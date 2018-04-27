@@ -18,6 +18,9 @@ set(GENERAL_FLAGS "-std=c++11 -Wall -Wno-reorder -MMD -MP -DIL_STD")
 set(CMAKE_CXX_FLAGS_DEBUG "${GENERAL_FLAGS} -g -O0 -D_DEBUG")
 set(CMAKE_CXX_FLAGS_RELEASE "${GENERAL_FLAGS} -O3") 
 
+find_package(OpenGL REQUIRED)
+find_package(glm REQUIRED)
+
 include_directories(${INCLUDE_DIR})
 link_directories(${LIB_DIR})
 

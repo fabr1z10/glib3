@@ -1,6 +1,15 @@
 #include <iostream>
 #include "graph/algo.h"
+#include "graph/poly.h"
 #include "test/io.h"
+
+
+void TestPoly1() {
+
+    std::vector<glm::vec2> a1 { glm::vec2(0, 0), glm::vec2(0, 10), glm::vec2(10, 10), glm::vec2(10, 0)};
+    Poly p (a1);
+}
+
 
 int main() {
 
