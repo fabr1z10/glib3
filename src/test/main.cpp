@@ -7,13 +7,17 @@
 void TestPoly1() {
 
     std::vector<glm::vec2> a1 { glm::vec2(0, 0), glm::vec2(0, 10), glm::vec2(10, 10), glm::vec2(10, 0)};
-    Poly p (a1);
-
+    Polygon p (a1);
+    std::cout << p.isPointInside(glm::vec2(0,0)) << std::endl;
+    std::cout << p.isPointInside(glm::vec2(3,3)) << std::endl;
+    std::cout << p.isPointInside(glm::vec2(12,0)) << std::endl;
+    std::cout << p.isPointInside(glm::vec2(8,4)) << std::endl;
 }
 
 
 int main() {
-
+    TestPoly1();
+    return 0;
     Graph<int> g;
 
     // add two nodes, labeled 1 and 2
