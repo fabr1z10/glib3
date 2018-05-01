@@ -21,6 +21,10 @@ set(CMAKE_CXX_FLAGS_RELEASE "${GENERAL_FLAGS} -O3")
 find_package(OpenGL REQUIRED)
 find_package(glm REQUIRED)
 
+if (APPLE)
+  include_directories(/usr/local/include)
+endif (APPLE)
+
 include_directories(${INCLUDE_DIR})
 link_directories(${LIB_DIR})
 
