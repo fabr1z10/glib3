@@ -11,7 +11,7 @@ bool Polygon::isVertexConcave(int i) const {
     return x < 0;
 }
 
-bool Polygon::isPointInside(glm::vec2 point) {
+bool Polygon::isPointInside(glm::vec2 point) const {
 
     float epsilon = 0.5;
 
@@ -49,6 +49,16 @@ bool Polygon::isPointInside(glm::vec2 point) {
     }
 
     return inside;
+}
+
+bool Poly::isPointInside(glm::vec2 P) const {
+    if (!m_polygons[0]->isPointInside(P))
+        return false;
+    for (int i = 1; i < m_polygons.size(); ++i) {
+        if (m_polygons[i]->isPointInside(P))
+            return false;
+    }
+    return true;
 }
 
 //for (i in 0...vertices.length)

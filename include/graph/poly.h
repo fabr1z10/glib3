@@ -5,7 +5,7 @@
 class Polygon : public Shape {
 public:
     Polygon (const std::vector<glm::vec2>& p) : m_points{p} {}
-    bool isPointInside (glm::vec2 P) override;
+    bool isPointInside (glm::vec2 P) const override;
     int GetVertexCount() const;
     glm::vec2 GetVertex(int) const;
     bool isVertexConcave (int i) const;
@@ -32,6 +32,7 @@ public:
         for (auto& hole : holes)
             m_polygons.push_back(std::move(hole));
     }
+    bool isPointInside (glm::vec2 P) const override;
     int GetVertexCount(int polyId = 0) const;
     int GetHoleCount() const;
     glm::vec2 GetVertex(int i, int polyId = 0) const;

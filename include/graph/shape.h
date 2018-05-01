@@ -13,7 +13,7 @@
 
 class Shape {
 public:
-    virtual bool isPointInside (glm::vec2) = 0;
+    virtual bool isPointInside (glm::vec2) const = 0;
         
 };
 

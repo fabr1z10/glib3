@@ -12,5 +12,6 @@ inline float distSq (glm::vec2& a, glm::vec2& b) {
     return p*p + q*q;
 }
 
-
+bool LineSegmentCross (glm::vec2, glm::vec2, glm::vec2, glm::vec2);
+bool inLineOfSight (const Poly&, glm::vec2, glm::vec2);
 void FindPathInPoly (const Poly&, glm::vec2 Start, glm::vec2 End);
