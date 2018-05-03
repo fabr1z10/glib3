@@ -1,4 +1,5 @@
 #include <vector>
+#include <memory>
 #include "shape.h"
 
 // simple polygon (can be concave), no holes

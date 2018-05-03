@@ -62,6 +62,7 @@ public:
     void AddNode (std::shared_ptr<Node<Key, Value>> node);
     void AddEdge (Key first, Key second, double weight);
     Node<Key, Value>* Get(Key key) const;
+    Value& GetValue(Key key) const;
     std::unordered_set<Key> GetKeys() const;
     int GetNodeCount() {
         return m_nodes.size();
@@ -87,6 +88,12 @@ Node<Key, Value>* Graph<Key, Value>::Get(Key key) const {
     return it->second.get();
 
 };
+
+template <typename Key, typename Value>
+Value& Graph<Key, Value>::GetValue(Key key) const {
+    auto node = Get(key);
+    return node->GetValue();
+}
 
 template<typename Key, typename Value>
 void Graph<Key, Value>::AddNode(std::shared_ptr<Node<Key, Value>> node) {

@@ -2,6 +2,32 @@
 #include "graph/poly.h"
 #include "graph/graph.h"
 
+bool LineSegmentCross (glm::vec2 A, glm::vec2 B, glm::vec2 C, glm::vec2 D) {
+    glm::vec2 r = B - A;
+    glm::vec2 s = D - C;
+    glm::vec2 PQ = C - A;
+    float rxs = cross(r, s);
+    if (isZero(rxs)) {
+        // collinear or parallel
+        float PQxr = cross (PQ, r);
+        if (isZero(PQxr)) {
+            // collinear
+            float am = 0;
+            float aM = glm::dot(r, r);
+            float b0 = glm::dot(PQ, r);
+            float b1 = glm::dot(D-A, r);
+            if (b0 < b1) {
+                return (b0 > aM || am > b1);
+            }
+            return (b1 > aM || am > b0);
+        }
+        return false;
+    }
+    float t = cross(PQ, s) / rxs;
+    float u = cross(PQ, r) / rxs;
+    return (t >= 0.0f && t <= 1.0f && u >= 0.0f && u <= 1.0f);
+}
+
 void FindPathInPoly (const Poly& poly, glm::vec2 Start, glm::vec2 End) {
     int nHoles = poly.GetHoleCount();
     int nVertices = poly.GetVertexCount();
@@ -21,6 +47,20 @@ void FindPathInPoly (const Poly& poly, glm::vec2 Start, glm::vec2 End) {
                 g.AddNode(n++, poly.GetVertex(j, h+1));
             }
         }
+    }
+
+    // add the edges
+    auto keys = g.GetKeys();
+    for (auto iter = keys.begin(); iter != keys.end(); ++iter) {
+        auto iter2 = iter;
+        glm::vec2& v1 = g.GetValue(*iter);
+        for (++iter2; iter2 != keys.end(); ++iter2) {
+            glm::vec2& v2 = g.GetValue(*iter2);
+            if (inLineOfSight(poly, v1, v2)) {
+                g.AddEdge(*iter, *iter2, glm::distance(v1, v2));
+            }
+        }
+
     }
 
     g.AddNode(n++, Start);
@@ -53,32 +93,12 @@ bool inLineOfSight (const Poly& p, glm::vec2 start, glm::vec2 end) {
         for (int j = 1; j < m; ++j) {
             glm::vec2 v2 = p.GetVertex(j);
             if (LineSegmentCross(start, end, v1, v2)) {
-                
+                return false;
             }
             v1 = v2;
         }
     }
-    
-//        for (i in 0...polygon.vertices.length) {
-//            var v1:Vector = polygon.vertices[i];
-//            var v2:Vector = polygon.vertices[(i + 1) % polygon.vertices.length];
-//            if (LineSegmentsCross(start, end, v1, v2)) {
-//                //In some cases a 'snapped' endpoint is just a little over the line due to rounding errors. So a 0.5 margin is used to tackle those cases.
-//                if (polygon.distanceToSegment(start.x, start.y, v1.x, v1.y, v2.x, v2.y ) &gt; 0.5 &amp;&amp; polygon.distanceToSegment(end.x, end.y, v1.x, v1.y, v2.x, v2.y ) &gt; 0.5) {
-//                    return false;
-//                }
-//            }
-//        }
-    //}
-        bool inside;
-    // Finally the middle point in the segment determines if in LOS or not
-//    var v:Vector = Vector.Add(start, end);
-//    var v2:Vector = new Vector(v.x / 2, v.y / 2);
-//    var inside:Bool = polygons[0].pointInside(v2);
-//    for (i in 1...polygons.length) {
-//        if (polygons[i].pointInside(v2, false)) {
-//            inside = false;
-//        }
-//    }
-    return inside;
+
+
+    return true;
 }

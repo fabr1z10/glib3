@@ -1,5 +1,11 @@
 #include <deque>
 #include <iostream>
+#include <string>
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+
+
+extern GLFWwindow* window;
 
 template <typename T>
 void printPath (std::deque<T>& vec) {
@@ -8,3 +14,11 @@ void printPath (std::deque<T>& vec) {
         std::cout << vec[i] << " -> ";
     std::cout << vec[i] << std::endl;
 }
+
+class App {
+public:
+    static void Init(int deviceWidth, int deviceHeight, int windowWidth, int windowHeight, const std::string& name);
+
+};
+
+

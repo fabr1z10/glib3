@@ -2,6 +2,18 @@
 
 class Poly;
 
+const float epsilon = 0.0001f;
+
+template <class T>
+bool isEqual (T x, T y, T eps = epsilon) {
+    return std::abs(x-y) < eps;
+}
+
+template <class T>
+bool isZero (T x, T eps = epsilon) {
+    return isEqual(x, 0.0f, eps);
+}
+
 inline float cross (glm::vec2& a, glm::vec2& b) {
     return a.x * b.y - a.y * b.x;
 }
