@@ -19,10 +19,15 @@ class RenderingEngine : public Component {
 public:
     
     void Update(double) override;
-    
+    void AddCamera (std::unique_ptr<Camera>);
 private:
     std::vector<Shader*> m_shaders;
     std::vector<std::unique_ptr<Camera>> m_cameras;
 };
+
+inline void RenderingEngine::AddCamera(std::unique_ptr<Camera> cam) {
+    m_cameras.push_back(std::move(cam));
+}
+
 
 #endif /* renderingengine_h */
