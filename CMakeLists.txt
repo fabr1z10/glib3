@@ -19,6 +19,8 @@ set(CMAKE_CXX_FLAGS_DEBUG "${GENERAL_FLAGS} -g -O0 -D_DEBUG")
 set(CMAKE_CXX_FLAGS_RELEASE "${GENERAL_FLAGS} -O3") 
 
 find_package(OpenGL REQUIRED)
+find_package(GLEW REQUIRED)
+find_package(glfw3 REQUIRED)
 find_package(glm REQUIRED)
 
 if (APPLE)

@@ -15,7 +15,10 @@
 
 int main() {
     App::Init(320, 200, 800, 600, "Hello world!");
-    Engine g(window);
+    EngineConfig config;
+    config.window = window;
+    Engine& g = Engine::get();
+    g.Init(config);
     g.MainLoop();
 
     //TestPoly1();

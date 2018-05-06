@@ -1,0 +1,89 @@
+//
+//  shader.h
+//  glib
+//
+//  Created by Fabrizio Venturini on 04/05/2018.
+//
+//
+
+#ifndef shader_h
+#define shader_h
+
+#include <GL/glew.h>
+#include <gfx/enums.h>
+#include <unordered_map>
+#include <string>
+#include <memory>
+
+// the basic (unlit) textured shader
+const char basic_vshader[] =
+"#version 330\n"
+"\n"
+"layout (location = 0) in vec3 vPosition;\n"
+"layout (location = 1) in vec2 vTexture;\n"
+"uniform mat4 MVmat;\n"
+"uniform mat4 ProjMat;\n"
+"out vec2 tex;\n"
+"void main()\n"
+"{\n"
+"tex = vTexture;\n"
+"gl_Position = ProjMat * MVmat * vec4(vPosition, 1.0);\n"
+"}\n"
+;
+
+const char basic_fshader[] =
+"#version 330\n"
+"\n"
+"in vec2 tex;\n"
+"uniform sampler2D Tex1;\n"
+"uniform vec4 color;\n"
+"out vec4 fragColor;\n"
+"\n"
+"void main()\n"
+"{\n"
+"vec4 texColor = texture (Tex1, tex);\n"
+"if (texColor.a < 0.5)\n"
+"discard;\n"
+"texColor *= color;\n"
+"fragColor = texColor;\n"
+"}\n"
+;
+
+
+
+
+struct EnumClassHash
+{
+    template <typename T>
+    std::size_t operator()(T t) const
+    {
+        return static_cast<std::size_t>(t);
+    }
+};
+
+
+
+class Shader {
+public:
+    Shader(ShaderType type, const char* vertex, const char* fragment, unsigned int attributes, std::unordered_map<ShaderUniform, std::string, EnumClassHash> m_uniforms = std::unordered_map<ShaderUniform, std::string, EnumClassHash>());
+    GLuint GetProgId() const;
+    GLuint GetUniformLocation(ShaderUniform);
+    void AddUniform(ShaderUniform unif, const char*);
+    virtual void Start();
+    virtual void Stop();
+    ShaderType GetShaderId() const { return m_shaderId; }
+private:
+    ShaderType m_shaderId;
+    unsigned int m_nAttributes;
+    std::unordered_map <ShaderUniform, GLuint, EnumClassHash> m_locations;
+    GLuint m_programId;
+};
+
+class ShaderFactory {
+public:
+    static std::unique_ptr<Shader> GetTextureShader();
+    static std::unique_ptr<Shader> GetColorShader();
+    static std::unique_ptr<Shader> GetTextShader();
+};
+
+#endif /* shader_h */

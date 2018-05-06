@@ -1,16 +1,54 @@
 #pragma once
 
+#include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <gfx/singleton.h>
+#include <gfx/shader.h>
+#include <gfx/entity.h>
 
-class Engine {
+
+struct EngineConfig {
+    EngineConfig () : window{nullptr}, frameRate (60.0) {}
+    
+    GLFWwindow* window;
+    double frameRate;
+};
+
+class SceneFactory {
 public:
-    Engine(GLFWwindow * w) : m_window(w),m_timeLastUpdate{0}, m_frameTime{1.0/60.0} {}
+    virtual std::shared_ptr<Entity> Create() = 0;
+};
 
+
+
+class Engine : public Singleton<Engine> {
+public:
+    void Init(const EngineConfig& config);
     void MainLoop();
-
+    void Draw();
+    bool isRunning() const;
+    void AddShader (std::unique_ptr<Shader>);
+    Entity* GetScene() const;
 private:
+    std::unique_ptr<SceneFactory> m_sceneFactory;
+    std::vector<std::unique_ptr<Shader> > m_shaders;
+    std::shared_ptr<Entity> m_scene;
+    bool m_running;
     double m_frameTime;
     double m_timeLastUpdate;
     GLFWwindow* m_window;
 
 };
+
+inline Entity* Engine::GetScene() const {
+    return m_scene.get();
+}
+
+
+inline void Engine::AddShader (std::unique_ptr<Shader> shader) {
+    m_shaders.push_back(std::move(shader));
+}
+
+inline bool Engine::isRunning() const {
+    return m_running;
+}
