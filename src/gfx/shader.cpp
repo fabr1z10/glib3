@@ -96,3 +96,10 @@ std::unique_ptr<Shader> ShaderFactory::GetTextureShader() {
     return std::unique_ptr<Shader> (
                                     new Shader(TEXTURE_SHADER, basic_vshader, basic_fshader, 2, uniforms));
 }
+
+GLuint Shader::GetUniformLocation(ShaderUniform uniform) {
+    auto iter = m_locations.find(uniform);
+    if (iter == m_locations.end())
+        throw;
+    return iter->second;
+}

@@ -11,6 +11,18 @@
 #include <gfx/engine.h>
 #include <gfx/shader.h>
 
+extern GLFWwindow* window;
+
+void RenderingEngine::Start() {
+
+    // trigger a resize for all cameras
+    int widthPixel, heightPixel;
+    glfwGetFramebufferSize(window, &widthPixel, &heightPixel);
+    for (auto& cam : m_cameras)
+        cam->Resize (widthPixel, heightPixel);
+}
+
+
 void RenderingEngine::Update(double)
 {
     int drawCount {0};

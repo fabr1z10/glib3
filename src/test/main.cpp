@@ -1,6 +1,9 @@
 #include <iostream>
 #include "test/io.h"
 #include "gfx/engine.h"
+#include <gfx/error.h>
+#include "test/testgfx.h"
+
 
 //void TestPoly1() {
 //
@@ -14,12 +17,18 @@
 
 
 int main() {
-    App::Init(320, 200, 800, 600, "Hello world!");
-    EngineConfig config;
-    config.window = window;
-    Engine& g = Engine::get();
-    g.Init(config);
-    g.MainLoop();
+    try {
+        App::Init(320, 200, 800, 600, "Hello world!");
+        EngineConfig config;
+        config.window = window;
+        Engine &g = Engine::get();
+        g.Init(config);
+        g.SetSceneFactory(std::unique_ptr<Factory1>(new Factory1));
+        g.MainLoop();
+    } catch (Error& err){
+        std::cerr << err.what() << std::endl;
+        return 1;
+    }
 
     //TestPoly1();
     return 0;

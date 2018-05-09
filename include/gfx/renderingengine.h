@@ -17,7 +17,7 @@
 // handles camera and loops through all rendering components
 class RenderingEngine : public Component {
 public:
-    
+    void Start() override;
     void Update(double) override;
     void AddCamera (std::unique_ptr<Camera>);
 private:

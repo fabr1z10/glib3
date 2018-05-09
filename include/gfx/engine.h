@@ -29,6 +29,8 @@ public:
     bool isRunning() const;
     void AddShader (std::unique_ptr<Shader>);
     Entity* GetScene() const;
+    void SetSceneFactory (std::unique_ptr<SceneFactory> factory);
+    glm::vec2 GetDeviceSize() const;
 private:
     std::unique_ptr<SceneFactory> m_sceneFactory;
     std::vector<std::unique_ptr<Shader> > m_shaders;
@@ -37,8 +39,13 @@ private:
     double m_frameTime;
     double m_timeLastUpdate;
     GLFWwindow* m_window;
+    glm::vec2 m_deviceSize;
 
 };
+
+inline glm::vec2 Engine::GetDeviceSize() const {
+    return m_deviceSize;
+}
 
 inline Entity* Engine::GetScene() const {
     return m_scene.get();
@@ -51,4 +58,8 @@ inline void Engine::AddShader (std::unique_ptr<Shader> shader) {
 
 inline bool Engine::isRunning() const {
     return m_running;
+}
+
+inline void Engine::SetSceneFactory (std::unique_ptr<SceneFactory> factory) {
+    m_sceneFactory = std::move(factory);
 }

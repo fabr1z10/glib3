@@ -1,4 +1,5 @@
 #include "gfx/engine.h"
+#include <gfx/error.h>
 #include "gfx/app.h"
 
 
@@ -9,6 +10,8 @@ void Engine::Init(const EngineConfig& config) {
 }
 
 void Engine::MainLoop() {
+    if (m_sceneFactory == nullptr)
+        GLIB_FAIL("Scene factory has not been set.")
 
     if (!glfwWindowShouldClose(m_window)) {
 

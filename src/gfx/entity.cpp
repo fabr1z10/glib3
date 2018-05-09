@@ -40,9 +40,15 @@ void Entity::Start() {
     }
 }
 
-void Entity::Transform(glm::mat4& t) {
-    m_lastMove = t;
-    m_transform *= t;
-    //onMove.Fire(this);
-    
+
+void Entity::SetLocalTransform (glm::mat4& t) {
+    m_localTransform = t;
+    Notify (m_worldTransform);
+}
+
+void Entity::Notify(glm::mat4& parentTransform) {
+    m_worldTransform = parentTransform * m_localTransform;
+    for (auto& c : m_children)
+        c->Notify(m_worldTransform);
+
 }

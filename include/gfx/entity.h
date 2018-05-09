@@ -15,7 +15,9 @@
 #include <gfx/component.h>
 #include <string>
 #include <typeindex>
+#include <typeinfo>
 #include <list>
+#include <memory>
 #include <unordered_map>
 
 // an entity has a position, a tag and a bunch of components attached
@@ -27,8 +29,8 @@ public:
     ~Entity() {
         //onRemove.Fire(this);
     }
-    glm::mat4& GetLocalTransform();
-    glm::mat4 GetWorldTransform() const;
+    const glm::mat4& GetLocalTransform() const;
+    const glm::mat4& GetWorldTransform() const;
     std::string GetTag() const;
     template <class C>
     void AddComponent(std::shared_ptr<C> c) {
@@ -60,7 +62,9 @@ public:
     //Event<GameObject*> onAdd;						// fires when a new node is added to this
     //Event<GameObject*> onMove;						// fires when this node moves
     //Event<GameObject*> onRemove;					// fires when this node goes out of scope
+    // gets the world position
     glm::vec3 GetPosition() const;
+    void SetLocalTransform (glm::mat4&);
     void SetPosition(glm::vec2&);
     void SetPosition(glm::vec3&);
     void Move(glm::vec2&);
@@ -77,17 +81,32 @@ public:
     //	m_references.remove(ref);
     //}
 private:
+    void Notify(glm::mat4& world);
     bool m_active;
     int m_layer;
     Entity* m_parent;
     std::list<std::shared_ptr<Entity> >::iterator m_itParent;
     std::list<std::shared_ptr<Entity> > m_children;
     std::string m_tag;
-    glm::mat4 m_transform;
+    glm::mat4 m_localTransform;
+    glm::mat4 m_worldTransform;
     glm::mat4 m_lastMove;
-    void Transform(glm::mat4& t);
     std::unordered_map<std::type_index, std::shared_ptr<Component> > m_components;
 };
 
+inline int Entity::GetLayer() const {
+    return m_layer;
+}
 
+inline void Entity::SetLayer(int layer) {
+    m_layer = layer;
+}
+
+inline glm::vec3 Entity::GetPosition() const {
+    return glm::vec3(m_worldTransform[3]);
+}
+
+inline const glm::mat4& Entity::GetWorldTransform() const {
+    return m_worldTransform;
+}
 #endif /* entity_h */
