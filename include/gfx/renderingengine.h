@@ -19,7 +19,9 @@ class RenderingEngine : public Component {
 public:
     void Start() override;
     void Update(double) override;
+    void AddShader (ShaderType id);
     void AddCamera (std::unique_ptr<Camera>);
+    using ParentClass = RenderingEngine;
 private:
     std::vector<Shader*> m_shaders;
     std::vector<std::unique_ptr<Camera>> m_cameras;

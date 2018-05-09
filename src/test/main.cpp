@@ -18,8 +18,8 @@
 
 int main() {
     try {
-        App::Init(320, 200, 800, 600, "Hello world!");
-        EngineConfig config;
+        App::Init(800, 600, "Hello world!");
+        EngineConfig config (320, 200);
         config.window = window;
         Engine &g = Engine::get();
         g.Init(config);

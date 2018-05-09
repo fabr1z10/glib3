@@ -7,6 +7,9 @@ void Engine::Init(const EngineConfig& config) {
     m_window = config.window;
     m_frameTime = 1.0 / config.frameRate;
     m_running = false;
+    m_deviceSize = glm::vec2(config.deviceWidth, config.deviceHeight);
+    // initialize shaders
+    AddShader (ShaderFactory::GetTextureShader());
 }
 
 void Engine::MainLoop() {

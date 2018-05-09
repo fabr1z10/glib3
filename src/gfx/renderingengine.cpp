@@ -57,3 +57,11 @@ void RenderingEngine::Update(double)
         shader->Stop();
     }
 }
+
+void RenderingEngine::AddShader (ShaderType id) {
+    Shader* shader = Engine::get().GetShader(id);
+    if (shader == nullptr)
+        throw;
+    m_shaders.push_back(shader);
+
+}

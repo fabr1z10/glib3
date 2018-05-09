@@ -17,7 +17,7 @@ void printPath (std::deque<T>& vec) {
 
 class App {
 public:
-    static void Init(int deviceWidth, int deviceHeight, int windowWidth, int windowHeight, const std::string& name);
+    static void Init(int windowWidth, int windowHeight, const std::string& name);
 
 };
 

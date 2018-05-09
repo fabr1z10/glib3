@@ -8,10 +8,13 @@
 
 
 struct EngineConfig {
-    EngineConfig () : window{nullptr}, frameRate (60.0) {}
+    EngineConfig (float devWidth, float devHeight) :
+        window{nullptr}, frameRate (60.0), deviceWidth{devWidth}, deviceHeight{devHeight} {}
     
     GLFWwindow* window;
     double frameRate;
+    float deviceWidth;
+    float deviceHeight;
 };
 
 class SceneFactory {
@@ -27,13 +30,14 @@ public:
     void MainLoop();
     void Draw();
     bool isRunning() const;
+    Shader* GetShader (ShaderType id);
     void AddShader (std::unique_ptr<Shader>);
     Entity* GetScene() const;
     void SetSceneFactory (std::unique_ptr<SceneFactory> factory);
     glm::vec2 GetDeviceSize() const;
 private:
     std::unique_ptr<SceneFactory> m_sceneFactory;
-    std::vector<std::unique_ptr<Shader> > m_shaders;
+    std::unordered_map<ShaderType, std::unique_ptr<Shader>> m_shaders;
     std::shared_ptr<Entity> m_scene;
     bool m_running;
     double m_frameTime;
@@ -53,7 +57,7 @@ inline Entity* Engine::GetScene() const {
 
 
 inline void Engine::AddShader (std::unique_ptr<Shader> shader) {
-    m_shaders.push_back(std::move(shader));
+    m_shaders[shader->GetShaderId()] = std::move(shader);
 }
 
 inline bool Engine::isRunning() const {
@@ -62,4 +66,11 @@ inline bool Engine::isRunning() const {
 
 inline void Engine::SetSceneFactory (std::unique_ptr<SceneFactory> factory) {
     m_sceneFactory = std::move(factory);
+}
+
+inline Shader* Engine::GetShader(ShaderType id) {
+    auto it = m_shaders.find(id);
+    if (it == m_shaders.end())
+        return nullptr;
+    return it->second.get();
 }

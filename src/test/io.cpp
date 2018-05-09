@@ -3,10 +3,12 @@
 
 GLFWwindow* window;
 
-void App::Init(int deviceWidth, int deviceHeight, int windowWidth, int windowHeight, const std::string &name) {
+void App::Init(int windowWidth, int windowHeight, const std::string &name) {
     if (!glfwInit())
         exit(EXIT_FAILURE);
-
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR,3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR,3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     window = glfwCreateWindow(windowWidth, windowHeight, name.c_str(), NULL, NULL);
     if (!window) {
         glfwTerminate();
