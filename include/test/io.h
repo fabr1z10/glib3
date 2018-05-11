@@ -19,6 +19,9 @@ class App {
 public:
     static void Init(int windowWidth, int windowHeight, const std::string& name);
 
+private:
+
+    static GLuint m_vao;
 };
 
 

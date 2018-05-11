@@ -97,6 +97,13 @@ std::unique_ptr<Shader> ShaderFactory::GetTextureShader() {
                                     new Shader(TEXTURE_SHADER, basic_vshader, basic_fshader, 2, uniforms));
 }
 
+std::unique_ptr<Shader> ShaderFactory::GetColorShader() {
+    std::unordered_map <ShaderUniform, std::string, EnumClassHash> uniforms;
+    uniforms[TINT] = "color";
+    return std::unique_ptr<Shader>(new Shader(COLOR_SHADER, debug_vshader, debug_fshader, 2, uniforms));
+}
+
+
 GLuint Shader::GetUniformLocation(ShaderUniform uniform) {
     auto iter = m_locations.find(uniform);
     if (iter == m_locations.end())

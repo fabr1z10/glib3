@@ -1,7 +1,8 @@
 #include "test/io.h"
-
+#include <gfx/engine.h>
 
 GLFWwindow* window;
+GLuint App::m_vao;
 
 void App::Init(int windowWidth, int windowHeight, const std::string &name) {
     if (!glfwInit())
@@ -26,6 +27,16 @@ void App::Init(int windowWidth, int windowHeight, const std::string &name) {
     glGetIntegerv(GL_MAJOR_VERSION, &Mv);
     glGetIntegerv(GL_MINOR_VERSION, &mv);
 
+    glGenVertexArrays(1, &m_vao);
+    glBindVertexArray(m_vao);
+
+    glfwSetFramebufferSizeCallback(window, Engine::WindowResizeCallback);
+
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
     std::cout << "OpenGL version " << Mv << "." << mv << std::endl;
 
 }
+

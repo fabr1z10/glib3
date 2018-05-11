@@ -10,6 +10,10 @@ void Engine::Init(const EngineConfig& config) {
     m_deviceSize = glm::vec2(config.deviceWidth, config.deviceHeight);
     // initialize shaders
     AddShader (ShaderFactory::GetTextureShader());
+    AddShader (ShaderFactory::GetColorShader());
+
+
+
 }
 
 void Engine::MainLoop() {
@@ -40,7 +44,7 @@ void Engine::MainLoop() {
                 }
                 
                 
-                
+                glClearColor(0.0f,0.0f,0.3f,1.0f);
                 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
                 glfwSwapBuffers(m_window);
                 glfwPollEvents();
@@ -51,3 +55,21 @@ void Engine::MainLoop() {
     }
 }
 
+void Engine::WindowResizeCallback(GLFWwindow* win, int width, int height) {
+    // notify cameras
+    for (auto& listener : Engine::get().m_resizeListeners)
+        listener->Notify(width, height);
+
+}
+
+void Engine::RegisterToWindowResizeEvent(WindowResizeListener* listener) {
+    m_resizeListeners.insert(listener);
+}
+
+void Engine::UnregisterToWindowResizeEvent(WindowResizeListener* listener) {
+    m_resizeListeners.erase(listener);
+}
+
+Engine::~Engine() {
+    glfwTerminate();
+}

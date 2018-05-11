@@ -64,11 +64,14 @@ bool Camera::IsInViewport(float xScreen, float yScreen) {
 OrthographicCamera::OrthographicCamera(float orthoWidth, float orthoHeight, int layer, glm::vec4 viewport)
         : Camera(layer, viewport), m_orthoWidth{orthoWidth}, m_orthoHeight{orthoHeight}
 {
+    m_xMax = m_yMax = std::numeric_limits<float>::infinity();
+    m_xMin = m_yMin = -m_xMax;
     m_aspectRatio = m_camViewport[2] / m_camViewport[3];
     float hw = 0.5f * m_orthoWidth;
     float hh = 0.5f * m_orthoHeight;
     m_extents = glm::vec2 (hw, hh);
     m_projectionMatrix = glm::ortho(-hw, hw, -hh, hh, -100.0f, 100.0f);
+    Init();
 }
 
 
@@ -108,10 +111,10 @@ void OrthographicCamera::Init() {
     float hw = m_orthoWidth / 2.0f;
     float hh = m_orthoHeight / 2.0f;
     m_projectionMatrix = glm::ortho(-hw, hw, -hh, hh, -100.0f, 100.0f);
-    int widthPixel;
-    int heightPixel;
-    glfwGetFramebufferSize(window, &widthPixel, &heightPixel);
-    Resize(widthPixel, heightPixel);
+//    int widthPixel;
+//    int heightPixel;
+//    glfwGetFramebufferSize(window, &widthPixel, &heightPixel);
+//    Resize(widthPixel, heightPixel);
 }
 
 void OrthographicCamera::SetPosition(vec3 eye, vec3 direction, vec3 up) {

@@ -15,6 +15,8 @@ void Entity::AddChild(std::shared_ptr<Entity> child) {
     auto it = m_children.insert(m_children.end(), child);
     child->m_parent = this;
     child->m_itParent = it;
+    child->Notify(m_worldTransform);
+
     // if engine is running, start
     if (Engine::get().isRunning()) {
         child->Start();

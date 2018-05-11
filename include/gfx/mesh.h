@@ -29,7 +29,7 @@ struct AnimData {
 // abstract class for mesh
 class IMesh {
 public:
-    IMesh(ShaderType type) : m_vb(INVALID_OGL_VALUE), m_ib(INVALID_OGL_VALUE), m_offset{0}, m_shaderType{type} {}
+    IMesh(ShaderType type) : m_vb(INVALID_OGL_VALUE), m_ib(INVALID_OGL_VALUE), m_offset{0}, m_shaderType{type}, m_localTransform{glm::mat4(1.0f)} {}
     GLuint VertexBuffer() const { return m_vb; }
     GLuint IndexBuffer() const { return m_ib; }
     GLuint GetNumberOfIndices() { return m_nindices; }

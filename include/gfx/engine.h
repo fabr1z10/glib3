@@ -5,7 +5,8 @@
 #include <gfx/singleton.h>
 #include <gfx/shader.h>
 #include <gfx/entity.h>
-
+#include <gfx/listener.h>
+#include <unordered_set>
 
 struct EngineConfig {
     EngineConfig (float devWidth, float devHeight) :
@@ -26,6 +27,7 @@ public:
 
 class Engine : public Singleton<Engine> {
 public:
+    ~Engine();
     void Init(const EngineConfig& config);
     void MainLoop();
     void Draw();
@@ -35,6 +37,9 @@ public:
     Entity* GetScene() const;
     void SetSceneFactory (std::unique_ptr<SceneFactory> factory);
     glm::vec2 GetDeviceSize() const;
+    void RegisterToWindowResizeEvent(WindowResizeListener*);
+    void UnregisterToWindowResizeEvent(WindowResizeListener*);
+    static void WindowResizeCallback(GLFWwindow* win, int width, int height);
 private:
     std::unique_ptr<SceneFactory> m_sceneFactory;
     std::unordered_map<ShaderType, std::unique_ptr<Shader>> m_shaders;
@@ -44,6 +49,7 @@ private:
     double m_timeLastUpdate;
     GLFWwindow* m_window;
     glm::vec2 m_deviceSize;
+    std::unordered_set<WindowResizeListener*> m_resizeListeners;
 
 };
 

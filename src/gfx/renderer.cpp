@@ -9,6 +9,8 @@
 #include <gfx/renderer.h>
 #include <gfx/shader.h>
 
+Renderer::Renderer() : m_mesh(nullptr), m_visible(true), m_frame(0), m_tint(1.0f) {}
+
 void Renderer::Draw(Shader* shader) {
     auto tintLoc = shader->GetUniformLocation(TINT);
     glUniform4fv(tintLoc, 1, &m_tint[0]);

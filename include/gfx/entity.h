@@ -25,7 +25,7 @@
 // and only one parent (i.e. they are organized in a tree)
 class Entity {
 public:
-    Entity() : m_parent(nullptr), m_active(true) {}
+    Entity() : m_parent(nullptr), m_active(true), m_localTransform{glm::mat4(1.0)}, m_worldTransform{glm::mat4(1.0)} {}
     ~Entity() {
         //onRemove.Fire(this);
     }

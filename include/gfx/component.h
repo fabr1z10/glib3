@@ -14,6 +14,7 @@ class Entity;
 class Component {
 public:
     Component() {}
+    virtual~ Component() {}
     // called once when the entity is added to the scene
     virtual void Start() = 0;
     virtual void Update(double) = 0;

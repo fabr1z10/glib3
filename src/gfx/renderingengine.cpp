@@ -10,6 +10,8 @@
 #include <gfx/renderer.h>
 #include <gfx/engine.h>
 #include <gfx/shader.h>
+#include <gfx/error.h>
+#include <iostream>
 
 extern GLFWwindow* window;
 
@@ -20,8 +22,20 @@ void RenderingEngine::Start() {
     glfwGetFramebufferSize(window, &widthPixel, &heightPixel);
     for (auto& cam : m_cameras)
         cam->Resize (widthPixel, heightPixel);
+
+    // register to window resize
+    Engine::get().RegisterToWindowResizeEvent(this);
 }
 
+RenderingEngine::~RenderingEngine() {
+    Engine::get().UnregisterToWindowResizeEvent(this);
+}
+
+void RenderingEngine::Notify(float w, float h)  {
+    //std::cout << "Changed window size to " << w << ", " << h << std::endl;
+    for (auto& cam : m_cameras)
+        cam->Resize(w, h);
+}
 
 void RenderingEngine::Update(double)
 {
@@ -61,7 +75,7 @@ void RenderingEngine::Update(double)
 void RenderingEngine::AddShader (ShaderType id) {
     Shader* shader = Engine::get().GetShader(id);
     if (shader == nullptr)
-        throw;
+        GLIB_FAIL("Shader " << id << " is not available.");
     m_shaders.push_back(shader);
 
 }
