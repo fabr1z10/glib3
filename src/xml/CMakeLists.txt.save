@@ -1,0 +1,8 @@
+XML_INCLUcmake_minimum_required(VERSION 3.3)
+
+file(GLOB GRAPH_INCLUDE ${INCLUDE_DIR}/graph/*.h)
+file(GLOB GRAPH_SOURCE *.cpp)
+
+add_library(graph STATIC ${GRAPH_INCLUDE} ${GRAPH_SOURCE} ../../include/graph/algo.h)
+
+install(TARGETS graph DESTINATION ${LIB_DIR})

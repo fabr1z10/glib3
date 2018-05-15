@@ -1,7 +1,7 @@
 #pragma once
 
 #include <test/railway.h>
-
+#include <set>
 
 struct Position {
     long resourceId;
@@ -35,6 +35,9 @@ public:
     Solution(const std::string&);
     // get the position of train id at time t
     TrainPosition GetPosition(const std::string& id, long t);
+    std::vector<int> GetStations(const std::string& train);
+    std::vector<std::string> GetTrainNames() const;
+    int GetNumberOfSchedules() const { return schedules.size();}
 private:
     std::unordered_map<std::string, std::vector<Activity> > schedules;
 };

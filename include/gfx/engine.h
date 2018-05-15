@@ -10,12 +10,14 @@
 
 struct EngineConfig {
     EngineConfig (float devWidth, float devHeight) :
-        window{nullptr}, frameRate (60.0), deviceWidth{devWidth}, deviceHeight{devHeight} {}
+        window{nullptr}, frameRate (60.0), deviceWidth{devWidth}, deviceHeight{devHeight}, enableMouse{false}, enableKeyboard{false} {}
     
     GLFWwindow* window;
     double frameRate;
     float deviceWidth;
     float deviceHeight;
+    bool enableMouse;
+    bool enableKeyboard;
 };
 
 class SceneFactory {
@@ -39,8 +41,17 @@ public:
     glm::vec2 GetDeviceSize() const;
     void RegisterToWindowResizeEvent(WindowResizeListener*);
     void UnregisterToWindowResizeEvent(WindowResizeListener*);
+    void RegisterToMouseEvent(MouseListener*);
+    void UnregisterToMouseEvent(MouseListener*);
+    void RegisterToKeyboardEvent(KeyboardListener*);
+    void UnregisterToKeyboardEvent(KeyboardListener*);
+    void Remove(Entity*);
     static void WindowResizeCallback(GLFWwindow* win, int width, int height);
+    static void mouse_button_callback(GLFWwindow*, int, int, int);
+    static void cursor_pos_callback(GLFWwindow*, double xpos, double ypos);
+    static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 private:
+    std::unordered_set<Entity*> m_garbage;
     std::unique_ptr<SceneFactory> m_sceneFactory;
     std::unordered_map<ShaderType, std::unique_ptr<Shader>> m_shaders;
     std::shared_ptr<Entity> m_scene;
@@ -50,7 +61,8 @@ private:
     GLFWwindow* m_window;
     glm::vec2 m_deviceSize;
     std::unordered_set<WindowResizeListener*> m_resizeListeners;
-
+    std::unordered_set<MouseListener*> m_mouseListeners;
+    std::unordered_set<KeyboardListener*> m_keyboardListeners;
 };
 
 inline glm::vec2 Engine::GetDeviceSize() const {
@@ -74,6 +86,9 @@ inline void Engine::SetSceneFactory (std::unique_ptr<SceneFactory> factory) {
     m_sceneFactory = std::move(factory);
 }
 
+inline void Engine::Remove(Entity * entity) {
+    m_garbage.insert(entity);
+}
 inline Shader* Engine::GetShader(ShaderType id) {
     auto it = m_shaders.find(id);
     if (it == m_shaders.end())

@@ -17,6 +17,8 @@ void App::Init(int windowWidth, int windowHeight, const std::string &name) {
     }
 
     glfwMakeContextCurrent(window);
+    glfwSetFramebufferSizeCallback(window, Engine::WindowResizeCallback);
+
     // Initialize GLEW
     //glewExperimental = true;
     if (glewInit()) {
@@ -30,11 +32,11 @@ void App::Init(int windowWidth, int windowHeight, const std::string &name) {
     glGenVertexArrays(1, &m_vao);
     glBindVertexArray(m_vao);
 
-    glfwSetFramebufferSizeCallback(window, Engine::WindowResizeCallback);
+
 
     glEnable(GL_DEPTH_TEST);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    //glEnable(GL_BLEND);
+    //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     std::cout << "OpenGL version " << Mv << "." << mv << std::endl;
 

@@ -18,7 +18,7 @@
 // handles camera and loops through all rendering components
 class RenderingEngine : public Component, public WindowResizeListener {
 public:
-    virtual ~RenderingEngine();
+    //virtual ~RenderingEngine();
     void Start() override;
     void Update(double) override;
     void AddShader (ShaderType id);

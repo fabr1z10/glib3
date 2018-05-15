@@ -20,12 +20,15 @@ void testTCS() {
 int main() {
 
     try {
+        Solution s("/home/fabrizio/sources/tcs_processor/TestCaseUP/output/output_BR_76_Scenario_1_A_planner_input.xml");
         App::Init(800, 600, "Hello world!");
         EngineConfig config (800, 600);
         config.window = window;
+        config.enableMouse = true;
+        config.enableKeyboard = true;
         Engine &g = Engine::get();
         g.Init(config);
-        g.SetSceneFactory(std::unique_ptr<Factory2>(new Factory2));
+        g.SetSceneFactory(std::unique_ptr<Factory2>(new Factory2(s)));
         g.MainLoop();
     } catch (Error& err){
         std::cerr << err.what() << std::endl;

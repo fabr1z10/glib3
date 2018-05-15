@@ -4,6 +4,7 @@
 #include <vector>
 #include <unordered_map>
 #include <gfx/error.h>
+#include <set>
 
 class GlobalId {
 public:
@@ -42,6 +43,7 @@ class StationRoute : public Resource {
 public:
     StationRoute (const std::string& name, int length, int stationId) : Resource(name, length), _stationId{stationId} {}
     std::string GetName() override;
+    int GetStationId() const { return _stationId; }
 private:
     int _stationId;
 };
@@ -62,12 +64,20 @@ public:
     // get total track length
     int GetLength() const;
     std::string GetName() override;
+    const std::vector<int>& GetTrackCircuits() const { return m_trackCircuits; }
     void AddTrackCircuit(int id) {
         m_trackCircuits.push_back(id);
+    }
+    int GetStationA() const { return _stationA; }
+    int GetStationB() const { return _stationB; }
+    std::string GetMainName() const { return _mainName; }
+    void SetMainName(const std::string& name) {
+        _mainName = name;
     }
 private:
     // sequence of track circuits from A to B
     std::vector<int> m_trackCircuits;
+    std::string _mainName;
     int _stationA;
     int _stationB;
 };
@@ -87,6 +97,8 @@ public:
     }
     int GetStoppingPointId(const std::string&);
     int GetStationRouteId(const std::string&);
+    std::vector<std::string> GetTracks();
+    std::set<int> GetConnectedStations();
 private:
     std::unordered_map<int, std::string> linePoints;
     std::unordered_map<std::string, std::string> connectedTracks;

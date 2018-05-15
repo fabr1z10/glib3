@@ -27,10 +27,6 @@ void RenderingEngine::Start() {
     Engine::get().RegisterToWindowResizeEvent(this);
 }
 
-RenderingEngine::~RenderingEngine() {
-    Engine::get().UnregisterToWindowResizeEvent(this);
-}
-
 void RenderingEngine::Notify(float w, float h)  {
     //std::cout << "Changed window size to " << w << ", " << h << std::endl;
     for (auto& cam : m_cameras)

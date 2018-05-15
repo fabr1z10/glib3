@@ -73,13 +73,16 @@ Railway::Railway() {
         std::string trackName = eTrack->Attribute("Id");
         std::string stationA = eTrack->Attribute("StationA");
         std::string stationB = eTrack->Attribute("StationB");
+        std::string mainName;
+        if (eTrack->Attribute("MainName") != nullptr)
+            mainName = eTrack->Attribute("MainName");
         auto itA = m_stationNameToId.find(stationA);
         if (itA == m_stationNameToId.end())
             GLIB_FAIL("Unknown station " << stationA);
         auto itB = m_stationNameToId.find(stationB);
         if (itB == m_stationNameToId.end())
             GLIB_FAIL("Unknown station " << stationB);
-        int id = AddTrack(trackName, itA->second, itB->second);
+        int id = AddTrack(trackName, itA->second, itB->second, mainName);
         Track* track = GetTrack(id);
         auto etcs = eTrack->FirstChildElement("TrackCircuits");
         for (auto etc = etcs->FirstChildElement("TrackCircuit"); etc != NULL; etc = etc->NextSiblingElement()) {
@@ -117,8 +120,9 @@ int Railway::AddStation (const std::string& name) {
     return id;
 }
 
-int Railway::AddTrack (const std::string& name, int stationA, int stationB) {
+int Railway::AddTrack (const std::string& name, int stationA, int stationB, const std::string& mainName) {
     std::unique_ptr<Track> tr(new Track(name, stationA, stationB));
+    tr->SetMainName(mainName);
     int id = tr->GetId();
     m_trackNameToId[name] = id;
     m_tracks[id] = std::move(tr);
@@ -167,7 +171,7 @@ Train* Railway::GetTrain(const std::string& name) {
 Station* Railway::GetStation(int id) {
     auto it = m_stations.find(id);
     if (it == m_stations.end())
-    GLIB_FAIL("Unknown station with id" << id);
+    GLIB_FAIL("Unknown station with id " << id);
     return it->second.get();
 }
 
@@ -193,3 +197,16 @@ int Railway::GetTrackCircuitId (const std::string& tc) {
         GLIB_FAIL("Unknown track circuit " << tc);
     return it->second;
 }
+
+std::vector<std::string> Railway::GetTracksConnecting(int station1, int station2) {
+    Station* s1 = Railway::get().GetStation(station1);
+    auto tracks = s1->GetTracks();
+    std::vector<std::string> tracksOut;
+    for (auto& i :tracks) {
+        Track *t = GetTrack(i);
+        if (t->GetStationA() == station2 || t->GetStationB() == station2)
+            tracksOut.push_back(i);
+    }
+    return tracksOut;
+}
+

@@ -6,8 +6,10 @@
 //
 //
 
+
 #include "gfx/entity.h"
 #include <gfx/engine.h>
+#include <glm/gtx/transform.hpp>
 
 using namespace std;
 
@@ -23,9 +25,18 @@ void Entity::AddChild(std::shared_ptr<Entity> child) {
     }
 }
 
-void Entity::Remove (Entity* child) {
-    m_children.erase(child->m_itParent);
+void Entity::Remove(Entity* entity) {
+    m_children.erase(entity->m_itParent);
+
 }
+
+void Entity::ClearAllChildren() {
+
+    for (auto& c : m_children) {
+        Engine::get().Remove(c.get());
+    }
+}
+
 
 // update just calls update on each of the entity components
 void Entity::Update(double dt) {
@@ -43,7 +54,7 @@ void Entity::Start() {
 }
 
 
-void Entity::SetLocalTransform (glm::mat4& t) {
+void Entity::SetLocalTransform (glm::mat4 t) {
     m_localTransform = t;
     Notify (m_worldTransform);
 }
@@ -53,4 +64,8 @@ void Entity::Notify(glm::mat4& parentTransform) {
     for (auto& c : m_children)
         c->Notify(m_worldTransform);
 
+}
+
+void Entity::SetPosition(glm::vec3 pos){
+    SetLocalTransform(glm::translate(pos));
 }

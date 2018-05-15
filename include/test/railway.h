@@ -10,7 +10,7 @@ class Railway : public Singleton<Railway> {
 public:
     int AddTrain (const std::string& name, int length, float speed);
     int AddStation (const std::string& name);
-    int AddTrack (const std::string& name, int sa, int sb);
+    int AddTrack (const std::string& name, int sa, int sb, const std::string& mainName);
     int AddTrackCircuit (int trackId, const std::string& name, int length);
     //int AddStationRoute (int trackId, const std::string& name, int length);
     int AddStoppingPoint (int trackId, const std::string& name, int length);
@@ -24,6 +24,7 @@ public:
     int GetStationRouteId (const std::string& station, const std::string& sr);
     int GetTrackCircuitId (const std::string& tc);
     Resource* GetResource(int) const;
+    std::vector<std::string> GetTracksConnecting(int station1, int station2);
     Railway();
 private:
 

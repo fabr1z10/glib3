@@ -1,4 +1,5 @@
 #include <test/resource.h>
+#include <test/railway.h>
 
 void Station::AddLinePoint (int id, std::string& trackName) {
     linePoints[id] = trackName;
@@ -30,4 +31,26 @@ std::string Station::GetName() {
 }
 std::string Train::GetName() {
     return "Train " + _name;
+}
+
+std::vector<std::string> Station::GetTracks() {
+    std::vector<std::string> out;
+    for (auto& i : linePoints) {
+        if (i.second != "-1")
+        out.push_back(i.second);
+    }
+    return out;
+}
+
+std::set<int> Station::GetConnectedStations() {
+    std::set<int> out;
+    for (auto& i : linePoints) {
+        if (i.second != "-1") {
+            Track* t = Railway::get().GetTrack(i.second);
+            out.insert(t->GetStationA() == this->_id ? t->GetStationB() : t->GetStationA());
+        }
+    }
+    return out;
+
+
 }

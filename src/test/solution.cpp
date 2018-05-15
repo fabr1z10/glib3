@@ -2,6 +2,7 @@
 #include <xml/tinyxml2.h>
 #include <algorithm>
 #include <iostream>
+#include <set>
 
 using namespace tinyxml2;
 
@@ -121,4 +122,28 @@ TrainPosition Solution::GetPosition(const std::string& id, long t) {
 
 
 
+}
+
+std::vector<std::string> Solution::GetTrainNames() const {
+    std::vector<std::string> tn;
+    for (auto& m : schedules) tn.push_back(m.first);
+    return tn;
+}
+std::vector<int> Solution::GetStations(const std::string& trainName) {
+    std::vector<int> out;
+    int pid = -1;
+    auto iter = schedules.find(trainName);
+    if (iter == schedules.end())
+        throw;
+    for (auto& j : iter->second) {
+        if (j.resourceId != -1) {
+            auto res = Railway::get().GetResource(j.resourceId);
+            StationRoute *sr = dynamic_cast<StationRoute *>(res);
+            if (sr != nullptr && sr->GetStationId() != pid) {
+                out.push_back(sr->GetStationId());
+                pid = sr->GetStationId();
+            }
+        }
+    }
+    return out;
 }

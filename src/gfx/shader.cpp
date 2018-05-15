@@ -110,3 +110,8 @@ GLuint Shader::GetUniformLocation(ShaderUniform uniform) {
         throw;
     return iter->second;
 }
+
+std::unique_ptr<Shader> ShaderFactory::GetTestShader() {
+    std::unordered_map <ShaderUniform, std::string, EnumClassHash> uniforms;
+    return std::unique_ptr<Shader>(new Shader(COLOR_SHADER, test_vertex_shader, test_frag_shader, 1, uniforms));
+}

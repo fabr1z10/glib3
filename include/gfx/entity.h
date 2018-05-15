@@ -8,7 +8,7 @@
 
 #ifndef entity_h
 #define entity_h
-
+#define GLM_ENABLE_EXPERIMENTAL
 #include <glm/glm.hpp>
 #include <gfx/entity.h>
 #include <gfx/iterator.h>
@@ -46,6 +46,7 @@ public:
         return nullptr;
     }
     void AddChild(std::shared_ptr<Entity>);
+    void ClearAllChildren();
     void Remove(Entity*);
     void Update(double);
     void Start();
@@ -64,13 +65,13 @@ public:
     //Event<GameObject*> onRemove;					// fires when this node goes out of scope
     // gets the world position
     glm::vec3 GetPosition() const;
-    void SetLocalTransform (glm::mat4&);
+    void SetLocalTransform (glm::mat4);
     void SetPosition(glm::vec2&);
-    void SetPosition(glm::vec3&);
+    void SetPosition(glm::vec3);
     void Move(glm::vec2&);
     void Move(glm::vec3&);
     void Move(glm::mat4&);
-    Entity* GetParent();
+    //Entity* GetParent();
     bool IsActive() const;
     void SetActive(bool);
     glm::mat4& GetLastMove();
@@ -80,6 +81,7 @@ public:
     //void EraseRef(Ref* ref) {
     //	m_references.remove(ref);
     //}
+    Entity* GetParent() { return m_parent;}
 private:
     void Notify(glm::mat4& world);
     bool m_active;
@@ -92,6 +94,7 @@ private:
     glm::mat4 m_worldTransform;
     glm::mat4 m_lastMove;
     std::unordered_map<std::type_index, std::shared_ptr<Component> > m_components;
+
 };
 
 inline int Entity::GetLayer() const {
@@ -109,4 +112,6 @@ inline glm::vec3 Entity::GetPosition() const {
 inline const glm::mat4& Entity::GetWorldTransform() const {
     return m_worldTransform;
 }
+
+
 #endif /* entity_h */
