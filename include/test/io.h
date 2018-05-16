@@ -15,13 +15,13 @@ void printPath (std::deque<T>& vec) {
     std::cout << vec[i] << std::endl;
 }
 
-class App {
-public:
-    static void Init(int windowWidth, int windowHeight, const std::string& name);
-
-private:
-
-    static GLuint m_vao;
-};
-
-
+//class App {
+//public:
+//    static void Init(int windowWidth, int windowHeight, const std::string& name);
+//
+//private:
+//
+//    static GLuint m_vao;
+//};
+//
+//

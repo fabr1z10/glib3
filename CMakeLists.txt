@@ -15,19 +15,21 @@ set(INCLUDE_DIR ${PROJECT_DIR}/include)
 set(SRC_DIR ${PROJECT_DIR}/src)
 
 set(GENERAL_FLAGS "-std=c++11 -Wall -Wno-reorder -MMD -MP -DIL_STD") 
-set(CMAKE_CXX_FLAGS_DEBUG "${GENERAL_FLAGS} -g -O0 -D_DEBUG")
-set(CMAKE_CXX_FLAGS_RELEASE "${GENERAL_FLAGS} -O3") 
+set(CMAKE_CXX_FLAGS_DEBUG "${GENERAL_FLAGS} -g -O0 -D_DEBUG -Wl,--no-as-needed")
+set(CMAKE_CXX_FLAGS_RELEASE "${GENERAL_FLAGS} -O3 -Wl,--no-as-needed")
 
 find_package(OpenGL REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(glfw3 REQUIRED)
 find_package(glm REQUIRED)
+find_package(Freetype REQUIRED)
 
 if (APPLE)
   include_directories(/usr/local/include)
 endif (APPLE)
 
-include_directories(${INCLUDE_DIR})
+
+include_directories(${INCLUDE_DIR} ${FREETYPE_INCLUDE_DIRS})
 link_directories(${LIB_DIR})
 
 # source directory

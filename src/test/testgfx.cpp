@@ -5,6 +5,7 @@
 #include <test/controller.h>
 #include <iostream>
 #include <algorithm>
+#include <gfx/textmesh.h>
 
 
 
@@ -48,8 +49,21 @@ void Factory2::DrawLineStemmingFrom(int stationId, float x, float y) {
     }
 }
 
+std::shared_ptr<Entity> Factory2::CreateLabel (const std::string& text) {
+//    auto gfxNode = std::make_shared<Entity>();
+//    gfxNode->SetLayer(1);
+//    auto r1 = std::make_shared<Renderer>();
+//    std::shared_ptr<IMesh> m(new TextMesh())
+//    r1->SetMesh(MeshFactory::CreateBoxMesh(width, height, glm::vec4(1.0f)));
+//    gfxNode->AddComponent(r1);
+//    gfxNode->SetPosition(glm::vec3(s.second.x, s.second.y, 0.0f));
+//    entity->AddChild(gfxNode);
+    return nullptr;
+}
 
 std::shared_ptr<Entity> Factory2::Create() {
+
+    Engine::get().GetAssetManager().AddFont("main", "/home/fabrizio/Scaricati/a4rial.ttf");
 
     auto entity = std::make_shared<Entity>();
 
@@ -126,6 +140,10 @@ std::shared_ptr<Entity> Factory2::Create() {
         gfxNode->AddComponent(r1);
         gfxNode->SetPosition(glm::vec3(s.second.x, s.second.y, 0.0f));
         entity->AddChild(gfxNode);
+
+        // adding a text with station id
+
+
     }
     int trackDrawn = 0;
     for (auto& trainName : trainNames) {

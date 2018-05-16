@@ -20,6 +20,7 @@ public:
     std::shared_ptr<Entity> Create() override;
     void DrawLineStemmingFrom(int stationId, float x, float y);
     void RefreshTrains(double t);
+    std::shared_ptr<Entity> CreateLabel (const std::string&);
 private:
     Entity* m_trainNode;
 

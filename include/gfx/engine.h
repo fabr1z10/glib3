@@ -7,17 +7,19 @@
 #include <gfx/entity.h>
 #include <gfx/listener.h>
 #include <unordered_set>
+#include <gfx/assetman.h>
 
 struct EngineConfig {
-    EngineConfig (float devWidth, float devHeight) :
-        window{nullptr}, frameRate (60.0), deviceWidth{devWidth}, deviceHeight{devHeight}, enableMouse{false}, enableKeyboard{false} {}
-    
-    GLFWwindow* window;
+    EngineConfig (float devWidth, float devHeight) : frameRate (60.0), deviceWidth{devWidth}, deviceHeight{devHeight}, enableMouse{false}, enableKeyboard{false},
+    windowWidth{800}, windowHeight{600} {}
     double frameRate;
     float deviceWidth;
     float deviceHeight;
     bool enableMouse;
     bool enableKeyboard;
+    int windowWidth;
+    int windowHeight;
+    std::string name;
 };
 
 class SceneFactory {
@@ -46,11 +48,14 @@ public:
     void RegisterToKeyboardEvent(KeyboardListener*);
     void UnregisterToKeyboardEvent(KeyboardListener*);
     void Remove(Entity*);
+    AssetManager& GetAssetManager();
+    const AssetManager& GetAssetManager() const;
     static void WindowResizeCallback(GLFWwindow* win, int width, int height);
     static void mouse_button_callback(GLFWwindow*, int, int, int);
     static void cursor_pos_callback(GLFWwindow*, double xpos, double ypos);
     static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 private:
+    void InitGL(const EngineConfig& config);
     std::unordered_set<Entity*> m_garbage;
     std::unique_ptr<SceneFactory> m_sceneFactory;
     std::unordered_map<ShaderType, std::unique_ptr<Shader>> m_shaders;
@@ -58,12 +63,22 @@ private:
     bool m_running;
     double m_frameTime;
     double m_timeLastUpdate;
-    GLFWwindow* m_window;
+    //GLFWwindow* m_window;
     glm::vec2 m_deviceSize;
     std::unordered_set<WindowResizeListener*> m_resizeListeners;
     std::unordered_set<MouseListener*> m_mouseListeners;
     std::unordered_set<KeyboardListener*> m_keyboardListeners;
+    AssetManager m_assetManager;
+    GLuint m_vao;
 };
+
+inline AssetManager& Engine::GetAssetManager() {
+    return m_assetManager;
+}
+inline const AssetManager& Engine::GetAssetManager() const {
+    return m_assetManager;
+}
+
 
 inline glm::vec2 Engine::GetDeviceSize() const {
     return m_deviceSize;

@@ -115,3 +115,11 @@ std::unique_ptr<Shader> ShaderFactory::GetTestShader() {
     std::unordered_map <ShaderUniform, std::string, EnumClassHash> uniforms;
     return std::unique_ptr<Shader>(new Shader(COLOR_SHADER, test_vertex_shader, test_frag_shader, 1, uniforms));
 }
+
+std::unique_ptr<Shader> ShaderFactory::GetTextShader() {
+    std::unordered_map <ShaderUniform, std::string, EnumClassHash> uniforms;
+    uniforms[TEXTURE] = "Tex1";
+    uniforms[TINT] = "color";
+    return std::unique_ptr<Shader>(new Shader(TEXT_SHADER, text_vshader, text_fshader, 3, uniforms));
+
+}

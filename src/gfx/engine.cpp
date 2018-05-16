@@ -1,17 +1,18 @@
 #include "gfx/engine.h"
 #include <gfx/error.h>
+#include <iostream>
 
-
-extern GLFWwindow* window;
+GLFWwindow* window;
 
 void Engine::Init(const EngineConfig& config) {
-    m_window = config.window;
+    InitGL(config);
     m_frameTime = 1.0 / config.frameRate;
     m_running = false;
     m_deviceSize = glm::vec2(config.deviceWidth, config.deviceHeight);
     // initialize shaders
     AddShader (ShaderFactory::GetTextureShader());
     AddShader (ShaderFactory::GetColorShader());
+    AddShader (ShaderFactory::GetTextShader());
     if (config.enableMouse) {
         glfwSetMouseButtonCallback(window, mouse_button_callback);
         glfwSetCursorPosCallback(window, cursor_pos_callback);
@@ -23,11 +24,49 @@ void Engine::Init(const EngineConfig& config) {
 
 }
 
+void Engine::InitGL(const EngineConfig& config) {
+
+    if (!glfwInit())
+        exit(EXIT_FAILURE);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR,3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR,3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    window = glfwCreateWindow(config.windowWidth, config.windowHeight, config.name.c_str(), NULL, NULL);
+    if (!window) {
+        glfwTerminate();
+        exit(EXIT_FAILURE);
+    }
+
+    glfwMakeContextCurrent(window);
+    glfwSetFramebufferSizeCallback(window, Engine::WindowResizeCallback);
+
+    // Initialize GLEW
+    //glewExperimental = true;
+    if (glewInit()) {
+        std::cerr << "Unable to initialize GLEW ... exiting" << std::endl;
+        exit(EXIT_FAILURE);
+    }
+    GLint Mv, mv;
+    glGetIntegerv(GL_MAJOR_VERSION, &Mv);
+    glGetIntegerv(GL_MINOR_VERSION, &mv);
+
+    glGenVertexArrays(1, &m_vao);
+    glBindVertexArray(m_vao);
+
+
+
+    glEnable(GL_DEPTH_TEST);
+    //glEnable(GL_BLEND);
+    //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    std::cout << "OpenGL version " << Mv << "." << mv << std::endl;
+}
+
 void Engine::MainLoop() {
     if (m_sceneFactory == nullptr)
         GLIB_FAIL("Scene factory has not been set.")
 
-    if (!glfwWindowShouldClose(m_window)) {
+    if (!glfwWindowShouldClose(window)) {
 
         // load the scene
         // scene is an entity (often a container entity)
@@ -40,7 +79,7 @@ void Engine::MainLoop() {
         
         m_running = true;
         // run the scene
-        while (!glfwWindowShouldClose(m_window)) {
+        while (!glfwWindowShouldClose(window)) {
             double currentTime = glfwGetTime();
             if (currentTime - m_timeLastUpdate >= m_frameTime) {
                 m_timeLastUpdate = currentTime;
@@ -64,7 +103,7 @@ void Engine::MainLoop() {
                 
                 
 
-                glfwSwapBuffers(m_window);
+                glfwSwapBuffers(window);
                 glfwPollEvents();
             }
         }

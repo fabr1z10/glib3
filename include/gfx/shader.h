@@ -99,6 +99,42 @@ const char test_frag_shader[] =
 ;
 
 
+const char text_vshader[] =
+        "#version 330\n"
+                "\n"
+                "layout (location = 0) in vec2 vPosition;\n"
+                "layout (location = 1) in vec2 vTexture;\n"
+                "layout (location = 2) in vec4 vColor;\n"
+                "uniform mat4 MVmat;\n"
+                "uniform mat4 ProjMat;\n"
+                "out vec2 tex;\n"
+                "out vec4 col;\n"
+                "void main()\n"
+                "{\n"
+                "tex = vTexture;\n"
+                "col = vColor;\n"
+                "gl_Position = ProjMat * MVmat *  vec4(vPosition.x, vPosition.y, 0.0, 1.0);\n"
+                "}\n"
+;
+
+const char text_fshader[] =
+        "#version 330\n"
+                "\n"
+                "uniform sampler2D Tex1;\n"
+                "uniform vec4 color;\n"
+                "smooth in vec2 tex;\n"
+                "smooth in vec4 col;\n"
+                "out vec4 fragColor;\n"
+                "void main()\n"
+                "{\n"
+                "fragColor = texture(Tex1, tex).rrrr * col;\n"
+                "fragColor *= color;\n"
+                "if (fragColor.a < 0.5)\n"
+                "discard;\n"
+                "}\n"
+;
+
+
 
 struct EnumClassHash
 {
