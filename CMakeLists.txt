@@ -24,7 +24,11 @@ find_package(glfw3 REQUIRED)
 find_package(glm REQUIRED)
 find_package(Freetype REQUIRED)
 
-if (APPLE)
+if(APPLE)
+  find_library(BZ2_LIB bz2)
+  find_library(COCOA_LIBRARY Cocoa)
+  find_library(IOKIT_LIBRARY IOKit)
+  find_library(CV_LIBRARY CoreVideo)
   include_directories(/usr/local/include)
 endif (APPLE)
 

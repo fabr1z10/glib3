@@ -10,7 +10,7 @@
 #include "gfx/shader.h"
 
 void IMesh::Draw(Shader* shader, const std::string& anim, int frame) {
-    GLenum err = glGetError();
+    //GLenum err = glGetError();
     glBindBuffer(GL_ARRAY_BUFFER, m_vb);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ib);
     Setup(shader, anim, frame);

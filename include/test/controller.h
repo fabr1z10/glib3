@@ -12,7 +12,7 @@ public:
     ViewerController(Camera* cam, Factory2* f) : Component(), MouseListener(), KeyboardListener(), m_lmbPressed{false}, m_cam(cam), m_factory(f)
     , m_time{1517810400} {}
     void Start() override {}
-    void Update (double dt) {}
+    void Update (double dt) override {}
     void CursorPosCallback(GLFWwindow*, double, double) override;
     void MouseButtonCallback(GLFWwindow*, int, int, int) override;
     void KeyCallback(GLFWwindow*, int, int, int, int) override;

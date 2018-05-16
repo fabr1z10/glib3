@@ -10,7 +10,7 @@
 #define entity_h
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/glm.hpp>
-#include <gfx/entity.h>
+#include <gfx/enums.h>
 #include <gfx/iterator.h>
 #include <gfx/component.h>
 #include <string>

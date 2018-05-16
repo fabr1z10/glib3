@@ -7,5 +7,7 @@ MESSAGE("${OPENGL_LIBRARIES}")
 
 add_executable(unittest ${TEST_INCLUDE} ${TEST_SRC})
 target_link_libraries(unittest ${OPENGL_LIBRARIES} glfw ${GLEW_LIBRARIES} ${FREETYPE_LIBRARIES} gfx xml )
-
+if(APPLE)
+   target_link_libraries (unittest ${BZ2_LIB} ${COCOA_LIBRARY} ${IOKIT_LIBRARY} ${CV_LIBRARY})
+endif(APPLE)
 install(TARGETS	unittest DESTINATION ${BIN_DIR})

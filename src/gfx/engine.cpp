@@ -1,7 +1,13 @@
 #include "gfx/engine.h"
 #include <gfx/error.h>
 #include <iostream>
+//#include <OpenGL/gl3.h>
 
+//#ifdef __APPLE__
+//#define glGenVertexArrays glGenVertexArraysAPPLE
+//#define glBindVertexArray glBindVertexArrayAPPLE
+//#define glDeleteVertexArrays glDeleteVertexArraysAPPLE
+//#endif
 GLFWwindow* window;
 
 void Engine::Init(const EngineConfig& config) {
@@ -31,6 +37,9 @@ void Engine::InitGL(const EngineConfig& config) {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR,3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR,3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+#ifdef __APPLE__
+    glfwWindowHint (GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+#endif
     window = glfwCreateWindow(config.windowWidth, config.windowHeight, config.name.c_str(), NULL, NULL);
     if (!window) {
         glfwTerminate();
@@ -41,7 +50,7 @@ void Engine::InitGL(const EngineConfig& config) {
     glfwSetFramebufferSizeCallback(window, Engine::WindowResizeCallback);
 
     // Initialize GLEW
-    //glewExperimental = true;
+    glewExperimental = true;
     if (glewInit()) {
         std::cerr << "Unable to initialize GLEW ... exiting" << std::endl;
         exit(EXIT_FAILURE);
@@ -50,6 +59,8 @@ void Engine::InitGL(const EngineConfig& config) {
     glGetIntegerv(GL_MAJOR_VERSION, &Mv);
     glGetIntegerv(GL_MINOR_VERSION, &mv);
 
+    if(!GLEW_ARB_vertex_array_object)
+        std::cout << "ARB_vertex_array_object not available." << std::endl;
     glGenVertexArrays(1, &m_vao);
     glBindVertexArray(m_vao);
 

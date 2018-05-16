@@ -142,7 +142,7 @@ int Railway::AddTrackCircuit (int trackId, const std::string& name, int length) 
 
 int Railway::AddStoppingPoint (int trackId, const std::string& name, int length) {
 
-
+    return 0;
 }
 
 

@@ -58,7 +58,7 @@ private:
     void InitGL(const EngineConfig& config);
     std::unordered_set<Entity*> m_garbage;
     std::unique_ptr<SceneFactory> m_sceneFactory;
-    std::unordered_map<ShaderType, std::unique_ptr<Shader>> m_shaders;
+    std::unordered_map<ShaderType, std::unique_ptr<Shader>, EnumClassHash> m_shaders;
     std::shared_ptr<Entity> m_scene;
     bool m_running;
     double m_frameTime;

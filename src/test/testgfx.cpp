@@ -13,16 +13,27 @@ std::shared_ptr<Entity> Factory1::Create() {
 
     auto entity = std::make_shared<Entity>();
 
+    auto gfxNode = std::make_shared<Entity>();
+    gfxNode->SetLayer(1);
+    auto r1 = std::make_shared<Renderer>();
+    r1->SetMesh(MeshFactory::CreateBoxMesh(50, 100, glm::vec4(1.0f)));
+    gfxNode->AddComponent(r1);
+    gfxNode->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+    entity->AddChild(gfxNode);
+    
     // create engine node
     auto engineNode = std::make_shared<Entity>();
-
+    
     auto renderingEngine = std::make_shared<RenderingEngine>();
-    renderingEngine->AddCamera (std::unique_ptr<OrthographicCamera> (new OrthographicCamera(320, 200, 1)));
-    renderingEngine->AddShader(TEXTURE_SHADER);
+    auto cam = std::unique_ptr<OrthographicCamera> (new OrthographicCamera(800, 600, 1));
+    //auto controller = std::make_shared<ViewerController>(cam.get(), this);
+    cam->SetPosition(glm::vec3(0,0,5), glm::vec3(0,0,-1), glm::vec3(0,1,0));
+    renderingEngine->AddCamera (std::move(cam));
+    renderingEngine->AddShader(COLOR_SHADER);
     engineNode->AddComponent(renderingEngine);
-
+    //engineNode->AddComponent(controller);
     entity->AddChild(engineNode);
-
+    
     return entity;
 
 }
@@ -79,7 +90,7 @@ std::shared_ptr<Entity> Factory2::Create() {
         // see if I have any overlapping with existing stations
         bool overlaps{false};
         bool goingRight {true};
-        float startX = 0;
+        //float startX = 0;
 
         int overlappingIndex = -1;
         float overlappingX {0};
