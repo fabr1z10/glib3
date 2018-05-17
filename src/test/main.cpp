@@ -4,6 +4,8 @@
 #include <test/solution.h>
 #include <iostream>
 
+std::string homeDir;
+
 void testTCS() {
     Solution s("/home/fabrizio/sources/tcs_processor/TestCaseUP/output/output_BR_76_Scenario_2_B_planner_input.xml");
     std::cout << s.GetPosition("MNPPC", 1517810300) << std::endl;
@@ -17,21 +19,34 @@ void testTCS() {
 
 }
 
-int main() {
+int main(int argc, char* argv[]) {
 
     try {
-        //Solution s("/home/fabrizio/sources/tcs_processor/TestCaseUP/output/output_BR_76_Scenario_1_A_planner_input.xml");
-        //App::Init(800, 600, "Hello world!");
+        if (argc < 2)
+        {
+            std::cerr << "Usage: viewer <file>\n";
+            return 1;
+        }
+        std::string fileName(argv[1]);
+        if (argc == 3) {
+            homeDir = argv[2];
+        } else {
+            homeDir = "../TestCaseUP/";
+        }
+
+
+        Solution s(fileName);
+        //App::Init(800, 600, "Schedule viewer");
 
         EngineConfig config (800, 600);
         config.enableMouse = true;
         config.enableKeyboard = true;
         config.windowWidth = 800;
         config.windowHeight = 600;
-        config.name = "Hello world!";
+        config.name = "Schedule viewer";
         Engine &g = Engine::get();
         g.Init(config);
-        g.SetSceneFactory(std::unique_ptr<Factory1>(new Factory1));
+        g.SetSceneFactory(std::unique_ptr<SceneFactory>(new Factory2(s)));
         g.MainLoop();
     } catch (Error& err){
         std::cerr << err.what() << std::endl;

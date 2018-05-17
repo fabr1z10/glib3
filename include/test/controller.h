@@ -14,6 +14,7 @@ public:
     void Start() override {}
     void Update (double dt) override {}
     void CursorPosCallback(GLFWwindow*, double, double) override;
+    void ScrollCallback(GLFWwindow*, double, double) override;
     void MouseButtonCallback(GLFWwindow*, int, int, int) override;
     void KeyCallback(GLFWwindow*, int, int, int, int) override;
     using ParentClass = ViewerController;

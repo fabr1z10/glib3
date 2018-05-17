@@ -5,7 +5,7 @@
 
 using namespace std;
 
-TextMesh::TextMesh(Font* font, const std::string& message, float lineHeight, glm::vec4& color, float maxLineWidth) : Mesh<VertexText>(TEXT_SHADER)
+TextMesh::TextMesh(Font* font, const std::string& message, float lineHeight, glm::vec4 color, float maxLineWidth) : Mesh<VertexText>(TEXT_SHADER)
 {
     m_primitive = GL_TRIANGLES;
     m_texId = font->getTexId();

@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <gfx/font.h>
 #include <freetype/ftglyph.h>
+#include <gfx/error.h>
 
 FT_Library Font::s_lib;
 bool Font::s_loaded;
@@ -30,8 +31,10 @@ bool Font::loadFromFile(const std::string& filename, const int size) {
         return false;
 
     FT_Error err = FT_New_Face(s_lib, filename.c_str(), 0, &m_fontFace);
-    if (err != 0)
+    if (err != 0) {
+        GLIB_FAIL("Unable to load font " << filename);
         return false;
+    }
 
     // set the size of the font face
     // since the function expects a size in 1/64 pixels, we multiply by 64 (same as left-shift by 6)

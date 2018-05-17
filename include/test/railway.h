@@ -5,6 +5,7 @@
 #include <test/resource.h>
 #include <gfx/singleton.h>
 
+extern std::string homeDir;
 
 class Railway : public Singleton<Railway> {
 public:
@@ -26,7 +27,11 @@ public:
     Resource* GetResource(int) const;
     std::vector<std::string> GetTracksConnecting(int station1, int station2);
     Railway();
+    void ReadRunningTimes();
+    int GetResourceRunningTime (int resourceId, int trainCategory, bool fwd);
 private:
+    std::unordered_map<int, std::unordered_map<int, int>> m_forwardRunningTime;
+    std::unordered_map<int, std::unordered_map<int, int>> m_backwardRunningTime;
 
     std::unordered_map<int, std::unique_ptr<Track>> m_tracks;
     std::unordered_map<int, std::unique_ptr<Station>> m_stations;

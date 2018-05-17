@@ -6,7 +6,7 @@
 #include <iostream>
 #include <algorithm>
 #include <gfx/textmesh.h>
-
+#include <test/timeformatter.h>
 
 
 std::shared_ptr<Entity> Factory1::Create() {
@@ -60,21 +60,21 @@ void Factory2::DrawLineStemmingFrom(int stationId, float x, float y) {
     }
 }
 
-std::shared_ptr<Entity> Factory2::CreateLabel (const std::string& text) {
-//    auto gfxNode = std::make_shared<Entity>();
-//    gfxNode->SetLayer(1);
-//    auto r1 = std::make_shared<Renderer>();
-//    std::shared_ptr<IMesh> m(new TextMesh())
-//    r1->SetMesh(MeshFactory::CreateBoxMesh(width, height, glm::vec4(1.0f)));
-//    gfxNode->AddComponent(r1);
-//    gfxNode->SetPosition(glm::vec3(s.second.x, s.second.y, 0.0f));
-//    entity->AddChild(gfxNode);
-    return nullptr;
+std::shared_ptr<Entity> Factory2::CreateLabel (const std::string& text, glm::vec4 color, glm::vec2 pos, float size, int layer) {
+    auto gfxNode = std::make_shared<Entity>();
+    gfxNode->SetLayer(layer);
+    auto r1 = std::make_shared<Renderer>();
+    Font* f = Engine::get().GetAssetManager().GetFont("main");
+    std::shared_ptr<IMesh> m(new TextMesh(f, text, size, color));
+    r1->SetMesh(m);
+    gfxNode->AddComponent(r1);
+    gfxNode->SetPosition(glm::vec3(pos.x, pos.y, 0.0f));
+    return gfxNode;
 }
 
 std::shared_ptr<Entity> Factory2::Create() {
 
-    Engine::get().GetAssetManager().AddFont("main", "/home/fabrizio/Scaricati/a4rial.ttf");
+    Engine::get().GetAssetManager().AddFont("main", "/home/fabrizio/Scaricati/arial.ttf");
 
     auto entity = std::make_shared<Entity>();
 
@@ -143,7 +143,7 @@ std::shared_ptr<Entity> Factory2::Create() {
     // draw stations
 
     for (auto& s : m_stations) {
-
+        Station* station = Railway::get().GetStation(s.first);
         auto gfxNode = std::make_shared<Entity>();
         gfxNode->SetLayer(1);
         auto r1 = std::make_shared<Renderer>();
@@ -153,7 +153,7 @@ std::shared_ptr<Entity> Factory2::Create() {
         entity->AddChild(gfxNode);
 
         // adding a text with station id
-
+        entity->AddChild(CreateLabel(station->GetShortName(), glm::vec4(1.0f), glm::vec2(s.second.x, s.second.y), 10));
 
     }
     int trackDrawn = 0;
@@ -162,9 +162,14 @@ std::shared_ptr<Entity> Factory2::Create() {
         for (int i = 1; i<stations.size();++i) {
             auto tracks = Railway::get().GetTracksConnecting(stations[i-1],stations[i]);
             for (auto& track : tracks) {
+
                 Track* tr = Railway::get().GetTrack(track);
+
+                bool reverseOrder = tr->GetStationA() != stations[i-1];
                 double trackLength {0};
-                const auto& trackCircuits = tr->GetTrackCircuits();
+                auto trackCircuits = tr->GetTrackCircuits();
+                if (reverseOrder)
+                    std::reverse(std::begin(trackCircuits), std::end(trackCircuits));
                 for (auto& tc : trackCircuits) {
                     trackLength += Railway::get().GetResource(tc)->GetLength();
                 }
@@ -209,6 +214,7 @@ std::shared_ptr<Entity> Factory2::Create() {
                     gfxNode->AddComponent(r1);
                     //gfxNode->SetPosition(glm::vec3(x, y, 0.0f));
                     entity->AddChild(gfxNode);
+                    entity->AddChild(CreateLabel(tr->GetShortName(), glm::vec4(1.0f), glm::vec2(x0, y0), 8));
                     trackDrawn++;
                 std::cout << "Drawin track " << track << " from (" << x0 << ", " << y0 << ") to (" << x1 << ", " << y1 << ")\n";
                 //}
@@ -218,6 +224,8 @@ std::shared_ptr<Entity> Factory2::Create() {
 
     // draw trains
     auto trainNode = std::make_shared<Entity>();
+    TimeFormatter tf(m_solution.GetNow());
+    trainNode->AddChild(CreateLabel(tf.toString(), glm::vec4(1.0), glm::vec2(-400.0f, 300.0f), 10, 2));
     m_trainNode = trainNode.get();
     entity->AddChild(trainNode);
 
@@ -232,10 +240,14 @@ std::shared_ptr<Entity> Factory2::Create() {
 
     auto renderingEngine = std::make_shared<RenderingEngine>();
     auto cam = std::unique_ptr<OrthographicCamera> (new OrthographicCamera(800, 600, 1));
+    auto camFixed = std::unique_ptr<OrthographicCamera> (new OrthographicCamera(800, 600, 2));
     auto controller = std::make_shared<ViewerController>(cam.get(), this);
     cam->SetPosition(glm::vec3(0,0,5), glm::vec3(0,0,-1), glm::vec3(0,1,0));
+    camFixed->SetPosition(glm::vec3(0,0,5), glm::vec3(0,0,-1), glm::vec3(0,1,0));
     renderingEngine->AddCamera (std::move(cam));
+    renderingEngine->AddCamera (std::move(camFixed));
     renderingEngine->AddShader(COLOR_SHADER);
+    renderingEngine->AddShader(TEXT_SHADER);
     engineNode->AddComponent(renderingEngine);
     engineNode->AddComponent(controller);
     entity->AddChild(engineNode);
@@ -247,36 +259,53 @@ std::shared_ptr<Entity> Factory2::Create() {
 
 void Factory2::RefreshTrains(double t) {
     m_trainNode->ClearAllChildren();
+    TimeFormatter tf(t);
+    std::cout <<"Time now: "<< tf<< "\n";
     auto trainNames = m_solution.GetTrainNames();
     for (auto& train : trainNames) {
         auto pos = m_solution.GetPosition(train, t);
+        glm::vec2 avgPos(0);
         for (auto& p : pos.positions) {
-
-            double len = Railway::get().GetResource(p.resourceId)->GetLength();
-            double pctHead = p.xHead / len;
-            double pctTail = p.xTail / len;
-            auto locIt = m_loc.find(p.resourceId);
-            if (locIt != m_loc.end()) {
-                glm::vec2 axis = glm::normalize(locIt->second.pts[1] - locIt->second.pts[0]);
-                float length = glm::length(locIt->second.pts[1] - locIt->second.pts[0]);
-                bool isGoingRight = trainDir[train];
-                glm::vec2 SP;
-                if (isGoingRight) {
-                    SP = locIt->second.pts[0];
-                } else {
-                    axis = -axis;
-                    SP = locIt->second.pts[1];
+            auto r = Railway::get().GetResource(p.resourceId);
+            if (r->isTrackCircuit()) {
+                double len = r->GetLength();
+                double pctHead = p.xHead / len;
+                double pctTail = p.xTail / len;
+                auto locIt = m_loc.find(p.resourceId);
+                if (locIt != m_loc.end()) {
+                    glm::vec2 axis = glm::normalize(locIt->second.pts[1] - locIt->second.pts[0]);
+                    float length = glm::length(locIt->second.pts[1] - locIt->second.pts[0]);
+                    bool isGoingRight = trainDir[train];
+                    glm::vec2 SP;
+                    if (isGoingRight) {
+                        SP = locIt->second.pts[0];
+                    } else {
+                        axis = -axis;
+                        SP = locIt->second.pts[1];
+                    }
+                    glm::vec2 A = SP + axis * (length * static_cast<float>(pctHead));
+                    glm::vec2 B = SP + axis * (length * static_cast<float>(pctTail));
+                    auto gfxNode = std::make_shared<Entity>();
+                    gfxNode->SetLayer(1);
+                    auto r1 = std::make_shared<Renderer>();
+                    r1->SetMesh(MeshFactory::CreateLineMesh(A, B, glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), 1.0f));
+                    avgPos += (A + B) * 0.5f;
+                    gfxNode->AddComponent(r1);
+                    m_trainNode->AddChild(gfxNode);
                 }
-                glm::vec2 A = SP + axis * (length * static_cast<float>(pctHead));
-                glm::vec2 B = SP + axis * (length * static_cast<float>(pctTail));
-                auto gfxNode = std::make_shared<Entity>();
-                gfxNode->SetLayer(1);
-                auto r1 = std::make_shared<Renderer>();
-                r1->SetMesh(MeshFactory::CreateLineMesh(A, B, glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), 1.0f));
-                gfxNode->AddComponent(r1);
-                //gfxNode->SetPosition(glm::vec3(x, y, 0.0f));
-                m_trainNode->AddChild(gfxNode);
+            } else if (r->isStationRoute()) {
+                auto sr = dynamic_cast<StationRoute*>(r);
+                StationLocation loc = m_stations[sr->GetStationId()];
+                avgPos += glm::vec2(loc.x, loc.y);
+            } else if (r->isStoppingPoint()) {
+                auto sr = dynamic_cast<StoppingPoint*>(r);
+                StationLocation loc = m_stations[sr->GetStationId()];
+                avgPos += glm::vec2(loc.x, loc.y);
+
             }
         }
+        avgPos *= (1.0 / static_cast<float>(pos.positions.size()));
+        m_trainNode->AddChild(CreateLabel(train, glm::vec4(1.0, 0.0, 0.0, 1.0), avgPos + glm::vec2(0.0f, -5.0f), 8));
     }
+    m_trainNode->AddChild(CreateLabel(tf.toString(), glm::vec4(1.0), glm::vec2(-400.0f, 300.0f), 10, 2));
 }

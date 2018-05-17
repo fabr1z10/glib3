@@ -16,12 +16,14 @@ void Engine::Init(const EngineConfig& config) {
     m_running = false;
     m_deviceSize = glm::vec2(config.deviceWidth, config.deviceHeight);
     // initialize shaders
+
     AddShader (ShaderFactory::GetTextureShader());
     AddShader (ShaderFactory::GetColorShader());
     AddShader (ShaderFactory::GetTextShader());
     if (config.enableMouse) {
         glfwSetMouseButtonCallback(window, mouse_button_callback);
         glfwSetCursorPosCallback(window, cursor_pos_callback);
+        glfwSetScrollCallback(window, scroll_callback);
     }
 
     if (config.enableKeyboard) {
@@ -139,7 +141,10 @@ void Engine::cursor_pos_callback(GLFWwindow* win, double xpos, double ypos) {
     for (auto& listener : Engine::get().m_mouseListeners)
         listener->CursorPosCallback(win, xpos, ypos);
 }
-
+void Engine::scroll_callback(GLFWwindow* win, double xoffset, double yoffset) {
+    for (auto& listener : Engine::get().m_mouseListeners)
+        listener->ScrollCallback(win, xoffset, yoffset);
+}
 void Engine::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
     for (auto& listener : Engine::get().m_keyboardListeners)
         listener->KeyCallback(window, key, scancode, action, mods);

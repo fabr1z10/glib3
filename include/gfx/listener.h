@@ -8,6 +8,7 @@ public:
     virtual~ MouseListener();
     virtual void CursorPosCallback(GLFWwindow*, double, double) = 0;
     virtual void MouseButtonCallback(GLFWwindow*, int, int, int) = 0;
+    virtual void ScrollCallback(GLFWwindow*, double, double) = 0;
 };
 
 class KeyboardListener {

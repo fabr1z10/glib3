@@ -74,6 +74,11 @@ OrthographicCamera::OrthographicCamera(float orthoWidth, float orthoHeight, int 
     Init();
 }
 
+void OrthographicCamera::setOrthoSize(float w, float h) {
+    m_orthoWidth = w;
+    m_orthoHeight = h;
+    Init();
+}
 
 // called at startup and when window is resized
 void OrthographicCamera::Resize(int width, int height) {

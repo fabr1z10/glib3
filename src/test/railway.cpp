@@ -8,9 +8,10 @@ using namespace tinyxml2;
 Railway::Railway() {
 
     XMLDocument doc;
-    XMLError e = doc.LoadFile("/home/fabrizio/sources/tcs_processor/TestCaseUP/common/railway/common_railway.xml");
+    std::string fullPath = homeDir + "common/railway/common_railway.xml";
+    XMLError e = doc.LoadFile(fullPath.c_str());
     if (e != XML_SUCCESS) {
-        std::cout << "We've got a problem loading common railway file\n";
+        std::cout << "We've got a problem loading common railway file " << fullPath <<"\n";
     } else
         std::cout << "ok\n";
 
@@ -100,8 +101,55 @@ Railway::Railway() {
 //
     std::cout << "Read " << m_tracks.size() << " tracks." <<std::endl;
 
-
+    // Read running times
+    ReadRunningTimes();
 }
+
+
+void Railway::ReadRunningTimes() {
+
+    XMLDocument doc;
+    std::string fullPath = homeDir + "up/config/up_config_CommonRailway.xml";
+    XMLError e = doc.LoadFile(fullPath.c_str());
+    if (e != XML_SUCCESS) {
+        GLIB_FAIL ("We've got a problem loading common railway file " << fullPath );
+    } else
+        std::cout << "ok\n";
+
+    auto el = doc.FirstChildElement("UP_Config")->FirstChildElement("DefaultTrainStationDetails");
+    for (auto eStation = el->FirstChildElement("DefaultStationDetail"); eStation != NULL; eStation = eStation->NextSiblingElement()) {
+        std::string currentStation(eStation->Attribute("StationId"));
+        Station * s = GetStation(currentStation);
+        for (auto eRT = eStation->FirstChildElement("RouteRunningTimes")->FirstChildElement("RouteRunningTime"); eRT != NULL; eRT = eRT->NextSiblingElement()) {
+            std::string routeId = eRT->Attribute("routeId");
+            int runningTime = eRT->IntAttribute("runningTime");
+            char category = eRT->Attribute("category")[0];
+            int id = s->GetStationRouteId(routeId);
+            m_forwardRunningTime[id][category] = runningTime;
+        }
+    }
+
+    el = doc.FirstChildElement("UP_Config")->FirstChildElement("DefaultTrackRuntimes");
+    for (auto etrack = el->FirstChildElement("DefaultTrackRuntime"); etrack != NULL; etrack = etrack->NextSiblingElement()) {
+
+        std::string direction = etrack->Attribute("Direction");
+        bool fwd = direction == "AToB";
+        for (auto etr = etrack->FirstChildElement("TrackRuntimeByCategory"); etr != NULL; etr = etr->NextSiblingElement()) {
+            char category = etr->Attribute("Category")[0];
+            for (auto edtr = etr->FirstChildElement("DefaultTrackCircuitRuntime");
+                 edtr != NULL; edtr = edtr->NextSiblingElement()) {
+                std::string trackCircuitId = edtr->Attribute("TrackCircuitId");
+                int runTime = edtr->IntAttribute("Runtime");
+                int id = GetTrackCircuitId(trackCircuitId);
+                if (fwd)
+                    m_forwardRunningTime[id][category] = runTime;
+                else
+                    m_backwardRunningTime[id][category] = runTime;
+            }
+        }
+    }
+}
+
 
 int Railway::AddTrain (const std::string& name, int length, float speed) {
     std::unique_ptr<Train> st(new Train(name, length, speed));
@@ -210,3 +258,12 @@ std::vector<std::string> Railway::GetTracksConnecting(int station1, int station2
     return tracksOut;
 }
 
+int Railway::GetResourceRunningTime (int resourceId, int trainCategory, bool fwd) {
+    if (fwd) {
+        return m_forwardRunningTime[resourceId][trainCategory];
+    } else {
+        return m_backwardRunningTime[resourceId][trainCategory];
+
+    }
+
+}

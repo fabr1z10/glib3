@@ -24,6 +24,9 @@ class Resource : public GlobalId {
 public:
     Resource(const std::string& name, int length) : GlobalId(name), m_length{length} {}
     int GetLength() const { return m_length;}
+    virtual bool isStationRoute() = 0;
+    virtual bool isStoppingPoint() = 0;
+    virtual bool isTrackCircuit() = 0;
 private:
     int _id;
     int m_length;
@@ -35,6 +38,10 @@ class TrackCircuit : public Resource {
 public:
     TrackCircuit (const std::string& name, int length, int trackId) : Resource(name, length), _trackId{trackId} {}
     std::string GetName() override;
+    bool isStationRoute() override { return false;}
+    bool isStoppingPoint()override { return false;}
+    bool isTrackCircuit() override{ return true; }
+    int GetTrackId() { return _trackId;}
 private:
     int _trackId;
 };
@@ -44,6 +51,9 @@ public:
     StationRoute (const std::string& name, int length, int stationId) : Resource(name, length), _stationId{stationId} {}
     std::string GetName() override;
     int GetStationId() const { return _stationId; }
+    bool isStationRoute() override { return true;}
+    bool isStoppingPoint()override { return false;}
+    bool isTrackCircuit() override{ return false; }
 private:
     int _stationId;
 };
@@ -52,6 +62,10 @@ class StoppingPoint : public Resource {
 public:
     StoppingPoint (const std::string& name, int length, int stationId) : Resource(name, length), _stationId{stationId} {}
     std::string GetName() override;
+    int GetStationId() const { return _stationId; }
+    bool isStationRoute() override { return false;}
+    bool isStoppingPoint()override { return true;}
+    bool isTrackCircuit() override{ return false; }
 private:
     int _stationId;
 };
@@ -142,6 +156,7 @@ public:
     Train(const std::string& name, int length, double speed) : GlobalId(name), _length{length}, _speed{speed} {}
     std::string GetName() override;
     int _length;
+    char _category;
     double _speed;
 };
 

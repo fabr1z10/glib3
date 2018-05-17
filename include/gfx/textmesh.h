@@ -5,7 +5,7 @@
 
 class TextMesh : public Mesh<VertexText> {
 public:
-    TextMesh(Font* font, const std::string& message, float, glm::vec4&, float maxLineWidth = 0.0f);
+    TextMesh(Font* font, const std::string& message, float, glm::vec4, float maxLineWidth = 0.0f);
     void UpdateText(Font* font, const std::string& message, float, glm::vec4, float maxLineWidth = 0.0f);
     Bounds getBounds() const;
     int getNumberOfLines() const;

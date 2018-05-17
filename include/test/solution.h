@@ -22,6 +22,8 @@ struct Activity {
     int resourceId;
     long timeIn;
     long timeOut;
+    long runningTime;
+    bool isTrack;
     bool operator< (const Activity& other) const {
         return timeIn < other.timeIn;
     }
@@ -32,12 +34,18 @@ struct Activity {
 
 class Solution {
 public:
-    Solution(const std::string&);
+    Solution(const std::string& file);
     // get the position of train id at time t
     TrainPosition GetPosition(const std::string& id, long t);
     std::vector<int> GetStations(const std::string& train);
     std::vector<std::string> GetTrainNames() const;
     int GetNumberOfSchedules() const { return schedules.size();}
+    int GetNow() const;
 private:
+    int m_now;
     std::unordered_map<std::string, std::vector<Activity> > schedules;
 };
+
+inline int Solution::GetNow() const {
+    return m_now;
+}

@@ -22,7 +22,7 @@ public:
     Font();
     ~Font();
     static bool Initialize();
-    bool loadFromFile(const std::string& filename, const int size = 12);
+    bool loadFromFile(const std::string& filename, const int size = 36);
     Glyph getGlyph(unsigned char) const;
     GLuint getTexId() const;
     unsigned int getMaxHeight() const;

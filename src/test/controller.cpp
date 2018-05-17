@@ -42,3 +42,14 @@ void ViewerController::KeyCallback(GLFWwindow* window, int key, int scancode, in
 }
 
 
+void ViewerController::ScrollCallback(GLFWwindow*, double x , double y) {
+
+    OrthographicCamera* cc = dynamic_cast<OrthographicCamera*>(m_cam);
+    glm::vec2 size = cc->getOrthoSize();
+    if (y< 0)
+        size *= 1.1f;
+    else
+        size /= 1.1f;
+    cc->setOrthoSize(size.x, size.y);
+}
+

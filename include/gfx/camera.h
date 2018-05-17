@@ -38,7 +38,8 @@ protected:
 class OrthographicCamera : public Camera {
 public:
     OrthographicCamera(float orthoWidth, float orthoHeight, int layer, glm::vec4 viewport = glm::vec4());
-
+    void setOrthoSize(float w, float h);
+    glm::vec2 getOrthoSize() const;
     // set the visible rectangle
     void SetBounds(float xMin, float xMax, float yMin, float yMax);
     virtual void Resize(int width, int height);
@@ -61,6 +62,10 @@ protected:
     float m_yMin, m_yMax;
     glm::mat3 m_screenToWorldMat;
 };
+
+inline glm::vec2 OrthographicCamera::getOrthoSize() const{
+    return glm::vec2(m_orthoWidth, m_orthoHeight);
+}
 
 inline void OrthographicCamera::SetBounds(float xMin, float xMax, float yMin, float yMax) {
     m_xMin = xMin + m_orthoWidth*0.5f;
