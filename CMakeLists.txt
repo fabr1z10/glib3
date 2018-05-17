@@ -23,6 +23,7 @@ find_package(GLEW REQUIRED)
 find_package(glfw3 REQUIRED)
 find_package(glm REQUIRED)
 find_package(Freetype REQUIRED)
+#find_package(LUA REQUIRED)
 
 if(APPLE)
   find_library(BZ2_LIB bz2)
