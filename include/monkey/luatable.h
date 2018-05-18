@@ -23,6 +23,12 @@ public:
         return ref.cast<T>();
     }
 
+    template <typename T>
+    void Set(const std::string& key, T value) {
+        m_ref[key] = value;
+
+    }
+
 
     template <typename T>
     std::vector<T> GetVector (const std::string& key, bool required = false) {
