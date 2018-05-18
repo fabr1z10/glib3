@@ -1,6 +1,8 @@
 #include <monkey/luawrapper.h>
 #include <gfx/error.h>
 
+lua_State* LuaWrapper::L;
+
 void LuaWrapper::Init() {
     L = luaL_newstate();
     

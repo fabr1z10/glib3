@@ -10,9 +10,7 @@ extern "C" {
 
 class LuaWrapper {
 public:
-    void Init();
-    void Load(const std::string& filename);
-
-private:
-    lua_State* L;
+    static void Init();
+    static void Load(const std::string& filename);
+    static lua_State* L;
 };
