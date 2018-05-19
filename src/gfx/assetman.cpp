@@ -14,3 +14,31 @@ Font* AssetManager::GetFont(const std::string & name) const {
     }
     return it->second.get();
 }
+
+void AssetManager::SetDirectory(const std::string& dir)
+{
+    m_directory = dir;
+    
+    
+}
+
+Tex* AssetManager::GetTexture(const std::string& filename) {
+    auto iter = m_textures.find(filename);
+    if (iter == m_textures.end()) {
+        std::string file = (m_directory + filename);
+        try {
+            std::unique_ptr<Tex> texture(new Tex(file, nearest));
+            Tex* handle = texture.get();
+            m_textures[file] = std::move(texture);
+            return handle;
+        }
+        catch (std::exception& err) {
+            
+        }
+    }
+    return iter->second.get();
+}
+
+std::string AssetManager::GetDirectory() const {
+    return m_directory;
+}

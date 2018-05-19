@@ -6,6 +6,7 @@
 
 class LuaTable {
 public:
+    explicit LuaTable(luabridge::LuaRef ref) : m_ref(ref) {}
     LuaTable(const std::string&);
     bool isNil () const;
     template <typename T>
@@ -15,12 +16,21 @@ public:
             GLIB_FAIL("Unknown value " << key);
         return ref.cast<T>();
     }
+    
+    //template<> glm::vec2 Get<glm::vec2>(const std::string&);
+    //template<> glm::vec3 Get<glm::vec3>(const std::string&);
+    
     template <typename T>
     T Get(const std::string& key, T defaultValue) {
         luabridge::LuaRef ref = m_ref[key];
         if (ref.isNil())
             return defaultValue;
-        return ref.cast<T>();
+        return Get<T>(key);
+    }
+    
+    
+    bool HasKey (const std::string& key) {
+        return !(m_ref[key].isNil());
     }
 
     template <typename T>
@@ -67,7 +77,18 @@ inline glm::vec2 LuaTable::Get<glm::vec2>(const std::string& key) {
     out.x = ref[1].cast<float>();
     out.y = ref[2].cast<float>();
     return out;
+}
 
+template<>
+inline glm::vec3 LuaTable::Get<glm::vec3>(const std::string& key) {
+    luabridge::LuaRef ref = m_ref[key];
+    if (ref.isNil())
+        GLIB_FAIL("Unknown value " << key);
+    glm::vec3 out;
+    out.x = ref[1].cast<float>();
+    out.y = ref[2].cast<float>();
+    out.z = ref[3].cast<float>();
+    return out;
 }
 
 
