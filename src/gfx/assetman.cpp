@@ -33,7 +33,7 @@ Tex* AssetManager::GetTexture(const std::string& filename) {
             return handle;
         }
         catch (std::exception& err) {
-            
+            GLIB_FAIL("Error opening image " << filename);
         }
     }
     return iter->second.get();

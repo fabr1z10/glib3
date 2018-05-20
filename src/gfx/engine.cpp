@@ -107,7 +107,7 @@ void Engine::MainLoop() {
                 }
 
 
-                glClearColor(0.0f,0.0f,0.3f,1.0f);
+                //glClearColor(0.0f,0.0f,0.3f,1.0f);
                 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
                 // update all active components
                 for (auto iter = m_scene->begin(); iter != m_scene->end(); ++iter) {

@@ -91,4 +91,15 @@ inline glm::vec3 LuaTable::Get<glm::vec3>(const std::string& key) {
     return out;
 }
 
-
+template<>
+inline glm::vec4 LuaTable::Get<glm::vec4>(const std::string& key) {
+    luabridge::LuaRef ref = m_ref[key];
+    if (ref.isNil())
+        GLIB_FAIL("Unknown value " << key);
+    glm::vec4 out;
+    out.x = ref[1].cast<float>();
+    out.y = ref[2].cast<float>();
+    out.z = ref[3].cast<float>();
+    out.w = ref[4].cast<float>();
+    return out;
+}

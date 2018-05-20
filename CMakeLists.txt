@@ -23,6 +23,9 @@ find_package(GLEW REQUIRED)
 find_package(glfw3 REQUIRED)
 find_package(glm REQUIRED)
 find_package(Freetype REQUIRED)
+find_package(PNG REQUIRED)
+find_package(JPEG REQUIRED)
+
 #find_package(LUA REQUIRED)
 
 if(APPLE)
