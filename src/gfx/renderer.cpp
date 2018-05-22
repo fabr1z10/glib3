@@ -8,6 +8,7 @@
 
 #include <gfx/renderer.h>
 #include <gfx/shader.h>
+#include <gfx/error.h>
 
 Renderer::Renderer() : m_mesh(nullptr), m_visible(true), m_frame(0), m_tint(1.0f) {}
 
@@ -30,4 +31,16 @@ void Renderer::Update(double dt) {
         if (m_frame >= frames)
             m_frame = 0;
     }
+}
+
+void Renderer::SetAnimation(const std::string& anim) {
+    // do nothing if trying to set the animation to the current one
+    if (m_animation == anim)
+        return;
+    if (!m_mesh->HasAnimation(anim)) {
+        GLIB_FAIL("Looks like animation " << anim << " does not exist for this mesh!");
+    }
+    m_animation = anim;
+    m_frame = 0;
+    m_frameTime = 0.0f;
 }

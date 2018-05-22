@@ -23,6 +23,7 @@ public:
     void Update(double) override;
     void AddShader (ShaderType id);
     void AddCamera (std::unique_ptr<Camera>);
+    Camera* GetCamera (int);
     void Notify(float, float) override;
     using ParentClass = RenderingEngine;
 private:
@@ -34,5 +35,9 @@ inline void RenderingEngine::AddCamera(std::unique_ptr<Camera> cam) {
     m_cameras.push_back(std::move(cam));
 }
 
+
+inline Camera* RenderingEngine::GetCamera(int id) {
+    return m_cameras[id].get();
+}
 
 #endif /* renderingengine_h */

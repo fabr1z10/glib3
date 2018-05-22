@@ -177,3 +177,13 @@ void Engine::UnregisterToKeyboardEvent(KeyboardListener* listener) {
 Engine::~Engine() {
     glfwTerminate();
 }
+
+void Engine::AddTaggedRef (const std::string& id, Ref* ref) {
+    if (m_taggedReferences.find(id) != m_taggedReferences.end())
+        GLIB_FAIL("Duplicate tag = " << ref);
+    m_taggedReferences.insert(std::make_pair(id, ref));
+}
+
+void Engine::RemoveTaggedRef (const std::string& id) {
+    m_taggedReferences.erase(id);
+}

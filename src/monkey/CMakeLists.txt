@@ -6,7 +6,7 @@ file(GLOB MONKEY_SRC *.cpp)
 find_package(Lua REQUIRED)
 
 add_executable(monkey ${MONKEY_INCLUDE} ${MONKEY_SRC})
-target_link_libraries(monkey ${OPENGL_LIBRARIES} glfw ${GLEW_LIBRARIES} ${FREETYPE_LIBRARIES} ${LUA_LIBRARIES} ${PNG_LIBRARY} ${JPEG_LIBRARIES} gfx )
+target_link_libraries(monkey ${OPENGL_LIBRARIES} glfw ${GLEW_LIBRARIES} ${FREETYPE_LIBRARIES} ${LUA_LIBRARIES} ${PNG_LIBRARY} ${JPEG_LIBRARIES} gfx graph)
 if(APPLE)
    target_link_libraries (monkey ${BZ2_LIB} ${COCOA_LIBRARY} ${IOKIT_LIBRARY} ${CV_LIBRARY})
 endif(APPLE)

@@ -8,6 +8,7 @@
 #include <gfx/listener.h>
 #include <unordered_set>
 #include <gfx/assetman.h>
+#include <gfx/error.h>
 
 struct EngineConfig {
     EngineConfig (float devWidth, float devHeight) : frameRate (60.0), deviceWidth{devWidth}, deviceHeight{devHeight}, enableMouse{false}, enableKeyboard{false},
@@ -48,6 +49,18 @@ public:
     void RegisterToKeyboardEvent(KeyboardListener*);
     void UnregisterToKeyboardEvent(KeyboardListener*);
     void Remove(Entity*);
+    template <typename T>
+    T* GetRef(const std::string& id) {
+        auto it = m_taggedReferences.find(id);
+        if (it == m_taggedReferences.end())
+            GLIB_FAIL("Unknown reference " << id);
+        T* cref = dynamic_cast<T*>(it->second);
+        if (cref == nullptr)
+            GLIB_FAIL("Reference " << id << " has incorrect type.");
+        return cref;
+    }
+    void AddTaggedRef (const std::string&, Ref*);
+    void RemoveTaggedRef (const std::string&);
     AssetManager& GetAssetManager();
     const AssetManager& GetAssetManager() const;
     static void WindowResizeCallback(GLFWwindow* win, int width, int height);
@@ -56,6 +69,7 @@ public:
     static void scroll_callback(GLFWwindow*, double xoffset, double yoffset);
     static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 private:
+    std::unordered_map<std::string, Ref*> m_taggedReferences;
     void InitGL(const EngineConfig& config);
     std::unordered_set<Entity*> m_garbage;
     std::unique_ptr<SceneFactory> m_sceneFactory;

@@ -21,9 +21,11 @@
 
 class Shader;
 
-struct AnimData {
-    int frames;
-    std::vector<float> duration;
+
+
+struct FrameInfo {
+    int offset, count;
+    float duration;
 };
 
 // abstract class for mesh
@@ -63,7 +65,7 @@ protected:
     glm::mat4 m_localTransform;
     int m_scope;
     int m_animations;
-    std::unordered_map <std::string, AnimData> m_animInfo;
+    std::unordered_map <std::string, std::vector<FrameInfo> > m_animInfo;
     std::string m_defaultAnimation;
     Bounds3D m_bounds;
     GLsizei m_count;
@@ -81,19 +83,8 @@ inline void IMesh::SetScope(int value) { m_scope = value; }
 inline int IMesh::GetScope() const { return m_scope; }
 
 inline int IMesh::AnimationCount() const { return m_animations; }
-inline int IMesh::FrameCount(const std::string& anim) const {
-    // if the mesh has only one animation, just
-    if (m_animInfo.empty())
-        return 1;
-    return m_animInfo.find(anim)->second.frames;
-    //return m_frames[anim];
-}
-inline float IMesh::GetDuration(const std::string& anim, int frame) const {
-    if (m_animInfo.empty())
-        return 1.0f;
-    return m_animInfo.find(anim)->second.duration[frame];
-    //return m_durations[anim][frame];
-}
+
+
 
 
 template<class Vertex>

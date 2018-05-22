@@ -17,7 +17,7 @@ using namespace glm;
 
 extern GLFWwindow* window;
 
-Camera::Camera(int layer, glm::vec4 viewport) : m_layer{layer}, m_camViewport{viewport} {
+Camera::Camera(int layer, glm::vec4 viewport) : Ref(), m_layer{layer}, m_camViewport{viewport} {
     //App::RegisterToResizeEvent(this);
     int widthPixel;
     int widthPoint;
@@ -70,7 +70,7 @@ OrthographicCamera::OrthographicCamera(float orthoWidth, float orthoHeight, int 
     float hw = 0.5f * m_orthoWidth;
     float hh = 0.5f * m_orthoHeight;
     m_extents = glm::vec2 (hw, hh);
-    m_projectionMatrix = glm::ortho(-hw, hw, -hh, hh, -100.0f, 100.0f);
+    //m_projectionMatrix = glm::ortho(-hw, hw, -hh, hh, -100.0f, 100.0f);
     Init();
 }
 
@@ -143,4 +143,17 @@ bool OrthographicCamera::IsVisible(const Bounds3D& bounds) {
     auto pos = GetPosition();
     bool notVisible = (bounds.min.x >= pos.x + m_extents.x) || (bounds.max.x <= pos.x - m_extents.x) || (bounds.min.y >= pos.y + m_extents.y) || (bounds.max.y <= pos.y - m_extents.y);
     return !notVisible;
+}
+
+vec2 OrthographicCamera::GetWorldCoordinates(vec2 P) {
+
+    float x0 = -m_viewMatrix[3][0] - m_orthoWidth * 0.5f;
+    float y0 = -m_viewMatrix[3][1] - m_orthoHeight * 0.5f;
+    float ty = m_winHeight - P.y;
+
+    float xw = x0 + (P.x - m_viewportX) * (m_orthoWidth / m_viewportWidth);
+    float yw = y0 + (ty - m_viewportY) * (m_orthoHeight / m_viewportHeight);
+    return vec2(xw, yw);
+//    vec3 Pw = m_screenToWorldMat * vec3 (P.x, P.y, 1.0f);
+  //  return vec2(Pw);
 }

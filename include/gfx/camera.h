@@ -4,8 +4,9 @@
 #include <GL/glew.h>
 #include <gfx/bounds.h>
 #include "shader.h"
+#include "gfx/ref.h"
 
-class Camera {
+class Camera : public Ref {
 public:
     Camera(int layer, glm::vec4 viewport = glm::vec4());
     virtual ~Camera() {}

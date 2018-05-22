@@ -14,7 +14,7 @@ set(LIB_DIR ${PROJECT_DIR}/lib)
 set(INCLUDE_DIR ${PROJECT_DIR}/include)
 set(SRC_DIR ${PROJECT_DIR}/src)
 
-set(GENERAL_FLAGS "-std=c++11 -Wall -Wno-reorder -MMD -MP -DIL_STD") 
+set(GENERAL_FLAGS "-std=c++11 -Wall -Wno-reorder -MMD -MP -DIL_STD -pthread")
 set(CMAKE_CXX_FLAGS_DEBUG "${GENERAL_FLAGS} -g -O0 -D_DEBUG -Wl,--no-as-needed")
 set(CMAKE_CXX_FLAGS_RELEASE "${GENERAL_FLAGS} -O3 -Wl,--no-as-needed")
 

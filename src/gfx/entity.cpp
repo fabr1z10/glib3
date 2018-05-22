@@ -15,9 +15,9 @@ using namespace std;
 
 void Entity::AddChild(std::shared_ptr<Entity> child) {
     auto it = m_children.insert(m_children.end(), child);
-    child->m_parent = this;
+    child->SetParent(this);
     child->m_itParent = it;
-    child->Notify(m_worldTransform);
+    //child->Notify(m_worldTransform);
 
     // if engine is running, start
     if (Engine::get().isRunning()) {
@@ -56,16 +56,36 @@ void Entity::Start() {
 
 void Entity::SetLocalTransform (glm::mat4 t) {
     m_localTransform = t;
-    Notify (m_worldTransform);
+    if (m_parent != nullptr)
+        m_worldTransform = m_parent->GetWorldTransform() * m_localTransform;
+    else
+        m_worldTransform = m_localTransform;
+    Notify ();
 }
 
-void Entity::Notify(glm::mat4& parentTransform) {
-    m_worldTransform = parentTransform * m_localTransform;
+void Entity::SetWorldTransform(glm::mat4& wt) {
+    m_worldTransform = wt * m_localTransform;
+    Notify();
+}
+
+// to call whenever this change pos
+void Entity::Notify() {
+    //m_worldTransform = parentTransform * m_localTransform;
     for (auto& c : m_children)
-        c->Notify(m_worldTransform);
+        c->SetWorldTransform(m_worldTransform);
 
 }
 
 void Entity::SetPosition(glm::vec3 pos){
     SetLocalTransform(glm::translate(pos));
+}
+
+void Entity::SetPosition(glm::vec2 pos) {
+    SetPosition(glm::vec3(pos.x, pos.y, m_localTransform[3][2]));
+}
+
+void Entity::SetParent(Entity* entity) {
+    m_parent = entity;
+    m_worldTransform = m_parent->GetWorldTransform() * m_localTransform;
+    Notify();
 }

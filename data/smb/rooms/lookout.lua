@@ -1,12 +1,22 @@
 --assets local to this scene
+dt=0.1
 assets = {
-    guybrush = {
+    {
+        id="guybrush",
+        sheet="gfx/sprite1.png",
 	type="sprite",
+        ppu=1,
         animations = {
 	    {
-	        name = "idle_front",
-                frames = { 
-		    { 24, 51, 22, 47, -12, 0, dt }
+	        name = "idle_front",             
+                frames = 
+                { 
+	            {
+			duration = dt,
+                        quads = {
+			    { x = 24, y = 51, width = 22, height = 47, anchor = {12, 0}}
+			}
+		    }
 		}
 	    },
             {
@@ -16,8 +26,8 @@ assets = {
 
  	}
     },
-    lookout={},
-    fire={}
+    --lookout={},
+    --fire={}
 }
 
 scene = {
@@ -27,13 +37,24 @@ scene = {
   layer = 1
 },
 {
-    pos = {}
+  tag = "player",
+  pos = {30, 0, 0},
+  gfx = { model = "guybrush", anim = "idle_front" },
+  layer = 1
+},
+{
+  walkarea = { 
+    cam = "maincam", 
+    target = "player",
+    shape = { type="rect", width="10", height="10" }
+  }
+}
 }
 
-}
 
 cameras = {
 {
+    tag="maincam",
     type="ortho",
     size = {320, 144},
     bounds = {0, 0, 320, 144},

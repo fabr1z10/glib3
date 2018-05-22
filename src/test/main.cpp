@@ -20,38 +20,39 @@ void testTCS() {
 }
 
 int main(int argc, char* argv[]) {
+    std::string homeDir = "/home/fabrizio/sources/tcs_processor/TestCaseUP/";
 
-    try {
-        if (argc < 2)
-        {
-            std::cerr << "Usage: viewer <file>\n";
-            return 1;
-        }
-        std::string fileName(argv[1]);
-        if (argc == 3) {
-            homeDir = argv[2];
-        } else {
-            homeDir = "../TestCaseUP/";
-        }
-
-
-        Solution s(fileName);
-        //App::Init(800, 600, "Schedule viewer");
-
-        EngineConfig config (800, 600);
-        config.enableMouse = true;
-        config.enableKeyboard = true;
-        config.windowWidth = 800;
-        config.windowHeight = 600;
-        config.name = "Schedule viewer";
-        Engine &g = Engine::get();
-        g.Init(config);
-        g.SetSceneFactory(std::unique_ptr<SceneFactory>(new Factory2(s)));
-        g.MainLoop();
-    } catch (Error& err){
-        std::cerr << err.what() << std::endl;
-        return 1;
-    }
+//    try {
+//        if (argc < 2)
+//        {
+//            std::cerr << "Usage: viewer <file>\n";
+//            return 1;
+//        }
+//        std::string fileName(argv[1]);
+//        if (argc == 3) {
+//            homeDir = argv[2];
+//        } else {
+//            homeDir = "../TestCaseUP/";
+//        }
+//
+//
+//        Solution s(fileName);
+//        //App::Init(800, 600, "Schedule viewer");
+//
+//        EngineConfig config (800, 600);
+//        config.enableMouse = true;
+//        config.enableKeyboard = true;
+//        config.windowWidth = 800;
+//        config.windowHeight = 600;
+//        config.name = "Schedule viewer";
+//        Engine &g = Engine::get();
+//        g.Init(config);
+//        g.SetSceneFactory(std::unique_ptr<SceneFactory>(new Factory2(s)));
+//        g.MainLoop();
+//    } catch (Error& err){
+//        std::cerr << err.what() << std::endl;
+//        return 1;
+//    }
 //
 //    //TestPoly1();
 //    return 0;

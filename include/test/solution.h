@@ -32,6 +32,11 @@ struct Activity {
     }
 };
 
+class Problem {
+public:
+    Problem (const std::string& file);
+};
+
 class Solution {
 public:
     Solution(const std::string& file);

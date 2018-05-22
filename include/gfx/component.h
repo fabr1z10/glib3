@@ -9,12 +9,14 @@
 #ifndef component_h
 #define component_h
 
+#include <gfx/ref.h>
+
 class Entity;
 
-class Component {
+class Component : public Ref {
 public:
-    Component() {}
-    virtual~ Component() {}
+    Component() : Ref() {}
+    //~ Component() {}
     // called once when the entity is added to the scene
     virtual void Start() = 0;
     virtual void Update(double) = 0;

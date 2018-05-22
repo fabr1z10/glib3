@@ -11,6 +11,7 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/glm.hpp>
 #include <gfx/enums.h>
+#include <gfx/ref.h>
 #include <gfx/iterator.h>
 #include <gfx/component.h>
 #include <string>
@@ -23,12 +24,10 @@
 // an entity has a position, a tag and a bunch of components attached
 // that determine its behaviour. Every entity can have zero or more children entities
 // and only one parent (i.e. they are organized in a tree)
-class Entity {
+class Entity : public Ref {
 public:
-    Entity() : m_parent(nullptr), m_active(true), m_localTransform{glm::mat4(1.0)}, m_worldTransform{glm::mat4(1.0)} {}
-    ~Entity() {
-        //onRemove.Fire(this);
-    }
+    Entity() : Ref(), m_parent(nullptr), m_active(true), m_localTransform{glm::mat4(1.0)}, m_worldTransform{glm::mat4(1.0)} {}
+
     const glm::mat4& GetLocalTransform() const;
     const glm::mat4& GetWorldTransform() const;
     std::string GetTag() const;
@@ -66,7 +65,7 @@ public:
     // gets the world position
     glm::vec3 GetPosition() const;
     void SetLocalTransform (glm::mat4);
-    void SetPosition(glm::vec2&);
+    void SetPosition(glm::vec2);
     void SetPosition(glm::vec3);
     void Move(glm::vec2&);
     void Move(glm::vec3&);
@@ -82,14 +81,15 @@ public:
     //	m_references.remove(ref);
     //}
     Entity* GetParent() { return m_parent;}
+    void SetParent(Entity*);
 private:
-    void Notify(glm::mat4& world);
+    void SetWorldTransform(glm::mat4& wt);
+    void Notify();
     bool m_active;
     int m_layer;
     Entity* m_parent;
     std::list<std::shared_ptr<Entity> >::iterator m_itParent;
     std::list<std::shared_ptr<Entity> > m_children;
-    std::string m_tag;
     glm::mat4 m_localTransform;
     glm::mat4 m_worldTransform;
     glm::mat4 m_lastMove;

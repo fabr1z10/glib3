@@ -42,3 +42,16 @@ Tex* AssetManager::GetTexture(const std::string& filename) {
 std::string AssetManager::GetDirectory() const {
     return m_directory;
 }
+
+void AssetManager::AddMesh (const std::string& name, std::shared_ptr<IMesh> mesh) {
+    m_meshes[name] = mesh;
+}
+
+
+std::shared_ptr<IMesh> AssetManager::GetMesh(const std::string& name) const {
+    auto it = m_meshes.find(name);
+    if (it == m_meshes.end()){
+        GLIB_FAIL("Unknown mesh " << name);
+    }
+    return it->second;
+}
