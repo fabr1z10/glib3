@@ -1,6 +1,9 @@
 #include <monkey/hotspot.h>
 #include <gfx/engine.h>
 #include <iostream>
+#include <gfx/scheduler.h>
+#include <gfx/move.h>
+#include <gfx/animate.h>
 
 void HotSpot::CursorPosCallback(GLFWwindow*, double x, double y) {
     bool isActive =m_cam->IsInViewport(x, y);
@@ -19,8 +22,15 @@ void HotSpot::MouseButtonCallback(GLFWwindow* window, int button, int action, in
         double x, y;
         glfwGetCursorPos(window, &x, &y);
         glm::vec2 wp = m_cam->GetWorldCoordinates(glm::vec2(x, y));
-        if (m_shape->isPointInside(wp))
-            m_target->SetPosition(wp);
+        auto scheduler = Engine::get().GetRef<Scheduler>("_scheduler");
+        auto player = Engine::get().GetRef<Entity>("player");
+        auto script = std::make_shared<Script>(0);
+        script->AddActivity(std::make_shared<Animate>(0, player, "idle_right"));
+        script->AddActivity(std::make_shared<MoveTo>(1,player, wp, 10.0f));
+        script->AddEdge(0, 1);
+        scheduler->AddScript("_walk", script);
+        // if (m_shape->isPointInside(wp))
+        //  m_target->SetPosition(wp);
 
 
     }

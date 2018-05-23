@@ -6,6 +6,7 @@
 #include <gfx/renderingengine.h>
 #include <gfx/spritemesh.h>
 #include <monkey/hotspot.h>
+#include <gfx/scheduler.h>
 
 std::shared_ptr<Entity> MonkeyFactory::Create() {
 
@@ -66,8 +67,10 @@ std::shared_ptr<Entity> MonkeyFactory::Create() {
 
 
 
-
+    auto scheduler =std::make_shared<Scheduler>();
+    scheduler->SetTag("_scheduler");
     engineNode->AddComponent(renderingEngine);
+    engineNode->AddComponent(scheduler);
     entity->AddChild(engineNode);
     
     return entity;
@@ -149,13 +152,13 @@ void MonkeyFactory::ReadSprite (LuaTable& t) {
         animation.name = at.Get<std::string>("name");
         luabridge::LuaRef fr = at.Get<luabridge::LuaRef>("frames");
         for (int j = 0; j < fr.length(); ++j) {
-            luabridge::LuaRef a2 = fr[i+1];
+            luabridge::LuaRef a2 = fr[j+1];
             LuaTable ft (a2);
             Frame frame;
             frame.time = ft.Get<float>("duration");
             luabridge::LuaRef qu = ft.Get<luabridge::LuaRef>("quads");
             for (int k = 0; k < qu.length(); ++k) {
-                luabridge::LuaRef a3 = qu[i+1];
+                luabridge::LuaRef a3 = qu[k+1];
                 LuaTable qt (a3);
                 Quad q;
                 q.x = qt.Get<float>("x");

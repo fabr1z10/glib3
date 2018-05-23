@@ -89,3 +89,7 @@ void Entity::SetParent(Entity* entity) {
     m_worldTransform = m_parent->GetWorldTransform() * m_localTransform;
     Notify();
 }
+
+void Entity::Move(glm::vec2 pos) {
+    SetPosition(GetPosition() + glm::vec3(pos, 0.0f));
+}

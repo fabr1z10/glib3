@@ -67,7 +67,7 @@ public:
     void SetLocalTransform (glm::mat4);
     void SetPosition(glm::vec2);
     void SetPosition(glm::vec3);
-    void Move(glm::vec2&);
+    void Move(glm::vec2);
     void Move(glm::vec3&);
     void Move(glm::mat4&);
     //Entity* GetParent();

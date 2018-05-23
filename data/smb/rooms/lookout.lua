@@ -4,28 +4,35 @@ assets = {
     {
         id="guybrush",
         sheet="gfx/sprite1.png",
-	type="sprite",
+		type="sprite",
         ppu=1,
         animations = {
 	    {
 	        name = "idle_front",             
-                frames = 
-                { 
-	            {
-			duration = dt,
-                        quads = {
-			    { x = 24, y = 51, width = 22, height = 47, anchor = {12, 0}}
+            frames = 
+            { 
+	    	  	{
+					duration = dt,
+                    quads = {
+			    		{ x = 24, y = 51, width = 22, height = 47, anchor = {12, 0}}
+					}
+		    	}
 			}
-		    }
-		}
 	    },
-            {
-                name="idle_right",
-                frames={}
-            }
-
- 	}
-    },
+        {
+           name="idle_right",
+           frames=
+           { 
+	           {
+					duration = dt,
+                    quads = {
+			    		{ x = 2, y = 51, width = 19, height = 47, anchor = {12, 0}}
+					}
+		       }
+		   }				
+        }
+		}
+    }
     --lookout={},
     --fire={}
 }
