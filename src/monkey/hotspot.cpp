@@ -3,7 +3,9 @@
 #include <iostream>
 #include <gfx/scheduler.h>
 #include <gfx/move.h>
+#include <gfx/renderer.h>
 #include <gfx/animate.h>
+#include <gfx/sequence.h>
 
 void HotSpot::CursorPosCallback(GLFWwindow*, double x, double y) {
     bool isActive =m_cam->IsInViewport(x, y);
@@ -25,10 +27,38 @@ void HotSpot::MouseButtonCallback(GLFWwindow* window, int button, int action, in
         auto scheduler = Engine::get().GetRef<Scheduler>("_scheduler");
         auto player = Engine::get().GetRef<Entity>("player");
         auto script = std::make_shared<Script>(0);
-        script->AddActivity(std::make_shared<Animate>(0, player, "idle_right"));
-        script->AddActivity(std::make_shared<MoveTo>(1,player, wp, 10.0f));
-        script->AddEdge(0, 1);
-        scheduler->AddScript("_walk", script);
+        glm::vec2 currentPos(player->GetPosition());
+        glm::vec2 delta = wp - currentPos;
+        if (delta != glm::vec2(0.0f)) {
+            std::string anim;
+            std::string anim2;
+            if (std::fabs(delta.x) > std::fabs(delta.y)) {
+                anim = "walk_right";
+                anim2 = "idle_right";
+            }
+            else {
+                if (delta.y > 0) {
+                    anim = "walk_back";
+                    anim2 = "idle_back";
+                } else {
+                    anim = "walk_front";
+                    anim2 = "idle_front";
+                }
+            }
+            bool flipX = (anim == "walk_right" && delta.x < 0);
+            player->GetComponent<Renderer>()->SetFlipX(flipX);
+            auto p = std::make_shared<Sequence>(0);
+            p->Push(std::make_shared<Animate>(0, player, anim));
+            p->Push(std::make_shared<MoveTo>(1, player, wp, 50.0f));
+            p->Push(std::make_shared<Animate>(2, player, anim2));
+            script->AddActivity(p);
+            //script->AddActivity(std::make_shared<Animate>(0, player, anim));
+            //script->AddActivity(std::make_shared<MoveTo>(1, player, wp, 50.0f));
+            //script->AddActivity(std::make_shared<Animate>(2, player, anim2));
+            //script->AddEdge(0, 1);
+            //script->AddEdge(1, 2);
+            scheduler->AddScript("_walk", script);
+        }
         // if (m_shape->isPointInside(wp))
         //  m_target->SetPosition(wp);
 

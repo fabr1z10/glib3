@@ -27,7 +27,10 @@ public:
     void SetTint(glm::vec4& c);
     ShaderType GetShaderType() const { return m_mesh->GetShaderType(); }
     using ParentClass = Renderer;
+    void SetFlipX(bool);
+    bool GetFlipX() const;
 private:
+    bool m_flipX;
     std::shared_ptr<IMesh> m_mesh;
     bool m_visible;
     std::string m_animation;
