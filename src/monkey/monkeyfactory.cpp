@@ -5,8 +5,10 @@
 #include <gfx/quadmesh.h>
 #include <gfx/renderingengine.h>
 #include <gfx/spritemesh.h>
-#include <monkey/hotspot.h>
+#include <monkey/walkarea.h>
 #include <gfx/scheduler.h>
+#include <graph/poly.h>
+#include <gfx/meshfactory.h>
 
 std::shared_ptr<Entity> MonkeyFactory::Create() {
 
@@ -133,8 +135,17 @@ void MonkeyFactory::ReadWalkarea (luabridge::LuaRef& ref, Entity* parent) {
     std::string targetId = table.Get<std::string>("target");
     luabridge::LuaRef shapeR = table.Get<luabridge::LuaRef>("shape");
     auto shape = ReadShape(shapeR);
+    // see if we want to plot the outline of the walk area
+    auto mesh = MeshFactory::CreateMesh(*(shape.get()), 1.0f);
+    auto ce = std::make_shared<Entity>();
+    ce->SetLayer(1);
+    auto cer = std::make_shared<Renderer>();
+    cer->SetMesh(mesh);
+    ce->AddComponent(cer);
+    parent->AddChild(ce);
 
-    auto hotspot = std::make_shared<HotSpot>(id, targetId, shape);
+
+    auto hotspot = std::make_shared<WalkArea>(id, shape);
 
     parent->AddComponent(hotspot);
 }
@@ -187,6 +198,14 @@ std::shared_ptr<Shape> MonkeyFactory::ReadShape(luabridge::LuaRef& ref) {
         float w = at.Get<float>("width");
         float h = at.Get<float>("height");
         return std::make_shared<Rect>(w, h);
+    } else if (type == "poly") {
+        std::vector<float> outline = at.GetVector<float>("outline");
+        std::vector<glm::vec2> points;
+
+        for (int i = 0; i < outline.size(); i = i +2)
+            points.push_back(glm::vec2(outline[i], outline[i+1]));
+        return std::make_shared<Polygon>(points);
+
     }
     return nullptr;
 }

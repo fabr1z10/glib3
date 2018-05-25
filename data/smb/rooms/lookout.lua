@@ -196,7 +196,8 @@ scene = {
   walkarea = { 
     cam = "maincam", 
     target = "player",
-    shape = { type="rect", width="10", height="10" }
+    --shape = { type="rect", width="10", height="10" }
+	shape = { type="poly", outline = { 0, 0, 80, 80, 160, 0} }
   }
 }
 }

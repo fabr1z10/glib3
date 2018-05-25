@@ -1,3 +1,5 @@
+#pragma once
+
 #include <vector>
 #include <memory>
 #include "shape.h"
@@ -10,7 +12,7 @@ public:
     int GetVertexCount() const;
     glm::vec2 GetVertex(int) const;
     bool isVertexConcave (int i) const;
-
+    void accept (AcyclicVisitor& v) override;
 private:
     std::vector <glm::vec2> m_points;
 };
@@ -38,6 +40,7 @@ public:
     int GetHoleCount() const;
     glm::vec2 GetVertex(int i, int polyId = 0) const;
     bool isVertexConcave (int i, int polyId = 0) const;
+    void accept (AcyclicVisitor& v) override;
 private:
 
     std::vector<std::unique_ptr<Polygon>> m_polygons;

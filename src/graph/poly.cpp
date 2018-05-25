@@ -1,5 +1,6 @@
 #include "graph/poly.h"
 #include "graph/geom.h"
+#include <gfx/error.h>
 
 bool Polygon::isVertexConcave(int i) const {
     int n = m_points.size();
@@ -12,43 +13,23 @@ bool Polygon::isVertexConcave(int i) const {
 }
 
 bool Polygon::isPointInside(glm::vec2 point) const {
-
-    float epsilon = 0.5;
-
-    bool inside = false;
-
-    int n = m_points.size();
-
-    // Must have 3 or more edges
-    if (n < 3) return false;
-
-    glm::vec2 oldPoint = m_points[n - 1];
-    float oldSqDist = distSq(oldPoint, point);
-
-    for (int i = 0; i < n; ++i) {
-        glm::vec2 newPoint = m_points[i];
-        float newSqDist = distSq(newPoint, point);
-        if (oldSqDist + newSqDist + 2.0 * sqrt(oldSqDist + newSqDist) - distSq(newPoint, oldPoint) < epsilon) {
-            return true;
-        }
-        glm::vec2 left;
-        glm::vec2 right;
-        if (newPoint.x > oldPoint.x) {
-            left = oldPoint;
-            right = newPoint;
-        } else {
-            left = newPoint;
-            right = oldPoint;
-        }
-
-        if (left.x < point.x && point.x <= right.x &&
-            (point.y - left.y) * (right.x - left.x) < (right.y - left.y) * (point.x - left.x))
-            inside = !inside;
-        oldPoint = newPoint;
-        oldSqDist = newSqDist;
+    int i, j;
+    bool c = false;
+    int nvert = m_points.size();
+    for (i = 0, j = nvert-1; i < nvert; j = i++) {
+        if ( ((m_points[i].y > point.y) != (m_points[j].y > point.y)) &&
+             (point.x < (m_points[j].x-m_points[i].x) * (point.y-m_points[i].y) / (m_points[j].y-m_points[i].y) + m_points[i].x) )
+            c = !c;
     }
+    return c;
+}
 
-    return inside;
+void Polygon::accept (AcyclicVisitor& v) {
+    Visitor<Polygon>* v1 = dynamic_cast<Visitor<Polygon>*>(&v);
+    if (v1 != 0)
+        v1->visit(*this);
+    else
+        GLIB_FAIL("not a polygon visitor");
 }
 
 bool Poly::isPointInside(glm::vec2 P) const {
@@ -61,6 +42,13 @@ bool Poly::isPointInside(glm::vec2 P) const {
     return true;
 }
 
+void Poly::accept (AcyclicVisitor& v) {
+    Visitor<Poly>* v1 = dynamic_cast<Visitor<Poly>*>(&v);
+    if (v1 != 0)
+        v1->visit(*this);
+    else
+        GLIB_FAIL("not a poly visitor");
+}
 //for (i in 0...vertices.length)
 //{
 //var newPoint:Vector = vertices[i];

@@ -8,20 +8,22 @@
 
 class HotSpot : public Component, public MouseListener {
 public:
-    HotSpot(const std::string& camId, const std::string& targetId, std::shared_ptr<Shape> shape) :
-            Component(), MouseListener(), m_camId{camId}, m_targetId{targetId}, m_active{false}, m_shape{shape} {}
+    HotSpot(const std::string& camId, std::shared_ptr<Shape> shape) :
+            Component(), MouseListener(), m_camId{camId}, m_active{false}, m_shape{shape} {}
     void Start() override;
     void Update (double dt) override {}
     void CursorPosCallback(GLFWwindow*, double, double) override;
-    void ScrollCallback(GLFWwindow*, double, double) override;
-    void MouseButtonCallback(GLFWwindow*, int, int, int) override;
+    //void ScrollCallback(GLFWwindow*, double, double) override;
+    //void MouseButtonCallback(GLFWwindow*, int, int, int) override;
     using ParentClass = HotSpot;
+protected:
 
-private:
+
+
     std::shared_ptr<Shape> m_shape;
-    Entity* m_target;
+    //Entity* m_target;
     bool m_active;
     OrthographicCamera* m_cam;
     std::string m_camId;
-    std::string m_targetId;
+    //std::string m_targetId;
 };
