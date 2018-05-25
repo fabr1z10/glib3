@@ -24,6 +24,19 @@ bool Polygon::isPointInside(glm::vec2 point) const {
     return c;
 }
 
+bool Polygon::isInLineOfSight(glm::vec2 A, glm::vec2 B) {
+    if (!isPointInside(A) || !isPointInside(B))
+        return false;
+    // checks to see if there's any intersection with the edges
+    glm::vec2 P0 = m_points.back();
+    for (auto& P1 : m_points) {
+        if (LineSegmentCross(A, B, P0, P1))
+            return false;
+        P0 = P1;
+    }
+    return true;
+}
+
 void Polygon::accept (AcyclicVisitor& v) {
     Visitor<Polygon>* v1 = dynamic_cast<Visitor<Polygon>*>(&v);
     if (v1 != 0)

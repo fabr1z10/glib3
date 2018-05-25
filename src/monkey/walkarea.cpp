@@ -6,6 +6,7 @@
 #include <iostream>
 #include <graph/closest.h>
 
+
 void WalkArea::MouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
 
     if (m_active && button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
@@ -28,7 +29,7 @@ void WalkArea::MouseButtonCallback(GLFWwindow* window, int button, int action, i
         auto scheduler = Engine::get().GetRef<Scheduler>("_scheduler");
         //auto player = Engine::get().GetRef<Entity>("player");
         auto script = std::make_shared<Script>(0);
-        script->AddActivity(std::make_shared<Walk>(0, "player", worldCoords));
+        script->AddActivity(std::make_shared<Walk>(0, "player", worldCoords, m_shape.get()));
         scheduler->AddScript("_walk", script);
     }
 }

@@ -28,47 +28,47 @@ bool LineSegmentCross (glm::vec2 A, glm::vec2 B, glm::vec2 C, glm::vec2 D) {
     return (t >= 0.0f && t <= 1.0f && u >= 0.0f && u <= 1.0f);
 }
 
-void FindPathInPoly (const Poly& poly, glm::vec2 Start, glm::vec2 End) {
-    int nHoles = poly.GetHoleCount();
-    int nVertices = poly.GetVertexCount();
-    Graph<int, glm::vec2> g;
-    int n = 0;
-    for (int i = 0; i < nVertices; ++i) {
-        if (poly.isVertexConcave(i)) {
-            g.AddNode(n++, poly.GetVertex(i));
-        }
-    }
-
-    // add hole points
-    for (int h = 0; h < nHoles; ++h) {
-        int nvh = poly.GetVertexCount(h+1);
-        for (int j = 0; j < nvh; ++j) {
-            if (!poly.isVertexConcave(j, h+1)) {
-                g.AddNode(n++, poly.GetVertex(j, h+1));
-            }
-        }
-    }
-
-    // add the edges
-    auto keys = g.GetKeys();
-    for (auto iter = keys.begin(); iter != keys.end(); ++iter) {
-        auto iter2 = iter;
-        glm::vec2& v1 = g.GetValue(*iter);
-        for (++iter2; iter2 != keys.end(); ++iter2) {
-            glm::vec2& v2 = g.GetValue(*iter2);
-            if (inLineOfSight(poly, v1, v2)) {
-                g.AddEdge(*iter, *iter2, glm::distance(v1, v2));
-            }
-        }
-
-    }
-
-    g.AddNode(n++, Start);
-    g.AddNode(n++, End);
-
-    // now you need to set up the edges
-
-}
+//void FindPathInPoly (const Poly& poly, glm::vec2 Start, glm::vec2 End) {
+//    int nHoles = poly.GetHoleCount();
+//    int nVertices = poly.GetVertexCount();
+//    Graph<int, glm::vec2> g;
+//    int n = 0;
+//    for (int i = 0; i < nVertices; ++i) {
+//        if (poly.isVertexConcave(i)) {
+//            g.AddNode(n++, poly.GetVertex(i));
+//        }
+//    }
+//
+//    // add hole points
+//    for (int h = 0; h < nHoles; ++h) {
+//        int nvh = poly.GetVertexCount(h+1);
+//        for (int j = 0; j < nvh; ++j) {
+//            if (!poly.isVertexConcave(j, h+1)) {
+//                g.AddNode(n++, poly.GetVertex(j, h+1));
+//            }
+//        }
+//    }
+//
+//    // add the edges
+//    auto keys = g.GetKeys();
+//    for (auto iter = keys.begin(); iter != keys.end(); ++iter) {
+//        auto iter2 = iter;
+//        glm::vec2& v1 = g.GetValue(*iter);
+//        for (++iter2; iter2 != keys.end(); ++iter2) {
+//            glm::vec2& v2 = g.GetValue(*iter2);
+//            if (inLineOfSight(poly, v1, v2)) {
+//                g.AddEdge(*iter, *iter2, glm::distance(v1, v2));
+//            }
+//        }
+//
+//    }
+//
+//    g.AddNode(n++, Start);
+//    g.AddNode(n++, End);
+//
+//    // now you need to set up the edges
+//
+//}
 
 bool inLineOfSight (const Poly& p, glm::vec2 start, glm::vec2 end) {
     

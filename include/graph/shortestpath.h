@@ -9,7 +9,7 @@ class ShortestPath :
     //public Visitor<Poly>
 {
 public:
-    static glm::vec2 Find(Shape&, glm::vec2 A, glm::vec2 B);
+    static std::vector<glm::vec2> Find(Shape&, glm::vec2 A, glm::vec2 B);
     //void visit(Rect&) override;
     void visit(Polygon&) override;
     //void visit(Poly&) override;

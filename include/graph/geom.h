@@ -31,4 +31,4 @@ T Clamp(T x, T m, T M) {
 
 bool LineSegmentCross (glm::vec2, glm::vec2, glm::vec2, glm::vec2);
 bool inLineOfSight (const Poly&, glm::vec2, glm::vec2);
-void FindPathInPoly (const Poly&, glm::vec2 Start, glm::vec2 End);
+//void FindPathInPoly (const Poly&, glm::vec2 Start, glm::vec2 End);

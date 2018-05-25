@@ -29,3 +29,9 @@ void ShortestPath::visit(Polygon & p) {
 
 
 }
+
+std::vector<glm::vec2> ShortestPath::Find(Shape& s, glm::vec2 A, glm::vec2 B) {
+    ShortestPath sp(A, B);
+    s.accept(sp);
+    return sp.m_result;
+}

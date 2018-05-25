@@ -9,6 +9,8 @@ class Polygon : public Shape {
 public:
     Polygon (const std::vector<glm::vec2>& p) : m_points{p} {}
     bool isPointInside (glm::vec2 P) const override;
+    // tests if segment AB is within the polygon
+    bool isInLineOfSight(glm::vec2 A, glm::vec2 B);
     int GetVertexCount() const;
     glm::vec2 GetVertex(int) const;
     bool isVertexConcave (int i) const;

@@ -3,13 +3,18 @@
 #include <gfx/renderer.h>
 #include <gfx/animate.h>
 #include <gfx/move.h>
+#include <graph/shortestpath.h>
 
 void Walk::Start() {
 
     auto actor = Engine::get().GetRef<Entity>(m_actorId);
     glm::vec2 currentPos(actor->GetPosition());
+
     glm::vec2 delta = m_p - currentPos;
-    if (delta != glm::vec2(0.0f)) {
+    if (delta != glm::vec2(0.0f))
+    {
+        std::vector<glm::vec2> points = ShortestPath::Find(*m_shape, currentPos, m_p);
+
         std::string anim;
         std::string anim2;
         if (std::fabs(delta.x) > std::fabs(delta.y)) {
