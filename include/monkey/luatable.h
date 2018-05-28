@@ -4,6 +4,19 @@
 #include <vector>
 #include <glm/glm.hpp>
 
+template <typename T>
+std::vector<T> ReadVector(luabridge::LuaRef& ref) {
+    if (ref.isNil()) {
+        GLIB_FAIL("Nil vector");
+    }
+    std::vector<T> out;
+    for (int i = 0; i < ref.length(); ++i) {
+        luabridge::LuaRef r = ref[i+1];
+        out.push_back(r.cast<T>());
+    }
+    return out;
+}
+
 class LuaTable {
 public:
     explicit LuaTable(luabridge::LuaRef ref) : m_ref(ref) {}
@@ -51,12 +64,13 @@ public:
                 return std::vector<T>();
             }
         }
-        std::vector<T> out;
-        for (int i = 0; i < ref.length(); ++i) {
-            luabridge::LuaRef r = ref[i+1];
-            out.push_back(r.cast<T>());
-        }
-        return out;
+        return ReadVector<T>(ref);
+//        std::vector<T> out;
+//        for (int i = 0; i < ref.length(); ++i) {
+//            luabridge::LuaRef r = ref[i+1];
+//            out.push_back(r.cast<T>());
+//        }
+//        return out;
 
     }
 

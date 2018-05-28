@@ -25,9 +25,12 @@ bool LineSegmentCross (glm::vec2 A, glm::vec2 B, glm::vec2 C, glm::vec2 D) {
     }
     float t = cross(PQ, s) / rxs;
     float u = cross(PQ, r) / rxs;
-    return (t >= 0.0f && t <= 1.0f && u >= 0.0f && u <= 1.0f);
+    return (t > 0.0f && t < 1.0f && u > 0.0f && u < 1.0f);
 }
 
+float DistFromSegment (glm::vec2 A, glm::vec2 B, glm::vec2 P) {
+
+}
 //void FindPathInPoly (const Poly& poly, glm::vec2 Start, glm::vec2 End) {
 //    int nHoles = poly.GetHoleCount();
 //    int nVertices = poly.GetVertexCount();

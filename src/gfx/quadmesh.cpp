@@ -13,6 +13,8 @@ QuadMesh::QuadMesh(const std::string& filename, float width, float height, float
     m_primitive = GL_TRIANGLES;
     auto tex = Engine::get().GetAssetManager().GetTexture(filename);
     m_texId = tex->GetTexId();
+    if (width == 0) width = tex->GetWidth();
+    if (height == 0) height = tex->GetHeight();
     std::vector<Vertex3D> vertices{
         {0, 0, 0, 0, repeaty},
         {width, 0, 0, repeatx, repeaty},

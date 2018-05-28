@@ -5,6 +5,7 @@
 #include <gfx/engine.h>
 #include <iostream>
 #include <graph/closest.h>
+#include <graph/shortestpath.h>
 
 
 void WalkArea::MouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {

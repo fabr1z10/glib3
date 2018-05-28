@@ -19,7 +19,7 @@ public:
     static std::shared_ptr<IMesh> CreateMesh (Shape& s, float z = 0.0f, glm::vec4 color = glm::vec4(1.0f));
     void visit(Rect&) override;
     void visit(Polygon&) override;
-    void visit(Poly&) override{}
+    void visit(Poly&) override;
 private:
     std::shared_ptr<IMesh> m_mesh;
     glm::vec4 m_color;

@@ -6,7 +6,7 @@ bool Polygon::isVertexConcave(int i) const {
     int n = m_points.size();
     glm::vec2 next = m_points[i+1 % n];
     glm::vec2 prev = m_points[i == 0 ? n-1 : i-1];
-    glm::vec2 left = m_points[i] - prev;
+    glm::vec2 left = prev - m_points[i];
     glm::vec2 right = next - m_points[i];
     float x = cross(left, right);
     return x < 0;
@@ -25,8 +25,8 @@ bool Polygon::isPointInside(glm::vec2 point) const {
 }
 
 bool Polygon::isInLineOfSight(glm::vec2 A, glm::vec2 B) {
-    if (!isPointInside(A) || !isPointInside(B))
-        return false;
+    //if (!isPointInside(A) || !isPointInside(B))
+     //   return false;
     // checks to see if there's any intersection with the edges
     glm::vec2 P0 = m_points.back();
     for (auto& P1 : m_points) {
@@ -61,6 +61,30 @@ void Poly::accept (AcyclicVisitor& v) {
         v1->visit(*this);
     else
         GLIB_FAIL("not a poly visitor");
+}
+
+
+glm::vec2 Polygon::getNormalAtEdge (int edgeIndex) {
+    return glm::normalize(Perp(m_points[(edgeIndex+1) % m_points.size()] - m_points[edgeIndex]));
+}
+
+glm::vec2 Polygon::getNormalAtVertex (int i) {
+    glm::vec2 a = getNormalAtEdge(i);
+    glm::vec2 b = getNormalAtEdge((i-1 >= 0) ? (i-1) : m_points.size()-1);
+    return (glm::normalize(0.5f*(a+b)));
+    //return glm::normalize(Perp(m_points[(edgeIndex+1) % m_points.size()] - m_points[edgeIndex]));
+}
+
+Polygon* Poly::GetPolygon(int i) {
+    return m_polygons[i].get();
+}
+
+bool Poly::isInLineOfSight(glm::vec2 A, glm::vec2 B) {
+    for (auto& p : m_polygons) {
+        if (!p->isInLineOfSight(A, B))
+            return false;
+    }
+    return true;
 }
 //for (i in 0...vertices.length)
 //{

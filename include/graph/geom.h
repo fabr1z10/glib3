@@ -29,6 +29,11 @@ T Clamp(T x, T m, T M) {
     return (x > M ? M : (x < m ? m : x));
 }
 
+inline glm::vec2 Perp(glm::vec2 P) {
+    return glm::vec2(-P.y, P.x);
+}
+
+float DistFromSegment (glm::vec2 A, glm::vec2 B, glm::vec2 P);
 bool LineSegmentCross (glm::vec2, glm::vec2, glm::vec2, glm::vec2);
 bool inLineOfSight (const Poly&, glm::vec2, glm::vec2);
 //void FindPathInPoly (const Poly&, glm::vec2 Start, glm::vec2 End);

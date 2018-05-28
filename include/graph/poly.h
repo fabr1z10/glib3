@@ -14,6 +14,9 @@ public:
     int GetVertexCount() const;
     glm::vec2 GetVertex(int) const;
     bool isVertexConcave (int i) const;
+    // gets the outward normal at the j-th index (connecting vertices j to j+1)
+    glm::vec2 getNormalAtEdge (int edgeIndex);
+    glm::vec2 getNormalAtVertex(int);
     void accept (AcyclicVisitor& v) override;
 private:
     std::vector <glm::vec2> m_points;
@@ -32,17 +35,19 @@ public:
     // defines a polygon without holes
     // Note: the polygons are always clockwise oriented!
     Poly (std::unique_ptr<Polygon> p) { m_polygons.push_back(std::move(p)); }
-    Poly (std::unique_ptr<Polygon> p, std::vector<std::unique_ptr<Polygon>> holes) {
+
+    void AddHole (std::unique_ptr<Polygon> p) {
         m_polygons.push_back(std::move(p));
-        for (auto& hole : holes)
-            m_polygons.push_back(std::move(hole));
     }
     bool isPointInside (glm::vec2 P) const override;
+    bool isInLineOfSight(glm::vec2 A, glm::vec2 B);
     int GetVertexCount(int polyId = 0) const;
     int GetHoleCount() const;
+    int GetPolygonCount() const;
     glm::vec2 GetVertex(int i, int polyId = 0) const;
     bool isVertexConcave (int i, int polyId = 0) const;
     void accept (AcyclicVisitor& v) override;
+    Polygon* GetPolygon(int);
 private:
 
     std::vector<std::unique_ptr<Polygon>> m_polygons;
@@ -50,4 +55,5 @@ private:
 
 inline int Poly::GetVertexCount(int polyId) const { return m_polygons[polyId]->GetVertexCount(); }
 inline int Poly::GetHoleCount() const { return m_polygons.size() - 1;}
+inline int Poly::GetPolygonCount() const { return m_polygons.size();}
 inline glm::vec2 Poly::GetVertex(int i, int polyId) const { return m_polygons[polyId]->GetVertex(i); }

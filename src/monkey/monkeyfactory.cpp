@@ -114,8 +114,8 @@ void MonkeyFactory::ReadGfxComponent(luabridge::LuaRef &ref, Entity *parent) {
     auto renderer = std::make_shared<Renderer>();
     if (table.HasKey("image")) {
         std::string image = table.Get<std::string>("image");
-        float w = table.Get<float>("width");
-        float h = table.Get<float>("height");
+        float w = table.Get<float>("width", 0.0f);
+        float h = table.Get<float>("height", 0.0f);
         auto mesh = std::make_shared<QuadMesh>(image, w, h);
         renderer->SetMesh(mesh);
     } else if (table.HasKey("model")) {
@@ -201,11 +201,29 @@ std::shared_ptr<Shape> MonkeyFactory::ReadShape(luabridge::LuaRef& ref) {
     } else if (type == "poly") {
         std::vector<float> outline = at.GetVector<float>("outline");
         std::vector<glm::vec2> points;
-
         for (int i = 0; i < outline.size(); i = i +2)
             points.push_back(glm::vec2(outline[i], outline[i+1]));
-        return std::make_shared<Polygon>(points);
+        if (at.HasKey("holes")) {
+            std::unique_ptr<Polygon> mainOutline(new Polygon(points));
+            luabridge::LuaRef holes = at.Get<luabridge::LuaRef>("holes");
+            LuaTable ha(holes);
+            auto poly = std::make_shared<Poly>(std::move(mainOutline));
+            for (int j = 0; j<holes.length(); ++j) {
+                luabridge::LuaRef h = holes[j+1];
+                std::vector<float> holeOutline = ReadVector<float>(h);
+                std::vector<glm::vec2> points;
+                for (int i = 0; i < holeOutline.size(); i = i +2)
+                    points.push_back(glm::vec2(holeOutline[i], holeOutline[i+1]));
+                poly->AddHole(std::unique_ptr<Polygon>(new Polygon(points)));
 
+            }
+            return poly;
+
+        } else {
+
+
+            return std::make_shared<Polygon>(points);
+        }
     }
     return nullptr;
 }

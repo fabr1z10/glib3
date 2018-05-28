@@ -14,7 +14,7 @@
 
 class QuadMesh : public Mesh<Vertex3D> {
 public:
-    QuadMesh(const std::string& filename, float width, float height, float repeatx = 1, float repeaty = 1);
+    QuadMesh(const std::string& filename, float width = 0.0f, float height = 0.0f, float repeatx = 1, float repeaty = 1);
     QuadMesh(const std::string& filename, int rows, int cols, float size, std::vector<int>& data, int sheetRows, int sheetCols);
     virtual void Setup(Shader*, const std::string&, int);
 private:
