@@ -3,7 +3,7 @@
 
 void AssetManager::AddFont(const std::string &name, const std::string &file) {
     auto font = std::unique_ptr<Font>(new Font);
-    font->loadFromFile(file);
+    font->loadFromFile(m_directory + file);
     m_fonts[name] = std::move(font);
 }
 

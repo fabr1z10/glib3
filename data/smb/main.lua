@@ -12,6 +12,10 @@ engine = {
     prova = 10
 }
 
+fonts = {
+    { name = "ui", file  = "fonts/monkeysmall.ttf" }
+}
+
 variables = {
     _room = "lookout"
 }

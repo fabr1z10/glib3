@@ -12,5 +12,6 @@ public:
     void Start();
     
 private:
+    void LoadFonts();
     std::unordered_map<std::string, LuaTable> m_tables;
 };

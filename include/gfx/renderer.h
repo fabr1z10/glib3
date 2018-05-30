@@ -29,8 +29,11 @@ public:
     using ParentClass = Renderer;
     void SetFlipX(bool);
     bool GetFlipX() const;
+    const glm::mat4& GetRenderingTransform() const;
+    void SetRenderingTransform (glm::mat4 m);
 private:
-    bool m_flipX;
+    //bool m_flipX;
+    glm::mat4 m_renderingTransform;
     std::shared_ptr<IMesh> m_mesh;
     bool m_visible;
     std::string m_animation;
@@ -38,6 +41,14 @@ private:
     double m_frameTime;
     glm::vec4 m_tint;
 };
+
+inline const glm::mat4& Renderer::GetRenderingTransform() const{
+    return m_renderingTransform;
+}
+
+inline void Renderer::SetRenderingTransform (glm::mat4 m) {
+    m_renderingTransform = m;
+}
 
 inline Bounds3D Renderer::GetBounds() const {
     return m_mesh->GetBounds();

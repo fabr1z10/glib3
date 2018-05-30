@@ -181,21 +181,21 @@ assets = {
 }
 
 scene = {
-{
-  pos = {0, 0, 0},
-  gfx = { image="gfx/lookout/bg1.png", width=320, height=144 },
-  layer = 1
-},
-{
-  pos = {81, 16, 5},
-  gfx = { image="gfx/lookout/bg2.png" },
-  layer = 1
-},
-{
-  pos = {294, 33, 5},
-  gfx = { image="gfx/lookout/bg3.png" },
-  layer = 1
-},
+--{
+--  pos = {0, 0, 0},
+--  gfx = { image="gfx/lookout/bg1.png", width=320, height=144 },
+--  layer = 1
+--},
+--{
+--  pos = {81, 16, 5},
+-- gfx = { image="gfx/lookout/bg2.png" },
+--  layer = 1
+--},
+--{
+--  pos = {294, 33, 5},
+--  gfx = { image="gfx/lookout/bg3.png" },
+--  layer = 1
+--},
 {
   tag = "player",
   pos = {240, 40, 0},
@@ -211,6 +211,11 @@ scene = {
     --shape = { type = "poly", outline = {0,0, 0,120, 120, 120, 120, 0}, holes = { {50, 50, 100,50,50, 100} }}
 	shape = { type = "poly", outline = {203,51,315,62,315,19,260,10,260,0,260,-20,234,-20,234,0,234,10,221,26,152,33,152,51}}
   }
+},
+{
+  pos = { 0, 0, 0 },
+  text = { id="pippo", font="ui", align = "bottomleft" },
+  layer = 2
 }
 }
 

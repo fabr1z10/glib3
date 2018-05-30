@@ -14,6 +14,7 @@ public:
 private:
     void ReadItems(luabridge::LuaRef& ref, Entity* parent);
     void ReadGfxComponent (luabridge::LuaRef& ref, Entity* parent);
+    void ReadTextComponent (luabridge::LuaRef& ref, Entity* parent);
     void ReadWalkarea (luabridge::LuaRef& ref, Entity* parent);
     std::shared_ptr<Shape> ReadShape(luabridge::LuaRef& ref);
 };

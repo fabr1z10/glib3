@@ -55,9 +55,9 @@ void RenderingEngine::Update(double)
                         drawCount++;
                         
                         // compute model view matrix
-                        glm::mat4 mvm = cam->m_viewMatrix * wt;
-                        if (renderer->GetFlipX())
-                            mvm[0][0] *= -1.0f;
+                        glm::mat4 mvm = cam->m_viewMatrix * wt * renderer->GetRenderingTransform();
+                        //if (renderer->GetFlipX())
+                         //   mvm[0][0] *= -1.0f;
                         GLuint mvLoc = shader->GetUniformLocation(MODELVIEW);
                         glUniformMatrix4fv(mvLoc, 1, GL_FALSE, &mvm[0][0]);
                         renderer->Draw(shader);

@@ -9,6 +9,8 @@
 #include <gfx/scheduler.h>
 #include <graph/poly.h>
 #include <gfx/meshfactory.h>
+#include <gfx/textmesh.h>
+#include <glm/gtx/transform.hpp>
 
 std::shared_ptr<Entity> MonkeyFactory::Create() {
 
@@ -99,6 +101,11 @@ void MonkeyFactory::ReadItems(luabridge::LuaRef& scene, Entity* parent) {
             luabridge::LuaRef c = item.Get<luabridge::LuaRef>("gfx");
             ReadGfxComponent(c, entity.get());
         }
+        if (item.HasKey("text")) {
+            luabridge::LuaRef c = item.Get<luabridge::LuaRef>("text");
+            ReadTextComponent(c, entity.get());
+        }
+
         if (item.HasKey("walkarea")) {
             luabridge::LuaRef c = item.Get<luabridge::LuaRef>("walkarea");
             ReadWalkarea(c, entity.get());
@@ -127,6 +134,23 @@ void MonkeyFactory::ReadGfxComponent(luabridge::LuaRef &ref, Entity *parent) {
     }
     parent->AddComponent(renderer);
     
+}
+
+void MonkeyFactory::ReadTextComponent(luabridge::LuaRef &ref, Entity *parent) {
+    LuaTable table(ref);
+    auto renderer = std::make_shared<Renderer>();
+    std::string text = table.Get<std::string>("id");
+    std::string font = table.Get<std::string>("font");
+    std::string align = table.Get<std::string>("align", "topleft");
+    Font* f = Engine::get().GetAssetManager().GetFont(font);
+    auto mesh = std::make_shared<TextMesh>(f, text, 8, glm::vec4(1.0f));
+    // default alignment is top left
+    auto bounds = mesh->GetBounds();
+    if (align == "bottomleft") {
+        renderer->SetRenderingTransform(glm::translate(glm::vec3(0.0f, -bounds.min.y, 0.0f)));
+    }
+    renderer->SetMesh(mesh);
+    parent->AddComponent(renderer);
 }
 
 void MonkeyFactory::ReadWalkarea (luabridge::LuaRef& ref, Entity* parent) {
