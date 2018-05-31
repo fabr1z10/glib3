@@ -11,6 +11,8 @@
 #include <gfx/meshfactory.h>
 #include <gfx/textmesh.h>
 #include <glm/gtx/transform.hpp>
+#include <monkey/scripthotspot.h>
+
 
 std::shared_ptr<Entity> MonkeyFactory::Create() {
 
@@ -110,6 +112,14 @@ void MonkeyFactory::ReadItems(luabridge::LuaRef& scene, Entity* parent) {
             luabridge::LuaRef c = item.Get<luabridge::LuaRef>("walkarea");
             ReadWalkarea(c, entity.get());
         }
+        if (item.HasKey("hotspot")) {
+            luabridge::LuaRef c = item.Get<luabridge::LuaRef>("hotspot");
+            ReadHotspot(c, entity.get());
+        }
+        if (item.HasKey("button")) {
+            luabridge::LuaRef c = item.Get<luabridge::LuaRef>("button");
+            ReadButton(c, entity.get());
+        }
         entity->SetLayer(layer);
         parent->AddChild(entity);
     }
@@ -173,6 +183,61 @@ void MonkeyFactory::ReadWalkarea (luabridge::LuaRef& ref, Entity* parent) {
 
     parent->AddComponent(hotspot);
 }
+
+void MonkeyFactory::ReadHotspot (luabridge::LuaRef& ref, Entity* parent) {
+    LuaTable table(ref);
+    std::string id = table.Get<std::string>("cam");
+    luabridge::LuaRef shapeR = table.Get<luabridge::LuaRef>("shape");
+    auto shape = ReadShape(shapeR);
+    auto mesh = MeshFactory::CreateMesh(*(shape.get()), 1.0f);
+    auto ce = std::make_shared<Entity>();
+    int layer = table.Get<int>("layer", 1);
+    //int tag = Engine::get().GetRef<OrthographicCamera>(id)->GetLayer();
+    ce->SetLayer(layer);
+    auto cer = std::make_shared<Renderer>();
+    cer->SetMesh(mesh);
+    ce->AddComponent(cer);
+    parent->AddChild(ce);
+    auto hotspot = std::make_shared<ScriptHotSpot>(id, shape);
+
+    parent->AddComponent(hotspot);
+}
+
+void MonkeyFactory::ReadButton (luabridge::LuaRef& ref, Entity* parent) {
+    LuaTable table(ref);
+    auto renderer = std::make_shared<Renderer>();
+    std::string text = table.Get<std::string>("id");
+    std::string font = table.Get<std::string>("font");
+    std::string align = table.Get<std::string>("align", "topleft");
+    std::string id = table.Get<std::string>("cam");
+    int layer = table.Get<int>("layer", 1);
+
+    Font* f = Engine::get().GetAssetManager().GetFont(font);
+    auto mesh = std::make_shared<TextMesh>(f, text, 8, glm::vec4(1.0f));
+    auto bounds = mesh->GetBounds();
+    if (align == "bottomleft") {
+        renderer->SetRenderingTransform(glm::translate(glm::vec3(0.0f, -bounds.min.y, 0.0f)));
+    } else if (align == "bottomright") {
+        renderer->SetRenderingTransform(glm::translate(glm::vec3(-bounds.max.x, -bounds.min.y, 0.0f)));
+    }
+    renderer->SetMesh(mesh);
+
+    float w = bounds.max.x - bounds.min.x;
+    float h = bounds.max.y - bounds.min.y;
+    auto shape = std::make_shared<Rect>(w, h);
+    auto debugMesh = MeshFactory::CreateMesh(*(shape.get()), 1.0f);
+    auto ce = std::make_shared<Entity>();
+    ce->SetLayer(layer);
+    auto cer = std::make_shared<Renderer>();
+    cer->SetMesh(debugMesh);
+    ce->AddComponent(cer);
+    auto hotspot = std::make_shared<ScriptHotSpot>(id, shape);
+
+    parent->AddChild(ce);
+    parent->AddComponent(renderer);
+    parent->AddComponent(hotspot);
+}
+
 
 void MonkeyFactory::ReadSprite (LuaTable& t) {
     float ppu = t.Get<float>("ppu", 1.0);
