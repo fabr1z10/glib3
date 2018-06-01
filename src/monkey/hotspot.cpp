@@ -1,67 +1,129 @@
 #include <monkey/hotspot.h>
 #include <gfx/engine.h>
 #include <iostream>
+#include <set>
+
+bool HotSpot::isMouseInside(glm::vec2 pos) {
+    glm::vec2 lpos = (m_relativeTo == nullptr) ? glm::vec2(0.0f) : glm::vec2(m_relativeTo->GetPosition());
+    return m_shape->isPointInside(pos - lpos);
+
+}
 
 
+void HotSpot::SetActive(bool active) {
+    if (active != m_active) {
+        if (active)
+            onEnter();
+        else
+            onLeave();
+        m_active = active;
+    }
 
-void HotSpot::CursorPosCallback(GLFWwindow*, double x, double y) {
-    bool isActive =m_cam->IsInViewport(x, y);
-//    if (m_active != isActive) {
-//        if (isActive)
-//            std::cout << "Entering area\n";
-//        else
-//            std::cout << "Exiting area\n";
-//    }
+
+}
+void HotSpotManager::Start() {
+    for (auto& g : m_groups)
+        g.second.InitCamera();
+
+}
+void HotSpotManager::AddGroup (int id, const std::string& camId) {
+
+    m_groups[id] = HotSpotGroup(camId);
+}
+
+
+void HotSpotManager::CursorPosCallback(GLFWwindow*, double x, double y) {
+    for (auto& g : m_groups)
+        g.second.Run(x, y);
+
+}
+
+void HotSpotGroup::InitCamera() {
+    m_cam = Engine::get().GetRef<OrthographicCamera>(m_camId);
+}
+
+void HotSpotGroup::Click(double x, double y) {
+    if (m_active && m_currentlyActiveHotSpot != nullptr) {
+        // convert mouse to world
+        glm::vec2 wc = m_cam->GetWorldCoordinates(glm::vec2(x, y));
+        m_currentlyActiveHotSpot->onClick(wc);
+    }
+
+}
+
+void HotSpotGroup::Run(double x, double y) {
+    // see if current group is active (i.e. mouse position is in the group's cam viewport)
+    bool isActive = m_cam->IsInViewport(x, y);
+
+    if (isActive) {
+
+        // check all the inner hotspots
+        // convert mouse coords into world coordinates
+        glm::vec2 worldCoords = m_cam->GetWorldCoordinates(glm::vec2(x, y));
+
+
+        std::set<HotSpot*> candidateHotspots;
+        for (auto& h : m_hotspots) {
+            if (h->isMouseInside(worldCoords)) {
+                candidateHotspots.insert(h);
+            }
+        }
+
+        if (candidateHotspots.empty()) {
+            if (m_currentlyActiveHotSpot != nullptr)
+            {
+                m_currentlyActiveHotSpot->SetActive(false);
+                m_currentlyActiveHotSpot = nullptr;
+            }
+        } else {
+            auto hotspot = *candidateHotspots.begin();
+            if (m_currentlyActiveHotSpot != nullptr && m_currentlyActiveHotSpot != hotspot)
+                m_currentlyActiveHotSpot->SetActive(false);
+            hotspot->SetActive(true);
+            m_currentlyActiveHotSpot = hotspot;
+        }
+
+    } else {
+        if (m_active && m_currentlyActiveHotSpot != nullptr) {
+            m_currentlyActiveHotSpot->SetActive(false);
+            m_currentlyActiveHotSpot = nullptr;
+        }
+    }
+
+
     m_active = isActive;
 }
 
-//void HotSpot::MouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
-//
-//
-//
-////        glm::vec2 currentPos(player->GetPosition());
-////        glm::vec2 delta = wp - currentPos;
-////        if (delta != glm::vec2(0.0f)) {
-////            std::string anim;
-////            std::string anim2;
-////            if (std::fabs(delta.x) > std::fabs(delta.y)) {
-////                anim = "walk_right";
-////                anim2 = "idle_right";
-////            }
-////            else {
-////                if (delta.y > 0) {
-////                    anim = "walk_back";
-////                    anim2 = "idle_back";
-////                } else {
-////                    anim = "walk_front";
-////                    anim2 = "idle_front";
-////                }
-////            }
-////            bool flipX = (anim == "walk_right" && delta.x < 0);
-////            player->GetComponent<Renderer>()->SetFlipX(flipX);
-////            auto p = std::make_shared<Sequence>(0);
-////            p->Push(std::make_shared<Animate>(0, player, anim));
-////            p->Push(std::make_shared<MoveTo>(1, player, wp, 50.0f));
-////            p->Push(std::make_shared<Animate>(2, player, anim2));
-////            script->AddActivity(p);
-////            //script->AddActivity(std::make_shared<Animate>(0, player, anim));
-////            //script->AddActivity(std::make_shared<MoveTo>(1, player, wp, 50.0f));
-////            //script->AddActivity(std::make_shared<Animate>(2, player, anim2));
-////            //script->AddEdge(0, 1);
-////            //script->AddEdge(1, 2);
-//
-//        // if (m_shape->isPointInside(wp))
-//        //  m_target->SetPosition(wp);
-//
-//
-//
-//
-//}
-//
 
-void HotSpot::Start() {
-    // Get the underlying camera
-    m_cam = Engine::get().GetRef<OrthographicCamera>(m_camId);
-    //m_target = Engine::get().GetRef<Entity>(m_targetId);
+void HotSpotManager::MouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
+    {
+       double x, y ;
+       glfwGetCursorPos(window, &x, &y);
+       for (auto& g : m_groups) {
+           g.second.Click(x, y);
+       }
+    }
+
 }
 
+void HotSpotManager::Register (HotSpot* hotspot) {
+    m_groups[hotspot->GetGroup()].Insert(hotspot);
+}
+
+void HotSpotManager::Unregister (HotSpot* hotspot) {
+    m_groups[hotspot->GetGroup()].Erase(hotspot);
+}
+
+void HotSpot::Start() {
+
+    auto hs = (Engine::get().GetRef<HotSpotManager>("_hotspotmanager"));
+    hs->Register(this);
+
+}
+
+HotSpot::~HotSpot() {
+
+    auto hs = (Engine::get().GetRef<HotSpotManager>("_hotspotmanager"));
+    hs->Unregister(this);
+}

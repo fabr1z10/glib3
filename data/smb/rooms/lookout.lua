@@ -204,27 +204,58 @@ scene = {
 },
 {
   walkarea = { 
-    cam = "maincam", 
-    target = "player",
-    --shape = { type="rect", width="10", height="10" }
-    -- shape = { type="poly", outline = { 0, 0, 0, 50, 140, 50, 140, 100, 150, 100, 150, 0} }
-    --shape = { type = "poly", outline = {0,0, 0,120, 120, 120, 120, 0}, holes = { {50, 50, 100,50,50, 100} }}
-    shape = { type = "poly", outline = {203,51,315,62,315,19,260,10,260,0,260,-20,234,-20,234,0,234,10,221,26,152,33,152,51}}
+	group = 1,
+	priority = 0,
+	target = "player",
+	shape = { type = "poly", outline = {203,51,315,62,315,19,260,10,260,0,260,-20,234,-20,234,0,234,10,221,26,152,33,152,51}}
   }
 },
 {
   pos = { 0, 0, 0 },
-  button = { id="pippo", font="ui", align="bottomleft", cam="uicam", layer=2},
+  button = { id="pippo", font="ui", align="bottomleft", group = 2, layer=2, onenter="prova", onleave="prova2", onclick="prova3" },
   layer = 2
 },
 {
-  pos = { 160, 0, 0},  
-  button = { id="pippo", font="ui", align="bottomright", cam="uicam", layer=2},
+  pos = { 320, 0, 0},  
+  button = { id="pippo", font="ui", align="bottomright", group = 2, layer=2, onenter="prova", onleave="prova2", onclick="prova3"},
   layer = 2
+},
+{
+  pos = { 0, 54, 0},  
+  button = { id="pippo", font="ui", align="topleft", group = 2, layer=2, onenter="prova", onleave="prova2", onclick="prova3"},
+  layer = 2
+},
+{
+  pos = { 320, 54, 0},  
+  button = { id="pippo", font="ui", align="topright", group = 2, layer=2, onenter="prova", onleave="prova2", onclick="prova3"},
+  layer = 2
+},
+{
+  hotspothandler = {
+      cam = "maincam",
+	  hotspots = {
+         
+	  }
+  }
 }
+	
+
 }
 
+function prova (a)
+  a:parent():setcolor(255, 0, 0, 255)
+  print ("eccomi ")
+end
 
+function prova2(a)
+  a:parent():setcolor(255, 255, 255, 255)
+  print "qua!!"
+end
+
+groups = {
+	{ id=1, cam ="maincam"},
+	{ id=2, cam ="uicam"}
+}
 cameras = {
 {
     tag="maincam",

@@ -24,7 +24,7 @@ public:
     void Start() override {}
     void Update(double) override;
     void SetAnimation(const std::string&);
-    void SetTint(glm::vec4& c);
+    void SetTint(glm::vec4 c);
     ShaderType GetShaderType() const { return m_mesh->GetShaderType(); }
     using ParentClass = Renderer;
     void SetFlipX(bool);
@@ -66,7 +66,7 @@ inline void Renderer::SetMesh(std::shared_ptr<IMesh> mesh) {
     m_mesh = mesh;
 }
 
-inline void Renderer::SetTint(glm::vec4& color) {
+inline void Renderer::SetTint(glm::vec4 color) {
     m_tint = color;
 }
 

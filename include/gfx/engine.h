@@ -10,6 +10,7 @@
 #include <gfx/assetman.h>
 #include <gfx/error.h>
 
+
 struct EngineConfig {
     EngineConfig (float devWidth, float devHeight) : frameRate (60.0), deviceWidth{devWidth}, deviceHeight{devHeight}, enableMouse{false}, enableKeyboard{false},
     windowWidth{800}, windowHeight{600} {}

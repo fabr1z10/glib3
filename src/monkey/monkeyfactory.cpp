@@ -75,8 +75,20 @@ std::shared_ptr<Entity> MonkeyFactory::Create() {
 
     auto scheduler =std::make_shared<Scheduler>();
     scheduler->SetTag("_scheduler");
+    auto hotspotManager = std::make_shared<HotSpotManager>();
+    hotspotManager->SetTag("_hotspotmanager");
+    luabridge::LuaRef groups = luabridge::getGlobal(LuaWrapper::L, "groups");
+    for (int i = 0; i< groups.length(); ++i) {
+        luabridge::LuaRef groupR = groups[i+1];
+        int id = groupR["id"].cast<int>();
+        std::string cam = groupR["cam"].cast<std::string>();
+        hotspotManager->AddGroup(id, cam);
+    }
+
+
     engineNode->AddComponent(renderingEngine);
     engineNode->AddComponent(scheduler);
+    engineNode->AddComponent(hotspotManager);
     entity->AddChild(engineNode);
     
     return entity;
@@ -118,7 +130,7 @@ void MonkeyFactory::ReadItems(luabridge::LuaRef& scene, Entity* parent) {
         }
         if (item.HasKey("button")) {
             luabridge::LuaRef c = item.Get<luabridge::LuaRef>("button");
-            ReadButton(c, entity.get());
+            //ReadButton(c, entity.get());
         }
         entity->SetLayer(layer);
         parent->AddChild(entity);
@@ -147,28 +159,22 @@ void MonkeyFactory::ReadGfxComponent(luabridge::LuaRef &ref, Entity *parent) {
 }
 
 void MonkeyFactory::ReadTextComponent(luabridge::LuaRef &ref, Entity *parent) {
-    LuaTable table(ref);
-    auto renderer = std::make_shared<Renderer>();
-    std::string text = table.Get<std::string>("id");
-    std::string font = table.Get<std::string>("font");
-    std::string align = table.Get<std::string>("align", "topleft");
-    Font* f = Engine::get().GetAssetManager().GetFont(font);
-    auto mesh = std::make_shared<TextMesh>(f, text, 8, glm::vec4(1.0f));
-    // default alignment is top left
-    auto bounds = mesh->GetBounds();
-    if (align == "bottomleft") {
-        renderer->SetRenderingTransform(glm::translate(glm::vec3(0.0f, -bounds.min.y, 0.0f)));
-    }
-    renderer->SetMesh(mesh);
+    auto renderer = GetTextComponent(ref);
     parent->AddComponent(renderer);
 }
 
+
+// Read the walk-area
 void MonkeyFactory::ReadWalkarea (luabridge::LuaRef& ref, Entity* parent) {
     LuaTable table(ref);
-    std::string id = table.Get<std::string>("cam");
+    int group = table.Get<int>("group");
+    int priority = table.Get<int>("priority");
     std::string targetId = table.Get<std::string>("target");
     luabridge::LuaRef shapeR = table.Get<luabridge::LuaRef>("shape");
     auto shape = ReadShape(shapeR);
+    auto hotspot = std::make_shared<WalkArea>(shape, priority, group, targetId);
+    parent->AddComponent(hotspot);
+
     // see if we want to plot the outline of the walk area
     auto mesh = MeshFactory::CreateMesh(*(shape.get()), 1.0f);
     auto ce = std::make_shared<Entity>();
@@ -179,63 +185,94 @@ void MonkeyFactory::ReadWalkarea (luabridge::LuaRef& ref, Entity* parent) {
     parent->AddChild(ce);
 
 
-    auto hotspot = std::make_shared<WalkArea>(id, shape);
 
-    parent->AddComponent(hotspot);
+
+
 }
 
-void MonkeyFactory::ReadHotspot (luabridge::LuaRef& ref, Entity* parent) {
+std::shared_ptr<HotSpot> MonkeyFactory::GetHotSpot (luabridge::LuaRef& ref) {
     LuaTable table(ref);
-    std::string id = table.Get<std::string>("cam");
     luabridge::LuaRef shapeR = table.Get<luabridge::LuaRef>("shape");
     auto shape = ReadShape(shapeR);
-    auto mesh = MeshFactory::CreateMesh(*(shape.get()), 1.0f);
-    auto ce = std::make_shared<Entity>();
-    int layer = table.Get<int>("layer", 1);
-    //int tag = Engine::get().GetRef<OrthographicCamera>(id)->GetLayer();
-    ce->SetLayer(layer);
-    auto cer = std::make_shared<Renderer>();
-    cer->SetMesh(mesh);
-    ce->AddComponent(cer);
-    parent->AddChild(ce);
-    auto hotspot = std::make_shared<ScriptHotSpot>(id, shape);
+    return GetHotSpot(ref, shape);
 
-    parent->AddComponent(hotspot);
 }
 
-void MonkeyFactory::ReadButton (luabridge::LuaRef& ref, Entity* parent) {
+std::shared_ptr<HotSpot> MonkeyFactory::GetHotSpot (luabridge::LuaRef& ref, std::shared_ptr<Shape> shape) {
+    LuaTable table(ref);
+    int group = table.Get<int>("group");
+    int priority = table.Get<int>("priority");
+    std::string onEnter = table.Get<std::string>("onleave", "");
+    std::string onLeave = table.Get<std::string>("onleave", "");
+    std::string onClick = table.Get<std::string>("onclick", "");
+    auto hotspot = std::make_shared<ScriptHotSpot>(shape, priority, group, onEnter, onLeave, onClick);
+    return hotspot;
+}
+
+std::shared_ptr<Renderer> MonkeyFactory::GetTextComponent (luabridge::LuaRef& ref) {
     LuaTable table(ref);
     auto renderer = std::make_shared<Renderer>();
     std::string text = table.Get<std::string>("id");
     std::string font = table.Get<std::string>("font");
     std::string align = table.Get<std::string>("align", "topleft");
-    std::string id = table.Get<std::string>("cam");
-    int layer = table.Get<int>("layer", 1);
-
     Font* f = Engine::get().GetAssetManager().GetFont(font);
     auto mesh = std::make_shared<TextMesh>(f, text, 8, glm::vec4(1.0f));
     auto bounds = mesh->GetBounds();
+    glm::vec2 debugMeshPos(0.0f);
     if (align == "bottomleft") {
+        //parent->Move(glm::vec2(0.0f, -bounds.min.y));
         renderer->SetRenderingTransform(glm::translate(glm::vec3(0.0f, -bounds.min.y, 0.0f)));
     } else if (align == "bottomright") {
         renderer->SetRenderingTransform(glm::translate(glm::vec3(-bounds.max.x, -bounds.min.y, 0.0f)));
+        //debugMeshPos = glm::vec2(-bounds.max.x, 0.0f);
+    } else if (align == "topleft") {
+        //debugMeshPos = glm::vec2(0.0f, bounds.min.y);
+    } else if (align == "topright") {
+        renderer->SetRenderingTransform(glm::translate(glm::vec3(-bounds.max.x, 0.0f, 0.0f)));
+        //debugMeshPos = glm::vec2(-bounds.max.x, bounds.min.y);
     }
     renderer->SetMesh(mesh);
+    return renderer;
+}
 
+void MonkeyFactory::ReadHotspot (luabridge::LuaRef& ref, Entity* parent) {
+
+}
+
+void MonkeyFactory::ReadButton (luabridge::LuaRef& ref, Entity* parent) {
+    LuaTable table(ref);
+    auto renderer = GetTextComponent(ref);
+
+    // for a button the shape is determined by the text size
+    auto bounds = renderer->GetBounds();
     float w = bounds.max.x - bounds.min.x;
     float h = bounds.max.y - bounds.min.y;
     auto shape = std::make_shared<Rect>(w, h);
     auto debugMesh = MeshFactory::CreateMesh(*(shape.get()), 1.0f);
+    auto hs = GetHotSpot(ref, shape);
+
+    // logic to draw the debug mesh
+    glm::vec2 debugMeshPos(0.0f);
+    std::string align = table.Get<std::string>("align", "topleft");
+    int layer = table.Get<int>("layer", 1);
+    if (align == "bottomright") {
+        debugMeshPos = glm::vec2(-bounds.max.x, 0.0f);
+    } else if (align == "topleft") {
+        debugMeshPos = glm::vec2(0.0f, bounds.min.y);
+    } else if (align == "topright") {
+        debugMeshPos = glm::vec2(-bounds.max.x, bounds.min.y);
+    }
+
     auto ce = std::make_shared<Entity>();
+    ce->SetPosition(debugMeshPos);
     ce->SetLayer(layer);
     auto cer = std::make_shared<Renderer>();
     cer->SetMesh(debugMesh);
     ce->AddComponent(cer);
-    auto hotspot = std::make_shared<ScriptHotSpot>(id, shape);
 
     parent->AddChild(ce);
     parent->AddComponent(renderer);
-    parent->AddComponent(hotspot);
+    ce->AddComponent(hs);
 }
 
 
@@ -316,3 +353,5 @@ std::shared_ptr<Shape> MonkeyFactory::ReadShape(luabridge::LuaRef& ref) {
     }
     return nullptr;
 }
+
+

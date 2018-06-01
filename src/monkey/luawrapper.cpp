@@ -1,12 +1,22 @@
 #include <monkey/luawrapper.h>
 #include <gfx/error.h>
 
+#include <monkey/entitywrapper.h>
+
 lua_State* LuaWrapper::L;
 
 void LuaWrapper::Init() {
     L = luaL_newstate();
     
     luaL_openlibs(L);
+
+    luabridge::getGlobalNamespace(L)
+            .beginNamespace("monkey")
+                    .beginClass<EntityWrapper>("entity")
+                            .addProperty("x", &EntityWrapper::GetX)
+                            .addFunction("parent", &EntityWrapper::GetParent)
+                            .addFunction("setcolor", &EntityWrapper::SetColor)
+                    .endClass();
 }
 
 void LuaWrapper::Load(const std::string& filename) {
@@ -16,3 +26,4 @@ void LuaWrapper::Load(const std::string& filename) {
         GLIB_FAIL("Error opening " << filename << " Error = " << errMessage);
     }
 }
+
