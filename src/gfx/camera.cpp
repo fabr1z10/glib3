@@ -149,10 +149,10 @@ vec2 OrthographicCamera::GetWorldCoordinates(vec2 P) {
 
     float x0 = -m_viewMatrix[3][0] - m_orthoWidth * 0.5f;
     float y0 = -m_viewMatrix[3][1] - m_orthoHeight * 0.5f;
-    float ty = m_winHeight - P.y;
+    float ty = (m_winHeight/m_pixelRatio) - P.y;
 
-    float xw = x0 + (P.x - m_viewportX) * (m_orthoWidth / m_viewportWidth);
-    float yw = y0 + (ty - m_viewportY) * (m_orthoHeight / m_viewportHeight);
+    float xw = x0 + (P.x - m_viewportX / m_pixelRatio) * (m_orthoWidth / (m_viewportWidth / m_pixelRatio));
+    float yw = y0 + (ty - m_viewportY / m_pixelRatio) * (m_orthoHeight / (m_viewportHeight / m_pixelRatio));
     return vec2(xw, yw);
 //    vec3 Pw = m_screenToWorldMat * vec3 (P.x, P.y, 1.0f);
   //  return vec2(Pw);

@@ -130,7 +130,7 @@ void MonkeyFactory::ReadItems(luabridge::LuaRef& scene, Entity* parent) {
         }
         if (item.HasKey("button")) {
             luabridge::LuaRef c = item.Get<luabridge::LuaRef>("button");
-            //ReadButton(c, entity.get());
+            ReadButton(c, entity.get());
         }
         entity->SetLayer(layer);
         parent->AddChild(entity);
@@ -202,7 +202,7 @@ std::shared_ptr<HotSpot> MonkeyFactory::GetHotSpot (luabridge::LuaRef& ref, std:
     LuaTable table(ref);
     int group = table.Get<int>("group");
     int priority = table.Get<int>("priority");
-    std::string onEnter = table.Get<std::string>("onleave", "");
+    std::string onEnter = table.Get<std::string>("onenter", "");
     std::string onLeave = table.Get<std::string>("onleave", "");
     std::string onClick = table.Get<std::string>("onclick", "");
     auto hotspot = std::make_shared<ScriptHotSpot>(shape, priority, group, onEnter, onLeave, onClick);

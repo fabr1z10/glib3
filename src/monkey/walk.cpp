@@ -4,6 +4,7 @@
 #include <gfx/animate.h>
 #include <gfx/move.h>
 #include <graph/shortestpath.h>
+#include <glm/glm.hpp>
 
 void Walk::Start() {
 

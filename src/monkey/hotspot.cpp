@@ -4,7 +4,7 @@
 #include <set>
 
 bool HotSpot::isMouseInside(glm::vec2 pos) {
-    glm::vec2 lpos = (m_relativeTo == nullptr) ? glm::vec2(0.0f) : glm::vec2(m_relativeTo->GetPosition());
+    glm::vec2 lpos (m_entity->GetPosition());
     return m_shape->isPointInside(pos - lpos);
 
 }
@@ -33,6 +33,7 @@ void HotSpotManager::AddGroup (int id, const std::string& camId) {
 
 
 void HotSpotManager::CursorPosCallback(GLFWwindow*, double x, double y) {
+    //std::cout << x << ", " << y << std::endl;
     for (auto& g : m_groups)
         g.second.Run(x, y);
 
@@ -60,7 +61,7 @@ void HotSpotGroup::Run(double x, double y) {
         // check all the inner hotspots
         // convert mouse coords into world coordinates
         glm::vec2 worldCoords = m_cam->GetWorldCoordinates(glm::vec2(x, y));
-
+        //std::cout << "world coords + " << worldCoords.x << ", " << worldCoords.y << std::endl;
 
         std::set<HotSpot*> candidateHotspots;
         for (auto& h : m_hotspots) {

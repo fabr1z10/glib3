@@ -3,6 +3,7 @@
 #include <gfx/sequence.h>
 #include <glm/glm.hpp>
 #include <graph/shape.h>
+#include <string>
 
 class Walk : public Sequence {
 public:

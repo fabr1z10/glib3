@@ -19,7 +19,7 @@ SpriteMesh::SpriteMesh (float ppu, const std::string& filename, std::vector<Anim
 
         std::vector<FrameInfo> frameInfos;
         for (auto& frame : anim.frames) {
-            frameInfos.push_back(FrameInfo{6*quadCount, 6*frame.quads.size(), frame.time});
+            frameInfos.push_back(FrameInfo{6*quadCount, 6*static_cast<int>(frame.quads.size()), frame.time});
             for (auto& quad : frame.quads) {
                 glm::vec2 bottomLeft (-quad.anchorx, -quad.anchory);
                 float tx = quad.x / texWidth;

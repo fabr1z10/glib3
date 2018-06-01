@@ -36,16 +36,16 @@
 
 void ScriptHotSpot::onLeave() {
     if (!m_onLeave.empty()) {
-        LuaWrapper::Call(m_onLeave, EntityWrapper(m_relativeTo));
+        LuaWrapper::Call(m_onLeave, EntityWrapper(m_entity));
     }
 }
 void ScriptHotSpot::onClick(glm::vec2) {
     if (!m_onClick.empty()) {
-        LuaWrapper::Call(m_onClick, EntityWrapper(m_relativeTo));
+        LuaWrapper::Call(m_onClick, EntityWrapper(m_entity));
     }
 }
 void ScriptHotSpot::onEnter() {
     if (!m_onEnter.empty()) {
-        LuaWrapper::Call(m_onEnter, EntityWrapper(m_relativeTo));
+        LuaWrapper::Call(m_onEnter, EntityWrapper(m_entity));
     }
 }

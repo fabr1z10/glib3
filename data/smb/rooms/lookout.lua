@@ -212,22 +212,22 @@ scene = {
 },
 {
   pos = { 0, 0, 0 },
-  button = { id="pippo", font="ui", align="bottomleft", group = 2, layer=2, onenter="prova", onleave="prova2", onclick="prova3" },
+  button = { id="pippo", font="ui", align="bottomleft", group = 2, priority =1, layer=2, onenter="prova", onleave="prova2", onclick="prova3" },
   layer = 2
 },
 {
   pos = { 320, 0, 0},  
-  button = { id="pippo", font="ui", align="bottomright", group = 2, layer=2, onenter="prova", onleave="prova2", onclick="prova3"},
+  button = { id="pippo", font="ui", align="bottomright", group = 2, priority=1, layer=2, onenter="prova", onleave="prova2", onclick="prova3"},
   layer = 2
 },
 {
   pos = { 0, 54, 0},  
-  button = { id="pippo", font="ui", align="topleft", group = 2, layer=2, onenter="prova", onleave="prova2", onclick="prova3"},
+  button = { id="pippo", font="ui", align="topleft", group = 2, priority =1, layer=2, onenter="prova", onleave="prova2", onclick="prova3"},
   layer = 2
 },
 {
   pos = { 320, 54, 0},  
-  button = { id="pippo", font="ui", align="topright", group = 2, layer=2, onenter="prova", onleave="prova2", onclick="prova3"},
+  button = { id="pippo", font="ui", align="topright", group = 2, priority=1,layer=2, onenter="prova", onleave="prova2", onclick="prova3"},
   layer = 2
 },
 {

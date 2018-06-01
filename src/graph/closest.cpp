@@ -24,6 +24,7 @@ glm::vec2 ClosestPointOnEdge::getNearest(Polygon& p, float& bestSoFar, glm::vec2
         ip = i;
     }
     m_result = bestPoint - normal*0.01f;
+    return m_result;
 }
 
 

@@ -11,7 +11,7 @@
 class HotSpot : public Component {
 public:
     HotSpot (std::shared_ptr<Shape> shape, int priority, int group, Entity* relativeTo = nullptr) : Component(),
-    m_shape{shape}, m_active{false}, m_priority{priority}, m_relativeTo{relativeTo}, m_group{group} {}
+    m_shape{shape}, m_active{false}, m_priority{priority}, m_group{group} {}
     virtual ~HotSpot();
     virtual bool isMouseInside(glm::vec2);
     void SetActive (bool);
@@ -23,7 +23,6 @@ public:
     int GetGroup() const;
     using ParentClass = HotSpot;
 protected:
-    Entity* m_relativeTo;
     int m_priority;
     int m_group;
     std::shared_ptr<Shape> m_shape;
