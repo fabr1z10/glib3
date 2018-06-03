@@ -12,7 +12,7 @@ class LuaWrapper {
 public:
     static void Init();
     static void Load(const std::string& filename);
-
+    static int setLuaPath(const std::string& path );
     inline static void Call(const std::string& name) {
         luabridge::LuaRef s = luabridge::getGlobal(L, name.c_str());
         s();

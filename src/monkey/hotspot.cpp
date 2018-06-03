@@ -63,21 +63,23 @@ void HotSpotGroup::Run(double x, double y) {
         glm::vec2 worldCoords = m_cam->GetWorldCoordinates(glm::vec2(x, y));
         //std::cout << "world coords + " << worldCoords.x << ", " << worldCoords.y << std::endl;
 
-        std::set<HotSpot*> candidateHotspots;
+        std::map<int, HotSpot*> candidateHotspots;
         for (auto& h : m_hotspots) {
             if (h->isMouseInside(worldCoords)) {
-                candidateHotspots.insert(h);
+                candidateHotspots.insert(std::make_pair(-h->GetPriority(), h));
             }
         }
-
+        
         if (candidateHotspots.empty()) {
+            //std::cout << "no cand hotspot" << std::endl;
             if (m_currentlyActiveHotSpot != nullptr)
             {
                 m_currentlyActiveHotSpot->SetActive(false);
                 m_currentlyActiveHotSpot = nullptr;
             }
         } else {
-            auto hotspot = *candidateHotspots.begin();
+            auto hotspot = (candidateHotspots.begin()->second);
+            //std::cout << "priority = " << candidateHotspots.begin()->first << std::endl;
             if (m_currentlyActiveHotSpot != nullptr && m_currentlyActiveHotSpot != hotspot)
                 m_currentlyActiveHotSpot->SetActive(false);
             hotspot->SetActive(true);

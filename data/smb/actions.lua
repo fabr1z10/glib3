@@ -1,0 +1,13 @@
+actions = {
+    
+    path = {
+        open = "pippo"
+        
+        
+    }
+    
+ 
+    
+    
+    
+}

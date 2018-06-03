@@ -20,6 +20,7 @@ public:
     bool isVisible() const;
     const glm::mat4& GetTransform() const;
     void SetMesh(std::shared_ptr<IMesh> mesh);
+    IMesh* GetMesh();
     Bounds3D GetBounds() const;
     void Start() override {}
     void Update(double) override;
@@ -64,6 +65,10 @@ inline bool Renderer::isVisible() const {
 
 inline void Renderer::SetMesh(std::shared_ptr<IMesh> mesh) {
     m_mesh = mesh;
+}
+
+inline IMesh* Renderer::GetMesh() {
+    return m_mesh.get();
 }
 
 inline void Renderer::SetTint(glm::vec4 color) {

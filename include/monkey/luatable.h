@@ -1,6 +1,7 @@
 #pragma once
 #include <monkey/luawrapper.h>
 #include <gfx/error.h>
+#include <gfx/enums.h>
 #include <vector>
 #include <glm/glm.hpp>
 
@@ -116,4 +117,26 @@ inline glm::vec4 LuaTable::Get<glm::vec4>(const std::string& key) {
     out.z = ref[3].cast<float>();
     out.w = ref[4].cast<float>();
     return out;
+}
+
+template<>
+inline TextAlignment LuaTable::Get<TextAlignment>(const std::string& key) {
+    std::string as = m_ref[key].cast<std::string>();
+    if (as == "bottomleft")
+        return BOTTOM_LEFT;
+    else if (as == "bottomright")
+        return BOTTOM_RIGHT;
+    else if (as == "bottom")
+        return BOTTOM;
+    else if (as == "topleft")
+        return TOP_LEFT;
+    else if (as == "topright")
+        return TOP_RIGHT;
+    else if (as == "top")
+        return TOP;
+    else if (as == "center")
+        return CENTER;
+    GLIB_FAIL("Unknown text alignment " << as);
+    
+    
 }

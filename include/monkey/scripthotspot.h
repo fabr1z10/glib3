@@ -1,24 +1,35 @@
 #pragma once
 
 #include <monkey/hotspot.h>
+#include <monkey/luawrapper.h>
 
 class ScriptHotSpot : public HotSpot {
 public:
     ScriptHotSpot (
             std::shared_ptr<Shape> shape,
             int priority,
-            int group,
-            const std::string& onEnter,
-            const std::string& onLeave,
-            const std::string& onClick) : HotSpot(shape, priority, group), m_inShape{false}, m_onEnter{onEnter}, m_onLeave{onLeave}, m_onClick{onClick} {}
+            int group) : HotSpot(shape, priority, group), m_inShape{false}, r_enter{nullptr},
+    r_leave{nullptr}, r_click{}{}
     void onLeave() override;
     void onClick(glm::vec2) override;
     void onEnter() override;
+    void SetOnEnter(luabridge::LuaRef ref) {
+        r_enter= std::unique_ptr<luabridge::LuaRef>(new luabridge::LuaRef(ref));
+    }
+    void SetOnLeave(luabridge::LuaRef ref) {
+        r_leave= std::unique_ptr<luabridge::LuaRef>(new luabridge::LuaRef(ref));
+    }
+    void SetOnClick(luabridge::LuaRef ref) {
+        r_click= std::unique_ptr<luabridge::LuaRef>(new luabridge::LuaRef(ref));
+    }
     using ParentClass = HotSpot;
 
 private:
     bool m_inShape;
-    std::string m_onEnter;
-    std::string m_onClick;
-    std::string m_onLeave;
+    std::unique_ptr<luabridge::LuaRef> r_enter;
+    std::unique_ptr<luabridge::LuaRef> r_leave;
+    std::unique_ptr<luabridge::LuaRef> r_click;
+    //std::string m_onEnter;
+    //std::string m_onClick;
+    //std::string m_onLeave;
 };

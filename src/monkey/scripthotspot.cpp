@@ -35,17 +35,17 @@
 //}
 
 void ScriptHotSpot::onLeave() {
-    if (!m_onLeave.empty()) {
-        LuaWrapper::Call(m_onLeave, EntityWrapper(m_entity));
-    }
+    if (r_leave != nullptr)
+        r_leave->operator()(EntityWrapper(m_entity));
 }
 void ScriptHotSpot::onClick(glm::vec2) {
-    if (!m_onClick.empty()) {
-        LuaWrapper::Call(m_onClick, EntityWrapper(m_entity));
-    }
+    if (r_click != nullptr)
+        r_click->operator()(EntityWrapper(m_entity));
 }
 void ScriptHotSpot::onEnter() {
-    if (!m_onEnter.empty()) {
-        LuaWrapper::Call(m_onEnter, EntityWrapper(m_entity));
-    }
+    if (r_enter != nullptr)
+        r_enter->operator()(EntityWrapper(m_entity));
+    //if (!m_onEnter.empty()) {
+    //    LuaWrapper::Call(m_onEnter, EntityWrapper(m_entity));
+    //}
 }

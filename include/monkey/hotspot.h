@@ -16,11 +16,13 @@ public:
     virtual bool isMouseInside(glm::vec2);
     void SetActive (bool);
     void Start() override;
+    Shape* GetShape();
     void Update(double) override {}
     virtual void onEnter() = 0;
     virtual void onLeave() = 0;
     virtual void onClick(glm::vec2) = 0;
     int GetGroup() const;
+    int GetPriority() const;
     using ParentClass = HotSpot;
 protected:
     int m_priority;
@@ -29,10 +31,19 @@ protected:
     bool m_active;
 };
 
+inline Shape* HotSpot::GetShape()
+{
+    return m_shape.get();
+}
 
 inline int HotSpot::GetGroup() const {
     return m_group;
 }
+
+inline int HotSpot::GetPriority() const {
+    return m_priority;
+}
+
 
 class HotSpotGroup {
 public:

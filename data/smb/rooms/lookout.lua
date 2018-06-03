@@ -1,5 +1,11 @@
 --assets local to this scene
 dt=0.1
+
+require ("funcs")
+require ("text")
+require ("actions")
+
+
 assets = {
     {
         id="guybrush",
@@ -211,41 +217,69 @@ scene = {
   }
 },
 {
-  pos = { 0, 0, 0 },
-  button = { id="pippo", font="ui", align="bottomleft", group = 2, priority =1, layer=2, onenter="prova", onleave="prova2", onclick="prova3" },
-  layer = 2
+  pos= {230,30,0},
+  hotspot = {
+    group =1,
+    priority = 1,
+    shape = { type="rect", width=10, height=10},
+    onenter=curry(hoverOn, "path"),
+    onleave=hoverOff,
+    onclick=runAction
+  },
+  layer =1
 },
+makeButton(2, 40, variables._verbs.open),
+makeButton(2, 32, variables._verbs.close),
+makeButton(2, 24, variables._verbs.push),
+makeButton(2, 16, variables._verbs.pull),
+makeButton(48, 40, variables._verbs.walk),
+makeButton(48, 32, variables._verbs.pick),
+makeButton(48, 24, variables._verbs.talk),
+makeButton(48, 16, variables._verbs.give),
+makeButton(100, 40, variables._verbs.use),
+makeButton(100, 32, variables._verbs.look),
+makeButton(100, 24, variables._verbs.turnon),
+makeButton(100, 16, variables._verbs.turnoff),
 {
-  pos = { 320, 0, 0},  
-  button = { id="pippo", font="ui", align="bottomright", group = 2, priority=1, layer=2, onenter="prova", onleave="prova2", onclick="prova3"},
-  layer = 2
-},
-{
-  pos = { 0, 54, 0},  
-  button = { id="pippo", font="ui", align="topleft", group = 2, priority =1, layer=2, onenter="prova", onleave="prova2", onclick="prova3"},
-  layer = 2
-},
-{
-  pos = { 320, 54, 0},  
-  button = { id="pippo", font="ui", align="topright", group = 2, priority=1,layer=2, onenter="prova", onleave="prova2", onclick="prova3"},
-  layer = 2
-},
-{
-  hotspothandler = {
-      cam = "maincam",
-	  hotspots = {
-         
-	  }
-  }
+    tag = "currentaction",
+    pos={160,48,0},
+    text = {
+        id = strings.ui.walkto, font="ui", align = "bottom", color = config.ui_currentaction_color
+    },
+    layer=2
+    
 }
+
+--{
+--  pos = { 2, 32, 0 },
+--  button = { id=strings.ui.close, font="ui", align="bottomleft", group = 2, priority =1, layer=2,
+--            onenter = curry2(changecolor, config.ui_selected_color),
+--            onleave = curry2(changecolor, config.ui_unselected_color),
+--            onclick = curry(setverb, "close") },
+--  layer = 2
+--},
+--{
+--  pos = { 2, 24, 0 },
+--  button = { id=strings.ui.push, font="ui", align="bottomleft", group = 2, priority =1, layer=2,
+--            onenter = curry2(changecolor, { r = 255, g = 255, b = 85, a = 255}),
+--            onleave = curry2(changecolor, { r = 0, g = 170, b = 0, a = 255}),
+--            onclick = curry(setverb, "push") },
+--  layer = 2
+--},
+--{
+--  pos = { 2, 16, 0 },
+--  button = { id=strings.ui.pull, font="ui", align="bottomleft", group = 2, priority =1, layer=2,
+--            onenter = curry2(changecolor, { r = 255, g = 255, b = 85, a = 255}),
+--            onleave = curry2(changecolor, { r = 0, g = 170, b = 0, a = 255}),
+--            onclick = curry(setverb, "pull") },
+--  layer = 2
+--}
+
 	
 
 }
 
-function prova (a)
-  a:parent():setcolor(255, 0, 0, 255)
-  print ("eccomi ")
-end
+
 
 function prova2(a)
   a:parent():setcolor(255, 255, 255, 255)

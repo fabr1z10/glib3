@@ -5,18 +5,15 @@
 
 using namespace std;
 
-TextMesh::TextMesh(Font* font, const std::string& message, float lineHeight, glm::vec4 color, float maxLineWidth) : Mesh<VertexText>(TEXT_SHADER)
+TextMesh::TextMesh(Font* font, const std::string& message, float lineHeight, TextAlignment align, float maxLineWidth) : Mesh<VertexText>(TEXT_SHADER), m_font{font}, m_fontSize{lineHeight}, m_align{align}
 {
     m_primitive = GL_TRIANGLES;
     m_texId = font->getTexId();
-    //m_animations = 1;
-    //m_frames.push_back(1);
-    //m_durations.push_back({ 1 });
-    UpdateText(font, message, lineHeight, color, maxLineWidth);
+    UpdateText(message, maxLineWidth);
 }
 
-void TextMesh::UpdateText(Font* font, const std::string& msg, float lineHeight, glm::vec4 color, float maxLineWidth) {
-    m_texId = font->getTexId();
+void TextMesh::UpdateText(const std::string& msg, float maxLineWidth) {
+    m_text = msg;
     if (m_vb != INVALID_OGL_VALUE)
         glDeleteBuffers(1, &m_vb);
     if (m_ib != INVALID_OGL_VALUE)
@@ -31,14 +28,14 @@ void TextMesh::UpdateText(Font* font, const std::string& msg, float lineHeight, 
     vector <unsigned int> indices;
     vector <string> lines;
 
-    float scalingFactor = lineHeight / font->size(); //font.getMaxHeight();
+    float scalingFactor = m_fontSize / m_font->size(); //font.getMaxHeight();
     if (maxLineWidth == 0.0f)
         lines.push_back(msg);
     else
-        splitIntoLines(font, msg, lines, scalingFactor, maxLineWidth);
+        splitIntoLines(m_font, msg, lines, scalingFactor, maxLineWidth);
 
     // now loop through each line
-    float y = -lineHeight;
+    float y = -m_fontSize;
     int letterCount = 0;
 
     m_bounds.min.x = 1000;
@@ -53,7 +50,7 @@ void TextMesh::UpdateText(Font* font, const std::string& msg, float lineHeight, 
         for (size_t i = 0; i < lines[n].length(); i++) {
             char c = lines[n][i];
             //bool isLastCharacter = i == lines[n].length()-1;
-            Glyph glyph = font->getGlyph(c);
+            Glyph glyph = m_font->getGlyph(c);
 
             float scaledWidth = glyph.width * scalingFactor;
             float scaledHeight = glyph.height * scalingFactor;
@@ -65,10 +62,10 @@ void TextMesh::UpdateText(Font* font, const std::string& msg, float lineHeight, 
             float lastX = x + scaledWidth;
 
 
-            vertices.push_back(VertexText(x, yTop, glyph.tx, glyph.ty, color.r, color.g, color.b, color.a));
-            vertices.push_back(VertexText(lastX, yTop, glyph.tx + glyph.tw, glyph.ty, color.r, color.g, color.b, color.a));
-            vertices.push_back(VertexText(lastX, yBottom, glyph.tx + glyph.tw, glyph.ty + glyph.th, color.r, color.g, color.b, color.a));
-            vertices.push_back(VertexText(x, yBottom, glyph.tx, glyph.ty + glyph.th, color.r, color.g, color.b, color.a));
+            vertices.push_back(VertexText(x, yTop, glyph.tx, glyph.ty, 1.0f, 1.0f, 1.0f, 1.0f));
+            vertices.push_back(VertexText(lastX, yTop, glyph.tx + glyph.tw, glyph.ty, 1.0f, 1.0f, 1.0f, 1.0f));
+            vertices.push_back(VertexText(lastX, yBottom, glyph.tx + glyph.tw, glyph.ty + glyph.th, 1.0f, 1.0f, 1.0f, 1.0f));
+            vertices.push_back(VertexText(x, yBottom, glyph.tx, glyph.ty + glyph.th, 1.0f, 1.0f, 1.0f, 1.0f));
 
             m_bounds.min.x = min(m_bounds.min.x, x);
             m_bounds.max.x = max(m_bounds.max.x, lastX);
@@ -86,7 +83,7 @@ void TextMesh::UpdateText(Font* font, const std::string& msg, float lineHeight, 
             x += scaleAdvance;
 
         }
-        y -= lineHeight;
+        y -= m_fontSize;
     }
 
     //m_width = xMax - xMin;
@@ -156,3 +153,32 @@ void TextMesh::Setup(Shader* shader, const std::string&, int) {
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, m_texId);
 }
+
+glm::vec2 TextMesh::getOffset() {
+    glm::vec2 offset(0.0f);
+    switch (m_align) {
+        case BOTTOM_LEFT:
+            offset = - glm::vec2(m_bounds.min.x, m_bounds.min.y);
+            break;
+        case BOTTOM_RIGHT:
+            offset = - glm::vec2(m_bounds.max.x, m_bounds.min.y);
+            break;
+        case BOTTOM:
+            offset = -glm::vec2(0.5f * (m_bounds.min.x + m_bounds.max.x), m_bounds.min.y);
+            break;
+        case TOP_LEFT:
+            offset = -glm::vec2(m_bounds.min.x, m_bounds.max.y);
+            break;
+        case TOP_RIGHT:
+            offset = -glm::vec2(m_bounds.max.x, m_bounds.max.y);
+            break;
+        case TOP:
+            offset = -glm::vec2(0.5f * (m_bounds.min.x + m_bounds.max.x), m_bounds.max.y);
+            break;
+        case CENTER:
+            offset =-glm::vec2(0.5f * (m_bounds.min.x + m_bounds.max.x), 0.5f*(m_bounds.min.y + m_bounds.max.y));
+            break;
+    }
+    return offset;
+}
+
