@@ -14,7 +14,13 @@ strings = {
         turnoff = "Turn off",
         giveprep = "to",
         useprep = "with"
+    },
+    objects = {
+        stairs = "stairs"
+        
+        
     }
+    
     
     
     

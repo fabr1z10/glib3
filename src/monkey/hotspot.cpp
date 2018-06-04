@@ -126,7 +126,10 @@ void HotSpot::Start() {
 }
 
 HotSpot::~HotSpot() {
+    try {
+        auto hs = (Engine::get().GetRef<HotSpotManager>("_hotspotmanager"));
+        hs->Unregister(this);
+    } catch (Error& er) {
 
-    auto hs = (Engine::get().GetRef<HotSpotManager>("_hotspotmanager"));
-    hs->Unregister(this);
+    }
 }

@@ -79,6 +79,9 @@ inline glm::vec2 OrthographicCamera::GetSize() {
     return glm::vec2(m_orthoWidth, m_orthoHeight);
 }
 
+
+
+
 #endif
 
 

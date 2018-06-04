@@ -12,6 +12,7 @@
 #include <gfx/textmesh.h>
 #include <glm/gtx/transform.hpp>
 #include <monkey/scripthotspot.h>
+#include <gfx/follow.h>
 
 
 std::shared_ptr<Entity> MonkeyFactory::Create() {
@@ -135,7 +136,10 @@ void MonkeyFactory::ReadItems(luabridge::LuaRef& scene, Entity* parent) {
             luabridge::LuaRef c = item.Get<luabridge::LuaRef>("text");
             ReadTextComponent(c, entity.get());
         }
-
+        if (item.HasKey("follow")) {
+            luabridge::LuaRef c = item.Get<luabridge::LuaRef>("follow");
+            ReadFollowComponent(c, entity.get());
+        }
         if (item.HasKey("walkarea")) {
             luabridge::LuaRef c = item.Get<luabridge::LuaRef>("walkarea");
             ReadWalkarea(c, entity.get());
@@ -178,17 +182,25 @@ void MonkeyFactory::ReadTextComponent(luabridge::LuaRef &ref, Entity *parent) {
     auto renderer = GetTextComponent(ref);
     parent->AddComponent(renderer);
 }
+void MonkeyFactory::ReadFollowComponent(luabridge::LuaRef &ref, Entity *parent) {
+    LuaTable table(ref);
+    std::string cam = table.Get<std::string>("cam");
+    parent->AddComponent(std::make_shared<Follow>(cam));
+}
 
 
 // Read the walk-area
 void MonkeyFactory::ReadWalkarea (luabridge::LuaRef& ref, Entity* parent) {
     LuaTable table(ref);
+    std::string tag = table.Get<std::string>("tag", "");
+
     int group = table.Get<int>("group");
     int priority = table.Get<int>("priority");
     std::string targetId = table.Get<std::string>("target");
     luabridge::LuaRef shapeR = table.Get<luabridge::LuaRef>("shape");
     auto shape = ReadShape(shapeR);
     auto hotspot = std::make_shared<WalkArea>(shape, priority, group, targetId);
+    if (!tag.empty()) hotspot->SetTag(tag);
     parent->AddComponent(hotspot);
 
     // see if we want to plot the outline of the walk area
