@@ -28,25 +28,37 @@ function hoverOff ()
     if (variables._actionInfo.obj2 ~= nil) then
         variables._actionInfo.obj2 = nil
     else
-        variables._actionInfo.obj1 = nil
+        -- set obj1 to nil unless we are waiting for 2nd object
+        if (variables._actionInfo.selectSecond == false) then
+            variables._actionInfo.obj1 = nil
+        end
     end
     a = monkey.getEntity("currentaction")
     a:settext(variables._actionInfo:toString())
 end
 
 function runAction ()
-    print ("here")
     if (variables._actionInfo.obj2 == nil) then
         -- try to run a single object action
         print ("finding action " .. variables._actionInfo.verb.code .. " " .. variables._actionInfo.obj1)
         a = actions[variables._actionInfo.obj1][variables._actionInfo.verb.code]
         if (a == nil) then
-            print ("no action found")
+            if (variables._actionInfo.verb.code == "give" or variables._actionInfo.verb.code == "use") then
+                -- wait for second object
+                variables._actionInfo.selectSecond = true
+            else
+               -- run default
+               print ("Run default action for " .. variables._actionInfo.verb.code)
+               variables._actionInfo:reset()
+            end
         else
+            -- run specific action
             print (a)
+            variables._actionInfo:reset()
         end
-    end 
-    
+    end
+    a = monkey.getEntity("currentaction")
+    a:settext(variables._actionInfo:toString())    
 end
 
 -- click on a verb
@@ -54,6 +66,7 @@ function setverb(verb)
     variables._actionInfo.verb = verb
     variables._actionInfo.obj1 = nil
     variables._actionInfo.obj2 = nil
+    variables._actionInfo.selectSecond = false
     a = monkey.getEntity("currentaction")
     a:settext(variables._actionInfo:toString())
     print ("verb = " .. verb.code)

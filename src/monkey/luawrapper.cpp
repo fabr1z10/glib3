@@ -14,6 +14,7 @@ void LuaWrapper::Init() {
     luabridge::getGlobalNamespace(L)
             .beginNamespace("monkey")
                     .addFunction("getEntity", &EntityWrapper::GetEntity)
+                    .addFunction("play", &luaFunctions::PlayScript)
                     .beginClass<EntityWrapper>("entity")
                             .addProperty("x", &EntityWrapper::GetX)
                             .addProperty("text", &EntityWrapper::GetText)

@@ -27,6 +27,7 @@ struct EngineConfig {
 class SceneFactory {
 public:
     virtual std::shared_ptr<Entity> Create() = 0;
+    virtual void CleanUp () = 0;
 };
 
 
@@ -62,6 +63,7 @@ public:
     }
     void AddTaggedRef (const std::string&, Ref*);
     void RemoveTaggedRef (const std::string&);
+    void EndScene();
     AssetManager& GetAssetManager();
     const AssetManager& GetAssetManager() const;
     static void WindowResizeCallback(GLFWwindow* win, int width, int height);
@@ -86,6 +88,7 @@ private:
     std::unordered_set<KeyboardListener*> m_keyboardListeners;
     AssetManager m_assetManager;
     GLuint m_vao;
+    bool m_endScene;
 };
 
 inline AssetManager& Engine::GetAssetManager() {
@@ -125,4 +128,8 @@ inline Shader* Engine::GetShader(ShaderType id) {
     if (it == m_shaders.end())
         return nullptr;
     return it->second.get();
+}
+
+inline void Engine::EndScene() {
+    m_endScene = true;
 }

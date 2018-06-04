@@ -13,7 +13,7 @@ class HotSpotHandler;
 class MonkeyFactory : public SceneFactory {
 public:
     std::shared_ptr<Entity> Create() override;
-    
+    void CleanUp() override;
     void ReadSprite (LuaTable&);
 private:
     void ReadItems(luabridge::LuaRef& ref, Entity* parent);

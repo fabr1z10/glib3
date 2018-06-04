@@ -44,7 +44,8 @@ variables = {
 variables._actionInfo = {
         verb = variables._verbs.walk,
         obj1 = nil,
-        obj2 = nil
+        obj2 = nil,
+        selectSecond = false
     }
 
 function variables._actionInfo:toString ()
@@ -54,9 +55,20 @@ function variables._actionInfo:toString ()
         if (self.obj2 ~= nil) then
             t[3] = self.verb.prep
             t[4] = self.obj2
-        end
+        else
+            if (self.selectSecond == true) then
+               t[3] = self.verb.prep 
+            end
+        end 
     end
     return table.concat(t," ")
+end
+
+function variables._actionInfo:reset()
+   self.verb = variables._verbs.walk
+   obj1 = nil
+   obj2 = nil
+   selectSecond = false
 end
 
 config = {

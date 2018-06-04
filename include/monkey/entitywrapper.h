@@ -1,6 +1,13 @@
 #pragma once
 
 #include <gfx/entity.h>
+#include <monkey/luawrapper.h>
+
+namespace luaFunctions {
+    
+    void PlayScript (luabridge::LuaRef);
+    
+}
 
 struct EntityWrapper {
     EntityWrapper(Entity* entity) : m_underlying{entity}{}

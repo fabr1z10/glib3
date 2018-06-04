@@ -47,6 +47,9 @@ void AssetManager::AddMesh (const std::string& name, std::shared_ptr<IMesh> mesh
     m_meshes[name] = mesh;
 }
 
+void AssetManager::RemoveMesh(const std::string& name){
+    m_meshes.erase(name);
+}
 
 std::shared_ptr<IMesh> AssetManager::GetMesh(const std::string& name) const {
     auto it = m_meshes.find(name);

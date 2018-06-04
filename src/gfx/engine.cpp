@@ -79,7 +79,7 @@ void Engine::MainLoop() {
     if (m_sceneFactory == nullptr)
         GLIB_FAIL("Scene factory has not been set.")
 
-    if (!glfwWindowShouldClose(window)) {
+    while (!glfwWindowShouldClose(window)) {
 
         // load the scene
         // scene is an entity (often a container entity)
@@ -92,7 +92,8 @@ void Engine::MainLoop() {
         
         m_running = true;
         // run the scene
-        while (!glfwWindowShouldClose(window)) {
+        m_endScene = false;
+        while (!glfwWindowShouldClose(window) && !m_endScene) {
             double currentTime = glfwGetTime();
             if (currentTime - m_timeLastUpdate >= m_frameTime) {
                 m_timeLastUpdate = currentTime;
@@ -120,6 +121,8 @@ void Engine::MainLoop() {
                 glfwPollEvents();
             }
         }
+        // remove assets loaded at scene level
+        m_sceneFactory->CleanUp();
         m_scene = nullptr;
         m_running = false;
     }
@@ -146,6 +149,12 @@ void Engine::scroll_callback(GLFWwindow* win, double xoffset, double yoffset) {
         listener->ScrollCallback(win, xoffset, yoffset);
 }
 void Engine::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+    // key for restart scene
+    if (action == GLFW_PRESS && key == GLFW_KEY_F10) {
+        Engine::get().EndScene();
+    }
+    
+    
     for (auto& listener : Engine::get().m_keyboardListeners)
         listener->KeyCallback(window, key, scancode, action, mods);
 }

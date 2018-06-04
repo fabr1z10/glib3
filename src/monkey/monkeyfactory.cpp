@@ -95,6 +95,22 @@ std::shared_ptr<Entity> MonkeyFactory::Create() {
 
 }
 
+void MonkeyFactory::CleanUp() {
+    luabridge::LuaRef assets = luabridge::getGlobal(LuaWrapper::L, "assets");
+    for (int i = 0; i < assets.length();++i) {
+        luabridge::LuaRef a = assets[i+1];
+        LuaTable assetTable(a);
+        std::string id = assetTable.Get<std::string>("id");
+        std::string type = assetTable.Get<std::string>("type");
+        if (type == "sprite") {
+            Engine::get().GetAssetManager().RemoveMesh(id);
+            
+        }
+        
+        
+    }
+}
+
 void MonkeyFactory::ReadItems(luabridge::LuaRef& scene, Entity* parent) {
     for (int i = 0; i < scene.length(); ++i) {
         // create new entity

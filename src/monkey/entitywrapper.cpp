@@ -34,3 +34,11 @@ void EntityWrapper::SetText(const std::string& text) {
     glm::vec2 offset = tm->getOffset();
     r->SetRenderingTransform(glm::translate(glm::vec3(offset, 0.0f)));
 }
+
+namespace luaFunctions {
+    
+    void PlayScript (luabridge::LuaRef ref) {
+        int ciao = ref["pippo"].cast<int>();
+    }
+    
+}

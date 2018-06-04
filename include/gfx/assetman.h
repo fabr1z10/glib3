@@ -13,6 +13,7 @@ public:
     Font *GetFont(const std::string &) const;
     Tex* GetTexture(const std::string&);
     void AddMesh (const std::string& name, std::shared_ptr<IMesh> mesh);
+    void RemoveMesh (const std::string& name);
     std::shared_ptr<IMesh> GetMesh(const std::string& name) const;
 
     void SetDirectory(const std::string&);
