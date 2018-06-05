@@ -103,6 +103,8 @@ inline int Entity::GetLayer() const {
 
 inline void Entity::SetLayer(int layer) {
     m_layer = layer;
+    for (auto& c : m_children)
+        c->SetLayer(layer);
 }
 
 inline glm::vec3 Entity::GetPosition() const {

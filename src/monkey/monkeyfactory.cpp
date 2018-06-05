@@ -136,6 +136,10 @@ void MonkeyFactory::ReadItems(luabridge::LuaRef& scene, Entity* parent) {
             luabridge::LuaRef c = item.Get<luabridge::LuaRef>("text");
             ReadTextComponent(c, entity.get());
         }
+        if (item.HasKey("outlinetext")) {
+            luabridge::LuaRef c = item.Get<luabridge::LuaRef>("outlinetext");
+            ReadOutlineTextComponent(c, entity.get());
+        }
         if (item.HasKey("follow")) {
             luabridge::LuaRef c = item.Get<luabridge::LuaRef>("follow");
             ReadFollowComponent(c, entity.get());
@@ -155,6 +159,9 @@ void MonkeyFactory::ReadItems(luabridge::LuaRef& scene, Entity* parent) {
         entity->SetLayer(layer);
         parent->AddChild(entity);
     }
+
+
+
     
 }
 
@@ -186,6 +193,33 @@ void MonkeyFactory::ReadFollowComponent(luabridge::LuaRef &ref, Entity *parent) 
     LuaTable table(ref);
     std::string cam = table.Get<std::string>("cam");
     parent->AddComponent(std::make_shared<Follow>(cam));
+}
+
+void MonkeyFactory::ReadOutlineTextComponent(luabridge::LuaRef &ref, Entity *parent) {
+    LuaTable table(ref);
+
+    std::string font = table.Get<std::string>("font");
+    float size = table.Get<float>("size");
+    std::string text = table.Get<std::string>("id");
+    TextAlignment align = table.Get<TextAlignment>("align", TOP_LEFT);
+    glm::vec4 fontColor = table.Get<glm::vec4>("fontcolor", glm::vec4(255.0f));
+    glm::vec4 outlineColor = table.Get<glm::vec4>("outlinecolor", glm::vec4(255.0f));
+    fontColor /= 255.0f;
+    outlineColor /= 255.0f;
+    Font* f = Engine::get().GetAssetManager().GetFont(font);
+    auto mesh = std::make_shared<TextMesh>(f, text, size, align);
+    glm::vec2 offset = mesh->getOffset();
+    glm::vec2 outlineOffsets[] = {{0, 0}, {-1, 0}, {-1,1}, {0, 1}, {1,1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1}};
+    for (int i =0; i < 9; ++i) {
+        auto entity = std::make_shared<Entity>();
+        auto renderer = std::make_shared<Renderer>();
+        renderer->SetMesh(mesh);
+        entity->SetPosition(glm::vec3(outlineOffsets[i] * 0.5f, i == 0 ? 0 : -1));
+        renderer->SetTint(i==0 ? fontColor : outlineColor);
+        renderer->SetRenderingTransform(glm::translate(glm::vec3(offset, 0.0f)));
+        entity->AddComponent(renderer);
+        parent->AddChild(entity);
+    }
 }
 
 

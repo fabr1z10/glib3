@@ -71,7 +71,7 @@ scene = {
     group =1,
     priority = 1,
     shape = { type="rect", width=57, height=27},
-    onenter=curry(hoverOn, "path"),
+    onenter=curry(hoverOn, objects.stairs),
     onleave=hoverOff,
     onclick=runAction
   },

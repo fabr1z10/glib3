@@ -12,12 +12,12 @@ end
 
 
 
-function hoverOn (msg)
+function hoverOn (obj)
     if (variables._actionInfo.obj1 == nil) then
-        variables._actionInfo.obj1 = msg
+        variables._actionInfo.obj1 = obj
     else
         if (variables._actionInfo.verb.objects > 1) then
-            variables._actionInfo.obj2 = msg
+            variables._actionInfo.obj2 = obj
         end
     end
     a = monkey.getEntity("currentaction")
@@ -37,12 +37,82 @@ function hoverOff ()
     a:settext(variables._actionInfo:toString())
 end
 
+function createWalkToAction (obj, script)
+    table.insert (script.actions,
+    {
+        id = #script.actions,
+		walkarea = "walkarea",
+		actor = "player",
+        type = "walkto",
+		pos = obj.pos
+	})
+end
+
+function useActionHandler ()
+    -- create an empty script
+    script = {
+        startid = 0,
+        id = "_walk",
+        actions = {}
+    }
+    
+    -- do we have a function? use is symmetric so we can test both cases
+    a = (variables._actionInfo.obj1["use"] and variables._actionInfo.obj1["use"][variables._actionInfo.obj2]) or 
+        (variables._actionInfo.obj2["use"] and variables._actionInfo.obj2["use"][variables._actionInfo.obj1])
+    if (a == nil) then
+       -- not handled, so we can use default handler. This func populates the script with the actions
+       -- related to the default use case (where no actions is )
+       defaultActions["use"](script)
+       return script
+    end
+    isObj1InInv = inventory[variables._actionInfo.obj1] ~= nil
+    isObj2InInv = inventory[variables._actionInfo.obj2] ~= nil
+    if (isObj1InInv and isObj2InInv) then
+        -- the two objects are both in inventory, so I don't have to walk anywhere
+        a(script)
+        return script
+    elseif (isObj1InInv and not(isObj2InInv)) then
+        -- obj1 is in inventory, so I walkt o object 2
+        createWalkToAction (variables._actionInfo.obj2, script)
+        a(script)
+    elseif (isObj1InInv and not(isObj2InInv)) then
+        -- obj2 is in inventory, so I walkt o object 1
+        createWalkToAction (variables._actionInfo.obj1, script)
+        a(script)
+    else
+        -- both are outside of inventory
+        pickupAction = variables._actionInfo.obj1["pickup"]
+        if (pickupAction ~= nil) then
+            createWalkToAction (variables._actionInfo.obj1, script)
+            pickupAction (script)
+            createWalkToAction (variables._actionInfo.obj2, script)
+            a(script)
+            
+        else
+            pickupAction = variables._actionInfo.obj1["pickup"]
+            if (pickupAction ~= nil) then
+                createWalkToAction (variables._actionInfo.obj2, script)
+                pickupAction (script)
+                createWalkToAction (variables._actionInfo.obj1, script)
+                a(script)
+            else
+                -- no object is pickuppable, just call the script
+                a(script)
+            end
+        end
+                    
+    end
+    return script
+    
+end
+
 -- the default behavior when you click on an object
 function runAction ()
+    script = { startid = 0, id = "_walk", actions = {}, edges = {} }
     if (variables._actionInfo.obj2 == nil) then
         -- try to run a single object action
-        print ("finding action " .. variables._actionInfo.verb.code .. " " .. variables._actionInfo.obj1)
-        a = actions[variables._actionInfo.obj1][variables._actionInfo.verb.code]
+        print ("finding action " .. variables._actionInfo.verb.code .. " " .. variables._actionInfo.obj1.text)
+        a = variables._actionInfo.obj1[variables._actionInfo.verb.code]
         if (a == nil) then
             if (variables._actionInfo.verb.code == "give" or variables._actionInfo.verb.code == "use") then
                 -- wait for second object
@@ -52,16 +122,27 @@ function runAction ()
                -- Here we generate a play script. The first action is always a walkto towards the provided
                -- object position. The following action depend on the default action, usually it just says something
                -- like "It doesn't seem to work" or the like.
-               print ("Run default action for " .. variables._actionInfo.verb.code)
-               variables._actionInfo:reset()
+               print ("run default")
+               createWalkToAction (variables._actionInfo.obj1, script)
+               defaultActions[variables._actionInfo.verb.code](script)
             end
         else
             -- run specific action
-            print (a)
-			a()
-            variables._actionInfo:reset()
+            
+            createWalkToAction (variables._actionInfo.obj1, script)
+            a(script)
         end
+    else
+        -- action with two objects
+        -- see if there are any two object actions like verb obj1 ...
+        script = twoObjectHandler[variables._actionInfo.verb.code]
     end
+    for n = 1, #script.actions-1 do
+        table.insert (script.edges, {script.actions[n].id, script.actions[n+1].id})
+    end
+        
+    monkey.play(script)
+    variables._actionInfo:reset()
     a = monkey.getEntity("currentaction")
     a:settext(variables._actionInfo:toString())    
 end
@@ -104,6 +185,14 @@ makeButton(100, 16, variables._verbs.turnoff),
     layer=2
     
 }
+--{
+--    pos = {200, 40, 0},
+--    outlinetext = {
+--        id = "ciao", font="monkey", align="bottom", fontcolor={255,0,0,255}, outlinecolor = {255,255,255,255}, size = 8
+--    },
+--    layer = 2
+--    
+--}
 		}
 end
 

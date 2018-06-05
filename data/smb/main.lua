@@ -1,7 +1,7 @@
 print("Hello world!")
 
 require ("text")
-
+require ("defaultactions")
 
 function ciao() 
     print "Chiamo ciao "
@@ -16,10 +16,19 @@ engine = {
 }
 
 fonts = {
-    { name = "ui", file  = "fonts/monkeysmall.ttf" }
+    { name = "ui", file  = "fonts/monkeysmall.ttf" },
+    { name = "monkey", file  = "fonts/MonkeyIsland-1990.ttf" }
 }
 
+-- inventory keeps a table with objects
+inventory = {}
 
+
+defaultActions = {
+   walk = defaultWalk,
+   look = defaultLook
+   
+}
 
 variables = {
     _verbs = {
@@ -51,10 +60,10 @@ variables._actionInfo = {
 function variables._actionInfo:toString ()
     local t = { self.verb.text }
     if (self.obj1 ~= nil) then
-        t[2] = self.obj1
+        t[2] = self.obj1.text
         if (self.obj2 ~= nil) then
             t[3] = self.verb.prep
-            t[4] = self.obj2
+            t[4] = self.obj2.text
         else
             if (self.selectSecond == true) then
                t[3] = self.verb.prep 

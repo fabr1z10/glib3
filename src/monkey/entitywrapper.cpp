@@ -9,6 +9,7 @@
 #include <monkey/walk.h>
 #include <monkey/walkarea.h>
 #include <monkey/changeroom.h>
+#include <monkey/showmessage.h>
 
 float EntityWrapper::GetX() const {
     return m_underlying->GetPosition().x;
@@ -63,10 +64,22 @@ namespace luaFunctions {
                 // at this point branch on the type of action
                 auto walkarea = Engine::get().GetRef<WalkArea>(walkareaId);
                 glm::vec2 pos = table.Get<glm::vec2>("pos");
-                script->AddActivity(std::make_shared<Walk>(id, actor, pos, walkarea->GetShape()));
+                script->AddActivity(std::unique_ptr<Walk>(new Walk(id, actor, pos, walkarea->GetShape())));
             } else if (type == "gotoroom") {
                 std::string roomId = table.Get<std::string>("room");
-                script->AddActivity(std::make_shared<ChangeRoom>(id, roomId));
+                script->AddActivity(std::unique_ptr<ChangeRoom>(new ChangeRoom(id, roomId)));
+            } else if (type == "showmessage") {
+                std::string actor = table.Get<std::string>("actor");
+                std::string msg = table.Get<std::string>("message");
+                std::string font = table.Get<std::string>("font");
+                TextAlignment align = table.Get<TextAlignment>("align", BOTTOM);
+                glm::vec4 color = table.Get<glm::vec4>("color");
+                glm::vec4 outlineColor = table.Get<glm::vec4>("outlinecolor");
+                color/=255.0f;
+                outlineColor /= 255.0f;
+                float size = table.Get<float>("size");
+                script->AddActivity(std::unique_ptr<ShowMessage>(new ShowMessage(id, msg, font, actor, size, color, outlineColor, align,0.0f)));
+
             }
         }
         luabridge::LuaRef edges = ref["edges"];

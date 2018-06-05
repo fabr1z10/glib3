@@ -14,12 +14,12 @@ public:
     Script(int startActivityId) : m_complete{false}, m_startId{startActivityId}, m_suspended{false} {}
     void Run (float);
     void Start();
-    void AddActivity(std::shared_ptr<Activity>);
+    void AddActivity(std::unique_ptr<Activity>);
     void AddEdge (int fromActivity, int toActivity);
     bool IsComplete() const;
 private:
     std::unordered_set<Activity*> m_active;
-    std::unordered_map<int, std::shared_ptr<Activity> > m_activities;
+    std::unordered_map<int, std::unique_ptr<Activity> > m_activities;
     bool m_suspended;
     bool m_complete;
     int m_startId;

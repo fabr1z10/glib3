@@ -7,8 +7,8 @@ void Script::Start() {
     it->second->Start();
 }
 
-void Script::AddActivity(std::shared_ptr<Activity> act) {
-    m_activities[act->GetId()] = act;
+void Script::AddActivity(std::unique_ptr<Activity> act) {
+    m_activities[act->GetId()] = std::move( act);
 }
 
 void Script::AddEdge (int fromActivity, int toActivity) {
@@ -18,8 +18,8 @@ void Script::AddEdge (int fromActivity, int toActivity) {
     auto itTo = m_activities.find(toActivity);
     if (itTo == m_activities.end())
         GLIB_FAIL("Don't know activity " << toActivity);
-    itFrom->second->AddNext(itTo->second);
-    itTo->second->AddPrevious(itFrom->second);
+    itFrom->second->AddNext(itTo->second.get());
+    itTo->second->AddPrevious(itFrom->second.get());
 
 }
 
@@ -39,7 +39,7 @@ void Script::Run (float dt) {
             for (auto& child : following) {
                 if (child->IsReady()) {
 
-                    m_active.insert(child.get());
+                    m_active.insert(child);
                     child->Start();
                 }
             }

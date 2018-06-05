@@ -34,11 +34,11 @@ void Walk::Start() {
                 }
             }
             bool flipX = (anim == "walk_right" && delta.x < 0);
-            actor->GetComponent<Renderer>()->SetFlipX(flipX);
-            Push(std::make_shared<Animate>(count++, actor, anim));
+            //actor->GetComponent<Renderer>()->SetFlipX(flipX);
+            Push(std::make_shared<Animate>(count++, actor, anim, flipX));
             Push(std::make_shared<MoveTo>(count++, actor, points[i], 200.0f));
             if (i == points.size() -1)
-                Push(std::make_shared<Animate>(count++, actor, anim2));
+                Push(std::make_shared<Animate>(count++, actor, anim2, flipX));
             currentPos = points[i];
             //script->AddActivity(p);
         }

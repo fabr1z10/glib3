@@ -1,10 +1,15 @@
 #include <gfx/activity.h>
 
-void Activity::AddPrevious (std::shared_ptr<Activity> act) {
+Activity::~Activity() {
+    if (!m_complete)
+        SetComplete();
+}
+
+void Activity::AddPrevious (Activity* act) {
     m_previous.push_back(act);
 }
 
-void Activity::AddNext (std::shared_ptr<Activity> act) {
+void Activity::AddNext (Activity* act) {
     m_following.push_back(act);
 }
 
@@ -21,4 +26,5 @@ bool Activity::IsReady() const {
 
 void Activity::SetComplete() {
     m_complete = true;
+
 }

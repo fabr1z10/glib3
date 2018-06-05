@@ -1,0 +1,52 @@
+#include <monkey/showmessage.h>
+#include <gfx/engine.h>
+#include <gfx/entity.h>
+#include <gfx/enums.h>
+#include <gfx/textmesh.h>
+#include <gfx/renderer.h>
+#include <glm/gtx/transform.hpp>
+
+void ShowMessage::Start() {
+
+    auto scene = Engine::get().GetScene();
+    auto actor = Engine::get().GetRef<Entity>(m_actor);
+    glm::vec2 currentPos(actor->GetPosition());
+
+    auto parent = std::make_shared<Entity>();
+    Font* f = Engine::get().GetAssetManager().GetFont(m_font);
+    auto mesh = std::make_shared<TextMesh>(f, m_message, m_size, m_align);
+    glm::vec2 offset = mesh->getOffset();
+    glm::vec2 outlineOffsets[] = {{0, 0}, {-1, 0}, {-1,1}, {0, 1}, {1,1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1}};
+    for (int i =0; i < 9; ++i) {
+        auto entity = std::make_shared<Entity>();
+        auto renderer = std::make_shared<Renderer>();
+        renderer->SetMesh(mesh);
+        entity->SetPosition(glm::vec3(outlineOffsets[i] * 0.5f, i == 0 ? 0 : -1));
+        renderer->SetTint(i==0 ? m_color : m_outlineColor);
+        renderer->SetRenderingTransform(glm::translate(glm::vec3(offset, 0.0f)));
+        entity->AddComponent(renderer);
+        parent->AddChild(entity);
+    }
+    parent->SetPosition(glm::vec3(currentPos, 5.0f));
+    parent->SetLayer(1);
+    scene->AddChild(parent);
+    m_generatedEntity = parent.get();
+    m_elapsedTime=0.0f;
+    //SetComplete();
+}
+
+void ShowMessage::Run(float dt) {
+    m_elapsedTime+=dt;
+    if (m_elapsedTime >= 15.0f) {
+
+        SetComplete();
+    }
+
+}
+
+ShowMessage::~ShowMessage() {
+    if (m_generatedEntity != nullptr) {
+        Engine::get().Remove(m_generatedEntity);
+        m_generatedEntity = nullptr;
+    }
+}

@@ -29,7 +29,7 @@ void WalkArea::onClick(glm::vec2 worldCoords) {
     auto scheduler = Engine::get().GetRef<Scheduler>("_scheduler");
     //auto player = Engine::get().GetRef<Entity>("player");
     auto script = std::make_shared<Script>(0);
-    script->AddActivity(std::make_shared<Walk>(0, m_playerId, worldCoords, m_shape.get()));
+    script->AddActivity(std::unique_ptr<Walk>(new Walk(0, m_playerId, worldCoords, m_shape.get())));
     scheduler->AddScript("_walk", script);
 
 }
