@@ -46,9 +46,11 @@ variables = {
         turnoff = { code="turnoff", text = strings.ui.turnoff, objects = 1 }
     },
     -- sets the start room
-    _room = "lookout",
+    _room = "village1",
 
 }
+
+
 
 variables._actionInfo = {
         verb = variables._verbs.walk,

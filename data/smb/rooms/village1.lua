@@ -17,15 +17,6 @@ scene = {
   layer = 1
 },
 {
-  walkarea = { 
-	 tag = "walkarea",
-	 group = 1,
-	 priority = 0,
-	 target = "player",
-	 shape = { type = "poly", outline = {0,0,0,144,1008,144,1008,0}}
-  }
-},
-{
   tag = "player",
   pos = {20, 20, 0},
   gfx = { model = "guybrush", anim = "idle_front" },
@@ -33,18 +24,29 @@ scene = {
   layer = 1
 },
 {
-  pos= {6,60,0},
-  hotspot = {
-    group =1,
-    priority = 1,
-    shape = { type="rect", width=37, height=45},
-    onenter=curry(hoverOn, "path"),
-    onleave=hoverOff,
-    onclick=runAction
+  walkarea = { 
+	 tag = "walkarea",
+	 group = 1,
+	 priority = 0,
+	 target = "player",
+	 shape = { type = "graph", vertices = { {8, 71}, {23, 63}, {49, 49}, {40, 37}, {56, 24}, {84, 13}, {752, 13} }, edges = { {0,1}, {1,2}, {2,3},{3,4}, {4,5},{5,6} }} 
   },
-  layer =1
+  layer = 1
 },
-table.unpack(makeUI())
+
+-- {
+--   pos= {6,60,0},
+--   hotspot = {
+--     group =1,
+--     priority = 1,
+--     shape = { type="rect", width=37, height=45},
+--     onenter=curry(hoverOn, "path"),
+--     onleave=hoverOff,
+--     onclick=runAction
+--   },
+--   layer =1
+-- },
+--table.unpack(makeUI())
 }
 
 groups = {

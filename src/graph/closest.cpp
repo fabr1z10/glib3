@@ -45,6 +45,30 @@ void ClosestPointOnEdge::visit(Poly& p) {
 }
 
 
+void ClosestPointOnEdge::visit(PolyLine& p) {
+    const auto& e = p.GetEdges();
+
+    float bestSoFar = std::numeric_limits<float>::infinity();
+    glm::vec2 bestPoint;
+    for (auto& edge : e) {
+        // get closest point on this edge
+        glm::vec2 A = edge.first;
+        glm::vec2 B = edge.second;
+        float l = glm::length(B - A);
+        glm::vec2 u = glm::normalize(B - A);
+        float d = glm::dot(m_P - A, u);
+        glm::vec2 cp = (d > l ? B : (d < 0 ? A : A + u*d));
+        // update best point
+        float dist = glm::distance(cp, m_P);
+        if (dist < bestSoFar) {
+            bestSoFar = dist;
+            bestPoint = cp;
+        }
+    }
+    m_result = bestPoint;
+
+}
+
 glm::vec2 ClosestPointOnEdge::Find(Shape& s, glm::vec2 P) {
     ClosestPointOnEdge c (P);
     s.accept(c);

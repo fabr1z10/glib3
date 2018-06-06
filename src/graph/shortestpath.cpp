@@ -2,6 +2,55 @@
 #include <graph/graph.h>
 #include <graph/algo.h>
 
+void ShortestPath::visit(PolyLine& p) {
+
+
+    int es = p.GetEdgeContaining(m_A);
+    int ee = p.GetEdgeContaining(m_B);
+
+    // start and end points lie on the same edge. Nothing to do here!
+    if (es == ee) {
+        m_result.push_back(m_A);
+        m_result.push_back(m_B);
+        return;
+    }
+
+    Graph<int, glm::vec2> g;
+
+    // get all vertices
+    const auto& vertices = p.GetVertices();
+    const auto& edgeIndices = p.GetEdgeIndices();
+    int count = 0;
+    for (auto& v : vertices) {
+        g.AddNode(count++, v);
+    }
+    for (auto& e : edgeIndices) {
+        float w = glm::distance(vertices[e.first], vertices[e.second]);
+        g.AddEdge(e.first, e.second, w);
+    }
+    // add start and end points to the graph
+    int iStart = count;
+    int iEnd = count+1;
+    g.AddNode(iStart, m_A);
+    g.AddNode(iEnd, m_B);
+    // add connections
+    g.AddEdge(iStart, edgeIndices[es].first, glm::distance(m_A, vertices[edgeIndices[es].first]));
+    g.AddEdge(iStart, edgeIndices[es].second, glm::distance(m_A, vertices[edgeIndices[es].second]));
+    g.AddEdge(iEnd, edgeIndices[ee].first, glm::distance(m_A, vertices[edgeIndices[ee].first]));
+    g.AddEdge(iEnd, edgeIndices[ee].second, glm::distance(m_A, vertices[edgeIndices[ee].second]));
+
+
+    // now you need to add to the graph the start and end point
+    // plus you need to find the index of the edges containing the start, and end point
+    // let e_s and e_e the edge containing start and edge containing end.
+    // now you need to draw edges from start to the vertices of e_s and edges from e to the vertices of e_e
+    // if e_s = e_e also
+    auto res = FindShortestPath(g, iStart, iEnd);
+    for (auto& p : res) m_result.push_back(g.GetValue(p));
+
+
+}
+
 
 void ShortestPath::visit(Polygon & p) {
 
@@ -104,3 +153,5 @@ std::vector<glm::vec2> ShortestPath::Find(Shape& s, glm::vec2 A, glm::vec2 B) {
     s.accept(sp);
     return sp.m_result;
 }
+
+

@@ -8,6 +8,7 @@
 #include <monkey/walkarea.h>
 #include <gfx/scheduler.h>
 #include <graph/poly.h>
+#include <graph/polyline.h>
 #include <gfx/meshfactory.h>
 #include <gfx/textmesh.h>
 #include <glm/gtx/transform.hpp>
@@ -427,6 +428,23 @@ std::shared_ptr<Shape> MonkeyFactory::ReadShape(luabridge::LuaRef& ref) {
 
             return std::make_shared<Polygon>(points);
         }
+    } else if (type == "graph") {
+        // read the vertices
+        luabridge::LuaRef rVert = at.Get<luabridge::LuaRef>("vertices");
+        std::vector<glm::vec2> vertices;
+        std::vector<std::pair<int, int>> edges;
+        for (int i = 0; i< rVert.length(); ++i) {
+            luabridge::LuaRef vertex = rVert[i+1];
+            glm::vec2 p(vertex[1].cast<float>(), vertex[2].cast<float>());
+            vertices.push_back(p);
+        }
+        luabridge::LuaRef rEdges = at.Get<luabridge::LuaRef>("edges");
+        for (int i = 0; i< rEdges.length(); ++i) {
+            luabridge::LuaRef edge = rEdges[i+1];
+            std::pair<int, int> e(edge[1].cast<int>(), edge[2].cast<int>());
+            edges.push_back(e);
+        }
+        return std::make_shared<PolyLine>(vertices,edges);
     }
     return nullptr;
 }

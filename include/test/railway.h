@@ -7,52 +7,17 @@
 
 extern std::string homeDir;
 
-class Railway : public Singleton<Railway> {
+class Railway {
 public:
-    int AddTrain (const std::string& name, int length, float speed);
-    int AddStation (const std::string& name);
-    int AddTrack (const std::string& name, int sa, int sb, const std::string& mainName);
-    int AddTrackCircuit (int trackId, const std::string& name, int length);
-    //int AddStationRoute (int trackId, const std::string& name, int length);
-    int AddStoppingPoint (int trackId, const std::string& name, int length);
-    int GetStationCount() const;
-    Track* GetTrack(const std::string&);
-    Station* GetStation(const std::string&);
-    Station* GetStation(int id);
-    Track* GetTrack(int id);
-    Train* GetTrain(const std::string&);
-    int GetStoppingPointId (const std::string& station, const std::string& sp);
-    int GetStationRouteId (const std::string& station, const std::string& sr);
-    int GetTrackCircuitId (const std::string& tc);
-    Resource* GetResource(int) const;
-    std::vector<std::string> GetTracksConnecting(int station1, int station2);
-    Railway();
-    void ReadRunningTimes();
-    int GetResourceRunningTime (int resourceId, int trainCategory, bool fwd);
+    Railway () {}
+    void Load();
+    int GetStationCount() const ;
 private:
-    std::unordered_map<int, std::unordered_map<int, int>> m_forwardRunningTime;
-    std::unordered_map<int, std::unordered_map<int, int>> m_backwardRunningTime;
-
-    std::unordered_map<int, std::unique_ptr<Track>> m_tracks;
-    std::unordered_map<int, std::unique_ptr<Station>> m_stations;
-    std::unordered_map<int, std::unique_ptr<Train>> m_trains;
-    std::unordered_map<int, std::unique_ptr<Resource>> m_resources;
-    std::unordered_map<std::string, int> m_stationNameToId;
-    std::unordered_map<std::string, int> m_trackNameToId;
-    std::unordered_map<std::string, int> m_trainNameToId;
-    std::unordered_map<std::string, int> m_trackCircuitToId;
+    std::unordered_map<std::string, std::shared_ptr<Station>> m_stations;
+    std::unordered_map<std::string, std::shared_ptr<Station>> m_tracks;
 };
 
 inline int Railway::GetStationCount() const {
     return m_stations.size();
 }
 
-Station* GetStation(const std::string&);
-Station* GetStation(int id);
-
-inline Resource* Railway::GetResource(int id) const {
-    auto it = m_resources.find(id);
-    if (it == m_resources.end())
-        GLIB_FAIL("Unknown resource with id = " << id);
-    return it->second.get();
-}

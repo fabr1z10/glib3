@@ -1,18 +1,22 @@
 #include <graph/visitor.h>
 #include <graph/shape.h>
 #include <graph/poly.h>
+#include <graph/polyline.h>
+
 
 class ClosestPointOnEdge :
     public AcyclicVisitor,
     //public Visitor<Rect>,
     public Visitor<Polygon>,
-    public Visitor<Poly>
+    public Visitor<Poly>,
+    public Visitor<PolyLine>
 {
 public:
     static glm::vec2 Find(Shape&, glm::vec2 P);
     //void visit(Rect&) override;
     void visit(Polygon&) override;
     void visit(Poly&) override;
+    void visit(PolyLine&) override;
     //void visit(Poly&) override;
 private:
 

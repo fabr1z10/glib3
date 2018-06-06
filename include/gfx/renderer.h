@@ -24,6 +24,7 @@ public:
     Bounds3D GetBounds() const;
     void Start() override {}
     void Update(double) override;
+    std::string GetAnimation() const;
     void SetAnimation(const std::string&);
     void SetTint(glm::vec4 c);
     ShaderType GetShaderType() const { return m_mesh->GetShaderType(); }
@@ -42,6 +43,12 @@ private:
     double m_frameTime;
     glm::vec4 m_tint;
 };
+
+inline std::string Renderer::GetAnimation() const {
+    return m_animation;
+}
+
+
 
 inline const glm::mat4& Renderer::GetRenderingTransform() const{
     return m_renderingTransform;

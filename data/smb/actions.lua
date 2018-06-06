@@ -1,29 +1,10 @@
-function pippo()
-    monkey.play(
-        {
-			startid = 0,
-			id = "_walk",
-            actions = {
-				{
-					id = 0,
-					walkarea = "walkarea",
-					actor = "player",
-					type = "walkto",
-					pos = {250, 0}
-				},
-				{
-					id = 1,
-					type = "gotoroom",
-					room = "village1"
-				}
-				
-			},
-			edges = {
-				{0, 1}	
-			}
-        }
-    )
-    
+function pippo(script)
+    table.insert (script.actions,
+    {
+        id = #script.actions,
+ 	    type = "gotoroom",
+		room = "village1"
+    })
 end
 
 objects = {

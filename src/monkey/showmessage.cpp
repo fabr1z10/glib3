@@ -11,6 +11,8 @@ void ShowMessage::Start() {
     auto scene = Engine::get().GetScene();
     auto actor = Engine::get().GetRef<Entity>(m_actor);
     glm::vec2 currentPos(actor->GetPosition());
+    // make this a param
+    currentPos += glm::vec2(0, 60.0);
 
     auto parent = std::make_shared<Entity>();
     Font* f = Engine::get().GetAssetManager().GetFont(m_font);
@@ -37,7 +39,7 @@ void ShowMessage::Start() {
 
 void ShowMessage::Run(float dt) {
     m_elapsedTime+=dt;
-    if (m_elapsedTime >= 15.0f) {
+    if (m_elapsedTime >= m_time) {
 
         SetComplete();
     }

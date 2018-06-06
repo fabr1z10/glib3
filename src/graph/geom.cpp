@@ -28,6 +28,22 @@ bool LineSegmentCross (glm::vec2 A, glm::vec2 B, glm::vec2 C, glm::vec2 D) {
     return (t > 0.0f && t < 1.0f && u > 0.0f && u < 1.0f);
 }
 
+bool IsBetween (glm::vec2 A, glm::vec2 B, glm::vec2 P, float eps) {
+    // first, we need to make sure they are aligned
+    float a = cross(B - A, P - A);
+    if (a > eps)
+        return false;
+    // if they are aligned, let's get the dot
+    float b = glm::dot(P-A, B-A);
+    if (b < 0)
+        return false;
+
+    if (b > distSq(A, B))
+        return false;
+    return true;
+
+}
+
 float DistFromSegment (glm::vec2 A, glm::vec2 B, glm::vec2 P) {
 
 }

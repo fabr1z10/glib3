@@ -27,6 +27,7 @@ public:
     const std::unordered_map<Key, double>& GetNeighbors() const {
         return m_connections;
     };
+
 private:
     void AddEdge(Key otherNode, double weight);
     std::unordered_map<Key, double> m_connections;

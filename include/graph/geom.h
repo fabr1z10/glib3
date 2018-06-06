@@ -14,7 +14,7 @@ bool isZero (T x, T eps = epsilon) {
     return isEqual(x, 0.0f, eps);
 }
 
-inline float cross (glm::vec2& a, glm::vec2& b) {
+inline float cross (glm::vec2 a, glm::vec2 b) {
     return a.x * b.y - a.y * b.x;
 }
 
@@ -32,6 +32,9 @@ T Clamp(T x, T m, T M) {
 inline glm::vec2 Perp(glm::vec2 P) {
     return glm::vec2(-P.y, P.x);
 }
+
+// tests whether P is between A and B
+bool IsBetween (glm::vec2 A, glm::vec2 B, glm::vec2 P, float eps = 0.01f);
 
 float DistFromSegment (glm::vec2 A, glm::vec2 B, glm::vec2 P);
 bool LineSegmentCross (glm::vec2, glm::vec2, glm::vec2, glm::vec2);

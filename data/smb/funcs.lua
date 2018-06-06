@@ -209,6 +209,7 @@ function makeButton (x, y, verb)
 end
 
 function makeGuybrush()
+    local pane = {6,-34}
 return {
         id="guybrush",
         sheet="gfx/sprite1.png",
@@ -381,6 +382,236 @@ return {
 					
 					
 		   }				
+        },
+        {
+           name="talk_front",
+
+           frames={ 
+               {
+                    duration = dt,
+                    quads = {
+                        { x = 164, y = 12, width = 22, height = 36, anchor = {12, 0}},
+                        { x = 179, y = 129, width = 11, height = 13, anchor = pane }
+                    }
+               },
+               {
+                    duration = dt,
+                    quads = {
+                        { x = 164, y = 12, width = 22, height = 36, anchor = {12, 0}},
+                        { x = 192, y = 129, width = 11, height = 13, anchor = pane}
+                    }
+               },
+               {
+                    duration = dt,
+                    quads = {
+                        { x = 164, y = 12, width = 22, height = 36, anchor = {12, 0}},
+                        { x = 179, y = 129, width = 11, height = 13, anchor = pane }
+                    }
+               },
+               {
+                    duration = dt,
+                    quads = {
+                        { x = 164, y = 12, width = 22, height = 36, anchor = {12, 0}},
+                        { x = 192, y = 129, width = 11, height = 13, anchor = pane}
+                    }
+               },
+               {
+                    duration = dt,
+                    quads = {
+                        { x = 164, y = 12, width = 22, height = 36, anchor = {12, 0}},
+                        { x = 205, y = 129, width = 11, height = 13, anchor = pane}
+                    }
+               },
+               {
+                    duration = dt,
+                    quads = {
+                        { x = 164, y = 12, width = 22, height = 36, anchor = {12, 0}},
+                        { x = 179, y = 143, width = 11, height = 13, anchor =  pane}
+                    }
+               },               
+               {
+                    duration = dt,
+                    quads = {
+                        { x = 164, y = 12, width = 22, height = 36, anchor = {12, 0}},
+                        { x = 192, y = 129, width = 11, height = 13, anchor = pane }
+                    }
+               },
+               {
+                    duration = dt,
+                    quads = {
+                        { x = 164, y = 12, width = 22, height = 36, anchor = {12, 0}},
+                        { x = 192, y = 143, width = 11, height = 13, anchor = pane}
+                    }
+               },  
+               {
+                    duration = dt,
+                    quads = {
+                        { x = 164, y = 12, width = 22, height = 36, anchor = {12, 0}},
+                        { x = 205, y = 143, width = 11, height = 13, anchor = pane }
+                    }
+               }, 
+               {
+                    duration = dt,
+                    quads = {
+                        { x = 164, y = 12, width = 22, height = 36, anchor = {12, 0}},
+                        { x = 192, y = 143, width = 11, height = 13, anchor = pane}
+                    }
+               },
+               {
+                    duration = dt,
+                    quads = {
+                        { x = 164, y = 12, width = 22, height = 36, anchor = {12, 0}},
+                        { x = 179, y = 129, width = 11, height = 13, anchor = pane}
+                    }
+               },
+               {
+                    duration = dt,
+                    quads = {
+                        { x = 164, y = 12, width = 22, height = 36, anchor = {12, 0}},
+                        { x = 192, y = 129, width = 11, height = 13, anchor = pane}
+                    }
+               },      
+               {
+                    duration = dt,
+                    quads = {
+                        { x = 164, y = 12, width = 22, height = 36, anchor = {12, 0}},
+                        { x = 205, y = 143, width = 11, height = 13, anchor =  pane}
+                    }
+               }
+           }
+
+        },
+        {
+           name = "talk_right",
+           frames = { 
+               {
+                    duration = dt,
+                    quads = {
+                        { x = 157, y = 112, width = 19, height = 36, anchor = {10, 0}},
+                        { x = 179, y = 101, width = 11, height = 12, anchor = {10, 0}}
+                    }
+               },
+               {
+                    duration = dt,
+                    quads = {
+                        { x = 157, y = 112, width = 19, height = 36, anchor = {10, 0}},
+                        { x = 192, y = 101, width = 11, height = 12, anchor = {10, 0}}
+                    }
+               },
+               {
+                    duration = dt,
+                    quads = {
+                        { x = 157, y = 112, width = 19, height = 36, anchor = {10, 0}},
+                        { x = 205, y = 101, width = 11, height = 12, anchor = {10, 0}}
+                    }
+               },               
+               {
+                    duration = dt,
+                    quads = {
+                        { x = 157, y = 112, width = 19, height = 36, anchor = {10, 0}},
+                        { x = 179, y = 115, width = 11, height = 12, anchor = {10, 0}}
+                    }
+               },    
+               {
+                    duration = dt,
+                    quads = {
+                        { x = 157, y = 112, width = 19, height = 36, anchor = {10, 0}},
+                        { x = 192, y = 101, width = 11, height = 12, anchor = {10, 0}}
+                    }
+               }, 
+               {
+                    duration = dt,
+                    quads = {
+                        { x = 157, y = 112, width = 19, height = 36, anchor = {10, 0}},
+                        { x = 179, y = 101, width = 11, height = 12, anchor = {10, 0}}
+                    }
+               },
+               {
+                    duration = dt,
+                    quads = {
+                        { x = 157, y = 112, width = 19, height = 36, anchor = {10, 0}},
+                        { x = 192, y = 115, width = 11, height = 12, anchor = {10, 0}}
+                    }
+               },
+               {
+                    duration = dt,
+                    quads = {
+                        { x = 157, y = 112, width = 19, height = 36, anchor = {10, 0}},
+                        { x = 205, y = 115, width = 11, height = 12, anchor = {10, 0}}
+                    }
+               },
+               {
+                    duration = dt,
+                    quads = {
+                        { x = 157, y = 112, width = 19, height = 36, anchor = {10, 0}},
+                        { x = 179, y = 101, width = 11, height = 12, anchor = {10, 0}}
+                    }
+               },   
+               {
+                    duration = dt,
+                    quads = {
+                        { x = 157, y = 112, width = 19, height = 36, anchor = {10, 0}},
+                        { x = 192, y = 115, width = 11, height = 12, anchor = {10, 0}}
+                    }
+               }, 
+               {
+                    duration = dt,
+                    quads = {
+                        { x = 157, y = 112, width = 19, height = 36, anchor = {10, 0}},
+                        { x = 179, y = 101, width = 11, height = 12, anchor = {10, 0}}
+                    }
+               },
+               {
+                    duration = dt,
+                    quads = {
+                        { x = 157, y = 112, width = 19, height = 36, anchor = {10, 0}},
+                        { x = 205, y = 101, width = 11, height = 12, anchor = {10, 0}}
+                    }
+               }               
+           }                
+        },
+        {
+            name = "talk_back",
+            frames =            { 
+               {
+                    duration = dt,
+                    quads = {
+                        { x = 189, y = 12, width = 20, height = 36, anchor = {12, 0}},
+                        { x = 220, y = 101, width = 11, height = 12, anchor = {12, 0}}
+                    }
+               },
+               {
+                    duration = dt,
+                    quads = {
+                        { x = 189, y = 12, width = 20, height = 36, anchor = {12, 0}},
+                        { x = 233, y = 101, width = 11, height = 12, anchor = {12, 0}}
+                    }
+               },
+               {
+                    duration = dt,
+                    quads = {
+                        { x = 189, y = 12, width = 20, height = 36, anchor = {12, 0}},
+                        { x = 220, y = 101, width = 11, height = 12, anchor = {12, 0}}
+                    }
+               },
+               {
+                    duration = dt,
+                    quads = {
+                        { x = 189, y = 12, width = 20, height = 36, anchor = {12, 0}},
+                        { x = 233, y = 101, width = 11, height = 12, anchor = {12, 0}}
+                    }
+               },                    
+               {
+                    duration = dt,
+                    quads = {
+                        { x = 189, y = 12, width = 20, height = 36, anchor = {12, 0}},
+                        { x = 220, y = 115, width = 11, height = 12, anchor = {12, 0}}
+                    }
+               }                       
+                    
+                    
+                    
+           }
         }
         }
     }    

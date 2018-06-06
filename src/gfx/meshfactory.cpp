@@ -122,3 +122,36 @@ void MeshFactory::visit(Poly& p) {
     mesh->m_primitive = GL_LINES;
     m_mesh = mesh;
 }
+
+void MeshFactory::visit(PolyLine& p) {
+
+//    std::vector<VertexColor> vertices = {
+//            {0.0f, 0.0f, m_z, m_color.r, m_color.g, m_color.b, m_color.a},
+//            {50, 0.0f, m_z, m_color.r, m_color.g, m_color.b, m_color.a},
+//            {50, 50, m_z, m_color.r, m_color.g, m_color.b, m_color.a},
+//            {0.0f, 50, m_z, m_color.r, m_color.g, m_color.b, m_color.a},
+//    };
+//    std::vector<unsigned int> indices = {0, 1, 2, 3};
+//    auto mesh = std::make_shared<Mesh<VertexColor>>(COLOR_SHADER);
+//    mesh->Init(vertices, indices);
+//    mesh->m_primitive = GL_LINE_LOOP;
+//    m_mesh = mesh;
+
+    std::vector<VertexColor> vertices ;
+    std::vector<unsigned int> indices;
+    auto& v = p.GetVertices();
+    auto& e = p.GetEdgeIndices();
+    for(auto& vertex : v){
+        vertices.push_back({vertex.x, vertex.y, m_z, 1.0, 1.0, 1.0, 1.0});
+    }
+    for(auto& edge : e){
+        indices.push_back(edge.first);
+        indices.push_back(edge.second);
+    }
+
+    auto mesh = std::make_shared<Mesh<VertexColor>>(COLOR_SHADER);
+    mesh->Init(vertices, indices);
+    mesh->m_primitive = GL_LINES;
+    m_mesh = mesh;
+
+}

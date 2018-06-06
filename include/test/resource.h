@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <gfx/error.h>
 #include <set>
+#include <memory>
 
 class GlobalId {
 public:
@@ -58,17 +59,17 @@ private:
     int _stationId;
 };
 
-class StoppingPoint : public Resource {
-public:
-    StoppingPoint (const std::string& name, int length, int stationId) : Resource(name, length), _stationId{stationId} {}
-    std::string GetName() override;
-    int GetStationId() const { return _stationId; }
-    bool isStationRoute() override { return false;}
-    bool isStoppingPoint()override { return true;}
-    bool isTrackCircuit() override{ return false; }
-private:
-    int _stationId;
-};
+//class StoppingPoint : public Resource {
+//public:
+//    StoppingPoint (const std::string& name, int length, int stationId) : Resource(name, length), _stationId{stationId} {}
+//    std::string GetName() override;
+//    int GetStationId() const { return _stationId; }
+//    bool isStationRoute() override { return false;}
+//    bool isStoppingPoint()override { return true;}
+//    bool isTrackCircuit() override{ return false; }
+//private:
+//    int _stationId;
+//};
 
 // each track is made up of a sequence of track circuits
 // and connects two stations
@@ -96,40 +97,53 @@ private:
     int _stationB;
 };
 
-// a station is made up of routes and stopping points
-class Station : public GlobalId {
-public:
-    Station(const std::string& name) : GlobalId(name){}
-    void AddLinePoint (int id, std::string& trackName);
-    void AddCorrectPath (int, int);
-    std::string GetName() override;
-    void AddRoute (const StationRoute& r) {
-        m_routes[r.GetShortName()] = r.GetId();
-    }
-    void AddStoppingPoint (const StoppingPoint& sp) {
-        m_stoppingPoint[sp.GetShortName()] = sp.GetId();
-    }
-    int GetStoppingPointId(const std::string&);
-    int GetStationRouteId(const std::string&);
-    std::vector<std::string> GetTracks();
-    std::set<int> GetConnectedStations();
-private:
-    std::unordered_map<int, std::string> linePoints;
-    std::unordered_map<std::string, std::string> connectedTracks;
-    std::unordered_map<std::string, int> m_routes;
-    std::unordered_map<std::string, int> m_stoppingPoint;
+enum class PointType {
+    LINE_POINT, INTERMEDIATE_POINT, STOPPING_POINT
 };
 
-inline int Station::GetStoppingPointId(const std::string& name) {
-    return m_stoppingPoint.find(name)->second;
-}
+class Point {
+public:
+    Point(int id) : m_id{id}{}
+    virtual~ Point();
+    virtual PointType GetType() = 0;
+private:
+    int m_id;
+};
 
-inline int Station::GetStationRouteId(const std::string& name){
-    auto it = m_routes.find(name);
-    if (it == m_routes.end())
-        GLIB_FAIL(GetName() << " does not have route " << name);
-    return it->second;
-}
+class LinePoint : public Point {
+public:
+    LinePoint (int id, int connectingTrack) : Point(id), m_connectingTrack{connectingTrack}{}
+    PointType GetType() override {return PointType::LINE_POINT; }
+private:
+    int m_connectingTrack;
+};
+
+class IntermediatePoint : public Point {
+public:
+    IntermediatePoint(int id) : Point(id) {}
+    PointType GetType() override {return PointType::INTERMEDIATE_POINT; }
+};
+
+class StoppingPoint : public Point {
+public:
+    StoppingPoint (int id, int length) : Point(id), m_length{length}{}
+    PointType GetType() override {return PointType::STOPPING_POINT; }
+private:
+    int m_length;
+
+};
+
+// a station is made up of routes and stopping points
+class Station {
+public:
+    Station(const std::string& name) : m_name(name) {}
+    Path GetPath(int pointFrom, int pointTo);
+    int GetPoint(Track);
+    void AddPoint ()
+private:
+    std::string m_name;
+    std::unordered_map<int, std::shared_ptr<Point>> m_stationPoints;
+};
 
 //struct Schedule {
 //    long timeIn, timeOut;

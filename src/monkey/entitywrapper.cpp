@@ -10,6 +10,7 @@
 #include <monkey/walkarea.h>
 #include <monkey/changeroom.h>
 #include <monkey/showmessage.h>
+#include <monkey/say.h>
 
 float EntityWrapper::GetX() const {
     return m_underlying->GetPosition().x;
@@ -79,6 +80,12 @@ namespace luaFunctions {
                 outlineColor /= 255.0f;
                 float size = table.Get<float>("size");
                 script->AddActivity(std::unique_ptr<ShowMessage>(new ShowMessage(id, msg, font, actor, size, color, outlineColor, align,0.0f)));
+            } else if (type == "say") {
+                std::string actor = table.Get<std::string>("actor");
+                std::vector<std::string> msg = table.GetVector<std::string>("message");
+                glm::vec4 color = table.Get<glm::vec4>("color");
+                color/=255.0f;
+                script->AddActivity(std::unique_ptr<Say>(new Say(id, actor, msg, color)));
 
             }
         }
