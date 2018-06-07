@@ -31,6 +31,7 @@ public:
     using ParentClass = Renderer;
     void SetFlipX(bool);
     bool GetFlipX() const;
+    void SetScale(float);
     const glm::mat4& GetRenderingTransform() const;
     void SetRenderingTransform (glm::mat4 m);
 private:

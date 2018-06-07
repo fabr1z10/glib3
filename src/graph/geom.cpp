@@ -31,7 +31,7 @@ bool LineSegmentCross (glm::vec2 A, glm::vec2 B, glm::vec2 C, glm::vec2 D) {
 bool IsBetween (glm::vec2 A, glm::vec2 B, glm::vec2 P, float eps) {
     // first, we need to make sure they are aligned
     float a = cross(B - A, P - A);
-    if (a > eps)
+    if (fabs(a) > eps)
         return false;
     // if they are aligned, let's get the dot
     float b = glm::dot(P-A, B-A);

@@ -5,11 +5,19 @@
 #include <gfx/move.h>
 #include <graph/shortestpath.h>
 #include <glm/glm.hpp>
+#include <graph/closest.h>
 
 void Walk::Start() {
 
     auto actor = Engine::get().GetRef<Entity>(m_actorId);
     glm::vec2 currentPos(actor->GetPosition());
+
+    glm::vec2 p = ClosestPointOnEdge::Find(*(m_shape), currentPos);
+    if (p != currentPos) {
+        actor->SetPosition(p);
+        currentPos = p;
+    }
+
 
     glm::vec2 delta = m_p - currentPos;
     if (delta != glm::vec2(0.0f))
@@ -19,6 +27,8 @@ void Walk::Start() {
         glm::vec2 currentPoint = points.front();
         for (size_t i = 1; i < points.size(); ++i) {
             delta = points[i] - currentPos;
+            if (delta == glm::vec2(0.0f))
+                continue;
             std::string anim;
             std::string anim2;
             if (std::fabs(delta.x) > std::fabs(delta.y)) {

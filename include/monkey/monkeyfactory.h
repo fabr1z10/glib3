@@ -5,6 +5,7 @@
 #include <gfx/mesh.h>
 #include <monkey/luatable.h>
 #include <graph/shape.h>
+#include <monkey/funcs.h>
 
 class Renderer;
 class HotSpot;
@@ -18,7 +19,7 @@ public:
 private:
     void ReadItems(luabridge::LuaRef& ref, Entity* parent);
     void ReadGfxComponent (luabridge::LuaRef& ref, Entity* parent);
-
+    std::unique_ptr<Function2D> GetFunc2D(luabridge::LuaRef& ref);
 
     std::shared_ptr<Renderer> GetTextComponent (luabridge::LuaRef& ref);
     std::shared_ptr<HotSpot> GetHotSpot (luabridge::LuaRef& ref, std::shared_ptr<Shape> shape);
@@ -31,5 +32,6 @@ private:
     void ReadWalkarea (luabridge::LuaRef& ref, Entity* parent);
     void ReadHotspot (luabridge::LuaRef& ref, Entity* parent);
     void ReadButton (luabridge::LuaRef& ref, Entity* parent);
+    void ReadScaling (luabridge::LuaRef& ref, Entity* parent);
     std::shared_ptr<Shape> ReadShape(luabridge::LuaRef& ref);
 };

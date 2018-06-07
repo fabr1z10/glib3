@@ -14,6 +14,8 @@
 #include <glm/gtx/transform.hpp>
 #include <monkey/scripthotspot.h>
 #include <gfx/follow.h>
+#include <monkey/scaling.h>
+
 
 
 std::shared_ptr<Entity> MonkeyFactory::Create() {
@@ -157,6 +159,10 @@ void MonkeyFactory::ReadItems(luabridge::LuaRef& scene, Entity* parent) {
             luabridge::LuaRef c = item.Get<luabridge::LuaRef>("button");
             ReadButton(c, entity.get());
         }
+        if (item.HasKey("scaling")) {
+            luabridge::LuaRef c = item.Get<luabridge::LuaRef>("scaling");
+            ReadScaling(c, entity.get());
+        }
         entity->SetLayer(layer);
         parent->AddChild(entity);
     }
@@ -224,6 +230,19 @@ void MonkeyFactory::ReadOutlineTextComponent(luabridge::LuaRef &ref, Entity *par
 }
 
 
+std::unique_ptr<Function2D> MonkeyFactory::GetFunc2D(luabridge::LuaRef& ref) {
+    std::unique_ptr<PatchwiseLinear2D> p (new PatchwiseLinear2D);
+    for (int i = 0; i < ref.length(); ++i) {
+        luabridge::LuaRef f = ref[i+1];
+        LuaTable funcTable(f);
+        glm::vec4 domain = funcTable.Get<glm::vec4>("rect");
+        bool isX = (funcTable.Get<char>("dir") == 'x');
+        glm::vec2 bounds = funcTable.Get<glm::vec2>("bounds");
+        p->AddFunction(domain, isX, bounds.x, bounds.y);
+    }
+    return p;
+}
+
 // Read the walk-area
 void MonkeyFactory::ReadWalkarea (luabridge::LuaRef& ref, Entity* parent) {
     LuaTable table(ref);
@@ -236,6 +255,21 @@ void MonkeyFactory::ReadWalkarea (luabridge::LuaRef& ref, Entity* parent) {
     auto shape = ReadShape(shapeR);
     auto hotspot = std::make_shared<WalkArea>(shape, priority, group, targetId);
     if (!tag.empty()) hotspot->SetTag(tag);
+
+    // see if it has a depthfunc
+    if (table.HasKey("scaling")) {
+        luabridge::LuaRef sref = table.Get<luabridge::LuaRef>("scaling");
+        luabridge::LuaRef depthRef = sref["depth"];
+        auto depthFunc = GetFunc2D(depthRef);
+        hotspot->SetDepthFunction(std::move(depthFunc));
+        luabridge::LuaRef scaleRef = sref["scale"];
+        auto scaleFunc = GetFunc2D(scaleRef);
+        hotspot->SetScalingFunction(std::move(scaleFunc));
+
+
+    }
+
+
     parent->AddComponent(hotspot);
 
     // see if we want to plot the outline of the walk area
@@ -315,6 +349,11 @@ void MonkeyFactory::ReadHotspot (luabridge::LuaRef& ref, Entity* parent) {
     cer->SetMesh(debugMesh);
     ce->AddComponent(cer);
     parent->AddChild(ce);
+}
+
+void MonkeyFactory::ReadScaling (luabridge::LuaRef& ref, Entity* parent) {
+    parent->AddComponent(std::make_shared<ScalingDepthComponent>());
+
 }
 
 void MonkeyFactory::ReadButton (luabridge::LuaRef& ref, Entity* parent) {

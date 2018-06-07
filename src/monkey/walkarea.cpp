@@ -34,3 +34,14 @@ void WalkArea::onClick(glm::vec2 worldCoords) {
 
 }
 
+float WalkArea::GetDepth (float x, float y) {
+    if (m_depthFunc == nullptr)
+        GLIB_FAIL("Depth function not set for this walkarea");
+    return m_depthFunc->operator()(x, y);
+}
+
+float WalkArea::GetScale (float x, float y) {
+    if (m_scaleFunc == nullptr)
+        GLIB_FAIL("Depth function not set for this walkarea");
+    return m_scaleFunc->operator()(x, y);
+}

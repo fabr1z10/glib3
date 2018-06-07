@@ -21,15 +21,24 @@ scene = {
   pos = {20, 20, 0},
   gfx = { model = "guybrush", anim = "idle_front" },
   follow = { cam="maincam" },
-  layer = 1
+  layer = 1,
+  scaling = {}
 },
 {
   walkarea = { 
-	 tag = "walkarea",
-	 group = 1,
-	 priority = 0,
-	 target = "player",
-	 shape = { type = "graph", vertices = { {8, 71}, {23, 63}, {49, 49}, {40, 37}, {56, 24}, {84, 13}, {752, 13} }, edges = { {0,1}, {1,2}, {2,3},{3,4}, {4,5},{5,6} }} 
+    tag = "walkarea",
+	  group = 1,
+	  priority = 0,
+	  target = "player",
+	  shape = { type = "graph", vertices = { {8, 71}, {23, 63}, {49, 49}, {40, 37}, {56, 24}, {84, 13}, {752, 13} }, edges = { {0,1}, {1,2}, {2,3},{3,4}, {4,5},{5,6} }},
+    scaling = {
+        depth = { 
+            { rect = {0, 1008, 0, 144}, dir = "y", bounds = {1, 0} } 
+        },
+        scale = {
+            { rect = {0, 1008, 0, 144}, dir = "y", bounds = {1, 0.2} } 
+        }
+    }
   },
   layer = 1
 },

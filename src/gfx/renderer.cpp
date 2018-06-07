@@ -53,3 +53,11 @@ void Renderer::SetFlipX(bool value) {
     m_renderingTransform[0][0] = (value ? -1.0f : 1.0f) * std::fabs(m_renderingTransform[0][0]);
     //m_flipX = value;
 }
+
+void Renderer::SetScale(float scale) {
+    if (m_renderingTransform[0][0]<0)
+        scale = -scale;
+    m_renderingTransform[0][0] = scale;
+    m_renderingTransform[1][1] = fabs(scale);
+    m_renderingTransform[2][2] = fabs(scale);
+}
