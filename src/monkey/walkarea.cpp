@@ -16,12 +16,12 @@ void WalkArea::onClick(glm::vec2 worldCoords) {
 
     // find the target position. If I click inside the area, then that's my point, otherwise
     // I need to find the closest point in the edge of the polygon.
-    bool inside = m_shape->isPointInside(worldCoords);
-    std::cout << "Click at (" << worldCoords.x << ", "<< worldCoords.y  <<"), inside = " << inside<<std::endl;
-    if (!inside) {
-        worldCoords = ClosestPointOnEdge::Find(*(m_shape.get()), worldCoords);
-        std::cout << "closest point at (" << worldCoords.x << ", "<< worldCoords.y  <<")" << std::endl;
-    }
+    //bool inside = m_shape->isPointInside(worldCoords);
+    //std::cout << "Click at (" << worldCoords.x << ", "<< worldCoords.y  <<"), inside = " << inside<<std::endl;
+    //if (!inside) {
+    //    worldCoords = ClosestPointOnEdge::Find(*(m_shape.get()), worldCoords);
+    //    std::cout << "closest point at (" << worldCoords.x << ", "<< worldCoords.y  <<")" << std::endl;
+    //}
 
     // Now find the shortest path from player current position to the target pos.
 

@@ -3,6 +3,7 @@
 #include <gfx/activity.h>
 #include <glm/glm.hpp>
 #include <gfx/enums.h>
+#include <string>
 
 class Entity;
 
@@ -21,7 +22,6 @@ public:
     virtual ~ShowMessage();
     void Start() override;
     void Run (float dt) override;
-
 private:
     TextAlignment m_align;
     float m_elapsedTime;

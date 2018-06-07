@@ -1,6 +1,8 @@
 #pragma once
 
 #include <gfx/activity.h>
+#include <string>
+
 
 class ChangeRoom : public Activity {
 public:

@@ -6,6 +6,16 @@ require ("text")
 require ("actions")
 
 
+playerpos = nil
+if (variables._previousroom == "lookout") then
+   print "STOCAZZO"
+   playerpos = {8, 71, 0} 
+end
+
+
+
+
+
 assets = {
     makeGuybrush()
 }
@@ -18,7 +28,7 @@ scene = {
 },
 {
   tag = "player",
-  pos = {20, 20, 0},
+  pos = playerpos,
   gfx = { model = "guybrush", anim = "idle_front" },
   follow = { cam="maincam" },
   layer = 1,
@@ -80,3 +90,20 @@ cameras = {
     layer = 2
 }
 }
+
+
+-- initial script
+function startUp()
+
+if (variables._previousroom == "lookout") then
+    print ("PIPPODURO")
+    script = {
+        startid = 0,
+        id = "_walk",
+        actions = {},
+        edges ={}
+    }
+    createWalkToPosition ({120, 80}, script)
+    monkey.play(script)
+end
+end

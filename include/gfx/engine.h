@@ -28,6 +28,7 @@ class SceneFactory {
 public:
     virtual std::shared_ptr<Entity> Create() = 0;
     virtual void CleanUp () = 0;
+    virtual void PostInit() {}
 };
 
 

@@ -48,6 +48,20 @@ function createWalkToAction (obj, script)
 	})
 end
 
+function createWalkToPosition (position, script)
+    table.insert (script.actions,
+    {
+        id = #script.actions,
+		walkarea = "walkarea",
+		actor = "player",
+        type = "walkto",
+		pos = position
+	})
+end
+
+
+
+
 function useActionHandler ()
     -- create an empty script
     script = {

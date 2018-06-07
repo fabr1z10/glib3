@@ -90,6 +90,10 @@ void Engine::MainLoop() {
             iter->Start();
         }
         
+        m_sceneFactory->PostInit();
+        // call startUp
+        
+        
         m_running = true;
         // run the scene
         m_endScene = false;

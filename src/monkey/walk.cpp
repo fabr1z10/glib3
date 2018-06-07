@@ -13,6 +13,7 @@ void Walk::Start() {
     glm::vec2 currentPos(actor->GetPosition());
 
     glm::vec2 p = ClosestPointOnEdge::Find(*(m_shape), currentPos);
+    m_p = ClosestPointOnEdge::Find(*(m_shape), m_p);
     if (p != currentPos) {
         actor->SetPosition(p);
         currentPos = p;

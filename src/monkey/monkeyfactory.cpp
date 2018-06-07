@@ -240,7 +240,7 @@ std::unique_ptr<Function2D> MonkeyFactory::GetFunc2D(luabridge::LuaRef& ref) {
         glm::vec2 bounds = funcTable.Get<glm::vec2>("bounds");
         p->AddFunction(domain, isX, bounds.x, bounds.y);
     }
-    return p;
+    return std::move(p);
 }
 
 // Read the walk-area
@@ -486,6 +486,10 @@ std::shared_ptr<Shape> MonkeyFactory::ReadShape(luabridge::LuaRef& ref) {
         return std::make_shared<PolyLine>(vertices,edges);
     }
     return nullptr;
+}
+
+void MonkeyFactory::PostInit() {
+    LuaWrapper::Call("startUp");
 }
 
 
