@@ -16,7 +16,8 @@ strings = {
         useprep = "with"
     },
     objects = {
-        stairs = "stairs"
+        stairs = "stairs",
+        path = "path"
         
         
     }

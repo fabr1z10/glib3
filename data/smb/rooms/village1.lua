@@ -53,19 +53,19 @@ scene = {
   layer = 1
 },
 
--- {
---   pos= {6,60,0},
---   hotspot = {
---     group =1,
---     priority = 1,
---     shape = { type="rect", width=37, height=45},
---     onenter=curry(hoverOn, "path"),
---     onleave=hoverOff,
---     onclick=runAction
---   },
---   layer =1
--- },
---table.unpack(makeUI())
+{
+    pos= {6,60,0},
+    hotspot = {
+        group =1,
+        priority = 1,
+        shape = { type="rect", width=37, height=45},
+        onenter=curry(hoverOn, objects.path),
+        onleave=hoverOff,
+        onclick=runAction
+    },
+    layer =1
+},
+table.unpack(makeUI())
 }
 
 groups = {

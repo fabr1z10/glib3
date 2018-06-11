@@ -12,6 +12,10 @@ objects = {
         text = strings.objects.stairs,
         pos = {250, 0}, -- location where the player will go
         open = pippo
+    },
+    path = {
+        text = strings.objects.path,
+        pos = {8, 71}
     }
     
     
