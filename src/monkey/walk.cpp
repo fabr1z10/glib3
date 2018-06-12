@@ -12,12 +12,18 @@ void Walk::Start() {
     auto actor = Engine::get().GetRef<Entity>(m_actorId);
     glm::vec2 currentPos(actor->GetPosition());
 
-    glm::vec2 p = ClosestPointOnEdge::Find(*(m_shape), currentPos);
-    m_p = ClosestPointOnEdge::Find(*(m_shape), m_p);
-    if (p != currentPos) {
+    // if current position is not in shape
+    if (!m_shape->isPointInside(currentPos)) {
+        glm::vec2 p = ClosestPointOnEdge::Find(*(m_shape), currentPos);
         actor->SetPosition(p);
         currentPos = p;
     }
+
+    // if target point is not in shape
+    if (!m_shape->isPointInside(m_p)) {
+        m_p = ClosestPointOnEdge::Find(*(m_shape), m_p);
+    }
+
 
 
     glm::vec2 delta = m_p - currentPos;
