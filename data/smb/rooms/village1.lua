@@ -48,6 +48,18 @@ scene = {
     },
     layer =1
 },
+{
+    pos = {258, 26, 0},
+    hotspot = {
+        group = 1, priority = 1, 
+        shape = { type = "rect", width=24, height=26},
+        onenter = curry(hoverOn, objects.poster),
+        onleave = hoverOff,
+        onclick = runAction
+    },
+    layer = 1
+
+},
 table.unpack(makeUI())
 },
 

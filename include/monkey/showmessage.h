@@ -4,6 +4,7 @@
 #include <glm/glm.hpp>
 #include <gfx/enums.h>
 #include <string>
+#include <gfx/camera.h>
 
 class Entity;
 
@@ -34,4 +35,5 @@ private:
     std::string m_message;
     std::string m_font;
     Entity* m_generatedEntity;
+    OrthographicCamera* m_mainCam;
 };

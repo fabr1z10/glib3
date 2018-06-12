@@ -26,7 +26,8 @@ inventory = {}
 
 defaultActions = {
    walk = defaultWalk,
-   look = defaultLook
+   look = defaultLook,
+   open = defaultopen
    
 }
 

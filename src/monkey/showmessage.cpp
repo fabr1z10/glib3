@@ -7,7 +7,7 @@
 #include <glm/gtx/transform.hpp>
 
 void ShowMessage::Start() {
-
+    m_mainCam = Engine::get().GetRef<OrthographicCamera>("maincam");
     auto scene = Engine::get().GetScene();
     auto actor = Engine::get().GetRef<Entity>(m_actor);
     glm::vec2 currentPos(actor->GetPosition());
@@ -29,7 +29,20 @@ void ShowMessage::Start() {
         entity->AddComponent(renderer);
         parent->AddChild(entity);
     }
-    parent->SetPosition(glm::vec3(currentPos, 5.0f));
+
+    // adjust position
+
+    Bounds textBounds = mesh->getBounds();
+    glm::vec2 extents = textBounds.GetExtents();
+    glm::vec2 displ(0.0f);
+    glm::vec2 camPos(m_mainCam->GetPosition());
+    glm::vec2 camSize = 0.5f * m_mainCam->GetSize();
+
+    if (currentPos.x - extents[0] < camPos.x - camSize.x)
+        displ.x = (camPos.x - camSize.x) - (currentPos.x - extents[0]);
+    else if (currentPos.x + extents[0] > camPos.x + camSize.x)
+        displ.x = (currentPos.x + extents[0]) - (camPos.x - camSize.x);
+    parent->SetPosition(glm::vec3(currentPos + displ, 5.0f));
     parent->SetLayer(1);
     scene->AddChild(parent);
     m_generatedEntity = parent.get();

@@ -1,6 +1,18 @@
+
+
 function defaultWalk(script)
    return script 
 end
+
+
+function defaultopen(script) 
+    say (characters.guybrush, {strings.defaultactions[1]}, script)
+end
+
+function defaultclose(script) 
+    say (characters.guybrush, {strings.defaultactions[2]}, script)
+end
+
 
 function defaultLook (script)
     table.insert (script.actions,

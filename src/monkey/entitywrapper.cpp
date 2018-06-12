@@ -5,6 +5,7 @@
 #include <glm/gtx/transform.hpp>
 #include <gfx/engine.h>
 #include <gfx/scheduler.h>
+#include <gfx/animate.h>
 #include <monkey/luatable.h>
 #include <monkey/walk.h>
 #include <monkey/walkarea.h>
@@ -86,7 +87,24 @@ namespace luaFunctions {
                 glm::vec4 color = table.Get<glm::vec4>("color");
                 color/=255.0f;
                 script->AddActivity(std::unique_ptr<Say>(new Say(id, actor, msg, color)));
-
+            } else if (type == "turn") {
+                std::string actor = table.Get<std::string>("actor");
+                std::string dir = table.Get<std::string>("face");
+                std::string anim;
+                bool flip {false};
+                if (dir == "east") {
+                    anim = "idle_right";
+                    flip = true;
+                } else if (dir == "west") {
+                    anim = "idle_right";
+                } else if (dir == "north") {
+                    anim = "idle_back";
+                } else if (dir == "south") {
+                    anim = "idle_front";
+                } else {
+                    GLIB_FAIL("Unknown direction " << dir)
+                }
+                script->AddActivity(std::unique_ptr<Animate>(new Animate(id, actor, anim, flip)));
             }
         }
         luabridge::LuaRef edges = ref["edges"];

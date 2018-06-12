@@ -15,6 +15,7 @@ void Say::Start() {
     std::string animEnd;
     size_t s = anim.find_last_of('_');
     std::string face;
+    bool flipx = r->GetFlipX();
     if (s == std::string::npos) {
         face = "front";
     } else {
@@ -27,12 +28,12 @@ void Say::Start() {
     animStart ="talk_" + face;
     animEnd ="idle_" + face;
     int count = 0;
-    Push(std::make_shared<Animate>(count++, actor, animStart));
+    Push(std::make_shared<Animate>(count++, actor, animStart, flipx));
 
     for (auto& s : m_lines) {
 
         Push(std::make_shared<ShowMessage>(count++, s, "monkey", m_actorId, 8, m_color, glm::vec4(0.0f), BOTTOM, 2.0f));
     }
-    Push(std::make_shared<Animate>(count++, actor, animEnd));
+    Push(std::make_shared<Animate>(count++, actor, animEnd, flipx));
 
 }

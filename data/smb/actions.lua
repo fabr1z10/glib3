@@ -7,6 +7,14 @@ function changeRoom(roomId, script)
     })
 end
 
+
+characters = {
+    guybrush = {
+        name = "player",
+        color = {255, 255, 255, 255}
+    }
+}
+
 objects = {
     stairs = {
         text = strings.objects.stairs,
@@ -18,10 +26,16 @@ objects = {
         pos = {8, 71},
         walk = curry2(changeRoom, "lookout")
         
+    },
+    poster = {
+        text = strings.objects.poster,
+        pos = {269, 133},
+        dir = "north",
+        look = curry2_1(say, characters.guybrush, { strings.village1[1], strings.village1[2] })
     }
-    
-    
 }
+
+
 
 actions = {
     

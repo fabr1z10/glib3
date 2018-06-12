@@ -10,6 +10,12 @@ function curry2(f, arg)
     end 
 end
 
+function curry2_1(f, arg1, arg2)
+    return function(x)
+       f(arg1, arg2, x) 
+    end 
+end
+
 
 
 function hoverOn (obj)
@@ -47,18 +53,30 @@ function createWalkToAction (obj, script)
 		actor = "player",
         type = "walkto",
 		pos = obj.pos
-	})
+	  })
+
+    if (obj.dir ~= nil) then
+        table.insert (script.actions,
+        {
+            id = #script.actions,
+            actor = "player",
+            type = "turn",
+            face = obj.dir
+        })
+     end
 end
 
-function createWalkToPosition (position, script)
+function createWalkToPosition (position, script, f)
     table.insert (script.actions,
     {
         id = #script.actions,
-		walkarea = "walkarea",
-		actor = "player",
+		    walkarea = "walkarea",
+		    actor = "player",
         type = "walkto",
-		pos = position
-	})
+		    pos = position
+	  }
+
+  )
 end
 
 
@@ -175,6 +193,7 @@ function setverb(verb)
 end
 
 function changecolor (color, entity)
+  print ("QUI")
     entity:parent():setcolor(color[1], color[2], color[3], color[4])
 end
 
@@ -222,6 +241,17 @@ function makeButton (x, y, verb)
                    onclick = curry(setverb, verb ) },
         layer = 2
     }
+end
+
+function say (character, lines, script)
+    table.insert (script.actions,
+    {
+        id = #script.actions,
+        type = "say",
+        actor = character.name,
+        color = character.color,
+        message = lines
+    })
 end
 
 function makeGuybrush()
