@@ -4,8 +4,9 @@
 #include <set>
 
 struct Position {
-    long resourceId;
+    Resource* res;
     double xHead, xTail;
+    bool backwards;
 };
 
 std::ostream& operator<< (std::ostream& os, const Position& pos);
@@ -19,11 +20,16 @@ std::ostream& operator<< (std::ostream& os, const TrainPosition& pos);
 
 
 struct Activity {
-    int resourceId;
+    Activity() : resource{nullptr} {}
+    Activity (Resource& res) : resource(&res) {}
+    Resource* resource;
     long timeIn;
     long timeOut;
     long runningTime;
     bool isTrack;
+    bool backwards;  // important for tracks
+    //std::string ps, ns;
+    std::string trackOrStationId;
     bool operator< (const Activity& other) const {
         return timeIn < other.timeIn;
     }
@@ -42,12 +48,15 @@ public:
     Solution(const std::string& file);
     // get the position of train id at time t
     TrainPosition GetPosition(const std::string& id, long t);
-    std::vector<int> GetStations(const std::string& train);
+    std::vector<std::string> GetStations(const std::string& train);
     std::vector<std::string> GetTrainNames() const;
     int GetNumberOfSchedules() const { return schedules.size();}
     int GetNow() const;
+    std::string GetStationBefore (const std::string& train, Resource* r);
+    std::string GetStationAfter (const std::string& train, Resource* r);
 private:
     int m_now;
+    std::unordered_map<std::string, int> m_trainLengths;
     std::unordered_map<std::string, std::vector<Activity> > schedules;
 };
 

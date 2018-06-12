@@ -7,6 +7,64 @@
 
 using namespace tinyxml2;
 
+Station& Railway::GetStation(const std::string& name) {
+    auto it = m_stations.find(name);
+    if (it == m_stations.end())
+        GLIB_FAIL("Cannot find station " << name);
+    return *(it->second.get());
+}
+
+Track& Railway::GetTrack(const std::string& name) {
+    auto it = m_tracks.find(name);
+    if (it == m_tracks.end())
+        GLIB_FAIL("Cannot find track " << name);
+    return *(it->second.get());
+}
+
+void Railway::ReadRunningTimes() {
+
+    XMLDocument doc;
+    std::string fullPath = Config::get().GetHomeDir() + "up/config/up_config_CommonRailway.xml";
+    XMLError e = doc.LoadFile(fullPath.c_str());
+    if (e != XML_SUCCESS) {
+        std::cout << "We've got a problem loading common railway file " << fullPath <<"\n";
+    } else
+        std::cout << "ok\n";
+    int rtc = 0;
+    auto el = doc.FirstChildElement("UP_Config")->FirstChildElement("DefaultTrainStationDetails");
+    for (auto elp = el->FirstChildElement("DefaultStationDetail"); elp != NULL; elp = elp->NextSiblingElement()) {
+        std::string sid(elp->Attribute("StationId"));
+        Station& s = GetStation(sid);
+        auto el2 = elp->FirstChildElement("RouteRunningTimes");
+        for (auto elp2 = el2->FirstChildElement("RouteRunningTime"); elp2 != NULL; elp2 = elp2->NextSiblingElement()) {
+            std::string routeId(elp2->Attribute("routeId"));
+            int runTime = elp2->IntAttribute("runningTime");
+            std::string cat(elp2->Attribute("category"));
+            s.GetRoute(routeId).SetRunningTime(cat, runTime);
+            rtc++;
+        }
+
+    }
+
+    auto ela = doc.FirstChildElement("UP_Config")->FirstChildElement("DefaultTrackRuntimes");
+    for (auto elb = ela->FirstChildElement("DefaultTrackRuntime"); elb != NULL; elb = elb->NextSiblingElement()) {
+        std::string tid(elb->Attribute("TrackId"));
+        std::string dir(elb->Attribute("Direction"));
+        bool fwd = (dir == "AToB");
+        Track& t = GetTrack(tid);
+        for (auto elc = elb->FirstChildElement("TrackRuntimeByCategory"); elc != NULL; elc = elc->NextSiblingElement()) {
+            std::string cat(elc->Attribute("Category"));
+            for (auto eld = elc->FirstChildElement("DefaultTrackCircuitRuntime"); eld != NULL; eld = eld->NextSiblingElement()) {
+                std::string tc(eld->Attribute("TrackCircuitId"));
+                int runtime = eld->IntAttribute("Runtime");
+                t.GetTrackCircuit(tc).SetRunningTime(cat, fwd, runtime);
+                rtc++;
+            }
+        }
+    }
+    std::cout << "Read " << rtc << " << running times.\n";
+}
+
 void Railway::Load() {
 
     XMLDocument doc;
@@ -23,7 +81,7 @@ void Railway::Load() {
         std::string id = eStation->Attribute("Id");
         std::string name = eStation->Attribute("Name");
 
-        auto station = std::make_shared<Station>(name);
+        auto station = std::make_shared<Station>(id);
         m_stations[id] = station;
 
         // read points
@@ -34,9 +92,45 @@ void Railway::Load() {
             station->AddLinePoint(lp, atrack);
         }
 
+        // read station routes
+        auto eroutes = eStation->FirstChildElement("Routes");
+        for (auto eroute = eroutes->FirstChildElement("Route"); eroute != NULL; eroute = eroute->NextSiblingElement()) {
+            std::string name = eroute->Attribute("Id");
+            int length = eroute->IntAttribute("Length");
+            std::unique_ptr<StationRoute> sr(new StationRoute(name, length, id));
+            station->AddRoute(std::move(sr));
+        }
     }
-    std::cout << "Load " << m_stations.size() << " stations.\n";
 
+
+    // read all tracks
+    auto elt = doc.FirstChildElement("Railway")->FirstChildElement("Tracks");
+    for (auto eTrack = elt->FirstChildElement("Track"); eTrack != NULL; eTrack = eTrack->NextSiblingElement()) {
+        std::string trackName = eTrack->Attribute("Id");
+        std::string stationA = eTrack->Attribute("StationA");
+        std::string stationB = eTrack->Attribute("StationB");
+
+
+        auto track = std::make_shared<Track>(trackName, stationA, stationB);
+        if (eTrack->Attribute("MainName") != nullptr) {
+            std::string mainName = eTrack->Attribute("MainName");
+            track->SetMainName(mainName);
+        }
+        m_tracks[trackName] = track;
+
+        auto etcs = eTrack->FirstChildElement("TrackCircuits");
+        for (auto etc = etcs->FirstChildElement("TrackCircuit"); etc != NULL; etc = etc->NextSiblingElement()) {
+            std::string name = etc->Attribute("Id");
+            // length in feet
+            int length = etc->IntAttribute("Length");
+            std::unique_ptr<TrackCircuit> tc(new TrackCircuit(name, length, trackName));
+            track->AddTrackCircuit(std::move(tc));
+        }
+    }
+
+    std::cout << "Load " << m_stations.size() << " stations.\n";
+    std::cout << "Load " << m_tracks.size() << " tracks.\n";
+    ReadRunningTimes();
 
 
 //        int id = AddStation(name);
@@ -89,34 +183,7 @@ void Railway::Load() {
 //
 //    // read all tracks
 //
-//    auto elt = doc.FirstChildElement("Railway")->FirstChildElement("Tracks");
-//    for (auto eTrack = elt->FirstChildElement("Track"); eTrack != NULL; eTrack = eTrack->NextSiblingElement()) {
-//        std::string trackName = eTrack->Attribute("Id");
-//        std::string stationA = eTrack->Attribute("StationA");
-//        std::string stationB = eTrack->Attribute("StationB");
-//        std::string mainName;
-//        if (eTrack->Attribute("MainName") != nullptr)
-//            mainName = eTrack->Attribute("MainName");
-//        auto itA = m_stationNameToId.find(stationA);
-//        if (itA == m_stationNameToId.end())
-//            GLIB_FAIL("Unknown station " << stationA);
-//        auto itB = m_stationNameToId.find(stationB);
-//        if (itB == m_stationNameToId.end())
-//            GLIB_FAIL("Unknown station " << stationB);
-//        int id = AddTrack(trackName, itA->second, itB->second, mainName);
-//        Track* track = GetTrack(id);
-//        auto etcs = eTrack->FirstChildElement("TrackCircuits");
-//        for (auto etc = etcs->FirstChildElement("TrackCircuit"); etc != NULL; etc = etc->NextSiblingElement()) {
-//            std::string name = etc->Attribute("Id");
-//            // length in feet
-//            int length = etc->IntAttribute("Length");
-//            std::unique_ptr<TrackCircuit> sr(new TrackCircuit(name, length, id));
-//            track->AddTrackCircuit(sr->GetId());
-//            int idtc = sr->GetId();
-//            m_resources[idtc] = std::move(sr);
-//            m_trackCircuitToId[name] = idtc;
-//        }
-//    }
+
 ////
 ////
 //    std::cout << "Read " << m_tracks.size() << " tracks." <<std::endl;
@@ -287,3 +354,17 @@ void Railway::Load() {
 //    }
 //
 //}
+std::vector<std::string> Railway::GetTracksConnecting (const std::string& A, const std::string& B) {
+    Station& sa = GetStation(A);
+    std::vector<std::string> out;
+    std::vector<std::string> ct = sa.GetConnectingTracks();
+    for (auto& tid : ct){
+        if (tid != "-1") {
+            Track &t = GetTrack(tid);
+            if (t.GetStationA() == B || t.GetStationB() == B)
+                out.push_back(tid);
+        }
+    }
+    return out;
+
+}

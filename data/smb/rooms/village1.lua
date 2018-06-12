@@ -1,38 +1,22 @@
 --assets local to this scene
-dt=0.1
+
 
 require ("funcs")
 require ("text")
 require ("actions")
 
-
-playerpos = nil
-if (variables._previousroom == "lookout") then
-   print "STOCAZZO"
-   playerpos = {8, 71, 0} 
-end
-
-
-
-
+-- begin room
+room = {
 
 assets = {
     makeGuybrush()
-}
+},
 
 scene = {
 {
   pos = {0, 0, -5},
   gfx = { image="gfx/village1/bg1.png" },
   layer = 1
-},
-{
-  tag = "player",
-  pos = playerpos,
-  gfx = { model = "guybrush", anim = "idle_front" },
-  follow = { cam="maincam" },
-  layer = 1,
-  scaling = {}
 },
 {
   walkarea = { 
@@ -52,7 +36,6 @@ scene = {
   },
   layer = 1
 },
-
 {
     pos= {6,60,0},
     hotspot = {
@@ -66,12 +49,12 @@ scene = {
     layer =1
 },
 table.unpack(makeUI())
-}
+},
 
 groups = {
 	{ id=1, cam ="maincam"},
 	{ id=2, cam ="uicam"}
-}
+},
 cameras = {
 {
     tag="maincam",
@@ -90,13 +73,32 @@ cameras = {
     layer = 2
 }
 }
+}
+-- end room
 
 
 -- initial script
-function startUp()
+function room.init()
+    variables._actionInfo:reset()
+    print ("CAZZONE")
+    -- previous room was lookout
+    if (variables._previousroom == "lookout") then
+       playerpos = {8, 71, 0} 
+    end
+    
+    -- add player
+    table.insert (room.scene, {
+        tag = "player",
+        pos = playerpos,
+        gfx = { model = "guybrush", anim = "idle_front" },
+        follow = { cam="maincam" },
+        layer = 1,
+        scaling = {}
+    })
 
-if (variables._previousroom == "lookout") then
-    print ("PIPPODURO")
+end
+
+function room.start() 
     script = {
         startid = 0,
         id = "_walk",
@@ -105,5 +107,6 @@ if (variables._previousroom == "lookout") then
     }
     createWalkToPosition ({120, 80}, script)
     monkey.play(script)
+
 end
-end
+

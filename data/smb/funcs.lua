@@ -13,8 +13,10 @@ end
 
 
 function hoverOn (obj)
-    if (variables._actionInfo.obj1 == nil) then
+    print ("calling " .. obj.text)
+    if (variables._actionInfo.obj1 == nil) then 
         variables._actionInfo.obj1 = obj
+        print ("nil ok")
     else
         if (variables._actionInfo.verb.objects > 1) then
             variables._actionInfo.obj2 = obj
@@ -224,6 +226,7 @@ end
 
 function makeGuybrush()
     local pane = {6,-34}
+    local dt = 0.1
 return {
         id="guybrush",
         sheet="gfx/sprite1.png",

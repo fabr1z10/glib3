@@ -1,12 +1,14 @@
 --assets local to this scene
-dt=0.1
-
 require ("funcs")
 require ("text")
 require ("actions")
 
+local dt = 0.1
+
+room = {
 
 assets = {
+
     makeGuybrush(),
     {
         id = "fire",
@@ -18,16 +20,15 @@ assets = {
        	    name = "default",             
             frames = 
             { 
-	    	  	       { duration = dt, quads = { { x = 1, y = 1, width = 24, height = 32, anchor = {0, 0}}}},
+	    	  	    { duration = dt, quads = { { x = 1, y = 1, width = 24, height = 32, anchor = {0, 0}}}},
                 { duration = dt, quads = { { x = 27, y = 1, width = 24, height = 32, anchor = {0, 0}}}},
                 { duration = dt, quads = { { x = 53, y = 1, width = 24, height = 32, anchor = {0, 0}}}},
                 { duration = dt, quads = { { x = 79, y = 1, width = 24, height = 32, anchor = {0, 0}}}}               
-			         }
+			      }
         }
         }
     }
-}
-
+},
 scene = {
 {
   pos = {0, 0, -5},
@@ -78,19 +79,11 @@ scene = {
   layer =1
 },
 table.unpack(makeUI())
-}
-
-
-
-function prova2(a)
-  a:parent():setcolor(255, 255, 255, 255)
-  print "qua!!"
-end
-
+},
 groups = {
-	{ id=1, cam ="maincam"},
-	{ id=2, cam ="uicam"}
-}
+  { id=1, cam ="maincam"},
+  { id=2, cam ="uicam"}
+},
 cameras = {
 {
     tag="maincam",
@@ -109,3 +102,16 @@ cameras = {
     layer = 2
 }
 }
+}
+
+function room.init()
+variables._actionInfo:reset()
+end
+
+function prova2(a)
+  a:parent():setcolor(255, 255, 255, 255)
+  print "qua!!"
+end
+
+
+

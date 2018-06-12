@@ -78,9 +78,9 @@ end
 
 function variables._actionInfo:reset()
    self.verb = variables._verbs.walk
-   obj1 = nil
-   obj2 = nil
-   selectSecond = false
+   self.obj1 = nil
+   self.obj2 = nil
+   self.selectSecond = false
 end
 
 config = {

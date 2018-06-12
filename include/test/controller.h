@@ -9,8 +9,8 @@ class Factory2;
 
 class ViewerController : public Component, public MouseListener, public KeyboardListener {
 public:
-    ViewerController(Camera* cam, Factory2* f) : Component(), MouseListener(), KeyboardListener(), m_lmbPressed{false}, m_cam(cam), m_factory(f)
-    , m_time{1517810400} {}
+    ViewerController(Camera* cam, Factory2* f, int now) : Component(), MouseListener(), KeyboardListener(), m_lmbPressed{false}, m_cam(cam), m_factory(f)
+    , m_time{now}, m_now{now} {}
     void Start() override {}
     void Update (double dt) override {}
     void CursorPosCallback(GLFWwindow*, double, double) override;
@@ -19,6 +19,7 @@ public:
     void KeyCallback(GLFWwindow*, int, int, int, int) override;
     using ParentClass = ViewerController;
 private:
+    double m_now;
     double m_time;
     Factory2* m_factory;
     void RefreshTrains();

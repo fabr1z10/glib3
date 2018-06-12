@@ -28,8 +28,17 @@ std::shared_ptr<Entity> MonkeyFactory::Create() {
     std::cout << "Loading room "<< room << std::endl;
     LuaWrapper::Load(Engine::get().GetAssetManager().GetDirectory() + "rooms/" + room + ".lua");
 
+
     // Create the local assets
-    luabridge::LuaRef assets = luabridge::getGlobal(LuaWrapper::L, "assets");
+    luabridge::LuaRef roomRef = luabridge::getGlobal(LuaWrapper::L, "room");
+    LuaTable roomTable(roomRef);
+
+    if (roomTable.HasKey("init")) {
+        luabridge::LuaRef r1 = roomTable.Get<luabridge::LuaRef>("init");
+        r1();
+    }
+
+    luabridge::LuaRef assets = roomTable.Get<luabridge::LuaRef>("assets");
     for (int i = 0; i < assets.length();++i) {
         luabridge::LuaRef a = assets[i+1];
         LuaTable assetTable(a);
@@ -43,13 +52,14 @@ std::shared_ptr<Entity> MonkeyFactory::Create() {
     }
 
     // Creating the room
-    luabridge::LuaRef scene = luabridge::getGlobal(LuaWrapper::L, "scene");
+    //luabridge::LuaRef scene = luabridge::getGlobal(LuaWrapper::L, "scene");
+    luabridge::LuaRef scene = roomTable.Get<luabridge::LuaRef>("scene");
     ReadItems (scene, entity.get());
 
     // create the cameras
     auto engineNode = std::make_shared<Entity>();
     auto renderingEngine = std::make_shared<RenderingEngine>();
-    luabridge::LuaRef cams = luabridge::getGlobal(LuaWrapper::L, "cameras");
+    luabridge::LuaRef cams = roomTable.Get<luabridge::LuaRef>("cameras");
     for (int i = 0; i < cams.length(); ++i) {
         luabridge::LuaRef cam = cams[i+1];
         LuaTable tcam(cam);
@@ -81,7 +91,7 @@ std::shared_ptr<Entity> MonkeyFactory::Create() {
     scheduler->SetTag("_scheduler");
     auto hotspotManager = std::make_shared<HotSpotManager>();
     hotspotManager->SetTag("_hotspotmanager");
-    luabridge::LuaRef groups = luabridge::getGlobal(LuaWrapper::L, "groups");
+    luabridge::LuaRef groups = roomTable.Get<luabridge::LuaRef>("groups");
     for (int i = 0; i< groups.length(); ++i) {
         luabridge::LuaRef groupR = groups[i+1];
         int id = groupR["id"].cast<int>();
@@ -94,13 +104,22 @@ std::shared_ptr<Entity> MonkeyFactory::Create() {
     engineNode->AddComponent(scheduler);
     engineNode->AddComponent(hotspotManager);
     entity->AddChild(engineNode);
-    
+
+    //luabridge::LuaRef roomRef = luabridge::getGlobal(LuaWrapper::L, "room");
+    //LuaTable roomTable(roomRef);
+    if (roomTable.HasKey("start")) {
+        luabridge::LuaRef r1 = roomTable.Get<luabridge::LuaRef>("start");
+        r1();
+    }
+
     return entity;
 
 }
 
 void MonkeyFactory::CleanUp() {
-    luabridge::LuaRef assets = luabridge::getGlobal(LuaWrapper::L, "assets");
+    luabridge::LuaRef roomRef = luabridge::getGlobal(LuaWrapper::L, "room");
+    LuaTable table (roomRef);
+    luabridge::LuaRef assets = table.Get<luabridge::LuaRef>("assets");
     for (int i = 0; i < assets.length();++i) {
         luabridge::LuaRef a = assets[i+1];
         LuaTable assetTable(a);
@@ -110,9 +129,11 @@ void MonkeyFactory::CleanUp() {
             Engine::get().GetAssetManager().RemoveMesh(id);
             
         }
-        
-        
     }
+
+    roomRef = luabridge::Nil();
+
+
 }
 
 void MonkeyFactory::ReadItems(luabridge::LuaRef& scene, Entity* parent) {
@@ -485,11 +506,13 @@ std::shared_ptr<Shape> MonkeyFactory::ReadShape(luabridge::LuaRef& ref) {
         }
         return std::make_shared<PolyLine>(vertices,edges);
     }
+
     return nullptr;
 }
 
 void MonkeyFactory::PostInit() {
-    LuaWrapper::Call("startUp");
+
+
 }
 
 

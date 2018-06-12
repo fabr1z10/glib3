@@ -29,12 +29,13 @@ public:
     std::shared_ptr<Entity> Create() override;
     void DrawLineStemmingFrom(int stationId, float x, float y);
     void RefreshTrains(double t);
+    void CleanUp () override {}
     std::shared_ptr<Entity> CreateLabel (const std::string&, glm::vec4 color, glm::vec2 pos, float size, int layer = 1);
 private:
     Entity* m_trainNode;
 
-    std::unordered_map<int, StationLocation> m_stations;
-    std::unordered_map<int, ResourceLocation> m_loc;
+    std::unordered_map<std::string, StationLocation> m_stations;
+    std::unordered_map<std::string, ResourceLocation> m_loc;
     Solution& m_solution;
     std::unordered_map<int, std::vector<int>> connections;
     std::unordered_set<int> done;

@@ -19,131 +19,122 @@ protected:
     int _id;
 };
 
-// resources are: track circuits, routes and stopping points
-// each resource has a length
+enum class ResourceType { TRACK_CIRCUIT, STATION_ROUTE };
+
+// Resources are: track circuits and station routes
 class Resource : public GlobalId {
 public:
     Resource(const std::string& name, int length) : GlobalId(name), m_length{length} {}
     int GetLength() const { return m_length;}
-    virtual bool isStationRoute() = 0;
-    virtual bool isStoppingPoint() = 0;
-    virtual bool isTrackCircuit() = 0;
+    virtual int GetRunningTime(const std::string& cat, bool fwd = false) = 0;
+    virtual ResourceType GetType() = 0;
 private:
     int _id;
     int m_length;
-
-
 };
 
 class TrackCircuit : public Resource {
 public:
-    TrackCircuit (const std::string& name, int length, int trackId) : Resource(name, length), _trackId{trackId} {}
+    TrackCircuit (const std::string& name, int length, const std::string& trackId) : Resource(name, length), _trackId{trackId} {}
     std::string GetName() override;
-    bool isStationRoute() override { return false;}
-    bool isStoppingPoint()override { return false;}
-    bool isTrackCircuit() override{ return true; }
-    int GetTrackId() { return _trackId;}
+    int GetRunningTime(const std::string& cat, bool fwd = false) override;
+    void SetRunningTime (const std::string& cat, bool fwd, int runtime) {
+        if (fwd)
+            m_runningTimes[cat].first = runtime;
+        else
+            m_runningTimes[cat].second = runtime;
+    }
+    ResourceType GetType() override { return ResourceType::TRACK_CIRCUIT; }
+    std::string GetTrackId() { return _trackId;}
 private:
-    int _trackId;
+    std::unordered_map<std::string, std::pair<int, int>> m_runningTimes;
+    std::string _trackId;
 };
 
 class StationRoute : public Resource {
 public:
-    StationRoute (const std::string& name, int length, int stationId) : Resource(name, length), _stationId{stationId} {}
+    StationRoute (const std::string& name, int length, const std::string& stationId) : Resource(name, length), _stationId{stationId} {}
     std::string GetName() override;
-    int GetStationId() const { return _stationId; }
-    bool isStationRoute() override { return true;}
-    bool isStoppingPoint()override { return false;}
-    bool isTrackCircuit() override{ return false; }
+    std::string GetStationId() const { return _stationId; }
+    int GetRunningTime(const std::string& cat, bool fwd = false) override;
+    void SetRunningTime (const std::string& cat, int runtime) {
+        m_runningTimes[cat] = runtime;
+    }
+    ResourceType GetType() override { return ResourceType::STATION_ROUTE; }
 private:
-    int _stationId;
+    std::unordered_map<std::string, int> m_runningTimes;
+    std::string _stationId;
 };
-
-//class StoppingPoint : public Resource {
-//public:
-//    StoppingPoint (const std::string& name, int length, int stationId) : Resource(name, length), _stationId{stationId} {}
-//    std::string GetName() override;
-//    int GetStationId() const { return _stationId; }
-//    bool isStationRoute() override { return false;}
-//    bool isStoppingPoint()override { return true;}
-//    bool isTrackCircuit() override{ return false; }
-//private:
-//    int _stationId;
-//};
 
 // each track is made up of a sequence of track circuits
 // and connects two stations
 class Track : public GlobalId {
 public:
-    Track(const std::string& name, int stationA, int stationB) : GlobalId(name), _stationA{stationA}, _stationB{stationB} {}
+    Track(const std::string& name, const std::string& stationA, const std::string& stationB) : GlobalId(name), _stationA{stationA}, _stationB{stationB} {}
     // get total track length
     int GetLength() const;
     std::string GetName() override;
-    const std::vector<int>& GetTrackCircuits() const { return m_trackCircuits; }
-    void AddTrackCircuit(int id) {
-        m_trackCircuits.push_back(id);
+    std::vector<TrackCircuit*> GetTrackCircuits() const {
+        std::vector<TrackCircuit*> tcs;
+        for (auto& tc :m_trackCircuits)
+            tcs.push_back(tc.get());
+        return tcs;
+
     }
-    int GetStationA() const { return _stationA; }
-    int GetStationB() const { return _stationB; }
+    void AddTrackCircuit(std::unique_ptr<TrackCircuit> tc) {
+        m_namedTC[tc->GetShortName()] = tc.get();
+        m_trackCircuits.push_back(std::move(tc));
+    }
+    std::string GetStationA() const { return _stationA; }
+    std::string GetStationB() const { return _stationB; }
     std::string GetMainName() const { return _mainName; }
+    TrackCircuit& GetTrackCircuit (const std::string& name){
+        auto it = m_namedTC.find(name);
+        if (it == m_namedTC.end())
+        GLIB_FAIL("Track " << GetName() << " does not have track circuit " << name);
+        return *(it->second);
+
+    }
     void SetMainName(const std::string& name) {
         _mainName = name;
     }
 private:
     // sequence of track circuits from A to B
-    std::vector<int> m_trackCircuits;
+    std::vector<std::unique_ptr<TrackCircuit> > m_trackCircuits;
+    std::unordered_map<std::string, TrackCircuit*> m_namedTC;
     std::string _mainName;
-    int _stationA;
-    int _stationB;
+    std::string _stationA;
+    std::string _stationB;
 };
 
-enum class PointType {
-    LINE_POINT, INTERMEDIATE_POINT, STOPPING_POINT
-};
-
-class Point {
+class Station : public GlobalId {
 public:
-    Point(int id) : m_id{id}{}
-    virtual~ Point();
-    virtual PointType GetType() = 0;
+    Station (const std::string& name) : GlobalId(name) {}
+    std::string GetName() override;
+    void AddLinePoint (int id, const std::string& trackName);
+    void AddCorrectPath(int, int);
+    void AddRoute (std::unique_ptr<StationRoute> r) {
+        m_stationRoutes[r->GetShortName()] = std::move(r);
+    }
+    StationRoute& GetRoute(const std::string& name){
+        auto it = m_stationRoutes.find(name);
+        if (it == m_stationRoutes.end())
+            GLIB_FAIL("Station " << GetName() << " does not have route " << name);
+        return *(it->second.get());
+    }
+    std::vector<std::string> GetConnectingTracks() {
+        std::vector<std::string> out;
+        for (auto& m : m_lp)
+            out.push_back(m.second);
+        return out;
+    }
 private:
-    int m_id;
+    std::unordered_map<std::string, std::unique_ptr<StationRoute> > m_stationRoutes;
+    std::unordered_map<int, std::string> m_lp;
 };
 
-class LinePoint : public Point {
-public:
-    LinePoint (int id, int connectingTrack) : Point(id), m_connectingTrack{connectingTrack}{}
-    PointType GetType() override {return PointType::LINE_POINT; }
-private:
-    int m_connectingTrack;
-};
 
-class IntermediatePoint : public Point {
-public:
-    IntermediatePoint(int id) : Point(id) {}
-    PointType GetType() override {return PointType::INTERMEDIATE_POINT; }
-};
 
-class StoppingPoint : public Point {
-public:
-    StoppingPoint (int id, int length) : Point(id), m_length{length}{}
-    PointType GetType() override {return PointType::STOPPING_POINT; }
-private:
-    int m_length;
-
-};
-
-// a station is made up of routes and stopping points
-class Station {
-public:
-    Station(const std::string& name) : m_name(name) {}
-    Path GetPath(int pointFrom, int pointTo);
-    int GetPoint(Track);
-    void AddPoint ()
-private:
-    std::string m_name;
-    std::unordered_map<int, std::shared_ptr<Point>> m_stationPoints;
-};
 
 //struct Schedule {
 //    long timeIn, timeOut;

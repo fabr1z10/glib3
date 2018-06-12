@@ -1,9 +1,24 @@
 #include <test/resource.h>
 #include <test/railway.h>
-//
-//void Station::AddLinePoint (int id, std::string& trackName) {
-//    linePoints[id] = trackName;
-//}
+
+int StationRoute::GetRunningTime(const std::string& cat, bool) {
+    auto it = m_runningTimes.find(cat);
+    if (it == m_runningTimes.end())
+        GLIB_FAIL("Cannot find category " << cat);
+    return it->second;
+
+}
+
+int TrackCircuit::GetRunningTime(const std::string& cat, bool fwd) {
+    auto it = m_runningTimes.find(cat);
+    if (it == m_runningTimes.end())
+    GLIB_FAIL("Cannot find category " << cat);
+    return (fwd ? it->second.first : it->second.second);
+
+}
+void Station::AddLinePoint (int id, const std::string& trackName) {
+    m_lp[id] = trackName;
+}
 //
 //void Station::AddCorrectPath (int l1, int l2) {
 //
@@ -20,15 +35,13 @@ std::string StationRoute::GetName() {
     return "Route " + _name;
 }
 
-std::string StoppingPoint::GetName() {
-    return "Stopping point " + _name;
-}
+
 std::string Track::GetName() {
     return "Track " + _name;
 }
-//std::string Station::GetName() {
-//    return "Station " + _name;
-//}
+std::string Station::GetName() {
+    return "Station " + _name;
+}
 std::string Train::GetName() {
     return "Train " + _name;
 }

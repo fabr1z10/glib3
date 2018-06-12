@@ -22,12 +22,25 @@
 
 int main(int argc, char* argv[]) {
     try {
-        if (argc < 2) {
-            std::cerr << "Usage: viewer <file>\n";
+        if (argc < 3) {
+            std::cerr << "Usage: viewer <dir> <solution>\n";
             return 1;
         }
         Config::get().SetHomeDir(argv[1]);
         Config::get().GetRailway().Load();
+        Solution s(argv[2]);
+        float w = 800;
+        float h = 600;
+        EngineConfig config (w, h);
+        config.enableMouse = true;
+        config.enableKeyboard = true;
+        config.windowWidth = w;
+        config.windowHeight = h;
+        config.name = "Pippo";
+        Engine &g = Engine::get();
+        g.Init(config);
+        g.SetSceneFactory(std::unique_ptr<Factory2>(new Factory2(s)));
+        g.MainLoop();
     } catch (Error& err){
         std::cerr << err.what() << std::endl;
         return 1;
