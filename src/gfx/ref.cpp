@@ -1,6 +1,7 @@
 #include <gfx/ref.h>
 #include <gfx/engine.h>
 
+int Ref::g_idCount = 0;
 
 Ref::~Ref() {
     if (!m_tag.empty()) {

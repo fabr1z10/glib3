@@ -31,6 +31,11 @@ void HotSpotManager::AddGroup (int id, const std::string& camId) {
     m_groups[id] = HotSpotGroup(camId);
 }
 
+void HotSpotManager::Update(double dt) {
+    
+
+}
+
 
 void HotSpotManager::CursorPosCallback(GLFWwindow*, double x, double y) {
     //std::cout << x << ", " << y << std::endl;
@@ -51,6 +56,7 @@ void HotSpotGroup::Click(double x, double y) {
     }
 
 }
+
 
 void HotSpotGroup::Run(double x, double y) {
     // see if current group is active (i.e. mouse position is in the group's cam viewport)

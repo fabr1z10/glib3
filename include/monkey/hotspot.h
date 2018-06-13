@@ -56,6 +56,7 @@ public:
         m_hotspots.erase(hs);
     }
     void InitCamera();
+    void CheckCameraMove();
     void Run(double x, double y);
     void Click(double mouse_x, double mouse_y);
 private:
@@ -74,7 +75,7 @@ class HotSpotManager : public Component, public MouseListener {
 public:
     HotSpotManager() : Component(), MouseListener(), m_active{true} {}
     void Start() override ;
-    void Update (double dt) override {}
+    void Update (double dt) override ;
     void CursorPosCallback(GLFWwindow*, double, double) override;
     void ScrollCallback(GLFWwindow*, double, double) override {}
     void MouseButtonCallback(GLFWwindow*, int, int, int) override;

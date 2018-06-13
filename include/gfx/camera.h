@@ -5,6 +5,7 @@
 #include <gfx/bounds.h>
 #include "shader.h"
 #include "gfx/ref.h"
+#include <gfx/event.h>
 
 class Camera : public Ref {
 public:
