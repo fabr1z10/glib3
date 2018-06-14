@@ -27,7 +27,15 @@ inventory = {}
 defaultActions = {
    walk = defaultWalk,
    look = defaultLook,
-   open = defaultopen
+   open = defaultopen,
+   close = defaultclose,
+   push = defaultmove,
+   pull = defaultmove,
+   pick = defaultpickup,
+   use = defaultclose,
+   talk = defaultclose,
+   turnon = defaultclose,
+   turnoff = defaultclose
    
 }
 

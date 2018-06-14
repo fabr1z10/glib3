@@ -24,7 +24,7 @@ function hoverOn (obj)
         variables._actionInfo.obj1 = obj
         print ("nil ok")
     else
-        if (variables._actionInfo.verb.objects > 1) then
+        if (variables._actionInfo.verb.objects > 1 and variables._actionInfo.obj1 ~= obj) then
             variables._actionInfo.obj2 = obj
         end
     end
@@ -148,9 +148,14 @@ function runAction ()
         print ("finding action " .. variables._actionInfo.verb.code .. " " .. variables._actionInfo.obj1.text)
         a = variables._actionInfo.obj1[variables._actionInfo.verb.code]
         if (a == nil) then
+            
             if (variables._actionInfo.verb.code == "give" or variables._actionInfo.verb.code == "use") then
                 -- wait for second object
+                print ("POLLLL")
                 variables._actionInfo.selectSecond = true
+                a = monkey.getEntity("currentaction")
+                a:settext(variables._actionInfo:toString())
+                return
             else
                -- run default
                -- Here we generate a play script. The first action is always a walkto towards the provided
@@ -162,6 +167,7 @@ function runAction ()
             end
         else
             -- run specific action
+            -- see if obj1 has an action with obj2
             
             createWalkToAction (variables._actionInfo.obj1, script)
             a(script)
@@ -169,7 +175,18 @@ function runAction ()
     else
         -- action with two objects
         -- see if there are any two object actions like verb obj1 ...
-        script = twoObjectHandler[variables._actionInfo.verb.code]
+        a1 = variables._actionInfo.obj1[variables._actionInfo.verb.code]
+        if (a1 == nil) then
+            a1 = variables._actionInfo.obj2[variables._actionInfo.verb.code]
+            if (a1 == nil) then
+                defaultActions[variables._actionInfo.verb.code](script)
+            else
+                
+            end
+        end
+            
+        
+        --script = twoObjectHandler[variables._actionInfo.verb.code]
     end
     for n = 1, #script.actions-1 do
         table.insert (script.edges, {script.actions[n].id, script.actions[n+1].id})
@@ -195,6 +212,22 @@ end
 function changecolor (color, entity)
   print ("QUI")
     entity:parent():setcolor(color[1], color[2], color[3], color[4])
+end
+
+function make_hotspot(input)
+return {
+    pos = {input.x, input.y, 0},
+    gfx = input.gfx,
+    hotspot = {
+        group = 1,
+        priority = input.priority, 
+        shape = { type = "rect", width=input.width, height=input.height, offset= input.offset},
+        onenter = curry(hoverOn, input.object),
+        onleave = hoverOff,
+        onclick = runAction
+    },
+    layer = 1
+} 
 end
 
 function makeUI () 

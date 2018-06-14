@@ -32,6 +32,12 @@ objects = {
         pos = {269, 133},
         dir = "north",
         look = curry2_1(say, characters.guybrush, { strings.village1[1], strings.village1[2] })
+    },
+    village1_door = {
+        text = strings.objects.door,
+        pos = {715, 133},
+        dir = "north",
+        open = false
     }
 }
 

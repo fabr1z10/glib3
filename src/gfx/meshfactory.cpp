@@ -70,11 +70,12 @@ std::shared_ptr<IMesh> MeshFactory::CreateMesh (Shape& s, float z, glm::vec4 col
 void MeshFactory::visit(Rect& rect) {
     float w = rect.GetWidth();
     float h = rect.GetHeight();
+    glm::vec2 offset = rect.GetOffset();
     std::vector<VertexColor> vertices = {
-            {0.0f, 0.0f, m_z, m_color.r, m_color.g, m_color.b, m_color.a},
-            {w, 0.0f, m_z, m_color.r, m_color.g, m_color.b, m_color.a},
-            {w, h, m_z, m_color.r, m_color.g, m_color.b, m_color.a},
-            {0.0f, h, m_z, m_color.r, m_color.g, m_color.b, m_color.a},
+            {offset.x, offset.y, m_z, m_color.r, m_color.g, m_color.b, m_color.a},
+            {offset.x + w, offset.y, m_z, m_color.r, m_color.g, m_color.b, m_color.a},
+            {offset.x + w, offset.y + h, m_z, m_color.r, m_color.g, m_color.b, m_color.a},
+            {offset.x, offset.y + h, m_z, m_color.r, m_color.g, m_color.b, m_color.a},
     };
     std::vector<unsigned int> indices = {0, 1, 2, 3};
     auto mesh = std::make_shared<Mesh<VertexColor>>(COLOR_SHADER);

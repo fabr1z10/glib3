@@ -458,10 +458,11 @@ void MonkeyFactory::ReadSprite (LuaTable& t) {
 std::shared_ptr<Shape> MonkeyFactory::ReadShape(luabridge::LuaRef& ref) {
     LuaTable at (ref);
     std::string type = at.Get<std::string>("type");
+    glm::vec2 offset = at.Get<glm::vec2>("offset", glm::vec2(0.0f));
     if (type == "rect") {
         float w = at.Get<float>("width");
         float h = at.Get<float>("height");
-        return std::make_shared<Rect>(w, h);
+        return std::make_shared<Rect>(w, h, offset);
     } else if (type == "poly") {
         std::vector<float> outline = at.GetVector<float>("outline");
         std::vector<glm::vec2> points;

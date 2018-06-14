@@ -5,11 +5,35 @@ require ("funcs")
 require ("text")
 require ("actions")
 
+local dt = 0.1
+
 -- begin room
 room = {
 
 assets = {
-    makeGuybrush()
+    makeGuybrush(),
+    {
+        id = "door",
+        sheet = "gfx/sprite2.png",
+        type="sprite",
+        ppu=1,
+        animations = {
+        {
+       	    name = "close",             
+            frames = 
+            { 
+	    	  	{ duration = dt, quads = { { x = 33, y = 35, width = 31, height = 52, anchor = {0, 0}}}}              
+		    }
+        },
+        {
+       	    name = "open",             
+            frames = 
+            { 
+	    	  	{ duration = dt, quads = { { x = 1, y = 35, width = 31, height = 52, anchor = {0, 0}}}}              
+		    }
+        }
+        }
+    }
 },
 
 scene = {
@@ -60,6 +84,7 @@ scene = {
     layer = 1
 
 },
+make_hotspot { x=699, y=7, width=31, height=47, offset={0,5},priority = 1, object = objects.village1_door, gfx = { model="door", anim = ((objects.village1_door == true) and "open" or "close") }},
 table.unpack(makeUI())
 },
 

@@ -18,14 +18,17 @@ strings = {
     objects = {
         stairs = "stairs",
         path = "path",
-        poster = "poster"
+        poster = "poster",
+        door = "door"
         
         
     },
     defaultactions = {
         [1] = "It doesn't seem to open.",
         [2] = "That doesn't seem to work.",
-        [3] = "I can't move it."
+        [3] = "I can't move it.",
+        [4] = "I don't see anything special about it.",
+        [5] = "I can't pick that up."
 
     },
     village1 = {

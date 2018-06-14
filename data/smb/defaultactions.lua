@@ -15,22 +15,13 @@ end
 
 
 function defaultLook (script)
-    table.insert (script.actions,
-    {
-        id = #script.actions,
-        type = "say",
-        actor = "player",
-        color = {255,0,0,255},
-        message = {"ciao cazzo!", "te lo dico an!e?"}
-    })
- --    {
- --        id = #script.actions,
- --        type = "showmessage",
-	-- 	actor = "player",
- --        font ="monkey",
- --        size = 8,
- --        color = {255,0,0,255},
- --        outlinecolor = {0,0,0,255},
-	-- 	message = "ciao cazzo!"
-	-- })
+    say (characters.guybrush, {strings.defaultactions[4]}, script)
+end
+
+function defaultmove (script)
+    say (characters.guybrush, {strings.defaultactions[3]}, script)
+end
+
+function defaultpickup (script)
+    say (characters.guybrush, {strings.defaultactions[5]}, script)
 end
