@@ -3,6 +3,8 @@
 #include <iostream>
 #include <set>
 
+extern GLFWwindow* window;
+
 bool HotSpot::isMouseInside(glm::vec2 pos) {
     glm::vec2 lpos (m_entity->GetPosition());
     return m_shape->isPointInside(pos - lpos);
@@ -23,12 +25,12 @@ void HotSpot::SetActive(bool active) {
 }
 void HotSpotManager::Start() {
     for (auto& g : m_groups)
-        g.second.InitCamera();
+        g.second->InitCamera();
 
 }
 void HotSpotManager::AddGroup (int id, const std::string& camId) {
 
-    m_groups[id] = HotSpotGroup(camId);
+    m_groups[id] = std::unique_ptr<HotSpotGroup>(new HotSpotGroup(camId));
 }
 
 void HotSpotManager::Update(double dt) {
@@ -40,12 +42,13 @@ void HotSpotManager::Update(double dt) {
 void HotSpotManager::CursorPosCallback(GLFWwindow*, double x, double y) {
     //std::cout << x << ", " << y << std::endl;
     for (auto& g : m_groups)
-        g.second.Run(x, y);
+        g.second->Run(x, y);
 
 }
 
 void HotSpotGroup::InitCamera() {
     m_cam = Engine::get().GetRef<OrthographicCamera>(m_camId);
+    m_cam->OnMove.Register(this, [this] (Camera*) { CameraMove(); });
 }
 
 void HotSpotGroup::Click(double x, double y) {
@@ -57,6 +60,12 @@ void HotSpotGroup::Click(double x, double y) {
 
 }
 
+
+void HotSpotGroup::CameraMove() {
+    double x, y;
+    glfwGetCursorPos(window, &x, &y);
+    Run (x, y);
+}
 
 void HotSpotGroup::Run(double x, double y) {
     // see if current group is active (i.e. mouse position is in the group's cam viewport)
@@ -110,18 +119,18 @@ void HotSpotManager::MouseButtonCallback(GLFWwindow* window, int button, int act
        double x, y ;
        glfwGetCursorPos(window, &x, &y);
        for (auto& g : m_groups) {
-           g.second.Click(x, y);
+           g.second->Click(x, y);
        }
     }
 
 }
 
 void HotSpotManager::Register (HotSpot* hotspot) {
-    m_groups[hotspot->GetGroup()].Insert(hotspot);
+    m_groups[hotspot->GetGroup()]->Insert(hotspot);
 }
 
 void HotSpotManager::Unregister (HotSpot* hotspot) {
-    m_groups[hotspot->GetGroup()].Erase(hotspot);
+    m_groups[hotspot->GetGroup()]->Erase(hotspot);
 }
 
 void HotSpot::Start() {

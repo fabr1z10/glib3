@@ -45,10 +45,10 @@ inline int HotSpot::GetPriority() const {
 }
 
 
-class HotSpotGroup {
+class HotSpotGroup : public Ref {
 public:
-    HotSpotGroup(){}
-    HotSpotGroup(const std::string& camId) : m_camId(camId), m_currentlyActiveHotSpot{nullptr} {}
+    HotSpotGroup() : Ref() {}
+    HotSpotGroup(const std::string& camId) : Ref(), m_camId(camId), m_currentlyActiveHotSpot{nullptr} {}
     void Insert(HotSpot* hs) {
         m_hotspots.insert(hs);
     }
@@ -59,6 +59,7 @@ public:
     void CheckCameraMove();
     void Run(double x, double y);
     void Click(double mouse_x, double mouse_y);
+    void CameraMove() ;
 private:
     bool m_active;
     std::unordered_set<HotSpot*> m_hotspots;
@@ -85,5 +86,5 @@ public:
     using ParentClass = HotSpotManager;
 protected:
     bool m_active;
-    std::unordered_map<int, HotSpotGroup> m_groups;
+    std::unordered_map<int, std::unique_ptr<HotSpotGroup> > m_groups;
 };

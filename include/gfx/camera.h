@@ -26,6 +26,7 @@ public:
     bool IsInViewport(float xScreen, float yScreen);
     int GetLayer() const { return m_layer; }
     using ParentClass = Camera;
+    Event<Camera*> OnMove;
 protected:
     glm::vec4 m_camViewport;
     int m_layer;

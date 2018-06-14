@@ -11,7 +11,7 @@
 
 #include <gfx/ref.h>
 #include <functional>
-#include <list>
+#include <unordered_map>
 
 // generic class that enables to register interest
 // objects can expose different events other objects can register to
@@ -24,23 +24,36 @@ template<typename Args>
 class Event {
 private:
     struct Callback {
-        int id;
         std::function<void(Args)> callback;
     };
-    
+public:
     
     // register interest in this event with context
     void Register(Ref* object, std::function<void(Args)> f) {
-        m_callbacks[object->GetId()] = Callback{ object, f };
+        m_callbacks[object->GetId()] = Callback{ f };
     }
     
-    void Unregister(Object* obj) {
-        m_callbacks.erase(obj->GetHandle());
+    void Unregister(Ref* obj) {
+        m_callbacks.erase(obj->GetId());
     }
 
+    void Fire(Args args) {
+        for (auto it = m_callbacks.begin(); it != m_callbacks.end(); /* no inc */)
+        {
+            auto ref = Ref::Get(it->first);
+            if (ref == nullptr) {
+                // observer is no longer alive, remove the callback
+                m_callbacks.erase(it++);
+            }
+            else {
+                it->second.callback (args);
+                it++;
+            }
+        }
+    }
     
 private:
-    std::list<Callback> m_callbacks;
+    std::unordered_map<int, Callback> m_callbacks;
 };
 
 #endif /* event_h */

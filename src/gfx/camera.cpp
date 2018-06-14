@@ -45,8 +45,10 @@ void Camera::SetCurrentCamera(Shader* currentShader) {
 }
 
 void Camera::SetPosition(glm::vec3 eye, glm::vec3 dir, glm::vec3 up) {
-    m_viewMatrix = glm::lookAt(eye, eye + dir, up);
-    //m_entity->SetPosition(eye);
+    if (eye != glm::vec3(-m_viewMatrix[3])) {
+        m_viewMatrix = glm::lookAt(eye, eye + dir, up);
+        OnMove.Fire(this);
+    }
 }
 
 bool Camera::IsInViewport(float xScreen, float yScreen) {
