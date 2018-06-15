@@ -81,7 +81,7 @@ objects = {
         text = strings.objects.poster,
         pos = {269, 133},
         dir = "north",
-        look = curry(say, {character = characters.guybrush, lines = { strings.village1[1], strings.village1[2] }})
+        look = curry(say, {character = characters.guybrush, lines = { strings.village1[1], strings.village1[2] }})        
     },
     village1_door = {
         text = strings.objects.door,

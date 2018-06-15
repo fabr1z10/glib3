@@ -7,13 +7,13 @@ defaultActions = {
    look = curry (say, {character=characters.guybrush, lines = {strings.defaultactions[4]} }),
    open = curry (say, {character=characters.guybrush, lines = {strings.defaultactions[1]} }),
    close = curry (say, {character=characters.guybrush, lines = {strings.defaultactions[2]} }),
-   push = curry (say, {character="player", lines = {strings.defaultactions[3]} }),
-   pull = curry (say, {character="player", lines = {strings.defaultactions[3]} }),
-   pick = curry (say, {character="player", lines = {strings.defaultactions[5]} }),
-   use = curry (say, {character="player", lines = {strings.defaultactions[2]} }),
-   talk = curry (say, {character="player", lines = {strings.defaultactions[2]} }),
-   turnon = curry (say, {character="player", lines = {strings.defaultactions[2]} }),
-   turnoff = curry (say, {character="player", lines = {strings.defaultactions[2]} })
+   push = curry (say, {character=characters.guybrush, lines = {strings.defaultactions[3]} }),
+   pull = curry (say, {character=characters.guybrush, lines = {strings.defaultactions[3]} }),
+   pick = curry (say, {character=characters.guybrush, lines = {strings.defaultactions[5]} }),
+   use = curry (say, {character=characters.guybrush, lines = {strings.defaultactions[2]} }),
+   talk = curry (say, {character=characters.guybrush, lines = {strings.defaultactions[2]} }),
+   turnon = curry (say, {character=characters.guybrush, lines = {strings.defaultactions[2]} }),
+   turnoff = curry (say, {character= characters.guybrush, lines = {strings.defaultactions[2]} })
    
 }
 
@@ -150,6 +150,7 @@ function runAction ()
         else
             -- run specific action
             -- see if obj1 has an action with obj2
+            print ("found custom")
             s:add (createWalkToAction(variables._actionInfo.obj1))
             s:add (a())
         end

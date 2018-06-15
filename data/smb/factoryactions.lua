@@ -60,7 +60,7 @@ function empty()
 end
 
 function say (args)
-    print ("SAY!" .. args.character.name .. args.character.color[1] .. args.lines[1])
+    print ("SAY!" .. args.lines[1])
     actions = {
     {
         type= "say",
