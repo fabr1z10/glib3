@@ -142,7 +142,11 @@ end
 
 -- the default behavior when you click on an object
 function runAction ()
+    if (variables._actionInfo.obj1 == nil) then
+        return
+    end
     script = { startid = 0, id = "_walk", actions = {}, edges = {} }
+
     if (variables._actionInfo.obj2 == nil) then
         -- try to run a single object action
         print ("finding action " .. variables._actionInfo.verb.code .. " " .. variables._actionInfo.obj1.text)
