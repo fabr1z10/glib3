@@ -84,7 +84,7 @@ scene = {
     layer = 1
 
 },
-make_hotspot { x=699, y=7, width=31, height=47, offset={0,5},priority = 1, object = objects.village1_door, gfx = { model="door", anim = ((objects.village1_door == true) and "open" or "close") }},
+make_hotspot { x=699, y=7, width=31, height=47, offset={0,5},priority = 1, object = objects.village1_door, gfx = { model="door", anim = ((objects.village1_door.isopen == true) and "open" or "close") }},
 table.unpack(makeUI())
 },
 

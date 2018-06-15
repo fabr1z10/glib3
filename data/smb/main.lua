@@ -1,12 +1,4 @@
-print("Hello world!")
-
 require ("text")
-require ("defaultactions")
-
-function ciao() 
-    print "Chiamo ciao "
-    print (engine.prova)
-end
 
 engine = {
     device_size = { 320, 200 },
@@ -23,21 +15,6 @@ fonts = {
 -- inventory keeps a table with objects
 inventory = {}
 
-
-defaultActions = {
-   walk = defaultWalk,
-   look = defaultLook,
-   open = defaultopen,
-   close = defaultclose,
-   push = defaultmove,
-   pull = defaultmove,
-   pick = defaultpickup,
-   use = defaultclose,
-   talk = defaultclose,
-   turnon = defaultclose,
-   turnoff = defaultclose
-   
-}
 
 variables = {
     _verbs = {

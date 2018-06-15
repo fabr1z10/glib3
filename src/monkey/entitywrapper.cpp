@@ -12,6 +12,7 @@
 #include <monkey/changeroom.h>
 #include <monkey/showmessage.h>
 #include <monkey/say.h>
+#include <gfx/delay.h>
 
 float EntityWrapper::GetX() const {
     return m_underlying->GetPosition().x;
@@ -105,6 +106,13 @@ namespace luaFunctions {
                     GLIB_FAIL("Unknown direction " << dir)
                 }
                 script->AddActivity(std::unique_ptr<Animate>(new Animate(id, actor, anim, flip)));
+            } else if (type == "animate") {
+                std::string actor = table.Get<std::string>("actor");
+                std::string anim = table.Get<std::string>("anim");
+                script->AddActivity(std::unique_ptr<Animate>(new Animate(id, actor, anim)));
+            } else if (type == "delay") {
+                float sec = table.Get<float>("sec");
+                script->AddActivity(std::unique_ptr<DelayTime>(new DelayTime(id, sec)));
             }
         }
         luabridge::LuaRef edges = ref["edges"];

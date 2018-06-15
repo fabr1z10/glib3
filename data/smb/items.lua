@@ -17,8 +17,10 @@ function walkToDoor(args, script)
     end 
 end
 
-function openDoor(args, script) 
-    if (args.obj.isopen == false) then
+function useDoor(args, script) 
+    cond = args.open and false or true
+
+    if (args.obj.isopen == cond) then
         table.insert (script.actions, 
         { id = #script.actions, type="animate", actor="player", anim="operate_back" })
         table.insert (script.actions, 
@@ -61,7 +63,8 @@ characters = {
         color = {255, 255, 255, 255}
     }
 }
-
+print ("QUI CI ARRIVO")
+print (characters.guybrush.name)
 objects = {
     stairs = {
         text = strings.objects.stairs,
@@ -78,7 +81,7 @@ objects = {
         text = strings.objects.poster,
         pos = {269, 133},
         dir = "north",
-        look = curry2_1(say, characters.guybrush, { strings.village1[1], strings.village1[2] })
+        look = curry(say, {character = characters.guybrush, lines = { strings.village1[1], strings.village1[2] }})
     },
     village1_door = {
         text = strings.objects.door,
