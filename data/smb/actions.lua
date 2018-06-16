@@ -1,57 +1,29 @@
-function changeRoom(roomId, script)
-    table.insert (script.actions,
-    {
-        id = #script.actions,
- 	    type = "gotoroom",
-		room = roomId
-    })
+function changeRoom(roomId)
+    return {
+        { type = "gotoroom", room = roomId }
+    }
 end
 
-function walkToDoor(args, script) 
+function walkToDoor(args) 
     if (args.obj.isopen == true) then
-        table.insert (script.actions, {
-            id = #script.actions,
-            type = "gotoroom",
-            room = args.roomId
-        })
+        return {
+            { type = "gotoroom", room = args.roomId }
+        }
     end 
 end
 
-function openDoor(args, script) 
-    if (args.obj.isopen == false) then
-        table.insert (script.actions, 
-        { id = #script.actions, type="animate", actor="player", anim="operate_back" })
-        table.insert (script.actions, 
-        { id = #script.actions, type="delay", sec="0.5" })
-        table.insert (script.actions,
-        {
-            id = #script.actions,
-            type = "animate",
-            actor = args.obj.tag,
-            anim = "open"
-        })
-        table.insert (script.actions, 
-        { id = #script.actions, type="animate", actor="player", anim="idle_back" })        
-        args.obj.isopen = true
-    end 
-end
-
-function closeDoor(args, script) 
-    if (args.obj.isopen == true) then
-        table.insert (script.actions, 
-        { id = #script.actions, type="animate", actor="player", anim="operate_back" })
-        table.insert (script.actions, 
-        { id = #script.actions, type="delay", sec="0.5" })
-        table.insert (script.actions,
-        {
-            id = #script.actions,
-            type = "animate",
-            actor = args.obj.tag,
-            anim = "close"
-        })
-        table.insert (script.actions, 
-        { id = #script.actions, type="animate", actor="player", anim="idle_back" })        
-        args.obj.isopen = false
+function operateDoor(args)
+    -- if args.open == true then I need to something when it's closed
+    -- and viceversa, so ...
+    if (args.obj.isopen ~= args.open) then
+        face = dirHelper[args.obj.dir]
+        return { 
+            { type="animate", actor="player", anim=("operate" .. face) },
+            { type="delay", sec="0.5" },
+            { type="animate", actor = args.obj.tag, anim = (args.open and "open" or "close") },
+            { type="animate", actor="player", anim=("idle" .. face) },
+            { type="callfunc", func = function() args.obj.isopen = args.open end }
+        }
     end 
 end
 
@@ -66,19 +38,19 @@ objects = {
     stairs = {
         text = strings.objects.stairs,
         pos = {250, 0}, -- location where the player will go
-        walk = curry2(changeRoom, "village1")
+        walk = curry(changeRoom, "village1")
     },
     path = {
         text = strings.objects.path,
         pos = {8, 71},
-        walk = curry2(changeRoom, "lookout")
+        walk = curry(changeRoom, "lookout")
         
     },
     poster = {
         text = strings.objects.poster,
         pos = {269, 133},
         dir = "north",
-        look = curry2_1(say, characters.guybrush, { strings.village1[1], strings.village1[2] })
+        look = curry (say, {character = characters.guybrush, lines= { strings.village1[1], strings.village1[2] }})
     },
     village1_door = {
         text = strings.objects.door,
@@ -89,9 +61,9 @@ objects = {
     }
 }
 
-objects.village1_door.walk = curry2(walkToDoor, {obj = objects.village1_door, roomId = "lookout"})
-objects.village1_door.open = curry2(openDoor, {obj = objects.village1_door} )
-objects.village1_door.close = curry2(closeDoor, {obj = objects.village1_door} )
+objects.village1_door.walk = curry(walkToDoor, {obj = objects.village1_door, roomId = "lookout"} )
+objects.village1_door.open = curry(operateDoor, {obj = objects.village1_door, open = true} )
+objects.village1_door.close = curry(operateDoor, {obj = objects.village1_door, open = false} )
 
 
 

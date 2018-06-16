@@ -69,6 +69,14 @@ function variables._actionInfo:reset()
    self.selectSecond = false
 end
 
+dirHelper = {
+    north = "_back",
+    south = "_front",
+    east = "_right",
+    west = "_right"
+    
+}
+
 config = {
     
     ui_unselected_color = { 0, 170, 0, 255},

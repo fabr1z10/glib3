@@ -13,6 +13,7 @@
 #include <monkey/showmessage.h>
 #include <monkey/say.h>
 #include <gfx/delay.h>
+#include <monkey/callfunc.h>
 
 float EntityWrapper::GetX() const {
     return m_underlying->GetPosition().x;
@@ -113,6 +114,9 @@ namespace luaFunctions {
             } else if (type == "delay") {
                 float sec = table.Get<float>("sec");
                 script->AddActivity(std::unique_ptr<DelayTime>(new DelayTime(id, sec)));
+            } else if (type == "callfunc") {
+                luabridge::LuaRef ref = table.Get<luabridge::LuaRef>("func");
+                script->AddActivity(std::unique_ptr<CallFunc>(new CallFunc(id, ref)));
             }
         }
         luabridge::LuaRef edges = ref["edges"];
