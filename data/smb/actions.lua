@@ -31,6 +31,13 @@ characters = {
     guybrush = {
         name = "player",
         color = {255, 255, 255, 255}
+    },
+    lookout = {
+        name = "lookout",
+        text = strings.objects.lookout,
+        pos = {0, 0},
+        dir ="west",
+        color = {255,255,255,255}
     }
 }
 

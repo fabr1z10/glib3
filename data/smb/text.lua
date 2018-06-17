@@ -19,7 +19,8 @@ strings = {
         stairs = "stairs",
         path = "path",
         poster = "poster",
-        door = "door"
+        door = "door",
+        lookout = "lookout"
         
         
     },

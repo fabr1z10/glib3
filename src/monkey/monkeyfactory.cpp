@@ -205,7 +205,9 @@ void MonkeyFactory::ReadGfxComponent(luabridge::LuaRef &ref, Entity *parent) {
     } else if (table.HasKey("model")) {
         std::string model = table.Get<std::string>("model");
         std::string anim = table.Get<std::string>("anim", "");
+        bool flip = table.Get<bool>("flip", false);
         renderer->SetMesh(Engine::get().GetAssetManager().GetMesh(model));
+        renderer->SetFlipX(flip);
         renderer->SetAnimation(anim);
 
     }

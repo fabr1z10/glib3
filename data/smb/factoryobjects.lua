@@ -48,6 +48,7 @@ return {
         onclick = runAction
     },
     layer = 1,
+	scaling = input.scaling,
     tag = input.object.tag
 } 
 end

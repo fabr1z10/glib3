@@ -29,7 +29,7 @@ Tex* AssetManager::GetTexture(const std::string& filename) {
         try {
             std::unique_ptr<Tex> texture(new Tex(file, nearest));
             Tex* handle = texture.get();
-            m_textures[file] = std::move(texture);
+            m_textures[filename] = std::move(texture);
             return handle;
         }
         catch (std::exception& err) {

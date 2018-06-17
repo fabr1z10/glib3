@@ -8,8 +8,8 @@ local dt = 0.1
 room = {
 
 assets = {
-
     makeGuybrush(),
+    makeLookout(),
     {
         id = "fire",
         sheet = "gfx/sprite2.png",
@@ -28,6 +28,8 @@ assets = {
         }
         }
     }
+
+
 },
 scene = {
 {
@@ -49,8 +51,19 @@ scene = {
   tag = "player",
   pos = {240, 40, 0},
   gfx = { model = "guybrush", anim = "idle_front" },
+  scaling={},
   layer = 1
 },
+--{
+--  tag = "lookout",
+--  pos = {240, 40, 1},
+--  scaling = {},
+--  gfx = { model = "lookout", anim = "idle_right", flip = true },
+--  layer = 1
+--},
+make_hotspot { x=240, y=40, width=20, height=47, offset={0,0}, priority = 1, object = characters.lookout,
+              gfx = { model="lookout", anim = "idle_right", flip = true }, scaling = {} },
+
 {
   pos = {126, 52, -1},
   gfx = { model = "fire", anim = "default" },
@@ -63,7 +76,15 @@ scene = {
 	group = 1,
 	priority = 0,
 	target = "player",
-	shape = { type = "poly", outline = {203,51,315,62,315,19,260,10,260,0,260,-20,234,-20,234,0,234,10,221,26,152,33,152,51}}
+	shape = { type = "poly", outline = {203,51,315,62,315,19,260,10,260,0,260,-20,234,-20,234,0,234,10,221,26,152,33,152,51}},
+    scaling = {
+        depth = { 
+            { rect = {0, 320, 0, 144}, dir = "y", bounds = {1, 0} } 
+        },
+        scale = {
+            { rect = {0, 320, 0, 144}, dir = "y", bounds = {1, 1} } 
+        }
+    }
   },
   layer = 1
 },
