@@ -440,6 +440,7 @@ void MonkeyFactory::ReadSprite (LuaTable& t) {
                 Quad q;
                 q.x = qt.Get<float>("x");
                 q.y = qt.Get<float>("y");
+                q.z = qt.Get<float>("z", 0.0f);
                 q.width = qt.Get<float>("width");
                 q.height = qt.Get<float>("height");
                 glm::vec2 anchor = qt.Get<glm::vec2>("anchor", glm::vec2(0.0f));

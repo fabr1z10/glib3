@@ -28,10 +28,10 @@ SpriteMesh::SpriteMesh (float ppu, const std::string& filename, std::vector<Anim
                 float th = quad.height / texHeight;
                 float width = quad.width / ppu;
                 float height = quad.height / ppu;
-                vertices.push_back(Vertex3D(bottomLeft.x, bottomLeft.y, 0.0f, tx, ty + th));
-                vertices.push_back(Vertex3D(bottomLeft.x + width, bottomLeft.y, 0.0f, tx + tw, ty + th));
-                vertices.push_back(Vertex3D(bottomLeft.x + width, bottomLeft.y + height, 0.0f, tx + tw, ty));
-                vertices.push_back(Vertex3D(bottomLeft.x, bottomLeft.y + height, 0.0f, tx, ty));
+                vertices.push_back(Vertex3D(bottomLeft.x, bottomLeft.y, quad.z, tx, ty + th));
+                vertices.push_back(Vertex3D(bottomLeft.x + width, bottomLeft.y, quad.z, tx + tw, ty + th));
+                vertices.push_back(Vertex3D(bottomLeft.x + width, bottomLeft.y + height, quad.z, tx + tw, ty));
+                vertices.push_back(Vertex3D(bottomLeft.x, bottomLeft.y + height, quad.z, tx, ty));
                 int ix = quadCount * 4;
                 indices.push_back(ix);
                 indices.push_back(ix + 1);

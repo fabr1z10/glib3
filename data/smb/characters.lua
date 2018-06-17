@@ -464,7 +464,7 @@ function makeLookout()
 					    duration = dt,
                         quads = {
 			    		    { x = 105, y = 1, width = 20, height = 37, anchor = {13, 0}},
-                            { x = 181, y = 18, width = 10, height = 12, anchor = {0, 0}}
+                            { x = 181, y = 18, z= 0.001,width = 10, height = 12, anchor = {5, -33}}
 					    }
                     }
 		    	}

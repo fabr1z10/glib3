@@ -61,7 +61,7 @@ scene = {
 --  gfx = { model = "lookout", anim = "idle_right", flip = true },
 --  layer = 1
 --},
-make_hotspot { x=240, y=40, width=20, height=47, offset={0,0}, priority = 1, object = characters.lookout,
+make_hotspot { x=240, y=40, width=20, height=47, offset={-10,0}, priority = 1, object = characters.lookout,
               gfx = { model="lookout", anim = "idle_right", flip = true }, scaling = {} },
 
 {

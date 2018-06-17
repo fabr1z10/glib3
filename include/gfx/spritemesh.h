@@ -1,7 +1,7 @@
 #include "gfx/mesh.h"
 
 struct Quad {
-    float x, y;
+    float x, y, z;
     float width, height;
     float anchorx, anchory;
 };
