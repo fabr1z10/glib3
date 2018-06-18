@@ -11,10 +11,11 @@
 class HotSpot : public Component {
 public:
     HotSpot (std::shared_ptr<Shape> shape, int priority, int group, Entity* relativeTo = nullptr) : Component(),
-    m_shape{shape}, m_active{false}, m_priority{priority}, m_group{group} {}
+    m_shape{shape}, m_focus{false}, m_priority{priority}, m_group{group} {}
     virtual ~HotSpot();
     virtual bool isMouseInside(glm::vec2);
-    void SetActive (bool);
+    void SetFocus (bool);
+
     void Start() override;
     Shape* GetShape();
     void Update(double) override {}
@@ -28,7 +29,7 @@ protected:
     int m_priority;
     int m_group;
     std::shared_ptr<Shape> m_shape;
-    bool m_active;
+    bool m_focus;
 };
 
 inline Shape* HotSpot::GetShape()
@@ -54,6 +55,9 @@ public:
     }
     void Erase(HotSpot* hs) {
         m_hotspots.erase(hs);
+        if (m_currentlyActiveHotSpot == hs) {
+            m_currentlyActiveHotSpot = nullptr;
+        }
     }
     void InitCamera();
     void CheckCameraMove();

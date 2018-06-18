@@ -27,46 +27,25 @@ function operateDoor(args)
     end 
 end
 
-characters = {
-    guybrush = {
-        name = "player",
-        color = {255, 255, 255, 255}
-    },
-    lookout = {
-        name = "lookout",
-        text = strings.objects.lookout,
-        pos = {0, 0},
-        dir ="west",
-        color = {255,255,255,255}
-    }
-}
+function startDialogue(args)
+    print ("CALLING START DIALOGUE!")
+    ui = monkey.getEntity("ui")
+    ui:setactive(false)
+        print ("2")
+    parent = monkey.getEntity("dialogue")
+    print ("3")
+    node = dialogues[args.dialogueId][args.nodeId]
+    print ("lines = " .. #node.lines)
+    j = 0
+    for _, line in ipairs(node.lines) do
+        monkey.addEntity(makeDialogueButton(0, 48-8*j, line), parent)
+        j = j +1
+    end
+    
 
-objects = {
-    stairs = {
-        text = strings.objects.stairs,
-        pos = {250, 0}, -- location where the player will go
-        walk = curry(changeRoom, "village1")
-    },
-    path = {
-        text = strings.objects.path,
-        pos = {8, 71},
-        walk = curry(changeRoom, "lookout")
-        
-    },
-    poster = {
-        text = strings.objects.poster,
-        pos = {269, 133},
-        dir = "north",
-        look = curry (say, {character = characters.guybrush, lines= { strings.village1[1], strings.village1[2] }})
-    },
-    village1_door = {
-        text = strings.objects.door,
-        tag = "door1",
-        pos = {715, 133},
-        dir = "north",
-        isopen = false,
-    }
-}
+
+end
+
 
 objects.village1_door.walk = curry(walkToDoor, {obj = objects.village1_door, roomId = "lookout"} )
 objects.village1_door.open = curry(operateDoor, {obj = objects.village1_door, open = true} )

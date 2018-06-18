@@ -48,8 +48,8 @@ void RenderingEngine::Update(double)
                 if ( (camLayer & iter->GetLayer()) > 0) {
                     // get the renderer component
                     Renderer* renderer = iter->GetComponent<Renderer>();
-                    
-                    if (renderer != nullptr && renderer->GetShaderType() == stype) {
+
+                    if (renderer != nullptr && renderer->IsActive() && renderer->GetShaderType() == stype) {
                         glm::mat4 wt = iter->GetWorldTransform() * renderer->GetTransform();
                         // check for frustrum culling ...
                         drawCount++;

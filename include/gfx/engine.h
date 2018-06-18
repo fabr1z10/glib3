@@ -43,6 +43,7 @@ public:
     Shader* GetShader (ShaderType id);
     void AddShader (std::unique_ptr<Shader>);
     Entity* GetScene() const;
+    SceneFactory* GetSceneFactory();
     void SetSceneFactory (std::unique_ptr<SceneFactory> factory);
     glm::vec2 GetDeviceSize() const;
     void RegisterToWindowResizeEvent(WindowResizeListener*);
@@ -91,6 +92,10 @@ private:
     GLuint m_vao;
     bool m_endScene;
 };
+
+inline SceneFactory* Engine::GetSceneFactory() {
+    return m_sceneFactory.get();
+}
 
 inline AssetManager& Engine::GetAssetManager() {
     return m_assetManager;

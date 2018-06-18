@@ -17,6 +17,7 @@ public:
     void CleanUp() override;
     void PostInit() override;
     void ReadSprite (LuaTable&);
+    std::shared_ptr<Entity> ReadItem(luabridge::LuaRef& ref);
 private:
     void ReadItems(luabridge::LuaRef& ref, Entity* parent);
     void ReadGfxComponent (luabridge::LuaRef& ref, Entity* parent);

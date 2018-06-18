@@ -25,6 +25,23 @@ void Entity::AddChild(std::shared_ptr<Entity> child) {
     }
 }
 
+
+bool Entity::IsActive() const {
+    return m_active;
+}
+
+void Entity::SetActive(bool value) {
+    m_active = value;
+    for (auto& h : m_components) {
+        h.second->SetActive(value);
+    }
+    // now call setActive on all children
+    for (auto& c: m_children)
+        c->SetActive(value);
+
+}
+
+
 void Entity::Remove(Entity* entity) {
     m_children.erase(entity->m_itParent);
 
@@ -51,6 +68,9 @@ void Entity::Start() {
     for (auto& iter : m_components) {
         iter.second->Start();
     }
+    for (auto& m : m_children)
+        m->Start();
+
 }
 
 

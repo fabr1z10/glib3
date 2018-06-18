@@ -12,13 +12,13 @@ bool HotSpot::isMouseInside(glm::vec2 pos) {
 }
 
 
-void HotSpot::SetActive(bool active) {
-    if (active != m_active) {
-        if (active)
+void HotSpot::SetFocus(bool focus) {
+    if (focus != m_focus) {
+        if (focus)
             onEnter();
         else
             onLeave();
-        m_active = active;
+        m_focus = focus;
     }
 
 
@@ -80,7 +80,7 @@ void HotSpotGroup::Run(double x, double y) {
 
         std::map<int, HotSpot*> candidateHotspots;
         for (auto& h : m_hotspots) {
-            if (h->isMouseInside(worldCoords)) {
+            if (h->IsActive() && h->isMouseInside(worldCoords)) {
                 candidateHotspots.insert(std::make_pair(-h->GetPriority(), h));
             }
         }
@@ -89,21 +89,21 @@ void HotSpotGroup::Run(double x, double y) {
             //std::cout << "no cand hotspot" << std::endl;
             if (m_currentlyActiveHotSpot != nullptr)
             {
-                m_currentlyActiveHotSpot->SetActive(false);
+                m_currentlyActiveHotSpot->SetFocus(false);
                 m_currentlyActiveHotSpot = nullptr;
             }
         } else {
             auto hotspot = (candidateHotspots.begin()->second);
             //std::cout << "priority = " << candidateHotspots.begin()->first << std::endl;
             if (m_currentlyActiveHotSpot != nullptr && m_currentlyActiveHotSpot != hotspot)
-                m_currentlyActiveHotSpot->SetActive(false);
-            hotspot->SetActive(true);
+                m_currentlyActiveHotSpot->SetFocus(false);
+            hotspot->SetFocus(true);
             m_currentlyActiveHotSpot = hotspot;
         }
 
     } else {
         if (m_active && m_currentlyActiveHotSpot != nullptr) {
-            m_currentlyActiveHotSpot->SetActive(false);
+            m_currentlyActiveHotSpot->SetFocus(false);
             m_currentlyActiveHotSpot = nullptr;
         }
     }

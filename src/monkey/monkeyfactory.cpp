@@ -136,55 +136,62 @@ void MonkeyFactory::CleanUp() {
 
 }
 
+std::shared_ptr<Entity> MonkeyFactory::ReadItem(luabridge::LuaRef& ref) {
+    LuaTable item(ref);
+    auto entity = std::make_shared<Entity>();
+    std::string tag = item.Get<std::string>("tag", "");
+    if (!tag.empty()) entity->SetTag(tag);
+    glm::vec3 pos = item.Get<glm::vec3>("pos", glm::vec3(0.0f));
+    entity->SetPosition(pos);
+    int layer = item.Get<int>("layer", 0);
+    if (item.HasKey("children")) {
+        luabridge::LuaRef c = item.Get<luabridge::LuaRef>("children");
+        ReadItems (c, entity.get());
+    }
+    if (item.HasKey("gfx")) {
+        luabridge::LuaRef c = item.Get<luabridge::LuaRef>("gfx");
+        ReadGfxComponent(c, entity.get());
+    }
+    if (item.HasKey("text")) {
+        luabridge::LuaRef c = item.Get<luabridge::LuaRef>("text");
+        ReadTextComponent(c, entity.get());
+    }
+    if (item.HasKey("outlinetext")) {
+        luabridge::LuaRef c = item.Get<luabridge::LuaRef>("outlinetext");
+        ReadOutlineTextComponent(c, entity.get());
+    }
+    if (item.HasKey("follow")) {
+        luabridge::LuaRef c = item.Get<luabridge::LuaRef>("follow");
+        ReadFollowComponent(c, entity.get());
+    }
+    if (item.HasKey("walkarea")) {
+        luabridge::LuaRef c = item.Get<luabridge::LuaRef>("walkarea");
+        ReadWalkarea(c, entity.get());
+    }
+    if (item.HasKey("hotspot")) {
+        luabridge::LuaRef c = item.Get<luabridge::LuaRef>("hotspot");
+        ReadHotspot(c, entity.get());
+    }
+    if (item.HasKey("button")) {
+        luabridge::LuaRef c = item.Get<luabridge::LuaRef>("button");
+        ReadButton(c, entity.get());
+    }
+    if (item.HasKey("scaling")) {
+        luabridge::LuaRef c = item.Get<luabridge::LuaRef>("scaling");
+        ReadScaling(c, entity.get());
+    }
+    entity->SetLayer(layer);
+    return entity;
+
+
+}
+
+
 void MonkeyFactory::ReadItems(luabridge::LuaRef& scene, Entity* parent) {
     for (int i = 0; i < scene.length(); ++i) {
         // create new entity
         luabridge::LuaRef r = scene[i+1];
-        LuaTable item(r);
-        auto entity = std::make_shared<Entity>();
-        std::string tag = item.Get<std::string>("tag", "");
-        if (!tag.empty()) entity->SetTag(tag);
-        glm::vec3 pos = item.Get<glm::vec3>("pos", glm::vec3(0.0f));
-        entity->SetPosition(pos);
-        int layer = item.Get<int>("layer", 0);
-        // children
-        if (item.HasKey("children")) {
-            luabridge::LuaRef c = item.Get<luabridge::LuaRef>("children");
-            ReadItems (c, entity.get());
-        }
-        if (item.HasKey("gfx")) {
-            luabridge::LuaRef c = item.Get<luabridge::LuaRef>("gfx");
-            ReadGfxComponent(c, entity.get());
-        }
-        if (item.HasKey("text")) {
-            luabridge::LuaRef c = item.Get<luabridge::LuaRef>("text");
-            ReadTextComponent(c, entity.get());
-        }
-        if (item.HasKey("outlinetext")) {
-            luabridge::LuaRef c = item.Get<luabridge::LuaRef>("outlinetext");
-            ReadOutlineTextComponent(c, entity.get());
-        }
-        if (item.HasKey("follow")) {
-            luabridge::LuaRef c = item.Get<luabridge::LuaRef>("follow");
-            ReadFollowComponent(c, entity.get());
-        }
-        if (item.HasKey("walkarea")) {
-            luabridge::LuaRef c = item.Get<luabridge::LuaRef>("walkarea");
-            ReadWalkarea(c, entity.get());
-        }
-        if (item.HasKey("hotspot")) {
-            luabridge::LuaRef c = item.Get<luabridge::LuaRef>("hotspot");
-            ReadHotspot(c, entity.get());
-        }
-        if (item.HasKey("button")) {
-            luabridge::LuaRef c = item.Get<luabridge::LuaRef>("button");
-            ReadButton(c, entity.get());
-        }
-        if (item.HasKey("scaling")) {
-            luabridge::LuaRef c = item.Get<luabridge::LuaRef>("scaling");
-            ReadScaling(c, entity.get());
-        }
-        entity->SetLayer(layer);
+        auto entity = ReadItem(r);
         parent->AddChild(entity);
     }
 

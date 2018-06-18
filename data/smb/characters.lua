@@ -468,7 +468,34 @@ function makeLookout()
 					    }
                     }
 		    	}
-			}
+			},
+            {
+                name = "talk_front",             
+                frames = 
+                { 
+                {
+              duration = dt,
+                        quads = {
+                  { x = 128, y = 3, width = 23, height = 35, anchor = {11, 0}},
+                            { x = 180, y = 3, width = 10, height = 13, anchor = {0, 0}}
+              }
+                    }
+          }
+          },
+            {
+                name = "talk_right",             
+                frames = 
+                {
+                    --{ duration = dt, quads = { { x = 27, y = 1, width = 24, height = 32, anchor = {0, 0}}}}
+                {
+              duration = dt,
+                        quads = {
+                  { x = 105, y = 1, width = 20, height = 37, anchor = {13, 0}},
+                            { x = 181, y = 18, z= 0.001,width = 10, height = 12, anchor = {5, -33}}
+              }
+                    }
+          }
+      }      
             
         }
     }

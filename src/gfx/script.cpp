@@ -1,8 +1,15 @@
 #include <gfx/script.h>
 #include <gfx/error.h>
+#include <iostream>
 
 void Script::Start() {
     auto it = m_activities.find(m_startId);
+    if (it == m_activities.end())
+    {
+        std::cout << "Mmmh, script ended straight away, as we cannot find its start activity!\n";
+        m_complete = true;
+        return;
+    }
     m_active.insert(it->second.get());
     it->second->Start();
 }

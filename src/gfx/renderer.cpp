@@ -10,7 +10,7 @@
 #include <gfx/shader.h>
 #include <gfx/error.h>
 
-Renderer::Renderer() : m_mesh(nullptr), m_visible(true), m_frame(0), m_tint(1.0f), m_renderingTransform(1.0f) {}
+Renderer::Renderer() : Component(), m_mesh(nullptr), m_frame(0), m_tint(1.0f), m_renderingTransform(1.0f) {}
 
 void Renderer::Draw(Shader* shader) {
     auto tintLoc = shader->GetUniformLocation(TINT);

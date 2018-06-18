@@ -15,7 +15,7 @@ class Entity;
 
 class Component : public Ref {
 public:
-    Component() : Ref() {}
+    Component() : Ref(), m_active{true} {}
     //~ Component() {}
     // called once when the entity is added to the scene
     virtual void Start() = 0;
@@ -24,10 +24,22 @@ public:
         m_entity = parent;
     }
     Entity* GetObject();
+    bool IsActive();
+    void SetActive(bool);
 protected:
+    bool m_active;
     Entity* m_entity;
     
 };
+
+inline bool Component::IsActive() {
+    return m_active;
+}
+
+inline void Component::SetActive(bool value) {
+    m_active = value;
+}
+
 
 inline Entity* Component::GetObject() {
     return m_entity;

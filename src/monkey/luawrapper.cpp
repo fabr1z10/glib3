@@ -14,6 +14,7 @@ void LuaWrapper::Init() {
     luabridge::getGlobalNamespace(L)
             .beginNamespace("monkey")
                     .addFunction("getEntity", &EntityWrapper::GetEntity)
+                    .addFunction("addEntity", &EntityWrapper::AddEntity)
                     .addFunction("play", &luaFunctions::PlayScript)
                     .beginClass<EntityWrapper>("entity")
                             .addProperty("x", &EntityWrapper::GetX)
@@ -21,6 +22,8 @@ void LuaWrapper::Init() {
                             .addFunction("parent", &EntityWrapper::GetParent)
                             .addFunction("setcolor", &EntityWrapper::SetColor)
                             .addFunction("settext", &EntityWrapper::SetText)
+                            .addFunction("setactive", &EntityWrapper::SetActive)
+                            .addFunction("clear", &EntityWrapper::Clear)
                     .endClass();
 }
 

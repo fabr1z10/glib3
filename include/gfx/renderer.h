@@ -17,7 +17,7 @@ class Renderer : public Component {
 public:
     Renderer();
     void Draw(Shader*);
-    bool isVisible() const;
+    //bool isVisible() const;
     const glm::mat4& GetTransform() const;
     void SetMesh(std::shared_ptr<IMesh> mesh);
     IMesh* GetMesh();
@@ -38,7 +38,7 @@ private:
     //bool m_flipX;
     glm::mat4 m_renderingTransform;
     std::shared_ptr<IMesh> m_mesh;
-    bool m_visible;
+    //bool m_visible;
     std::string m_animation;
     int m_frame;
     double m_frameTime;
@@ -67,9 +67,9 @@ inline const glm::mat4& Renderer::GetTransform() const {
     return m_mesh->GetLocalTransform();
 }
 
-inline bool Renderer::isVisible() const {
-    return m_visible;
-}
+//inline bool Renderer::isVisible() const {
+//    return m_visible;
+//}
 
 inline void Renderer::SetMesh(std::shared_ptr<IMesh> mesh) {
     m_mesh = mesh;

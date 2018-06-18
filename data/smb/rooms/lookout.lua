@@ -1,7 +1,9 @@
 --assets local to this scene
 require ("funcs")
 require ("text")
+require ("dialogues")
 require ("actions")
+require ("dialogues/lookout")
 
 local dt = 0.1
 
@@ -32,76 +34,95 @@ assets = {
 
 },
 scene = {
-{
-  pos = {0, 0, -5},
-  gfx = { image="gfx/lookout/bg1.png", width=320, height=144 },
-  layer = 1
-},
-{
-  pos = {81, 16, 5},
- gfx = { image="gfx/lookout/bg2.png" },
-  layer = 1
-},
-{
-  pos = {294, 33, 5},
-  gfx = { image="gfx/lookout/bg3.png" },
-  layer = 1
-},
-{
-  tag = "player",
-  pos = {240, 40, 0},
-  gfx = { model = "guybrush", anim = "idle_front" },
-  scaling={},
-  layer = 1
-},
---{
---  tag = "lookout",
---  pos = {240, 40, 1},
---  scaling = {},
---  gfx = { model = "lookout", anim = "idle_right", flip = true },
---  layer = 1
---},
-make_hotspot { x=240, y=40, width=20, height=47, offset={-10,0}, priority = 1, object = characters.lookout,
-              gfx = { model="lookout", anim = "idle_right", flip = true }, scaling = {} },
-
-{
-  pos = {126, 52, -1},
-  gfx = { model = "fire", anim = "default" },
-  layer =1
-
-},
-{
-  walkarea = { 
-	tag = "walkarea",
-	group = 1,
-	priority = 0,
-	target = "player",
-	shape = { type = "poly", outline = {203,51,315,62,315,19,260,10,260,0,260,-20,234,-20,234,0,234,10,221,26,152,33,152,51}},
-    scaling = {
-        depth = { 
-            { rect = {0, 320, 0, 144}, dir = "y", bounds = {1, 0} } 
+[1] = { 
+    tag = "main",
+    layer = 1,
+    children = {
+        {
+          pos = {0, 0, -5},
+          gfx = { image="gfx/lookout/bg1.png", width=320, height=144 },
+          layer = 1
         },
-        scale = {
-            { rect = {0, 320, 0, 144}, dir = "y", bounds = {1, 1} } 
+        {
+          pos = {81, 16, 3},
+         gfx = { image="gfx/lookout/bg2.png" },
+          layer = 1
+        },
+        {
+          pos = {294, 33, 3},
+          gfx = { image="gfx/lookout/bg3.png" },
+          layer = 1
+        },
+        {
+          tag = "player",
+          pos = {240, 40, 0},
+          gfx = { model = "guybrush", anim = "idle_front" },
+          scaling={},
+          layer = 1
+        },
+        --{
+        --  tag = "lookout",
+        --  pos = {240, 40, 1},
+        --  scaling = {},
+        --  gfx = { model = "lookout", anim = "idle_right", flip = true },
+        --  layer = 1
+        --},
+        make_hotspot { x=240, y=40, width=20, height=47, offset={-10,0}, priority = 1, object = characters.lookout,
+                      gfx = { model="lookout", anim = "idle_right", flip = true }, scaling = {} },
+        
+        {
+          pos = {126, 52, -1},
+          gfx = { model = "fire", anim = "default" },
+          layer =1
+        
+        },
+        {
+          walkarea = { 
+        	tag = "walkarea",
+        	group = 1,
+        	priority = 0,
+        	target = "player",
+        	shape = { type = "poly", outline = {203,51,315,62,315,19,260,10,260,0,260,-20,234,-20,234,0,234,10,221,26,152,33,152,51}},
+            scaling = {
+                depth = { 
+                    { rect = {0, 320, 0, 144}, dir = "y", bounds = {1, 0} } 
+                },
+                scale = {
+                    { rect = {0, 320, 0, 144}, dir = "y", bounds = {1, 1} } 
+                }
+            }
+          },
+          layer = 1
+        },
+        {
+          pos= {221,0,0},
+          hotspot = {
+            group =1,
+            priority = 1,
+            shape = { type="rect", width=57, height=27},
+            onenter=curry(hoverOn, objects.stairs),
+            onleave=hoverOff,
+            onclick=runAction
+          },
+          layer =1
         }
     }
   },
-  layer = 1
+  [2] = {
+        tag = "controls",
+        layer = 2,
+        children = {
+            table.unpack(makeUI()),
+            {
+                tag = "dialogue"
+            }
+        }
+  }
 },
-{
-  pos= {221,0,0},
-  hotspot = {
-    group =1,
-    priority = 1,
-    shape = { type="rect", width=57, height=27},
-    onenter=curry(hoverOn, objects.stairs),
-    onleave=hoverOff,
-    onclick=runAction
-  },
-  layer =1
-},
-table.unpack(makeUI())
-},
+
+
+
+
 groups = {
   { id=1, cam ="maincam"},
   { id=2, cam ="uicam"}

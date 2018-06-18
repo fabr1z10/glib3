@@ -41,7 +41,7 @@ void ShowMessage::Start() {
     if (currentPos.x - extents[0] < camPos.x - camSize.x)
         displ.x = (camPos.x - camSize.x) - (currentPos.x - extents[0]);
     else if (currentPos.x + extents[0] > camPos.x + camSize.x)
-        displ.x = (currentPos.x + extents[0]) - (camPos.x - camSize.x);
+        displ.x = -((currentPos.x + extents[0]) - (camPos.x + camSize.x));
     parent->SetPosition(glm::vec3(currentPos + displ, 5.0f));
     parent->SetLayer(1);
     scene->AddChild(parent);

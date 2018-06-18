@@ -14,6 +14,7 @@
 #include <monkey/say.h>
 #include <gfx/delay.h>
 #include <monkey/callfunc.h>
+#include <monkey/monkeyfactory.h>
 
 float EntityWrapper::GetX() const {
     return m_underlying->GetPosition().x;
@@ -36,6 +37,18 @@ void EntityWrapper::SetColor(int r, int g, int b, int a) {
 EntityWrapper EntityWrapper::GetEntity(const std::string& id) {
     return EntityWrapper(Engine::get().GetRef<Entity>(id));
 }
+
+void EntityWrapper::AddEntity(luabridge::LuaRef ref, EntityWrapper* parent) {
+
+    auto mf = dynamic_cast<MonkeyFactory *>(Engine::get().GetSceneFactory());
+    auto ptr = mf->ReadItem(ref);
+    parent->m_underlying->AddChild(ptr);
+}
+
+void EntityWrapper::Clear() {
+    m_underlying->ClearAllChildren();
+}
+
 
 void EntityWrapper::SetText(const std::string& text) {
     Renderer* r = m_underlying->GetComponent<Renderer>();
@@ -129,4 +142,8 @@ namespace luaFunctions {
         scheduler->AddScript(scriptId, script);
     }
     
+}
+
+void EntityWrapper::SetActive (bool value) {
+    m_underlying->SetActive(value);
 }
