@@ -14,7 +14,7 @@ assets = {
     makeLookout(),
     {
         id = "fire",
-        sheet = "gfx/sprite2.png",
+        sheet = "gfx/anims.png",
         type="sprite",
         ppu=1,
         animations = {
@@ -67,7 +67,7 @@ scene = {
         --  gfx = { model = "lookout", anim = "idle_right", flip = true },
         --  layer = 1
         --},
-        make_hotspot { x=240, y=40, width=20, height=47, offset={-10,0}, priority = 1, object = characters.lookout,
+        make_hotspot { x=114, y=36, width=20, height=47, offset={-10,0}, priority = 1, object = characters.lookout,
                       gfx = { model="lookout", anim = "idle_right", flip = true }, scaling = {} },
         
         {

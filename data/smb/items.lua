@@ -1,15 +1,15 @@
 characters = {
     guybrush = {
-        name = "player",
+        tag = "player",
         color = {255, 255, 255, 255}
     },
     lookout = {
-        name = "lookout",
+        tag = "lookout",
         text = strings.objects.lookout,
-        pos = {0, 0},
+        pos = {160, 36},
         dir ="west",
-        color = {255,255,255,255},
-        talk = curry(startDialogue, { dialogueId="lookout", nodeId = 1})
+        color = {170, 170, 170, 255},
+        talk = curry(talk, { character = "lookout", node = 1})
     }
 }
 
@@ -36,10 +36,40 @@ objects = {
         tag = "door1",
         pos = {715, 133},
         dir = "north",
-        isopen = false,
+        openFlag = false
+        --isopen = false,
+    },
+    scummbar_door_out = {
+        text = strings.objects.door,
+        tag = "door1",
+        pos = {66, 19},
+        dir = "west"        
+    },
+    door_bar_kitchen = {
+        text = strings.objects.door,
+        tag = "doorkitchen",
+        pos = {600, 14},
+		dir = "east",
+		openFlag = false
     }
 }
 
-objects.village1_door.walk = curry(walkToDoor, {obj = objects.village1_door, roomId = "lookout"} )
+objects.village1_door.walk = curry(walkToDoor, {obj = objects.village1_door, roomId = "scummbar"} )
 objects.village1_door.open = curry(operateDoor, {obj = objects.village1_door, open = true} )
 objects.village1_door.close = curry(operateDoor, {obj = objects.village1_door, open = false} )
+objects.village1_door.isopen = function() return objects.village1_door.openFlag end
+objects.village1_door.setopen = function(open) objects.village1_door.openFlag = open end
+
+objects.scummbar_door_out.isopen = function() return objects.village1_door.openFlag end
+objects.scummbar_door_out.setopen = function(open) objects.village1_door.openFlag = open end
+objects.scummbar_door_out.walk = curry(walkToDoor, {obj = objects.village1_door, roomId = "village1"} )
+objects.scummbar_door_out.open = curry(operateDoor, {obj = objects.village1_door, open = true} )
+objects.scummbar_door_out.close = curry(operateDoor, {obj = objects.village1_door, open = false} )
+
+objects.door_bar_kitchen.walk = curry(walkToDoor, {obj = objects.door_bar_kitchen, roomId = "kitchen"} )
+objects.door_bar_kitchen.open = curry(operateDoor, {obj = objects.door_bar_kitchen, open = true} )
+objects.door_bar_kitchen.close = curry(operateDoor, {obj = objects.door_bar_kitchen, open = false} )
+objects.door_bar_kitchen.isopen = function() return objects.door_bar_kitchen.openFlag end
+objects.door_bar_kitchen.setopen = function(open) objects.door_bar_kitchen.openFlag = open end
+
+

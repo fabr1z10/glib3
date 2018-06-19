@@ -53,8 +53,10 @@ void Script::Run (float dt) {
         }
     }
 
-    for(auto& a : toRemove)
+    for(auto& a : toRemove) {
+        a->Reset();
         m_active.erase(a);
+    }
 
     if (m_active.empty())
     {

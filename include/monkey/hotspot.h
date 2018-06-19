@@ -48,8 +48,8 @@ inline int HotSpot::GetPriority() const {
 
 class HotSpotGroup : public Ref {
 public:
-    HotSpotGroup() : Ref() {}
-    HotSpotGroup(const std::string& camId) : Ref(), m_camId(camId), m_currentlyActiveHotSpot{nullptr} {}
+    HotSpotGroup() : Ref(), m_enabled{true} {}
+    HotSpotGroup(const std::string& camId) : Ref(), m_enabled{true}, m_camId(camId), m_currentlyActiveHotSpot{nullptr} {}
     void Insert(HotSpot* hs) {
         m_hotspots.insert(hs);
     }
@@ -64,13 +64,21 @@ public:
     void Run(double x, double y);
     void Click(double mouse_x, double mouse_y);
     void CameraMove() ;
+    void SetEnabled(bool value) ;
 private:
+    bool m_enabled;
     bool m_active;
     std::unordered_set<HotSpot*> m_hotspots;
     HotSpot* m_currentlyActiveHotSpot;
     OrthographicCamera* m_cam;
     std::string m_camId;
 };
+
+inline void HotSpotGroup::SetEnabled(bool value) {
+    m_enabled = value;
+    m_currentlyActiveHotSpot = nullptr;
+
+}
 
 // I have one only mouse listener
 // so when mouse moves, I just need to call one function and not one func for every hotspot.
@@ -88,6 +96,8 @@ public:
     void Unregister (HotSpot*);
     void AddGroup (int, const std::string& camId);
     using ParentClass = HotSpotManager;
+    void EnableGroup(int);
+    void DisableGroup(int);
 protected:
     bool m_active;
     std::unordered_map<int, std::unique_ptr<HotSpotGroup> > m_groups;

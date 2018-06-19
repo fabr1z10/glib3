@@ -26,6 +26,7 @@ strings = {
     },
     dialogues = {
         lookout = {
+            text = {
             [1] = "I heard there was going to be a weenie roast here.",
             [2] = "I'm looking for fun. Seen any?",
             [3] = "What's green and hairy and has a thousand legs?",
@@ -42,7 +43,7 @@ strings = {
             [14] = "I'll just be off to seek my fortune now.",
             [15] = "Eh?",
             [16] = "Oh.",
-            [17] = "I came to MÃªlÃ©e Islandâ„¢ because I want to be a pirate.",
+            [17] = "I came to Mêlée™ Island because I want to be a pirate.",
             [18] = "Well, you picked the right place for it.",
             [19] = "Though perhaps the wrong time.",
             [20] = "Not to mention the wrong name.",
@@ -55,7 +56,7 @@ strings = {
             [27] = "You just said you were Gibberish Driftwood, or something like that.",
             [28] = "GUYBRUSH THREEPwood.",
             [29] = "Sure, whatever.",
-            [30] = "I'm the lookout of  MÃªlÃ©e Islandâ„¢.",
+            [30] = "I'm the lookout of Mêlée™ Island.",
             [31] = "I watch the ocean for approaching storms and ships, and report them directly to the Governor.",
             [32] = "She doesn't like unexpected visitors.",
             [33] = "...especially not now.",
@@ -66,8 +67,20 @@ strings = {
             [38] = "How did you get to be the lookout when you're obviously blind as a bat?",
             [39] = "Watch your tongue.",
             [40] = "I was hand-picked by Sheriff Shinetop!",
-            [41] = "OK, Squinky."
+            [41] = "OK, Squinky.",
+            [42] = "Good luck.",
+            [43] = "Oh, it's you again, ",
+            [44] = "Listen, I'm sort of busy right now.",
+            [45] = "I'll talk to you later.",
+            [46] = "Look out! Ha ha. Get it?",
+            [47] = "That's THREEPWOOD.",
+            [48] = "Actually, my name is Guybrush Threepwood.",
+            [49] = "Oh, right."
+            },
+            names = { "Thranwook", "Thrumwink" }
         }
+
+        
 
     },
     defaultactions = {
@@ -84,7 +97,10 @@ strings = {
     }
 }
 
-    
+strings.dialogues.lookout.randomLookoutMsg = function() 
+    return strings.dialogues.lookout.text[43] .. strings.dialogues.lookout.names[math.random(1, #strings.dialogues.lookout.names)] .. "."
+end
+
     
     
     

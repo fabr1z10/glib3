@@ -26,6 +26,13 @@ std::string EntityWrapper::GetText() const {
     return tm->GetText();
 }
 
+int EntityWrapper::GetLines() const {
+    Renderer* r = m_underlying->GetComponent<Renderer>();
+    auto tm = dynamic_cast<TextMesh*>(r->GetMesh());
+    return tm->getNumberOfLines();
+}
+
+
 EntityWrapper EntityWrapper::GetParent() {
     return EntityWrapper(m_underlying->GetParent());
 }
@@ -38,11 +45,21 @@ EntityWrapper EntityWrapper::GetEntity(const std::string& id) {
     return EntityWrapper(Engine::get().GetRef<Entity>(id));
 }
 
-void EntityWrapper::AddEntity(luabridge::LuaRef ref, EntityWrapper* parent) {
+EntityWrapper EntityWrapper::AddEntity(luabridge::LuaRef ref, EntityWrapper* parent) {
 
     auto mf = dynamic_cast<MonkeyFactory *>(Engine::get().GetSceneFactory());
     auto ptr = mf->ReadItem(ref);
     parent->m_underlying->AddChild(ptr);
+
+    EntityWrapper ew(ptr.get());
+    return ew;
+
+
+}
+
+EntityWrapper EntityWrapper::RemoveEntity(const std::string& tag) {
+    auto entity = Engine::get().GetRef<Entity>(tag);
+    Engine::get().Remove(entity);
 }
 
 void EntityWrapper::Clear() {
@@ -109,9 +126,9 @@ namespace luaFunctions {
                 bool flip {false};
                 if (dir == "east") {
                     anim = "idle_right";
-                    flip = true;
                 } else if (dir == "west") {
                     anim = "idle_right";
+                    flip = true;
                 } else if (dir == "north") {
                     anim = "idle_back";
                 } else if (dir == "south") {
@@ -146,4 +163,19 @@ namespace luaFunctions {
 
 void EntityWrapper::SetActive (bool value) {
     m_underlying->SetActive(value);
+}
+
+void EntityWrapper::EnableGroup(int id) {
+    auto hs = Engine::get().GetRef<HotSpotManager>("_hotspotmanager");
+    hs->EnableGroup(id);
+}
+
+void EntityWrapper::DisableGroup(int id) {
+    auto hs = Engine::get().GetRef<HotSpotManager>("_hotspotmanager");
+    hs->DisableGroup(id);
+
+}
+
+void EntityWrapper::SetPosition(float x, float y, float z) {
+    m_underlying->SetPosition(glm::vec3(x, y, z));
 }

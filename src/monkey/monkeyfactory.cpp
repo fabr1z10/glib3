@@ -133,7 +133,11 @@ void MonkeyFactory::CleanUp() {
 
     roomRef = luabridge::Nil();
 
-
+    //Monkey& m = Monkey::get();
+    //std::string ciao = m["variables"].Get<std::string>("_previousroom");
+    //std::string cr = m["variables"].Get<std::string>("_room");
+    //m["variables"].Set("_previousroom", cr);
+    //std::string ciao = m["variables"].Get<std::string>("_previousroom");
 }
 
 std::shared_ptr<Entity> MonkeyFactory::ReadItem(luabridge::LuaRef& ref) {
@@ -355,10 +359,11 @@ std::shared_ptr<Renderer> MonkeyFactory::GetTextComponent (luabridge::LuaRef& re
     std::string text = table.Get<std::string>("id");
     std::string font = table.Get<std::string>("font");
     TextAlignment align = table.Get<TextAlignment>("align", TOP_LEFT);
+    float maxWidth = table.Get<float>("maxwidth", 0.0f);
     glm::vec4 color = table.Get<glm::vec4>("color", glm::vec4(255.0f));
     color /= 255.0f;
     Font* f = Engine::get().GetAssetManager().GetFont(font);
-    auto mesh = std::make_shared<TextMesh>(f, text, 8, align);
+    auto mesh = std::make_shared<TextMesh>(f, text, 8, align, maxWidth);
     glm::vec2 offset = mesh->getOffset();
     renderer->SetRenderingTransform(glm::translate(glm::vec3(offset, 0.0f)));
     renderer->SetTint(color);

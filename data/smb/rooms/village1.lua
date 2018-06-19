@@ -88,7 +88,7 @@ scene = {
                 layer = 1
             
             },
-            make_hotspot { x=699, y=7, width=31, height=47, offset={0,5},priority = 1, object = objects.village1_door, gfx = { model="door", anim = ((objects.village1_door.isopen == true) and "open" or "close") }}
+            make_hotspot { x=699, y=7, width=31, height=47, offset={0,5},priority = 1, object = objects.village1_door, gfx = { model="door", anim = ((objects.village1_door.isopen() == true) and "open" or "close") }}
         }
     },
     [2] = {
@@ -130,17 +130,19 @@ cameras = {
 -- initial script
 function room.init()
     variables._actionInfo:reset()
-    print ("CAZZONE")
     -- previous room was lookout
-    if (variables._previousroom == "lookout") then
-       playerpos = {8, 71, 0} 
-    end
-    
+	local fromData = {
+        lookout = { playerpos = {8, 71, 0}, anim = "idle_front" },
+		scummbar = { playerpos = {715, 13, 0}, anim = "idle_front" }
+    }
+
+	f = fromData[variables._previousroom]
+
     -- add player
     table.insert (room.scene[1].children, {
         tag = "player",
-        pos = playerpos,
-        gfx = { model = "guybrush", anim = "idle_front" },
+        pos = f.playerpos,
+        gfx = { model = "guybrush", anim = f.anim },
         follow = { cam="maincam" },
         layer = 1,
         scaling = {}
@@ -149,6 +151,7 @@ function room.init()
 end
 
 function room.start() 
+	if (variables._previousroom == "lookout") then
     script = {
         startid = 0,
         id = "_walk",
@@ -157,6 +160,8 @@ function room.start()
     }
     createWalkToPosition ({120, 80}, script)
     monkey.play(script)
+
+	end
 
 end
 

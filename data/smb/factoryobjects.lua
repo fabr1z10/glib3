@@ -43,10 +43,10 @@ end
 function makeDialogueButton (x, y, button) 
     return {
         pos = {x, y, 0},
-        button = { id = button.text, font="ui", align="bottomleft", group = 2, priority = 1, layer = 2, color = config.ui_unselected_color,
+        button = { id = button.text, font="ui", align="bottomleft", group = 2, priority = 1, layer = 2, maxwidth = 320, color = config.ui_unselected_color,
             onenter = curry2(changecolor, config.ui_selected_color),
             onleave = curry2(changecolor, config.ui_unselected_color),
-            onclick = curry(pippo, { callback = button.click })
+            onclick = curry(pippo, button)
         },
         layer = 2
     }   
@@ -67,6 +67,6 @@ return {
     },
     layer = 1,
 	scaling = input.scaling,
-    tag = input.object.name
+    tag = input.object.tag
 } 
 end

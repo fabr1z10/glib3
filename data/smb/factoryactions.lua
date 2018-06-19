@@ -31,6 +31,22 @@ function Script:setsequence()
     end
 end
 
+function Script:setloop()
+    self:setsequence()
+    table.insert (self.edges, {self.actions[#self.actions].id, self.actions[1].id})
+end
+
+function createObject (obj) 
+    print ("CREATE OBJ" .. obj.tag)
+    parent = monkey.getEntity("main")
+
+    monkey.addEntity (obj, parent)
+end
+
+
+function removeObject (tag) 
+    monkey.removeEntity(tag)
+end
 
 function createWalkToAction (obj)
 
@@ -60,11 +76,10 @@ function empty()
 end
 
 function say (args)
-    print ("SAY!" .. args.lines[1])
     actions = {
     {
         type= "say",
-        actor = args.character.name,
+        actor = args.character.tag,
         color = args.character.color,
         message = args.lines
     }
@@ -76,7 +91,7 @@ function turn (args)
     actions = {
     {
         type= "turn",
-        actor = args.character.name,
+        actor = args.character.tag,
         face = args.face
     }
     }
@@ -89,8 +104,15 @@ function changeRoom(roomId)
     }
 end
 
+function talk(args)
+    return {
+        { type = "callfunc", func = curry(startDialogue, { dialogueId=args.character, nodeId=args.node, init = true }) }
+    }
+end
+
+
 function walkToDoor(args) 
-    if (args.obj.isopen == true) then
+    if (args.obj.isopen() == true) then
         return {
             { type = "gotoroom", room = args.roomId }
         }
@@ -107,28 +129,46 @@ function operateDoor(args)
             { type="delay", sec="0.5" },
             { type="animate", actor = args.obj.tag, anim = (args.open and "open" or "close") },
             { type="animate", actor="player", anim=("idle" .. face) },
-            { type="callfunc", func = function() args.obj.isopen = args.open end }
+            { type="callfunc", func = function() args.obj.setopen(args.open) end }
         }
     end 
 end
 
-function startDialogue(args)
-    print ("CALLING START DIALOGUE!")
+function resumePlay()
     ui = monkey.getEntity("ui")
+    ui:setactive(true)
+    monkey.enableGroup(1)
+end
+
+function startDialogue(args)
+    ui = monkey.getEntity("ui")
+    monkey.disableGroup(1)
     ui:setactive(false)
-        print ("2")
     parent = monkey.getEntity("dialogue")
-    print ("3")
-    node = dialogues[args.dialogueId][args.nodeId]
-    print ("lines = " .. #node.lines)
-    j = 0
-    for _, line in ipairs(node.lines) do
-        monkey.addEntity(makeDialogueButton(0, 48-8*j, line), parent)
-        j = j +1
+
+    dial = dialogues[args.dialogueId]
+    node = dial[args.nodeId]
+    if (args.init == true and dial.init ~= nil) then
+        dialogues[args.dialogueId].init()
     end
     
-
+    local tkeys = {}
+    for k in pairs(node.lines) do
+        if (node.lines[k].active == true) then
+            table.insert(tkeys, k )
+        end 
+    end
+    table.sort(tkeys) 
+    j = 0
+    for _, k in ipairs(tkeys) do
+        entity = monkey.addEntity(makeDialogueButton(0, 0, node.lines[k]), parent)
+        j = j + entity.lines
+        entity:setposition(0, 56 - 8*j, 0)
+        
+    end
 
 end
+
+
 
 

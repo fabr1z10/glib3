@@ -1,6 +1,6 @@
 #include <monkey/luawrapper.h>
 #include <gfx/error.h>
-#include <sstream>
+
 #include <gfx/engine.h>
 #include <monkey/entitywrapper.h>
 
@@ -15,15 +15,21 @@ void LuaWrapper::Init() {
             .beginNamespace("monkey")
                     .addFunction("getEntity", &EntityWrapper::GetEntity)
                     .addFunction("addEntity", &EntityWrapper::AddEntity)
+                    .addFunction("removeEntity", &EntityWrapper::RemoveEntity)
                     .addFunction("play", &luaFunctions::PlayScript)
+                    .addFunction("enableGroup", &EntityWrapper::EnableGroup)
+                    .addFunction("disableGroup", &EntityWrapper::DisableGroup)
                     .beginClass<EntityWrapper>("entity")
                             .addProperty("x", &EntityWrapper::GetX)
                             .addProperty("text", &EntityWrapper::GetText)
+                            .addProperty("lines", &EntityWrapper::GetLines)
                             .addFunction("parent", &EntityWrapper::GetParent)
                             .addFunction("setcolor", &EntityWrapper::SetColor)
                             .addFunction("settext", &EntityWrapper::SetText)
                             .addFunction("setactive", &EntityWrapper::SetActive)
                             .addFunction("clear", &EntityWrapper::Clear)
+                            .addFunction("setposition", &EntityWrapper::SetPosition)
+
                     .endClass();
 }
 

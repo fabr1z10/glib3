@@ -18,7 +18,6 @@ defaultActions = {
 }
 
 function changecolor (color, entity)
-    print ("CANE")
     entity:parent():setcolor(color[1], color[2], color[3], color[4])
 end
 
@@ -29,21 +28,16 @@ end
 
 -- click on a verb
 function setverb(verb)
-    print ("CALLLL")
     variables._actionInfo.verb = verb
     variables._actionInfo.obj1 = nil
     variables._actionInfo.obj2 = nil
     variables._actionInfo.selectSecond = false
     updateVerb()
-    print ("verb = " .. verb.code)
 end
 
 function hoverOn (obj)
-    print ("PIPPO")
-    print ("calling " .. obj.text)
     if (variables._actionInfo.obj1 == nil) then 
         variables._actionInfo.obj1 = obj
-        print ("nil ok")
     else
         if (variables._actionInfo.verb.objects > 1 and variables._actionInfo.obj1 ~= obj) then
             variables._actionInfo.obj2 = obj

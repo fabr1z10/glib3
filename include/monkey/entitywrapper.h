@@ -11,13 +11,18 @@ namespace luaFunctions {
 
 struct EntityWrapper {
     EntityWrapper(Entity* entity) : m_underlying{entity}{}
-    static void AddEntity(luabridge::LuaRef ref, EntityWrapper* parent);
+    static EntityWrapper AddEntity(luabridge::LuaRef ref, EntityWrapper* parent);
+    static EntityWrapper RemoveEntity(const std::string& tag);
     void Clear();
     float GetX() const;
     void SetColor(int, int, int, int);
     void SetText(const std::string&);
     void SetActive (bool);
+    static void EnableGroup(int);
+    static void DisableGroup(int);
     std::string GetText() const;
+    int GetLines() const;
+    void SetPosition(float x, float y, float z);
     EntityWrapper GetParent() ;
     static EntityWrapper GetEntity(const std::string&);
     Entity* m_underlying;

@@ -69,6 +69,10 @@ void HotSpotGroup::CameraMove() {
 
 void HotSpotGroup::Run(double x, double y) {
     // see if current group is active (i.e. mouse position is in the group's cam viewport)
+    if (!m_enabled)
+    {
+        return;
+    }
     bool isActive = m_cam->IsInViewport(x, y);
 
     if (isActive) {
@@ -148,3 +152,17 @@ HotSpot::~HotSpot() {
 
     }
 }
+
+void HotSpotManager::EnableGroup(int group) {
+    auto iter = m_groups.find(group);
+    if (iter == m_groups.end())
+        GLIB_FAIL("EnableGroup: unknown group " << group);
+    iter->second->SetEnabled(true);
+}
+void HotSpotManager::DisableGroup(int group) {
+    auto iter = m_groups.find(group);
+    if (iter == m_groups.end())
+        GLIB_FAIL("DisableGroup: unknown group " << group);
+    iter->second->SetEnabled(false);
+}
+

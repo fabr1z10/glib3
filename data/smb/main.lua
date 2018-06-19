@@ -33,8 +33,9 @@ variables = {
     },
     -- sets the start room
     _room = "village1",
-    _previousroom = "lookout"
-    
+    _previousroom = "lookout",
+    talkedToLookout = false,
+    lookoutKnowsName = false,
 }
 
 
