@@ -1,4 +1,5 @@
 #include <graph/closest.h>
+#include <iostream>
 
 glm::vec2 ClosestPointOnEdge::getNearest(Polygon& p, float& bestSoFar, glm::vec2 closestPointSoFar) {
     int n = p.GetVertexCount();
@@ -19,12 +20,13 @@ glm::vec2 ClosestPointOnEdge::getNearest(Polygon& p, float& bestSoFar, glm::vec2
             bestSoFar = dist;
             bestPoint = cp;
             normal = (d >= l ? p.getNormalAtVertex(i) : (d <= 0 ? p.getNormalAtVertex(ip) : p.getNormalAtEdge(ip)));
+            bestPoint = bestPoint - normal*0.01f;
         }
         A = B;
         ip = i;
     }
-    m_result = bestPoint - normal*0.01f;
-    return m_result;
+
+    return bestPoint;
 }
 
 
@@ -40,8 +42,12 @@ void ClosestPointOnEdge::visit(Poly& p) {
     for (int i = 0; i < p.GetHoleCount() + 1; ++i) {
         auto poly = p.GetPolygon(i);
         P = getNearest(*poly, b, P);
+        std::cout << "Find nearest of " << m_P.x << ", " << m_P.y << " on poly " << i << " is " << P.x << ", " << P.y << "\n";
     }
     m_result = P;
+    if (std::isnan(m_result.x) || std::isnan(m_result.y)) {
+        std::cout << "Probelm hgere \n";
+    }
 }
 
 

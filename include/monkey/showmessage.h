@@ -20,6 +20,16 @@ public:
             glm::vec4 outlineColor,
             TextAlignment align,
             float time) : Activity(id), m_generatedEntity{nullptr}, m_message{message}, m_time{time}, m_font{font}, m_actor{actor}, m_size{size}, m_align{align}, m_color{color}, m_outlineColor{outlineColor} {}
+    ShowMessage(
+            int id,
+            const std::string& message,
+            const std::string& font,
+            glm::vec3 pos,
+            float size,
+            glm::vec4 color,
+            glm::vec4 outlineColor,
+            TextAlignment align,
+            float time) : Activity(id), m_generatedEntity{nullptr}, m_message{message}, m_time{time}, m_font{font}, m_pos{pos}, m_size{size}, m_align{align}, m_color{color}, m_outlineColor{outlineColor} {}
     virtual ~ShowMessage();
     void Start() override;
     void Run (float dt) override;

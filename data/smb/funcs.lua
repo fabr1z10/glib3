@@ -11,9 +11,11 @@ function curry2(f, arg)
 end
 
 require ("factoryactions")
+require ("rooms/scummbar/actions")
 require ("items")
 require ("factoryobjects")
 require ("uifuncs")
+
 
 function curry2_1(f, arg1, arg2)
     return function(x)

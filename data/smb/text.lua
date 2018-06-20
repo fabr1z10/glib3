@@ -78,6 +78,11 @@ strings = {
             [49] = "Oh, right."
             },
             names = { "Thranwook", "Thrumwink" }
+        },
+        cook = {
+            [1] = "Hey!",
+            [2] = "Don't go into the kitchen!",
+			[3] = "You can't come back here!"
         }
 
         

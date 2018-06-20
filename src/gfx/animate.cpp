@@ -17,6 +17,8 @@ void Animate::Start() {
 
     }
     auto renderer = m_entity->GetComponent<Renderer>();
+    if (renderer == nullptr)
+        GLIB_FAIL("Error! No renderer found for " << m_actorId << " when trying to animate " << m_animId);
     renderer->SetFlipX(m_flipX);
     renderer->SetAnimation(m_animId);
     SetComplete();

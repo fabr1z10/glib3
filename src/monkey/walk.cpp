@@ -6,9 +6,16 @@
 #include <graph/shortestpath.h>
 #include <glm/glm.hpp>
 #include <graph/closest.h>
+#include <iostream>
+#include <monkey/walkarea.h>
+
 
 void Walk::Start() {
+    auto walkArea = Engine::get().GetRef<WalkArea>("walkarea");
+    m_shape = walkArea->GetShape();
+    auto blockedLines = walkArea->GetActiveWalls();
 
+    //std::cout << "Calling walk for " << m_actorId << " to " << m_p.x << ", " << m_p.y << "\n";
     auto actor = Engine::get().GetRef<Entity>(m_actorId);
     glm::vec2 currentPos(actor->GetPosition());
 
@@ -17,6 +24,7 @@ void Walk::Start() {
         glm::vec2 p = ClosestPointOnEdge::Find(*(m_shape), currentPos);
         actor->SetPosition(p);
         currentPos = p;
+
     }
 
     // if target point is not in shape
@@ -32,12 +40,26 @@ void Walk::Start() {
         std::vector<glm::vec2> points = ShortestPath::Find(*m_shape, currentPos, m_p);
         int count = 0;
         glm::vec2 currentPoint = points.front();
+        std::string anim2;
+        bool flipX{false};
         for (size_t i = 1; i < points.size(); ++i) {
             delta = points[i] - currentPos;
             if (delta == glm::vec2(0.0f))
                 continue;
+
+            // see if this intersects one of the walls.
+            // If it does, this is the last movement and it will end here
+            float tMin = 1.0;
+            for (auto& b : blockedLines) {
+                float t = LineSegmentIntersection(currentPos, points[i], b.A, b.B);
+                if (t > 0) {
+                    tMin = std::min(tMin, t);
+                }
+            }
+            // effective displacement
+            delta = tMin * delta;
             std::string anim;
-            std::string anim2;
+            //std::string anim2;
             if (std::fabs(delta.x) > std::fabs(delta.y)) {
                 anim = "walk_right";
                 anim2 = "idle_right";
@@ -50,14 +72,18 @@ void Walk::Start() {
                     anim2 = "idle_front";
                 }
             }
-            bool flipX = (anim == "walk_right" && delta.x < 0);
-            //actor->GetComponent<Renderer>()->SetFlipX(flipX);
+            flipX = (anim == "walk_right" && delta.x < 0);
             Push(std::make_shared<Animate>(count++, actor, anim, flipX));
             Push(std::make_shared<MoveTo>(count++, actor, points[i], 200.0f));
-            if (i == points.size() -1)
-                Push(std::make_shared<Animate>(count++, actor, anim2, flipX));
+            //if (i == points.size() - 1 || tMin < 1.0)
             currentPos = points[i];
+            if (tMin < 1.0)
+            {
+                // I hit a wall!
+                break;
+            }
             //script->AddActivity(p);
         }
+        Push(std::make_shared<Animate>(count++, actor, anim2, flipX));
     }
 }

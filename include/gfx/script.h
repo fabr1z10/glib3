@@ -17,6 +17,7 @@ public:
     void AddActivity(std::unique_ptr<Activity>);
     void AddEdge (int fromActivity, int toActivity);
     bool IsComplete() const;
+    void SetSuspended(bool);
 private:
     std::unordered_set<Activity*> m_active;
     std::unordered_map<int, std::unique_ptr<Activity> > m_activities;
@@ -24,6 +25,11 @@ private:
     bool m_complete;
     int m_startId;
 };
+
+
+inline void Script::SetSuspended(bool value) {
+    m_suspended = value;
+}
 
 inline bool Script::IsComplete() const {
     return m_complete;

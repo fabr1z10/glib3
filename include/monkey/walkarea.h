@@ -2,7 +2,12 @@
 
 #include <monkey/hotspot.h>
 #include <monkey/funcs.h>
+#include <graph/geom.h>
 
+struct BlockedLine {
+    LineSegment seg;
+    bool active;
+};
 
 class WalkArea : public HotSpot {
 public:
@@ -20,7 +25,12 @@ public:
     void SetDepthFunction (std::unique_ptr<Function2D> func);
     void SetScalingFunction (std::unique_ptr<Function2D> func);
     using ParentClass = HotSpot;
+    void AddBlockedLine(glm::vec2 A, glm::vec2 B, bool active);
+    void EnableBlockedLine(int, bool);
+    std::vector<LineSegment> GetActiveWalls() const;
 private:
+
+    std::vector<BlockedLine> m_walls;
     std::string m_playerId;
     std::unique_ptr<Function2D> m_depthFunc;
     std::unique_ptr<Function2D> m_scaleFunc;

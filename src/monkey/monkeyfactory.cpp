@@ -26,7 +26,7 @@ std::shared_ptr<Entity> MonkeyFactory::Create() {
     Monkey& m = Monkey::get();
     std::string room = m["variables"].Get<std::string>("_room");
     std::cout << "Loading room "<< room << std::endl;
-    LuaWrapper::Load(Engine::get().GetAssetManager().GetDirectory() + "rooms/" + room + ".lua");
+    LuaWrapper::Load(Engine::get().GetAssetManager().GetDirectory() + "rooms/" + room + "/room.lua");
 
 
     // Create the local assets

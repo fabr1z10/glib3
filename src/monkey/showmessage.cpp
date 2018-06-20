@@ -9,8 +9,14 @@
 void ShowMessage::Start() {
     m_mainCam = Engine::get().GetRef<OrthographicCamera>("maincam");
     auto scene = Engine::get().GetScene();
-    auto actor = Engine::get().GetRef<Entity>(m_actor);
-    glm::vec2 currentPos(actor->GetPosition());
+    glm::vec2 currentPos;
+    if (!m_actor.empty()) {
+        auto actor = Engine::get().GetRef<Entity>(m_actor);
+        currentPos = (actor->GetPosition());
+    } else {
+        currentPos = m_pos;
+    }
+
     // make this a param
     currentPos += glm::vec2(0, 60.0);
 
@@ -55,6 +61,10 @@ void ShowMessage::Run(float dt) {
     if (m_elapsedTime >= m_time) {
 
         SetComplete();
+        if (m_generatedEntity != nullptr) {
+            Engine::get().Remove(m_generatedEntity);
+            m_generatedEntity = nullptr;
+        }
     }
 
 }

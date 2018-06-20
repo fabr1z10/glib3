@@ -54,10 +54,10 @@ scene = {
             shape = { 
                 type = "poly", 
                 outline = {32,16,70,24,128,19,251,18,311,10,321,10,345,32,467,41,492,50,514,40,565,40,580,35,629,6,626,0,256,0,200,16,149,0,90,0,85,10},
-                 --holes = {
-               --  
-                --     {374,6,505,6,505,28,374,28}
-                --}
+                 holes = {
+               
+                    {374,6,505,6,505,28,374,28}
+                }
             },
             scaling = {
                 depth = { 
@@ -151,7 +151,9 @@ function room.start()
     -- cook script
     s = Script.create("_cook")
     s:add ({
-        { type = "delay", sec = 2.0 },
+        { type = "delay", sec = 5.0 },
+		{ type = "animate", actor ="door_bar_kitchen", anim="open" },
+		{ type = "callfunc", func = function() objects.door_bar_kitchen.setopen(true) end },
         { type = "callfunc", func = curry (createObject, { 
             pos = {607, 20, 0},
             gfx = { model = "cook", anim = "idle_back" },
@@ -176,6 +178,8 @@ function room.start()
             pos = {607, 20}
         },
         { type = "delay", sec = 0.5 },
+		{ type = "animate", actor ="door_bar_kitchen", anim="close" },
+		{ type = "callfunc", func = function() objects.door_bar_kitchen.setopen(false) end },
         { type = "callfunc", func = curry(removeObject, "cook") }
     })
     s:setloop()

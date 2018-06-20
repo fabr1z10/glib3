@@ -1,4 +1,5 @@
 #include <gfx/scheduler.h>
+#include <gfx/error.h>
 
 void Scheduler::Update(double dt) {
     std::vector<std::string> toRemove;
@@ -20,3 +21,9 @@ void Scheduler::AddScript(const std::string &name, std::shared_ptr<Script> scrip
 
 }
 
+Script* Scheduler::GetScript (const std::string& name) {
+    auto it = m_scripts.find(name);
+    if (it == m_scripts.end())
+        GLIB_FAIL("Unknown script " << name);
+    return it->second.get();
+}

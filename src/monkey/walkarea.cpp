@@ -29,7 +29,7 @@ void WalkArea::onClick(glm::vec2 worldCoords) {
     auto scheduler = Engine::get().GetRef<Scheduler>("_scheduler");
     //auto player = Engine::get().GetRef<Entity>("player");
     auto script = std::make_shared<Script>(0);
-    script->AddActivity(std::unique_ptr<Walk>(new Walk(0, m_playerId, worldCoords, m_shape.get())));
+    script->AddActivity(std::unique_ptr<Walk>(new Walk(0, m_playerId, worldCoords)));
     scheduler->AddScript("_walk", script);
 
 }
@@ -45,3 +45,22 @@ float WalkArea::GetScale (float x, float y) {
         GLIB_FAIL("Depth function not set for this walkarea");
     return m_scaleFunc->operator()(x, y);
 }
+
+void WalkArea::AddBlockedLine(glm::vec2 A, glm::vec2 B, bool active) {
+    m_walls.push_back( BlockedLine { LineSegment{A, B}, active });
+}
+
+void WalkArea::EnableBlockedLine(int i, bool value) {
+    m_walls[i].active = value;
+
+}
+
+std::vector<LineSegment> WalkArea::GetActiveWalls() const {
+    std::vector<LineSegment> segs;
+    for (auto& m : m_walls) {
+        if (m.active)
+            segs.push_back(m.seg);
+    }
+    return segs;
+}
+

@@ -10,6 +10,10 @@ characters = {
         dir ="west",
         color = {170, 170, 170, 255},
         talk = curry(talk, { character = "lookout", node = 1})
+    },
+    cook = {
+        tag = "cook",
+        color = {85, 255, 255, 255},
     }
 }
 
@@ -47,10 +51,12 @@ objects = {
     },
     door_bar_kitchen = {
         text = strings.objects.door,
-        tag = "doorkitchen",
+        tag = "door_bar_kitchen",
         pos = {600, 14},
 		dir = "east",
-		openFlag = false
+		openFlag = false,
+		open = openBarKitchen,
+		walk = enterBarKitchen
     }
 }
 
@@ -66,8 +72,8 @@ objects.scummbar_door_out.walk = curry(walkToDoor, {obj = objects.village1_door,
 objects.scummbar_door_out.open = curry(operateDoor, {obj = objects.village1_door, open = true} )
 objects.scummbar_door_out.close = curry(operateDoor, {obj = objects.village1_door, open = false} )
 
-objects.door_bar_kitchen.walk = curry(walkToDoor, {obj = objects.door_bar_kitchen, roomId = "kitchen"} )
-objects.door_bar_kitchen.open = curry(operateDoor, {obj = objects.door_bar_kitchen, open = true} )
+--objects.door_bar_kitchen.walk = curry(walkToDoor, {obj = objects.door_bar_kitchen, roomId = "kitchen"} )
+--objects.door_bar_kitchen.open = curry(operateDoor, {obj = objects.door_bar_kitchen, open = true} )
 objects.door_bar_kitchen.close = curry(operateDoor, {obj = objects.door_bar_kitchen, open = false} )
 objects.door_bar_kitchen.isopen = function() return objects.door_bar_kitchen.openFlag end
 objects.door_bar_kitchen.setopen = function(open) objects.door_bar_kitchen.openFlag = open end

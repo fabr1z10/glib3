@@ -28,6 +28,35 @@ bool LineSegmentCross (glm::vec2 A, glm::vec2 B, glm::vec2 C, glm::vec2 D) {
     return (t > 0.0f && t < 1.0f && u > 0.0f && u < 1.0f);
 }
 
+float LineSegmentIntersection (glm::vec2 A, glm::vec2 B, glm::vec2 C, glm::vec2 D) {
+    glm::vec2 r = B - A;
+    glm::vec2 s = D - C;
+    glm::vec2 PQ = C - A;
+    float rxs = cross(r, s);
+    if (isZero(rxs)) {
+        // collinear or parallel
+        float PQxr = cross (PQ, r);
+        if (isZero(PQxr)) {
+            // collinear
+            float am = 0;
+            float aM = glm::dot(r, r);
+            float b0 = glm::dot(PQ, r);
+            float b1 = glm::dot(D-A, r);
+            if (b0 < b1) {
+                return (b0 > aM || am > b1);
+            }
+            return (b1 > aM || am > b0);
+        }
+        return false;
+    }
+    float t = cross(PQ, s) / rxs;
+    float u = cross(PQ, r) / rxs;
+    if (t > 0.0f && t < 1.0f && u > 0.0f && u < 1.0f)
+        return t;
+    return -10.0;
+}
+
+
 bool IsBetween (glm::vec2 A, glm::vec2 B, glm::vec2 P, float eps) {
     // first, we need to make sure they are aligned
     float a = cross(B - A, P - A);
