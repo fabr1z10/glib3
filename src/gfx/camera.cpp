@@ -12,6 +12,8 @@
 #include "gfx/entity.h"
 #include "gfx/engine.h"
 #include "graph/geom.h"
+#include <iostream>
+
 
 using namespace glm;
 
@@ -125,6 +127,7 @@ void OrthographicCamera::Init() {
 }
 
 void OrthographicCamera::SetPosition(vec3 eye, vec3 direction, vec3 up) {
+    //std::cout << "update cam pos...\n";
     eye.x = Clamp(eye.x, m_xMin, m_xMax);
     eye.y = Clamp(eye.y, m_yMin, m_yMax);
     Camera::SetPosition(eye, direction, up);
@@ -148,7 +151,7 @@ bool OrthographicCamera::IsVisible(const Bounds3D& bounds) {
 }
 
 vec2 OrthographicCamera::GetWorldCoordinates(vec2 P) {
-
+    std::cout << m_viewMatrix[3][0] << "...\n";
     float x0 = -m_viewMatrix[3][0] - m_orthoWidth * 0.5f;
     float y0 = -m_viewMatrix[3][1] - m_orthoHeight * 0.5f;
     float ty = (m_winHeight/m_pixelRatio) - P.y;

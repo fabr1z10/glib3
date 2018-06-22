@@ -39,6 +39,7 @@ void ScriptHotSpot::onLeave() {
         r_leave->operator()(EntityWrapper(m_entity));
 }
 void ScriptHotSpot::onClick(glm::vec2) {
+    std::cout << "CLICK ON SCRIPTHS\n";
     if (r_click != nullptr)
         r_click->operator()(EntityWrapper(m_entity));
 }

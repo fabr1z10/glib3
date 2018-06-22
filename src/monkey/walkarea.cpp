@@ -13,7 +13,7 @@ void WalkArea::Start() {
 }
 
 void WalkArea::onClick(glm::vec2 worldCoords) {
-
+    std::cout << "CLICK ON WALKAREA\n";
     // find the target position. If I click inside the area, then that's my point, otherwise
     // I need to find the closest point in the edge of the polygon.
     //bool inside = m_shape->isPointInside(worldCoords);

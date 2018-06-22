@@ -299,10 +299,19 @@ void MonkeyFactory::ReadWalkarea (luabridge::LuaRef& ref, Entity* parent) {
         luabridge::LuaRef scaleRef = sref["scale"];
         auto scaleFunc = GetFunc2D(scaleRef);
         hotspot->SetScalingFunction(std::move(scaleFunc));
-
-
     }
 
+    if (table.HasKey("blockedlines")) {
+        luabridge::LuaRef ref = table.Get<luabridge::LuaRef>("blockedlines");
+        for (int i = 0; i < ref.length(); ++i) {
+            luabridge::LuaRef bl = ref[i+1];
+            LuaTable t(bl);
+            glm::vec2 A = t.Get<glm::vec2>("A");
+            glm::vec2 B = t.Get<glm::vec2>("B");
+            bool active = t.Get<bool>("active");
+            hotspot->AddBlockedLine(A, B, active);
+        }
+    }
 
     parent->AddComponent(hotspot);
 

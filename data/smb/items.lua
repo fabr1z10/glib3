@@ -57,7 +57,18 @@ objects = {
 		openFlag = false,
 		open = openBarKitchen,
 		walk = enterBarKitchen
-    }
+    },
+	door_kitchen_bar = {
+		text = strings.objects.door,
+		tag = "door_kitchen_bar",
+        pos = {50, 15},
+		dir = "west",
+	},
+	door_kitchen_pier = {
+		text = strings.objects.door,
+		tag = "door_kitchen_pier",
+		openFlag = false
+	}
 }
 
 objects.village1_door.walk = curry(walkToDoor, {obj = objects.village1_door, roomId = "scummbar"} )
@@ -79,3 +90,25 @@ objects.door_bar_kitchen.isopen = function() return objects.door_bar_kitchen.ope
 objects.door_bar_kitchen.setopen = function(open) objects.door_bar_kitchen.openFlag = open end
 
 
+objects.door_kitchen_bar.isopen = objects.door_bar_kitchen.isopen
+objects.door_kitchen_bar.setopen = objects.door_bar_kitchen.setopen
+objects.door_kitchen_pier.posfunc = function () 
+	player = monkey.getEntity("player")
+	if (player.x > 200) then
+		return { 210, 14}
+	else
+		return {190, 14}	
+	end
+end
+objects.door_kitchen_pier.dirfunc = function () 
+	player = monkey.getEntity("player")
+	if (player.x > 200) then
+		return "west"
+	else
+		return "east"	
+	end
+end
+objects.door_kitchen_pier.isopen = function() return objects.door_kitchen_pier.openFlag end
+objects.door_kitchen_pier.setopen = function(open) objects.door_bar_kitchen.openFlag = open end
+objects.door_kitchen_pier.open = openKitchenPierDoor
+objects.door_kitchen_pier.close = closeKitchenPierDoor

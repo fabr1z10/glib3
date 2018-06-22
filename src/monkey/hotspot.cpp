@@ -80,15 +80,16 @@ void HotSpotGroup::Run(double x, double y) {
         // check all the inner hotspots
         // convert mouse coords into world coordinates
         glm::vec2 worldCoords = m_cam->GetWorldCoordinates(glm::vec2(x, y));
-        //std::cout << "world coords + " << worldCoords.x << ", " << worldCoords.y << std::endl;
+        std::cout << x << "," << y << ", world coords = " << worldCoords.x << ", " << worldCoords.y << std::endl;
 
         std::map<int, HotSpot*> candidateHotspots;
         for (auto& h : m_hotspots) {
             if (h->IsActive() && h->isMouseInside(worldCoords)) {
+
                 candidateHotspots.insert(std::make_pair(-h->GetPriority(), h));
             }
         }
-        
+        std::cout << candidateHotspots.size() << "\n";
         if (candidateHotspots.empty()) {
             //std::cout << "no cand hotspot" << std::endl;
             if (m_currentlyActiveHotSpot != nullptr)

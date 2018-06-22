@@ -16,6 +16,7 @@
 #include <gfx/scriptactions.h>
 #include <monkey/callfunc.h>
 #include <monkey/monkeyfactory.h>
+#include <monkey/enableblock.h>
 
 float EntityWrapper::GetX() const {
     return m_underlying->GetPosition().x;
@@ -169,6 +170,10 @@ namespace luaFunctions {
             } else if (type == "resumescript") {
                 std::string s = table.Get<std::string>("script");
                 script->AddActivity(std::unique_ptr<ResumeScript>(new ResumeScript(id, s)));
+            } else if (type == "activatewall") {
+                int wallId = table.Get<int>("wall");
+                bool active = table.Get<bool>("active");
+                script->AddActivity(std::unique_ptr<EnableBlock>(new EnableBlock(id, wallId, active)));
             }
         }
         luabridge::LuaRef edges = ref["edges"];

@@ -50,21 +50,34 @@ end
 
 function createWalkToAction (obj)
 
+	if (obj.posfunc == nil) then
+		walkPos = obj.pos
+	else
+		walkPos = obj.posfunc()
+	end
+
     actions = {
         {
             type = "walkto",
             walkarea = "walkarea",
             actor = "player",
-            pos = obj.pos
+            pos = walkPos
         }
     }
 
-    if (obj.dir ~= nil) then
+	dir = nil
+	if (obj.dirfunc ~= nil) then
+		dir = obj.dirfunc()
+	else
+		dir = obj.dir
+	end
+
+    if (dir ~= nil) then
         table.insert (actions,
         {
             actor = "player",
             type = "turn",
-            face = obj.dir
+            face = dir
         })
      end
 
@@ -123,8 +136,12 @@ function operateDoor(args)
     -- if args.open == true then I need to something when it's closed
     -- and viceversa, so ...
     if (args.obj.isopen ~= args.open) then
-        face = dirHelper[args.obj.dir]
-        return { 
+		if (args.obj.dirfunc ~= nil) then
+			face = dirHelper[args.obj.dirfunc()]
+		else
+            face = dirHelper[args.obj.dir]
+        end
+		return { 
             { type="animate", actor="player", anim=("operate" .. face) },
             { type="delay", sec="0.5" },
             { type="animate", actor = args.obj.tag, anim = (args.open and "open" or "close") },

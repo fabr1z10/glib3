@@ -12,6 +12,7 @@ end
 
 require ("factoryactions")
 require ("rooms/scummbar/actions")
+require ("rooms/kitchen/actions")
 require ("items")
 require ("factoryobjects")
 require ("uifuncs")

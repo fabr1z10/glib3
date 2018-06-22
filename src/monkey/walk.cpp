@@ -44,6 +44,7 @@ void Walk::Start() {
         bool flipX{false};
         for (size_t i = 1; i < points.size(); ++i) {
             delta = points[i] - currentPos;
+            float length = glm::length(delta);
             if (delta == glm::vec2(0.0f))
                 continue;
 
@@ -57,7 +58,12 @@ void Walk::Start() {
                 }
             }
             // effective displacement
-            delta = tMin * delta;
+            if (tMin < 1.0) {
+                length = tMin * length - 0.1f;
+                length = std::max(0.0f, length);
+            }
+            if (length == 0.0f)
+                break;
             std::string anim;
             //std::string anim2;
             if (std::fabs(delta.x) > std::fabs(delta.y)) {
@@ -74,7 +80,7 @@ void Walk::Start() {
             }
             flipX = (anim == "walk_right" && delta.x < 0);
             Push(std::make_shared<Animate>(count++, actor, anim, flipX));
-            Push(std::make_shared<MoveTo>(count++, actor, points[i], 200.0f));
+            Push(std::make_shared<MoveTo>(count++, actor, currentPos + length * glm::normalize(delta), 200.0f));
             //if (i == points.size() - 1 || tMin < 1.0)
             currentPos = points[i];
             if (tMin < 1.0)
@@ -84,6 +90,7 @@ void Walk::Start() {
             }
             //script->AddActivity(p);
         }
-        Push(std::make_shared<Animate>(count++, actor, anim2, flipX));
+        if (!anim2.empty())
+            Push(std::make_shared<Animate>(count++, actor, anim2, flipX));
     }
 }
