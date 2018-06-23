@@ -21,6 +21,7 @@ public:
 private:
     void ReadItems(luabridge::LuaRef& ref, Entity* parent);
     void ReadGfxComponent (luabridge::LuaRef& ref, Entity* parent);
+    void ReadTextViewComponent (luabridge::LuaRef& ref, Entity* parent);
     std::unique_ptr<Function2D> GetFunc2D(luabridge::LuaRef& ref);
 
     std::shared_ptr<Renderer> GetTextComponent (luabridge::LuaRef& ref);

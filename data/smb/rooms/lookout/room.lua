@@ -34,6 +34,7 @@ assets = {
 
 },
 scene = {
+
 [1] = { 
     tag = "main",
     layer = 1,
@@ -117,7 +118,18 @@ scene = {
                 tag = "dialogue"
             }
         }
-  }
+  },
+[3] =
+{
+   tag ="prova",
+   textview = {
+      width=160,
+      height=100,
+	  viewport = {80, 50, 160, 100},
+	  size = 8,
+      font = "ui" 
+   }
+},
 },
 
 
@@ -130,6 +142,7 @@ groups = {
 cameras = {
 {
     tag="maincam",
+	root="main",
     type="ortho",
     size = {320, 144},
     bounds = {0, 0, 320, 144},
@@ -138,7 +151,8 @@ cameras = {
 },
 {
     tag = "uicam",
-    type="ortho",
+    root="ui",
+	type="ortho",
     size = {320, 56},
     bounds = {0, 0, 320, 56},
     viewport = {0, 0, 320, 56},

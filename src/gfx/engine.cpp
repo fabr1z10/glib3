@@ -86,15 +86,17 @@ void Engine::MainLoop() {
         m_scene = m_sceneFactory->Create();
         
         // start the scene (initialize components)
-        for (auto iter = m_scene->begin(); iter != m_scene->end(); ++iter) {
-            iter->Start();
-        }
+        m_running = true;
+        m_scene->Start();
+        //for (auto iter = m_scene->begin(); iter != m_scene->end(); ++iter) {
+        //    iter->Start();
+        //}
         
         m_sceneFactory->PostInit();
         // call startUp
         
         
-        m_running = true;
+
         // run the scene
         m_endScene = false;
         while (!glfwWindowShouldClose(window) && !m_endScene) {

@@ -23,17 +23,18 @@ public:
     void Update(double) override;
     void AddShader (ShaderType id);
     void AddCamera (std::unique_ptr<Camera>);
+    void RemoveCamera(int);
     Camera* GetCamera (int);
     void Notify(float, float) override;
     using ParentClass = RenderingEngine;
 private:
     std::vector<Shader*> m_shaders;
-    std::vector<std::unique_ptr<Camera>> m_cameras;
+    std::unordered_map<int, std::unique_ptr<Camera>> m_cameras;
+
+    std::unordered_map<Camera*, Entity*> m_roots;
 };
 
-inline void RenderingEngine::AddCamera(std::unique_ptr<Camera> cam) {
-    m_cameras.push_back(std::move(cam));
-}
+
 
 
 inline Camera* RenderingEngine::GetCamera(int id) {

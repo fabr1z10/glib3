@@ -30,7 +30,7 @@ public:
 
     const glm::mat4& GetLocalTransform() const;
     const glm::mat4& GetWorldTransform() const;
-    std::string GetTag() const;
+
     template <class C>
     void AddComponent(std::shared_ptr<C> c) {
         m_components[std::type_index(typeid(typename C::ParentClass))] = c;

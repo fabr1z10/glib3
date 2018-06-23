@@ -16,7 +16,7 @@
 #include <gfx/follow.h>
 #include <monkey/scaling.h>
 
-
+#include <gfx/textview.h>
 
 std::shared_ptr<Entity> MonkeyFactory::Create() {
 
@@ -65,6 +65,7 @@ std::shared_ptr<Entity> MonkeyFactory::Create() {
         LuaTable tcam(cam);
         std::string camType = tcam.Get<std::string>("type");
         std::string tag = tcam.Get<std::string>("tag", "");
+        std::string rootNode = tcam.Get<std::string>("root");
         glm::vec2 pos = tcam.Get<glm::vec2>("pos", glm::vec2(0.0f));
         if (camType == "ortho") {
             // orhographic camera
@@ -78,6 +79,7 @@ std::shared_ptr<Entity> MonkeyFactory::Create() {
             cam->SetPosition(glm::vec3(pos, 5.0f), glm::vec3(0,0,-1), glm::vec3(0,1,0));
             if (!tag.empty())
                 cam->SetTag(tag);
+            cam->SetRoot(rootNode);
             renderingEngine->AddCamera(std::move(cam));
         }
     }
@@ -91,6 +93,7 @@ std::shared_ptr<Entity> MonkeyFactory::Create() {
     scheduler->SetTag("_scheduler");
     auto hotspotManager = std::make_shared<HotSpotManager>();
     hotspotManager->SetTag("_hotspotmanager");
+    renderingEngine->SetTag("_renderingengine");
     luabridge::LuaRef groups = roomTable.Get<luabridge::LuaRef>("groups");
     for (int i = 0; i< groups.length(); ++i) {
         luabridge::LuaRef groupR = groups[i+1];
@@ -156,6 +159,10 @@ std::shared_ptr<Entity> MonkeyFactory::ReadItem(luabridge::LuaRef& ref) {
         luabridge::LuaRef c = item.Get<luabridge::LuaRef>("gfx");
         ReadGfxComponent(c, entity.get());
     }
+    if (item.HasKey("textview")) {
+        luabridge::LuaRef c = item.Get<luabridge::LuaRef>("textview");
+        ReadTextViewComponent(c, entity.get());
+    }
     if (item.HasKey("text")) {
         luabridge::LuaRef c = item.Get<luabridge::LuaRef>("text");
         ReadTextComponent(c, entity.get());
@@ -203,6 +210,20 @@ void MonkeyFactory::ReadItems(luabridge::LuaRef& scene, Entity* parent) {
 
     
 }
+
+void MonkeyFactory::ReadTextViewComponent(luabridge::LuaRef &ref, Entity *parent) {
+    LuaTable table(ref);
+    glm::vec4 viewport = table.Get<glm::vec4>("viewport");
+    float w = table.Get<float>("width");
+    float h = table.Get<float>("height");
+    float size = table.Get<float>("size");
+    std::string font = table.Get<std::string>("font");
+    auto r = std::make_shared<TextView>(w, h, size, font, viewport);
+    parent->AddComponent(r);
+
+
+}
+
 
 void MonkeyFactory::ReadGfxComponent(luabridge::LuaRef &ref, Entity *parent) {
     LuaTable table(ref);

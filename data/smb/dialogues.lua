@@ -27,7 +27,11 @@ dialogues = {
                 [3] = { text = d[3], active = true, alwaysActive = true, click = curry(dialoguesLookout.start, 3) },
                 [4] = { text = d[4], active = true, alwaysActive = true, click = curry(dialoguesLookout.start, 4) },
                 [5] = { text = d[46], active = false, alwaysActive = true, click = curry(dialoguesLookout.start, 46) },
-            }
+				[6] = { text = d[10], active = true },
+				[7] = { text = d[11], active = true },
+            	[8] = { text = d[12], active = true },
+				[9] = { text = d[13], active = true },
+			}
         },
         [2] = {
         	lines = {

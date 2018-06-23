@@ -7,8 +7,9 @@ class Ref {
 public:
     Ref();
     virtual ~Ref();
-    void SetTag(const std::string&);
     std::string GetTag() const;
+    void SetTag(const std::string&);
+
     int GetId() const;
     static Ref* Get(int);
 private:
@@ -20,6 +21,10 @@ private:
 
 };
 
+
+inline std::string Ref::GetTag() const {
+    return m_tag;
+}
 inline int Ref::GetId() const {
     return m_id;
 }

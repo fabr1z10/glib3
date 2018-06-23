@@ -27,6 +27,8 @@ public:
     int GetLayer() const { return m_layer; }
     using ParentClass = Camera;
     Event<Camera*> OnMove;
+    std::string GetRoot() const;
+    void SetRoot(const std::string&);
 protected:
     glm::vec4 m_camViewport;
     int m_layer;
@@ -35,7 +37,16 @@ protected:
     GLsizei m_viewportHeight;
     GLsizei m_viewportWidth;
     float m_pixelRatio;
+    std::string m_root;
 };
+
+inline std::string Camera::GetRoot() const {
+    return m_root;
+}
+
+inline void Camera::SetRoot(const std::string& root) {
+    m_root = root;
+}
 
 
 class OrthographicCamera : public Camera {
