@@ -10,8 +10,8 @@
 // hotspot is a component I can attach to
 class HotSpot : public Component {
 public:
-    HotSpot (std::shared_ptr<Shape> shape, int priority, int group, Entity* relativeTo = nullptr) : Component(),
-    m_shape{shape}, m_focus{false}, m_priority{priority}, m_group{group} {}
+    HotSpot (std::shared_ptr<Shape> shape, int priority) : Component(),
+    m_shape{shape}, m_focus{false}, m_priority{priority} {}
     virtual ~HotSpot();
     virtual bool isMouseInside(glm::vec2);
     void SetFocus (bool);
@@ -27,7 +27,6 @@ public:
     using ParentClass = HotSpot;
 protected:
     int m_priority;
-    int m_group;
     std::shared_ptr<Shape> m_shape;
     bool m_focus;
 };
@@ -37,48 +36,45 @@ inline Shape* HotSpot::GetShape()
     return m_shape.get();
 }
 
-inline int HotSpot::GetGroup() const {
-    return m_group;
-}
 
 inline int HotSpot::GetPriority() const {
     return m_priority;
 }
 
 
-class HotSpotGroup : public Ref {
-public:
-    HotSpotGroup() : Ref(), m_enabled{true} {}
-    HotSpotGroup(const std::string& camId) : Ref(), m_enabled{true}, m_camId(camId), m_currentlyActiveHotSpot{nullptr} {}
-    void Insert(HotSpot* hs) {
-        m_hotspots.insert(hs);
-    }
-    void Erase(HotSpot* hs) {
-        m_hotspots.erase(hs);
-        if (m_currentlyActiveHotSpot == hs) {
-            m_currentlyActiveHotSpot = nullptr;
-        }
-    }
-    void InitCamera();
-    void CheckCameraMove();
-    void Run(double x, double y);
-    void Click(double mouse_x, double mouse_y);
-    void CameraMove() ;
-    void SetEnabled(bool value) ;
-private:
-    bool m_enabled;
-    bool m_active;
-    std::unordered_set<HotSpot*> m_hotspots;
-    HotSpot* m_currentlyActiveHotSpot;
-    OrthographicCamera* m_cam;
-    std::string m_camId;
-};
-
-inline void HotSpotGroup::SetEnabled(bool value) {
-    m_enabled = value;
-    m_currentlyActiveHotSpot = nullptr;
-
-}
+//class HotSpotGroup : public Ref {
+//public:
+//    HotSpotGroup() : Ref(), m_enabled{true} {}
+//    HotSpotGroup(const std::string& camId) : Ref(), m_enabled{true}, m_camId(camId), m_currentlyActiveHotSpot{nullptr} {}
+//    void Insert(HotSpot* hs) {
+//        m_hotspots.insert(hs);
+//    }
+//    void Erase(HotSpot* hs) {
+//        m_hotspots.erase(hs);
+//        if (m_currentlyActiveHotSpot == hs) {
+//            m_currentlyActiveHotSpot = nullptr;
+//        }
+//    }
+//    void InitCamera();
+//    void CheckCameraMove();
+//    void Run(double x, double y);
+//    void Click(double mouse_x, double mouse_y);
+//    void CameraMove() ;
+//    void SetEnabled(bool value) ;
+//private:
+//    bool m_enabled;
+//    bool m_active;
+//    std::unordered_set<HotSpot*> m_hotspots;
+//    HotSpot* m_currentlyActiveHotSpot;
+//    OrthographicCamera* m_cam;
+//    std::string m_camId;
+//};
+//
+//inline void HotSpotGroup::SetEnabled(bool value) {
+//    m_enabled = value;
+//    m_currentlyActiveHotSpot = nullptr;
+//
+//}
 
 // I have one only mouse listener
 // so when mouse moves, I just need to call one function and not one func for every hotspot.
@@ -96,9 +92,9 @@ public:
     void Unregister (HotSpot*);
     void AddGroup (int, const std::string& camId);
     using ParentClass = HotSpotManager;
-    void EnableGroup(int);
-    void DisableGroup(int);
+    //void EnableGroup(int);
+    //void DisableGroup(int);
 protected:
     bool m_active;
-    std::unordered_map<int, std::unique_ptr<HotSpotGroup> > m_groups;
+    //std::unordered_map<int, std::unique_ptr<HotSpotGroup> > m_groups;
 };

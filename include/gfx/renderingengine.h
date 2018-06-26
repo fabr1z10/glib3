@@ -12,7 +12,28 @@
 #include <gfx/component.h>
 #include <gfx/camera.h>
 #include <gfx/listener.h>
+#include <gfx/iterator.h>
 #include <vector>
+#include <stack>
+
+// stack with extended push/pop functionalities
+//class RenderingStack {
+//public:
+//    void push(Entity*);
+//    void pop();
+//    bool empty() const;
+//    bool operator== (const RenderingStack& r) const {
+//        return m_stack == r.m_stack;
+//    }
+//    Entity* top();
+//    Camera* GetCamera() {
+//        return (m_cameras.empty() ? nullptr : m_cameras.top());
+//    }
+//private:
+//    std::stack<Camera*> m_cameras;
+//    std::stack<Entity*> m_stack;
+//    std::stack<glm::vec4> m_viewportStack;
+//};
 
 // class responsible for rendering the entire scene.
 // handles camera and loops through all rendering components

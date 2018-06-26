@@ -184,11 +184,14 @@ public:
     virtual void Start();
     virtual void Stop();
     ShaderType GetShaderId() const { return m_shaderId; }
+    static Shader* GetCurrentShader();
+    static void SetCurrentShader(Shader*);
 private:
     ShaderType m_shaderId;
     unsigned int m_nAttributes;
     std::unordered_map <ShaderUniform, GLuint, EnumClassHash> m_locations;
     GLuint m_programId;
+    static Shader* g_currentShader;
 };
 
 class ShaderFactory {

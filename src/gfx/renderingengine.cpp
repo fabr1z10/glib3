@@ -9,25 +9,87 @@
 #include <gfx/renderingengine.h>
 #include <gfx/renderer.h>
 #include <gfx/engine.h>
-#include <gfx/shader.h>
-#include <gfx/error.h>
+#include <graph/geom.h>
 #include <iostream>
+#include <gfx/renderingiterator.h>
 
 extern GLFWwindow* window;
+
+//void RenderingStack::push(Entity* entity) {
+//    // if the entity has a camera, we need to activate
+//    Camera* cam = entity->GetCamera();
+//    if (cam != nullptr) {
+//        cam->SetProjectionMatrix();
+//
+//        // set the viewport
+//        glm::vec4 vp = cam->GetViewPort();
+//        glm::vec4 viewport;
+//        if (m_viewportStack.empty()) {
+//            viewport = vp;
+//        } else {
+//            glm::vec4 currentViewport = m_viewportStack.top();
+//            float xMin = currentViewport.x + vp.x;
+//            float yMin = currentViewport.y + vp.y;
+//            float xMax = xMin + vp[2];
+//            float yMax = yMin + vp[3];
+//            xMin = Clamp(xMin, currentViewport.x, currentViewport.x + currentViewport[2]);
+//            xMax = Clamp(xMax, currentViewport.x, currentViewport.x + currentViewport[2]);
+//            yMin = Clamp(yMin, currentViewport.y, currentViewport.y + currentViewport[3]);
+//            yMax = Clamp(yMax, currentViewport.y, currentViewport.y + currentViewport[3]);
+//            // clamp to current viewport!
+//            currentViewport = glm::vec4(xMin, yMin, xMax - xMin, yMax - yMin);
+//        }
+//        Engine::get().SetViewport(viewport[0], viewport[1], viewport[2], viewport[3]);
+//        m_cameras.push(cam);
+//        m_viewportStack.push(viewport);
+//    }
+//    m_stack.push(entity);
+//}
+//
+//bool RenderingStack::empty() const {
+//    return m_stack.empty();
+//}
+//
+//void RenderingStack::pop() {
+//    // if the top entity has a camera,
+//    // we need to reset the previous viewport
+//    // and the previous projection matrix!
+//    if (m_stack.top()->GetCamera() != nullptr) {
+//        m_viewportStack.pop();
+//        m_cameras.pop();
+//
+//        if (!m_cameras.empty()) {
+//            glm::vec4 vp = m_viewportStack.top();
+//            Engine::get().SetViewport(vp[0], vp[1], vp[2], vp[3]);
+//            m_cameras.top()->SetProjectionMatrix();
+//        }
+//    }
+//
+//
+//    m_stack.pop();
+//
+//
+//};
+//
+//Entity* RenderingStack::top() {
+//    return m_stack.top();
+//}
 
 void RenderingEngine::Start() {
 
     // trigger a resize for all cameras
     int widthPixel, heightPixel;
     glfwGetFramebufferSize(window, &widthPixel, &heightPixel);
-    for (auto& c : m_cameras) {
-        auto cam = c.second.get();
-        cam->Resize(widthPixel, heightPixel);
-        // get the root entity for each camera
-        std::string root = cam->GetRoot();
-        Entity* rootNode = Engine::get().GetRef<Entity>(root);
-        m_roots.insert(std::make_pair(cam, rootNode));
-    }
+    // trigger a resize
+    Engine::WindowResizeCallback(window, widthPixel, heightPixel);
+//    for (auto& c : m_cameras) {
+//        auto cam = c.second.get();
+//        cam->Resize(widthPixel, heightPixel);
+//        // get the root entity for each camera
+//        std::string root = cam->GetRoot();
+//        Entity* rootNode = Engine::get().GetRef<Entity>(root);
+//        m_roots.insert(std::make_pair(cam, rootNode));
+//    }
 
     // register to window resize
     Engine::get().RegisterToWindowResizeEvent(this);
@@ -43,39 +105,43 @@ void RenderingEngine::Update(double)
 {
     int drawCount {0};
     //auto root = Engine::get().GetScene();
+
+
+    Entity* root = Engine::get().GetScene();
+    //std::cout << root->ToString() << "\n";
     for (auto& shader : m_shaders) {
         ShaderType stype = shader->GetShaderId();
-        shader->Start();
-        for (auto& c : m_cameras) {
-            auto cam = c.second.get();
-            cam->SetCurrentCamera(shader);
-            auto it = m_roots.find(cam);
-            if (it == m_roots.end())
-                GLIB_FAIL ("Cannot find root for cam : " << cam->GetRoot());
-            Entity *root = it->second;
+        Shader::SetCurrentShader(shader);
 
-            // loop through all nodes
-            for (auto iter = root->begin(); iter != root->end(); ++iter) {
+        // loop through all nodes
+        RenderingIterator iterator(root);
+        for (; iterator != RenderingIterator();  ++iterator) {
+            // get the renderer component
 
-                // get the renderer component
-                Renderer* renderer = iter->GetComponent<Renderer>();
+            auto cam = iterator.GetCamera();
+            if (cam == nullptr)
+                continue;
+            Entity& e = *iterator;
+            //std::cout << "Examining " << e.GetTag() << "\n";
 
-                if (renderer != nullptr && renderer->IsActive() && renderer->GetShaderType() == stype) {
-                    glm::mat4 wt = iter->GetWorldTransform() * renderer->GetTransform();
-                    // check for frustrum culling ...
-                    drawCount++;
+            Renderer* renderer = e.GetComponent<Renderer>();
+
+            if (renderer != nullptr && renderer->IsActive() && renderer->GetShaderType() == stype) {
+                glm::mat4 wt = iterator->GetWorldTransform() * renderer->GetTransform();
+                // check for frustrum culling ...
+                drawCount++;
                         
-                    // compute model view matrix
-                    glm::mat4 mvm = cam->m_viewMatrix * wt * renderer->GetRenderingTransform();
-                    GLuint mvLoc = shader->GetUniformLocation(MODELVIEW);
-                    glUniformMatrix4fv(mvLoc, 1, GL_FALSE, &mvm[0][0]);
-                    renderer->Draw(shader);
-                }
+                // compute model view matrix
+
+                glm::mat4 mvm = cam->m_viewMatrix * wt * renderer->GetRenderingTransform();
+                GLuint mvLoc = shader->GetUniformLocation(MODELVIEW);
+                glUniformMatrix4fv(mvLoc, 1, GL_FALSE, &mvm[0][0]);
+                renderer->Draw(shader);
+            }
                     
 
-            }
         }
-        shader->Stop();
+
     }
 }
 

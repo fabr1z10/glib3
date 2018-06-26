@@ -22,8 +22,8 @@ struct EntityWrapper {
     void SetColor(int, int, int, int);
     void SetText(const std::string&);
     void SetActive (bool);
-    static void EnableGroup(int);
-    static void DisableGroup(int);
+    //static void EnableGroup(int);
+    //static void DisableGroup(int);
     std::string GetText() const;
     int GetLines() const;
     void SetPosition(float x, float y, float z);

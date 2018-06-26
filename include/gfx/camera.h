@@ -9,7 +9,7 @@
 
 class Camera : public Ref {
 public:
-    Camera(int layer, glm::vec4 viewport = glm::vec4());
+    Camera(glm::vec4 viewport = glm::vec4());
     virtual ~Camera() {}
     virtual void Resize(int width, int height) = 0;
     glm::vec3 GetPosition() const;
@@ -19,19 +19,18 @@ public:
     virtual void InitCamera() {}
     // this needs to be called everything we switch camera
     // sets up viewport and projection matrix
-    void SetCurrentCamera(Shader*);
+    void SetProjectionMatrix();
     virtual bool IsVisible(const Bounds3D&) = 0;
     glm::mat4 m_projectionMatrix;
     glm::mat4 m_viewMatrix;
     bool IsInViewport(float xScreen, float yScreen);
-    int GetLayer() const { return m_layer; }
     using ParentClass = Camera;
     Event<Camera*> OnMove;
     std::string GetRoot() const;
     void SetRoot(const std::string&);
+    glm::vec4 GetViewPort();
 protected:
     glm::vec4 m_camViewport;
-    int m_layer;
     float m_winHeight;
     GLint m_viewportX, m_viewportY;
     GLsizei m_viewportHeight;
@@ -48,10 +47,13 @@ inline void Camera::SetRoot(const std::string& root) {
     m_root = root;
 }
 
+inline glm::vec4 Camera::GetViewPort() {
+    return m_camViewport;
+}
 
 class OrthographicCamera : public Camera {
 public:
-    OrthographicCamera(float orthoWidth, float orthoHeight, int layer, glm::vec4 viewport = glm::vec4());
+    OrthographicCamera(float orthoWidth, float orthoHeight, glm::vec4 viewport = glm::vec4());
     void setOrthoSize(float w, float h);
     glm::vec2 getOrthoSize() const;
     // set the visible rectangle

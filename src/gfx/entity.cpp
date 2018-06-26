@@ -54,6 +54,9 @@ void Entity::ClearAllChildren() {
     }
 }
 
+ std::list<std::shared_ptr<Entity> >& Entity::GetChildren() {
+    return m_children;
+}
 
 // update just calls update on each of the entity components
 void Entity::Update(double dt) {
@@ -70,6 +73,33 @@ void Entity::Start() {
     }
     for (auto& m : m_children)
         m->Start();
+
+}
+
+
+bool Entity::IsDescendantOf(Entity * other) const {
+    Entity* current = GetParent();
+    while (current != nullptr) {
+        if (current == other)
+            return true;
+        current = current->GetParent();
+    }
+    return false;
+}
+
+
+std::string Entity::ToString() {
+    std::stringstream  s ;
+    s << GetTag() << ": " ;
+    for (auto& c : m_children) {
+        std::string t = c->GetTag();
+        if (t.empty()) t = "*unknown*";
+        s << t << ", ";
+    }
+    s << "\n";
+    for (auto& c : m_children)
+        s << c->ToString();
+    return s.str();
 
 }
 
@@ -112,4 +142,8 @@ void Entity::SetParent(Entity* entity) {
 
 void Entity::Move(glm::vec2 pos) {
     SetPosition(GetPosition() + glm::vec3(pos, 0.0f));
+}
+
+Camera* Entity::GetCamera() {
+    return m_cameras.get();
 }

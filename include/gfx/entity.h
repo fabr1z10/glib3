@@ -12,6 +12,7 @@
 #include <glm/glm.hpp>
 #include <gfx/enums.h>
 #include <gfx/ref.h>
+#include <gfx/camera.h>
 #include <gfx/iterator.h>
 #include <gfx/component.h>
 #include <string>
@@ -31,6 +32,8 @@ public:
     const glm::mat4& GetLocalTransform() const;
     const glm::mat4& GetWorldTransform() const;
 
+    std::string ToString();
+
     template <class C>
     void AddComponent(std::shared_ptr<C> c) {
         m_components[std::type_index(typeid(typename C::ParentClass))] = c;
@@ -46,6 +49,7 @@ public:
     }
     void AddChild(std::shared_ptr<Entity>);
     void ClearAllChildren();
+    std::list<std::shared_ptr<Entity> >& GetChildren();
     void Remove(Entity*);
     void Update(double);
     void Start();
@@ -56,6 +60,7 @@ public:
     DepthFirstIterator<Entity> end() {
         return DepthFirstIterator<Entity>();
     }
+    bool IsDescendantOf (Entity*) const;
     
     void SetLayer(int);
     int GetLayer() const;
@@ -80,8 +85,10 @@ public:
     //void EraseRef(Ref* ref) {
     //	m_references.remove(ref);
     //}
-    Entity* GetParent() { return m_parent;}
+    Entity* GetParent() const { return m_parent;}
     void SetParent(Entity*);
+    void SetCamera(std::unique_ptr<Camera>);
+    Camera* GetCamera();
 private:
     void SetWorldTransform(glm::mat4& wt);
     void Notify();
@@ -94,6 +101,8 @@ private:
     glm::mat4 m_worldTransform;
     glm::mat4 m_lastMove;
     std::unordered_map<std::type_index, std::shared_ptr<Component> > m_components;
+    // can also be a vec of cameras?
+    std::unique_ptr<Camera> m_cameras;
 
 };
 
@@ -115,5 +124,8 @@ inline const glm::mat4& Entity::GetWorldTransform() const {
     return m_worldTransform;
 }
 
+inline void Entity::SetCamera(std::unique_ptr<Camera> cam)  {
+    m_cameras = std::move(cam);
+}
 
 #endif /* entity_h */

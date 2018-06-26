@@ -15,6 +15,7 @@ void Engine::Init(const EngineConfig& config) {
     m_frameTime = 1.0 / config.frameRate;
     m_running = false;
     m_deviceSize = glm::vec2(config.deviceWidth, config.deviceHeight);
+    m_aspectRatio = config.deviceWidth / config.deviceHeight;
     // initialize shaders
 
     AddShader (ShaderFactory::GetTextureShader());
@@ -75,6 +76,16 @@ void Engine::InitGL(const EngineConfig& config) {
     std::cout << "OpenGL version " << Mv << "." << mv << std::endl;
 }
 
+
+void Engine::SetViewport(float x, float y, float width, float height) {
+    // convert from device size to window size
+    float vph = static_cast<GLsizei> (m_actualSize.y * (height / m_deviceSize.y));
+    float vpw = static_cast<GLsizei> (m_actualSize.x * (width / m_deviceSize.x));
+    float vpx = (m_winSize.x - m_actualSize.x) / 2.0f + x * (m_actualSize.x / m_deviceSize.x);
+    float vpy = (m_winSize.y - m_actualSize.y) / 2.0f + y * (m_actualSize.y / m_deviceSize.y);
+    glViewport(vpx, vpy, vpw, vph);
+}
+
 void Engine::MainLoop() {
     if (m_sceneFactory == nullptr)
         GLIB_FAIL("Scene factory has not been set.")
@@ -118,6 +129,7 @@ void Engine::MainLoop() {
                 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
                 // update all active components
                 for (auto iter = m_scene->begin(); iter != m_scene->end(); ++iter) {
+
                     iter->Update(m_frameTime);
                 }
                 
@@ -136,6 +148,21 @@ void Engine::MainLoop() {
 
 void Engine::WindowResizeCallback(GLFWwindow* win, int width, int height) {
     // notify cameras
+
+    if (height == 0) height = 1;
+    // update the window aspect
+    Engine& engine = Engine::get();
+    float winAspectRatio = static_cast<float>(width) / height;
+    engine.m_winAspectRatio = winAspectRatio;
+    engine.m_winSize = glm::vec2(width, height);
+    if (winAspectRatio > engine.m_aspectRatio) {
+        // vertical bands
+        engine.m_actualSize = glm::vec2 (height * engine.m_aspectRatio, height);
+    } else {
+        // horizontal bands
+        engine.m_actualSize = glm::vec2 (width, width / engine.m_aspectRatio);
+    }
+
     for (auto& listener : Engine::get().m_resizeListeners)
         listener->Notify(width, height);
 

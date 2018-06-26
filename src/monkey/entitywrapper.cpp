@@ -192,16 +192,16 @@ void EntityWrapper::SetActive (bool value) {
     m_underlying->SetActive(value);
 }
 
-void EntityWrapper::EnableGroup(int id) {
-    auto hs = Engine::get().GetRef<HotSpotManager>("_hotspotmanager");
-    hs->EnableGroup(id);
-}
-
-void EntityWrapper::DisableGroup(int id) {
-    auto hs = Engine::get().GetRef<HotSpotManager>("_hotspotmanager");
-    hs->DisableGroup(id);
-
-}
+//void EntityWrapper::EnableGroup(int id) {
+//    auto hs = Engine::get().GetRef<HotSpotManager>("_hotspotmanager");
+//    hs->EnableGroup(id);
+//}
+//
+//void EntityWrapper::DisableGroup(int id) {
+//    auto hs = Engine::get().GetRef<HotSpotManager>("_hotspotmanager");
+//    hs->DisableGroup(id);
+//
+//}
 
 void EntityWrapper::SetPosition(float x, float y, float z) {
     m_underlying->SetPosition(glm::vec3(x, y, z));

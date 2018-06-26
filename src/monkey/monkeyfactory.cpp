@@ -15,8 +15,10 @@
 #include <monkey/scripthotspot.h>
 #include <gfx/follow.h>
 #include <monkey/scaling.h>
-
+#include <monkey/luakeylistener.h>
 #include <gfx/textview.h>
+
+using namespace luabridge;
 
 std::shared_ptr<Entity> MonkeyFactory::Create() {
 
@@ -56,33 +58,25 @@ std::shared_ptr<Entity> MonkeyFactory::Create() {
     luabridge::LuaRef scene = roomTable.Get<luabridge::LuaRef>("scene");
     ReadItems (scene, entity.get());
 
+
     // create the cameras
     auto engineNode = std::make_shared<Entity>();
     auto renderingEngine = std::make_shared<RenderingEngine>();
-    luabridge::LuaRef cams = roomTable.Get<luabridge::LuaRef>("cameras");
-    for (int i = 0; i < cams.length(); ++i) {
-        luabridge::LuaRef cam = cams[i+1];
-        LuaTable tcam(cam);
-        std::string camType = tcam.Get<std::string>("type");
-        std::string tag = tcam.Get<std::string>("tag", "");
-        std::string rootNode = tcam.Get<std::string>("root");
-        glm::vec2 pos = tcam.Get<glm::vec2>("pos", glm::vec2(0.0f));
-        if (camType == "ortho") {
-            // orhographic camera
-            glm::vec2 size = tcam.Get<glm::vec2>("size");
-            int layer = tcam.Get<int>("layer");
-            glm::vec4 bounds = tcam.Get<glm::vec4>("bounds", glm::vec4(0.0));
-            glm::vec4 viewport = tcam.Get<glm::vec4>("viewport", glm::vec4(0.0f, 0.0f, Engine::get().GetDeviceSize()));
-            auto cam = std::unique_ptr<OrthographicCamera> (new OrthographicCamera(size.x, size.y, layer, viewport));
-            if (bounds != glm::vec4(0.0f))
-                cam->SetBounds(bounds[0], bounds[2], bounds[1], bounds[3]);
-            cam->SetPosition(glm::vec3(pos, 5.0f), glm::vec3(0,0,-1), glm::vec3(0,1,0));
-            if (!tag.empty())
-                cam->SetTag(tag);
-            cam->SetRoot(rootNode);
-            renderingEngine->AddCamera(std::move(cam));
-        }
+
+    // add key listener to handle savegame, quit, pause etc.
+    auto keyListener = std::make_shared<LuaKeyListener>();
+
+
+
+    luabridge::LuaRef hotkeys = roomTable.Get<luabridge::LuaRef>("hotkeys");
+    for (int i = 0; i < hotkeys.length(); ++i) {
+        luabridge::LuaRef hotkey = hotkeys[i+1];
+        int key = hotkey["key"].cast<int>();
+        luabridge::LuaRef callback = hotkey["func"];
+        keyListener->AddHotKey(key, callback);
     }
+
+
     renderingEngine->AddShader(TEXTURE_SHADER);
     renderingEngine->AddShader(COLOR_SHADER);
     renderingEngine->AddShader(TEXT_SHADER);
@@ -94,18 +88,22 @@ std::shared_ptr<Entity> MonkeyFactory::Create() {
     auto hotspotManager = std::make_shared<HotSpotManager>();
     hotspotManager->SetTag("_hotspotmanager");
     renderingEngine->SetTag("_renderingengine");
-    luabridge::LuaRef groups = roomTable.Get<luabridge::LuaRef>("groups");
-    for (int i = 0; i< groups.length(); ++i) {
-        luabridge::LuaRef groupR = groups[i+1];
-        int id = groupR["id"].cast<int>();
-        std::string cam = groupR["cam"].cast<std::string>();
-        hotspotManager->AddGroup(id, cam);
+
+    if (roomTable.HasKey("groups")) {
+        luabridge::LuaRef groups = roomTable.Get<luabridge::LuaRef>("groups");
+        for (int i = 0; i < groups.length(); ++i) {
+            luabridge::LuaRef groupR = groups[i + 1];
+            int id = groupR["id"].cast<int>();
+            std::string cam = groupR["cam"].cast<std::string>();
+            hotspotManager->AddGroup(id, cam);
+        }
     }
 
 
     engineNode->AddComponent(renderingEngine);
     engineNode->AddComponent(scheduler);
     engineNode->AddComponent(hotspotManager);
+    engineNode->AddComponent(keyListener);
     entity->AddChild(engineNode);
 
     //luabridge::LuaRef roomRef = luabridge::getGlobal(LuaWrapper::L, "room");
@@ -150,7 +148,32 @@ std::shared_ptr<Entity> MonkeyFactory::ReadItem(luabridge::LuaRef& ref) {
     if (!tag.empty()) entity->SetTag(tag);
     glm::vec3 pos = item.Get<glm::vec3>("pos", glm::vec3(0.0f));
     entity->SetPosition(pos);
-    int layer = item.Get<int>("layer", 0);
+    // int layer = item.Get<int>("layer", 0);
+    if (item.HasKey("camera")) {
+        LuaRef cam = item.Get<LuaRef>("camera");
+        LuaTable tcam(cam);
+        std::string camType = tcam.Get<std::string>("type");
+        std::string tag = tcam.Get<std::string>("tag", "");
+        glm::vec2 pos = tcam.Get<glm::vec2>("pos", glm::vec2(0.0f));
+        glm::vec4 viewport = tcam.Get<glm::vec4>("viewport", glm::vec4(0.0f, 0.0f, Engine::get().GetDeviceSize()));
+        if (camType == "ortho") {
+            // orhographic camera
+            glm::vec2 size = tcam.Get<glm::vec2>("size");
+            glm::vec4 bounds = tcam.Get<glm::vec4>("bounds", glm::vec4(0.0));
+
+            auto camera = std::unique_ptr<OrthographicCamera> (new OrthographicCamera(size.x, size.y, viewport));
+            if (bounds != glm::vec4(0.0f))
+                camera->SetBounds(bounds[0], bounds[2], bounds[1], bounds[3]);
+            camera->SetPosition(glm::vec3(pos, 5.0f), glm::vec3(0,0,-1), glm::vec3(0,1,0));
+            if (!tag.empty())
+                camera->SetTag(tag);
+            entity->SetCamera(std::move(camera));
+        }
+
+
+    }
+
+
     if (item.HasKey("children")) {
         luabridge::LuaRef c = item.Get<luabridge::LuaRef>("children");
         ReadItems (c, entity.get());
@@ -191,7 +214,7 @@ std::shared_ptr<Entity> MonkeyFactory::ReadItem(luabridge::LuaRef& ref) {
         luabridge::LuaRef c = item.Get<luabridge::LuaRef>("scaling");
         ReadScaling(c, entity.get());
     }
-    entity->SetLayer(layer);
+    //entity->SetLayer(layer);
     return entity;
 
 
@@ -241,6 +264,21 @@ void MonkeyFactory::ReadGfxComponent(luabridge::LuaRef &ref, Entity *parent) {
         renderer->SetMesh(Engine::get().GetAssetManager().GetMesh(model));
         renderer->SetFlipX(flip);
         renderer->SetAnimation(anim);
+    } else if (table.HasKey("shape")) {
+        LuaRef sref = table.Get<LuaRef>("shape");
+        std::string draw = table.Get<std::string>("draw","outline");
+        glm::vec4 color = table.Get<glm::vec4>("color");
+        color /= 255.0f;
+        auto shape = ReadShape(sref);
+        if (draw == "outline") {
+            auto mesh = MeshFactory::CreateMesh(*(shape.get()), 0.0f);
+            renderer->SetMesh(mesh);
+        } else if (draw == "solid") {
+            auto mesh = MeshFactorySolid::CreateMesh(*(shape.get()), 0.0f);
+            renderer->SetMesh(mesh);
+
+        }
+        renderer->SetTint(color);
 
     }
     parent->AddComponent(renderer);
@@ -303,12 +341,12 @@ void MonkeyFactory::ReadWalkarea (luabridge::LuaRef& ref, Entity* parent) {
     LuaTable table(ref);
     std::string tag = table.Get<std::string>("tag", "");
 
-    int group = table.Get<int>("group");
+    //int group = table.Get<int>("group");
     int priority = table.Get<int>("priority");
     std::string targetId = table.Get<std::string>("target");
     luabridge::LuaRef shapeR = table.Get<luabridge::LuaRef>("shape");
     auto shape = ReadShape(shapeR);
-    auto hotspot = std::make_shared<WalkArea>(shape, priority, group, targetId);
+    auto hotspot = std::make_shared<WalkArea>(shape, priority, targetId);
     if (!tag.empty()) hotspot->SetTag(tag);
 
     // see if it has a depthfunc
@@ -361,9 +399,9 @@ std::shared_ptr<HotSpot> MonkeyFactory::GetHotSpot (luabridge::LuaRef& ref) {
 
 std::shared_ptr<HotSpot> MonkeyFactory::GetHotSpot (luabridge::LuaRef& ref, std::shared_ptr<Shape> shape) {
     LuaTable table(ref);
-    int group = table.Get<int>("group");
+    //int group = table.Get<int>("group");
     int priority = table.Get<int>("priority");
-    auto hotspot = std::make_shared<ScriptHotSpot>(shape, priority, group);
+    auto hotspot = std::make_shared<ScriptHotSpot>(shape, priority);
     if (table.HasKey("onenter")) {
         luabridge::LuaRef r = table.Get<luabridge::LuaRef>("onenter");
         hotspot->SetOnEnter(r);

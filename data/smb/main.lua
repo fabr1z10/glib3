@@ -86,3 +86,8 @@ config = {
     
 }
 
+-- hotkeys = {
+-- 	space = pause,
+-- 	f8 = restart
+
+-- }

@@ -7,8 +7,7 @@ class ScriptHotSpot : public HotSpot {
 public:
     ScriptHotSpot (
             std::shared_ptr<Shape> shape,
-            int priority,
-            int group) : HotSpot(shape, priority, group), m_inShape{false}, r_enter{nullptr},
+            int priority) : HotSpot(shape, priority), m_inShape{false}, r_enter{nullptr},
     r_leave{nullptr}, r_click{}{}
     void onLeave() override;
     void onClick(glm::vec2) override;

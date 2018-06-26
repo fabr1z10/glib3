@@ -10,6 +10,20 @@
 #include <sstream>
 #include <iostream>
 
+Shader* Shader::g_currentShader = nullptr;
+
+Shader* Shader::GetCurrentShader() {
+    return g_currentShader;
+}
+
+void Shader::SetCurrentShader(Shader* s) {
+    if (g_currentShader != nullptr) {
+        g_currentShader->Stop();
+    }
+    g_currentShader = s;
+    g_currentShader->Start();
+}
+
 Shader::Shader(
     ShaderType type,
     const char* vertex,

@@ -19,7 +19,7 @@ using namespace glm;
 
 extern GLFWwindow* window;
 
-Camera::Camera(int layer, glm::vec4 viewport) : Ref(), m_layer{layer}, m_camViewport{viewport} {
+Camera::Camera(glm::vec4 viewport) : Ref(), m_camViewport{viewport} {
     //App::RegisterToResizeEvent(this);
     int widthPixel;
     int widthPoint;
@@ -40,10 +40,11 @@ void Camera::Start() {
     //Game::get().AddCamera(this);
 }
 
-void Camera::SetCurrentCamera(Shader* currentShader) {
-    GLuint projLoc = currentShader->GetUniformLocation(PROJECTION);
+void Camera::SetProjectionMatrix() {
+    Shader* shader = Shader::GetCurrentShader();
+    GLuint projLoc = shader->GetUniformLocation(PROJECTION);
     glUniformMatrix4fv(projLoc, 1, GL_FALSE, &m_projectionMatrix[0][0]);
-    glViewport(m_viewportX, m_viewportY, m_viewportWidth, m_viewportHeight);
+    //glViewport(m_viewportX, m_viewportY, m_viewportWidth, m_viewportHeight);
 }
 
 void Camera::SetPosition(glm::vec3 eye, glm::vec3 dir, glm::vec3 up) {
@@ -65,8 +66,8 @@ bool Camera::IsInViewport(float xScreen, float yScreen) {
     
 }
 
-OrthographicCamera::OrthographicCamera(float orthoWidth, float orthoHeight, int layer, glm::vec4 viewport)
-        : Camera(layer, viewport), m_orthoWidth{orthoWidth}, m_orthoHeight{orthoHeight}
+OrthographicCamera::OrthographicCamera(float orthoWidth, float orthoHeight, glm::vec4 viewport)
+        : Camera(viewport), m_orthoWidth{orthoWidth}, m_orthoHeight{orthoHeight}
 {
     m_xMax = m_yMax = std::numeric_limits<float>::infinity();
     m_xMin = m_yMin = -m_xMax;

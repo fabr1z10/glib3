@@ -48,6 +48,9 @@ inline glm::vec2 Bounds::GetExtents() {
 struct Bounds3D {
     glm::vec3 min;
     glm::vec3 max;
+    glm::vec3 GetExtents() {
+        return max - min;
+    }
     //Bounds3D Apply(Transform&);
 };
 

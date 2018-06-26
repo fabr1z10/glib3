@@ -12,6 +12,9 @@
 #include <stack>
 #include <queue>
 
+// need to do something after each atomic operation on the stack.
+// it will check the top element and do some custom operation
+
 // generic iterator for Depth-first search in tree structures (for instance game objects and scheduler)
 template <class T>
 class DepthFirstIterator {
@@ -19,30 +22,33 @@ public:
     DepthFirstIterator() {}
     DepthFirstIterator(T* root) {
         m_stack.push(root);
+        // custom operation here
     }
     
     
     DepthFirstIterator& operator++() {
+        // pop
         T* top = m_stack.top();
         m_stack.pop();
-        if (!top->m_children.empty()) {
-            for (auto& c : top->m_children)
-                m_stack.push(c.get());
+        auto children = top->GetChildren();
+        for (auto r = children.rbegin(); r != children.rend(); ++r) {
+            m_stack.push(r->get());
         }
+        // custom operation here
         return *this;
-        
     }
     
-    T& operator*() const {
+    T& operator*() {
         return *(m_stack.top());
     }
     
-    T* operator->() const
+    T* operator->()
     { return (m_stack.top()); }
     
     
     std::stack<T*> m_stack;
-    
+
+
     bool operator== (const DepthFirstIterator& rhs) {
         return (m_stack.empty() ? rhs.m_stack.empty() : (m_stack == rhs.m_stack));
     }

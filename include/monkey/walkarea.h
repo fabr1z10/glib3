@@ -11,7 +11,7 @@ struct BlockedLine {
 
 class WalkArea : public HotSpot {
 public:
-    WalkArea (std::shared_ptr<Shape> shape, int priority, int group, const std::string& playerId) : HotSpot(shape, priority, group), m_playerId{playerId},
+    WalkArea (std::shared_ptr<Shape> shape, int priority, const std::string& playerId) : HotSpot(shape, priority), m_playerId{playerId},
     m_depthFunc{nullptr}, m_scaleFunc{nullptr} {}
     virtual bool isMouseInside(glm::vec2) {
         return true;

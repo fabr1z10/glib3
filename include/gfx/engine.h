@@ -52,6 +52,7 @@ public:
     void UnregisterToMouseEvent(MouseListener*);
     void RegisterToKeyboardEvent(KeyboardListener*);
     void UnregisterToKeyboardEvent(KeyboardListener*);
+    void SetViewport(float x, float y, float width, float height);
     void Remove(Entity*);
     template <typename T>
     T* GetRef(const std::string& id) {
@@ -85,6 +86,10 @@ private:
     double m_timeLastUpdate;
     //GLFWwindow* m_window;
     glm::vec2 m_deviceSize;
+    float m_aspectRatio;
+    float m_winAspectRatio;
+    glm::vec2 m_actualSize;
+    glm::vec2 m_winSize;
     std::unordered_set<WindowResizeListener*> m_resizeListeners;
     std::unordered_set<MouseListener*> m_mouseListeners;
     std::unordered_set<KeyboardListener*> m_keyboardListeners;
