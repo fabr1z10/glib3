@@ -5,6 +5,8 @@
 
 class ScriptHotSpot : public HotSpot {
 public:
+    ScriptHotSpot (int priority) : HotSpot(priority), m_inShape{false}, r_enter{nullptr},
+                            r_leave{nullptr}, r_click{}{}
     ScriptHotSpot (
             std::shared_ptr<Shape> shape,
             int priority) : HotSpot(shape, priority), m_inShape{false}, r_enter{nullptr},

@@ -4,8 +4,9 @@
 #include <gfx/renderer.h>
 #include <gfx/textmesh.h>
 #include <gfx/hotspot.h>
+#include <iostream>
 
-TextViewButton::TextViewButton(std::shared_ptr<Shape> shape, int priority) : HotSpot(shape, priority){}
+TextViewButton::TextViewButton(int n, TextView* textView, std::shared_ptr<Shape> shape, int priority) : HotSpot(shape, priority), m_textView{textView}, m_n{n} {}
 
 void TextViewButton::onEnter() {
     m_entity->GetComponent<Renderer>()->SetAnimation("selected");
@@ -14,6 +15,39 @@ void TextViewButton::onEnter() {
 void TextViewButton::onLeave() {
     m_entity->GetComponent<Renderer>()->SetAnimation("unselected");
 }
+
+void TextViewButton::onClick(glm::vec2){
+    m_textView->Scroll(m_n);
+}
+
+void TextView::Scroll(int nlines) {
+
+    int linesToSkip = m_textItems[nlines> 0 ? m_topLine : m_topLine+nlines].lines;
+    m_topLine += nlines;
+    Camera* cam = m_entity->GetCamera();
+    glm::vec3 pos = cam->GetPosition();
+    pos.y += (nlines > 0 ? -1.0f : 1.0f) * linesToSkip * m_fontSize;
+    cam->SetPosition(pos, glm::vec3(0, 0, -1));
+
+    m_arrowUp->SetActive(ScrollUpVisible());
+    m_arrowDown->SetActive(ScrollDownVisible());
+    std::cout << "topline = " << m_topLine << " line count = " << m_lineCount << ", maxlines = " << m_maxLines << "\n";
+}
+
+
+bool TextView::ScrollDownVisible() const {
+    int total = 0;
+    for (int i = m_topLine; i < m_textItems.size(); ++i) {
+        total += m_textItems[i].lines;
+        if (total > m_maxLines)
+            return true;
+    }
+    return false;
+}
+bool TextView::ScrollUpVisible() const {
+    return m_topLine > 0;
+}
+
 
 void TextView::Start() {
 
@@ -29,15 +63,15 @@ void TextView::Start() {
 
 
 
-    AppendText("Pippo calzelunga");
-    AppendText("A very long line which probably will take two lines of text.");
-    AppendText("ciao!");
-    AppendText("ciao!");
-    AppendText("ciao!");
-    AppendText("ciao!");
-    AppendText("ciao!");
-    AppendText("ciao!");
-    AppendText("ciao!");
+//    AppendText("Pippo calzelunga");
+//    AppendText("A very long line which probably will take two lines of text.");
+//    AppendText("ciao!");
+//    AppendText("ciao!");
+//    AppendText("ciao!");
+//    AppendText("ciao!");
+//    AppendText("ciao!");
+//    AppendText("ciao!");
+//    AppendText("ciao!");
 }
 
 TextView::~TextView() {
@@ -58,9 +92,9 @@ void TextView::AddArrows() {
     auto rendd = std::make_shared<Renderer>();
     glm::vec3 auExtents = arrowUpMesh->GetBounds().GetExtents();
     glm::vec3 adExtents = arrowDownMesh->GetBounds().GetExtents();
-    auto hsu = std::make_shared<TextViewButton>(std::make_shared<Rect>(auExtents[0], auExtents[1]), 1);
-    auto hsd = std::make_shared<TextViewButton>(std::make_shared<Rect>(adExtents[0], adExtents[1]), 1);
-
+    auto hsu = std::make_shared<TextViewButton>(-1, this, std::make_shared<Rect>(auExtents[0], auExtents[1]), 1);
+    auto hsd = std::make_shared<TextViewButton>(1, this, std::make_shared<Rect>(adExtents[0], adExtents[1]), 1);
+    m_scrollBarWidth = std::max(auExtents[0], adExtents[0]);
     rend->SetMesh(arrowUpMesh);
     rendd->SetMesh(arrowDownMesh);
     rend->SetAnimation("unselected");
@@ -79,27 +113,69 @@ void TextView::AddArrows() {
     m_arrowUp = arrowUp.get();
 }
 
-void TextView::AppendText(const std::string msg) {
-    auto mesh = std::make_shared<TextMesh>(m_font, msg, m_fontSize, BOTTOM_LEFT, m_orthoWidth);
+void TextView::ResetText() {
+    // called when a line is added briging number of lines > max visualizable
+    // we need to
+    // 1. remove all text
+    m_entity->ClearAllChildren();
+    // 2. set scrollbar to active
+    m_scrollBarOn = true;
+    m_arrowUp->SetActive(m_topLine > 0);
+    m_lineCount = 0;
+    for (auto& item : m_textItems) {
+        AppendLine(item);
+    }
+    m_arrowDown->SetActive(m_topLine + m_maxLines < m_lineCount);
+
+}
+
+void TextView::AppendLine(TextItem& item) {
+    float maxWidth = m_orthoWidth - (m_scrollBarOn ? m_scrollBarWidth : 0.0f);
+    auto mesh = std::make_shared<TextMesh>(m_font, item.text, m_fontSize, BOTTOM_LEFT, maxWidth);
     int nlines = mesh->getNumberOfLines();
+    item.lines = nlines;
 
     // if line count is greater than max lines, I need to add a vertical scroll mechanism, and possibly
     // resize all the existing meshes
-    if (m_lineCount+nlines > m_maxLines) {
-        m_arrowUp->SetActive(true);
-        m_arrowDown->SetActive(true);
+    if (!m_scrollBarOn && m_lineCount+nlines > m_maxLines) {
+        ResetText();
+    } else {
+        auto entity = std::make_shared<Entity>();
+        auto renderer = std::make_shared<Renderer>();
+        renderer->SetTint(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+        renderer->SetMesh(mesh);
+        float x = m_scrollBarOn ? m_scrollBarWidth : 0.0f;
+        // the position of top left corner
+        glm::vec2 pos(x, -m_lineCount * m_fontSize);
+        glm::vec2 offset = mesh->getOffset();
+        entity->SetPosition(glm::vec3(pos, 0.0f));
+        m_lineCount += nlines;
+        entity->AddComponent(renderer);
+
+        // if it's a button, also add a hotspot
+        if (item.hotspot != nullptr) {
+            auto bounds = renderer->GetBounds();
+            float w = bounds.max.x - bounds.min.x;
+            float h = bounds.max.y - bounds.min.y;
+            auto shape = std::make_shared<Rect>(w, h);
+            item.hotspot->SetShape(shape);
+            entity->AddComponent(item.hotspot);
+        }
+
+
+        m_entity->AddChild(entity);
+        // check if we need to activate the scroll down control
+        if (m_scrollBarOn)
+            m_arrowDown->SetActive(ScrollDownVisible());
     }
+}
 
-
-    auto entity = std::make_shared<Entity>();
-    auto renderer = std::make_shared<Renderer>();
-    renderer->SetTint(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
-    renderer->SetMesh(mesh);
-    // the position of top left corner
-    glm::vec2 pos (0.0f, -m_lineCount * m_fontSize);
-    glm::vec2 offset = mesh->getOffset();
-    entity->SetPosition(glm::vec3(pos, 0.0f));
-    m_lineCount += nlines;
-    entity->AddComponent(renderer);
-    m_entity->AddChild(entity);
+void TextView::AppendText(const std::string& msg, std::shared_ptr<HotSpot> hotspot) {
+    TextItem t;
+    t.lines = 0;
+    t.text = msg;
+    t.hotspot = hotspot;
+    m_textItems.push_back(t);
+    AppendLine(m_textItems.back());
+    //m_nLines.push_back(n);
 }

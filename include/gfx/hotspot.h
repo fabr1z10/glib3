@@ -10,6 +10,7 @@
 // hotspot is a component I can attach to
 class HotSpot : public Component {
 public:
+    HotSpot (int priority) : Component(), m_shape{nullptr}, m_focus{false}, m_priority{false} {}
     HotSpot (std::shared_ptr<Shape> shape, int priority) : Component(),
     m_shape{shape}, m_focus{false}, m_priority{priority} {}
     virtual ~HotSpot();
@@ -18,6 +19,7 @@ public:
 
     void Start() override;
     Shape* GetShape();
+    void SetShape (std::shared_ptr<Shape> shape);
     void Update(double) override {}
     virtual void onEnter() = 0;
     virtual void onLeave() = 0;
@@ -36,6 +38,9 @@ inline Shape* HotSpot::GetShape()
     return m_shape.get();
 }
 
+inline void HotSpot::SetShape (std::shared_ptr<Shape> shape) {
+    m_shape =shape;
+}
 
 inline int HotSpot::GetPriority() const {
     return m_priority;

@@ -17,6 +17,8 @@
 #include <monkey/callfunc.h>
 #include <monkey/monkeyfactory.h>
 #include <monkey/enableblock.h>
+#include <monkey/scripthotspot.h>
+#include <gfx/textview.h>
 
 float EntityWrapper::GetX() const {
     return m_underlying->GetPosition().x;
@@ -216,4 +218,10 @@ bool EntityWrapper::GetFlipX() const {
     Renderer* r = m_underlying->GetComponent<Renderer>();
     return r->GetFlipX();
 
+}
+
+void EntityWrapper::AppendText(const std::string& text) {
+    TextView* r = m_underlying->GetComponent<TextView>();
+    auto hs = std::make_shared<ScriptHotSpot>(1);
+    r->AppendText(text, hs);
 }

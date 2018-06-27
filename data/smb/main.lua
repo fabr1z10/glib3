@@ -32,7 +32,7 @@ variables = {
         turnoff = { code="turnoff", text = strings.ui.turnoff, objects = 1 }
     },
     -- sets the start room
-    _room = "lookout",
+    _room = "test1",
     _previousroom = "scummbar",
     talkedToLookout = false,
     lookoutKnowsName = false,

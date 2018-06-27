@@ -30,7 +30,9 @@ struct EntityWrapper {
     EntityWrapper GetParent() ;
     static EntityWrapper GetEntity(const std::string&);
     Entity* m_underlying;
+    void AppendText (const std::string&);
 };
+
 
 inline bool EntityWrapper::IsNil() const {
     return m_underlying == nullptr;

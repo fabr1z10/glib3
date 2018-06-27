@@ -154,7 +154,7 @@ scene = {
 					onleave = curry2(changecolor, config.ui_unselected_color),
 					onclick = function() 
 						a = monkey.getEntity("textview")
-						a:addtext("cane")
+						a:addtext(strings.dialogues.lookout.text[math.random(1,10)])
 					end
 				}
 			}

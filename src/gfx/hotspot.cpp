@@ -67,7 +67,11 @@ void HotSpotManager::CursorPosCallback(GLFWwindow*, double x, double y) {
     glm::vec4 viewport;
     HotSpot* newActiveHotSpot = nullptr;
     while (iterator != RenderingIterator()) {
-
+        if (!iterator->IsActive())
+        {
+            iterator.advanceSkippingChildren();
+            continue;
+        }
         if (iterator.changedCamera() && iterator.hasActiveViewport()) {
             // if we have a new ORTHO camera
             auto orthoCam = dynamic_cast<OrthographicCamera*>(iterator.GetCamera());
@@ -99,8 +103,10 @@ void HotSpotManager::CursorPosCallback(GLFWwindow*, double x, double y) {
         }
         HotSpot* hotspot = iterator->GetComponent<HotSpot>();
         // only check if I don't have an active hotspot or if it has lower priority
+
         if (hotspot != nullptr &&
                 (newActiveHotSpot == nullptr || (newActiveHotSpot->GetPriority() < hotspot->GetPriority()))) {
+
             // we need to convert screen coordinates to world coordinates
             // first observation we make is that the bottom left screen point given
             // by viewport.x and viewport.y, corresponds to the world point (cam.x - cam.width, cam.y - cam.height)
@@ -111,6 +117,7 @@ void HotSpotManager::CursorPosCallback(GLFWwindow*, double x, double y) {
             float ty = (winHeight/m_pixelRatio) - y;
             float xw = x0 + (x - viewport.x / m_pixelRatio) * (orthoSize.x / (viewport[2] / m_pixelRatio));
             float yw = y0 + (ty - viewport.y / m_pixelRatio) * (orthoSize.y / (viewport[3] / m_pixelRatio));
+            //std::cout << xw << "," << yw << "\n";
             if (hotspot->isMouseInside(glm::vec2(xw, yw))) {
                 //std::cout << "INSIDE!\n";
                 newActiveHotSpot = hotspot;
@@ -209,11 +216,13 @@ void HotSpotManager::CursorPosCallback(GLFWwindow*, double x, double y) {
 void HotSpotManager::MouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
     {
-//       double x, y ;
-//       glfwGetCursorPos(window, &x, &y);
-//       for (auto& g : m_groups) {
-//           g.second->Click(x, y);
-//       }
+        if (m_currentlyActiveHotSpot != nullptr && m_currentlyActiveHotSpot->GetObject()->IsActive()) {
+            double x, y ;
+            glfwGetCursorPos(window, &x, &y);
+            m_currentlyActiveHotSpot->onClick(glm::vec2(x, y));
+        }
+
+
     }
 
 }

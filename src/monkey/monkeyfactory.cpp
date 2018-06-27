@@ -426,6 +426,7 @@ std::shared_ptr<Renderer> MonkeyFactory::GetTextComponent (luabridge::LuaRef& re
     auto renderer = std::make_shared<Renderer>();
     std::string text = table.Get<std::string>("id");
     std::string font = table.Get<std::string>("font");
+    float size = table.Get<float>("size", 8);
     TextAlignment align = table.Get<TextAlignment>("align", TOP_LEFT);
     float maxWidth = table.Get<float>("maxwidth", 0.0f);
     glm::vec4 color = table.Get<glm::vec4>("color", glm::vec4(255.0f));

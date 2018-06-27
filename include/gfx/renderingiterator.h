@@ -29,6 +29,7 @@ public:
 
     RenderingIterator& advanceSkippingChildren() {
         m_iter.advanceSkippingChildren();
+        HandleCamera();
         return *this;
 
     }
