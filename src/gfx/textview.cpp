@@ -3,6 +3,17 @@
 #include <gfx/renderingengine.h>
 #include <gfx/renderer.h>
 #include <gfx/textmesh.h>
+#include <gfx/hotspot.h>
+
+TextViewButton::TextViewButton(std::shared_ptr<Shape> shape, int priority) : HotSpot(shape, priority){}
+
+void TextViewButton::onEnter() {
+    m_entity->GetComponent<Renderer>()->SetAnimation("selected");
+}
+
+void TextViewButton::onLeave() {
+    m_entity->GetComponent<Renderer>()->SetAnimation("unselected");
+}
 
 void TextView::Start() {
 
@@ -45,12 +56,18 @@ void TextView::AddArrows() {
     auto arrowDownMesh = Engine::get().GetAssetManager().GetMesh("arrowdown");
     auto rend = std::make_shared<Renderer>();
     auto rendd = std::make_shared<Renderer>();
+    glm::vec3 auExtents = arrowUpMesh->GetBounds().GetExtents();
+    glm::vec3 adExtents = arrowDownMesh->GetBounds().GetExtents();
+    auto hsu = std::make_shared<TextViewButton>(std::make_shared<Rect>(auExtents[0], auExtents[1]), 1);
+    auto hsd = std::make_shared<TextViewButton>(std::make_shared<Rect>(adExtents[0], adExtents[1]), 1);
 
     rend->SetMesh(arrowUpMesh);
     rendd->SetMesh(arrowDownMesh);
     rend->SetAnimation("unselected");
     rendd->SetAnimation("unselected");
     arrowUp->AddComponent(rend);
+    arrowUp->AddComponent(hsu);
+    arrowDown->AddComponent(hsd);
     arrowDown->AddComponent(rendd);
     arrowUp->SetPosition(glm::vec3(m_viewport.x, m_viewport.y+m_orthoHeight-arrowUpMesh->GetBounds().GetExtents().y, 1.0f));
     arrowDown->SetPosition(glm::vec3(m_viewport.x, m_viewport.y, 1.0f));

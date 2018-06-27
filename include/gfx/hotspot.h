@@ -82,7 +82,7 @@ inline int HotSpot::GetPriority() const {
 // only one hotspot can be active at any given time.
 class HotSpotManager : public Component, public MouseListener {
 public:
-    HotSpotManager() : Component(), MouseListener(), m_active{true} {}
+    HotSpotManager() : Component(), MouseListener(), m_active{true}, m_currentlyActiveHotSpot{nullptr} {}
     void Start() override ;
     void Update (double dt) override ;
     void CursorPosCallback(GLFWwindow*, double, double) override;
@@ -92,9 +92,12 @@ public:
     void Unregister (HotSpot*);
     void AddGroup (int, const std::string& camId);
     using ParentClass = HotSpotManager;
+    bool IsInViewport(float xScreen, float yScreen, glm::vec4 activeViewport);
     //void EnableGroup(int);
     //void DisableGroup(int);
 protected:
+    HotSpot* m_currentlyActiveHotSpot;
     bool m_active;
+    float m_pixelRatio;
     //std::unordered_map<int, std::unique_ptr<HotSpotGroup> > m_groups;
 };

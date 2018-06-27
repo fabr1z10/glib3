@@ -1,6 +1,6 @@
 #pragma once
 
-#include <monkey/hotspot.h>
+#include <gfx/hotspot.h>
 #include <monkey/funcs.h>
 #include <graph/geom.h>
 

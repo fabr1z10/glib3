@@ -11,11 +11,11 @@ Camera* RenderingIterator::GetCamera() {
 
 void RenderingIterator::HandleCamera() {
     // check if top entity has camera
+    m_changeCamera = false;
     if (m_iter.m_stack.empty())
         return;
     Entity& e = *m_iter;
     Camera* c = e.GetCamera();
-    bool switchCam {false};
     if (c != nullptr) {
         CameraInfo info;
         info.camera = c;
@@ -40,7 +40,7 @@ void RenderingIterator::HandleCamera() {
             currentViewport = glm::vec4(xMin, yMin, xMax - xMin, yMax - yMin);
         }
         info.viewport = viewport;
-        switchCam = true;
+        m_changeCamera = true;
         m_viewportStack.push(info);
     } else {
         // if I have a camera, check if the current node is a descedent
@@ -48,13 +48,14 @@ void RenderingIterator::HandleCamera() {
         // you either find a descendant or empty the viewport stack
         while (!m_viewportStack.empty() && !e.IsDescendantOf(m_viewportStack.top().entity)) {
             m_viewportStack.pop();
-            switchCam = true;
+            m_changeCamera = true;
         }
         // if you popped some cameras, need to reset the current
 
     }
 
-    if (switchCam && !m_viewportStack.empty()) {
+    if (m_setCameras && m_changeCamera && !m_viewportStack.empty()) {
+
         CameraInfo& c = m_viewportStack.top();
         c.camera->SetProjectionMatrix();
         Engine::get().SetViewport(c.viewport[0], c.viewport[1], c.viewport[2], c.viewport[3]);

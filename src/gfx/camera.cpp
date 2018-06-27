@@ -21,15 +21,10 @@ extern GLFWwindow* window;
 
 Camera::Camera(glm::vec4 viewport) : Ref(), m_camViewport{viewport} {
     //App::RegisterToResizeEvent(this);
-    int widthPixel;
-    int widthPoint;
-    int heightPixel;
-    int heightPoint;
+
     if (m_camViewport == glm::vec4())
         m_camViewport = glm::vec4(0.0, 0.0, Engine::get().GetDeviceSize());
-    glfwGetWindowSize(window, &widthPoint, &heightPoint);
-    glfwGetFramebufferSize(window, &widthPixel, &heightPixel);
-    m_pixelRatio = static_cast<float>(widthPixel) / widthPoint;
+
 }
 
 glm::vec3 Camera::GetPosition() const {
@@ -54,17 +49,7 @@ void Camera::SetPosition(glm::vec3 eye, glm::vec3 dir, glm::vec3 up) {
     }
 }
 
-bool Camera::IsInViewport(float xScreen, float yScreen) {
-    xScreen *= m_pixelRatio;
-    yScreen *= m_pixelRatio;
-    if (xScreen < m_viewportX || xScreen > m_viewportX + m_viewportWidth)
-        return false;
-    float yFlipped = m_winHeight - yScreen;
-    if (yFlipped < m_viewportY || yFlipped > m_viewportY + m_viewportHeight)
-        return false;
-    return true;
-    
-}
+
 
 OrthographicCamera::OrthographicCamera(float orthoWidth, float orthoHeight, glm::vec4 viewport)
         : Camera(viewport), m_orthoWidth{orthoWidth}, m_orthoHeight{orthoHeight}
@@ -87,31 +72,31 @@ void OrthographicCamera::setOrthoSize(float w, float h) {
 
 // called at startup and when window is resized
 void OrthographicCamera::Resize(int width, int height) {
-    if (height == 0)
-        height = 1;
-    m_winHeight = static_cast<float>(height);
-    vec2 size = Engine::get().GetDeviceSize();
-    float gameAR = size.x / size.y;
-    float winAR = static_cast<float>(width) / height;
-
-    if (winAR >= gameAR) {
-        // screen wider than game, place vertical bands
-        float actualScreenWidth = height * gameAR;
-        m_viewportHeight = static_cast<GLsizei> (height * (m_camViewport[3] / size.y));
-        m_viewportWidth = static_cast<GLsizei> (m_viewportHeight * m_aspectRatio);
-        m_viewportX = static_cast<GLint>(((width - actualScreenWidth) / 2.0f) + m_camViewport.x * actualScreenWidth / size[0]);
-        m_viewportY = static_cast<GLint> (m_camViewport.y * height / size[1]);
-    }
-    else {
-        // screen taller than game, hroizontal bands
-        float actualScreenHeight = width / gameAR;
-        m_viewportWidth = static_cast<GLsizei> (width * (m_camViewport[2] / size.x));
-        m_viewportHeight = static_cast<GLsizei> (m_viewportWidth / m_aspectRatio);
-        m_viewportX = static_cast<GLint> (m_camViewport.x * width / size[0]);
-        m_viewportY = static_cast<GLint> (((height - actualScreenHeight) / 2.0f) + m_camViewport.y * actualScreenHeight / size[1]);
-    }
-
-    RecomputeScreenToWorldMatrix();
+//    if (height == 0)
+//        height = 1;
+//    m_winHeight = static_cast<float>(height);
+//    vec2 size = Engine::get().GetDeviceSize();
+//    float gameAR = size.x / size.y;
+//    float winAR = static_cast<float>(width) / height;
+//
+//    if (winAR >= gameAR) {
+//        // screen wider than game, place vertical bands
+//        float actualScreenWidth = height * gameAR;
+//        m_viewportHeight = static_cast<GLsizei> (height * (m_camViewport[3] / size.y));
+//        m_viewportWidth = static_cast<GLsizei> (m_viewportHeight * m_aspectRatio);
+//        m_viewportX = static_cast<GLint>(((width - actualScreenWidth) / 2.0f) + m_camViewport.x * actualScreenWidth / size[0]);
+//        m_viewportY = static_cast<GLint> (m_camViewport.y * height / size[1]);
+//    }
+//    else {
+//        // screen taller than game, hroizontal bands
+//        float actualScreenHeight = width / gameAR;
+//        m_viewportWidth = static_cast<GLsizei> (width * (m_camViewport[2] / size.x));
+//        m_viewportHeight = static_cast<GLsizei> (m_viewportWidth / m_aspectRatio);
+//        m_viewportX = static_cast<GLint> (m_camViewport.x * width / size[0]);
+//        m_viewportY = static_cast<GLint> (((height - actualScreenHeight) / 2.0f) + m_camViewport.y * actualScreenHeight / size[1]);
+//    }
+//
+//    RecomputeScreenToWorldMatrix();
 }
 
 void OrthographicCamera::Init() {
@@ -132,18 +117,18 @@ void OrthographicCamera::SetPosition(vec3 eye, vec3 direction, vec3 up) {
     eye.x = Clamp(eye.x, m_xMin, m_xMax);
     eye.y = Clamp(eye.y, m_yMin, m_yMax);
     Camera::SetPosition(eye, direction, up);
-    RecomputeScreenToWorldMatrix();
+    //RecomputeScreenToWorldMatrix();
 }
 
-void OrthographicCamera::RecomputeScreenToWorldMatrix() {
-    float a = (m_orthoWidth / m_viewportWidth) * m_pixelRatio;
-    float b = -(m_orthoHeight / m_viewportHeight) * m_pixelRatio;
-    m_screenToWorldMat[0][0] = a;
-    m_screenToWorldMat[1][1] = b;
-    m_screenToWorldMat[2][2] = 1.0f;
-    m_screenToWorldMat[2][0] = -m_viewMatrix[3][0] - (m_orthoWidth / 2.0f) - a * (m_viewportX / m_pixelRatio);
-    m_screenToWorldMat[2][1] = -m_viewMatrix[3][1] - (m_orthoHeight / 2.0f) - b * ((m_winHeight - m_viewportY) / m_pixelRatio);
-}
+//void OrthographicCamera::RecomputeScreenToWorldMatrix() {
+//    float a = (m_orthoWidth / m_viewportWidth) * m_pixelRatio;
+//    float b = -(m_orthoHeight / m_viewportHeight) * m_pixelRatio;
+//    m_screenToWorldMat[0][0] = a;
+//    m_screenToWorldMat[1][1] = b;
+//    m_screenToWorldMat[2][2] = 1.0f;
+//    m_screenToWorldMat[2][0] = -m_viewMatrix[3][0] - (m_orthoWidth / 2.0f) - a * (m_viewportX / m_pixelRatio);
+//    m_screenToWorldMat[2][1] = -m_viewMatrix[3][1] - (m_orthoHeight / 2.0f) - b * ((m_winHeight - m_viewportY) / m_pixelRatio);
+//}
 
 bool OrthographicCamera::IsVisible(const Bounds3D& bounds) {
     auto pos = GetPosition();
@@ -151,15 +136,15 @@ bool OrthographicCamera::IsVisible(const Bounds3D& bounds) {
     return !notVisible;
 }
 
-vec2 OrthographicCamera::GetWorldCoordinates(vec2 P) {
-    std::cout << m_viewMatrix[3][0] << "...\n";
-    float x0 = -m_viewMatrix[3][0] - m_orthoWidth * 0.5f;
-    float y0 = -m_viewMatrix[3][1] - m_orthoHeight * 0.5f;
-    float ty = (m_winHeight/m_pixelRatio) - P.y;
-
-    float xw = x0 + (P.x - m_viewportX / m_pixelRatio) * (m_orthoWidth / (m_viewportWidth / m_pixelRatio));
-    float yw = y0 + (ty - m_viewportY / m_pixelRatio) * (m_orthoHeight / (m_viewportHeight / m_pixelRatio));
-    return vec2(xw, yw);
-//    vec3 Pw = m_screenToWorldMat * vec3 (P.x, P.y, 1.0f);
-  //  return vec2(Pw);
-}
+//vec2 OrthographicCamera::GetWorldCoordinates(vec2 P) {
+//    std::cout << m_viewMatrix[3][0] << "...\n";
+//    float x0 = -m_viewMatrix[3][0] - m_orthoWidth * 0.5f;
+//    float y0 = -m_viewMatrix[3][1] - m_orthoHeight * 0.5f;
+//    float ty = (m_winHeight/m_pixelRatio) - P.y;
+//
+//    float xw = x0 + (P.x - m_viewportX / m_pixelRatio) * (m_orthoWidth / (m_viewportWidth / m_pixelRatio));
+//    float yw = y0 + (ty - m_viewportY / m_pixelRatio) * (m_orthoHeight / (m_viewportHeight / m_pixelRatio));
+//    return vec2(xw, yw);
+////    vec3 Pw = m_screenToWorldMat * vec3 (P.x, P.y, 1.0f);
+//  //  return vec2(Pw);
+//}

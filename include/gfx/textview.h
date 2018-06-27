@@ -5,6 +5,17 @@
 #include <glm/glm.hpp>
 #include <vector>
 #include <gfx/font.h>
+#include <gfx/hotspot.h>
+
+class TextViewButton : public HotSpot {
+public:
+    TextViewButton (std::shared_ptr<Shape>, int);
+    void onEnter() override;
+    void onLeave() override;
+    void onClick(glm::vec2) override {
+
+    }
+};
 
 class TextView : public Component {
 

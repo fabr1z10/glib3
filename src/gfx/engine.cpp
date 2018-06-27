@@ -16,8 +16,17 @@ void Engine::Init(const EngineConfig& config) {
     m_running = false;
     m_deviceSize = glm::vec2(config.deviceWidth, config.deviceHeight);
     m_aspectRatio = config.deviceWidth / config.deviceHeight;
-    // initialize shaders
 
+    // find pixel ratio
+    int widthPixel;
+    int widthPoint;
+    int heightPixel;
+    int heightPoint;
+    glfwGetWindowSize(window, &widthPoint, &heightPoint);
+    glfwGetFramebufferSize(window, &widthPixel, &heightPixel);
+    m_pixelRatio = static_cast<float>(widthPixel) / widthPoint;
+
+    // initialize shaders
     AddShader (ShaderFactory::GetTextureShader());
     AddShader (ShaderFactory::GetColorShader());
     AddShader (ShaderFactory::GetTextShader());
@@ -76,14 +85,25 @@ void Engine::InitGL(const EngineConfig& config) {
     std::cout << "OpenGL version " << Mv << "." << mv << std::endl;
 }
 
+glm::vec4 Engine::GetViewport(float x, float y, float width, float height) {
+    glm::vec4 viewport;
+    viewport[3] = static_cast<GLsizei> (m_actualSize.y * (height / m_deviceSize.y));
+    viewport[2] = static_cast<GLsizei> (m_actualSize.x * (width / m_deviceSize.x));
+    viewport.x = (m_winSize.x - m_actualSize.x) / 2.0f + x * (m_actualSize.x / m_deviceSize.x);
+    viewport.y = (m_winSize.y - m_actualSize.y) / 2.0f + y * (m_actualSize.y / m_deviceSize.y);
+    return viewport;
+
+}
+
 
 void Engine::SetViewport(float x, float y, float width, float height) {
     // convert from device size to window size
-    float vph = static_cast<GLsizei> (m_actualSize.y * (height / m_deviceSize.y));
-    float vpw = static_cast<GLsizei> (m_actualSize.x * (width / m_deviceSize.x));
-    float vpx = (m_winSize.x - m_actualSize.x) / 2.0f + x * (m_actualSize.x / m_deviceSize.x);
-    float vpy = (m_winSize.y - m_actualSize.y) / 2.0f + y * (m_actualSize.y / m_deviceSize.y);
-    glViewport(vpx, vpy, vpw, vph);
+    glm::vec4 viewport = GetViewport(x, y, width, height);
+//    float vph = static_cast<GLsizei> (m_actualSize.y * (height / m_deviceSize.y));
+//    float vpw = static_cast<GLsizei> (m_actualSize.x * (width / m_deviceSize.x));
+//    float vpx = (m_winSize.x - m_actualSize.x) / 2.0f + x * (m_actualSize.x / m_deviceSize.x);
+//    float vpy = (m_winSize.y - m_actualSize.y) / 2.0f + y * (m_actualSize.y / m_deviceSize.y);
+    glViewport(viewport.x, viewport.y, viewport[2], viewport[3]);
 }
 
 void Engine::MainLoop() {

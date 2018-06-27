@@ -1,6 +1,6 @@
 #pragma once
 
-#include <monkey/hotspot.h>
+#include <gfx/hotspot.h>
 #include <monkey/luawrapper.h>
 
 class ScriptHotSpot : public HotSpot {

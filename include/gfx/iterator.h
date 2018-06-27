@@ -37,6 +37,14 @@ public:
         // custom operation here
         return *this;
     }
+
+
+    DepthFirstIterator& advanceSkippingChildren() {
+        T* top = m_stack.top();
+        m_stack.pop();
+        return *this;
+    }
+
     
     T& operator*() {
         return *(m_stack.top());

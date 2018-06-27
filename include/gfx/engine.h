@@ -52,6 +52,7 @@ public:
     void UnregisterToMouseEvent(MouseListener*);
     void RegisterToKeyboardEvent(KeyboardListener*);
     void UnregisterToKeyboardEvent(KeyboardListener*);
+    glm::vec4 GetViewport(float x, float y, float width, float height);
     void SetViewport(float x, float y, float width, float height);
     void Remove(Entity*);
     template <typename T>
@@ -67,6 +68,8 @@ public:
     void AddTaggedRef (const std::string&, Ref*);
     void RemoveTaggedRef (const std::string&);
     void EndScene();
+    glm::vec2 GetWindowSize() const;
+    float GetPixelRatio() const;
     AssetManager& GetAssetManager();
     const AssetManager& GetAssetManager() const;
     static void WindowResizeCallback(GLFWwindow* win, int width, int height);
@@ -96,6 +99,7 @@ private:
     AssetManager m_assetManager;
     GLuint m_vao;
     bool m_endScene;
+    float m_pixelRatio;
 };
 
 inline SceneFactory* Engine::GetSceneFactory() {
@@ -143,4 +147,12 @@ inline Shader* Engine::GetShader(ShaderType id) {
 
 inline void Engine::EndScene() {
     m_endScene = true;
+}
+
+inline float Engine::GetPixelRatio() const {
+    return m_pixelRatio;
+}
+
+inline glm::vec2 Engine::GetWindowSize() const {
+    return m_winSize;
 }
