@@ -18,6 +18,7 @@ public:
     void PostInit() override;
     void ReadSprite (LuaTable&);
     std::shared_ptr<Entity> ReadItem(luabridge::LuaRef& ref);
+    std::shared_ptr<HotSpot> GetHotSpot (luabridge::LuaRef& ref, std::shared_ptr<Shape> shape);
 private:
     void ReadItems(luabridge::LuaRef& ref, Entity* parent);
     void ReadGfxComponent (luabridge::LuaRef& ref, Entity* parent);
@@ -25,7 +26,7 @@ private:
     std::unique_ptr<Function2D> GetFunc2D(luabridge::LuaRef& ref);
 
     std::shared_ptr<Renderer> GetTextComponent (luabridge::LuaRef& ref);
-    std::shared_ptr<HotSpot> GetHotSpot (luabridge::LuaRef& ref, std::shared_ptr<Shape> shape);
+
     std::shared_ptr<HotSpot> GetHotSpot (luabridge::LuaRef& ref);
 
 

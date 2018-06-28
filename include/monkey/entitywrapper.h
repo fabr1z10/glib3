@@ -22,6 +22,7 @@ struct EntityWrapper {
     void SetColor(int, int, int, int);
     void SetText(const std::string&);
     void SetActive (bool);
+    void SetEnableControls (bool);
     //static void EnableGroup(int);
     //static void DisableGroup(int);
     std::string GetText() const;
@@ -31,6 +32,7 @@ struct EntityWrapper {
     static EntityWrapper GetEntity(const std::string&);
     Entity* m_underlying;
     void AppendText (const std::string&);
+    void AppendButton (luabridge::LuaRef ref);
 };
 
 

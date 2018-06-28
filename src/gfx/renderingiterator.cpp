@@ -15,6 +15,11 @@ void RenderingIterator::HandleCamera() {
     if (m_iter.m_stack.empty())
         return;
     Entity& e = *m_iter;
+
+    while (!m_viewportStack.empty() && !e.IsDescendantOf(m_viewportStack.top().entity)) {
+        m_viewportStack.pop();
+        m_changeCamera = true;
+    }
     Camera* c = e.GetCamera();
     if (c != nullptr) {
         CameraInfo info;
@@ -46,10 +51,7 @@ void RenderingIterator::HandleCamera() {
         // if I have a camera, check if the current node is a descedent
         // of the current camera's entity. If not, pop and repeat until
         // you either find a descendant or empty the viewport stack
-        while (!m_viewportStack.empty() && !e.IsDescendantOf(m_viewportStack.top().entity)) {
-            m_viewportStack.pop();
-            m_changeCamera = true;
-        }
+
         // if you popped some cameras, need to reset the current
 
     }

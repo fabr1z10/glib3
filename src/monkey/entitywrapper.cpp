@@ -194,6 +194,10 @@ void EntityWrapper::SetActive (bool value) {
     m_underlying->SetActive(value);
 }
 
+void EntityWrapper::SetEnableControls (bool value) {
+    m_underlying->SetControlsEnabled(value);
+}
+
 //void EntityWrapper::EnableGroup(int id) {
 //    auto hs = Engine::get().GetRef<HotSpotManager>("_hotspotmanager");
 //    hs->EnableGroup(id);
@@ -222,6 +226,16 @@ bool EntityWrapper::GetFlipX() const {
 
 void EntityWrapper::AppendText(const std::string& text) {
     TextView* r = m_underlying->GetComponent<TextView>();
-    auto hs = std::make_shared<ScriptHotSpot>(1);
+    //auto hs = std::make_shared<ScriptHotSpot>(1);
+    r->AppendText(text);
+}
+
+void EntityWrapper::AppendButton(luabridge::LuaRef ref) {
+    TextView* r = m_underlying->GetComponent<TextView>();
+    LuaTable table(ref);
+    std::string text = table.Get<std::string>("text");
+    auto mf = dynamic_cast<MonkeyFactory*>(Engine::get().GetSceneFactory());
+    auto hs = mf->GetHotSpot(ref, nullptr);
     r->AppendText(text, hs);
 }
+

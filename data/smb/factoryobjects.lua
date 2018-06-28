@@ -29,6 +29,84 @@ function makeUI ()
 	}
 end
 
+function refreshInventory()
+	inv = monkey.getEntity("inventory")
+	for k, v in pairs(inventory) do
+		print (v.item.text)
+		inv:addbutton({ text = v.item.text, priority = 1, onenter = curry2(changecolor, config.ui_inv_selected),
+			onleave = curry2(changecolor, config.ui_inv_unselected), onclick = function() print("click") end })
+	end
+end
+
+function makescummui1() 
+	return 
+	{
+		tag="ui",
+	 	camera = {
+			type="ortho",
+	 		size = {320, 56},
+	 		bounds = {0, 0, 320, 56},
+	 		viewport = {0, 0, 320, 56}
+	 	},	
+		children = {
+			{
+				tag = "uiplay",
+				children = {
+				    makeButton(2, 40, variables._verbs.open),
+				    makeButton(2, 32, variables._verbs.close),
+				    makeButton(2, 24, variables._verbs.push),
+				    makeButton(2, 16, variables._verbs.pull),
+				    makeButton(48, 40, variables._verbs.walk),
+				    makeButton(48, 32, variables._verbs.pick),
+				    makeButton(48, 24, variables._verbs.talk),
+				    makeButton(48, 16, variables._verbs.give),
+				    makeButton(100, 40, variables._verbs.use),
+				    makeButton(100, 32, variables._verbs.look),
+				    makeButton(100, 24, variables._verbs.turnon),
+				    makeButton(100, 16, variables._verbs.turnoff),
+				    {
+		     		    tag = "currentaction",
+		    		    pos={160,48,0},
+		    		    text = { id = "ddd", font="ui", align = "bottom", color = config.ui_currentaction_color},
+		    		    layer=2
+		            },
+					{
+						tag="inventory",
+						textview = {
+							width = 170.0,
+							height = 48.0,
+		                    viewport = {150, 0, 170, 48},
+							color = config.ui_inv_unselected,
+		                    font = "ui",
+		                    size = 8,
+							deltax = 26,
+							arrowup = "arrowup",
+		                    arrowdown = "arrowdown"
+						}
+					}
+				}
+			},
+			{
+				tag="dialogue",
+				textview = {
+					width = 320.0,
+					height = 56.0,
+                    viewport = {0, 0, 320, 56},
+					color = config.ui_unselected_color,
+                    font = "ui",
+                    size = 8,
+					deltax = 0,
+					arrowup = "arrowup",
+                    arrowdown = "arrowdown"
+				}			
+			}
+		}
+	}
+	-- add all inventory items
+end
+
+
+
 function makeButton (x, y, verb)
     return {
         pos = { x, y, 0 },
@@ -54,6 +132,7 @@ end
 
 
 function make_hotspot(input)
+obj = objects[input.object]
 return {
     pos = {input.x, input.y, 0},
     gfx = input.gfx,
@@ -61,12 +140,12 @@ return {
         group = 1,
         priority = input.priority, 
         shape = { type = "rect", width=input.width, height=input.height, offset= input.offset},
-        onenter = curry(hoverOn, input.object),
+        onenter = curry(hoverOn, obj),
         onleave = hoverOff,
         onclick = runAction
     },
     layer = 1,
 	scaling = input.scaling,
-    tag = input.object.tag
+    tag = obj.tag
 } 
 end

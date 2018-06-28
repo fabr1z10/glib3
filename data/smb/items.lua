@@ -1,4 +1,4 @@
-characters = {
+objects = {
     guybrush = {
         tag = "player",
         color = {255, 255, 255, 255}
@@ -9,15 +9,13 @@ characters = {
         pos = {160, 36},
         dir ="west",
         color = {170, 170, 170, 255},
-        talk = curry(talk, { character = "lookout", node = 1})
+        talk = curry(talk, { character = "lookout", node = 1}),
+		look = curry(say,{character ="guybrush", lines = {strings.dialogues.lookout.text[50]}})
     },
     cook = {
         tag = "cook",
         color = {85, 255, 255, 255},
-    }
-}
-
-objects = {
+    },
     stairs = {
         text = strings.objects.stairs,
         pos = {250, 0}, -- location where the player will go
@@ -33,7 +31,7 @@ objects = {
         text = strings.objects.poster,
         pos = {269, 133},
         dir = "north",
-        look = curry (say, {character = characters.guybrush, lines= { strings.village1[1], strings.village1[2] }})
+        look = curry (say, { character="guybrush", lines= { strings.village1[1], strings.village1[2] }} )
     },
     village1_door = {
         text = strings.objects.door,

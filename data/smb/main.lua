@@ -13,7 +13,8 @@ fonts = {
 }
 
 -- inventory keeps a table with objects
-inventory = {}
+inventory = {
+}
 
 
 variables = {
@@ -32,7 +33,7 @@ variables = {
         turnoff = { code="turnoff", text = strings.ui.turnoff, objects = 1 }
     },
     -- sets the start room
-    _room = "test1",
+    _room = "lookout",
     _previousroom = "scummbar",
     talkedToLookout = false,
     lookoutKnowsName = false,
@@ -82,7 +83,9 @@ config = {
     
     ui_unselected_color = { 0, 170, 0, 255},
     ui_selected_color = {255, 255, 85, 255},
-    ui_currentaction_color ={0, 170, 170, 255}
+    ui_currentaction_color ={0, 170, 170, 255},
+	ui_inv_unselected = {170, 0, 170, 255},
+	ui_inv_selected = {255, 85, 255, 255}
     
 }
 

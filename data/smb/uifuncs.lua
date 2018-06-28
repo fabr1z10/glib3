@@ -1,24 +1,20 @@
-
-print ("polne")
-print(characters.guybrush.name)
-
 defaultActions = {
    walk = empty,
-   look = curry (say, {character=characters.guybrush, lines = {strings.defaultactions[4]} }),
-   open = curry (say, {character=characters.guybrush, lines = {strings.defaultactions[1]} }),
-   close = curry (say, {character=characters.guybrush, lines = {strings.defaultactions[2]} }),
-   push = curry (say, {character=characters.guybrush, lines = {strings.defaultactions[3]} }),
-   pull = curry (say, {character=characters.guybrush, lines = {strings.defaultactions[3]} }),
-   pick = curry (say, {character=characters.guybrush, lines = {strings.defaultactions[5]} }),
-   use = curry (say, {character=characters.guybrush, lines = {strings.defaultactions[2]} }),
-   talk = curry (say, {character=characters.guybrush, lines = {strings.defaultactions[2]} }),
-   turnon = curry (say, {character=characters.guybrush, lines = {strings.defaultactions[2]} }),
-   turnoff = curry (say, {character= characters.guybrush, lines = {strings.defaultactions[2]} })
+   look = curry (say, {character="guybrush", lines = {strings.defaultactions[4]} }),
+   open = curry (say, {character="guybrush", lines = {strings.defaultactions[1]} }),
+   close = curry (say, {character="guybrush", lines = {strings.defaultactions[2]} }),
+   push = curry (say, {character="guybrush", lines = {strings.defaultactions[3]} }),
+   pull = curry (say, {character="guybrush", lines = {strings.defaultactions[3]} }),
+   pick = curry (say, {character="guybrush", lines = {strings.defaultactions[5]} }),
+   use = curry (say, {character="guybrush", lines = {strings.defaultactions[2]} }),
+   talk = curry (say, {character="guybrush", lines = {strings.defaultactions[2]} }),
+   turnon = curry (say, {character="guybrush", lines = {strings.defaultactions[2]} }),
+   turnoff = curry (say, {character="guybrush", lines = {strings.defaultactions[2]} })
    
 }
 
 function changecolor (color, entity)
-    entity:parent():setcolor(color[1], color[2], color[3], color[4])
+    entity:setcolor(color[1], color[2], color[3], color[4])
 end
 
 function updateVerb() 

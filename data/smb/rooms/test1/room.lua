@@ -135,6 +135,7 @@ scene = {
 					width = 140.0,
 					height = 80.0,
                     viewport = {10, 16, 140, 80},
+					color = config.ui_unselected_color,
                     font = "ui",
                     size = 8,
 					arrowup = "arrowup",
@@ -154,7 +155,9 @@ scene = {
 					onleave = curry2(changecolor, config.ui_unselected_color),
 					onclick = function() 
 						a = monkey.getEntity("textview")
-						a:addtext(strings.dialogues.lookout.text[math.random(1,10)])
+						a:addbutton ({ text = strings.dialogues.lookout.text[math.random(1,10)], priority = 1, onenter = curry2(changecolor, config.ui_selected_color),
+						onleave = curry2(changecolor, config.ui_unselected_color), onclick = function() print("click") end })
+						--a:addtext(strings.dialogues.lookout.text[math.random(1,10)])
 					end
 				}
 			}

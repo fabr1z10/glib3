@@ -240,8 +240,11 @@ void MonkeyFactory::ReadTextViewComponent(luabridge::LuaRef &ref, Entity *parent
     float w = table.Get<float>("width");
     float h = table.Get<float>("height");
     float size = table.Get<float>("size");
+    float deltax = table.Get<float>("deltax", 0.0f);
+    glm::vec4 color = table.Get<glm::vec4>("color", glm::vec4(255.0f));
+    color /= 255.0f;
     std::string font = table.Get<std::string>("font");
-    auto r = std::make_shared<TextView>(w, h, size, font, viewport);
+    auto r = std::make_shared<TextView>(w, h, size, font, color, viewport, deltax);
     parent->AddComponent(r);
 
 
@@ -375,13 +378,13 @@ void MonkeyFactory::ReadWalkarea (luabridge::LuaRef& ref, Entity* parent) {
     parent->AddComponent(hotspot);
 
     // see if we want to plot the outline of the walk area
-    auto mesh = MeshFactory::CreateMesh(*(shape.get()), 1.0f);
-    auto ce = std::make_shared<Entity>();
-    ce->SetLayer(1);
-    auto cer = std::make_shared<Renderer>();
-    cer->SetMesh(mesh);
-    ce->AddComponent(cer);
-    parent->AddChild(ce);
+//    auto mesh = MeshFactory::CreateMesh(*(shape.get()), 1.0f);
+//    auto ce = std::make_shared<Entity>();
+//    ce->SetLayer(1);
+//    auto cer = std::make_shared<Renderer>();
+//    cer->SetMesh(mesh);
+//    ce->AddComponent(cer);
+//    parent->AddChild(ce);
 
 
 
@@ -469,31 +472,31 @@ void MonkeyFactory::ReadButton (luabridge::LuaRef& ref, Entity* parent) {
     float w = bounds.max.x - bounds.min.x;
     float h = bounds.max.y - bounds.min.y;
     auto shape = std::make_shared<Rect>(w, h);
-    auto debugMesh = MeshFactory::CreateMesh(*(shape.get()), 1.0f);
+    //auto debugMesh = MeshFactory::CreateMesh(*(shape.get()), 1.0f);
     auto hs = GetHotSpot(ref, shape);
 
     // logic to draw the debug mesh
-    glm::vec2 debugMeshPos(0.0f);
-    std::string align = table.Get<std::string>("align", "topleft");
-    int layer = table.Get<int>("layer", 1);
-    if (align == "bottomright") {
-        debugMeshPos = glm::vec2(-bounds.max.x, 0.0f);
-    } else if (align == "topleft") {
-        debugMeshPos = glm::vec2(0.0f, bounds.min.y);
-    } else if (align == "topright") {
-        debugMeshPos = glm::vec2(-bounds.max.x, bounds.min.y);
-    }
+//    glm::vec2 debugMeshPos(0.0f);
+//    std::string align = table.Get<std::string>("align", "topleft");
+//    int layer = table.Get<int>("layer", 1);
+//    if (align == "bottomright") {
+//        debugMeshPos = glm::vec2(-bounds.max.x, 0.0f);
+//    } else if (align == "topleft") {
+//        debugMeshPos = glm::vec2(0.0f, bounds.min.y);
+//    } else if (align == "topright") {
+//        debugMeshPos = glm::vec2(-bounds.max.x, bounds.min.y);
+//    }
+//
+//    auto ce = std::make_shared<Entity>();
+    //ce->SetPosition(debugMeshPos);
+    //ce->SetLayer(layer);
+    //auto cer = std::make_shared<Renderer>();
+    //cer->SetMesh(debugMesh);
+    //ce->AddComponent(cer);
 
-    auto ce = std::make_shared<Entity>();
-    ce->SetPosition(debugMeshPos);
-    ce->SetLayer(layer);
-    auto cer = std::make_shared<Renderer>();
-    cer->SetMesh(debugMesh);
-    ce->AddComponent(cer);
-
-    parent->AddChild(ce);
+    //parent->AddChild(ce);
     parent->AddComponent(renderer);
-    ce->AddComponent(hs);
+    parent->AddComponent(hs);
 }
 
 
@@ -597,7 +600,13 @@ std::shared_ptr<Shape> MonkeyFactory::ReadShape(luabridge::LuaRef& ref) {
 
 void MonkeyFactory::PostInit() {
 
-
+    // Create the local assets
+    luabridge::LuaRef roomRef = luabridge::getGlobal(LuaWrapper::L, "room");
+    LuaTable roomTable(roomRef);
+    if (roomTable.HasKey("afterstartup")) {
+        luabridge::LuaRef r1 = roomTable.Get<luabridge::LuaRef>("afterstartup");
+        r1();
+    }
 }
 
 

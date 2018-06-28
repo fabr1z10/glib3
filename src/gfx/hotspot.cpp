@@ -67,7 +67,7 @@ void HotSpotManager::CursorPosCallback(GLFWwindow*, double x, double y) {
     glm::vec4 viewport;
     HotSpot* newActiveHotSpot = nullptr;
     while (iterator != RenderingIterator()) {
-        if (!iterator->IsActive())
+        if (!iterator->IsActive() || !iterator->AreControlsEnabled())
         {
             iterator.advanceSkippingChildren();
             continue;
@@ -121,6 +121,7 @@ void HotSpotManager::CursorPosCallback(GLFWwindow*, double x, double y) {
             if (hotspot->isMouseInside(glm::vec2(xw, yw))) {
                 //std::cout << "INSIDE!\n";
                 newActiveHotSpot = hotspot;
+                m_worldCoordinates = glm::vec2(xw, yw);
             }
         }
         ++iterator;
@@ -217,9 +218,9 @@ void HotSpotManager::MouseButtonCallback(GLFWwindow* window, int button, int act
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
     {
         if (m_currentlyActiveHotSpot != nullptr && m_currentlyActiveHotSpot->GetObject()->IsActive()) {
-            double x, y ;
-            glfwGetCursorPos(window, &x, &y);
-            m_currentlyActiveHotSpot->onClick(glm::vec2(x, y));
+            //uble x, y ;
+            //fwGetCursorPos(window, &x, &y);
+            m_currentlyActiveHotSpot->onClick(m_worldCoordinates);
         }
 
 
@@ -242,7 +243,7 @@ void HotSpot::Start() {
     // if DEBUG
     auto ce = std::make_shared<Entity>();
     auto cer = std::make_shared<Renderer>();
-    auto debugMesh = MeshFactory::CreateMesh(*(m_shape.get()), 1.0f);
+    auto debugMesh = MeshFactory::CreateMesh(*(m_shape.get()), 5.0f);
     cer->SetMesh(debugMesh);
     ce->AddComponent(cer);
     m_entity->AddChild(ce);

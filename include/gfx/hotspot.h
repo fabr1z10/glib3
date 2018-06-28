@@ -101,6 +101,7 @@ public:
     //void EnableGroup(int);
     //void DisableGroup(int);
 protected:
+    glm::vec2 m_worldCoordinates;
     HotSpot* m_currentlyActiveHotSpot;
     bool m_active;
     float m_pixelRatio;

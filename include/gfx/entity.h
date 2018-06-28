@@ -27,7 +27,7 @@
 // and only one parent (i.e. they are organized in a tree)
 class Entity : public Ref {
 public:
-    Entity() : Ref(), m_parent(nullptr), m_active(true), m_localTransform{glm::mat4(1.0)}, m_worldTransform{glm::mat4(1.0)} {}
+    Entity() : Ref(), m_parent(nullptr), m_active(true), m_localTransform{glm::mat4(1.0)}, m_worldTransform{glm::mat4(1.0)}, m_enableControls{true} {}
 
     const glm::mat4& GetLocalTransform() const;
     const glm::mat4& GetWorldTransform() const;
@@ -78,6 +78,8 @@ public:
     //Entity* GetParent();
     bool IsActive() const;
     void SetActive(bool);
+    bool AreControlsEnabled() const;
+    void SetControlsEnabled(bool);
     glm::mat4& GetLastMove();
     //void AddRef(Ref* ref) {
     //	m_references.push_back(ref);
@@ -93,6 +95,7 @@ private:
     void SetWorldTransform(glm::mat4& wt);
     void Notify();
     bool m_active;
+    bool m_enableControls;
     int m_layer;
     Entity* m_parent;
     std::list<std::shared_ptr<Entity> >::iterator m_itParent;
@@ -127,5 +130,14 @@ inline const glm::mat4& Entity::GetWorldTransform() const {
 inline void Entity::SetCamera(std::unique_ptr<Camera> cam)  {
     m_cameras = std::move(cam);
 }
+
+inline bool Entity::AreControlsEnabled() const {
+    return m_enableControls;
+}
+
+inline void Entity::SetControlsEnabled(bool value) {
+    m_enableControls = value;
+}
+
 
 #endif /* entity_h */

@@ -89,11 +89,12 @@ function empty()
 end
 
 function say (args)
+	c = objects[args.character]
     actions = {
     {
         type= "say",
-        actor = args.character.tag,
-        color = args.character.color,
+        actor = c.tag,
+        color = c.color,
         message = args.lines
     }
     }
@@ -158,30 +159,40 @@ function resumePlay()
 end
 
 function startDialogue(args)
-    ui = monkey.getEntity("ui")
-    monkey.disableGroup(1)
+    ui = monkey.getEntity("uiplay")
+	d = monkey.getEntity("dialogue")
+	a = monkey.getEntity("main")
+    --monkey.disableGroup(1)
     ui:setactive(false)
-    parent = monkey.getEntity("dialogue")
+	d:setactive(true)
+	a:enablecontrols(false)
+
+    -- parent = monkey.getEntity("dialogue")
 
     dial = dialogues[args.dialogueId]
     node = dial[args.nodeId]
-    if (args.init == true and dial.init ~= nil) then
-        dialogues[args.dialogueId].init()
-    end
+
+--print(node.lines[1])
+    -- if (args.init == true and dial.init ~= nil) then
+    --     dialogues[args.dialogueId].init()
+    -- end
     
     local tkeys = {}
     for k in pairs(node.lines) do
-        if (node.lines[k].active == true) then
-            table.insert(tkeys, k )
-        end 
+    	if (node.lines[k].active == true) then
+    		table.insert(tkeys, k )
+    	end 
     end
     table.sort(tkeys) 
     j = 0
     for _, k in ipairs(tkeys) do
-        entity = monkey.addEntity(makeDialogueButton(0, 0, node.lines[k]), parent)
-        j = j + entity.lines
-        entity:setposition(0, 56 - 8*j, 0)
-        
+		print ("LINEA = " .. node.lines[k].text)
+		d:addbutton({ 
+		 	text = node.lines[k].text,
+			priority = 1, 
+		 	onenter = curry2(changecolor, config.ui_selected_color),
+		 	onleave = curry2(changecolor, config.ui_unselected_color), 
+		 	onclick = function() print("click") end })
     end
 
 end

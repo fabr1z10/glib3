@@ -30,9 +30,11 @@ void LuaWrapper::Init() {
                             .addFunction("setcolor", &EntityWrapper::SetColor)
                             .addFunction("settext", &EntityWrapper::SetText)
                             .addFunction("setactive", &EntityWrapper::SetActive)
+                            .addFunction("enablecontrols", &EntityWrapper::SetEnableControls)
                             .addFunction("clear", &EntityWrapper::Clear)
                             .addFunction("setposition", &EntityWrapper::SetPosition)
                             .addFunction("addtext", &EntityWrapper::AppendText)
+                            .addFunction("addbutton", &EntityWrapper::AppendButton)
                             //.addFunction("addbutton"), &EntityWrapper::AddButton)
                     .endClass();
 }

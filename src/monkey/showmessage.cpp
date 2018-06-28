@@ -8,7 +8,7 @@
 
 void ShowMessage::Start() {
     m_mainCam = Engine::get().GetRef<OrthographicCamera>("maincam");
-    auto scene = Engine::get().GetScene();
+    auto scene = Engine::get().GetRef<Entity>("main");
     glm::vec2 currentPos;
     if (!m_actor.empty()) {
         auto actor = Engine::get().GetRef<Entity>(m_actor);

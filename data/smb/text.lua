@@ -75,7 +75,8 @@ strings = {
             [46] = "Look out! Ha ha. Get it?",
             [47] = "That's THREEPWOOD.",
             [48] = "Actually, my name is Guybrush Threepwood.",
-            [49] = "Oh, right."
+            [49] = "Oh, right.",
+			[50] = "I am not sure, but I think he may be asleep."
             },
             names = { "Thranwook", "Thrumwink" }
         },

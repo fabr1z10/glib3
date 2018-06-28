@@ -31,6 +31,10 @@ void TextView::Scroll(int nlines) {
 
     m_arrowUp->SetActive(ScrollUpVisible());
     m_arrowDown->SetActive(ScrollDownVisible());
+    // update position of arrows
+    glm::vec3 p = glm::vec3(0.0f, pos.y - m_orthoHeight*0.5f, 0.0f);
+    m_arrowUp->SetPosition(glm::vec3(p.x, p.y + m_orthoHeight - m_arrowHeight, 1.0f));
+    m_arrowDown->SetPosition(glm::vec3(p.x, p.y, 1.0f));
     std::cout << "topline = " << m_topLine << " line count = " << m_lineCount << ", maxlines = " << m_maxLines << "\n";
 }
 
@@ -103,28 +107,43 @@ void TextView::AddArrows() {
     arrowUp->AddComponent(hsu);
     arrowDown->AddComponent(hsd);
     arrowDown->AddComponent(rendd);
-    arrowUp->SetPosition(glm::vec3(m_viewport.x, m_viewport.y+m_orthoHeight-arrowUpMesh->GetBounds().GetExtents().y, 1.0f));
-    arrowDown->SetPosition(glm::vec3(m_viewport.x, m_viewport.y, 1.0f));
-    m_entity->GetParent()->AddChild(arrowUp);
-    m_entity->GetParent()->AddChild(arrowDown);
+    m_arrowHeight = arrowUpMesh->GetBounds().GetExtents().y;
+    glm::vec3 p = m_entity->GetCamera()->GetPosition() - glm::vec3(m_orthoWidth*0.5f, m_orthoHeight*0.5f, 0.0f);
+
+    // arrowUp->SetPosition(glm::vec3(m_viewport.x, m_viewport.y+m_orthoHeight-arrowUpMesh->GetBounds().GetExtents().y, 1.0f));
+    //arrowDown->SetPosition(glm::vec3(m_viewport.x, m_viewport.y, 1.0f));
+    arrowUp->SetPosition(glm::vec3(p.x, p.y + m_orthoHeight -m_arrowHeight , 1.0f));
+    arrowDown->SetPosition(glm::vec3(p.x, p.y, 1.0f));
+    m_entity->/*GetParent()->*/AddChild(arrowUp);
+    m_entity->/*etParent()->*/AddChild(arrowDown);
     arrowUp->SetActive(false);
     arrowDown->SetActive(false);
     m_arrowDown = arrowDown.get();
     m_arrowUp = arrowUp.get();
 }
 
+
+
 void TextView::ResetText() {
     // called when a line is added briging number of lines > max visualizable
     // we need to
     // 1. remove all text
-    m_entity->ClearAllChildren();
-    // 2. set scrollbar to active
     m_scrollBarOn = true;
-    m_arrowUp->SetActive(m_topLine > 0);
-    m_lineCount = 0;
-    for (auto& item : m_textItems) {
-        AppendLine(item);
+    if (m_deltax < m_scrollBarWidth) {
+        m_entity->ClearAllChildren();
+        m_lineCount = 0;
+        for (auto &item : m_textItems) {
+            AppendLine(item);
+        }
+        // update position of arrows
+        glm::vec3 pos = m_entity->GetCamera()->GetPosition();
+        glm::vec3 p = glm::vec3(0.0f, pos.y - m_orthoHeight*0.5f, 0.0f);
+        m_arrowUp->SetPosition(glm::vec3(p.x, p.y + m_orthoHeight - m_arrowHeight, 1.0f));
+        m_arrowDown->SetPosition(glm::vec3(p.x, p.y, 1.0f));
     }
+    // 2. set scrollbar to active
+
+    m_arrowUp->SetActive(m_topLine > 0);
     m_arrowDown->SetActive(m_topLine + m_maxLines < m_lineCount);
 
 }
@@ -142,9 +161,9 @@ void TextView::AppendLine(TextItem& item) {
     } else {
         auto entity = std::make_shared<Entity>();
         auto renderer = std::make_shared<Renderer>();
-        renderer->SetTint(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+        renderer->SetTint(m_textColor);
         renderer->SetMesh(mesh);
-        float x = m_scrollBarOn ? m_scrollBarWidth : 0.0f;
+        float x = (m_deltax > m_scrollBarWidth) ? m_deltax : (m_scrollBarOn ? m_scrollBarWidth : 0.0f);
         // the position of top left corner
         glm::vec2 pos(x, -m_lineCount * m_fontSize);
         glm::vec2 offset = mesh->getOffset();
