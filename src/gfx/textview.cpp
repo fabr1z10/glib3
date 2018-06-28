@@ -157,7 +157,7 @@ void TextView::AppendLine(TextItem& item) {
             auto bounds = renderer->GetBounds();
             float w = bounds.max.x - bounds.min.x;
             float h = bounds.max.y - bounds.min.y;
-            auto shape = std::make_shared<Rect>(w, h);
+            auto shape = std::make_shared<Rect>(w, h, glm::vec2(0, bounds.min.y));
             item.hotspot->SetShape(shape);
             entity->AddComponent(item.hotspot);
         }
