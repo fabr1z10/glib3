@@ -20,12 +20,12 @@ public:
     // called once when the entity is added to the scene
     virtual void Start() = 0;
     virtual void Update(double) = 0;
-    void SetParent(Entity* parent) {
+    virtual void SetParent(Entity* parent) {
         m_entity = parent;
     }
     Entity* GetObject();
     bool IsActive();
-    void SetActive(bool);
+    virtual void SetActive(bool);
 protected:
     bool m_active;
     Entity* m_entity;

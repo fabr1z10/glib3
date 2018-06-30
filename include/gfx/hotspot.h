@@ -21,6 +21,7 @@ public:
     Shape* GetShape();
     void SetShape (std::shared_ptr<Shape> shape);
     void Update(double) override {}
+    void SetParent(Entity*) override;
     virtual void onEnter() = 0;
     virtual void onLeave() = 0;
     virtual void onClick(glm::vec2) = 0;

@@ -21,21 +21,8 @@ void TextViewButton::onClick(glm::vec2){
 }
 
 void TextView::Scroll(int nlines) {
-
-    int linesToSkip = m_textItems[nlines> 0 ? m_topLine : m_topLine+nlines].lines;
     m_topLine += nlines;
-    Camera* cam = m_entity->GetCamera();
-    glm::vec3 pos = cam->GetPosition();
-    pos.y += (nlines > 0 ? -1.0f : 1.0f) * linesToSkip * m_fontSize;
-    cam->SetPosition(pos, glm::vec3(0, 0, -1));
-
-    m_arrowUp->SetActive(ScrollUpVisible());
-    m_arrowDown->SetActive(ScrollDownVisible());
-    // update position of arrows
-    glm::vec3 p = glm::vec3(0.0f, pos.y - m_orthoHeight*0.5f, 0.0f);
-    m_arrowUp->SetPosition(glm::vec3(p.x, p.y + m_orthoHeight - m_arrowHeight, 1.0f));
-    m_arrowDown->SetPosition(glm::vec3(p.x, p.y, 1.0f));
-    std::cout << "topline = " << m_topLine << " line count = " << m_lineCount << ", maxlines = " << m_maxLines << "\n";
+    UpdateCamPosition(m_topLine);
 }
 
 
@@ -52,6 +39,12 @@ bool TextView::ScrollUpVisible() const {
     return m_topLine > 0;
 }
 
+void TextView::SetParent(Entity *parent) {
+    Component::SetParent(parent);
+    AddArrows();
+
+}
+
 
 void TextView::Start() {
 
@@ -60,10 +53,14 @@ void TextView::Start() {
     m_font = Engine::get().GetAssetManager().GetFont(m_fontName);
     // create a new camera
 
+    //AddArrows();
     std::unique_ptr<Camera> cam(new OrthographicCamera(m_orthoWidth, m_orthoHeight, m_viewport));
-    cam->SetPosition(glm::vec3(m_orthoWidth*0.5f, -m_orthoHeight*0.5f, -5.0f), glm::vec3(0,0, -1));
     m_entity->SetCamera(std::move(cam));
-    AddArrows();
+
+    UpdateCamPosition(0);
+    //cam->SetPosition(glm::vec3(m_orthoWidth*0.5f, -m_orthoHeight*0.5f, -5.0f), glm::vec3(0,0, -1));
+
+    //AddArrows();
 
 
 
@@ -77,6 +74,78 @@ void TextView::Start() {
 //    AppendText("ciao!");
 //    AppendText("ciao!");
 }
+void TextView::UpdateCamPosition2(int line) {
+    if (line < 0)
+        line = 0;
+    else if (line > m_textItems.size()-1)
+        line = m_textItems.size()-1;
+    //if (m_topLine == line)
+    //    return;
+    int nlines {0};
+    int linesLeft{0};
+    for (int i = 0; i < line; ++i)
+        nlines += m_textItems[i].lines;
+    for (int i = line; i < m_textItems.size(); ++i)
+        linesLeft += m_textItems[i].lines;
+    float x = m_orthoWidth * 0.5f;
+    float y = -m_orthoHeight * 0.5f - nlines * m_fontSize;
+    std::cout << "set cam pos to " << x << ", " << y << std::endl;
+    m_entity->GetCamera()->SetPosition(glm::vec3(x, y, -5.0f), glm::vec3(0, 0, -1));
+    glm::vec3 dp = glm::vec3(0.0f, y - m_orthoHeight*0.5f, 1.0f);
+    glm::vec3 up = glm::vec3(0.0f, y + m_orthoHeight*0.5f - m_arrowHeight, 1.0f);
+
+    m_arrowDown->SetPosition(dp);
+    m_arrowUp->SetPosition(up);
+    std::cout << "setting down pos to " << m_arrowDown->GetPosition().x << ", " << m_arrowDown->GetPosition().y << "\n";
+    std::cout << "setting up pos to " << m_arrowUp->GetPosition().x << ", " << m_arrowUp->GetPosition().y << "\n";
+    m_topLine = line;
+    std::cout << "up active = " << (m_topLine>0) << " down active = " << (linesLeft>m_maxLines) <<"\n";
+    m_arrowUp->SetActive(m_topLine>0);
+    m_arrowDown->SetActive(linesLeft > m_maxLines);
+    std::cout << m_arrowUp->IsActive() << ", " << m_arrowDown->IsActive() << "\n";
+}
+
+void TextView::UpdateCamPosition(int line) {
+    if (line < 0)
+        line = 0;
+    else if (line > m_textItems.size()-1)
+        line = m_textItems.size()-1;
+    //if (m_topLine == line)
+    //    return;
+    int nlines {0};
+    int linesLeft{0};
+    for (int i = 0; i < line; ++i)
+        nlines += m_textItems[i].lines;
+    for (int i = line; i < m_textItems.size(); ++i)
+        linesLeft += m_textItems[i].lines;
+    float x = m_orthoWidth * 0.5f;
+    float y = -m_orthoHeight * 0.5f - nlines * m_fontSize;
+    std::cout << "set cam pos to " << x << ", " << y << std::endl;
+    m_entity->GetCamera()->SetPosition(glm::vec3(x, y, -5.0f), glm::vec3(0, 0, -1));
+    glm::vec3 dp = glm::vec3(0.0f, y - m_orthoHeight*0.5f, 1.0f);
+    glm::vec3 up = glm::vec3(0.0f, y + m_orthoHeight*0.5f - m_arrowHeight, 1.0f);
+
+    m_arrowDown->SetPosition(dp);
+    m_arrowUp->SetPosition(up);
+    std::cout << "setting down pos to " << m_arrowDown->GetPosition().x << ", " << m_arrowDown->GetPosition().y << "\n";
+    std::cout << "setting up pos to " << m_arrowUp->GetPosition().x << ", " << m_arrowUp->GetPosition().y << "\n";
+    m_topLine = line;
+    std::cout << "up active = " << (m_topLine>0) << " down active = " << (linesLeft>m_maxLines) <<"\n";
+    m_arrowUp->SetActive(m_topLine > 0);
+    m_arrowDown->SetActive(linesLeft > m_maxLines);
+    m_arrowUp->SetActive(m_topLine > 0);
+    m_arrowDown->SetActive(linesLeft > m_maxLines);
+    std::cout << m_arrowUp->IsActive() << ", " << m_arrowDown->IsActive() << "\n";
+}
+
+
+void TextView::SetActive(bool value) {
+    Component::SetActive(value);
+    UpdateCamPosition(m_topLine);
+    //m_arrowUp->SetActive(m_topLine > 0);
+    //m_arrowDown->SetActive(linesLeft > m_maxLines);
+
+}
 
 TextView::~TextView() {
 
@@ -87,7 +156,7 @@ void TextView::AddArrows() {
 
     auto arrowUp = std::make_shared<Entity>();
     auto arrowDown = std::make_shared<Entity>();
-
+    auto textItems = std::make_shared<Entity>();
     //arrowUp->SetTag("arrowup");
 
     auto arrowUpMesh = Engine::get().GetAssetManager().GetMesh("arrowup");
@@ -105,21 +174,25 @@ void TextView::AddArrows() {
     rendd->SetAnimation("unselected");
     arrowUp->AddComponent(rend);
     arrowUp->AddComponent(hsu);
+    arrowUp->SetTag("arrup");
+    arrowDown->SetTag("arrdw");
     arrowDown->AddComponent(hsd);
     arrowDown->AddComponent(rendd);
     m_arrowHeight = arrowUpMesh->GetBounds().GetExtents().y;
-    glm::vec3 p = m_entity->GetCamera()->GetPosition() - glm::vec3(m_orthoWidth*0.5f, m_orthoHeight*0.5f, 0.0f);
+    //glm::vec3 p = m_entity->GetCamera()->GetPosition() - glm::vec3(m_orthoWidth*0.5f, m_orthoHeight*0.5f, 0.0f);
 
     // arrowUp->SetPosition(glm::vec3(m_viewport.x, m_viewport.y+m_orthoHeight-arrowUpMesh->GetBounds().GetExtents().y, 1.0f));
     //arrowDown->SetPosition(glm::vec3(m_viewport.x, m_viewport.y, 1.0f));
-    arrowUp->SetPosition(glm::vec3(p.x, p.y + m_orthoHeight -m_arrowHeight , 1.0f));
-    arrowDown->SetPosition(glm::vec3(p.x, p.y, 1.0f));
+    //arrowUp->SetPosition(glm::vec3(p.x, p.y + m_orthoHeight -m_arrowHeight , 1.0f));
+   // arrowDown->SetPosition(glm::vec3(p.x, p.y, 1.0f));
     m_entity->/*GetParent()->*/AddChild(arrowUp);
     m_entity->/*etParent()->*/AddChild(arrowDown);
+    m_entity->AddChild(textItems);
     arrowUp->SetActive(false);
     arrowDown->SetActive(false);
     m_arrowDown = arrowDown.get();
     m_arrowUp = arrowUp.get();
+    m_itemContainer = textItems.get();
 }
 
 
@@ -130,21 +203,17 @@ void TextView::ResetText() {
     // 1. remove all text
     m_scrollBarOn = true;
     if (m_deltax < m_scrollBarWidth) {
-        m_entity->ClearAllChildren();
+        //m_entity->ClearAllChildren();
+        m_itemContainer->ClearAllChildren();
         m_lineCount = 0;
         for (auto &item : m_textItems) {
             AppendLine(item);
         }
-        // update position of arrows
-        glm::vec3 pos = m_entity->GetCamera()->GetPosition();
-        glm::vec3 p = glm::vec3(0.0f, pos.y - m_orthoHeight*0.5f, 0.0f);
-        m_arrowUp->SetPosition(glm::vec3(p.x, p.y + m_orthoHeight - m_arrowHeight, 1.0f));
-        m_arrowDown->SetPosition(glm::vec3(p.x, p.y, 1.0f));
     }
     // 2. set scrollbar to active
-
-    m_arrowUp->SetActive(m_topLine > 0);
-    m_arrowDown->SetActive(m_topLine + m_maxLines < m_lineCount);
+    UpdateCamPosition(m_topLine);
+    //m_arrowUp->SetActive(m_topLine > 0);
+    //m_arrowDown->SetActive(m_topLine + m_maxLines < m_lineCount);
 
 }
 
@@ -182,10 +251,11 @@ void TextView::AppendLine(TextItem& item) {
         }
 
 
-        m_entity->AddChild(entity);
+        m_itemContainer->AddChild(entity);
         // check if we need to activate the scroll down control
-        if (m_scrollBarOn)
-            m_arrowDown->SetActive(ScrollDownVisible());
+        //if (m_scrollBarOn)
+        //    m_arrowDown->SetActive(ScrollDownVisible());
+        UpdateCamPosition(m_topLine);
     }
 }
 

@@ -25,7 +25,10 @@ public:
     }
     virtual ~TextView();
     void ResetText();
-    //void UpdateCamPosition();
+    void SetParent(Entity* parent) override;
+    // place the camera in such a way that I see i-th line on top
+    void UpdateCamPosition(int);
+    void UpdateCamPosition2(int);
     void Start() override ;
     void Update(double) override {}
     void AppendText(const std::string& msg, std::shared_ptr<HotSpot> hotspot = nullptr);
@@ -33,6 +36,7 @@ public:
     bool ScrollDownVisible() const;
     bool ScrollUpVisible() const;
     using ParentClass = TextView;
+    void SetActive(bool) override;
 private:
     void AppendLine(TextItem&);
     void AddArrows();
@@ -52,6 +56,7 @@ private:
     int m_camId;
     Entity* m_arrowUp;
     Entity* m_arrowDown;
+    Entity* m_itemContainer;
     int m_topLine;
     bool m_scrollBarOn;
 };

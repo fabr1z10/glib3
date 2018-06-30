@@ -236,17 +236,23 @@ void HotSpotManager::Unregister (HotSpot* hotspot) {
     //m_groups[hotspot->GetGroup()]->Erase(hotspot);
 }
 
-void HotSpot::Start() {
-
-    //auto hs = (Engine::get().GetRef<HotSpotManager>("_hotspotmanager"));
-    //hs->Register(this);
-    // if DEBUG
+void HotSpot::SetParent(Entity * entity) {
+    Component::SetParent(entity);
     auto ce = std::make_shared<Entity>();
     auto cer = std::make_shared<Renderer>();
     auto debugMesh = MeshFactory::CreateMesh(*(m_shape.get()), 5.0f);
     cer->SetMesh(debugMesh);
     ce->AddComponent(cer);
+    ce->SetTag("hotspotmesh");
     m_entity->AddChild(ce);
+}
+
+void HotSpot::Start() {
+
+    //auto hs = (Engine::get().GetRef<HotSpotManager>("_hotspotmanager"));
+    //hs->Register(this);
+    // if DEBUG
+
 }
 
 HotSpot::~HotSpot() {
