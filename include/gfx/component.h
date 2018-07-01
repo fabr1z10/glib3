@@ -25,7 +25,7 @@ public:
     }
     Entity* GetObject();
     bool IsActive();
-    virtual void SetActive(bool);
+    virtual bool SetActive(bool);
 protected:
     bool m_active;
     Entity* m_entity;
@@ -36,8 +36,9 @@ inline bool Component::IsActive() {
     return m_active;
 }
 
-inline void Component::SetActive(bool value) {
+inline bool Component::SetActive(bool value) {
     m_active = value;
+    return true;
 }
 
 

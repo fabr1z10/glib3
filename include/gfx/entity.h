@@ -76,8 +76,14 @@ public:
     void Move(glm::vec3&);
     void Move(glm::mat4&);
     //Entity* GetParent();
+
+    // an active entity gets updated at every frame,
+    // and responds to events (i.e. hot-spots)
     bool IsActive() const;
     void SetActive(bool);
+
+
+
     bool AreControlsEnabled() const;
     void SetControlsEnabled(bool);
     glm::mat4& GetLastMove();

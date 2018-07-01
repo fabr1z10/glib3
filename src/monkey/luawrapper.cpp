@@ -17,6 +17,7 @@ void LuaWrapper::Init() {
                     .addFunction("addEntity", &EntityWrapper::AddEntity)
                     .addFunction("removeEntity", &EntityWrapper::RemoveEntity)
                     .addFunction("play", &luaFunctions::PlayScript)
+                    .addFunction("enablescriptengine", &luaFunctions::EnableScriptEngine)
                     //.addFunction("enableGroup", &EntityWrapper::EnableGroup)
                     //.addFunction("disableGroup", &EntityWrapper::DisableGroup)
                     .beginClass<EntityWrapper>("entity")
@@ -35,6 +36,8 @@ void LuaWrapper::Init() {
                             .addFunction("setposition", &EntityWrapper::SetPosition)
                             .addFunction("addtext", &EntityWrapper::AppendText)
                             .addFunction("addbutton", &EntityWrapper::AppendButton)
+                            .addFunction("cleartext", &EntityWrapper::ClearText)
+
                             //.addFunction("addbutton"), &EntityWrapper::AddButton)
                     .endClass();
 }

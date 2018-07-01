@@ -76,23 +76,11 @@ extern GLFWwindow* window;
 //}
 
 void RenderingEngine::Start() {
-
-    // trigger a resize for all cameras
     int widthPixel, heightPixel;
     glfwGetFramebufferSize(window, &widthPixel, &heightPixel);
     // trigger a resize
     Engine::WindowResizeCallback(window, widthPixel, heightPixel);
-//    for (auto& c : m_cameras) {
-//        auto cam = c.second.get();
-//        cam->Resize(widthPixel, heightPixel);
-//        // get the root entity for each camera
-//        std::string root = cam->GetRoot();
-//        Entity* rootNode = Engine::get().GetRef<Entity>(root);
-//        m_roots.insert(std::make_pair(cam, rootNode));
-//    }
-
-    // register to window resize
-    Engine::get().RegisterToWindowResizeEvent(this);
+    // Engine::get().RegisterToWindowResizeEvent(this);
 }
 
 void RenderingEngine::Notify(float w, float h)  {

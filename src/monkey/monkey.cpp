@@ -51,6 +51,53 @@ void Monkey::Start() {
 
     g.Init(config);
 
+    // set-up the rendering engine
+    auto renderingEngine = std::unique_ptr<RenderingEngine>(new RenderingEngine);
+    renderingEngine->AddShader(TEXTURE_SHADER);
+    renderingEngine->AddShader(COLOR_SHADER);
+    renderingEngine->AddShader(TEXT_SHADER);
+    g.SetRenderingEngine(std::move(renderingEngine));
+
+    // set-up the scripting engine
+    auto scheduler = std::unique_ptr<Scheduler>(new Scheduler);
+    g.SetScriptingEngine(std::move(scheduler));
+
+    // set-up the input system (mouse & keyboard)
+
+
+
+
+//    auto hotspotManager = std::make_shared<HotSpotManager>();
+//
+//
+//
+//    engineNode->AddComponent(renderingEngine);
+//    engineNode->AddComponent(scheduler);
+
+
+//
+//    // add key listener to handle savegame, quit, pause etc.
+//    auto keyListener = std::make_shared<LuaKeyListener>();
+//
+//
+//
+//    luabridge::LuaRef hotkeys = roomTable.Get<luabridge::LuaRef>("hotkeys");
+//    for (int i = 0; i < hotkeys.length(); ++i) {
+//        luabridge::LuaRef hotkey = hotkeys[i+1];
+//        int key = hotkey["key"].cast<int>();
+//        luabridge::LuaRef callback = hotkey["func"];
+//        keyListener->AddHotKey(key, callback);
+//    }
+//
+//
+//
+//
+//
+//    engineNode->AddComponent(hotspotManager);
+//    engineNode->AddComponent(keyListener);
+//    entity->AddChild(engineNode);
+
+
     LoadFonts();
     g.SetSceneFactory(std::unique_ptr<SceneFactory>(new MonkeyFactory));
 

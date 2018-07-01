@@ -1,3 +1,5 @@
+#pragma once
+
 #include <gfx/component.h>
 #include <gfx/script.h>
 #include <unordered_map>

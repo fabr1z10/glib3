@@ -59,52 +59,52 @@ std::shared_ptr<Entity> MonkeyFactory::Create() {
     ReadItems (scene, entity.get());
 
 
-    // create the cameras
-    auto engineNode = std::make_shared<Entity>();
-    auto renderingEngine = std::make_shared<RenderingEngine>();
-
-    // add key listener to handle savegame, quit, pause etc.
-    auto keyListener = std::make_shared<LuaKeyListener>();
-
-
-
-    luabridge::LuaRef hotkeys = roomTable.Get<luabridge::LuaRef>("hotkeys");
-    for (int i = 0; i < hotkeys.length(); ++i) {
-        luabridge::LuaRef hotkey = hotkeys[i+1];
-        int key = hotkey["key"].cast<int>();
-        luabridge::LuaRef callback = hotkey["func"];
-        keyListener->AddHotKey(key, callback);
-    }
-
-
-    renderingEngine->AddShader(TEXTURE_SHADER);
-    renderingEngine->AddShader(COLOR_SHADER);
-    renderingEngine->AddShader(TEXT_SHADER);
-
-
-
-    auto scheduler =std::make_shared<Scheduler>();
-    scheduler->SetTag("_scheduler");
-    auto hotspotManager = std::make_shared<HotSpotManager>();
-    hotspotManager->SetTag("_hotspotmanager");
-    renderingEngine->SetTag("_renderingengine");
-
-    if (roomTable.HasKey("groups")) {
-        luabridge::LuaRef groups = roomTable.Get<luabridge::LuaRef>("groups");
-        for (int i = 0; i < groups.length(); ++i) {
-            luabridge::LuaRef groupR = groups[i + 1];
-            int id = groupR["id"].cast<int>();
-            std::string cam = groupR["cam"].cast<std::string>();
-            hotspotManager->AddGroup(id, cam);
-        }
-    }
-
-
-    engineNode->AddComponent(renderingEngine);
-    engineNode->AddComponent(scheduler);
-    engineNode->AddComponent(hotspotManager);
-    engineNode->AddComponent(keyListener);
-    entity->AddChild(engineNode);
+//    // create the cameras
+//    auto engineNode = std::make_shared<Entity>();
+//    auto renderingEngine = std::make_shared<RenderingEngine>();
+//
+//    // add key listener to handle savegame, quit, pause etc.
+//    auto keyListener = std::make_shared<LuaKeyListener>();
+//
+//
+//
+//    luabridge::LuaRef hotkeys = roomTable.Get<luabridge::LuaRef>("hotkeys");
+//    for (int i = 0; i < hotkeys.length(); ++i) {
+//        luabridge::LuaRef hotkey = hotkeys[i+1];
+//        int key = hotkey["key"].cast<int>();
+//        luabridge::LuaRef callback = hotkey["func"];
+//        keyListener->AddHotKey(key, callback);
+//    }
+//
+//
+//    renderingEngine->AddShader(TEXTURE_SHADER);
+//    renderingEngine->AddShader(COLOR_SHADER);
+//    renderingEngine->AddShader(TEXT_SHADER);
+//
+//
+//
+//    auto scheduler =std::make_shared<Scheduler>();
+//    scheduler->SetTag("_scheduler");
+//    auto hotspotManager = std::make_shared<HotSpotManager>();
+//    hotspotManager->SetTag("_hotspotmanager");
+//    renderingEngine->SetTag("_renderingengine");
+//
+//    if (roomTable.HasKey("groups")) {
+//        luabridge::LuaRef groups = roomTable.Get<luabridge::LuaRef>("groups");
+//        for (int i = 0; i < groups.length(); ++i) {
+//            luabridge::LuaRef groupR = groups[i + 1];
+//            int id = groupR["id"].cast<int>();
+//            std::string cam = groupR["cam"].cast<std::string>();
+//            hotspotManager->AddGroup(id, cam);
+//        }
+//    }
+//
+//
+//    engineNode->AddComponent(renderingEngine);
+//    engineNode->AddComponent(scheduler);
+//    engineNode->AddComponent(hotspotManager);
+//    engineNode->AddComponent(keyListener);
+//    entity->AddChild(engineNode);
 
     //luabridge::LuaRef roomRef = luabridge::getGlobal(LuaWrapper::L, "room");
     //LuaTable roomTable(roomRef);

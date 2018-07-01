@@ -35,6 +35,7 @@ variables = {
     -- sets the start room
     _room = "lookout",
     _previousroom = "scummbar",
+	_pause = false,
     talkedToLookout = false,
     lookoutKnowsName = false,
 }

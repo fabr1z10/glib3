@@ -28,15 +28,16 @@ public:
     void SetParent(Entity* parent) override;
     // place the camera in such a way that I see i-th line on top
     void UpdateCamPosition(int);
-    void UpdateCamPosition2(int);
+    //void UpdateCamPosition2(int);
     void Start() override ;
     void Update(double) override {}
     void AppendText(const std::string& msg, std::shared_ptr<HotSpot> hotspot = nullptr);
+    void ClearText();
     void Scroll(int nlines);
     bool ScrollDownVisible() const;
     bool ScrollUpVisible() const;
     using ParentClass = TextView;
-    void SetActive(bool) override;
+    bool SetActive(bool) override;
 private:
     void AppendLine(TextItem&);
     void AddArrows();

@@ -1,57 +1,46 @@
---assets local to this scene
 require ("funcs")
 require ("text")
 require ("dialogues")
 require ("actions")
-
+require ("dialogues/lookout")
 
 local dt = 0.1
 
 room = {
 
 assets = {
+    makeGuybrush(),
+    makeArrowUp(),
+    makeArrowDown(),
+    makeLookout()
 },
 
 scene = {
-    [1] = { 
-        tag = "main",
-        layer = 1,
-        children = {},
-    },
-    [2] = {
-        tag = "controls",
-        layer = 2,
-        children = {}
-    }
+	{
+		tag = "main",
+		camera = {
+			tag = "maincam",
+			type="ortho",
+			size = {320, 144},
+			bounds = {0, 0, 320, 144},
+			viewport = {0, 56, 320, 144}
+		},
+		children = {
+		}
+	},
+	makescummui1()
 },
-
-groups = {
-  { id=1, cam ="maincam"},
-  { id=2, cam ="uicam"}
-},
-
-cameras = {
-{
-    tag="maincam",
-    type="ortho",
-    size = {320, 144},
-    bounds = {0, 0, 320, 144},
-    viewport = {0, 56, 320, 144},
-    layer = 1
-},
-{
-    tag = "uicam",
-    type="ortho",
-    size = {320, 56},
-    bounds = {0, 0, 320, 56},
-    viewport = {0, 0, 320, 56},
-    layer = 2
+hotkeys = {
+	{ key = 32, func = provaciccio }
 }
 }
-}
+-- end room
 
 function room.init()
--- put your initialization code here
+
+end
+
+function room.afterstartup() 
 
 end
 

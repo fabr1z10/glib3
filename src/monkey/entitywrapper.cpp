@@ -76,6 +76,12 @@ void EntityWrapper::Clear() {
     m_underlying->ClearAllChildren();
 }
 
+void EntityWrapper::ClearText() {
+    TextView* r = m_underlying->GetComponent<TextView>();
+    r->ClearText();
+}
+
+
 
 void EntityWrapper::SetText(const std::string& text) {
     Renderer* r = m_underlying->GetComponent<Renderer>();
@@ -86,7 +92,13 @@ void EntityWrapper::SetText(const std::string& text) {
 }
 
 namespace luaFunctions {
-    
+
+    void EnableScriptEngine (bool value) {
+        auto schedule = Engine::get().GetRef<Scheduler>("_scheduler");
+        schedule->SetActive(value);
+    }
+
+
     void PlayScript (luabridge::LuaRef ref) {
         auto scheduler = Engine::get().GetRef<Scheduler>("_scheduler");
         int startId = ref["startid"].cast<int>();

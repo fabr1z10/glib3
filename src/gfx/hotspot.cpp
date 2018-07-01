@@ -54,7 +54,7 @@ bool HotSpotManager::IsInViewport(float xScreen, float yScreen, glm::vec4 active
     return true;
 }
 
-
+// if I remove the hotspot currently active I get sigsegv!
 void HotSpotManager::CursorPosCallback(GLFWwindow*, double x, double y) {
 
     // mouse has moved! let's find the current focussed hotspot
@@ -129,12 +129,12 @@ void HotSpotManager::CursorPosCallback(GLFWwindow*, double x, double y) {
 
     if (newActiveHotSpot != m_currentlyActiveHotSpot) {
         if (m_currentlyActiveHotSpot != nullptr) {
-            std::cout << "LEAVING\n";
+            //std::cout << "LEAVING\n";
             m_currentlyActiveHotSpot->onLeave();
         }
         m_currentlyActiveHotSpot = newActiveHotSpot;
         if (newActiveHotSpot != nullptr) {
-            std::cout << "ENTER\n";
+            //std::cout << "ENTER\n";
             m_currentlyActiveHotSpot->onEnter();
         }
 
@@ -256,14 +256,19 @@ void HotSpot::Start() {
 }
 
 HotSpot::~HotSpot() {
-//    try {
-//        auto hs = (Engine::get().GetRef<HotSpotManager>("_hotspotmanager"));
-//        hs->Unregister(this);
-//    } catch (Error& er) {
-//
-//    }
+    try {
+        auto hs = (Engine::get().GetRef<HotSpotManager>("_hotspotmanager"));
+        hs->NotifyHotSpotDestructor(this);
+    }
+    catch (Error& er) {
+
+    }
 }
 
+void HotSpotManager::NotifyHotSpotDestructor(HotSpot* hotspot) {
+    if (hotspot == m_currentlyActiveHotSpot)
+        m_currentlyActiveHotSpot = nullptr;
+}
 //void HotSpotManager::EnableGroup(int group) {
 //    auto iter = m_groups.find(group);
 //    if (iter == m_groups.end())

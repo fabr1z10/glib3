@@ -99,6 +99,7 @@ public:
     void AddGroup (int, const std::string& camId);
     using ParentClass = HotSpotManager;
     bool IsInViewport(float xScreen, float yScreen, glm::vec4 activeViewport);
+    void NotifyHotSpotDestructor(HotSpot*);
     //void EnableGroup(int);
     //void DisableGroup(int);
 protected:

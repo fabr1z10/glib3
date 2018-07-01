@@ -1,4 +1,56 @@
+function makeArrowUp() 
+local dt=0.1
+return 
+	{
+		id = "arrowup",
+		sheet ="gfx/anims.png",
+		type="sprite",
+		ppu=1,
+	    animations = {
+        {
+       	    name = "unselected",             
+            frames = 
+            { 
+	    	  	{ duration = dt, quads = { { x = 485, y = 4, width = 12, height = 20, anchor = {0, 0}}}}             
+			}
+        },
+		{
+			name = "selected",
+            frames = 
+            { 
+	    	  	{ duration = dt, quads = { { x = 485, y = 25, width = 12, height = 20, anchor = {0, 0}}}}             
+			}
+		}
+        }	
+	}
+end
+function makeArrowDown()
+local dt =0.1
+return
+	{
+		id = "arrowdown",
+		sheet ="gfx/anims.png",
+		type="sprite",
+		ppu=1,
+	    animations = {
+        {
+       	    name = "unselected",             
+            frames = 
+            { 
+	    	  	{ duration = dt, quads = { { x = 472, y = 4, width = 12, height = 20, anchor = {0, 0}}}}             
+			}
+        },
+		{
+			name = "selected",
+            frames = 
+            { 
+	    	  	{ duration = dt, quads = { { x = 472, y = 25, width = 12, height = 20, anchor = {0, 0}}}}             
+			}
+		}
+        }	
+	}
 
+end
 
 function makeGuybrush()
     local pane = {6,-34}

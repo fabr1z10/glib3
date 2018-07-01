@@ -32,12 +32,14 @@ bool Entity::IsActive() const {
 
 void Entity::SetActive(bool value) {
     m_active = value;
+    bool recursive = true;
     for (auto& h : m_components) {
-        h.second->SetActive(value);
+        recursive = h.second->SetActive(value);
     }
     // now call setActive on all children
-    for (auto& c: m_children)
-        c->SetActive(value);
+    if (recursive)
+        for (auto& c: m_children)
+            c->SetActive(value);
 
 }
 

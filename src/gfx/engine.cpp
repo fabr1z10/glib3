@@ -108,7 +108,7 @@ void Engine::SetViewport(float x, float y, float width, float height) {
 
 void Engine::MainLoop() {
     if (m_sceneFactory == nullptr)
-        GLIB_FAIL("Scene factory has not been set.")
+        GLIB_FAIL("Scene factory has not been set.");
 
     while (!glfwWindowShouldClose(window)) {
 
@@ -153,7 +153,9 @@ void Engine::MainLoop() {
                     iter->Update(m_frameTime);
                 }
                 
-                
+
+                m_scriptEngine->Update(m_frameTime);
+                m_renderingEngine->Update(m_frameTime);
 
                 glfwSwapBuffers(window);
                 glfwPollEvents();
@@ -248,4 +250,13 @@ void Engine::AddTaggedRef (const std::string& id, Ref* ref) {
 
 void Engine::RemoveTaggedRef (const std::string& id) {
     m_taggedReferences.erase(id);
+}
+
+void Engine::SetRenderingEngine(std::unique_ptr<RenderingEngine> engine) {
+
+    m_renderingEngine = std::move(engine);
+    m_renderingEngine->Start();
+}
+void Engine::SetScriptingEngine(std::unique_ptr<Scheduler> engine) {
+    m_scriptEngine = std::move(engine);
 }

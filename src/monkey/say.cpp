@@ -32,7 +32,7 @@ void Say::Start() {
 
     for (auto& s : m_lines) {
 
-        Push(std::make_shared<ShowMessage>(count++, s, "monkey", m_actorId, 8, m_color, glm::vec4(0.0f), BOTTOM, 2.0f));
+        Push(std::make_shared<ShowMessage>(count++, s, "monkey", m_actorId, 8, m_color, glm::vec4(0.0f), BOTTOM, 1.0f));
     }
     Push(std::make_shared<Animate>(count++, actor, animEnd, flipx));
 

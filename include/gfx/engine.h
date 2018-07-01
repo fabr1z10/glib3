@@ -9,7 +9,8 @@
 #include <unordered_set>
 #include <gfx/assetman.h>
 #include <gfx/error.h>
-
+#include <gfx/renderingengine.h>
+#include <gfx/scheduler.h>
 
 struct EngineConfig {
     EngineConfig (float devWidth, float devHeight) : frameRate (60.0), deviceWidth{devWidth}, deviceHeight{devHeight}, enableMouse{false}, enableKeyboard{false},
@@ -77,6 +78,12 @@ public:
     static void cursor_pos_callback(GLFWwindow*, double xpos, double ypos);
     static void scroll_callback(GLFWwindow*, double xoffset, double yoffset);
     static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
+    void SetRenderingEngine(std::unique_ptr<RenderingEngine>);
+    void SetScriptingEngine(std::unique_ptr<Scheduler>);
+    RenderingEngine* GetRenderingEngine();
+    Scheduler* GetScriptingEngine();
+    //void SetInputHandler(std::unique_ptr<)
+
 private:
     std::unordered_map<std::string, Ref*> m_taggedReferences;
     void InitGL(const EngineConfig& config);
@@ -100,6 +107,10 @@ private:
     GLuint m_vao;
     bool m_endScene;
     float m_pixelRatio;
+    // the engine has sub-engines that run at end of each frame
+
+    std::unique_ptr<Scheduler> m_scriptEngine;
+    std::unique_ptr<RenderingEngine> m_renderingEngine;
 };
 
 inline SceneFactory* Engine::GetSceneFactory() {
@@ -155,4 +166,11 @@ inline float Engine::GetPixelRatio() const {
 
 inline glm::vec2 Engine::GetWindowSize() const {
     return m_winSize;
+}
+
+inline RenderingEngine* Engine::GetRenderingEngine() {
+    return m_renderingEngine.get();
+}
+inline Scheduler* Engine::GetScriptingEngine() {
+    return m_scriptEngine.get();
 }

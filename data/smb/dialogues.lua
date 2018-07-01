@@ -7,7 +7,7 @@ local d = strings.dialogues.lookout.text
 function pippo(f) 
 -- clear dialogue 
 dialogue = monkey.getEntity("dialogue")
-dialogue:clear()
+dialogue:cleartext()
 -- set the button active to false
 print ("Current status = " .. tostring(f.active))
 if (f.alwaysActive ~= true) then
@@ -27,10 +27,10 @@ dialogues = {
                 [3] = { text = d[3], active = true, alwaysActive = true, click = curry(dialoguesLookout.start, 3) },
                 [4] = { text = d[4], active = true, alwaysActive = true, click = curry(dialoguesLookout.start, 4) },
                 [5] = { text = d[46], active = false, alwaysActive = true, click = curry(dialoguesLookout.start, 46) },
-				[6] = { text = d[10], active = true },
-				[7] = { text = d[11], active = true },
-            	[8] = { text = d[12], active = true },
-				[9] = { text = d[13], active = true },
+				-- [6] = { text = d[10], active = true },
+				-- [7] = { text = d[11], active = true },
+    --         	[8] = { text = d[12], active = true },
+				-- [9] = { text = d[13], active = true },
 			}
         },
         [2] = {

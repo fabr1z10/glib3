@@ -6,7 +6,7 @@
 namespace luaFunctions {
     
     void PlayScript (luabridge::LuaRef);
-    
+    void EnableScriptEngine (bool);
 }
 
 struct EntityWrapper {
@@ -15,6 +15,8 @@ struct EntityWrapper {
     static EntityWrapper AddEntity(luabridge::LuaRef ref, EntityWrapper* parent);
     static EntityWrapper RemoveEntity(const std::string& tag);
     void Clear();
+    void ClearText();
+
     bool IsNil() const;
     float GetX() const;
     std::string GetAnim() const;

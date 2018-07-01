@@ -102,10 +102,11 @@ function say (args)
 end
 
 function turn (args)
+    c = objects[args.character]
     actions = {
     {
         type= "turn",
-        actor = args.character.tag,
+        actor = c.tag,
         face = args.face
     }
     }
@@ -152,10 +153,20 @@ function operateDoor(args)
     end 
 end
 
+function pause()
+	monkey.enablescriptengine(false)
+end
+
 function resumePlay()
-    ui = monkey.getEntity("ui")
-    ui:setactive(true)
-    monkey.enableGroup(1)
+print ("OFOFOFOF")
+    local ui = monkey.getEntity("uiplay")
+	--inv = monkey.getEntity("inventory")
+	local d = monkey.getEntity("dialogue")
+	local a = monkey.getEntity("main")
+	d:setactive(false)
+	ui:setactive(true)
+    --inv:setactive(true)
+	a:enablecontrols(true)
 end
 
 function startDialogue(args)
@@ -192,7 +203,8 @@ function startDialogue(args)
 			priority = 1, 
 		 	onenter = curry2(changecolor, config.ui_selected_color),
 		 	onleave = curry2(changecolor, config.ui_unselected_color), 
-		 	onclick = function() print("click") end })
+		 	onclick = curry(pippo, node.lines[k])
+		})
     end
 
 end
