@@ -2,6 +2,8 @@
 #include <gfx/error.h>
 
 void Scheduler::Update(double dt) {
+    if (!m_active)
+        return;
     std::vector<std::string> toRemove;
     for (auto& s : m_scripts) {
         s.second->Run(dt);

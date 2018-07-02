@@ -94,6 +94,7 @@ function pause()
 
 	variables._pause = not variables._pause
 	print ("pause = " .. tostring(variables._pause))
+	monkey.enablescriptengine(not variables._pause)
 	monkey.enablemouse(not variables._pause)
 	monkey.enablekeyboard(not variables._pause)
 	monkey.enablekey(32, true)
