@@ -7,6 +7,10 @@ namespace luaFunctions {
     
     void PlayScript (luabridge::LuaRef);
     void EnableScriptEngine (bool);
+    void EndRoom();
+    void EnableMouse(bool);
+    void EnableKeyboard(bool);
+    void EnableKey(int, bool);
 }
 
 struct EntityWrapper {

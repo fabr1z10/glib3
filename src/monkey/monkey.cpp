@@ -9,6 +9,8 @@
 #include <monkey/monkey.h>
 #include <gfx/engine.h>
 #include <monkey/monkeyfactory.h>
+#include <gfx/hotspot.h>
+#include <monkey/luakeylistener.h>
 
 Monkey::Monkey() {
     LuaWrapper::Init();
@@ -63,8 +65,17 @@ void Monkey::Start() {
     g.SetScriptingEngine(std::move(scheduler));
 
     // set-up the input system (mouse & keyboard)
+    g.RegisterToMouseEvent(std::unique_ptr<HotSpotManager>(new HotSpotManager));
 
-
+    std::unique_ptr<LuaKeyListener> kl(new LuaKeyListener);
+    luabridge::LuaRef hk = luabridge::getGlobal(LuaWrapper::L, "hotkeys");
+    for (int i = 0; i < hk.length(); ++i) {
+        luabridge::LuaRef h = hk[i+1];
+        int keyCode = h["key"].cast<int>();
+        luabridge::LuaRef ref = h["func"];
+        kl->AddHotKey(keyCode, ref);
+    }
+    g.RegisterToKeyboardEvent(std::move(kl));
 
 
 //    auto hotspotManager = std::make_shared<HotSpotManager>();

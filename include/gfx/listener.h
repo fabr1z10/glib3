@@ -9,6 +9,7 @@ public:
     virtual void CursorPosCallback(GLFWwindow*, double, double) = 0;
     virtual void MouseButtonCallback(GLFWwindow*, int, int, int) = 0;
     virtual void ScrollCallback(GLFWwindow*, double, double) = 0;
+    virtual void Enable(bool) = 0;
 };
 
 class KeyboardListener {
@@ -16,6 +17,9 @@ public:
     KeyboardListener();
     virtual~ KeyboardListener();
     virtual void KeyCallback(GLFWwindow*, int, int, int, int) = 0;
+    virtual void Enable(bool) = 0;
+    // enable specific keys
+    virtual void EnableKey(int, bool)= 0;
 };
 
 class WindowResizeListener {

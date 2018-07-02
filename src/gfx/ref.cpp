@@ -14,6 +14,7 @@ Ref::~Ref() {
         m_tag.clear();
     }
     g_refs.erase(m_id);
+
 }
 
 Ref* Ref::Get(int id) {

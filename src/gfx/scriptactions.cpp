@@ -4,14 +4,14 @@
 
 
 void SuspendScript::Start() {
-    auto scheduler = Engine::get().GetRef<Scheduler>("_scheduler");
+    auto scheduler = Engine::get().GetScriptingEngine();
     scheduler->GetScript(m_script)->SetSuspended(true);
     SetComplete();
 
 }
 
 void ResumeScript::Start() {
-    auto scheduler = Engine::get().GetRef<Scheduler>("_scheduler");
+    auto scheduler = Engine::get().GetScriptingEngine();
     scheduler->GetScript(m_script)->SetSuspended(false);
     SetComplete();
 

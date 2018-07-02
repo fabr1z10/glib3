@@ -147,9 +147,9 @@ void Engine::MainLoop() {
 
                 //glClearColor(0.0f,0.0f,0.3f,1.0f);
                 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
                 // update all active components
                 for (auto iter = m_scene->begin(); iter != m_scene->end(); ++iter) {
-
                     iter->Update(m_frameTime);
                 }
                 
@@ -191,27 +191,25 @@ void Engine::WindowResizeCallback(GLFWwindow* win, int width, int height) {
 }
 
 void Engine::mouse_button_callback(GLFWwindow* win, int button, int action, int mods) {
-    for (auto& listener : Engine::get().m_mouseListeners)
-        listener->MouseButtonCallback(win, button, action, mods);
+    auto& e = Engine::get().m_mouseListener;
+    if (e != nullptr)
+        e->MouseButtonCallback(win, button, action, mods);
 }
 
 void Engine::cursor_pos_callback(GLFWwindow* win, double xpos, double ypos) {
-    for (auto& listener : Engine::get().m_mouseListeners)
-        listener->CursorPosCallback(win, xpos, ypos);
+    auto& e = Engine::get().m_mouseListener;
+    if (e != nullptr)
+        e->CursorPosCallback(win, xpos, ypos);
 }
+
 void Engine::scroll_callback(GLFWwindow* win, double xoffset, double yoffset) {
-    for (auto& listener : Engine::get().m_mouseListeners)
-        listener->ScrollCallback(win, xoffset, yoffset);
+    //for (auto& listener : Engine::get().m_mouseListener)
+      //  listener->ScrollCallback(win, xoffset, yoffset);
 }
 void Engine::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-    // key for restart scene
-    if (action == GLFW_PRESS && key == GLFW_KEY_F10) {
-        Engine::get().EndScene();
-    }
-    
-    
-    for (auto& listener : Engine::get().m_keyboardListeners)
-        listener->KeyCallback(window, key, scancode, action, mods);
+    auto& e = Engine::get().m_keyboardListener;
+    if (e != nullptr)
+        e->KeyCallback(window, key, scancode, action, mods);
 }
 
 void Engine::RegisterToWindowResizeEvent(WindowResizeListener* listener) {
@@ -222,21 +220,21 @@ void Engine::UnregisterToWindowResizeEvent(WindowResizeListener* listener) {
     m_resizeListeners.erase(listener);
 }
 
-void Engine::RegisterToMouseEvent(MouseListener* listener) {
-    m_mouseListeners.insert(listener);
+void Engine::RegisterToMouseEvent(std::unique_ptr<MouseListener> listener) {
+    m_mouseListener = std::move(listener);
 }
 
-void Engine::UnregisterToMouseEvent(MouseListener* listener) {
-    m_mouseListeners.erase(listener);
+//void Engine::UnregisterToMouseEvent(MouseListener* listener) {
+//    m_mouseListeners.erase(listener);
+//}
+
+void Engine::RegisterToKeyboardEvent(std::unique_ptr<KeyboardListener> listener) {
+    m_keyboardListener = std::move(listener);
 }
 
-void Engine::RegisterToKeyboardEvent(KeyboardListener * listener) {
-    m_keyboardListeners.insert(listener);
-}
-
-void Engine::UnregisterToKeyboardEvent(KeyboardListener* listener) {
-    m_keyboardListeners.erase(listener);
-}
+//void Engine::UnregisterToKeyboardEvent(KeyboardListener* listener) {
+//    m_keyboardListeners.erase(listener);
+//}
 
 Engine::~Engine() {
     glfwTerminate();

@@ -91,16 +91,33 @@ void EntityWrapper::SetText(const std::string& text) {
     r->SetRenderingTransform(glm::translate(glm::vec3(offset, 0.0f)));
 }
 
+
+
 namespace luaFunctions {
 
     void EnableScriptEngine (bool value) {
-        auto schedule = Engine::get().GetRef<Scheduler>("_scheduler");
+        auto schedule = Engine::get().GetScriptingEngine();
         schedule->SetActive(value);
     }
 
+    void EndRoom() {
+        Engine::get().EndScene();
+    }
+
+    void EnableMouse(bool value) {
+        Engine::get().GetMouseHandler()->Enable(value);
+    }
+
+    void EnableKeyboard(bool value) {
+        Engine::get().GetKeyboardListener()->Enable(value);
+    }
+
+    void EnableKey(int key, bool value) {
+        Engine::get().GetKeyboardListener()->EnableKey(key, value);
+    }
 
     void PlayScript (luabridge::LuaRef ref) {
-        auto scheduler = Engine::get().GetRef<Scheduler>("_scheduler");
+        auto scheduler = Engine::get().GetScriptingEngine();
         int startId = ref["startid"].cast<int>();
         std::string scriptId = ref["id"].cast<std::string>();
         auto script = std::make_shared<Script>(startId);

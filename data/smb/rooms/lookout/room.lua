@@ -108,13 +108,22 @@ scene = {
 			},
 		}
 	},
-	makescummui1()
-},
+	makescummui1(),
+	{
+		tag = "diag",
+		camera = {
+			tag = "maincam",
+			type="ortho",
+			size = {320, 200},
+			bounds = {0, 0, 320, 200},
+			viewport = {0, 0, 320, 200}
+		},
+		children = {}
+	}
+}
+}
 
-hotkeys = {
-	{ key = 32, func = pause }
-}
-}
+
 -- end room
 
 function room.init()

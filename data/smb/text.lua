@@ -13,7 +13,8 @@ strings = {
         turnon = "Turn on",
         turnoff = "Turn off",
         giveprep = "to",
-        useprep = "with"
+        useprep = "with",
+		pause_message = "Game Paused. Press SPACE to Continue."
     },
     objects = {
         stairs = "stairs",

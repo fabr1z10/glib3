@@ -6,6 +6,7 @@
 #include <graph/shape.h>
 #include <vector>
 #include <unordered_set>
+#include <gfx/event.h>
 
 // hotspot is a component I can attach to
 class HotSpot : public Component {
@@ -16,7 +17,7 @@ public:
     virtual ~HotSpot();
     virtual bool isMouseInside(glm::vec2);
     void SetFocus (bool);
-
+    Event<HotSpot*> onDestroy;
     void Start() override;
     Shape* GetShape();
     void SetShape (std::shared_ptr<Shape> shape);
@@ -48,56 +49,22 @@ inline int HotSpot::GetPriority() const {
 }
 
 
-//class HotSpotGroup : public Ref {
-//public:
-//    HotSpotGroup() : Ref(), m_enabled{true} {}
-//    HotSpotGroup(const std::string& camId) : Ref(), m_enabled{true}, m_camId(camId), m_currentlyActiveHotSpot{nullptr} {}
-//    void Insert(HotSpot* hs) {
-//        m_hotspots.insert(hs);
-//    }
-//    void Erase(HotSpot* hs) {
-//        m_hotspots.erase(hs);
-//        if (m_currentlyActiveHotSpot == hs) {
-//            m_currentlyActiveHotSpot = nullptr;
-//        }
-//    }
-//    void InitCamera();
-//    void CheckCameraMove();
-//    void Run(double x, double y);
-//    void Click(double mouse_x, double mouse_y);
-//    void CameraMove() ;
-//    void SetEnabled(bool value) ;
-//private:
-//    bool m_enabled;
-//    bool m_active;
-//    std::unordered_set<HotSpot*> m_hotspots;
-//    HotSpot* m_currentlyActiveHotSpot;
-//    OrthographicCamera* m_cam;
-//    std::string m_camId;
-//};
-//
-//inline void HotSpotGroup::SetEnabled(bool value) {
-//    m_enabled = value;
-//    m_currentlyActiveHotSpot = nullptr;
-//
-//}
-
 // I have one only mouse listener
 // so when mouse moves, I just need to call one function and not one func for every hotspot.
 // Each hotspoot registers to the hotspot handler at startup and it has a group id. For each group,
 // only one hotspot can be active at any given time.
-class HotSpotManager : public Component, public MouseListener {
+class HotSpotManager : public Ref, public MouseListener {
 public:
-    HotSpotManager() : Component(), MouseListener(), m_active{true}, m_currentlyActiveHotSpot{nullptr} {}
-    void Start() override ;
-    void Update (double dt) override ;
+    HotSpotManager();
+    //void Start() override ;
+    //void Update (double dt) override ;
     void CursorPosCallback(GLFWwindow*, double, double) override;
     void ScrollCallback(GLFWwindow*, double, double) override {}
     void MouseButtonCallback(GLFWwindow*, int, int, int) override;
-    void Register (HotSpot*);
-    void Unregister (HotSpot*);
-    void AddGroup (int, const std::string& camId);
-    using ParentClass = HotSpotManager;
+    void Enable(bool) override;
+    //void Register (HotSpot*);
+    //void Unregister (HotSpot*);
+    //void AddGroup (int, const std::string& camId);
     bool IsInViewport(float xScreen, float yScreen, glm::vec4 activeViewport);
     void NotifyHotSpotDestructor(HotSpot*);
     //void EnableGroup(int);
@@ -109,3 +76,9 @@ protected:
     float m_pixelRatio;
     //std::unordered_map<int, std::unique_ptr<HotSpotGroup> > m_groups;
 };
+
+inline void HotSpotManager::Enable(bool value) {
+    m_active = value;
+    if (value == false)
+        m_currentlyActiveHotSpot= nullptr;
+}

@@ -90,6 +90,37 @@ config = {
     
 }
 
+function pause()
+
+	variables._pause = not variables._pause
+	print ("pause = " .. tostring(variables._pause))
+	monkey.enablemouse(not variables._pause)
+	monkey.enablekeyboard(not variables._pause)
+	monkey.enablekey(32, true)
+	d = monkey.getEntity("diag")
+	if (variables._pause == true) then
+		monkey.addEntity({
+			pos = {0, 108, 6},
+			gfx = { shape = { type="rect", width=320.0, height=10.0}, color = {0, 0, 0, 255}, draw = "solid" }
+		}, d)
+		monkey.addEntity({
+			pos = {160, 110, 6.1},
+			text = { id=strings.ui.pause_message, font="ui", color = {255,85,85,255}, align="bottom"}
+		}, d)
+		monkey.addEntity({
+			pos = {-1,108,6.1},
+			gfx = { shape = { type="rect", width=322.0, height=10.0}, color = {255,85,85,255}, draw = "outline" }
+		}, d)
+	else
+		d:clear()
+	end
+end
+
+hotkeys = {
+	{ key = 299, func = function() monkey.endroom() end },
+	{ key = 32, func = pause }
+}
+
 -- hotkeys = {
 -- 	space = pause,
 -- 	f8 = restart

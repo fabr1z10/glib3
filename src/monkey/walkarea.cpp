@@ -26,7 +26,7 @@ void WalkArea::onClick(glm::vec2 worldCoords) {
     // Now find the shortest path from player current position to the target pos.
 
 
-    auto scheduler = Engine::get().GetRef<Scheduler>("_scheduler");
+    auto scheduler = Engine::get().GetScriptingEngine();
     //auto player = Engine::get().GetRef<Entity>("player");
     auto script = std::make_shared<Script>(0);
     script->AddActivity(std::unique_ptr<Walk>(new Walk(0, m_playerId, worldCoords)));

@@ -26,20 +26,9 @@ void HotSpot::SetFocus(bool focus) {
 
 
 }
-void HotSpotManager::Start() {
+
+HotSpotManager::HotSpotManager() : Ref(), MouseListener(), m_active{true}, m_currentlyActiveHotSpot{nullptr} {
     m_pixelRatio = Engine::get().GetPixelRatio();
-//    for (auto& g : m_groups)
-//        g.second->InitCamera();
-
-}
-void HotSpotManager::AddGroup (int id, const std::string& camId) {
-
-    //m_groups[id] = std::unique_ptr<HotSpotGroup>(new HotSpotGroup(camId));
-}
-
-void HotSpotManager::Update(double dt) {
-    
-
 }
 
 bool HotSpotManager::IsInViewport(float xScreen, float yScreen, glm::vec4 activeViewport) {
@@ -58,7 +47,8 @@ bool HotSpotManager::IsInViewport(float xScreen, float yScreen, glm::vec4 active
 void HotSpotManager::CursorPosCallback(GLFWwindow*, double x, double y) {
 
     // mouse has moved! let's find the current focussed hotspot
-
+    if (!m_active)
+        return;
     Entity* root = Engine::get().GetScene();
     RenderingIterator iterator(root, false);
 
@@ -135,6 +125,8 @@ void HotSpotManager::CursorPosCallback(GLFWwindow*, double x, double y) {
         m_currentlyActiveHotSpot = newActiveHotSpot;
         if (newActiveHotSpot != nullptr) {
             //std::cout << "ENTER\n";
+            // notify me when you die!
+            m_currentlyActiveHotSpot->onDestroy.Register(this, [&] (HotSpot* hs) { NotifyHotSpotDestructor(hs); });
             m_currentlyActiveHotSpot->onEnter();
         }
 
@@ -228,13 +220,6 @@ void HotSpotManager::MouseButtonCallback(GLFWwindow* window, int button, int act
 
 }
 
-void HotSpotManager::Register (HotSpot* hotspot) {
-    //m_groups[hotspot->GetGroup()]->Insert(hotspot);
-}
-
-void HotSpotManager::Unregister (HotSpot* hotspot) {
-    //m_groups[hotspot->GetGroup()]->Erase(hotspot);
-}
 
 void HotSpot::SetParent(Entity * entity) {
     Component::SetParent(entity);
@@ -256,13 +241,7 @@ void HotSpot::Start() {
 }
 
 HotSpot::~HotSpot() {
-    try {
-        auto hs = (Engine::get().GetRef<HotSpotManager>("_hotspotmanager"));
-        hs->NotifyHotSpotDestructor(this);
-    }
-    catch (Error& er) {
-
-    }
+    onDestroy.Fire(this);
 }
 
 void HotSpotManager::NotifyHotSpotDestructor(HotSpot* hotspot) {

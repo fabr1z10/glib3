@@ -3,19 +3,19 @@
 
 
 MouseListener::MouseListener() {
-    Engine::get().RegisterToMouseEvent(this);
+    //Engine::get().RegisterToMouseEvent(this);
 }
 
 MouseListener::~MouseListener() {
-    Engine::get().UnregisterToMouseEvent(this);
+    //Engine::get().UnregisterToMouseEvent(this);
 }
 
 KeyboardListener::KeyboardListener() {
-    Engine::get().RegisterToKeyboardEvent(this);
+    //Engine::get().RegisterToKeyboardEvent(this);
 }
 
 KeyboardListener::~KeyboardListener() {
-    Engine::get().UnregisterToKeyboardEvent(this);
+    //Engine::get().UnregisterToKeyboardEvent(this);
 }
 
 WindowResizeListener::WindowResizeListener() {
