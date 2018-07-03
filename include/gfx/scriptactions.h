@@ -1,6 +1,7 @@
 #pragma once
 
 #include <gfx/activity.h>
+#include <string>
 
 class SuspendScript : public Activity {
 public:
