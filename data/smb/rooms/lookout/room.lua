@@ -70,7 +70,7 @@ scene = {
                	    tag = "walkarea",
 					priority = 0,
 			       	target = "player",
-					shape = { type = "poly", outline = {203,51,315,62,315,19,260,10,260,0,260,-20,234,-20,234,0,234,10,221,26,152,33,152,51}},
+					shape = { type = "poly", outline = {203,51,315,62,315,40,293,40,260,10,260,0,260,-20,234,-20,234,0,234,10,221,26,152,33,152,51}},
 					scaling = {
 					    depth = { 
 						    { rect = {0, 320, 0, 144}, dir = "y", bounds = {1, 0} } 
@@ -81,12 +81,6 @@ scene = {
 					}
 		      	},
          	},
-            {
-                tag = "player",
-                pos = {240, 40, 0},
-                gfx = { model = "guybrush", anim = "idle_front" },
-                scaling={},
-            },
 	        make_hotspot { 
                 x=114, 
 				y=36, 
@@ -127,13 +121,40 @@ scene = {
 -- end room
 
 function room.init()
-variables._actionInfo:reset()
+	variables._actionInfo:reset()
+	local fromData = {
+        village1 = { playerpos = {250, 0, 0}, anim = "idle_back" },
+		--scummbar = { playerpos = {715, 13, 0}, anim = "idle_front" }
+    }
 
+	f = fromData[variables._previousroom]
+	
+    -- add player
+    table.insert (room.scene[1].children, {
+        tag = "player",
+        pos = f.playerpos,
+        gfx = { model = "guybrush", anim = f.anim },
+        scaling = {}
+    })
+end
+
+function room.start()
+	if (variables._previousroom == "village1") then
+	    script = {
+	        startid = 0,
+	        id = "_walk",
+	        actions = {},
+	        edges ={}
+	    }
+	    createWalkToPosition ({247, 30}, script)
+	    monkey.play(script)
+
+	end
 end
 
 function room.afterstartup() 
-print ("refreshing inventory")
-refreshInventory()
+	print ("refreshing inventory")
+	refreshInventory()
 end
 
 function prova2(a)

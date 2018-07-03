@@ -149,8 +149,10 @@ void Engine::MainLoop() {
                 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
                 // update all active components
-                for (auto iter = m_scene->begin(); iter != m_scene->end(); ++iter) {
-                    iter->Update(m_frameTime);
+                if (m_update) {
+                    for (auto iter = m_scene->begin(); iter != m_scene->end(); ++iter) {
+                        iter->Update(m_frameTime);
+                    }
                 }
                 
 

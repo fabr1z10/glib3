@@ -8,8 +8,8 @@ function openBarKitchen()
             { type="delay", sec="0.5" },
             { type="animate", actor = objects.door_bar_kitchen.tag, anim = "open" },
             { type="animate", actor="player", anim= "idle_right" },
-			{ type="showmessage", color = characters.cook.color, message = strings.dialogues.cook[1], pos = {600,30,0} },
-			{ type="showmessage", color = characters.cook.color, message = strings.dialogues.cook[3], pos = {600,30,0} },
+			{ type="showmessage", color = objects.cook.color, message = strings.dialogues.cook[1], pos = {600,30,0} },
+			{ type="showmessage", color = objects.cook.color, message = strings.dialogues.cook[3], pos = {600,30,0} },
             { type="animate", actor = objects.door_bar_kitchen.tag, anim = "close" },
 			{ type="resumescript", script ="_cook" }
 		})
@@ -37,8 +37,8 @@ function enterBarKitchen()
      			
      			s = Script.create("_cook2")
          		s:add ({ {type = "suspendscript", script ="_cook" } })
-     			s:add (turn { character = characters.cook, face = "east" })
-     			s:add (say { character = characters.cook, lines = { strings.dialogues.cook[1], strings.dialogues.cook[2] }})
+     			s:add (turn { character = "cook", face = "east" })
+     			s:add (say { character = "cook", lines = { strings.dialogues.cook[1], strings.dialogues.cook[2] }})
      			-- restore animation and flip
      			s:add ({ { type="animate", actor="cook", anim=anim, flipx = fx } })
      			s:add ({ { type = "resumescript", script ="_cook" }})

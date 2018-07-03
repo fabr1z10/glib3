@@ -21,7 +21,8 @@ strings = {
         path = "path",
         poster = "poster",
         door = "door",
-        lookout = "lookout"
+        lookout = "lookout",
+		cliffside = "cliffside"
         
         
     },

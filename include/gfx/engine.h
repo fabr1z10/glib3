@@ -37,6 +37,7 @@ public:
 
 class Engine : public Singleton<Engine> {
 public:
+    Engine() : m_update{true} {}
     ~Engine();
     void Init(const EngineConfig& config);
     void MainLoop();
@@ -86,7 +87,7 @@ public:
     RenderingEngine* GetRenderingEngine();
     Scheduler* GetScriptingEngine();
     //void SetInputHandler(std::unique_ptr<)
-
+    void SetEnableUpdate(bool);
 private:
     std::unordered_map<std::string, Ref*> m_taggedReferences;
     void InitGL(const EngineConfig& config);
@@ -95,6 +96,7 @@ private:
     std::unordered_map<ShaderType, std::unique_ptr<Shader>, EnumClassHash> m_shaders;
     std::shared_ptr<Entity> m_scene;
     bool m_running;
+    bool m_update;
     double m_frameTime;
     double m_timeLastUpdate;
     //GLFWwindow* m_window;
@@ -185,4 +187,8 @@ inline MouseListener* Engine::GetMouseHandler() {
 
 inline KeyboardListener* Engine::GetKeyboardListener() {
     return m_keyboardListener.get();
+}
+
+inline void Engine::SetEnableUpdate(bool value) {
+    m_update = value;
 }

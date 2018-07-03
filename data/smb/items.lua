@@ -21,6 +21,11 @@ objects = {
         pos = {250, 0}, -- location where the player will go
         walk = curry(changeRoom, "village1")
     },
+	cliffside = {
+		text = strings.objects.cliffside,
+		pos = {8, 71},
+		walk = curry(changeRoom, "lookout")
+	},
     path = {
         text = strings.objects.path,
         pos = {8, 71},
@@ -36,7 +41,7 @@ objects = {
     village1_door = {
         text = strings.objects.door,
         tag = "door1",
-        pos = {715, 133},
+        pos = {715, 13},
         dir = "north",
         openFlag = false
         --isopen = false,

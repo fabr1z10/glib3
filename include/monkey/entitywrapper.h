@@ -11,6 +11,7 @@ namespace luaFunctions {
     void EnableMouse(bool);
     void EnableKeyboard(bool);
     void EnableKey(int, bool);
+    void EnableUpdate(bool);
 }
 
 struct EntityWrapper {

@@ -1,17 +1,21 @@
 --assets local to this scene
-
-
 require ("funcs")
 require ("text")
+require ("dialogues")
 require ("actions")
+require ("dialogues/lookout")
 
 local dt = 0.1
+
+--table.insert(inventory, { item = objects.poster, qty = 1})
 
 -- begin room
 room = {
 
 assets = {
     makeGuybrush(),
+    makeArrowUp(),
+    makeArrowDown(),
     {
         id = "door",
         sheet = "gfx/sprite2.png",
@@ -35,25 +39,30 @@ assets = {
         }
     }
 },
-
 scene = {
-    [1] = {
-        tag="main",
-        layer = 1,
-        children = {
+	{
+		tag = "main",
+		camera = {
+			tag = "maincam",
+			type="ortho",
+			size = {320, 144},
+			bounds = {0, 0, 1008, 144},
+			viewport = {0, 56, 320, 144}
+		},
+		children = {
             {
               pos = {0, 0, -5},
-              gfx = { image="gfx/village1/bg1.png" },
-              layer = 1
+              gfx = { image="gfx/village1/bg1.png" }
             },
             {
               walkarea = { 
-                tag = "walkarea",
+                  tag = "walkarea",
             	  group = 1,
             	  priority = 0,
             	  target = "player",
-            	  shape = { type = "graph", vertices = { {8, 71}, {23, 63}, {49, 49}, {40, 37}, {56, 24}, {84, 13}, {752, 13} }, edges = { {0,1}, {1,2}, {2,3},{3,4}, {4,5},{5,6} }},
-                scaling = {
+            	  shape = { type = "graph", vertices = { {8, 71}, {23, 63}, {49, 49}, {40, 37}, {56, 24}, {84, 13}, {770, 13}, {780,34}, {1000,34} }, edges = { 
+					{0,1}, {1,2}, {2,3},{3,4}, {4,5},{5,6},{6,7},{7,8} }},
+                  scaling = {
                     depth = { 
                         { rect = {0, 1008, 0, 144}, dir = "y", bounds = {1, 0} } 
                     },
@@ -61,73 +70,57 @@ scene = {
                         { rect = {0, 1008, 0, 144}, dir = "y", bounds = {1, 0.2} } 
                     }
                 }
-              },
-              layer = 1
+              }
             },
-            {
-                pos= {6,60,0},
-                hotspot = {
-                    group =1,
-                    priority = 1,
-                    shape = { type="rect", width=37, height=45},
-                    onenter=curry(hoverOn, objects.path),
-                    onleave=hoverOff,
-                    onclick=runAction
-                },
-                layer =1
-            },
-            {
-                pos = {258, 26, 0},
-                hotspot = {
-                    group = 1, priority = 1, 
-                    shape = { type = "rect", width=24, height=26},
-                    onenter = curry(hoverOn, objects.poster),
-                    onleave = hoverOff,
-                    onclick = runAction
-                },
-                layer = 1
-            
-            },
-            make_hotspot { x=699, y=7, width=31, height=47, offset={0,5},priority = 1, object = objects.village1_door, gfx = { model="door", anim = ((objects.village1_door.isopen() == true) and "open" or "close") }}
-        }
-    },
-    [2] = {
-        tag = "controls",
-        layer = 2,
-        children = {
-            table.unpack(makeUI())
-        }
-    }
+	        make_hotspot { 
+                x=0, 
+				y=58, 
+				width=74, 
+				height=50, 
+				priority = 1, 
+				object = "cliffside"
+			},
+	        make_hotspot { 
+                x=258, 
+				y=26, 
+				width=24, 
+				height=26, 
+				priority = 1, 
+				object = "poster"
+			},
+			make_hotspot { 
+				x=699, 
+				y=7, 
+				width=31, 
+				height=47, 
+				offset={0,5},
+				priority = 1, 
+				object = "village1_door", 
+				gfx = { 
+					model="door", 
+					anim = ((objects.village1_door.isopen() == true) and "open" or "close") 
+				}
+			},
 
-},
 
-groups = {
-	{ id=1, cam ="maincam"},
-	{ id=2, cam ="uicam"}
-},
-cameras = {
-{
-    tag="maincam",
-    type="ortho",
-    size = {320, 144},
-    bounds = {0, 0, 1008, 144},
-    viewport = {0, 56, 320, 144},
-    layer = 1
-},
-{
-    tag = "uicam",
-    type="ortho",
-    size = {320, 56},
-    bounds = {0, 0, 320, 56},
-    viewport = {0, 0, 320, 56},
-    layer = 2
-}
+        }
+	},
+	makescummui1(),
+	{
+		tag = "diag",
+		camera = {
+			tag = "maincam",
+			type="ortho",
+			size = {320, 200},
+			bounds = {0, 0, 320, 200},
+			viewport = {0, 0, 320, 200}
+		},
+		children = {}
+	}
 }
 }
 -- end room
 
-
--- initial script
 function room.init()
     variables._actionInfo:reset()
     -- previous room was lookout
@@ -150,18 +143,27 @@ function room.init()
 
 end
 
+
 function room.start() 
 	if (variables._previousroom == "lookout") then
-    script = {
-        startid = 0,
-        id = "_walk",
-        actions = {},
-        edges ={}
-    }
-    createWalkToPosition ({120, 80}, script)
-    monkey.play(script)
+	    script = {
+	        startid = 0,
+	        id = "_walk",
+	        actions = {},
+	        edges ={}
+	    }
+	    createWalkToPosition ({120, 80}, script)
+	    monkey.play(script)
 
 	end
 
 end
+
+
+function room.afterstartup() 
+refreshInventory()
+end
+
+
+
 

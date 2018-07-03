@@ -104,6 +104,10 @@ namespace luaFunctions {
         Engine::get().EndScene();
     }
 
+    void EnableUpdate(bool value) {
+        Engine::get().SetEnableUpdate(value);
+    }
+
     void EnableMouse(bool value) {
         Engine::get().GetMouseHandler()->Enable(value);
     }

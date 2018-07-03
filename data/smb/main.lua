@@ -34,7 +34,7 @@ variables = {
     },
     -- sets the start room
     _room = "lookout",
-    _previousroom = "scummbar",
+    _previousroom = "village1",
 	_pause = false,
     talkedToLookout = false,
     lookoutKnowsName = false,
@@ -98,6 +98,7 @@ function pause()
 	monkey.enablemouse(not variables._pause)
 	monkey.enablekeyboard(not variables._pause)
 	monkey.enablekey(32, true)
+	monkey.enableupdate(not variables._pause)
 	d = monkey.getEntity("diag")
 	if (variables._pause == true) then
 		monkey.addEntity({
