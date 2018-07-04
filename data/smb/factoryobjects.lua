@@ -32,8 +32,8 @@ end
 function refreshInventory()
 	inv = monkey.getEntity("inventory")
 	for k, v in pairs(inventory) do
-		print (v.item.text)
-		inv:addbutton({ text = v.item.text, priority = 1, onenter = curry2(changecolor, config.ui_inv_selected),
+		print (k)
+		inv:addbutton({ text = objects[k].text, priority = 1, onenter = curry2(changecolor, config.ui_inv_selected),
 			onleave = curry2(changecolor, config.ui_inv_unselected), onclick = function() print("click") end })
 	end
 end
@@ -132,6 +132,9 @@ end
 
 
 function make_hotspot(input)
+if (inventory[input.object]~=nil) then
+	return nil
+end
 obj = objects[input.object]
 return {
     pos = {input.x, input.y, 0},

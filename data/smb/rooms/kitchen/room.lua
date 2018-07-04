@@ -59,7 +59,16 @@ assets = {
                 { duration = dt, quads = { { x = 254, y = 258, width = 29, height = 17, anchor = {0, 0}}}},
 			}
 		}}
-	}
+	},
+	{
+		id = "meat",
+		sheet = "gfx/anims.png",
+		type="sprite",
+		ppu = 1,
+		animations = {
+		{ name="default", frames = { {duration = dt, quads = { { x = 49, y = 37, width = 24, height = 6, anchor = {0, 0}}}}}}
+		}
+	},
 },
 scene = {
 	{
@@ -118,7 +127,17 @@ scene = {
 	            priority = 1, 
 	            object = "door_kitchen_bar",
 	            gfx = { model="door_to_bar", anim = ((objects.door_kitchen_bar.isopen() == true) and "open" or "close") }
-	        }
+	        },
+			make_hotspot {
+				x = 79,
+				y = 40,
+				width = 20,
+				height = 20,
+				offset = {0, 0},
+				priority = 1,
+				object = "meat",
+				gfx = { model="meat", anim="default" }
+			}
 		}
 	},
 	makescummui1(),

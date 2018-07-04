@@ -114,6 +114,25 @@ function turn (args)
     return actions
 end
 
+function pickupItem(obj)
+	inventory[obj] = { qty = 1 }
+	refreshInventory()
+end
+
+
+function pickup (args) 
+	-- first check if obj is in inventory
+	if (inventory[args.obj] ~= nil) then
+		-- I already have this
+		return
+	end
+	local o = objects[args.obj]
+	return {
+		{type = "callfunc", func = curry(pickupItem, args.obj)},
+		{type = "callfunc", func = curry(removeObject, o.tag)}
+	}
+end
+
 function changeRoom(roomId)
     return {
         { type = "gotoroom", room = roomId }

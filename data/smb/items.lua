@@ -88,6 +88,14 @@ objects = {
 		text = strings.objects.door,
 		tag = "door_kitchen_pier",
 		openFlag = false
+	},
+	meat = {
+		text = strings.objects.meat,
+		tag = "meat",
+		pos = {76, 19},
+		dir = "north",
+ 		look = curry (say, { character="guybrush", lines= { strings.kitchen[1] }} ),
+		pick = curry (pickup, {obj = "meat"})
 	}
 }
 

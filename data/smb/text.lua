@@ -22,7 +22,8 @@ strings = {
         poster = "poster",
         door = "door",
         lookout = "lookout",
-		cliffside = "cliffside"
+		cliffside = "cliffside",
+		meat = "hunk of meat"
         
         
     },
@@ -102,7 +103,10 @@ strings = {
     village1 = {
         [1] = "Re-elect Governor Marley.",
         [2] = "\"When there's only one candidate, there's only one choice.\""
-    }
+    },
+	kitchen = {
+		[1] = "It's some sort of meat or meatlike substance..."
+	}
 }
 
 strings.dialogues.lookout.randomLookoutMsg = function() 
