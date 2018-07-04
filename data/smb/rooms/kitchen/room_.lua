@@ -3,19 +3,14 @@ require ("funcs")
 require ("text")
 require ("dialogues")
 require ("actions")
-require ("dialogues/lookout")
+
 
 local dt = 0.1
 
---table.insert(inventory, { item = objects.poster, qty = 1})
-
--- begin room
 room = {
 
 assets = {
     makeGuybrush(),
-    makeArrowUp(),
-    makeArrowDown(),
     {
         id = "door_to_bar",
         sheet = "gfx/anims.png",
@@ -61,32 +56,31 @@ assets = {
 		}}
 	}
 },
+
 scene = {
-	{
-		tag = "main",
-		camera = {
-			tag = "maincam",
-			type="ortho",
-			size = {320, 144},
-			bounds = {0, 0, 320, 144},
-			viewport = {0, 56, 320, 144}
-		},
-		children = {
+    [1] = { 
+        tag = "main",
+        layer = 1,
+        children = {
 	        {
 	          pos = {0, 0, -5},
 	          gfx = { image="gfx/kitchen/bg1.png" },
+	          layer = 1
 	        },
 			{
 			  pos = {204, 0, 3},
 			  gfx = { image="gfx/kitchen/bg2.png" },
+		      layer = 1
 			},
 	        {
 	          pos = {115, 0, 3},
 	          gfx = { model = "kitchen_table", anim = "default" },
+	          layer =1
 	        },
 	        {
 	          pos = {153, 39, -3},
 	          gfx = { model = "potostew", anim = "default" },
+	          layer =1
 	        },
 	        {
 	            walkarea = { 
@@ -107,8 +101,9 @@ scene = {
 	                    { rect = {0, 320, 0, 144}, dir = "y", bounds = {1, 1} } 
 	                }
 	            }
-	            }
-			},
+	          },
+	          layer = 1
+	        },
 	        make_hotspot { 
 	            x = 19,
 	            y = 18, 
@@ -116,52 +111,68 @@ scene = {
 	            height = 53, 
 	            offset = {0, 0},
 	            priority = 1, 
-	            object = "door_kitchen_bar",
+	            object = objects.door_kitchen_bar, 
 	            gfx = { model="door_to_bar", anim = ((objects.door_kitchen_bar.isopen() == true) and "open" or "close") }
-	        }
-		}
-	},
-	makescummui1(),
-	{
-		tag = "diag",
-		camera = {
-			tag = "maincam",
-			type="ortho",
-			size = {320, 200},
-			bounds = {0, 0, 320, 200},
-			viewport = {0, 0, 320, 200}
-		},
-		children = {}
-	}
+	        },
+	        
+	        make_hotspot { 
+	            x = 192,
+	            y = 9, 
+	            width = 30, 
+	            height = 60,
+	            offset = {0, 0},
+	            priority = 1, 
+	            object = objects.door_kitchen_pier, 
+	            gfx = { model="door_to_pier", anim = ((objects.door_kitchen_pier.isopen() == true) and "open" or "close") }
+	        },
+        },
+    },
+    [2] = {
+        tag = "controls",
+        layer = 2,
+        children = {
+            table.unpack(makeUI())
+        }
+    }
+},
+
+groups = {
+  { id=1, cam ="maincam"},
+  { id=2, cam ="uicam"}
+},
+
+cameras = {
+{
+    tag="maincam",
+    type="ortho",
+    size = {320, 144},
+    bounds = {0, 0, 320, 144},
+    viewport = {0, 56, 320, 144},
+    layer = 1
+},
+{
+    tag = "uicam",
+    type="ortho",
+    size = {320, 56},
+    bounds = {0, 0, 320, 56},
+    viewport = {0, 0, 320, 56},
+    layer = 2
 }
 }
--- end room
+}
 
 function room.init()
-    variables._actionInfo:reset()
-
-	local fromData = {
-        scummbar = { playerpos = {45, 14, 0}, anim = "idle_right" }
-    }
+    -- put your initialization code here
 
     -- add player
-	local d = fromData[variables._previousroom]
-	if (d == nil) then
-		d = fromData["scummbar"]
-	end
-
     table.insert (room.scene[1].children, {
-        tag = objects.guybrush.tag,
-        pos = d.playerpos,
-        gfx = { model = "guybrush", anim = d.anim, flip = d.flip },
+        tag = characters.guybrush.tag,
+        pos = {50,20,0} ,
+        gfx = { model = "guybrush", anim = "idle_right" },
         follow = { cam="maincam" },
+        layer = 1,
         scaling = {}
     })
-
-end
-
-function room.afterstartup() 
-refreshInventory()
 end
 
 

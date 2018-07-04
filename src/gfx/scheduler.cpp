@@ -15,6 +15,7 @@ void Scheduler::Update(double dt) {
     for (auto& s : toRemove)
         m_scripts.erase(s);
 }
+
 void Scheduler::AddScript(const std::string &name, std::shared_ptr<Script> script) {
     if (m_scripts.count(name) > 0)
         m_scripts.erase(name);

@@ -7,6 +7,7 @@ function Script.create(id)
     local self = setmetatable({}, Script)
     self.id = id
     self.startid = 0
+	self.loop = -1
     self.actions = {}
     self.edges={}
     return self
@@ -31,9 +32,9 @@ function Script:setsequence()
     end
 end
 
-function Script:setloop()
+function Script:setloop(n)
     self:setsequence()
-    table.insert (self.edges, {self.actions[#self.actions].id, self.actions[1].id})
+   ---table.insert (self.edges, {self.actions[#self.actions].id, self.actions[n].id})
 end
 
 function createObject (obj) 
@@ -127,28 +128,40 @@ end
 
 
 function walkToDoor(args) 
-    if (args.obj.isopen() == true) then
+	local o = objects[args.obj]
+    if (o.isopen() == true) then
         return {
             { type = "gotoroom", room = args.roomId }
         }
     end 
 end
 
+function isOpen (doorName)
+	local o = objects[doorName]
+	return o.openflag
+end
+
+function setOpen (doorName, value)
+	local o = objects[doorName]
+	o.openflag = value
+end
+
 function operateDoor(args)
     -- if args.open == true then I need to something when it's closed
     -- and viceversa, so ...
-    if (args.obj.isopen ~= args.open) then
-		if (args.obj.dirfunc ~= nil) then
-			face = dirHelper[args.obj.dirfunc()]
+	local o = objects[args.obj]
+    if (o.isopen() ~= args.open) then
+		if (o.dirfunc ~= nil) then
+			face = dirHelper[o.dirfunc()]
 		else
-            face = dirHelper[args.obj.dir]
+            face = dirHelper[o.dir]
         end
 		return { 
             { type="animate", actor="player", anim=("operate" .. face) },
             { type="delay", sec="0.5" },
-            { type="animate", actor = args.obj.tag, anim = (args.open and "open" or "close") },
+            { type="animate", actor = o.tag, anim = (args.open and "open" or "close") },
             { type="animate", actor="player", anim=("idle" .. face) },
-            { type="callfunc", func = function() args.obj.setopen(args.open) end }
+            { type="callfunc", func = function() o.setopen(args.open) end }
         }
     end 
 end

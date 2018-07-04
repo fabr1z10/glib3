@@ -60,7 +60,14 @@ void Script::Run (float dt) {
 
     if (m_active.empty())
     {
-        m_complete = true;
+        if (m_loop == -1) {
+            m_complete = true;
+        }
+        else {
+            auto act = m_activities.find(m_loop)->second.get();
+            act->Start();
+            m_active.insert(act);
+        }
     }
 
 }

@@ -10,10 +10,15 @@ public:
     void Update(double) override;
     void AddScript (const std::string& name, std::shared_ptr<Script> script);
     void KillScript (const std::string& name);
+    void Clear ();
     Script* GetScript (const std::string&);
     using ParentClass = Scheduler;
 private:
     std::unordered_map<std::string, std::shared_ptr<Script> > m_scripts;
 };
 
+
+inline void Scheduler::Clear () {
+    m_scripts.clear();
+}
 

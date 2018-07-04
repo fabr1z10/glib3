@@ -120,15 +120,22 @@ scene = {
 function room.init()
     -- put your initialization code here
     variables._actionInfo:reset()
-    -- previous room was lookout
-    if (variables._previousroom == "village1") then
-       playerpos = {66, 19, 0} 
-    end
+
+	local fromData = {
+        village1 = { playerpos = {66, 19, 0}, anim = "idle_right" },
+		kitchen = { playerpos = {601, 16, 0}, anim = "idle_right", flip = true},
+    }
+
     -- add player
+	local d = fromData[variables._previousroom]
+	if (d == nil) then
+		d = fromData["village1"]
+	end
+
     table.insert (room.scene[1].children, {
         tag = objects.guybrush.tag,
-        pos = playerpos,
-        gfx = { model = "guybrush", anim = "idle_front" },
+        pos = d.playerpos,
+        gfx = { model = "guybrush", anim = d.anim, flip = d.flip },
         follow = { cam="maincam" },
         scaling = {}
     })
@@ -141,7 +148,30 @@ end
 
 function room.start() 
     --cook script
-    s = Script.create("_cook")
+ 	s = Script.create("_cook")
+	local n = 1
+	if (variables._previousroom == "kitchen") then
+	    s:add ({
+	        { type = "callfunc", func = curry (createObject, { 
+	            pos = {100, 20, 0},
+	            gfx = { model = "cook", anim = "idle_back" },
+	            scaling = {},
+	            tag = "cook"
+	        })},
+	        { type = "delay", sec = 3.0 },
+	        {
+	            type = "walkto",
+	            walkarea = "walkarea",
+	            actor = "cook",
+	            pos = {607, 20}
+	        },
+	        { type = "delay", sec = 0.5 },
+			{ type = "animate", actor ="door_bar_kitchen", anim="close" },
+			{ type = "callfunc", func = function() objects.door_bar_kitchen.setopen(false) end },
+	        { type = "callfunc", func = curry(removeObject, "cook") }
+	    })
+		n = 7
+	end
     s:add ({
         { type = "delay", sec = 5.0 },
 		{ type = "animate", actor ="door_bar_kitchen", anim="open" },
@@ -153,13 +183,11 @@ function room.start()
             scaling = {},
             tag = "cook"
         })},
-
         {
             type = "walkto",
             walkarea = "walkarea",
             actor = "cook",
             pos = {100, 20}
-
         },
         { type ="turn", actor="cook", face="north"},
         { type = "delay", sec = 3.0 },
@@ -174,9 +202,9 @@ function room.start()
 		{ type = "callfunc", func = function() objects.door_bar_kitchen.setopen(false) end },
         { type = "callfunc", func = curry(removeObject, "cook") }
     })
-    s:setloop()
-    monkey.play(s)
-
+	s:setsequence()
+	s.loop = n
+	monkey.play(s)
 end
 
 

@@ -128,8 +128,12 @@ function room.init()
         lookout = { playerpos = {8, 71, 0}, anim = "idle_front" },
 		scummbar = { playerpos = {715, 13, 0}, anim = "idle_front" }
     }
-
+	
 	f = fromData[variables._previousroom]
+	if (f == nil) then
+		variables._previousroom = "lookout"
+		f = fromData[variables._previousroom]
+	end
 
     -- add player
     table.insert (room.scene[1].children, {

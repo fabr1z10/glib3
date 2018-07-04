@@ -164,6 +164,7 @@ void Engine::MainLoop() {
             }
         }
         // remove assets loaded at scene level
+        m_scriptEngine->Clear();
         m_sceneFactory->CleanUp();
         m_scene = nullptr;
         m_running = false;

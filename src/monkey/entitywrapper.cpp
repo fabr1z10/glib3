@@ -123,8 +123,10 @@ namespace luaFunctions {
     void PlayScript (luabridge::LuaRef ref) {
         auto scheduler = Engine::get().GetScriptingEngine();
         int startId = ref["startid"].cast<int>();
+        int loopId = ref["loop"].cast<int>();
         std::string scriptId = ref["id"].cast<std::string>();
         auto script = std::make_shared<Script>(startId);
+        script->SetLoop(loopId);
         luabridge::LuaRef actions = ref["actions"];
         for (int i= 0; i < actions.length(); ++i) {
             luabridge::LuaRef action = actions[i+1];
