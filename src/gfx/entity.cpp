@@ -130,6 +130,7 @@ void Entity::Notify() {
 
 void Entity::SetPosition(glm::vec3 pos){
     SetLocalTransform(glm::translate(pos));
+    onMove.Fire(this);
 }
 
 void Entity::SetPosition(glm::vec2 pos) {

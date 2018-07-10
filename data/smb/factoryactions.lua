@@ -49,8 +49,15 @@ function removeObject (tag)
     monkey.removeEntity(tag)
 end
 
-function createWalkToAction (obj)
+function createWalkToAction (objectId)
 
+
+	-- if the object is in the inventory, nothing to be done
+	if (inventory[objectId] ~= nil) then
+		return
+	end
+	
+    obj = objects[objectId]
 	if (obj.posfunc == nil) then
 		walkPos = obj.pos
 	else
@@ -121,13 +128,22 @@ end
 
 
 function pickup (args) 
+print("qwqwqw")
 	-- first check if obj is in inventory
 	if (inventory[args.obj] ~= nil) then
 		-- I already have this
 		return
 	end
 	local o = objects[args.obj]
+	if (o.dirfunc ~= nil) then
+		face = dirHelper[o.dirfunc()]
+	else
+        face = dirHelper[o.dir]
+    end
 	return {
+        {type = "animate", actor="player", anim=("operate" .. face) },
+        {type = "delay", sec="0.5" },
+        {type = "animate", actor="player", anim=("idle" .. face) },
 		{type = "callfunc", func = curry(pickupItem, args.obj)},
 		{type = "callfunc", func = curry(removeObject, o.tag)}
 	}

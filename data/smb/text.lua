@@ -23,7 +23,9 @@ strings = {
         door = "door",
         lookout = "lookout",
 		cliffside = "cliffside",
-		meat = "hunk of meat"
+		meat = "hunk of meat",
+		pot = "pot",
+		fish = "fish"
         
         
     },
@@ -105,7 +107,13 @@ strings = {
         [2] = "\"When there's only one candidate, there's only one choice.\""
     },
 	kitchen = {
-		[1] = "It's some sort of meat or meatlike substance..."
+		[1] = "It's some sort of meat or meatlike substance...",
+		[2] = "Someone cooked a headcheese in this.",
+		[3] = "I think it's a herring.",
+		[4] = "I think that bird will peck my hand off...",
+		[5] = "It's boiling hot.",
+		[6] = "I think it's full of that fouls stuff pirates drink."
+
 	}
 }
 

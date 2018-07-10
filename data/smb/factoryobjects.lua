@@ -32,9 +32,9 @@ end
 function refreshInventory()
 	inv = monkey.getEntity("inventory")
 	for k, v in pairs(inventory) do
-		print (k)
-		inv:addbutton({ text = objects[k].text, priority = 1, onenter = curry2(changecolor, config.ui_inv_selected),
-			onleave = curry2(changecolor, config.ui_inv_unselected), onclick = function() print("click") end })
+		inv:addbutton({ text = objects[k].text, priority = 1, onenter = curry2(hoverOnInventory, {obj = k, color = config.ui_inv_selected}),
+        onleave = curry2(hoverOffInventory, {color = config.ui_inv_unselected}),
+        onclick = runAction })
 	end
 end
 
@@ -143,7 +143,7 @@ return {
         group = 1,
         priority = input.priority, 
         shape = { type = "rect", width=input.width, height=input.height, offset= input.offset},
-        onenter = curry(hoverOn, obj),
+        onenter = curry(hoverOn, input.object),
         onleave = hoverOff,
         onclick = runAction
     },

@@ -2,7 +2,6 @@
 require ("funcs")
 require ("text")
 require ("dialogues")
-require ("actions")
 require ("dialogues/lookout")
 
 local dt = 0.1
@@ -69,6 +68,24 @@ assets = {
 		{ name="default", frames = { {duration = dt, quads = { { x = 49, y = 37, width = 24, height = 6, anchor = {0, 0}}}}}}
 		}
 	},
+	{
+		id = "pot",
+		sheet = "gfx/anims.png",
+		type="sprite",
+		ppu = 1,
+		animations = {
+		{ name="default", frames = { {duration = dt, quads = { { x = 75, y = 36, width = 15, height = 7, anchor = {0, 0}}}}}}
+		}
+	},
+	{
+		id = "fish",
+		sheet = "gfx/anims.png",
+		type="sprite",
+		ppu = 1,
+		animations = {
+		{ name="default", frames = { {duration = dt, quads = { { x = 33, y = 36, width = 12, height = 7, anchor = {0, 0}}}}}}
+		}
+	}
 },
 scene = {
 	{
@@ -128,6 +145,16 @@ scene = {
 	            object = "door_kitchen_bar",
 	            gfx = { model="door_to_bar", anim = ((objects.door_kitchen_bar.isopen() == true) and "open" or "close") }
 	        },
+	        make_hotspot { 
+	            x = 192,
+	            y = 9, 
+	            width = 40, 
+	            height = 64, 
+	            offset = {0, 0},
+	            priority = 1, 
+	            object = "door_kitchen_pier",
+	            gfx = { model="door_to_pier", anim = ((objects.door_kitchen_pier.isopen() == true) and "open" or "close") }
+	        },
 			make_hotspot {
 				x = 79,
 				y = 40,
@@ -137,7 +164,27 @@ scene = {
 				priority = 1,
 				object = "meat",
 				gfx = { model="meat", anim="default" }
-			}
+			},
+			make_hotspot {
+				x = 104,
+				y = 24,
+				width = 15,
+				height = 7,
+				offset = {0, 0},
+				priority = 1,
+				object = "pot",
+				gfx = { model="pot", anim="default" }
+			},
+			make_hotspot {
+				x = 234,
+				y = 9,
+				width = 12,
+				height = 7,
+				offset = {0, 0},
+				priority = 1,
+				object = "fish",
+				gfx = { model="fish", anim="default" }
+			},
 		}
 	},
 	makescummui1(),

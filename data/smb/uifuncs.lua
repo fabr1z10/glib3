@@ -42,6 +42,12 @@ function hoverOn (obj)
     updateVerb()
 end
 
+function hoverOnInventory (args, entity)
+	changecolor (args.color, entity) 
+	hoverOn(args.obj)
+end
+
+
 function hoverOff ()
     if (variables._actionInfo.obj2 ~= nil) then
         variables._actionInfo.obj2 = nil
@@ -54,6 +60,10 @@ function hoverOff ()
     updateVerb()
 end
 
+function hoverOffInventory(args, entity) 
+	changecolor(args.color, entity)
+	hoverOff()
+end
 
 -- function that handle use on two objects
 function useActionHandler ()
@@ -115,15 +125,16 @@ end
 function runAction ()
     -- mm, no target object here, just ignore the click
     if (variables._actionInfo.obj1 == nil) then
-        return
+        return nil
     end
     print ("Current verb " .. variables._actionInfo.verb.code)
     local s = Script.create("_walk")
     print("Number of actions = " .. #s.actions)
     if (variables._actionInfo.obj2 == nil) then
         -- try to run a single object action
-        print ("finding action " .. variables._actionInfo.verb.code .. " " .. variables._actionInfo.obj1.text)
-        a = variables._actionInfo.obj1[variables._actionInfo.verb.code]
+        print ("finding action " .. variables._actionInfo.verb.code .. " " .. variables._actionInfo.obj1)
+		local obj = objects[variables._actionInfo.obj1]
+        a = obj[variables._actionInfo.verb.code]
         if (a == nil) then
             if (variables._actionInfo.verb.code == "give" or variables._actionInfo.verb.code == "use") then
                 variables._actionInfo.selectSecond = true

@@ -87,7 +87,27 @@ objects = {
 	door_kitchen_pier = {
 		text = strings.objects.door,
 		tag = "door_kitchen_pier",
-		openFlag = false
+		openFlag = false,
+		isopen = curry(isOpen, "door_kitchen_pier"),
+		setopen = curry2(setOpen, "door_kitchen_pier"),
+		posfunc = function () 
+			player = monkey.getEntity("player")
+			if (player.x > 200) then
+				return { 210, 14}
+			else
+				return {190, 14}	
+			end
+		end,
+		dirfunc = function () 
+			player = monkey.getEntity("player")
+			if (player.x > 200) then
+				return "west"
+			else
+				return "east"	
+			end
+		end,
+		open = openKitchenPierDoor,
+		close = closeKitchenPierDoor
 	},
 	meat = {
 		text = strings.objects.meat,
@@ -96,7 +116,23 @@ objects = {
 		dir = "north",
  		look = curry (say, { character="guybrush", lines= { strings.kitchen[1] }} ),
 		pick = curry (pickup, {obj = "meat"})
-	}
+	},
+	pot = {
+		text = strings.objects.pot,
+		tag = "pot",
+		pos = {109, 19},
+		dir ="north",
+		look = curry (say, { character="guybrush", lines= { strings.kitchen[2] }} ),
+		pick = curry (pickup, {obj = "pot"})
+	},
+	fish = {
+		text = strings.objects.fish,
+		tag = fish,
+		pos = {239, 16},
+		dir ="south",
+		look = curry (say, { character="guybrush", lines= { strings.kitchen[3] }} )
+	},
+
 }
 
 --objects.village1_door.walk = curry(walkToDoor, {obj = objects.village1_door, roomId = "scummbar"} )
@@ -114,29 +150,14 @@ objects = {
 --objects.door_bar_kitchen.walk = curry(walkToDoor, {obj = objects.door_bar_kitchen, roomId = "kitchen"} )
 --objects.door_bar_kitchen.open = curry(operateDoor, {obj = objects.door_bar_kitchen, open = true} )
 
-objects.door_bar_kitchen.isopen = function() return objects.door_bar_kitchen.openFlag end
-objects.door_bar_kitchen.setopen = function(open) objects.door_bar_kitchen.openFlag = open end
+--objects.door_bar_kitchen.isopen = function() return objects.door_bar_kitchen.openFlag end
+--objects.door_bar_kitchen.setopen = function(open) objects.door_bar_kitchen.openFlag = open end
 
 
-objects.door_kitchen_bar.isopen = objects.door_bar_kitchen.isopen
-objects.door_kitchen_bar.setopen = objects.door_bar_kitchen.setopen
-objects.door_kitchen_pier.posfunc = function () 
-	player = monkey.getEntity("player")
-	if (player.x > 200) then
-		return { 210, 14}
-	else
-		return {190, 14}	
-	end
-end
-objects.door_kitchen_pier.dirfunc = function () 
-	player = monkey.getEntity("player")
-	if (player.x > 200) then
-		return "west"
-	else
-		return "east"	
-	end
-end
-objects.door_kitchen_pier.isopen = function() return objects.door_kitchen_pier.openFlag end
-objects.door_kitchen_pier.setopen = function(open) objects.door_bar_kitchen.openFlag = open end
-objects.door_kitchen_pier.open = openKitchenPierDoor
-objects.door_kitchen_pier.close = closeKitchenPierDoor
+--objects.door_kitchen_bar.isopen = objects.door_bar_kitchen.isopen
+--objects.door_kitchen_bar.setopen = objects.door_bar_kitchen.setopen
+
+--objects.door_kitchen_pier.isopen = function() return objects.door_kitchen_pier.openFlag end
+--objects.door_kitchen_pier.setopen = function(open) objects.door_bar_kitchen.openFlag = open end
+--objects.door_kitchen_pier.open = openKitchenPierDoor
+--objects.door_kitchen_pier.close = closeKitchenPierDoor

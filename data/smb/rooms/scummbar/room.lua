@@ -2,7 +2,6 @@
 require ("funcs")
 require ("text")
 require ("dialogues")
-require ("actions")
 require ("dialogues/lookout")
 
 local dt = 0.1

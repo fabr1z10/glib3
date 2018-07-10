@@ -52,10 +52,12 @@ variables._actionInfo = {
 function variables._actionInfo:toString ()
     local t = { self.verb.text }
     if (self.obj1 ~= nil) then
-        t[2] = self.obj1.text
+		o1 = objects[self.obj1]
+        t[2] = o1.text
         if (self.obj2 ~= nil) then
+            o2 = objects[self.obj2]
             t[3] = self.verb.prep
-            t[4] = self.obj2.text
+            t[4] = o2.text
         else
             if (self.selectSecond == true) then
                t[3] = self.verb.prep 
