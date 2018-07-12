@@ -10,6 +10,7 @@
 class Renderer;
 class HotSpot;
 class HotSpotHandler;
+class WalkTrigger;
 
 class MonkeyFactory : public SceneFactory {
 public:
@@ -19,6 +20,7 @@ public:
     void ReadSprite (LuaTable&);
     std::shared_ptr<Entity> ReadItem(luabridge::LuaRef& ref);
     std::shared_ptr<HotSpot> GetHotSpot (luabridge::LuaRef& ref, std::shared_ptr<Shape> shape);
+
 private:
     void ReadItems(luabridge::LuaRef& ref, Entity* parent);
     void ReadGfxComponent (luabridge::LuaRef& ref, Entity* parent);
@@ -35,6 +37,7 @@ private:
     void ReadFollowComponent (luabridge::LuaRef& ref, Entity* parent);
     void ReadWalkarea (luabridge::LuaRef& ref, Entity* parent);
     void ReadHotspot (luabridge::LuaRef& ref, Entity* parent);
+    void ReadWalkTrigger (luabridge::LuaRef& ref, Entity* parent);
     void ReadButton (luabridge::LuaRef& ref, Entity* parent);
     void ReadScaling (luabridge::LuaRef& ref, Entity* parent);
     std::shared_ptr<Shape> ReadShape(luabridge::LuaRef& ref);

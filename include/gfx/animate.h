@@ -3,7 +3,7 @@
 #include <gfx/activity.h>
 #include <gfx/entity.h>
 
-
+class Renderer;
 
 class Animate : public Activity {
 public:
@@ -14,10 +14,17 @@ public:
         Activity::Reset();
         m_entity = nullptr;
     }
-    void Run (float dt) override {}
+    void Run (float dt) override ;
+    void SetLoop (int);
 private:
+    int m_loop;
     bool m_flipX;
     Entity* m_entity;
+    Renderer* m_renderer;
     std::string m_animId;
     std::string m_actorId;
 };
+
+inline void Animate::SetLoop (int count) {
+    m_loop = count;
+}

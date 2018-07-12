@@ -19,7 +19,7 @@ public:
     void SetOnStay(luabridge::LuaRef ref) {
         r_stay= std::unique_ptr<luabridge::LuaRef>(new luabridge::LuaRef(ref));
     }
-    //using ParentClass = HotSpot;
+    using ParentClass = WalkTrigger;
 private:
     std::unique_ptr<luabridge::LuaRef> r_enter;
     std::unique_ptr<luabridge::LuaRef> r_leave;

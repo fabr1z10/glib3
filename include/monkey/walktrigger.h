@@ -14,6 +14,7 @@ public:
     virtual void onEnter() = 0;
     virtual void onLeave() = 0;
     virtual void onStay() = 0;
+    void SetParent(Entity*) override;
 private:
     void onTargetMove(Entity*);
     std::shared_ptr<Shape> m_shape;

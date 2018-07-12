@@ -2,12 +2,12 @@
 #include <gfx/renderer.h>
 #include <gfx/engine.h>
 
-Animate::Animate(int activityId, Entity* entity, const std::string& animId, bool flipX) : Activity(activityId), m_animId{animId}, m_entity{entity}, m_flipX{flipX} {
+Animate::Animate(int activityId, Entity* entity, const std::string& animId, bool flipX) : Activity(activityId), m_animId{animId}, m_entity{entity}, m_flipX{flipX}, m_loop{0} {
 
 }
 
 Animate::Animate(int activityId, const std::string& actorId, const std::string& animId, bool flipX )
-: Activity(activityId), m_animId{animId}, m_entity{nullptr}, m_actorId{actorId}, m_flipX{flipX} {
+: Activity(activityId), m_animId{animId}, m_entity{nullptr}, m_actorId{actorId}, m_flipX{flipX}, m_loop{0} {
 
 }
 
@@ -16,11 +16,21 @@ void Animate::Start() {
         m_entity = Engine::get().GetRef<Entity>(m_actorId);
 
     }
-    auto renderer = m_entity->GetComponent<Renderer>();
-    if (renderer == nullptr)
+    m_renderer = m_entity->GetComponent<Renderer>();
+
+    if (m_renderer == nullptr)
         GLIB_FAIL("Error! No renderer found for " << m_actorId << " when trying to animate " << m_animId);
-    renderer->SetFlipX(m_flipX);
-    renderer->SetAnimation(m_animId);
-    SetComplete();
+    m_renderer->SetFlipX(m_flipX);
+    m_renderer->SetAnimation(m_animId);
+    if (m_loop == 0) {
+        SetComplete();
+    }
+
+}
+
+void Animate::Run(float dt) {
+    // runs only if loop is set
+    if (m_renderer->GetLoopCount() == m_loop)
+        SetComplete();
 
 }

@@ -32,6 +32,7 @@ function setverb(verb)
 end
 
 function hoverOn (obj)
+	print (obj)
     if (variables._actionInfo.obj1 == nil) then 
         variables._actionInfo.obj1 = obj
     else
@@ -67,56 +68,71 @@ end
 
 -- function that handle use on two objects
 function useActionHandler ()
+	
     -- create an empty script
-    s = Script:create("_walk")
+    local s = Script.create("_walk")
+	print ("Using " .. variables._actionInfo.obj1 .. " with " .. variables._actionInfo.obj2)
+	local obj1 = objects[variables._actionInfo.obj1]
+	local obj2 = objects[variables._actionInfo.obj2]
+	local a = nil	
 
-    -- do we have a function? use is symmetric so we can test both cases
-    a = (variables._actionInfo.obj1["use"] and variables._actionInfo.obj1["use"][variables._actionInfo.obj2]) or 
-        (variables._actionInfo.obj2["use"] and variables._actionInfo.obj2["use"][variables._actionInfo.obj1])
+	if (obj1["use"] ~= nil) then
+		a = obj1["use"][variables._actionInfo.obj2]
+	else 
+		if (obj2["use"] ~= nil) then
+			a = obj2["use"][variables._actionInfo.obj1]
+		end 
+	end
+	-- do we have a function? use is symmetric so we can test both cases
     if (a == nil) then
+		print ("custom use not found")
        -- not handled, so we can use default handler. This func populates the script with the actions
        -- related to the default use case (where no actions is )
-       s:add(defaultActions["use"])
-       return script
+       s:add(defaultActions["use"]())
+       return s
     end
     isObj1InInv = inventory[variables._actionInfo.obj1] ~= nil
     isObj2InInv = inventory[variables._actionInfo.obj2] ~= nil
     if (isObj1InInv and isObj2InInv) then
         -- the two objects are both in inventory, so I don't have to walk anywhere
-        a(script)
-        return script
+        s:add(a())
+        return s
     elseif (isObj1InInv and not(isObj2InInv)) then
         -- obj1 is in inventory, so I walkt o object 2
-        createWalkToAction (variables._actionInfo.obj2, script)
-        a(script)
+		s:add(createWalkToAction(variables._actionInfo.obj2))
+        s:add(a())
+		return s
     elseif (isObj1InInv and not(isObj2InInv)) then
         -- obj2 is in inventory, so I walkt o object 1
-        createWalkToAction (variables._actionInfo.obj1, script)
-        a(script)
+		s:add(createWalkToAction(variables._actionInfo.obj1))
+        s:add(a())
+		return s
     else
         -- both are outside of inventory
-        pickupAction = variables._actionInfo.obj1["pickup"]
+        pickupAction = obj1["pick"]
         if (pickupAction ~= nil) then
-            createWalkToAction (variables._actionInfo.obj1, script)
-            pickupAction (script)
-            createWalkToAction (variables._actionInfo.obj2, script)
-            a(script)
-            
+            s:add(createWalkToAction(variables._actionInfo.obj1))
+            s:add(pickupAction())
+            s:add(createWalkToAction(variables._actionInfo.obj2))
+	        s:add(a())
+            return s
         else
-            pickupAction = variables._actionInfo.obj1["pickup"]
+            pickupAction = obj2["pick"]
             if (pickupAction ~= nil) then
-                createWalkToAction (variables._actionInfo.obj2, script)
-                pickupAction (script)
-                createWalkToAction (variables._actionInfo.obj1, script)
-                a(script)
+	            s:add(createWalkToAction(variables._actionInfo.obj2))
+    	        s:add(pickupAction())
+        	    s:add(createWalkToAction(variables._actionInfo.obj1))
+	        	s:add(a())
+            	return s
             else
                 -- no object is pickuppable, just call the script
-                a(script)
+				s:add(a())
+                return s
             end
         end
                     
     end
-    return script
+    
     
 end
 

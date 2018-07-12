@@ -194,7 +194,10 @@ namespace luaFunctions {
                 std::string actor = table.Get<std::string>("actor");
                 std::string anim = table.Get<std::string>("anim");
                 bool flipX = table.Get<bool>("flipx", false);
-                script->AddActivity(std::unique_ptr<Animate>(new Animate(id, actor, anim, flipX)));
+                int loopCount = table.Get<int>("loop", 0);
+                auto act = std::unique_ptr<Animate>(new Animate(id, actor, anim, flipX));
+                act->SetLoop(loopCount);
+                script->AddActivity(std::move(act));
             } else if (type == "delay") {
                 float sec = table.Get<float>("sec");
                 script->AddActivity(std::unique_ptr<DelayTime>(new DelayTime(id, sec)));

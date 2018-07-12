@@ -19,5 +19,6 @@ void ScalingDepthComponent::Update(double) {
         float scale = m_walkArea->GetScale (pos.x, pos.y);
         m_entity->SetPosition(glm::vec3(pos, depth));
         m_renderer->SetScale(scale);
+        m_prevPos = pos;
     }
 }

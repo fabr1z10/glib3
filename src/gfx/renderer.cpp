@@ -10,7 +10,7 @@
 #include <gfx/shader.h>
 #include <gfx/error.h>
 
-Renderer::Renderer() : Component(), m_mesh(nullptr), m_frame(0), m_tint(1.0f), m_renderingTransform(1.0f) {}
+Renderer::Renderer() : Component(), m_mesh(nullptr), m_frame(0), m_tint(1.0f), m_renderingTransform(1.0f), m_loopCount{0} {}
 
 void Renderer::Draw(Shader* shader) {
     auto tintLoc = shader->GetUniformLocation(TINT);
@@ -28,8 +28,10 @@ void Renderer::Update(double dt) {
     if (m_frameTime >= duration) {
         m_frame++;
         m_frameTime = 0;
-        if (m_frame >= frames)
+        if (m_frame >= frames) {
             m_frame = 0;
+            m_loopCount++;
+        }
     }
 }
 
@@ -43,6 +45,7 @@ void Renderer::SetAnimation(const std::string& anim) {
     m_animation = anim;
     m_frame = 0;
     m_frameTime = 0.0f;
+    m_loopCount = 0;
 }
 
 bool Renderer::GetFlipX() const {

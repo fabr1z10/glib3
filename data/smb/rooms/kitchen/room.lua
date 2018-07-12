@@ -85,6 +85,54 @@ assets = {
 		animations = {
 		{ name="default", frames = { {duration = dt, quads = { { x = 33, y = 36, width = 12, height = 7, anchor = {0, 0}}}}}}
 		}
+	},
+	{
+		id = "seagull",
+		sheet = "gfx/anims3.png",
+		type ="sprite",
+		ppu = 1,
+		animations = {
+			{
+				name = "flying",
+				frames = {	
+					{duration = dt, quads = {{x=39, y = 33, width=20, height=14, anchor = {-307,-37}}}},
+					{duration = dt, quads = {{x=39, y = 49, width=25, height=12, anchor = {-295,-35}}}},
+					{duration = dt, quads = {{x=39, y = 33, width=20, height=14, anchor = {-292,-33}}}},
+					{duration = dt, quads = {{x=39, y = 63, width=19, height=25, anchor = {-285,-29}}}},
+					{duration = dt, quads = {{x=39, y = 90, width=19, height=19, anchor = {-277,-32}}}},
+					{duration = dt, quads = {{x=39, y = 63, width=19, height=25, anchor = {-269,-22}}}},
+					{duration = dt, quads = {{x=39, y = 33, width=20, height=14, anchor = {-260,-25}}}},
+					{duration = dt, quads = {{x=39, y = 49, width=25, height=12, anchor = {-247,-23}}}},
+					{duration = dt, quads = {{x=39, y = 33, width=20, height=14, anchor = {-244,-21}}}},
+					{duration = dt, quads = {{x=39, y = 90, width=19, height=19, anchor = {-245,-23}}}},
+					{duration = dt, quads = {{x=39, y = 90, width=19, height=19, anchor = {-250,-17}}}},
+					{duration = dt, quads = {{x=39, y = 111, width=23, height=15, anchor = {-248,-14}}}},
+					{duration = dt, quads = {{x=39, y = 128, width=25, height=11, anchor = {-246,-13}}}},
+					{duration = dt, quads = {{x=39, y = 111, width=23, height=15, anchor = {-243,-12}}}},
+					{duration = dt, quads = {{x=39, y = 141, width=19, height=9, anchor = {-243,-10}}}}
+				}
+			},
+			{
+				name = "eating",
+				frames = {	
+					{duration = dt, quads = {{x=39, y = 152, width=15, height=13, anchor = {-245,-10}}}},
+					{duration = dt, quads = {{x=61, y = 36, width=18, height=11, anchor = {-242,-10}}}},
+					{duration = dt, quads = {{x=66, y = 51, width=17, height=10, anchor = {-243,-10}}}},
+					{duration = dt, quads = {{x=60, y = 63, width=19, height=9, anchor = {-242,-10}}}},
+					{duration = dt, quads = {{x=60, y = 74, width=19, height=10, anchor = {-242,-10}}}},
+					{duration = dt, quads = {{x=60, y = 63, width=19, height=9, anchor = {-242,-10}}}},	
+					{duration = dt, quads = {{x=60, y = 74, width=19, height=10, anchor = {-242,-10}}}},
+					{duration = dt, quads = {{x=60, y = 86, width=17, height=10, anchor = {-243,-10}}}},
+					{duration = dt, quads = {{x=60, y = 86, width=17, height=10, anchor = {-243,-10}}}},
+					{duration = dt, quads = {{x=60, y = 86, width=17, height=10, anchor = {-243,-10}}}},
+					{duration = dt, quads = {{x=60, y = 98, width=18, height=11, anchor = {-242,-10}}}},
+					{duration = dt, quads = {{x=64, y = 111, width=15, height=13, anchor = {-245,-10}}}},
+					{duration = dt, quads = {{x=66, y = 125, width=11, height=17, anchor = {-249,-10}}}},
+					{duration = dt, quads = {{x=60, y = 144, width=12, height=17, anchor = {-248,-10}}}},
+					{duration = dt, quads = {{x=85, y = 37, width=12, height=17, anchor = {-248,-10}}}},
+				}
+			}
+		}
 	}
 },
 scene = {
@@ -185,6 +233,25 @@ scene = {
 				object = "fish",
 				gfx = { model="fish", anim="default" }
 			},
+			make_hotspot {
+				x = 153,
+				y = 39,
+				width = 32,
+				height = 19,
+				offset = {0, 0},
+				priority = 1,
+				object = "potostew"
+			},
+			{
+				walktrigger = {
+				
+					shape = { type = "rect", width=20, height=100, offset = {80,0}},
+					target = "player",
+					onenter = startSeagull,
+					onleave = function() end,
+					onstay = function() end,
+				}
+			}
 		}
 	},
 	makescummui1(),

@@ -98,6 +98,7 @@ end
 
 function say (args)
 	c = objects[args.character]
+print (args.lines[1])
     actions = {
     {
         type= "say",
@@ -126,6 +127,11 @@ function pickupItem(obj)
 	refreshInventory()
 end
 
+function removeItemFromInventory(obj) 
+	print ("removing " .. obj)
+	inventory[obj] = nil
+	refreshInventory()
+end
 
 function pickup (args) 
 print("qwqwqw")

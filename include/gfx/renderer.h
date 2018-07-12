@@ -34,6 +34,7 @@ public:
     void SetScale(float);
     const glm::mat4& GetRenderingTransform() const;
     void SetRenderingTransform (glm::mat4 m);
+    int GetLoopCount() const;
 private:
     //bool m_flipX;
     glm::mat4 m_renderingTransform;
@@ -42,6 +43,7 @@ private:
     std::string m_animation;
     int m_frame;
     double m_frameTime;
+    int m_loopCount;
     glm::vec4 m_tint;
 };
 
@@ -81,6 +83,10 @@ inline IMesh* Renderer::GetMesh() {
 
 inline void Renderer::SetTint(glm::vec4 color) {
     m_tint = color;
+}
+
+inline int Renderer::GetLoopCount() const {
+    return m_loopCount;
 }
 
 

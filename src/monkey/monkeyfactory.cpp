@@ -16,6 +16,7 @@
 #include <gfx/follow.h>
 #include <monkey/scaling.h>
 #include <monkey/luakeylistener.h>
+#include <monkey/scriptwalktrigger.h>
 #include <gfx/textview.h>
 
 using namespace luabridge;
@@ -213,6 +214,10 @@ std::shared_ptr<Entity> MonkeyFactory::ReadItem(luabridge::LuaRef& ref) {
     if (item.HasKey("scaling")) {
         luabridge::LuaRef c = item.Get<luabridge::LuaRef>("scaling");
         ReadScaling(c, entity.get());
+    }
+    if (item.HasKey("walktrigger")) {
+        luabridge::LuaRef c = item.Get<luabridge::LuaRef>("walktrigger");
+        ReadWalkTrigger(c, entity.get());
     }
     //entity->SetLayer(layer);
     return entity;
@@ -456,6 +461,28 @@ void MonkeyFactory::ReadHotspot (luabridge::LuaRef& ref, Entity* parent) {
     cer->SetMesh(debugMesh);
     ce->AddComponent(cer);
     parent->AddChild(ce);
+}
+
+void MonkeyFactory::ReadWalkTrigger (luabridge::LuaRef& ref, Entity* parent) {
+    LuaTable table(ref);
+    luabridge::LuaRef shapeR = table.Get<luabridge::LuaRef>("shape");
+    auto shape = ReadShape(shapeR);
+
+    std::string target = table.Get<std::string>("target");
+    auto wt = std::make_shared<ScriptWalkTrigger>(shape, target);
+    if (table.HasKey("onenter")) {
+        luabridge::LuaRef r = table.Get<luabridge::LuaRef>("onenter");
+        wt->SetOnEnter(r);
+    }
+    if (table.HasKey("onleave")) {
+        luabridge::LuaRef r = table.Get<luabridge::LuaRef>("onleave");
+        wt->SetOnLeave(r);
+    }
+    if (table.HasKey("onstay")) {
+        luabridge::LuaRef r = table.Get<luabridge::LuaRef>("onstay");
+        wt->SetOnStay(r);
+    }
+    parent->AddComponent(wt);
 }
 
 void MonkeyFactory::ReadScaling (luabridge::LuaRef& ref, Entity* parent) {

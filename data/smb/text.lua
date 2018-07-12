@@ -25,7 +25,10 @@ strings = {
 		cliffside = "cliffside",
 		meat = "hunk of meat",
 		pot = "pot",
-		fish = "fish"
+		fish = "fish",
+		potostew = "pot o'stew",
+		meatstew = "meat in stew",
+        stewedmeat = "stewed meat",
         
         
     },
@@ -112,8 +115,10 @@ strings = {
 		[3] = "I think it's a herring.",
 		[4] = "I think that bird will peck my hand off...",
 		[5] = "It's boiling hot.",
-		[6] = "I think it's full of that fouls stuff pirates drink."
-
+		[6] = "I think it's full of that fouls stuff pirates drink.",
+		[7] = "Ouch!",
+		[8] = "Got it!",
+		[9] = "Hmm. Stewed meat."
 	}
 }
 

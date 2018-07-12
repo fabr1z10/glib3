@@ -132,6 +132,18 @@ objects = {
 		dir ="south",
 		look = curry (say, { character="guybrush", lines= { strings.kitchen[3] }} )
 	},
+	potostew = {
+		text = strings.objects.potostew,
+		tag ="potostew",
+		pos = {161, 19},
+		dir ="north",
+		look = lookatPotoStew,
+		meatin = false,
+		pick = pickMeatInStew,
+		use = {
+			meat = stewMeat
+		}
+	}
 
 }
 
