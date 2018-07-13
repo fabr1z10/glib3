@@ -127,10 +127,12 @@ objects = {
 	},
 	fish = {
 		text = strings.objects.fish,
-		tag = fish,
+		tag = "fish",
 		pos = {239, 16},
 		dir ="south",
-		look = curry (say, { character="guybrush", lines= { strings.kitchen[3] }} )
+		pickupAnim = "kneel_front",
+		look = curry (say, { character="guybrush", lines= { strings.kitchen[3] }} ),
+		pick = getFish
 	},
 	potostew = {
 		text = strings.objects.potostew,

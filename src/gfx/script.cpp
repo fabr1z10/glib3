@@ -42,12 +42,15 @@ void Script::Run (float dt) {
         if (a->IsComplete()) {
             // check its children
             toRemove.insert(a);
-            auto& following = a->GetFollowing();
-            for (auto& child : following) {
-                if (child->IsReady()) {
+            // proceed only if it's successful
+            if (a->IsSuccessful()) {
+                auto &following = a->GetFollowing();
+                for (auto &child : following) {
+                    if (child->IsReady()) {
 
-                    m_active.insert(child);
-                    child->Start();
+                        m_active.insert(child);
+                        child->Start();
+                    }
                 }
             }
         }

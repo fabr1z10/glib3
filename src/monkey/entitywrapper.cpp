@@ -122,9 +122,10 @@ namespace luaFunctions {
 
     void PlayScript (luabridge::LuaRef ref) {
         auto scheduler = Engine::get().GetScriptingEngine();
-        int startId = ref["startid"].cast<int>();
-        int loopId = ref["loop"].cast<int>();
-        std::string scriptId = ref["id"].cast<std::string>();
+        LuaTable table(ref);
+        int startId = table.Get<int>("startid");
+        int loopId = table.Get<int>("loop");
+        std::string scriptId = table.Get<std::string>("id", "");
         auto script = std::make_shared<Script>(startId);
         script->SetLoop(loopId);
         luabridge::LuaRef actions = ref["actions"];
@@ -223,7 +224,10 @@ namespace luaFunctions {
             int edgeTo = edge[2].cast<int>();
             script->AddEdge(edgeFrom, edgeTo);
         }
-        scheduler->AddScript(scriptId, script);
+        if (scriptId.empty())
+            scheduler->AddScript(script);
+        else
+            scheduler->AddScript(scriptId, script);
     }
     
 }

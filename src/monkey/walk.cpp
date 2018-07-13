@@ -9,6 +9,15 @@
 #include <iostream>
 #include <monkey/walkarea.h>
 
+void Walk::SetComplete() {
+
+    Activity::SetComplete();
+    // success if it managed ot get to the final point
+    auto actor = Engine::get().GetRef<Entity>(m_actorId);
+    glm::vec2 currentPos(actor->GetPosition());
+    m_success =(glm::length(m_p - currentPos) < 0.01);
+}
+
 
 void Walk::Start() {
     auto walkArea = Engine::get().GetRef<WalkArea>("walkarea");

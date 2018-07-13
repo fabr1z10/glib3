@@ -476,8 +476,29 @@ return {
                     }
                },
            }
-        }
-
+        },
+        {
+            name = "kneel_front",
+            frames =            { 
+               {
+                    duration = dt,
+                    quads = {
+                        { x = 80, y = 163, width = 17, height = 33, anchor = {10, 0}},
+                    }
+               },
+           }
+        },
+        {
+            name = "plank",
+            frames =            { 
+               {
+                    duration = dt,
+                    quads = {
+                        { x = 57, y = 150, width = 21, height = 47, anchor = {10, 0}},
+                    }
+               },
+           }
+        },
 
 
         }

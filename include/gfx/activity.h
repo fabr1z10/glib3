@@ -8,13 +8,13 @@ class Edge;
 
 class Activity {
 public:
-    Activity (int id) : m_id{id}, m_complete{false} {}
+    Activity (int id) : m_id{id}, m_complete{false}, m_success{true} {}
     virtual ~Activity();
     virtual void Start() = 0;
     virtual void Run (float dt) = 0;
-
+    bool IsSuccessful() const;
     bool IsComplete () const;
-    void SetComplete();
+    virtual void SetComplete();
     virtual void Reset() { m_complete = false;}
     bool IsReady() const;
     std::vector<Activity*>& GetPrevious();
@@ -27,7 +27,9 @@ private:
     std::vector<Activity*> m_previous;
     std::vector<Activity*> m_following;
     bool m_complete;
-    //std::chrono::time_point<std::chrono::system_clock> m_timeComplete;
+protected:
+    bool m_success;
+
 };
 
 inline int Activity::GetId() const {
@@ -36,6 +38,10 @@ inline int Activity::GetId() const {
 
 inline bool Activity::IsComplete () const{
     return m_complete;
+}
+
+inline bool Activity::IsSuccessful() const {
+    return m_success;
 }
 
 inline std::vector<Activity*>& Activity::GetPrevious() {

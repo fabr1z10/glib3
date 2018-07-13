@@ -38,6 +38,7 @@ variables = {
 	_pause = false,
     talkedToLookout = false,
     lookoutKnowsName = false,
+	seagull = 0
 }
 
 

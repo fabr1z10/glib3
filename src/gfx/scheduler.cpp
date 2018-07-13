@@ -24,6 +24,13 @@ void Scheduler::AddScript(const std::string &name, std::shared_ptr<Script> scrip
 
 }
 
+void Scheduler::AddScript(std::shared_ptr<Script> script) {
+    std::stringstream stream;
+    stream << "_unknown_" << m_count++ ;
+    AddScript(stream.str(), script);
+
+}
+
 Script* Scheduler::GetScript (const std::string& name) {
     auto it = m_scripts.find(name);
     if (it == m_scripts.end())
