@@ -76,10 +76,10 @@ function variables._actionInfo:reset()
 end
 
 dirHelper = {
-    north = "_back",
-    south = "_front",
-    east = "_right",
-    west = "_right"
+    north = "back",
+    south = "front",
+    east = "right",
+    west = "right"
     
 }
 

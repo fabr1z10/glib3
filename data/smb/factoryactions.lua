@@ -197,16 +197,20 @@ function operateDoor(args)
     -- and viceversa, so ...
 	local o = objects[args.obj]
     if (o.isopen() ~= args.open) then
+		local direction =""
 		if (o.dirfunc ~= nil) then
-			face = dirHelper[o.dirfunc()]
+			direction = o.dirfunc()
+			face = dirHelper[direction]
 		else
-            face = dirHelper[o.dir]
+			direction = o.dir
+            face = dirHelper[direction]
         end
 		return { 
-            { type="animate", actor="player", anim=("operate" .. face) },
+			--{ type="turn", actor="player", face = direction},
+            { type="animate", actor="player", anim=("operate_" .. face), flipx = (direction == "west")},
             { type="delay", sec="0.5" },
             { type="animate", actor = o.tag, anim = (args.open and "open" or "close") },
-            { type="animate", actor="player", anim=("idle" .. face) },
+            { type="animate", actor="player", anim=("idle_" .. face), flipx = (direction == "west") },
             { type="callfunc", func = function() o.setopen(args.open) end }
         }
     end 

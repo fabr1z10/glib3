@@ -320,6 +320,24 @@ scene = {
 				priority = 1,
 				object = "potostew"
 			},
+			make_hotspot {
+				x = 9,
+				y = 0,
+				width = 28,
+				height = 28,
+				offset = {0, 0},
+				priority = 2,
+				object = "barrel"
+			},
+			make_hotspot {
+				x = 114,
+				y = 0,
+				width = 35,
+				height = 22,
+				offset = {0, 0},
+				priority = 2,
+				object = "kitchen_table"
+			},
 			{
 				-- plank
 				pos = {248, 0, 1},

@@ -35,6 +35,21 @@ assets = {
         { name = "close", frames = { {duration = dt, quads = { { x = 44, y = 199, width = 35, height = 69, anchor = {0, 0}}}}}},
         { name = "open", frames = { {duration = dt, quads = { { x = 44, y = 270, width = 35, height = 69, anchor = {0, 0}}}}}}
         }
+    },
+    {
+        id = "fireplace",
+        sheet = "gfx/anims.png",
+        type="sprite",
+        ppu=1,
+        animations = {
+        { name = "default", frames = { 
+			{duration = dt, quads = { { x = 262, y = 280, width = 32, height = 26, anchor = {0, 0}}}},
+			{duration = dt, quads = { { x = 296, y = 280, width = 32, height = 26, anchor = {0, 0}}}},
+			{duration = dt, quads = { { x = 330, y = 280, width = 32, height = 26, anchor = {0, 0}}}},
+
+			}
+
+		}}
     }
 },
 scene = {
@@ -53,6 +68,11 @@ scene = {
           		gfx = { image="gfx/scummbar/bg1.png", width=640, height=144 },
           		layer = 1
         	},
+	        {
+	            pos = {374, 20, 0.96},
+	            gfx = { image="gfx/scummbar/bg2.png" },
+	            layer = 1
+	        },
 	        {
 	          walkarea = { 
 	            tag = "walkarea",
@@ -97,7 +117,17 @@ scene = {
 	            priority = 1, 
 	            object = "door_bar_kitchen",
 	            gfx = { model="door_kitchen", anim = ((objects.door_bar_kitchen.isopen() == true) and "open" or "close") }
-	        }
+	        },
+			make_hotspot {
+				x = 509,
+				y = 44,
+				width = 29,
+				height = 18,
+				offset = {0, 0},
+				priority = 1,
+				object = "fireplace",
+				gfx = { model="fireplace", anim="default" }
+			},
 		}
 	},
 	makescummui1(),

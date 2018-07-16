@@ -122,6 +122,7 @@ objects = {
 		tag = "pot",
 		pos = {109, 19},
 		dir ="north",
+		pickupAnim = "kneel_back",
 		look = curry (say, { character="guybrush", lines= { strings.kitchen[2] }} ),
 		pick = curry (pickup, {obj = "pot"})
 	},
@@ -145,33 +146,26 @@ objects = {
 		use = {
 			meat = stewMeat
 		}
-	}
+	},
+	barrel = {
+		text = strings.objects.barrel,
+		tag ="barrel",
+		pos = {47, 6},
+		dir ="west",
+		look = curry (say, { character="guybrush", lines= { strings.kitchen[6] }} )
+	},
+	kitchen_table = {		
+		text = strings.objects.kitchen_table,
+		tag ="kitchentable",
+		pos = {132, 14},
+		dir ="south"
+	},
+	fireplace = {
+		text = strings.objects.fireplace,
+		tag ="fireplace",
+		pos = {506, 41},
+		dir ="east",
+		look = curry (say, { character="guybrush", lines= { strings.scummbar[1] }} )
+	},
 
 }
-
---objects.village1_door.walk = curry(walkToDoor, {obj = objects.village1_door, roomId = "scummbar"} )
---objects.village1_door.open = curry(operateDoor, {obj = objects.village1_door, open = true} )
---objects.village1_door.close = curry(operateDoor, {obj = objects.village1_door, open = false} )
---objects.village1_door.isopen = function() return objects.village1_door.openFlag end
---objects.village1_door.setopen = function(open) objects.village1_door.openFlag = open end
-
-
---objects.scummbar_door_out.setopen = function(open) objects.village1_door.openFlag = open end
---objects.scummbar_door_out.walk = curry(walkToDoor, {obj = objects.village1_door, roomId = "village1"} )
---objects.scummbar_door_out.open = curry(operateDoor, {obj = objects.village1_door, open = true} )
---objects.scummbar_door_out.close = curry(operateDoor, {obj = objects.village1_door, open = false} )
-
---objects.door_bar_kitchen.walk = curry(walkToDoor, {obj = objects.door_bar_kitchen, roomId = "kitchen"} )
---objects.door_bar_kitchen.open = curry(operateDoor, {obj = objects.door_bar_kitchen, open = true} )
-
---objects.door_bar_kitchen.isopen = function() return objects.door_bar_kitchen.openFlag end
---objects.door_bar_kitchen.setopen = function(open) objects.door_bar_kitchen.openFlag = open end
-
-
---objects.door_kitchen_bar.isopen = objects.door_bar_kitchen.isopen
---objects.door_kitchen_bar.setopen = objects.door_bar_kitchen.setopen
-
---objects.door_kitchen_pier.isopen = function() return objects.door_kitchen_pier.openFlag end
---objects.door_kitchen_pier.setopen = function(open) objects.door_bar_kitchen.openFlag = open end
---objects.door_kitchen_pier.open = openKitchenPierDoor
---objects.door_kitchen_pier.close = closeKitchenPierDoor

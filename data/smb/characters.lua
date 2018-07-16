@@ -489,6 +489,17 @@ return {
            }
         },
         {
+            name = "kneel_back",
+            frames =            { 
+               {
+                    duration = dt,
+                    quads = {
+                        { x = 100, y = 163, width = 19, height = 33, anchor = {10, 0}},
+                    }
+               },
+           }
+        },
+        {
             name = "plank",
             frames =            { 
                {
