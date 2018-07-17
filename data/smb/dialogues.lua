@@ -1,7 +1,10 @@
 
 require ("dialogues/lookout")
+require ("dialogues/pirates")
 
 local d = strings.dialogues.lookout.text
+local p = strings.dialogues.pirates.text
+
 
 -- this is the basic dialogue
 function pippo(f) 
@@ -49,8 +52,17 @@ dialogues = {
         [3] = {
             lines = {}
         }
-    	}
-    }
+    },
+    pirates = {
+		[1] = {
+			lines = {
+				[1] = { text = p[2], active = true, alwaysActive = true, click = curry(dialoguesPirates.getlost, 2) },
+				[2] = { text = p[3], active = true, alwaysActive = true, click = dialoguesPirates.iwanttobeapirate },
+				[3] = { text = p[4], active = true, alwaysActive = true, click = curry(dialoguesPirates.getlost, 4) }
+			}
+		}
+	}
+}
 
 dialogues.lookout.init = function()
     -- reset to active at each init

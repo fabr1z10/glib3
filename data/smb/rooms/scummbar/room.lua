@@ -48,10 +48,71 @@ assets = {
 			{duration = dt, quads = { { x = 330, y = 280, width = 32, height = 26, anchor = {0, 0}}}},
 
 			}
-
 		}}
-    }
+    },
+    {
+        id = "ilp1",
+        sheet = "gfx/anims.png",
+        type="sprite",
+        ppu=1,
+        animations = {
+        { name = "idle", frames = { 
+			{duration = dt*5, quads = { { x = 220, y = 336, width = 35, height = 55, anchor = {0, 0}}}},
+			{duration = dt*5, quads = { { x = 257, y = 336, width = 35, height = 55, anchor = {0, 0}}}},
+			{duration = dt, quads = { { x = 183, y = 336, width = 35, height = 55, anchor = {0, 0}}}},
+			{duration = dt, quads = { { x = 295, y = 335, width = 35, height = 56, anchor = {0, 0}}}},
+			{duration = dt, quads = { { x = 183, y = 336, width = 35, height = 55, anchor = {0, 0}}}},
+			}
+		},
+        { name = "talk", frames = { 
+			{duration = dt, quads = { { x = 365, y = 341, width = 35, height = 56, anchor = {0, 0}}}},
+			{duration = dt, quads = { { x = 402, y = 343, width = 35, height = 54, anchor = {0, 0}}}},
+			}
+		},
+		}
+    },
+    {
+        id = "ilp2",
+        sheet = "gfx/anims.png",
+        type="sprite",
+        ppu=1,
+        animations = {
+        { name = "idle", frames = { 
+			{duration = dt*4, quads = { { x = 257, y = 393, width = 35, height = 53, anchor = {1, 0}}}},
+			{duration = dt, quads = { { x = 294, y = 393, width = 34, height = 53, anchor = {1, 0}}}},
+			{duration = dt*4, quads = { { x = 330, y = 393, width = 34, height = 53, anchor = {0, 0}}}},
+			{duration = dt, quads = { { x = 294, y = 393, width = 34, height = 53, anchor = {0, 0}}}},
+			}
+		},
+        { name = "talk", frames = { 
+			{duration = dt, quads = { { x = 439, y = 341, width = 34, height = 56, anchor = {0, 0}}}},
+			{duration = dt, quads = { { x = 475, y = 345, width = 35, height = 52, anchor = {1, 0}}}},
+			}
+		},
+
+		}
+    },
+    {
+        id = "ilp3",
+        sheet = "gfx/anims.png",
+        type="sprite",
+        ppu=1,
+        animations = {
+        { name = "idle", frames = { 
+			{duration = dt*4, quads = { { x = 183, y = 393, width = 35, height = 52, anchor = {0, 0}}}},
+			{duration = dt*4, quads = { { x = 220, y = 393, width = 35, height = 52, anchor = {0, 0}}}},
+			}
+		},
+        { name = "talk", frames = { 
+			{duration = dt, quads = { { x = 366, y = 399, width = 31, height = 52, anchor = {0, 0}}}},
+			{duration = dt, quads = { { x = 399, y = 400, width = 32, height = 51, anchor = {0, 0}}}},
+            {duration = dt, quads = { { x = 433, y = 399, width = 31, height = 52, anchor = {0, 0}}}},
+			}
+		},
+        }
+    },
 },
+
 scene = {
 	{
 		tag = "main",
@@ -69,7 +130,7 @@ scene = {
           		layer = 1
         	},
 	        {
-	            pos = {374, 20, 0.96},
+	            pos = {374, 20, 0.95},
 	            gfx = { image="gfx/scummbar/bg2.png" },
 	            layer = 1
 	        },
@@ -128,6 +189,30 @@ scene = {
 				object = "fireplace",
 				gfx = { model="fireplace", anim="default" }
 			},
+			{
+				tag ="ilp1",
+				pos = {376,11,0.95},
+				gfx = {model = "ilp1", anim="idle"}
+			},
+			{
+				tag ="ilp2",
+				pos = {413,11,0.95},
+				gfx = {model = "ilp2", anim="idle"}
+			},
+			{
+				tag = "ilp3",
+				pos = {444,18,0.95},
+				gfx = {model = "ilp3", anim="idle"}
+			},
+			make_hotspot {
+				x = 393,
+				y = 34,
+				width = 80,
+				height = 18,
+				offset = {0, 0},
+				priority = 1,
+				object = "ilp"
+			},
 		}
 	},
 	makescummui1(),
@@ -177,6 +262,7 @@ end
 
 function room.start() 
     --cook script
+
  	s = Script.create("_cook")
 	local n = 1
 	if (variables._previousroom == "kitchen") then

@@ -19,7 +19,9 @@ public:
             glm::vec4 color,
             glm::vec4 outlineColor,
             TextAlignment align,
-            float time) : Activity(id), m_generatedEntity{nullptr}, m_message{message}, m_time{time}, m_font{font}, m_actor{actor}, m_size{size}, m_align{align}, m_color{color}, m_outlineColor{outlineColor} {}
+            float time,
+            glm::vec2 offset) : Activity(id), m_generatedEntity{nullptr}, m_message{message}, m_time{time}, m_font{font}, m_actor{actor}, m_size{size},
+                                m_align{align}, m_color{color}, m_outlineColor{outlineColor}, m_offset{offset} {}
     ShowMessage(
             int id,
             const std::string& message,
@@ -29,7 +31,9 @@ public:
             glm::vec4 color,
             glm::vec4 outlineColor,
             TextAlignment align,
-            float time) : Activity(id), m_generatedEntity{nullptr}, m_message{message}, m_time{time}, m_font{font}, m_pos{pos}, m_size{size}, m_align{align}, m_color{color}, m_outlineColor{outlineColor} {}
+            float time,
+            glm::vec2 offset) : Activity(id), m_generatedEntity{nullptr}, m_message{message}, m_time{time}, m_font{font}, m_pos{pos}, m_size{size},
+                                m_align{align}, m_color{color}, m_outlineColor{outlineColor}, m_offset{offset} {}
     virtual ~ShowMessage();
     void Start() override;
     void Run (float dt) override;
@@ -37,6 +41,7 @@ private:
     TextAlignment m_align;
     float m_elapsedTime;
     float m_size;
+    glm::vec2 m_offset;
     glm::vec3 m_pos;
     glm::vec4 m_color;
     glm::vec4 m_outlineColor;

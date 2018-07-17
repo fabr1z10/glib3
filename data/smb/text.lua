@@ -96,7 +96,44 @@ strings = {
             [1] = "Hey!",
             [2] = "Don't go into the kitchen!",
 			[3] = "You can't come back here!"
-        }
+        },
+		pirates = {
+			text = {
+			[1] = "What be ye wantin', boy?",
+			[2] = "I mean to kill you all!",
+			[3] = "I want to be a pirate.",
+			[4] = "I want to be a fireman.",
+			[5] = "Get lost, boy, you bother us.",
+			[6] = "So what?",
+			[7] = "Why bother us?",
+			[8] = "Hey, don't forget we're short on help because of this whole LeChuck thing.",
+			[9] = "So?",
+			[10] = "So, no pirates means no swag, and no swag means no grog, and we're getting dangerously low on grog...",
+			[11] = "Hmm...",
+			[12] = "Do you have any special skills?",
+			[13] = "I can hold my breath for ten minutes!",
+			[14] = "Well...",
+			[15] = "All right, but you don't become a pirate just by ASKING.",
+			[16] = "You'll have to go through...",
+			[17] = "The three trials!",
+			[18] = "Er...",
+			[19] = "What three trials are those?",
+			[20] = "There are three trials every pirate must pass.",
+			[21] = "You must master the sword", 
+			[22] = "...and the art of thievery...",
+			[23] = "...and the quest.",
+			[24] = "The what?",
+			[25] = "Treasure huntin', ya sea urchin!",
+			[26] = "Right.",
+			[27] = "You must prove yourself in each of these three areas:",
+			[28] = "swordplay, thievery, and, er, treasure huntery;",
+			[29] = "then return with proof that you've done it.",
+			[30] = "And then ye must drink grog with us!!",
+			[31] = "GROG!!!"
+			
+			
+			}
+		}
 
         
 

@@ -15,7 +15,7 @@ public:
     bool IsSuccessful() const;
     bool IsComplete () const;
     virtual void SetComplete();
-    virtual void Reset() { m_complete = false;}
+    virtual void Reset();
     bool IsReady() const;
     std::vector<Activity*>& GetPrevious();
     std::vector<Activity*>& GetFollowing();

@@ -154,6 +154,7 @@ namespace luaFunctions {
                 std::string font = table.Get<std::string>("font", "monkey");
                 TextAlignment align = table.Get<TextAlignment>("align", BOTTOM);
                 glm::vec4 color = table.Get<glm::vec4>("color");
+                glm::vec2 offset = table.Get<glm::vec2>("offset", glm::vec2(0.0f));
                 float time = table.Get<float>("time", 2.0f);
                 glm::vec4 outlineColor = table.Get<glm::vec4>("outlinecolor", glm::vec4(0.0f, 0.0f, 0.0f, 255.0f));
                 color/=255.0f;
@@ -161,18 +162,24 @@ namespace luaFunctions {
                 float size = table.Get<float>("size", 8.0f);
                 if (!actor.empty()) {
                     script->AddActivity(std::unique_ptr<ShowMessage>(
-                            new ShowMessage(id, msg, font, actor, size, color, outlineColor, align, time)));
+                            new ShowMessage(id, msg, font, actor, size, color, outlineColor, align, time, offset)));
                 } else {
                     glm::vec3 pos = table.Get<glm::vec3>("pos");
                     script->AddActivity(std::unique_ptr<ShowMessage>(
-                            new ShowMessage(id, msg, font, pos, size, color, outlineColor, align, time)));
+                            new ShowMessage(id, msg, font, pos, size, color, outlineColor, align, time, offset)));
                 }
             } else if (type == "say") {
                 std::string actor = table.Get<std::string>("actor");
                 std::vector<std::string> msg = table.GetVector<std::string>("message");
                 glm::vec4 color = table.Get<glm::vec4>("color");
+                glm::vec2 offset = table.Get<glm::vec2>("offset", glm::vec2(0.0f));
                 color/=255.0f;
-                script->AddActivity(std::unique_ptr<Say>(new Say(id, actor, msg, color)));
+                auto say = std::unique_ptr<Say>(new Say(id, actor, msg, color, offset));
+                std::string animStart = table.Get<std::string>("animstart", "");
+                std::string animEnd = table.Get<std::string>("animend","");
+                say->SetAnimationEnd(animEnd);
+                say->SetAnimationStart(animStart);
+                script->AddActivity(std::move(say));
             } else if (type == "turn") {
                 std::string actor = table.Get<std::string>("actor");
                 std::string dir = table.Get<std::string>("face");

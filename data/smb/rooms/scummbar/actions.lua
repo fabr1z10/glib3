@@ -56,3 +56,11 @@ function enterBarKitchen()
 	
 
 end
+
+function talkToPirates() 
+	local a = say { character = "ilp2", lines = {strings.dialogues.pirates.text[1]}, animstart ="talk", animend="idle" }
+	table.insert (a, 
+        { type = "callfunc", func = curry(startDialogue, { dialogueId="pirates", nodeId=1, init = true })}
+    )
+	return a
+end

@@ -25,14 +25,20 @@ void Say::Start() {
         } else
             face = "front";
     }
-    animStart ="talk_" + face;
-    animEnd ="idle_" + face;
+    if (m_animStart.empty())
+        animStart ="talk_" + face;
+    else
+        animStart = m_animStart;
+    if (m_animEnd.empty())
+        animEnd ="idle_" + face;
+    else
+        animEnd = m_animEnd;
     int count = 0;
     Push(std::make_shared<Animate>(count++, actor, animStart, flipx));
 
     for (auto& s : m_lines) {
 
-        Push(std::make_shared<ShowMessage>(count++, s, "monkey", m_actorId, 8, m_color, glm::vec4(0.0f), BOTTOM, 1.0f));
+        Push(std::make_shared<ShowMessage>(count++, s, "monkey", m_actorId, 8, m_color, glm::vec4(0.0f), BOTTOM, 1.0f, m_offset));
     }
     Push(std::make_shared<Animate>(count++, actor, animEnd, flipx));
 

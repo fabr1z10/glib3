@@ -18,7 +18,7 @@ void ShowMessage::Start() {
     }
 
     // make this a param
-    currentPos += glm::vec2(0, 60.0);
+    currentPos += m_offset; //glm::vec2(0, 60.0);
 
     auto parent = std::make_shared<Entity>();
     Font* f = Engine::get().GetAssetManager().GetFont(m_font);

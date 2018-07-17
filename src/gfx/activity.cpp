@@ -12,7 +12,12 @@ void Activity::AddPrevious (Activity* act) {
 void Activity::AddNext (Activity* act) {
     m_following.push_back(act);
 }
-
+void Activity::Reset() {
+    m_complete = false;
+    for (auto& a : m_following) {
+        a->Reset();
+    }
+}
 
 
 bool Activity::IsReady() const {

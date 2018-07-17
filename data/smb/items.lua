@@ -1,7 +1,8 @@
 objects = {
     guybrush = {
         tag = "player",
-        color = {255, 255, 255, 255}
+        color = {255, 255, 255, 255},
+		offset = {0, 60}
     },
     lookout = {
         tag = "lookout",
@@ -166,6 +167,29 @@ objects = {
 		pos = {506, 41},
 		dir ="east",
 		look = curry (say, { character="guybrush", lines= { strings.scummbar[1] }} )
+	},
+	ilp = {
+		text = strings.objects.ilp,
+		tag="ilp",
+		pos={474,7},
+		dir ="west",
+ 		talk = talkToPirates
+	},
+	ilp1 = {
+		color = {85, 85, 255, 255},
+		offset = {0, 60},
+		tag ="ilp1"		
+
+	},
+	ilp2 = {
+		color = {255, 255, 85, 255},
+		offset = {0, 60},
+		tag ="ilp2"		
+	},
+	ilp3 = {
+		color = {255, 85, 255, 255},
+		offset = {0, 60},
+		tag ="ilp3"		
 	},
 
 }

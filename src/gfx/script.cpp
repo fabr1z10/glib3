@@ -57,7 +57,7 @@ void Script::Run (float dt) {
     }
 
     for(auto& a : toRemove) {
-        a->Reset();
+        //a->Reset();
         m_active.erase(a);
     }
 
@@ -68,6 +68,7 @@ void Script::Run (float dt) {
         }
         else {
             auto act = m_activities.find(m_loop)->second.get();
+            act->Reset();
             act->Start();
             m_active.insert(act);
         }

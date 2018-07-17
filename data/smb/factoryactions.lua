@@ -104,7 +104,10 @@ print (args.lines[1])
         type= "say",
         actor = c.tag,
         color = c.color,
-        message = args.lines
+        message = args.lines,
+		offset = c.offset,
+		animstart = args.animstart,
+		animend = args.animend
     }
     }
     return actions
