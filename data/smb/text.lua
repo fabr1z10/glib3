@@ -130,7 +130,16 @@ strings = {
 			[29] = "then return with proof that you've done it.",
 			[30] = "And then ye must drink grog with us!!",
 			[31] = "GROG!!!"
-			
+			[32] = "Tell me more about mastering the sword.",
+			[33] = "Tell me more about mastering the art of thievery.",
+			[34] = "Tell me more about treasure hunting.",
+			[35] = "You're a bunch of foul-smelling, grog-swilling pigs!",
+			[36] = "What's in that grog stuff, anyway?",
+			[37] = "I'll just be running along now.",
+			[38] = "Leave us to our grog.",
+			[39] = "Come back later and tell us how ye're doing.",
+			[40] = "Well, if it isn't the boy who wants to be a pirate.",
+			[41] = "How do you fare on your quests?"
 			
 			}
 		}
