@@ -38,6 +38,7 @@ variables = {
 	_pause = false,
     talkedToLookout = false,
     lookoutKnowsName = false,	
+	talkedToEstevan = false,
 	talkedToPirates = false,
 	doneTalkDog = false,
 	doneTalkLoom = false,

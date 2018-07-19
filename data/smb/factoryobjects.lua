@@ -137,8 +137,12 @@ if (inventory[input.object]~=nil) then
 	return nil
 end
 obj = objects[input.object]
+local z = input.z
+if (z == nil) then
+	z = 0
+end
 return {
-    pos = {input.x, input.y, 0},
+    pos = {input.x, input.y, z},
     gfx = input.gfx,
     hotspot = {
         group = 1,

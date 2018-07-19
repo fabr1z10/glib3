@@ -150,6 +150,40 @@ assets = {
         }
 	},
 	{
+		id = "estevan",
+		sheet = "gfx/anims.png",
+        type="sprite",
+        ppu=1,
+        animations = {
+        { name = "idle", frames = { 
+			{duration = dt, quads = { { x = 183, y = 455, width = 35, height = 27, anchor = {0, 0}}}},
+			}
+		},
+        { name = "drink", frames = { 
+			{duration = dt, quads = { { x = 220, y = 455, width = 39, height = 27, anchor = {0, 0}}}},
+			{duration = dt, quads = { { x = 261, y = 455, width = 37, height = 27, anchor = {0, 0}}}},
+			{duration = dt, quads = { { x = 220, y = 455, width = 39, height = 27, anchor = {0, 0}}}},
+			}
+		},
+        }
+	},
+	{
+		id = "mancomb",
+		sheet = "gfx/anims.png",
+        type="sprite",
+        ppu=1,
+        animations = {
+        { name = "idle", frames = { 
+			{duration = dt, quads = { { x = 6, y = 405, width = 33, height = 40, anchor = {0, 0}}}},
+			}
+		},
+        { name = "drink", frames = { 
+			{duration = dt*2, quads = { { x = 3, y = 446, width = 36, height = 40, anchor = {0, 0}}}},
+			}
+		},
+        }
+	},
+	{
 		id = "loompirate",
 		sheet = "gfx/anims.png",
         type="sprite",
@@ -165,6 +199,98 @@ assets = {
 		},
         { name = "move", frames = { 
 			{duration = dt, quads = { { x = 383, y = 474, width = 29, height = 37, anchor = {0, 0}}}},
+			}
+		},
+        }
+	},
+	{
+		id = "piratewoman",
+		sheet = "gfx/anims.png",
+        type="sprite",
+        ppu=1,
+        animations = {
+        { name = "idle1", frames = { 
+			{duration = dt, quads = { { x = 469, y = 454, width = 20, height = 21, anchor = {0, 0}}}},
+			}
+		},
+        { name = "idle2", frames = { 
+			{duration = dt, quads = { { x = 446, y = 454, width = 20, height = 21, anchor = {0, 0}}}},
+			}
+		},
+        { name = "move", frames = { 
+			{duration = dt, quads = { { x = 491, y = 454, width = 20, height = 21, anchor = {0, 0}}}},
+			}
+		},
+        }
+	},
+	{
+		id = "piratecouple",
+		sheet = "gfx/anims.png",
+        type="sprite",
+        ppu=1,
+        animations = {
+        { name = "idle1", frames = { 
+			{duration = dt, quads = { { x = 183, y = 484, width = 35, height = 28, anchor = {0, 1}}}},
+			}
+		},
+        { name = "idle2", frames = { 
+			{duration = dt, quads = { { x = 257, y = 485, width = 35, height = 26, anchor = {0, 0}}}},
+			}
+		},
+        { name = "move", frames = { 
+			{duration = dt, quads = { { x = 220, y = 484, width = 35, height = 27, anchor = {0, 0}}}},
+			}
+		},
+        }
+	},
+	{
+		id = "pirate1",
+		sheet = "gfx/anims.png",
+        type="sprite",
+        ppu=1,
+        animations = {
+        { name = "idle", frames = { 
+			{duration = dt, quads = { { x = 297, y = 485, width = 50, height = 26, anchor = {0, 1}}}},
+			}
+		},
+        }
+	},
+	{
+		id = "pirate2",
+		sheet = "gfx/anims.png",
+        type="sprite",
+        ppu=1,
+        animations = {
+        { name = "idle1", frames = { 
+			{duration = dt, quads = { { x = 380, y = 167, width = 36, height = 37, anchor = {0, 0}}}},
+			}
+		},
+        { name = "idle2", frames = { 
+			{duration = dt, quads = { { x = 418, y = 167, width = 36, height = 37, anchor = {0, 0}}}},
+			}
+		},
+        { name = "move", frames = { 
+			{duration = dt, quads = { { x = 418, y = 167, width = 36, height = 37, anchor = {0, 0}}}},
+			}
+		},
+        }
+	},
+	{
+		id = "pirate3",
+		sheet = "gfx/anims.png",
+        type="sprite",
+        ppu=1,
+        animations = {
+        { name = "idle1", frames = { 
+			{duration = dt, quads = { { x = 42, y = 470, width = 26, height = 27, anchor = {0, 0}}}},
+			}
+		},
+        { name = "idle2", frames = { 
+			{duration = dt, quads = { { x = 99, y = 470, width = 26, height = 27, anchor = {0, 0}}}},
+			}
+		},
+        { name = "move", frames = { 
+			{duration = dt, quads = { { x = 70, y = 470, width = 26, height = 27, anchor = {0, 0}}}},
 			}
 		},
         }
@@ -286,6 +412,31 @@ scene = {
 				pos = {289, 36, 0.5},
 				gfx = {model = "fatpirate", anim="idle"}
 			},
+			{
+				tag = "piratewoman",
+				pos = {260, 42, -1},
+				gfx = {model = "piratewoman", anim="idle1"}
+			},
+			{
+				tag = "piratecouple",
+				pos = {212, 19, 1},
+				gfx = {model = "piratecouple", anim="idle1"}
+			},
+			{
+				pos = {173, 0, 1},
+				gfx = {model = "pirate1", anim="idle"}
+			},
+			{
+				tag="pirate2",
+				pos = {126, 17, 0},
+				gfx = {model = "pirate2", anim="idle1"}
+			},
+			{
+				tag="pirate3",
+				pos = {138, 38, -0.1},
+				gfx = {model = "pirate3", anim="idle1"}
+			},
+
 	        make_hotspot { 
 	            x = 260, 
 	            y = 17, 
@@ -295,6 +446,36 @@ scene = {
 	            priority = 1, 
 	            object = "loom_pirate",
 	            gfx = { model="loompirate", anim = "idle1" }
+	        },
+	        make_hotspot { 
+	            x = 164, 
+	            y = 21, 
+                z = 1,
+	            width = 30, 
+	            height = 20, 
+	            offset = {0, 0},
+	            priority = 1, 
+	            object = "estevan",
+	            gfx = { model="estevan", anim = "idle" }
+	        },
+	        make_hotspot { 
+	            x = 89, 
+	            y = 24, 
+	            width = 30, 
+	            height = 30, 
+	            offset = {0, 0},
+	            priority = 1, 
+	            object = "mancomb",
+	            gfx = { model="mancomb", anim = "idle" }
+	        },
+	        make_hotspot { 
+	            x = 136, 
+	            y = 32, 
+	            width = 30, 
+	            height = 20, 
+	            offset = {0, 0},
+	            priority = 1, 
+	            object = "pirates_listening"
 	        },
 		}
 	},
@@ -317,12 +498,13 @@ scene = {
 function room.init()
     -- put your initialization code here
     variables._actionInfo:reset()
-print ("STARTING SCUMMBAR !!!")
+--print ("STARTING SCUMMBAR !!!")
 
 	local fromData = {
         village1 = { playerpos = {66, 19, 0}, anim = "idle_right" },
 		kitchen = { playerpos = {601, 16, 0}, anim = "idle_right", flip = true},
-		loom = {playerpos = {239, 15, 0}, anim ="idle_right", flip = false }
+		loom = {playerpos = {239, 15, 0}, anim ="idle_right", flip = false },
+		estevan = {playerpos = {200, 10, 0}, anim= "idle_front", flip=false} 
     }
 
     -- add player
@@ -362,21 +544,31 @@ function runBackgroundScript(name)
 	
 end
 
+function runBackgroundScript2(name)
+	local s = Script.create("_" .. name)
+    s:add ({
+        { type = "delay", sec = 2.0 },
+		{ type = "animate", actor = name, anim="drink", loop=1 },
+		{ type = "animate", actor = name, anim="idle" },
+	})
+	s:setsequence()
+	s.loop = 0
+	monkey.play(s)
+
+end
+
 function room.start() 
     --cook script
 	runBackgroundScript("dog")
 	runBackgroundScript("loompirate")
-
+	runBackgroundScript("piratewoman")
+	runBackgroundScript("piratecouple")
+	runBackgroundScript("pirate2")
+	runBackgroundScript("pirate3")
 	-- fat pirate
-	local s2 = Script.create("_fatpir")
-    s2:add ({
-        { type = "delay", sec = 2.0 },
-		{ type = "animate", actor ="fatpirate", anim="drink", loop=1 },
-		{ type = "animate", actor ="fatpirate", anim="idle" },
-	})
-	s2:setsequence()
-	s2.loop = 0
-	monkey.play(s2)
+	runBackgroundScript2("fatpirate")
+	runBackgroundScript2("estevan")
+	runBackgroundScript2("mancomb")
 
  	s = Script.create("_cook")
 	local n = 0

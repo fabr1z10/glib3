@@ -34,7 +34,8 @@ strings = {
 		fireplace = "fireplace",
 		ilp = "important-looking pirates",
 		dog = "dog",
-		pirate = "pirate"
+		pirate = "pirate",
+		pirates = "pirates"
         
         
     },
@@ -243,6 +244,31 @@ strings = {
 			[15] = "Sorry, but on some topics I just get carried away.",
 			[16] = "No thanks. I can't stand salesmen."
 			}
+		},
+		estevan = {
+			text = {
+			[1] = "What are you looking at me for?",
+			[2] = "I'd like to introduce myself... my name's Guybrush.",
+			[3] = "Excuse me, but I'm looking for the dart board.",
+			[4] = "Where can I get a drink?",
+			[5] = "Sorry to bother you. Bye.",
+			[6] = "What now?",
+			[7] = "Right.",
+			[8] = "Yeah, so what?",
+			[9] = "What happened to your eye?",
+			[10] = "Dart board?",
+			[11] = "We don't have one anymore.",
+			[12] = "There was a horrible accident",
+			[13] = "Drinking and darts don't mix.",
+			[14] = "A drink?",
+			[15] = "You could wait for the cook to notice you...",
+			[16] = "...but that could take all day.",
+			[17] = "Just find a mug and sneak into the kitchen.",
+			[18] = "That's what we all do.",
+			[19] = "Well, I was putting in my contact lens when--",
+			[20] = "Hey, wait a second!",
+			[21] = "That's none of your business!"
+			}
 		}
 
         
@@ -272,7 +298,9 @@ strings = {
 		[9] = "Hmm. Stewed meat."
 	},
 	scummbar = {
-		[1] = "Cozy."
+		[1] = "Cozy.",
+		[2] = "I don't want to bother them.",
+		[3] = "They're busy listening to the guy on the left."
 	}
 }
 

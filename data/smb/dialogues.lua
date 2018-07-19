@@ -3,12 +3,13 @@ require ("dialogues/lookout")
 require ("dialogues/pirates")
 require ("dialogues/dog")
 require ("dialogues/loom")
+require ("dialogues/estevan")
 
 local d = strings.dialogues.lookout.text
 local p = strings.dialogues.pirates.text
 local dog = strings.dialogues.dog.text
 local loom = strings.dialogues.loom_pirate.text
-
+local est = strings.dialogues.estevan.text
 
 -- this is the basic dialogue
 function pippo(f) 
@@ -103,6 +104,18 @@ dialogues = {
 				[4] = { text=loom[5], active=true, alwaysActive = true, click = dialoguesLoom.leave },
 				[5] = { text=loom[14], active=false, click = dialoguesLoom.pitch}
 			}
+		}
+	},
+	estevan = {
+		[1] = {
+			lines = {
+				[1] = { text=est[2], active=true, click = dialoguesEstevan.iamguybrush },
+				[2] = { text=est[3], active=true, click = dialoguesEstevan.darts },
+				[3] = { text=est[4], active=true, click = dialoguesEstevan.drink },
+				[4] = { text=est[5], active=true, alwaysActive = true, click = dialoguesEstevan.leave },
+				[5] = {text =est[9], active=false, click = dialoguesEstevan.eye}
+			}
+		
 		}
 	}
 }

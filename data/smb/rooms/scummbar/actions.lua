@@ -87,3 +87,7 @@ function talkToLoom()
 		return changeRoom("loom")
 	end
 end
+
+function talkToEstevan()
+	return changeRoom("estevan")
+end

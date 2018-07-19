@@ -209,6 +209,32 @@ objects = {
 		offset = {0, 40},
 		look = talkToLoom,
 		talk = talkToLoom	
+	},
+	estevan = {
+		text = strings.objects.pirate,
+		tag = "estevan",
+		pos = {200,10},
+		dir = "south",
+		color = {170, 85, 0, 255},
+		offset = {0, 40},
+		look = talkToEstevan,
+		talk = talkToEstevan	
+	},
+	mancomb = {
+		text = strings.objects.pirate,
+		tag = "mancomb",
+		pos = {123,17},
+		dir = "north",
+		color = {170, 85, 0, 255},
+		offset = {0, 40},
+	},
+	pirates_listening = {
+		text = strings.objects.pirates,
+		tag="pirateslistening",
+		pos = {123,17},
+		dir = "north",
+		talk = curry (say, { character="guybrush", lines= { strings.scummbar[2], strings.scummbar[3] }} ),
+		look = curry (say, { character="guybrush", lines= { strings.scummbar[3] }} )
 	}
 
 }
