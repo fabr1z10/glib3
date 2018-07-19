@@ -22,8 +22,8 @@ void Renderer::Draw(Shader* shader) {
 void Renderer::Update(double dt) {
     m_frameTime += dt;
     int frames = m_mesh->FrameCount(m_animation);
-    if (frames == 1)
-        return;
+//    if (frames == 1)
+  //      return;
     float duration = m_mesh->GetDuration(m_animation, m_frame);
     if (m_frameTime >= duration) {
         m_frame++;

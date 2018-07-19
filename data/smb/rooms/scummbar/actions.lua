@@ -58,9 +58,32 @@ function enterBarKitchen()
 end
 
 function talkToPirates() 
-	local a = say { character = "ilp2", lines = {strings.dialogues.pirates.text[1]}, animstart ="talk", animend="idle" }
+	local lines = variables.talkedToPirates and{strings.dialogues.pirates.text[40], strings.dialogues.pirates.text[41]} or {strings.dialogues.pirates.text[1]}
+	local a = say { character = "ilp2", lines = lines, animstart ="talk", animend="idle" }
 	table.insert (a, 
         { type = "callfunc", func = curry(startDialogue, { dialogueId="pirates", nodeId=1, init = true })}
     )
 	return a
+end
+
+function talkToDog() 
+	if (variables.doneTalkDog) then
+		local a = say { character = "dog", lines = {strings.dialogues.dog.text[1] }, noanim = true}
+		return a
+	else 
+		local a = say { character = "dog", lines = {strings.dialogues.dog.text[1] }, noanim = true}
+		table.insert (a, 
+	        { type = "callfunc", func = curry(startDialogue, { dialogueId="dog", nodeId=1, init = true })}
+	    )
+		return a
+	end
+end
+
+function talkToLoom()
+	if (variables.doneTalkLoom == true) then
+		local a = say { character = "guybrush", lines = {strings.dialogues.loom_pirate.text[16] } }
+		return a
+	else
+		return changeRoom("loom")
+	end
 end

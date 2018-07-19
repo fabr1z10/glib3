@@ -191,5 +191,24 @@ objects = {
 		offset = {0, 60},
 		tag ="ilp3"		
 	},
+	dog = {
+		text = strings.objects.dog,
+		tag = "dog",
+		pos = {289, 9},
+		dir = "north",
+		talk = talkToDog,
+        color = {170, 170, 170, 255},
+		offset = {0, 60},
+	},
+	loom_pirate = {
+		text = strings.objects.pirate,
+		tag = "loompirate",
+		pos = {239,15},
+		dir = "east",
+		color = {85, 85, 255, 255},
+		offset = {0, 40},
+		look = talkToLoom,
+		talk = talkToLoom	
+	}
 
 }

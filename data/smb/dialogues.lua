@@ -1,9 +1,13 @@
 
 require ("dialogues/lookout")
 require ("dialogues/pirates")
+require ("dialogues/dog")
+require ("dialogues/loom")
 
 local d = strings.dialogues.lookout.text
 local p = strings.dialogues.pirates.text
+local dog = strings.dialogues.dog.text
+local loom = strings.dialogues.loom_pirate.text
 
 
 -- this is the basic dialogue
@@ -58,7 +62,46 @@ dialogues = {
 			lines = {
 				[1] = { text = p[2], active = true, alwaysActive = true, click = curry(dialoguesPirates.getlost, 2) },
 				[2] = { text = p[3], active = true, alwaysActive = true, click = dialoguesPirates.iwanttobeapirate },
-				[3] = { text = p[4], active = true, alwaysActive = true, click = curry(dialoguesPirates.getlost, 4) }
+				[3] = { text = p[4], active = true, alwaysActive = true, click = curry(dialoguesPirates.getlost, 4) },
+				[4] = { text = p[32], active = false, click = dialoguesPirates.masteringSword },
+				[5] = { text = p[33], active = false, click = dialoguesPirates.masteringThievery },
+				[6] = { text = p[34], active = false, click = dialoguesPirates.treasureHunting },	
+				[7] = { text = p[35], active = false, click = dialoguesPirates.pigs },	
+				[8] = { text = p[36], active = false, click = dialoguesPirates.grog },	
+				[9] = { text = p[37], active = false, click = dialoguesPirates.leave },	
+				[10] = { text = p[50], active = false, alwaysActive =true, click = dialoguesPirates.masteringSwordAgain },
+				[11] = { text = p[60], active = false, alwaysActive =true, click = dialoguesPirates.masteringThieveryAgain },
+				[12] = { text = p[67], active = false, alwaysActive =true, click = dialoguesPirates.treasureHuntingAgain },
+			}
+		}
+	},
+	dog = {
+		[1] = {
+			lines = {
+				[1] = {text=dog[2], active =true, alwaysActive = true, click = dialoguesDog.woof },
+				[2] = {text=dog[3], active =true, alwaysActive = true, click = dialoguesDog.arf },
+				[3] = {text=dog[4], active =true, alwaysActive = true, clcik = dialoguesDog.ruff },
+				[4] = {text=dog[5], active =true, click = dialoguesDog.grrr },
+			}
+		},
+		[2] = {
+			lines = {
+				[5] = {text=dog[14], active=true, click = dialoguesDog.worf},
+				[6] = {text=dog[15], active=true, click = dialoguesDog.aroof},
+				[7] = {text=dog[16], active=true, click = dialoguesDog.lechuck},
+				[8] = {text=dog[17], active=true, click = dialoguesDog.yip},
+
+			}
+		}
+	},
+	loom_pirate = {
+		[1] = {
+			lines = {
+				[1] = { text=loom[2], active=true, click = dialoguesLoom.aye },
+				[2] = { text=loom[3], active=true, click = dialoguesLoom.hat },
+				[3] = { text=loom[4], active=true, click = dialoguesLoom.loom },
+				[4] = { text=loom[5], active=true, alwaysActive = true, click = dialoguesLoom.leave },
+				[5] = { text=loom[14], active=false, click = dialoguesLoom.pitch}
 			}
 		}
 	}

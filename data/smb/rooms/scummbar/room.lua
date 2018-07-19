@@ -111,6 +111,64 @@ assets = {
 		},
         }
     },
+	{
+		id = "dog",
+		sheet = "gfx/anims3.png",
+        type="sprite",
+        ppu=1,
+        animations = {
+        { name = "idle1", frames = { 
+			{duration = dt, quads = { { x = 71, y = 187, width = 16, height = 14, anchor = {0, 0}}}},
+			}
+		},
+        { name = "idle2", frames = { 
+			{duration = dt, quads = { { x = 74, y = 219, width = 19, height = 14, anchor = {3, 0}}}},
+			}
+		},
+        { name = "move", frames = { 
+			{duration = dt, quads = { { x = 70, y = 203, width = 18, height = 14, anchor = {2, 0}}}},
+			}
+		},
+        }
+	},
+	{
+		id = "fatpirate",
+		sheet = "gfx/anims3.png",
+        type="sprite",
+        ppu=1,
+        animations = {
+        { name = "idle", frames = { 
+			{duration = dt, quads = { { x = 286, y = 1, width = 30, height = 33, anchor = {0, 0}}}},
+			}
+		},
+        { name = "drink", frames = { 
+			{duration = dt, quads = { { x = 317, y = 1, width = 30, height = 35, anchor = {0, 0}}}},
+			{duration = dt, quads = { { x = 349, y = 1, width = 30, height = 39, anchor = {0, 0}}}},
+			{duration = dt, quads = { { x = 317, y = 1, width = 30, height = 35, anchor = {0, 0}}}},
+			}
+		},
+        }
+	},
+	{
+		id = "loompirate",
+		sheet = "gfx/anims.png",
+        type="sprite",
+        ppu=1,
+        animations = {
+        { name = "idle1", frames = { 
+			{duration = dt, quads = { { x = 352, y = 473, width = 29, height = 38, anchor = {0, 0}}}},
+			}
+		},
+        { name = "idle2", frames = { 
+			{duration = dt, quads = { { x = 414, y = 474, width = 29, height = 37, anchor = {0, 0}}}},
+			}
+		},
+        { name = "move", frames = { 
+			{duration = dt, quads = { { x = 383, y = 474, width = 29, height = 37, anchor = {0, 0}}}},
+			}
+		},
+        }
+	},
 },
 
 scene = {
@@ -213,6 +271,31 @@ scene = {
 				priority = 1,
 				object = "ilp"
 			},
+	        make_hotspot { 
+	            x = 300, 
+	            y = 15, 
+	            width = 15, 
+	            height = 15, 
+	            offset = {0, 0},
+	            priority = 1, 
+	            object = "dog",
+	            gfx = { model="dog", anim = "idle1" }
+	        },
+			{
+				tag = "fatpirate",
+				pos = {289, 36, 0.5},
+				gfx = {model = "fatpirate", anim="idle"}
+			},
+	        make_hotspot { 
+	            x = 260, 
+	            y = 17, 
+	            width = 20, 
+	            height = 20, 
+	            offset = {0, 0},
+	            priority = 1, 
+	            object = "loom_pirate",
+	            gfx = { model="loompirate", anim = "idle1" }
+	        },
 		}
 	},
 	makescummui1(),
@@ -234,10 +317,12 @@ scene = {
 function room.init()
     -- put your initialization code here
     variables._actionInfo:reset()
+print ("STARTING SCUMMBAR !!!")
 
 	local fromData = {
         village1 = { playerpos = {66, 19, 0}, anim = "idle_right" },
 		kitchen = { playerpos = {601, 16, 0}, anim = "idle_right", flip = true},
+		loom = {playerpos = {239, 15, 0}, anim ="idle_right", flip = false }
     }
 
     -- add player
@@ -260,11 +345,41 @@ function room.afterstartup()
 refreshInventory()
 end
 
+function runBackgroundScript(name)
+	
+	local s = Script.create("_" .. name)
+    s:add ({
+        { type = "delay", sec = 2.0 },
+		{ type = "animate", actor =name, anim="move", loop=1 },
+		{ type = "animate", actor =name, anim="idle2" },
+		{ type = "delay", sec = 2.0 },
+		{ type = "animate", actor =name, anim="move", loop=1 },
+		{ type = "animate", actor =name, anim="idle1" }	
+	})
+	s:setsequence()
+	s.loop = 0
+	monkey.play(s)
+	
+end
+
 function room.start() 
     --cook script
+	runBackgroundScript("dog")
+	runBackgroundScript("loompirate")
+
+	-- fat pirate
+	local s2 = Script.create("_fatpir")
+    s2:add ({
+        { type = "delay", sec = 2.0 },
+		{ type = "animate", actor ="fatpirate", anim="drink", loop=1 },
+		{ type = "animate", actor ="fatpirate", anim="idle" },
+	})
+	s2:setsequence()
+	s2.loop = 0
+	monkey.play(s2)
 
  	s = Script.create("_cook")
-	local n = 1
+	local n = 0
 	if (variables._previousroom == "kitchen") then
 	    s:add ({
 	        { type = "callfunc", func = curry (createObject, { 
@@ -319,6 +434,9 @@ function room.start()
     })
 	s:setsequence()
 	s.loop = n
+
+	
+
 	monkey.play(s)
 end
 

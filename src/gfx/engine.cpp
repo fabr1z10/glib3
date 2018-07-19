@@ -167,6 +167,7 @@ void Engine::MainLoop() {
         m_scriptEngine->Clear();
         m_sceneFactory->CleanUp();
         m_scene = nullptr;
+        m_garbage.clear();
         m_running = false;
     }
 }

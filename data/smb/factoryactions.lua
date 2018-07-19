@@ -107,11 +107,14 @@ print (args.lines[1])
         message = args.lines,
 		offset = c.offset,
 		animstart = args.animstart,
-		animend = args.animend
+		animend = args.animend,
+		noanim = args.noanim
     }
     }
     return actions
 end
+
+
 
 function turn (args)
     c = objects[args.character]

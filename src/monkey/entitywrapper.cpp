@@ -155,7 +155,7 @@ namespace luaFunctions {
                 TextAlignment align = table.Get<TextAlignment>("align", BOTTOM);
                 glm::vec4 color = table.Get<glm::vec4>("color");
                 glm::vec2 offset = table.Get<glm::vec2>("offset", glm::vec2(0.0f));
-                float time = table.Get<float>("time", 2.0f);
+                float time = table.Get<float>("time", 1.0f);
                 glm::vec4 outlineColor = table.Get<glm::vec4>("outlinecolor", glm::vec4(0.0f, 0.0f, 0.0f, 255.0f));
                 color/=255.0f;
                 outlineColor /= 255.0f;
@@ -177,8 +177,10 @@ namespace luaFunctions {
                 auto say = std::unique_ptr<Say>(new Say(id, actor, msg, color, offset));
                 std::string animStart = table.Get<std::string>("animstart", "");
                 std::string animEnd = table.Get<std::string>("animend","");
+                bool noAnim = table.Get<bool>("noanim", false);
                 say->SetAnimationEnd(animEnd);
                 say->SetAnimationStart(animStart);
+                say->SetNoAnim(noAnim);
                 script->AddActivity(std::move(say));
             } else if (type == "turn") {
                 std::string actor = table.Get<std::string>("actor");
