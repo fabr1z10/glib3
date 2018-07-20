@@ -2,8 +2,7 @@
 require ("funcs")
 require ("text")
 require ("dialogues")
-require ("actions")
-require ("dialogues/lookout")
+--require ("actions")
 
 local dt = 0.1
 
@@ -101,7 +100,14 @@ scene = {
 					anim = ((objects.village1_door.isopen() == true) and "open" or "close") 
 				}
 			},
-
+	        make_hotspot { 
+                x=992, 
+				y=30, 
+				width=16, 
+				height=40, 
+				priority = 1, 
+				object = "archway"
+			},
 
         }
 	},

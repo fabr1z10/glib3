@@ -295,6 +295,40 @@ assets = {
 		},
         }
 	},
+	{
+		id = "sleepypirate1",
+		sheet = "gfx/anims.png",
+        type="sprite",
+        ppu=1,
+        animations = {
+        { name = "idle", frames = { 
+			{duration = dt, quads = { { x = 41, y = 418, width = 33, height = 25, anchor = {0, 0}}}},
+			}
+		},
+        { name = "drink", frames = { 
+			{duration = dt, quads = { { x = 76, y = 418, width = 33, height = 25, anchor = {0, 0}}}},
+			{duration = dt, quads = { { x = 111, y = 418, width = 33, height = 25, anchor = {0, 0}}}},
+			{duration = dt, quads = { { x = 76, y = 418, width = 33, height = 25, anchor = {0, 0}}}},
+			}
+		},
+        }
+	},
+	{
+		id = "sleepypirate2",
+		sheet = "gfx/anims.png",
+        type="sprite",
+        ppu=1,
+        animations = {
+        { name = "idle", frames = { 
+			{duration = dt, quads = { { x = 41, y = 445, width = 40, height = 23, anchor = {0, 0}}}},
+			}
+		},
+        { name = "drink", frames = { 
+			{duration = dt*2, quads = { { x = 83, y = 445, width = 40, height = 23, anchor = {0, 0}}}},
+			}
+		},
+        }
+	},
 },
 
 scene = {
@@ -317,6 +351,14 @@ scene = {
 	            pos = {374, 20, 0.95},
 	            gfx = { image="gfx/scummbar/bg2.png" },
 	            layer = 1
+	        },
+	        {
+	            pos = {157, 0, 1},
+	            gfx = { image="gfx/scummbar/bg3.png" },
+	        },
+	        {
+	            pos = {20, 0, 1},
+	            gfx = { image="gfx/scummbar/bg4.png" },
 	        },
 	        {
 	          walkarea = { 
@@ -423,7 +465,7 @@ scene = {
 				gfx = {model = "piratecouple", anim="idle1"}
 			},
 			{
-				pos = {173, 0, 1},
+				pos = {173, 0, 1.01},
 				gfx = {model = "pirate1", anim="idle"}
 			},
 			{
@@ -436,7 +478,16 @@ scene = {
 				pos = {138, 38, -0.1},
 				gfx = {model = "pirate3", anim="idle1"}
 			},
-
+			{
+				tag ="sleepypirate1",
+				pos = {0, 0, 1.01},
+				gfx = {model = "sleepypirate1", anim="idle"}
+			},
+			{
+				tag ="sleepypirate2",
+				pos = {38, 0, 1.01},
+				gfx = {model = "sleepypirate2", anim="idle"}
+			},
 	        make_hotspot { 
 	            x = 260, 
 	            y = 17, 
@@ -477,6 +528,15 @@ scene = {
 	            priority = 1, 
 	            object = "pirates_listening"
 	        },
+	        make_hotspot { 
+	            x = 0, 
+	            y = 0, 
+	            width = 40, 
+	            height = 20, 
+	            offset = {0, 0},
+	            priority = 1, 
+	            object = "sleeping_pirate"
+	        },
 		}
 	},
 	makescummui1(),
@@ -504,7 +564,8 @@ function room.init()
         village1 = { playerpos = {66, 19, 0}, anim = "idle_right" },
 		kitchen = { playerpos = {601, 16, 0}, anim = "idle_right", flip = true},
 		loom = {playerpos = {239, 15, 0}, anim ="idle_right", flip = false },
-		estevan = {playerpos = {200, 10, 0}, anim= "idle_front", flip=false} 
+		estevan = {playerpos = {200, 10, 0}, anim= "idle_front", flip=false},
+		mancomb = {playerpos = {123, 17, 0}, anim= "idle_back", flip=false},
     }
 
     -- add player
@@ -569,6 +630,8 @@ function room.start()
 	runBackgroundScript2("fatpirate")
 	runBackgroundScript2("estevan")
 	runBackgroundScript2("mancomb")
+	runBackgroundScript2("sleepypirate1")
+	runBackgroundScript2("sleepypirate2")
 
  	s = Script.create("_cook")
 	local n = 0

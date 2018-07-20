@@ -26,6 +26,50 @@ function Script:add(actions)
     end
 end
 
+-- add a set of actions in sequence
+function Script:adds(sa)
+	if (sa ~= nil) then
+	    local n = #self.actions
+		self:add(sa)
+		local start = (n>0 and 0 or 1)
+		for i = start, #sa-1 do
+			table.insert(self.edges, {n+i-1, n+i})
+			print ("ADDING EDGE " .. tostring(n+i-1) .." TO " .. tostring(n+i))
+		end
+	end
+end
+
+-- add a set of actions in parallel
+function Script:addp(sa)
+	if (sa ~= nil) then
+	    local n = #self.actions
+		self:add(sa)
+		if (n > 0) then
+			for i = 1, #sa do
+				table.insert(self.edges, {n-1, n-1+i})
+			end
+		end
+	end
+end
+
+-- add action starting after the end of the last n
+function Script:addb(sa, m)
+	if (sa ~= nil) then
+	    local n = #self.actions
+		self:add({ sa })
+		local start = (n>0 and 0 or 1)
+		for i = 1, m do
+			table.insert(self.edges, {n-i, n})
+		end
+	end
+end
+
+
+
+
+
+
+
 function Script:setsequence()
     for n = 1, #self.actions-1 do
         table.insert (self.edges, {self.actions[n].id, self.actions[n+1].id})
@@ -114,6 +158,22 @@ print (args.lines[1])
     return actions
 end
 
+function say2 (args)
+	c = objects[args.character]
+    action = 
+    {
+        type= "say",
+        actor = c.tag,
+        color = c.color,
+        message = args.lines,
+		offset = c.offset,
+		animstart = args.animstart,
+		animend = args.animend,
+		noanim = args.noanim
+    }
+
+    return action
+end
 
 
 function turn (args)

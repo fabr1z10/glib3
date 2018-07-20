@@ -36,6 +36,7 @@ T Clamp(T x, T m, T M) {
     return (x > M ? M : (x < m ? m : x));
 }
 
+// rotate ccw vector P by 90 deg
 inline glm::vec2 Perp(glm::vec2 P) {
     return glm::vec2(-P.y, P.x);
 }

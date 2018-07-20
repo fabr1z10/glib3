@@ -225,8 +225,10 @@ objects = {
 		tag = "mancomb",
 		pos = {123,17},
 		dir = "north",
-		color = {170, 85, 0, 255},
+		color = {255, 85, 85, 255},
 		offset = {0, 40},
+		look = talkToMancomb,
+		talk = talkToMancomb	
 	},
 	pirates_listening = {
 		text = strings.objects.pirates,
@@ -235,6 +237,52 @@ objects = {
 		dir = "north",
 		talk = curry (say, { character="guybrush", lines= { strings.scummbar[2], strings.scummbar[3] }} ),
 		look = curry (say, { character="guybrush", lines= { strings.scummbar[3] }} )
+	},
+	sleeping_pirate = {
+		text = strings.objects.pirate,
+		tag = "sleepingpirate",
+		pos = {52,14},
+		dir ="south",
+		talk = curry (say, { character="guybrush", lines= { strings.scummbar[4] }} ),
+		look = curry (say, { character="guybrush", lines= { strings.scummbar[4] }} )
+		
+	},
+    archway = {
+        text = strings.objects.archway,
+        pos = {1008, 32}, -- location where the player will go
+		dir = "east",
+        walk = curry(changeRoom, "village2")
+    },
+	citizen = {
+		tag = "citizen",
+		text = strings.objects.citizen,
+		pos = {359, 27},
+		dir = "west",
+		color = {255, 85, 85, 255},
+		offset = {0,60},
+		look = lookCitizen,
+		talk = talkCitizen
+	},
+	lowmoralfiber = {
+		text = strings.objects.lowmoralfiber,
+		pos = {75,14},
+		dir="west",
+		talk = curry(talk, { character = "lowmoralfiber", node = 1}),
+	},
+	lmf1 = {
+		tag="lmf1",
+		color = {255, 85, 255, 255},
+		offset = {0,60}
+	},
+	lmf2 = {
+		tag="lmf2",
+		color = {85, 255, 255, 255},
+		offset = {0,60}
+	},	
+	lmf3 = {
+		tag="lmf3",
+		color = {85, 255, 85, 255},
+		offset = {0,60}
 	}
 
 }

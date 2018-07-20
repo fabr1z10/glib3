@@ -82,6 +82,7 @@ end
 
 function room.afterstartup() 
 	local firstLine = variables.talkedToEstevan and 6 or 1
+	variables.talkedToEstevan = true
 	local s = Script.create("startup")
 	s:add (say { character = "estevan", noanim = true, lines = { strings.dialogues.estevan.text[firstLine] } })
 	s:add ({ 

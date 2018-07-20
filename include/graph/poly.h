@@ -15,6 +15,7 @@ public:
     glm::vec2 GetVertex(int) const;
     bool isVertexConcave (int i) const;
     // gets the outward normal at the j-th index (connecting vertices j to j+1)
+    // ASSUMPTION: vertices are listed in a clockwise order
     glm::vec2 getNormalAtEdge (int edgeIndex);
     glm::vec2 getNormalAtVertex(int);
     void accept (AcyclicVisitor& v) override;

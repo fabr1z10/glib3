@@ -91,3 +91,12 @@ end
 function talkToEstevan()
 	return changeRoom("estevan")
 end
+
+function talkToMancomb()
+	if (variables.doneTalkMancomb == true) then
+		local a = say { character = "guybrush", lines = {strings.dialogues.mancomb.text[39] } }
+		return a
+	else
+		return changeRoom("mancomb")
+	end	
+end

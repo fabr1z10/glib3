@@ -4,12 +4,18 @@ require ("dialogues/pirates")
 require ("dialogues/dog")
 require ("dialogues/loom")
 require ("dialogues/estevan")
+require ("dialogues/mancomb")
+require ("dialogues/citizen")
+require ("dialogues/lowmoralfiber")
 
 local d = strings.dialogues.lookout.text
 local p = strings.dialogues.pirates.text
 local dog = strings.dialogues.dog.text
 local loom = strings.dialogues.loom_pirate.text
 local est = strings.dialogues.estevan.text
+local ms = strings.dialogues.mancomb.text
+local ct = strings.dialogues.citizen.text
+local lmf = strings.dialogues.lowmoralfiber.text
 
 -- this is the basic dialogue
 function pippo(f) 
@@ -117,6 +123,111 @@ dialogues = {
 			}
 		
 		}
+	},
+	mancomb = {
+		[1] = {
+			lines = {
+				[1] = { text=ms[3], active=true, click = dialoguesMancomb.guybrush },
+				[2] = { text=ms[4], active=true, click = dialoguesMancomb.crew },
+				[3] = { text=ms[5], active=true, alwaysActive = true, click = dialoguesMancomb.charge },
+				[4] = { text=ms[6], active=true, alwaysActive = true, click = dialoguesMancomb.leave },
+				[5] = { text=ms[27], active=false, click = curry(dialoguesMancomb.governor, 27) },
+				[6] = { text=ms[49], active=false, click = dialoguesMancomb.whatwasyourname },
+			}
+		},
+		[2] = {
+			lines = {
+				[1] = {text=ms[12], active=true, click = dialoguesMancomb.ilikeguybrush },
+				[2] = {text=ms[13], active=true, click = dialoguesMancomb.yourname },
+				[3] = {text=ms[14], active=true, click = dialoguesMancomb.dumbname },
+				[4] = {text=ms[15], active=true, click = dialoguesMancomb.insulted },
+			}
+		},
+		[3] = {
+			lines = {
+				[1] = {text=ms[19], active=true, click = dialoguesMancomb.pirate },
+				[2] = {text=ms[20], active=true, click = dialoguesMancomb.fortune },
+				[3] = {text=ms[21], active=true, click = dialoguesMancomb.dontknow },
+				[4] = {text=ms[22], active=true, click = dialoguesMancomb.noneofyourbusiness },
+			}
+		},
+		[4] = {
+				[1] = {text=ms[34], active=true, click = dialoguesMancomb.whynot },
+				[2] = {text=ms[35], active=true, click = dialoguesMancomb.iamwelcome },
+				[3] = {text=ms[36], active=true, click = dialoguesMancomb.gothere },
+		},
+		[5] = {
+				[1] = {text=ms[42], active=true, click = dialoguesMancomb.pirateleaders },
+				[2] = {text=ms[43], active=true, click = curry(dialoguesMancomb.governor, 43) },
+				[3] = {text=ms[44], active=true, click = dialoguesMancomb.leave2 },
+		},
+		[6] = {
+				[1] = {text=ms[54], active=true, click = dialoguesMancomb.howsthat},
+				[2] = {text=ms[55], active=true, click = dialoguesMancomb.whoisthispirate},
+				[3] = {text=ms[56], active=true, click = dialoguesMancomb.leave4 },
+		},
+
+
+	},
+	citizen = {
+		[1] = {
+			lines = {
+				[1] = { text = ct[2], active = true, click = curry(dialoguesCitizen.what, 2) },
+				[2] = { text = ct[3], active = true, click = curry(dialoguesCitizen.what, 3) },
+				[3] = { text = ct[4], active = true, click = dialoguesCitizen.code },
+				[4] = { text = ct[5], active = true, click = dialoguesCitizen.dominique },
+
+			}
+		},
+		[2] = {
+			lines = {
+				[1] = { text = ct[10], active = true, click = curry(dialoguesCitizen.wantmap, 10) },
+				[2] = { text = ct[11], active = true, click = dialoguesCitizen.sven },
+				[3] = { text = ct[12], active = true, click = curry(dialoguesCitizen.wantmap, 12) },
+				[4] = { text = ct[13], active = true, click = dialoguesCitizen.somewhereelse },
+			}	
+		},
+		[3] = {
+			lines = {
+				[1] = { text = ct[24], active = true, alwaysActive = true, click = dialoguesCitizen.nomoney },
+				[2] = { text = ct[25], active = true, alwaysActive = true, click = dialoguesCitizen.nowant },
+			}	
+		}
+	},
+	lowmoralfiber = {
+		[1] = {
+			lines = {
+				[1] = { text = lmf[1], active = true, click = dialoguesLowmoralfiber.nicerat },
+				[2] = { text = lmf[2], active = true },
+				[3] = { text = lmf[3], active = true, click = dialoguesLowmoralfiber.sneaky },
+				[4] = { text = lmf[4], active = true },
+				[5] = { text = lmf[5], active = true },
+			}
+		},
+		[2] = {
+			lines = {
+				[1] = { text = lmf[7], active = true, click = dialoguesLowmoralfiber.intelligentrats },
+				[2] = { text = lmf[8], active = true },
+				[3] = { text = lmf[9], active = true },
+				[4] = { text = lmf[10], active = true },
+			}
+		},
+		[3] = {
+			lines = {
+				[1] = { text = lmf[17], active = true, click = dialoguesLowmoralfiber.amazing },
+				[2] = { text = lmf[18], active = true },
+				[3] = { text = lmf[19], active = true },
+				[4] = { text = lmf[20], active = true },
+			}
+		},
+		[4] = {
+			lines = {
+				[1] = { text = lmf[31], active = true },
+				[2] = { text = lmf[32], active = true },
+				[3] = { text = lmf[33], active = true },
+
+			}
+		},
 	}
 }
 
