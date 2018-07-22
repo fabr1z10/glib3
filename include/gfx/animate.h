@@ -7,8 +7,14 @@ class Renderer;
 
 class Animate : public Activity {
 public:
-    Animate(int activityId, const std::string& actorId, const std::string& animId, bool flipX = false);
-    Animate(int activityId, Entity* entity, const std::string& animId, bool flipX = false);
+    //! \name Constructors
+    //@{
+    /*! Animate the given actor with animation animId. If flip is 0, no flip is applied. Otherwise,
+    the sprite horizontal flip is set to false if flip = 1, or true if flip = 2.
+     */
+    Animate(int activityId, const std::string& actorId, const std::string& animId, int flip = 0);
+    Animate(int activityId, Entity* entity, const std::string& animId, int flip = 0);
+    //@}
     void Start() override;
     void Reset() override {
         Activity::Reset();
@@ -18,7 +24,7 @@ public:
     void SetLoop (int);
 private:
     int m_loop;
-    bool m_flipX;
+    int m_flipX;
     Entity* m_entity;
     Renderer* m_renderer;
     std::string m_animId;

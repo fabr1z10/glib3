@@ -13,10 +13,11 @@ void Say::Start() {
     int count = 0;
     std::string animStart;
     std::string animEnd;
-    bool flipx {false};
+    //bool flipx {false};
+    Renderer* r = actor->GetComponent<Renderer>();
+    bool flipx = r->GetFlipX();
+
     if (!m_noAnim) {
-        Renderer* r = actor->GetComponent<Renderer>();
-        bool flipx = r->GetFlipX();
         std::string anim = r->GetAnimation();
         size_t s = anim.find_last_of('_');
         std::string face;

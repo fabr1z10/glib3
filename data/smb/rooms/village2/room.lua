@@ -291,6 +291,24 @@ assets = {
 
 		}		
 	},
+	{
+        id = "rat",
+        sheet = "gfx/anims.png",
+        type="sprite",
+        ppu=1,
+        animations = {
+        {
+       	    name = "idle",             
+            frames = 
+            { 
+	    	  	{ duration = dt, quads = { { x=54, y=126, width=13, height=12, anchor = {4, 0}}, { x=40, y=121, width=5, height=4, anchor={7,0} } }},             
+	    	  	{ duration = dt*2, quads = { { x=54, y=126, width=13, height=12, anchor = {4, 0}}, { x=47, y=123, width=6, height=2, anchor={7,0} } }},             
+	    	  	{ duration = dt, quads = { { x=40, y=126, width=13, height=10, anchor = {5, 0}}, { x=47, y=123, width=6, height=2, anchor={7,0} } }}             
+		    }
+        },
+		
+		}		
+	},
 },
 scene = {
 	{
@@ -355,6 +373,12 @@ scene = {
 				pos = {56, 23, 0},
 				scaling = true,
 				gfx = {model = "lmf3", anim="idle"}
+			},
+			{
+				tag ="rat",
+				pos = {56, 10, 0},
+				scaling = true,
+				gfx = {model = "rat", anim="idle", flip = true}
 			},
 	        make_hotspot { 
 	            x = 0, 

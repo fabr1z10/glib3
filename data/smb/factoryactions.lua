@@ -213,14 +213,14 @@ print("qwqwqw")
         face = dirHelper[o.dir]
     end
 	if (o.pickupAnim == nil) then
-		pickupAnim = "operate" .. face
+		pickupAnim = "operate_" .. face
 	else
 		pickupAnim = o.pickupAnim
 	end
 	return {
         {type = "animate", actor="player", anim=pickupAnim },
         {type = "delay", sec="0.5" },
-        {type = "animate", actor="player", anim=("idle" .. face) },
+        {type = "animate", actor="player", anim=("idle_" .. face) },
 		{type = "callfunc", func = curry(pickupItem, args.obj)},
 		{type = "callfunc", func = curry(removeObject, o.tag)}
 	}

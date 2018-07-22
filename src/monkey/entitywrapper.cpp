@@ -186,12 +186,12 @@ namespace luaFunctions {
                 std::string actor = table.Get<std::string>("actor");
                 std::string dir = table.Get<std::string>("face");
                 std::string anim;
-                bool flip {false};
+                int flip =1;
                 if (dir == "east") {
                     anim = "idle_right";
                 } else if (dir == "west") {
                     anim = "idle_right";
-                    flip = true;
+                    flip = 2;
                 } else if (dir == "north") {
                     anim = "idle_back";
                 } else if (dir == "south") {
@@ -203,9 +203,12 @@ namespace luaFunctions {
             } else if (type == "animate") {
                 std::string actor = table.Get<std::string>("actor");
                 std::string anim = table.Get<std::string>("anim");
-                bool flipX = table.Get<bool>("flipx", false);
+                int flip{0};
+                if (table.HasKey("flipx")) {
+                    flip = table.Get<bool>("flipx") ? 2 : 1;
+                }
                 int loopCount = table.Get<int>("loop", 0);
-                auto act = std::unique_ptr<Animate>(new Animate(id, actor, anim, flipX));
+                auto act = std::unique_ptr<Animate>(new Animate(id, actor, anim, flip));
                 act->SetLoop(loopCount);
                 script->AddActivity(std::move(act));
             } else if (type == "delay") {

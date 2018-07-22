@@ -42,7 +42,7 @@ void RenderingIterator::HandleCamera() {
             yMin = Clamp(yMin, currentViewport.y, currentViewport.y + currentViewport[3]);
             yMax = Clamp(yMax, currentViewport.y, currentViewport.y + currentViewport[3]);
             // clamp to current viewport!
-            currentViewport = glm::vec4(xMin, yMin, xMax - xMin, yMax - yMin);
+            viewport = glm::vec4(xMin, yMin, xMax - xMin, yMax - yMin);
         }
         info.viewport = viewport;
         m_changeCamera = true;

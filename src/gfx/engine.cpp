@@ -59,6 +59,8 @@ void Engine::InitGL(const EngineConfig& config) {
     }
 
     glfwMakeContextCurrent(window);
+    // note: we are setting a callback for the frame buffer resize event,
+    // so the dimensions we will get will be in pixels and NOT screen coordinates!
     glfwSetFramebufferSizeCallback(window, Engine::WindowResizeCallback);
 
     // Initialize GLEW
@@ -172,6 +174,7 @@ void Engine::MainLoop() {
     }
 }
 
+// width and height will be pixels!!
 void Engine::WindowResizeCallback(GLFWwindow* win, int width, int height) {
     // notify cameras
 

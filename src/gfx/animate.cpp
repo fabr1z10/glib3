@@ -2,11 +2,11 @@
 #include <gfx/renderer.h>
 #include <gfx/engine.h>
 
-Animate::Animate(int activityId, Entity* entity, const std::string& animId, bool flipX) : Activity(activityId), m_animId{animId}, m_entity{entity}, m_flipX{flipX}, m_loop{0} {
+Animate::Animate(int activityId, Entity* entity, const std::string& animId, int flip) : Activity(activityId), m_animId{animId}, m_entity{entity}, m_flipX{flip}, m_loop{0} {
 
 }
 
-Animate::Animate(int activityId, const std::string& actorId, const std::string& animId, bool flipX )
+Animate::Animate(int activityId, const std::string& actorId, const std::string& animId, int flipX )
 : Activity(activityId), m_animId{animId}, m_entity{nullptr}, m_actorId{actorId}, m_flipX{flipX}, m_loop{0} {
 
 }
