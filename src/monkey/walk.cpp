@@ -50,7 +50,7 @@ void Walk::Start() {
         int count = 0;
         glm::vec2 currentPoint = points.front();
         std::string anim2;
-        bool flipX{false};
+        int flipX{1};
         for (size_t i = 1; i < points.size(); ++i) {
             delta = points[i] - currentPos;
             float length = glm::length(delta);
@@ -87,7 +87,7 @@ void Walk::Start() {
                     anim2 = "idle_front";
                 }
             }
-            flipX = (anim == "walk_right" && delta.x < 0);
+            flipX = (anim == "walk_right" && delta.x < 0) ? 2 : 1;
             Push(std::make_shared<Animate>(count++, actor, anim, flipX));
             Push(std::make_shared<MoveTo>(count++, actor, currentPos + length * glm::normalize(delta), 200.0f));
             //if (i == points.size() - 1 || tMin < 1.0)

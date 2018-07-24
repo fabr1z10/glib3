@@ -33,8 +33,8 @@ variables = {
         turnoff = { code="turnoff", text = strings.ui.turnoff, objects = 1 }
     },
     -- sets the start room
-    _room = "village2",
-    _previousroom = "village1",
+    _room = "voodoolady",
+    _previousroom = "village2",
 	_pause = false,
     talkedToLookout = false,
 	talkedToCitizen = 0,
@@ -42,6 +42,7 @@ variables = {
 	talkedToEstevan = false,
 	talkedToMancomb = false,
 	talkedToPirates = false,
+	talkedToVoodooLady = false,
 	mancombKnowsWannabePirate = false,
 	doneTalkDog = false,
 	doneTalkLoom = false,

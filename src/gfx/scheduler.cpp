@@ -5,6 +5,13 @@ void Scheduler::Update(double dt) {
     if (!m_active)
         return;
     std::vector<std::string> toRemove;
+    // add queued scripts
+    for (auto& q : m_queuedScripts) {
+        m_scripts[q.first] = q.second;
+        q.second->Start();
+    }
+    m_queuedScripts.clear();
+
     for (auto& s : m_scripts) {
         s.second->Run(dt);
         if (s.second->IsComplete()) {
@@ -17,10 +24,11 @@ void Scheduler::Update(double dt) {
 }
 
 void Scheduler::AddScript(const std::string &name, std::shared_ptr<Script> script) {
-    if (m_scripts.count(name) > 0)
-        m_scripts.erase(name);
-    m_scripts[name] = script;
-    script->Start();
+    if (m_scripts.count(name) > 0) {
+        // a script with the same name already exists. Suspend it
+        m_scripts[name]->SetSuspended(true);
+    }
+    m_queuedScripts[name] = script;
 
 }
 

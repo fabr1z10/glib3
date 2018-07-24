@@ -309,6 +309,29 @@ assets = {
 		
 		}		
 	},
+	{
+        id = "door_voodoo",
+        sheet = "gfx/anims.png",
+        type="sprite",
+        ppu=1,
+        animations = {
+        {
+       	    name = "open",             
+            frames = 
+            { 
+	    	  	{ duration = dt, quads = { { x=301, y=130, width=26, height=24, anchor = {0, 0}}}}             
+		    }
+        },
+        {
+       	    name = "close",             
+            frames = 
+            { 
+	    	  	{ duration = dt, quads = { { x=273, y=130, width=26, height=24, anchor = {0, 0}}}}             
+		    }
+        },
+		
+		}		
+	},
 },
 scene = {
 	{
@@ -389,6 +412,19 @@ scene = {
 	            priority = 1, 
 	            object = "lowmoralfiber"
 	        },
+			make_hotspot { 
+				x=220, 
+				y=52, 
+				width=26, 
+				height=26, 
+				offset={0,0},
+				priority = 1, 
+				object = "door_voodoolady_out", 
+				gfx = { 
+					model="door_voodoo", 
+					anim = ((objects.door_voodoolady_out.isopen() == true) and "open" or "close") 
+				}
+			},
 		}
 	},
 	makescummui1(),

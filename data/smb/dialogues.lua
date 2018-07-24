@@ -7,6 +7,7 @@ require ("dialogues/estevan")
 require ("dialogues/mancomb")
 require ("dialogues/citizen")
 require ("dialogues/lowmoralfiber")
+require ("dialogues/voodoolady")
 
 local d = strings.dialogues.lookout.text
 local p = strings.dialogues.pirates.text
@@ -16,6 +17,7 @@ local est = strings.dialogues.estevan.text
 local ms = strings.dialogues.mancomb.text
 local ct = strings.dialogues.citizen.text
 local lmf = strings.dialogues.lowmoralfiber.text
+local v = strings.dialogues.voodoolady.text
 
 -- this is the basic dialogue
 function pippo(f) 
@@ -197,35 +199,68 @@ dialogues = {
 	lowmoralfiber = {
 		[1] = {
 			lines = {
-				[1] = { text = lmf[1], active = true, click = dialoguesLowmoralfiber.nicerat },
-				[2] = { text = lmf[2], active = true },
+				[1] = { text = lmf[1], active = true, click = curry(dialoguesLowmoralfiber.nicerat, 1) },
+				[2] = { text = lmf[2], active = true , click = dialoguesLowmoralfiber.vermin},
 				[3] = { text = lmf[3], active = true, click = dialoguesLowmoralfiber.sneaky },
-				[4] = { text = lmf[4], active = true },
-				[5] = { text = lmf[5], active = true },
+				[4] = { text = lmf[4], active = true, click = dialoguesLowmoralfiber.areyoupirates },
+				[5] = { text = lmf[5], active = true, click = curry(dialoguesLowmoralfiber.leave, 5) },
+				[6] = { text = lmf[40], active = false, click = curry(dialoguesLowmoralfiber.intelligentrats, 40) },
+				[7] = { text = lmf[67], active = false, click = curry(dialoguesLowmoralfiber.getminutes, 67) }
 			}
 		},
 		[2] = {
 			lines = {
-				[1] = { text = lmf[7], active = true, click = dialoguesLowmoralfiber.intelligentrats },
-				[2] = { text = lmf[8], active = true },
-				[3] = { text = lmf[9], active = true },
-				[4] = { text = lmf[10], active = true },
+				[1] = { text = lmf[7], active = true, click = curry(dialoguesLowmoralfiber.intelligentrats, 7) },
+				[2] = { text = lmf[8], active = true, click = curry(dialoguesLowmoralfiber.intelligentrats, 8) },
+				[3] = { text = lmf[9], active = true, click = dialoguesLowmoralfiber.winesauce },
+				[4] = { text = lmf[10], active = true, click = curry(dialoguesLowmoralfiber.leave, 10) },
 			}
 		},
 		[3] = {
 			lines = {
-				[1] = { text = lmf[17], active = true, click = dialoguesLowmoralfiber.amazing },
-				[2] = { text = lmf[18], active = true },
-				[3] = { text = lmf[19], active = true },
-				[4] = { text = lmf[20], active = true },
+				[1] = { text = lmf[17], active = true, click = curry(dialoguesLowmoralfiber.amazing, {17, 21}) },
+				[2] = { text = lmf[18], active = true, click = curry(dialoguesLowmoralfiber.amazing, {18, 41}) },
+				[3] = { text = lmf[19], active = true, click = curry(dialoguesLowmoralfiber.amazing, {19, 56}) },
+				[4] = { text = lmf[20], active = true, click = curry(dialoguesLowmoralfiber.leave, 20) },
 			}
 		},
 		[4] = {
 			lines = {
-				[1] = { text = lmf[31], active = true },
-				[2] = { text = lmf[32], active = true },
-				[3] = { text = lmf[33], active = true },
+				[1] = { text = lmf[31], active = true, click = dialoguesLowmoralfiber.nothanks },
+				[2] = { text = lmf[32], active = true, click = dialoguesLowmoralfiber.onmyway },
+				[3] = { text = lmf[33], active = true, click = curry(dialoguesLowmoralfiber.getminutes, 33) },
 
+			}
+		},
+		[5] = {
+			lines = {
+				[1] = { text = lmf[48], active = true, click = dialoguesLowmoralfiber.keg },
+				[2] = { text = lmf[49], active = true, click = curry(dialoguesLowmoralfiber.nicerat, 49) },
+				[3] = { text = lmf[50], active = true, click = curry(dialoguesLowmoralfiber.leave, 50)},
+				[4] = { text = lmf[51], active = true, click = dialoguesLowmoralfiber.pillage },
+
+			}
+		},
+	},
+	voodoolady = {
+		[1] = {
+			lines = {
+				[1] = { text = v[2], active = true, click = dialoguesVoodooLady.myname },
+				[2] = { text = v[3], active = true, click = dialoguesVoodooLady.future },
+				[3] = { text = v[4], active = true, alwaysActive = true, click = dialoguesVoodooLady.leave},
+				[4] = { text = v[28], active = false, click = dialoguesVoodooLady.changedmind },
+			}
+		},
+		[2] = {
+			lines = {
+				[1] = { text = v[18], active = true, click = dialoguesVoodooLady.tricks },
+				[2] = { text = v[19], active = true},
+			}
+		},
+		[3] = {
+			lines = {
+				[1] = { text = v[25], active = true, click = dialoguesVoodooLady.yes },
+				[2] = { text = v[26], active = true, click = dialoguesVoodooLady.no },
 			}
 		},
 	}

@@ -193,6 +193,11 @@ function pickupItem(obj)
 	refreshInventory()
 end
 
+function pickupItemQty(obj)
+	inventory[obj.name] = { qty = obj.qty }
+	refreshInventory()
+end
+
 function removeItemFromInventory(obj) 
 	print ("removing " .. obj)
 	inventory[obj] = nil
@@ -236,6 +241,13 @@ function talk(args)
     return {
         { type = "callfunc", func = curry(startDialogue, { dialogueId=args.character, nodeId=args.node, init = true }) }
     }
+end
+
+function lookPiecesOfEight() 
+	return {
+		say2 { character ="guybrush", lines = { strings.piecesofeightmsg() } }
+	}
+
 end
 
 
@@ -297,6 +309,24 @@ print ("OFOFOFOF")
     --inv:setactive(true)
 	a:enablecontrols(true)
 end
+
+function startScript()
+    ui = monkey.getEntity("uiplay")
+	d = monkey.getEntity("dialogue")
+	a = monkey.getEntity("main")
+    --monkey.disableGroup(1)
+    ui:setactive(false)
+	d:setactive(true)
+	a:enablecontrols(false)
+
+end
+
+function setActive (args) 
+	a = monkey.getEntity(args.id)
+	a:setactive(args.active)
+
+end
+
 
 function startDialogue(args)
     ui = monkey.getEntity("uiplay")

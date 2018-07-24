@@ -136,6 +136,15 @@ objects = {
 		look = curry (say, { character="guybrush", lines= { strings.kitchen[3] }} ),
 		pick = getFish
 	},
+	pieceofeight = {
+		text = strings.objects.pieceofeight,
+		plural = strings.objects.piecesofeight,
+		look = lookPiecesOfEight		
+	},
+	minutes = {
+		text = strings.objects.minutes,
+		look = curry (say, { character="guybrush", lines= { strings.village2[2] }} ),
+	},
 	potostew = {
 		text = strings.objects.potostew,
 		tag ="potostew",
@@ -283,6 +292,60 @@ objects = {
 		tag="lmf3",
 		color = {85, 255, 85, 255},
 		offset = {0,60}
+	},
+	rat = {
+		tag="rat",
+		color = {170, 170, 170, 255},
+		offset = {0,60}
+	},
+    door_voodoolady_out = {
+        text = strings.objects.door,
+        tag = "door_voodoo",
+        pos = {231, 52},
+		dir = "east",
+		openflag = false,
+		walk = curry(walkToDoor, { obj = "door_voodoolady_out", roomId = "voodoolady"}),
+		open = curry(operateDoor, { obj = "door_voodoolady_out", open = true }),
+		close = curry(operateDoor, { obj = "door_voodoolady_out", open = false }),
+		isopen = curry(isOpen, "door_voodoolady_out"),
+		setopen = curry2(setOpen, "door_voodoolady_out")		
+    },
+	voodoolady = {
+		tag="voodoolady",
+		color= {0, 170, 0, 255},
+		offset = {0, 60}
+	},
+	baskets = {
+		text = strings.objects.baskets,
+		pos = {124, 20},
+		dir = "south",
+		open = curry (say, { character="guybrush", lines= { strings.voodoolady[1], strings.voodoolady[2] }} ),
+		close = curry (say, { character="guybrush", lines= { strings.voodoolady[3] }} ),
+		push = curry (say, { character="guybrush", lines= { strings.voodoolady[3] }} ),
+		pull = curry (say, { character="guybrush", lines= { strings.voodoolady[3] }} ),
+		look = curry (say, { character="guybrush", lines= { strings.voodoolady[4] }} ),
+		use = curry (say, { character="guybrush", lines= { strings.voodoolady[3] }} ),
+	},
+	basket = {
+		text = strings.objects.basket,
+		pos = {178, 19},
+		dir = "south",
+		open = curry (say, { character="guybrush", lines= { strings.voodoolady[6]}} ),
+		close = curry (say, { character="guybrush", lines= { strings.voodoolady[3] }} ),
+		push = curry (say, { character="guybrush", lines= { strings.voodoolady[3] }} ),
+		pull = curry (say, { character="guybrush", lines= { strings.voodoolady[3] }} ),
+		look = curry (say, { character="guybrush", lines= { strings.voodoolady[5] }} ),
+		use = curry (say, { character="guybrush", lines= { strings.voodoolady[3] }} ),
 	}
-
+	-- door_voodoolady_in = {
+	-- 	text = strings.objects.door,
+	-- 	tag = "door_voodoo",
+ --        pos = {50, 15},
+	-- 	dir = "west",
+	-- 	walk = curry(walkToDoor, {obj = "door_kitchen_bar", roomId = "scummbar"}),
+	-- 	open = curry(operateDoor, { obj = "door_kitchen_bar", open = true }),
+	-- 	close = curry(operateDoor, { obj = "door_kitchen_bar", open = false }),
+	-- 	isopen = curry(isOpen, "door_bar_kitchen"),
+	-- 	setopen = curry2(setOpen, "door_bar_kitchen")		
+	-- },
 }

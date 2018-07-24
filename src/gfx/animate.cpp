@@ -20,7 +20,8 @@ void Animate::Start() {
 
     if (m_renderer == nullptr)
         GLIB_FAIL("Error! No renderer found for " << m_actorId << " when trying to animate " << m_animId);
-    m_renderer->SetFlipX(m_flipX);
+    if (m_flipX != 0)
+        m_renderer->SetFlipX(m_flipX == 2);
     m_renderer->SetAnimation(m_animId);
     if (m_loop == 0) {
         SetComplete();

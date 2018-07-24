@@ -33,7 +33,14 @@ function refreshInventory()
 	inv = monkey.getEntity("inventory")
 	inv:cleartext()
 	for k, v in pairs(inventory) do
-		inv:addbutton({ text = objects[k].text, priority = 1, onenter = curry2(hoverOnInventory, {obj = k, color = config.ui_inv_selected}),
+		-- create string
+		local t = ""
+		if (v.qty == 1) then
+			t = objects[k].text
+		else
+			t = tostring(v.qty) .. " " .. objects[k].plural
+		end
+		inv:addbutton({ text = t, priority = 1, onenter = curry2(hoverOnInventory, {obj = k, color = config.ui_inv_selected}),
         onleave = curry2(hoverOffInventory, {color = config.ui_inv_unselected}),
         onclick = runAction })
 	end

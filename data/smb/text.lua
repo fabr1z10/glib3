@@ -38,7 +38,12 @@ strings = {
 		pirates = "pirates",
 		archway = "archway",
 		citizen = "Citizen of Mêlée",
-		lowmoralfiber = "Men of Low Moral Fiber (pirates)"
+		lowmoralfiber = "Men of Low Moral Fiber (pirates)",
+		pieceofeight = "piece of eight",
+		piecesofeight = "pieces of eight",
+		minutes = "minutes",
+		baskets = "baskets",
+		basket = "basket"
         
         
     },
@@ -416,8 +421,97 @@ strings = {
 			[30] = "Want one?",
 			[31] = "No, thanks.",
 			[32] = "No, I must be on my way.",
-			[33] = "No, but I'll take one if you give me two pieces of eight."
+			[33] = "No, but I'll take one if you give me two pieces of eight.",
+			[34] = "Oh, they are not so bad.",
+			[35] = "-- squeak --",
+			[36] = "Sounds like this guy don't like rats!",
+			[37] = "Let's sauté him now!",
+			[38] = "I think you'd best leave, boy.",
+			[39] = "Ha ha ha ha ha hoo hoo ha ha ha",
+			[40] = "I apologize for what I said about rats.",
+			[41] = "But it's true.",
+			[42] = "OK, that's fair.",
+			[43] = "No, we're a wandering circus troupe.",
+			[44] = "But this rat scared away the elephant.",
+			[45] = "Of course we're pirates!",
+			[46] = "You can't buy clothes like these off the rack!",
+			[47] = "What do you want?",
+			[48] = "What's in the keg?",
+			[49] = "Where'd you get that rat?",
+			[50] = "Nothing. See you later.",
+			[51] = "How come you're on this street corner and not on a ship, looting, pillaging, sacking, that sort of thing?",
+			[52] = "Rum.",
+			[53] = "Jam.",
+			[54] = "Er... rum and jam.",
+			[55] = "It's an old pirate favorite, everybody knows that.",
+			[56] = "Actually, they were chimps, and they WEREN'T stupid.",
+			[57] = "AIEEE!!! Get away!!!",
+			[58] = "Well, pirating hasn't been panning out so well for us...",
+			[59] = "There are some UNNATURALLY talented pirates in the area right now...",
+			[60] = "...operating out of Monkey Island™.",
+			[61] = "So we've been pursuing alternate means of self-support.",
+			[62] = "We're trying to start up a circus.",
+			[63] = "It was working out well, until the rat scared off the elephant.",
+			[64] = "Now you've depressed us.",
+			[65] = "Go home.",
+			[66] = "See? Told you so.",
+			[67] = "I'll take those minutes if you give me two pieces of eight."
 
+			}
+		},
+		voodoolady = {
+			text = {
+			[1] = "What may I help you with, son?",
+			[2] = "My name is Guybrush Threepwood and I'm a mighty pirate.",
+			[3] = "Can you read palms? Am I going to be rich?",
+			[4] = "Neat place you got here. Guess I'll be on my way.",
+			[5] = "I can tell, you grow tired.",
+			[6] = "Go, please.",
+			[7] = "Yes?",
+			[8] = "Wait...",
+			[9] = "...don't say anything.",
+			[10] = "I can sense your name is...",
+			[11] = "...is...",
+			[12] = "...Guybrush...",
+			[13] = "...Guybrush Nosehair.",
+			[14] = "No...",
+			[15] = "...Threepwood",
+			[16] = "Guybrush Threepwood.",
+			[17] = "Am I not right?",
+			[18] = "Wow! That was amazing. Do you know any other tricks?",
+			[19] = "Lucky guess.",
+			[20] = "I do not deal in tricks.",
+			[21] = "What I know is the truth.",
+			[22] = "So...",
+			[23] = "...my mindreading skills tells me it is your future you are interested in.",
+			[24] = "Are you certain this is something you really wish to know?",
+			[25] = "Yes! Tell me everything that's going to happen to me.",
+			[26] = "No! Don't tell me a thing. Life should be unexpected and exciting.",
+			[27] = "Suit yourself.",
+			[28] = "I've changed my mind about knowing the future... spill it.",
+			[29] = "I am getting a vision...",
+			[30] = "... I see you taking a voyage, a long voyage.",
+			[31] = "I see you captaining a ship.",
+			[32] = "Yeah!",
+			[33] = "I see...",
+			[34] = "What?",
+			[35] = "See what?",
+			[36] = "I see a giant monkey.",
+			[37] = "Yikes!",
+			[38] = "I see you inside the giant monkey.",
+			[39] = "Gross.",
+			[40] = "Wait...",
+			[41] = "...it is all becoming clear.",
+			[42] = "Your journey will have many parts.",
+			[43] = "You will see things better left unseen.",
+			[44] = "You will hear things better left unheard.",
+			[45] = "You will learn things better left unlearned.",
+			[46] = "What kind of things?",
+			[47] = "I hate surprises.",
+			[48] = "NO!",
+			[49] = "The time is not right to know.",
+			[50] = "When you know your purpose, come see me...",
+			[51] = "...I will let you know then."
 			}
 		}
 
@@ -454,7 +548,17 @@ strings = {
 		[4] = "I don't think it's wise to wake a sleeping pirate."
 	},
 	village2 = {
-		[1] = "What are YOU looking at?"
+		[1] = "What are YOU looking at?",
+		[2] = "There sure are a lot of spelling errors.",
+		[3] = "I have",
+	},
+	voodoolady = {
+		[1] = "Actually, I'm not THAT curious to find out what's inside.",
+		[2] = "Probably poisonous snakes.",
+		[3] = "No thanks, I'd rather not touch any of this creepy voodoo stuff.",
+		[4] = "Gee, I wonder what's in these baskets.",
+		[5] = "Hmmm... I think I hear slithering inside.",
+		[6] = "No thanks. Something would probably jump out and bite me."
 	}
 }
 
@@ -462,6 +566,9 @@ strings.dialogues.lookout.randomLookoutMsg = function()
     return strings.dialogues.lookout.text[43] .. strings.dialogues.lookout.names[math.random(1, #strings.dialogues.lookout.names)] .. "."
 end
 
+strings.piecesofeightmsg = function() 
+    return strings.village2[3] .. " " .. tostring(inventory["pieceofeight"].qty) .. " " .. strings.objects.piecesofeight
+end
     
     
     

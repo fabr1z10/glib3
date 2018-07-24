@@ -13,6 +13,7 @@ end
 require ("factoryactions")
 require ("rooms/scummbar/actions")
 require ("rooms/kitchen/actions")
+require ("rooms/voodoolady/actions")
 require ("rooms/village2/actions")
 require ("items")
 require ("factoryobjects")

@@ -19,6 +19,7 @@
 #include <monkey/enableblock.h>
 #include <monkey/scripthotspot.h>
 #include <gfx/textview.h>
+#include <gfx/scroll.h>
 
 float EntityWrapper::GetX() const {
     return m_underlying->GetPosition().x;
@@ -189,6 +190,7 @@ namespace luaFunctions {
                 int flip =1;
                 if (dir == "east") {
                     anim = "idle_right";
+
                 } else if (dir == "west") {
                     anim = "idle_right";
                     flip = 2;
@@ -227,6 +229,18 @@ namespace luaFunctions {
                 int wallId = table.Get<int>("wall");
                 bool active = table.Get<bool>("active");
                 script->AddActivity(std::unique_ptr<EnableBlock>(new EnableBlock(id, wallId, active)));
+            } else if (type == "scroll") {
+                std::string camId = table.Get<std::string>("cam");
+                bool relative{false};
+                glm::vec2 displacement(0.0f);
+                if (table.HasKey("by")) {
+                    relative = true;
+                    displacement = table.Get<glm::vec2>("by");
+                } else {
+                    displacement = table.Get<glm::vec2>("to");
+                }
+                float speed = table.Get<float>("speed");
+                script->AddActivity(std::unique_ptr<Scroll>(new Scroll(id, camId, displacement, relative, speed)));
             }
         }
         luabridge::LuaRef edges = ref["edges"];
