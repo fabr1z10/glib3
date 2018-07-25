@@ -5,7 +5,7 @@
 
 class Sequence : public Activity {
 public:
-    Sequence(int id);
+    Sequence();
     void Start() override {}
     void Run (float dt) override;
     void Push (std::shared_ptr<Activity> activity);

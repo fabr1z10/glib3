@@ -20,3 +20,14 @@ function gotoLady()
 	
 	monkey.play(s)
 end
+
+function lookknickknacks() 
+ 	s = Script.create("_walk")
+    s:adds({
+		say2 {character ="guybrush", lines ={d[10], d[11], d[12], d[13]} },
+		{ type="turn", actor="player", face="south" },
+		say2 {character ="guybrush", lines ={d[14], d[15]} }
+	})
+	monkey.play(s)
+
+end

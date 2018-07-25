@@ -8,7 +8,7 @@ class Edge;
 
 class Activity {
 public:
-    Activity (int id) : m_id{id}, m_complete{false}, m_success{true} {}
+    Activity () : m_complete{false}, m_success{true} {}
     virtual ~Activity();
     virtual void Start() = 0;
     virtual void Run (float dt) = 0;
@@ -21,9 +21,9 @@ public:
     std::vector<Activity*>& GetFollowing();
     void AddPrevious (Activity*);
     void AddNext (Activity*);
-    int GetId() const;
+
 private:
-    int m_id;
+    //int m_id;
     std::vector<Activity*> m_previous;
     std::vector<Activity*> m_following;
     bool m_complete;
@@ -32,9 +32,6 @@ protected:
 
 };
 
-inline int Activity::GetId() const {
-    return m_id;
-}
 
 inline bool Activity::IsComplete () const{
     return m_complete;

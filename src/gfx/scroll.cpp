@@ -1,7 +1,7 @@
 #include "gfx/scroll.h"
 #include "gfx/engine.h"
 
-Scroll::Scroll(int activityId, const std::string &camId, glm::vec2 targetPos, bool relative, float speed) : Activity(activityId),
+Scroll::Scroll(const std::string &camId, glm::vec2 targetPos, bool relative, float speed) : Activity(),
     m_targetPos{targetPos}, m_relative{relative}, m_speed{speed}, m_camId{camId}, m_distanceToCover{0.0f}, m_distanceCovered{0.0f} {}
 
 void Scroll::Start() {

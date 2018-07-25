@@ -310,6 +310,17 @@ objects = {
 		isopen = curry(isOpen, "door_voodoolady_out"),
 		setopen = curry2(setOpen, "door_voodoolady_out")		
     },
+    door_voodoolady_in = {
+        text = strings.objects.door,
+        tag = "door_voodoo",
+        pos = {106, 40},
+		dir = "west",
+		walk = curry(walkToDoor, { obj = "door_voodoolady_in", roomId = "village2"}),
+		open = curry(operateDoor, { obj = "door_voodoolady_in", open = true }),
+		close = curry(operateDoor, { obj = "door_voodoolady_in", open = false }),
+		isopen = curry(isOpen, "door_voodoolady_out"),
+		setopen = curry2(setOpen, "door_voodoolady_out")		
+    },
 	voodoolady = {
 		tag="voodoolady",
 		color= {0, 170, 0, 255},
@@ -336,6 +347,37 @@ objects = {
 		pull = curry (say, { character="guybrush", lines= { strings.voodoolady[3] }} ),
 		look = curry (say, { character="guybrush", lines= { strings.voodoolady[5] }} ),
 		use = curry (say, { character="guybrush", lines= { strings.voodoolady[3] }} ),
+	},
+	chickens = {
+		text = strings.objects.chickens,
+		pos = {94, 20},
+		dir="south",
+		pick =curry (say, { character="guybrush", lines= { strings.voodoolady[8]}} ),
+		look =curry (say, { character="guybrush", lines= { strings.voodoolady[7]}} ),
+	},
+	statue = {
+		text = strings.objects.statue,
+		pos = {185, 40},
+		dir = "west",
+		open = curry (say, { character="guybrush", lines= { strings.voodoolady[3]}} ),
+		close = curry (say, { character="guybrush", lines= { strings.voodoolady[3] }} ),
+		push = curry (say, { character="guybrush", lines= { strings.voodoolady[3] }} ),
+		pull = curry (say, { character="guybrush", lines= { strings.voodoolady[3] }} ),
+		--look = curry (say, { character="guybrush", lines= { strings.voodoolady[9] }} ),
+		use = curry (say, { character="guybrush", lines= { strings.voodoolady[3] }} ),
+	},
+	knickknacks = {
+		text = strings.objects.knickknacks,
+		pos = {189, 41},
+		dir ="north",
+		look = lookknickknacks
+	},
+	couch = {
+		text = strings.objects.couch,
+		pos = {209,40},
+		dir ="north",
+		look = curry (say, { character="guybrush", lines= { strings.voodoolady[17] }} ),
+		use = curry (say, { character="guybrush", lines= { strings.voodoolady[16] }} )
 	}
 	-- door_voodoolady_in = {
 	-- 	text = strings.objects.door,

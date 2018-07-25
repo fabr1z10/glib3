@@ -47,7 +47,7 @@ void Walk::Start() {
     if (delta != glm::vec2(0.0f))
     {
         std::vector<glm::vec2> points = ShortestPath::Find(*m_shape, currentPos, m_p);
-        int count = 0;
+        //int count = 0;
         glm::vec2 currentPoint = points.front();
         std::string anim2;
         int flipX{1};
@@ -88,8 +88,8 @@ void Walk::Start() {
                 }
             }
             flipX = (anim == "walk_right" && delta.x < 0) ? 2 : 1;
-            Push(std::make_shared<Animate>(count++, actor, anim, flipX));
-            Push(std::make_shared<MoveTo>(count++, actor, currentPos + length * glm::normalize(delta), 200.0f));
+            Push(std::make_shared<Animate>(actor, anim, flipX));
+            Push(std::make_shared<MoveTo>(actor, currentPos + length * glm::normalize(delta), 200.0f));
             //if (i == points.size() - 1 || tMin < 1.0)
             currentPos = points[i];
             if (tMin < 1.0)
@@ -100,6 +100,6 @@ void Walk::Start() {
             //script->AddActivity(p);
         }
         if (!anim2.empty())
-            Push(std::make_shared<Animate>(count++, actor, anim2, flipX));
+            Push(std::make_shared<Animate>(actor, anim2, flipX));
     }
 }

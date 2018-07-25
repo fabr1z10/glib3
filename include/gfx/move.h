@@ -5,7 +5,7 @@
 
 class MoveTo : public Activity {
 public:
-    MoveTo(int activityId, Entity*, glm::vec2 pos, float speed);
+    MoveTo(Entity*, glm::vec2 pos, float speed);
     void Start() override;
     void Run (float dt) override;
 private:

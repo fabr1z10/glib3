@@ -5,7 +5,7 @@
 
 class DelayTime : public Activity {
 public:
-    DelayTime(int activityId, float sec) : Activity(activityId), m_time{sec}, m_elapsed{0.0f} {}
+    DelayTime(float sec) : Activity(), m_time{sec}, m_elapsed{0.0f} {}
     void Start() override ;
     void Run (float dt) override;
 private:

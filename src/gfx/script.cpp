@@ -3,6 +3,7 @@
 #include <iostream>
 
 void Script::Start() {
+    // by convention, the script starts from "scriptname@0"
     auto it = m_activities.find(m_startId);
     if (it == m_activities.end())
     {
@@ -14,11 +15,11 @@ void Script::Start() {
     it->second->Start();
 }
 
-void Script::AddActivity(std::unique_ptr<Activity> act) {
-    m_activities[act->GetId()] = std::move( act);
+void Script::AddActivity(const std::string& id, std::unique_ptr<Activity> act) {
+    m_activities[id] = std::move( act);
 }
 
-void Script::AddEdge (int fromActivity, int toActivity) {
+void Script::AddEdge (const std::string& fromActivity, const std::string& toActivity) {
     auto itFrom = m_activities.find(fromActivity);
     if (itFrom == m_activities.end())
         GLIB_FAIL("Don't know activity " << fromActivity);
@@ -63,7 +64,7 @@ void Script::Run (float dt) {
 
     if (m_active.empty())
     {
-        if (m_loop == -1) {
+        if (m_loop.empty()) {
             m_complete = true;
         }
         else {

@@ -1,85 +1,58 @@
+-- Create a script where the player walks to an object and turns toward its direction
+function createWalkToAction(args)
 
--- script object
-Script = {}
-Script.__index = Script
+	-- create an empty script	
+	local s = Script:new(args.name)
+ 
+	-- if the object is in the inventory, nothing to be done
+	if (inventory[args.objectId] ~= nil) then
+		return s
+	end
+	
+    obj = objects[args.objectId]
+	if (obj.posfunc == nil) then
+		walkPos = obj.pos
+	else
+		walkPos = obj.posfunc()
+	end
 
-function Script.create(id)
-    local self = setmetatable({}, Script)
-    self.id = id
-    self.startid = 0
-	self.loop = -1
-    self.actions = {}
-    self.edges={}
-    return self
-end
+	s:push({
+        [0] = { type="walkto", walkarea = "walkarea", actor = "player", pos = walkPos },
+    })
 
--- add actions to the script
-function Script:add(actions)
-    if (actions ~= nil) then
-        for _, action in ipairs(actions) do
-            action.id = #self.actions
-            print("adding " .. action.type)
-            table.insert (self.actions, action)
-        end
-    else
-        print("NIL")
+	dir = nil
+	if (obj.dirfunc ~= nil) then
+		dir = obj.dirfunc()
+	else
+		dir = obj.dir
+	end
+
+    if (dir ~= nil) then
+		s:push({
+        	[1] = { type="turn", actor = "player", face = dir, desc = {0} }
+        })
     end
+	return s
 end
 
--- add a set of actions in sequence
-function Script:adds(sa)
-	if (sa ~= nil) then
-	    local n = #self.actions
-		self:add(sa)
-		local start = (n>0 and 0 or 1)
-		for i = start, #sa-1 do
-			table.insert(self.edges, {n+i-1, n+i})
-			print ("ADDING EDGE " .. tostring(n+i-1) .." TO " .. tostring(n+i))
-		end
-	end
+function say (args)
+	local s = Script:new(args.scriptname)
+	c = objects[args.character]
+	s:push({
+    	[0] = {
+	        type= "say",
+    	    actor = c.tag,
+        	color = c.color,
+        	message = args.lines,
+			offset = c.offset,
+			animstart = args.animstart,
+			animend = args.animend,
+			noanim = args.noanim
+    	}
+    })
+    return s
 end
 
--- add a set of actions in parallel
-function Script:addp(sa)
-	if (sa ~= nil) then
-	    local n = #self.actions
-		self:add(sa)
-		if (n > 0) then
-			for i = 1, #sa do
-				table.insert(self.edges, {n-1, n-1+i})
-			end
-		end
-	end
-end
-
--- add action starting after the end of the last n
-function Script:addb(sa, m)
-	if (sa ~= nil) then
-	    local n = #self.actions
-		self:add({ sa })
-		local start = (n>0 and 0 or 1)
-		for i = 1, m do
-			table.insert(self.edges, {n-i, n})
-		end
-	end
-end
-
-
-
-
-
-
-
-function Script:setsequence()
-    for n = 1, #self.actions-1 do
-        table.insert (self.edges, {self.actions[n].id, self.actions[n+1].id})
-    end
-end
-
-function Script:setloop(n)
-    self:setsequence()
-   ---table.insert (self.edges, {self.actions[#self.actions].id, self.actions[n].id})
-end
 
 function createObject (obj) 
     print ("CREATE OBJ" .. obj.tag)
@@ -93,70 +66,13 @@ function removeObject (tag)
     monkey.removeEntity(tag)
 end
 
-function createWalkToAction (objectId)
 
-
-	-- if the object is in the inventory, nothing to be done
-	if (inventory[objectId] ~= nil) then
-		return
-	end
-	
-    obj = objects[objectId]
-	if (obj.posfunc == nil) then
-		walkPos = obj.pos
-	else
-		walkPos = obj.posfunc()
-	end
-
-    actions = {
-        {
-            type = "walkto",
-            walkarea = "walkarea",
-            actor = "player",
-            pos = walkPos
-        }
-    }
-
-	dir = nil
-	if (obj.dirfunc ~= nil) then
-		dir = obj.dirfunc()
-	else
-		dir = obj.dir
-	end
-
-    if (dir ~= nil) then
-        table.insert (actions,
-        {
-            actor = "player",
-            type = "turn",
-            face = dir
-        })
-     end
-
-     return actions
-end
 
 function empty() 
     return nil
 end
 
-function say (args)
-	c = objects[args.character]
-print (args.lines[1])
-    actions = {
-    {
-        type= "say",
-        actor = c.tag,
-        color = c.color,
-        message = args.lines,
-		offset = c.offset,
-		animstart = args.animstart,
-		animend = args.animend,
-		noanim = args.noanim
-    }
-    }
-    return actions
-end
+
 
 function say2 (args)
 	c = objects[args.character]

@@ -63,6 +63,17 @@ assets = {
 			}
 		}}
 	},
+	{
+		id = "chickens",
+		sheet = "gfx/anims.png",
+        type="sprite",
+        ppu=1,
+        animations = {
+        { name = "idle", frames = { 
+			{duration = dt, quads = { { x = 89, y = 260, width = 56, height = 48, anchor = {0, 0}}}},
+			}
+		}}
+	},
 	{	
 		id ="voodoolady",
 		sheet = "gfx/anims.png",
@@ -85,7 +96,17 @@ assets = {
 
 		}
 		
-	}
+	},
+    {
+        id = "door",
+        sheet = "gfx/anims.png",
+        type="sprite",
+        ppu=1,
+        animations = {
+        { name = "close", frames = { {duration = dt, quads = { { x = 183, y = 221, width = 33, height = 58, anchor = {0, 0}}}}}},
+        { name = "open", frames = { {duration = dt, quads = { { x = 218, y = 221, width = 33, height = 58, anchor = {0, 0}}}}}}
+        }
+    },
 },
 
 scene = {
@@ -147,6 +168,54 @@ scene = {
 				scaling = true,
 	            gfx = { model="basket", anim = "idle" }
 	        },
+	        make_hotspot { 
+	            x = 50, 
+	            y = 69, 
+				z = 1,
+	            width = 40, 
+	            height = 40, 
+	            offset = {0, 0},
+	            priority = 1, 
+	            object = "chickens",
+	            gfx = { model="chickens", anim = "idle" }
+	        },
+	        make_hotspot { 
+	            x = 153, 
+	            y = 44, 
+	            width = 24, 
+	            height = 43, 
+	            offset = {0, 0},
+	            priority = 1, 
+	            object = "statue"
+	        },
+	        make_hotspot { 
+	            x = 176, 
+	            y = 64, 
+	            width = 35, 
+	            height = 34, 
+	            offset = {0, 0},
+	            priority = 1, 
+	            object = "knickknacks"
+	        },
+	        make_hotspot { 
+	            x = 179, 
+	            y = 46, 
+	            width = 77, 
+	            height = 28, 
+	            offset = {0, 0},
+	            priority = 1, 
+	            object = "couch"
+	        },
+	        make_hotspot { 
+	            x = 87, 
+	            y = 42, 
+	            width = 33, 
+	            height = 58, 
+	            offset = {0, 0},
+	            priority = 1, 
+	            object = "door_voodoolady_in",
+	            gfx = { model="door", anim = ((objects.door_voodoolady_in.isopen() == true) and "open" or "close") }
+	        },
 			{
 				walktrigger = {				
 			 		shape = { type = "rect", width=64, height=132, offset = {255, 12}},
@@ -200,7 +269,7 @@ scene = {
 function room.init()
 	variables._actionInfo:reset()
 	local fromData = {
-        village2 = { playerpos = {77, 36, 0}, anim = "idle_right" },
+        village2 = { playerpos = {106, 40, 0}, anim = "idle_right" },
     }
 
     -- add player
@@ -221,7 +290,14 @@ end
 
 function room.afterstartup() 
 	setActive {id="bg2", active=false}
-refreshInventory()
+	refreshInventory()
+	-- s = Script.create("_init")
+ --    s:adds ({
+	-- 	{ type = "animate", actor="door_voodoo", anim="open" },
+	-- 	{ type ="delay", sec = 0.5},
+	-- 	{ type = "animate", actor="door_voodoo", anim="close" },
+ --    })
+	-- monkey.play(s)
 end
 
 

@@ -11,7 +11,6 @@ class Entity;
 class ShowMessage : public Activity {
 public:
     ShowMessage(
-            int id,
             const std::string& message,
             const std::string& font,
             const std::string& actor,
@@ -20,10 +19,9 @@ public:
             glm::vec4 outlineColor,
             TextAlignment align,
             float time,
-            glm::vec2 offset) : Activity(id), m_generatedEntity{nullptr}, m_message{message}, m_time{time}, m_font{font}, m_actor{actor}, m_size{size},
+            glm::vec2 offset) : Activity(), m_generatedEntity{nullptr}, m_message{message}, m_time{time}, m_font{font}, m_actor{actor}, m_size{size},
                                 m_align{align}, m_color{color}, m_outlineColor{outlineColor}, m_offset{offset} {}
     ShowMessage(
-            int id,
             const std::string& message,
             const std::string& font,
             glm::vec3 pos,
@@ -32,7 +30,7 @@ public:
             glm::vec4 outlineColor,
             TextAlignment align,
             float time,
-            glm::vec2 offset) : Activity(id), m_generatedEntity{nullptr}, m_message{message}, m_time{time}, m_font{font}, m_pos{pos}, m_size{size},
+            glm::vec2 offset) : Activity(), m_generatedEntity{nullptr}, m_message{message}, m_time{time}, m_font{font}, m_pos{pos}, m_size{size},
                                 m_align{align}, m_color{color}, m_outlineColor{outlineColor}, m_offset{offset} {}
     virtual ~ShowMessage();
     void Start() override;

@@ -4,6 +4,7 @@
 #include <gfx/enums.h>
 #include <vector>
 #include <glm/glm.hpp>
+#include <unordered_map>
 
 template <typename T>
 std::vector<T> ReadVector(luabridge::LuaRef& ref) {
@@ -74,7 +75,7 @@ public:
 //        return out;
 
     }
-
+    static std::unordered_map<std::string, luabridge::LuaRef> getKeyValueMap(const luabridge::LuaRef& ref);
 private:
     luabridge::LuaRef m_ref;
 };

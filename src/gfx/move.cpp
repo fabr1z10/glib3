@@ -1,7 +1,7 @@
 #include <gfx/move.h>
 #include <iostream>
 
-MoveTo::MoveTo(int activityId, Entity* entity, glm::vec2 pos, float speed) : Activity(activityId), m_entity(entity), m_toPos(pos), m_speed{speed},
+MoveTo::MoveTo(Entity* entity, glm::vec2 pos, float speed) : Activity(), m_entity(entity), m_toPos(pos), m_speed{speed},
                                                                              m_lengthCovered{0.0f}, m_lengthToCover{0.0f}
 {
 

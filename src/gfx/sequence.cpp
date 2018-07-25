@@ -1,6 +1,6 @@
 #include <gfx/sequence.h>
 
-Sequence::Sequence(int id) : Activity(id), m_current(nullptr) {}
+Sequence::Sequence() : Activity(), m_current(nullptr) {}
 
 void Sequence::Push(std::shared_ptr<Activity> activity) {
     m_innerActivities.push(activity);

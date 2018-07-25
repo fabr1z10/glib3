@@ -8,7 +8,7 @@
 */
 class Scroll : public Activity {
 public:
-    Scroll (int activityId, const std::string& camId, glm::vec2 targetPos, bool relative, float speed);
+    Scroll (const std::string& camId, glm::vec2 targetPos, bool relative, float speed);
     void Start() override;
     void Run (float dt) override;
 private:

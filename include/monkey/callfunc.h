@@ -5,7 +5,7 @@
 
 class CallFunc : public Activity {
 public:
-    CallFunc(int activityId, luabridge::LuaRef func) : Activity(activityId), m_func{func} {}
+    CallFunc(luabridge::LuaRef func) : Activity(), m_func{func} {}
     void Start() override;
     void Run (float dt) override {}
 private:

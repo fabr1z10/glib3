@@ -4,12 +4,20 @@ function curry(f, arg)
     end 
 end
 
+function curryg(f, arg) 
+	return function(name) 
+		arg.scriptname = name
+		return f(arg)
+	end
+end
+
 function curry2(f, arg)
     return function(x)
        f(arg, x) 
     end 
 end
 
+require ("script")
 require ("factoryactions")
 require ("rooms/scummbar/actions")
 require ("rooms/kitchen/actions")

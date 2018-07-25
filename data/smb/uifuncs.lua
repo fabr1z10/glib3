@@ -1,15 +1,15 @@
 defaultActions = {
    walk = empty,
-   look = curry (say, {character="guybrush", lines = {strings.defaultactions[4]} }),
-   open = curry (say, {character="guybrush", lines = {strings.defaultactions[1]} }),
-   close = curry (say, {character="guybrush", lines = {strings.defaultactions[2]} }),
-   push = curry (say, {character="guybrush", lines = {strings.defaultactions[3]} }),
-   pull = curry (say, {character="guybrush", lines = {strings.defaultactions[3]} }),
-   pick = curry (say, {character="guybrush", lines = {strings.defaultactions[5]} }),
-   use = curry (say, {character="guybrush", lines = {strings.defaultactions[2]} }),
-   talk = curry (say, {character="guybrush", lines = {strings.defaultactions[2]} }),
-   turnon = curry (say, {character="guybrush", lines = {strings.defaultactions[2]} }),
-   turnoff = curry (say, {character="guybrush", lines = {strings.defaultactions[2]} })
+   look = curryg (say, {character="guybrush", lines = {strings.defaultactions[4]} }),
+   open = curryg (say, {character="guybrush", lines = {strings.defaultactions[1]} }),
+   close = curryg (say, {character="guybrush", lines = {strings.defaultactions[2]} }),
+   push = curryg (say, {character="guybrush", lines = {strings.defaultactions[3]} }),
+   pull = curryg (say, {character="guybrush", lines = {strings.defaultactions[3]} }),
+   pick = curryg (say, {character="guybrush", lines = {strings.defaultactions[5]} }),
+   use = curryg (say, {character="guybrush", lines = {strings.defaultactions[2]} }),
+   talk = curryg (say, {character="guybrush", lines = {strings.defaultactions[2]} }),
+   turnon = curryg (say, {character="guybrush", lines = {strings.defaultactions[2]} }),
+   turnoff = curryg (say, {character="guybrush", lines = {strings.defaultactions[2]} })
    
 }
 
@@ -144,7 +144,8 @@ function runAction ()
         return nil
     end
     print ("Current verb " .. variables._actionInfo.verb.code)
-    local s = Script.create("_walk")
+	-- create a brand new script
+    local s = Script:new("main")
     print("Number of actions = " .. #s.actions)
     if (variables._actionInfo.obj2 == nil) then
         -- try to run a single object action
@@ -157,13 +158,13 @@ function runAction ()
                 updateVerb()
                 return
             else
-               -- run default
-               -- Here we generate a play script. The first action is always a walkto towards the provided
-               -- object position. The following action depend on the default action, usually it just says something
-               -- like "It doesn't seem to work" or the like.
-               print ("Run default")
-               s:add (createWalkToAction(variables._actionInfo.obj1))
-               s:add (defaultActions[variables._actionInfo.verb.code]())
+                -- run default
+                -- Here we generate a play script. The first action is always a walkto towards the provided
+                -- object position. The following action depend on the default action, usually it just says something
+                -- like "It doesn't seem to work" or the like.
+				print ("Run default")
+				s:add { script = createWalkToAction {objectId = variables._actionInfo.obj1, name = "walk" }, after = "main" }
+				s:add { script = defaultActions[variables._actionInfo.verb.code] ("action"), after = "walk" }
             end
         else
             -- run specific action
@@ -191,8 +192,7 @@ function runAction ()
         
         --script = twoObjectHandler[variables._actionInfo.verb.code]
     end
-    s:setsequence()
-    print("Number of actions = " .. #s.actions)
+	s:dump()
     monkey.play(s)
     variables._actionInfo:reset()
     updateVerb()

@@ -43,7 +43,11 @@ strings = {
 		piecesofeight = "pieces of eight",
 		minutes = "minutes",
 		baskets = "baskets",
-		basket = "basket"
+		basket = "basket",
+		chickens = "chickens",
+		statue = "statue",
+		knickknacks = "voodoo knickknacks",
+		couch = "couch"
         
         
     },
@@ -558,7 +562,18 @@ strings = {
 		[3] = "No thanks, I'd rather not touch any of this creepy voodoo stuff.",
 		[4] = "Gee, I wonder what's in these baskets.",
 		[5] = "Hmmm... I think I hear slithering inside.",
-		[6] = "No thanks. Something would probably jump out and bite me."
+		[6] = "No thanks. Something would probably jump out and bite me.",
+		[7] = "Poor chickens...",
+		[8] = "I'd better not. They're probably being saved for a pagan ritual, and I wouldn't want to spoil it.",
+		[9] = "Kind of an emaciated Charles Atlas.",
+		[10] = "Let's see, there's a jar of bat drippings...",
+		[11] = "...a box that says, \"Assorted Scales\"...",
+		[12] = "...a shaker full of monkey flakes...",
+		[13] = "...and some cat knuckles",
+		[14] = "Cat knuckles?!?",
+		[15] = "How barbaric!",
+		[16] = "No thanks. I can never fall asleep in strange places.",
+		[17] = "Looks comfortable, in a spooky sort of way."
 	}
 }
 

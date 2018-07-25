@@ -9,8 +9,8 @@
 
 class Walk : public Sequence {
 public:
-    Walk (int id, const std::string& actor, glm::vec2 p ) :
-            Sequence(id), m_actorId{actor}, m_p{p} {}
+    Walk (const std::string& actor, glm::vec2 p ) :
+            Sequence(), m_actorId{actor}, m_p{p} {}
     void Start() override;
     void SetComplete() override;
 private:

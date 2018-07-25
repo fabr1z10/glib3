@@ -37,7 +37,7 @@ public:
 
 class Engine : public Singleton<Engine> {
 public:
-    Engine() : m_update{true} {}
+    //Engine() : m_update{true} {}
     ~Engine();
     void Init(const EngineConfig& config);
     void MainLoop();
@@ -89,6 +89,8 @@ public:
     //void SetInputHandler(std::unique_ptr<)
     void SetEnableUpdate(bool);
 private:
+    friend class Singleton<Engine>;
+    Engine() : m_update{true} {}
     std::unordered_map<std::string, Ref*> m_taggedReferences;
     void InitGL(const EngineConfig& config);
     std::unordered_set<Entity*> m_garbage;
