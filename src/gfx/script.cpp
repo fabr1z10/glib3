@@ -3,8 +3,8 @@
 #include <iostream>
 
 void Script::Start() {
-    // by convention, the script starts from "scriptname@0"
-    auto it = m_activities.find(m_startId);
+    // by convention, the script starts from 0
+    auto it = m_activities.find(0);
     if (it == m_activities.end())
     {
         std::cout << "Mmmh, script ended straight away, as we cannot find its start activity!\n";
@@ -15,23 +15,36 @@ void Script::Start() {
     it->second->Start();
 }
 
-void Script::AddActivity(const std::string& id, std::unique_ptr<Activity> act) {
+void Script::AddActivityAfter(int id, std::unique_ptr<Activity> act, std::vector<int> after) {
+    Script::AddActivity(id, std::move(act));
+    for (auto& a : after)
+        AddEdge (a, id);
+
+}
+void Script::AddActivity(int id, std::unique_ptr<Activity> act) {
     m_activities[id] = std::move( act);
+
 }
 
-void Script::AddEdge (const std::string& fromActivity, const std::string& toActivity) {
+void Script::AddEdge (int fromActivity, int toActivity) {
     auto itFrom = m_activities.find(fromActivity);
     if (itFrom == m_activities.end())
         GLIB_FAIL("Don't know activity " << fromActivity);
     auto itTo = m_activities.find(toActivity);
     if (itTo == m_activities.end())
         GLIB_FAIL("Don't know activity " << toActivity);
+    auto ptr = itFrom->second.get();
+    auto ptr2 = itTo->second.get();
     itFrom->second->AddNext(itTo->second.get());
     itTo->second->AddPrevious(itFrom->second.get());
 
 }
 
-
+void Script::Print() {
+    for (auto& a: m_activities) {
+        std::cout << a.first << typeid(*a.second.get()).name() << "\n";
+    }
+}
 
 void Script::Run (float dt) {
     if (m_suspended)
@@ -64,7 +77,7 @@ void Script::Run (float dt) {
 
     if (m_active.empty())
     {
-        if (m_loop.empty()) {
+        if (m_loop == -1) {
             m_complete = true;
         }
         else {

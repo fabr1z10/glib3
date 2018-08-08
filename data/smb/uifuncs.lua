@@ -145,8 +145,9 @@ function runAction ()
     end
     print ("Current verb " .. variables._actionInfo.verb.code)
 	-- create a brand new script
-    local s = Script:new("main")
-    print("Number of actions = " .. #s.actions)
+    local s = Script:new()
+	print("NOW IS")
+	s:dump()
     if (variables._actionInfo.obj2 == nil) then
         -- try to run a single object action
         print ("finding action " .. variables._actionInfo.verb.code .. " " .. variables._actionInfo.obj1)
@@ -163,8 +164,8 @@ function runAction ()
                 -- object position. The following action depend on the default action, usually it just says something
                 -- like "It doesn't seem to work" or the like.
 				print ("Run default")
-				s:add { script = createWalkToAction {objectId = variables._actionInfo.obj1, name = "walk" }, after = "main" }
-				s:add { script = defaultActions[variables._actionInfo.verb.code] ("action"), after = "walk" }
+				s:push { actions = createWalkToAction {objectId = variables._actionInfo.obj1}, name ="walk" }
+				--s:push { actions = defaultActions[variables._actionInfo.verb.code] ("action"), after = "walk" }
             end
         else
             -- run specific action

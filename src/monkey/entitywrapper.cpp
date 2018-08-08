@@ -21,6 +21,7 @@
 #include <gfx/textview.h>
 #include <gfx/scroll.h>
 #include <monkey/activityfactory.h>
+#include <iostream>
 
 float EntityWrapper::GetX() const {
     return m_underlying->GetPosition().x;
@@ -129,17 +130,16 @@ namespace luaFunctions {
         //int loopId = table.Get<int>("loop");
         std::string scriptId = table.Get<std::string>("id", "");
 
-        auto script = std::make_shared<Script>(scriptId+"@0");
+        auto script = std::make_shared<Script>();
         //script->SetLoop(loopId);
         luabridge::LuaRef actions = ref["actions"];
-        auto a = LuaTable::getKeyValueMap(actions);
+        auto a = LuaTable::getIntValueMap(actions);
         ActivityFactory& af = ActivityFactory::get();
         for (auto& p : a) {
-
-            std::string actionId = p.first;
             LuaTable table(p.second);
             auto activity= af.createActivity(table);
-            script->AddActivity(actionId, std::move(activity));
+            std::cout << "Adding = " << p.first <<"\n";
+            script->AddActivity(p.first, std::move(activity));
             //std::string type = table.Get<std::string>("type");
             //int ciao = 200;
 //            luabridge::LuaRef action = actions[i+1];
@@ -254,12 +254,13 @@ namespace luaFunctions {
 //                script->AddActivity(std::unique_ptr<Scroll>(new Scroll(id, camId, displacement, relative, speed)));
 //            }
         }
+        script->Print();
         luabridge::LuaRef edges = ref["edges"];
-        auto e = LuaTable::getKeyValueMap(edges);
+        auto e = LuaTable::getIntValueMap(edges);
         for (auto& p : e) {
-            std::string tail = p.first;
+            int tail = p.first;
             for (int i = 0; i< p.second.length(); ++i) {
-                std::string head = p.second[i+1].cast<std::string>();
+                int head = p.second[i+1].cast<int>();
                 script->AddEdge(tail, head);
             }
         }

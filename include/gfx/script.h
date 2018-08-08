@@ -11,24 +11,26 @@
 // active set is empty, the script is itself complete.
 class Script {
 public:
-    Script(const std::string& startActivityId) : m_complete{false}, m_startId{startActivityId}, m_suspended{false} {}
+    Script() : m_complete{false}, m_suspended{false}, m_loop{-1} {}
     void Run (float);
     void Start();
-    void AddActivity(const std::string& id, std::unique_ptr<Activity>);
-    void AddEdge (const std::string& fromActivity, const std::string& toActivity);
+    void AddActivityAfter(int id, std::unique_ptr<Activity>, std::vector<int> after = {0});
+    void AddActivity(int id, std::unique_ptr<Activity>);
+    void AddEdge (int fromActivity, int toActivity);
     bool IsComplete() const;
     void SetSuspended(bool);
-    void SetLoop(const std::string&);
+    void SetLoop(int);
+    void Print();
 private:
     std::unordered_set<Activity*> m_active;
-    std::unordered_map<std::string, std::unique_ptr<Activity> > m_activities;
+    std::unordered_map<int, std::unique_ptr<Activity> > m_activities;
     bool m_suspended;
     bool m_complete;
-    std::string m_startId;
-    std::string m_loop;
+    //std::string m_startId;
+    int m_loop;
 };
 
-inline void Script::SetLoop(const std::string& id) {
+inline void Script::SetLoop(int id) {
     m_loop =id;
 }
 inline void Script::SetSuspended(bool value) {

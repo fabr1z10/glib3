@@ -76,6 +76,7 @@ public:
 
     }
     static std::unordered_map<std::string, luabridge::LuaRef> getKeyValueMap(const luabridge::LuaRef& ref);
+    static std::unordered_map<int, luabridge::LuaRef> getIntValueMap(const luabridge::LuaRef& ref);
 private:
     luabridge::LuaRef m_ref;
 };

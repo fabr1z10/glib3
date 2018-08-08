@@ -1,12 +1,9 @@
 -- Create a script where the player walks to an object and turns toward its direction
 function createWalkToAction(args)
 
-	-- create an empty script	
-	local s = Script:new(args.name)
- 
 	-- if the object is in the inventory, nothing to be done
 	if (inventory[args.objectId] ~= nil) then
-		return s
+		return nil
 	end
 	
     obj = objects[args.objectId]
@@ -15,10 +12,9 @@ function createWalkToAction(args)
 	else
 		walkPos = obj.posfunc()
 	end
-
-	s:push({
-        [0] = { type="walkto", walkarea = "walkarea", actor = "player", pos = walkPos },
-    })
+	
+	local actions = {}
+	actions[0] = { type="walkto", walkarea = "walkarea", actor = "player", pos = walkPos }
 
 	dir = nil
 	if (obj.dirfunc ~= nil) then
@@ -28,11 +24,9 @@ function createWalkToAction(args)
 	end
 
     if (dir ~= nil) then
-		s:push({
-        	[1] = { type="turn", actor = "player", face = dir, desc = {0} }
-        })
+		actions[1] = { type="turn", actor = "player", face = dir, after = {0} }
     end
-	return s
+	return actions
 end
 
 function say (args)
