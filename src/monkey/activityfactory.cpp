@@ -5,6 +5,8 @@
 #include "monkey/say.h"
 #include "monkey/callfunc.h"
 #include "gfx/scroll.h"
+#include "monkey/changeroom.h"
+#include "gfx/delay.h"
 
 
 ActivityFactory::ActivityFactory() {
@@ -68,6 +70,26 @@ ActivityFactory::ActivityFactory() {
         }
         float speed = table.Get<float>("speed");
         return std::unique_ptr<Scroll>(new Scroll(camId, displacement, relative, speed));
+    };
+    m_factories["gotoroom"] = [] (LuaTable& table) -> std::unique_ptr<Activity> {
+        std::string roomId = table.Get<std::string>("room");
+        return std::unique_ptr<ChangeRoom>(new ChangeRoom(roomId));
+    };
+    m_factories["animate"] = [] (LuaTable& table) -> std::unique_ptr<Activity> {
+        std::string actor = table.Get<std::string>("actor");
+        std::string anim = table.Get<std::string>("anim");
+        int flip{0};
+        if (table.HasKey("flipx")) {
+            flip = table.Get<bool>("flipx") ? 2 : 1;
+        }
+        int loopCount = table.Get<int>("loop", 0);
+        auto act = std::unique_ptr<Animate>(new Animate(actor, anim, flip));
+        act->SetLoop(loopCount);
+        return (std::move(act));
+    };
+    m_factories["delay"] = [] (LuaTable& table) -> std::unique_ptr<Activity> {
+        float sec = table.Get<float>("sec");
+        return std::unique_ptr<DelayTime>(new DelayTime(sec));
     };
 }
 

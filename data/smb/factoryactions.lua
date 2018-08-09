@@ -162,10 +162,12 @@ end
 function walkToDoor(args) 
 	local o = objects[args.obj]
     if (o.isopen() == true) then
-        return {
-            { type = "gotoroom", room = args.roomId }
-        }
-    end 
+    	s = script:new()
+		s.actions[1] = { type = "gotoroom", room = args.roomId } 
+		return s
+    else
+    	return nil
+    end
 end
 
 -- checks if a door is open
@@ -190,14 +192,16 @@ function operateDoor(args)
 			direction = o.dir
             face = dirHelper[direction]
         end
-		return { 
+        s = script:new()
+        s.actions = { 
 			--{ type="turn", actor="player", face = direction},
-            { type="animate", actor="player", anim=("operate_" .. face), flipx = (direction == "west")},
-            { type="delay", sec="0.5" },
-            { type="animate", actor = o.tag, anim = (args.open and "open" or "close") },
-            { type="animate", actor="player", anim=("idle_" .. face), flipx = (direction == "west") },
-            { type="callfunc", func = function() o.setopen(args.open) end }
+        	[1] = { type="animate", actor="player", anim=("operate_" .. face), flipx = (direction == "west")},
+            [2] = { type="delay", sec="0.5", after={1} },
+    		[3] = { type="animate", actor = o.tag, anim = (args.open and "open" or "close"), after={2} },
+            [4] = { type="animate", actor="player", anim=("idle_" .. face), flipx = (direction == "west"), after={3} },
+        	[5] = { type="callfunc", func = function() o.setopen(args.open) end, args={4} }
         }
+        return s
     end 
 end
 
