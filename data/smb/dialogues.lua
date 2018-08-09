@@ -19,19 +19,22 @@ local ct = strings.dialogues.citizen.text
 local lmf = strings.dialogues.lowmoralfiber.text
 local v = strings.dialogues.voodoolady.text
 
--- this is the basic dialogue
-function pippo(f) 
--- clear dialogue 
-dialogue = monkey.getEntity("dialogue")
-dialogue:cleartext()
--- set the button active to false
-print ("Current status = " .. tostring(f.active))
-if (f.alwaysActive ~= true) then
-    f.active = false
-end
-print ("Current status = " .. tostring(f.active))
-s = f.click()
-monkey.play(s)
+-- this is the basic dialogue handler
+function onDialogueButtonClick(f) 
+print ("IDIDIDIDI")
+	-- clear dialogue 
+	dialogue = monkey.getEntity("dialogue")
+	dialogue:cleartext()
+	-- set the button active to false
+	print ("Current status = " .. tostring(f.active))
+	if (f.alwaysActive ~= true) then
+    	f.active = false
+	end
+	print ("Current status = " .. tostring(f.active))
+	local s = Script:new()
+	s:push { actions = f.click() }
+	--s = f.click()
+	monkey.play(s)
 end
 
 dialogues = {

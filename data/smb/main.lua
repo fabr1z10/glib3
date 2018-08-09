@@ -47,7 +47,12 @@ variables = {
 	doneTalkDog = false,
 	doneTalkLoom = false,
 	doneTalkMancomb = false,
-	seagull = 0
+	seagull = 0,
+	-- holds the status (true = open)
+	doors = {
+		voodoolady = true
+
+	}
 }
 
 

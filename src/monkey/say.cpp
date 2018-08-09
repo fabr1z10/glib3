@@ -39,7 +39,7 @@ void Say::Start() {
             animEnd = "idle_" + face;
         else
             animEnd = m_animEnd;
-        Push(std::make_shared<Animate>(actor, animStart, flipx));
+        Push(std::make_shared<Animate>(actor, animStart, 0));
     }
 
     for (auto& s : m_lines) {
@@ -47,7 +47,7 @@ void Say::Start() {
         Push(std::make_shared<ShowMessage>(s, "monkey", m_actorId, 8, m_color, glm::vec4(0.0f), BOTTOM, 1.0f, m_offset));
     }
     if (!m_noAnim) {
-        Push(std::make_shared<Animate>(actor, animEnd, flipx));
+        Push(std::make_shared<Animate>(actor, animEnd, 0));
     }
 
 }

@@ -1,6 +1,6 @@
 -- Create a script where the player walks to an object and turns toward its direction
 function createWalkToAction(args)
-
+	s = script:new()
 	-- if the object is in the inventory, nothing to be done
 	if (inventory[args.objectId] ~= nil) then
 		return nil
@@ -13,8 +13,7 @@ function createWalkToAction(args)
 		walkPos = obj.posfunc()
 	end
 	
-	local actions = {}
-	actions[0] = { type="walkto", walkarea = "walkarea", actor = "player", pos = walkPos }
+	s.actions[1] = { type="walkto", walkarea = "walkarea", actor = "player", pos = walkPos }
 
 	dir = nil
 	if (obj.dirfunc ~= nil) then
@@ -24,27 +23,26 @@ function createWalkToAction(args)
 	end
 
     if (dir ~= nil) then
-		actions[1] = { type="turn", actor = "player", face = dir, after = {0} }
+		s.actions[2] = { type="turn", actor = "player", face = dir, after = {1} }
     end
-	return actions
+	return s
 end
 
 function say (args)
-	local s = Script:new(args.scriptname)
+	--local actions = {}
 	c = objects[args.character]
-	s:push({
-    	[0] = {
-	        type= "say",
-    	    actor = c.tag,
-        	color = c.color,
-        	message = args.lines,
-			offset = c.offset,
-			animstart = args.animstart,
-			animend = args.animend,
-			noanim = args.noanim
-    	}
-    })
-    return s
+	local action = {
+	    type= "say",
+    	actor = c.tag,
+        color = c.color,
+        message = args.lines,
+		offset = c.offset,
+		animstart = args.animstart,
+		animend = args.animend,
+		noanim = args.noanim,
+		after = args.after
+    }    
+    return action
 end
 
 
@@ -170,14 +168,13 @@ function walkToDoor(args)
     end 
 end
 
+-- checks if a door is open
 function isOpen (doorName)
-	local o = objects[doorName]
-	return o.openflag
+	return variables.doors[doorName]
 end
 
 function setOpen (doorName, value)
-	local o = objects[doorName]
-	o.openflag = value
+	variables.doors[doorName] = value
 end
 
 function operateDoor(args)
@@ -272,12 +269,17 @@ function startDialogue(args)
 			priority = 1, 
 		 	onenter = curry2(changecolor, config.ui_selected_color),
 		 	onleave = curry2(changecolor, config.ui_unselected_color), 
-		 	onclick = curry(pippo, node.lines[k])
+		 	onclick = curry(onDialogueButtonClick, node.lines[k])
 		})
     end
 
 end
 
+function _say(args) 
+	s = script:new()
+	s.actions[1] = say(args) 
+	return s
+end
 
 
 

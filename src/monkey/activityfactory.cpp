@@ -2,6 +2,10 @@
 #include <monkey/walk.h>
 #include "gfx/noop.h"
 #include "gfx/animate.h"
+#include "monkey/say.h"
+#include "monkey/callfunc.h"
+#include "gfx/scroll.h"
+
 
 ActivityFactory::ActivityFactory() {
     m_factories["walkto"] = [] (LuaTable& table) -> std::unique_ptr<Activity> {
@@ -32,6 +36,38 @@ ActivityFactory::ActivityFactory() {
             GLIB_FAIL("Unknown direction " << dir)
         }
         return std::unique_ptr<Animate>(new Animate(actor, anim, flip));
+    };
+    m_factories["say"] = [] (LuaTable& table) -> std::unique_ptr<Activity> {
+        std::string actor = table.Get<std::string>("actor");
+        std::vector<std::string> msg = table.GetVector<std::string>("message");
+        glm::vec4 color = table.Get<glm::vec4>("color");
+        glm::vec2 offset = table.Get<glm::vec2>("offset", glm::vec2(0.0f));
+        color/=255.0f;
+        auto say = std::unique_ptr<Say>(new Say(actor, msg, color, offset));
+        std::string animStart = table.Get<std::string>("animstart", "");
+        std::string animEnd = table.Get<std::string>("animend","");
+        bool noAnim = table.Get<bool>("noanim", false);
+        say->SetAnimationEnd(animEnd);
+        say->SetAnimationStart(animStart);
+        say->SetNoAnim(noAnim);
+        return std::move(say);
+    };
+    m_factories["callfunc"] = [] (LuaTable& table) -> std::unique_ptr<Activity> {
+        luabridge::LuaRef ref = table.Get<luabridge::LuaRef>("func");
+        return std::unique_ptr<CallFunc>(new CallFunc(ref));
+    };
+    m_factories["scroll"] = [] (LuaTable& table) -> std::unique_ptr<Activity> {
+        std::string camId = table.Get<std::string>("cam");
+        bool relative{false};
+        glm::vec2 displacement(0.0f);
+        if (table.HasKey("by")) {
+            relative = true;
+            displacement = table.Get<glm::vec2>("by");
+        } else {
+            displacement = table.Get<glm::vec2>("to");
+        }
+        float speed = table.Get<float>("speed");
+        return std::unique_ptr<Scroll>(new Scroll(camId, displacement, relative, speed));
     };
 }
 

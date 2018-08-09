@@ -132,7 +132,7 @@ function makeDialogueButton (x, y, button)
         button = { id = button.text, font="ui", align="bottomleft", group = 2, priority = 1, layer = 2, maxwidth = 320, color = config.ui_unselected_color,
             onenter = curry2(changecolor, config.ui_selected_color),
             onleave = curry2(changecolor, config.ui_unselected_color),
-            onclick = curry(pippo, button)
+            onclick = function() print ("IOI") end -- curry(onDialogueButtonClick, button)
         },
         layer = 2
     }   

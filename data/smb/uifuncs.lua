@@ -1,16 +1,22 @@
+function defaultHelper(line) 
+	s = script:new()
+	s.actions[1] = say {character="guybrush", lines = {strings.defaultactions[line]}}
+	return s
+end
+
+
 defaultActions = {
-   walk = empty,
-   look = curryg (say, {character="guybrush", lines = {strings.defaultactions[4]} }),
-   open = curryg (say, {character="guybrush", lines = {strings.defaultactions[1]} }),
-   close = curryg (say, {character="guybrush", lines = {strings.defaultactions[2]} }),
-   push = curryg (say, {character="guybrush", lines = {strings.defaultactions[3]} }),
-   pull = curryg (say, {character="guybrush", lines = {strings.defaultactions[3]} }),
-   pick = curryg (say, {character="guybrush", lines = {strings.defaultactions[5]} }),
-   use = curryg (say, {character="guybrush", lines = {strings.defaultactions[2]} }),
-   talk = curryg (say, {character="guybrush", lines = {strings.defaultactions[2]} }),
-   turnon = curryg (say, {character="guybrush", lines = {strings.defaultactions[2]} }),
-   turnoff = curryg (say, {character="guybrush", lines = {strings.defaultactions[2]} })
-   
+   walk = function() return nil end,
+   look = curry(defaultHelper, 4),
+   open = curry(defaultHelper, 1),
+   close = curry(defaultHelper, 2),
+   push = curry(defaultHelper, 3),
+   pull = curry(defaultHelper, 3),
+   pick = curry(defaultHelper, 5),
+   use = curry(defaultHelper, 2),
+   talk = curry(defaultHelper, 2),
+   turnon = curry(defaultHelper, 2),
+   turnoff = curry(defaultHelper, 2)   
 }
 
 function changecolor (color, entity)
@@ -145,9 +151,8 @@ function runAction ()
     end
     print ("Current verb " .. variables._actionInfo.verb.code)
 	-- create a brand new script
-    local s = Script:new()
-	print("NOW IS")
-	s:dump()
+    local s = script:new()
+	s.name="_walk"
     if (variables._actionInfo.obj2 == nil) then
         -- try to run a single object action
         print ("finding action " .. variables._actionInfo.verb.code .. " " .. variables._actionInfo.obj1)
@@ -164,15 +169,16 @@ function runAction ()
                 -- object position. The following action depend on the default action, usually it just says something
                 -- like "It doesn't seem to work" or the like.
 				print ("Run default")
-				s:push { actions = createWalkToAction {objectId = variables._actionInfo.obj1}, name ="walk" }
-				--s:push { actions = defaultActions[variables._actionInfo.verb.code] ("action"), after = "walk" }
+				s:push { script = createWalkToAction {objectId = variables._actionInfo.obj1}, at = "end" }
+				s:push { script = defaultActions[variables._actionInfo.verb.code] (), at = "end" }
+				s:dump()
             end
         else
             -- run specific action
             -- see if obj1 has an action with obj2
             print ("found custom")
-            s:add (createWalkToAction(variables._actionInfo.obj1))
-            s:add (a())
+			s:push { script = createWalkToAction {objectId = variables._actionInfo.obj1}, at = "end" }
+			s:push { script = a(), at = "end" }
         end
     else
         -- action with two objects

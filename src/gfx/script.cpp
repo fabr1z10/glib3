@@ -4,7 +4,7 @@
 
 void Script::Start() {
     // by convention, the script starts from 0
-    auto it = m_activities.find(0);
+    auto it = m_activities.find(1);
     if (it == m_activities.end())
     {
         std::cout << "Mmmh, script ended straight away, as we cannot find its start activity!\n";

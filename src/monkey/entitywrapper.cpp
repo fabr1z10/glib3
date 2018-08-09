@@ -128,10 +128,8 @@ namespace luaFunctions {
         LuaTable table(ref);
         //int startId = table.Get<int>("startid");
         //int loopId = table.Get<int>("loop");
-        std::string scriptId = table.Get<std::string>("id", "");
-
+        std::string scriptId = table.Get<std::string>("name", "");
         auto script = std::make_shared<Script>();
-        //script->SetLoop(loopId);
         luabridge::LuaRef actions = ref["actions"];
         auto a = LuaTable::getIntValueMap(actions);
         ActivityFactory& af = ActivityFactory::get();
@@ -254,16 +252,25 @@ namespace luaFunctions {
 //                script->AddActivity(std::unique_ptr<Scroll>(new Scroll(id, camId, displacement, relative, speed)));
 //            }
         }
-        script->Print();
-        luabridge::LuaRef edges = ref["edges"];
-        auto e = LuaTable::getIntValueMap(edges);
-        for (auto& p : e) {
-            int tail = p.first;
-            for (int i = 0; i< p.second.length(); ++i) {
-                int head = p.second[i+1].cast<int>();
-                script->AddEdge(tail, head);
+        //script->Print();
+        for (auto& p : a) {
+            luabridge::LuaRef after = p.second["after"];
+            if (!after.isNil()) {
+                int tail = p.first;
+                for (int i = 0; i < after.length(); ++i) {
+                    script->AddEdge(after[i + 1], tail);
+                }
             }
         }
+//        luabridge::LuaRef edges = ref["edges"];
+//        auto e = LuaTable::getIntValueMap(edges);
+//        for (auto& p : e) {
+//            int tail = p.first;
+//            for (int i = 0; i< p.second.length(); ++i) {
+//                int head = p.second[i+1].cast<int>();
+//                script->AddEdge(tail, head);
+//            }
+//        }
         if (scriptId.empty())
             scheduler->AddScript(script);
         else

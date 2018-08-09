@@ -1,106 +1,88 @@
--- script object
--- a script is a graph of nodes
--- there is a START node with index 0
--- and a FINAL node with index -1
-Script = {
+
+-- a script is just a wrapper for an array of actions. Each action has an after field which links it to other actions in a graph-like
+-- structure
+script = {
 	-- empty actions
 	name = nil,
-	actions = {},	
-	edges = {},
-	leaves = {},
-	nextid = 0
+	actions = {}
 }
 
 
-function Script:dump() 
-
-	--print ("Script: " .. self.name)
-	print ("-*-*-*-*-*-*")
-	print ("Actions:")
-	for id,a in pairs(self.actions) do
-		print (string.format("%-5s%-10s", id, a.type))
-	end
-	print ("-*-*-*-*-*-*")
-	print ("Edges:")
-	for id, e in pairs(self.edges) do
-		io.write(string.format("%-5d{",id))
-		for _, a in ipairs(e) do
-			local del = ", "
-			if (next(e,_) == nil) then
-				del = "}"
-			end
-			io.write (a .. del)
-		end
-		print ()
-	end	
-	print ("-*-*-*-*-*-*")
-	print (string.format("%-20s%-10s%-10s","Subscript","Start","End"))
-	for id, l in pairs(self.leaves) do 
-		io.write (string.format("%-20s%-10d%-10d", id, l[1], l[2]))
-		print("")
-	end
+function script:dump() 
 	
+	print ("Script: " .. ((self.name == nil) and "*** unknown ***" or self.name))
+	print (string.format("%-5s%-10s%-20s", "id", "action", "predecessors"))
+	for id, a in ipairs(self.actions) do
+		local t = { "{" } 
+		if (a.after ~= nil) then
+			for _, p in ipairs(a.after) do
+				table.insert(t, p)
+				table.insert(t, ", ")
+			end
+			table.remove(t)
+		end
+		table.insert(t, "}")
+		print (string.format("%-5s%-10s%-20s", id, a.type, table.concat(t)))
+	end	
 end
 
 -- create a new script with a given name
-function Script:new() 
+function script:new() 
 	s = {}
 	setmetatable (s, self)
 	self.__index = self
 	-- at beginning, beginning and end are both at id 0
 	-- add a noop. You can overwrite it if you don't need it
-	s.actions = { [0] = {type = "noop"} }
-	s.edges = {}
-	s.leaves = {}
-	s.nextid = 1
+	s.actions = {}
 	return s
 end
 
--- push actions 
-function Script:push (args) 
-	-- if no after/before is provided, it adds to 0
-	local parent = 0
-	if (args.after ~= nil) then
-		parent = self.leaves[args.after][2]
-	elseif (args.before ~= nil) then
-		parent = self.leaves[args.before][1]
+-- push another script 
+-- call ike s:push { script = a, parent = node }
+function script:push (args) 
+	if (args.script == nil) then
+		return
 	end
-	local lv = {}
-	local newNext = self.nextid
-	for id, action in pairs(args.actions) do
-		local newId = self.nextid + id
-		self.actions[self.nextid + id] = action
-		newNext = math.max(newNext, newId)
-		lv[newId] = true
-		-- see if it has parents
-		if (action.after ~= nil) then
-			for _, desc in ipairs(action.after) do
-				local tail = self.nextid + desc
-				self:addEdge { from = tail, to = newId }
-				if (lv[tail] == true) then
-					lv[tail] = nil
-				end
-			end
-		else
-			self:addEdge {from=parent, to = newId}
+    -- append an array to another
+	local offset = #self.actions
+	print ("Appending script with " .. #args.script.actions .. " actions.")
+	print ("Current script has  " .. offset .. " actions.")
+	if (args.at ~= nil) then
+		if (args.at == "beginning") then
+			parent = (offset == 0) and 0 or 1
+		elseif (args.at == "end") then
+			parent = offset
 		end
 	end
-	-- add a final node 
-	newNext = newNext + 1
-	self.actions[newNext] = { type ="noop" }
-	for id, desc in pairs(lv) do
-		self:addEdge { from = id, to = newNext }
+	print ("Parent node is " .. parent)
+	local leaves = {}
+    for k, v in ipairs(args.script.actions) do
+		leaves[offset+k] = true
 	end
-	
-	if (args.name ~= nil) then
-		self.leaves[args.name] = {parent, newNext}
-	end
-	self.nextid = newNext+1
-end
 
-function Script:addEdge(args) 
-	if (self.edges[args.from] == nil) then
-		self.edges[args.from] = {}
+    for k, v in ipairs(args.script.actions) do
+		print (k .. v.type)
+		if (v.after == nil) then
+			if (parent ~= 0) then
+				v.after = {parent}	
+			end
+		else
+			for a,b in ipairs(v.after) do
+				v.after[a] = offset+b
+				if (leaves[offset+b] == true) then
+					print ("removing " .. (offset+b))
+					leaves[offset+b] = nil
+				end
+			end
+		end
+		self.actions[offset + k] = v
 	end
-	table.insert(self.edges[args.from], args.to)
+print ("CIAO")
+	-- add fake action at the end so that the last node always corresponds to the end of the script
+	local after = {}
+	for k, _ in pairs(leaves) do
+		after[#after+1]=k
+	end
+
+	self.actions[#self.actions+1] = { type = "noop", after = after }
 end
