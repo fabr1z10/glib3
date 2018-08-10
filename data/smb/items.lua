@@ -48,12 +48,11 @@ objects = {
         tag = "door1",
         pos = {715, 13},
         dir = "north",
-        openFlag = false,
 		walk = curry(walkToDoor, { obj = "village1_door", roomId = "scummbar"}),
 		open = curry(operateDoor, { obj = "village1_door", open = true }),
 		close = curry(operateDoor, { obj = "village1_door", open = false }),
-		isopen = curry(isOpen, "village1_door"),
-		setopen = curry2(setOpen, "village1_door")
+		isopen = curry(isOpen, "scummbar"),
+		setopen = curry2(setOpen, "scummbar")
     },
     scummbar_door_out = {
         text = strings.objects.door,
@@ -63,8 +62,8 @@ objects = {
 		walk = curry(walkToDoor, {obj = "scummbar_door_out", roomId = "village1"}),
 		open = curry(operateDoor, { obj = "scummbar_door_out", open = true }),
 		close = curry(operateDoor, { obj = "scummbar_door_out", open = false }),
-		isopen = curry(isOpen, "village1_door"),
-		setopen = curry2(setOpen, "village1_door")
+		isopen = curry(isOpen, "scummbar"),
+		setopen = curry2(setOpen, "scummbar")
     },
     door_bar_kitchen = {
         text = strings.objects.door,

@@ -141,15 +141,9 @@ end
 
 function room.start()
 	if (variables._previousroom == "village1") then
-	    script = {
-	        startid = 0,
-	        id = "_walk",
-	        actions = {},
-	        edges ={}
-	    }
-	    createWalkToPosition ({247, 30}, script)
-	    monkey.play(script)
-
+		local s = script:new()	
+		s.actions[1] = { type="walkto", actor="player", pos={247, 30}}
+	    monkey.play(s)
 	end
 end
 

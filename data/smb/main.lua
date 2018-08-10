@@ -50,6 +50,7 @@ variables = {
 	seagull = 0,
 	-- holds the status (true = open)
 	doors = {
+		scummbar = false,
 		voodoolady = true
 
 	}
