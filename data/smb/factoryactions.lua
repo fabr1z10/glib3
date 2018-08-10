@@ -113,7 +113,6 @@ function removeItemFromInventory(obj)
 end
 
 function pickup (args) 
-print("qwqwqw")
 	-- first check if obj is in inventory
 	if (inventory[args.obj] ~= nil) then
 		-- I already have this
@@ -130,25 +129,31 @@ print("qwqwqw")
 	else
 		pickupAnim = o.pickupAnim
 	end
-	return {
-        {type = "animate", actor="player", anim=pickupAnim },
-        {type = "delay", sec="0.5" },
-        {type = "animate", actor="player", anim=("idle_" .. face) },
-		{type = "callfunc", func = curry(pickupItem, args.obj)},
-		{type = "callfunc", func = curry(removeObject, o.tag)}
+	local s = script:new()
+	s.actions =  {
+        [1] = {type = "animate", actor="player", anim=pickupAnim },
+        [2] = {type = "delay", sec="0.5", after={1} },
+        [3] = {type = "animate", actor="player", anim=("idle_" .. face), after={2} },
+		[4] = {type = "callfunc", func = curry(pickupItem, args.obj), after={3} },
+		[5] = {type = "callfunc", func = curry(removeObject, o.tag), after = {4}}
 	}
+	return s
 end
 
 function changeRoom(roomId)
-    return {
-        { type = "gotoroom", room = roomId }
+	local s = script:new()
+    s.actions = {
+        [1] = { type = "gotoroom", room = roomId }
     }
+	return s
 end
 
 function talk(args)
-    return {
-        { type = "callfunc", func = curry(startDialogue, { dialogueId=args.character, nodeId=args.node, init = true }) }
+	local s = script:new()
+    s.actions = {
+        [1] = { type = "callfunc", func = curry(startDialogue, { dialogueId=args.character, nodeId=args.node, init = true }) }
     }
+	return s
 end
 
 function lookPiecesOfEight() 

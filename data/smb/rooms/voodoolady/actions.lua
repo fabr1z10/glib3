@@ -27,5 +27,27 @@ function lookknickknacks()
 		[3] = say {character ="guybrush", lines ={d[14], d[15]}, after={2} }
 	}
 	return s
-
 end
+
+function look_rubber_chicken() 
+	s = script:new()
+ 	s.actions = {
+		[1] = say {character ="guybrush", lines ={d[19], d[20], d[21] }},
+		[2] = { type="callfunc", func = function() 
+			objects.rubberchicken.text = strings.objects.rubberchicken 
+			refreshInventory()
+		end, after = {1} }
+	}
+	return s
+end
+
+function pickup_rubber_chicken() 
+	local s = pickup {obj = "rubberchicken"}
+	local s1 = script:new()
+	s1.actions = {
+		[1] = say {character ="guybrush", lines ={d[22] }}
+	}
+	s:push { script=s1, at="end" }
+	return s
+end
+

@@ -478,6 +478,17 @@ return {
            }
         },
         {
+            name = "operate_front",
+            frames =            { 
+               {
+                    duration = dt,
+                    quads = {
+                        { x = 125, y = 151, width = 18, height = 46, anchor = {12, 0}},
+                    }
+               },
+           }
+        },
+        {
             name = "kneel_front",
             frames =            { 
                {

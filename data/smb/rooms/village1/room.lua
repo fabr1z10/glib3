@@ -156,15 +156,9 @@ end
 
 function room.start() 
 	if (variables._previousroom == "lookout") then
-	    script = {
-	        startid = 0,
-	        id = "_walk",
-	        actions = {},
-	        edges ={}
-	    }
-	    createWalkToPosition ({120, 80}, script)
-	    monkey.play(script)
-
+		local s = script:new()	
+		s.actions[1] = { type="walkto", actor="player", pos={120, 80}}
+	    monkey.play(s)
 	end
 
 end

@@ -151,8 +151,8 @@ function runAction ()
     end
     print ("Current verb " .. variables._actionInfo.verb.code)
 	-- create a brand new script
-    local s = script:new()
-	s.name="_walk"
+    local s = script:new("_walk")
+	--s.name="_walk"
     if (variables._actionInfo.obj2 == nil) then
         -- try to run a single object action
         print ("finding action " .. variables._actionInfo.verb.code .. " " .. variables._actionInfo.obj1)

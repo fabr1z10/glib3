@@ -89,7 +89,7 @@ void Walk::Start() {
             }
             flipX = (anim == "walk_right" && delta.x < 0) ? 2 : 1;
             Push(std::make_shared<Animate>(actor, anim, flipX));
-            Push(std::make_shared<MoveTo>(actor, currentPos + length * glm::normalize(delta), 200.0f));
+            Push(std::make_shared<MoveTo>(actor, currentPos + length * glm::normalize(delta), 200.0f, false, false));
             //if (i == points.size() - 1 || tMin < 1.0)
             currentPos = points[i];
             if (tMin < 1.0)

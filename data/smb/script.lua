@@ -27,12 +27,13 @@ function script:dump()
 end
 
 -- create a new script with a given name
-function script:new() 
+function script:new(name) 
 	s = {}
 	setmetatable (s, self)
 	self.__index = self
 	-- at beginning, beginning and end are both at id 0
 	-- add a noop. You can overwrite it if you don't need it
+	s.name = name
 	s.actions = {}
 	return s
 end

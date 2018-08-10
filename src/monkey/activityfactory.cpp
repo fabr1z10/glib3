@@ -7,7 +7,7 @@
 #include "gfx/scroll.h"
 #include "monkey/changeroom.h"
 #include "gfx/delay.h"
-
+#include "gfx/move.h"
 
 ActivityFactory::ActivityFactory() {
     m_factories["walkto"] = [] (LuaTable& table) -> std::unique_ptr<Activity> {
@@ -90,6 +90,23 @@ ActivityFactory::ActivityFactory() {
     m_factories["delay"] = [] (LuaTable& table) -> std::unique_ptr<Activity> {
         float sec = table.Get<float>("sec");
         return std::unique_ptr<DelayTime>(new DelayTime(sec));
+    };
+    m_factories["move"] = [] (LuaTable& table) -> std::unique_ptr<Activity> {
+        std::string actor = table.Get<std::string>("actor");
+        bool relative = true;
+        glm::vec2 dest;
+        if (table.HasKey("to")) {
+            relative = false;
+            dest = table.Get<glm::vec2>("to");
+        } else if (table.HasKey("by")) {
+            relative = true;
+            dest = table.Get<glm::vec2>("by");
+        } else {
+            GLIB_FAIL("move action requires to or by attribute.")
+        }
+        float speed = table.Get<float>("speed", 0.0f);
+        bool immediate = table.Get<bool>("immediate", false);
+        return std::unique_ptr<MoveTo>(new MoveTo(actor, dest, speed, relative, immediate));
     };
 }
 

@@ -44,11 +44,15 @@ strings = {
 		minutes = "minutes",
 		baskets = "baskets",
 		basket = "basket",
+		chicken = "chicken",
 		chickens = "chickens",
 		statue = "statue",
 		knickknacks = "voodoo knickknacks",
-		couch = "couch"
-        
+		couch = "couch",
+        trunk = "trunk",
+		rubberchicken = "rubber chicken",
+		bones = "bones",
+		chalice = "chalice"
         
     },
     dialogues = {
@@ -573,7 +577,15 @@ strings = {
 		[14] = "Cat knuckles?!?",
 		[15] = "How barbaric!",
 		[16] = "No thanks. I can never fall asleep in strange places.",
-		[17] = "Looks comfortable, in a spooky sort of way."
+		[17] = "Looks comfortable, in a spooky sort of way.",
+		[18] = "Probably got a body in it.",
+		[19] = "Hmmm...",
+		[20] = "A rubber chicken with a pulley in the middle...",
+		[21] = "What possible use could that have?",
+		[22] = "Maybe no one will miss just this one thing...",
+		[23] = "Poor little thing...",
+		[24] = "Whatever it was.",
+		[25] = "Now, THIS is the cup of a carpenter."
 	}
 }
 

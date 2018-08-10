@@ -332,6 +332,98 @@ assets = {
 		
 		}		
 	},
+	{
+        id = "door_1",
+        sheet = "gfx/anims.png",
+        type="sprite",
+        ppu=1,
+        animations = {
+        {
+       	    name = "open",             
+            frames = 
+            { 
+	    	  	{ duration = dt, quads = { { x=144, y=176, width=16, height=29, anchor = {0, 0}}}}             
+		    }
+        },
+        {
+       	    name = "close",             
+            frames = 
+            { 
+	    	  	{ duration = dt, quads = { { x=126, y=176, width=16, height=29, anchor = {0, 0}}}}             
+		    }
+        },
+		
+		}		
+	},
+	{
+        id = "door_2",
+        sheet = "gfx/anims.png",
+        type="sprite",
+        ppu=1,
+        animations = {
+        {
+       	    name = "open",             
+            frames = 
+            { 
+	    	  	{ duration = dt, quads = { { x=303, y=156, width=8, height=14, anchor = {0, 0}}}}             
+		    }
+        },
+        {
+       	    name = "close",             
+            frames = 
+            { 
+	    	  	{ duration = dt, quads = { { x=293, y=156, width=8, height=14, anchor = {0, 0}}}}             
+		    }
+        },
+		
+		}		
+	},
+	{
+        id = "door_3",
+        sheet = "gfx/anims.png",
+        type="sprite",
+        ppu=1,
+        animations = {
+        {
+       	    name = "open",             
+            frames = 
+            { 
+	    	  	{ duration = dt, quads = { { x=283, y=156, width=8, height=13, anchor = {0, 0}}}}             
+		    }
+        },
+        {
+       	    name = "close",             
+            frames = 
+            { 
+	    	  	{ duration = dt, quads = { { x=273, y=156, width=8, height=13, anchor = {0, 0}}}}             
+		    }
+        },
+		
+		}		
+	},
+	{
+        id = "door_4",
+        sheet = "gfx/anims.png",
+        type="sprite",
+        ppu=1,
+        animations = {
+        {
+       	    name = "open",             
+            frames = 
+            { 
+	    	  	{ duration = dt, quads = { { x=283, y=170, width=8, height=12, anchor = {0, 0}}}}             
+		    }
+        },
+        {
+       	    name = "close",             
+            frames = 
+            { 
+	    	  	{ duration = dt, quads = { { x=273, y=170, width=8, height=12, anchor = {0, 0}}}}             
+		    }
+        },
+		
+		}		
+	},
 },
 scene = {
 	{
@@ -425,6 +517,55 @@ scene = {
 					anim = ((objects.door_voodoolady_out.isopen() == true) and "open" or "close") 
 				}
 			},
+			make_hotspot { 
+				x=377,
+				y=37,
+				width=16, 
+				height=29, 
+				offset={0,0},
+				priority = 1, 
+				object = "door_village2_1", 
+				gfx = { model="door_1", anim = "close" }
+			},
+			make_hotspot { 
+				x=208,
+				y=59,
+				width=8, 
+				height=14, 
+				offset={0,0},
+				priority = 1, 
+				object = "door_village2_2", 
+				gfx = { model="door_2", anim = "close" }
+			},
+			make_hotspot { 
+				x=130,
+				y=63,
+				width=8, 
+				height=13, 
+				offset={0,0},
+				priority = 1, 
+				object = "door_village2_3", 
+				gfx = { model="door_3", anim = "close" }
+			},
+			make_hotspot { 
+				x=184,
+				y=64,
+				width=8, 
+				height=12, 
+				offset={0,0},
+				priority = 1, 
+				object = "door_village2_4", 
+				gfx = { model="door_4", anim = "close" }
+			},
+			make_hotspot { 
+				x=146,
+				y=63,
+				width=35, 
+				height=30, 
+				offset={0,0},
+				priority = 1, 
+				object = "village2_archway"				
+			},
 		}
 	},
 	makescummui1(),
@@ -446,7 +587,9 @@ scene = {
 function room.init()
 	variables._actionInfo:reset()
 	local fromData = {
-        village1 = { playerpos = {436, 34, 0}, anim = "idle_front", flip = false }
+        village1 = { playerpos = {436, 34, 0}, anim = "idle_front", flip = false },
+		voodoolady = { playerpos = {231, 52, 0}, anim = "idle_right", flip = true },
+		village3 = { playerpos = {160, 65, 0}, anim = "idle_front", flip = false },
     }
     -- add player
 	local d = fromData[variables._previousroom]

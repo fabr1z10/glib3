@@ -2,8 +2,7 @@
 require ("funcs")
 require ("text")
 require ("dialogues")
-require ("actions")
-require ("dialogues/lookout")
+--require ("dialogues/lookout")
 
 local dt = 0.1
 
@@ -128,7 +127,9 @@ function room.init()
     }
 
 	f = fromData[variables._previousroom]
-	
+	if (f == nil) then
+		f = fromData["village1"]
+	end
     -- add player
     table.insert (room.scene[1].children, {
         tag = "player",

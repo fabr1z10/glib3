@@ -5,7 +5,8 @@
 
 class MoveTo : public Activity {
 public:
-    MoveTo(Entity*, glm::vec2 pos, float speed);
+    MoveTo(Entity* entity, glm::vec2 pos, float speed, bool relative, bool immediate);
+    MoveTo(const std::string& actorId, glm::vec2 pos, float speed, bool relative, bool immediate);
     void Start() override;
     void Run (float dt) override;
 private:
@@ -15,4 +16,7 @@ private:
     float m_speed;
     float m_lengthToCover;
     float m_lengthCovered;
+    bool m_relative;
+    bool m_immediate;
+    std::string m_actorId;
 };

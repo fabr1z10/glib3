@@ -21,18 +21,17 @@ local v = strings.dialogues.voodoolady.text
 
 -- this is the basic dialogue handler
 function onDialogueButtonClick(f) 
-print ("IDIDIDIDI")
 	-- clear dialogue 
 	dialogue = monkey.getEntity("dialogue")
 	dialogue:cleartext()
 	-- set the button active to false
-	print ("Current status = " .. tostring(f.active))
+	--print ("Current status = " .. tostring(f.active))
 	if (f.alwaysActive ~= true) then
     	f.active = false
 	end
-	print ("Current status = " .. tostring(f.active))
-	local s = Script:new()
-	s:push { actions = f.click() }
+	--print ("Current status = " .. tostring(f.active))
+	local s = f.click()
+	--s:push { script = f.click() }
 	--s = f.click()
 	monkey.play(s)
 end

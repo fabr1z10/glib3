@@ -107,6 +107,29 @@ assets = {
         { name = "open", frames = { {duration = dt, quads = { { x = 218, y = 221, width = 33, height = 58, anchor = {0, 0}}}}}}
         }
     },
+	{
+		id = "trunk",
+		sheet = "gfx/anims.png",
+        type="sprite",
+        ppu=1,
+        animations = {
+        { name = "idle", frames = { 
+			{duration = dt, quads = { { x = 2, y = 274, width = 81, height = 24, anchor = {0, 0}}}},
+			}
+		}}
+	},
+	{
+		id = "rubberchicken",
+		sheet = "gfx/anims.png",
+        type="sprite",
+        ppu=1,
+        animations = {
+        { name = "idle", frames = { 
+			{duration = dt, quads = { { x = 0, y = 36, width = 27, height = 20, anchor = {0, 0}}}},
+			}
+		}}
+	},
+
 },
 
 scene = {
@@ -207,6 +230,17 @@ scene = {
 	            object = "couch"
 	        },
 	        make_hotspot { 
+	            x = 230, 
+	            y = 0, 
+				z = 1,
+	            width = 70, 
+	            height = 30, 
+	            offset = {0, 0},
+	            priority = 1, 
+	            object = "trunk",
+				gfx = { model="trunk", anim="idle"}
+	        },
+	        make_hotspot { 
 	            x = 87, 
 	            y = 42, 
 	            width = 33, 
@@ -216,9 +250,20 @@ scene = {
 	            object = "door_voodoolady_in",
 	            gfx = { model="door", anim = ((objects.door_voodoolady_in.isopen() == true) and "open" or "close") }
 	        },
+	        make_hotspot { 
+	            x = 238,
+	            y = 16,
+				z = 1, 
+	            width = 20, 
+	            height = 20, 
+	            offset = {0, 0},
+	            priority = 2, 
+	            object = "rubberchicken",
+	            gfx = { model="rubberchicken", anim="idle" }
+	        },
 			{
 				walktrigger = {				
-			 		shape = { type = "rect", width=64, height=132, offset = {255, 12}},
+			 		shape = { type = "rect", width=64, height=132, offset = {265, 22}},
 			 		target = "player",
 			 		onenter = gotoLady,
 			 		onleave = function() end,
@@ -248,6 +293,24 @@ scene = {
 	            }
 	            }
 			},
+	        make_hotspot { 
+	            x = 263, 
+	            y = 7, 
+	            width = 24, 
+	            height = 9, 
+	            offset = {0, 0},
+	            priority = 2, 
+	            object = "bones"
+	        },
+	        make_hotspot { 
+	            x = 292, 
+	            y = 12, 
+	            width = 12, 
+	            height = 14, 
+	            offset = {0, 0},
+	            priority = 2, 
+	            object = "chalice"
+	        },
 		}
 	},
 	makescummui1(),

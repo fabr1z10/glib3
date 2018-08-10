@@ -22,3 +22,27 @@ function talkCitizen()
 	)
 	return a
 end
+
+function door_transport(args) 
+	local s = script:new()
+	s.actions = {
+		
+		[1] = { type = "animate", actor = args.doorfrom, anim="open" },
+		[2] = { type = "delay", sec=0.5, after={1} },
+		[3] = { type = "callfunc", func = curry(setActive, {id="player", active=false}), after={2} },
+		[4] = { type = "animate", actor = args.doorfrom, anim="close", after={3} },
+		[5] = { type = "scroll", cam ="maincam", to = args.dest, speed = 200, after={4} },
+		[6] = { type = "animate", actor = args.doorto, anim="open", after={5} },
+		[7] = { type = "delay", sec=0.5, after={6} },
+		[8] = { type = "animate", actor = args.doorto, anim="close", after={7} },
+		[9] = { type = "callfunc", func = curry(setActive, {id="player", active=true}), after={8} },
+		[10] = { type = "move", actor ="player", to = args.playerdest, immediate = true, after={9} },
+		[11] = { type = "animate", actor="player", anim = args.anim, flip = args.flip, after={10} }
+
+		
+		
+		
+		-- [9] = { type = "animate", actor = args.doorto, anim="close", after={8} },
+	}
+	return s
+end

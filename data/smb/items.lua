@@ -1,3 +1,6 @@
+
+
+
 objects = {
     guybrush = {
         tag = "player",
@@ -9,9 +12,10 @@ objects = {
         text = strings.objects.lookout,
         pos = {160, 36},
         dir ="west",
+		offset = {0, 60},
         color = {170, 170, 170, 255},
         talk = curry(talk, { character = "lookout", node = 1}),
-		look = curry(say,{character ="guybrush", lines = {strings.dialogues.lookout.text[50]}})
+		look = curry(_say,{character ="guybrush", lines = {strings.dialogues.lookout.text[50]}})
     },
     cook = {
         tag = "cook",
@@ -37,7 +41,7 @@ objects = {
         text = strings.objects.poster,
         pos = {269, 133},
         dir = "north",
-        look = curry (say, { character="guybrush", lines= { strings.village1[1], strings.village1[2] }} )
+        look = curry (_say, { character="guybrush", lines= { strings.village1[1], strings.village1[2] }} )
     },
     village1_door = {
         text = strings.objects.door,
@@ -298,85 +302,50 @@ objects = {
 		color = {170, 170, 170, 255},
 		offset = {0,60}
 	},
-    door_voodoolady_out = {
-        text = strings.objects.door,
-        tag = "door_voodoo",
-        pos = {231, 52},
-		dir = "east",
-		walk = curry(walkToDoor, { obj = "door_voodoolady_out", roomId = "voodoolady"}),
-		open = curry(operateDoor, { obj = "door_voodoolady_out", open = true }),
-		close = curry(operateDoor, { obj = "door_voodoolady_out", open = false }),
-		isopen = curry(isOpen, "voodoolady"),
-		setopen = curry2(setOpen, "voodoolady")		
-    },
-    door_voodoolady_in = {
-        text = strings.objects.door,
-        tag = "door_voodoo",
-        pos = {106, 40},
-		dir = "west",
-		walk = curry(walkToDoor, { obj = "door_voodoolady_in", roomId = "village2"}),
-		open = curry(operateDoor, { obj = "door_voodoolady_in", open = true }),
-		close = curry(operateDoor, { obj = "door_voodoolady_in", open = false }),
-		isopen = curry(isOpen, "voodoolady"),
-		setopen = curry2(setOpen, "voodoolady")		
-    },
-	voodoolady = {
-		tag="voodoolady",
-		color= {0, 170, 0, 255},
-		offset = {0, 60}
+	door_village2_1 = {
+		text = strings.objects.door,
+		tag="door1",
+		pos = {387, 37},
+		dir="west",
+		open = curry (door_transport, {doorfrom = "door1", doorto = "door4", dest = {172, 72}, playerdest = {188, 62}, anim="idle_front", flip=false})
 	},
-	baskets = {
-		text = strings.objects.baskets,
-		pos = {124, 20},
-		dir = "south",
-		open = curry (_say, { character="guybrush", lines= { strings.voodoolady[1], strings.voodoolady[2] }} ),
-		close = curry (_say, { character="guybrush", lines= { strings.voodoolady[3] }} ),
-		push = curry (_say, { character="guybrush", lines= { strings.voodoolady[3] }} ),
-		pull = curry (_say, { character="guybrush", lines= { strings.voodoolady[3] }} ),
-		look = curry (_say, { character="guybrush", lines= { strings.voodoolady[4] }} ),
-		use = curry (_say, { character="guybrush", lines= { strings.voodoolady[3] }} ),
+	door_village2_2 = {
+		text = strings.objects.door,
+		tag="door2",
+		pos = {208, 59},
+		dir="east",
+		open = curry (door_transport, {doorfrom = "door2", doorto = "door3", dest = {160, 72}, playerdest = {134, 62}, anim="idle_front", flip=false})
 	},
-	basket = {
-		text = strings.objects.basket,
-		pos = {178, 19},
-		dir = "south",
-		open = curry (_say, { character="guybrush", lines= { strings.voodoolady[6]}} ),
-		close = curry (_say, { character="guybrush", lines= { strings.voodoolady[3] }} ),
-		push = curry (_say, { character="guybrush", lines= { strings.voodoolady[3] }} ),
-		pull = curry (_say, { character="guybrush", lines= { strings.voodoolady[3] }} ),
-		look = curry (_say, { character="guybrush", lines= { strings.voodoolady[5] }} ),
-		use = curry (_say, { character="guybrush", lines= { strings.voodoolady[3] }} ),
+	door_village2_3 = {
+		text = strings.objects.door,
+		tag="door3",
+		pos = {134, 62},
+		dir="north",
+		open = curry (door_transport, {doorfrom = "door3", doorto = "door1", dest = {800,72}, playerdest = {387, 33}, anim="idle_right", flip=false})
 	},
-	chickens = {
-		text = strings.objects.chickens,
-		pos = {94, 20},
-		dir="south",
-		pick =curry (_say, { character="guybrush", lines= { strings.voodoolady[8]}} ),
-		look =curry (_say, { character="guybrush", lines= { strings.voodoolady[7]}} ),
+	door_village2_4 = {
+		text = strings.objects.door,
+		tag="door4",
+		pos = {188, 62},
+		dir="north",
+		open = curry (door_transport, {doorfrom = "door4", doorto = "door2", dest = {172, 72}, playerdest = {208, 59}, anim="idle_right", flip=true})
 	},
-	statue = {
-		text = strings.objects.statue,
-		pos = {185, 40},
-		dir = "west",
-		open = curry (_say, { character="guybrush", lines= { strings.voodoolady[3]}} ),
-		close = curry (_say, { character="guybrush", lines= { strings.voodoolady[3] }} ),
-		push = curry (_say, { character="guybrush", lines= { strings.voodoolady[3] }} ),
-		pull = curry (_say, { character="guybrush", lines= { strings.voodoolady[3] }} ),
-		look = curry (_say, { character="guybrush", lines= { strings.voodoolady[9] }} ),
-		use = curry (_say, { character="guybrush", lines= { strings.voodoolady[3] }} ),
+	village2_archway = {
+		text = strings.objects.archway,
+		pos = {160,65},
+		dir = "north",
+		walk = curry(changeRoom, "village3")
 	},
-	knickknacks = {
-		text = strings.objects.knickknacks,
-		pos = {189, 41},
-		dir ="north",
-		look = lookknickknacks
-	},
-	couch = {
-		text = strings.objects.couch,
-		pos = {209,40},
-		dir ="north",
-		look = curry (_say, { character="guybrush", lines= { strings.voodoolady[17] }} ),
-		use = curry (_say, { character="guybrush", lines= { strings.voodoolady[16] }} )
+ 	door_voodoolady_out = {
+	text = strings.objects.door,
+    tag = "door_voodoo",
+    pos = {231, 52},
+	dir = "east",
+	walk = curry(walkToDoor, { obj = "door_voodoolady_out", roomId = "voodoolady"}),
+	open = curry(operateDoor, { obj = "door_voodoolady_out", open = true }),
+	close = curry(operateDoor, { obj = "door_voodoolady_out", open = false }),
+	isopen = curry(isOpen, "voodoolady"),
+	setopen = curry2(setOpen, "voodoolady")		
 	}
 	-- door_voodoolady_in = {
 	-- 	text = strings.objects.door,
@@ -391,3 +360,5 @@ objects = {
 	-- },
 }
 
+require ("rooms/voodoolady/items")
+require ("rooms/village3/items")
