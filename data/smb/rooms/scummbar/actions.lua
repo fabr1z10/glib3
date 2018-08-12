@@ -1,19 +1,18 @@
 function openBarKitchen() 
 	-- if the door is already open, nothing to do
 	if (objects.door_bar_kitchen.isopen() == false) then
-		s = Script.create("_cook2")
-		s:add( {
-			{ type="suspendscript", script ="_cook" },
-		    { type="animate", actor="player", anim="operate_right" },
-            { type="delay", sec="0.5" },
-            { type="animate", actor = objects.door_bar_kitchen.tag, anim = "open" },
-            { type="animate", actor="player", anim= "idle_right" },
-			{ type="showmessage", color = objects.cook.color, message = strings.dialogues.cook[1], pos = {600,30,0} },
-			{ type="showmessage", color = objects.cook.color, message = strings.dialogues.cook[3], pos = {600,30,0} },
-            { type="animate", actor = objects.door_bar_kitchen.tag, anim = "close" },
-			{ type="resumescript", script ="_cook" }
-		})
-		s:setsequence()
+		s = script:new("_cook2")
+		s.actions = {
+			[1] = { type="suspendscript", script ="_cook" },
+		    [2] = { type="animate", actor="player", anim="operate_right", after={1} },
+            [3] = { type="delay", sec="0.5", after={2} },
+            [4] = { type="animate", actor = objects.door_bar_kitchen.tag, anim = "open", after={3} },
+            [5] = { type="animate", actor="player", anim= "idle_right", after={4} },
+			[6] = { type="showmessage", color = objects.cook.color, message = strings.dialogues.cook[1], pos = {600,30,0}, after={5} },
+			[7] = { type="showmessage", color = objects.cook.color, message = strings.dialogues.cook[3], pos = {600,30,0}, after={6} },
+            [8] = { type="animate", actor = objects.door_bar_kitchen.tag, anim = "close", after={7} },
+			[9] = { type="resumescript", script ="_cook", after={8} }
+		}
 		monkey.play(s)
 	end 
 end
@@ -35,20 +34,19 @@ function enterBarKitchen()
      			local fx = cook.flipx
      			print ("COOK IS AROUND AND AT " .. cook.x .. " ANIM = " .. anim .. " fx = " .. tostring(fx))
      			
-     			s = Script.create("_cook2")
-         		s:add ({ {type = "suspendscript", script ="_cook" } })
-     			s:add (turn { character = "cook", face = "east" })
-     			s:add (say { character = "cook", lines = { strings.dialogues.cook[1], strings.dialogues.cook[2] }})
-     			-- restore animation and flip
-     			s:add ({ { type="animate", actor="cook", anim=anim, flipx = fx } })
-     			s:add ({ { type = "resumescript", script ="_cook" }})
-     			s:setsequence()
+     			local s = script:new("_cook2")
+     			s.actions = {
+					[1] = {type = "suspendscript", script ="_cook" },
+     				[2] = { type="turn", actor ="cook", face = "east", after={1} },
+     				[3] = say { character = "cook", lines = { strings.dialogues.cook[1], strings.dialogues.cook[2] }, after={2} },
+     				-- restore animation and flip
+     				[4] = { type="animate", actor="cook", anim=anim, flipx = fx, after={3} },
+     				[5] = { type= "resumescript", script ="_cook", after={4} },
+     			}
      			monkey.play(s)	
 			else
 				return changeRoom("kitchen")
-			end
-			
-
+			end			
 		end
 	end
 

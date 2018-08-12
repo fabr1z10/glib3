@@ -8,6 +8,7 @@
 #include "monkey/changeroom.h"
 #include "gfx/delay.h"
 #include "gfx/move.h"
+#include "gfx/scriptactions.h"
 
 ActivityFactory::ActivityFactory() {
     m_factories["walkto"] = [] (LuaTable& table) -> std::unique_ptr<Activity> {
@@ -107,6 +108,14 @@ ActivityFactory::ActivityFactory() {
         float speed = table.Get<float>("speed", 0.0f);
         bool immediate = table.Get<bool>("immediate", false);
         return std::unique_ptr<MoveTo>(new MoveTo(actor, dest, speed, relative, immediate));
+    };
+    m_factories["suspendscript"] = [] (LuaTable& table) -> std::unique_ptr<Activity> {
+        std::string s = table.Get<std::string>("script");
+        return std::unique_ptr<SuspendScript>(new SuspendScript(s));
+    };
+    m_factories["resumescript"] = [] (LuaTable& table) -> std::unique_ptr<Activity> {
+        std::string s = table.Get<std::string>("script");
+        return std::unique_ptr<ResumeScript>(new ResumeScript(s));
     };
 }
 

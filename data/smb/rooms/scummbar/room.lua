@@ -2,7 +2,7 @@
 require ("funcs")
 require ("text")
 require ("dialogues")
-require ("dialogues/lookout")
+--require ("dialogues/lookout")
 
 local dt = 0.1
 
@@ -590,30 +590,30 @@ end
 
 function runBackgroundScript(name)
 	
-	local s = Script.create("_" .. name)
-    s:add ({
-        { type = "delay", sec = 2.0 },
-		{ type = "animate", actor =name, anim="move", loop=1 },
-		{ type = "animate", actor =name, anim="idle2" },
-		{ type = "delay", sec = 2.0 },
-		{ type = "animate", actor =name, anim="move", loop=1 },
-		{ type = "animate", actor =name, anim="idle1" }	
-	})
-	s:setsequence()
-	s.loop = 0
+	local s = script:new("_" .. name)
+    s.actions = {
+   		[1] = { type = "delay", sec = 2.0 },
+		[2] = { type = "animate", actor = name, anim="move", loop=1, after={1} },
+		[3] = { type = "animate", actor = name, anim="idle2", after={2} },
+		[4] = { type = "delay", sec = 2.0, after={3} },
+		[5] = { type = "animate", actor =name, anim="move", loop=1, after={4} },
+		[6] = { type = "animate", actor =name, anim="idle1", after={5} }	
+	}
+	--s:setsequence()
+	s.loop = 1
 	monkey.play(s)
 	
 end
 
 function runBackgroundScript2(name)
-	local s = Script.create("_" .. name)
-    s:add ({
-        { type = "delay", sec = 2.0 },
-		{ type = "animate", actor = name, anim="drink", loop=1 },
-		{ type = "animate", actor = name, anim="idle" },
-	})
-	s:setsequence()
-	s.loop = 0
+	local s = script:new("_" .. name)
+    s.actions = {
+        [1] = { type = "delay", sec = 2.0 },
+		[2] = { type = "animate", actor = name, anim="drink", loop=1, after={1} },
+		[3] = { type = "animate", actor = name, anim="idle", after={2} },
+	}
+	--s:setsequence()
+	s.loop = 1
 	monkey.play(s)
 
 end
@@ -633,63 +633,62 @@ function room.start()
 	runBackgroundScript2("sleepypirate1")
 	runBackgroundScript2("sleepypirate2")
 
- 	s = Script.create("_cook")
+ 	local s = script:new("_cook")
 	local n = 0
 	if (variables._previousroom == "kitchen") then
-	    s:add ({
-	        { type = "callfunc", func = curry (createObject, { 
-	            pos = {100, 20, 0},
-	            gfx = { model = "cook", anim = "idle_back" },
-	            scaling = {},
-	            tag = "cook"
-	        })},
-	        { type = "delay", sec = 3.0 },
-	        {
-	            type = "walkto",
-	            walkarea = "walkarea",
-	            actor = "cook",
-	            pos = {607, 20}
-	        },
-	        { type = "delay", sec = 0.5 },
-			{ type = "animate", actor ="door_bar_kitchen", anim="close" },
-			{ type = "callfunc", func = function() objects.door_bar_kitchen.setopen(false) end },
-	        { type = "callfunc", func = curry(removeObject, "cook") }
-	    })
-		n = 7
+		local c1 = script:new()
+		c1.actions = {
+			[1] = { type = "callfunc", func = curry (createObject, { 
+				pos = {100, 20, 0},
+				gfx = { model = "cook", anim = "idle_back" },
+				scaling = {},
+				tag = "cook"
+			})},
+			[2] = { type = "delay", sec = 3.0, after = {1} },
+			[3] = { type = "walkto", walkarea = "walkarea", actor = "cook", pos = {607, 20}, after={2} },
+			[4] = { type = "delay", sec = 0.5, after ={3} },
+			[5] = { type = "animate", actor ="door_bar_kitchen", anim="close", after={4} },
+			[6] = { type = "callfunc", after={5}, func = function() objects.door_bar_kitchen.setopen(false) end },
+			[7] = { type = "callfunc", after={6}, func = curry(removeObject, "cook") }
+		}
+		s:push {script = c1, at="end" }
 	end
-    s:add ({
-        { type = "delay", sec = 5.0 },
-		{ type = "animate", actor ="door_bar_kitchen", anim="open" },
-		{ type = "callfunc", func = function() objects.door_bar_kitchen.setopen(true) end },
-        { type = "callfunc", func = curry (createObject, { 
-            pos = {607, 20, 0},
-            gfx = { model = "cook", anim = "idle_back" },
-            layer = 1,
-            scaling = {},
-            tag = "cook"
-        })},
-        {
-            type = "walkto",
-            walkarea = "walkarea",
-            actor = "cook",
-            pos = {100, 20}
-        },
-        { type ="turn", actor="cook", face="north"},
-        { type = "delay", sec = 3.0 },
-        {
-            type = "walkto",
-            walkarea = "walkarea",
-            actor = "cook",
-            pos = {607, 20}
-        },
-        { type = "delay", sec = 0.5 },
-		{ type = "animate", actor ="door_bar_kitchen", anim="close" },
-		{ type = "callfunc", func = function() objects.door_bar_kitchen.setopen(false) end },
-        { type = "callfunc", func = curry(removeObject, "cook") }
-    })
-	s:setsequence()
-	s.loop = n
-
+	 	local c = script:new()
+	 	c.actions = {
+	 		[1] = { type = "delay", sec = 5.0 },
+			[2] = { type = "animate", actor ="door_bar_kitchen", anim="open", after={1} },
+			[3] = { type = "callfunc", func = function() objects.door_bar_kitchen.setopen(true) end, after={2} },
+ 			[4] = { type = "callfunc", after={3}, func = curry (createObject, { 
+ 				pos = {607, 20, 0},
+ 				gfx = { model = "cook", anim = "idle_back" },
+ 				layer = 1,
+ 				scaling = {},
+ 				tag = "cook"
+ 			})},
+ 			[5] = {
+ 				type = "walkto",
+ 				walkarea = "walkarea",
+ 				actor = "cook",
+				pos = {100, 20},
+				after = {4}
+ 			},
+ 			[6] = { type ="turn", actor="cook", face="north", after={5} },
+ 			[7] = { type = "delay", sec = 3.0, after={6} },
+ 			[8] = {
+				type = "walkto",
+ 				walkarea = "walkarea",
+ 				actor = "cook",
+				pos = {607, 20},
+				after= {7}
+			},
+			[9] = { type = "delay", sec = 0.5, after={8} },
+			[10] = { type = "animate", actor ="door_bar_kitchen", anim="close", after={9} },
+			[11] = { type = "callfunc", after={10}, func = function() objects.door_bar_kitchen.setopen(false) end },
+			[12] = { type = "callfunc", after={11}, func = curry(removeObject, "cook") }
+		}
+	s:push { script = c, at ="end", id="main" }
+	s.loop = s:getid("main", 1)
+	print ("Set loop at = " .. s.loop)
 	
 
 	monkey.play(s)

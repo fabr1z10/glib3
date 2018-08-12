@@ -33,8 +33,8 @@ variables = {
         turnoff = { code="turnoff", text = strings.ui.turnoff, objects = 1 }
     },
     -- sets the start room
-    _room = "lookout",
-    _previousroom = "village2",
+    _room = "village1",
+    _previousroom = "scummbar",
 	_pause = false,
     talkedToLookout = false,
 	talkedToCitizen = 0,
@@ -51,6 +51,7 @@ variables = {
 	-- holds the status (true = open)
 	doors = {
 		scummbar = false,
+        kitchen = false,
 		voodoolady = true
 
 	}

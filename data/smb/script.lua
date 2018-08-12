@@ -4,7 +4,8 @@
 script = {
 	-- empty actions
 	name = nil,
-	actions = {}
+	actions = {},
+	offset = {}
 }
 
 
@@ -35,7 +36,12 @@ function script:new(name)
 	-- add a noop. You can overwrite it if you don't need it
 	s.name = name
 	s.actions = {}
+	s.offset ={}
 	return s
+end
+
+function script:getid(name, id)
+	return self.offset[name] + id
 end
 
 -- push another script 
@@ -46,6 +52,9 @@ function script:push (args)
 	end
     -- append an array to another
 	local offset = #self.actions
+	if (args.id ~= nil) then
+		self.offset[args.id] = offset
+	end
 	print ("Appending script with " .. #args.script.actions .. " actions.")
 	print ("Current script has  " .. offset .. " actions.")
 	if (args.at ~= nil) then
