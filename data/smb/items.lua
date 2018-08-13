@@ -360,3 +360,4 @@ objects = {
 
 require ("rooms/voodoolady/items")
 require ("rooms/village3/items")
+require ("rooms/shop/items")

@@ -35,7 +35,7 @@ function dialoguesPirates.masteringSwordAgain()
 	local s = script:new("_dial")
 	s.actions = {
 		[1] = say { character = "guybrush", lines = { d[50] } },
-		[2] = say { character="ilp1", lines = {d[42], d[43], d[44]}, animstart = "talk", animend="idle", after={1} }
+		[2] = say { character="ilp1", lines = {d[42], d[43], d[44]}, animstart = "talk", animend="idle", after={1} },
 		[3] = say { character="ilp3", lines = {d[51]}, animstart = "talk", animend="idle", after={2} },
 		[4] = { type = "callfunc", func = curry(startDialogue, { dialogueId="pirates", nodeId=1 }), after={3} }
 	}
@@ -61,125 +61,96 @@ function dialoguesPirates.masteringThievery()
 end
 
 function dialoguesPirates.masteringThieveryAgain() 
-	s = Script.create("_dial")
-	s:add (say { character = "guybrush", lines = { d[60] } })
-	s:add (say { character="ilp2", lines = {d[55]}, animstart = "talk", animend="idle" })
-	s:add (say { character="ilp1", lines = {d[56]}, animstart = "talk", animend="idle" })
-	s:add (say { character="ilp3", lines = {d[57]}, animstart = "talk", animend="idle" })
-	s:add (say { character="ilp1", lines = {d[58], d[59]}, animstart = "talk", animend="idle" })
-	s:add ({{ type = "callfunc", func = curry(startDialogue, { dialogueId="pirates", nodeId=1 })}})
-    s:setsequence()
+	local s = script:new("_dial")
+	s.actions = {
+		[1] = say { character = "guybrush", lines = { d[60] } },
+		[2] = say { character = "ilp2", lines = {d[55]}, animstart = "talk", animend="idle", after={1} },
+		[3] = say { character = "ilp1", lines = {d[56]}, animstart = "talk", animend="idle", after={2} },
+		[4] = say { character = "ilp3", lines = {d[57]}, animstart = "talk", animend="idle", after={3} },
+		[5] = say { character="ilp1", lines = {d[58], d[59]}, animstart = "talk", animend="idle", after={4}},
+		[6] = { type = "callfunc", func = curry(startDialogue, { dialogueId="pirates", nodeId=1 }), after={5}}
+	}
 	return s
 end
 
 function dialoguesPirates.treasureHunting()
 	dialogues.pirates[1].lines[6].active= false
 	dialogues.pirates[1].lines[12].active= true
-	s = Script.create("_dial")
-	s:add (say { character = "guybrush", lines = { d[34] } })
-	s:add (say { character="ilp3", lines = {d[61]}, animstart = "talk", animend="idle" })
-	s:add (say { character="ilp1", lines = {d[62]}, animstart = "talk", animend="idle" })
-	s:add (say { character = "guybrush", lines = { d[63] } })
-	s:add (say { character="ilp1", lines = {d[64]}, animstart = "talk", animend="idle" })
-	s:add (say { character="ilp2", lines = {d[65], d[66]}, animstart = "talk", animend="idle" })
-    s:add (say { character="ilp1", lines = {d[49]}, animstart = "talk", animend="idle" }) 
-    s:add (say { character="ilp2", lines = {d[49]}, animstart = "talk", animend="idle" }) 
-    s:add (say { character="ilp3", lines = {d[49]}, animstart = "talk", animend="idle" }) 
-	s:add ({{ type = "callfunc", func = curry(startDialogue, { dialogueId="pirates", nodeId=1 })}})
-	table.insert(s.edges, {0,1})
-	table.insert(s.edges, {1,2})
-	table.insert(s.edges, {2,3})
-	table.insert(s.edges, {3,4})
-	table.insert(s.edges, {4,5})	
-	table.insert(s.edges, {5,6})
-	table.insert(s.edges, {5,7})
-	table.insert(s.edges, {5,8})
-	table.insert(s.edges, {6,9})
-	table.insert(s.edges, {7,9})
-	table.insert(s.edges, {8,9})
+	local s = script:new("_dial")
+	s.actions = {
+		[1] = say { character = "guybrush", lines = { d[34] } },
+		[2] = say { character="ilp3", lines = {d[61]}, animstart = "talk", animend="idle", after={1}},
+		[3] = say { character="ilp1", lines = {d[62]}, animstart = "talk", animend="idle", after={2}},
+		[4] = say { character = "guybrush", lines = { d[63] }, after={3} },
+		[5] = say { character="ilp1", lines = {d[64]}, animstart = "talk", animend="idle", after={4}},
+		[6] = say { character="ilp2", lines = {d[65], d[66]}, animstart = "talk", animend="idle", after={5}},
+    	[7] = say { character="ilp1", lines = {d[49]}, animstart = "talk", animend="idle", after={6}},
+    	[8] = say { character="ilp2", lines = {d[49]}, animstart = "talk", animend="idle", after={6}},
+    	[9] = say { character="ilp3", lines = {d[49]}, animstart = "talk", animend="idle", after={6}},
+		[10] = { type = "callfunc", func = curry(startDialogue, { dialogueId="pirates", nodeId=1 }), after={7,8,9}}
+	}
 	return s
 end
 
 
 function dialoguesPirates.treasureHuntingAgain()
-	s = Script.create("_dial")
-	s:add (say { character = "guybrush", lines = { d[67] } })
-	s:add (say { character="ilp1", lines = {d[62]}, animstart = "talk", animend="idle" })
-	s:add (say { character="ilp2", lines = {d[65], d[66]}, animstart = "talk", animend="idle" })
-    s:add (say { character="ilp1", lines = {d[49]}, animstart = "talk", animend="idle" }) 
-    s:add (say { character="ilp2", lines = {d[49]}, animstart = "talk", animend="idle" }) 
-    s:add (say { character="ilp3", lines = {d[49]}, animstart = "talk", animend="idle" }) 
-	s:add ({{ type = "callfunc", func = curry(startDialogue, { dialogueId="pirates", nodeId=1 })}})
-	table.insert(s.edges, {0,1})
-	table.insert(s.edges, {1,2})
-	table.insert(s.edges, {2,3})
-	table.insert(s.edges, {2,4})
-	table.insert(s.edges, {2,5})	
-	table.insert(s.edges, {3,6})
-	table.insert(s.edges, {4,6})
-	table.insert(s.edges, {5,6})	
+	local s = script:new("_dial")
+	s.actions = {
+		[1] = say { character = "guybrush", lines = { d[67] } },
+		[2] = say { character="ilp1", lines = {d[62]}, animstart = "talk", animend="idle", after={1}},
+		[3] = say { character="ilp2", lines = {d[65], d[66]}, animstart = "talk", animend="idle", after={2}},
+    	[4] = say { character="ilp1", lines = {d[49]}, animstart = "talk", animend="idle", after={3}},
+    	[5] = say { character="ilp2", lines = {d[49]}, animstart = "talk", animend="idle", after={3}},
+    	[6] = say { character="ilp3", lines = {d[49]}, animstart = "talk", animend="idle", after={3}},
+		[7] = { type = "callfunc", func = curry(startDialogue, { dialogueId="pirates", nodeId=1 }), after={4,5,6}}
+	}
 	return s
 end
 
 function dialoguesPirates.pigs() 
-	s = Script.create("_dial")
-	s:add (say { character = "guybrush", lines = { d[35] } })
-	s:add (say { character="ilp1", lines = {d[68]}, animstart = "talk", animend="idle" }) 
-	s:add ({{ type = "callfunc", func = curry(startDialogue, { dialogueId="pirates", nodeId=1 })}})
-    s:setsequence()
+	local s = script:new("_dial")
+	s.actions = {	
+		[1] = say { character = "guybrush", lines = { d[35] } },
+		[2] = say { character="ilp1", lines = {d[68]}, animstart = "talk", animend="idle", after={1}},
+		[3] = { type = "callfunc", func = curry(startDialogue, { dialogueId="pirates", nodeId=1 }), after={2}}
+	}
 	return s
 end
 
 function dialoguesPirates.grog() 
-	s = Script.create("_dial")
-	s:add (say { character = "guybrush", lines = { d[36] } })
-	s:add (say { character="ilp2", lines = {d[69]}, animstart = "talk", animend="idle" }) 
-	s:add (say { character="ilp1", lines = {d[70]}, animstart = "talk", animend="idle" }) 
-	s:add (say { character="ilp2", lines = {d[71]}, animstart = "talk", animend="idle" }) 
-	s:add (say { character="ilp3", lines = {d[72]}, animstart = "talk", animend="idle" }) 
-	s:add (say { character="ilp1", lines = {d[73]}, animstart = "talk", animend="idle" }) 
-	s:add (say { character="ilp2", lines = {d[74]}, animstart = "talk", animend="idle" }) 
-	s:add (say { character="ilp3", lines = {d[75]}, animstart = "talk", animend="idle" }) 
-	s:add (say { character="ilp1", lines = {d[76]}, animstart = "talk", animend="idle" }) 
-	s:add (say { character="ilp2", lines = {d[77]}, animstart = "talk", animend="idle" }) 
-	s:add (say { character="ilp3", lines = {d[78]}, animstart = "talk", animend="idle" }) 
-	s:add (say { character="ilp1", lines = {d[79]}, animstart = "talk", animend="idle" }) 
-	s:add (say { character="ilp2", lines = {d[80], d[81]}, animstart = "talk", animend="idle" }) 
-	s:add (say { character="ilp1", lines = {d[82]}, animstart = "talk", animend="idle" }) 
-    s:add (say { character="ilp1", lines = {d[49]}, animstart = "talk", animend="idle" }) 
-    s:add (say { character="ilp2", lines = {d[49]}, animstart = "talk", animend="idle" }) 
-    s:add (say { character="ilp3", lines = {d[49]}, animstart = "talk", animend="idle" }) 
-	s:add ({{ type = "callfunc", func = curry(startDialogue, { dialogueId="pirates", nodeId=1 })}})
-	table.insert(s.edges, {0,1})
-	table.insert(s.edges, {1,2})
-	table.insert(s.edges, {2,3})
-	table.insert(s.edges, {3,4})
-	table.insert(s.edges, {4,5})	
-	table.insert(s.edges, {5,6})	
-	table.insert(s.edges, {6,7})	
-	table.insert(s.edges, {7,8})
-	table.insert(s.edges, {8,9})
-	table.insert(s.edges, {9,10})
-	table.insert(s.edges, {10,11})
-	table.insert(s.edges, {11,12})
-	table.insert(s.edges, {12,13})
-	table.insert(s.edges, {13,14})
-	table.insert(s.edges, {13,15})
-	table.insert(s.edges, {13,16})
-	table.insert(s.edges, {14,17})
-	table.insert(s.edges, {15,17})
-	table.insert(s.edges, {16,17})
+	local s = script:new("_dial")
+	s.actions = {
+		[1] = say { character = "guybrush", lines = { d[36] } },
+		[2] = say { character="ilp2", lines = {d[69]}, animstart = "talk", animend="idle", after={1}},
+		[3] = say { character="ilp1", lines = {d[70]}, animstart = "talk", animend="idle", after={2}},
+		[4] = say { character="ilp2", lines = {d[71]}, animstart = "talk", animend="idle", after={3}},
+		[5] = say { character="ilp3", lines = {d[72]}, animstart = "talk", animend="idle", after={4}},
+		[6] = say { character="ilp1", lines = {d[73]}, animstart = "talk", animend="idle", after={5}},
+		[7] = say { character="ilp2", lines = {d[74]}, animstart = "talk", animend="idle", after={6}},
+		[8] = say { character="ilp3", lines = {d[75]}, animstart = "talk", animend="idle", after={7}},
+		[9] = say { character="ilp1", lines = {d[76]}, animstart = "talk", animend="idle", after={8}},
+		[10] = say { character="ilp2", lines = {d[77]}, animstart = "talk", animend="idle", after={9}},
+		[11] = say { character="ilp3", lines = {d[78]}, animstart = "talk", animend="idle", after={10}},
+		[12] = say { character="ilp1", lines = {d[79]}, animstart = "talk", animend="idle", after={11}},
+		[13] = say { character="ilp2", lines = {d[80], d[81]}, animstart = "talk", animend="idle", after={12}},
+		[14] = say { character="ilp1", lines = {d[82]}, animstart = "talk", animend="idle", after={13}},
+    	[15] = say { character="ilp1", lines = {d[49]}, animstart = "talk", animend="idle", after={14}},
+    	[16] = say { character="ilp2", lines = {d[49]}, animstart = "talk", animend="idle", after={14}},
+    	[17] = say { character="ilp3", lines = {d[49]}, animstart = "talk", animend="idle", after={14}},
+		[18] = { type = "callfunc", func = curry(startDialogue, { dialogueId="pirates", nodeId=1 }), after={15,16,17}}
+	}
 	return s
 end
 
 
 function dialoguesPirates.leave() 
-	s = Script.create("_dial")
-	s:add (say { character = "guybrush", lines = { d[37] } })
-	s:add (say { character="ilp1", lines = {d[38]}, animstart = "talk", animend="idle" }) 
-	s:add (say { character="ilp2", lines = {d[39]}, animstart = "talk", animend="idle" }) 
-	s:add ({{ type = "callfunc", func = resumePlay }})
-	s:setsequence()
+	local s = script:new("_dial")
+	s.actions = {
+		[1] = say { character = "guybrush", lines = { d[37] } },
+		[2] = say { character="ilp1", lines = {d[38]}, animstart = "talk", animend="idle", after={1}},
+		[3] = say { character="ilp2", lines = {d[39]}, animstart = "talk", animend="idle", after={2}},
+		[4] = { type = "callfunc", func = resumePlay, after={3}}
+	}
 	return s
 end
 

@@ -52,7 +52,9 @@ strings = {
         trunk = "trunk",
 		rubberchicken = "rubber chicken",
 		bones = "bones",
-		chalice = "chalice"
+		chalice = "chalice",
+		sword = "sword",
+		storekeeper="storekeeper"
         
     },
     dialogues = {
@@ -586,6 +588,15 @@ strings = {
 		[23] = "Poor little thing...",
 		[24] = "Whatever it was.",
 		[25] = "Now, THIS is the cup of a carpenter."
+	},
+	shop = {
+		[1] = "Ahoy there, fancy pants.",
+		[2] = "Let's go, fancy-pants!",
+		[3] = "What do you think this is? A museum?",
+		[4] = "I don't have all day.",
+		[5] = "Got a good deal on swords right now...",
+		[5] = "\"SLASHMASTER™ -- When you want a sword as sharp as your wit.\""
+		
 	}
 }
 

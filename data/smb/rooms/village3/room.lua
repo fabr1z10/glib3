@@ -15,6 +15,31 @@ assets = {
     makeGuybrush(),
     makeArrowUp(),
     makeArrowDown(),
+	{
+        id = "door_shop",
+        sheet = "gfx/anims.png",
+        type="sprite",
+        ppu=1,
+        animations = {
+        {
+       	    name = "open",             
+            frames = 
+            { 
+	    	  	{ duration = dt, quads = { { x=78, y=150, width=20, height=31, anchor = {0, 0}}}}             
+		    }
+        },
+        {
+       	    name = "close",             
+            frames = 
+            { 
+	    	  	{ duration = dt, quads = { { x=101, y=150, width=20, height=31, anchor = {0, 0}}}}             
+		    }
+        },
+		
+		}		
+	},
+
+
 },
 scene = {
 	{
@@ -65,6 +90,16 @@ scene = {
 				priority = 1, 
 				object = "village3_archway"				
 			},
+	        make_hotspot { 
+	            x = 659, 
+	            y = 17,
+	            width = 20, 
+	            height = 31, 
+	            offset = {0, 0},
+	            priority = 1, 
+	            object = "door_village_shop",
+	            gfx = { model="door_shop", anim = ((objects.door_village_shop.isopen() == true) and "open" or "close")  }
+	        },
 		}
 	},
 	makescummui1(),
