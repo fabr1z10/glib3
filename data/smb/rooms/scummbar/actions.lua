@@ -22,7 +22,7 @@ function enterBarKitchen()
 	-- if door is closed, nothing happens
 	if (objects.door_bar_kitchen.isopen() == false) then
 		-- close, do nothing
-		return {}
+		return nil
 	else
 		cook = monkey.getEntity("cook")
 		if (cook.isnil) then
@@ -57,11 +57,12 @@ end
 
 function talkToPirates() 
 	local lines = variables.talkedToPirates and{strings.dialogues.pirates.text[40], strings.dialogues.pirates.text[41]} or {strings.dialogues.pirates.text[1]}
-	local a = say { character = "ilp2", lines = lines, animstart ="talk", animend="idle" }
-	table.insert (a, 
-        { type = "callfunc", func = curry(startDialogue, { dialogueId="pirates", nodeId=1, init = true })}
-    )
-	return a
+	local s = script:new()
+	s.actions = {
+		[1] = say { character = "ilp2", lines = lines, animstart ="talk", animend="idle" },
+		[2] = {type = "callfunc", func = curry(startDialogue, { dialogueId="pirates", nodeId=1, init = true }), after={1}}
+    }
+	return s
 end
 
 function talkToDog() 

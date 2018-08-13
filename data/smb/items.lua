@@ -117,7 +117,7 @@ objects = {
 		tag = "meat",
 		pos = {76, 19},
 		dir = "north",
- 		look = curry (say, { character="guybrush", lines= { strings.kitchen[1] }} ),
+ 		look = curry (_say, { character="guybrush", lines= { strings.kitchen[1] }} ),
 		pick = curry (pickup, {obj = "meat"})
 	},
 	pot = {
@@ -126,7 +126,7 @@ objects = {
 		pos = {109, 19},
 		dir ="north",
 		pickupAnim = "kneel_back",
-		look = curry (say, { character="guybrush", lines= { strings.kitchen[2] }} ),
+		look = curry (_say, { character="guybrush", lines= { strings.kitchen[2] }} ),
 		pick = curry (pickup, {obj = "pot"})
 	},
 	fish = {
@@ -135,7 +135,7 @@ objects = {
 		pos = {239, 16},
 		dir ="south",
 		pickupAnim = "kneel_front",
-		look = curry (say, { character="guybrush", lines= { strings.kitchen[3] }} ),
+		look = curry (_say, { character="guybrush", lines= { strings.kitchen[3] }} ),
 		pick = getFish
 	},
 	pieceofeight = {

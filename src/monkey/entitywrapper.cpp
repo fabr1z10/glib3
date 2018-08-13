@@ -16,7 +16,7 @@
 #include <gfx/scriptactions.h>
 #include <monkey/callfunc.h>
 #include <monkey/monkeyfactory.h>
-#include <monkey/enableblock.h>
+
 #include <monkey/scripthotspot.h>
 #include <gfx/textview.h>
 #include <gfx/scroll.h>

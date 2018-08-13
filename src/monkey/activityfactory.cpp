@@ -9,6 +9,8 @@
 #include "gfx/delay.h"
 #include "gfx/move.h"
 #include "gfx/scriptactions.h"
+#include <monkey/enableblock.h>
+
 
 ActivityFactory::ActivityFactory() {
     m_factories["walkto"] = [] (LuaTable& table) -> std::unique_ptr<Activity> {
@@ -117,6 +119,12 @@ ActivityFactory::ActivityFactory() {
         std::string s = table.Get<std::string>("script");
         return std::unique_ptr<ResumeScript>(new ResumeScript(s));
     };
+    m_factories["activatewall"] = [] (LuaTable& table) -> std::unique_ptr<Activity> {
+        int wallId = table.Get<int>("wall");
+        bool active = table.Get<bool>("active");
+        return std::unique_ptr<EnableBlock>(new EnableBlock(wallId, active));
+    };
+
 }
 
 std::unique_ptr<Activity> ActivityFactory::createActivity(LuaTable& table) {
