@@ -33,9 +33,7 @@ private:
 inline void Script::SetLoop(int id) {
     m_loop =id;
 }
-inline void Script::SetSuspended(bool value) {
-    m_suspended = value;
-}
+
 
 inline bool Script::IsComplete() const {
     return m_complete;

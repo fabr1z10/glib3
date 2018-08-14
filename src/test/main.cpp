@@ -21,6 +21,8 @@
 //}
 
 int main(int argc, char* argv[]) {
+
+    //return 0;
     try {
         if (argc < 3) {
             std::cerr << "Usage: viewer <dir> <solution>\n";

@@ -2,7 +2,6 @@
 require ("funcs")
 require ("text")
 require ("dialogues")
---require ("actions")
 
 local dt = 0.1
 
@@ -46,6 +45,21 @@ assets = {
 		}		
 	},
 	{
+        id = "desk",
+        sheet = "gfx/anims2.png",
+        type="sprite",
+        ppu=1,
+        animations = {
+        {
+       	    name = "idle",             
+            frames = 
+            { 
+	    	  	{ duration = dt, quads = { { x=177, y=19, width=50, height=35, anchor = {0, 0}}}}             
+		    }
+        }		
+		}		
+	},
+	{
         id = "storekeeper",
         sheet = "gfx/anims2.png",
         type="sprite",
@@ -62,7 +76,12 @@ assets = {
        	    name = "talk_right",             
             frames = 
             { 
-	    	  	{ duration = dt, quads = { { x=246, y=5, width=28, height=42, anchor = {12, 0}}, {x=232, y=4, width=11, height=13, anchor = {-2,-32}}}}
+	    	  	{ duration = dt, quads = { { x=246, y=5, width=28, height=42, anchor = {12, 0}}, {x=232, y=4, width=11, height=13, anchor = {-2,-32}}}},
+				{ duration = dt, quads = { { x=246, y=5, width=28, height=42, anchor = {12, 0}}, {x=168, y=3, width=10, height=14, anchor = {-2,-32}}}},
+				{ duration = dt, quads = { { x=246, y=5, width=28, height=42, anchor = {12, 0}}, {x=180, y=4, width=10, height=13, anchor = {-2,-32}}}},
+				{ duration = dt, quads = { { x=246, y=5, width=28, height=42, anchor = {12, 0}}, {x=192, y=4, width=12, height=12, anchor = {-2,-32}}}},
+				{ duration = dt, quads = { { x=246, y=5, width=28, height=42, anchor = {12, 0}}, {x=207, y=2, width=11, height=15, anchor = {-2,-32}}}},
+				{ duration = dt, quads = { { x=246, y=5, width=28, height=42, anchor = {12, 0}}, {x=220, y=2, width=11, height=15, anchor = {-2,-32}}}},
 		    }
         },
 		}
@@ -88,6 +107,11 @@ scene = {
               tag = "mainbg",
               pos = {117, 0, 2},
               gfx = { model="shopbarrels", anim="idle" }
+            },
+            {
+              tag = "mainbg",
+              pos = {249, 0, 1},
+              gfx = { model="desk", anim="idle" }
             },
 	        {
 	          walkarea = { 
@@ -125,6 +149,7 @@ scene = {
 				height=40, 
 				offset={0,0},
 				priority = 1, 
+				scaling = {},
  				gfx = { model="storekeeper", anim="idle_right", flip=true },
 				object = "storekeeper"
 			},
@@ -169,7 +194,7 @@ end
 
 function room.afterstartup() 
 	refreshInventory()
-	local s = script:new("_pippo")
+	local s = script:new("_storekeeper")
 	s.actions = {
 		[1] = { type="delay", sec =2},
 		[2] = say { character = "storekeeper", lines = { strings.shop[1]}, after={1} }

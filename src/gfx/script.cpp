@@ -46,6 +46,14 @@ void Script::Print() {
     }
 }
 
+void Script::SetSuspended(bool value) {
+    m_suspended = value;
+    for (auto& a : m_active) {
+        a->NotifySuspend();
+
+    }
+}
+
 void Script::Run (float dt) {
     if (m_suspended)
         return;

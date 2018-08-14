@@ -21,7 +21,9 @@ public:
     std::vector<Activity*>& GetFollowing();
     void AddPrevious (Activity*);
     void AddNext (Activity*);
-
+    // called when a script is suspended and this activity is current.
+    // default behavior is do nothing
+    virtual void NotifySuspend() {}
 private:
     //int m_id;
     std::vector<Activity*> m_previous;

@@ -30,3 +30,8 @@ void Sequence::Run(float dt) {
     }
 
 }
+
+void Sequence::NotifySuspend() {
+    if (m_current != nullptr)
+        m_current->NotifySuspend();
+}

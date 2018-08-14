@@ -68,6 +68,13 @@ void ShowMessage::Run(float dt) {
     }
 
 }
+void ShowMessage::NotifySuspend(){
+    SetComplete();
+    if (m_generatedEntity != nullptr) {
+        Engine::get().Remove(m_generatedEntity);
+        m_generatedEntity = nullptr;
+    }
+}
 
 ShowMessage::~ShowMessage() {
     if (m_generatedEntity != nullptr) {

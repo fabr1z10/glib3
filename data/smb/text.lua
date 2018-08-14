@@ -523,6 +523,14 @@ strings = {
 			[50] = "When you know your purpose, come see me...",
 			[51] = "...I will let you know then."
 			}
+		},
+		storekeeper = {
+			text = {
+			[1] = "Waddya want?",
+			[2] = "I think I'd just like to browse for now.",
+			[3] = "Whatever.",
+			[4] = "About this sword..."
+			}
 		}
 
         

@@ -35,6 +35,7 @@ public:
     virtual ~ShowMessage();
     void Start() override;
     void Run (float dt) override;
+    void NotifySuspend() override;
 private:
     TextAlignment m_align;
     float m_elapsedTime;
