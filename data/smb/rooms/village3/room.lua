@@ -124,6 +124,7 @@ function room.init()
 	variables._actionInfo:reset()
 	local fromData = {
         village2 = { playerpos = {750, 16, 0}, anim = "idle_right", flip = true },
+		shop = { playerpos = {667, 22,0}, anim="idle_front", flip=false }
 		--voodoolady = { playerpos = {231, 52, 0}, anim = "idle_right", flip = true }
     }
     -- add player

@@ -30,6 +30,31 @@ assets = {
 		}		
 	},
 	{
+        id = "shovel",
+        sheet = "gfx/anims2.png",
+        type="sprite",
+        ppu=1,
+        animations = {
+        {
+       	    name = "idle",             
+            frames = 
+            { 
+	    	  	{ duration = dt, quads = { { x=348, y=29, width=8, height=25, anchor = {0, 0}}}}             
+		    }
+        }		
+		}		
+	},
+    {
+        id = "door_out",
+        sheet = "gfx/anims.png",
+        type="sprite",
+        ppu=1,
+        animations = {
+        { name = "close", frames = { {duration = dt, quads = { { x = 434, y = 280, width = 31, height = 51, anchor = {0, 0}}}}}},
+        { name = "open", frames = { {duration = dt, quads = { { x = 467, y = 280, width = 31, height = 51, anchor = {0, 0}}}}}}
+        }
+    },
+	{
         id = "shopbarrels",
         sheet = "gfx/anims2.png",
         type="sprite",
@@ -143,6 +168,16 @@ scene = {
 				object = "sword"				
 			},
 			make_hotspot { 
+				x=141,
+				y=69,
+				width=8, 
+				height=20, 
+				offset={0,0},
+				priority = 1, 
+ 				gfx = { model="shovel", anim="idle" },
+				object = "shovel"				
+			},
+			make_hotspot { 
 				x=289,
 				y=7,
 				width=20, 
@@ -153,6 +188,16 @@ scene = {
  				gfx = { model="storekeeper", anim="idle_right", flip=true },
 				object = "storekeeper"
 			},
+	        make_hotspot { 
+	            x = 59, 
+	            y = 16, 
+	            width = 30, 
+	            height = 50, 
+	            offset = {0, 0},
+	            priority = 1, 
+	            object = "door_shop_village",
+	            gfx = { model="door_out", anim = ((objects.door_shop_village.isopen() == true) and "open" or "close") }
+	        },
 		}
 	},
 	makescummui1(),

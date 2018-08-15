@@ -8,6 +8,7 @@ require ("dialogues/mancomb")
 require ("dialogues/citizen")
 require ("dialogues/lowmoralfiber")
 require ("dialogues/voodoolady")
+require ("dialogues/storekeeper")
 
 local d = strings.dialogues.lookout.text
 local p = strings.dialogues.pirates.text
@@ -18,6 +19,7 @@ local ms = strings.dialogues.mancomb.text
 local ct = strings.dialogues.citizen.text
 local lmf = strings.dialogues.lowmoralfiber.text
 local v = strings.dialogues.voodoolady.text
+local sk = strings.dialogues.storekeeper.text
 
 -- this is the basic dialogue handler
 function onDialogueButtonClick(f) 
@@ -26,7 +28,7 @@ function onDialogueButtonClick(f)
 	dialogue:cleartext()
 	-- set the button active to false
 	--print ("Current status = " .. tostring(f.active))
-	if (f.alwaysActive ~= true) then
+	if (f.alwaysActive ~= true and type(f.active) ~= "function") then
     	f.active = false
 	end
 	--print ("Current status = " .. tostring(f.active))
@@ -263,6 +265,41 @@ dialogues = {
 			lines = {
 				[1] = { text = v[25], active = true, click = dialoguesVoodooLady.yes },
 				[2] = { text = v[26], active = true, click = dialoguesVoodooLady.no },
+			}
+		},
+	},
+	storekeeper = {
+		[1] = {
+			lines = {
+			[1] = { text = sk[4], active = function() return inventory["sword"] ~= nil end, click = dialoguesStorekeeper.sword },
+			[2] = { text = sk[5], active = function() return inventory["shovel"] ~= nil end, click = dialoguesStorekeeper.shovel },
+			[3] = { text = sk[2], active = true, alwaysActive=true, click = dialoguesStorekeeper.leave }
+			}
+		},
+		[2] = {
+			lines = {
+			[1] = { text = sk[13], active = true, alwaysActive = true, click = curry(dialoguesStorekeeper.iwantsword, 13) },
+			[2] = { text = sk[14], active = true, alwaysActive = true, click = curry(dialoguesStorekeeper.iwantsword, 14) },
+			[3] = { text = sk[15], active = true, alwaysActive = true, click = curry(dialoguesStorekeeper.nomoney, 15) },
+			}
+		},
+		[3] = {
+			lines = {
+			[1] = { text = sk[18], active = true, alwaysActive = true, click = curry(dialoguesStorekeeper.nomoney, 18) },
+			[2] = { text = sk[15], active = true, alwaysActive = true, click = curry(dialoguesStorekeeper.nomoney, 15) }
+			}
+		},
+		[4] = {
+			lines = {
+			[1] = { text = sk[13], active = true, alwaysActive = true, click = curry(dialoguesStorekeeper.iwantshovel, 13) },
+			[2] = { text = sk[14], active = true, alwaysActive = true, click = curry(dialoguesStorekeeper.iwantshovel, 14) },
+			[3] = { text = sk[15], active = true, alwaysActive = true, click = curry(dialoguesStorekeeper.nomoneyshovel, 15) },
+			}
+		},
+		[5] = {
+			lines = {
+			[1] = { text = sk[25], active = true, alwaysActive = true, click = curry(dialoguesStorekeeper.nomoneyshovel, 25) },
+			[2] = { text = sk[15], active = true, alwaysActive = true, click = curry(dialoguesStorekeeper.nomoneyshovel, 15) }
 			}
 		},
 	}

@@ -54,8 +54,8 @@ strings = {
 		bones = "bones",
 		chalice = "chalice",
 		sword = "sword",
-		storekeeper="storekeeper"
-        
+		storekeeper="storekeeper",
+        shovel = "shovel"
     },
     dialogues = {
         lookout = {
@@ -529,7 +529,33 @@ strings = {
 			[1] = "Waddya want?",
 			[2] = "I think I'd just like to browse for now.",
 			[3] = "Whatever.",
-			[4] = "About this sword..."
+			[4] = "About this sword...",
+			[5] = "About this shovel...",
+			[6] = "Okay, but don't put your lips on anything.",
+			[7] = "Hey, this ain't no boutique.",
+			[8] = "Don't take all day.",
+			[9] = "Okay.",
+			[10] = "Wake me up if you need anything.",
+			[11] = "Be my guest, fancy pants.",
+			[12] = "What about it?",
+			[13] = "I want it.",
+			[14] = "How much is it?",
+			[15] = "I don't want it.",
+			[16] = "That's 100 pieces of eight.",
+			[17] = "Take it or leave it.",
+			[18] = "I don't have enough money.",
+			[19] = "Figures.",
+			[20] = "How else do you want to waste my time?",
+			[21] = "I already told you, it's 100 pieces of eight.",
+			[22] = "Did you bring enough money this time?",
+			[23] = "Another would-be treasure hunter, eh?",
+			[24] = "That'll cost you 75 pieces of eight.",
+			[25] = "75 pieces of eight? I don't have that much.",
+			[26] = "Then you'd better go put it back.",
+			[27] = "Is there something here maybe that you CAN afford?",
+			[28] = "Same price as the last time you asked me:",
+			[29] = "75 pieces of eight.",
+			[30] = "Maybe you'd like to pay for that?"
 			}
 		}
 
@@ -603,7 +629,8 @@ strings = {
 		[3] = "What do you think this is? A museum?",
 		[4] = "I don't have all day.",
 		[5] = "Got a good deal on swords right now...",
-		[5] = "\"SLASHMASTER™ -- When you want a sword as sharp as your wit.\""
+		[5] = "\"SLASHMASTER™ -- When you want a sword as sharp as your wit.\"",
+		[6] = "\"DIGMASTER™ -- The only shovel for serious treasure-hunting enthusiasts.\""
 		
 	}
 }

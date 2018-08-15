@@ -1,8 +1,12 @@
+function getProperty(a)
+	return (type(a) == "function" and a() or a)
+end
+
 -- Create a script where the player walks to an object and turns toward its direction
 function createWalkToAction(args)
 	s = script:new()
 	-- if the object is in the inventory, nothing to be done
-	if (inventory[args.objectId] ~= nil) then
+	if (inventory[args.objectId] ~= nil and args.goanyway == nil) then
 		return nil
 	end
 	
@@ -106,6 +110,11 @@ function pickupItemQty(obj)
 	refreshInventory()
 end
 
+function dropItem(obj)
+	inventory[obj] = nil
+	refreshInventory()
+end
+
 function removeItemFromInventory(obj) 
 	print ("removing " .. obj)
 	inventory[obj] = nil
@@ -135,10 +144,43 @@ function pickup (args)
         [2] = {type = "delay", sec="0.5", after={1} },
         [3] = {type = "animate", actor="player", anim=("idle_" .. face), after={2} },
 		[4] = {type = "callfunc", func = curry(pickupItem, args.obj), after={3} },
-		[5] = {type = "callfunc", func = curry(removeObject, o.tag), after = {4}}
+		--[5] = {type = "callfunc", func = curry(removeObject, o.tag), after = {4}}
+		[5] = {type="callfunc", func=curry(setActive, {id=args.obj, active=false}), after={4}}
 	}
 	return s
 end
+
+function drop (args) 
+	-- first check if obj is in inventory
+	if (inventory[args.obj] == nil) then
+		-- I already have this
+		return
+	end
+	local o = objects[args.obj]
+	if (o.dirfunc ~= nil) then
+		face = dirHelper[o.dirfunc()]
+	else
+        face = dirHelper[o.dir]
+    end
+	if (o.pickupAnim == nil) then
+		pickupAnim = "operate_" .. face
+	else
+		pickupAnim = o.pickupAnim
+	end
+	local s = script:new()
+	s.actions =  {
+        [1] = {type = "animate", actor="player", anim=pickupAnim },
+        [2] = {type = "delay", sec="0.5", after={1} },
+        [3] = {type = "animate", actor="player", anim=("idle_" .. face), after={2} },
+		[4] = {type = "callfunc", func = curry(dropItem, args.obj), after={3} },
+		[5] = {type = "callfunc", func=curry(setActive, {id=args.obj, active=true}), after={4}}
+	}
+	return s
+end
+
+
+
+
 
 function changeRoom(roomId)
 	local s = script:new()
@@ -244,6 +286,8 @@ function setActive (args)
 end
 
 
+
+
 function startDialogue(args)
     ui = monkey.getEntity("uiplay")
 	d = monkey.getEntity("dialogue")
@@ -265,7 +309,7 @@ function startDialogue(args)
     
     local tkeys = {}
     for k in pairs(node.lines) do
-    	if (node.lines[k].active == true) then
+    	if (getProperty(node.lines[k].active) == true) then
     		table.insert(tkeys, k )
     	end 
     end

@@ -7,6 +7,14 @@ objects["sword"] = {
 	pick = curry (pickup, {obj = "sword"})
 }
 
+objects["shovel"] = {
+	text = strings.objects.shovel,
+	pos = {157, 69},
+	tag = "shovel",
+	dir = "west",
+	look = curry (_say, { character="guybrush", lines= { strings.shop[6] }} ),
+	pick = curry (pickup, {obj = "shovel"})
+}
 
 objects["storekeeper"] = {
 	text = strings.objects.storekeeper,
@@ -16,4 +24,16 @@ objects["storekeeper"] = {
 	offset = {0, 60},
     color = {255, 85, 255, 255},
 	talk = talkToStorekeeper
+}
+
+objects["door_shop_village"] = {
+	text = strings.objects.door,
+    tag = "door_shop",
+    pos = {85, 15},
+	dir = "west",
+	walk = walkToShopDoor,--curry(walkToDoor, { obj = "door_shop_village", roomId = "village3"}),
+	open = curry(operateDoor, { obj = "door_shop_village", open = true }),
+	close = curry(operateDoor, { obj = "door_shop_village", open = false }),
+	isopen = curry(isOpen, "shop"),
+	setopen = curry2(setOpen, "shop")
 }
