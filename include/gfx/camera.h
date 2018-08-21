@@ -29,8 +29,15 @@ public:
     std::string GetRoot() const;
     void SetRoot(const std::string&);
     glm::vec4 GetViewPort();
+    glm::vec4 GetScreenViewPort();
+    void SetScreenViewPort(glm::vec4);
+    virtual glm::vec2 GetWorldCoordinates(glm::vec2) { throw; }
+    bool IsInViewport(float xScreen, float yScreen);
 protected:
+    // this is static and it's the viewport in device coordinates
     glm::vec4 m_camViewport;
+    // this is the real viewport, and is recomputed when window resizes and at startup
+    glm::vec4 m_screenViewport;
     float m_winHeight;
     GLint m_viewportX, m_viewportY;
     GLsizei m_viewportHeight;
@@ -51,6 +58,13 @@ inline glm::vec4 Camera::GetViewPort() {
     return m_camViewport;
 }
 
+inline glm::vec4 Camera::GetScreenViewPort() {
+    return m_screenViewport;
+}
+inline void Camera::SetScreenViewPort(glm::vec4 viewport) {
+    m_screenViewport = viewport;
+}
+
 class OrthographicCamera : public Camera {
 public:
     OrthographicCamera(float orthoWidth, float orthoHeight, glm::vec4 viewport = glm::vec4());
@@ -60,7 +74,7 @@ public:
     void SetBounds(float xMin, float xMax, float yMin, float yMax);
     virtual void Resize(int width, int height);
     virtual bool IsVisible(const Bounds3D&);
-    //glm::vec2 GetWorldCoordinates(glm::vec2);
+    glm::vec2 GetWorldCoordinates(glm::vec2) override;
     virtual void SetPosition(glm::vec3 eye, glm::vec3 direction, glm::vec3 up = glm::vec3(0, 1, 0));
     glm::vec2 GetSize();
     virtual void Init();

@@ -31,17 +31,17 @@ HotSpotManager::HotSpotManager() : Ref(), MouseListener(), m_active{true}, m_cur
     m_pixelRatio = Engine::get().GetPixelRatio();
 }
 
-bool HotSpotManager::IsInViewport(float xScreen, float yScreen, glm::vec4 activeViewport) {
-    xScreen *= m_pixelRatio;
-    yScreen *= m_pixelRatio;
-    if (xScreen < activeViewport.x || xScreen > activeViewport.x + activeViewport[2])
-        return false;
-    float winHeight = Engine::get().GetWindowSize().y;
-    float yFlipped = winHeight - yScreen;
-    if (yFlipped < activeViewport.y || yFlipped > activeViewport.y + activeViewport[3])
-        return false;
-    return true;
-}
+//bool HotSpotManager::IsInViewport(float xScreen, float yScreen, glm::vec4 activeViewport) {
+//    xScreen *= m_pixelRatio;
+//    yScreen *= m_pixelRatio;
+//    if (xScreen < activeViewport.x || xScreen > activeViewport.x + activeViewport[2])
+//        return false;
+//    float winHeight = Engine::get().GetWindowSize().y;
+//    float yFlipped = winHeight - yScreen;
+//    if (yFlipped < activeViewport.y || yFlipped > activeViewport.y + activeViewport[3])
+//        return false;
+//    return true;
+//}
 
 // if I remove the hotspot currently active I get sigsegv!
 void HotSpotManager::CursorPosCallback(GLFWwindow*, double x, double y) {
@@ -50,71 +50,47 @@ void HotSpotManager::CursorPosCallback(GLFWwindow*, double x, double y) {
     if (!m_active)
         return;
     Entity* root = Engine::get().GetScene();
-    RenderingIterator iterator(root, false);
+    HotSpotIterator iterator(root);
 
     bool isInViewport {false};
     OrthographicCamera* currentCam {nullptr};
     glm::vec4 viewport;
     HotSpot* newActiveHotSpot = nullptr;
-    while (iterator != RenderingIterator()) {
+    while (!iterator.end()) {
         if (!iterator->IsActive() || !iterator->AreControlsEnabled())
         {
             iterator.advanceSkippingChildren();
             continue;
         }
-        if (iterator.changedCamera() && iterator.hasActiveViewport()) {
-            // if we have a new ORTHO camera
-            auto orthoCam = dynamic_cast<OrthographicCamera*>(iterator.GetCamera());
-            if (orthoCam != nullptr) {
-                viewport = iterator.GetCurrentViewport();
-                viewport = Engine::get().GetViewport(viewport.x, viewport.y, viewport[2], viewport[3]);
-                // check if point is inside viewport
-                isInViewport = IsInViewport(x, y, viewport);
+        Camera* cam = iterator.GetCamera();
+        if (cam != nullptr) {
+            //viewport = iterator.GetCamera()->GetScreenViewPort();
+            bool isInViewport = cam->IsInViewport(x, y);
+            if (isInViewport) {
+                HotSpot* hotspot = iterator->GetComponent<HotSpot>();
+                // only check if I don't have an active hotspot or if it has lower priority
+                if (hotspot != nullptr &&
+                    (newActiveHotSpot == nullptr || (newActiveHotSpot->GetPriority() < hotspot->GetPriority()))) {
 
-                if (isInViewport) {
-                    currentCam = orthoCam;
-                    //std::cout << "in camera viewport = " << viewport.x << ", " << viewport.y << ", " << viewport[2] << ", " << viewport[3] << "\n";
+                    // we need to convert screen coordinates to world coordinates
+                    // first observation we make is that the bottom left screen point given
+                    // by viewport.x and viewport.y, corresponds to the world point (cam.x - cam.width, cam.y - cam.height)
+                    glm::vec2 worldCoords = cam->GetWorldCoordinates(glm::vec2(x, y));
+                    if (hotspot->isMouseInside(worldCoords)) {
+                        //std::cout << "INSIDE!\n";
+                        newActiveHotSpot = hotspot;
+                        m_worldCoordinates = worldCoords;
+                    }
                 }
+                ++iterator;
 
             } else {
-                isInViewport = false;
-            }
-            // if it's not in this camera, there's no point
-            // in visiting its children, so we skip all of them.
-            if (!isInViewport) {
                 iterator.advanceSkippingChildren();
                 continue;
             }
         } else {
-            if (!isInViewport) {
-                ++iterator;
-                continue;
-            }
+            ++iterator;
         }
-        HotSpot* hotspot = iterator->GetComponent<HotSpot>();
-        // only check if I don't have an active hotspot or if it has lower priority
-
-        if (hotspot != nullptr &&
-                (newActiveHotSpot == nullptr || (newActiveHotSpot->GetPriority() < hotspot->GetPriority()))) {
-
-            // we need to convert screen coordinates to world coordinates
-            // first observation we make is that the bottom left screen point given
-            // by viewport.x and viewport.y, corresponds to the world point (cam.x - cam.width, cam.y - cam.height)
-            glm::vec2 orthoSize = currentCam->GetSize();
-            float x0 = -currentCam->m_viewMatrix[3][0] - orthoSize.x * 0.5f;
-            float y0 = -currentCam->m_viewMatrix[3][1] - orthoSize.y * 0.5f;
-            float winHeight = Engine::get().GetWindowSize().y;
-            float ty = (winHeight/m_pixelRatio) - y;
-            float xw = x0 + (x - viewport.x / m_pixelRatio) * (orthoSize.x / (viewport[2] / m_pixelRatio));
-            float yw = y0 + (ty - viewport.y / m_pixelRatio) * (orthoSize.y / (viewport[3] / m_pixelRatio));
-            //std::cout << xw << "," << yw << "\n";
-            if (hotspot->isMouseInside(glm::vec2(xw, yw))) {
-                //std::cout << "INSIDE!\n";
-                newActiveHotSpot = hotspot;
-                m_worldCoordinates = glm::vec2(xw, yw);
-            }
-        }
-        ++iterator;
     }
 
     if (newActiveHotSpot != m_currentlyActiveHotSpot) {
@@ -130,6 +106,10 @@ void HotSpotManager::CursorPosCallback(GLFWwindow*, double x, double y) {
             m_currentlyActiveHotSpot->onEnter();
         }
 
+    } else {
+        // the active hotspot is still the same, but the mouse has moved
+        if (m_currentlyActiveHotSpot != nullptr)
+        m_currentlyActiveHotSpot->onMove(m_worldCoordinates);
     }
 
 }

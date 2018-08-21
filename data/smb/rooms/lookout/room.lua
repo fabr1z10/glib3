@@ -99,6 +99,14 @@ scene = {
 				priority = 1, 
 				object = "stairs"
 			},
+	        make_hotspot { 
+                x=288, 
+				y=44, 
+				width=32, 
+				height=100, 
+				priority = 1, 
+				object = "path"
+			},
 		}
 	},
 	makescummui1(),

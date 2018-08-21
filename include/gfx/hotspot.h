@@ -26,6 +26,7 @@ public:
     virtual void onEnter() = 0;
     virtual void onLeave() = 0;
     virtual void onClick(glm::vec2) = 0;
+    virtual void onMove(glm::vec2) = 0;
     int GetGroup() const;
     int GetPriority() const;
     using ParentClass = HotSpot;
@@ -65,7 +66,7 @@ public:
     //void Register (HotSpot*);
     //void Unregister (HotSpot*);
     //void AddGroup (int, const std::string& camId);
-    bool IsInViewport(float xScreen, float yScreen, glm::vec4 activeViewport);
+    //bool IsInViewport(float xScreen, float yScreen, glm::vec4 activeViewport);
     void NotifyHotSpotDestructor(HotSpot*);
     //void EnableGroup(int);
     //void DisableGroup(int);

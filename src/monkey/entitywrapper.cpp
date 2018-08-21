@@ -112,7 +112,7 @@ namespace luaFunctions {
     }
 
     void EnableMouse(bool value) {
-        Engine::get().GetMouseHandler()->Enable(value);
+        //Engine::get().GetMouseHandler()->Enable(value);
     }
 
     void EnableKeyboard(bool value) {

@@ -11,9 +11,11 @@
 
 #include <stack>
 #include <queue>
+#include <functional>
 
 // need to do something after each atomic operation on the stack.
 // it will check the top element and do some custom operation
+
 
 // generic iterator for Depth-first search in tree structures (for instance game objects and scheduler)
 template <class T>
@@ -24,17 +26,27 @@ public:
         m_stack.push(root);
         // custom operation here
     }
-    
-    
+    bool end() {
+        return m_stack.empty();
+    }
+    // this function is called when a node is being popped (when the func is called the node passed has just been popped)
+    virtual void onPop(T*) {}
+    // this function is called everytime a new node is ready to be accessed with the deref operator
+    virtual void onNext() {}
+
     DepthFirstIterator& operator++() {
-        // pop
-        T* top = m_stack.top();
+        auto top = m_stack.top();
         m_stack.pop();
+        // Do something here
+        onPop(top);
+
         auto children = top->GetChildren();
         for (auto r = children.rbegin(); r != children.rend(); ++r) {
             m_stack.push(r->get());
         }
-        // custom operation here
+        if (!m_stack.empty()) {
+            onNext();
+        }
         return *this;
     }
 
@@ -42,6 +54,10 @@ public:
     DepthFirstIterator& advanceSkippingChildren() {
         T* top = m_stack.top();
         m_stack.pop();
+        onPop(top);
+        if (!m_stack.empty()) {
+            onNext();
+        }
         return *this;
     }
 

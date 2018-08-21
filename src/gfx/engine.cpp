@@ -1,6 +1,7 @@
 #include "gfx/engine.h"
 #include <gfx/error.h>
 #include <iostream>
+#include "gfx/renderingiterator.h"
 //#include <OpenGL/gl3.h>
 
 //#ifdef __APPLE__
@@ -100,12 +101,12 @@ glm::vec4 Engine::GetViewport(float x, float y, float width, float height) {
 
 void Engine::SetViewport(float x, float y, float width, float height) {
     // convert from device size to window size
-    glm::vec4 viewport = GetViewport(x, y, width, height);
+    //glm::vec4 viewport = GetViewport(x, y, width, height);
 //    float vph = static_cast<GLsizei> (m_actualSize.y * (height / m_deviceSize.y));
 //    float vpw = static_cast<GLsizei> (m_actualSize.x * (width / m_deviceSize.x));
 //    float vpx = (m_winSize.x - m_actualSize.x) / 2.0f + x * (m_actualSize.x / m_deviceSize.x);
 //    float vpy = (m_winSize.y - m_actualSize.y) / 2.0f + y * (m_actualSize.y / m_deviceSize.y);
-    glViewport(viewport.x, viewport.y, viewport[2], viewport[3]);
+    glViewport(x, y, width, height);
 }
 
 void Engine::MainLoop() {
@@ -127,8 +128,9 @@ void Engine::MainLoop() {
         
         m_sceneFactory->PostInit();
         // call startUp
-        
-        
+        int widthPixel, heightPixel;
+        glfwGetFramebufferSize(window, &widthPixel, &heightPixel);
+        Engine::WindowResizeCallback(window, widthPixel, heightPixel);
 
         // run the scene
         m_endScene = false;
@@ -195,18 +197,31 @@ void Engine::WindowResizeCallback(GLFWwindow* win, int width, int height) {
     for (auto& listener : Engine::get().m_resizeListeners)
         listener->Notify(width, height);
 
+    // recalculate all camera viewports
+    glm::vec4 viewport;
+    Entity* root = Engine::get().GetScene();
+    ResizeIterator iterator(root, engine.m_winSize, engine.m_actualSize);
+    while (!iterator.end()) {
+        ++iterator;
+    }
+
 }
 
 void Engine::mouse_button_callback(GLFWwindow* win, int button, int action, int mods) {
-    auto& e = Engine::get().m_mouseListener;
-    if (e != nullptr)
-        e->MouseButtonCallback(win, button, action, mods);
+    if (Engine::get().m_mouseEnabled) {
+        for (auto &listener : Engine::get().m_mouseListeners)
+            listener->MouseButtonCallback(win, button, action, mods);
+    }
+//    auto& e = Engine::get().m_mouseListener;
+//    if (e != nullptr)
+//        e->MouseButtonCallback(win, button, action, mods);
 }
 
 void Engine::cursor_pos_callback(GLFWwindow* win, double xpos, double ypos) {
-    auto& e = Engine::get().m_mouseListener;
-    if (e != nullptr)
-        e->CursorPosCallback(win, xpos, ypos);
+    if (Engine::get().m_mouseEnabled) {
+        for (auto &listener : Engine::get().m_mouseListeners)
+            listener->CursorPosCallback(win, xpos, ypos);
+    }
 }
 
 void Engine::scroll_callback(GLFWwindow* win, double xoffset, double yoffset) {
@@ -227,13 +242,13 @@ void Engine::UnregisterToWindowResizeEvent(WindowResizeListener* listener) {
     m_resizeListeners.erase(listener);
 }
 
-void Engine::RegisterToMouseEvent(std::unique_ptr<MouseListener> listener) {
-    m_mouseListener = std::move(listener);
+void Engine::RegisterToMouseEvent(MouseListener* listener) {
+    m_mouseListeners.insert(listener);
 }
 
-//void Engine::UnregisterToMouseEvent(MouseListener* listener) {
-//    m_mouseListeners.erase(listener);
-//}
+void Engine::UnregisterToMouseEvent(MouseListener* listener) {
+    m_mouseListeners.erase(listener);
+}
 
 void Engine::RegisterToKeyboardEvent(std::unique_ptr<KeyboardListener> listener) {
     m_keyboardListener = std::move(listener);

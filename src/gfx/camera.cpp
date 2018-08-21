@@ -120,6 +120,20 @@ void OrthographicCamera::SetPosition(vec3 eye, vec3 direction, vec3 up) {
     //RecomputeScreenToWorldMatrix();
 }
 
+bool Camera::IsInViewport(float xScreen, float yScreen) {
+    float pixelRatio = Engine::get().GetPixelRatio();
+    xScreen *= pixelRatio;
+    yScreen *= pixelRatio;
+    if (xScreen < m_screenViewport.x || xScreen > m_screenViewport.x + m_screenViewport[2])
+        return false;
+    float winHeight = Engine::get().GetWindowSize().y;
+    float yFlipped = winHeight - yScreen;
+    if (yFlipped < m_screenViewport.y || yFlipped > m_screenViewport.y + m_screenViewport[3])
+        return false;
+    return true;
+}
+
+
 //void OrthographicCamera::RecomputeScreenToWorldMatrix() {
 //    float a = (m_orthoWidth / m_viewportWidth) * m_pixelRatio;
 //    float b = -(m_orthoHeight / m_viewportHeight) * m_pixelRatio;
@@ -136,15 +150,13 @@ bool OrthographicCamera::IsVisible(const Bounds3D& bounds) {
     return !notVisible;
 }
 
-//vec2 OrthographicCamera::GetWorldCoordinates(vec2 P) {
-//    std::cout << m_viewMatrix[3][0] << "...\n";
-//    float x0 = -m_viewMatrix[3][0] - m_orthoWidth * 0.5f;
-//    float y0 = -m_viewMatrix[3][1] - m_orthoHeight * 0.5f;
-//    float ty = (m_winHeight/m_pixelRatio) - P.y;
-//
-//    float xw = x0 + (P.x - m_viewportX / m_pixelRatio) * (m_orthoWidth / (m_viewportWidth / m_pixelRatio));
-//    float yw = y0 + (ty - m_viewportY / m_pixelRatio) * (m_orthoHeight / (m_viewportHeight / m_pixelRatio));
-//    return vec2(xw, yw);
-////    vec3 Pw = m_screenToWorldMat * vec3 (P.x, P.y, 1.0f);
-//  //  return vec2(Pw);
-//}
+vec2 OrthographicCamera::GetWorldCoordinates(vec2 P) {
+    float pixelRatio = Engine::get().GetPixelRatio();
+    float x0 = -m_viewMatrix[3][0] - m_orthoWidth * 0.5f;
+    float y0 = -m_viewMatrix[3][1] - m_orthoHeight * 0.5f;
+    float winHeight = Engine::get().GetWindowSize().y;
+    float ty = (winHeight/pixelRatio) - P.y;
+    float xw = x0 + (P.x - m_screenViewport.x / pixelRatio) * (m_orthoWidth / (m_screenViewport[2] / pixelRatio));
+    float yw = y0 + (ty - m_screenViewport.y / pixelRatio) * (m_orthoHeight / (m_screenViewport[3] / pixelRatio));
+    return glm::vec2(xw, yw);
+}

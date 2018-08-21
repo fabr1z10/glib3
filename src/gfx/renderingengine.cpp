@@ -76,10 +76,9 @@ extern GLFWwindow* window;
 //}
 
 void RenderingEngine::Start() {
-    int widthPixel, heightPixel;
-    glfwGetFramebufferSize(window, &widthPixel, &heightPixel);
+
     // trigger a resize
-    Engine::WindowResizeCallback(window, widthPixel, heightPixel);
+
     // Engine::get().RegisterToWindowResizeEvent(this);
 }
 
@@ -103,7 +102,7 @@ void RenderingEngine::Update(double)
 
         // loop through all nodes
         RenderingIterator iterator(root);
-        for (; iterator != RenderingIterator();  ++iterator) {
+        for (; !iterator.end();  ++iterator) {
             // get the renderer component
 
             auto cam = iterator.GetCamera();

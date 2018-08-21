@@ -37,6 +37,7 @@ private:
     void ReadFollowComponent (luabridge::LuaRef& ref, Entity* parent);
     void ReadWalkarea (luabridge::LuaRef& ref, Entity* parent);
     void ReadHotspot (luabridge::LuaRef& ref, Entity* parent);
+    void ReadCursor (luabridge::LuaRef& ref, Entity* parent);
     void ReadWalkTrigger (luabridge::LuaRef& ref, Entity* parent);
     void ReadButton (luabridge::LuaRef& ref, Entity* parent);
     void ReadScaling (luabridge::LuaRef& ref, Entity* parent);

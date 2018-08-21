@@ -6,70 +6,48 @@
 struct CameraInfo {
     Entity* entity;
     Camera* camera;
+    //glm::vec4 viewport;
+};
+
+class RenderingIterator : public DepthFirstIterator<Entity> {
+public:
+    RenderingIterator() : DepthFirstIterator<Entity>() {}
+    RenderingIterator(Entity* root) : DepthFirstIterator<Entity>(root) {}
+    void onPop(Entity*) override;
+    void onNext() override;
+    Camera* GetCamera();
+private:
+    std::stack<CameraInfo> m_cameraStack;
+};
+
+class HotSpotIterator : public DepthFirstIterator<Entity> {
+public:
+    HotSpotIterator() : DepthFirstIterator<Entity>() {}
+    HotSpotIterator(Entity* root) : DepthFirstIterator<Entity>(root) {}
+    void onPop(Entity*) override;
+    void onNext() override;
+    Camera* GetCamera();
+private:
+    std::stack<CameraInfo> m_cameraStack;
+};
+
+struct ResizeCameraInfo {
+    Entity* entity;
+    Camera* camera;
+    glm::vec4 deviceViewport;
     glm::vec4 viewport;
 };
 
-class RenderingIterator {
+class ResizeIterator : public DepthFirstIterator<Entity> {
 public:
-    RenderingIterator(bool setCameras = true) : m_setCameras{setCameras}, m_changeCamera{false} {}
-    RenderingIterator(Entity* root, bool setCameras = true) : m_setCameras{setCameras}, m_changeCamera{false} {
-        m_iter.m_stack.push(root);
-        HandleCamera();
-        // custom operation here
-    }
-
-
-    RenderingIterator& operator++() {
-        // just fwd this call to the inner iterator
-        ++m_iter;
-        // do check
-        HandleCamera();
-        return *this;
-    }
-
-    RenderingIterator& advanceSkippingChildren() {
-        m_iter.advanceSkippingChildren();
-        HandleCamera();
-        return *this;
-
-    }
-
-    Entity& operator*() {
-        return *m_iter;
-    }
-
-    Entity* operator->()
-    { return m_iter.operator->(); }
-
-
-    bool operator== (const RenderingIterator& rhs) {
-        return (m_iter == rhs.m_iter);
-    }
-
-    bool operator!= (const RenderingIterator& rhs) {
-        return !(operator==(rhs));
-    }
-
+    ResizeIterator() : DepthFirstIterator<Entity>() {}
+    ResizeIterator(Entity* root, glm::vec2 winSize, glm::vec2 actSize) : DepthFirstIterator<Entity>(root), m_winSize{winSize}, m_actualSize{actSize} {}
+    void onPop(Entity*) override;
+    void onNext() override;
     Camera* GetCamera();
-    glm::vec4 GetCurrentViewport() const;
-    void HandleCamera();
-    bool changedCamera() const;
-    bool hasActiveViewport () const;
 private:
-    bool m_setCameras;
-    bool m_changeCamera;
-    DepthFirstIterator<Entity> m_iter;
-    std::stack<CameraInfo> m_viewportStack;
+    glm::vec4 deviceToScreenViewport(glm::vec4);
+    glm::vec2 m_winSize;
+    glm::vec2 m_actualSize;
+    std::stack<ResizeCameraInfo> m_cameraStack;
 };
-
-inline bool RenderingIterator::changedCamera() const {
-    return m_changeCamera;
-}
-
-inline glm::vec4 RenderingIterator::GetCurrentViewport() const {
-    return m_viewportStack.top().viewport;
-}
-
-inline bool RenderingIterator::hasActiveViewport () const {
-    return !m_viewportStack.empty();
-}

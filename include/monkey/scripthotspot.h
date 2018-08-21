@@ -14,6 +14,7 @@ public:
     void onLeave() override;
     void onClick(glm::vec2) override;
     void onEnter() override;
+    void onMove(glm::vec2) override;
     void SetOnEnter(luabridge::LuaRef ref) {
         r_enter= std::unique_ptr<luabridge::LuaRef>(new luabridge::LuaRef(ref));
     }
@@ -23,6 +24,9 @@ public:
     void SetOnClick(luabridge::LuaRef ref) {
         r_click= std::unique_ptr<luabridge::LuaRef>(new luabridge::LuaRef(ref));
     }
+    void SetOnMove(luabridge::LuaRef ref) {
+        r_move= std::unique_ptr<luabridge::LuaRef>(new luabridge::LuaRef(ref));
+    }
     using ParentClass = HotSpot;
 
 private:
@@ -30,6 +34,7 @@ private:
     std::unique_ptr<luabridge::LuaRef> r_enter;
     std::unique_ptr<luabridge::LuaRef> r_leave;
     std::unique_ptr<luabridge::LuaRef> r_click;
+    std::unique_ptr<luabridge::LuaRef> r_move;
     //std::string m_onEnter;
     //std::string m_onClick;
     //std::string m_onLeave;

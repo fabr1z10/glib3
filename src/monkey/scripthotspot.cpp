@@ -15,6 +15,11 @@ void ScriptHotSpot::onClick(glm::vec2) {
     if (r_click != nullptr)
         r_click->operator()(EntityWrapper(m_entity));
 }
+void ScriptHotSpot::onMove(glm::vec2 p) {
+
+    if (r_move != nullptr)
+        r_move->operator()(p.x, p.y);
+}
 void ScriptHotSpot::onEnter() {
     if (r_enter != nullptr)
         r_enter->operator()(EntityWrapper(m_entity));

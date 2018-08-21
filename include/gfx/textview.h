@@ -68,6 +68,7 @@ public:
     void onEnter() override;
     void onLeave() override;
     void onClick(glm::vec2) override ;
+    void onMove(glm::vec2) override{}
 private:
     TextView* m_textView;
     int m_n;

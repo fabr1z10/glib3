@@ -33,9 +33,8 @@ objects = {
 	},
     path = {
         text = strings.objects.path,
-        pos = {8, 71},
-        walk = curry(changeRoom, "lookout")
-        
+        pos = {314, 52},
+        walk = curry(changeRoom, "meleemap")  
     },
     poster = {
         text = strings.objects.poster,

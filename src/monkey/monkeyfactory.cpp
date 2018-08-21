@@ -18,6 +18,8 @@
 #include <monkey/luakeylistener.h>
 #include <monkey/scriptwalktrigger.h>
 #include <gfx/textview.h>
+#include "gfx/cursor.h"
+
 
 using namespace luabridge;
 
@@ -218,6 +220,10 @@ std::shared_ptr<Entity> MonkeyFactory::ReadItem(luabridge::LuaRef& ref) {
     if (item.HasKey("walktrigger")) {
         luabridge::LuaRef c = item.Get<luabridge::LuaRef>("walktrigger");
         ReadWalkTrigger(c, entity.get());
+    }
+    if (item.HasKey("cursor")) {
+        luabridge::LuaRef c = item.Get<luabridge::LuaRef>("cursor");
+        ReadCursor(c, entity.get());
     }
     //entity->SetLayer(layer);
     return entity;
@@ -422,6 +428,10 @@ std::shared_ptr<HotSpot> MonkeyFactory::GetHotSpot (luabridge::LuaRef& ref, std:
         luabridge::LuaRef r = table.Get<luabridge::LuaRef>("onclick");
         hotspot->SetOnClick(r);
     }
+    if (table.HasKey("onmove")) {
+        luabridge::LuaRef r = table.Get<luabridge::LuaRef>("onmove");
+        hotspot->SetOnMove(r);
+    }
     //std::string onEnter = table.Get<std::string>("onenter", "");
     //std::string onLeave = table.Get<std::string>("onleave", "");
     //std::string onClick = table.Get<std::string>("onclick", "");
@@ -446,6 +456,13 @@ std::shared_ptr<Renderer> MonkeyFactory::GetTextComponent (luabridge::LuaRef& re
     renderer->SetTint(color);
     renderer->SetMesh(mesh);
     return renderer;
+}
+
+
+void MonkeyFactory::ReadCursor (luabridge::LuaRef& ref, Entity* parent) {
+    LuaTable table(ref);
+    auto cursor = std::make_shared<Cursor>();
+    parent->AddComponent(cursor);
 }
 
 void MonkeyFactory::ReadHotspot (luabridge::LuaRef& ref, Entity* parent) {

@@ -51,7 +51,8 @@ public:
     glm::vec2 GetDeviceSize() const;
     void RegisterToWindowResizeEvent(WindowResizeListener*);
     void UnregisterToWindowResizeEvent(WindowResizeListener*);
-    void RegisterToMouseEvent(std::unique_ptr<MouseListener>);
+    void RegisterToMouseEvent(MouseListener*);
+    void UnregisterToMouseEvent(MouseListener*);
     void RegisterToKeyboardEvent(std::unique_ptr<KeyboardListener>);
     glm::vec4 GetViewport(float x, float y, float width, float height);
     void SetViewport(float x, float y, float width, float height);
@@ -80,7 +81,7 @@ public:
     static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
     void SetRenderingEngine(std::unique_ptr<RenderingEngine>);
     void SetScriptingEngine(std::unique_ptr<Scheduler>);
-    MouseListener* GetMouseHandler();
+    //MouseListener* GetMouseHandler();
     KeyboardListener* GetKeyboardListener();
     //void SetKeyboardHandler(std::unique_ptr<KeyboardListener>);
     //void SetMouseHandler(std::unique_ptr<MouseListener>);
@@ -90,7 +91,7 @@ public:
     void SetEnableUpdate(bool);
 private:
     friend class Singleton<Engine>;
-    Engine() : m_update{true} {}
+    Engine() : m_update{true}, m_mouseEnabled{true} {}
     std::unordered_map<std::string, Ref*> m_taggedReferences;
     void InitGL(const EngineConfig& config);
     std::unordered_set<Entity*> m_garbage;
@@ -108,11 +109,12 @@ private:
     glm::vec2 m_actualSize;
     glm::vec2 m_winSize;
     std::unordered_set<WindowResizeListener*> m_resizeListeners;
-    std::unique_ptr<MouseListener> m_mouseListener;
+    std::unordered_set<MouseListener*> m_mouseListeners;
     std::unique_ptr<KeyboardListener> m_keyboardListener;
     AssetManager m_assetManager;
     GLuint m_vao;
     bool m_endScene;
+    bool m_mouseEnabled;
     float m_pixelRatio;
     // the engine has sub-engines that run at end of each frame
     //std::unique_ptr<MouseListener> m_mouseListener;
@@ -183,9 +185,9 @@ inline Scheduler* Engine::GetScriptingEngine() {
     return m_scriptEngine.get();
 }
 
-inline MouseListener* Engine::GetMouseHandler() {
-    return m_mouseListener.get();
-}
+//inline MouseListener* Engine::GetMouseHandler() {
+//return m_mouseListener.get();
+//}
 
 inline KeyboardListener* Engine::GetKeyboardListener() {
     return m_keyboardListener.get();

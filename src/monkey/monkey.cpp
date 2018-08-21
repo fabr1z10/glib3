@@ -65,7 +65,8 @@ void Monkey::Start() {
     g.SetScriptingEngine(std::move(scheduler));
 
     // set-up the input system (mouse & keyboard)
-    g.RegisterToMouseEvent(std::unique_ptr<HotSpotManager>(new HotSpotManager));
+    auto hsm = std::unique_ptr<HotSpotManager>(new HotSpotManager);
+    g.RegisterToMouseEvent(hsm.get());
 
     std::unique_ptr<LuaKeyListener> kl(new LuaKeyListener);
     luabridge::LuaRef hk = luabridge::getGlobal(LuaWrapper::L, "hotkeys");

@@ -55,7 +55,18 @@ strings = {
 		chalice = "chalice",
 		sword = "sword",
 		storekeeper="storekeeper",
-        shovel = "shovel"
+        shovel = "shovel",
+		village = "village",
+		lookoutpoint = "lookout point",
+		fork = "fork",
+		clearing="clearing",
+		bridge = "bridge",
+		island = "island",
+		lights = "lights",
+		house = "house"
+		
+		
+		
     },
     dialogues = {
         lookout = {

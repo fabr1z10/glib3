@@ -22,6 +22,7 @@ public:
     void onEnter() override {}
     void onLeave() override {}
     void onClick(glm::vec2);
+    void onMove(glm::vec2) {}
     void SetDepthFunction (std::unique_ptr<Function2D> func);
     void SetScalingFunction (std::unique_ptr<Function2D> func);
     using ParentClass = HotSpot;
