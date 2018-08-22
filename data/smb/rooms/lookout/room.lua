@@ -131,6 +131,7 @@ function room.init()
 	variables._actionInfo:reset()
 	local fromData = {
         village1 = { playerpos = {250, 0, 0}, anim = "idle_back" },
+		meleemap = { playerpos = {314,52, 0}, anim = "idle_right", flip = true },
 		--scummbar = { playerpos = {715, 13, 0}, anim = "idle_front" }
     }
 
@@ -148,15 +149,20 @@ function room.init()
 end
 
 function room.start()
-	if (variables._previousroom == "village1") then
-		local s = script:new()	
-		s.actions[1] = { type="walkto", actor="player", pos={247, 30}}
-	    monkey.play(s)
-	end
+
 end
 
 function room.afterstartup() 
 	print ("refreshing inventory")
+	if (variables._previousroom == "village1") then
+		local s = script:new()	
+		s.actions[1] = { type="walkto", actor="player", pos={247, 30}}
+	    monkey.play(s)
+	elseif (variables._previousroom == "meleemap") then
+		local s = script:new()	
+		s.actions[1] = { type="walkto", actor="player", pos={247, 30}}
+	    monkey.play(s)
+	end
 	refreshInventory()
 end
 

@@ -34,7 +34,7 @@ variables = {
     },
     -- sets the start room
     _room = "lookout",
-    _previousroom = "scummbar",
+    _previousroom = "meleemap",
 	_pause = false,
     talkedToLookout = false,
 	talkedToCitizen = 0,

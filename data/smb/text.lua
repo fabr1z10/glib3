@@ -63,7 +63,8 @@ strings = {
 		bridge = "bridge",
 		island = "island",
 		lights = "lights",
-		house = "house"
+		house = "house",
+		circustent ="circus tent"
 		
 		
 		

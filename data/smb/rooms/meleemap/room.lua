@@ -51,15 +51,15 @@ scene = {
                 }
               }
             },
-			createMapItem (72, 76, strings.objects.lookoutpoint, 1),
-			createMapItem (62, 68, strings.objects.village, 1),
-			createMapItem (71, 110, strings.objects.fork, 1),
-			createMapItem (132, 110, strings.objects.clearing, 1),	
-			createMapItem (132, 110, strings.objects.fork, 1),	
-			createMapItem (167, 64, strings.objects.bridge, 1),	
-			createMapItem (201, 52, strings.objects.lights, 1),	
-			createMapItem (272, 93, strings.objects.house, 1),	
-			createMapItem (231, 180, strings.objects.island, 1),	
+			createMapItem (72, 76, strings.objects.lookoutpoint, 1, {75, 80}, "lookout"),
+			createMapItem (62, 68, strings.objects.village, 1, {69, 74}, "village1"),
+			--createMapItem (71, 110, strings.objects.fork, 1),
+			createMapItem (132, 110, strings.objects.clearing, 1, {135, 113}, "clearing"),	
+			--createMapItem (132, 110, strings.objects.fork, 1),	
+			--createMapItem (167, 64, strings.objects.bridge, 1),	
+			--createMapItem (201, 52, strings.objects.lights, 1),	
+			--createMapItem (272, 93, strings.objects.house, 1),	
+			--createMapItem (231, 180, strings.objects.island, 1),	
 			
 			-- {
 			--     pos = {62, 68, 0},
@@ -69,7 +69,7 @@ scene = {
 			--         onenter = curry (mapLocationEnter, "village"),
 			-- 		onleave = curry (mapLocationExit)
 			--     }
-			-- },
+			-- },a
         }
 	},
 	{
@@ -107,7 +107,8 @@ function room.init()
     variables._actionInfo:reset()
     -- previous room was lookout
 	local fromData = {
-        lookout = { playerpos = {76, 78, 0}, anim = "idle_back" }
+        lookout = { playerpos = {76, 78, 0}, anim = "idle_back" },
+		clearing = { playerpos = {135, 113, 0}, anim = "idle_right", flip=true },
     }
 	
 	f = fromData[variables._previousroom]
@@ -120,7 +121,7 @@ function room.init()
     table.insert (room.scene[1].children, {
         tag = "player",
         pos = f.playerpos,
-        gfx = { model = "guybrush", anim = f.anim },
+        gfx = { model = "guybrush", anim = f.anim, flip=f.flip},
         follow = { cam="maincam" },
         layer = 1,
         scaling = {}
