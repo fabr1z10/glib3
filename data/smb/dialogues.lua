@@ -9,6 +9,7 @@ require ("dialogues/citizen")
 require ("dialogues/lowmoralfiber")
 require ("dialogues/voodoolady")
 require ("dialogues/storekeeper")
+require ("dialogues/fettbros")
 
 local d = strings.dialogues.lookout.text
 local p = strings.dialogues.pirates.text
@@ -20,6 +21,7 @@ local ct = strings.dialogues.citizen.text
 local lmf = strings.dialogues.lowmoralfiber.text
 local v = strings.dialogues.voodoolady.text
 local sk = strings.dialogues.storekeeper.text
+local fb = strings.dialogues.fettbros.text
 
 -- this is the basic dialogue handler
 function onDialogueButtonClick(f) 
@@ -302,6 +304,36 @@ dialogues = {
 			[2] = { text = sk[15], active = true, alwaysActive = true, click = curry(dialoguesStorekeeper.nomoneyshovel, 15) }
 			}
 		},
+	},
+	fettbros = {
+		[1] = {
+			lines = {
+			[1] = { text = fb[29], active=true, alwaysActive = true, click = curry(dialoguesFettBros.ahem, 29) },
+			[2] = { text = fb[30], active=true, alwaysActive = true, click = curry(dialoguesFettBros.ahem, 30) },
+			[3] = { text = fb[31], active=true, alwaysActive = true, click = curry(dialoguesFettBros.ahem, 31) },
+			[4] = { text = fb[32], active=true, alwaysActive = true, click = curry(dialoguesFettBros.ahem, 32) },
+			[5] = { text = fb[33], active=true, alwaysActive = true, click = curry(dialoguesFettBros.ahem, 33) },
+			}
+		},
+		[2] = {
+			lines = {
+			[1] = { text = fb[61], active=true, alwaysActive = true, click = dialoguesFettBros.doit },
+			[2] = { text = fb[62], active=true, alwaysActive = true, click = dialoguesFettBros.howmuch },
+			[3] = { text = fb[63], active=true, alwaysActive = true, click = curry(dialoguesFettBros.noway, 63) },
+			}
+		},
+		[3] = {
+			lines = {
+			[1] = { text = fb[65], active=true, click = dialoguesFettBros.ahem },
+			[2] = { text = fb[66], active=true, alwaysActive = true, click = curry(dialoguesFettBros.noway, 66)  },
+			}
+		},
+		[4] = {
+			lines = {
+			[1] = { text = fb[71], active=true, click = dialoguesFettBros.nohelmet },
+			[2] = { text = fb[72], active=true, alwaysActive = true, click = dialoguesFettBros.ihavehelmet  },
+			}
+		}
 	}
 }
 

@@ -64,7 +64,8 @@ strings = {
 		island = "island",
 		lights = "lights",
 		house = "house",
-		circustent ="circus tent"
+		circustent ="circus tent",
+		outside = "outside"
 		
 		
 		
@@ -569,6 +570,93 @@ strings = {
 			[29] = "75 pieces of eight.",
 			[30] = "Maybe you'd like to pay for that?"
 			}
+		},
+		fettbros = {
+			text = {
+			[1] = "I'd get in the cannon, but the gunpowder makes me sneeze.",
+			[2] = "Well, I can't do it, I hurt my hand taming the lions last week.",
+			[3] = "I hardly think that little scratch compares to my chronic allergy. You get in the cannon.",
+			[4] = "You don't have any allergies, you faker. YOU get in the cannon.",
+			[5] = "No, YOU get in the cannon!",
+			[6] = "Slacker!",
+			[7] = "Loser!",
+			[8] = "Ruffian!",
+			[9] = "Fop!",
+			[10] = "Weasel!",
+			[11] = "Weevil!",
+			[12] = "Miscreant!",
+			[13] = "Toady!",
+			[14] = "Ne'er-do-well!",
+			[15] = "Scofflaw!",
+			[16] = "Mullet-head!",
+			[17] = "Millet-head!",
+			[18] = "Pencil-head!",
+			[19] = "Half-head!",
+			[20] = "Cheese-head!",
+			[21] = "Harpy!",
+			[22] = "What?",
+			[23] = "Just get in the cannon.",
+			[24] = "Your mother wears combat slippers!",
+			[25] = "Leave our mother out of it! Get in the cannon!",
+			[26] = "You're a chicken!",
+			[27] = "You're a dead chicken!",
+			[28] = "Well, you're a dead chicken with a pulley in the middle!",
+			[29] = "...ahem...",
+			[30] = "Does this place have a bathroom?",
+			[31] = "I'm selling these fine jackets.",
+			[32] = "Can I borrow a trampoline?",
+			[33] = "Why are you guys dressed up in those ridiculous outfits?",
+			[34] = "Say there, son, how'd you like a chance--",
+			[35] = "--A once in a lifetime chance--",
+			[36] = "--To perform an amazing feat--",
+			[37] = "--A death-defying feat--",
+			[38] = "--Well, not so death-defying, really--",
+			[39] = "--A dangerous feat--",
+			[40] = "--No, not dangerous at all--",
+			[41] = "--An easy feat--",
+			[42] = "--But exciting!--",
+			[43] = "--With the Amazing--",
+			[44] = "--Adventurous, Acrobatic--",
+			[45] = "--And Exceedingly Well-Known--",
+			[46] = "--Fabulous, Flying--",
+			[47] = "--Fettuccini Brothers!",
+			[48] = "That's us.",
+			[49] = "My brother Alfredo...",
+			[50] = "...and my brother Bill.",
+			[51] = "Sound good?",
+			[52] = "Good.",
+			[53] = "It's very simple, really.",
+			[54] = "See that cannon over there?",
+			[55] = "All you have to do--",
+			[56] = "--Is get in the cannon--",
+			[57] = "--And we'll shoot you out of it--",
+			[58] = "--Across the room--",
+			[59] = "--Quite safe, actually--",
+			[60] = "--So, what do you say?",
+			[61] = "OK, I'll do it.",
+			[62] = "How much will you give me?",
+			[63] = "Forget it!",
+			[64] = "How about 478 pieces of eight?",
+			[65] = "OK, sounds good.",
+			[66] = "No way!",
+			[67] = "Hello again.",
+			[68] = "Ready to do the cannon trick?",
+			[69] = "We'll pay you 478 pieces of eight.",
+			[70] = "Have you got a helmet?",
+			[71] = "Er... no, I don't have a helmet. Will I need one?",
+			[72] = "Of course I have a helmet. What sort of idiot do you take me for?",
+			[73] = "No helmet?",
+			[74] = "Oh, you've got to have a helmet--",
+			[75] = "--Can't do the cannon trick without a helmet--",
+			[76] = "--Nosiree!",
+			[77] = "Go get a helmet, and then we can do the trick.",
+			[78] = "Well, let's have it.",
+			[79] = "We want to be sure--",
+			[80] = "--That is's safe--",
+			[81] = "--Wouldn't want you hurt--",
+
+			
+			}
 		}
 
         
@@ -644,7 +732,8 @@ strings = {
 		[5] = "\"SLASHMASTER™ -- When you want a sword as sharp as your wit.\"",
 		[6] = "\"DIGMASTER™ -- The only shovel for serious treasure-hunting enthusiasts.\""
 		
-	}
+	},
+
 }
 
 strings.dialogues.lookout.randomLookoutMsg = function() 

@@ -33,7 +33,7 @@ variables = {
         turnoff = { code="turnoff", text = strings.ui.turnoff, objects = 1 }
     },
     -- sets the start room
-    _room = "lookout",
+    _room = "clearing",
     _previousroom = "meleemap",
 	_pause = false,
     talkedToLookout = false,
@@ -51,6 +51,8 @@ variables = {
 	knowsShovelPrice = false,
 	swordPaid = false,
 	shovelPaid = false,
+	talkedToFettuccini = false,
+	talkedAboutHelmet = false,
 	seagull = 0,
 	-- holds the status (true = open)
 	doors = {
