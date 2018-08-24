@@ -65,7 +65,8 @@ strings = {
 		lights = "lights",
 		house = "house",
 		circustent ="circus tent",
-		outside = "outside"
+		outside = "outside",
+		fettuccini = "Fettuccini Brothers",
 		
 		
 		
@@ -654,7 +655,32 @@ strings = {
 			[79] = "We want to be sure--",
 			[80] = "--That is's safe--",
 			[81] = "--Wouldn't want you hurt--",
+			[82] = "Ah, that will work as a helmet!",
+			[83] = "Now we can do the trick.",
+			[84] = "Step right over here, son.",
+			[85] = "Now, put on yout helmet--",
+			[86] = "--and get in the cannon--",
+			[87] = "--and we'll take care of the rest.",
+			[88] = "ECHO",
+			[89] = "It works!",
+			[90] = "I'm so relieved!",
+			[91] = "Hey...",
+			[92] = "Are you OK?",
+			[93] = "Where's my helmet?",
+			[94] = "I'm Bobbin. Are you my mother?",
+			[95] = "He's all right!",
+			[96] = "Hooray! We are spared an embarassing and financially debilitating lawsuit!",
+			[97] = "Here's your money, sir.",
+			[98] = "Just recompense for aiding us.",
+			[99] = "We just need to change the aim a bit.",
+			[100] = "I'll try it next!",
+			[101] = "No, I'LL do it next!",
+			[102] = "No, me!",
+			[103] = "No, ME!",
 
+			
+
+			
 			
 			}
 		}
@@ -733,6 +759,9 @@ strings = {
 		[6] = "\"DIGMASTER™ -- The only shovel for serious treasure-hunting enthusiasts.\""
 		
 	},
+	circus = {
+		[1] = "Those crazy Spaghetti Brothers are still in there."
+	}
 
 }
 

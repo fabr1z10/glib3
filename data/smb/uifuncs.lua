@@ -14,6 +14,7 @@ defaultActions = {
    pull = curry(defaultHelper, 3),
    pick = curry(defaultHelper, 5),
    use = curry(defaultHelper, 2),
+   give = curry(defaultHelper, 2),
    talk = curry(defaultHelper, 2),
    turnon = curry(defaultHelper, 2),
    turnoff = curry(defaultHelper, 2)   
@@ -71,6 +72,37 @@ function hoverOffInventory(args, entity)
 	changecolor(args.color, entity)
 	hoverOff()
 end
+
+function giveActionHandler() 
+
+    local s = script:new("_walk")
+	print ("Giving " .. variables._actionInfo.obj1 .. " to " .. variables._actionInfo.obj2)
+	local obj1 = objects[variables._actionInfo.obj1]
+	local obj2 = objects[variables._actionInfo.obj2]
+	local a = nil
+
+	-- I need to have obj1
+	isObj1InInv = inventory[variables._actionInfo.obj1] ~= nil
+	if (isObj1InInv == false) then
+		s:push { script = defaultActions["give"] (), at = "end" }
+    	return s
+	end
+	-- first, I need to walk to the recipient
+	s:push { script = createWalkToAction {objectId = variables._actionInfo.obj2}, at = "end" }
+	if (obj2["give"] ~= nil) then
+		a = obj2["give"][variables._actionInfo.obj1]
+		if (a == nil) then
+			s:push { script = defaultActions["give"] (), at = "end" }
+		else
+			s:push { script = a(), at = "end" }
+		end
+	else
+		s:push { script = defaultActions["give"] (), at = "end" }
+	end
+	return s
+
+end
+
 
 -- function that handle use on two objects
 function useActionHandler ()
@@ -186,7 +218,9 @@ function runAction ()
         -- see if there are any two object actions like verb obj1 ...
         if (variables._actionInfo.verb.code == "use") then
             s = useActionHandler()
-        end
+        elseif (variables._actionInfo.verb.code == "give") then
+			s = giveActionHandler()
+		end
         -- a1 = variables._actionInfo.obj1[variables._actionInfo.verb.code]
         -- if (a1 == nil) then
         --     a1 = variables._actionInfo.obj2[variables._actionInfo.verb.code]

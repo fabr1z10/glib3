@@ -10,7 +10,7 @@
 #include "gfx/move.h"
 #include "gfx/scriptactions.h"
 #include <monkey/enableblock.h>
-
+#include <monkey/showmessage.h>
 
 ActivityFactory::ActivityFactory() {
     m_factories["walkto"] = [] (LuaTable& table) -> std::unique_ptr<Activity> {
@@ -56,6 +56,20 @@ ActivityFactory::ActivityFactory() {
         say->SetAnimationStart(animStart);
         say->SetNoAnim(noAnim);
         return std::move(say);
+    };
+    m_factories["showmessage"] = [] (LuaTable& table) -> std::unique_ptr<Activity> {
+        std::string msg = table.Get<std::string>("message");
+        std::string font = table.Get<std::string>("font", "monkey");
+        TextAlignment align = table.Get<TextAlignment>("align", BOTTOM);
+        glm::vec4 color = table.Get<glm::vec4>("color");
+        glm::vec2 offset = table.Get<glm::vec2>("offset", glm::vec2(0.0f));
+        float time = table.Get<float>("time", 1.0f);
+        glm::vec4 outlineColor = table.Get<glm::vec4>("outlinecolor", glm::vec4(0.0f, 0.0f, 0.0f, 255.0f));
+        color/=255.0f;
+        outlineColor /= 255.0f;
+        float size = table.Get<float>("size", 8.0f);
+        glm::vec3 pos = table.Get<glm::vec3>("pos");
+        return std::unique_ptr<ShowMessage>(new ShowMessage(msg, font, pos, size, color, outlineColor, align, time, offset));
     };
     m_factories["callfunc"] = [] (LuaTable& table) -> std::unique_ptr<Activity> {
         luabridge::LuaRef ref = table.Get<luabridge::LuaRef>("func");

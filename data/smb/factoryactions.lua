@@ -51,7 +51,7 @@ end
 
 
 function createObject (obj) 
-    print ("CREATE OBJ" .. obj.tag)
+    --print ("CREATE OBJ" .. obj.tag)
     parent = monkey.getEntity("main")
 
     monkey.addEntity (obj, parent)
@@ -106,7 +106,12 @@ function pickupItem(obj)
 end
 
 function pickupItemQty(obj)
-	inventory[obj.name] = { qty = obj.qty }
+	local a = inventory[obj.name]
+	if (a == nil) then
+		inventory[obj.name] = { qty = obj.qty }
+	else
+		a.qty = a.qty + obj.qty
+	end
 	refreshInventory()
 end
 
@@ -199,9 +204,11 @@ function talk(args)
 end
 
 function lookPiecesOfEight() 
-	return {
-		say2 { character ="guybrush", lines = { strings.piecesofeightmsg() } }
+	local s = script:new()	
+	s.actions = {
+		[1] = say { character ="guybrush", lines = { strings.piecesofeightmsg() } }
 	}
+	return s
 
 end
 

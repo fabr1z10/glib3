@@ -53,6 +53,7 @@ variables = {
 	shovelPaid = false,
 	talkedToFettuccini = false,
 	talkedAboutHelmet = false,
+	cannondone = false,
 	seagull = 0,
 	-- holds the status (true = open)
 	doors = {
@@ -153,3 +154,6 @@ hotkeys = {
 -- 	f8 = restart
 
 -- }
+
+-- custom for debug
+inventory["pot"] = {qty=1}

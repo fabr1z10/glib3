@@ -330,8 +330,14 @@ dialogues = {
 		},
 		[4] = {
 			lines = {
-			[1] = { text = fb[71], active=true, click = dialoguesFettBros.nohelmet },
+			[1] = { text = fb[71], active=true, alwaysActive = true, click = dialoguesFettBros.nohelmet },
 			[2] = { text = fb[72], active=true, alwaysActive = true, click = dialoguesFettBros.ihavehelmet  },
+			}
+		},
+		[5] = {
+			lines = {
+			[1] = { text = fb[93], active=true, alwaysActive = true, click = curry(dialoguesFettBros.closing, 93) },
+			[2] = { text = fb[94], active=true, alwaysActive = true, click = curry(dialoguesFettBros.closing, 94)  },
 			}
 		}
 	}

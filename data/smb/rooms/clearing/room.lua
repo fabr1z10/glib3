@@ -91,6 +91,7 @@ function room.init()
 	variables._actionInfo:reset()
 	local fromData = {
 		meleemap = { playerpos = {490,24, 0}, anim = "idle_right", flip = true },
+		circus = { playerpos ={82,69,0}, anim = "idle_front", flip=false }
     }
 
 	f = fromData[variables._previousroom]

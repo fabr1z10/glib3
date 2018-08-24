@@ -261,7 +261,9 @@ namespace luaFunctions {
             if (!after.isNil()) {
                 int tail = p.first;
                 for (int i = 0; i < after.length(); ++i) {
-                    script->AddEdge(after[i + 1], tail);
+                    int b = after[i+1].cast<int>();
+                    //int af = b < 0 ? p.first - b : b;
+                    script->AddEdge(b, tail);
                 }
             }
         }

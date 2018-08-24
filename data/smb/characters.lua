@@ -104,7 +104,7 @@ return {
 	           {
 					duration = dt,
                     quads = {
-			    		{ x = 6, y = 196, width = 22, height = 47, anchor = {12, 0}}
+			    		{ x = 125, y = 200, width = 22, height = 47, anchor = {12, 0}}
 					}
 		       }
 		   }				
@@ -116,7 +116,7 @@ return {
 	           {
 					duration = dt,
                     quads = {
-			    		{ x = 29, y = 196, width = 22, height = 47, anchor = {12, 0}}
+			    		{ x = 148, y = 200, width = 21, height = 47, anchor = {12, 0}}
 					}
 		       }
 		   }				
@@ -545,7 +545,50 @@ return {
                },
            }
         },
-
+        {
+            name = "pot_out",
+            frames = { 
+               	{ duration = dt, quads = {{ x = 1, y = 199, width = 26, height = 47, anchor = {13, 0}}}},
+				{ duration = dt, quads = {{ x = 30, y = 199, width = 26, height = 47, anchor = {13, 0}}}},
+				{ duration = dt, quads = {{ x = 59, y = 199, width = 26, height = 47, anchor = {13, 0}}}},
+				{ duration = dt, quads = {{ x = 88, y = 199, width = 36, height = 48, anchor = {13, 0}}}},
+           	}
+        },
+        {
+            name = "show_pot",
+            frames = { 
+				{ duration = dt, quads = {{ x = 88, y = 199, width = 36, height = 48, anchor = {13, 0}}}},
+           	}
+        },
+        {
+            name = "pot_in",
+            frames = { 
+				{ duration = dt, quads = {{ x = 88, y = 199, width = 36, height = 48, anchor = {13, 0}}}},
+				{ duration = dt, quads = {{ x = 59, y = 199, width = 26, height = 47, anchor = {13, 0}}}},
+				{ duration = dt, quads = {{ x = 30, y = 199, width = 26, height = 47, anchor = {13, 0}}}},
+               	{ duration = dt, quads = {{ x = 1, y = 199, width = 26, height = 47, anchor = {13, 0}}}},
+           	}
+        },
+        {
+            name = "get_in_cannon",
+            frames = { 
+               	{ duration = dt, quads = {{ x = 1, y = 199, width = 26, height = 47, anchor = {13, 0}}}},
+				{ duration = dt, quads = {{ x = 30, y = 199, width = 26, height = 47, anchor = {13, 0}}}},
+				{ duration = dt, quads = {{ x = 59, y = 199, width = 26, height = 47, anchor = {13, 0}}}},
+				{ duration = 3*dt, quads = {{ x = 88, y = 199, width = 36, height = 48, anchor = {13, 0}}}},
+				{ duration = dt, quads = {{ x = 176, y = 193, width = 21, height = 54, anchor = {7, 2}}}},
+				{ duration = dt, quads = {{ x = 200, y = 200, width = 18, height = 47, anchor = {7, 2}}}},
+				{ duration = dt, quads = {{ x = 222, y = 198, width = 26, height = 49, anchor = {7, 2}}}},
+				{ duration = dt, quads = {{ x = 2, y = 249, width = 26, height = 49, anchor = {7, 1}}}},
+				{ duration = dt, quads = {{ x = 31, y = 248, width = 23, height = 50, anchor = {5, -6}}}},
+				{ duration = dt, quads = {{ x = 57, y = 248, width = 19, height = 46, anchor = {5, -6}}}},
+				{ duration = dt, quads = {{ x = 80, y = 249, width = 21, height = 41, anchor = {6, -5}}}},
+				{ duration = dt, quads = {{ x = 104, y = 249, width = 15, height = 29, anchor = {0, -13}}}},
+				{ duration = dt, quads = {{ x = 124, y = 249, width = 19, height = 20, anchor = {4, -16}}}},
+				{ duration = dt, quads = {{ x = 147, y = 249, width = 23, height = 20, anchor = {4, -22}}}},
+				{ duration = dt, quads = {{ x = 172, y = 252, width = 21, height = 13, anchor = {4, -22}}}},
+           	}
+        },
 
         }
     }    
@@ -690,6 +733,16 @@ function makePurpleClown()
 				{ duration = dt, quads = {{ x = 290, y = 404, width = 22, height = 38, anchor = {12, 0}}, { x = 277, y = 424, width = 9, height = 12, anchor = {2, -34}}}}                
             }
         },   
+        {
+            name = "talk_back",             
+            frames = {
+            {
+                duration = dt,
+                quads = {
+                    { x = 331, y = 409, width = 28, height = 45, anchor = {15, 0}}
+                }
+            }}
+        },
     }}
 
     
