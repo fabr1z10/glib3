@@ -72,7 +72,7 @@ public:
     glm::vec2 getOrthoSize() const;
     // set the visible rectangle
     void SetBounds(float xMin, float xMax, float yMin, float yMax);
-    virtual void Resize(int width, int height);
+    void Resize(int width, int height) override;
     virtual bool IsVisible(const Bounds3D&);
     glm::vec2 GetWorldCoordinates(glm::vec2) override;
     virtual void SetPosition(glm::vec3 eye, glm::vec3 direction, glm::vec3 up = glm::vec3(0, 1, 0));

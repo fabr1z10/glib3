@@ -33,7 +33,7 @@ variables = {
         turnoff = { code="turnoff", text = strings.ui.turnoff, objects = 1 }
     },
     -- sets the start room
-    _room = "clearing",
+    _room = "village3",
     _previousroom = "meleemap",
 	_pause = false,
     talkedToLookout = false,
@@ -59,8 +59,8 @@ variables = {
 	doors = {
 		scummbar = false,
         kitchen = false,
-		voodoolady = true
-
+		voodoolady = true,
+        shop = false
 	}
 }
 
@@ -157,3 +157,4 @@ hotkeys = {
 
 -- custom for debug
 inventory["pot"] = {qty=1}
+inventory["pieceofeight"] = {qty=1000}

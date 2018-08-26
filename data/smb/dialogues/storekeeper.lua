@@ -49,6 +49,30 @@ function dialoguesStorekeeper.sword()
 	return s
 end
 
+function dialoguesStorekeeper.swordmaster()
+	local s = script:new("_dial")
+	s.actions = {
+		[1] = say { character = "guybrush", lines = { d[34] } },
+		[2] = say { character="storekeeper", lines = {d[36], d[37], d[38], d[39], d[40], d[41], d[42], d[43]}, after={1} },
+		[3] = { type="activatewall", wall=0, active = false, after={2}},
+	    [4] = { type="walkto", actor="storekeeper", pos={85, 15}, after={3}},
+	    [5] = { type="animate", actor="door_shop", anim="open", after={4}},
+	    [6] = { type="turn", actor="storekeeper", face="east", after={5}},
+		[7] = say { character="storekeeper", lines = {d[45]}, after={6} },
+	    [8] = { type="animate", actor="door_shop", anim="close", after={7}},
+		[9] = { type="activatewall", wall=0, active = true, after={8}},
+		[10] = { type="callfunc", func = function() variables.doors.shop = false end, after={9}},
+		[11] = { type="callfunc", func = curry(setActive, {id="storekeeper", active=false}), after={10} },
+		[12] = { type = "callfunc", func = resumePlay, after={11}},
+		[16] = {type="callfunc", func = curry(setActive, {id="sign", active =true}), after={3}},
+		[17] = {type="callfunc", func = curry(setActive, {id="bell", active =true}), after={3}},
+
+	}
+	return s
+
+end
+
+
 function dialoguesStorekeeper.shovel() 
 	local s = script:new("_dial")
 	s.actions = {
@@ -62,11 +86,22 @@ end
 
 function dialoguesStorekeeper.iwantsword(n) 
 	local s = script:new("_dial")
-	s.actions = {
-		[1] = say { character = "guybrush", lines = { d[n] } },
-		[2] = say { character="storekeeper", lines = (variables.knowsSwordPrice == false and {d[16], d[17]} or {d[21], d[22]}), after={1} },
-		[3] = { type = "callfunc", func = curry(startDialogue, { dialogueId="storekeeper", nodeId=3 }), after={2}}
-	}
+	if (inventory["pieceofeight"] ~= nil and inventory["pieceofeight"].qty >= 100) then
+		s.actions = {
+			[1] = say { character = "guybrush", lines = { d[n] } },
+			[2] = say { character="storekeeper", lines = {d[31], d[32], d[33]}, after={1} },
+			[3] = { type="callfunc", func = curry (pickupItemQty, { name="pieceofeight", qty=-100}), after={2}},
+			[4] = { type= "callfunc", func = curry(startDialogue, { dialogueId="storekeeper", nodeId=1 }), after={3}}
+		}
+		variables.swordPaid = true
+   
+	else
+		s.actions = {
+			[1] = say { character = "guybrush", lines = { d[n] } },
+			[2] = say { character="storekeeper", lines = (variables.knowsSwordPrice == false and {d[16], d[17]} or {d[21], d[22]}), after={1} },
+			[3] = { type = "callfunc", func = curry(startDialogue, { dialogueId="storekeeper", nodeId=3 }), after={2}}
+		}
+	end
 	variables.knowsSwordPrice = true
 	return s
 

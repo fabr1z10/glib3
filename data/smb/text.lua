@@ -67,7 +67,8 @@ strings = {
 		circustent ="circus tent",
 		outside = "outside",
 		fettuccini = "Fettuccini Brothers",
-		
+		sign = "sign",
+		bell = "bell"
 		
 		
     },
@@ -569,7 +570,23 @@ strings = {
 			[27] = "Is there something here maybe that you CAN afford?",
 			[28] = "Same price as the last time you asked me:",
 			[29] = "75 pieces of eight.",
-			[30] = "Maybe you'd like to pay for that?"
+			[30] = "Maybe you'd like to pay for that?",
+			[31] = "Great.",
+			[32] = "Best 100 pieces of eight you ever spent.",
+			[33] = "What else do you want?",
+			[34] = "Now that I have this sword, who can I test it out on?",
+			[35] = "I think I'd just like to browse.",
+			[36] = "Well if you're looking for a good fight...",
+			[37] = "We've got the best swordfighterin all the Caribbean right here on Mêlée Island™.",
+			[38] = "Of course, no one knows where her secret hideout is...",
+			[39] = "...nobody except me.",
+			[40] = "I'd have to go and ask her if it's okay to show you the way.",
+			[41] = "Hmmm...",
+			[42] = "I guess I could hike all the way over there...",
+			[43] = "...ONCE.",
+			[44] = "Be right back.",
+			[45] = "AND DON'T TOUCH ANYTHING!"
+
 			}
 		},
 		fettbros = {
@@ -756,7 +773,10 @@ strings = {
 		[4] = "I don't have all day.",
 		[5] = "Got a good deal on swords right now...",
 		[5] = "\"SLASHMASTER™ -- When you want a sword as sharp as your wit.\"",
-		[6] = "\"DIGMASTER™ -- The only shovel for serious treasure-hunting enthusiasts.\""
+		[6] = "\"DIGMASTER™ -- The only shovel for serious treasure-hunting enthusiasts.\"",
+		[7] = "\"Ring bell for service.\"",
+		[8] = "I'd better not touch it.",
+		[9] = "That storekeeper guy might bite my head off."
 		
 	},
 	circus = {

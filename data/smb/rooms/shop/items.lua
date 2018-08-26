@@ -26,6 +26,25 @@ objects["storekeeper"] = {
 	talk = talkToStorekeeper
 }
 
+objects["sign"] = {
+	text = strings.objects.sign,
+	pos = {235, 7},
+	tag ="sign",
+	dir = "east",
+	look = curry (_say, { character="guybrush", lines= { strings.shop[7] }} ),
+	pick = curry (_say, { character="guybrush", lines= { strings.shop[8], strings.shop[9] }} )
+}
+
+objects["bell"] = {
+	text = strings.objects.bell,
+	pos = {235, 7},
+	tag ="bell",
+	dir = "east",
+	look = curry (_say, { character="guybrush", lines= { strings.shop[7] }} ),
+	pick = curry (_say, { character="guybrush", lines= { strings.shop[8], strings.shop[9] }} )
+}
+
+
 objects["door_shop_village"] = {
 	text = strings.objects.door,
     tag = "door_shop",

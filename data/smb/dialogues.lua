@@ -275,7 +275,8 @@ dialogues = {
 			lines = {
 			[1] = { text = sk[4], active = function() return inventory["sword"] ~= nil end, click = dialoguesStorekeeper.sword },
 			[2] = { text = sk[5], active = function() return inventory["shovel"] ~= nil end, click = dialoguesStorekeeper.shovel },
-			[3] = { text = sk[2], active = true, alwaysActive=true, click = dialoguesStorekeeper.leave }
+			[3] = { text = sk[2], active = true, alwaysActive=true, click = dialoguesStorekeeper.leave },
+		    [4] = { text = sk[34], active = function() return variables.swordPaid end, click = dialoguesStorekeeper.swordmaster }
 			}
 		},
 		[2] = {
