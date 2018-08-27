@@ -12,7 +12,8 @@ local dt = 0.1
 room = {
 
 assets = {
-    makeGuybrush()
+    makeGuybrush(),
+	makeStorekeeper(),
 },
 scene = {
 	{
@@ -110,7 +111,9 @@ function room.init()
         lookout = { playerpos = {76, 78, 0}, anim = "idle_back" },
 		clearing = { playerpos = {135, 113, 0}, anim = "idle_right", flip=true },
     }
-	
+	if (variables._previousroom ~= "lookout" and variables.chase == 1) then
+		variables.chase = 0
+	end	
 	f = fromData[variables._previousroom]
 	if (f == nil) then
 		variables._previousroom = "lookout"
@@ -130,6 +133,24 @@ function room.init()
 end
 
 function room.afterstartup() 
+
+	if (variables.chase == 1) then
+		local s = script:new("_chase")
+		s.actions = {
+			[1] = { type = "callfunc", func = curry (createObject, { 
+				pos = {54, 97, 0},
+				gfx = { model = "storekeeper", anim = "idle_right", flip=true },
+				scaling = {},
+				tag = "storekeeper"
+			})},
+			[2] = { type = "walkto", actor = "storekeeper", pos = {75, 112}, after={1} },
+			[3] = { type="callfunc", func = curry(setActive, {id="storekeeper", active=false}), after={2} },
+			[4] = {type="delay", sec=8, after={3}},
+			[5] = {type="callfunc", func = function() variables.chase=0 end, after={4}},
+		}
+		monkey.play(s)
+	end
+
 --refreshInventory()
 end
 

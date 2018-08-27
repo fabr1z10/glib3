@@ -64,6 +64,9 @@ function dialoguesStorekeeper.swordmaster()
 		[10] = { type="callfunc", func = function() variables.doors.shop = false end, after={9}},
 		[11] = { type="callfunc", func = curry(setActive, {id="storekeeper", active=false}), after={10} },
 		[12] = { type = "callfunc", func = resumePlay, after={11}},
+		[18] = {type="callfunc", func = function() variables.chase=1 end, after={12}},
+		[19] = {type="delay", sec=8, after={18}},
+		[20] = {type="callfunc", func = function() variables.chase=0 end, after={19}},
 		[16] = {type="callfunc", func = curry(setActive, {id="sign", active =true}), after={3}},
 		[17] = {type="callfunc", func = curry(setActive, {id="bell", active =true}), after={3}},
 

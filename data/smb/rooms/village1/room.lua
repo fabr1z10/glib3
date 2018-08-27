@@ -15,6 +15,7 @@ assets = {
     makeGuybrush(),
     makeArrowUp(),
     makeArrowDown(),
+	makeStorekeeper(),
     {
         id = "door",
         sheet = "gfx/sprite2.png",
@@ -132,9 +133,13 @@ function room.init()
     -- previous room was lookout
 	local fromData = {
         lookout = { playerpos = {8, 71, 0}, anim = "idle_front" },
-		scummbar = { playerpos = {715, 13, 0}, anim = "idle_front" }
+		scummbar = { playerpos = {715, 13, 0}, anim = "idle_front" },
+		village2 = { playerpos = {1008, 34, 0}, anim = "idle_right", flip=true },
     }
-	
+	if (variables._previousroom ~= "village2" and variables.chase == 1) then
+		variables.chase = 0
+	end
+
 	f = fromData[variables._previousroom]
 	if (f == nil) then
 		variables._previousroom = "lookout"
@@ -145,7 +150,7 @@ function room.init()
     table.insert (room.scene[1].children, {
         tag = "player",
         pos = f.playerpos,
-        gfx = { model = "guybrush", anim = f.anim },
+        gfx = { model = "guybrush", anim = f.anim, flip = f.flip },
         follow = { cam="maincam" },
         layer = 1,
         scaling = {}
@@ -166,6 +171,22 @@ end
 
 function room.afterstartup() 
 refreshInventory()
+if (variables.chase == 1) then
+	local s = script:new("_chase")
+	s.actions = {
+		[1] = { type = "callfunc", func = curry (createObject, { 
+			pos = {820, 34, 0},
+			gfx = { model = "storekeeper", anim = "idle_right" },
+			scaling = {},
+			tag = "storekeeper"
+		})},
+		[2] = { type = "walkto", actor = "storekeeper", pos = {8,71}, after={1} },
+		[3] = { type="callfunc", func = curry(setActive, {id="storekeeper", active=false}), after={2} },
+		[4] = {type="delay", sec=8, after={3}},
+		[5] = {type="callfunc", func = function() variables.chase=0 end, after={4}},
+	}
+	monkey.play(s)
+end
 end
 
 

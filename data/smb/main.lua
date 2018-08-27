@@ -55,6 +55,7 @@ variables = {
 	talkedAboutHelmet = false,
 	cannondone = false,
 	seagull = 0,
+	chase = 0,
 	-- holds the status (true = open)
 	doors = {
 		scummbar = false,

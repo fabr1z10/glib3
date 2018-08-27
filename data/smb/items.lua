@@ -333,6 +333,12 @@ objects = {
 		dir = "north",
 		walk = curry(changeRoom, "village3")
 	},
+	village2_archway2 = {
+		text = strings.objects.archway,
+		pos = {436,36},
+		dir = "north",
+		walk = curry(changeRoom, "village1")
+	},
  	door_voodoolady_out = {
 	text = strings.objects.door,
     tag = "door_voodoo",

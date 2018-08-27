@@ -16,6 +16,7 @@ assets = {
     makeGuybrush(),
     makeArrowUp(),
     makeArrowDown(),
+	makeStorekeeper(),
     {
         id = "citizen",
         sheet = "gfx/anims.png",
@@ -566,6 +567,15 @@ scene = {
 				priority = 1, 
 				object = "village2_archway"				
 			},
+			make_hotspot { 
+				x=416,
+				y=45,
+				width=40, 
+				height=40, 
+				offset={0,0},
+				priority = 1, 
+				object = "village2_archway2"				
+			},
 		}
 	},
 	makescummui1(),
@@ -591,7 +601,12 @@ function room.init()
 		voodoolady = { playerpos = {231, 52, 0}, anim = "idle_right", flip = true },
 		village3 = { playerpos = {160, 65, 0}, anim = "idle_front", flip = false },
     }
+	if (variables._previousroom ~= "village3" and variables.chase == 1) then
+		variables.chase = 0
+	end
+
     -- add player
+
 	local d = fromData[variables._previousroom]
 	if (d == nil) then
 		d = fromData["village1"]
@@ -608,6 +623,23 @@ end
 
 function room.afterstartup() 
 refreshInventory()
+if (variables.chase == 1) then
+	local s = script:new("_chase")
+	s.actions = {
+		[1] = { type = "callfunc", func = curry (createObject, { 
+			pos = {205, 14, 0},
+			gfx = { model = "storekeeper", anim = "idle_right" },
+			scaling = {},
+			tag = "storekeeper"
+		})},
+		[2] = { type = "walkto", actor = "storekeeper", pos = {415,14}, after={1} },
+		[3] = { type = "walkto", actor = "storekeeper", pos = {436,36}, after={2} },
+		[4] = { type="callfunc", func = curry(setActive, {id="storekeeper", active=false}), after={3} },
+		[5] = {type="delay", sec=8, after={4}},
+		[6] = {type="callfunc", func = function() variables.chase=0 end, after={5}},
+	}
+	monkey.play(s)
+end
 end
 
 
