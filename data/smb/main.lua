@@ -33,7 +33,7 @@ variables = {
         turnoff = { code="turnoff", text = strings.ui.turnoff, objects = 1 }
     },
     -- sets the start room
-    _room = "village3",
+    _room = "meleemap",
     _previousroom = "meleemap",
 	_pause = false,
     talkedToLookout = false,
@@ -149,6 +149,8 @@ hotkeys = {
 	{ key = 299, func = function() monkey.endroom() end },
 	{ key = 32, func = pause }
 }
+
+require("funcs")
 
 -- hotkeys = {
 -- 	space = pause,

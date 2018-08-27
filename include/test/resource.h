@@ -107,20 +107,35 @@ private:
     std::string _stationB;
 };
 
+struct RouteDetail {
+    int endingPoint;
+    int length;
+};
+
 class Station : public GlobalId {
 public:
     Station (const std::string& name) : GlobalId(name) {}
     std::string GetName() override;
     void AddLinePoint (int id, const std::string& trackName);
+    void AddStoppingPoint (int id, int length);
     void AddCorrectPath(int, int);
+    void AddStationRoute(int origin, int ending, int length);
     void AddRoute (std::unique_ptr<StationRoute> r) {
         m_stationRoutes[r->GetShortName()] = std::move(r);
     }
+    std::vector<int> getLinePoints();
     StationRoute& GetRoute(const std::string& name){
         auto it = m_stationRoutes.find(name);
         if (it == m_stationRoutes.end())
             GLIB_FAIL("Station " << GetName() << " does not have route " << name);
         return *(it->second.get());
+    }
+    std::vector<RouteDetail>& GetRoutesStartingAt(int id) {
+        auto it = m_routes.find(id);
+        if (it == m_routes.end())
+            throw;
+        return it->second;
+
     }
     std::vector<std::string> GetConnectingTracks() {
         std::vector<std::string> out;
@@ -128,9 +143,18 @@ public:
             out.push_back(m.second);
         return out;
     }
+    bool isStoppingPoint(int id) {
+        return m_stoppingPoints.count(id)>0;
+    }
+    bool isLinePoint(int id) {
+        return m_lp.count(id)>0;
+    }
 private:
     std::unordered_map<std::string, std::unique_ptr<StationRoute> > m_stationRoutes;
     std::unordered_map<int, std::string> m_lp;
+    std::unordered_map<int, int> m_stoppingPoints;
+    std::unordered_map<int, std::vector<RouteDetail> > m_routes;
+
 };
 
 

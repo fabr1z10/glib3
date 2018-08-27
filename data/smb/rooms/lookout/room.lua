@@ -1,12 +1,5 @@
---assets local to this scene
-require ("funcs")
-require ("text")
-require ("dialogues")
---require ("dialogues/lookout")
-
 local dt = 0.1
-
---table.insert(inventory, { item = objects.poster, qty = 1})
+local centerPos = {247, 40}
 
 room = {
 
@@ -131,13 +124,10 @@ scene = {
 function room.init()
 	variables._actionInfo:reset()
 	local fromData = {
-        village1 = { playerpos = {250, 0, 0}, anim = "idle_back" },
-		meleemap = { playerpos = {314,52, 0}, anim = "idle_right", flip = true },
+        village1 = { playerpos = objects.stairs.pos, anim = "idle_back" },
+		meleemap = { playerpos = objects.path.pos, anim = "idle_right", flip = true },
 		--scummbar = { playerpos = {715, 13, 0}, anim = "idle_front" }
     }
-	if (variables._previousroom ~= "village1" and variables.chase == 1) then
-		variables.chase = 0
-	end
 	f = fromData[variables._previousroom]
 	if (f == nil) then
 		f = fromData["village1"]
@@ -145,7 +135,7 @@ function room.init()
     -- add player
     table.insert (room.scene[1].children, {
         tag = "player",
-        pos = f.playerpos,
+        pos = {f.playerpos[1], f.playerpos[2], 0},
         gfx = { model = "guybrush", anim = f.anim },
         scaling = {}
     })
@@ -156,41 +146,17 @@ function room.start()
 end
 
 function room.afterstartup() 
-	print ("refreshing inventory")
 	if (variables._previousroom == "village1") then
 		local s = script:new()	
-		s.actions[1] = { type="walkto", actor="player", pos={247, 30}}
+		s.actions[1] = { type="walkto", actor="player", pos=centerPos }
 	    monkey.play(s)
 	elseif (variables._previousroom == "meleemap") then
 		local s = script:new()	
-		s.actions[1] = { type="walkto", actor="player", pos={247, 30}}
+		s.actions[1] = { type="walkto", actor="player", pos=centerPos }
 	    monkey.play(s)
 	end
-
-	if (variables.chase == 1) then
-		local s = script:new("_chase")
-		s.actions = {
-			[1] = { type = "callfunc", func = curry (createObject, { 
-				pos = {270, 62, 0},
-				gfx = { model = "storekeeper", anim = "idle_right" },
-				scaling = {},
-				tag = "storekeeper"
-			})},
-			[2] = { type = "walkto", actor = "storekeeper", pos = {320, 75}, after={1} },
-			[3] = { type="callfunc", func = curry(setActive, {id="storekeeper", active=false}), after={2} },
-			[4] = {type="delay", sec=8, after={3}},
-			[5] = {type="callfunc", func = function() variables.chase=0 end, after={4}},
-		}
-		monkey.play(s)
-	end
 	refreshInventory()
-end
-
-
-
-function prova2(a)
-  a:parent():setcolor(255, 255, 255, 255)
-  print "qua!!"
+	storeKeeperChase(270, 62, "idle_right", false, {320, 75}, "village1")
 end
 
 

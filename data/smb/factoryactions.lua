@@ -341,5 +341,24 @@ function _say(args)
 	return s
 end
 
-
+function storeKeeperChase(x, y, anim, flip, walkto, prevroom)
+	if (variables.chase == 1 and (variables._previousroom == prevroom)) then
+		local s = script:new("_chase")
+		s.actions = {
+			[1] = { type = "callfunc", func = curry (createObject, { 
+				pos = {x, y, 0},
+				gfx = { model = "storekeeper", anim = anim, flip=flip },
+				scaling = {},
+				tag = "storekeeper"
+			})},
+			[2] = { type = "walkto", actor = "storekeeper", pos = walkto, after={1} },
+			[3] = { type="callfunc", func = curry(setActive, {id="storekeeper", active=false}), after={2} },
+			[4] = {type="delay", sec=8, after={3}},
+			[5] = {type="callfunc", func = function() variables.chase=0 end, after={4}},
+		}
+		monkey.play(s)
+	else 
+		variables.chase = 0
+	end
+end
 

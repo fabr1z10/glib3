@@ -19,6 +19,23 @@ int TrackCircuit::GetRunningTime(const std::string& cat, bool fwd) {
 void Station::AddLinePoint (int id, const std::string& trackName) {
     m_lp[id] = trackName;
 }
+
+void Station::AddStationRoute(int origin, int ending, int length) {
+    RouteDetail detail {ending, length};
+    m_routes[origin].push_back(detail);
+}
+
+void Station::AddStoppingPoint (int id, int length){
+    m_stoppingPoints[id] = length;
+}
+
+std::vector<int> Station::getLinePoints() {
+    std::vector<int> lp;
+    for (auto& r : m_lp)
+        lp.push_back(r.first);
+    return lp;
+
+}
 //
 //void Station::AddCorrectPath (int l1, int l2) {
 //

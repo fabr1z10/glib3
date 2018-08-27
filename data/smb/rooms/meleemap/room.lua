@@ -1,9 +1,3 @@
---assets local to this scene
-require ("funcs")
-require ("text")
-require ("dialogues")
-
-
 local dt = 0.1
 
 --table.insert(inventory, { item = objects.poster, qty = 1})
@@ -54,7 +48,7 @@ scene = {
             },
 			createMapItem (72, 76, strings.objects.lookoutpoint, 1, {75, 80}, "lookout"),
 			createMapItem (62, 68, strings.objects.village, 1, {69, 74}, "village1"),
-			--createMapItem (71, 110, strings.objects.fork, 1),
+			createMapItem (71, 110, strings.objects.fork, 1, {74, 112}, "forest1"),
 			createMapItem (132, 110, strings.objects.clearing, 1, {135, 113}, "clearing"),	
 			--createMapItem (132, 110, strings.objects.fork, 1),	
 			--createMapItem (167, 64, strings.objects.bridge, 1),	
@@ -110,16 +104,12 @@ function room.init()
 	local fromData = {
         lookout = { playerpos = {76, 78, 0}, anim = "idle_back" },
 		clearing = { playerpos = {135, 113, 0}, anim = "idle_right", flip=true },
+		forest1 = { playerpos = {74, 112, 0}, anim = "idle_right", flip=false },
     }
-	if (variables._previousroom ~= "lookout" and variables.chase == 1) then
-		variables.chase = 0
-	end	
 	f = fromData[variables._previousroom]
 	if (f == nil) then
-		variables._previousroom = "lookout"
-		f = fromData[variables._previousroom]
+		f = fromData["lookout"]
 	end
-
     -- add player
     table.insert (room.scene[1].children, {
         tag = "player",
@@ -133,25 +123,7 @@ function room.init()
 end
 
 function room.afterstartup() 
-
-	if (variables.chase == 1) then
-		local s = script:new("_chase")
-		s.actions = {
-			[1] = { type = "callfunc", func = curry (createObject, { 
-				pos = {54, 97, 0},
-				gfx = { model = "storekeeper", anim = "idle_right", flip=true },
-				scaling = {},
-				tag = "storekeeper"
-			})},
-			[2] = { type = "walkto", actor = "storekeeper", pos = {75, 112}, after={1} },
-			[3] = { type="callfunc", func = curry(setActive, {id="storekeeper", active=false}), after={2} },
-			[4] = {type="delay", sec=8, after={3}},
-			[5] = {type="callfunc", func = function() variables.chase=0 end, after={4}},
-		}
-		monkey.play(s)
-	end
-
---refreshInventory()
+	storeKeeperChase(54, 97, "idle_right", true, {75, 112}, "lookout")
 end
 
 

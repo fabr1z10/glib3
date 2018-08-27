@@ -259,7 +259,7 @@ objects = {
 	},
     archway = {
         text = strings.objects.archway,
-        pos = {1008, 32}, -- location where the player will go
+        pos = {1008, 34}, -- location where the player will go
 		dir = "east",
         walk = curry(changeRoom, "village2")
     },
@@ -368,3 +368,4 @@ require ("rooms/village3/items")
 require ("rooms/shop/items")
 require ("rooms/clearing/items")
 require ("rooms/circus/items")
+require ("forest")

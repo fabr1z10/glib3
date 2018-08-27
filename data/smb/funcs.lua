@@ -29,6 +29,7 @@ require ("rooms/circus/actions")
 require ("items")
 require ("factoryobjects")
 require ("uifuncs")
+require("dialogues")
 
 
 function curry2_1(f, arg1, arg2)

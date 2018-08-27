@@ -1,13 +1,4 @@
---assets local to this scene
-require ("funcs")
-require ("text")
-require ("dialogues")
-
-
-
 local dt = 0.1
-
---table.insert(inventory, { item = objects.poster, qty = 1})
 
 -- begin room
 room = {
@@ -597,16 +588,12 @@ scene = {
 function room.init()
 	variables._actionInfo:reset()
 	local fromData = {
-        village1 = { playerpos = {436, 34, 0}, anim = "idle_front", flip = false },
-		voodoolady = { playerpos = {231, 52, 0}, anim = "idle_right", flip = true },
-		village3 = { playerpos = {160, 65, 0}, anim = "idle_front", flip = false },
+        village1 = { playerpos = objects.village2_archway2.pos, anim = "idle_front", flip = false },
+		voodoolady = { objects.door_voodoolady_out.pos, anim = "idle_right", flip = true },
+		village3 = { playerpos = objects.village2_archway.pos, anim = "idle_front", flip = false },
     }
-	if (variables._previousroom ~= "village3" and variables.chase == 1) then
-		variables.chase = 0
-	end
 
     -- add player
-
 	local d = fromData[variables._previousroom]
 	if (d == nil) then
 		d = fromData["village1"]
@@ -622,24 +609,8 @@ function room.init()
 end
 
 function room.afterstartup() 
-refreshInventory()
-if (variables.chase == 1) then
-	local s = script:new("_chase")
-	s.actions = {
-		[1] = { type = "callfunc", func = curry (createObject, { 
-			pos = {205, 14, 0},
-			gfx = { model = "storekeeper", anim = "idle_right" },
-			scaling = {},
-			tag = "storekeeper"
-		})},
-		[2] = { type = "walkto", actor = "storekeeper", pos = {415,14}, after={1} },
-		[3] = { type = "walkto", actor = "storekeeper", pos = {436,36}, after={2} },
-		[4] = { type="callfunc", func = curry(setActive, {id="storekeeper", active=false}), after={3} },
-		[5] = {type="delay", sec=8, after={4}},
-		[6] = {type="callfunc", func = function() variables.chase=0 end, after={5}},
-	}
-	monkey.play(s)
-end
+	refreshInventory()
+	storeKeeperChase (205, 15, "idle_right", false, {436, 36}, "village3")	
 end
 
 

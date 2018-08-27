@@ -92,11 +92,21 @@ void Railway::Load() {
             station->AddLinePoint(lp, atrack);
         }
 
+        // read stoppping points
+        auto estop = eStation->FirstChildElement("StoppingPoints");
+        for (auto est = estop->FirstChildElement("StoppingPoint"); est != NULL; est = est->NextSiblingElement()) {
+            int lp = est->IntAttribute("Id");
+            int length = est->IntAttribute("Length");
+            station->AddStoppingPoint(lp, length);
+        }
         // read station routes
         auto eroutes = eStation->FirstChildElement("Routes");
         for (auto eroute = eroutes->FirstChildElement("Route"); eroute != NULL; eroute = eroute->NextSiblingElement()) {
             std::string name = eroute->Attribute("Id");
             int length = eroute->IntAttribute("Length");
+            int originPoint = eroute->IntAttribute("OriginPointId");
+            int endingPoint = eroute->IntAttribute("EndingPointId");
+            station->AddStationRoute(originPoint, endingPoint, length);
             std::unique_ptr<StationRoute> sr(new StationRoute(name, length, id));
             station->AddRoute(std::move(sr));
         }

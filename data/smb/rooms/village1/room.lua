@@ -1,14 +1,5 @@
---assets local to this scene
-require ("funcs")
-require ("text")
-require ("dialogues")
---require ("actions")
-
 local dt = 0.1
 
---table.insert(inventory, { item = objects.poster, qty = 1})
-
--- begin room
 room = {
 
 assets = {
@@ -132,9 +123,9 @@ function room.init()
     variables._actionInfo:reset()
     -- previous room was lookout
 	local fromData = {
-        lookout = { playerpos = {8, 71, 0}, anim = "idle_front" },
-		scummbar = { playerpos = {715, 13, 0}, anim = "idle_front" },
-		village2 = { playerpos = {1008, 34, 0}, anim = "idle_right", flip=true },
+        lookout = { playerpos = objects.cliffside.pos, anim = "idle_front" },
+		scummbar = { playerpos = objects.village1_door.pos, anim = "idle_front" },
+		village2 = { playerpos = objects.archway.pos, anim = "idle_right", flip=true },
     }
 	if (variables._previousroom ~= "village2" and variables.chase == 1) then
 		variables.chase = 0
@@ -142,14 +133,13 @@ function room.init()
 
 	f = fromData[variables._previousroom]
 	if (f == nil) then
-		variables._previousroom = "lookout"
 		f = fromData[variables._previousroom]
 	end
 
     -- add player
     table.insert (room.scene[1].children, {
         tag = "player",
-        pos = f.playerpos,
+        pos = {f.playerpos[1], f.playerpos[2], 0},
         gfx = { model = "guybrush", anim = f.anim, flip = f.flip },
         follow = { cam="maincam" },
         layer = 1,
@@ -170,23 +160,8 @@ end
 
 
 function room.afterstartup() 
-refreshInventory()
-if (variables.chase == 1) then
-	local s = script:new("_chase")
-	s.actions = {
-		[1] = { type = "callfunc", func = curry (createObject, { 
-			pos = {820, 34, 0},
-			gfx = { model = "storekeeper", anim = "idle_right" },
-			scaling = {},
-			tag = "storekeeper"
-		})},
-		[2] = { type = "walkto", actor = "storekeeper", pos = {8,71}, after={1} },
-		[3] = { type="callfunc", func = curry(setActive, {id="storekeeper", active=false}), after={2} },
-		[4] = {type="delay", sec=8, after={3}},
-		[5] = {type="callfunc", func = function() variables.chase=0 end, after={4}},
-	}
-	monkey.play(s)
-end
+	refreshInventory()
+	storeKeeperChase(820, 34, "idle_right", false, objects.cliffside.pos, "village2")
 end
 
 

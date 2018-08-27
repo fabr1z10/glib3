@@ -30,7 +30,7 @@ int main(int argc, char* argv[]) {
         }
         Config::get().SetHomeDir(argv[1]);
         Config::get().GetRailway().Load();
-        Solution s(argv[2]);
+        //Solution s(argv[2]);
         float w = 800;
         float h = 600;
         EngineConfig config (w, h);
@@ -41,7 +41,17 @@ int main(int argc, char* argv[]) {
         config.name = "Pippo";
         Engine &g = Engine::get();
         g.Init(config);
-        g.SetSceneFactory(std::unique_ptr<Factory2>(new Factory2(s)));
+        g.SetSceneFactory(std::unique_ptr<StationPlot>(new StationPlot("23")));
+        // set-up the rendering engine
+        auto renderingEngine = std::unique_ptr<RenderingEngine>(new RenderingEngine);
+        renderingEngine->AddShader(TEXTURE_SHADER);
+        renderingEngine->AddShader(COLOR_SHADER);
+        renderingEngine->AddShader(TEXT_SHADER);
+        g.SetRenderingEngine(std::move(renderingEngine));
+
+        // set-up the scripting engine
+        auto scheduler = std::unique_ptr<Scheduler>(new Scheduler);
+        g.SetScriptingEngine(std::move(scheduler));
         g.MainLoop();
     } catch (Error& err){
         std::cerr << err.what() << std::endl;
