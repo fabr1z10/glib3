@@ -30,7 +30,7 @@ int main(int argc, char* argv[]) {
         }
         Config::get().SetHomeDir(argv[1]);
         Config::get().GetRailway().Load();
-        //Solution s(argv[2]);
+        Solution s(argv[2]);
         float w = 800;
         float h = 600;
         EngineConfig config (w, h);
@@ -41,7 +41,7 @@ int main(int argc, char* argv[]) {
         config.name = "Pippo";
         Engine &g = Engine::get();
         g.Init(config);
-        g.SetSceneFactory(std::unique_ptr<StationPlot>(new StationPlot("23")));
+        g.SetSceneFactory(std::unique_ptr<SceneFactory>(new SceneFactory3(s)));
         // set-up the rendering engine
         auto renderingEngine = std::unique_ptr<RenderingEngine>(new RenderingEngine);
         renderingEngine->AddShader(TEXTURE_SHADER);
@@ -52,6 +52,8 @@ int main(int argc, char* argv[]) {
         // set-up the scripting engine
         auto scheduler = std::unique_ptr<Scheduler>(new Scheduler);
         g.SetScriptingEngine(std::move(scheduler));
+
+        Engine::get().GetAssetManager().AddFont("main", "/home/fabrizio/Scaricati/arial.ttf");
         g.MainLoop();
     } catch (Error& err){
         std::cerr << err.what() << std::endl;

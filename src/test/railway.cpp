@@ -110,6 +110,14 @@ void Railway::Load() {
             std::unique_ptr<StationRoute> sr(new StationRoute(name, length, id));
             station->AddRoute(std::move(sr));
         }
+
+        // read stoppping points
+        auto ecpaths = eStation->FirstChildElement("CorrectPaths");
+        for (auto ecpath = ecpaths->FirstChildElement("CorrectPath"); ecpath != NULL; ecpath = ecpath->NextSiblingElement()) {
+            int inId = ecpath->IntAttribute("InputLinePointId");
+            int outId = ecpath->IntAttribute("OutputLinePointId");
+            station->AddCorrectPath(inId, outId);
+        }
     }
 
 

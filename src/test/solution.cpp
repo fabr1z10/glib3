@@ -1,13 +1,13 @@
-//#include <test/solution.h>
-//#include <xml/tinyxml2.h>
-//#include <test/timeformatter.h>
+#include <test/solution.h>
+#include <xml/tinyxml2.h>
+#include <test/timeformatter.h>
 //#include <algorithm>
-//#include <iostream>
+#include <iostream>
 //#include <set>
 //
-//using namespace tinyxml2;
+using namespace tinyxml2;
 //
-//#include <test/global.h>
+#include <test/global.h>
 //
 ////std::ostream& operator<< (std::ostream& os, const Position& pos) {
 ////    os << Railway::get().GetResource(pos.resourceId)->GetName() << ", [" << pos.xTail << ", " << pos.xHead << "]";
@@ -29,46 +29,55 @@
 //    return tn;
 //
 //}
-//Solution::Solution(const std::string &solutionFile) {
-//
-//    Railway &r = Config::get().GetRailway();
-//    XMLDocument doc;
-//    std::string fullPath = Config::get().GetHomeDir() + "output/" + solutionFile;
-//    XMLError e = doc.LoadFile(fullPath.c_str());
-//    if (e != XML_SUCCESS) {
-//        std::cout << "We've got a problem loading solution file " << fullPath << std::endl;
-//    } else {
-//        std::cout << "Read " << solutionFile << "\n";
-//    }
-//
-//    // Get now
-//    m_now = doc.FirstChildElement("p1:TCS_OUT")->IntAttribute("Now");
-//
-//    TimeFormatter::setReferenceDay(m_now);
-//    std::cout << "Time now = " << m_now << "\n";
-//
-//    auto el = doc.FirstChildElement("p1:TCS_OUT")->FirstChildElement("p1:Trains");
-//    for (auto eTrain = el->FirstChildElement("p1:Train"); eTrain != NULL; eTrain = eTrain->NextSiblingElement()) {
-//        std::string trainId(eTrain->Attribute("Name"));
-//        double speed = eTrain->DoubleAttribute("Speed");
-//        //r.AddTrain(trainId, 0, speed);
-//        std::cout << "Reading train " << trainId << std::endl;
+Solution::Solution(const std::string &solutionFile) {
+
+    Railway &r = Config::get().GetRailway();
+    XMLDocument doc;
+    std::string fullPath = Config::get().GetHomeDir() + "output/" + solutionFile;
+    XMLError e = doc.LoadFile(fullPath.c_str());
+    if (e != XML_SUCCESS) {
+        std::cout << "We've got a problem loading solution file " << fullPath << std::endl;
+    } else {
+        std::cout << "Read " << solutionFile << "\n";
+    }
+
+    // Get now
+    m_now = doc.FirstChildElement("p1:TCS_OUT")->IntAttribute("Now");
+
+    TimeFormatter::setReferenceDay(m_now);
+    std::cout << "Time now = " << m_now << "\n";
+
+    auto el = doc.FirstChildElement("p1:TCS_OUT")->FirstChildElement("p1:Trains");
+    for (auto eTrain = el->FirstChildElement("p1:Train"); eTrain != NULL; eTrain = eTrain->NextSiblingElement()) {
+        std::string trainId(eTrain->Attribute("Name"));
+        double speed = eTrain->DoubleAttribute("Speed");
+        //r.AddTrain(trainId, 0, speed);
+        std::cout << "Reading train " << trainId << std::endl;
+
 //        std::string cat = trainId.substr(0,1);
 //        std::vector<Activity> activities;
 //        std::string previousStation();
-//        bool beyondPlanningHorizon = false;
-//        for (auto eSchedule = eTrain->FirstChildElement("p1:Schedule"); eSchedule != NULL; eSchedule = eSchedule->NextSiblingElement()) {
-//            if (beyondPlanningHorizon) break;
-//            for (auto ets = eSchedule->FirstChildElement("p1:StationSchedule"); ets != NULL; ets = ets->NextSiblingElement()) {
-//
-//                std::string stationId = ets->Attribute("StationId");
-//                std::string routeId = ets->Attribute("RouteId");
+        bool beyondPlanningHorizon = false;
+        for (auto eSchedule = eTrain->FirstChildElement("p1:Schedule");
+             eSchedule != NULL; eSchedule = eSchedule->NextSiblingElement()) {
+            if (beyondPlanningHorizon) break;
+            for (auto ets = eSchedule->FirstChildElement("p1:StationSchedule");
+                 ets != NULL; ets = ets->NextSiblingElement()) {
+                std::string stationId = ets->Attribute("StationId");
+                std::string routeId = ets->Attribute("RouteId");
 //                if (routeId == "-1") {
 //                    // beyond planning horizon
 //                    beyondPlanningHorizon = true;
 //                    break;
 //                }
-//                Activity act(r.GetStation(stationId).GetRoute(routeId));
+                std::cout << "Adding station: " << stationId << "\n";
+                m_stations[trainId].push_back(stationId);
+            }
+        }
+    }
+}
+
+                //Activity act(r.GetStation(stationId).GetRoute(routeId));
 //                act.timeIn = ets->IntAttribute("TimeIn");
 //                act.timeOut = ets->IntAttribute("TimeOut");
 //                act.isTrack = false;
@@ -280,7 +289,7 @@
 //        tp.positions.push_back(pos);
 //    }
 //    return tp;
-//}
+
 ////
 ////std::vector<std::string> Solution::GetTrainNames() const {
 ////    std::vector<std::string> tn;

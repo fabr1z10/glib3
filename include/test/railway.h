@@ -13,6 +13,7 @@ public:
     int GetStationCount() const ;
     Station& GetStation(const std::string& name);
     Track& GetTrack(const std::string& name);
+
     std::vector<std::string> GetTracksConnecting (const std::string& A, const std::string& B);
 private:
     std::unordered_map<std::string, std::shared_ptr<Station>> m_stations;

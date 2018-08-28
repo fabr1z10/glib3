@@ -14,11 +14,10 @@
 
 Monkey::Monkey() {
     LuaWrapper::Init();
+    luabridge::setGlobal(LuaWrapper::L,Engine::get().GetAssetManager().GetDirectory().c_str(), "_path" );
     LuaWrapper::Load(Engine::get().GetAssetManager().GetDirectory() + "main.lua");
     AddTable("engine");
     AddTable("variables");
-
-
 }
 
 void Monkey::LoadFonts() {

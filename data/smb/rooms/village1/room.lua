@@ -133,7 +133,7 @@ function room.init()
 
 	f = fromData[variables._previousroom]
 	if (f == nil) then
-		f = fromData[variables._previousroom]
+		f = fromData["lookout"]
 	end
 
     -- add player
@@ -150,7 +150,7 @@ end
 
 
 function room.start() 
-	if (variables._previousroom == "lookout") then
+	if (variables._previousroom == "lookout" or variables._previousroom=="meleemap") then
 		local s = script:new()	
 		s.actions[1] = { type="walkto", actor="player", pos={120, 80}}
 	    monkey.play(s)

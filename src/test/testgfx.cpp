@@ -9,79 +9,184 @@
 #include <test/timeformatter.h>
 #include <test/global.h>
 
-StationPlot::StationPlot(const std::string& id) : SceneFactory(), m_stationId(id) {
-
-}
-std::shared_ptr<Entity> StationPlot::Create() {
-
+std::shared_ptr<Entity> SceneFactory3::Create() {
     auto root = std::make_shared<Entity>();
-
     auto mainNode = std::make_shared<Entity>();
-    m_main = mainNode.get();
     auto cam = std::unique_ptr<OrthographicCamera> (new OrthographicCamera(800, 600));
     cam->SetPosition(glm::vec3(0,0,5), glm::vec3(0,0,-1), glm::vec3(0,1,0));
     mainNode->SetCamera(std::move(cam));
     root->AddChild(mainNode);
-    Railway& r = Config::get().GetRailway();
-    auto& s = r.GetStation(m_stationId);
-    auto lps = s.getLinePoints();
-    ExtendFromPoint(s, lps[0], 0, 0);
-return root;
+    auto& stations = sol.getStations();
+    int n = 0;
+    float x = 0.0f;
+    for (auto& s : stations) {
+        for (auto& st : s.second) {
+            auto plt = std::make_shared<StationPlot>(st);
+            auto node = plt->Get();
+            node->SetPosition(glm::vec2(x, 0));
+            mainNode->AddChild(node);
+            n++;
+            std::cout << "Plotting station " << st << "\n";
+            x += plt->GetWidth() + 50.0f;
+            m_stations[st] = plt;
+            if (n>2) break;
+        }
+        if (n>2)
+            break;
+
+    }
+    // plot the tracks
+    auto a = std::make_shared<Entity>();
+    auto r1 = std::make_shared<Renderer>();
+    std::vector<glm::vec2> pts;
+    std::vector<std::pair<int,int>> edg;
+
+    for (auto& s : m_stations) {
+        s.second->GetStationId();
+        Railway& r = Config::get().GetRailway();
+        auto tracks = r.GetStation(s.second->GetStationId()).GetConnectingTracks();
+        for (auto& track : tracks) {
+            if (track != "-1") {
+                auto& t = r.GetTrack(track);
+                std::string sa = t.GetStationA();
+                std::string sb = t.GetStationB();
+                auto it1 = m_stations.find(sa);
+                auto it2 = m_stations.find(sb);
+                if (it1 != m_stations.end() && it2 != m_stations.end()) {
+                    glm::vec2 P1 = it1->second->GetTrackPosition(track);
+                    glm::vec2 P2 = it2->second->GetTrackPosition(track);
+                    // draw line connecting tracks
+                    edg.push_back(std::make_pair(pts.size(), pts.size() + 1));
+                    pts.push_back(P1);
+                    pts.push_back(P2);
+                }
+            }
+            std::cout << track << "\n";
+
+        }
+    }
+    PolyLine p(pts,edg);
+    r1->SetMesh(MeshFactory::CreateMesh(p, 0.0f, glm::vec4(0.2f, 0.8f, 0.8f, 1.0f)));
+    a->AddComponent(r1);
+    a->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+    mainNode->AddChild(a);
+
+
+    return root;
 }
 
-void StationPlot::ExtendFromPoint(Station& s, int id, float x, float y) {
-    if (pointsDone.count(id)>0)
-        return;
-    pointsDone.insert(id);
 
-    std::cout << "point: " << id << "\n";
-    if (s.isLinePoint(id)) {
-        auto gfxNode = std::make_shared<Entity>();
-        auto r1 = std::make_shared<Renderer>();
-        r1->SetMesh(MeshFactory::CreateBoxMesh(2, 2, glm::vec4(1.0f)));
-        gfxNode->AddComponent(r1);
-        gfxNode->SetPosition(glm::vec3(x, y, 0.0f));
-        m_main->AddChild(gfxNode);
+StationPlot::StationPlot(const std::string& id) : m_stationId(id), m_blockMin(0) {
+    Railway& r = Config::get().GetRailway();
+    gfxNode = std::make_shared<Entity>();
+    auto& s = r.GetStation(m_stationId);
+    auto lps = s.getLinePoints(true);
+    //std::vector<glm::vec2> points;
+
+    AddElement(s, lps[0], 0);
+    m_startPoint = lps[0];
+    ExtendFromPoint(s, lps[0]);
+    auto a = std::make_shared<Entity>();
+    auto r1 = std::make_shared<Renderer>();
+    PolyLine p(m_points, m_edges);
+    r1->SetMesh(MeshFactory::CreateMesh(p));
+    a->AddComponent(r1);
+    a->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+    gfxNode->AddChild(a);
+    //mainNode->AddChild(gfxNode);
+}
+
+
+
+std::shared_ptr<Entity> StationPlot::CreateLabel (const std::string& text, glm::vec4 color, glm::vec2 pos, float size) {
+    auto a = std::make_shared<Entity>();
+    auto r1 = std::make_shared<Renderer>();
+    Font* f = Engine::get().GetAssetManager().GetFont("main");
+    std::shared_ptr<IMesh> m(new TextMesh(f, text, size, BOTTOM));
+    r1->SetMesh(m);
+    a->AddComponent(r1);
+    a->SetPosition(glm::vec3(pos.x, pos.y, 0.0f));
+    return a;
+}
+
+void StationPlot::AddConnection (Station& s, int point1, int point2) {
+    std::cout << "adding connection  between " << point1 << " and " << point2 << std::endl;
+    if (locations[point1].block < locations[point2].block) {
+        m_edges.push_back(std::make_pair(locations[point1].j, locations[point2].i));
+    } else {
+        m_edges.push_back(std::make_pair(locations[point1].i, locations[point2].j));
     }
+}
 
+
+void StationPlot::AddElement (Station& s, int point, int block) {
+    // add an element, line point or stopping point to the station, at a given block
+    // first we find the y
+    float yLevel{0};
+    if (blockInfo.count(block) == 0) {
+        blockInfo[block] = m_blockMin;
+        m_width = block;
+    } else {
+        blockInfo[block]++;
+    }
+    yLevel = blockInfo[block] * 20.0f;
+    float x1=0;
+    float x2=0;
+    if (s.isLinePoint(point)) {
+        x1 = block ==  0 ? block*30.0f+15.0f : block*30.0f + 5.0f;
+        x2 = x1+10.0f;
+        std::cout << "Adding line point " << point <<"\n";
+        auto label = CreateLabel(std::to_string(point), glm::vec4(1.0f), glm::vec2(block==0 ? x1 : x2, yLevel), 8);
+        if (block > 0)
+            m_blockMin = blockInfo[block]+1;
+        gfxNode->AddChild(label);
+
+        m_linePointLocations[s.GetTrackAtLinePoint(point)] = glm::vec2(block == 0 ? x1 : x2, yLevel);
+    } else {
+        x1 = block*30.0f+5;
+        x2 = x1+20.0f;
+        std::cout << "Adding stopping point " << point <<"\n";
+        auto label = CreateLabel(std::to_string(point), glm::vec4(1.0f), glm::vec2((x1+x2)*0.5f, yLevel), 6);
+        gfxNode->AddChild(label);
+    }
+    locations[point] = {m_points.size(),m_points.size()+1,block};
+    m_edges.push_back(std::make_pair(m_points.size(), m_points.size()+1));
+    m_points.push_back(glm::vec2(x1, yLevel));
+    m_points.push_back(glm::vec2(x2, yLevel));
+    std::cout << "Block " << block << " y= " << yLevel << " x = (" << x1 << ", " << x2 << ")" << std::endl;
+
+}
+
+void StationPlot::ExtendFromPoint(Station& s, int id) {
+    if (explored.count(id)>0)
+        return;
+    explored.insert(id);
+
+    std::cout << "exploring point: " << id << "\n";
     auto& d = s.GetRoutesStartingAt(id);
-    int n = 0;
-    float dy = 5;
+
     for (auto& e : d) {
         std::cout << "goes to " << e.endingPoint << "\n";
-        //if (s.isLinePoint(e.endingPoint)) {
-            // draw line
-            glm::vec2 A(1,1);
-            glm::vec2 B(5,y+n*dy);
-            glm::vec2 C(5+20,y+n*dy);
-            auto gfxNode = std::make_shared<Entity>();
-            auto r1 = std::make_shared<Renderer>();
-            r1->SetMesh(MeshFactory::CreateLineMesh(A, B, glm::vec4(1.0f), 0.0f));
-            gfxNode->AddComponent(r1);
-            gfxNode->SetPosition(glm::vec3(x, y, 0.0f));
-            auto gfxNode2 = std::make_shared<Entity>();
-            auto r12 = std::make_shared<Renderer>();
-            r12->SetMesh(MeshFactory::CreateLineMesh(B, C, glm::vec4(1.0f), 0.0f));
-            gfxNode2->AddComponent(r12);
-            gfxNode2->SetPosition(glm::vec3(x, y, 0.0f));
-            m_main->AddChild(gfxNode);
-            m_main->AddChild(gfxNode2);
-
-            n++;
-//        } else if (s.isStoppingPoint(e.endingPoint)) {
-//            auto gfxNode = std::make_shared<Entity>();
-//            auto r1 = std::make_shared<Renderer>();
-//            r1->SetMesh(MeshFactory::CreateLineMesh(glm::vec2(x, y+n*dy), glm::vec2(x+20, y+n*dy), glm::vec4(1.0f), 0.0f));
-//            gfxNode->AddComponent(r1);
-//            gfxNode->SetPosition(glm::vec3(0, 0, 0.0f));
-//            m_main->AddChild(gfxNode);
-//            //ExtendFromPoint(s, e, x+20, y+n*dy);
-//            n++;
-//
-//        }
-        ExtendFromPoint(s, e.endingPoint, x+20, y+n*dy);
+        // check if this has already been added
+        if (locations.count(e.endingPoint) > 0) {
+            AddConnection(s, id, e.endingPoint);
+        } else {
+            int nextBlock {0};
+            if (s.isLinePoint(e.endingPoint)) {
+                std::cout << "check if " << e.endingPoint << " is same side of " << m_startPoint << "\n";
+                if (s.IsSameSide(m_startPoint, e.endingPoint))
+                    nextBlock = locations[id].block-1;
+                else
+                    nextBlock = locations[id].block+1;
+            } else {
+                nextBlock = (s.isLinePoint(id) && locations[id].block>0) ? locations[id].block-1 : locations[id].block+1;
+            }
+            AddElement(s, e.endingPoint, nextBlock);
+        }
     }
-    //return root;
+    for (auto& e : d) {
+        ExtendFromPoint(s, e.endingPoint);
+    }
 
 }
 

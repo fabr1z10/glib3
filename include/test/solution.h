@@ -1,7 +1,7 @@
-//#pragma once
-//
-//#include <test/railway.h>
-//#include <set>
+#pragma once
+
+#include <test/railway.h>
+#include <set>
 //
 //struct Position {
 //    Resource* res;
@@ -43,9 +43,15 @@
 //    Problem (const std::string& file);
 //};
 //
-//class Solution {
-//public:
-//    Solution(const std::string& file);
+class Schedule {
+public:
+    Schedule(const std::string& s) : stationId(s){}
+    std::string stationId;
+};
+
+class Solution {
+public:
+    Solution(const std::string& file);
 //    // get the position of train id at time t
 //    TrainPosition GetPosition(const std::string& id, long t);
 //    std::vector<std::string> GetStations(const std::string& train);
@@ -54,11 +60,12 @@
 //    int GetNow() const;
 //    std::string GetStationBefore (const std::string& train, Resource* r);
 //    std::string GetStationAfter (const std::string& train, Resource* r);
-//private:
-//    int m_now;
+    std::unordered_map<std::string, std::vector<std::string> >& getStations() {return m_stations;}
+private:
+    int m_now;
 //    std::unordered_map<std::string, int> m_trainLengths;
-//    std::unordered_map<std::string, std::vector<Activity> > schedules;
-//};
+    std::unordered_map<std::string, std::vector<std::string> > m_stations;
+};
 //
 //inline int Solution::GetNow() const {
 //    return m_now;

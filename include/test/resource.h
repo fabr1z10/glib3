@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
+#include <unordered_set>
 #include <gfx/error.h>
 #include <set>
 #include <memory>
@@ -116,14 +117,16 @@ class Station : public GlobalId {
 public:
     Station (const std::string& name) : GlobalId(name) {}
     std::string GetName() override;
+    std::string GetTrackAtLinePoint(int) const;
     void AddLinePoint (int id, const std::string& trackName);
     void AddStoppingPoint (int id, int length);
     void AddCorrectPath(int, int);
+    bool IsSameSide(int a, int b);
     void AddStationRoute(int origin, int ending, int length);
     void AddRoute (std::unique_ptr<StationRoute> r) {
         m_stationRoutes[r->GetShortName()] = std::move(r);
     }
-    std::vector<int> getLinePoints();
+    std::vector<int> getLinePoints(bool);
     StationRoute& GetRoute(const std::string& name){
         auto it = m_stationRoutes.find(name);
         if (it == m_stationRoutes.end())
@@ -154,6 +157,7 @@ private:
     std::unordered_map<int, std::string> m_lp;
     std::unordered_map<int, int> m_stoppingPoints;
     std::unordered_map<int, std::vector<RouteDetail> > m_routes;
+    std::unordered_map<int, std::unordered_set<int>> m_correctPaths;
 
 };
 

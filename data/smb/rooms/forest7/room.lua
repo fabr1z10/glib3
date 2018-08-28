@@ -21,7 +21,7 @@ scene = {
 		children = {
 	        {
 	          pos = {0, 0, -5},
-	          gfx = { image="gfx/forest4/bg1.png" },
+	          gfx = { image="gfx/forest7/bg1.png" },
 	        },
 			{
               walkarea = { 
@@ -29,7 +29,7 @@ scene = {
             	  group = 1,
             	  priority = 0,
             	  target = "player",
-            	  shape = { type = "graph", vertices = { {135, 70}, {135, 32}, {320, 32}}, edges = { 
+            	  shape = { type = "graph", vertices = { {0,32}, {154, 32}, {154, 70}}, edges = { 
 					{0,1}, {1,2}}},
                   scaling = {
                     depth = { 
@@ -42,20 +42,20 @@ scene = {
               }
 			},
 	        make_hotspot { 
-                x=115,
-				y=70,
-				width=20, 
-				height=60, 
-				priority = 1, 
-				object = "forest4_2"
-			},
-	        make_hotspot { 
-                x=300, 
-				y=0, 
+                x=0,
+				y=0,
 				width=20, 
 				height=144, 
 				priority = 1, 
-				object = "forest4_5"
+				object = "forest7_6"
+			},
+	        make_hotspot { 
+                x=134, 
+				y=70, 
+				width=20, 
+				height=70, 
+				priority = 1, 
+				object = "forest7_9"
 			},
 		}
 	},
@@ -79,13 +79,13 @@ function room.init()
     variables._actionInfo:reset()
 
 	local fromData = {
-        forest2 = { playerpos = objects.forest4_2.pos, anim = "idle_front", flip=false },
-        forest5 = { playerpos = objects.forest4_5.pos, anim = "idle_right", flip=true },
+        forest6 = { playerpos = objects.forest7_6.pos, anim = "idle_right", flip=false },
+		forest9 = { playerpos = objects.forest7_9.pos, anim = "idle_front", flip=false },
     }
     -- add player
 	local d = fromData[variables._previousroom]
 	if (d == nil) then
-		d = fromData["forest2"]
+		d = fromData["forest6"]
 	end
 
     table.insert (room.scene[1].children, {

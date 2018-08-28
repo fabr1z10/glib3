@@ -66,6 +66,14 @@ scene = {
 				priority = 1, 
 				object = "forest1_3"
 			},
+	        make_hotspot { 
+                x=310, 
+				y=0, 
+				width=10, 
+				height=144, 
+				priority = 1, 
+				object = "forest_exit"
+			},
 		}
 	},
 	makescummui1(),

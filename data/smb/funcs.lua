@@ -19,14 +19,28 @@ end
 
 require ("script")
 require ("factoryactions")
-require ("rooms/scummbar/actions")
-require ("rooms/kitchen/actions")
-require ("rooms/voodoolady/actions")
-require ("rooms/village2/actions")
-require ("rooms/shop/actions")
-require ("rooms/meleemap/actions")
-require ("rooms/circus/actions")
-require ("items")
+-- require ("rooms/scummbar/actions")
+-- require ("rooms/kitchen/actions")
+-- require ("rooms/voodoolady/actions")
+-- require ("rooms/village2/actions")
+-- require ("rooms/shop/actions")
+-- require ("rooms/meleemap/actions")
+-- require ("rooms/circus/actions")
+print ("The path is : " .. _path)
+print ("Loading items ...")
+local p = io.popen("find " .. _path .. " -path */items.lua | cut -c" .. tostring(string.len(_path)+1) .. "- | sed 's/.\\{4\\}$//'"):lines()
+for line in p do
+	print("loading " .. line)
+	require(line)
+end
+print ("Loading actions ...")
+
+local p = io.popen("find " .. _path .. " -path */actions.lua | cut -c" .. tostring(string.len(_path)+1) .. "- | sed 's/.\\{4\\}$//'"):lines()
+for line in p do
+	print("loading " .. line)
+	require(line)
+end
+--require ("items")
 require ("factoryobjects")
 require ("uifuncs")
 require("dialogues")

@@ -7,74 +7,17 @@ objects = {
         color = {255, 255, 255, 255},
 		offset = {0, 60}
     },
-    lookout = {
-        tag = "lookout",
-        text = strings.objects.lookout,
-        pos = {160, 36},
-        dir ="west",
-		offset = {0, 60},
-        color = {170, 170, 170, 255},
-        talk = curry(talk, { character = "lookout", node = 1}),
-		look = curry(_say,{character ="guybrush", lines = {strings.dialogues.lookout.text[50]}})
-    },
+
     cook = {
         tag = "cook",
         color = {85, 255, 255, 255},
     },
-    stairs = {
-        text = strings.objects.stairs,
-        pos = {250, 0}, -- location where the player will go
-        walk = curry(changeRoom, "village1")
-    },
-	cliffside = {
-		text = strings.objects.cliffside,
-		pos = {8, 71},
-		walk = curry(changeRoom, "lookout")
-	},
-    path = {
-        text = strings.objects.path,
-        pos = {314, 52},
-        walk = curry(changeRoom, "meleemap")  
-    },
-    poster = {
-        text = strings.objects.poster,
-        pos = {269, 133},
-        dir = "north",
-        look = curry (_say, { character="guybrush", lines= { strings.village1[1], strings.village1[2] }} )
-    },
-    village1_door = {
-        text = strings.objects.door,
-        tag = "door1",
-        pos = {715, 13},
-        dir = "north",
-		walk = curry(walkToDoor, { obj = "village1_door", roomId = "scummbar"}),
-		open = curry(operateDoor, { obj = "village1_door", open = true }),
-		close = curry(operateDoor, { obj = "village1_door", open = false }),
-		isopen = curry(isOpen, "scummbar"),
-		setopen = curry2(setOpen, "scummbar")
-    },
-    scummbar_door_out = {
-        text = strings.objects.door,
-        tag = "door1",
-        pos = {66, 19},
-        dir = "west",
-		walk = curry(walkToDoor, {obj = "scummbar_door_out", roomId = "village1"}),
-		open = curry(operateDoor, { obj = "scummbar_door_out", open = true }),
-		close = curry(operateDoor, { obj = "scummbar_door_out", open = false }),
-		isopen = curry(isOpen, "scummbar"),
-		setopen = curry2(setOpen, "scummbar")
-    },
-    door_bar_kitchen = {
-        text = strings.objects.door,
-        tag = "door_bar_kitchen",
-        pos = {600, 14},
-		dir = "east",
-		open = openBarKitchen,
-		walk = enterBarKitchen,
-		close = curry(operateDoor, {obj = "door_bar_kitchen", open = false} ),
-		isopen = curry(isOpen, "kitchen"),
-		setopen = curry2(setOpen, "kitchen")		
-    },
+
+
+
+
+
+
 	door_kitchen_bar = {
 		text = strings.objects.door,
 		tag = "door_kitchen_bar",
@@ -171,98 +114,9 @@ objects = {
 		pos = {132, 14},
 		dir ="south"
 	},
-	fireplace = {
-		text = strings.objects.fireplace,
-		tag ="fireplace",
-		pos = {506, 41},
-		dir ="east",
-		look = curry (say, { character="guybrush", lines= { strings.scummbar[1] }} )
-	},
-	ilp = {
-		text = strings.objects.ilp,
-		tag="ilp",
-		pos={474,7},
-		dir ="west",
- 		talk = talkToPirates
-	},
-	ilp1 = {
-		color = {85, 85, 255, 255},
-		offset = {0, 60},
-		tag ="ilp1"		
 
-	},
-	ilp2 = {
-		color = {255, 255, 85, 255},
-		offset = {0, 60},
-		tag ="ilp2"		
-	},
-	ilp3 = {
-		color = {255, 85, 255, 255},
-		offset = {0, 60},
-		tag ="ilp3"		
-	},
-	dog = {
-		text = strings.objects.dog,
-		tag = "dog",
-		pos = {289, 9},
-		dir = "north",
-		talk = talkToDog,
-        color = {170, 170, 170, 255},
-		offset = {0, 60},
-	},
-	loom_pirate = {
-		text = strings.objects.pirate,
-		tag = "loompirate",
-		pos = {239,15},
-		dir = "east",
-		color = {85, 85, 255, 255},
-		offset = {0, 40},
-		look = talkToLoom,
-		talk = talkToLoom	
-	},
-	estevan = {
-		text = strings.objects.pirate,
-		tag = "estevan",
-		pos = {200,10},
-		dir = "south",
-		color = {170, 85, 0, 255},
-		offset = {0, 40},
-		look = talkToEstevan,
-		talk = talkToEstevan	
-	},
-	mancomb = {
-		text = strings.objects.pirate,
-		tag = "mancomb",
-		pos = {123,17},
-		dir = "north",
-		color = {255, 85, 85, 255},
-		offset = {0, 40},
-		look = talkToMancomb,
-		talk = talkToMancomb	
-	},
-	pirates_listening = {
-		text = strings.objects.pirates,
-		tag="pirateslistening",
-		pos = {123,17},
-		dir = "north",
-		talk = curry (say, { character="guybrush", lines= { strings.scummbar[2], strings.scummbar[3] }} ),
-		look = curry (say, { character="guybrush", lines= { strings.scummbar[3] }} )
-	},
-	sleeping_pirate = {
-		text = strings.objects.pirate,
-		tag = "sleepingpirate",
-		pos = {52,14},
-		dir ="south",
-		talk = curry (say, { character="guybrush", lines= { strings.scummbar[4] }} ),
-		look = curry (say, { character="guybrush", lines= { strings.scummbar[4] }} )
-		
-	},
-    archway = {
-        text = strings.objects.archway,
-        pos = {1008, 34}, -- location where the player will go
-		dir = "east",
-        walk = curry(changeRoom, "village2")
-    },
+
+
 	citizen = {
 		tag = "citizen",
 		text = strings.objects.citizen,
@@ -363,9 +217,9 @@ objects = {
 	-- },
 }
 
-require ("rooms/voodoolady/items")
-require ("rooms/village3/items")
-require ("rooms/shop/items")
-require ("rooms/clearing/items")
-require ("rooms/circus/items")
-require ("forest")
+-- require ("rooms/voodoolady/items")
+-- require ("rooms/village3/items")
+-- require ("rooms/shop/items")
+-- require ("rooms/clearing/items")
+-- require ("rooms/circus/items")
+-- require ("forest")
