@@ -12,6 +12,7 @@
 #include <gfx/renderingengine.h>
 #include <gfx/scheduler.h>
 #include <gfx/listener.h>
+#include <gfx/collisionengine.h>
 
 struct EngineConfig {
     EngineConfig (float devWidth, float devHeight) : frameRate (60.0), deviceWidth{devWidth}, deviceHeight{devHeight}, enableMouse{false}, enableKeyboard{false},
@@ -53,7 +54,8 @@ public:
     void UnregisterToWindowResizeEvent(WindowResizeListener*);
     void RegisterToMouseEvent(MouseListener*);
     void UnregisterToMouseEvent(MouseListener*);
-    void RegisterToKeyboardEvent(std::unique_ptr<KeyboardListener>);
+    void RegisterToKeyboardEvent(KeyboardListener*);
+    void UnregisterToKeyboardEvent(KeyboardListener*);
     glm::vec4 GetViewport(float x, float y, float width, float height);
     void SetViewport(float x, float y, float width, float height);
     void Remove(Entity*);
@@ -81,8 +83,9 @@ public:
     static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
     void SetRenderingEngine(std::unique_ptr<RenderingEngine>);
     void SetScriptingEngine(std::unique_ptr<Scheduler>);
+    void SetCollisionEngine(std::unique_ptr<CollisionEngine>);
     //MouseListener* GetMouseHandler();
-    KeyboardListener* GetKeyboardListener();
+    //KeyboardListener* GetKeyboardListener();
     //void SetKeyboardHandler(std::unique_ptr<KeyboardListener>);
     //void SetMouseHandler(std::unique_ptr<MouseListener>);
     RenderingEngine* GetRenderingEngine();
@@ -110,7 +113,7 @@ private:
     glm::vec2 m_winSize;
     std::unordered_set<WindowResizeListener*> m_resizeListeners;
     std::unordered_set<MouseListener*> m_mouseListeners;
-    std::unique_ptr<KeyboardListener> m_keyboardListener;
+    std::unordered_set<KeyboardListener*> m_keyboardListeners;
     AssetManager m_assetManager;
     GLuint m_vao;
     bool m_endScene;
@@ -121,6 +124,7 @@ private:
     //std::unique_ptr<KeyboardListener> m_keyboardListener;
     std::unique_ptr<Scheduler> m_scriptEngine;
     std::unique_ptr<RenderingEngine> m_renderingEngine;
+    std::unique_ptr<CollisionEngine> m_collisionEngine;
 };
 
 inline SceneFactory* Engine::GetSceneFactory() {
@@ -189,9 +193,9 @@ inline Scheduler* Engine::GetScriptingEngine() {
 //return m_mouseListener.get();
 //}
 
-inline KeyboardListener* Engine::GetKeyboardListener() {
-    return m_keyboardListener.get();
-}
+//inline KeyboardListener* Engine::GetKeyboardListener() {
+//    return m_keyboardListener.get();
+//}
 
 inline void Engine::SetEnableUpdate(bool value) {
     m_update = value;

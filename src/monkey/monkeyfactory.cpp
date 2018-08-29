@@ -19,7 +19,8 @@
 #include <monkey/scriptwalktrigger.h>
 #include <gfx/textview.h>
 #include "gfx/cursor.h"
-
+#include <gfx/collider.h>
+#include <gfx/keyboardcontroller.h>
 
 using namespace luabridge;
 
@@ -193,6 +194,15 @@ std::shared_ptr<Entity> MonkeyFactory::ReadItem(luabridge::LuaRef& ref) {
         luabridge::LuaRef c = item.Get<luabridge::LuaRef>("text");
         ReadTextComponent(c, entity.get());
     }
+    if (item.HasKey("collider")) {
+        luabridge::LuaRef c = item.Get<luabridge::LuaRef>("collider");
+        ReadColliderComponent(c, entity.get());
+    }
+    if (item.HasKey("keyboardcontroller")) {
+        luabridge::LuaRef c = item.Get<luabridge::LuaRef>("keyboardcontroller");
+        ReadKeyboardComponent(c, entity.get());
+    }
+
     if (item.HasKey("outlinetext")) {
         luabridge::LuaRef c = item.Get<luabridge::LuaRef>("outlinetext");
         ReadOutlineTextComponent(c, entity.get());
@@ -303,11 +313,27 @@ void MonkeyFactory::ReadTextComponent(luabridge::LuaRef &ref, Entity *parent) {
     auto renderer = GetTextComponent(ref);
     parent->AddComponent(renderer);
 }
+
 void MonkeyFactory::ReadFollowComponent(luabridge::LuaRef &ref, Entity *parent) {
     LuaTable table(ref);
     std::string cam = table.Get<std::string>("cam");
     parent->AddComponent(std::make_shared<Follow>(cam));
 }
+
+void MonkeyFactory::ReadColliderComponent(luabridge::LuaRef &ref, Entity *parent) {
+    LuaTable table(ref);
+    luabridge::LuaRef shapeR = table.Get<luabridge::LuaRef>("shape");
+    auto shape = ReadShape(shapeR);
+    parent->AddComponent(std::make_shared<Collider>(shape));
+}
+
+void MonkeyFactory::ReadKeyboardComponent(luabridge::LuaRef &ref, Entity *parent) {
+    LuaTable table(ref);
+    //luabridge::LuaRef shapeR = table.Get<luabridge::LuaRef>("shape");
+    //auto shape = ReadShape(shapeR);
+    parent->AddComponent(std::make_shared<KeyboardController>());
+}
+
 
 void MonkeyFactory::ReadOutlineTextComponent(luabridge::LuaRef &ref, Entity *parent) {
     LuaTable table(ref);

@@ -159,7 +159,7 @@ void Engine::MainLoop() {
                     }
                 }
                 
-
+                // update all the engines (script, rendering, collision)
                 m_scriptEngine->Update(m_frameTime);
                 m_renderingEngine->Update(m_frameTime);
 
@@ -229,9 +229,8 @@ void Engine::scroll_callback(GLFWwindow* win, double xoffset, double yoffset) {
       //  listener->ScrollCallback(win, xoffset, yoffset);
 }
 void Engine::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-    auto& e = Engine::get().m_keyboardListener;
-    if (e != nullptr)
-        e->KeyCallback(window, key, scancode, action, mods);
+    for (auto& listener : Engine::get().m_keyboardListeners)
+        listener->KeyCallback(window, key, scancode, action, mods);
 }
 
 void Engine::RegisterToWindowResizeEvent(WindowResizeListener* listener) {
@@ -250,13 +249,13 @@ void Engine::UnregisterToMouseEvent(MouseListener* listener) {
     m_mouseListeners.erase(listener);
 }
 
-void Engine::RegisterToKeyboardEvent(std::unique_ptr<KeyboardListener> listener) {
-    m_keyboardListener = std::move(listener);
+void Engine::RegisterToKeyboardEvent(KeyboardListener* listener) {
+    m_keyboardListeners.insert(listener);
 }
 
-//void Engine::UnregisterToKeyboardEvent(KeyboardListener* listener) {
-//    m_keyboardListeners.erase(listener);
-//}
+void Engine::UnregisterToKeyboardEvent(KeyboardListener* listener) {
+    m_keyboardListeners.erase(listener);
+}
 
 Engine::~Engine() {
     glfwTerminate();
@@ -279,4 +278,7 @@ void Engine::SetRenderingEngine(std::unique_ptr<RenderingEngine> engine) {
 }
 void Engine::SetScriptingEngine(std::unique_ptr<Scheduler> engine) {
     m_scriptEngine = std::move(engine);
+}
+void Engine::SetCollisionEngine(std::unique_ptr<CollisionEngine> engine) {
+    m_collisionEngine = std::move(engine);
 }

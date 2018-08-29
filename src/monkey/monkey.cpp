@@ -11,6 +11,7 @@
 #include <monkey/monkeyfactory.h>
 #include <gfx/hotspot.h>
 #include <monkey/luakeylistener.h>
+#include <gfx/collisionengine.h>
 
 Monkey::Monkey() {
     LuaWrapper::Init();
@@ -41,6 +42,9 @@ void Monkey::Start() {
     glm::vec2 devSize = engine.Get<glm::vec2>("device_size");
     glm::vec2 winSize = engine.Get<glm::vec2>("window_size");
     std::string title = engine.Get<std::string>("title");
+    bool collisionEngine = engine.Get<bool>("collision", false);
+    glm::vec2 collisionSize = engine.Get<glm::vec2>("collision_size", glm::vec2(0.0f, 0.0f));
+
 
     EngineConfig config (devSize.x, devSize.y);
     config.enableMouse = true;
@@ -63,19 +67,27 @@ void Monkey::Start() {
     auto scheduler = std::unique_ptr<Scheduler>(new Scheduler);
     g.SetScriptingEngine(std::move(scheduler));
 
-    // set-up the input system (mouse & keyboard)
-    auto hsm = std::unique_ptr<HotSpotManager>(new HotSpotManager);
-    g.RegisterToMouseEvent(hsm.get());
-
-    std::unique_ptr<LuaKeyListener> kl(new LuaKeyListener);
-    luabridge::LuaRef hk = luabridge::getGlobal(LuaWrapper::L, "hotkeys");
-    for (int i = 0; i < hk.length(); ++i) {
-        luabridge::LuaRef h = hk[i+1];
-        int keyCode = h["key"].cast<int>();
-        luabridge::LuaRef ref = h["func"];
-        kl->AddHotKey(keyCode, ref);
+    // set up the collision engine
+    if (collisionEngine) {
+        auto ce = std::unique_ptr<CollisionEngine>(new CollisionEngine(collisionSize.x, collisionSize.y));
+        g.SetCollisionEngine(std::move(ce));
     }
-    g.RegisterToKeyboardEvent(std::move(kl));
+
+    // set-up the input system (mouse & keyboard)
+    //auto hsm = std::unique_ptr<HotSpotManager>(new HotSpotManager);
+    //g.RegisterToMouseEvent(hsm.get());
+
+//    std::unique_ptr<LuaKeyListener> kl(new LuaKeyListener);
+//    luabridge::LuaRef hk = luabridge::getGlobal(LuaWrapper::L, "hotkeys");
+//    if (!hk.isNil()) {
+//        for (int i = 0; i < hk.length(); ++i) {
+//            luabridge::LuaRef h = hk[i + 1];
+//            int keyCode = h["key"].cast<int>();
+//            luabridge::LuaRef ref = h["func"];
+//            kl->AddHotKey(keyCode, ref);
+//        }
+//    }
+//    g.RegisterToKeyboardEvent(std::move(kl));
 
 
 //    auto hotspotManager = std::make_shared<HotSpotManager>();

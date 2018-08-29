@@ -116,11 +116,11 @@ namespace luaFunctions {
     }
 
     void EnableKeyboard(bool value) {
-        Engine::get().GetKeyboardListener()->Enable(value);
+        //Engine::get().GetKeyboardListener()->Enable(value);
     }
 
     void EnableKey(int key, bool value) {
-        Engine::get().GetKeyboardListener()->EnableKey(key, value);
+        //Engine::get().GetKeyboardListener()->EnableKey(key, value);
     }
 
     void PlayScript (luabridge::LuaRef ref) {

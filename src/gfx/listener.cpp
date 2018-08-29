@@ -11,11 +11,11 @@ MouseListener::~MouseListener() {
 }
 
 KeyboardListener::KeyboardListener() {
-    //Engine::get().RegisterToKeyboardEvent(this);
+    Engine::get().RegisterToKeyboardEvent(this);
 }
 
 KeyboardListener::~KeyboardListener() {
-    //Engine::get().UnregisterToKeyboardEvent(this);
+    Engine::get().UnregisterToKeyboardEvent(this);
 }
 
 WindowResizeListener::WindowResizeListener() {

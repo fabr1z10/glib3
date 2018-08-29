@@ -25,6 +25,7 @@ struct Bounds {
     void Expand(float);
     bool Contains(glm::vec2 P);
     bool Intersects(Bounds& other) const;
+    // rotate a bounding box
     void Transform(const glm::mat4&);
 };
 
