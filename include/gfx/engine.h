@@ -90,6 +90,7 @@ public:
     //void SetMouseHandler(std::unique_ptr<MouseListener>);
     RenderingEngine* GetRenderingEngine();
     Scheduler* GetScriptingEngine();
+    CollisionEngine* GetCollisionEngine();
     //void SetInputHandler(std::unique_ptr<)
     void SetEnableUpdate(bool);
 private:

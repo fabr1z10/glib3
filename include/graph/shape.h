@@ -11,6 +11,8 @@
 
 #include <glm/glm.hpp>
 #include <graph/visitor.h>
+#include <gfx/bounds.h>
+
 
 class Shape {
 public:
@@ -18,14 +20,21 @@ public:
     virtual ~Shape() {}
     virtual bool isPointInside (glm::vec2) const = 0;
     virtual void accept (AcyclicVisitor& v) = 0;
-        
+    Bounds getBounds() const;
+protected:
+    Bounds m_bounds;
 };
+
+Bounds Shape::getBounds() const {
+    return m_bounds;
+}
 
 class Rect : public Shape {
 public:
     Rect (float width, float height, glm::vec2 offset =glm::vec2(0.0f)) :
     Shape(), m_width(width), m_height(height), m_offset{offset} {
-
+        m_bounds.min = offset;
+        m_bounds.max = offset + glm::vec2(width, height);
     }
     bool isPointInside(glm::vec2) const override;
     void accept (AcyclicVisitor& v) override;
