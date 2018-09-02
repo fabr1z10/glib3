@@ -162,7 +162,8 @@ void Engine::MainLoop() {
                 // update all the engines (script, rendering, collision)
                 m_scriptEngine->Update(m_frameTime);
                 m_renderingEngine->Update(m_frameTime);
-
+                if (m_collisionEngine != nullptr)
+                    m_collisionEngine->Update(m_frameTime);
                 glfwSwapBuffers(window);
                 glfwPollEvents();
             }
@@ -198,7 +199,7 @@ void Engine::WindowResizeCallback(GLFWwindow* win, int width, int height) {
         listener->Notify(width, height);
 
     // recalculate all camera viewports
-    glm::vec4 viewport;
+    //glm::vec4 viewport;
     Entity* root = Engine::get().GetScene();
     ResizeIterator iterator(root, engine.m_winSize, engine.m_actualSize);
     while (!iterator.end()) {

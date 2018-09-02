@@ -18,14 +18,16 @@ void Collider::SetParent(Entity * entity) {
 }
 
 void Collider::Start() {
-
-    Engine::get().GetCollisionEngine()->Add(this);
+    m_aabb = m_shape->getBounds();
+    m_aabb.Transform(m_entity->GetWorldTransform());
+    auto ce = Engine::get().GetCollisionEngine();
+    ce->Add(this);
     GetObject()->onMove.Register(this, [&] (Entity* e) { this->Move(e);} );
     m_aabb = m_shape->getBounds();
     m_aabb.Transform(m_entity->GetWorldTransform());
 }
 
-void Collider::~Collider() {
+Collider::~Collider() {
     Engine::get().GetCollisionEngine()->Remove(this);
 }
 

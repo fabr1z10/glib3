@@ -90,6 +90,21 @@ void MeshFactory::visit(Rect& rect) {
     m_mesh = mesh;
 }
 
+void MeshFactory::visit(Line& p) {
+    std::vector<VertexColor> vertices ;
+    std::vector<unsigned int> indices;
+    auto A = p.getA();
+    auto B = p.getB();
+    vertices.push_back({A.x, A.y, m_z, 1.0, 1.0, 1.0, 1.0});
+    vertices.push_back({B.x, B.y, m_z, 1.0, 1.0, 1.0, 1.0});
+    indices.push_back(0);
+    indices.push_back(1);
+    auto mesh = std::make_shared<Mesh<VertexColor>>(COLOR_SHADER);
+    mesh->Init(vertices, indices);
+    mesh->m_primitive = GL_LINES;
+    m_mesh = mesh;
+}
+
 void MeshFactory::visit(Polygon& p) {
     std::vector<VertexColor> vertices ;
     std::vector<unsigned int> indices;

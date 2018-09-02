@@ -52,9 +52,9 @@ void HotSpotManager::CursorPosCallback(GLFWwindow*, double x, double y) {
     Entity* root = Engine::get().GetScene();
     HotSpotIterator iterator(root);
 
-    bool isInViewport {false};
-    OrthographicCamera* currentCam {nullptr};
-    glm::vec4 viewport;
+    //bool isInViewport {false};
+    //OrthographicCamera* currentCam {nullptr};
+    //glm::vec4 viewport;
     HotSpot* newActiveHotSpot = nullptr;
     while (!iterator.end()) {
         if (!iterator->IsActive() || !iterator->AreControlsEnabled())

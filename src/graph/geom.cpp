@@ -73,9 +73,9 @@ bool IsBetween (glm::vec2 A, glm::vec2 B, glm::vec2 P, float eps) {
 
 }
 
-float DistFromSegment (glm::vec2 A, glm::vec2 B, glm::vec2 P) {
+//float DistFromSegment (glm::vec2 A, glm::vec2 B, glm::vec2 P) {
 
-}
+//}
 //void FindPathInPoly (const Poly& poly, glm::vec2 Start, glm::vec2 End) {
 //    int nHoles = poly.GetHoleCount();
 //    int nVertices = poly.GetVertexCount();
@@ -133,7 +133,7 @@ bool inLineOfSight (const Poly& p, glm::vec2 start, glm::vec2 end) {
     }
     
     // Not in LOS if any edge is intersected by the start-end line segment
-    bool inSight = true;
+   // bool inSight = true;
     int n = p.GetHoleCount() + 1;
     for (int i = 0; i < n; ++i) {
         int m = p.GetVertexCount(i);

@@ -33,8 +33,8 @@ void Script::AddEdge (int fromActivity, int toActivity) {
     auto itTo = m_activities.find(toActivity);
     if (itTo == m_activities.end())
         GLIB_FAIL("Don't know activity " << toActivity);
-    auto ptr = itFrom->second.get();
-    auto ptr2 = itTo->second.get();
+    //auto ptr = itFrom->second.get();
+    //auto ptr2 = itTo->second.get();
     itFrom->second->AddNext(itTo->second.get());
     itTo->second->AddPrevious(itFrom->second.get());
 

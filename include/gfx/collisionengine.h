@@ -4,6 +4,7 @@
 #include <unordered_set>
 #include "gfx/collider.h"
 #include "gfx/hashpair.h"
+#include "graph/intersect.h"
 
 struct CollisionEngineCell {
     bool dirty;
@@ -22,18 +23,18 @@ struct Location {
 
 class CollisionEngine : public Ref {
 public:
-    CollisionEngine (float cellWidth, float cellHeight) : Ref(), m_width{cellWidth}, m_height{cellHeight} {}
+    CollisionEngine (float cellWidth, float cellHeight);
     void Add (Collider*);
     void Remove(Collider*);
     void Move(Collider*);
     void PopCollider(Collider*);
     void PushCollider(Collider*, Location);
     Location GetLocation(Collider* c);
-
+    void Update(double);
 private:
     std::unordered_map<std::pair<int, int>, CollisionEngineCell> m_cells;
     std::unordered_map<Collider*, Location> m_colliderLocations;
     float m_width;
     float m_height;
-
+    std::unique_ptr<Intersector> m_intersector;
 };

@@ -5,11 +5,11 @@
 
 class ScriptHotSpot : public HotSpot {
 public:
-    ScriptHotSpot (int priority) : HotSpot(priority), m_inShape{false}, r_enter{nullptr},
+    ScriptHotSpot (int priority) : HotSpot(priority), r_enter{nullptr},
                             r_leave{nullptr}, r_click{}{}
     ScriptHotSpot (
             std::shared_ptr<Shape> shape,
-            int priority) : HotSpot(shape, priority), m_inShape{false}, r_enter{nullptr},
+            int priority) : HotSpot(shape, priority), r_enter{nullptr},
     r_leave{nullptr}, r_click{}{}
     void onLeave() override;
     void onClick(glm::vec2) override;
@@ -30,7 +30,7 @@ public:
     using ParentClass = HotSpot;
 
 private:
-    bool m_inShape;
+    //bool m_inShape;
     std::unique_ptr<luabridge::LuaRef> r_enter;
     std::unique_ptr<luabridge::LuaRef> r_leave;
     std::unique_ptr<luabridge::LuaRef> r_click;

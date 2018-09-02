@@ -73,9 +73,9 @@ public:
     // set the visible rectangle
     void SetBounds(float xMin, float xMax, float yMin, float yMax);
     void Resize(int width, int height) override;
-    virtual bool IsVisible(const Bounds3D&);
+    bool IsVisible(const Bounds3D&) override;
     glm::vec2 GetWorldCoordinates(glm::vec2) override;
-    virtual void SetPosition(glm::vec3 eye, glm::vec3 direction, glm::vec3 up = glm::vec3(0, 1, 0));
+    void SetPosition(glm::vec3 eye, glm::vec3 direction, glm::vec3 up = glm::vec3(0, 1, 0)) override;
     glm::vec2 GetSize();
     virtual void Init();
     using ParentClass = Camera;

@@ -15,6 +15,10 @@ public:
     const std::vector<glm::vec2>& GetVertices() const;
     const std::vector<std::pair<glm::vec2, glm::vec2>>& GetEdges() const;
     const std::vector<std::pair<int, int>>& GetEdgeIndices() const;
+    std::string toString() const override;
+    glm::vec2 project(const glm::vec2 axis, const glm::mat4& worldTransform) override {
+        return glm::vec2();
+    }
 
 private:
     std::vector<glm::vec2> m_vertices;

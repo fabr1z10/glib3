@@ -189,7 +189,9 @@ inline RenderingEngine* Engine::GetRenderingEngine() {
 inline Scheduler* Engine::GetScriptingEngine() {
     return m_scriptEngine.get();
 }
-
+inline CollisionEngine* Engine::GetCollisionEngine() {
+    return m_collisionEngine.get();
+}
 //inline MouseListener* Engine::GetMouseHandler() {
 //return m_mouseListener.get();
 //}

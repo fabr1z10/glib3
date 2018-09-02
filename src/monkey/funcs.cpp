@@ -10,6 +10,7 @@
         // found the right patch
         ++i;
     }
+     return 0.0f;
  }
 
 

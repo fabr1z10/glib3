@@ -28,3 +28,7 @@ int PolyLine::GetEdgeContaining(glm::vec2 P) {
     }
     return -1;
 }
+
+std::string PolyLine::toString() const {
+    return "Polyline";
+}

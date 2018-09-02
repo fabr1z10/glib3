@@ -13,7 +13,7 @@ class WalkArea : public HotSpot {
 public:
     WalkArea (std::shared_ptr<Shape> shape, int priority, const std::string& playerId) : HotSpot(shape, priority), m_playerId{playerId},
     m_depthFunc{nullptr}, m_scaleFunc{nullptr} {}
-    virtual bool isMouseInside(glm::vec2) {
+    bool isMouseInside(glm::vec2) override {
         return true;
     }
     float GetDepth (float x, float y);
@@ -21,8 +21,8 @@ public:
     void Start() override;
     void onEnter() override {}
     void onLeave() override {}
-    void onClick(glm::vec2);
-    void onMove(glm::vec2) {}
+    void onClick(glm::vec2) override;
+    void onMove(glm::vec2) override {}
     void SetDepthFunction (std::unique_ptr<Function2D> func);
     void SetScalingFunction (std::unique_ptr<Function2D> func);
     using ParentClass = HotSpot;

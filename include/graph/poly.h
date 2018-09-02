@@ -19,6 +19,10 @@ public:
     glm::vec2 getNormalAtEdge (int edgeIndex);
     glm::vec2 getNormalAtVertex(int);
     void accept (AcyclicVisitor& v) override;
+    std::string toString() const override;
+    glm::vec2 project(const glm::vec2 axis, const glm::mat4& worldTransform) override {
+        return glm::vec2();
+    }
 private:
     std::vector <glm::vec2> m_points;
 };
@@ -36,7 +40,7 @@ public:
     // defines a polygon without holes
     // Note: the polygons are always clockwise oriented!
     Poly (std::unique_ptr<Polygon> p) { m_polygons.push_back(std::move(p)); }
-
+    std::string toString() const override;
     void AddHole (std::unique_ptr<Polygon> p) {
         m_polygons.push_back(std::move(p));
     }
@@ -49,6 +53,9 @@ public:
     bool isVertexConcave (int i, int polyId = 0) const;
     void accept (AcyclicVisitor& v) override;
     Polygon* GetPolygon(int);
+    glm::vec2 project(const glm::vec2 axis, const glm::mat4& worldTransform) override {
+        return glm::vec2();
+    }
 private:
 
     std::vector<std::unique_ptr<Polygon>> m_polygons;

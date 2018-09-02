@@ -620,6 +620,10 @@ std::shared_ptr<Shape> MonkeyFactory::ReadShape(luabridge::LuaRef& ref) {
         float w = at.Get<float>("width");
         float h = at.Get<float>("height");
         return std::make_shared<Rect>(w, h, offset);
+    } else if (type=="line") {
+        glm::vec2 A = at.Get<glm::vec2>("A");
+        glm::vec2 B = at.Get<glm::vec2>("B");
+        return std::make_shared<Line>(A, B);
     } else if (type == "poly") {
         std::vector<float> outline = at.GetVector<float>("outline");
         std::vector<glm::vec2> points;

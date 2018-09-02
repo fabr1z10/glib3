@@ -10,12 +10,12 @@ void Say::Start() {
     glm::vec2 currentPos(actor->GetPosition());
 
 
-    int count = 0;
+    //int count = 0;
     std::string animStart;
     std::string animEnd;
     //bool flipx {false};
     Renderer* r = actor->GetComponent<Renderer>();
-    bool flipx = r->GetFlipX();
+    //bool flipx = r->GetFlipX();
 
     if (!m_noAnim) {
         std::string anim = r->GetAnimation();

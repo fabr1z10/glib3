@@ -86,6 +86,14 @@ bool Poly::isInLineOfSight(glm::vec2 A, glm::vec2 B) {
     }
     return true;
 }
+
+std::string Poly::toString() const {
+    return "Poly";
+}
+
+std::string Polygon::toString() const {
+    return "Polygon";
+}
 //for (i in 0...vertices.length)
 //{
 //var newPoint:Vector = vertices[i];
