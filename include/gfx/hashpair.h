@@ -17,4 +17,15 @@ namespace std {
         return seed;
     }
 };
+
+template<>
+struct hash<glm::vec2> {
+    inline size_t operator()(const glm::vec2 &v) const {
+        size_t seed = 0;
+        ::hash_combine(seed, v.x);
+        ::hash_combine(seed, v.y);
+        return seed;
+    }
+};
+
 }

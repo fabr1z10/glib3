@@ -5,6 +5,7 @@
 class Poly;
 
 const float epsilon = 0.0001f;
+const float deg2rad = M_PI / 180.0f;
 
 struct LineSegment {
     glm::vec2 A;

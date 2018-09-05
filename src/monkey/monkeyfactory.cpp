@@ -151,7 +151,12 @@ std::shared_ptr<Entity> MonkeyFactory::ReadItem(luabridge::LuaRef& ref) {
     std::string tag = item.Get<std::string>("tag", "");
     if (!tag.empty()) entity->SetTag(tag);
     glm::vec3 pos = item.Get<glm::vec3>("pos", glm::vec3(0.0f));
-    entity->SetPosition(pos);
+    if (item.HasKey("angle")) {
+        float angle = item.Get<float>("angle",0.0f);
+        entity->SetPosition(pos, deg2rad* angle);
+    } else {
+        entity->SetPosition(pos);
+    }
     // int layer = item.Get<int>("layer", 0);
     if (item.HasKey("camera")) {
         LuaRef cam = item.Get<LuaRef>("camera");
@@ -323,8 +328,9 @@ void MonkeyFactory::ReadFollowComponent(luabridge::LuaRef &ref, Entity *parent) 
 void MonkeyFactory::ReadColliderComponent(luabridge::LuaRef &ref, Entity *parent) {
     LuaTable table(ref);
     luabridge::LuaRef shapeR = table.Get<luabridge::LuaRef>("shape");
+    int tag = table.Get<int>("tag");
     auto shape = ReadShape(shapeR);
-    parent->AddComponent(std::make_shared<Collider>(shape));
+    parent->AddComponent(std::make_shared<Collider>(shape, tag));
 }
 
 void MonkeyFactory::ReadKeyboardComponent(luabridge::LuaRef &ref, Entity *parent) {

@@ -17,8 +17,9 @@ scene = {
 			keyboardcontroller={}
 	    }, 
 		{
-			pos = {90, 90, 0},
-			collider= {shape={type="rect", width=10, height=10}},
+			pos = {80, 80, 0},
+			angle = 30,
+			collider= {shape={type="rect", width=30, height=10, offset={-15,-5}}},
 	    }
 		}
 	},

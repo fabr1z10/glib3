@@ -58,3 +58,13 @@ glm::vec2 Line::project(const glm::vec2 axis, const glm::mat4& worldTransform) {
     };
     return Projection(points, axis, worldTransform);
 }
+
+
+std::vector<glm::vec2> Line::getPoints() {
+    // for a segment the point
+    return { m_A, m_B};
+}
+
+std::vector<glm::vec2> Line::getEdges() {
+    return {m_B - m_A};
+}

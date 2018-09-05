@@ -37,4 +37,6 @@ private:
     float m_width;
     float m_height;
     std::unique_ptr<Intersector> m_intersector;
+    std::unordered_set<std::pair<Collider*, Collider*>> m_previouslyCollidingPairs;
+    //std::unordered_map<std::pair<int, int>,
 };

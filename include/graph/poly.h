@@ -23,6 +23,9 @@ public:
     glm::vec2 project(const glm::vec2 axis, const glm::mat4& worldTransform) override {
         return glm::vec2();
     }
+    std::vector<glm::vec2> getPoints() override;
+    std::vector<glm::vec2> getEdges() override;
+
 private:
     std::vector <glm::vec2> m_points;
 };
@@ -56,6 +59,9 @@ public:
     glm::vec2 project(const glm::vec2 axis, const glm::mat4& worldTransform) override {
         return glm::vec2();
     }
+    std::vector<glm::vec2> getPoints() override;
+    std::vector<glm::vec2> getEdges() override;
+
 private:
 
     std::vector<std::unique_ptr<Polygon>> m_polygons;

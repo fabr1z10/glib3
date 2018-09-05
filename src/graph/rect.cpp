@@ -31,3 +31,18 @@ glm::vec2 Rect::project(const glm::vec2 axis, const glm::mat4& worldTransform) {
     };
     return Projection(points, axis, worldTransform);
 }
+
+
+std::vector<glm::vec2> Rect::getPoints() {
+    return {
+            m_offset,
+            m_offset + glm::vec2(m_width, 0.0f),
+            m_offset + glm::vec2(m_width, m_height),
+            m_offset + glm::vec2(0.0f, m_height),
+    };
+}
+
+
+std::vector<glm::vec2> Rect::getEdges() {
+    return { glm::vec2(m_width, 0.0), glm::vec2(0.0, m_height)};
+}

@@ -13,6 +13,7 @@
 #include <graph/visitor.h>
 #include <gfx/bounds.h>
 #include <string>
+#include <vector>
 
 class Shape {
 public:
@@ -23,8 +24,10 @@ public:
     virtual std::string toString() const = 0;
     Bounds getBounds() const;
     virtual glm::vec2 project(const glm::vec2 axis, const glm::mat4& worldTransform) = 0;
+    virtual std::vector<glm::vec2> getPoints() = 0;
+    virtual std::vector<glm::vec2> getEdges() = 0;
 protected:
-    Bounds m_bounds;
+        Bounds m_bounds;
 };
 
 inline Bounds Shape::getBounds() const {

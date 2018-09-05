@@ -133,6 +133,12 @@ void Entity::SetPosition(glm::vec3 pos){
     onMove.Fire(this);
 }
 
+void Entity::SetPosition(glm::vec3 pos, float angle){
+    SetLocalTransform(glm::translate(pos)* glm::rotate(angle, glm::vec3(0,0,1)));
+    onMove.Fire(this);
+}
+
+
 void Entity::SetPosition(glm::vec2 pos) {
     SetPosition(glm::vec3(pos.x, pos.y, m_localTransform[3][2]));
 }

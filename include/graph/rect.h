@@ -20,6 +20,9 @@ public:
     }
     std::string toString() const override;
     glm::vec2 project(const glm::vec2 axis, const glm::mat4& worldTransform) override;
+    std::vector<glm::vec2> getPoints() override;
+    std::vector<glm::vec2> getEdges() override;
+
 private:
     glm::vec2 m_offset;
     float m_width;

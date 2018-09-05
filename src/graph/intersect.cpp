@@ -1,9 +1,11 @@
 #include "graph/intersect.h"
 #include "gfx/collider.h"
 #include <iostream>
+#include "graph/geomalgo.h"
 
 Intersector::Intersector() {
-    //m_func[std::make_pair(std::type_index(typeid(Rect)), std::type_index(typeid(Rect)))] = h;
+    auto convexPolyIntersector = std::make_shared<ConvexPolygonIntersectionFunction>();
+    m_func[std::make_pair(std::type_index(typeid(Rect)), std::type_index(typeid(Rect)))] = convexPolyIntersector;
    
 
 }
@@ -14,7 +16,7 @@ CollisionReport Intersector::Intersect(Shape * s1, const glm::mat4& t1, Shape *s
     if (it == m_func.end()) {
         std::cout << "Don't have a routine to intersect shapes\n";
     } else {
-        
+        return it->second->operator()(s1,s2,t1,t2);
     }
     return CollisionReport();
 }
@@ -23,4 +25,17 @@ CollisionReport ConvexPolygonIntersectionFunction::operator()(Shape *s1, Shape *
 {
     // in order to perform a collision test between two convex shapes, we will leverage the SAT
     // (ie Separating Axis Theorem).
+    // We need first to get the axes. For convex polygons the axes to test are the normal to the edges
+
+    auto edges1 = s1->getEdges();
+    auto edges2 = s2->getEdges();
+
+    std::unordered_set<glm::vec2> axes;
+    for (auto& e : edges1) {
+        axes.insert (glm::normalize(glm::vec2(t1 * glm::vec4(e.x, e.y, 0.0f, 0.0f))));
+    }
+    for (auto& e : edges2) {
+        axes.insert (glm::normalize(glm::vec2(t2 * glm::vec4(e.x, e.y, 0.0f, 0.0f))));
+    }
+    return SAT(axes, s1,s2, t1,t2);
 }

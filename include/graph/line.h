@@ -14,6 +14,8 @@ public:
     glm::vec2 getA() const;
     glm::vec2 getB() const;
     glm::vec2 project(const glm::vec2 axis, const glm::mat4& worldTransform) override;
+    std::vector<glm::vec2> getPoints() override;
+    std::vector<glm::vec2> getEdges() override;
 private:
     glm::vec2 m_A;
     glm::vec2 m_B;

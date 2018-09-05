@@ -45,6 +45,18 @@ void Polygon::accept (AcyclicVisitor& v) {
         GLIB_FAIL("not a polygon visitor");
 }
 
+std::vector<glm::vec2> Polygon::getPoints() {
+    return m_points;
+}
+
+std::vector<glm::vec2> Polygon::getEdges() {
+    std::vector<glm::vec2> edges;
+    for (int i = 1; i < m_points.size(); ++i)
+        edges.push_back(m_points[i] - m_points[i-1]);
+    edges.push_back(m_points.front() - m_points.back());
+    return edges;
+}
+
 bool Poly::isPointInside(glm::vec2 P) const {
     if (!m_polygons[0]->isPointInside(P))
         return false;
@@ -94,6 +106,14 @@ std::string Poly::toString() const {
 std::string Polygon::toString() const {
     return "Polygon";
 }
+
+std::vector<glm::vec2> Poly::getPoints() {
+    return m_polygons.front()->getPoints();
+}
+std::vector<glm::vec2> Poly::getEdges() {
+    return m_polygons.front()->getEdges();
+}
+
 //for (i in 0...vertices.length)
 //{
 //var newPoint:Vector = vertices[i];

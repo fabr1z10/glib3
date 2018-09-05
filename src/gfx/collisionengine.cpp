@@ -98,6 +98,7 @@ Location CollisionEngine::GetLocation(Collider* c) {
 void CollisionEngine::Update(double dt) {
 
     // loop throught all dirty cells and do a pair-wise collision detection for each collider within the cell.
+    std::unordered_set<std::pair<Collider*, Collider*>> currentlyCollidingPairs;
     for (auto& cell : m_cells) {
         // skip cells that have less than 2 colliders
         if (!cell.second.dirty)
@@ -148,7 +149,10 @@ void CollisionEngine::Update(double dt) {
                 
                 // bounding boxes intersect, so let's make a proper collision test
                 CollisionReport report = m_intersector->Intersect(s1, t1, s2, t2);
-
+                std::cout << "COllide = " << report.collide << "\n";
+                if (report.collide) {
+                    currentlyCollidingPairs.insert(std::make_pair(c1, c2));
+                }
                 // check if these colliders were colliding in the previous frame
                 //auto np = make_pair(c1, c2);
                 //auto itercp = m_previouslyCollidingPairs.find(np);
@@ -174,8 +178,12 @@ void CollisionEngine::Update(double dt) {
                 //    }
                 //}
             }
+            // set cell as not dirty
+            cell.second.dirty = false;
         }
     }
+
+
     // remove pairs that were previously colliding but not now
     //for (auto& iter = m_previouslyCollidingPairs.begin(); iter != m_previouslyCollidingPairs.end();) {
      //   if (!iter->second->m_confirmed) {

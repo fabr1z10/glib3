@@ -2,6 +2,8 @@
 #include "graph/geom.h"
 #include <algorithm>
 #include "graph/shape.h"
+#include <gfx/hashpair.h>
+
 
 CollisionReport SegmentTest(glm::vec2 A, glm::vec2 B, glm::vec2 C, glm::vec2 D) {
     CollisionReport report;
@@ -90,7 +92,7 @@ float ComputeOverlap(glm::vec2& p1, glm::vec2& p2) {
     return -b;
 }
 
-CollisionReport SAT(std::vector<glm::vec2>& axesw, Shape* a, Shape* b, const glm::mat4& ta, const glm::mat4& tb) {
+CollisionReport SAT(std::unordered_set<glm::vec2>& axesw, Shape* a, Shape* b, const glm::mat4& ta, const glm::mat4& tb) {
     // axes are given in world coordinates
     // since dot products do not depend on coordinate systems, we transform axes from world to local
     CollisionReport report;
@@ -98,7 +100,7 @@ CollisionReport SAT(std::vector<glm::vec2>& axesw, Shape* a, Shape* b, const glm
     for (auto& axis : axesw) {
         glm::vec2 pA = a->project(axis, ta);
         glm::vec2 pB = b->project(axis, tb);
-        if (pA.x <= pB.y || pB.x <= pA.y) {
+        if (pA.x > pB.y || pB.x > pA.y) {
             // we found a non-overlapping axis
             // so we are sure that the two shapes do not collide
             report.collide = false;
