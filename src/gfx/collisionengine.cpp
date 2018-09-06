@@ -98,11 +98,15 @@ Location CollisionEngine::GetLocation(Collider* c) {
 void CollisionEngine::Update(double dt) {
 
     // loop throught all dirty cells and do a pair-wise collision detection for each collider within the cell.
-    std::unordered_set<std::pair<Collider*, Collider*>> currentlyCollidingPairs;
+    std::unordered_map<std::pair<Collider*, Collider*>, CollisionInfo> currentlyCollidingPairs;
+    std::cout << "Running collision engine update...\n";
+    std::unordered_set<std::pair<int, int>> cellsExamined;
+    //std::unordered_set<std::pair<Collider*, Collider*>> testedPairs;
     for (auto& cell : m_cells) {
         // skip cells that have less than 2 colliders
         if (!cell.second.dirty)
             continue;
+        cellsExamined.insert(std::make_pair(cell.first.first, cell.first.second));
         if (cell.second.colliders.size() < 2)
         {
             cell.second.dirty = false;
@@ -119,6 +123,11 @@ void CollisionEngine::Update(double dt) {
                 Collider * c2 = *iter2;
                 if (!c2->Enabled())
                     continue;
+                // if no response is provided for these tags, then skip it
+                if (!m_responseManager->HasCollision(c1, c2)) {
+                    std::cout << "No response for tag (" << c1->GetTag() << ", " << c2->GetTag() << ")\n";
+                    continue;
+                }
 //
 //                // if we get here, collision is enabled on both nodes check now collision mask
 //                int m1 = c1->GetCollisionFlag() & c2->GetCollisionMask();
@@ -151,8 +160,15 @@ void CollisionEngine::Update(double dt) {
                 CollisionReport report = m_intersector->Intersect(s1, t1, s2, t2);
                 std::cout << "COllide = " << report.collide << "\n";
                 if (report.collide) {
-                    currentlyCollidingPairs.insert(std::make_pair(c1, c2));
+                    CollisionInfo ci;
+                    ci.report = report;
+                    ci.i = cell.first.first;
+                    ci.j = cell.first.second;
+                    currentlyCollidingPairs.insert(std::make_pair(std::make_pair(c1, c2), ci));
                 }
+
+                //testedPairs.insert(std::make_pair(c1, c2));
+                //testedPairs.insert(std::make_pair(c2, c1));
                 // check if these colliders were colliding in the previous frame
                 //auto np = make_pair(c1, c2);
                 //auto itercp = m_previouslyCollidingPairs.find(np);
@@ -182,17 +198,29 @@ void CollisionEngine::Update(double dt) {
             cell.second.dirty = false;
         }
     }
-
-
     // remove pairs that were previously colliding but not now
-    //for (auto& iter = m_previouslyCollidingPairs.begin(); iter != m_previouslyCollidingPairs.end();) {
-     //   if (!iter->second->m_confirmed) {
-     //       iter->second->End();
-     //       m_previouslyCollidingPairs.erase(iter++);
-     //   }
-     //   else {
-     //       iter->second->Continue();
-     //       iter++;
-     //   }
-   // }
+    for (auto iter = m_previouslyCollidingPairs.begin(); iter != m_previouslyCollidingPairs.end();) {
+        CollisionInfo& ci = iter->second;
+        // If i have examined the cell AND they are not colliding anymore ...
+        if (cellsExamined.count(std::make_pair(ci.i, ci.j))>0 && currentlyCollidingPairs.count(iter->first) == 0) {
+            m_responseManager->onEnd (iter->first.first, iter->first.second, ci.report);
+            m_previouslyCollidingPairs.erase(iter++);
+        }
+        else {
+            iter++;
+        }
+    }
+
+    for (auto& p : currentlyCollidingPairs) {
+        auto it = m_previouslyCollidingPairs.find(p.first);
+        if (it == m_previouslyCollidingPairs.end()) {
+            m_responseManager->onStart (p.first.first, p.first.second, p.second.report);
+            m_previouslyCollidingPairs.insert(std::make_pair(p.first, p.second));
+        } else {
+            m_responseManager->onStay(p.first.first, p.first.second, p.second.report);
+            it->second = p.second;
+        }
+    }
+
+    // add the new collision pairs
 }

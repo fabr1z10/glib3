@@ -1,5 +1,13 @@
+local function ciao(x)
+	x:setcolor(255,0,0,255)
+end
+local function ciao1(x)
+	x:setcolor(255,255,255,255)
+end
 room = {
-
+collisionresponse = {
+	{ tag = {1,2}, onenter = ciao, onleave=ciao1}
+},
 assets = {},
 scene = {
 	{
@@ -13,13 +21,15 @@ scene = {
 		},
 		children = {
 		{
-			collider= {shape={type="rect", width=20, height=10}},
+			gfx = {shape={type="rect", width=20, height=10}, color={255,255,255,255} },
+			collider= {shape={type="rect", width=20, height=10}, tag=1},
 			keyboardcontroller={}
 	    }, 
 		{
 			pos = {80, 80, 0},
 			angle = 30,
-			collider= {shape={type="rect", width=30, height=10, offset={-15,-5}}},
+			gfx = {shape={type="rect", width=30, height=10, offset={-15,-5}}, color={255,255,255,255} },
+			collider= {shape={type="rect", width=30, height=10, offset={-15,-5}}, tag = 2},
 	    }
 		}
 	},

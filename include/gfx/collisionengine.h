@@ -4,6 +4,7 @@
 #include <unordered_set>
 #include "gfx/collider.h"
 #include "gfx/hashpair.h"
+#include <gfx/collisionresponse.h>
 #include "graph/intersect.h"
 
 struct CollisionEngineCell {
@@ -21,6 +22,11 @@ struct Location {
     }
 };
 
+struct CollisionInfo {
+    CollisionReport report;
+    int i, j;
+};
+
 class CollisionEngine : public Ref {
 public:
     CollisionEngine (float cellWidth, float cellHeight);
@@ -31,12 +37,19 @@ public:
     void PushCollider(Collider*, Location);
     Location GetLocation(Collider* c);
     void Update(double);
+    void SetResponseManager(std::unique_ptr<CollisionResponseManager>);
 private:
     std::unordered_map<std::pair<int, int>, CollisionEngineCell> m_cells;
     std::unordered_map<Collider*, Location> m_colliderLocations;
     float m_width;
     float m_height;
     std::unique_ptr<Intersector> m_intersector;
-    std::unordered_set<std::pair<Collider*, Collider*>> m_previouslyCollidingPairs;
-    //std::unordered_map<std::pair<int, int>,
+    std::unique_ptr<CollisionResponseManager> m_responseManager;
+    std::unordered_map<std::pair<Collider*, Collider*>, CollisionInfo> m_previouslyCollidingPairs;
+
 };
+
+
+inline void CollisionEngine::SetResponseManager(std::unique_ptr<CollisionResponseManager> r){
+    m_responseManager = std::move(r);
+}
