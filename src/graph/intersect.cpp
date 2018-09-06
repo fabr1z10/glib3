@@ -6,6 +6,7 @@
 Intersector::Intersector() {
     auto convexPolyIntersector = std::make_shared<ConvexPolygonIntersectionFunction>();
     m_func[std::make_pair(std::type_index(typeid(Rect)), std::type_index(typeid(Rect)))] = convexPolyIntersector;
+    m_func[std::make_pair(std::type_index(typeid(Line)), std::type_index(typeid(Rect)))] = convexPolyIntersector;
    
 
 }
@@ -14,7 +15,15 @@ CollisionReport Intersector::Intersect(Shape * s1, const glm::mat4& t1, Shape *s
 
     auto it = m_func.find (std::make_pair(std::type_index(typeid(*s1)), std::type_index(typeid(*s2))));
     if (it == m_func.end()) {
-        std::cout << "Don't have a routine to intersect shapes\n";
+        it = m_func.find (std::make_pair(std::type_index(typeid(*s2)), std::type_index(typeid(*s1))));
+        if (it == m_func.end()) {
+            std::cout << "Don't have a routine to intersect shapes\n";
+        } else {
+            auto report = it->second->operator()(s2, s1, t2, t1);
+            report.direction *= -1.0f;
+            return report;
+        }
+        
     } else {
         return it->second->operator()(s1,s2,t1,t2);
     }
@@ -32,10 +41,11 @@ CollisionReport ConvexPolygonIntersectionFunction::operator()(Shape *s1, Shape *
 
     std::unordered_set<glm::vec2> axes;
     for (auto& e : edges1) {
-        axes.insert (glm::normalize(glm::vec2(t1 * glm::vec4(e.x, e.y, 0.0f, 0.0f))));
+        
+        axes.insert (glm::normalize(glm::vec2(t1 * glm::vec4(-e.y, e.x, 0.0f, 0.0f))));
     }
     for (auto& e : edges2) {
-        axes.insert (glm::normalize(glm::vec2(t2 * glm::vec4(e.x, e.y, 0.0f, 0.0f))));
+        axes.insert (glm::normalize(glm::vec2(t2 * glm::vec4(-e.y, e.x, 0.0f, 0.0f))));
     }
     return SAT(axes, s1,s2, t1,t2);
 }

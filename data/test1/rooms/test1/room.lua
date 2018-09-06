@@ -4,6 +4,16 @@ end
 local function ciao1(x)
 	x:setcolor(255,255,255,255)
 end
+
+local function makeShape (arg)
+	return {
+		pos = arg.pos,
+		angle = arg.angle,
+		gfx = {shape=arg.shape, color={255,255,255,255} },
+		collider= {shape=arg.shape, tag=2},
+	}
+end
+
 room = {
 collisionresponse = {
 	{ tag = {1,2}, onenter = ciao, onleave=ciao1}
@@ -25,13 +35,16 @@ scene = {
 			collider= {shape={type="rect", width=20, height=10}, tag=1},
 			keyboardcontroller={}
 	    }, 
-		{
-			pos = {80, 80, 0},
-			angle = 30,
-			gfx = {shape={type="rect", width=30, height=10, offset={-15,-5}}, color={255,255,255,255} },
-			collider= {shape={type="rect", width=30, height=10, offset={-15,-5}}, tag = 2},
-	    }
+	    makeShape { pos = {80, 80, 0}, angle = 30, shape = {type="rect", width=30, height=10, offset={-15,-5}} },
+	    makeShape { pos = {130, 90, 0}, angle=45, shape = {type="line", A={0,0}, B={30,0}}}
 		}
+		-- {
+		-- 	pos = {80, 80, 0},
+		-- 	angle = 30,
+		-- 	gfx = {shape=, color={255,255,255,255} },
+		-- 	collider= {shape={type="rect", width=30, height=10, offset={-15,-5}}, tag = 2},
+	 --    }
+		
 	},
 }
 }

@@ -99,7 +99,7 @@ void CollisionEngine::Update(double dt) {
 
     // loop throught all dirty cells and do a pair-wise collision detection for each collider within the cell.
     std::unordered_map<std::pair<Collider*, Collider*>, CollisionInfo> currentlyCollidingPairs;
-    std::cout << "Running collision engine update...\n";
+    //std::cout << "Running collision engine update...\n";
     std::unordered_set<std::pair<int, int>> cellsExamined;
     //std::unordered_set<std::pair<Collider*, Collider*>> testedPairs;
     for (auto& cell : m_cells) {
