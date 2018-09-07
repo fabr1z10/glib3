@@ -7,7 +7,7 @@ Intersector::Intersector() {
     auto convexPolyIntersector = std::make_shared<ConvexPolygonIntersectionFunction>();
     m_func[std::make_pair(std::type_index(typeid(Rect)), std::type_index(typeid(Rect)))] = convexPolyIntersector;
     m_func[std::make_pair(std::type_index(typeid(Line)), std::type_index(typeid(Rect)))] = convexPolyIntersector;
-   
+    m_func[std::make_pair(std::type_index(typeid(Polygon)), std::type_index(typeid(Rect)))] = convexPolyIntersector;
 
 }
 

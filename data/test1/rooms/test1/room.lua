@@ -36,7 +36,8 @@ scene = {
 			keyboardcontroller={}
 	    }, 
 	    makeShape { pos = {80, 80, 0}, angle = 30, shape = {type="rect", width=30, height=10, offset={-15,-5}} },
-	    makeShape { pos = {130, 90, 0}, angle=45, shape = {type="line", A={0,0}, B={30,0}}}
+	    makeShape { pos = {130, 90, 0}, angle=45, shape = {type="line", A={0,0}, B={30,0}}},
+	    makeShape { pos = {170, 90, 0}, shape = {type="poly", outline = {0, 0, 10, 20, 20, 0}}},
 		}
 		-- {
 		-- 	pos = {80, 80, 0},

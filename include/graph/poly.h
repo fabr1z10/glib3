@@ -7,7 +7,7 @@
 // simple polygon (can be concave), no holes
 class Polygon : public Shape {
 public:
-    Polygon (const std::vector<glm::vec2>& p) : m_points{p} {}
+    Polygon (const std::vector<glm::vec2>& p);
     bool isPointInside (glm::vec2 P) const override;
     // tests if segment AB is within the polygon
     bool isInLineOfSight(glm::vec2 A, glm::vec2 B);
@@ -20,9 +20,7 @@ public:
     glm::vec2 getNormalAtVertex(int);
     void accept (AcyclicVisitor& v) override;
     std::string toString() const override;
-    glm::vec2 project(const glm::vec2 axis, const glm::mat4& worldTransform) override {
-        return glm::vec2();
-    }
+    glm::vec2 project(const glm::vec2 axis, const glm::mat4& worldTransform) override;
     std::vector<glm::vec2> getPoints() override;
     std::vector<glm::vec2> getEdges() override;
 

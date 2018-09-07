@@ -1,6 +1,20 @@
 #include "graph/poly.h"
 #include "graph/geom.h"
 #include <gfx/error.h>
+#include <graph/geomalgo.h>
+
+Polygon::Polygon(const std::vector<glm::vec2> &p) : m_points{p} {
+    m_bounds.min = p[0];
+    m_bounds.max = p[0];
+    for (int i = 1; i < p.size(); ++i) {
+        m_bounds.min.x = std::min(m_bounds.min.x, p[i].x);
+        m_bounds.min.y = std::min(m_bounds.min.y, p[i].y);
+        m_bounds.max.x = std::max(m_bounds.max.x, p[i].x);
+        m_bounds.max.y = std::max(m_bounds.max.y, p[i].y);
+    }
+
+}
+
 
 bool Polygon::isVertexConcave(int i) const {
     int n = m_points.size();
@@ -85,6 +99,10 @@ glm::vec2 Polygon::getNormalAtVertex (int i) {
     glm::vec2 b = getNormalAtEdge((i-1 >= 0) ? (i-1) : m_points.size()-1);
     return (glm::normalize(0.5f*(a+b)));
     //return glm::normalize(Perp(m_points[(edgeIndex+1) % m_points.size()] - m_points[edgeIndex]));
+}
+
+glm::vec2 Polygon::project(const glm::vec2 axis, const glm::mat4& worldTransform) {
+    return Projection(m_points, axis, worldTransform);
 }
 
 Polygon* Poly::GetPolygon(int i) {
