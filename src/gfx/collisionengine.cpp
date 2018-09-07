@@ -224,3 +224,7 @@ void CollisionEngine::Update(double dt) {
 
     // add the new collision pairs
 }
+
+RayCastHit2D CollisionEngine::Raycast (glm::vec2 rayOrigin, glm::vec2 rayDir, float length, int mask) {
+    return RayCastHit2D();
+}

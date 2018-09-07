@@ -38,6 +38,12 @@ public:
     Location GetLocation(Collider* c);
     void Update(double);
     void SetResponseManager(std::unique_ptr<CollisionResponseManager>);
+    // Casts a ray against colliders in the scene.
+    // A raycast is conceptually like a laser beam that is fired from a point in space along a particular direction.
+    // Any object making contact with the beam can be detected and reported.
+    // This function returns a RaycastHit object with a reference to the collider that is hit by the ray
+    // (the collider property of the result will be NULL if nothing was hit). The layerMask can be used to detect objects selectively only on certain layers (this allows you to apply the detection only to enemy characters, for example).
+    RayCastHit2D Raycast (glm::vec2 rayOrigin, glm::vec2 rayDir, float length, int mask);
 private:
     std::unordered_map<std::pair<int, int>, CollisionEngineCell> m_cells;
     std::unordered_map<Collider*, Location> m_colliderLocations;
