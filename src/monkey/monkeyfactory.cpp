@@ -661,19 +661,19 @@ std::shared_ptr<Shape> MonkeyFactory::ReadShape(luabridge::LuaRef& ref) {
     } else if (type == "poly") {
         std::vector<float> outline = at.GetVector<float>("outline");
         std::vector<glm::vec2> points;
-        for (int i = 0; i < outline.size(); i = i +2)
-            points.push_back(glm::vec2(outline[i], outline[i+1]));
+        for (int i = 0; i < outline.size(); i = i + 2)
+            points.push_back(glm::vec2(outline[i], outline[i + 1]));
         if (at.HasKey("holes")) {
             std::unique_ptr<Polygon> mainOutline(new Polygon(points));
             luabridge::LuaRef holes = at.Get<luabridge::LuaRef>("holes");
             LuaTable ha(holes);
             auto poly = std::make_shared<Poly>(std::move(mainOutline));
-            for (int j = 0; j<holes.length(); ++j) {
-                luabridge::LuaRef h = holes[j+1];
+            for (int j = 0; j < holes.length(); ++j) {
+                luabridge::LuaRef h = holes[j + 1];
                 std::vector<float> holeOutline = ReadVector<float>(h);
                 std::vector<glm::vec2> points;
-                for (int i = 0; i < holeOutline.size(); i = i +2)
-                    points.push_back(glm::vec2(holeOutline[i], holeOutline[i+1]));
+                for (int i = 0; i < holeOutline.size(); i = i + 2)
+                    points.push_back(glm::vec2(holeOutline[i], holeOutline[i + 1]));
                 poly->AddHole(std::unique_ptr<Polygon>(new Polygon(points)));
 
             }
@@ -684,6 +684,9 @@ std::shared_ptr<Shape> MonkeyFactory::ReadShape(luabridge::LuaRef& ref) {
 
             return std::make_shared<Polygon>(points);
         }
+    } else if (type == "circle") {
+        float radius = at.Get<float>("radius");
+        return std::make_shared<Circle>(radius, offset);
     } else if (type == "graph") {
         // read the vertices
         luabridge::LuaRef rVert = at.Get<luabridge::LuaRef>("vertices");
@@ -701,6 +704,15 @@ std::shared_ptr<Shape> MonkeyFactory::ReadShape(luabridge::LuaRef& ref) {
             edges.push_back(e);
         }
         return std::make_shared<PolyLine>(vertices,edges);
+    } else if (type =="compound") {
+        luabridge::LuaRef rshapes = at.Get<luabridge::LuaRef>("shapes");
+        auto cs = std::make_shared<CompoundShape>();
+        for (int i = 0; i<rshapes.length(); ++i) {
+            luabridge::LuaRef rshape = rshapes[i+1];
+            auto s = ReadShape(rshape);
+            cs->AddShape(s);
+        }
+        return cs;
     }
 
     return nullptr;

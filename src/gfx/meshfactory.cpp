@@ -1,5 +1,6 @@
 #include <gfx/meshfactory.h>
 #include <gfx/vertices.h>
+#include <cmath>
 
 std::shared_ptr<IMesh> MeshFactory::CreateLineMesh (glm::vec2 A, glm::vec2 B, glm::vec4 color, float z) {
     std::vector<VertexColor> vertices = {
@@ -118,6 +119,27 @@ void MeshFactory::visit(Polygon& p) {
     mesh->Init(vertices, indices);
     mesh->m_primitive = GL_LINE_LOOP;
     m_mesh = mesh;
+}
+
+void MeshFactory::visit(Circle& c) {
+    // number of points
+    int n = 20;
+    float dAngle = 2.0f * M_PI / n;
+    std::vector<VertexColor> vertices ;
+    std::vector<unsigned int> indices;
+    float radius = c.GetRadius();
+    glm::vec2 C= c.GetOffset();
+    for (int i = 0; i < n; ++i) {
+        float angle = dAngle * i;
+        vertices.push_back( { C.x + radius*cos(angle), C.y + radius * sin(angle), 0.0f, 1.0f, 1.0f, 1.0f, 1.0f });
+        indices.push_back(i);
+    }
+    indices.push_back(0);
+    auto mesh = std::make_shared<Mesh<VertexColor>>(COLOR_SHADER);
+    mesh->Init(vertices, indices);
+    mesh->m_primitive = GL_LINE_STRIP;
+    m_mesh = mesh;
+
 }
 
 void MeshFactory::visit(Poly& p) {

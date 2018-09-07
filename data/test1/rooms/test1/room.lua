@@ -38,6 +38,17 @@ scene = {
 	    makeShape { pos = {80, 80, 0}, angle = 30, shape = {type="rect", width=30, height=10, offset={-15,-5}} },
 	    makeShape { pos = {130, 90, 0}, angle=45, shape = {type="line", A={0,0}, B={30,0}}},
 	    makeShape { pos = {170, 90, 0}, shape = {type="poly", outline = {0, 0, 10, 20, 20, 0}}},
+		makeShape { pos = {100, 140, 0}, shape = {type="circle", radius = 10}},
+		{
+			pos = {150, 140, 0},
+			angle =10,
+			gfx = { shape = { type = "poly", outline = {0,0,0,50,10,50,10,30,40,30,40,50,50,50,50,0,40,0,40,20,10,20,10,0}}, color={255,255,255,255}},
+			collider = { tag =2, shape = {type="compound", shapes = {
+				{ type = "rect", width = 10, height = 50 },
+				{ type = "rect", width = 30, height = 10, offset={10, 20} },
+				{ type = "rect", width = 10, height = 50, offset={40, 0} },
+			}}}
+		}
 		}
 		-- {
 		-- 	pos = {80, 80, 0},
