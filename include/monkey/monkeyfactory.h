@@ -35,6 +35,7 @@ private:
     void ReadTextComponent (luabridge::LuaRef& ref, Entity* parent);
     void ReadColliderComponent (luabridge::LuaRef& ref, Entity* parent);
     void ReadKeyboardComponent (luabridge::LuaRef& ref, Entity* parent);
+    void ReadKeyboardCollisionComponent (luabridge::LuaRef& ref, Entity* parent);
     void ReadOutlineTextComponent (luabridge::LuaRef& ref, Entity* parent);
     void ReadFollowComponent (luabridge::LuaRef& ref, Entity* parent);
     void ReadWalkarea (luabridge::LuaRef& ref, Entity* parent);

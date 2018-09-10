@@ -226,5 +226,67 @@ void CollisionEngine::Update(double dt) {
 }
 
 RayCastHit2D CollisionEngine::Raycast (glm::vec2 rayOrigin, glm::vec2 rayDir, float length, int mask) {
-    return RayCastHit2D();
+
+    glm::vec2 P = rayOrigin;
+    glm::vec2 P1 = P;
+    // initialize current cell
+    int i = static_cast<int>(P.x / m_width);
+    int j = static_cast<int>(P.y / m_height);
+    int n = (rayDir.x > 0 ? 1 : (rayDir.x < 0 ? -1 : 0));
+    int m = (rayDir.y > 0 ? 1 : (rayDir.y < 0 ? -1 : 0));
+    // n = 0 <-> r_x = 0 <-> vertical line
+    // m = 0 <-> r_y = 0 <-> horizontal line
+    float l = 0.0f;
+    bool endReached = false;
+
+    RayCastHit2D out;
+    out.length = length;
+
+    while (!endReached && !out.collide) {
+        // get the next point into this cell
+        float t1 = (n == 0) ? std::numeric_limits<float>::infinity() : ((i+n)*m_width - P.x) / rayDir.x;
+        float t2 = (m == 0) ? std::numeric_limits<float>::infinity() : ((j+m)*m_height - P.y) / rayDir.y;
+        float tm = std::min(t1, t2);
+
+        if (l + tm < length) {
+            P1 = P + tm * rayDir;
+        } else {
+            P1 = rayOrigin + length * rayDir;
+            endReached = true;
+        }
+
+        // get the colliders at the current cell
+        auto it = m_cells.find(std::make_pair(i, j));
+        Line line (P, P1);
+        auto lineBounds = line.getBounds();
+        if (it != m_cells.end()) {
+            for (auto& c : it->second.colliders) {
+                // aabb check
+                float dist{0.0f};
+                auto shapeBounds = c->GetBounds();
+                if (lineBounds.Intersects(shapeBounds)) {
+                    auto& t = c->GetObject()->GetWorldTransform();
+                    CollisionReport report = m_intersector->Intersect(&line, glm::mat4(1.0f), c->GetShape(), t);
+                    if (report.collide) {
+                        out.collide = true;
+                        if (l+report.distance < out.length) {
+                            out.length = l+report.distance;
+                            out.entity = c->GetObject();
+                        }
+                    }
+                }
+            }
+        }
+        P = P1;
+        l += tm;
+        if (t1 < t2) {
+            i++;
+        } else {
+            j++;
+        }
+
+    }
+
+    return out;
+
 }

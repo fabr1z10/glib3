@@ -235,7 +235,10 @@ std::shared_ptr<Entity> MonkeyFactory::ReadItem(luabridge::LuaRef& ref) {
         luabridge::LuaRef c = item.Get<luabridge::LuaRef>("keyboardcontroller");
         ReadKeyboardComponent(c, entity.get());
     }
-
+    if (item.HasKey("keyboardcontrollercollision")) {
+        luabridge::LuaRef c = item.Get<luabridge::LuaRef>("keyboardcontrollercollision");
+        ReadKeyboardCollisionComponent(c, entity.get());
+    }
     if (item.HasKey("outlinetext")) {
         luabridge::LuaRef c = item.Get<luabridge::LuaRef>("outlinetext");
         ReadOutlineTextComponent(c, entity.get());
@@ -366,6 +369,12 @@ void MonkeyFactory::ReadKeyboardComponent(luabridge::LuaRef &ref, Entity *parent
     //luabridge::LuaRef shapeR = table.Get<luabridge::LuaRef>("shape");
     //auto shape = ReadShape(shapeR);
     parent->AddComponent(std::make_shared<KeyboardController>());
+}
+void MonkeyFactory::ReadKeyboardCollisionComponent(luabridge::LuaRef &ref, Entity *parent) {
+    LuaTable table(ref);
+    //luabridge::LuaRef shapeR = table.Get<luabridge::LuaRef>("shape");
+    //auto shape = ReadShape(shapeR);
+    parent->AddComponent(std::make_shared<KeyboardControllerCollision>());
 }
 
 
