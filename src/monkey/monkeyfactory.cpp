@@ -360,21 +360,28 @@ void MonkeyFactory::ReadColliderComponent(luabridge::LuaRef &ref, Entity *parent
     LuaTable table(ref);
     luabridge::LuaRef shapeR = table.Get<luabridge::LuaRef>("shape");
     int tag = table.Get<int>("tag");
+    int flag = table.Get<int>("flag");
     auto shape = ReadShape(shapeR);
-    parent->AddComponent(std::make_shared<Collider>(shape, tag));
+    parent->AddComponent(std::make_shared<Collider>(shape, tag, flag));
 }
 
 void MonkeyFactory::ReadKeyboardComponent(luabridge::LuaRef &ref, Entity *parent) {
     LuaTable table(ref);
+
     //luabridge::LuaRef shapeR = table.Get<luabridge::LuaRef>("shape");
     //auto shape = ReadShape(shapeR);
     parent->AddComponent(std::make_shared<KeyboardController>());
 }
 void MonkeyFactory::ReadKeyboardCollisionComponent(luabridge::LuaRef &ref, Entity *parent) {
     LuaTable table(ref);
+    float width = table.Get<float>("width");
+    float height = table.Get<float>("height");
+    float speed = table.Get<float>("speed");
+    int horRays = table.Get<int>("horizontal_rays");
+    int vertRays = table.Get<int>("vertical_rays");
     //luabridge::LuaRef shapeR = table.Get<luabridge::LuaRef>("shape");
     //auto shape = ReadShape(shapeR);
-    parent->AddComponent(std::make_shared<KeyboardControllerCollision>());
+    parent->AddComponent(std::make_shared<KeyboardControllerCollision>(width, height, speed, horRays, vertRays));
 }
 
 

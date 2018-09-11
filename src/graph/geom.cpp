@@ -73,6 +73,13 @@ bool IsBetween (glm::vec2 A, glm::vec2 B, glm::vec2 P, float eps) {
 
 }
 
+
+float GetFirstSolution(float a, float b, float c) {
+    float delta = b*b - 4*a*c;
+    if (delta < 0)
+        throw;
+    return (-b -sqrt(delta)) / (2.0f*a);
+}
 //float DistFromSegment (glm::vec2 A, glm::vec2 B, glm::vec2 P) {
 
 //}

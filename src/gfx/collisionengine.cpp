@@ -3,7 +3,7 @@
 #include "gfx/entity.h"
 #include "graph/collisionreport.h"
 #include <iostream>
-
+#include <graph/raycast.h>
 
 CollisionEngine::CollisionEngine (float cellWidth, float cellHeight) : Ref(), m_width{cellWidth}, m_height{cellHeight}
 {
@@ -112,7 +112,7 @@ void CollisionEngine::Update(double dt) {
             cell.second.dirty = false;
             continue;
         }
-        std::cout << "Examining cell " << cell.first.first << ", " << cell.first.second << "\n";
+        //std::cout << "Examining cell " << cell.first.first << ", " << cell.first.second << "\n";
         for (auto iter = cell.second.colliders.begin(); iter != cell.second.colliders.end(); ++iter) {
             Collider* c1 = *iter;
             if (!c1->Enabled())
@@ -147,10 +147,10 @@ void CollisionEngine::Update(double dt) {
                 
                 // perform a aabb testing
                 if (!b1.Intersects(b2)) {
-                    std::cout << "aabb do not intersect\n";
+                    //std::cout << "aabb do not intersect\n";
                     continue;
                 }
-                std::cout << "aabb do intersect. Now do a proper testing\n";
+                //std::cout << "aabb do intersect. Now do a proper testing\n";
                 Shape* s1 = c1->GetShape();
                 Shape* s2 = c2->GetShape();
                 auto& t1 = c1->GetObject()->GetWorldTransform();
@@ -158,7 +158,7 @@ void CollisionEngine::Update(double dt) {
                 
                 // bounding boxes intersect, so let's make a proper collision test
                 CollisionReport report = m_intersector->Intersect(s1, t1, s2, t2);
-                std::cout << "COllide = " << report.collide << "\n";
+                //std::cout << "COllide = " << report.collide << "\n";
                 if (report.collide) {
                     CollisionInfo ci;
                     ci.report = report;
@@ -262,15 +262,18 @@ RayCastHit2D CollisionEngine::Raycast (glm::vec2 rayOrigin, glm::vec2 rayDir, fl
         if (it != m_cells.end()) {
             for (auto& c : it->second.colliders) {
                 // aabb check
-                float dist{0.0f};
-                auto shapeBounds = c->GetBounds();
-                if (lineBounds.Intersects(shapeBounds)) {
-                    auto& t = c->GetObject()->GetWorldTransform();
-                    CollisionReport report = m_intersector->Intersect(&line, glm::mat4(1.0f), c->GetShape(), t);
-                    if (report.collide) {
-                        out.collide = true;
-                        if (l+report.distance < out.length) {
-                            out.length = l+report.distance;
+                int flag = c->GetFlag();
+                int m = flag & mask;
+                if (m != 0) {
+                    float dist{0.0f};
+                    auto shapeBounds = c->GetBounds();
+                    if (lineBounds.Intersects(shapeBounds)) {
+                        auto t = c->GetObject()->GetWorldTransform();
+                        RayCast2D rc(rayOrigin, rayDir, length, t);
+                        c->GetShape()->accept(rc);
+                        auto report = rc.GetResult();
+                        if (report.collide && (!out.collide || out.length > report.length)) {
+                            out = report;
                             out.entity = c->GetObject();
                         }
                     }
@@ -286,7 +289,9 @@ RayCastHit2D CollisionEngine::Raycast (glm::vec2 rayOrigin, glm::vec2 rayDir, fl
         }
 
     }
-
+    if (out.collide) {
+        std::cout << "Collide! length = " << out.length << "\n";
+    }
     return out;
 
 }

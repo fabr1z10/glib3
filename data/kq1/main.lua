@@ -1,7 +1,7 @@
 engine = {
     device_size = { 320, 200 },
     window_size = { 800, 600 },
-    title = "Hello world!",
+    title = "King's quest I",
     collision = true,
     collision_size={40, 40}
 }
@@ -13,6 +13,6 @@ fonts = {
 
 
 variables = {
-    _room = "test2",
+    _room = "001",
 }
 

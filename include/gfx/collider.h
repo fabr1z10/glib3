@@ -8,7 +8,7 @@ class Entity;
 
 class Collider : public Component {
 public:
-    Collider (std::shared_ptr<Shape> shape, int tag) : m_shape{shape}, m_tag{tag}, m_enabled{true} {}
+    Collider (std::shared_ptr<Shape> shape, int tag, int flag) : m_shape{shape}, m_tag{tag}, m_enabled{true}, m_flag{flag} {}
     virtual ~Collider();
     Shape* GetShape();
     void SetShape(std::shared_ptr<Shape> shape);
@@ -20,7 +20,9 @@ public:
     bool Enabled() const;
     Bounds GetBounds() const;
     int GetTag() const;
+    int GetFlag() const;
 private:
+    int m_flag;
     int m_tag;
     std::shared_ptr<Shape> m_shape;
     Bounds m_aabb;
@@ -42,4 +44,8 @@ inline bool Collider::Enabled() const {
 inline int Collider::GetTag() const {
     return m_tag;
 
+}
+
+inline int Collider::GetFlag() const {
+    return m_flag;
 }

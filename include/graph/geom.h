@@ -32,6 +32,14 @@ inline float distSq (glm::vec2& a, glm::vec2& b) {
     return p*p + q*q;
 }
 
+inline float length2 (glm::vec2 P) {
+    return P.x * P.x + P.y * P.y;
+}
+
+inline int sign (float f) {
+    return f>=0.0f ? 1 : -1;
+}
+
 template <class T>
 T Clamp(T x, T m, T M) {
     return (x > M ? M : (x < m ? m : x));
@@ -50,3 +58,5 @@ bool LineSegmentCross (glm::vec2, glm::vec2, glm::vec2, glm::vec2);
 float LineSegmentIntersection (glm::vec2, glm::vec2, glm::vec2, glm::vec2);
 bool inLineOfSight (const Poly&, glm::vec2, glm::vec2);
 //void FindPathInPoly (const Poly&, glm::vec2 Start, glm::vec2 End);
+
+float GetFirstSolution(float, float, float);

@@ -27,7 +27,11 @@ class CollisionEngine;
 // use keys (for instance, arrow keys) to move an entity
 class KeyboardControllerCollision : public Component, public KeyboardListener {
 public:
-    KeyboardControllerCollision() : Component(), KeyboardListener() {}
+    KeyboardControllerCollision(float width, float height, float speed, int horRays, int vertRays) :
+            Component(), KeyboardListener(), m_width{width}, m_height{height}, m_horizontalRays{horRays}, m_verticalRays{vertRays}, m_speed{speed} {
+        m_horizontalRaySpace = m_horizontalRays == 1 ? 0.0f : m_height / (m_horizontalRays-1);
+        m_verticalRaySpace = m_verticalRays == 1 ? 0.0f : m_width / (m_verticalRays-1);
+    }
 
     void Start() override;
 
@@ -42,4 +46,11 @@ public:
     void Enable(bool) override {}
 private:
     CollisionEngine* m_engine;
+    float m_width;
+    float m_height;
+    float m_speed;
+    int m_horizontalRays;
+    int m_verticalRays;
+    float m_horizontalRaySpace;
+    float m_verticalRaySpace;
 };
