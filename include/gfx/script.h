@@ -18,6 +18,7 @@ public:
     void AddActivity(int id, std::unique_ptr<Activity>);
     void AddEdge (int fromActivity, int toActivity);
     bool IsComplete() const;
+    void Kill () { m_complete=true;}
     void SetSuspended(bool);
     void SetLoop(int);
     void Print();

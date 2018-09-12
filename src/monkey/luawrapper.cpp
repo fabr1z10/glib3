@@ -27,6 +27,8 @@ void LuaWrapper::Init() {
                     //.addFunction("disableGroup", &EntityWrapper::DisableGroup)
                     .beginClass<EntityWrapper>("entity")
                             .addProperty("x", &EntityWrapper::GetX)
+                            .addProperty("y", &EntityWrapper::GetY)
+                            .addProperty("z", &EntityWrapper::GetZ)
                             .addProperty("anim", &EntityWrapper::GetAnim)
                             .addProperty("flipx", &EntityWrapper::GetFlipX)
                             .addProperty("isnil", &EntityWrapper::IsNil)

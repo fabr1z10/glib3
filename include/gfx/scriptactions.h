@@ -21,3 +21,12 @@ public:
 private:
     std::string m_script;
 };
+
+class KillScript : public Activity {
+public:
+    KillScript(const std::string& script) : Activity(), m_script{script} {}
+    void Start() override ;
+    void Run (float dt) override {}
+private:
+    std::string m_script;
+};

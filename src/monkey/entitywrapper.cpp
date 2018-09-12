@@ -26,6 +26,12 @@
 float EntityWrapper::GetX() const {
     return m_underlying->GetPosition().x;
 }
+float EntityWrapper::GetY() const {
+    return m_underlying->GetPosition().y;
+}
+float EntityWrapper::GetZ() const {
+    return m_underlying->GetPosition().z;
+}
 
 std::string EntityWrapper::GetText() const {
     Renderer* r = m_underlying->GetComponent<Renderer>();

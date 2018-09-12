@@ -16,3 +16,10 @@ void ResumeScript::Start() {
     SetComplete();
 
 }
+
+void KillScript::Start() {
+    auto scheduler = Engine::get().GetScriptingEngine();
+    scheduler->GetScript(m_script)->Kill();
+    SetComplete();
+
+}

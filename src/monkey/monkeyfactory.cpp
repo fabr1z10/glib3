@@ -99,15 +99,7 @@ std::shared_ptr<Entity> MonkeyFactory::Create() {
 //    auto keyListener = std::make_shared<LuaKeyListener>();
 //
 //
-//
-//    luabridge::LuaRef hotkeys = roomTable.Get<luabridge::LuaRef>("hotkeys");
-//    for (int i = 0; i < hotkeys.length(); ++i) {
-//        luabridge::LuaRef hotkey = hotkeys[i+1];
-//        int key = hotkey["key"].cast<int>();
-//        luabridge::LuaRef callback = hotkey["func"];
-//        keyListener->AddHotKey(key, callback);
-//    }
-//
+
 //
 //    renderingEngine->AddShader(TEXTURE_SHADER);
 //    renderingEngine->AddShader(COLOR_SHADER);
@@ -179,6 +171,7 @@ std::shared_ptr<Entity> MonkeyFactory::ReadItem(luabridge::LuaRef& ref) {
     std::string tag = item.Get<std::string>("tag", "");
     if (!tag.empty()) entity->SetTag(tag);
     glm::vec3 pos = item.Get<glm::vec3>("pos", glm::vec3(0.0f));
+    bool active = item.Get<bool>("active", true);
     if (item.HasKey("angle")) {
         float angle = item.Get<float>("angle",0.0f);
         entity->SetPosition(pos, deg2rad* angle);
@@ -239,6 +232,10 @@ std::shared_ptr<Entity> MonkeyFactory::ReadItem(luabridge::LuaRef& ref) {
         luabridge::LuaRef c = item.Get<luabridge::LuaRef>("keyboardcontrollercollision");
         ReadKeyboardCollisionComponent(c, entity.get());
     }
+    if (item.HasKey("luakey")) {
+        luabridge::LuaRef c = item.Get<luabridge::LuaRef>("luakey");
+        ReadLuaKeyboard(c, entity.get());
+    }
     if (item.HasKey("outlinetext")) {
         luabridge::LuaRef c = item.Get<luabridge::LuaRef>("outlinetext");
         ReadOutlineTextComponent(c, entity.get());
@@ -272,6 +269,7 @@ std::shared_ptr<Entity> MonkeyFactory::ReadItem(luabridge::LuaRef& ref) {
         ReadCursor(c, entity.get());
     }
     //entity->SetLayer(layer);
+    entity->SetActive(active);
     return entity;
 
 
@@ -382,6 +380,20 @@ void MonkeyFactory::ReadKeyboardCollisionComponent(luabridge::LuaRef &ref, Entit
     //luabridge::LuaRef shapeR = table.Get<luabridge::LuaRef>("shape");
     //auto shape = ReadShape(shapeR);
     parent->AddComponent(std::make_shared<KeyboardControllerCollision>(width, height, speed, horRays, vertRays));
+}
+
+void MonkeyFactory::ReadLuaKeyboard(luabridge::LuaRef &ref, Entity *parent) {
+    LuaTable table(ref);
+    auto keyListener = std::make_shared<LuaKeyListener>();
+    luabridge::LuaRef hotkeys = table.Get<luabridge::LuaRef>("keys");
+    for (int i = 0; i < hotkeys.length(); ++i) {
+        luabridge::LuaRef hotkey = hotkeys[i+1];
+        int key = hotkey["key"].cast<int>();
+        luabridge::LuaRef callback = hotkey["func"];
+        keyListener->AddHotKey(key, callback);
+    }
+    parent->AddComponent(keyListener);
+
 }
 
 

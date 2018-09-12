@@ -2,7 +2,7 @@
 
 #include <gfx/component.h>
 #include <gfx/listener.h>
-
+#include <glm/glm.hpp>
 
 // use keys (for instance, arrow keys) to move an entity
 class KeyboardController : public Component, public KeyboardListener {
@@ -23,6 +23,7 @@ public:
 };
 
 class CollisionEngine;
+class Renderer;
 
 // use keys (for instance, arrow keys) to move an entity
 class KeyboardControllerCollision : public Component, public KeyboardListener {
@@ -46,6 +47,7 @@ public:
     void Enable(bool) override {}
 private:
     CollisionEngine* m_engine;
+    Renderer* m_renderer;
     float m_width;
     float m_height;
     float m_speed;
@@ -53,4 +55,5 @@ private:
     int m_verticalRays;
     float m_horizontalRaySpace;
     float m_verticalRaySpace;
+    glm::vec2 m_prevMove;
 };

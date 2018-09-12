@@ -11,8 +11,13 @@ fonts = {
     --{ name = "monkey", file  = "fonts/MonkeyIsland-1990.ttf" }
 }
 
+require("script")
+require("sprites")
+require("funcs")
+
 
 variables = {
     _room = "001",
+	drown = false
 }
 

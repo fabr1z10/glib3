@@ -4,7 +4,7 @@ CollisionHandler CollisionResponseManager::GetCollisionResponse(Collider* c1, Co
     auto rm = m_response.find(std::make_pair(c1->GetTag(), c2->GetTag()));
     if (rm == m_response.end()) {
         rm = m_response.find(std::make_pair(c2->GetTag(), c1->GetTag()));
-        if (rm == m_response.end()) {
+        if (rm != m_response.end()) {
             return CollisionHandler(rm->second.get(), true);
         }
         return CollisionHandler();

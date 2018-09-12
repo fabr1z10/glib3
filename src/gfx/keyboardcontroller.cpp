@@ -4,6 +4,7 @@
 #include <gfx/entity.h>
 #include <gfx/engine.h>
 #include <gfx/collisionengine.h>
+#include <gfx/renderer.h>
 
 extern GLFWwindow* window;
 
@@ -37,6 +38,7 @@ void KeyboardController::Update(double) {
 }
 void KeyboardControllerCollision::Start() {
     m_engine = Engine::get().GetCollisionEngine();
+    m_renderer = m_entity->GetComponent<Renderer>();
 }
 void KeyboardControllerCollision::Update(double) {
 
@@ -98,4 +100,29 @@ void KeyboardControllerCollision::Update(double) {
     if (moveHorizontal || moveVertical) {
         m_entity->Move(TotalShift);
     }
+
+    // handle animation
+    if (moveHorizontal) {
+        m_renderer->SetAnimation("walk_right");
+        //if (TotalShift.x < 0)
+            m_renderer->SetFlipX(TotalShift.x < 0);
+    } else if (moveVertical) {
+        if (TotalShift.y > 0)
+            m_renderer->SetAnimation("walk_back");
+        else
+            m_renderer->SetAnimation("walk_front");
+    } else {
+        // not moving in this frame, restore idleness
+        if (m_prevMove.x != 0.0f) {
+            m_renderer->SetAnimation("idle_right");
+        } else {
+            if (m_prevMove.y > 0) {
+                m_renderer->SetAnimation("idle_back");
+            } else if (m_prevMove.y < 0) {
+                m_renderer->SetAnimation("idle_front");
+            }
+        }
+    }
+
+    m_prevMove = TotalShift;
 }

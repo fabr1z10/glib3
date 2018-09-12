@@ -125,7 +125,7 @@ void CollisionEngine::Update(double dt) {
                     continue;
                 // if no response is provided for these tags, then skip it
                 if (!m_responseManager->HasCollision(c1, c2)) {
-                    std::cout << "No response for tag (" << c1->GetTag() << ", " << c2->GetTag() << ")\n";
+                    //std::cout << "No response for tag (" << c1->GetTag() << ", " << c2->GetTag() << ")\n";
                     continue;
                 }
 //

@@ -133,6 +133,10 @@ ActivityFactory::ActivityFactory() {
         std::string s = table.Get<std::string>("script");
         return std::unique_ptr<ResumeScript>(new ResumeScript(s));
     };
+    m_factories["killscript"] = [] (LuaTable& table) -> std::unique_ptr<Activity> {
+        std::string s = table.Get<std::string>("script");
+        return std::unique_ptr<KillScript>(new KillScript(s));
+    };
     m_factories["activatewall"] = [] (LuaTable& table) -> std::unique_ptr<Activity> {
         int wallId = table.Get<int>("wall");
         bool active = table.Get<bool>("active");
