@@ -379,7 +379,17 @@ void MonkeyFactory::ReadKeyboardCollisionComponent(luabridge::LuaRef &ref, Entit
     int vertRays = table.Get<int>("vertical_rays");
     //luabridge::LuaRef shapeR = table.Get<luabridge::LuaRef>("shape");
     //auto shape = ReadShape(shapeR);
-    parent->AddComponent(std::make_shared<KeyboardControllerCollision>(width, height, speed, horRays, vertRays));
+    auto c = std::make_shared<KeyboardControllerCollision>(width, height, speed, horRays, vertRays);
+    if (table.HasKey("anims")) {
+        auto anims = table.Get<luabridge::LuaRef>("anims");
+        for (int i = 0 ; i < anims.length(); ++i) {
+            luabridge::LuaRef an = anims[i+1];
+            std::string id = an["id"].cast<std::string>();
+            std::string anim = an["anim"].cast<std::string>();
+            c->AddAnimation(id, anim);
+        }
+    }
+    parent->AddComponent(c);
 }
 
 void MonkeyFactory::ReadLuaKeyboard(luabridge::LuaRef &ref, Entity *parent) {

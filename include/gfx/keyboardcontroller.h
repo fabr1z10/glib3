@@ -28,12 +28,13 @@ class Renderer;
 // use keys (for instance, arrow keys) to move an entity
 class KeyboardControllerCollision : public Component, public KeyboardListener {
 public:
-    KeyboardControllerCollision(float width, float height, float speed, int horRays, int vertRays) :
-            Component(), KeyboardListener(), m_width{width}, m_height{height}, m_horizontalRays{horRays}, m_verticalRays{vertRays}, m_speed{speed} {
+    KeyboardControllerCollision(
+            float width, float height, float speed, int horRays, int vertRays) :
+            Component(), KeyboardListener(), m_width{width}, m_height{height}, m_horizontalRays{horRays}, m_verticalRays{vertRays}, m_speed{speed}, m_handleAnimations{false} {
         m_horizontalRaySpace = m_horizontalRays == 1 ? 0.0f : m_height / (m_horizontalRays-1);
         m_verticalRaySpace = m_verticalRays == 1 ? 0.0f : m_width / (m_verticalRays-1);
     }
-
+    void AddAnimation(const std::string& id, const std::string& name);
     void Start() override;
 
     void Update(double) override ;
@@ -56,4 +57,7 @@ private:
     float m_horizontalRaySpace;
     float m_verticalRaySpace;
     glm::vec2 m_prevMove;
+    bool m_handleAnimations;
+    std::unordered_map<std::string, std::string> m_animations;
 };
+

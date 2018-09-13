@@ -40,6 +40,13 @@ void KeyboardControllerCollision::Start() {
     m_engine = Engine::get().GetCollisionEngine();
     m_renderer = m_entity->GetComponent<Renderer>();
 }
+
+
+void KeyboardControllerCollision::AddAnimation(const std::string& id, const std::string& name) {
+    m_handleAnimations = true;
+    m_animations[id] = name;
+}
+
 void KeyboardControllerCollision::Update(double) {
 
 
@@ -102,24 +109,26 @@ void KeyboardControllerCollision::Update(double) {
     }
 
     // handle animation
-    if (moveHorizontal) {
-        m_renderer->SetAnimation("walk_right");
-        //if (TotalShift.x < 0)
+    if (m_handleAnimations) {
+        if (moveHorizontal) {
+            m_renderer->SetAnimation(m_animations.at("walk_right"));
+            //if (TotalShift.x < 0)
             m_renderer->SetFlipX(TotalShift.x < 0);
-    } else if (moveVertical) {
-        if (TotalShift.y > 0)
-            m_renderer->SetAnimation("walk_back");
-        else
-            m_renderer->SetAnimation("walk_front");
-    } else {
-        // not moving in this frame, restore idleness
-        if (m_prevMove.x != 0.0f) {
-            m_renderer->SetAnimation("idle_right");
+        } else if (moveVertical) {
+            if (TotalShift.y > 0)
+                m_renderer->SetAnimation(m_animations.at("walk_back"));
+            else
+                m_renderer->SetAnimation(m_animations.at("walk_front"));
         } else {
-            if (m_prevMove.y > 0) {
-                m_renderer->SetAnimation("idle_back");
-            } else if (m_prevMove.y < 0) {
-                m_renderer->SetAnimation("idle_front");
+            // not moving in this frame, restore idleness
+            if (m_prevMove.x != 0.0f) {
+                m_renderer->SetAnimation(m_animations.at("idle_right"));
+            } else {
+                if (m_prevMove.y > 0) {
+                    m_renderer->SetAnimation(m_animations.at("idle_back"));
+                } else if (m_prevMove.y < 0) {
+                    m_renderer->SetAnimation(m_animations.at("idle_front"));
+                }
             }
         }
     }

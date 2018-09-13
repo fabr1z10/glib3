@@ -63,6 +63,44 @@ sprites = {
 				   { duration = dt, quads = { { x = 166, y = 69, width = 10, height = 31, anchor = {5, 0}}}}
 			   }				
 	        },
+	        {
+	           name="swim_right",
+	           frames=
+	           { 
+		           { duration = dt, quads = { { x = 223, y = 1, width = 26, height = 11, anchor = {10, 0}}}},
+				   { duration = dt, quads = { { x = 223, y = 13, width = 22, height = 11, anchor = {10, 0}}}},
+				   { duration = dt, quads = { { x = 223, y = 25, width = 24, height = 10, anchor = {10, 0}}}},
+				   { duration = dt, quads = { { x = 223, y = 36, width = 24, height = 10, anchor = {8, 0}}}},
+			   }				
+	        },		
+	        {
+	           name="swim_back",
+	           frames=
+	           { 
+		            { duration = dt, quads = { { x = 247, y = 81, width = 8, height = 15, anchor = {4, 0}}}},
+				    { duration = dt, quads = { { x = 223, y = 97, width = 8, height = 15, anchor = {4, 0}}}},
+				    { duration = dt, quads = { { x = 233, y = 97, width = 8, height = 15, anchor = {4, 0}}}},
+				    { duration = dt, quads = { { x = 242, y = 97, width = 12, height = 13, anchor = {6, 0}}}},
+				    { duration = dt, quads = { { x = 223, y = 113, width = 8, height = 15, anchor = {6, 0}}}},
+				    { duration = dt, quads = { { x = 233, y = 113, width = 8, height = 15, anchor = {6, 0}}}},
+				    { duration = dt, quads = { { x = 243, y = 113, width = 8, height = 15, anchor = {6, 0}}}},
+					{ duration = dt, quads = { { x = 223, y = 129, width = 12, height = 13, anchor = {8, 0}}}}
+			   }				
+	        },	
+			{
+	           name="swim_front",
+	           frames=
+	           { 
+		            { duration = dt, quads = { { x = 223, y = 47, width = 8, height = 14, anchor = {4, 0}}}},
+				    { duration = dt, quads = { { x = 233, y = 47, width = 8, height = 14, anchor = {4, 0}}}},
+				    { duration = dt, quads = { { x = 243, y = 47, width = 8, height = 15, anchor = {4, 0}}}},
+				    { duration = dt, quads = { { x = 223, y = 64, width = 12, height = 15, anchor = {6, 0}}}},
+				    { duration = dt, quads = { { x = 237, y = 64, width = 8, height = 14, anchor = {6, 0}}}},
+				    { duration = dt, quads = { { x = 247, y = 64, width = 8, height = 14, anchor = {6, 0}}}},
+					{ duration = dt, quads = { { x = 223, y = 81, width = 8, height = 15, anchor = {6, 0}}}},
+					{ duration = dt, quads = { { x = 233, y = 81, width = 12, height = 15, anchor = {8, 0}}}},
+			   }				
+	        },
 			{
 	           name="drown",
 	           frames=

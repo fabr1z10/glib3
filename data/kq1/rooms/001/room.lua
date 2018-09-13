@@ -54,7 +54,15 @@ scene = {
                 height = 1, 
                 speed = 1, 
                 horizontal_rays = 2, 
-                vertical_rays = 2 
+                vertical_rays = 2,
+				anims = {
+					{ id = "walk_right", anim = "walk_right" },
+					{ id = "walk_front", anim = "walk_front" },
+					{ id = "walk_back", anim = "walk_right" },
+					{ id = "idle_right", anim = "idle_right" },
+					{ id = "idle_front", anim = "idle_front"},
+					{ id= "idle_back", anim = "idle_back"}
+				} 
             }
 	    }, 
 		{
@@ -64,6 +72,28 @@ scene = {
 			gfx = { model="graham", anim="drown"},
 			collider= {shape={type="rect", width=1, height=1}, tag=1, flag=1},
 			--keyboardcontrollercollision = { width = 1, height = 1, speed = 1, horizontal_rays = 2, vertical_rays = 2 }
+	    }, 
+		{
+			--gfx = {shape={type="rect", width=20, height=10}, color={255,255,255,255} },
+			tag = "swimming_graham", 
+			gfx = { model="graham", anim="swim_right"},
+			collider= {shape={type="rect", width=1, height=1}, tag=1, flag=1},
+			keyboardcontrollercollision = { 
+				width = 1, 
+                height = 1, 
+                speed = 1, 
+                horizontal_rays = 2, 
+                vertical_rays = 2,
+				anims = {
+					{ id = "walk_right", anim = "swim_right" },
+					{ id = "walk_front", anim = "swim_front" },
+					{ id = "walk_back", anim = "swim_right" },
+					{ id = "idle_right", anim = "swim_right" },
+					{ id = "idle_front", anim = "swim_front"},
+					{ id= "idle_back", anim = "swim_back"}
+				} 
+
+            }
 	    }, 
 		}
 	},
