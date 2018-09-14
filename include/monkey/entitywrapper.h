@@ -11,7 +11,7 @@ namespace luaFunctions {
     void EnableMouse(bool);
     void EnableKeyboard(bool);
     void EnableKey(int, bool);
-    void EnableUpdate(bool);
+    //void EnableUpdate(bool);
 }
 
 struct EntityWrapper {
@@ -31,7 +31,9 @@ struct EntityWrapper {
     void SetColor(int, int, int, int);
     void SetText(const std::string&);
     void SetActive (bool);
+    void EnableUpdate(bool);
     void SetEnableControls (bool);
+    luabridge::LuaRef GetTextInfo();
     //static void EnableGroup(int);
     //static void DisableGroup(int);
     std::string GetText() const;

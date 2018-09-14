@@ -22,6 +22,7 @@
 #include "gfx/cursor.h"
 #include <gfx/collider.h>
 #include <gfx/keyboardcontroller.h>
+#include <gfx/keyinput.h>
 
 using namespace luabridge;
 
@@ -220,6 +221,10 @@ std::shared_ptr<Entity> MonkeyFactory::ReadItem(luabridge::LuaRef& ref) {
         luabridge::LuaRef c = item.Get<luabridge::LuaRef>("text");
         ReadTextComponent(c, entity.get());
     }
+    if (item.HasKey("keyinput")) {
+        luabridge::LuaRef c = item.Get<luabridge::LuaRef>("keyinput");
+        ReadKeyInputComponent(c, entity.get());
+    }
     if (item.HasKey("collider")) {
         luabridge::LuaRef c = item.Get<luabridge::LuaRef>("collider");
         ReadColliderComponent(c, entity.get());
@@ -346,6 +351,10 @@ void MonkeyFactory::ReadGfxComponent(luabridge::LuaRef &ref, Entity *parent) {
 void MonkeyFactory::ReadTextComponent(luabridge::LuaRef &ref, Entity *parent) {
     auto renderer = GetTextComponent(ref);
     parent->AddComponent(renderer);
+}
+
+void MonkeyFactory::ReadKeyInputComponent(luabridge::LuaRef &ref, Entity *parent) {
+    parent->AddComponent(std::make_shared<KeyInput>());
 }
 
 void MonkeyFactory::ReadFollowComponent(luabridge::LuaRef &ref, Entity *parent) {
@@ -548,7 +557,7 @@ std::shared_ptr<Renderer> MonkeyFactory::GetTextComponent (luabridge::LuaRef& re
     glm::vec4 color = table.Get<glm::vec4>("color", glm::vec4(255.0f));
     color /= 255.0f;
     Font* f = Engine::get().GetAssetManager().GetFont(font);
-    auto mesh = std::make_shared<TextMesh>(f, text, 8, align, maxWidth);
+    auto mesh = std::make_shared<TextMesh>(f, text, size, align, maxWidth);
     glm::vec2 offset = mesh->getOffset();
     renderer->SetRenderingTransform(glm::translate(glm::vec3(offset, 0.0f)));
     renderer->SetTint(color);

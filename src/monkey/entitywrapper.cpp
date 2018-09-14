@@ -100,6 +100,10 @@ void EntityWrapper::SetText(const std::string& text) {
     r->SetRenderingTransform(glm::translate(glm::vec3(offset, 0.0f)));
 }
 
+void EntityWrapper::EnableUpdate(bool value) {
+    m_underlying->SetEnableUpdate(value);
+}
+
 
 
 namespace luaFunctions {
@@ -113,9 +117,7 @@ namespace luaFunctions {
         Engine::get().EndScene();
     }
 
-    void EnableUpdate(bool value) {
-        Engine::get().SetEnableUpdate(value);
-    }
+
 
     void EnableMouse(bool value) {
         //Engine::get().GetMouseHandler()->Enable(value);
@@ -337,5 +339,15 @@ void EntityWrapper::AppendButton(luabridge::LuaRef ref) {
     auto mf = dynamic_cast<MonkeyFactory*>(Engine::get().GetSceneFactory());
     auto hs = mf->GetHotSpot(ref, nullptr);
     r->AppendText(text, hs);
+}
+
+luabridge::LuaRef EntityWrapper::GetTextInfo() {
+    Renderer* r = m_underlying->GetComponent<Renderer>();
+    TextMesh* tm = dynamic_cast<TextMesh*>(r->GetMesh());
+    luabridge::LuaRef rr = luabridge::newTable(LuaWrapper::L);
+    glm::vec2 f = tm->getBounds().GetSize();
+    rr["width"] = f.x;
+    rr["height"] = f.y;
+    return rr;
 }
 

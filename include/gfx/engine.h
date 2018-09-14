@@ -92,10 +92,9 @@ public:
     Scheduler* GetScriptingEngine();
     CollisionEngine* GetCollisionEngine();
     //void SetInputHandler(std::unique_ptr<)
-    void SetEnableUpdate(bool);
 private:
     friend class Singleton<Engine>;
-    Engine() : m_update{true}, m_mouseEnabled{true} {}
+    Engine() : m_mouseEnabled{true} {}
     std::unordered_map<std::string, Ref*> m_taggedReferences;
     void InitGL(const EngineConfig& config);
     std::unordered_set<Entity*> m_garbage;
@@ -103,7 +102,7 @@ private:
     std::unordered_map<ShaderType, std::unique_ptr<Shader>, EnumClassHash> m_shaders;
     std::shared_ptr<Entity> m_scene;
     bool m_running;
-    bool m_update;
+
     double m_frameTime;
     double m_timeLastUpdate;
     //GLFWwindow* m_window;
@@ -200,6 +199,3 @@ inline CollisionEngine* Engine::GetCollisionEngine() {
 //    return m_keyboardListener.get();
 //}
 
-inline void Engine::SetEnableUpdate(bool value) {
-    m_update = value;
-}

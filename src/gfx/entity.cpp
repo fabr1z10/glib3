@@ -62,7 +62,7 @@ void Entity::ClearAllChildren() {
 
 // update just calls update on each of the entity components
 void Entity::Update(double dt) {
-    if (!m_active)
+    if (!m_active || !m_update)
         return;
     for (auto& iter : m_components) {
         iter.second->Update(dt);

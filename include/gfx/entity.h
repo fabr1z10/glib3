@@ -27,7 +27,7 @@
 // and only one parent (i.e. they are organized in a tree)
 class Entity : public Ref {
 public:
-    Entity() : Ref(), m_parent(nullptr), m_active(true), m_localTransform{glm::mat4(1.0)}, m_worldTransform{glm::mat4(1.0)}, m_enableControls{true} {}
+    Entity() : Ref(), m_parent(nullptr), m_active(true), m_update(true), m_localTransform{glm::mat4(1.0)}, m_worldTransform{glm::mat4(1.0)}, m_enableControls{true} {}
 
     const glm::mat4& GetLocalTransform() const;
     const glm::mat4& GetWorldTransform() const;
@@ -82,6 +82,7 @@ public:
     // and responds to events (i.e. hot-spots)
     bool IsActive() const;
     void SetActive(bool);
+    void SetEnableUpdate(bool);
 
 
 
@@ -102,6 +103,7 @@ private:
     void SetWorldTransform(glm::mat4& wt);
     void Notify();
     bool m_active;
+    bool m_update;
     bool m_enableControls;
     int m_layer;
     Entity* m_parent;
@@ -146,5 +148,10 @@ inline void Entity::SetControlsEnabled(bool value) {
     m_enableControls = value;
 }
 
+inline void Entity::SetEnableUpdate(bool value){
+    m_update = value;
+    for (auto& c : m_children)
+        c->SetEnableUpdate(value);
+}
 
 #endif /* entity_h */

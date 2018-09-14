@@ -7,7 +7,7 @@ engine = {
 }
 
 fonts = {
-    --{ name = "ui", file  = "fonts/monkeysmall.ttf" },
+    { name = "ui", file  = "fonts/sierra1.ttf" },
     --{ name = "monkey", file  = "fonts/MonkeyIsland-1990.ttf" }
 }
 
@@ -18,6 +18,7 @@ require("funcs")
 
 variables = {
     _room = "001",
-	drown = false
+	status = 0,
+pause = false
 }
 

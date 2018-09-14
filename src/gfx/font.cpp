@@ -97,7 +97,7 @@ bool Font::loadFromFile(const std::string& filename, const int size) {
         }
 
         // we need to draw on the rowStart-th column of the texture
-        unsigned int rowStart = (currentLine * m_maxHeight - 1) - (slot->metrics.horiBearingY >> 6);
+        unsigned int rowStart = (currentLine * m_maxHeight) - (slot->metrics.horiBearingY >> 6);
         for (size_t j = 0; j < bh; j++) {
             for (size_t k = 0; k < bw; k++) {
                 size_t u = (rowStart + j) * w + currentCol + k;

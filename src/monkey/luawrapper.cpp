@@ -22,7 +22,7 @@ void LuaWrapper::Init() {
                     .addFunction("enablemouse", &luaFunctions::EnableMouse)
                     .addFunction("enablekeyboard", &luaFunctions::EnableKeyboard)
                     .addFunction("enablekey", &luaFunctions::EnableKey)
-                    .addFunction("enableupdate", &luaFunctions::EnableUpdate)
+
                     //.addFunction("enableGroup", &EntityWrapper::EnableGroup)
                     //.addFunction("disableGroup", &EntityWrapper::DisableGroup)
                     .beginClass<EntityWrapper>("entity")
@@ -37,6 +37,7 @@ void LuaWrapper::Init() {
                             .addFunction("parent", &EntityWrapper::GetParent)
                             .addFunction("setcolor", &EntityWrapper::SetColor)
                             .addFunction("settext", &EntityWrapper::SetText)
+                            .addFunction("enableupdate", &EntityWrapper::EnableUpdate)
                             .addFunction("setactive", &EntityWrapper::SetActive)
                             .addFunction("enablecontrols", &EntityWrapper::SetEnableControls)
                             .addFunction("clear", &EntityWrapper::Clear)
@@ -44,7 +45,7 @@ void LuaWrapper::Init() {
                             .addFunction("addtext", &EntityWrapper::AppendText)
                             .addFunction("addbutton", &EntityWrapper::AppendButton)
                             .addFunction("cleartext", &EntityWrapper::ClearText)
-
+                            .addFunction("gettextinfo", &EntityWrapper::GetTextInfo)
                             //.addFunction("addbutton"), &EntityWrapper::AddButton)
                     .endClass();
 }
