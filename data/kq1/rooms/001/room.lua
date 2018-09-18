@@ -127,7 +127,7 @@ scene = {
 				text = {
 					id="0",
 					font="ui",
-					size=7,
+					size=8,
 				},
 				keyinput = {}
 				
