@@ -123,13 +123,17 @@ scene = {
 		},
 		children = {
 			{
-				pos={0,24,0},
+				pos={0,16,0},
 				text = {
-					id="0",
+					id="_",
 					font="ui",
 					size=8,
+					align ="bottomleft"
 				},
-				keyinput = {}
+				keyinput = {
+					maxlength = 10,
+					func = function(msg) print (msg) end
+				}
 				
 			}
 		}

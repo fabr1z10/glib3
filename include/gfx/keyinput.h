@@ -3,10 +3,10 @@
 #include "gfx/listener.h"
 #include "gfx/component.h"
 #include "gfx/textmesh.h"
-
+#include <monkey/luawrapper.h>
 class KeyInput : public Component, public KeyboardListener {
 public:
-    KeyInput () : Component(), KeyboardListener() {}
+    KeyInput (int length, luabridge::LuaRef callback) : Component(), KeyboardListener(), m_callback(callback), m_maxLength(length) {}
     void Start() override;
     void Update(double) override {}
     void KeyCallback(GLFWwindow*, int, int, int, int) override;
@@ -15,5 +15,7 @@ public:
     void EnableKey(int, bool) override {}
     using ParentClass = KeyInput;
 private:
+    int m_maxLength;
+    luabridge::LuaRef m_callback;
     TextMesh* m_mesh;
 };

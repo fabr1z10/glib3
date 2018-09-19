@@ -354,7 +354,10 @@ void MonkeyFactory::ReadTextComponent(luabridge::LuaRef &ref, Entity *parent) {
 }
 
 void MonkeyFactory::ReadKeyInputComponent(luabridge::LuaRef &ref, Entity *parent) {
-    parent->AddComponent(std::make_shared<KeyInput>());
+    LuaTable table(ref);
+    int maxLength = table.Get<int>("maxlength");
+    luabridge::LuaRef shapeR = table.Get<luabridge::LuaRef>("func");
+    parent->AddComponent(std::make_shared<KeyInput>(maxLength, shapeR));
 }
 
 void MonkeyFactory::ReadFollowComponent(luabridge::LuaRef &ref, Entity *parent) {
