@@ -9,6 +9,7 @@ public:
     MoveTo(const std::string& actorId, glm::vec2 pos, float speed, bool relative, bool immediate);
     void Start() override;
     void Run (float dt) override;
+    void Reset() override;
 private:
     Entity* m_entity;
     glm::vec2 m_toPos;

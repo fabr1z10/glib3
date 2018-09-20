@@ -38,7 +38,7 @@ inline Shape* Collider::GetShape() {
 }
 
 inline bool Collider::Enabled() const {
-    return m_enabled;
+    return m_enabled && IsActive();
 }
 
 inline int Collider::GetTag() const {

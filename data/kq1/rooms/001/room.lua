@@ -1,3 +1,4 @@
+require("rooms/001/actions")
 
 local function makeShape (arg)
 	return {
@@ -13,103 +14,90 @@ local function ciao1()
 print ("LEAVE WATER")
 end
 
-local function exitpause() 
-	if (variables.pause == true) then
-	    local parent = monkey.getEntity("main")
-		monkey.removeEntity("msg")
-		parent:enableupdate(true)
-		monkey.enablescriptengine(true) 
-		variables.pause = false
-	end
 
-end
+local dt=0.1
 
-local function displayBox()
-    local parent = monkey.getEntity("main")
-
-    monkey.addEntity ({
-		tag = "msg",
-		children = {
-			{
-				tag ="msgtext",
-				pos={158, 83, 1},
-				text = {
-					id="012 0011 12 22110 0122 020 0200 121",
-					align = "center",
-					font="ui",
-					size=7,
-					maxwidth = 160,
-					color = {0,0,0,255}
-				}
-			}
-		}
-	}, parent)
-	local m  = monkey.getEntity("msg")
-	local mm  = monkey.getEntity("msgtext")
-    local a = mm:gettextinfo()
-	print ("width = " .. a.width)
-	print ("height = " .. a.height)
-	local paddingOuter = {10, 6}
-	local paddingInner = {6, 4}
-	monkey.addEntity ({
-		pos={158 - a.width * 0.5 - paddingOuter[1], 83-a.height*0.5-paddingOuter[2], 0.5},
-		gfx = {
-			shape = {
-				type ="rect",
-				width = a.width + 2*paddingOuter[1],
-				height = a.height + 2*paddingOuter[2]
-			},
-			draw = "solid",
-			color = {255,255,255,255}
-		}
-	}, m)
-	monkey.addEntity ({
-		pos={158 - a.width * 0.5 - paddingInner[1], 83-a.height*0.5-paddingInner[2], 0.7},
-		gfx = {
-			shape = {
-				type ="rect",
-				width = a.width + 2*paddingInner[1],
-				height = a.height + 2*paddingInner[2]
-			},
-			draw = "solid",
-			color = {255,255,255,255}
-		}
-	}, m)
-	monkey.addEntity ({
-		pos={158 - a.width * 0.5 - paddingInner[1] - 2, 83-a.height*0.5-paddingInner[2]-1, 0.7},
-		gfx = {
-			shape = {
-				type ="rect",
-				width = a.width + 2*paddingInner[1] + 4,
-				height = a.height + 2*paddingInner[2]+2,
-			},
-			draw = "solid",
-			color = {170,0,0,255}
-		}
-	}, m)
-	-- monkey.addEntity ({
-	-- 	pos={158 - a.width * 0.5 - paddingInner[1] - 2, 83-a.height*0.5-paddingInner[2]-1, 0.6},
-	-- 	gfx = {
-	-- 		shape = {
-	-- 			type ="rect",
-	-- 			width = a.width + 2*paddingInner[1]+4,
-	-- 			height = a.height + 2*paddingInner[2]+2,
-	-- 		},
-	-- 		draw = "solid",
-	-- 		color = {170,0,0,255}
-	-- 	}
-	-- }, m)
-	parent:enableupdate(false)
-	variables.pause = true
-	monkey.enablescriptengine(false)
-end
 
 room = {
 collisionresponse = {
-	{ tag = {1, 10}, onenter = enterWater, onleave=exitWater}
+	{ tag = {1, 10}, onenter = enterWaterDie, onleave=exitWater}
 },
 assets = {
-	sprites.graham
+	sprites.graham,
+    {
+        id = "purple_flag",
+        sheet = "gfx/sprites.png",
+        type="sprite",
+        ppu=1,
+        animations = {
+        {
+       	    name = "default",             
+            frames = 
+            { 
+	    	  	{ duration = dt, quads = { { x = 1, y = 1, width = 24, height = 8, anchor = {0, -1}}}},
+                { duration = dt, quads = { { x = 1, y = 11, width = 25, height = 9, anchor = {0, 0}}}},
+                { duration = dt, quads = { { x = 1, y = 21, width = 20, height = 9, anchor = {0, 0}}}},
+                { duration = dt, quads = { { x = 1, y = 31, width = 22, height = 9, anchor = {0, 0}}}},
+				{ duration = dt, quads = { { x = 1, y = 41, width = 22, height = 9, anchor = {0, 0}}}}                              
+			}
+        }
+        }
+    },
+    {
+        id = "yellow_flag",
+        sheet = "gfx/sprites.png",
+        type="sprite",
+        ppu=1,
+        animations = {
+        {
+       	    name = "default",             
+            frames = 
+            { 
+	    	  	{ duration = dt, quads = { { x = 26, y = 1, width = 24, height = 9, anchor = {0, 0}}}},
+                { duration = dt, quads = { { x = 26, y = 11, width = 22, height = 9, anchor = {0, 0}}}},
+                { duration = dt, quads = { { x = 26, y = 21, width = 22, height = 9, anchor = {0, 0}}}},
+                { duration = dt, quads = { { x = 26, y = 31, width = 22, height = 9, anchor = {0, 0}}}},
+				{ duration = dt, quads = { { x = 26, y = 41, width = 24, height = 9, anchor = {0, 0}}}}                              
+			}
+        }
+        }
+    },
+    {
+        id = "cyan_flag",
+        sheet = "gfx/sprites.png",
+        type="sprite",
+        ppu=1,
+        animations = {
+        {
+       	    name = "default",             
+            frames = 
+            { 
+	    	  	{ duration = dt, quads = { { x = 51, y = 1, width = 22, height = 9, anchor = {0, 0}}}},
+                { duration = dt, quads = { { x = 51, y = 11, width = 22, height = 9, anchor = {0, 0}}}},
+                { duration = dt, quads = { { x = 51, y = 21, width = 22, height = 9, anchor = {0, 0}}}},
+                { duration = dt, quads = { { x = 51, y = 31, width = 22, height = 9, anchor = {0, 0}}}},
+				{ duration = dt, quads = { { x = 52, y = 41, width = 22, height = 9, anchor = {0, 0}}}}                              
+			}
+        }
+        }
+    },
+    {
+        id = "alligator",
+        sheet = "gfx/sprites.png",
+        type="sprite",
+        ppu=1,
+        animations = {
+        {
+       	    name = "default",             
+            frames = 
+            { 
+	    	  	{ duration = dt, quads = { { x = 75, y = 1, width = 26, height = 8, anchor = {12, 0}}}},
+                { duration = dt, quads = { { x = 75, y = 11, width = 24, height = 11, anchor = {12, 0}}}},
+                { duration = 4*dt, quads = { { x = 75, y = 23, width = 26, height = 4, anchor = {12, 0}}}},
+			}
+        }
+        }
+    },
 },
 scene = {
 	{
@@ -132,7 +120,7 @@ scene = {
 				},
 				keyinput = {
 					maxlength = 10,
-					func = function(msg) print (msg) end
+					func = processText
 				}
 				
 			}
@@ -148,65 +136,26 @@ scene = {
 			viewport = {2, 25, 318, 25+166}
 		},
 		children = {
-		{
-			pos = {0, 0, -5},
-			gfx = { image="gfx/bg001.png", width=316, height=166 }
-		},
+-- 		{
+-- 			pos = {0, 0, -5},
+-- 			gfx = { image="gfx/bg001.png", width=316, height=166 }
+-- 		},
+--        {   pos = {8, 149, 1}, gfx = { model = "purple_flag", anim = "default" } },--   
+-- 		{   pos = {38, 150, 1}, gfx = { model = "yellow_flag", anim = "default" } },-- 
+-- 		{   pos = {68, 149, 1}, gfx = { model = "cyan_flag", anim = "default" } },-- 
+-- 		{   pos = {0, 0, 1}, tag="alli1", gfx = { model = "alligator", anim = "default" } },-- 
+-- 		{   pos = {20, 0, 1}, tag="alli2", gfx = { model = "alligator", anim = "default" } },-- 
 
-		makeShape { pos = {265, 39, 0}, angle = 0, tag=2, flag=2, shape = {type="rect", width=17, height=7, offset={0, 0}} },
-		makeShape { pos = {0, 23, 0}, angle = 0, tag=2, flag=2, shape = {type="line", A={0,0},B={179,0}}, offset={0, 0} },
-		makeShape { pos = {50, 0, 0}, angle=0, tag = 10, flag = 4, shape = {type="rect", width = 100, height=10 }},
-		{
-			--gfx = {shape={type="rect", width=20, height=10}, color={255,255,255,255} },
-			tag = "graham", 
-			gfx = { model="graham", anim="idle_right"},
-			collider= {shape={type="rect", width=1, height=1}, tag=1, flag=1},
-			keyboardcontrollercollision = { 
-				width = 1, 
-                height = 1, 
-                speed = 1, 
-                horizontal_rays = 2, 
-                vertical_rays = 2,
-				anims = {
-					{ id = "walk_right", anim = "walk_right" },
-					{ id = "walk_front", anim = "walk_front" },
-					{ id = "walk_back", anim = "walk_back" },
-					{ id = "idle_right", anim = "idle_right" },
-					{ id = "idle_front", anim = "idle_front"},
-					{ id= "idle_back", anim = "idle_back"}
-				} 
-            }
-	    }, 
-		{
-			--gfx = {shape={type="rect", width=20, height=10}, color={255,255,255,255} },
-			tag = "drowning_graham", 
-			active = false,
-			gfx = { model="graham", anim="drown"},
-			collider= {shape={type="rect", width=1, height=1}, tag=1, flag=1},
-			--keyboardcontrollercollision = { width = 1, height = 1, speed = 1, horizontal_rays = 2, vertical_rays = 2 }
-	    }, 
-		{
-			--gfx = {shape={type="rect", width=20, height=10}, color={255,255,255,255} },
-			tag = "swimming_graham", 
-			gfx = { model="graham", anim="swim_right"},
-			collider= {shape={type="rect", width=1, height=1}, tag=1, flag=1},
-			keyboardcontrollercollision = { 
-				width = 1, 
-                height = 1, 
-                speed = 1, 
-                horizontal_rays = 2, 
-                vertical_rays = 2,
-				anims = {
-					{ id = "walk_right", anim = "swim_right" },
-					{ id = "walk_front", anim = "swim_front" },
-					{ id = "walk_back", anim = "swim_right" },
-					{ id = "idle_right", anim = "swim_right" },
-					{ id = "idle_front", anim = "swim_front"},
-					{ id= "idle_back", anim = "swim_back"}
-				} 
+			makeGraham(20, 10),
+ 			--makeShape { pos = {265, 39, 0}, angle = 0, tag=2, flag=2, shape = {type="rect", width=17, height=7, offset={0, 0}} },
+ 			--makeShape { pos = {0, 23, 0}, angle = 0, tag=2, flag=2, shape = {type="line", A={0,0},B={179,0}}, offset={0, 0} },
+ 			makeShape { pos = {0, 0, 0}, angle=0, tag = 10, flag = 4, shape = { type="compound", 
+ 			shapes = {
+ 				{ type="rect", width = 228, height = 6},
+ 				{ type="poly", outline= {228,6,243,18,306,0}}
+ 			}}},
+		
 
-            }
-	    }, 
 		}
 	},
 	{
@@ -248,11 +197,34 @@ function room.start()
 
 end
 
+function moveAlligator(name)
+	local s = script:new(name)
+	local x = math.random(0, 243)
+	local y = math.random(0, 5)
+	local a = monkey.getEntity(name)
+	local flip = false
+	if (x < a.x) then
+		flip = true
+	else
+		flip = false
+	end
+	--print ("Moving alligator to " .. tostring(x) .. ", " .. tostring(y))
+	s.actions = {
+		[1] = { type ="animate", actor =name, anim="default", flipx = flip },
+		[2] = { type = "move", actor=name, to={x, y}, speed=30.0, after={1} },
+		[3] = { type = "callfunc", func = curry(moveAlligator, name),after={2}}
+	}
+	monkey.play(s)
+	
+end
+
 function room.afterstartup() 
-	local a = monkey.getEntity("drowning_graham")
-	a:setactive(false)
-	local b = monkey.getEntity("swimming_graham")
-	b:setactive(false)
+	--local a = monkey.getEntity("drowning_graham")
+	--a:setactive(false)
+	--local b = monkey.getEntity("swimming_graham")
+	--b:setactive(false)
+	--moveAlligator("alli1")
+	--moveAlligator("alli2")
 end
 
 

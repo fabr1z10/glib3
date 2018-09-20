@@ -24,7 +24,7 @@ public:
         m_entity = parent;
     }
     Entity* GetObject();
-    bool IsActive();
+    bool IsActive() const;
     virtual bool SetActive(bool);
 protected:
     bool m_active;
@@ -32,7 +32,7 @@ protected:
     
 };
 
-inline bool Component::IsActive() {
+inline bool Component::IsActive() const {
     return m_active;
 }
 

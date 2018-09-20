@@ -44,6 +44,7 @@ struct EntityWrapper {
     Entity* m_underlying;
     void AppendText (const std::string&);
     void AppendButton (luabridge::LuaRef ref);
+    void ChangeState(const std::string& name);
 };
 
 

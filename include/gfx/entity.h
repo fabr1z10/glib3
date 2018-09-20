@@ -83,7 +83,7 @@ public:
     bool IsActive() const;
     void SetActive(bool);
     void SetEnableUpdate(bool);
-
+    bool IsUpdateEnabled() const;
 
 
     bool AreControlsEnabled() const;
@@ -152,6 +152,10 @@ inline void Entity::SetEnableUpdate(bool value){
     m_update = value;
     for (auto& c : m_children)
         c->SetEnableUpdate(value);
+}
+
+inline bool Entity::IsUpdateEnabled() const {
+    return m_update;
 }
 
 #endif /* entity_h */

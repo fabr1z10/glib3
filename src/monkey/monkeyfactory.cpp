@@ -26,6 +26,28 @@
 
 using namespace luabridge;
 
+MonkeyFactory::MonkeyFactory() {
+
+    AddFactory<TextComponentFactory>("text");
+    AddFactory<OutlineTextComponentFactory>("outlinetext");
+    AddFactory<CameraFactory>("camera");
+    AddFactory<KeyInputFactory>("keyinput");
+    AddFactory<GfxComponentFactory>("gfx");
+    AddFactory<ColliderComponentFactory>("collider");
+    AddFactory<WalkAreaComponentFactory>("walkarea");
+    AddFactory<HotSpotComponentFactory>("hotspot");
+    AddFactory<KeyboardCollisionComponentFactory>("keyboardcontrollercollision");
+    AddFactory<LuaKeyboardComponentFactory>("luakey");
+    AddFactory<SwitchComponentFactory>("switch");
+
+    m_specialKeys.insert("tag");
+    m_specialKeys.insert("pos");
+    m_specialKeys.insert("angle");
+    m_specialKeys.insert("children");
+    m_specialKeys.insert("active");
+}
+
+
 std::shared_ptr<Entity> MonkeyFactory::Create() {
 
     auto entity = std::make_shared<Entity>();
@@ -179,101 +201,123 @@ std::shared_ptr<Entity> MonkeyFactory::ReadItem(luabridge::LuaRef& ref) {
     } else {
         entity->SetPosition(pos);
     }
+
+
     // int layer = item.Get<int>("layer", 0);
-    if (item.HasKey("camera")) {
-        LuaRef cam = item.Get<LuaRef>("camera");
-        LuaTable tcam(cam);
-        std::string camType = tcam.Get<std::string>("type");
-        std::string tag = tcam.Get<std::string>("tag", "");
-        glm::vec2 pos = tcam.Get<glm::vec2>("pos", glm::vec2(0.0f));
-        glm::vec4 viewport = tcam.Get<glm::vec4>("viewport", glm::vec4(0.0f, 0.0f, Engine::get().GetDeviceSize()));
-        if (camType == "ortho") {
-            // orhographic camera
-            glm::vec2 size = tcam.Get<glm::vec2>("size");
-            glm::vec4 bounds = tcam.Get<glm::vec4>("bounds", glm::vec4(0.0));
 
-            auto camera = std::unique_ptr<OrthographicCamera> (new OrthographicCamera(size.x, size.y, viewport));
-            if (bounds != glm::vec4(0.0f))
-                camera->SetBounds(bounds[0], bounds[2], bounds[1], bounds[3]);
-            camera->SetPosition(glm::vec3(pos, 5.0f), glm::vec3(0,0,-1), glm::vec3(0,1,0));
-            if (!tag.empty())
-                camera->SetTag(tag);
-            entity->SetCamera(std::move(camera));
+
+    auto keyValueMap = LuaTable::getKeyValueMap(ref);
+    for (auto& pair : keyValueMap) {
+        auto iter = m_componentFactories.find(pair.first);
+        std::cout << "Reading " << pair.first << "\n";
+        if (iter == m_componentFactories.end()) {
+            if (m_specialKeys.count(pair.first) == 0) {
+                GLIB_FAIL("Unknown component " << pair.first);
+            }
+        } else {
+            iter->second->operator()(pair.second, entity.get());
         }
-
-
     }
+//
+//
+//
+//
+//    if (item.HasKey("camera")) {
+//        LuaRef cam = item.Get<LuaRef>("camera");
+//        LuaTable tcam(cam);
+//        std::string camType = tcam.Get<std::string>("type");
+//        std::string tag = tcam.Get<std::string>("tag", "");
+//        glm::vec2 pos = tcam.Get<glm::vec2>("pos", glm::vec2(0.0f));
+//        glm::vec4 viewport = tcam.Get<glm::vec4>("viewport", glm::vec4(0.0f, 0.0f, Engine::get().GetDeviceSize()));
+//        if (camType == "ortho") {
+//            // orhographic camera
+//            glm::vec2 size = tcam.Get<glm::vec2>("size");
+//            glm::vec4 bounds = tcam.Get<glm::vec4>("bounds", glm::vec4(0.0));
+//
+//            auto camera = std::unique_ptr<OrthographicCamera> (new OrthographicCamera(size.x, size.y, viewport));
+//            if (bounds != glm::vec4(0.0f))
+//                camera->SetBounds(bounds[0], bounds[2], bounds[1], bounds[3]);
+//            camera->SetPosition(glm::vec3(pos, 5.0f), glm::vec3(0,0,-1), glm::vec3(0,1,0));
+//            if (!tag.empty())
+//                camera->SetTag(tag);
+//            entity->SetCamera(std::move(camera));
+//        }
+//
+//
+//    }
+//
+//
 
+//    if (item.HasKey("gfx")) {
+//        luabridge::LuaRef c = item.Get<luabridge::LuaRef>("gfx");
+//        ReadGfxComponent(c, entity.get());
+//    }
+//    if (item.HasKey("textview")) {
+//        luabridge::LuaRef c = item.Get<luabridge::LuaRef>("textview");
+//        ReadTextViewComponent(c, entity.get());
+//    }
+//    if (item.HasKey("text")) {
+//        luabridge::LuaRef c = item.Get<luabridge::LuaRef>("text");
+//        ReadTextComponent(c, entity.get());
+//    }
+//    if (item.HasKey("keyinput")) {
+//        luabridge::LuaRef c = item.Get<luabridge::LuaRef>("keyinput");
+//        ReadKeyInputComponent(c, entity.get());
+//    }
+//    if (item.HasKey("collider")) {
+//        luabridge::LuaRef c = item.Get<luabridge::LuaRef>("collider");
+//        ReadColliderComponent(c, entity.get());
+//    }
+//    if (item.HasKey("keyboardcontroller")) {
+//        luabridge::LuaRef c = item.Get<luabridge::LuaRef>("keyboardcontroller");
+//        ReadKeyboardComponent(c, entity.get());
+//    }
+//    if (item.HasKey("keyboardcontrollercollision")) {
+//        luabridge::LuaRef c = item.Get<luabridge::LuaRef>("keyboardcontrollercollision");
+//        ReadKeyboardCollisionComponent(c, entity.get());
+//    }
+//    if (item.HasKey("luakey")) {
+//        luabridge::LuaRef c = item.Get<luabridge::LuaRef>("luakey");
+//        ReadLuaKeyboard(c, entity.get());
+//    }
+//    if (item.HasKey("outlinetext")) {
+//        luabridge::LuaRef c = item.Get<luabridge::LuaRef>("outlinetext");
+//        ReadOutlineTextComponent(c, entity.get());
+//    }
+//    if (item.HasKey("follow")) {
+//        luabridge::LuaRef c = item.Get<luabridge::LuaRef>("follow");
+//        ReadFollowComponent(c, entity.get());
+//    }
+//    if (item.HasKey("walkarea")) {
+//        luabridge::LuaRef c = item.Get<luabridge::LuaRef>("walkarea");
+//        ReadWalkarea(c, entity.get());
+//    }
+//    if (item.HasKey("hotspot")) {
+//        luabridge::LuaRef c = item.Get<luabridge::LuaRef>("hotspot");
+//        ReadHotspot(c, entity.get());
+//    }
+//    if (item.HasKey("button")) {
+//        luabridge::LuaRef c = item.Get<luabridge::LuaRef>("button");
+//        ReadButton(c, entity.get());
+//    }
+//    if (item.HasKey("scaling")) {
+//        luabridge::LuaRef c = item.Get<luabridge::LuaRef>("scaling");
+//        ReadScaling(c, entity.get());
+//    }
+//    if (item.HasKey("walktrigger")) {
+//        luabridge::LuaRef c = item.Get<luabridge::LuaRef>("walktrigger");
+//        ReadWalkTrigger(c, entity.get());
+//    }
+//    if (item.HasKey("cursor")) {
+//        luabridge::LuaRef c = item.Get<luabridge::LuaRef>("cursor");
+//        ReadCursor(c, entity.get());
+//    }
+//    //entity->SetLayer(layer);
 
     if (item.HasKey("children")) {
         luabridge::LuaRef c = item.Get<luabridge::LuaRef>("children");
         ReadItems (c, entity.get());
     }
-    if (item.HasKey("gfx")) {
-        luabridge::LuaRef c = item.Get<luabridge::LuaRef>("gfx");
-        ReadGfxComponent(c, entity.get());
-    }
-    if (item.HasKey("textview")) {
-        luabridge::LuaRef c = item.Get<luabridge::LuaRef>("textview");
-        ReadTextViewComponent(c, entity.get());
-    }
-    if (item.HasKey("text")) {
-        luabridge::LuaRef c = item.Get<luabridge::LuaRef>("text");
-        ReadTextComponent(c, entity.get());
-    }
-    if (item.HasKey("keyinput")) {
-        luabridge::LuaRef c = item.Get<luabridge::LuaRef>("keyinput");
-        ReadKeyInputComponent(c, entity.get());
-    }
-    if (item.HasKey("collider")) {
-        luabridge::LuaRef c = item.Get<luabridge::LuaRef>("collider");
-        ReadColliderComponent(c, entity.get());
-    }
-    if (item.HasKey("keyboardcontroller")) {
-        luabridge::LuaRef c = item.Get<luabridge::LuaRef>("keyboardcontroller");
-        ReadKeyboardComponent(c, entity.get());
-    }
-    if (item.HasKey("keyboardcontrollercollision")) {
-        luabridge::LuaRef c = item.Get<luabridge::LuaRef>("keyboardcontrollercollision");
-        ReadKeyboardCollisionComponent(c, entity.get());
-    }
-    if (item.HasKey("luakey")) {
-        luabridge::LuaRef c = item.Get<luabridge::LuaRef>("luakey");
-        ReadLuaKeyboard(c, entity.get());
-    }
-    if (item.HasKey("outlinetext")) {
-        luabridge::LuaRef c = item.Get<luabridge::LuaRef>("outlinetext");
-        ReadOutlineTextComponent(c, entity.get());
-    }
-    if (item.HasKey("follow")) {
-        luabridge::LuaRef c = item.Get<luabridge::LuaRef>("follow");
-        ReadFollowComponent(c, entity.get());
-    }
-    if (item.HasKey("walkarea")) {
-        luabridge::LuaRef c = item.Get<luabridge::LuaRef>("walkarea");
-        ReadWalkarea(c, entity.get());
-    }
-    if (item.HasKey("hotspot")) {
-        luabridge::LuaRef c = item.Get<luabridge::LuaRef>("hotspot");
-        ReadHotspot(c, entity.get());
-    }
-    if (item.HasKey("button")) {
-        luabridge::LuaRef c = item.Get<luabridge::LuaRef>("button");
-        ReadButton(c, entity.get());
-    }
-    if (item.HasKey("scaling")) {
-        luabridge::LuaRef c = item.Get<luabridge::LuaRef>("scaling");
-        ReadScaling(c, entity.get());
-    }
-    if (item.HasKey("walktrigger")) {
-        luabridge::LuaRef c = item.Get<luabridge::LuaRef>("walktrigger");
-        ReadWalkTrigger(c, entity.get());
-    }
-    if (item.HasKey("cursor")) {
-        luabridge::LuaRef c = item.Get<luabridge::LuaRef>("cursor");
-        ReadCursor(c, entity.get());
-    }
-    //entity->SetLayer(layer);
     entity->SetActive(active);
     return entity;
 
@@ -311,54 +355,19 @@ void MonkeyFactory::ReadTextViewComponent(luabridge::LuaRef &ref, Entity *parent
 }
 
 
-void MonkeyFactory::ReadGfxComponent(luabridge::LuaRef &ref, Entity *parent) {
-    LuaTable table(ref);
-    auto renderer = std::make_shared<Renderer>();
-    if (table.HasKey("image")) {
-        std::string image = table.Get<std::string>("image");
-        float w = table.Get<float>("width", 0.0f);
-        float h = table.Get<float>("height", 0.0f);
-        auto mesh = std::make_shared<QuadMesh>(image, w, h);
-        renderer->SetMesh(mesh);
-    } else if (table.HasKey("model")) {
-        std::string model = table.Get<std::string>("model");
-        std::string anim = table.Get<std::string>("anim", "");
-        bool flip = table.Get<bool>("flip", false);
-        renderer->SetMesh(Engine::get().GetAssetManager().GetMesh(model));
-        renderer->SetFlipX(flip);
-        renderer->SetAnimation(anim);
-    } else if (table.HasKey("shape")) {
-        LuaRef sref = table.Get<LuaRef>("shape");
-        std::string draw = table.Get<std::string>("draw","outline");
-        glm::vec4 color = table.Get<glm::vec4>("color");
-        color /= 255.0f;
-        auto shape = ReadShape(sref);
-        if (draw == "outline") {
-            auto mesh = MeshFactory::CreateMesh(*(shape.get()), 0.0f);
-            renderer->SetMesh(mesh);
-        } else if (draw == "solid") {
-            auto mesh = MeshFactorySolid::CreateMesh(*(shape.get()), 0.0f);
-            renderer->SetMesh(mesh);
 
-        }
-        renderer->SetTint(color);
-
-    }
-    parent->AddComponent(renderer);
-    
-}
-
-void MonkeyFactory::ReadTextComponent(luabridge::LuaRef &ref, Entity *parent) {
-    auto renderer = GetTextComponent(ref);
-    parent->AddComponent(renderer);
-}
-
-void MonkeyFactory::ReadKeyInputComponent(luabridge::LuaRef &ref, Entity *parent) {
-    LuaTable table(ref);
-    int maxLength = table.Get<int>("maxlength");
-    luabridge::LuaRef shapeR = table.Get<luabridge::LuaRef>("func");
-    parent->AddComponent(std::make_shared<KeyInput>(maxLength, shapeR));
-}
+//
+//void MonkeyFactory::ReadTextComponent(luabridge::LuaRef &ref, Entity *parent) {
+//    auto renderer = GetTextComponent(ref);
+//    parent->AddComponent(renderer);
+//}
+//
+//void MonkeyFactory::ReadKeyInputComponent(luabridge::LuaRef &ref, Entity *parent) {
+//    LuaTable table(ref);
+//    int maxLength = table.Get<int>("maxlength");
+//    luabridge::LuaRef shapeR = table.Get<luabridge::LuaRef>("func");
+//    parent->AddComponent(std::make_shared<KeyInput>(maxLength, shapeR));
+//}
 
 void MonkeyFactory::ReadFollowComponent(luabridge::LuaRef &ref, Entity *parent) {
     LuaTable table(ref);
@@ -366,14 +375,6 @@ void MonkeyFactory::ReadFollowComponent(luabridge::LuaRef &ref, Entity *parent) 
     parent->AddComponent(std::make_shared<Follow>(cam));
 }
 
-void MonkeyFactory::ReadColliderComponent(luabridge::LuaRef &ref, Entity *parent) {
-    LuaTable table(ref);
-    luabridge::LuaRef shapeR = table.Get<luabridge::LuaRef>("shape");
-    int tag = table.Get<int>("tag");
-    int flag = table.Get<int>("flag");
-    auto shape = ReadShape(shapeR);
-    parent->AddComponent(std::make_shared<Collider>(shape, tag, flag));
-}
 
 void MonkeyFactory::ReadKeyboardComponent(luabridge::LuaRef &ref, Entity *parent) {
     LuaTable table(ref);
@@ -382,172 +383,22 @@ void MonkeyFactory::ReadKeyboardComponent(luabridge::LuaRef &ref, Entity *parent
     //auto shape = ReadShape(shapeR);
     parent->AddComponent(std::make_shared<KeyboardController>());
 }
-void MonkeyFactory::ReadKeyboardCollisionComponent(luabridge::LuaRef &ref, Entity *parent) {
-    LuaTable table(ref);
-    float width = table.Get<float>("width");
-    float height = table.Get<float>("height");
-    float speed = table.Get<float>("speed");
-    int horRays = table.Get<int>("horizontal_rays");
-    int vertRays = table.Get<int>("vertical_rays");
-    //luabridge::LuaRef shapeR = table.Get<luabridge::LuaRef>("shape");
-    //auto shape = ReadShape(shapeR);
-    auto c = std::make_shared<KeyboardControllerCollision>(width, height, speed, horRays, vertRays);
-    if (table.HasKey("anims")) {
-        auto anims = table.Get<luabridge::LuaRef>("anims");
-        for (int i = 0 ; i < anims.length(); ++i) {
-            luabridge::LuaRef an = anims[i+1];
-            std::string id = an["id"].cast<std::string>();
-            std::string anim = an["anim"].cast<std::string>();
-            c->AddAnimation(id, anim);
-        }
-    }
-    parent->AddComponent(c);
-}
-
-void MonkeyFactory::ReadLuaKeyboard(luabridge::LuaRef &ref, Entity *parent) {
-    LuaTable table(ref);
-    auto keyListener = std::make_shared<LuaKeyListener>();
-    luabridge::LuaRef hotkeys = table.Get<luabridge::LuaRef>("keys");
-    for (int i = 0; i < hotkeys.length(); ++i) {
-        luabridge::LuaRef hotkey = hotkeys[i+1];
-        int key = hotkey["key"].cast<int>();
-        luabridge::LuaRef callback = hotkey["func"];
-        keyListener->AddHotKey(key, callback);
-    }
-    parent->AddComponent(keyListener);
-
-}
-
-
-void MonkeyFactory::ReadOutlineTextComponent(luabridge::LuaRef &ref, Entity *parent) {
-    LuaTable table(ref);
-
-    std::string font = table.Get<std::string>("font");
-    float size = table.Get<float>("size");
-    std::string text = table.Get<std::string>("id");
-    TextAlignment align = table.Get<TextAlignment>("align", TOP_LEFT);
-    glm::vec4 fontColor = table.Get<glm::vec4>("fontcolor", glm::vec4(255.0f));
-    glm::vec4 outlineColor = table.Get<glm::vec4>("outlinecolor", glm::vec4(255.0f));
-    fontColor /= 255.0f;
-    outlineColor /= 255.0f;
-    Font* f = Engine::get().GetAssetManager().GetFont(font);
-    auto mesh = std::make_shared<TextMesh>(f, text, size, align);
-    glm::vec2 offset = mesh->getOffset();
-    glm::vec2 outlineOffsets[] = {{0, 0}, {-1, 0}, {-1,1}, {0, 1}, {1,1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1}};
-    for (int i =0; i < 9; ++i) {
-        auto entity = std::make_shared<Entity>();
-        auto renderer = std::make_shared<Renderer>();
-        renderer->SetMesh(mesh);
-        entity->SetPosition(glm::vec3(outlineOffsets[i] * 0.5f, i == 0 ? 0 : -1));
-        renderer->SetTint(i==0 ? fontColor : outlineColor);
-        renderer->SetRenderingTransform(glm::translate(glm::vec3(offset, 0.0f)));
-        entity->AddComponent(renderer);
-        parent->AddChild(entity);
-    }
-}
-
-
-std::unique_ptr<Function2D> MonkeyFactory::GetFunc2D(luabridge::LuaRef& ref) {
-    std::unique_ptr<PatchwiseLinear2D> p (new PatchwiseLinear2D);
-    for (int i = 0; i < ref.length(); ++i) {
-        luabridge::LuaRef f = ref[i+1];
-        LuaTable funcTable(f);
-        glm::vec4 domain = funcTable.Get<glm::vec4>("rect");
-        bool isX = (funcTable.Get<char>("dir") == 'x');
-        glm::vec2 bounds = funcTable.Get<glm::vec2>("bounds");
-        p->AddFunction(domain, isX, bounds.x, bounds.y);
-    }
-    return std::move(p);
-}
-
-// Read the walk-area
-void MonkeyFactory::ReadWalkarea (luabridge::LuaRef& ref, Entity* parent) {
-    LuaTable table(ref);
-    std::string tag = table.Get<std::string>("tag", "");
-
-    //int group = table.Get<int>("group");
-    int priority = table.Get<int>("priority");
-    std::string targetId = table.Get<std::string>("target");
-    luabridge::LuaRef shapeR = table.Get<luabridge::LuaRef>("shape");
-    auto shape = ReadShape(shapeR);
-    auto hotspot = std::make_shared<WalkArea>(shape, priority, targetId);
-    if (!tag.empty()) hotspot->SetTag(tag);
-
-    // see if it has a depthfunc
-    if (table.HasKey("scaling")) {
-        luabridge::LuaRef sref = table.Get<luabridge::LuaRef>("scaling");
-        luabridge::LuaRef depthRef = sref["depth"];
-        auto depthFunc = GetFunc2D(depthRef);
-        hotspot->SetDepthFunction(std::move(depthFunc));
-        luabridge::LuaRef scaleRef = sref["scale"];
-        auto scaleFunc = GetFunc2D(scaleRef);
-        hotspot->SetScalingFunction(std::move(scaleFunc));
-    }
-
-    if (table.HasKey("blockedlines")) {
-        luabridge::LuaRef ref = table.Get<luabridge::LuaRef>("blockedlines");
-        for (int i = 0; i < ref.length(); ++i) {
-            luabridge::LuaRef bl = ref[i+1];
-            LuaTable t(bl);
-            glm::vec2 A = t.Get<glm::vec2>("A");
-            glm::vec2 B = t.Get<glm::vec2>("B");
-            bool active = t.Get<bool>("active");
-            hotspot->AddBlockedLine(A, B, active);
-        }
-    }
-
-    parent->AddComponent(hotspot);
-
-    // see if we want to plot the outline of the walk area
-//    auto mesh = MeshFactory::CreateMesh(*(shape.get()), 1.0f);
-//    auto ce = std::make_shared<Entity>();
-//    ce->SetLayer(1);
-//    auto cer = std::make_shared<Renderer>();
-//    cer->SetMesh(mesh);
-//    ce->AddComponent(cer);
-//    parent->AddChild(ce);
 
 
 
 
 
-}
 
-std::shared_ptr<HotSpot> MonkeyFactory::GetHotSpot (luabridge::LuaRef& ref) {
-    LuaTable table(ref);
-    luabridge::LuaRef shapeR = table.Get<luabridge::LuaRef>("shape");
-    auto shape = ReadShape(shapeR);
-    return GetHotSpot(ref, shape);
 
-}
+//std::shared_ptr<HotSpot> MonkeyFactory::GetHotSpot (luabridge::LuaRef& ref) {
+//    LuaTable table(ref);
+//    luabridge::LuaRef shapeR = table.Get<luabridge::LuaRef>("shape");
+//    auto shape = ReadShape(shapeR);
+//    return GetHotSpot(ref, shape);
+//
+//}
 
-std::shared_ptr<HotSpot> MonkeyFactory::GetHotSpot (luabridge::LuaRef& ref, std::shared_ptr<Shape> shape) {
-    LuaTable table(ref);
-    //int group = table.Get<int>("group");
-    int priority = table.Get<int>("priority");
-    auto hotspot = std::make_shared<ScriptHotSpot>(shape, priority);
-    if (table.HasKey("onenter")) {
-        luabridge::LuaRef r = table.Get<luabridge::LuaRef>("onenter");
-        hotspot->SetOnEnter(r);
-    }
-    if (table.HasKey("onleave")) {
-        luabridge::LuaRef r = table.Get<luabridge::LuaRef>("onleave");
-        hotspot->SetOnLeave(r);
-    }
-    if (table.HasKey("onclick")) {
-        luabridge::LuaRef r = table.Get<luabridge::LuaRef>("onclick");
-        hotspot->SetOnClick(r);
-    }
-    if (table.HasKey("onmove")) {
-        luabridge::LuaRef r = table.Get<luabridge::LuaRef>("onmove");
-        hotspot->SetOnMove(r);
-    }
-    //std::string onEnter = table.Get<std::string>("onenter", "");
-    //std::string onLeave = table.Get<std::string>("onleave", "");
-    //std::string onClick = table.Get<std::string>("onclick", "");
-    
-    return hotspot;
-}
+
 
 std::shared_ptr<Renderer> MonkeyFactory::GetTextComponent (luabridge::LuaRef& ref) {
     LuaTable table(ref);
@@ -575,20 +426,7 @@ void MonkeyFactory::ReadCursor (luabridge::LuaRef& ref, Entity* parent) {
     parent->AddComponent(cursor);
 }
 
-void MonkeyFactory::ReadHotspot (luabridge::LuaRef& ref, Entity* parent) {
-    LuaTable table(ref);
-    auto hs = GetHotSpot(ref);
-    Shape* s = hs->GetShape();
-    parent->AddComponent(hs);
-    int layer = table.Get<int>("layer", 1);
-    auto ce = std::make_shared<Entity>();
-    ce->SetLayer(layer);
-    auto cer = std::make_shared<Renderer>();
-    auto debugMesh = MeshFactory::CreateMesh(*s, 1.0f);
-    cer->SetMesh(debugMesh);
-    ce->AddComponent(cer);
-    parent->AddChild(ce);
-}
+
 
 void MonkeyFactory::ReadWalkTrigger (luabridge::LuaRef& ref, Entity* parent) {
     LuaTable table(ref);
@@ -696,77 +534,7 @@ void MonkeyFactory::ReadSprite (LuaTable& t) {
 
 }
 
-std::shared_ptr<Shape> MonkeyFactory::ReadShape(luabridge::LuaRef& ref) {
-    LuaTable at (ref);
-    std::string type = at.Get<std::string>("type");
-    glm::vec2 offset = at.Get<glm::vec2>("offset", glm::vec2(0.0f));
-    if (type == "rect") {
-        float w = at.Get<float>("width");
-        float h = at.Get<float>("height");
-        return std::make_shared<Rect>(w, h, offset);
-    } else if (type=="line") {
-        glm::vec2 A = at.Get<glm::vec2>("A");
-        glm::vec2 B = at.Get<glm::vec2>("B");
-        return std::make_shared<Line>(A, B);
-    } else if (type == "poly") {
-        std::vector<float> outline = at.GetVector<float>("outline");
-        std::vector<glm::vec2> points;
-        for (int i = 0; i < outline.size(); i = i + 2)
-            points.push_back(glm::vec2(outline[i], outline[i + 1]));
-        if (at.HasKey("holes")) {
-            std::unique_ptr<Polygon> mainOutline(new Polygon(points));
-            luabridge::LuaRef holes = at.Get<luabridge::LuaRef>("holes");
-            LuaTable ha(holes);
-            auto poly = std::make_shared<Poly>(std::move(mainOutline));
-            for (int j = 0; j < holes.length(); ++j) {
-                luabridge::LuaRef h = holes[j + 1];
-                std::vector<float> holeOutline = ReadVector<float>(h);
-                std::vector<glm::vec2> points;
-                for (int i = 0; i < holeOutline.size(); i = i + 2)
-                    points.push_back(glm::vec2(holeOutline[i], holeOutline[i + 1]));
-                poly->AddHole(std::unique_ptr<Polygon>(new Polygon(points)));
 
-            }
-            return poly;
-
-        } else {
-
-
-            return std::make_shared<Polygon>(points);
-        }
-    } else if (type == "circle") {
-        float radius = at.Get<float>("radius");
-        return std::make_shared<Circle>(radius, offset);
-    } else if (type == "graph") {
-        // read the vertices
-        luabridge::LuaRef rVert = at.Get<luabridge::LuaRef>("vertices");
-        std::vector<glm::vec2> vertices;
-        std::vector<std::pair<int, int>> edges;
-        for (int i = 0; i< rVert.length(); ++i) {
-            luabridge::LuaRef vertex = rVert[i+1];
-            glm::vec2 p(vertex[1].cast<float>(), vertex[2].cast<float>());
-            vertices.push_back(p);
-        }
-        luabridge::LuaRef rEdges = at.Get<luabridge::LuaRef>("edges");
-        for (int i = 0; i< rEdges.length(); ++i) {
-            luabridge::LuaRef edge = rEdges[i+1];
-            std::pair<int, int> e(edge[1].cast<int>(), edge[2].cast<int>());
-            edges.push_back(e);
-        }
-        return std::make_shared<PolyLine>(vertices,edges);
-    } else if (type =="compound") {
-        luabridge::LuaRef rshapes = at.Get<luabridge::LuaRef>("shapes");
-        auto cs = std::make_shared<CompoundShape>();
-        for (int i = 0; i<rshapes.length(); ++i) {
-            luabridge::LuaRef rshape = rshapes[i+1];
-            auto s = ReadShape(rshape);
-            cs->AddShape(s);
-        }
-        return cs;
-    }
-
-    return nullptr;
-}
 
 void MonkeyFactory::PostInit() {
 

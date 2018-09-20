@@ -6,6 +6,7 @@
 #include <graph/poly.h>
 #include <graph/polyline.h>
 #include <graph/circle.h>
+#include <graph/compound.h>
 #include <memory>
 
 
@@ -16,7 +17,8 @@ class MeshFactory :
     public Visitor<Polygon>,
     public Visitor<Poly>,
     public Visitor<PolyLine>,
-    public Visitor<Circle>
+    public Visitor<Circle>,
+    public Visitor<CompoundShape>
 {
 public:
     static std::shared_ptr<IMesh> CreateLineMesh (glm::vec2 A, glm::vec2 B, glm::vec4 color, float z= 0.0f);
@@ -30,6 +32,7 @@ public:
     void visit(Poly&) override;
     void visit(PolyLine&) override;
     void visit(Circle&) override;
+    void visit(CompoundShape&) override;
 private:
     std::shared_ptr<IMesh> m_mesh;
     glm::vec4 m_color;

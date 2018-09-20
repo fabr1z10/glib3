@@ -28,6 +28,7 @@ std::shared_ptr<IMesh> MeshFactory::CreateBoxMesh (float width, float height, gl
     return mesh;
 }
 
+
 std::shared_ptr<IMesh> MeshFactory::CreateLineMesh (glm::vec2 A, glm::vec2 B) {
     std::vector<SimpleVertex3D> vertices = {
             {-0.5f, -0.5f, 0.0f},
@@ -88,6 +89,29 @@ void MeshFactory::visit(Rect& rect) {
     auto mesh = std::make_shared<Mesh<VertexColor>>(COLOR_SHADER);
     mesh->Init(vertices, indices);
     mesh->m_primitive = GL_LINE_LOOP;
+    m_mesh = mesh;
+}
+
+void MeshFactory::visit(CompoundShape& shape) {
+    auto shapes = shape.GetShapes();
+    std::vector<VertexColor> vertices;
+    std::vector<unsigned int> indices;
+    unsigned int i{0};
+    for (auto& shape : shapes) {
+        auto points = shape->getPoints();
+        glm::vec2 offset = shape->GetOffset();
+        int j = 0;
+        for (auto& p : points) {
+            vertices.push_back({offset.x + p.x, offset.y + p.y, m_z, m_color.g, m_color.r, m_color.b, m_color.a});
+            indices.push_back(i);
+            indices.push_back((j+1 >= points.size()) ? 0 : i+1);
+            i++;
+            j++;
+        }
+    }
+    auto mesh = std::make_shared<Mesh<VertexColor>>(COLOR_SHADER);
+    mesh->Init(vertices, indices);
+    mesh->m_primitive = GL_LINES;
     m_mesh = mesh;
 }
 

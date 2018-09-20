@@ -14,6 +14,12 @@ MoveTo::MoveTo(Entity* entity, glm::vec2 pos, float speed, bool relative, bool i
 
 }
 
+void MoveTo::Reset() {
+    Activity::Reset();
+    m_lengthToCover = 0.0f;
+    m_lengthCovered = 0.0f;
+
+}
 
 void MoveTo::Start() {
     if (m_entity == nullptr) {

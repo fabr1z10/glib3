@@ -14,11 +14,12 @@ fonts = {
 require("script")
 require("sprites")
 require("funcs")
-
+require("strings")
 
 variables = {
     _room = "001",
 	status = 0,
-pause = false
+	pause = false,
+	callbackAfterPause = nil
 }
 

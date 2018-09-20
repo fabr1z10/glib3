@@ -16,12 +16,13 @@
 #include <gfx/scriptactions.h>
 #include <monkey/callfunc.h>
 #include <monkey/monkeyfactory.h>
-
+#include <gfx/switch.h>
 #include <monkey/scripthotspot.h>
 #include <gfx/textview.h>
 #include <gfx/scroll.h>
 #include <monkey/activityfactory.h>
 #include <iostream>
+#include <monkey/compfactories.h>
 
 float EntityWrapper::GetX() const {
     return m_underlying->GetPosition().x;
@@ -337,7 +338,7 @@ void EntityWrapper::AppendButton(luabridge::LuaRef ref) {
     LuaTable table(ref);
     std::string text = table.Get<std::string>("text");
     auto mf = dynamic_cast<MonkeyFactory*>(Engine::get().GetSceneFactory());
-    auto hs = mf->GetHotSpot(ref, nullptr);
+    auto hs = GetHotSpot(ref, nullptr);
     r->AppendText(text, hs);
 }
 
@@ -351,3 +352,8 @@ luabridge::LuaRef EntityWrapper::GetTextInfo() {
     return rr;
 }
 
+
+void EntityWrapper::ChangeState(const std::string& name)
+{
+    m_underlying->GetComponent<Switch>()->ChangeState(name);
+}

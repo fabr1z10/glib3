@@ -38,8 +38,12 @@ void CompoundShape::AddShape (std::shared_ptr<Shape> s) {
     m_shapes.push_back(s);
     // update the bounding box
     auto b = s->getBounds();
-    m_bounds.min.x = std::min(m_bounds.min.x,b.min.x);
-    m_bounds.min.y = std::min(m_bounds.min.y,b.min.y);
-    m_bounds.max.x = std::max(m_bounds.max.x,b.max.x);
-    m_bounds.max.y = std::max(m_bounds.max.y,b.max.y);
+    if (m_shapes.size() == 1) {
+        m_bounds = b;
+    } else {
+        m_bounds.min.x = std::min(m_bounds.min.x, b.min.x);
+        m_bounds.min.y = std::min(m_bounds.min.y, b.min.y);
+        m_bounds.max.x = std::max(m_bounds.max.x, b.max.x);
+        m_bounds.max.y = std::max(m_bounds.max.y, b.max.y);
+    }
 }

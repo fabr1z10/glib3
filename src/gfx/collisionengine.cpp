@@ -147,7 +147,7 @@ void CollisionEngine::Update(double dt) {
                 
                 // perform a aabb testing
                 if (!b1.Intersects(b2)) {
-                    //std::cout << "aabb do not intersect\n";
+                    std::cout << "aabb do not intersect\n";
                     continue;
                 }
                 //std::cout << "aabb do intersect. Now do a proper testing\n";

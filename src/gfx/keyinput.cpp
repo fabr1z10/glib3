@@ -12,6 +12,8 @@ void KeyInput::Start() {
 
 
 void KeyInput::KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+    if (!m_entity->IsUpdateEnabled())
+        return;
     std::cout << key << "\n";
     if (action == GLFW_PRESS)
     {
