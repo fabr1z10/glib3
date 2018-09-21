@@ -47,6 +47,7 @@ void LuaWrapper::Init() {
                             .addFunction("addbutton", &EntityWrapper::AppendButton)
                             .addFunction("cleartext", &EntityWrapper::ClearText)
                             .addFunction("gettextinfo", &EntityWrapper::GetTextInfo)
+                            .addFunction("getinfo",&EntityWrapper::GetInfo)
                             //.addFunction("addbutton"), &EntityWrapper::AddButton)
                     .endClass();
 }

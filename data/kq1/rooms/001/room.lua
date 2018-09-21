@@ -6,21 +6,22 @@ local function makeShape (arg)
 		angle = arg.angle,
 		gfx = {shape=arg.shape, color={255,255,255,255} },
 		collider= {shape=arg.shape, tag=arg.tag, flag = arg.flag},
+		info = arg.info
 	}
 end
 
 
-local function ciao1() 
-print ("LEAVE WATER")
-end
-
-
 local dt=0.1
-
+local d = {
+	depth = { 
+	    { rect = {0, 316, 0, 166}, dir = "y", bounds = {1, 0} } 
+	}
+}
 
 room = {
 collisionresponse = {
-	{ tag = {1, 10}, onenter = enterWaterDie, onleave=exitWater}
+	{ tag = {1, 10}, onenter = enterWaterDie, onleave=exitWater},
+	{ tag = {1, 11}, onenter = changeRoom }
 },
 assets = {
 	sprites.graham,
@@ -136,9 +137,9 @@ scene = {
 			viewport = {2, 25, 318, 25+166}
 		},
 		children = {
--- 		{
--- 			pos = {0, 0, -5},
--- 			gfx = { image="gfx/bg001.png", width=316, height=166 }
+	 		{ pos = {0, 0, -5}, gfx = { image="gfx/bg001.png", width=316, height=166 }},
+	 		{ pos = {196, 39, 0.765}, gfx = { image="gfx/bg002.png"}},
+
 -- 		},
 --        {   pos = {8, 149, 1}, gfx = { model = "purple_flag", anim = "default" } },--   
 -- 		{   pos = {38, 150, 1}, gfx = { model = "yellow_flag", anim = "default" } },-- 
@@ -146,9 +147,10 @@ scene = {
 -- 		{   pos = {0, 0, 1}, tag="alli1", gfx = { model = "alligator", anim = "default" } },-- 
 -- 		{   pos = {20, 0, 1}, tag="alli2", gfx = { model = "alligator", anim = "default" } },-- 
 
-			makeGraham(20, 10),
- 			--makeShape { pos = {265, 39, 0}, angle = 0, tag=2, flag=2, shape = {type="rect", width=17, height=7, offset={0, 0}} },
- 			--makeShape { pos = {0, 23, 0}, angle = 0, tag=2, flag=2, shape = {type="line", A={0,0},B={179,0}}, offset={0, 0} },
+			makeGraham(20, 10, d),
+ 			makeShape { pos = {265, 39, 0}, angle = 0, tag=2, flag=2, shape = {type="rect", width=17, height=7, offset={0, 0}} },
+ 			makeShape { pos = {0, 23, 0}, angle = 0, tag=2, flag=2, shape = {type="line", A={0,0},B={179,0}}, offset={0, 0} },
+			makeShape { pos = {0,0,0}, tag=11, flag = 4, shape = {type="line", A={1,10}, B={1,20}}, info = {roomto = 10} },
  			makeShape { pos = {0, 0, 0}, angle=0, tag = 10, flag = 4, shape = { type="compound", 
  			shapes = {
  				{ type="rect", width = 228, height = 6},

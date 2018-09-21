@@ -12,6 +12,8 @@
 #include <monkey/scripthotspot.h>
 #include <gfx/keyboardcontroller.h>
 #include <monkey/luakeylistener.h>
+#include <gfx/depth.h>
+#include <monkey/info.h>
 
 // a text component is actually a renderer
 void TextComponentFactory::operator() (luabridge::LuaRef& ref, Entity* e) {
@@ -360,3 +362,25 @@ void SwitchComponentFactory::operator()(luabridge::LuaRef & ref, Entity * p) {
     p->AddComponent(sw);
 }
 
+void DepthComponentFactory::operator()(luabridge::LuaRef & ref, Entity * p) {
+    LuaTable table(ref);
+    auto comp = std::make_shared<DepthCalculator>();
+    if (table.HasKey("depth")) {
+        luabridge::LuaRef dref = table.Get<luabridge::LuaRef>("depth");
+        auto depthFunc = GetFunc2D(dref);
+        comp->SetDepthFunction(std::move(depthFunc));
+    }
+    if (table.HasKey("scale")) {
+        luabridge::LuaRef dref = table.Get<luabridge::LuaRef>("scale");
+        auto scaleFunc = GetFunc2D(dref);
+        comp->SetScalingFunction(std::move(scaleFunc));
+    }
+    p->AddComponent(comp);
+
+}
+
+void InfoComponentFactory::operator()(luabridge::LuaRef & ref, Entity * p) {
+    auto comp = std::make_shared<LuaInfo>(ref);
+    p->AddComponent(comp);
+
+}

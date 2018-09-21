@@ -8,7 +8,7 @@ class Renderer;
 
 class DepthCalculator : public Component {
 public:
-    DepthCalculator();
+    DepthCalculator() : Component(), m_depthFunc(nullptr), m_scaleFunc(nullptr) {}
     void Start() override;
     void Update(double) override {}
     void SetDepthFunction (std::unique_ptr<Function2D> func);

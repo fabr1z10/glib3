@@ -63,3 +63,11 @@ class LuaKeyboardComponentFactory : public ComponentFactory {
 class SwitchComponentFactory : public ComponentFactory {
     void operator()(luabridge::LuaRef&, Entity*) override;
 };
+
+class DepthComponentFactory : public ComponentFactory {
+    void operator()(luabridge::LuaRef&, Entity*) override;
+};
+
+class InfoComponentFactory : public ComponentFactory {
+    void operator()(luabridge::LuaRef&, Entity*) override;
+};

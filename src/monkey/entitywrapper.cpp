@@ -23,6 +23,7 @@
 #include <monkey/activityfactory.h>
 #include <iostream>
 #include <monkey/compfactories.h>
+#include <monkey/info.h>
 
 float EntityWrapper::GetX() const {
     return m_underlying->GetPosition().x;
@@ -356,4 +357,9 @@ luabridge::LuaRef EntityWrapper::GetTextInfo() {
 void EntityWrapper::ChangeState(const std::string& name)
 {
     m_underlying->GetComponent<Switch>()->ChangeState(name);
+}
+
+
+luabridge::LuaRef EntityWrapper::GetInfo() {
+    return m_underlying->GetComponent<LuaInfo>()->get();
 }

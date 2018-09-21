@@ -39,6 +39,8 @@ MonkeyFactory::MonkeyFactory() {
     AddFactory<KeyboardCollisionComponentFactory>("keyboardcontrollercollision");
     AddFactory<LuaKeyboardComponentFactory>("luakey");
     AddFactory<SwitchComponentFactory>("switch");
+    AddFactory<DepthComponentFactory>("depth");
+    AddFactory<InfoComponentFactory>("info");
 
     m_specialKeys.insert("tag");
     m_specialKeys.insert("pos");

@@ -4,6 +4,12 @@ function curry(f, arg)
     end 
 end
 
+function changeRoom(o1, o2)
+	local a = o2:getinfo()
+	print (a.roomto)
+
+end
+
 function exitpause() 
 	if (variables.pause == true) then
 		print ("Exit pause mode")
@@ -22,11 +28,8 @@ function exitpause()
 end
 
 function waitForRestart()
-print ("DUIDJIDJ")
-	local a = monkey.getEntity("drowning_graham")
 	local b = monkey.getEntity("graham")
 	local c = monkey.getEntity("ui")
-	a:setactive(false)
 	b:setactive(false)
 	c:setactive(false)
 	variables.callbackAfterPause = nil
@@ -220,7 +223,7 @@ function setGrahamState (s)
 end
 
 
-function makeGraham(x, y) 
+function makeGraham(x, y, depth) 
 	return
 		{
 			tag = "graham",
@@ -234,6 +237,7 @@ function makeGraham(x, y)
 					gfx = { model="graham", anim="idle_right"},
 					collider= {shape={type="rect", width=1, height=1}, tag=1, flag=1},
 					pos = {x,y,0},
+					depth = depth,
 					keyboardcontrollercollision = { 
 						width = 1, 
 		                height = 1, 
@@ -255,10 +259,12 @@ function makeGraham(x, y)
 					-- drown
 					gfx = { model="graham", anim="drown"},
 					collider= {shape={type="rect", width=1, height=1}, tag=1, flag=1},
+					depth = depth,
 			    }, 
 				{
 					-- swim
 					gfx = { model="graham", anim="swim_right"},
+					depth = depth,
 					collider= {shape={type="rect", width=1, height=1}, tag=1, flag=1},
 					keyboardcontrollercollision = { 
 						width = 1, 
