@@ -18,6 +18,7 @@ require("strings")
 
 variables = {
     _room = "001",
+    _previousroom = "start",
 	status = 0,
 	pause = false,
 	callbackAfterPause = nil

@@ -6,6 +6,7 @@
 #include "shader.h"
 #include "gfx/ref.h"
 #include <gfx/event.h>
+#include <gfx/listener.h>
 
 class Camera : public Ref {
 public:
@@ -109,6 +110,17 @@ inline glm::vec2 OrthographicCamera::GetSize() {
 }
 
 
+class PerspectiveCamera : public Camera, public WindowResizeListener {
+public:
+    PerspectiveCamera (glm::vec4 viewport, float fov = 45.0f, float nearPlane = 0.05f, float farPlane = 1000.0f);
+    void Resize(int w, int h) override;
+    bool IsVisible(const Bounds3D&) override {return true;}
+    void Notify(float, float) override ;
+private:
+    float m_fov;
+    float m_near;
+    float m_far;
+};
 
 
 #endif

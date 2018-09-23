@@ -26,6 +26,12 @@ void CollisionEngine::Remove(Collider* c) {
     PopCollider(c);
 }
 
+void CollisionEngine::Clear() {
+    m_cells.clear();
+    m_colliderLocations.clear();
+    m_previouslyCollidingPairs.clear();
+}
+
 void CollisionEngine::Move(Collider * c) {
     Location loc = GetLocation(c);
     auto it = m_colliderLocations.find(c);

@@ -69,6 +69,15 @@ public:
             GLIB_FAIL("Reference " << id << " has incorrect type.");
         return cref;
     }
+    template <class T>
+    T* GetRunner() {
+        auto it = m_runners.find(std::type_index(typeid(typename T::ParentClass)));
+        if (it != m_runners.end()) {
+            return dynamic_cast<T*>(it->second.get());
+        }
+        return nullptr;
+    }
+    
     void AddTaggedRef (const std::string&, Ref*);
     void RemoveTaggedRef (const std::string&);
     void EndScene();
@@ -82,15 +91,16 @@ public:
     static void scroll_callback(GLFWwindow*, double xoffset, double yoffset);
     static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
     void SetRenderingEngine(std::unique_ptr<RenderingEngine>);
-    void SetScriptingEngine(std::unique_ptr<Scheduler>);
-    void SetCollisionEngine(std::unique_ptr<CollisionEngine>);
+    
+    //void SetScriptingEngine(std::unique_ptr<Scheduler>);
+    //void SetCollisionEngine(std::unique_ptr<CollisionEngine>);
     //MouseListener* GetMouseHandler();
     //KeyboardListener* GetKeyboardListener();
     //void SetKeyboardHandler(std::unique_ptr<KeyboardListener>);
     //void SetMouseHandler(std::unique_ptr<MouseListener>);
     RenderingEngine* GetRenderingEngine();
-    Scheduler* GetScriptingEngine();
-    CollisionEngine* GetCollisionEngine();
+    //Scheduler* GetScriptingEngine();
+    //CollisionEngine* GetCollisionEngine();
     //void SetInputHandler(std::unique_ptr<)
 private:
     friend class Singleton<Engine>;
@@ -125,6 +135,9 @@ private:
     std::unique_ptr<Scheduler> m_scriptEngine;
     std::unique_ptr<RenderingEngine> m_renderingEngine;
     std::unique_ptr<CollisionEngine> m_collisionEngine;
+    
+    // the runners (i.e. script engine, collision engine, hostpot manager etc)
+    std::unordered_map<std::type_index, std::shared_ptr<Runner> > m_runners;
 };
 
 inline SceneFactory* Engine::GetSceneFactory() {
@@ -185,12 +198,12 @@ inline glm::vec2 Engine::GetWindowSize() const {
 inline RenderingEngine* Engine::GetRenderingEngine() {
     return m_renderingEngine.get();
 }
-inline Scheduler* Engine::GetScriptingEngine() {
-    return m_scriptEngine.get();
-}
-inline CollisionEngine* Engine::GetCollisionEngine() {
-    return m_collisionEngine.get();
-}
+//inline Scheduler* Engine::GetScriptingEngine() {
+//    return m_scriptEngine.get();
+//}
+//inline CollisionEngine* Engine::GetCollisionEngine() {
+//    return m_collisionEngine.get();/
+//}/
 //inline MouseListener* Engine::GetMouseHandler() {
 //return m_mouseListener.get();
 //}

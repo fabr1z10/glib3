@@ -1,27 +1,112 @@
-local function ciao(x)
-	x:setcolor(255,0,0,255)
-end
-local function ciao1(x)
-	x:setcolor(255,255,255,255)
-end
+--require("rooms/002/actions")
 
-local function makeShape (arg)
-	return {
-		pos = arg.pos,
-		angle = arg.angle,
-		gfx = {shape=arg.shape, color={255,255,255,255} },
-		collider= {shape=arg.shape, tag=2, flag = 2},
+local dt=0.1
+local d = {
+	depth = { 
+	    { rect = {0, 316, 0, 166}, dir = "y", bounds = {1, 0} } 
 	}
-end
+}
 
 room = {
 collisionresponse = {
-	{ tag = {1,2}, onenter = ciao, onleave=ciao1}
+	{ tag = {1, 10}, onenter = enterWaterDie, onleave=exitWater},
+	{ tag = {1, 11}, onenter = changeRoom }
 },
-assets = {},
+assets = {
+	sprites.graham,
+    {
+        id = "purple_flag",
+        sheet = "gfx/sprites.png",
+        type="sprite",
+        ppu=1,
+        animations = {
+        {
+       	    name = "default",             
+            frames = 
+            { 
+	    	  	{ duration = dt, quads = { { x = 1, y = 1, width = 24, height = 8, anchor = {0, -1}}}},
+                { duration = dt, quads = { { x = 1, y = 11, width = 25, height = 9, anchor = {0, 0}}}},
+                { duration = dt, quads = { { x = 1, y = 21, width = 20, height = 9, anchor = {0, 0}}}},
+                { duration = dt, quads = { { x = 1, y = 31, width = 22, height = 9, anchor = {0, 0}}}},
+				{ duration = dt, quads = { { x = 1, y = 41, width = 22, height = 9, anchor = {0, 0}}}}                              
+			}
+        }
+        }
+    },
+    {
+        id = "yellow_flag",
+        sheet = "gfx/sprites.png",
+        type="sprite",
+        ppu=1,
+        animations = {
+        {
+       	    name = "default",             
+            frames = 
+            { 
+	    	  	{ duration = dt, quads = { { x = 26, y = 1, width = 24, height = 9, anchor = {0, 0}}}},
+                { duration = dt, quads = { { x = 26, y = 11, width = 22, height = 9, anchor = {0, 0}}}},
+                { duration = dt, quads = { { x = 26, y = 21, width = 22, height = 9, anchor = {0, 0}}}},
+                { duration = dt, quads = { { x = 26, y = 31, width = 22, height = 9, anchor = {0, 0}}}},
+				{ duration = dt, quads = { { x = 26, y = 41, width = 24, height = 9, anchor = {0, 0}}}}                              
+			}
+        }
+        }
+    },
+    {
+        id = "cyan_flag",
+        sheet = "gfx/sprites.png",
+        type="sprite",
+        ppu=1,
+        animations = {
+        {
+       	    name = "default",             
+            frames = 
+            { 
+	    	  	{ duration = dt, quads = { { x = 51, y = 1, width = 22, height = 9, anchor = {0, 0}}}},
+                { duration = dt, quads = { { x = 51, y = 11, width = 22, height = 9, anchor = {0, 0}}}},
+                { duration = dt, quads = { { x = 51, y = 21, width = 22, height = 9, anchor = {0, 0}}}},
+                { duration = dt, quads = { { x = 51, y = 31, width = 22, height = 9, anchor = {0, 0}}}},
+				{ duration = dt, quads = { { x = 52, y = 41, width = 22, height = 9, anchor = {0, 0}}}}                              
+			}
+        }
+        }
+    },
+    {
+        id = "alligator",
+        sheet = "gfx/sprites.png",
+        type="sprite",
+        ppu=1,
+        animations = {
+        {
+       	    name = "default",             
+            frames = 
+            { 
+	    	  	{ duration = dt, quads = { { x = 75, y = 1, width = 26, height = 8, anchor = {12, 0}}}},
+                { duration = dt, quads = { { x = 75, y = 11, width = 24, height = 11, anchor = {12, 0}}}},
+                { duration = 4*dt, quads = { { x = 75, y = 23, width = 26, height = 4, anchor = {12, 0}}}},
+			}
+        }
+        }
+    },
+},
 scene = {
+	makeui(),
 	{
 		tag = "main",
+		camera = {
+			tag = "maincam",
+			type="ortho",
+			size = {316, 166},
+			bounds = {0, 0, 316, 166},
+			viewport = {2, 25, 318, 25+166}
+		},
+		children = {
+	 		{ pos = {0, 0, -5}, gfx = { image="gfx/bg003.png", width=316, height=166 }},
+			makeGraham(20, 10, d),
+		}
+	},
+	{
+		tag = "diag",
 		camera = {
 			tag = "maincam",
 			type="ortho",
@@ -29,42 +114,19 @@ scene = {
 			bounds = {0, 0, 320, 200},
 			viewport = {0, 0, 320, 200}
 		},
-		children = {
+		children = 
 		{
-			gfx = {shape={type="rect", width=20, height=1, offset={-10,-0.5}}, color={255,255,255,255} },
-			collider= {shape={type="rect", width=20, height=1, offset ={-10,-0.5}}, tag=1, flag=1},
-			keyboardcontrollercollision= {
-				width = 20,
-				height = 0,
-				speed = 1,
-				horizontal_rays = 1,
-				vertical_rays = 2
-				
+			{
+				luakey = {
+					keys = {
+						{ key = 61, func = startSwimming },
+                        { key = 48, func = displayBox },
+						{ key = 257, func = exitpause }
+					}
+				}
 			}
-	    }, 
-	    makeShape { pos = {80, 80, 0}, angle = 30, shape = {type="rect", width=30, height=10, offset={-15,-5}} },
-	    makeShape { pos = {130, 90, 0}, angle=45, shape = {type="line", A={0,0}, B={30,0}}},
-	    makeShape { pos = {170, 90, 0}, shape = {type="poly", outline = {0, 0, 10, 20, 20, 0}}},
-		makeShape { pos = {100, 140, 0}, shape = {type="circle", radius = 10}},
-		{
-			pos = {150, 140, 0},
-			angle =10,
-			gfx = { shape = { type = "poly", outline = {0,0,0,50,10,50,10,30,40,30,40,50,50,50,50,0,40,0,40,20,10,20,10,0}}, color={255,255,255,255}},
-			collider = { tag =2, flag =2, shape = {type="compound", shapes = {
-				{ type = "rect", width = 10, height = 50 },
-				{ type = "rect", width = 30, height = 10, offset={10, 20} },
-				{ type = "rect", width = 10, height = 50, offset={40, 0} },
-			}}}
 		}
-		}
-		-- {
-		-- 	pos = {80, 80, 0},
-		-- 	angle = 30,
-		-- 	gfx = {shape=, color={255,255,255,255} },
-		-- 	collider= {shape={type="rect", width=30, height=10, offset={-15,-5}}, tag = 2},
-	 --    }
-		
-	},
+	}
 }
 }
 
@@ -82,7 +144,30 @@ function room.start()
 
 end
 
+function moveAlligator(name)
+	local s = script:new(name)
+	local x = math.random(0, 243)
+	local y = math.random(0, 5)
+	local a = monkey.getEntity(name)
+	local flip = false
+	if (x < a.x) then
+		flip = true
+	else
+		flip = false
+	end
+	--print ("Moving alligator to " .. tostring(x) .. ", " .. tostring(y))
+	s.actions = {
+		[1] = { type ="animate", actor =name, anim="default", flipx = flip },
+		[2] = { type = "move", actor=name, to={x, y}, speed=30.0, after={1} },
+		[3] = { type = "callfunc", func = curry(moveAlligator, name),after={2}}
+	}
+	monkey.play(s)
+	
+end
+
 function room.afterstartup() 
+	--moveAlligator("alli1")
+	--moveAlligator("alli2")
 end
 
 

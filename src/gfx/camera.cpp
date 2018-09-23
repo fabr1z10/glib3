@@ -64,6 +64,16 @@ OrthographicCamera::OrthographicCamera(float orthoWidth, float orthoHeight, glm:
     Init();
 }
 
+PerspectiveCamera::PerspectiveCamera (glm::vec4 viewport, float fov, float nearPlane, float farPlane) : Camera(viewport), WindowResizeListener(), m_fov(fov), m_near(nearPlane), m_far(farPlane)
+{
+    
+    
+}
+
+void PerspectiveCamera::Notify(float w, float h) {
+    Resize(w, h);
+}
+
 void OrthographicCamera::setOrthoSize(float w, float h) {
     m_orthoWidth = w;
     m_orthoHeight = h;
@@ -72,32 +82,17 @@ void OrthographicCamera::setOrthoSize(float w, float h) {
 
 // called at startup and when window is resized
 void OrthographicCamera::Resize(int width, int height) {
-//    if (height == 0)
-//        height = 1;
-//    m_winHeight = static_cast<float>(height);
-//    vec2 size = Engine::get().GetDeviceSize();
-//    float gameAR = size.x / size.y;
-//    float winAR = static_cast<float>(width) / height;
-//
-//    if (winAR >= gameAR) {
-//        // screen wider than game, place vertical bands
-//        float actualScreenWidth = height * gameAR;
-//        m_viewportHeight = static_cast<GLsizei> (height * (m_camViewport[3] / size.y));
-//        m_viewportWidth = static_cast<GLsizei> (m_viewportHeight * m_aspectRatio);
-//        m_viewportX = static_cast<GLint>(((width - actualScreenWidth) / 2.0f) + m_camViewport.x * actualScreenWidth / size[0]);
-//        m_viewportY = static_cast<GLint> (m_camViewport.y * height / size[1]);
-//    }
-//    else {
-//        // screen taller than game, hroizontal bands
-//        float actualScreenHeight = width / gameAR;
-//        m_viewportWidth = static_cast<GLsizei> (width * (m_camViewport[2] / size.x));
-//        m_viewportHeight = static_cast<GLsizei> (m_viewportWidth / m_aspectRatio);
-//        m_viewportX = static_cast<GLint> (m_camViewport.x * width / size[0]);
-//        m_viewportY = static_cast<GLint> (((height - actualScreenHeight) / 2.0f) + m_camViewport.y * actualScreenHeight / size[1]);
-//    }
-//
-//    RecomputeScreenToWorldMatrix();
+
 }
+
+void PerspectiveCamera::Resize(int w, int h) {
+   	if (h == 0)
+        h = 1;
+    float winAR = static_cast<float>(w) / h;
+    m_projectionMatrix = glm::perspective (m_fov, winAR, m_near, m_far);
+
+}
+
 
 void OrthographicCamera::Init() {
 
@@ -119,6 +114,8 @@ void OrthographicCamera::SetPosition(vec3 eye, vec3 direction, vec3 up) {
     Camera::SetPosition(eye, direction, up);
     //RecomputeScreenToWorldMatrix();
 }
+
+
 
 bool Camera::IsInViewport(float xScreen, float yScreen) {
     float pixelRatio = Engine::get().GetPixelRatio();

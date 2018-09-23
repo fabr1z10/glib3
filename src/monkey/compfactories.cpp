@@ -13,7 +13,11 @@
 #include <gfx/keyboardcontroller.h>
 #include <monkey/luakeylistener.h>
 #include <gfx/depth.h>
+#include <gfx/follow.h>
+#include <gfx/billboard.h>
+#include <monkey/scaling.h>
 #include <monkey/info.h>
+#include <gfx/textview.h>
 
 // a text component is actually a renderer
 void TextComponentFactory::operator() (luabridge::LuaRef& ref, Entity* e) {
@@ -42,8 +46,8 @@ void OutlineTextComponentFactory::operator() (luabridge::LuaRef &ref, Entity *pa
         renderer->SetMesh(mesh);
         entity->SetPosition(glm::vec3(outlineOffsets[i] * 0.5f, i == 0 ? 0 : -1));
         renderer->SetTint(i==0 ? fontColor : outlineColor);
-        renderer->SetRenderingTransform(glm::translate(glm::vec3(offset, 0.0f)));
-        entity->AddComponent(renderer);
+        //renderer->SetRenderingTransform(glm::translate(glm::vec3(offset, 0.0f)));
+        //entity->AddComponent(renderer);
         parent->AddChild(entity);
     }
 }
@@ -184,7 +188,9 @@ void CameraFactory::operator()(luabridge::LuaRef & cam, Entity * entity) {
     LuaTable tcam(cam);
     std::string camType = tcam.Get<std::string>("type");
     std::string tag = tcam.Get<std::string>("tag", "");
-    glm::vec2 pos = tcam.Get<glm::vec2>("pos", glm::vec2(0.0f));
+    glm::vec3 pos = tcam.Get<glm::vec3>("pos", glm::vec3(0.0f));
+    glm::vec3 direction = tcam.Get<glm::vec3> ("direction", glm::vec3(0, 0, -1));
+    glm::vec3 up = tcam.Get<glm::vec3> ("up", glm::vec3(0, 1, 0));
     glm::vec4 viewport = tcam.Get<glm::vec4>("viewport", glm::vec4(0.0f, 0.0f, Engine::get().GetDeviceSize()));
 
     if (camType == "ortho") {
@@ -194,13 +200,25 @@ void CameraFactory::operator()(luabridge::LuaRef & cam, Entity * entity) {
         auto camera = std::unique_ptr<OrthographicCamera>(new OrthographicCamera(size.x, size.y, viewport));
         if (bounds != glm::vec4(0.0f))
             camera->SetBounds(bounds[0], bounds[2], bounds[1], bounds[3]);
-        camera->SetPosition(glm::vec3(pos, 5.0f), glm::vec3(0, 0, -1), glm::vec3(0, 1, 0));
+        camera->SetPosition(pos, direction, up);
         if (!tag.empty())
             camera->SetTag(tag);
         entity->SetCamera(std::move(camera));
     }
 
     // perspective camera...
+    else if (camType == "perspective") {
+        // get field of view
+        float fov = tcam.Get<float>("fov", 45.0f);
+        float near = tcam.Get<float>("near", 0.05f);
+        float far = tcam.Get<float>("far", 1000.0f);
+        auto camera = std::unique_ptr<PerspectiveCamera>(new PerspectiveCamera(viewport, fov, near, far));
+        camera->SetPosition(pos, direction, up);
+        if (!tag.empty())
+            camera->SetTag(tag);
+        entity->SetCamera(std::move(camera));
+        
+    }
 }
 
 void KeyInputFactory::operator()(luabridge::LuaRef & ref, Entity * entity) {
@@ -230,6 +248,8 @@ void GfxComponentFactory::operator()(luabridge::LuaRef & ref, Entity * entity) {
         bool flip = table.Get<bool>("flip", false);
         renderer->SetMesh(Engine::get().GetAssetManager().GetMesh(model));
         renderer->SetFlipX(flip);
+        renderer->SetRenderingTransform(glm::scale(glm::vec3(0.1f))*glm::rotate(90.0f, glm::vec3(1.0f,0.0f,0.0f)));
+        //renderer->SetScale(0.1f);
         renderer->SetAnimation(anim);
     } else if (table.HasKey("shape")) {
         luabridge::LuaRef sref = table.Get<luabridge::LuaRef>("shape");
@@ -297,7 +317,7 @@ void WalkAreaComponentFactory::operator() (luabridge::LuaRef& ref, Entity* paren
             hotspot->AddBlockedLine(A, B, active);
         }
     }
-
+    hotspot->SetTag("walkarea");
     parent->AddComponent(hotspot);
 }
 
@@ -383,4 +403,54 @@ void InfoComponentFactory::operator()(luabridge::LuaRef & ref, Entity * p) {
     auto comp = std::make_shared<LuaInfo>(ref);
     p->AddComponent(comp);
 
+}
+
+void FollowComponentFactory::operator()(luabridge::LuaRef &ref, Entity *parent) {
+    LuaTable table(ref);
+    std::string cam = table.Get<std::string>("cam");
+    glm::vec3 relPos = table.Get<glm::vec3>("relativepos");
+    glm::vec3 up = table.Get<glm::vec3>("up");
+    parent->AddComponent(std::make_shared<Follow>(cam, relPos, up));
+}
+
+void BillboardComponentFactory::operator()(luabridge::LuaRef &ref, Entity *parent) {
+    LuaTable table(ref);
+    std::string cam = table.Get<std::string>("cam");
+    parent->AddComponent(std::make_shared<Billboard>(cam));
+}
+
+void ScalingComponentFactory::operator() (luabridge::LuaRef& ref, Entity* parent) {
+    parent->AddComponent(std::make_shared<ScalingDepthComponent>());
+    
+}
+
+void ButtonComponentFactory::operator() (luabridge::LuaRef& ref, Entity* parent) {
+    LuaTable table(ref);
+    auto renderer = ReadTextComponent(ref);
+    // for a button the shape is determined by the text size
+    auto bounds = renderer->GetBounds();
+    float w = bounds.max.x - bounds.min.x;
+    float h = bounds.max.y - bounds.min.y;
+    auto shape = std::make_shared<Rect>(w, h);
+    //auto debugMesh = MeshFactory::CreateMesh(*(shape.get()), 1.0f);
+    auto hs = GetHotSpot(ref, shape);
+    parent->AddComponent(renderer);
+    parent->AddComponent(hs);
+}
+
+
+
+void TextViewComponentFactory::operator() (luabridge::LuaRef &ref, Entity *parent) {
+    LuaTable table(ref);
+    glm::vec4 viewport = table.Get<glm::vec4>("viewport");
+    float w = table.Get<float>("width");
+    float h = table.Get<float>("height");
+    float size = table.Get<float>("size");
+    float deltax = table.Get<float>("deltax", 0.0f);
+    glm::vec4 color = table.Get<glm::vec4>("color", glm::vec4(255.0f));
+    color /= 255.0f;
+    std::string font = table.Get<std::string>("font");
+    auto r = std::make_shared<TextView>(w, h, size, font, color, viewport, deltax);
+    parent->AddComponent(r);
+    
 }

@@ -155,7 +155,7 @@ void MeshFactory::visit(Circle& c) {
     glm::vec2 C= c.GetOffset();
     for (int i = 0; i < n; ++i) {
         float angle = dAngle * i;
-        vertices.push_back( { C.x + radius*cos(angle), C.y + radius * sin(angle), 0.0f, 1.0f, 1.0f, 1.0f, 1.0f });
+        vertices.push_back( { static_cast<GLfloat>(C.x + radius*cos(angle)), static_cast<GLfloat>(C.y + radius * sin(angle)), 0.0f, 1.0f, 1.0f, 1.0f, 1.0f });
         indices.push_back(i);
     }
     indices.push_back(0);

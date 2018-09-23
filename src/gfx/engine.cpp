@@ -113,6 +113,8 @@ void Engine::MainLoop() {
     if (m_sceneFactory == nullptr)
         GLIB_FAIL("Scene factory has not been set.");
 
+    
+    
     while (!glfwWindowShouldClose(window)) {
 
         // load the scene
@@ -169,6 +171,8 @@ void Engine::MainLoop() {
         }
         // remove assets loaded at scene level
         m_scriptEngine->Clear();
+        if (m_collisionEngine != nullptr)
+            m_collisionEngine->Clear();
         m_sceneFactory->CleanUp();
         m_scene = nullptr;
         m_garbage.clear();

@@ -4,9 +4,25 @@ function curry(f, arg)
     end 
 end
 
+function makeShape (arg)
+	return {
+		pos = arg.pos,
+		angle = arg.angle,
+		gfx = {shape=arg.shape, color={255,255,255,255} },
+		collider= {shape=arg.shape, tag=arg.tag, flag = arg.flag},
+		info = arg.info
+	}
+end
+
 function changeRoom(o1, o2)
 	local a = o2:getinfo()
 	print (a.roomto)
+	local s = script:new("_cr")
+
+	s.actions = {
+		[1] = {type="gotoroom", room=a.roomto }
+	}
+	monkey.play(s)
 
 end
 
@@ -149,7 +165,7 @@ function displayBox(msg)
 		children = {
 			{
 				tag ="msgtext",
-				pos={158, 83, 1},
+				pos={158, 83, 2},
 				text = {
 					id=msg,
 					align = "center",
@@ -169,7 +185,7 @@ function displayBox(msg)
 	local paddingOuter = {10, 6}
 	local paddingInner = {6, 4}
 	monkey.addEntity ({
-		pos={158 - a.width * 0.5 - paddingOuter[1], 83-a.height*0.5-paddingOuter[2], 0.5},
+		pos={158 - a.width * 0.5 - paddingOuter[1], 83-a.height*0.5-paddingOuter[2], 1.5},
 		gfx = {
 			shape = {
 				type ="rect",
@@ -181,7 +197,7 @@ function displayBox(msg)
 		}
 	}, m)
 	monkey.addEntity ({
-		pos={158 - a.width * 0.5 - paddingInner[1], 83-a.height*0.5-paddingInner[2], 0.7},
+		pos={158 - a.width * 0.5 - paddingInner[1], 83-a.height*0.5-paddingInner[2], 1.7},
 		gfx = {
 			shape = {
 				type ="rect",
@@ -193,7 +209,7 @@ function displayBox(msg)
 		}
 	}, m)
 	monkey.addEntity ({
-		pos={158 - a.width * 0.5 - paddingInner[1] - 2, 83-a.height*0.5-paddingInner[2]-1, 0.7},
+		pos={158 - a.width * 0.5 - paddingInner[1] - 2, 83-a.height*0.5-paddingInner[2]-1, 1.7},
 		gfx = {
 			shape = {
 				type ="rect",
@@ -287,4 +303,33 @@ function makeGraham(x, y, depth)
 	    }
 
  
+end
+
+function makeui()
+	return {
+		tag = "ui",
+		camera = {
+			tag = "maincam",
+			type="ortho",
+			size = {320, 24},
+			bounds = {0, 0, 320, 24},
+			viewport = {0, 0, 320, 24}
+		},
+		children = {
+			{
+				pos={0,16,0},
+				text = {
+					id="_",
+					font="ui",
+					size=8,
+					align ="bottomleft"
+				},
+				keyinput = {
+					maxlength = 10,
+					func = processText
+				}
+				
+			}
+		}
+	}
 end

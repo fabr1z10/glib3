@@ -1,22 +1,17 @@
 require("rooms/001/actions")
 
-local function makeShape (arg)
-	return {
-		pos = arg.pos,
-		angle = arg.angle,
-		gfx = {shape=arg.shape, color={255,255,255,255} },
-		collider= {shape=arg.shape, tag=arg.tag, flag = arg.flag},
-		info = arg.info
-	}
-end
-
-
 local dt=0.1
 local d = {
 	depth = { 
 	    { rect = {0, 316, 0, 166}, dir = "y", bounds = {1, 0} } 
 	}
 }
+
+local startPositionTable = {
+	['start'] = {212, 77}
+}
+
+local startPosition = startPositionTable[variables._previousroom]
 
 room = {
 collisionresponse = {
@@ -101,32 +96,7 @@ assets = {
     },
 },
 scene = {
-	{
-		tag = "ui",
-		camera = {
-			tag = "maincam",
-			type="ortho",
-			size = {320, 24},
-			bounds = {0, 0, 320, 24},
-			viewport = {0, 0, 320, 24}
-		},
-		children = {
-			{
-				pos={0,16,0},
-				text = {
-					id="_",
-					font="ui",
-					size=8,
-					align ="bottomleft"
-				},
-				keyinput = {
-					maxlength = 10,
-					func = processText
-				}
-				
-			}
-		}
-	},
+	makeui(),
 	{
 		tag = "main",
 		camera = {
@@ -139,25 +109,21 @@ scene = {
 		children = {
 	 		{ pos = {0, 0, -5}, gfx = { image="gfx/bg001.png", width=316, height=166 }},
 	 		{ pos = {196, 39, 0.765}, gfx = { image="gfx/bg002.png"}},
-
--- 		},
---        {   pos = {8, 149, 1}, gfx = { model = "purple_flag", anim = "default" } },--   
--- 		{   pos = {38, 150, 1}, gfx = { model = "yellow_flag", anim = "default" } },-- 
--- 		{   pos = {68, 149, 1}, gfx = { model = "cyan_flag", anim = "default" } },-- 
--- 		{   pos = {0, 0, 1}, tag="alli1", gfx = { model = "alligator", anim = "default" } },-- 
--- 		{   pos = {20, 0, 1}, tag="alli2", gfx = { model = "alligator", anim = "default" } },-- 
-
-			makeGraham(20, 10, d),
+	        { pos = {8, 149, 1}, gfx = { model = "purple_flag", anim = "default" } },   
+			{ pos = {38, 150, 1}, gfx = { model = "yellow_flag", anim = "default" } }, 
+			{ pos = {68, 149, 1}, gfx = { model = "cyan_flag", anim = "default" } },
+			{ pos = {0, 0, 1}, tag="alli1", gfx = { model = "alligator", anim = "default" } }, 
+			{ pos = {20, 0, 1}, tag="alli2", gfx = { model = "alligator", anim = "default" } },
+		    makeGraham(startPosition[1], startPosition[2], d),
  			makeShape { pos = {265, 39, 0}, angle = 0, tag=2, flag=2, shape = {type="rect", width=17, height=7, offset={0, 0}} },
  			makeShape { pos = {0, 23, 0}, angle = 0, tag=2, flag=2, shape = {type="line", A={0,0},B={179,0}}, offset={0, 0} },
-			makeShape { pos = {0,0,0}, tag=11, flag = 4, shape = {type="line", A={1,10}, B={1,20}}, info = {roomto = 10} },
+			makeShape { pos = {0,0,0}, tag=11, flag = 4, shape = {type="line", A={1,10}, B={1,20}}, info = {roomto = "002"} },
  			makeShape { pos = {0, 0, 0}, angle=0, tag = 10, flag = 4, shape = { type="compound", 
  			shapes = {
  				{ type="rect", width = 228, height = 6},
- 				{ type="poly", outline= {228,6,243,18,306,0}}
+ 				{ type="poly", outline= {228,6,243,18,306,0}},
  			}}},
-		
-
+ 			makeShape { pos ={0,0,0}, tag=10, flag=4, shape={type="poly", outline={182,25,176,44,197,39}}}
 		}
 	},
 	{
@@ -221,12 +187,8 @@ function moveAlligator(name)
 end
 
 function room.afterstartup() 
-	--local a = monkey.getEntity("drowning_graham")
-	--a:setactive(false)
-	--local b = monkey.getEntity("swimming_graham")
-	--b:setactive(false)
-	--moveAlligator("alli1")
-	--moveAlligator("alli2")
+	moveAlligator("alli1")
+	moveAlligator("alli2")
 end
 
 

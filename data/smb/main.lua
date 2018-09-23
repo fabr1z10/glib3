@@ -33,8 +33,8 @@ variables = {
         turnoff = { code="turnoff", text = strings.ui.turnoff, objects = 1 }
     },
     -- sets the start room
-    _room = "meleemap",
-    _previousroom = "meleemap",
+    _room = "lookout",
+    _previousroom = "",
 	_pause = false,
     talkedToLookout = false,
 	talkedToCitizen = 0,

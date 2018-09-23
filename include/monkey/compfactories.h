@@ -71,3 +71,24 @@ class DepthComponentFactory : public ComponentFactory {
 class InfoComponentFactory : public ComponentFactory {
     void operator()(luabridge::LuaRef&, Entity*) override;
 };
+
+class FollowComponentFactory : public ComponentFactory {
+    void operator()(luabridge::LuaRef&, Entity*) override;
+};
+
+class BillboardComponentFactory : public ComponentFactory {
+    void operator()(luabridge::LuaRef&, Entity*) override;
+};
+
+class ScalingComponentFactory : public ComponentFactory {
+    void operator()(luabridge::LuaRef&, Entity*) override;
+};
+
+class ButtonComponentFactory : public ComponentFactory {
+    void operator()(luabridge::LuaRef&, Entity*) override;
+};
+
+class TextViewComponentFactory : public ComponentFactory {
+    void operator()(luabridge::LuaRef&, Entity*) override;
+};
+

@@ -1,5 +1,18 @@
 local dt = 0.1
+
 local centerPos = {247, 40}
+
+-- set player start position
+local startPositionTable = {
+	village1 = { pos = objects.stairs.pos, anim = "idle_back" },
+	meleemap = { pos = objects.path.pos, anim = "idle_right", flip = true },
+	default = { pos = objects.stairs.pos, anim = "idle_back" }
+}
+
+local startPosition = startPositionTable[variables._previousroom]
+if (startPosition == nil) then
+	startPosition = startPositionTable.default
+end
 
 room = {
 
@@ -46,17 +59,15 @@ scene = {
 	        {
 	            pos = {81, 16, 3},
 	            gfx = { image="gfx/lookout/bg2.png" },
-	            layer = 1
 	        },
 	        {
 	            pos = {294, 33, 3},
 	            gfx = { image="gfx/lookout/bg3.png" },
-	            layer = 1
+	          
 	        },
             {
                 pos = {126, 52, -1},
                 gfx = { model = "fire", anim = "default" },
-                layer =1
             },--         
 			{
                 walkarea = { 

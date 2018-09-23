@@ -49,8 +49,7 @@ void TextView::SetParent(Entity *parent) {
 void TextView::Start() {
 
     // create a new camera for this
-    //auto re = Engine::get().GetRef<RenderingEngine>("_renderingengine");
-    auto re = Engine::get().GetRenderingEngine();
+    //auto re = Engine::get().GetRenderingEngine();
     m_font = Engine::get().GetAssetManager().GetFont(m_fontName);
     // create a new camera
 
@@ -59,52 +58,7 @@ void TextView::Start() {
     m_entity->SetCamera(std::move(cam));
 
     UpdateCamPosition(0);
-    //cam->SetPosition(glm::vec3(m_orthoWidth*0.5f, -m_orthoHeight*0.5f, -5.0f), glm::vec3(0,0, -1));
-
-    //AddArrows();
-
-
-
-//    AppendText("Pippo calzelunga");
-//    AppendText("A very long line which probably will take two lines of text.");
-//    AppendText("ciao!");
-//    AppendText("ciao!");
-//    AppendText("ciao!");
-//    AppendText("ciao!");
-//    AppendText("ciao!");
-//    AppendText("ciao!");
-//    AppendText("ciao!");
 }
-//void TextView::UpdateCamPosition2(int line) {
-//    if (line < 0)
-//        line = 0;
-//    else if (line > m_textItems.size()-1)
-//        line = m_textItems.size()-1;
-//    //if (m_topLine == line)
-//    //    return;
-//    int nlines {0};
-//    int linesLeft{0};
-//    for (int i = 0; i < line; ++i)
-//        nlines += m_textItems[i].lines;
-//    for (int i = line; i < m_textItems.size(); ++i)
-//        linesLeft += m_textItems[i].lines;
-//    float x = m_orthoWidth * 0.5f;
-//    float y = -m_orthoHeight * 0.5f - nlines * m_fontSize;
-//    std::cout << "set cam pos to " << x << ", " << y << std::endl;
-//    m_entity->GetCamera()->SetPosition(glm::vec3(x, y, -5.0f), glm::vec3(0, 0, -1));
-//    glm::vec3 dp = glm::vec3(0.0f, y - m_orthoHeight*0.5f, 1.0f);
-//    glm::vec3 up = glm::vec3(0.0f, y + m_orthoHeight*0.5f - m_arrowHeight, 1.0f);
-//
-//    m_arrowDown->SetPosition(dp);
-//    m_arrowUp->SetPosition(up);
-//    std::cout << "setting down pos to " << m_arrowDown->GetPosition().x << ", " << m_arrowDown->GetPosition().y << "\n";
-//    std::cout << "setting up pos to " << m_arrowUp->GetPosition().x << ", " << m_arrowUp->GetPosition().y << "\n";
-//    m_topLine = line;
-//    std::cout << "up active = " << (m_topLine>0) << " down active = " << (linesLeft>m_maxLines) <<"\n";
-//    m_arrowUp->SetActive(m_topLine>0);
-//    m_arrowDown->SetActive(linesLeft > m_maxLines);
-//    std::cout << m_arrowUp->IsActive() << ", " << m_arrowDown->IsActive() << "\n";
-//}
 
 void TextView::UpdateCamPosition(int line) {
     if (line < 0)

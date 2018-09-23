@@ -19,7 +19,7 @@ class TextView : public Component {
 public:
     TextView (float width, float height, float size, const std::string& fontName, glm::vec4 color, glm::vec4 viewport, float deltax) : Component(),
     m_lineCount{0}, m_fontName{fontName}, m_viewport{viewport}, m_orthoWidth{width}, m_orthoHeight{height}, m_fontSize{size}, m_topLine{0}, m_scrollBarOn{false},
-                                                                                                        m_scrollBarWidth{0.0f}, m_textColor{color}, m_deltax{deltax}
+                                                                                                    m_scrollBarWidth{0.0f}, m_textColor{color}, m_deltax{deltax}
     {
         m_maxLines = m_orthoHeight / m_fontSize;
     }

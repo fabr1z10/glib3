@@ -41,7 +41,12 @@ MonkeyFactory::MonkeyFactory() {
     AddFactory<SwitchComponentFactory>("switch");
     AddFactory<DepthComponentFactory>("depth");
     AddFactory<InfoComponentFactory>("info");
-
+    AddFactory<FollowComponentFactory>("follow");
+    AddFactory<BillboardComponentFactory>("billboard");
+    AddFactory<ScalingComponentFactory>("scaling");
+    AddFactory<ButtonComponentFactory>("button");
+    AddFactory<TextViewComponentFactory>("textview");
+    
     m_specialKeys.insert("tag");
     m_specialKeys.insert("pos");
     m_specialKeys.insert("angle");
@@ -320,7 +325,7 @@ std::shared_ptr<Entity> MonkeyFactory::ReadItem(luabridge::LuaRef& ref) {
         luabridge::LuaRef c = item.Get<luabridge::LuaRef>("children");
         ReadItems (c, entity.get());
     }
-    entity->SetActive(active);
+    //entity->SetActive(active);
     return entity;
 
 
@@ -340,22 +345,6 @@ void MonkeyFactory::ReadItems(luabridge::LuaRef& scene, Entity* parent) {
     
 }
 
-void MonkeyFactory::ReadTextViewComponent(luabridge::LuaRef &ref, Entity *parent) {
-    LuaTable table(ref);
-    glm::vec4 viewport = table.Get<glm::vec4>("viewport");
-    float w = table.Get<float>("width");
-    float h = table.Get<float>("height");
-    float size = table.Get<float>("size");
-    float deltax = table.Get<float>("deltax", 0.0f);
-    glm::vec4 color = table.Get<glm::vec4>("color", glm::vec4(255.0f));
-    color /= 255.0f;
-    std::string font = table.Get<std::string>("font");
-    auto r = std::make_shared<TextView>(w, h, size, font, color, viewport, deltax);
-    parent->AddComponent(r);
-
-
-}
-
 
 
 //
@@ -371,11 +360,7 @@ void MonkeyFactory::ReadTextViewComponent(luabridge::LuaRef &ref, Entity *parent
 //    parent->AddComponent(std::make_shared<KeyInput>(maxLength, shapeR));
 //}
 
-void MonkeyFactory::ReadFollowComponent(luabridge::LuaRef &ref, Entity *parent) {
-    LuaTable table(ref);
-    std::string cam = table.Get<std::string>("cam");
-    parent->AddComponent(std::make_shared<Follow>(cam));
-}
+
 
 
 void MonkeyFactory::ReadKeyboardComponent(luabridge::LuaRef &ref, Entity *parent) {
@@ -452,46 +437,8 @@ void MonkeyFactory::ReadWalkTrigger (luabridge::LuaRef& ref, Entity* parent) {
     parent->AddComponent(wt);
 }
 
-void MonkeyFactory::ReadScaling (luabridge::LuaRef& ref, Entity* parent) {
-    parent->AddComponent(std::make_shared<ScalingDepthComponent>());
 
-}
 
-void MonkeyFactory::ReadButton (luabridge::LuaRef& ref, Entity* parent) {
-    LuaTable table(ref);
-    auto renderer = GetTextComponent(ref);
-
-    // for a button the shape is determined by the text size
-    auto bounds = renderer->GetBounds();
-    float w = bounds.max.x - bounds.min.x;
-    float h = bounds.max.y - bounds.min.y;
-    auto shape = std::make_shared<Rect>(w, h);
-    //auto debugMesh = MeshFactory::CreateMesh(*(shape.get()), 1.0f);
-    auto hs = GetHotSpot(ref, shape);
-
-    // logic to draw the debug mesh
-//    glm::vec2 debugMeshPos(0.0f);
-//    std::string align = table.Get<std::string>("align", "topleft");
-//    int layer = table.Get<int>("layer", 1);
-//    if (align == "bottomright") {
-//        debugMeshPos = glm::vec2(-bounds.max.x, 0.0f);
-//    } else if (align == "topleft") {
-//        debugMeshPos = glm::vec2(0.0f, bounds.min.y);
-//    } else if (align == "topright") {
-//        debugMeshPos = glm::vec2(-bounds.max.x, bounds.min.y);
-//    }
-//
-//    auto ce = std::make_shared<Entity>();
-    //ce->SetPosition(debugMeshPos);
-    //ce->SetLayer(layer);
-    //auto cer = std::make_shared<Renderer>();
-    //cer->SetMesh(debugMesh);
-    //ce->AddComponent(cer);
-
-    //parent->AddChild(ce);
-    parent->AddComponent(renderer);
-    parent->AddComponent(hs);
-}
 
 
 void MonkeyFactory::ReadSprite (LuaTable& t) {

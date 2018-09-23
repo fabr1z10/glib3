@@ -76,7 +76,6 @@ function makescummui1()
 		     		    tag = "currentaction",
 		    		    pos={160,48,0},
 		    		    text = { id = "ddd", font="ui", align = "bottom", color = config.ui_currentaction_color},
-		    		    layer=2
 		            },
 					{
 						tag="inventory",
@@ -121,8 +120,7 @@ function makeButton (x, y, verb)
         button = { id = verb.text, font="ui", align="bottomleft", group = 2, priority =1, layer=2, color = config.ui_unselected_color,
                    onenter = curry2(changecolor, config.ui_selected_color ),
                    onleave = curry2(changecolor, config.ui_unselected_color),
-                   onclick = curry(setverb, verb ) },
-        layer = 2
+                   onclick = curry(setverb, verb ) }
     }
 end
 
@@ -133,8 +131,7 @@ function makeDialogueButton (x, y, button)
             onenter = curry2(changecolor, config.ui_selected_color),
             onleave = curry2(changecolor, config.ui_unselected_color),
             onclick = function() print ("IOI") end -- curry(onDialogueButtonClick, button)
-        },
-        layer = 2
+        }
     }   
 end
 
@@ -159,7 +156,6 @@ return {
         onleave = hoverOff,
         onclick = runAction
     },
-    layer = 1,
 	scaling = input.scaling,
     tag = obj.tag
 } 
