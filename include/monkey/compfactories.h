@@ -9,12 +9,16 @@ class Renderer;
 class Function2D;
 class HotSpot;
 class Runner;
+class State;
 
 class ComponentFactory {
 public:
     virtual void operator()(luabridge::LuaRef&, Entity*) = 0;
 };
-
+class StateFactory {
+public:
+    virtual std::shared_ptr<State> Create(luabridge::LuaRef&) = 0;
+};
 class RunnerFactory {
 public:
     virtual void Create(luabridge::LuaRef&) = 0;
@@ -58,8 +62,13 @@ class HotSpotComponentFactory : public ComponentFactory {
     void operator()(luabridge::LuaRef&, Entity*) override;
 };
 
-class KeyboardCollisionComponentFactory : public ComponentFactory {
+class StateMachineComponentFactory : public ComponentFactory {
+public:
     void operator()(luabridge::LuaRef&, Entity*) override;
+private:
+    // state factory
+    std::unordered_map<std::string, std::shared_ptr<StateFactory> > m_stateFactories;
+
 };
 
 class LuaKeyboardComponentFactory : public ComponentFactory {
@@ -107,4 +116,14 @@ public:
 class SchedulerFactory : public RunnerFactory {
 public:
     void Create(luabridge::LuaRef&) override;
+};
+
+class CollisionEngineFactory : public RunnerFactory {
+public:
+    void Create(luabridge::LuaRef&) override;
+};
+
+// --- states
+class WalkStateFactory : public StateFactory {
+    std::shared_ptr<State> Create(luabridge::LuaRef&) override;
 };

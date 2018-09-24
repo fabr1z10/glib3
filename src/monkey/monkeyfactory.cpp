@@ -36,7 +36,7 @@ MonkeyFactory::MonkeyFactory() {
     AddFactory<ColliderComponentFactory>("collider");
     AddFactory<WalkAreaComponentFactory>("walkarea");
     AddFactory<HotSpotComponentFactory>("hotspot");
-    AddFactory<KeyboardCollisionComponentFactory>("keyboardcontrollercollision");
+    AddFactory<StateMachineComponentFactory>("statemachine");
     AddFactory<LuaKeyboardComponentFactory>("luakey");
     AddFactory<SwitchComponentFactory>("switch");
     AddFactory<DepthComponentFactory>("depth");
@@ -49,6 +49,7 @@ MonkeyFactory::MonkeyFactory() {
 
     AddRunnerFactory<HotSpotManagerFactory>("hotspotmanager");
     AddRunnerFactory<SchedulerFactory>("scheduler");
+    AddRunnerFactory<CollisionEngineFactory>("collision");
 
     m_specialKeys.insert("tag");
     m_specialKeys.insert("pos");
@@ -379,17 +380,17 @@ void MonkeyFactory::ReadItems(luabridge::LuaRef& scene, Entity* parent) {
 //    parent->AddComponent(std::make_shared<KeyInput>(maxLength, shapeR));
 //}
 
-
-
-
-void MonkeyFactory::ReadKeyboardComponent(luabridge::LuaRef &ref, Entity *parent) {
-    LuaTable table(ref);
-
-    //luabridge::LuaRef shapeR = table.Get<luabridge::LuaRef>("shape");
-    //auto shape = ReadShape(shapeR);
-    parent->AddComponent(std::make_shared<KeyboardController>());
-}
-
+//
+//
+//
+//void MonkeyFactory::ReadKeyboardComponent(luabridge::LuaRef &ref, Entity *parent) {
+//    LuaTable table(ref);
+//
+//    //luabridge::LuaRef shapeR = table.Get<luabridge::LuaRef>("shape");
+//    //auto shape = ReadShape(shapeR);
+//    parent->AddComponent(std::make_shared<KeyboardController>());
+//}
+//
 
 
 

@@ -1,9 +1,8 @@
+require ("sprites")
 engine = {
     device_size = { 320, 200 },
     window_size = { 800, 600 },
     title = "Hello world!",
-    collision = true,
-    collision_size={40, 40}
 }
 
 fonts = {
@@ -13,6 +12,6 @@ fonts = {
 
 
 variables = {
-    _room = "test3",
+    _room = "test4",
 }
 

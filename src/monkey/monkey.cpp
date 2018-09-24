@@ -42,8 +42,6 @@ void Monkey::Start() {
     glm::vec2 devSize = engine.Get<glm::vec2>("device_size");
     glm::vec2 winSize = engine.Get<glm::vec2>("window_size");
     std::string title = engine.Get<std::string>("title");
-    bool collisionEngine = engine.Get<bool>("collision", false);
-    glm::vec2 collisionSize = engine.Get<glm::vec2>("collision_size", glm::vec2(0.0f, 0.0f));
 
 
     EngineConfig config (devSize.x, devSize.y);

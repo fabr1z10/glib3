@@ -1,63 +1,65 @@
-#pragma once
-
-#include <gfx/component.h>
-#include <gfx/listener.h>
-#include <glm/glm.hpp>
-
-// use keys (for instance, arrow keys) to move an entity
-class KeyboardController : public Component, public KeyboardListener {
-public:
-    KeyboardController() : Component(), KeyboardListener() {}
-
-    void Start() override {}
-
-    void Update(double) override ;
-
-    virtual void KeyCallback(GLFWwindow *, int, int, int, int);
-
-    using ParentClass = KeyboardController;
-
-    void EnableKey(int, bool) override {}
-
-    void Enable(bool) override {}
-};
-
-class CollisionEngine;
-class Renderer;
-
-// use keys (for instance, arrow keys) to move an entity
-class KeyboardControllerCollision : public Component, public KeyboardListener {
-public:
-    KeyboardControllerCollision(
-            float width, float height, float speed, int horRays, int vertRays) :
-            Component(), KeyboardListener(), m_width{width}, m_height{height}, m_horizontalRays{horRays}, m_verticalRays{vertRays}, m_speed{speed}, m_handleAnimations{false} {
-        m_horizontalRaySpace = m_horizontalRays == 1 ? 0.0f : m_height / (m_horizontalRays-1);
-        m_verticalRaySpace = m_verticalRays == 1 ? 0.0f : m_width / (m_verticalRays-1);
-    }
-    void AddAnimation(const std::string& id, const std::string& name);
-    void Start() override;
-
-    void Update(double) override ;
-
-    virtual void KeyCallback(GLFWwindow *, int, int, int, int) {}
-
-    using ParentClass = KeyboardControllerCollision;
-
-    void EnableKey(int, bool) override {}
-
-    void Enable(bool) override {}
-private:
-    CollisionEngine* m_engine;
-    Renderer* m_renderer;
-    float m_width;
-    float m_height;
-    float m_speed;
-    int m_horizontalRays;
-    int m_verticalRays;
-    float m_horizontalRaySpace;
-    float m_verticalRaySpace;
-    glm::vec2 m_prevMove;
-    bool m_handleAnimations;
-    std::unordered_map<std::string, std::string> m_animations;
-};
-
+//#pragma once
+//
+//#include <gfx/component.h>
+//
+//#include <glm/glm.hpp>
+//#include <gfx/statemachine.h>
+//
+//// use keys (for instance, arrow keys) to move an entity
+//class KeyboardController : public Component, public KeyboardListener {
+//public:
+//    KeyboardController() : Component(), KeyboardListener() {}
+//
+//    void Start() override {}
+//
+//    void Update(double) override ;
+//
+//    virtual void KeyCallback(GLFWwindow *, int, int, int, int);
+//
+//    using ParentClass = KeyboardController;
+//
+//    void EnableKey(int, bool) override {}
+//
+//    void Enable(bool) override {}
+//};
+//
+//class CollisionEngine;
+//class Renderer;
+//
+//
+//
+//// use keys (for instance, arrow keys) to move an entity
+//// this works like a state machine
+//
+//
+//
+//class KeyboardControllerCollision : public Component, public KeyboardListener {
+//public:
+//    KeyboardControllerCollision(const std::string& initialState) : Component(), KeyboardListener(), m_initialState(initialState) {}
+//
+//    void AddState(const std::string&, std::shared_ptr<State>);
+//    void Start() override;
+//
+//
+//    void Update(double) override ;
+//
+//    void KeyCallback(GLFWwindow *, int, int, int, int) override;
+//
+//    using ParentClass = KeyboardControllerCollision;
+//
+//    void EnableKey(int, bool) override {}
+//
+//    void Enable(bool) override {}
+//    void ChangeState(const std::string&);
+//private:
+//    std::string m_initialState;
+//    glm::vec2 m_prevMove;
+//    int m_state;
+//    std::unordered_map<std::string, std::shared_ptr<State>> m_states;
+//    State* m_currentState;
+//    std::unordered_map<int, ExtraKeyInfo> m_extraKeys;
+//};
+//
+//inline void KeyboardControllerCollision::AddState(const std::string& name, std::shared_ptr<State> state) {
+//    m_states[name] = state;
+//}

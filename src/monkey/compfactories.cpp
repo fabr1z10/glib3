@@ -18,6 +18,7 @@
 #include <monkey/scaling.h>
 #include <monkey/info.h>
 #include <gfx/textview.h>
+#include <gfx/statemachine.h>
 
 // a text component is actually a renderer
 void TextComponentFactory::operator() (luabridge::LuaRef& ref, Entity* e) {
@@ -338,26 +339,49 @@ void HotSpotComponentFactory::operator() (luabridge::LuaRef& ref, Entity* parent
     parent->AddChild(ce);
 }
 
-void KeyboardCollisionComponentFactory::operator()(luabridge::LuaRef &ref, Entity *parent) {
+
+std::shared_ptr<State> WalkStateFactory::Create(luabridge::LuaRef &) {
+
+
+}
+
+
+void StateMachineComponentFactory::operator()(luabridge::LuaRef &ref, Entity *parent) {
     LuaTable table(ref);
 
-    float width = table.Get<float>("width");
-    float height = table.Get<float>("height");
-    float speed = table.Get<float>("speed");
-    int horRays = table.Get<int>("horizontal_rays");
-    int vertRays = table.Get<int>("vertical_rays");
+    std::string initialState = table.Get<std::string>("initialstate");
+    auto comp = std::make_shared<KeyboardControlledStateMachine>(initialState);
+    // get the array of states
 
-    auto c = std::make_shared<KeyboardControllerCollision>(width, height, speed, horRays, vertRays);
-    if (table.HasKey("anims")) {
-        auto anims = table.Get<luabridge::LuaRef>("anims");
-        for (int i = 0 ; i < anims.length(); ++i) {
-            luabridge::LuaRef an = anims[i+1];
-            std::string id = an["id"].cast<std::string>();
-            std::string anim = an["anim"].cast<std::string>();
-            c->AddAnimation(id, anim);
-        }
+    luabridge::LuaRef ts = table.Get<luabridge::LuaRef>("states");
+    for (int i = 0 ; i < ts.length(); ++i) {
+        luabridge::LuaRef tss = ts[i+1];
+        std::string id = tss["id"].cast<std::string>();
+        std::string type = tss["type"].cast<std::string>();
+        auto it = m_stateFactories.find(type);
+        if (it == m_stateFactories.end())
+            GLIB_FAIL("Unknown state " << type);
+        auto state = it->second->Create(tss);
+        comp->AddState(id, state);
     }
-    parent->AddComponent(c);
+
+//    float width = table.Get<float>("width");
+//    float height = table.Get<float>("height");
+//    float speed = table.Get<float>("speed");
+//    int horRays = table.Get<int>("horizontal_rays");
+//    int vertRays = table.Get<int>("vertical_rays");
+//
+//    auto c = std::make_shared<KeyboardControllerCollision>(width, height, speed, horRays, vertRays);
+//    if (table.HasKey("anims")) {
+//        auto anims = table.Get<luabridge::LuaRef>("anims");
+//        for (int i = 0 ; i < anims.length(); ++i) {
+//            luabridge::LuaRef an = anims[i+1];
+//            std::string id = an["id"].cast<std::string>();
+//            std::string anim = an["anim"].cast<std::string>();
+//            c->AddAnimation(id, anim);
+//        }
+//    }
+    parent->AddComponent(comp);
 }
 
 void LuaKeyboardComponentFactory::operator()(luabridge::LuaRef &ref, Entity *parent) {
@@ -471,4 +495,12 @@ void SchedulerFactory::Create(luabridge::LuaRef&) {
     // set-up the scripting engine
     auto scheduler = std::make_shared<Scheduler>();
     Engine::get().AddRunner(scheduler);
+}
+
+void CollisionEngineFactory::Create(luabridge::LuaRef & ref) {
+    LuaTable table(ref);
+    glm::vec2 collisionSize = table.Get<glm::vec2>("size");
+    auto ce = std::make_shared<CollisionEngine>(collisionSize.x, collisionSize.y);
+    Engine::get().AddRunner(ce);
+
 }
