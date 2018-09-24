@@ -1,8 +1,24 @@
 local dt = 0.1
 
+-- set player start position
+local startPositionTable = {
+	village1 = { pos = objects.village2_archway2.pos, anim = "idle_front", flip = false },
+	voodoolady = { pos = objects.door_voodoolady_out.pos, anim = "idle_right", flip = true },
+	village3 = { pos = objects.village2_archway.pos, anim = "idle_front", flip = false },
+	default = { pos = objects.village2_archway2.pos, anim = "idle_front", flip = false },
+}
+
+local startPosition = startPositionTable[variables._previousroom]
+if (startPosition == nil) then
+	startPosition = startPositionTable.default
+end
+
 -- begin room
 room = {
-
+engines = {
+	{ type = "hotspotmanager" },
+	{ type = "scheduler" }
+},
 assets = {
     makeGuybrush(),
     makeArrowUp(),
@@ -432,6 +448,7 @@ scene = {
               pos = {0, 0, -5},
               gfx = { image="gfx/village2/bg1.png" }
             },
+			makePlayer(startPosition, true),
 	        {
 	          walkarea = { 
 	            tag = "walkarea",
@@ -587,25 +604,6 @@ scene = {
 
 function room.init()
 	variables._actionInfo:reset()
-	local fromData = {
-        village1 = { playerpos = objects.village2_archway2.pos, anim = "idle_front", flip = false },
-		voodoolady = { objects.door_voodoolady_out.pos, anim = "idle_right", flip = true },
-		village3 = { playerpos = objects.village2_archway.pos, anim = "idle_front", flip = false },
-    }
-
-    -- add player
-	local d = fromData[variables._previousroom]
-	if (d == nil) then
-		d = fromData["village1"]
-	end
-
-    table.insert (room.scene[1].children, {
-        tag = objects.guybrush.tag,
-        pos = d.playerpos,
-        gfx = { model = "guybrush", anim = d.anim, flip = d.flip },
-        follow = { cam="maincam" },
-        scaling = {}
-    })
 end
 
 function room.afterstartup() 

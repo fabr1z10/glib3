@@ -29,6 +29,22 @@ function makeUI ()
 	}
 end
 
+function makePlayer(startPosition, scroll) 
+	local a = 
+	{
+		tag = objects.guybrush.tag,
+		pos = {startPosition.pos[1], startPosition.pos[2], 0},
+		gfx = { model = "guybrush", anim = startPosition.anim, flip = startPosition.flip },
+        scaling = {}
+	}
+	if (scroll == true) then 
+		a["follow"] = { cam = "maincam", relativepos = {0, 0, 5}, up = {0,1,0}, z=5 }
+	end
+	return a
+end
+
+
+
 function refreshInventory()
 	inv = monkey.getEntity("inventory")
 	inv:cleartext()

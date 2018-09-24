@@ -1,7 +1,24 @@
 local dt = 0.1
 
-room = {
+-- set player start position
+local startPositionTable = {
+    lookout = { pos = objects.cliffside.pos, anim = "idle_front" },
+	scummbar = { pos = objects.village1_door.pos, anim = "idle_front" },
+	village2 = { pos = objects.archway.pos, anim = "idle_right", flip=true },
+	default = { pos = objects.cliffside.pos, anim = "idle_front" },
+}
 
+local startPosition = startPositionTable[variables._previousroom]
+if (startPosition == nil) then
+	startPosition = startPositionTable.default
+end
+
+
+room = {
+engines = {
+	{ type = "hotspotmanager" },
+	{ type = "scheduler" }
+},
 assets = {
     makeGuybrush(),
     makeArrowUp(),
@@ -45,6 +62,7 @@ scene = {
               pos = {0, 0, -5},
               gfx = { image="gfx/village1/bg1.png" }
             },
+			makePlayer(startPosition, true),       
             {
               walkarea = { 
                   tag = "walkarea",
@@ -122,30 +140,6 @@ scene = {
 function room.init()
     variables._actionInfo:reset()
     -- previous room was lookout
-	local fromData = {
-        lookout = { playerpos = objects.cliffside.pos, anim = "idle_front" },
-		scummbar = { playerpos = objects.village1_door.pos, anim = "idle_front" },
-		village2 = { playerpos = objects.archway.pos, anim = "idle_right", flip=true },
-    }
-	if (variables._previousroom ~= "village2" and variables.chase == 1) then
-		variables.chase = 0
-	end
-
-	f = fromData[variables._previousroom]
-	if (f == nil) then
-		f = fromData["lookout"]
-	end
-
-    -- add player
-    table.insert (room.scene[1].children, {
-        tag = "player",
-        pos = {f.playerpos[1], f.playerpos[2], 0},
-        gfx = { model = "guybrush", anim = f.anim, flip = f.flip },
-        follow = { cam="maincam" },
-        layer = 1,
-        scaling = {}
-    })
-
 end
 
 

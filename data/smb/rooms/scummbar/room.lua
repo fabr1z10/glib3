@@ -1,15 +1,27 @@
---assets local to this scene
-require ("funcs")
-require ("text")
-require ("dialogues")
---require ("dialogues/lookout")
-
 local dt = 0.1
 
---table.insert(inventory, { item = objects.poster, qty = 1})
+-- set player start position
+local startPositionTable = {
+    village1 = { pos = {66, 19, 0}, anim = "idle_right" },
+	kitchen = { pos = {601, 16, 0}, anim = "idle_right", flip = true},
+	loom = {pos = {239, 15, 0}, anim ="idle_right", flip = false },
+	estevan = {pos = {200, 10, 0}, anim= "idle_front", flip=false},
+	mancomb = {pos = {123, 17, 0}, anim= "idle_back", flip=false},
+ 	default = { pos = {66, 19, 0}, anim = "idle_right" },
+}
+
+local startPosition = startPositionTable[variables._previousroom]
+if (startPosition == nil) then
+	startPosition = startPositionTable.default
+end
 
 -- begin room
 room = {
+
+engines = {
+	{ type = "hotspotmanager" },
+	{ type = "scheduler" }
+},
 
 assets = {
     makeGuybrush(),
@@ -345,12 +357,10 @@ scene = {
 			{
 		    	pos = {0, 0, -5},
           		gfx = { image="gfx/scummbar/bg1.png", width=640, height=144 },
-          		layer = 1
         	},
 	        {
 	            pos = {374, 20, 0.95},
 	            gfx = { image="gfx/scummbar/bg2.png" },
-	            layer = 1
 	        },
 	        {
 	            pos = {157, 0, 1},
@@ -360,12 +370,12 @@ scene = {
 	            pos = {20, 0, 1},
 	            gfx = { image="gfx/scummbar/bg4.png" },
 	        },
+			makePlayer(startPosition, true),
 	        {
 	          walkarea = { 
 	            tag = "walkarea",
 	            group = 1,
 	            priority = 0,
-	            layer = 1,
 	            target = "player",
 	            shape = { 
 	                type = "poly", 
@@ -558,29 +568,7 @@ scene = {
 function room.init()
     -- put your initialization code here
     variables._actionInfo:reset()
---print ("STARTING SCUMMBAR !!!")
 
-	local fromData = {
-        village1 = { playerpos = {66, 19, 0}, anim = "idle_right" },
-		kitchen = { playerpos = {601, 16, 0}, anim = "idle_right", flip = true},
-		loom = {playerpos = {239, 15, 0}, anim ="idle_right", flip = false },
-		estevan = {playerpos = {200, 10, 0}, anim= "idle_front", flip=false},
-		mancomb = {playerpos = {123, 17, 0}, anim= "idle_back", flip=false},
-    }
-
-    -- add player
-	local d = fromData[variables._previousroom]
-	if (d == nil) then
-		d = fromData["village1"]
-	end
-
-    table.insert (room.scene[1].children, {
-        tag = objects.guybrush.tag,
-        pos = d.playerpos,
-        gfx = { model = "guybrush", anim = d.anim, flip = d.flip },
-        follow = { cam="maincam" },
-        scaling = {}
-    })
 
 end
 
@@ -661,7 +649,6 @@ function room.start()
  			[4] = { type = "callfunc", after={3}, func = curry (createObject, { 
  				pos = {607, 20, 0},
  				gfx = { model = "cook", anim = "idle_back" },
- 				layer = 1,
  				scaling = {},
  				tag = "cook"
  			})},

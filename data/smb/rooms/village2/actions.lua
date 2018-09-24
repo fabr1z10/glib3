@@ -1,6 +1,9 @@
-function lookCitizen()	
-	local a = say { character = "citizen", lines = { strings.village2[1] }, animstart ="talkfront", animend="idle"}
-	return a	
+function lookCitizen()
+	local s = script:new()
+	s.actions = {
+		[1] = say { character = "citizen", lines = { strings.village2[1] }, animstart ="talkfront", animend="idle" }
+	}	
+	return s
 end
 
 function talkCitizen()
@@ -16,11 +19,12 @@ function talkCitizen()
 		l = { strings.dialogues.citizen.text[8], strings.dialogues.citizen.text[9], strings.dialogues.citizen.text[27], strings.dialogues.citizen.text[28] }
 		startNode = 3
 	end
-	local a = say { character = "citizen", lines = l, animstart="talkside", animend="idleside" }	
-	table.insert (a, 
-		{ type = "callfunc", func = curry(startDialogue, { dialogueId="citizen", nodeId=startNode, init = true })}
-	)
-	return a
+	local s = script:new()
+	s.actions = {
+		[1] = say { character = "citizen", lines = l, animstart="talkside", animend="idleside" },
+		[2] = { type = "callfunc", after={1}, func = curry(startDialogue, { dialogueId="citizen", nodeId=startNode, init = true })}
+	}
+	return s
 end
 
 function door_transport(args) 

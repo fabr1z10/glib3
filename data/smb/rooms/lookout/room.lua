@@ -71,13 +71,8 @@ scene = {
             {
                 pos = {126, 52, -1},
                 gfx = { model = "fire", anim = "default" },
-            },--         
-			{
-        		tag = "player",
-        		pos = {startPosition.pos[1], startPosition.pos[2], 0},
-        		gfx = { model = "guybrush", anim = startPosition.anim, flip = startPosition.flip },
-        		scaling = {}
-    		},
+            },--  
+			makePlayer(startPosition, false),       
 			{
                 walkarea = { 
                	    tag = "walkarea",

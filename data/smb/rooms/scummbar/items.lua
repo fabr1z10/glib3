@@ -1,3 +1,5 @@
+require("rooms/scummbar/actions")
+
 objects["scummbar_door_out"] = {
 	text = strings.objects.door,
     tag = "door1",

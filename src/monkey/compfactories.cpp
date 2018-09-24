@@ -410,7 +410,12 @@ void FollowComponentFactory::operator()(luabridge::LuaRef &ref, Entity *parent) 
     std::string cam = table.Get<std::string>("cam");
     glm::vec3 relPos = table.Get<glm::vec3>("relativepos");
     glm::vec3 up = table.Get<glm::vec3>("up");
-    parent->AddComponent(std::make_shared<Follow>(cam, relPos, up));
+    auto f = std::make_shared<Follow>(cam, relPos, up);
+    if (table.HasKey("z")) {
+        float z = table.Get<float>("z");
+        f->fixZ(z);
+    }
+    parent->AddComponent(f);
 }
 
 void BillboardComponentFactory::operator()(luabridge::LuaRef &ref, Entity *parent) {
