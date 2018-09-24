@@ -1,13 +1,12 @@
 #pragma once
 
-#include <gfx/component.h>
+#include <gfx/runner.h>
 #include <gfx/script.h>
 #include <unordered_map>
 
-class Scheduler : public Component {
+class Scheduler : public Runner {
 public:
-    Scheduler() : Component(), m_count{0}{}
-    void Start() override{}
+    Scheduler() : Runner(), m_count{0}{}
     void Update(double) override;
     void AddScript (const std::string& name, std::shared_ptr<Script> script);
     void AddScript (std::shared_ptr<Script> script);

@@ -6,6 +6,7 @@
 #include "gfx/hashpair.h"
 #include <gfx/collisionresponse.h>
 #include "graph/intersect.h"
+#include "gfx/runner.h"
 
 struct CollisionEngineCell {
     bool dirty;
@@ -27,7 +28,7 @@ struct CollisionInfo {
     int i, j;
 };
 
-class CollisionEngine : public Ref {
+class CollisionEngine : public Runner {
 public:
     CollisionEngine (float cellWidth, float cellHeight);
     void Add (Collider*);
@@ -37,8 +38,11 @@ public:
     void PopCollider(Collider*);
     void PushCollider(Collider*, Location);
     Location GetLocation(Collider* c);
-    void Update(double);
+
+    // runner implementation
+    void Update(double) override;
     void SetResponseManager(std::unique_ptr<CollisionResponseManager>);
+    using ParentClass = CollisionEngine;
     // Casts a ray against colliders in the scene.
     // A raycast is conceptually like a laser beam that is fired from a point in space along a particular direction.
     // Any object making contact with the beam can be detected and reported.

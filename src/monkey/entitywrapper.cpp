@@ -111,8 +111,8 @@ void EntityWrapper::EnableUpdate(bool value) {
 namespace luaFunctions {
 
     void EnableScriptEngine (bool value) {
-        auto schedule = Engine::get().GetScriptingEngine();
-        schedule->SetActive(value);
+        auto schedule = Engine::get().GetRunner<Scheduler>();
+        schedule->setActive(value);
     }
 
     void EndRoom() {
@@ -134,7 +134,7 @@ namespace luaFunctions {
     }
 
     void PlayScript (luabridge::LuaRef ref) {
-        auto scheduler = Engine::get().GetScriptingEngine();
+        auto scheduler = Engine::get().GetRunner<Scheduler>();
         LuaTable table(ref);
         //int startId = table.Get<int>("startid");
         int loopId = table.Get<int>("loop", -1);

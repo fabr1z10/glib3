@@ -37,7 +37,7 @@ void KeyboardController::Update(double) {
     }
 }
 void KeyboardControllerCollision::Start() {
-    m_engine = Engine::get().GetCollisionEngine();
+    m_engine = Engine::get().GetRunner<CollisionEngine>();
     m_renderer = m_entity->GetComponent<Renderer>();
 }
 

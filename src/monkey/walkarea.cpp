@@ -9,17 +9,19 @@
 
 void WalkArea::Start() {
     HotSpot::Start();
-
+    m_scheduler = Engine::get().GetRunner<Scheduler>();
+    if (m_scheduler == nullptr) {
+        GLIB_FAIL ("Walk area component needs a scheduler runner!");
+    }
 }
 
 void WalkArea::onClick(glm::vec2 worldCoords) {
     std::cout << "CLICK ON WALKAREA\n";
 
-    auto scheduler = Engine::get().GetScriptingEngine();
     //auto player = Engine::get().GetRef<Entity>("player");
     auto script = std::make_shared<Script>();
     script->AddActivity(1, std::unique_ptr<Walk>(new Walk(m_playerId, worldCoords)));
-    scheduler->AddScript("main", script);
+    m_scheduler->AddScript("main", script);
 
 }
 

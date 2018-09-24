@@ -8,10 +8,16 @@ class Shape;
 class Renderer;
 class Function2D;
 class HotSpot;
+class Runner;
 
 class ComponentFactory {
 public:
     virtual void operator()(luabridge::LuaRef&, Entity*) = 0;
+};
+
+class RunnerFactory {
+public:
+    virtual void Create(luabridge::LuaRef&) = 0;
 };
 
 // helper functions
@@ -92,3 +98,13 @@ class TextViewComponentFactory : public ComponentFactory {
     void operator()(luabridge::LuaRef&, Entity*) override;
 };
 
+// --- runners
+class HotSpotManagerFactory : public RunnerFactory {
+public:
+    void Create(luabridge::LuaRef&) override;
+};
+
+class SchedulerFactory : public RunnerFactory {
+public:
+    void Create(luabridge::LuaRef&) override;
+};

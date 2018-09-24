@@ -7,6 +7,7 @@
 #include <vector>
 #include <unordered_set>
 #include <gfx/event.h>
+#include <gfx/runner.h>
 
 // hotspot is a component I can attach to
 class HotSpot : public Component {
@@ -54,7 +55,7 @@ inline int HotSpot::GetPriority() const {
 // so when mouse moves, I just need to call one function and not one func for every hotspot.
 // Each hotspoot registers to the hotspot handler at startup and it has a group id. For each group,
 // only one hotspot can be active at any given time.
-class HotSpotManager : public Ref, public MouseListener {
+class HotSpotManager : public Runner, public MouseListener {
 public:
     HotSpotManager();
     //void Start() override ;
@@ -63,6 +64,7 @@ public:
     void ScrollCallback(GLFWwindow*, double, double) override {}
     void MouseButtonCallback(GLFWwindow*, int, int, int) override;
     void Enable(bool) override;
+    void Update(double) override {}
     //void Register (HotSpot*);
     //void Unregister (HotSpot*);
     //void AddGroup (int, const std::string& camId);
@@ -70,6 +72,7 @@ public:
     void NotifyHotSpotDestructor(HotSpot*);
     //void EnableGroup(int);
     //void DisableGroup(int);
+    using ParentClass = HotSpotManager;
 protected:
     glm::vec2 m_worldCoordinates;
     HotSpot* m_currentlyActiveHotSpot;

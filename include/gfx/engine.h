@@ -13,6 +13,7 @@
 #include <gfx/scheduler.h>
 #include <gfx/listener.h>
 #include <gfx/collisionengine.h>
+#include <gfx/runner.h>
 
 struct EngineConfig {
     EngineConfig (float devWidth, float devHeight) : frameRate (60.0), deviceWidth{devWidth}, deviceHeight{devHeight}, enableMouse{false}, enableKeyboard{false},
@@ -77,7 +78,12 @@ public:
         }
         return nullptr;
     }
-    
+
+    template <typename T>
+    void AddRunner(std::shared_ptr<T> c) {
+        m_runners[std::type_index(typeid(typename T::ParentClass))] = c;
+    }
+
     void AddTaggedRef (const std::string&, Ref*);
     void RemoveTaggedRef (const std::string&);
     void EndScene();
@@ -91,7 +97,6 @@ public:
     static void scroll_callback(GLFWwindow*, double xoffset, double yoffset);
     static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
     void SetRenderingEngine(std::unique_ptr<RenderingEngine>);
-    
     //void SetScriptingEngine(std::unique_ptr<Scheduler>);
     //void SetCollisionEngine(std::unique_ptr<CollisionEngine>);
     //MouseListener* GetMouseHandler();
@@ -132,9 +137,9 @@ private:
     // the engine has sub-engines that run at end of each frame
     //std::unique_ptr<MouseListener> m_mouseListener;
     //std::unique_ptr<KeyboardListener> m_keyboardListener;
-    std::unique_ptr<Scheduler> m_scriptEngine;
+    //std::unique_ptr<Scheduler> m_scriptEngine;
     std::unique_ptr<RenderingEngine> m_renderingEngine;
-    std::unique_ptr<CollisionEngine> m_collisionEngine;
+    //std::unique_ptr<CollisionEngine> m_collisionEngine;
     
     // the runners (i.e. script engine, collision engine, hostpot manager etc)
     std::unordered_map<std::type_index, std::shared_ptr<Runner> > m_runners;

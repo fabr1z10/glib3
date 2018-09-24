@@ -64,14 +64,14 @@ void Monkey::Start() {
     g.SetRenderingEngine(std::move(renderingEngine));
 
     // set-up the scripting engine
-    auto scheduler = std::unique_ptr<Scheduler>(new Scheduler);
-    g.SetScriptingEngine(std::move(scheduler));
-
-    // set up the collision engine
-    if (collisionEngine) {
-        auto ce = std::unique_ptr<CollisionEngine>(new CollisionEngine(collisionSize.x, collisionSize.y));
-        g.SetCollisionEngine(std::move(ce));
-    }
+//    auto scheduler = std::unique_ptr<Scheduler>(new Scheduler);
+//    g.SetScriptingEngine(std::move(scheduler));
+//
+//    // set up the collision engine
+//    if (collisionEngine) {
+//        auto ce = std::unique_ptr<CollisionEngine>(new CollisionEngine(collisionSize.x, collisionSize.y));
+//        g.SetCollisionEngine(std::move(ce));
+//    }
 
     // set-up the input system (mouse & keyboard)
     //auto hsm = std::unique_ptr<HotSpotManager>(new HotSpotManager);

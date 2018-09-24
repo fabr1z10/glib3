@@ -248,7 +248,7 @@ void GfxComponentFactory::operator()(luabridge::LuaRef & ref, Entity * entity) {
         bool flip = table.Get<bool>("flip", false);
         renderer->SetMesh(Engine::get().GetAssetManager().GetMesh(model));
         renderer->SetFlipX(flip);
-        renderer->SetRenderingTransform(glm::scale(glm::vec3(0.1f))*glm::rotate(90.0f, glm::vec3(1.0f,0.0f,0.0f)));
+        //renderer->SetRenderingTransform(glm::scale(glm::vec3(0.1f))*glm::rotate(90.0f, glm::vec3(1.0f,0.0f,0.0f)));
         //renderer->SetScale(0.1f);
         renderer->SetAnimation(anim);
     } else if (table.HasKey("shape")) {
@@ -453,4 +453,17 @@ void TextViewComponentFactory::operator() (luabridge::LuaRef &ref, Entity *paren
     auto r = std::make_shared<TextView>(w, h, size, font, color, viewport, deltax);
     parent->AddComponent(r);
     
+}
+
+
+void HotSpotManagerFactory::Create(luabridge::LuaRef&) {
+    auto hsm = std::make_shared<HotSpotManager>();
+    Engine::get().AddRunner(hsm);
+    //g.RegisterToMouseEvent(hsm.get());
+}
+
+void SchedulerFactory::Create(luabridge::LuaRef&) {
+    // set-up the scripting engine
+    auto scheduler = std::make_shared<Scheduler>();
+    Engine::get().AddRunner(scheduler);
 }

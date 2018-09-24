@@ -5,6 +5,7 @@
 #include "gfx/component.h"
 
 class Entity;
+class CollisionEngine;
 
 class Collider : public Component {
 public:
@@ -27,6 +28,7 @@ private:
     std::shared_ptr<Shape> m_shape;
     Bounds m_aabb;
     bool m_enabled;
+    CollisionEngine* m_engine;
 };
 
 inline Bounds Collider::GetBounds() const {

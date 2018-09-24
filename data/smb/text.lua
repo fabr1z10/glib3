@@ -790,7 +790,7 @@ strings.dialogues.lookout.randomLookoutMsg = function()
 end
 
 strings.piecesofeightmsg = function() 
-    return strings.village2[3] .. " " .. tostring(inventory["pieceofeight"].qty) .. " " .. strings.objects.piecesofeight
+    return strings.village2[3] .. " " .. tostring(inventory["pieceofeight"].qty) .. " " .. strings.objects.piecesofeight .. "."
 end
     
     

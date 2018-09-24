@@ -27,7 +27,7 @@ void HotSpot::SetFocus(bool focus) {
 
 }
 
-HotSpotManager::HotSpotManager() : Ref(), MouseListener(), m_active{true}, m_currentlyActiveHotSpot{nullptr} {
+HotSpotManager::HotSpotManager() : Runner(), MouseListener(), m_active{true}, m_currentlyActiveHotSpot{nullptr} {
     m_pixelRatio = Engine::get().GetPixelRatio();
 }
 

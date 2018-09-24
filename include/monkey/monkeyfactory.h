@@ -29,6 +29,12 @@ private:
     void AddFactory (const std::string& key) {
         m_componentFactories[key] = std::unique_ptr<T>(new T);
     }
+
+    template<typename T>
+    void AddRunnerFactory (const std::string& key) {
+        m_runnerFactories[key] = std::unique_ptr<T>(new T);
+    }
+
     void ReadItems(luabridge::LuaRef& ref, Entity* parent);
     //void ReadGfxComponent (luabridge::LuaRef& ref, Entity* parent);
     void ReadTextViewComponent (luabridge::LuaRef& ref, Entity* parent);
@@ -55,6 +61,7 @@ private:
     void ReadScaling (luabridge::LuaRef& ref, Entity* parent);
     //std::shared_ptr<Shape> ReadShape(luabridge::LuaRef& ref);
     std::unordered_map<std::string, std::unique_ptr<ComponentFactory> > m_componentFactories;
+    std::unordered_map<std::string, std::unique_ptr<RunnerFactory> > m_runnerFactories;
     std::unordered_set<std::string> m_specialKeys;
 };
 

@@ -5,7 +5,7 @@
 #include <iostream>
 #include <graph/raycast.h>
 
-CollisionEngine::CollisionEngine (float cellWidth, float cellHeight) : Ref(), m_width{cellWidth}, m_height{cellHeight}
+CollisionEngine::CollisionEngine (float cellWidth, float cellHeight) : Runner(), m_width{cellWidth}, m_height{cellHeight}
 {
     m_intersector = std::unique_ptr<Intersector>(new Intersector);
 }

@@ -46,7 +46,10 @@ MonkeyFactory::MonkeyFactory() {
     AddFactory<ScalingComponentFactory>("scaling");
     AddFactory<ButtonComponentFactory>("button");
     AddFactory<TextViewComponentFactory>("textview");
-    
+
+    AddRunnerFactory<HotSpotManagerFactory>("hotspotmanager");
+    AddRunnerFactory<SchedulerFactory>("scheduler");
+
     m_specialKeys.insert("tag");
     m_specialKeys.insert("pos");
     m_specialKeys.insert("angle");
@@ -75,6 +78,22 @@ std::shared_ptr<Entity> MonkeyFactory::Create() {
         r1();
     }
 
+    std::cout << "Loading engines ...\n";
+    if (roomTable.HasKey("engines")) {
+        luabridge::LuaRef engines = roomTable.Get<luabridge::LuaRef>("engines");
+        for (int i = 0; i < engines.length(); ++i) {
+            luabridge::LuaRef e = engines[i+1];
+            std::string type = e["type"].cast<std::string>();
+            auto it = m_runnerFactories.find(type);
+            if (it == m_runnerFactories.end()) {
+                GLIB_FAIL("Unknown runner " << type);
+            }
+            std::cout << "Adding runner: " << type << std::endl;
+            it->second->Create(e);
+        }
+    }
+
+
     if (roomTable.HasKey("collisionresponse")) {
         // set the collision responses
         luabridge::LuaRef resp = roomTable.Get<luabridge::LuaRef>("collisionresponse");
@@ -99,7 +118,7 @@ std::shared_ptr<Entity> MonkeyFactory::Create() {
             crm->AddCollisionResponse(tags[0], tags[1], std::move(l));
 
         }
-        Engine::get().GetCollisionEngine()->SetResponseManager(std::move(crm));
+        Engine::get().GetRunner<CollisionEngine>()->SetResponseManager(std::move(crm));
     }
 
     luabridge::LuaRef assets = roomTable.Get<luabridge::LuaRef>("assets");

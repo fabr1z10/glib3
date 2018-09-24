@@ -4,6 +4,8 @@
 #include <monkey/funcs.h>
 #include <graph/geom.h>
 
+class Scheduler;
+
 struct BlockedLine {
     LineSegment seg;
     bool active;
@@ -35,7 +37,7 @@ private:
     std::string m_playerId;
     std::unique_ptr<Function2D> m_depthFunc;
     std::unique_ptr<Function2D> m_scaleFunc;
-
+    Scheduler* m_scheduler;
 };
 
 

@@ -2,8 +2,6 @@
 #include <gfx/error.h>
 
 void Scheduler::Update(double dt) {
-    if (!m_active)
-        return;
     std::vector<std::string> toRemove;
     // add queued scripts
     for (auto& q : m_queuedScripts) {

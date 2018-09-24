@@ -6,7 +6,7 @@ local centerPos = {247, 40}
 local startPositionTable = {
 	village1 = { pos = objects.stairs.pos, anim = "idle_back" },
 	meleemap = { pos = objects.path.pos, anim = "idle_right", flip = true },
-	default = { pos = objects.stairs.pos, anim = "idle_back" }
+	default = { pos = objects.path.pos, anim = "idle_right", flip = true },
 }
 
 local startPosition = startPositionTable[variables._previousroom]
@@ -15,7 +15,10 @@ if (startPosition == nil) then
 end
 
 room = {
-
+engines = {
+	{ type = "hotspotmanager" },
+	{ type = "scheduler" }
+},
 assets = {
     makeGuybrush(),
     makeArrowUp(),
@@ -69,6 +72,12 @@ scene = {
                 pos = {126, 52, -1},
                 gfx = { model = "fire", anim = "default" },
             },--         
+			{
+        		tag = "player",
+        		pos = {startPosition.pos[1], startPosition.pos[2], 0},
+        		gfx = { model = "guybrush", anim = startPosition.anim, flip = startPosition.flip },
+        		scaling = {}
+    		},
 			{
                 walkarea = { 
                	    tag = "walkarea",
@@ -134,22 +143,6 @@ scene = {
 
 function room.init()
 	variables._actionInfo:reset()
-	local fromData = {
-        village1 = { playerpos = objects.stairs.pos, anim = "idle_back" },
-		meleemap = { playerpos = objects.path.pos, anim = "idle_right", flip = true },
-		--scummbar = { playerpos = {715, 13, 0}, anim = "idle_front" }
-    }
-	f = fromData[variables._previousroom]
-	if (f == nil) then
-		f = fromData["village1"]
-	end
-    -- add player
-    table.insert (room.scene[1].children, {
-        tag = "player",
-        pos = {f.playerpos[1], f.playerpos[2], 0},
-        gfx = { model = "guybrush", anim = f.anim },
-        scaling = {}
-    })
 end
 
 function room.start()
@@ -161,7 +154,7 @@ function room.afterstartup()
 		local s = script:new()	
 		s.actions[1] = { type="walkto", actor="player", pos=centerPos }
 	    monkey.play(s)
-	elseif (variables._previousroom == "meleemap") then
+	else --if (variables._previousroom == "meleemap") then
 		local s = script:new()	
 		s.actions[1] = { type="walkto", actor="player", pos=centerPos }
 	    monkey.play(s)

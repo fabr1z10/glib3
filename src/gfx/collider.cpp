@@ -20,19 +20,19 @@ void Collider::SetParent(Entity * entity) {
 void Collider::Start() {
     m_aabb = m_shape->getBounds();
     m_aabb.Transform(m_entity->GetWorldTransform());
-    auto ce = Engine::get().GetCollisionEngine();
-    ce->Add(this);
+    m_engine = Engine::get().GetRunner<CollisionEngine>();
+    m_engine->Add(this);
     GetObject()->onMove.Register(this, [&] (Entity* e) { this->Move(e);} );
     m_aabb = m_shape->getBounds();
     m_aabb.Transform(m_entity->GetWorldTransform());
 }
 
 Collider::~Collider() {
-    Engine::get().GetCollisionEngine()->Remove(this);
+    m_engine->Remove(this);
 }
 
 void Collider::Move(Entity* e) {
     m_aabb = m_shape->getBounds();
     m_aabb.Transform(m_entity->GetWorldTransform());
-    Engine::get().GetCollisionEngine()->Move(this);
+    m_engine->Move(this);
 }

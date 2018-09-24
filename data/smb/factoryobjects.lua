@@ -20,7 +20,7 @@ function makeUI ()
 		    {
      		    tag = "currentaction",
     		    pos={160,48,0},
-    		    text = { id = "ddd", font="ui", align = "bottom", color = config.ui_currentaction_color},
+    		    text = { id = strings.ui.walkto, font="ui", align = "bottom", color = config.ui_currentaction_color},
     		    layer=2
             }
     	},
@@ -75,7 +75,7 @@ function makescummui1()
 				    {
 		     		    tag = "currentaction",
 		    		    pos={160,48,0},
-		    		    text = { id = "ddd", font="ui", align = "bottom", color = config.ui_currentaction_color},
+		    		    text = { id = strings.ui.walkto, font="ui", align = "bottom", color = config.ui_currentaction_color},
 		            },
 					{
 						tag="inventory",

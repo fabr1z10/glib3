@@ -160,19 +160,23 @@ void Engine::MainLoop() {
                 }
 
                 
-                // update all the engines (script, rendering, collision)
-                m_scriptEngine->Update(m_frameTime);
+                // update all the runners (script, rendering, collision)
+                for (auto& runner : m_runners) {
+                    if (runner.second->isActive())
+                        runner.second->Update(m_frameTime);
+                }
+                //m_scriptEngine->Update(m_frameTime);
+
+                // Finally render the scene
                 m_renderingEngine->Update(m_frameTime);
-                if (m_collisionEngine != nullptr)
-                    m_collisionEngine->Update(m_frameTime);
+                //if (m_collisionEngine != nullptr)
+                //    m_collisionEngine->Update(m_frameTime);
                 glfwSwapBuffers(window);
                 glfwPollEvents();
             }
         }
         // remove assets loaded at scene level
-        m_scriptEngine->Clear();
-        if (m_collisionEngine != nullptr)
-            m_collisionEngine->Clear();
+        m_runners.clear();
         m_sceneFactory->CleanUp();
         m_scene = nullptr;
         m_garbage.clear();
@@ -279,10 +283,4 @@ void Engine::SetRenderingEngine(std::unique_ptr<RenderingEngine> engine) {
 
     m_renderingEngine = std::move(engine);
     m_renderingEngine->Start();
-}
-void Engine::SetScriptingEngine(std::unique_ptr<Scheduler> engine) {
-    m_scriptEngine = std::move(engine);
-}
-void Engine::SetCollisionEngine(std::unique_ptr<CollisionEngine> engine) {
-    m_collisionEngine = std::move(engine);
 }
