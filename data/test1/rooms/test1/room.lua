@@ -15,8 +15,14 @@ local function makeShape (arg)
 end
 
 room = {
-collisionresponse = {
-	{ tag = {1,2}, onenter = ciao, onleave=ciao1}
+engines = {
+	{ 
+		type = "collision", 
+		size = {80, 80}, 
+		response = {
+			{ tag = {1,2}, onenter = ciao, onleave=ciao1}		
+		}
+	}
 },
 assets = {},
 scene = {
