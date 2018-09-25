@@ -21,6 +21,8 @@
 #include <gfx/statemachine.h>
 #include <monkey/luacollision.h>
 #include <gfx/walkstate.h>
+#include <gfx/hit.h>
+
 
 // a text component is actually a renderer
 void TextComponentFactory::operator() (luabridge::LuaRef& ref, Entity* e) {
@@ -350,9 +352,40 @@ std::shared_ptr<State> WalkStateFactory::Create(luabridge::LuaRef & ref) {
 
 }
 
+std::shared_ptr<State> WalkCollisionStateFactory::Create(luabridge::LuaRef & ref) {
+    LuaTable table(ref);
+    float speed = table.Get<float>("speed");
+    float width = table.Get<float>("width");
+    float height = table.Get<float>("height");
+    int horRays = table.Get<int>("horizontal_rays");
+    int vertRays = table.Get<int>("vertical_rays");
+
+    auto ptr = std::make_shared<WalkStateCollision>(width, height, speed, horRays, vertRays);
+    if (table.HasKey("anims")) {
+        luabridge::LuaRef animsTable = table.Get<luabridge::LuaRef>("anims");
+        for (int i = 0; i < animsTable.length(); ++i) {
+            luabridge::LuaRef anim = animsTable[i+1];
+            std::string id = anim["id"].cast<std::string>();
+            std::string animName = anim["anim"].cast<std::string>();
+            ptr->AddAnimation(id, animName);
+        }
+    }
+    return ptr;
+
+}
+
+
+std::shared_ptr<State> HitStateFactory::Create(luabridge::LuaRef & ref) {
+    LuaTable table(ref);
+    std::string anim = table.Get<std::string>("anim");
+    auto ptr = std::make_shared<Hit>(anim);
+    return ptr;
+}
 
 StateMachineComponentFactory::StateMachineComponentFactory() {
     m_stateFactories["walk"] = std::make_shared<WalkStateFactory>();
+    m_stateFactories["walkcollision"] = std::make_shared<WalkCollisionStateFactory>();
+    m_stateFactories["hit"] = std::make_shared<HitStateFactory>();
 }
 
 void StateMachineComponentFactory::operator()(luabridge::LuaRef &ref, Entity *parent) {
@@ -371,8 +404,19 @@ void StateMachineComponentFactory::operator()(luabridge::LuaRef &ref, Entity *pa
         if (it == m_stateFactories.end())
             GLIB_FAIL("Unknown state " << type);
         auto state = it->second->Create(tss);
+        state->SetId(id);
         comp->AddState(id, state);
     }
+
+    // read the transition keys
+    auto keys = table.GetVector<luabridge::LuaRef>("keys");
+    for (auto& key : keys) {
+        int k =  key["key"].cast<int>();
+        std::string current =  key["current"].cast<std::string>();
+        std::string next =  key["next"].cast<std::string>();
+        comp->AddKey(current, k, next);
+    }
+
 
 //    float width = table.Get<float>("width");
 //    float height = table.Get<float>("height");

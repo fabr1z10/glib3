@@ -64,3 +64,6 @@ void KeyboardControlledStateMachine::KeyCallback(GLFWwindow* window, int key, in
 }
 
 
+void KeyboardControlledStateMachine::AddKey(const std::string& currentState, int key, const std::string& nextState){
+    m_transitions[currentState][key] = nextState;
+}

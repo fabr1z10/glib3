@@ -15,9 +15,18 @@ local function makeShape (arg)
 end
 
 room = {
-collisionresponse = {
-	{ tag = {1,2}, onenter = ciao, onleave=ciao1}
+engines = {
+	{ 
+		type = "collision", 
+		size = {80, 80}, 
+		response = {
+			{ tag = {1,2}, onenter = ciao, onleave=ciao1}		
+		}
+	}
 },
+-- collisionresponse = {
+-- 	{ tag = {1,2}, onenter = ciao, onleave=ciao1}
+-- },
 assets = {},
 scene = {
 	{
@@ -33,13 +42,12 @@ scene = {
 		{
 			gfx = {shape={type="rect", width=20, height=1, offset={-10,-0.5}}, color={255,255,255,255} },
 			collider= {shape={type="rect", width=20, height=1, offset ={-10,-0.5}}, tag=1, flag=1},
-			keyboardcontrollercollision= {
-				width = 20,
-				height = 0,
-				speed = 1,
-				horizontal_rays = 1,
-				vertical_rays = 2
-				
+			statemachine = {
+				initialstate = "walk",
+				states = {
+					{ id = "walk", type="walkcollision", speed = 1, width=20, height=0, horizontal_rays=1, vertical_rays=2 }
+				}
+			
 			}
 	    }, 
 	    makeShape { pos = {80, 80, 0}, angle = 30, shape = {type="rect", width=30, height=10, offset={-15,-5}} },

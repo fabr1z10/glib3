@@ -38,27 +38,42 @@ scene = {
 				collider= {shape={type="rect", width=1, height=1}, tag=1, flag=1},
 				pos = {30,30,0},
 				depth = depth,
-				keyboardcontrollercollision = { 
-					width = 1, 
-		            height = 1, 
-		            speed = 1, 
-		            horizontal_rays = 2, 
-		            vertical_rays = 2,
-					anims = {
-						{ id = "walk_right", anim = "walk" },
-						{ id = "walk_front", anim = "walk" },
-						{ id = "walk_back", anim = "walk" },
-						{ id = "idle_right", anim = "idle" },
-						{ id = "idle_front", anim = "idle"},
-						{ id= "idle_back", anim = "idle"}
+				statemachine = {
+					initialstate = "walk",
+					states = {
+						{ 
+							id = "walk", 
+							type="walkcollision", 
+							speed = 1, width=5, height=1, 
+							horizontal_rays=1, vertical_rays=2,
+							anims = {
+								{ id = "walk_right", anim = "walk" },
+								{ id = "walk_front", anim = "walk" },
+								{ id = "walk_back", anim = "walk" },
+								{ id = "idle_right", anim = "idle" },
+								{ id = "idle_front", anim = "idle"},
+								{ id = "idle_back", anim = "idle"}
+							}
+						},
+						{	
+							id = "punch",
+							type ="hit",
+							anim = "punch"
+						},
+						{	
+							id = "kick",
+							type ="hit",
+							anim = "kick"
+						},
 					},
-					extrakeys = {
-						{ key = 65, anim="punch" },
-						{ key = 83, anim="kick" }
+					keys = {
+						{ key = 65, current = "walk", next= "punch"},
+						{ key = 83, current = "walk", next= "kick"}
+
 					}
-		        }
+				
+				}
 			}
-		
 		}
 	}
 }

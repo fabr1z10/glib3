@@ -19,6 +19,21 @@ std::vector<T> ReadVector(luabridge::LuaRef& ref) {
     return out;
 }
 
+template <>
+inline std::vector<luabridge::LuaRef> ReadVector<luabridge::LuaRef>(luabridge::LuaRef& ref) {
+    if (ref.isNil()) {
+        GLIB_FAIL("Nil vector");
+    }
+    std::vector<luabridge::LuaRef> out;
+    for (int i = 0; i < ref.length(); ++i) {
+        luabridge::LuaRef r = ref[i+1];
+        out.push_back(r);
+    }
+    return out;
+
+}
+
+
 class LuaTable {
 public:
     explicit LuaTable(luabridge::LuaRef ref) : m_ref(ref) {}

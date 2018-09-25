@@ -20,6 +20,7 @@ public:
     virtual void Init(Entity*);
     std::string GetNextState() const;
     std::string GetId() const;
+    void SetId(const std::string& id);
 protected:
     std::string m_id;
     std::string m_nextState;
@@ -34,6 +35,10 @@ inline std::string State::GetId() const {
     return m_id;
 }
 
+
+inline void State::SetId(const std::string& id) {
+    m_id = id;
+}
 
 class StateMachine : public Component {
 public:
@@ -64,6 +69,7 @@ public:
     void Enable(bool) override {}
     // enable specific keys
     void EnableKey(int, bool) override {}
+    void AddKey(const std::string& currentState, int key, const std::string& nextState);
 private:
     std::unordered_map<std::string, std::unordered_map<int, std::string>> m_transitions;
 };

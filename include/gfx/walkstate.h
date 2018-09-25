@@ -18,6 +18,9 @@ public:
     WalkStateCollision (float width, float height, float speed, int horizontalRays, int verticalRays);
     void Init(Entity*) override;
     bool Run(double) override;
+    void Start () override {}
+    void End() override {}
+
     void AddAnimation(const std::string& id, const std::string& name);
 private:
     CollisionEngine* m_engine;
