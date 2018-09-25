@@ -95,32 +95,7 @@ std::shared_ptr<Entity> MonkeyFactory::Create() {
     }
 
 
-    if (roomTable.HasKey("collisionresponse")) {
-        // set the collision responses
-        luabridge::LuaRef resp = roomTable.Get<luabridge::LuaRef>("collisionresponse");
-        std::unique_ptr<CollisionResponseManager> crm (new CollisionResponseManager);
-        for (int i = 0; i < resp.length();++i) {
-            luabridge::LuaRef a = resp[i+1];
-            LuaTable at(a);
-            std::vector<int> tags = at.GetVector<int>("tag");
-            std::unique_ptr<LuaCollisionResponse> l(new LuaCollisionResponse);
-            if (at.HasKey("onenter")) {
-                luabridge::LuaRef onEnter = at.Get<luabridge::LuaRef>("onenter");
-                l->SetOnEnter(onEnter);
-            }
-            if (at.HasKey("onleave")) {
-                luabridge::LuaRef onLeave = at.Get<luabridge::LuaRef>("onleave");
-                l->SetOnLeave(onLeave);
-            }
-            if (at.HasKey("onstay")) {
-                luabridge::LuaRef onStay = at.Get<luabridge::LuaRef>("onstay");
-                l->SetOnStay(onStay);
-            }
-            crm->AddCollisionResponse(tags[0], tags[1], std::move(l));
 
-        }
-        Engine::get().GetRunner<CollisionEngine>()->SetResponseManager(std::move(crm));
-    }
 
     luabridge::LuaRef assets = roomTable.Get<luabridge::LuaRef>("assets");
     for (int i = 0; i < assets.length();++i) {

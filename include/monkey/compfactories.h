@@ -64,6 +64,7 @@ class HotSpotComponentFactory : public ComponentFactory {
 
 class StateMachineComponentFactory : public ComponentFactory {
 public:
+    StateMachineComponentFactory();
     void operator()(luabridge::LuaRef&, Entity*) override;
 private:
     // state factory

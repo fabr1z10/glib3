@@ -5,9 +5,9 @@
 
 class WalkState : public State {
 public:
-    WalkState(float speed);
-    void Init() override {}
-
+    WalkState(float speed) : State(), m_speed(speed) {}
+    void Start () override {}
+    void End() override {}
     bool Run(double) override;
 private:
     float m_speed;
@@ -16,7 +16,7 @@ private:
 class WalkStateCollision : public State {
 public:
     WalkStateCollision (float width, float height, float speed, int horizontalRays, int verticalRays);
-    void Init() override;
+    void Init(Entity*) override;
     bool Run(double) override;
     void AddAnimation(const std::string& id, const std::string& name);
 private:

@@ -19,6 +19,8 @@
 #include <monkey/info.h>
 #include <gfx/textview.h>
 #include <gfx/statemachine.h>
+#include <monkey/luacollision.h>
+#include <gfx/walkstate.h>
 
 // a text component is actually a renderer
 void TextComponentFactory::operator() (luabridge::LuaRef& ref, Entity* e) {
@@ -340,11 +342,18 @@ void HotSpotComponentFactory::operator() (luabridge::LuaRef& ref, Entity* parent
 }
 
 
-std::shared_ptr<State> WalkStateFactory::Create(luabridge::LuaRef &) {
-
+std::shared_ptr<State> WalkStateFactory::Create(luabridge::LuaRef & ref) {
+    LuaTable table(ref);
+    float speed = table.Get<float>("speed");
+    auto ptr = std::make_shared<WalkState>(speed);
+    return ptr;
 
 }
 
+
+StateMachineComponentFactory::StateMachineComponentFactory() {
+    m_stateFactories["walk"] = std::make_shared<WalkStateFactory>();
+}
 
 void StateMachineComponentFactory::operator()(luabridge::LuaRef &ref, Entity *parent) {
     LuaTable table(ref);
@@ -501,6 +510,34 @@ void CollisionEngineFactory::Create(luabridge::LuaRef & ref) {
     LuaTable table(ref);
     glm::vec2 collisionSize = table.Get<glm::vec2>("size");
     auto ce = std::make_shared<CollisionEngine>(collisionSize.x, collisionSize.y);
+
+    if (table.HasKey("response")) {
+        // set the collision responses
+        luabridge::LuaRef resp = table.Get<luabridge::LuaRef>("response");
+        std::unique_ptr<CollisionResponseManager> crm (new CollisionResponseManager);
+        for (int i = 0; i < resp.length();++i) {
+            luabridge::LuaRef a = resp[i+1];
+            LuaTable at(a);
+            std::vector<int> tags = at.GetVector<int>("tag");
+            std::unique_ptr<LuaCollisionResponse> l(new LuaCollisionResponse);
+            if (at.HasKey("onenter")) {
+                luabridge::LuaRef onEnter = at.Get<luabridge::LuaRef>("onenter");
+                l->SetOnEnter(onEnter);
+            }
+            if (at.HasKey("onleave")) {
+                luabridge::LuaRef onLeave = at.Get<luabridge::LuaRef>("onleave");
+                l->SetOnLeave(onLeave);
+            }
+            if (at.HasKey("onstay")) {
+                luabridge::LuaRef onStay = at.Get<luabridge::LuaRef>("onstay");
+                l->SetOnStay(onStay);
+            }
+            crm->AddCollisionResponse(tags[0], tags[1], std::move(l));
+
+        }
+        ce->SetResponseManager(std::move(crm));
+    }
+
     Engine::get().AddRunner(ce);
 
 }

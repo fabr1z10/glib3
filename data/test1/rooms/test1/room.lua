@@ -10,7 +10,7 @@ local function makeShape (arg)
 		pos = arg.pos,
 		angle = arg.angle,
 		gfx = {shape=arg.shape, color={255,255,255,255} },
-		collider= {shape=arg.shape, tag=2},
+		collider= {shape=arg.shape, tag=2, flag = 1},
 	}
 end
 
@@ -38,11 +38,11 @@ scene = {
 		children = {
 		{
 			gfx = {shape={type="rect", width=20, height=10}, color={255,255,255,255} },
-			collider= {shape={type="rect", width=20, height=10}, tag=1},
-			keystatemachine = {
+			collider= {shape={type="rect", width=20, height=10}, tag=1,flag=1},
+			statemachine = {
 				initialstate = "walk",
 				states = {
-					{ id = "walk", type="walk", speed = 10 }
+					{ id = "walk", type="walk", speed = 2}
 				}
 			
 			}
@@ -55,7 +55,7 @@ scene = {
 			pos = {150, 140, 0},
 			angle =10,
 			gfx = { shape = { type = "poly", outline = {0,0,0,50,10,50,10,30,40,30,40,50,50,50,50,0,40,0,40,20,10,20,10,0}}, color={255,255,255,255}},
-			collider = { tag =2, shape = {type="compound", shapes = {
+			collider = { tag =2, flag =1, shape = {type="compound", shapes = {
 				{ type = "rect", width = 10, height = 50 },
 				{ type = "rect", width = 30, height = 10, offset={10, 20} },
 				{ type = "rect", width = 10, height = 50, offset={40, 0} },

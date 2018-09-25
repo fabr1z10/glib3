@@ -33,7 +33,8 @@ m_handleAnimations(true), m_width(width), m_height(height), m_speed(speed), m_ho
     m_verticalRaySpace = m_verticalRays == 1 ? 0.0f : m_width / (m_verticalRays-1);
 }
 
-void WalkStateCollision::Init() {
+void WalkStateCollision::Init(Entity* e) {
+    State::Init(e);
     m_renderer = m_entity->GetComponent<Renderer>();
     m_engine = Engine::get().GetRunner<CollisionEngine>();
 

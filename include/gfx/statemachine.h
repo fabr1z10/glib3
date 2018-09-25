@@ -17,7 +17,7 @@ public:
     virtual bool Run (double) = 0;
     virtual void Start () = 0;
     // called once!!!
-    virtual void Init() = 0;
+    virtual void Init(Entity*);
     std::string GetNextState() const;
     std::string GetId() const;
 protected:

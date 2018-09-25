@@ -4,9 +4,13 @@
 #include <GLFW/glfw3.h>
 
 
+void State::Init(Entity* entity) {
+    m_entity = entity;
+}
+
 void StateMachine::Start() {
     for (auto& s : m_states)
-        s.second->Init();
+        s.second->Init(m_entity);
     ChangeState(m_initialState);
 }
 
