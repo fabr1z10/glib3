@@ -2,7 +2,7 @@
 #include <gfx/error.h>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-
+#include <iostream>
 
 void State::Init(Entity* entity) {
     m_entity = entity;
@@ -47,6 +47,7 @@ void StateMachine::Update(double dt) {
 
 // key triggered state change
 void KeyboardControlledStateMachine::KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+    std::cout << action << ", " << key<<"\n";
     if (action == GLFW_PRESS)
     {
 

@@ -10,7 +10,7 @@ public:
     Hit (const std::string&);
     void Init(Entity*) override;
     void Start() override;
-    bool Run(double) override { return false;}
+    bool Run(double) override;
     void End() override {}
 private:
     CollisionEngine* m_engine;

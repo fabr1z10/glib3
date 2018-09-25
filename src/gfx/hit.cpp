@@ -16,3 +16,10 @@ void Hit::Start() {
     m_renderer->SetAnimation(m_anim);
 
 }
+
+bool Hit::Run(double) {
+    if (m_renderer->GetLoopCount() > 0) {
+        m_nextState = "walk";
+        return true;
+    }
+}
