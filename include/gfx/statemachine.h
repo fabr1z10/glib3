@@ -42,7 +42,7 @@ inline void State::SetId(const std::string& id) {
 
 class StateMachine : public Component {
 public:
-    StateMachine(const std::string& initialState) : Component(), m_initialState(initialState) {}
+    StateMachine(const std::string& initialState) : Component(), m_currentState{nullptr}, m_initialState(initialState) {}
 
     void AddState(const std::string&, std::shared_ptr<State>);
     void ChangeState(const std::string&);

@@ -1,4 +1,7 @@
 require ("sprites")
+require ("funcs")
+require ("script")
+
 engine = {
     device_size = { 320, 200 },
     window_size = { 800, 600 },

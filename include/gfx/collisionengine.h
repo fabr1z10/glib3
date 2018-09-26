@@ -37,7 +37,7 @@ public:
     void Move(Collider*);
     void PopCollider(Collider*);
     void PushCollider(Collider*, Location);
-    Location GetLocation(Collider* c);
+    Location GetLocation(const Bounds& b);
 
     // runner implementation
     void Update(double) override;
@@ -49,7 +49,7 @@ public:
     // This function returns a RaycastHit object with a reference to the collider that is hit by the ray
     // (the collider property of the result will be NULL if nothing was hit). The layerMask can be used to detect objects selectively only on certain layers (this allows you to apply the detection only to enemy characters, for example).
     RayCastHit2D Raycast (glm::vec2 rayOrigin, glm::vec2 rayDir, float length, int mask);
-    
+    Entity* ShapeCast (std::shared_ptr<Shape>, const glm::mat4& transform, int mask);
 private:
     std::unordered_map<std::pair<int, int>, CollisionEngineCell> m_cells;
     std::unordered_map<Collider*, Location> m_colliderLocations;

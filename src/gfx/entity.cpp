@@ -105,6 +105,16 @@ std::string Entity::ToString() {
 
 }
 
+void Entity::SetZ(float z) {
+    m_localTransform[3][2] = z;
+    if (m_parent != nullptr)
+        m_worldTransform = m_parent->GetWorldTransform() * m_localTransform;
+    else
+        m_worldTransform = m_localTransform;
+    Notify ();
+
+
+}
 
 void Entity::SetLocalTransform (glm::mat4 t) {
     m_localTransform = t;

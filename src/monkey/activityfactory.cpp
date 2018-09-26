@@ -125,6 +125,16 @@ ActivityFactory::ActivityFactory() {
         bool immediate = table.Get<bool>("immediate", false);
         return std::unique_ptr<MoveTo>(new MoveTo(actor, dest, speed, relative, immediate));
     };
+    m_factories["movegravity"] = [] (LuaTable& table) -> std::unique_ptr<Activity> {
+        std::string actor = table.Get<std::string>("actor");
+        glm::vec2 initialVelocity = table.Get<glm::vec2>("velocity");
+        float g = table.Get<float>("g");
+        float yStop = table.Get<float>("ystop");
+        return std::unique_ptr<MoveGravity>(new MoveGravity(actor, initialVelocity, g, yStop));
+    };
+
+
+
     m_factories["suspendscript"] = [] (LuaTable& table) -> std::unique_ptr<Activity> {
         std::string s = table.Get<std::string>("script");
         return std::unique_ptr<SuspendScript>(new SuspendScript(s));

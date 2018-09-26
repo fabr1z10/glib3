@@ -3,13 +3,35 @@
 local dt=0.1
 local d = {
 	depth = { 
-	    { rect = {0, 316, 0, 166}, dir = "y", bounds = {1, 0} } 
+	    type = "linear_y", values = {0, 1, 400, 0}
 	}
 }
 
 local startPositionTable = {
 	['start'] = {212, 77}
 }
+local function ciao(x)
+	x:setcolor(255,0,0,255)
+ 	print ("y = " .. tostring(x.y))
+ 	local s = script:new("_cook")
+	s.actions = {
+		[1] = { type = "callfunc", func = curry (createObject, { 
+			pos = {100, 100, 0},
+			gfx = { model = "piece1", anim = "default" },
+			depth = d,
+			tag="p1"
+		})},
+		[2] = {
+			type="movegravity",
+			actor="p1",
+			velocity={50,20},
+			g =20,
+			ystop = x.y,
+			after={1}
+		}
+	}
+	monkey.play(s)
+end
 
 local startPosition = startPositionTable[variables._previousroom]
 
@@ -20,6 +42,8 @@ engines = {
 },
 assets = {
 	sprites.player,
+	sprites.character_1,
+	sprites.piece1
 
 },
 scene = {
@@ -34,10 +58,43 @@ scene = {
 		},
 		children = {
 			{
+				gfx = { model="character_1", anim="idle"},	
+				pos = {60, 30, 0},
+				depth = d,
+				children = {
+					{
+						pos={0,50,1},
+				 		gfx = {
+				 			shape= {type="rect", width=10, height=10},
+				 			color={255,255,255,255}
+				 		}
+					}
+				}
+				-- children = {
+				-- 	-- head collider
+				-- 	{
+				-- 		pos = {0, 50, 0},
+				-- 		collider = {
+				-- 			shape= {type="rect", width=10, height=10}, 
+				-- 			tag=1, 
+				-- 			flag=2
+				-- 		},
+
+				-- 	}					
+				-- }
+			},
+			{		
+				pos={0,50,1},
+				gfx = {
+					shape= {type="rect", width=10, height=10},
+					color={255,255,255,255}
+				}
+			},
+			{
 				gfx = { model="player", anim="idle"},
 				collider= {shape={type="rect", width=1, height=1}, tag=1, flag=1},
 				pos = {30,30,0},
-				depth = depth,
+				depth = d,
 				statemachine = {
 					initialstate = "walk",
 					states = {
@@ -58,7 +115,12 @@ scene = {
 						{	
 							id = "punch",
 							type ="hit",
-							anim = "punch"
+							anim = "punch",
+							frame = 2,
+							mask = 2,
+							shape = { type = "rect", width = 10, height = 10 },
+							offset = {32, 52},
+							func = ciao
 						},
 						{	
 							id = "kick",
@@ -72,6 +134,25 @@ scene = {
 
 					}
 				
+				}
+			},
+			{
+				pos = {50, 50, 0},
+				gfx = { image="gfx/tree1.png" },
+				depth = d,
+			},
+			{
+				-- a collider object
+				pos = {100,50,0},
+				depth =d,
+				collider = {
+					shape= {type="rect", width=10, height=51}, 
+					tag=1, 
+					flag=2
+				},
+				gfx = {
+					shape= {type="rect", width=10, height=51},
+					color={255,255,255,255}
 				}
 			}
 		}

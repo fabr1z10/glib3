@@ -59,3 +59,30 @@ void MoveTo::Run (float dt) {
     }
 
 }
+
+MoveGravity::MoveGravity (const std::string& actorId, glm::vec2 initialVelocity, float g, float yStop) :
+        Activity(), m_entity{nullptr}, m_actorId(actorId), m_initialVelocity(initialVelocity), m_g(g), m_yStop(yStop) {}
+
+
+void MoveGravity::Start() {
+    if (m_entity == nullptr) {
+        m_entity = Engine::get().GetRef<Entity>(m_actorId);
+    }
+    m_velocity = m_initialVelocity;
+    m_angle = 0.0f;
+}
+
+void MoveGravity::Run(float dt) {
+    glm::vec3 p(m_entity->GetPosition());
+    glm::mat4 wt = m_entity->GetWorldTransform();
+    m_angle += 0.2f;
+    glm::vec2 pos(p);
+    pos += m_velocity * dt;
+    m_velocity += glm::vec2(0, -m_g) *dt;
+    if (pos.y <= m_yStop) {
+        pos.y = m_yStop;
+        m_angle = 0.0f;
+        SetComplete();
+    }
+    m_entity->SetPosition(glm::vec3(pos, p.z), m_angle);
+}

@@ -42,6 +42,44 @@ sprites = {
 			   }				
 	        },	
 		}
+	},
+	character_1 = {
+		id = "character_1",
+		sheet = "gfx/enemies.png",
+		type = "sprite",
+		ppu = 1,
+		animations = {
+		    {
+		        name = "idle", frames = 
+				{ 
+					{ duration = dt, quads = { { x = 57, y = 2, width = 18, height = 62, anchor = {9, 0}}}}
+				}
+		    },
+	        {
+	           name="walk",
+	           frames=
+	           { 
+		           { duration = dt, quads = { { x = 5, y = 2, width = 24, height = 62, anchor = {12, 0}}}},
+				   { duration = dt, quads = { { x = 31, y = 1, width = 24, height = 63, anchor = {12, 0}}}},
+		           { duration = dt, quads = { { x = 57, y = 2, width = 18, height = 62, anchor = {9, 0}}}},
+				   { duration = dt, quads = { { x = 77, y = 1, width = 20, height = 63, anchor = {10, 0}}}}
+			   }				
+	        },		
+		}
+	},
+	piece1 = {
+		id="piece1",
+		sheet = "gfx/ab.png",
+		type = "sprite",
+		ppu = 1,
+		animations = {
+		    {
+		        name = "default", frames = 
+				{ 
+					{ duration = dt, quads = { { x = 5, y = 161, width = 12, height = 5, anchor = {6, 2}}}}
+				}
+		    },
+		}
 	}
 	-- end graham
 }

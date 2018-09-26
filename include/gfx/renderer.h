@@ -35,6 +35,7 @@ public:
     const glm::mat4& GetRenderingTransform() const;
     void SetRenderingTransform (glm::mat4 m);
     int GetLoopCount() const;
+    int GetFrame() const;
 private:
     //bool m_flipX;
     glm::mat4 m_renderingTransform;
@@ -89,5 +90,8 @@ inline int Renderer::GetLoopCount() const {
     return m_loopCount;
 }
 
+inline int Renderer::GetFrame() const {
+    return m_frame;
+}
 
 #endif /* renderer_h */

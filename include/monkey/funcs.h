@@ -20,8 +20,32 @@ private:
 class Function2D {
 public:
     virtual float operator()(float x, float y) = 0;
-
 };
+
+class Linear2Dx : public Function2D {
+public:
+    Linear2Dx(float x0, float value0, float x1, float value1) : m_x0{x0}, m_value0{value0}, m_delta{(value1-value0)/(x1-x0)} {}
+    float operator()(float x, float y) override {
+        return m_value0 + (x - m_x0) * m_delta;
+    }
+private:
+    float m_x0;
+    float m_value0;
+    float m_delta;
+};
+
+class Linear2Dy : public Function2D {
+public:
+    Linear2Dy(float y0, float value0, float y1, float value1) : m_y0{y0}, m_value0{value0}, m_delta{(value1-value0)/(y1-y0)} {}
+    float operator()(float x, float y) override {
+        return m_value0 + (y - m_y0) * m_delta;
+    }
+private:
+    float m_y0;
+    float m_value0;
+    float m_delta;
+};
+
 
 class PatchwiseLinear2D : public Function2D {
 public:

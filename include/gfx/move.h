@@ -21,3 +21,19 @@ private:
     bool m_immediate;
     std::string m_actorId;
 };
+
+class MoveGravity : public Activity {
+public:
+    MoveGravity (const std::string& actorId, glm::vec2 initialVelocity, float g, float yStop);
+    void Start() override;
+    void Run (float dt) override;
+private:
+    Entity* m_entity;
+    float m_yStop;
+    glm::vec2 m_initialVelocity;
+    glm::vec2 m_velocity;
+    float m_g;
+    std::string m_actorId;
+    float m_angle;
+
+};

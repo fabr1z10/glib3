@@ -154,16 +154,30 @@ std::shared_ptr<Shape> ReadShape(luabridge::LuaRef& ref) {
 
 
 std::unique_ptr<Function2D> GetFunc2D(luabridge::LuaRef& ref) {
-    std::unique_ptr<PatchwiseLinear2D> p (new PatchwiseLinear2D);
-    for (int i = 0; i < ref.length(); ++i) {
-        luabridge::LuaRef f = ref[i+1];
-        LuaTable funcTable(f);
-        glm::vec4 domain = funcTable.Get<glm::vec4>("rect");
-        bool isX = (funcTable.Get<char>("dir") == 'x');
-        glm::vec2 bounds = funcTable.Get<glm::vec2>("bounds");
-        p->AddFunction(domain, isX, bounds.x, bounds.y);
+    LuaTable table(ref);
+    std::string type = table.Get<std::string>("type");
+    if (type == "linear_x") {
+        glm::vec4 values = table.Get<glm::vec4>("values");
+        std::unique_ptr<Function2D> f(new Linear2Dx(values[0], values[1], values[2], values[3]));
+        return std::move(f);
+    } else if (type == "linear_y") {
+        glm::vec4 values = table.Get<glm::vec4>("values");
+        std::unique_ptr<Function2D> f(new Linear2Dy(values[0], values[1], values[2], values[3]));
+        return std::move(f);
+    } else if (type == "patchwise") {
+
+        std::unique_ptr<PatchwiseLinear2D> p(new PatchwiseLinear2D);
+        for (int i = 0; i < ref.length(); ++i) {
+            luabridge::LuaRef f = ref[i + 1];
+            LuaTable funcTable(f);
+            glm::vec4 domain = funcTable.Get<glm::vec4>("rect");
+            bool isX = (funcTable.Get<char>("dir") == 'x');
+            glm::vec2 bounds = funcTable.Get<glm::vec2>("bounds");
+            p->AddFunction(domain, isX, bounds.x, bounds.y);
+        }
+        return std::move(p);
     }
-    return std::move(p);
+    GLIB_FAIL("Unknown function " << type);
 }
 
 std::shared_ptr<HotSpot> GetHotSpot (luabridge::LuaRef& ref, std::shared_ptr<Shape> shape) {
@@ -285,7 +299,8 @@ void ColliderComponentFactory::operator()(luabridge::LuaRef &ref, Entity *parent
     int flag = table.Get<int>("flag");
     auto shape = ReadShape(shapeR);
 
-    parent->AddComponent(std::make_shared<Collider>(shape, tag, flag));
+    auto coll = std::make_shared<Collider>(shape, tag, flag);
+    parent->AddComponent(coll);
 }
 
 
@@ -378,8 +393,23 @@ std::shared_ptr<State> WalkCollisionStateFactory::Create(luabridge::LuaRef & ref
 std::shared_ptr<State> HitStateFactory::Create(luabridge::LuaRef & ref) {
     LuaTable table(ref);
     std::string anim = table.Get<std::string>("anim");
-    auto ptr = std::make_shared<Hit>(anim);
-    return ptr;
+
+    int frame = table.Get<int>("frame", -1);
+    if (frame != -1) {
+        int mask =table.Get<int>("mask");
+        glm::vec2 offset = table.Get<glm::vec2>("offset");
+        luabridge::LuaRef ts = table.Get<luabridge::LuaRef>("shape");
+        auto shape = ReadShape(ts);
+        luabridge::LuaRef callback = table.Get<luabridge::LuaRef>("func");
+        auto ptr = std::make_shared<HitCollision>(anim, frame, shape, offset, mask, callback);
+        return ptr;
+
+
+    } else {
+        auto ptr = std::make_shared<Hit>(anim);
+        return ptr;
+    }
+
 }
 
 StateMachineComponentFactory::StateMachineComponentFactory() {

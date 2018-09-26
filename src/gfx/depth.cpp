@@ -7,6 +7,8 @@
 void DepthCalculator::Start() {
     m_entity->onMove.Register(this, [&] (Entity* e) { this->UpdateDepthAndScale(e);});
     m_renderer = m_entity->GetComponent<Renderer>();
+    // initialize depth
+    UpdateDepthAndScale(m_entity);
 }
 
 void DepthCalculator::UpdateDepthAndScale(Entity * e) {
@@ -14,7 +16,7 @@ void DepthCalculator::UpdateDepthAndScale(Entity * e) {
         glm::vec2 p(e->GetPosition());
         if (m_depthFunc != nullptr) {
             float z = m_depthFunc->operator()(p.x, p.y);
-            e->SetLocalTransform(glm::translate(glm::vec3(p.x, p.y, z)));
+            e->SetZ(z);
         }
         if (m_scaleFunc != nullptr) {
             float scale = m_scaleFunc->operator()(p.x, p.y);

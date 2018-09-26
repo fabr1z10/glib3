@@ -70,6 +70,7 @@ public:
     // gets the world position
     glm::vec3 GetPosition() const;
     void SetLocalTransform (glm::mat4);
+    void SetZ(float);
     void SetPosition(glm::vec2);
     void SetPosition(glm::vec3);
     void SetPosition(glm::vec3, float angle);

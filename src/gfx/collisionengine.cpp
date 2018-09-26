@@ -14,7 +14,8 @@ CollisionEngine::CollisionEngine (float cellWidth, float cellHeight) : Runner(),
 void CollisionEngine::Add(Collider* c) {
     // this is called when a new collider starts. It registers with the engine
     // get the shape bounding box, transform it, map it
-    Location loc = GetLocation(c);
+    auto aabb = c->GetBounds();
+    Location loc = GetLocation(aabb);
     PushCollider(c, loc);
     std::cout << "Adding collider " << c->GetShape()->toString() << " from (" << loc.x0 << ", " << loc.y0 << ") to (" << loc.x1 << ", " << loc.y1 << ")\n";
     // register to onmove
@@ -33,7 +34,8 @@ void CollisionEngine::Clear() {
 }
 
 void CollisionEngine::Move(Collider * c) {
-    Location loc = GetLocation(c);
+    auto aabb = c->GetBounds();
+    Location loc = GetLocation(aabb);
     auto it = m_colliderLocations.find(c);
     if (it != m_colliderLocations.end()) {
         if (it->second != loc) {
@@ -59,6 +61,7 @@ void CollisionEngine::Move(Collider * c) {
 }
 
 void CollisionEngine::PopCollider(Collider* c) {
+
     auto it = m_colliderLocations.find(c);
     if (it != m_colliderLocations.end()) {
         Location loc = it->second;
@@ -85,8 +88,8 @@ void CollisionEngine::PushCollider(Collider* c, Location loc) {
     m_colliderLocations[c] = loc;
 }
 
-Location CollisionEngine::GetLocation(Collider* c) {
-    auto aabb = c->GetBounds();
+Location CollisionEngine::GetLocation(const Bounds& aabb) {
+    //auto aabb = c->GetBounds();
     Location loc;
     loc.x0 = floor(aabb.min.x / m_width);
     float mx = aabb.max.x / m_width;
@@ -130,7 +133,7 @@ void CollisionEngine::Update(double dt) {
                 if (!c2->Enabled())
                     continue;
                 // if no response is provided for these tags, then skip it
-                if (!m_responseManager->HasCollision(c1, c2)) {
+                if (m_responseManager == nullptr || !m_responseManager->HasCollision(c1, c2)) {
                     //std::cout << "No response for tag (" << c1->GetTag() << ", " << c2->GetTag() << ")\n";
                     continue;
                 }
@@ -229,6 +232,43 @@ void CollisionEngine::Update(double dt) {
     }
 
     // add the new collision pairs
+}
+
+Entity* CollisionEngine::ShapeCast (std::shared_ptr<Shape> shape, const glm::mat4& transform, int mask) {
+    auto aabb = shape->getBounds();
+    aabb.Transform(transform);
+    Location loc = GetLocation(aabb);
+    for (int i = loc.x0; i <= loc.x1; ++i) {
+        for (int j = loc.y0; j <= loc.y1; ++j) {
+            auto cell = m_cells.find(std::make_pair(i, j));
+            if (cell != m_cells.end()) {
+                auto& colliders = cell->second.colliders;
+                for (auto& c : colliders) {
+                    int flag = c->GetFlag();
+                    int m = flag & mask;
+                    if (m == 0) {
+                        continue;
+                    }
+                    auto b = c->GetBounds();
+
+                    // perform a aabb testing
+                    if (!aabb.Intersects(b)) {
+                        continue;
+                    }
+                    Shape* s = c->GetShape();
+                    auto& t = c->GetObject()->GetWorldTransform();
+
+                    // bounding boxes intersect, so let's make a proper collision test
+                    CollisionReport report = m_intersector->Intersect(shape.get(), transform, s, t);
+                    if (report.collide) {
+                        return c->GetObject();
+                    }
+                }
+            }
+        }
+    }
+    return nullptr;
+
 }
 
 RayCastHit2D CollisionEngine::Raycast (glm::vec2 rayOrigin, glm::vec2 rayDir, float length, int mask) {
