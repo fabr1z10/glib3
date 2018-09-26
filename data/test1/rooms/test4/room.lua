@@ -11,26 +11,30 @@ local startPositionTable = {
 	['start'] = {212, 77}
 }
 local function ciao(x)
+	print("pollo")
 	x:setcolor(255,0,0,255)
- 	print ("y = " .. tostring(x.y))
- 	local s = script:new("_cook")
-	s.actions = {
-		[1] = { type = "callfunc", func = curry (createObject, { 
-			pos = {100, 100, 0},
-			gfx = { model = "piece1", anim = "default" },
-			depth = d,
-			tag="p1"
-		})},
-		[2] = {
-			type="movegravity",
-			actor="p1",
-			velocity={50,20},
-			g =20,
-			ystop = x.y,
-			after={1}
-		}
-	}
-	monkey.play(s)
+	pp =  x:parent()
+ 	info = x:getinfo()
+ 	print ("pos = (" .. tostring(pp.x) .. ", " .. tostring(pp.y) .. ")")
+ 	print ("hitting = " .. info.pos)
+ -- 	local s = script:new("_cook")
+	-- s.actions = {
+	-- 	[1] = { type = "callfunc", func = curry (createObject, { 
+	-- 		pos = {100, 100, 0},
+	-- 		gfx = { model = "piece1", anim = "default" },
+	-- 		depth = d,
+	-- 		tag="p1"
+	-- 	})},
+	-- 	[2] = {
+	-- 		type="movegravity",
+	-- 		actor="p1",
+	-- 		velocity={50,20},
+	-- 		g =20,
+	-- 		ystop = x.y,
+	-- 		after={1}
+	-- 	}
+	-- }
+	-- monkey.play(s)
 end
 
 local startPosition = startPositionTable[variables._previousroom]
@@ -67,8 +71,17 @@ scene = {
 				 		gfx = {
 				 			shape= {type="rect", width=10, height=10},
 				 			color={255,255,255,255}
-				 		}
+				 		},
+					collider = {
+						shape= {type="rect", width=10, height=10}, 
+						tag=1, 
+						flag=2
+					},
+					info = {
+						pos = "head"
 					}
+				}
+					
 				}
 				-- children = {
 				-- 	-- head collider

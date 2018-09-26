@@ -40,6 +40,11 @@ void WalkStateCollision::Init(Entity* e) {
 
 }
 
+void WalkStateCollision::Start() {
+    m_renderer->SetAnimation(m_animations.at("idle_right"));
+    
+}
+
 // 4-directional walking state
 bool WalkStateCollision::Run(double) {
     bool moveHorizontal = false;
@@ -99,7 +104,7 @@ bool WalkStateCollision::Run(double) {
     if (moveHorizontal || moveVertical) {
         m_entity->Move(TotalShift);
     }
-
+    
     // handle animation
     if (m_handleAnimations) {
         if (moveHorizontal) {
@@ -124,6 +129,7 @@ bool WalkStateCollision::Run(double) {
             }
         }
     }
+    m_prevMove = TotalShift;
     return false;
 }
 
