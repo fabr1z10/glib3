@@ -28,6 +28,7 @@ private:
     std::shared_ptr<Shape> m_shape;
     Bounds m_aabb;
     bool m_enabled;
+
     CollisionEngine* m_engine;
 };
 

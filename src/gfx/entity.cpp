@@ -127,6 +127,7 @@ void Entity::SetLocalTransform (glm::mat4 t) {
 
 void Entity::SetWorldTransform(glm::mat4& wt) {
     m_worldTransform = wt * m_localTransform;
+    onMove.Fire(this);
     Notify();
 }
 
@@ -162,7 +163,9 @@ void Entity::SetParent(Entity* entity) {
 void Entity::Move(glm::vec2 pos) {
     SetPosition(GetPosition() + glm::vec3(pos, 0.0f));
 }
-
+void Entity::Move(glm::vec3 pos) {
+    SetPosition(GetPosition() + pos);
+}
 Camera* Entity::GetCamera() {
     return m_cameras.get();
 }

@@ -92,6 +92,10 @@ void EntityWrapper::ClearText() {
     r->ClearText();
 }
 
+void EntityWrapper::Remove() {
+    Engine::get().Remove(m_underlying);
+}
+
 
 
 void EntityWrapper::SetText(const std::string& text) {

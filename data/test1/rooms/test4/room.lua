@@ -10,15 +10,94 @@ local d = {
 local startPositionTable = {
 	['start'] = {212, 77}
 }
+
+hitfunc = {}
+
+
+hitfunc["head"] = function(info, pp)
+	main = monkey.getEntity("main")
+	player = monkey.getEntity("player")
+	flip = player.flipx and 1 or -1
+	local b = nextTag()
+	local b1 = nextTag()
+	print ("Adding object with tag " .. b)
+    monkey.addEntity ({
+		pos = {pp.x, pp.y, 0},
+		depth = d,
+		gfx = { model = info.spriteid, anim = "body"},
+		tag = b
+	}, main)
+	-- adding fx
+    monkey.addEntity ({
+		pos = {pp.x + info.offset[1], pp.y + info.offset[2], 0},
+		depth = d,
+		gfx = { model = "expl1", anim = "default", scale = info.scale},
+		tag = b1
+	}, main)
+ 	local s = script:new("_cook")
+	s.actions ={
+		[1] = {type="noop"},
+		[2] = { type="rotate", speed = flip * 60, acceleration = flip * 200, deg = flip*90, actor = b, after={1} },
+		[3] = { type="animate", actor=b1, anim="default", loop = 1, after={1}},
+		[4] = { type="animate", actor=b1, anim="stop", after={3}},
+		[5] = { type ="movegravity", actor=b1, velocity={0,-100}, g=100, ystop = pp.y, after={1}}
+	}	
+	monkey.play(s)
+end
+
+hitfunc["body"] = function()
+	main = monkey.getEntity("main")
+	player = monkey.getEntity("player")
+	flip = player.flipx and 1 or -1
+	local tagHead = nextTag()
+	local tagLegs = nextTag()
+local b1 = nextTag()
+    monkey.addEntity ({
+		pos = {pp.x + info.headx, pp.y + info.heady, 0},
+		depth = d,
+		gfx = { model = info.spriteid, anim = "head"},
+		tag = tagHead
+	}, main)
+    monkey.addEntity ({
+		pos = {pp.x, pp.y, 0},
+		depth = d,
+		gfx = { model = info.spriteid, anim = "legs"},
+		tag = tagLegs
+	}, main)
+	-- adding fx
+    monkey.addEntity ({
+		pos = {pp.x + info.offset[1], pp.y + info.offset[2], 0},
+		depth = d,
+		gfx = { model = "expl1", anim = "default", scale = info.scale},
+		tag = b1
+	}, main)
+ 	local s = script:new("_cook")
+	s.actions ={
+		[1] = {type="noop"},
+		[2] = { type="rotate", speed = flip * 60, acceleration = flip * 200, deg = flip*90, actor = tagLegs, after={1} },
+		[3] = { type="animate", actor=b1, anim="default", loop = 1, after={1}},
+		[4] = { type="animate", actor=b1, anim="stop", after={3}},
+		[5] = { type ="movegravity", actor=b1, velocity={0,-100}, g=100, ystop = pp.y, after={1}},
+		[6] = {type="movegravity", actor=tagHead, velocity = {20, 100}, g = 100,ystop = pp.y, after= {1}}
+	}	
+	monkey.play(s)
+end
+
+hitfunc["leg"] = function()
+
+end
+
 local function ciao(x)
-	print("pollo")
 	x:setcolor(255,0,0,255)
 	pp =  x:parent()
  	info = x:getinfo()
  	print ("pos = (" .. tostring(pp.x) .. ", " .. tostring(pp.y) .. ")")
  	print ("hitting = " .. info.pos)
- -- 	local s = script:new("_cook")
-	-- s.actions = {
+	pp:remove()	
+	hitfunc[info.pos](info, pp)
+	-- create the body
+
+-- s.actions = {
 	-- 	[1] = { type = "callfunc", func = curry (createObject, { 
 	-- 		pos = {100, 100, 0},
 	-- 		gfx = { model = "piece1", anim = "default" },
@@ -42,12 +121,13 @@ local startPosition = startPositionTable[variables._previousroom]
 room = {
 engines = {
 	{ type = "scheduler"},
-	{ type = "collision", size = {80, 80} }
+	{ type = "collision", size = {80, 80}, coll25 = true, eps = 0.01 }
 },
 assets = {
 	sprites.player,
 	sprites.character_1,
-	sprites.piece1
+	sprites.piece1,
+	sprites.expl1
 
 },
 scene = {
@@ -60,50 +140,68 @@ scene = {
 			bounds = {0, 0, 1280, 400},
 			viewport = {0, 0, 640, 400}
 		},
-		children = {
-			{
-				gfx = { model="character_1", anim="idle"},	
-				pos = {60, 30, 0},
-				depth = d,
-				children = {
-					{
-						pos={0,50,1},
-				 		gfx = {
-				 			shape= {type="rect", width=10, height=10},
-				 			color={255,255,255,255}
-				 		},
-					collider = {
-						shape= {type="rect", width=10, height=10}, 
-						tag=1, 
-						flag=2
-					},
-					info = {
-						pos = "head"
-					}
-				}
-					
-				}
-				-- children = {
-				-- 	-- head collider
-				-- 	{
-				-- 		pos = {0, 50, 0},
-				-- 		collider = {
-				-- 			shape= {type="rect", width=10, height=10}, 
-				-- 			tag=1, 
-				-- 			flag=2
-				-- 		},
+		children = 
+		{
+			makeEnemy ("character_1", 60, 30, 40, 50, 20, 10, 10),
+			-- {
+			-- 	gfx = { model="character_1", anim="idle"},	
+			-- 	pos = {60, 30, 0},
+			-- 	depth = d,
+			-- 	statemachine = {
+			-- 		initialstate = "walk",
+			-- 		states = {
+			-- 			{
+			-- 				id="walk",
+			-- 				type ="aiwalk",
+			-- 				speed = 5,
+			-- 				target = "player"
+			-- 			}
+			-- 		}
+			-- 	},
+			-- 	children = {
+			-- 		{
+			-- 			pos={0,50,1},
+			-- 	 		gfx = {
+			-- 	 			shape= {type="rect", width=10, height=10, offset={-5,0}},
+			-- 	 			color={255,255,255,255}
+			-- 	 		},
+			-- 			collider = {
+			-- 				shape= {type="rect", width=10, height=10, offset={-5,0}}, 
+			-- 				tag=1, 
+			-- 				flag=2
+			-- 			},
+			-- 			info = {
+			-- 				pos = "head",
+			-- 				spriteid ="character_1",
+			-- 				offset = {0, 50},
+			-- 				scale =0.5
+			-- 			}
+			-- 		},
+			-- 		{
+			-- 			pos={0,20,1},
+			-- 	 		gfx = {
+			-- 	 			shape= {type="rect", width=10, height=30},
+			-- 	 			color={255,255,255,255}
+			-- 	 		},
+			-- 		collider = {
+			-- 			shape= {type="rect", width=10, height=30}, 
+			-- 			tag=1, 
+			-- 			flag=2
+			-- 		},
+			-- 		info = {
+			-- 			pos = "body",
+			-- 			spriteid ="character_1",
+			-- 			offset = {0, 20},
+			-- 			headx = 0, heady=50,
+			-- 			scale =0.7
+			-- 		}
+			-- 		},				
+			-- 	}
 
-				-- 	}					
-				-- }
-			},
-			{		
-				pos={0,50,1},
-				gfx = {
-					shape= {type="rect", width=10, height=10},
-					color={255,255,255,255}
-				}
-			},
+			-- },
+
 			{
+				tag = "player",
 				gfx = { model="player", anim="idle"},
 				collider= {shape={type="rect", width=1, height=1}, tag=1, flag=1},
 				pos = {30,30,0},
@@ -138,12 +236,23 @@ scene = {
 						{	
 							id = "kick",
 							type ="hit",
-							anim = "kick"
+							anim = "kick",
+							mask = 2,
+							frame = 2,
+							shape = { type = "rect", width = 18, height = 8 },
+							offset = {38, 19},
+							func = ciao
+						},
+						{	
+							id = "cr",
+							type ="hit",
+							anim = "cr",
 						},
 					},
 					keys = {
 						{ key = 65, current = "walk", next= "punch"},
-						{ key = 83, current = "walk", next= "kick"}
+						{ key = 83, current = "walk", next= "kick"},
+						{ key = 84, current = "walk", next= "cr"},
 
 					}
 				
@@ -154,20 +263,20 @@ scene = {
 				gfx = { image="gfx/tree1.png" },
 				depth = d,
 			},
-			{
-				-- a collider object
-				pos = {100,50,0},
-				depth =d,
-				collider = {
-					shape= {type="rect", width=10, height=51}, 
-					tag=1, 
-					flag=2
-				},
-				gfx = {
-					shape= {type="rect", width=10, height=51},
-					color={255,255,255,255}
-				}
-			}
+			-- {
+			-- 	-- a collider object
+			-- 	pos = {100,50,0},
+			-- 	depth =d,
+			-- 	collider = {
+			-- 		shape= {type="rect", width=10, height=51}, 
+			-- 		tag=1, 
+			-- 		flag=2
+			-- 	},
+			-- 	gfx = {
+			-- 		shape= {type="rect", width=10, height=51},
+			-- 		color={255,255,255,255}
+			-- 	}
+			-- }
 		}
 	}
 }

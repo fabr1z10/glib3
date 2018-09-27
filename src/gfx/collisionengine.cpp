@@ -5,11 +5,17 @@
 #include <iostream>
 #include <graph/raycast.h>
 
-CollisionEngine::CollisionEngine (float cellWidth, float cellHeight) : Runner(), m_width{cellWidth}, m_height{cellHeight}
+CollisionEngine::CollisionEngine (float cellWidth, float cellHeight) :
+        Runner(), m_width{cellWidth}, m_height{cellHeight}, m_coll25d(false), m_eps(false)
 {
     m_intersector = std::unique_ptr<Intersector>(new Intersector);
 }
 
+
+void CollisionEngine::Enable25DCollision(float eps) {
+    m_coll25d = true;
+    m_eps = eps;
+}
 
 void CollisionEngine::Add(Collider* c) {
     // this is called when a new collider starts. It registers with the engine
@@ -126,10 +132,11 @@ void CollisionEngine::Update(double dt) {
             Collider* c1 = *iter;
             if (!c1->Enabled())
                 continue;
-
+            float z1 = c1->GetObject()->GetPosition().z;
             auto iter2 = iter;
             for (++iter2; iter2 != cell.second.colliders.end(); ++iter2) {
                 Collider * c2 = *iter2;
+                float z2 = c2->GetObject()->GetPosition().z;
                 if (!c2->Enabled())
                     continue;
                 // if no response is provided for these tags, then skip it
@@ -137,18 +144,11 @@ void CollisionEngine::Update(double dt) {
                     //std::cout << "No response for tag (" << c1->GetTag() << ", " << c2->GetTag() << ")\n";
                     continue;
                 }
-//
-//                // if we get here, collision is enabled on both nodes check now collision mask
-//                int m1 = c1->GetCollisionFlag() & c2->GetCollisionMask();
-//                int m2 = c2->GetCollisionFlag() & c1->GetCollisionMask();
-//                bool collisionMaskTest = m1 || m2;
-//                if (collisionMaskTest == 0)
-//                    continue;
-//
-//                // do we have a collision response set up for this nodes?
-//                auto factory = m_response->GetResponseFactory(c1, c2);
-//                if (!factory.good())
-//                    continue;
+                // 2.5d collision check
+                if (m_coll25d && fabs(z1-z2) > m_eps) {
+                    continue;
+                }
+
 
                 // we have a collision response, so let's calculate collision
                 auto b1 = c1->GetBounds();
@@ -176,32 +176,7 @@ void CollisionEngine::Update(double dt) {
                     currentlyCollidingPairs.insert(std::make_pair(std::make_pair(c1, c2), ci));
                 }
 
-                //testedPairs.insert(std::make_pair(c1, c2));
-                //testedPairs.insert(std::make_pair(c2, c1));
-                // check if these colliders were colliding in the previous frame
-                //auto np = make_pair(c1, c2);
-                //auto itercp = m_previouslyCollidingPairs.find(np);
-                //bool collidingBefore = (itercp != m_previouslyCollidingPairs.end());
 
-                //if (report.collide) {
-                    // if the shapes are colldiing and they were not colliding before,
-                    // a new collision response is generated
-                //    if (!collidingBefore) {
-                //        auto handler = factory.Create(c1->GetObject(), c2->GetObject(), report);
-                //        handler->Start();
-                //        m_previouslyCollidingPairs[np] = std::move(handler);
-                //    }
-                //    else {
-                //        itercp->second->UpdateReport(c1->GetObject(), report);
-                //        itercp->second->m_confirmed = true;
-                //    }
-                //}
-                //else {
-                //    if (collidingBefore) {
-                //        itercp->second->End();
-                //        m_previouslyCollidingPairs.erase(np);
-                //    }
-                //}
             }
             // set cell as not dirty
             cell.second.dirty = false;
@@ -237,6 +212,7 @@ void CollisionEngine::Update(double dt) {
 Entity* CollisionEngine::ShapeCast (std::shared_ptr<Shape> shape, const glm::mat4& transform, int mask) {
     auto aabb = shape->getBounds();
     aabb.Transform(transform);
+    float z = transform[3][2];
     Location loc = GetLocation(aabb);
     for (int i = loc.x0; i <= loc.x1; ++i) {
         for (int j = loc.y0; j <= loc.y1; ++j) {
@@ -250,7 +226,12 @@ Entity* CollisionEngine::ShapeCast (std::shared_ptr<Shape> shape, const glm::mat
                         continue;
                     }
                     auto b = c->GetBounds();
-
+                    glm::vec3 pp = c->GetObject()->GetPosition();
+                    float zc = c->GetObject()->GetPosition().z;
+                    // 2.5d collision check
+                    if (m_coll25d && fabs(z-zc) > m_eps) {
+                        continue;
+                    }
                     // perform a aabb testing
                     if (!aabb.Intersects(b)) {
                         continue;
@@ -271,10 +252,11 @@ Entity* CollisionEngine::ShapeCast (std::shared_ptr<Shape> shape, const glm::mat
 
 }
 
-RayCastHit2D CollisionEngine::Raycast (glm::vec2 rayOrigin, glm::vec2 rayDir, float length, int mask) {
+RayCastHit2D CollisionEngine::Raycast (glm::vec3 rayOrigin, glm::vec2 rayDir, float length, int mask) {
 
-    glm::vec2 P = rayOrigin;
+    glm::vec2 P(rayOrigin);
     glm::vec2 P1 = P;
+    float z = rayOrigin.z;
     // initialize current cell
     int i = static_cast<int>(P.x / m_width);
     int j = static_cast<int>(P.y / m_height);
@@ -297,7 +279,7 @@ RayCastHit2D CollisionEngine::Raycast (glm::vec2 rayOrigin, glm::vec2 rayDir, fl
         if (l + tm < length) {
             P1 = P + tm * rayDir;
         } else {
-            P1 = rayOrigin + length * rayDir;
+            P1 = P + length * rayDir;
             endReached = true;
         }
 
@@ -310,7 +292,12 @@ RayCastHit2D CollisionEngine::Raycast (glm::vec2 rayOrigin, glm::vec2 rayDir, fl
                 // aabb check
                 int flag = c->GetFlag();
                 int m = flag & mask;
+
                 if (m != 0) {
+                    float zc = c->GetObject()->GetPosition().z;
+                    if (m_coll25d && fabs(z-zc) > m_eps) {
+                        continue;
+                    }
                     float dist{0.0f};
                     auto shapeBounds = c->GetBounds();
                     if (lineBounds.Intersects(shapeBounds)) {
@@ -341,3 +328,4 @@ RayCastHit2D CollisionEngine::Raycast (glm::vec2 rayOrigin, glm::vec2 rayDir, fl
     return out;
 
 }
+

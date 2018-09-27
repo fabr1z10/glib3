@@ -11,6 +11,7 @@
 #include "gfx/scriptactions.h"
 #include <monkey/enableblock.h>
 #include <monkey/showmessage.h>
+#include <gfx/rotate.h>
 
 ActivityFactory::ActivityFactory() {
     m_factories["walkto"] = [] (LuaTable& table) -> std::unique_ptr<Activity> {
@@ -131,6 +132,13 @@ ActivityFactory::ActivityFactory() {
         float g = table.Get<float>("g");
         float yStop = table.Get<float>("ystop");
         return std::unique_ptr<MoveGravity>(new MoveGravity(actor, initialVelocity, g, yStop));
+    };
+    m_factories["rotate"] = [] (LuaTable& table) -> std::unique_ptr<Activity> {
+        std::string actor = table.Get<std::string>("actor");
+        float initialVelocity = table.Get<float>("speed");
+        float acceleration = table.Get<float>("acceleration", 0.0f);
+        float deg = table.Get<float>("deg");
+        return std::unique_ptr<Rotate>(new Rotate(actor, deg, acceleration, initialVelocity));
     };
 
 

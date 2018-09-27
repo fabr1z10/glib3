@@ -22,7 +22,7 @@
 #include <monkey/luacollision.h>
 #include <gfx/walkstate.h>
 #include <gfx/hit.h>
-
+#include <gfx/aiwalk.h>
 
 // a text component is actually a renderer
 void TextComponentFactory::operator() (luabridge::LuaRef& ref, Entity* e) {
@@ -287,6 +287,10 @@ void GfxComponentFactory::operator()(luabridge::LuaRef & ref, Entity * entity) {
         renderer->SetTint(color);
 
     }
+    if (table.HasKey("scale")) {
+        float scale = table.Get<float>("scale");
+        renderer->SetScale(scale);
+    }
     entity->AddComponent(renderer);
 }
 
@@ -367,6 +371,16 @@ std::shared_ptr<State> WalkStateFactory::Create(luabridge::LuaRef & ref) {
 
 }
 
+std::shared_ptr<State> AIWalkStateFactory::Create(luabridge::LuaRef & ref) {
+    LuaTable table(ref);
+    float speed = table.Get<float>("speed");
+    std::string target = table.Get<std::string>("target");
+    auto ptr = std::make_shared<AIWalk>(target, speed);
+    return ptr;
+
+}
+
+
 std::shared_ptr<State> WalkCollisionStateFactory::Create(luabridge::LuaRef & ref) {
     LuaTable table(ref);
     float speed = table.Get<float>("speed");
@@ -414,6 +428,7 @@ std::shared_ptr<State> HitStateFactory::Create(luabridge::LuaRef & ref) {
 
 StateMachineComponentFactory::StateMachineComponentFactory() {
     m_stateFactories["walk"] = std::make_shared<WalkStateFactory>();
+    m_stateFactories["aiwalk"] = std::make_shared<AIWalkStateFactory>();
     m_stateFactories["walkcollision"] = std::make_shared<WalkCollisionStateFactory>();
     m_stateFactories["hit"] = std::make_shared<HitStateFactory>();
 }
@@ -584,7 +599,11 @@ void CollisionEngineFactory::Create(luabridge::LuaRef & ref) {
     LuaTable table(ref);
     glm::vec2 collisionSize = table.Get<glm::vec2>("size");
     auto ce = std::make_shared<CollisionEngine>(collisionSize.x, collisionSize.y);
-
+    bool coll25 = table.Get<bool>("coll25", false);
+    if (coll25) {
+        float eps = table.Get<float>("eps");
+        ce->Enable25DCollision(eps);
+    }
     if (table.HasKey("response")) {
         // set the collision responses
         luabridge::LuaRef resp = table.Get<luabridge::LuaRef>("response");

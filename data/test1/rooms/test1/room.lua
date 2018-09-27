@@ -1,6 +1,7 @@
 local function ciao(x)
 	x:setcolor(255,0,0,255)
 end
+
 local function ciao1(x)
 	x:setcolor(255,255,255,255)
 end
@@ -15,9 +16,11 @@ local function makeShape (arg)
 end
 
 room = {
+
 engines = {
 	{ 
 		type = "collision", 
+
 		size = {80, 80}, 
 		response = {
 			{ tag = {1,2}, onenter = ciao, onleave=ciao1}		

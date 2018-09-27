@@ -75,7 +75,7 @@ public:
     void SetPosition(glm::vec3);
     void SetPosition(glm::vec3, float angle);
     void Move(glm::vec2);
-    void Move(glm::vec3&);
+    void Move(glm::vec3);
     void Move(glm::mat4&);
     //Entity* GetParent();
 

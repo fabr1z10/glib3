@@ -21,7 +21,7 @@ struct EntityWrapper {
     static EntityWrapper RemoveEntity(const std::string& tag);
     void Clear();
     void ClearText();
-
+    void Remove();
     bool IsNil() const;
     float GetX() const;
     float GetY() const;

@@ -61,14 +61,14 @@ bool WalkStateCollision::Run(double) {
     }
 
     // Horizontal check
-    glm::vec2 TotalShift(0.0f);
+    glm::vec3 TotalShift(0.0f);
     if (moveHorizontal) {
-        glm::vec2 P (m_entity->GetPosition());
-        P += glm::vec2(dir.x*m_width*0.5f, -m_height*0.5f);
+        glm::vec3 P = m_entity->GetPosition();
+        P += glm::vec3(dir.x*m_width*0.5f, -m_height*0.5f, 0.0f);
         float shift = m_speed;
         for (int i = 0; i < m_horizontalRays; ++i) {
             // fire horizontal rays
-            glm::vec2 s = P + glm::vec2(0.0f, i*m_horizontalRaySpace);
+            glm::vec3 s = P + glm::vec3(0.0f, i*m_horizontalRaySpace, 0.0f);
             auto result = m_engine->Raycast(s, dir, shift, 2);
             if (result.length < shift)
                 shift = result.length;
@@ -88,12 +88,12 @@ bool WalkStateCollision::Run(double) {
     }
 
     if (moveVertical) {
-        glm::vec2 P (m_entity->GetPosition());
-        P += TotalShift + glm::vec2(-m_width*0.5f, dir.y*m_height*0.5f);
+        glm::vec3 P = m_entity->GetPosition();
+        P += TotalShift + glm::vec3(-m_width*0.5f, dir.y*m_height*0.5f, 0.0f);
         float shift = m_speed;
         for (int i = 0; i < m_verticalRays; ++i) {
             // fire horizontal rays
-            glm::vec2 s = P + glm::vec2(i*m_verticalRaySpace, 0.0f);
+            glm::vec3 s = P + glm::vec3(i*m_verticalRaySpace, 0.0f, 0.0f);
             auto result = m_engine->Raycast(s, dir, shift, 2);
             if (result.length < shift)
                 shift = result.length;

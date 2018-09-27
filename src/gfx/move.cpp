@@ -75,7 +75,7 @@ void MoveGravity::Start() {
 void MoveGravity::Run(float dt) {
     glm::vec3 p(m_entity->GetPosition());
     glm::mat4 wt = m_entity->GetWorldTransform();
-    m_angle += 0.2f;
+    m_angle = 0.0f;// += 0.2f;
     glm::vec2 pos(p);
     pos += m_velocity * dt;
     m_velocity += glm::vec2(0, -m_g) *dt;

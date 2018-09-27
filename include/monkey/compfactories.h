@@ -136,3 +136,7 @@ class WalkCollisionStateFactory : public StateFactory {
 class HitStateFactory : public StateFactory {
     std::shared_ptr<State> Create(luabridge::LuaRef&) override;
 };
+
+class AIWalkStateFactory : public StateFactory {
+    std::shared_ptr<State> Create(luabridge::LuaRef&) override;
+};
