@@ -7,6 +7,10 @@ local d = {
 	}
 }
 
+local function computeDepth(y) 
+	return 1 - y/400
+end
+
 local startPositionTable = {
 	['start'] = {212, 77}
 }
@@ -121,13 +125,18 @@ local startPosition = startPositionTable[variables._previousroom]
 room = {
 engines = {
 	{ type = "scheduler"},
-	{ type = "collision", size = {80, 80}, coll25 = true, eps = 0.01 }
+	{ type = "collision", size = {80, 80}, coll25 = true, eps = 0.01,
+		response = {
+			{ tag = {1,10}, onenter = function() print("DIEIEIEIEI") end}
+		}
+	}
 },
 assets = {
 	sprites.player,
 	sprites.character_1,
 	sprites.piece1,
-	sprites.expl1
+	sprites.expl1,
+	sprites.expl2
 
 },
 scene = {
@@ -143,6 +152,11 @@ scene = {
 		children = 
 		{
 			makeEnemy ("character_1", 60, 30, 40, 50, 20, 10, 10),
+			{
+				tag ="c1",
+				gfx = { image="gfx/brick.png", width = 128, height = 128},
+				pos = { 60, 120, computeDepth(60)},
+			},
 			-- {
 			-- 	gfx = { model="character_1", anim="idle"},	
 			-- 	pos = {60, 30, 0},
@@ -206,6 +220,12 @@ scene = {
 				collider= {shape={type="rect", width=1, height=1}, tag=1, flag=1},
 				pos = {30,30,0},
 				depth = d,
+				children = {
+					-- shadow
+					{
+						gfx = { shape={type="rect", width=20, height=3, offset={-10,-1.5}}, draw="solid", color={128,128,128,255} }
+					}
+				},
 				statemachine = {
 					initialstate = "walk",
 					states = {
@@ -300,6 +320,23 @@ end
 
 function room.afterstartup() 
 
+	local s= script:new()
+	s.actions = {
+		[1] = { actor="c1", type ="move", by ={0,-60}, speed = 500},
+		[2] = { type="collisioncheck", after={1}, shape = {type="rect", width = 60, height = 5}, actor="c1", offset={0,0}, mask=1, func = 
+		function(x) 
+			x:remove()
+			main = monkey.getEntity("main")
+		    monkey.addEntity ({
+				pos = {x.x, x.y, 0},
+				depth = d,
+				gfx = { model = "expl2", anim = "default"},
+			}, main)
+		end },
+		[3] = { actor="c1", type ="move", by ={0, 60}, speed = 20, after={2} },
+	}
+	s.loop = 1
+	monkey.play(s)
 end
 
 

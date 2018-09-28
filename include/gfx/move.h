@@ -14,6 +14,7 @@ private:
     Entity* m_entity;
     glm::vec2 m_toPos;
     glm::vec2 m_velocity;
+    glm::vec2 m_finalPosition;
     float m_speed;
     float m_lengthToCover;
     float m_lengthCovered;

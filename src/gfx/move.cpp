@@ -18,7 +18,7 @@ void MoveTo::Reset() {
     Activity::Reset();
     m_lengthToCover = 0.0f;
     m_lengthCovered = 0.0f;
-
+    m_lengthCovered = 0.0f;
 }
 
 void MoveTo::Start() {
@@ -26,10 +26,12 @@ void MoveTo::Start() {
         m_entity = Engine::get().GetRef<Entity>(m_actorId);
     }
     glm::vec2 displacement;
+    glm::vec2 pos(m_entity->GetPosition());
     if (m_relative) {
         displacement = m_toPos;
+        m_finalPosition = pos + displacement;
     } else {
-        glm::vec2 pos(m_entity->GetPosition());
+        m_finalPosition = m_toPos;
         displacement = m_toPos - pos;
     }
 
@@ -51,7 +53,7 @@ void MoveTo::Run (float dt) {
     glm::vec2 delta = dt * m_velocity;
     m_lengthCovered += glm::length(delta);
     if (m_lengthCovered >= m_lengthToCover) {
-        m_entity->SetPosition(m_toPos);
+        m_entity->SetPosition(m_finalPosition);
         SetComplete();
     }
     else {

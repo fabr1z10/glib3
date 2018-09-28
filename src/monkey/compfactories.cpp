@@ -259,6 +259,7 @@ void GfxComponentFactory::operator()(luabridge::LuaRef & ref, Entity * entity) {
         std::string image = table.Get<std::string>("image");
         float w = table.Get<float>("width", 0.0f);
         float h = table.Get<float>("height", 0.0f);
+        glm::vec2
         auto mesh = std::make_shared<QuadMesh>(image, w, h);
         renderer->SetMesh(mesh);
     } else if (table.HasKey("model")) {
@@ -605,7 +606,7 @@ void CollisionEngineFactory::Create(luabridge::LuaRef & ref) {
         ce->Enable25DCollision(eps);
     }
     if (table.HasKey("response")) {
-        // set the collision responses
+        // set the collision responsesfg
         luabridge::LuaRef resp = table.Get<luabridge::LuaRef>("response");
         std::unique_ptr<CollisionResponseManager> crm (new CollisionResponseManager);
         for (int i = 0; i < resp.length();++i) {

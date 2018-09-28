@@ -135,6 +135,33 @@ sprites = {
 			}
 		}
 	},
-
+	expl2 = {
+		id="expl2",
+		sheet = "gfx/enemies.png",
+		type = "sprite",
+		ppu = 1,
+		animations = {
+		    {
+		        name = "default", frames = 
+				{ 
+					{ duration = dt, quads = { { x = 71, y = 265, width = 227, height = 26, anchor = {112, 0}}}},
+				}
+		    },
+		}
+	},
+	crusher1 = {
+		id="crusher",
+		sheet = "gfx/brick.png",
+		type = "sprite",
+		ppu = 1,
+		animations = {
+		    {
+		        name = "default", frames = 
+				{ 
+					{ duration = dt, quads = { { x = 0, y = 0, width = 256, height = 256, anchor = {128, 0}}}},
+				}
+		    },
+		}
+	}
 	-- end graham
 }

@@ -12,6 +12,8 @@
 #include <monkey/enableblock.h>
 #include <monkey/showmessage.h>
 #include <gfx/rotate.h>
+#include <gfx/collisioncheck.h>
+#include <monkey/compfactories.h>
 
 ActivityFactory::ActivityFactory() {
     m_factories["walkto"] = [] (LuaTable& table) -> std::unique_ptr<Activity> {
@@ -133,6 +135,7 @@ ActivityFactory::ActivityFactory() {
         float yStop = table.Get<float>("ystop");
         return std::unique_ptr<MoveGravity>(new MoveGravity(actor, initialVelocity, g, yStop));
     };
+
     m_factories["rotate"] = [] (LuaTable& table) -> std::unique_ptr<Activity> {
         std::string actor = table.Get<std::string>("actor");
         float initialVelocity = table.Get<float>("speed");
@@ -140,7 +143,15 @@ ActivityFactory::ActivityFactory() {
         float deg = table.Get<float>("deg");
         return std::unique_ptr<Rotate>(new Rotate(actor, deg, acceleration, initialVelocity));
     };
-
+    m_factories["collisioncheck"] = [] (LuaTable& table) -> std::unique_ptr<Activity> {
+        std::string actor = table.Get<std::string>("actor");
+        luabridge::LuaRef rshape = table.Get<luabridge::LuaRef>("shape");
+        std::shared_ptr<Shape> shape = ReadShape(rshape);
+        glm::vec2 offset = table.Get<glm::vec2>("offset");
+        int mask = table.Get<float>("mask");
+        luabridge::LuaRef callback = table.Get<luabridge::LuaRef>("func");
+        return std::unique_ptr<CollisionCheck>(new CollisionCheck(shape, actor, offset, mask, callback));
+    };
 
 
     m_factories["suspendscript"] = [] (LuaTable& table) -> std::unique_ptr<Activity> {
