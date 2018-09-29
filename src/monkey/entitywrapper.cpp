@@ -24,6 +24,7 @@
 #include <iostream>
 #include <monkey/compfactories.h>
 #include <monkey/info.h>
+#include <gfx/depth.h>
 
 float EntityWrapper::GetX() const {
     return m_underlying->GetPosition().x;
@@ -96,7 +97,9 @@ void EntityWrapper::Remove() {
     Engine::get().Remove(m_underlying);
 }
 
-
+void EntityWrapper::EnableDepth(bool value) {
+    m_underlying->GetComponent<DepthCalculator>()->SetActive(value);
+}
 
 void EntityWrapper::SetText(const std::string& text) {
     Renderer* r = m_underlying->GetComponent<Renderer>();

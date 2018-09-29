@@ -163,7 +163,33 @@ void MeshFactory::visit(Circle& c) {
     mesh->Init(vertices, indices);
     mesh->m_primitive = GL_LINE_STRIP;
     m_mesh = mesh;
+}
 
+void MeshFactory::visit(Ellipse& e) {
+    // number of points
+    int n = 20;
+    float dAngle = 2.0f * M_PI / n;
+    std::vector<VertexColor> vertices ;
+    std::vector<unsigned int> indices;
+    glm::vec2 axes = e.GetSemiAxes();
+    glm::vec2 C= e.GetOffset();
+    float rx2 = axes.x * axes.x;
+    float ry2 = axes.y * axes.y;
+    float rxy = axes.x * axes.y;
+    
+    for (int i = 0; i < n; ++i) {
+        float angle = dAngle * i;
+        float ca = cos(angle);
+        float sa = sin(angle);
+        float s = (rxy) / sqrt(ry2*ca*ca + rx2*sa*sa);
+        vertices.push_back( { static_cast<GLfloat>(C.x + s*cos(angle)), static_cast<GLfloat>(C.y + s * sin(angle)), 0.0f, 1.0f, 1.0f, 1.0f, 1.0f });
+        indices.push_back(i);
+    }
+    indices.push_back(0);
+    auto mesh = std::make_shared<Mesh<VertexColor>>(COLOR_SHADER);
+    mesh->Init(vertices, indices);
+    mesh->m_primitive = GL_LINE_STRIP;
+    m_mesh = mesh;
 }
 
 void MeshFactory::visit(Poly& p) {
@@ -239,4 +265,35 @@ void MeshFactorySolid::visit(Rect& rect) {
     mesh->Init(vertices, indices);
     mesh->m_primitive = GL_TRIANGLES;
     m_mesh = mesh;
+}
+
+void MeshFactorySolid::visit(Ellipse & e) {
+    std::vector<unsigned int> indices;
+    std::vector<VertexColor> vertices;
+    int n = 50;
+    float dAngle = 2.0f * M_PI / n;
+
+    glm::vec2 center = e.GetOffset();
+    glm::vec2 axes = e.GetSemiAxes();
+    float rx2 = axes.x * axes.x;
+    float ry2 = axes.y * axes.y;
+    float rxy = axes.x * axes.y;
+
+    vertices.push_back ({center.x, center.y, m_z, m_color.r, m_color.g, m_color.b, m_color.a});
+    indices.push_back(0);
+    for (int i = 0; i < n; ++i) {
+
+        float angle = dAngle * i;
+        float ca = cos(angle);
+        float sa = sin(angle);
+        float s = (rxy) / sqrt(ry2*ca*ca + rx2*sa*sa);
+        vertices.push_back({center.x + s*ca, center.y + s*sa, m_z, m_color.r, m_color.g, m_color.b, m_color.a});
+        indices.push_back(i+1);
+    }
+    indices.push_back(1);
+    auto mesh = std::make_shared<Mesh<VertexColor>>(COLOR_SHADER);
+    mesh->Init(vertices, indices);
+    mesh->m_primitive = GL_TRIANGLE_FAN;
+    m_mesh = mesh;
+
 }

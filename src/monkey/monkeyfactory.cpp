@@ -46,6 +46,7 @@ MonkeyFactory::MonkeyFactory() {
     AddFactory<ScalingComponentFactory>("scaling");
     AddFactory<ButtonComponentFactory>("button");
     AddFactory<TextViewComponentFactory>("textview");
+    AddFactory<ShadowComponentFactory>("shadow");
 
     AddRunnerFactory<HotSpotManagerFactory>("hotspotmanager");
     AddRunnerFactory<SchedulerFactory>("scheduler");

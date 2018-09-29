@@ -39,6 +39,7 @@ void LuaWrapper::Init() {
                             .addFunction("setcolor", &EntityWrapper::SetColor)
                             .addFunction("settext", &EntityWrapper::SetText)
                             .addFunction("enableupdate", &EntityWrapper::EnableUpdate)
+                            .addFunction("enabledepth", &EntityWrapper::EnableDepth)
                             .addFunction("setactive", &EntityWrapper::SetActive)
                             .addFunction("enablecontrols", &EntityWrapper::SetEnableControls)
                             .addFunction("clear", &EntityWrapper::Clear)

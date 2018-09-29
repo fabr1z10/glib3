@@ -1,5 +1,6 @@
 #include <gfx/assetman.h>
 #include <gfx/error.h>
+#include <iostream>
 
 void AssetManager::AddFont(const std::string &name, const std::string &file) {
     auto font = std::unique_ptr<Font>(new Font);
@@ -48,6 +49,10 @@ void AssetManager::AddMesh (const std::string& name, std::shared_ptr<IMesh> mesh
 }
 
 void AssetManager::RemoveMesh(const std::string& name){
+    for (auto& m : m_meshes) {
+        std::cout << m.first << ": ";
+        std::cout << m.second->AnimationCount() << "\n";
+    }
     m_meshes.erase(name);
 }
 

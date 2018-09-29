@@ -82,8 +82,8 @@ void Engine::InitGL(const EngineConfig& config) {
 
 
     glEnable(GL_DEPTH_TEST);
-    //glEnable(GL_BLEND);
-    //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     std::cout << "OpenGL version " << Mv << "." << mv << std::endl;
 }
@@ -176,9 +176,9 @@ void Engine::MainLoop() {
             }
         }
         // remove assets loaded at scene level
-        m_runners.clear();
         m_sceneFactory->CleanUp();
         m_scene = nullptr;
+        m_runners.clear();
         m_garbage.clear();
         m_running = false;
     }

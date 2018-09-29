@@ -12,7 +12,7 @@ void DepthCalculator::Start() {
 }
 
 void DepthCalculator::UpdateDepthAndScale(Entity * e) {
-    if (e->IsActive()) {
+    if (IsActive()) {
         glm::vec2 p(e->GetPosition());
         if (m_depthFunc != nullptr) {
             float z = m_depthFunc->operator()(p.x, p.y);
@@ -23,4 +23,8 @@ void DepthCalculator::UpdateDepthAndScale(Entity * e) {
             m_renderer->SetScale(scale);
         }
     }
+}
+
+float DepthCalculator::GetFloorY (float x, float z) {
+    return m_depthFunc->invY(x, z);
 }

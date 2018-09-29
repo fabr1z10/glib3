@@ -85,3 +85,11 @@ function makeEnemy(spriteName, x, y, speed, headY, bodyY, boxWidth, headHeight)
 		}
 	}
 end
+
+function restartRoom()
+	local s = script:new()
+	s.actions = {
+		[1] = { type="gotoroom", room=variables._room }
+	}
+	monkey.play(s)
+end

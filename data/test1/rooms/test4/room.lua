@@ -134,7 +134,6 @@ engines = {
 assets = {
 	sprites.player,
 	sprites.character_1,
-	sprites.piece1,
 	sprites.expl1,
 	sprites.expl2
 
@@ -151,11 +150,30 @@ scene = {
 		},
 		children = 
 		{
+			{
+				luakey = {
+					keys = {
+						{ key = 299, func = restartRoom }
+					}
+				}
+		    },
 			makeEnemy ("character_1", 60, 30, 40, 50, 20, 10, 10),
 			{
 				tag ="c1",
 				gfx = { image="gfx/brick.png", width = 128, height = 128},
-				pos = { 60, 120, computeDepth(60)},
+				pos = { 60, 60, computeDepth(60)},
+				depth = d,
+				children = {
+					-- shadow
+					{
+						gfx = { shape={type="rect", width=128, height=5 }, draw="solid", color={0,0,0,128} },
+						shadow = {}
+					}
+				},
+			},
+			{
+				gfx = { image="gfx/floor1.png", rep = {4,2}, width = 320, height = 160},
+				pos = {0,0,-1}
 			},
 			-- {
 			-- 	gfx = { model="character_1", anim="idle"},	
@@ -223,7 +241,8 @@ scene = {
 				children = {
 					-- shadow
 					{
-						gfx = { shape={type="rect", width=20, height=3, offset={-10,-1.5}}, draw="solid", color={128,128,128,255} }
+						gfx = { shape={type="ellipse", semiaxes={ 50, 10} }, draw="solid", color={0,0,0,128} },
+						shadow = {}
 					}
 				},
 				statemachine = {
@@ -316,15 +335,21 @@ function room.start()
 
 end
 
-
+function disableDepth(actor)
+	local m = monkey.getEntity(actor)
+	m:enabledepth(false)
+end
 
 function room.afterstartup() 
 
 	local s= script:new()
 	s.actions = {
-		[1] = { actor="c1", type ="move", by ={0,-60}, speed = 500},
-		[2] = { type="collisioncheck", after={1}, shape = {type="rect", width = 60, height = 5}, actor="c1", offset={0,0}, mask=1, func = 
+		[1] = { type="callfunc", func = curry(disableDepth, "c1")},
+		[2] = { actor="c1", type ="move", by ={0,120}, speed = 20, after={1}},
+		[3] = { actor="c1", type ="move", by ={0, -120}, speed = 500, after={2} },
+		[4] = { type="collisioncheck", after={3}, shape = {type="rect", width = 128, height = 5}, actor="c1", offset={0,0}, mask=1, func = 
 		function(x) 
+			--print ("opOPOPLPOIJ")
 			x:remove()
 			main = monkey.getEntity("main")
 		    monkey.addEntity ({
@@ -333,7 +358,6 @@ function room.afterstartup()
 				gfx = { model = "expl2", anim = "default"},
 			}, main)
 		end },
-		[3] = { actor="c1", type ="move", by ={0, 60}, speed = 20, after={2} },
 	}
 	s.loop = 1
 	monkey.play(s)

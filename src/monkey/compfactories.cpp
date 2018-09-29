@@ -23,6 +23,7 @@
 #include <gfx/walkstate.h>
 #include <gfx/hit.h>
 #include <gfx/aiwalk.h>
+#include <gfx/shadow.h>
 
 // a text component is actually a renderer
 void TextComponentFactory::operator() (luabridge::LuaRef& ref, Entity* e) {
@@ -121,6 +122,9 @@ std::shared_ptr<Shape> ReadShape(luabridge::LuaRef& ref) {
     } else if (type == "circle") {
         float radius = at.Get<float>("radius");
         return std::make_shared<Circle>(radius, offset);
+    } else if (type == "ellipse") {
+        glm::vec2 axes = at.Get<glm::vec2>("semiaxes");
+        return std::make_shared<Ellipse>(axes.x, axes.y, offset);
     } else if (type == "graph") {
         // read the vertices
         luabridge::LuaRef rVert = at.Get<luabridge::LuaRef>("vertices");
@@ -259,8 +263,8 @@ void GfxComponentFactory::operator()(luabridge::LuaRef & ref, Entity * entity) {
         std::string image = table.Get<std::string>("image");
         float w = table.Get<float>("width", 0.0f);
         float h = table.Get<float>("height", 0.0f);
-        glm::vec2
-        auto mesh = std::make_shared<QuadMesh>(image, w, h);
+        glm::vec2 repeat = table.Get<glm::vec2>("rep", glm::vec2(1.0f, 1.0f));
+        auto mesh = std::make_shared<QuadMesh>(image, w, h, repeat.x, repeat.y);
         renderer->SetMesh(mesh);
     } else if (table.HasKey("model")) {
         std::string model = table.Get<std::string>("model");
@@ -566,6 +570,9 @@ void ButtonComponentFactory::operator() (luabridge::LuaRef& ref, Entity* parent)
     parent->AddComponent(hs);
 }
 
+void ShadowComponentFactory::operator()(luabridge::LuaRef &, Entity * parent) {
+    parent->AddComponent(std::make_shared<Shadow>());
+}
 
 
 void TextViewComponentFactory::operator() (luabridge::LuaRef &ref, Entity *parent) {
