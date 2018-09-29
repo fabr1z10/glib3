@@ -108,6 +108,10 @@ class TextViewComponentFactory : public ComponentFactory {
     void operator()(luabridge::LuaRef&, Entity*) override;
 };
 
+class ShadowComponentFactory : public ComponentFactory {
+    void operator()(luabridge::LuaRef&, Entity*) override;
+};
+
 // --- runners
 class HotSpotManagerFactory : public RunnerFactory {
 public:

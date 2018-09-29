@@ -31,6 +31,7 @@ struct EntityWrapper {
     void SetColor(int, int, int, int);
     void SetText(const std::string&);
     void SetActive (bool);
+    void EnableDepth(bool);
     void EnableUpdate(bool);
     void SetEnableControls (bool);
     luabridge::LuaRef GetTextInfo();

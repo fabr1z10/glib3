@@ -32,6 +32,7 @@ struct FrameInfo {
 class IMesh {
 public:
     IMesh(ShaderType type) : m_vb(INVALID_OGL_VALUE), m_ib(INVALID_OGL_VALUE), m_offset{0}, m_shaderType{type}, m_localTransform{glm::mat4(1.0f)} {}
+    virtual ~IMesh() {}
     GLuint VertexBuffer() const { return m_vb; }
     GLuint IndexBuffer() const { return m_ib; }
     GLuint GetNumberOfIndices() { return m_nindices; }
@@ -64,7 +65,7 @@ protected:
     ShaderType m_shaderType;
     glm::mat4 m_localTransform;
     int m_scope;
-    int m_animations;
+    //int m_animations;
     std::unordered_map <std::string, std::vector<FrameInfo> > m_animInfo;
     std::string m_defaultAnimation;
     Bounds3D m_bounds;
@@ -82,7 +83,7 @@ inline const glm::mat4& IMesh::GetLocalTransform() const { return m_localTransfo
 inline void IMesh::SetScope(int value) { m_scope = value; }
 inline int IMesh::GetScope() const { return m_scope; }
 
-inline int IMesh::AnimationCount() const { return m_animations; }
+inline int IMesh::AnimationCount() const { return m_animInfo.size(); }
 
 
 

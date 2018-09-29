@@ -178,6 +178,7 @@ const char text_fshader[] =
 class Shader {
 public:
     Shader(ShaderType type, const char* vertex, const char* fragment, unsigned int attributes, std::unordered_map<ShaderUniform, std::string, EnumClassHash> m_uniforms = std::unordered_map<ShaderUniform, std::string, EnumClassHash>());
+    virtual ~Shader() {}
     GLuint GetProgId() const;
     GLuint GetUniformLocation(ShaderUniform);
     void AddUniform(ShaderUniform unif, const char*);

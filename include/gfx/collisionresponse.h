@@ -13,6 +13,7 @@ class Entity;
 
 class CollisionResponse {
 public:
+    virtual ~CollisionResponse() {}
     virtual void onStart (Entity*, Entity*, const CollisionReport& report) = 0;
     virtual void onEnd (Entity*, Entity*, const CollisionReport& report) = 0;
     virtual void onStay (Entity*, Entity*, const CollisionReport& report) = 0;
