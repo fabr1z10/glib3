@@ -94,6 +94,61 @@ sprites = {
 		    },
 		}
 	},
+	character_2 = {
+		id = "character_2",
+		sheet = "gfx/enemies.png",
+		type = "sprite",
+		ppu = 1,
+		animations = {
+		    {
+		        name = "idle", frames = 
+				{ 
+		           --{ duration = dt, quads = { { x = 4, y = 68, width = 58, height = 50, anchor = {32, 0}}, { x = 16, y = 158, width = 41, height = 38, anchor = {20,-50} } }},
+					
+					{ duration = dt, quads = { { x = 272, y = 65, width = 27, height = 52, anchor = {16, 0}}, { x = 16, y = 158, width = 41, height = 38, anchor = {20,-52} } }}
+				}
+		    },
+	        {
+	           name="walk",
+	           frames=
+	           { 
+		           { duration = dt, quads = { { x = 4, y = 68, width = 58, height = 50, anchor = {32, 0}}, { x = 16, y = 158, width = 41, height = 38, anchor = {20,-50} } }},
+				   { duration = dt, quads = { { x = 63, y = 67, width = 47, height = 49, anchor = {35, 0}}, { x = 16, y = 158, width = 41, height = 38, anchor = {20,-49} } }},
+		           { duration = dt, quads = { { x = 130, y = 66, width = 29, height = 51, anchor = {16, 0}}, { x = 16, y = 158, width = 41, height = 38, anchor = {20,-51} } }},
+				   { duration = dt, quads = { { x = 162, y = 67, width = 55, height = 50, anchor = {28, 0}}, { x = 16, y = 158, width = 41, height = 38, anchor = {20,-50} } }},
+				   { duration = dt, quads = { { x = 222, y = 66, width = 46, height = 51, anchor = {35, 0}}, { x = 16, y = 158, width = 41, height = 38, anchor = {20,-51} } }},
+				   { duration = dt, quads = { { x = 272, y = 65, width = 27, height = 52, anchor = {16, 0}}, { x = 16, y = 158, width = 41, height = 38, anchor = {20,-52} } }},
+
+			   }				
+	        },	
+			{
+				name ="hit1",
+				frames = {
+				   { duration = dt, quads = { { x = 222, y = 66, width = 46, height = 51, anchor = {35, 0}}, { x = 108, y = 199, width = 56, height = 39, anchor = {26,-51} } }},
+				   { duration = dt, quads = { { x = 222, y = 66, width = 46, height = 51, anchor = {35, 0}}, { x = 5, y = 199, width = 90, height = 38, anchor = {27,-51} } }},
+				   { duration = dt, quads = { { x = 222, y = 66, width = 46, height = 51, anchor = {35, 0}}, { x = 108, y = 199, width = 56, height = 39, anchor = {26,-51} } }},
+				}
+			},
+		    {
+		        name = "body", frames = 
+				{ 
+					{ duration = dt, quads = { { x = 100, y = 1, width = 20, height = 49, anchor = {10, 0}}}}
+				}
+		    },	
+		    {
+		        name = "head", frames = 
+				{ 
+					{ duration = dt, quads = { { x = 99, y = 50, width = 10, height = 15, anchor = {5, 0}}}}
+				}
+		    },
+		    {
+		        name = "legs", frames = 
+				{ 
+					{ duration = dt, quads = { { x = 112, y = 52, width = 11, height = 29, anchor = {6, 0}}}}
+				}
+		    },
+		}
+	},
 	piece1 = {
 		id="piece1",
 		sheet = "gfx/ab.png",

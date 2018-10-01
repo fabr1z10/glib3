@@ -134,6 +134,7 @@ engines = {
 assets = {
 	sprites.player,
 	sprites.character_1,
+	sprites.character_2,
 	sprites.expl1,
 	sprites.expl2
 
@@ -157,7 +158,8 @@ scene = {
 					}
 				}
 		    },
-			makeEnemy ("character_1", 60, 30, 40, 50, 20, 10, 10),
+			--makeEnemy ("character_1", 60, 30, 40, 50, 20, 10, 10),
+			makeEnemy { sprite = "character_2", x = 120, y = 30, speed = 40, headY = 77, bodyY = 50, boxWidth = 10, headHeight = 10, scale = 1.1,hit = { {anim="hit1", frame=1, width=10, height=10, offset={0,0}} } },
 			{
 				tag ="c1",
 				gfx = { image="gfx/brick.png", width = 128, height = 128},
