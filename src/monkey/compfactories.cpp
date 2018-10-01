@@ -432,6 +432,7 @@ std::shared_ptr<State> HitStateFactory::Create(luabridge::LuaRef & ref) {
 }
 
 StateMachineComponentFactory::StateMachineComponentFactory() {
+    m_stateFactories["empty"] = std::make_shared<EmptyStateFactory>();
     m_stateFactories["walk"] = std::make_shared<WalkStateFactory>();
     m_stateFactories["aiwalk"] = std::make_shared<AIWalkStateFactory>();
     m_stateFactories["walkcollision"] = std::make_shared<WalkCollisionStateFactory>();
@@ -641,4 +642,8 @@ void CollisionEngineFactory::Create(luabridge::LuaRef & ref) {
 
     Engine::get().AddRunner(ce);
 
+}
+
+std::shared_ptr<State> EmptyStateFactory::Create(luabridge::LuaRef &) {
+    return std::make_shared<EmptyState>();
 }

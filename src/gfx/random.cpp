@@ -10,3 +10,8 @@ int Random::GetUniform(int min, int max) {
     return dis(*(m_gen.get()));
 
 }
+
+float Random::GetUniformReal (float min, float max) {
+    std::uniform_real_distribution<> dis(min, max);
+    return dis(*(m_gen.get()));
+}

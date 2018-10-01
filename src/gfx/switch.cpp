@@ -1,5 +1,7 @@
 #include <gfx/switch.h>
 #include <gfx/entity.h>
+#include <gfx/error.h>
+
 
 void Switch::Start() {
     int i = 0;
@@ -17,7 +19,11 @@ void Switch::Start() {
 void Switch::ChangeState(const std::string& newState) {
     if (newState == m_currentlyActive)
         return;
-    auto entity = m_states.at(newState);
+    auto it = m_states.find(newState);
+    if (it == m_states.end()) {
+        GLIB_FAIL("Unknown state " << newState;)
+    }
+    auto entity = it->second;
     if (!m_currentlyActive.empty()) {
         auto old =m_states.at(m_currentlyActive);
         old->SetActive(false);

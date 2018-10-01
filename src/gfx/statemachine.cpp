@@ -39,9 +39,21 @@ void StateMachine::Update(double dt) {
             ChangeState(m_currentState->GetNextState());
         }
     }
+}
 
+void RandomTransitionStateMachine::Update(double dt) {
+    if (m_currentState != nullptr) {
+        if (m_currentState->Run(dt)) {
+            ChangeState(m_currentState->GetNextState());
+        } else {
+            // check transition
+            auto p = m_transition.Next(m_currentState->GetId());
+            if (p.first) {
+                ChangeState(p.second);
+            }
 
-
+        }
+    }
 
 }
 

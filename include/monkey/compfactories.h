@@ -129,6 +129,10 @@ public:
 };
 
 // --- states
+class EmptyStateFactory : public StateFactory {
+    std::shared_ptr<State> Create(luabridge::LuaRef&) override;
+};
+
 class WalkStateFactory : public StateFactory {
     std::shared_ptr<State> Create(luabridge::LuaRef&) override;
 };
@@ -144,3 +148,4 @@ class HitStateFactory : public StateFactory {
 class AIWalkStateFactory : public StateFactory {
     std::shared_ptr<State> Create(luabridge::LuaRef&) override;
 };
+

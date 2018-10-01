@@ -14,6 +14,8 @@
 #include <gfx/rotate.h>
 #include <gfx/collisioncheck.h>
 #include <monkey/compfactories.h>
+#include <gfx/changestate.h>
+
 
 ActivityFactory::ActivityFactory() {
     m_factories["walkto"] = [] (LuaTable& table) -> std::unique_ptr<Activity> {
@@ -126,7 +128,13 @@ ActivityFactory::ActivityFactory() {
         }
         float speed = table.Get<float>("speed", 0.0f);
         bool immediate = table.Get<bool>("immediate", false);
-        return std::unique_ptr<MoveTo>(new MoveTo(actor, dest, speed, relative, immediate));
+        auto m = std::unique_ptr<MoveTo>(new MoveTo(actor, dest, speed, relative, immediate));
+        if (table.HasKey("acceleration")) {
+            float acceleration = table.Get<float>("acceleration");
+            m->SetAcceleration(acceleration);
+        }
+
+        return std::move(m);
     };
     m_factories["movegravity"] = [] (LuaTable& table) -> std::unique_ptr<Activity> {
         std::string actor = table.Get<std::string>("actor");
@@ -152,7 +160,11 @@ ActivityFactory::ActivityFactory() {
         luabridge::LuaRef callback = table.Get<luabridge::LuaRef>("func");
         return std::unique_ptr<CollisionCheck>(new CollisionCheck(shape, actor, offset, mask, callback));
     };
-
+    m_factories["changestate"] = [] (LuaTable& table) -> std::unique_ptr<Activity> {
+        std::string actor = table.Get<std::string>("actor");
+        std::string state = table.Get<std::string>("state");
+        return std::unique_ptr<ChangeState>(new ChangeState(actor, state));
+    };
 
     m_factories["suspendscript"] = [] (LuaTable& table) -> std::unique_ptr<Activity> {
         std::string s = table.Get<std::string>("script");

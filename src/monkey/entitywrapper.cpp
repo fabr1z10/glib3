@@ -16,7 +16,7 @@
 #include <gfx/scriptactions.h>
 #include <monkey/callfunc.h>
 #include <monkey/monkeyfactory.h>
-#include <gfx/switch.h>
+#include <gfx/statemachine.h>
 #include <monkey/scripthotspot.h>
 #include <gfx/textview.h>
 #include <gfx/scroll.h>
@@ -34,6 +34,10 @@ float EntityWrapper::GetY() const {
 }
 float EntityWrapper::GetZ() const {
     return m_underlying->GetPosition().z;
+}
+
+std::string EntityWrapper::GetTag() const {
+    return m_underlying->GetTag();
 }
 
 std::string EntityWrapper::GetText() const {
@@ -363,7 +367,7 @@ luabridge::LuaRef EntityWrapper::GetTextInfo() {
 
 void EntityWrapper::ChangeState(const std::string& name)
 {
-    m_underlying->GetComponent<Switch>()->ChangeState(name);
+    m_underlying->GetComponent<StateMachine>()->ChangeState(name);
 }
 
 

@@ -10,6 +10,7 @@ private:
     Random();
 public:
     int GetUniform (int min, int max);
+    float GetUniformReal (float min, float max);
 private:
     std::unique_ptr<std::mt19937> m_gen;
 };

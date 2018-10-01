@@ -18,7 +18,14 @@ local startPositionTable = {
 hitfunc = {}
 
 
+
+
 hitfunc["head"] = function(info, pp)
+	-- check energy left
+	info = pp:getinfo()
+	
+
+
 	main = monkey.getEntity("main")
 	player = monkey.getEntity("player")
 	flip = player.flipx and 1 or -1
@@ -92,13 +99,29 @@ hitfunc["leg"] = function()
 end
 
 local function ciao(x)
-	x:setcolor(255,0,0,255)
+	--x:setcolor(255,0,0,255)
 	pp =  x:parent()
  	info = x:getinfo()
+	player = monkey.getEntity("player")
+	flip = player.flipx and -1 or 1
+	infoChar = pp:getinfo()
  	print ("pos = (" .. tostring(pp.x) .. ", " .. tostring(pp.y) .. ")")
  	print ("hitting = " .. info.pos)
-	pp:remove()	
-	hitfunc[info.pos](info, pp)
+	print ("Energy left = " .. infoChar.energy)
+	infoChar.energy = infoChar.energy -1
+	if (infoChar.energy <= 0) then
+		pp:remove()		
+	else
+		local s = script:new()
+		s.actions = {
+			[1] = { type= "animate", actor = pp.tag, anim="idle" },
+			[2] = { type="move", actor = pp.tag, by = {flip*50,0}, speed = 100, acceleration = -20, after={1}},
+			[3] = { type="changestate", actor=pp.tag, state="walk", after={2} }
+		}
+		monkey.play(s)
+		pp:changestate("ishit")
+	end
+	--hitfunc[info.pos](info, pp)
 	-- create the body
 
 -- s.actions = {
@@ -132,7 +155,7 @@ engines = {
 	}
 },
 assets = {
-	sprites.player,
+	sprites.beast,
 	sprites.character_1,
 	sprites.character_2,
 	sprites.expl1,
@@ -159,7 +182,8 @@ scene = {
 				}
 		    },
 			--makeEnemy ("character_1", 60, 30, 40, 50, 20, 10, 10),
-			makeEnemy { sprite = "character_2", x = 120, y = 30, speed = 40, headY = 77, bodyY = 50, boxWidth = 10, headHeight = 10, scale = 1.1,hit = { {anim="hit1", frame=1, width=10, height=10, offset={0,0}} } },
+			makeCharacter { template = characters.beast, x = 30, y = 30, type="player" },
+			makeCharacter { template = characters.bred, x=120, y = 30, type="enemy" },
 			{
 				tag ="c1",
 				gfx = { image="gfx/brick.png", width = 128, height = 128},
@@ -177,147 +201,12 @@ scene = {
 				gfx = { image="gfx/floor1.png", rep = {4,2}, width = 320, height = 160},
 				pos = {0,0,-1}
 			},
-			-- {
-			-- 	gfx = { model="character_1", anim="idle"},	
-			-- 	pos = {60, 30, 0},
-			-- 	depth = d,
-			-- 	statemachine = {
-			-- 		initialstate = "walk",
-			-- 		states = {
-			-- 			{
-			-- 				id="walk",
-			-- 				type ="aiwalk",
-			-- 				speed = 5,
-			-- 				target = "player"
-			-- 			}
-			-- 		}
-			-- 	},
-			-- 	children = {
-			-- 		{
-			-- 			pos={0,50,1},
-			-- 	 		gfx = {
-			-- 	 			shape= {type="rect", width=10, height=10, offset={-5,0}},
-			-- 	 			color={255,255,255,255}
-			-- 	 		},
-			-- 			collider = {
-			-- 				shape= {type="rect", width=10, height=10, offset={-5,0}}, 
-			-- 				tag=1, 
-			-- 				flag=2
-			-- 			},
-			-- 			info = {
-			-- 				pos = "head",
-			-- 				spriteid ="character_1",
-			-- 				offset = {0, 50},
-			-- 				scale =0.5
-			-- 			}
-			-- 		},
-			-- 		{
-			-- 			pos={0,20,1},
-			-- 	 		gfx = {
-			-- 	 			shape= {type="rect", width=10, height=30},
-			-- 	 			color={255,255,255,255}
-			-- 	 		},
-			-- 		collider = {
-			-- 			shape= {type="rect", width=10, height=30}, 
-			-- 			tag=1, 
-			-- 			flag=2
-			-- 		},
-			-- 		info = {
-			-- 			pos = "body",
-			-- 			spriteid ="character_1",
-			-- 			offset = {0, 20},
-			-- 			headx = 0, heady=50,
-			-- 			scale =0.7
-			-- 		}
-			-- 		},				
-			-- 	}
-
-			-- },
-
-			{
-				tag = "player",
-				gfx = { model="player", anim="idle"},
-				collider= {shape={type="rect", width=1, height=1}, tag=1, flag=1},
-				pos = {30,30,0},
-				depth = d,
-				children = {
-					-- shadow
-					{
-						gfx = { shape={type="ellipse", semiaxes={ 50, 10} }, draw="solid", color={0,0,0,128} },
-						shadow = {}
-					}
-				},
-				statemachine = {
-					initialstate = "walk",
-					states = {
-						{ 
-							id = "walk", 
-							type="walkcollision", 
-							speed = 1, width=5, height=1, 
-							horizontal_rays=1, vertical_rays=2,
-							anims = {
-								{ id = "walk_right", anim = "walk" },
-								{ id = "walk_front", anim = "walk" },
-								{ id = "walk_back", anim = "walk" },
-								{ id = "idle_right", anim = "idle" },
-								{ id = "idle_front", anim = "idle"},
-								{ id = "idle_back", anim = "idle"}
-							}
-						},
-						{	
-							id = "punch",
-							type ="hit",
-							anim = "punch",
-							frame = 2,
-							mask = 2,
-							shape = { type = "rect", width = 10, height = 10 },
-							offset = {32, 52},
-							func = ciao
-						},
-						{	
-							id = "kick",
-							type ="hit",
-							anim = "kick",
-							mask = 2,
-							frame = 2,
-							shape = { type = "rect", width = 18, height = 8 },
-							offset = {38, 19},
-							func = ciao
-						},
-						{	
-							id = "cr",
-							type ="hit",
-							anim = "cr",
-						},
-					},
-					keys = {
-						{ key = 65, current = "walk", next= "punch"},
-						{ key = 83, current = "walk", next= "kick"},
-						{ key = 84, current = "walk", next= "cr"},
-
-					}
-				
-				}
-			},
 			{
 				pos = {50, 50, 0},
 				gfx = { image="gfx/tree1.png" },
 				depth = d,
-			},
-			-- {
-			-- 	-- a collider object
-			-- 	pos = {100,50,0},
-			-- 	depth =d,
-			-- 	collider = {
-			-- 		shape= {type="rect", width=10, height=51}, 
-			-- 		tag=1, 
-			-- 		flag=2
-			-- 	},
-			-- 	gfx = {
-			-- 		shape= {type="rect", width=10, height=51},
-			-- 		color={255,255,255,255}
-			-- 	}
-			-- }
+			}
+
 		}
 	}
 }

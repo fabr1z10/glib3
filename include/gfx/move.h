@@ -10,18 +10,25 @@ public:
     void Start() override;
     void Run (float dt) override;
     void Reset() override;
+    void SetAcceleration(float acceleration);
 private:
     Entity* m_entity;
     glm::vec2 m_toPos;
     glm::vec2 m_velocity;
     glm::vec2 m_finalPosition;
+    glm::vec2 m_accelerationVector;
     float m_speed;
     float m_lengthToCover;
     float m_lengthCovered;
+    float m_acceleration;
     bool m_relative;
     bool m_immediate;
     std::string m_actorId;
 };
+
+inline void MoveTo::SetAcceleration(float acceleration) {
+    m_acceleration = acceleration;
+}
 
 class MoveGravity : public Activity {
 public:

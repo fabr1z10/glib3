@@ -1,15 +1,18 @@
 #include <gfx/move.h>
 #include <iostream>
 #include "gfx/engine.h"
+#include <graph/geom.h>
 
 MoveTo::MoveTo(const std::string& actor, glm::vec2 pos, float speed, bool relative, bool immediate) : Activity(),
-    m_entity(nullptr), m_actorId(actor), m_toPos(pos), m_speed{speed}, m_lengthCovered{0.0f}, m_lengthToCover{0.0f}, m_relative{relative}, m_immediate{immediate}
+    m_entity(nullptr), m_actorId(actor), m_toPos(pos), m_speed{speed}, m_lengthCovered{0.0f}, m_lengthToCover{0.0f}, m_relative{relative},
+                                                                                                      m_immediate{immediate}, m_acceleration(0.0f), m_accelerationVector(0.0f)
 {
 
 }
 
 MoveTo::MoveTo(Entity* entity, glm::vec2 pos, float speed, bool relative, bool immediate) : Activity(),
-    m_entity(entity), m_toPos(pos), m_speed{speed}, m_lengthCovered{0.0f}, m_lengthToCover{0.0f}, m_relative{relative}, m_immediate{immediate}
+    m_entity(entity), m_toPos(pos), m_speed{speed}, m_lengthCovered{0.0f}, m_lengthToCover{0.0f}, m_relative{relative},m_acceleration(0.0f), m_immediate{immediate},m_accelerationVector(0.0f)
+
 {
 
 }
@@ -43,7 +46,9 @@ void MoveTo::Start() {
         if (m_lengthToCover == 0) {
             SetComplete();
         } else {
-            m_velocity = glm::normalize(displacement) * m_speed;
+            glm::vec2 nd = glm::normalize(displacement);
+            m_velocity = nd * m_speed;
+            m_accelerationVector = nd * m_acceleration;
         }
     }
 }
@@ -51,6 +56,8 @@ void MoveTo::Start() {
 
 void MoveTo::Run (float dt) {
     glm::vec2 delta = dt * m_velocity;
+    m_velocity += m_accelerationVector * dt;
+
     m_lengthCovered += glm::length(delta);
     if (m_lengthCovered >= m_lengthToCover) {
         m_entity->SetPosition(m_finalPosition);

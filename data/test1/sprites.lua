@@ -1,8 +1,8 @@
 local dt = 0.1
 sprites = {
 	-- start graham
-	player = {
-		id = "player",
+	beast = {
+		id = "beast",
 		sheet = "gfx/ab.png",
 		type = "sprite",
 		ppu = 1,
