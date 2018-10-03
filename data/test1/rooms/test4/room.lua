@@ -22,38 +22,7 @@ hitfunc = {}
 
 hitfunc["head"] = function(info, pp)
 	-- check energy left
-	info = pp:getinfo()
-	
 
-
-	main = monkey.getEntity("main")
-	player = monkey.getEntity("player")
-	flip = player.flipx and 1 or -1
-	local b = nextTag()
-	local b1 = nextTag()
-	print ("Adding object with tag " .. b)
-    monkey.addEntity ({
-		pos = {pp.x, pp.y, 0},
-		depth = d,
-		gfx = { model = info.spriteid, anim = "body"},
-		tag = b
-	}, main)
-	-- adding fx
-    monkey.addEntity ({
-		pos = {pp.x + info.offset[1], pp.y + info.offset[2], 0},
-		depth = d,
-		gfx = { model = "expl1", anim = "default", scale = info.scale},
-		tag = b1
-	}, main)
- 	local s = script:new("_cook")
-	s.actions ={
-		[1] = {type="noop"},
-		[2] = { type="rotate", speed = flip * 60, acceleration = flip * 200, deg = flip*90, actor = b, after={1} },
-		[3] = { type="animate", actor=b1, anim="default", loop = 1, after={1}},
-		[4] = { type="animate", actor=b1, anim="stop", after={3}},
-		[5] = { type ="movegravity", actor=b1, velocity={0,-100}, g=100, ystop = pp.y, after={1}}
-	}	
-	monkey.play(s)
 end
 
 hitfunc["body"] = function()
@@ -98,50 +67,7 @@ hitfunc["leg"] = function()
 
 end
 
-local function ciao(x)
-	--x:setcolor(255,0,0,255)
-	pp =  x:parent()
- 	info = x:getinfo()
-	player = monkey.getEntity("player")
-	flip = player.flipx and -1 or 1
-	infoChar = pp:getinfo()
- 	print ("pos = (" .. tostring(pp.x) .. ", " .. tostring(pp.y) .. ")")
- 	print ("hitting = " .. info.pos)
-	print ("Energy left = " .. infoChar.energy)
-	infoChar.energy = infoChar.energy -1
-	if (infoChar.energy <= 0) then
-		pp:remove()		
-	else
-		local s = script:new()
-		s.actions = {
-			[1] = { type= "animate", actor = pp.tag, anim="idle" },
-			[2] = { type="move", actor = pp.tag, by = {flip*50,0}, speed = 100, acceleration = -20, after={1}},
-			[3] = { type="changestate", actor=pp.tag, state="walk", after={2} }
-		}
-		monkey.play(s)
-		pp:changestate("ishit")
-	end
-	--hitfunc[info.pos](info, pp)
-	-- create the body
 
--- s.actions = {
-	-- 	[1] = { type = "callfunc", func = curry (createObject, { 
-	-- 		pos = {100, 100, 0},
-	-- 		gfx = { model = "piece1", anim = "default" },
-	-- 		depth = d,
-	-- 		tag="p1"
-	-- 	})},
-	-- 	[2] = {
-	-- 		type="movegravity",
-	-- 		actor="p1",
-	-- 		velocity={50,20},
-	-- 		g =20,
-	-- 		ystop = x.y,
-	-- 		after={1}
-	-- 	}
-	-- }
-	-- monkey.play(s)
-end
 
 local startPosition = startPositionTable[variables._previousroom]
 

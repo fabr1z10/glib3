@@ -54,17 +54,19 @@ bool HitCollision::Run(double dt) {
         int f = m_renderer->GetFrame();
         if (f == m_frame) {
             glm::vec3 pos = m_entity->GetPosition();
-            std::cout <<" **** hit ****\n";
-            std::cout << "character at position = " << pos.x << ", " << pos.y << "\n";
+            //std::cout <<" **** hit ****\n";
+            //std::cout << "character at position = " << pos.x << ", " << pos.y << "\n";
             bool flip = m_renderer->GetFlipX();
             pos.x += flip ? -m_offset.x - m_shape->getBounds().GetSize().x : m_offset.x;
             pos.y += m_offset.y;
-            std::cout << "collider at position = " << pos.x << ", " << pos.y << "\n";
+            //std::cout << "collider at position = " << pos.x << ", " << pos.y << "\n";
             auto t = glm::translate(pos);
 
             Entity *e = m_engine->ShapeCast(m_shape, t, m_mask);
-            if (e != nullptr) {
-                m_callback(EntityWrapper(e));
+            // avoid collision with oneself
+            if (e != nullptr && e->GetParent() != m_entity) {
+                // I hit something, passing the collision box and the entity hitting
+                m_callback(EntityWrapper(e), EntityWrapper(m_entity));
             }
             m_hitDone = true;
         }

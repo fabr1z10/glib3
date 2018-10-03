@@ -13,6 +13,11 @@ std::pair<bool, std::string> Transition::Next(const std::string& from) {
     }
 
     float p = Random::get().GetUniformReal(0, 1);
-
+    auto it2 = it->second.lower_bound(p);
+    if (it2 != it->second.end())
+    {
+        return std::make_pair(true, it2->second);
+    }
+    return std::make_pair(false, from);
 
 };

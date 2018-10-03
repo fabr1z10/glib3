@@ -26,13 +26,8 @@ bool AIWalk::Run(double dt) {
         m_renderer->SetAnimation("walk");
     } else {
         m_renderer->SetAnimation("idle");
-
-        // go to hit state
-        int d = Random::get().GetUniform(0, 100);
-        if (d > 98) {
-            m_nextState="hit1";
-            return true;
-        }
+        m_nextState = "idle";
+        return true;
 
     }
     return false;

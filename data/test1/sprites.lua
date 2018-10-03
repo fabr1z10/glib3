@@ -132,19 +132,19 @@ sprites = {
 		    {
 		        name = "body", frames = 
 				{ 
-					{ duration = dt, quads = { { x = 100, y = 1, width = 20, height = 49, anchor = {10, 0}}}}
+					{ duration = dt, quads = { { x = 30, y = 120, width = 27, height = 26, anchor = {13, 0}}}}
 				}
 		    },	
 		    {
 		        name = "head", frames = 
 				{ 
-					{ duration = dt, quads = { { x = 99, y = 50, width = 10, height = 15, anchor = {5, 0}}}}
+					{ duration = dt, quads = { { x = 14, y = 120, width = 13, height = 12, anchor = {7, 0}}}}
 				}
 		    },
 		    {
 		        name = "legs", frames = 
 				{ 
-					{ duration = dt, quads = { { x = 112, y = 52, width = 11, height = 29, anchor = {6, 0}}}}
+					{ duration = dt, quads = { { x = 130, y = 66, width = 29, height = 51, anchor = {14, 0}}}}
 				}
 		    },
 		}

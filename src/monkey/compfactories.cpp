@@ -443,7 +443,31 @@ void StateMachineComponentFactory::operator()(luabridge::LuaRef &ref, Entity *pa
     LuaTable table(ref);
 
     std::string initialState = table.Get<std::string>("initialstate");
-    auto comp = std::make_shared<KeyboardControlledStateMachine>(initialState);
+    std::shared_ptr<StateMachine> comp;
+    if (table.HasKey("keys")) {
+        auto c  = std::make_shared<KeyboardControlledStateMachine>(initialState);
+        // read the transition keys
+        auto keys = table.GetVector<luabridge::LuaRef>("keys");
+        for (auto& key : keys) {
+            int k =  key["key"].cast<int>();
+            std::string current =  key["current"].cast<std::string>();
+            std::string next =  key["next"].cast<std::string>();
+            c->AddKey(current, k, next);
+        }
+        comp = c;
+    } else {
+        auto c = std::make_shared<RandomTransitionStateMachine>(initialState);
+        // read the transition keys
+        auto keys = table.GetVector<luabridge::LuaRef>("transitionmatrix");
+        for (auto& key : keys) {
+            float prob =  key["prob"].cast<float>();
+            std::string current =  key["current"].cast<std::string>();
+            std::string next =  key["next"].cast<std::string>();
+            c->Add(current, next, prob);
+        }
+        comp = c;
+    }
+
     // get the array of states
 
     luabridge::LuaRef ts = table.Get<luabridge::LuaRef>("states");
@@ -459,14 +483,7 @@ void StateMachineComponentFactory::operator()(luabridge::LuaRef &ref, Entity *pa
         comp->AddState(id, state);
     }
 
-    // read the transition keys
-    auto keys = table.GetVector<luabridge::LuaRef>("keys");
-    for (auto& key : keys) {
-        int k =  key["key"].cast<int>();
-        std::string current =  key["current"].cast<std::string>();
-        std::string next =  key["next"].cast<std::string>();
-        comp->AddKey(current, k, next);
-    }
+
 
 
 //    float width = table.Get<float>("width");

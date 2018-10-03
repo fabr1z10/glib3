@@ -28,14 +28,18 @@ characters = {
 		speed = 50,
 		shadowsize ={50,10},
 		hit = {
-			{ id = "punch", anim = "punch", frame = 2, mask = 2, shape = { type = "rect", width = 10, height = 10 }, offset = {32, 52}, func = ciao, key = 65},
-			{ id = "kick", anim = "kick", frame = 2, mask = 2, shape = { type = "rect", width = 18, height = 8 }, offset = {38, 19}, func = ciao, key = 83},
-			{ id = "cr", anim="cr", key = 84}
+			{ id = "punch", anim = "punch", frame = 2, mask = 2, width = 10, height = 10, offset = {32, 52} },
+			{ id = "kick", anim = "kick", frame = 2, mask = 2, width = 18, height = 8, offset = {38, 19}},
+			{ id = "cr", anim="cr", frame = 2, mask = 2, width = 1, height = 1, offset={0,0}}
 		},
 		keys = {
 			{ current = "walk", key =  65, next="punch" },
-			{ current = "walk", key =  65, next="kick" },
-			{ current = "walk", key =  65, next="cr" }
+			{ current = "walk", key =  83, next="kick" },
+			{ current = "walk", key =  84, next="cr" }
+		},
+		collisionType = "clear",
+		info = {	
+			energy = 3
 		}
 	},
 	bred = {
@@ -48,12 +52,17 @@ characters = {
 		--x = 120, y = 30, 
 		speed = 40, 
 		shadowsize ={50,10},
-		scale = 1,
+		scale = 0.7,
 		hit = { 
-			{ id ="punch", anim="hit1", frame=1, width=10, height=10, offset={0,0}}
+			{ id ="punch", anim="hit1", frame=1, width=16, height=8, offset={52,70}}
 		},
 		transitionmatrix = {
-			{ current = "walk", next="punch", prob = 0.01 }
+			{ current = "idle", next="punch", prob = 0.01 }
+		},
+		--collisionType = "clear",
+		collisionType = "headBodyLegs",
+		info = {
+			energy = 2
 		}
 	}
 
@@ -61,12 +70,54 @@ characters = {
 
 }
 
+-- collision callback
+function ciao(boxHit, entityHitting)
+	print ("Entity hitting: " .. entityHitting.tag)
+
+	-- print ("Entering collision check .......")
+	entityHit = boxHit:parent()
+	-- print ("Character hit position is = " .. entityHit.x)
+	infoChar = entityHit:getinfo()
+	print ("Energy left = " .. infoChar.energy)
+ 	
+
+	info = boxHit:getinfo()
+	print ("Info type: " .. info.type)
+	-- player = monkey.getEntity("player")
+	flip = entityHitting.flipx and -1 or 1
+	
+ -- 	print ("pos = (" .. tostring(entityHit.x) .. ", " .. tostring(entityHit.y) .. ")")
+	-- infoChar.energy = infoChar.energy -1
+	if (infoChar.energy <= 0) then
+
+		-- This will call the special collision handler based on the collision info type
+	 	collisionResponse[info.type](entityHit, info, entityHitting)
+	else
+	 	local s = script:new()
+	 	s.actions = {
+	 		[1] = { type= "animate", actor = entityHit.tag, anim="idle" },
+	 		[2] = { type="move", actor = entityHit.tag, by = {flip*50,0}, speed = 100, acceleration = -20, after={1}},
+	 		[3] = { type="changestate", actor=entityHit.tag, state="walk", after={2} }
+	 	}
+	 	monkey.play(s)
+		infoChar.energy = infoChar.energy -1
+	 	entityHit:changestate("ishit")
+	end
+end
+
+
+collisionMaker = {}
+collisionResponse = {}
+
+require("collision/hbl")
+require("collision/clear")
+
+
 -- Body metrics
 -- headY = y where head starts
 -- bodyY = y where body starts
 -- headHeight = height of head box
 -- boxWidth = width of collision boxes
-
 function makeCharacter(args) 
 	local d = {
 		depth = { 
@@ -77,15 +128,8 @@ function makeCharacter(args)
 	
 	-- Compute metrics
 	local scale = args.template.scale or 1
-	local boxWidth = args.template.boxWidth * scale
-	local headY = args.template.headY * scale
-	local bodyY = args.template.bodyY * scale
-	local headHeight = args.template.headHeight * scale
-	local hw = 0.5 * args.template.boxWidth
-	local bodyHeight = headY - bodyY
-	local headShape = { type = "rect", width = boxWidth, height = headHeight, offset = {-hw, 0}}
-	local bodyShape = { type = "rect", width = boxWidth, height = bodyHeight, offset = {-hw, 0}}
-	
+
+	print ("scale =  " .. tostring(scale))
 	local statemachine = { initialstate = "walk"} 
 	statemachine.states = {}
 	local tag = ""
@@ -106,6 +150,9 @@ function makeCharacter(args)
 				{ id = "idle_back", anim = "idle"}
 			}
 		}
+		statemachine.states[2] = {
+			id="ishit", type="empty"
+		}
 	elseif (args.type == "enemy") then
 		tag = nextTag()
 		statemachine.transitionmatrix = args.template.transitionmatrix
@@ -115,19 +162,23 @@ function makeCharacter(args)
 			speed = args.template.speed,
 			target = "player"
 		}
+		statemachine.states[2] = {
+			id="ishit", type="empty"
+		}
+		statemachine.states[3] = {
+			id ="idle", type="empty"
+		}
 	end
-	statemachine.states[2] = {
-		id="ishit", type="empty"
-	}
 
 	-- add hit state
 	local keys = args.template.keys
-	local prob = {}
-	if (args.hit ~= nil) then
+	local prob = args.template.transitionmatrix
+	if (args.template.hit ~= nil) then
 		for k, v in ipairs(args.template.hit) do
+			print ("Adding state " .. v.id)
 			table.insert (statemachine.states, 
 			{ 
-				id="hit".. tostring(k), 
+				id=v.id,
 				type="hit",
 				anim=v.anim,
 				frame=v.frame,
@@ -136,29 +187,35 @@ function makeCharacter(args)
 				offset = {v.offset[1]*scale, v.offset[2]*scale},
 				func = ciao
 			})
-			table.insert(keys, { key = v.key,  })
-			table.insert(prob, { }))
 		end
 	end
 	
-
-	return 
-	{
-		tag = tag,
-		gfx = { model=args.template.sprite, anim="idle"},
-		collider= { shape = {type="rect", width=1, height=1}, tag=1, flag=1},
-		pos = {args.x, args.y, 0},
-		depth = d,
-		children = {
+	
+	local c = collisionMaker[args.template.collisionType](args)
+	local children = {
 			-- shadow
 			{
 				gfx = { shape={type="ellipse", semiaxes={ 50, 10} }, draw="solid", color={0,0,0,128} },
 				shadow = {}
 			},
 			-- collision boxes
+		}
+	for i, c in ipairs(c) do
+		table.insert(children, c)
+	end
+	
 
-		},
-		statemachine = statemachine
+
+	return 
+	{
+		tag = tag,
+		gfx = { model=args.template.sprite, anim="idle", scale = scale},
+		collider= { shape = {type="rect", width=1, height=1}, tag=1, flag=1},
+		pos = {args.x, args.y, 0},
+		depth = d,
+		children = children,
+		statemachine = statemachine,
+		info = args.template.info
 	}
 end
 			-- {
@@ -231,45 +288,7 @@ function makeEnemy(args)
 			energy = 10
 		},
 		children = {
-			{
-				-- head
-				pos={0, headY, 0},
-		 		gfx = {
-		 			shape= headShape,
-		 			color={255,255,255,255}
-		 		},
-				collider = {
-					shape= headShape, 
-					tag=1, 
-					flag=2
-				},
-				info = {
-					pos = "head",
-					spriteid = args.sprite,
-					offset = {0, headY},
-					scale =0.5
-				},
-			},
-			{
-				pos={0, bodyY, 0},
-				gfx = {
-					shape= bodyShape,
-				 	color={255,255,255,255}
-				},
-				collider = {
-					shape= bodyShape,
-					tag=1, 
-					flag=2
-				},
-				info = {
-					pos = "body",
-					spriteid = args.ssprite,
-					offset = {0, 20},
-					headx = 0, 
-					heady = headY,
-					scale =0.7
-				}
-			},				
+			
 		}
 	}
 end
