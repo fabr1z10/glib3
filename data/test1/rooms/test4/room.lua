@@ -26,47 +26,14 @@ hitfunc["head"] = function(info, pp)
 end
 
 hitfunc["body"] = function()
-	main = monkey.getEntity("main")
-	player = monkey.getEntity("player")
-	flip = player.flipx and 1 or -1
-	local tagHead = nextTag()
-	local tagLegs = nextTag()
-local b1 = nextTag()
-    monkey.addEntity ({
-		pos = {pp.x + info.headx, pp.y + info.heady, 0},
-		depth = d,
-		gfx = { model = info.spriteid, anim = "head"},
-		tag = tagHead
-	}, main)
-    monkey.addEntity ({
-		pos = {pp.x, pp.y, 0},
-		depth = d,
-		gfx = { model = info.spriteid, anim = "legs"},
-		tag = tagLegs
-	}, main)
-	-- adding fx
-    monkey.addEntity ({
-		pos = {pp.x + info.offset[1], pp.y + info.offset[2], 0},
-		depth = d,
-		gfx = { model = "expl1", anim = "default", scale = info.scale},
-		tag = b1
-	}, main)
- 	local s = script:new("_cook")
-	s.actions ={
-		[1] = {type="noop"},
-		[2] = { type="rotate", speed = flip * 60, acceleration = flip * 200, deg = flip*90, actor = tagLegs, after={1} },
-		[3] = { type="animate", actor=b1, anim="default", loop = 1, after={1}},
-		[4] = { type="animate", actor=b1, anim="stop", after={3}},
-		[5] = { type ="movegravity", actor=b1, velocity={0,-100}, g=100, ystop = pp.y, after={1}},
-		[6] = {type="movegravity", actor=tagHead, velocity = {20, 100}, g = 100,ystop = pp.y, after= {1}}
-	}	
-	monkey.play(s)
+
 end
 
 hitfunc["leg"] = function()
 
 end
 
+local collisionGrid = 80
 
 
 local startPosition = startPositionTable[variables._previousroom]
@@ -74,7 +41,7 @@ local startPosition = startPositionTable[variables._previousroom]
 room = {
 engines = {
 	{ type = "scheduler"},
-	{ type = "collision", size = {80, 80}, coll25 = true, eps = 0.01,
+	{ type = "collision", size = {collisionGrid, collisionGrid}, coll25 = true, eps = 0.01,
 		response = {
 			{ tag = {1,10}, onenter = function() print("DIEIEIEIEI") end}
 		}
@@ -108,23 +75,24 @@ scene = {
 				}
 		    },
 			--makeEnemy ("character_1", 60, 30, 40, 50, 20, 10, 10),
-			makeCharacter { template = characters.beast, x = 30, y = 30, type="player" },
-			makeCharacter { template = characters.bred, x=120, y = 30, type="enemy" },
+			makeCharacter { template = characters.beast, x = 30, y = 30, player=1},
+			--makeCharacter { template = characters.bred, x=120, y = 30, type="enemy" },
+			makeShape { pos = {20, 20, 0}, angle = 0, tag=2, flag=2, shape = {type="line", A={0,0},B={100,0}}, offset={0, 0} },
+			-- {
+			-- 	tag ="c1",
+			-- 	gfx = { image="gfx/brick.png", width = 128, height = 128},
+			-- 	pos = { 60, 60, computeDepth(60)},
+			-- 	depth = d,
+			-- 	children = {
+			-- 		-- shadow
+			-- 		{
+			-- 			gfx = { shape={type="rect", width=128, height=5 }, draw="solid", color={0,0,0,128} },
+			-- 			shadow = {}
+			-- 		}
+			-- 	},
+			-- },
 			{
-				tag ="c1",
-				gfx = { image="gfx/brick.png", width = 128, height = 128},
-				pos = { 60, 60, computeDepth(60)},
-				depth = d,
-				children = {
-					-- shadow
-					{
-						gfx = { shape={type="rect", width=128, height=5 }, draw="solid", color={0,0,0,128} },
-						shadow = {}
-					}
-				},
-			},
-			{
-				gfx = { image="gfx/floor1.png", rep = {4,2}, width = 320, height = 160},
+				gfx = { image="gfx/gnd2.jpg", rep = {4,2}, skew={-0.5,0}, width = 320, height = 160},
 				pos = {0,0,-1}
 			},
 			{
@@ -139,8 +107,8 @@ scene = {
 }
 
 for i = 1,10 do
-    table.insert(room.scene[1].children, { gfx = { shape = { type="line", A={40*i,0}, B={40*i, 200}}, color={255, 255, 255, 255} }})
-    table.insert(room.scene[1].children, { gfx = { shape = { type="line", A={0, 40*i}, B={320, 40*i}}, color={255, 255, 255, 255} }})
+    table.insert(room.scene[1].children, { gfx = { shape = { type="line", A={collisionGrid*i,0}, B={collisionGrid*i, 200}}, color={255, 255, 255, 255} }})
+    table.insert(room.scene[1].children, { gfx = { shape = { type="line", A={0, collisionGrid*i}, B={320, collisionGrid*i}}, color={255, 255, 255, 255} }})
 end
 
 -- end room
@@ -159,25 +127,25 @@ end
 
 function room.afterstartup() 
 
-	local s= script:new()
-	s.actions = {
-		[1] = { type="callfunc", func = curry(disableDepth, "c1")},
-		[2] = { actor="c1", type ="move", by ={0,120}, speed = 20, after={1}},
-		[3] = { actor="c1", type ="move", by ={0, -120}, speed = 500, after={2} },
-		[4] = { type="collisioncheck", after={3}, shape = {type="rect", width = 128, height = 5}, actor="c1", offset={0,0}, mask=1, func = 
-		function(x) 
-			--print ("opOPOPLPOIJ")
-			x:remove()
-			main = monkey.getEntity("main")
-		    monkey.addEntity ({
-				pos = {x.x, x.y, 0},
-				depth = d,
-				gfx = { model = "expl2", anim = "default"},
-			}, main)
-		end },
-	}
-	s.loop = 1
-	monkey.play(s)
+	-- local s= script:new()
+	-- s.actions = {
+	-- 	[1] = { type="callfunc", func = curry(disableDepth, "c1")},
+	-- 	[2] = { actor="c1", type ="move", by ={0,120}, speed = 20, after={1}},
+	-- 	[3] = { actor="c1", type ="move", by ={0, -120}, speed = 500, after={2} },
+	-- 	[4] = { type="collisioncheck", after={3}, shape = {type="rect", width = 128, height = 5}, actor="c1", offset={0,0}, mask=1, func = 
+	-- 	function(x) 
+	-- 		--print ("opOPOPLPOIJ")
+	-- 		x:remove()
+	-- 		main = monkey.getEntity("main")
+	-- 	    monkey.addEntity ({
+	-- 			pos = {x.x, x.y, 0},
+	-- 			depth = d,
+	-- 			gfx = { model = "expl2", anim = "default"},
+	-- 		}, main)
+	-- 	end },
+	-- }
+	-- s.loop = 1
+	-- monkey.play(s)
 end
 
 

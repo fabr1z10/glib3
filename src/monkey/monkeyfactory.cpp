@@ -53,6 +53,7 @@ MonkeyFactory::MonkeyFactory() {
     AddRunnerFactory<CollisionEngineFactory>("collision");
 
     m_specialKeys.insert("tag");
+    m_specialKeys.insert("name");
     m_specialKeys.insert("pos");
     m_specialKeys.insert("angle");
     m_specialKeys.insert("children");
@@ -195,7 +196,9 @@ std::shared_ptr<Entity> MonkeyFactory::ReadItem(luabridge::LuaRef& ref) {
     LuaTable item(ref);
     auto entity = std::make_shared<Entity>();
     std::string tag = item.Get<std::string>("tag", "");
+    std::string name = item.Get<std::string>("name", "");
     if (!tag.empty()) entity->SetTag(tag);
+    if (!name.empty()) entity->SetName(name);
     glm::vec3 pos = item.Get<glm::vec3>("pos", glm::vec3(0.0f));
     bool active = item.Get<bool>("active", true);
     if (item.HasKey("angle")) {
@@ -212,7 +215,7 @@ std::shared_ptr<Entity> MonkeyFactory::ReadItem(luabridge::LuaRef& ref) {
     auto keyValueMap = LuaTable::getKeyValueMap(ref);
     for (auto& pair : keyValueMap) {
         auto iter = m_componentFactories.find(pair.first);
-        std::cout << "Reading " << pair.first << "\n";
+        //std::cout << "Reading " << pair.first << "\n";
         if (iter == m_componentFactories.end()) {
             if (m_specialKeys.count(pair.first) == 0) {
                 GLIB_FAIL("Unknown component " << pair.first);

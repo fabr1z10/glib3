@@ -122,7 +122,7 @@ sprites = {
 			   }				
 	        },	
 			{
-				name ="hit1",
+				name ="punch",
 				frames = {
 				   { duration = dt, quads = { { x = 222, y = 66, width = 46, height = 51, anchor = {35, 0}}, { x = 108, y = 199, width = 56, height = 39, anchor = {26,-51} } }},
 				   { duration = dt, quads = { { x = 222, y = 66, width = 46, height = 51, anchor = {35, 0}}, { x = 5, y = 199, width = 90, height = 38, anchor = {27,-51} } }},

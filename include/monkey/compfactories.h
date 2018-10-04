@@ -129,7 +129,7 @@ public:
 };
 
 // --- states
-class EmptyStateFactory : public StateFactory {
+class BasicStateFactory : public StateFactory {
     std::shared_ptr<State> Create(luabridge::LuaRef&) override;
 };
 

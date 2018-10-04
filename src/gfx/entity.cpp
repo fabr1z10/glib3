@@ -19,6 +19,10 @@ void Entity::AddChild(std::shared_ptr<Entity> child) {
     child->m_itParent = it;
     //child->Notify(m_worldTransform);
 
+    std::string name = child->GetName();
+    if (!name.empty()) {
+        m_namedChildren[name] = child.get();
+    }
     // if engine is running, start
     if (Engine::get().isRunning()) {
         child->Start();
@@ -45,8 +49,18 @@ void Entity::SetActive(bool value) {
 
 
 void Entity::Remove(Entity* entity) {
+    std::string name = entity->GetName();
+    if (!name.empty())
+        m_namedChildren.erase(name);
     m_children.erase(entity->m_itParent);
 
+}
+
+Entity* Entity::GetNamedChild(const std::string& name) {
+    auto it = m_namedChildren.find(name);
+    if (it == m_namedChildren.end())
+        return nullptr;
+    return it->second;
 }
 
 void Entity::ClearAllChildren() {

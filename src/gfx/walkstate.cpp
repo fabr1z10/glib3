@@ -41,31 +41,35 @@ void WalkStateCollision::Init(Entity* e) {
 }
 
 void WalkStateCollision::Start() {
-    m_renderer->SetAnimation(m_animations.at("idle_right"));
-    
+    //m_renderer->SetAnimation(m_animations.at("idle_right"));
+    m_renderer->SetAnimation("walk");
 }
 
 // 4-directional walking state
-bool WalkStateCollision::Run(double) {
-    bool moveHorizontal = false;
-    bool moveVertical = false;
+bool WalkStateCollision::Run(double dt) {
+    int leftKeyDown = glfwGetKey(window, GLFW_KEY_LEFT);
+    int rightKeyDown = glfwGetKey(window, GLFW_KEY_RIGHT);
+    int downKeyDown = glfwGetKey(window, GLFW_KEY_DOWN);
+    int upKeyDown = glfwGetKey(window, GLFW_KEY_UP);
+
+    if (leftKeyDown != GLFW_PRESS && rightKeyDown != GLFW_PRESS && upKeyDown != GLFW_PRESS && downKeyDown != GLFW_PRESS) {
+        m_nextState = "idle";
+        return true;
+    }
+    if (leftKeyDown || rightKeyDown)
+        m_renderer->SetFlipX(leftKeyDown);
+
+
 
     glm::vec2 dir(0.0f);
-    if (glfwGetKey(window, GLFW_KEY_RIGHT)) {
-        dir.x = 1.0f;
-        moveHorizontal = true;
-    }
-    if (glfwGetKey(window, GLFW_KEY_LEFT)) {
-        dir.x = -1.0f;
-        moveHorizontal = true;
-    }
+    dir.x = leftKeyDown ? -1.0f : (rightKeyDown ? 1.0f : 0.0f);
 
     // Horizontal check
     glm::vec3 TotalShift(0.0f);
-    if (moveHorizontal) {
+    if (dir.x != 0.0f) {
         glm::vec3 P = m_entity->GetPosition();
         P += glm::vec3(dir.x*m_width*0.5f, -m_height*0.5f, 0.0f);
-        float shift = m_speed;
+        float shift = m_speed*dt;
         for (int i = 0; i < m_horizontalRays; ++i) {
             // fire horizontal rays
             glm::vec3 s = P + glm::vec3(0.0f, i*m_horizontalRaySpace, 0.0f);
@@ -78,19 +82,12 @@ bool WalkStateCollision::Run(double) {
 
 
     dir = glm::vec2(0.0f);
-    if (glfwGetKey(window, GLFW_KEY_UP)) {
-        dir.y = 1.0f;
-        moveVertical = true;
-    }
-    if (glfwGetKey(window, GLFW_KEY_DOWN)) {
-        dir.y = -1.0f;
-        moveVertical = true;
-    }
+    dir.y = downKeyDown ? -1.0f : (upKeyDown ? 1.0f : 0.0f);
 
-    if (moveVertical) {
+    if (dir.y != 0.0f) {
         glm::vec3 P = m_entity->GetPosition();
         P += TotalShift + glm::vec3(-m_width*0.5f, dir.y*m_height*0.5f, 0.0f);
-        float shift = m_speed;
+        float shift = m_speed * dt;
         for (int i = 0; i < m_verticalRays; ++i) {
             // fire horizontal rays
             glm::vec3 s = P + glm::vec3(i*m_verticalRaySpace, 0.0f, 0.0f);
@@ -101,35 +98,33 @@ bool WalkStateCollision::Run(double) {
         TotalShift.y = dir.y*(shift - 0.1f);
     }
 
-    if (moveHorizontal || moveVertical) {
-        m_entity->Move(TotalShift);
-    }
-    
-    // handle animation
-    if (m_handleAnimations) {
-        if (moveHorizontal) {
-            m_renderer->SetAnimation(m_animations.at("walk_right"));
-            //if (TotalShift.x < 0)
-            m_renderer->SetFlipX(TotalShift.x < 0);
-        } else if (moveVertical) {
-            if (TotalShift.y > 0)
-                m_renderer->SetAnimation(m_animations.at("walk_back"));
-            else
-                m_renderer->SetAnimation(m_animations.at("walk_front"));
-        } else {
-            // not moving in this frame, restore idleness
-            if (m_prevMove.x != 0.0f) {
-                m_renderer->SetAnimation(m_animations.at("idle_right"));
-            } else {
-                if (m_prevMove.y > 0) {
-                    m_renderer->SetAnimation(m_animations.at("idle_back"));
-                } else if (m_prevMove.y < 0) {
-                    m_renderer->SetAnimation(m_animations.at("idle_front"));
-                }
-            }
-        }
-    }
-    m_prevMove = TotalShift;
+    m_entity->Move(TotalShift);
+//
+//    // handle animation
+//    if (m_handleAnimations) {
+//        if (moveHorizontal) {
+//            m_renderer->SetAnimation(m_animations.at("walk_right"));
+//            //if (TotalShift.x < 0)
+//            m_renderer->SetFlipX(TotalShift.x < 0);
+//        } else if (moveVertical) {
+//            if (TotalShift.y > 0)
+//                m_renderer->SetAnimation(m_animations.at("walk_back"));
+//            else
+//                m_renderer->SetAnimation(m_animations.at("walk_front"));
+//        } else {
+//            // not moving in this frame, restore idleness
+//            if (m_prevMove.x != 0.0f) {
+//                m_renderer->SetAnimation(m_animations.at("idle_right"));
+//            } else {
+//                if (m_prevMove.y > 0) {
+//                    m_renderer->SetAnimation(m_animations.at("idle_back"));
+//                } else if (m_prevMove.y < 0) {
+//                    m_renderer->SetAnimation(m_animations.at("idle_front"));
+//                }
+//            }
+//        }
+//    }
+//    m_prevMove = TotalShift;
     return false;
 }
 

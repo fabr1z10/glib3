@@ -24,6 +24,7 @@
 #include <gfx/hit.h>
 #include <gfx/aiwalk.h>
 #include <gfx/shadow.h>
+#include <gfx/basicstate.h>
 
 // a text component is actually a renderer
 void TextComponentFactory::operator() (luabridge::LuaRef& ref, Entity* e) {
@@ -264,7 +265,8 @@ void GfxComponentFactory::operator()(luabridge::LuaRef & ref, Entity * entity) {
         float w = table.Get<float>("width", 0.0f);
         float h = table.Get<float>("height", 0.0f);
         glm::vec2 repeat = table.Get<glm::vec2>("rep", glm::vec2(1.0f, 1.0f));
-        auto mesh = std::make_shared<QuadMesh>(image, w, h, repeat.x, repeat.y);
+        glm::vec2 skew = table.Get<glm::vec2>("skew", glm::vec2(0.0f, 0.0f));
+        auto mesh = std::make_shared<QuadMesh>(image, w, h, repeat.x, repeat.y, skew.x, skew.y);
         renderer->SetMesh(mesh);
     } else if (table.HasKey("model")) {
         std::string model = table.Get<std::string>("model");
@@ -432,7 +434,7 @@ std::shared_ptr<State> HitStateFactory::Create(luabridge::LuaRef & ref) {
 }
 
 StateMachineComponentFactory::StateMachineComponentFactory() {
-    m_stateFactories["empty"] = std::make_shared<EmptyStateFactory>();
+    m_stateFactories["basic"] = std::make_shared<BasicStateFactory>();
     m_stateFactories["walk"] = std::make_shared<WalkStateFactory>();
     m_stateFactories["aiwalk"] = std::make_shared<AIWalkStateFactory>();
     m_stateFactories["walkcollision"] = std::make_shared<WalkCollisionStateFactory>();
@@ -661,6 +663,9 @@ void CollisionEngineFactory::Create(luabridge::LuaRef & ref) {
 
 }
 
-std::shared_ptr<State> EmptyStateFactory::Create(luabridge::LuaRef &) {
-    return std::make_shared<EmptyState>();
+std::shared_ptr<State> BasicStateFactory::Create(luabridge::LuaRef & r) {
+    LuaTable table(r);
+    std::string anim = table.Get<std::string>("anim");
+    std::vector<std::string> colliders = table.GetVector<std::string>("colliders");
+    return std::make_shared<BasicState>(anim, colliders);
 }

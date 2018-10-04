@@ -77,6 +77,8 @@ public:
     void Move(glm::vec2);
     void Move(glm::vec3);
     void Move(glm::mat4&);
+    void SetName(const std::string& name);
+    std::string GetName() const;
     //Entity* GetParent();
 
     // an active entity gets updated at every frame,
@@ -100,6 +102,7 @@ public:
     void SetParent(Entity*);
     void SetCamera(std::unique_ptr<Camera>);
     Camera* GetCamera();
+    Entity* GetNamedChild(const std::string& name);
 private:
     void SetWorldTransform(glm::mat4& wt);
     void Notify();
@@ -116,7 +119,8 @@ private:
     std::unordered_map<std::type_index, std::shared_ptr<Component> > m_components;
     // can also be a vec of cameras?
     std::unique_ptr<Camera> m_cameras;
-
+    std::string m_name;
+    std::unordered_map<std::string, Entity*> m_namedChildren;
 };
 
 inline int Entity::GetLayer() const {
@@ -157,6 +161,14 @@ inline void Entity::SetEnableUpdate(bool value){
 
 inline bool Entity::IsUpdateEnabled() const {
     return m_update;
+}
+
+inline void Entity::SetName(const std::string& name) {
+    m_name =name;
+}
+
+inline std::string Entity::GetName() const {
+    return m_name;
 }
 
 #endif /* entity_h */

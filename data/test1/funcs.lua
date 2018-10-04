@@ -16,73 +16,38 @@ function createObject (obj)
     monkey.addEntity (obj, parent)
 end
 
-characters = {
+ 	local d = {
+ 		depth = { 
+ 		    type = "linear_y", values = {0, 1, 400, 0}
+ 		}
+ 	}
 
-	beast = {
-		sprite = "beast",
-		-- body metrics
-		headY = 60,
-		bodyY = 41,
-		boxWidth = 21,
-		headHeight = 10,
-		speed = 50,
-		shadowsize ={50,10},
-		hit = {
-			{ id = "punch", anim = "punch", frame = 2, mask = 2, width = 10, height = 10, offset = {32, 52} },
-			{ id = "kick", anim = "kick", frame = 2, mask = 2, width = 18, height = 8, offset = {38, 19}},
-			{ id = "cr", anim="cr", frame = 2, mask = 2, width = 1, height = 1, offset={0,0}}
-		},
-		keys = {
-			{ current = "walk", key =  65, next="punch" },
-			{ current = "walk", key =  83, next="kick" },
-			{ current = "walk", key =  84, next="cr" }
-		},
-		collisionType = "clear",
-		info = {	
-			energy = 3
-		}
-	},
-	bred = {
-		sprite = "character_2", 
-		-- body metrics
-		headY = 77, 
-		bodyY = 50, 
-		boxWidth = 10, 
-		headHeight = 10, 
-		--x = 120, y = 30, 
-		speed = 40, 
-		shadowsize ={50,10},
-		scale = 0.7,
-		hit = { 
-			{ id ="punch", anim="hit1", frame=1, width=16, height=8, offset={52,70}}
-		},
-		transitionmatrix = {
-			{ current = "idle", next="punch", prob = 0.01 }
-		},
-		--collisionType = "clear",
-		collisionType = "headBodyLegs",
-		info = {
-			energy = 2
-		}
+
+function makeShape (arg)
+	return {
+		pos = arg.pos,
+		angle = arg.angle,
+		gfx = {shape=arg.shape, color={255,255,255,255} },
+		collider= {shape=arg.shape, tag=arg.tag, flag = arg.flag},
+		depth = d,
+		info = arg.info
 	}
-
-
-
-}
+end
 
 -- collision callback
 function ciao(boxHit, entityHitting)
 	print ("Entity hitting: " .. entityHitting.tag)
 
 	-- print ("Entering collision check .......")
-	entityHit = boxHit:parent()
+	entityHit = boxHit:parent():parent()
+print ("entity hit in " .. tostring(entityHit.x))
 	-- print ("Character hit position is = " .. entityHit.x)
 	infoChar = entityHit:getinfo()
 	print ("Energy left = " .. infoChar.energy)
  	
 
-	info = boxHit:getinfo()
-	print ("Info type: " .. info.type)
+
+	--print ("Info type: " .. info.type)
 	-- player = monkey.getEntity("player")
 	flip = entityHitting.flipx and -1 or 1
 	
@@ -91,7 +56,28 @@ function ciao(boxHit, entityHitting)
 	if (infoChar.energy <= 0) then
 
 		-- This will call the special collision handler based on the collision info type
-	 	collisionResponse[info.type](entityHit, info, entityHitting)
+	 	--collisionResponse[info.type](entityHit, info, entityHitting)
+		entityHit:remove()
+	 	main = monkey.getEntity("main")
+	-- 	player = monkey.getEntity("player")
+	 	flip = entityHitting.flipx and 1 or -1
+	 	local b = nextTag()
+	-- 	local b1 = nextTag()
+	-- 	-- adding fx
+	    monkey.addEntity ({
+			pos = {entityHit.x, entityHit.y, 0},
+	 		depth = d,
+	 		gfx = { model = "expl1", anim = "default", scale = infoChar.killscale},
+	 		tag = b
+	 	}, main)
+	  	local s = script:new("_cook")
+	 	s.actions ={
+			[1] = {type="noop"},
+			[2] = {type="animate", actor=b, loop=1, anim="default", after={1} },
+			[3] = {type="animate", actor=b, loop=1, anim="stop", after={2} },
+	 		[4] = {type="move", actor=b, by = {20,0}, speed=50, acceleration =-10, after={1}}
+		}	
+	 	monkey.play(s)
 	else
 	 	local s = script:new()
 	 	s.actions = {
@@ -105,6 +91,7 @@ function ciao(boxHit, entityHitting)
 	end
 end
 
+require("characters")
 
 collisionMaker = {}
 collisionResponse = {}
@@ -112,112 +99,169 @@ collisionResponse = {}
 require("collision/hbl")
 require("collision/clear")
 
+function makeCharacter(args)
+
+	local tag =""
+	if (args.player == 1) then
+		tag = "player"
+	else
+		tag = nextTag()
+	end
+
+	colliders = {}
+	for k, v in ipairs(args.template.colliders) do 
+		local s = { type="rect", width = v.width, height = v.height }
+		print ("Adding collider" .. tostring(v.width) .. " " .. tostring(v.height))
+		table.insert(colliders, { 
+			pos = {v.offset[1], v.offset[2], 0},
+			collider = { shape = s, tag=1, flag=2 },
+			gfx = { shape = s, color = {255,255,255,255 }},
+			name = v.name
+		})
+				
+	end
+
+	return {
+		pos = {args.x, args.y, 0},
+		depth = d,
+		tag = tag,
+		gfx = { model=args.template.sprite, anim=args.template.anim, scale = scale},
+		statemachine = {
+			initialstate = args.template.initialstate,
+			states = args.template.states,
+			keys = args.template.keys,
+			transitionmatrix = args.template.transitionmatrix
+		},
+		info = args.template.info,
+		children = {
+			{
+				name ="colliders",
+				children = colliders
+			},
+ 			{
+				name ="shadow",
+ 				gfx = { shape={type="ellipse", semiaxes=args.template.shadowsize }, draw="solid", color={0,0,0,128} },
+ 				shadow = {}
+ 			},
+
+		}
+		--collider= { shape = {type="rect", width=1, height=1}, tag=1, flag=1},
+	}
+-- 		pos = {args.x, args.y, 0},
+-- 		depth = d,
+-- 		children = children,
+-- 		statemachine = statemachine,
+-- 		info = args.template.info
+-- 	}
+end
 
 -- Body metrics
 -- headY = y where head starts
 -- bodyY = y where body starts
 -- headHeight = height of head box
 -- boxWidth = width of collision boxes
-function makeCharacter(args) 
-	local d = {
-		depth = { 
-		    type = "linear_y", values = {0, 1, 400, 0}
-		}
-	}
-	local sprite = args.template.sprite
-	
-	-- Compute metrics
-	local scale = args.template.scale or 1
+-- function makeCharacter(args) 
+-- 	local d = {
+-- 		depth = { 
+-- 		    type = "linear_y", values = {0, 1, 400, 0}
+-- 		}
+-- 	}
+-- 	local sprite = args.template.sprite
+-- 	local scale = args.template.scale or 1
 
-	print ("scale =  " .. tostring(scale))
-	local statemachine = { initialstate = "walk"} 
-	statemachine.states = {}
-	local tag = ""
-	if (args.type == "player") then
-		tag = "player"
-		statemachine.keys = args.template.keys
-		statemachine.states[1] = {
-			id = "walk", 
-			type="walkcollision", 
-			speed = 1, width=5, height=1, 
-			horizontal_rays=1, vertical_rays=2,
-			anims = {
-				{ id = "walk_right", anim = "walk" },
-				{ id = "walk_front", anim = "walk" },
-				{ id = "walk_back", anim = "walk" },
-				{ id = "idle_right", anim = "idle" },
-				{ id = "idle_front", anim = "idle"},
-				{ id = "idle_back", anim = "idle"}
-			}
-		}
-		statemachine.states[2] = {
-			id="ishit", type="empty"
-		}
-	elseif (args.type == "enemy") then
-		tag = nextTag()
-		statemachine.transitionmatrix = args.template.transitionmatrix
-		statemachine.states[1] = {
-			id="walk",
-			type ="aiwalk",
-			speed = args.template.speed,
-			target = "player"
-		}
-		statemachine.states[2] = {
-			id="ishit", type="empty"
-		}
-		statemachine.states[3] = {
-			id ="idle", type="empty"
-		}
-	end
-
-	-- add hit state
-	local keys = args.template.keys
-	local prob = args.template.transitionmatrix
-	if (args.template.hit ~= nil) then
-		for k, v in ipairs(args.template.hit) do
-			print ("Adding state " .. v.id)
-			table.insert (statemachine.states, 
-			{ 
-				id=v.id,
-				type="hit",
-				anim=v.anim,
-				frame=v.frame,
-				mask=2,
-				shape = {type="rect", width=v.width*scale, height=v.height*scale},
-				offset = {v.offset[1]*scale, v.offset[2]*scale},
-				func = ciao
-			})
-		end
-	end
-	
-	
-	local c = collisionMaker[args.template.collisionType](args)
-	local children = {
-			-- shadow
-			{
-				gfx = { shape={type="ellipse", semiaxes={ 50, 10} }, draw="solid", color={0,0,0,128} },
-				shadow = {}
-			},
-			-- collision boxes
-		}
-	for i, c in ipairs(c) do
-		table.insert(children, c)
-	end
-	
+-- 	local statemachine = {
+-- 		states = args.template.states
+-- 	}
 
 
-	return 
-	{
-		tag = tag,
-		gfx = { model=args.template.sprite, anim="idle", scale = scale},
-		collider= { shape = {type="rect", width=1, height=1}, tag=1, flag=1},
-		pos = {args.x, args.y, 0},
-		depth = d,
-		children = children,
-		statemachine = statemachine,
-		info = args.template.info
-	}
-end
+
+-- 	statemachine.states = 
+-- 	local tag = ""
+-- 	if (args.type == "player") then
+-- 		tag = "player"
+-- 		statemachine.keys = args.template.keys
+-- 		statemachine.states[1] = {
+-- 			id = "walk", 
+-- 			type="walkcollision", 
+-- 			speed = 1, width=5, height=1, 
+-- 			horizontal_rays=1, vertical_rays=2,
+-- 			anims = {
+-- 				{ id = "walk_right", anim = "walk" },
+-- 				{ id = "walk_front", anim = "walk" },
+-- 				{ id = "walk_back", anim = "walk" },
+-- 				{ id = "idle_right", anim = "idle" },
+-- 				{ id = "idle_front", anim = "idle"},
+-- 				{ id = "idle_back", anim = "idle"}
+-- 			}
+-- 		}
+-- 		statemachine.states[2] = {
+-- 			id="ishit", type="empty"
+-- 		}
+-- 	elseif (args.type == "enemy") then
+-- 		tag = nextTag()
+-- 		statemachine.transitionmatrix = args.template.transitionmatrix
+-- 		statemachine.states[1] = {
+-- 			id="walk",
+-- 			type ="aiwalk",
+-- 			speed = args.template.speed,
+-- 			target = "player"
+-- 		}
+-- 		statemachine.states[2] = {
+-- 			id="ishit", type="empty"
+-- 		}
+-- 		statemachine.states[3] = {
+-- 			id ="idle", type="empty"
+-- 		}
+-- 	end
+
+-- 	-- add hit state
+-- 	local keys = args.template.keys
+-- 	local prob = args.template.transitionmatrix
+-- 	if (args.template.hit ~= nil) then
+-- 		for k, v in ipairs(args.template.hit) do
+-- 			print ("Adding state " .. v.id)
+-- 			table.insert (statemachine.states, 
+-- 			{ 
+-- 				id=v.id,
+-- 				type="hit",
+-- 				anim=v.anim,
+-- 				frame=v.frame,
+-- 				mask=2,
+-- 				shape = {type="rect", width=v.width*scale, height=v.height*scale},
+-- 				offset = {v.offset[1]*scale, v.offset[2]*scale},
+-- 				func = ciao
+-- 			})
+-- 		end
+-- 	end
+	
+	
+-- 	local c = collisionMaker[args.template.collisionType](args)
+-- 	local children = {
+-- 			-- shadow
+-- 			{
+-- 				gfx = { shape={type="ellipse", semiaxes={ 50, 10} }, draw="solid", color={0,0,0,128} },
+-- 				shadow = {}
+-- 			},
+-- 			-- collision boxes
+-- 		}
+-- 	for i, c in ipairs(c) do
+-- 		table.insert(children, c)
+-- 	end
+	
+
+
+-- 	return 
+-- 	{
+-- 		tag = tag,
+-- 		gfx = { model=args.template.sprite, anim="idle", scale = scale},
+-- 		collider= { shape = {type="rect", width=1, height=1}, tag=1, flag=1},
+-- 		pos = {args.x, args.y, 0},
+-- 		depth = d,
+-- 		children = children,
+-- 		statemachine = statemachine,
+-- 		info = args.template.info
+-- 	}
+-- end
 			-- {
 
 

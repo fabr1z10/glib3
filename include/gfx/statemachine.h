@@ -41,14 +41,6 @@ inline void State::SetId(const std::string& id) {
     m_id = id;
 }
 
-// do  nothing sttae
-class EmptyState : public State {
-public:
-    void End () override {}
-    // returns true if state changes
-    bool Run (double) override { return false; }
-    void Start () override {}
-};
 
 class StateMachine : public Component {
 public:

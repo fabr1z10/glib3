@@ -19,6 +19,8 @@ void StateMachine::AddState(const std::string & name, std::shared_ptr<State> sta
 }
 
 
+
+
 void StateMachine::ChangeState(const std::string& state) {
     if (m_currentState != nullptr)
         m_currentState->End();
@@ -62,7 +64,7 @@ void KeyboardControlledStateMachine::KeyCallback(GLFWwindow* window, int key, in
     std::cout << action << ", " << key<<"\n";
     if (action == GLFW_PRESS)
     {
-
+        //std::cout << key << " press " << scancode << " , " << mods << "\n";
         if (m_currentState != nullptr) {
             auto it = m_transitions.find(m_currentState->GetId());
             if (it != m_transitions.end())
