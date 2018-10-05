@@ -21,3 +21,12 @@ void Bounds::Transform(const glm::mat4& m){
             max.y = Pt.y;
     }
 }
+
+
+
+void Bounds::Expand(float amount) {
+    float ha = amount * 0.5f;
+    glm::vec2 halfAmounts(ha, ha);
+    min -= halfAmounts;
+    max += halfAmounts;
+}

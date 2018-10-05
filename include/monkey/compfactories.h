@@ -112,6 +112,10 @@ class ShadowComponentFactory : public ComponentFactory {
     void operator()(luabridge::LuaRef&, Entity*) override;
 };
 
+class Controller2DComponentFactory : public ComponentFactory {
+    void operator()(luabridge::LuaRef&, Entity*) override;
+};
+
 // --- runners
 class HotSpotManagerFactory : public RunnerFactory {
 public:
@@ -149,3 +153,12 @@ class AIWalkStateFactory : public StateFactory {
     std::shared_ptr<State> Create(luabridge::LuaRef&) override;
 };
 
+class Idle2DStateFactory : public StateFactory {
+    std::shared_ptr<State> Create(luabridge::LuaRef&) override;
+};
+class Walk2DStateFactory : public StateFactory {
+    std::shared_ptr<State> Create(luabridge::LuaRef&) override;
+};
+class Jump2DStateFactory : public StateFactory {
+    std::shared_ptr<State> Create(luabridge::LuaRef&) override;
+};

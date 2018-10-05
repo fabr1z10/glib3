@@ -25,6 +25,11 @@
 #include <gfx/aiwalk.h>
 #include <gfx/shadow.h>
 #include <gfx/basicstate.h>
+#include <gfx/idle2d.h>
+#include <gfx/walk2d.h>
+#include <gfx/jump2d.h>
+#include <gfx/controller2d.h>
+
 
 // a text component is actually a renderer
 void TextComponentFactory::operator() (luabridge::LuaRef& ref, Entity* e) {
@@ -439,6 +444,10 @@ StateMachineComponentFactory::StateMachineComponentFactory() {
     m_stateFactories["aiwalk"] = std::make_shared<AIWalkStateFactory>();
     m_stateFactories["walkcollision"] = std::make_shared<WalkCollisionStateFactory>();
     m_stateFactories["hit"] = std::make_shared<HitStateFactory>();
+    // platformer states
+    m_stateFactories["idle2d"] = std::make_shared<Idle2DStateFactory>();
+    m_stateFactories["walk2d"] = std::make_shared<Walk2DStateFactory>();
+    m_stateFactories["jump2d"] = std::make_shared<Jump2DStateFactory>();
 }
 
 void StateMachineComponentFactory::operator()(luabridge::LuaRef &ref, Entity *parent) {
@@ -593,7 +602,15 @@ void ButtonComponentFactory::operator() (luabridge::LuaRef& ref, Entity* parent)
 void ShadowComponentFactory::operator()(luabridge::LuaRef &, Entity * parent) {
     parent->AddComponent(std::make_shared<Shadow>());
 }
-
+void Controller2DComponentFactory::operator()(luabridge::LuaRef & ref, Entity * parent) {
+    LuaTable table(ref);
+    float maxClimbAngle = table.Get<float>("maxclimbangle");
+    float maxDescendAngle = table.Get<float>("maxdescendangle");
+    int horCount = table.Get<int>("horizontalrays", 4);
+    int vertCount = table.Get<int>("veticalrays", 4);
+    float skinWidth = table.Get<float>("skinwidth", .015f);
+    parent->AddComponent(std::make_shared<Controller2D>(maxClimbAngle, maxDescendAngle, skinWidth, horCount, vertCount));
+}
 
 void TextViewComponentFactory::operator() (luabridge::LuaRef &ref, Entity *parent) {
     LuaTable table(ref);
@@ -668,4 +685,30 @@ std::shared_ptr<State> BasicStateFactory::Create(luabridge::LuaRef & r) {
     std::string anim = table.Get<std::string>("anim");
     std::vector<std::string> colliders = table.GetVector<std::string>("colliders");
     return std::make_shared<BasicState>(anim, colliders);
+}
+
+std::shared_ptr<State> Idle2DStateFactory::Create(luabridge::LuaRef & r) {
+    LuaTable table(r);
+    std::string anim = table.Get<std::string>("anim");
+    float acc = table.Get<float>("acceleration");
+    float g = table.Get<float>("gravity");
+    return std::make_shared<Idle2D>(anim, acc,g);
+}
+
+std::shared_ptr<State> Walk2DStateFactory::Create(luabridge::LuaRef & r) {
+    LuaTable table(r);
+    std::string anim = table.Get<std::string>("anim");
+    float acc = table.Get<float>("acceleration");
+    float g = table.Get<float>("gravity");
+    float speed = table.Get<float>("speed");
+    return std::make_shared<Walk2D>(anim, acc,g,speed);
+}
+
+std::shared_ptr<State> Jump2DStateFactory::Create(luabridge::LuaRef & r) {
+    LuaTable table(r);
+    std::string anim = table.Get<std::string>("anim");
+    float acc = table.Get<float>("acceleration");
+    float g = table.Get<float>("gravity");
+    float speed = table.Get<float>("speed");
+    return std::make_shared<Jump2D>(anim, acc,g,speed);
 }

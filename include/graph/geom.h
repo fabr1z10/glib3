@@ -6,7 +6,7 @@ class Poly;
 
 const float epsilon = 0.0001f;
 const float deg2rad = M_PI / 180.0f;
-
+const float rad2deg = 180.0f / M_PI;
 struct LineSegment {
     glm::vec2 A;
     glm::vec2 B;
@@ -36,6 +36,11 @@ inline float length2 (glm::vec2 P) {
     return P.x * P.x + P.y * P.y;
 }
 
+// returns the angle (in radians) between two vectors
+inline float angle(glm::vec2 v1, glm::vec2 v2) {
+    return std::acos(glm::dot(v1, v2));
+}
+
 inline int sign (float f) {
     return f>=0.0f ? 1 : -1;
 }
@@ -60,3 +65,4 @@ bool inLineOfSight (const Poly&, glm::vec2, glm::vec2);
 //void FindPathInPoly (const Poly&, glm::vec2 Start, glm::vec2 End);
 
 float GetFirstSolution(float, float, float);
+float SmoothDamp(float current, float target, float& currentVelocity, float smoothTime, float deltaTime, float maxSpeed = 10000000.0f);
