@@ -50,7 +50,7 @@ engines = {
 assets = {
 	sprites.beast,
 	sprites.character_1,
-	sprites.character_2,
+	sprites.bred,
 	sprites.expl1,
 	sprites.expl2
 
@@ -76,7 +76,7 @@ scene = {
 		    },
 			--makeEnemy ("character_1", 60, 30, 40, 50, 20, 10, 10),
 			makeCharacter { template = characters.beast, x = 30, y = 30, player=1},
-			--makeCharacter { template = characters.bred, x=120, y = 30, type="enemy" },
+			makeCharacter { template = characters.bred, x=120, y = 30, type="enemy" },
 			makeShape { pos = {20, 20, 0}, angle = 0, tag=2, flag=2, shape = {type="line", A={0,0},B={100,0}}, offset={0, 0} },
 			-- {
 			-- 	tag ="c1",

@@ -69,8 +69,8 @@ void MoveTo::Run (float dt) {
 
 }
 
-MoveGravity::MoveGravity (const std::string& actorId, glm::vec2 initialVelocity, float g, float yStop) :
-        Activity(), m_entity{nullptr}, m_actorId(actorId), m_initialVelocity(initialVelocity), m_g(g), m_yStop(yStop) {}
+MoveGravity::MoveGravity (const std::string& actorId, glm::vec2 initialVelocity, float g, float yStop, float rotationSpeed, float finalRotation) :
+        Activity(), m_entity{nullptr}, m_actorId(actorId), m_initialVelocity(initialVelocity), m_g(g), m_yStop(yStop), m_rotationSpeed(rotationSpeed), m_finalRotation(finalRotation) {}
 
 
 void MoveGravity::Start() {
@@ -84,13 +84,13 @@ void MoveGravity::Start() {
 void MoveGravity::Run(float dt) {
     glm::vec3 p(m_entity->GetPosition());
     glm::mat4 wt = m_entity->GetWorldTransform();
-    m_angle = 0.0f;// += 0.2f;
+    m_angle += m_rotationSpeed*dt;
     glm::vec2 pos(p);
     pos += m_velocity * dt;
     m_velocity += glm::vec2(0, -m_g) *dt;
     if (pos.y <= m_yStop) {
         pos.y = m_yStop;
-        m_angle = 0.0f;
+        m_angle = m_finalRotation;
         SetComplete();
     }
     m_entity->SetPosition(glm::vec3(pos, p.z), m_angle);

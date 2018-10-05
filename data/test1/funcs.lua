@@ -34,13 +34,78 @@ function makeShape (arg)
 	}
 end
 
+local g = 100
+local explFactor = 1
+
+function hit(infoBox, entityHit, flip)
+	-- create the spinning items
+	main = monkey.getEntity("main")
+
+	infoChar = entityHit:getinfo()
+	local scale =infoChar.scale or 1
+	for i, v in ipairs(infoBox.parts) do
+	 	local b = nextTag()
+	-- 	local b1 = nextTag()
+	-- 	-- adding fx
+		local collider = nil
+		local info = nil
+		if (v.cr ==1) then
+			collider = { shape = {type="rect", width=infoChar.bodymetrics.y[v.anim], height=1}, tag=1, flag=4 }
+			info = { scale = v.crscale * scale, offset = infoChar.bodymetrics.width[v.anim]*0.5 }
+		end
+		
+
+	    monkey.addEntity ({
+			pos = {entityHit.x, (entityHit.y + infoChar.bodymetrics.y[v.anim])*scale, entityHit.z},
+	 		gfx = { model = infoChar.sprite, anim = v.anim, scale = scale},
+	 		tag = b,
+			collider = collider,
+			info = info
+	 	}, main)
+	  	local s = script:new("_cook" .. tostring(i))
+	  	s.actions ={
+	 		[1] = {type="movegravity", actor =b, velocity = {flip*math.random(20,60), math.random(10,40)}, g =g, ystop = entityHit.y + infoChar.bodymetrics.width[v.anim]*0.5, rotationspeed=math.random(5,20), finalrotation = 90},
+	 	}	
+	  	monkey.play(s)
+	end
+	-- explosion
+	entityHit:remove()
+ 	local b = nextTag()
+	monkey.addEntity ({
+		pos = {entityHit.x, (entityHit.y + infoChar.bodymetrics.y[infoBox.type])*scale, entityHit.z},
+		--depth = d,
+		gfx = { model = "expl1", anim = "default", scale = scale*explFactor},
+		tag = b
+	}, main)
+	local s = script:new("_cook")
+	s.actions ={
+		[1] = {type="noop"},
+		[2] = {type="movegravity", actor =b, velocity = {flip*math.random(10,30), -50}, g =g, ystop = entityHit.y, rotationspeed=0, after={1}},
+		[3] = {type="animate", actor=b, anim="default", loop=1, after={1}},
+		[4] = {type="animate", actor=b, anim="stop", after={3}},
+
+	}	
+	monkey.play(s)
+	
+end
+
+function ciao2(boxHit, entityHitting) 
+	boxHit:remove()
+	main = monkey.getEntity("main")
+	infoChar = boxHit:getinfo()
+    monkey.addEntity ({
+		pos = {boxHit.x, boxHit.y - infoChar.offset, boxHit.z},
+	 	gfx = { model = "expl2", anim = "default", scale = infoChar.scale},
+	 }, main)
+end
+
 -- collision callback
 function ciao(boxHit, entityHitting)
 	print ("Entity hitting: " .. entityHitting.tag)
 
 	-- print ("Entering collision check .......")
 	entityHit = boxHit:parent():parent()
-print ("entity hit in " .. tostring(entityHit.x))
+	print ("entity hit in " .. tostring(entityHit.x))
 	-- print ("Character hit position is = " .. entityHit.x)
 	infoChar = entityHit:getinfo()
 	print ("Energy left = " .. infoChar.energy)
@@ -54,30 +119,32 @@ print ("entity hit in " .. tostring(entityHit.x))
  -- 	print ("pos = (" .. tostring(entityHit.x) .. ", " .. tostring(entityHit.y) .. ")")
 	-- infoChar.energy = infoChar.energy -1
 	if (infoChar.energy <= 0) then
-
+		bh = boxHit:getinfo()
+		print ("hit on " .. bh.type)
 		-- This will call the special collision handler based on the collision info type
 	 	--collisionResponse[info.type](entityHit, info, entityHitting)
-		entityHit:remove()
-	 	main = monkey.getEntity("main")
-	-- 	player = monkey.getEntity("player")
-	 	flip = entityHitting.flipx and 1 or -1
-	 	local b = nextTag()
-	-- 	local b1 = nextTag()
-	-- 	-- adding fx
-	    monkey.addEntity ({
-			pos = {entityHit.x, entityHit.y, 0},
-	 		depth = d,
-	 		gfx = { model = "expl1", anim = "default", scale = infoChar.killscale},
-	 		tag = b
-	 	}, main)
-	  	local s = script:new("_cook")
-	 	s.actions ={
-			[1] = {type="noop"},
-			[2] = {type="animate", actor=b, loop=1, anim="default", after={1} },
-			[3] = {type="animate", actor=b, loop=1, anim="stop", after={2} },
-	 		[4] = {type="move", actor=b, by = {20,0}, speed=50, acceleration =-10, after={1}}
-		}	
-	 	monkey.play(s)
+		
+		hit(bh, entityHit, flip)
+	--  	main = monkey.getEntity("main")
+	-- -- 	player = monkey.getEntity("player")
+	--  	flip = entityHitting.flipx and 1 or -1
+	--  	local b = nextTag()
+	-- -- 	local b1 = nextTag()
+	-- -- 	-- adding fx
+	--     monkey.addEntity ({
+	-- 		pos = {entityHit.x, entityHit.y, 0},
+	--  		depth = d,
+	--  		gfx = { model = "expl1", anim = "default", scale = infoChar.killscale},
+	--  		tag = b
+	--  	}, main)
+	--   	local s = script:new("_cook")
+	--  	s.actions ={
+	-- 		[1] = {type="noop"},
+	-- 		[2] = {type="animate", actor=b, loop=1, anim="default", after={1} },
+	-- 		[3] = {type="animate", actor=b, loop=1, anim="stop", after={2} },
+	--  		[4] = {type="move", actor=b, by = {20,0}, speed=50, acceleration =-10, after={1}}
+	-- 	}	
+	--  	monkey.play(s)
 	else
 	 	local s = script:new()
 	 	s.actions = {
@@ -102,36 +169,44 @@ require("collision/clear")
 function makeCharacter(args)
 
 	local tag =""
+	local follow= nil
 	if (args.player == 1) then
 		tag = "player"
+		follow = {cam="maincam", relativepos = {0, 0, 5}, up ={0,1,0}}
 	else
 		tag = nextTag()
 	end
+	
+	-- Read character scale (by default it's 1)
+	local scale = args.template.info.scale or 1
 
 	colliders = {}
 	for k, v in ipairs(args.template.colliders) do 
-		local s = { type="rect", width = v.width, height = v.height }
-		print ("Adding collider" .. tostring(v.width) .. " " .. tostring(v.height))
+		local width = args.template.info.bodymetrics.width[v.name] * scale
+		local height = args.template.info.bodymetrics.height[v.name] * scale
+		local y = args.template.info.bodymetrics.y[v.name] * scale
+		local s = {type="rect", width = width, height = height}
 		table.insert(colliders, { 
-			pos = {v.offset[1], v.offset[2], 0},
+			pos = {0, y, 0},
 			collider = { shape = s, tag=1, flag=2 },
 			gfx = { shape = s, color = {255,255,255,255 }},
-			name = v.name
+			name = v.name,
+			info = v.info
 		})
-				
 	end
 
 	return {
 		pos = {args.x, args.y, 0},
 		depth = d,
 		tag = tag,
-		gfx = { model=args.template.sprite, anim=args.template.anim, scale = scale},
+		gfx = { model=args.template.info.sprite, anim=args.template.anim, scale = scale},
 		statemachine = {
 			initialstate = args.template.initialstate,
 			states = args.template.states,
 			keys = args.template.keys,
 			transitionmatrix = args.template.transitionmatrix
 		},
+		follow = follow,
 		info = args.template.info,
 		children = {
 			{

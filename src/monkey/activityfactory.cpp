@@ -141,7 +141,9 @@ ActivityFactory::ActivityFactory() {
         glm::vec2 initialVelocity = table.Get<glm::vec2>("velocity");
         float g = table.Get<float>("g");
         float yStop = table.Get<float>("ystop");
-        return std::unique_ptr<MoveGravity>(new MoveGravity(actor, initialVelocity, g, yStop));
+        float rotSpeed = table.Get<float>("rotationspeed", 0.0f);
+        float finRotation = table.Get<float>("finalrotation", 0.0f) * deg2rad;
+        return std::unique_ptr<MoveGravity>(new MoveGravity(actor, initialVelocity, g, yStop, rotSpeed, finRotation));
     };
 
     m_factories["rotate"] = [] (LuaTable& table) -> std::unique_ptr<Activity> {
@@ -149,6 +151,7 @@ ActivityFactory::ActivityFactory() {
         float initialVelocity = table.Get<float>("speed");
         float acceleration = table.Get<float>("acceleration", 0.0f);
         float deg = table.Get<float>("deg");
+
         return std::unique_ptr<Rotate>(new Rotate(actor, deg, acceleration, initialVelocity));
     };
     m_factories["collisioncheck"] = [] (LuaTable& table) -> std::unique_ptr<Activity> {

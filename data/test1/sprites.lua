@@ -94,8 +94,8 @@ sprites = {
 		    },
 		}
 	},
-	character_2 = {
-		id = "character_2",
+	bred = {
+		id = "bred",
 		sheet = "gfx/enemies.png",
 		type = "sprite",
 		ppu = 1,
@@ -132,19 +132,19 @@ sprites = {
 		    {
 		        name = "body", frames = 
 				{ 
-					{ duration = dt, quads = { { x = 30, y = 120, width = 27, height = 26, anchor = {13, 0}}}}
+					{ duration = dt, quads = { { x = 30, y = 120, width = 27, height = 26, anchor = {13, 13}}}}
 				}
 		    },	
 		    {
 		        name = "head", frames = 
 				{ 
-					{ duration = dt, quads = { { x = 14, y = 120, width = 13, height = 12, anchor = {7, 0}}}}
+					{ duration = dt, quads = { { x = 14, y = 120, width = 13, height = 12, anchor = {7, 6}}}}
 				}
 		    },
 		    {
 		        name = "legs", frames = 
 				{ 
-					{ duration = dt, quads = { { x = 130, y = 66, width = 29, height = 51, anchor = {14, 0}}}}
+					{ duration = dt, quads = { { x = 68, y = 119, width = 25, height = 51, anchor = {12, 25}}}}
 				}
 		    },
 		}
@@ -199,7 +199,7 @@ sprites = {
 		    {
 		        name = "default", frames = 
 				{ 
-					{ duration = dt, quads = { { x = 71, y = 265, width = 227, height = 26, anchor = {112, 0}}}},
+					{ duration = dt, quads = { { x = 71, y = 265, width = 227, height = 26, anchor = {112, 13}}}},
 				}
 		    },
 		}
