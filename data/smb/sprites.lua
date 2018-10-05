@@ -26,7 +26,7 @@ sprites = {
 	           name="jump",
 	           frames=
 	           { 
-					{ duration = dt, quads = { { x = 76, y = 0, width = 16, height = 16, anchor = {8, 0}}}},
+					{ duration = dt, quads = { { x = 80, y = 0, width = 16, height = 16, anchor = {8, 0}}}},
 			   }				
 	        },				
 		}

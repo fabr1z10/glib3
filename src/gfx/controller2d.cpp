@@ -52,7 +52,7 @@ void Controller2D::Move(glm::vec2& dx) {
         m_details.velocityOld = dx;
 
         // before we do that... we have code handling collisions
-        if (dx.y < 0) {
+        if (dx.y < 0 && m_details.below) {
             DescendSlope(dx);
         }
         if (!isEqual(dx.x, 0.0f))
@@ -127,6 +127,8 @@ void Controller2D::ClimbSlope(glm::vec2& velocity, float slopeAngle) {
 
 
 void Controller2D::DescendSlope(glm::vec2& velocity) {
+    //if (velocity.x == 0.0f)
+     //   return;
     float directionX = sign(velocity.x);
     vec2 rayOrigin = ((directionX == -1) ? m_raycastOrigins.bottomRight : m_raycastOrigins.bottomLeft);
     //RayCastHit2D hit = m_collision->Raycast(rayOrigin, vec2(0, -1), 100.0f, m_platform != nullptr ? 2 | 32 : 2);

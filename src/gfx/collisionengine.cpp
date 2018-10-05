@@ -260,8 +260,12 @@ RayCastHit2D CollisionEngine::Raycast (glm::vec3 rayOrigin, glm::vec2 rayDir, fl
     // initialize current cell
     int i = static_cast<int>(P.x / m_width);
     int j = static_cast<int>(P.y / m_height);
-    int n = (rayDir.x > 0 ? 1 : (rayDir.x < 0 ? -1 : 0));
-    int m = (rayDir.y > 0 ? 1 : (rayDir.y < 0 ? -1 : 0));
+
+    // distance to hit the vertical lines:
+    // ((i+\xi)*delta - P) / u_x, where
+
+    int n = (rayDir.x > 0 ? 1 : 0);
+    int m = (rayDir.y > 0 ? 1 : 0);
     // n = 0 <-> r_x = 0 <-> vertical line
     // m = 0 <-> r_y = 0 <-> horizontal line
     float l = 0.0f;
@@ -316,9 +320,9 @@ RayCastHit2D CollisionEngine::Raycast (glm::vec3 rayOrigin, glm::vec2 rayDir, fl
         P = P1;
         l += tm;
         if (t1 < t2) {
-            i++;
+            i += (rayDir.x > 0 ? 1 : -1);
         } else {
-            j++;
+            j += (rayDir.y > 0 ? 1 : -1);
         }
 
     }

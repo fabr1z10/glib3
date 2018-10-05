@@ -14,7 +14,9 @@ float RayCast2D::SegmentIntersection(glm::vec2 A, glm::vec2 B, glm::vec2 C, glm:
         return std::numeric_limits<float>::infinity();
 
     // if we get here, we definitely are intersecting, so let's compute
-    return a / cross(AB, CD);
+    glm::vec2 ab = glm::normalize(AB);
+    glm::vec2 cd = glm::normalize(CD);
+    return a / cross(ab, cd);
 
 
 }
