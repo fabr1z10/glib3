@@ -19,8 +19,10 @@ void CollisionResponseManager::onStart (Collider* c1, Collider* c2, CollisionRep
     if (handler.response != nullptr) {
         if (handler.flip) {
             report.direction *= -1.0f;
+            handler.response->onStart(c2->GetObject(), c1->GetObject(), report);
+        } else {
+            handler.response->onStart(c1->GetObject(), c2->GetObject(), report);
         }
-        handler.response->onStart(c1->GetObject(), c2->GetObject(), report);
     }
 }
 
@@ -30,8 +32,10 @@ void CollisionResponseManager::onStay (Collider* c1, Collider* c2, CollisionRepo
     if (handler.response != nullptr) {
         if (handler.flip) {
             report.direction *= -1.0f;
+            handler.response->onStay(c2->GetObject(), c1->GetObject(), report);
+        } else {
+            handler.response->onStay(c1->GetObject(), c2->GetObject(), report);
         }
-        handler.response->onStay(c1->GetObject(), c2->GetObject(), report);
     }
 }
 
@@ -40,8 +44,10 @@ void CollisionResponseManager::onEnd (Collider* c1, Collider* c2, CollisionRepor
     if (handler.response != nullptr) {
         if (handler.flip) {
             report.direction *= -1.0f;
+            handler.response->onEnd(c2->GetObject(), c1->GetObject(), report);
+        } else {
+            handler.response->onEnd(c1->GetObject(), c2->GetObject(), report);
         }
-        handler.response->onEnd(c1->GetObject(), c2->GetObject(), report);
     }
 
 }

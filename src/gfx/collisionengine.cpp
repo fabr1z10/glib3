@@ -156,7 +156,7 @@ void CollisionEngine::Update(double dt) {
                 
                 // perform a aabb testing
                 if (!b1.Intersects(b2)) {
-                    std::cout << "aabb do not intersect\n";
+                    //std::cout << "aabb do not intersect\n";
                     continue;
                 }
                 //std::cout << "aabb do intersect. Now do a proper testing\n";
@@ -261,7 +261,7 @@ RayCastHit2D CollisionEngine::Raycast (glm::vec3 rayOrigin, glm::vec2 rayDir, fl
     int i = static_cast<int>(P.x / m_width);
     int j = static_cast<int>(P.y / m_height);
 
-    // distance to hit the vertical lines:
+    // distance to h0it the vertical lines:
     // ((i+\xi)*delta - P) / u_x, where
 
     int n = (rayDir.x > 0 ? 1 : 0);

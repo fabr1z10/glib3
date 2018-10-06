@@ -25,11 +25,20 @@ end
 
 function makeBrick(arg)
 	local s = { type = "rect", width = 16, height = 16 }
+	-- place the sensor
+	local s1 = { type = "rect", width = 14, height = 0.5, offset = {1, -0.25}}
 	return {
 		pos = {arg.pos[1] * 16, arg.pos[2] * 16, 0},
 		--gfx = {shape=arg.shape, color={255,255,255,255} },
 		gfx = { model=arg.sprite, anim="idle", width = 16, height = 16},	
-		collider= {shape=s, tag=10, flag = 2}
+		collider= {shape=s, tag=10, flag = 2},
+		children = {
+			
+			{
+				collider = { shape = s1, tag = 20, flag = 4 },
+				gfx = { shape = s1, color = {255,0,0,255}}
+			}
+		}
 	}
 end
 
@@ -44,6 +53,14 @@ function makeLine (arg)
 	}
 end
 
+function ciao(e1, e2)
+	print ("Brick is at " .. tostring(e2.x) .. ", " .. tostring(e2.y)) 
+	--local s = script:new()
+	--s.actions = {
+	--	[1] = 
+	--}
+	
+end
 
 
 room = {
@@ -54,7 +71,7 @@ engines = {
 		type = "collision", 
 		size = {collisionSize, collisionSize}, 
 		response = {
-			{ tag = {1,2}, onenter = ciao, onleave=ciao1}		
+			{ tag = {1, 20}, onenter = ciao, onleave=ciao1}		
 		}
 	}
 },
