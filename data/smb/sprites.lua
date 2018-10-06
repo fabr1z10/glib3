@@ -31,5 +31,20 @@ sprites = {
 	        },				
 		}
 	},
-	-- end graham
+	basicbrick = {
+		id = "basicbrick",
+		sheet = "gfx/smb1.png",
+		type = "sprite",
+		ppu = 1,
+		animations = {
+		    {
+		        name = "idle", frames = 
+				{ 
+					{ duration = dt, quads = { { x = 240, y = 0, width = 16, height = 16, anchor = {0, 0}}}}
+				}
+		    }		
+		}
+	},
+	
+
 }

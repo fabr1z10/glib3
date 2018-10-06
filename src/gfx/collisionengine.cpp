@@ -276,8 +276,8 @@ RayCastHit2D CollisionEngine::Raycast (glm::vec3 rayOrigin, glm::vec2 rayDir, fl
 
     while (!endReached && !out.collide) {
         // get the next point into this cell
-        float t1 = (n == 0) ? std::numeric_limits<float>::infinity() : ((i+n)*m_width - P.x) / rayDir.x;
-        float t2 = (m == 0) ? std::numeric_limits<float>::infinity() : ((j+m)*m_height - P.y) / rayDir.y;
+        float t1 = (rayDir.x == 0.0f) ? std::numeric_limits<float>::infinity() : ((i+n)*m_width - P.x) / rayDir.x;
+        float t2 = (rayDir.y == 0.0f) ? std::numeric_limits<float>::infinity() : ((j+m)*m_height - P.y) / rayDir.y;
         float tm = std::min(t1, t2);
 
         if (l + tm < length) {

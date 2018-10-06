@@ -11,13 +11,40 @@ function restartRoom()
 	monkey.play(s)
 end
 
-function makeShape (arg)
+function makeRect(arg)
+	local width = 16 * arg.width
+	local height = 16 * arg.height
+	local s = { type = "rect", width = width, height = height }
 	return {
 		pos = arg.pos,
-		gfx = {shape=arg.shape, color={255,255,255,255} },
-		collider= {shape=arg.shape, tag=10, flag = 2}
+		--gfx = {shape=arg.shape, color={255,255,255,255} },
+		gfx = { image="gfx/block1.png", width = width, height = height, rep={arg.width, arg.height}},	
+		collider= {shape=s, tag=10, flag = 2}
 	}
 end
+
+function makeBrick(arg)
+	local s = { type = "rect", width = 16, height = 16 }
+	return {
+		pos = {arg.pos[1] * 16, arg.pos[2] * 16, 0},
+		--gfx = {shape=arg.shape, color={255,255,255,255} },
+		gfx = { model=arg.sprite, anim="idle", width = 16, height = 16},	
+		collider= {shape=s, tag=10, flag = 2}
+	}
+end
+
+function makeLine (arg) 
+
+	local s = { type = "line", A = arg.A, B = arg.B }
+	return {
+		pos = {0,0,0},
+		--gfx = {shape=arg.shape, color={255,255,255,255} },
+		gfx = { shape = s, color = {255,255,255,255}},	
+		collider= {shape=s, tag=10, flag = 2}
+	}
+end
+
+
 
 room = {
 
@@ -32,7 +59,8 @@ engines = {
 	}
 },
 assets = {
-	sprites.mario
+	sprites.mario,
+	sprites.basicbrick
 },
 scene = {
 	{
@@ -56,7 +84,7 @@ scene = {
 				pos = {startPos[1], startPos[2], 0},
 				gfx = { model="mario", anim="idle" },
 				controller2d = { maxclimbangle = 80, maxdescendangle = 80, horizontalrays=4, verticalrays=4 },
-				dynamics2d = { jumpheight = 64, timetojumpapex = 0.5 },
+				dynamics2d = { jumpheight = 128, timetojumpapex = 2 },
 				collider = { shape = {type="rect", width=16, height=16, offset={-8,0}}, tag = 1, flag= 1},
 				statemachine = {
 					initialstate = "idle",
@@ -75,6 +103,7 @@ scene = {
 					},
 
 				},
+				follow = { cam ="maincam", relativepos={0,0,5}, up={0,1,0}},
 				--				follow = follow,
 				--info = args.template.info,
 				-- children = {
@@ -90,8 +119,10 @@ scene = {
 
 				-- }
 			},
-			makeShape { pos ={0,0,0}, shape = {type="line", A={0,0}, B={0,256}}},
-			makeShape { pos ={0,0,0}, shape = {type="rect", width=64, height=32 }}
+			makeLine { A = {0,0}, B = {0,256} },
+			makeRect { pos ={0,0,0}, width = 69, height = 2 },
+			makeBrick { pos = {5,4}, sprite="basicbrick" },
+			makeBrick { pos ={ 4, 5}, sprite="basicbrick"}
 			-- {
 			-- 	pos = {0,0,0},
 			-- 	gfx = {shape={type="rect", width = 64, height=32}, color={255,255,255,255} },
