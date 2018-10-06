@@ -5,6 +5,7 @@
 #include <graph/geom.h>
 #include <gfx/error.h>
 #include <gfx/renderer.h>
+#include <gfx/dynamics2d.h>
 
 extern GLFWwindow* window;
 
@@ -21,6 +22,10 @@ void PlatformerState::Init(Entity* e) {
     m_renderer = m_entity->GetComponent<Renderer>();
     if (m_renderer == nullptr) {
         GLIB_FAIL("Required a renderer component!")
+    }
+    m_dynamics = m_entity->GetComponent<Dynamics2D>();
+    if (m_dynamics == nullptr) {
+        GLIB_FAIL("Required a dynamics2d component!");
     }
 }
 

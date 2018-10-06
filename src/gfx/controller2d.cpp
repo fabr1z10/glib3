@@ -8,6 +8,7 @@
 #include <gfx/entity.h>
 #include <graph/geom.h>
 #include <gfx/platform.h>
+#include <iostream>
 
 using namespace glm;
 
@@ -21,10 +22,11 @@ void Controller2D::Start() {
 
 void Controller2D::CalculateRaySpacing() {
     m_cc =  m_entity->GetComponent<Collider>();
-    Bounds bounds = m_cc->GetBounds();
+    Bounds bounds = m_cc->GetShape()->getBounds();
     bounds.Expand(m_skinWidth * -2);
     m_horizontalRaySpacing = bounds.GetSize().y / (m_horizontalRayCount - 1);
     m_verticalRaySpacing = bounds.GetSize().x / (m_verticalRayCount - 1);
+    std::cout <<"ray spacing = "<< m_horizontalRaySpacing << ","<<m_verticalRaySpacing<<"\n";
 }
 
 void Controller2D::UpdateRaycastOrigins() {
@@ -179,6 +181,17 @@ void Controller2D::VerticalCollisions(glm::vec2& velocity) {
             m_obstacle = hit.entity;
         }
     }
+//    if (m_obstacle == nullptr) {
+//        // no coll
+//        for (int i = 0; i < m_verticalRayCount; i++) {
+//            vec2 rayOrigin = (directionY == -1) ? m_raycastOrigins.bottomLeft : m_raycastOrigins.topLeft;
+//            rayOrigin += vec2(1, 0) * (i *m_verticalRaySpacing + velocity.x);
+//            int collMask = (directionY == -1 ? (2 | 32) : 2);
+//            RayCastHit2D hit = m_collision->Raycast(vec3(rayOrigin, 0.0f), glm::vec2(0, 1) * directionY, rayLength, collMask);// (directionY == -1 ? m_collisionMaskDown : m_collisionMaskAny));
+//
+//        }
+//    }
+
 
     if (m_details.climbingSlope) {
         float directionX = sign(velocity.x);

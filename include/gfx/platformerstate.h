@@ -5,6 +5,7 @@
 
 class Controller2D;
 class Renderer;
+class Dynamics2D;
 
 class PlatformerState : public State {
 public:
@@ -14,6 +15,7 @@ public:
     void Init(Entity* e) override;
 protected:
     Controller2D* m_controller;
+    Dynamics2D* m_dynamics;
     Renderer* m_renderer;
     std::string m_anim;
 };

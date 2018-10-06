@@ -29,7 +29,7 @@
 #include <gfx/walk2d.h>
 #include <gfx/jump2d.h>
 #include <gfx/controller2d.h>
-
+#include <gfx/dynamics2d.h>
 
 // a text component is actually a renderer
 void TextComponentFactory::operator() (luabridge::LuaRef& ref, Entity* e) {
@@ -612,6 +612,13 @@ void Controller2DComponentFactory::operator()(luabridge::LuaRef & ref, Entity * 
     parent->AddComponent(std::make_shared<Controller2D>(maxClimbAngle, maxDescendAngle, skinWidth, horCount, vertCount));
 }
 
+void Dynamics2DComponentFactory::operator()(luabridge::LuaRef & ref, Entity * parent) {
+    LuaTable table(ref);
+    float jumpHeight = table.Get<float>("jumpheight");
+    float timeApex = table.Get<float>("timetojumpapex");
+    parent->AddComponent(std::make_shared<Dynamics2D>(jumpHeight, timeApex));
+}
+
 void TextViewComponentFactory::operator() (luabridge::LuaRef &ref, Entity *parent) {
     LuaTable table(ref);
     glm::vec4 viewport = table.Get<glm::vec4>("viewport");
@@ -691,24 +698,23 @@ std::shared_ptr<State> Idle2DStateFactory::Create(luabridge::LuaRef & r) {
     LuaTable table(r);
     std::string anim = table.Get<std::string>("anim");
     float acc = table.Get<float>("acceleration");
-    float g = table.Get<float>("gravity");
-    return std::make_shared<Idle2D>(anim, acc,g);
+    return std::make_shared<Idle2D>(anim, acc);
 }
 
 std::shared_ptr<State> Walk2DStateFactory::Create(luabridge::LuaRef & r) {
     LuaTable table(r);
     std::string anim = table.Get<std::string>("anim");
     float acc = table.Get<float>("acceleration");
-    float g = table.Get<float>("gravity");
+    //float g = table.Get<float>("gravity");
     float speed = table.Get<float>("speed");
-    return std::make_shared<Walk2D>(anim, acc,g,speed);
+    return std::make_shared<Walk2D>(anim, acc, speed);
 }
 
 std::shared_ptr<State> Jump2DStateFactory::Create(luabridge::LuaRef & r) {
     LuaTable table(r);
     std::string anim = table.Get<std::string>("anim");
     float acc = table.Get<float>("acceleration");
-    float g = table.Get<float>("gravity");
+    //float g = table.Get<float>("gravity");
     float speed = table.Get<float>("speed");
-    return std::make_shared<Jump2D>(anim, acc,g,speed);
+    return std::make_shared<Jump2D>(anim, acc, speed);
 }

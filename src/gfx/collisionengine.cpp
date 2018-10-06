@@ -326,9 +326,9 @@ RayCastHit2D CollisionEngine::Raycast (glm::vec3 rayOrigin, glm::vec2 rayDir, fl
         }
 
     }
-    if (out.collide) {
-        std::cout << "Collide! length = " << out.length << "\n";
-    }
+//    if (out.collide) {
+//        std::cout << "Collide! length = " << out.length << "\n";
+//    }
     return out;
 
 }

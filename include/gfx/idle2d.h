@@ -9,11 +9,9 @@ class Renderer;
 
 class Idle2D : public PlatformerState {
 public:
-    Idle2D(const std::string& anim, float accelerationTimeGrounded, float gravity);
+    Idle2D(const std::string& anim, float accelerationTimeGrounded);
     bool Run (double) override;
 private:
-    glm::vec2 m_velocity;
-    float m_gravity;
     float m_accTimeGnd;
     float m_velocitySmoothing;
 };

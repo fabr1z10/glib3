@@ -9,11 +9,10 @@ class Renderer;
 
 class Jump2D : public PlatformerState {
 public:
-    Jump2D(const std::string& anim, float accelerationTimeAirborne, float gravity, float speed);
+    Jump2D(const std::string& anim, float accelerationTimeAirborne, float speed);
+    void Start() override;
     bool Run (double) override;
 private:
-    glm::vec2 m_velocity;
-    float m_gravity;
     float m_speed;
     float m_accTimeAir;
     float m_velocitySmoothing;

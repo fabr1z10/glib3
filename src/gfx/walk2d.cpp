@@ -4,11 +4,12 @@
 #include <GLFW/glfw3.h>
 #include <gfx/renderer.h>
 #include <graph/geom.h>
+#include <gfx/dynamics2d.h>
 
 extern GLFWwindow* window;
 
-Walk2D::Walk2D(const std::string& anim, float accelerationTimeGrounded, float gravity, float speed) :
-        PlatformerState(anim), m_velocity(glm::vec2(0.0f)), m_accTimeGnd(accelerationTimeGrounded), m_velocitySmoothing(0.0f), m_gravity(gravity), m_speed(speed)
+Walk2D::Walk2D(const std::string& anim, float accelerationTimeGrounded, float speed) :
+        PlatformerState(anim), m_accTimeGnd(accelerationTimeGrounded), m_velocitySmoothing(0.0f), m_speed(speed)
 {}
 
 bool Walk2D::Run(double dt) {
@@ -18,7 +19,7 @@ bool Walk2D::Run(double dt) {
         return true;
     }
 
-    m_velocity.y += m_gravity * dt;
+    m_dynamics->m_velocity.y += m_dynamics->m_gravity * dt;
     bool left = (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS);
     bool right = (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS);
     float targetVelocityX = 0.0f;
@@ -29,14 +30,14 @@ bool Walk2D::Run(double dt) {
         targetVelocityX = m_speed;
         m_renderer->SetFlipX(false);
     }
-    m_velocity.x = SmoothDamp(
-            m_velocity.x, targetVelocityX, m_velocitySmoothing, m_accTimeGnd, dt);
-    glm::vec2 delta = static_cast<float>(dt) * m_velocity;
+    m_dynamics->m_velocity.x = SmoothDamp(
+            m_dynamics->m_velocity.x, targetVelocityX, m_velocitySmoothing, m_accTimeGnd, dt);
+    glm::vec2 delta = static_cast<float>(dt) * m_dynamics->m_velocity;
     m_controller->Move(delta);
 
     // if not button is pressed and velocity is small enough, move to idle
     if (!left && !right) {
-        if (fabs(m_velocity.x) < 0.1f) {
+        if (fabs(m_dynamics->m_velocity.x) < 0.1f) {
             m_nextState="idle";
             return true;
         }

@@ -1,6 +1,6 @@
 require ("sprites")
 --require ("funcs")
---require ("script")
+require ("script")
 
 engine = {
     device_size = { 256, 256 },

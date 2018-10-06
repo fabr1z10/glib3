@@ -116,6 +116,10 @@ class Controller2DComponentFactory : public ComponentFactory {
     void operator()(luabridge::LuaRef&, Entity*) override;
 };
 
+class Dynamics2DComponentFactory : public ComponentFactory {
+    void operator()(luabridge::LuaRef&, Entity*) override;
+};
+
 // --- runners
 class HotSpotManagerFactory : public RunnerFactory {
 public:
