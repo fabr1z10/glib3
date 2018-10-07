@@ -7,7 +7,7 @@
 //
 
 #include <gfx/renderingengine.h>
-#include <gfx/renderer.h>
+#include <gfx/components/renderer.h>
 #include <gfx/engine.h>
 #include <graph/geom.h>
 #include <iostream>

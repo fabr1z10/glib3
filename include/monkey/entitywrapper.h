@@ -1,7 +1,7 @@
 #pragma once
 
 #include <gfx/entity.h>
-#include <monkey/luawrapper.h>
+#include <gfx/lua/luawrapper.h>
 
 namespace luaFunctions {
     

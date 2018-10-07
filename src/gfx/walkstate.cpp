@@ -2,7 +2,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
-#include <gfx/renderer.h>
+#include <gfx/components/renderer.h>
 #include <gfx/entity.h>
 #include <gfx/engine.h>
 #include <gfx/collisionengine.h>

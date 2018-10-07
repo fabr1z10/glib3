@@ -9,7 +9,7 @@
 #include <monkey/monkey.h>
 #include <gfx/engine.h>
 #include <monkey/monkeyfactory.h>
-#include <gfx/hotspot.h>
+#include <gfx/components/hotspot.h>
 #include <monkey/luakeylistener.h>
 #include <gfx/collisionengine.h>
 

@@ -1,6 +1,6 @@
 #include <monkey/scaling.h>
 #include <gfx/entity.h>
-#include <gfx/renderer.h>
+#include <gfx/components/renderer.h>
 #include <gfx/engine.h>
 #include <monkey/walkarea.h>
 

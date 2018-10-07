@@ -1,7 +1,7 @@
 #pragma once
 
 #include <gfx/engine.h>
-#include <monkey/luawrapper.h>
+#include <gfx/lua/luawrapper.h>
 #include <gfx/mesh.h>
 #include <monkey/compfactories.h>
 #include <graph/shape.h>

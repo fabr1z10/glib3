@@ -1,6 +1,6 @@
 #include <gfx/aiwalk.h>
 #include <gfx/engine.h>
-#include <gfx/renderer.h>
+#include <gfx/components/renderer.h>
 #include <gfx/random.h>
 
 void AIWalk::Start() {

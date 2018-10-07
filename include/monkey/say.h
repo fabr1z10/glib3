@@ -1,6 +1,6 @@
 #pragma once
 
-#include <gfx/sequence.h>
+#include <gfx/activities/sequence.h>
 #include <glm/glm.hpp>
 #include <graph/shape.h>
 #include <string>

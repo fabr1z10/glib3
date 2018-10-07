@@ -1,7 +1,7 @@
 #pragma once
 
 #include <monkey/walktrigger.h>
-#include <monkey/luawrapper.h>
+#include <gfx/lua/luawrapper.h>
 
 class ScriptWalkTrigger : public WalkTrigger {
 public:

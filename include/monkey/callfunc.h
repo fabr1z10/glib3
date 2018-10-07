@@ -1,7 +1,7 @@
 #pragma once
 
 #include <gfx/activity.h>
-#include <monkey/luawrapper.h>
+#include <gfx/lua/luawrapper.h>
 
 class CallFunc : public Activity {
 public:

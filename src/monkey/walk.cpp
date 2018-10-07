@@ -1,8 +1,8 @@
 #include <monkey/walk.h>
 #include <gfx/engine.h>
-#include <gfx/renderer.h>
-#include <gfx/animate.h>
-#include <gfx/move.h>
+#include <gfx/components/renderer.h>
+#include <gfx/activities/animate.h>
+#include <gfx/activities/move.h>
 #include <graph/shortestpath.h>
 #include <glm/glm.hpp>
 #include <graph/closest.h>

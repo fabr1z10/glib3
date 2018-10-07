@@ -1,4 +1,4 @@
-#include <gfx/statemachine.h>
+#include <gfx/components/statemachine.h>
 #include <vector>
 
 class Entity;

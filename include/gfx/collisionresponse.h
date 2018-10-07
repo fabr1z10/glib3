@@ -2,7 +2,7 @@
 
 #include "entity.h"
 #include <graph/collisionreport.h>
-#include <gfx/collider.h>
+#include <gfx/components/collider.h>
 #include <unordered_map>
 #include <memory>
 #include <gfx/hashpair.h>

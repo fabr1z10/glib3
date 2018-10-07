@@ -2,7 +2,7 @@
 
 #include <gfx/listener.h>
 #include <gfx/component.h>
-#include <monkey/luawrapper.h>
+#include <gfx/lua/luawrapper.h>
 #include <unordered_map>
 
 class LuaKeyListener : public Component, public KeyboardListener {

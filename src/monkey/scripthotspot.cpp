@@ -2,7 +2,7 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include <gfx/entity.h>
-#include <monkey/luawrapper.h>
+#include <gfx/lua/luawrapper.h>
 #include <monkey/entitywrapper.h>
 
 

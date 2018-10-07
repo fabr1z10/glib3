@@ -16,3 +16,4 @@ private:
     float m_accTimeGnd;
     float m_velocitySmoothing;
 };
+

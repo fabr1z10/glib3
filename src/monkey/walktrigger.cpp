@@ -1,7 +1,7 @@
 #include "monkey/walktrigger.h"
 #include "gfx/engine.h"
 #include "gfx/meshfactory.h"
-#include "gfx/renderer.h"
+#include "gfx/components/renderer.h"
 
 WalkTrigger::WalkTrigger(std::shared_ptr<Shape> shape, const std::string &target) : Component(), m_shape{shape}, m_target{target}, m_isInside{false} {
 

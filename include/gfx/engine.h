@@ -4,14 +4,13 @@
 #include <GLFW/glfw3.h>
 #include <gfx/singleton.h>
 #include <gfx/shader.h>
-#include <gfx/entity.h>
+#include <gfx/factories.h>
 #include <gfx/listener.h>
 #include <unordered_set>
 #include <gfx/assetman.h>
 #include <gfx/error.h>
 #include <gfx/renderingengine.h>
 #include <gfx/scheduler.h>
-#include <gfx/listener.h>
 #include <gfx/collisionengine.h>
 #include <gfx/runner.h>
 
@@ -28,12 +27,7 @@ struct EngineConfig {
     std::string name;
 };
 
-class SceneFactory {
-public:
-    virtual std::shared_ptr<Entity> Create() = 0;
-    virtual void CleanUp () = 0;
-    virtual void PostInit() {}
-};
+
 
 
 
@@ -50,6 +44,9 @@ public:
     Entity* GetScene() const;
     SceneFactory* GetSceneFactory();
     void SetSceneFactory (std::unique_ptr<SceneFactory> factory);
+    ActivityFactory* GetActivityFactory();
+    void SetActivityFactory (std::unique_ptr<SceneFactory> factory);
+
     glm::vec2 GetDeviceSize() const;
     void RegisterToWindowResizeEvent(WindowResizeListener*);
     void UnregisterToWindowResizeEvent(WindowResizeListener*);
@@ -114,6 +111,7 @@ private:
     void InitGL(const EngineConfig& config);
     std::unordered_set<Entity*> m_garbage;
     std::unique_ptr<SceneFactory> m_sceneFactory;
+    std::unique_ptr<ActivityFactory> m_activityFactory;
     std::unordered_map<ShaderType, std::unique_ptr<Shader>, EnumClassHash> m_shaders;
     std::shared_ptr<Entity> m_scene;
     bool m_running;
@@ -203,17 +201,7 @@ inline glm::vec2 Engine::GetWindowSize() const {
 inline RenderingEngine* Engine::GetRenderingEngine() {
     return m_renderingEngine.get();
 }
-//inline Scheduler* Engine::GetScriptingEngine() {
-//    return m_scriptEngine.get();
-//}
-//inline CollisionEngine* Engine::GetCollisionEngine() {
-//    return m_collisionEngine.get();/
-//}/
-//inline MouseListener* Engine::GetMouseHandler() {
-//return m_mouseListener.get();
-//}
 
-//inline KeyboardListener* Engine::GetKeyboardListener() {
-//    return m_keyboardListener.get();
-//}
-
+inline ActivityFactory* Engine::GetActivityFactory() {
+    return m_activityFactory.get();
+}

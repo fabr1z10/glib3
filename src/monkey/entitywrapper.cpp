@@ -1,31 +1,31 @@
 #include <monkey/entitywrapper.h>
-#include <gfx/renderer.h>
+#include <gfx/components/renderer.h>
 #include <gfx/textmesh.h>
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
 #include <gfx/engine.h>
 #include <gfx/scheduler.h>
-#include <gfx/animate.h>
-#include <monkey/luatable.h>
+#include <gfx/activities/animate.h>
+#include <gfx/lua/luatable.h>
 #include <monkey/walk.h>
 #include <monkey/walkarea.h>
 #include <monkey/changeroom.h>
 #include <monkey/showmessage.h>
 #include <monkey/say.h>
-#include <gfx/delay.h>
-#include <gfx/scriptactions.h>
+#include <gfx/activities/delay.h>
+#include <gfx/activities/scriptactions.h>
 #include <monkey/callfunc.h>
 #include <monkey/monkeyfactory.h>
-#include <gfx/statemachine.h>
+#include <gfx/components/statemachine.h>
 #include <monkey/scripthotspot.h>
-#include <gfx/textview.h>
-#include <gfx/scroll.h>
+#include <gfx/components/textview.h>
+#include <gfx/activities/scroll.h>
 #include <monkey/activityfactory.h>
 #include <iostream>
 #include <monkey/compfactories.h>
 #include <monkey/info.h>
-#include <gfx/depth.h>
-#include <gfx/dynamics2d.h>
+#include <gfx/components/depth.h>
+#include <gfx/components/dynamics2d.h>
 
 float EntityWrapper::GetX() const {
     return m_underlying->GetPosition().x;
@@ -164,10 +164,10 @@ namespace luaFunctions {
         }
         luabridge::LuaRef actions = ref["actions"];
         auto a = LuaTable::getIntValueMap(actions);
-        ActivityFactory& af = ActivityFactory::get();
+        ActivityFactory* af = Engine::get().GetActivityFactory();
         for (auto& p : a) {
             LuaTable table(p.second);
-            auto activity= af.createActivity(table);
+            auto activity= af->createActivity(table);
             std::cout << "Adding = " << p.first <<"\n";
             script->AddActivity(p.first, std::move(activity));
             //std::string type = table.Get<std::string>("type");

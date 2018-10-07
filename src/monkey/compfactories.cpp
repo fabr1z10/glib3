@@ -1,35 +1,34 @@
 #include <monkey/compfactories.h>
-#include <gfx/renderer.h>
+#include <gfx/components/renderer.h>
 #include <gfx/font.h>
 #include <gfx/engine.h>
 #include <gfx/textmesh.h>
 #include <glm/gtx/transform.hpp>
-#include <gfx/keyinput.h>
-#include <gfx/switch.h>
+#include <gfx/components/keyinput.h>
+#include <gfx/components/switch.h>
 #include <gfx/quadmesh.h>
 #include <gfx/meshfactory.h>
 #include <monkey/walkarea.h>
 #include <monkey/scripthotspot.h>
-#include <gfx/keyboardcontroller.h>
 #include <monkey/luakeylistener.h>
-#include <gfx/depth.h>
-#include <gfx/follow.h>
-#include <gfx/billboard.h>
+#include <gfx/components/depth.h>
+#include <gfx/components/follow.h>
+#include <gfx/components/billboard.h>
 #include <monkey/scaling.h>
 #include <monkey/info.h>
-#include <gfx/textview.h>
-#include <gfx/statemachine.h>
+#include <gfx/components/textview.h>
+#include <gfx/components/statemachine.h>
 #include <monkey/luacollision.h>
 #include <gfx/walkstate.h>
 #include <gfx/hit.h>
 #include <gfx/aiwalk.h>
-#include <gfx/shadow.h>
+#include <gfx/components/shadow.h>
 #include <gfx/basicstate.h>
 #include <gfx/idle2d.h>
 #include <gfx/walk2d.h>
 #include <gfx/jump2d.h>
-#include <gfx/controller2d.h>
-#include <gfx/dynamics2d.h>
+#include <gfx/components/controller2d.h>
+#include <gfx/components/dynamics2d.h>
 
 // a text component is actually a renderer
 void TextComponentFactory::operator() (luabridge::LuaRef& ref, Entity* e) {

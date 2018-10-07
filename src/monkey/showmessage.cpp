@@ -3,7 +3,7 @@
 #include <gfx/entity.h>
 #include <gfx/enums.h>
 #include <gfx/textmesh.h>
-#include <gfx/renderer.h>
+#include <gfx/components/renderer.h>
 #include <glm/gtx/transform.hpp>
 
 void ShowMessage::Start() {

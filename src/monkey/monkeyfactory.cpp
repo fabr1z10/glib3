@@ -1,7 +1,7 @@
 #include <monkey/monkeyfactory.h>
 #include <monkey/monkey.h>
 #include <iostream>
-#include <gfx/renderer.h>
+#include <gfx/components/renderer.h>
 #include <gfx/quadmesh.h>
 #include <gfx/renderingengine.h>
 #include <gfx/spritemesh.h>
@@ -14,15 +14,14 @@
 #include <glm/gtx/transform.hpp>
 #include <monkey/scripthotspot.h>
 #include <monkey/luacollision.h>
-#include <gfx/follow.h>
+#include <gfx/components/follow.h>
 #include <monkey/scaling.h>
 #include <monkey/luakeylistener.h>
 #include <monkey/scriptwalktrigger.h>
-#include <gfx/textview.h>
-#include "gfx/cursor.h"
-#include <gfx/collider.h>
-#include <gfx/keyboardcontroller.h>
-#include <gfx/keyinput.h>
+#include <gfx/components/textview.h>
+#include "gfx/components/cursor.h"
+#include <gfx/components/collider.h>
+#include <gfx/components/keyinput.h>
 
 using namespace luabridge;
 

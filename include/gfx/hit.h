@@ -1,8 +1,8 @@
 #pragma once
 
-#include <gfx/statemachine.h>
+#include <gfx/components/statemachine.h>
 #include <graph/shape.h>
-#include <monkey/luawrapper.h>
+#include <gfx/lua/luawrapper.h>
 
 
 class CollisionEngine;

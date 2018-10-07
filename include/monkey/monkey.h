@@ -1,6 +1,6 @@
 #pragma once
 
-#include <monkey/luatable.h>
+#include <gfx/lua//luatable.h>
 #include <gfx/singleton.h>
 #include <unordered_map>
 

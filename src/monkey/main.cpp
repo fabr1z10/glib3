@@ -1,13 +1,17 @@
 #include <iostream>
-#include <monkey/luawrapper.h>
-#include <monkey/luatable.h>
+#include <gfx/lua/luawrapper.h>
+#include <gfx/lua/luatable.h>
 #include <gfx/error.h>
 #include <gfx/engine.h>
 #include <monkey/monkey.h>
 #include <set>
 
+//lua_State* l;
+
 int main(int argc, char* argv[])
 {
+    //l = luaL_newstate();
+    //luaL_openlibs(l);
     if (argc < 2) {
         std::cout << "Usage: monkey <directory>" << std::endl;
         return 1;

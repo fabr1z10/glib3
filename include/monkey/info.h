@@ -1,7 +1,7 @@
 #pragma once
 
 #include <gfx/component.h>
-#include <monkey/luawrapper.h>
+#include <gfx/lua/luawrapper.h>
 
 
 class LuaInfo : public Component {

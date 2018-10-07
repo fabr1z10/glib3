@@ -1,7 +1,7 @@
 #include <gfx/hit.h>
 #include <gfx/entity.h>
 #include <gfx/engine.h>
-#include <gfx/renderer.h>
+#include <gfx/components/renderer.h>
 #include <iostream>
 #include <glm/gtx/transform.hpp>
 #include <monkey/entitywrapper.h>

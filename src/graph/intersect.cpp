@@ -1,5 +1,5 @@
 #include "graph/intersect.h"
-#include "gfx/collider.h"
+#include "gfx/components/collider.h"
 #include <iostream>
 #include "graph/geomalgo.h"
 

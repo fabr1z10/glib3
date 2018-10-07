@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.3)
 file(GLOB MONKEY_INCLUDE ${INCLUDE_DIR}/monkey/*.h)
 file(GLOB MONKEY_SRC *.cpp)
 
-find_package(Lua REQUIRED)
+#find_package(Lua REQUIRED)
 
 add_executable(monkey ${MONKEY_INCLUDE} ${MONKEY_SRC})
 target_link_libraries(monkey ${OPENGL_LIBRARIES} glfw ${GLEW_LIBRARIES} ${FREETYPE_LIBRARIES} ${LUA_LIBRARIES} ${PNG_LIBRARY} ${JPEG_LIBRARIES} gfx graph)

@@ -1,9 +1,9 @@
 #include <gfx/idle2d.h>
-#include <gfx/controller2d.h>
+#include <gfx/components/controller2d.h>
 #include <gfx/entity.h>
 #include <GLFW/glfw3.h>
 #include <graph/geom.h>
-#include <gfx/dynamics2d.h>
+#include <gfx/components/dynamics2d.h>
 
 extern GLFWwindow* window;
 

@@ -1,23 +1,23 @@
 #include <monkey/activityfactory.h>
 #include <monkey/walk.h>
-#include "gfx/noop.h"
-#include "gfx/animate.h"
+#include "gfx/activities/noop.h"
+#include "gfx/activities/animate.h"
 #include "monkey/say.h"
 #include "monkey/callfunc.h"
-#include "gfx/scroll.h"
+#include "gfx/activities/scroll.h"
 #include "monkey/changeroom.h"
-#include "gfx/delay.h"
-#include "gfx/move.h"
-#include "gfx/scriptactions.h"
+#include "gfx/activities/delay.h"
+#include "gfx/activities/move.h"
+#include "gfx/activities/scriptactions.h"
 #include <monkey/enableblock.h>
 #include <monkey/showmessage.h>
-#include <gfx/rotate.h>
-#include <gfx/collisioncheck.h>
+#include <gfx/activities/rotate.h>
+#include <gfx/activities/collisioncheck.h>
 #include <monkey/compfactories.h>
-#include <gfx/changestate.h>
+#include <gfx/activities/changestate.h>
 
 
-ActivityFactory::ActivityFactory() {
+BasicActivityFactory::BasicActivityFactory() {
     m_factories["walkto"] = [] (LuaTable& table) -> std::unique_ptr<Activity> {
         // see who is performing the action
         std::string actor = table.Get<std::string>("actor");
@@ -189,7 +189,7 @@ ActivityFactory::ActivityFactory() {
 
 }
 
-std::unique_ptr<Activity> ActivityFactory::createActivity(LuaTable& table) {
+std::unique_ptr<Activity> BasicActivityFactory::createActivity(LuaTable& table) {
     std::string type = table.Get<std::string>("type");
     auto it = m_factories.find(type);
     if (it == m_factories.end()) {

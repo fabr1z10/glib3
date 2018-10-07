@@ -2,7 +2,7 @@
 
 #include <unordered_map>
 #include <unordered_set>
-#include "gfx/collider.h"
+#include "gfx/components/collider.h"
 #include "gfx/hashpair.h"
 #include <gfx/collisionresponse.h>
 #include "graph/intersect.h"

@@ -101,11 +101,19 @@ function ciao(brick)
 
 	local main = monkey.getEntity("main")
 	print ("Brick position is " .. tostring(brick.x) .. ", " .. tostring(brick.y))
+	local t = nextTag()
 	local m = {
+		tag = t,
 		pos = { brick.x, brick.y, 0.1 },
-		gfx = { model = "mushroom", anim="idle" }
+		gfx = { model = "mushroom", anim="idle" },
+		collider = { shape = {type="rect", width=16, height=16, offset={-8,0}}, tag = 22, flag= 1}
 	}
 	monkey.addEntity (m, main)
+	local s = script:new()
+	s.actions = {
+		[1] = {type="move", by={0, 16}, actor = t, speed = 2}
+	}
+	monkey.play(s)
 end
 
 function basicBrickResponse(e1, e2)

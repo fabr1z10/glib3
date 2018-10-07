@@ -1,7 +1,7 @@
 #pragma once
 
-#include <gfx/hotspot.h>
-#include <monkey/luawrapper.h>
+#include <gfx/components/hotspot.h>
+#include <gfx/lua/luawrapper.h>
 
 class ScriptHotSpot : public HotSpot {
 public:

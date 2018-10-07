@@ -1,7 +1,7 @@
 #include <monkey/say.h>
 #include <gfx/engine.h>
-#include <gfx/renderer.h>
-#include <gfx/animate.h>
+#include <gfx/components/renderer.h>
+#include <gfx/activities/animate.h>
 #include <monkey/showmessage.h>
 
 void Say::Start() {

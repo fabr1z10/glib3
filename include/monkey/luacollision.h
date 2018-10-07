@@ -1,7 +1,7 @@
 #pragma once
 
 #include "gfx/collisionresponse.h"
-#include <monkey/luawrapper.h>
+#include <gfx/lua/luawrapper.h>
 
 class LuaCollisionResponse : public CollisionResponse {
 public:

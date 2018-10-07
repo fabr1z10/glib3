@@ -1,6 +1,6 @@
 #pragma once
 
-#include <gfx/statemachine.h>
+#include <gfx/components/statemachine.h>
 #include <glm/glm.hpp>
 
 class Controller2D;

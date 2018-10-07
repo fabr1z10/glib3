@@ -4,16 +4,14 @@
 #include <unordered_map>
 #include <functional>
 #include <gfx/activity.h>
-#include <monkey/luatable.h>
+#include <gfx/lua/luatable.h>
+#include <gfx/factories.h>
 
-class ActivityFactory : public Singleton<ActivityFactory>
-{
+class BasicActivityFactory : public ActivityFactory {
 public:
+    BasicActivityFactory ();
     // can I make it const LuaTable& ?
-    std::unique_ptr<Activity> createActivity(LuaTable& t);
+    std::unique_ptr<Activity> createActivity(LuaTable& t) override;
 private:
-
-    friend class Singleton<ActivityFactory>;
-    ActivityFactory() ;
     std::unordered_map<std::string, std::function<std::unique_ptr<Activity>(LuaTable&)>> m_factories;
 };

@@ -14,9 +14,7 @@ set(LIB_DIR ${PROJECT_DIR}/lib)
 set(INCLUDE_DIR ${PROJECT_DIR}/include)
 set(SRC_DIR ${PROJECT_DIR}/src)
 
-set(GENERAL_FLAGS "-std=c++11 -Wall -Wno-reorder -MMD -MP -DIL_STD -pthread")
-set(CMAKE_CXX_FLAGS_DEBUG "${GENERAL_FLAGS} -g -O0 -D_DEBUG -Wl,--no-as-needed")
-set(CMAKE_CXX_FLAGS_RELEASE "${GENERAL_FLAGS} -O3 -Wl,--no-as-needed")
+set(CMAKE_CXX_FLAGS "-std=c++11 -Wall -Wno-reorder -pthread")
 
 find_package(OpenGL REQUIRED)
 find_package(GLEW REQUIRED)
@@ -25,22 +23,26 @@ find_package(glm REQUIRED)
 find_package(Freetype REQUIRED)
 find_package(PNG REQUIRED)
 find_package(JPEG REQUIRED)
-
-#find_package(LUA REQUIRED)
+#find_package(Lua REQUIRED)
 
 if(APPLE)
-  find_library(BZ2_LIB bz2)
-  find_library(COCOA_LIBRARY Cocoa)
-  find_library(IOKIT_LIBRARY IOKit)
-  find_library(CV_LIBRARY CoreVideo)
-  include_directories(/usr/local/include)
+    find_library(BZ2_LIB bz2)
+    find_library(COCOA_LIBRARY Cocoa)
+    find_library(IOKIT_LIBRARY IOKit)
+    find_library(CV_LIBRARY CoreVideo)
+    include_directories(/usr/local/include)
 endif (APPLE)
 
 
 include_directories(${INCLUDE_DIR} ${FREETYPE_INCLUDE_DIRS})
-link_directories(${LIB_DIR})
+#link_directories(${LIB_DIR})
+
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${LIB_DIR})
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${LIB_DIR})
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${BIN_DIR})
 
 # source directory
 add_subdirectory(src)
+
 
 

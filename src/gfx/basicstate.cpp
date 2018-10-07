@@ -1,7 +1,7 @@
 #include <gfx/basicstate.h>
 #include <gfx/entity.h>
 #include <gfx/engine.h>
-#include <gfx/renderer.h>
+#include <gfx/components/renderer.h>
 
 BasicState::BasicState(const std::string &anim, const std::vector<std::string>& colliders) : State(), m_anim(anim), m_activeColliders(colliders) {}
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <monkey/luatable.h>
+#include <gfx/lua/luatable.h>
 #include <memory>
 
 class Entity;
