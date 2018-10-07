@@ -2,67 +2,6 @@ local collisionSize = 80
 local startPos = {32, 64}
 local g = -10
 
-
-function restartRoom()
-	local s = script:new()
-	s.actions = {
-		[1] = { type="gotoroom", room=variables._room }
-	}
-	monkey.play(s)
-end
-
-function makeRect(arg)
-	local width = 16 * arg.width
-	local height = 16 * arg.height
-	local s = { type = "rect", width = width, height = height }
-	return {
-		pos = arg.pos,
-		--gfx = {shape=arg.shape, color={255,255,255,255} },
-		gfx = { image="gfx/block1.png", width = width, height = height, rep={arg.width, arg.height}},	
-		collider= {shape=s, tag=10, flag = 2}
-	}
-end
-
-function makeBrick(arg)
-	local s = { type = "rect", width = 16, height = 16 }
-	-- place the sensor
-	local s1 = { type = "rect", width = 14, height = 0.5, offset = {1, -0.25}}
-	return {
-		pos = {arg.pos[1] * 16, arg.pos[2] * 16, 0},
-		--gfx = {shape=arg.shape, color={255,255,255,255} },
-		gfx = { model=arg.sprite, anim="idle", width = 16, height = 16},	
-		collider= {shape=s, tag=10, flag = 2},
-		children = {
-			
-			{
-				collider = { shape = s1, tag = 20, flag = 4 },
-				gfx = { shape = s1, color = {255,0,0,255}}
-			}
-		}
-	}
-end
-
-function makeLine (arg) 
-
-	local s = { type = "line", A = arg.A, B = arg.B }
-	return {
-		pos = {0,0,0},
-		--gfx = {shape=arg.shape, color={255,255,255,255} },
-		gfx = { shape = s, color = {255,255,255,255}},	
-		collider= {shape=s, tag=10, flag = 2}
-	}
-end
-
-function ciao(e1, e2)
-	print ("Brick is at " .. tostring(e2.x) .. ", " .. tostring(e2.y)) 
-	--local s = script:new()
-	--s.actions = {
-	--	[1] = 
-	--}
-	
-end
-
-
 room = {
 
 engines = {
@@ -71,13 +10,16 @@ engines = {
 		type = "collision", 
 		size = {collisionSize, collisionSize}, 
 		response = {
-			{ tag = {1, 20}, onenter = ciao, onleave=ciao1}		
+			{ tag = {1, 20}, onenter = basicBrickResponse },
+			{ tag = {1, 21}, onenter = bonusBrickResponse }				
 		}
 	}
 },
 assets = {
 	sprites.mario,
-	sprites.basicbrick
+	sprites.basicbrick,
+	sprites.bonusbrick,
+	sprites.mushroom
 },
 scene = {
 	{
@@ -139,7 +81,8 @@ scene = {
 			makeLine { A = {0,0}, B = {0,256} },
 			makeRect { pos ={0,0,0}, width = 69, height = 2 },
 			makeBrick { pos = {5,4}, sprite="basicbrick" },
-			makeBrick { pos ={ 4, 5}, sprite="basicbrick"}
+			makeBrick { pos ={ 4, 5}, sprite="basicbrick"},
+			makeBonusBrick { pos = {7,5}, sprite="bonusbrick", hits=1, bonusfactory = ciao }
 			-- {
 			-- 	pos = {0,0,0},
 			-- 	gfx = {shape={type="rect", width = 64, height=32}, color={255,255,255,255} },

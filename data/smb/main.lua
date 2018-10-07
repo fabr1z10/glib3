@@ -1,5 +1,5 @@
 require ("sprites")
---require ("funcs")
+require ("funcs")
 require ("script")
 
 engine = {

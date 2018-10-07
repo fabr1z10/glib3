@@ -26,6 +26,8 @@ struct EntityWrapper {
     float GetX() const;
     float GetY() const;
     float GetZ() const;
+    float GetVy() const;
+    void SetVy(float);
     std::string GetTag() const;
     std::string GetAnim() const;
     bool GetFlipX() const;

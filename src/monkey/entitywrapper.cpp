@@ -25,6 +25,7 @@
 #include <monkey/compfactories.h>
 #include <monkey/info.h>
 #include <gfx/depth.h>
+#include <gfx/dynamics2d.h>
 
 float EntityWrapper::GetX() const {
     return m_underlying->GetPosition().x;
@@ -36,6 +37,13 @@ float EntityWrapper::GetZ() const {
     return m_underlying->GetPosition().z;
 }
 
+float EntityWrapper::GetVy() const {
+    m_underlying->GetComponent<Dynamics2D>()->m_velocity.x;
+}
+
+void EntityWrapper::SetVy(float value) {
+    m_underlying->GetComponent<Dynamics2D>()->m_velocity.x = value;
+}
 std::string EntityWrapper::GetTag() const {
     return m_underlying->GetTag();
 }
