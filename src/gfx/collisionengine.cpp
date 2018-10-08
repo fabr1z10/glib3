@@ -1,9 +1,6 @@
 #include "gfx/collisionengine.h"
-#include "graph/shape.h"
-#include "gfx/entity.h"
-#include "graph/collisionreport.h"
 #include <iostream>
-#include <graph/raycast.h>
+#include <gfx/math/raycast.h>
 
 CollisionEngine::CollisionEngine (float cellWidth, float cellHeight) :
         Runner(), m_width{cellWidth}, m_height{cellHeight}, m_coll25d(false), m_eps(false)

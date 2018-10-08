@@ -2,7 +2,7 @@
 #define __depth_compononent_hpp
 
 #include <gfx/component.h>
-#include <monkey/funcs.h>
+#include <gfx/math/funcs.h>
 
 class Renderer;
 

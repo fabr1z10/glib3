@@ -1,6 +1,6 @@
 #include <gfx/activities/rotate.h>
 #include <gfx/engine.h>
-#include <graph/geom.h>
+#include <gfx/math/geom.h>
 
 Rotate::Rotate(const std::string& actorId, float degrees, float acceleration, float initialSpeed) :
         Activity(), m_actorId(actorId), m_degrees(degrees), m_acceleration(acceleration), m_speed(initialSpeed), m_degreesCount(0.0f), m_entity(nullptr)

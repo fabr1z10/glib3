@@ -1,13 +1,13 @@
 #pragma once
 
 #include <gfx/mesh.h>
-#include <graph/rect.h>
-#include <graph/line.h>
-#include <graph/poly.h>
-#include <graph/polyline.h>
-#include <graph/circle.h>
-#include <graph/ellipse.h>
-#include <graph/compound.h>
+#include <gfx/math/rect.h>
+#include <gfx/math/line.h>
+#include <gfx/math/poly.h>
+#include <gfx/math/polyline.h>
+#include <gfx/math/circle.h>
+#include <gfx/math/ellipse.h>
+#include <gfx/math/compound.h>
 #include <memory>
 
 

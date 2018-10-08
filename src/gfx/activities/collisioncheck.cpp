@@ -1,7 +1,7 @@
 #include <gfx/activities/collisioncheck.h>
 #include <gfx/engine.h>
 #include <glm/gtx/transform.hpp>
-#include <monkey/entitywrapper.h>
+#include <gfx/entitywrapper.h>
 #include <gfx/collisionengine.h>
 
 CollisionCheck::CollisionCheck(std::shared_ptr<Shape> shape, const std::string& actorId, glm::vec2 offset, int mask, luabridge::LuaRef callback)

@@ -5,7 +5,7 @@
 #include "gfx/components/collider.h"
 #include "gfx/hashpair.h"
 #include <gfx/collisionresponse.h>
-#include "graph/intersect.h"
+#include "gfx/math/intersect.h"
 #include "gfx/runner.h"
 
 struct CollisionEngineCell {

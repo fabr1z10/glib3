@@ -1,6 +1,6 @@
 #include <gfx/renderingiterator.h>
 #include <gfx/engine.h>
-#include <graph/geom.h>
+#include <gfx/math/geom.h>
 
 void RenderingIterator::onPop(Entity* e) {
     if (e->GetCamera() != nullptr && !m_stack.empty()) {

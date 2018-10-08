@@ -3,7 +3,7 @@
 #include <gfx/listener.h>
 #include <gfx/component.h>
 #include <gfx/camera.h>
-#include <graph/shape.h>
+#include <gfx/math/shape.h>
 #include <vector>
 #include <unordered_set>
 #include <gfx/event.h>

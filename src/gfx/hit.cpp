@@ -4,7 +4,7 @@
 #include <gfx/components/renderer.h>
 #include <iostream>
 #include <glm/gtx/transform.hpp>
-#include <monkey/entitywrapper.h>
+#include <gfx/entitywrapper.h>
 
 Hit::Hit (const std::string& anim) :
         State(), m_anim(anim)

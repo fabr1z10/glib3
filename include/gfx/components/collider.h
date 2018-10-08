@@ -1,7 +1,7 @@
 #pragma once
 
 #include <memory>
-#include "graph/shape.h"
+#include "gfx/math/shape.h"
 #include "gfx/component.h"
 
 class Entity;

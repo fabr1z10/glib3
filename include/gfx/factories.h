@@ -2,9 +2,13 @@
 
 #include <gfx/entity.h>
 #include <memory>
+#include <gfx/lua/luawrapper.h>
 
 class Activity;
 class LuaTable;
+
+
+
 
 class SceneFactory {
 public:
@@ -12,6 +16,7 @@ public:
     virtual std::shared_ptr<Entity> Create() = 0;
     virtual void CleanUp () = 0;
     virtual void PostInit() {}
+    virtual std::shared_ptr<Entity> ReadItem(luabridge::LuaRef& ref) = 0;
 };
 
 class ActivityFactory {

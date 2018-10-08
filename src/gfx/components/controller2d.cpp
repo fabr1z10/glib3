@@ -6,7 +6,7 @@
 #include <gfx/engine.h>
 #include <gfx/collisionengine.h>
 #include <gfx/entity.h>
-#include <graph/geom.h>
+#include <gfx/math/geom.h>
 #include <gfx/components/platform.h>
 #include <iostream>
 

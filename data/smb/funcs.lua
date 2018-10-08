@@ -120,7 +120,7 @@ function basicBrickResponse(e1, e2)
 	--print ("Brick is at " .. tostring(e2.x) .. ", " .. tostring(e2.y))
 	local brick = e2:parent()
 	local brickInfo = brick:getinfo()
-	local s = script:new()
+	local s = script:new("_brick" .. brick.tag)
 	e1.vy = -e1.vy
 	s.actions = {
 		[1] = { type="movegravity", actor = e2:parent().tag, velocity  = {0,50}, g = 30, ystop = brickInfo.y}

@@ -2,7 +2,7 @@
 #include <gfx/error.h>
 
 #include <gfx/engine.h>
-#include <monkey/entitywrapper.h>
+#include <gfx/entitywrapper.h>
 
 lua_State* LuaWrapper::L;
 

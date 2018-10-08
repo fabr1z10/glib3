@@ -1,7 +1,7 @@
 #pragma once
 
 #include "entity.h"
-#include <graph/collisionreport.h>
+#include <gfx/math/collisionreport.h>
 #include <gfx/components/collider.h>
 #include <unordered_map>
 #include <memory>

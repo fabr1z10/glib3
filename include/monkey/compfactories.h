@@ -54,9 +54,9 @@ class ColliderComponentFactory : public ComponentFactory {
     void operator()(luabridge::LuaRef&, Entity*) override;
 };
 
-class WalkAreaComponentFactory : public ComponentFactory {
-    void operator()(luabridge::LuaRef&, Entity*) override;
-};
+//class WalkAreaComponentFactory : public ComponentFactory {
+//    void operator()(luabridge::LuaRef&, Entity*) override;
+//};
 
 class HotSpotComponentFactory : public ComponentFactory {
     void operator()(luabridge::LuaRef&, Entity*) override;
@@ -96,9 +96,9 @@ class BillboardComponentFactory : public ComponentFactory {
     void operator()(luabridge::LuaRef&, Entity*) override;
 };
 
-class ScalingComponentFactory : public ComponentFactory {
-    void operator()(luabridge::LuaRef&, Entity*) override;
-};
+//class ScalingComponentFactory : public ComponentFactory {
+//    void operator()(luabridge::LuaRef&, Entity*) override;
+//};
 
 class ButtonComponentFactory : public ComponentFactory {
     void operator()(luabridge::LuaRef&, Entity*) override;

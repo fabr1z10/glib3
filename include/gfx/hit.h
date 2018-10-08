@@ -1,7 +1,7 @@
 #pragma once
 
 #include <gfx/components/statemachine.h>
-#include <graph/shape.h>
+#include <gfx/math/shape.h>
 #include <gfx/lua/luawrapper.h>
 
 

@@ -11,7 +11,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "gfx/entity.h"
 #include "gfx/engine.h"
-#include "graph/geom.h"
+#include "gfx/math/geom.h"
 #include <iostream>
 
 

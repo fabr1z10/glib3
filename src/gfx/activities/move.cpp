@@ -1,7 +1,7 @@
 #include <gfx/activities/move.h>
 #include <iostream>
 #include "gfx/engine.h"
-#include <graph/geom.h>
+#include <gfx/math/geom.h>
 
 MoveTo::MoveTo(const std::string& actor, glm::vec2 pos, float speed, bool relative, bool immediate) : Activity(),
     m_entity(nullptr), m_actorId(actor), m_toPos(pos), m_speed{speed}, m_lengthCovered{0.0f}, m_lengthToCover{0.0f}, m_relative{relative},

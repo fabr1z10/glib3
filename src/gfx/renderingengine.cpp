@@ -9,7 +9,7 @@
 #include <gfx/renderingengine.h>
 #include <gfx/components/renderer.h>
 #include <gfx/engine.h>
-#include <graph/geom.h>
+#include <gfx/math/geom.h>
 #include <iostream>
 #include <gfx/renderingiterator.h>
 

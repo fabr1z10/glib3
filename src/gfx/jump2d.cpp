@@ -3,7 +3,7 @@
 #include <gfx/entity.h>
 #include <GLFW/glfw3.h>
 #include <gfx/components/renderer.h>
-#include <graph/geom.h>
+#include <gfx/math/geom.h>
 #include <gfx/components/dynamics2d.h>
 
 extern GLFWwindow* window;

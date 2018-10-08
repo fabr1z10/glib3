@@ -45,7 +45,7 @@ public:
     SceneFactory* GetSceneFactory();
     void SetSceneFactory (std::unique_ptr<SceneFactory> factory);
     ActivityFactory* GetActivityFactory();
-    void SetActivityFactory (std::unique_ptr<SceneFactory> factory);
+    void SetActivityFactory (std::unique_ptr<ActivityFactory> factory);
 
     glm::vec2 GetDeviceSize() const;
     void RegisterToWindowResizeEvent(WindowResizeListener*);
@@ -204,4 +204,8 @@ inline RenderingEngine* Engine::GetRenderingEngine() {
 
 inline ActivityFactory* Engine::GetActivityFactory() {
     return m_activityFactory.get();
+}
+
+inline void Engine::SetActivityFactory(std::unique_ptr<ActivityFactory> factory) {
+    m_activityFactory = std::move(factory);
 }
