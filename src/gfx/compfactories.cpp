@@ -1,4 +1,4 @@
-#include <monkey/compfactories.h>
+#include <gfx/compfactories.h>
 #include <gfx/components/renderer.h>
 #include <gfx/font.h>
 #include <gfx/engine.h>
@@ -24,9 +24,7 @@
 #include <gfx/aiwalk.h>
 #include <gfx/components/shadow.h>
 #include <gfx/basicstate.h>
-#include <gfx/idle2d.h>
-#include <gfx/walk2d.h>
-#include <gfx/jump2d.h>
+
 #include <gfx/components/controller2d.h>
 #include <gfx/components/dynamics2d.h>
 
@@ -319,42 +317,7 @@ void ColliderComponentFactory::operator()(luabridge::LuaRef &ref, Entity *parent
 }
 
 
-// Read the walk-area
-//void WalkAreaComponentFactory::operator() (luabridge::LuaRef& ref, Entity* parent) {
-//    LuaTable table(ref);
-//
-//    // input
-//    int priority = table.Get<int>("priority");
-//    std::string targetId = table.Get<std::string>("target");
-//    luabridge::LuaRef shapeR = table.Get<luabridge::LuaRef>("shape");
-//    auto shape = ReadShape(shapeR);
-//    auto hotspot = std::make_shared<WalkArea>(shape, priority, targetId);
-//
-//    // see if it has a depthfunc
-//    if (table.HasKey("scaling")) {
-//        luabridge::LuaRef sref = table.Get<luabridge::LuaRef>("scaling");
-//        luabridge::LuaRef depthRef = sref["depth"];
-//        auto depthFunc = GetFunc2D(depthRef);
-//        hotspot->SetDepthFunction(std::move(depthFunc));
-//        luabridge::LuaRef scaleRef = sref["scale"];
-//        auto scaleFunc = GetFunc2D(scaleRef);
-//        hotspot->SetScalingFunction(std::move(scaleFunc));
-//    }
-//
-//    if (table.HasKey("blockedlines")) {
-//        luabridge::LuaRef ref = table.Get<luabridge::LuaRef>("blockedlines");
-//        for (int i = 0; i < ref.length(); ++i) {
-//            luabridge::LuaRef bl = ref[i+1];
-//            LuaTable t(bl);
-//            glm::vec2 A = t.Get<glm::vec2>("A");
-//            glm::vec2 B = t.Get<glm::vec2>("B");
-//            bool active = t.Get<bool>("active");
-//            hotspot->AddBlockedLine(A, B, active);
-//        }
-//    }
-//    hotspot->SetTag("walkarea");
-//    parent->AddComponent(hotspot);
-//}
+
 
 void HotSpotComponentFactory::operator() (luabridge::LuaRef& ref, Entity* parent) {
     LuaTable table(ref);
@@ -438,15 +401,8 @@ std::shared_ptr<State> HitStateFactory::Create(luabridge::LuaRef & ref) {
 }
 
 StateMachineComponentFactory::StateMachineComponentFactory() {
-    m_stateFactories["basic"] = std::make_shared<BasicStateFactory>();
-    m_stateFactories["walk"] = std::make_shared<WalkStateFactory>();
-    m_stateFactories["aiwalk"] = std::make_shared<AIWalkStateFactory>();
-    m_stateFactories["walkcollision"] = std::make_shared<WalkCollisionStateFactory>();
-    m_stateFactories["hit"] = std::make_shared<HitStateFactory>();
-    // platformer states
-    m_stateFactories["idle2d"] = std::make_shared<Idle2DStateFactory>();
-    m_stateFactories["walk2d"] = std::make_shared<Walk2DStateFactory>();
-    m_stateFactories["jump2d"] = std::make_shared<Jump2DStateFactory>();
+
+
 }
 
 void StateMachineComponentFactory::operator()(luabridge::LuaRef &ref, Entity *parent) {
@@ -479,16 +435,16 @@ void StateMachineComponentFactory::operator()(luabridge::LuaRef &ref, Entity *pa
     }
 
     // get the array of states
-
+    auto sceneFactory = Engine::get().GetSceneFactory();
     luabridge::LuaRef ts = table.Get<luabridge::LuaRef>("states");
     for (int i = 0 ; i < ts.length(); ++i) {
         luabridge::LuaRef tss = ts[i+1];
         std::string id = tss["id"].cast<std::string>();
         std::string type = tss["type"].cast<std::string>();
-        auto it = m_stateFactories.find(type);
-        if (it == m_stateFactories.end())
+        auto factory = sceneFactory->GetStateFactory(type);
+        if (factory == nullptr)
             GLIB_FAIL("Unknown state " << type);
-        auto state = it->second->Create(tss);
+        auto state = factory->Create(tss);
         state->SetId(id);
         comp->AddState(id, state);
     }
@@ -579,10 +535,7 @@ void BillboardComponentFactory::operator()(luabridge::LuaRef &ref, Entity *paren
     parent->AddComponent(std::make_shared<Billboard>(cam));
 }
 
-//void ScalingComponentFactory::operator() (luabridge::LuaRef& ref, Entity* parent) {
-//    parent->AddComponent(std::make_shared<ScalingDepthComponent>());
-//
-//}
+
 
 void ButtonComponentFactory::operator() (luabridge::LuaRef& ref, Entity* parent) {
     LuaTable table(ref);
@@ -693,27 +646,3 @@ std::shared_ptr<State> BasicStateFactory::Create(luabridge::LuaRef & r) {
     return std::make_shared<BasicState>(anim, colliders);
 }
 
-std::shared_ptr<State> Idle2DStateFactory::Create(luabridge::LuaRef & r) {
-    LuaTable table(r);
-    std::string anim = table.Get<std::string>("anim");
-    float acc = table.Get<float>("acceleration");
-    return std::make_shared<Idle2D>(anim, acc);
-}
-
-std::shared_ptr<State> Walk2DStateFactory::Create(luabridge::LuaRef & r) {
-    LuaTable table(r);
-    std::string anim = table.Get<std::string>("anim");
-    float acc = table.Get<float>("acceleration");
-    //float g = table.Get<float>("gravity");
-    float speed = table.Get<float>("speed");
-    return std::make_shared<Walk2D>(anim, acc, speed);
-}
-
-std::shared_ptr<State> Jump2DStateFactory::Create(luabridge::LuaRef & r) {
-    LuaTable table(r);
-    std::string anim = table.Get<std::string>("anim");
-    float acc = table.Get<float>("acceleration");
-    //float g = table.Get<float>("gravity");
-    float speed = table.Get<float>("speed");
-    return std::make_shared<Jump2D>(anim, acc, speed);
-}

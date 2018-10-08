@@ -5,5 +5,6 @@ cmake_minimum_required(VERSION 3.3)
 add_subdirectory(gfx)
 #add_subdirectory(test)
 add_subdirectory(monkey)
+add_subdirectory(platformer)
 #add_subdirectory(xml)
 

@@ -1,4 +1,4 @@
-#include <gfx/monkeyfactory.h>
+#include <gfx/basicfactory.h>
 #include <gfx/monkey.h>
 #include <iostream>
 #include <gfx/spritemesh.h>
@@ -8,7 +8,7 @@
 
 using namespace luabridge;
 
-MonkeyFactory::MonkeyFactory() {
+BasicSceneFactory::BasicSceneFactory() {
 
     AddFactory<TextComponentFactory>("text");
     AddFactory<OutlineTextComponentFactory>("outlinetext");
@@ -16,7 +16,6 @@ MonkeyFactory::MonkeyFactory() {
     AddFactory<KeyInputFactory>("keyinput");
     AddFactory<GfxComponentFactory>("gfx");
     AddFactory<ColliderComponentFactory>("collider");
-    //AddFactory<WalkAreaComponentFactory>("walkarea");
     AddFactory<HotSpotComponentFactory>("hotspot");
     AddFactory<StateMachineComponentFactory>("statemachine");
     AddFactory<LuaKeyboardComponentFactory>("luakey");
@@ -25,7 +24,6 @@ MonkeyFactory::MonkeyFactory() {
     AddFactory<InfoComponentFactory>("info");
     AddFactory<FollowComponentFactory>("follow");
     AddFactory<BillboardComponentFactory>("billboard");
-    //AddFactory<ScalingComponentFactory>("scaling");
     AddFactory<ButtonComponentFactory>("button");
     AddFactory<TextViewComponentFactory>("textview");
     AddFactory<ShadowComponentFactory>("shadow");
@@ -36,6 +34,12 @@ MonkeyFactory::MonkeyFactory() {
     AddRunnerFactory<SchedulerFactory>("scheduler");
     AddRunnerFactory<CollisionEngineFactory>("collision");
 
+    m_stateFactories["basic"] = std::make_shared<BasicStateFactory>();
+    m_stateFactories["walk"] = std::make_shared<WalkStateFactory>();
+    m_stateFactories["aiwalk"] = std::make_shared<AIWalkStateFactory>();
+    m_stateFactories["walkcollision"] = std::make_shared<WalkCollisionStateFactory>();
+    m_stateFactories["hit"] = std::make_shared<HitStateFactory>();
+
     m_specialKeys.insert("tag");
     m_specialKeys.insert("name");
     m_specialKeys.insert("pos");
@@ -45,7 +49,7 @@ MonkeyFactory::MonkeyFactory() {
 }
 
 
-std::shared_ptr<Entity> MonkeyFactory::Create() {
+std::shared_ptr<Entity> BasicSceneFactory::Create() {
 
     auto entity = std::make_shared<Entity>();
     
@@ -148,7 +152,7 @@ std::shared_ptr<Entity> MonkeyFactory::Create() {
 
 }
 
-void MonkeyFactory::CleanUp() {
+void BasicSceneFactory::CleanUp() {
     luabridge::LuaRef roomRef = luabridge::getGlobal(LuaWrapper::L, "room");
     LuaTable table (roomRef);
     luabridge::LuaRef assets = table.Get<luabridge::LuaRef>("assets");
@@ -167,7 +171,7 @@ void MonkeyFactory::CleanUp() {
 
 }
 
-std::shared_ptr<Entity> MonkeyFactory::ReadItem(luabridge::LuaRef& ref) {
+std::shared_ptr<Entity> BasicSceneFactory::ReadItem(luabridge::LuaRef& ref) {
     LuaTable item(ref);
     auto entity = std::make_shared<Entity>();
     std::string tag = item.Get<std::string>("tag", "");
@@ -212,7 +216,7 @@ std::shared_ptr<Entity> MonkeyFactory::ReadItem(luabridge::LuaRef& ref) {
 }
 
 
-void MonkeyFactory::ReadItems(luabridge::LuaRef& scene, Entity* parent) {
+void BasicSceneFactory::ReadItems(luabridge::LuaRef& scene, Entity* parent) {
     for (int i = 0; i < scene.length(); ++i) {
         // create new entity
         luabridge::LuaRef r = scene[i+1];
@@ -225,103 +229,14 @@ void MonkeyFactory::ReadItems(luabridge::LuaRef& scene, Entity* parent) {
 
 }
 
+std::shared_ptr<StateFactory> BasicSceneFactory::GetStateFactory(const std::string& stateName) {
+    auto it = m_stateFactories.find(stateName);
+    if (it == m_stateFactories.end())
+        return nullptr;
+    return it->second;
+}
 
-
-//
-//void MonkeyFactory::ReadTextComponent(luabridge::LuaRef &ref, Entity *parent) {
-//    auto renderer = GetTextComponent(ref);
-//    parent->AddComponent(renderer);
-//}
-//
-//void MonkeyFactory::ReadKeyInputComponent(luabridge::LuaRef &ref, Entity *parent) {
-//    LuaTable table(ref);
-//    int maxLength = table.Get<int>("maxlength");
-//    luabridge::LuaRef shapeR = table.Get<luabridge::LuaRef>("func");
-//    parent->AddComponent(std::make_shared<KeyInput>(maxLength, shapeR));
-//}
-
-//
-//
-//
-//void MonkeyFactory::ReadKeyboardComponent(luabridge::LuaRef &ref, Entity *parent) {
-//    LuaTable table(ref);
-//
-//    //luabridge::LuaRef shapeR = table.Get<luabridge::LuaRef>("shape");
-//    //auto shape = ReadShape(shapeR);
-//    parent->AddComponent(std::make_shared<KeyboardController>());
-//}
-//
-
-
-
-
-
-
-//std::shared_ptr<HotSpot> MonkeyFactory::GetHotSpot (luabridge::LuaRef& ref) {
-//    LuaTable table(ref);
-//    luabridge::LuaRef shapeR = table.Get<luabridge::LuaRef>("shape");
-//    auto shape = ReadShape(shapeR);
-//    return GetHotSpot(ref, shape);
-//
-//}
-
-
-
-//std::shared_ptr<Renderer> MonkeyFactory::GetTextComponent (luabridge::LuaRef& ref) {
-//    LuaTable table(ref);
-//    auto renderer = std::make_shared<Renderer>();
-//    std::string text = table.Get<std::string>("id");
-//    std::string font = table.Get<std::string>("font");
-//    float size = table.Get<float>("size", 8);
-//    TextAlignment align = table.Get<TextAlignment>("align", TOP_LEFT);
-//    float maxWidth = table.Get<float>("maxwidth", 0.0f);
-//    glm::vec4 color = table.Get<glm::vec4>("color", glm::vec4(255.0f));
-//    color /= 255.0f;
-//    Font* f = Engine::get().GetAssetManager().GetFont(font);
-//    auto mesh = std::make_shared<TextMesh>(f, text, size, align, maxWidth);
-//    glm::vec2 offset = mesh->getOffset();
-//    renderer->SetRenderingTransform(glm::translate(glm::vec3(offset, 0.0f)));
-//    renderer->SetTint(color);
-//    renderer->SetMesh(mesh);
-//    return renderer;
-//}
-//
-//
-//void MonkeyFactory::ReadCursor (luabridge::LuaRef& ref, Entity* parent) {
-//    LuaTable table(ref);
-//    auto cursor = std::make_shared<Cursor>();
-//    parent->AddComponent(cursor);
-//}
-
-
-
-//void MonkeyFactory::ReadWalkTrigger (luabridge::LuaRef& ref, Entity* parent) {
-//    LuaTable table(ref);
-//    luabridge::LuaRef shapeR = table.Get<luabridge::LuaRef>("shape");
-//    auto shape = ReadShape(shapeR);
-//
-//    std::string target = table.Get<std::string>("target");
-//    auto wt = std::make_shared<ScriptWalkTrigger>(shape, target);
-//    if (table.HasKey("onenter")) {
-//        luabridge::LuaRef r = table.Get<luabridge::LuaRef>("onenter");
-//        wt->SetOnEnter(r);
-//    }
-//    if (table.HasKey("onleave")) {
-//        luabridge::LuaRef r = table.Get<luabridge::LuaRef>("onleave");
-//        wt->SetOnLeave(r);
-//    }
-//    if (table.HasKey("onstay")) {
-//        luabridge::LuaRef r = table.Get<luabridge::LuaRef>("onstay");
-//        wt->SetOnStay(r);
-//    }
-//    parent->AddComponent(wt);
-//}
-
-
-
-
-
-void MonkeyFactory::ReadSprite (LuaTable& t) {
+void BasicSceneFactory::ReadSprite (LuaTable& t) {
     float ppu = t.Get<float>("ppu", 1.0);
     std::string name = t.Get<std::string>("id");
     std::string sheetName = t.Get<std::string>("sheet");
@@ -365,7 +280,7 @@ void MonkeyFactory::ReadSprite (LuaTable& t) {
 
 
 
-void MonkeyFactory::PostInit() {
+void BasicSceneFactory::PostInit() {
 
     // Create the local assets
     luabridge::LuaRef roomRef = luabridge::getGlobal(LuaWrapper::L, "room");

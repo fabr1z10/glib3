@@ -12,6 +12,6 @@ public:
     BasicActivityFactory ();
     // can I make it const LuaTable& ?
     std::unique_ptr<Activity> createActivity(LuaTable& t) override;
-private:
+protected:
     std::unordered_map<std::string, std::function<std::unique_ptr<Activity>(LuaTable&)>> m_factories;
 };

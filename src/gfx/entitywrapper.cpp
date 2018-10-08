@@ -1,27 +1,12 @@
 #include <gfx/entitywrapper.h>
 #include <gfx/components/renderer.h>
 #include <gfx/textmesh.h>
-#include <glm/glm.hpp>
+#include <gfx/components/statemachine.h>
 #include <glm/gtx/transform.hpp>
 #include <gfx/engine.h>
-#include <gfx/scheduler.h>
-#include <gfx/activities/animate.h>
-#include <gfx/lua/luatable.h>
-//#include <monkey/walk.h>
-//#include <monkey/walkarea.h>
-#include <gfx/activities/changeroom.h>
-#include <gfx/activities/showmessage.h>
-//#include <monkey/say.h>
-#include <gfx/activities/delay.h>
-#include <gfx/activities/scriptactions.h>
-#include <gfx/activities/callfunc.h>
-#include <gfx/components/statemachine.h>
-#include <gfx/components/scripthotspot.h>
 #include <gfx/components/textview.h>
-#include <gfx/activities/scroll.h>
-#include <gfx/activityfactory.h>
-#include <iostream>
-//#include <monkey/compfactories.h>
+#include <gfx/activities/animate.h>
+#include <gfx/compfactories.h>
 #include <gfx/components/info.h>
 #include <gfx/components/depth.h>
 #include <gfx/components/dynamics2d.h>
@@ -37,7 +22,7 @@ float EntityWrapper::GetZ() const {
 }
 
 float EntityWrapper::GetVy() const {
-    m_underlying->GetComponent<Dynamics2D>()->m_velocity.x;
+    return m_underlying->GetComponent<Dynamics2D>()->m_velocity.y;
 }
 
 void EntityWrapper::SetVy(float value) {
@@ -167,7 +152,7 @@ namespace luaFunctions {
         for (auto& p : a) {
             LuaTable table(p.second);
             auto activity= af->createActivity(table);
-            std::cout << "Adding = " << p.first <<"\n";
+            //std::cout << "Adding = " << p.first <<"\n";
             script->AddActivity(p.first, std::move(activity));
 
         }
@@ -241,12 +226,12 @@ void EntityWrapper::AppendText(const std::string& text) {
 }
 
 void EntityWrapper::AppendButton(luabridge::LuaRef ref) {
-//    TextView* r = m_underlying->GetComponent<TextView>();
-//    LuaTable table(ref);
-//    std::string text = table.Get<std::string>("text");
-//    auto mf = dynamic_cast<SceneFactory*>(Engine::get().GetSceneFactory());
-//    auto hs = GetHotSpot(ref, nullptr);
-//    r->AppendText(text, hs);
+    TextView* r = m_underlying->GetComponent<TextView>();
+    LuaTable table(ref);
+    std::string text = table.Get<std::string>("text");
+    auto mf = dynamic_cast<SceneFactory*>(Engine::get().GetSceneFactory());
+    auto hs = GetHotSpot(ref, nullptr);
+    r->AppendText(text, hs);
 }
 
 luabridge::LuaRef EntityWrapper::GetTextInfo() {

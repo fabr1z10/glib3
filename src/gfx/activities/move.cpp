@@ -79,6 +79,8 @@ void MoveGravity::Start() {
     }
     m_velocity = m_initialVelocity;
     m_angle = 0.0f;
+    std::cout << "Initial velocity " << m_velocity.x << "," << m_velocity.y << "\n";
+    std::cout << "rot speed  " << m_rotationSpeed << "\n";
 }
 
 void MoveGravity::Run(float dt) {

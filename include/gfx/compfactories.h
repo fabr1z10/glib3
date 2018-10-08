@@ -1,6 +1,7 @@
 #pragma once
 
 #include <gfx/lua/luatable.h>
+#include <gfx/factories.h>
 #include <memory>
 
 class Entity;
@@ -11,18 +12,7 @@ class HotSpot;
 class Runner;
 class State;
 
-class ComponentFactory {
-public:
-    virtual void operator()(luabridge::LuaRef&, Entity*) = 0;
-};
-class StateFactory {
-public:
-    virtual std::shared_ptr<State> Create(luabridge::LuaRef&) = 0;
-};
-class RunnerFactory {
-public:
-    virtual void Create(luabridge::LuaRef&) = 0;
-};
+
 
 // helper functions
 std::shared_ptr<Renderer> ReadTextComponent (luabridge::LuaRef& ref);
@@ -54,10 +44,6 @@ class ColliderComponentFactory : public ComponentFactory {
     void operator()(luabridge::LuaRef&, Entity*) override;
 };
 
-//class WalkAreaComponentFactory : public ComponentFactory {
-//    void operator()(luabridge::LuaRef&, Entity*) override;
-//};
-
 class HotSpotComponentFactory : public ComponentFactory {
     void operator()(luabridge::LuaRef&, Entity*) override;
 };
@@ -68,8 +54,8 @@ public:
     void operator()(luabridge::LuaRef&, Entity*) override;
 private:
     // state factory
-    std::unordered_map<std::string, std::shared_ptr<StateFactory> > m_stateFactories;
 
+    SceneFactory* m_sceneFactory;
 };
 
 class LuaKeyboardComponentFactory : public ComponentFactory {
@@ -96,9 +82,7 @@ class BillboardComponentFactory : public ComponentFactory {
     void operator()(luabridge::LuaRef&, Entity*) override;
 };
 
-//class ScalingComponentFactory : public ComponentFactory {
-//    void operator()(luabridge::LuaRef&, Entity*) override;
-//};
+
 
 class ButtonComponentFactory : public ComponentFactory {
     void operator()(luabridge::LuaRef&, Entity*) override;
@@ -157,12 +141,3 @@ class AIWalkStateFactory : public StateFactory {
     std::shared_ptr<State> Create(luabridge::LuaRef&) override;
 };
 
-class Idle2DStateFactory : public StateFactory {
-    std::shared_ptr<State> Create(luabridge::LuaRef&) override;
-};
-class Walk2DStateFactory : public StateFactory {
-    std::shared_ptr<State> Create(luabridge::LuaRef&) override;
-};
-class Jump2DStateFactory : public StateFactory {
-    std::shared_ptr<State> Create(luabridge::LuaRef&) override;
-};

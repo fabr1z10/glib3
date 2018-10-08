@@ -1,8 +1,7 @@
 #pragma once
 
-#include <gfx/platformerstate.h>
+#include <platformer/states/platformerstate.h>
 #include <glm/glm.hpp>
-#include "platformerstate.h"
 
 class Controller2D;
 class Renderer;

@@ -1,4 +1,4 @@
-#include <gfx/walk2d.h>
+#include <platformer/states/walk2d.h>
 #include <gfx/components/controller2d.h>
 #include <gfx/entity.h>
 #include <GLFW/glfw3.h>

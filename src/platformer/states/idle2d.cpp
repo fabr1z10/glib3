@@ -1,4 +1,4 @@
-#include <gfx/idle2d.h>
+#include <platformer/states/idle2d.h>
 #include <gfx/components/controller2d.h>
 #include <gfx/entity.h>
 #include <GLFW/glfw3.h>

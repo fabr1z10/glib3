@@ -1,4 +1,6 @@
 _nextTag = 0
+brickSpeed = 60
+brickg = 50
 
 function curry(f, arg)
     return function()
@@ -121,9 +123,10 @@ function basicBrickResponse(e1, e2)
 	local brick = e2:parent()
 	local brickInfo = brick:getinfo()
 	local s = script:new("_brick" .. brick.tag)
+	print ("vel = " .. tostring(e1.vy))
 	e1.vy = -e1.vy
 	s.actions = {
-		[1] = { type="movegravity", actor = e2:parent().tag, velocity  = {0,50}, g = 30, ystop = brickInfo.y}
+		[1] = { type="movegravity", actor = e2:parent().tag, velocity  = {0, brickSpeed}, g = brickg, ystop = brickInfo.y}
 	}
 	monkey.play(s)
 end
@@ -132,6 +135,7 @@ function bonusBrickResponse(e1, e2)
 	--print ("Brick is at " .. tostring(e2.x) .. ", " .. tostring(e2.y))
 	local brick = e2:parent()
 	local brickInfo = brick:getinfo()
+	print ("vel = " .. tostring(e1.vy))
 	e1.vy = -e1.vy
 	if (brickInfo.hits > 0) then
 		brickInfo.hits = brickInfo.hits - 1
@@ -144,7 +148,7 @@ function bonusBrickResponse(e1, e2)
 		local s = script:new()
 		s.actions = {
 			[1] = a1,
-			[2] = { type="movegravity", actor = brick.tag, velocity  = {0,50}, g = 30, ystop = brickInfo.y, after={1} },
+			[2] = { type="movegravity", actor = brick.tag, velocity  = {0,brickSpeed}, g = brickg, ystop = brickInfo.y, after={1} },
 			[3] = a2
 		}
 		monkey.play(s)

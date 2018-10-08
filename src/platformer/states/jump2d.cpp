@@ -1,4 +1,4 @@
-#include <gfx/jump2d.h>
+#include <platformer/states/jump2d.h>
 #include <gfx/components/controller2d.h>
 #include <gfx/entity.h>
 #include <GLFW/glfw3.h>

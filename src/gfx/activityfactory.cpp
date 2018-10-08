@@ -1,31 +1,22 @@
 #include <gfx/activityfactory.h>
 #include <gfx/activities/noop.h>
 #include <gfx/activities/animate.h>
-
-#include <monkey/activities/walk.h>
-#include <monkey/activities/say.h>
-
 #include "gfx/activities/callfunc.h"
 #include "gfx/activities/scroll.h"
 #include "gfx/activities/changeroom.h"
 #include "gfx/activities/delay.h"
 #include "gfx/activities/move.h"
 #include "gfx/activities/scriptactions.h"
-//#include <monkey/activities/enableblock.h>
+#include <gfx/math/geom.h>
 #include <gfx/activities/showmessage.h>
 #include <gfx/activities/rotate.h>
 #include <gfx/activities/collisioncheck.h>
-#include <monkey/compfactories.h>
+#include <gfx/compfactories.h>
 #include <gfx/activities/changestate.h>
 
 
 BasicActivityFactory::BasicActivityFactory() {
-    m_factories["walkto"] = [] (LuaTable& table) -> std::unique_ptr<Activity> {
-        // see who is performing the action
-        std::string actor = table.Get<std::string>("actor");
-        glm::vec2 pos = table.Get<glm::vec2>("pos");
-        return std::unique_ptr<Walk>(new Walk(actor, pos));
-    };
+
     m_factories["noop"] = [] (LuaTable&) -> std::unique_ptr<Activity> {
         return std::unique_ptr<NoOp>(new NoOp());
     };
@@ -49,21 +40,7 @@ BasicActivityFactory::BasicActivityFactory() {
         }
         return std::unique_ptr<Animate>(new Animate(actor, anim, flip));
     };
-    m_factories["say"] = [] (LuaTable& table) -> std::unique_ptr<Activity> {
-        std::string actor = table.Get<std::string>("actor");
-        std::vector<std::string> msg = table.GetVector<std::string>("message");
-        glm::vec4 color = table.Get<glm::vec4>("color");
-        glm::vec2 offset = table.Get<glm::vec2>("offset", glm::vec2(0.0f));
-        color/=255.0f;
-        auto say = std::unique_ptr<Say>(new Say(actor, msg, color, offset));
-        std::string animStart = table.Get<std::string>("animstart", "");
-        std::string animEnd = table.Get<std::string>("animend","");
-        bool noAnim = table.Get<bool>("noanim", false);
-        say->SetAnimationEnd(animEnd);
-        say->SetAnimationStart(animStart);
-        say->SetNoAnim(noAnim);
-        return std::move(say);
-    };
+
     m_factories["showmessage"] = [] (LuaTable& table) -> std::unique_ptr<Activity> {
         std::string msg = table.Get<std::string>("message");
         std::string font = table.Get<std::string>("font", "monkey");
@@ -183,11 +160,6 @@ BasicActivityFactory::BasicActivityFactory() {
         std::string s = table.Get<std::string>("script");
         return std::unique_ptr<KillScript>(new KillScript(s));
     };
-//    m_factories["activatewall"] = [] (LuaTable& table) -> std::unique_ptr<Activity> {
-//        int wallId = table.Get<int>("wall");
-//        bool active = table.Get<bool>("active");
-//        return std::unique_ptr<EnableBlock>(new EnableBlock(wallId, active));
-//    };
 
 }
 

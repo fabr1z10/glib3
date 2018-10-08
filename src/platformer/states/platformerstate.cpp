@@ -1,4 +1,4 @@
-#include <gfx/platformerstate.h>
+#include <platformer/states/platformerstate.h>
 #include <gfx/components/controller2d.h>
 #include <gfx/entity.h>
 #include <GLFW/glfw3.h>

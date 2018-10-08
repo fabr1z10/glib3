@@ -80,12 +80,8 @@ scene = {
 			       	target = "player",
 					shape = { type = "poly", outline = {203,51,315,62,315,40,293,40,260,10,260,0,260,-20,234,-20,234,0,234,10,221,26,152,33,152,51}},
 					scaling = {
-					    depth = { 
-						    { rect = {0, 320, 0, 144}, dir = "y", bounds = {1, 0} } 
-						},
-                        scale = {
-	                    	{ rect = {0, 320, 0, 144}, dir = "y", bounds = {1, 1} } 
-		                }
+					    depth = { type="linear_y", values = {0, 1, 144, 0}},
+                        scale = { type="linear_y", values = {0, 1, 144, 1}}
 					}
 		      	},
          	},

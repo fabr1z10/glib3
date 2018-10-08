@@ -1,8 +1,8 @@
 #include <iostream>
 #include <gfx/lua/luawrapper.h>
 #include <gfx/lua/luatable.h>
-#include <monkey/monkeyfactory.h>
-#include <monkey/monkeyactivityfactory.h>
+#include <platformer/platformerfactory.h>
+#include <gfx/activityfactory.h>
 #include <gfx/monkey.h>
 #include <set>
 
@@ -16,7 +16,7 @@ int main(int argc, char* argv[])
         std::string homeDir(argv[1]);
         Engine::get().GetAssetManager().SetDirectory(homeDir);
         Monkey& m = Monkey::get();
-        m.Init<MonkeyFactory, MonkeyActivityFactory>();
+        m.Init<PlatformerFactory, BasicActivityFactory>();
         m.Start();
 
     } catch (Error& err) {

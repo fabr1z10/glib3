@@ -1,7 +1,8 @@
 local collisionSize = 80
 local startPos = {32, 64}
 local g = -10
-
+local marioAcc = 0.05
+local marioSpeed = 75
 room = {
 
 engines = {
@@ -43,14 +44,14 @@ scene = {
 				pos = {startPos[1], startPos[2], 0},
 				gfx = { model="mario", anim="idle" },
 				controller2d = { maxclimbangle = 80, maxdescendangle = 80, horizontalrays=4, verticalrays=4 },
-				dynamics2d = { jumpheight = 128, timetojumpapex = 2 },
-				collider = { shape = {type="rect", width=16, height=16, offset={-8,0}}, tag = 1, flag= 1},
+				dynamics2d = { jumpheight = 64, timetojumpapex = 0.5 },
+				collider = { shape = {type="rect", width=14, height=16, offset={-8,0}}, tag = 1, flag= 1},
 				statemachine = {
 					initialstate = "idle",
 					states = {
-						{ id = "idle", type ="idle2d", anim="idle", acceleration = 0.1 },
-						{ id = "walk", type ="walk2d", anim="walk", acceleration = 0.1, speed = 50},
-						{ id = "jump", type ="jump2d", anim="jump", acceleration = 0.1, speed = 50}
+						{ id = "idle", type ="idle2d", anim="idle", acceleration = marioAcc },
+						{ id = "walk", type ="walk2d", anim="walk", acceleration = marioAcc, speed = marioSpeed},
+						{ id = "jump", type ="jump2d", anim="jump", acceleration = marioAcc, speed = marioSpeed}
 					},
 
 					keys = {
