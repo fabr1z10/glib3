@@ -1,6 +1,7 @@
 _nextTag = 0
 brickSpeed = 60
-brickg = 50
+brickg = 150
+bonusRaiseSpeed = 50
 
 function curry(f, arg)
     return function()
@@ -106,14 +107,24 @@ function ciao(brick)
 	local t = nextTag()
 	local m = {
 		tag = t,
-		pos = { brick.x, brick.y, 0.1 },
+		pos = { brick.x + 8, brick.y, 0.1 },
 		gfx = { model = "mushroom", anim="idle" },
-		collider = { shape = {type="rect", width=16, height=16, offset={-8,0}}, tag = 22, flag= 1}
+		collider = { shape = {type="rect", width=16, height=16, offset={-8,0}}, tag = 22, flag= 1},
+		controller2d = { maxclimbangle = 80, maxdescendangle = 80, horizontalrays=4, verticalrays=4 },
+		dynamics2d = { jumpheight = 64, timetojumpapex = 0.5 },
+		statemachine = {
+			initialstate = "idle",
+			states = {
+				{ id = "idle", type ="basic", anim="idle" },
+				{ id = "walk", type ="enemywalk2d", anim="idle", speed = 50, dir = -1, flip = false},
+			}
+		}
 	}
 	monkey.addEntity (m, main)
 	local s = script:new()
 	s.actions = {
-		[1] = {type="move", by={0, 16}, actor = t, speed = 2}
+		[1] = {type="move", by={0, 16}, actor = t, speed = bonusRaiseSpeed},
+		[2] = {type="changestate", actor=t, state="walk", after={1}}
 	}
 	monkey.play(s)
 end

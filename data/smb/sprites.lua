@@ -54,7 +54,7 @@ sprites = {
 		    {
 		        name = "idle", frames = 
 				{ 
-					{ duration = dt, quads = { { x = 48, y = 16, width = 16, height = 16, anchor = {0, 0}}}}
+					{ duration = dt, quads = { { x = 48, y = 16, width = 16, height = 16, anchor = {8, 0}}}}
 				}
 		    }		
 		}

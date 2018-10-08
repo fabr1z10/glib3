@@ -16,11 +16,13 @@ void BasicState::Init(Entity* e) {
 
 void BasicState::Start() {
     m_renderer->SetAnimation(m_anim);
-    auto& v = m_colliderContainer->GetChildren();
-    for (auto& c : v)
-        c->SetActive(false);
-    for (auto& c : m_colliders)
-        c->SetActive(true);
+    if (m_colliderContainer != nullptr) {
+        auto &v = m_colliderContainer->GetChildren();
+        for (auto &c : v)
+            c->SetActive(false);
+        for (auto &c : m_colliders)
+            c->SetActive(true);
+    }
 }
 
 BasicStateFallback::BasicStateFallback(const std::string &anim, const std::string &fallback, const std::vector<std::string>& colliders) :

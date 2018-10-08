@@ -11,3 +11,6 @@ class Walk2DStateFactory : public StateFactory {
 class Jump2DStateFactory : public StateFactory {
     std::shared_ptr<State> Create(luabridge::LuaRef&) override;
 };
+class EnemyWalk2DStateFactory : public StateFactory {
+    std::shared_ptr<State> Create(luabridge::LuaRef&) override;
+};
