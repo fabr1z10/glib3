@@ -7,8 +7,8 @@
 
 extern GLFWwindow* window;
 
-Idle2D::Idle2D(const std::string& anim, float accelerationTimeGrounded) :
-        PlatformerState(anim), m_accTimeGnd(accelerationTimeGrounded), m_velocitySmoothing(0.0f)
+Idle2D::Idle2D(float accelerationTimeGrounded) :
+        PlatformerState(), m_accTimeGnd(accelerationTimeGrounded), m_velocitySmoothing(0.0f)
 {}
 
 bool Idle2D::Run(double dt) {

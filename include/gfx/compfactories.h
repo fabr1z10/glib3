@@ -13,70 +13,118 @@ class Runner;
 class State;
 
 
+#define FACTORY(name, type) \
+    class name : public FactoryMethod<type> { \
+    public: \
+        std::shared_ptr<type> Create(luabridge::LuaRef& ref) override; \
+    };
+
+// Entities
+FACTORY(EntityFactory, Entity)
+FACTORY(OutlineTextFactory, Entity)
+
+// Components
+FACTORY(TextComponentFactory, Component)
+FACTORY(GfxComponentFactory, Component)
+FACTORY(ColliderComponentFactory, Component)
+FACTORY(StateMachineComponentFactory, Component)
+FACTORY(HotSpotComponentFactory, Component)
+FACTORY(DepthComponentFactory, Component)
+FACTORY(FollowComponentFactory, Component)
+FACTORY(Controller2DComponentFactory, Component)
+FACTORY(Dynamics2DComponentFactory, Component)
+FACTORY(InfoComponentFactory, Component)
+
+
+// Runners
+FACTORY(HotSpotManagerFactory, Runner)
+FACTORY(SchedulerFactory, Runner)
+FACTORY(CollisionEngineFactory, Runner)
+
+// Shapes
+FACTORY(RectFactory, Shape)
+FACTORY(LineFactory, Shape)
+FACTORY(PolyFactory, Shape)
+FACTORY(CircleFactory, Shape)
+FACTORY(EllipseFactory, Shape)
+FACTORY(GraphFactory, Shape)
+FACTORY(CompoundFactory, Shape)
+
+// Cameras
+FACTORY(OrthoCamFactory, Camera)
+FACTORY(PerspectiveCamFactory, Camera)
+
+// Activities
+FACTORY(NoOpActFactory, Camera)
+FACTORY(ChangeRoomActFactory, Camera)
+
+//class EntityFactory : public FactoryMethod<Entity> {
+//public:
+//    std::shared_ptr<Entity> Create(luabridge::LuaRef& ref) override;
+//
+//};
 
 // helper functions
-std::shared_ptr<Renderer> ReadTextComponent (luabridge::LuaRef& ref);
-std::shared_ptr<Shape> ReadShape(luabridge::LuaRef& ref);
+//std::shared_ptr<Renderer> ReadTextComponent (luabridge::LuaRef& ref);
+//std::shared_ptr<Shape> ReadShape(luabridge::LuaRef& ref);
 std::unique_ptr<Function2D> GetFunc2D(luabridge::LuaRef& ref);
-std::shared_ptr<HotSpot> GetHotSpot (luabridge::LuaRef& ref, std::shared_ptr<Shape> shape);
+//std::shared_ptr<HotSpot> GetHotSpot (luabridge::LuaRef& ref, std::shared_ptr<Shape> shape);
 
-class TextComponentFactory : public ComponentFactory {
-    void operator()(luabridge::LuaRef&, Entity*) override;
-};
+//class TextComponentFactory : public ComponentFactory {
+//    void operator()(luabridge::LuaRef&, Entity*) override;
+//};
+//
+//class OutlineTextComponentFactory : public ComponentFactory {
+//    void operator()(luabridge::LuaRef&, Entity*) override;
+//};
 
-class OutlineTextComponentFactory : public ComponentFactory {
-    void operator()(luabridge::LuaRef&, Entity*) override;
-};
-
-class CameraFactory : public ComponentFactory {
-    void operator()(luabridge::LuaRef&, Entity*) override;
-};
+//class CameraFactory : public ComponentFactory {
+//    void operator()(luabridge::LuaRef&, Entity*) override;
+//};
 
 class KeyInputFactory : public ComponentFactory {
     void operator()(luabridge::LuaRef&, Entity*) override;
 };
 
-class GfxComponentFactory : public ComponentFactory {
-    void operator()(luabridge::LuaRef&, Entity*) override;
-};
+//class GfxComponentFactory : public ComponentFactory {
+//    void operator()(luabridge::LuaRef&, Entity*) override;
+//};
 
-class ColliderComponentFactory : public ComponentFactory {
-    void operator()(luabridge::LuaRef&, Entity*) override;
-};
+//class ColliderComponentFactory : public ComponentFactory {
+//    void operator()(luabridge::LuaRef&, Entity*) override;
+//};
 
-class HotSpotComponentFactory : public ComponentFactory {
-    void operator()(luabridge::LuaRef&, Entity*) override;
-};
+//class HotSpotComponentFactory : public ComponentFactory {
+//    void operator()(luabridge::LuaRef&, Entity*) override;
+//};
 
-class StateMachineComponentFactory : public ComponentFactory {
-public:
-    StateMachineComponentFactory();
-    void operator()(luabridge::LuaRef&, Entity*) override;
-private:
-    // state factory
-
-    SceneFactory* m_sceneFactory;
-};
+//class StateMachineComponentFactory : public ComponentFactory {
+//public:
+//    StateMachineComponentFactory();
+//    void operator()(luabridge::LuaRef&, Entity*) override;
+//private:
+//    // state factory
+//
+//    SceneFactory* m_sceneFactory;
+//};
 
 class LuaKeyboardComponentFactory : public ComponentFactory {
     void operator()(luabridge::LuaRef&, Entity*) override;
 };
 
-class SwitchComponentFactory : public ComponentFactory {
-    void operator()(luabridge::LuaRef&, Entity*) override;
-};
+//class SwitchComponentFactory : public ComponentFactory {
+//    void operator()(luabridge::LuaRef&, Entity*) override;
+//};
 
-class DepthComponentFactory : public ComponentFactory {
-    void operator()(luabridge::LuaRef&, Entity*) override;
-};
+//class DepthComponentFactory : public ComponentFactory {
+//    void operator()(luabridge::LuaRef&, Entity*) override;
+//};
 
-class InfoComponentFactory : public ComponentFactory {
-    void operator()(luabridge::LuaRef&, Entity*) override;
-};
 
-class FollowComponentFactory : public ComponentFactory {
-    void operator()(luabridge::LuaRef&, Entity*) override;
-};
+
+//class FollowComponentFactory : public ComponentFactory {
+//    void operator()(luabridge::LuaRef&, Entity*) override;
+//};
 
 class BillboardComponentFactory : public ComponentFactory {
     void operator()(luabridge::LuaRef&, Entity*) override;
@@ -96,48 +144,29 @@ class ShadowComponentFactory : public ComponentFactory {
     void operator()(luabridge::LuaRef&, Entity*) override;
 };
 
-class Controller2DComponentFactory : public ComponentFactory {
-    void operator()(luabridge::LuaRef&, Entity*) override;
-};
 
-class Dynamics2DComponentFactory : public ComponentFactory {
-    void operator()(luabridge::LuaRef&, Entity*) override;
-};
 
 // --- runners
-class HotSpotManagerFactory : public RunnerFactory {
-public:
-    void Create(luabridge::LuaRef&) override;
-};
 
-class SchedulerFactory : public RunnerFactory {
-public:
-    void Create(luabridge::LuaRef&) override;
-};
-
-class CollisionEngineFactory : public RunnerFactory {
-public:
-    void Create(luabridge::LuaRef&) override;
-};
 
 // --- states
-class BasicStateFactory : public StateFactory {
-    std::shared_ptr<State> Create(luabridge::LuaRef&) override;
-};
-
-class WalkStateFactory : public StateFactory {
-    std::shared_ptr<State> Create(luabridge::LuaRef&) override;
-};
-
-class WalkCollisionStateFactory : public StateFactory {
-    std::shared_ptr<State> Create(luabridge::LuaRef&) override;
-};
-
-class HitStateFactory : public StateFactory {
-    std::shared_ptr<State> Create(luabridge::LuaRef&) override;
-};
-
-class AIWalkStateFactory : public StateFactory {
-    std::shared_ptr<State> Create(luabridge::LuaRef&) override;
-};
-
+//class BasicStateFactory : public Factory {
+//    std::shared_ptr<State> Create(luabridge::LuaRef&) override;
+//};
+//
+//class WalkStateFactory : public StateFactory {
+//    std::shared_ptr<State> Create(luabridge::LuaRef&) override;
+//};
+//
+//class WalkCollisionStateFactory : public StateFactory {
+//    std::shared_ptr<State> Create(luabridge::LuaRef&) override;
+//};
+//
+//class HitStateFactory : public StateFactory {
+//    std::shared_ptr<State> Create(luabridge::LuaRef&) override;
+//};
+//
+//class AIWalkStateFactory : public StateFactory {
+//    std::shared_ptr<State> Create(luabridge::LuaRef&) override;
+//};
+//

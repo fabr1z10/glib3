@@ -9,12 +9,13 @@
 
 extern GLFWwindow* window;
 
-PlatformerState::PlatformerState(const std::string& anim) :
-        State(), m_anim(anim), m_controller(nullptr), m_renderer(nullptr)
+PlatformerState::PlatformerState() :
+        StateBehaviour(), m_controller(nullptr), m_renderer(nullptr)
 {}
 
 void PlatformerState::Init(Entity* e) {
-    State::Init(e);
+    //StateBehaviour::Init(e);
+    m_entity = e;
     m_controller = m_entity->GetComponent<Controller2D>();
     if (m_controller == nullptr) {
         GLIB_FAIL("Required a controller2D component!")
@@ -28,12 +29,3 @@ void PlatformerState::Init(Entity* e) {
         GLIB_FAIL("Required a dynamics2d component!");
     }
 }
-
-void PlatformerState::Start() {
-
-    // set the animation
-    m_renderer->SetAnimation(m_anim);
-
-    // colliders!
-}
-

@@ -36,12 +36,12 @@ public:
 
     template <class C>
     void AddComponent(std::shared_ptr<C> c) {
-        m_components[std::type_index(typeid(typename C::ParentClass))] = c;
+        m_components[c->GetType()] = c;
         c->SetParent(this);
     }
     template <class T>
     T* GetComponent() {
-        auto it = m_components.find(std::type_index(typeid(typename T::ParentClass)));
+        auto it = m_components.find(std::type_index(typeid(T)));
         if (it != m_components.end()) {
             return dynamic_cast<T*>(it->second.get());
         }
@@ -100,7 +100,7 @@ public:
     //}
     Entity* GetParent() const { return m_parent;}
     void SetParent(Entity*);
-    void SetCamera(std::unique_ptr<Camera>);
+    void SetCamera(std::shared_ptr<Camera>);
     Camera* GetCamera();
     Entity* GetNamedChild(const std::string& name);
 private:
@@ -118,7 +118,7 @@ private:
     glm::mat4 m_lastMove;
     std::unordered_map<std::type_index, std::shared_ptr<Component> > m_components;
     // can also be a vec of cameras?
-    std::unique_ptr<Camera> m_cameras;
+    std::shared_ptr<Camera> m_cameras;
     std::string m_name;
     std::unordered_map<std::string, Entity*> m_namedChildren;
 };
@@ -141,8 +141,8 @@ inline const glm::mat4& Entity::GetWorldTransform() const {
     return m_worldTransform;
 }
 
-inline void Entity::SetCamera(std::unique_ptr<Camera> cam)  {
-    m_cameras = std::move(cam);
+inline void Entity::SetCamera(std::shared_ptr<Camera> cam)  {
+    m_cameras = cam;
 }
 
 inline bool Entity::AreControlsEnabled() const {

@@ -1,28 +1,31 @@
 #pragma once
 
-#include <gfx/components/statemachine.h>
+#include <gfx/state.h>
 #include <glm/glm.hpp>
+#include <unordered_map>
 
-class WalkState : public State {
+class CollisionEngine;
+class Renderer;
+
+class WalkState : public StateBehaviour {
 public:
-    WalkState(float speed) : State(), m_speed(speed) {}
-    void Start () override {}
-    void End() override {}
+    WalkState(float speed) : StateBehaviour(), m_speed(speed) {}
+    void Init(Entity*) override;
     bool Run(double) override;
 private:
+    Entity* m_entity;
     float m_speed;
 };
 
-class WalkStateCollision : public State {
+class WalkStateCollision : public StateBehaviour {
 public:
     WalkStateCollision (float width, float height, float speed, int horizontalRays, int verticalRays);
     void Init(Entity*) override;
     bool Run(double) override;
-    void Start () override;
-    void End() override {}
-
     void AddAnimation(const std::string& id, const std::string& name);
 private:
+    Entity* m_entity;
+
     CollisionEngine* m_engine;
     Renderer* m_renderer;
     float m_width;

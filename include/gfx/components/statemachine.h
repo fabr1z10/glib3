@@ -5,42 +5,10 @@
 #include <memory>
 #include <gfx/listener.h>
 #include <gfx/transition.h>
+#include <gfx/state.h>
 
 class CollisionEngine;
 class Renderer;
-class Entity;
-
-class State {
-public:
-    State() : m_nextState() {}
-    virtual void End () = 0;
-    // returns true if state changes
-    virtual bool Run (double) = 0;
-    virtual void Start () = 0;
-    // called once!!!
-    virtual void Init(Entity*);
-    std::string GetNextState() const;
-    std::string GetId() const;
-    void SetId(const std::string& id);
-protected:
-    std::string m_id;
-    std::string m_nextState;
-    Entity* m_entity;
-};
-
-inline std::string State::GetNextState() const {
-    return m_nextState;
-}
-
-inline std::string State::GetId() const {
-    return m_id;
-}
-
-
-inline void State::SetId(const std::string& id) {
-    m_id = id;
-}
-
 
 class StateMachine : public Component {
 public:

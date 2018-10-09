@@ -8,15 +8,15 @@
 
 extern GLFWwindow* window;
 
-Jump2D::Jump2D(const std::string& anim, float accelerationTimeAirborne, float speed) :
-        PlatformerState(anim), m_accTimeAir(accelerationTimeAirborne), m_velocitySmoothing(0.0f), m_speed(speed)
+Jump2D::Jump2D(float accelerationTimeAirborne, float speed) :
+        PlatformerState(), m_accTimeAir(accelerationTimeAirborne), m_velocitySmoothing(0.0f), m_speed(speed)
 {
 
 
 }
 
-void Jump2D::Start() {
-    PlatformerState::Start();
+void Jump2D::ResetState() {
+    //PlatformerState::Start();
     if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
         m_dynamics->m_velocity.y = m_dynamics->m_jumpVelocity;
 }

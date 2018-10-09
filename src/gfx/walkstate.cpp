@@ -9,6 +9,10 @@
 
 extern GLFWwindow* window;
 
+void WalkState::Init(Entity * e) {
+    m_entity = e;
+}
+
 bool WalkState::Run(double) {
     if (glfwGetKey(window, GLFW_KEY_RIGHT)) {
         m_entity->Move(glm::vec2(m_speed,0.0f));
@@ -26,7 +30,7 @@ bool WalkState::Run(double) {
 }
 
 
-WalkStateCollision::WalkStateCollision (float width, float height, float speed, int horizontalRays, int verticalRays) : State(),
+WalkStateCollision::WalkStateCollision (float width, float height, float speed, int horizontalRays, int verticalRays) : StateBehaviour(),
 m_handleAnimations(false), m_width(width), m_height(height), m_speed(speed), m_horizontalRays(horizontalRays), m_verticalRays(verticalRays)
 {
     m_horizontalRaySpace = m_horizontalRays == 1 ? 0.0f : m_height / (m_horizontalRays-1);
@@ -34,17 +38,11 @@ m_handleAnimations(false), m_width(width), m_height(height), m_speed(speed), m_h
 }
 
 void WalkStateCollision::Init(Entity* e) {
-    State::Init(e);
-    m_renderer = m_entity->GetComponent<Renderer>();
+    m_renderer = e->GetComponent<Renderer>();
     m_engine = Engine::get().GetRunner<CollisionEngine>();
+    m_entity = e;
 
 }
-
-void WalkStateCollision::Start() {
-    //m_renderer->SetAnimation(m_animations.at("idle_right"));
-    m_renderer->SetAnimation("walk");
-}
-
 // 4-directional walking state
 bool WalkStateCollision::Run(double dt) {
     int leftKeyDown = glfwGetKey(window, GLFW_KEY_LEFT);

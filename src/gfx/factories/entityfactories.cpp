@@ -1,0 +1,93 @@
+#include <gfx/compfactories.h>
+#include <gfx/math/geom.h>
+#include <gfx/engine.h>
+#include <gfx/textmesh.h>
+#include <gfx/components/renderer.h>
+
+std::shared_ptr<Entity> EntityFactory::Create(luabridge::LuaRef& ref) {
+
+    auto entity = std::make_shared<Entity>();
+
+    LuaTable item(ref);
+    std::string tag = item.Get<std::string>("tag", "");
+    std::string name = item.Get<std::string>("name", "");
+    if (!tag.empty()) entity->SetTag(tag);
+    if (!name.empty()) entity->SetName(name);
+    bool active = item.Get<bool>("active", true);
+    glm::vec3 pos = item.Get<glm::vec3>("pos", glm::vec3(0.0f));
+    if (item.HasKey("angle")) {
+        float angle = item.Get<float>("angle",0.0f);
+        entity->SetPosition(pos, deg2rad* angle);
+    } else {
+        entity->SetPosition(pos);
+    }
+
+    auto factory = Engine::get().GetSceneFactory();
+
+    // setup camera
+    if (item.HasKey("camera")) {
+        luabridge::LuaRef cam = item.Get<luabridge::LuaRef>("camera");
+        auto camera = factory->Get<Camera>(cam);
+        entity->SetCamera(camera);
+    }
+
+    // add components
+    auto keyValueMap = LuaTable::getKeyValueMap(ref);
+    for (auto& pair : keyValueMap) {
+        auto component = factory->Get<Component>(pair.second);
+        entity->AddComponent(component);
+    }
+
+    if (item.HasKey("children")) {
+        luabridge::LuaRef c = item.Get<luabridge::LuaRef>("children");
+        for (int i = 0; i < c.length(); ++i) {
+            luabridge::LuaRef child = c[i+1];
+            auto childEntity = factory->Get<Entity>(child);
+            entity->AddChild(childEntity);
+        }
+    }
+    entity->SetActive(active);
+    return entity;
+}
+
+std::shared_ptr<Entity> OutlineTextComponentFactory::Create(luabridge::LuaRef &ref, Entity *parent) {
+
+    LuaTable table(ref);
+    auto parent = std::make_shared<Entity>();
+    std::string tag = table.Get<std::string>("tag", "");
+    std::string name = table.Get<std::string>("name", "");
+    if (!tag.empty()) parent->SetTag(tag);
+    if (!name.empty()) parent->SetName(name);
+    bool active = table.Get<bool>("active", true);
+    glm::vec3 pos = table.Get<glm::vec3>("pos", glm::vec3(0.0f));
+    if (table.HasKey("angle")) {
+        float angle = table.Get<float>("angle",0.0f);
+        parent->SetPosition(pos, deg2rad* angle);
+    } else {
+        parent->SetPosition(pos);
+    }
+
+    std::string font = table.Get<std::string>("font");
+    float size = table.Get<float>("size");
+    std::string text = table.Get<std::string>("id");
+    TextAlignment align = table.Get<TextAlignment>("align", TOP_LEFT);
+    glm::vec4 fontColor = table.Get<glm::vec4>("fontcolor", glm::vec4(255.0f));
+    glm::vec4 outlineColor = table.Get<glm::vec4>("outlinecolor", glm::vec4(255.0f));
+    fontColor /= 255.0f;
+    outlineColor /= 255.0f;
+    Font* f = Engine::get().GetAssetManager().GetFont(font);
+    auto mesh = std::make_shared<TextMesh>(f, text, size, align);
+    //glm::vec2 offset = mesh->getOffset();
+    glm::vec2 outlineOffsets[] = {{0, 0}, {-1, 0}, {-1,1}, {0, 1}, {1,1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1}};
+    for (int i =0; i < 9; ++i) {
+        auto entity = std::make_shared<Entity>();
+        auto renderer = std::make_shared<Renderer>();
+        renderer->SetMesh(mesh);
+        entity->SetPosition(glm::vec3(outlineOffsets[i] * 0.5f, i == 0 ? 0 : -1));
+        renderer->SetTint(i==0 ? fontColor : outlineColor);
+        //renderer->SetRenderingTransform(glm::translate(glm::vec3(offset, 0.0f)));
+        //entity->AddComponent(renderer);
+        parent->AddChild(entity);
+    }
+    return parent;
+}

@@ -10,13 +10,14 @@
 #define component_h
 
 #include <gfx/ref.h>
+#include <typeindex>
 
 class Entity;
 
 class Component : public Ref {
 public:
     Component() : Ref(), m_active{true} {}
-    //~ Component() {}
+    virtual ~ Component() {}
     // called once when the entity is added to the scene
     virtual void Start() = 0;
     virtual void Update(double) = 0;
@@ -26,6 +27,7 @@ public:
     Entity* GetObject();
     bool IsActive() const;
     virtual bool SetActive(bool);
+    virtual std::type_index GetType();
 protected:
     bool m_active;
     Entity* m_entity;
@@ -41,6 +43,10 @@ inline bool Component::SetActive(bool value) {
     return true;
 }
 
+
+inline std::type_index Component::GetType() {
+    return std::type_index(typeid(*this));
+}
 
 inline Entity* Component::GetObject() {
     return m_entity;

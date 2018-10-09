@@ -4,41 +4,57 @@
 #include <gfx/spritemesh.h>
 #include <glm/gtx/transform.hpp>
 #include <gfx/math/geom.h>
+
 //#include <mo/components/scriptwalktrigger.h>
 
 using namespace luabridge;
 
 BasicSceneFactory::BasicSceneFactory() {
 
-    AddFactory<TextComponentFactory>("text");
-    AddFactory<OutlineTextComponentFactory>("outlinetext");
-    AddFactory<CameraFactory>("camera");
-    AddFactory<KeyInputFactory>("keyinput");
-    AddFactory<GfxComponentFactory>("gfx");
-    AddFactory<ColliderComponentFactory>("collider");
-    AddFactory<HotSpotComponentFactory>("hotspot");
-    AddFactory<StateMachineComponentFactory>("statemachine");
-    AddFactory<LuaKeyboardComponentFactory>("luakey");
-    AddFactory<SwitchComponentFactory>("switch");
-    AddFactory<DepthComponentFactory>("depth");
-    AddFactory<InfoComponentFactory>("info");
-    AddFactory<FollowComponentFactory>("follow");
-    AddFactory<BillboardComponentFactory>("billboard");
-    AddFactory<ButtonComponentFactory>("button");
-    AddFactory<TextViewComponentFactory>("textview");
-    AddFactory<ShadowComponentFactory>("shadow");
-    AddFactory<Controller2DComponentFactory>("controller2d");
-    AddFactory<Dynamics2DComponentFactory>("dynamics2d");
+    m_entityFactory.Add<EntityFactory>("default");
+    m_entityFactory.Add<OutlineTextFactory>("outlinetext");
 
-    AddRunnerFactory<HotSpotManagerFactory>("hotspotmanager");
-    AddRunnerFactory<SchedulerFactory>("scheduler");
-    AddRunnerFactory<CollisionEngineFactory>("collision");
+    m_componentFactory.Add<TextComponentFactory>("text");
+    m_componentFactory.Add<GfxComponentFactory>("gfx");
+    m_componentFactory.Add<ColliderComponentFactory>("collider");
+    m_componentFactory.Add<StateMachineComponentFactory>("statemachine");
+    m_componentFactory.Add<DepthComponentFactory>("depth");
+    m_componentFactory.Add<InfoComponentFactory>("info");
+    m_componentFactory.Add<FollowComponentFactory>("follow");
+    m_componentFactory.Add<HotSpotComponentFactory>("hotspot");
+    m_componentFactory.Add<Controller2DComponentFactory>("controller2d");
+    m_componentFactory.Add<Dynamics2DComponentFactory>("dynamics2d");
 
-    m_stateFactories["basic"] = std::make_shared<BasicStateFactory>();
-    m_stateFactories["walk"] = std::make_shared<WalkStateFactory>();
-    m_stateFactories["aiwalk"] = std::make_shared<AIWalkStateFactory>();
-    m_stateFactories["walkcollision"] = std::make_shared<WalkCollisionStateFactory>();
-    m_stateFactories["hit"] = std::make_shared<HitStateFactory>();
+    m_cameraFactory.Add<OrthoCamFactory>("ortho");
+    m_cameraFactory.Add<PerspectiveCamFactory>("perspective");
+
+
+
+
+//    AddFactory<KeyInputFactory>("keyinput");
+//    AddFactory<HotSpotComponentFactory>("hotspot");
+//    AddFactory<LuaKeyboardComponentFactory>("luakey");
+//
+//    AddFactory<BillboardComponentFactory>("billboard");
+//    AddFactory<ButtonComponentFactory>("button");
+//    AddFactory<TextViewComponentFactory>("textview");
+//    AddFactory<ShadowComponentFactory>("shadow");
+
+
+    m_runnerFactory.Add<HotSpotManagerFactory>("hotspotmanager");
+    m_runnerFactory.Add<SchedulerFactory>("scheduler");
+    m_runnerFactory.Add<CollisionEngineFactory>("collision");
+
+    m_activityFactory.Add<NoOpActFactory>("noop");
+    m_activityFactory.Add<ChangeRoomActFactory>("gotoroom");
+
+
+
+//    m_stateFactories["basic"] = std::make_shared<BasicStateFactory>();
+//    m_stateFactories["walk"] = std::make_shared<WalkStateFactory>();
+//    m_stateFactories["aiwalk"] = std::make_shared<AIWalkStateFactory>();
+//    m_stateFactories["walkcollision"] = std::make_shared<WalkCollisionStateFactory>();
+//    m_stateFactories["hit"] = std::make_shared<HitStateFactory>();
 
     m_specialKeys.insert("tag");
     m_specialKeys.insert("name");
@@ -74,13 +90,8 @@ std::shared_ptr<Entity> BasicSceneFactory::Create() {
         luabridge::LuaRef engines = roomTable.Get<luabridge::LuaRef>("engines");
         for (int i = 0; i < engines.length(); ++i) {
             luabridge::LuaRef e = engines[i+1];
-            std::string type = e["type"].cast<std::string>();
-            auto it = m_runnerFactories.find(type);
-            if (it == m_runnerFactories.end()) {
-                GLIB_FAIL("Unknown runner " << type);
-            }
-            std::cout << "Adding runner: " << type << std::endl;
-            it->second->Create(e);
+            auto runner = Get<Runner>(e);
+            Engine::get().AddRunner(runner);
         }
     }
 
@@ -99,50 +110,9 @@ std::shared_ptr<Entity> BasicSceneFactory::Create() {
 
     // read the scene tree
     luabridge::LuaRef scene = roomTable.Get<luabridge::LuaRef>("scene");
+
     ReadItems (scene, entity.get());
 
-
-//    // create the cameras
-//    auto engineNode = std::make_shared<Entity>();
-//    auto renderingEngine = std::make_shared<RenderingEngine>();
-//
-//    // add key listener to handle savegame, quit, pause etc.
-//    auto keyListener = std::make_shared<LuaKeyListener>();
-//
-//
-
-//
-//    renderingEngine->AddShader(TEXTURE_SHADER);
-//    renderingEngine->AddShader(COLOR_SHADER);
-//    renderingEngine->AddShader(TEXT_SHADER);
-//
-//
-//
-//    auto scheduler =std::make_shared<Scheduler>();
-//    scheduler->SetTag("_scheduler");
-//    auto hotspotManager = std::make_shared<HotSpotManager>();
-//    hotspotManager->SetTag("_hotspotmanager");
-//    renderingEngine->SetTag("_renderingengine");
-//
-//    if (roomTable.HasKey("groups")) {
-//        luabridge::LuaRef groups = roomTable.Get<luabridge::LuaRef>("groups");
-//        for (int i = 0; i < groups.length(); ++i) {
-//            luabridge::LuaRef groupR = groups[i + 1];
-//            int id = groupR["id"].cast<int>();
-//            std::string cam = groupR["cam"].cast<std::string>();
-//            hotspotManager->AddGroup(id, cam);
-//        }
-//    }
-//
-//
-//    engineNode->AddComponent(renderingEngine);
-//    engineNode->AddComponent(scheduler);
-//    engineNode->AddComponent(hotspotManager);
-//    engineNode->AddComponent(keyListener);
-//    entity->AddChild(engineNode);
-
-    //luabridge::LuaRef roomRef = luabridge::getGlobal(LuaWrapper::L, "room");
-    //LuaTable roomTable(roomRef);
     if (roomTable.HasKey("start")) {
         luabridge::LuaRef r1 = roomTable.Get<luabridge::LuaRef>("start");
         r1();
@@ -220,7 +190,8 @@ void BasicSceneFactory::ReadItems(luabridge::LuaRef& scene, Entity* parent) {
     for (int i = 0; i < scene.length(); ++i) {
         // create new entity
         luabridge::LuaRef r = scene[i+1];
-        auto entity = ReadItem(r);
+        auto entity = Get<Entity>(r);
+        //auto entity = ReadItem(r);
         parent->AddChild(entity);
     }
 
@@ -229,12 +200,6 @@ void BasicSceneFactory::ReadItems(luabridge::LuaRef& scene, Entity* parent) {
 
 }
 
-std::shared_ptr<StateFactory> BasicSceneFactory::GetStateFactory(const std::string& stateName) {
-    auto it = m_stateFactories.find(stateName);
-    if (it == m_stateFactories.end())
-        return nullptr;
-    return it->second;
-}
 
 void BasicSceneFactory::ReadSprite (LuaTable& t) {
     float ppu = t.Get<float>("ppu", 1.0);

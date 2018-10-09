@@ -69,7 +69,7 @@ public:
     }
     template <class T>
     T* GetRunner() {
-        auto it = m_runners.find(std::type_index(typeid(typename T::ParentClass)));
+        auto it = m_runners.find(std::type_index(typeid(T)));
         if (it != m_runners.end()) {
             return dynamic_cast<T*>(it->second.get());
         }
@@ -78,7 +78,7 @@ public:
 
     template <typename T>
     void AddRunner(std::shared_ptr<T> c) {
-        m_runners[std::type_index(typeid(typename T::ParentClass))] = c;
+        m_runners[c->GetType()] = c;
     }
 
     void AddTaggedRef (const std::string&, Ref*);

@@ -8,8 +8,9 @@ class Renderer;
 
 class Jump2D : public PlatformerState {
 public:
-    Jump2D(const std::string& anim, float accelerationTimeAirborne, float speed);
-    void Start() override;
+    Jump2D(float accelerationTimeAirborne, float speed);
+    //void Start() override;
+    void ResetState() override;
     bool Run (double) override;
 private:
     float m_speed;

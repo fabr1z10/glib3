@@ -1,18 +1,18 @@
 #pragma once
 
-#include <gfx/components/statemachine.h>
+#include <gfx/state.h>
 #include <glm/glm.hpp>
 
 class Renderer;
 
 
-class AIWalk : public State {
+class AIWalk : public StateBehaviour {
 public:
-    AIWalk(const std::string& targetId, float speed) : State(), m_speed(speed), m_targetId{targetId} {}
-    void Start () override;
-    void End() override {}
+    AIWalk(const std::string& targetId, float speed) : StateBehaviour(), m_speed(speed), m_targetId{targetId} {}
+    void Init (Entity*) override;
     bool Run(double) override;
 private:
+    Entity* m_entity;
     Entity* m_target;
     Renderer* m_renderer;
     float m_speed;

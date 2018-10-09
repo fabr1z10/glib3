@@ -72,10 +72,7 @@ BasicActivityFactory::BasicActivityFactory() {
         float speed = table.Get<float>("speed");
         return std::unique_ptr<Scroll>(new Scroll(camId, displacement, relative, speed));
     };
-    m_factories["gotoroom"] = [] (LuaTable& table) -> std::unique_ptr<Activity> {
-        std::string roomId = table.Get<std::string>("room");
-        return std::unique_ptr<ChangeRoom>(new ChangeRoom(roomId));
-    };
+
     m_factories["animate"] = [] (LuaTable& table) -> std::unique_ptr<Activity> {
         std::string actor = table.Get<std::string>("actor");
         std::string anim = table.Get<std::string>("anim");

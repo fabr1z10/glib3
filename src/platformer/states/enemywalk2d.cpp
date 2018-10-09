@@ -8,8 +8,8 @@
 
 extern GLFWwindow* window;
 
-EnemyWalk2D::EnemyWalk2D(const std::string& anim, float speed, int dir, bool enableFlip) :
-        PlatformerState(anim), m_speed(speed), m_dir(dir), m_enableFlip(enableFlip)
+EnemyWalk2D::EnemyWalk2D(float speed, int dir, bool enableFlip) :
+        PlatformerState(), m_speed(speed), m_dir(dir), m_enableFlip(enableFlip)
 {}
 
 bool EnemyWalk2D::Run(double dt) {

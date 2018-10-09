@@ -8,8 +8,8 @@
 
 extern GLFWwindow* window;
 
-Walk2D::Walk2D(const std::string& anim, float accelerationTimeGrounded, float speed) :
-        PlatformerState(anim), m_accTimeGnd(accelerationTimeGrounded), m_velocitySmoothing(0.0f), m_speed(speed)
+Walk2D::Walk2D(float accelerationTimeGrounded, float speed) :
+        PlatformerState(), m_accTimeGnd(accelerationTimeGrounded), m_velocitySmoothing(0.0f), m_speed(speed)
 {}
 
 bool Walk2D::Run(double dt) {

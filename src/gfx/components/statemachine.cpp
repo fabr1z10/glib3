@@ -4,9 +4,6 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 
-void State::Init(Entity* entity) {
-    m_entity = entity;
-}
 
 void StateMachine::Start() {
     for (auto& s : m_states)
@@ -22,8 +19,8 @@ void StateMachine::AddState(const std::string & name, std::shared_ptr<State> sta
 
 
 void StateMachine::ChangeState(const std::string& state) {
-    if (m_currentState != nullptr)
-        m_currentState->End();
+    //if (m_currentState != nullptr)
+    //    m_currentState->End();
 
     auto it = m_states.find(state);
     if (it == m_states.end()) {

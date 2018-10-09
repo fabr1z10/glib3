@@ -7,15 +7,13 @@ class Controller2D;
 class Renderer;
 class Dynamics2D;
 
-class PlatformerState : public State {
+class PlatformerState : public StateBehaviour {
 public:
-    PlatformerState(const std::string& anim);
-    void End () override {}
-    void Start () override ;
+    PlatformerState();
     void Init(Entity* e) override;
 protected:
+    Entity* m_entity;
     Controller2D* m_controller;
     Dynamics2D* m_dynamics;
     Renderer* m_renderer;
-    std::string m_anim;
 };

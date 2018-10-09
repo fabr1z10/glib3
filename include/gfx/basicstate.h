@@ -1,34 +1,29 @@
-#include <gfx/components/statemachine.h>
+#include <gfx/state.h>
 #include <vector>
+#include "state.h"
 
 class Entity;
 class Renderer;
 
-// super basic state. There's a play animation
-// collision boxes to activate
-// a fallback animation if loop
-class BasicState : public State {
+// super basic initializer, just set an animation
+class AnimInitializer : public StateInitializer {
 public:
-    BasicState (const std::string& anim, const std::vector<std::string>& colliders);
+    AnimInitializer (const std::string& anim);
     void Init(Entity* e) override;
-    void End () override {}
-    // returns true if state changes
-    bool Run (double) override { return false; }
     void Start () override;
 protected:
-    Entity* m_colliderContainer;
     Renderer* m_renderer;
     std::string m_anim;
-    std::vector<Entity*> m_colliders;
-    std::vector<std::string> m_activeColliders;
 };
 
 
-class BasicStateFallback : public BasicState {
+class AnimColliderInitializer : public AnimInitializer {
 public:
-    BasicStateFallback (const std::string& anim, const std::string& fallbackState, const std::vector<std::string>&);
-    bool Run (double) override;
-
+    AnimColliderInitializer (const std::string& anim, const std::vector<std::string>&);
+    void Init(Entity* e) override;
+    void Start () override;
 private:
-    std::string m_fallback;
+    Entity* m_colliderContainer;
+    std::vector<Entity*> m_colliders;
+    std::vector<std::string> m_activeColliders;
 };

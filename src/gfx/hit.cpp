@@ -6,45 +6,41 @@
 #include <glm/gtx/transform.hpp>
 #include <gfx/entitywrapper.h>
 
-Hit::Hit (const std::string& anim) :
-        State(), m_anim(anim)
+Hit::Hit () : StateBehaviour()
 {}
 
-HitCollision::HitCollision (const std::string& anim, int frame, std::shared_ptr<Shape> collisionShape, glm::vec2 offset, int mask, luabridge::LuaRef callback) :
-Hit(anim), m_frame(frame), m_shape(collisionShape), m_mask(mask), m_offset(offset), m_hitDone{false}, m_callback(callback)
+HitCollision::HitCollision (int frame, std::shared_ptr<Shape> collisionShape, glm::vec2 offset, int mask, luabridge::LuaRef callback) :
+Hit(), m_frame(frame), m_shape(collisionShape), m_mask(mask), m_offset(offset), m_hitDone{false}, m_callback(callback)
 {}
 
 void Hit::Init(Entity* e) {
-    State::Init(e);
-    m_renderer = m_entity->GetComponent<Renderer>();
+    StateBehaviour::Init(e);
+    m_renderer = e->GetComponent<Renderer>();
 }
-
-void HitCollision::Init(Entity* e) {
-    Hit::Init(e);
-    m_engine = Engine::get().GetRunner<CollisionEngine>();
-}
-
-
-void Hit::Start() {
-    m_renderer->SetAnimation(m_anim);
-}
-
-void HitCollision::Start() {
-    Hit::Start();
-    m_hitDone = false;
-}
-
 
 bool Hit::Run(double) {
 
     if (m_renderer->GetLoopCount() > 0) {
         m_nextState = "walk";
         return true;
-    } else {
-
     }
     return false;
 }
+
+
+void HitCollision::Init(Entity* e) {
+    Hit::Init(e);
+    m_engine = Engine::get().GetRunner<CollisionEngine>();
+    m_entity = e;
+}
+
+
+
+void HitCollision::ResetState() {
+    m_hitDone = false;
+}
+
+
 
 bool HitCollision::Run(double dt) {
     if (Hit::Run(dt))

@@ -3,9 +3,10 @@
 #include <gfx/components/renderer.h>
 #include <gfx/random.h>
 
-void AIWalk::Start() {
+void AIWalk::Init(Entity* e) {
+    m_entity = e;
     m_target = Engine::get().GetRef<Entity>(m_targetId);
-    m_renderer = m_entity->GetComponent<Renderer>();
+    m_renderer = e->GetComponent<Renderer>();
     m_eps = 0.1;
     m_offset = glm::vec2(40, 0);
 }
