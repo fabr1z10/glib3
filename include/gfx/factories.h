@@ -1,126 +1,194 @@
 #pragma once
 
-#include <gfx/entity.h>
+#include <gfx/lua/luatable.h>
+#include <gfx/factory.h>
 #include <memory>
-#include <string>
-#include <gfx/lua/luawrapper.h>
-#include <gfx/state.h>
-#include <gfx/error.h>
-#include <gfx/runner.h>
 
-
-class Activity;
-class LuaTable;
-class State;
+class Entity;
 class Shape;
-class Camera;
+class Renderer;
+class Function2D;
+class HotSpot;
+class Runner;
+class State;
+class Activity;
+class IMesh;
 
-template<class T>
-class FactoryMethod {
-public:
-    virtual std::shared_ptr<T> Create(luabridge::LuaRef& ref) = 0;
-};
+#define FACTORY(name, type) \
+    class name : public FactoryMethod<type> { \
+    public: \
+        std::unique_ptr<type> Create(luabridge::LuaRef& ref) override; \
+    };
 
-template<class T>
-class Factory {
-public:
-    std::shared_ptr<T> Create(luabridge::LuaRef ref) {
-        luabridge::LuaRef r = ref["type"];
-        std::string type = r.isNil() ? "default" : r.cast<std::string>();
-        auto it = m_factories.find(type);
-        if (it == m_factories.end())
-            GLIB_FAIL("Unknown object " << type);
-        return it->second->Create(ref);
-    }
-    void Add(const std::string& name, std::unique_ptr<FactoryMethod<T>> m){
-        m_factories[name] = std::move(m);
-    }
-    template<class FM>
-    void Add(const std::string& name){
-        m_factories[name] = std::unique_ptr<FM>(new FM);
-    }
-private:
-    std::unordered_map<std::string, std::unique_ptr<FactoryMethod<T>> > m_factories;
-};
+// Entities
+FACTORY(EntityFactory, Entity)
+FACTORY(OutlineTextFactory, Entity)
 
+// Components
+FACTORY(TextComponentFactory, Component)
+FACTORY(GfxComponentFactory, Component)
+FACTORY(ColliderComponentFactory, Component)
+FACTORY(StateMachineComponentFactory, Component)
+FACTORY(HotSpotComponentFactory, Component)
+FACTORY(DepthComponentFactory, Component)
+FACTORY(FollowComponentFactory, Component)
+FACTORY(Controller2DComponentFactory, Component)
+FACTORY(Dynamics2DComponentFactory, Component)
+FACTORY(InfoComponentFactory, Component)
+FACTORY(KeyInputComponentFactory, Component)
+FACTORY(LuaKeyboardComponentFactory, Component)
+FACTORY(TextViewComponentFactory, Component)
+FACTORY(ShadowComponentFactory, Component)
+FACTORY(BillboardComponentFactory, Component)
 
+// Runners
+FACTORY(HotSpotManagerFactory, Runner)
+FACTORY(SchedulerFactory, Runner)
+FACTORY(CollisionEngineFactory, Runner)
 
-class ComponentFactory {
-public:
-    virtual void operator()(luabridge::LuaRef&, Entity*) = 0;
-};
+// Shapes
+FACTORY(RectFactory, Shape)
+FACTORY(LineFactory, Shape)
+FACTORY(PolyFactory, Shape)
+FACTORY(CircleFactory, Shape)
+FACTORY(EllipseFactory, Shape)
+FACTORY(GraphFactory, Shape)
+FACTORY(CompoundFactory, Shape)
 
+// Cameras
+FACTORY(OrthoCamFactory, Camera)
+FACTORY(PerspectiveCamFactory, Camera)
 
-//class StateFactory {
+// Activities
+FACTORY(NoOpActFactory, Activity)
+FACTORY(ChangeRoomActFactory, Activity)
+FACTORY(CallFuncActFactory, Activity)
+FACTORY(ScrollActFactory, Activity)
+FACTORY(CollisionCheckActFactory, Activity)
+FACTORY(MoveActFactory, Activity)
+FACTORY(MoveGravityActFactory, Activity)
+FACTORY(RotateActFactory, Activity)
+FACTORY(DelayActFactory, Activity)
+FACTORY(AnimateActFactory, Activity)
+FACTORY(ChangeStateActFactory, Activity)
+FACTORY(ShowMessageActFactory, Activity)
+
+// Asset
+FACTORY(SpriteFactory, IMesh)
+
+// States
+FACTORY(AnimInitializerFactory, StateInitializer)
+FACTORY(AnimColliderInitializerFactory, StateInitializer)
+
+//class EntityFactory : public FactoryMethod<Entity> {
 //public:
-//    virtual std::shared_ptr<State> Create(luabridge::LuaRef&) = 0;
+//    std::shared_ptr<Entity> Create(luabridge::LuaRef& ref) override;
+//
 //};
-//class RunnerFactory {
+
+// helper functions
+//std::shared_ptr<Renderer> ReadTextComponent (luabridge::LuaRef& ref);
+//std::shared_ptr<Shape> ReadShape(luabridge::LuaRef& ref);
+std::unique_ptr<Function2D> GetFunc2D(luabridge::LuaRef& ref);
+//std::shared_ptr<HotSpot> GetHotSpot (luabridge::LuaRef& ref, std::shared_ptr<Shape> shape);
+
+//class TextComponentFactory : public ComponentFactory {
+//    void operator()(luabridge::LuaRef&, Entity*) override;
+//};
+//
+//class OutlineTextComponentFactory : public ComponentFactory {
+//    void operator()(luabridge::LuaRef&, Entity*) override;
+//};
+
+//class CameraFactory : public ComponentFactory {
+//    void operator()(luabridge::LuaRef&, Entity*) override;
+//};
+
+//class KeyInputFactory : public ComponentFactory {
+//    void operator()(luabridge::LuaRef&, Entity*) override;
+//};
+
+//class GfxComponentFactory : public ComponentFactory {
+//    void operator()(luabridge::LuaRef&, Entity*) override;
+//};
+
+//class ColliderComponentFactory : public ComponentFactory {
+//    void operator()(luabridge::LuaRef&, Entity*) override;
+//};
+
+//class HotSpotComponentFactory : public ComponentFactory {
+//    void operator()(luabridge::LuaRef&, Entity*) override;
+//};
+
+//class StateMachineComponentFactory : public ComponentFactory {
 //public:
-//    virtual void Create(luabridge::LuaRef&) = 0;
+//    StateMachineComponentFactory();
+//    void operator()(luabridge::LuaRef&, Entity*) override;
+//private:
+//    // state factory
+//
+//    SceneFactory* m_sceneFactory;
+//};
+//
+//class LuaKeyboardComponentFactory : public ComponentFactory {
+//    void operator()(luabridge::LuaRef&, Entity*) override;
+//};
+
+//class SwitchComponentFactory : public ComponentFactory {
+//    void operator()(luabridge::LuaRef&, Entity*) override;
+//};
+
+//class DepthComponentFactory : public ComponentFactory {
+//    void operator()(luabridge::LuaRef&, Entity*) override;
 //};
 
 
 
-class SceneFactory {
-public:
-    virtual ~SceneFactory() {}
-    virtual std::shared_ptr<Entity> Create() = 0;
-    virtual void CleanUp () = 0;
-    virtual void PostInit() {}
-    virtual std::shared_ptr<Entity> ReadItem(luabridge::LuaRef& ref) = 0;
-    template<typename T>
-    std::shared_ptr<T> Get(luabridge::LuaRef&) {
-        GLIB_FAIL("Not imnplemented yet");
-    }
+//class FollowComponentFactory : public ComponentFactory {
+//    void operator()(luabridge::LuaRef&, Entity*) override;
+//};
+//
+//class BillboardComponentFactory : public ComponentFactory {
+//    void operator()(luabridge::LuaRef&, Entity*) override;
+//};
+
+//
+//
+//class ButtonComponentFactory : public ComponentFactory {
+//    void operator()(luabridge::LuaRef&, Entity*) override;
+//};
+
+//class TextViewComponentFactory : public ComponentFactory {
+//    void operator()(luabridge::LuaRef&, Entity*) override;
+//};
+//
+//class ShadowComponentFactory : public ComponentFactory {
+//    void operator()(luabridge::LuaRef&, Entity*) override;
+//};
+//
+//
+
+// --- runners
 
 
-protected:
-    Factory<Camera> m_cameraFactory;
-    Factory<Shape> m_shapeFactory;
-    Factory<Entity> m_entityFactory;
-    Factory<Activity> m_activityFactory;
-    Factory<Component> m_componentFactory;
-    Factory<Runner> m_runnerFactory;
-    Factory<StateInitializer> m_stateInitFactory;
-    Factory<StateBehaviour> m_stateBehaviorFactory;
-};
-
-
-template <>
-inline std::shared_ptr<Entity> SceneFactory::Get<Entity> (luabridge::LuaRef& ref) {
-    return m_entityFactory.Create(ref);
-}
-
-template <>
-inline std::shared_ptr<Runner> SceneFactory::Get<Runner> (luabridge::LuaRef& ref) {
-    return m_runnerFactory.Create(ref);
-}
-
-template <>
-inline std::shared_ptr<StateInitializer> SceneFactory::Get<StateInitializer> (luabridge::LuaRef& ref) {
-    return m_stateInitFactory.Create(ref);
-}
-
-template <>
-inline std::shared_ptr<StateBehaviour> SceneFactory::Get<StateBehaviour> (luabridge::LuaRef& ref) {
-    return m_stateBehaviorFactory.Create(ref);
-}
-
-template <>
-inline std::shared_ptr<Component> SceneFactory::Get<Component> (luabridge::LuaRef& ref) {
-    return m_componentFactory.Create(ref);
-}
-
-template <>
-inline std::shared_ptr<Activity> SceneFactory::Get<Activity> (luabridge::LuaRef& ref) {
-    return m_activityFactory.Create(ref);
-}
-
-
-class ActivityFactory {
-public:
-    virtual ~ActivityFactory () {}
-    // can I make it const LuaTable& ?
-    virtual std::unique_ptr<Activity> createActivity(LuaTable& t) = 0;
-};
+// --- states
+//class BasicStateFactory : public Factory {
+//    std::shared_ptr<State> Create(luabridge::LuaRef&) override;
+//};
+//
+//class WalkStateFactory : public StateFactory {
+//    std::shared_ptr<State> Create(luabridge::LuaRef&) override;
+//};
+//
+//class WalkCollisionStateFactory : public StateFactory {
+//    std::shared_ptr<State> Create(luabridge::LuaRef&) override;
+//};
+//
+//class HitStateFactory : public StateFactory {
+//    std::shared_ptr<State> Create(luabridge::LuaRef&) override;
+//};
+//
+//class AIWalkStateFactory : public StateFactory {
+//    std::shared_ptr<State> Create(luabridge::LuaRef&) override;
+//};
+//

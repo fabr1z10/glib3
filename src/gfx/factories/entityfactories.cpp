@@ -1,12 +1,12 @@
-#include <gfx/compfactories.h>
+#include <gfx/factories.h>
 #include <gfx/math/geom.h>
 #include <gfx/engine.h>
 #include <gfx/textmesh.h>
 #include <gfx/components/renderer.h>
 
-std::shared_ptr<Entity> EntityFactory::Create(luabridge::LuaRef& ref) {
+std::unique_ptr<Entity> EntityFactory::Create(luabridge::LuaRef& ref) {
 
-    auto entity = std::make_shared<Entity>();
+    auto entity = std::unique_ptr<Entity>(new Entity);
 
     LuaTable item(ref);
     std::string tag = item.Get<std::string>("tag", "");
@@ -27,33 +27,37 @@ std::shared_ptr<Entity> EntityFactory::Create(luabridge::LuaRef& ref) {
     // setup camera
     if (item.HasKey("camera")) {
         luabridge::LuaRef cam = item.Get<luabridge::LuaRef>("camera");
-        auto camera = factory->Get<Camera>(cam);
+        auto camera = factory->GetShared<Camera>(cam);
         entity->SetCamera(camera);
     }
 
     // add components
-    auto keyValueMap = LuaTable::getKeyValueMap(ref);
-    for (auto& pair : keyValueMap) {
-        auto component = factory->Get<Component>(pair.second);
-        entity->AddComponent(component);
+    if (item.HasKey("components")) {
+        luabridge::LuaRef c = item.Get<luabridge::LuaRef>("components");
+        for (int i = 0; i < c.length(); ++i) {
+            luabridge::LuaRef rcomponent = c[i+1];
+            auto component = factory->GetShared<Component>(rcomponent);
+            entity->AddComponent(component);
+        }
+
     }
 
     if (item.HasKey("children")) {
         luabridge::LuaRef c = item.Get<luabridge::LuaRef>("children");
         for (int i = 0; i < c.length(); ++i) {
             luabridge::LuaRef child = c[i+1];
-            auto childEntity = factory->Get<Entity>(child);
+            auto childEntity = factory->GetShared<Entity>(child);
             entity->AddChild(childEntity);
         }
     }
     entity->SetActive(active);
-    return entity;
+    return std::move(entity);
 }
 
-std::shared_ptr<Entity> OutlineTextComponentFactory::Create(luabridge::LuaRef &ref, Entity *parent) {
+std::unique_ptr<Entity> OutlineTextFactory::Create(luabridge::LuaRef &ref) {
 
     LuaTable table(ref);
-    auto parent = std::make_shared<Entity>();
+    auto parent = std::unique_ptr<Entity>(new Entity);
     std::string tag = table.Get<std::string>("tag", "");
     std::string name = table.Get<std::string>("name", "");
     if (!tag.empty()) parent->SetTag(tag);
@@ -89,5 +93,5 @@ std::shared_ptr<Entity> OutlineTextComponentFactory::Create(luabridge::LuaRef &r
         //entity->AddComponent(renderer);
         parent->AddChild(entity);
     }
-    return parent;
+    return std::move(parent);
 }

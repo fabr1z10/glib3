@@ -1,2 +1,0 @@
-#include <gfx/factories.h>
-

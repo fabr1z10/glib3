@@ -31,9 +31,10 @@ function makeRect(arg)
 	local s = { type = "rect", width = width, height = height }
 	return {
 		pos = arg.pos,
-		--gfx = {shape=arg.shape, color={255,255,255,255} },
-		gfx = { image="gfx/block1.png", width = width, height = height, rep={arg.width, arg.height}},	
-		collider= {shape=s, tag=10, flag = 2}
+		components = {
+			{ type ="gfx", image="gfx/block1.png", width = width, height = height, rep={arg.width, arg.height} },
+			{ type ="collider", shape=s, tag=10, flag = 2 }
+		}
 	}
 end
 
@@ -72,18 +73,18 @@ function makeBonusBrick(arg)
 	return {
 		tag = b,
 		pos = {arg.pos[1] * 16, y, 0},
-		gfx = { model=arg.sprite, anim="idle", width = 16, height = 16},	
-		collider= {shape=s, tag=10, flag = 2},
-		info = {
-			y = y,
-            hits = arg.hits,
-			bonus = arg.bonusfactory
+		components = {
+			{ type="gfx", model=arg.sprite, anim="idle", width = 16, height = 16},	
+			{ type="collider", shape=s, tag=10, flag = 2},
+			{ type="info", y = y, hits = arg.hits, bonus = arg.bonusfactory}
 		},
 		children = {
 			-- head sensor
 			{
-				collider = { shape = s1, tag = 21, flag = 4 },
-				gfx = { shape = s1, color = {255,0,0,255}}
+				components = {
+					{ type="collider", shape = s1, tag = 21, flag = 4 },
+					{ type="gfx", shape = s1, color = {255,0,0,255}}
+				}
 			}
 		}
 	}

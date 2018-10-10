@@ -11,7 +11,7 @@ public:
     void AddTable (const std::string& name);
     Monkey();
 
-    template <typename SCENE_FACTORY, typename ACTIVITIES_FACTORY>
+    template <typename SCENE_FACTORY>
     void Init() {
 
         LuaTable& engine =(*this)["engine"];
@@ -36,7 +36,6 @@ public:
 
         LoadFonts();
         g.SetSceneFactory(std::unique_ptr<SceneFactory>(new SCENE_FACTORY));
-        g.SetActivityFactory(std::unique_ptr<ActivityFactory>(new ACTIVITIES_FACTORY));
     }
 
     void Start();

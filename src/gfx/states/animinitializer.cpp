@@ -1,4 +1,4 @@
-#include <gfx/basicstate.h>
+#include <gfx/states/animinitializer.h>
 #include <gfx/entity.h>
 #include <gfx/engine.h>
 #include <gfx/components/renderer.h>

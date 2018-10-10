@@ -4,7 +4,7 @@
 #include <GLFW/glfw3.h>
 #include <gfx/singleton.h>
 #include <gfx/shader.h>
-#include <gfx/factories.h>
+#include <gfx/scenefactory.h>
 #include <gfx/listener.h>
 #include <unordered_set>
 #include <gfx/assetman.h>
@@ -44,9 +44,6 @@ public:
     Entity* GetScene() const;
     SceneFactory* GetSceneFactory();
     void SetSceneFactory (std::unique_ptr<SceneFactory> factory);
-    ActivityFactory* GetActivityFactory();
-    void SetActivityFactory (std::unique_ptr<ActivityFactory> factory);
-
     glm::vec2 GetDeviceSize() const;
     void RegisterToWindowResizeEvent(WindowResizeListener*);
     void UnregisterToWindowResizeEvent(WindowResizeListener*);
@@ -111,7 +108,6 @@ private:
     void InitGL(const EngineConfig& config);
     std::unordered_set<Entity*> m_garbage;
     std::unique_ptr<SceneFactory> m_sceneFactory;
-    std::unique_ptr<ActivityFactory> m_activityFactory;
     std::unordered_map<ShaderType, std::unique_ptr<Shader>, EnumClassHash> m_shaders;
     std::shared_ptr<Entity> m_scene;
     bool m_running;
@@ -202,10 +198,3 @@ inline RenderingEngine* Engine::GetRenderingEngine() {
     return m_renderingEngine.get();
 }
 
-inline ActivityFactory* Engine::GetActivityFactory() {
-    return m_activityFactory.get();
-}
-
-inline void Engine::SetActivityFactory(std::unique_ptr<ActivityFactory> factory) {
-    m_activityFactory = std::move(factory);
-}

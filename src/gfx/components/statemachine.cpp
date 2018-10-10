@@ -58,7 +58,7 @@ void RandomTransitionStateMachine::Update(double dt) {
 
 // key triggered state change
 void KeyboardControlledStateMachine::KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-    std::cout << action << ", " << key<<"\n";
+    //std::cout << action << ", " << key<<"\n";
     if (action == GLFW_PRESS)
     {
         //std::cout << key << " press " << scancode << " , " << mods << "\n";

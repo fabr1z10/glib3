@@ -16,15 +16,18 @@ public:
     virtual void ResetState() {}
     virtual void Init(Entity*) = 0;
     virtual bool Run(double) = 0;
+    std::string GetNextState() const;
 protected:
     std::string m_nextState;
 };
 
-
+inline std::string StateBehaviour::GetNextState() const {
+    return m_nextState;
+}
 
 class State {
 public:
-    State() : m_nextState() {}
+    State() {}
     void Init(Entity*);
     void Start();
     bool Run(double);
@@ -37,12 +40,11 @@ protected:
     std::unique_ptr<StateInitializer> m_initializer;
     std::unique_ptr<StateBehaviour> m_behaviour;
     std::string m_id;
-    std::string m_nextState;
     Entity* m_entity;
 };
 
 inline std::string State::GetNextState() const {
-    return m_nextState;
+    return m_behaviour->GetNextState();
 }
 
 inline std::string State::GetId() const {

@@ -1,6 +1,5 @@
 #include <gfx/state.h>
 #include <vector>
-#include "state.h"
 
 class Entity;
 class Renderer;

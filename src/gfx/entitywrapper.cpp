@@ -6,7 +6,7 @@
 #include <gfx/engine.h>
 #include <gfx/components/textview.h>
 #include <gfx/activities/animate.h>
-#include <gfx/compfactories.h>
+#include <gfx/factories.h>
 #include <gfx/components/info.h>
 #include <gfx/components/depth.h>
 #include <gfx/components/dynamics2d.h>
@@ -66,7 +66,7 @@ EntityWrapper EntityWrapper::GetEntity(const std::string& id) {
 EntityWrapper EntityWrapper::AddEntity(luabridge::LuaRef ref, EntityWrapper* parent) {
 
     auto mf = Engine::get().GetSceneFactory();
-    auto ptr = mf->ReadItem(ref);
+    auto ptr = mf->GetShared<Entity>(ref);
     parent->m_underlying->AddChild(ptr);
 
     EntityWrapper ew(ptr.get());
@@ -148,13 +148,10 @@ namespace luaFunctions {
         }
         luabridge::LuaRef actions = ref["actions"];
         auto a = LuaTable::getIntValueMap(actions);
-        ActivityFactory* af = Engine::get().GetActivityFactory();
+        auto factory = Engine::get().GetSceneFactory();
         for (auto& p : a) {
-            LuaTable table(p.second);
-            auto activity= af->createActivity(table);
-            //std::cout << "Adding = " << p.first <<"\n";
+            auto activity= factory->Get<Activity>(p.second);
             script->AddActivity(p.first, std::move(activity));
-
         }
 
         for (auto& p : a) {
@@ -226,12 +223,12 @@ void EntityWrapper::AppendText(const std::string& text) {
 }
 
 void EntityWrapper::AppendButton(luabridge::LuaRef ref) {
-    TextView* r = m_underlying->GetComponent<TextView>();
-    LuaTable table(ref);
-    std::string text = table.Get<std::string>("text");
-    auto mf = dynamic_cast<SceneFactory*>(Engine::get().GetSceneFactory());
-    auto hs = GetHotSpot(ref, nullptr);
-    r->AppendText(text, hs);
+//    TextView* r = m_underlying->GetComponent<TextView>();
+//    LuaTable table(ref);
+//    std::string text = table.Get<std::string>("text");
+//    auto mf = dynamic_cast<SceneFactory*>(Engine::get().GetSceneFactory());
+//    auto hs = GetHotSpot(ref, nullptr);
+//    r->AppendText(text, hs);
 }
 
 luabridge::LuaRef EntityWrapper::GetTextInfo() {

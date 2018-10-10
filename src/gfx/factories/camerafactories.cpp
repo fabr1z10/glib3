@@ -1,7 +1,7 @@
-#include <gfx/compfactories.h>
+#include <gfx/factories.h>
 #include <gfx/engine.h>
 
-std::shared_ptr<Camera> OrthoCamFactory::Create(luabridge::LuaRef &ref) {
+std::unique_ptr<Camera> OrthoCamFactory::Create(luabridge::LuaRef &ref) {
 
     LuaTable tcam(ref);
     std::string tag = tcam.Get<std::string>("tag", "");
@@ -18,10 +18,10 @@ std::shared_ptr<Camera> OrthoCamFactory::Create(luabridge::LuaRef &ref) {
     camera->SetPosition(pos, direction, up);
     if (!tag.empty())
         camera->SetTag(tag);
-    return camera;
+    return std::move(camera);
 }
 
-std::shared_ptr<Camera> PerspectiveCamFactory::Create(luabridge::LuaRef &ref) {
+std::unique_ptr<Camera> PerspectiveCamFactory::Create(luabridge::LuaRef &ref) {
     LuaTable tcam(ref);
     std::string tag = tcam.Get<std::string>("tag", "");
     glm::vec3 pos = tcam.Get<glm::vec3>("pos", glm::vec3(0.0f));
@@ -37,5 +37,5 @@ std::shared_ptr<Camera> PerspectiveCamFactory::Create(luabridge::LuaRef &ref) {
     camera->SetPosition(pos, direction, up);
     if (!tag.empty())
         camera->SetTag(tag);
-    return camera;
+    return std::move(camera);
 }

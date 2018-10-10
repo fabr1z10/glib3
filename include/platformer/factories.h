@@ -2,15 +2,20 @@
 
 #include <gfx/factories.h>
 
-class Idle2DStateFactory : public FactoryMethod<StateBehaviour> {
-    std::shared_ptr<StateBehaviour> Create(luabridge::LuaRef&) override;
-};
-class Walk2DStateFactory : public FactoryMethod<StateBehaviour> {
-    std::shared_ptr<StateBehaviour> Create(luabridge::LuaRef&) override;
-};
-class Jump2DStateFactory : public FactoryMethod<StateBehaviour> {
-    std::shared_ptr<StateBehaviour> Create(luabridge::LuaRef&) override;
-};
-class EnemyWalk2DStateFactory : public FactoryMethod<StateBehaviour> {
-    std::shared_ptr<StateBehaviour> Create(luabridge::LuaRef&) override;
-};
+FACTORY(Idle2DStateFactory, StateBehaviour)
+FACTORY(Walk2DStateFactory, StateBehaviour)
+FACTORY(Jump2DStateFactory, StateBehaviour)
+FACTORY(EnemyWalk2DStateFactory, StateBehaviour)
+
+//class Idle2DStateFactory : public FactoryMethod<StateBehaviour> {
+//    std::unique_ptr<StateBehaviour> Create(luabridge::LuaRef&) override;
+//};
+//class Walk2DStateFactory : public FactoryMethod<StateBehaviour> {
+//    std::unique_ptr<StateBehaviour> Create(luabridge::LuaRef&) override;
+//};
+//class Jump2DStateFactory : public FactoryMethod<StateBehaviour> {
+//    std::unique_ptr<StateBehaviour> Create(luabridge::LuaRef&) override;
+//};
+//class EnemyWalk2DStateFactory : public FactoryMethod<StateBehaviour> {
+//    std::unique_ptr<StateBehaviour> Create(luabridge::LuaRef&) override;
+//};

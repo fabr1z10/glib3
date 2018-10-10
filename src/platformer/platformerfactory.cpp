@@ -2,7 +2,7 @@
 #include <platformer/factories.h>
 
 
-PlatformerFactory::PlatformerFactory() : BasicSceneFactory() {
+PlatformerFactory::PlatformerFactory() : SceneFactory() {
 
     // platformer states
     m_stateBehaviorFactory.Add<Idle2DStateFactory>("idle2d");

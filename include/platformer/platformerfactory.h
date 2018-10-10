@@ -1,8 +1,8 @@
 #pragma once
 
-#include <gfx/basicfactory.h>
+#include <gfx/scenefactory.h>
 
-class PlatformerFactory : public BasicSceneFactory {
+class PlatformerFactory : public SceneFactory {
 public:
     PlatformerFactory();
 };
