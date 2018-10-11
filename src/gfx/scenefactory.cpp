@@ -29,6 +29,8 @@ SceneFactory::SceneFactory() {
 
     m_stateInitFactory.Add<AnimInitializerFactory>("anim");
     m_stateInitFactory.Add<AnimColliderInitializerFactory>("animcollider");
+    m_stateInitFactory.Add<LuaInitializerFactory>("lua");
+    m_stateInitFactory.Add<LuaAnimColliderInitializerFactory>("luaanim");
 
     m_activityFactory.Add<NoOpActFactory>("noop");
     m_activityFactory.Add<CallFuncActFactory>("callfunc");

@@ -3,6 +3,15 @@ local startPos = {32, 64}
 local g = -10
 local marioAcc = 0.05
 local marioSpeed = 75
+
+function mario_mushroom(e1, e2) 
+	e2:parent():remove()
+	mario = e1:parent()
+	info = mario:getinfo()
+	info.supermario = true
+	mario:resetstate()
+end
+
 room = {
 
 engines = {
@@ -12,7 +21,8 @@ engines = {
 		size = {collisionSize, collisionSize}, 
 		response = {
 			{ tag = {1, 20}, onenter = basicBrickResponse },
-			{ tag = {1, 21}, onenter = bonusBrickResponse }				
+			{ tag = {1, 21}, onenter = bonusBrickResponse },
+			{ tag = {3,4}, onenter = mario_mushroom}				
 		}
 	}
 },
@@ -47,7 +57,7 @@ scene = {
 					{ type="collider", shape = {type="rect", width=14, height=16, offset={-8,0}}, tag = 1, flag= 1 },
 					{ type="statemachine", initialstate = "idle",
 						states = {
-							{ id = "idle", init = { type="anim", anim="idle", colliders = {"normal"}}, behavior = { type ="idle2d", acceleration = marioAcc }},
+							{ id = "idle", init = { type="luaanim", func = marioinit }, behavior = { type ="idle2d", acceleration = marioAcc }},
 							{ id = "walk", init = { type="anim", anim="walk", colliders = {"normal"}}, behavior = { type ="walk2d", acceleration = marioAcc, speed= marioSpeed }},
 							{ id = "jump", init = { type="anim", anim="jump", colliders = {"normal"}}, behavior = { type ="jump2d", acceleration = marioAcc, speed= marioSpeed }},
 						},
@@ -59,6 +69,7 @@ scene = {
 							{ current = "walk", key =  265, next="jump" }
 						}
 					},
+					{ type="info", supermario = false, fire = false },
 					{ type="follow", cam ="maincam", relativepos={0,0,5}, up={0,1,0} }
 		 		},
 				-- collider boxes

@@ -79,6 +79,8 @@ FACTORY(SpriteFactory, IMesh)
 // States
 FACTORY(AnimInitializerFactory, StateInitializer)
 FACTORY(AnimColliderInitializerFactory, StateInitializer)
+FACTORY(LuaAnimColliderInitializerFactory, StateInitializer)
+FACTORY(LuaInitializerFactory, StateInitializer)
 
 //class EntityFactory : public FactoryMethod<Entity> {
 //public:

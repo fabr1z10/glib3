@@ -20,6 +20,7 @@ public:
     // impl component
     void Start() override;
     void Update(double) override ;
+    State* GetCurrentState();
 
     using ParentClass = StateMachine;
 protected:
@@ -28,6 +29,9 @@ protected:
     State* m_currentState;
 };
 
+inline State* StateMachine::GetCurrentState() {
+    return m_currentState;
+}
 
 // Transition controlled via keyboard
 class KeyboardControlledStateMachine : public StateMachine, public KeyboardListener {

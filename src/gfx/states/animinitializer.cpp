@@ -36,14 +36,27 @@ void AnimColliderInitializer::Start () {
     for (auto& c : m_colliders) {
         c->SetActive(true);
     }
+}
 
-//    auto &v = m_entity->GetChildren();
-//    for (auto &c : v)
-//        c->SetActive(false);
-//    for (auto &c : m_colliders)
-//        c->SetActive(true);
+LuaAnimColliderInitializer::LuaAnimColliderInitializer (luabridge::LuaRef func) : m_ref(func) {
 
 }
+
+void LuaAnimColliderInitializer::Init(Entity* e) {
+    m_entity = e;
+    m_renderer = e->GetComponent<Renderer>();
+    m_info = e->GetComponent<LuaInfo>();
+}
+
+
+void LuaAnimColliderInitializer::Start () {
+    luabridge::LuaRef f = m_ref(m_info->get());
+    for (auto& c : m_entity->GetChildren()) {
+        c->SetActive(false);
+    }
+}
+
+
 
 
 

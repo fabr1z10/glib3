@@ -13,6 +13,12 @@ sprites = {
 					{ duration = dt, quads = { { x = 0, y = 0, width = 16, height = 16, anchor = {8, 0}}}}
 				}
 		    },
+		    {
+		        name = "idlebig", frames = 
+				{ 
+					{ duration = dt, quads = { { x = 80, y = 16, width = 16, height = 32, anchor = {8, 0}}}}
+				}
+		    },
 	        {
 	           name="walk",
 	           frames=
@@ -23,12 +29,29 @@ sprites = {
 			   }				
 	        },		
 	        {
+	           name="walkbig",
+	           frames=
+	           { 
+					{ duration = dt, quads = { { x = 80, y = 16, width = 16, height = 32, anchor = {8, 0}}}},
+					{ duration = dt, quads = { { x = 96, y = 16, width = 16, height = 32, anchor = {8, 0}}}},
+					{ duration = dt, quads = { { x = 112, y = 16, width = 16, height = 32, anchor = {8, 0}}}},
+			   }				
+	        },		
+	        {
 	           name="jump",
 	           frames=
 	           { 
 					{ duration = dt, quads = { { x = 80, y = 0, width = 16, height = 16, anchor = {8, 0}}}},
 			   }				
 	        },				
+	        {
+	           name="jumpbig",
+	           frames=
+	           { 
+					{ duration = dt, quads = { { x = 128, y = 16, width = 16, height = 32, anchor = {8, 0}}}},
+			   }				
+	        },				
+
 		}
 	},
 	basicbrick = {

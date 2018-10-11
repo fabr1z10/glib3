@@ -29,7 +29,7 @@
 #include <gfx/components/controller2d.h>
 #include <gfx/components/dynamics2d.h>
 #include <gfx/runner.h>
-
+#include <gfx/states/luainitializer.h>
 
 
 std::unique_ptr<Component> TextComponentFactory::Create(luabridge::LuaRef &ref) {
@@ -516,6 +516,18 @@ std::unique_ptr<StateInitializer> AnimColliderInitializerFactory::Create(luabrid
     return std::unique_ptr<AnimColliderInitializer>(new AnimColliderInitializer(anim, activate));
 }
 
+
+std::unique_ptr<StateInitializer> LuaInitializerFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    luabridge::LuaRef func = table.Get<luabridge::LuaRef>("func");
+    return std::unique_ptr<LuaInitializer>(new LuaInitializer(func));
+}
+
+std::unique_ptr<StateInitializer> LuaAnimColliderInitializerFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    luabridge::LuaRef func = table.Get<luabridge::LuaRef>("func");
+    return std::unique_ptr<LuaAnimColliderInitializer>(new LuaAnimColliderInitializer(func));
+}
 
 //std::shared_ptr<State> BasicStateFactory::Create(luabridge::LuaRef & r) {
 //    LuaTable table(r);

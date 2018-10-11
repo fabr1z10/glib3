@@ -24,6 +24,10 @@ function restartRoom()
 	monkey.play(s)
 end
 
+function marioinit(e) 
+	print ("is supermario? " .. tostring(e.supermario))
+	
+end
 
 function makeRect(arg)
 	local width = 16 * arg.width

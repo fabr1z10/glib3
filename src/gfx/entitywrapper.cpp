@@ -247,6 +247,11 @@ void EntityWrapper::ChangeState(const std::string& name)
     m_underlying->GetComponent<StateMachine>()->ChangeState(name);
 }
 
+void EntityWrapper::ResetState() {
+    auto sm = m_underlying->GetComponent<StateMachine>();
+    sm->GetCurrentState()->Start();
+}
+
 
 luabridge::LuaRef EntityWrapper::GetInfo() {
     return m_underlying->GetComponent<LuaInfo>()->get();
