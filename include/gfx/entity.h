@@ -21,7 +21,7 @@
 #include <list>
 #include <memory>
 #include <unordered_map>
-
+#include <gfx/components/statemachine.h>
 // an entity has a position, a tag and a bunch of components attached
 // that determine its behaviour. Every entity can have zero or more children entities
 // and only one parent (i.e. they are organized in a tree)

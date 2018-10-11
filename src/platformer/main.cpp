@@ -4,7 +4,7 @@
 #include <platformer/platformerfactory.h>
 #include <gfx/monkey.h>
 #include <set>
-
+#include <gfx/components/statemachine.h>
 int main(int argc, char* argv[])
 {
     if (argc < 2) {
@@ -12,6 +12,8 @@ int main(int argc, char* argv[])
         return 1;
     }
     try {
+
+
         std::string homeDir(argv[1]);
         Engine::get().GetAssetManager().SetDirectory(homeDir);
         Monkey& m = Monkey::get();

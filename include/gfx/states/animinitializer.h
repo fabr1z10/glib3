@@ -22,7 +22,7 @@ public:
     void Init(Entity* e) override;
     void Start () override;
 private:
-    Entity* m_colliderContainer;
+    Entity* m_entity;
     std::vector<Entity*> m_colliders;
     std::vector<std::string> m_activeColliders;
 };

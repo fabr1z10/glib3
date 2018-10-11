@@ -25,8 +25,10 @@ SceneFactory::SceneFactory() {
     m_componentFactory.Add<InfoComponentFactory>("info");
 
     m_shapeFactory.Add<RectFactory>("rect");
+    m_shapeFactory.Add<LineFactory>("line");
 
     m_stateInitFactory.Add<AnimInitializerFactory>("anim");
+    m_stateInitFactory.Add<AnimColliderInitializerFactory>("animcollider");
 
     m_activityFactory.Add<NoOpActFactory>("noop");
     m_activityFactory.Add<CallFuncActFactory>("callfunc");

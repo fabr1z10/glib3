@@ -71,11 +71,11 @@ scene = {
 					}
 				}
 			},
-			-- makeLine { A = {0,0}, B = {0,256} },
+			makeLine { A = {1,0}, B = {1,256} },
 			makeRect { pos ={0,0,0}, width = 69, height = 2 },
 			-- makeBrick { pos = {5,4}, sprite="basicbrick" },
 			-- makeBrick { pos ={ 4, 5}, sprite="basicbrick"},
-			 makeBonusBrick { pos = {7,5}, sprite="bonusbrick", hits=1, bonusfactory = ciao }
+			makeBonusBrick { pos = {7,5}, sprite="bonusbrick", hits=1, bonusfactory = ciao }
 		}
 	}
 },

@@ -96,8 +96,10 @@ function makeLine (arg)
 	return {
 		pos = {0,0,0},
 		--gfx = {shape=arg.shape, color={255,255,255,255} },
-		gfx = { shape = s, color = {255,255,255,255}},	
-		collider= {shape=s, tag=10, flag = 2}
+		components = {
+			{ type="gfx", shape = s, color = {255,255,255,255}  },
+			{ type="collider", shape=s, tag=10, flag = 2 }
+		}
 	}
 end
 
@@ -105,20 +107,25 @@ function ciao(brick)
 
 	local main = monkey.getEntity("main")
 	print ("Brick position is " .. tostring(brick.x) .. ", " .. tostring(brick.y))
-	local t = nextTag()
+	local t = nextTag()	
+	local s = {type="rect", width=16, height=16, offset={-8,0}}
 	local m = {
 		tag = t,
 		pos = { brick.x + 8, brick.y, 0.1 },
-		gfx = { model = "mushroom", anim="idle" },
-		collider = { shape = {type="rect", width=16, height=16, offset={-8,0}}, tag = 22, flag= 1},
-		controller2d = { maxclimbangle = 80, maxdescendangle = 80, horizontalrays=4, verticalrays=4 },
-		dynamics2d = { jumpheight = 64, timetojumpapex = 0.5 },
-		statemachine = {
-			initialstate = "idle",
-			states = {
-				{ id = "idle", type ="basic", anim="idle" },
-				{ id = "walk", type ="enemywalk2d", anim="idle", speed = 50, dir = -1, flip = false},
+		components = {
+			{ type="gfx", model = "mushroom", anim="idle" },
+			{ type="collider", shape = s, tag = 22, flag= 1},
+			{ type="controller2d", maxclimbangle = 80, maxdescendangle = 80, horizontalrays=4, verticalrays=4 },
+			{ type="dynamics2d", jumpheight = 64, timetojumpapex = 0.5 },
+			{ type="statemachine", initialstate = "idle",
+				states = {
+					{ id = "idle", init = { type="animcollider", anim="idle", activate= {} }},
+					{ id = "walk", init = { type="animcollider", anim="idle", activate={"enemycollider"} }, behavior= {type="enemywalk2d", speed=50, dir=-1, flip=false }}
+				}
 			}
+		},
+		children = {
+			{ name="enemycollider", components = { {type="collider", shape=s, tag=4, flag=4}, {type="gfx", shape=s, color = {255,0,0,255} }}}
 		}
 	}
 	monkey.addEntity (m, main)

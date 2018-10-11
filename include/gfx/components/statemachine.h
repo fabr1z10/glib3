@@ -41,6 +41,7 @@ public:
     // enable specific keys
     void EnableKey(int, bool) override {}
     void AddKey(const std::string& currentState, int key, const std::string& nextState);
+    std::type_index GetType() override;
 private:
     std::unordered_map<std::string, std::unordered_map<int, std::string>> m_transitions;
 };
@@ -52,6 +53,7 @@ public:
             : StateMachine(initialState) {}
     void Add(const std::string& initial, const std::string& next, float);
     void Update(double) override ;
+    std::type_index GetType() override;
 private:
     Transition m_transition;
 
@@ -61,7 +63,13 @@ inline void RandomTransitionStateMachine::Add(const std::string& initial, const 
     m_transition.AddTransition(initial, next, p);
 }
 
+inline std::type_index KeyboardControlledStateMachine::GetType() {
+    return std::type_index(typeid(StateMachine));
+}
 
+inline std::type_index RandomTransitionStateMachine::GetType() {
+    return std::type_index(typeid(StateMachine));
+}
 
 
 

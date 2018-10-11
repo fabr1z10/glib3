@@ -509,6 +509,14 @@ std::unique_ptr<StateInitializer> AnimInitializerFactory::Create(luabridge::LuaR
     return std::unique_ptr<AnimInitializer>(new AnimInitializer(anim));
 }
 
+std::unique_ptr<StateInitializer> AnimColliderInitializerFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    std::string anim = table.Get<std::string>("anim");
+    std::vector<std::string> activate = table.GetVector<std::string>("activate");
+    return std::unique_ptr<AnimColliderInitializer>(new AnimColliderInitializer(anim, activate));
+}
+
+
 //std::shared_ptr<State> BasicStateFactory::Create(luabridge::LuaRef & r) {
 //    LuaTable table(r);
 //    std::string anim = table.Get<std::string>("anim");
