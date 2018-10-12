@@ -38,6 +38,8 @@ SceneFactory::SceneFactory() {
     m_activityFactory.Add<MoveActFactory>("move");
     m_activityFactory.Add<MoveGravityActFactory>("movegravity");
     m_activityFactory.Add<ChangeStateActFactory>("changestate");
+    m_activityFactory.Add<ChangeRoomActFactory>("gotoroom");
+    m_activityFactory.Add<DelayActFactory>("delay");
 }
 
 template <>

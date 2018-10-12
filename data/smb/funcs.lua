@@ -3,12 +3,41 @@ brickSpeed = 60
 brickg = 150
 bonusRaiseSpeed = 50
 
+mushroomTag = 100
+goombaTag = 101
+
+items = { }
+
+require("items/mushroom")
+require("items/goomba")
+
+function resumeplay()
+	local ros = monkey.getEntity("restofscene")
+	local mario = monkey.getEntity("player")
+	ros:enableupdate(true)
+	mario:enablestatemachine(true)
+	mario:resetstate()
+
+	
+end
+
+function suspendplay()
+	local ros = monkey.getEntity("restofscene")
+local mario = monkey.getEntity("player")
+	ros:enableupdate(false)
+	mario:enablestatemachine(false)
+end
+
 function curry(f, arg)
     return function()
        return f(arg) 
     end 
 end
-
+function curry21(f, arg)
+    return function(a)
+       return f(arg,a) 
+    end 
+end
 -- function to autogenerate tags for entities
 function nextTag()
 	_nextTag = _nextTag+1
@@ -24,9 +53,13 @@ function restartRoom()
 	monkey.play(s)
 end
 
-function marioinit(e) 
-	print ("is supermario? " .. tostring(e.supermario))
+function marioinit(verb, e) 
 	
+	return {
+		anim = verb .. (e.supermario and "big" or ""),
+		colliders = { e.supermario and "big" or "small"}
+	}
+		
 end
 
 function makeRect(arg)
@@ -80,7 +113,7 @@ function makeBonusBrick(arg)
 		components = {
 			{ type="gfx", model=arg.sprite, anim="idle", width = 16, height = 16},	
 			{ type="collider", shape=s, tag=10, flag = 2},
-			{ type="info", y = y, hits = arg.hits, bonus = arg.bonusfactory}
+			{ type="info", y = y, hits = arg.hits, item = arg.item}
 		},
 		children = {
 			-- head sensor
@@ -107,36 +140,18 @@ function makeLine (arg)
 	}
 end
 
-function ciao(brick)
-
-	local main = monkey.getEntity("main")
+function generateBonus(brick)
+	local main = monkey.getEntity("restofscene")
+	local args = { x = brick.x+8, y = brick.y, z = 0.1 }
 	print ("Brick position is " .. tostring(brick.x) .. ", " .. tostring(brick.y))
-	local t = nextTag()	
 	local s = {type="rect", width=16, height=16, offset={-8,0}}
-	local m = {
-		tag = t,
-		pos = { brick.x + 8, brick.y, 0.1 },
-		components = {
-			{ type="gfx", model = "mushroom", anim="idle" },
-			{ type="collider", shape = s, tag = 22, flag= 1},
-			{ type="controller2d", maxclimbangle = 80, maxdescendangle = 80, horizontalrays=4, verticalrays=4 },
-			{ type="dynamics2d", jumpheight = 64, timetojumpapex = 0.5 },
-			{ type="statemachine", initialstate = "idle",
-				states = {
-					{ id = "idle", init = { type="animcollider", anim="idle", activate= {} }},
-					{ id = "walk", init = { type="animcollider", anim="idle", activate={"enemycollider"} }, behavior= {type="enemywalk2d", speed=50, dir=-1, flip=false }}
-				}
-			}
-		},
-		children = {
-			{ name="enemycollider", components = { {type="collider", shape=s, tag=4, flag=4}, {type="gfx", shape=s, color = {255,0,0,255} }}}
-		}
-	}
+	local brickInfo = brick:getinfo()
+	local m = items[brickInfo.item].create(args)
 	monkey.addEntity (m, main)
 	local s = script:new()
 	s.actions = {
-		[1] = {type="move", by={0, 16}, actor = t, speed = bonusRaiseSpeed},
-		[2] = {type="changestate", actor=t, state="walk", after={1}}
+		[1] = {type="move", by={0, 16}, actor = m.tag, speed = bonusRaiseSpeed},
+		[2] = {type="changestate", actor=m.tag, state="walk", after={1}}
 	}
 	monkey.play(s)
 end
@@ -166,7 +181,7 @@ function bonusBrickResponse(e1, e2)
 		local a2 ={ type="noop", after={2}}
 		if (brickInfo.hits == 0) then
 			a1 = { type="animate", actor=brick.tag, anim="taken" }
-			a2 = { type="callfunc", func = curry(brickInfo.bonus, brick), after={2} } 
+			a2 = { type="callfunc", func = curry(generateBonus, brick), after={2} } 
 		end
 		local s = script:new()
 		s.actions = {

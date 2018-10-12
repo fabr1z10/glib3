@@ -29,6 +29,7 @@ struct EntityWrapper {
     float GetVy() const;
     void SetVy(float);
     std::string GetTag() const;
+    std::string GetState() const;
     std::string GetAnim() const;
     bool GetFlipX() const;
     void SetColor(int, int, int, int);
@@ -51,6 +52,7 @@ struct EntityWrapper {
     void ChangeState(const std::string& name);
     void ResetState();
     luabridge::LuaRef GetInfo();
+    void EnableStateMachine(bool);
 };
 
 

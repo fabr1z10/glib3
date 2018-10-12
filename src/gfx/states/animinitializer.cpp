@@ -50,10 +50,24 @@ void LuaAnimColliderInitializer::Init(Entity* e) {
 
 
 void LuaAnimColliderInitializer::Start () {
+    //std::cout << "Calling ...\n";
     luabridge::LuaRef f = m_ref(m_info->get());
+    std::string anim=  f["anim"].cast<std::string>();
     for (auto& c : m_entity->GetChildren()) {
         c->SetActive(false);
     }
+
+
+    m_renderer->SetAnimation(anim);
+    for (auto& c : m_entity->GetChildren()) {
+        c->SetActive(false);
+    }
+    luabridge::LuaRef colliders = f["colliders"];
+    for (int i = 0; i < colliders.length(); ++i) {
+        std::string n = colliders[i+1].cast<std::string>();
+        m_entity->GetNamedChild(n)->SetActive(true);
+    }
+
 }
 
 

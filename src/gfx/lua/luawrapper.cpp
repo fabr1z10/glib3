@@ -31,6 +31,7 @@ void LuaWrapper::Init() {
             .addProperty("z", &EntityWrapper::GetZ)
             .addProperty("vy", &EntityWrapper::GetVy, &EntityWrapper::SetVy)
             .addProperty("tag", &EntityWrapper::GetTag)
+            .addProperty("state", &EntityWrapper::GetState)
             .addProperty("anim", &EntityWrapper::GetAnim)
             .addProperty("flipx", &EntityWrapper::GetFlipX)
             .addProperty("isnil", &EntityWrapper::IsNil)
@@ -53,6 +54,7 @@ void LuaWrapper::Init() {
             .addFunction("cleartext", &EntityWrapper::ClearText)
             .addFunction("gettextinfo", &EntityWrapper::GetTextInfo)
             .addFunction("getinfo",&EntityWrapper::GetInfo)
+            .addFunction("enablestatemachine",&EntityWrapper::EnableStateMachine)
                     //.addFunction("addbutton"), &EntityWrapper::AddButton)
             .endClass();
 }

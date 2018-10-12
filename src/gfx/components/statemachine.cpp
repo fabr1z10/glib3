@@ -32,7 +32,8 @@ void StateMachine::ChangeState(const std::string& state) {
 }
 
 void StateMachine::Update(double dt) {
-
+    if (!m_active)
+        return;
     if (m_currentState != nullptr) {
         if (m_currentState->Run(dt)) {
             ChangeState(m_currentState->GetNextState());

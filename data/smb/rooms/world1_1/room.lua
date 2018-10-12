@@ -4,13 +4,7 @@ local g = -10
 local marioAcc = 0.05
 local marioSpeed = 75
 
-function mario_mushroom(e1, e2) 
-	e2:parent():remove()
-	mario = e1:parent()
-	info = mario:getinfo()
-	info.supermario = true
-	mario:resetstate()
-end
+
 
 room = {
 
@@ -22,7 +16,9 @@ engines = {
 		response = {
 			{ tag = {1, 20}, onenter = basicBrickResponse },
 			{ tag = {1, 21}, onenter = bonusBrickResponse },
-			{ tag = {3,4}, onenter = mario_mushroom}				
+			{ tag = {3, mushroomTag}, onenter = mario_mushroom},
+			{ tag = {3, goombaTag}, onenter = mario_goomba},
+				
 		}
 	}
 },
@@ -30,7 +26,8 @@ assets = {
 	sprites.mario,
 	sprites.basicbrick,
 	sprites.bonusbrick,
-	sprites.mushroom
+	sprites.mushroom,
+	sprites.goomba
 },
 scene = {
 	{
@@ -48,7 +45,9 @@ scene = {
 					{ type="luakey", keys = { { key = 299, func = restartRoom }}}
 				}
 		    },
+			-- player
 			{	
+				tag="player",
 				pos = {startPos[1], startPos[2], 0},
 				components = {
 					{ type="gfx", model="mario", anim="idle" },
@@ -57,9 +56,9 @@ scene = {
 					{ type="collider", shape = {type="rect", width=14, height=16, offset={-8,0}}, tag = 1, flag= 1 },
 					{ type="statemachine", initialstate = "idle",
 						states = {
-							{ id = "idle", init = { type="luaanim", func = marioinit }, behavior = { type ="idle2d", acceleration = marioAcc }},
-							{ id = "walk", init = { type="anim", anim="walk", colliders = {"normal"}}, behavior = { type ="walk2d", acceleration = marioAcc, speed= marioSpeed }},
-							{ id = "jump", init = { type="anim", anim="jump", colliders = {"normal"}}, behavior = { type ="jump2d", acceleration = marioAcc, speed= marioSpeed }},
+							{ id = "idle", init = { type="luaanim", func = curry21(marioinit, "idle") }, behavior = { type ="idle2d", acceleration = marioAcc }},
+							{ id = "walk", init = { type="luaanim", func = curry21(marioinit, "walk") }, behavior = { type ="walk2d", acceleration = marioAcc, speed= marioSpeed }},
+							{ id = "jump", init = { type="luaanim", func = curry21(marioinit, "jump") }, behavior = { type ="jump2d", acceleration = marioAcc, speed= marioSpeed }},
 						},
 						keys = {
 							{ current = "idle", key =  262, next="walk" },
@@ -69,24 +68,38 @@ scene = {
 							{ current = "walk", key =  265, next="jump" }
 						}
 					},
-					{ type="info", supermario = false, fire = false },
+					{ type="info", supermario = false, fire = false, invincible = true },
 					{ type="follow", cam ="maincam", relativepos={0,0,5}, up={0,1,0} }
 		 		},
 				-- collider boxes
 				children = {
 					{ 
+						name="small",
 						components = {
 							{ type="collider", shape = {type="rect", width=16, height=16, offset={-8, 0}}, tag=3,flag=1 },
 							{ type="gfx", shape= {type="rect", width=16, height=16, offset={-8, 0}}, color={255,0,0,255}}
 						}
-					}
+					},
+					{ 
+						name="big",
+						components = {
+							{ type="collider", shape = {type="rect", width=16, height=32, offset={-8, 0}}, tag=3,flag=1 },
+							{ type="gfx", shape= {type="rect", width=16, height=32, offset={-8, 0}}, color={255,0,0,255}}
+						}
+					},
 				}
 			},
-			makeLine { A = {1,0}, B = {1,256} },
-			makeRect { pos ={0,0,0}, width = 69, height = 2 },
-			-- makeBrick { pos = {5,4}, sprite="basicbrick" },
-			-- makeBrick { pos ={ 4, 5}, sprite="basicbrick"},
-			makeBonusBrick { pos = {7,5}, sprite="bonusbrick", hits=1, bonusfactory = ciao }
+			{
+				tag = "restofscene",
+				children = {
+					makeLine { A = {1,0}, B = {1,256} },
+					makeRect { pos ={0,0,0}, width = 69, height = 2 },
+					-- makeBrick { pos = {5,4}, sprite="basicbrick" },
+					-- makeBrick { pos ={ 4, 5}, sprite="basicbrick"},
+					makeBonusBrick { pos = {7,5}, sprite="bonusbrick", hits=1, item = "mushroom" },
+					items.goomba.create { x = 16*10, y = 16*3, z = 0, dir = -1}
+				}		
+			}
 		}
 	}
 },

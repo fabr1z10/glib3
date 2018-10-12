@@ -50,8 +50,60 @@ sprites = {
 	           { 
 					{ duration = dt, quads = { { x = 128, y = 16, width = 16, height = 32, anchor = {8, 0}}}},
 			   }				
-	        },				
+	        },
+	        {
+	           name="dead",
+	           frames=
+	           { 
+					{ duration = dt, quads = { { x = 96, y = 0, width = 16, height = 16, anchor = {8, 0}}}},
+			   }				
+	        },	
+			{	
+			    name="smalltobig",
+		        frames = 
+				{ 
+					{ duration = dt, quads = { { x = 0, y = 0, width = 16, height = 16, anchor = {8, 0}}}},
+					{ duration = dt, quads = { { x = 80, y = 16, width = 16, height = 32, anchor = {8, 0}}}},
+					{ duration = dt, quads = { { x = 0, y = 0, width = 16, height = 16, anchor = {8, 0}}}},
+					{ duration = 2*dt, quads = { { x = 80, y = 16, width = 16, height = 32, anchor = {8, 0}}}},
+					{ duration = dt, quads = { { x = 0, y = 0, width = 16, height = 16, anchor = {8, 0}}}},
+					{ duration = 4*dt, quads = { { x = 80, y = 16, width = 16, height = 32, anchor = {8, 0}}}},
+				}
+			},
+			{	
+			    name="bigtosmall",
+		        frames = 
+				{ 
+					{ duration = dt, quads = { { x = 80, y = 0, width = 16, height = 32, anchor = {8, 0}}}},
+					{ duration = dt, quads = { { x = 0, y = 16, width = 16, height = 16, anchor = {8, 0}}}},
+					{ duration = dt, quads = { { x = 80, y = 0, width = 16, height = 32, anchor = {8, 0}}}},
+					{ duration = 2*dt, quads = { { x = 0, y = 16, width = 16, height = 16, anchor = {8, 0}}}},
+					{ duration = dt, quads = { { x = 80, y = 0, width = 16, height = 31, anchor = {8, 0}}}},
+					{ duration = 4*dt, quads = { { x = 0, y = 16, width = 16, height = 16, anchor = {8, 0}}}},
+				}
+			}				
 
+		}
+	},
+	goomba = {
+		id = "goomba",
+		sheet = "gfx/smb1.png",
+		type = "sprite",
+		ppu = 1,
+		animations = {
+		    {
+		        name = "walk", frames = 
+				{ 
+					{ duration = dt, quads = { { x = 112, y = 0, width = 16, height = 16, anchor = {8, 0}}}},
+					{ duration = dt, quads = { { x = 128, y = 0, width = 16, height = 16, anchor = {8, 0}}}}
+				}
+		    },
+		    {
+		        name = "dead", frames = 
+				{ 
+					{ duration = dt, quads = { { x = 144, y = 0, width = 16, height = 16, anchor = {8, 0}}}}
+				}
+		    }			
 		}
 	},
 	basicbrick = {

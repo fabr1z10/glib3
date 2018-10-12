@@ -31,6 +31,10 @@ void EntityWrapper::SetVy(float value) {
 std::string EntityWrapper::GetTag() const {
     return m_underlying->GetTag();
 }
+std::string EntityWrapper::GetState() const {
+    auto sm = m_underlying->GetComponent<StateMachine>();
+    return sm->GetCurrentState()->GetId();
+}
 
 std::string EntityWrapper::GetText() const {
     Renderer* r = m_underlying->GetComponent<Renderer>();
@@ -252,6 +256,10 @@ void EntityWrapper::ResetState() {
     sm->GetCurrentState()->Start();
 }
 
+void EntityWrapper::EnableStateMachine(bool value) {
+    auto sm = m_underlying->GetComponent<StateMachine>();
+    sm->SetActive(value);
+}
 
 luabridge::LuaRef EntityWrapper::GetInfo() {
     return m_underlying->GetComponent<LuaInfo>()->get();
