@@ -180,6 +180,7 @@ void Engine::MainLoop() {
         m_scene = nullptr;
         m_runners.clear();
         m_garbage.clear();
+
         m_running = false;
     }
 }

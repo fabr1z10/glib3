@@ -7,12 +7,14 @@ class Entity;
 
 class StateInitializer {
 public:
+    virtual ~StateInitializer() {}
     virtual void Init(Entity*) = 0;
     virtual void Start() = 0;
 };
 
 class StateBehaviour {
 public:
+    virtual ~StateBehaviour() {}
     virtual void ResetState() {}
     virtual void Init(Entity*) = 0;
     virtual bool Run(double) = 0;

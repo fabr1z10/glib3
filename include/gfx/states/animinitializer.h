@@ -5,6 +5,7 @@
 
 class Entity;
 class Renderer;
+class MultiCollider;
 
 // super basic initializer, just set an animation
 class AnimInitializer : public StateInitializer {
@@ -20,13 +21,13 @@ protected:
 
 class AnimColliderInitializer : public AnimInitializer {
 public:
-    AnimColliderInitializer (const std::string& anim, const std::vector<std::string>&);
+    AnimColliderInitializer (const std::string& anim, const std::string& collider);
     void Init(Entity* e) override;
     void Start () override;
 private:
     Entity* m_entity;
-    std::vector<Entity*> m_colliders;
-    std::vector<std::string> m_activeColliders;
+    MultiCollider* m_collider;
+    std::string m_activeCollider;
 };
 
 class LuaAnimColliderInitializer : public StateInitializer {
@@ -38,5 +39,6 @@ private:
     Renderer* m_renderer;
     LuaInfo * m_info;
     Entity* m_entity;
+    MultiCollider* m_collider;
     luabridge::LuaRef m_ref;
 };

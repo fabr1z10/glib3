@@ -3,7 +3,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
-
+#include <gfx/entitywrapper.h>
 
 void StateMachine::Start() {
     for (auto& s : m_states)
@@ -69,7 +69,8 @@ void KeyboardControlledStateMachine::KeyCallback(GLFWwindow* window, int key, in
             {
                 auto it2 = it->second.find(key);
                 if (it2 != it->second.end()) {
-                    ChangeState(it2->second);
+                    it2->second->Run(this);
+                    //ChangeState(it2->second);
                 }
             }
         }
@@ -77,6 +78,15 @@ void KeyboardControlledStateMachine::KeyCallback(GLFWwindow* window, int key, in
 }
 
 
-void KeyboardControlledStateMachine::AddKey(const std::string& currentState, int key, const std::string& nextState){
-    m_transitions[currentState][key] = nextState;
+void KeyboardControlledStateMachine::AddKey(const std::string& currentState, int key, std::unique_ptr<StateEvent> ev)
+{
+    m_transitions[currentState][key] = std::move(ev);
+}
+
+void SEChangeState::Run(StateMachine * s) {
+    s->ChangeState(m_nextState);
+}
+
+void SECallback::Run(StateMachine * s) {
+    m_ref(EntityWrapper(s->GetObject()));
 }

@@ -57,9 +57,16 @@ function marioinit(verb, e)
 	
 	return {
 		anim = verb .. (e.supermario and "big" or ""),
-		colliders = { e.supermario and "big" or "small"}
+		collider = (e.supermario and "big" or "small")
 	}
 		
+end
+
+function mario_duck(e) 
+	local info = e:getinfo()
+	if (info.supermario == true) then
+		print ("duck")
+	end
 end
 
 function makeRect(arg)
@@ -118,6 +125,7 @@ function makeBonusBrick(arg)
 		children = {
 			-- head sensor
 			{
+				pos = { 0, -0.25, 0},
 				components = {
 					{ type="collider", shape = s1, tag = 21, flag = 4 },
 					{ type="gfx", shape = s1, color = {255,0,0,255}}
@@ -170,7 +178,7 @@ function basicBrickResponse(e1, e2)
 end
 
 function bonusBrickResponse(e1, e2)
-	--print ("Brick is at " .. tostring(e2.x) .. ", " .. tostring(e2.y))
+	print ("Brick is at " .. tostring(e2.x) .. ", " .. tostring(e2.y))
 	local brick = e2:parent()
 	local brickInfo = brick:getinfo()
 	print ("vel = " .. tostring(e1.vy))

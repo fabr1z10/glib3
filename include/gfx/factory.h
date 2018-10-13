@@ -12,6 +12,7 @@
 template<class T>
 class FactoryMethod {
 public:
+    virtual ~FactoryMethod() {}
     virtual std::unique_ptr<T> Create(luabridge::LuaRef& ref) = 0;
 };
 

@@ -8,7 +8,7 @@
 #include <gfx/components/switch.h>
 #include <gfx/quadmesh.h>
 #include <gfx/meshfactory.h>
-//#include <monkey/walkarea.h>
+#include <gfx/components/multicollider.h>
 #include <gfx/components/scripthotspot.h>
 #include <gfx/components/luakeylistener.h>
 #include <gfx/components/depth.h>
@@ -85,7 +85,6 @@ std::unique_ptr<Component> GfxComponentFactory::Create(luabridge::LuaRef & ref) 
         } else if (draw == "solid") {
             auto mesh = MeshFactorySolid::CreateMesh(*(shape.get()), 0.0f);
             renderer->SetMesh(mesh);
-
         }
         renderer->SetTint(color);
     }
@@ -110,6 +109,27 @@ std::unique_ptr<Component> ColliderComponentFactory::Create(luabridge::LuaRef &r
     return coll;
 }
 
+std::unique_ptr<Component> MultiColliderComponentFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    
+    // input
+    luabridge::LuaRef shapesR = table.Get<luabridge::LuaRef>("shapes");
+    int tag = table.Get<int>("tag");
+    int flag = table.Get<int>("flag");
+    std::string initShape = table.Get<std::string>("initialshape");
+    auto factory = Engine::get().GetSceneFactory();
+    std::unordered_map<std::string, std::shared_ptr<Shape>> shapes;
+    for (int i = 0; i < shapesR.length(); ++i) {
+        luabridge::LuaRef shapeR = shapesR[i+1];
+        auto shape = factory->GetShared<Shape>(shapeR);
+        std::string name = shapeR["name"].cast<std::string>();
+        shapes[name] = shape;
+    }
+    auto coll = std::unique_ptr<MultiCollider>(new MultiCollider(shapes, tag, flag, initShape));
+
+    return coll;
+}
+
 std::unique_ptr<Component> StateMachineComponentFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
 
@@ -122,8 +142,14 @@ std::unique_ptr<Component> StateMachineComponentFactory::Create(luabridge::LuaRe
         for (auto& key : keys) {
             int k =  key["key"].cast<int>();
             std::string current =  key["current"].cast<std::string>();
-            std::string next =  key["next"].cast<std::string>();
-            c->AddKey(current, k, next);
+            
+            if (!(key["next"].isNil())) {
+                std::string next =  key["next"].cast<std::string>();
+                c->AddKey(current, k, std::unique_ptr<StateEvent>(new SEChangeState(next)));
+            } else if (!key["func"].isNil()) {
+                luabridge::LuaRef func = key["func"];
+                c->AddKey(current, k, std::unique_ptr<StateEvent>(new SECallback(func)));
+            }
         }
         comp = std::move(c);
     } else {
@@ -512,8 +538,8 @@ std::unique_ptr<StateInitializer> AnimInitializerFactory::Create(luabridge::LuaR
 std::unique_ptr<StateInitializer> AnimColliderInitializerFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
     std::string anim = table.Get<std::string>("anim");
-    std::vector<std::string> activate = table.GetVector<std::string>("activate");
-    return std::unique_ptr<AnimColliderInitializer>(new AnimColliderInitializer(anim, activate));
+    std::string collider = table.Get<std::string>("collider", "");
+    return std::unique_ptr<AnimColliderInitializer>(new AnimColliderInitializer(anim, collider));
 }
 
 

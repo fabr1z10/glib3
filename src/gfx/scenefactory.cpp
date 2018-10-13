@@ -18,6 +18,8 @@ SceneFactory::SceneFactory() {
     m_componentFactory.Add<LuaKeyboardComponentFactory>("luakey");
     m_componentFactory.Add<GfxComponentFactory>("gfx");
     m_componentFactory.Add<ColliderComponentFactory>("collider");
+    m_componentFactory.Add<MultiColliderComponentFactory>("multicollider");
+
     m_componentFactory.Add<Controller2DComponentFactory>("controller2d");
     m_componentFactory.Add<Dynamics2DComponentFactory>("dynamics2d");
     m_componentFactory.Add<StateMachineComponentFactory>("statemachine");

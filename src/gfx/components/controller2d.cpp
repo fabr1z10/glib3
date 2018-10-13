@@ -13,6 +13,8 @@
 using namespace glm;
 
 void Controller2D::Start() {
+    m_cc =  m_entity->GetComponent<Collider>();
+    m_cc->onShapeChanged.Register(this, [&] (Collider* c) { this->ResetShape(c); });
     CalculateRaySpacing();
     m_details.Reset();
     m_collision = Engine::get().GetRunner<CollisionEngine>();
@@ -20,13 +22,17 @@ void Controller2D::Start() {
         GLIB_FAIL("Controller2D requires a collision engine running!");
 }
 
+void Controller2D::ResetShape(Collider*) {
+    CalculateRaySpacing();
+}
+
 void Controller2D::CalculateRaySpacing() {
-    m_cc =  m_entity->GetComponent<Collider>();
+    
     Bounds bounds = m_cc->GetShape()->getBounds();
     bounds.Expand(m_skinWidth * -2);
     m_horizontalRaySpacing = bounds.GetSize().y / (m_horizontalRayCount - 1);
     m_verticalRaySpacing = bounds.GetSize().x / (m_verticalRayCount - 1);
-    std::cout <<"ray spacing = "<< m_horizontalRaySpacing << ","<<m_verticalRaySpacing<<"\n";
+    //std::cout <<"ray spacing = "<< m_horizontalRaySpacing << ","<<m_verticalRaySpacing<<"\n";
 }
 
 void Controller2D::UpdateRaycastOrigins() {

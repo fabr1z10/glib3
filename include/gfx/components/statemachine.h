@@ -6,6 +6,7 @@
 #include <gfx/listener.h>
 #include <gfx/transition.h>
 #include <gfx/state.h>
+#include <gfx/lua/luawrapper.h>
 
 class CollisionEngine;
 class Renderer;
@@ -33,6 +34,29 @@ inline State* StateMachine::GetCurrentState() {
     return m_currentState;
 }
 
+class StateEvent {
+public:
+    virtual void Run(StateMachine*) = 0;
+};
+
+class SEChangeState : public StateEvent {
+public:
+    SEChangeState(const std::string& state) : m_nextState(state) {}
+    void Run(StateMachine*) override;
+private:
+    std::string m_nextState;
+};
+
+class SECallback : public StateEvent {
+public:
+    SECallback (luabridge::LuaRef& ref) : m_ref(ref) {}
+    void Run(StateMachine*) override;
+private:
+    luabridge::LuaRef m_ref;
+};
+
+
+
 // Transition controlled via keyboard
 class KeyboardControlledStateMachine : public StateMachine, public KeyboardListener {
 public:
@@ -44,10 +68,10 @@ public:
     void Enable(bool) override {}
     // enable specific keys
     void EnableKey(int, bool) override {}
-    void AddKey(const std::string& currentState, int key, const std::string& nextState);
+    void AddKey(const std::string& currentState, int key, std::unique_ptr<StateEvent>);
     std::type_index GetType() override;
 private:
-    std::unordered_map<std::string, std::unordered_map<int, std::string>> m_transitions;
+    std::unordered_map<std::string, std::unordered_map<int, std::unique_ptr<StateEvent> >> m_transitions;
 };
 
 // prob transition

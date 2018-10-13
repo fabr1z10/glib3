@@ -106,6 +106,35 @@ sprites = {
 		    }			
 		}
 	},
+	koopa = {
+		id = "koopa",
+		sheet ="gfx/smb1.png",
+		type = "sprite",
+		ppu=1,
+		animations = {
+			{
+				name = "walk", frames =
+				{ 
+					{ duration = dt, quads = { { x = 0, y = 16, width = 16, height = 32, anchor = {8, 0}}}},
+					{ duration = dt, quads = { { x = 16, y = 16, width = 16, height = 32, anchor = {8, 0}}}}
+				}
+			},
+			{
+				name = "shell", frames =
+				{ 
+					{ duration = dt, quads = { { x = 32, y = 32, width = 16, height = 16, anchor = {8, 0}}}}
+				}
+			},			
+			{
+				name = "blink", frames =
+				{ 
+					{ duration = dt, quads = { { x = 32, y = 32, width = 16, height = 16, anchor = {8, 0}}}},
+					{ duration = dt, quads = { { x = 32, y = 16, width = 16, height = 16, anchor = {8, 0}}}},
+				}
+			},			
+
+		}
+	},
 	basicbrick = {
 		id = "basicbrick",
 		sheet = "gfx/smb1.png",
