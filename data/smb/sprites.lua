@@ -57,7 +57,14 @@ sprites = {
 	           { 
 					{ duration = dt, quads = { { x = 96, y = 0, width = 16, height = 16, anchor = {8, 0}}}},
 			   }				
-	        },	
+	        },
+	        {
+	           name="duck",
+	           frames=
+	           { 
+					{ duration = dt, quads = { { x = 96, y = 128, width = 16, height = 32, anchor = {8, 0}}}},
+			   }				
+	        },		
 			{	
 			    name="smalltobig",
 		        frames = 

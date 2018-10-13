@@ -140,15 +140,17 @@ std::unique_ptr<Component> StateMachineComponentFactory::Create(luabridge::LuaRe
         // read the transition keys
         auto keys = table.GetVector<luabridge::LuaRef>("keys");
         for (auto& key : keys) {
-            int k =  key["key"].cast<int>();
-            std::string current =  key["current"].cast<std::string>();
+            LuaTable t(key);
+            int k = t.Get<int>("key");
+            bool press = t.Get<bool>("press", true);
+            std::string current =  t.Get<std::string>("current");
             
-            if (!(key["next"].isNil())) {
-                std::string next =  key["next"].cast<std::string>();
-                c->AddKey(current, k, std::unique_ptr<StateEvent>(new SEChangeState(next)));
-            } else if (!key["func"].isNil()) {
-                luabridge::LuaRef func = key["func"];
-                c->AddKey(current, k, std::unique_ptr<StateEvent>(new SECallback(func)));
+            if (t.HasKey("next")) {
+                std::string next =  t.Get<std::string>("next");
+                c->AddKey(current, k, press, std::unique_ptr<StateEvent>(new SEChangeState(next)));
+            } else if (t.HasKey("func")) {
+                luabridge::LuaRef func = t.Get<luabridge::LuaRef>("func");
+                c->AddKey(current, k, press, std::unique_ptr<StateEvent>(new SECallback(func)));
             }
         }
         comp = std::move(c);

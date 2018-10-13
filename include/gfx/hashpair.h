@@ -1,5 +1,7 @@
 #pragma once
 
+#include <glm/glm.hpp>
+
 template <class T>
 inline void hash_combine(std::size_t & seed, const T & v)
 {

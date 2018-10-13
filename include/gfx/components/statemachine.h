@@ -7,6 +7,7 @@
 #include <gfx/transition.h>
 #include <gfx/state.h>
 #include <gfx/lua/luawrapper.h>
+#include <gfx/hashpair.h>
 
 class CollisionEngine;
 class Renderer;
@@ -55,6 +56,29 @@ private:
     luabridge::LuaRef m_ref;
 };
 
+struct KeyPress {
+    int key;
+    int action;
+    std::string state;
+    bool operator==(const KeyPress& other) const {
+        return (key == other.key && action == other.action && state == other.state);
+    }
+};
+
+namespace std {
+    template<>
+    struct hash<KeyPress>
+    {
+        std::size_t operator()(KeyPress const& s) const
+        {
+            std::size_t res = 0;
+            hash_combine(res,s.state);
+            hash_combine(res,s.key);
+            hash_combine(res,s.action);
+            return res;
+        }
+    };
+}
 
 
 // Transition controlled via keyboard
@@ -68,10 +92,10 @@ public:
     void Enable(bool) override {}
     // enable specific keys
     void EnableKey(int, bool) override {}
-    void AddKey(const std::string& currentState, int key, std::unique_ptr<StateEvent>);
+    void AddKey(const std::string& currentState, int key, bool press, std::unique_ptr<StateEvent>);
     std::type_index GetType() override;
 private:
-    std::unordered_map<std::string, std::unordered_map<int, std::unique_ptr<StateEvent> >> m_transitions;
+    std::unordered_map<KeyPress, std::unique_ptr<StateEvent>> m_transitions;
 };
 
 // prob transition

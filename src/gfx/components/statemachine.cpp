@@ -58,29 +58,29 @@ void RandomTransitionStateMachine::Update(double dt) {
 }
 
 // key triggered state change
-void KeyboardControlledStateMachine::KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-    //std::cout << action << ", " << key<<"\n";
-    if (action == GLFW_PRESS)
-    {
-        //std::cout << key << " press " << scancode << " , " << mods << "\n";
-        if (m_currentState != nullptr) {
-            auto it = m_transitions.find(m_currentState->GetId());
-            if (it != m_transitions.end())
-            {
-                auto it2 = it->second.find(key);
-                if (it2 != it->second.end()) {
-                    it2->second->Run(this);
-                    //ChangeState(it2->second);
-                }
-            }
+void KeyboardControlledStateMachine::KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+    if (m_currentState != nullptr) {
+        std::cout << key << ", " << action << ", " << m_currentState->GetId() <<"\n";
+        KeyPress kp;
+        kp.action = action;
+        kp.key =key;
+        kp.state = m_currentState->GetId();
+        auto it = m_transitions.find(kp);
+        if (it != m_transitions.end()) {
+            it->second->Run(this);
         }
     }
 }
 
 
-void KeyboardControlledStateMachine::AddKey(const std::string& currentState, int key, std::unique_ptr<StateEvent> ev)
+void KeyboardControlledStateMachine::AddKey(const std::string& currentState, int key, bool press, std::unique_ptr<StateEvent> ev)
 {
-    m_transitions[currentState][key] = std::move(ev);
+    KeyPress k;
+    k.action = press ? GLFW_PRESS : GLFW_RELEASE;
+    k.key = key;
+    k.state = currentState;
+    m_transitions[k] = std::move(ev);
 }
 
 void SEChangeState::Run(StateMachine * s) {

@@ -66,6 +66,7 @@ function mario_duck(e)
 	local info = e:getinfo()
 	if (info.supermario == true) then
 		print ("duck")
+		e:changestate("duck")
 	end
 end
 

@@ -55,14 +55,15 @@ scene = {
 					{ type="dynamics2d", jumpheight = 64, timetojumpapex = 0.5 },
 					{ type="multicollider", tag=1, flag=1, initialshape="small", shapes = {
 						{ name ="small", type="rect", width=14, height=16, offset={-8,0}},
-						{ name ="big", type="rect", width=14, height=32, offset={-8,0}}
+						{ name ="big", type="rect", width=14, height=32, offset={-8,0}},
+						{ name ="duck", type="rect", width=14, height=24, offset={-8,0}}
 					}},
 					{ type="statemachine", initialstate = "idle",
 						states = {
 							{ id = "idle", init = { type="luaanim", func = curry21(marioinit, "idle") }, behavior = { type ="idle2d", acceleration = marioAcc }},
 							{ id = "walk", init = { type="luaanim", func = curry21(marioinit, "walk") }, behavior = { type ="walk2d", acceleration = marioAcc, speed= marioSpeed }},
 							{ id = "jump", init = { type="luaanim", func = curry21(marioinit, "jump") }, behavior = { type ="jump2d", acceleration = marioAcc, speed= marioSpeed }},
-							{ id = "duck", init = { type="luaanim", func = curry21(marioinit, "jump") }, behavior = { type ="idle2d", acceleration = marioAcc, speed= marioSpeed }},
+							{ id = "duck", init = { type="animcollider", anim= "duck", collider="duck" }, behavior = { type ="idle2d", acceleration = marioAcc, speed= marioSpeed }},
 						},
 						keys = {
 							{ current = "idle", key =  262, next="walk" },
@@ -71,9 +72,10 @@ scene = {
 							{ current = "idle", key =  264, func=mario_duck},
 						--{ current = "idle", key =  262, next="duck" },
 							{ current = "walk", key =  265, next="jump" },
-							{ current = "walk", key = 254, func=mario_duck}
+							{ current = "walk", key = 264, func=mario_duck},
+							{ current = "duck", key = 264, press=false, next="idle" }
 							-- event key release when duck returning to idle
-							
+
 						}
 					},
 					{ type="info", supermario = false, fire = false, invincible = true },
