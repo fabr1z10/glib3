@@ -17,6 +17,14 @@ void State::Start() {
 
 }
 
+void State::Start(luabridge::LuaRef param) {
+    if (m_initializer != nullptr)
+        m_initializer->Start(param);
+    if (m_behaviour != nullptr)
+        m_behaviour->ResetState();
+}
+
+
 void State::End() {
     if (m_finalizer != nullptr)
         m_finalizer->Start();

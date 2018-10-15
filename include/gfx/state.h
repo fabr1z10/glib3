@@ -2,6 +2,7 @@
 
 #include <string>
 #include <memory>
+#include <gfx/lua/luawrapper.h>
 
 class Entity;
 
@@ -10,6 +11,8 @@ public:
     virtual ~StateInitializer() {}
     virtual void Init(Entity*) = 0;
     virtual void Start() = 0;
+    // init with params
+    virtual void Start(luabridge::LuaRef) {}
 };
 
 class StateBehaviour {
@@ -34,6 +37,7 @@ public:
     State() : m_finalizer(nullptr), m_behaviour(nullptr), m_initializer(nullptr), m_entity(nullptr) {}
     void Init(Entity*);
     void Start();
+    void Start(luabridge::LuaRef param);
     bool Run(double);
     void End();
     std::string GetNextState() const;

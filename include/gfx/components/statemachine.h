@@ -18,6 +18,7 @@ public:
 
     void AddState(const std::string&, std::shared_ptr<State>);
     void ChangeState(const std::string&);
+    void ChangeState(const std::string&, luabridge::LuaRef param);
 
     // impl component
     void Start() override;

@@ -251,6 +251,11 @@ void EntityWrapper::ChangeState(const std::string& name)
     m_underlying->GetComponent<StateMachine>()->ChangeState(name);
 }
 
+void EntityWrapper::ChangeStateParam(const std::string& name, luabridge::LuaRef param)
+{
+    m_underlying->GetComponent<StateMachine>()->ChangeState(name, param);
+}
+
 void EntityWrapper::ResetState() {
     auto sm = m_underlying->GetComponent<StateMachine>();
     sm->GetCurrentState()->Start();

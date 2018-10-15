@@ -50,6 +50,7 @@ struct EntityWrapper {
     void AppendText (const std::string&);
     void AppendButton (luabridge::LuaRef ref);
     void ChangeState(const std::string& name);
+    void ChangeStateParam(const std::string& name, luabridge::LuaRef ref);
     void ResetState();
     luabridge::LuaRef GetInfo();
     void EnableStateMachine(bool);

@@ -35,6 +35,23 @@ void StateMachine::ChangeState(const std::string& state) {
 
 }
 
+void StateMachine::ChangeState(const std::string& state, luabridge::LuaRef param) {
+    //if (m_currentState != nullptr)
+    //    m_currentState->End();
+
+    auto it = m_states.find(state);
+    if (it == m_states.end()) {
+        GLIB_FAIL("Don't know state " << state);
+    }
+    if (m_currentState != nullptr) {
+        // finalize current state, if any.
+        m_currentState->End();
+    }
+    m_currentState = it->second.get();
+    m_currentState->Start();
+
+}
+
 void StateMachine::Update(double dt) {
     if (!m_active)
         return;
