@@ -103,11 +103,13 @@ scene = {
 				tag = "restofscene",
 				children = {
 					makeLine { A = {1,0}, B = {1,256} },
-					makeRect { pos ={0,0,0}, width = 69, height = 2 },
-					-- makeBrick { pos = {5,4}, sprite="basicbrick" },
+					makeRect { pos ={0,0,0}, width = 69, height = 2, gfx="block1" },
+					makeRect { pos ={8,2,0}, width = 1, height = 1, gfx="block2" },
+					makeRect { pos ={12,2,0}, width = 1, height = 1, gfx="block2" },
+					items.brick.create { pos = {6,5}, sprite="basicbrick" },
 					-- makeBrick { pos ={ 4, 5}, sprite="basicbrick"},
-					makeBonusBrick { pos = {7,5}, sprite="bonusbrick", hits=1, item = "mushroom" },
-					--items.goomba.create { x = 16*10, y = 16*3, z = 0, dir = -1}
+					items.bonusbrick.create { pos = {7,5}, sprite="bonusbrick", hits=1, item = "mushroom" },
+					items.goomba.create { x = 16*10, y = 16*3, z = 0, dir = -1}
 				}		
 			}
 		}
