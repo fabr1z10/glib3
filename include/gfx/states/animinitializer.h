@@ -42,3 +42,4 @@ private:
     MultiCollider* m_collider;
     luabridge::LuaRef m_ref;
 };
+

@@ -3,7 +3,8 @@ items.koopa = {}
 function shell_end(entity)
 
 	-- terminate script 
-	monkey.killscript("_shell" .. koopa.tag)
+	print ("killing script: _shell" .. entity.tag)
+	monkey.killscript("_shell" .. entity.tag)
 end
 
 items.koopa.create = function(args)
@@ -24,7 +25,7 @@ items.koopa.create = function(args)
 			{ type="statemachine", initialstate = "walk",
 				states = {
 					{ id = "walk", init = { type="animcollider", anim="walk", collider="default" }, behavior= {type="enemywalk2d", speed=50, dir= args.dir, flip=true } },
-					{ id = "shell", init = { type="animcollider", anim="shell", collider="shell" }, finalizer = { type="luaanim", func = shell_end }},
+					{ id = "shell", init = { type="animcollider", anim="shell", collider="shell" }, finalizer = { type="lua", func = shell_end }},
 					{ id = "shellfly", init = { type="animcollider", anim="shell", collider="shell" }, behavior= {type="enemywalk2d", speed=100, dir= args.dir, flip=false }}
 				}
 			}

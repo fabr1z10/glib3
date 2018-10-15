@@ -3,6 +3,7 @@
 #include <gfx/engine.h>
 #include <gfx/components/renderer.h>
 #include <gfx/components/multicollider.h>
+#include <gfx/entitywrapper.h>
 
 AnimInitializer::AnimInitializer(const std::string &anim) : StateInitializer(), m_anim(anim) {}
 
@@ -69,9 +70,4 @@ void LuaAnimColliderInitializer::Start () {
     //}
 
 }
-
-
-
-
-
 

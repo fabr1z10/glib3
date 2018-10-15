@@ -53,7 +53,7 @@ struct EntityWrapper {
     void ResetState();
     luabridge::LuaRef GetInfo();
     void EnableStateMachine(bool);
-    void KillScript(const std::string& scriptName);
+    static void KillScript(const std::string& scriptName);
 };
 
 

@@ -62,20 +62,20 @@ scene = {
 					}},
 					{ type="statemachine", initialstate = "idle",
 						states = {
-							{ id = "idle", init = { type="luaanim", func = curry21(marioinit, "idle") }, behavior = { type ="idle2d", acceleration = marioAcc }},
+						 	{ id = "idle", init = { type="luaanim", func = curry21(marioinit, "idle") }, behavior = { type ="idle2d", acceleration = marioAcc }},
 							{ id = "walk", init = { type="luaanim", func = curry21(marioinit, "walk") }, behavior = { type ="walk2d", acceleration = marioAcc, speed= marioSpeed }},
 							{ id = "jump", init = { type="luaanim", func = curry21(marioinit, "jump") }, behavior = { type ="jump2d", acceleration = marioAcc, speed= marioSpeed }},
 							{ id = "duck", init = { type="animcollider", anim= "duck", collider="duck" }, behavior = { type ="idle2d", acceleration = marioAcc, speed= marioSpeed }},
 						},
 						keys = {
-							{ current = "idle", key =  262, next="walk" },
-							{ current = "idle", key =  263, next="walk" },
-							{ current = "idle", key =  265, next="jump" },
-							{ current = "idle", key =  264, func=mario_duck},
-						--{ current = "idle", key =  262, next="duck" },
-							{ current = "walk", key =  265, next="jump" },
-							{ current = "walk", key = 264, func=mario_duck},
-							{ current = "duck", key = 264, press=false, next="idle" }
+						 	{ current = "idle", key =  262, next="walk" },
+						 	{ current = "idle", key =  263, next="walk" },
+						 	{ current = "idle", key =  265, next="jump" },
+						 	{ current = "idle", key =  264, func=mario_duck},
+						-- --{ current = "idle", key =  262, next="duck" },
+						 	{ current = "walk", key =  265, next="jump" },
+						 	{ current = "walk", key = 264, func=mario_duck},
+						 	{ current = "duck", key = 264, press=false, next="idle" }
 							-- event key release when duck returning to idle
 
 						}
@@ -110,7 +110,7 @@ scene = {
 					makeRect { pos ={12,2,0}, width = 1, height = 1, gfx="block2" },
 					makeRect { pos ={16,2,0}, width = 1, height = 1, gfx="block2" },
 					items.brick.create { pos = {6,5}, sprite="basicbrick" },
-					-- makeBrick { pos ={ 4, 5}, sprite="basicbrick"},
+					-- -- makeBrick { pos ={ 4, 5}, sprite="basicbrick"},
 					items.bonusbrick.create { pos = {7,5}, sprite="bonusbrick", hits=1, item = "mushroom" },					
 					items.goomba.create { x = 16*10, y = 16*3, z = 0, dir = -1},
 					items.koopa.create { x = 16*14, y = 16*3, z = 0, dir = -1}
