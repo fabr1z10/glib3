@@ -186,6 +186,11 @@ std::unique_ptr<Component> StateMachineComponentFactory::Create(luabridge::LuaRe
             auto sb = sceneFactory->Get<StateBehaviour>(behavior);
             state->SetBehaviour(std::move(sb));
         }
+        if (!tss["finalizer"].isNil()) {
+            luabridge::LuaRef finalizer = tss["finalizer"];
+            auto si = sceneFactory->Get<StateInitializer>(finalizer);
+            state->SetFinalizer(std::move(si));
+        }
 
 
 

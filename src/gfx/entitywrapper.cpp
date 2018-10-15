@@ -264,3 +264,9 @@ void EntityWrapper::EnableStateMachine(bool value) {
 luabridge::LuaRef EntityWrapper::GetInfo() {
     return m_underlying->GetComponent<LuaInfo>()->get();
 }
+
+void EntityWrapper::KillScript(const std::string& scriptName) {
+
+    Engine::get().GetRunner<Scheduler>()->GetScript(scriptName)->Kill();
+
+}

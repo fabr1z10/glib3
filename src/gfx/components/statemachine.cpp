@@ -26,6 +26,10 @@ void StateMachine::ChangeState(const std::string& state) {
     if (it == m_states.end()) {
         GLIB_FAIL("Don't know state " << state);
     }
+    if (m_currentState != nullptr) {
+        // finalize current state, if any.
+        m_currentState->End();
+    }
     m_currentState = it->second.get();
     m_currentState->Start();
 

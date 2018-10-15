@@ -23,24 +23,29 @@ protected:
     std::string m_nextState;
 };
 
+
+
 inline std::string StateBehaviour::GetNextState() const {
     return m_nextState;
 }
 
 class State {
 public:
-    State() {}
+    State() : m_finalizer(nullptr), m_behaviour(nullptr), m_initializer(nullptr), m_entity(nullptr) {}
     void Init(Entity*);
     void Start();
     bool Run(double);
+    void End();
     std::string GetNextState() const;
     std::string GetId() const;
     void SetId(const std::string& id);
     void SetInitializer(std::unique_ptr<StateInitializer>);
     void SetBehaviour(std::unique_ptr<StateBehaviour>);
+    void SetFinalizer(std::unique_ptr<StateInitializer>);
 protected:
     std::unique_ptr<StateInitializer> m_initializer;
     std::unique_ptr<StateBehaviour> m_behaviour;
+    std::unique_ptr<StateInitializer> m_finalizer;
     std::string m_id;
     Entity* m_entity;
 };
@@ -63,4 +68,8 @@ inline void State::SetInitializer(std::unique_ptr<StateInitializer> init) {
 
 inline void State::SetBehaviour(std::unique_ptr<StateBehaviour> behavior) {
     m_behaviour = std::move(behavior);
+}
+
+inline void State::SetFinalizer(std::unique_ptr<StateInitializer> finalizer) {
+    m_finalizer = std::move(finalizer);
 }

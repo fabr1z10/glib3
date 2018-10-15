@@ -5,11 +5,13 @@ bonusRaiseSpeed = 50
 
 mushroomTag = 100
 goombaTag = 101
+koopaTag = 102
 
 items = { }
 
 require("items/mushroom")
 require("items/goomba")
+require("items/koopa")
 require("items/brick")
 require("items/bonusbrick")
 

@@ -23,6 +23,9 @@ int main(int argc, char* argv[])
     } catch (Error& err) {
         std::cout << err.what() << std::endl;
         return 1;
+    } catch (...) {
+
+        int ciao = 2;
     }
     return 0;
 }

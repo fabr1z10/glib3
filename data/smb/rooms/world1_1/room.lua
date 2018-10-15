@@ -18,6 +18,7 @@ engines = {
 			{ tag = {1, 21}, onenter = bonusBrickResponse },
 			{ tag = {1, mushroomTag}, onenter = mario_mushroom},
 			{ tag = {1, goombaTag}, onenter = mario_goomba},
+			{ tag = {1, koopaTag}, onenter = mario_koopa},
 				
 		}
 	}
@@ -27,7 +28,8 @@ assets = {
 	sprites.basicbrick,
 	sprites.bonusbrick,
 	sprites.mushroom,
-	sprites.goomba
+	sprites.goomba,
+	sprites.koopa
 },
 scene = {
 	{
@@ -106,10 +108,12 @@ scene = {
 					makeRect { pos ={0,0,0}, width = 69, height = 2, gfx="block1" },
 					makeRect { pos ={8,2,0}, width = 1, height = 1, gfx="block2" },
 					makeRect { pos ={12,2,0}, width = 1, height = 1, gfx="block2" },
+					makeRect { pos ={16,2,0}, width = 1, height = 1, gfx="block2" },
 					items.brick.create { pos = {6,5}, sprite="basicbrick" },
 					-- makeBrick { pos ={ 4, 5}, sprite="basicbrick"},
-					items.bonusbrick.create { pos = {7,5}, sprite="bonusbrick", hits=1, item = "mushroom" },
-					items.goomba.create { x = 16*10, y = 16*3, z = 0, dir = -1}
+					items.bonusbrick.create { pos = {7,5}, sprite="bonusbrick", hits=1, item = "mushroom" },					
+					items.goomba.create { x = 16*10, y = 16*3, z = 0, dir = -1},
+					items.koopa.create { x = 16*14, y = 16*3, z = 0, dir = -1}
 				}		
 			}
 		}
