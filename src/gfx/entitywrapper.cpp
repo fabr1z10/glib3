@@ -209,6 +209,10 @@ void EntityWrapper::SetPosition(float x, float y, float z) {
     m_underlying->SetPosition(glm::vec3(x, y, z));
 }
 
+void EntityWrapper::Move(float x, float y, float z) {
+    m_underlying->Move(glm::vec3(x, y, z));
+}
+
 std::string EntityWrapper::GetAnim() const {
     Renderer* r = m_underlying->GetComponent<Renderer>();
     return r->GetAnimation();

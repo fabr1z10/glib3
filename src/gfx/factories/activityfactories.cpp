@@ -13,6 +13,7 @@
 #include <gfx/activities/animate.h>
 #include <gfx/activities/changestate.h>
 #include <gfx/activities/showmessage.h>
+#include <gfx/activities/blink.h>
 
 std::unique_ptr<Activity> NoOpActFactory::Create(luabridge::LuaRef &ref) {
     return std::unique_ptr<NoOp>(new NoOp);
@@ -146,3 +147,13 @@ std::unique_ptr<Activity> ShowMessageActFactory::Create(luabridge::LuaRef &ref) 
     glm::vec3 pos = table.Get<glm::vec3>("pos");
     return std::unique_ptr<ShowMessage>(new ShowMessage(msg, font, pos, size, color, outlineColor, align, time, offset));
 };
+
+std::unique_ptr<Activity> BlinkActFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    std::string actor = table.Get<std::string>("actor");
+    float duration = table.Get<float>("duration");
+    float blinkDuration = table.Get<float>("blinkduration");
+    return std::unique_ptr<Blink>(new Blink(actor, duration, blinkDuration));
+
+
+}

@@ -19,6 +19,7 @@ class StateBehaviour {
 public:
     virtual ~StateBehaviour() {}
     virtual void ResetState() {}
+    virtual void ResetState(luabridge::LuaRef) {}
     virtual void Init(Entity*) = 0;
     virtual bool Run(double) = 0;
     std::string GetNextState() const;

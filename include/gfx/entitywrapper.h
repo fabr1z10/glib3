@@ -44,6 +44,7 @@ struct EntityWrapper {
     std::string GetText() const;
     int GetLines() const;
     void SetPosition(float x, float y, float z);
+    void Move (float x, float y, float z);
     EntityWrapper GetParent() ;
     static EntityWrapper GetEntity(const std::string&);
     Entity* m_underlying;

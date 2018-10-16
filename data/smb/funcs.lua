@@ -6,10 +6,17 @@ bonusRaiseSpeed = 50
 mushroomTag = 100
 goombaTag = 101
 koopaTag = 102
+flowerTag = 103
 
 items = { }
 
+function hitFromAbove(mario, sx, sy)
+	return (mario.state == "jump" and mario.vy < 0 and sy > 0 and math.abs(sx) < 0.01)
+end
+
+require("items/mario")
 require("items/mushroom")
+require("items/flower")
 require("items/goomba")
 require("items/koopa")
 require("items/brick")
@@ -57,10 +64,12 @@ function restartRoom()
 	monkey.play(s)
 end
 
+
+
 function marioinit(verb, e) 
 	
 	return {
-		anim = verb .. (e.supermario and "big" or ""),
+		anim = verb .. (e.supermario and "big" or "") .. (e.fire and "fire" or ""),
 		collider = (e.supermario and "big" or "small")
 	}
 		

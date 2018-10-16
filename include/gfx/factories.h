@@ -73,6 +73,7 @@ FACTORY(DelayActFactory, Activity)
 FACTORY(AnimateActFactory, Activity)
 FACTORY(ChangeStateActFactory, Activity)
 FACTORY(ShowMessageActFactory, Activity)
+FACTORY(BlinkActFactory, Activity)
 
 // Asset
 FACTORY(SpriteFactory, IMesh)

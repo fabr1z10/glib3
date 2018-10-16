@@ -48,6 +48,7 @@ void LuaWrapper::Init() {
             .addFunction("enablecontrols", &EntityWrapper::SetEnableControls)
             .addFunction("clear", &EntityWrapper::Clear)
             .addFunction("setposition", &EntityWrapper::SetPosition)
+            .addFunction("move", &EntityWrapper::Move)
             .addFunction("addtext", &EntityWrapper::AppendText)
             .addFunction("changestate", &EntityWrapper::ChangeState)
             .addFunction("changestateparam", &EntityWrapper::ChangeStateParam)

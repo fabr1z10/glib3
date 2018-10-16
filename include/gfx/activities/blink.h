@@ -1,0 +1,28 @@
+#pragma once
+
+#include <gfx/activity.h>
+#include <gfx/entity.h>
+
+class Renderer;
+
+class Blink : public Activity {
+public:
+    //! \name Constructors
+    //@{
+    /*! Blink the given actor for a certain time, each blink lasting t.
+     */
+    Blink(const std::string& actorId, float totalDuration, float blinkDuration);
+    //@}
+    void Start() override;
+    void Run (float dt) override ;
+private:
+    float m_timer;
+    float m_timer2;
+    Entity * m_entity;
+    bool m_visible;
+    float m_duration;
+    float m_blinkDuration;
+    Renderer* m_renderer;
+    std::string m_actorId;
+};
+

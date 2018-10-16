@@ -19,6 +19,7 @@ engines = {
 			{ tag = {1, mushroomTag}, onenter = mario_mushroom},
 			{ tag = {1, goombaTag}, onenter = mario_goomba},
 			{ tag = {1, koopaTag}, onenter = mario_koopa},
+			{ tag = {1, flowerTag}, onenter = mario_flower},
 				
 		}
 	}
@@ -28,6 +29,7 @@ assets = {
 	sprites.basicbrick,
 	sprites.bonusbrick,
 	sprites.mushroom,
+	sprites.flower,
 	sprites.goomba,
 	sprites.koopa
 },
@@ -54,7 +56,7 @@ scene = {
 				components = {
 					{ type="gfx", model="mario", anim="idle" },
 					{ type="controller2d", maxclimbangle = 80, maxdescendangle = 80, horizontalrays=4, verticalrays=4 },
-					{ type="dynamics2d", jumpheight = 64, timetojumpapex = 0.5 },
+					{ type="dynamics2d", jumpheight = 80, timetojumpapex = 0.5 },
 					{ type="multicollider", tag=1, flag=1, initialshape="small", shapes = {
 						{ name ="small", type="rect", width=14, height=16, offset={-8,0}},
 						{ name ="big", type="rect", width=14, height=32, offset={-8,0}},
@@ -80,7 +82,7 @@ scene = {
 
 						}
 					},
-					{ type="info", supermario = false, fire = false, invincible = true },
+					{ type="info", supermario = false, fire = false, invincible = false },
 					{ type="follow", cam ="maincam", relativepos={0,0,5}, up={0,1,0} }
 		 		},
 				-- collider boxes
@@ -108,10 +110,11 @@ scene = {
 					makeRect { pos ={0,0,0}, width = 69, height = 2, gfx="block1" },
 					makeRect { pos ={8,2,0}, width = 1, height = 1, gfx="block2" },
 					makeRect { pos ={12,2,0}, width = 1, height = 1, gfx="block2" },
-					makeRect { pos ={16,2,0}, width = 1, height = 1, gfx="block2" },
+					makeRect { pos ={20,2,0}, width = 1, height = 1, gfx="block2" },
 					items.brick.create { pos = {6,5}, sprite="basicbrick" },
 					-- -- makeBrick { pos ={ 4, 5}, sprite="basicbrick"},
 					items.bonusbrick.create { pos = {7,5}, sprite="bonusbrick", hits=1, item = "mushroom" },					
+					items.bonusbrick.create { pos = {4,5}, sprite="bonusbrick", hits=1, item = "flower" },					
 					items.goomba.create { x = 16*10, y = 16*3, z = 0, dir = -1},
 					items.koopa.create { x = 16*14, y = 16*3, z = 0, dir = -1}
 				}		

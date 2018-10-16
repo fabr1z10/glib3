@@ -29,8 +29,9 @@ end
 
 
 
-function mario_goomba(mario, goomba) 
-	if (mario.state == "jump" and mario.vy < 0) then
+function mario_goomba(mario, goomba, sx, sy)
+	
+	if (mario.state == "jump" and mario.vy < 0 and sy > 0 and math.abs(sx) < 0.01) then
 		mario.vy = -mario.vy
 		goomba:changestate("dead")
 		local s = script:new()
@@ -40,17 +41,6 @@ function mario_goomba(mario, goomba)
 		}
 		monkey.play(s)
 	else
-		marioinfo = mario:getinfo()
-		if (not mario.invincible) then
-			suspendplay()
-			local s = script:new()
-			s.actions = {
-				[1] = {type="animate", actor="player", anim="dead"},
-				[2] = {type="delay", sec=0.5, after={1}},
-				[3] = {type="movegravity", actor ="player", velocity={0,50}, g = 100, ystop = 0, after={2}},
-				[4] = { type="gotoroom", room=variables._room, after={3} }
-			}
-			monkey.play(s)
-		end
+		mario_is_hit(mario)
 	end
 end

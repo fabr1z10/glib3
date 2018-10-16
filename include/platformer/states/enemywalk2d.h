@@ -7,6 +7,7 @@ class EnemyWalk2D : public PlatformerState {
 public:
     // dir = 1 for right, -1 for left
     EnemyWalk2D(float speed, int dir, bool enableFlip);
+    void ResetState(luabridge::LuaRef) override;
     bool Run (double) override;
 private:
     float m_speed;

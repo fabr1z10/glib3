@@ -5,12 +5,18 @@
 #include <gfx/components/renderer.h>
 #include <gfx/math/geom.h>
 #include <gfx/components/dynamics2d.h>
+#include <gfx/lua/luatable.h>
 
 extern GLFWwindow* window;
 
 EnemyWalk2D::EnemyWalk2D(float speed, int dir, bool enableFlip) :
         PlatformerState(), m_speed(speed), m_dir(dir), m_enableFlip(enableFlip)
 {}
+
+void EnemyWalk2D::ResetState(luabridge::LuaRef ref) {
+    LuaTable table(ref);
+    m_dir = table.Get<int>("dir");
+}
 
 bool EnemyWalk2D::Run(double dt) {
     // apply gravity

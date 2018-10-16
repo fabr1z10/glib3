@@ -42,6 +42,7 @@ SceneFactory::SceneFactory() {
     m_activityFactory.Add<ChangeStateActFactory>("changestate");
     m_activityFactory.Add<ChangeRoomActFactory>("gotoroom");
     m_activityFactory.Add<DelayActFactory>("delay");
+    m_activityFactory.Add<BlinkActFactory>("blink");
 }
 
 template <>

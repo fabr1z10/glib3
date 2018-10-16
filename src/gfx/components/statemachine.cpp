@@ -48,7 +48,7 @@ void StateMachine::ChangeState(const std::string& state, luabridge::LuaRef param
         m_currentState->End();
     }
     m_currentState = it->second.get();
-    m_currentState->Start();
+    m_currentState->Start(param);
 
 }
 
