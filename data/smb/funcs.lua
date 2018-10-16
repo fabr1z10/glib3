@@ -7,6 +7,8 @@ mushroomTag = 100
 goombaTag = 101
 koopaTag = 102
 flowerTag = 103
+mushroom1upTag = 104
+starTag = 105
 
 items = { }
 
@@ -16,7 +18,9 @@ end
 
 require("items/mario")
 require("items/mushroom")
+require("items/mushroom1up")
 require("items/flower")
+require("items/star")
 require("items/goomba")
 require("items/koopa")
 require("items/brick")

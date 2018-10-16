@@ -17,9 +17,11 @@ engines = {
 			{ tag = {1, 20}, onenter = basicBrickResponse },
 			{ tag = {1, 21}, onenter = bonusBrickResponse },
 			{ tag = {1, mushroomTag}, onenter = mario_mushroom},
+			{ tag = {1, mushroom1upTag}, onenter = mario_mushroom1up},
 			{ tag = {1, goombaTag}, onenter = mario_goomba},
 			{ tag = {1, koopaTag}, onenter = mario_koopa},
 			{ tag = {1, flowerTag}, onenter = mario_flower},
+			{ tag = {1, starTag}, onenter = mario_star},
 				
 		}
 	}
@@ -29,7 +31,9 @@ assets = {
 	sprites.basicbrick,
 	sprites.bonusbrick,
 	sprites.mushroom,
+	sprites.mushroom1up,
 	sprites.flower,
+	sprites.star,
 	sprites.goomba,
 	sprites.koopa
 },
@@ -115,6 +119,8 @@ scene = {
 					-- -- makeBrick { pos ={ 4, 5}, sprite="basicbrick"},
 					items.bonusbrick.create { pos = {7,5}, sprite="bonusbrick", hits=1, item = "mushroom" },					
 					items.bonusbrick.create { pos = {4,5}, sprite="bonusbrick", hits=1, item = "flower" },					
+					items.bonusbrick.create { pos = {3,5}, sprite="bonusbrick", hits=1, item = "mushroom1up" },					
+					items.bonusbrick.create { pos = {4,8}, sprite="bonusbrick", hits=1, item = "star" },					
 					items.goomba.create { x = 16*10, y = 16*3, z = 0, dir = -1},
 					items.koopa.create { x = 16*14, y = 16*3, z = 0, dir = -1}
 				}		

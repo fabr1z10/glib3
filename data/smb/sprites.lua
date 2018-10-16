@@ -192,6 +192,20 @@ sprites = {
 		    }		
 		}
 	},
+	mushroom1up = {
+		id = "mushroom1up",
+		sheet = "gfx/smb1.png",
+		type = "sprite",
+		ppu = 1,
+		animations = {
+		    {
+		        name = "idle", frames = 
+				{ 
+					{ duration = dt, quads = { { x = 144, y = 48, width = 16, height = 16, anchor = {8, 0}}}}
+				}
+		    }		
+		}
+	},
 	flower = {
 		id = "flower",
 		sheet = "gfx/smb1.png",
@@ -205,6 +219,20 @@ sprites = {
 					{ duration = dt, quads = { { x = 192, y = 96, width = 16, height = 16, anchor = {8, 0}}}},
 					{ duration = dt, quads = { { x = 208, y = 96, width = 16, height = 16, anchor = {8, 0}}}},
 					{ duration = dt, quads = { { x = 224, y = 96, width = 16, height = 16, anchor = {8, 0}}}},
+				}
+		    }		
+		}
+	},
+	star = {
+		id = "star",
+		sheet = "gfx/smb1.png",
+		type = "sprite",
+		ppu = 1,
+		animations = {
+		    {
+		        name = "idle", frames = 
+				{ 
+					{ duration = dt, quads = { { x = 128, y = 48, width = 16, height = 16, anchor = {8, 0}}}}
 				}
 		    }		
 		}

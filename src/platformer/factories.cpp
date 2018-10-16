@@ -2,6 +2,7 @@
 #include <platformer/states/idle2d.h>
 #include <platformer/states/walk2d.h>
 #include <platformer/states/enemywalk2d.h>
+#include <platformer/states/enemybounce2d.h>
 #include <platformer/states/jump2d.h>
 #include <gfx/lua/luatable.h>
 
@@ -31,4 +32,12 @@ std::unique_ptr<StateBehaviour> EnemyWalk2DStateFactory::Create(luabridge::LuaRe
     int dir = table.Get<int>("dir", 1);
     bool enableFlip = table.Get<bool>("flip");
     return std::unique_ptr<EnemyWalk2D>(new EnemyWalk2D(speed, dir, enableFlip));
+}
+
+std::unique_ptr<StateBehaviour> EnemyBounce2DStateFactory::Create(luabridge::LuaRef & r) {
+    LuaTable table(r);
+    float speed = table.Get<float>("speed");
+    float vy = table.Get<float>("vy");
+    bool enableFlip = table.Get<bool>("flip");
+    return std::unique_ptr<EnemyBounce2D>(new EnemyBounce2D(speed, vy, enableFlip));
 }

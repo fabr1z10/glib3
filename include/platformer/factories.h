@@ -6,6 +6,8 @@ FACTORY(Idle2DStateFactory, StateBehaviour)
 FACTORY(Walk2DStateFactory, StateBehaviour)
 FACTORY(Jump2DStateFactory, StateBehaviour)
 FACTORY(EnemyWalk2DStateFactory, StateBehaviour)
+FACTORY(EnemyBounce2DStateFactory, StateBehaviour)
+
 
 //class Idle2DStateFactory : public FactoryMethod<StateBehaviour> {
 //    std::unique_ptr<StateBehaviour> Create(luabridge::LuaRef&) override;
