@@ -112,6 +112,19 @@ inline glm::vec2 LuaTable::Get<glm::vec2>(const std::string& key) {
 }
 
 template<>
+inline glm::ivec2 LuaTable::Get<glm::ivec2>(const std::string& key) {
+    luabridge::LuaRef ref = m_ref[key];
+    if (ref.isNil())
+    GLIB_FAIL("Unknown value " << key);
+    glm::ivec2 out;
+    out.x = ref[1].cast<int>();
+    out.y = ref[2].cast<int>();
+    return out;
+}
+
+
+
+template<>
 inline glm::vec3 LuaTable::Get<glm::vec3>(const std::string& key) {
     luabridge::LuaRef ref = m_ref[key];
     if (ref.isNil())

@@ -87,6 +87,15 @@ std::unique_ptr<Component> GfxComponentFactory::Create(luabridge::LuaRef & ref) 
             renderer->SetMesh(mesh);
         }
         renderer->SetTint(color);
+    } else if (table.HasKey("tiledata")) {
+        std::string image = table.Get<std::string>("img");
+        float size = table.Get<float>("size", 1.0f);
+        int width = table.Get<int>("width");
+        int height = table.Get<int>("height");
+        glm::ivec2 sheetSize = table.Get<glm::ivec2>("sheetsize");
+        std::vector<int> data = table.GetVector<int>("tiledata");
+        auto mesh = std::make_shared<QuadMesh>(image, height, width, size, data, sheetSize.x, sheetSize.y);
+        renderer->SetMesh(mesh);
     }
     if (table.HasKey("scale")) {
         float scale = table.Get<float>("scale");

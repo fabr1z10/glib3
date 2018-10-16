@@ -126,7 +126,13 @@ scene = {
 					items.bonusbrick.create { pos = {4,8}, sprite="bonusbrick", hits=1, item = "star" },					
 					items.invisiblebrick.create { pos = {5, 8}, sprite="invbrick", hits=1, item="mushroom1up" },
 					items.goomba.create { x = 16*10, y = 16*3, z = 0, dir = -1},
-					items.koopa.create { x = 16*14, y = 16*3, z = 0, dir = -1}
+					items.koopa.create { x = 16*14, y = 16*3, z = 0, dir = -1},
+					{
+						pos = {2*16,10*16, -1},
+						components = {
+							{ type="gfx", img="gfx/smb1.png", width=3, height=2, size=16, tiledata={5,4,6,4,7,4,5,3,6,3,7,3}, sheetsize={16, 16}}
+						}
+					}
 				}		
 			}
 		}
