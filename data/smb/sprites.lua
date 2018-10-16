@@ -260,6 +260,25 @@ sprites = {
 		    }			
 		}
 	},
-	
+	invbrick = {
+		id = "invbrick",
+		sheet = "gfx/smb1.png",
+		type = "sprite",
+		ppu = 1,
+		animations = {
+		    {
+		        name = "nottaken", frames = 
+				{ 
+					{ duration = dt, quads = { { x = 176, y = 80, width = 16, height = 16, anchor = {0, 0}}}},
+				}
+		    },
+		    {
+		        name = "taken", frames = 
+				{ 
+					{ duration = dt, quads = { { x = 224, y = 0, width = 16, height = 16, anchor = {0, 0}}}}
+				}
+		    }			
+		}
+	},	
 
 }

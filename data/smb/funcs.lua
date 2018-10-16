@@ -9,6 +9,7 @@ koopaTag = 102
 flowerTag = 103
 mushroom1upTag = 104
 starTag = 105
+invisibleBrickTag = 106
 
 items = { }
 
@@ -25,6 +26,7 @@ require("items/goomba")
 require("items/koopa")
 require("items/brick")
 require("items/bonusbrick")
+require("items/invisiblebrick")
 
 function resumeplay()
 	local ros = monkey.getEntity("restofscene")

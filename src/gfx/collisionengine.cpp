@@ -291,6 +291,8 @@ RayCastHit2D CollisionEngine::Raycast (glm::vec3 rayOrigin, glm::vec2 rayDir, fl
         auto lineBounds = line.getBounds();
         if (it != m_cells.end()) {
             for (auto& c : it->second.colliders) {
+                if (!c->Enabled())
+                    continue;
                 // aabb check
                 int flag = c->GetFlag();
                 int m = flag & mask;

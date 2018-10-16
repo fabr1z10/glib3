@@ -22,6 +22,8 @@ engines = {
 			{ tag = {1, koopaTag}, onenter = mario_koopa},
 			{ tag = {1, flowerTag}, onenter = mario_flower},
 			{ tag = {1, starTag}, onenter = mario_star},
+			{ tag = {1, invisibleBrickTag}, onenter = mario_invisiblebrick},
+
 				
 		}
 	}
@@ -30,6 +32,7 @@ assets = {
 	sprites.mario,
 	sprites.basicbrick,
 	sprites.bonusbrick,
+	sprites.invbrick,
 	sprites.mushroom,
 	sprites.mushroom1up,
 	sprites.flower,
@@ -121,6 +124,7 @@ scene = {
 					items.bonusbrick.create { pos = {4,5}, sprite="bonusbrick", hits=1, item = "flower" },					
 					items.bonusbrick.create { pos = {3,5}, sprite="bonusbrick", hits=1, item = "mushroom1up" },					
 					items.bonusbrick.create { pos = {4,8}, sprite="bonusbrick", hits=1, item = "star" },					
+					items.invisiblebrick.create { pos = {5, 8}, sprite="invbrick", hits=1, item="mushroom1up" },
 					items.goomba.create { x = 16*10, y = 16*3, z = 0, dir = -1},
 					items.koopa.create { x = 16*14, y = 16*3, z = 0, dir = -1}
 				}		
