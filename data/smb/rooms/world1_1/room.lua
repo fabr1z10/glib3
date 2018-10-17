@@ -23,6 +23,7 @@ engines = {
 			{ tag = {1, flowerTag}, onenter = mario_flower},
 			{ tag = {1, starTag}, onenter = mario_star},
 			{ tag = {1, invisibleBrickTag}, onenter = mario_invisiblebrick},
+			{ tag = {1, movingPlatformTag}, onenter = character_movingplatform},
 
 				
 		}
@@ -132,6 +133,25 @@ scene = {
 						components = {
 							{ type="gfx", img="gfx/smb1.png", width=3, height=2, size=16, tiledata={5,4,6,4,7,4,5,3,6,3,7,3}, sheetsize={16, 16}}
 						}
+					},
+					{
+						tag="p1",
+						pos = {10*16,5*16,-1},
+						components = {
+							{ type="gfx", img="gfx/smb1.png", width=3, height=1, size=16, tiledata={15,5,15,5,15,5}, sheetsize={16, 16}},
+							{ type ="collider", shape={type="rect", width=16*3, height = 8}, tag=10, flag = 32 }
+
+						},
+						children = {
+							{
+								pos = { 0, 8, 0},
+								components = {
+									{ type="collider", shape = {type="rect", width=16*3, height = 0.5}, tag = movingPlatformTag, flag = 4 },
+									{ type="gfx", shape = {type="rect", width=16*3, height = 0.5}, color = {255,0,0,255}}
+								}
+							}
+						}
+					
 					}
 				}		
 			}
@@ -163,6 +183,15 @@ function room.start()
 end
 
 function room.afterstartup() 
+	local s = script:new()
+	s.actions = {
+		[1] = { type="move", actor="p1", to ={18*16,5*16}, speed=20},
+		[2] = { type="move", actor="p1", to ={10*16,5*16}, speed=20, after={1}},
+	}
+	s.loop = 1
+	monkey.play(s)
+
+		
 end
 
 

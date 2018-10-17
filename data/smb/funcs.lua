@@ -10,6 +10,7 @@ flowerTag = 103
 mushroom1upTag = 104
 starTag = 105
 invisibleBrickTag = 106
+movingPlatformTag = 90
 
 items = { }
 
@@ -70,7 +71,9 @@ function restartRoom()
 	monkey.play(s)
 end
 
-
+function character_movingplatform()
+	print ("ECCOMI")
+end
 
 function marioinit(verb, e) 
 	
