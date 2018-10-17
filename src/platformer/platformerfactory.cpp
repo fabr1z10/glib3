@@ -1,6 +1,6 @@
 #include <platformer/platformerfactory.h>
 #include <platformer/factories.h>
-
+#include <gfx/entitywrapper.h>
 
 PlatformerFactory::PlatformerFactory() : SceneFactory() {
 
@@ -11,5 +11,19 @@ PlatformerFactory::PlatformerFactory() : SceneFactory() {
     m_stateBehaviorFactory.Add<EnemyWalk2DStateFactory>("enemywalk2d");
     m_stateBehaviorFactory.Add<EnemyBounce2DStateFactory>("enemybounce2d");
 
+
+}
+
+void ciao() {
+        std::cout << "CALLLLED PIPPO\n";
+
+}
+
+
+void PlatformerFactory::extendLua() {
+
+    luabridge::getGlobalNamespace(LuaWrapper::L)
+            .beginNamespace("monkey")
+            .addFunction("pippo", &ciao);
 
 }

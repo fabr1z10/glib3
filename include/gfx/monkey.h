@@ -35,7 +35,9 @@ public:
         g.SetRenderingEngine(std::move(renderingEngine));
 
         LoadFonts();
-        g.SetSceneFactory(std::unique_ptr<SceneFactory>(new SCENE_FACTORY));
+        auto factory = std::unique_ptr<SceneFactory>(new SCENE_FACTORY);
+        factory->extendLua();
+        g.SetSceneFactory(std::move(factory));
     }
 
     void Start();

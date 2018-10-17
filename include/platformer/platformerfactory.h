@@ -5,4 +5,5 @@
 class PlatformerFactory : public SceneFactory {
 public:
     PlatformerFactory();
+    void extendLua() override;
 };

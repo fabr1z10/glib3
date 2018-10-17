@@ -33,7 +33,7 @@ public:
         auto s = std::shared_ptr<T>(std::move(up));
         return s;
     }
-
+    virtual void extendLua() {}
 protected:
     Factory<IMesh> m_meshFactory;
     Factory<Camera> m_cameraFactory;

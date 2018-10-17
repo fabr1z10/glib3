@@ -73,6 +73,7 @@ end
 
 function character_movingplatform()
 	print ("ECCOMI")
+	monkey.pippo()
 end
 
 function marioinit(verb, e) 
