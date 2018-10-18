@@ -71,9 +71,10 @@ function restartRoom()
 	monkey.play(s)
 end
 
-function character_movingplatform()
+function character_movingplatform(ch, platform)
 	print ("ECCOMI")
-	monkey.pippo()
+	local p = platform:parent()
+	monkey.register_platform(ch, p)
 end
 
 function marioinit(verb, e) 

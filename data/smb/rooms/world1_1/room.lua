@@ -139,7 +139,8 @@ scene = {
 						pos = {10*16,5*16,-1},
 						components = {
 							{ type="gfx", img="gfx/smb1.png", width=3, height=1, size=16, tiledata={15,5,15,5,15,5}, sheetsize={16, 16}},
-							{ type ="collider", shape={type="rect", width=16*3, height = 8}, tag=10, flag = 32 }
+							{ type ="collider", shape={type="rect", width=16*3, height = 8}, tag=10, flag = 32 },
+							{ type="platform"}
 
 						},
 						children = {
@@ -147,7 +148,7 @@ scene = {
 								pos = { 0, 8, 0},
 								components = {
 									{ type="collider", shape = {type="rect", width=16*3, height = 0.5}, tag = movingPlatformTag, flag = 4 },
-									{ type="gfx", shape = {type="rect", width=16*3, height = 0.5}, color = {255,0,0,255}}
+									{ type="gfx", shape = {type="rect", width=16*3, height = 0.5}, color = {255,0,0,255}},
 								}
 							}
 						}

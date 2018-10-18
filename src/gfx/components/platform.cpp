@@ -5,6 +5,7 @@ using namespace glm;
 
 void PlatformComponent::Start() {
     m_entity->onMove.Register(this, [this](Entity* node) { Move(node); });
+    m_lastPosition = m_entity->GetPosition();
 }
 
 PlatformComponent::~PlatformComponent() {
@@ -14,11 +15,11 @@ PlatformComponent::~PlatformComponent() {
 }
 
 void PlatformComponent::Move(Entity* node) {
-//    if (m_characters.empty())
-//        return;
-//    mat4 t = node->GetLastMove();
-//    for (auto iter = m_characters.begin(); iter != m_characters.end(); iter++) {
-//        m_current = (*iter);
-//        m_current->GetObject()->Move(t);
-//    }
+    glm::vec3 currentPosition = node->GetPosition();
+    glm::vec3 delta = currentPosition - m_lastPosition;
+    for (auto iter = m_characters.begin(); iter != m_characters.end(); iter++) {
+        m_current = (*iter);
+        m_current->GetObject()->Move(delta);
+    }
+    m_lastPosition = currentPosition;
 }

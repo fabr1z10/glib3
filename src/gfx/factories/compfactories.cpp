@@ -30,7 +30,7 @@
 #include <gfx/components/dynamics2d.h>
 #include <gfx/runner.h>
 #include <gfx/states/luainitializer.h>
-
+#include <gfx/components/platform.h>
 
 std::unique_ptr<Component> TextComponentFactory::Create(luabridge::LuaRef &ref) {
     auto renderer = std::unique_ptr<Renderer>(new Renderer);
@@ -358,6 +358,10 @@ std::unique_ptr<Component> ShadowComponentFactory::Create(luabridge::LuaRef &) {
     return std::unique_ptr<Shadow>(new Shadow);
 }
 
+std::unique_ptr<Component> PlatformComponentFactory::Create(luabridge::LuaRef &) {
+    return std::unique_ptr<PlatformComponent>(new PlatformComponent);
+}
+
 std::unique_ptr<Component> BillboardComponentFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
     std::string cam = table.Get<std::string>("cam");
@@ -570,6 +574,8 @@ std::unique_ptr<StateInitializer> LuaAnimColliderInitializerFactory::Create(luab
     luabridge::LuaRef func = table.Get<luabridge::LuaRef>("func");
     return std::unique_ptr<LuaAnimColliderInitializer>(new LuaAnimColliderInitializer(func));
 }
+
+
 
 //std::shared_ptr<State> BasicStateFactory::Create(luabridge::LuaRef & r) {
 //    LuaTable table(r);

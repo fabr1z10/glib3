@@ -41,6 +41,7 @@ FACTORY(LuaKeyboardComponentFactory, Component)
 FACTORY(TextViewComponentFactory, Component)
 FACTORY(ShadowComponentFactory, Component)
 FACTORY(BillboardComponentFactory, Component)
+FACTORY(PlatformComponentFactory, Component)
 
 // Runners
 FACTORY(HotSpotManagerFactory, Runner)

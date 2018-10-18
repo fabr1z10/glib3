@@ -33,6 +33,7 @@ protected:
     //EventListener m_listener;
     Controller2D* m_current;
     std::set<Controller2D*> m_characters;
+    glm::vec3 m_lastPosition;
 };
 
 

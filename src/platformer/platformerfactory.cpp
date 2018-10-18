@@ -1,6 +1,7 @@
 #include <platformer/platformerfactory.h>
 #include <platformer/factories.h>
 #include <gfx/entitywrapper.h>
+#include <platformer/luaext.h>
 
 PlatformerFactory::PlatformerFactory() : SceneFactory() {
 
@@ -14,16 +15,15 @@ PlatformerFactory::PlatformerFactory() : SceneFactory() {
 
 }
 
-void ciao() {
-        std::cout << "CALLLLED PIPPO\n";
 
-}
 
 
 void PlatformerFactory::extendLua() {
 
     luabridge::getGlobalNamespace(LuaWrapper::L)
             .beginNamespace("monkey")
-            .addFunction("pippo", &ciao);
+            .addFunction("register_platform", &RegisterToPlatform)
+            .addFunction("unregister_platform", &UnregisterToPlatform);
+
 
 }
