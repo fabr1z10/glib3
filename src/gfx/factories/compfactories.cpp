@@ -14,6 +14,7 @@
 #include <gfx/components/depth.h>
 #include <gfx/components/follow.h>
 #include <gfx/components/billboard.h>
+#include <gfx/components/parallax.h>
 #include <gfx/state.h>
 #include <gfx/components/info.h>
 #include <gfx/components/textview.h>
@@ -116,6 +117,14 @@ std::unique_ptr<Component> ColliderComponentFactory::Create(luabridge::LuaRef &r
 
     auto coll = std::unique_ptr<Collider>(new Collider(shape, tag, flag));
     return coll;
+}
+
+std::unique_ptr<Component> ParallaxComponentFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    std::string cam = table.Get<std::string>("cam");
+    float factor = table.Get<float>("factor");
+    float reset = table.Get<float>("reset");
+    return std::unique_ptr<Component>(new Parallax(cam, factor, reset));
 }
 
 std::unique_ptr<Component> MultiColliderComponentFactory::Create(luabridge::LuaRef &ref) {

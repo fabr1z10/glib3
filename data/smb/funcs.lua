@@ -28,6 +28,7 @@ require("items/koopa")
 require("items/brick")
 require("items/bonusbrick")
 require("items/invisiblebrick")
+require("items/movingplatform")
 
 function resumeplay()
 	local ros = monkey.getEntity("restofscene")

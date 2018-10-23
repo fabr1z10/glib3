@@ -42,6 +42,7 @@ FACTORY(TextViewComponentFactory, Component)
 FACTORY(ShadowComponentFactory, Component)
 FACTORY(BillboardComponentFactory, Component)
 FACTORY(PlatformComponentFactory, Component)
+FACTORY(ParallaxComponentFactory, Component)
 
 // Runners
 FACTORY(HotSpotManagerFactory, Runner)

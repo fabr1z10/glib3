@@ -3,7 +3,7 @@ local startPos = {32, 64}
 local g = -10
 local marioAcc = 0.05
 local marioSpeed = 75
-
+local initscripts = {}
 
 
 room = {
@@ -114,6 +114,15 @@ scene = {
 			{
 				tag = "restofscene",
 				children = {
+					-- the background (parallax)
+					{
+						pos = {0,0,-2},
+						components = {
+							{ type="gfx", image="gfx/bg1.png", width=512, height=256 },
+							{ type="parallax", cam="maincam", factor = 0.5, reset=0 }
+						}
+					},
+					
 					makeLine { A = {1,0}, B = {1,256} },
 					makeRect { pos ={0,0,0}, width = 69, height = 2, gfx="block1" },
 					makeRect { pos ={8,2,0}, width = 1, height = 1, gfx="block2" },
@@ -134,26 +143,9 @@ scene = {
 							{ type="gfx", img="gfx/smb1.png", width=3, height=2, size=16, tiledata={5,4,6,4,7,4,5,3,6,3,7,3}, sheetsize={16, 16}}
 						}
 					},
-					{
-						tag="p1",
-						pos = {10*16,5*16,-1},
-						components = {
-							{ type="gfx", img="gfx/smb1.png", width=3, height=1, size=16, tiledata={15,5,15,5,15,5}, sheetsize={16, 16}},
-							{ type ="collider", shape={type="rect", width=16*3, height = 8}, tag=10, flag = 32 },
-							{ type="platform"}
+					items.movingplatform.create { pos={10, 5}, width=3, tx=15, ty=5, speed=20, pos2={18, 5}, initscripts = initscripts },
+					items.movingplatform.create { pos={10, 6}, width=3, tx=15, ty=5, speed=20, pos2={10, 11}, initscripts = initscripts },
 
-						},
-						children = {
-							{
-								pos = { 0, 8, 0},
-								components = {
-									{ type="collider", shape = {type="rect", width=16*3, height = 0.5}, tag = movingPlatformTag, flag = 4 },
-									{ type="gfx", shape = {type="rect", width=16*3, height = 0.5}, color = {255,0,0,255}},
-								}
-							}
-						}
-					
-					}
 				}		
 			}
 		}
@@ -184,15 +176,10 @@ function room.start()
 end
 
 function room.afterstartup() 
-	local s = script:new()
-	s.actions = {
-		[1] = { type="move", actor="p1", to ={18*16,5*16}, speed=20},
-		[2] = { type="move", actor="p1", to ={10*16,5*16}, speed=20, after={1}},
-	}
-	s.loop = 1
-	monkey.play(s)
 
-		
+	for k, v in pairs(initscripts) do
+		monkey.play(v)
+	end		
 end
 
 

@@ -26,6 +26,7 @@ SceneFactory::SceneFactory() {
     m_componentFactory.Add<FollowComponentFactory>("follow");
     m_componentFactory.Add<InfoComponentFactory>("info");
     m_componentFactory.Add<PlatformComponentFactory>("platform");
+    m_componentFactory.Add<ParallaxComponentFactory>("parallax");
 
     m_shapeFactory.Add<RectFactory>("rect");
     m_shapeFactory.Add<LineFactory>("line");
