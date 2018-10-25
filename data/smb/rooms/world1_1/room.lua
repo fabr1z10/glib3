@@ -8,8 +8,8 @@ local coinBricks = { {16, 5}, {23, 5}, {22, 9}}
 local basicBricks = { {20, 5}, {22, 5}, {24, 5}}
 local mushroomBricks = {{21,5}}
 local pipe2 = { {28,2} }
-local pipe3 = { {28,2} }
-local pipe4 = { {28,2} }
+local pipe3 = { {38,2} }
+local pipe4 = { {46,2}, {57, 2} }
 
 
 room = {
@@ -108,8 +108,8 @@ for k, v in ipairs(mushroomBricks) do
 end
 -- pipes
 for k, v in ipairs(pipe2) do table.insert(mainScene, makeRect { pos = Pos(v), width = 2, height = 2, tiledata = {0,4,1,4,0,3,1,3}}) end	
-for k, v in ipairs(pipe3) do table.insert(mainScene, makeRect { pos = Pos(v), width = 2, height = 3, tiledata = {0,4,1,4,0,3,1,3,0,3,1,3}}) end	
-for k, v in ipairs(pipe4) do table.insert(mainScene, makeRect { pos = Pos(v), width = 2, height = 4, tiledata = {0,4,1,4,0,3,1,3,0,3,1,3,0,3,1,3}}) end	
+for k, v in ipairs(pipe3) do table.insert(mainScene, makeRect { pos = Pos(v), width = 2, height = 3, tiledata = {0,4,1,4,0,4,1,4,0,3,1,3}}) end	
+for k, v in ipairs(pipe4) do table.insert(mainScene, makeRect { pos = Pos(v), width = 2, height = 4, tiledata = {0,4,1,4,0,4,1,4,0,4,1,4,0,3,1,3}}) end	
 
 -- for i = 1,10 do
 -- 	print ("pollo")
