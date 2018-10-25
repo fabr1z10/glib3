@@ -19,7 +19,7 @@ bool Walk2D::Run(double dt) {
         return true;
     }
 
-    m_dynamics->m_velocity.y += m_dynamics->m_gravity * dt;
+    m_dynamics->m_velocity.y = m_dynamics->m_gravity * dt;
     bool left = (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS);
     bool right = (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS);
     float targetVelocityX = 0.0f;

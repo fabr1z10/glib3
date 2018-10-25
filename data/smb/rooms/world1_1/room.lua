@@ -48,7 +48,7 @@ scene = {
 			tag = "maincam",
 			type="ortho",
 			size = {256, 256},
-			bounds = {0, 0, 512, 256},
+			bounds = {0, 0, 1024, 256},
 			viewport = {0, 0, 256, 256}
 		},
 		children = {
@@ -118,8 +118,9 @@ scene = {
 					{
 						pos = {0,0,-2},
 						components = {
-							{ type="gfx", image="gfx/bg1.png", width=512, height=256 },
-							{ type="parallax", cam="maincam", factor = 0.5, reset=0 }
+							--{ type="gfx", image="gfx/bg1.png", width=512, height=256, rep = {2,1} },
+							{ type="gfx", shape = { type="rect", width = 256, height = 256 }, color = {92, 148, 252, 255}, draw="solid" },
+							{ type="parallax", cam="maincam", factor = 1, width = 512, height = 256}
 						}
 					},
 					

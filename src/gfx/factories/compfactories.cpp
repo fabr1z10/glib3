@@ -123,8 +123,9 @@ std::unique_ptr<Component> ParallaxComponentFactory::Create(luabridge::LuaRef &r
     LuaTable table(ref);
     std::string cam = table.Get<std::string>("cam");
     float factor = table.Get<float>("factor");
-    float reset = table.Get<float>("reset");
-    return std::unique_ptr<Component>(new Parallax(cam, factor, reset));
+    float width = table.Get<float>("width");
+    float height = table.Get<float>("width");
+    return std::unique_ptr<Component>(new Parallax(cam, factor, width, height));
 }
 
 std::unique_ptr<Component> MultiColliderComponentFactory::Create(luabridge::LuaRef &ref) {

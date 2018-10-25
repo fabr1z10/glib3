@@ -72,10 +72,13 @@ function restartRoom()
 	monkey.play(s)
 end
 
-function character_movingplatform(ch, platform)
-	print ("ECCOMI")
-	local p = platform:parent()
-	monkey.register_platform(ch, p)
+function character_movingplatform(ch, platform, sx, sy)
+	
+	if (hitFromAbove(ch, sx, sy)) then
+		print ("ECCOMI")
+		local p = platform:parent()
+		monkey.register_platform(ch, p)
+	end
 end
 
 function marioinit(verb, e) 

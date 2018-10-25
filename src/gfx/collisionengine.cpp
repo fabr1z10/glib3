@@ -42,7 +42,7 @@ void CollisionEngine::Move(Collider * c) {
     auto it = m_colliderLocations.find(c);
     if (it != m_colliderLocations.end()) {
         if (it->second != loc) {
-            std::cout << "Collider " << c->GetShape()->toString() << " moved to loc from (" << loc.x0 << ", " << loc.y0 << ") to (" << loc.x1 << ", " << loc.y1 << ")\n";
+            //std::cout << "Collider " << c->GetShape()->toString() << " moved to loc from (" << loc.x0 << ", " << loc.y0 << ") to (" << loc.x1 << ", " << loc.y1 << ")\n";
             if (loc != it->second) {
                 // if it's still in the same region nbothing to do
                 PopCollider(c);

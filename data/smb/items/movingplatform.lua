@@ -26,7 +26,10 @@ items.movingplatform.create = function(arg)
 		pos = {arg.pos[1]*16, arg.pos[2]*16, -1},
 		components = {
 			{ type="gfx", img="gfx/smb1.png", width=arg.width, height=1, size=16, tiledata=tiledata, sheetsize={16, 16}},
-			{ type="collider", shape={type="rect", width=16*arg.width, height = 8}, tag=10, flag = 32 },
+			{ type="collider", 
+				shape = {type="line", A = {0,8}, B = {16*arg.width, 8}},
+				--shape={type="rect", width=16*arg.width, height = 8}, 
+				tag=10, flag = 32 },
 			{ type="platform"}
 		},
 		children = {

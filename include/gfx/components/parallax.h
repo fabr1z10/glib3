@@ -8,14 +8,18 @@
 */
 class Parallax : public Component {
 public:
-    Parallax (const std::string& camId, float factor, float reset);
+    Parallax (const std::string& camId, float factor, float width, float height);
     void Start() override;
     void Update(double) override {}
 private:
     void onCameraMove(Camera*);
     std::string m_camId;
-    Camera* m_cam;
+    OrthographicCamera* m_cam;
     float m_factor;
-    float m_reset;
+    float m_width;
+    float m_height;
+    float m_horizontalTranslation;
+    float m_verticalTranslation;
+    glm::vec2 m_camSize;
     glm::vec3 m_previousPos;
 };
