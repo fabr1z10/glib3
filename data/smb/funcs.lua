@@ -1,4 +1,5 @@
 _nextTag = 0
+tilesize = 16
 brickSpeed = 60
 brickg = 150
 bonusRaiseSpeed = 50
@@ -10,9 +11,14 @@ flowerTag = 103
 mushroom1upTag = 104
 starTag = 105
 invisibleBrickTag = 106
+spawnTag = 107
 movingPlatformTag = 90
 
 items = { }
+
+function Pos(a) 
+	return {a[1]*tilesize, a[2]*tilesize}
+end
 
 function hitFromAbove(mario, sx, sy)
 	return (mario.state == "jump" and mario.vy < 0 and sy > 0 and math.abs(sx) < 0.01)
@@ -27,8 +33,10 @@ require("items/goomba")
 require("items/koopa")
 require("items/brick")
 require("items/bonusbrick")
+require("items/brickcoin")
 require("items/invisiblebrick")
 require("items/movingplatform")
+require("items/spawn")
 
 function resumeplay()
 	local ros = monkey.getEntity("restofscene")
@@ -152,20 +160,26 @@ function makeLine (arg)
 	}
 end
 
-function generateBonus(brick)
-	local main = monkey.getEntity("restofscene")
-	local args = { x = brick.x+8, y = brick.y, z = 0.1 }
-	print ("Brick position is " .. tostring(brick.x) .. ", " .. tostring(brick.y))
-	local s = {type="rect", width=16, height=16, offset={-8,0}}
-	local brickInfo = brick:getinfo()
-	local m = items[brickInfo.item].create(args)
-	monkey.addEntity (m, main)
+function bonusRise(m) 
 	local s = script:new()
 	s.actions = {
 		[1] = {type="move", by={0, 16}, actor = m.tag, speed = bonusRaiseSpeed},
 		[2] = {type="changestate", actor=m.tag, state="walk", after={1}}
 	}
 	monkey.play(s)
+end
+
+function generateBonus(brick)
+	local main = monkey.getEntity("restofscene")
+	local args = { pos = {brick.x+8, brick.y}, z = 0.1 }
+	local s = {type="rect", width=16, height=16, offset={-8,0}}
+	local brickInfo = brick:getinfo()
+	local m = items[brickInfo.item].create(args)
+print ("CREATO ITEM")
+	monkey.addEntity (m, main)
+	if (items[brickInfo.item].script ~= nil) then
+		items[brickInfo.item].script(m)
+	end
 end
 
 

@@ -1,10 +1,8 @@
 local collisionSize = 80
-local startPos = {32, 64}
+local startPos = {2, 4}
 local g = -10
-local marioAcc = 0.05
-local marioSpeed = 75
-local initscripts = {}
 
+local initscripts = {}
 
 room = {
 
@@ -24,7 +22,7 @@ engines = {
 			{ tag = {1, starTag}, onenter = mario_star},
 			{ tag = {1, invisibleBrickTag}, onenter = mario_invisiblebrick},
 			{ tag = {1, movingPlatformTag}, onenter = character_movingplatform},
-
+			{ tag = {1, spawnTag}, onenter = mario_spawn},
 				
 		}
 	}
@@ -34,6 +32,7 @@ assets = {
 	sprites.basicbrick,
 	sprites.bonusbrick,
 	sprites.invbrick,
+	sprites.brickcoin,
 	sprites.mushroom,
 	sprites.mushroom1up,
 	sprites.flower,
@@ -58,95 +57,25 @@ scene = {
 				}
 		    },
 			-- player
-			{	
-				tag="player",
-				pos = {startPos[1], startPos[2], 0},
-				components = {
-					{ type="gfx", model="mario", anim="idle" },
-					{ type="controller2d", maxclimbangle = 80, maxdescendangle = 80, horizontalrays=4, verticalrays=4 },
-					{ type="dynamics2d", jumpheight = 80, timetojumpapex = 0.5 },
-					{ type="multicollider", tag=1, flag=1, initialshape="small", shapes = {
-						{ name ="small", type="rect", width=14, height=16, offset={-8,0}},
-						{ name ="big", type="rect", width=14, height=32, offset={-8,0}},
-						{ name ="duck", type="rect", width=14, height=24, offset={-8,0}}
-					}},
-					{ type="statemachine", initialstate = "idle",
-						states = {
-						 	{ id = "idle", init = { type="luaanim", func = curry21(marioinit, "idle") }, behavior = { type ="idle2d", acceleration = marioAcc }},
-							{ id = "walk", init = { type="luaanim", func = curry21(marioinit, "walk") }, behavior = { type ="walk2d", acceleration = marioAcc, speed= marioSpeed }},
-							{ id = "jump", init = { type="luaanim", func = curry21(marioinit, "jump") }, behavior = { type ="jump2d", acceleration = marioAcc, speed= marioSpeed }},
-							{ id = "duck", init = { type="animcollider", anim= "duck", collider="duck" }, behavior = { type ="idle2d", acceleration = marioAcc, speed= marioSpeed }},
-						},
-						keys = {
-						 	{ current = "idle", key =  262, next="walk" },
-						 	{ current = "idle", key =  263, next="walk" },
-						 	{ current = "idle", key =  265, next="jump" },
-						 	{ current = "idle", key =  264, func=mario_duck},
-						-- --{ current = "idle", key =  262, next="duck" },
-						 	{ current = "walk", key =  265, next="jump" },
-						 	{ current = "walk", key = 264, func=mario_duck},
-						 	{ current = "duck", key = 264, press=false, next="idle" }
-							-- event key release when duck returning to idle
-
-						}
-					},
-					{ type="info", supermario = false, fire = false, invincible = false },
-					{ type="follow", cam ="maincam", relativepos={0,0,5}, up={0,1,0} }
-		 		},
-				-- collider boxes
-				-- children = {
-				-- 	{ 
-				-- 		name="small",
-				-- 		components = {
-				-- 			{ type="collider", shape = {type="rect", width=16, height=16, offset={-8, 0}}, tag=3,flag=1 },
-				-- 			{ type="gfx", shape= {type="rect", width=16, height=16, offset={-8, 0}}, color={255,0,0,255}}
-				-- 		}
-				-- 	},
-				-- 	{ 
-				-- 		name="big",
-				-- 		components = {
-				-- 			{ type="collider", shape = {type="rect", width=16, height=32, offset={-8, 0}}, tag=3,flag=1 },
-				-- 			{ type="gfx", shape= {type="rect", width=16, height=32, offset={-8, 0}}, color={255,0,0,255}}
-				-- 		}
-				-- 	},
-				-- }
-			},
+			items.mario.create { pos = Pos{startPos[1], startPos[2]} },
 			{
 				tag = "restofscene",
 				children = {
 					-- the background (parallax)
-					{
-						pos = {0,0,-2},
-						components = {
-							--{ type="gfx", image="gfx/bg1.png", width=512, height=256, rep = {2,1} },
-							{ type="gfx", shape = { type="rect", width = 256, height = 256 }, color = {92, 148, 252, 255}, draw="solid" },
-							{ type="parallax", cam="maincam", factor = 1, width = 512, height = 256}
-						}
-					},
+					-- {
+					-- 	pos = {0,0,-2},
+					-- 	components = {
+					-- 		--{ type="gfx", image="gfx/bg1.png", width=512, height=256, rep = {2,1} },
+					-- 		{ type="gfx", shape = { type="rect", width = 256, height = 256 }, color = {92, 148, 252, 255}, draw="solid" },
+					-- 		{ type="parallax", cam="maincam", factor = 1, width = 512, height = 256}
+					-- 	}
+					-- },
 					
 					makeLine { A = {1,0}, B = {1,256} },
 					makeRect { pos ={0,0,0}, width = 69, height = 2, gfx="block1" },
-					makeRect { pos ={8,2,0}, width = 1, height = 1, gfx="block2" },
-					makeRect { pos ={12,2,0}, width = 1, height = 1, gfx="block2" },
-					makeRect { pos ={20,2,0}, width = 1, height = 1, gfx="block2" },
-					items.brick.create { pos = {6,5}, sprite="basicbrick" },
-					-- -- makeBrick { pos ={ 4, 5}, sprite="basicbrick"},
-					items.bonusbrick.create { pos = {7,5}, sprite="bonusbrick", hits=1, item = "mushroom" },					
-					items.bonusbrick.create { pos = {4,5}, sprite="bonusbrick", hits=1, item = "flower" },					
-					items.bonusbrick.create { pos = {3,5}, sprite="bonusbrick", hits=1, item = "mushroom1up" },					
-					items.bonusbrick.create { pos = {4,8}, sprite="bonusbrick", hits=1, item = "star" },					
-					items.invisiblebrick.create { pos = {5, 8}, sprite="invbrick", hits=1, item="mushroom1up" },
-					items.goomba.create { x = 16*10, y = 16*3, z = 0, dir = -1},
-					items.koopa.create { x = 16*14, y = 16*3, z = 0, dir = -1},
-					{
-						pos = {2*16,10*16, -1},
-						components = {
-							{ type="gfx", img="gfx/smb1.png", width=3, height=2, size=16, tiledata={5,4,6,4,7,4,5,3,6,3,7,3}, sheetsize={16, 16}}
-						}
-					},
-					items.movingplatform.create { pos={10, 5}, width=3, tx=15, ty=5, speed=20, pos2={18, 5}, initscripts = initscripts },
-					items.movingplatform.create { pos={10, 6}, width=3, tx=15, ty=5, speed=20, pos2={10, 11}, initscripts = initscripts },
-
+					items.spawn.create { pos = Pos{5,0}, func = items.goomba.create, args = { pos ={10,4}, dir = -1} },
+					items.bonusbrick.create { pos = Pos{16, 5}, sprite="bonusbrick", hits=1, item = "brickcoin" },					
+					--items.brick.create { pos = {16, 5}, sprite="basicbrick" },
 				}		
 			}
 		}
@@ -155,17 +84,17 @@ scene = {
 }
 
 
-for i = 1,10 do
-	print ("pollo")
-     table.insert(room.scene[1].children, { components = 
-     	{
-     		{ type="gfx", shape = { type="line", A={collisionSize*i,0}, B={collisionSize*i, 256}}, color={255, 255, 255, 255}}
-     	}})
-     table.insert(room.scene[1].children, { components =
-     	{
-     		{ type="gfx", shape = { type="line", A={0, collisionSize*i}, B={320, collisionSize*i}}, color={255, 255, 255, 255}}
-     	}})
-end
+-- for i = 1,10 do
+-- 	print ("pollo")
+--      table.insert(room.scene[1].children, { components = 
+--      	{
+--      		{ type="gfx", shape = { type="line", A={collisionSize*i,0}, B={collisionSize*i, 256}}, color={255, 255, 255, 255}}
+--      	}})
+--      table.insert(room.scene[1].children, { components =
+--      	{
+--      		{ type="gfx", shape = { type="line", A={0, collisionSize*i}, B={320, collisionSize*i}}, color={255, 255, 255, 255}}
+--      	}})
+-- end
 
 -- end room
 

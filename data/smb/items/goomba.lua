@@ -1,11 +1,18 @@
 items.goomba = {}
 
+-- args:
+-- mandatory:
+-- x, y     initial position
+-- dir      walking direction (1 = right, -1 = left)
 items.goomba.create = function(args)
+	print ("DODODODO")
+print (tostring(args.dir))
 	local t = nextTag()	
 	local s = {type="rect", width=16, height=16, offset={-8,0}}
+	local z = args.z or 0
 	return {
 		tag = t,
-		pos = { args.x, args.y, args.z },
+		pos = { args.pos[1]*16, args.pos[2]*16, z },
 		components = {
 			{ type="gfx", model = "goomba", anim="walk" },
 			--{ type="collider", shape = s, tag = 22, flag= 1},

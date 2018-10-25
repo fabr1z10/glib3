@@ -30,6 +30,17 @@ void Collider::Start() {
     GetObject()->onMove.Register(this, [&] (Entity* e) { this->Move(e);} );
     //m_aabb = m_shape->getBounds();
     //m_aabb.Transform(m_entity->GetWorldTransform());
+    if (m_shape != nullptr) {
+        auto c = std::make_shared<Entity>();
+        auto renderer = std::make_shared<Renderer>();
+        glm::vec4 color(1.0f, 0.0f, 0.0f, 1.0f);
+        auto mesh = MeshFactory::CreateMesh(*(m_shape.get()), 0.0f);
+        renderer->SetMesh(mesh);
+        renderer->SetTint(color);
+        c->AddComponent(renderer);
+        m_entity->AddChild(c);
+    }
+
 }
 
 Collider::~Collider() {

@@ -90,7 +90,7 @@ void MoveGravity::Run(float dt) {
     glm::vec2 pos(p);
     pos += m_velocity * dt;
     m_velocity += glm::vec2(0, -m_g) *dt;
-    if (pos.y <= m_yStop) {
+    if (pos.y <= m_yStop && m_velocity.y<0) {
         pos.y = m_yStop;
         m_angle = m_finalRotation;
         SetComplete();

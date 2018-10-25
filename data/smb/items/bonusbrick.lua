@@ -4,11 +4,12 @@ items.bonusbrick.create = function(arg)
 	local s = { type = "rect", width = 16, height = 16 }
 	local s1 = { type = "rect", width = 14, height = 0.5, offset = {1, -0.25}}
 	local b = nextTag()
-	local y = arg.pos[2] * 16
+	local y = arg.pos[2]
+print ("STOMEGACAZZO = " .. tostring(y))
 	--print ("CREATE BRICK WITH TAG = " .. b)
 	return {
 		tag = b,
-		pos = {arg.pos[1] * 16, y, 0},
+		pos = {arg.pos[1], arg.pos[2], 0},
 		components = {
 			{ type="gfx", model=arg.sprite, anim="idle", width = 16, height = 16},	
 			{ type="collider", shape=s, tag=10, flag = 2},
@@ -34,6 +35,7 @@ function bonusBrickResponse(e1, e2)
 	print ("vel = " .. tostring(e1.vy))
 	e1.vy = -e1.vy
 	if (brickInfo.hits > 0) then
+		--print ("brick speed = " .. tostring(brickInfo.y) .. ", " .. tostring(brickg))
 		brickInfo.hits = brickInfo.hits - 1
 		local a1 ={ type="noop" }
 		local a2 ={ type="noop", after={2}}
@@ -44,8 +46,9 @@ function bonusBrickResponse(e1, e2)
 		local s = script:new()
 		s.actions = {
 			[1] = a1,
-			[2] = { type="movegravity", actor = brick.tag, velocity  = {0,brickSpeed}, g = brickg, ystop = brickInfo.y, after={1} },
-			[3] = a2
+		 	[2] = { type="movegravity", actor = brick.tag, velocity  = {0, brickSpeed}, g = brickg, ystop = brickInfo.y, after={1} },
+			--[2] = {type="noop", after={1}},
+		 	[3] = a2
 		}
 		monkey.play(s)
 	end

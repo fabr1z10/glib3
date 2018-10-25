@@ -223,6 +223,23 @@ sprites = {
 		    }		
 		}
 	},
+	brickcoin = {
+		id = "brickcoin",
+		sheet = "gfx/smb1.png",
+		type = "sprite",
+		ppu = 1,
+		animations = {
+		    {
+		        name = "idle", frames = 
+				{ 
+					{ duration = dt, quads = { { x = 160, y = 16, width = 16, height = 16, anchor = {8, 0}}}},
+					{ duration = dt, quads = { { x = 176, y = 16, width = 16, height = 16, anchor = {8, 0}}}},
+					{ duration = dt, quads = { { x = 192, y = 16, width = 16, height = 16, anchor = {8, 0}}}},
+					{ duration = dt, quads = { { x = 208, y = 16, width = 16, height = 16, anchor = {8, 0}}}},
+				}
+		    }		
+		}
+	},
 	star = {
 		id = "star",
 		sheet = "gfx/smb1.png",
@@ -279,6 +296,20 @@ sprites = {
 				}
 		    }			
 		}
-	},	
+	},
+	score100 = {
+		id = "score100",
+		sheet = "gfx/smb1.png",
+		type = "sprite",
+		ppu = 1,
+		animations = {
+		    {
+		        name = "idle", frames = 
+				{ 
+					{ duration = dt, quads = { { x = 0, y = 80, width = 16, height = 16, anchor = {8, 0}}}}
+				}
+		    }		
+		}
+	},
 
 }

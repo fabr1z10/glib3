@@ -1,3 +1,46 @@
+local marioAcc = 0.05
+local marioSpeed = 75
+
+items.mario = {}
+
+items.mario.create = function(args)
+	return 
+	{	
+		tag="player",
+		pos = {args.pos[1], args.pos[2], 0},
+		components = {
+			{ type="gfx", model="mario", anim="idle" },
+			{ type="controller2d", maxclimbangle = 80, maxdescendangle = 80, horizontalrays=4, verticalrays=4 },
+			{ type="dynamics2d", jumpheight = 80, timetojumpapex = 0.5 },
+			{ type="multicollider", tag=1, flag=1, initialshape="small", shapes = {
+				{ name ="small", type="rect", width=14, height=16, offset={-8,0}},
+				{ name ="big", type="rect", width=14, height=32, offset={-8,0}},
+				{ name ="duck", type="rect", width=14, height=24, offset={-8,0}}
+			}},
+			{ type="statemachine", initialstate = "idle",
+				states = {
+				 	{ id = "idle", init = { type="luaanim", func = curry21(marioinit, "idle") }, behavior = { type ="idle2d", acceleration = marioAcc }},
+					{ id = "walk", init = { type="luaanim", func = curry21(marioinit, "walk") }, behavior = { type ="walk2d", acceleration = marioAcc, speed= marioSpeed }},
+					{ id = "jump", init = { type="luaanim", func = curry21(marioinit, "jump") }, behavior = { type ="jump2d", acceleration = marioAcc, speed= marioSpeed }},
+					{ id = "duck", init = { type="animcollider", anim= "duck", collider="duck" }, behavior = { type ="idle2d", acceleration = marioAcc, speed= marioSpeed }},
+				},
+				keys = {
+				 	{ current = "idle", key =  262, next="walk" },
+				 	{ current = "idle", key =  263, next="walk" },
+				 	{ current = "idle", key =  265, next="jump" },
+				 	{ current = "idle", key =  264, func=mario_duck},
+					-- --{ current = "idle", key =  262, next="duck" },
+					{ current = "walk", key =  265, next="jump" },
+					{ current = "walk", key = 264, func=mario_duck},
+					{ current = "duck", key = 264, press=false, next="idle" }
+					-- event key release when duck returning to idle
+				}
+			},
+			{ type="info", supermario = false, fire = false, invincible = false },
+			{ type="follow", cam ="maincam", relativepos={0,0,5}, up={0,1,0} }
+		 },
+	}
+end
 
 function mario_is_hit(mario)
 	marioinfo = mario:getinfo()
