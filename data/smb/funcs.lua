@@ -16,12 +16,35 @@ movingPlatformTag = 90
 
 items = { }
 
+-- create object at runtime
+function CreateItem (args) 
+	if (items[args.id].create == nil) then
+		print ("Item " .. args.id .. " does not exist!")
+		return nil
+	end
+	local parent = monkey.getEntity("restofscene")
+	local item = items[args.id].create(args.args)
+	monkey.addEntity (item, parent)
+	if (items[args.id].script ~= nil) then
+		items[args.id].script(item)
+	end
+end
+
 function Pos(a) 
 	return {a[1]*tilesize, a[2]*tilesize}
 end
 
 function hitFromAbove(mario, sx, sy)
 	return (mario.state == "jump" and mario.vy < 0 and sy > 0 and math.abs(sx) < 0.01)
+end
+
+function bonusRise(m) 
+	local s = script:new()
+	s.actions = {
+		[1] = {type="move", by={0, 16}, actor = m.tag, speed = bonusRaiseSpeed},
+		[2] = {type="changestate", actor=m.tag, state="walk", after={1}}
+	}
+	monkey.play(s)
 end
 
 require("items/mario")
@@ -37,6 +60,8 @@ require("items/brickcoin")
 require("items/invisiblebrick")
 require("items/movingplatform")
 require("items/spawn")
+require("items/score")
+
 
 function resumeplay()
 	local ros = monkey.getEntity("restofscene")
@@ -110,14 +135,24 @@ function makeRect(arg)
 	local width = 16 * arg.width
 	local height = 16 * arg.height
 	local s = { type = "rect", width = width, height = height }
+	local gfxComponent = nil
+	if (arg.gfx ~= nil) then
+		gfxComponent = { type ="gfx", image=("gfx/" .. arg.gfx .. ".png"), width = width, height = height, rep={arg.width, arg.height} }
+	else
+		gfxComponent = { type ="gfx", img="gfx/smb1.png", width=arg.width, height=arg.height, size=16, tiledata=arg.tiledata, sheetsize={16, 16} }
+	end
+	local z = arg.z or 0
 	return {
-		pos = {arg.pos[1]*16, arg.pos[2]*16, arg.pos[3]},
+		pos = {arg.pos[1], arg.pos[2], z},
 		components = {
-			{ type ="gfx", image=("gfx/" .. arg.gfx .. ".png"), width = width, height = height, rep={arg.width, arg.height} },
+			gfxComponent,	
 			{ type ="collider", shape=s, tag=10, flag = 2 }
 		}
 	}
 end
+
+
+
 
 -- function makeBrick(arg)
 -- 	local s = { type = "rect", width = 16, height = 16 }
@@ -160,14 +195,7 @@ function makeLine (arg)
 	}
 end
 
-function bonusRise(m) 
-	local s = script:new()
-	s.actions = {
-		[1] = {type="move", by={0, 16}, actor = m.tag, speed = bonusRaiseSpeed},
-		[2] = {type="changestate", actor=m.tag, state="walk", after={1}}
-	}
-	monkey.play(s)
-end
+
 
 function generateBonus(brick)
 	local main = monkey.getEntity("restofscene")
@@ -175,9 +203,10 @@ function generateBonus(brick)
 	local s = {type="rect", width=16, height=16, offset={-8,0}}
 	local brickInfo = brick:getinfo()
 	local m = items[brickInfo.item].create(args)
-print ("CREATO ITEM")
+	print ("CREATO ITEM")
 	monkey.addEntity (m, main)
 	if (items[brickInfo.item].script ~= nil) then
+	print ("CHIAMO SCRIPT")
 		items[brickInfo.item].script(m)
 	end
 end

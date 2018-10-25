@@ -3,9 +3,10 @@ items.mushroom = {}
 items.mushroom.create = function(args)
 	local t = nextTag()	
 	local s = {type="rect", width=16, height=16, offset={-8,0}}
+
 	return {
 		tag = t,
-		pos = { args.x, args.y, args.z },
+		pos = { args.pos[1], args.pos[2], args.z },
 		components = {
 			{ type="gfx", model = "mushroom", anim="idle" },
 			-- type="collider", shape = s, tag = 22, flag= 1},
@@ -26,6 +27,9 @@ items.mushroom.create = function(args)
 		-- }
 	}
 end
+
+items.mushroom.script = bonusRise
+
 
 function mario_mushroom(mario, mushroom) 
 	mushroom:remove()

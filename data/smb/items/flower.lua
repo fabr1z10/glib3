@@ -5,6 +5,7 @@ items.flower.create = function(args)
 	local mario = monkey.getEntity("player")
 	local marioinfo = mario:getinfo()
 	if (marioinfo.supermario == false) then
+		print ("NO SUPAMARIO")
 		return items.mushroom.create(args)
 	else
 		local t = nextTag()	
@@ -33,6 +34,7 @@ items.flower.create = function(args)
 		-- }
 	end
 end
+items.flower.script = bonusRise
 
 function mario_flower(mario, flower) 
 	flower:remove()

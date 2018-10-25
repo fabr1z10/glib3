@@ -4,6 +4,14 @@ local g = -10
 
 local initscripts = {}
 
+local coinBricks = { {16, 5}, {23, 5}, {22, 9}}
+local basicBricks = { {20, 5}, {22, 5}, {24, 5}}
+local mushroomBricks = {{21,5}}
+local pipe2 = { {28,2} }
+local pipe3 = { {28,2} }
+local pipe4 = { {28,2} }
+
+
 room = {
 
 engines = {
@@ -38,10 +46,11 @@ assets = {
 	sprites.flower,
 	sprites.star,
 	sprites.goomba,
-	sprites.koopa
+	sprites.koopa,
+	sprites.score100
 },
 scene = {
-	{
+	[1] = {
 		tag = "main",
 		camera = {
 			tag = "maincam",
@@ -51,14 +60,14 @@ scene = {
 			viewport = {0, 0, 256, 256}
 		},
 		children = {
-			{
+			[1] = {
 				components = {
 					{ type="luakey", keys = { { key = 299, func = restartRoom }}}
 				}
 		    },
 			-- player
-			items.mario.create { pos = Pos{startPos[1], startPos[2]} },
-			{
+			[2] = items.mario.create { pos = Pos{startPos[1], startPos[2]} },
+			[3] = {
 				tag = "restofscene",
 				children = {
 					-- the background (parallax)
@@ -72,10 +81,12 @@ scene = {
 					-- },
 					
 					makeLine { A = {1,0}, B = {1,256} },
-					makeRect { pos ={0,0,0}, width = 69, height = 2, gfx="block1" },
+					makeRect { pos = Pos{0,0}, width = 69, height = 2, gfx="block1" },
+					
 					items.spawn.create { pos = Pos{5,0}, func = items.goomba.create, args = { pos ={10,4}, dir = -1} },
-					items.bonusbrick.create { pos = Pos{16, 5}, sprite="bonusbrick", hits=1, item = "brickcoin" },					
-					--items.brick.create { pos = {16, 5}, sprite="basicbrick" },
+										
+					--items.brick.create { pos = {20, 5}, sprite="basicbrick" },
+
 				}		
 			}
 		}
@@ -83,6 +94,22 @@ scene = {
 },
 }
 
+
+local mainScene = room.scene[1].children[3].children
+
+for k, v in ipairs(basicBricks) do
+	table.insert(mainScene, items.brick.create{ pos=Pos(v), sprite="basicbrick" })
+end
+for k, v in ipairs(coinBricks) do
+	table.insert(mainScene, items.bonusbrick.create { pos = Pos(v), sprite="bonusbrick", hits=1, item = "brickcoin" })
+end
+for k, v in ipairs(mushroomBricks) do
+	table.insert(mainScene, items.bonusbrick.create { pos = Pos(v), sprite="bonusbrick", hits=1, item = "flower" })
+end
+-- pipes
+for k, v in ipairs(pipe2) do table.insert(mainScene, makeRect { pos = Pos(v), width = 2, height = 2, tiledata = {0,4,1,4,0,3,1,3}}) end	
+for k, v in ipairs(pipe3) do table.insert(mainScene, makeRect { pos = Pos(v), width = 2, height = 3, tiledata = {0,4,1,4,0,3,1,3,0,3,1,3}}) end	
+for k, v in ipairs(pipe4) do table.insert(mainScene, makeRect { pos = Pos(v), width = 2, height = 4, tiledata = {0,4,1,4,0,3,1,3,0,3,1,3,0,3,1,3}}) end	
 
 -- for i = 1,10 do
 -- 	print ("pollo")
