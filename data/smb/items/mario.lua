@@ -23,6 +23,7 @@ items.mario.create = function(args)
 					{ id = "walk", init = { type="luaanim", func = curry21(marioinit, "walk") }, behavior = { type ="walk2d", acceleration = marioAcc, speed= marioSpeed }},
 					{ id = "jump", init = { type="luaanim", func = curry21(marioinit, "jump") }, behavior = { type ="jump2d", acceleration = marioAcc, speed= marioSpeed }},
 					{ id = "duck", init = { type="animcollider", anim= "duck", collider="duck" }, behavior = { type ="idle2d", acceleration = marioAcc, speed= marioSpeed }},
+					{ id = "nophys", init = { type="animcollider", anim="idle"} }
 				},
 				keys = {
 				 	{ current = "idle", key =  262, next="walk" },
@@ -67,5 +68,20 @@ function mario_is_hit(mario)
 			}
 			monkey.play(s)
 		end
+	end
+end
+
+function mario_duck(e) 
+	-- first check warp
+	if (warpFunction == nil) then
+		print ("Warp not set")
+		local info = e:getinfo()
+		if (info.supermario == true) then
+			print ("duck")
+			e:changestate("duck")
+		end
+	else
+		print ("Warp set!")
+		warpFunction()
 	end
 end

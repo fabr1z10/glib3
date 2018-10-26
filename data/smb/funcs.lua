@@ -3,6 +3,7 @@ tilesize = 16
 brickSpeed = 60
 brickg = 150
 bonusRaiseSpeed = 50
+warpFunction = nil
 
 mushroomTag = 100
 goombaTag = 101
@@ -12,6 +13,7 @@ mushroom1upTag = 104
 starTag = 105
 invisibleBrickTag = 106
 spawnTag = 107
+warpTag = 108
 movingPlatformTag = 90
 
 items = { }
@@ -31,7 +33,16 @@ function CreateItem (args)
 end
 
 function Pos(a) 
-	return {a[1]*tilesize, a[2]*tilesize}
+	if (#a == 2) then
+		print ("DUE")
+		return {a[1]*tilesize, a[2]*tilesize}
+	elseif (#a == 3) then
+		print ("CANANENENENEE")
+		return {a[1]*tilesize, a[2]*tilesize, a[3]}
+	else
+		return nil
+	end
+
 end
 
 function hitFromAbove(mario, sx, sy)
@@ -61,6 +72,7 @@ require("items/invisiblebrick")
 require("items/movingplatform")
 require("items/spawn")
 require("items/score")
+require("items/warp")
 
 
 function resumeplay()
@@ -123,13 +135,6 @@ function marioinit(verb, e)
 		
 end
 
-function mario_duck(e) 
-	local info = e:getinfo()
-	if (info.supermario == true) then
-		print ("duck")
-		e:changestate("duck")
-	end
-end
 
 function makeRect(arg)
 	local width = 16 * arg.width

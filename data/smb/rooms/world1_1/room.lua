@@ -1,5 +1,5 @@
 local collisionSize = 80
-local startPos = {2, 4}
+local startPos = {63, 4}
 local g = -10
 
 local initscripts = {}
@@ -10,6 +10,9 @@ local mushroomBricks = {{21,5}}
 local pipe2 = { {28,2} }
 local pipe3 = { {38,2} }
 local pipe4 = { {46,2}, {57, 2} }
+
+
+
 
 
 room = {
@@ -31,6 +34,7 @@ engines = {
 			{ tag = {1, invisibleBrickTag}, onenter = mario_invisiblebrick},
 			{ tag = {1, movingPlatformTag}, onenter = character_movingplatform},
 			{ tag = {1, spawnTag}, onenter = mario_spawn},
+			{ tag = {1, warpTag}, onenter = mario_warp_in, onleave = mario_warp_out },
 				
 		}
 	}
@@ -62,7 +66,10 @@ scene = {
 		children = {
 			[1] = {
 				components = {
-					{ type="luakey", keys = { { key = 299, func = restartRoom }}}
+					{ type="luakey", keys = { 
+						{ key = 299, func = restartRoom }}
+					},
+					
 				}
 		    },
 			-- player
@@ -83,8 +90,14 @@ scene = {
 					makeLine { A = {1,0}, B = {1,256} },
 					makeRect { pos = Pos{0,0}, width = 69, height = 2, gfx="block1" },
 					
-					items.spawn.create { pos = Pos{5,0}, func = items.goomba.create, args = { pos ={10,4}, dir = -1} },
-										
+					items.spawn.create { pos = Pos{5,0}, func = items.goomba.create, args = { pos ={10,4}, dir = -1} },		
+					items.warp.create { pos = Pos{58, 6}, width = 8, height = 2, func = ciao }							
+					-- {
+					--  	pos = Pos{58, 6, 0},
+					-- 	components = {
+					--  		{ type="collider", shape={type="rect", width = 8, height=2, offset={-4,0}}, flag=4, tag = warpTag }
+					--  	}
+					-- }	
 					--items.brick.create { pos = {20, 5}, sprite="basicbrick" },
 
 				}		
@@ -107,9 +120,9 @@ for k, v in ipairs(mushroomBricks) do
 	table.insert(mainScene, items.bonusbrick.create { pos = Pos(v), sprite="bonusbrick", hits=1, item = "flower" })
 end
 -- pipes
-for k, v in ipairs(pipe2) do table.insert(mainScene, makeRect { pos = Pos(v), width = 2, height = 2, tiledata = {0,4,1,4,0,3,1,3}}) end	
-for k, v in ipairs(pipe3) do table.insert(mainScene, makeRect { pos = Pos(v), width = 2, height = 3, tiledata = {0,4,1,4,0,4,1,4,0,3,1,3}}) end	
-for k, v in ipairs(pipe4) do table.insert(mainScene, makeRect { pos = Pos(v), width = 2, height = 4, tiledata = {0,4,1,4,0,4,1,4,0,4,1,4,0,3,1,3}}) end	
+for k, v in ipairs(pipe2) do table.insert(mainScene, makeRect { pos = Pos(v), z = 0.5, width = 2, height = 2, tiledata = {0,4,1,4,0,3,1,3}}) end	
+for k, v in ipairs(pipe3) do table.insert(mainScene, makeRect { pos = Pos(v), z = 0.5, width = 2, height = 3, tiledata = {0,4,1,4,0,4,1,4,0,3,1,3}}) end	
+for k, v in ipairs(pipe4) do table.insert(mainScene, makeRect { pos = Pos(v), z = 0.5, width = 2, height = 4, tiledata = {0,4,1,4,0,4,1,4,0,4,1,4,0,3,1,3}}) end	
 
 -- for i = 1,10 do
 -- 	print ("pollo")
