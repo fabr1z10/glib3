@@ -23,7 +23,7 @@ items.mario.create = function(args)
 					{ id = "walk", init = { type="luaanim", func = curry21(marioinit, "walk") }, behavior = { type ="walk2d", acceleration = marioAcc, speed= marioSpeed }},
 					{ id = "jump", init = { type="luaanim", func = curry21(marioinit, "jump") }, behavior = { type ="jump2d", acceleration = marioAcc, speed= marioSpeed }},
 					{ id = "duck", init = { type="animcollider", anim= "duck", collider="duck" }, behavior = { type ="idle2d", acceleration = marioAcc, speed= marioSpeed }},
-					{ id = "nophys", init = { type="animcollider", anim="idle"} }
+					{ id = "nophys", init = { type="luaanim", func = curry21(marioinit2, "idle") } }
 				},
 				keys = {
 				 	{ current = "idle", key =  262, next="walk" },

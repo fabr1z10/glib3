@@ -76,6 +76,7 @@ FACTORY(AnimateActFactory, Activity)
 FACTORY(ChangeStateActFactory, Activity)
 FACTORY(ShowMessageActFactory, Activity)
 FACTORY(BlinkActFactory, Activity)
+FACTORY(CamBoundsActFactory, Activity)
 
 // Asset
 FACTORY(SpriteFactory, IMesh)

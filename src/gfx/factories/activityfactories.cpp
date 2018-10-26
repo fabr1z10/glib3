@@ -14,6 +14,7 @@
 #include <gfx/activities/changestate.h>
 #include <gfx/activities/showmessage.h>
 #include <gfx/activities/blink.h>
+#include <gfx/activities/cambounds.h>
 
 std::unique_ptr<Activity> NoOpActFactory::Create(luabridge::LuaRef &ref) {
     return std::unique_ptr<NoOp>(new NoOp);
@@ -154,6 +155,18 @@ std::unique_ptr<Activity> BlinkActFactory::Create(luabridge::LuaRef &ref) {
     float duration = table.Get<float>("duration");
     float blinkDuration = table.Get<float>("blinkduration");
     return std::unique_ptr<Blink>(new Blink(actor, duration, blinkDuration));
+
+
+}
+std::unique_ptr<Activity> CamBoundsActFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    std::string cam = table.Get<std::string>("cam");
+
+    float xMin = table.Get<float>("xmin");
+    float xMax = table.Get<float>("xmax");
+    float yMin = table.Get<float>("ymin");
+    float yMax = table.Get<float>("ymax");
+    return std::unique_ptr<ChangeCamBounds>(new ChangeCamBounds(cam, xMin, xMax, yMin, yMax));
 
 
 }

@@ -135,6 +135,14 @@ function marioinit(verb, e)
 		
 end
 
+function marioinit2(verb, e) 
+	print ("CANEBESTIA")
+	return {
+		anim = verb .. (e.supermario and "big" or "") .. (e.fire and "fire" or ""),
+		collider=""
+	}
+		
+end
 
 function makeRect(arg)
 	local width = 16 * arg.width
