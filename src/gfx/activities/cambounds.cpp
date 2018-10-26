@@ -10,6 +10,7 @@ ChangeCamBounds::ChangeCamBounds(const std::string &camId, float xMin, float xMa
 
 void ChangeCamBounds::Start() {
     auto camera = Engine::get().GetRef<OrthographicCamera>(m_camId);
+    std::cout << "Setting camera bounds to " << m_xMin << ", " << m_xMax << ", " << m_yMin << ", " << m_yMax << "\n";
     camera->SetBounds(m_xMin, m_xMax, m_yMin, m_yMax);
     SetComplete();
 

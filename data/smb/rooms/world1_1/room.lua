@@ -82,16 +82,20 @@ scene = {
 					-- 	pos = {0,0,-2},
 					-- 	components = {
 					-- 		--{ type="gfx", image="gfx/bg1.png", width=512, height=256, rep = {2,1} },
-					-- 		{ type="gfx", shape = { type="rect", width = 256, height = 256 }, color = {92, 148, 252, 255}, draw="solid" },
+					-- 		{ type="gfx", shape = { type="rect", width = 256, height = 256 }, color = {92, 148, 252, 255}, draw="solid" },s
 					-- 		{ type="parallax", cam="maincam", factor = 1, width = 512, height = 256}
 					-- 	}
 					-- },
 					
 					makeLine { A = {1,0}, B = {1,256} },
 					makeRect { pos = Pos{0,0}, width = 69, height = 2, gfx="block1" },
-					
+					makeRect { pos = Pos{0, 20}, width = 16, height = 2, gfx="block4"},
+					-- makeRect { pos = Pos{0, 20}, width = 1, height = 11, gfx="brick2"},
+					makeRect { pos = Pos{4, 22}, width = 7, height = 3, gfx="brick2"},
+					-- makeRect { pos = Pos{4, 30}, width = 7, height = 1, gfx="brick2"},
+
 					items.spawn.create { pos = Pos{5,0}, func = items.goomba.create, args = { pos ={10,4}, dir = -1} },		
-					items.warp.create { pos = Pos{58, 6}, width = 8, height = 2, func = ciao }							
+					items.warp.create { pos = Pos{58, 6}, width = 8, height = 2, func = curry(pipeDown, {x = 2, y = 36, xmin=0, xmax=256, ymin=20*16, ymax= 20*16+256}) }							
 					-- {
 					--  	pos = Pos{58, 6, 0},
 					-- 	components = {

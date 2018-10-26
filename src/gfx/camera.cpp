@@ -109,8 +109,10 @@ void OrthographicCamera::Init() {
 
 void OrthographicCamera::SetPosition(vec3 eye, vec3 direction, vec3 up) {
     //std::cout << "update cam pos...\n";
+    //std::cout << "Switch cam pos to " << eye.x << ", " << eye.y << "\n";
     eye.x = Clamp(eye.x, m_xMin, m_xMax);
     eye.y = Clamp(eye.y, m_yMin, m_yMax);
+    std::cout << "Switch cam pos to " << eye.x << ", " << eye.y << "\n";
     Camera::SetPosition(eye, direction, up);
     //RecomputeScreenToWorldMatrix();
 }
