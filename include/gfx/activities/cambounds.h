@@ -1,6 +1,7 @@
 #pragma once
 
 #include <gfx/activity.h>
+#include <string>
 
 class ChangeCamBounds : public Activity {
 public:

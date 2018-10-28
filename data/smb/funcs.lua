@@ -14,6 +14,8 @@ starTag = 105
 invisibleBrickTag = 106
 spawnTag = 107
 warpTag = 108
+coinTag = 109
+warpTouch = 110
 movingPlatformTag = 90
 
 items = { }
@@ -73,6 +75,7 @@ require("items/movingplatform")
 require("items/spawn")
 require("items/score")
 require("items/warp")
+require("items/coin")
 
 
 function resumeplay()

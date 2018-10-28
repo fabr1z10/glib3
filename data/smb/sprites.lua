@@ -240,6 +240,23 @@ sprites = {
 		    }		
 		}
 	},
+	pickupcoin = {
+		id = "pickupcoin",
+		sheet = "gfx/smb1.png",
+		type = "sprite",
+		ppu = 1,
+		animations = {
+		    {
+		        name = "idle", frames = 
+				{ 
+					{ duration = dt, quads = { { x = 128, y = 64, width = 16, height = 16, anchor = {0, 0}}}},
+					{ duration = dt, quads = { { x = 144, y = 64, width = 16, height = 16, anchor = {0, 0}}}},
+					{ duration = dt, quads = { { x = 160, y = 64, width = 16, height = 16, anchor = {0, 0}}}},
+					{ duration = dt, quads = { { x = 144, y = 64, width = 16, height = 16, anchor = {0, 0}}}},
+				}
+		    }		
+		}
+	},
 	star = {
 		id = "star",
 		sheet = "gfx/smb1.png",

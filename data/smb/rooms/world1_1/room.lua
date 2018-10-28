@@ -10,7 +10,8 @@ local mushroomBricks = {{21,5}}
 local pipe2 = { {28,2} }
 local pipe3 = { {38,2} }
 local pipe4 = { {46,2}, {57, 2} }
-
+local coins = { {4, 25}, {5,25}, {6,25}, {7,25}, {8,25}, {9,25}, {10,25}, {4, 27}, {5,27}, {6,27}, {7,27}, {8,27}, {9,27}, {10,27}, {5,29},
+{6,29}, {7,29}, {8,29}, {9,29}}
 
 
 
@@ -35,6 +36,9 @@ engines = {
 			{ tag = {1, movingPlatformTag}, onenter = character_movingplatform},
 			{ tag = {1, spawnTag}, onenter = mario_spawn},
 			{ tag = {1, warpTag}, onenter = mario_warp_in, onleave = mario_warp_out },
+			{ tag = {1, warpTouch}, onenter = mario_warptouch},
+			{ tag = {1, coinTag}, onenter = mario_coin },
+
 				
 		}
 	}
@@ -51,7 +55,8 @@ assets = {
 	sprites.star,
 	sprites.goomba,
 	sprites.koopa,
-	sprites.score100
+	sprites.score100,
+	sprites.pickupcoin
 },
 scene = {
 	[1] = {
@@ -90,12 +95,16 @@ scene = {
 					makeLine { A = {1,0}, B = {1,256} },
 					makeRect { pos = Pos{0,0}, width = 69, height = 2, gfx="block1" },
 					makeRect { pos = Pos{0, 20}, width = 16, height = 2, gfx="block4"},
-					-- makeRect { pos = Pos{0, 20}, width = 1, height = 11, gfx="brick2"},
+					makeRect { pos = Pos{0, 22}, width = 1, height = 11, gfx="brick2"},
 					makeRect { pos = Pos{4, 22}, width = 7, height = 3, gfx="brick2"},
-					-- makeRect { pos = Pos{4, 30}, width = 7, height = 1, gfx="brick2"},
-
+					makeRect { pos = Pos{4, 32}, width = 7, height = 1, gfx="brick2"},
+					makeRect { pos = Pos{13, 22}, z=0.5, width = 3, height = 2, tiledata = {2,5,3,5,4,5,2,4,3,4,4,4}},
+					makeRect { pos = Pos{15, 24}, width = 1, height = 9, gfx="block3"},
 					items.spawn.create { pos = Pos{5,0}, func = items.goomba.create, args = { pos ={10,4}, dir = -1} },		
-					items.warp.create { pos = Pos{58, 6}, width = 8, height = 2, func = curry(pipeDown, {x = 2, y = 36, xmin=0, xmax=256, ymin=20*16, ymax= 20*16+256}) }							
+					items.warp.create { pos = Pos{58, 6}, width = 8, height = 2, tag =warpTag, func = curry(pipeDown, 
+						{x = 2, y = 36, xmin=0, xmax=256, ymin=20*16, ymax= 20*16+256}) },							
+					items.warp.create { pos = Pos{12.5, 22}, width = 8, height = 1, tag = warpTouch, func = curry(pipeRight, 
+						{x = 2, y = 4, xmin=0, xmax=1024, ymin=0, ymax= 256}) }					
 					-- {
 					--  	pos = Pos{58, 6, 0},
 					-- 	components = {
@@ -127,6 +136,9 @@ end
 for k, v in ipairs(pipe2) do table.insert(mainScene, makeRect { pos = Pos(v), z = 0.5, width = 2, height = 2, tiledata = {0,4,1,4,0,3,1,3}}) end	
 for k, v in ipairs(pipe3) do table.insert(mainScene, makeRect { pos = Pos(v), z = 0.5, width = 2, height = 3, tiledata = {0,4,1,4,0,4,1,4,0,3,1,3}}) end	
 for k, v in ipairs(pipe4) do table.insert(mainScene, makeRect { pos = Pos(v), z = 0.5, width = 2, height = 4, tiledata = {0,4,1,4,0,4,1,4,0,4,1,4,0,3,1,3}}) end	
+for k, v in ipairs(coins) do
+	table.insert(mainScene, items.coin.create { pos = Pos(v) })
+end
 
 -- for i = 1,10 do
 -- 	print ("pollo")

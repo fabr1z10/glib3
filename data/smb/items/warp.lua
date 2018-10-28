@@ -7,13 +7,16 @@ items.warp.create = function(args)
 		tag = t,
 		pos = { args.pos[1], args.pos[2], 0},
 		components = {
-			{ type="collider", shape=s, flag=4, tag = warpTag },
+			{ type="collider", shape=s, flag=4, tag = args.tag },
 			{ type="info", func = args.func }
 		}
 	}
 end
 
-
+function mario_warptouch(mario, warp) 
+	local info = warp:getinfo()
+	info.func(info.args)
+end
 
 function mario_warp_in(mario, warp) 
 	local info = warp:getinfo()
@@ -27,7 +30,6 @@ end
 
 function pipeDown(args) 
 	-- move mario down 
-	
 	local s = script:new()
 	s.actions = {
 		[1] = {type="changestate", actor="player", state="nophys"},
@@ -38,3 +40,18 @@ function pipeDown(args)
 	}
 	monkey.play(s)
 end
+
+function pipeRight(args) 
+	-- move mario down 
+	local s = script:new()
+	s.actions = {
+		[1] = { type="changestate", actor="player", state="nophys"},
+		[2] = { type="animate", actor ="player", anim="walk", flipx = false, after={1}},
+		[3] = { type="move", by={32, 0}, speed = 25, actor = "player", after={2}},		
+		[4] = { type="setcambounds", cam ="maincam", xmin=args.xmin, xmax = args.xmax, ymin = args.ymin, ymax = args.ymax, after={3}},
+		[5] = { type="move", to=Pos{args.x, args.y}, immediate=true, actor="player", after={4}},
+		[6] = { type="changestate", actor="player", state="idle", after={5}},
+	}
+	monkey.play(s)
+end
+
