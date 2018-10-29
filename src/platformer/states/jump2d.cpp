@@ -17,14 +17,15 @@ Jump2D::Jump2D(float accelerationTimeAirborne, float speed) :
 
 void Jump2D::ResetState() {
     //PlatformerState::Start();
-    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+    if (m_keyboard.isPressed(GLFW_KEY_UP)) {
         m_dynamics->m_velocity.y = m_dynamics->m_jumpVelocity;
+    }
 }
 
 bool Jump2D::Run(double dt) {
     // if not touching the ground, set status to jump
-    bool left = (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS);
-    bool right = (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS);
+    bool left = m_keyboard.isPressed(GLFW_KEY_LEFT);
+    bool right = m_keyboard.isPressed(GLFW_KEY_RIGHT);
     if (m_controller->m_details.below && m_dynamics->m_velocity.y < 0) {
         m_dynamics->m_velocity.y = 0.0f;
 

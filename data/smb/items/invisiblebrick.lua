@@ -4,18 +4,18 @@ items.invisiblebrick.create = function(arg)
 	local s = { type = "rect", width = 16, height = 16 }
 	local s1 = { type = "rect", width = 14, height = 0.5, offset = {1, -0.25}}
 	local b = nextTag()
-	local y = arg.pos[2] * 16
+	local z = arg.z or 0
 	--print ("CREATE BRICK WITH TAG = " .. b)
 	return {
 		tag = b,
-		pos = {arg.pos[1] * 16, y, 0},
+		pos = {arg.pos[1], arg.pos[2], z},
 		components = {
 			{ type="gfx", model=arg.sprite, anim="nottaken" },	
 			--{ type="collider", shape=s, tag=10, flag = 2},
 			{ type="multicollider", tag=10, flag=2, initialshape="default", shapes = {
 				{ name ="default", type="rect", width=16, height=16 }
 			}},
-			{ type="info", y = y, item = arg.item},
+			{ type="info", y = arg.pos[2], item = arg.item},
 			{ type="statemachine", initialstate = "nottaken",
 				states = {
 					{ id = "nottaken", init = { type="animcollider", anim="nottaken" } },

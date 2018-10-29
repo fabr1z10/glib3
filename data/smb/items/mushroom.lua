@@ -3,7 +3,6 @@ items.mushroom = {}
 items.mushroom.create = function(args)
 	local t = nextTag()	
 	local s = {type="rect", width=16, height=16, offset={-8,0}}
-
 	return {
 		tag = t,
 		pos = { args.pos[1], args.pos[2], args.z },

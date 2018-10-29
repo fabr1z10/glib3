@@ -15,6 +15,8 @@
 #include <gfx/activities/showmessage.h>
 #include <gfx/activities/blink.h>
 #include <gfx/activities/cambounds.h>
+#include <gfx/activities/enablekey.h>
+#include <gfx/activities/virtualkey.h>
 
 std::unique_ptr<Activity> NoOpActFactory::Create(luabridge::LuaRef &ref) {
     return std::unique_ptr<NoOp>(new NoOp);
@@ -169,4 +171,18 @@ std::unique_ptr<Activity> CamBoundsActFactory::Create(luabridge::LuaRef &ref) {
     return std::unique_ptr<ChangeCamBounds>(new ChangeCamBounds(cam, xMin, xMax, yMin, yMax));
 
 
+}
+
+std::unique_ptr<Activity> EnableKeyActFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    int key = table.Get<int>("key");
+    bool enable = table.Get<bool>("enabled");
+    return std::unique_ptr<EnableKey>(new EnableKey(key, enable));
+}
+
+std::unique_ptr<Activity> VirtualKeyActFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    int key = table.Get<int>("key");
+    int action = table.Get<int>("action");
+    return std::unique_ptr<VirtualKey>(new VirtualKey(key, action));
 }

@@ -5,7 +5,7 @@ items.star.create = function(args)
 	local s = {type="rect", width=16, height=16, offset={-8,0}}
 	return {
 		tag = t,
-		pos = { args.x, args.y, args.z },
+		pos = { args.pos[1], args.pos[2], args.z },
 		components = {
 			{ type="gfx", model = "star", anim="idle" },
 			-- type="collider", shape = s, tag = 22, flag= 1},
@@ -26,6 +26,8 @@ items.star.create = function(args)
 		-- }
 	}
 end
+
+items.star.script = bonusRise
 
 function mario_star(mario, star) 
 	star:remove()

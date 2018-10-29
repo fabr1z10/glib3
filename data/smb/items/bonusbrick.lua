@@ -5,7 +5,6 @@ items.bonusbrick.create = function(arg)
 	local s1 = { type = "rect", width = 14, height = 0.5, offset = {1, -0.25}}
 	local b = nextTag()
 	local y = arg.pos[2]
-print ("STOMEGACAZZO = " .. tostring(y))
 	--print ("CREATE BRICK WITH TAG = " .. b)
 	return {
 		tag = b,
@@ -41,8 +40,9 @@ function bonusBrickResponse(e1, e2)
 		local a2 ={ type="noop", after={2}}
 		if (brickInfo.hits == 0) then
 			a1 = { type="animate", actor=brick.tag, anim="taken" }
-			a2 = { type="callfunc", func = curry(generateBonus, brick), after={2} } 
 		end
+		a2 = { type="callfunc", func = curry(generateBonus, brick), after={2} } 
+
 		local s = script:new()
 		s.actions = {
 			[1] = a1,

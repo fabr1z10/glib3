@@ -87,6 +87,21 @@ sprites = {
 					{ duration = dt, quads = { { x = 96, y = 128, width = 16, height = 32, anchor = {8, 0}}}},
 			   }				
 	        },		
+	        {
+	           name="slide",
+	           frames=
+	           { 
+					{ duration = dt, quads = { { x = 176, y = 64, width = 16, height = 16, anchor = {8, 0}}}},
+			   }				
+	        },
+	        {
+	           name="slidebig",
+	           frames=
+	           { 
+					{ duration = dt, quads = { { x = 192, y = 64, width = 16, height = 32, anchor = {8, 0}}}},
+			   }				
+	        },
+
 			{	
 			    name="smalltobig",
 		        frames = 
@@ -175,7 +190,13 @@ sprites = {
 				{ 
 					{ duration = dt, quads = { { x = 240, y = 0, width = 16, height = 16, anchor = {0, 0}}}}
 				}
-		    }		
+		    },
+		    {
+		        name = "taken", frames = 
+				{ 
+					{ duration = dt, quads = { { x = 224, y = 0, width = 16, height = 16, anchor = {0, 0}}}}
+				}
+		    }				
 		}
 	},
 	mushroom = {

@@ -36,10 +36,8 @@ end
 
 function Pos(a) 
 	if (#a == 2) then
-		print ("DUE")
 		return {a[1]*tilesize, a[2]*tilesize}
 	elseif (#a == 3) then
-		print ("CANANENENENEE")
 		return {a[1]*tilesize, a[2]*tilesize, a[3]}
 	else
 		return nil
@@ -60,6 +58,7 @@ function bonusRise(m)
 	monkey.play(s)
 end
 
+require("cutscene")
 require("items/mario")
 require("items/mushroom")
 require("items/mushroom1up")
@@ -76,6 +75,8 @@ require("items/spawn")
 require("items/score")
 require("items/warp")
 require("items/coin")
+require("items/background")
+require("template/template")
 
 
 function resumeplay()

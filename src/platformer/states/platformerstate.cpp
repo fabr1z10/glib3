@@ -6,16 +6,18 @@
 #include <gfx/error.h>
 #include <gfx/components/renderer.h>
 #include <gfx/components/dynamics2d.h>
+#include <gfx/engine.h>
 
 extern GLFWwindow* window;
 
 PlatformerState::PlatformerState() :
-        StateBehaviour(), m_controller(nullptr), m_renderer(nullptr)
+        StateBehaviour(), m_controller(nullptr), m_renderer(nullptr), m_keyboard(Engine::get().GetKeyboard())
 {}
 
 void PlatformerState::Init(Entity* e) {
     //StateBehaviour::Init(e);
     m_entity = e;
+
     m_controller = m_entity->GetComponent<Controller2D>();
     if (m_controller == nullptr) {
         GLIB_FAIL("Required a controller2D component!")

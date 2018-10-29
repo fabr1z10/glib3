@@ -20,8 +20,8 @@ bool Walk2D::Run(double dt) {
     }
 
     m_dynamics->m_velocity.y = m_dynamics->m_gravity * dt;
-    bool left = (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS);
-    bool right = (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS);
+    bool left = m_keyboard.isPressed(GLFW_KEY_LEFT);
+    bool right = m_keyboard.isPressed(GLFW_KEY_RIGHT);
     float targetVelocityX = 0.0f;
     if (left) {
         targetVelocityX = -m_speed;

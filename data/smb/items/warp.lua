@@ -1,13 +1,13 @@
 items.warp = {}
 
 items.warp.create = function(args)
-	local t = nextTag()	
+	local t = args.tag or nextTag()	
 	local s = {type="rect", width=args.width, height=args.height, offset = {-args.width/2, 0} }
 	return {
 		tag = t,
 		pos = { args.pos[1], args.pos[2], 0},
 		components = {
-			{ type="collider", shape=s, flag=4, tag = args.tag },
+			{ type="collider", shape=s, flag=4, tag = args.ctag },
 			{ type="info", func = args.func }
 		}
 	}
@@ -50,7 +50,9 @@ function pipeRight(args)
 		[3] = { type="move", by={32, 0}, speed = 25, actor = "player", after={2}},		
 		[4] = { type="setcambounds", cam ="maincam", xmin=args.xmin, xmax = args.xmax, ymin = args.ymin, ymax = args.ymax, after={3}},
 		[5] = { type="move", to=Pos{args.x, args.y}, immediate=true, actor="player", after={4}},
-		[6] = { type="changestate", actor="player", state="idle", after={5}},
+		[6] = { type="animate", actor ="player", anim="idle", flipx = false, after={5}},
+		[7] = { type="move", by={0, 32}, speed = 25, actor = "player", after={6}},		
+		[8] = { type="changestate", actor="player", state="idle", after={7}},
 	}
 	monkey.play(s)
 end

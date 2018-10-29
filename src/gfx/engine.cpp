@@ -227,6 +227,7 @@ void Engine::mouse_button_callback(GLFWwindow* win, int button, int action, int 
 }
 
 void Engine::cursor_pos_callback(GLFWwindow* win, double xpos, double ypos) {
+
     if (Engine::get().m_mouseEnabled) {
         for (auto &listener : Engine::get().m_mouseListeners)
             listener->CursorPosCallback(win, xpos, ypos);
@@ -237,10 +238,7 @@ void Engine::scroll_callback(GLFWwindow* win, double xoffset, double yoffset) {
     //for (auto& listener : Engine::get().m_mouseListener)
       //  listener->ScrollCallback(win, xoffset, yoffset);
 }
-void Engine::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-    for (auto& listener : Engine::get().m_keyboardListeners)
-        listener->KeyCallback(window, key, scancode, action, mods);
-}
+
 
 void Engine::RegisterToWindowResizeEvent(WindowResizeListener* listener) {
     m_resizeListeners.insert(listener);
@@ -259,11 +257,11 @@ void Engine::UnregisterToMouseEvent(MouseListener* listener) {
 }
 
 void Engine::RegisterToKeyboardEvent(KeyboardListener* listener) {
-    m_keyboardListeners.insert(listener);
+    m_keyboard.AddListener(listener);
 }
 
 void Engine::UnregisterToKeyboardEvent(KeyboardListener* listener) {
-    m_keyboardListeners.erase(listener);
+    m_keyboard.RemoveListener(listener);
 }
 
 Engine::~Engine() {
@@ -284,4 +282,11 @@ void Engine::SetRenderingEngine(std::unique_ptr<RenderingEngine> engine) {
 
     m_renderingEngine = std::move(engine);
     m_renderingEngine->Start();
+}
+
+
+
+void Engine::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+    // don't handle key events for disable keys until mods==16 (programmatically for demo-mode)
+    Engine::get().m_keyboard.key_callback(window, key, scancode, action, mods);
 }

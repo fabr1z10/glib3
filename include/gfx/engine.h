@@ -13,6 +13,7 @@
 #include <gfx/scheduler.h>
 #include <gfx/collisionengine.h>
 #include <gfx/runner.h>
+#include <gfx/keyboard.h>
 
 struct EngineConfig {
     EngineConfig (float devWidth, float devHeight) : frameRate (60.0), deviceWidth{devWidth}, deviceHeight{devHeight}, enableMouse{false}, enableKeyboard{false},
@@ -101,6 +102,8 @@ public:
     //Scheduler* GetScriptingEngine();
     //CollisionEngine* GetCollisionEngine();
     //void SetInputHandler(std::unique_ptr<)
+   //void EnableKey(int, bool);
+    Keyboard& GetKeyboard();
 private:
     friend class Singleton<Engine>;
     Engine() : m_mouseEnabled{true} {}
@@ -122,7 +125,6 @@ private:
     glm::vec2 m_winSize;
     std::unordered_set<WindowResizeListener*> m_resizeListeners;
     std::unordered_set<MouseListener*> m_mouseListeners;
-    std::unordered_set<KeyboardListener*> m_keyboardListeners;
     AssetManager m_assetManager;
     GLuint m_vao;
     bool m_endScene;
@@ -137,6 +139,7 @@ private:
     
     // the runners (i.e. script engine, collision engine, hostpot manager etc)
     std::unordered_map<std::type_index, std::shared_ptr<Runner> > m_runners;
+    Keyboard m_keyboard;
 };
 
 inline SceneFactory* Engine::GetSceneFactory() {
@@ -198,3 +201,6 @@ inline RenderingEngine* Engine::GetRenderingEngine() {
     return m_renderingEngine.get();
 }
 
+inline Keyboard& Engine::GetKeyboard() {
+    return m_keyboard;
+}
