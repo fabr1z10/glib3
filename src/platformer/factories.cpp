@@ -31,7 +31,8 @@ std::unique_ptr<StateBehaviour> EnemyWalk2DStateFactory::Create(luabridge::LuaRe
     float speed = table.Get<float>("speed");
     int dir = table.Get<int>("dir", 1);
     bool enableFlip = table.Get<bool>("flip");
-    return std::unique_ptr<EnemyWalk2D>(new EnemyWalk2D(speed, dir, enableFlip));
+    bool flipWhenPlatformEnds = table.Get<bool>("flip_when_platform_ends", false);
+    return std::unique_ptr<EnemyWalk2D>(new EnemyWalk2D(speed, dir, enableFlip, flipWhenPlatformEnds));
 }
 
 std::unique_ptr<StateBehaviour> EnemyBounce2DStateFactory::Create(luabridge::LuaRef & r) {

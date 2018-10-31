@@ -41,6 +41,7 @@ public:
 		: Component(), m_maxClimbAngle(maxClimbAngle), m_maxDescendAngle(maxDescendAngle), m_skinWidth(skinwidth), m_horizontalRayCount(horizontalRayCount), m_verticalRayCount(verticalRayCount), m_platform(nullptr) {}
 	virtual ~Controller2D();
 	virtual void Start();
+	bool IsFalling(int);
 	void Move(glm::vec2&);
 	void ClimbSlope(glm::vec2&, float);
 	void DescendSlope(glm::vec2&);

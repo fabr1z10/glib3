@@ -1,18 +1,17 @@
 items.goomba = {}
 
 -- args:
--- mandatory:
+-- mandatory:s
 -- x, y     initial position
 -- dir      walking direction (1 = right, -1 = left)
 items.goomba.create = function(args)
-	print ("DODODODO")
-print (tostring(args.dir))
 	local t = nextTag()	
 	local s = {type="rect", width=16, height=16, offset={-8,0}}
 	local z = args.z or 0
+	print ("Create goomba")
 	return {
 		tag = t,
-		pos = { args.pos[1]*16, args.pos[2]*16, z },
+		pos = { args.pos[1], args.pos[2], z },
 		components = {
 			{ type="gfx", model = "goomba", anim="walk" },
 			--{ type="collider", shape = s, tag = 22, flag= 1},
@@ -23,7 +22,7 @@ print (tostring(args.dir))
 			{ type="dynamics2d", jumpheight = 64, timetojumpapex = 0.5 },
 			{ type="statemachine", initialstate = "walk",
 				states = {
-					{ id = "walk", init = { type="animcollider", anim="walk", collider="default" }, behavior= {type="enemywalk2d", speed=50, dir= args.dir, flip=false }},
+					{ id = "walk", init = { type="animcollider", anim="walk", collider="default" }, behavior= {type="enemywalk2d", speed=50, dir= args.dir, flip=false, flip_when_platform_ends = true }},
 					{ id = "dead", init = { type="animcollider", anim="dead" }}
 				}
 			}

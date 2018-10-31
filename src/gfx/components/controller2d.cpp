@@ -45,6 +45,14 @@ void Controller2D::UpdateRaycastOrigins() {
 
 }
 
+bool Controller2D::IsFalling(int dir) {
+    glm::vec2 rayOrigin = (dir == -1) ? m_raycastOrigins.bottomLeft : m_raycastOrigins.bottomRight;
+    RayCastHit2D hit = m_collision->Raycast(glm::vec3(rayOrigin, 0.0f), glm::vec2(0.0f, -1.0f), 5.0, 2);
+    if (!hit.collide)
+        return true;
+}
+
+
 void Controller2D::Move(glm::vec2& dx) {
     if (dx != vec2(0.0f)) {
         UpdateRaycastOrigins();

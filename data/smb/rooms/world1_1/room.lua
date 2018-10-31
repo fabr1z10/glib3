@@ -58,7 +58,7 @@ local sceneItems = {
 	makeRect { pos = Pos{4, 32}, width = 7, height = 1, gfx="brick2"},
 	makeRect { pos = Pos{13, 22}, z=0.5, width = 3, height = 2, tiledata = {2,5,3,5,4,5,2,4,3,4,4,4}},
 	makeRect { pos = Pos{15, 24}, width = 1, height = 9, gfx="block3"},
-	items.spawn.create { pos = Pos{5,0}, func = items.goomba.create, args = { pos ={10,4}, dir = -1} },		
+	items.spawn.create { pos = Pos{5,0}, func = items.goomba.create, args = { pos =Pos{10,4}, dir = -1} },		
 	items.warp.create { pos = Pos{58, 6}, width = 8, height = 2, ctag =warpTag, func = curry(pipeDown, 
 		{x = 2, y = 36, xmin=0, xmax=256, ymin=20*16, ymax= 20*16+256}) },							
 	items.warp.create { pos = Pos{12.5, 22}, width = 8, height = 1, ctag = warpTouch, func = curry(pipeRight, 
