@@ -3,11 +3,15 @@
 #include <gfx/entity.h>
 #include <gfx/meshfactory.h>
 
+
+// you might want to have a multicollider holding multiple colliders so that you can have a flag and a mask for each+ù
+// subcollider
 MultiCollider::MultiCollider (
     const std::unordered_map<std::string, std::shared_ptr<Shape>>& shapes,
     int tag,
     int flag,
-    const std::string& initialShape) : Collider(tag, flag), m_shapes(shapes), m_current(initialShape)
+    int mask,
+    const std::string& initialShape) : Collider(tag, flag, mask), m_shapes(shapes), m_current(initialShape)
 {
     auto it = m_shapes.find(initialShape);
     if (it == m_shapes.end())

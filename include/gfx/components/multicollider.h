@@ -5,7 +5,7 @@
 
 class MultiCollider : public Collider {
 public:
-    MultiCollider (const std::unordered_map<std::string, std::shared_ptr<Shape>>& shapes, int tag, int flag, const std::string& initialShape);
+    MultiCollider (const std::unordered_map<std::string, std::shared_ptr<Shape>>& shapes, int tag, int flag, int mask, const std::string& initialShape);
     void SwitchTo (const std::string&);
     void Start () override;
     std::type_index GetType() override;

@@ -27,6 +27,8 @@ SceneFactory::SceneFactory() {
     m_componentFactory.Add<InfoComponentFactory>("info");
     m_componentFactory.Add<PlatformComponentFactory>("platform");
     m_componentFactory.Add<ParallaxComponentFactory>("parallax");
+    m_componentFactory.Add<TextComponentFactory>("text");
+    m_componentFactory.Add<FPSComponentFactory>("fps");
 
     m_shapeFactory.Add<RectFactory>("rect");
     m_shapeFactory.Add<LineFactory>("line");

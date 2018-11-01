@@ -11,7 +11,7 @@ items.bonusbrick.create = function(arg)
 		pos = {arg.pos[1], arg.pos[2], 0},
 		components = {
 			{ type="gfx", model=arg.sprite, anim="idle", width = 16, height = 16},	
-			{ type="collider", shape=s, tag=10, flag = 2},
+			{ type="collider", shape=s, tag=10, flag = collisionFlags.platform, mask = 0},
 			{ type="info", y = y, hits = arg.hits, item = arg.item}
 		},
 		children = {
@@ -19,7 +19,7 @@ items.bonusbrick.create = function(arg)
 			{
 				pos = { 0, -0.25, 0},
 				components = {
-					{ type="collider", shape = s1, tag = 21, flag = 4 },
+					{ type="collider", shape = s1, tag = 21, flag = collisionFlags.enemy, mask = collisionFlags.player },
 					{ type="gfx", shape = s1, color = {255,0,0,255}}
 				}
 			}

@@ -55,6 +55,7 @@ public:
     glm::vec4 GetViewport(float x, float y, float width, float height);
     void SetViewport(float x, float y, float width, float height);
     void Remove(Entity*);
+
     template <typename T>
     T* GetRef(const std::string& id) {
         auto it = m_taggedReferences.find(id);
@@ -136,7 +137,7 @@ private:
     //std::unique_ptr<Scheduler> m_scriptEngine;
     std::unique_ptr<RenderingEngine> m_renderingEngine;
     //std::unique_ptr<CollisionEngine> m_collisionEngine;
-    
+
     // the runners (i.e. script engine, collision engine, hostpot manager etc)
     std::unordered_map<std::type_index, std::shared_ptr<Runner> > m_runners;
     Keyboard m_keyboard;

@@ -43,6 +43,7 @@ FACTORY(ShadowComponentFactory, Component)
 FACTORY(BillboardComponentFactory, Component)
 FACTORY(PlatformComponentFactory, Component)
 FACTORY(ParallaxComponentFactory, Component)
+FACTORY(FPSComponentFactory, Component)
 
 // Runners
 FACTORY(HotSpotManagerFactory, Runner)

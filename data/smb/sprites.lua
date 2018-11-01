@@ -199,6 +199,26 @@ sprites = {
 		    }				
 		}
 	},
+	basicbrickdark = {
+		id = "basicbrickdark",
+		sheet = "gfx/smb1.png",
+		type = "sprite",
+		ppu = 1,
+		animations = {
+		    {
+		        name = "idle", frames = 
+				{ 
+					{ duration = dt, quads = { { x = 160, y = 48, width = 16, height = 16, anchor = {0, 0}}}}
+				}
+		    },
+		    {
+		        name = "taken", frames = 
+				{ 
+					{ duration = dt, quads = { { x = 240, y = 96, width = 16, height = 16, anchor = {0, 0}}}}
+				}
+		    }				
+		}
+	},
 	mushroom = {
 		id = "mushroom",
 		sheet = "gfx/smb1.png",
@@ -288,6 +308,22 @@ sprites = {
 		        name = "idle", frames = 
 				{ 
 					{ duration = dt, quads = { { x = 128, y = 48, width = 16, height = 16, anchor = {8, 0}}}}
+				}
+		    }		
+		}
+	},
+	plant = {
+		id = "plant",
+		sheet = "gfx/smb1.png",
+		type = "sprite",
+		ppu = 1,
+		animations = {
+		    {
+		        name = "idle", frames = 
+				{ 
+					{ duration = dt, quads = { { x = 128, y = 96, width = 16, height = 32, anchor = {8, 0}}}},
+					{ duration = dt, quads = { { x = 144, y = 96, width = 16, height = 32, anchor = {8, 0}}}},
+
 				}
 		    }		
 		}

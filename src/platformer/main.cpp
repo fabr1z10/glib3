@@ -25,7 +25,6 @@ int main(int argc, char* argv[])
         return 1;
     } catch (...) {
 
-        int ciao = 2;
     }
     return 0;
 }

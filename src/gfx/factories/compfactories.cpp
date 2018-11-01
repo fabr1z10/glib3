@@ -32,6 +32,8 @@
 #include <gfx/runner.h>
 #include <gfx/states/luainitializer.h>
 #include <gfx/components/platform.h>
+#include <gfx/components/fpscounter.h>
+
 
 std::unique_ptr<Component> TextComponentFactory::Create(luabridge::LuaRef &ref) {
     auto renderer = std::unique_ptr<Renderer>(new Renderer);
@@ -112,10 +114,11 @@ std::unique_ptr<Component> ColliderComponentFactory::Create(luabridge::LuaRef &r
     luabridge::LuaRef shapeR = table.Get<luabridge::LuaRef>("shape");
     int tag = table.Get<int>("tag");
     int flag = table.Get<int>("flag");
+    int mask = table.Get<int>("mask");
     auto factory = Engine::get().GetSceneFactory();
     auto shape = factory->GetShared<Shape>(shapeR);
 
-    auto coll = std::unique_ptr<Collider>(new Collider(shape, tag, flag));
+    auto coll = std::unique_ptr<Collider>(new Collider(shape, tag, flag, mask));
     return coll;
 }
 
@@ -135,6 +138,7 @@ std::unique_ptr<Component> MultiColliderComponentFactory::Create(luabridge::LuaR
     luabridge::LuaRef shapesR = table.Get<luabridge::LuaRef>("shapes");
     int tag = table.Get<int>("tag");
     int flag = table.Get<int>("flag");
+    int mask = table.Get<int>("mask");
     std::string initShape = table.Get<std::string>("initialshape");
     auto factory = Engine::get().GetSceneFactory();
     std::unordered_map<std::string, std::shared_ptr<Shape>> shapes;
@@ -144,7 +148,7 @@ std::unique_ptr<Component> MultiColliderComponentFactory::Create(luabridge::LuaR
         std::string name = shapeR["name"].cast<std::string>();
         shapes[name] = shape;
     }
-    auto coll = std::unique_ptr<MultiCollider>(new MultiCollider(shapes, tag, flag, initShape));
+    auto coll = std::unique_ptr<MultiCollider>(new MultiCollider(shapes, tag, flag, mask, initShape));
 
     return coll;
 }
@@ -378,6 +382,9 @@ std::unique_ptr<Component> BillboardComponentFactory::Create(luabridge::LuaRef &
     return std::unique_ptr<Billboard>(new Billboard(cam));
 }
 
+std::unique_ptr<Component> FPSComponentFactory::Create(luabridge::LuaRef &ref) {
+    return std::unique_ptr<FPSCounter>(new FPSCounter);
+}
 
 
 

@@ -36,7 +36,7 @@ items.movingplatform.create = function(arg)
 			{
 				pos = { 0, 8, 0},
 				components = {
-					{ type="collider", shape = sh, tag = movingPlatformTag, flag = 4 },
+					{ type="collider", shape = sh, tag = movingPlatformTag, flag = collisionFlags.movingPlatform, mask = collisionFlags.player | collisionFlags.enemy  },
 					{ type="gfx", shape = sh, color = {255,0,0,255}},
 				}
 			}

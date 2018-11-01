@@ -9,12 +9,12 @@ engine = {
 }
 
 fonts = {
-    --{ name = "ui", file  = "fonts/monkeysmall.ttf" },
-    --{ name = "monkey", file  = "fonts/MonkeyIsland-1990.ttf" }
+    { name = "diag", file  = "fonts/arial.ttf" }
 }
 
 
+
 variables = {
-    _room = "world1_1",
+    _room = "world1_2",
 }
 

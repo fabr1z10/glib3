@@ -9,7 +9,7 @@ items.coin.create = function(args)
 		pos = { args.pos[1], args.pos[2], z },
 		components = {
 			{ type="gfx", model = "pickupcoin", anim="idle" },
-			{ type="collider", tag=coinTag, flag=4, shape = s },
+			{ type="collider", tag=coinTag, flag=collisionFlags.enemy, mask = collisionFlags.player, shape = s },
 		},
 	}
 end

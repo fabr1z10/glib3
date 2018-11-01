@@ -21,6 +21,7 @@ function getBaseRoom(roomInfo)
 					{ tag = {1, spawnTag}, onenter = mario_spawn},
 					{ tag = {1, warpTag}, onenter = mario_warp_in, onleave = mario_warp_out },
 					{ tag = {1, warpTouch}, onenter = mario_warptouch},
+					{ tag = {1, plantTag}, onenter = mario_plant},
 					{ tag = {1, coinTag}, onenter = mario_coin },
 		
 						
@@ -30,6 +31,7 @@ function getBaseRoom(roomInfo)
 		assets = {
 			sprites.mario,
 			sprites.basicbrick,
+			sprites.basicbrickdark,
 			sprites.bonusbrick,
 			sprites.invbrick,
 			sprites.brickcoin,
@@ -40,7 +42,8 @@ function getBaseRoom(roomInfo)
 			sprites.goomba,
 			sprites.koopa,
 			sprites.score100,
-			sprites.pickupcoin
+			sprites.pickupcoin,
+			sprites.plant
 		},
 		scene = {
 			[1] = {
@@ -68,6 +71,30 @@ function getBaseRoom(roomInfo)
 						children = {
 							makeLine { A = {1,0}, B = {1, roomInfo.worldHeight} },
 						}		
+					}
+				}
+			},
+			[2] = {
+				tag = "diag",
+				camera = {
+					tag = "diagcam",
+					type ="ortho",
+					size = {256, 256},
+					bounds = {0,0,256, 256},
+					viewport = {0,0,256,256}
+				},
+				children = {
+					{
+						tag = "_fps",
+						pos = {0, 256, 0},
+						components = {
+							{ 
+								type = "text", id = "Ciao", font ="diag"
+							},
+							{
+								type="fps"
+							}
+						}
 					}
 				}
 			}

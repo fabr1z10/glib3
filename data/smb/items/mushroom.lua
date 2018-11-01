@@ -9,7 +9,7 @@ items.mushroom.create = function(args)
 		components = {
 			{ type="gfx", model = "mushroom", anim="idle" },
 			-- type="collider", shape = s, tag = 22, flag= 1},
-			{ type="multicollider", tag=mushroomTag, flag=4, initialshape="default", shapes = {
+			{ type="multicollider", tag=mushroomTag, flag=collisionFlags.enemy, mask = collisionFlags.player, initialshape="default", shapes = {
 				{ name ="default", type="rect", width=16, height=16, offset={-8,0} },
 			}},
 			{ type="controller2d", maxclimbangle = 80, maxdescendangle = 80, horizontalrays=4, verticalrays=4 },

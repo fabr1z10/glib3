@@ -109,6 +109,8 @@ void Engine::SetViewport(float x, float y, float width, float height) {
     glViewport(x, y, width, height);
 }
 
+
+
 void Engine::MainLoop() {
     if (m_sceneFactory == nullptr)
         GLIB_FAIL("Scene factory has not been set.");
@@ -173,6 +175,7 @@ void Engine::MainLoop() {
                 //    m_collisionEngine->Update(m_frameTime);
                 glfwSwapBuffers(window);
                 glfwPollEvents();
+
             }
         }
         // remove assets loaded at scene level

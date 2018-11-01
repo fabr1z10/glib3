@@ -137,6 +137,13 @@ void CollisionEngine::Update(double dt) {
                 float z2 = c2->GetObject()->GetPosition().z;
                 if (!c2->Enabled())
                     continue;
+                // check collision mask
+                if ( ((c1->GetMask() & c2->GetFlag()) == 0) && ((c2->GetMask() & c1->GetFlag()) == 0)) {
+                    // If at least one mask is hit, then we keep checking the collision.
+                    // if both mask fail, then we skip to the next collider
+                    continue;
+                }
+
                 // if no response is provided for these tags, then skip it
                 if (m_responseManager == nullptr || !m_responseManager->HasCollision(c1, c2)) {
                     //std::cout << "No response for tag (" << c1->GetTag() << ", " << c2->GetTag() << ")\n";

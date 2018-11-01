@@ -12,7 +12,7 @@ items.mario.create = function(args)
 			{ type="gfx", model="mario", anim="idle" },
 			{ type="controller2d", maxclimbangle = 80, maxdescendangle = 80, horizontalrays=4, verticalrays=4 },
 			{ type="dynamics2d", jumpheight = 80, timetojumpapex = 0.5 },
-			{ type="multicollider", tag=1, flag=1, initialshape="small", shapes = {
+			{ type="multicollider", tag=1, flag=collisionFlags.player, mask = collisionFlags.enemy, initialshape="small", shapes = {
 				{ name ="small", type="rect", width=14, height=16, offset={-8,0}},
 				{ name ="big", type="rect", width=14, height=32, offset={-8,0}},
 				{ name ="duck", type="rect", width=14, height=24, offset={-8,0}}

@@ -5,6 +5,15 @@ brickg = 150
 bonusRaiseSpeed = 50
 warpFunction = nil
 
+-- collision flags
+collisionFlags = {
+	player = 1,
+	platform = 2,
+	platform_transparent = 32,
+	enemy = 4
+}
+
+
 mushroomTag = 100
 goombaTag = 101
 koopaTag = 102
@@ -16,6 +25,7 @@ spawnTag = 107
 warpTag = 108
 coinTag = 109
 warpTouch = 110
+plantTag = 111
 movingPlatformTag = 90
 
 items = { }
@@ -76,6 +86,7 @@ require("items/score")
 require("items/warp")
 require("items/coin")
 require("items/background")
+require("items/plant")
 require("template/template")
 
 
@@ -163,7 +174,7 @@ function makeRect(arg)
 		pos = {arg.pos[1], arg.pos[2], z},
 		components = {
 			gfxComponent,	
-			{ type ="collider", shape=s, tag=10, flag = 2 }
+			{ type ="collider", shape=s, tag=10, flag = collisionFlags.platform, mask = 0 }
 		}
 	}
 end
@@ -207,7 +218,7 @@ function makeLine (arg)
 		--gfx = {shape=arg.shape, color={255,255,255,255} },
 		components = {
 			{ type="gfx", shape = s, color = {255,255,255,255}  },
-			{ type="collider", shape=s, tag=10, flag = 2 }
+			{ type="collider", shape=s, tag=10, flag = collisionFlags.platform, mask = 0 }
 		}
 	}
 end
