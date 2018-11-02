@@ -29,6 +29,7 @@ public:
     std::set<Controller2D*>& GetCharacters() {
         return m_characters;
     }
+    void RemoveCharacters();
 protected:
     //EventListener m_listener;
     Controller2D* m_current;

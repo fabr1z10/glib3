@@ -18,20 +18,23 @@ local basicBricks = { {39, 25}, {39, 26}, {39, 27}, {40,25}, {41,25}, {41,26}, {
 	{66, 31}, {67, 31}, {68, 31}, {69, 31}, {66,30}, {67,30}, {68,30}, {69,30}, {67,29}, {67,28}, {67,27}, {67, 26}, {67, 25}, {68,25}, {69, 25},
 	{72, 25}, {73, 25}, {72, 26}, {72, 27}, {73, 27}, {72,28}, {73,28}, {72,29}, {73,29},
 	{76, 25}, {77,25}, {78,25}, {79, 25}, {76, 30}, {77,30}, {78,30}, {79,30}, {76,31}, {77,31}, {78,31}, {79,31},
-	{84, 26}, {85, 26}, {86, 26}, {87, 26}, {88, 26}, {89, 26}, {84, 27}, {85, 27}, {86, 27}, {87, 27}, {88, 27}, {89, 27}  }
+	{84, 26}, {85, 26}, {86, 26}, {87, 26}, {88, 26}, {89, 26}, {84, 27}, {85, 27}, {86, 27}, {87, 27}, {88, 27}, {89, 27}, {145, 26}, {146,26}, {147,26}, {148,26}, {149,26} }
 for x = 1,83 do table.insert(basicBricks, {5+x, 32}) end
 for x = 1,48 do table.insert(basicBricks, {89+x, 32}) end
+for x = 1,7 do table.insert(basicBricks, {160+x, 32}) end
 
 local mushroomBricks = {{10,25}}
 local coinBricks = { {11, 25}, {12, 25}, {13, 25}, {14, 25} }
 local coins = { {40,26}, {41,29}, {42,29}, {43,29}, {44,29}, {45,26}, {58, 26}, {59, 26}, {60, 26}, {61, 26}, {68, 26}, {84, 29}, {85, 29}, {86, 29}, {87, 29}, {88, 29}, {89, 29} }
-local pipe2 = { {115, 22} }
+local pipe2 = { {115, 22}, {153, 2} }
 local pipe3 = { {103, 22} }
 local pipe4 = { {109, 22} }
 
 local sceneItems = {
 	makeRect { pos = Pos{0,0}, width = 24, height = 2, gfx="block1" },
+	makeRect { pos = Pos{150, 0}, width = 42, height = 2, gfx="block1" },
 	items.backgroundelement.castle { pos = Pos{0, 2}},
+	items.backgroundelement.castle { pos = Pos{176, 2}},
 	items.backgroundelement.pipe2ways { pos = Pos{10, 2}},
 	makeRect { pos = Pos{0, 20}, width = 80, height = 2, gfx="block4" },
 	makeRect { pos = Pos{83, 20}, width = 37, height = 2, gfx="block4" },
@@ -53,13 +56,41 @@ local sceneItems = {
 	items.bonusbrick.create { pos = Pos{46, 27}, sprite="basicbrickdark", hits=1, item = "star" },			
 	items.bonusbrick.create { pos = Pos{69, 26}, sprite="basicbrickdark", hits=1, item = "star" },	
 	makeRect { pos = Pos{122, 22}, width = 2, height = 3, gfx="brick2" },
-	makeRect { pos = Pos{132, 22}, width = 5, height = 1, gfx="block5" },
-	makeRect { pos = Pos{133, 23}, width = 4, height = 1, gfx="block5" },
-	makeRect { pos = Pos{134, 24}, width = 3, height = 1, gfx="block5" },
-	makeRect { pos = Pos{135, 25}, width = 2, height = 1, gfx="block5" },
+	makeRect { pos = Pos{133, 22}, width = 5, height = 1, gfx="block5" },
+	makeRect { pos = Pos{134, 23}, width = 4, height = 1, gfx="block5" },
+	makeRect { pos = Pos{135, 24}, width = 3, height = 1, gfx="block5" },
+	makeRect { pos = Pos{136, 25}, width = 2, height = 1, gfx="block5" },
 	items.plant.create { pos = Pos{104, 25}, z = -0.5, initscripts = initscripts },
 	items.plant.create { pos = Pos{110, 26}, z = -0.5, initscripts = initscripts },
-	items.plant.create { pos = Pos{116, 24}, z = -0.5, initscripts = initscripts }
+	items.plant.create { pos = Pos{116, 24}, z = -0.5, initscripts = initscripts },
+	items.bonusbrick.create { pos = Pos{150, 26}, sprite="basicbrickdark", hits=1, item = "flower" },	
+	items.movingplatform.create { pos=Pos{140, 20}, width=3, tx=15, ty=5, speed=20, path = { { pos=Pos{140,33}, speed = 20}, {pos=Pos{140,20}}}, initscripts = initscripts },
+	items.movingplatform.create { pos=Pos{140, 26}, width=3, tx=15, ty=5, speed=20, path = { { pos=Pos{140,33}, speed = 20}, {pos=Pos{140,20}}}, initscripts = initscripts },
+	items.movingplatform.create { pos=Pos{155, 21}, width=3, tx=15, ty=5, speed=20, path = { { pos=Pos{155,20}, speed = 20}, {pos=Pos{155,33}}}, initscripts = initscripts },
+	items.movingplatform.create { pos=Pos{155, 27}, width=3, tx=15, ty=5, speed=20, path = { { pos=Pos{155,20}, speed = 20}, {pos=Pos{155,33}}}, initscripts = initscripts },
+	makeRect { pos = Pos{160, 22}, width = 17, height = 3, gfx="brick2" },
+	makeRect { pos = Pos{170, 25}, width = 7, height = 8, gfx="brick2" },
+	makeRect { pos = Pos{166, 25}, z=0.5, width = 3, height = 2, tiledata = {2,5,3,5,4,5,2,4,3,4,4,4}},
+	makeRect { pos = Pos{168, 27}, width = 1, height = 6, gfx="block3" },
+	makeRect { pos = Pos{169, 25}, width = 1, height = 8, gfx="block6" },
+	items.warp.create { pos = Pos{165.5, 25}, width = 8, height = 1, ctag = warpTouch, func = curry(pipeRight, 
+		{x = 154, y = 2, xmin=150*16, xmax=(18+roomInfo.worldWidth)*16, ymin=0, ymax= roomInfo.worldHeight*16}) },
+	makeRect { pos = Pos{155, 2}, width = 9, height = 1, gfx="block2" },
+	makeRect { pos = Pos{156, 3}, width = 8, height = 1, gfx="block2" },
+	makeRect { pos = Pos{157, 4}, width = 7, height = 1, gfx="block2" },
+	makeRect { pos = Pos{158, 5}, width = 6, height = 1, gfx="block2" },
+	makeRect { pos = Pos{159, 6}, width = 5, height = 1, gfx="block2" },
+	makeRect { pos = Pos{160, 7}, width = 4, height = 1, gfx="block2" },
+	makeRect { pos = Pos{161, 8}, width = 3, height = 1, gfx="block2" },
+	makeRect { pos = Pos{162, 9}, width = 2, height = 1, gfx="block2" },
+	makeRect { pos = Pos{172, 2}, width = 1, height = 1, gfx="block2" },
+	items.backgroundelement.create { pos = Pos{172, 3}, z=-1, width=1, height=9, tiledata ={3,2,3,2,3,2,3,2,3,2,3,2,3,2,3,2,3,2}},
+	items.backgroundelement.create { pos = Pos{172, 12}, z=-1, width=1, height=1, tiledata ={4,2}},
+	items.backgroundelement.create { pos = Pos{171.5,11}, tag="flag", z=-0.5, width=1, height=1, tiledata ={14,4}},		
+	items.warp.create { pos = Pos{172.5, 2}, tag="goal", width = 1, height = 15*16, ctag = warpTouch, func = curry(mario_end_level, {x=172, y = 48, deltayflag = -8*16, goal="goal"}) },
+	items.warp.create { pos = Pos{179, 2}, width = 1, height = 15*16, ctag = warpTouch, func = mario_complete },
+	--items.movingplatform.create { pos=Pos{140, 26}, width=3, tx=15, ty=5, speed=20, path = { { pos=Pos{140,33}, speed = 20}, {pos=Pos{140,20}}}, initscripts = initscripts },
+
 }
 
 for k, v in ipairs(sceneItems) do
@@ -101,7 +132,7 @@ function room.afterstartup()
 		[3] = { type="animate", actor ="player", anim="walk", flipx = false, after={2}},
 		[4] = { type="move", by={128, 0}, speed = 250, actor = "player", after={3}},		
 		[5] = { type="setcambounds", cam ="maincam", xmin=0, xmax = 16 * roomInfo.worldWidth, ymin = 320, ymax = 320 + 16 * roomInfo.worldHeight, after={4}},
-		[6] = { type="move", to=Pos{100, 30}, immediate=true, actor="player", after={5}},
+		[6] = { type="move", to=Pos{163, 30}, immediate=true, actor="player", after={5}},
 		[7] = { type="changestate", actor="player", state="idle", after={6}},		
 	}
 	monkey.play(s)

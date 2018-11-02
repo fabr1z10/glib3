@@ -23,3 +23,10 @@ void PlatformComponent::Move(Entity* node) {
     }
     m_lastPosition = currentPosition;
 }
+
+void PlatformComponent::RemoveCharacters() {
+    for (auto& c : m_characters) {
+        c->ForceDetach();
+    }
+    m_characters.clear();
+}

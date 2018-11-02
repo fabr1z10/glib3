@@ -7,7 +7,7 @@ items.warp.create = function(args)
 		tag = t,
 		pos = { args.pos[1], args.pos[2], 0},
 		components = {
-			{ type="collider", shape=s, flag=4, tag = args.ctag },
+			{ type="collider", shape=s, flag=collisionFlags.enemy, mask = collisionFlags.player, tag = args.ctag },
 			{ type="info", func = args.func }
 		}
 	}

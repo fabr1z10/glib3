@@ -12,6 +12,7 @@ PlatformerFactory::PlatformerFactory() : SceneFactory() {
     m_stateBehaviorFactory.Add<EnemyWalk2DStateFactory>("enemywalk2d");
     m_stateBehaviorFactory.Add<EnemyBounce2DStateFactory>("enemybounce2d");
 
+    m_activityFactory.Add<DropCharactersActFactory>("dropcharacters");
 
 }
 

@@ -4,6 +4,7 @@
 #include <platformer/states/enemywalk2d.h>
 #include <platformer/states/enemybounce2d.h>
 #include <platformer/states/jump2d.h>
+#include <platformer/activities/dropcharacters.h>
 #include <gfx/lua/luatable.h>
 
 std::unique_ptr<StateBehaviour> Idle2DStateFactory::Create(luabridge::LuaRef & r) {
@@ -42,3 +43,11 @@ std::unique_ptr<StateBehaviour> EnemyBounce2DStateFactory::Create(luabridge::Lua
     bool enableFlip = table.Get<bool>("flip");
     return std::unique_ptr<EnemyBounce2D>(new EnemyBounce2D(speed, vy, enableFlip));
 }
+
+
+std::unique_ptr<Activity> DropCharactersActFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    std::string actor = table.Get<std::string>("actor");
+    glm::vec2 targetPos = table.Get<glm::vec2>("pos");
+    return std::unique_ptr<DropCharacters>(new DropCharacters(actor, targetPos));
+};
