@@ -137,6 +137,7 @@ void Entity::UpdateWorldTransform() {
     else
         m_worldTransform = m_localTransform;
     Notify ();
+    onMove.Fire(this);
 }
 
 void Entity::SetWorldTransform(glm::mat4& wt) {
@@ -175,10 +176,22 @@ void Entity::SetParent(Entity* entity) {
 }
 
 void Entity::Move(glm::vec2 pos) {
-    SetPosition(GetPosition() + glm::vec3(pos, 0.0f));
+    if (m_flipHorizontal)
+        pos.x *= -1.0f;
+    m_localTransform[3][0] += pos.x;
+    m_localTransform[3][1] += pos.y;
+    //m_localTransform[3][2] += pos.z;
+    UpdateWorldTransform();
+    //SetPosition(GetPosition() + glm::vec3(pos, 0.0f));
 }
 void Entity::Move(glm::vec3 pos) {
-    SetPosition(GetPosition() + pos);
+    if (m_flipHorizontal)
+        pos.x *= -1.0f;
+    m_localTransform[3][0] += pos.x;
+    m_localTransform[3][1] += pos.y;
+    m_localTransform[3][2] += pos.z;
+    UpdateWorldTransform();
+    //SetPosition(GetPosition() + pos);
 }
 Camera* Entity::GetCamera() {
     return m_cameras.get();
@@ -205,4 +218,10 @@ void Entity::FlipX() {
     m_localTransform[0][1] *= -1.0f;
     m_flipHorizontal = !m_flipHorizontal;
     UpdateWorldTransform();
+}
+
+void Entity::SetFlipX(bool value) {
+    if (value == m_flipHorizontal)
+        return;
+    FlipX();
 }

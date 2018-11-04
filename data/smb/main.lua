@@ -15,6 +15,6 @@ fonts = {
 
 
 variables = {
-    _room = "world10_1",
+    _room = "world1_1",
 }
 

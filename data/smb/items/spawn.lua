@@ -7,7 +7,7 @@ items.spawn.create = function(args)
 		tag = t,
 		pos = { args.pos[1], args.pos[2], 0},
 		components = {
-			{ type="collider", tag=spawnTag, flag=1, shape = s },
+			{ type="collider", tag=spawnTag, flag=collisionFlags.enemy, mask = collisionFlags.player, shape = s },
 			{ type="info", func = args.func, args = args.args }
 		},
 	}

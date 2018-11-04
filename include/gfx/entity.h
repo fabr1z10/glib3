@@ -92,7 +92,11 @@ public:
     void SetEnableUpdate(bool);
     bool IsUpdateEnabled() const;
 
+    // invert current flip
     void FlipX();
+    // set flip horizontal (true = facing left)
+    void SetFlipX(bool);
+    bool GetFlipX() const;
 
     bool AreControlsEnabled() const;
     void SetControlsEnabled(bool);
@@ -176,6 +180,10 @@ inline void Entity::SetName(const std::string& name) {
 
 inline std::string Entity::GetName() const {
     return m_name;
+}
+
+inline bool Entity::GetFlipX() const {
+    return m_flipHorizontal;
 }
 
 #endif /* entity_h */

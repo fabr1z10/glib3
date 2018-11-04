@@ -26,6 +26,8 @@ bool Jump2D::Run(double dt) {
     // if not touching the ground, set status to jump
     bool left = m_keyboard.isPressed(GLFW_KEY_LEFT);
     bool right = m_keyboard.isPressed(GLFW_KEY_RIGHT);
+    if (left && right) left = false;
+
     if (m_controller->m_details.below && m_dynamics->m_velocity.y < 0) {
         m_dynamics->m_velocity.y = 0.0f;
 
@@ -45,15 +47,17 @@ bool Jump2D::Run(double dt) {
     //bool left = (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS);
     //bool right = (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS);
 
+
     float targetVelocityX = 0.0f;
-    if (left) {
-        targetVelocityX = -m_speed;
-        m_renderer->SetFlipX(true);
-    }
-    else if (right) {
+    if (left || right) {
+        m_entity->SetFlipX(left);
         targetVelocityX = m_speed;
-        m_renderer->SetFlipX(false);
+        //m_renderer->SetFlipX(true);
     }
+//    else if (right) {
+//        targetVelocityX = m_speed;
+//        m_renderer->SetFlipX(false);
+//    }
     m_dynamics->m_velocity.x = SmoothDamp(
             m_dynamics->m_velocity.x, targetVelocityX,
             m_velocitySmoothing,

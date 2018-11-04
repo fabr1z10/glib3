@@ -81,11 +81,14 @@ void Controller2D::Move(glm::vec2& dx) {
 
 void Controller2D::HorizontalCollisions(glm::vec2& velocity) {
 
-    float directionX = sign(velocity.x);// *m_gameObject->GetFlipX());
+    //float directionX = sign(velocity.x);// *m_gameObject->GetFlipX());
     float rayLength = fabs(velocity.x) + m_skinWidth;
+    bool facingLeft = m_entity->GetFlipX();
+    float directionX = facingLeft ? -1.0 : 1.0;
 
     for (int i = 0; i < m_horizontalRayCount; i++) {
-        vec2 rayOrigin = (directionX == -1) ? m_raycastOrigins.bottomLeft : m_raycastOrigins.bottomRight;
+
+        vec2 rayOrigin = facingLeft ? m_raycastOrigins.bottomLeft : m_raycastOrigins.bottomRight;
         rayOrigin += vec2(0.0f, 1.0f) * (i *m_horizontalRaySpacing);
         //RayCastHit2D hit = m_collision->Raycast(rayOrigin, glm::vec2(1, 0) * directionX, rayLength, 2);
         RayCastHit2D hit = m_collision->Raycast(glm::vec3(rayOrigin, 0.0f), glm::vec2(1.0f, 0.0f) * directionX, rayLength, 2);
@@ -109,7 +112,7 @@ void Controller2D::HorizontalCollisions(glm::vec2& velocity) {
             }
 
             if (!m_details.climbingSlope || (slopeAngle*rad2deg) > m_maxClimbAngle) {
-                velocity.x = (hit.length - m_skinWidth) *directionX;
+                velocity.x = (hit.length - m_skinWidth) ;//*directionX;
 
                 rayLength = hit.length;
                 if (m_details.climbingSlope) {

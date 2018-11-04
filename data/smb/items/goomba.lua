@@ -15,7 +15,7 @@ items.goomba.create = function(args)
 		components = {
 			{ type="gfx", model = "goomba", anim="walk" },
 			--{ type="collider", shape = s, tag = 22, flag= 1},
-			{ type="multicollider", tag=goombaTag, flag=1, initialshape="default", shapes = {
+			{ type="multicollider", tag=goombaTag, flag=collisionFlags.enemy, mask = collisionFlags.player, initialshape="default", shapes = {
 				{ name ="default", type="rect", width=16, height=16, offset={-8,0} },
 			}},
 			{ type="controller2d", maxclimbangle = 80, maxdescendangle = 80, horizontalrays=4, verticalrays=4 },

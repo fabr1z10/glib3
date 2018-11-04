@@ -12,7 +12,7 @@ items.invisiblebrick.create = function(arg)
 		components = {
 			{ type="gfx", model=arg.sprite, anim="nottaken" },	
 			--{ type="collider", shape=s, tag=10, flag = 2},
-			{ type="multicollider", tag=10, flag=2, initialshape="default", shapes = {
+			{ type="multicollider", tag=10, flag = collisionFlags.platform, mask = 0, initialshape="default", shapes = {
 				{ name ="default", type="rect", width=16, height=16 }
 			}},
 			{ type="info", y = arg.pos[2], item = arg.item},
@@ -28,7 +28,7 @@ items.invisiblebrick.create = function(arg)
 			{
 				pos = { 0, -0.25, 0},
 				components = {
-					{ type="collider", shape = s1, tag = invisibleBrickTag, flag = 4 },
+					{ type="collider", shape = s1, tag = invisibleBrickTag, flag = collisionFlags.enemy, mask = collisionFlags.player },
 					{ type="gfx", shape = s1, color = {255,0,0,255}}
 				}
 			}
