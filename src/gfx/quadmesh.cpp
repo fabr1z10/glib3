@@ -9,17 +9,18 @@
 #include <gfx/quadmesh.h>
 #include <gfx/engine.h>
 
-QuadMesh::QuadMesh(const std::string& filename, float width, float height, float repeatx, float repeaty, float skewx, float skewy) : Mesh<Vertex3D>(TEXTURE_SHADER) {
+QuadMesh::QuadMesh(const std::string& filename, float width, float height,
+                   float repeatx, float repeaty, float skewx, float skewy, glm::vec2 offset) : Mesh<Vertex3D>(TEXTURE_SHADER) {
     m_primitive = GL_TRIANGLES;
     auto tex = Engine::get().GetAssetManager().GetTexture(filename);
     m_texId = tex->GetTexId();
     if (width == 0) width = tex->GetWidth();
     if (height == 0) height = tex->GetHeight();
     std::vector<Vertex3D> vertices{
-        {0, 0, 0, 0, repeaty},
-        {width, 0, 0, repeatx, repeaty+skewy},
-        {width, height, 0, repeatx+skewx, 0},
-        {0, height, 0, skewx, 0}
+        {offset.x, offset.y, 0, 0, repeaty},
+        {offset.x + width, offset.y, 0, repeatx, repeaty+skewy},
+        {offset.x + width, offset.y + height, 0, repeatx+skewx, 0},
+        {offset.x, offset.y + height, 0, skewx, 0}
     };
     std::vector<unsigned int> indices{ 0, 1, 3, 3, 2, 1 };
     Init(vertices, indices);

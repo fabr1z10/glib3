@@ -41,6 +41,7 @@ SceneFactory::SceneFactory() {
     m_activityFactory.Add<NoOpActFactory>("noop");
     m_activityFactory.Add<CallFuncActFactory>("callfunc");
     m_activityFactory.Add<AnimateActFactory>("animate");
+    m_activityFactory.Add<FlipActFactory>("flip");
     m_activityFactory.Add<MoveActFactory>("move");
     m_activityFactory.Add<MoveGravityActFactory>("movegravity");
     m_activityFactory.Add<ChangeStateActFactory>("changestate");
@@ -50,6 +51,7 @@ SceneFactory::SceneFactory() {
     m_activityFactory.Add<CamBoundsActFactory>("setcambounds");
     m_activityFactory.Add<EnableKeyActFactory>("enablekey");
     m_activityFactory.Add<VirtualKeyActFactory>("virtualkey");
+    m_activityFactory.Add<CollisionCheckActFactory>("collisioncheck");
 }
 
 template <>

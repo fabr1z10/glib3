@@ -27,7 +27,8 @@
 // and only one parent (i.e. they are organized in a tree)
 class Entity : public Ref {
 public:
-    Entity() : Ref(), m_parent(nullptr), m_active(true), m_update(true), m_localTransform{glm::mat4(1.0)}, m_worldTransform{glm::mat4(1.0)}, m_enableControls{true} {}
+    Entity() : Ref(), m_parent(nullptr), m_active(true), m_update(true), m_localTransform{glm::mat4(1.0)},
+               m_worldTransform{glm::mat4(1.0)}, m_enableControls{true}, m_flipHorizontal{false} {}
 
     const glm::mat4& GetLocalTransform() const;
     const glm::mat4& GetWorldTransform() const;
@@ -78,6 +79,9 @@ public:
     void Move(glm::vec3);
     void Move(glm::mat4&);
     void SetName(const std::string& name);
+    // set angle (around z-axis) in degrees
+    void SetAngle(float);
+    float GetAngle() const;
     std::string GetName() const;
     //Entity* GetParent();
 
@@ -88,6 +92,7 @@ public:
     void SetEnableUpdate(bool);
     bool IsUpdateEnabled() const;
 
+    void FlipX();
 
     bool AreControlsEnabled() const;
     void SetControlsEnabled(bool);
@@ -104,8 +109,10 @@ public:
     Camera* GetCamera();
     Entity* GetNamedChild(const std::string& name);
 private:
+    void UpdateWorldTransform();
     void SetWorldTransform(glm::mat4& wt);
     void Notify();
+    bool m_flipHorizontal;
     bool m_active;
     bool m_update;
     bool m_enableControls;

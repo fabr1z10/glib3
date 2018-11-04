@@ -64,7 +64,8 @@ std::unique_ptr<Component> GfxComponentFactory::Create(luabridge::LuaRef & ref) 
         float h = table.Get<float>("height", 0.0f);
         glm::vec2 repeat = table.Get<glm::vec2>("rep", glm::vec2(1.0f, 1.0f));
         glm::vec2 skew = table.Get<glm::vec2>("skew", glm::vec2(0.0f, 0.0f));
-        auto mesh = std::make_shared<QuadMesh>(image, w, h, repeat.x, repeat.y, skew.x, skew.y);
+        glm::vec2 offset = table.Get<glm::vec2>("offset", glm::vec2(0.0f));
+        auto mesh = std::make_shared<QuadMesh>(image, w, h, repeat.x, repeat.y, skew.x, skew.y, offset);
         renderer->SetMesh(mesh);
     } else if (table.HasKey("model")) {
         std::string model = table.Get<std::string>("model");

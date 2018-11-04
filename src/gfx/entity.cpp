@@ -10,6 +10,7 @@
 #include "gfx/entity.h"
 #include <gfx/engine.h>
 #include <glm/gtx/transform.hpp>
+#include <gfx/math/geom.h>
 
 using namespace std;
 
@@ -121,17 +122,16 @@ std::string Entity::ToString() {
 
 void Entity::SetZ(float z) {
     m_localTransform[3][2] = z;
-    if (m_parent != nullptr)
-        m_worldTransform = m_parent->GetWorldTransform() * m_localTransform;
-    else
-        m_worldTransform = m_localTransform;
-    Notify ();
-
+    UpdateWorldTransform();
 
 }
 
 void Entity::SetLocalTransform (glm::mat4 t) {
     m_localTransform = t;
+    UpdateWorldTransform();
+}
+
+void Entity::UpdateWorldTransform() {
     if (m_parent != nullptr)
         m_worldTransform = m_parent->GetWorldTransform() * m_localTransform;
     else
@@ -182,4 +182,27 @@ void Entity::Move(glm::vec3 pos) {
 }
 Camera* Entity::GetCamera() {
     return m_cameras.get();
+}
+
+void Entity::SetAngle(float angle) {
+    glm::mat4 m = glm::rotate(deg2rad * angle, glm::vec3(0,0,1));
+    m_localTransform[0][0] = (m_flipHorizontal ? -1 : 1) * m[0][0];
+    m_localTransform[0][1] = (m_flipHorizontal ? -1 : 1) * m[0][1];
+    m_localTransform[1][0] = m[1][0];
+    m_localTransform[1][1] = m[1][1];
+
+    UpdateWorldTransform();
+}
+
+float Entity::GetAngle() const {
+    if (m_localTransform[0][0] == 0.0)
+        return m_localTransform[0][1] < 0 ? 90.0f : -90.0f;
+    return rad2deg * atan(m_localTransform[0][1] / m_localTransform[0][0]);
+}
+
+void Entity::FlipX() {
+    m_localTransform[0][0] *= -1.0f;
+    m_localTransform[0][1] *= -1.0f;
+    m_flipHorizontal = !m_flipHorizontal;
+    UpdateWorldTransform();
 }

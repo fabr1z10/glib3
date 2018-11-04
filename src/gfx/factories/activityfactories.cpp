@@ -17,6 +17,7 @@
 #include <gfx/activities/cambounds.h>
 #include <gfx/activities/enablekey.h>
 #include <gfx/activities/virtualkey.h>
+#include <gfx/activities/flip.h>
 
 std::unique_ptr<Activity> NoOpActFactory::Create(luabridge::LuaRef &ref) {
     return std::unique_ptr<NoOp>(new NoOp);
@@ -77,7 +78,14 @@ std::unique_ptr<Activity> MoveActFactory::Create(luabridge::LuaRef &ref) {
     }
     float speed = table.Get<float>("speed", 0.0f);
     bool immediate = table.Get<bool>("immediate", false);
-    auto m = std::unique_ptr<MoveTo>(new MoveTo(actor, dest, speed, relative, immediate));
+    std::unique_ptr<MoveTo> m;
+    if (table.HasKey("angle")) {
+        float angle = table.Get<float>("angle");
+        bool relAngle = table.Get<bool>("angle_relative");
+        m = std::unique_ptr<MoveTo>(new MoveAndRotateTo(actor, dest, speed, relative, immediate, angle, relAngle));
+    } else {
+        m = std::unique_ptr<MoveTo>(new MoveTo(actor, dest, speed, relative, immediate));
+    }
     if (table.HasKey("acceleration")) {
         float acceleration = table.Get<float>("acceleration");
         m->SetAcceleration(acceleration);
@@ -185,4 +193,11 @@ std::unique_ptr<Activity> VirtualKeyActFactory::Create(luabridge::LuaRef &ref) {
     int key = table.Get<int>("key");
     int action = table.Get<int>("action");
     return std::unique_ptr<VirtualKey>(new VirtualKey(key, action));
+}
+
+std::unique_ptr<Activity> FlipActFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    std::string actor = table.Get<std::string>("actor");
+    bool horizontal = table.Get<bool>("horizontal");
+    return std::unique_ptr<Flip>(new Flip(actor, horizontal));
 }

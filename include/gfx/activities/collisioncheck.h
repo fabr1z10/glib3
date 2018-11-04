@@ -6,6 +6,7 @@
 
 class CollisionEngine;
 class Entity;
+class Renderer;
 
 class CollisionCheck : public Activity {
 
@@ -22,4 +23,5 @@ private:
     int m_mask;
     luabridge::LuaRef m_callback;
     CollisionEngine* m_engine;
+    Renderer* m_renderer;
 };

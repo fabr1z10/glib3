@@ -93,6 +93,7 @@ public:
     static void scroll_callback(GLFWwindow*, double xoffset, double yoffset);
     static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
     void SetRenderingEngine(std::unique_ptr<RenderingEngine>);
+
     //void SetScriptingEngine(std::unique_ptr<Scheduler>);
     //void SetCollisionEngine(std::unique_ptr<CollisionEngine>);
     //MouseListener* GetMouseHandler();

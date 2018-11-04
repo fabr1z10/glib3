@@ -11,7 +11,7 @@ public:
     void Run (float dt) override;
     void Reset() override;
     void SetAcceleration(float acceleration);
-private:
+protected:
     Entity* m_entity;
     glm::vec2 m_toPos;
     glm::vec2 m_velocity;
@@ -29,6 +29,19 @@ private:
 inline void MoveTo::SetAcceleration(float acceleration) {
     m_acceleration = acceleration;
 }
+
+class MoveAndRotateTo : public MoveTo {
+public:
+    MoveAndRotateTo (const std::string& actorId, glm::vec2 pos, float speed, bool relative, bool immediate, float angle, bool angleRelative);
+    void Start() override;
+    void Run (float dt) override;
+private:
+    float m_deltaAngle;
+    bool m_angleRelative;
+    float m_initAngle;
+    float m_endAngle;
+    float m_angle;
+};
 
 class MoveGravity : public Activity {
 public:

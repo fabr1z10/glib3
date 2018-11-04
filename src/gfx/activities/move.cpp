@@ -40,6 +40,7 @@ void MoveTo::Start() {
 
     if (m_immediate) {
         m_entity->Move(displacement);
+
         SetComplete();
     } else {
         m_lengthToCover = glm::length(displacement);
@@ -67,6 +68,35 @@ void MoveTo::Run (float dt) {
         m_entity->Move(delta);
     }
 
+}
+
+MoveAndRotateTo::MoveAndRotateTo(const std::string &actorId, glm::vec2 pos, float speed, bool relative, bool immediate,
+                                 float angle, bool angleRelative)
+        : MoveTo(actorId, pos, speed, relative, immediate), m_angle(angle), m_angleRelative(angleRelative)
+{
+
+}
+
+void MoveAndRotateTo::Start() {
+    MoveTo::Start();
+    m_initAngle = m_entity->GetAngle();
+    if (!m_angleRelative) {
+        m_endAngle = m_angle;
+        m_deltaAngle = m_endAngle - m_initAngle;
+    } else {
+        m_endAngle = m_initAngle + m_angle;
+        m_deltaAngle = m_angle;
+    }
+}
+
+void MoveAndRotateTo::Run(float dt) {
+    MoveTo::Run(dt);
+    float angle = m_initAngle + m_deltaAngle * (m_lengthCovered/m_lengthToCover);
+    if (this->IsComplete()) {
+        m_entity->SetAngle(m_endAngle);
+    } else {
+        m_entity->SetAngle(angle);
+    }
 }
 
 MoveGravity::MoveGravity (const std::string& actorId, glm::vec2 initialVelocity, float g, float yStop, float rotationSpeed, float finalRotation) :
