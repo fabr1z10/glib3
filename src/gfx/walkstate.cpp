@@ -15,16 +15,16 @@ void WalkState::Init(Entity * e) {
 
 bool WalkState::Run(double) {
     if (glfwGetKey(window, GLFW_KEY_RIGHT)) {
-        m_entity->Move(glm::vec2(m_speed,0.0f));
+        m_entity->MoveLocal(glm::vec2(m_speed,0.0f));
     }
     if (glfwGetKey(window, GLFW_KEY_LEFT)) {
-        m_entity->Move(glm::vec2(-m_speed,0.0f));
+        m_entity->MoveLocal(glm::vec2(-m_speed,0.0f));
     }
     if (glfwGetKey(window, GLFW_KEY_UP)) {
-        m_entity->Move(glm::vec2(0.0,m_speed));
+        m_entity->MoveLocal(glm::vec2(0.0,m_speed));
     }
     if (glfwGetKey(window, GLFW_KEY_DOWN)) {
-        m_entity->Move(glm::vec2(0.0,-m_speed));
+        m_entity->MoveLocal(glm::vec2(0.0,-m_speed));
     }
     return false;
 }
@@ -96,7 +96,7 @@ bool WalkStateCollision::Run(double dt) {
         TotalShift.y = dir.y*(shift - 0.1f);
     }
 
-    m_entity->Move(TotalShift);
+    m_entity->MoveLocal(TotalShift);
 //
 //    // handle animation
 //    if (m_handleAnimations) {

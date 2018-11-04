@@ -210,7 +210,7 @@ void EntityWrapper::SetPosition(float x, float y, float z) {
 }
 
 void EntityWrapper::Move(float x, float y, float z) {
-    m_underlying->Move(glm::vec3(x, y, z));
+    m_underlying->MoveOrigin(glm::vec3(x, y, z));
 }
 
 std::string EntityWrapper::GetAnim() const {

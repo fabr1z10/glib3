@@ -155,13 +155,22 @@ void Entity::Notify() {
 }
 
 void Entity::SetPosition(glm::vec3 pos){
-    SetLocalTransform(glm::translate(pos));
-    onMove.Fire(this);
+    m_localTransform[3][0] = pos.x;
+    m_localTransform[3][1] = pos.y;
+    m_localTransform[3][2] = pos.z;
+    UpdateWorldTransform();
+    //SetLocalTransform(glm::translate(pos));
+    //onMove.Fire(this);
 }
 
 void Entity::SetPosition(glm::vec3 pos, float angle){
-    SetLocalTransform(glm::translate(pos)* glm::rotate(angle, glm::vec3(0,0,1)));
-    onMove.Fire(this);
+    m_localTransform = glm::rotate(angle, glm::vec3(0.0f, 0.0f, 1.0f));
+    m_localTransform[3][0] = pos.x;
+    m_localTransform[3][1] = pos.y;
+    m_localTransform[3][2] = pos.z;
+    UpdateWorldTransform();
+    //SetLocalTransform(glm::translate(pos)* glm::rotate(angle, glm::vec3(0,0,1)));
+    //onMove.Fire(this);
 }
 
 
@@ -175,24 +184,34 @@ void Entity::SetParent(Entity* entity) {
     Notify();
 }
 
-void Entity::Move(glm::vec2 pos) {
-    if (m_flipHorizontal)
-        pos.x *= -1.0f;
+void Entity::MoveOrigin(glm::vec2 pos) {
     m_localTransform[3][0] += pos.x;
     m_localTransform[3][1] += pos.y;
-    //m_localTransform[3][2] += pos.z;
     UpdateWorldTransform();
-    //SetPosition(GetPosition() + glm::vec3(pos, 0.0f));
 }
-void Entity::Move(glm::vec3 pos) {
-    if (m_flipHorizontal)
-        pos.x *= -1.0f;
+
+void Entity::MoveOrigin(glm::vec3 pos) {
     m_localTransform[3][0] += pos.x;
     m_localTransform[3][1] += pos.y;
     m_localTransform[3][2] += pos.z;
     UpdateWorldTransform();
-    //SetPosition(GetPosition() + pos);
 }
+
+void Entity::MoveLocal(glm::vec2 delta) {
+    glm::vec2 worldDelta (m_worldTransform * glm::vec4(delta.x, delta.y, 0.0f, 0.0f));
+    m_localTransform[3][0] += worldDelta.x;
+    m_localTransform[3][1] += worldDelta.y;
+    UpdateWorldTransform();
+}
+
+void Entity::MoveLocal(glm::vec3 delta) {
+    glm::vec3 worldDelta (m_worldTransform * glm::vec4(delta.x, delta.y, delta.z, 0.0f));
+    m_localTransform[3][0] += worldDelta.x;
+    m_localTransform[3][1] += worldDelta.y;
+    m_localTransform[3][2] += worldDelta.z;
+    UpdateWorldTransform();
+}
+
 Camera* Entity::GetCamera() {
     return m_cameras.get();
 }

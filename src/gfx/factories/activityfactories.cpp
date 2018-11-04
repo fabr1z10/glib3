@@ -198,6 +198,6 @@ std::unique_ptr<Activity> VirtualKeyActFactory::Create(luabridge::LuaRef &ref) {
 std::unique_ptr<Activity> FlipActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
     std::string actor = table.Get<std::string>("actor");
-    bool horizontal = table.Get<bool>("horizontal");
-    return std::unique_ptr<Flip>(new Flip(actor, horizontal));
+    int mode = table.Get<bool>("mode", 0);
+    return std::unique_ptr<Flip>(new Flip(actor, mode));
 }

@@ -29,6 +29,7 @@ void MoveTo::Start() {
         m_entity = Engine::get().GetRef<Entity>(m_actorId);
     }
     glm::vec2 displacement;
+    //glm::mat4 m = m_entity->GetWorldTransform();
     glm::vec2 pos(m_entity->GetPosition());
     if (m_relative) {
         displacement = m_toPos;
@@ -39,7 +40,7 @@ void MoveTo::Start() {
     }
 
     if (m_immediate) {
-        m_entity->Move(displacement);
+        m_entity->MoveOrigin(displacement);
 
         SetComplete();
     } else {
@@ -65,7 +66,7 @@ void MoveTo::Run (float dt) {
         SetComplete();
     }
     else {
-        m_entity->Move(delta);
+        m_entity->MoveOrigin(delta);
     }
 
 }

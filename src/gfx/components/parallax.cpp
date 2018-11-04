@@ -48,7 +48,7 @@ void Parallax::onCameraMove(Camera * cam) {
         panelDelta.x += i*m_horizontalTranslation;
     }
     // 2. Vertical scrolling
-    m_entity->Move(panelDelta);
+    m_entity->MoveOrigin(panelDelta);
 
 
 //    m_entity->Get

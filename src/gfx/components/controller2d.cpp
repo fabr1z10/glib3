@@ -75,7 +75,7 @@ void Controller2D::Move(glm::vec2& dx) {
             HorizontalCollisions(dx);
         if (!isEqual(dx.y, 0.0f))
             VerticalCollisions(dx);
-        m_entity->Move(glm::vec3(dx.x, dx.y, 0));
+        m_entity->MoveLocal(glm::vec3(dx.x, dx.y, 0));
     }
 }
 

@@ -3,11 +3,15 @@
 #include <gfx/entity.h>
 #include <gfx/engine.h>
 
-Flip::Flip(const std::string& id, bool horizontal) : Activity(), m_actor(id), m_value(horizontal) {}
+Flip::Flip(const std::string& id, int mode) : Activity(), m_actor(id), m_value(mode) {}
 
 void Flip::Start() {
     auto entity = Engine::get().GetRef<Entity>(m_actor);
-    //entity->GetComponent<Renderer>()->SetFlipX(m_value);
-    entity->FlipX();
+    if (m_value == 0) {
+        entity->FlipX();
+    } else {
+        entity->SetFlipX(m_value == 2);
+    }
+
     SetComplete();
 }

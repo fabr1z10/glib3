@@ -5,11 +5,14 @@
 
 class Flip : public Activity {
 public:
-    Flip(const std::string& id, bool horizontal);
+    // mode = 0: just flip
+    // mode = 1: flip right (ie no horizontal flip)
+    // mode = 2: flip left (horizontal flip)
+    Flip(const std::string& id, int mode);
     void Start() override;
     void Run(float) override {}
 private:
-    bool m_value;
+    int m_value;
     std::string m_actor;
 };
 

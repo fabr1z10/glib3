@@ -72,12 +72,21 @@ public:
     glm::vec3 GetPosition() const;
     void SetLocalTransform (glm::mat4);
     void SetZ(float);
+
+    // set the position of the local origin in w.c.
     void SetPosition(glm::vec2);
     void SetPosition(glm::vec3);
     void SetPosition(glm::vec3, float angle);
-    void Move(glm::vec2);
-    void Move(glm::vec3);
-    void Move(glm::mat4&);
+
+    // move the origin by a given amount
+    void MoveOrigin(glm::vec2);
+    void MoveOrigin(glm::vec3);
+    void MoveLocal(glm::vec2);
+    void MoveLocal(glm::vec3);
+    //void MoveOrigin(glm::mat4&);
+
+
+
     void SetName(const std::string& name);
     // set angle (around z-axis) in degrees
     void SetAngle(float);
