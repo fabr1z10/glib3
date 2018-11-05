@@ -2,7 +2,7 @@
 
 #include <gfx/activity.h>
 #include <glm/glm.hpp>
-
+#include <string>
 
 class DropCharacters : public Activity {
 public:

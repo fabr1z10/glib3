@@ -75,6 +75,10 @@ void Controller2D::Move(glm::vec2& dx) {
         if (!isEqual(dx.y, 0.0f))
             VerticalCollisions(dx);
         m_entity->MoveLocal(glm::vec3(dx.x, dx.y, 0));
+        if (!m_wasGnd && m_details.below) {
+            glm::vec3 p=m_entity->GetPosition();
+            std::cout << "AFTER+++ " << p.x << "," << p.y << std::endl;
+        }
     }
 }
 
@@ -88,11 +92,11 @@ void Controller2D::HorizontalCollisions(glm::vec2& velocity) {
         vec2 rayOrigin = facingLeft ? m_raycastOrigins.bottomLeft : m_raycastOrigins.bottomRight;
         rayOrigin += vec2(0.0f, 1.0f) * (i *m_horizontalRaySpacing);
         //RayCastHit2D hit = m_collision->Raycast(rayOrigin, glm::vec2(1, 0) * directionX, rayLength, 2);
-        RayCastHit2D hit = m_collision->Raycast(glm::vec3(rayOrigin, 0.0f), glm::vec2(1.0f, 0.0f) * directionX, rayLength, 2);
+        RayCastHit2D hit = m_collision->Raycast(glm::vec3(rayOrigin, 0.0f), glm::vec2(1.0f, 0.0f) * directionX, rayLength, 2 | 32);
         if (hit.collide) {
 
             float slopeAngle = angle(hit.normal, vec2(0, 1));
-            std::cout << "SLOPE ANGLE = " << slopeAngle << std::endl;
+            std::cout << "SLOPE ANGLE = " << rad2deg*slopeAngle << std::endl;
             if (i == 0 && (slopeAngle*rad2deg) <= m_maxClimbAngle) {
                 if (m_details.descendingSlope) {
                     m_details.descendingSlope = false;

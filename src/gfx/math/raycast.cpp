@@ -47,6 +47,7 @@ void RayCast2D::visit(Line& l) {
     } else {
         m_result.collide = true;
         m_result.length = t;
+        m_result.normal = glm::normalize(Perp(Dw-Cw));
     }
 }
 
