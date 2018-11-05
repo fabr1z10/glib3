@@ -60,6 +60,7 @@ void MultiCollider::SwitchTo (const std::string& shapeId)
             m_gfx.at(shapeId)->SetActive(true);
         }
     }
+
     m_current = shapeId;
 
 }

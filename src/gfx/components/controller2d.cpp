@@ -28,7 +28,7 @@ void Controller2D::ResetShape(Collider*) {
 
 void Controller2D::CalculateRaySpacing() {
     
-    Bounds bounds = m_cc->GetShape()->getBounds();
+    Bounds bounds = m_cc->GetBounds();
     bounds.Expand(m_skinWidth * -2);
     m_horizontalRaySpacing = bounds.GetSize().y / (m_horizontalRayCount - 1);
     m_verticalRaySpacing = bounds.GetSize().x / (m_verticalRayCount - 1);
@@ -42,7 +42,6 @@ void Controller2D::UpdateRaycastOrigins() {
     m_raycastOrigins.bottomRight = vec2(bounds.max.x, bounds.min.y);
     m_raycastOrigins.topLeft = vec2(bounds.min.x, bounds.max.y);
     m_raycastOrigins.topRight = vec2(bounds.max.x, bounds.max.y);
-
 }
 
 bool Controller2D::IsFalling(int dir) {
@@ -63,7 +62,7 @@ void Controller2D::Move(glm::vec2& dx) {
         b.max = m_raycastOrigins.topRight + glm::vec2((dx.x > 0.0f) ? dx.x : 0.0f, (dx.y > 0.0f)? dx.y : 0.0f);
         //m_ppp = m_collision->GetNodes(b, 2 | 32);
 
-
+        m_wasGnd = m_details.below;
         m_details.Reset();
         m_details.velocityOld = dx;
 
@@ -81,13 +80,11 @@ void Controller2D::Move(glm::vec2& dx) {
 
 void Controller2D::HorizontalCollisions(glm::vec2& velocity) {
 
-    //float directionX = sign(velocity.x);// *m_gameObject->GetFlipX());
-    float rayLength = fabs(velocity.x) + m_skinWidth;
     bool facingLeft = m_entity->GetFlipX();
     float directionX = facingLeft ? -1.0 : 1.0;
+    float rayLength = fabs(velocity.x) + m_skinWidth;
 
     for (int i = 0; i < m_horizontalRayCount; i++) {
-
         vec2 rayOrigin = facingLeft ? m_raycastOrigins.bottomLeft : m_raycastOrigins.bottomRight;
         rayOrigin += vec2(0.0f, 1.0f) * (i *m_horizontalRaySpacing);
         //RayCastHit2D hit = m_collision->Raycast(rayOrigin, glm::vec2(1, 0) * directionX, rayLength, 2);
@@ -95,6 +92,7 @@ void Controller2D::HorizontalCollisions(glm::vec2& velocity) {
         if (hit.collide) {
 
             float slopeAngle = angle(hit.normal, vec2(0, 1));
+            std::cout << "SLOPE ANGLE = " << slopeAngle << std::endl;
             if (i == 0 && (slopeAngle*rad2deg) <= m_maxClimbAngle) {
                 if (m_details.descendingSlope) {
                     m_details.descendingSlope = false;
@@ -171,22 +169,25 @@ void Controller2D::DescendSlope(glm::vec2& velocity) {
 }
 
 void Controller2D::VerticalCollisions(glm::vec2& velocity) {
-    glm::vec2 originalVelocity = velocity;
     float directionY = sign(velocity.y);
     float rayLength = std::abs(velocity.y) + m_skinWidth;
     Entity* m_obstacle = nullptr;
+    float velx = velocity.x * (m_entity->GetFlipX() ? -1.0f : 1.0f);
 
     for (int i = 0; i < m_verticalRayCount; i++) {
         vec2 rayOrigin = (directionY == -1) ? m_raycastOrigins.bottomLeft : m_raycastOrigins.topLeft;
-        rayOrigin += vec2(1, 0) * (i *m_verticalRaySpacing + velocity.x);
+        rayOrigin += vec2(1, 0) * (i *m_verticalRaySpacing + velx);
         int collMask = (directionY == -1 ? (2 | 32) : 2);
-        RayCastHit2D hit = m_collision->Raycast(vec3(rayOrigin, 0.0f), glm::vec2(0, 1) * directionY, rayLength, collMask);// (directionY == -1 ? m_collisionMaskDown : m_collisionMaskAny));
-        //RayCastHit2D hit = Raycast(rayOrigin, glm::vec2(0, 1) * directionY, rayLength, collMask);// (directionY == -1 ? m_collisionMaskDown : m_collisionMaskAny));
-        //RayCastHit2D hit;
-        //hit.collide = true;
-        //hit.length = 0;
-        //hit.other = nullptr;
+        RayCastHit2D hit = m_collision->Raycast(vec3(rayOrigin, 0.0f), glm::vec2(0, 1) * directionY, rayLength, collMask);
         if (hit.collide) {
+            if (!m_wasGnd) {
+                auto bounds = m_cc->GetBounds();
+                glm::vec3 pos = m_entity->GetPosition();
+                std::cout << "Position current = " << pos.x << ", " << pos.y << "\n";
+                std::cout << "Collide! Length = " << hit.length << ", ray length = " << rayLength << std::endl;
+                std::cout << "i = " << i << ", rayorigin = "<< rayOrigin.x <<", " << rayOrigin.y << std::endl;
+            }
+
             velocity.y = (hit.length - m_skinWidth) * directionY;
             rayLength = hit.length;
 

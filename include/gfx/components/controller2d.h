@@ -74,4 +74,5 @@ private:
 	float m_skinWidth;
 	float m_maxClimbAngle;
 	float m_maxDescendAngle;
+    bool m_wasGnd;
 };
