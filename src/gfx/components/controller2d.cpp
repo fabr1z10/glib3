@@ -67,7 +67,7 @@ void Controller2D::Move(glm::vec2& dx) {
         m_details.velocityOld = dx;
 
         // before we do that... we have code handling collisions
-        if (dx.y < 0 && m_details.below) {
+        if (dx.y < 0 && m_wasGnd) {
             DescendSlope(dx);
         }
         if (!isEqual(dx.x, 0.0f))
@@ -150,18 +150,21 @@ void Controller2D::ClimbSlope(glm::vec2& velocity, float slopeAngle) {
 void Controller2D::DescendSlope(glm::vec2& velocity) {
     //if (velocity.x == 0.0f)
      //   return;
-    float directionX = sign(velocity.x);
+    //float directionX = sign(velocity.x);
+    bool facingLeft = m_entity->GetFlipX();
+    float directionX = facingLeft ? -1.0 : 1.0;
     vec2 rayOrigin = ((directionX == -1) ? m_raycastOrigins.bottomRight : m_raycastOrigins.bottomLeft);
     //RayCastHit2D hit = m_collision->Raycast(rayOrigin, vec2(0, -1), 100.0f, m_platform != nullptr ? 2 | 32 : 2);
-    RayCastHit2D hit = m_collision->Raycast(vec3(rayOrigin,0.0f), vec2(0, -1), 100.0f, m_platform != nullptr ? 2 | 32 : 2);
+    RayCastHit2D hit = m_collision->Raycast(vec3(rayOrigin,0.0f), vec2(0, -1), 100.0f, 2 | 32);
     if (hit.collide) {
         float slopeAngle = angle(hit.normal, vec2(0, 1));
+        std::cout << "DESCEND SLOPE, angle = " << rad2deg * slopeAngle << "\n";
         if (slopeAngle != 0 && slopeAngle <= m_maxDescendAngle) {
             if (sign(hit.normal.x) == directionX) {
                 if (hit.length - m_skinWidth <= tan(slopeAngle) * fabs(velocity.x)) {
                     float moveDistance = fabs(velocity.x);
                     float descendVelocityY = sin(slopeAngle) * moveDistance;
-                    velocity.x = cos(slopeAngle) * moveDistance * sign(velocity.x);
+                    velocity.x = cos(slopeAngle) * moveDistance;// * sign(velocity.x);
                     velocity.y -= descendVelocityY;
                     m_details.slopeAngle = slopeAngle;
                     m_details.descendingSlope = true;
@@ -177,23 +180,15 @@ void Controller2D::VerticalCollisions(glm::vec2& velocity) {
     float rayLength = std::abs(velocity.y) + m_skinWidth;
     Entity* m_obstacle = nullptr;
     float velx = velocity.x * (m_entity->GetFlipX() ? -1.0f : 1.0f);
-
     for (int i = 0; i < m_verticalRayCount; i++) {
         vec2 rayOrigin = (directionY == -1) ? m_raycastOrigins.bottomLeft : m_raycastOrigins.topLeft;
         rayOrigin += vec2(1, 0) * (i *m_verticalRaySpacing + velx);
         int collMask = (directionY == -1 ? (2 | 32) : 2);
         RayCastHit2D hit = m_collision->Raycast(vec3(rayOrigin, 0.0f), glm::vec2(0, 1) * directionY, rayLength, collMask);
         if (hit.collide) {
-            if (!m_wasGnd) {
-                auto bounds = m_cc->GetBounds();
-                glm::vec3 pos = m_entity->GetPosition();
-                std::cout << "Position current = " << pos.x << ", " << pos.y << "\n";
-                std::cout << "Collide! Length = " << hit.length << ", ray length = " << rayLength << std::endl;
-                std::cout << "i = " << i << ", rayorigin = "<< rayOrigin.x <<", " << rayOrigin.y << std::endl;
-            }
-
             velocity.y = (hit.length - m_skinWidth) * directionY;
             rayLength = hit.length;
+
 
             if (m_details.climbingSlope) {
                 velocity.x = (velocity.y / tan(m_details.slopeAngle)) * sign(velocity.x);
@@ -203,6 +198,8 @@ void Controller2D::VerticalCollisions(glm::vec2& velocity) {
             m_obstacle = hit.entity;
         }
     }
+
+
 //    if (m_obstacle == nullptr) {
 //        // no coll
 //        for (int i = 0; i < m_verticalRayCount; i++) {
