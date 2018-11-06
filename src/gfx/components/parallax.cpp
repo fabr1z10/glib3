@@ -15,8 +15,8 @@ void Parallax::Start() {
     m_camSize = glm::vec2(size.x * 0.5f, size.y * 0.5f);
     glm::vec2 panelPos (m_previousPos.x - m_camSize.x, m_previousPos.y - m_camSize.y);
     m_entity->SetPosition(panelPos);
-    m_horizontalTranslation = m_width - 2*m_camSize.x;
-    m_verticalTranslation = m_height - 2*m_camSize.y;
+    m_horizontalTranslation = m_width ;//- 2*m_camSize.x;
+    m_verticalTranslation = m_height ;//- 2*m_camSize.y;
     // as the camera moves, we always need to make sure that
     // P_x - panel_x in [c_w / 2, panel_width - c_w/2]
     // P_y - panel_y in [c_h / 2, panel_width - c_h/2]
@@ -34,15 +34,15 @@ void Parallax::onCameraMove(Camera * cam) {
     // check conditions
     // 1. Horizontal scrolling
     glm::vec3 relativeCamPos = pos - panelPos;
-    //std::cout << "Rel cam pos = " << relativeCamPos.x << ", " << relativeCamPos.y << "\n";
+    std::cout << "Rel cam pos = " << relativeCamPos.x << ", " << relativeCamPos.y << "\n";
     if (relativeCamPos.x < m_camSize.x) {
         // camera is left of panel, move the panel backward
         int i = static_cast<int>(std::ceil((panelPos.x + m_camSize.x - pos.x) / m_horizontalTranslation));
         std::cout << "Moving cam by " <<i << " unit\n";
         panelDelta.x -= i*m_horizontalTranslation;
-    } else if (relativeCamPos.x > m_width - m_camSize.x) {
+    } else if (relativeCamPos.x > m_width*2 - m_camSize.x) {
         // camera is right of panel, move the panel forward
-        std::cout << "Relative pos = " << relativeCamPos.x << "\n";
+
         int i = static_cast<int>(std::ceil((pos.x - panelPos.x - m_width + m_camSize.x) / m_horizontalTranslation));
         std::cout << "Moving cam by " <<i << " unit\n";
         panelDelta.x += i*m_horizontalTranslation;

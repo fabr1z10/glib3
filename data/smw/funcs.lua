@@ -26,6 +26,8 @@ warpTag = 108
 coinTag = 109
 warpTouch = 110
 plantTag = 111
+banzaiTag = 112
+rexTag = 113
 movingPlatformTag = 90
 
 items = { }
@@ -36,6 +38,7 @@ function CreateItem (args)
 		print ("Item " .. args.id .. " does not exist!")
 		return nil
 	end
+	print ("CREATING " .. args.id)
 	local parent = monkey.getEntity("restofscene")
 	local item = items[args.id].create(args.args)
 	monkey.addEntity (item, parent)
@@ -71,6 +74,9 @@ end
 -- require("cutscene")
 require("tilesets")
 require("items/mario")
+require("items/banzaibill")
+require("items/rex")
+require("items/parallax")
 -- require("items/mushroom")
 -- require("items/mushroom1up")
 -- require("items/flower")
@@ -82,7 +88,7 @@ require("items/mario")
 -- require("items/brickcoin")
 -- require("items/invisiblebrick")
 -- require("items/movingplatform")
--- require("items/spawn")
+require("items/spawn")
 -- require("items/score")
 -- require("items/warp")
 -- require("items/coin")

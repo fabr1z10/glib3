@@ -1,6 +1,43 @@
 local dt = 0.1
 sprites = {
 	-- start graham
+	banzai_bill = {
+		id = "banzai_bill",
+		sheet = "gfx/sprites.png",
+		type = "sprite",
+		ppu = 1,
+		animations = {
+			{
+				name="idle",
+				frames = {
+					{ duration = dt, quads = { { x = 48, y = 32, width = 64, height = 64, anchor = {0, 0}}}}	
+				}
+			}
+		}
+	},
+	rex = {
+		id = "rex",
+		sheet = "gfx/sprites.png",
+		type = "sprite",
+		ppu = 1,
+		animations = {
+			{
+				name="walk",
+				frames = {
+					{ duration = dt, quads = { { x = 112, y = 32, width = 32, height = 32, anchor = {16, 0}}}},
+					{ duration = dt, quads = { { x = 144, y = 32, width = 32, height = 32, anchor = {16, 0}}}}	
+				}
+			},
+			{
+				name="walk_small",
+				frames = {
+					{ duration = dt, quads = { { x = 112, y = 32, width = 32, height = 32, anchor = {-16, 0}}}},
+					{ duration = dt, quads = { { x = 144, y = 32, width = 32, height = 32, anchor = {-16, 0}}}}	
+				}
+			},
+
+		}
+	},
 	mario = {
 		id = "mario",
 		sheet = "gfx/sprites.png",

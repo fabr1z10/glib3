@@ -15,7 +15,7 @@ items.mario.create = function(args)
 			{ type="multicollider", tag=1, flag=collisionFlags.player, mask = collisionFlags.enemy, initialshape="small", shapes = {
 				{ name ="small", type="rect", width=14, height=16, offset={-7,0}},
 				{ name ="big", type="rect", width=14, height=32, offset={-7,0}},
-				{ name ="duck", type="rect", width=14, height=24, offset={-7,0}}
+				{ name ="duck", type="rect", width=14, height=6, offset={-7,0}}
 			}},
 			{ type="statemachine", initialstate = "idle",
 				states = {
@@ -72,14 +72,11 @@ function mario_is_hit(mario)
 end
 
 function mario_duck(e) 
+	print ("CIAOOAOAOAO")
 	-- first check warp
 	if (warpFunction == nil) then
-		print ("Warp not set")
-		local info = e:getinfo()
-		if (info.supermario == true) then
-			print ("duck")
-			e:changestate("duck")
-		end
+		e:changestate("duck")
+		
 	else
 		print ("Warp set!")
 		warpFunction()

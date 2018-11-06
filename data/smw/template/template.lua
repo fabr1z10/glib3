@@ -23,6 +23,9 @@ function getBaseRoom(roomInfo)
 					{ tag = {1, warpTouch}, onenter = mario_warptouch},
 					{ tag = {1, plantTag}, onenter = mario_plant},
 					{ tag = {1, coinTag}, onenter = mario_coin },
+					{ tag= {1, banzaiTag}, onenter = mario_banzai},
+					{ tag= {1, rexTag}, onenter = mario_rex},
+
 		
 						
 				}
@@ -30,6 +33,8 @@ function getBaseRoom(roomInfo)
 		},
 		assets = {
 			sprites.mario,
+			sprites.banzai_bill,
+			sprites.rex,
 			sprites.basicbrick,
 			sprites.basicbrickdark,
 			sprites.bonusbrick,
@@ -51,9 +56,9 @@ function getBaseRoom(roomInfo)
 				camera = {
 					tag = "maincam",
 					type="ortho",
-					size = {256, 256},
+					size = {256, 224},
 					bounds = {0, 0, roomInfo.worldWidth*16, roomInfo.worldHeight*16},
-					viewport = {0, 0, 256, 256}
+					viewport = {0, 0, 256, 224}
 				},
 				children = {
 					[1] = {
@@ -79,9 +84,9 @@ function getBaseRoom(roomInfo)
 				camera = {
 					tag = "diagcam",
 					type ="ortho",
-					size = {256, 256},
-					bounds = {0,0,256, 256},
-					viewport = {0,0,256,256}
+					size = {256, 224},
+					bounds = {0,0,256, 224},
+					viewport = {0,0,256,224}
 				},
 				children = {
 					{

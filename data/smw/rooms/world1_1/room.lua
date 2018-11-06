@@ -1,7 +1,7 @@
 local roomInfo = {
 	worldWidth = 224,
-	worldHeight = 16,
-	startPos = {52, 4},
+	worldHeight = 14,
+	startPos = {1, 4},
 	collisionSize = 80,
 	g = -10
 }
@@ -12,6 +12,7 @@ room = getBaseRoom(roomInfo)
 local mainScene = room.scene[1].children[3].children
 
 local sceneItems = {
+	items.parallaxbg.create { img="gfx/bg1.png", width=512, height=224, factor = 0.5},
 	makeTiledRect { pos = Pos{0,0}, tile ={0,1}, width = 60, height = 1 },
 	makeTiledRect { pos = Pos{60,0}, tile ={0,1}, width = 12, height = 5 },
 	makeTiledRect { pos = Pos{0,1}, tile ={0,0}, width = 59, height = 1 },
@@ -22,7 +23,9 @@ local sceneItems = {
 	makePlatformLine {A =Pos{57,8}, B=Pos{59,6}},
 	makePlatformLine {A =Pos{11,5}, B=Pos{14,8}},
 
-	--makePlatformLine {A =Pos{7,7}, B=Pos{8,7}},
+	items.spawn.create { pos=Pos{5,0}, items = { { id="banzaibill", args = { pos=Pos{20,2.5}}  }}},
+	items.rex.create { pos = Pos{12,3}, dir =-1},
+	--makePlatformLine {A =Pos{7,7	}, B=Pos{8,7}},
 
 	--makePlatformLine {A =Pos{7,7}, B=Pos{7.25,7}},
 	--makePlatformLine {A =Pos{8,7}, B=Pos{13,5}},
