@@ -69,6 +69,7 @@ function bonusRise(m)
 end
 
 -- require("cutscene")
+require("tilesets")
 require("items/mario")
 -- require("items/mushroom")
 -- require("items/mushroom1up")

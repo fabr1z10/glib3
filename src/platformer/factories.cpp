@@ -24,7 +24,8 @@ std::unique_ptr<StateBehaviour> Jump2DStateFactory::Create(luabridge::LuaRef & r
     LuaTable table(r);
     float acc = table.Get<float>("acceleration");
     float speed = table.Get<float>("speed");
-    return std::unique_ptr<Jump2D>(new Jump2D(acc, speed));
+    std::string animDown = table.Get<std::string>("animdown", "");
+    return std::unique_ptr<Jump2D>(new Jump2D(acc, speed, !animDown.empty(), animDown));
 }
 
 std::unique_ptr<StateBehaviour> EnemyWalk2DStateFactory::Create(luabridge::LuaRef & r) {

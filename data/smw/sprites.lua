@@ -57,7 +57,15 @@ sprites = {
 	           { 
 					{ duration = dt, quads = { { x = 176, y = 0, width = 16, height = 32, anchor = {8, 0}}}},
 			   }				
-	        },				
+	        },	
+	        {
+	           name="jump_down",
+	           frames=
+	           { 
+					{ duration = dt, quads = { { x = 192, y = 0, width = 16, height = 32, anchor = {8, 0}}}},
+			   }				
+	        },	
+			
 	    --     {
 	    --        name="jumpbig",
 	    --        frames=

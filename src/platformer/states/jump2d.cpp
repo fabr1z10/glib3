@@ -8,8 +8,9 @@
 
 extern GLFWwindow* window;
 
-Jump2D::Jump2D(float accelerationTimeAirborne, float speed) :
-        PlatformerState(), m_accTimeAir(accelerationTimeAirborne), m_velocitySmoothing(0.0f), m_speed(speed)
+Jump2D::Jump2D(float accelerationTimeAirborne, float speed, bool setAnimDown, const std::string& animDown) :
+        PlatformerState(), m_accTimeAir(accelerationTimeAirborne), m_velocitySmoothing(0.0f), m_speed(speed), m_setJumpDownAnim(setAnimDown),
+        m_jumpDownAnim(animDown)
 {
 
 
@@ -20,6 +21,7 @@ void Jump2D::ResetState() {
     if (m_keyboard.isPressed(GLFW_KEY_UP)) {
         m_dynamics->m_velocity.y = m_dynamics->m_jumpVelocity;
     }
+    m_goingUp = true;
 }
 
 bool Jump2D::Run(double dt) {
@@ -42,6 +44,14 @@ bool Jump2D::Run(double dt) {
 
     // apply gravity
     m_dynamics->m_velocity.y += m_dynamics->m_gravity * dt;
+
+    if (m_goingUp && m_dynamics->m_velocity.y < 0) {
+        m_goingUp = false;
+        if (m_setJumpDownAnim) {
+            m_renderer->SetAnimation(m_jumpDownAnim);
+        }
+    }
+
 
     // check keyboard
     //bool left = (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS);
