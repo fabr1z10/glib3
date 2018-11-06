@@ -33,6 +33,7 @@ local sceneItems = {
 	makeTiledRect { pos = Pos{60,5}, tile ={0,0}, width = 12 , height = 1 },
 	items.backgroundelement.create { pos=Pos{72,1}, width=1, height=5, tiledata = {1,4,1,3,1,3,1,3,1,2}},
 	tilesets.ramp1(Pos{11,2}, -1),
+	tilesets.incline_pipe_green(Pos{51,2}, -1)
 	--items.backgroundelement.create { pos=Pos{11,2}, width=9, height=6, z=-1, tiledata = tilesets.ramp1 },
 
 
