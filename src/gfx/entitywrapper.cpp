@@ -219,8 +219,7 @@ std::string EntityWrapper::GetAnim() const {
 }
 
 bool EntityWrapper::GetFlipX() const {
-    Renderer* r = m_underlying->GetComponent<Renderer>();
-    return r->GetFlipX();
+    return m_underlying->GetFlipX();
 
 }
 

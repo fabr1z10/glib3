@@ -18,14 +18,15 @@ items.rex.create = function(args)
 			{ type="gfx", model = "rex", anim="walk" },
 			--{ type="collider", shape = s, tag = 22, flag= 1},
 			{ type="multicollider", tag=rexTag, flag=collisionFlags.enemy, mask = collisionFlags.player, initialshape="default", shapes = {
-				{ name ="default", type="rect", width=16, height=16, offset={-8,0} },
+				{ name ="default", type="rect", width=16, height=30, offset={-8,0} },
+				{ name ="small", type="rect", width=16, height=16, offset={-8,0} },
 			}},
 			{ type="controller2d", maxclimbangle = 80, maxdescendangle = 80, horizontalrays=4, verticalrays=4 },
 			{ type="dynamics2d", jumpheight = 64, timetojumpapex = 0.5 },
 			{ type="statemachine", initialstate = "walk",
 				states = {
 					{ id = "walk", init = { type="animcollider", anim="walk", collider="default" }, behavior= {type="enemywalk2d", speed=50, dir= dir, flip=false, flip_when_platform_ends = true }},
-					{ id = "walksmall", init = { type="animcollider", anim="walksmall", collider="default" }, behavior= {type="enemywalk2d", speed=50, dir= dir, flip=false, flip_when_platform_ends = true }},
+					{ id = "walksmall", init = { type="animcollider", anim="walk_small", collider="small" }, behavior= {type="enemywalk2d", speed=50, dir= dir, flip=false, flip_when_platform_ends = true }},
 					{ id = "dead", init = { type="animcollider", anim="dead" }}
 				}
 			}
@@ -38,11 +39,26 @@ end
 
 
 
-function mario_rex(mario, goomba, sx, sy)
+function mario_rex(mario, rex, sx, sy)
 	
-	-- if (mario.state == "jump" and mario.vy < 0 and sy > 0 and math.abs(sx) < 0.01) then
-	-- 	mario.vy = -mario.vy
-	-- 	goomba:changestate("dead")
+	if (mario.state == "jump" and mario.vy < 0 and sy > 0 and math.abs(sx) < 0.01) then
+		mario.vy = -mario.vy
+		local rexState = rex.state
+		local dir = rex.flipx and -1 or 1
+		if (rexState == "walk") then
+	 		rex:changestateparam("walksmall", { dir = dir })
+		else
+			rex:changestate("dead")
+			local s = script:new()
+			s.actions = {
+				[1] = {type="delay", sec=2},
+				[2] = {type="callfunc", func = function() rex:remove() end, after={1}}
+			}
+			monkey.play(s)
+		end
+	else
+		--mario_is_hit(mario)
+	end
 	-- 	local s = script:new()
 	-- 	s.actions = {
 	-- 		[1] = {type="delay", sec=2},

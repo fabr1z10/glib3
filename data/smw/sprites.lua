@@ -31,11 +31,16 @@ sprites = {
 			{
 				name="walk_small",
 				frames = {
-					{ duration = dt, quads = { { x = 112, y = 32, width = 32, height = 32, anchor = {-16, 0}}}},
-					{ duration = dt, quads = { { x = 144, y = 32, width = 32, height = 32, anchor = {-16, 0}}}}	
+					{ duration = dt, quads = { { x = 176, y = 48, width = 16, height = 16, anchor = {8, 0}}}},
+					{ duration = dt, quads = { { x = 192, y = 48, width = 16, height = 16, anchor = {8, 0}}}}	
 				}
 			},
-
+			{
+				name="dead",
+				frames = {
+					{ duration = dt, quads = { { x = 208, y = 48, width = 16, height = 16, anchor = {8, 0}}}},
+				}
+			},
 		}
 	},
 	mario = {

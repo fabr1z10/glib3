@@ -12,7 +12,9 @@ public:
     virtual void Init(Entity*) = 0;
     virtual void Start() = 0;
     // init with params
-    virtual void Start(luabridge::LuaRef) {}
+    virtual void Start(luabridge::LuaRef) {
+        Start();
+    }
 };
 
 class StateBehaviour {
