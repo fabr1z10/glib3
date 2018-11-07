@@ -12,7 +12,7 @@ tilesets = {
 	end,
 	incline_pipe_green = function(pos, z)
 		local z1 = z or 0 
-		return items.backgroundelement.create { pos=pos, width=8, height=6, z=z1, tiledata = {
+		local item = items.backgroundelement.create { pos=pos, width=8, height=6, z=z1, tiledata = {
 			7, 5, 7, 6, 8, 6, 8, 7, 9, 7, -1, -1, -1,
 			-1, 7, 5, 7, 6, 8, 6, 8, 7, 9, 7, -1, -1, 
 			-1, -1, 7, 5, 7, 6, 8, 6, 8, 7, 9, 7, -1, 
@@ -20,6 +20,76 @@ tilesets = {
 			-1, -1, -1, -1, 7, 5, 8,5, 9,5, 10,5, 
 			-1, -1, -1, -1, -1, 8,4, 9,4, -1
 		}}
+		item.children = {
+			{
+				components = {
+					{ type ="collider", shape={type="line", A={0,0}, B={6*16,6*16}}, tag=10, flag = 32, mask = 0 }
+				}
+			},
+			{
+				components = {
+					{ type ="collider", shape={type="line", A={6*16,6*16}, B={8*16,4*16}}, tag=10, flag = 32, mask = 0 }
+				}
+			}
+
+		}
+		return item
+	end,
+	pipe_purple = function(pos, z, height, solid)
+		local z1 = z or 0
+		data = {}
+		for i = 1,height-1 do
+			table.insert(data, 11)
+			table.insert(data, 5)
+			table.insert(data, 12)
+			table.insert(data, 5)
+		end
+		table.insert(data, 11)
+		table.insert(data, 4)
+		table.insert(data, 12)
+		table.insert(data, 4)
+
+		local item = items.backgroundelement.create { pos=pos, width=2, height=height, z=z1, tiledata = data}
+		if (solid == true) then
+			table.insert(item.components, { type ="collider", shape={type="rect", width = 2*16, height=height*16}, tag=10, flag = collisionFlags.platform, mask = 0 })
+		end
+		return item
+	end,
+	pipe_grey = function(pos, z, height, solid)
+		local z1 = z or 0
+		data = {}
+		for i = 1,height-1 do
+			table.insert(data, 13)
+			table.insert(data, 5)
+			table.insert(data, 14)
+			table.insert(data, 5)
+		end
+		table.insert(data, 13)
+		table.insert(data, 4)
+		table.insert(data, 14)
+		table.insert(data, 4)
+
+		local item = items.backgroundelement.create { pos=pos, width=2, height=height, z=z1, tiledata = data}
+		if (solid == true) then
+			table.insert(item.components, { type ="collider", shape={type="rect", width = 2*16, height=height*16}, tag=10, flag = collisionFlags.platform, mask = 0 })
+		end
+		return item
+	end,
+	pipe_green_small = function(pos, z, height, solid)
+		local z1 = z or 0
+		data = {15,6}
+		for i = 1,height-2 do
+			table.insert(data, 15)
+			table.insert(data, 5)
+		end
+		table.insert(data, 15)
+		table.insert(data, 4)
+
+		local item = items.backgroundelement.create { pos=pos, width=1, height=height, z=z1, tiledata = data}
+		if (solid == true) then
+			table.insert(item.components, { type ="collider", shape={type="rect", width = 16, height=height*16}, tag=10, flag = collisionFlags.platform, mask = 0 })
+		end
+		return item
 	end
 
 }

@@ -170,6 +170,7 @@ function makeTiledRect (arg)
 	local width = arg.width
 	local height = arg.height
 	local pos = arg.pos
+	local solid = arg.solid or false
 	local z = arg.z or 0
 
 	local tiledata = {}
@@ -177,6 +178,9 @@ function makeTiledRect (arg)
 		table.insert(tiledata, arg.tile[1])
 		table.insert(tiledata, arg.tile[2])
 	end
+
+	
+
 	local gfxComponent = {
 		type="gfx",
 		img="gfx/sprites.png",
@@ -186,11 +190,17 @@ function makeTiledRect (arg)
 		tiledata = tiledata,
 		sheetsize ={32, 32}
 	}
+
+	local comp = {
+		gfxComponent
+	}
+	if (solid == true) then
+		table.insert(comp, { type ="collider", shape={type="rect", width = width*16, height=height*16}, tag=10, flag = collisionFlags.platform, mask = 0 })
+	end
+
 	return {
 		pos = {pos[1], pos[2], z},
-		components = {
-			gfxComponent,	
-		}
+		components = comp
 	}	
 end
 

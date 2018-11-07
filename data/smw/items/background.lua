@@ -2,12 +2,16 @@ items.backgroundelement = {}
 
 items.backgroundelement.create = function(args)
 	local z =args.z or 1
+	local coll = nil
+	local comp = {
+		{ type="gfx", img="gfx/sprites.png", width=args.width, height=args.height, size=16, tiledata=args.tiledata, sheetsize={32, 32}}
+	}
+
+
 	return {
 		tag = args.tag,
 		pos = {args.pos[1], args.pos[2], z},
-		components = {
-			{ type="gfx", img="gfx/sprites.png", width=args.width, height=args.height, size=16, tiledata=args.tiledata, sheetsize={32, 32}}
-		}
+		components = comp
 	}
 end
 
