@@ -25,6 +25,7 @@ function getBaseRoom(roomInfo)
 					{ tag = {1, coinTag}, onenter = mario_coin },
 					{ tag= {1, banzaiTag}, onenter = mario_banzai},
 					{ tag= {1, rexTag}, onenter = mario_rex},
+					--{ tag= {1, cornerTag}, onenter = mario_corner},
 
 		
 						

@@ -30,9 +30,11 @@ tilesets = {
 				components = {
 					{ type ="collider", shape={type="line", A={6*16,6*16}, B={8*16,4*16}}, tag=10, flag = 32, mask = 0 }
 				}
-			}
+			},
+	
 
 		}
+		item.components = {}
 		return item
 	end,
 	pipe_purple = function(pos, z, height, solid)

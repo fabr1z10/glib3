@@ -9,6 +9,7 @@
 #include <gfx/math/geom.h>
 #include <gfx/components/platform.h>
 #include <iostream>
+#include <gfx/math/geomalgo.h>
 
 using namespace glm;
 
@@ -158,7 +159,7 @@ void Controller2D::DescendSlope(glm::vec2& velocity) {
     RayCastHit2D hit = m_collision->Raycast(vec3(rayOrigin,0.0f), vec2(0, -1), 100.0f, 2 | 32);
     if (hit.collide) {
         float slopeAngle = angle(hit.normal, vec2(0, 1));
-        //std::cout << "DESCEND SLOPE, angle = " << rad2deg * slopeAngle << "\n";
+        std::cout << "DESCEND SLOPE, angle = " << rad2deg * slopeAngle << "\n";
         if (slopeAngle != 0 && slopeAngle <= m_maxDescendAngle) {
             if (sign(hit.normal.x) == directionX) {
                 if (hit.length - m_skinWidth <= tan(slopeAngle) * fabs(velocity.x)) {
@@ -195,9 +196,29 @@ void Controller2D::VerticalCollisions(glm::vec2& velocity) {
             }
             m_details.below = directionY == -1;
             m_details.above = directionY == 1;
-            m_obstacle = hit.entity;
+            m_obstacle = hit.entity->GetObject();
         }
     }
+
+    // cast an extra ray at the bottom
+    if (velocity.y < 0 && !m_details.descendingSlope) {
+        vec2 rayOrigin = m_raycastOrigins.bottomLeft + vec2(0.0f, velocity.y);
+        float length = m_raycastOrigins.bottomRight.x - m_raycastOrigins.bottomLeft.x;
+        RayCastHit2D hit = m_collision->Raycast(vec3(rayOrigin, 0.0f), vec2(1.0f, 0.0f), length, 2 | 32);
+        if (hit.collide) {
+            auto m = hit.entity->GetObject()->GetWorldTransform();
+            Shape * s = hit.entity->GetShape();
+            glm::vec2 platformProjection = s->project(glm::vec2(0, 1), m);
+            glm::vec2 charProjection (rayOrigin.y, m_raycastOrigins.topLeft.y + velocity.y);
+            float overlap = ComputeOverlap(charProjection, platformProjection);
+            std::cout << "vy = " << velocity.y << ", Overlap is = " << overlap << "\n";
+            velocity.y += overlap;
+            m_details.below = true;
+            m_obstacle = hit.entity->GetObject();
+        }
+
+    }
+
 
 
 //    if (m_obstacle == nullptr) {

@@ -34,6 +34,7 @@ SceneFactory::SceneFactory() {
     m_shapeFactory.Add<LineFactory>("line");
     m_shapeFactory.Add<CircleFactory>("circle");
     m_shapeFactory.Add<CompoundFactory>("compound");
+    m_shapeFactory.Add<PolyFactory>("poly");
 
     m_stateInitFactory.Add<AnimInitializerFactory>("anim");
     m_stateInitFactory.Add<AnimColliderInitializerFactory>("animcollider");

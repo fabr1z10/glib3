@@ -28,6 +28,7 @@ warpTouch = 110
 plantTag = 111
 banzaiTag = 112
 rexTag = 113
+cornerTag = 114
 movingPlatformTag = 90
 
 items = { }
@@ -315,3 +316,11 @@ end
 
 
 
+
+-- function mario_corner(mario, rex, sx, sy)
+-- 	print ("MOVING MARIO BY  " .. tostring(sy) .. " " .. tostring(sx))
+-- 	if (mario.vy < 0) then
+-- 		mario:move(sx, sy + 1, 0)
+-- 		mario.vy = 0
+-- 	end
+-- end

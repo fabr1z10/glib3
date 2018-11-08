@@ -318,8 +318,9 @@ RayCastHit2D CollisionEngine::Raycast (glm::vec3 rayOrigin, glm::vec2 rayDir, fl
                         auto report = rc.GetResult();
                         if (report.collide && (!out.collide || out.length > report.length)) {
                             out = report;
-                            out.entity = c->GetObject();
-                            return out;
+                            out.entity = c;// ->GetObject();
+                            out.collide = true;
+                            //return out;
                         }
                     }
                 }

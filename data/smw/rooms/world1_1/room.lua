@@ -35,7 +35,7 @@ local sceneItems = {
 	makePlatformLine {A =Pos{83,5}, B=Pos{86,8}},
 
 	items.spawn.create { pos=Pos{5,0}, items = { { id="banzaibill", args = { pos=Pos{20,2.5}}  }}},
-	items.rex.create { pos = Pos{12,3}, dir =-1},
+	--items.rex.create { pos = Pos{12,3}, dir =-1},
 	--makePlatformLine {A =Pos{7,7	}, B=Pos{8,7}},
 
 	--makePlatformLine {A =Pos{7,7}, B=Pos{7.25,7}},
