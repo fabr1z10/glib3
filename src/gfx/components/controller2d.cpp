@@ -159,7 +159,7 @@ void Controller2D::DescendSlope(glm::vec2& velocity) {
     RayCastHit2D hit = m_collision->Raycast(vec3(rayOrigin,0.0f), vec2(0, -1), 100.0f, 2 | 32);
     if (hit.collide) {
         float slopeAngle = angle(hit.normal, vec2(0, 1));
-        std::cout << "DESCEND SLOPE, angle = " << rad2deg * slopeAngle << "\n";
+        //std::cout << "DESCEND SLOPE, angle = " << rad2deg * slopeAngle << "\n";
         if (slopeAngle != 0 && slopeAngle <= m_maxDescendAngle) {
             if (sign(hit.normal.x) == directionX) {
                 if (hit.length - m_skinWidth <= tan(slopeAngle) * fabs(velocity.x)) {

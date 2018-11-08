@@ -29,6 +29,7 @@ plantTag = 111
 banzaiTag = 112
 rexTag = 113
 cornerTag = 114
+brickTag = 115
 movingPlatformTag = 90
 
 items = { }
@@ -84,7 +85,9 @@ require("items/parallax")
 -- require("items/star")
 -- require("items/goomba")
 -- require("items/koopa")
--- require("items/brick")
+require("items/brick")
+require("items/brickpiece")
+
 -- require("items/bonusbrick")
 -- require("items/brickcoin")
 -- require("items/invisiblebrick")

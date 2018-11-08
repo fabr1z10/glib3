@@ -178,5 +178,37 @@ sprites = {
 
 		}
 	},
-
+	brick = {
+		id = "brick",
+		sheet = "gfx/sprites.png",
+		type = "sprite",
+		ppu = 1,
+		animations = {
+			{
+				name="idle",
+				frames = {
+					{ duration = dt, quads = { { x = 192, y = 96, width = 16, height = 16, anchor = {0, 0}}}}	
+				}
+			}
+		}
+	},
+	brickpiece = {
+		id = "brickpiece",
+		sheet = "gfx/sprites.png",
+		type = "sprite",
+		ppu = 1,
+		animations = {
+			{
+				name="idle",
+				frames = {
+					{ duration = dt, quads = { { x = 192, y = 112, width = 16, height = 16, anchor = {0, 0}}}},	
+					{ duration = dt, quads = { { x = 208, y = 112, width = 16, height = 16, anchor = {0, 0}}}},	
+					{ duration = dt, quads = { { x = 224, y = 112, width = 16, height = 16, anchor = {0, 0}}}},	
+					{ duration = dt, quads = { { x = 240, y = 112, width = 16, height = 16, anchor = {0, 0}}}},	
+					{ duration = dt, quads = { { x = 256, y = 112, width = 16, height = 16, anchor = {0, 0}}}},	
+					{ duration = dt, quads = { { x = 272, y = 112, width = 16, height = 16, anchor = {0, 0}}}}	
+				}
+			}
+		}
+	},
 }

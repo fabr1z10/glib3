@@ -1,7 +1,7 @@
 local roomInfo = {
 	worldWidth = 224,
 	worldHeight = 14,
-	startPos = {49,4},
+	startPos = {118,4},
 	collisionSize = 80,
 	g = -10
 }
@@ -54,7 +54,8 @@ local sceneItems = {
 	tilesets.pipe_grey(Pos{139, 2}, 0.1, 4, true),
 	tilesets.pipe_green_small(Pos{131, 2}, 0.1, 3, false),
 	tilesets.pipe_green_small(Pos{132, 2}, 0.1, 4, true),
-
+	items.brick.create { pos = Pos{120, 5}, sprite="brick" },
+	items.brick.create { pos = Pos{121, 5}, sprite="brick" },
 	--items.backgroundelement.create { pos=Pos{11,2}, width=9, height=6, z=-1, tiledata = tilesets.ramp1 },
 
 
