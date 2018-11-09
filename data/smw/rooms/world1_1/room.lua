@@ -1,23 +1,38 @@
 local roomInfo = {
 	worldWidth = 224,
 	worldHeight = 14,
-	startPos = {118,4},
+	startPos = {2,4},
 	collisionSize = 80,
 	g = -10
 }
 
 local initscripts = {}
 
+areas = {
+	main1 = {
+		range = {0, 0, 224*16, 14*16},
+		startPos = Pos{118, 4},
+		background = { "bg_main" }
+	},
+	cave = {
+		range = {0, 20*16, 512, 34*16},
+		startPos = Pos{2, 34},
+		background = { "bg_cave" }
+	}
+}
+
+
+
 room = getBaseRoom(roomInfo)
 local mainScene = room.scene[1].children[3].children
 
 local sceneItems = {
 	-- cave
-	--items.parallaxbg.create { img="gfx/bg2.png", pos=Pos{0, 20}, width=384, height=224, factor = 0.5},
+	items.parallaxbg.create { tag = "bg_cave", img="gfx/bg2.png", pos=Pos{0, 0}, width=384, height=224, factor = 0.5},
 
 
 
-	items.parallaxbg.create { img="gfx/bg1.png", width=512, height=224, factor = 0.5},
+	items.parallaxbg.create { tag="bg_main", img="gfx/bg1.png", width=512, height=224, factor = 0.5},
 	makeTiledRect { pos = Pos{0,0}, tile ={0,1}, width = 60, height = 1 },
 	makeTiledRect { pos = Pos{60,0}, tile ={0,1}, width = 12, height = 5 },
 	makeTiledRect { pos = Pos{0,1}, tile ={0,0}, width = 59, height = 1 },
@@ -61,7 +76,7 @@ local sceneItems = {
 	tilesets.pipe_green_small(Pos{132, 2}, 0.1, 4, true),
 	items.brick.create { pos = Pos{120, 5}, sprite="brick" },
 	items.brick.create { pos = Pos{121, 5}, sprite="brick" },
-	items.warp.create { pos = Pos{121, 4}, width=8, height= 1, ctag = warpTag, func = pipeDown }
+	items.warp.create { pos = Pos{121, 4}, width=8, height= 1, ctag = warpTag, func = curry(pipeDown, {area = "cave"}) }
 	--items.backgroundelement.create { pos=Pos{11,2}, width=9, height=6, z=-1, tiledata = tilesets.ramp1 },
 
 
@@ -82,6 +97,10 @@ function room.afterstartup()
 	for k, v in pairs(initscripts) do
 		monkey.play(v)
 	end		
+	
+	monkey.getEntity("bg_cave"):setactive(false)
+	print ("SWIUTCHING to main1")
+	switchToArea("main1")
 end
 
 

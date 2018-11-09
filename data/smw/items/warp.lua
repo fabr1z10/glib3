@@ -38,17 +38,18 @@ end
 
 
 function pipeDown(args) 
-	print ("CIAO stronzo")
--- 	-- move mario down 
--- 	local s = script:new()
--- 	s.actions = {
--- 		[1] = {type="changestate", actor="player", state="nophys"},
--- 		[2] = { type="move", by={0, -32}, speed = 25, actor = "player", after={1}},		
--- 		[3] = { type="setcambounds", cam ="maincam", xmin=args.xmin, xmax = args.xmax, ymin = args.ymin, ymax = args.ymax, after={2}},
--- 		[4] = { type="move", to=Pos{args.x, args.y}, immediate=true, actor="player", after={3}},
--- 		[5] = {type="changestate", actor="player", state="idle", after={4}},
--- 	}
--- 	monkey.play(s)
+ 	-- move mario down 
+print ("MOVINGF DOWN")
+ 	local s = script:new()
+ 	s.actions = {
+ 		[1] = {type="changestate", actor="player", state="nophys"},
+ 		[2] = { type="move", by={0, -32}, speed = 25, actor = "player", after={1}},	
+		[3] = { type="callfunc", func = curry(switchToArea, (args.area)), after={2}},
+ 		--[3] = { type="setcambounds", cam ="maincam", xmin=args.xmin, xmax = args.xmax, ymin = args.ymin, ymax = args.ymax, after={2}},
+ 		--[4] = { type="move", to=Pos{args.x, args.y}, immediate=true, actor="player", after={3}},
+ 		[4] = {type="changestate", actor="player", state="idle", after={3}},
+ 	}
+ 	monkey.play(s)
 end
 
 -- function pipeRight(args) 

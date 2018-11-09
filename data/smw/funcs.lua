@@ -4,6 +4,7 @@ brickSpeed = 60
 brickg = 150
 bonusRaiseSpeed = 50
 warpFunction = nil
+currentArea = nil
 
 -- collision flags
 collisionFlags = {
@@ -69,6 +70,32 @@ function bonusRise(m)
 	s.actions = {
 		[1] = {type="move", by={0, 16}, actor = m.tag, speed = bonusRaiseSpeed},
 		[2] = {type="changestate", actor=m.tag, state="walk", after={1}}
+	}
+	monkey.play(s)
+end
+
+function switchToArea(name) 
+	if (currentArea ~= nil) then
+		print ("current area is " .. currentArea)
+		for k, v in ipairs(areas[currentArea].background) do
+			monkey.getEntity(v):setactive(false)
+		end
+	end
+	print ("CHOOSING Main1")
+	local area = areas[name]
+	if (area == nil) then
+		print ("area " .. name .. " not found")
+	end
+	for k, v in ipairs(area.background) do
+		print ("enabling background " .. v)
+		monkey.getEntity(v):setactive(true)
+	end
+print ("set bvackgrounds")
+	currentArea = name
+	local s = script:new()
+	s.actions = {
+		[1] = { type="setcambounds", cam ="maincam", xmin=area.range[1], xmax = area.range[3], ymin = area.range[2], ymax = area.range[4] },
+ 		[2] = { type="move", to=area.startPos, immediate=true, actor="player", after={1}},
 	}
 	monkey.play(s)
 end

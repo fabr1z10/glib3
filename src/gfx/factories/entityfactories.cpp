@@ -50,6 +50,9 @@ std::unique_ptr<Entity> EntityFactory::Create(luabridge::LuaRef& ref) {
             entity->AddChild(childEntity);
         }
     }
+    if (active == false) {
+        std::cout << "ciaos";
+    }
     entity->SetActive(active);
     return std::move(entity);
 }

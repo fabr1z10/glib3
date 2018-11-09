@@ -9,7 +9,9 @@ items.parallaxbg.create = function(args)
 	local width = args.width
 	local height = args.height
 	local factor = args.factor
+
 	return {
+		tag = args.tag,
 		pos = {pos[1], pos[2], z},
 		components = {
 			{ type="gfx", image = img, width = 2*width, height = height, rep={2,1} },
