@@ -31,6 +31,8 @@ banzaiTag = 112
 rexTag = 113
 cornerTag = 114
 brickTag = 115
+checkpointTag = 116
+infobrickTag = 117
 movingPlatformTag = 90
 
 items = { }
@@ -106,6 +108,8 @@ require("items/mario")
 require("items/banzaibill")
 require("items/rex")
 require("items/parallax")
+require("items/midwaygate")
+require("items/infobrick")
 -- require("items/mushroom")
 -- require("items/mushroom1up")
 -- require("items/flower")

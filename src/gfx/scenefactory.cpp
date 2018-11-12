@@ -55,6 +55,7 @@ SceneFactory::SceneFactory() {
     m_activityFactory.Add<EnableKeyActFactory>("enablekey");
     m_activityFactory.Add<VirtualKeyActFactory>("virtualkey");
     m_activityFactory.Add<CollisionCheckActFactory>("collisioncheck");
+    m_activityFactory.Add<ScaleActFactory>("scale");
 }
 
 template <>

@@ -10,6 +10,45 @@ tilesets = {
 			-1,-1,1,0,2,1,-1,-1,-1,-1,-1
 		}}
 	end,
+	pipe_orange_down = function (pos, z, height,solid)
+		local z1 = z or 0
+		data = {5,8,6,8,5,7,6,7}
+		for i = 1,height-1 do
+			table.insert(data, 5)
+			table.insert(data, 6)
+			table.insert(data, 6)
+			table.insert(data, 6)
+		end
+
+		local item = items.backgroundelement.create { pos=pos, width=2, height=height, z=z1, tiledata = data}
+		if (solid == true) then
+			table.insert(item.components, { type ="collider", shape={type="rect", width = 2*16, height=height*16}, tag=10, flag = collisionFlags.platform, mask = 0 })
+		end
+		return item
+
+	end,
+	pipe_horizontal_green = function (pos, z, width, solid)
+		local z1 = z or 0
+		data = {7,9,8,9}
+		for i = 1,width-2 do
+			table.insert(data, 8)
+			table.insert(data, 9)
+		end
+		table.insert(data,7)
+		table.insert(data,8)
+		table.insert(data,8)
+		table.insert(data,8)
+		for i = 1,width-1 do
+			table.insert(data, 8)
+			table.insert(data, 8)
+		end
+		local item = items.backgroundelement.create { pos=pos, width=width, height=2, z=z1, tiledata = data}
+		if (solid == true) then
+			table.insert(item.components, { type ="collider", shape={type="rect", width = width*16, height=2*16}, tag=10, flag = collisionFlags.platform, mask = 0 })
+		end
+		return item
+
+	end,
 	incline_pipe_green = function(pos, z)
 		local z1 = z or 0 
 		local item = items.backgroundelement.create { pos=pos, width=8, height=6, z=z1, tiledata = {

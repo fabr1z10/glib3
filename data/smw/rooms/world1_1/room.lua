@@ -11,7 +11,7 @@ local initscripts = {}
 areas = {
 	main1 = {
 		range = {0, 0, 224*16, 14*16},
-		startPos = Pos{118, 4},
+		startPos = Pos{159, 4},
 		background = { "bg_main" }
 	},
 	cave = {
@@ -29,7 +29,26 @@ local mainScene = room.scene[1].children[3].children
 local sceneItems = {
 	-- cave
 	items.parallaxbg.create { tag = "bg_cave", img="gfx/bg2.png", pos=Pos{0, 0}, width=384, height=224, factor = 0.5},
-
+	makeTiledRect { pos = Pos{1,21}, tile ={3, 7}, width = 30, height = 1},
+	makeTiledRect { pos = Pos{0,20}, tile ={3, 8}, width = 32, height = 1},
+	makeTiledRect { pos = Pos{0,21}, tile ={2, 7}, width = 1, height = 1},
+	makeTiledRect { pos = Pos{31,21}, tile ={4, 7}, width = 1, height = 1},
+	makeTiledRect { pos = Pos{31,32}, tile ={2, 8}, width = 1, height = 1},
+	makeTiledRect { pos = Pos{0,22}, tile ={2, 6}, width = 1, height = 12, solid = true },
+	makeTiledRect { pos = Pos{31,22}, tile ={4, 6}, width = 1, height = 10, solid = true },
+	makeTiledRect { pos = Pos{4,32}, tile ={1, 9}, width = 27, height = 1 },
+	makeTiledRect { pos = Pos{4,33}, tile ={1, 8}, width = 28, height = 1 },
+	makeTiledRect { pos = Pos{3,32}, tile ={0, 9}, width = 1, height = 1 },
+	makeTiledRect { pos = Pos{3,33}, tile ={0, 8}, width = 1, height = 1 },
+	makePlatformRect {pos = Pos{0,20}, size = Pos{32,2}},
+	makeTiledRect { pos = Pos{20, 22}, tile ={11,6}, width = 1, height = 4, solid=true},
+	makeTiledRect { pos = Pos{24, 22}, tile ={11,6}, width = 1, height = 4, solid=true},
+	items.brick.create { pos = Pos{21, 25}, sprite="brick" },
+	items.brick.create { pos = Pos{22, 25}, sprite="brick" },
+	items.brick.create { pos = Pos{23, 25}, sprite="brick" },
+	tilesets.pipe_orange_down (Pos{1, 25}, 0.1, 9, false),
+	tilesets.pipe_horizontal_green (Pos{28, 22}, 0.1, 3, true),
+	makePlatformLine {A =Pos{3,25}, B=Pos{3,32}},
 
 
 	items.parallaxbg.create { tag="bg_main", img="gfx/bg1.png", width=512, height=224, factor = 0.5},
@@ -76,9 +95,11 @@ local sceneItems = {
 	tilesets.pipe_green_small(Pos{132, 2}, 0.1, 4, true),
 	items.brick.create { pos = Pos{120, 5}, sprite="brick" },
 	items.brick.create { pos = Pos{121, 5}, sprite="brick" },
-	items.warp.create { pos = Pos{121, 4}, width=8, height= 1, ctag = warpTag, func = curry(pipeDown, {area = "cave"}) }
+	items.warp.create { pos = Pos{121, 4}, width=8, height= 1, ctag = warpTag, func = curry(pipeDown, {area = "cave"}) },
 	--items.backgroundelement.create { pos=Pos{11,2}, width=9, height=6, z=-1, tiledata = tilesets.ramp1 },
-
+	items.midwaygate.create { pos = Pos{150, 2} },
+	items.infobrick.create { pos = Pos{162, 5} },
+	items.rex.create { pos = Pos{168,3}, dir =-1},
 
 }
 

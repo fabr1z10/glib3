@@ -26,6 +26,8 @@ function getBaseRoom(roomInfo)
 					{ tag= {1, banzaiTag}, onenter = mario_banzai},
 					{ tag= {1, rexTag}, onenter = mario_rex},
 					{ tag= {1, brickTag}, onenter = mario_brick},
+					{ tag= {1, checkpointTag}, onenter = mario_checkpoint},
+					{ tag= {1, infobrickTag}, onenter = mario_infobrick}
 					--{ tag= {1, cornerTag}, onenter = mario_corner},
 
 		
@@ -39,19 +41,26 @@ function getBaseRoom(roomInfo)
 			sprites.rex,
 			sprites.brick,
 			sprites.brickpiece,
-			sprites.basicbrickdark,
-			sprites.bonusbrick,
-			sprites.invbrick,
-			sprites.brickcoin,
-			sprites.mushroom,
-			sprites.mushroom1up,
-			sprites.flower,
-			sprites.star,
-			sprites.goomba,
-			sprites.koopa,
-			sprites.score100,
-			sprites.pickupcoin,
-			sprites.plant
+			-- sprites.basicbrickdark,
+			-- sprites.bonusbrick,
+			-- sprites.invbrick,
+			-- sprites.brickcoin,
+			-- sprites.mushroom,
+			-- sprites.mushroom1up,
+			-- sprites.flower,
+			-- sprites.star,
+			-- sprites.goomba,
+			-- sprites.koopa,
+			-- sprites.score100,
+			-- sprites.pickupcoin,
+			-- sprites.plant,
+			sprites.midway_gate,
+			sprites.midway_gate_top,
+			sprites.midway_gate_back,
+			sprites.midway_gate_back_top,
+			sprites.midway_gate_back_flag,
+			sprites.midway_flag,
+			sprites.infobrick
 		},
 		scene = {
 			[1] = {

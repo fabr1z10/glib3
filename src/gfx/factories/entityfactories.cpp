@@ -21,7 +21,10 @@ std::unique_ptr<Entity> EntityFactory::Create(luabridge::LuaRef& ref) {
     } else {
         entity->SetPosition(pos);
     }
-
+    if (item.HasKey("scale")) {
+        float scale = item.Get<float>("scale");
+        entity->SetScale(scale);
+    }
     auto factory = Engine::get().GetSceneFactory();
 
     // setup camera

@@ -244,3 +244,27 @@ void Entity::SetFlipX(bool value) {
         return;
     FlipX();
 }
+
+void Entity::SetScale(float s) {
+    glm::vec3 i = glm::normalize(glm::vec3(m_localTransform[0]));
+    glm::vec3 j = glm::normalize(glm::vec3(m_localTransform[1]));
+    glm::vec3 k = glm::normalize(glm::vec3(m_localTransform[2]));
+    i *= s;
+    j *= s;
+    k *= s;
+    m_localTransform[0][0] = i.x;
+    m_localTransform[0][1] = i.y;
+    m_localTransform[0][2] = i.z;
+    m_localTransform[1][0] = j.x;
+    m_localTransform[1][1] = j.y;
+    m_localTransform[1][2] = j.z;
+    m_localTransform[2][0] = k.x;
+    m_localTransform[2][1] = k.y;
+    m_localTransform[2][2] = k.z;
+    UpdateWorldTransform();
+
+
+}
+float Entity::GetScale() const {
+    return glm::length(glm::vec3(m_localTransform[0]));
+}

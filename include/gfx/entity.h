@@ -106,6 +106,8 @@ public:
     // set flip horizontal (true = facing left)
     void SetFlipX(bool);
     bool GetFlipX() const;
+    float GetScale() const;
+    void SetScale(float);
 
     bool AreControlsEnabled() const;
     void SetControlsEnabled(bool);

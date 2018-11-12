@@ -211,4 +211,117 @@ sprites = {
 			}
 		}
 	},
+	midway_gate = {
+		id = "midway_gate",
+		sheet = "gfx/sprites.png",
+		type = "sprite",
+		ppu = 1,
+		animations = {
+			{
+				name="idle",
+				frames = {
+					{ duration = dt, quads = { { x = 272, y = 0, width = 16, height = 16, anchor = {0, 0}}}},	
+					{ duration = dt, quads = { { x = 288, y = 0, width = 16, height = 16, anchor = {0, 0}}}},	
+					{ duration = dt, quads = { { x = 304, y = 0, width = 16, height = 16, anchor = {0, 0}}}},	
+					{ duration = dt, quads = { { x = 320, y = 0, width = 16, height = 16, anchor = {0, 0}}}},	
+				}
+			}
+		}		
+	},
+	midway_gate_top = {
+		id = "midway_gate_top",
+		sheet = "gfx/sprites.png",
+		type = "sprite",
+		ppu = 1,
+		animations = {
+			{
+				name="idle",
+				frames = {
+					{ duration = dt, quads = { { x = 272, y = 16, width = 16, height = 16, anchor = {0, 0}}}},	
+					{ duration = dt, quads = { { x = 288, y = 16, width = 16, height = 16, anchor = {0, 0}}}},	
+					{ duration = dt, quads = { { x = 304, y = 16, width = 16, height = 16, anchor = {0, 0}}}},	
+					{ duration = dt, quads = { { x = 320, y = 16, width = 16, height = 16, anchor = {0, 0}}}},	
+				}
+			}
+		}		
+	},
+	midway_gate_back = {
+		id = "midway_gate_back",
+		sheet = "gfx/sprites.png",
+		type = "sprite",
+		ppu = 1,
+		animations = {
+			{
+				name="idle",
+				frames = {
+					{ duration = dt, quads = { { x = 272, y = 32, width = 16, height = 16, anchor = {0, 0}}}},	
+					{ duration = dt, quads = { { x = 288, y = 32, width = 16, height = 16, anchor = {0, 0}}}},	
+					{ duration = dt, quads = { { x = 304, y = 32, width = 16, height = 16, anchor = {0, 0}}}},	
+					{ duration = dt, quads = { { x = 320, y = 32, width = 16, height = 16, anchor = {0, 0}}}},	
+				}
+			}
+		}		
+	},
+	midway_gate_back_top = {
+		id = "midway_gate_back_top",
+		sheet = "gfx/sprites.png",
+		type = "sprite",
+		ppu = 1,
+		animations = {
+			{
+				name="idle",
+				frames = {
+					{ duration = dt, quads = { { x = 272, y = 64, width = 16, height = 16, anchor = {0, 0}}}},	
+					{ duration = dt, quads = { { x = 288, y = 64, width = 16, height = 16, anchor = {0, 0}}}},	
+					{ duration = dt, quads = { { x = 304, y = 64, width = 16, height = 16, anchor = {0, 0}}}},	
+					{ duration = dt, quads = { { x = 320, y = 64, width = 16, height = 16, anchor = {0, 0}}}},	
+				}
+			}
+		}		
+	},
+	midway_gate_back_flag = {
+		id = "midway_gate_back_flag",
+		sheet = "gfx/sprites.png",
+		type = "sprite",
+		ppu = 1,
+		animations = {
+			{
+				name="idle",
+				frames = {
+					{ duration = dt, quads = { { x = 272, y = 48, width = 16, height = 16, anchor = {0, 0}}}},	
+					{ duration = dt, quads = { { x = 288, y = 48, width = 16, height = 16, anchor = {0, 0}}}},	
+					{ duration = dt, quads = { { x = 304, y = 48, width = 16, height = 16, anchor = {0, 0}}}},	
+					{ duration = dt, quads = { { x = 320, y = 48, width = 16, height = 16, anchor = {0, 0}}}},	
+				}
+			}
+		}		
+	},
+	midway_flag = {
+		id = "midway_flag",
+		sheet = "gfx/sprites.png",
+		type = "sprite",
+		ppu = 1,
+		animations = {
+			{
+				name="idle",
+				frames = {
+					{ duration = dt, quads = { { x = 240, y = 32, width = 16, height = 16, anchor = {0, 0}}}},	
+				}
+			}
+		}		
+	},
+	infobrick = {
+		id = "infobrick",
+		sheet = "gfx/sprites.png",
+		type = "sprite",
+		ppu = 1,
+		animations = {
+			{
+				name="idle",
+				frames = {
+					{ duration = dt, quads = { { x = 176, y = 112, width = 16, height = 16, anchor = {0, 0}}}},	
+				}
+			}
+		}		
+	},  
 }

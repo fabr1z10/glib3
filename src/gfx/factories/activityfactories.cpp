@@ -18,6 +18,7 @@
 #include <gfx/activities/enablekey.h>
 #include <gfx/activities/virtualkey.h>
 #include <gfx/activities/flip.h>
+#include <gfx/activities/scale.h>
 
 std::unique_ptr<Activity> NoOpActFactory::Create(luabridge::LuaRef &ref) {
     return std::unique_ptr<NoOp>(new NoOp);
@@ -200,4 +201,12 @@ std::unique_ptr<Activity> FlipActFactory::Create(luabridge::LuaRef &ref) {
     std::string actor = table.Get<std::string>("actor");
     int mode = table.Get<bool>("mode", 0);
     return std::unique_ptr<Flip>(new Flip(actor, mode));
+}
+
+std::unique_ptr<Activity> ScaleActFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    std::string actor = table.Get<std::string>("actor");
+    float duration = table.Get<float>("duration");
+    float scale = table.Get<float>("scale");
+    return std::unique_ptr<ScaleTo>(new ScaleTo(actor, duration, scale));
 }

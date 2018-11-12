@@ -81,6 +81,7 @@ FACTORY(BlinkActFactory, Activity)
 FACTORY(CamBoundsActFactory, Activity)
 FACTORY(EnableKeyActFactory, Activity)
 FACTORY(VirtualKeyActFactory, Activity)
+FACTORY(ScaleActFactory, Activity)
 
 // Asset
 FACTORY(SpriteFactory, IMesh)
