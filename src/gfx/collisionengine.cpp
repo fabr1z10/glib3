@@ -286,7 +286,9 @@ RayCastHit2D CollisionEngine::Raycast (glm::vec3 rayOrigin, glm::vec2 rayDir, fl
         float tm = std::min(t1, t2);
 
         if (l + tm < length) {
-            P1 = P + tm * rayDir;
+            // need to add a tiny extra bit in case the colliding object is a line that lies exactly at the border
+            // of two neighboring cell!
+            P1 = P + (tm+0.01f) * rayDir;
         } else {
             P1 = P + length * rayDir;
             endReached = true;

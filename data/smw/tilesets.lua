@@ -131,6 +131,51 @@ tilesets = {
 			table.insert(item.components, { type ="collider", shape={type="rect", width = 16, height=height*16}, tag=10, flag = collisionFlags.platform, mask = 0 })
 		end
 		return item
+	end,
+	platform1 = function (pos, z, width, height) 
+		local z1 = z or 0	
+		data = {}
+		for i = 1,height-1 do
+			table.insert(data,0)
+			table.insert(data,6)
+			for j = 1, width-2 do
+				table.insert(data,0)
+				table.insert(data,1)
+			end
+			table.insert(data, 1)
+			table.insert(data, 6)
+		end
+		table.insert(data,0)
+		table.insert(data,5)
+		for j = 1,width-2 do
+			table.insert(data, 0)
+			table.insert(data, 0)
+		end
+		table.insert(data,1)
+		table.insert(data,5)
+		local item = items.backgroundelement.create { pos=pos, width=width, height=height, z=z1, tiledata = data}
+		table.insert(item.components, { 
+			type ="collider", 
+			shape={type="line", A={0, height*16}, B={width*16, height*16}}, 
+			tag=10, flag = 32, mask = 0 
+		})
+		return item
+	end,
+	platform2 = function (pos, z) 
+		local z1 = z or 0
+		data = {
+			0, 6, 0, 1, 0, 1, 0, 1, 0, 1, 0,1,0,1,0,1,0,1,0,1,0,1,0,1,1,6,
+			0, 6, 0, 1, 0, 1, 0, 1, 0, 1, 0,1,0,1,0,1,0,1,0,1,1,4,0,0,1,5,
+			0, 6, 0, 1, 0, 1, 0, 1, 0, 1, 0,1,0,1,0,1,0,1,1,4,2,5,-1,-1,
+			0, 6, 0, 1, 0, 1, 0, 1, 0, 1, 0,1,0,1,0,1,1,4,2,5,-1,-1,-1,
+			0, 6, 0, 1, 0, 1, 0, 1, 0, 1, 0,1,0,1,1,4,2,5,-1,-1,-1,-1,
+			0, 6, 0, 1, 0, 1, 0, 1, 0, 1, 0,1,1,4,2,5,-1,-1,-1,-1,-1,
+			0, 6, 0, 1, 0, 1, 0, 1, 0,1,1,4,2,5,-1,-1,-1,-1,-1,-1,					
+			0,5, 0,0,0,0,0,0,0,0,2,5,-1,-1,-1,-1,-1,-1,-1
+		}
+		local item = items.backgroundelement.create { pos=pos, width=13, height=8, z=z1, tiledata = data}
+		return item
+
 	end
 
 }

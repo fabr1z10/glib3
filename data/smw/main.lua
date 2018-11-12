@@ -1,5 +1,5 @@
 -- Super Mario World
-
+require ("strings")
 require ("sprites")
 require ("funcs")
 require ("script")
@@ -18,5 +18,6 @@ fonts = {
 
 variables = {
     _room = "world1_1",
+	advice = false
 }
 

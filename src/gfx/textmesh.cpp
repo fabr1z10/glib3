@@ -2,6 +2,7 @@
 #include <gfx/textmesh.h>
 #include <sstream>
 #include <gfx/shader.h>
+#include <unordered_set>
 
 using namespace std;
 
@@ -100,12 +101,31 @@ void TextMesh::splitIntoLines(Font* font, const string& msg, vector<string>& lin
     float spaceLength = font->getGlyph(' ').advanceToNext * scalingFactor;
     vector <string> words;
     vector <float> wlenghts;
-    istringstream iss(msg);
-    do {
-        std::string word;
-        iss >> word;
-        words.push_back(word);
-    } while (iss);
+
+    std::string current = "";
+    std::unordered_set<int> newLines;
+    for (auto& c : msg) {
+        if (c == ' ' || c == '\n') {
+            if (!current.empty()) {
+                words.push_back(current);
+            }
+            current = "";
+            if (c == '\n') {
+                newLines.insert(words.size()-1);
+            }
+        } else {
+            current.push_back(c);
+        }
+    }
+    if (!current.empty()) {
+        words.push_back(current);
+    }
+//    istringstream iss(msg);
+//    do {
+//        std::string word;
+//        iss >> word;
+//        words.push_back(word);
+//    } while (iss);
 
     for (vector<string>::iterator iter = words.begin(); iter != words.end(); iter++) {
         float wordLength = 0;
@@ -123,6 +143,7 @@ void TextMesh::splitIntoLines(Font* font, const string& msg, vector<string>& lin
     stringstream currentLine;
     for (size_t i = 0; i < nWords; i++) {
         float newLength = currentLength + wlenghts[i] + (wordsInLine > 0 ? spaceLength : 0);
+        bool added = false;
         if (newLength <= mll) {
             if (wordsInLine == 0)
                 currentLine << words[i];
@@ -130,14 +151,19 @@ void TextMesh::splitIntoLines(Font* font, const string& msg, vector<string>& lin
                 currentLine << " " << words[i];
             currentLength = newLength;
             wordsInLine++;
+            added = true;
         }
-        else {
+
+        if (newLength > mll || (newLines.count(i) > 0)) {
             lines.push_back(currentLine.str());
             currentLine.str("");
             currentLine.clear();
-            currentLine << words[i];
-            currentLength = wlenghts[i];
-            wordsInLine = 1;
+            wordsInLine = 0;
+            if (!added) {
+                currentLine << words[i];
+                currentLength = wlenghts[i];
+                wordsInLine = 1;
+            }
         }
 
     }

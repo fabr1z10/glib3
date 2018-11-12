@@ -52,6 +52,62 @@ function CreateItem (args)
 	end
 end
 
+function RemoveAdvice() 
+	if (variables.advice == true) then
+		local ros = monkey.getEntity("restofscene")
+		local player = monkey.getEntity("player")
+		print ("CIAO")
+		local a1 = monkey.getEntity("_advice")
+		print ("CIAO2")
+		local a2 = monkey.getEntity("_advice_bg")
+		print ("CIAO3")
+		a1:remove()
+		a2:remove()
+		ros:enableupdate(true)
+		player:enableupdate(true)
+		variables.advice = false
+	end
+end
+
+
+function ShowAdvice (arg) 
+	local text = arg.text
+
+	local ros = monkey.getEntity("restofscene")
+	local mario = monkey.getEntity("player")
+	ros:enableupdate(false)
+	mario:enableupdate(false)
+	
+	local diag = monkey.getEntity("diag")
+	monkey.addEntity ( { 
+		tag ="_advice", 
+		active=false, 
+		pos = {128, 176, 1}, 
+		components = { 
+			{ type="text", align="top", maxwidth = 160, id = text, font="diag"} }
+		}, diag)
+	local poa = monkey.getEntity("_advice")
+	local ti = poa:gettextinfo()
+	local center = { 128, 176-ti.height*0.5}
+	ti.width = ti.width * 1.1
+	ti.height = ti.height * 1.1
+			
+	monkey.addEntity ( { 
+		tag = "_advice_bg",
+		pos = {center[1], center[2], 0.9}, 
+		scale = 0.5,
+		components = { 
+			{type="gfx", shape={type="rect", width = ti.width, height = ti.height, offset = {-ti.width*0.5, -ti.height*0.5}}, color = {0,0,0,255}, draw ="solid"} }
+		}, diag)
+	local s1 = script:new()
+	s1.actions = {
+		[1] = { type="scale", duration = 0.5, scale = 1.0, actor = "_advice_bg" },
+		[2] = { type="callfunc", after={1}, func = function() poa:setactive(true) end }
+	}
+	monkey.play(s1)
+	variables.advice = true
+end
+
 function Pos(a) 
 	if (#a == 2) then
 		return {a[1]*tilesize, a[2]*tilesize}
