@@ -174,9 +174,57 @@ tilesets = {
 			0,5, 0,0,0,0,0,0,0,0,2,5,-1,-1,-1,-1,-1,-1,-1
 		}
 		local item = items.backgroundelement.create { pos=pos, width=13, height=8, z=z1, tiledata = data}
-		return item
+		item.children = {
+			{
+				components = {
+					{ type ="collider", shape={type="line", A={0,8*16}, B={5*16,8*16}}, tag=10, flag = 32, mask = 0 }
+				}
+			},
+			{
+				components = {
+					{ type ="collider", shape={type="line", A={5*16,8*16}, B={11*16,2*16}}, tag=10, flag = 32, mask = 0 }
+				}
+			},
+			{
+				components = {
+					{ type ="collider", shape={type="line", A={11*16,2*16}, B={13*16,2*16}}, tag=10, flag = 32, mask = 0 }
+				}
+			},
+	
 
-	end
+		}
+		return item
+	end,
+	connect_down = function(pos, height, turn) 
+		local turn = turn or 1
+		local data = {1, 4}
+		if (turn == 0) then
+			data = {1, 3}
+		end
+		for i =1, height-2 do
+			table.insert(data, 1)
+			table.insert(data, 3)
+		end
+		table.insert(data,1)
+		table.insert(data,2)
+		local item = items.backgroundelement.create { pos=pos, width=1, height=height, z=0, tiledata = data}
+		return item
+	end,
+	connect_up = function(pos, height, turn) 
+		local turn = turn or 1
+		local data = {0, 4}
+		if (turn == 0) then
+			data ={0,3}
+		end
+		for i =1, height-2 do
+			table.insert(data, 0)
+			table.insert(data, 3)
+		end
+		table.insert(data,0)
+		table.insert(data,2)
+		local item = items.backgroundelement.create { pos=pos, width=1, height=height, z=0, tiledata = data}
+		return item
+	end,
 
 }
 

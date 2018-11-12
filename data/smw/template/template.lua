@@ -102,18 +102,18 @@ function getBaseRoom(roomInfo)
 					viewport = {0,0,256,224}
 				},
 				children = {
-					-- {
-					-- 	tag = "_fps",
-					-- 	pos = {0, 256, 0},
-					-- 	components = {
-					-- 		{ 
-					-- 			type = "text", id = "Ciao", font ="diag"
-					-- 		},
-					-- 		{
-					-- 			type="fps"
-					-- 		}
-					-- 	}
-					-- }
+					{
+						tag = "_fps",
+						pos = {0, 256, 0},
+						components = {
+							{ 
+								type = "text", id = "Ciao", font ="diag"
+							},
+							{
+								type="fps"
+							}
+						}
+					}
 				}
 			}
 		},
