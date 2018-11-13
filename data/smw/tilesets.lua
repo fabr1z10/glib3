@@ -116,6 +116,26 @@ tilesets = {
 		end
 		return item
 	end,
+	pipe_green = function(pos, z, height, solid)
+		local z1 = z or 0
+		data = {}
+		for i = 1,height-1 do
+			table.insert(data, 16)
+			table.insert(data, 6)
+			table.insert(data, 17)
+			table.insert(data, 6)
+		end
+		table.insert(data, 16)
+		table.insert(data, 5)
+		table.insert(data, 17)
+		table.insert(data, 5)
+
+		local item = items.backgroundelement.create { pos=pos, width=2, height=height, z=z1, tiledata = data}
+		if (solid == true) then
+			table.insert(item.components, { type ="collider", shape={type="rect", width = 2*16, height=height*16}, tag=10, flag = collisionFlags.platform, mask = 0 })
+		end
+		return item
+	end,
 	pipe_green_small = function(pos, z, height, solid)
 		local z1 = z or 0
 		data = {15,6}

@@ -27,7 +27,9 @@ function getBaseRoom(roomInfo)
 					{ tag= {1, rexTag}, onenter = mario_rex},
 					{ tag= {1, brickTag}, onenter = mario_brick},
 					{ tag= {1, checkpointTag}, onenter = mario_checkpoint},
-					{ tag= {1, infobrickTag}, onenter = mario_infobrick}
+					{ tag= {1, infobrickTag}, onenter = mario_infobrick},
+					{ tag= {1, bonusBrickTag}, onenter = mario_bonusbrick},
+
 					--{ tag= {1, cornerTag}, onenter = mario_corner},
 
 		
@@ -41,6 +43,7 @@ function getBaseRoom(roomInfo)
 			sprites.rex,
 			sprites.brick,
 			sprites.brickpiece,
+			sprites.bonusbrick,
 			-- sprites.basicbrickdark,
 			-- sprites.bonusbrick,
 			-- sprites.invbrick,

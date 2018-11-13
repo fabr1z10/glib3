@@ -1,13 +1,13 @@
 #pragma once
 
-#include <gfx/compfactories.h>
+#include <gfx/factories.h>
 
-
-
-class WalkAreaComponentFactory : public ComponentFactory {
-    void operator()(luabridge::LuaRef&, Entity*) override;
-};
-
-class ScalingComponentFactory : public ComponentFactory {
-    void operator()(luabridge::LuaRef&, Entity*) override;
-};
+//
+//
+//class WalkAreaComponentFactory : public ComponentFactory {
+//    void operator()(luabridge::LuaRef&, Entity*) override;
+//};
+//
+//class ScalingComponentFactory : public ComponentFactory {
+//    void operator()(luabridge::LuaRef&, Entity*) override;
+//};

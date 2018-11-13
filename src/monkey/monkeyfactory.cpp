@@ -2,9 +2,9 @@
 #include <monkey/factories.h>
 
 
-MonkeyFactory::MonkeyFactory() : BasicSceneFactory() {
+MonkeyFactory::MonkeyFactory() : SceneFactory() {
 
-    AddFactory<WalkAreaComponentFactory>("walkarea");
-    AddFactory<ScalingComponentFactory>("scaling");
+    //AddFactory<WalkAreaComponentFactory>("walkarea");
+    //AddFactory<ScalingComponentFactory>("scaling");
 
 }

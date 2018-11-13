@@ -194,6 +194,17 @@ void EntityWrapper::SetEnableControls (bool value) {
     m_underlying->SetControlsEnabled(value);
 }
 
+void EntityWrapper::EnableCollisions(bool value) {
+    auto collider = m_underlying->GetComponent<Collider>();
+    if (collider != nullptr)
+        collider->SetActive(value);
+    auto& children = m_underlying->GetChildren();
+    for (auto& child : children) {
+        EntityWrapper e(child.get());
+        e.EnableCollisions(value);
+    }
+}
+
 //void EntityWrapper::EnableGroup(int id) {
 //    auto hs = Engine::get().GetRef<HotSpotManager>("_hotspotmanager");
 //    hs->EnableGroup(id);

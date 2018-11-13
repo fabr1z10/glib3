@@ -38,6 +38,7 @@ struct EntityWrapper {
     void EnableDepth(bool);
     void EnableUpdate(bool);
     void SetEnableControls (bool);
+    void EnableCollisions (bool);
     luabridge::LuaRef GetTextInfo();
     //static void EnableGroup(int);
     //static void DisableGroup(int);

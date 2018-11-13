@@ -33,6 +33,7 @@ cornerTag = 114
 brickTag = 115
 checkpointTag = 116
 infobrickTag = 117
+bonusBrickTag = 118
 movingPlatformTag = 90
 
 items = { }
@@ -165,6 +166,7 @@ require("items/banzaibill")
 require("items/rex")
 require("items/parallax")
 require("items/midwaygate")
+require("items/finalgate")
 require("items/infobrick")
 -- require("items/mushroom")
 -- require("items/mushroom1up")
@@ -173,6 +175,7 @@ require("items/infobrick")
 -- require("items/goomba")
 -- require("items/koopa")
 require("items/brick")
+require("items/bonusbrick")
 require("items/brickpiece")
 
 -- require("items/bonusbrick")

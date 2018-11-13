@@ -46,6 +46,7 @@ void LuaWrapper::Init() {
             .addFunction("enabledepth", &EntityWrapper::EnableDepth)
             .addFunction("setactive", &EntityWrapper::SetActive)
             .addFunction("enablecontrols", &EntityWrapper::SetEnableControls)
+            .addFunction("enablecollision", &EntityWrapper::EnableCollisions)
             .addFunction("clear", &EntityWrapper::Clear)
             .addFunction("setposition", &EntityWrapper::SetPosition)
             .addFunction("move", &EntityWrapper::Move)

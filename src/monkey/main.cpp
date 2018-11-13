@@ -13,15 +13,19 @@ int main(int argc, char* argv[])
         return 1;
     }
     try {
+
+
         std::string homeDir(argv[1]);
         Engine::get().GetAssetManager().SetDirectory(homeDir);
         Monkey& m = Monkey::get();
-        m.Init<MonkeyFactory, MonkeyActivityFactory>();
+        m.Init<MonkeyFactory>();
         m.Start();
 
     } catch (Error& err) {
         std::cout << err.what() << std::endl;
         return 1;
+    } catch (...) {
+
     }
     return 0;
 }

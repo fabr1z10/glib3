@@ -11,7 +11,7 @@ local initscripts = {}
 areas = {
 	main1 = {
 		range = {0, 0, roomInfo.worldWidth*16, roomInfo.worldHeight*16},
-		startPos = Pos{175, 4},
+		startPos = Pos{297, 4},
 		background = { "bg_main" }
 	},
 	cave = {
@@ -75,9 +75,13 @@ local sceneItems = {
 	makeTiledRect { pos = Pos{224,0}, tile ={0,1}, width = 3, height = 1 },
 	tilesets.connect_down(Pos{227,0}, 2, 0),
 	tilesets.connect_up(Pos{230,0}, 2, 0),
-	--makeTiledRect { pos = Pos{224,1}, tile ={0,0}, width = 3, height = 1 },
-	--makeTiledRect { pos = Pos{224,0}, tile ={0,1}, width = 3, height = 1 },
-
+	makeTiledRect { pos = Pos{231,1}, tile ={0,0}, width = 55, height = 1 },
+	makeTiledRect { pos = Pos{231,0}, tile ={0,1}, width = 89, height = 1 },
+	makeTiledRect { pos = Pos{287,4}, tile ={0,0}, width = 4, height = 1 },
+	tilesets.connect_down(Pos{291,1}, 4),
+	tilesets.connect_up(Pos{286,1}, 4),
+	makeTiledRect { pos = Pos{292,1}, tile ={0,0}, width = 28, height = 1 },
+	makeTiledRect { pos = Pos{287,1}, tile ={0,1}, width = 4, height = 3 },
 
 	makePlatformRect {pos = Pos{0,0}, size = Pos{59,2}},
 	makePlatformRect {pos = Pos{59,0}, size = Pos{14,6}},
@@ -130,7 +134,16 @@ local sceneItems = {
 	items.rex.create { pos = Pos{168,3}, dir =-1},
 	tilesets.platform1 (Pos{174, 2}, -0.2, 5, 6),
 	tilesets.platform1 (Pos{177, 2}, -0.1, 4, 3),
-	tilesets.platform2 (Pos{177,2}, -0.3)
+	tilesets.platform1 (Pos{269, 2}, -0.1, 9, 4),
+	tilesets.platform2 (Pos{177,2}, -0.3),
+	tilesets.pipe_green(Pos{284, 2}, 0.1, 4, true),
+	makeTiledRect { pos = Pos{291,5}, tile ={11,6}, width = 1, height = 1, solid=true},
+	items.brick.create { pos = Pos{239, 5}, sprite="brick" },
+	items.brick.create { pos = Pos{243, 4}, sprite="brick" },
+	items.brick.create { pos = Pos{247, 5}, sprite="brick" },
+	items.bonusbrick.create { pos = Pos{243, 8} },
+	items.finalgate.create { pos = Pos{301, 2}}
+
 }
 
 for k, v in ipairs(sceneItems) do

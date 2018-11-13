@@ -7,6 +7,7 @@ SceneFactory::SceneFactory() {
     //m_runnerFactory.Add<HotSpotManagerFactory>("hotspotmanager");
     m_runnerFactory.Add<SchedulerFactory>("scheduler");
     m_runnerFactory.Add<CollisionEngineFactory>("collision");
+    m_runnerFactory.Add<HotSpotManagerFactory>("hotspotmanager");
 
     m_meshFactory.Add<SpriteFactory>("sprite");
 
@@ -110,7 +111,7 @@ std::shared_ptr<Entity> SceneFactory::Create() {
     Monkey& m = Monkey::get();
     std::string room = m["variables"].Get<std::string>("_room");
     std::cout << "Loading room "<< room << std::endl;
-    LuaWrapper::Load(Engine::get().GetAssetManager().GetDirectory() + "rooms/" + room + "/room.lua");
+    LuaWrapper::Load(Engine::get().GetAssetManager().GetDirectory() + "rooms/" + room + ".lua");
 
     // Create the local assets
     luabridge::LuaRef roomRef = luabridge::getGlobal(LuaWrapper::L, "room");

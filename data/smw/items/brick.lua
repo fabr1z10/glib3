@@ -12,7 +12,6 @@ items.brick.create = function(arg)
 		tag = b,
 		pos = {pos[1], pos[2], 0},
 		components = {
-			
 			{ type="gfx", model=sprite, anim="idle", width = 16, height = 16},	
 			{ type="collider", shape=s, tag=10, flag = collisionFlags.platform, mask = 0},
 			{ type="info", y = y },
@@ -24,7 +23,15 @@ items.brick.create = function(arg)
 					{ type="collider", shape = s1, tag = brickTag, flag = collisionFlags.enemy, mask = collisionFlags.player },
 					{ type="gfx", shape = s1, color = {255,0,0,255}}
 				}
-			}
+			},
+			{
+				pos = { 1, -0.25, 0},
+				components = {
+					{ type="collider", shape = s1, tag = brickTag, flag = collisionFlags.enemy, mask = collisionFlags.player },
+					{ type="gfx", shape = s1, color = {255,0,0,255}}
+				}
+			},
+
 		}
 
 	}
@@ -32,7 +39,7 @@ end
 
 function mario_brick(e1, e2)
 	
-	if (e1.state =="jump" and e1.vy < 0) then
+	if (e1.state =="spinjump" and e1.vy < 0) then
 		print ("CIAOOO")
 		e1.vy = -e1.vy
 		local parent = e2:parent()
@@ -45,6 +52,19 @@ function mario_brick(e1, e2)
 		CreateItem { id ="brickpiece", args= {pos ={x, y+16}, z=1, velocity = {-40, 40}} }
 		CreateItem { id ="brickpiece", args= {pos ={x, y}, z=1, velocity = {-30, 20}} }
 		--end
+	elseif (e1.state == "jump" and e1.vy > 0) then
+		--e2:enablecollision(false)
+		local parent = e2:parent()
+		e1.vy = -e1.vy
+		parent:enablecollision(false)
+		local s = script:new()
+		s.actions = {
+			[1] = { type = "animate", actor = parent.tag, anim ="rotate"},
+			[2] = { type="delay", sec = 2, after={1}},
+			[3] = { type = "animate", actor = parent.tag, anim ="idle", after={2}},
+			[4] = { type="callfunc", func = function() parent:enablecollision(true) end, after={3}}
+		}
+		monkey.play(s)
 	end
 	--print ("Brick is at " .. tostring(e2.x) .. ", " .. tostring(e2.y))
 	-- local brick = e2:parent()

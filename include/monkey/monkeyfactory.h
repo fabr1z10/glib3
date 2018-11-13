@@ -1,8 +1,8 @@
 #pragma once
 
-#include <gfx/basicfactory.h>
+#include <gfx/scenefactory.h>
 
-class MonkeyFactory : public BasicSceneFactory {
+class MonkeyFactory : public SceneFactory {
 public:
     MonkeyFactory();
 };

@@ -189,7 +189,41 @@ sprites = {
 				frames = {
 					{ duration = dt, quads = { { x = 192, y = 96, width = 16, height = 16, anchor = {0, 0}}}}	
 				}
-			}
+			},
+			{
+				name="rotate",
+				frames = {
+					{ duration = dt, quads = { { x = 192, y = 96, width = 16, height = 16, anchor = {0, 0}}}},
+					{ duration = dt, quads = { { x = 176, y = 128, width = 16, height = 16, anchor = {0, 0}}}},	
+					{ duration = dt, quads = { { x = 192, y = 128, width = 16, height = 16, anchor = {0, 0}}}},
+					{ duration = dt, quads = { { x = 208, y = 128, width = 16, height = 16, anchor = {0, 0}}}},
+				}
+			},
+
+		}
+	},
+	bonusbrick = {
+		id = "bonusbrick",
+		sheet = "gfx/sprites.png",
+		type = "sprite",
+		ppu = 1,
+		animations = {
+			{
+				name="idle",
+				frames = {
+					{ duration = dt, quads = { { x = 208, y = 96, width = 16, height = 16, anchor = {0, 0}}}},
+					{ duration = dt, quads = { { x = 224, y = 128, width = 16, height = 16, anchor = {0, 0}}}},
+					{ duration = dt, quads = { { x = 240, y = 128, width = 16, height = 16, anchor = {0, 0}}}},
+					{ duration = dt, quads = { { x = 256, y = 128, width = 16, height = 16, anchor = {0, 0}}}},
+				}
+			},
+			{
+				name="taken",
+				frames = {
+					{ duration = dt, quads = { { x = 272, y = 128, width = 16, height = 16, anchor = {0, 0}}}},
+				}
+			},
+
 		}
 	},
 	brickpiece = {
