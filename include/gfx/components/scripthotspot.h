@@ -28,6 +28,7 @@ public:
         r_move= std::unique_ptr<luabridge::LuaRef>(new luabridge::LuaRef(ref));
     }
     using ParentClass = HotSpot;
+    std::type_index GetType() override;
 
 private:
     //bool m_inShape;

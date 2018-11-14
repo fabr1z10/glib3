@@ -2,6 +2,7 @@
 
 #include <gfx/factories.h>
 
+
 //
 //
 //class WalkAreaComponentFactory : public ComponentFactory {

@@ -32,6 +32,7 @@ public:
     int GetPriority() const;
     using ParentClass = HotSpot;
 protected:
+    void AddDebugMesh();
     int m_priority;
     std::shared_ptr<Shape> m_shape;
     bool m_focus;

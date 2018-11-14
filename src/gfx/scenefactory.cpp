@@ -30,6 +30,7 @@ SceneFactory::SceneFactory() {
     m_componentFactory.Add<ParallaxComponentFactory>("parallax");
     m_componentFactory.Add<TextComponentFactory>("text");
     m_componentFactory.Add<FPSComponentFactory>("fps");
+    m_componentFactory.Add<HotSpotComponentFactory>("hotspot");
 
     m_shapeFactory.Add<RectFactory>("rect");
     m_shapeFactory.Add<LineFactory>("line");

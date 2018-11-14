@@ -228,9 +228,14 @@ std::unique_ptr<Component> HotSpotComponentFactory::Create(luabridge::LuaRef& re
     LuaTable table(ref);
     int priority = table.Get<int>("priority");
     auto factory = Engine::get().GetSceneFactory();
-    luabridge::LuaRef rshape = table.Get<luabridge::LuaRef>("shape");
-    auto shape = factory->GetShared<Shape>(rshape);
-    auto hotspot = std::unique_ptr<ScriptHotSpot>(new ScriptHotSpot(shape, priority));
+    std::unique_ptr<ScriptHotSpot> hotspot;
+    if (table.HasKey("shape")) {
+        luabridge::LuaRef rshape = table.Get<luabridge::LuaRef>("shape");
+        auto shape = factory->GetShared<Shape>(rshape);
+        hotspot = std::unique_ptr<ScriptHotSpot>(new ScriptHotSpot(shape, priority));
+    } else {
+        hotspot = std::unique_ptr<ScriptHotSpot>(new ScriptHotSpot(priority));
+    }
     if (table.HasKey("onenter")) {
         luabridge::LuaRef r = table.Get<luabridge::LuaRef>("onenter");
         hotspot->SetOnEnter(r);

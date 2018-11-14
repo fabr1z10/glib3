@@ -203,16 +203,39 @@ void HotSpotManager::MouseButtonCallback(GLFWwindow* window, int button, int act
 
 void HotSpot::SetParent(Entity * entity) {
     Component::SetParent(entity);
+    if (m_shape != nullptr)
+        AddDebugMesh();
+}
+
+void HotSpot::AddDebugMesh() {
     auto ce = std::make_shared<Entity>();
     auto cer = std::make_shared<Renderer>();
+
     auto debugMesh = MeshFactory::CreateMesh(*(m_shape.get()), 5.0f);
     cer->SetMesh(debugMesh);
     ce->AddComponent(cer);
     ce->SetTag("hotspotmesh");
     m_entity->AddChild(ce);
+
+
 }
 
 void HotSpot::Start() {
+
+    if (m_shape == nullptr) {
+        // try to get shape from gfx component
+        auto renderer = m_entity->GetComponent<Renderer>();
+        auto& rt = renderer->GetRenderingTransform();
+        auto bounds = m_entity->GetComponent<Renderer>()->GetBounds();
+        Bounds b;
+        b.min = glm::vec3(bounds.min);
+        b.max = glm::vec3(bounds.max);
+        b.Transform(rt);
+        auto extents = b.GetSize();
+        SetShape(std::make_shared<Rect>(extents.x, extents.y, b.min));
+        AddDebugMesh();
+    }
+
 
     //auto hs = (Engine::get().GetRef<HotSpotManager>("_hotspotmanager"));
     //hs->Register(this);

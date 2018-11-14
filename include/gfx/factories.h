@@ -23,6 +23,9 @@ class IMesh;
 // Entities
 FACTORY(EntityFactory, Entity)
 FACTORY(OutlineTextFactory, Entity)
+FACTORY(ButtonFactory, Entity)
+
+
 
 // Components
 FACTORY(TextComponentFactory, Component)

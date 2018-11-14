@@ -23,3 +23,8 @@ void ScriptHotSpot::onEnter() {
     if (r_enter != nullptr)
         r_enter->operator()(EntityWrapper(m_entity));
 }
+
+
+std::type_index ScriptHotSpot::GetType() {
+    return std::type_index(typeid(HotSpot));
+}
