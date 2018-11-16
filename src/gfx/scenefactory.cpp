@@ -31,6 +31,7 @@ SceneFactory::SceneFactory() {
     m_componentFactory.Add<TextComponentFactory>("text");
     m_componentFactory.Add<FPSComponentFactory>("fps");
     m_componentFactory.Add<HotSpotComponentFactory>("hotspot");
+    m_componentFactory.Add<TextViewComponentFactory>("textview");
 
     m_shapeFactory.Add<RectFactory>("rect");
     m_shapeFactory.Add<LineFactory>("line");

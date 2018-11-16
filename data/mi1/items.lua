@@ -1,0 +1,3 @@
+items = {}
+
+require ("items/button")

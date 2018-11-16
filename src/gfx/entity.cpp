@@ -28,6 +28,7 @@ void Entity::AddChild(std::shared_ptr<Entity> child) {
     if (Engine::get().isRunning()) {
         child->Start();
     }
+    onAdd.Fire(child.get());
 }
 
 

@@ -6,6 +6,8 @@
 #include <vector>
 #include <gfx/font.h>
 #include <gfx/components/hotspot.h>
+#include <gfx/lua/luawrapper.h>
+
 
 struct TextItem {
     TextItem () : lines{0}, hotspot{nullptr} {}
@@ -17,12 +19,24 @@ struct TextItem {
 
 class TextView : public Component {
 public:
-    TextView (float width, float height, float size, const std::string& fontName, glm::vec4 color, glm::vec4 viewport, float deltax) : Component(),
-    m_lineCount{0}, m_fontName{fontName}, m_viewport{viewport}, m_orthoWidth{width}, m_orthoHeight{height}, m_fontSize{size}, m_topLine{0}, m_scrollBarOn{false},
-                                                                                                    m_scrollBarWidth{0.0f}, m_textColor{color}, m_deltax{deltax}
+    TextView (
+            float width,
+            float height,
+            float fontSize,
+            int lines,
+            //glm::vec4 viewport,
+            float deltax,
+            luabridge::LuaRef factory) : Component(),
+    m_nLines{0}, m_width{width}, m_height{height}, m_topLine{0}, m_deltax{deltax}, m_factory(factory), m_maxLines(lines), m_fontSize(fontSize)
     {
-        m_maxLines = m_orthoHeight / m_fontSize;
+        //m_maxLines = m_orthoHeight / m_fontSize;
+        m_nextPos = glm::vec2(0.0f);
+        m_scroll =false;
     }
+
+    // add a new component. It doesn't matter what is it, as long as it has a renderer component.
+    void AddItem (const std::string&);
+    void AddEntity (const std::string&);
     virtual ~TextView();
     void ResetText();
     void SetParent(Entity* parent) override;
@@ -31,7 +45,7 @@ public:
     //void UpdateCamPosition2(int);
     void Start() override ;
     void Update(double) override {}
-    void AppendText(const std::string& msg, std::shared_ptr<HotSpot> hotspot = nullptr);
+    //void AppendText(const std::string& msg, std::shared_ptr<HotSpot> hotspot = nullptr);
     void ClearText();
     void Scroll(int nlines);
     bool ScrollDownVisible() const;
@@ -39,37 +53,31 @@ public:
     using ParentClass = TextView;
     bool SetActive(bool) override;
 private:
-    void AppendLine(TextItem&);
-    void AddArrows();
-    std::string m_fontName;
-    Font* m_font;
-    std::vector<TextItem> m_textItems;
+    void reformat();
+    luabridge::LuaRef m_factory;
+    // number of lines in text view
+    std::vector<std::string> m_lines;
+    int m_nLines;
     int m_maxLines;
-    int m_lineCount;
+    float m_width;
+    float m_height;
     float m_deltax;
+    bool m_scroll;
     float m_fontSize;
-    float m_orthoWidth;
-    float m_orthoHeight;
-    float m_scrollBarWidth;
-    float m_arrowHeight;
-    glm::vec4 m_viewport;
-    glm::vec4 m_textColor;
-    int m_camId;
-    Entity* m_arrowUp;
-    Entity* m_arrowDown;
-    Entity* m_itemContainer;
+    glm::vec2 m_nextPos;
+    glm::vec2 m_loc;
+    // glm::vec4 m_viewport;
     int m_topLine;
-    bool m_scrollBarOn;
 };
 
-class TextViewButton : public HotSpot {
-public:
-    TextViewButton (int n, TextView* textview, std::shared_ptr<Shape>, int);
-    void onEnter() override;
-    void onLeave() override;
-    void onClick(glm::vec2) override ;
-    void onMove(glm::vec2) override{}
-private:
-    TextView* m_textView;
-    int m_n;
-};
+//class TextViewButton : public HotSpot {
+//public:
+//    TextViewButton (int n, TextView* textview, std::shared_ptr<Shape>, int);
+//    void onEnter() override;
+//    void onLeave() override;
+//    void onClick(glm::vec2) override ;
+//    void onMove(glm::vec2) override{}
+//private:
+//    TextView* m_textView;
+//    int m_n;
+//};

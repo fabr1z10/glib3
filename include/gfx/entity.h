@@ -67,6 +67,7 @@ public:
     int GetLayer() const;
     //Event<GameObject*> onAdd;						// fires when a new node is added to this
     Event<Entity*> onMove;						// fires when this node moves
+    Event<Entity*> onAdd;
     //Event<GameObject*> onRemove;					// fires when this node goes out of scope
     // gets the world position
     glm::vec3 GetPosition() const;

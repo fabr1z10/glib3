@@ -237,7 +237,7 @@ bool EntityWrapper::GetFlipX() const {
 void EntityWrapper::AppendText(const std::string& text) {
     TextView* r = m_underlying->GetComponent<TextView>();
     //auto hs = std::make_shared<ScriptHotSpot>(1);
-    r->AppendText(text);
+    r->AddItem(text);
 }
 
 void EntityWrapper::AppendButton(luabridge::LuaRef ref) {

@@ -361,15 +361,17 @@ std::unique_ptr<Component> LuaKeyboardComponentFactory::Create(luabridge::LuaRef
 
 std::unique_ptr<Component> TextViewComponentFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
-    glm::vec4 viewport = table.Get<glm::vec4>("viewport");
+    //glm::vec4 viewport = table.Get<glm::vec4>("viewport");
     float w = table.Get<float>("width");
     float h = table.Get<float>("height");
     float size = table.Get<float>("size");
+    int lines = table.Get<int>("lines");
     float deltax = table.Get<float>("deltax", 0.0f);
-    glm::vec4 color = table.Get<glm::vec4>("color", glm::vec4(255.0f));
-    color /= 255.0f;
-    std::string font = table.Get<std::string>("font");
-    auto r = std::unique_ptr<TextView>(new TextView(w, h, size, font, color, viewport, deltax));
+    luabridge::LuaRef factory = table.Get<luabridge::LuaRef>("factory");
+    //glm::vec4 color = table.Get<glm::vec4>("color", glm::vec4(255.0f));
+    //color /= 255.0f;
+    //std::string font = table.Get<std::string>("font");
+    auto r = std::unique_ptr<TextView>(new TextView(w, h, size, lines, deltax, factory));
     return r;
 
 }
