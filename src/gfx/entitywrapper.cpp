@@ -4,7 +4,7 @@
 #include <gfx/components/statemachine.h>
 #include <glm/gtx/transform.hpp>
 #include <gfx/engine.h>
-#include <gfx/components/textview.h>
+#include <gfx/entities/textview.h>
 #include <gfx/activities/animate.h>
 #include <gfx/factories.h>
 #include <gfx/components/info.h>
@@ -89,7 +89,7 @@ void EntityWrapper::Clear() {
 }
 
 void EntityWrapper::ClearText() {
-    TextView* r = m_underlying->GetComponent<TextView>();
+    TextView* r = dynamic_cast<TextView*>(m_underlying);
     r->ClearText();
 }
 
@@ -235,8 +235,7 @@ bool EntityWrapper::GetFlipX() const {
 }
 
 void EntityWrapper::AppendText(const std::string& text) {
-    TextView* r = m_underlying->GetComponent<TextView>();
-    //auto hs = std::make_shared<ScriptHotSpot>(1);
+    TextView* r = dynamic_cast<TextView*>(m_underlying);
     r->AddItem(text);
 }
 

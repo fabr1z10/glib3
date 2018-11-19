@@ -24,7 +24,7 @@ class IMesh;
 FACTORY(EntityFactory, Entity)
 FACTORY(OutlineTextFactory, Entity)
 FACTORY(ButtonFactory, Entity)
-
+FACTORY(TextViewFactory, Entity)
 
 
 // Components
@@ -41,7 +41,6 @@ FACTORY(Dynamics2DComponentFactory, Component)
 FACTORY(InfoComponentFactory, Component)
 FACTORY(KeyInputComponentFactory, Component)
 FACTORY(LuaKeyboardComponentFactory, Component)
-FACTORY(TextViewComponentFactory, Component)
 FACTORY(ShadowComponentFactory, Component)
 FACTORY(BillboardComponentFactory, Component)
 FACTORY(PlatformComponentFactory, Component)

@@ -133,10 +133,10 @@ void Entity::SetLocalTransform (glm::mat4 t) {
 }
 
 void Entity::UpdateWorldTransform() {
-    if (m_parent != nullptr)
+    if (m_parent != nullptr && m_parent->m_cameras == nullptr)
         m_worldTransform = m_parent->GetWorldTransform() * m_localTransform;
     else
-        m_worldTransform = m_localTransform;
+        m_worldTransform = m_localTransform;         // identity if root or has camera
     Notify ();
     onMove.Fire(this);
 }
@@ -150,8 +150,10 @@ void Entity::SetWorldTransform(glm::mat4& wt) {
 // to call whenever this change pos
 void Entity::Notify() {
     //m_worldTransform = parentTransform * m_localTransform;
-    for (auto& c : m_children)
-        c->SetWorldTransform(m_worldTransform);
+    glm::mat4 t = m_cameras == nullptr ? m_worldTransform : glm::mat4(1.0f);
+    for (auto& c : m_children) {
+        c->SetWorldTransform(t);
+    }
 
 }
 
@@ -181,7 +183,10 @@ void Entity::SetPosition(glm::vec2 pos) {
 
 void Entity::SetParent(Entity* entity) {
     m_parent = entity;
-    m_worldTransform = m_parent->GetWorldTransform() * m_localTransform;
+    if (m_parent->m_cameras == nullptr)
+        m_worldTransform = m_parent->GetWorldTransform() * m_localTransform;
+    else
+        m_worldTransform = m_localTransform;
     Notify();
 }
 

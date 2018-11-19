@@ -53,7 +53,7 @@ public:
     std::list<std::shared_ptr<Entity> >& GetChildren();
     void Remove(Entity*);
     void Update(double);
-    void Start();
+    virtual void Start();
     friend class DepthFirstIterator<Entity>;
     DepthFirstIterator<Entity> begin() {
         return DepthFirstIterator<Entity>(this);

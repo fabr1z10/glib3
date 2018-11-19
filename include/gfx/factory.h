@@ -20,6 +20,8 @@ template<class T>
 class Factory {
 public:
     std::unique_ptr<T> Create(luabridge::LuaRef ref) {
+        if (ref.isNil())
+            return nullptr;
         luabridge::LuaRef r = ref["type"];
         std::string type = r.isNil() ? "default" : r.cast<std::string>();
         auto it = m_factories.find(type);

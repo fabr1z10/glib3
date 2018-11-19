@@ -16,7 +16,7 @@ void WalkArea::Start() {
 }
 
 void WalkArea::onClick(glm::vec2 worldCoords) {
-    //std::cout << "CLICK ON WALKAREA\n";
+    std::cout << "CLICK ON WALKAREA\n";
 
     //auto player = Engine::get().GetRef<Entity>("player");
     auto script = std::make_shared<Script>();
@@ -25,17 +25,17 @@ void WalkArea::onClick(glm::vec2 worldCoords) {
 
 }
 
-float WalkArea::GetDepth (float x, float y) {
-    if (m_depthFunc == nullptr)
-        GLIB_FAIL("Depth function not set for this walkarea");
-    return m_depthFunc->operator()(x, y);
-}
-
-float WalkArea::GetScale (float x, float y) {
-    if (m_scaleFunc == nullptr)
-        GLIB_FAIL("Depth function not set for this walkarea");
-    return m_scaleFunc->operator()(x, y);
-}
+//float WalkArea::GetDepth (float x, float y) {
+//    if (m_depthFunc == nullptr)
+//        GLIB_FAIL("Depth function not set for this walkarea");
+//    return m_depthFunc->operator()(x, y);
+//}
+//
+//float WalkArea::GetScale (float x, float y) {
+//    if (m_scaleFunc == nullptr)
+//        GLIB_FAIL("Depth function not set for this walkarea");
+//    return m_scaleFunc->operator()(x, y);
+//}
 
 void WalkArea::AddBlockedLine(glm::vec2 A, glm::vec2 B, bool active) {
     m_walls.push_back( BlockedLine { LineSegment{A, B}, active });

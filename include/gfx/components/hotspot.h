@@ -52,6 +52,8 @@ inline int HotSpot::GetPriority() const {
 }
 
 
+
+
 // I have one only mouse listener
 // so when mouse moves, I just need to call one function and not one func for every hotspot.
 // Each hotspoot registers to the hotspot handler at startup and it has a group id. For each group,

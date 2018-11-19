@@ -12,6 +12,7 @@ SceneFactory::SceneFactory() {
     m_meshFactory.Add<SpriteFactory>("sprite");
 
     m_entityFactory.Add<EntityFactory>("default");
+    m_entityFactory.Add<TextViewFactory>("textview");
 
     m_cameraFactory.Add<OrthoCamFactory>("ortho");
     m_cameraFactory.Add<PerspectiveCamFactory>("perspective");
@@ -31,7 +32,7 @@ SceneFactory::SceneFactory() {
     m_componentFactory.Add<TextComponentFactory>("text");
     m_componentFactory.Add<FPSComponentFactory>("fps");
     m_componentFactory.Add<HotSpotComponentFactory>("hotspot");
-    m_componentFactory.Add<TextViewComponentFactory>("textview");
+
 
     m_shapeFactory.Add<RectFactory>("rect");
     m_shapeFactory.Add<LineFactory>("line");

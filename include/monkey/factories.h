@@ -3,6 +3,7 @@
 #include <gfx/factories.h>
 
 
+FACTORY(WalkAreaComponentFactory, Component)
 //
 //
 //class WalkAreaComponentFactory : public ComponentFactory {

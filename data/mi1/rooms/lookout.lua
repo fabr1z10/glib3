@@ -4,6 +4,11 @@ engines = {
 	{ type = "hotspotmanager" },
 	{ type = "scheduler" }
 },
+assets = {
+	sprites.arrowup,
+	sprites.arrowdown,
+	sprites.guybrush
+},
 scene = {
 
 	{
@@ -14,6 +19,24 @@ scene = {
 			size = {320, 144},
 			bounds = {0, 0, 320, 144},
 			viewport = {0, 56, 320, 144}
+		},
+		children = {
+			{ pos = {0,0,-3}, components = { { type="gfx", image="gfx/lookout_1.png" }}},
+	        { pos = {81, 16, 3}, components = { { type="gfx", image="gfx/lookout_2.png" }}},
+	        { pos = {294, 33, 3}, components = { { type="gfx", image ="gfx/lookout_3.png" }}},
+			items.object.create { object = objects.lookout.stairs },
+			items.player.create { pos={100, 100}, model="guybrush", facing ="east" },
+			{
+				pos = {0,0,0},
+				components = {
+                	{ 
+						type ="walkarea",
+						priority = 0,
+			       		target = "player",
+						shape = { type = "poly", outline = {203,51,315,62,315,40,293,40,260,10,260,0,260,-20,234,-20,234,0,234,10,221,26,152,33,152,51}},
+					}
+		      	}
+			}
 		}
 	},
 	{
@@ -46,20 +69,26 @@ scene = {
 			items.verbbutton.create {pos={100, 24}, verb = config.verbs.turnon},
 			items.verbbutton.create {pos={100, 16}, verb = config.verbs.turnoff},
 			{
+				type = "textview", 
 				tag="inventory",
-				pos = {150, 0, 0},
-				components = {
-					{ 
-						type="textview",
-						width = 170.0,
-						height = 48.0,
-		                --viewport = {150, 0, 170, 48},
-		                size = 8,
-						lines = 6,
-						deltax = 26,
-						factory = items.inventorybutton.create
-					}
-				}
+				pos = {150, 0},
+				size = {170, 48},
+				font_size = 8,
+				lines = 6,
+				deltax = 26,
+				factory = items.inventorybutton.create
+				-- components = {
+				-- 	{ 
+				-- 		type="textview",
+				-- 		width = 170.0,
+				-- 		height = 48.0,
+		  --               --viewport = {150, 0, 170, 48},
+		  --               size = 8,
+				-- 		lines = 6,
+				-- 		deltax = 26,
+				-- 		factory = items.inventorybutton.create
+				-- 	}
+				-- }
 			}
 
 			--items.button.create { pos ={2, 40}, font="ui", text="Open", align="bottomleft", color = config.ui_unselected_color, size = 8, priority = 1,

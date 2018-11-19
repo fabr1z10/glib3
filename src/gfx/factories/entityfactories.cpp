@@ -3,6 +3,7 @@
 #include <gfx/engine.h>
 #include <gfx/textmesh.h>
 #include <gfx/components/renderer.h>
+#include <gfx/entities/textview.h>
 
 std::unique_ptr<Entity> EntityFactory::Create(luabridge::LuaRef& ref) {
 
@@ -50,7 +51,8 @@ std::unique_ptr<Entity> EntityFactory::Create(luabridge::LuaRef& ref) {
         for (int i = 0; i < c.length(); ++i) {
             luabridge::LuaRef child = c[i+1];
             auto childEntity = factory->GetShared<Entity>(child);
-            entity->AddChild(childEntity);
+            if (childEntity != nullptr)
+                entity->AddChild(childEntity);
         }
     }
     if (active == false) {
@@ -121,4 +123,23 @@ std::unique_ptr<Entity> OutlineTextFactory::Create(luabridge::LuaRef &ref) {
         parent->AddChild(entity);
     }
     return std::move(parent);
+}
+
+std::unique_ptr<Entity> TextViewFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    std::string tag = table.Get<std::string>("tag", "");
+    glm::vec2 pos = table.Get<glm::vec2>("pos");
+    //glm::vec4 viewport = table.Get<glm::vec4>("viewport");
+    glm::vec2 size = table.Get<glm::vec2>("size");
+    float fontSize = table.Get<float>("font_size");
+    int lines = table.Get<int>("lines");
+    //float deltax = table.Get<float>("deltax", 0.0f);
+    luabridge::LuaRef factory = table.Get<luabridge::LuaRef>("factory");
+    //glm::vec4 color = table.Get<glm::vec4>("color", glm::vec4(255.0f));
+    //color /= 255.0f;
+    //std::string font = table.Get<std::string>("font");
+    auto r = std::unique_ptr<TextView>(new TextView(pos, size.x, size.y, fontSize, lines, factory));
+    r->SetTag(tag);
+    return r;
+
 }
