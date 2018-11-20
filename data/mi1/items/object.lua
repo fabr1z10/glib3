@@ -21,7 +21,8 @@ print("CICICICI")
 			table.insert (comp, { type="hotspot", priority = priority, 
 				shape = {type="rect", width = args.object.size[1], height = args.object.size[2], offset = offset},
 				onenter = curry(hoverOn, args.object),
-				onleave = hoverOff })
+				onleave = hoverOff,
+				onclick = runAction })
 		end
 		return {
 			pos = pos,

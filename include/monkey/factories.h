@@ -4,6 +4,10 @@
 
 
 FACTORY(WalkAreaComponentFactory, Component)
+
+FACTORY(WalkToActFactory, Activity)
+FACTORY(TurnActFactory, Activity)
+FACTORY(SayActFactory, Activity)
 //
 //
 //class WalkAreaComponentFactory : public ComponentFactory {

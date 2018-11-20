@@ -3,6 +3,7 @@
 #include <test/timeformatter.h>
 //#include <algorithm>
 #include <iostream>
+#include <iomanip>
 //#include <set>
 //
 using namespace tinyxml2;
@@ -29,11 +30,50 @@ using namespace tinyxml2;
 //    return tn;
 //
 //}
+
+void Plan::FillRunningTimes() {
+    Railway &r = Config::get().GetRailway();
+    for (auto& item : m_items) {
+        if (item.second.isTrack) {
+            item.second.nextStation;
+            auto& track = r.GetTrack(item.second.id);
+            bool fwd = (track.GetStationB() == item.second.nextStation);
+            auto& trackCircuit = track.GetTrackCircuit(item.second.id2);
+            item.second.runTime = trackCircuit.GetRunningTime(m_trainId.substr(0,1), fwd);
+            //m.second.id2).GetRunningTime(m_trainId.substr(0,1), fwd);
+        }
+    }
+}
+
+void Plan::Dump() {
+    std::cout << "Plan for train: " << m_trainId << std::endl;
+    std::cout << "    t_in        t_out      resource     rt   act dw\n";
+    for (auto& item : m_items) {
+        int act = item.second.timeOut - item.first;
+        std::cout << std::setw(12) << item.first << std::setw(12) << item.second.timeOut << std::setw(12) << item.second.resource <<
+                     std::setw(6) << item.second.runTime << std::setw(6) << act << std::setw(2) << (act > item.second.runTime ? "Y" : "") << "\n";
+
+    }
+}
+
+void Plan::SetNextStation(const std::string & ns) {
+    if (m_items.empty())
+        return;
+    for (auto it = m_items.rbegin(); it != m_items.rend(); it++) {
+        if (it->second.isTrack) {
+            it->second.nextStation = ns;
+        } else {
+            break;
+        }
+    }
+}
+
+
 Solution::Solution(const std::string &solutionFile) {
 
     Railway &r = Config::get().GetRailway();
     XMLDocument doc;
-    std::string fullPath = Config::get().GetHomeDir() + "output/" + solutionFile;
+    std::string fullPath = Config::get().GetHomeDir() + solutionFile;
     XMLError e = doc.LoadFile(fullPath.c_str());
     if (e != XML_SUCCESS) {
         std::cout << "We've got a problem loading solution file " << fullPath << std::endl;
@@ -52,11 +92,8 @@ Solution::Solution(const std::string &solutionFile) {
         std::string trainId(eTrain->Attribute("Name"));
         double speed = eTrain->DoubleAttribute("Speed");
         //r.AddTrain(trainId, 0, speed);
-        std::cout << "Reading train " << trainId << std::endl;
-
-//        std::string cat = trainId.substr(0,1);
-//        std::vector<Activity> activities;
-//        std::string previousStation();
+        //std::cout << "Creatng a plan for train " << trainId << std::endl;
+        std::unique_ptr<Plan> plan( new Plan(trainId));
         bool beyondPlanningHorizon = false;
         for (auto eSchedule = eTrain->FirstChildElement("p1:Schedule");
              eSchedule != NULL; eSchedule = eSchedule->NextSiblingElement()) {
@@ -64,16 +101,50 @@ Solution::Solution(const std::string &solutionFile) {
             for (auto ets = eSchedule->FirstChildElement("p1:StationSchedule");
                  ets != NULL; ets = ets->NextSiblingElement()) {
                 std::string stationId = ets->Attribute("StationId");
+                plan->SetNextStation(stationId);
+
                 std::string routeId = ets->Attribute("RouteId");
-//                if (routeId == "-1") {
-//                    // beyond planning horizon
-//                    beyondPlanningHorizon = true;
-//                    break;
-//                }
-                std::cout << "Adding station: " << stationId << "\n";
+                if (routeId == "-1") {
+                    // beyond planning horizon
+                    beyondPlanningHorizon = true;
+                    break;
+                }
+                //Activity act(r.GetStation(stationId).GetRoute(routeId));
+                int timeIn = ets->IntAttribute("TimeIn");
+                PlanItem item;
+                item.resource = "S" + stationId +"(" + routeId +")";
+                item.timeOut = ets->IntAttribute("TimeOut");
+                item.runTime = r.GetStation(stationId).GetRoute(routeId).GetRunningTime(trainId.substr(0,1), true);
+                item.isTrack = false;
+                item.id = stationId;
+                item.id2 =routeId;
+                //std::cout << "Adding station: " << stationId << "\n";
                 m_stations[trainId].push_back(stationId);
+                plan->Add(timeIn, item);
+                //std::cout <<"Added plan item: " << item.resource << ", time in = " << timeIn << ", time out = " << item.timeOut << ", runtime = " << item.runTime << "\n";
             }
+            for (auto ets = eSchedule->FirstChildElement("p1:TrackSchedule");
+                 ets != NULL; ets = ets->NextSiblingElement()) {
+                std::string trackCircuitId = ets->Attribute("TrackCircuitId");
+                std::string trackId = trackCircuitId.substr(0, trackCircuitId.find_first_of('.'));
+                PlanItem item;
+                item.resource = trackCircuitId;
+                int timeIn = ets->IntAttribute("TimeIn");
+                item.timeOut = ets->IntAttribute("TimeOut");
+                item.isTrack = true;
+                item.id = trackId;
+                item.id2 = trackCircuitId;
+                plan->Add(timeIn, item);
+                //std::cout <<"Added plan item: " << item.resource << ", time in = " << timeIn << ", time out = " << item.timeOut << ", runtime = " << item.runTime << "\n";
+            }
+
         }
+
+        plan->FillRunningTimes();
+        plan->Dump();
+
+
+        m_plans[trainId] = std::move(plan);
     }
 }
 
@@ -86,19 +157,7 @@ Solution::Solution(const std::string &solutionFile) {
 //                // see if the previous track has been traversed forward or back
 //                activities.push_back(act);
 //            }
-//            for (auto ets = eSchedule->FirstChildElement("p1:TrackSchedule");
-//                 ets != NULL; ets = ets->NextSiblingElement()) {
-//
-//                std::string trackCircuitId = ets->Attribute("TrackCircuitId");
-//                std::string trackId = trackCircuitId.substr(0, trackCircuitId.find_first_of('.'));
-//                Activity act(r.GetTrack(trackId).GetTrackCircuit(trackCircuitId));
-//
-//                act.timeIn = ets->IntAttribute("TimeIn");
-//                act.timeOut = ets->IntAttribute("TimeOut");
-//                act.isTrack = true;
-//                act.trackOrStationId = trackId;
-//                activities.push_back(act);
-//            }
+
 //        }
 //        std::sort (activities.begin(), activities.end());
 //

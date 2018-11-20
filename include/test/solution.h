@@ -2,6 +2,7 @@
 
 #include <test/railway.h>
 #include <set>
+#include <map>
 //
 //struct Position {
 //    Resource* res;
@@ -49,6 +50,42 @@ public:
     std::string stationId;
 };
 
+
+struct PlanItem {
+    std::string resource;
+    std::string nextStation;
+    std::string previousStation;
+    std::string id;
+    std::string id2;
+    int timeOut;
+    bool dwell;
+    int runTime;
+    bool isTrack;
+};
+
+class Plan {
+public:
+    Plan(const std::string& trainId) : m_trainId(trainId) {}
+    void Add (int, PlanItem) ;
+    bool Empty() const {
+        return m_items.empty();
+    }
+    PlanItem& GetLastItem(){
+        return m_items.end()->second;
+    }
+    void FillRunningTimes();
+    void Dump();
+    void SetNextStation(const std::string&);
+
+    std::string m_trainId;
+    std::map <int, PlanItem> m_items;
+};
+
+inline void Plan::Add (int tin, PlanItem item){
+    m_items[tin] = item;
+}
+
+
 class Solution {
 public:
     Solution(const std::string& file);
@@ -61,9 +98,11 @@ public:
 //    std::string GetStationBefore (const std::string& train, Resource* r);
 //    std::string GetStationAfter (const std::string& train, Resource* r);
     std::unordered_map<std::string, std::vector<std::string> >& getStations() {return m_stations;}
+    std::unordered_map<std::string, std::unique_ptr<Plan> > m_plans;
 private:
     int m_now;
 //    std::unordered_map<std::string, int> m_trainLengths;
+
     std::unordered_map<std::string, std::vector<std::string> > m_stations;
 };
 //

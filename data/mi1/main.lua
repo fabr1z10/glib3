@@ -53,6 +53,7 @@ variables = {
     }
 }
 
+require ("script")
 require ("funcs")
 require ("items")
 require ("sprites")

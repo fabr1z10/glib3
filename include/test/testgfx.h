@@ -1,5 +1,6 @@
 #include <gfx/engine.h>
 #include <test/solution.h>
+#include <test/global.h>
 
 class Factory1 : public SceneFactory {
 public:
@@ -24,7 +25,7 @@ struct ResourceLocation {
 class Station;
 class Entity;
 
-struct Location {
+struct TLocation {
     int i, j;
     int block;
 };
@@ -34,12 +35,17 @@ class StationPlot;
 
 class SceneFactory3 : public SceneFactory {
 public:
-    SceneFactory3(Solution& s) : sol(s) {}
+    SceneFactory3(Solution& s) : sol(s), r(Config::get().GetRailway()) {}
     std::shared_ptr<Entity> Create() override;
-
+    void PostInit() override {}
     void CleanUp () override {}
+    void Plot(const std::string& station, int x, int y);
 private:
     Solution& sol;
+    Railway& r;
+    std::unordered_set<std::string> stations;
+    std::unordered_map<std::string, std::pair<int,int>> stationPos;
+
     std::unordered_map<std::string, std::shared_ptr<StationPlot>> m_stations;
 };
 
@@ -60,7 +66,7 @@ private:
     //Entity* m_main;
     int m_blockMin;
     int m_startPoint;
-    std::unordered_map<int, Location> locations;
+    std::unordered_map<int, TLocation> locations;
     std::vector<std::pair<int,int>> m_edges;
     std::unordered_set<int> explored;
     std::string m_stationId;

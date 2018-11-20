@@ -238,8 +238,10 @@ void Engine::cursor_pos_callback(GLFWwindow* win, double xpos, double ypos) {
 }
 
 void Engine::scroll_callback(GLFWwindow* win, double xoffset, double yoffset) {
-    //for (auto& listener : Engine::get().m_mouseListener)
-      //  listener->ScrollCallback(win, xoffset, yoffset);
+    if (Engine::get().m_mouseEnabled) {
+        for (auto &listener : Engine::get().m_mouseListeners)
+            listener->ScrollCallback(win, xoffset, yoffset);
+    }
 }
 
 

@@ -1,75 +1,250 @@
 #include <test/testgfx.h>
 #include <gfx/renderingengine.h>
-#include <gfx/renderer.h>
+#include <gfx/components/renderer.h>
 #include <gfx/meshfactory.h>
 #include <test/controller.h>
 #include <iostream>
 #include <algorithm>
 #include <gfx/textmesh.h>
 #include <test/timeformatter.h>
-#include <test/global.h>
+#include <glm/gtx/transform.hpp>
+
+void SceneFactory3::Plot(const std::string& id, int x, int y) {
+
+    std::cout << "plotting " << id << " at (" << x << ", " << y << ")\n";
+    stationPos[id] = std::make_pair(x, y);
+    auto tracks = r.GetStation(id).GetConnectingTracks();
+    for (auto& t : tracks) {
+        if (t[0] == 'F')
+            continue;
+        std::string sa = r.GetTrack(t).GetStationA();
+        std::string sb = r.GetTrack(t).GetStationB();
+        int incx = 0;
+        int incy = 0;
+        std::string s;
+        if (sa == id) {
+            s = sb;
+            incx = 1;
+        } else {
+            s = sa;
+            incx = -1;
+        }
+        if (stations.count(s) > 0 && stationPos.count(s) == 0)
+            Plot(s, x+incx, y);
+    }
+}
 
 std::shared_ptr<Entity> SceneFactory3::Create() {
+    r = Config::get().GetRailway();
     auto root = std::make_shared<Entity>();
+
+
     auto mainNode = std::make_shared<Entity>();
+
     auto cam = std::unique_ptr<OrthographicCamera> (new OrthographicCamera(800, 600));
     cam->SetPosition(glm::vec3(0,0,5), glm::vec3(0,0,-1), glm::vec3(0,1,0));
     mainNode->SetCamera(std::move(cam));
+    mainNode->AddComponent(std::make_shared<ViewerController>());
     root->AddChild(mainNode);
-    auto& stations = sol.getStations();
-    int n = 0;
-    float x = 0.0f;
-    for (auto& s : stations) {
-        for (auto& st : s.second) {
-            auto plt = std::make_shared<StationPlot>(st);
-            auto node = plt->Get();
-            node->SetPosition(glm::vec2(x, 0));
-            mainNode->AddChild(node);
-            n++;
-            std::cout << "Plotting station " << st << "\n";
-            x += plt->GetWidth() + 50.0f;
-            m_stations[st] = plt;
-            if (n>2) break;
+
+
+    //std::unordered_set<std::string> stationsTraversed;
+
+    for (auto& p :sol.m_plans) {
+        for (auto& i : p.second->m_items) {
+            if (!i.second.isTrack) {
+                stations.insert(i.second.id);
+            }
         }
-        if (n>2)
-            break;
-
     }
-    // plot the tracks
-    auto a = std::make_shared<Entity>();
-    auto r1 = std::make_shared<Renderer>();
-    std::vector<glm::vec2> pts;
-    std::vector<std::pair<int,int>> edg;
 
-    for (auto& s : m_stations) {
-        s.second->GetStationId();
-        Railway& r = Config::get().GetRailway();
-        auto tracks = r.GetStation(s.second->GetStationId()).GetConnectingTracks();
-        for (auto& track : tracks) {
-            if (track != "-1") {
-                auto& t = r.GetTrack(track);
-                std::string sa = t.GetStationA();
-                std::string sb = t.GetStationB();
-                auto it1 = m_stations.find(sa);
-                auto it2 = m_stations.find(sb);
-                if (it1 != m_stations.end() && it2 != m_stations.end()) {
-                    glm::vec2 P1 = it1->second->GetTrackPosition(track);
-                    glm::vec2 P2 = it2->second->GetTrackPosition(track);
-                    // draw line connecting tracks
-                    edg.push_back(std::make_pair(pts.size(), pts.size() + 1));
-                    pts.push_back(P1);
-                    pts.push_back(P2);
+    std::cout << "stations traversed:\n";
+    for (auto& s : stations)
+        std::cout << s<<"\n";
+    Plot(*stations.begin(), 0, 0);
+    for (auto& s : stationPos) {
+        auto node = std::make_shared<Entity>();
+        node->SetPosition(glm::vec3(s.second.first * 50, s.second.second * 50, 0));
+        auto renderer = std::make_shared<Renderer>();
+        std::string draw = "outline";
+        glm::vec4 color (1.0f);
+        auto shape = std::make_shared<Rect>(10.0f, 10.0f, glm::vec2(-5,-5));
+        auto mesh = MeshFactory::CreateMesh(*(shape.get()), 0.0f);
+        renderer->SetMesh(mesh);
+        renderer->SetTint(color);
+        node->AddComponent(renderer);
+        mainNode->AddChild(node);
+
+        auto txtNode = std::make_shared<Entity>();
+        auto txtRenderer = std::make_shared<Renderer>();
+        std::string text = s.first;
+        std::string font = "main";
+        float size = 6.0f;
+        TextAlignment align = CENTER;
+        float maxWidth = 100.0f;
+        Font* f = Engine::get().GetAssetManager().GetFont(font);
+        auto txtMesh = std::make_shared<TextMesh>(f, text, size, align, maxWidth);
+        glm::vec2 offset = txtMesh->getOffset();
+        txtRenderer->SetRenderingTransform(glm::translate(glm::vec3(offset, 0.0f)));
+        txtRenderer->SetTint(color);
+        txtRenderer->SetMesh(txtMesh);
+        txtNode->AddComponent(txtRenderer);
+        node->AddChild(txtNode);
+    }
+
+    // plot all tracks
+    std::unordered_set<std::string> plottedTracks;
+    for (auto& s : stationPos) {
+        auto tracksFromStation = r.GetStation(s.first).GetConnectingTracks();
+        std::unordered_map<std::string, std::vector<std::string>> stationToTracks;
+        for (auto& t : tracksFromStation) {
+            if (t[0] == 'F')
+                continue;
+            auto& track = r.GetTrack(t);
+            if (track.GetStationA() == s.first) {
+                stationToTracks[track.GetStationB()].push_back(t);
+            }
+            else {
+                stationToTracks[track.GetStationA()].push_back(t);
+            }
+        }
+        int s1x = s.second.first;
+        int s1y = s.second.second;
+        std::cout << "Station : " << s.first << "\n";
+
+        for (auto& m: stationToTracks) {
+            if (stations.count(m.first) > 0) {
+                // find positions
+                auto it = stationPos.find(m.first);
+                int s2x = it->second.first;
+                int s2y = it->second.second;
+                std::cout << "is connected to station " << m.first << " via tracks ";
+                glm::vec2 initialPos;
+                glm::vec2 endPos;
+                float inc = 10.0 / (m.second.size() + 1);
+                if (s2x > s1x) {
+                    // station 2 is right of station 1
+                    initialPos = glm::vec2(s1x*50+5 ,s1y*50-5 + inc);
+                    endPos = glm::vec2(s2x*50-5 ,s2y*50-5 + inc);
+                } else {
+                    initialPos = glm::vec2(s1x*50-5 ,s1y*50-5 + inc);
+                    endPos = glm::vec2(s2x*50+5 ,s2y*50-5 + inc);
+                }
+                for (auto& tt : m.second) {
+                    if (plottedTracks.count(tt) == 0) {
+                        auto &track = r.GetTrack(tt);
+                        plottedTracks.insert(tt);
+                        glm::vec2 labelStart;
+                        glm::vec2 dir;
+                        if (track.GetStationA() == s.first) {
+                            labelStart = initialPos;
+                            dir = endPos - initialPos;
+                        } else {
+                            labelStart = endPos;
+                            dir = initialPos -endPos;
+                        }
+                        dir = glm::normalize(dir);
+                        //std::cout << "Plotting track " << tt << " between station " << s.first << " at (" << s1x << ", "
+                         //         << s1y << ") and " << m.first << " at (" << s2x << ", " << s2y << ")\n";
+                        auto node = std::make_shared<Entity>();
+                        //node->SetPosition(glm::vec3(s.second.first * 50, s.second.second * 50, 0));
+                        auto renderer = std::make_shared<Renderer>();
+                        std::string draw = "outline";
+                        glm::vec4 color(1.0f);
+                        auto shape = std::make_shared<Line>(initialPos, endPos);
+                        auto mesh = MeshFactory::CreateMesh(*(shape.get()), 0.0f);
+                        renderer->SetMesh(mesh);
+                        renderer->SetTint(color);
+                        node->AddComponent(renderer);
+                        mainNode->AddChild(node);
+                        initialPos.y += inc;
+                        endPos.y += inc;
+                        // see how many track circuits I have
+                        auto tc = r.GetTrack(tt).GetTrackCircuits();
+                        float lengthTC = glm::length(endPos -initialPos) / tc.size();
+
+                        labelStart += dir * 0.5f * lengthTC;
+                        for (auto &trackCircuit : tc) {
+                            std::cout << "plot label for " << trackCircuit->GetShortName()<< "\n";
+                            auto txtNode = std::make_shared<Entity>();
+                            auto txtRenderer = std::make_shared<Renderer>();
+                            std::string text = trackCircuit->GetShortName();
+                            std::string font = "main";
+                            float size = 1.0f;
+                            TextAlignment align = BOTTOM;
+                            float maxWidth = 100.0f;
+                            Font *f = Engine::get().GetAssetManager().GetFont(font);
+                            auto txtMesh = std::make_shared<TextMesh>(f, text, size, align, maxWidth);
+                            glm::vec2 offset = txtMesh->getOffset();
+                            txtRenderer->SetRenderingTransform(glm::translate(glm::vec3(offset, 0.0f)));
+                            txtRenderer->SetTint(color);
+                            txtRenderer->SetMesh(txtMesh);
+                            txtNode->AddComponent(txtRenderer);
+                            txtNode->SetPosition(labelStart);
+                            labelStart += dir * lengthTC;
+                            mainNode->AddChild(txtNode);
+                        }
+                    }
                 }
             }
-            std::cout << track << "\n";
-
         }
+
     }
-    PolyLine p(pts,edg);
-    r1->SetMesh(MeshFactory::CreateMesh(p, 0.0f, glm::vec4(0.2f, 0.8f, 0.8f, 1.0f)));
-    a->AddComponent(r1);
-    a->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-    mainNode->AddChild(a);
+
+//    auto& stations = sol.getStations();
+//    int n = 0;
+//    float x = 0.0f;
+//    for (auto& s : stations) {
+//        for (auto& st : s.second) {
+//            auto plt = std::make_shared<StationPlot>(st);
+//            auto node = plt->Get();
+//            node->SetPosition(glm::vec2(x, 0));
+//            mainNode->AddChild(node);
+//            n++;
+//            std::cout << "Plotting station " << st << "\n";
+//            x += plt->GetWidth() + 50.0f;
+//            m_stations[st] = plt;
+//            if (n>2) break;
+//        }
+//        if (n>2)
+//            break;
+//
+//    }
+//    // plot the tracks
+//    auto a = std::make_shared<Entity>();
+//    auto r1 = std::make_shared<Renderer>();
+//    std::vector<glm::vec2> pts;
+//    std::vector<std::pair<int,int>> edg;
+//
+//    for (auto& s : m_stations) {
+//        s.second->GetStationId();
+//        Railway& r = Config::get().GetRailway();
+//        auto tracks = r.GetStation(s.second->GetStationId()).GetConnectingTracks();
+//        for (auto& track : tracks) {
+//            if (track != "-1") {
+//                auto& t = r.GetTrack(track);
+//                std::string sa = t.GetStationA();
+//                std::string sb = t.GetStationB();
+//                auto it1 = m_stations.find(sa);
+//                auto it2 = m_stations.find(sb);
+//                if (it1 != m_stations.end() && it2 != m_stations.end()) {
+//                    glm::vec2 P1 = it1->second->GetTrackPosition(track);
+//                    glm::vec2 P2 = it2->second->GetTrackPosition(track);
+//                    // draw line connecting tracks
+//                    edg.push_back(std::make_pair(pts.size(), pts.size() + 1));
+//                    pts.push_back(P1);
+//                    pts.push_back(P2);
+//                }
+//            }
+//            std::cout << track << "\n";
+//
+//        }
+//    }
+//    PolyLine p(pts,edg);
+//    r1->SetMesh(MeshFactory::CreateMesh(p, 0.0f, glm::vec4(0.2f, 0.8f, 0.8f, 1.0f)));
+//    a->AddComponent(r1);
+//    a->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+//    mainNode->AddChild(a);
 
 
     return root;

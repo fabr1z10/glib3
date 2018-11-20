@@ -249,91 +249,91 @@ sprites = {
 	                    duration = dt,
 	                    quads = {
 	                        { x = 164, y = 12, width = 22, height = 36, anchor = {12, 0}},
-	                        { x = 179, y = 129, width = 11, height = 13, anchor = pane }
+	                        { x = 179, y = 129, width = 11, height = 13, anchor = {6, -34} }
 	                    }
 	               },
 	               {
 	                    duration = dt,
 	                    quads = {
 	                        { x = 164, y = 12, width = 22, height = 36, anchor = {12, 0}},
-	                        { x = 192, y = 129, width = 11, height = 13, anchor = pane}
+	                        { x = 192, y = 129, width = 11, height = 13, anchor = {6, -34}}
 	                    }
 	               },
 	               {
 	                    duration = dt,
 	                    quads = {
 	                        { x = 164, y = 12, width = 22, height = 36, anchor = {12, 0}},
-	                        { x = 179, y = 129, width = 11, height = 13, anchor = pane }
+	                        { x = 179, y = 129, width = 11, height = 13, anchor = {6, -34} }
 	                    }
 	               },
 	               {
 	                    duration = dt,
 	                    quads = {
 	                        { x = 164, y = 12, width = 22, height = 36, anchor = {12, 0}},
-	                        { x = 192, y = 129, width = 11, height = 13, anchor = pane}
+	                        { x = 192, y = 129, width = 11, height = 13, anchor = {6, -34}}
 	                    }
 	               },
 	               {
 	                    duration = dt,
 	                    quads = {
 	                        { x = 164, y = 12, width = 22, height = 36, anchor = {12, 0}},
-	                        { x = 205, y = 129, width = 11, height = 13, anchor = pane}
+	                        { x = 205, y = 129, width = 11, height = 13, anchor = {6, -34}}
 	                    }
 	               },
 	               {
 	                    duration = dt,
 	                    quads = {
 	                        { x = 164, y = 12, width = 22, height = 36, anchor = {12, 0}},
-	                        { x = 179, y = 143, width = 11, height = 13, anchor =  pane}
+	                        { x = 179, y = 143, width = 11, height = 13, anchor =  {6, -34}}
 	                    }
 	               },               
 	               {
 	                    duration = dt,
 	                    quads = {
 	                        { x = 164, y = 12, width = 22, height = 36, anchor = {12, 0}},
-	                        { x = 192, y = 129, width = 11, height = 13, anchor = pane }
+	                        { x = 192, y = 129, width = 11, height = 13, anchor = {6, -34} }
 	                    }
 	               },
 	               {
 	                    duration = dt,
 	                    quads = {
 	                        { x = 164, y = 12, width = 22, height = 36, anchor = {12, 0}},
-	                        { x = 192, y = 143, width = 11, height = 13, anchor = pane}
+	                        { x = 192, y = 143, width = 11, height = 13, anchor = {6, -34}}
 	                    }
 	               },  
 	               {
 	                    duration = dt,
 	                    quads = {
 	                        { x = 164, y = 12, width = 22, height = 36, anchor = {12, 0}},
-	                        { x = 205, y = 143, width = 11, height = 13, anchor = pane }
+	                        { x = 205, y = 143, width = 11, height = 13, anchor = {6, -34} }
 	                    }
 	               }, 
 	               {
 	                    duration = dt,
 	                    quads = {
 	                        { x = 164, y = 12, width = 22, height = 36, anchor = {12, 0}},
-	                        { x = 192, y = 143, width = 11, height = 13, anchor = pane}
+	                        { x = 192, y = 143, width = 11, height = 13, anchor = {6, -34}}
 	                    }
 	               },
 	               {
 	                    duration = dt,
 	                    quads = {
 	                        { x = 164, y = 12, width = 22, height = 36, anchor = {12, 0}},
-	                        { x = 179, y = 129, width = 11, height = 13, anchor = pane}
+	                        { x = 179, y = 129, width = 11, height = 13, anchor = {6, -34}}
 	                    }
 	               },
 	               {
 	                    duration = dt,
 	                    quads = {
 	                        { x = 164, y = 12, width = 22, height = 36, anchor = {12, 0}},
-	                        { x = 192, y = 129, width = 11, height = 13, anchor = pane}
+	                        { x = 192, y = 129, width = 11, height = 13, anchor = {6, -34}}
 	                    }
 	               },      
 	               {
 	                    duration = dt,
 	                    quads = {
 	                        { x = 164, y = 12, width = 22, height = 36, anchor = {12, 0}},
-	                        { x = 205, y = 143, width = 11, height = 13, anchor =  pane}
+	                        { x = 205, y = 143, width = 11, height = 13, anchor =  {6, -34}}
 	                    }
 	               }
 	           }

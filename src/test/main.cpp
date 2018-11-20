@@ -31,17 +31,19 @@ int main(int argc, char* argv[]) {
         Config::get().SetHomeDir(argv[1]);
         Config::get().GetRailway().Load();
         Solution s(argv[2]);
-        float w = 800;
-        float h = 600;
-        EngineConfig config (w, h);
+
+        glm::vec2 devSize (800, 600);
+        glm::vec2 winSize = devSize;
+        std::string title = "Solution viewer";
+        EngineConfig config (devSize.x, devSize.y);
         config.enableMouse = true;
         config.enableKeyboard = true;
-        config.windowWidth = w;
-        config.windowHeight = h;
-        config.name = "Pippo";
+        config.windowWidth = winSize.x;
+        config.windowHeight = winSize.y;
+        config.name = title;
         Engine &g = Engine::get();
         g.Init(config);
-        g.SetSceneFactory(std::unique_ptr<SceneFactory>(new SceneFactory3(s)));
+
         // set-up the rendering engine
         auto renderingEngine = std::unique_ptr<RenderingEngine>(new RenderingEngine);
         renderingEngine->AddShader(TEXTURE_SHADER);
@@ -49,10 +51,16 @@ int main(int argc, char* argv[]) {
         renderingEngine->AddShader(TEXT_SHADER);
         g.SetRenderingEngine(std::move(renderingEngine));
 
-        // set-up the scripting engine
-        auto scheduler = std::unique_ptr<Scheduler>(new Scheduler);
-        g.SetScriptingEngine(std::move(scheduler));
-
+        //LoadFonts();
+        auto factory = std::unique_ptr<SceneFactory>(new SceneFactory3(s));
+        //factory->extendLua();
+        g.SetSceneFactory(std::move(factory));
+//
+//        // set-up the scripting engine
+//        auto scheduler = std::make_shared<Scheduler>();
+//        g.AddRunner(scheduler);
+//        //g.SetScriptingEngine(std::move(scheduler));
+//
         Engine::get().GetAssetManager().AddFont("main", "/home/fabrizio/Scaricati/arial.ttf");
         g.MainLoop();
     } catch (Error& err){
