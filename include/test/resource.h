@@ -71,7 +71,7 @@ private:
 // and connects two stations
 class Track : public GlobalId {
 public:
-    Track(const std::string& name, const std::string& stationA, const std::string& stationB) : GlobalId(name), _stationA{stationA}, _stationB{stationB} {}
+    Track(const std::string& name, const std::string& stationA, const std::string& stationB) : GlobalId(name), _stationA{stationA}, _stationB{stationB}, _length(0) {}
     // get total track length
     int GetLength() const;
     std::string GetName() override;
@@ -83,6 +83,7 @@ public:
 
     }
     void AddTrackCircuit(std::unique_ptr<TrackCircuit> tc) {
+        _length += tc->GetLength();
         m_namedTC[tc->GetShortName()] = tc.get();
         m_trackCircuits.push_back(std::move(tc));
     }
@@ -101,12 +102,17 @@ public:
     }
 private:
     // sequence of track circuits from A to B
+    int _length;
     std::vector<std::unique_ptr<TrackCircuit> > m_trackCircuits;
     std::unordered_map<std::string, TrackCircuit*> m_namedTC;
     std::string _mainName;
     std::string _stationA;
     std::string _stationB;
 };
+
+inline int Track::GetLength() const {
+    return _length;
+}
 
 struct RouteDetail {
     int endingPoint;

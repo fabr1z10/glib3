@@ -34,18 +34,72 @@ void SceneFactory3::Plot(const std::string& id, int x, int y) {
     }
 }
 
+void SceneFactory3::AdvanceTime(int n) {
+    int tentative = m_currentTime + n;
+    if (tentative >= m_tMin && tentative <= m_tMax) {
+        m_currentTime = tentative;
+        TimeFormatter tf(m_currentTime);
+        m_timeLabel->UpdateText(tf.toString());
+        RefreshTrains();
+    }
+
+
+}
+
+std::shared_ptr<Entity> SceneFactory3::CreateLine(glm::vec2 A, glm::vec2 B, glm::vec3 col) {
+    auto node = std::make_shared<Entity>();
+    auto renderer = std::make_shared<Renderer>();
+    std::string draw = "outline";
+    glm::vec4 color(col, 1.0f);
+    auto shape = std::make_shared<Line>(A, B);
+    auto mesh = MeshFactory::CreateMesh(*(shape.get()), 0.0f);
+    renderer->SetMesh(mesh);
+    renderer->SetTint(color);
+    node->AddComponent(renderer);
+    return node;
+}
+
+std::shared_ptr<Entity> SceneFactory3::CreateText(const std::string& text, float x, float y, float size, TextAlignment align, glm::vec3 color) {
+    auto txtNode = std::make_shared<Entity>();
+    auto txtRenderer = std::make_shared<Renderer>();
+    std::string font = "main";
+    float maxWidth = 800.0f;
+    Font *f = Engine::get().GetAssetManager().GetFont(font);
+    auto txtMesh = std::make_shared<TextMesh>(f, text, size, align, maxWidth);
+    glm::vec2 offset = txtMesh->getOffset();
+    txtRenderer->SetRenderingTransform(glm::translate(glm::vec3(offset, 0.0f)));
+    txtRenderer->SetTint(glm::vec4(color, 1.0f));
+    txtRenderer->SetMesh(txtMesh);
+    txtNode->AddComponent(txtRenderer);
+    txtNode->SetPosition(glm::vec3(x, y, 0.0f));
+    return txtNode;
+}
+
+
 std::shared_ptr<Entity> SceneFactory3::Create() {
     r = Config::get().GetRailway();
     auto root = std::make_shared<Entity>();
 
 
     auto mainNode = std::make_shared<Entity>();
+    auto UINode = std::make_shared<Entity>();
 
     auto cam = std::unique_ptr<OrthographicCamera> (new OrthographicCamera(800, 600));
     cam->SetPosition(glm::vec3(0,0,5), glm::vec3(0,0,-1), glm::vec3(0,1,0));
     mainNode->SetCamera(std::move(cam));
-    mainNode->AddComponent(std::make_shared<ViewerController>());
+    mainNode->AddComponent(std::make_shared<ViewerController>(this));
     root->AddChild(mainNode);
+
+    auto camUI = std::unique_ptr<OrthographicCamera> (new OrthographicCamera(800, 600));
+    camUI->SetPosition(glm::vec3(0,0,5), glm::vec3(0,0,-1), glm::vec3(0,1,0));
+    UINode->SetCamera(std::move(camUI));
+    root->AddChild(UINode);
+
+    auto trainsNode = std::make_shared<Entity>();
+    mainNode->AddChild(trainsNode);
+    m_trainContainer = trainsNode.get();
+
+
 
 
     //std::unordered_set<std::string> stationsTraversed;
@@ -56,15 +110,34 @@ std::shared_ptr<Entity> SceneFactory3::Create() {
                 stations.insert(i.second.id);
             }
         }
+        // for trains that are currently on a track, also add the previous station
+        auto it = p.second->m_items.begin();
+        if (it->second.isTrack) {
+            auto& track = r.GetTrack(it->second.id);
+            if (it->second.fwd) {
+                stations.insert(track.GetStationA());
+            }
+            else {
+                stations.insert(track.GetStationB());
+            }
+        }
     }
+
+
+
+
 
     std::cout << "stations traversed:\n";
     for (auto& s : stations)
         std::cout << s<<"\n";
     Plot(*stations.begin(), 0, 0);
+
+
+
     for (auto& s : stationPos) {
         auto node = std::make_shared<Entity>();
-        node->SetPosition(glm::vec3(s.second.first * 50, s.second.second * 50, 0));
+        glm::vec2 stationPos(s.second.first*50, s.second.second*50);
+        node->SetPosition(glm::vec3(stationPos, 0.0f));
         auto renderer = std::make_shared<Renderer>();
         std::string draw = "outline";
         glm::vec4 color (1.0f);
@@ -73,23 +146,26 @@ std::shared_ptr<Entity> SceneFactory3::Create() {
         renderer->SetMesh(mesh);
         renderer->SetTint(color);
         node->AddComponent(renderer);
+        m_stationRenderingInfo[s.first] = stationPos;
         mainNode->AddChild(node);
 
-        auto txtNode = std::make_shared<Entity>();
-        auto txtRenderer = std::make_shared<Renderer>();
-        std::string text = s.first;
-        std::string font = "main";
-        float size = 6.0f;
-        TextAlignment align = CENTER;
-        float maxWidth = 100.0f;
-        Font* f = Engine::get().GetAssetManager().GetFont(font);
-        auto txtMesh = std::make_shared<TextMesh>(f, text, size, align, maxWidth);
-        glm::vec2 offset = txtMesh->getOffset();
-        txtRenderer->SetRenderingTransform(glm::translate(glm::vec3(offset, 0.0f)));
-        txtRenderer->SetTint(color);
-        txtRenderer->SetMesh(txtMesh);
-        txtNode->AddComponent(txtRenderer);
-        node->AddChild(txtNode);
+//        auto txtNode = std::make_shared<Entity>();
+//        auto txtRenderer = std::make_shared<Renderer>();
+//        std::string text = s.first;
+//        std::string font = "main";
+//        float size = 6.0f;
+//        TextAlignment align = CENTER;
+//        float maxWidth = 100.0f;
+//        Font* f = Engine::get().GetAssetManager().GetFont(font);
+//        auto txtMesh = std::make_shared<TextMesh>(f, text, size, align, maxWidth);
+//        glm::vec2 offset = txtMesh->getOffset();
+//        txtRenderer->SetRenderingTransform(glm::translate(glm::vec3(offset, 0.0f)));
+//        txtRenderer->SetTint(color);
+//        txtRenderer->SetMesh(txtMesh);
+//        txtNode->AddComponent(txtRenderer);
+//        node->AddChild(txtNode);
+//
+        node->AddChild(CreateText(s.first, 0.0f, 0.0f, 6.0f, CENTER, glm::vec3(1.0f)));
     }
 
     // plot all tracks
@@ -136,12 +212,21 @@ std::shared_ptr<Entity> SceneFactory3::Create() {
                         plottedTracks.insert(tt);
                         glm::vec2 labelStart;
                         glm::vec2 dir;
+                        glm::vec2 cStart;
+                        glm::vec2 cEnd;
+                        glm::vec2 cdir;
                         if (track.GetStationA() == s.first) {
                             labelStart = initialPos;
                             dir = endPos - initialPos;
+                            cStart = initialPos;
+                            cEnd = endPos;
+                            cdir = glm::normalize(endPos - initialPos);
                         } else {
                             labelStart = endPos;
                             dir = initialPos -endPos;
+                            cStart = endPos;
+                            cEnd = initialPos;
+                            cdir = glm::normalize(initialPos-endPos);
                         }
                         dir = glm::normalize(dir);
                         //std::cout << "Plotting track " << tt << " between station " << s.first << " at (" << s1x << ", "
@@ -152,23 +237,28 @@ std::shared_ptr<Entity> SceneFactory3::Create() {
                         std::string draw = "outline";
                         glm::vec4 color(1.0f);
                         auto shape = std::make_shared<Line>(initialPos, endPos);
+                        std::cout << "Track " << tt << " from (" << cStart.x << ", " << cStart.y << ") to (" << cEnd.x << ", " << cEnd.y << ")\n";
                         auto mesh = MeshFactory::CreateMesh(*(shape.get()), 0.0f);
                         renderer->SetMesh(mesh);
                         renderer->SetTint(color);
                         node->AddComponent(renderer);
                         mainNode->AddChild(node);
+
                         initialPos.y += inc;
                         endPos.y += inc;
                         // see how many track circuits I have
                         auto tc = r.GetTrack(tt).GetTrackCircuits();
                         float lengthTC = glm::length(endPos -initialPos) / tc.size();
-
+                        int trackLength = r.GetTrack(tt).GetLength();
                         labelStart += dir * 0.5f * lengthTC;
+                        float totalGfxLength = glm::length(cEnd-cStart);
                         for (auto &trackCircuit : tc) {
                             std::cout << "plot label for " << trackCircuit->GetShortName()<< "\n";
                             auto txtNode = std::make_shared<Entity>();
                             auto txtRenderer = std::make_shared<Renderer>();
                             std::string text = trackCircuit->GetShortName();
+                            int trackCircuitLength = trackCircuit->GetLength();
+                            float pct = trackCircuitLength / static_cast<float>(trackLength);
                             std::string font = "main";
                             float size = 1.0f;
                             TextAlignment align = BOTTOM;
@@ -182,6 +272,11 @@ std::shared_ptr<Entity> SceneFactory3::Create() {
                             txtNode->AddComponent(txtRenderer);
                             txtNode->SetPosition(labelStart);
                             labelStart += dir * lengthTC;
+                            glm::vec2 cEnd = cStart + cdir * pct * totalGfxLength;
+                            m_trackCircuitRenderingInfo[text] = glm::vec4(cStart, cEnd);
+                            std::cout << "Track circuit " << text << " from (" << cStart.x << ", " << cStart.y << ") to (" << cEnd.x << ", " << cEnd.y << ")\n";
+                            cStart = cEnd;
+                            mainNode->AddChild(CreateLine(cEnd, cEnd + glm::vec2(0,2), glm::vec3(1.0f)));
                             mainNode->AddChild(txtNode);
                         }
                     }
@@ -246,8 +341,61 @@ std::shared_ptr<Entity> SceneFactory3::Create() {
 //    a->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
 //    mainNode->AddChild(a);
 
-
+    m_currentTime = sol.GetNow();
+    m_tMin = m_currentTime;
+    m_tMax = m_tMin + 7200;
+    TimeFormatter tf(m_currentTime);
+    auto timeLabel = CreateText(tf.toString(), -400, 300, 16, TOP_LEFT, glm::vec3(1.0f, 1.0f, 1.0f));
+    m_timeLabel = dynamic_cast<TextMesh*>(timeLabel->GetComponent<Renderer>()->GetMesh());
+    UINode->AddChild(timeLabel);
+//    auto p = sol.GetTrainPosition("MNPHK", 1526450400);
+//    p.Dump();
+//
+//    p = sol.GetTrainPosition("MNPHK", 1526450678);
+//    p.Dump();
+//
+//    p = sol.GetTrainPosition("MNPHK", 1526450677);
+//    p.Dump();
+//    p = sol.GetTrainPosition("MNPHK", 1526450679);
+//    p.Dump();
+    RefreshTrains();
     return root;
+}
+
+void SceneFactory3::RefreshTrains() {
+    // clear train node
+    //return;
+    m_trainContainer->ClearAllChildren();
+    for (auto& s : sol.m_trainDetails){
+        std::string trainId = s.first;
+        auto positions = sol.GetTrainPosition(trainId, m_currentTime);
+        for (auto& pos : positions.pos) {
+            // render current position
+            if (pos.isTrack) {
+                glm::vec4 trackCircuitPos = m_trackCircuitRenderingInfo.at(pos.id2);
+                glm::vec2 A(trackCircuitPos[0], trackCircuitPos[1]);
+                glm::vec2 B(trackCircuitPos[2], trackCircuitPos[3]);
+                glm::vec2 HeadPoint = A + (B - A) * (pos.xHead / pos.length);
+                glm::vec2 TailPoint = A + (B - A) * (pos.xTail / pos.length);
+
+                auto node = std::make_shared<Entity>();
+                auto renderer = std::make_shared<Renderer>();
+                std::string draw = "outline";
+                glm::vec4 color(1.0f, 0.0f, 0.0f, 1.0f);
+                auto shape = std::make_shared<Line>(TailPoint, HeadPoint);
+                auto mesh = MeshFactory::CreateMesh(*(shape.get()), 0.0f);
+                renderer->SetMesh(mesh);
+                renderer->SetTint(color);
+                node->AddComponent(renderer);
+                node->AddChild(CreateText(trainId, HeadPoint.x, HeadPoint.y, 2, BOTTOM, glm::vec3(color)));
+                m_trainContainer->AddChild(node);
+
+            }
+        }
+
+    }
+
+
 }
 
 

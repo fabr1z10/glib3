@@ -4,11 +4,22 @@
 #include <set>
 #include <map>
 //
-//struct Position {
-//    Resource* res;
-//    double xHead, xTail;
-//    bool backwards;
-//};
+
+
+struct TrainPositionInResource {
+    std::string id;
+    std::string id2;
+    bool isTrack;
+    float xHead, xTail;
+    float length;
+};
+
+struct TrainLoc {
+    void Dump();
+    std::vector<TrainPositionInResource> pos;
+    std::string trainId;
+    int time;
+};
 //
 //std::ostream& operator<< (std::ostream& os, const Position& pos);
 //
@@ -60,7 +71,9 @@ struct PlanItem {
     int timeOut;
     bool dwell;
     int runTime;
+    int length;
     bool isTrack;
+    bool fwd;
 };
 
 class Plan {
@@ -85,6 +98,10 @@ inline void Plan::Add (int tin, PlanItem item){
     m_items[tin] = item;
 }
 
+struct TrainDetails {
+    int speed;
+    int length;
+};
 
 class Solution {
 public:
@@ -99,12 +116,19 @@ public:
 //    std::string GetStationAfter (const std::string& train, Resource* r);
     std::unordered_map<std::string, std::vector<std::string> >& getStations() {return m_stations;}
     std::unordered_map<std::string, std::unique_ptr<Plan> > m_plans;
+    std::unordered_map<std::string, TrainDetails> m_trainDetails;
+    TrainLoc GetTrainPosition (const std::string& trainId, int time);
+    int GetNow() const;
 private:
     int m_now;
 //    std::unordered_map<std::string, int> m_trainLengths;
 
     std::unordered_map<std::string, std::vector<std::string> > m_stations;
 };
+
+inline int Solution::GetNow() const {
+    return m_now;
+}
 //
 //inline int Solution::GetNow() const {
 //    return m_now;

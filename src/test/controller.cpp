@@ -35,19 +35,16 @@ void ViewerController::MouseButtonCallback(GLFWwindow* window, int button, int a
 }
 
 void ViewerController::KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-//    if (key == GLFW_KEY_LEFT && action == GLFW_PRESS)
-//    {
-//        m_time -= 60.0;
-//        m_factory->RefreshTrains(m_time);
-//    } else if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS) {
-//        m_time += 60.0;
-//        m_factory->RefreshTrains(m_time);
-//
-//    }
-//
+    if (key == GLFW_KEY_LEFT && action == GLFW_PRESS)
+    {
+        m_factory->AdvanceTime(-60);
+    } else if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS) {
+        m_factory->AdvanceTime(60);
+    }
+
 }
-//
-//
+
+
 void ViewerController::ScrollCallback(GLFWwindow*, double x , double y) {
 
     double xx,yy;

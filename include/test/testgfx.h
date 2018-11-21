@@ -1,6 +1,7 @@
 #include <gfx/engine.h>
 #include <test/solution.h>
 #include <test/global.h>
+#include <gfx/textmesh.h>
 
 class Factory1 : public SceneFactory {
 public:
@@ -40,13 +41,23 @@ public:
     void PostInit() override {}
     void CleanUp () override {}
     void Plot(const std::string& station, int x, int y);
+    void AdvanceTime(int);
 private:
+    TextMesh * m_timeLabel;
+    std::shared_ptr<Entity> CreateText(const std::string& text, float x, float y, float size, TextAlignment, glm::vec3 color);
+    std::shared_ptr<Entity> CreateLine(glm::vec2, glm::vec2, glm::vec3);
+    void RefreshTrains();
     Solution& sol;
     Railway& r;
     std::unordered_set<std::string> stations;
     std::unordered_map<std::string, std::pair<int,int>> stationPos;
-
+    int m_tMin;
+    int m_tMax;
+    int m_currentTime;
     std::unordered_map<std::string, std::shared_ptr<StationPlot>> m_stations;
+    std::unordered_map<std::string, glm::vec2> m_stationRenderingInfo;
+    std::unordered_map<std::string, glm::vec4> m_trackCircuitRenderingInfo;
+    Entity* m_trainContainer;
 };
 
 class StationPlot  {

@@ -5,11 +5,11 @@
 #include <gfx/camera.h>
 #include <test/solution.h>
 
-//class Factory2;
+class SceneFactory3;
 //
 class ViewerController : public Component, public MouseListener, public KeyboardListener {
 public:
-    ViewerController() : Component(), MouseListener(), KeyboardListener(), m_lmbPressed{false} {}
+    ViewerController(SceneFactory3* factory) : Component(), MouseListener(), KeyboardListener(), m_lmbPressed{false}, m_factory(factory) {}
     void Start() override;
     void Update (double dt) override {}
     void CursorPosCallback(GLFWwindow*, double, double) override;
@@ -24,7 +24,7 @@ private:
 
 //    double m_now;
 //    double m_time;
-//    Factory2* m_factory;
+    SceneFactory3* m_factory;
 //    void RefreshTrains();
     bool m_lmbPressed;
     double m_xPrev, m_yPrev;

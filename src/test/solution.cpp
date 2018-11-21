@@ -31,6 +31,14 @@ using namespace tinyxml2;
 //
 //}
 
+void TrainLoc::Dump() {
+    std::cout << "Train location for " << trainId << " at " << time << "\n";
+    for (auto& p : pos) {
+        std::cout << (p.isTrack ? ("Trackcircuit " + p.id2) : ("Station " + p.id + ", " +p.id2)) << "... head = " << p.xHead << ", tail = " << p.xTail << "\n";
+    }
+
+}
+
 void Plan::FillRunningTimes() {
     Railway &r = Config::get().GetRailway();
     for (auto& item : m_items) {
@@ -40,6 +48,7 @@ void Plan::FillRunningTimes() {
             bool fwd = (track.GetStationB() == item.second.nextStation);
             auto& trackCircuit = track.GetTrackCircuit(item.second.id2);
             item.second.runTime = trackCircuit.GetRunningTime(m_trainId.substr(0,1), fwd);
+            item.second.fwd = fwd;
             //m.second.id2).GetRunningTime(m_trainId.substr(0,1), fwd);
         }
     }
@@ -90,7 +99,8 @@ Solution::Solution(const std::string &solutionFile) {
     auto el = doc.FirstChildElement("p1:TCS_OUT")->FirstChildElement("p1:Trains");
     for (auto eTrain = el->FirstChildElement("p1:Train"); eTrain != NULL; eTrain = eTrain->NextSiblingElement()) {
         std::string trainId(eTrain->Attribute("Name"));
-        double speed = eTrain->DoubleAttribute("Speed");
+        int speed = eTrain->IntAttribute("Speed");
+        m_trainDetails[trainId].speed = speed;
         //r.AddTrain(trainId, 0, speed);
         //std::cout << "Creatng a plan for train " << trainId << std::endl;
         std::unique_ptr<Plan> plan( new Plan(trainId));
@@ -112,12 +122,14 @@ Solution::Solution(const std::string &solutionFile) {
                 //Activity act(r.GetStation(stationId).GetRoute(routeId));
                 int timeIn = ets->IntAttribute("TimeIn");
                 PlanItem item;
+                auto& route = r.GetStation(stationId).GetRoute(routeId);
                 item.resource = "S" + stationId +"(" + routeId +")";
                 item.timeOut = ets->IntAttribute("TimeOut");
-                item.runTime = r.GetStation(stationId).GetRoute(routeId).GetRunningTime(trainId.substr(0,1), true);
+                item.runTime = route.GetRunningTime(trainId.substr(0,1), true);
                 item.isTrack = false;
                 item.id = stationId;
                 item.id2 =routeId;
+                item.fwd = true;
                 //std::cout << "Adding station: " << stationId << "\n";
                 m_stations[trainId].push_back(stationId);
                 plan->Add(timeIn, item);
@@ -127,11 +139,13 @@ Solution::Solution(const std::string &solutionFile) {
                  ets != NULL; ets = ets->NextSiblingElement()) {
                 std::string trackCircuitId = ets->Attribute("TrackCircuitId");
                 std::string trackId = trackCircuitId.substr(0, trackCircuitId.find_first_of('.'));
+                auto& trackCircuit = r.GetTrack(trackId).GetTrackCircuit(trackCircuitId);
                 PlanItem item;
                 item.resource = trackCircuitId;
                 int timeIn = ets->IntAttribute("TimeIn");
                 item.timeOut = ets->IntAttribute("TimeOut");
                 item.isTrack = true;
+                item.length = trackCircuit.GetLength();
                 item.id = trackId;
                 item.id2 = trackCircuitId;
                 plan->Add(timeIn, item);
@@ -146,6 +160,15 @@ Solution::Solution(const std::string &solutionFile) {
 
         m_plans[trainId] = std::move(plan);
     }
+
+    // get the train lengths
+    auto el2 = doc.FirstChildElement("p1:TCS_OUT")->FirstChildElement("p1:TrainLengths");
+    for (auto el3 = el2->FirstChildElement("p2:TrainLength"); el3 != NULL; el3 = el3->NextSiblingElement()) {
+        std::string trainId = el3->Attribute("TrainId");
+        int length = el3->IntAttribute("TrainLen");
+        m_trainDetails.at(trainId).length = length;
+    }
+
 }
 
                 //Activity act(r.GetStation(stationId).GetRoute(routeId));
@@ -192,13 +215,6 @@ Solution::Solution(const std::string &solutionFile) {
 //        schedules[trainId] = activities;
 //    }
 //
-//    // get the train lengths
-//    auto el2 = doc.FirstChildElement("p1:TCS_OUT")->FirstChildElement("p1:TrainLengths");
-//    for (auto el3 = el2->FirstChildElement("p2:TrainLength"); el3 != NULL; el3 = el3->NextSiblingElement()) {
-//        std::string trainId = el3->Attribute("TrainId");
-//        int length = el3->IntAttribute("TrainLen");
-//        m_trainLengths[trainId] = length;
-//    }
 //
 //    for (auto& s : schedules) {
 //        std::string ps;
@@ -370,3 +386,66 @@ Solution::Solution(const std::string &solutionFile) {
 //    }
 //    return out;
 //}
+
+TrainLoc Solution::GetTrainPosition (const std::string& trainId, int time) {
+
+    auto ip = m_plans.find(trainId);
+    if (ip == m_plans.end()) {
+        GLIB_FAIL("Cannot find plan for train " << trainId);
+    }
+    auto it = ip->second->m_items.upper_bound(time);
+    it--;
+    // std::cout << "\nHead of train " << trainId << " at " << time << " is in " << it->second.resource<<"\n";
+    int dt = std::min(time - it->first, it->second.runTime);
+    auto& trainDetail = m_trainDetails.at(trainId);
+    double trainSpeedFeetPerSec = trainDetail.speed * (5280.0 / 3600.0);
+    double dx = dt * trainSpeedFeetPerSec;
+
+    TrainLoc out;
+    out.trainId = trainId;
+    out.time = time;
+    TrainPositionInResource tpos;
+    tpos.xHead = it->second.fwd ? std::min(dx, static_cast<double>(it->second.length)) : std::max(it->second.length - dx, 0.0);
+    tpos.id = it->second.id;
+    tpos.id2 = it->second.id2;
+    tpos.length = it->second.length;
+    tpos.isTrack = it->second.isTrack;
+    if (dx > trainDetail.length) {
+        tpos.xTail = it->second.fwd ? tpos.xHead - trainDetail.length : tpos.xHead + trainDetail.length;
+        out.pos.push_back(tpos);
+        return out;
+    } else {
+        // occupy previous resources
+        tpos.xTail = it->second.fwd ? 0 : it->second.length;
+        out.pos.push_back(tpos);
+        float lengthLeft = trainDetail.length - dx;
+        while (lengthLeft > 0) {
+            // examine previous resource (unless this is the 1st)
+            if (it == ip->second->m_items.begin())
+            {
+                break;
+            }
+            --it;
+            TrainPositionInResource tpos;
+            tpos.id= it->second.id;
+            tpos.id2= it->second.id2;
+            tpos.isTrack = it->second.isTrack;
+            tpos.length = it->second.length;
+            if (it->second.length > lengthLeft) {
+                tpos.xHead = it->second.fwd ? it->second.length : 0;
+                tpos.xTail = it->second.fwd ? it->second.length - lengthLeft : lengthLeft;
+                lengthLeft = 0;
+            } else {
+                tpos.xHead = it->second.fwd ? it->second.length : 0;
+                tpos.xTail = it->second.fwd ? 0 : it->second.length;
+                lengthLeft -= it->second.length;
+            }
+            out.pos.push_back(tpos);
+
+        }
+
+
+
+    }
+    return out;
+}
