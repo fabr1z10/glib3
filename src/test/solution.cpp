@@ -83,6 +83,10 @@ Solution::Solution(const std::string &solutionFile) {
     Railway &r = Config::get().GetRailway();
     XMLDocument doc;
     std::string fullPath = Config::get().GetHomeDir() + solutionFile;
+
+    // create the string for output file and status
+    //std::string outputFile = "output_Ubuntu"
+
     XMLError e = doc.LoadFile(fullPath.c_str());
     if (e != XML_SUCCESS) {
         std::cout << "We've got a problem loading solution file " << fullPath << std::endl;
@@ -404,6 +408,7 @@ TrainLoc Solution::GetTrainPosition (const std::string& trainId, int time) {
     TrainLoc out;
     out.trainId = trainId;
     out.time = time;
+    out.stopped = time-it->first > it->second.runTime;
     TrainPositionInResource tpos;
     tpos.xHead = it->second.fwd ? std::min(dx, static_cast<double>(it->second.length)) : std::max(it->second.length - dx, 0.0);
     tpos.id = it->second.id;

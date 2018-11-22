@@ -18,6 +18,7 @@ struct TrainLoc {
     void Dump();
     std::vector<TrainPositionInResource> pos;
     std::string trainId;
+    bool stopped;
     int time;
 };
 //

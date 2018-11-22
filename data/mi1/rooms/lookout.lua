@@ -6,6 +6,7 @@ room = generateBasicRoom { width = 320, height = 144 }
 
 -- set player location. It depends on the previous room
 
+-- the local objects
 local obj = {
 	stairs = {
 		text = strings.objects.stairs,
@@ -16,6 +17,14 @@ local obj = {
 		actions = {
 			walk = curry(changeRoom, "village1")
 		}
+	},
+	lookout = {
+		text = strings.objects.lookout,
+		pos = {114, 36, 0},
+		walk_to = {134, 36},
+		size = {20, 47},
+		face = "west",
+		actions = {}
 	}
 }
 
@@ -26,6 +35,7 @@ room:add( {
     { pos = {294, 33, 3}, components = { { type="gfx", image ="gfx/lookout_3.png" }}},
 	items.player.create { pos={100, 100}, model="guybrush", facing ="east" },
 	items.object.create { object = obj.stairs },
+	items.object.create { object = obj.lookout },
 	{
 		pos = {0,0,0},
 		components = {

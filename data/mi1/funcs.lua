@@ -114,8 +114,11 @@ function runAction ()
 				s.actions = {
 					[1] = { type="walk", actor="player", pos = obj.walk_to},
 					[2] = { type="turn", actor="player", dir = obj.face, after={1}}
-				}					
-				s:push { script = defaultActions[variables._actionInfo.verb.code] (), at = "end" }
+				}			
+				local b = defaultActions[variables._actionInfo.verb.code]
+				if (b ~= nil) then		
+					s:push { script = b(), at = "end" }
+				end
 				--s:dump()
             end
         else

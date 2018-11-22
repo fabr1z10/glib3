@@ -46,6 +46,8 @@ private:
     TextMesh * m_timeLabel;
     std::shared_ptr<Entity> CreateText(const std::string& text, float x, float y, float size, TextAlignment, glm::vec3 color);
     std::shared_ptr<Entity> CreateLine(glm::vec2, glm::vec2, glm::vec3);
+    std::shared_ptr<Entity> CreateRect(glm::vec3 pos, float width, float height, glm::vec3 color);
+    std::shared_ptr<Entity> CreateCircle(glm::vec3 pos, float radius, glm::vec3 color);
     void RefreshTrains();
     Solution& sol;
     Railway& r;

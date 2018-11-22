@@ -28,5 +28,6 @@ objects= {
 }
 
 defaultActions = {
-	look = curry (say, {actor=objects.guybrush, lines = {strings.defaultactions[4]} })
+	look = curry (say, {actor=objects.guybrush, lines = {strings.defaultactions[4]} }),
+
 }

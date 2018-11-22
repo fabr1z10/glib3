@@ -59,6 +59,35 @@ std::shared_ptr<Entity> SceneFactory3::CreateLine(glm::vec2 A, glm::vec2 B, glm:
     return node;
 }
 
+std::shared_ptr<Entity> SceneFactory3::CreateRect(glm::vec3 pos, float width, float height, glm::vec3 col) {
+    auto node = std::make_shared<Entity>();
+    auto renderer = std::make_shared<Renderer>();
+    std::string draw = "outline";
+    glm::vec4 color(col, 1.0f);
+    auto shape = std::make_shared<Rect>(width, height, glm::vec2(-width*0.5f, -height*0.5f));
+    auto mesh = MeshFactory::CreateMesh(*(shape.get()), 0.0f);
+    renderer->SetMesh(mesh);
+    renderer->SetTint(color);
+    node->AddComponent(renderer);
+    node->SetPosition(pos);
+    return node;
+}
+
+std::shared_ptr<Entity> SceneFactory3::CreateCircle(glm::vec3 pos, float radius, glm::vec3 col) {
+    auto node = std::make_shared<Entity>();
+    auto renderer = std::make_shared<Renderer>();
+    std::string draw = "solid";
+    glm::vec4 color(col, 1.0f);
+    auto shape = std::make_shared<Circle>(radius);
+    auto mesh = MeshFactory::CreateMesh(*(shape.get()), 0.0f);
+    renderer->SetMesh(mesh);
+    renderer->SetTint(color);
+    node->AddComponent(renderer);
+    node->SetPosition(pos);
+    return node;
+
+}
+
 std::shared_ptr<Entity> SceneFactory3::CreateText(const std::string& text, float x, float y, float size, TextAlignment align, glm::vec3 color) {
     auto txtNode = std::make_shared<Entity>();
     auto txtRenderer = std::make_shared<Renderer>();
@@ -121,6 +150,19 @@ std::shared_ptr<Entity> SceneFactory3::Create() {
                 stations.insert(track.GetStationB());
             }
         }
+        // if this is the last track, add the next station
+        auto it2 = p.second->m_items.rbegin();
+        if (it2->second.isTrack) {
+            auto& track = r.GetTrack(it2->second.id);
+            if (it2->second.fwd) {
+                stations.insert(track.GetStationB());
+            }
+            else {
+                stations.insert(track.GetStationA());
+            }
+
+        }
+
     }
 
 
@@ -270,9 +312,10 @@ std::shared_ptr<Entity> SceneFactory3::Create() {
                             txtRenderer->SetTint(color);
                             txtRenderer->SetMesh(txtMesh);
                             txtNode->AddComponent(txtRenderer);
-                            txtNode->SetPosition(labelStart);
+
                             labelStart += dir * lengthTC;
                             glm::vec2 cEnd = cStart + cdir * pct * totalGfxLength;
+                            txtNode->SetPosition((cStart+cEnd)*0.5f);
                             m_trackCircuitRenderingInfo[text] = glm::vec4(cStart, cEnd);
                             std::cout << "Track circuit " << text << " from (" << cStart.x << ", " << cStart.y << ") to (" << cEnd.x << ", " << cEnd.y << ")\n";
                             cStart = cEnd;
@@ -366,9 +409,13 @@ void SceneFactory3::RefreshTrains() {
     // clear train node
     //return;
     m_trainContainer->ClearAllChildren();
+    std::map<std::string, std::vector<std::string>> trainsInStation;
     for (auto& s : sol.m_trainDetails){
         std::string trainId = s.first;
         auto positions = sol.GetTrainPosition(trainId, m_currentTime);
+
+        glm::vec2 HeadPos;
+        int count = 0;
         for (auto& pos : positions.pos) {
             // render current position
             if (pos.isTrack) {
@@ -387,10 +434,23 @@ void SceneFactory3::RefreshTrains() {
                 renderer->SetMesh(mesh);
                 renderer->SetTint(color);
                 node->AddComponent(renderer);
-                node->AddChild(CreateText(trainId, HeadPoint.x, HeadPoint.y, 2, BOTTOM, glm::vec3(color)));
                 m_trainContainer->AddChild(node);
-
+                if (count == 0)
+                    HeadPos = HeadPoint;
+            } else {
+                glm::vec2 stationPos = m_stationRenderingInfo.at(pos.id);
+                m_trainContainer->AddChild(CreateRect(glm::vec3(stationPos,1.0f), 10.0f,10.0f, glm::vec3(1.0f, 0.0f, 0.0f)));
+                if (count == 0) {
+                    HeadPos = stationPos + glm::vec2(0,10.f+ trainsInStation.count(pos.id)*2.0f);
+                }
+                trainsInStation[pos.id].push_back(trainId);
             }
+            count++;
+        }
+        m_trainContainer->AddChild(CreateText(trainId, HeadPos.x, HeadPos.y, 2, BOTTOM, glm::vec3(1.0f, 0.0f, 0.0f)));
+        if (positions.stopped) {
+            // add a circle next to train name to indicate train is being held
+            m_trainContainer->AddChild(CreateCircle(glm::vec3(HeadPos.x - 5.0f, HeadPos.y+0.5f, 1.0f), 1.0f, glm::vec3(1.0f, 0.0f, 0.0f)));
         }
 
     }
