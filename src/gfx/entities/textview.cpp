@@ -28,14 +28,26 @@ TextView::TextView (glm::vec2 pos, float width, float height, float fontSize, in
 }
 
 
-void TextView::AddItem(const std::string & text) {
-    m_lines.push_back(text);
-    AddEntity(text);
+void TextView::AddItem(luabridge::LuaRef ref) {
+    std::string text = ref["text"].cast<std::string>();
+    m_lines.push_back(ref);
+    AddEntity(ref);
 
 }
 
-void TextView::AddEntity(const std::string & text) {
-    luabridge::LuaRef f = m_factory(text, m_scroll ? m_width - m_deltax : m_width);
+void TextView::ClearText() {
+    m_scroll = false;
+    m_textContainer->ClearAllChildren();
+    m_nextPos = glm::vec2(0.0f, 0.0f);
+    m_nLines = 0;
+    m_lines.clear();
+    IncreaseTopLine(0);
+
+}
+
+void TextView::AddEntity(luabridge::LuaRef ref) {
+    ref["maxwidth"] = m_scroll ? m_width - m_deltax : m_width;
+    luabridge::LuaRef f = m_factory(ref);
 
     // 1. find the number of rows of this
     auto mf = Engine::get().GetSceneFactory();
@@ -53,7 +65,7 @@ void TextView::AddEntity(const std::string & text) {
         m_textContainer->AddChild(ptr);
         ptr->SetPosition(bottomLeftPos);
         auto p = ptr->GetPosition();
-        std::cout << "World pos of " << text << " is " << p.x << ", " << p.y << "\n";
+        //std::cout << "World pos of " << text << " is " << p.x << ", " << p.y << "\n";
         m_nextPos = bottomLeftPos;
     }
 

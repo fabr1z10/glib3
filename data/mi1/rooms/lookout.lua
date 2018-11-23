@@ -5,6 +5,34 @@ room = generateBasicRoom { width = 320, height = 144 }
 --local main = room.scene[1].children
 
 -- set player location. It depends on the previous room
+room:add_asset(sprites.lookout)
+
+function say2(args)
+return { type="say", actor=args.actor.tag, lines = args.lines, offset = args.actor.text_offset, color = args.actor.text_color, after = args.after }
+end
+function ciaooo() 
+	print ("IIIDIDIDI")
+	print (obj.lookout.text)
+	local s = script:new()
+	s.actions = {
+		[1] = say2 { actor = objects.guybrush, lines= {strings.dialogues.lookout.text[1] }},
+		[2] = say2 { actor = obj.lookout, lines = {strings.dialogues.lookout.text[2]}, after= {1} }
+	}
+	print ("DIDIDIDIDI!!!")
+	return s
+end
+
+
+dialogues.lookout = {
+	-- root
+	[1] = { children = {2, 3, 4, 5} },
+	[2] = { text = strings.dialogues.lookout.text[1], script = ciaooo },
+	[3] = { text = strings.dialogues.lookout.text[2] },
+	[4] = { text = strings.dialogues.lookout.text[3] },
+	[5] = { text = strings.dialogues.lookout.text[4] },
+}
+
+
 
 -- the local objects
 local obj = {
@@ -24,9 +52,18 @@ local obj = {
 		walk_to = {134, 36},
 		size = {20, 47},
 		face = "west",
-		actions = {}
+		model ="lookout",
+		anim ="idle_right",
+		flip = true,
+		actions = {
+			talk = curry(start_dialogue, "lookout")
+		}
 	}
 }
+
+
+
+
 
 
 room:add( {
@@ -160,13 +197,13 @@ function room.afterstartup()
 	setverb (config.verbs.walk)
 
 	local c = monkey.getEntity("inventory")
-	c:addtext("ciao")
-	c:addtext("come")
-	c:addtext("stai")
-	c:addtext("alleelelel")
-	c:addtext("stronzo")
-	c:addtext("duro")
-	c:addtext("anvedi")
+	c:addtext ( { text="ciao" })
+	c:addtext ( { text="come" })
+	c:addtext( { text ="stai" })
+	c:addtext({ text="alleelelel"})
+	c:addtext({ text="stronzo" })
+	c:addtext( { text="duro"})
+	c:addtext( {text="anvedi"})
 
 
 	--monkey.addEntity(items.inventorybutton.create ("ciao",100), c)

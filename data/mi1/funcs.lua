@@ -12,6 +12,7 @@ end
 
 -- basic say script
 function say(args) 
+	-- requires actor, lines
 	local s = script:new()
 	s.actions = {
 		[1] = { type="say", actor=args.actor.tag, lines = args.lines, offset = args.actor.text_offset, color = args.actor.text_color }
@@ -130,7 +131,7 @@ function runAction ()
 				[2] = { type="turn", actor="player", dir = obj.face, after={1}}
 			}		
 			--s:push { script = createWalkToAction {objectId = variables._actionInfo.obj1}, at = "end" }
-			--s:push { script = a(), at = "end" }
+			s:push { script = a(), at = "end" }
         end
     else
         -- action with two objects
@@ -160,4 +161,63 @@ function runAction ()
     variables._actionInfo:reset()
 	print ("CIOCOCO")
     updateVerb()
+end
+
+function start_dialogue(dialogueId)
+	local s = script:new()
+	s.actions ={
+		[1] = { type="callfunc", func = function()
+			local m = monkey.getEntity("mainui")
+			local m1 = monkey.getEntity("main")
+			local m2 = monkey.getEntity("dialogueui")
+			m:setactive(false)
+			m1:enablecontrols(false)
+			m2:setactive(true)
+			local dialogue = dialogues[dialogueId]
+			local root = dialogue[1]
+			print ("Size of children = " .. tostring(#root.children))
+			m2:cleartext()
+			for k, v in ipairs(root.children) do
+				m2:addtext { text=dialogue[v].text, dialogue_node = dialogue[v] }
+			end
+		end
+		}
+	}
+	return s
+end
+
+function handleDialogueButton(entity)
+	print ("VAFFFA " ..  tostring(entity.x))
+	local m2 = monkey.getEntity("dialogueui")				
+	m2:cleartext()
+	
+	local info = entity:getinfo()  
+	local dialogueNode = info.data.node
+	local s = nil
+	if (dialogueNode.script ~= nil) then
+		s = dialogueNode.script()
+	end
+
+	if (dialogueNode.children == nil) then
+		-- return to game
+		local s1 = script:new()
+		s1.actions = {
+			[1] = { type="callfunc", func= function() 
+				local m = monkey.getEntity("mainui")
+				local m1 = monkey.getEntity("main")
+				local m2 = monkey.getEntity("dialogueui")
+				m2:cleartext()
+				m2:setactive(false)
+				m:setactive(true)
+				m1:enablecontrols(true)			
+			end}
+		}
+		if (s == nil) then
+			s = s1
+		else
+			s:push { script = s1, at = "end" }
+		end
+	else
+	end
+	monkey.play(s)
 end

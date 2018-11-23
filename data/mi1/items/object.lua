@@ -15,7 +15,7 @@ print("CICICICI")
 		local comp = {}
 		local offset = args.object.offset
 		if (args.object.model ~= nil) then
-			table.insert (comp, { type="gfx", model=args.object.model, anim = args.object.anim})
+			table.insert (comp, { type="gfx", model=args.object.model, anim = args.object.anim, flip = args.object.flip})
 		end
 		if (args.object.size ~= nil) then
 			table.insert (comp, { type="hotspot", priority = priority, 

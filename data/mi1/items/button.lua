@@ -1,6 +1,7 @@
 items.button = {}
 items.verbbutton = {}
 items.inventorybutton = {}
+items.dialoguebutton = {}
 
 -- a button is simply some text with a hotspot
 items.button.create = function(args)
@@ -15,23 +16,28 @@ items.button.create = function(args)
 	local text = args.text
 	local color = args.color or {255,255,255,255}
 	local maxwidth = args.maxwidth
+	local components = {
+		{ type="text", id=text, font = font, size = size, color = color, align = align, maxwidth = maxwidth },
+		{ type="hotspot", onenter = onenter, onleave = onleave, onclick = onclick, priority = priority }
+	}
+	if (args.info ~= nil) then
+		table.insert(components, { type="info", data = args.info})
+	end
 
     return {
         pos = { pos[1], pos[2], 0 },
-		components = {
-			{ type="text", id=text, font = font, size = size, color = color, align = align, maxwidth = maxwidth },
-			{ type="hotspot", onenter = onenter, onleave = onleave, onclick = onclick, priority = priority }
-		}
+		components = components
     }
 
 end
 
-items.inventorybutton.create = function (text, maxwidth) 
+items.inventorybutton.create = function (args) 
+	
 	return items.button.create {
 		pos = {0,0},
 		font="ui", 
-        text= text,
-		maxwidth = maxwidth,
+        text= args.text,
+		maxwidth = args.maxwidth,
         align="bottomleft", 
         color = config.ui_inv_unselected, 
         size = 8, 
@@ -42,6 +48,25 @@ items.inventorybutton.create = function (text, maxwidth)
 	}
 
 end
+
+items.dialoguebutton.create = function (args) 
+	return items.button.create {
+		pos = {0,0},
+		font="ui", 
+        text= args.text,
+		maxwidth = args.maxwidth,
+        align="bottomleft", 
+        color = config.ui_unselected_color, 
+        size = 8, 
+        priority = 1,
+		info = { node = args.dialogue_node }, 
+		onenter = curry2(changecolor, config.ui_selected_color), 
+        onleave = curry2(changecolor, config.ui_unselected_color),
+		onclick = handleDialogueButton
+	}
+
+end
+
 
 items.verbbutton.create = function(args) 
 	local pos = args.pos

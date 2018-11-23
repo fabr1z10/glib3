@@ -8,8 +8,8 @@ public:
     TextView (glm::vec2 pos, float width, float height, float fontSize, int lines, luabridge::LuaRef factory) ;
     //virtual ~TextView();
 
-    void AddItem (const std::string&);
-    void ClearText() {}
+    void AddItem (luabridge::LuaRef ref);
+    void ClearText();
     void IncreaseTopLine(int);
     void Start() override;
 //    void ResetText();
@@ -24,11 +24,11 @@ public:
 //    // bool SetActive(bool) override;
 private:
     void AddArrows();
-    void AddEntity(const std::string&);
+    void AddEntity(luabridge::LuaRef);
     void reformat();
     luabridge::LuaRef m_factory;
     // number of lines in text view
-    std::vector<std::string> m_lines;
+    std::vector<luabridge::LuaRef> m_lines;
     int m_nLines;
     int m_maxLines;
     float m_width;

@@ -234,9 +234,9 @@ bool EntityWrapper::GetFlipX() const {
 
 }
 
-void EntityWrapper::AppendText(const std::string& text) {
+void EntityWrapper::AppendText(luabridge::LuaRef ref) {
     TextView* r = dynamic_cast<TextView*>(m_underlying);
-    r->AddItem(text);
+    r->AddItem(ref);
 }
 
 void EntityWrapper::AppendButton(luabridge::LuaRef ref) {
