@@ -10,6 +10,18 @@ function curry2(f, arg)
     end 
 end
 
+-- load all files in a folder
+function load_all(folder_name)
+    print ("Loading all " .. folder_name .. " ...")
+    local p = io.popen("find " .. _path .. " -path " .. folder_name .. "/*.lua | cut -c" .. tostring(string.len(_path)+1) .. "- | sed 's/.\\{4\\}$//'"):lines()
+    print ("pollo" .. tostring(#p()))
+    for line in p do
+        print(" " .. line)
+        require(line)
+    end
+end
+
+
 -- basic say script
 function say(args) 
 	-- requires actor, lines
@@ -18,6 +30,28 @@ function say(args)
 		[1] = { type="say", actor=args.actor.tag, lines = args.lines, offset = args.actor.text_offset, color = args.actor.text_color }
 	}
 	return s
+end
+
+function say2(args)
+    return { type="say", actor=args.actor.tag, lines = args.lines, offset = args.actor.text_offset, color = args.actor.text_color, after = args.after }
+end
+
+function make_dialogue(args)
+    print ("POLLOOO")
+    local s = script:new()
+    s.actions = {}
+    local i = 1
+    for k,v in ipairs(args) do
+        print (v[1].tag .. "saying " .. tostring(#v[2]) .. " lines")
+        local a = {i-1}
+        if (i ==1) then
+            a=nil
+        end
+        s.actions[i] = say2{actor=v[1], lines=v[2], after = a}
+        print ("polsjduhfuhf")
+        i =i+1
+    end
+    return s
 end
 
 
@@ -163,7 +197,14 @@ function runAction ()
     updateVerb()
 end
 
-function start_dialogue(dialogueId)
+function start_dialogue(args)
+    local dialogue = args.dialogue
+    local root = args.root or dialogue.nodes[1]
+    if (args.root == nil) then
+        if (dialogue.init ~= nil) then
+            dialogue.init()
+        end
+    end
 	local s = script:new()
 	s.actions ={
 		[1] = { type="callfunc", func = function()
@@ -173,34 +214,60 @@ function start_dialogue(dialogueId)
 			m:setactive(false)
 			m1:enablecontrols(false)
 			m2:setactive(true)
-			local dialogue = dialogues[dialogueId]
-			local root = dialogue[1]
+			--local root = dialogue[1]
 			print ("Size of children = " .. tostring(#root.children))
 			m2:cleartext()
 			for k, v in ipairs(root.children) do
-				m2:addtext { text=dialogue[v].text, dialogue_node = dialogue[v] }
-			end
+                local node = dialogue.nodes[v]
+                if (node.active == true) then
+				    m2:addtext { text=node.text, dialogue_node = node, dialogue = dialogue }
+			    end
+            end
 		end
 		}
 	}
 	return s
 end
 
+
+
+
+
 function handleDialogueButton(entity)
-	print ("VAFFFA " ..  tostring(entity.x))
 	local m2 = monkey.getEntity("dialogueui")				
 	m2:cleartext()
 	
-	local info = entity:getinfo()  
-	local dialogueNode = info.data.node
-	local s = nil
-	if (dialogueNode.script ~= nil) then
-		s = dialogueNode.script()
-	end
+    local info = entity:getinfo()  
+    local dialogueNode = info.data.node
+    local dialogue = info.data.dialogue    
+    
+    if (dialogueNode.deact ~= nil) then
+        for k, v in ipairs(dialogueNode.deact) do
+            dialogue.nodes[v].active = false
+        end
+    end
+    if (dialogueNode.act ~= nil) then
+        for k, v in ipairs(dialogueNode.act) do
+            dialogue.nodes[v].active = true
+        end
+    end
 
+
+
+
+	local s = nil
+
+
+	if (dialogueNode.script ~= nil) then
+        print ("calling button")
+		s = dialogueNode.script()
+	else
+        print ("button has no script attached.")
+    end
+
+    local s1 = script:new()
 	if (dialogueNode.children == nil) then
 		-- return to game
-		local s1 = script:new()
 		s1.actions = {
 			[1] = { type="callfunc", func= function() 
 				local m = monkey.getEntity("mainui")
@@ -212,12 +279,30 @@ function handleDialogueButton(entity)
 				m1:enablecontrols(true)			
 			end}
 		}
-		if (s == nil) then
-			s = s1
-		else
-			s:push { script = s1, at = "end" }
-		end
+
 	else
+        local dialogue = info.data.dialogue
+        s1 = start_dialogue {dialogue = dialogue, root = dialogueNode}
+        -- s1.actions = {
+        --     [1] = { type="callfunc", func = function ()
+        --         -- body
+        --         local m2 = monkey.getEntity("dialogueui")
+        --         for k, v in ipairs(dialogueNode.children) do
+        --             m2:addtext { text=dialogue[v].text, dialogue_node = dialogue[v], dialogue = dialogue }
+        --         end
+        --     end}
+        -- }
 	end
+    if (s == nil) then
+        s = s1
+    else
+        s:push { script = s1, at = "end" }
+    end
 	monkey.play(s)
 end
+
+-- load room specific scripts
+load_all("scripts")
+
+
+

@@ -1,3 +1,3 @@
 dialogues = {}
 
-
+require("dialogues/lookout")

@@ -16,6 +16,7 @@ config = {
 
 require ("text/" .. config.lang .."/text")
 
+
 config.verbs = {
 	open = { code="open", text = strings.ui.open, objects = 1 },
     close = { code="close", text = strings.ui.close, objects = 1 },
@@ -55,6 +56,7 @@ variables = {
 
 require ("script")
 require ("funcs")
+require ("factories")
 require ("items")
 require ("sprites")
 require ("dialogues")

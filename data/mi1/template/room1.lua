@@ -4,6 +4,9 @@ function generateBasicRoom (args)
 	local room_height = args.height
 
 	local p =  {
+		items = {},
+		dialogues = {},
+		scripts = {},
 		engines = {
 			{ type = "hotspotmanager" },
 			{ type = "scheduler" }

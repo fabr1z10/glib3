@@ -1,6 +1,7 @@
 #pragma once
 
 #include <gfx/activity.h>
+#include <string>
 
 class Turn : public Activity {
 public:

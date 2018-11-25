@@ -1,4 +1,5 @@
 require("template/room1")
+dofile("cippo.lua")
 
 room = generateBasicRoom { width = 320, height = 144 }
 
@@ -7,59 +8,16 @@ room = generateBasicRoom { width = 320, height = 144 }
 -- set player location. It depends on the previous room
 room:add_asset(sprites.lookout)
 
-function say2(args)
-return { type="say", actor=args.actor.tag, lines = args.lines, offset = args.actor.text_offset, color = args.actor.text_color, after = args.after }
-end
-function ciaooo() 
-	print ("IIIDIDIDI")
-	print (obj.lookout.text)
-	local s = script:new()
-	s.actions = {
-		[1] = say2 { actor = objects.guybrush, lines= {strings.dialogues.lookout.text[1] }},
-		[2] = say2 { actor = obj.lookout, lines = {strings.dialogues.lookout.text[2]}, after= {1} }
-	}
-	print ("DIDIDIDIDI!!!")
-	return s
-end
-
-
-dialogues.lookout = {
-	-- root
-	[1] = { children = {2, 3, 4, 5} },
-	[2] = { text = strings.dialogues.lookout.text[1], script = ciaooo },
-	[3] = { text = strings.dialogues.lookout.text[2] },
-	[4] = { text = strings.dialogues.lookout.text[3] },
-	[5] = { text = strings.dialogues.lookout.text[4] },
-}
+local d = strings.dialogues.lookout.text
 
 
 
--- the local objects
-local obj = {
-	stairs = {
-		text = strings.objects.stairs,
-		pos = {250, 0, 0},
-		walk_to = {250, 0}, 
-		face = "south",
-		size = {10, 10},			
-		actions = {
-			walk = curry(changeRoom, "village1")
-		}
-	},
-	lookout = {
-		text = strings.objects.lookout,
-		pos = {114, 36, 0},
-		walk_to = {134, 36},
-		size = {20, 47},
-		face = "west",
-		model ="lookout",
-		anim ="idle_right",
-		flip = true,
-		actions = {
-			talk = curry(start_dialogue, "lookout")
-		}
-	}
-}
+
+
+
+
+
+
 
 
 
@@ -71,8 +29,8 @@ room:add( {
     { pos = {81, 16, 3}, components = { { type="gfx", image="gfx/lookout_2.png" }}},
     { pos = {294, 33, 3}, components = { { type="gfx", image ="gfx/lookout_3.png" }}},
 	items.player.create { pos={100, 100}, model="guybrush", facing ="east" },
-	items.object.create { object = obj.stairs },
-	items.object.create { object = obj.lookout },
+	items.object.create { object = room.items.stairs },
+	items.object.create { object = room.items.lookout },
 	{
 		pos = {0,0,0},
 		components = {

@@ -84,7 +84,7 @@ strings = {
             [7] = "I thought you were a--",
             [8] = "--never mind.",
             [9] = "What did you say your name was, again?",
-            [10] = "I'm Guybrush Threepwood",
+            [10] = "I'm Guybrush Threepwood.",
             [11] = "Call me Squinky.",
             [12] = "I'm over this way.",
             [13] = "Who are YOU?",
@@ -124,7 +124,9 @@ strings = {
             [47] = "That's THREEPWOOD.",
             [48] = "Actually, my name is Guybrush Threepwood.",
             [49] = "Oh, right.",
-			[50] = "I am not sure, but I think he may be asleep."
+			[50] = "I am not sure, but I think he may be asleep.",
+			[51] = "It's the only one I've ever heard that was more ridiculous than \"Squinky\".",
+			[52] = "I'm over here."
             },
             names = { "Thranwook", "Thrumwink" }
         },

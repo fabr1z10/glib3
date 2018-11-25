@@ -59,7 +59,7 @@ items.dialoguebutton.create = function (args)
         color = config.ui_unselected_color, 
         size = 8, 
         priority = 1,
-		info = { node = args.dialogue_node }, 
+		info = { node = args.dialogue_node, dialogue = args.dialogue }, 
 		onenter = curry2(changecolor, config.ui_selected_color), 
         onleave = curry2(changecolor, config.ui_unselected_color),
 		onclick = handleDialogueButton
