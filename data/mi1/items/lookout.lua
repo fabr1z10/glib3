@@ -3,11 +3,13 @@ items.lookout = {}
 -- the local objects
 items.lookout.stairs = {
 	text = strings.objects.stairs,
-	pos = {250, 0, 0},
+	pos = {230, 0, 0},
 	walk_to = {250, 0}, 
 	face = "south",
-	size = {10, 10},			
-	actions = {}
+	size = {30, 10},			
+	actions = {
+		walk = curry(change_room, "village1")
+	}
 }
 
 items.lookout.lookout = {
@@ -18,6 +20,7 @@ items.lookout.lookout = {
 	pos = {114, 36, 0},
 	walk_to = {134, 36},
 	size = {20, 47},
+	offset = {-10,0},
 	face = "west",
 	model ="lookout",
 	anim ="idle_right",
@@ -25,4 +28,10 @@ items.lookout.lookout = {
 	actions = {
 		talk = curry(start_dialogue, {dialogue = "lookout"})
 	}
+}
+
+items.lookout.fire = {
+	pos = {126, 52, -1},
+	model = "fire",
+    anim = "default"
 }

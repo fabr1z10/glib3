@@ -13,12 +13,20 @@ factory.player.create = function(args)
 	local facing = args.facing
 	local f = face_map[facing]
 	
+	local components = {
+		{ type="gfx", model = model, anim = f.sprite, flip = f.flip }
+	}
+	print("ADDING SCROLLING?")
+	if (args.scroll) then 
+		print ("YES")
+		table.insert(components, { type="follow", cam ="maincam", relativepos = {0,0,5}, up={0,1,0}})
+	else
+		print ("NO")
+	end
 	return
 	{
 		tag = "player",
 		pos = {pos[1], pos[2], 0},
-		components = {
-			{ type="gfx", model = model, anim = f.sprite, flip = f.flip }
-		}
+		components = components
 	}
 end

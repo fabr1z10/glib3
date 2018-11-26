@@ -3,10 +3,21 @@ function generateBasicRoom (args)
 	local room_width = args.width
 	local room_height = args.height
 
+	local startPos = nil
+	if (args.startTable ~= nil) then
+		print ("CAZZO")
+		startPos = args.startTable[_previousroom]
+		if (startPos == nil) then
+			startPos = args.startTable[args.defaultroom]
+		end	
+	end
+
 	local p =  {
 		items = {},
 		dialogues = {},
 		scripts = {},
+		startPos = startPos,
+		initstuff = {},
 		engines = {
 			{ type = "hotspotmanager" },
 			{ type = "scheduler" }
@@ -26,7 +37,9 @@ function generateBasicRoom (args)
 					bounds = {0, 0, room_width, room_height},
 					viewport = {0, 56, 320, 144}
 				},
-				children = {}
+				children = {
+					factory.player.create { pos= startPos.pos, model="guybrush", facing = startPos.facing, scroll = (room_width > 320) }
+				}
 			},
 			{
 				tag = "ui",
@@ -92,6 +105,25 @@ function generateBasicRoom (args)
 			}
 		}
 	}
+
+	table.insert(p.initstuff, function()
+		setverb (config.verbs.walk)
+		local c = monkey.getEntity("inventory")
+		c:addtext ( { text="ciao" })
+		c:addtext ( { text="come" })
+		c:addtext( { text ="stai" })
+		c:addtext({ text="alleelelel"})
+		c:addtext({ text="stronzo" })
+		c:addtext( { text="duro"})
+		c:addtext( {text="anvedi"})
+	end)
+
+	if (p.startPos.func ~= nil) then
+	
+	 	table.insert(p.initstuff, p.startPos.func)
+	 end
+	
+
 	function p:add(items) 
 		for k,v in ipairs(items) do
 			table.insert(self.scene[1].children, v)

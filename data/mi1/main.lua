@@ -46,12 +46,14 @@ fonts = {
 -- this stuff will change at gametime
 variables = {
     _room = "lookout",
+	_previousroom="",
 	_actionInfo = {
         verb = nil,
         obj1 = nil,
         obj2 = nil,
         selectSecond = false
-    }
+    },
+	door_village_scummbar = 0
 }
 
 require ("script")

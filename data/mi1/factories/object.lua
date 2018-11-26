@@ -19,7 +19,13 @@ factory.object.create = function(args)
 		local comp = {}
 		local offset = args.object.offset
 		if (args.object.model ~= nil) then
-			table.insert (comp, { type="gfx", model=args.object.model, anim = args.object.anim, flip = args.object.flip})
+			local anim = nil
+			if (type(args.object.anim)=="function") then
+				anim = args.object.anim() 
+			else
+				anim = args.object.anim
+			end
+			table.insert (comp, { type="gfx", model=args.object.model, anim = anim, flip = args.object.flip})
 		end
 		if (args.object.size ~= nil) then
 			table.insert (comp, { type="hotspot", priority = priority, 

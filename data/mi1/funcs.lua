@@ -103,6 +103,22 @@ function updateVerb()
     a:settext(variables._actionInfo:toString())    
 end
 
+function change_room(roomId) 
+	local s = script:new()
+	s.actions = {
+		[1] = { type="gotoroom", room = roomId}
+	}
+	return s
+end
+
+function walk_player_to(args) 
+	local s = script:new()
+	s.actions = {
+		[1] = { type="walk", actor="player", pos=args.pos }
+}
+	monkey.play(s)
+end
+
 function hoverOn (obj)
     if (variables._actionInfo.obj1 == nil) then 
         variables._actionInfo.obj1 = obj

@@ -644,5 +644,45 @@ sprites = {
             	}
         	}        
     	}
-	}
+	},
+    fire = {
+        id = "fire",
+        sheet = "gfx/anims.png",
+        type="sprite",
+        ppu=1,
+        animations = {
+        {
+       	    name = "default",             
+            frames = 
+            { 
+	    	  	{ duration = dt, quads = { { x = 1, y = 1, width = 24, height = 32, anchor = {0, 0}}}},
+                { duration = dt, quads = { { x = 27, y = 1, width = 24, height = 32, anchor = {0, 0}}}},
+                { duration = dt, quads = { { x = 53, y = 1, width = 24, height = 32, anchor = {0, 0}}}},
+                { duration = dt, quads = { { x = 79, y = 1, width = 24, height = 32, anchor = {0, 0}}}}               
+			}
+        }
+        }
+    },
+    door_village_scummbar = {
+        id = "door_village_scummbar",
+        sheet = "gfx/anims.png",
+        type="sprite",
+        ppu=1,
+        animations = {
+        {
+       	    name = "close",             
+            frames = 
+            { 
+	    	  	{ duration = dt, quads = { { x = 93, y = 185, width = 31, height = 52, anchor = {0, 0}}}}              
+		    }
+        },
+        {
+       	    name = "open",             
+            frames = 
+            { 
+	    	  	{ duration = dt, quads = { { x = 61, y = 185, width = 31, height = 52, anchor = {0, 0}}}}              
+		    }
+        }
+        }
+    }
 }
