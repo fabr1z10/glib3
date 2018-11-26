@@ -1,10 +1,10 @@
-items.button = {}
-items.verbbutton = {}
-items.inventorybutton = {}
-items.dialoguebutton = {}
+factory.button = {}
+factory.verbbutton = {}
+factory.inventorybutton = {}
+factory.dialoguebutton = {}
 
 -- a button is simply some text with a hotspot
-items.button.create = function(args)
+factory.button.create = function(args)
 	local pos = args.pos
 	local font = args.font 
 	local size = args.size or 8
@@ -31,9 +31,9 @@ items.button.create = function(args)
 
 end
 
-items.inventorybutton.create = function (args) 
+factory.inventorybutton.create = function (args) 
 	
-	return items.button.create {
+	return factory.button.create {
 		pos = {0,0},
 		font="ui", 
         text= args.text,
@@ -49,8 +49,8 @@ items.inventorybutton.create = function (args)
 
 end
 
-items.dialoguebutton.create = function (args) 
-	return items.button.create {
+factory.dialoguebutton.create = function (args) 
+	return factory.button.create {
 		pos = {0,0},
 		font="ui", 
         text= args.text,
@@ -68,10 +68,10 @@ items.dialoguebutton.create = function (args)
 end
 
 
-items.verbbutton.create = function(args) 
+factory.verbbutton.create = function(args) 
 	local pos = args.pos
 	local verb = args.verb
-	return items.button.create {
+	return factory.button.create {
 		pos = pos,
 		font="ui", 
         text= verb.text,

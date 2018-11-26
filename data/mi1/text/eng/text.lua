@@ -74,8 +74,7 @@ strings = {
     },
     dialogues = {
         lookout = {
-            text = {
-            [1] = "I heard there was going to be a weenie roast here.",
+        	[1] = "I heard there was going to be a weenie roast here.",
             [2] = "I'm looking for fun. Seen any?",
             [3] = "What's green and hairy and has a thousand legs?",
             [4] = "Do you ever wonder if we're all just characters in a novel?",
@@ -126,9 +125,9 @@ strings = {
             [49] = "Oh, right.",
 			[50] = "I am not sure, but I think he may be asleep.",
 			[51] = "It's the only one I've ever heard that was more ridiculous than \"Squinky\".",
-			[52] = "I'm over here."
-            },
-            names = { "Thranwook", "Thrumwink" }
+			[52] = "I'm over here.",
+            [53] = "Thranwook.", 
+			[54] = "Thrumwink."
         },
         cook = {
             [1] = "Hey!",

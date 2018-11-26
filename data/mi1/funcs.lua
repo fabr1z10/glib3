@@ -13,9 +13,13 @@ end
 -- load all files in a folder
 function load_all(folder_name)
     print ("Loading all " .. folder_name .. " ...")
-    local p = io.popen("find " .. _path .. " -path " .. folder_name .. "/*.lua | cut -c" .. tostring(string.len(_path)+1) .. "- | sed 's/.\\{4\\}$//'"):lines()
-    print ("pollo" .. tostring(#p()))
-    for line in p do
+    --local s = "find " .. _path .. " -path " .. folder_name .. "/*.lua | cut -c" .. tostring(string.len(_path)+1) .. "- | sed 's/.\\{4\\}$//'"
+    s = "find " .. _path .. folder_name .. "/*.lua | cut -c " .. tostring(string.len(_path)+1) .. "- | sed 's/.\\{4\\}$//'"
+    --print (s)
+    local p = io.popen(s)
+
+
+    for line in p:lines() do
         print(" " .. line)
         require(line)
     end
@@ -83,7 +87,6 @@ function variables._actionInfo:reset()
 end
 
 function changecolor (color, entity)
-	print ("ASSO")	
     entity:setcolor(color[1], color[2], color[3], color[4])
 end
 
@@ -197,17 +200,23 @@ function runAction ()
     updateVerb()
 end
 
-function start_dialogue(args)
-    local dialogue = args.dialogue
+function start_dialogue(args)    
+	print ("Starting dialogue " .. args.dialogue)
+	local dialogue = dialogues[args.dialogue]
+	if (dialogue == nil) then
+		print ("Can't find dialogue " .. args.dialogue)
+	end
     local root = args.root or dialogue.nodes[1]
     if (args.root == nil) then
         if (dialogue.init ~= nil) then
             dialogue.init()
         end
     end
+	print ("Run script")
 	local s = script:new()
 	s.actions ={
 		[1] = { type="callfunc", func = function()
+			print ("FOTTETEVIs")
 			local m = monkey.getEntity("mainui")
 			local m1 = monkey.getEntity("main")
 			local m2 = monkey.getEntity("dialogueui")
@@ -220,12 +229,13 @@ function start_dialogue(args)
 			for k, v in ipairs(root.children) do
                 local node = dialogue.nodes[v]
                 if (node.active == true) then
-				    m2:addtext { text=node.text, dialogue_node = node, dialogue = dialogue }
+				    m2:addtext { text=node.text, dialogue_node = node, dialogue = args.dialogue }
 			    end
             end
 		end
 		}
 	}
+
 	return s
 end
 
@@ -236,10 +246,10 @@ end
 function handleDialogueButton(entity)
 	local m2 = monkey.getEntity("dialogueui")				
 	m2:cleartext()
-	
+	print ("calling handleDialogueButton ...")
     local info = entity:getinfo()  
     local dialogueNode = info.data.node
-    local dialogue = info.data.dialogue    
+    local dialogue = dialogues[info.data.dialogue]
     
     if (dialogueNode.deact ~= nil) then
         for k, v in ipairs(dialogueNode.deact) do
@@ -257,7 +267,7 @@ function handleDialogueButton(entity)
 
 	local s = nil
 
-
+	
 	if (dialogueNode.script ~= nil) then
         print ("calling button")
 		s = dialogueNode.script()
@@ -277,12 +287,17 @@ function handleDialogueButton(entity)
 				m2:setactive(false)
 				m:setactive(true)
 				m1:enablecontrols(true)			
-			end}
+				if (dialogue.close ~= nil) then
+					dialogue.close()
+				end
+
+			end},
 		}
 
 	else
-        local dialogue = info.data.dialogue
-        s1 = start_dialogue {dialogue = dialogue, root = dialogueNode}
+        --local dialogue = info.data.dialogue
+
+        s1 = start_dialogue {dialogue = info.data.dialogue, root = dialogueNode } 
         -- s1.actions = {
         --     [1] = { type="callfunc", func = function ()
         --         -- body
@@ -290,7 +305,7 @@ function handleDialogueButton(entity)
         --         for k, v in ipairs(dialogueNode.children) do
         --             m2:addtext { text=dialogue[v].text, dialogue_node = dialogue[v], dialogue = dialogue }
         --         end
-        --     end}
+        --     end}s
         -- }
 	end
     if (s == nil) then
@@ -298,11 +313,13 @@ function handleDialogueButton(entity)
     else
         s:push { script = s1, at = "end" }
     end
+	
 	monkey.play(s)
 end
 
--- load room specific scripts
-load_all("scripts")
+
+
+
 
 
 

@@ -56,7 +56,14 @@ variables = {
 
 require ("script")
 require ("funcs")
-require ("factories")
-require ("items")
 require ("sprites")
-require ("dialogues")
+
+-- load room specific scripts
+scripts = {}
+factory = {}
+items = {}
+dialogues = {}
+load_all("scripts")
+load_all("factories")
+load_all("items")
+load_all("dialogues")

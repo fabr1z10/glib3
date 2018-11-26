@@ -27,7 +27,7 @@ public:
         auto it = m_factories.find(type);
         if (it == m_factories.end())
             GLIB_FAIL("Unknown object " << type);
-        std::cout << "Reading object of type: "<< type<<"\n";
+        //std::cout << "Reading object of type: "<< type<<"\n";
         return it->second->Create(ref);
     }
 

@@ -1,3 +1,0 @@
-dialogues = {}
-
-require("dialogues/lookout")

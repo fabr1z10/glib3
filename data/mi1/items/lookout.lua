@@ -1,3 +1,5 @@
+items.lookout = {}
+
 -- the local objects
 items.lookout.stairs = {
 	text = strings.objects.stairs,
@@ -8,7 +10,7 @@ items.lookout.stairs = {
 	actions = {}
 }
 
-room.items.lookout = {
+items.lookout.lookout = {
 	tag = "lookout",
 	text_offset = {0, 60},
     text_color = {170, 170, 170, 255},

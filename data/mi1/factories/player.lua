@@ -1,4 +1,4 @@
-items.player = {}
+factory.player = {}
 
 local face_map = {
 	east = { sprite="idle_right", flip=true},
@@ -7,7 +7,7 @@ local face_map = {
 	south = { sprite="idle_front", flip=false}
 }
 
-items.player.create = function(args)
+factory.player.create = function(args)
 	local pos = args.pos
 	local model = args.model
 	local facing = args.facing

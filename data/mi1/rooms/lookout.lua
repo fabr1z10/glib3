@@ -1,5 +1,4 @@
 require("template/room1")
-dofile("cippo.lua")
 
 room = generateBasicRoom { width = 320, height = 144 }
 
@@ -28,9 +27,9 @@ room:add( {
 	{ pos = {0,0,-3}, components = { { type="gfx", image="gfx/lookout_1.png" }}},
     { pos = {81, 16, 3}, components = { { type="gfx", image="gfx/lookout_2.png" }}},
     { pos = {294, 33, 3}, components = { { type="gfx", image ="gfx/lookout_3.png" }}},
-	items.player.create { pos={100, 100}, model="guybrush", facing ="east" },
-	items.object.create { object = room.items.stairs },
-	items.object.create { object = room.items.lookout },
+	factory.player.create { pos={100, 100}, model="guybrush", facing ="east" },
+	factory.object.create { object = items.lookout.stairs },
+	factory.object.create { object = items.lookout.lookout },
 	{
 		pos = {0,0,0},
 		components = {

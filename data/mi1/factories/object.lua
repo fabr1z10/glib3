@@ -1,6 +1,6 @@
-items.object = {}
+factory.object = {}
 
-items.object.create = function(args) 
+factory.object.create = function(args) 
 	-- normally, if player owns something, the object is not created
 	local tag = args.object.tag
 	--if (tag ~= nil) then
