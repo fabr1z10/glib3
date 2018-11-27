@@ -104,6 +104,7 @@ function updateVerb()
 end
 
 function change_room(roomId) 
+	variables._previousroom = variables._room
 	local s = script:new()
 	s.actions = {
 		[1] = { type="gotoroom", room = roomId}

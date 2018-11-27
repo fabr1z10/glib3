@@ -74,6 +74,7 @@ public:
     void SetLocalTransform (glm::mat4);
     void SetZ(float);
 
+
     // set the position of the local origin in w.c.
     void SetPosition(glm::vec2);
     void SetPosition(glm::vec3);

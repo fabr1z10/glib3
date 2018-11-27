@@ -122,6 +122,13 @@ std::unique_ptr<Activity> DelayActFactory::Create(luabridge::LuaRef &ref) {
     return std::unique_ptr<DelayTime>(new DelayTime(sec));
 };
 
+std::unique_ptr<Activity> DelayDynamicActFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    luabridge::LuaRef func = table.Get<luabridge::LuaRef>("func");
+    return std::unique_ptr<DelayTimeDynamic>(new DelayTimeDynamic(func));
+};
+
+
 std::unique_ptr<Activity> AnimateActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
     std::string actor = table.Get<std::string>("actor");

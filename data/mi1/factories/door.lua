@@ -21,7 +21,8 @@ factory.door.create =function(args)
 		face = face,
 		model = model,
 		anim = function() 
-			if (args.door_ref == 0) then
+			
+			if (variables[args.door_ref] == 0) then
 				return "close"
 			else
 				return "open"
@@ -29,14 +30,14 @@ factory.door.create =function(args)
 		end,
 		actions = {
 			walk = function() 
-				if (args.door_ref == 1) then
+				if (variables[args.door_ref] == 1) then
 					return change_room( nextroom)
 				else
 					return nil
 				end
 			end,
 			open = function()
-				args.door_ref = 1
+				variables[args.door_ref] = 1
 				local s = script:new()
 				s.actions = {
 					[1] = { type="animate", actor=tag, anim="open" }
@@ -44,7 +45,7 @@ factory.door.create =function(args)
 				return s
 			end,
 			close = function()
-				args.door_ref = 0
+				variables[args.door_ref] = 0
 				local s = script:new()
 				s.actions = {
 					[1] = { type="animate", actor=tag, anim="close" }

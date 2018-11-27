@@ -32,6 +32,7 @@ SceneFactory::SceneFactory() {
     m_componentFactory.Add<TextComponentFactory>("text");
     m_componentFactory.Add<FPSComponentFactory>("fps");
     m_componentFactory.Add<HotSpotComponentFactory>("hotspot");
+    m_componentFactory.Add<DepthComponentFactory>("depth");
 
 
     m_shapeFactory.Add<RectFactory>("rect");
@@ -61,6 +62,8 @@ SceneFactory::SceneFactory() {
     m_activityFactory.Add<VirtualKeyActFactory>("virtualkey");
     m_activityFactory.Add<CollisionCheckActFactory>("collisioncheck");
     m_activityFactory.Add<ScaleActFactory>("scale");
+    m_activityFactory.Add<DelayActFactory>("delay");
+    m_activityFactory.Add<DelayDynamicActFactory>("delay_dynamic");
 }
 
 template <>

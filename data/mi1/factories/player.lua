@@ -1,8 +1,8 @@
 factory.player = {}
 
 local face_map = {
-	east = { sprite="idle_right", flip=true},
-	west = { sprite="idle_right", flip=false},
+	east = { sprite="idle_right", flip=false},
+	west = { sprite="idle_right", flip=true},
 	north = { sprite="idle_back", flip=false},
 	south = { sprite="idle_front", flip=false}
 }
@@ -23,6 +23,11 @@ factory.player.create = function(args)
 	else
 		print ("NO")
 	end
+	if (args.depth ~= nil or args.scale ~= nil) then
+		table.insert(components, { type="depth", depth = args.depth, scale = args.scale })
+	end
+
+
 	return
 	{
 		tag = "player",

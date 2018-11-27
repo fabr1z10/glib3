@@ -6,7 +6,7 @@ function generateBasicRoom (args)
 	local startPos = nil
 	if (args.startTable ~= nil) then
 		print ("CAZZO")
-		startPos = args.startTable[_previousroom]
+		startPos = args.startTable[variables._previousroom]
 		if (startPos == nil) then
 			startPos = args.startTable[args.defaultroom]
 		end	
@@ -38,7 +38,14 @@ function generateBasicRoom (args)
 					viewport = {0, 56, 320, 144}
 				},
 				children = {
-					factory.player.create { pos= startPos.pos, model="guybrush", facing = startPos.facing, scroll = (room_width > 320) }
+					factory.player.create { 
+						pos= startPos.pos, 
+						model="guybrush", 
+						facing = startPos.facing, 
+						scroll = (room_width > 320),
+						depth = args.depth,
+						scale = args.scale
+					}
 				}
 			},
 			{

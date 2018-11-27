@@ -1,15 +1,26 @@
 require("template/room1")
 
-local startPosTable = {
-	lookout = { pos = items.village1.cliffside.walk_to, facing = "west"},
+local roomInfo = {
+	width = 1008,
+	height = 144,
+	startTable = {
+		lookout = { pos = items.village1.cliffside.walk_to, facing = "east"},
+		scummbar = { pos = items.village1.door.walk_to, facing = "south"}
+	},
+	defaultroom = "lookout",
+	depth = { type="linear_y", values= {0, 1, 144, 0} },
+	scale = { type="linear_y", values= {0, 0.8, 144, 0.2}}
 }
 
-room = generateBasicRoom { width = 1008, height = 144, startTable = startPosTable, defaultroom = "lookout"}
+room = generateBasicRoom (roomInfo)
 
 room:add_asset(sprites.door_village_scummbar)
 
 room:add( {
-	{ pos = {0,0,-3}, components = { { type="gfx", image="gfx/village1_1.png" }}},
+	{ pos = {0, 0,-3}, components = { { type="gfx", image="gfx/village1_1.png" }}},
+	{ pos = {73, 0, 1}, components = { { type="gfx", image="gfx/village1_2.png" }}},
+	{ pos = {229, 0, 1}, components = { { type="gfx", image="gfx/village1_3.png" }}},
+	{ pos = {606, 0, 1}, components = { { type="gfx", image="gfx/village1_4.png" }}},
 	{
 		pos = {0,0,0},
 		components = {
@@ -24,7 +35,7 @@ room:add( {
 	},
 	factory.object.create { object = items.village1.cliffside },
 	factory.object.create { object = items.village1.door },
-
+	factory.object.create { object = items.village1.poster },
 })
 
 

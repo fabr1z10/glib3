@@ -18,44 +18,18 @@ items.village1.door = factory.door.create {
 	size = {30, 45},
 	walk_to = {715, 15},
 	face = "north",
-	door_ref = variables.door_village_scummbar,
+	door_ref = "door_village_scummbar",
 	model = "door_village_scummbar",
-	nextroom = "lookout"
+	nextroom = "scummbar"
 }
 
--- {
--- 	tag="door",
--- 	text = strings.objects.door,
--- 	pos = {699, 7,-1},
--- 	size = {30, 45},
--- 	walk_to = {715, 15},
--- 	face = "north",
--- 	model ="door_village_scummbar",
--- 	anim = function() 
--- 		if (variables.door_village_scummbar == 0) then
--- 			return "close"
--- 		else
--- 			return "open"
--- 		end
--- 	end,
--- 	actions = {
--- 		open = function()
--- 			variables.door_village_scummbar = 1
--- 			local s = script:new()
--- 			s.actions = {
--- 				[1] = { type="animate", actor="door", anim="open" }
--- 			}
--- 			return s
--- 		end,
--- 		close = function()
--- 			variables.door_village_scummbar = 0
--- 			local s = script:new()
--- 			s.actions = {
--- 				[1] = { type="animate", actor="door", anim="close" }
--- 			}
--- 			return s
--- 		end,
-
--- 	}
-
--- }
+items.village1.poster = {
+	text = strings.objects.poster,
+	pos ={259, 27, 0},
+	size = {20,23},
+	walk_to = {269, 15},
+	face = "north",
+	actions = {
+		look = curry (say, {actor =items.guybrush, lines = {strings.village1[1], strings.village1[2]}})
+	}
+}
