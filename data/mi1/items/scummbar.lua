@@ -24,5 +24,20 @@ items.scummbar.mancomb = {
 		look = curry(change_room, "mancomb"),
 		talk = curry(change_room, "mancomb")
 	}
-
 }
+
+items.scummbar.estevan = {
+	tag="estevan",
+	text = strings.objects.pirate,
+	pos = {164, 21, 1},
+	size = {30, 20},
+	model = "estevan",
+	anim = "idle",
+	walk_to = {195, 11},
+	face = "south",
+	actions = {
+		look = curry(change_room, "estevan"),
+		talk = curry(change_room, "estevan")
+	}
+}
+

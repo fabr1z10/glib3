@@ -31,23 +31,34 @@ void Say::Start() {
             } else
                 face = "front";
         }
-        if (m_animStart.empty())
+        if (m_animStart.empty() && m_animEnd.empty()) {
+            // if they are both empty run auto
             animStart = "talk_" + face;
-        else
-            animStart = m_animStart;
-        if (m_animEnd.empty())
             animEnd = "idle_" + face;
-        else
+        } else {
+            animStart = m_animStart;
             animEnd = m_animEnd;
-        Push(std::make_shared<Animate>(actor, animStart, 0));
+        }
+
+//        if (m_animStart.empty())
+//            animStart = "talk_" + face;
+//        else
+//            animStart = m_animStart;
+//        if (m_animEnd.empty())
+//            animEnd = "idle_" + face;
+//        else
+//            animEnd = m_animEnd;
+        if (!animStart.empty())
+            Push(std::make_shared<Animate>(actor, animStart, 0));
     }
 
     for (auto& s : m_lines) {
 
-        Push(std::make_shared<ShowMessage>(s, "monkey", m_actorId, 8, m_color, glm::vec4(0.0f), BOTTOM, 1.0f, m_offset));
+        Push(std::make_shared<ShowMessage>(s, "monkey", m_actorId, 8, m_color, glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), BOTTOM, 1.0f, m_offset));
     }
     if (!m_noAnim) {
-        Push(std::make_shared<Animate>(actor, animEnd, 0));
+        if (!animEnd.empty())
+            Push(std::make_shared<Animate>(actor, animEnd, 0));
     }
 
 }

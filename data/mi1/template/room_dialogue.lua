@@ -30,7 +30,7 @@ function generateDialogueRoom (args)
 				children = {
 					{ 
 						pos= args.player_pos,
-						tag = "guybrush"
+						tag = "player"
 					}
 				}
 			},

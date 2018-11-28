@@ -37,7 +37,18 @@ function say(args)
 end
 
 function say2(args)
-    return { type="say", actor=args.actor.tag, lines = args.lines, offset = args.actor.text_offset, color = args.actor.text_color, after = args.after }
+	local animate = args.animate
+    return { 
+		type="say", 
+		actor=	args.actor.tag, 
+		lines = args.lines, 
+		offset = args.actor.text_offset, 
+		color = args.actor.text_color, 
+		animstart = args.animstart,
+		animend = args.animend,
+		animate = animate,
+		after = args.after 
+	}
 end
 
 function make_dialogue(args)
@@ -51,7 +62,14 @@ function make_dialogue(args)
         if (i ==1) then
             a=nil
         end
-        s.actions[i] = say2{actor=v[1], lines=v[2], after = a}
+		local args = {actor=v[1], lines=v[2], after = a}
+		if (#v == 3) then
+			args.animstart = v[3].anim_begin
+			args.animend = v[3].anim_end
+			args.animate = v[3].animate
+		end
+
+        s.actions[i] = say2(args)
         print ("polsjduhfuhf")
         i =i+1
     end
@@ -237,8 +255,16 @@ function start_dialogue(args)
 			local m = monkey.getEntity("mainui")
 			local m1 = monkey.getEntity("main")
 			local m2 = monkey.getEntity("dialogueui")
-			m:setactive(false)
-			m1:enablecontrols(false)
+			if (m.isnil) then
+				print ("no  main ui")
+			else
+				m:setactive(false)
+			end
+			if (m1.isnil) then
+				print ("no main")
+			else
+				m1:enablecontrols(false)
+			end
 			m2:setactive(true)
 			--local root = dialogue[1]
 			print ("Size of children = " .. tostring(#root.children))
@@ -301,9 +327,14 @@ function handleDialogueButton(entity)
 				local m1 = monkey.getEntity("main")
 				local m2 = monkey.getEntity("dialogueui")
 				m2:cleartext()
+				
 				m2:setactive(false)
-				m:setactive(true)
-				m1:enablecontrols(true)			
+				if (not m.isnil) then
+					m:setactive(true)	
+				end
+				if (not m1.isnil) then
+					m1:enablecontrols(true)			
+				end
 				if (dialogue.close ~= nil) then
 					dialogue.close()
 				end

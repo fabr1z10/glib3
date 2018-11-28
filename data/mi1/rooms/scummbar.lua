@@ -5,8 +5,12 @@ local roomInfo = {
 	height = 144,
 	startTable = {
 		village1 = { pos = items.scummbar.door_out.walk_to, facing = "east"},
+		mancomb = { pos = items.scummbar.mancomb.walk_to, facing = "north"},
+		estevan = { pos = items.scummbar.estevan.walk_to, facing = "south"},
+
 	},
 	defaultroom = "village1",
+	depth = { type="linear_y", values= {0, 1, 144, 0} },
 	--depth = { type="linear_y", values= {0, 1, 144, 0} },
 	--scale = { type="linear_y", values= {0, 0.8, 144, 0.2}}
 }
@@ -15,11 +19,16 @@ room = generateBasicRoom (roomInfo)
 
 room:add_asset(sprites.door_scummbar_village)
 room:add_asset(sprites.mancomb)
+room:add_asset(sprites.estevan)
 
 room:add( {
 	{ pos = {0, 0,-3}, components = { { type="gfx", image="gfx/scummbar_1.png" }}},
+	{ pos = {157, 0, 0.99}, components = { { type="gfx", image="gfx/scummbar_3.png" }}},
+	{ pos = {20, 0, 0.99}, components = { { type="gfx", image="gfx/scummbar_4.png" }}},
+	{ pos = {374, 20, 0.95}, components = { { type="gfx", image="gfx/scummbar_2.png" }}},
 	factory.object.create { object = items.scummbar.door_out },
 	factory.object.create { object = items.scummbar.mancomb },
+	factory.object.create { object = items.scummbar.estevan },
 	factory.walkarea.create {
    		shape = { 
 	    	type = "poly", 
@@ -33,19 +42,24 @@ room:add( {
 })
 
 
+function run_background_script(actor, anim) 
+	local mancomb_script = script:new()
+	mancomb_script.actions = {
+		[1] = { type="delay_dynamic", func = function() return (1 + math.random() * 4) end },
+		[2] = { type="animate", actor=actor, anim=anim, loop=1, after={1}},
+		[3] = { type="animate", actor=actor, anim="idle", after={2} },
+	}
+	mancomb_script.loop = 1
+	monkey.play(mancomb_script)
+end
+
 function room.afterstartup() 
 	for k, v in ipairs(room.initstuff) do
 		v()
 	end
 	
-	local mancomb_script = script:new()
-	mancomb_script.actions = {
-		[1] = { type="delay_dynamic", func = function() return (1 + math.random() * 4) end },
-		[2] = { type="animate", actor="mancomb", anim="drink", loop=1, after={1}},
-		[3] = { type="animate", actor="mancomb", anim="idle", after={2} },
-	}
-	mancomb_script.loop = 1
-	monkey.play(mancomb_script)
+	run_background_script ("mancomb", "drink")
+	run_background_script ("estevan", "drink")
 
 
 end

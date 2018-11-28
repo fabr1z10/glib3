@@ -23,3 +23,26 @@ sprites.mancomb =  {
         { name = "drink", frames = { {duration = dt*2, quads = { { x = 3, y = 446, width = 36, height = 40, anchor = {0, 0}}}}}}
 	}
 }
+
+sprites.estevan = {
+	id = "estevan",
+	sheet = "gfx/anims.png",
+    type="sprite",
+    ppu=1,
+    animations = {
+    	{ 
+			name = "idle", 
+			frames = { 
+				{duration = dt, quads = { { x = 183, y = 455, width = 35, height = 27, anchor = {0, 0}}}},
+			}
+		},
+     	{ 
+			name = "drink", 
+			frames = { 
+				{duration = dt, quads = { { x = 220, y = 455, width = 39, height = 27, anchor = {0, 0}}}},
+				{duration = dt, quads = { { x = 261, y = 455, width = 37, height = 27, anchor = {0, 0}}}},
+				{duration = dt, quads = { { x = 220, y = 455, width = 39, height = 27, anchor = {0, 0}}}},
+			}
+		}
+	}
+}

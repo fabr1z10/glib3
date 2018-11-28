@@ -280,7 +280,6 @@ strings = {
 			}
 		},
 		estevan = {
-			text = {
 			[1] = "What are you looking at me for?",
 			[2] = "I'd like to introduce myself... my name's Guybrush.",
 			[3] = "Excuse me, but I'm looking for the dart board.",
@@ -302,10 +301,8 @@ strings = {
 			[19] = "Well, I was putting in my contact lens when--",
 			[20] = "Hey, wait a second!",
 			[21] = "That's none of your business!"
-			}
 		},
 		mancomb = {
-			text = {
 			[1] = "Ahoy there, stranger.",
 			[2] = "New in town?",
 			[3] = "My name's Guybrush Threepwood. I'm new in town.",
@@ -322,7 +319,7 @@ strings = {
 			[14] = "Yeah, it's pretty dumb, isn't it?",
 			[15] = "I'm insulted. Goodbye.",
 			[16] = "But it's not even a name!",
-			[17] = "My name is Mancomb Seepgood",
+			[17] = "My name is Mancomb Seepgood.",
 			[18] = "So what brings you to Mêlée Island™ anyway?",
 			[19] = "I want to be a pirate!",
 			[20] = "I've come seeking my fortune.",
@@ -370,8 +367,8 @@ strings = {
 			[62] = "He takes the whole thing seriously.",
 			[63] = "Very seriously.",
 			[64] = "Whatever you say.",
-			[65] = "Just watch out for those guard dogs!"
-			}
+			[65] = "Just watch out for those guard dogs!",
+			[66] = "Uh-oh, it looks like my grog is going flat, so you'll have to excuse me."
 		},
 		citizen = {
 			text = {	

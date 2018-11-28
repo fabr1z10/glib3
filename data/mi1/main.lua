@@ -45,7 +45,7 @@ fonts = {
 
 -- this stuff will change at gametime
 variables = {
-    _room = "lookout",
+    _room = "scummbar",
 	_previousroom="",
 	_actionInfo = {
         verb = nil,
@@ -53,6 +53,8 @@ variables = {
         obj2 = nil,
         selectSecond = false
     },
+	first_time_mancomb = true,
+	first_time_estevan = true,
 	door_village_scummbar = 0
 }
 
