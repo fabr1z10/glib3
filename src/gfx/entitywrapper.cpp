@@ -151,33 +151,36 @@ namespace luaFunctions {
             script->SetLoop(loopId);
         }
         luabridge::LuaRef actions = ref["actions"];
-        auto a = LuaTable::getIntValueMap(actions);
-        auto factory = Engine::get().GetSceneFactory();
-        for (auto& p : a) {
-            auto activity= factory->Get<Activity>(p.second);
-            script->AddActivity(p.first, std::move(activity));
-        }
 
-        for (auto& p : a) {
-            luabridge::LuaRef after = p.second["after"];
-            if (!after.isNil()) {
-                int tail = p.first;
-                for (int i = 0; i < after.length(); ++i) {
-                    int b = after[i+1].cast<int>();
-                    //int af = b < 0 ? p.first - b : b;
-                    script->AddEdge(b, tail);
+        std::vector<std::pair<int, int>> edges;
+        auto factory = Engine::get().GetSceneFactory();
+        for (int i = 0; i < actions.length(); ++i) {
+            luabridge::LuaRef action = actions[i+1];
+            if (action["id"].isNil())
+                GLIB_FAIL("When reading a script, found action with no required <id> field!");
+            int id = action["id"].cast<int>();
+            if (!action["after"].isNil()) {
+                luabridge::LuaRef after = action["after"];
+                for (int j = 0; j < after.length(); ++j) {
+                    int a = after[j+1].cast<int>();
+                    edges.push_back(std::make_pair(a, id));
+                }
+            } else {
+                // If I don't specify an <after> field, then I assume it follows the previous one
+                // unless of course it is the first
+                if (id > 1) {
+                    edges.push_back(std::make_pair(id-1, id));
+
                 }
             }
+            auto activity= factory->Get<Activity>(action);
+            script->AddActivity(id, std::move(activity));
         }
-//        luabridge::LuaRef edges = ref["edges"];
-//        auto e = LuaTable::getIntValueMap(edges);
-//        for (auto& p : e) {
-//            int tail = p.first;
-//            for (int i = 0; i< p.second.length(); ++i) {
-//                int head = p.second[i+1].cast<int>();
-//                script->AddEdge(tail, head);
-//            }
-//        }
+
+        for (auto& i : edges) {
+            script->AddEdge(i.first, i.second);
+        }
+
         if (scriptId.empty())
             scheduler->AddScript(script);
         else

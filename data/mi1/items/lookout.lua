@@ -1,7 +1,5 @@
-items.lookout = {}
-
 -- the local objects
-items.lookout.stairs = {
+items["lookout.stairs"] = {
 	text = strings.objects.stairs,
 	pos = {230, 0, 0},
 	walk_to = {250, 0}, 
@@ -12,7 +10,7 @@ items.lookout.stairs = {
 	}
 }
 
-items.lookout.lookout = {
+items["lookout.lookout"] = {
 	tag = "lookout",
 	text_offset = {0, 60},
     text_color = {170, 170, 170, 255},
@@ -30,7 +28,7 @@ items.lookout.lookout = {
 	}
 }
 
-items.lookout.fire = {
+items["lookout.fire"] = {
 	pos = {126, 52, -1},
 	model = "fire",
     anim = "default"

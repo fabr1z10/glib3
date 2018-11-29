@@ -1,7 +1,13 @@
 factory.object = {}
 
 factory.object.create = function(args) 
-	-- normally, if player owns something, the object is not created
+
+	-- fetch the object
+	local object = items[args.object]
+	if (object == nil) then
+		print ("Error! Unknown object " .. args.object)
+	end
+
 	local tag = args.object.tag
 	--if (tag ~= nil) then
 	--	print ("tag is " .. tag)

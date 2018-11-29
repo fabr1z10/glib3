@@ -65,11 +65,13 @@ require ("funcs")
 -- load room specific scripts
 scripts = {}
 factory = {}
+action = {}
 items = {}
 dialogues = {}
 sprites = {}
 load_all("sprites")
-load_all("scripts")
 load_all("factories")
+load_all("scripts")
+
 load_all("items")
 load_all("dialogues")

@@ -10,6 +10,26 @@ function curry2(f, arg)
     end 
 end
 
+function assert(n, msg) 
+	if (n == nil) then
+		print (msg)
+	end
+end
+
+function gr (n, msg)
+	if (n == nil) then
+		print (msg)
+	end
+	return n
+end
+
+function go (n, d, msg)
+	if (n == nil) then
+		return d
+	end
+	return n
+end
+
 -- load all files in a folder
 function load_all(folder_name)
     print ("Loading all " .. folder_name .. " ...")
@@ -76,6 +96,11 @@ function make_dialogue(args)
     return s
 end
 
+function make_script(args) 
+	local s = script:new()
+	s.actions = args
+	return s
+end
 
 
 function variables._actionInfo:toString ()
@@ -184,9 +209,12 @@ function runAction ()
                 -- Here we generate a play script. The first action is always a walkto towards the provided
                 -- object position. The following action depend on the default action, usually it just says something
                 -- like "It doesn't seem to work" or the like.
+				print ("CIAOCIAO")
 				s.actions = {
-					[1] = { type="walk", actor="player", pos = obj.walk_to},
-					[2] = { type="turn", actor="player", dir = obj.face, after={1}}
+					action.walkto { id=1, actor="player", obj = obj },
+					action.turn { id=2, actor="player", dir = obj.face }
+					--[1] = { type="walk", actor="player", pos = obj.walk_to},
+					--[2] = { type="turn", actor="player", dir = obj.face, after={1}}
 				}			
 				local b = defaultActions[variables._actionInfo.verb.code]
 				if (b ~= nil) then		
@@ -199,8 +227,8 @@ function runAction ()
             -- see if obj1 has an action with obj2
             print ("found custom")
 			s.actions = {
-				[1] = { type="walk", actor="player", pos = obj.walk_to },
-				[2] = { type="turn", actor="player", dir = obj.face, after={1}}
+				action.walkto { id=1, actor="player", obj = obj },
+				action.turn { id=2, actor="player", dir = obj.face }
 			}		
 			--s:push { script = createWalkToAction {objectId = variables._actionInfo.obj1}, at = "end" }
 			s:push { script = a(), at = "end" }

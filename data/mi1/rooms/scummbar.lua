@@ -45,11 +45,12 @@ room:add( {
 function run_background_script(actor, anim) 
 	local mancomb_script = script:new()
 	mancomb_script.actions = {
-		[1] = { type="delay_dynamic", func = function() return (1 + math.random() * 4) end },
-		[2] = { type="animate", actor=actor, anim=anim, loop=1, after={1}},
-		[3] = { type="animate", actor=actor, anim="idle", after={2} },
+		action.random_delay { id=1, min=1, max=4 },
+		action.animate_once { id=2, actor = actor, anim = anim },
+		action.animate { id=3, actor = actor, anim = "idle" },
 	}
 	mancomb_script.loop = 1
+	print ("CANE BESTIA")
 	monkey.play(mancomb_script)
 end
 

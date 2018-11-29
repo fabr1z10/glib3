@@ -47,52 +47,87 @@ end
 -- push another script 
 -- call ike s:push { script = a, parent = node }
 function script:push (args) 
+	print ("** push a script at the end of another...")
 	if (args.script == nil) then
 		return
 	end
-    -- append an array to another
-	local offset = #self.actions
-	if (args.id ~= nil) then
-		self.offset[args.id] = offset
-	end
-	print ("Appending script with " .. #args.script.actions .. " actions.")
-	print ("Current script has  " .. offset .. " actions.")
-	if (args.at ~= nil) then
-		if (args.at == "beginning") then
-			parent = (offset == 0) and 0 or 1
-		elseif (args.at == "end") then
-			parent = offset
-		end
-	end
-	print ("Parent node is " .. parent)
+	
+	local idmax = -1
 	local leaves = {}
-    for k, v in ipairs(args.script.actions) do
-		leaves[offset+k] = true
+	print (tostring(#self.actions))
+	for k, v in ipairs(self.actions) do
+		print ("id = " .. tostring(v.type))
+		idmax = math.max(idmax, v.id)
+		table.insert(leaves, v.id)
+	end
+	print ("id_max = " .. tostring(idmax))
+	-- find leaves
+	for k, v in ipairs(self.actions) do
+		for i, j in v.after do
+			leaves[j] = nil
+		end
+	end
+	print ("id_max = " .. tostring(idmax))
+	print("LEAVES:")
+	for k,v in ipairs(leaves) do
+		print (tostring(v))
 	end
 
-    for k, v in ipairs(args.script.actions) do
-		print (k .. v.type)
-		if (v.after == nil) then
-			if (parent ~= 0) then
-				v.after = {parent}	
-			end
+	for k, v in ipairs(script.actions) do
+		v.id = idmax+v.id
+		if (v.id == 1) then
+			v.after = leaves
 		else
-			for a,b in ipairs(v.after) do
-				v.after[a] = offset+b
-				if (leaves[offset+b] == true) then
-					print ("removing " .. (offset+b))
-					leaves[offset+b] = nil
-				end
+			for i,j in v.after do
+				v.after[i] = v.after[i] + idmax
 			end
 		end
-		self.actions[offset + k] = v
-	end
-print ("CIAO")
-	-- add fake action at the end so that the last node always corresponds to the end of the script
-	local after = {}
-	for k, _ in pairs(leaves) do
-		after[#after+1]=k
+		table.insert(self.actions, v)
 	end
 
-	self.actions[#self.actions+1] = { type = "noop", after = after }
+--     -- append an array to another
+-- 	local offset = #self.actions
+-- 	if (args.id ~= nil) then
+-- 		self.offset[args.id] = offset
+-- 	end
+-- 	print ("Appending script with " .. #args.script.actions .. " actions.")
+-- 	print ("Current script has  " .. offset .. " actions.")
+-- 	if (args.at ~= nil) then
+-- 		if (args.at == "beginning") then
+-- 			parent = (offset == 0) and 0 or 1
+-- 		elseif (args.at == "end") then
+-- 			parent = offset
+-- 		end
+-- 	end
+-- 	print ("Parent node is " .. parent)
+-- 	local leaves = {}
+--     for k, v in ipairs(args.script.actions) do
+-- 		leaves[offset+k] = true
+-- 	end
+
+--     for k, v in ipairs(args.script.actions) do
+-- 		print (k .. v.type)
+-- 		if (v.after == nil) then
+-- 			if (parent ~= 0) then
+-- 				v.after = {parent}	
+-- 			end
+-- 		else
+-- 			for a,b in ipairs(v.after) do
+-- 				v.after[a] = offset+b
+-- 				if (leaves[offset+b] == true) then
+-- 					print ("removing " .. (offset+b))
+-- 					leaves[offset+b] = nil
+-- 				end
+-- 			end
+-- 		end
+-- 		self.actions[offset + k] = v
+-- 	end
+-- print ("CIAO")
+-- 	-- add fake action at the end so that the last node always corresponds to the end of the script
+-- 	local after = {}
+-- 	for k, _ in pairs(leaves) do
+-- 		after[#after+1]=k
+-- 	end
+
+-- 	self.actions[#self.actions+1] = { type = "noop", after = after }
 end
