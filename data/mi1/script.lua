@@ -58,19 +58,28 @@ function script:push (args)
 	for k, v in ipairs(self.actions) do
 		print ("id = " .. tostring(v.type))
 		idmax = math.max(idmax, v.id)
-		table.insert(leaves, v.id)
+		leaves[v.id] = 1
+		--table.insert(leaves, v.id)
 	end
 	print ("id_max = " .. tostring(idmax))
 	-- find leaves
 	for k, v in ipairs(self.actions) do
-		for i, j in v.after do
-			leaves[j] = nil
+		print(tostring(k))
+		if (v.after ~= nil) then
+			for i, j in ipairs(v.after) do
+				leaves[j] = nil
+			end
+		else
+			print(tostring(v.id) .. " ...")
+			if (v.id>1) then
+				leaves[v.id-1]=nil
+			end
 		end
 	end
 	print ("id_max = " .. tostring(idmax))
 	print("LEAVES:")
 	for k,v in ipairs(leaves) do
-		print (tostring(v))
+		print (tostring(k))
 	end
 
 	for k, v in ipairs(script.actions) do

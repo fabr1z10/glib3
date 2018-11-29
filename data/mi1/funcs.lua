@@ -48,6 +48,7 @@ function ms(args)
     return function()
         local s = script:new()
         for k, v in ipairs(args) do
+            print("kkkkkk")
             table.insert(s.actions, v.action(v.args))
         end
         return s
@@ -226,7 +227,9 @@ function runAction ()
 					--[1] = { type="walk", actor="player", pos = obj.walk_to},
 					--[2] = { type="turn", actor="player", dir = obj.face, after={1}}
 				}			
-				local b = defaultActions[variables._actionInfo.verb.code]
+                print("loppo")
+				local b = script.defaultactions[variables._actionInfo.verb.code]
+                print("llll")
 				if (b ~= nil) then		
 					s:push { script = b(), at = "end" }
 				end

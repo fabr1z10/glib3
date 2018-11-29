@@ -36,8 +36,9 @@ print ("canebello")
 	if (args.obj == nil) then
 		pos = gr(args.pos, "Required object or position in action.walkto")
 	else
-		local item2 = items[args.obj]
-		pos = item2.walk_to
+		--local item2 = items[args.obj]
+		print("plllll" .. args.obj.tag)
+		pos = args.obj.walk_to
 		if (pos == nil) then
 			print ("ERROR! Target object needs a <walk_to> field!")
 		end
@@ -52,7 +53,8 @@ action.turn = function (args)
 	local after= go(args.after, nil)
 	local actor = gr(args.actor, "Required actor in action.turn")
 	local dir = gr(args.dir, "Required dir in action.turn")
-	return { id=id, after=after, type="turn", actor=actor, dir = dir }
+	local item = items[actor]
+	return { id=id, after=after, type="turn", actor=item.tag, dir = dir }
 
 end
 
