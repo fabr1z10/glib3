@@ -4,9 +4,9 @@ local roomInfo = {
 	width = 640,
 	height = 144,
 	startTable = {
-		village1 = { pos = items.scummbar.door_out.walk_to, facing = "east"},
-		mancomb = { pos = items.scummbar.mancomb.walk_to, facing = "north"},
-		estevan = { pos = items.scummbar.estevan.walk_to, facing = "south"},
+		village1 = { pos = items["scummbar.door_out"].walk_to, facing = "east"},
+		mancomb = { pos = items["scummbar.mancomb"].walk_to, facing = "north"},
+		estevan = { pos = items["scummbar.estevan"].walk_to, facing = "south"},
 
 	},
 	defaultroom = "village1",
@@ -26,9 +26,9 @@ room:add( {
 	{ pos = {157, 0, 0.99}, components = { { type="gfx", image="gfx/scummbar_3.png" }}},
 	{ pos = {20, 0, 0.99}, components = { { type="gfx", image="gfx/scummbar_4.png" }}},
 	{ pos = {374, 20, 0.95}, components = { { type="gfx", image="gfx/scummbar_2.png" }}},
-	factory.object.create { object = items.scummbar.door_out },
-	factory.object.create { object = items.scummbar.mancomb },
-	factory.object.create { object = items.scummbar.estevan },
+	factory.object.create { object = "scummbar.door_out" },
+	factory.object.create { object = "scummbar.mancomb" },
+	factory.object.create { object = "scummbar.estevan" },
 	factory.walkarea.create {
    		shape = { 
 	    	type = "poly", 
@@ -59,8 +59,8 @@ function room.afterstartup()
 		v()
 	end
 	
-	run_background_script ("mancomb", "drink")
-	run_background_script ("estevan", "drink")
+	--run_background_script ("mancomb", "drink")
+	--run_background_script ("estevan", "drink")
 
 
 end

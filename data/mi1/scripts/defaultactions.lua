@@ -2,6 +2,8 @@ script.defaultactions = {}
 
 local d = strings.defaultactions
 
-script.defaultactions.look = curry (make_script, { action.say { id=1, actor=items.guybrush, lines = {d[4]} }})
+script.defaultactions.look = ms { 
+	{action = action.say, args = { id=1, actor="guybrush", lines={d[4]} }}
+}
 
-
+print("pollo")

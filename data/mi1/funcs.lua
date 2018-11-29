@@ -44,6 +44,15 @@ function load_all(folder_name)
         require(line)
     end
 end
+function ms(args)
+    return function()
+        local s = script:new()
+        for k, v in ipairs(args) do
+            table.insert(s.actions, v.action(v.args))
+        end
+        return s
+    end
+end
 
 
 -- basic say script
@@ -98,7 +107,8 @@ end
 
 function make_script(args) 
 	local s = script:new()
-	s.actions = args
+    print ("number of actions = " .. tostring(#args.actions))
+	s.actions = args.actions
 	return s
 end
 
@@ -211,8 +221,8 @@ function runAction ()
                 -- like "It doesn't seem to work" or the like.
 				print ("CIAOCIAO")
 				s.actions = {
-					action.walkto { id=1, actor="player", obj = obj },
-					action.turn { id=2, actor="player", dir = obj.face }
+					action.walkto { id=1, actor="guybrush", obj = obj },
+					action.turn { id=2, actor="guybrush", dir = obj.face }
 					--[1] = { type="walk", actor="player", pos = obj.walk_to},
 					--[2] = { type="turn", actor="player", dir = obj.face, after={1}}
 				}			

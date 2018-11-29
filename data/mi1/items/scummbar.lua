@@ -1,6 +1,6 @@
-items.scummbar = {}
+--items.scummbar = {}
 
-items.scummbar.door_out = factory.door.create {
+items["scummbar.door_out"] = factory.door.create {
 	tag = "door_out",
 	pos = {32, 24, -1},
 	size = {38, 47},
@@ -11,7 +11,7 @@ items.scummbar.door_out = factory.door.create {
 	nextroom = "village1"
 }
 
-items.scummbar.mancomb = {
+items["scummbar.mancomb"] = {
 	tag="mancomb",
 	text = strings.objects.pirate,
 	pos = {89, 24, -1},
@@ -26,7 +26,7 @@ items.scummbar.mancomb = {
 	}
 }
 
-items.scummbar.estevan = {
+items["scummbar.estevan"] = {
 	tag="estevan",
 	text = strings.objects.pirate,
 	pos = {164, 21, 1},

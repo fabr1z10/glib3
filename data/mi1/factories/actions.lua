@@ -27,6 +27,7 @@ action.animate_once = function(args)
 end
 
 action.walkto = function (args) 
+print ("canebello")
 	local id = gr(args.id, "Required id in action.walkto")
 	local after= go(args.after, nil)
 	local actor = gr(args.actor, "Required id in action.walkto")
@@ -60,6 +61,6 @@ action.say = function(args)
 	local after= go(args.after, nil)
 	local actor = gr(args.actor, "Required actor in action.say")
 	local lines = gr(args.lines, "Required lines to say in action.say")
-
-	return { id = id, after = after,  type="say", actor= actor.tag, lines = lines, offset = actor.text_offset, color = actor.text_color }
+	local item = items[actor]
+	return { id = id, after = after,  type="say", actor= item.tag, lines = lines, offset = item.text_offset, color = item.text_color }
 end
