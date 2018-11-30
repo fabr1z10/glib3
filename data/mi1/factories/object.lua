@@ -8,6 +8,11 @@ factory.object.create = function(args)
 		print ("Error! Unknown object " .. args.object)
 	end
 
+	-- These values can be overridden in the args
+	local pos = args.pos and args.pos or object.pos
+	local anim = args.anim and args.anim or object.anim
+	local flip = args.flip and args.flip or object.flip
+
 	local tag = object.tag
 	--if (tag ~= nil) then
 	--	print ("tag is " .. tag)
@@ -24,13 +29,13 @@ factory.object.create = function(args)
 		local comp = {}
 		local offset = object.offset
 		if (object.model ~= nil) then
-			local anim = nil
-			if (type(object.anim)=="function") then
-				anim = object.anim() 
+			local a = nil
+			if (type(anim)=="function") then
+				a = anim() 
 			else
-				anim = object.anim
+				a = anim
 			end
-			table.insert (comp, { type="gfx", model=object.model, anim = anim, flip = object.flip})
+			table.insert (comp, { type="gfx", model=object.model, anim = a, flip = flip})
 		end
 		if (object.size ~= nil) then
 			table.insert (comp, { type="hotspot", priority = priority, 
@@ -38,6 +43,12 @@ factory.object.create = function(args)
 				onenter = curry(hoverOn, object),
 				onleave = hoverOff,
 				onclick = runAction })
+		end
+		if (args.applydepth) then
+			print ("COME STAI")
+			print (tostring(room.depth == nil))
+			print (tostring(room.scale == nil))
+			table.insert(comp, { type="depth", depth = room.depth, scale = room.scale })
 		end
 		return {
 			tag = tag,

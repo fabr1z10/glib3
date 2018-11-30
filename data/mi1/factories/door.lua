@@ -2,7 +2,7 @@ factory.door = {}
 
 
 factory.door.create =function(args)
-	local tag = args.tag
+	local tag = args.name
 	local pos = args.pos
 	local size = args.size
 	local offset = args.offset
@@ -31,24 +31,29 @@ factory.door.create =function(args)
 		actions = {
 			walk = function() 
 				if (variables[args.door_ref] == 1) then
-					return change_room( nextroom)
+					local s = script:new()
+					s.actions = { action.change_room { id=1, room = nextroom }}
+					return s
+					--return change_room( nextroom)
 				else
 					return nil
 				end
 			end,
 			open = function()
 				variables[args.door_ref] = 1
+				print ("OPEN!!! " .. tag)
 				local s = script:new()
 				s.actions = {
-					[1] = { type="animate", actor=tag, anim="open" }
+					action.animate {id = 1, actor=tag, anim="open" }
 				}
+				print "OPEN!!!"
 				return s
 			end,
 			close = function()
 				variables[args.door_ref] = 0
 				local s = script:new()
 				s.actions = {
-					[1] = { type="animate", actor=tag, anim="close" }
+					action.animate {id = 1, actor=tag, anim="close" }
 				}
 				return s
 			end,

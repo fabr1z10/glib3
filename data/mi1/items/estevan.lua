@@ -1,7 +1,7 @@
 items.estevan = {}
 
 -- the local objects
-items.estevan.estevan = {
+items["estevan.estevan"] = {
 	tag="estevan",
 	pos = {176, 15, 0},
 	model = "estevan2",

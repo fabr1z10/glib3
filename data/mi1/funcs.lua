@@ -47,9 +47,10 @@ end
 function ms(args)
     return function()
         local s = script:new()
+		s.actions = {}
         for k, v in ipairs(args) do
             print("kkkkkk")
-            table.insert(s.actions, v.action(v.args))
+            table.insert(s.actions, v[1](v[2]))
         end
         return s
     end
@@ -200,6 +201,7 @@ end
 -- the default behavior when you click on an object
 function runAction ()
     -- mm, no target object here, just ignore the click
+	print ("XANED")
     if (variables._actionInfo.obj1 == nil) then
         return nil
     end
@@ -220,7 +222,7 @@ function runAction ()
                 -- Here we generate a play script. The first action is always a walkto towards the provided
                 -- object position. The following action depend on the default action, usually it just says something
                 -- like "It doesn't seem to work" or the like.
-				print ("CIAOCIAO")
+				print ("CIAOCIAO" .. obj.text)
 				s.actions = {
 					action.walkto { id=1, actor="guybrush", obj = obj },
 					action.turn { id=2, actor="guybrush", dir = obj.face }
@@ -240,8 +242,8 @@ function runAction ()
             -- see if obj1 has an action with obj2
             print ("found custom")
 			s.actions = {
-				action.walkto { id=1, actor="player", obj = obj },
-				action.turn { id=2, actor="player", dir = obj.face }
+				action.walkto { id=1, actor="guybrush", obj = obj },
+				action.turn { id=2, actor="guybrush", dir = obj.face }
 			}		
 			--s:push { script = createWalkToAction {objectId = variables._actionInfo.obj1}, at = "end" }
 			s:push { script = a(), at = "end" }
@@ -361,47 +363,31 @@ function handleDialogueButton(entity)
 
     local s1 = script:new()
 	if (dialogueNode.children == nil) then
-		-- return to game
-		s1.actions = {
-			[1] = { type="callfunc", func= function() 
-				local m = monkey.getEntity("mainui")
-				local m1 = monkey.getEntity("main")
-				local m2 = monkey.getEntity("dialogueui")
-				m2:cleartext()
-				
-				m2:setactive(false)
-				if (not m.isnil) then
-					m:setactive(true)	
-				end
-				if (not m1.isnil) then
-					m1:enablecontrols(true)			
-				end
-				if (dialogue.close ~= nil) then
-					dialogue.close()
-				end
-
-			end},
+	 	-- return to game
+	 	s1.actions = {
+			action.end_dialogue { id = 1, dialogue = info.data.dialogue }
 		}
-
 	else
-        --local dialogue = info.data.dialogue
-
-        s1 = start_dialogue {dialogue = info.data.dialogue, root = dialogueNode } 
-        -- s1.actions = {
-        --     [1] = { type="callfunc", func = function ()
-        --         -- body
-        --         local m2 = monkey.getEntity("dialogueui")
-        --         for k, v in ipairs(dialogueNode.children) do
-        --             m2:addtext { text=dialogue[v].text, dialogue_node = dialogue[v], dialogue = dialogue }
-        --         end
-        --     end}s
-        -- }
+ --        --local dialogue = info.data.dialogue
+		s1.actions = {
+			action.start_dialogue { id=1, dialogue = info.data.dialogue, root = dialogueNode }
+		}
+ --        s1 = start_dialogue {dialogue = info.data.dialogue, root = dialogueNode } 
+ --        -- s1.actions = {
+ --        --     [1] = { type="callfunc", func = function ()
+ --        --         -- body
+ --        --         local m2 = monkey.getEntity("dialogueui")
+ --        --         for k, v in ipairs(dialogueNode.children) do
+ --        --             m2:addtext { text=dialogue[v].text, dialogue_node = dialogue[v], dialogue = dialogue }
+ --        --         end
+ --        --     end}s
+ --        -- }
 	end
     if (s == nil) then
-        s = s1
-    else
-        s:push { script = s1, at = "end" }
-    end
+ 		s = s1
+ 	else
+		s:push { script = s1 }
+ 	end
 	
 	monkey.play(s)
 end

@@ -2,17 +2,18 @@ local d = strings.dialogues.mancomb
 
 dialogues.mancomb = {
 	close = function()
-		local s = change_room("scummbar")
+		local s = script:new()
+		s.actions = { action.change_room {id=1, room="scummbar"} }
 		monkey.play(s)
 	end,
 	-- root
 	nodes = {
 		[1] = { children = {2, 24, 3, 4, 5} },
-		[2] = { text = d[3], active=true, children = {6,7,8,9}, script = curry(make_dialogue, {
-			{ items.guybrush, {d[3]}, { animate=false } },
-			{ items.mancomb.mancomb, { d[9] }, {animate=false} },
-			{ items.mancomb.mancomb, { d[10], d[11] }, { anim_begin="smile" } },
-		}) },
+		[2] = { text = d[3], active=true, children = {6,7,8,9}, script = ms {
+			{ action.say, { id=1, actor = "guybrush", lines = {d[3]}, animate=false } },
+			{ action.say, { id=2, actor = "mancomb.mancomb", lines = { d[9] }, animate=false }},
+			{ action.say, { id=3, actor = "mancomb.mancomb", lines = { d[10], d[11] }, animstart ="smile" }}
+		}},
 		[3] = { text = d[4], active=true, deact={3}, children = {2, 14, 5}, script = curry(make_dialogue, {
 			{ items.guybrush, {d[4]}, { animate=false } },
 			{ items.mancomb.mancomb, { d[29], d[30], d[24], d[25], d[26] }, {anim_begin="idle"} },
@@ -21,10 +22,10 @@ dialogues.mancomb = {
 			{ items.guybrush, {d[5]}, { animate=false } },
 			{ items.mancomb.mancomb, { d[40], d[41] }, {anim_begin="idle"} },
 		}) },
-		[5] = { text = d[6], active=true, script = curry(make_dialogue, {
-			{ items.guybrush, {d[6]}, {animate=false}},
-			{ items.mancomb.mancomb, { d[6], d[7] }, { anim_begin="idle" } },			
-		}) },
+		[5] = { text = d[6], active=true, script = ms {
+			{ action.say, { id = 1, actor = "guybrush",  lines = {d[6]}, animate=false }},
+			{ action.say, { id = 2, actor = "mancomb.mancomb", lines = { d[6], d[7] }, animstart="idle" } }
+		}},
 		[6] = { text = d[12], active=true, deact={6}, children={7,8,9}, script = curry(make_dialogue, {
 			{ items.guybrush, {d[12]}, { animate=false } },
 			{ items.mancomb.mancomb, { d[16] }, { anim_begin="idle" } },

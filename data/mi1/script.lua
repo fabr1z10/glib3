@@ -16,14 +16,14 @@ function script:dump()
 	for id, a in ipairs(self.actions) do
 		local t = { "{" } 
 		if (a.after ~= nil) then
-			for _, p in ipairs(a.after) do
+			for _, p in pairs(a.after) do
 				table.insert(t, p)
 				table.insert(t, ", ")
 			end
 			table.remove(t)
 		end
 		table.insert(t, "}")
-		print (string.format("%-5s%-10s%-20s", id, a.type, table.concat(t)))
+		print (string.format("%-5s%-10s%-20s", a.id, a.type, table.concat(t)))
 	end	
 end
 
@@ -78,22 +78,32 @@ function script:push (args)
 	end
 	print ("id_max = " .. tostring(idmax))
 	print("LEAVES:")
-	for k,v in ipairs(leaves) do
+	for k,v in pairs(leaves) do
 		print (tostring(k))
 	end
 
-	for k, v in ipairs(script.actions) do
+	print ("numero di azioni = " .. tostring(#args.script.actions))
+	for k, v in ipairs(args.script.actions) do
+		print ("AZIONE DA AGGIUNGERE: id = " .. tostring(v.id))
+		local lid = v.id
 		v.id = idmax+v.id
-		if (v.id == 1) then
-			v.after = leaves
+		if (lid == 1) then
+			v.after = {}
+			for k, _ in pairs(leaves) do
+				print ("INSERTING PREDECESSOR = " .. tostring(k))
+				table.insert(v.after, k)
+			end
 		else
-			for i,j in v.after do
-				v.after[i] = v.after[i] + idmax
+			if (v.after ~= nil) then
+				for i,j in ipairs(v.after) do
+					v.after[i] = v.after[i] + idmax
+				end
 			end
 		end
+		print ("IDIDIDI")
 		table.insert(self.actions, v)
 	end
-
+	self:dump()
 --     -- append an array to another
 -- 	local offset = #self.actions
 -- 	if (args.id ~= nil) then

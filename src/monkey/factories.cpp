@@ -71,15 +71,18 @@ std::unique_ptr<Activity> SayActFactory::Create(luabridge::LuaRef &ref) {
     color/=255.0f;
     glm::vec2 offset = table.Get<glm::vec2>("offset");
     auto say = std::unique_ptr<Say>(new Say(actor, lines, color, offset));
+    bool animate = table.Get<bool>("animate", true);
     if (table.HasKey("animstart")) {
         std::string animStart = table.Get<std::string>("animstart");
         say->SetAnimationStart(animStart);
+        //animate = false;
     }
     if (table.HasKey("animend")) {
         std::string animEnd = table.Get<std::string>("animend");
         say->SetAnimationStart(animEnd);
+        //animate = false;
     }
-    bool animate = table.Get<bool>("animate", true);
+
     say->SetNoAnim(!animate);
     return std::move(say);
 };

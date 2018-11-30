@@ -20,6 +20,9 @@ room = generateBasicRoom (roomInfo)
 room:add_asset(sprites.door_scummbar_village)
 room:add_asset(sprites.mancomb)
 room:add_asset(sprites.estevan)
+room:add_asset(sprites.loompirate)
+room:add_asset(sprites.fireplace)
+room:add_asset(sprites.cook)
 
 room:add( {
 	{ pos = {0, 0,-3}, components = { { type="gfx", image="gfx/scummbar_1.png" }}},
@@ -29,6 +32,8 @@ room:add( {
 	factory.object.create { object = "scummbar.door_out" },
 	factory.object.create { object = "scummbar.mancomb" },
 	factory.object.create { object = "scummbar.estevan" },
+	factory.object.create { object = "scummbar.loompirate"},
+	factory.object.create { object = "scummbar.fireplace"},
 	factory.walkarea.create {
    		shape = { 
 	    	type = "poly", 
@@ -50,7 +55,21 @@ function run_background_script(actor, anim)
 		action.animate { id=3, actor = actor, anim = "idle" },
 	}
 	mancomb_script.loop = 1
-	print ("CANE BESTIA")
+	monkey.play(mancomb_script)
+end
+
+function run_background_script_2(actor, anim_transition, anim2) 
+	local mancomb_script = script:new()
+	mancomb_script.actions = {
+		action.random_delay { id=1, min=1, max=4 },
+		action.animate_once { id=2, actor = actor, anim = anim_transition },
+		action.animate { id=3, actor = actor, anim = anim2, },
+		action.random_delay { id=4, min=1, max=4 },
+		action.animate_once { id=5, actor = actor, anim = anim_transition },		
+		action.animate { id=6, actor = actor, anim = "idle", },
+		
+	}
+	mancomb_script.loop = 1
 	monkey.play(mancomb_script)
 end
 
@@ -59,10 +78,10 @@ function room.afterstartup()
 		v()
 	end
 	
-	--run_background_script ("mancomb", "drink")
-	--run_background_script ("estevan", "drink")
-
-
+	run_background_script ("scummbar.mancomb", "drink")
+	run_background_script ("scummbar.estevan", "drink")
+	run_background_script_2 ("scummbar.loompirate", "move", "idle2")
+	scripts.cook()
 end
 
 

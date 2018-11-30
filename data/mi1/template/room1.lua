@@ -139,5 +139,8 @@ function generateBasicRoom (args)
 	function p:add_asset(item) 
 		table.insert(self.assets, item)
 	end
+
+	p.depth = args.depth
+	p.scale = args.scale
 	return p
 end

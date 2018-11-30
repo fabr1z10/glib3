@@ -46,3 +46,103 @@ sprites.estevan = {
 		}
 	}
 }
+
+sprites.loompirate =
+{
+	id = "loompirate",
+	sheet = "gfx/anims.png",
+   	type="sprite",
+   	ppu=1,
+  	animations = {
+  		{ 
+			name = "idle", frames = { 
+				{duration = dt, quads = { { x = 352, y = 473, width = 29, height = 38, anchor = {0, 0}}}},
+			}
+		},
+    	{ 
+			name = "idle2", frames = { 
+				{duration = dt, quads = { { x = 414, y = 474, width = 29, height = 37, anchor = {0, 0}}}},
+			}
+		},
+       	{ 
+			name = "move", frames = { 
+				{duration = dt, quads = { { x = 383, y = 474, width = 29, height = 37, anchor = {0, 0}}}},
+			}
+		},
+    }
+}
+
+sprites.fireplace = 
+{
+    id = "fireplace",
+    sheet = "gfx/anims.png",
+    type="sprite",
+    ppu=1,
+    animations = {
+  		{ name = "default", frames = { 
+			{duration = dt, quads = { { x = 262, y = 280, width = 32, height = 26, anchor = {0, 0}}}},
+			{duration = dt, quads = { { x = 296, y = 280, width = 32, height = 26, anchor = {0, 0}}}},
+			{duration = dt, quads = { { x = 330, y = 280, width = 32, height = 26, anchor = {0, 0}}}},
+		}
+	}}
+}
+
+sprites.cook = {
+    id="cook",
+    sheet="gfx/anims.png",
+    type="sprite",
+    ppu=1,
+    animations = {
+    	{
+            name = "idle_front",             
+            frames = { 
+            {
+                duration = dt,
+                quads = {
+                    { x = 316, y = 213, width = 31, height = 48, anchor = {15, 0}}
+                }
+            }}
+        },
+        {
+            name = "idle_right",             
+            frames = {
+            {
+                duration = dt,
+                quads = {
+                    { x = 438, y = 115, width = 28, height = 48, anchor = {14, 0}}
+                }
+            }}
+        },
+        {
+            name = "idle_back",             
+            frames = {
+            {
+                duration = dt,
+                quads = {
+                    { x = 462, y = 165, width = 36, height = 48, anchor = {18, 0}}
+                }
+            }}
+        },
+        {
+            name = "walk_right",             
+            frames = {
+              { duration = dt, quads = {{ x = 349, y = 216, width = 25, height = 48, anchor = {12, 0}}}},
+              { duration = dt, quads = {{ x = 376, y = 216, width = 31, height = 48, anchor = {15, 0}}}},
+              { duration = dt, quads = {{ x = 409, y = 215, width = 20, height = 49, anchor = {10, 0}}}},
+              { duration = dt, quads = {{ x = 431, y = 215, width = 28, height = 49, anchor = {14, 0}}}},
+              { duration = dt, quads = {{ x = 460, y = 216, width = 27, height = 48, anchor = {14, 0}}}},
+              { duration = dt, quads = {{ x = 489, y = 216, width = 22, height = 48, anchor = {11, 0}}}}
+            }
+        }, 
+        {
+            name = "talk_right",             
+            frames = {
+              { duration = dt, quads = {{ x = 349, y = 116, width = 28, height = 47, anchor = {14, 0}}}},
+              { duration = dt, quads = {{ x = 379, y = 115, width = 28, height = 48, anchor = {14, 0}}}}, 
+              { duration = dt, quads = {{ x = 408, y = 115, width = 28, height = 48, anchor = {14, 0}}}},
+              { duration = dt, quads = {{ x = 438, y = 115, width = 28, height = 48, anchor = {14, 0}}}},
+              { duration = dt, quads = {{ x = 467, y = 115, width = 29, height = 48, anchor = {14, 0}}}}
+            }
+        },   
+    }
+}

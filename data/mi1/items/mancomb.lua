@@ -1,7 +1,7 @@
 items.mancomb = {}
 
 -- the local objects
-items.mancomb.mancomb = {
+items["mancomb.mancomb"] = {
 	tag="mancomb",
 	pos = {52, 18, 0},
 	model = "mancomb2",
