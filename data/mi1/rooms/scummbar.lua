@@ -18,6 +18,7 @@ local roomInfo = {
 room = generateBasicRoom (roomInfo)
 
 room:add_asset(sprites.door_scummbar_village)
+room:add_asset(sprites.door_scummbar_kitchen)
 room:add_asset(sprites.mancomb)
 room:add_asset(sprites.estevan)
 room:add_asset(sprites.loompirate)
@@ -30,6 +31,7 @@ room:add( {
 	{ pos = {20, 0, 0.99}, components = { { type="gfx", image="gfx/scummbar_4.png" }}},
 	{ pos = {374, 20, 0.95}, components = { { type="gfx", image="gfx/scummbar_2.png" }}},
 	factory.object.create { object = "scummbar.door_out" },
+	factory.object.create { object = "scummbar.door_kitchen" },
 	factory.object.create { object = "scummbar.mancomb" },
 	factory.object.create { object = "scummbar.estevan" },
 	factory.object.create { object = "scummbar.loompirate"},

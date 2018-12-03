@@ -20,6 +20,7 @@ factory.door.create =function(args)
 		walk_to = walk_to,
 		face = face,
 		model = model,
+		door_ref = args.door_ref,
 		anim = function() 
 			
 			if (variables[args.door_ref] == 0) then

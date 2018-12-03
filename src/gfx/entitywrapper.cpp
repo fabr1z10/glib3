@@ -232,6 +232,12 @@ std::string EntityWrapper::GetAnim() const {
     return r->GetAnimation();
 }
 
+void EntityWrapper::SetAnim(const std::string& anim) {
+    Renderer* r = m_underlying->GetComponent<Renderer>();
+    r->SetAnimation(anim);
+}
+
+
 bool EntityWrapper::GetFlipX() const {
     return m_underlying->GetFlipX();
 

@@ -55,7 +55,8 @@ variables = {
     },
 	first_time_mancomb = true,
 	first_time_estevan = true,
-	door_village_scummbar = 0
+	door_village_scummbar = 0,
+	door_scummbar_kitchen = 0
 }
 
 require ("script")

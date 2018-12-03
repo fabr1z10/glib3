@@ -163,3 +163,35 @@ action.create_object = function(args)
 		end
 	}
 end
+
+action.open_door = function(args) 
+	local id = gr(args.id, "Required id in action.create_object")
+	local after= go(args.after, nil)
+	local door = gr(args.door, "ciao")
+
+	return { id = id, after = after, type = "callfunc", func = 
+		function()
+			local d = items[door]
+			print ("CICICICICICICILOPPOPO")
+			local e = monkey.getEntity(d.tag)
+			e.anim = "open"
+			variables[d.door_ref] = 1
+		end
+	}
+end
+
+action.close_door = function(args) 
+	local id = gr(args.id, "Required id in action.create_object")
+	local after= go(args.after, nil)
+	local door = gr(args.door, "ciao")
+
+	return { id = id, after = after, type = "callfunc", func = 
+		function()
+			local d = items[door]
+			print ("CANEBEBEBEBEBE")
+			monkey.getEntity(d.tag)
+			d.anim = "close"
+			variables[d.door_ref] = 0
+		end
+	}
+end

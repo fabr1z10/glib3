@@ -12,6 +12,18 @@ sprites.door_scummbar_village = {
     }
 }
 
+sprites.door_scummbar_kitchen = 
+{
+    id = "door_scummbar_kitchen",
+    sheet = "gfx/anims2.png",
+    type="sprite",
+    ppu=1,
+    animations = {
+    { name = "close", frames = { {duration = dt, quads = { { x = 44, y = 199, width = 35, height = 69, anchor = {0, 0}}}}}},
+    { name = "open", frames = { {duration = dt, quads = { { x = 44, y = 270, width = 35, height = 69, anchor = {0, 0}}}}}}
+    }
+}
+
 sprites.mancomb =  {
 	id = "mancomb",
 	sheet = "gfx/anims.png",

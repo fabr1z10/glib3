@@ -33,7 +33,7 @@ void LuaWrapper::Init() {
             .addProperty("vy", &EntityWrapper::GetVy, &EntityWrapper::SetVy)
             .addProperty("tag", &EntityWrapper::GetTag)
             .addProperty("state", &EntityWrapper::GetState)
-            .addProperty("anim", &EntityWrapper::GetAnim)
+            .addProperty("anim", &EntityWrapper::GetAnim, &EntityWrapper::SetAnim)
             .addProperty("flipx", &EntityWrapper::GetFlipX)
             .addProperty("isnil", &EntityWrapper::IsNil)
             .addProperty("text", &EntityWrapper::GetText)

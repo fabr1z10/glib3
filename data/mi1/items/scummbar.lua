@@ -11,6 +11,18 @@ items["scummbar.door_out"] = factory.door.create {
 	nextroom = "village1"
 }
 
+items["scummbar.door_kitchen"] = factory.door.create {
+	name = "scummbar.door_kitchen",
+	pos = {591, 9, -1},
+	size = {35, 69},
+	walk_to = {588, 14},
+	face = "east",
+	door_ref = "door_scummbar_kitchen",
+	model = "door_scummbar_kitchen",
+	nextroom = "kitchen"
+}
+
+
 items["scummbar.mancomb"] = {
 	tag="mancomb",
 	text = strings.objects.pirate,
