@@ -40,7 +40,7 @@ factory.door.create =function(args)
 					return nil
 				end
 			end,
-			open = function()
+			open = args.open or function()
 				variables[args.door_ref] = 1
 				print ("OPEN!!! " .. tag)
 				local s = script:new()
@@ -50,7 +50,7 @@ factory.door.create =function(args)
 				print "OPEN!!!"
 				return s
 			end,
-			close = function()
+			close = args.close or function()
 				variables[args.door_ref] = 0
 				local s = script:new()
 				s.actions = {

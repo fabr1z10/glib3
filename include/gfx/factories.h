@@ -85,6 +85,9 @@ FACTORY(CamBoundsActFactory, Activity)
 FACTORY(EnableKeyActFactory, Activity)
 FACTORY(VirtualKeyActFactory, Activity)
 FACTORY(ScaleActFactory, Activity)
+FACTORY(SuspendScriptActFactory, Activity)
+FACTORY(ResumeScriptActFactory, Activity)
+FACTORY(KillScriptActFactory, Activity)
 
 // Asset
 FACTORY(SpriteFactory, IMesh)

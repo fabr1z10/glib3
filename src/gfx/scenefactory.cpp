@@ -64,6 +64,7 @@ SceneFactory::SceneFactory() {
     m_activityFactory.Add<ScaleActFactory>("scale");
     m_activityFactory.Add<DelayActFactory>("delay");
     m_activityFactory.Add<DelayDynamicActFactory>("delay_dynamic");
+    m_activityFactory.Add<ShowMessageActFactory>("show_message");
 }
 
 template <>

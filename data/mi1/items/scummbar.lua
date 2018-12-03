@@ -1,5 +1,7 @@
 --items.scummbar = {}
 
+local cook_text_color = {85, 255, 255, 255}
+
 items["scummbar.door_out"] = factory.door.create {
 	name = "scummbar.door_out",
 	pos = {32, 24, -1},
@@ -19,7 +21,18 @@ items["scummbar.door_kitchen"] = factory.door.create {
 	face = "east",
 	door_ref = "door_scummbar_kitchen",
 	model = "door_scummbar_kitchen",
-	nextroom = "kitchen"
+	nextroom = "kitchen",
+	open = function()
+		local s = script:new()
+		if (variables.cook_in_kitchen == true) then
+			s.actions = {
+				action.animate {id = 1, actor="scummbar.door_kitchen", anim="open" },
+				action.show_message { id = 2, message = strings.dialogues.cook[3], color = cook_text_color, pos= {591, 100,1}},
+				--action.animate {id = 3, actor="scummbar.door_kitchen", anim="close" },
+			}
+			return s
+		end
+	end
 }
 
 
@@ -82,8 +95,10 @@ items["scummbar.fireplace"] = {
 }
 
 items["scummbar.cook"] = {
+	tag = "cook",
 	pos = {0,0,-1},
 	model = "cook",
 	anim = "idle_right",
 	face = "east",
+	text_color = cook_text_color
 }

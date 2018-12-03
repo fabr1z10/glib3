@@ -19,9 +19,9 @@ end
 action.animate = function(args)
 	local id = gr(args.id, "Required id in action.animate")
 	local after= go(args.after, nil)
-	local actor = gr(args.actor, "Required id in action.animate")
+	local actor = gr(args.actor, "Required actor in action.animate")
 	local item = items[actor]
-	local anim = gr(args.anim, "Required id in action.animate")
+	local anim = gr(args.anim, "Required anim in action.animate")
 	return { id = id, after = after, type="animate", actor=item.tag, anim=anim }
 end
 
@@ -152,14 +152,31 @@ action.create_object = function(args)
 	local id = gr(args.id, "Required id in action.create_object")
 	local after= go(args.after, nil)
 	local objid = gr(args.name, "Required name in action.create_object")
+	local flip = false
+	if (args.face ~= nil and args.face == "west") then
+		flip = true
+	end
 	return { id = id, after = after, type = "callfunc", func = 
 		function()
 			print ("CIAO")
-			local o = factory.object.create { object = objid, pos = args.pos, anim = args.anim, flip = args.flip, applydepth = args.applydepth }
+			local o = factory.object.create { object = objid, pos = args.pos, anim = args.anim, flip = flip, applydepth = args.applydepth }
 			print ("CIAO2")
 			local m1 = monkey.getEntity("main")
 			print ("CIAO3")
 			monkey.addEntity (o, m1)
+		end
+	}
+end
+
+action.remove_object = function(args) 
+	local id = gr(args.id, "Required id in action.create_object")
+	local after= go(args.after, nil)
+	local objid = gr(args.name, "Required name in action.create_object")
+	local tag = items[objid].tag
+	return { id = id, after = after, type = "callfunc", func = 
+		function()
+			local i = monkey.getEntity(tag)
+			i:remove()
 		end
 	}
 end
@@ -188,10 +205,35 @@ action.close_door = function(args)
 	return { id = id, after = after, type = "callfunc", func = 
 		function()
 			local d = items[door]
-			print ("CANEBEBEBEBEBE")
-			monkey.getEntity(d.tag)
-			d.anim = "close"
+			local e = monkey.getEntity(d.tag)
+			e.anim = "close"
 			variables[d.door_ref] = 0
 		end
 	}
+end
+
+action.set_variable = function(args)
+	local id = gr(args.id, "Required id in action.create_object")
+	local after= go(args.after, nil)
+	local var = gr(args.var, "ciao")
+	local value = gr(args.value, "value")
+
+	return { id = id, after = after, type = "callfunc", func = 
+		function()
+			variables[var] = value
+		end
+	}
+
+end
+
+action.show_message = function(args) 
+	local id = gr(args.id, "Required id in action.create_object")
+	local after= go(args.after, nil)
+	print ("SHOW : " .. args.message)
+	local msg = gr(args.message, "Required id in action.create_object")
+	local time = go(args.time, nil)
+	local color = args.color
+	local pos = args.pos
+	
+	return { id = id, after = after, type="show_message", message = msg, color = color, pos= pos}
 end
