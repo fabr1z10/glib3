@@ -9,6 +9,7 @@ factory.walkarea.create = function(args)
 				priority = 0,
        			target = "player",
 				shape = args.shape,
+				blockedlines = args.blockedlines
 			}
       	}
 	}

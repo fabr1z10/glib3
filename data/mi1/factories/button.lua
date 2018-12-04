@@ -32,7 +32,7 @@ factory.button.create = function(args)
 end
 
 factory.inventorybutton.create = function (args) 
-	
+	print ("Object name = ".. args.obj)
 	return factory.button.create {
 		pos = {0,0},
 		font="ui", 
@@ -42,9 +42,10 @@ factory.inventorybutton.create = function (args)
         color = config.ui_inv_unselected, 
         size = 8, 
         priority = 1,
-		onenter = curry2(changecolor, config.ui_inv_selected), 
-        onleave = curry2(changecolor, config.ui_inv_unselected),
-		onclick = curry(setverb, verb)
+		info = { obj = args.obj},
+		onenter = hover_on_inv_button, --scurry2(changecolor, config.ui_inv_selected), 
+        onleave = hover_off_inv_button, --(changecolor, config.ui_inv_unselected),
+		onclick = runAction
 	}
 
 end

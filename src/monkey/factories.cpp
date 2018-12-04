@@ -5,6 +5,7 @@
 #include <monkey/activities/walk.h>
 #include <monkey/activities/turn.h>
 #include <monkey/activities/say.h>
+#include <monkey/activities/enableblock.h>
 //
 // /
 // Read the walk-area
@@ -86,6 +87,17 @@ std::unique_ptr<Activity> SayActFactory::Create(luabridge::LuaRef &ref) {
     say->SetNoAnim(!animate);
     return std::move(say);
 };
+
+
+std::unique_ptr<Activity> EnableBlockActFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+
+    int wallId = table.Get<int>("wall");
+    bool active = table.Get<bool>("active");
+
+    return std::unique_ptr<EnableBlock>(new EnableBlock(wallId, active));
+};
+
 
 //
 //void ScalingComponentFactory::operator() (luabridge::LuaRef& ref, Entity* parent) {

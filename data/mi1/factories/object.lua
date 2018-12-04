@@ -1,9 +1,9 @@
 factory.object = {}
 
 factory.object.create = function(args) 
-
+	local objId = args.object
 	-- fetch the object
-	local object = items[args.object]
+	local object = items[objId]
 	if (object == nil) then
 		print ("Error! Unknown object " .. args.object)
 	end
@@ -40,7 +40,7 @@ factory.object.create = function(args)
 		if (object.size ~= nil) then
 			table.insert (comp, { type="hotspot", priority = priority, 
 				shape = {type="rect", width = object.size[1], height = object.size[2], offset = offset},
-				onenter = curry(hoverOn, object),
+				onenter = curry(hoverOn, objId),
 				onleave = hoverOff,
 				onclick = runAction })
 		end

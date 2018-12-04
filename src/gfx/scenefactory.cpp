@@ -65,6 +65,9 @@ SceneFactory::SceneFactory() {
     m_activityFactory.Add<DelayActFactory>("delay");
     m_activityFactory.Add<DelayDynamicActFactory>("delay_dynamic");
     m_activityFactory.Add<ShowMessageActFactory>("show_message");
+    m_activityFactory.Add<SuspendScriptActFactory>("suspend_script");
+    m_activityFactory.Add<ResumeScriptActFactory>("resume_script");
+    m_activityFactory.Add<KillScriptActFactory>("kill_script");
 }
 
 template <>

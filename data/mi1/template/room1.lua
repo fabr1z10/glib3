@@ -113,16 +113,17 @@ function generateBasicRoom (args)
 		}
 	}
 
+	-- get the inventory
 	table.insert(p.initstuff, function()
 		setverb (config.verbs.walk)
-		local c = monkey.getEntity("inventory")
-		c:addtext ( { text="ciao" })
-		c:addtext ( { text="come" })
-		c:addtext( { text ="stai" })
-		c:addtext({ text="alleelelel"})
-		c:addtext({ text="stronzo" })
-		c:addtext( { text="duro"})
-		c:addtext( {text="anvedi"})
+		refresh_inventory()
+		-- c:addtext ( { text="ciao" })
+		-- c:addtext ( { text="come" })
+		-- c:addtext( { text ="stai" })
+		-- c:addtext({ text="alleelelel"})
+		-- c:addtext({ text="stronzo" })
+		-- c:addtext( { text="duro"})
+		-- c:addtext( {text="anvedi"})
 	end)
 
 	if (p.startPos.func ~= nil) then

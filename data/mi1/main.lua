@@ -23,7 +23,7 @@ config.verbs = {
     push = { code="push", text = strings.ui.push, objects = 1 },
     pull = { code="pull", text = strings.ui.pull, objects = 1 },
     walk = { code="walk", text = strings.ui.walkto, objects = 1 },
-    pick = { code="pick", text = strings.ui.pickup, objects = 1 },
+    pick = { code="pickup", text = strings.ui.pickup, objects = 1 },
     talk = { code="talk", text = strings.ui.talkto, objects = 1 },
     give = { code="give", text = strings.ui.give, objects = 2, prep = strings.ui.giveprep },
     use = { code="use", text = strings.ui.use, objects = 2, prep= strings.ui.useprep },
@@ -45,7 +45,7 @@ fonts = {
 
 -- this stuff will change at gametime
 variables = {
-    _room = "scummbar",
+    _room = "kitchen",
 	_previousroom="",
 	_actionInfo = {
         verb = nil,
@@ -57,7 +57,12 @@ variables = {
 	first_time_estevan = true,
 	door_village_scummbar = 0,
 	door_scummbar_kitchen = 0,
-	cook_in_kitchen = true
+	door_kitchen_pier = 0,
+	cook_in_kitchen = true,
+	inventory = {
+		-- put here your belongings
+
+	}
 }
 
 require ("script")

@@ -8,6 +8,9 @@ FACTORY(WalkAreaComponentFactory, Component)
 FACTORY(WalkToActFactory, Activity)
 FACTORY(TurnActFactory, Activity)
 FACTORY(SayActFactory, Activity)
+FACTORY(EnableBlockActFactory, Activity)
+
+
 //
 //
 //class WalkAreaComponentFactory : public ComponentFactory {

@@ -120,11 +120,11 @@ function variables._actionInfo:toString ()
 	print (t)
     if (self.obj1 ~= nil) then
 		--o1 = objects[self.obj1]
-        t[2] = self.obj1.text
+        t[2] = items[self.obj1].text
         if (self.obj2 ~= nil) then
             --o2 = objects[self.obj2]
             t[3] = self.verb.prep
-            t[4] = self.obj2.text
+            t[4] = items[self.obj2].text
         else
             if (self.selectSecond == true) then
                t[3] = self.verb.prep 
@@ -144,6 +144,22 @@ end
 function changecolor (color, entity)
     entity:setcolor(color[1], color[2], color[3], color[4])
 end
+
+function hover_on_inv_button(entity) 
+	local color = config.ui_inv_selected
+	entity:setcolor(color[1], color[2], color[3], color[4])
+	local info = entity:getinfo()
+	print ("Hovering on " .. info.data.obj)
+	hoverOn(info.data.obj)
+end
+
+function hover_off_inv_button(entity) 
+	local color = config.ui_inv_unselected
+	entity:setcolor(color[1], color[2], color[3], color[4])
+	local info = entity:getinfo()
+	hoverOff()
+end
+
 
 function setverb(verb)
     variables._actionInfo.verb = verb
@@ -201,7 +217,6 @@ end
 -- the default behavior when you click on an object
 function runAction ()
     -- mm, no target object here, just ignore the click
-	print ("XANED")
     if (variables._actionInfo.obj1 == nil) then
         return nil
     end
@@ -210,7 +225,7 @@ function runAction ()
 	--s.name="_walk"
     if (variables._actionInfo.obj2 == nil) then
         -- try to run a single object action
-		local obj = variables._actionInfo.obj1
+		local obj = items[variables._actionInfo.obj1]
         a = obj.actions[variables._actionInfo.verb.code]
         if (a == nil) then
             if (variables._actionInfo.verb.code == "give" or variables._actionInfo.verb.code == "use") then
@@ -222,40 +237,98 @@ function runAction ()
                 -- Here we generate a play script. The first action is always a walkto towards the provided
                 -- object position. The following action depend on the default action, usually it just says something
                 -- like "It doesn't seem to work" or the like.
-				print ("CIAOCIAO" .. obj.text)
-				s.actions = {
-					action.walkto { id=1, actor="guybrush", obj = obj },
-					action.turn { id=2, actor="guybrush", dir = obj.face }
-					--[1] = { type="walk", actor="player", pos = obj.walk_to},
-					--[2] = { type="turn", actor="player", dir = obj.face, after={1}}
-				}			
-                print("loppo")
+				if (variables.inventory[variables._actionInfo.obj1] == nil) then		
+					s.actions = {
+						action.walkto { id=1, actor="guybrush", obj = obj },
+						action.turn { id=2, actor="guybrush", dir = obj.face }
+					}			
+				end
 				local b = script.defaultactions[variables._actionInfo.verb.code]
-                print("llll")
 				if (b ~= nil) then		
 					s:push { script = b(), at = "end" }
 				end
-				--s:dump()
             end
         else
             -- run specific action
             -- see if obj1 has an action with obj2
-            print ("found custom")
-			s.actions = {
-				action.walkto { id=1, actor="guybrush", obj = obj },
-				action.turn { id=2, actor="guybrush", dir = obj.face }
-			}		
+			if (variables.inventory[variables._actionInfo.obj1] == nil) then		
+				s.actions = {
+					action.walkto { id=1, actor="guybrush", obj = obj },
+					action.turn { id=2, actor="guybrush", dir = obj.face }
+				}		
+			end
 			--s:push { script = createWalkToAction {objectId = variables._actionInfo.obj1}, at = "end" }
 			s:push { script = a(), at = "end" }
         end
     else
         -- action with two objects
         -- see if there are any two object actions like verb obj1 ...
-        --if (variables._actionInfo.verb.code == "use") then
-        --    s = useActionHandler()
-        --elseif (variables._actionInfo.verb.code == "give") then
-		--	s = giveActionHandler()
-		--end
+        if (variables._actionInfo.verb.code == "use") then
+			print ("UELLLA")
+			local s = script:new()
+			local obj2 = items[variables._actionInfo.obj2]
+			-- walk action
+			-- 1. If both obejcts are in inventory, stay where you are
+			-- 2. If one object is in inventory, walk to the other object
+			-- 3. If both objects are not in inventory, then
+			-- a. If obj1 has a pickup action, pick it up and go to obj2
+			-- b. If obj2 has a pickup action, pick it up and go to obj1
+			-- c. If no pickup action is there, walk to obj2
+			local IhaveObj1 = variables.inventory[variables._actionInfo.obj1]
+			local IhaveObj2 = variables.inventory[variables._actionInfo.obj2]
+			if (IhaveObj1 and (not IhaveObj2)) then
+				s.actions = {
+					action.walkto { id=1, actor="guybrush", obj = obj2 },
+					action.turn { id=2, actor="guybrush", dir = obj2.face }
+				}		
+			elseif (IhaveObj2 and (not IhaveObj1)) then
+				s.actions = {
+					action.walkto { id=1, actor="guybrush", obj = obj },
+					action.turn { id=2, actor="guybrush", dir = obj.face }
+				}		
+			elseif ((not IhaveObj1) and (not IhaveObj2)) then
+				local pu1 = obj.actions["pickup"]
+				local pu2 = obj.actions["pickup"]
+				if (pu1 ~= nil) then
+					-- go pick-up 1st object, walk to 2nd
+					s:push { script = pu1(), at="end" }
+					local s1 = script:new() 
+					s1.actions = {
+						action.walkto { id=1, actor="guybrush", obj = obj2 },
+						action.turn { id=2, actor="guybrush", dir = obj2.face }
+					}		
+					s:push { script = s1, at="end"}
+				elseif (pu2 ~= nil) then
+					-- go pick-up 2nd object, walk to 2nd
+					s:push { script = pu2(), at="end" }
+					local s1 = script:new() 
+					s1.actions = {
+						action.walkto { id=1, actor="guybrush", obj = obj },
+						action.turn { id=2, actor="guybrush", dir = obj.face }
+					}		
+					s:push { script = s1, at="end"}
+				else 
+					s.actions = {
+						-- just walk to 2nd object
+						action.walkto { id=1, actor="guybrush", obj = obj2 },
+						action.turn { id=2, actor="guybrush", dir = obj2.face }
+					}							
+				end
+			end
+			-- now, slap the actual use action
+			local u1 = obj.actions["use"]
+			local u2 = obj2.actions["use"]
+			if (u1 ~= nil) then
+				s:push {script=u1(), at="end"}
+			elseif (u2 ~= nil) then
+				s:push {script=u2(), at="end"}
+			else
+				-- default use handler
+				s:push { script = script.defaultactions["use"](), at="end" }
+            end
+        elseif (variables._actionInfo.verb.code == "give") then
+			s = giveActionHandler()
+		end
         -- a1 = variables._actionInfo.obj1[variables._actionInfo.verb.code]
         -- if (a1 == nil) then
         --     a1 = variables._actionInfo.obj2[variables._actionInfo.verb.code]
@@ -392,9 +465,36 @@ function handleDialogueButton(entity)
 	monkey.play(s)
 end
 
+refresh_inventory = function()
+	local c = monkey.getEntity("inventory")
+	c:cleartext()
+	for k, v in pairs(variables.inventory) do
+		if (v == 1) then
+			c:addtext( {text = items[k].text, obj = k})
+		end
+	end
 
+end
 
+pick_up_item = function(name, act)
+	return function()
+		if (variables.inventory[name] == nil) then
+			local s = script:new()
+			local obj = items[name]
+			s.actions = {
+				action.animate { id=1, actor="guybrush", anim = act },
+				action.delay { id=2, sec=0.5 },
+				action.turn { id=3, actor="guybrush", dir = obj.face },
+				action.remove_object{ id=4, name = name },
+				action.add_to_inventory{id = 5, name= name, qty = 1}
+			}
+			return s
+		else
+			return nil
+		end
+	end
 
+end
 
 
 

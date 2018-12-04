@@ -19,6 +19,7 @@
 #include <gfx/activities/virtualkey.h>
 #include <gfx/activities/flip.h>
 #include <gfx/activities/scale.h>
+#include <gfx/activities/scriptactions.h>
 
 std::unique_ptr<Activity> NoOpActFactory::Create(luabridge::LuaRef &ref) {
     return std::unique_ptr<NoOp>(new NoOp);
@@ -217,3 +218,24 @@ std::unique_ptr<Activity> ScaleActFactory::Create(luabridge::LuaRef &ref) {
     float scale = table.Get<float>("scale");
     return std::unique_ptr<ScaleTo>(new ScaleTo(actor, duration, scale));
 }
+
+std::unique_ptr<Activity> SuspendScriptActFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    std::string script = table.Get<std::string>("script");
+    return std::unique_ptr<SuspendScript>(new SuspendScript(script));
+}
+
+std::unique_ptr<Activity> ResumeScriptActFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    std::string script = table.Get<std::string>("script");
+    return std::unique_ptr<ResumeScript>(new ResumeScript(script));
+}
+
+std::unique_ptr<Activity> KillScriptActFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    std::string script = table.Get<std::string>("script");
+    return std::unique_ptr<KillScript>(new KillScript(script));
+}
+
+
+

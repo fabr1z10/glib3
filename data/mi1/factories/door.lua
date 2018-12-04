@@ -30,7 +30,7 @@ factory.door.create =function(args)
 			end
 		end,
 		actions = {
-			walk = function() 
+			walk = args.walk or function() 
 				if (variables[args.door_ref] == 1) then
 					local s = script:new()
 					s.actions = { action.change_room { id=1, room = nextroom }}

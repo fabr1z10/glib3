@@ -26,10 +26,35 @@ items["scummbar.door_kitchen"] = factory.door.create {
 		local s = script:new()
 		if (variables.cook_in_kitchen == true) then
 			s.actions = {
-				action.animate {id = 1, actor="scummbar.door_kitchen", anim="open" },
-				action.show_message { id = 2, message = strings.dialogues.cook[3], color = cook_text_color, pos= {591, 100,1}},
-				--action.animate {id = 3, actor="scummbar.door_kitchen", anim="close" },
+				action.suspend_script { id = 1, script = "cook"},
+				action.animate {id = 2, actor="scummbar.door_kitchen", anim="open" },
+				action.show_message { id = 3, message = strings.dialogues.cook[3], color = cook_text_color, pos= {591, 100,1}},
+				action.animate {id = 4, actor="scummbar.door_kitchen", anim="close" },
+				action.resume_script { id = 5, script = "cook"},
 			}
+			return s
+		end
+		
+	end,
+	walk = function() 
+		local s = script:new()
+		local m = monkey.getEntity("cook")
+		if (variables.cook_in_kitchen == false and m.x > 320) then			
+			-- we need this to restore the animation!
+			local a = m.anim
+			local f = m.flipx
+			print ("anim = " .. a)
+			s.actions = {
+				action.suspend_script { id = 1, script = "cook"},
+				action.turn { id = 2, actor="scummbar.cook", dir="east"},
+				action.say {id = 3, actor="scummbar.cook", lines = { strings.dialogues.cook[1], strings.dialogues.cook[2] }},
+				action.animate {id=4, actor ="scummbar.cook", anim = a, flip = f},
+				action.resume_script { id = 5, script = "cook"},
+			}
+			return s
+		else 
+			-- you can get in the kitchen
+			s.actions = { action.change_room { id=1, room = "kitchen" }}
 			return s
 		end
 	end
@@ -100,5 +125,6 @@ items["scummbar.cook"] = {
 	model = "cook",
 	anim = "idle_right",
 	face = "east",
-	text_color = cook_text_color
+	text_color = cook_text_color,
+	text_offset = {0,60}
 }

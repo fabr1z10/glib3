@@ -22,7 +22,11 @@ action.animate = function(args)
 	local actor = gr(args.actor, "Required actor in action.animate")
 	local item = items[actor]
 	local anim = gr(args.anim, "Required anim in action.animate")
-	return { id = id, after = after, type="animate", actor=item.tag, anim=anim }
+	local flip = 0
+	if (args.flip ~= nil) then
+		flip = (args.flip) and 2 or 1
+	end
+	return { id = id, after = after, type="animate", actor=item.tag, anim=anim, flip = flip }
 end
 
 action.animate_once = function(args)
@@ -169,10 +173,12 @@ action.create_object = function(args)
 end
 
 action.remove_object = function(args) 
+	print ("CANEBESTRIA")
 	local id = gr(args.id, "Required id in action.create_object")
 	local after= go(args.after, nil)
 	local objid = gr(args.name, "Required name in action.create_object")
 	local tag = items[objid].tag
+print ("OPPPOOOOOO")
 	return { id = id, after = after, type = "callfunc", func = 
 		function()
 			local i = monkey.getEntity(tag)
@@ -236,4 +242,55 @@ action.show_message = function(args)
 	local pos = args.pos
 	
 	return { id = id, after = after, type="show_message", message = msg, color = color, pos= pos}
+end
+
+action.suspend_script = function(args) 
+	local id = gr(args.id, "Required id in action.create_object")
+	local after= go(args.after, nil)
+	local script = gr(args.script, "Required id in action.create_object")
+	return { id = id, after = after, type="suspend_script", script = script}
+end
+
+action.resume_script = function(args) 
+	local id = gr(args.id, "Required id in action.create_object")
+	local after= go(args.after, nil)
+	local script = gr(args.script, "Required id in action.create_object")
+	return { id = id, after = after, type="resume_script", script = script}
+end
+
+action.kill_script = function(args) 
+	local id = gr(args.id, "Required id in action.create_object")
+	local after= go(args.after, nil)
+	local script = gr(args.script, "Required id in action.create_object")
+	return { id = id, after = after, type="kill_script", script = script}
+end
+
+
+action.add_to_inventory = function(args) 
+	local id = gr(args.id, "Required id in action.create_object")
+	local after= go(args.after, nil)
+	local objid = gr(args.name, "Required object name in add_to_inventory")
+	local qty = gr(args.qty, "Required qty")
+	return { id = id, after = after, type = "callfunc", func = 
+		function()
+			-- the object might already be in inventory
+			if (variables.inventory[objid] == nil) then
+				variables.inventory[objid] = qty
+			else 
+				variables.inventory[objid] = variables.inventory[objid] + qty
+			end
+			refresh_inventory()
+	
+		end
+	}
+
+
+end
+
+action.enable_wall = function(args) 
+	local id = gr(args.id, "Required id in action.create_object")
+	local after= go(args.after, nil)
+	local wallId = gr(args.wall,"")
+	local active = gr(args.active,"")
+	return { id = id, after = after, type="enable_wall", wall = wallId, active = active }
 end

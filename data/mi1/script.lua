@@ -51,7 +51,11 @@ function script:push (args)
 	if (args.script == nil) then
 		return
 	end
-	
+	if (self.actions == nil or #self.actions == 0) then
+		print ("Start script has no actions!")
+		self.actions = args.script.actions
+		return
+	end
 	local idmax = -1
 	local leaves = {}
 	print (tostring(#self.actions))

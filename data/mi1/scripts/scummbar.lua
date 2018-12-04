@@ -1,9 +1,9 @@
 scripts.cook = function() 
-	local s = script:new()
+	local s = script:new("cook")
 	local pos = items["scummbar.door_kitchen"].walk_to
 	
 	s.actions = {
-		action.delay { id=1, sec = 15 },
+		action.delay { id=1, sec = 10 },
 		action.open_door { id = 2, door = "scummbar.door_kitchen"},
 		action.set_variable { id = 3, var = "cook_in_kitchen", value = false },
 		action.create_object { id = 4, name="scummbar.cook", pos = {pos[1], pos[2], 0}, anim ="idle_right", face = "west", applydepth = true},
