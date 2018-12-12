@@ -16,12 +16,12 @@ void WalkArea::Start() {
 }
 
 void WalkArea::onClick(glm::vec2 worldCoords) {
-    std::cout << "CLICK ON WALKAREA\n";
+    //std::cout << "CLICK ON WALKAREA\n";
 
     //auto player = Engine::get().GetRef<Entity>("player");
     auto script = std::make_shared<Script>();
     script->AddActivity(1, std::unique_ptr<Walk>(new Walk(m_playerId, worldCoords)));
-    m_scheduler->AddScript("main", script);
+    m_scheduler->AddScript("_walk", script);
 
 }
 

@@ -150,5 +150,38 @@ items["kitchen.fish"] = {
 	face="south",
 	model = "kitchen_fish",
 	anim = "default",
-	actions = {}
+	actions = {
+		pickup = function()
+			local a = nil
+			if (variables.can_pickup_fish == true) then
+				a = pick_up_item("kitchen.fish", "kneel_front")
+			else
+				a = ms {
+					{ action.animate, {id=1, actor="guybrush", anim="kneel_front"}},
+					{ action.delay, {id=2, sec=0.5}},
+					{ action.animate, {id=3, actor="guybrush", anim="idle_front"}},
+					{ action.say, {id=4, actor="guybrush", lines= {d[4]}}}
+				}
+			end
+			return a()
+		end,
+		look = ms {
+			{ action.say, { id=1, actor="guybrush", lines = {d[2] }}}
+		}
+
+	}
+}
+
+items["kitchen.seagull"] = {
+	pos = {0, 0, 1},
+	tag = "seagull",
+	model = "seagull",
+	anim = "flying",
+}
+
+items["kitchen.plank"] = {
+	pos = {248, 0, 1},
+	tag = "plank",
+	model="plank", 
+	anim="default"
 }

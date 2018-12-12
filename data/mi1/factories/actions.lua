@@ -173,12 +173,14 @@ action.create_object = function(args)
 end
 
 action.remove_object = function(args) 
-	print ("CANEBESTRIA")
+
 	local id = gr(args.id, "Required id in action.create_object")
 	local after= go(args.after, nil)
-	local objid = gr(args.name, "Required name in action.create_object")
-	local tag = items[objid].tag
-print ("OPPPOOOOOO")
+	local tag = args.tag
+	if (tag == nil) then
+		local objid = gr(args.name, "Required name in action.create_object")
+		tag = items[objid].tag
+	end
 	return { id = id, after = after, type = "callfunc", func = 
 		function()
 			local i = monkey.getEntity(tag)
