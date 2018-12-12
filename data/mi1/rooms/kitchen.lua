@@ -8,9 +8,20 @@ local roomInfo = {
 	},
 	defaultroom = "scummbar",
 	depth = { type="linear_y", values= {0, 1, 144, 0} },
+	collide = true
 }
 
 room = generateBasicRoom (roomInfo)
+
+table.insert (room.engines, 
+	{ 
+		type = "collision", 
+		size = {128, 128}, 
+		response = {
+			{ tag = {1, 2}, onenter=nil }
+		}
+	}
+)
 
 room:add_asset(sprites.kitchen_table)
 room:add_asset(sprites.door_kitchen)

@@ -59,6 +59,7 @@ variables = {
 	door_scummbar_kitchen = 0,
 	door_kitchen_pier = 0,
 	cook_in_kitchen = true,
+	meat_in_pot = false,
 	inventory = {
 		-- put here your belongings
 

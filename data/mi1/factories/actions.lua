@@ -283,7 +283,33 @@ action.add_to_inventory = function(args)
 	
 		end
 	}
+end
 
+action.remove_from_inventory = function(args) 
+	local id = gr(args.id, "Required id in action.create_object")
+	local after= go(args.after, nil)
+	local objid = gr(args.name, "Required object name in add_to_inventory")
+	return { id = id, after = after, type = "callfunc", func = 
+		function()
+			variables.inventory[objid] = nil
+			refresh_inventory()
+		end
+	}
+
+
+end
+
+action.change_text_item = function(args) 
+	local id = gr(args.id, "Required id in action.create_object")
+	local after= go(args.after, nil)
+	local objid = gr(args.name, "Required object name in add_to_inventory")
+	local text = gr(args.text, "Required object name in add_to_inventory")
+	return { id = id, after = after, type = "callfunc", func = 
+		function()
+			items[objid].text = text
+			refresh_inventory()
+		end
+	}
 
 end
 

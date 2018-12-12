@@ -44,7 +44,8 @@ function generateBasicRoom (args)
 						facing = startPos.facing, 
 						scroll = (room_width > 320),
 						depth = args.depth,
-						scale = args.scale
+						scale = args.scale,
+						collide = args.collide
 					}
 				}
 			},

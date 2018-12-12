@@ -1,4 +1,5 @@
 --items.scummbar = {}
+local d = strings.kitchen
 
 items["kitchen.door"] = factory.door.create {
 	name = "kitchen.door",
@@ -66,8 +67,43 @@ items["kitchen.potostew"] = {
 	anim = "default",
 	walk_to = {170, 35},
 	face ="north",
-	actions = {}
+	actions = {
+		look = function() 
+			local line = variables.meat_in_pot and 9 or 5
+			local a = ms {
+				{action.say, {id=1, actor="guybrush", lines={d[line]}} }
+			}
+			return a()
+		end,
+		pickup = function() 
+			local a = nil
+			if (variables.meat_in_pot) then
+				a = ms {
+					{ action.animate, {id=1, actor="guybrush", anim="operate_back"}},
+					{ action.delay, {id=2, sec=0.5}},
+					{ action.animate, {id=3, actor="guybrush", anim="idle_back"}},
+					{ action.change_text_item, {id=4, name="kitchen.meat", text = strings.objects.stewedmeat }},
+					{ action.add_to_inventory, {id=5, name="kitchen.meat", qty=1}},
+				}
+			else
+				a = script.defaultactions.pickup
+			end
+			return a()
+
+		end,
+		use = {
+		}
+	}
 }
+
+items["kitchen.potostew"].actions.use["kitchen.meat"] = ms {
+	{ action.animate, {id=1, actor="guybrush", anim="operate_back"}},
+	{ action.delay, {id=2, sec=0.5}},
+	{ action.animate, {id=3, actor="guybrush", anim="idle_back"}},
+	{ action.remove_from_inventory, {id=4, name="kitchen.meat"}},
+	{ action.set_variable, { id=5, var="meat_in_pot", value = true}}
+}
+
 
 items["kitchen.meat"] = { 
 	tag = "meat",
@@ -99,9 +135,12 @@ items["kitchen.pot"] = {
 		pickup = pick_up_item("kitchen.pot", "kneel_back"),
 		look = ms {
 			{ action.say, { id=1, actor="guybrush", lines = {strings.kitchen[2] }}}
-		}
+		},
+
 	}	
 }
+
+
 
 items["kitchen.fish"] = {
 	text = strings.objects.fish,	

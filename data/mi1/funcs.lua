@@ -223,9 +223,10 @@ function runAction ()
 	-- create a brand new script
     local s = script:new("_walk")
 	--s.name="_walk"
+	print (variables._actionInfo.obj1)
+	local obj = items[variables._actionInfo.obj1]
     if (variables._actionInfo.obj2 == nil) then
         -- try to run a single object action
-		local obj = items[variables._actionInfo.obj1]
         a = obj.actions[variables._actionInfo.verb.code]
         if (a == nil) then
             if (variables._actionInfo.verb.code == "give" or variables._actionInfo.verb.code == "use") then
@@ -264,8 +265,6 @@ function runAction ()
         -- action with two objects
         -- see if there are any two object actions like verb obj1 ...
         if (variables._actionInfo.verb.code == "use") then
-			print ("UELLLA")
-			local s = script:new()
 			local obj2 = items[variables._actionInfo.obj2]
 			-- walk action
 			-- 1. If both obejcts are in inventory, stay where you are
@@ -274,50 +273,33 @@ function runAction ()
 			-- a. If obj1 has a pickup action, pick it up and go to obj2
 			-- b. If obj2 has a pickup action, pick it up and go to obj1
 			-- c. If no pickup action is there, walk to obj2
-			local IhaveObj1 = variables.inventory[variables._actionInfo.obj1]
-			local IhaveObj2 = variables.inventory[variables._actionInfo.obj2]
+			local IhaveObj1 = variables.inventory[variables._actionInfo.obj1] ~= nil
+			local IhaveObj2 = variables.inventory[variables._actionInfo.obj2] ~= nil
+			print ("I HAVE 1 = " .. tostring(IhaveObj1) .. ", i have 2 = " .. tostring(IhaveObj2))
 			if (IhaveObj1 and (not IhaveObj2)) then
-				s.actions = {
-					action.walkto { id=1, actor="guybrush", obj = obj2 },
-					action.turn { id=2, actor="guybrush", dir = obj2.face }
-				}		
+				s:push { script = walk_to_object(obj2), at="end" }
 			elseif (IhaveObj2 and (not IhaveObj1)) then
-				s.actions = {
-					action.walkto { id=1, actor="guybrush", obj = obj },
-					action.turn { id=2, actor="guybrush", dir = obj.face }
-				}		
+				s:push { script = walk_to_object(obj), at="end" }
 			elseif ((not IhaveObj1) and (not IhaveObj2)) then
 				local pu1 = obj.actions["pickup"]
-				local pu2 = obj.actions["pickup"]
+				local pu2 = obj2.actions["pickup"]
 				if (pu1 ~= nil) then
 					-- go pick-up 1st object, walk to 2nd
+					s:push { script = walk_to_object(obj), at="end" }
 					s:push { script = pu1(), at="end" }
-					local s1 = script:new() 
-					s1.actions = {
-						action.walkto { id=1, actor="guybrush", obj = obj2 },
-						action.turn { id=2, actor="guybrush", dir = obj2.face }
-					}		
-					s:push { script = s1, at="end"}
+					s:push { script = walk_to_object(obj2), at="end" }
 				elseif (pu2 ~= nil) then
 					-- go pick-up 2nd object, walk to 2nd
+					s:push { script = walk_to_object(obj2), at="end" }
 					s:push { script = pu2(), at="end" }
-					local s1 = script:new() 
-					s1.actions = {
-						action.walkto { id=1, actor="guybrush", obj = obj },
-						action.turn { id=2, actor="guybrush", dir = obj.face }
-					}		
-					s:push { script = s1, at="end"}
+					s:push { script = walk_to_object(obj), at="end" }					
 				else 
-					s.actions = {
-						-- just walk to 2nd object
-						action.walkto { id=1, actor="guybrush", obj = obj2 },
-						action.turn { id=2, actor="guybrush", dir = obj2.face }
-					}							
+					s:push { script = walk_to_object(obj2), at="end" }
 				end
 			end
 			-- now, slap the actual use action
-			local u1 = obj.actions["use"]
-			local u2 = obj2.actions["use"]
+			local u1 = obj.actions["use"] and obj.actions["use"][variables._actionInfo.obj2]
+			local u2 = obj2.actions["use"] and obj2.actions["use"][variables._actionInfo.obj1]
 			if (u1 ~= nil) then
 				s:push {script=u1(), at="end"}
 			elseif (u2 ~= nil) then
@@ -325,10 +307,11 @@ function runAction ()
 			else
 				-- default use handler
 				s:push { script = script.defaultactions["use"](), at="end" }
-            end
+   			end
         elseif (variables._actionInfo.verb.code == "give") then
 			s = giveActionHandler()
 		end
+
         -- a1 = variables._actionInfo.obj1[variables._actionInfo.verb.code]
         -- if (a1 == nil) then
         --     a1 = variables._actionInfo.obj2[variables._actionInfo.verb.code]
@@ -342,12 +325,8 @@ function runAction ()
         
         --script = twoObjectHandler[variables._actionInfo.verb.code]
     end
-	--s:dump()
-	print ("CIAONE")
     monkey.play(s)
-	print ("CIAO")
     variables._actionInfo:reset()
-	print ("CIOCOCO")
     updateVerb()
 end
 
@@ -476,6 +455,15 @@ refresh_inventory = function()
 
 end
 
+walk_to_object = function(obj) 
+	local s = script:new() 
+	s.actions = {
+		action.walkto { id=1, actor="guybrush", obj = obj },
+		action.turn { id=2, actor="guybrush", dir = obj.face }
+	}
+	return s	
+end
+
 pick_up_item = function(name, act)
 	return function()
 		if (variables.inventory[name] == nil) then
@@ -488,13 +476,12 @@ pick_up_item = function(name, act)
 				action.remove_object{ id=4, name = name },
 				action.add_to_inventory{id = 5, name= name, qty = 1}
 			}
+			--s:dump()
 			return s
 		else
 			return nil
 		end
 	end
-
 end
-
 
 

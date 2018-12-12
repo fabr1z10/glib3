@@ -238,23 +238,23 @@ sprites.guybrush = {
 			{ 
 	            { duration = dt, quads = {
 	                { x = 189, y = 12, width = 20, height = 36, anchor = {12, 0}},
-	                { x = 220, y = 101, width = 11, height = 12, anchor = {12, 0}
+	                { x = 220, y = 101, width = 11, height = 12, anchor = {6, -34}
 	            }}},
                 { duration = dt, quads = {
 	                { x = 189, y = 12, width = 20, height = 36, anchor = {12, 0}},
-	                { x = 233, y = 101, width = 11, height = 12, anchor = {12, 0}
+	                { x = 233, y = 101, width = 11, height = 12, anchor = {6, -34}
 	            }}},
                 { duration = dt, quads = {
 	                { x = 189, y = 12, width = 20, height = 36, anchor = {12, 0}},
-	                { x = 220, y = 101, width = 11, height = 12, anchor = {12, 0}
+	                { x = 220, y = 101, width = 11, height = 12, anchor = {6, -34}
 	            }}},
                 { duration = dt, quads = {
 	                { x = 189, y = 12, width = 20, height = 36, anchor = {12, 0}},
-	                { x = 233, y = 101, width = 11, height = 12, anchor = {12, 0}
+	                { x = 233, y = 101, width = 11, height = 12, anchor = {6, -34}
                 }}},
                 { duration = dt, quads = {
 	                { x = 189, y = 12, width = 20, height = 36, anchor = {12, 0}},
-	                { x = 220, y = 115, width = 11, height = 12, anchor = {12, 0}
+	                { x = 220, y = 115, width = 11, height = 12, anchor = {6, -34}
 	            }}}
 	        }
 	    },

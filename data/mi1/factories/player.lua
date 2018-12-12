@@ -26,7 +26,9 @@ factory.player.create = function(args)
 	if (args.depth ~= nil or args.scale ~= nil) then
 		table.insert(components, { type="depth", depth = args.depth, scale = args.scale })
 	end
-
+	if (args.collide == true) then
+		table.insert(components, { type="collider", shape = {type="rect", width=10, height=2, offset={-5,-1}}, tag=1, flag=1, mask=2 })
+	end
 
 	return
 	{

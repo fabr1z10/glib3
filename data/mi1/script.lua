@@ -47,7 +47,7 @@ end
 -- push another script 
 -- call ike s:push { script = a, parent = node }
 function script:push (args) 
-	print ("** push a script at the end of another...")
+	--print ("** push a script at the end of another...")
 	if (args.script == nil) then
 		return
 	end
@@ -60,41 +60,29 @@ function script:push (args)
 	local leaves = {}
 	print (tostring(#self.actions))
 	for k, v in ipairs(self.actions) do
-		print ("id = " .. tostring(v.type))
 		idmax = math.max(idmax, v.id)
 		leaves[v.id] = 1
 		--table.insert(leaves, v.id)
 	end
-	print ("id_max = " .. tostring(idmax))
 	-- find leaves
 	for k, v in ipairs(self.actions) do
-		print(tostring(k))
 		if (v.after ~= nil) then
 			for i, j in ipairs(v.after) do
 				leaves[j] = nil
 			end
 		else
-			print(tostring(v.id) .. " ...")
 			if (v.id>1) then
 				leaves[v.id-1]=nil
 			end
 		end
 	end
-	print ("id_max = " .. tostring(idmax))
-	print("LEAVES:")
-	for k,v in pairs(leaves) do
-		print (tostring(k))
-	end
 
-	print ("numero di azioni = " .. tostring(#args.script.actions))
 	for k, v in ipairs(args.script.actions) do
-		print ("AZIONE DA AGGIUNGERE: id = " .. tostring(v.id))
 		local lid = v.id
 		v.id = idmax+v.id
 		if (lid == 1) then
 			v.after = {}
 			for k, _ in pairs(leaves) do
-				print ("INSERTING PREDECESSOR = " .. tostring(k))
 				table.insert(v.after, k)
 			end
 		else
@@ -104,10 +92,8 @@ function script:push (args)
 				end
 			end
 		end
-		print ("IDIDIDI")
 		table.insert(self.actions, v)
 	end
-	self:dump()
 --     -- append an array to another
 -- 	local offset = #self.actions
 -- 	if (args.id ~= nil) then
