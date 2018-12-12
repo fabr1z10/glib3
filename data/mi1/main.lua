@@ -61,6 +61,8 @@ variables = {
 	cook_in_kitchen = true,
 	meat_in_pot = false,
 	can_pickup_fish = true,
+    seagull_jump = 1,
+    seagull_flying = false,
 	inventory = {
 		-- put here your belongings
 

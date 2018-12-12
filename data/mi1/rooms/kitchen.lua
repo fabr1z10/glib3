@@ -85,9 +85,17 @@ room:add( {
 			s.actions = {
 				action.walkto{id=1, actor="guybrush", pos={292,8} },
 				action.turn {id=2, actor="guybrush", dir="south" },
+				{ id=3, type="callback", func = function ()
+					-- body
 				action.animate_once{id=3,actor="guybrush", anim="plank"},
-				action.animate{id=4, actor="guybrush", anim="idle_front"}
-			
+				action.animate{id=4, actor="guybrush", anim="idle_front"},
+				action.animate_once{id=5, actor="kitchen.plank", anim="pushed"},
+				action.animate_once {id=6, actor="kitchen.seagull", anim="jump" .. tostring(variables.seagull_jump)},
+				action.animate {id=7, actor="kitchen.plank", anim="default", after={5}},
+				action.animate {id=8, actor="kitchen.seagull", anim="eating", after={6}},
+				action.set_variable {id=9, var="seagull_jump", value = (variables.seagull_jump==1) and 2 or 1, after = {7}}					
+				end}
+
 			}
 			monkey.play(s)
 		end
