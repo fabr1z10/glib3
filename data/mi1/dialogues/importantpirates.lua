@@ -3,7 +3,7 @@ local d = strings.dialogues.pirates
 dialogues.importantpirates = {
 	
 	nodes = {
-		[1] = { children = {2, 3, 4,5,6,7,8,9,10} },
+		[1] = { children = {2, 3, 4,5,6,7,8,9,10,11} },
 		[2] = { text = d[2], active=true, script = ms {
 			{ action.say, { id = 1, actor = "guybrush",  lines = {d[2]} }},
 			{ action.say, { id = 2, actor = "scummbar.ilp1",  lines = {d[5]}, animstart="talk", animend="idle" }}
@@ -41,7 +41,15 @@ dialogues.importantpirates = {
 			{ action.say, { id = 2, actor = "scummbar.ilp1",  lines = {d[5]}, animstart="talk", animend="idle" }}
 			}
 		},
-		[5] = { text = d[32], active=false },
+		[5] = { text = d[32], active=false, deact={5}, act={11}, children = {11,6,7,8}, script = ms {
+			{ action.say, { id = 1, actor = "guybrush",  lines = {d[32]} }},
+			{ action.say, { id = 2, actor = "scummbar.ilp1",  lines = {d[42], d[43], d[44], d[45], d[46]}, animstart="talk", animend="idle" }},
+			{ action.say, { id = 3, actor = "scummbar.ilp3",  lines = {d[47], d[48]}, animstart="talk", animend="idle" }},
+			{ action.say, { id = 4, actor = "scummbar.ilp1",  lines = {d[49]}, animstart="talk", animend="idle", after={3} }},
+			{ action.say, { id = 5, actor = "scummbar.ilp2",  lines = {d[49]}, animstart="talk", animend="idle", after={3} }},
+			{ action.say, { id = 6, actor = "scummbar.ilp3",  lines = {d[49]}, animstart="talk", animend="idle", after={3} }},
+			}
+		},
 		[6] = { text = d[33], active=false },
 		[7] = { text = d[34], active=false },
 		[8] = { text = d[35], active=false },
@@ -52,5 +60,6 @@ dialogues.importantpirates = {
 			{ action.say, { id = 3, actor = "scummbar.ilp2",  lines = {d[39]}, animstart="talk", animend="idle" }}
 			}
 		},
+		[11] = { text= d[50], active=false }
 	}
 }
