@@ -135,7 +135,6 @@ strings = {
 			[3] = "You can't come back here!"
         },
 		pirates = {
-			text = {
 			[1] = "What be ye wantin', boy?",
 			[2] = "I mean to kill you all!",
 			[3] = "I want to be a pirate.",
@@ -218,7 +217,6 @@ strings = {
 			[80] = "and/or pepperoni",
 			[81] = "As you can probably imagine, it's one of the most caustic, volatile substances known to man.",
 			[82] = "The stuff eats right through these mugs and the cook is losing a fortune replacing them."
-			}
 		},
 		dog = {
 			text = {

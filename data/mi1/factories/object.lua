@@ -18,11 +18,11 @@ factory.object.create = function(args)
 	--	print ("tag is " .. tag)
 	--end
 	
-	local qty = object.qty or 0
+	local owned = variables.inventory[objId] ~= nil
 	local createanyway = object.createanyway
-	local createObject = (qty == 0 or object.createanyway)
+	local createObject = ((not owned) or object.createanyway)
 	if (not createObject) then
-		return nil
+		return {}
 	else
 		local pos = args.pos and args.pos or object.pos
 		local priority = args.priority or 1

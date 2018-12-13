@@ -94,6 +94,9 @@ function script:push (args)
 		end
 		table.insert(self.actions, v)
 	end
+	if (args.script.loop ~= nil) then
+		self.loop = idmax + args.script.loop
+	end
 --     -- append an array to another
 -- 	local offset = #self.actions
 -- 	if (args.id ~= nil) then

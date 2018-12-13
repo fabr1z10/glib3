@@ -63,6 +63,7 @@ variables = {
 	can_pickup_fish = true,
     seagull_jump = 1,
     seagull_flying = false,
+	fish_taken=false,
 	inventory = {
 		-- put here your belongings
 

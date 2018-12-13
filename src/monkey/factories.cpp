@@ -80,7 +80,7 @@ std::unique_ptr<Activity> SayActFactory::Create(luabridge::LuaRef &ref) {
     }
     if (table.HasKey("animend")) {
         std::string animEnd = table.Get<std::string>("animend");
-        say->SetAnimationStart(animEnd);
+        say->SetAnimationEnd(animEnd);
         //animate = false;
     }
 

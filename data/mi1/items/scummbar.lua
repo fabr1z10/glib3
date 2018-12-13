@@ -128,3 +128,45 @@ items["scummbar.cook"] = {
 	text_color = cook_text_color,
 	text_offset = {0,60}
 }
+
+items["scummbar.ilp1"] = {
+	tag ="ilp1",
+	pos = {376, 11, 0.95},
+	text_color = {85, 85, 255, 255},
+	text_offset = {0, 60},
+	model = "ilp1", 
+	anim="idle"
+}
+
+items["scummbar.ilp2"] = {
+	tag ="ilp2",
+	pos = {413, 11, 0.95},
+	text_color = {255, 255, 85, 255},
+	text_offset = {0, 60},
+	model = "ilp2", 
+	anim="idle"
+}
+
+items["scummbar.ilp3"] = {
+	tag ="ilp3",
+	pos = {444, 18, 0.95},
+	text_color = {255, 85, 255, 255},
+	text_offset = {0, 60},
+	model = "ilp3", 
+	anim="idle"
+}
+
+items["scummbar.important_looking_pirates"] = {
+	text = strings.objects.ilp,
+	pos = {370,30,0},
+	size= {110,25},
+	walk_to = {460, 2},
+	face="west",
+	actions = {
+		talk = ms {
+			{action.say, {id=1, actor="scummbar.ilp1", lines = {strings.dialogues.pirates[1]}, animstart="talk", animend="idle"}},
+			{action.start_dialogue, {id=2, dialogue="importantpirates"}}
+		}
+
+	}
+}

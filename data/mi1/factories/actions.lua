@@ -39,7 +39,7 @@ action.animate_once = function(args)
 end
 
 action.walkto = function (args) 
-print ("canebello")
+
 	local id = gr(args.id, "Required id in action.walkto")
 	local after= go(args.after, nil)
 	local actor = gr(args.actor, "Required id in action.walkto")

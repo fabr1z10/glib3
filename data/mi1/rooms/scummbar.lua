@@ -7,6 +7,7 @@ local roomInfo = {
 		village1 = { pos = items["scummbar.door_out"].walk_to, facing = "east"},
 		mancomb = { pos = items["scummbar.mancomb"].walk_to, facing = "north"},
 		estevan = { pos = items["scummbar.estevan"].walk_to, facing = "south"},
+		kitchen = { pos = items["scummbar.door_kitchen"].walk_to, facing="west" }
 
 	},
 	defaultroom = "village1",
@@ -24,6 +25,9 @@ room:add_asset(sprites.estevan)
 room:add_asset(sprites.loompirate)
 room:add_asset(sprites.fireplace)
 room:add_asset(sprites.cook)
+room:add_asset(sprites.ilp1)
+room:add_asset(sprites.ilp2)
+room:add_asset(sprites.ilp3)
 
 room:add( {
 	{ pos = {0, 0,-3}, components = { { type="gfx", image="gfx/scummbar_1.png" }}},
@@ -36,6 +40,10 @@ room:add( {
 	factory.object.create { object = "scummbar.estevan" },
 	factory.object.create { object = "scummbar.loompirate"},
 	factory.object.create { object = "scummbar.fireplace"},
+	factory.object.create { object = "scummbar.ilp1"},
+	factory.object.create { object = "scummbar.ilp2"},
+	factory.object.create { object = "scummbar.ilp3"},
+	factory.object.create { object = "scummbar.important_looking_pirates"},
 	factory.walkarea.create {
    		shape = { 
 	    	type = "poly", 

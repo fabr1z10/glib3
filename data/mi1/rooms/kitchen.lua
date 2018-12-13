@@ -66,35 +66,57 @@ room:add( {
 			{ A = {206, 0}, B = {206, 144}, active =true },
 		},
 	},
-	factory.trap.create { pos ={100,10,0}, tag="seagull_sensor", width=10, height = 10, onenter = 
-		function()			
-			local s = script:new()
-			s.actions = {
-				action.remove_object {id=1, tag="seagull_sensor"},
-				action.create_object {id=2, name="kitchen.seagull"},
-				action.animate_once {id=3, actor="kitchen.seagull", anim="flying"},
-				action.animate {id=4, actor="kitchen.seagull", anim="eating"},
-			 	action.set_variable {id=5, var="can_pickup_fish", value=false}
-			}
-			monkey.play(s)
-		end
-	},
+
 	factory.hotspot.create { pos = {290,5,0}, width=20, height=10, onclick = function()
 		if (variables.door_kitchen_pier == 1) then
 			local s = script:new("_walk")
 			s.actions = {
 				action.walkto{id=1, actor="guybrush", pos={292,8} },
 				action.turn {id=2, actor="guybrush", dir="south" },
-				{ id=3, type="callback", func = function ()
-					-- body
-				action.animate_once{id=3,actor="guybrush", anim="plank"},
-				action.animate{id=4, actor="guybrush", anim="idle_front"},
-				action.animate_once{id=5, actor="kitchen.plank", anim="pushed"},
-				action.animate_once {id=6, actor="kitchen.seagull", anim="jump" .. tostring(variables.seagull_jump)},
-				action.animate {id=7, actor="kitchen.plank", anim="default", after={5}},
-				action.animate {id=8, actor="kitchen.seagull", anim="eating", after={6}},
-				action.set_variable {id=9, var="seagull_jump", value = (variables.seagull_jump==1) and 2 or 1, after = {7}}					
-				end}
+				{ id=3, type="callfunc", func = function ()
+					local s = script:new()
+					s.actions = {
+						action.animate_once{id=1,actor="guybrush", anim="plank"},
+						action.animate{id=2, actor="guybrush", anim="idle_front"},
+						action.animate_once{id=3, actor="kitchen.plank", anim="pushed"}
+					}
+					if (variables.seagull_flying == false) then
+						variables.seagull_flying = true
+						local s1 = script:new()
+						s1.actions = {
+							{ id=1, type="noop" },
+							action.animate_once {id=2, actor="kitchen.seagull", anim="jump" .. tostring(variables.seagull_jump)},
+							action.animate {id=3, actor="kitchen.plank", anim="default", after={1} },
+							{ id = 4, type = "callfunc", after={2}, func = function() 
+								-- see if fish has been taken
+								local s2 = script:new()
+								if (variables.inventory["kitchen.fish"] == nil) then
+									s2.actions = {
+										action.animate {id=1, actor="kitchen.seagull", anim="eating" },
+										action.set_variable {id=2, var="seagull_jump", value = (variables.seagull_jump==1) and 2 or 1 },
+										action.set_variable {id=3, var="seagull_flying", value = false }
+									}
+								else 
+									s2.actions = {
+										action.animate_once {id=1, actor="kitchen.seagull", anim="nofish" },
+										action.set_variable {id=2, var="fish_taken", value = true },
+										action.remove_object {id =3, name="kitchen.seagull", after={1}}
+									}								
+								end
+								monkey.play(s2)
+							end }
+
+						}
+						s:push { script = s1, at="end"}
+					else
+						local s1 = script:new()
+						s1.actions = {
+							action.animate {id=1, actor="kitchen.plank", anim="default" },
+						}
+						s:push { script = s1, at="end"}
+					end
+					monkey.play(s)
+				end }
 
 			}
 			monkey.play(s)
@@ -102,7 +124,22 @@ room:add( {
 	end }
 })
 
-
+if (variables.fish_taken == false) then
+	room:add( {
+		factory.trap.create { pos ={100,10,0}, tag="seagull_sensor", width=10, height = 10, onenter = 
+			function()			
+				local s = script:new()
+				s.actions = {
+					action.remove_object {id=1, tag="seagull_sensor"},
+					action.create_object {id=2, name="kitchen.seagull"},
+					action.animate_once {id=3, actor="kitchen.seagull", anim="flying"},
+					action.animate {id=4, actor="kitchen.seagull", anim="eating"},
+				 	action.set_variable {id=5, var="can_pickup_fish", value=false}
+				}
+				monkey.play(s)
+			end
+		}})
+end
 
 function room.afterstartup() 
 	for k, v in ipairs(room.initstuff) do

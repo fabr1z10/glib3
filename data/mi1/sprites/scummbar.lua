@@ -158,3 +158,64 @@ sprites.cook = {
         },   
     }
 }
+
+sprites.ilp1 = {
+	id = "ilp1",
+    sheet = "gfx/anims.png",
+    type="sprite",
+    ppu=1,
+    animations = {
+        { name = "idle", frames = { 
+			{duration = dt*5, quads = { { x = 220, y = 336, width = 35, height = 55, anchor = {0, 0}}}},
+			{duration = dt*5, quads = { { x = 257, y = 336, width = 35, height = 55, anchor = {0, 0}}}},
+			{duration = dt, quads = { { x = 183, y = 336, width = 35, height = 55, anchor = {0, 0}}}},
+			{duration = dt, quads = { { x = 295, y = 335, width = 35, height = 56, anchor = {0, 0}}}},
+			{duration = dt, quads = { { x = 183, y = 336, width = 35, height = 55, anchor = {0, 0}}}},
+		}},
+    	{ name = "talk", frames = { 
+			{duration = dt, quads = { { x = 365, y = 341, width = 35, height = 56, anchor = {0, 0}}}},
+			{duration = dt, quads = { { x = 402, y = 343, width = 35, height = 54, anchor = {0, 0}}}},
+			}
+		},
+	}
+}
+    
+sprites.ilp2 = {
+    id = "ilp2",
+    sheet = "gfx/anims.png",
+    type="sprite",
+    ppu=1,
+    animations = {
+        { name = "idle", frames = { 
+			{duration = dt*4, quads = { { x = 257, y = 393, width = 35, height = 53, anchor = {1, 0}}}},
+			{duration = dt, quads = { { x = 294, y = 393, width = 34, height = 53, anchor = {1, 0}}}},
+			{duration = dt*4, quads = { { x = 330, y = 393, width = 34, height = 53, anchor = {0, 0}}}},
+			{duration = dt, quads = { { x = 294, y = 393, width = 34, height = 53, anchor = {0, 0}}}},
+		}},
+    	{ name = "talk", frames = { 
+			{duration = dt, quads = { { x = 439, y = 341, width = 34, height = 56, anchor = {0, 0}}}},
+			{duration = dt, quads = { { x = 475, y = 345, width = 35, height = 52, anchor = {1, 0}}}},
+			}
+		},
+	}
+}
+    
+sprites.ilp3 = {
+	id = "ilp3",
+    sheet = "gfx/anims.png",
+    type="sprite",
+    ppu=1,
+    animations = {
+        { name = "idle", frames = { 
+			{duration = dt*4, quads = { { x = 183, y = 393, width = 35, height = 52, anchor = {0, 0}}}},
+			{duration = dt*4, quads = { { x = 220, y = 393, width = 35, height = 52, anchor = {0, 0}}}},
+			}
+		},
+        { name = "talk", frames = { 
+			{duration = dt, quads = { { x = 366, y = 399, width = 31, height = 52, anchor = {0, 0}}}},
+			{duration = dt, quads = { { x = 399, y = 400, width = 32, height = 51, anchor = {0, 0}}}},
+            {duration = dt, quads = { { x = 433, y = 399, width = 31, height = 52, anchor = {0, 0}}}},
+			}
+		},
+    }
+}

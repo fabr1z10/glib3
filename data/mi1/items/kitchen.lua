@@ -143,6 +143,7 @@ items["kitchen.pot"] = {
 
 
 items["kitchen.fish"] = {
+	tag="kitchen.fish",
 	text = strings.objects.fish,	
 	pos = {234, 9, 1},
 	size = {12, 7},
@@ -153,7 +154,7 @@ items["kitchen.fish"] = {
 	actions = {
 		pickup = function()
 			local a = nil
-			if (variables.can_pickup_fish == true) then
+			if (variables.seagull_flying == true) then
 				a = pick_up_item("kitchen.fish", "kneel_front")
 			else
 				a = ms {
@@ -166,7 +167,7 @@ items["kitchen.fish"] = {
 			return a()
 		end,
 		look = ms {
-			{ action.say, { id=1, actor="guybrush", lines = {d[2] }}}
+			{ action.say, { id=1, actor="guybrush", lines = {d[3] }}}
 		}
 
 	}
