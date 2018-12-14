@@ -205,6 +205,14 @@ void TextView::reformat() {
 //    //Engine::get().GetRef<RenderingEngine>("_renderingengine")->RemoveCamera(m_camId);
 //}
 //
+
+void TextView::SetActiveInnerCheck(bool value) {
+    if (value) {
+        IncreaseTopLine(0);
+    }
+
+}
+
 void TextView::AddArrows() {
 
     auto arrowUp = std::make_shared<Entity>();

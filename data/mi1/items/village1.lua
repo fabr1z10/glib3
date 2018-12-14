@@ -35,3 +35,14 @@ items["village1.poster"] = {
 		}
 	}
 }
+
+items["village1.archway"] = {
+	text = strings.objects.archway,
+	pos = {992, 30, 0},
+	walk_to = {1008, 20}, 
+	face = "east",
+	size = {16, 40},			
+	actions = {
+		walk = ms { {action.change_room, {id=1,room="village2"}}}
+	}
+}

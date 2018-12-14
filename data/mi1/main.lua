@@ -45,7 +45,7 @@ fonts = {
 
 -- this stuff will change at gametime
 variables = {
-    _room = "kitchen",
+    _room = "village2",
 	_previousroom="",
 	_actionInfo = {
         verb = nil,
@@ -63,6 +63,8 @@ variables = {
 	can_pickup_fish = true,
     seagull_jump = 1,
     seagull_flying = false,
+	talked_to_important_pirates = false,
+	talked_to_citizen = false,
 	fish_taken=false,
 	inventory = {
 		-- put here your belongings

@@ -129,6 +129,7 @@ private:
     void UpdateWorldTransform();
     void SetWorldTransform(glm::mat4& wt);
     void Notify();
+    virtual void SetActiveInnerCheck(bool) {}
     bool m_flipHorizontal;
     bool m_active;
     bool m_update;

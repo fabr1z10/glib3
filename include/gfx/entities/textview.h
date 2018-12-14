@@ -23,6 +23,7 @@ public:
 //    bool ScrollUpVisible() const;
 //    // bool SetActive(bool) override;
 private:
+    void SetActiveInnerCheck(bool) override;
     void AddArrows();
     void AddEntity(luabridge::LuaRef);
     void reformat();

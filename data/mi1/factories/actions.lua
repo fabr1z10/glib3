@@ -92,6 +92,22 @@ action.change_room = function (args)
 	return { id = id, after = after, type="gotoroom", room = room }
 end
 
+action.disable_controls = function(args) 
+	local id = gr(args.id, "Required id in action.start_dialogue")
+	local after= go(args.after, nil)
+	return { id = id, after = after, type="callfunc", func = function() 
+		local m = monkey.getEntity("mainui")
+		local m1 = monkey.getEntity("main")
+		if (not m.isnil) then
+			m:setactive(false)
+		end
+		if (not m1.isnil) then
+			m1:enablecontrols(false)
+		end
+	end }
+
+end
+
 action.start_dialogue = function (args) 
 	local id = gr(args.id, "Required id in action.start_dialogue")
 	local after= go(args.after, nil)
@@ -145,7 +161,7 @@ action.end_dialogue = function(args)
 			m1:enablecontrols(true)			
 		end
 		if (dialogue.close ~= nil) then
-			print ("CIAO")
+			print ("closing seq")
 			dialogue.close()
 		end
 	end

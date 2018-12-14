@@ -9,8 +9,10 @@
 extern GLFWwindow* window;
 
 bool HotSpot::isMouseInside(glm::vec2 pos) {
-    glm::vec2 lpos (m_entity->GetPosition());
-    return m_shape->isPointInside(pos - lpos);
+    glm::mat4 wt = glm::inverse(m_entity->GetWorldTransform());
+    glm::vec2 lpos = wt * glm::vec4(pos.x, pos.y, 0.0f, 1.0f);
+    //glm::vec2 lpos (m_entity->GetPosition());
+    return m_shape->isPointInside(lpos);
 
 }
 

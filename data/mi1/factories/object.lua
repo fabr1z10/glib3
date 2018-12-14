@@ -44,7 +44,8 @@ factory.object.create = function(args)
 				onleave = hoverOff,
 				onclick = runAction })
 		end
-		if (args.applydepth) then
+		--print ("CANENENENE = "..tostring(args.applydepth))
+		if (object.applydepth) then
 			print ("COME STAI")
 			print (tostring(room.depth == nil))
 			print (tostring(room.scale == nil))

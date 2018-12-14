@@ -4,11 +4,15 @@
 void Scheduler::Update(double dt) {
     std::vector<std::string> toRemove;
     // add queued scripts
-    for (auto& q : m_queuedScripts) {
-        m_scripts[q.first] = q.second;
-        q.second->Start();
+    if (!m_queuedScripts.empty()) {
+        auto qs = m_queuedScripts;
+        m_queuedScripts.clear();
+        for (auto& q : qs) {
+            m_scripts[q.first] = q.second;
+            q.second->Start();
+        }
     }
-    m_queuedScripts.clear();
+
 
     for (auto& s : m_scripts) {
         s.second->Run(dt);

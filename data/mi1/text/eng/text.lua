@@ -369,7 +369,6 @@ strings = {
 			[66] = "Uh-oh, it looks like my grog is going flat, so you'll have to excuse me."
 		},
 		citizen = {
-			text = {	
 			[1] = "Excuse me, but do you have a cousin named Sven?",
 			[2] = "What?",
 			[3] = "No, I don't",
@@ -397,7 +396,7 @@ strings = {
 			[25] = "No thanks. I don't want it.",
 			[26] = "Well then, buzz off kid, it's bad for business.",
 			[27] = "Come back for the map to the Legenrary Lost Treasure of Mêlée Island™, eh?",
-			[28] = "I hope you brought enough moneyt this time.",
+			[28] = "I hope you brought enough money this time.",
 			[29] = "Shhhhhhh!",
 			[30] = "Pipe down, will ya?",
 			[31] = "That ugly sheriff might be around here.",
@@ -405,8 +404,6 @@ strings = {
 			[33] = "I see.",
 			[34] = "Not enough money, eh?",
 			[35] = "Come back when you're serious about treasure hunting, kid."
-
-			}
 		},
 		lowmoralfiber = {
 			text = {

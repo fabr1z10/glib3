@@ -43,10 +43,11 @@ void Entity::SetActive(bool value) {
         recursive = h.second->SetActive(value);
     }
     // now call setActive on all children
+
     if (recursive)
         for (auto& c: m_children)
             c->SetActive(value);
-
+    SetActiveInnerCheck(value);
 }
 
 

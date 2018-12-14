@@ -5,7 +5,8 @@ local roomInfo = {
 	height = 144,
 	startTable = {
 		lookout = { pos = items["village1.cliffside"].walk_to, facing = "east"},
-		scummbar = { pos = items["village1.door"].walk_to, facing = "south"}
+		scummbar = { pos = items["village1.door"].walk_to, facing = "south"},
+		village2 = { pos = items["village1.archway"].walk_to, facing="west"}
 	},
 	defaultroom = "lookout",
 	depth = { type="linear_y", values= {0, 1, 144, 0} },
@@ -36,6 +37,7 @@ room:add( {
 	factory.object.create { object = "village1.cliffside" },
 	factory.object.create { object = "village1.door" },
 	factory.object.create { object = "village1.poster" },
+	factory.object.create { object = "village1.archway" },
 })
 
 

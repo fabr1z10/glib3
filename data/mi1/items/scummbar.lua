@@ -163,10 +163,17 @@ items["scummbar.important_looking_pirates"] = {
 	walk_to = {460, 2},
 	face="west",
 	actions = {
-		talk = ms {
-			{action.say, {id=1, actor="scummbar.ilp1", lines = {strings.dialogues.pirates[1]}, animstart="talk", animend="idle"}},
-			{action.start_dialogue, {id=2, dialogue="importantpirates"}}
-		}
+		talk = function() 
+			local s = script:new()
+			local dp = strings.dialogues.pirates
+			local lines = (variables.talked_to_important_pirates == false) and {dp[1]} or {dp[40], dp[41]}
+			s.actions = {
+				action.disable_controls {id=1},
+				action.say {id=2, actor="scummbar.ilp1", lines = lines, animstart="talk", animend="idle"},
+				action.start_dialogue{id=3, dialogue="importantpirates"}
+			}
+			return s
+		end
 
 	}
 }
