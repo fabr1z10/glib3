@@ -21,7 +21,6 @@ local s1 = {
 
 dialogues.citizen = {
 	close = function()
-		print ("CANENENENENEN!!!!")
 		local s = script:new("_citizenclose")
 		s.actions = {
 			action.animate {id=1,actor="village2.citizen", anim="idle"}
@@ -55,10 +54,32 @@ dialogues.citizen = {
 			},
 			s1}
 		},
-		[6] = { text = d[10], active = false},
-		[7] = { text = d[11], active = false},
-		[8] = { text = d[12], active = false},
-		[9] = { text = d[13], active = false},
+		[6] = { text = d[10], active = false, children ={10, 11}, script = msc {
+			{
+				{ action.say, { id = 1, actor = "guybrush",  lines = {d[10]} }},
+				{ action.say, { id = 2, actor = "village2.citizen",  lines = {d[29], d[30], d[31], d[32]}, animstart="talkside", animend="idleside" }},
+			},
+			s1}
+		},
+		[7] = { text = d[11], active = false, children ={10, 11}, script = msc {
+			{
+				{ action.say, { id = 1, actor = "guybrush",  lines = {d[11]} }},
+				{ action.say, { id = 2, actor = "village2.citizen",  lines = {d[33]}, animstart="talkside", animend="idleside" }},
+			},
+			s1}
+		},
+		[8] = { text = d[12], active = false, script = msc {
+			{
+				{ action.say, { id = 1, actor = "guybrush",  lines = {d[12]} }},
+				{ action.say, { id = 2, actor = "village2.citizen",  lines = {d[29], d[30], d[31], d[32]}, animstart="talkside", animend="idleside" }},
+			},
+			s1}
+		},
+		[9] = { text = d[13], active = false, script = ms {
+			{ action.say, { id = 1, actor = "guybrush",  lines = {d[13]} }},
+			{ action.say, { id = 2, actor = "village2.citizen",  lines = {d[14], d[15]}, animstart="talkside", animend="idleside" }},
+			}
+		},
 		[10] = { text = d[24], active = function() 
 			return (variables.talked_about_map and (
 				(variables.inventory["piece_of_eight"] == nil) or (variables.inventory["piece_of_eight"]<100)))

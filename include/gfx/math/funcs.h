@@ -34,6 +34,16 @@ public:
     }
 };
 
+class Constant2D : public Function2D {
+public:
+    Constant2D(float value) : m_value{value} {}
+    float operator()(float, float) override {
+        return m_value;
+    }
+private:
+    float m_value;
+};
+
 class Linear2Dx : public Function2D {
 public:
     Linear2Dx(float x0, float value0, float x1, float value1) : m_x0{x0}, m_value0{value0}, m_delta{(value1-value0)/(x1-x0)} {}
@@ -67,9 +77,9 @@ class PatchwiseLinear2D : public Function2D {
 public:
     PatchwiseLinear2D() {}
     float operator() (float x, float y) override;
-    void AddFunction (glm::vec4, bool, float value0, float value1);
+    void AddFunction (glm::vec4, std::unique_ptr<Function2D>);
 private:
     std::vector<glm::vec4> m_domains;
     std::vector<bool> m_varX;
-    std::vector<LinearFunction> m_functions;
+    std::vector<std::unique_ptr<Function2D>> m_functions;
 };

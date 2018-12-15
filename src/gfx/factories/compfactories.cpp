@@ -319,16 +319,22 @@ std::unique_ptr<Function2D> GetFunc2D(luabridge::LuaRef& ref) {
         glm::vec4 values = table.Get<glm::vec4>("values");
         std::unique_ptr<Function2D> f(new Linear2Dy(values[0], values[1], values[2], values[3]));
         return std::move(f);
+    } else if (type == "constant") {
+        float value = table.Get<float>("value");
+        std::unique_ptr<Function2D> f(new Constant2D(value));
+        return std::move(f);
     } else if (type == "patchwise") {
-
         std::unique_ptr<PatchwiseLinear2D> p(new PatchwiseLinear2D);
-        for (int i = 0; i < ref.length(); ++i) {
-            luabridge::LuaRef f = ref[i + 1];
+        luabridge::LuaRef quads = table.Get<luabridge::LuaRef>("rects");
+        for (int i = 0; i < quads.length(); ++i) {
+            luabridge::LuaRef f = quads[i + 1];
             LuaTable funcTable(f);
-            glm::vec4 domain = funcTable.Get<glm::vec4>("rect");
-            bool isX = (funcTable.Get<char>("dir") == 'x');
-            glm::vec2 bounds = funcTable.Get<glm::vec2>("bounds");
-            p->AddFunction(domain, isX, bounds.x, bounds.y);
+            glm::vec2 pos = funcTable.Get<glm::vec2>("pos");
+            glm::vec2 size = funcTable.Get<glm::vec2>("size");
+            glm::vec4 domain (pos.x, pos.y, pos.x+size.x, pos.y +size.y);
+            //luabridge::LuaRef fref = funcTable.Get<luabridge::LuaRef>("func");
+            auto fu = GetFunc2D(f);
+            p->AddFunction(domain, std::move(fu));
         }
         return std::move(p);
     }

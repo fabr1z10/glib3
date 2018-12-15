@@ -15,7 +15,7 @@ items["village2.citizen"] = {
 	tag="citizen",
 	text = strings.objects.citizen,
 	pos = {325, 27, 0},
-	walk_to = {340, 27}, 
+	walk_to = {360, 27}, 
 	face = "west",
 	model = "citizen",
 	anim ="idle",
@@ -40,5 +40,44 @@ items["village2.citizen"] = {
 			}
 			return s
 		end
+	}
+}
+
+items["village2.lmf1"] = {
+	tag="lmf1",
+	pos = {18, 10, 0},
+	text_color = {255, 85, 255, 255},
+	text_offset = {0,60},
+	model ="lmf1",
+	anim="idle"
+}
+
+items["village2.lmf2"] = {
+	tag="lmf2",
+	pos = {44, 20, 0},
+	text_color = {85, 255, 255, 255},
+	text_offset = {0,60},
+	model ="lmf2",
+	anim="idle"
+}
+
+items["village2.lmf3"] = {
+	tag="lmf3",
+	pos = {56, 23, 0},
+	text_color = {85, 255, 85, 255},
+	text_offset = {0,60},
+	model ="lmf3",
+	anim="idle"
+
+}
+
+items["village2.lmf"] = {
+	text = strings.objects.lowmoralfiber,
+	pos = {0, 0, 0},
+	size = {50, 30},
+	walk_to = {70, 18},
+	face = "west",
+	actions = {
+
 	}
 }

@@ -8,12 +8,21 @@ local roomInfo = {
 	},
 	defaultroom = "village1",
 	depth = { type="linear_y", values= {0, 1, 144, 0} },
-	scale = { type="linear_y", values= {0, 0.8, 144, 0.2}}
+	scale = { type="patchwise", rects = {
+    		{ pos = {0, 0}, size={480, 40}, type="constant", value = 1},
+    		{ pos = {0, 40}, size={480, 104}, type="constant", value = 0.8},    		
+    	}
+	}
+	
 }
 
 room = generateBasicRoom (roomInfo)
 
 room:add_asset(sprites.citizen)
+room:add_asset(sprites.lmf1)
+room:add_asset(sprites.lmf2)
+room:add_asset(sprites.lmf3)
+
 
 room:add( {
 	{ pos = {0, 0,-3}, components = { { type="gfx", image="gfx/village2.png" }}},
@@ -33,8 +42,12 @@ room:add( {
 	},
  	factory.object.create { object = "village2.archway1" },
 	factory.object.create { object = "village2.citizen" },
--- 	factory.object.create { object = "village1.poster" },
--- 	factory.object.create { object = "village1.archway" },
+	factory.object.create { object = "village2.lmf1" },
+	factory.object.create { object = "village2.lmf2" },
+	factory.object.create { object = "village2.lmf3" },
+	factory.object.create { object = "village2.lmf" },
+
+
 })
 
 
