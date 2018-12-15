@@ -29,6 +29,10 @@ items["village2.citizen"] = {
 			local s = script:new()
 			local dp = strings.dialogues.citizen
 			local lines = (variables.talked_to_citizen == false) and {dp[1]} or {dp[8], dp[9]}
+			if (variables.talked_about_map) then
+				table.insert(lines, dp[27])
+				table.insert(lines, dp[28])
+			end
 			s.actions = {
 				action.disable_controls {id=1},
 				action.say {id=2, actor="village2.citizen", lines = lines, animstart="talkside", animend="idleside" },

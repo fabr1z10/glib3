@@ -30,6 +30,16 @@ function go (n, d, msg)
 	return n
 end
 
+function get(ref)
+	if (type(ref)=="function") then
+		print ("PLLLL")
+		return ref()
+	else
+		print ("LMMMM")
+		return ref
+	end
+end
+
 -- load all files in a folder
 function load_all(folder_name)
     print ("Loading all " .. folder_name .. " ...")
@@ -44,17 +54,36 @@ function load_all(folder_name)
         require(line)
     end
 end
+
 function ms(args)
     return function()
         local s = script:new()
 		s.actions = {}
         for k, v in ipairs(args) do
-            print("kkkkkk")
             table.insert(s.actions, v[1](v[2]))
         end
         return s
     end
 end
+
+function msc(args)
+    return function()
+    	local s = script:new()
+    	for _, ss in ipairs(args) do
+        	local s1 = script:new()
+			s1.actions = {}
+        	for _, v in ipairs(ss) do
+        		print("running act")
+            	table.insert(s1.actions, v[1](v[2]))
+        	end
+
+    		s:push { script=s1 }
+        end
+        return s
+    end
+end
+
+
 
 
 -- basic say script
@@ -366,7 +395,9 @@ function start_dialogue(args)
 			m2:cleartext()
 			for k, v in ipairs(root.children) do
                 local node = dialogue.nodes[v]
-                if (node.active == true) then
+                print("ciao = " .. tostring(v))
+                print ( "pollo === " .. tostring(get(node.active)))
+                if (get(node.active) == true) then
 				    m2:addtext { text=node.text, dialogue_node = node, dialogue = args.dialogue }
 			    end
             end

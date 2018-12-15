@@ -133,7 +133,7 @@ action.start_dialogue = function (args)
 		m2:cleartext()
 		for k, v in ipairs(root.children) do
         	local node = dialogue.nodes[v]
-            if (node.active == true) then
+            if (get(node.active) == true) then
 				m2:addtext { text=node.text, dialogue_node = node, dialogue = args.dialogue }
 			end
         end

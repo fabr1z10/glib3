@@ -65,6 +65,7 @@ variables = {
     seagull_flying = false,
 	talked_to_important_pirates = false,
 	talked_to_citizen = false,
+    talked_about_map = false,
 	fish_taken=false,
 	inventory = {
 		-- put here your belongings
