@@ -1,4 +1,8 @@
 strings = {
+	pieces_of_eight = function() 
+		local n = variables.inventory["pieces_of_eight"]
+		return ("I have " .. tostring(n) .. " pieces of eight.")
+	end,
     ui = {
         open = "Open",
         close = "Close",
