@@ -406,7 +406,6 @@ strings = {
 			[35] = "Come back when you're serious about treasure hunting, kid."
 		},
 		lowmoralfiber = {
-			text = {
 			[1] = "Hey, nice rat!",
 			[2] = "How can you stand to be near this vermin?",
 			[3] = "Do you guys know the sneaky-looking man on the opposite corner?",
@@ -473,9 +472,8 @@ strings = {
 			[64] = "Now you've depressed us.",
 			[65] = "Go home.",
 			[66] = "See? Told you so.",
-			[67] = "I'll take those minutes if you give me two pieces of eight."
-
-			}
+			[67] = "I'll take those minutes if you give me two pieces of eight.",
+			[68] = "Do you know where I can find a treasure map around here?"
 		},
 		voodoolady = {
 			text = {

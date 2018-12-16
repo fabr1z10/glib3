@@ -49,7 +49,8 @@ items["village2.lmf1"] = {
 	text_color = {255, 85, 255, 255},
 	text_offset = {0,60},
 	model ="lmf1",
-	anim="idle"
+	anim="idle",
+	applydepth = true
 }
 
 items["village2.lmf2"] = {
@@ -58,7 +59,8 @@ items["village2.lmf2"] = {
 	text_color = {85, 255, 255, 255},
 	text_offset = {0,60},
 	model ="lmf2",
-	anim="idle"
+	anim="idle",
+	applydepth = true,
 }
 
 items["village2.lmf3"] = {
@@ -66,6 +68,7 @@ items["village2.lmf3"] = {
 	pos = {56, 23, 0},
 	text_color = {85, 255, 85, 255},
 	text_offset = {0,60},
+	applydepth = true,
 	model ="lmf3",
 	anim="idle"
 
@@ -78,6 +81,10 @@ items["village2.lmf"] = {
 	walk_to = {70, 18},
 	face = "west",
 	actions = {
+		talk = ms {
+			{ action.start_dialogue, {id=1, dialogue="lowmoralfiber"}}
+
+		} 
 
 	}
 }

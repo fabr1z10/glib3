@@ -297,6 +297,7 @@ action.add_to_inventory = function(args)
 			else 
 				variables.inventory[objid] = variables.inventory[objid] + qty
 			end
+			print "llllllllll"
 			refresh_inventory()
 	
 		end

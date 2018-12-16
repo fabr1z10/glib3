@@ -481,6 +481,8 @@ refresh_inventory = function()
 	for k, v in pairs(variables.inventory) do
 		if (v == 1) then
 			c:addtext( {text = items[k].text, obj = k})
+		else
+			c:addtext( { text = tostring(v) .. " " .. items[k].text_plural, obj = k} )
 		end
 	end
 
