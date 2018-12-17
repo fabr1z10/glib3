@@ -45,7 +45,7 @@ fonts = {
 
 -- this stuff will change at gametime
 variables = {
-    _room = "village2",
+    _room = "village3",
 	_previousroom="",
 	_actionInfo = {
         verb = nil,
@@ -58,6 +58,8 @@ variables = {
 	door_village_scummbar = 0,
 	door_scummbar_kitchen = 0,
 	door_kitchen_pier = 0,
+	door_voodoolady = 0,
+	door_shop = 0,
 	cook_in_kitchen = true,
 	meat_in_pot = false,
 	can_pickup_fish = true,
@@ -67,11 +69,20 @@ variables = {
 	talked_to_citizen = false,
     talked_about_map = false,
 	fish_taken=false,
+	talking_to_voodoolady = false,
+	talked_to_voodoolady = false,
+	voodoolady_told_future = false,
+	sword_paid = false,
+	shovel_paid = false,
+	know_sword_price = false,
+	know_shovel_price = false,
 	inventory = {
 		-- put here your belongings
-
+		
 	}
 }
+
+variables.inventory["pieces_of_eight"] = 10000
 
 require ("script")
 require ("funcs")

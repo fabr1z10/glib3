@@ -11,6 +11,17 @@ items["village2.archway1"] = {
 	}
 }
 
+items["village2.archway2"] = {
+	text = strings.objects.archway,
+	pos = {146, 63, 0},
+	walk_to = {160, 80}, 
+	face = "north",
+	size = {30, 30},			
+	actions = {
+		walk = ms { {action.change_room, {id=1,room="village3"}}}
+	}
+}
+
 items["village2.citizen"] = {
 	tag="citizen",
 	text = strings.objects.citizen,
@@ -87,4 +98,27 @@ items["village2.lmf"] = {
 		} 
 
 	}
+}
+
+items["village2.rat"] = {
+	tag="rat",
+	pos = {56,10,0},
+	applydepth = true,
+	text_color = {170, 170, 170, 255},
+	text_offset = {0,60},
+	model = "rat",
+	anim="idle",
+	flip=true
+
+}
+
+items["village2.door_voodoolady"] = factory.door.create {
+	name = "village2.door_voodoolady",
+	pos = {220, 52, -1},
+	size = {26, 26},
+	walk_to = {220, 48},
+	face = "east",
+	door_ref = "door_voodoolady",
+	model = "village2.door_voodoo",
+	nextroom = "voodoolady"
 }

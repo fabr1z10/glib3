@@ -79,6 +79,7 @@ function msc(args)
 
     		s:push { script=s1 }
         end
+		s:dump()
         return s
     end
 end
@@ -391,9 +392,11 @@ function start_dialogue(args)
 			end
 			m2:setactive(true)
 			--local root = dialogue[1]
-			print ("Size of children = " .. tostring(#root.children))
+			local children = get(root.children)
+			print ("Size of children = " .. tostring(#children))
 			m2:cleartext()
-			for k, v in ipairs(root.children) do
+			for k, v in ipairs(children) do
+				print ("child = " .. tostring(v))
                 local node = dialogue.nodes[v]
                 print("ciao = " .. tostring(v))
                 print ( "pollo === " .. tostring(get(node.active)))
@@ -506,7 +509,8 @@ pick_up_item = function(name, act)
 				action.animate { id=1, actor="guybrush", anim = act },
 				action.delay { id=2, sec=0.5 },
 				action.turn { id=3, actor="guybrush", dir = obj.face },
-				action.remove_object{ id=4, name = name },
+				--action.remove_object{ id=4, name = name },
+				action.activate {id=4, name=name, value=false},
 				action.add_to_inventory{id = 5, name= name, qty = 1}
 			}
 			--s:dump()
@@ -517,4 +521,8 @@ pick_up_item = function(name, act)
 	end
 end
 
-
+checkFunds = function(n)
+	local p8 = variables.inventory["pieces_of_eight"]
+	if (p8 == nil) then return false end
+	return (p8 >= n)
+end

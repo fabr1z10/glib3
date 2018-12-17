@@ -275,3 +275,45 @@ sprites.lmf3 =  {
         },
     }       
 }
+
+sprites.rat = {
+    id = "rat",
+    sheet = "gfx/anims.png",
+    type="sprite",
+    ppu=1,
+    animations = {
+        {
+       	    name = "idle",             
+            frames = 
+            { 
+	    	  	{ duration = dt, quads = { { x=54, y=126, width=13, height=12, anchor = {4, 0}}, { x=40, y=121, width=5, height=4, anchor={7,0} } }},             
+	    	  	{ duration = dt*2, quads = { { x=54, y=126, width=13, height=12, anchor = {4, 0}}, { x=47, y=123, width=6, height=2, anchor={7,0} } }},             
+	    	  	{ duration = dt, quads = { { x=40, y=126, width=13, height=10, anchor = {5, 0}}, { x=47, y=123, width=6, height=2, anchor={7,0} } }}             
+		    }
+        },
+		
+	}	
+}
+
+sprites["village2.door_voodoo"] = {
+	id = "village2.door_voodoo",
+    sheet = "gfx/anims.png",
+    type="sprite",
+    ppu=1,
+    animations = {
+        {
+       	    name = "open",             
+            frames = 
+            { 
+	    	  	{ duration = dt, quads = { { x=301, y=130, width=26, height=24, anchor = {0, 0}}}}             
+		    }
+        },
+        {
+       	    name = "close",             
+            frames = 
+            { 
+	    	  	{ duration = dt, quads = { { x=273, y=130, width=26, height=24, anchor = {0, 0}}}}             
+		    }
+        },
+	}	
+}

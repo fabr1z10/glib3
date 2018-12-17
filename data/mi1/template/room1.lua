@@ -11,6 +11,9 @@ function generateBasicRoom (args)
 			startPos = args.startTable[args.defaultroom]
 		end	
 	end
+	local enableScroll = args.enableScroll
+	if (enableScroll == nil) then enableScroll = true end
+	
 
 	local p =  {
 		items = {},
@@ -42,7 +45,7 @@ function generateBasicRoom (args)
 						pos= startPos.pos, 
 						model="guybrush", 
 						facing = startPos.facing, 
-						scroll = (room_width > 320),
+						scroll = (room_width > 320 and enableScroll),
 						depth = args.depth,
 						scale = args.scale,
 						collide = args.collide

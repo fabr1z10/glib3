@@ -480,7 +480,6 @@ strings = {
 			[68] = "Do you know where I can find a treasure map around here?"
 		},
 		voodoolady = {
-			text = {
 			[1] = "What may I help you with, son?",
 			[2] = "My name is Guybrush Threepwood and I'm a mighty pirate.",
 			[3] = "Can you read palms? Am I going to be rich?",
@@ -531,11 +530,14 @@ strings = {
 			[48] = "NO!",
 			[49] = "The time is not right to know.",
 			[50] = "When you know your purpose, come see me...",
-			[51] = "...I will let you know then."
-			}
+			[51] = "...I will let you know then.",
+			[52] = "Hello?",
+			[53] = "Hey! I'm back and I'm ready to know more about the future.",
+			[54] = "Guess I'll just be going now.",
+			[55] = "Guess no one's here.",
+			[56] = "Changed your mind, I see."
 		},
 		storekeeper = {
-			text = {
 			[1] = "Waddya want?",
 			[2] = "I think I'd just like to browse for now.",
 			[3] = "Whatever.",
@@ -581,8 +583,6 @@ strings = {
 			[43] = "...ONCE.",
 			[44] = "Be right back.",
 			[45] = "AND DON'T TOUCH ANYTHING!"
-
-			}
 		},
 		fettbros = {
 			text = {
@@ -771,7 +771,8 @@ strings = {
 		[6] = "\"DIGMASTER™ -- The only shovel for serious treasure-hunting enthusiasts.\"",
 		[7] = "\"Ring bell for service.\"",
 		[8] = "I'd better not touch it.",
-		[9] = "That storekeeper guy might bite my head off."
+		[9] = "That storekeeper guy might bite my head off.",
+		[10] = "Did you just come in here to get out of the cold, or do you need something?"
 		
 	},
 	circus = {

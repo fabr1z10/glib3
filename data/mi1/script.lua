@@ -44,6 +44,27 @@ function script:getid(name, id)
 	return self.offset[name] + id
 end
 
+function shallowcopy(orig)
+    local orig_type = type(orig)
+    local copy 
+    if orig_type == 'table' then
+        copy = {}
+        for orig_key, orig_value in pairs(orig) do
+			if (orig_key=="after") then
+				copy.after= {}
+				for _,b in ipairs(orig_value) do
+					table.insert(copy.after, b)
+				end
+			else
+            	copy[orig_key] = orig_value
+			end
+        end
+    else -- number, string, boolean, etc
+        copy = orig
+    end
+    return copy
+end
+
 -- push another script 
 -- call ike s:push { script = a, parent = node }
 function script:push (args) 
@@ -78,21 +99,23 @@ function script:push (args)
 	end
 
 	for k, v in ipairs(args.script.actions) do
-		local lid = v.id
-		v.id = idmax+v.id
+		-- copy the action
+		local vc = shallowcopy(v)
+		local lid = vc.id
+		vc.id = idmax + vc.id
 		if (lid == 1) then
-			v.after = {}
+			vc.after = {}
 			for k, _ in pairs(leaves) do
-				table.insert(v.after, k)
+				table.insert(vc.after, k)
 			end
 		else
-			if (v.after ~= nil) then
-				for i,j in ipairs(v.after) do
-					v.after[i] = v.after[i] + idmax
+			if (vc.after ~= nil) then
+				for i,j in ipairs(vc.after) do
+					vc.after[i] = vc.after[i] + idmax
 				end
 			end
 		end
-		table.insert(self.actions, v)
+		table.insert(self.actions, vc)
 	end
 	if (args.script.loop ~= nil) then
 		self.loop = idmax + args.script.loop

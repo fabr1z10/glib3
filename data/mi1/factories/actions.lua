@@ -45,12 +45,17 @@ action.walkto = function (args)
 	local actor = gr(args.actor, "Required id in action.walkto")
 	local item = items[actor]
 	local pos = nil
-	if (args.obj == nil) then
+	local obj = args.obj
+	if (obj == nil and (args.objid ~= nil)) then
+		obj = items[args.objid]
+	end
+	
+	if (obj == nil) then
 		pos = gr(args.pos, "Required object or position in action.walkto")
 	else
 		--local item2 = items[args.obj]
 		--print("plllll" .. args.obj.tag)
-		pos = args.obj.walk_to
+		pos = obj.walk_to
 		if (pos == nil) then
 			print ("ERROR! Target object needs a <walk_to> field!")
 		end
@@ -92,6 +97,13 @@ action.change_room = function (args)
 	return { id = id, after = after, type="gotoroom", room = room }
 end
 
+action.noop = function(args) 
+	local id = gr(args.id, "Required id in action.changeroom")
+	local after= go(args.after, nil)
+	return { id = id, after = after, type="noop" }
+	
+end
+
 action.disable_controls = function(args) 
 	local id = gr(args.id, "Required id in action.start_dialogue")
 	local after= go(args.after, nil)
@@ -129,9 +141,10 @@ action.start_dialogue = function (args)
 			m1:enablecontrols(false)
 		end
 		m2:setactive(true)
-		print ("Size of children = " .. tostring(#root.children))
+		local children = get(root.children)
+		print ("Size of children = " .. tostring(#children))
 		m2:cleartext()
-		for k, v in ipairs(root.children) do
+		for k, v in ipairs(children) do
         	local node = dialogue.nodes[v]
             if (get(node.active) == true) then
 				m2:addtext { text=node.text, dialogue_node = node, dialogue = args.dialogue }
@@ -199,6 +212,7 @@ action.remove_object = function(args)
 	end
 	return { id = id, after = after, type = "callfunc", func = 
 		function()
+			print ("ciao " .. tag)
 			local i = monkey.getEntity(tag)
 			i:remove()
 		end
@@ -338,4 +352,30 @@ action.enable_wall = function(args)
 	local wallId = gr(args.wall,"")
 	local active = gr(args.active,"")
 	return { id = id, after = after, type="enable_wall", wall = wallId, active = active }
+end
+
+action.scroll = function (args) 
+	local id = gr(args.id, "Required id in action.scroll")
+
+	local after= go(args.after, nil)
+	local speed = gr(args.speed, "Required speed in action.scroll")
+	local by = args.by
+	local to = args.to
+	return { id = id, after = after, type="scroll", cam = "maincam", by = by, to = to, speed = speed }
+end
+
+action.activate = function (args)
+	local id = gr(args.id, "Required id in action.activate")
+	local after= go(args.after, nil)
+	local tag = args.tag
+	if (tag == nil) then
+		local name = gr(args.name, "Required <name> in action.activate")
+		tag = items[name].tag
+	end
+	local activate = gr(args.value, "Req <value> in action.activate")
+	return { id = id, after = after, type="callfunc", func = function() 
+		local m = monkey.getEntity(tag)
+		m:setactive(activate)
+	end}
+
 end
