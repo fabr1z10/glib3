@@ -76,6 +76,7 @@ variables = {
 	shovel_paid = false,
 	know_sword_price = false,
 	know_shovel_price = false,
+    met_fester = false,
 	inventory = {
 		-- put here your belongings
 		

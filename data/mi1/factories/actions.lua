@@ -191,11 +191,9 @@ action.create_object = function(args)
 	end
 	return { id = id, after = after, type = "callfunc", func = 
 		function()
-			print ("CIAO")
-			local o = factory.object.create { object = objid, pos = args.pos, anim = args.anim, flip = flip, applydepth = args.applydepth }
-			print ("CIAO2")
+			local o = factory.object.create { object = objid, pos = args.pos, anim = args.anim, 
+			flip = flip, applydepth = args.applydepth }
 			local m1 = monkey.getEntity("main")
-			print ("CIAO3")
 			monkey.addEntity (o, m1)
 		end
 	}

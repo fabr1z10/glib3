@@ -72,7 +72,8 @@ strings = {
 		outside = "outside",
 		fettuccini = "Fettuccini Brothers",
 		sign = "sign",
-		bell = "bell"
+		bell = "bell",
+		alley ="alley"
 		
 		
     },
@@ -584,6 +585,13 @@ strings = {
 			[44] = "Be right back.",
 			[45] = "AND DON'T TOUCH ANYTHING!"
 		},
+		fester = {
+			[1] = "Hello?",
+			[2] = "Anybody in here?",
+			[3] = "HELLO???",
+			[4] = "You know, bad things could happen to a person in a dark, deserted alley like this one.",
+			[5] = "And at this time of night, nobody would be around to see it."
+		},
 		fettbros = {
 			text = {
 			[1] = "I'd get in the cannon, but the gunpowder makes me sneeze.",
@@ -733,6 +741,11 @@ strings = {
 		[1] = "What are YOU looking at?",
 		[2] = "There sure are a lot of spelling errors.",
 		[3] = "I have",
+	},
+	village3 = {
+		[1] = "Psssst.",
+		[2] = "Hey you.",
+		[3] = "Come over here"
 	},
 	voodoolady = {
 		[1] = "Actually, I'm not THAT curious to find out what's inside.",

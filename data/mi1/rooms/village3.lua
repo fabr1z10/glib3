@@ -34,6 +34,7 @@ room:add( {
       	}
 	},
 	factory.object.create { object = "village3.archway" },
+	factory.object.create { object = "village3.alley" },
 	factory.object.create { object = "village3.shop_door" },
 
 
@@ -43,6 +44,19 @@ room:add( {
 function room.afterstartup() 
 	for k, v in ipairs(room.initstuff) do
 		v()
+	end
+	if (variables.met_fester == false) then
+		local s = script:new()
+		s.actions = {
+			action.delay { id=1, sec=5},
+			action.show_message { id = 2, message = strings.village3[1], color = items["fester"].text_color, pos= {594,67,1}},
+			action.delay { id=3, sec=5},
+			action.show_message { id = 4, message = strings.village3[2], color = items["fester"].text_color, pos= {594,67,1}},
+			action.delay { id=5, sec=5},
+			action.show_message { id = 6, message = strings.village3[3], color = items["fester"].text_color, pos= {594,67,1}},
+		}
+		s.loop = 1
+		monkey.play(s)	
 	end
 end
 
