@@ -1,13 +1,17 @@
 require("template/room1")
 
-
-
-local startPosTable = {
-	village1 = { pos = {248, 0}, facing = "north", func = curry(walk_player_to, {pos={229, 36}} )},
-	meleemap = { pos = {310, 52}, facing = "west", func = curry(walk_player_to, {pos={229, 36}} )}
+local roomInfo = {
+	width = 320,
+	height = 144,
+	startTable = {
+		village1 = { pos = items["lookout.stairs"].walk_to, facing="north"},
+		meleemap = { pos = items["lookout.path"].walk_to, facing = "east"},
+	},
+	defaultroom = "village1",
+	depth = { type="linear_y", values= {0, 1, 144, 0} },
 }
 
-room = generateBasicRoom { width = 320, height = 144, startTable = startPosTable, defaultroom = "village1" }
+room = generateBasicRoom (roomInfo)
 
 --local main = room.scene[1].children
 
@@ -21,9 +25,10 @@ room:add( {
 	{ pos = {0,0,-3}, components = { { type="gfx", image="gfx/lookout_1.png" }}},
     { pos = {81, 16, 3}, components = { { type="gfx", image="gfx/lookout_2.png" }}},
     { pos = {294, 33, 3}, components = { { type="gfx", image ="gfx/lookout_3.png" }}},
-	factory.object.create { object = items.lookout.stairs },
-	factory.object.create { object = items.lookout.lookout },
-	factory.object.create { object = items.lookout.fire },
+	factory.object.create { object = "lookout.stairs" },
+	factory.object.create { object = "lookout.lookout" },
+	factory.object.create { object = "lookout.fire" },
+	factory.object.create { object = "lookout.path" },
 	{
 		pos = {0,0,0},
 		components = {

@@ -6,9 +6,21 @@ items["lookout.stairs"] = {
 	face = "south",
 	size = {30, 10},			
 	actions = {
-		walk = curry(change_room, "village1")
+		walk = ms { {action.change_room, {id=1,room="village1"}}}
 	}
 }
+
+items["lookout.path"] = {
+	text = strings.objects.path,
+	pos = {294, 0, 0},
+	walk_to = {320, 50}, 
+	face = "west",
+	size = {26, 144},			
+	actions = {
+		walk = ms { {action.change_room, {id=1,room="meleemap"}}}
+	}
+}
+
 
 items["lookout.lookout"] = {
 	tag = "lookout",

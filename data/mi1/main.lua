@@ -45,7 +45,7 @@ fonts = {
 
 -- this stuff will change at gametime
 variables = {
-    _room = "village3",
+    _room = "lookout",
 	_previousroom="",
 	_actionInfo = {
         verb = nil,
