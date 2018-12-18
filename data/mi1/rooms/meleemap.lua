@@ -31,6 +31,7 @@ room:add( {
 			}
       	}
 	},
+	factory.mapitem.create { pos={75, 79}, name = "lookout", room="lookout" }
 })
 
 

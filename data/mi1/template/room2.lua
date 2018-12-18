@@ -49,6 +49,34 @@ function generateMapRoom (args)
 					}
 				}
 			},
+			{
+				tag = "diag",
+				camera = {
+					tag = "maincam",
+					type="ortho",
+					size = {320, 200},
+					bounds = {0, 0, 320, 200},
+					viewport = {0, 0, 320, 200}
+				},
+				children = {
+					-- {
+					--     pos = {0, 0, 0},
+					--     hotspot = {
+					--         priority = 1,
+					--         shape = { type = "rect", width=320, height=200 },
+					--         onmove = function(x,y) print(x .. " " .. y) end
+					--     }
+					-- },
+					{ 
+				    	tag = "cursor",
+				    	pos={0,0,0},
+						components = {
+				    		{ type="text", id = "prova", font="monkey", align = "bottom", color = config.ui_currentaction_color},
+							{ type="cursor"}
+						}
+					}
+				}
+			}
 		}
 	}
 

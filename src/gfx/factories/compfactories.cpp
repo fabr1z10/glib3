@@ -33,7 +33,7 @@
 #include <gfx/states/luainitializer.h>
 #include <gfx/components/platform.h>
 #include <gfx/components/fpscounter.h>
-
+#include <gfx/components/cursor.h>
 
 std::unique_ptr<Component> TextComponentFactory::Create(luabridge::LuaRef &ref) {
     auto renderer = std::unique_ptr<Renderer>(new Renderer);
@@ -384,7 +384,10 @@ std::unique_ptr<Component> FPSComponentFactory::Create(luabridge::LuaRef &ref) {
     return std::unique_ptr<FPSCounter>(new FPSCounter);
 }
 
+std::unique_ptr<Component> CursorComponentFactory::Create(luabridge::LuaRef& ref) {
+    return std::unique_ptr<Cursor>(new Cursor);
 
+}
 
 //
 //void HotSpotComponentFactory::operator() (luabridge::LuaRef& ref, Entity* parent) {
