@@ -45,7 +45,7 @@ fonts = {
 
 -- this stuff will change at gametime
 variables = {
-    _room = "lookout",
+    _room = "clearing",
 	_previousroom="",
 	_actionInfo = {
         verb = nil,
@@ -77,6 +77,9 @@ variables = {
 	know_sword_price = false,
 	know_shovel_price = false,
     met_fester = false,
+	entered_circus = false,
+	circus_knows_trick = false,
+	circus_knows_helmet = false,
 	inventory = {
 		-- put here your belongings
 		

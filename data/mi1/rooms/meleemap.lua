@@ -5,6 +5,7 @@ local roomInfo = {
 	height = 200,
 	startTable = {
 		lookout = { pos = {75, 79}, facing = "north"},
+		clearing = { pos = {135, 113}, facing = "west"},
 	},
 	defaultroom = "lookout",
 	depth = { type="linear_y", values= {0, 1, 144, 0} },
@@ -31,7 +32,9 @@ room:add( {
 			}
       	}
 	},
-	factory.mapitem.create { pos={75, 79}, name = "lookout", room="lookout" }
+	factory.mapitem.create { pos={75, 79}, name = "lookout", room="lookout" },
+	factory.mapitem.create { pos={135, 113}, name = "clearing", room="clearing" },
+
 })
 
 

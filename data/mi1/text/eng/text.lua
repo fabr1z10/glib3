@@ -593,7 +593,6 @@ strings = {
 			[5] = "And at this time of night, nobody would be around to see it."
 		},
 		fettbros = {
-			text = {
 			[1] = "I'd get in the cannon, but the gunpowder makes me sneeze.",
 			[2] = "Well, I can't do it, I hurt my hand taming the lions last week.",
 			[3] = "I hardly think that little scratch compares to my chronic allergy. You get in the cannon.",
@@ -697,16 +696,7 @@ strings = {
 			[101] = "No, I'LL do it next!",
 			[102] = "No, me!",
 			[103] = "No, ME!",
-
-			
-
-			
-			
-			}
 		}
-
-        
-
     },
     defaultactions = {
         [1] = "It doesn't seem to open.",

@@ -58,6 +58,7 @@ end
 function ms(args)
     return function()
         local s = script:new()
+		print ("number of action = " .. tostring(#args))
 		s.actions = {}
         for k, v in ipairs(args) do
             table.insert(s.actions, v[1](v[2]))

@@ -68,6 +68,8 @@ end
 -- push another script 
 -- call ike s:push { script = a, parent = node }
 function script:push (args) 
+	local at = args.at
+	if (at == nil) then at = "end" end
 	--print ("** push a script at the end of another...")
 	if (args.script == nil) then
 		return
@@ -104,9 +106,13 @@ function script:push (args)
 		local lid = vc.id
 		vc.id = idmax + vc.id
 		if (lid == 1) then
-			vc.after = {}
-			for k, _ in pairs(leaves) do
-				table.insert(vc.after, k)
+			if (at == "end") then
+				vc.after = {}
+				for k, _ in pairs(leaves) do
+					table.insert(vc.after, k)
+				end
+			else
+				vc.after={1}
 			end
 		else
 			if (vc.after ~= nil) then
