@@ -12,6 +12,8 @@
 GLFWwindow* window;
 
 void Engine::Init(const EngineConfig& config) {
+    // When I call init, I decide which shaders to add...
+
     InitGL(config);
     m_frameTime = 1.0 / config.frameRate;
     m_running = false;
@@ -31,6 +33,18 @@ void Engine::Init(const EngineConfig& config) {
     AddShader (ShaderFactory::GetTextureShader());
     AddShader (ShaderFactory::GetColorShader());
     AddShader (ShaderFactory::GetTextShader());
+
+    // set-up the rendering engine
+    auto renderingEngine = std::unique_ptr<RenderingEngine>(new RenderingEngine);
+    for (auto& shaderId : config.shaders) {
+        std::cout << "Loading shader: " << shaderId << "\n";
+        auto sh = ShaderFactory::GetShader(shaderId);
+        renderingEngine->AddShader(sh.get());
+        AddShader(std::move(sh));
+    }
+
+    SetRenderingEngine(std::move(renderingEngine));
+
     if (config.enableMouse) {
         glfwSetMouseButtonCallback(window, mouse_button_callback);
         glfwSetCursorPosCallback(window, cursor_pos_callback);

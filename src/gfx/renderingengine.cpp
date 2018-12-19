@@ -132,11 +132,11 @@ void RenderingEngine::Update(double)
     }
 }
 
-void RenderingEngine::AddShader (ShaderType id) {
-    Shader* shader = Engine::get().GetShader(id);
-    if (shader == nullptr)
-        GLIB_FAIL("Shader " << id << " is not available.");
-    m_shaders.push_back(shader);
+void RenderingEngine::AddShader (Shader* s) {
+//    Shader* shader = Engine::get().GetShader(id);
+//    if (shader == nullptr)
+//        GLIB_FAIL("Shader " << id << " is not available.");
+    m_shaders.push_back(s);
 
 }
 

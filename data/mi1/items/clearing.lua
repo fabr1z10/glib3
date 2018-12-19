@@ -13,7 +13,7 @@ items["clearing.tent"] = {
 	text = strings.objects.circustent,
 	pos = {47, 63, 0},
 	size = {135, 70},
-	walk_to = {160, 80}, 
+	walk_to = {82, 66}, 
 	face = "north",
 	actions = {
 		walk = ms { {action.change_room, {id=1,room="circus"}}}

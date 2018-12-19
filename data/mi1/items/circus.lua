@@ -1,5 +1,5 @@
 items["circus.wayout"] = {
-	text = strings.objects.path,
+	text = strings.objects.outside,
 	pos = {280, 32, 0},
 	size = {16, 144},			
 	walk_to = {280, 32}, 
@@ -7,6 +7,14 @@ items["circus.wayout"] = {
 	actions = {
 		walk = ms { {action.change_room, {id=1,room="clearing"}}}
 	}
+}
+items["circus.explosion"] = {
+	model ="circus.explosion",
+	anim="default"
+}
+items["circus.flyingguybrush"] = {
+	model ="circus.flyingguy",
+	anim="default"
 }
 
 items["circus.purpleclown"] = {
@@ -17,6 +25,8 @@ items["circus.purpleclown"] = {
 	offset ={-9,0},
     text_color = {255, 85, 255, 255},
 	text_offset = {0,60},
+	walk_to = {178, 9} ,
+	face = "south",
 	applydepth = true,
 	model = "circus.purpleclown",
 	anim="idle_right",
@@ -31,6 +41,8 @@ items["circus.greenclown"] = {
 	offset ={-9,0},
 	text_color = {85, 255, 85, 255},
 	text_offset={0,60},
+	walk_to = {178, 9},
+	face = "south",
 	applydepth = true,
 	model = "circus.greenclown",
 	anim="idle_right",

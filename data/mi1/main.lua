@@ -2,6 +2,7 @@ engine = {
     device_size = { 320, 200 },
     window_size = { 800, 600 },
     title = "The secret of Monkey Island",
+	shaders = { "unlit_textured", "unlit_color", "text" }
 }
 
 -- this is constant config stuff
@@ -86,7 +87,13 @@ variables = {
 	}
 }
 
+-- DEBUG STUFF
 variables.inventory["pieces_of_eight"] = 10000
+variables.inventory["kitchen.pot"] = 1
+variables.entered_circus = true
+variables.circus_knows_trick = true
+variables.circus_knows_helmet = true
+-- END DEBUG
 
 require ("script")
 require ("funcs")

@@ -36,6 +36,17 @@ struct VertexColor {
     static void InitAttributes();
 };
 
+struct VertexColorNormal {
+    VertexColorNormal(GLfloat x, GLfloat y, GLfloat z,
+        GLfloat nx, GLfloat ny, GLfloat nz,
+        GLfloat r = 1.0f, GLfloat g = 1.0f, GLfloat b = 1.0f, GLfloat a = 1.0f)
+            : x(x), y(y), z(z), r(r), g(g), b(b), a(a) {}
+    GLfloat x, y, z;
+    GLfloat nx, ny, nz;
+    GLfloat r, g, b, a;
+    static void InitAttributes();
+};
+
 struct VertexText {
     VertexText(GLfloat x, GLfloat y, GLfloat s, GLfloat t, GLfloat r, GLfloat g, GLfloat b, GLfloat a)
     : x(x), y(y), s(s), t(t), r(r), g(g), b(b), a(a) {}

@@ -20,12 +20,15 @@ room = generateBasicRoom (roomInfo)
 
 room:add_asset(sprites["circus.greenclown"])
 room:add_asset(sprites["circus.purpleclown"])
+room:add_asset(sprites["circus.explosion"])
+room:add_asset(sprites["circus.flyingguy"])
 
 
 room:add( {
 	{ pos = {0, 0,-3}, components = { { type="gfx", image="gfx/circus1.png" }}},
     { pos = {259, 1, 0.99}, components = { {type="gfx", image="gfx/circus2.png" }}},
     { pos = {233, 1, 0.99}, components = { {type="gfx", image="gfx/circus3.png" }}},
+   	{ pos = {247, 17, 0.99}, components = { {type="gfx", image="gfx/circus4.png"}}},
 	{
 		pos = {0,0,0},
 		components = {
@@ -37,6 +40,7 @@ room:add( {
  	  		}
 		}
 	},
+	factory.object.create { object = "circus.wayout"},
 	factory.object.create { object = "circus.greenclown"},
 	factory.object.create { object = "circus.purpleclown"}	
 })

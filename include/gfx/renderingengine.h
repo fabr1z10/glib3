@@ -42,7 +42,7 @@ public:
     //virtual ~RenderingEngine();
     void Start() override;
     void Update(double) override;
-    void AddShader (ShaderType id);
+    void AddShader (Shader* id);
     void AddCamera (std::unique_ptr<Camera>);
     void RemoveCamera(int);
     Camera* GetCamera (int);

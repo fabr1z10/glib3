@@ -17,6 +17,7 @@
 #include <gfx/components/parallax.h>
 #include <gfx/state.h>
 #include <gfx/components/info.h>
+#include <gfx/model3D/model3D.h>
 
 #include <gfx/components/statemachine.h>
 #include <gfx/components/keyinput.h>
@@ -53,6 +54,7 @@ std::unique_ptr<Component> TextComponentFactory::Create(luabridge::LuaRef &ref) 
     renderer->SetMesh(mesh);
     return std::move(renderer);
 }
+
 
 std::unique_ptr<Component> GfxComponentFactory::Create(luabridge::LuaRef & ref) {
     LuaTable table(ref);
@@ -106,6 +108,22 @@ std::unique_ptr<Component> GfxComponentFactory::Create(luabridge::LuaRef & ref) 
         renderer->SetScale(scale);
     }
     return std::move(renderer);
+}
+
+
+std::unique_ptr<Component> Gfx3DComponentFactory::Create(luabridge::LuaRef & ref){
+    LuaTable table(ref);
+
+    auto renderer = std::unique_ptr<Renderer>(new Renderer);
+    std::string shape = table.Get<std::string>("shape");
+    if (shape == "plane") {
+        float width = table.Get<float>("width");
+        float depth = table.Get<float>("depth");
+        auto mesh = Model3DFactory::CreatePlane(width, depth, glm::vec4(0.4f, 0.0f, 0.0f, 1.0f));
+        renderer->SetMesh(mesh);
+    }
+    return std::move(renderer);
+
 }
 
 std::unique_ptr<Component> ColliderComponentFactory::Create(luabridge::LuaRef &ref) {

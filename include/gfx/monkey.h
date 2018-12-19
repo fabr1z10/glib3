@@ -23,16 +23,12 @@ public:
         config.enableKeyboard = true;
         config.windowWidth = winSize.x;
         config.windowHeight = winSize.y;
+        config.shaders = engine.GetVector<std::string>("shaders");
         config.name = title;
         Engine &g = Engine::get();
         g.Init(config);
 
-        // set-up the rendering engine
-        auto renderingEngine = std::unique_ptr<RenderingEngine>(new RenderingEngine);
-        renderingEngine->AddShader(TEXTURE_SHADER);
-        renderingEngine->AddShader(COLOR_SHADER);
-        renderingEngine->AddShader(TEXT_SHADER);
-        g.SetRenderingEngine(std::move(renderingEngine));
+
 
         LoadFonts();
         auto factory = std::unique_ptr<SceneFactory>(new SCENE_FACTORY);

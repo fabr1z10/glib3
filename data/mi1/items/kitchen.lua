@@ -136,9 +136,63 @@ items["kitchen.pot"] = {
 		look = ms {
 			{ action.say, { id=1, actor="guybrush", lines = {strings.kitchen[2] }}}
 		},
+		give = {
+			
+		}
 
 	}	
 }
+
+items["kitchen.pot"].actions.give["circus.purpleclown"] = function() 
+	local s = script:new()
+	local d = strings.dialogues.fettbros
+	local explTag = nextTag()
+	local fgTag = nextTag()
+	s.actions = {
+		action.disable_controls{id=1},
+		action.animate_once {id=2, actor="guybrush", anim="pot_out"},
+		action.animate {id=3, actor="guybrush", anim="show_pot"},
+		action.say {id=4, actor="circus.greenclown", lines = {d[82]} },
+		action.animate_once {id=5, actor="guybrush", anim="pot_in"},
+		action.animate {id=6, actor="guybrush", anim="idle_front"},
+		action.say {id=7, actor="circus.purpleclown", lines = {d[83]} },
+		action.say {id=8, actor="circus.greenclown", lines = {d[84]} },
+		action.walkto {id=9, actor="circus.purpleclown", pos={333, 1}, after={8} },
+		action.walkto {id=10, actor="circus.greenclown", pos={296, 24}, after={8} },
+		action.walkto {id=11, actor="guybrush", pos={250, 24},after={8}},
+		action.scroll {id=12, by = {48, 0}, speed = 50, after={8} },
+		action.turn {id =13, actor="circus.purpleclown", dir="north", after={9} },
+		action.turn {id =14, actor="circus.greenclown", dir="west", after={10} },
+		action.turn {id =15, actor="guybrush", dir="south", after={11} },
+		action.say {id=16, actor="circus.purpleclown", after={13,14,15}, lines = {d[85]} },
+		action.say {id=17, actor="circus.greenclown", lines = {d[86]} },
+		action.say {id=18, actor="circus.purpleclown", lines = {d[87]} },
+		action.walkto { id=19, actor="guybrush", pos={264, 23} },
+		action.turn {id=20, actor="guybrush", dir="east" },
+		action.say {id=21, actor="guybrush", lines ={d[88]}},
+		action.walkto {id=22, actor="guybrush", pos={250, 24}},
+		action.turn {id=23, actor="guybrush", dir="south"},
+		action.animate_once {id = 24, actor="guybrush", anim="get_in_cannon" },
+		action.activate {id=25, name="guybrush", value=false},
+		action.create_object {id = 26, name="circus.explosion", tag = explTag, pos ={0,0,0}, after={25}},
+		action.create_object {id = 27, name="circus.flyingguybrush", tag = fgTag, pos ={0,0,0}, after={25}},
+		action.animate_once {id = 28, tag = explTag, anim="default", after={26}},
+		action.animate_once {id = 29, tag = fgTag, anim="default", after={27}},
+		action.remove_object {id=30, after={28}, tag = explTag },
+		action.animate {id=31, tag=fgTag, anim="end", after={29}},
+		action.delay {id=32, sec=0.5},
+		action.say {id=33, actor="circus.purpleclown", lines = {d[89]} },
+		action.say {id=34, actor="circus.greenclown", lines = {d[90]} },
+		action.walkto { id=35, actor="circus.purpleclown", pos={87, 29}, after={34}},
+		action.walkto { id=36, actor="circus.greenclown", pos={126,29}, after={34}},
+		action.turn { id=37, actor="circus.purpleclown", dir="east", after={35}},			
+		action.turn { id=38, actor="circus.greenclown", dir="west", after={36}},	
+		action.say {id=39, actor="circus.purpleclown", after={37, 38}, lines = {d[91]} },
+		action.say {id=40, actor="circus.greenclown", lines = {d[92]} },
+		action.start_dialogue {id = 41, dialogue="fettuccini", root=dialogues.fettuccini.nodes[15]}
+	}
+	return s
+end
 
 
 

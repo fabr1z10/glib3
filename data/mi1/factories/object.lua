@@ -13,7 +13,8 @@ factory.object.create = function(args)
 	local anim = args.anim and args.anim or object.anim
 	local flip = args.flip and args.flip or object.flip
 
-	local tag = object.tag
+	local tag = args.tag
+	if (tag == nil) then tag = object.tag end
 	--if (tag ~= nil) then
 	--	print ("tag is " .. tag)
 	--end

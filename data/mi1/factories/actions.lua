@@ -19,23 +19,32 @@ end
 action.animate = function(args)
 	local id = gr(args.id, "Required id in action.animate")
 	local after= go(args.after, nil)
-	local actor = gr(args.actor, "Required actor in action.animate")
-	local item = items[actor]
+	
+	local tag = args.tag
+	if (tag == nil) then
+		local actor = gr(args.actor, "Required actor in action.animate")
+		local item = items[actor]
+		tag = item.tag
+	end
 	local anim = gr(args.anim, "Required anim in action.animate")
 	local flip = 0
 	if (args.flip ~= nil) then
 		flip = (args.flip) and 2 or 1
 	end
-	return { id = id, after = after, type="animate", actor=item.tag, anim=anim, flip = flip }
+	return { id = id, after = after, type="animate", actor=tag, anim=anim, flip = flip }
 end
 
 action.animate_once = function(args)
 	local id = gr(args.id, "Required id in action.animate")
 	local after= go(args.after, nil)
-	local actor = gr(args.actor, "Required id in action.animate")
-	local item = items[actor]
+	local tag = args.tag
+	if (tag == nil) then
+		local actor = gr(args.actor, "Required actor in action.animate")
+		local item = items[actor]
+		tag = item.tag
+	end
 	local anim = gr(args.anim, "Required id in action.animate")
-	return { id = id, after = after, type="animate", actor=item.tag, loop=1, anim=anim }
+	return { id = id, after = after, type="animate", actor=tag, loop=1, anim=anim }
 end
 
 action.walkto = function (args) 
@@ -191,7 +200,7 @@ action.create_object = function(args)
 	end
 	return { id = id, after = after, type = "callfunc", func = 
 		function()
-			local o = factory.object.create { object = objid, pos = args.pos, anim = args.anim, 
+			local o = factory.object.create { object = objid, pos = args.pos, anim = args.anim, tag= args.tag,
 			flip = flip, applydepth = args.applydepth }
 			local m1 = monkey.getEntity("main")
 			monkey.addEntity (o, m1)

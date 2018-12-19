@@ -7,6 +7,7 @@
 //
 
 #include "gfx/shader.h"
+#include "gfx/error.h"
 #include <sstream>
 #include <iostream>
 
@@ -101,6 +102,18 @@ void Shader::Stop() {
 void Shader::AddUniform(ShaderUniform unif, const char* name) {
     GLuint loc = glGetUniformLocation(m_programId, name);
     m_locations[unif] = loc;
+}
+
+std::unique_ptr<Shader> ShaderFactory::GetShader(const std::string& shaderId) {
+    // IMPROVE HERE
+    if (shaderId == "unlit_textured")
+        return GetTextureShader();
+    else if (shaderId == "unlit_color")
+        return GetColorShader();
+    else if (shaderId == "text")
+        return GetTextShader();
+    else
+        GLIB_FAIL("Unknown shader " << shaderId);
 }
 
 std::unique_ptr<Shader> ShaderFactory::GetTextureShader() {

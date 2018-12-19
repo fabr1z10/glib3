@@ -1,3 +1,6 @@
+_nextTag = 0
+
+
 function curry(f, arg)
     return function()
        return f(arg) 
@@ -9,6 +12,12 @@ function curry2(f, arg)
        f(arg, x) 
     end 
 end
+
+function nextTag()
+	_nextTag = _nextTag+1
+	return "__auto" .. _nextTag
+end
+
 
 function assert(n, msg) 
 	if (n == nil) then
@@ -254,13 +263,19 @@ function runAction ()
 	-- create a brand new script
     local s = script:new("_walk")
 	--s.name="_walk"
+	print ("RUNNNNO LAZZIONE")
 	print (variables._actionInfo.obj1)
 	local obj = items[variables._actionInfo.obj1]
     if (variables._actionInfo.obj2 == nil) then
         -- try to run a single object action
+		if (variables._actionInfo.verb.code == "give") then
+        	variables._actionInfo.selectSecond = true
+            updateVerb()
+            return		
+		end
         a = obj.actions[variables._actionInfo.verb.code]
         if (a == nil) then
-            if (variables._actionInfo.verb.code == "give" or variables._actionInfo.verb.code == "use") then
+            if (variables._actionInfo.verb.code == "use") then
                 variables._actionInfo.selectSecond = true
                 updateVerb()
                 return
@@ -340,7 +355,17 @@ function runAction ()
 				s:push { script = script.defaultactions["use"](), at="end" }
    			end
         elseif (variables._actionInfo.verb.code == "give") then
-			s = giveActionHandler()
+			--s = giveActionHandler()
+			local IhaveObj1 = variables.inventory[variables._actionInfo.obj1] ~= nil
+			if (not IhaveObj1) then return nil end
+			local obj2 = items[variables._actionInfo.obj2]
+			s:push { script = walk_to_object(obj2), at="end" }
+			local u1 = obj.actions["give"] and obj.actions["give"][variables._actionInfo.obj2]
+			if (u1 ~= nil) then
+				s:push {script=u1()}
+			else 
+				s:push {script = script.defaultactions["give"]()}
+			end
 		end
 
         -- a1 = variables._actionInfo.obj1[variables._actionInfo.verb.code]

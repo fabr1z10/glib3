@@ -25,6 +25,7 @@ struct EngineConfig {
     bool enableKeyboard;
     int windowWidth;
     int windowHeight;
+    std::vector<std::string> shaders;
     std::string name;
 };
 

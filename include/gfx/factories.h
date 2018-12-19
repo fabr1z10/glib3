@@ -30,6 +30,7 @@ FACTORY(TextViewFactory, Entity)
 // Components
 FACTORY(TextComponentFactory, Component)
 FACTORY(GfxComponentFactory, Component)
+FACTORY(Gfx3DComponentFactory, Component)
 FACTORY(ColliderComponentFactory, Component)
 FACTORY(MultiColliderComponentFactory, Component)
 FACTORY(StateMachineComponentFactory, Component)

@@ -48,6 +48,20 @@ local s2 = {
 	{ action.say, {id=8, actor="circus.greenclown", lines={d[68]}}},
 }
 
+local s3 = {
+	{ action.say, {id=1, actor="circus.purpleclown", lines={d[95]}}},
+	{ action.say, {id=2, actor="circus.greenclown", lines={d[96]}}},	
+	{ action.say, {id=3, actor="circus.purpleclown", lines={d[97]}}},
+	{ action.say, {id=4, actor="circus.greenclown", lines={d[98]}}},
+	{ action.delay, {id=5, sec=0.5}},
+	{ action.say, {id=6, actor="circus.greenclown", lines={d[99]}}},
+	{ action.say, {id=7, actor="circus.purpleclown", lines={d[100]}}},
+	{ action.say, {id=8, actor="circus.greenclown", lines={d[101]}}},	
+	{ action.say, {id=9, actor="circus.purpleclown", lines={d[102]}}},
+	{ action.say, {id=10, actor="circus.greenclown", lines={d[103]}}},
+	{ action.change_room, {id=11, room="clearing"}}		
+}
+
 local a1 = function(n) 
 	return { text = d[n], active=true, children= function() if (variables.circus_knows_helmet == true) then return {10,11} else return {7,8,9} end end, 
 		script = function()
@@ -107,7 +121,15 @@ dialogues.fettuccini = {
 			{ action.set_variable, {id=7, var="circus_knows_helmet", value=true}},
 			{ action.change_room, {id=8, room="clearing"}}
 		}},
-		[11] = { text = d[72], active=true},
+		[11] = { text = d[72], active=true, script = ms {
+			{ action.say, {id=1, actor="guybrush", lines={d[72]}}},
+			{ action.say, {id=2, actor="circus.greenclown", lines={d[78]}}},
+			{ action.say, {id=3, actor="circus.purpleclown", lines={d[79]}}},
+			{ action.say, {id=4, actor="circus.greenclown", lines={d[80]}}},
+			{ action.say, {id=5, actor="circus.purpleclown", lines={d[81]}}},
+			{ action.say, {id=6, actor="circus.greenclown", lines={d[76]}}},
+			{ action.set_variable, {id=7, var="circus_knows_helmet", value=true}},
+		}},
 		[12] = { text = d[29], active=true, children={10, 11}, script = msc {
 			{
 				{ action.kill_script, {id = 1, script="_fettuccini"}},
@@ -119,10 +141,24 @@ dialogues.fettuccini = {
 			{ action.say, {id=1, actor="guybrush", lines={d[65]}}},
 			{ action.say, {id=2, actor="circus.purpleclown", lines={d[70]}}},
 			{ action.set_variable, {id=3, var="circus_knows_helmet", value=true}},
-		} }
+		} },
 		[14] = { text = d[66], active=true, script = ms{
 			{ action.say, {id=1, actor="guybrush", lines={d[66]}}},
 			{ action.change_room, {id=2, room="clearing"}}		
-		} }
+		} },
+		[15] = { children = {16, 17}},
+		[16] = { text = d[93], active=true, script = msc {
+			{
+				{ action.say, {id=1, actor="guybrush", lines={d[93]}}},
+			},
+			s3
+		}},
+		[17] = { text = d[94], active=true, script = msc {
+			{
+				{ action.say, {id=1, actor="guybrush", lines={d[93]}}},
+			},
+			s3
+		}}
+
 	}
 }

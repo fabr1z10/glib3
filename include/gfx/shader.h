@@ -49,6 +49,23 @@ const char basic_fshader[] =
 "}\n"
 ;
 
+// the basic lit textured shader
+const char basic_vshader_light[] =
+"#version 330 core\n"
+"\n"
+"layout (location = 0) in vec3 vPosition;\n"
+"layout (location = 1) in vec2 vTexture;\n"
+                "uniform mat4 MVmat;\n"
+                "uniform mat4 ProjMat;\n"
+                "out vec2 tex;\n"
+                "void main()\n"
+                "{\n"
+                "tex = vTexture;\n"
+                "gl_Position = ProjMat * MVmat * vec4(vPosition, 1.0);\n"
+                "}\n"
+;
+
+
 // this is the shader used for drawing shapes.
 // It just draws a colored outline of the shapes
 const char debug_vshader[] =
@@ -197,6 +214,7 @@ private:
 
 class ShaderFactory {
 public:
+    static std::unique_ptr<Shader> GetShader(const std::string& shaderId);
     static std::unique_ptr<Shader> GetTextureShader();
     static std::unique_ptr<Shader> GetColorShader();
     static std::unique_ptr<Shader> GetTextShader();
