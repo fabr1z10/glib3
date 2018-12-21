@@ -211,6 +211,12 @@ void Entity::MoveLocal(glm::vec2 delta) {
     UpdateWorldTransform();
 }
 
+void Entity::RotateY(float deg) {
+    glm::mat4 rot = glm::rotate(deg, glm::vec3(0,0,1));
+    m_localTransform *= rot;
+    UpdateWorldTransform();
+}
+
 void Entity::MoveLocal(glm::vec3 delta) {
     glm::vec3 worldDelta (m_worldTransform * glm::vec4(delta.x, delta.y, delta.z, 0.0f));
     m_localTransform[3][0] += worldDelta.x;

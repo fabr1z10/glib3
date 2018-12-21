@@ -158,3 +158,11 @@ void RenderingEngine::AddCamera(std::unique_ptr<Camera> cam) {
 void RenderingEngine::RemoveCamera(int id) {
     m_cameras.erase(id);
 }
+
+void RenderingEngine::AddLight (Light* light) {
+    m_lights.insert(light);
+}
+
+void RenderingEngine::RemoveLight(Light* light ) {
+    m_lights.erase(light);
+}

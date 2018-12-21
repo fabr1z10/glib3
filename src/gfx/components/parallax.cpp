@@ -40,7 +40,7 @@ void Parallax::Start() {
 
 void Parallax::onCameraMove(Camera * cam) {
     glm::vec3 pos = cam->GetPosition();
-    glm::vec3 panel = m_entity->GetPosition();
+    //glm::vec3 panel = m_entity->GetPosition();
     // IDEA: every time camera moves, I get its x
     int n = static_cast<int>((pos.x - m_x0) / m_deltaX );
     float refX = m_x0 + n * m_deltaX;

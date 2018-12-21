@@ -30,9 +30,10 @@ void Engine::Init(const EngineConfig& config) {
     m_pixelRatio = static_cast<float>(widthPixel) / widthPoint;
 
     // initialize shaders
-    AddShader (ShaderFactory::GetTextureShader());
-    AddShader (ShaderFactory::GetColorShader());
-    AddShader (ShaderFactory::GetTextShader());
+    //AddShader (ShaderFactory::GetTextureShader());
+    //AddShader (ShaderFactory::GetColorShader());
+    //AddShader (ShaderFactory::GetTextShader());
+
 
     // set-up the rendering engine
     auto renderingEngine = std::unique_ptr<RenderingEngine>(new RenderingEngine);

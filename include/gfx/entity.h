@@ -85,6 +85,7 @@ public:
     void MoveOrigin(glm::vec3);
     void MoveLocal(glm::vec2);
     void MoveLocal(glm::vec3);
+    void RotateY(float deg);
     //void MoveOrigin(glm::mat4&);
 
 

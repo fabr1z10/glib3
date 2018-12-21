@@ -27,6 +27,7 @@ SceneFactory::SceneFactory() {
     m_componentFactory.Add<Dynamics2DComponentFactory>("dynamics2d");
     m_componentFactory.Add<StateMachineComponentFactory>("statemachine");
     m_componentFactory.Add<FollowComponentFactory>("follow");
+    m_componentFactory.Add<Follow3DComponentFactory>("follow3d");
     m_componentFactory.Add<InfoComponentFactory>("info");
     m_componentFactory.Add<PlatformComponentFactory>("platform");
     m_componentFactory.Add<ParallaxComponentFactory>("parallax");
@@ -35,7 +36,8 @@ SceneFactory::SceneFactory() {
     m_componentFactory.Add<HotSpotComponentFactory>("hotspot");
     m_componentFactory.Add<DepthComponentFactory>("depth");
     m_componentFactory.Add<CursorComponentFactory>("cursor");
-
+    m_componentFactory.Add<LightComponentFactory>("light");
+    m_componentFactory.Add<RaycastControllerComponentFactory>("raycastcontroller");
 
     m_shapeFactory.Add<RectFactory>("rect");
     m_shapeFactory.Add<LineFactory>("line");

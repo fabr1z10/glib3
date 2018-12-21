@@ -10,6 +10,7 @@
 #include "gfx/error.h"
 #include <sstream>
 #include <iostream>
+#include <gfx/lightshader.h>
 
 Shader* Shader::g_currentShader = nullptr;
 
@@ -112,6 +113,8 @@ std::unique_ptr<Shader> ShaderFactory::GetShader(const std::string& shaderId) {
         return GetColorShader();
     else if (shaderId == "text")
         return GetTextShader();
+    else if (shaderId == "light_color")
+        return GetLightColorShader();
     else
         GLIB_FAIL("Unknown shader " << shaderId);
 }
@@ -130,11 +133,17 @@ std::unique_ptr<Shader> ShaderFactory::GetColorShader() {
     return std::unique_ptr<Shader>(new Shader(COLOR_SHADER, debug_vshader, debug_fshader, 2, uniforms));
 }
 
+std::unique_ptr<Shader> ShaderFactory::GetLightColorShader() {
+    std::unordered_map <ShaderUniform, std::string, EnumClassHash> uniforms;
+    uniforms[LIGHTCOLOR] = "lightColor";
+    return std::unique_ptr<Shader>(new LightShader(COLOR_SHADER_LIGHT, basic_vshader_light, basic_fshader_light, 2, uniforms));
+}
+
 
 GLuint Shader::GetUniformLocation(ShaderUniform uniform) {
     auto iter = m_locations.find(uniform);
     if (iter == m_locations.end())
-        throw;
+        return -1;
     return iter->second;
 }
 

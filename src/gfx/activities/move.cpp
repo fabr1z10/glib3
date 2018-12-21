@@ -116,7 +116,7 @@ void MoveGravity::Start() {
 
 void MoveGravity::Run(float dt) {
     glm::vec3 p(m_entity->GetPosition());
-    glm::mat4 wt = m_entity->GetWorldTransform();
+    //glm::mat4 wt = m_entity->GetWorldTransform();
     m_angle += m_rotationSpeed*dt;
     glm::vec2 pos(p);
     pos += m_velocity * dt;

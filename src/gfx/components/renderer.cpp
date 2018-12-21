@@ -14,7 +14,8 @@ Renderer::Renderer() : Component(), m_mesh(nullptr), m_frame(0), m_tint(1.0f), m
 
 void Renderer::Draw(Shader* shader) {
     auto tintLoc = shader->GetUniformLocation(TINT);
-    glUniform4fv(tintLoc, 1, &m_tint[0]);
+    if (tintLoc != -1)
+        glUniform4fv(tintLoc, 1, &m_tint[0]);
     m_mesh->Draw(shader, m_animation, m_frame);
 }
 

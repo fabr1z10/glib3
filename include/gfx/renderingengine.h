@@ -15,6 +15,8 @@
 #include <gfx/iterator.h>
 #include <vector>
 #include <stack>
+#include <unordered_set>
+#include <gfx/components/light.h>
 
 // stack with extended push/pop functionalities
 //class RenderingStack {
@@ -48,18 +50,22 @@ public:
     Camera* GetCamera (int);
     void Notify(float, float) override;
     using ParentClass = RenderingEngine;
+    void AddLight (Light*);
+    void RemoveLight(Light*);
+    std::unordered_set<Light*>& GetLights();
 private:
     std::vector<Shader*> m_shaders;
     std::unordered_map<int, std::unique_ptr<Camera>> m_cameras;
-
+    std::unordered_set<Light*> m_lights;
     std::unordered_map<Camera*, Entity*> m_roots;
 };
 
-
-
-
 inline Camera* RenderingEngine::GetCamera(int id) {
     return m_cameras[id].get();
+}
+
+inline std::unordered_set<Light*>& RenderingEngine::GetLights() {
+    return m_lights;
 }
 
 #endif /* renderingengine_h */

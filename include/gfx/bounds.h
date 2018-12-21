@@ -27,6 +27,7 @@ struct Bounds {
     bool Intersects(Bounds& other) const;
     // rotate a bounding box
     void Transform(const glm::mat4&);
+    void TransformXZ (const glm::mat4&);
 };
 
 inline bool Bounds::Intersects(Bounds& other) const {

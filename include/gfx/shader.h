@@ -51,19 +51,55 @@ const char basic_fshader[] =
 
 // the basic lit textured shader
 const char basic_vshader_light[] =
-"#version 330 core\n"
-"\n"
-"layout (location = 0) in vec3 vPosition;\n"
-"layout (location = 1) in vec2 vTexture;\n"
+        "#version 330 core\n"
+                "layout (location = 0) in vec3 vPosition;\n"
+                "layout (location = 1) in vec4 vColor;\n"
                 "uniform mat4 MVmat;\n"
                 "uniform mat4 ProjMat;\n"
-                "out vec2 tex;\n"
+                "out vec4 col;\n"
                 "void main()\n"
                 "{\n"
-                "tex = vTexture;\n"
-                "gl_Position = ProjMat * MVmat * vec4(vPosition, 1.0);\n"
+                "col = vColor;\n"
+                "gl_Position = ProjMat * MVmat *  vec4(vPosition, 1.0);\n"
                 "}\n"
 ;
+//"#version 330 core\n"
+//"\n"
+//"layout (location = 0) in vec3 vPosition;\n"
+//"layout (location = 1) in vec4 vColor;\n"
+//"uniform mat4 MVmat;\n"
+//"uniform mat4 ProjMat;\n"
+//"out vec4 col;\n"
+//"void main()\n"
+//"{\n"
+//"col = vColor;\n"
+//"gl_Position = ProjMat * MVmat * vec4(vPosition, 1.0);\n"
+//"}\n"
+//;
+
+
+// the basic lit textured shader
+const char basic_fshader_light[] =
+        "#version 330\n"
+                "\n"
+                "in vec4 col;\n"
+                "out vec4 fragColor;\n"
+                "uniform vec3 lightColor;\n"
+                "void main()\n"
+                "{\n"
+                "fragColor = col * vec4(lightColor, 1.0);\n"
+                "}\n"
+;
+//"#version 330 core\n"
+//"\n"
+//"out vec4 fragColor;\n"
+//"in vec4 color;\n"
+//"uniform vec3 lightColor;\n"
+//"void main()\n"
+//"{\n"
+//"fragColor = color * vec4(lightColor, 1.0);\n"
+//"}\n"
+//;
 
 
 // this is the shader used for drawing shapes.
@@ -217,6 +253,8 @@ public:
     static std::unique_ptr<Shader> GetShader(const std::string& shaderId);
     static std::unique_ptr<Shader> GetTextureShader();
     static std::unique_ptr<Shader> GetColorShader();
+    static std::unique_ptr<Shader> GetLightColorShader();
+
     static std::unique_ptr<Shader> GetTextShader();
     static std::unique_ptr<Shader> GetTestShader();
 };

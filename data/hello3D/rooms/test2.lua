@@ -29,10 +29,11 @@ room =  {
 					}
 				},
 				{
-					pos = {3, 5, 0},
+					pos = {0, 0, 0},
 					components = {
-						{ type="gfx3d", shape="plane", width = 10, depth = 10, color = {128, 128, 0, 255}},
-						{ type="collider", shape = {type="rect", width=10, height=10, offset={-5,-5}}, tag=1, flag=1, mask=2}
+						--{ type="gfx3d", shape="plane", width = 10, depth = 10, color = {128, 128, 0, 255}},
+						{ type="gfx3d", shape="plane", width = 1000, depth = 1000, image="gfx/1.png"},
+						--{ type="collider", shape = {type="rect", width=10, height=10, offset={-5,-5}}, tag=1, flag=1, mask=2}
 					}
 				},
 				{

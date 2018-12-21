@@ -13,10 +13,14 @@
 #include <gfx/components/luakeylistener.h>
 #include <gfx/components/depth.h>
 #include <gfx/components/follow.h>
+#include <gfx/components/follow3d.h>
+
 #include <gfx/components/billboard.h>
 #include <gfx/components/parallax.h>
 #include <gfx/state.h>
 #include <gfx/components/info.h>
+#include <gfx/components/light.h>
+#include <gfx/components/raycastcontroller.h>
 #include <gfx/model3D/model3D.h>
 
 #include <gfx/components/statemachine.h>
@@ -110,6 +114,13 @@ std::unique_ptr<Component> GfxComponentFactory::Create(luabridge::LuaRef & ref) 
     return std::move(renderer);
 }
 
+std::unique_ptr<Component> LightComponentFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    glm::vec3 color = table.Get<glm::vec3>("color");
+    color /= 255.0f;
+    return std::unique_ptr<Component>(new Light(color));
+
+}
 
 std::unique_ptr<Component> Gfx3DComponentFactory::Create(luabridge::LuaRef & ref){
     LuaTable table(ref);
@@ -119,8 +130,19 @@ std::unique_ptr<Component> Gfx3DComponentFactory::Create(luabridge::LuaRef & ref
     if (shape == "plane") {
         float width = table.Get<float>("width");
         float depth = table.Get<float>("depth");
-        auto mesh = Model3DFactory::CreatePlane(width, depth, glm::vec4(0.4f, 0.0f, 0.0f, 1.0f));
-        renderer->SetMesh(mesh);
+        if (table.HasKey("color")) {
+            glm::vec4 color = table.Get<glm::vec4>("color");
+            color /= 255.0f;
+            auto mesh = Model3DFactory::CreatePlane(width, depth, color);
+            renderer->SetMesh(mesh);
+        } else {
+            std::string image = table.Get<std::string>("image");
+            glm::vec2 repeat = table.Get<glm::vec2>("rep", glm::vec2(1.0f, 1.0f));
+            glm::vec2 skew = table.Get<glm::vec2>("skew", glm::vec2(0.0f, 0.0f));
+            glm::vec2 offset = table.Get<glm::vec2>("offset", glm::vec2(0.0f));
+            auto mesh = std::make_shared<QuadMesh>(image, width, depth, repeat.x, repeat.y, skew.x, skew.y, offset);
+            renderer->SetMesh(mesh);
+        }
     }
     return std::move(renderer);
 
@@ -302,6 +324,14 @@ std::unique_ptr<Component> FollowComponentFactory::Create(luabridge::LuaRef &ref
     }
     return f;
 }
+std::unique_ptr<Component> Follow3DComponentFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    std::string cam = table.Get<std::string>("cam");
+    float dist = table.Get<float>("distance");
+    float elev = table.Get<float>("elevation");
+    return std::unique_ptr<Component>(new Follow3D(cam, dist, elev));
+
+}
 
 std::unique_ptr<Component> Controller2DComponentFactory::Create(luabridge::LuaRef & ref) {
     LuaTable table(ref);
@@ -404,6 +434,11 @@ std::unique_ptr<Component> FPSComponentFactory::Create(luabridge::LuaRef &ref) {
 
 std::unique_ptr<Component> CursorComponentFactory::Create(luabridge::LuaRef& ref) {
     return std::unique_ptr<Cursor>(new Cursor);
+
+}
+
+std::unique_ptr<Component> RaycastControllerComponentFactory::Create(luabridge::LuaRef& ref) {
+    return std::unique_ptr<Component>(new RaycastController);
 
 }
 

@@ -19,7 +19,6 @@ std::unique_ptr<Shape> RectFactory::Create(luabridge::LuaRef &ref) {
 
 std::unique_ptr<Shape> LineFactory::Create(luabridge::LuaRef &ref) {
     LuaTable at (ref);
-    glm::vec2 offset = at.Get<glm::vec2>("offset", glm::vec2(0.0f));
     glm::vec2 A = at.Get<glm::vec2>("A");
     glm::vec2 B = at.Get<glm::vec2>("B");
     return std::unique_ptr<Line>(new Line(A, B));
