@@ -79,7 +79,7 @@ EntityWrapper EntityWrapper::AddEntity(luabridge::LuaRef ref, EntityWrapper* par
 
 }
 
-EntityWrapper EntityWrapper::RemoveEntity(const std::string& tag) {
+void EntityWrapper::RemoveEntity(const std::string& tag) {
     auto entity = Engine::get().GetRef<Entity>(tag);
     Engine::get().Remove(entity);
 }

@@ -13,6 +13,7 @@ SceneFactory::SceneFactory() {
 
     m_entityFactory.Add<EntityFactory>("default");
     m_entityFactory.Add<TextViewFactory>("textview");
+    m_entityFactory.Add<HeightMapFactory>("heightmap");
 
     m_cameraFactory.Add<OrthoCamFactory>("ortho");
     m_cameraFactory.Add<PerspectiveCamFactory>("perspective");
@@ -38,6 +39,7 @@ SceneFactory::SceneFactory() {
     m_componentFactory.Add<CursorComponentFactory>("cursor");
     m_componentFactory.Add<LightComponentFactory>("light");
     m_componentFactory.Add<RaycastControllerComponentFactory>("raycastcontroller");
+    m_componentFactory.Add<BillboardComponentFactory>("billboard");
 
     m_shapeFactory.Add<RectFactory>("rect");
     m_shapeFactory.Add<LineFactory>("line");

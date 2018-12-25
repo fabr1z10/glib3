@@ -37,6 +37,14 @@ room =  {
 					}
 				},
 				{
+					pos = {2, 2, 0},
+					components = {
+						--{ type="gfx3d", shape="plane", width = 10, depth = 10, color = {128, 128, 0, 255}},
+						{ type="gfx3d", shape="plane", width = 20, depth = 20, offset={-10,0}, image="gfx/tree.png", plane="xz"},
+						{ type="billboard", cam="maincam"}
+					}
+				},
+				{
 					pos = {0, 0, 0.1},
 					components = {
 						{ type="gfx3d", shape="plane", width = 1, depth = 2, color = {0, 0, 128, 255}},

@@ -43,7 +43,9 @@ void Camera::SetProjectionMatrix() {
 }
 
 void Camera::SetPosition(glm::vec3 eye, glm::vec3 dir, glm::vec3 up) {
-    //if (eye != glm::vec3(-m_viewMatrix[3])) {
+
+    m_fwd = dir;
+    m_up = up;
         m_viewMatrix = glm::lookAt(eye, eye + dir, up);
         OnMove.Fire(this);
     //}

@@ -116,9 +116,21 @@ std::unique_ptr<Component> GfxComponentFactory::Create(luabridge::LuaRef & ref) 
 
 std::unique_ptr<Component> LightComponentFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
-    glm::vec3 color = table.Get<glm::vec3>("color");
-    color /= 255.0f;
-    return std::unique_ptr<Component>(new Light(color));
+    std::string cl = table.Get<std::string>("class");
+    if (cl == "ambient") {
+
+        glm::vec3 color = table.Get<glm::vec3>("color");
+        color /= 255.0f;
+        return std::unique_ptr<Component>(new AmbientLight(color));
+    } else if (cl=="directional") {
+        glm::vec3 dir = table.Get<glm::vec3>("dir");
+        glm::vec3 color = table.Get<glm::vec3>("color");
+        color /= 255.0f;
+        return std::unique_ptr<Component>(new DirectionalLight(dir, color));
+
+    } else {
+        GLIB_FAIL("Unknown light class: " << cl);
+    }
 
 }
 
@@ -130,6 +142,7 @@ std::unique_ptr<Component> Gfx3DComponentFactory::Create(luabridge::LuaRef & ref
     if (shape == "plane") {
         float width = table.Get<float>("width");
         float depth = table.Get<float>("depth");
+
         if (table.HasKey("color")) {
             glm::vec4 color = table.Get<glm::vec4>("color");
             color /= 255.0f;
@@ -137,10 +150,12 @@ std::unique_ptr<Component> Gfx3DComponentFactory::Create(luabridge::LuaRef & ref
             renderer->SetMesh(mesh);
         } else {
             std::string image = table.Get<std::string>("image");
+            std::string plane = table.Get<std::string>("plane", "xy");
+            Plane p = (plane == "xy") ? Plane::XY : Plane::XZ;
             glm::vec2 repeat = table.Get<glm::vec2>("rep", glm::vec2(1.0f, 1.0f));
             glm::vec2 skew = table.Get<glm::vec2>("skew", glm::vec2(0.0f, 0.0f));
             glm::vec2 offset = table.Get<glm::vec2>("offset", glm::vec2(0.0f));
-            auto mesh = std::make_shared<QuadMesh>(image, width, depth, repeat.x, repeat.y, skew.x, skew.y, offset);
+            auto mesh = std::make_shared<QuadMesh>(image, width, depth, repeat.x, repeat.y, skew.x, skew.y, offset, p);
             renderer->SetMesh(mesh);
         }
     }
@@ -438,7 +453,10 @@ std::unique_ptr<Component> CursorComponentFactory::Create(luabridge::LuaRef& ref
 }
 
 std::unique_ptr<Component> RaycastControllerComponentFactory::Create(luabridge::LuaRef& ref) {
-    return std::unique_ptr<Component>(new RaycastController);
+    LuaTable table(ref);
+
+    std::string heightMap = table.Get<std::string>("heightmap", "");
+    return std::unique_ptr<Component>(new RaycastController(heightMap));
 
 }
 

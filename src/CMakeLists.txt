@@ -7,4 +7,5 @@ add_subdirectory(test)
 add_subdirectory(monkey)
 add_subdirectory(platformer)
 add_subdirectory(xml)
+add_subdirectory(phy)
 

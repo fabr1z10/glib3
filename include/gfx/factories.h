@@ -25,7 +25,7 @@ FACTORY(EntityFactory, Entity)
 FACTORY(OutlineTextFactory, Entity)
 FACTORY(ButtonFactory, Entity)
 FACTORY(TextViewFactory, Entity)
-
+FACTORY(HeightMapFactory, Entity)
 
 // Components
 FACTORY(TextComponentFactory, Component)

@@ -1,24 +1,22 @@
 #include <iostream>
 #include <gfx/lua/luawrapper.h>
 #include <gfx/lua/luatable.h>
-#include <platformer/platformerfactory.h>
+#include <phy/phyfactory.h>
 #include <gfx/monkey.h>
 #include <set>
-#include <gfx/components/statemachine.h>
+
 
 int main(int argc, char* argv[])
 {
     if (argc < 2) {
-        std::cout << "Usage: monkey <directory>" << std::endl;
+        std::cout << "Usage: phy <directory>" << std::endl;
         return 1;
     }
     try {
-
-
         std::string homeDir(argv[1]);
         Engine::get().GetAssetManager().SetDirectory(homeDir);
         Monkey& m = Monkey::get();
-        m.Init<PlatformerFactory>();
+        m.Init<PhyFactory>();
         m.Start();
 
     } catch (Error& err) {

@@ -34,6 +34,9 @@ public:
     void SetScreenViewPort(glm::vec4);
     virtual glm::vec2 GetWorldCoordinates(glm::vec2) { throw; }
     bool IsInViewport(float xScreen, float yScreen);
+    glm::vec3 getForward() const;
+    glm::vec3 getUp() const;
+    glm::vec3 getRight () const;
 protected:
     // this is static and it's the viewport in device coordinates
     glm::vec4 m_camViewport;
@@ -43,9 +46,20 @@ protected:
     GLint m_viewportX, m_viewportY;
     GLsizei m_viewportHeight;
     GLsizei m_viewportWidth;
-
+    glm::vec3 m_fwd;
+    glm::vec3 m_up;
     std::string m_root;
 };
+
+inline glm::vec3 Camera::getForward() const {
+    return m_fwd;
+}
+inline glm::vec3 Camera::getUp() const {
+    return m_up;
+}
+inline glm::vec3 Camera::getRight () const {
+    return glm::cross(m_fwd, m_up);
+}
 
 inline std::string Camera::GetRoot() const {
     return m_root;

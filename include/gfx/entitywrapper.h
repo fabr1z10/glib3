@@ -18,7 +18,7 @@ struct EntityWrapper {
     EntityWrapper() : m_underlying(nullptr) {}
     EntityWrapper(Entity* entity) : m_underlying{entity}{}
     static EntityWrapper AddEntity(luabridge::LuaRef ref, EntityWrapper* parent);
-    static EntityWrapper RemoveEntity(const std::string& tag);
+    static void RemoveEntity(const std::string& tag);
     void Clear();
     void ClearText();
     void Remove();

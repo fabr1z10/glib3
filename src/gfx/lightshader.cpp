@@ -9,20 +9,20 @@ LightShader::LightShader(ShaderType type, const char *vertex, const char *fragme
 void LightShader::Start() {
 
     Shader::Start();
-    auto loc = GetUniformLocation(LIGHTCOLOR);
+
 
     auto& lights = Engine::get().GetRenderingEngine()->GetLights();
     int lightCount = 0;
     for (auto iter = lights.begin(); iter != lights.end(); ++iter) {
-        glm::vec3 color = (*iter)->GetColor();
+        (*iter)->setUp(this);
 
         //glUniform3fv(loc, 1, GL_FALSE, &color[0]);
-        glUniform3fv(loc, 1, &color[0]);
+
 
         //glUniformMatrix4fv(mvLoc, 1, GL_FALSE, &mvm[0][0]);
 
         lightCount++;
-        if (lightCount >= 1)
-            break;
+//        if (lightCount >= 1)
+//            break;
     }
 }

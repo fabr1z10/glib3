@@ -28,6 +28,21 @@ struct Vertex3D {
     static void InitAttributes();
 };
 
+// vertex with texture and normal
+
+struct Vertex3DN {
+    Vertex3DN(
+            GLfloat x, GLfloat y, GLfloat z,
+            GLfloat s, GLfloat t,
+            GLfloat nx, GLfloat ny, GLfloat nz)
+            : x(x), y(y), z(z), nx(nx), ny(ny), nz(nz), s(s), t(t) {}
+    GLfloat x, y, z;
+    GLfloat s, t;
+    GLfloat nx, ny, nz;
+
+    static void InitAttributes();
+};
+
 struct VertexColor {
     VertexColor(GLfloat x, GLfloat y, GLfloat z, GLfloat r = 1.0f, GLfloat g = 1.0f, GLfloat b = 1.0f, GLfloat a = 1.0f)
     : x(x), y(y), z(z), r(r), g(g), b(b), a(a) {}

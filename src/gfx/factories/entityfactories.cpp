@@ -4,6 +4,7 @@
 #include <gfx/textmesh.h>
 #include <gfx/components/renderer.h>
 #include <gfx/entities/textview.h>
+#include <gfx/entities/heightmap.h>
 
 std::unique_ptr<Entity> EntityFactory::Create(luabridge::LuaRef& ref) {
 
@@ -70,7 +71,6 @@ std::unique_ptr<Entity> ButtonFactory::Create(luabridge::LuaRef &ref) {
     std::string name = table.Get<std::string>("name", "");
     if (!tag.empty()) parent->SetTag(tag);
     if (!name.empty()) parent->SetName(name);
-    bool active = table.Get<bool>("active", true);
     glm::vec3 pos = table.Get<glm::vec3>("pos", glm::vec3(0.0f));
     if (table.HasKey("angle")) {
         float angle = table.Get<float>("angle",0.0f);
@@ -142,4 +142,19 @@ std::unique_ptr<Entity> TextViewFactory::Create(luabridge::LuaRef &ref) {
     r->SetTag(tag);
     return r;
 
+}
+
+std::unique_ptr<Entity> HeightMapFactory::Create(luabridge::LuaRef& ref) {
+    LuaTable table(ref);
+    std::string tag = table.Get<std::string>("tag", "");
+    std::string tex = table.Get<std::string>("image");
+    std::string texture = table.Get<std::string>("texture");
+
+    glm::vec2 size = table.Get<glm::vec2>("size");
+    glm::vec2 hb = table.Get<glm::vec2>("height_bounds");
+
+    auto ptr = std::unique_ptr<Entity>(new HeightMap(tex, texture, size.x, size.y, hb.x, hb.y));
+    if (!tag.empty())
+        ptr->SetTag(tag);
+    return std::move(ptr);
 }

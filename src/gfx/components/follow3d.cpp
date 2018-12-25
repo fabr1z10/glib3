@@ -17,10 +17,15 @@ void Follow3D::onMove(Entity *) {
     // get the fwd vector
     glm::vec3 fwd(wt[1][0], wt[1][1], wt[1][2]);
     glm::vec3 pos(wt[3][0], wt[3][1], wt[3][2]);
-    pos -= fwd*m_distance;
-    pos += glm::vec3(0.0f, 0.0f, m_elevation);
     glm::vec3 up(wt[2][0], wt[2][1], wt[2][2]);
-    m_cam->SetPosition(pos, fwd, up);
+    //glm::vec3 up(0,0,1);
+    fwd.z = 0;
+    fwd = glm::normalize(fwd);
+    pos -= fwd*m_distance;
+    pos += m_elevation * up;
+    std::cout << "Updated cam pos: fwd = (" << fwd.x << ", " << fwd.y << ", " << fwd.z << "), pos = "<< pos.x << ", " << pos.y
+    << ", " << pos.z << "), up = " << up.x << ", " << up.y <<", " << up.z << ")\n";
+    m_cam->SetPosition(pos,fwd, glm::vec3(0,0,1));
 }
 void Follow3D::Update (double dt) {
 

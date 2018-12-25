@@ -1,9 +1,13 @@
 #include <gfx/components/raycastcontroller.h>
 #include <gfx/math/geom.h>
-
+#include <gfx/entities/heightmap.h>
 void RaycastController::Start() {
     // m_keyboard = Engine::get().GetKeyboard();
     m_collision = Engine::get().GetRunner<CollisionEngine>();
+    if (!m_heightmap.empty()) {
+        m_heightMap = Engine::get().GetRef<HeightMap>(m_heightmap);
+
+    }
 
 }
 
@@ -33,15 +37,49 @@ void RaycastController::Update(double) {
         glm::vec2 mid = (P1+P2)*0.5f;
         glm::vec2 d = glm::normalize(P2-P1);
         glm::vec2 P0p = mid + glm::vec2(-d.y, d.x) * 1.0f;
-        glm::vec2 ndir= glm::vec2(d.y, -d.x);
         float delta = glm::length(P0p - P0);
-        std::cout << "advance by " << delta << "\n";
+        //std::cout << "advance by " << delta << "\n";
+
         m_entity->MoveLocal(glm::vec3(0.0f, len, 0.0f));
-        // rotation along z axis
-        //float a = angle(ndir, dir);
-        //m_entity->RotateY(a);
+        //glm::vec3 pos = m_entity->GetPosition();
+        //float h = m_heightMap->getHeight(pos.x, pos.y);
+        //m_entity->SetPosition(glm::vec3(pos.x, pos.y, h+0.1));
+        glm::mat4 lt = m_entity->GetLocalTransform();
+        float h = m_heightMap->getHeight(lt[3][0], lt[3][1]);
+        glm::vec3 normal = m_heightMap->getNormal(lt[3][0], lt[3][1]);
+        glm::vec3 fwd = glm::normalize(glm::cross (normal, glm::vec3(lt[0][0], lt[0][1], lt[0][2])));
+        std::cout << "normal = " << normal.x << "," << normal.y << ", " << normal.z << "\n";
+        std::cout << "right = " << lt[0][0] << "," << lt[0][1] << ", " << lt[0][2] << "\n";
+        std::cout << "fwd = " << fwd.x << "," << fwd.y << ", " << fwd.z << "\n";
+//        lt[2][0] = normal.x;
+//        lt[2][1] = normal.y;
+//        lt[2][2] = normal.z;
+//        lt[1][0] = fwd.x;
+//        lt[1][1] = fwd.y;
+//        lt[1][2] = fwd.z;
+        //glm::vec3 normal = m_heightMap->getNormal(lt[3][0], lt[3][1]);
+        lt[3][2] = h+1.0f;
+        m_entity->SetLocalTransform(lt);
+
+
     } else if (m_keyboard.isPressed(GLFW_KEY_DOWN)) {
         m_entity->MoveLocal(glm::vec3(0,-1,0));
+//        glm::vec3 pos = m_entity->GetPosition();
+//        float h = m_heightMap->getHeight(pos.x, pos.y);
+//        m_entity->SetPosition(glm::vec3(pos.x, pos.y, h+0.1));
+        glm::mat4 lt = m_entity->GetLocalTransform();
+        float h = m_heightMap->getHeight(lt[3][0], lt[3][1]);
+        glm::vec3 normal = m_heightMap->getNormal(lt[3][0], lt[3][1]);
+        glm::vec3 fwd = glm::normalize(glm::cross (normal, glm::vec3(lt[0])));
+//        lt[2][0] = normal.x;
+//        lt[2][1] = normal.y;
+//        lt[2][2] = normal.z;
+//        lt[1][0] = fwd.x;
+//        lt[1][1] = fwd.y;
+//        lt[1][2] = fwd.z;
+        lt[3][2] = h+1.0f;
+        m_entity->SetLocalTransform(lt);
+
     }
 
     // rotation

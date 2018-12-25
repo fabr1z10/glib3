@@ -1,4 +1,5 @@
 #include "gfx/model3D/model3D.h"
+#include <gfx/engine.h>
 
 std::shared_ptr<IMesh> Model3DFactory::CreatePlane (float width, float depth, glm::vec4 color) {
     float hw = 0.5f * width;
@@ -14,6 +15,7 @@ std::shared_ptr<IMesh> Model3DFactory::CreatePlane (float width, float depth, gl
     mesh->m_primitive = GL_TRIANGLES;
     return mesh;
 }
+
 
 
 

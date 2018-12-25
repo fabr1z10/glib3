@@ -11,6 +11,9 @@
 #include <sstream>
 #include <iostream>
 #include <gfx/lightshader.h>
+#include <gfx/shader/tex_unlit.h>
+#include <gfx/shader/color_unlit.h>
+#include <gfx/shader/tex_light.h>
 
 Shader* Shader::g_currentShader = nullptr;
 
@@ -115,6 +118,8 @@ std::unique_ptr<Shader> ShaderFactory::GetShader(const std::string& shaderId) {
         return GetTextShader();
     else if (shaderId == "light_color")
         return GetLightColorShader();
+    else if (shaderId == "light_textured")
+        return GetLightTexShader();
     else
         GLIB_FAIL("Unknown shader " << shaderId);
 }
@@ -124,19 +129,27 @@ std::unique_ptr<Shader> ShaderFactory::GetTextureShader() {
     uniforms[TEXTURE] = "Tex1";
     uniforms[TINT] = "color";
     return std::unique_ptr<Shader> (
-                                    new Shader(TEXTURE_SHADER, basic_vshader, basic_fshader, 2, uniforms));
+            new Shader(TEXTURE_SHADER, vs_tex_unlit, fs_tex_unlit, 2, uniforms));
 }
 
 std::unique_ptr<Shader> ShaderFactory::GetColorShader() {
     std::unordered_map <ShaderUniform, std::string, EnumClassHash> uniforms;
     uniforms[TINT] = "color";
-    return std::unique_ptr<Shader>(new Shader(COLOR_SHADER, debug_vshader, debug_fshader, 2, uniforms));
+    return std::unique_ptr<Shader>(new Shader(COLOR_SHADER, vs_color_unlit, fs_color_unlit, 2, uniforms));
 }
 
 std::unique_ptr<Shader> ShaderFactory::GetLightColorShader() {
     std::unordered_map <ShaderUniform, std::string, EnumClassHash> uniforms;
     uniforms[LIGHTCOLOR] = "lightColor";
     return std::unique_ptr<Shader>(new LightShader(COLOR_SHADER_LIGHT, basic_vshader_light, basic_fshader_light, 2, uniforms));
+}
+
+std::unique_ptr<Shader> ShaderFactory::GetLightTexShader() {
+    std::unordered_map <ShaderUniform, std::string, EnumClassHash> uniforms;
+    uniforms[LIGHTCOLOR] = "lightColor";
+    uniforms[LIGHTDIR] = "lightDir";
+    uniforms[AMBIENT] = "ambient";
+    return std::unique_ptr<Shader>(new LightShader(TEXTURE_SHADER_LIGHT, vs_tex_light, fs_tex_light, 3, uniforms));
 }
 
 

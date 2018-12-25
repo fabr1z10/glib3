@@ -9,19 +9,34 @@
 #include <gfx/quadmesh.h>
 #include <gfx/engine.h>
 
+QuadMesh::QuadMesh(GLenum prim, const std::string& filename) : Mesh<Vertex3D>(TEXTURE_SHADER) {
+    m_primitive = prim;
+    auto tex = Engine::get().GetAssetManager().GetTexture(filename);
+    m_texId = tex->GetTexId();
+}
+
 QuadMesh::QuadMesh(const std::string& filename, float width, float height,
-                   float repeatx, float repeaty, float skewx, float skewy, glm::vec2 offset) : Mesh<Vertex3D>(TEXTURE_SHADER) {
+                   float repeatx, float repeaty, float skewx, float skewy, glm::vec2 offset, Plane p) : Mesh<Vertex3D>(TEXTURE_SHADER) {
     m_primitive = GL_TRIANGLES;
     auto tex = Engine::get().GetAssetManager().GetTexture(filename);
     m_texId = tex->GetTexId();
     if (width == 0) width = tex->GetWidth();
     if (height == 0) height = tex->GetHeight();
-    std::vector<Vertex3D> vertices{
-        {offset.x, offset.y, 0, 0, repeaty},
-        {offset.x + width, offset.y, 0, repeatx, repeaty+skewy},
-        {offset.x + width, offset.y + height, 0, repeatx+skewx, 0},
-        {offset.x, offset.y + height, 0, skewx, 0}
-    };
+    std::vector<Vertex3D> vertices;
+    if (p == Plane::XY) {
+        vertices = {
+                {offset.x,         offset.y,          0, 0,               repeaty},
+                {offset.x + width, offset.y,          0, repeatx,         repeaty + skewy},
+                {offset.x + width, offset.y + height, 0, repeatx + skewx, 0},
+                {offset.x,         offset.y + height, 0, skewx,           0}};
+    }
+    else {
+        vertices = {
+                {offset.x,         0,offset.y,           0,               repeaty},
+                {offset.x + width, 0,offset.y,           repeatx,         repeaty + skewy},
+                {offset.x + width, 0,offset.y + height,  repeatx + skewx, 0},
+                {offset.x,         0,offset.y + height,  skewx,           0}};
+    }
     std::vector<unsigned int> indices{ 0, 1, 3, 3, 2, 1 };
     Init(vertices, indices);
     

@@ -166,7 +166,9 @@ inline glm::vec3 Entity::GetPosition() const {
 inline const glm::mat4& Entity::GetWorldTransform() const {
     return m_worldTransform;
 }
-
+inline const glm::mat4& Entity::GetLocalTransform() const {
+    return m_localTransform;
+}
 inline void Entity::SetCamera(std::shared_ptr<Camera> cam)  {
     m_cameras = cam;
 }
