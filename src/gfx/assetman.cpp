@@ -19,7 +19,8 @@ Font* AssetManager::GetFont(const std::string & name) const {
 void AssetManager::SetDirectory(const std::string& dir)
 {
     m_directory = dir;
-    
+    if (m_directory.back() != '/')
+        m_directory.push_back('/');
     
 }
 

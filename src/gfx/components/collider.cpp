@@ -19,12 +19,12 @@ void Collider::SetParent(Entity * entity) {
 
 void Collider::Start() {
     m_engine = Engine::get().GetRunner<CollisionEngine>();
-
+    if (m_engine == nullptr) {
+        GLIB_FAIL("The room has a collider component but no collision engine is loaded.");
+    }
     if (m_shape != nullptr) {
         m_aabb = m_shape->getBounds();
         m_aabb.Transform(m_entity->GetWorldTransform());
-        
-
     }
     m_engine->Add(this);
     GetObject()->onMove.Register(this, [&] (Entity* e) { this->Move(e);} );
@@ -44,7 +44,9 @@ void Collider::Start() {
 }
 
 Collider::~Collider() {
-    m_engine->Remove(this);
+    if (m_engine != nullptr) {
+        m_engine->Remove(this);
+    }
 }
 void Collider::SetShape(std::shared_ptr<Shape> shape) {
     m_shape = shape;

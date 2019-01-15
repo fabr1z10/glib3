@@ -19,6 +19,8 @@ Monkey::Monkey() {
     AddTable("variables");
 }
 
+
+
 void Monkey::LoadFonts() {
     // load fonts
     luabridge::LuaRef fonts = luabridge::getGlobal(LuaWrapper::L, "fonts");

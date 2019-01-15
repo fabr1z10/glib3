@@ -109,6 +109,5 @@ sprites = {}
 load_all("sprites")
 load_all("factories")
 load_all("scripts")
-
 load_all("items")
 load_all("dialogues")

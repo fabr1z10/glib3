@@ -34,7 +34,12 @@ room:add( {
 	},
 	factory.mapitem.create { pos={75, 79}, name = "lookout", room="lookout" },
 	factory.mapitem.create { pos={135, 113}, name = "clearing", room="clearing" },
-
+	factory.mapitem.create { pos={169, 67}, name = "bridge", room="bridge" },
+	factory.trap.create { pos ={169, 67, 0}, tag="bridge_sensor", width=10, height = 10, onenter = 
+	  	function()			
+	 		print ("entering bridge")
+	  	end
+	}
 })
 
 

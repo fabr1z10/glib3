@@ -13,8 +13,8 @@ public:
 
     template <typename SCENE_FACTORY>
     void Init() {
-
-        LuaTable& engine =(*this)["engine"];
+        LuaTable engine(std::string("engine"));
+        //LuaTable& engine =(*this)["engine"];
         glm::vec2 devSize = engine.Get<glm::vec2>("device_size");
         glm::vec2 winSize = engine.Get<glm::vec2>("window_size");
         std::string title = engine.Get<std::string>("title");
