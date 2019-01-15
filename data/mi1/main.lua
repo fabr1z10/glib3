@@ -81,6 +81,7 @@ variables = {
 	entered_circus = false,
 	circus_knows_trick = false,
 	circus_knows_helmet = false,
+	talked_to_troll = false,
 	inventory = {
 		-- put here your belongings
 		

@@ -5,7 +5,6 @@ function generateBasicRoom (args)
 
 	local startPos = nil
 	if (args.startTable ~= nil) then
-		print ("CAZZO")
 		startPos = args.startTable[variables._previousroom]
 		if (startPos == nil) then
 			startPos = args.startTable[args.defaultroom]
@@ -116,6 +115,24 @@ function generateBasicRoom (args)
 			}
 		}
 	}
+
+	if (args.collide == true) then
+		table.insert (p.engines, 
+			{ 
+				type = "collision", 
+				size = {128, 128}, 
+				response = {
+					{ tag = {1, 2}, onenter=function(e,f) 
+
+							local info = f:getinfo()
+							if (info.onenter ~= nil) then
+								info.onenter()
+							end
+					 end}
+				}
+			}
+		)
+	end
 
 	-- get the inventory
 	table.insert(p.initstuff, function()

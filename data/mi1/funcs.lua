@@ -480,10 +480,22 @@ function handleDialogueButton(entity)
 			action.end_dialogue { id = 1, dialogue = info.data.dialogue }
 		}
 	else
- --        --local dialogue = info.data.dialogue
-		s1.actions = {
-			action.start_dialogue { id=1, dialogue = info.data.dialogue, root = dialogueNode }
-		}
+		atLeastOneActiveChild = false
+		for k, v in ipairs(dialogueNode.children) do
+            if (dialogue.nodes[v].active == true) then
+				atLeastOneActiveChild = true
+				break
+			end
+        end
+		if (atLeastOneActiveChild) then
+			s1.actions = {
+				action.start_dialogue { id=1, dialogue = info.data.dialogue, root = dialogueNode }
+			}
+		else
+	 		s1.actions = {
+				action.end_dialogue { id = 1, dialogue = info.data.dialogue }
+			}
+		end
  --        s1 = start_dialogue {dialogue = info.data.dialogue, root = dialogueNode } 
  --        -- s1.actions = {
  --        --     [1] = { type="callfunc", func = function ()

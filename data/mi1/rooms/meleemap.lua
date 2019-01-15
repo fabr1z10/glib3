@@ -9,7 +9,8 @@ local roomInfo = {
 	},
 	defaultroom = "lookout",
 	depth = { type="linear_y", values= {0, 1, 144, 0} },
-	scale = { type="constant", value=0.1}
+	scale = { type="constant", value=0.1},
+	collide = true
 
 }
 
@@ -35,9 +36,13 @@ room:add( {
 	factory.mapitem.create { pos={75, 79}, name = "lookout", room="lookout" },
 	factory.mapitem.create { pos={135, 113}, name = "clearing", room="clearing" },
 	factory.mapitem.create { pos={169, 67}, name = "bridge", room="bridge" },
-	factory.trap.create { pos ={169, 67, 0}, tag="bridge_sensor", width=10, height = 10, onenter = 
+	factory.trap.create { pos ={164, 62, 0}, tag="bridge_sensor", width=12, height = 12, onenter = 
 	  	function()			
-	 		print ("entering bridge")
+			local s = script:new()
+		 	s.actions = {	
+				action.change_room { id = 1, room = "bridge" }
+			}
+			monkey.play(s)
 	  	end
 	}
 })

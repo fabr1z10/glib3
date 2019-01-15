@@ -73,7 +73,8 @@ strings = {
 		fettuccini = "Fettuccini Brothers",
 		sign = "sign",
 		bell = "bell",
-		alley ="alley"
+		alley ="alley",
+		troll = "troll"
 		
 		
     },
@@ -592,6 +593,57 @@ strings = {
 			[4] = "You know, bad things could happen to a person in a dark, deserted alley like this one.",
 			[5] = "And at this time of night, nobody would be around to see it."
 		},
+		troll = {
+			[1] = "NONE SHALL PASS!!",
+			[2] = "STOP!!",
+			[3] = "You must pay a toll!",
+			[4] = "Stand aside, troll, I'm a mighty pirate.",
+			[5] = "Oh, please, can't I pass?",
+			[6] = "How much is the toll?",
+			[7] = "Look behind you! A mouse!",
+			[8] = "Oops, sorry. I'll take the long way around.",
+			[9] = "You're no pirate!",
+			[10] = "Why, the town drunk could out-insult you on his back!",
+			[11] = "(...and probably would.)",
+			[12] = "Oh, yeah?",
+			[13] = "I can out-insult anybody, you brainless clay doppelganger",
+			[14] = "Stick it in your ear, you great green garrulous grub!",
+			[15] = "I'll just go and find out. Good day.",
+			[16] = "Yeah!",
+			[17] = "You know, you could stand a lesson or two if that's the best you can come up with.",
+			[18] = "You can't pass until you pay the toll!",
+			[19] = "Boy, do you sound like a wimp.",
+			[20] = "I don't like wimps.",
+			[21] = "Well, what have you got?",
+			[22] = "Don't mess with me, troll, I'm a mighty pirate!",
+			[23] = "Nothing of consequence.",
+			[24] = "Never mind, I have to go now.",
+			[25] = "I want something that will attract attention, but have no real importance.",
+			[26] = "Construction paper jockey shorts?",
+			[27] = "A monkey leash with three collars?",
+			[28] = "A rubber chicken with a pulley in the middle?",
+			[29] = "My old moss-covered three-handed family credenza?",
+			[30] = "I'll try to find something like that. Bye.",
+			[31] = "Don't be silly.",
+			[32] = "You have three chances to give me what I want. Then...",
+			[33] = "...I eat ya!",
+			[34] = "I'm not falling for that!",
+			[35] = "Scuttle along, you scurvy sea slug!",
+			[36] = "Fine.",
+			[37] = "Begone.",
+			[38] = "How much did you say the toll was?",
+			[39] = "Hah!",
+			[40] = "I once owned a dog that was smarter than you.",
+			[41] = "Take THAT and stick it in your repertoire!",
+			[42] = "Uh...",
+			[43] = "...errrr...",
+			[44] = "...ummm...",
+			[45] = "Which ear, cudgel-breath?",
+			[46] = "...heh...",
+			[47] = "What's so good about it?"
+
+
+		},
 		fettbros = {
 			[1] = "I'd get in the cannon, but the gunpowder makes me sneeze.",
 			[2] = "Well, I can't do it, I hurt my hand taming the lions last week.",
@@ -777,6 +829,9 @@ strings = {
 		[9] = "That storekeeper guy might bite my head off.",
 		[10] = "Did you just come in here to get out of the cold, or do you need something?"
 		
+	},
+	bridge = {
+
 	},
 	circus = {
 		[1] = "Those crazy Spaghetti Brothers are still in there."

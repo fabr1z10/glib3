@@ -79,6 +79,22 @@ function generateMapRoom (args)
 			}
 		}
 	}
+	if (args.collide == true) then
+		table.insert (p.engines, 
+			{ 
+				type = "collision", 
+				size = {128, 128}, 
+				response = {
+					{ tag = {1, 2}, onenter=function(e,f) 
+							local info = f:getinfo()
+							if (info.onenter ~= nil) then
+								info.onenter()
+							end
+					 end}
+				}
+			}
+		)
+	end
 
 	if (p.startPos.func ~= nil) then
 	
