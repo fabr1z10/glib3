@@ -46,7 +46,7 @@ fonts = {
 
 -- this stuff will change at gametime
 variables = {
-    _room = "clearing",
+    _room = "bridge",
 	_previousroom="",
 	_actionInfo = {
         verb = nil,
@@ -94,6 +94,7 @@ variables.inventory["kitchen.pot"] = 1
 variables.entered_circus = true
 variables.circus_knows_trick = true
 variables.circus_knows_helmet = true
+variables.inventory["kitchen.fish"] = 1
 -- END DEBUG
 
 require ("script")

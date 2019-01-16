@@ -356,6 +356,7 @@ function runAction ()
    			end
         elseif (variables._actionInfo.verb.code == "give") then
 			--s = giveActionHandler()
+			print ("QUI")
 			local IhaveObj1 = variables.inventory[variables._actionInfo.obj1] ~= nil
 			if (not IhaveObj1) then return nil end
 			local obj2 = items[variables._actionInfo.obj2]

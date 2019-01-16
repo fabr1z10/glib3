@@ -52,7 +52,7 @@ bool HitCollision::Run(double dt) {
             glm::vec3 pos = m_entity->GetPosition();
             //std::cout <<" **** hit ****\n";
             //std::cout << "character at position = " << pos.x << ", " << pos.y << "\n";
-            bool flip = m_renderer->GetFlipX();
+            bool flip = m_entity->GetFlipX();
             pos.x += flip ? -m_offset.x - m_shape->getBounds().GetSize().x : m_offset.x;
             pos.y += m_offset.y;
             //std::cout << "collider at position = " << pos.x << ", " << pos.y << "\n";

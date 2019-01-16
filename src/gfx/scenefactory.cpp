@@ -160,6 +160,12 @@ std::shared_ptr<Entity> SceneFactory::Create() {
             std::string id = a["id"].cast<std::string>();
             auto asset = GetShared<IMesh>(a);
             Engine::get().GetAssetManager().AddMesh(id, asset);
+            // check if mesh has additional info
+            luabridge::LuaRef additionalInfo = a["addinfo"];
+            if (!additionalInfo.isNil()) {
+                std::cout << "Hey, mesh has additional info!\n";
+                Engine::get().GetAssetManager().AddMeshInfo(id, additionalInfo);
+            }
         }
     }
 

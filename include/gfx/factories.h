@@ -13,6 +13,7 @@ class Runner;
 class State;
 class Activity;
 class IMesh;
+class IFrameChangeHandler;
 
 #define FACTORY(name, type) \
     class name : public FactoryMethod<type> { \
@@ -51,6 +52,9 @@ FACTORY(FPSComponentFactory, Component)
 FACTORY(CursorComponentFactory, Component)
 FACTORY(LightComponentFactory, Component)
 FACTORY(RaycastControllerComponentFactory, Component)
+
+// Frame handlers
+FACTORY(RelativePosFrameHandler, IFrameChangeHandler)
 
 // Runners
 FACTORY(HotSpotManagerFactory, Runner)

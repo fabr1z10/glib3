@@ -17,6 +17,8 @@ std::unique_ptr<Entity> EntityFactory::Create(luabridge::LuaRef& ref) {
     if (!name.empty()) entity->SetName(name);
     bool active = item.Get<bool>("active", true);
     glm::vec3 pos = item.Get<glm::vec3>("pos", glm::vec3(0.0f));
+    bool flipx = item.Get<bool>("flipx", false);
+    entity->SetFlipX(flipx);
     if (item.HasKey("angle")) {
         float angle = item.Get<float>("angle",0.0f);
         entity->SetPosition(pos, deg2rad* angle);

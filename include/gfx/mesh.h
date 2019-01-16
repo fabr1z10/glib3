@@ -61,6 +61,8 @@ public:
     int GetScope() const;
     ShaderType GetShaderType() const { return m_shaderType; }
     std::string GetDefaultAnimation() const { return m_defaultAnimation; }
+    std::string GetId() const;
+    void SetId(const std::string&);
 protected:
     ShaderType m_shaderType;
     glm::mat4 m_localTransform;
@@ -68,6 +70,7 @@ protected:
     //int m_animations;
     std::unordered_map <std::string, std::vector<FrameInfo> > m_animInfo;
     std::string m_defaultAnimation;
+    std::string m_id;
     Bounds3D m_bounds;
     GLsizei m_count;
     GLint m_offset;
@@ -84,9 +87,13 @@ inline void IMesh::SetScope(int value) { m_scope = value; }
 inline int IMesh::GetScope() const { return m_scope; }
 
 inline int IMesh::AnimationCount() const { return m_animInfo.size(); }
+inline std::string IMesh::GetId() const {
+    return m_id;
+}
 
-
-
+inline void IMesh::SetId(const std::string& name) {
+    m_id = name;
+}
 
 template<class Vertex>
 Bounds3D ComputeBounds(std::vector<Vertex>& vertices) {

@@ -1,5 +1,6 @@
 #include <gfx/factories.h>
 #include <gfx/spritemesh.h>
+#include <gfx/assetman.h>
 
 std::unique_ptr<IMesh> SpriteFactory::Create (luabridge::LuaRef& ref) {
 
@@ -39,6 +40,7 @@ std::unique_ptr<IMesh> SpriteFactory::Create (luabridge::LuaRef& ref) {
         anims.push_back(animation);
     }
     auto mesh = std::unique_ptr<SpriteMesh>(new SpriteMesh(ppu, sheetName, anims));
+
     return std::move(mesh);
 }
 

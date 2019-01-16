@@ -14,7 +14,8 @@ enum ShaderType {
     TEXT_SHADER,
     COLOR_SHADER,
     TEXTURE_SHADER_LIGHT,
-    COLOR_SHADER_LIGHT
+    COLOR_SHADER_LIGHT,
+    NONE
 };
 
 enum ShaderUniform {

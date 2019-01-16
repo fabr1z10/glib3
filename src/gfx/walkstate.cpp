@@ -55,7 +55,7 @@ bool WalkStateCollision::Run(double dt) {
         return true;
     }
     if (leftKeyDown || rightKeyDown)
-        m_renderer->SetFlipX(leftKeyDown);
+        m_entity->SetFlipX(leftKeyDown);
 
 
 

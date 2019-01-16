@@ -46,6 +46,7 @@ std::string AssetManager::GetDirectory() const {
 }
 
 void AssetManager::AddMesh (const std::string& name, std::shared_ptr<IMesh> mesh) {
+    mesh->SetId(name);
     m_meshes[name] = mesh;
 }
 
@@ -63,4 +64,15 @@ std::shared_ptr<IMesh> AssetManager::GetMesh(const std::string& name) const {
         GLIB_FAIL("Unknown mesh " << name);
     }
     return it->second;
+}
+
+luabridge::LuaRef AssetManager::GetMeshInfo (const std::string& name) {
+    auto it = m_meshAddInfo.find(name);
+    if (it == m_meshAddInfo.end())
+        GLIB_FAIL("No additional mesh info for: " << name);
+    return it->second;
+}
+
+void AssetManager::AddMeshInfo (const std::string& name, luabridge::LuaRef ref) {
+    m_meshAddInfo.insert(std::make_pair(name, ref));
 }

@@ -222,10 +222,29 @@ items["kitchen.fish"] = {
 		end,
 		look = ms {
 			{ action.say, { id=1, actor="guybrush", lines = {d[3] }}}
-		}
+		},
+		give = {}
 
 	}
 }
+
+items["kitchen.fish"].actions.give["bridge.troll"] = function()
+	local dp = strings.dialogues.troll
+	local s = script:new()
+	s.actions = {
+		action.suspend_script {id=1, script="_troll"},
+		action.animate_once {id=2, actor="bridge.troll", anim="take_fish"},
+		action.animate {id=3, after={2}, actor="bridge.troll", anim="wait_fish"},
+		action.say { id= 4, after={1}, actor="bridge.troll", lines={dp[48]}, animate=false  },
+		action.animate {id=5, actor="guybrush", anim="operate_right", after={2} },
+		action.delay {id = 6, sec=0.5},
+		action.animate {id=7, after={6}, actor="guybrush", anim="idle_right" },
+		action.animate {id=8, after={6}, actor="bridge.troll", anim="hold_fish"},
+
+
+	}
+	return s
+end
 
 items["kitchen.seagull"] = {
 	pos = {0, 0, 1},

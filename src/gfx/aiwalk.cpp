@@ -17,7 +17,7 @@ bool AIWalk::Run(double dt) {
     glm::vec3 enemyPos = m_entity->GetPosition();
     float targetX = targetPos.x;
     float enemyX = m_entity->GetPosition().x;
-    m_renderer->SetFlipX(enemyX > targetX);
+    m_entity->SetFlipX(enemyX > targetX);
     glm::vec2 pos (targetPos.x + m_offset.x, targetPos.y + m_offset.y);
     glm::vec2 dist = pos - glm::vec2(enemyPos);
     if (dist.x*dist.x + dist.y*dist.y > m_eps) {

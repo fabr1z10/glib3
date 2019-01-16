@@ -23,19 +23,22 @@ items["bridge.troll"] = {
 	anim ="idle",
 	applydepth = true,
 	flip = true,
+	talk_script = function()
+		local s = script:new()
+		local dp = strings.dialogues.troll
+		local lines = (variables.talked_to_troll == false) and {dp[2], dp[3]} or {dp[18]}
+		variables.talked_to_troll = true
+		s.actions = {
+			action.suspend_script {id=1, script="_troll"},
+			action.disable_controls {id=2},
+			action.say {id=3, actor="bridge.troll", lines = lines, animstart="talk", animend="idle" },
+			action.start_dialogue{id=4, dialogue="troll"}
+		}
+		return s
+	end,
 	actions = {
-		talk = function() 
-			local s = script:new()
-			local dp = strings.dialogues.troll
-			local lines = (variables.talked_to_troll == false) and {dp[2], dp[3]} or {dp[18]}
-			variables.talked_to_troll = true
-			s.actions = {
-				action.suspend_script {id=1, script="_troll"},
-				action.disable_controls {id=2},
-				action.say {id=3, actor="bridge.troll", lines = lines, animstart="idle", animend="idle" },
-				action.start_dialogue{id=4, dialogue="troll"}
-			}
-			return s
-		end
+		give = {}
 	}
 }
+
+items["bridge.troll"].actions.talk = items["bridge.troll"].talk_script

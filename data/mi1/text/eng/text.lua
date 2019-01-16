@@ -640,7 +640,8 @@ strings = {
 			[44] = "...ummm...",
 			[45] = "Which ear, cudgel-breath?",
 			[46] = "...heh...",
-			[47] = "What's so good about it?"
+			[47] = "What's so good about it?",
+			[48] = "Ah! A red herring!"
 
 
 		},

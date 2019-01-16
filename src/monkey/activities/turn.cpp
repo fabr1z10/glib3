@@ -7,7 +7,7 @@ void Turn::Start() {
     auto actor = Engine::get().GetRef<Entity>(m_actorId);
     auto renderer = actor->GetComponent<Renderer>();
 
-    renderer->SetFlipX(m_dir == "west");
+    actor->SetFlipX(m_dir == "west");
     if (m_dir == "north") {
         renderer->SetAnimation("idle_back");
     } else if (m_dir == "south") {

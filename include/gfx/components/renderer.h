@@ -12,6 +12,7 @@
 #include <memory>
 #include "gfx/component.h"
 #include "gfx/mesh.h"
+#include "gfx/framechangehandler.h"
 
 class Renderer : public Component {
 public:
@@ -25,18 +26,20 @@ public:
     void Start() override {}
     void Update(double) override;
     std::string GetAnimation() const;
+    void SetParent(Entity* parent) override;
     void SetAnimation(const std::string&);
     void SetTint(glm::vec4 c);
-    ShaderType GetShaderType() const { return m_mesh->GetShaderType(); }
+    ShaderType GetShaderType() const { return (m_mesh == nullptr ? ShaderType::NONE : m_mesh->GetShaderType()); }
     using ParentClass = Renderer;
-    void SetFlipX(bool);
-    bool GetFlipX() const;
     void SetScale(float);
     const glm::mat4& GetRenderingTransform() const;
     void SetRenderingTransform (glm::mat4 m);
     int GetLoopCount() const;
     int GetFrame() const;
+    void SetFrame (int);
+    void AddFrameChangeHandler (std::unique_ptr<IFrameChangeHandler>);
 private:
+
     //bool m_flipX;
     glm::mat4 m_renderingTransform;
     std::shared_ptr<IMesh> m_mesh;
@@ -46,6 +49,7 @@ private:
     double m_frameTime;
     int m_loopCount;
     glm::vec4 m_tint;
+    std::vector<std::unique_ptr<IFrameChangeHandler>> m_frameChangeHandlers;
 };
 
 inline std::string Renderer::GetAnimation() const {
@@ -75,7 +79,10 @@ inline const glm::mat4& Renderer::GetTransform() const {
 //}
 
 inline void Renderer::SetMesh(std::shared_ptr<IMesh> mesh) {
+
     m_mesh = mesh;
+    for (auto& c : m_frameChangeHandlers)
+        c->SetMesh(mesh);
 }
 
 inline IMesh* Renderer::GetMesh() {

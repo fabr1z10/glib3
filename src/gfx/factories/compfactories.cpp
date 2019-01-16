@@ -14,6 +14,7 @@
 #include <gfx/components/depth.h>
 #include <gfx/components/follow.h>
 #include <gfx/components/follow3d.h>
+#include <gfx/components/relativepos.h>
 
 #include <gfx/components/billboard.h>
 #include <gfx/components/parallax.h>
@@ -59,11 +60,29 @@ std::unique_ptr<Component> TextComponentFactory::Create(luabridge::LuaRef &ref) 
     return std::move(renderer);
 }
 
+std::unique_ptr<IFrameChangeHandler> RelativePosFrameHandler::Create(luabridge::LuaRef &ref) {
+    return std::unique_ptr<IFrameChangeHandler>(new RelativePosHandler);
+}
 
 std::unique_ptr<Component> GfxComponentFactory::Create(luabridge::LuaRef & ref) {
     LuaTable table(ref);
 
     auto renderer = std::unique_ptr<Renderer>(new Renderer);
+    if (table.HasKey("framehandlers")) {
+        luabridge::LuaRef fh = table.Get<luabridge::LuaRef>("framehandlers");
+        for (int i = 0; i< fh.length(); ++i) {
+            luabridge::LuaRef fhandler = fh[i+1];
+            std::string type = fhandler["type"].cast<std::string>();
+            if (type == "pos")
+            {
+                RelativePosFrameHandler r;
+
+                renderer->AddFrameChangeHandler(r.Create(fhandler));
+            }
+        }
+    }
+
+
     if (table.HasKey("image")) {
         std::string image = table.Get<std::string>("image");
         float w = table.Get<float>("width", 0.0f);
@@ -78,7 +97,7 @@ std::unique_ptr<Component> GfxComponentFactory::Create(luabridge::LuaRef & ref) 
         std::string anim = table.Get<std::string>("anim", "");
         bool flip = table.Get<bool>("flip", false);
         renderer->SetMesh(Engine::get().GetAssetManager().GetMesh(model));
-        renderer->SetFlipX(flip);
+        //renderer->SetFlipX(flip);
         //renderer->SetRenderingTransform(glm::scale(glm::vec3(0.1f))*glm::rotate(90.0f, glm::vec3(1.0f,0.0f,0.0f)));
         //renderer->SetScale(0.1f);
         renderer->SetAnimation(anim);
