@@ -41,10 +41,8 @@ end
 
 function get(ref)
 	if (type(ref)=="function") then
-		print ("PLLLL")
 		return ref()
 	else
-		print ("LMMMM")
 		return ref
 	end
 end

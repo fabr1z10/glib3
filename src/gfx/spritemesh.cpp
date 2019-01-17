@@ -16,10 +16,12 @@ SpriteMesh::SpriteMesh (float ppu, const std::string& filename, std::vector<Anim
     int quadCount {0};
     for (auto& anim : data) {
 
+        AnimInfo animInfo (anim.loop);
 
-        std::vector<FrameInfo> frameInfos;
+        //std::vector<FrameInfo> frameInfos;
         for (auto& frame : anim.frames) {
-            frameInfos.push_back(FrameInfo{6*quadCount, 6*static_cast<int>(frame.quads.size()), frame.time});
+            FrameInfo frameInfo{6*quadCount, 6*static_cast<int>(frame.quads.size()), frame.time};
+            animInfo.AddFrameInfo(frameInfo);
             for (auto& quad : frame.quads) {
                 glm::vec2 bottomLeft (-quad.anchorx / ppu, -quad.anchory/ppu);
                 float tx = quad.x / texWidth;
@@ -43,7 +45,7 @@ SpriteMesh::SpriteMesh (float ppu, const std::string& filename, std::vector<Anim
             }
 
         }
-        m_animInfo.insert(std::make_pair(anim.name, frameInfos));
+        m_animInfo.insert(std::make_pair(anim.name, animInfo));
     }
     Init(vertices, indices);
 
@@ -54,15 +56,13 @@ void SpriteMesh::Setup(Shader* shader, const std::string& anim, int frame) {
     glUniform1i(texLoc, 0);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, m_texId);
-    auto it = m_animInfo.find(anim);
-    if (it == m_animInfo.end()) {
-        GLIB_FAIL("Don't have animation: " << anim);
-    }
 
-    std::vector<FrameInfo>& aInfo = it->second;
-    if (frame < 0 || frame >= aInfo.size()) {
-        GLIB_FAIL("Animation " << anim << " has frames 0 to " << aInfo.size()-1 << ": requested frame " << frame);
+    const AnimInfo& ai = GetAnimInfo(anim);
+    size_t n = ai.getFrameCount();
+
+    if (frame < 0 || frame >= n) {
+        GLIB_FAIL("Animation " << anim << " has frames 0 to " << n-1 << ": requested frame " << frame);
     }
-    m_offset = aInfo[frame].offset;
-    m_count = aInfo[frame].count;
+    m_offset = ai.getOffset(frame);
+    m_count = ai.getCount(frame);
 }

@@ -13,6 +13,7 @@ struct Frame {
 
 struct Animation {
     std::string name;
+    bool loop;
     std::vector<Frame> frames;
 };
 

@@ -32,7 +32,9 @@ struct EntityWrapper {
     std::string GetState() const;
     std::string GetAnim() const;
     void SetAnim(const std::string&);
+    void SetModel (const std::string&, const std::string&);
     bool GetFlipX() const;
+    void SetFlipX(bool);
     void SetColor(int, int, int, int);
     void SetText(const std::string&);
     void SetActive (bool);

@@ -95,7 +95,7 @@ action.say = function(args)
 	if (args.animate ~= nil) then animate = args.animate end
 
 	local item = items[actor]
-	return { id = id, after = after,  type="say", actor= item.tag, lines = lines, offset = item.text_offset, color = item.text_color,
+	return { id = id, after = after,  type="say", actor= item.tagSpeak or item.tag, lines = lines, offset = item.text_offset, color = item.text_color,
 		animstart = animstart, animend = animend, animate = animate }
 end
 
@@ -125,6 +125,23 @@ action.disable_controls = function(args)
 		if (not m1.isnil) then
 			m1:enablecontrols(false)
 		end
+	end }
+
+end
+
+action.flip = function(args) 
+	local id = gr(args.id, "Required id in action.start_dialogue")
+	local tag = args.tag
+	local flip = args.flip
+	if (tag == nil) then
+		local actor = gr(args.actor, "Required actor in action.animate")
+		local item = items[actor]
+		tag = item.tag
+	end
+	local after= go(args.after, nil)
+	return { id = id, after = after, type="callfunc", func = function() 
+		local m = monkey.getEntity(tag)
+		m.flipx = flip
 	end }
 
 end

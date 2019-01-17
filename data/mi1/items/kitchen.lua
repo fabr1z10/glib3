@@ -232,14 +232,25 @@ items["kitchen.fish"].actions.give["bridge.troll"] = function()
 	local dp = strings.dialogues.troll
 	local s = script:new()
 	s.actions = {
-		action.suspend_script {id=1, script="_troll"},
-		action.animate_once {id=2, actor="bridge.troll", anim="take_fish"},
-		action.animate {id=3, after={2}, actor="bridge.troll", anim="wait_fish"},
-		action.say { id= 4, after={1}, actor="bridge.troll", lines={dp[48]}, animate=false  },
-		action.animate {id=5, actor="guybrush", anim="operate_right", after={2} },
-		action.delay {id = 6, sec=0.5},
-		action.animate {id=7, after={6}, actor="guybrush", anim="idle_right" },
-		action.animate {id=8, after={6}, actor="bridge.troll", anim="hold_fish"},
+		action.disable_controls {id=1},
+		action.suspend_script {id=2, after={1}, script="_troll"},
+		action.animate_once {id=3, after={2}, tag="bridge.troll.body", anim="take_fish"},
+		--action.animate {id=3, after={2}, actor="bridge.troll", anim="wait_fish"},
+		action.say { id= 4, after={2}, actor="bridge.troll", lines={dp[48]}, animstart="talk", animend="idle"},
+		action.animate {id=5, actor="guybrush", anim="operate_right", after={3} },
+		action.create_object {id = 6, name="bridge.fish" },
+		action.animate_once {id=7, after={5}, tag="bridge.troll.body", anim="hold_fish"},
+		action.animate {id=8, after={5}, actor="guybrush", anim="idle_right"},
+		action.say { id= 9, after={7}, actor="bridge.troll", lines={dp[49]}, animstart="talk", animend="idle"},
+		action.walkto { id = 10, actor="guybrush", pos= {211,55}},
+		action.turn { id = 11, actor="guybrush", dir="north"},
+		action.flip {id=12, tag="troll", flip=false},
+		action.animate {id=13, tag="bridge.troll.body", anim="idle_front", after={12} },
+		action.animate {id=14, tag="bridge.troll", anim="look_around", after={12} },
+
+		--action.delay {id = 6, sec=0.5},
+		--action.animate {id=7, after={6}, actor="guybrush", anim="idle_right" },
+		
 
 
 	}

@@ -15,6 +15,7 @@ room = generateBasicRoom (roomInfo)
 
 room:add_asset(sprites["bridge.troll.body"])
 room:add_asset(sprites["bridge.troll.head"])
+room:add_asset(sprites["bridge.fish"])
 
 room:add({
 	{ pos = {0, 0, -3}, components = { { type="gfx", image="gfx/bridge.png" }}},
@@ -30,34 +31,35 @@ room:add({
 			}
       	}
 	},
-	{
-		pos = {134, 20, 0},
-		flipx = true,
-		children = {
-			{
-				name = "body",
-				pos = {0, 0, 0},
-				components = {
-					{ type = "gfx", model = "bridge.troll.body", anim="idle", framehandlers = { { type="pos"}  } }
-				},
-				children = {
-					{
-						tag="bridge.troll",
-						name="head",
-						pos = {0,0,0},
-						components = {
-							{ type="gfx", model="bridge.troll.head", anim="idle" }
-						}
-					}
-				}
+ 	factory.cobject.create { object = "bridge.troll" },
+	-- {
+	-- 	pos = {134, 20, 0},
+	-- 	flipx = true,
+	-- 	children = {
+	-- 		{
+	-- 			name = "body",
+	-- 			pos = {0, 0, 0},
+	-- 			components = {
+	-- 				{ type = "gfx", model = "bridge.troll.body", anim="idle", framehandlers = { { type="pos"}  } }
+	-- 			},
+	-- 			children = {
+	-- 				{
+	-- 					tag="bridge.troll",
+	-- 					name="head",
+	-- 					pos = {0,0,0},
+	-- 					components = {
+	-- 						{ type="gfx", model="bridge.troll.head", anim="idle" }
+	-- 					}
+	-- 				}
+	-- 			}
 
-			}
-		},
-		components = {
-			{ type="depth", depth = roomInfo.depth, scale = roomInfo.scale }
-		}		
+	-- 		}
+	-- 	},
+	-- 	components = {
+	-- 		{ type="depth", depth = roomInfo.depth, scale = roomInfo.scale }
+	-- 	}		
 
-	}
+	-- }
  	--factory.object.create { object = "bridge.troll"},
 	-- factory.trap.create { pos ={90, 0, 0}, tag="bridge_sensor", width=10, height = 144, onenter = 
 	--   	function()			

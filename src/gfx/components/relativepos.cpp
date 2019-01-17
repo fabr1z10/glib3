@@ -17,7 +17,7 @@ void RelativePosHandler::Handle (const std::string& anim, int frame) {
     for (auto& cp : it->second) {
         auto child =  m_entity->GetNamedChild(cp.name);
         if (child != nullptr)
-            child->SetPosition(glm::vec3(cp.offset, 0.0f), cp.angle);
+            child->SetPosition(cp.offset, cp.angle);
     }
 
 }
@@ -38,7 +38,7 @@ void RelativePosHandler::Init(luabridge::LuaRef ref, const std::string& anim, in
         LuaTable t(pos);
         ChildPosition p;
         p.name = t.Get<std::string>("name");
-        p.offset = t.Get<glm::vec2>("offset");
+        p.offset = t.Get<glm::vec3>("offset");
         p.angle = t.Get<float>("angle", 0.0f);
         positions.emplace_back(p);
     }

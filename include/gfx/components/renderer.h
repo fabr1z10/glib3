@@ -39,7 +39,7 @@ public:
     void SetFrame (int);
     void AddFrameChangeHandler (std::unique_ptr<IFrameChangeHandler>);
 private:
-
+    const AnimInfo* m_currentAnim;
     //bool m_flipX;
     glm::mat4 m_renderingTransform;
     std::shared_ptr<IMesh> m_mesh;

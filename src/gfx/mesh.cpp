@@ -22,19 +22,9 @@ void IMesh::Draw(Shader* shader, const std::string& anim, int frame) {
 }
 
 
-int IMesh::FrameCount(const std::string& anim) const {
-    if (m_animInfo.empty()) return 1;
-    // if the mesh has only one animation, just
-    auto it = m_animInfo.find(anim);
-    if (it == m_animInfo.end())
-        GLIB_FAIL ("Don't know animation: " << anim);
-    return it->second.size();
-}
-
-float IMesh::GetDuration(const std::string& anim, int frame) const {
-    if (m_animInfo.empty()) return 1.0f;
-    auto it = m_animInfo.find(anim);
-    if (it == m_animInfo.end())
-        GLIB_FAIL ("Don't know animation: " << anim);
-    return it->second[frame].duration;
+const AnimInfo& IMesh::GetAnimInfo(const std::string& id) {
+    if (m_animInfo.count(id) == 0) {
+        GLIB_FAIL("Unknown animation " << id);
+    }
+    return m_animInfo.at(id);
 }

@@ -14,6 +14,7 @@ std::unique_ptr<IMesh> SpriteFactory::Create (luabridge::LuaRef& ref) {
         luabridge::LuaRef a = an[i+1];
         LuaTable at (a);
         animation.name = at.Get<std::string>("name");
+        animation.loop = at.Get<bool>("loop", true);
         luabridge::LuaRef fr = at.Get<luabridge::LuaRef>("frames");
         for (int j = 0; j < fr.length(); ++j) {
             luabridge::LuaRef a2 = fr[j+1];

@@ -28,6 +28,33 @@ struct FrameInfo {
     float duration;
 };
 
+struct AnimInfo {
+public:
+    AnimInfo (bool loop) : loop(loop) {}
+    size_t getFrameCount () const {
+        return frameInfo.size();
+    }
+    bool isLoop() const {
+        return loop;
+    }
+    void AddFrameInfo(FrameInfo& f) {
+        frameInfo.emplace_back(f);
+    }
+    int getCount(int frame) const {
+        return frameInfo[frame].count;
+    }
+    int getOffset(int frame) const {
+        return frameInfo[frame].offset;
+    }
+    float getDuration (int frame) const {
+        return frameInfo[frame].duration;
+    }
+private:
+    bool loop;
+    std::vector<FrameInfo> frameInfo;
+
+};
+
 // abstract class for mesh
 class IMesh {
 public:
@@ -39,10 +66,12 @@ public:
     GLuint GetNumberOfVertices() { return m_nvertices; }
     /// get the number of animations in the mesh
     int AnimationCount() const;
+
+    const AnimInfo& GetAnimInfo(const std::string&);
     /// get the number of frames int the given animation
-    int FrameCount(const std::string& anim) const;
+    //int FrameCount(const std::string& anim) const;
     /// get the duration of a given frame of a given animation
-    float GetDuration(const std::string& anim, int frame) const;
+    //float GetDuration(const std::string& anim, int frame) const;
     bool HasAnimation(const std::string& anim) {
         return m_animInfo.find(anim) != m_animInfo.end();
     }
@@ -51,10 +80,7 @@ public:
     virtual Bounds3D GetBounds() { return m_bounds; }
     virtual int UpdateFrame(int anim, int frame, float time) { return frame; }
     virtual void Draw(Shader*, const std::string&, int frame = 0);
-    void SetCount(GLsizei);
-    void SetOffset(GLint);
-    void SetMask(unsigned int);
-    unsigned int GetMask() const;
+
     GLenum m_primitive;
     const glm::mat4& GetLocalTransform() const;
     void SetScope(int);
@@ -68,7 +94,7 @@ protected:
     glm::mat4 m_localTransform;
     int m_scope;
     //int m_animations;
-    std::unordered_map <std::string, std::vector<FrameInfo> > m_animInfo;
+    std::unordered_map <std::string, AnimInfo > m_animInfo;
     std::string m_defaultAnimation;
     std::string m_id;
     Bounds3D m_bounds;
@@ -90,6 +116,7 @@ inline int IMesh::AnimationCount() const { return m_animInfo.size(); }
 inline std::string IMesh::GetId() const {
     return m_id;
 }
+
 
 inline void IMesh::SetId(const std::string& name) {
     m_id = name;

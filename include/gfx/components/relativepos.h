@@ -7,7 +7,7 @@
 
 struct ChildPosition {
     std::string name;
-    glm::vec2 offset;
+    glm::vec3 offset;
     float angle;
 };
 

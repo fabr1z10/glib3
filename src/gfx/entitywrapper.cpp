@@ -237,12 +237,21 @@ void EntityWrapper::SetAnim(const std::string& anim) {
     r->SetAnimation(anim);
 }
 
+void EntityWrapper::SetModel(const std::string& model, const std::string& anim) {
+    Renderer* r = m_underlying->GetComponent<Renderer>();
+    auto mesh = Engine::get().GetAssetManager().GetMesh(model);
+    r->SetMesh(mesh);
+    r->SetAnimation(anim);
+}
 
 bool EntityWrapper::GetFlipX() const {
     return m_underlying->GetFlipX();
 
 }
 
+void EntityWrapper::SetFlipX(bool value) {
+    m_underlying->SetFlipX(value);
+}
 void EntityWrapper::AppendText(luabridge::LuaRef ref) {
     TextView* r = dynamic_cast<TextView*>(m_underlying);
     r->AddItem(ref);

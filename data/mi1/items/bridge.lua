@@ -9,20 +9,34 @@ items["bridge.path"] = {
 	}
 }
 
+items["bridge.fish"] = {
+	pos = {134, 24, 0},
+	flipx = true,
+	tag = "bridge.fish",
+	model = "bridge.fish",
+	anim = "idle"
+}
+
 items["bridge.troll"] = {
-	tag = "bridge.troll",
+	pos = {134, 24, 0},
+	flipx = true,
+	applydepth = true,
+	tag = "troll",
+	tagSpeak = "bridge.troll",
 	text_offset = {0, 60},
     text_color = {0, 170, 0, 255},
+	-- hotspot	
 	text = strings.objects.troll,
-	pos = {134, 24, 0},
 	walk_to = {80, 26},
 	size = {20, 47},
-	offset = {-10,0},
+	offset = {-10, 0},
 	face = "east",
-	model ="bridge.troll",
-	anim ="idle",
-	applydepth = true,
-	flip = true,
+	nodes = {
+		{ name = "body", tag="bridge.troll.body", model = "bridge.troll.body", anim="idle", fh = { { type="pos"}  } },
+		{ name = "head", parent="body", tag="bridge.troll", model = "bridge.troll.head", anim="idle" },
+		{ name ="helditem", parent="body", tag="bridge.troll.item" }
+	},
+
 	talk_script = function()
 		local s = script:new()
 		local dp = strings.dialogues.troll
@@ -36,6 +50,7 @@ items["bridge.troll"] = {
 		}
 		return s
 	end,
+	
 	actions = {
 		give = {}
 	}

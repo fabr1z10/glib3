@@ -11,7 +11,8 @@
 #include <gfx/error.h>
 #include <gfx/entity.h>
 
-Renderer::Renderer() : Component(), m_mesh(nullptr), m_frame(0), m_tint(1.0f), m_renderingTransform(1.0f), m_loopCount{0} {}
+Renderer::Renderer() : Component(), m_mesh(nullptr),
+                       m_frame(0), m_frameTime(0.0), m_tint(1.0f), m_renderingTransform(1.0f), m_loopCount{0}, m_currentAnim(nullptr) {}
 
 void Renderer::Draw(Shader* shader) {
     auto tintLoc = shader->GetUniformLocation(TINT);
@@ -24,9 +25,10 @@ void Renderer::SetFrame(int frame) {
     if (m_frame != frame) {
         m_frame = frame;
         m_frameTime = 0.0;
-        int frames = m_mesh->FrameCount(m_animation);
+
+        size_t frames = m_currentAnim->getFrameCount();
         if (m_frame >= frames) {
-            m_frame = 0;
+            m_frame = m_currentAnim->isLoop() ? 0 : frames-1;
             m_loopCount++;
         }
         for (auto& h : m_frameChangeHandlers) {
@@ -36,9 +38,9 @@ void Renderer::SetFrame(int frame) {
 }
 
 void Renderer::Update(double dt) {
-    if (m_mesh != nullptr) {
+    if (m_currentAnim != nullptr) {
         m_frameTime += dt;
-        float duration = m_mesh->GetDuration(m_animation, m_frame);
+        float duration = m_currentAnim->getDuration(m_frame);
         if (m_frameTime >= duration) {
             SetFrame(m_frame + 1);
         }
@@ -54,6 +56,7 @@ void Renderer::SetAnimation(const std::string& anim) {
     }
     m_animation = anim;
     SetFrame (0);
+    m_currentAnim = &m_mesh->GetAnimInfo(m_animation);
     m_loopCount = 0;
 }
 
