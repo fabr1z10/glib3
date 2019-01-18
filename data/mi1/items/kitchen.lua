@@ -247,6 +247,10 @@ items["kitchen.fish"].actions.give["bridge.troll"] = function()
 		action.flip {id=12, tag="troll", flip=false},
 		action.animate {id=13, tag="bridge.troll.body", anim="idle_front", after={12} },
 		action.animate {id=14, tag="bridge.troll", anim="look_around", after={12} },
+		action.delay {id=15, sec=2},
+		action.animate {id=16, tag="bridge.troll.body", anim="eat_s1", after={15} },
+		action.animate {id=17, tag="bridge.troll", anim="look_front", after={15} },
+
 
 		--action.delay {id = 6, sec=0.5},
 		--action.animate {id=7, after={6}, actor="guybrush", anim="idle_right" },
