@@ -42,7 +42,10 @@ void Renderer::Update(double dt) {
         m_frameTime += dt;
         float duration = m_currentAnim->getDuration(m_frame);
         if (m_frameTime >= duration) {
+
+            float dx = m_frameTime-duration;
             SetFrame(m_frame + 1);
+            m_frameTime=dx;
         }
     }
 }
