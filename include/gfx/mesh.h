@@ -89,6 +89,7 @@ public:
     std::string GetDefaultAnimation() const { return m_defaultAnimation; }
     std::string GetId() const;
     void SetId(const std::string&);
+    const std::unordered_map <std::string, AnimInfo >& GetAnimInfo() const;
 protected:
     ShaderType m_shaderType;
     glm::mat4 m_localTransform;
@@ -116,7 +117,9 @@ inline int IMesh::AnimationCount() const { return m_animInfo.size(); }
 inline std::string IMesh::GetId() const {
     return m_id;
 }
-
+inline const std::unordered_map <std::string, AnimInfo >& IMesh::GetAnimInfo() const {
+    return m_animInfo;
+};
 
 inline void IMesh::SetId(const std::string& name) {
     m_id = name;

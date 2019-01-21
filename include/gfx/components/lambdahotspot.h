@@ -25,8 +25,8 @@ public:
         if (m_onLeave)
             m_onLeave();
     }
-    void onClick(glm::vec2 p) override {
-        if (m_onClick)
+    void onClick(glm::vec2 p, int button, int action, int mods) override {
+        if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS && m_onClick)
             m_onClick(p);
     }
     void onMove(glm::vec2 p) override{

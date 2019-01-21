@@ -26,8 +26,9 @@ public:
     void SetParent(Entity*) override;
     virtual void onEnter() = 0;
     virtual void onLeave() = 0;
-    virtual void onClick(glm::vec2) = 0;
+    virtual void onClick(glm::vec2, int button, int action, int mods) = 0;
     virtual void onMove(glm::vec2) = 0;
+    virtual void onScroll(float, float) {}
     int GetGroup() const;
     int GetPriority() const;
     using ParentClass = HotSpot;
@@ -64,7 +65,7 @@ public:
     //void Start() override ;
     //void Update (double dt) override ;
     void CursorPosCallback(GLFWwindow*, double, double) override;
-    void ScrollCallback(GLFWwindow*, double, double) override {}
+    void ScrollCallback(GLFWwindow*, double, double) override;
     void MouseButtonCallback(GLFWwindow*, int, int, int) override;
     void Enable(bool) override;
     void Update(double) override {}

@@ -9,9 +9,8 @@ void ScriptHotSpot::onLeave() {
     if (r_leave != nullptr)
         r_leave->operator()(EntityWrapper(m_entity));
 }
-void ScriptHotSpot::onClick(glm::vec2) {
-    std::cout << "CLICK ON SCRIPTHS\n";
-    if (r_click != nullptr)
+void ScriptHotSpot::onClick(glm::vec2, int button, int action, int mods) {
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS && r_click != nullptr)
         r_click->operator()(EntityWrapper(m_entity));
 }
 void ScriptHotSpot::onMove(glm::vec2 p) {

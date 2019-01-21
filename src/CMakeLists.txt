@@ -8,4 +8,4 @@ add_subdirectory(monkey)
 add_subdirectory(platformer)
 add_subdirectory(xml)
 add_subdirectory(phy)
-
+add_subdirectory(spriteview)

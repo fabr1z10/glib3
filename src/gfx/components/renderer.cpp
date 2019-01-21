@@ -27,7 +27,9 @@ void Renderer::SetFrame(int frame) {
         m_frameTime = 0.0;
 
         size_t frames = m_currentAnim->getFrameCount();
-        if (m_frame >= frames) {
+        if (m_frame < 0) {
+            m_frame = frames-1;
+        } else if (m_frame >= frames) {
             m_frame = m_currentAnim->isLoop() ? 0 : frames-1;
             m_loopCount++;
         }

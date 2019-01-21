@@ -12,7 +12,7 @@ public:
             int priority) : HotSpot(shape, priority), r_enter{nullptr},
     r_leave{nullptr}, r_click{}{}
     void onLeave() override;
-    void onClick(glm::vec2) override;
+    void onClick(glm::vec2, int, int, int) override;
     void onEnter() override;
     void onMove(glm::vec2) override;
     void SetOnEnter(luabridge::LuaRef ref) {

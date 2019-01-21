@@ -45,6 +45,12 @@ HotSpotManager::HotSpotManager() : Runner(), MouseListener(), m_active{true}, m_
 //    return true;
 //}
 
+void HotSpotManager::ScrollCallback(GLFWwindow*, double x, double y) {
+    if (m_currentlyActiveHotSpot != nullptr && m_currentlyActiveHotSpot->GetObject()->IsActive()) {
+        m_currentlyActiveHotSpot->onScroll(x, y);
+    }
+}
+
 // if I remove the hotspot currently active I get sigsegv!
 void HotSpotManager::CursorPosCallback(GLFWwindow*, double x, double y) {
 
@@ -189,15 +195,8 @@ void HotSpotManager::CursorPosCallback(GLFWwindow*, double x, double y) {
 
 
 void HotSpotManager::MouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
-    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
-    {
-        if (m_currentlyActiveHotSpot != nullptr && m_currentlyActiveHotSpot->GetObject()->IsActive()) {
-            //uble x, y ;
-            //fwGetCursorPos(window, &x, &y);
-            m_currentlyActiveHotSpot->onClick(m_worldCoordinates);
-        }
-
-
+    if (m_currentlyActiveHotSpot != nullptr && m_currentlyActiveHotSpot->GetObject()->IsActive()) {
+        m_currentlyActiveHotSpot->onClick(m_worldCoordinates, button, action, mods);
     }
 
 }
