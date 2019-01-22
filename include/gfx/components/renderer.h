@@ -31,9 +31,9 @@ public:
     void SetTint(glm::vec4 c);
     ShaderType GetShaderType() const { return (m_mesh == nullptr ? ShaderType::NONE : m_mesh->GetShaderType()); }
     using ParentClass = Renderer;
-    void SetScale(float);
+    //void SetScale(float);
     const glm::mat4& GetRenderingTransform() const;
-    void SetRenderingTransform (glm::mat4 m);
+    //void SetRenderingTransform (glm::mat4 m);
     int GetLoopCount() const;
     int GetFrame() const;
     void SetFrame (int);
@@ -41,7 +41,7 @@ public:
 private:
     const AnimInfo* m_currentAnim;
     //bool m_flipX;
-    glm::mat4 m_renderingTransform;
+    //glm::mat4 m_renderingTransform;
     std::shared_ptr<IMesh> m_mesh;
     //bool m_visible;
     std::string m_animation;
@@ -59,12 +59,9 @@ inline std::string Renderer::GetAnimation() const {
 
 
 inline const glm::mat4& Renderer::GetRenderingTransform() const{
-    return m_renderingTransform;
+    return m_mesh->GetLocalTransform();
 }
 
-inline void Renderer::SetRenderingTransform (glm::mat4 m) {
-    m_renderingTransform = m;
-}
 
 inline Bounds3D Renderer::GetBounds() const {
     return m_mesh->GetBounds();

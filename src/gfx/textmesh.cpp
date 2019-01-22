@@ -2,6 +2,7 @@
 #include <gfx/textmesh.h>
 #include <sstream>
 #include <gfx/shader.h>
+#include <glm/gtc/matrix_transform.hpp>
 #include <unordered_set>
 
 using namespace std;
@@ -86,7 +87,8 @@ void TextMesh::UpdateText(const std::string& msg, float maxLineWidth) {
         }
         y -= m_fontSize;
     }
-
+    glm::vec2 offset = getOffset();
+     m_localTransform = glm::translate(glm::mat4(1.0f), glm::vec3(offset.x, offset.y, 0.0f));
     //m_width = xMax - xMin;
     //m_height = yMax - yMin;
     //m_topLeft = glm::vec2 (xMin, yMax);
@@ -184,7 +186,8 @@ glm::vec2 TextMesh::getOffset() {
     glm::vec2 offset(0.0f);
     switch (m_align) {
         case BOTTOM_LEFT:
-            offset = - glm::vec2(m_bounds.min.x, m_bounds.min.y);
+            offset = glm::vec2(0.0f, getNumberOfLines()*m_fontSize);
+            //offset = glm::vec2(0.0f, 4.0f);
             break;
         case BOTTOM_RIGHT:
             offset = - glm::vec2(m_bounds.max.x, m_bounds.min.y);
@@ -193,7 +196,7 @@ glm::vec2 TextMesh::getOffset() {
             offset = -glm::vec2(0.5f * (m_bounds.min.x + m_bounds.max.x), m_bounds.min.y);
             break;
         case TOP_LEFT:
-            offset = -glm::vec2(m_bounds.min.x, m_bounds.max.y);
+            offset = glm::vec2(0.0f, 0.0f);
             break;
         case TOP_RIGHT:
             offset = -glm::vec2(m_bounds.max.x, m_bounds.max.y);

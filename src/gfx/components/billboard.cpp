@@ -30,7 +30,8 @@ void Billboard::Update(double) {
     rt[2][2] = up.z;
     auto wt2 = m_entity->GetWorldTransform();
     //std::cout << " x = " << wt2[3][0] <<", " << wt2[3][1] << ", " << wt2[3][2] << "\n";
-    m_renderer->SetRenderingTransform(rt);
+    // PLUG THIS BACK IN !!!
+    //m_renderer->SetRenderingTransform(rt);
 //    glm::mat4 m = (m_cam->m_viewMatrix);
 //    glm::mat3 rotMat(m);
 //    glm::vec3 d(m[3]);

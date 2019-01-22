@@ -31,7 +31,7 @@ void ShowMessage::Start() {
         renderer->SetMesh(mesh);
         entity->SetPosition(glm::vec3(outlineOffsets[i] * 0.5f, i == 0 ? 0 : -1));
         renderer->SetTint(i==0 ? m_color : m_outlineColor);
-        renderer->SetRenderingTransform(glm::translate(glm::vec3(offset, 0.0f)));
+        //renderer->SetRenderingTransform(glm::translate(glm::vec3(offset, 0.0f)));
         entity->AddComponent(renderer);
         parent->AddChild(entity);
     }

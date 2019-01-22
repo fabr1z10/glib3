@@ -3,6 +3,7 @@
 #include <spriteview/mousecontrol.h>
 #include <gfx/entity.h>
 #include <iostream>
+#include <gfx/math/geom.h>
 #include <gfx/engine.h>
 #include <gfx/components/renderer.h>
 
@@ -21,6 +22,9 @@ void ViewerController::onMove(glm::vec2 pos) {
         double deltaY =(pos.y - m_yPrev);
         std::cout << "delta of " << deltaX << ", " << deltaY << "\n";
         glm::vec3 d = m_cam->GetPosition()+ glm::vec3(static_cast<float>(deltaX), static_cast<float>(deltaY), 0.0f);
+        d.x = Clamp(d.x, -400+size.x*0.5f,400-size.x*0.5f);
+        d.y = Clamp(d.y, -300+size.y*0.5f,300-size.y*0.5f);
+
         m_cam->SetPosition(d,glm::vec3(0,0,-1));
         m_xPrev = pos.x;
         m_yPrev = pos.y;
@@ -136,12 +140,21 @@ void ViewerController::onScroll(float x, float y) {
     glm::vec3 cp = m_cam->GetPosition();
     glm::vec2 camPos(cp);
     glm::vec2 newPos = camPos +0.1f*(pp-camPos);
-    m_cam->SetPosition(glm::vec3(newPos, cp.z), glm::vec3(0,0,-1));
     glm::vec2 size = m_cam->getOrthoSize();
     if (y< 0)
         size *= 1.1f;
     else
         size /= 1.1f;
-    m_cam->setOrthoSize(size.x, size.y);
+    int w = std::min(800, static_cast<int>(size.x+0.5f));
+    int h = std::min(600, static_cast<int>(size.y+0.5f));
+    int d = std::min(w, h);
+    m_cam->setOrthoSize(d, d);
+    float x1 = static_cast<int>(newPos.x) + (d % 2 == 1 ? 0.5f : 0.0f);
+    float y1 = static_cast<int>(newPos.y)+ (d % 2 == 1 ? 0.5f : 0.0f);
+    x1 = Clamp(x1, -400+d*0.5f,400-d*0.5f);
+    y1 = Clamp(y1, -300+d*0.5f,300-d*0.5f);
+    std::cout << "setting w= "<< w << ", h= " << h<<" x = " << x1 << ", y = " << y1 << "\n";
+    m_cam->SetPosition(glm::vec3(x1, y1, cp.z), glm::vec3(0,0,-1));
+
 }
 ////

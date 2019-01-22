@@ -53,8 +53,8 @@ std::unique_ptr<Component> TextComponentFactory::Create(luabridge::LuaRef &ref) 
     color /= 255.0f;
     Font* f = Engine::get().GetAssetManager().GetFont(font);
     auto mesh = std::make_shared<TextMesh>(f, text, size, align, maxWidth);
-    glm::vec2 offset = mesh->getOffset();
-    renderer->SetRenderingTransform(glm::translate(glm::vec3(offset, 0.0f)));
+    //glm::vec2 offset = mesh->getOffset();
+    //renderer->SetRenderingTransform(glm::translate(glm::vec3(offset, 0.0f)));
     renderer->SetTint(color);
     renderer->SetMesh(mesh);
     return std::move(renderer);
@@ -95,7 +95,7 @@ std::unique_ptr<Component> GfxComponentFactory::Create(luabridge::LuaRef & ref) 
     } else if (table.HasKey("model")) {
         std::string model = table.Get<std::string>("model");
         std::string anim = table.Get<std::string>("anim", "");
-        bool flip = table.Get<bool>("flip", false);
+        //bool flip = table.Get<bool>("flip", false);
         renderer->SetMesh(Engine::get().GetAssetManager().GetMesh(model));
         //renderer->SetFlipX(flip);
         //renderer->SetRenderingTransform(glm::scale(glm::vec3(0.1f))*glm::rotate(90.0f, glm::vec3(1.0f,0.0f,0.0f)));
@@ -126,10 +126,10 @@ std::unique_ptr<Component> GfxComponentFactory::Create(luabridge::LuaRef & ref) 
         auto mesh = std::make_shared<QuadMesh>(image, height, width, size, data, sheetSize.x, sheetSize.y);
         renderer->SetMesh(mesh);
     }
-    if (table.HasKey("scale")) {
-        float scale = table.Get<float>("scale");
-        renderer->SetScale(scale);
-    }
+//    if (table.HasKey("scale")) {
+//        float scale = table.Get<float>("scale");
+//        renderer->SetScale(scale);
+//    }
     return std::move(renderer);
 }
 

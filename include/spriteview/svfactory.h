@@ -10,6 +10,8 @@ public:
     SpriteViewFactory();
     std::shared_ptr<Entity> Create() override;
     void PostInit() override {}
+    void CleanUp () override {}
+
     void LoadModel (const std::string& model);
 private:
     Entity* m_mainNode;

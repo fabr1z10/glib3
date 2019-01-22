@@ -105,8 +105,8 @@ void EntityWrapper::SetText(const std::string& text) {
     Renderer* r = m_underlying->GetComponent<Renderer>();
     auto tm = dynamic_cast<TextMesh*>(r->GetMesh());
     tm->UpdateText(text);
-    glm::vec2 offset = tm->getOffset();
-    r->SetRenderingTransform(glm::translate(glm::vec3(offset, 0.0f)));
+    // glm::vec2 offset = tm->getOffset();
+    //r->SetRenderingTransform(glm::translate(glm::vec3(offset, 0.0f)));
 }
 
 void EntityWrapper::EnableUpdate(bool value) {

@@ -12,7 +12,7 @@
 #include <gfx/entity.h>
 
 Renderer::Renderer() : Component(), m_mesh(nullptr),
-                       m_frame(0), m_frameTime(0.0), m_tint(1.0f), m_renderingTransform(1.0f), m_loopCount{0}, m_currentAnim(nullptr) {}
+                       m_frame(0), m_frameTime(0.0), m_tint(1.0f), m_loopCount{0}, m_currentAnim(nullptr) {}
 
 void Renderer::Draw(Shader* shader) {
     auto tintLoc = shader->GetUniformLocation(TINT);
@@ -65,13 +65,13 @@ void Renderer::SetAnimation(const std::string& anim) {
     m_loopCount = 0;
 }
 
-void Renderer::SetScale(float scale) {
-    if (m_renderingTransform[0][0]<0)
-        scale = -scale;
-    m_renderingTransform[0][0] = scale;
-    m_renderingTransform[1][1] = fabs(scale);
-    m_renderingTransform[2][2] = fabs(scale);
-}
+//void Renderer::SetScale(float scale) {
+//    if (m_renderingTransform[0][0]<0)
+//        scale = -scale;
+//    m_renderingTransform[0][0] = scale;
+//    m_renderingTransform[1][1] = fabs(scale);
+//    m_renderingTransform[2][2] = fabs(scale);
+//}
 
 void Renderer::SetParent(Entity *parent) {
     Component::SetParent(parent);

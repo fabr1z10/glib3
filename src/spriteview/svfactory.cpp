@@ -9,6 +9,7 @@
 #include <spriteview/mousecontrol.h>
 #include <gfx/lua/luatable.h>
 #include <gfx/components/hotspot.h>
+#include <gfx/entities/listview.h>
 
 SpriteViewFactory::SpriteViewFactory() {
 
@@ -74,7 +75,7 @@ void SpriteViewFactory::LoadModel (const std::string& model) {
     rend->SetMesh(mesh);
     rend->SetAnimation(anim);
     node->AddComponent(rend);
-    node->SetTag("model");
+
     m->AddChild(node);
 }
 
@@ -120,8 +121,8 @@ std::shared_ptr<Entity> SpriteViewFactory::Create() {
     node_xAxis->AddComponent(renderer);
     mainNode->AddChild(node_xAxis);
     mainNode->AddChild(GenerateGrid(-400,400,-300,300));
-    auto p = std::make_shared<Entity>();
-    auto pr = std::make_shared<Renderer>();
+    //auto p = std::make_shared<Entity>();
+    //auto pr = std::make_shared<Renderer>();
 
     luabridge::LuaRef s = luabridge::getGlobal(LuaWrapper::L, "sprites");
     auto lt = LuaTable::getKeyValueMap(s);
@@ -130,11 +131,28 @@ std::shared_ptr<Entity> SpriteViewFactory::Create() {
 
 
     auto font = Engine::get().GetAssetManager().GetFont("main");
-    auto tm = std::make_shared<TextMesh>(font, it->first, 8.0f, TextAlignment::BOTTOM_LEFT);
-    pr->SetMesh(tm);
-    p->AddComponent(pr);
+    // auto tm = std::make_shared<TextMesh>(font, it->first, 8.0f, TextAlignment::BOTTOM_LEFT);
+    //pr->SetMesh(tm);
+    //p->AddComponent(pr);
 
-    uiNode->AddChild(p);
+    //uiNode->AddChild(p);
+    auto lv = std::make_shared<ListView>(200.0f, 300.0f, "main", 8.0f, glm::vec4(1.0f), glm::vec4(0.2f, 0.0f, 0.0f, 1.0f));
+    lv->SetOnClick([&] (const std::string& c) {
+        std::cout << "Selected: " << c << std::endl;
+        LoadModel(c);
+        auto mesh = Engine::get().GetAssetManager().GetMesh(c);
+        const auto& m = mesh->GetAnimInfo();
+        for (const auto& a : m) {
+            std::cout << a.first << "\n";
+        }
+
+    });
+    lv->SetPosition(glm::vec3(-400.0f, 0.0f, 1.0f));
+    for (auto& a : lt) {
+        lv->AddItem(a.second["id"].cast<std::string>());
+    }
+
+    uiNode->AddChild(lv);
 
     node->AddChild(panelNode);
     node->AddChild(mainNode);
@@ -144,7 +162,7 @@ std::shared_ptr<Entity> SpriteViewFactory::Create() {
     mnode->SetTag("model");
     mainNode->AddChild(mnode);
 
-    LoadModel("potostew");
+    //LoadModel("potostew");
 
     return node;
 }
