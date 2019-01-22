@@ -142,8 +142,12 @@ std::shared_ptr<Entity> SpriteViewFactory::Create() {
         LoadModel(c);
         auto mesh = Engine::get().GetAssetManager().GetMesh(c);
         const auto& m = mesh->GetAnimInfo();
+        m_animList->Clear();
         for (const auto& a : m) {
-            std::cout << a.first << "\n";
+
+            m_animList->AddItem(a.first);
+            //std::cout << a.first << "\n";
+
         }
 
     });
@@ -152,7 +156,15 @@ std::shared_ptr<Entity> SpriteViewFactory::Create() {
         lv->AddItem(a.second["id"].cast<std::string>());
     }
 
+    auto animView = std::make_shared<ListView>(200.0f, 150.0f, "main", 8.0f, glm::vec4(1.0f), glm::vec4(0.3f, 0.0f, 0.0f, 1.0f));
+    animView->SetOnClick([&] (const std::string& c) {
+        std::cout << "Selected: " << c << std::endl;
+    });
+    animView->SetPosition(glm::vec3(-400.0f, -150.0f, 1.0f));
+
     uiNode->AddChild(lv);
+    uiNode->AddChild(animView);
+    m_animList = animView.get();
 
     node->AddChild(panelNode);
     node->AddChild(mainNode);

@@ -72,6 +72,11 @@ void ListView::AddItem(const std::string& text) {
 
 }
 
+void ListView::Clear() {
+    m_items.clear();
+    Repaint();
+}
+
 void ListView::Repaint() {
     ClearAllChildren();
     m_visibleItems.clear();

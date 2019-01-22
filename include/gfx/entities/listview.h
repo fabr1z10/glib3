@@ -13,6 +13,8 @@ public:
     void setBackgroundColor (glm::vec4);
     void setTextColor (glm::vec4);
     void AddItem (const std::string& txt);
+    void Clear();
+
     int ItemCount() const;
     void Repaint();
     void SetOnClick (std::function<void(const std::string)> f);
