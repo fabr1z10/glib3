@@ -30,6 +30,7 @@ public:
 
     void Start();
 
+    void Load();
 
 private:
     std::string m_dir;

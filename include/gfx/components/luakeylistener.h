@@ -13,8 +13,8 @@ public:
     using ParentClass = LuaKeyListener;
     void Start() override {}
     void Update(double) override {}
-    void Enable(bool) override;
-    void EnableKey(int, bool) override;
+    //void Enable(bool) override;
+    //void EnableKey(int, bool) override;
 private:
     struct KeyInfo {
         bool active;
@@ -24,8 +24,8 @@ private:
     std::unordered_map<int, KeyInfo> m_hotkeys;
 };
 
-inline void LuaKeyListener::Enable(bool value) {
-    for (auto& p : m_hotkeys)
-        p.second.active = value;
-
-}
+//inline void LuaKeyListener::Enable(bool value) {
+//    for (auto& p : m_hotkeys)
+//        p.second.active = value;
+//
+//}

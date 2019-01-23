@@ -10,6 +10,7 @@
 #include <gfx/shader.h>
 #include <gfx/error.h>
 #include <gfx/entity.h>
+#include <iostream>
 
 Renderer::Renderer() : Component(), m_mesh(nullptr),
                        m_frame(0), m_frameTime(0.0), m_tint(1.0f), m_loopCount{0}, m_currentAnim(nullptr) {}
@@ -19,6 +20,19 @@ void Renderer::Draw(Shader* shader) {
     if (tintLoc != -1)
         glUniform4fv(tintLoc, 1, &m_tint[0]);
     m_mesh->Draw(shader, m_animation, m_frame);
+}
+
+void Renderer::AdvanceFrame(int m) {
+    m_frame += m;
+    int n = m_currentAnim->getFrameCount();
+    if (m_frame >= n) {
+        m_frame = 0;
+    } else if (m_frame < 0) {
+
+        m_frame = n-1;
+    }
+    std::cout << "new frame; " << m_frame << "\n";
+
 }
 
 void Renderer::SetFrame(int frame) {

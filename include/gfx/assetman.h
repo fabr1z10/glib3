@@ -18,9 +18,10 @@ public:
     luabridge::LuaRef GetMeshInfo (const std::string& name);
     void AddMeshInfo (const std::string& name, luabridge::LuaRef);
     std::shared_ptr<IMesh> GetMesh(const std::string& name) const;
-
     void SetDirectory(const std::string&);
     std::string GetDirectory() const;
+    void Clear();
+
 private:
     std::unordered_map<std::string, std::unique_ptr<Font>> m_fonts;
     std::unordered_map<std::string, std::unique_ptr<Tex>> m_textures;

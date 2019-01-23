@@ -76,3 +76,8 @@ luabridge::LuaRef AssetManager::GetMeshInfo (const std::string& name) {
 void AssetManager::AddMeshInfo (const std::string& name, luabridge::LuaRef ref) {
     m_meshAddInfo.insert(std::make_pair(name, ref));
 }
+
+void AssetManager::Clear() {
+    m_meshes.clear();
+    m_textures.clear();
+}

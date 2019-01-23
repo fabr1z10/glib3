@@ -29,6 +29,7 @@ public:
     virtual void onClick(glm::vec2, int button, int action, int mods) = 0;
     virtual void onMove(glm::vec2) = 0;
     virtual void onScroll(float, float) {}
+    virtual bool onKeyEvent (const KeyEvent&) {}
     int GetGroup() const;
     int GetPriority() const;
     using ParentClass = HotSpot;
@@ -59,7 +60,7 @@ inline int HotSpot::GetPriority() const {
 // so when mouse moves, I just need to call one function and not one func for every hotspot.
 // Each hotspoot registers to the hotspot handler at startup and it has a group id. For each group,
 // only one hotspot can be active at any given time.
-class HotSpotManager : public Runner, public MouseListener {
+class HotSpotManager : public Runner, public MouseListener, public KeyboardListener {
 public:
     HotSpotManager();
     //void Start() override ;
@@ -74,6 +75,8 @@ public:
     //void AddGroup (int, const std::string& camId);
     //bool IsInViewport(float xScreen, float yScreen, glm::vec4 activeViewport);
     void NotifyHotSpotDestructor(HotSpot*);
+    void KeyCallback(GLFWwindow*, int, int, int, int) override;
+
     //void EnableGroup(int);
     //void DisableGroup(int);
     using ParentClass = HotSpotManager;

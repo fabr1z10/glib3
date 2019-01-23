@@ -37,6 +37,7 @@ public:
     int GetLoopCount() const;
     int GetFrame() const;
     void SetFrame (int);
+    void AdvanceFrame(int);
     void AddFrameChangeHandler (std::unique_ptr<IFrameChangeHandler>);
 private:
     const AnimInfo* m_currentAnim;

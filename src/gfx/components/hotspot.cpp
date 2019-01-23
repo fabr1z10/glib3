@@ -201,6 +201,21 @@ void HotSpotManager::MouseButtonCallback(GLFWwindow* window, int button, int act
 
 }
 
+void HotSpotManager::KeyCallback(GLFWwindow *, int key, int scancode, int action, int mods) {
+    // if a hotspot is focused, send the event
+    KeyEvent k {key, action, mods};
+    bool handled = false;
+    if (m_currentlyActiveHotSpot != nullptr) {
+        handled = m_currentlyActiveHotSpot->onKeyEvent(k);
+    }
+    if (!handled) {
+        auto it = m_callbacks.find(k);
+        if (it != m_callbacks.end())
+            it->second();
+    }
+
+}
+
 
 void HotSpot::SetParent(Entity * entity) {
     Component::SetParent(entity);

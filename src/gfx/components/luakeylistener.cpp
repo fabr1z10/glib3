@@ -19,9 +19,9 @@ void LuaKeyListener::KeyCallback(GLFWwindow* window, int key, int scancode, int 
     }
 }
 
-void LuaKeyListener::EnableKey(int key, bool active) {
-    auto it = m_hotkeys.find(key);
-    if (it == m_hotkeys.end())
-        return;
-    it->second.active = active;
-}
+//void LuaKeyListener::EnableKey(int key, bool active) {
+//    auto it = m_hotkeys.find(key);
+//    if (it == m_hotkeys.end())
+//        return;
+//    it->second.active = active;
+//}

@@ -11,9 +11,9 @@ public:
     void Start() override;
     void Update(double) override {}
     void KeyCallback(GLFWwindow*, int, int, int, int) override;
-    void Enable(bool) override {}
+    //void Enable(bool) override {}
     // enable specific keys
-    void EnableKey(int, bool) override {}
+    //void EnableKey(int, bool) override {}
     using ParentClass = KeyInput;
 private:
     int m_maxLength;

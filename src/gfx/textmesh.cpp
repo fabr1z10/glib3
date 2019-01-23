@@ -190,7 +190,8 @@ glm::vec2 TextMesh::getOffset() {
             //offset = glm::vec2(0.0f, 4.0f);
             break;
         case BOTTOM_RIGHT:
-            offset = - glm::vec2(m_bounds.max.x, m_bounds.min.y);
+            offset = glm::vec2(-m_bounds.max.x, getNumberOfLines()*m_fontSize);
+            //offset = - glm::vec2(m_bounds.max.x, m_bounds.min.y);
             break;
         case BOTTOM:
             offset = -glm::vec2(0.5f * (m_bounds.min.x + m_bounds.max.x), m_bounds.min.y);

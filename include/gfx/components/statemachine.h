@@ -90,9 +90,9 @@ public:
 
     // listener
     void KeyCallback(GLFWwindow *, int, int, int, int) override;
-    void Enable(bool) override {}
+    // void Enable(bool) override {}
     // enable specific keys
-    void EnableKey(int, bool) override {}
+    //void EnableKey(int, bool) override {}
     void AddKey(const std::string& currentState, int key, bool press, std::unique_ptr<StateEvent>);
     std::type_index GetType() override;
 private:

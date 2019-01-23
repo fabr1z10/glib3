@@ -10,10 +10,13 @@
 #include <gfx/lua/luatable.h>
 #include <gfx/components/hotspot.h>
 #include <gfx/entities/listview.h>
+#include <spriteview/sv.h>
 
-SpriteViewFactory::SpriteViewFactory() {
+SpriteViewFactory::SpriteViewFactory() : m_animate(true) {
+    LoadAssets();
+}
 
-
+void SpriteViewFactory::LoadAssets() {
     // read assets
     luabridge::LuaRef refSprites = luabridge::getGlobal(LuaWrapper::L, "sprites");
     auto smap = LuaTable::getKeyValueMap(refSprites);
@@ -23,10 +26,30 @@ SpriteViewFactory::SpriteViewFactory() {
         Engine::get().GetAssetManager().AddMesh(k.first, asset);
 
     }
+}
+std::shared_ptr<Entity> SpriteViewFactory::GenerateAxis(int xFrom, int xTo, int yFrom, int yTo) {
 
-
+    auto nodeAxis = std::make_shared<Entity>();
+    Line l(glm::vec2(xFrom, yFrom), glm::vec2(xTo, yTo));
+    auto mesh = MeshFactory::CreateMesh(l, 0.0f, glm::vec4(128.0f, 0.0f, 0.0f, 255.0f));
+    auto renderer = std::make_shared<Renderer>();
+    renderer->SetMesh(mesh);
+    nodeAxis->AddComponent(renderer);
+    return nodeAxis;
 }
 
+std::shared_ptr<Entity> SpriteViewFactory::GenerateText(float x, float y, const std::string& text, float size, TextAlignment align){
+    auto p = std::make_shared<Entity>();
+    p->SetPosition(glm::vec3(x, y, 0.0f));
+    auto pr = std::make_shared<Renderer>();
+    auto font = Engine::get().GetAssetManager().GetFont("main");
+
+    auto tm = std::make_shared<TextMesh>(font, text, size, align, 0.0f);
+    pr->SetMesh(tm);
+    p->AddComponent(pr);
+    return p;
+
+}
 
 
 std::shared_ptr<Entity> SpriteViewFactory::GenerateGrid(int xFrom, int xTo, int yFrom, int yTo) {
@@ -62,25 +85,100 @@ std::shared_ptr<Entity> SpriteViewFactory::GenerateGrid(int xFrom, int xTo, int 
 
 }
 
-void SpriteViewFactory::LoadModel (const std::string& model) {
+void SpriteViewFactory::ChangeAnim (const std::string& anim) {
+    m_renderer->SetAnimation(anim);
+    m_labelAnimName->UpdateText(anim);
+}
+
+void SpriteViewFactory::LoadModel (const std::string& model, const std::string& anim) {
     auto m = Engine::get().GetRef<Entity>("model");
     m->ClearAllChildren();
 
-    auto mesh = Engine::get().GetAssetManager().GetMesh(model);
-    const auto& k = mesh->GetAnimInfo();
-    std::string anim = k.begin()->first;
+    m_currentMesh = Engine::get().GetAssetManager().GetMesh(model);
+    const auto& ai = m_currentMesh->GetAnimInfo();
+    m_animList->Clear();
+    for (const auto& a : ai) {
+        m_animList->AddItem(a.first);
+    }
+
+    std::string a = anim.empty() ? ai.begin()->first : anim;
     auto node = std::make_shared<Entity>();
     auto rend = std::make_shared<Renderer>();
-
-    rend->SetMesh(mesh);
-    rend->SetAnimation(anim);
+    rend->SetMesh(m_currentMesh);
+    rend->SetAnimation(a);
     node->AddComponent(rend);
-
+    m_renderer = rend.get();
     m->AddChild(node);
+    m_currentMeshName = model;
+    m_labelModelName->UpdateText(model);
+    m_labelAnimName->UpdateText(a);
+    m_currentAnimation = a;
+    m_currentFrame = 0;
+}
+
+void SpriteViewFactory::Reload() {
+    m_modelList->Clear();
+    m_animList->Clear();
+
+    luabridge::LuaRef s = luabridge::getGlobal(LuaWrapper::L, "sprites");
+    auto lt = LuaTable::getKeyValueMap(s);
+    auto it = lt.begin();
+    for (auto& a : lt) {
+        m_modelList->AddItem(a.second["id"].cast<std::string>());
+    }
+
+    if (!m_currentMeshName.empty()) {
+        int frame =m_currentFrame;
+        LoadModel(m_currentMeshName, m_currentAnimation);
+        m_renderer->GetObject()->SetEnableUpdate(m_animate);
+        m_renderer->SetFrame(frame);
+    }
 }
 
 std::shared_ptr<Entity> SpriteViewFactory::Create() {
-    Engine::get().AddRunner(std::make_shared<HotSpotManager>());
+
+    auto hm = std::make_shared<HotSpotManager>();
+    hm->AddCallback(KeyEvent{GLFW_KEY_0, GLFW_PRESS, 0}, [] () { std::cout << "Pressed 0\n"; });
+
+    // toggle animation
+    hm->AddCallback(KeyEvent{GLFW_KEY_1, GLFW_PRESS, 0}, [&] () {
+        m_animate = !m_animate;
+        auto obj = m_renderer->GetObject();
+        obj->SetEnableUpdate(m_animate);
+        if (!m_animate) {
+            m_currentFrame = m_renderer->GetFrame();
+
+        }
+    });
+
+    // advance frame (only works when animate == false)
+    hm->AddCallback(KeyEvent{GLFW_KEY_W, GLFW_PRESS, 0}, [&] () {
+        if (!m_animate) {
+            m_renderer->AdvanceFrame(1);
+            m_currentFrame = m_renderer->GetFrame();
+            m_labelCurrentFrame->UpdateText(std::to_string(m_currentFrame));
+        }
+    });
+
+    // go back one frame (only works when animate == false)
+    hm->AddCallback(KeyEvent{GLFW_KEY_Q, GLFW_PRESS, 0}, [&] () {
+        if (!m_animate) {
+            m_renderer->AdvanceFrame(-1);
+            m_currentFrame = m_renderer->GetFrame();
+            m_labelCurrentFrame->UpdateText(std::to_string(m_currentFrame));        }
+    });
+
+    // reload data
+    hm->AddCallback(KeyEvent{GLFW_KEY_F10, GLFW_PRESS, 0}, [&] () {
+        auto m = Engine::get().GetRef<Entity>("model");
+        m->ClearAllChildren();
+        SpriteView::get().Load();
+        LoadAssets();
+        Reload();
+
+
+    });
+    Engine::get().AddRunner(hm);
     auto node = std::make_shared<Entity>();
 
     float camWidth = 600;
@@ -113,52 +211,32 @@ std::shared_ptr<Entity> SpriteViewFactory::Create() {
     uiNode->SetCamera(uiCam);
 
     // x-axis
-    auto node_xAxis = std::make_shared<Entity>();
-    Line l(glm::vec2(-10,0), glm::vec2(10, 0));
-    auto mesh = MeshFactory::CreateMesh(l, 0.0f, glm::vec4(128.0f, 0.0f, 0.0f, 255.0f));
-    auto renderer = std::make_shared<Renderer>();
-    renderer->SetMesh(mesh);
-    node_xAxis->AddComponent(renderer);
-    mainNode->AddChild(node_xAxis);
+    mainNode->AddChild(GenerateAxis(-400,400,0,0));
+    mainNode->AddChild(GenerateAxis(0,0,-300,300));
     mainNode->AddChild(GenerateGrid(-400,400,-300,300));
     //auto p = std::make_shared<Entity>();
     //auto pr = std::make_shared<Renderer>();
 
-    luabridge::LuaRef s = luabridge::getGlobal(LuaWrapper::L, "sprites");
-    auto lt = LuaTable::getKeyValueMap(s);
-    auto it = lt.begin();
+
 
 
 
     auto font = Engine::get().GetAssetManager().GetFont("main");
-    // auto tm = std::make_shared<TextMesh>(font, it->first, 8.0f, TextAlignment::BOTTOM_LEFT);
-    //pr->SetMesh(tm);
-    //p->AddComponent(pr);
 
-    //uiNode->AddChild(p);
     auto lv = std::make_shared<ListView>(200.0f, 300.0f, "main", 8.0f, glm::vec4(1.0f), glm::vec4(0.2f, 0.0f, 0.0f, 1.0f));
     lv->SetOnClick([&] (const std::string& c) {
         std::cout << "Selected: " << c << std::endl;
         LoadModel(c);
         auto mesh = Engine::get().GetAssetManager().GetMesh(c);
-        const auto& m = mesh->GetAnimInfo();
-        m_animList->Clear();
-        for (const auto& a : m) {
 
-            m_animList->AddItem(a.first);
-            //std::cout << a.first << "\n";
-
-        }
 
     });
     lv->SetPosition(glm::vec3(-400.0f, 0.0f, 1.0f));
-    for (auto& a : lt) {
-        lv->AddItem(a.second["id"].cast<std::string>());
-    }
+    m_modelList = lv.get();
 
     auto animView = std::make_shared<ListView>(200.0f, 150.0f, "main", 8.0f, glm::vec4(1.0f), glm::vec4(0.3f, 0.0f, 0.0f, 1.0f));
     animView->SetOnClick([&] (const std::string& c) {
-        std::cout << "Selected: " << c << std::endl;
+        ChangeAnim(c);
     });
     animView->SetPosition(glm::vec3(-400.0f, -150.0f, 1.0f));
 
@@ -172,9 +250,21 @@ std::shared_ptr<Entity> SpriteViewFactory::Create() {
 
     auto mnode = std::make_shared<Entity>();
     mnode->SetTag("model");
+
     mainNode->AddChild(mnode);
-
+    uiNode->AddChild(GenerateText(-400, -158, "model", 8, BOTTOM_LEFT));
+    uiNode->AddChild(GenerateText(-400, -158-8, "anim", 8, BOTTOM_LEFT));
+    uiNode->AddChild(GenerateText(-400, -158-16, "frame", 8, BOTTOM_LEFT));
+    auto labelModel =GenerateText(-200, -158, "-", 8, BOTTOM_RIGHT);
+    auto labelAnim =GenerateText(-200, -158-8, "-", 8, BOTTOM_RIGHT);
+    auto labelFrame =GenerateText(-200, -158-16, "-", 8, BOTTOM_RIGHT);
+    uiNode->AddChild(labelModel);
+    uiNode->AddChild(labelAnim);
+    uiNode->AddChild(labelFrame);
+    m_labelModelName = dynamic_cast<TextMesh*>(labelModel->GetComponent<Renderer>()->GetMesh());
+    m_labelAnimName = dynamic_cast<TextMesh*>(labelAnim->GetComponent<Renderer>()->GetMesh());
+    m_labelCurrentFrame = dynamic_cast<TextMesh*>(labelFrame->GetComponent<Renderer>()->GetMesh());
     //LoadModel("potostew");
-
+    Reload();
     return node;
 }
