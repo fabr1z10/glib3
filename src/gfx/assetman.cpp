@@ -81,3 +81,19 @@ void AssetManager::Clear() {
     m_meshes.clear();
     m_textures.clear();
 }
+
+void AssetManager::AddModel (const std::string& name, std::shared_ptr<Model> model) {
+    m_models.insert(std::make_pair(name, model));
+}
+
+void AssetManager::RemoveModel (const std::string& name) {
+    m_models.erase(name);
+}
+
+std::shared_ptr<Model> AssetManager::GetModel (const std::string& name) const {
+    auto it = m_models.find(name);
+    if (it == m_models.end()) {
+        GLIB_FAIL("Unknown model: " << name);
+    }
+    return it->second;
+}

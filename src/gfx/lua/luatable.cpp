@@ -48,3 +48,11 @@ std::unordered_map<int, luabridge::LuaRef> LuaTable::getIntValueMap(const luabri
     lua_pop(L, 1); // pop table
     return result;
 }
+
+void lua_loop_array (luabridge::LuaRef ref, std::function<void(const LuaTable&)> f) {
+    for (int i = 0; i < ref.length(); ++i) {
+        luabridge::LuaRef r = ref[i+1];
+        LuaTable table(r);
+        f(table);
+    }
+}

@@ -10,6 +10,7 @@ SceneFactory::SceneFactory() {
     m_runnerFactory.Add<HotSpotManagerFactory>("hotspotmanager");
 
     m_meshFactory.Add<SpriteFactory>("sprite");
+    m_modelFactory.Add<ModelFactory>("model");
 
     m_entityFactory.Add<EntityFactory>("default");
     m_entityFactory.Add<TextViewFactory>("textview");
@@ -122,6 +123,10 @@ std::unique_ptr<IMesh> SceneFactory::Get<IMesh> (luabridge::LuaRef& ref) {
     return m_meshFactory.Create(ref);
 }
 
+template <>
+std::unique_ptr<Model> SceneFactory::Get<Model> (luabridge::LuaRef& ref) {
+    return m_modelFactory.Create(ref);
+}
 
 std::shared_ptr<Entity> SceneFactory::Create() {
 

@@ -29,6 +29,15 @@ void SpriteViewFactory::LoadAssets() {
         Engine::get().GetAssetManager().AddMesh(k.first, asset);
 
     }
+
+    luabridge::LuaRef refModels = luabridge::getGlobal(LuaWrapper::L, "models");
+    auto mmap = LuaTable::getKeyValueMap(refModels);
+    for (auto& k : mmap) {
+        luabridge::LuaRef a = k.second;
+        auto model = GetShared<Model>(a);
+        Engine::get().GetAssetManager().AddModel(model->GetName(), model);
+    }
+
 }
 std::shared_ptr<Entity> SpriteViewFactory::GenerateAxis(int xFrom, int xTo, int yFrom, int yTo) {
 

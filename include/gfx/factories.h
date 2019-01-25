@@ -13,6 +13,7 @@ class Runner;
 class State;
 class Activity;
 class IMesh;
+class Model;
 class IFrameChangeHandler;
 
 #define FACTORY(name, type) \
@@ -100,6 +101,7 @@ FACTORY(KillScriptActFactory, Activity)
 
 // Asset
 FACTORY(SpriteFactory, IMesh)
+FACTORY(ModelFactory, Model)
 
 // States
 FACTORY(AnimInitializerFactory, StateInitializer)

@@ -1,6 +1,24 @@
 #include <gfx/factories.h>
 #include <gfx/spritemesh.h>
 #include <gfx/assetman.h>
+#include <gfx/model.h>
+
+std::unique_ptr<Model> ModelFactory::Create (luabridge::LuaRef& ref) {
+
+    LuaTable t(ref);
+    std::unique_ptr<Model> model(new Model);
+    std::string id = t.Get<std::string>("id");
+    luabridge::LuaRef comps = t.Get<luabridge::LuaRef>("components");
+    lua_loop_array(comps, [&model] (const LuaTable& table) {
+        ModelComponent component;
+        component.name = table.Get<std::string>("name");
+        component.parent = table.Get<std::string>("parent", "");
+        component.mesh = table.Get<std::string>("mesh");
+        component.pos = table.Get<glm::vec3>("pos", glm::vec3(0.0f));
+        model->AddComponent(component);
+    });
+    return model;
+}
 
 std::unique_ptr<IMesh> SpriteFactory::Create (luabridge::LuaRef& ref) {
 
@@ -42,6 +60,6 @@ std::unique_ptr<IMesh> SpriteFactory::Create (luabridge::LuaRef& ref) {
     }
     auto mesh = std::unique_ptr<SpriteMesh>(new SpriteMesh(ppu, sheetName, anims));
 
-    return std::move(mesh);
+    return mesh;
 }
 

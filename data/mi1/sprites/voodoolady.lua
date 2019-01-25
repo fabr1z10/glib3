@@ -11,6 +11,15 @@ sprites["voodoolady.door"] = {
     }
 }
 
+models["voodoolady"] = {
+	id ="voodoolady",
+	type="model",
+	components = {
+		{ name="body", mesh="voodoolady.body" },
+		{ name="head", mesh="voodoolady.head", pos = {0, 20, 0} }
+	}
+}
+
 sprites["voodoolady.body"] = {
 	id = "voodoolady.body",
 	sheet = "gfx/anims.png",

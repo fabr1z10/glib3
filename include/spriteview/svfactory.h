@@ -19,6 +19,7 @@ public:
     }
 private:
     std::string m_text;
+    std::string m_type;
 };
 
 struct Item2 {
