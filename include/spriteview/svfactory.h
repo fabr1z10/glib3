@@ -1,11 +1,37 @@
 #pragma once
 
 #include <gfx/scenefactory.h>
+#include <gfx/entities/listview.h>
+#include <gfx/entities/treeview.h>
 
 class Entity;
-class ListView;
 class IMesh;
 class TextMesh;
+
+class Item {
+public:
+    Item (const std::string& s) : m_text(s) {}
+    std::string GetText() const {
+        return m_text;
+    }
+    bool operator<(const Item& other) const {
+        return m_text < other.m_text;
+    }
+private:
+    std::string m_text;
+};
+
+struct Item2 {
+    int key;
+    int parentKey;
+    std::string text;
+    std::string GetText() const {
+        return text;
+    }
+    static int rootKey;
+
+};
+
 
 class SpriteViewFactory : public SceneFactory {
 public:
@@ -20,8 +46,8 @@ public:
     void LoadAssets();
 private:
     Entity* m_mainNode;
-    ListView* m_animList;
-    ListView* m_modelList;
+    TreeView<Item2>* m_animList;
+    ListView<Item>* m_modelList;
     std::shared_ptr<IMesh> m_currentMesh;
     Renderer* m_renderer;
     std::shared_ptr<Entity> GenerateGrid(int xFrom, int xTo, int yFrom, int yTo);

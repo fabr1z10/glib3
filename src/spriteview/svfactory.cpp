@@ -10,7 +10,10 @@
 #include <gfx/lua/luatable.h>
 #include <gfx/components/hotspot.h>
 #include <gfx/entities/listview.h>
+#include <gfx/entities/treeview.h>
 #include <spriteview/sv.h>
+
+int Item2::rootKey = 0;
 
 SpriteViewFactory::SpriteViewFactory() : m_animate(true) {
     LoadAssets();
@@ -85,6 +88,7 @@ std::shared_ptr<Entity> SpriteViewFactory::GenerateGrid(int xFrom, int xTo, int 
 
 }
 
+
 void SpriteViewFactory::ChangeAnim (const std::string& anim) {
     m_renderer->SetAnimation(anim);
     m_labelAnimName->UpdateText(anim);
@@ -93,14 +97,26 @@ void SpriteViewFactory::ChangeAnim (const std::string& anim) {
 void SpriteViewFactory::LoadModel (const std::string& model, const std::string& anim) {
     auto m = Engine::get().GetRef<Entity>("model");
     m->ClearAllChildren();
-
+    m_animList->Clear();
     m_currentMesh = Engine::get().GetAssetManager().GetMesh(model);
     const auto& ai = m_currentMesh->GetAnimInfo();
-    m_animList->Clear();
+    // m_animList->Clear();
+    int modelKey = 1;
+    int key = modelKey+1;
+    Item2 item;
+    item.key = modelKey;
+    item.parentKey = Item2::rootKey;
+    item.text = model;
+    m_animList->AddItem(item);
     for (const auto& a : ai) {
-        m_animList->AddItem(a.first);
+        Item2 item;
+        item.key = key++;
+        item.parentKey = modelKey;
+        item.text = a.first;
+        m_animList->AddItem(item);
     }
-
+    m_animList->Repaint();
+    return;
     std::string a = anim.empty() ? ai.begin()->first : anim;
     auto node = std::make_shared<Entity>();
     auto rend = std::make_shared<Renderer>();
@@ -117,16 +133,18 @@ void SpriteViewFactory::LoadModel (const std::string& model, const std::string& 
 }
 
 void SpriteViewFactory::Reload() {
+    // AAA
     m_modelList->Clear();
-    m_animList->Clear();
+    // m_animList->Clear();
 
     luabridge::LuaRef s = luabridge::getGlobal(LuaWrapper::L, "sprites");
     auto lt = LuaTable::getKeyValueMap(s);
     auto it = lt.begin();
     for (auto& a : lt) {
-        m_modelList->AddItem(a.second["id"].cast<std::string>());
+        // AAA
+         m_modelList->AddItem(a.second["id"].cast<std::string>());
     }
-
+    m_modelList->Repaint();
     if (!m_currentMeshName.empty()) {
         int frame =m_currentFrame;
         LoadModel(m_currentMeshName, m_currentAnimation);
@@ -223,26 +241,32 @@ std::shared_ptr<Entity> SpriteViewFactory::Create() {
 
     auto font = Engine::get().GetAssetManager().GetFont("main");
 
-    auto lv = std::make_shared<ListView>(200.0f, 300.0f, "main", 8.0f, glm::vec4(1.0f), glm::vec4(0.2f, 0.0f, 0.0f, 1.0f));
-    lv->SetOnClick([&] (const std::string& c) {
-        std::cout << "Selected: " << c << std::endl;
-        LoadModel(c);
-        auto mesh = Engine::get().GetAssetManager().GetMesh(c);
 
 
+    auto lv = std::make_shared<ListView<Item>>(200.0f, 300.0f, "main", 8.0f, color::WHITE, Color(64, 0, 0));
+    lv->SetOnClick([&] (const Item& c) {
+        std::string name = c.GetText();
+        std::cout << "Selected: " << name << std::endl;
+        LoadModel(name);
     });
     lv->SetPosition(glm::vec3(-400.0f, 0.0f, 1.0f));
     m_modelList = lv.get();
-
-    auto animView = std::make_shared<ListView>(200.0f, 150.0f, "main", 8.0f, glm::vec4(1.0f), glm::vec4(0.3f, 0.0f, 0.0f, 1.0f));
-    animView->SetOnClick([&] (const std::string& c) {
-        ChangeAnim(c);
-    });
-    animView->SetPosition(glm::vec3(-400.0f, -150.0f, 1.0f));
-
     uiNode->AddChild(lv);
-    uiNode->AddChild(animView);
-    m_animList = animView.get();
+
+    auto tv = std::make_shared<TreeView<Item2>>(200.0f, 150.0f, "main", 8.0f, color::WHITE, Color(32, 0, 0));
+    tv->SetPosition(glm::vec3(-400.0f, -150.0f, 1.0f));
+    m_animList = tv.get();
+    uiNode->AddChild(tv);
+//
+//    auto animView = std::make_shared<ListView>(200.0f, 150.0f, "main", 8.0f, glm::vec4(1.0f), glm::vec4(0.3f, 0.0f, 0.0f, 1.0f));
+//    animView->SetOnClick([&] (const std::string& c) {
+//        ChangeAnim(c);
+//    });
+
+//
+
+
+    // m_animList = animView.get();
 
     node->AddChild(panelNode);
     node->AddChild(mainNode);

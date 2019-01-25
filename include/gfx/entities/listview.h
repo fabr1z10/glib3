@@ -1,47 +1,76 @@
 #pragma once
 
-#include <gfx/entity.h>
-#include <gfx/font.h>
-#include <set>
-#include <functional>
+#include <gfx/entities/alistview.h>
+#include <gfx/textmesh.h>
 
 class Renderer;
 
-class ListView : public Entity {
+template <typename T>
+class ListView : public AbstractListView<T>  {
 public:
-    ListView (float width, float height, const std::string& fontName, float size, glm::vec4 textColor = glm::vec4(1.0f), glm::vec4 bgColor = glm::vec4(0.0f));
-    void setBackgroundColor (glm::vec4);
-    void setTextColor (glm::vec4);
-    void AddItem (const std::string& txt);
-    void Clear();
+    ListView (
+        float width,
+        float height,
+        const std::string& fontName,
+        float size,
+        const Color& textColor = color::WHITE,
+        const Color& bgColor = color::BLACK) : AbstractListView<T>(width, height, fontName, size, textColor, bgColor)
+    {
 
-    int ItemCount() const;
-    void Repaint();
-    void SetOnClick (std::function<void(const std::string)> f);
-    void onMouseMove (glm::vec2 pos);
-    void onMouseScroll(float x, float y);
+    }
+
+    void AddItem(const T& item) override {
+        m_items.insert(item);
+    }
+
+    void Clear() override  {
+        m_items.clear();
+        this->m_visibleItems.clear();
+        this->m_firstVisibleItem = 0;
+        Repaint();
+    }
+
+//    int MaxVisibleItemsCount() override {
+//        return m_items.size();
+//    }
+
+    void Repaint() override {
+        this->ClearAllChildren();
+        this->m_visibleItems.clear();
+        this->m_scrollDownAllowed = false;
+        float y = this->m_height - this->m_fontSize;
+        int itemNumber = 0;
+        auto iter = m_items.begin();
+        for (int i = 0; i < this->m_firstVisibleItem; ++i)
+            ++iter;
+        int row = 0;
+        for (int i = 0; i <= this->m_maxVisibleItems; ++i) {
+            if (iter == m_items.end()) {
+                break;
+            }
+            if (row >= this->m_maxVisibleItems) {
+                this->m_scrollDownAllowed = true;
+                break;
+            }
+            auto node = std::make_shared<Entity>();
+            auto tm = std::make_shared<TextMesh>(this->m_font, iter->GetText(), this->m_fontSize, TextAlignment::BOTTOM_LEFT, 0.0f);
+            auto rend = std::make_shared<Renderer>();
+            rend->SetMesh(tm);
+            node->AddComponent(rend);
+            node->SetPosition(glm::vec3(0.0f, y, 1.0f));
+            this->AddChild(node);
+            const T& c = *iter;
+            typename AbstractListView<T>::VisibleItem vi {&c, rend.get()};
+            this->m_visibleItems.push_back(vi);
+            y-= this->m_fontSize;
+            iter++;
+            row++;
+        }
+    }
+
 private:
-    struct Data {
-        Renderer* renderer;
-        std::string value;
-    };
-
-    float m_width;
-    float m_height;
-    glm::vec4 m_backgroundColor;
-    glm::vec4 m_textColor;
-    float m_fontSize;
-    Font* m_font;
-    std::set<std::string> m_items;
-    int m_focusedItem;
-    std::vector<Data> m_visibleItems;
-    int m_firstVisibleItem;
-    int m_maxItems;
-    std::function<void(const std::string&)> m_onClick;
+    std::set<T> m_items;
 
 };
 
-inline void ListView::SetOnClick (std::function<void(const std::string)> f) {
-    m_onClick = f;
-}
 
