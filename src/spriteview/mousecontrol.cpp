@@ -14,9 +14,11 @@ void ViewerController::Start() {
 }
 
 void ViewerController::onMove(glm::vec2 pos) {
-
+    glm::vec3 camPos=  m_cam->GetPosition();
+    std::cout << "cam pos = " << camPos.x << ", " << camPos.y << "\n";
     if (m_lmbPressed) {
         glm::vec2 size = m_cam->getOrthoSize();
+
 
         double deltaX =(pos.x - m_xPrev);
         double deltaY =(pos.y - m_yPrev);

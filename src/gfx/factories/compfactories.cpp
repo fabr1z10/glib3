@@ -68,19 +68,7 @@ std::unique_ptr<Component> GfxComponentFactory::Create(luabridge::LuaRef & ref) 
     LuaTable table(ref);
 
     auto renderer = std::unique_ptr<Renderer>(new Renderer);
-    if (table.HasKey("framehandlers")) {
-        luabridge::LuaRef fh = table.Get<luabridge::LuaRef>("framehandlers");
-        for (int i = 0; i< fh.length(); ++i) {
-            luabridge::LuaRef fhandler = fh[i+1];
-            std::string type = fhandler["type"].cast<std::string>();
-            if (type == "pos")
-            {
-                RelativePosFrameHandler r;
 
-                renderer->AddFrameChangeHandler(r.Create(fhandler));
-            }
-        }
-    }
 
 
     if (table.HasKey("image")) {
@@ -92,15 +80,15 @@ std::unique_ptr<Component> GfxComponentFactory::Create(luabridge::LuaRef & ref) 
         glm::vec2 offset = table.Get<glm::vec2>("offset", glm::vec2(0.0f));
         auto mesh = std::make_shared<QuadMesh>(image, w, h, repeat.x, repeat.y, skew.x, skew.y, offset);
         renderer->SetMesh(mesh);
-    } else if (table.HasKey("model")) {
-        std::string model = table.Get<std::string>("model");
-        std::string anim = table.Get<std::string>("anim", "");
-        //bool flip = table.Get<bool>("flip", false);
-        renderer->SetMesh(Engine::get().GetAssetManager().GetMesh(model));
-        //renderer->SetFlipX(flip);
-        //renderer->SetRenderingTransform(glm::scale(glm::vec3(0.1f))*glm::rotate(90.0f, glm::vec3(1.0f,0.0f,0.0f)));
-        //renderer->SetScale(0.1f);
-        renderer->SetAnimation(anim);
+//    } else if (table.HasKey("model")) {
+//        std::string model = table.Get<std::string>("model");
+//        std::string anim = table.Get<std::string>("anim", "");
+//        //bool flip = table.Get<bool>("flip", false);
+//        renderer->SetMesh(Engine::get().GetAssetManager().GetMesh(model));
+//        //renderer->SetFlipX(flip);
+//        //renderer->SetRenderingTransform(glm::scale(glm::vec3(0.1f))*glm::rotate(90.0f, glm::vec3(1.0f,0.0f,0.0f)));
+//        //renderer->SetScale(0.1f);
+//        renderer->SetAnimation(anim);
     } else if (table.HasKey("shape")) {
         luabridge::LuaRef sref = table.Get<luabridge::LuaRef>("shape");
         std::string draw = table.Get<std::string>("draw","outline");
@@ -170,11 +158,11 @@ std::unique_ptr<Component> Gfx3DComponentFactory::Create(luabridge::LuaRef & ref
         } else {
             std::string image = table.Get<std::string>("image");
             std::string plane = table.Get<std::string>("plane", "xy");
-            Plane p = (plane == "xy") ? Plane::XY : Plane::XZ;
+            //Plane p = (plane == "xy") ? Plane::XY : Plane::XZ;
             glm::vec2 repeat = table.Get<glm::vec2>("rep", glm::vec2(1.0f, 1.0f));
             glm::vec2 skew = table.Get<glm::vec2>("skew", glm::vec2(0.0f, 0.0f));
             glm::vec2 offset = table.Get<glm::vec2>("offset", glm::vec2(0.0f));
-            auto mesh = std::make_shared<QuadMesh>(image, width, depth, repeat.x, repeat.y, skew.x, skew.y, offset, p);
+            auto mesh = std::make_shared<QuadMesh>(image, width, depth, repeat.x, repeat.y, skew.x, skew.y, offset);
             renderer->SetMesh(mesh);
         }
     }
@@ -471,13 +459,13 @@ std::unique_ptr<Component> CursorComponentFactory::Create(luabridge::LuaRef& ref
 
 }
 
-std::unique_ptr<Component> RaycastControllerComponentFactory::Create(luabridge::LuaRef& ref) {
-    LuaTable table(ref);
-
-    std::string heightMap = table.Get<std::string>("heightmap", "");
-    return std::unique_ptr<Component>(new RaycastController(heightMap));
-
-}
+//std::unique_ptr<Component> RaycastControllerComponentFactory::Create(luabridge::LuaRef& ref) {
+//    LuaTable table(ref);
+//
+//    std::string heightMap = table.Get<std::string>("heightmap", "");
+//    return std::unique_ptr<Component>(new RaycastController(heightMap));
+//
+//}
 
 //
 //void HotSpotComponentFactory::operator() (luabridge::LuaRef& ref, Entity* parent) {

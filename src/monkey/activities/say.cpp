@@ -4,6 +4,7 @@
 #include <gfx/activities/animate.h>
 #include <gfx/activities/showmessage.h>
 
+
 void Say::Start() {
 
     auto actor = Engine::get().GetRef<Entity>(m_actorId);

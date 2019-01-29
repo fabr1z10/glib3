@@ -17,7 +17,7 @@ public:
     Bounds getBounds() const;
     int getNumberOfLines() const;
     glm::vec2 getOffset();
-    virtual void Setup(Shader*, const std::string&, int);
+    void Setup(Shader*) override;
 private:
     std::string m_text;
     float m_fontSize;

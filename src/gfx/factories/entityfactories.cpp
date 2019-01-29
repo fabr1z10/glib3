@@ -81,7 +81,7 @@ std::unique_ptr<Entity> ButtonFactory::Create(luabridge::LuaRef &ref) {
         parent->SetPosition(pos);
     }
 
-
+    return parent;
 
 }
 
@@ -146,17 +146,17 @@ std::unique_ptr<Entity> TextViewFactory::Create(luabridge::LuaRef &ref) {
 
 }
 
-std::unique_ptr<Entity> HeightMapFactory::Create(luabridge::LuaRef& ref) {
-    LuaTable table(ref);
-    std::string tag = table.Get<std::string>("tag", "");
-    std::string tex = table.Get<std::string>("image");
-    std::string texture = table.Get<std::string>("texture");
-
-    glm::vec2 size = table.Get<glm::vec2>("size");
-    glm::vec2 hb = table.Get<glm::vec2>("height_bounds");
-
-    auto ptr = std::unique_ptr<Entity>(new HeightMap(tex, texture, size.x, size.y, hb.x, hb.y));
-    if (!tag.empty())
-        ptr->SetTag(tag);
-    return std::move(ptr);
-}
+//std::unique_ptr<Entity> HeightMapFactory::Create(luabridge::LuaRef& ref) {
+//    LuaTable table(ref);
+//    std::string tag = table.Get<std::string>("tag", "");
+//    std::string tex = table.Get<std::string>("image");
+//    std::string texture = table.Get<std::string>("texture");
+//
+//    glm::vec2 size = table.Get<glm::vec2>("size");
+//    glm::vec2 hb = table.Get<glm::vec2>("height_bounds");
+//
+//    auto ptr = std::unique_ptr<Entity>(new HeightMap(tex, texture, size.x, size.y, hb.x, hb.y));
+//    if (!tag.empty())
+//        ptr->SetTag(tag);
+//    return std::move(ptr);
+//}

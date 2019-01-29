@@ -4,7 +4,7 @@
 #include <gfx/components/info.h>
 
 class Entity;
-class Renderer;
+class Animator;
 class MultiCollider;
 
 // super basic initializer, just set an animation
@@ -14,7 +14,7 @@ public:
     void Init(Entity* e) override;
     void Start () override;
 protected:
-    Renderer* m_renderer;
+    Animator* m_animator;
     std::string m_anim;
 };
 
@@ -36,7 +36,7 @@ public:
     void Init(Entity* e) override;
     void Start () override;
 private:
-    Renderer* m_renderer;
+    Animator* m_animator;
     LuaInfo * m_info;
     Entity* m_entity;
     MultiCollider* m_collider;

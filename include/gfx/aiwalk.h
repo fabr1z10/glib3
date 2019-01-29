@@ -3,7 +3,7 @@
 #include <gfx/state.h>
 #include <glm/glm.hpp>
 
-class Renderer;
+class Animator;
 
 
 class AIWalk : public StateBehaviour {
@@ -14,7 +14,7 @@ public:
 private:
     Entity* m_entity;
     Entity* m_target;
-    Renderer* m_renderer;
+    Animator* m_animator;
     float m_speed;
     std::string m_targetId;
     glm::vec2 m_offset;

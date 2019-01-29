@@ -3,7 +3,7 @@
 #include <gfx/activity.h>
 #include <gfx/entity.h>
 
-class Renderer;
+class Animator;
 
 class Animate : public Activity {
 public:
@@ -26,7 +26,7 @@ private:
     int m_loop;
     int m_flipX;
     Entity* m_entity;
-    Renderer* m_renderer;
+    Animator* m_animator;
     std::string m_animId;
     std::string m_actorId;
 };

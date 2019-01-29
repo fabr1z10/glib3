@@ -23,7 +23,7 @@ public:
     void Start() override;
     void onEnter() override {}
     void onLeave() override {}
-    void onClick(glm::vec2) override;
+    void onClick(glm::vec2, int button, int action, int mods) override;
     void onMove(glm::vec2) override {}
     //void SetDepthFunction (std::unique_ptr<Function2D> func);
     //void SetScalingFunction (std::unique_ptr<Function2D> func);

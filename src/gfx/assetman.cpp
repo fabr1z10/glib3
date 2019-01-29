@@ -45,23 +45,18 @@ std::string AssetManager::GetDirectory() const {
     return m_directory;
 }
 
-void AssetManager::AddMesh (const std::string& name, std::shared_ptr<IMesh> mesh) {
-    mesh->SetId(name);
-    m_meshes[name] = mesh;
+void AssetManager::AddModel (const std::string& name, std::shared_ptr<IModel> mesh) {
+    m_models.insert(std::make_pair(name, mesh));
 }
 
-void AssetManager::RemoveMesh(const std::string& name){
-    for (auto& m : m_meshes) {
-        std::cout << m.first << ": ";
-        std::cout << m.second->AnimationCount() << "\n";
-    }
-    m_meshes.erase(name);
+void AssetManager::RemoveModel(const std::string& name){
+    m_models.erase(name);
 }
 
-std::shared_ptr<IMesh> AssetManager::GetMesh(const std::string& name) const {
-    auto it = m_meshes.find(name);
-    if (it == m_meshes.end()){
-        GLIB_FAIL("Unknown mesh " << name);
+std::shared_ptr<IModel> AssetManager::GetModel(const std::string& name) const {
+    auto it = m_models.find(name);
+    if (it == m_models.end()){
+        GLIB_FAIL("Unknown model " << name);
     }
     return it->second;
 }
@@ -78,22 +73,6 @@ void AssetManager::AddMeshInfo (const std::string& name, luabridge::LuaRef ref) 
 }
 
 void AssetManager::Clear() {
-    m_meshes.clear();
+    m_models.clear();
     m_textures.clear();
-}
-
-void AssetManager::AddModel (const std::string& name, std::shared_ptr<Model> model) {
-    m_models.insert(std::make_pair(name, model));
-}
-
-void AssetManager::RemoveModel (const std::string& name) {
-    m_models.erase(name);
-}
-
-std::shared_ptr<Model> AssetManager::GetModel (const std::string& name) const {
-    auto it = m_models.find(name);
-    if (it == m_models.end()) {
-        GLIB_FAIL("Unknown model: " << name);
-    }
-    return it->second;
 }

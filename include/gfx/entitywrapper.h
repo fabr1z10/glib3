@@ -30,7 +30,7 @@ struct EntityWrapper {
     void SetVy(float);
     std::string GetTag() const;
     std::string GetState() const;
-    std::string GetAnim() const;
+    luabridge::LuaRef GetAnim() const;
     void SetAnim(const std::string&);
     void SetModel (const std::string&, const std::string&);
     bool GetFlipX() const;

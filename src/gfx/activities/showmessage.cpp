@@ -23,7 +23,6 @@ void ShowMessage::Start() {
     auto parent = std::make_shared<Entity>();
     Font* f = Engine::get().GetAssetManager().GetFont(m_font);
     auto mesh = std::make_shared<TextMesh>(f, m_message, m_size, m_align, 280.0f);
-    glm::vec2 offset = mesh->getOffset();
     glm::vec2 outlineOffsets[] = {{0, 0}, {-1, 0}, {-1,1}, {0, 1}, {1,1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1}};
     for (int i =0; i < 9; ++i) {
         auto entity = std::make_shared<Entity>();

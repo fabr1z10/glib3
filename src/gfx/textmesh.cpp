@@ -7,7 +7,8 @@
 
 using namespace std;
 
-TextMesh::TextMesh(Font* font, const std::string& message, float lineHeight, TextAlignment align, float maxLineWidth) : Mesh<VertexText>(TEXT_SHADER), m_font{font}, m_fontSize{lineHeight}, m_align{align}
+TextMesh::TextMesh(Font* font, const std::string& message, float lineHeight, TextAlignment align, float maxLineWidth) :
+        Mesh<VertexText>(TEXT_SHADER), m_font{font}, m_fontSize{lineHeight}, m_align{align}
 {
     m_primitive = GL_TRIANGLES;
     m_texId = font->getTexId();
@@ -38,7 +39,7 @@ void TextMesh::UpdateText(const std::string& msg, float maxLineWidth) {
 
     // now loop through each line
     float y = -m_fontSize;
-    int letterCount = 0;
+    unsigned int letterCount = 0;
 
     m_bounds.min.x = 1000;
     m_bounds.min.y = 1000;
@@ -64,17 +65,17 @@ void TextMesh::UpdateText(const std::string& msg, float maxLineWidth) {
             float lastX = x + scaledWidth;
 
 
-            vertices.push_back(VertexText(x, yTop, glyph.tx, glyph.ty, 1.0f, 1.0f, 1.0f, 1.0f));
-            vertices.push_back(VertexText(lastX, yTop, glyph.tx + glyph.tw, glyph.ty, 1.0f, 1.0f, 1.0f, 1.0f));
-            vertices.push_back(VertexText(lastX, yBottom, glyph.tx + glyph.tw, glyph.ty + glyph.th, 1.0f, 1.0f, 1.0f, 1.0f));
-            vertices.push_back(VertexText(x, yBottom, glyph.tx, glyph.ty + glyph.th, 1.0f, 1.0f, 1.0f, 1.0f));
+            vertices.emplace_back(VertexText(x, yTop, glyph.tx, glyph.ty, 1.0f, 1.0f, 1.0f, 1.0f));
+            vertices.emplace_back(VertexText(lastX, yTop, glyph.tx + glyph.tw, glyph.ty, 1.0f, 1.0f, 1.0f, 1.0f));
+            vertices.emplace_back(VertexText(lastX, yBottom, glyph.tx + glyph.tw, glyph.ty + glyph.th, 1.0f, 1.0f, 1.0f, 1.0f));
+            vertices.emplace_back(VertexText(x, yBottom, glyph.tx, glyph.ty + glyph.th, 1.0f, 1.0f, 1.0f, 1.0f));
 
             m_bounds.min.x = min(m_bounds.min.x, x);
             m_bounds.max.x = max(m_bounds.max.x, lastX);
             m_bounds.min.y = min(m_bounds.min.y, yBottom);
             m_bounds.max.y = max(m_bounds.max.y, yTop);
 
-            int ix = letterCount * 4;
+            unsigned int ix = letterCount * 4;
             indices.push_back(ix);
             indices.push_back(ix + 1);
             indices.push_back(ix + 3);
@@ -175,7 +176,7 @@ void TextMesh::splitIntoLines(Font* font, const string& msg, vector<string>& lin
 
 }
 
-void TextMesh::Setup(Shader* shader, const std::string&, int) {
+void TextMesh::Setup(Shader* shader) {
     auto texLoc = shader->GetUniformLocation(TEXTURE);
     glUniform1i(texLoc, 0);
     glActiveTexture(GL_TEXTURE0);

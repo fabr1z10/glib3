@@ -16,7 +16,7 @@ models["voodoolady"] = {
 	type="model",
 	components = {
 		{ name="body", mesh="voodoolady.body" },
-		{ name="head", mesh="voodoolady.head", pos = {0, 20, 0} }
+		{ name="head", mesh="voodoolady.voodoolady", pos = {0, 30, 0} }
 	}
 }
 
@@ -54,16 +54,16 @@ sprites["voodoolady.voodoolady"] = 	{
     ppu=1,
     animations = {
         { name = "idle", frames = { 
-			{duration = dt, quads = { { x = 228, y = 175, width = 12, height = 15, anchor = {-20, -30}}}},
+			{duration = dt, quads = { { x = 228, y = 175, width = 12, height = 15, anchor = {-0, -0}}}},
 		}
 			
 		},
         { name = "talk", frames = { 
-			{duration = dt, quads = { { x = 241, y = 175, width = 12, height = 15, anchor = {-20, -30}}}},
-			{duration = dt, quads = { { x = 254, y = 175, width = 12, height = 15, anchor = {-20, -30}}}},
-			{duration = dt, quads = { { x = 228, y = 191, width = 13, height = 15, anchor = {-20, -30}}}},
-			{duration = dt, quads = { { x = 242, y = 191, width = 13, height = 15, anchor = {-20, -30}}}},
-			{duration = dt, quads = { { x = 256, y = 191, width = 12, height = 15, anchor = {-20, -30}}}}
+			{duration = dt, quads = { { x = 241, y = 175, width = 12, height = 15, anchor = {0,0}}}},
+			{duration = dt, quads = { { x = 254, y = 175, width = 12, height = 15, anchor = {0,0}}}},
+			{duration = dt, quads = { { x = 228, y = 191, width = 13, height = 15, anchor = {0,0}}}},
+			{duration = dt, quads = { { x = 242, y = 191, width = 13, height = 15, anchor = {0,0}}}},
+			{duration = dt, quads = { { x = 256, y = 191, width = 12, height = 15, anchor = {0,0}}}}
 		}
 		},
 

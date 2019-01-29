@@ -9,6 +9,7 @@
 #include <gfx/factories.h>
 #include <gfx/components/info.h>
 #include <gfx/components/depth.h>
+#include <gfx/components/animator.h>
 #include <gfx/components/dynamics2d.h>
 
 float EntityWrapper::GetX() const {
@@ -227,21 +228,30 @@ void EntityWrapper::Move(float x, float y, float z) {
     m_underlying->MoveOrigin(glm::vec3(x, y, z));
 }
 
-std::string EntityWrapper::GetAnim() const {
-    Renderer* r = m_underlying->GetComponent<Renderer>();
-    return r->GetAnimation();
+luabridge::LuaRef EntityWrapper::GetAnim() const {
+    //Animator* r = m_underlying->GetComponent<Animator>();
+    //const auto& m = r->GetAnimation();
+    luabridge::LuaRef rr = luabridge::newTable(LuaWrapper::L);
+
+    //for (auto& p : m) {
+      //  rr[p.first] = p.second;
+    //}
+
+    return rr;
 }
 
 void EntityWrapper::SetAnim(const std::string& anim) {
-    Renderer* r = m_underlying->GetComponent<Renderer>();
+    Animator* r = m_underlying->GetComponent<Animator>();
     r->SetAnimation(anim);
 }
 
 void EntityWrapper::SetModel(const std::string& model, const std::string& anim) {
-    Renderer* r = m_underlying->GetComponent<Renderer>();
-    auto mesh = Engine::get().GetAssetManager().GetMesh(model);
-    r->SetMesh(mesh);
-    r->SetAnimation(anim);
+//    Renderer* r = m_underlying->GetComponent<Renderer>();
+//    Animator* a = m_underlying->GetComponent<Animator>();
+//    auto mesh = Engine::get().GetAssetManager().GetMesh(model);
+//    r->SetMesh(mesh);
+//
+//    r->SetAnimation(anim);
 }
 
 bool EntityWrapper::GetFlipX() const {

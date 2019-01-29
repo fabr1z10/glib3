@@ -50,6 +50,7 @@ bool Controller2D::IsFalling(int dir) {
     RayCastHit2D hit = m_collision->Raycast(glm::vec3(rayOrigin, 0.0f), glm::vec2(0.0f, -1.0f), 5.0, 2);
     if (!hit.collide)
         return true;
+    return false;
 }
 
 

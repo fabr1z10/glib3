@@ -107,6 +107,7 @@ public:
     //void SetInputHandler(std::unique_ptr<)
    //void EnableKey(int, bool);
     Keyboard& GetKeyboard();
+    double GetFrameTime() const;
 private:
     friend class Singleton<Engine>;
     Engine() : m_mouseEnabled{true} {}
@@ -145,6 +146,9 @@ private:
     Keyboard m_keyboard;
 };
 
+inline double Engine::GetFrameTime() const {
+    return m_frameTime;
+}
 inline SceneFactory* Engine::GetSceneFactory() {
     return m_sceneFactory.get();
 }

@@ -99,7 +99,7 @@ void Engine::InitGL(const EngineConfig& config) {
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
+    glfwSwapInterval(1);
     std::cout << "OpenGL version " << Mv << "." << mv << std::endl;
 }
 
@@ -153,9 +153,12 @@ void Engine::MainLoop() {
 
         // run the scene
         m_endScene = false;
+        std::cout << "Starting game: time step = " << m_frameTime << "\n";
         while (!glfwWindowShouldClose(window) && !m_endScene) {
             double currentTime = glfwGetTime();
+
             if (currentTime - m_timeLastUpdate >= m_frameTime) {
+                //double t0 = glfwGetTime();
                 m_timeLastUpdate = currentTime;
 
                 // remove all entities scheduled for removal
@@ -188,10 +191,12 @@ void Engine::MainLoop() {
                 m_renderingEngine->Update(m_frameTime);
                 //if (m_collisionEngine != nullptr)
                 //    m_collisionEngine->Update(m_frameTime);
-                glfwSwapBuffers(window);
-                glfwPollEvents();
 
+                //double t1 = glfwGetTime();
+                //std::cout << "frame updated in: " << (t1-t0) << " sec.\n";
             }
+            glfwSwapBuffers(window);
+            glfwPollEvents();
         }
         // remove assets loaded at scene level
         m_sceneFactory->CleanUp();

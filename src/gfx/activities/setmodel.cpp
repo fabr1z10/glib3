@@ -15,9 +15,9 @@ void SetModel::Start() {
         //m_entity->Set
         m_entity->SetFlipX(m_flipX == 2);
     }
-    auto model = Engine::get().GetAssetManager().GetMesh(m_model);
-    m_renderer->SetMesh(model);
-    m_renderer->SetAnimation(m_animId);
+    //auto model = Engine::get().GetAssetManager().GetModel(m_model);
+    //m_renderer->SetMesh(model);
+    //m_renderer->SetAnimation(m_animId);
     SetComplete();
 
 }

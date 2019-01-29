@@ -3,13 +3,12 @@
 #include <gfx/factory.h>
 #include <unordered_set>
 
-class IMesh;
+class IModel;
 class Activity;
 class LuaTable;
 class State;
 class Shape;
 class Camera;
-class Model;
 
 class SceneFactory {
 public:
@@ -36,8 +35,7 @@ public:
     }
     virtual void extendLua() {}
 protected:
-    Factory<IMesh> m_meshFactory;
-    Factory<Model> m_modelFactory;
+    Factory<IModel> m_modelFactory;
     Factory<Camera> m_cameraFactory;
     Factory<Shape> m_shapeFactory;
     Factory<Entity> m_entityFactory;

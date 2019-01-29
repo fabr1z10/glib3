@@ -2,10 +2,12 @@
 #include <gfx/engine.h>
 #include <gfx/renderingengine.h>
 #include <gfx/components/renderer.h>
+#include <gfx/components/animator.h>
 #include <gfx/textmesh.h>
 #include <gfx/components/hotspot.h>
-#include <iostream>
+#include <gfx/spritefactory.h>
 #include <gfx/components/lambdahotspot.h>
+
 
 TextView::TextView (glm::vec2 pos, float width, float height, float fontSize, int lines, luabridge::LuaRef factory) : Entity(),
     m_nLines{0}, m_width{width}, m_height{height}, m_topLine{0}, m_factory(factory), m_maxLines(lines), m_fontSize(fontSize)
@@ -64,7 +66,6 @@ void TextView::AddEntity(luabridge::LuaRef ref) {
         glm::vec2 bottomLeftPos = m_nextPos - glm::vec2(0.0f, m_fontSize*n);
         m_textContainer->AddChild(ptr);
         ptr->SetPosition(bottomLeftPos);
-        auto p = ptr->GetPosition();
         //std::cout << "World pos of " << text << " is " << p.x << ", " << p.y << "\n";
         m_nextPos = bottomLeftPos;
     }
@@ -213,67 +214,47 @@ void TextView::SetActiveInnerCheck(bool value) {
 
 }
 
+
+
 void TextView::AddArrows() {
 
-    auto arrowUp = std::make_shared<Entity>();
-    auto arrowDown = std::make_shared<Entity>();
-//////    auto textItems = std::make_shared<Entity>();
+    auto arrowUpMesh = Engine::get().GetAssetManager().GetModel("arrowup");
+    auto arrowDownMesh = Engine::get().GetAssetManager().GetModel("arrowdown");
+
+    std::shared_ptr<Entity> arrowUp = (std::move(SpriteFactory::Create(arrowUpMesh)));
+    std::shared_ptr<Entity> arrowDown = std::move(SpriteFactory::Create(arrowDownMesh));
+
     arrowUp->SetName("arrowUp");
     arrowDown->SetName("arrowDown");
-//////
-    auto arrowUpMesh = Engine::get().GetAssetManager().GetMesh("arrowup");
-    auto arrowDownMesh = Engine::get().GetAssetManager().GetMesh("arrowdown");
-    auto rend = std::make_shared<Renderer>();
-    auto rendd = std::make_shared<Renderer>();
 
-    rend->SetMesh(arrowUpMesh);
-    rendd->SetMesh(arrowDownMesh);
-    rend->SetAnimation("unselected");
-    rendd->SetAnimation("unselected");
     glm::vec3 auExtents = arrowUpMesh->GetBounds().GetExtents();
     glm::vec3 adExtents = arrowDownMesh->GetBounds().GetExtents();
     m_deltax = auExtents.x;
 
     auto hsu= std::make_shared<LambdaHotSpot>(std::make_shared<Rect>(auExtents[0], auExtents[1]), 1);
     auto hsd= std::make_shared<LambdaHotSpot>(std::make_shared<Rect>(adExtents[0], adExtents[1]), 1);
-    hsu->SetOnEnter( [rend] () { rend->SetAnimation("selected"); });
-    hsu->SetOnLeave( [rend] () { rend->SetAnimation("unselected"); });
-    hsu->SetOnClick( [&] (glm::vec2) { this->IncreaseTopLine(-1); });
-    hsd->SetOnEnter( [rendd] () { rendd->SetAnimation("selected"); });
-    hsd->SetOnLeave( [rendd] () { rendd->SetAnimation("unselected"); });
-    hsd->SetOnClick( [&] (glm::vec2) { this->IncreaseTopLine(1); });
-//////    auto hsu = std::make_shared<TextViewButton>(-1, this, std::make_shared<Rect>(auExtents[0], auExtents[1]), 1);
-//////    auto hsd = std::make_shared<TextViewButton>(1, this, std::make_shared<Rect>(adExtents[0], adExtents[1]), 1);
-//////    m_scrollBarWidth = std::max(auExtents[0], adExtents[0]);
-//////    rend->SetMesh(arrowUpMesh);
-//////    rendd->SetMesh(arrowDownMesh);
-//////    rend->SetAnimation("unselected");
-//////    rendd->SetAnimation("unselected");
-    arrowUp->AddComponent(rend);
-    arrowUp->AddComponent(hsu);
-//////    arrowUp->SetTag("arrup");
-//////    arrowDown->SetTag("arrdw");
+    auto animatorUp = arrowUp->GetComponent<Animator>();
+    auto animatorDown = arrowDown->GetComponent<Animator>();
 
-    arrowDown->AddComponent(rendd);
+
+    hsu->SetOnEnter( [animatorUp] () { animatorUp->SetAnimation("selected"); });
+    hsu->SetOnLeave( [animatorUp] () { animatorUp->SetAnimation("unselected"); });
+    hsu->SetOnClick( [&] (glm::vec2) { this->IncreaseTopLine(-1); });
+    hsd->SetOnEnter( [animatorDown] () { animatorDown->SetAnimation("selected"); });
+    hsd->SetOnLeave( [animatorDown] () { animatorDown->SetAnimation("unselected"); });
+    hsd->SetOnClick( [&] (glm::vec2) { this->IncreaseTopLine(1); });
+    arrowUp->AddComponent(hsu);
     arrowDown->AddComponent(hsd);
-/////    m_arrowHeight = arrowUpMesh->GetBounds().GetExtents().y;
-//////    //glm::vec3 p = m_entity->GetCamera()->GetPosition() - glm::vec3(m_orthoWidth*0.5f, m_orthoHeight*0.5f, 0.0f);
-//////
+
     arrowUp->SetPosition(glm::vec3(0.0f, -arrowUpMesh->GetBounds().GetExtents().y, 1.0f));
     arrowDown->SetPosition(glm::vec3(0.0f, -m_height, 1.0f));
     AddChild(arrowUp);
     AddChild(arrowDown);
-//////    //arrowUp->SetPosition(glm::vec3(p.x, p.y + m_orthoHeight -m_arrowHeight , 1.0f));
-//////   // arrowDown->SetPosition(glm::vec3(p.x, p.y, 1.0f));
-//////    m_entity->/*GetParent()->*/AddChild(arrowUp);
-//////    m_entity->/*etParent()->*/AddChild(arrowDown);
-//////    m_entity->AddChild(textItems);
-//////    arrowUp->SetActive(false);
-//////    arrowDown->SetActive(false);
+
     m_arrowDown = arrowDown.get();
     m_arrowUp = arrowUp.get();
     m_arrowUpSize = auExtents.y;
-//////    m_itemContainer = textItems.get();
+
 }
 
 void TextView::Start() {

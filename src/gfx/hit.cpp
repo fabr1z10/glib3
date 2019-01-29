@@ -20,10 +20,10 @@ void Hit::Init(Entity* e) {
 
 bool Hit::Run(double) {
 
-    if (m_renderer->GetLoopCount() > 0) {
-        m_nextState = "walk";
-        return true;
-    }
+//    if (m_renderer->GetLoopCount() > 0) {
+//        m_nextState = "walk";
+//        return true;
+//    }
     return false;
 }
 
@@ -43,29 +43,30 @@ void HitCollision::ResetState() {
 
 
 bool HitCollision::Run(double dt) {
-    if (Hit::Run(dt))
-        return true;
-
-    if (!m_hitDone) {
-        int f = m_renderer->GetFrame();
-        if (f == m_frame) {
-            glm::vec3 pos = m_entity->GetPosition();
-            //std::cout <<" **** hit ****\n";
-            //std::cout << "character at position = " << pos.x << ", " << pos.y << "\n";
-            bool flip = m_entity->GetFlipX();
-            pos.x += flip ? -m_offset.x - m_shape->getBounds().GetSize().x : m_offset.x;
-            pos.y += m_offset.y;
-            //std::cout << "collider at position = " << pos.x << ", " << pos.y << "\n";
-            auto t = glm::translate(pos);
-
-            Entity *e = m_engine->ShapeCast(m_shape, t, m_mask);
-            // avoid collision with oneself
-            if (e != nullptr && e->GetParent() != m_entity) {
-                // I hit something, passing the collision box and the entity hitting
-                m_callback(EntityWrapper(e), EntityWrapper(m_entity));
-            }
-            m_hitDone = true;
-        }
-    }
     return false;
+//    if (Hit::Run(dt))
+//        return true;
+//
+//    if (!m_hitDone) {
+//       //  int f = m_renderer->GetFrame();
+//        if (f == m_frame) {
+//            glm::vec3 pos = m_entity->GetPosition();
+//            //std::cout <<" **** hit ****\n";
+//            //std::cout << "character at position = " << pos.x << ", " << pos.y << "\n";
+//            bool flip = m_entity->GetFlipX();
+//            pos.x += flip ? -m_offset.x - m_shape->getBounds().GetSize().x : m_offset.x;
+//            pos.y += m_offset.y;
+//            //std::cout << "collider at position = " << pos.x << ", " << pos.y << "\n";
+//            auto t = glm::translate(pos);
+//
+//            Entity *e = m_engine->ShapeCast(m_shape, t, m_mask);
+//            // avoid collision with oneself
+//            if (e != nullptr && e->GetParent() != m_entity) {
+//                // I hit something, passing the collision box and the entity hitting
+//                m_callback(EntityWrapper(e), EntityWrapper(m_entity));
+//            }
+//            m_hitDone = true;
+//        }
+//    }
+//    return false;
 }

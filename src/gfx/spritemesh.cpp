@@ -1,68 +1,14 @@
 #include <gfx/spritemesh.h>
-#include <gfx/shader.h>
-#include <gfx/error.h>
-#include <gfx/engine.h>
 
-SpriteMesh::SpriteMesh (float ppu, const std::string& filename, std::vector<Animation>& data) : Mesh<Vertex3D>(TEXTURE_SHADER) {
-    m_primitive = GL_TRIANGLES;
 
-    std::vector<Vertex3D> vertices;
-    std::vector<unsigned int> indices;
+SpriteMesh::SpriteMesh (const std::string& filename) : TexturedMesh(GL_TRIANGLES, filename) {}
 
-    auto tex = Engine::get().GetAssetManager().GetTexture(filename);
-    m_texId = tex->GetTexId();
-    float texWidth = static_cast<float>(tex->GetWidth());
-    float texHeight = static_cast<float>(tex->GetHeight());
-    int quadCount {0};
-    for (auto& anim : data) {
+const AnimInfo* SpriteMesh::GetAnimInfo(const std::string& anim) const {
+    auto it = m_info.find(anim);
 
-        AnimInfo animInfo (anim.loop);
-
-        //std::vector<FrameInfo> frameInfos;
-        for (auto& frame : anim.frames) {
-            FrameInfo frameInfo{6*quadCount, 6*static_cast<int>(frame.quads.size()), frame.time};
-            animInfo.AddFrameInfo(frameInfo);
-            for (auto& quad : frame.quads) {
-                glm::vec2 bottomLeft (-quad.anchorx / ppu, -quad.anchory/ppu);
-                float tx = quad.x / texWidth;
-                float ty = quad.y / texHeight;
-                float tw = quad.width / texWidth;
-                float th = quad.height / texHeight;
-                float width = quad.width / ppu;
-                float height = quad.height / ppu;
-                vertices.push_back(Vertex3D(bottomLeft.x, bottomLeft.y, quad.z, tx, ty + th));
-                vertices.push_back(Vertex3D(bottomLeft.x + width, bottomLeft.y, quad.z, tx + tw, ty + th));
-                vertices.push_back(Vertex3D(bottomLeft.x + width, bottomLeft.y + height, quad.z, tx + tw, ty));
-                vertices.push_back(Vertex3D(bottomLeft.x, bottomLeft.y + height, quad.z, tx, ty));
-                int ix = quadCount * 4;
-                indices.push_back(ix);
-                indices.push_back(ix + 1);
-                indices.push_back(ix + 3);
-                indices.push_back(ix + 3);
-                indices.push_back(ix + 2);
-                indices.push_back(ix + 1);
-                quadCount++;
-            }
-
-        }
-        m_animInfo.insert(std::make_pair(anim.name, animInfo));
+    if (it != m_info.end()) {
+        return &it->second;
     }
-    Init(vertices, indices);
-
-}
-
-void SpriteMesh::Setup(Shader* shader, const std::string& anim, int frame) {
-    auto texLoc = shader->GetUniformLocation(TEXTURE);
-    glUniform1i(texLoc, 0);
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, m_texId);
-
-    const AnimInfo& ai = GetAnimInfo(anim);
-    size_t n = ai.getFrameCount();
-
-    if (frame < 0 || frame >= n) {
-        GLIB_FAIL("Animation " << anim << " has frames 0 to " << n-1 << ": requested frame " << frame);
-    }
-    m_offset = ai.getOffset(frame);
-    m_count = ai.getCount(frame);
+    return nullptr;
+    // throw
 }

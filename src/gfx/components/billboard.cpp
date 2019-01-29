@@ -17,7 +17,6 @@ void Billboard::Update(double) {
     glm::vec3 fwd = m_cam->getForward();
     glm::vec3 up = m_cam->getUp();
     glm::vec3 r = m_cam->getRight();
-    auto& wt = m_entity->GetWorldTransform();
     glm::mat4 rt(1.0);
     rt[0][0] = r.x;
     rt[0][1] = r.y;
@@ -28,7 +27,6 @@ void Billboard::Update(double) {
     rt[2][0] = up.x;
     rt[2][1] = up.y;
     rt[2][2] = up.z;
-    auto wt2 = m_entity->GetWorldTransform();
     //std::cout << " x = " << wt2[3][0] <<", " << wt2[3][1] << ", " << wt2[3][2] << "\n";
     // PLUG THIS BACK IN !!!
     //m_renderer->SetRenderingTransform(rt);

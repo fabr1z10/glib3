@@ -231,7 +231,6 @@ Entity* CollisionEngine::ShapeCast (std::shared_ptr<Shape> shape, const glm::mat
                         continue;
                     }
                     auto b = c->GetBounds();
-                    glm::vec3 pp = c->GetObject()->GetPosition();
                     float zc = c->GetObject()->GetPosition().z;
                     // 2.5d collision check
                     if (m_coll25d && fabs(z-zc) > m_eps) {
@@ -311,7 +310,6 @@ RayCastHit2D CollisionEngine::Raycast (glm::vec3 rayOrigin, glm::vec2 rayDir, fl
                     if (m_coll25d && fabs(z-zc) > m_eps) {
                         continue;
                     }
-                    float dist{0.0f};
                     auto shapeBounds = c->GetBounds();
                     if (lineBounds.Intersects(shapeBounds)) {
                         auto t = c->GetObject()->GetWorldTransform();

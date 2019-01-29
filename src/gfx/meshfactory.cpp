@@ -100,7 +100,7 @@ void MeshFactory::visit(CompoundShape& shape) {
     for (auto& shape : shapes) {
         auto points = shape->getPoints();
         glm::vec2 offset = shape->GetOffset();
-        int j = 0;
+        size_t j = 0;
         for (auto& p : points) {
             vertices.push_back({offset.x + p.x, offset.y + p.y, m_z, m_color.g, m_color.r, m_color.b, m_color.a});
             indices.push_back(i);

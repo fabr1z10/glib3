@@ -3,6 +3,8 @@
 #include <gfx/lua/luatable.h>
 #include <gfx/factory.h>
 #include <memory>
+#include <gfx/imodel.h>
+#include <gfx/spritefactory.h>
 
 class Entity;
 class Shape;
@@ -27,7 +29,9 @@ FACTORY(EntityFactory, Entity)
 FACTORY(OutlineTextFactory, Entity)
 FACTORY(ButtonFactory, Entity)
 FACTORY(TextViewFactory, Entity)
-FACTORY(HeightMapFactory, Entity)
+//FACTORY(SpriteFactory, Entity)
+//FACTORY(HeightMapFactory, Entity)
+
 
 // Components
 FACTORY(TextComponentFactory, Component)
@@ -52,7 +56,7 @@ FACTORY(ParallaxComponentFactory, Component)
 FACTORY(FPSComponentFactory, Component)
 FACTORY(CursorComponentFactory, Component)
 FACTORY(LightComponentFactory, Component)
-FACTORY(RaycastControllerComponentFactory, Component)
+//FACTORY(RaycastControllerComponentFactory, Component)
 
 // Frame handlers
 FACTORY(RelativePosFrameHandler, IFrameChangeHandler)
@@ -100,8 +104,8 @@ FACTORY(ResumeScriptActFactory, Activity)
 FACTORY(KillScriptActFactory, Activity)
 
 // Asset
-FACTORY(SpriteFactory, IMesh)
-FACTORY(ModelFactory, Model)
+FACTORY(SimpleModelFactory, IModel)
+FACTORY(CompositeModelFactory, IModel)
 
 // States
 FACTORY(AnimInitializerFactory, StateInitializer)

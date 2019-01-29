@@ -1,12 +1,12 @@
 #include <gfx/aiwalk.h>
 #include <gfx/engine.h>
-#include <gfx/components/renderer.h>
+#include <gfx/components/animator.h>
 #include <gfx/random.h>
 
 void AIWalk::Init(Entity* e) {
     m_entity = e;
     m_target = Engine::get().GetRef<Entity>(m_targetId);
-    m_renderer = e->GetComponent<Renderer>();
+    m_animator = e->GetComponent<Animator>();
     m_eps = 0.1;
     m_offset = glm::vec2(40, 0);
 }
@@ -24,9 +24,9 @@ bool AIWalk::Run(double dt) {
         dist = glm::normalize(dist);
         enemyPos += (m_speed * static_cast<float>(dt)) * glm::vec3(dist, 0.0f);
         m_entity->SetPosition(enemyPos);
-        m_renderer->SetAnimation("walk");
+        m_animator->SetAnimation("walk");
     } else {
-        m_renderer->SetAnimation("idle");
+        m_animator->SetAnimation("idle");
         m_nextState = "idle";
         return true;
 

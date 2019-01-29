@@ -14,9 +14,9 @@
 #include <unordered_map>
 #include <string>
 #include <memory>
+#include <limits>
 
-
-
+const GLuint GL_INVALID = std::numeric_limits<GLuint>::max();
 
 const char basic_vshader_light[] =
         "#version 330 core\n"

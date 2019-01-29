@@ -26,7 +26,7 @@ void SpriteView::Load() {
     luabridge::setGlobal(LuaWrapper::L, m_dir+"/", "_path");
     Engine::get().GetAssetManager().SetDirectory(m_dir+"/");
     Engine::get().GetAssetManager().Clear();
-    LuaWrapper::Load(m_dir + "/loadspr.lua");
+    LuaWrapper::Load(m_dir + "/loadassets.lua");
 
 
 }

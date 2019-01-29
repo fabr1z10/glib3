@@ -9,12 +9,12 @@ SceneFactory::SceneFactory() {
     m_runnerFactory.Add<CollisionEngineFactory>("collision");
     m_runnerFactory.Add<HotSpotManagerFactory>("hotspotmanager");
 
-    m_meshFactory.Add<SpriteFactory>("sprite");
-    m_modelFactory.Add<ModelFactory>("model");
+    m_modelFactory.Add<SimpleModelFactory>("sprite");
+    m_modelFactory.Add<CompositeModelFactory>("model");
 
     m_entityFactory.Add<EntityFactory>("default");
     m_entityFactory.Add<TextViewFactory>("textview");
-    m_entityFactory.Add<HeightMapFactory>("heightmap");
+    //m_entityFactory.Add<HeightMapFactory>("heightmap");
 
     m_cameraFactory.Add<OrthoCamFactory>("ortho");
     m_cameraFactory.Add<PerspectiveCamFactory>("perspective");
@@ -39,7 +39,7 @@ SceneFactory::SceneFactory() {
     m_componentFactory.Add<DepthComponentFactory>("depth");
     m_componentFactory.Add<CursorComponentFactory>("cursor");
     m_componentFactory.Add<LightComponentFactory>("light");
-    m_componentFactory.Add<RaycastControllerComponentFactory>("raycastcontroller");
+    //m_componentFactory.Add<RaycastControllerComponentFactory>("raycastcontroller");
     m_componentFactory.Add<BillboardComponentFactory>("billboard");
 
     m_shapeFactory.Add<RectFactory>("rect");
@@ -119,14 +119,11 @@ std::unique_ptr<Activity> SceneFactory::Get<Activity> (luabridge::LuaRef& ref) {
 }
 
 template <>
-std::unique_ptr<IMesh> SceneFactory::Get<IMesh> (luabridge::LuaRef& ref) {
-    return m_meshFactory.Create(ref);
-}
-
-template <>
-std::unique_ptr<Model> SceneFactory::Get<Model> (luabridge::LuaRef& ref) {
+std::unique_ptr<IModel> SceneFactory::Get<IModel> (luabridge::LuaRef& ref) {
     return m_modelFactory.Create(ref);
 }
+
+
 
 std::shared_ptr<Entity> SceneFactory::Create() {
 
@@ -157,22 +154,22 @@ std::shared_ptr<Entity> SceneFactory::Create() {
 
 
 
-    // read assets
-    if (roomTable.HasKey("assets")) {
-        luabridge::LuaRef assets = roomTable.Get<luabridge::LuaRef>("assets");
-        for (int i = 0; i < assets.length();++i) {
-            luabridge::LuaRef a = assets[i+1];
-            std::string id = a["id"].cast<std::string>();
-            auto asset = GetShared<IMesh>(a);
-            Engine::get().GetAssetManager().AddMesh(id, asset);
-            // check if mesh has additional info
-            luabridge::LuaRef additionalInfo = a["addinfo"];
-            if (!additionalInfo.isNil()) {
-                std::cout << "Hey, mesh has additional info!\n";
-                Engine::get().GetAssetManager().AddMeshInfo(id, additionalInfo);
-            }
-        }
-    }
+//    // read assets
+//    if (roomTable.HasKey("assets")) {
+//        luabridge::LuaRef assets = roomTable.Get<luabridge::LuaRef>("assets");
+//        for (int i = 0; i < assets.length();++i) {
+//            luabridge::LuaRef a = assets[i+1];
+//            std::string id = a["id"].cast<std::string>();
+//            auto asset = GetShared<IMesh>(a);
+//            Engine::get().GetAssetManager().AddMesh(id, asset);
+//            // check if mesh has additional info
+//            luabridge::LuaRef additionalInfo = a["addinfo"];
+//            if (!additionalInfo.isNil()) {
+//                std::cout << "Hey, mesh has additional info!\n";
+//                Engine::get().GetAssetManager().AddMeshInfo(id, additionalInfo);
+//            }
+//        }
+//    }
 
     // read the scene tree
     auto rootNode = std::make_shared<Entity>();
@@ -216,7 +213,7 @@ void SceneFactory::CleanUp() {
         std::string id = assetTable.Get<std::string>("id");
         std::string type = assetTable.Get<std::string>("type");
         if (type == "sprite") {
-            Engine::get().GetAssetManager().RemoveMesh(id);
+            Engine::get().GetAssetManager().RemoveModel(id);
 
         }
     }

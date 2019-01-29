@@ -29,7 +29,9 @@ public:
     virtual void onClick(glm::vec2, int button, int action, int mods) = 0;
     virtual void onMove(glm::vec2) = 0;
     virtual void onScroll(float, float) {}
-    virtual bool onKeyEvent (const KeyEvent&) {}
+    virtual bool onKeyEvent (const KeyEvent&) {
+        return false;
+    }
     int GetGroup() const;
     int GetPriority() const;
     using ParentClass = HotSpot;

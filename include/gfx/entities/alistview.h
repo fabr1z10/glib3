@@ -11,8 +11,8 @@
 #include <gfx/components/lambdahotspot.h>
 #include <gfx/meshfactory.h>
 #include <gfx/math/geom.h>
+#include <gfx/components/renderer.h>
 
-class Renderer;
 
 // type T should implement sorting
 template <typename T>

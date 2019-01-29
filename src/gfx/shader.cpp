@@ -156,7 +156,7 @@ std::unique_ptr<Shader> ShaderFactory::GetLightTexShader() {
 GLuint Shader::GetUniformLocation(ShaderUniform uniform) {
     auto iter = m_locations.find(uniform);
     if (iter == m_locations.end())
-        return -1;
+        return GL_INVALID;
     return iter->second;
 }
 
