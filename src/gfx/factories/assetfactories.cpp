@@ -9,7 +9,7 @@
 std::unique_ptr<IModel> CompositeModelFactory::Create (luabridge::LuaRef& ref) {
 
     LuaTable t(ref);
-    std::string id = t.Get<std::string>("id");
+
     std::unique_ptr<CompositeModel> model(new CompositeModel);
     luabridge::LuaRef comps = t.Get<luabridge::LuaRef>("components");
     lua_loop_array(comps, [&model] (const LuaTable& table) {
@@ -23,6 +23,23 @@ std::unique_ptr<IModel> CompositeModelFactory::Create (luabridge::LuaRef& ref) {
         }
         model->AddComponent(name, m, parent);
     });
+
+    luabridge::LuaRef anims = t.Get<luabridge::LuaRef>("animations");
+    lua_loop_array(anims, [&model] (const LuaTable& table) {
+        std::string name = table.Get<std::string>("name");
+        std::vector<AnimationDefinition> def;
+        luabridge::LuaRef adef = table.Get<luabridge::LuaRef>("anims");
+        for (int i = 0; i< adef.length(); ++i) {
+            luabridge::LuaRef aa = adef[i+1];
+            LuaTable aatab(aa);
+            std::string comp = aatab.Get<std::string>("name");
+            std::string anim = aatab.Get<std::string>("anim");
+            glm::vec3 pos = aatab.Get<glm::vec3>("pos", glm::vec3(0.0f));
+            def.push_back(AnimationDefinition{comp, anim, pos});
+        }
+        model->AddAnimation(name, def);
+    });
+
     return model;
 }
 
@@ -68,23 +85,35 @@ std::unique_ptr<IModel> SimpleModelFactory::Create (luabridge::LuaRef& ref) {
             for (int k = 0; k < n; ++k) {
                 luabridge::LuaRef a3 = qu[k+1];
                 LuaTable qt (a3);
-                float x = qt.Get<float>("x");
-                float y = qt.Get<float>("y");
-                float z = qt.Get<float>("z", 0.0f);
-                float width = qt.Get<float>("width");
-                float height = qt.Get<float>("height");
+                luabridge::LuaRef a4 = qt.Get<luabridge::LuaRef>("id");
+                LuaTable quadTable (a4);
+
+                float x = quadTable.Get<float>("x");
+                float y = quadTable.Get<float>("y");
+                float z = quadTable.Get<float>("z", 0.0f);
+                // width and height in pixels, the quad size must be rescaled by ppu
+                float width = quadTable.Get<float>("width");
+                float height = quadTable.Get<float>("height");
                 float tx = x / texWidth;
                 float ty = y / texHeight;
                 float tw = width / texWidth;
                 float th = height / texHeight;
-                glm::vec2 anchor = qt.Get<glm::vec2>("anchor", glm::vec2(0.0f));
+                glm::vec2 anchor = quadTable.Get<glm::vec2>("anchor", glm::vec2(0.0f));
                 glm::vec2 bottomLeft { -anchor.x / ppu, -anchor.y / ppu };
 
+                bool flipX = qt.Get<bool>("flipx", false);
+                bool flipY = qt.Get<bool>("flipy", false);
+                glm::vec2 pos = qt.Get<glm::vec2>("pos", glm::vec2(0.0f));
+                float tx0 = flipX ? tx+tw : tx;
+                float tx1 = flipX ? tx : tx + tw;
+                float ty0 = flipY ? ty : ty+th;
+                float ty1 = flipY ? ty+th : ty;
+                bottomLeft += pos;
                 // for each quad, add 4 vertices and 6 quads
-                vertices.emplace_back(Vertex3D(bottomLeft.x, bottomLeft.y, z, tx, ty + th));
-                vertices.emplace_back(Vertex3D(bottomLeft.x + width, bottomLeft.y, z, tx + tw, ty + th));
-                vertices.emplace_back(Vertex3D(bottomLeft.x + width, bottomLeft.y + height, z, tx + tw, ty));
-                vertices.emplace_back(Vertex3D(bottomLeft.x, bottomLeft.y + height, z, tx, ty));
+                vertices.emplace_back(Vertex3D(bottomLeft.x, bottomLeft.y, z, tx0, ty0));
+                vertices.emplace_back(Vertex3D(bottomLeft.x + width, bottomLeft.y, z, tx1, ty0));
+                vertices.emplace_back(Vertex3D(bottomLeft.x + width, bottomLeft.y + height, z, tx1, ty1));
+                vertices.emplace_back(Vertex3D(bottomLeft.x, bottomLeft.y + height, z, tx0, ty1));
                 int ix = quadCount * 4;
                 indices.push_back(ix);
                 indices.push_back(ix + 1);
@@ -95,9 +124,9 @@ std::unique_ptr<IModel> SimpleModelFactory::Create (luabridge::LuaRef& ref) {
 
                 quadCount++;
             }
-            animInfo.frameCount = animInfo.frameInfo.size();
             animInfo.frameInfo.push_back(frame);
         }
+        animInfo.frameCount = animInfo.frameInfo.size();
         mesh->AddAnimInfo(animName, animInfo);
     }
     mesh->Init(vertices, indices);

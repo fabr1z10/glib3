@@ -15,14 +15,10 @@ void ViewerController::Start() {
 
 void ViewerController::onMove(glm::vec2 pos) {
     glm::vec3 camPos=  m_cam->GetPosition();
-    std::cout << "cam pos = " << camPos.x << ", " << camPos.y << "\n";
     if (m_lmbPressed) {
         glm::vec2 size = m_cam->getOrthoSize();
-
-
         double deltaX =(pos.x - m_xPrev);
         double deltaY =(pos.y - m_yPrev);
-        std::cout << "delta of " << deltaX << ", " << deltaY << "\n";
         glm::vec3 d = m_cam->GetPosition()+ glm::vec3(static_cast<float>(deltaX), static_cast<float>(deltaY), 0.0f);
         d.x = Clamp(d.x, -400+size.x*0.5f,400-size.x*0.5f);
         d.y = Clamp(d.y, -300+size.y*0.5f,300-size.y*0.5f);
@@ -60,11 +56,9 @@ void ViewerController::onClick(glm::vec2 pos, int button, int action, int mods) 
 //
 //
 void ViewerController::onEnter() {
-    std::cout << "Entering gfx area\n";
 }
 void ViewerController::onLeave() {
     m_lmbPressed = false;
-    std::cout << "Leaving gfx area\n";
 }
 std::type_index ViewerController::GetType() {
     return std::type_index(typeid(HotSpot));

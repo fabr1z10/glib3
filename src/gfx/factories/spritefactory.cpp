@@ -5,6 +5,20 @@
 #include <gfx/components/animator.h>
 #include <gfx/engine.h>
 
+std::unique_ptr<Entity> SpriteFactory::Create (std::shared_ptr<IModel> mesh) {
+    switch (mesh->GetType()) {
+        case ModelType::SIMPLESPRITE: {
+            auto ptr = std::dynamic_pointer_cast<SimpleModel>(mesh);
+            return Create(ptr);
+        }
+        case ModelType::COMPOSITESPRITE: {
+            auto ptr = std::dynamic_pointer_cast<CompositeModel>(mesh);
+            return Create(ptr);
+        }
+    }
+    return nullptr;
+}
+
 std::unique_ptr<Entity> SpriteFactory::Create(std::shared_ptr<SimpleModel> model) {
 
     auto entity = std::unique_ptr<Entity>(new Entity);

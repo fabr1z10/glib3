@@ -18,6 +18,7 @@ public:
     void AddModel (const std::string& name, std::shared_ptr<IModel> mesh);
     void RemoveModel (const std::string& name);
     std::shared_ptr<IModel> GetModel(const std::string& name) const;
+    const std::unordered_map<std::string, std::shared_ptr<IModel>>& GetModels() const;
 
     luabridge::LuaRef GetMeshInfo (const std::string& name);
     void AddMeshInfo (const std::string& name, luabridge::LuaRef);
@@ -39,4 +40,8 @@ private:
     //std::unordered_map<std::string, std::shared_ptr<Model>> m_models;
     std::unordered_map<std::string, luabridge::LuaRef> m_meshAddInfo;
     std::string m_directory;
+};
+
+inline const std::unordered_map<std::string, std::shared_ptr<IModel>>& AssetManager::GetModels() const {
+    return  m_models;
 };

@@ -35,6 +35,7 @@ public:
     Animator(std::shared_ptr<IModel> model) : m_model(model) {}
     virtual ~Animator() {}
     void Start() override;
+    void AdvanceFrame(int);
     void Update(double dt) override;
     void SetAnimation (const std::string& anim);
     //virtual void SetAnimation (const std::string& node, const std::string& anim) = 0;

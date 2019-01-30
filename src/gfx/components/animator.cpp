@@ -3,6 +3,11 @@
 #include <gfx/entity.h>
 #include <gfx/error.h>
 
+void Animator::Start() {
+    m_status = m_model->GetModelStatus();
+    m_status->Init(m_entity);
+
+}
 void Animator::Update(double dt) {
     m_status->Update(dt);
 }
@@ -11,6 +16,9 @@ void Animator::SetAnimation(const std::string &anim) {
     m_status->SetAnimation(anim);
 }
 
+void Animator::AdvanceFrame(int inc) {
+    m_status->AdvanceFrame(inc);
+}
 
 //void Animator::SetForward (bool value) {
 //    m_increment = value ? 1 : -1;

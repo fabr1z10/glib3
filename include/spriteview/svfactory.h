@@ -28,6 +28,11 @@ private:
 };
 
 struct Item2 {
+    Item2() {}
+    Item2 (const std::string& key, const std::string& text)
+            : key(key), parentKey(Item2::rootKey), text(text) {}
+    Item2 (const std::string& key, const std::string& parent, const std::string& text)
+            : key(key), parentKey(parent), text(text) {}
     std::string key;
     std::string parentKey;
     std::string text;
@@ -46,15 +51,15 @@ public:
     void PostInit() override {}
     void CleanUp () override {}
 
-    void LoadModel (const Item& model, const std::string& anim = "");
+    void LoadModel (const Item2& model, const std::string& anim = "");
     void ChangeAnim (const std::string& anim);
     void Reload();
     void LoadAssets();
 private:
     void printStatus();
     Entity* m_mainNode;
-    TreeView<Item2>* m_animList;
-    ListView<Item>* m_modelList;
+    ListView<Item>* m_animList;
+    TreeView<Item2>* m_modelList;
     std::shared_ptr<IMesh> m_currentMesh;
     Renderer* m_renderer;
     std::shared_ptr<Entity> GenerateGrid(int xFrom, int xTo, int yFrom, int yTo);
@@ -67,7 +72,7 @@ private:
     TextMesh* m_labelAnimName;
     TextMesh* m_labelCurrentFrame;
     Animator* m_modelNode;
-    Item m_currentItem;
+    Item2 m_currentItem;
     std::unordered_map<std::string, std::pair<std::string, int>> m_status;
     int m_currentFrame;
 };

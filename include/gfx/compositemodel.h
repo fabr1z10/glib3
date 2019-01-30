@@ -11,6 +11,7 @@ struct ModelComponent {
 struct AnimationDefinition {
     std::string node;
     std::string anim;
+    glm::vec3 pos;
 };
 
 class CompositeModel : public IModel {
@@ -20,6 +21,8 @@ public:
     void AddComponent(const std::string&, SimpleModel* model, const std::string& parent);
     const std::unordered_map<std::string, ModelComponent>& GetComponents() const;
     const std::vector<AnimationDefinition>& GetAnimationDefinition(const std::string&) const;
+    std::vector<std::string> GetAnimations() override;
+    void AddAnimation(const std::string& name, std::vector<AnimationDefinition>& def);
     ModelType GetType() const override;
     Bounds3D GetBounds() const override {
         return Bounds3D();
@@ -32,6 +35,10 @@ private:
 
 inline ModelType CompositeModel::GetType() const {
     return ModelType::COMPOSITESPRITE;
+}
+
+inline void CompositeModel::AddAnimation(const std::string& name, std::vector<AnimationDefinition>& def) {
+    m_animInfo.insert(std::make_pair(name, def));
 }
 
 inline const std::unordered_map<std::string, ModelComponent>& CompositeModel::GetComponents() const {
@@ -47,7 +54,11 @@ public:
     CompositeModelStatus(CompositeModel* model) : m_model(model) {}
     void Init(Entity*) override ;
     void Update(double dt) override ;
-    void AddComponent (const std::string&, const SimpleModelStatus& status);
+    void AddComponent (const std::string& s, const SimpleModelStatus& status) {
+        m_componentStates.insert(std::make_pair(s,status));
+    }
+    void AdvanceFrame(int) override;
+
     void SetAnimation (const std::string& anim) override;
 private:
     std::unordered_map<std::string, SimpleModelStatus> m_componentStates;

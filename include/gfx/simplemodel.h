@@ -12,8 +12,11 @@ public:
     void Init(Entity*) override;
 
     void Update(double dt) override ;
-
+    void AdvanceFrame(int) override;
     void SetAnimation (const std::string& anim) override;
+    Entity* GetEntity() {
+        return renderer->GetObject();
+    }
 private:
     int inc;
     std::string animation;
@@ -31,6 +34,7 @@ public:
     std::shared_ptr<SpriteMesh> GetMesh();
     ModelType GetType() const override;
     Bounds3D GetBounds() const override;
+    std::vector<std::string> GetAnimations() override;
 private:
     std::shared_ptr<SpriteMesh> m_mesh;
 };

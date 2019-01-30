@@ -22,13 +22,25 @@ SpriteViewFactory::SpriteViewFactory() : m_animate(true) {
 
 void SpriteViewFactory::LoadAssets() {
     // read assets
-    luabridge::LuaRef refSprites = luabridge::getGlobal(LuaWrapper::L, "sprites");
-    auto smap = LuaTable::getKeyValueMap(refSprites);
-    for (auto& k : smap) {
-        std::cout << "Reading sprite " << k.first << " ...\n";
-        luabridge::LuaRef a = k.second;
-        auto asset = GetShared<IModel>(a);
-        Engine::get().GetAssetManager().AddModel(k.first, asset);
+    {
+        luabridge::LuaRef refSprites = luabridge::getGlobal(LuaWrapper::L, "models");
+        auto smap = LuaTable::getKeyValueMap(refSprites);
+        for (auto &k : smap) {
+            std::cout << "Reading sprite " << k.first << " ...\n";
+            luabridge::LuaRef a = k.second;
+            auto asset = GetShared<IModel>(a);
+            Engine::get().GetAssetManager().AddModel(k.first, asset);
+        }
+    }
+    {
+        luabridge::LuaRef refSprites = luabridge::getGlobal(LuaWrapper::L, "models2");
+        auto smap = LuaTable::getKeyValueMap(refSprites);
+        for (auto &k : smap) {
+            std::cout << "Reading sprite " << k.first << " ...\n";
+            luabridge::LuaRef a = k.second;
+            auto asset = GetShared<IModel>(a);
+            Engine::get().GetAssetManager().AddModel(k.first, asset);
+        }
     }
 }
 std::shared_ptr<Entity> SpriteViewFactory::GenerateAxis(float xFrom, float xTo, float yFrom, float yTo) {
@@ -96,7 +108,7 @@ void SpriteViewFactory::ChangeAnim (const std::string& anim) {
     m_labelAnimName->UpdateText(anim);
 }
 
-void SpriteViewFactory::LoadModel (const Item& item, const std::string& anim) {
+void SpriteViewFactory::LoadModel (const Item2& item, const std::string& anim) {
     auto m = Engine::get().GetRef<Entity>("model");
     m->ClearAllChildren();
     m_animList->Clear();
@@ -105,51 +117,57 @@ void SpriteViewFactory::LoadModel (const Item& item, const std::string& anim) {
 
 
     auto& am = Engine::get().GetAssetManager();
-    std::string type = item.GetType();
     std::string name = item.GetText();
-    if (type == "model") {
-        auto model = am.GetModel(name);
-        const auto& comps = model->GetComponents();
-        for (auto& comp : comps) {
-            const ModelComponent& mc = comp.second;
-            Item2 item;
-            item.key = comp.first;
-            item.parentKey = (mc.parent.empty() ? Item2::rootKey : mc.parent);
-            item.text = mc.name;
-            m_animList->AddItem(item);
-            //auto mesh = am.GetMesh(comp.mesh);
-            const auto &ai =  mc.m_mesh->GetAnimInfo();
-            for (auto &a : ai) {
-                Item2 item;
-                item.key = mc.name + "@" + a.first;
-                item.text = a.first;
-                item.parentKey = mc.name;
-                m_animList->AddItem(item);
-            }
-        }
-        auto entity = SpriteFactory::Create(model);
-        m_modelNode = entity->GetComponent<Animator>();
-        m->AddChild(std::move(entity));
-    }
-    if (type == "mesh") {
-        auto mesh = std::dynamic_pointer_cast<SpriteMesh>(am.GetMesh(name));
-        const auto& ai = mesh->GetAnimInfo();
-        for (auto& a : ai) {
-            Item2 item;
-            item.key = "@"+ a.first;
-            item.text = a.first;
-            item.parentKey = Item2::rootKey;
-            m_animList->AddItem(item);
-        }
-
-        // generate the entity
-        auto node = SpriteFactory::Create(mesh);
-        m_modelNode = node->GetComponent<Animator>();
-        m->AddChild(std::move(node));
+    auto model = am.GetModel(name);
+    const auto& a =  model->GetAnimations();
+    for (auto& b : a) {
+        m_animList->AddItem(Item(b, ""));
     }
 
+
+    auto entity = SpriteFactory::Create(model);
+    m_modelNode = entity->GetComponent<Animator>();
+    m->AddChild(std::move(entity));
+//        const auto& comps = model->GetComponents();
+//        for (auto& comp : comps) {
+//            const ModelComponent& mc = comp.second;
+//            Item2 item;
+//            item.key = comp.first;
+//            item.parentKey = (mc.parent.empty() ? Item2::rootKey : mc.parent);
+//            item.text = mc.name;
+//            m_animList->AddItem(item);
+//            //auto mesh = am.GetMesh(comp.mesh);
+//            const auto &ai =  mc.m_mesh->GetAnimInfo();
+//            for (auto &a : ai) {
+//                Item2 item;
+//                item.key = mc.name + "@" + a.first;
+//                item.text = a.first;
+//                item.parentKey = mc.name;
+//                m_animList->AddItem(item);
+//            }
+//        }
+//        auto entity = SpriteFactory::Create(model);
+//        m_modelNode = entity->GetComponent<Animator>();
+//        m->AddChild(std::move(entity));
+//    }
+//    if (type == "mesh") {
+//        auto mesh = std::dynamic_pointer_cast<SpriteMesh>(am.GetMesh(name));
+//        const auto& ai = mesh->GetAnimInfo();
+//        for (auto& a : ai) {
+//            Item2 item;
+//            item.key = "@"+ a.first;
+//            item.text = a.first;
+//            item.parentKey = Item2::rootKey;
+//            m_animList->AddItem(item);
+//        }
+//
+//        // generate the entity
+//        auto node = SpriteFactory::Create(mesh);
+//        m->AddChild(std::move(node));
+//    }
+//
     m_animList->Repaint();
-    m_labelModelName->UpdateText(name);
+//    m_labelModelName->UpdateText(name);
     return;
 //    std::string a = anim.empty() ? ai.begin()->first : anim;
 
@@ -164,23 +182,28 @@ void SpriteViewFactory::Reload() {
 
     // if animate is deactivated I get the status
     std::unordered_map<std::string, std::pair<std::string, int>> status;
-    Item previousItem = m_currentItem;
+    Item2 previousItem = m_currentItem;
 
     m_modelList->Clear();
     m_animList->Clear();
-    m_currentItem = Item();
+    m_currentItem = Item2();
 
     // get the sprites
-    const auto& meshes = Engine::get().GetAssetManager().GetMeshes();
-    for (auto& a : meshes) {
-        Item item (a.first, "mesh");
-        m_modelList->AddItem(item);
-    }
     const auto& models = Engine::get().GetAssetManager().GetModels();
+
+
+
+    m_modelList->AddItem(Item2 ("@sprites", "sprites"));
+    m_modelList->AddItem(Item2 ("@compound", "compound"));
     for (auto& a : models) {
-        Item item (a.first, "model");
-        m_modelList->AddItem(item);
+        ModelType type = a.second->GetType();
+        if (type == ModelType::SIMPLESPRITE) {
+            m_modelList->AddItem (Item2(a.first, "@sprites", a.first));
+        } else if (type == ModelType::COMPOSITESPRITE) {
+            m_modelList->AddItem (Item2(a.first, "@compound", a.first));
+        }
     }
+
 
 
     m_modelList->Repaint();
@@ -206,7 +229,7 @@ void SpriteViewFactory::Reload() {
 void SpriteViewFactory::printStatus() {
     std::stringstream outputMessage;
 
-    std::cout << outputMessage.str() << "\n";
+    // std::cout << outpztMessage.str() << "\n";
 }
 
 
@@ -216,52 +239,42 @@ std::shared_ptr<Entity> SpriteViewFactory::Create() {
     auto hm = std::make_shared<HotSpotManager>();
     // reset cam pos to (0, 0)
     hm->AddCallback(KeyEvent{GLFW_KEY_0, GLFW_PRESS, 0}, [] () { std::cout << "Pressed 0\n"; });
-////
-//    // toggle animation
-//    hm->AddCallback(KeyEvent{GLFW_KEY_1, GLFW_PRESS, 0}, [&] () {
-//        m_animate = !m_animate;
-//        auto m = Engine::get().GetRef<Entity>("model");
-//        m->SetEnableUpdate(m_animate);
-//        if (!m_animate) {
-//            printStatus();
-//        }
-//    });
-//
-//    // advance frame (only works when animate == false)
-//    hm->AddCallback(KeyEvent{GLFW_KEY_W, GLFW_PRESS, 0}, [&] () {
-//        if (!m_animate) {
-//            auto m = Engine::get().GetRef<Entity>("model");
-//            double dt = Engine::get().GetFrameTime();
-//            for (auto& a : m_nodes) {
-//                a.second->Update(dt);
-//            }
-//            printStatus();
-//        }
-//    });
-//
-//    // go back one frame (only works when animate == false)
-//    hm->AddCallback(KeyEvent{GLFW_KEY_Q, GLFW_PRESS, 0}, [&] () {
-//        if (!m_animate) {
-//            auto m = Engine::get().GetRef<Entity>("model");
-//            double dt = Engine::get().GetFrameTime();
-//            for (auto& a : m_nodes) {
-//                a.second->Update(dt);
-//            }
-//            printStatus();
-//        }
-//
-//    });
-//
-//    // reload data
-//    hm->AddCallback(KeyEvent{GLFW_KEY_F10, GLFW_PRESS, 0}, [&] () {
-//        auto m = Engine::get().GetRef<Entity>("model");
-//        m->ClearAllChildren();
-//        SpriteView::get().Load();
-//        LoadAssets();
-//        Reload();
-//
-//
-//    });
+
+    // toggle animation
+    hm->AddCallback(KeyEvent{GLFW_KEY_1, GLFW_PRESS, 0}, [&] () {
+        m_animate = !m_animate;
+        auto m = Engine::get().GetRef<Entity>("model");
+        m->SetEnableUpdate(m_animate);
+        if (!m_animate) {
+            printStatus();
+        }
+    });
+
+    // advance frame (only works when animate == false)
+    hm->AddCallback(KeyEvent{GLFW_KEY_W, GLFW_PRESS, 0}, [&] () {
+        if (!m_animate) {
+            m_modelNode->AdvanceFrame(1);
+        }
+    });
+
+    // go back one frame (only works when animate == false)
+    hm->AddCallback(KeyEvent{GLFW_KEY_Q, GLFW_PRESS, 0}, [&] () {
+        if (!m_animate) {
+            m_modelNode->AdvanceFrame(-1);
+        }
+
+    });
+
+    // reload data
+    hm->AddCallback(KeyEvent{GLFW_KEY_F10, GLFW_PRESS, 0}, [&] () {
+        auto m = Engine::get().GetRef<Entity>("model");
+        m->ClearAllChildren();
+        SpriteView::get().Load();
+        LoadAssets();
+        Reload();
+
+
+    });
     Engine::get().AddRunner(hm);
 //
     float camWidth = 600;
@@ -293,50 +306,26 @@ std::shared_ptr<Entity> SpriteViewFactory::Create() {
     mainNode->AddChild(GenerateAxis(-400,400,0,0));
     mainNode->AddChild(GenerateAxis(0,0,-300,300));
     mainNode->AddChild(GenerateGrid(-400,400,-300,300));
-////    //auto p = std::make_shared<Entity>();
-////    //auto pr = std::make_shared<Renderer>();std::make_shared<Renderer>();
-////
-////
-////
-////
-////
-////    auto font = Engine::get().GetAssetManager().GetFont("main");
-////
-////
-//
-    auto lv = std::make_shared<ListView<Item>>(200.0f, 300.0f, "main", 8.0f, color::WHITE, Color(64, 0, 0));
-    lv->SetOnClick([&] (const Item& c) {
+
+    auto lv = std::make_shared<TreeView<Item2>>(200.0f, 300.0f, "main", 8.0f, color::WHITE, Color(64, 0, 0));
+    lv->SetOnClick([&] (const  Item2& c) {
         LoadModel(c);
     });
     lv->SetPosition(glm::vec3(-400.0f, 0.0f, 1.0f));
     m_modelList = lv.get();
     uiNode->AddChild(lv);
 
-    auto tv = std::make_shared<TreeView<Item2>>(200.0f, 150.0f, "main", 8.0f, color::WHITE, Color(32, 0, 0));
+    auto tv = std::make_shared<ListView<Item>>(200.0f, 150.0f, "main", 8.0f, color::WHITE, Color(32, 0, 0));
     tv->SetPosition(glm::vec3(-400.0f, -150.0f, 1.0f));
-    tv->SetOnClick([&] (const Item2& c) {
-        std::cout << "Setting animation: " << c.text << " to node " << c.parentKey << "\n";
-        if (m_modelNode != nullptr) {
-            m_modelNode->SetAnimation(c.parentKey, c.text);
-        }
+    tv->SetOnClick([&] (const Item& c) {
+        m_modelNode->SetAnimation(c.GetText());
     });
     m_animList = tv.get();
     uiNode->AddChild(tv);
-//////
-//////    auto animView = std::make_shared<ListView>(200.0f, 150.0f, "main", 8.0f, glm::vec4(1.0f), glm::vec4(0.3f, 0.0f, 0.0f, 1.0f));
-//////    animView->SetOnClick([&] (const std::string& c) {
-//////        ChangeAnim(c);
-//////    });
-////
-//////
-////
-////
-////    // m_animList = animView.get();
-////
+
     node->AddChild(panelNode);
     node->AddChild(mainNode);
     node->AddChild(uiNode);
-//
     auto mnode = std::make_shared<Entity>();
     mnode->SetTag("model");
     mainNode->AddChild(mnode);
