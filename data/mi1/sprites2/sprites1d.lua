@@ -103,6 +103,6 @@ models2["citizen"] = {
 		{ name="head", mesh="citizen.head"},
 	},
 	animations = {
-		{ name = "idle", anims = { {name="body", anim="idle"}, {name="head", anim="idle", pos={0,50,0} }}}
+		{ name = "idle", anims = { {name="body", anim="idle"}, {name="head", anim="idle", pos={0,25,0} }}}
 	}
 }
