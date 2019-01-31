@@ -27,17 +27,31 @@ public:
     Bounds3D GetBounds() const override {
         return Bounds3D();
     }
+    void SetDefaultAnimation(const std::string&);
+    std::string GetDefaultAnimation() const;
 private:
+    std::string m_defaultAnimation;
     std::unordered_map<std::string, ModelComponent> m_components;
     // a composite model needs to describe animations as (node, anim) pairs
     std::unordered_map<std::string, std::vector<AnimationDefinition>> m_animInfo;
 };
+
+inline std::string CompositeModel::GetDefaultAnimation() const {
+    return m_defaultAnimation;
+}
+
+inline void CompositeModel::SetDefaultAnimation(const std::string& anim) {
+    m_defaultAnimation = anim;
+}
 
 inline ModelType CompositeModel::GetType() const {
     return ModelType::COMPOSITESPRITE;
 }
 
 inline void CompositeModel::AddAnimation(const std::string& name, std::vector<AnimationDefinition>& def) {
+    if (m_animInfo.empty()) {
+        SetDefaultAnimation(name);
+    }
     m_animInfo.insert(std::make_pair(name, def));
 }
 
@@ -51,18 +65,23 @@ inline void CompositeModel::AddComponent(const std::string& name, SimpleModel* m
 
 class CompositeModelStatus : public IModelStatus {
 public:
-    CompositeModelStatus(CompositeModel* model) : m_model(model) {}
+    CompositeModelStatus(CompositeModel* model) : m_model(model), m_entity(nullptr) {}
     void Init(Entity*) override ;
     void Update(double dt) override ;
-    void AddComponent (const std::string& s, const SimpleModelStatus& status) {
-        m_componentStates.insert(std::make_pair(s,status));
+    void AddComponent (const std::string& s, std::unique_ptr<IModelStatus> status) {
+        m_componentStates.insert(std::make_pair(s,std::move(status)));
     }
     void AdvanceFrame(int) override;
-
+    Entity* GetEntity() override;
     void SetAnimation (const std::string& anim) override;
 private:
-    std::unordered_map<std::string, SimpleModelStatus> m_componentStates;
+    std::unordered_map<std::string, std::unique_ptr<IModelStatus>> m_componentStates;
     CompositeModel* m_model;
+    Entity* m_entity;
 };
+
+inline Entity* CompositeModelStatus::GetEntity() {
+    return m_entity;
+}
 
 

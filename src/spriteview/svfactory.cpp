@@ -128,6 +128,7 @@ void SpriteViewFactory::LoadModel (const Item2& item, const std::string& anim) {
     auto entity = SpriteFactory::Create(model);
     m_modelNode = entity->GetComponent<Animator>();
     m->AddChild(std::move(entity));
+
 //        const auto& comps = model->GetComponents();
 //        for (auto& comp : comps) {
 //            const ModelComponent& mc = comp.second;

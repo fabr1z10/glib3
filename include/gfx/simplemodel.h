@@ -14,7 +14,7 @@ public:
     void Update(double dt) override ;
     void AdvanceFrame(int) override;
     void SetAnimation (const std::string& anim) override;
-    Entity* GetEntity() {
+    Entity* GetEntity() override {
         return renderer->GetObject();
     }
 private:

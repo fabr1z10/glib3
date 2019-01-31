@@ -17,6 +17,7 @@ public:
     virtual void Update (double) = 0;
     virtual void AdvanceFrame(int) = 0;
     virtual void SetAnimation (const std::string& anim) = 0;
+    virtual Entity* GetEntity() = 0;
 };
 
 // interface for generic model.

@@ -4,14 +4,15 @@
 
 
 void CompositeModelStatus::Init(Entity* entity) {
+    m_entity = entity;
     DepthFirstIterator<Entity> iterator(entity);
     for (; !iterator.end();  ++iterator) {
         auto it = m_componentStates.find(iterator->GetName());
         if (it != m_componentStates.end()) {
-            it->second.Init(&(*iterator));
+            it->second->Init(&(*iterator));
         }
-
     }
+    SetAnimation(m_model->GetDefaultAnimation());
 
 }
 const std::vector<AnimationDefinition>& CompositeModel::GetAnimationDefinition(const std::string& name) const {
@@ -24,9 +25,9 @@ const std::vector<AnimationDefinition>& CompositeModel::GetAnimationDefinition(c
 std::unique_ptr<IModelStatus> CompositeModel::GetModelStatus() {
     auto p = std::unique_ptr<CompositeModelStatus>(new CompositeModelStatus(this));
     for (auto& component : m_components) {
-
-        SimpleModelStatus status(*(component.second.model->GetMesh().get()));
-        p->AddComponent(component.first, status);
+        std::unique_ptr<IModelStatus> sms = component.second.model->GetModelStatus();
+        //SimpleModelStatus status(*(component.second.model->GetMesh().get()));
+        p->AddComponent(component.first, std::move(sms));
 
     }
     return p;
@@ -34,23 +35,24 @@ std::unique_ptr<IModelStatus> CompositeModel::GetModelStatus() {
 
 // the composite status update just updates all components
 void CompositeModelStatus::Update(double dt) {
+
     for (auto& c : m_componentStates) {
-        c.second.Update(dt);
+        c.second->Update(dt);
     }
 }
 
 void CompositeModelStatus::AdvanceFrame(int inc) {
     for (auto& c : m_componentStates) {
-        c.second.AdvanceFrame(inc);
+        c.second->AdvanceFrame(inc);
     }
 }
 
 void CompositeModelStatus::SetAnimation(const std::string &anim) {
     auto animDef = m_model->GetAnimationDefinition(anim);
     for (auto& a : animDef) {
-        auto sm = m_componentStates.at(a.node);
-        sm.SetAnimation(a.anim);
-        sm.GetEntity()->SetPosition(a.pos);
+        auto sm = m_componentStates.at(a.node).get();
+        sm->SetAnimation(a.anim);
+        sm->GetEntity()->SetPosition(a.pos);
 
     }
 }

@@ -36,7 +36,7 @@ void Monkey::LoadFonts() {
 
 void Monkey::AddTable (const std::string& name) {
     m_tables.insert(std::make_pair(name, LuaTable(name)));
-    
+
 }
 
 void Monkey::Start() {
@@ -48,7 +48,7 @@ void Monkey::Start() {
 
 LuaTable& Monkey::operator[] (const std::string& key) {
     auto it = m_tables.find(key);
-    if (it == m_tables.end()) {
+    if (it == m_tables.end() || it->second.isNil()) {
         GLIB_FAIL("Unknown table " << key);
     }
     return it->second;

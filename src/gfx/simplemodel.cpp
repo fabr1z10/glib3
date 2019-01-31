@@ -1,12 +1,13 @@
 #include <gfx/simplemodel.h>
 #include <gfx/entity.h>
-
+#include <iostream>
 void SimpleModelStatus::Init(Entity* entity) {
     renderer = entity->GetComponent<Renderer>();
     SetAnimation(m_mesh.GetDefaultAnimation());
 }
 
 void SimpleModelStatus::SetAnimation(const std::string& anim) {
+    std::cout << "setting anim to " << anim<<"\n";
     animation = anim;
     frame = 0;
     time = 0.0;
@@ -27,6 +28,7 @@ void SimpleModelStatus::AdvanceFrame(int inc) {
 }
 
 void SimpleModelStatus::Update(double dt) {
+
     time += dt;
     float frameDuration = m_animInfo->frameInfo[frame].duration;
     if (time >= frameDuration) {
@@ -40,6 +42,7 @@ void SimpleModelStatus::Update(double dt) {
         // this will be >= 0
         time = time - frameDuration;
         const FrameInfo &frameInfo = m_animInfo->frameInfo[frame];
+        std::cout << "(" << frameInfo.offset<<"," << frameInfo.count << ")\n";
         renderer->SetMeshInfo(frameInfo.offset, frameInfo.count);
     }
 }

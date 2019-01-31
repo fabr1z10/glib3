@@ -1,21 +1,27 @@
 #include <monkey/activities/turn.h>
 #include <gfx/engine.h>
-#include <gfx/components/renderer.h>
+#include <monkey/components/charactercomponent.h>
 
 void Turn::Start() {
 
     auto actor = Engine::get().GetRef<Entity>(m_actorId);
-    auto renderer = actor->GetComponent<Renderer>();
-
-    actor->SetFlipX(m_dir == "west");
-    if (m_dir == "north") {
-        renderer->SetAnimation("idle_back");
-    } else if (m_dir == "south") {
-        renderer->SetAnimation("idle_front");
-    } else {
-        renderer->SetAnimation("idle_right");
-
+    auto state = actor->GetComponent<StateCharacter>();
+    Direction dir;
+    switch (m_dir[0]) {
+        case 'w':
+            dir = Direction::WEST;
+            break;
+        case 'e':
+            dir = Direction::EAST;
+            break;
+        case 'n':
+            dir = Direction::NORTH;
+            break;
+        case 's':
+            dir = Direction::SOUTH;
+            break;
     }
+    state->SetDirection(dir);
     SetComplete();
 
 }

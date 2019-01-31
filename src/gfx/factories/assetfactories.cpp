@@ -62,6 +62,7 @@ std::unique_ptr<IModel> SimpleModelFactory::Create (luabridge::LuaRef& ref) {
 
     // loop through animations
     for (int i = 0; i < an.length(); ++i) {
+
         luabridge::LuaRef a = an[i+1];
         LuaTable at (a);
         std::string animName = at.Get<std::string>("name");
