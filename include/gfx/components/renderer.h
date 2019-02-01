@@ -12,7 +12,6 @@
 #include <memory>
 #include "gfx/component.h"
 #include "gfx/mesh.h"
-#include "gfx/framechangehandler.h"
 
 class Renderer : public Component {
 public:

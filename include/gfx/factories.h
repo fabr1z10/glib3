@@ -59,7 +59,7 @@ FACTORY(LightComponentFactory, Component)
 //FACTORY(RaycastControllerComponentFactory, Component)
 
 // Frame handlers
-FACTORY(RelativePosFrameHandler, IFrameChangeHandler)
+
 
 // Runners
 FACTORY(HotSpotManagerFactory, Runner)

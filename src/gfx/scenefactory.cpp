@@ -153,23 +153,12 @@ std::shared_ptr<Entity> SceneFactory::Create() {
     }
 
 
-
-//    // read assets
-//    if (roomTable.HasKey("assets")) {
-//        luabridge::LuaRef assets = roomTable.Get<luabridge::LuaRef>("assets");
-//        for (int i = 0; i < assets.length();++i) {
-//            luabridge::LuaRef a = assets[i+1];
-//            std::string id = a["id"].cast<std::string>();
-//            auto asset = GetShared<IMesh>(a);
-//            Engine::get().GetAssetManager().AddMesh(id, asset);
-//            // check if mesh has additional info
-//            luabridge::LuaRef additionalInfo = a["addinfo"];
-//            if (!additionalInfo.isNil()) {
-//                std::cout << "Hey, mesh has additional info!\n";
-//                Engine::get().GetAssetManager().AddMeshInfo(id, additionalInfo);
-//            }
-//        }
-//    }
+    // load room-specific assets
+    auto roomAssets = roomTable.GetVector<std::string>("assets");
+    for (auto& a : roomAssets) {
+        // load the asset
+        LoadModel(a);
+    }
 
     // read the scene tree
     auto rootNode = std::make_shared<Entity>();
@@ -203,19 +192,35 @@ void SceneFactory::PostInit() {
     }
 }
 
-void SceneFactory::CleanUp() {
-    luabridge::LuaRef roomRef = luabridge::getGlobal(LuaWrapper::L, "room");
-    LuaTable table (roomRef);
-    luabridge::LuaRef assets = table.Get<luabridge::LuaRef>("assets");
-    for (int i = 0; i < assets.length();++i) {
-        luabridge::LuaRef a = assets[i+1];
-        LuaTable assetTable(a);
-        std::string id = assetTable.Get<std::string>("id");
-        std::string type = assetTable.Get<std::string>("type");
-        if (type == "sprite") {
-            Engine::get().GetAssetManager().RemoveModel(id);
 
-        }
+void SceneFactory::LoadModel (const std::string& model) {
+    static luabridge::LuaRef modelsDef = LuaWrapper::GetGlobal("models");
+    if (modelsDef.isNil()) {
+        GLIB_FAIL("No models available!")
+    }
+    std::cout << "*** load asset " << model << " ... \n";
+    luabridge::LuaRef modelDef = modelsDef[model];
+    if (modelDef.isNil()) {
+        GLIB_FAIL("Unknown model " << model);
+    }
+    auto& am = Engine::get().GetAssetManager();
+    auto asset = GetShared<IModel>(modelDef);
+    am.AddModel(model, asset);
+
+}
+
+void SceneFactory::CleanUp() {
+    luabridge::LuaRef roomRef = LuaWrapper::GetGlobal("room");
+    LuaTable table (roomRef);
+
+    // unload room-specific assets
+    auto roomAssets = table.GetVector<std::string>("assets");
+    auto& assetManager = Engine::get().GetAssetManager();
+    luabridge::LuaRef modelsDef = LuaWrapper::GetGlobal("models");
+    for (auto& a : roomAssets) {
+        // load the asset
+        std::cout << "*** dropping asset" << a << " ... \n";
+        assetManager.RemoveModel(a);
     }
 
     roomRef = luabridge::Nil();

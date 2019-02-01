@@ -17,9 +17,14 @@ std::unique_ptr<IModel> CompositeModelFactory::Create (luabridge::LuaRef& ref) {
         std::string name = table.Get<std::string>("name");
         std::string parent = table.Get<std::string>("parent", "");
         std::string mesh = table.Get<std::string>("mesh");
+        // DEPENDENCIES. IF simplemodls are not loaded, then do it now!
+
         SimpleModel* m = dynamic_cast<SimpleModel*>(Engine::get().GetAssetManager().GetModel(mesh).get());
         if (model == nullptr) {
-            GLIB_FAIL("Composite models requires simple model components. " << mesh << " is not a simpòe model.");
+            // mmmh the model is not available, try to get it now
+//            auto sceneFactory = Engine::get().GetSceneFactory();
+//            sceneFactory->LoadModel(mesh);
+//            m = dynamic_cast<SimpleModel*>(Engine::get().GetAssetManager().GetModel(mesh).get());
         }
         model->AddComponent(name, m, parent);
     });

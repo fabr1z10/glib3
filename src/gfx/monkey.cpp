@@ -23,10 +23,10 @@ Monkey::Monkey() {
 
 void Monkey::LoadFonts() {
     // load fonts
-    luabridge::LuaRef fonts = luabridge::getGlobal(LuaWrapper::L, "fonts");
-    if (!fonts.isNil()) {
-        for (int i = 0; i < fonts.length(); ++i) {
-            luabridge::LuaRef f = fonts[i + 1];
+    auto fontsRef = LuaWrapper::GetGlobal("fonts");
+    if (!fontsRef.isNil()) {
+        for (int i = 0; i < fontsRef.length(); ++i) {
+            luabridge::LuaRef f = fontsRef[i + 1];
             std::string name = f["name"].cast<std::string>();
             std::string file = f["file"].cast<std::string>();
             Engine::get().GetAssetManager().AddFont(name, file);

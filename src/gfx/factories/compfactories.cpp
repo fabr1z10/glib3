@@ -14,7 +14,6 @@
 #include <gfx/components/depth.h>
 #include <gfx/components/follow.h>
 #include <gfx/components/follow3d.h>
-#include <gfx/components/relativepos.h>
 
 #include <gfx/components/billboard.h>
 #include <gfx/components/parallax.h>
@@ -60,9 +59,6 @@ std::unique_ptr<Component> TextComponentFactory::Create(luabridge::LuaRef &ref) 
     return std::move(renderer);
 }
 
-std::unique_ptr<IFrameChangeHandler> RelativePosFrameHandler::Create(luabridge::LuaRef &ref) {
-    return std::unique_ptr<IFrameChangeHandler>(new RelativePosHandler);
-}
 
 std::unique_ptr<Component> GfxComponentFactory::Create(luabridge::LuaRef & ref) {
     LuaTable table(ref);

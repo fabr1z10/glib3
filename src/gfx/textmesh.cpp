@@ -41,9 +41,8 @@ void TextMesh::UpdateText(const std::string& msg, float maxLineWidth) {
     float y = -m_fontSize;
     unsigned int letterCount = 0;
 
-    m_bounds.min.x = 1000;
-    m_bounds.min.y = 1000;
-    m_bounds.max.x = m_bounds.max.y = -1000;
+    m_bounds.min = glm::vec3(std::numeric_limits<float>::infinity());
+    m_bounds.max.x glm::vec3(-std::numeric_limits<float>::infinity());
     m_lines = lines.size();
 
     // loop through lines

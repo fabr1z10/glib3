@@ -25,5 +25,10 @@ public:
     luabridge::LuaRef s = luabridge::getGlobal(L, name.c_str());
         s(args...);
     }
+
+    static luabridge::LuaRef GetGlobal (const std::string& name){
+        return luabridge::getGlobal(L, name.c_str());
+    }
+
     static lua_State* L;
 };

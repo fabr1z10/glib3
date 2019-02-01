@@ -11,6 +11,9 @@
 
 class AssetManager {
 public:
+    void SetDirectory(const std::string&);
+    std::string GetDirectory() const;
+
     void AddFont(const std::string &name, const std::string &file);
     Font *GetFont(const std::string &) const;
     Tex* GetTexture(const std::string&);
@@ -20,10 +23,6 @@ public:
     std::shared_ptr<IModel> GetModel(const std::string& name) const;
     const std::unordered_map<std::string, std::shared_ptr<IModel>>& GetModels() const;
 
-    luabridge::LuaRef GetMeshInfo (const std::string& name);
-    void AddMeshInfo (const std::string& name, luabridge::LuaRef);
-    void SetDirectory(const std::string&);
-    std::string GetDirectory() const;
 
     void Clear();
 
@@ -34,10 +33,9 @@ public:
 
 
 private:
-    std::unordered_map<std::string, std::unique_ptr<Font>> m_fonts;
-    std::unordered_map<std::string, std::unique_ptr<Tex>> m_textures;
+    std::unordered_map<std::string, std::shared_ptr<Font>> m_fonts;
+    std::unordered_map<std::string, std::shared_ptr<Tex>> m_textures;
     std::unordered_map<std::string, std::shared_ptr<IModel>> m_models;
-    //std::unordered_map<std::string, std::shared_ptr<Model>> m_models;
     std::unordered_map<std::string, luabridge::LuaRef> m_meshAddInfo;
     std::string m_directory;
 };

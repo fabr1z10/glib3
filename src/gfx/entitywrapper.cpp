@@ -280,7 +280,7 @@ luabridge::LuaRef EntityWrapper::GetTextInfo() {
     Renderer* r = m_underlying->GetComponent<Renderer>();
     TextMesh* tm = dynamic_cast<TextMesh*>(r->GetMesh());
     luabridge::LuaRef rr = luabridge::newTable(LuaWrapper::L);
-    glm::vec2 f = tm->getBounds().GetSize();
+    glm::vec3 f = tm->GetBounds().GetExtents();
     rr["width"] = f.x;
     rr["height"] = f.y;
     return rr;

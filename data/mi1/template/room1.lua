@@ -25,9 +25,9 @@ function generateBasicRoom (args)
 			{ type = "scheduler" }
 		},
 		assets = {
-			sprites.arrowup,
-			sprites.arrowdown,
-			sprites.guybrush
+			"arrow_up",
+			"arrow_down",
+			--"guybrush" change with input param
 		},
 		scene = {
 			{
@@ -40,15 +40,15 @@ function generateBasicRoom (args)
 					viewport = {0, 56, 320, 144}
 				},
 				children = {
-					factory.player.create { 
-						pos= startPos.pos, 
-						model="guybrush", 
-						facing = startPos.facing, 
-						scroll = (room_width > 320 and enableScroll),
-						depth = args.depth,
-						scale = args.scale,
-						collide = args.collide
-					}
+					-- factory.player.create { 
+					-- 	pos= startPos.pos, 
+					-- 	model="guybrush", 
+					-- 	facing = startPos.facing, 
+					-- 	scroll = (room_width > 320 and enableScroll),
+					-- 	depth = args.depth,
+					-- 	scale = args.scale,
+					-- 	collide = args.collide
+					-- }
 				}
 			},
 			{
@@ -73,44 +73,44 @@ function generateBasicRoom (args)
 								}
 						    },
 							factory.verbbutton.create {pos={2, 40}, verb = config.verbs.open},
-							factory.verbbutton.create {pos={2, 32}, verb = config.verbs.close},
-							factory.verbbutton.create {pos={2, 24}, verb = config.verbs.push},
-							factory.verbbutton.create {pos={2, 16}, verb = config.verbs.pull},
-							factory.verbbutton.create {pos={48, 40}, verb = config.verbs.walk},
-							factory.verbbutton.create {pos={48, 32}, verb = config.verbs.pick},
-							factory.verbbutton.create {pos={48, 24}, verb = config.verbs.talk},
-							factory.verbbutton.create {pos={48, 16}, verb = config.verbs.give},
-							factory.verbbutton.create {pos={100, 40}, verb = config.verbs.use},
-							factory.verbbutton.create {pos={100, 32}, verb = config.verbs.look},
-							factory.verbbutton.create {pos={100, 24}, verb = config.verbs.turnon},
-							factory.verbbutton.create {pos={100, 16}, verb = config.verbs.turnoff},
-							{
-								type = "textview", 
-								tag="inventory",
-								pos = {150, 0},
-								size = {170, 48},
-								font_size = 8,
-								lines = 6,
-								deltax = 26,
-								factory = factory.inventorybutton.create
-							}
+							-- factory.verbbutton.create {pos={2, 32}, verb = config.verbs.close},
+							-- factory.verbbutton.create {pos={2, 24}, verb = config.verbs.push},
+							-- factory.verbbutton.create {pos={2, 16}, verb = config.verbs.pull},
+							-- factory.verbbutton.create {pos={48, 40}, verb = config.verbs.walk},
+							-- factory.verbbutton.create {pos={48, 32}, verb = config.verbs.pick},
+							-- factory.verbbutton.create {pos={48, 24}, verb = config.verbs.talk},
+							-- factory.verbbutton.create {pos={48, 16}, verb = config.verbs.give},
+							-- factory.verbbutton.create {pos={100, 40}, verb = config.verbs.use},
+							-- factory.verbbutton.create {pos={100, 32}, verb = config.verbs.look},
+							-- factory.verbbutton.create {pos={100, 24}, verb = config.verbs.turnon},
+							-- factory.verbbutton.create {pos={100, 16}, verb = config.verbs.turnoff},
+							-- {
+							-- 	type = "textview", 
+							-- 	tag="inventory",
+							-- 	pos = {150, 0},
+							-- 	size = {170, 48},
+							-- 	font_size = 8,
+							-- 	lines = 6,
+							-- 	deltax = 26,
+							-- 	factory = factory.inventorybutton.create
+							-- }
 						}
 					},
-					{
-						pos  = {0,0,0},
-						children = {
-							{
-								tag = "dialogueui",
-								type = "textview", 
-								pos = {0, 0},
-								size = {320, 56},
-								font_size = 8,
-								lines = 6,
-								deltax = 26,
-								factory = factory.dialoguebutton.create
-							}
-						}
-					}
+					-- {
+					-- 	pos  = {0,0,0},
+					-- 	children = {
+					-- 		{
+					-- 			tag = "dialogueui",
+					-- 			type = "textview", 
+					-- 			pos = {0, 0},
+					-- 			size = {320, 56},
+					-- 			font_size = 8,
+					-- 			lines = 6,
+					-- 			deltax = 26,
+					-- 			factory = factory.dialoguebutton.create
+					-- 		}
+					-- 	}
+					-- }
 				}
 			}
 		}
@@ -135,9 +135,9 @@ function generateBasicRoom (args)
 	end
 
 	-- get the inventory
-	table.insert(p.initstuff, function()
-		setverb (config.verbs.walk)
-		refresh_inventory()
+	--table.insert(p.initstuff, function()
+		--setverb (config.verbs.walk)
+		--refresh_inventory()
 		-- c:addtext ( { text="ciao" })
 		-- c:addtext ( { text="come" })
 		-- c:addtext( { text ="stai" })
@@ -145,10 +145,10 @@ function generateBasicRoom (args)
 		-- c:addtext({ text="stronzo" })
 		-- c:addtext( { text="duro"})
 		-- c:addtext( {text="anvedi"})
-	end)
+	--end)
 
 	if (p.startPos.func ~= nil) then
-	
+
 	 	table.insert(p.initstuff, p.startPos.func)
 	 end
 	

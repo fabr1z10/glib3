@@ -19,7 +19,7 @@ require ("text/" .. config.lang .."/text")
 
 
 config.verbs = {
-	open = { code="open", text = strings.ui.open, objects = 1 },
+ 	open = { code="open", text = strings.ui.open, objects = 1 },
     close = { code="close", text = strings.ui.close, objects = 1 },
     push = { code="push", text = strings.ui.push, objects = 1 },
     pull = { code="pull", text = strings.ui.pull, objects = 1 },
@@ -44,72 +44,74 @@ fonts = {
 }
 
 
--- this stuff will change at gametime
+-- -- this stuff will change at gametime
 variables = {
-    _room = "bridge",
-	_previousroom="",
-	_actionInfo = {
-        verb = nil,
-        obj1 = nil,
-        obj2 = nil,
-        selectSecond = false
-    },
-	first_time_mancomb = true,
-	first_time_estevan = true,
-	door_village_scummbar = 0,
-	door_scummbar_kitchen = 0,
-	door_kitchen_pier = 0,
-	door_voodoolady = 0,
-	door_shop = 0,
-	cook_in_kitchen = true,
-	meat_in_pot = false,
-	can_pickup_fish = true,
-    seagull_jump = 1,
-    seagull_flying = false,
-	talked_to_important_pirates = false,
-	talked_to_citizen = false,
-    talked_about_map = false,
-	fish_taken=false,
-	talking_to_voodoolady = false,
-	talked_to_voodoolady = false,
-	voodoolady_told_future = false,
-	sword_paid = false,
-	shovel_paid = false,
-	know_sword_price = false,
-	know_shovel_price = false,
-    met_fester = false,
-	entered_circus = false,
-	circus_knows_trick = false,
-	circus_knows_helmet = false,
-	talked_to_troll = false,
-	inventory = {
-		-- put here your belongings
+    _room = "village2",
+-- 	_previousroom="",
+-- 	_actionInfo = {
+--         verb = nil,
+--         obj1 = nil,
+--         obj2 = nil,
+--         selectSecond = false
+--     },
+-- 	first_time_mancomb = true,
+-- 	first_time_estevan = true,
+-- 	door_village_scummbar = 0,
+-- 	door_scummbar_kitchen = 0,
+-- 	door_kitchen_pier = 0,
+-- 	door_voodoolady = 0,
+-- 	door_shop = 0,
+-- 	cook_in_kitchen = true,
+-- 	meat_in_pot = false,
+-- 	can_pickup_fish = true,
+--     seagull_jump = 1,
+--     seagull_flying = false,
+-- 	talked_to_important_pirates = false,
+-- 	talked_to_citizen = false,
+--     talked_about_map = false,
+-- 	fish_taken=false,
+-- 	talking_to_voodoolady = false,
+-- 	talked_to_voodoolady = false,
+-- 	voodoolady_told_future = false,
+-- 	sword_paid = false,
+-- 	shovel_paid = false,
+-- 	know_sword_price = false,
+-- 	know_shovel_price = false,
+--     met_fester = false,
+-- 	entered_circus = false,
+-- 	circus_knows_trick = false,
+-- 	circus_knows_helmet = false,
+-- 	talked_to_troll = false,
+-- 	inventory = {
+-- 		-- put here your belongings
 		
-	}
+-- 	}
 }
 
--- DEBUG STUFF
-variables.inventory["pieces_of_eight"] = 10000
-variables.inventory["kitchen.pot"] = 1
-variables.entered_circus = true
-variables.circus_knows_trick = true
-variables.circus_knows_helmet = true
-variables.inventory["kitchen.fish"] = 1
--- END DEBUG
+-- -- DEBUG STUFF
+-- variables.inventory["pieces_of_eight"] = 10000
+-- variables.inventory["kitchen.pot"] = 1
+-- variables.entered_circus = true
+-- variables.circus_knows_trick = true
+-- variables.circus_knows_helmet = true
+-- variables.inventory["kitchen.fish"] = 1
+-- -- END DEBUG
 
-require ("script")
-require ("funcs")
+-- require ("script")
+require ("funcs2")
 
 
--- load room specific scripts
-scripts = {}
+-- -- load room specific scripts
+-- scripts = {}
 factory = {}
 action = {}
-items = {}
-dialogues = {}
-sprites = {}
-load_all("sprites")
+items2 = {}
+spritesheets = {}
+models = {}
+-- dialogues = {}
+-- sprites = {}
+load_all("sprites2")
 load_all("factories")
-load_all("scripts")
-load_all("items")
-load_all("dialogues")
+-- load_all("scripts")
+load_all("items2")
+-- load_all("dialogues")

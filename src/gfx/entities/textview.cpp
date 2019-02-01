@@ -218,8 +218,8 @@ void TextView::SetActiveInnerCheck(bool value) {
 
 void TextView::AddArrows() {
 
-    auto arrowUpMesh = Engine::get().GetAssetManager().GetModel("arrowup");
-    auto arrowDownMesh = Engine::get().GetAssetManager().GetModel("arrowdown");
+    auto arrowUpMesh = Engine::get().GetAssetManager().GetModel("arrow_up");
+    auto arrowDownMesh = Engine::get().GetAssetManager().GetModel("arrow_down");
 
     std::shared_ptr<Entity> arrowUp = (std::move(SpriteFactory::Create(arrowUpMesh)));
     std::shared_ptr<Entity> arrowDown = std::move(SpriteFactory::Create(arrowDownMesh));
