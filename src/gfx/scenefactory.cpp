@@ -80,7 +80,7 @@ SceneFactory::SceneFactory() {
 
 template <>
 std::unique_ptr<Entity> SceneFactory::Get<Entity> (luabridge::LuaRef& ref) {
-    return std::move(m_entityFactory.Create(ref));
+    return m_entityFactory.Create(ref);
 }
 
 template <>
@@ -115,7 +115,7 @@ std::unique_ptr<Component> SceneFactory::Get<Component> (luabridge::LuaRef& ref)
 
 template <>
 std::unique_ptr<Activity> SceneFactory::Get<Activity> (luabridge::LuaRef& ref) {
-    return std::move(m_activityFactory.Create(ref));
+    return m_activityFactory.Create(ref);
 }
 
 template <>

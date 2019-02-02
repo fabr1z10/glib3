@@ -18,6 +18,7 @@
 class IntersectionFunction {
 public:
     virtual CollisionReport operator() (Shape* s1, Shape* s2, const glm::mat4& t1, const glm::mat4& t2) = 0;
+    virtual ~IntersectionFunction() = default;
 };
 
 

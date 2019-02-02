@@ -33,7 +33,7 @@ std::unique_ptr<Entity> SpriteFactory::Create(std::shared_ptr<SimpleModel> model
 
 std::unique_ptr<Entity> SpriteFactory::Create (std::shared_ptr<CompositeModel> model) {
     auto entity = std::unique_ptr<Entity>(new Entity);
-    auto& assetManager = Engine::get().GetAssetManager();
+    //auto& assetManager = Engine::get().GetAssetManager();
 
     std::unordered_map<std::string, std::shared_ptr<Entity>> entities;
 

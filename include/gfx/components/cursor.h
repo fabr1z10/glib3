@@ -11,9 +11,9 @@ public:
     Cursor () : Component() {}
     void Start() override ;
     void Update(double) override {}
-    void CursorPosCallback(GLFWwindow*, double, double);
-    void MouseButtonCallback(GLFWwindow*, int, int, int) {}
-    virtual void ScrollCallback(GLFWwindow*, double, double) {}
+    void CursorPosCallback(GLFWwindow*, double, double) override;
+    void MouseButtonCallback(GLFWwindow*, int, int, int) override {}
+    virtual void ScrollCallback(GLFWwindow*, double, double) override {}
     void Enable(bool) override;
     using ParentClass = Cursor;
 private:

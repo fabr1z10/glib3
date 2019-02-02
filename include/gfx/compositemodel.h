@@ -17,6 +17,7 @@ struct AnimationDefinition {
 class CompositeModel : public IModel {
 public:
     CompositeModel () {}
+    
     std::unique_ptr<IModelStatus> GetModelStatus() override;
     void AddComponent(const std::string&, SimpleModel* model, const std::string& parent);
     const std::unordered_map<std::string, ModelComponent>& GetComponents() const;

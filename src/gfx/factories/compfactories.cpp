@@ -380,15 +380,15 @@ std::unique_ptr<Function2D> GetFunc2D(luabridge::LuaRef& ref) {
     if (type == "linear_x") {
         glm::vec4 values = table.Get<glm::vec4>("values");
         std::unique_ptr<Function2D> f(new Linear2Dx(values[0], values[1], values[2], values[3]));
-        return std::move(f);
+        return f;
     } else if (type == "linear_y") {
         glm::vec4 values = table.Get<glm::vec4>("values");
         std::unique_ptr<Function2D> f(new Linear2Dy(values[0], values[1], values[2], values[3]));
-        return std::move(f);
+        return f;
     } else if (type == "constant") {
         float value = table.Get<float>("value");
         std::unique_ptr<Function2D> f(new Constant2D(value));
-        return std::move(f);
+        return f;
     } else if (type == "patchwise") {
         std::unique_ptr<PatchwiseLinear2D> p(new PatchwiseLinear2D);
         luabridge::LuaRef quads = table.Get<luabridge::LuaRef>("rects");
@@ -402,7 +402,7 @@ std::unique_ptr<Function2D> GetFunc2D(luabridge::LuaRef& ref) {
             auto fu = GetFunc2D(f);
             p->AddFunction(domain, std::move(fu));
         }
-        return std::move(p);
+        return p;
     }
     GLIB_FAIL("Unknown function " << type);
 }
@@ -411,10 +411,10 @@ std::unique_ptr<Function2D> GetFunc2D(luabridge::LuaRef& ref) {
 std::unique_ptr<Component> KeyInputComponentFactory::Create(luabridge::LuaRef & ref) {
     LuaTable table(ref);
     // read input
-    int maxLength = table.Get<int>("maxlength");
+    //int maxLength = table.Get<int>("maxlength");
     // callback function when user hits enter
     luabridge::LuaRef callback = table.Get<luabridge::LuaRef>("func");
-    return std::unique_ptr<KeyInput>(new KeyInput(maxLength, callback));
+    return std::unique_ptr<KeyInput>(new KeyInput(callback));
 }
 
 std::unique_ptr<Component> LuaKeyboardComponentFactory::Create(luabridge::LuaRef &ref) {

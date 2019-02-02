@@ -10,7 +10,7 @@ Hit::Hit () : StateBehaviour()
 {}
 
 HitCollision::HitCollision (int frame, std::shared_ptr<Shape> collisionShape, glm::vec2 offset, int mask, luabridge::LuaRef callback) :
-Hit(), m_frame(frame), m_shape(collisionShape), m_mask(mask), m_offset(offset), m_hitDone{false}, m_callback(callback)
+Hit(), m_shape(collisionShape), m_hitDone{false}, m_callback(callback)
 {}
 
 void Hit::Init(Entity* e) {

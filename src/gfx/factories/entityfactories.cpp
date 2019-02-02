@@ -62,7 +62,7 @@ std::unique_ptr<Entity> EntityFactory::Create(luabridge::LuaRef& ref) {
         std::cout << "ciaos";
     }
     entity->SetActive(active);
-    return std::move(entity);
+    return entity;
 }
 
 std::unique_ptr<Entity> ButtonFactory::Create(luabridge::LuaRef &ref) {
@@ -93,7 +93,7 @@ std::unique_ptr<Entity> OutlineTextFactory::Create(luabridge::LuaRef &ref) {
     std::string name = table.Get<std::string>("name", "");
     if (!tag.empty()) parent->SetTag(tag);
     if (!name.empty()) parent->SetName(name);
-    bool active = table.Get<bool>("active", true);
+    //bool active = table.Get<bool>("active", true);
     glm::vec3 pos = table.Get<glm::vec3>("pos", glm::vec3(0.0f));
     if (table.HasKey("angle")) {
         float angle = table.Get<float>("angle",0.0f);
@@ -124,7 +124,7 @@ std::unique_ptr<Entity> OutlineTextFactory::Create(luabridge::LuaRef &ref) {
         //entity->AddComponent(renderer);
         parent->AddChild(entity);
     }
-    return std::move(parent);
+    return parent;
 }
 
 std::unique_ptr<Entity> TextViewFactory::Create(luabridge::LuaRef &ref) {

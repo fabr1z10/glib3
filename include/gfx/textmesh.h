@@ -27,7 +27,7 @@ private:
     //Bounds m_bounds;
     int m_lines;
     TextAlignment m_align;
-    glm::vec2 m_topLeft, m_bottomRight;
+    //glm::vec2 m_topLeft, m_bottomRight;
 };
 
 inline std::string TextMesh::GetText() const { return m_text;}

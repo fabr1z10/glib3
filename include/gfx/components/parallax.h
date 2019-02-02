@@ -21,8 +21,8 @@ private:
     float m_horizontalTranslation;
     float m_verticalTranslation;
     glm::vec2 m_camSize;
-    glm::vec3 m_previousPos;
+    //glm::vec3 m_previousPos;
     float m_x0;
     float m_deltaX;
-    int m_prevn;
+    //int m_prevn;
 };

@@ -6,7 +6,7 @@ file(GLOB SPRITEVIEW_SRC *.cpp)
 
 
 add_executable(spriteview ${SPRITEVIEW_INCLUDE} ${SPRITEVIEW_SRC})
-target_compile_features(spriteview PRIVATE cxx_std_14)
+
 target_link_libraries(spriteview ${OPENGL_LIBRARIES} glfw ${GLEW_LIBRARIES} ${FREETYPE_LIBRARIES} ${LUA_LIBRARIES} ${PNG_LIBRARY}
         ${JPEG_LIBRARIES} gfx)
 if(APPLE)

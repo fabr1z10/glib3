@@ -36,6 +36,6 @@ private:
     float m_horizontalRaySpace;
     float m_verticalRaySpace;
     bool m_handleAnimations;
-    glm::vec2 m_prevMove;
+    //glm::vec2 m_prevMove;
     std::unordered_map<std::string, std::string> m_animations;
 };

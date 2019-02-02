@@ -1,7 +1,7 @@
 #pragma once
 
 #include <gfx/activity.h>
-
+#include <string>
 
 class SetState : public Activity {
 public:

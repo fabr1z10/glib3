@@ -26,9 +26,9 @@ public:
 private:
     Entity* m_entity;
     luabridge::LuaRef m_callback;
-    int m_frame;
-    int m_mask;
-    glm::vec2 m_offset;
+    //t m_frame;
+    //int m_mask;
+    //glm::vec2 m_offset;
     std::shared_ptr<Shape> m_shape;
     CollisionEngine* m_engine;
     bool m_hitDone;

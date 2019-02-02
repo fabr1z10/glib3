@@ -39,6 +39,7 @@ inline State* StateMachine::GetCurrentState() {
 class StateEvent {
 public:
     virtual void Run(StateMachine*) = 0;
+    virtual ~StateEvent() = default;
 };
 
 class SEChangeState : public StateEvent {

@@ -5,6 +5,7 @@
 
 class State2 {
 public:
+    virtual ~State2() = default;
     virtual void Init () = 0;
     virtual void Run (double) = 0;
     virtual void End () = 0;
@@ -15,7 +16,7 @@ class StateMachine2 : public Component {
 public:
     StateMachine2();
     void Start () override;
-    void Update(double);
+    void Update(double) override;
     void ResetState() ;
     void SetState (const std::string&);
 private:

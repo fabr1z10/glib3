@@ -9,7 +9,8 @@
 // implements a linear function passing through points (x0, y0) and (x1, y1)
 class LinearFunction {
 public:
-    LinearFunction(float x0, float y0, float x1, float y1) : m_x0{x0}, m_y0{y0}, m_y1{y1}, m_delta{(y1-y0)/(x1-x0)} {}
+    LinearFunction(float x0, float y0, float x1, float y1) : m_x0{x0}, m_y0{y0},
+    m_delta{(y1-y0)/(x1-x0)} {}
     float operator() (float x) {
         return m_y0 + (x - m_x0) * m_delta;
     }
@@ -21,7 +22,7 @@ public:
     //    return (value - m_y0) / (m_delta) + m_x0;
     //}
 private:
-    float m_x0, m_y0, m_y1;
+    float m_x0, m_y0;//, m_y1;
     float m_delta;
 
 };
@@ -32,6 +33,7 @@ public:
     virtual float invY (float x, float z) {
         throw;
     }
+    virtual ~Function2D() = default;
 };
 
 class Constant2D : public Function2D {

@@ -61,12 +61,12 @@ private:
 	void VerticalCollisions(glm::vec2& velocity);
 	void UpdateRaycastOrigins();
 
-	int m_handleNotify;
+	//int m_handleNotify;
 	Entity* m_platform;
 	Collider* m_cc;
 	CollisionEngine * m_collision;
-	int m_collisionMaskDown;
-	int m_collisionMaskAny;
+	//int m_collisionMaskDown;
+	//int m_collisionMaskAny;
 	int m_horizontalRayCount;
 	int m_verticalRayCount;
 	float m_horizontalRaySpacing;

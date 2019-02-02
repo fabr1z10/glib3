@@ -13,6 +13,7 @@ enum class ModelType {
 
 class IModelStatus {
 public:
+    virtual ~IModelStatus() = default;
     virtual void Init(Entity*) = 0;
     virtual void Update (double) = 0;
     virtual void AdvanceFrame(int) = 0;
@@ -23,6 +24,7 @@ public:
 // interface for generic model.
 class IModel {
 public:
+    virtual ~IModel() = default;
     virtual std::unique_ptr<IModelStatus> GetModelStatus() = 0;
     virtual ModelType GetType() const = 0;
     virtual Bounds3D GetBounds() const = 0;

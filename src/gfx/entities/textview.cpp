@@ -221,8 +221,8 @@ void TextView::AddArrows() {
     auto arrowUpMesh = Engine::get().GetAssetManager().GetModel("arrow_up");
     auto arrowDownMesh = Engine::get().GetAssetManager().GetModel("arrow_down");
 
-    std::shared_ptr<Entity> arrowUp = (std::move(SpriteFactory::Create(arrowUpMesh)));
-    std::shared_ptr<Entity> arrowDown = std::move(SpriteFactory::Create(arrowDownMesh));
+    std::shared_ptr<Entity> arrowUp = SpriteFactory::Create(arrowUpMesh);
+    std::shared_ptr<Entity> arrowDown = SpriteFactory::Create(arrowDownMesh);
 
     arrowUp->SetName("arrowUp");
     arrowDown->SetName("arrowDown");

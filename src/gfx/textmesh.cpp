@@ -4,6 +4,7 @@
 #include <gfx/shader.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include <unordered_set>
+#include <limits>
 
 using namespace std;
 
@@ -42,7 +43,7 @@ void TextMesh::UpdateText(const std::string& msg, float maxLineWidth) {
     unsigned int letterCount = 0;
 
     m_bounds.min = glm::vec3(std::numeric_limits<float>::infinity());
-    m_bounds.max.x glm::vec3(-std::numeric_limits<float>::infinity());
+    m_bounds.max = glm::vec3(-std::numeric_limits<float>::infinity());
     m_lines = lines.size();
 
     // loop through lines

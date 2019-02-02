@@ -23,5 +23,5 @@ private:
     int m_mask;
     luabridge::LuaRef m_callback;
     CollisionEngine* m_engine;
-    Renderer* m_renderer;
+    //Renderer* m_renderer;
 };

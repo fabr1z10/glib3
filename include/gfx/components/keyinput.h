@@ -7,7 +7,7 @@
 
 class KeyInput : public Component, public KeyboardListener {
 public:
-    KeyInput (int length, luabridge::LuaRef callback) : Component(), KeyboardListener(), m_callback(callback), m_maxLength(length) {}
+    KeyInput (luabridge::LuaRef callback) : Component(), KeyboardListener(), m_callback(callback) {}
     void Start() override;
     void Update(double) override {}
     void KeyCallback(GLFWwindow*, int, int, int, int) override;
@@ -16,7 +16,7 @@ public:
     //void EnableKey(int, bool) override {}
     using ParentClass = KeyInput;
 private:
-    int m_maxLength;
+    //int m_maxLength;
     luabridge::LuaRef m_callback;
     TextMesh* m_mesh;
 };

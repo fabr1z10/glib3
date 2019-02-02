@@ -37,8 +37,8 @@ void ShowMessage::Start() {
 
     // adjust position
 
-    Bounds textBounds = mesh->getBounds();
-    glm::vec2 extents = textBounds.GetExtents();
+    Bounds3D textBounds = mesh->GetBounds();
+    glm::vec2 extents (textBounds.GetExtents());
     glm::vec2 displ(0.0f);
     glm::vec2 camPos(m_mainCam->GetPosition());
     glm::vec2 camSize = 0.5f * m_mainCam->GetSize();

@@ -48,7 +48,7 @@ void Walk::Start() {
     {
         std::vector<glm::vec2> points = ShortestPath::Find(*m_shape, currentPos, m_p);
         //int count = 0;
-        glm::vec2 currentPoint = points.front();
+        //glm::vec2 currentPoint = points.front();
         std::string anim2;
         int flipX{1};
         for (size_t i = 1; i < points.size(); ++i) {

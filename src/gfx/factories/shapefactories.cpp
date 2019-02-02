@@ -26,7 +26,7 @@ std::unique_ptr<Shape> LineFactory::Create(luabridge::LuaRef &ref) {
 
 std::unique_ptr<Shape> PolyFactory::Create(luabridge::LuaRef& ref) {
     LuaTable at (ref);
-    glm::vec2 offset = at.Get<glm::vec2>("offset", glm::vec2(0.0f));
+    //glm::vec2 offset = at.Get<glm::vec2>("offset", glm::vec2(0.0f));
     std::vector<float> outline = at.GetVector<float>("outline");
     std::vector<glm::vec2> points;
     for (size_t i = 0; i < outline.size(); i = i + 2)
@@ -66,7 +66,7 @@ std::unique_ptr<Shape> EllipseFactory::Create(luabridge::LuaRef& ref) {
 
 std::unique_ptr<Shape> GraphFactory::Create(luabridge::LuaRef& ref) {
     LuaTable at (ref);
-    glm::vec2 offset = at.Get<glm::vec2>("offset", glm::vec2(0.0f));
+    //glm::vec2 offset = at.Get<glm::vec2>("offset", glm::vec2(0.0f));
     // read the vertices
     luabridge::LuaRef rVert = at.Get<luabridge::LuaRef>("vertices");
     std::vector<glm::vec2> vertices;
