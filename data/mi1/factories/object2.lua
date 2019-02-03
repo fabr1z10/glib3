@@ -2,9 +2,10 @@ factory.objc = function(args)
 
 	local objId = args.id
 	-- fetch the object
-	local object = items[objId]
+	local object = items2[objId]
 	if (object == nil) then
-		print ("Error! Unknown object " .. args.object)
+		print ("Error! Unknown object " .. args.id)
+		return
 	end
 
 	-- These values can be overridden in the args

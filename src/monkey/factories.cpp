@@ -6,8 +6,17 @@
 #include <monkey/activities/turn.h>
 #include <monkey/activities/say.h>
 #include <monkey/activities/enableblock.h>
-//
-// /
+#include <monkey/components/charactercomponent.h>
+
+std::unique_ptr<Component> CharacterStateFactory::Create(luabridge::LuaRef& ref) {
+    LuaTable table(ref);
+    std::unique_ptr<StateCharacter> c(new StateCharacter);
+    Direction dir = DirectionBuilder::FromString(table.Get<std::string>("dir"));
+    c->SetDirection(dir);
+    return c;
+}
+
+
 // Read the walk-area
 std::unique_ptr<Component> WalkAreaComponentFactory::Create(luabridge::LuaRef& ref) {
     LuaTable table(ref);

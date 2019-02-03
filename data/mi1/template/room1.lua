@@ -40,6 +40,7 @@ function generateBasicRoom (args)
 					viewport = {0, 56, 320, 144}
 				},
 				children = {
+					factory.objc { id="guybrush", pos=startPos.pos, model="guybrush", look = startPos.facing }
 					-- factory.player.create { 
 					-- 	pos= startPos.pos, 
 					-- 	model="guybrush", 

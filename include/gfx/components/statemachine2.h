@@ -14,7 +14,7 @@ public:
 
 class StateMachine2 : public Component {
 public:
-    StateMachine2();
+    StateMachine2() {}
     void Start () override;
     void Update(double) override;
     void ResetState() ;
