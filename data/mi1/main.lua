@@ -8,6 +8,7 @@ engine = {
 -- this is constant config stuff
 config = {
 	lang = "eng",
+    default_verb = "walk",
     ui_unselected_color = { 0, 170, 0, 255},
     ui_selected_color = {255, 255, 85, 255},
     ui_currentaction_color ={0, 170, 170, 255},
@@ -48,12 +49,12 @@ fonts = {
 variables = {
     _room = "village2",
 -- 	_previousroom="",
--- 	_actionInfo = {
---         verb = nil,
---         obj1 = nil,
---         obj2 = nil,
---         selectSecond = false
---     },
+    _actionInfo = {
+        verb = nil,
+        obj1 = nil,
+        obj2 = nil,
+        selectSecond = false
+    },
 -- 	first_time_mancomb = true,
 -- 	first_time_estevan = true,
 -- 	door_village_scummbar = 0,
