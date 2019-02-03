@@ -27,8 +27,8 @@ room = generateBasicRoom (roomInfo)
 -- room:add_asset(sprites.rat)
 -- room:add_asset(sprites["village2.door_voodoo"])
 
--- room:add( {
--- 	{ pos = {0, 0,-3}, components = { { type="gfx", image="gfx/village2.png" }}},
+room:add( {
+	{ pos = {0, 0,-3}, components = { { type="gfx", image="gfx/village2.png" }}},
 -- 	{
 -- 		pos = {0,0,0},
 -- 		components = {
@@ -54,7 +54,7 @@ room = generateBasicRoom (roomInfo)
 -- 	factory.object.create { object = "village2.door_voodoolady" },
 
 
--- })
+})
 
 
 function room.afterstartup() 

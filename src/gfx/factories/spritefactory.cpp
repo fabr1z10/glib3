@@ -5,6 +5,50 @@
 #include <gfx/components/animator.h>
 #include <gfx/engine.h>
 
+std::unique_ptr<Entity> SpriteFactory::Create (luabridge::LuaRef& ref) {
+    LuaTable table(ref);
+    std::string tag = table.Get<std::string>("tag");
+    std::string name = table.Get<std::string>("name");
+
+    
+    std::string modelId = table.Get<std::string>("model");
+    auto model = Engine::get().GetAssetManager().GetModel(modelId);
+    auto entity = Create(model);
+    
+    if (table.HasKey("anim")) {
+        std::string anim = table.Get<std::string>("anim");
+        auto animator = entity->GetComponent<Animator>();
+        animator->SetAnimation(anim);
+    }
+    
+    // set the position (default origin)
+    glm::vec3 pos = table.Get<glm::vec3>("pos", glm::vec3(0.0f));
+    bool flip = table.Get<bool>("flipx", false);
+    entity->SetPosition(pos);
+    entity->SetFlipX(flip);
+  
+    auto factory = Engine::get().GetSceneFactory();
+    
+    // additional components
+    if (table.HasKey("components")) {
+        luabridge::LuaRef c = table.Get<luabridge::LuaRef>("components");
+        for (int i = 0; i < c.length(); ++i) {
+            luabridge::LuaRef rcomponent = c[i+1];
+            auto component = factory->GetShared<Component>(rcomponent);
+            entity->AddComponent(component);
+        }
+    }
+    
+    if (!tag.empty()) {
+        entity->SetTag(tag);
+    }
+    if (!name.empty()) {
+        entity->SetName(name);
+    }
+
+    return entity;
+}
+
 std::unique_ptr<Entity> SpriteFactory::Create (std::shared_ptr<IModel> mesh) {
     switch (mesh->GetType()) {
         case ModelType::SIMPLESPRITE: {
