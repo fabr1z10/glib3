@@ -7,8 +7,8 @@
 
 std::unique_ptr<Entity> SpriteFactory::Create (luabridge::LuaRef& ref) {
     LuaTable table(ref);
-    std::string tag = table.Get<std::string>("tag");
-    std::string name = table.Get<std::string>("name");
+    std::string tag = table.Get<std::string>("tag", "");
+    std::string name = table.Get<std::string>("name", "");
 
     
     std::string modelId = table.Get<std::string>("model");

@@ -20,6 +20,7 @@ public:
 
     void AddModel (const std::string& name, std::shared_ptr<IModel> mesh);
     void RemoveModel (const std::string& name);
+    bool HasModel (const std::string& name) const;
     std::shared_ptr<IModel> GetModel(const std::string& name) const;
     const std::unordered_map<std::string, std::shared_ptr<IModel>>& GetModels() const;
 

@@ -9,23 +9,20 @@
 std::unique_ptr<IModel> CompositeModelFactory::Create (luabridge::LuaRef& ref) {
 
     LuaTable t(ref);
-
+    auto& am = Engine::get().GetAssetManager();
     std::unique_ptr<CompositeModel> model(new CompositeModel);
     luabridge::LuaRef comps = t.Get<luabridge::LuaRef>("components");
-    lua_loop_array(comps, [&model] (const LuaTable& table) {
+    lua_loop_array(comps, [am, &model] (const LuaTable& table) {
         ModelComponent component;
         std::string name = table.Get<std::string>("name");
         std::string parent = table.Get<std::string>("parent", "");
         std::string mesh = table.Get<std::string>("mesh");
         // DEPENDENCIES. IF simplemodls are not loaded, then do it now!
-
-        SimpleModel* m = dynamic_cast<SimpleModel*>(Engine::get().GetAssetManager().GetModel(mesh).get());
-        if (model == nullptr) {
-            // mmmh the model is not available, try to get it now
-//            auto sceneFactory = Engine::get().GetSceneFactory();
-//            sceneFactory->LoadModel(mesh);
-//            m = dynamic_cast<SimpleModel*>(Engine::get().GetAssetManager().GetModel(mesh).get());
+        if (!am.HasModel(mesh)) {
+            auto factory = Engine::get().GetSceneFactory();
+            factory->LoadModel(mesh);
         }
+        SimpleModel *m = dynamic_cast<SimpleModel *>(Engine::get().GetAssetManager().GetModel(mesh).get());
         model->AddComponent(name, m, parent);
     });
 

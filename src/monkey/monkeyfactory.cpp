@@ -1,9 +1,10 @@
 #include <monkey/monkeyfactory.h>
 #include <monkey/factories.h>
-
+#include <monkey/components/charactercomponent.h>
 
 MonkeyFactory::MonkeyFactory() : SceneFactory() {
     m_componentFactory.Add<WalkAreaComponentFactory>("walkarea");
+    m_componentFactory.Add<CharacterStateFactory>("character");
 
     m_activityFactory.Add<WalkToActFactory>("walk");
     m_activityFactory.Add<TurnActFactory>("turn");

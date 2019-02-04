@@ -27,6 +27,7 @@ void Entity::AddChild(std::shared_ptr<Entity> child) {
     // if engine is running, start
     if (Engine::get().isRunning()) {
         child->Start();
+        child->Begin();
     }
     onAdd.Fire(child.get());
 }
@@ -92,6 +93,14 @@ void Entity::Start() {
     }
     for (auto& m : m_children)
         m->Start();
+}
+
+void Entity::Begin() {
+    for (auto& iter : m_components) {
+        iter.second->Begin();
+    }
+    for (auto& m : m_children)
+        m->Begin();
 
 }
 

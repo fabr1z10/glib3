@@ -27,7 +27,7 @@ function generateBasicRoom (args)
 		assets = {
 			"arrow_up",
 			"arrow_down",
-			--"guybrush" change with input param
+			"guybrush", -- set this as input param
 		},
 		scene = {
 			{
@@ -40,7 +40,14 @@ function generateBasicRoom (args)
 					viewport = {0, 56, 320, 144}
 				},
 				children = {
-					factory.objc { id="guybrush", pos=startPos.pos, model="guybrush", look = startPos.facing }
+					factory.objc { 
+						id="guybrush", 
+						pos={startPos.pos[1], startPos.pos[2], 0}, 
+						tag="player", 
+						dir=startPos.dir, 
+						follow = (room_width > 320 and enableScroll)
+					}
+				}
 					-- factory.player.create { 
 					-- 	pos= startPos.pos, 
 					-- 	model="guybrush", 
@@ -50,7 +57,7 @@ function generateBasicRoom (args)
 					-- 	scale = args.scale,
 					-- 	collide = args.collide
 					-- }
-				}
+				
 			},
 			{
 				tag = "ui",

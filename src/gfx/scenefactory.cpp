@@ -195,6 +195,12 @@ void SceneFactory::PostInit() {
 
 
 void SceneFactory::LoadModel (const std::string& model) {
+    // check if model is already loaded:
+    auto& am = Engine::get().GetAssetManager();
+
+    if (am.HasModel(model)) {
+        return;
+    }
     static luabridge::LuaRef modelsDef = LuaWrapper::GetGlobal("models");
     if (modelsDef.isNil()) {
         GLIB_FAIL("No models available!")
@@ -204,7 +210,7 @@ void SceneFactory::LoadModel (const std::string& model) {
     if (modelDef.isNil()) {
         GLIB_FAIL("Unknown model " << model);
     }
-    auto& am = Engine::get().GetAssetManager();
+
     auto asset = GetShared<IModel>(modelDef);
     am.AddModel(model, asset);
 

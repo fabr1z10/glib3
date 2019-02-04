@@ -10,9 +10,10 @@
 
 std::unique_ptr<Component> CharacterStateFactory::Create(luabridge::LuaRef& ref) {
     LuaTable table(ref);
-    std::unique_ptr<StateCharacter> c(new StateCharacter);
-    Direction dir = DirectionBuilder::FromString(table.Get<std::string>("dir"));
-    c->SetDirection(dir);
+    char dir = table.Get<std::string>("dir")[0];
+    std::string initialState = table.Get<std::string>("state");
+    std::unique_ptr<StateCharacter> c(new StateCharacter(dir, initialState));
+
     return c;
 }
 
@@ -66,7 +67,7 @@ std::unique_ptr<Activity> TurnActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
 
     std::string actor = table.Get<std::string>("actor");
-    std::string dir = table.Get<std::string>("dir");
+    char dir = table.Get<std::string>("dir")[0];
 
     return std::unique_ptr<Turn>(new Turn(actor, dir));
 };

@@ -8,6 +8,8 @@
 #include <gfx/math/closest.h>
 #include <iostream>
 #include <monkey/components/walkarea.h>
+#include <monkey/activities/turn.h>
+#include <gfx/activities/setstate.h>
 
 void Walk::SetComplete() {
 
@@ -50,7 +52,8 @@ void Walk::Start() {
         //int count = 0;
         //glm::vec2 currentPoint = points.front();
         std::string anim2;
-        int flipX{1};
+        // set status to walk
+        Push(std::make_shared<SetState>(m_actorId, "walk"));
         for (size_t i = 1; i < points.size(); ++i) {
             delta = points[i] - currentPos;
             float length = glm::length(delta);
@@ -73,22 +76,14 @@ void Walk::Start() {
             }
             if (length == 0.0f)
                 break;
-            std::string anim;
+            char dir;
             //std::string anim2;
             if (std::fabs(delta.x) > std::fabs(delta.y)) {
-                anim = "walk_right";
-                anim2 = "idle_right";
+                dir = delta.x > 0 ? 'e' : 'w';
             } else {
-                if (delta.y > 0) {
-                    anim = "walk_back";
-                    anim2 = "idle_back";
-                } else {
-                    anim = "walk_front";
-                    anim2 = "idle_front";
-                }
+                dir = delta.y > 0 ? 'n' : 's';
             }
-            flipX = (anim == "walk_right" && delta.x < 0) ? 2 : 1;
-            Push(std::make_shared<Animate>(actor, anim, flipX));
+            Push(std::make_shared<Turn>(m_actorId, dir));
             Push(std::make_shared<MoveTo>(actor, currentPos + length * glm::normalize(delta), 200.0f, false, false));
             //if (i == points.size() - 1 || tMin < 1.0)
             currentPos = points[i];
@@ -99,7 +94,9 @@ void Walk::Start() {
             }
             //script->AddActivity(p);
         }
-        if (!anim2.empty())
-            Push(std::make_shared<Animate>(actor, anim2, flipX));
+        Push(std::make_shared<SetState>(m_actorId, "idle"));
+
+//        if (!anim2.empty())
+  //          Push(std::make_shared<Animate>(actor, anim2, flipX));
     }
 }

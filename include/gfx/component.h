@@ -20,6 +20,8 @@ public:
     virtual ~ Component() {}
     // called once when the entity is added to the scene
     virtual void Start() = 0;
+    // called once. When this is called, it is guaranteed that all other components have run the start method
+    virtual void Begin() {}
     virtual void Update(double) = 0;
     virtual void SetParent(Entity* parent) {
         m_entity = parent;

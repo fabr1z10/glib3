@@ -1,6 +1,6 @@
 engine = {
     device_size = { 320, 200 },
-    window_size = { 800, 600 },
+    window_size = { 320, 200 },
     title = "The secret of Monkey Island",
 	shaders = { "unlit_textured", "unlit_color", "text" }
 }
@@ -83,10 +83,7 @@ variables = {
 -- 	circus_knows_trick = false,
 -- 	circus_knows_helmet = false,
 -- 	talked_to_troll = false,
--- 	inventory = {
--- 		-- put here your belongings
-		
--- 	}
+ 	inventory = { 	}
 }
 
 -- -- DEBUG STUFF

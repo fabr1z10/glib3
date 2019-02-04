@@ -3,8 +3,9 @@
 items2["village2.archway1"] = {
 	hotspot = {
 		text = strings.objects.archway,
-		walk_to = {436, 35}, 
-		face = "north",
+		--walk_to = {436, 35}, 
+		walk_to = {20, 20},
+		dir = "north",
 		size = {40, 50},			
 		actions = {
 			walk = ms { {action.change_room, {id=1,room="village1"}}}

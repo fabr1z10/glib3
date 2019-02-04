@@ -54,6 +54,7 @@ public:
     void Remove(Entity*);
     void Update(double);
     virtual void Start();
+    void Begin();
     friend class DepthFirstIterator<Entity>;
     DepthFirstIterator<Entity> begin() {
         return DepthFirstIterator<Entity>(this);

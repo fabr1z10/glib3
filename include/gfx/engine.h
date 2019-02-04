@@ -110,7 +110,7 @@ public:
     double GetFrameTime() const;
 private:
     friend class Singleton<Engine>;
-    Engine() : m_mouseEnabled{true} {}
+    Engine() : m_mouseEnabled{true}, m_sceneFactory{nullptr} {}
     std::unordered_map<std::string, Ref*> m_taggedReferences;
     void InitGL(const EngineConfig& config);
     std::unordered_set<Entity*> m_garbage;

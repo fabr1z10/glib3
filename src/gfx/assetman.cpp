@@ -52,6 +52,10 @@ void AssetManager::RemoveModel(const std::string& name){
     m_models.erase(name);
 }
 
+bool AssetManager::HasModel(const std::string &name) const {
+    return m_models.count(name) > 0;
+}
+
 std::shared_ptr<IModel> AssetManager::GetModel(const std::string& name) const {
     auto it = m_models.find(name);
     if (it == m_models.end()){

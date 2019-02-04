@@ -1,6 +1,7 @@
 #include <gfx/simplemodel.h>
 #include <gfx/entity.h>
 #include <iostream>
+
 void SimpleModelStatus::Init(Entity* entity) {
     renderer = entity->GetComponent<Renderer>();
     SetAnimation(m_mesh.GetDefaultAnimation());

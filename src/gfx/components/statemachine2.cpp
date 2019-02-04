@@ -1,7 +1,7 @@
 #include <gfx/components/statemachine2.h>
 #include <gfx/error.h>
 
-void StateMachine2::Start() {
+void StateMachine2::Begin() {
     SetState(m_initialState);
 }
 
@@ -17,8 +17,9 @@ void StateMachine2::ResetState() {
     if (m_currentState == nullptr)
         return;
     m_currentState = nullptr;
+    std::string state(m_currentStateId);
     m_currentStateId.clear();
-    SetState(m_currentStateId);
+    SetState(state);
 }
 
 void StateMachine2::SetState(const std::string & state) {

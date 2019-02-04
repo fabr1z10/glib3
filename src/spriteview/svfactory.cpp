@@ -16,8 +16,8 @@
 
 std::string Item2::rootKey = "@@root";
 
-SpriteViewFactory::SpriteViewFactory() : m_animate(true) {
-    LoadAssets();
+SpriteViewFactory::SpriteViewFactory() : SceneFactory(), m_animate(true) {
+
 }
 
 void SpriteViewFactory::LoadAssets() {
@@ -235,6 +235,8 @@ void SpriteViewFactory::printStatus() {
 
 
 std::shared_ptr<Entity> SpriteViewFactory::Create() {
+    LoadAssets();
+
     auto node = std::make_shared<Entity>();
 
     auto hm = std::make_shared<HotSpotManager>();
