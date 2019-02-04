@@ -195,10 +195,11 @@ void Engine::MainLoop() {
 
                 //double t1 = glfwGetTime();
                 //std::cout << "frame updated in: " << (t1-t0) << " sec.\n";
+                glfwSwapBuffers(window);
                 glfwPollEvents();
 
             }
-            glfwSwapBuffers(window);
+            //glfwSwapBuffers(window);
         }
         // remove assets loaded at scene level
         m_sceneFactory->CleanUp();

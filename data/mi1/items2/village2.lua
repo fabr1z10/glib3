@@ -1,6 +1,6 @@
 -- generally, an item is a blueprint for an object
 -- * it can have graphics attached. To do so, model needs to be specified
-items2["village2.archway1"] = {
+items2["village2.archway_to_village1"] = {
 	hotspot = {
 		text = strings.objects.archway,
 		--walk_to = {436, 35}, 
@@ -14,3 +14,15 @@ items2["village2.archway1"] = {
 	pos = {416, 34, 0},
 }
 
+items2["village2.archway_to_village3"] = {
+	hotspot = {
+		text = strings.objects.archway,
+		walk_to = {160, 80},
+		dir="north",
+		size={30, 30},
+		actions = {
+			walk = ms { {action.change_room, {id=1,room="village3"}}}
+		}
+	},
+	pos = {146, 63, 0},
+}

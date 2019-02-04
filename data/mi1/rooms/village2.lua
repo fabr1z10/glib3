@@ -4,7 +4,7 @@ local roomInfo = {
 	width = 480,
 	height = 144,
 	startTable = {
-		village1 = { pos = items2["village2.archway1"].hotspot.walk_to, dir = "w"},
+		village1 = { pos = items2["village2.archway_to_village1"].hotspot.walk_to, dir = "w"},
 		--village3 = { pos = items["village2.archway2"].walk_to, facing = "south"},
 		--voodoolady = { pos = items["village2.door_voodoolady"].walk_to, facing = "west"},
 	},
@@ -29,8 +29,8 @@ room = generateBasicRoom (roomInfo)
 
 room:add( {
 	{ pos = {0, 0,-3}, components = { { type="gfx", image="gfx/village2.png" }}},
-	factory.walkarea { shape = { type = "poly", outline = {0, 24, 123, 63, 199, 63, 299, 30, 377, 30, 385, 35, 454, 35, 470, 0, 0}}}
-	factory.objc { id="village2.archway1" }
+	factory.walkarea { shape = { type = "poly", outline = {0, 24, 123, 63, 199, 63, 299, 30, 377, 30, 385, 35, 454, 35, 470, 0, 0}}},
+	factory.objc { id="village2.archway_to_village1" },
 -- 	factory.object.create { object = "village2.archway1" },
 -- 	factory.object.create { object = "village2.archway2" },
 -- 	factory.object.create { object = "village2.citizen" },

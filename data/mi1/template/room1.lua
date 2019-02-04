@@ -80,6 +80,15 @@ function generateBasicRoom (args)
 						    		{ type="text", id = config.verbs[config.default_verb].text, font="ui", align = "bottom", color = config.ui_currentaction_color}
 								}
 						    },
+						    {
+								pos = {320,0,0},
+								components = {
+									{ type="text", id="ciao", font="ui", align="bottomright"},
+									{ type="fps" }
+								}
+
+							},
+
 							factory.verbbutton.create {pos={2, 40}, verb = config.verbs.open},
 							factory.verbbutton.create {pos={2, 32}, verb = config.verbs.close},
 							factory.verbbutton.create {pos={2, 24}, verb = config.verbs.push},
