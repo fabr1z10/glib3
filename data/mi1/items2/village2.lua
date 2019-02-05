@@ -52,8 +52,9 @@ items2["village2.citizen"] = {
 			end
 			s.actions = {
 				action.disable_controls {id=1},
-				action.say {id=2, actor="village2.citizen", lines = lines, animstart="talkside", animend="idleside" },
-				action.start_dialogue{id=3, dialogue="citizen"}
+				action.animate { id=2, actor="village2.citizen", anim="idle_e" },
+				action.say {id=3, actor="village2.citizen", lines = lines, animstart="talk", animend="idle_e" },
+				action.start_dialogue {id=4, dialogue="citizen"}
 			}
 			return s
 		end

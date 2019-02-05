@@ -124,6 +124,12 @@ models["citizen.head"] = {
 			{ duration = dt, quads = {{ id = s.citizen_head_idle_south2 }}},
 			{ duration = dt, quads = {{ id = s.citizen_head_idle_south1 }}}
 		}},
+		{ name = "talk", frames = { 
+			{ duration = dt, quads = {{ id = s.citizen_head_talk_1 }}},
+			{ duration = dt, quads = {{ id = s.citizen_head_talk_2 }}},
+			{ duration = dt, quads = {{ id = s.citizen_head_idle_east }}},
+		}},
+
 	}
 }
 
@@ -135,7 +141,8 @@ models["citizen"] = {
 	},
 	animations = {
 		{ name = "idle_s", anims = { {name="body", anim="idle_s"}, {name="head", anim="idle_s", pos={0,25,0} }}},
-		{ name = "idle_e", anims = { {name="body", anim="idle_e"}, {name="head", anim="idle_e", pos={-1,25,0} }}}
+		{ name = "idle_e", anims = { {name="body", anim="idle_e"}, {name="head", anim="idle_e", pos={-1,25,0} }}},
+		{ name = "talk", anims = { {name="head", anim="talk", pos ={-1,25,0} }}}
 	}
 }
 

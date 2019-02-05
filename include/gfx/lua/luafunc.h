@@ -7,9 +7,10 @@
 class LuaFunction {
 public:
     LuaFunction(luabridge::LuaRef ref) : m_ref(ref) {}
-    void execute() {
+    template<typename... Args>
+    void execute(Args... args) {
         try {
-            m_ref();
+            m_ref(args...);
         } catch (luabridge::LuaException const& e) {
             GLIB_FAIL(e.what());
         }

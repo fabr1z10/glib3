@@ -79,6 +79,89 @@ action.say = function(args)
 		animstart = animstart, animend = animend, animate = animate }
 end
 
+action.disable_controls = function(args) 
+	assert (args.id, "id")
+	local after = args.after
+	return { id = args.id, after = after, type="callfunc", func = function() 
+		local m = monkey.getEntity("mainui")
+		local m1 = monkey.getEntity("main")
+		if (not m.isnil) then
+			m:setactive(false)
+		end
+		if (not m1.isnil) then
+			m1:enablecontrols(false)
+		end
+	end }
+end
+
+
+action.start_dialogue = function (args) 
+	assert (args.id, "id")
+	assert (args.dialogue, "dialogue")
+	
+	local after = args.after
+	local droot = args.root
+
+	return { id = args.id, after = after, type="callfunc", func = function() 
+		print ("Starting dialogue: " .. args.dialogue)
+		local dialogue = dialogues[args.dialogue]
+		if (dialogue == nil) then
+			error ("Can't find dialogue " .. args.dialogue)
+		end
+		local root = droot or dialogue.nodes[1]
+		local m = monkey.getEntity("mainui")
+		local m1 = monkey.getEntity("main")
+		local m2 = monkey.getEntity("dialogueui")
+		if (not m.isnil) then
+			m:setactive(false)
+		end
+		if (not m1.isnil) then
+			m1:enablecontrols(false)
+		end
+		m2:setactive(true)
+		local children = get(root.children)
+		print ("Size of children = " .. tostring(#children))
+		m2:cleartext()
+		for k, v in ipairs(children) do
+        	local node = dialogue.nodes[v]
+            if (get(node.active) == true) then
+				m2:addtext { text=node.text, dialogue_node = node, dialogue = args.dialogue }
+			end
+        end
+	end }
+end
+
+action.end_dialogue = function(args)
+	assert (args.id, "id")
+	assert (args.dialogue, "dialogue")
+
+	local after= args.after
+
+	return { id = args.id, after = after, type="callfunc", func = function() 
+	print ("LLLLL")
+		local dialogue = dialogues[args.dialogue]
+		if (dialogue == nil) then
+			error ("Can't find dialogue " .. args.dialogue)
+		end
+		local m = monkey.getEntity("mainui")
+		local m1 = monkey.getEntity("main")
+		local m2 = monkey.getEntity("dialogueui")
+		m2:cleartext()
+		m2:setactive(false)
+		if (not m.isnil) then
+			m:setactive(true)	
+		end
+		if (not m1.isnil) then
+			m1:enablecontrols(true)			
+		end
+		if (dialogue.close ~= nil) then
+			print ("closing seq")
+			dialogue.close()
+		end
+	end
+	}
+end
+
 action.random_delay = function(args)
 	local id = gr(args.id, "Required id in action.random_delay")
 	local after= go(args.after, nil)
@@ -115,21 +198,7 @@ action.noop = function(args)
 	
 end
 
-action.disable_controls = function(args) 
-	local id = gr(args.id, "Required id in action.start_dialogue")
-	local after= go(args.after, nil)
-	return { id = id, after = after, type="callfunc", func = function() 
-		local m = monkey.getEntity("mainui")
-		local m1 = monkey.getEntity("main")
-		if (not m.isnil) then
-			m:setactive(false)
-		end
-		if (not m1.isnil) then
-			m1:enablecontrols(false)
-		end
-	end }
 
-end
 
 action.flip = function(args) 
 	local id = gr(args.id, "Required id in action.start_dialogue")
@@ -148,66 +217,8 @@ action.flip = function(args)
 
 end
 
-action.start_dialogue = function (args) 
-	local id = gr(args.id, "Required id in action.start_dialogue")
-	local after= go(args.after, nil)
-	local dialogueId = gr(args.dialogue, "Required dialogue in action.start_dialogue")
-	local droot = args.root
-	return { id = id, after = after, type="callfunc", func = function() 
-		local dialogue = dialogues[dialogueId]
-		if (dialogue == nil) then
-			print ("Can't find dialogue " .. dialogueId)
-		end
-		local root = droot or dialogue.nodes[1]
-		local m = monkey.getEntity("mainui")
-		local m1 = monkey.getEntity("main")
-		local m2 = monkey.getEntity("dialogueui")
-		if (not m.isnil) then
-			m:setactive(false)
-		end
-		if (not m1.isnil) then
-			m1:enablecontrols(false)
-		end
-		m2:setactive(true)
-		local children = get(root.children)
-		print ("Size of children = " .. tostring(#children))
-		m2:cleartext()
-		for k, v in ipairs(children) do
-        	local node = dialogue.nodes[v]
-            if (get(node.active) == true) then
-				m2:addtext { text=node.text, dialogue_node = node, dialogue = args.dialogue }
-			end
-        end
-	end }
-end
 
-action.end_dialogue = function(args)
-	local id = gr(args.id, "Required id in action.start_dialogue")
-	local after= go(args.after, nil)
-	local dialogueId = gr(args.dialogue, "Required dialogue in action.start_dialogue")
-	return { id = id, after = after, type="callfunc", func = function() 
-		local dialogue = dialogues[dialogueId]
-		if (dialogue == nil) then
-			print ("Can't find dialogue " .. dialogueId)
-		end
-		local m = monkey.getEntity("mainui")
-		local m1 = monkey.getEntity("main")
-		local m2 = monkey.getEntity("dialogueui")
-		m2:cleartext()
-		m2:setactive(false)
-		if (not m.isnil) then
-			m:setactive(true)	
-		end
-		if (not m1.isnil) then
-			m1:enablecontrols(true)			
-		end
-		if (dialogue.close ~= nil) then
-			print ("closing seq")
-			dialogue.close()
-		end
-	end
-	}
-end
+
 
 action.create_object = function(args) 
 	local id = gr(args.id, "Required id in action.create_object")
@@ -277,14 +288,14 @@ action.close_door = function(args)
 end
 
 action.set_variable = function(args)
-	local id = gr(args.id, "Required id in action.create_object")
-	local after= go(args.after, nil)
-	local var = gr(args.var, "ciao")
-	local value = gr(args.value, "value")
+	assert (args.id, "id")
+	assert (args.var, "var")
+	assert (args.value, "value")
+	local after= args.after
 
-	return { id = id, after = after, type = "callfunc", func = 
+	return { id = args.id, after = after, type = "callfunc", func = 
 		function()
-			variables[var] = value
+			variables[args.var] = args.value
 		end
 	}
 

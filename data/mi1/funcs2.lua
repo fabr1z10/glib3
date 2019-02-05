@@ -56,6 +56,24 @@ function ms(args)
     end	
 end
 
+function msc(args)
+    return function()
+        local s = script:new()
+        for _, ss in ipairs(args) do
+            local s1 = script:new()
+            s1.actions = {}
+            for _, v in ipairs(ss) do
+                print("running act")
+                table.insert(s1.actions, v[1](v[2]))
+            end
+
+            s:push { script=s1 }
+        end
+        s:dump()
+        return s
+    end
+end
+
 function changecolor (color, entity)
     entity:setcolor(color[1], color[2], color[3], color[4])
 end
@@ -257,4 +275,73 @@ function runAction ()
     monkey.play(s)
     variables._actionInfo:reset()
     updateVerb()
+end
+
+function handleDialogueButton(entity)
+    local m2 = monkey.getEntity("dialogueui")               
+    m2:cleartext()
+    print ("calling handleDialogueButton ...")
+    local info = entity:getinfo()  
+    local dialogueNode = info.data.node
+    local dialogue = dialogues[info.data.dialogue]
+    print("llll")
+    if (dialogueNode.deact ~= nil) then
+        for k, v in ipairs(dialogueNode.deact) do
+            dialogue.nodes[v].active = false
+        end
+    end
+    if (dialogueNode.act ~= nil) then
+        for k, v in ipairs(dialogueNode.act) do
+            dialogue.nodes[v].active = true
+        end
+    end
+    local s = nil
+    if (dialogueNode.script ~= nil) then
+        print ("calling button")
+        s = dialogueNode.script()
+    else
+        print ("button has no script attached.")
+    end
+
+    local s1 = script:new()
+    if (dialogueNode.children == nil) then
+        -- return to game
+        s1.actions = {
+            action.end_dialogue { id = 1, dialogue = info.data.dialogue }
+        }
+    else
+        atLeastOneActiveChild = false
+        for k, v in ipairs(dialogueNode.children) do
+            if (dialogue.nodes[v].active == true) then
+                atLeastOneActiveChild = true
+                break
+            end
+        end
+        if (atLeastOneActiveChild) then
+            s1.actions = {
+                action.start_dialogue { id=1, dialogue = info.data.dialogue, root = dialogueNode }
+            }
+        else
+            s1.actions = {
+                action.end_dialogue { id = 1, dialogue = info.data.dialogue }
+            }
+        end
+ --        s1 = start_dialogue {dialogue = info.data.dialogue, root = dialogueNode } 
+ --        -- s1.actions = {
+ --        --     [1] = { type="callfunc", func = function ()
+ --        --         -- body
+ --        --         local m2 = monkey.getEntity("dialogueui")
+ --        --         for k, v in ipairs(dialogueNode.children) do
+ --        --             m2:addtext { text=dialogue[v].text, dialogue_node = dialogue[v], dialogue = dialogue }
+ --        --         end
+ --        --     end}s
+ --        -- }
+    end
+    if (s == nil) then
+        s = s1
+    else
+        s:push { script = s1 }
+    end
+    
+    monkey.play(s)
 end

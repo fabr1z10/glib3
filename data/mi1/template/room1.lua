@@ -105,33 +105,33 @@ function generateBasicRoom (args)
 							factory.verbbutton.create {pos={100, 32}, verb = config.verbs.look},
 							factory.verbbutton.create {pos={100, 24}, verb = config.verbs.turnon},
 							factory.verbbutton.create {pos={100, 16}, verb = config.verbs.turnoff},
-							-- {
-							-- 	type = "textview", 
-							-- 	tag="inventory",
-							-- 	pos = {150, 0},
-							-- 	size = {170, 48},
-							-- 	font_size = 8,
-							-- 	lines = 6,
-							-- 	deltax = 26,
-							-- 	factory = factory.inventorybutton.create
-							-- }
+							{
+								type = "textview", 
+								tag="inventory",
+								pos = {150, 0},
+								size = {170, 48},
+								font_size = 8,
+								lines = 6,
+								deltax = 26,
+								factory = factory.inventorybutton.create
+							}
 						}
 					},
-					-- {
-					-- 	pos  = {0,0,0},
-					-- 	children = {
-					-- 		{
-					-- 			tag = "dialogueui",
-					-- 			type = "textview", 
-					-- 			pos = {0, 0},
-					-- 			size = {320, 56},
-					-- 			font_size = 8,
-					-- 			lines = 6,
-					-- 			deltax = 26,
-					-- 			factory = factory.dialoguebutton.create
-					-- 		}
-					-- 	}
-					-- }
+					{
+						pos  = {0,0,0},
+						children = {
+							{
+								tag = "dialogueui",
+								type = "textview", 
+								pos = {0, 0},
+								size = {320, 56},
+								font_size = 8,
+								lines = 6,
+								deltax = 26,
+								factory = factory.dialoguebutton.create
+							}
+						}
+					}
 				}
 			}
 		}

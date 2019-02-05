@@ -68,8 +68,8 @@ variables = {
 --     seagull_jump = 1,
 --     seagull_flying = false,
 -- 	talked_to_important_pirates = false,
--- 	talked_to_citizen = false,
---     talked_about_map = false,
+    talked_to_citizen = false,
+    talked_about_map = false,
 -- 	fish_taken=false,
 -- 	talking_to_voodoolady = false,
 -- 	talked_to_voodoolady = false,
@@ -106,7 +106,7 @@ action = {}
 items2 = {}
 spritesheets = {}
 models = {}
--- dialogues = {}
+dialogues = {}
 -- sprites = {}
 load_all("sprites2")
 load_all("factories")
@@ -114,4 +114,4 @@ load_all("factories")
 require("defaultscripts")
 
 load_all("items2")
--- load_all("dialogues")
+load_all("dialogues")

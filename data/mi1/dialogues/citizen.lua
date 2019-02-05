@@ -31,7 +31,7 @@ dialogues.citizen = {
 		[1] = { children = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11} },
 		[2] = { text = d[2], deact = {2,3,4,5}, act={6,7,8,9}, active=true, script = ms {
 			{ action.say, { id = 1, actor = "guybrush",  lines = {d[2]} }},
-			{ action.say, { id = 2, actor = "village2.citizen",  lines = {d[6], d[7]}, animstart="talkside", animend="idleside" }},
+			{ action.say, { id = 2, actor = "village2.citizen",  lines = {d[6], d[7]}, animstart="talk", animend="idle_e" }},
 			{ action.set_variable, { id = 3, var = "talked_to_citizen", value=true}},
 			}
 		},
