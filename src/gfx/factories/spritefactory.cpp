@@ -18,7 +18,7 @@ std::unique_ptr<Entity> SpriteFactory::Create (luabridge::LuaRef& ref) {
     if (table.HasKey("anim")) {
         std::string anim = table.Get<std::string>("anim");
         auto animator = entity->GetComponent<Animator>();
-        animator->SetAnimation(anim);
+        animator->SetInitialAnimation(anim);
     }
     
     // set the position (default origin)

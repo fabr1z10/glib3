@@ -37,6 +37,7 @@ public:
     void Start() override;
     void AdvanceFrame(int);
     void Update(double dt) override;
+    void SetInitialAnimation (const std::string& anim);
     void SetAnimation (const std::string& anim);
     //virtual void SetAnimation (const std::string& node, const std::string& anim) = 0;
     //bool HasAnimation(const std::string&) = 0;
@@ -48,7 +49,12 @@ public:
     //virtual std::shared_ptr<AnimatorState> SaveState()  = 0;
     //virtual void LoadState(std::shared_ptr<AnimatorState>) = 0;
 protected:
+    std::string m_initAnim;
     std::shared_ptr<IModel> m_model;
     std::unique_ptr<IModelStatus> m_status;
 
 };
+
+inline void Animator::SetInitialAnimation (const std::string& anim) {
+    m_initAnim = anim;
+}

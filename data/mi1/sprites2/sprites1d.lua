@@ -138,3 +138,13 @@ models["citizen"] = {
 		{ name = "idle_e", anims = { {name="body", anim="idle_e"}, {name="head", anim="idle_e", pos={-1,25,0} }}}
 	}
 }
+
+models["door_village_scummbar"] = {
+    sheet = "sprites2/sprites1.png",
+    type = "sprite",
+    ppu=1,
+	animations = {
+		{ name = "open", frames = { { duration = dt, quads = {{ id = s.door_village_scummbar_open }}}}},
+		{ name = "close", frames = { { duration = dt, quads = {{ id = s.door_village_scummbar_close }}}}}
+	}
+}

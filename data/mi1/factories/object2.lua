@@ -16,7 +16,7 @@ factory.objc = function(args)
 
 	local tag = args.tag
 	if (tag == nil) then 
-		tag = object.tag 
+		tag = object.tag or objId
 	end
 	
 	local owned = variables.inventory[objId] ~= nil
@@ -37,7 +37,7 @@ factory.objc = function(args)
 	if (object.model ~= nullptr) then
 		obj.type = "sprite"
 		obj.model = object.model
-		obj.anim = object.anim
+		obj.anim = get(object.anim)
 	end
 
 	-- add the hotspot only if size is supplied
@@ -51,6 +51,7 @@ factory.objc = function(args)
 			onclick = runAction })
 	end
 	if (object.character ~= nil) then
+		print ("hey la direzione è " .. args.dir)
 		table.insert (obj.components, { type="character", dir = args.dir or object.character.dir, state = object.character.state })
 	end
 	if (args.follow == true) then
@@ -60,7 +61,7 @@ factory.objc = function(args)
 
 	-- depth component
 	if (object.applydepth) then
-		table.insert(obj.components, { type="depth", depth = room.depth, scale = room.scale })
+		table.insert(obj.components, { type="depth", depth = roomDefinition.depth, scale = roomDefinition.scale })
 	end
 
 	return obj

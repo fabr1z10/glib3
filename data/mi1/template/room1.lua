@@ -19,7 +19,11 @@ function generateBasicRoom (args)
 		dialogues = {},
 		scripts = {},
 		startPos = startPos,
-		initstuff = {},
+		initstuff = {
+			[1] = function() 
+				variables._actionInfo.verb = config.verbs.walk
+				updateVerb() end
+		},
 		engines = {
 			{ type = "hotspotmanager" },
 			{ type = "scheduler" }
@@ -43,8 +47,8 @@ function generateBasicRoom (args)
 					factory.objc { 
 						id="guybrush", 
 						pos={startPos.pos[1], startPos.pos[2], 0}, 
-						tag="player", 
-						dir=startPos.dir, 
+						--tag="player", 
+						dir = startPos.dir,
 						follow = (room_width > 320 and enableScroll)
 					}
 				}
@@ -175,8 +179,10 @@ function generateBasicRoom (args)
 			table.insert(self.scene[1].children, v)
 		end
 	end
-	function p:add_asset(item) 
-		table.insert(self.assets, item)
+	function p:add_assets(items) 
+		for _,asset in ipairs(items) do
+			table.insert(self.assets, asset)
+		end
 	end
 
 	p.depth = args.depth

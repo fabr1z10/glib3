@@ -1,11 +1,83 @@
-action.delay = function (args) 
-	local id = gr(args.id, "Required id in action.delay")
-	local after= go(args.after, nil)
-	local sec = gr(args.sec, "Required min in action.delay")
-	return { id = id, after = after, type="delay", sec = sec }
+function getTag (args) 
+	local tag = args.tag
+	if (tag == nil) then
+    	assert (args.actor, "tag or actor")    
+		local item = items2[args.actor]
+		tag = item.tag or args.actor
+	end
+	return tag
+end
+
+action.walkto = function (args) 
+	assert (args.id, "id")
+	local after = args.after
+	-- you can specify a tag or an actor (in this case the tag will be the actor's tag)
+	local tag = getTag(args)
+
+	-- you can specify pos directly or through object
+	local pos = args.pos
+
+	if (pos == nil) then
+		assert (args.obj, "pos or obj")
+		print ("ECCOMI " .. args.obj)
+		local obj = items2[args.obj]
+		pos = obj.hotspot.walk_to
+	end
+	
+	return { id = args.id, after=after, type="walk", actor=tag, pos = pos }
 
 end
 
+action.turn = function (args) 
+	assert (args.id, "id")
+	assert (args.dir, "dir")
+	local after= args.after
+	local tag = getTag(args)
+	return { id = args.id, after=after, type="turn", actor=tag, dir = args.dir }
+
+end
+
+action.change_room = function (args) 	
+	assert (args.id, "id")
+	assert (args.room, "room")
+	local after= args.after
+	return { id = args.id, after = after, type="gotoroom", room = args.room }
+end
+
+action.delay = function (args) 
+	assert (args.id, "id")
+	assert (args.sec, "sec")
+	local after= args.after
+	return { id = args.id, after = after, type="delay", sec = args.sec }
+
+end
+
+action.animate = function(args)
+	assert (args.id, "id")
+	assert (args.anim, "anim")
+	local after= args.after
+	local tag = getTag(args)
+	return { id = args.id, after = after, type="animate", actor = tag, anim = args.anim }
+end
+
+action.say = function(args) 
+	assert (args.id, "id")
+	assert (args.lines, "lines")
+	assert (args.actor, "actor")
+
+	local after= args.after
+	local item = items2[args.actor]
+	local tag = item.tag or args.actor
+
+	local animstart = args.animstart
+	local animend = args.animend
+	local animate = true
+	if (args.animate ~= nil) then animate = args.animate end
+
+	local item = items2[args.actor]
+	return { id = args.id, after = after,  type="say", actor= tag, lines = args.lines, offset = item.text_offset, color = item.text_color,
+		animstart = animstart, animend = animend, animate = animate }
+end
 
 action.random_delay = function(args)
 	local id = gr(args.id, "Required id in action.random_delay")
@@ -16,23 +88,7 @@ action.random_delay = function(args)
 	return { id = id, after = after, type="delay_dynamic", func = function() return (min + math.random() * (max-min)) end }
 end
 
-action.animate = function(args)
-	local id = gr(args.id, "Required id in action.animate")
-	local after= go(args.after, nil)
-	
-	local tag = args.tag
-	if (tag == nil) then
-		local actor = gr(args.actor, "Required actor in action.animate")
-		local item = items[actor]
-		tag = item.tag
-	end
-	local anim = gr(args.anim, "Required anim in action.animate")
-	local flip = 0
-	if (args.flip ~= nil) then
-		flip = (args.flip) and 2 or 1
-	end
-	return { id = id, after = after, type="animate", actor=tag, anim=anim, flip = flip }
-end
+
 
 action.animate_once = function(args)
 	local id = gr(args.id, "Required id in action.animate")
@@ -47,64 +103,10 @@ action.animate_once = function(args)
 	return { id = id, after = after, type="animate", actor=tag, loop=1, anim=anim }
 end
 
-action.walkto = function (args) 
 
-	local id = gr(args.id, "Required id in action.walkto")
-	local after= go(args.after, nil)
-	local actor = gr(args.actor, "Required id in action.walkto")
-	local item = items[actor]
-	local pos = nil
-	local obj = args.obj
-	if (obj == nil and (args.objid ~= nil)) then
-		obj = items[args.objid]
-	end
-	
-	if (obj == nil) then
-		pos = gr(args.pos, "Required object or position in action.walkto")
-	else
-		--local item2 = items[args.obj]
-		--print("plllll" .. args.obj.tag)
-		pos = obj.walk_to
-		if (pos == nil) then
-			print ("ERROR! Target object needs a <walk_to> field!")
-		end
-	end
-	print ("id... = " .. tostring(id))
-	return { id=id, after=after, type="walk", actor=item.tag, pos = pos }
 
-end
 
-action.turn = function (args) 
-	local id = gr(args.id, "Required id in action.turn")
-	local after= go(args.after, nil)
-	local actor = gr(args.actor, "Required actor in action.turn")
-	local dir = gr(args.dir, "Required dir in action.turn")
-	local item = items[actor]
-	return { id=id, after=after, type="turn", actor=item.tag, dir = dir }
 
-end
-
-action.say = function(args) 
-	local id = gr(args.id, "Required id in action.say")
-	local after= go(args.after, nil)
-	local actor = gr(args.actor, "Required actor in action.say")
-	local lines = gr(args.lines, "Required lines to say in action.say")
-	local animstart = args.animstart
-	local animend = args.animend
-	local animate = true
-	if (args.animate ~= nil) then animate = args.animate end
-
-	local item = items[actor]
-	return { id = id, after = after,  type="say", actor= item.tagSpeak or item.tag, lines = lines, offset = item.text_offset, color = item.text_color,
-		animstart = animstart, animend = animend, animate = animate }
-end
-
-action.change_room = function (args) 	
-	local id = gr(args.id, "Required id in action.changeroom")
-	local after= go(args.after, nil)
-	local room = gr(args.room, "Required room in action.changeroom")
-	return { id = id, after = after, type="gotoroom", room = room }
-end
 
 action.noop = function(args) 
 	local id = gr(args.id, "Required id in action.changeroom")

@@ -304,7 +304,8 @@ std::unique_ptr<Component> HotSpotComponentFactory::Create(luabridge::LuaRef& re
     }
     if (table.HasKey("onclick")) {
         luabridge::LuaRef r = table.Get<luabridge::LuaRef>("onclick");
-        hotspot->SetOnClick(r);
+        std::unique_ptr<LuaFunction> f(new LuaFunction(r));
+        hotspot->SetOnClick(std::move(f));
     }
     if (table.HasKey("onmove")) {
         luabridge::LuaRef r = table.Get<luabridge::LuaRef>("onmove");

@@ -14,10 +14,11 @@ void StateMachine2::Update(double dt) {
 
 
 void StateMachine2::ResetState() {
-    if (m_currentState == nullptr)
-        return;
     m_currentState = nullptr;
+
     std::string state(m_currentStateId);
+    if (state.empty())
+        state = m_initialState;
     m_currentStateId.clear();
     SetState(state);
 }

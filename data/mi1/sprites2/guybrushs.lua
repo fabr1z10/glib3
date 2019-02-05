@@ -20,6 +20,27 @@ spritesheets["guybrush"] = {
 	idle_east = {x=2, y=51, width=19, height=47, anchor = {10, 0}},
 	idle_south = {x=24, y=51, width=22, height=47, anchor = {12, 0}},
 	idle_north = {x=49, y=51, width=20, height=47, anchor = {10, 0}},
+	idle_body_south = {x=164, y=12, width=22, height=36, anchor= {12,0}},
+	idle_body_east = {x=157, y=112, width=19, height=36, anchor= {10,0}},
+	idle_body_north = {x=189, y=12, width=20, height=36, anchor= {10,0}},
+	talk_head_south_1 = { x = 179, y = 129, width = 11, height = 13, anchor = {6, -34}},
+	talk_head_south_2 = { x = 192, y = 129, width = 11, height = 13, anchor = {6, -34}},
+	talk_head_south_3 = { x = 205, y = 129, width = 11, height = 13, anchor = {6, -34}},
+	talk_head_south_4 = { x = 179, y = 143, width = 11, height = 13, anchor =  {6, -34}},
+	talk_head_south_5 = { x = 192, y = 143, width = 11, height = 13, anchor = {6, -34}},
+	talk_head_south_6 = { x = 205, y = 143, width = 11, height = 13, anchor = {6, -34}},
+	talk_head_north_1 = { x = 220, y = 101, width = 11, height = 12, anchor = {6, -34}},
+	talk_head_north_2 = { x = 233, y = 101, width = 11, height = 12, anchor = {6, -34}},
+	talk_head_north_3 = { x = 220, y = 115, width = 11, height = 12, anchor = {6, -34}},
+	talk_head_east_1 = { x = 179, y = 101, width = 11, height = 12, anchor = {7, -35}},
+	talk_head_east_2 = { x = 192, y = 101, width = 11, height = 12, anchor = {7,-35}},
+	talk_head_east_3 = { x = 205, y = 101, width = 11, height = 12, anchor = {7,-35}},
+	talk_head_east_4 = { x = 179, y = 115, width = 11, height = 12, anchor = {7,-35}},
+	talk_head_east_5 = { x = 192, y = 115, width = 11, height = 12, anchor = {7,-35}},
+	talk_head_east_6 = { x = 205, y = 115, width = 11, height = 12, anchor = {7,-35}}
+
+
+
 
 	-- idle_east_body = {},
 	-- idle_east_head = {},

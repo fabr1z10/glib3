@@ -31,6 +31,9 @@ spritesheets["sprites1"] = {
 	citizen_head_idle_south1 = {x=196, y=11, width=9, height=9, anchor = {5,0}},
 	citizen_head_idle_south2 = {x=196, y=1, width=9, height=9, anchor = {5,0}},
 	citizen_head_idle_east = {x=196, y=21, width=9, height=9, anchor = {5,0}},
+	door_village_scummbar_open = {x=3, y=126, width=31, height=52 },
+	door_village_scummbar_close = {x=35, y=126, width=31, height=52 },
+
 
 
 

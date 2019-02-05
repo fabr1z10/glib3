@@ -57,7 +57,7 @@ variables = {
     },
 -- 	first_time_mancomb = true,
 -- 	first_time_estevan = true,
--- 	door_village_scummbar = 0,
+ 	door_village_scummbar = 0,
 -- 	door_scummbar_kitchen = 0,
 -- 	door_kitchen_pier = 0,
 -- 	door_voodoolady = 0,
@@ -95,7 +95,7 @@ variables = {
 -- variables.inventory["kitchen.fish"] = 1
 -- -- END DEBUG
 
--- require ("script")
+require ("script")
 require ("funcs2")
 
 
@@ -110,6 +110,8 @@ models = {}
 -- sprites = {}
 load_all("sprites2")
 load_all("factories")
--- load_all("scripts")
+
+require("defaultscripts")
+
 load_all("items2")
 -- load_all("dialogues")

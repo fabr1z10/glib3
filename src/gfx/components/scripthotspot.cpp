@@ -11,7 +11,8 @@ void ScriptHotSpot::onLeave() {
 }
 void ScriptHotSpot::onClick(glm::vec2, int button, int action, int mods) {
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS && r_click != nullptr)
-        r_click->operator()(EntityWrapper(m_entity));
+        r_click->execute();
+        //r_click->operator()(EntityWrapper(m_entity));
 }
 void ScriptHotSpot::onMove(glm::vec2 p) {
 

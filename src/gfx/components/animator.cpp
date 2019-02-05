@@ -6,6 +6,9 @@
 void Animator::Start() {
     m_status = m_model->GetModelStatus();
     m_status->Init(m_entity);
+    if (!m_initAnim.empty()) {
+        SetAnimation(m_initAnim);
+    }
 
 }
 void Animator::Update(double dt) {

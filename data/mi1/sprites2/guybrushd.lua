@@ -37,6 +37,42 @@ models["guybrush"] = {
 			{ duration = dt, quads = {{ id = s.walk_south_5 }}},
 			{ duration = dt, quads = {{ id = s.walk_south_6 }}}
 		}},
+		{ name = "talk_s", frames = { 
+			{ duration = dt, quads = {{ id = s.idle_body_south }, { id = s.talk_head_south_1 }}},
+			{ duration = dt, quads = {{ id = s.idle_body_south }, { id = s.talk_head_south_2 }}},
+			{ duration = dt, quads = {{ id = s.idle_body_south }, { id = s.talk_head_south_1 }}},
+			{ duration = dt, quads = {{ id = s.idle_body_south }, { id = s.talk_head_south_2 }}},
+			{ duration = dt, quads = {{ id = s.idle_body_south }, { id = s.talk_head_south_3 }}},
+			{ duration = dt, quads = {{ id = s.idle_body_south }, { id = s.talk_head_south_4 }}},
+			{ duration = dt, quads = {{ id = s.idle_body_south }, { id = s.talk_head_south_2 }}},
+			{ duration = dt, quads = {{ id = s.idle_body_south }, { id = s.talk_head_south_5 }}},
+			{ duration = dt, quads = {{ id = s.idle_body_south }, { id = s.talk_head_south_6 }}},
+			{ duration = dt, quads = {{ id = s.idle_body_south }, { id = s.talk_head_south_5 }}},
+			{ duration = dt, quads = {{ id = s.idle_body_south }, { id = s.talk_head_south_1 }}},
+			{ duration = dt, quads = {{ id = s.idle_body_south }, { id = s.talk_head_south_2 }}},
+			{ duration = dt, quads = {{ id = s.idle_body_south }, { id = s.talk_head_south_6 }}},
+		}},
+		{ name = "talk_n", frames = { 
+			{ duration = dt, quads = {{ id = s.idle_body_north }, { id = s.talk_head_north_1 }}},
+			{ duration = dt, quads = {{ id = s.idle_body_north }, { id = s.talk_head_north_2 }}},
+			{ duration = dt, quads = {{ id = s.idle_body_north }, { id = s.talk_head_north_1 }}},
+			{ duration = dt, quads = {{ id = s.idle_body_north }, { id = s.talk_head_north_2 }}},
+			{ duration = dt, quads = {{ id = s.idle_body_north }, { id = s.talk_head_north_3 }}},
+		}},
+		{ name = "talk_e", frames = { 
+			{ duration = dt, quads = {{ id = s.idle_body_east }, { id = s.talk_head_east_1 }}},
+			{ duration = dt, quads = {{ id = s.idle_body_east }, { id = s.talk_head_east_2 }}},
+			{ duration = dt, quads = {{ id = s.idle_body_east }, { id = s.talk_head_east_3 }}},
+			{ duration = dt, quads = {{ id = s.idle_body_east }, { id = s.talk_head_east_4 }}},
+			{ duration = dt, quads = {{ id = s.idle_body_east }, { id = s.talk_head_east_2 }}},
+			{ duration = dt, quads = {{ id = s.idle_body_east }, { id = s.talk_head_east_1 }}},
+			{ duration = dt, quads = {{ id = s.idle_body_east }, { id = s.talk_head_east_5 }}},
+			{ duration = dt, quads = {{ id = s.idle_body_east }, { id = s.talk_head_east_6 }}},
+			{ duration = dt, quads = {{ id = s.idle_body_east }, { id = s.talk_head_east_1 }}},
+			{ duration = dt, quads = {{ id = s.idle_body_east }, { id = s.talk_head_east_5 }}},
+			{ duration = dt, quads = {{ id = s.idle_body_east }, { id = s.talk_head_east_1 }}},
+			{ duration = dt, quads = {{ id = s.idle_body_east }, { id = s.talk_head_east_3 }}},
+		}},
 
 	}
 }

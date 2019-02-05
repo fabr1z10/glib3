@@ -1,29 +1,31 @@
 factory.door = {}
 
-
 factory.door.create =function(args)
-	local tag = args.name
-	local pos = args.pos
-	local size = args.size
+	assert (args.id, "id")
+	assert (args.pos, "pos")
+	assert (args.size, "size")
+	assert (args.walk_to, "walk_to")
+	assert (args.dir, "dir")
+	assert (args.model, "model")
+	assert (args.nextroom, "nextroom")
+	assert (args.variable, "variable")
+	--local tag = args.name
 	local offset = args.offset
-	local walk_to = args.walk_to
-	local face = args.face
-	local model = args.model
-	local nextroom = args.nextroom
 
-	return {
-		tag = tag, 
-		text = strings.objects.door,
-		pos = pos,
-		size = size,
-		offset = offset,
-		walk_to = walk_to,
-		face = face,
-		model = model,
-		door_ref = args.door_ref,
+	items2[args.id] = {
+		--tag = tag, 
+		pos = args.pos,
+		hotspot = {
+			size = args.size,
+			offset = offset,
+			walk_to = args.walk_to,
+			dir = args.dir,
+			text = strings.objects.door
+		},
+		model = args.model,
+		variable = args.variable,
 		anim = function() 
-			
-			if (variables[args.door_ref] == 0) then
+			if (variables[args.variable] == 0) then
 				return "close"
 			else
 				return "open"
@@ -31,30 +33,28 @@ factory.door.create =function(args)
 		end,
 		actions = {
 			walk = args.walk or function() 
-				if (variables[args.door_ref] == 1) then
+				if (variables[args.variable] == 1) then
 					local s = script:new()
-					s.actions = { action.change_room { id=1, room = nextroom }}
+					s.actions = { action.change_room { id=1, room = args.nextroom }}
 					return s
-					--return change_room( nextroom)
 				else
 					return nil
 				end
 			end,
 			open = args.open or function()
-				variables[args.door_ref] = 1
-				print ("OPEN!!! " .. tag)
+				variables[args.variable] = 1
 				local s = script:new()
+
 				s.actions = {
-					action.animate {id = 1, actor=tag, anim="open" }
+					action.animate {id = 1, actor=args.id, anim="open" }
 				}
-				print "OPEN!!!"
 				return s
 			end,
 			close = args.close or function()
-				variables[args.door_ref] = 0
+				variables[args.variable] = 0
 				local s = script:new()
 				s.actions = {
-					action.animate {id = 1, actor=tag, anim="close" }
+					action.animate {id = 1, actor=args.id, anim="close" }
 				}
 				return s
 			end,

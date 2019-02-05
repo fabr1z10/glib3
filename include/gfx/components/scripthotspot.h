@@ -2,6 +2,7 @@
 
 #include <gfx/components/hotspot.h>
 #include <gfx/lua/luawrapper.h>
+#include <gfx/lua/luafunc.h>
 
 class ScriptHotSpot : public HotSpot {
 public:
@@ -21,8 +22,8 @@ public:
     void SetOnLeave(luabridge::LuaRef ref) {
         r_leave= std::unique_ptr<luabridge::LuaRef>(new luabridge::LuaRef(ref));
     }
-    void SetOnClick(luabridge::LuaRef ref) {
-        r_click= std::unique_ptr<luabridge::LuaRef>(new luabridge::LuaRef(ref));
+    void SetOnClick(std::unique_ptr<LuaFunction> ref) {
+        r_click = std::move(ref); //std::unique_ptr<luabridge::LuaRef>(new luabridge::LuaRef(ref));
     }
     void SetOnMove(luabridge::LuaRef ref) {
         r_move= std::unique_ptr<luabridge::LuaRef>(new luabridge::LuaRef(ref));
@@ -34,7 +35,7 @@ private:
     //bool m_inShape;
     std::unique_ptr<luabridge::LuaRef> r_enter;
     std::unique_ptr<luabridge::LuaRef> r_leave;
-    std::unique_ptr<luabridge::LuaRef> r_click;
+    std::unique_ptr<LuaFunction> r_click;
     std::unique_ptr<luabridge::LuaRef> r_move;
     //std::string m_onEnter;
     //std::string m_onClick;
