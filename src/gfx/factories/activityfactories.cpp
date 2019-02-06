@@ -134,13 +134,15 @@ std::unique_ptr<Activity> AnimateActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
     std::string actor = table.Get<std::string>("actor");
     std::string anim = table.Get<std::string>("anim");
+    bool fwd = table.Get<bool>("fwd", true);
     int flip{0};
     if (table.HasKey("flipx")) {
         flip = table.Get<bool>("flipx") ? 2 : 1;
     }
-    int loopCount = table.Get<int>("loop", 0);
-    auto act = std::unique_ptr<Animate>(new Animate(actor, anim, flip));
-    act->SetLoop(loopCount);
+    //int loopCount = table.Get<int>("loop", 0);
+    bool sync = table.Get<bool>("sync", false);
+    auto act = std::unique_ptr<Animate>(new Animate(actor, anim, fwd, flip));
+    act->SetSync(sync);
     return std::move(act);
 };
 

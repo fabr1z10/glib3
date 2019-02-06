@@ -32,7 +32,7 @@ public:
 //
 class Animator : public Component {
 public:
-    Animator(std::shared_ptr<IModel> model) : m_model(model) {}
+    Animator(std::shared_ptr<IModel> model) : m_model(model), m_forward(true) {}
     virtual ~Animator() {}
     void Start() override;
     void AdvanceFrame(int);
@@ -42,18 +42,23 @@ public:
     //virtual void SetAnimation (const std::string& node, const std::string& anim) = 0;
     //bool HasAnimation(const std::string&) = 0;
     //virtual bool HasAnimation(const std::string&, const std::string&) = 0;
-    bool loopEnd() const {
-        return true;
-    }
+    bool IsComplete() const;
+    void SetPlayForward (bool);
     // allows to backup the status in order to restore it later
     //virtual std::shared_ptr<AnimatorState> SaveState()  = 0;
     //virtual void LoadState(std::shared_ptr<AnimatorState>) = 0;
 protected:
+    // play animation forward
+    bool m_forward;
     std::string m_initAnim;
     std::shared_ptr<IModel> m_model;
     std::unique_ptr<IModelStatus> m_status;
 
 };
+
+inline void Animator::SetPlayForward (bool value) {
+    m_forward = value;
+}
 
 inline void Animator::SetInitialAnimation (const std::string& anim) {
     m_initAnim = anim;

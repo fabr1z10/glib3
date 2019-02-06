@@ -13,10 +13,12 @@ public:
 
     void Update(double dt) override ;
     void AdvanceFrame(int) override;
-    void SetAnimation (const std::string& anim) override;
+    void SetAnimation (const std::string& anim, bool fwd) override;
     Entity* GetEntity() override {
         return renderer->GetObject();
     }
+    bool IsAnimComplete() const override;
+
 private:
     int inc;
     std::string animation;
@@ -25,7 +27,13 @@ private:
     const AnimInfo* m_animInfo;
     const SpriteMesh& m_mesh;
     Renderer* renderer;
+    bool m_animCompleted;
 };
+
+inline bool SimpleModelStatus::IsAnimComplete() const {
+    return m_animCompleted;
+}
+
 
 class SimpleModel : public IModel {
 public:

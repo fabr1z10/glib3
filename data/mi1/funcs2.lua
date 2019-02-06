@@ -304,39 +304,10 @@ function handleDialogueButton(entity)
     end
 
     local s1 = script:new()
-    if (dialogueNode.children == nil) then
-        -- return to game
-        s1.actions = {
-            action.end_dialogue { id = 1, dialogue = info.data.dialogue }
-        }
-    else
-        atLeastOneActiveChild = false
-        for k, v in ipairs(dialogueNode.children) do
-            if (dialogue.nodes[v].active == true) then
-                atLeastOneActiveChild = true
-                break
-            end
-        end
-        if (atLeastOneActiveChild) then
-            s1.actions = {
-                action.start_dialogue { id=1, dialogue = info.data.dialogue, root = dialogueNode }
-            }
-        else
-            s1.actions = {
-                action.end_dialogue { id = 1, dialogue = info.data.dialogue }
-            }
-        end
- --        s1 = start_dialogue {dialogue = info.data.dialogue, root = dialogueNode } 
- --        -- s1.actions = {
- --        --     [1] = { type="callfunc", func = function ()
- --        --         -- body
- --        --         local m2 = monkey.getEntity("dialogueui")
- --        --         for k, v in ipairs(dialogueNode.children) do
- --        --             m2:addtext { text=dialogue[v].text, dialogue_node = dialogue[v], dialogue = dialogue }
- --        --         end
- --        --     end}s
- --        -- }
-    end
+	s1.actions = {
+		action.resume_dialogue { id = 1, dialogue = info.data.dialogue, node = dialogueNode }
+	}
+
     if (s == nil) then
         s = s1
     else

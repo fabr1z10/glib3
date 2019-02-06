@@ -4,15 +4,17 @@
 
 void SimpleModelStatus::Init(Entity* entity) {
     renderer = entity->GetComponent<Renderer>();
-    SetAnimation(m_mesh.GetDefaultAnimation());
+    SetAnimation(m_mesh.GetDefaultAnimation(), true);
 }
 
-void SimpleModelStatus::SetAnimation(const std::string& anim) {
+void SimpleModelStatus::SetAnimation(const std::string& anim, bool fwd) {
     std::cout << "setting anim to " << anim<<"\n";
+    m_animCompleted = false;
+    inc = fwd ? 1 : -1;
     animation = anim;
-    frame = 0;
     time = 0.0;
     m_animInfo = m_mesh.GetAnimInfo(anim);
+    frame = fwd ? 0 : m_animInfo->frameCount-1;
     const FrameInfo& frameInfo = m_animInfo->frameInfo[frame];
     renderer->SetMeshInfo(frameInfo.offset, frameInfo.count);
 }
@@ -20,8 +22,10 @@ void SimpleModelStatus::SetAnimation(const std::string& anim) {
 void SimpleModelStatus::AdvanceFrame(int inc) {
     frame += inc;
     if (frame >= m_animInfo->frameCount) {
+        m_animCompleted = true;
         frame = m_animInfo->loop ? 0 : m_animInfo->frameCount - 1;
     } else if (frame < 0) {
+        m_animCompleted = true;
         frame = m_animInfo->loop ? m_animInfo->frameCount - 1 : 0;
     }
     const FrameInfo &frameInfo = m_animInfo->frameInfo[frame];
@@ -36,14 +40,15 @@ void SimpleModelStatus::Update(double dt) {
         frame += inc;
         if (frame >= m_animInfo->frameCount) {
             frame = m_animInfo->loop ? 0 : m_animInfo->frameCount - 1;
-
+            m_animCompleted = true;
         } else if (frame < 0) {
             frame = m_animInfo->loop ? m_animInfo->frameCount - 1 : 0;
+            m_animCompleted = true;
         }
         // this will be >= 0
         time = time - frameDuration;
         const FrameInfo &frameInfo = m_animInfo->frameInfo[frame];
-        std::cout << "(" << frameInfo.offset<<"," << frameInfo.count << ")\n";
+        //std::cout << "(" << frameInfo.offset<<"," << frameInfo.count << ")\n";
         renderer->SetMeshInfo(frameInfo.offset, frameInfo.count);
     }
 }

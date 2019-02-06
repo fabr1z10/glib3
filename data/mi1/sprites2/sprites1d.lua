@@ -103,6 +103,21 @@ models["citizen.body"] = {
 	animations = {
 		{ name = "idle_s", frames = { { duration = dt, quads = {{ id = s.citizen_body_idle_south }}}}},
 		{ name = "idle_e", frames = { { duration = dt, quads = {{ id = s.citizen_body_idle_east }}}}},
+		{ name = "open_jacket", loop=false, frames = {
+			{ duration = dt, quads = {{ id = s.citizen_body_idle_east }}},
+			{ duration = dt, quads = {{ id = s.citizen_open_jacket_1 }}},
+			{ duration = dt, quads = {{ id = s.citizen_open_jacket_2 }}},
+			{ duration = dt, quads = {{ id = s.citizen_open_jacket_3 }}},
+			{ duration = dt, quads = {{ id = s.citizen_open_jacket_4 }}},
+		}},
+		{ name = "rollmap", loop=false, frames = {
+			{ duration = dt, quads = {{ id = s.citizen_body_idle_east }}},
+			{ duration = dt, quads = {{ id = s.citizen_rollmap_1 }}},
+			{ duration = dt, quads = {{ id = s.citizen_rollmap_2 }}},
+			{ duration = dt, quads = {{ id = s.citizen_rollmap_3 }}},
+			{ duration = dt, quads = {{ id = s.citizen_rollmap_4 }}},
+			{ duration = dt, quads = {{ id = s.citizen_rollmap_5 }}},
+		}},
 
 	}
 }
@@ -142,7 +157,11 @@ models["citizen"] = {
 	animations = {
 		{ name = "idle_s", anims = { {name="body", anim="idle_s"}, {name="head", anim="idle_s", pos={0,25,0} }}},
 		{ name = "idle_e", anims = { {name="body", anim="idle_e"}, {name="head", anim="idle_e", pos={-1,25,0} }}},
-		{ name = "talk", anims = { {name="head", anim="talk", pos ={-1,25,0} }}}
+		{ name = "talk_start", anims = { {name="head", anim="talk", pos ={-1,25,0} }}},
+		{ name = "talk_end", anims = { {name="head", anim="idle_e", pos ={-1,25,0} }}},
+		{ name = "open_jacket", anims = { { name="body", anim="open_jacket" }}},
+		{ name = "rollmap", anims = { { name="body", anim="rollmap" }}}
+
 	}
 }
 

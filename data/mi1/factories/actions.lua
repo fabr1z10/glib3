@@ -57,7 +57,11 @@ action.animate = function(args)
 	assert (args.anim, "anim")
 	local after= args.after
 	local tag = getTag(args)
-	return { id = args.id, after = after, type="animate", actor = tag, anim = args.anim }
+	local fwd = args.fwd
+	local sync = args.sync
+	if (fwd == nil) then fwd = true end
+	if (sync == nil) then sync = false end
+	return { id = args.id, after = after, type="animate", actor = tag, anim = args.anim, fwd = fwd, sync = sync }
 end
 
 action.say = function(args) 
@@ -138,7 +142,6 @@ action.end_dialogue = function(args)
 	local after= args.after
 
 	return { id = args.id, after = after, type="callfunc", func = function() 
-	print ("LLLLL")
 		local dialogue = dialogues[args.dialogue]
 		if (dialogue == nil) then
 			error ("Can't find dialogue " .. args.dialogue)
@@ -155,12 +158,84 @@ action.end_dialogue = function(args)
 			m1:enablecontrols(true)			
 		end
 		if (dialogue.close ~= nil) then
-			print ("closing seq")
 			dialogue.close()
 		end
 	end
 	}
 end
+
+local closeDialogue = function(dialogue) 
+	local m = monkey.getEntity("mainui")
+	local m1 = monkey.getEntity("main")
+	local m2 = monkey.getEntity("dialogueui")
+	m2:cleartext()
+	m2:setactive(false)
+	if (not m.isnil) then
+		m:setactive(true)	
+	end
+	if (not m1.isnil) then
+		m1:enablecontrols(true)			
+	end
+	if (dialogue.close ~= nil) then
+		dialogue.close()
+	end
+end
+
+local showDialogue = function(dialogueId, node) 
+	local m2 = monkey.getEntity("dialogueui")
+	local dialogue = dialogues[dialogueId]
+	m2:setactive(true)
+	m2:cleartext()
+	for _, v in ipairs(node.children) do
+    	local node = dialogue.nodes[v]
+        if (get(node.active) == true) then
+			m2:addtext { text=node.text, dialogue_node = node, dialogue = dialogueId }
+		end
+    end
+end
+
+
+action.resume_dialogue = function(args) 
+	assert (args.id, "id")
+	assert (args.node, "node")
+	assert (args.dialogue, "dialogue")
+
+	local after= args.after
+	
+	local node = args.node
+	local dialogue = dialogues[args.dialogue]
+	return { id = args.id, after = after, type="callfunc", func = 
+		function() 
+			print ("... resuming dialogue.")
+			if (node.children == nil) then
+				print ("NO CHILDREN!")
+        		-- return to game
+        		closeDialogue (dialogue)
+        	else
+				-- check if node has active children
+				print ("I have children. Check at least one is active.")
+        		atLeastOneActiveChild = false
+        		for _, v in ipairs(node.children) do
+					print (tostring(v))
+            		if (get(dialogue.nodes[v].active) == true) then
+                		atLeastOneActiveChild = true
+                		break
+        		    end
+        		end
+				if (atLeastOneActiveChild == true) then
+					print ("At least one child is active. Resuming dialogue...")
+					showDialogue (args.dialogue, node)
+				else
+					print ("No active children. Shutting down dialogue, returning to game.")
+					closeDialogue (dialogue)
+				end
+			end
+		end
+	}
+end
+
+
+
 
 action.random_delay = function(args)
 	local id = gr(args.id, "Required id in action.random_delay")
@@ -292,9 +367,9 @@ action.set_variable = function(args)
 	assert (args.var, "var")
 	assert (args.value, "value")
 	local after= args.after
-
 	return { id = args.id, after = after, type = "callfunc", func = 
 		function()
+			print ("Setting " .. args.var .. " to " .. tostring(args.value))
 			variables[args.var] = args.value
 		end
 	}

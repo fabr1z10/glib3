@@ -12,7 +12,7 @@ void CompositeModelStatus::Init(Entity* entity) {
             it->second->Init(&(*iterator));
         }
     }
-    SetAnimation(m_model->GetDefaultAnimation());
+    SetAnimation(m_model->GetDefaultAnimation(), true);
 
 }
 const std::vector<AnimationDefinition>& CompositeModel::GetAnimationDefinition(const std::string& name) const {
@@ -47,14 +47,21 @@ void CompositeModelStatus::AdvanceFrame(int inc) {
     }
 }
 
-void CompositeModelStatus::SetAnimation(const std::string &anim) {
+void CompositeModelStatus::SetAnimation(const std::string &anim, bool fwd) {
     auto animDef = m_model->GetAnimationDefinition(anim);
     for (auto& a : animDef) {
         auto sm = m_componentStates.at(a.node).get();
-        sm->SetAnimation(a.anim);
+        sm->SetAnimation(a.anim, fwd);
         sm->GetEntity()->SetPosition(a.pos);
-
     }
+}
+
+bool CompositeModelStatus::IsAnimComplete() const {
+    for (auto& a : m_componentStates) {
+        if (!a.second->IsAnimComplete())
+            return false;
+    }
+    return true;
 }
 
 std::vector<std::string> CompositeModel::GetAnimations() {

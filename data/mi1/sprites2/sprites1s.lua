@@ -33,6 +33,17 @@ spritesheets["sprites1"] = {
 	citizen_head_idle_east = {x=196, y=21, width=9, height=9, anchor = {5,0}},
 	citizen_head_talk_1 = {x=231,y=1,width=9, height=9, anchor={5,0}},
 	citizen_head_talk_2 = {x=231,y=11, width=9, height=9, anchor={5,0}},
+	citizen_open_jacket_1 = {x=241, y=3, width=26, height=29, anchor = {20, 0 }},
+	citizen_open_jacket_2 = {x=269, y=3, width=23, height=29, anchor = {17, 0 }},
+	citizen_open_jacket_3 = {x=293, y=3, width=33, height=29, anchor = {25, 0}},
+	citizen_open_jacket_4 = {x=328, y=3, width=38, height=29, anchor = {25, 0}},
+	citizen_rollmap_1 = {x=165, y=34, width=29, height=29, anchor={17, 0}},
+	citizen_rollmap_2 = {x=197, y=34, width=26, height=29, anchor={16, 0}},
+	citizen_rollmap_3 = {x=226, y=34, width=26, height=29, anchor={16, 0}},
+	citizen_rollmap_4 = {x=257, y=34, width=26, height=29, anchor={16, 0}},
+	citizen_rollmap_5 = {x=286, y=34, width=25, height=29, anchor={16, 0}},
+
+
 	door_village_scummbar_open = {x=3, y=126, width=31, height=52 },
 	door_village_scummbar_close = {x=35, y=126, width=31, height=52 },
 

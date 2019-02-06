@@ -16,11 +16,14 @@ void Animator::Update(double dt) {
 }
 
 void Animator::SetAnimation(const std::string &anim) {
-    m_status->SetAnimation(anim);
+    m_status->SetAnimation(anim, m_forward);
 }
 
 void Animator::AdvanceFrame(int inc) {
     m_status->AdvanceFrame(inc);
+}
+bool Animator::IsComplete() const {
+    return m_status->IsAnimComplete();
 }
 
 //void Animator::SetForward (bool value) {

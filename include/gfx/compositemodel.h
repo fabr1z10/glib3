@@ -74,7 +74,8 @@ public:
     }
     void AdvanceFrame(int) override;
     Entity* GetEntity() override;
-    void SetAnimation (const std::string& anim) override;
+    void SetAnimation (const std::string& anim, bool fwd) override;
+    bool IsAnimComplete() const override;
 private:
     std::unordered_map<std::string, std::unique_ptr<IModelStatus>> m_componentStates;
     CompositeModel* m_model;

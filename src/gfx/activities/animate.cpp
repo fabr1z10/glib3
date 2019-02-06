@@ -2,12 +2,13 @@
 #include <gfx/components/animator.h>
 #include <gfx/engine.h>
 
-Animate::Animate(Entity* entity, const std::string& animId, int flip) : Activity(), m_animId{animId}, m_entity{entity}, m_flipX{flip}, m_loop{0} {
+Animate::Animate(Entity* entity, const std::string& animId, bool fwd, int flip) : Activity(),
+    m_animId{animId}, m_entity{entity}, m_flipX{flip}, m_forward(fwd) {
 
 }
 
-Animate::Animate(const std::string& actorId, const std::string& animId, int flipX )
-: Activity(), m_animId{animId}, m_entity{nullptr}, m_actorId{actorId}, m_flipX{flipX}, m_loop{0} {
+Animate::Animate(const std::string& actorId, const std::string& animId, bool fwd, int flipX )
+: Activity(), m_animId{animId}, m_entity{nullptr}, m_actorId{actorId}, m_flipX{flipX}, m_forward(fwd) {
 
 }
 
@@ -24,8 +25,9 @@ void Animate::Start() {
         //m_entity->Set
         m_entity->SetFlipX(m_flipX == 2);
     }
+    m_animator->SetPlayForward(m_forward);
     m_animator->SetAnimation(m_animId);
-    if (m_loop == 0) {
+    if (!m_sync) {
         SetComplete();
     }
 
@@ -33,7 +35,7 @@ void Animate::Start() {
 
 void Animate::Run(float dt) {
     // runs only if loop is set
-    if (m_animator->loopEnd()) {
+    if (m_animator->IsComplete()) {
         SetComplete();
     }
 
