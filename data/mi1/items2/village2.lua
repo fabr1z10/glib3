@@ -27,6 +27,56 @@ items2["village2.archway_to_village3"] = {
 	pos = {146, 63, 0},
 }
 
+items2["village2.lmf1"] = {
+	pos = {18, 10, 0},
+	text_color = {255, 85, 255, 255},
+	text_offset = {0,60},
+	model = "low_moral_fiber_1",
+	anim= "rock",
+	applydepth = true,
+}
+
+items2["village2.lmf2"] = {
+	pos = {44, 20, 0},
+	text_color = {85, 255, 255, 255},
+	text_offset = {0,60},
+	model = "low_moral_fiber_2",
+	anim= "idle",
+	applydepth = true,
+}
+
+items2["village2.lmf3"] = {
+	pos = {56, 23, 0},
+	text_color = {85, 255, 85, 255},
+	text_offset = {0,60},
+	model = "lmf3",
+	anim= "idle_e",
+	applydepth = true,
+}
+
+items2["village2.rat"] = {
+	pos = {56,10,0},
+	model ="village2.rat",
+	anim="idle",
+	applydepth = true,
+	text_color = {170, 170, 170, 255},
+	text_offset = {0,60},
+	flipx = true,
+}
+
+items2["village2.lmf"] = {
+	pos = {0, 0, 0},
+	hotspot = {
+		text = strings.objects.lowmoralfiber,
+		size = {60, 60},
+		walk_to = {70, 15},
+		dir = "west"
+	},
+	actions = {
+		talk = { type = action.start_dialogue, args = {id=1, dialogue="lowmoralfiber"}} 
+	}
+}
+
 items2["village2.citizen"] = {
 	pos = {325, 27, 0},
 	hotspot = {
@@ -43,20 +93,58 @@ items2["village2.citizen"] = {
 	text_offset = {0,60},
 	actions = {
 		talk = function() 
-			local s = script:new()
 			local dp = strings.dialogues.citizen
 			local lines = (variables.talked_to_citizen == false) and {dp[1]} or {dp[8], dp[9]}
 			if (variables.talked_about_map) then
 				table.insert(lines, dp[27])
 				table.insert(lines, dp[28])
 			end
-			s.actions = {
-				action.disable_controls {id=1},
-				action.animate { id=2, actor="village2.citizen", anim="idle_e" },
-				action.say {id=3, actor="village2.citizen", lines = lines, animstart="talk_start", animend="talk_end" },
-				action.start_dialogue {id=4, dialogue="citizen"}
+			local s = {
+				{ type = action.disable_controls },
+				{ type = action.animate, args = { actor="village2.citizen", anim="idle_e" } },
+				{ type = action.say, args = {actor="village2.citizen", lines = lines, animstart="talk_start", animend="talk_end" }},
+				{ type = action.start_dialogue, args = {dialogue="citizen"}}
 			}
 			return s
 		end
 	}
 }
+
+factory.door.create {
+	id = "village2.voodoolady_door",
+	pos = {220, 52, -1},
+	size = {26, 26},
+	walk_to = {220, 48},
+	dir = "east",
+	model = "door_village_voodoolady",
+	nextroom="voodoolady",
+	variable = "door_voodoolady"
+}
+
+items2["village2.fakedoor1"] = {
+	pos = {377, 37, -1},
+	hotspot = {
+		text = strings.objects.door,
+		walk_to= {389, 36},
+		dir = "west",
+		size = {20, 30}	
+	},
+	actions = {},
+	model = "fakedoor_village_1",
+	anim="close"
+}
+
+items2["village2.fakedoor2"] = {
+	pos = {208, 59, -1},
+	hotspot = {
+		text = strings.objects.door,
+		walk_to= {206, 58},
+		dir = "east",
+		size = {10, 20},
+		priority = 10,
+	},
+	actions = {},
+	model = "fakedoor_village_2",
+	anim="close"
+}
+

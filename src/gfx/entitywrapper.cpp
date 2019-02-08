@@ -159,6 +159,7 @@ namespace luaFunctions {
             luabridge::LuaRef action = actions[i+1];
             if (action["id"].isNil())
                 GLIB_FAIL("When reading a script, found action with no required <id> field!");
+            luabridge::LuaRef ac = action["action"];
             int id = action["id"].cast<int>();
             if (!action["after"].isNil()) {
                 luabridge::LuaRef after = action["after"];
@@ -171,10 +172,9 @@ namespace luaFunctions {
                 // unless of course it is the first
                 if (id > 1) {
                     edges.push_back(std::make_pair(id-1, id));
-
                 }
             }
-            auto activity= factory->Get<Activity>(action);
+            auto activity= factory->Get<Activity>(ac);
             script->AddActivity(id, std::move(activity));
         }
 

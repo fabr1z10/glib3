@@ -1,6 +1,6 @@
 engine = {
     device_size = { 320, 200 },
-    window_size = { 320, 200 },
+    window_size = { 800, 600 },
     title = "The secret of Monkey Island",
 	shaders = { "unlit_textured", "unlit_color", "text" }
 }
@@ -60,7 +60,7 @@ variables = {
  	door_village_scummbar = 0,
 -- 	door_scummbar_kitchen = 0,
 -- 	door_kitchen_pier = 0,
--- 	door_voodoolady = 0,
+	door_voodoolady = 0,
 -- 	door_shop = 0,
 -- 	cook_in_kitchen = true,
 -- 	meat_in_pot = false,
@@ -87,7 +87,7 @@ variables = {
 }
 
 -- -- DEBUG STUFF
--- variables.inventory["pieces_of_eight"] = 10000
+variables.inventory["pieces_of_eight"] = 10000
 -- variables.inventory["kitchen.pot"] = 1
 -- variables.entered_circus = true
 -- variables.circus_knows_trick = true
@@ -111,7 +111,9 @@ dialogues = {}
 load_all("sprites2")
 load_all("factories")
 
-require("defaultscripts")
+
 
 load_all("items2")
 load_all("dialogues")
+
+require("defaultscripts")

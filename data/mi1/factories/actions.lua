@@ -9,7 +9,7 @@ function getTag (args)
 end
 
 action.walkto = function (args) 
-	assert (args.id, "id")
+	--assert (args.id, "id")
 	local after = args.after
 	-- you can specify a tag or an actor (in this case the tag will be the actor's tag)
 	local tag = getTag(args)
@@ -24,48 +24,46 @@ action.walkto = function (args)
 		pos = obj.hotspot.walk_to
 	end
 	
-	return { id = args.id, after=after, type="walk", actor=tag, pos = pos }
+	return { type="walk", actor=tag, pos = pos }
 
 end
 
 action.turn = function (args) 
-	assert (args.id, "id")
+	--assert (args.id, "id")
 	assert (args.dir, "dir")
 	local after= args.after
 	local tag = getTag(args)
-	return { id = args.id, after=after, type="turn", actor=tag, dir = args.dir }
+	return { type="turn", actor=tag, dir = args.dir }
 
 end
 
 action.change_room = function (args) 	
-	assert (args.id, "id")
 	assert (args.room, "room")
-	local after= args.after
-	return { id = args.id, after = after, type="gotoroom", room = args.room }
+	return { type="gotoroom", room = args.room }
 end
 
 action.delay = function (args) 
-	assert (args.id, "id")
-	assert (args.sec, "sec")
+	--assert (args.id, "id")
+	--assert (args.sec, "sec")
 	local after= args.after
-	return { id = args.id, after = after, type="delay", sec = args.sec }
+	return { type="delay", sec = args.sec }
 
 end
 
 action.animate = function(args)
-	assert (args.id, "id")
+	--assert (args.id, "id")
 	assert (args.anim, "anim")
-	local after= args.after
+	--local after= args.after
 	local tag = getTag(args)
 	local fwd = args.fwd
 	local sync = args.sync
 	if (fwd == nil) then fwd = true end
 	if (sync == nil) then sync = false end
-	return { id = args.id, after = after, type="animate", actor = tag, anim = args.anim, fwd = fwd, sync = sync }
+	return {type="animate", actor = tag, anim = args.anim, fwd = fwd, sync = sync }
 end
 
 action.say = function(args) 
-	assert (args.id, "id")
+	--assert (args.id, "id")
 	assert (args.lines, "lines")
 	assert (args.actor, "actor")
 
@@ -84,9 +82,9 @@ action.say = function(args)
 end
 
 action.disable_controls = function(args) 
-	assert (args.id, "id")
-	local after = args.after
-	return { id = args.id, after = after, type="callfunc", func = function() 
+	--assert (args.id, "id")
+	--local after = args.after
+	return { type="callfunc", func = function() 
 		local m = monkey.getEntity("mainui")
 		local m1 = monkey.getEntity("main")
 		if (not m.isnil) then
@@ -100,13 +98,12 @@ end
 
 
 action.start_dialogue = function (args) 
-	assert (args.id, "id")
+	--assert (args.id, "id")
 	assert (args.dialogue, "dialogue")
-	
-	local after = args.after
+
 	local droot = args.root
 
-	return { id = args.id, after = after, type="callfunc", func = function() 
+	return { type="callfunc", func = function() 
 		print ("Starting dialogue: " .. args.dialogue)
 		local dialogue = dialogues[args.dialogue]
 		if (dialogue == nil) then
@@ -187,8 +184,10 @@ local showDialogue = function(dialogueId, node)
 	m2:setactive(true)
 	m2:cleartext()
 	for _, v in ipairs(node.children) do
+		print ("examine node " .. tostring(v))
     	local node = dialogue.nodes[v]
         if (get(node.active) == true) then
+			print ("active " .. node.text)
 			m2:addtext { text=node.text, dialogue_node = node, dialogue = dialogueId }
 		end
     end
@@ -411,11 +410,11 @@ end
 
 
 action.add_to_inventory = function(args) 
-	local id = gr(args.id, "Required id in action.create_object")
-	local after= go(args.after, nil)
-	local objid = gr(args.name, "Required object name in add_to_inventory")
-	local qty = gr(args.qty, "Required qty")
-	return { id = id, after = after, type = "callfunc", func = 
+	--local id = gr(args.id, "Required id in action.create_object")
+	--local after= go(args.after, nil)
+	local objid = args.name
+	local qty = args.qty
+	return { type = "callfunc", func = 
 		function()
 			-- the object might already be in inventory
 			if (variables.inventory[objid] == nil) then

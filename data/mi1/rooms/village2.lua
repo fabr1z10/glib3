@@ -20,7 +20,16 @@ roomDefinition = {
 
 room = generateBasicRoom (roomDefinition)
 
-room:add_assets { "citizen" }
+room:add_assets { 
+	"citizen", 
+	"low_moral_fiber_1", 
+	"low_moral_fiber_2", 
+	"lmf3", 
+	"village2.rat",
+	"door_village_voodoolady",
+	"fakedoor_village_1",
+	"fakedoor_village_2"  
+}
 -- room:add_asset(sprites.citizen)
 -- room:add_asset(sprites.lmf1)
 -- room:add_asset(sprites.lmf2)
@@ -33,6 +42,14 @@ room:add( {
 	factory.walkarea { shape = { type = "poly", outline = {0, 24, 123, 63, 199, 63, 299, 30, 377, 30, 385, 35, 454, 35, 470, 0, 0}}},
 	factory.objc { id="village2.archway_to_village1" },
  	factory.objc { id="village2.citizen" },
+	factory.objc { id="village2.lmf1"},
+	factory.objc { id="village2.lmf2"},
+	factory.objc { id="village2.lmf3"},
+	factory.objc { id="village2.lmf"},
+	factory.objc { id="village2.rat"},
+	factory.objc { id="village2.voodoolady_door"},
+	factory.objc { id="village2.fakedoor1"},
+	factory.objc { id="village2.fakedoor2"},
 
 -- 	factory.object.create { object = "village2.archway1" },
 -- 	factory.object.create { object = "village2.archway2" },

@@ -589,8 +589,25 @@ std::unique_ptr<Component> CursorComponentFactory::Create(luabridge::LuaRef& ref
 
 
 
-std::unique_ptr<Runner> HotSpotManagerFactory::Create(luabridge::LuaRef&) {
+std::unique_ptr<Runner> HotSpotManagerFactory::Create(luabridge::LuaRef& ref) {
     auto hsm = std::unique_ptr<HotSpotManager>(new HotSpotManager);
+    LuaTable table(ref);
+    if (table.HasKey("keys")) {
+
+        luabridge::LuaRef keys = table.Get<luabridge::LuaRef>("keys");
+        for (int i = 0; i < keys.length(); ++i) {
+            luabridge::LuaRef key = keys[i+1];
+            LuaTable t2(key);
+            KeyEvent event;
+            event.key = t2.Get<int>("key");
+            event.action = GLFW_PRESS;
+            event.mods = 0;
+            LuaFunction f(t2.Get<luabridge::LuaRef>("func"));
+            hsm->AddCallback(event, [f] () { f.execute(); });
+        }
+    }
+
+
     return hsm;
     //Engine::get().AddRunner(hsm);
     //g.RegisterToMouseEvent(hsm.get());

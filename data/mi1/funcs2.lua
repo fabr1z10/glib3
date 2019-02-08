@@ -24,6 +24,71 @@ function get(ref)
 	end
 end
 
+function isarray(t) 
+    return (type(t)=="table" and t[1] ~= nil)
+end
+
+-- takes an input array and flattens it
+-- e.g {1, 2,{3, {5, 7}, 4}, 10} --> {1, 2, 3, 5, 7, 4, 10}
+function flatten(a) 
+    local out = {}
+    for _, v in ipairs(a) do
+        if (isarray(v)) then
+            --print (tostring(v) .. " is an array")
+            tmp = flatten(v)
+            for _, j in ipairs(tmp) do
+               table.insert(out, j)
+            end
+        else
+            --print (tostring(v) .. " is not an array")
+            table.insert(out, v)
+        end
+    end
+    return out
+end
+
+function flatten_script(a, offset) 
+    local out = {}
+	local ref_id = {}
+	local id = offset
+    for _, v in ipairs(a) do
+        if (isarray(v)) then
+            --print (tostring(v) .. " is an array")
+            tmp = flatten_script(v, id)
+            for _, j in ipairs(tmp) do
+               table.insert(out, j)
+            end
+			id = tmp[#tmp].id
+        else
+            --print (tostring(v) .. " is not an array")
+			if (v.type ~= nil) then
+			
+				id = id + 1
+				local node = { id = id, action = v.type(v.args) }
+				if (v.ref ~= nil) then
+					print ("ADDING REF " .. tostring(v.ref) .. " to node " .. tostring(id))
+					ref_id[v.ref] = id
+				end
+				if (v.after ~= nil) then 
+					node.after = {}
+					for _, ref in ipairs(v.after) do
+						print ("LOOK UP REF " .. tostring(ref) .. " is " .. tostring(ref_id[ref]))
+						table.insert (node.after, ref_id[ref])
+					end
+				else
+					if (id > 1) then
+						print ("CANE CANE = " .. tostring(id))
+						node.after = { id-1 } 
+					end
+				end
+	            table.insert(out, node)
+			end
+        end
+    end
+    return out
+end
+
+
 function defaultHelper(line) 
 	s = script:new()
 	s.actions[1] = say {character="guybrush", lines = {strings.defaultactions[line]}}
@@ -55,6 +120,30 @@ function ms(args)
         return s
     end	
 end
+
+function ms2(args)
+
+        local s = script:new()
+		s.actions = flatten_script (args, 0)
+		
+		for _,v in pairs(s.actions) do 
+			local sa = ""
+			if (v.after == nil) then
+				sa = (v.id == 1) and "-" or "{" .. tostring(v.id-1) .. "}"
+			else
+
+				sa = tostring(#(v.after)) .. "{"
+				for _, after in ipairs(v.after) do
+					sa = sa .. tostring(after) .. ", "
+				end
+				sa = sa .. "}"
+			end
+
+			print ("id = " .. tostring(v.id) .. ", after = " .. sa .. ", type = " .. v.action.type)	
+		end
+        return s
+end
+
 
 function msc(args)
     return function()
@@ -173,29 +262,32 @@ function runAction ()
                 -- Here we generate a play script. The first action is always a walkto towards the provided
                 -- object position. The following action depend on the default action, usually it just says something
                 -- like "It doesn't seem to work" or the like.
+				local actions = {}
 				if (variables.inventory[variables._actionInfo.obj1] == nil) then		
-					s.actions = {
-						action.walkto { id=1, actor="guybrush", obj = variables._actionInfo.obj1 },
-						action.turn { id=2, actor="guybrush", dir = obj.hotspot.dir }
+					actions = {
+						{ type = action.walkto, args = { actor="guybrush", obj = variables._actionInfo.obj1 }},
+						{ type = action.turn, args = { actor="guybrush", dir = obj.hotspot.dir }}
 					}			
 				end
 				local b = script.defaultactions[variables._actionInfo.verb.code]
 				if (b ~= nil) then		
-					s:push { script = b(), at = "end" }
+					table.insert (actions, b)
 				end
+				s = ms2 (actions)
             end
         else
             -- run specific action
             -- see if obj1 has an action with obj2
 			print ("found a custom action for object: " .. variables._actionInfo.obj1 .. ", verb: " .. variables._actionInfo.verb.text)
+			local actions = {}
 			if (variables.inventory[variables._actionInfo.obj1] == nil) then		
-				s.actions = {
-					action.walkto { id=1, actor="guybrush", obj = variables._actionInfo.obj1 },
-					action.turn { id=2, actor="guybrush", dir = obj.hotspot.dir }
+				actions = {
+					{ type = action.walkto, args = { id=1, actor="guybrush", obj = variables._actionInfo.obj1 }},
+					{ type = action.turn, args = { id=2, actor="guybrush", dir = obj.hotspot.dir }}
 				}		
 			end
-			--s:push { script = createWalkToAction {objectId = variables._actionInfo.obj1}, at = "end" }
-			s:push { script = a(), at = "end" }
+			table.insert (actions, get(a))
+			s = ms2 (actions)
         end
     else
         -- action with two objects
@@ -295,24 +387,36 @@ function handleDialogueButton(entity)
             dialogue.nodes[v].active = true
         end
     end
-    local s = nil
+    local actions = nil
     if (dialogueNode.script ~= nil) then
         print ("calling button")
-        s = dialogueNode.script()
+        actions = get (dialogueNode.script)
     else
         print ("button has no script attached.")
     end
 
-    local s1 = script:new()
-	s1.actions = {
-		action.resume_dialogue { id = 1, dialogue = info.data.dialogue, node = dialogueNode }
-	}
 
-    if (s == nil) then
-        s = s1
+	local s1 = { type = action.resume_dialogue, args = { id = 1, dialogue = info.data.dialogue, node = dialogueNode }}
+    if (actions ~= nil) then
+    	table.insert (actions, s1)
     else
-        s:push { script = s1 }
+        actions = s1
     end
-    
+    local s = ms2 (actions)
+
     monkey.play(s)
+end
+
+refresh_inventory = function()
+	local c = monkey.getEntity("inventory")
+	c:cleartext()
+	for k, v in pairs(variables.inventory) do
+		if (v == 1) then
+	--		c:addtext( {text = items[k].text, obj = k})
+			print ("IDHEUHFKUEWHF" ..k)
+		else
+			c:addtext( { text = tostring(v) .. " " .. items2[k].text_plural, obj = k}) -- l, obj = k} )
+		end
+	end
+
 end

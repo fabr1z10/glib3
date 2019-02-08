@@ -22,10 +22,14 @@ function generateBasicRoom (args)
 		initstuff = {
 			[1] = function() 
 				variables._actionInfo.verb = config.verbs.walk
-				updateVerb() end
+				updateVerb() 
+				refresh_inventory()
+			end
 		},
 		engines = {
-			{ type = "hotspotmanager" },
+			{ type = "hotspotmanager", keys = {
+				{ key = 299, func = function() monkey.endroom() end }
+			} },
 			{ type = "scheduler" }
 		},
 		assets = {

@@ -8,7 +8,7 @@ class LuaFunction {
 public:
     LuaFunction(luabridge::LuaRef ref) : m_ref(ref) {}
     template<typename... Args>
-    void execute(Args... args) {
+    void execute(Args... args) const {
         try {
             m_ref(args...);
         } catch (luabridge::LuaException const& e) {
