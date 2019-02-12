@@ -76,8 +76,13 @@ action.say = function(args)
 	local animate = true
 	if (args.animate ~= nil) then animate = args.animate end
 
+	local l = {}
+	for _, li in ipairs(args.lines) do
+		table.insert(l, get(li))
+	end
+
 	local item = items2[args.actor]
-	return { id = args.id, after = after,  type="say", actor= tag, lines = args.lines, offset = item.text_offset, color = item.text_color,
+	return { id = args.id, after = after,  type="say", actor= tag, lines = l, offset = item.text_offset, color = item.text_color,
 		animstart = animstart, animend = animend, animate = animate }
 end
 

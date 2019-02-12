@@ -67,25 +67,16 @@ dialogues.lowmoralfiber = {
 			{ type = action.say, args = {actor="village2.lmf3", lines={d[45], d[46]}, animstart="talk_e", animend="idle_e"}},
 			{ type = action.say, args = {actor="village2.lmf1", lines={d[47]}, animstart="talk", animend="rock"}},
 		}},
-		[6] = { text = d[5], active=true, script = ms {
-			{ action.say, {id=1, actor="guybrush", lines={d[5]}}},
+		[6] = { text = d[5], active=true, script = {
+			{ type = action.say, args = {actor="guybrush", lines={d[5]}}}
 		}},
 		[7] = { text = d[7], active=true, children = {11,12,13,14}, script = { { type = action.say, args = {actor="guybrush", lines={d[7]}}}, s1}},
-		[8] = { text = d[8], active=true, children = {11,12,13,14}, script = msc {
-			{
-				{ action.say, {id=1, actor="guybrush", lines={d[8]}}},
-			},
-			s1
-		}},
-		[9] = { text = d[9], act={20}, active=true, script = ms {
-			{ action.say, {id=1, actor="guybrush", lines={d[9]}}},
-			{ action.animate, {id=2, actor="village2.lmf2", anim="laugh"}},
-			{ action.say, {id=3, after={1}, actor="village2.lmf1", lines={d[57]}, animstart="talk", animend="idle2"}},
-			{ action.animate_once, {id=4, actor="village2.lmf3", anim="punch1"}},
-			{ action.animate_once, {id=5, actor="village2.lmf3", anim="punch2", after={4}}},
-			{ action.animate_once, {id=6, actor="village2.lmf2", anim="hit", after={4}}},
-			{ action.animate, {id=7, actor="village2.lmf2", anim="idle", after={6}}},		
-			{ action.animate, {id=8, actor="village2.lmf3", anim="idle", after={5}}},		
+		[8] = { text = d[8], active=true, children = {11,12,13,14}, script = { { type = action.say, args = {actor="guybrush", lines={d[8]}}}, s1}},
+		[9] = { text = d[9], act={20}, active=true, script = {
+			{ ref = 1, type = action.say, args = {actor="guybrush", lines={d[9]}}},
+			  { type = action.animate, after = {1}, args = {actor="village2.lmf2", anim="laugh"}},
+			  { type = action.say, after= {1}, args = {actor="village2.lmf1", lines={d[57]}, animstart="talk", animend="idle"}},
+            punch(0)		
 		}},
 		[10] = { text = d[10], active=true},
 		[11] = { text = d[17], active=true, children = {3,15,4,5,6}, script = {
@@ -159,7 +150,7 @@ dialogues.lowmoralfiber = {
 			{ type = action.animate, args = {actor="village2.lmf1", anim="rock", }},
 		}},
 		[22] = {text = d[49], active=true, children = {7,8,9,10}, script = {
-			{ type = action.say, args = {actor="guybrush", lines={d[1]}}},
+			{ type = action.say, args = {actor="guybrush", lines={d[49]}}},
 			{ type = action.say, args = {actor="village2.lmf1", lines={d[6]}, animstart="talk", animend="idle"}}		
 		}},
 		[23] = {text = d[50], active=true, script = { {type=action.say, args = {actor="guybrush", lines={d[50]}}}}},

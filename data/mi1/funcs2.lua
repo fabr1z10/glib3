@@ -182,6 +182,7 @@ end
 
 function variables._actionInfo:toString ()
     local t = { self.verb.text }
+
     if (self.obj1 ~= nil) then
         --o1 = objects[self.obj1]
         t[2] = items2[self.obj1].hotspot.text
@@ -412,11 +413,36 @@ refresh_inventory = function()
 	c:cleartext()
 	for k, v in pairs(variables.inventory) do
 		if (v == 1) then
-	--		c:addtext( {text = items[k].text, obj = k})
-			print ("IDHEUHFKUEWHF" ..k)
+			c:addtext( {text = items[k].hotspot.text, obj = k})
 		else
-			c:addtext( { text = tostring(v) .. " " .. items2[k].text_plural, obj = k}) -- l, obj = k} )
+			c:addtext( { text = tostring(v) .. " " .. items2[k].hotspot.text_plural, obj = k}) -- l, obj = k} )
 		end
 	end
 
+end
+
+function hoverOn (obj)
+    if (variables._actionInfo.obj1 == nil) then 
+        variables._actionInfo.obj1 = obj
+    else
+        if (variables._actionInfo.verb.objects > 1 and variables._actionInfo.obj1 ~= obj) then
+            variables._actionInfo.obj2 = obj
+        end
+    end
+    updateVerb()
+end
+
+function hover_on_inv_button(entity) 
+	print ("QUI")
+	local color = config.ui_inv_selected
+	entity:setcolor(color[1], color[2], color[3], color[4])
+	local info = entity:getinfo()
+	hoverOn(info.data.obj)
+end
+
+function hover_off_inv_button(entity) 
+	local color = config.ui_inv_unselected
+	entity:setcolor(color[1], color[2], color[3], color[4])
+	local info = entity:getinfo()
+	hoverOff()
 end

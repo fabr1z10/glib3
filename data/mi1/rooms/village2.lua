@@ -20,16 +20,16 @@ roomDefinition = {
 
 room = generateBasicRoom (roomDefinition)
 
-room:add_assets { 
-	"citizen", 
-	"low_moral_fiber_1", 
-	"low_moral_fiber_2", 
-	"lmf3", 
-	"village2.rat",
-	"door_village_voodoolady",
-	"fakedoor_village_1",
-	"fakedoor_village_2"  
-}
+-- room:add_assets { 
+-- 	"citizen", 
+-- 	"low_moral_fiber_1", 
+-- 	"low_moral_fiber_2", 
+-- 	"lmf3", 
+-- 	"village2.rat",
+-- 	"door_village_voodoolady",
+-- 	"fakedoor_village_1",
+-- 	"fakedoor_village_2"  
+-- }
 -- room:add_asset(sprites.citizen)
 -- room:add_asset(sprites.lmf1)
 -- room:add_asset(sprites.lmf2)

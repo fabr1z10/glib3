@@ -34,28 +34,19 @@ factory.door.create =function(args)
 		actions = {
 			walk = args.walk or function() 
 				if (variables[args.variable] == 1) then
-					local s = script:new()
-					s.actions = { action.change_room { id=1, room = args.nextroom }}
-					return s
+					return { type = action.change_room, args = {room =args.nextroom }}
 				else
 					return nil
 				end
 			end,
 			open = args.open or function()
 				variables[args.variable] = 1
-				local s = script:new()
-
-				s.actions = {
-					action.animate {id = 1, actor=args.id, anim="open" }
-				}
+				local s = { type = action.animate, args = {actor=args.id, anim="open"}}
 				return s
 			end,
 			close = args.close or function()
 				variables[args.variable] = 0
-				local s = script:new()
-				s.actions = {
-					action.animate {id = 1, actor=args.id, anim="close" }
-				}
+				local s = { type = action.animate, args = {actor=args.id, anim="close"}}
 				return s
 			end,
 		}

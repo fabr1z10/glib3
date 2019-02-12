@@ -32,7 +32,7 @@ factory.button.create = function(args)
 end
 
 factory.inventorybutton.create = function (args) 
-	print ("Object name = ".. args.obj)
+print ("CREATE::: " .. args.obj)
 	return factory.button.create {
 		pos = {0,0},
 		font="ui", 
