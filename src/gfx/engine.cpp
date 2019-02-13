@@ -319,3 +319,11 @@ void Engine::key_callback(GLFWwindow* window, int key, int scancode, int action,
     Engine::get().m_keyboard.key_callback(window, key, scancode, action, mods);
 }
 
+void Engine::SetDirectory(const std::string& dir)
+{
+    m_directory = dir;
+    if (m_directory.back() != '/')
+        m_directory.push_back('/');
+
+}
+

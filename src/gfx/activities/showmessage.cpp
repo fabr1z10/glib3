@@ -21,7 +21,7 @@ void ShowMessage::Start() {
     currentPos += m_offset; //glm::vec2(0, 60.0);
 
     auto parent = std::make_shared<Entity>();
-    Font* f = Engine::get().GetAssetManager().GetFont(m_font);
+    Font* f = Engine::get().GetAssetManager().GetFont(m_font).get();
     auto mesh = std::make_shared<TextMesh>(f, m_message, m_size, m_align, 280.0f);
     glm::vec2 outlineOffsets[] = {{0, 0}, {-1, 0}, {-1,1}, {0, 1}, {1,1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1}};
     for (int i =0; i < 9; ++i) {

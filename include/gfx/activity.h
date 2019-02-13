@@ -6,6 +6,7 @@
 
 class Edge;
 
+
 class Activity {
 public:
     Activity () : m_complete{false}, m_success{true} {}

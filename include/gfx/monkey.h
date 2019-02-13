@@ -9,10 +9,13 @@ class Monkey : public Singleton<Monkey> {
 public:
     LuaTable& operator[] (const std::string& key);
     void AddTable (const std::string& name);
-    Monkey();
+    Monkey() = default;
 
     template <typename SCENE_FACTORY>
-    void Init() {
+    void Init(const std::string& home) {
+        Engine::get().SetDirectory(home);
+        InitLUA();
+
         LuaTable engine(std::string("engine"));
         //LuaTable& engine =(*this)["engine"];
         glm::vec2 devSize = engine.Get<glm::vec2>("device_size");
@@ -30,7 +33,7 @@ public:
 
 
 
-        LoadFonts();
+        //LoadFonts();
         auto factory = std::unique_ptr<SceneFactory>(new SCENE_FACTORY);
         factory->extendLua();
         g.SetSceneFactory(std::move(factory));
@@ -39,6 +42,7 @@ public:
     void Start();
     
 private:
-    void LoadFonts();
+    //  void LoadFonts();
+    void InitLUA();
     std::unordered_map<std::string, LuaTable> m_tables;
 };

@@ -3,7 +3,7 @@
 
 TexturedMesh::TexturedMesh(GLenum prim, const std::string& filename) : Mesh<Vertex3D>(TEXTURE_SHADER) {
     m_primitive = prim;
-    auto tex = Engine::get().GetAssetManager().GetTexture(filename);
+    auto tex = Engine::get().GetAssetManager().GetTex(filename);
     m_texId = tex->GetTexId();
 }
 

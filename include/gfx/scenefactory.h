@@ -33,7 +33,7 @@ public:
         auto s = std::shared_ptr<T>(std::move(up));
         return s;
     }
-    void LoadModel(const std::string&);
+    //void LoadModel(const std::string&);
     virtual void extendLua() {}
 protected:
     Factory<IModel> m_modelFactory;

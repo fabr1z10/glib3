@@ -40,8 +40,8 @@ config.verbs = {
 
 
 fonts = {
-    { name = "ui", file  = "fonts/monkeysmall.ttf" },
-    { name = "monkey", file  = "fonts/MonkeyIsland-1990.ttf" }
+    ui = {file  = "fonts/monkeysmall.ttf" },
+    monkey = {file  = "fonts/MonkeyIsland-1990.ttf"}
 }
 
 

@@ -10,7 +10,7 @@ void LuaWrapper::Init() {
     L = luaL_newstate();
 
     luaL_openlibs(L);
-    setLuaPath(Engine::get().GetAssetManager().GetDirectory());
+    setLuaPath(Engine::get().GetDirectory());
     luabridge::getGlobalNamespace(L)
             .beginNamespace("monkey")
             .addFunction("getEntity", &EntityWrapper::GetEntity)

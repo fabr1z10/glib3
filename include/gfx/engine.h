@@ -108,6 +108,8 @@ public:
    //void EnableKey(int, bool);
     Keyboard& GetKeyboard();
     double GetFrameTime() const;
+    void SetDirectory(const std::string&);
+    std::string GetDirectory() const;
 private:
     friend class Singleton<Engine>;
     Engine() : m_mouseEnabled{true}, m_sceneFactory{nullptr} {}
@@ -144,6 +146,8 @@ private:
     // the runners (i.e. script engine, collision engine, hostpot manager etc)
     std::unordered_map<std::type_index, std::shared_ptr<Runner> > m_runners;
     Keyboard m_keyboard;
+    std::string m_directory;
+
 };
 
 inline double Engine::GetFrameTime() const {
@@ -210,4 +214,8 @@ inline RenderingEngine* Engine::GetRenderingEngine() {
 
 inline Keyboard& Engine::GetKeyboard() {
     return m_keyboard;
+}
+
+std::string Engine::GetDirectory() const {
+    return m_directory;
 }

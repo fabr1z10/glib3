@@ -3,44 +3,94 @@
 #include <string>
 #include <memory>
 #include <unordered_map>
+#include <unordered_set>
 #include <gfx/font.h>
 #include <gfx/tex.h>
 #include <gfx/mesh.h>
 #include <gfx/imodel.h>
+#include <gfx/error.h>
 #include <gfx/lua/luawrapper.h>
+
+template <typename T, typename Builder>
+class AssetStore {
+public:
+    std::shared_ptr<T> Get (const std::string& id) {
+        auto it = m_assets.find(id);
+        if (it == m_assets.end()) {
+            // try to build
+            std::shared_ptr<T> asset = m_builder(id);
+            if (asset == nullptr) {
+                GLIB_FAIL("Cannot find or create asset: " << id);
+            }
+            m_assets[id] = asset;
+            if (m_local) {
+                m_localAssets.insert(id);
+            }
+            return asset;
+        }
+        return it->second;
+
+    }
+
+    void CleanUp() {
+        for (const auto& s : m_localAssets) {
+            m_assets.erase(s);
+        }
+        m_localAssets.clear();
+    }
+    void SetLocal(bool value) {
+        m_local = value;
+    }
+
+private:
+    bool m_local;
+    Builder m_builder;
+    std::unordered_map<std::string, std::shared_ptr<T>> m_assets;
+    std::unordered_set<std::string> m_localAssets;
+};
+
+class FontBuilder {
+public:
+    std::shared_ptr<Font> operator() (const std::string&) const;
+};
+
+class TexBuilder {
+public:
+    std::shared_ptr<Tex> operator() (const std::string&) const;
+};
+
+class ModelBuilder {
+public:
+    std::shared_ptr<IModel> operator() (const std::string&) const;
+};
+
+
+
 
 class AssetManager {
 public:
-    void SetDirectory(const std::string&);
-    std::string GetDirectory() const;
+    AssetManager() {}
 
-    void AddFont(const std::string &name, const std::string &file);
-    Font *GetFont(const std::string &) const;
-    Tex* GetTexture(const std::string&);
+    std::shared_ptr<Font> GetFont (const std::string&);
+    std::shared_ptr<Tex> GetTex (const std::string&);
+    std::shared_ptr<IModel> GetModel (const std::string&);
 
-    void AddModel (const std::string& name, std::shared_ptr<IModel> mesh);
-    void RemoveModel (const std::string& name);
-    bool HasModel (const std::string& name) const;
-    std::shared_ptr<IModel> GetModel(const std::string& name) const;
-    const std::unordered_map<std::string, std::shared_ptr<IModel>>& GetModels() const;
-
-
-    void Clear();
-
-    //void AddModel (const std::string& name, std::shared_ptr<Model> mesh);
-    // void RemoveModel (const std::string& name);
-    //std::shared_ptr<Model> GetModel (const std::string& name) const;
-
-
-
+    void CleanUp() {}
 private:
-    std::unordered_map<std::string, std::shared_ptr<Font>> m_fonts;
-    std::unordered_map<std::string, std::shared_ptr<Tex>> m_textures;
-    std::unordered_map<std::string, std::shared_ptr<IModel>> m_models;
-    std::unordered_map<std::string, luabridge::LuaRef> m_meshAddInfo;
-    std::string m_directory;
+    AssetStore<Font, FontBuilder> m_fonts2;
+    AssetStore<Tex, TexBuilder> m_textures2;
+    AssetStore<IModel, ModelBuilder> m_models2;
+
 };
 
-inline const std::unordered_map<std::string, std::shared_ptr<IModel>>& AssetManager::GetModels() const {
-    return  m_models;
-};
+inline std::shared_ptr<Font> AssetManager::GetFont (const std::string& id) {
+    return m_fonts2.Get(id);
+}
+
+inline std::shared_ptr<Tex> AssetManager::GetTex (const std::string& id) {
+    return m_textures2.Get(id);
+}
+
+inline std::shared_ptr<IModel> AssetManager::GetModel (const std::string& id) {
+    return m_models2.Get(id);
+}

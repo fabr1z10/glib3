@@ -11,14 +11,14 @@
 
 QuadMesh::QuadMesh(GLenum prim, const std::string& filename) : Mesh<Vertex3D>(TEXTURE_SHADER) {
     m_primitive = prim;
-    auto tex = Engine::get().GetAssetManager().GetTexture(filename);
+    auto tex = Engine::get().GetAssetManager().GetTex(filename);
     m_texId = tex->GetTexId();
 }
 
 QuadMesh::QuadMesh(const std::string& filename, float width, float height,
                    float repeatx, float repeaty, float skewx, float skewy, glm::vec2 offset) : Mesh<Vertex3D>(TEXTURE_SHADER) {
     m_primitive = GL_TRIANGLES;
-    auto tex = Engine::get().GetAssetManager().GetTexture(filename);
+    auto tex = Engine::get().GetAssetManager().GetTex(filename);
     m_texId = tex->GetTexId();
     if (width == 0) width = tex->GetWidth();
     if (height == 0) height = tex->GetHeight();
@@ -37,7 +37,7 @@ QuadMesh::QuadMesh(const std::string& filename, float width, float height,
 QuadMesh::QuadMesh(const std::string& filename, int rows, int cols, float size, std::vector<int>& data, int spriteSheetRows, int spriteSheetCols)
 : Mesh<Vertex3D>(TEXTURE_SHADER) {
     m_primitive = GL_TRIANGLES;
-    auto tex = Engine::get().GetAssetManager().GetTexture(filename);
+    auto tex = Engine::get().GetAssetManager().GetTex(filename);
     m_texId = tex->GetTexId();
     std::vector<Vertex3D> vertices;
     std::vector<unsigned int> indices;

@@ -132,7 +132,7 @@ std::shared_ptr<Entity> SceneFactory::Create() {
     Monkey& m = Monkey::get();
     std::string room = m["variables"].Get<std::string>("_room");
     std::cout << "Loading room "<< room << std::endl;
-    LuaWrapper::Load(Engine::get().GetAssetManager().GetDirectory() + "rooms/" + room + ".lua");
+    LuaWrapper::Load(Engine::get().GetDirectory() + "rooms/" + room + ".lua");
 
     // Create the local assets
     luabridge::LuaRef roomRef = luabridge::getGlobal(LuaWrapper::L, "room");
@@ -155,11 +155,11 @@ std::shared_ptr<Entity> SceneFactory::Create() {
 
 
     // load room-specific assets
-    auto roomAssets = roomTable.GetVector<std::string>("assets");
-    for (auto& a : roomAssets) {
-        // load the asset
-        LoadModel(a);
-    }
+//    auto roomAssets = roomTable.GetVector<std::string>("assets");
+//    for (auto& a : roomAssets) {
+//        // load the asset
+//        LoadModel(a);
+//    }
 
     // read the scene tree
     auto rootNode = std::make_shared<Entity>();
@@ -194,41 +194,34 @@ void SceneFactory::PostInit() {
 }
 
 
-void SceneFactory::LoadModel (const std::string& model) {
-    // check if model is already loaded:
-    auto& am = Engine::get().GetAssetManager();
-
-    if (am.HasModel(model)) {
-        return;
-    }
-    static luabridge::LuaRef modelsDef = LuaWrapper::GetGlobal("models");
-    if (modelsDef.isNil()) {
-        GLIB_FAIL("No models available!")
-    }
-    std::cout << "*** load asset " << model << " ... \n";
-    luabridge::LuaRef modelDef = modelsDef[model];
-    if (modelDef.isNil()) {
-        GLIB_FAIL("Unknown model " << model);
-    }
-
-    auto asset = GetShared<IModel>(modelDef);
-    am.AddModel(model, asset);
-
-}
+//void SceneFactory::LoadModel (const std::string& model) {
+//    // check if model is already loaded:
+//    auto& am = Engine::get().GetAssetManager();
+//
+//    if (am.HasModel(model)) {
+//        return;
+//    }
+//    static luabridge::LuaRef modelsDef = LuaWrapper::GetGlobal("models");
+//    if (modelsDef.isNil()) {
+//        GLIB_FAIL("No models available!")
+//    }
+//    std::cout << "*** load asset " << model << " ... \n";
+//    luabridge::LuaRef modelDef = modelsDef[model];
+//    if (modelDef.isNil()) {
+//        GLIB_FAIL("Unknown model " << model);
+//    }
+//
+//    auto asset = GetShared<IModel>(modelDef);
+//    am.AddModel(model, asset);
+//
+//}
 
 void SceneFactory::CleanUp() {
     luabridge::LuaRef roomRef = LuaWrapper::GetGlobal("room");
     LuaTable table (roomRef);
 
     // unload room-specific assets
-    auto roomAssets = table.GetVector<std::string>("assets");
-    auto& assetManager = Engine::get().GetAssetManager();
-    luabridge::LuaRef modelsDef = LuaWrapper::GetGlobal("models");
-    for (auto& a : roomAssets) {
-        // load the asset
-        std::cout << "*** dropping asset" << a << " ... \n";
-        assetManager.RemoveModel(a);
-    }
+    Engine::get().GetAssetManager().CleanUp();
 
     roomRef = luabridge::Nil();
 

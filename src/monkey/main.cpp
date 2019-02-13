@@ -2,7 +2,6 @@
 #include <gfx/lua/luawrapper.h>
 #include <gfx/lua/luatable.h>
 #include <monkey/monkeyfactory.h>
-#include <monkey/monkeyactivityfactory.h>
 #include <gfx/monkey.h>
 #include <set>
 
@@ -13,14 +12,10 @@ int main(int argc, char* argv[])
         return 1;
     }
     try {
-
-
         std::string homeDir(argv[1]);
-        Engine::get().GetAssetManager().SetDirectory(homeDir);
         Monkey& m = Monkey::get();
-        m.Init<MonkeyFactory>();
+        m.Init<MonkeyFactory>(homeDir);
         m.Start();
-
     } catch (Error& err) {
         std::cout << err.what() << std::endl;
         return 1;
