@@ -18,11 +18,8 @@ std::unique_ptr<IModel> CompositeModelFactory::Create (luabridge::LuaRef& ref) {
         std::string parent = table.Get<std::string>("parent", "");
         std::string mesh = table.Get<std::string>("mesh");
         // DEPENDENCIES. IF simplemodls are not loaded, then do it now!
-        if (!am.HasModel(mesh)) {
-            auto factory = Engine::get().GetSceneFactory();
-            factory->LoadModel(mesh);
-        }
-        SimpleModel *m = dynamic_cast<SimpleModel *>(Engine::get().GetAssetManager().GetModel(mesh).get());
+        auto me = Engine::get().GetAssetManager().GetModel(mesh);
+        SimpleModel *m = dynamic_cast<SimpleModel *>(me.get());
         model->AddComponent(name, m, parent);
     });
 
@@ -53,7 +50,7 @@ std::unique_ptr<IModel> SimpleModelFactory::Create (luabridge::LuaRef& ref) {
     luabridge::LuaRef an = t.Get<luabridge::LuaRef>("animations");
 
     std::string defaultAnimation;
-    auto tex = Engine::get().GetAssetManager().GetTexture(sheetName);
+    auto tex = Engine::get().GetAssetManager().GetTex(sheetName);
     float texWidth = static_cast<float>(tex->GetWidth());
     float texHeight = static_cast<float>(tex->GetHeight());
     int quadCount {0};

@@ -20,23 +20,6 @@ roomDefinition = {
 
 room = generateBasicRoom (roomDefinition)
 
--- room:add_assets { 
--- 	"citizen", 
--- 	"low_moral_fiber_1", 
--- 	"low_moral_fiber_2", 
--- 	"lmf3", 
--- 	"village2.rat",
--- 	"door_village_voodoolady",
--- 	"fakedoor_village_1",
--- 	"fakedoor_village_2"  
--- }
--- room:add_asset(sprites.citizen)
--- room:add_asset(sprites.lmf1)
--- room:add_asset(sprites.lmf2)
--- room:add_asset(sprites.lmf3)
--- room:add_asset(sprites.rat)
--- room:add_asset(sprites["village2.door_voodoo"])
-
 room:add( {
 	{ pos = {0, 0,-3}, components = { { type="gfx", image="gfx/village2.png" }}},
 	factory.walkarea { shape = { type = "poly", outline = {0, 24, 123, 63, 199, 63, 299, 30, 377, 30, 385, 35, 454, 35, 470, 0, 0}}},

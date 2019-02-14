@@ -110,7 +110,7 @@ std::unique_ptr<Entity> OutlineTextFactory::Create(luabridge::LuaRef &ref) {
     glm::vec4 outlineColor = table.Get<glm::vec4>("outlinecolor", glm::vec4(255.0f));
     fontColor /= 255.0f;
     outlineColor /= 255.0f;
-    Font* f = Engine::get().GetAssetManager().GetFont(font);
+    Font* f = Engine::get().GetAssetManager().GetFont(font).get();
     auto mesh = std::make_shared<TextMesh>(f, text, size, align);
     //glm::vec2 offset = mesh->getOffset();
     glm::vec2 outlineOffsets[] = {{0, 0}, {-1, 0}, {-1,1}, {0, 1}, {1,1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1}};

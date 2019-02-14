@@ -69,7 +69,7 @@ public:
 
 class AssetManager {
 public:
-    AssetManager() {}
+    AssetManager();
 
     std::shared_ptr<Font> GetFont (const std::string&);
     std::shared_ptr<Tex> GetTex (const std::string&);

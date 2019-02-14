@@ -15,38 +15,17 @@
 #include <gfx/runner.h>
 #include <gfx/keyboard.h>
 
-struct EngineConfig {
-    EngineConfig (float devWidth, float devHeight) : frameRate (60.0), deviceWidth{devWidth}, deviceHeight{devHeight}, enableMouse{false}, enableKeyboard{false},
-    windowWidth{800}, windowHeight{600} {}
-    double frameRate;
-    float deviceWidth;
-    float deviceHeight;
-    bool enableMouse;
-    bool enableKeyboard;
-    int windowWidth;
-    int windowHeight;
-    std::vector<std::string> shaders;
-    std::string name;
-};
-
-
-
-
-
 class Engine : public Singleton<Engine> {
 public:
-    //Engine() : m_update{true} {}
     ~Engine();
-    void Init(const EngineConfig& config);
+    void Init(const std::string& home);
     void MainLoop();
-    void Draw();
     bool isRunning() const;
-    Shader* GetShader (ShaderType id);
-    void AddShader (std::unique_ptr<Shader>);
     Entity* GetScene() const;
     SceneFactory* GetSceneFactory();
     void SetSceneFactory (std::unique_ptr<SceneFactory> factory);
     glm::vec2 GetDeviceSize() const;
+    void SetDeviceSize(glm::vec2);
     void RegisterToWindowResizeEvent(WindowResizeListener*);
     void UnregisterToWindowResizeEvent(WindowResizeListener*);
     void RegisterToMouseEvent(MouseListener*);
@@ -85,6 +64,8 @@ public:
     void RemoveTaggedRef (const std::string&);
     void EndScene();
     glm::vec2 GetWindowSize() const;
+    void SetWindowSize(glm::ivec2);
+    void SetFPS(int);
     float GetPixelRatio() const;
     AssetManager& GetAssetManager();
     const AssetManager& GetAssetManager() const;
@@ -94,18 +75,9 @@ public:
     static void scroll_callback(GLFWwindow*, double xoffset, double yoffset);
     static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
     void SetRenderingEngine(std::unique_ptr<RenderingEngine>);
-
-    //void SetScriptingEngine(std::unique_ptr<Scheduler>);
-    //void SetCollisionEngine(std::unique_ptr<CollisionEngine>);
-    //MouseListener* GetMouseHandler();
-    //KeyboardListener* GetKeyboardListener();
-    //void SetKeyboardHandler(std::unique_ptr<KeyboardListener>);
-    //void SetMouseHandler(std::unique_ptr<MouseListener>);
+    void EnableMouse();
+    void EnableKeyboard();
     RenderingEngine* GetRenderingEngine();
-    //Scheduler* GetScriptingEngine();
-    //CollisionEngine* GetCollisionEngine();
-    //void SetInputHandler(std::unique_ptr<)
-   //void EnableKey(int, bool);
     Keyboard& GetKeyboard();
     double GetFrameTime() const;
     void SetDirectory(const std::string&);
@@ -114,21 +86,19 @@ private:
     friend class Singleton<Engine>;
     Engine() : m_mouseEnabled{true}, m_sceneFactory{nullptr} {}
     std::unordered_map<std::string, Ref*> m_taggedReferences;
-    void InitGL(const EngineConfig& config);
+    void InitGL();
     std::unordered_set<Entity*> m_garbage;
     std::unique_ptr<SceneFactory> m_sceneFactory;
     std::unordered_map<ShaderType, std::unique_ptr<Shader>, EnumClassHash> m_shaders;
     std::shared_ptr<Entity> m_scene;
     bool m_running;
-
     double m_frameTime;
     double m_timeLastUpdate;
-    //GLFWwindow* m_window;
     glm::vec2 m_deviceSize;
     float m_aspectRatio;
     float m_winAspectRatio;
     glm::vec2 m_actualSize;
-    glm::vec2 m_winSize;
+    glm::ivec2 m_winSize;
     std::unordered_set<WindowResizeListener*> m_resizeListeners;
     std::unordered_set<MouseListener*> m_mouseListeners;
     AssetManager m_assetManager;
@@ -136,18 +106,12 @@ private:
     bool m_endScene;
     bool m_mouseEnabled;
     float m_pixelRatio;
-    // the engine has sub-engines that run at end of each frame
-    //std::unique_ptr<MouseListener> m_mouseListener;
-    //std::unique_ptr<KeyboardListener> m_keyboardListener;
-    //std::unique_ptr<Scheduler> m_scriptEngine;
     std::unique_ptr<RenderingEngine> m_renderingEngine;
-    //std::unique_ptr<CollisionEngine> m_collisionEngine;
-
     // the runners (i.e. script engine, collision engine, hostpot manager etc)
     std::unordered_map<std::type_index, std::shared_ptr<Runner> > m_runners;
     Keyboard m_keyboard;
     std::string m_directory;
-
+    std::string m_title;
 };
 
 inline double Engine::GetFrameTime() const {
@@ -174,9 +138,9 @@ inline Entity* Engine::GetScene() const {
 }
 
 
-inline void Engine::AddShader (std::unique_ptr<Shader> shader) {
-    m_shaders[shader->GetShaderId()] = std::move(shader);
-}
+//inline void Engine::AddShader (std::unique_ptr<Shader> shader) {
+//    m_shaders[shader->GetShaderId()] = std::move(shader);
+//}
 
 inline bool Engine::isRunning() const {
     return m_running;
@@ -189,12 +153,14 @@ inline void Engine::SetSceneFactory (std::unique_ptr<SceneFactory> factory) {
 inline void Engine::Remove(Entity * entity) {
     m_garbage.insert(entity);
 }
+/*
 inline Shader* Engine::GetShader(ShaderType id) {
     auto it = m_shaders.find(id);
     if (it == m_shaders.end())
         return nullptr;
     return it->second.get();
 }
+*/
 
 inline void Engine::EndScene() {
     m_endScene = true;
@@ -216,6 +182,6 @@ inline Keyboard& Engine::GetKeyboard() {
     return m_keyboard;
 }
 
-std::string Engine::GetDirectory() const {
+inline std::string Engine::GetDirectory() const {
     return m_directory;
 }

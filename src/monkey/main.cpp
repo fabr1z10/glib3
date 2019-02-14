@@ -2,7 +2,7 @@
 #include <gfx/lua/luawrapper.h>
 #include <gfx/lua/luatable.h>
 #include <monkey/monkeyfactory.h>
-#include <gfx/monkey.h>
+#include <gfx/engine.h>
 #include <set>
 
 int main(int argc, char* argv[])
@@ -13,9 +13,10 @@ int main(int argc, char* argv[])
     }
     try {
         std::string homeDir(argv[1]);
-        Monkey& m = Monkey::get();
-        m.Init<MonkeyFactory>(homeDir);
-        m.Start();
+        auto& engine = Engine::get();
+        engine.SetSceneFactory(std::unique_ptr<SceneFactory>(new MonkeyFactory));
+        engine.Init(homeDir);
+        engine.MainLoop();
     } catch (Error& err) {
         std::cout << err.what() << std::endl;
         return 1;

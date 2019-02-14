@@ -2,23 +2,50 @@
 #include <gfx/error.h>
 #include <iostream>
 #include "gfx/renderingiterator.h"
-//#include <OpenGL/gl3.h>
 
 //#ifdef __APPLE__
 //#define glGenVertexArrays glGenVertexArraysAPPLE
 //#define glBindVertexArray glBindVertexArrayAPPLE
 //#define glDeleteVertexArrays glDeleteVertexArraysAPPLE
 //#endif
+
 GLFWwindow* window;
 
-void Engine::Init(const EngineConfig& config) {
-    // When I call init, I decide which shaders to add...
+void Engine::SetDeviceSize(glm::vec2 size) {
+    m_deviceSize = size;
+    m_aspectRatio = size.x / size.y;
+}
 
-    InitGL(config);
-    m_frameTime = 1.0 / config.frameRate;
+void Engine::SetWindowSize(glm::ivec2 size) {
+    m_winSize = size;
+}
+
+void Engine::SetFPS(int frameRate) {
+    m_frameTime = 1.0 / static_cast<double>(frameRate);
+}
+
+void Engine::EnableMouse() {
+    glfwSetMouseButtonCallback(window, mouse_button_callback);
+    glfwSetCursorPosCallback(window, cursor_pos_callback);
+    glfwSetScrollCallback(window, scroll_callback);
+}
+
+void Engine::EnableKeyboard() {
+    glfwSetKeyCallback(window, key_callback );
+
+}
+
+
+void Engine::Init(const std::string& home) {
+    if (m_sceneFactory == nullptr) {
+        GLIB_FAIL("Scene factory has not been set. Please set the factory before calling Init()!");
+    }
+
     m_running = false;
-    m_deviceSize = glm::vec2(config.deviceWidth, config.deviceHeight);
-    m_aspectRatio = config.deviceWidth / config.deviceHeight;
+    SetDirectory(home);
+    m_sceneFactory->Init(this);
+
+    InitGL();
 
     // find pixel ratio
     int widthPixel;
@@ -29,36 +56,21 @@ void Engine::Init(const EngineConfig& config) {
     glfwGetFramebufferSize(window, &widthPixel, &heightPixel);
     m_pixelRatio = static_cast<float>(widthPixel) / widthPoint;
 
-    // initialize shaders
-    //AddShader (ShaderFactory::GetTextureShader());
-    //AddShader (ShaderFactory::GetColorShader());
-    //AddShader (ShaderFactory::GetTextShader());
-
 
     // set-up the rendering engine
     auto renderingEngine = std::unique_ptr<RenderingEngine>(new RenderingEngine);
-    for (auto& shaderId : config.shaders) {
-        std::cout << "Loading shader: " << shaderId << "\n";
-        auto sh = ShaderFactory::GetShader(shaderId);
-        renderingEngine->AddShader(sh.get());
-        AddShader(std::move(sh));
-    }
-
     SetRenderingEngine(std::move(renderingEngine));
 
-    if (config.enableMouse) {
-        glfwSetMouseButtonCallback(window, mouse_button_callback);
-        glfwSetCursorPosCallback(window, cursor_pos_callback);
-        glfwSetScrollCallback(window, scroll_callback);
-    }
+    m_sceneFactory->StartUp(this);
 
-    if (config.enableKeyboard) {
-        glfwSetKeyCallback(window, key_callback );
-    }
+
+
+
+
 
 }
 
-void Engine::InitGL(const EngineConfig& config) {
+void Engine::InitGL() {
 
     if (!glfwInit())
         exit(EXIT_FAILURE);
@@ -68,7 +80,7 @@ void Engine::InitGL(const EngineConfig& config) {
 #ifdef __APPLE__
     glfwWindowHint (GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
-    window = glfwCreateWindow(config.windowWidth, config.windowHeight, config.name.c_str(), NULL, NULL);
+    window = glfwCreateWindow(m_winSize.x, m_winSize.y, m_title.c_str(), NULL, NULL);
     if (!window) {
         glfwTerminate();
         exit(EXIT_FAILURE);
@@ -82,19 +94,18 @@ void Engine::InitGL(const EngineConfig& config) {
     // Initialize GLEW
     glewExperimental = true;
     if (glewInit()) {
-        std::cerr << "Unable to initialize GLEW ... exiting" << std::endl;
+        GLIB_FAIL("Unable to initialize GLEW ... exiting");
         exit(EXIT_FAILURE);
     }
     GLint Mv, mv;
     glGetIntegerv(GL_MAJOR_VERSION, &Mv);
     glGetIntegerv(GL_MINOR_VERSION, &mv);
 
-    if(!GLEW_ARB_vertex_array_object)
-        std::cout << "ARB_vertex_array_object not available." << std::endl;
+    if(!GLEW_ARB_vertex_array_object) {
+        GLIB_FAIL("ARB_vertex_array_object not available.");
+    }
     glGenVertexArrays(1, &m_vao);
     glBindVertexArray(m_vao);
-
-
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
@@ -127,11 +138,7 @@ void Engine::SetViewport(float x, float y, float width, float height) {
 
 
 void Engine::MainLoop() {
-    if (m_sceneFactory == nullptr)
-        GLIB_FAIL("Scene factory has not been set.");
 
-    
-    
     while (!glfwWindowShouldClose(window)) {
 
         // load the scene
@@ -171,8 +178,6 @@ void Engine::MainLoop() {
                     m_garbage.clear();
                 }
 
-
-                //glClearColor(0.0f,0.0f,0.3f,1.0f);
                 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
                 // update all active components
@@ -180,18 +185,14 @@ void Engine::MainLoop() {
                     iter->Update(m_frameTime);
                 }
 
-                
-                // update all the runners (script, rendering, collision)
+                // update all the runners (script, collision, etc.)
                 for (auto& runner : m_runners) {
                     if (runner.second->isActive())
                         runner.second->Update(m_frameTime);
                 }
-                //m_scriptEngine->Update(m_frameTime);
 
                 // Finally render the scene
                 m_renderingEngine->Update(m_frameTime);
-                //if (m_collisionEngine != nullptr)
-                //    m_collisionEngine->Update(m_frameTime);
 
                 //double t1 = glfwGetTime();
                 //std::cout << "frame updated in: " << (t1-t0) << " sec.\n";
@@ -206,7 +207,6 @@ void Engine::MainLoop() {
         m_scene = nullptr;
         m_runners.clear();
         m_garbage.clear();
-
         m_running = false;
     }
 }

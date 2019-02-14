@@ -98,7 +98,7 @@ void RenderingEngine::Update(double)
     //std::cout << root->ToString() << "\n";
     for (auto& shader : m_shaders) {
         ShaderType stype = shader->GetShaderId();
-        Shader::SetCurrentShader(shader);
+        Shader::SetCurrentShader(shader.get());
 
         // loop through all nodes
         RenderingIterator iterator(root);
@@ -123,7 +123,7 @@ void RenderingEngine::Update(double)
                 glm::mat4 mvm = cam->m_viewMatrix * wt;
                 GLuint mvLoc = shader->GetUniformLocation(MODELVIEW);
                 glUniformMatrix4fv(mvLoc, 1, GL_FALSE, &mvm[0][0]);
-                renderer->Draw(shader);
+                renderer->Draw(shader.get());
             }
                     
 
@@ -132,11 +132,11 @@ void RenderingEngine::Update(double)
     }
 }
 
-void RenderingEngine::AddShader (Shader* s) {
+void RenderingEngine::AddShader (std::unique_ptr<Shader> s) {
 //    Shader* shader = Engine::get().GetShader(id);
 //    if (shader == nullptr)
 //        GLIB_FAIL("Shader " << id << " is not available.");
-    m_shaders.push_back(s);
+    m_shaders.push_back(std::move(s));
 
 }
 

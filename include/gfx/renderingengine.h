@@ -44,7 +44,7 @@ public:
     //virtual ~RenderingEngine();
     void Start() override;
     void Update(double) override;
-    void AddShader (Shader* id);
+    void AddShader (std::unique_ptr<Shader> shader);
     void AddCamera (std::unique_ptr<Camera>);
     void RemoveCamera(int);
     Camera* GetCamera (int);
@@ -54,7 +54,7 @@ public:
     void RemoveLight(Light*);
     std::unordered_set<Light*>& GetLights();
 private:
-    std::vector<Shader*> m_shaders;
+    std::vector<std::unique_ptr<Shader>> m_shaders;
     std::unordered_map<int, std::unique_ptr<Camera>> m_cameras;
     std::unordered_set<Light*> m_lights;
     std::unordered_map<Camera*, Entity*> m_roots;

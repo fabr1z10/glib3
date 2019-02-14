@@ -3,6 +3,7 @@
 #include <gfx/factory.h>
 #include <unordered_set>
 
+class Engine;
 class IModel;
 class Activity;
 class LuaTable;
@@ -14,6 +15,8 @@ class SceneFactory {
 public:
     SceneFactory ();
     virtual ~SceneFactory() {}
+    virtual void Init(Engine*);
+    virtual void StartUp (Engine*);
     virtual std::shared_ptr<Entity> Create();
     virtual void CleanUp ();
     virtual void PostInit();

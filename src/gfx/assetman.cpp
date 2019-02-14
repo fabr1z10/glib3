@@ -2,6 +2,12 @@
 #include <gfx/engine.h>
 #include <gfx/lua/luatable.h>
 
+AssetManager::AssetManager() {
+    m_textures2.SetLocal(false);
+    m_fonts2.SetLocal(false);
+    m_models2.SetLocal(false);
+}
+
 std::shared_ptr<Font> FontBuilder::operator()(const std::string & fontId) const {
 
     luabridge::LuaRef fonts = LuaWrapper::GetGlobal("fonts");
@@ -37,7 +43,7 @@ std::shared_ptr<IModel> ModelBuilder::operator()(const std::string & modelId) co
 std::shared_ptr<Tex> TexBuilder::operator()(const std::string & file) const {
 
     std::string fileName = Engine::get().GetDirectory() + file;
-    auto texture = std::make_shared<Tex>(file, nearest);
+    auto texture = std::make_shared<Tex>(fileName, nearest);
     return texture;
 }
 

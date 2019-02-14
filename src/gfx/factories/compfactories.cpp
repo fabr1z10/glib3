@@ -50,7 +50,7 @@ std::unique_ptr<Component> TextComponentFactory::Create(luabridge::LuaRef &ref) 
     float maxWidth = table.Get<float>("maxwidth", 0.0f);
     glm::vec4 color = table.Get<glm::vec4>("color", glm::vec4(255.0f));
     color /= 255.0f;
-    Font* f = Engine::get().GetAssetManager().GetFont(font);
+    Font* f = Engine::get().GetAssetManager().GetFont(font).get();
     auto mesh = std::make_shared<TextMesh>(f, text, size, align, maxWidth);
     //glm::vec2 offset = mesh->getOffset();
     //renderer->SetRenderingTransform(glm::translate(glm::vec3(offset, 0.0f)));

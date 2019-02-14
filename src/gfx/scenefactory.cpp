@@ -1,7 +1,42 @@
 #include <gfx/scenefactory.h>
 #include <gfx/factories.h>
-#include <gfx/monkey.h>
 #include <iostream>
+#include <gfx/engine.h>
+
+void SceneFactory::Init(Engine* engine) {
+    // initialize lua
+    LuaWrapper::Init();
+    luabridge::setGlobal(LuaWrapper::L, engine->GetDirectory().c_str(), "_path" );
+    // load main
+    LuaWrapper::Load(Engine::get().GetDirectory() + "main.lua");
+
+    LuaTable engineDef(LuaWrapper::GetGlobal("engine"));
+
+    glm::vec2 devSize = engineDef.Get<glm::vec2>("device_size");
+    glm::ivec2 winSize = engineDef.Get<glm::ivec2>("window_size");
+    int fps = engineDef.Get<int>("fps", 60);
+    std::string title = engineDef.Get<std::string>("title");
+
+    engine->SetDeviceSize(devSize);
+    engine->SetWindowSize(winSize);
+    engine->SetFPS(fps);
+}
+
+void SceneFactory::StartUp(Engine * engine) {
+    engine->EnableMouse();
+    engine->EnableKeyboard();
+
+    LuaTable engineDef(LuaWrapper::GetGlobal("engine"));
+    std::vector<std::string> shaders = engineDef.GetVector<std::string>("shaders");
+    auto re = engine->GetRenderingEngine();
+    for (auto& shaderId : shaders) {
+        std::cout << "Loading shader: " << shaderId << "\n";
+        auto sh = ShaderFactory::GetShader(shaderId);
+        re->AddShader(std::move(sh));
+        // engine->AddShader(std::move(sh));
+    }
+
+}
 
 SceneFactory::SceneFactory() {
     //m_runnerFactory.Add<HotSpotManagerFactory>("hotspotmanager");
@@ -129,8 +164,9 @@ std::unique_ptr<IModel> SceneFactory::Get<IModel> (luabridge::LuaRef& ref) {
 std::shared_ptr<Entity> SceneFactory::Create() {
 
     // get current room
-    Monkey& m = Monkey::get();
-    std::string room = m["variables"].Get<std::string>("_room");
+    LuaTable vars (LuaWrapper::GetGlobal("variables"));
+    std::string room = vars.Get<std::string>("_room");
+
     std::cout << "Loading room "<< room << std::endl;
     LuaWrapper::Load(Engine::get().GetDirectory() + "rooms/" + room + ".lua");
 
