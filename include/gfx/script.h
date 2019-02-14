@@ -11,7 +11,7 @@
 // active set is empty, the script is itself complete.
 class Script {
 public:
-    Script() : m_complete{false}, m_suspended{false}, m_loop{-1} {}
+    Script();
     void Run (float);
     void Start();
     void AddActivityAfter(int id, std::unique_ptr<Activity>, std::vector<int> after = {0});
@@ -23,8 +23,12 @@ public:
     void SetLoop(int);
     void Print();
 private:
-    std::unordered_set<Activity*> m_active;
+    void ResetActivity(int);
+    std::unordered_map<int, Activity*> m_frontier;
     std::unordered_map<int, std::unique_ptr<Activity> > m_activities;
+
+    std::unordered_map<int, std::vector<int>> m_directedEdges;
+
     bool m_suspended;
     bool m_complete;
     //std::string m_startId;

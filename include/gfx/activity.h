@@ -1,11 +1,7 @@
 #pragma once
 
-//#include <chrono>
 #include <memory>
 #include <vector>
-
-class Edge;
-
 
 class Activity {
 public:
@@ -17,20 +13,23 @@ public:
     bool IsComplete () const;
     virtual void SetComplete();
     virtual void Reset();
-    bool IsReady() const;
-    std::vector<Activity*>& GetPrevious();
-    std::vector<Activity*>& GetFollowing();
-    void AddPrevious (Activity*);
-    void AddNext (Activity*);
+    //bool IsReady() const;
+    //std::vector<Activity*>& GetPrevious();
+    //std::vector<Activity*>& GetFollowing();
+    //void AddPrevious (Activity*);
+    //void AddNext (Activity*);
     // called when a script is suspended and this activity is current.
     // default behavior is do nothing
     virtual void NotifySuspend() {}
 private:
     //int m_id;
-    std::vector<Activity*> m_previous;
-    std::vector<Activity*> m_following;
+    //std::vector<Activity*> m_previous;
+    //std::vector<Activity*> m_following;
     bool m_complete;
 protected:
+    //! the outcome of the activity. This is used in a script to determine whether the script should proceed or not.
+    // this flag is set to true in the ctor, so if you want to use it, just set it to the correct value when the
+    // action ends.
     bool m_success;
 
 };
@@ -44,30 +43,3 @@ inline bool Activity::IsSuccessful() const {
     return m_success;
 }
 
-inline std::vector<Activity*>& Activity::GetPrevious() {
-    return m_previous;
-}
-
-inline std::vector<Activity*>& Activity::GetFollowing() {
-    return m_following;
-}
-
-
-class Edge {
-public:
-    Edge (std::shared_ptr<Activity> tail, std::shared_ptr<Activity> head, float weight);
-    Activity* GetTail() const;
-    Activity* GetHead() const;
-private:
-    float m_weight;
-    std::shared_ptr<Activity> m_tail;
-    std::shared_ptr<Activity> m_head;
-};
-
-inline Activity* Edge::GetHead() const {
-    return m_head.get();
-}
-
-inline Activity* Edge::GetTail() const {
-    return m_tail.get();
-}
