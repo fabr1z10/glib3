@@ -65,8 +65,9 @@ void Script::ResetActivity(int id) {
 
 
 void Script::Run (float dt) {
-    if (m_suspended)
+    if (m_suspended) {
         return;
+    }
 
     // check the frontier. If any
     std::unordered_set<int> toRemove;
@@ -77,18 +78,13 @@ void Script::Run (float dt) {
             // check its children
             // this definitely  needs to be removed rom the froniter
             toRemove.insert(id);
-            // proceed only if it's successful
+            // proceed only if it's successful!
             if (activity->IsSuccessful()) {
-                auto ifollow = m_directedEdges.find(a.first);
-                if (ifollow != m_directedEdges.end()) {
-                    // first, decrement incoming edge count for all children
-                    for (auto& fid : ifollow->second) {
-                        m_incomingEdgeCount.
-                    }
-                    for (auto& fid : ifollow->second) {
-                        Activity * act = m_activities.at(fid).get();
-                        m_frontier.insert(std::make_pair(fid, act));
-                        act->Start();
+                const auto& followers = m_edges[id];
+                for (auto f : followers) {
+                    m_incomingEdgeCount[f] --;
+                    if (m_incomingEdgeCount[f] == 0) {
+                        PushToFrontier(f);
                     }
                 }
             }
@@ -96,7 +92,6 @@ void Script::Run (float dt) {
     }
 
     for(auto& a : toRemove) {
-        //a->Reset();
         m_frontier.erase(a);
     }
 
