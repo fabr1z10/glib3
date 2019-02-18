@@ -38,14 +38,17 @@ void ShowMessage::Start() {
     // adjust position
 
     Bounds3D textBounds = mesh->GetBounds();
+    const auto& lt = mesh->GetLocalTransform();
+    glm::vec2 lpos(lt[3][0], lt[3][1]);
     glm::vec2 extents (textBounds.GetExtents());
+
     glm::vec2 displ(0.0f);
     glm::vec2 camPos(m_mainCam->GetPosition());
     glm::vec2 camSize = 0.5f * m_mainCam->GetSize();
 
-    if (currentPos.x - extents[0] < camPos.x - camSize.x)
+    if (currentPos.x - extents[0] - lpos.x < camPos.x - camSize.x)
         displ.x = (camPos.x - camSize.x) - (currentPos.x - extents[0]);
-    else if (currentPos.x + extents[0] > camPos.x + camSize.x)
+    else if (currentPos.x + extents[0] + lpos.x > camPos.x + camSize.x)
         displ.x = -((currentPos.x + extents[0]) - (camPos.x + camSize.x));
     parent->SetPosition(glm::vec3(currentPos + displ, 5.0f));
     parent->SetLayer(1);

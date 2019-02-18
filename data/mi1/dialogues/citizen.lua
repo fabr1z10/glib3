@@ -18,18 +18,18 @@ local s1 = {
 
 dialogues.citizen = {
 	close = function()
-		local s = script:new("_citizenclose")
-		s.actions = {
-			action.animate {id=1,actor="village2.citizen", anim="idle_s"}
+		local actions = {
+			{ type = action.animate, args = {actor="village2.citizen", anim="idle_s"}}
 		}
+		local s = ms2(actions) 
 		monkey.play(s)
 	end,
 	nodes = {
 		[1] = { children = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11} },
-		[2] = { text = d[2], deact = {2,3,4,5}, act={6,7,8,9}, active=true, script = ms {
-			{ action.say, { id = 1, actor = "guybrush",  lines = {d[2]} }},
-			{ action.say, { id = 2, actor = "village2.citizen",  lines = {d[6], d[7]}, animstart="talk_start", animend="talk_end" }},
-			{ action.set_variable, { id = 3, var = "talked_to_citizen", value=true}},
+		[2] = { text = d[2], deact = {2,3,4,5}, act={6,7,8,9}, active=true, script = {
+			{ type = action.say, args = { actor = "guybrush",  lines = {d[2]} }},
+			{ type = action.say, args = { actor = "village2.citizen",  lines = {d[6], d[7]}, animstart="talk_start", animend="talk_end" }},
+			{ type = action.set_variable, args = { var = "talked_to_citizen", value=true}},
 			}
 		},
 		[3] = { text = d[3], deact = {2,3,4,5}, act={6,7,8,9}, active=true, script = ms {

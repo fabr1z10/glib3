@@ -257,7 +257,7 @@ function runAction ()
                 -- Here we generate a play script. The first action is always a walkto towards the provided
                 -- object position. The following action depend on the default action, usually it just says something
                 -- like "It doesn't seem to work" or the like.
-				print ("Running default action (" .. variables._actionInfo.verb.text .. ", " .. variables._actionInfo.obj1 .. ") ...")
+				print ("Running default script (" .. variables._actionInfo.verb.text .. ", " .. variables._actionInfo.obj1 .. ") ...")
 				local actions = {}
 				if (variables.inventory[variables._actionInfo.obj1] == nil) then		
 					actions = {
@@ -274,7 +274,7 @@ function runAction ()
         else
             -- run specific action
             -- see if obj1 has an action with obj2
-			print ("Running action (" .. variables._actionInfo.verb.text .. ", " .. variables._actionInfo.obj1 .. ") ...")
+			print ("Running script (" .. variables._actionInfo.verb.text .. ", " .. variables._actionInfo.obj1 .. ") ...")
 			local actions = {}
 			if (variables.inventory[variables._actionInfo.obj1] == nil) then		
 				actions = {
@@ -367,11 +367,10 @@ end
 function handleDialogueButton(entity)
     local m2 = monkey.getEntity("dialogueui")               
     m2:cleartext()
-    print ("calling handleDialogueButton ...")
+    --print ("calling handleDialogueButton ...")
     local info = entity:getinfo()  
     local dialogueNode = info.data.node
     local dialogue = dialogues[info.data.dialogue]
-    print("llll")
     if (dialogueNode.deact ~= nil) then
         for k, v in ipairs(dialogueNode.deact) do
             dialogue.nodes[v].active = false
@@ -384,14 +383,14 @@ function handleDialogueButton(entity)
     end
     local actions = nil
     if (dialogueNode.script ~= nil) then
-        print ("calling button")
+        print ("Running script ...")
         actions = get (dialogueNode.script)
     else
         print ("button has no script attached.")
     end
 
 
-	local s1 = { type = action.resume_dialogue, args = { id = 1, dialogue = info.data.dialogue, node = dialogueNode }}
+	local s1 = { type = action.resume_dialogue, args = { dialogue = info.data.dialogue, node = dialogueNode }}
     if (actions ~= nil) then
     	table.insert (actions, s1)
     else
