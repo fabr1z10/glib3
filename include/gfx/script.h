@@ -14,7 +14,6 @@ public:
     Script();
     void Run (float);
     void Start();
-    void AddActivityAfter(int id, std::unique_ptr<Activity>, std::vector<int> after = {0});
     void AddActivity(int id, std::unique_ptr<Activity>);
     void AddEdge (int fromActivity, int toActivity);
     bool IsComplete() const;
@@ -23,11 +22,17 @@ public:
     void SetLoop(int);
     void Print();
 private:
+    void PushToFrontier(int);
     void ResetActivity(int);
-    std::unordered_map<int, Activity*> m_frontier;
-    std::unordered_map<int, std::unique_ptr<Activity> > m_activities;
+    std::unordered_set<size_t> m_frontier;
+    std::vector<std::unique_ptr<Activity>> m_activities;
 
-    std::unordered_map<int, std::vector<int>> m_directedEdges;
+    //std::unordered_map<int, std::vector<int>> m_directedEdges;
+    //std::unordered_map<int, int> m_incomingEdgeCount;
+    // use of vector to make it more efficient
+    std::vector<std::vector<size_t>> m_edges;
+    std::vector<size_t> m_incomingEdgeCount;
+    std::unordered_map<int, size_t> m_externalToInternalIdMap;
 
     bool m_suspended;
     bool m_complete;

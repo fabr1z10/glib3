@@ -10,41 +10,42 @@ Script::Script() : m_complete{false}, m_suspended{false}, m_loop{-1} {
 
 void Script::Start() {
     // by convention, the script starts from 0
-    auto it = m_activities.find(0);
-    m_frontier.insert(std::make_pair(0, it->second.get()));
-    it->second->Start();
+    PushToFrontier(0);
 }
 
-void Script::AddActivityAfter(int id, std::unique_ptr<Activity> act, std::vector<int> after) {
-    Script::AddActivity(id, std::move(act));
-    for (auto& a : after)
-        AddEdge (a, id);
-
+void Script::PushToFrontier(int id) {
+    m_frontier.insert(id);
+    m_activities[id]->Start();
 }
+
 void Script::AddActivity(int id, std::unique_ptr<Activity> act) {
-    m_activities[id] = std::move( act);
-
+    m_externalToInternalIdMap[id] = m_activities.size();
+    m_activities.push_back(std::move(act));
+    m_edges.push_back(std::vector<size_t>());
+    m_incomingEdgeCount.push_back(0);
 }
 
 void Script::AddEdge (int fromActivity, int toActivity) {
-    if (m_activities.count(fromActivity) == 0)
+    if (m_externalToInternalIdMap.count(fromActivity) == 0)
         GLIB_FAIL("Don't know activity " << fromActivity);
-    if (m_activities.count(toActivity) == 0)
+    if (m_externalToInternalIdMap.count(toActivity) == 0)
         GLIB_FAIL("Don't know activity " << toActivity);
-    m_directedEdges[fromActivity].push_back(toActivity);
+    size_t head = m_externalToInternalIdMap.at(toActivity);
+    m_edges[m_externalToInternalIdMap.at(fromActivity)].push_back(head);
+    m_incomingEdgeCount[head] ++;
 
 }
 
 void Script::Print() {
-    for (auto& a: m_activities) {
-        std::cout << a.first << typeid(*a.second.get()).name() << "\n";
-    }
+//    for (auto& a: m_activities) {
+//        std::cout << a.first << typeid(*a.second.get()).name() << "\n";
+//    }
 }
 
 void Script::SetSuspended(bool value) {
     m_suspended = value;
     for (auto& a : m_frontier) {
-        a.second->NotifySuspend();
+        m_activities[a]->NotifySuspend();
     }
 }
 
@@ -69,16 +70,21 @@ void Script::Run (float dt) {
 
     // check the frontier. If any
     std::unordered_set<int> toRemove;
-    for (auto& a : m_frontier) {
-        Activity* activity = a.second;
+    for (auto& id : m_frontier) {
+        Activity* activity = m_activities[id].get();
         activity->Run(dt);
         if (activity->IsComplete()) {
             // check its children
-            toRemove.insert(a.first);
+            // this definitely  needs to be removed rom the froniter
+            toRemove.insert(id);
             // proceed only if it's successful
             if (activity->IsSuccessful()) {
                 auto ifollow = m_directedEdges.find(a.first);
                 if (ifollow != m_directedEdges.end()) {
+                    // first, decrement incoming edge count for all children
+                    for (auto& fid : ifollow->second) {
+                        m_incomingEdgeCount.
+                    }
                     for (auto& fid : ifollow->second) {
                         Activity * act = m_activities.at(fid).get();
                         m_frontier.insert(std::make_pair(fid, act));

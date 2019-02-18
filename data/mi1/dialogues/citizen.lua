@@ -1,20 +1,28 @@
 local d = strings.dialogues.citizen
 
 local s1 = {
-	{ action.say, { id = 1, actor = "village2.citizen",  lines = {d[18]}, animstart="talk_start", animend="talk_end" }},
-	{ action.animate, { id = 2, actor="village2.citizen", anim="open_jacket"}},
-	{ action.say, { id = 3, actor="village2.citizen", lines = {d[19]}, animstart="talk_start", animend="talk_end"}},
-	{ action.delay, {id = 4, after={2}, sec= 2}},
-	{ action.animate, { id = 5, after={3,4}, actor="village2.citizen", anim="open_jacket", fwd = false}},
-    { action.say, { id = 6, after={3,4}, actor="village2.citizen", lines = {d[20]}, animstart="talk_start", animend="talk_end"}},
-	{ action.animate, { id = 7, actor="village2.citizen", anim="rollmap"}},
-	{ action.say, { id = 8, actor="village2.citizen", lines = {d[21], d[22]}, animstart="talk_start", animend="talk_end"}},
-	{ action.animate, { id = 9, actor="village2.citizen", anim="rollmap", fwd=false, sync = true}},
-	{ action.say, { id = 10, actor="village2.citizen", lines = {d[23]}, animstart="talk_start", animend="talk_end"}},
-	{ action.set_variable, { id = 11, var = "talked_to_citizen", value=true}},
-	{ action.set_variable, { id = 12, var="talked_about_map", value=true}}	
+	{ type = action.say, args = { actor = "village2.citizen",  lines = {d[18]}, animstart="talk_start", animend="talk_end" }},
+	{ ref = 2, type = action.animate, args = { id = 2, actor="village2.citizen", anim="open_jacket"}},
+	{ ref = 3, type = action.say, after= {2}, args = { actor="village2.citizen", lines = {d[19]}, animstart="talk_start", animend="talk_end"}},
+	{ ref = 4, type = action.delay, after= {2}, args = {sec= 2}},
+	{ type = action.animate, after = {3,4}, args = {actor="village2.citizen", anim="open_jacket", fwd = false}},
+    { type = action.say, after= {3,4}, args = {actor="village2.citizen", lines = {d[20]}, animstart="talk_start", animend="talk_end"}},
+	{ type = action.animate, args = {actor="village2.citizen", anim="rollmap"}},
+	{ type = action.say, args = {actor="village2.citizen", lines = {d[21], d[22]}, animstart="talk_start", animend="talk_end"}},
+	{ type = action.animate, args = {actor="village2.citizen", anim="rollmap", fwd=false, sync = true}},
+	{ type = action.say, args = {actor="village2.citizen", lines = {d[23]}, animstart="talk_start", animend="talk_end"}},
+	{ type = action.set_variable, args = { var = "talked_to_citizen", value=true}},
+	{ type = action.set_variable, args = { var="talked_about_map", value=true}}	
 }
 
+local s2 = function(n, k) 
+	local lines = k and {d[k], d[6], d[7]} or {d[6], d[7]}
+	return {
+		{ type = action.say, args = { actor = "guybrush",  lines = {d[n]} }},
+		{ type = action.say, args = { actor = "village2.citizen",  lines = lines, animstart="talk_start", animend="talk_end" }},
+		{ type = action.set_variable, args = { var = "talked_to_citizen", value=true}}
+	}
+end
 
 dialogues.citizen = {
 	close = function()
@@ -26,30 +34,15 @@ dialogues.citizen = {
 	end,
 	nodes = {
 		[1] = { children = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11} },
-		[2] = { text = d[2], deact = {2,3,4,5}, act={6,7,8,9}, active=true, script = {
-			{ type = action.say, args = { actor = "guybrush",  lines = {d[2]} }},
-			{ type = action.say, args = { actor = "village2.citizen",  lines = {d[6], d[7]}, animstart="talk_start", animend="talk_end" }},
-			{ type = action.set_variable, args = { var = "talked_to_citizen", value=true}},
-			}
-		},
-		[3] = { text = d[3], deact = {2,3,4,5}, act={6,7,8,9}, active=true, script = ms {
-			{ action.say, { id = 1, actor = "guybrush",  lines = {d[3]} }},
-			{ action.say, { id = 2, actor = "village2.citizen",  lines = {d[6], d[7]}, animstart="talk_start", animend="talk_end" }},
-			{ action.set_variable, { id = 3, var = "talked_to_citizen", value=true}},
-			}
-		},
-		[4] = { text = d[4], deact = {2,3,4,5}, act={6,7,8,9}, active=true, script = ms {
-			{ action.say, { id = 1, actor = "guybrush",  lines = {d[4]} }},
-			{ action.say, { id = 2, actor = "village2.citizen",  lines = {d[16], d[6], d[7]}, animstart="talk_start", animend="talk_end" }},
-			{ action.set_variable, { id = 3, var = "talked_to_citizen", value=true}},
-			}
-		},
-		[5] = { text = d[5], active=true, deact={2,3,4,5,6,7,8,9}, children ={10, 11}, script = msc {
+		[2] = { text = d[2], deact = {2,3,4,5}, act={6,7,8,9}, active=true, script = s2(2, nil)},
+		[3] = { text = d[3], deact = {2,3,4,5}, act={6,7,8,9}, active=true, script = s2(3, nil)},
+		[4] = { text = d[4], deact = {2,3,4,5}, act={6,7,8,9}, active=true, script = s2(4, 16)},
+		[5] = { text = d[5], active=true, deact={2,3,4,5,6,7,8,9}, children ={10, 11}, script = 
 			{
-				{ action.say, { id = 1, actor = "guybrush",  lines = {d[5]} }},
-				{ action.say, { id = 2, actor = "village2.citizen",  lines = {d[17]}, animstart="talk_start", animend="talk_end" }},
-			},
-			s1}
+				{ type = action.say, args = { actor = "guybrush",  lines = {d[5]} }},
+				{ type = action.say, args = { actor = "village2.citizen",  lines = {d[17]}, animstart="talk_start", animend="talk_end" }},
+				s1
+			}
 		},
 		[6] = { text = d[10], active = false, children ={10, 11}, script = msc {
 			{
