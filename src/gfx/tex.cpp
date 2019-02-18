@@ -17,7 +17,6 @@ using namespace cimg_library;
 
 
 Tex::Tex (const std::string& filename, TexFilter filter) {
-    std::cout << "Loading texture " << filename << "...\n";
     CImg<unsigned char> data (filename.c_str());
     m_width = data.width();
     m_height = data.height();
@@ -49,6 +48,6 @@ Tex::Tex (const std::string& filename, TexFilter filter) {
 }
 
 Tex::~Tex() {
-    std::cout << "deleting tex\n";
+    //std::cout << "deleting tex\n";
     glDeleteTextures (1, &m_texId);
 }

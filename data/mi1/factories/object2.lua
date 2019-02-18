@@ -51,7 +51,6 @@ factory.objc = function(args)
 			onclick = runAction })
 	end
 	if (object.character ~= nil) then
-		print ("hey la direzione è " .. args.dir)
 		table.insert (obj.components, { type="character", dir = args.dir or object.character.dir, state = object.character.state })
 	end
 	if (args.follow == true) then

@@ -19,6 +19,7 @@ void WalkArea::onClick(glm::vec2 worldCoords, int button, int action, int mods) 
 
     auto script = std::make_shared<Script>();
     script->AddActivity(1, std::unique_ptr<Walk>(new Walk(m_playerId, worldCoords)));
+    script->AddEdge(0, 1);
     m_scheduler->AddScript("_walk", script);
 
 }

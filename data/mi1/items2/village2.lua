@@ -8,7 +8,7 @@ items2["village2.archway_to_village1"] = {
 		size = {40, 50},			
 	},
 	actions = {
-		walk = ms { {action.change_room, {id=1,room="village1"}}}
+		walk = { type = action.change_room, args = { room="village1"}}
 	},
 	pos = {416, 34, 0},
 }

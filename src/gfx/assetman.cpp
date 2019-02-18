@@ -3,13 +3,11 @@
 #include <gfx/lua/luatable.h>
 
 AssetManager::AssetManager() {
-    m_textures2.SetLocal(false);
-    m_fonts2.SetLocal(false);
-    m_models2.SetLocal(false);
+    SetLocal(false);
 }
 
 std::shared_ptr<Font> FontBuilder::operator()(const std::string & fontId) const {
-
+    std::cout << "*** load font " << fontId << " ... \n";
     luabridge::LuaRef fonts = LuaWrapper::GetGlobal("fonts");
     luabridge::LuaRef font = fonts[fontId];
     if (font.isNil()) {
@@ -41,12 +39,25 @@ std::shared_ptr<IModel> ModelBuilder::operator()(const std::string & modelId) co
 }
 
 std::shared_ptr<Tex> TexBuilder::operator()(const std::string & file) const {
+    std::cout << "*** loading texture " << file << "...\n";
 
     std::string fileName = Engine::get().GetDirectory() + file;
     auto texture = std::make_shared<Tex>(fileName, nearest);
     return texture;
 }
 
+void AssetManager::SetLocal (bool value) {
+    m_fonts2.SetLocal(value);
+    m_models2.SetLocal(value);
+    m_textures2.SetLocal(value);
+}
+
+
+void AssetManager::CleanUp() {
+    m_fonts2.CleanUp();
+    m_models2.CleanUp();
+    m_textures2.CleanUp();
+}
 
 //void AssetManager::AddFont(const std::string &name, const std::string &file) {
 //    auto font = std::make_shared<Font>();

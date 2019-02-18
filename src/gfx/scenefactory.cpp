@@ -36,6 +36,26 @@ void SceneFactory::StartUp(Engine * engine) {
         // engine->AddShader(std::move(sh));
     }
 
+    // load global assets
+    std::cout << "Loading global assets ...\n";
+    LuaTable globalAssets(LuaWrapper::GetGlobal("global_assets"));
+    if (globalAssets.HasKey("fonts")) {
+        std::vector<std::string> fonts = globalAssets.GetVector<std::string>("fonts");
+        for (auto& fontId : fonts) {
+            Engine::get().GetAssetManager().GetFont(fontId);
+        }
+    }
+    if (globalAssets.HasKey("models")) {
+        std::vector<std::string> models = globalAssets.GetVector<std::string>("models");
+        for (auto& modelId : models) {
+            Engine::get().GetAssetManager().GetModel(modelId);
+        }
+    }
+    Engine::get().GetAssetManager().SetLocal(true);
+
+
+
+
 }
 
 SceneFactory::SceneFactory() {
@@ -167,7 +187,9 @@ std::shared_ptr<Entity> SceneFactory::Create() {
     LuaTable vars (LuaWrapper::GetGlobal("variables"));
     std::string room = vars.Get<std::string>("_room");
 
-    std::cout << "Loading room "<< room << std::endl;
+    std::cout << "=================================\n";
+    std::cout << "Loading room: "<< room << std::endl;
+    std::cout << "=================================\n";
     LuaWrapper::Load(Engine::get().GetDirectory() + "rooms/" + room + ".lua");
 
     // Create the local assets
@@ -179,7 +201,6 @@ std::shared_ptr<Entity> SceneFactory::Create() {
         r1();
     }
 
-    std::cout << "Loading engines ...\n";
     if (roomTable.HasKey("engines")) {
         luabridge::LuaRef engines = roomTable.Get<luabridge::LuaRef>("engines");
         for (int i = 0; i < engines.length(); ++i) {

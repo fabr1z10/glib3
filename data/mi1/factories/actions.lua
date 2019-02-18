@@ -19,7 +19,6 @@ action.walkto = function (args)
 
 	if (pos == nil) then
 		assert (args.obj, "pos or obj")
-		print ("ECCOMI " .. args.obj)
 		local obj = items2[args.obj]
 		pos = obj.hotspot.walk_to
 	end

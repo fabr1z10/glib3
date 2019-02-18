@@ -62,22 +62,18 @@ function flatten_script(a, offset)
         else
             --print (tostring(v) .. " is not an array")
 			if (v.type ~= nil) then
-			
 				id = id + 1
 				local node = { id = id, action = v.type(v.args) }
 				if (v.ref ~= nil) then
-					print ("ADDING REF " .. tostring(v.ref) .. " to node " .. tostring(id))
 					ref_id[v.ref] = id
 				end
 				if (v.after ~= nil) then 
 					node.after = {}
 					for _, ref in ipairs(v.after) do
-						print ("LOOK UP REF " .. tostring(ref) .. " is " .. tostring(ref_id[ref]))
 						table.insert (node.after, ref_id[ref])
 					end
 				else
-					if (id > 1) then
-						print ("CANE CANE = " .. tostring(id))
+					if (id > 0) then
 						node.after = { id-1 } 
 					end
 				end
@@ -104,7 +100,7 @@ function load_all(folder_name)
     --print (s)
     local p = io.popen(s)
     for line in p:lines() do
-        print(" " .. line)
+        --print(" " .. line)
         require(line)
     end
 end
@@ -112,7 +108,7 @@ end
 function ms(args)
     return function()
         local s = script:new()
-		print ("number of action = " .. tostring(#args))
+		--print ("number of action = " .. tostring(#args))
 		s.actions = {}
         for k, v in ipairs(args) do
             table.insert(s.actions, v[1](v[2]))
@@ -242,10 +238,8 @@ function runAction ()
 	-- create a brand new script
     local s = script:new("_walk")
 	--s.name="_walk"
-	print ("RUNNNNO LAZZIONE")
 	local obj = items2[variables._actionInfo.obj1]
     if (variables._actionInfo.obj2 == nil) then
-		print ("no second object selected")
         -- try to run a single object action
 		if (variables._actionInfo.verb.code == "give") then
         	variables._actionInfo.selectSecond = true
@@ -263,6 +257,7 @@ function runAction ()
                 -- Here we generate a play script. The first action is always a walkto towards the provided
                 -- object position. The following action depend on the default action, usually it just says something
                 -- like "It doesn't seem to work" or the like.
+				print ("Running default action (" .. variables._actionInfo.verb.text .. ", " .. variables._actionInfo.obj1 .. ") ...")
 				local actions = {}
 				if (variables.inventory[variables._actionInfo.obj1] == nil) then		
 					actions = {
@@ -279,7 +274,7 @@ function runAction ()
         else
             -- run specific action
             -- see if obj1 has an action with obj2
-			print ("found a custom action for object: " .. variables._actionInfo.obj1 .. ", verb: " .. variables._actionInfo.verb.text)
+			print ("Running action (" .. variables._actionInfo.verb.text .. ", " .. variables._actionInfo.obj1 .. ") ...")
 			local actions = {}
 			if (variables.inventory[variables._actionInfo.obj1] == nil) then		
 				actions = {
@@ -339,7 +334,6 @@ function runAction ()
    			end
         elseif (variables._actionInfo.verb.code == "give") then
 			--s = giveActionHandler()
-			print ("QUI")
 			local IhaveObj1 = variables.inventory[variables._actionInfo.obj1] ~= nil
 			if (not IhaveObj1) then return nil end
 			local obj2 = items2[variables._actionInfo.obj2]
@@ -433,7 +427,6 @@ function hoverOn (obj)
 end
 
 function hover_on_inv_button(entity) 
-	print ("QUI")
 	local color = config.ui_inv_selected
 	entity:setcolor(color[1], color[2], color[3], color[4])
 	local info = entity:getinfo()

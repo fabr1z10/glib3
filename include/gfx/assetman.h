@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <iostream>
 #include <memory>
 #include <unordered_map>
 #include <unordered_set>
@@ -22,6 +23,7 @@ public:
             if (asset == nullptr) {
                 GLIB_FAIL("Cannot find or create asset: " << id);
             }
+
             m_assets[id] = asset;
             if (m_local) {
                 m_localAssets.insert(id);
@@ -34,6 +36,7 @@ public:
 
     void CleanUp() {
         for (const auto& s : m_localAssets) {
+            std::cout << "### dropping asset " << s << "\n";
             m_assets.erase(s);
         }
         m_localAssets.clear();
@@ -74,8 +77,8 @@ public:
     std::shared_ptr<Font> GetFont (const std::string&);
     std::shared_ptr<Tex> GetTex (const std::string&);
     std::shared_ptr<IModel> GetModel (const std::string&);
-
-    void CleanUp() {}
+    void SetLocal (bool);
+    void CleanUp();
 private:
     AssetStore<Font, FontBuilder> m_fonts2;
     AssetStore<Tex, TexBuilder> m_textures2;
@@ -94,3 +97,4 @@ inline std::shared_ptr<Tex> AssetManager::GetTex (const std::string& id) {
 inline std::shared_ptr<IModel> AssetManager::GetModel (const std::string& id) {
     return m_models2.Get(id);
 }
+

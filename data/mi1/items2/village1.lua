@@ -7,7 +7,7 @@ items2["village1.cliffside"] = {
 		size = {20, 144},			
 	},
 	actions = {
-		walk = ms { {action.change_room, {id=1,room="lookout"}}}
+		walk = { type=action.change_room, args={room="lookout"}}
 	}
 }
 
@@ -35,7 +35,7 @@ items2["village1.poster"] = {
 		dir = "north"	
 	},
  	actions = {
- 		look = ms { { action.say, { id=1, actor="guybrush", lines = {strings.village1[1], strings.village1[2]}}}}
+ 		look = { type=action.say, args={actor="guybrush", lines = {strings.village1[1], strings.village1[2]}}}
 	}
 }
 
@@ -48,6 +48,6 @@ items2["village1.archway"] = {
 		size = {16, 40}
 	},
 	actions = {
-		walk = ms { {action.change_room, {id=1,room="village2"}}}
+		walk = { type = action.change_room, args = {room="village2"}}
 	}
 }
