@@ -285,15 +285,16 @@ end
 
 
 action.create_object = function(args) 
-	local objid = gr(args.name, "Required name in action.create_object")
+    print ("loppo")
+	assert (args.name, "name")
 	local flip = false
 	if (args.face ~= nil and args.face == "west") then
 		flip = true
 	end
 	return { type = "callfunc", func = 
 		function()
-			local o = factory.object.create { object = objid, pos = args.pos, anim = args.anim, tag= args.tag,
-			flip = flip, applydepth = args.applydepth }
+			print ("ciao, creating " .. args.name)
+			local o = factory.objc { id = args.name, pos = args.pos }
 			local m1 = monkey.getEntity("main")
 			monkey.addEntity (o, m1)
 		end
@@ -317,26 +318,26 @@ action.remove_object = function(args)
 end
 
 action.open_door = function(args) 
-	local door = gr(args.door, "ciao")
-
+	assert (args.door, "door")
 	return { type = "callfunc", func = 
 		function()
-			local d = items[door]
+			local d = items2[args.door]
+			print ("tag is " .. d.tag)
 			local e = monkey.getEntity(d.tag)
 			e.anim = "open"
-			variables[d.door_ref] = 1
+			variables[d.variable] = 1
 		end
 	}
 end
 
 action.close_door = function(args) 
-	local door = gr(args.door, "ciao")
+	assert (args.door, "door")
 	return { type = "callfunc", func = 
 		function()
-			local d = items[door]
+			local d = items2[args.door]
 			local e = monkey.getEntity(d.tag)
 			e.anim = "close"
-			variables[d.door_ref] = 0
+			variables[d.variable] = 0
 		end
 	}
 end

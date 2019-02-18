@@ -1,6 +1,6 @@
 engine = {
     device_size = { 320, 200 },
-    window_size = { 320, 200 },
+    window_size = { 640, 400 },
     title = "The secret of Monkey Island",
 	shaders = { "unlit_textured", "unlit_color", "text" }
 }
@@ -45,7 +45,7 @@ global_assets = {
 
 -- -- this stuff will change at gametime
 variables = {
-    _room = "village2",
+    _room = "scummbar",
 -- 	_previousroom="",
     _actionInfo = {
         verb = nil,
@@ -56,11 +56,11 @@ variables = {
 -- 	first_time_mancomb = true,
 -- 	first_time_estevan = true,
  	door_village_scummbar = 0,
--- 	door_scummbar_kitchen = 0,
+    door_scummbar_kitchen = 0,
 -- 	door_kitchen_pier = 0,
 	door_voodoolady = 0,
 -- 	door_shop = 0,
--- 	cook_in_kitchen = true,
+    cook_in_kitchen = true,
 -- 	meat_in_pot = false,
 -- 	can_pickup_fish = true,
 --     seagull_jump = 1,

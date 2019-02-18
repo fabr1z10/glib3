@@ -13,7 +13,7 @@ factory.door.create =function(args)
 	local offset = args.offset
 
 	items2[args.id] = {
-		--tag = tag, 
+		tag = args.id,
 		pos = args.pos,
 		hotspot = {
 			size = args.size,

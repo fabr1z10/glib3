@@ -74,6 +74,10 @@ spritesheets["sprites1"] = {
 	fakedoor1_village_door_close = {x=58, y=179, width=16, height=29},
 	fakedoor2_village_door_open = {x=13, y=204, width=8, height=14},
 	fakedoor2_village_door_close = {x=3, y=204, width=8, height=14},
+	door_scummbar_village_open = {x=472, y=2, width=38, height=47},
+	door_scummbar_village_close = {x=472, y=50, width=38, height=47},
+	door_scummbar_kitchen_open = {x=435, y=73, width=35, height=69},
+	door_scummbar_kitchen_close = {x=435, y=2, width=35, height=69}
 
 
 

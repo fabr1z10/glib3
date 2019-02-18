@@ -4,8 +4,7 @@
 #include <gfx/activities/noop.h>
 
 Script::Script() : m_complete{false}, m_suspended{false}, m_loop{-1} {
-    m_activities[0] = std::unique_ptr<NoOp>(new NoOp);
-
+    AddActivity(0, std::unique_ptr<NoOp>(new NoOp));
 }
 
 void Script::Start() {
@@ -51,15 +50,12 @@ void Script::SetSuspended(bool value) {
 
 
 void Script::ResetActivity(int id) {
-    auto activity = m_activities.at(id).get();
-    if (activity->IsComplete()) {
-        activity->Reset();
-        auto ifollow = m_directedEdges.find(id);
-        if (ifollow != m_directedEdges.end()) {
-            for (auto& fid : ifollow->second) {
-                ResetActivity(fid);
-            }
-        }
+    auto activity = m_activities[id].get();
+    activity->Reset();
+    const auto& followers = m_edges[id];
+    for (auto& fid : followers) {
+        m_incomingEdgeCount[fid]++;
+        ResetActivity(fid);
     }
 }
 
@@ -105,10 +101,11 @@ void Script::Run (float dt) {
         }
         else {
             // reset loop action and all its successors
+            for (auto& n : m_incomingEdgeCount) {
+                n = 0;
+            }
             ResetActivity(m_loop);
-            auto restartActivity = m_activities.find(m_loop)->second.get();
-            m_frontier.insert(std::make_pair(m_loop, restartActivity));
-            restartActivity->Start();
+            PushToFrontier(m_loop);
         }
     }
 

@@ -128,6 +128,19 @@ models["cook"] = {
 		 		{ duration = dt, quads = {{ id = s.cook_walk_east6 }}},
 		 	}
 		},
+		{
+			name = "walk_n",
+			frames = {
+		 		{ duration = dt, quads = {{ id = s.cook_idle_north }}}
+		 	}
+		},
+		{
+			name = "walk_s",
+			frames = {
+		 		{ duration = dt, quads = {{ id = s.cook_idle_south }}}
+		 	}
+		},
+
 	}
 }
 
@@ -313,5 +326,25 @@ models["village2.rat"] = {
 			{ duration = dt, quads = {{ id = s.rat_body_idle_1 }, {id = s.rat_tail_2, pos = {-6,0} }}},
 			{ duration = dt, quads = {{ id = s.rat_body_idle_2 }, {id = s.rat_tail_2, pos = {-6,0} }}},
 		}},
+	}
+}
+
+models["door_scummbar_village"] = {
+    sheet = "sprites2/sprites1.png",
+    type = "sprite",
+    ppu=1,
+	animations = {
+		{ name = "open", frames = { { duration = dt, quads = {{ id = s.door_scummbar_village_open }}}}},
+		{ name = "close", frames = { { duration = dt, quads = {{ id = s.door_scummbar_village_close }}}}}
+	}
+}
+
+models["door_scummbar_kitchen"] = {
+    sheet = "sprites2/sprites1.png",
+    type = "sprite",
+    ppu=1,
+	animations = {
+		{ name = "open", frames = { { duration = dt, quads = {{ id = s.door_scummbar_kitchen_open }}}}},
+		{ name = "close", frames = { { duration = dt, quads = {{ id = s.door_scummbar_kitchen_close }}}}}
 	}
 }

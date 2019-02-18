@@ -5,7 +5,7 @@ roomDefinition = {
 	height = 144,
 	startTable = {
 		--lookout = { pos = items2["village1.cliffside"].hotspot.walk_to, facing = "east"},
-		--scummbar = { pos = items2["village1.door"].hotspot.walk_to, facing = "south"},
+		scummbar = { pos = items2["village1.door"].hotspot.walk_to, dir = "south"},
 		village2 = { pos = items2["village1.archway"].hotspot.walk_to, dir="west"}
 	},
 	defaultroom = "lookout",
