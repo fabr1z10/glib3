@@ -1,6 +1,6 @@
 engine = {
     device_size = { 320, 200 },
-    window_size = { 640, 400 },
+    window_size = { 320, 200 },
     title = "The secret of Monkey Island",
 	shaders = { "unlit_textured", "unlit_color", "text" }
 }

@@ -102,7 +102,9 @@ local cook = function()
 		{ type = action.delay, args = {sec=10}},
 		{ type = action.open_door, args = {door="scummbar.door_kitchen"}},
 		{ type = action.set_variable, args = {var = "cook_in_kitchen", value = false }},
-		{ type = action.create_object, args = {name="scummbar.cook", pos = {pos[1], pos[2], 0} }}
+		{ type = action.create_object, args = {name="scummbar.cook", pos = {pos[1], pos[2], 0} }},
+		{ type = action.turn, args = {actor="scummbar.cook", dir="west"}},
+		--{ type = action.walkto, args = { actor ="scummbar.cook", pos = {20, 20} }}, --obj = items["scummbar.mancomb"]},
 
 
 	}

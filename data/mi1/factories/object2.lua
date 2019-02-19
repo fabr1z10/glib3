@@ -12,8 +12,10 @@ factory.objc = function(args)
 	local pos = args.pos and args.pos or object.pos
 
     -- flipx is optional. If not provided, the default value is false (NOT flipped horizontally)
-	local flipx = object.flipx or false 
-
+	
+	local flipx = args.flipx
+	if (flipx == nil) then flipx = object.flipx or false end
+	
 	local tag = args.tag
 	if (tag == nil) then 
 		tag = object.tag or objId

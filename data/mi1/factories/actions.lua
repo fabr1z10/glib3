@@ -285,7 +285,6 @@ end
 
 
 action.create_object = function(args) 
-    print ("loppo")
 	assert (args.name, "name")
 	local flip = false
 	if (args.face ~= nil and args.face == "west") then
@@ -294,7 +293,7 @@ action.create_object = function(args)
 	return { type = "callfunc", func = 
 		function()
 			print ("ciao, creating " .. args.name)
-			local o = factory.objc { id = args.name, pos = args.pos }
+			local o = factory.objc { id = args.name, pos = args.pos, flipx = args.flipx }
 			local m1 = monkey.getEntity("main")
 			monkey.addEntity (o, m1)
 		end

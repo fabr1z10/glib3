@@ -31,7 +31,11 @@ items2["scummbar.cook"] = {
 	dir = "east",
 	text_color = cook_text_color,
 	text_offset = {0,60},
-	applydepth = true
+	applydepth = true,
+	character = {
+		state = "idle",
+		dir ="east"
+	}
 }
 
 -- items["scummbar.door_kitchen"] = factory.door.create {

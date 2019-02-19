@@ -236,7 +236,7 @@ function runAction ()
         return nil
     end
 	-- create a brand new script
-    local s = script:new("_walk")
+    --local s = script:new("_walk")
 	--s.name="_walk"
 	local obj = items2[variables._actionInfo.obj1]
     if (variables._actionInfo.obj2 == nil) then
@@ -359,6 +359,7 @@ function runAction ()
         
         --script = twoObjectHandler[variables._actionInfo.verb.code]
     end
+	s.name= "_walk"
     monkey.play(s)
     variables._actionInfo:reset()
     updateVerb()
