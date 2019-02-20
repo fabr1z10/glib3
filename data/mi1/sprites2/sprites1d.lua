@@ -348,3 +348,13 @@ models["door_scummbar_kitchen"] = {
 		{ name = "close", frames = { { duration = dt, quads = {{ id = s.door_scummbar_kitchen_close }}}}}
 	}
 }
+
+models["scummbar.mancomb"] = {
+    sheet = "sprites2/sprites1.png",
+    type = "sprite",
+    ppu=1,
+	animations = {
+		{ name = "idle_1", frames = { { duration = dt, quads = {{ id = s.mancomb_1 }}}}},
+		{ name = "idle_2", frames = { { duration = dt, quads = {{ id = s.mancomb_2 }}}}}
+	}
+}

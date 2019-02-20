@@ -21,7 +21,40 @@ factory.door.create {
 	dir = "east",
 	model = "door_scummbar_kitchen",
 	nextroom = "kitchen",
-	variable = "door_scummbar_kitchen"
+	variable = "door_scummbar_kitchen",
+	walk = function() 
+		if (variables.cook_in_kitchen == false) then
+			local m = monkey.getEntity("scummbar.cook")
+			if (m.x > 320) then
+				return {
+					{ type = action.suspend_script, args = {script = "_cook"}},
+					{ type = action.turn, args = {actor="scummbar.cook", dir="east"}},
+					{ type = action.say, args = {actor="scummbar.cook", lines = { strings.dialogues.cook[1], strings.dialogues.cook[2] }}},
+					{ type = action.turn, args = {actor="scummbar.cook", dir="west"}},
+					{ type = action.set_state, args = {actor = "scummbar.cook", state="walk"}},
+					{ type = action.resume_script, args = {script = "_cook"}},
+				}
+			else
+				-- sneak into kitchen
+				return { type = action.change_room, args = { room="kitchen"}}
+			end
+		else
+			return nil
+		end
+	end,
+	open = function() 
+		if (variables.cook_in_kitchen == true) then
+			return {
+				{ type = action.suspend_script, args = {script = "_cook"}},
+				{ type = action.animate, args = {actor="scummbar.door_kitchen", anim="open" }},
+				{ type = action.show_message, args = {message = strings.dialogues.cook[3], color = cook_text_color, pos= {591, 100,1}}},
+				{ type = action.animate, args = {actor="scummbar.door_kitchen", anim="close" }},
+				{ type = action.resume_script, args = {script = "_cook"}}
+			}
+		else
+			return { type = action.open_door, args = {door="scummbar.door_kitchen"}}
+		end
+	end,
 }
 
 items2["scummbar.cook"] = {
@@ -35,6 +68,21 @@ items2["scummbar.cook"] = {
 	character = {
 		state = "idle",
 		dir ="east"
+	}
+}
+
+items2["scummbar.mancomb"] = {
+	hotspot = {
+		text = strings.objects.pirate,
+		size = {30, 30},	
+		walk_to = {125, 17},
+		dir = "north",
+	},
+	model = "scummbar.mancomb",
+	pos = {89, 24, -1},
+	actions = {
+		look = { type=action.change_room, args={room = "mancomb" }},
+		talk = { type=action.change_room, args={room = "mancomb" }}
 	}
 }
 

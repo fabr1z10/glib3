@@ -5,7 +5,7 @@ roomDefinition = {
 	height = 144,
 	startTable = {
 		village1 = { pos = items2["scummbar.door_out"].hotspot.walk_to, dir = "east"},
-		--mancomb = { pos = items2["scummbar.mancomb"].hotspot.walk_to, dir = "north"},
+		mancomb = { pos = items2["scummbar.mancomb"].hotspot.walk_to, dir = "north"},
 		--estevan = { pos = items2["scummbar.estevan"].hotspot.walk_to, dir = "south"},
 		--kitchen = { pos = items2["scummbar.door_kitchen"].hotspot.walk_to, dir="west" }
 
@@ -41,6 +41,7 @@ room:add( {
 	}},
 	factory.objc { id="scummbar.door_out" },
 	factory.objc { id="scummbar.door_kitchen" },
+	factory.objc { id="scummbar.mancomb" },
 
 
 	-- { pos = {157, 0, 0.99}, components = { { type="gfx", image="gfx/scummbar_3.png" }}},
@@ -99,17 +100,21 @@ local cook = function()
 	local pos = items2["scummbar.door_kitchen"].hotspot.walk_to
 	-- coming from village
 	local actions = {
-		{ type = action.delay, args = {sec=10}},
+		{ ref = 1, type = action.delay, args = {sec=10}},
 		{ type = action.open_door, args = {door="scummbar.door_kitchen"}},
 		{ type = action.set_variable, args = {var = "cook_in_kitchen", value = false }},
 		{ type = action.create_object, args = {name="scummbar.cook", pos = {pos[1], pos[2], 0} }},
 		{ type = action.turn, args = {actor="scummbar.cook", dir="west"}},
-		--{ type = action.walkto, args = { actor ="scummbar.cook", pos = {20, 20} }}, --obj = items["scummbar.mancomb"]},
-
-
+		{ type = action.walkto, args = { actor ="scummbar.cook", obj = "scummbar.mancomb" }}, --obj = items["scummbar.mancomb"]},
+		{ type = action.turn, args = {actor="scummbar.cook", dir="north"}},
+		{ type = action.delay, args = {sec = 5 }},
+		{ type = action.walkto, args = { actor ="scummbar.cook", obj = "scummbar.door_kitchen"}},
+		{ type = action.remove_object, args = {name ="scummbar.cook"}},
+		{ type = action.close_door, args = {door="scummbar.door_kitchen"}},
+		{ type = action.set_variable, args = {var = "cook_in_kitchen", value = true }},
 	}
-
-	local s = ms2(actions)
+	local s = ms2(actions, 1)
+	s.name = "_cook"
 	monkey.play(s)
 
 	-- if (variables._previousroom == "kitchen") then

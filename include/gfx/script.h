@@ -37,12 +37,11 @@ private:
     bool m_suspended;
     bool m_complete;
     //std::string m_startId;
-    int m_loop;
+    bool m_loop;
+    size_t m_loopId;
 };
 
-inline void Script::SetLoop(int id) {
-    m_loop =id;
-}
+
 
 
 inline bool Script::IsComplete() const {

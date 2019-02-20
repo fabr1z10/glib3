@@ -77,7 +77,10 @@ spritesheets["sprites1"] = {
 	door_scummbar_village_open = {x=472, y=2, width=38, height=47},
 	door_scummbar_village_close = {x=472, y=50, width=38, height=47},
 	door_scummbar_kitchen_open = {x=435, y=73, width=35, height=69},
-	door_scummbar_kitchen_close = {x=435, y=2, width=35, height=69}
+	door_scummbar_kitchen_close = {x=435, y=2, width=35, height=69},
+	mancomb_1 = {x=241, y=68, width=33, height=40},
+	mancomb_2 = {x=277, y=68, width=36, height=39},
+
 
 
 

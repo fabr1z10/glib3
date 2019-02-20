@@ -13,10 +13,10 @@ function generateDialogueRoom (args)
 			{ type = "hotspotmanager" },
 			{ type = "scheduler" }
 		},
-		assets = {
-			sprites.arrowup,
-			sprites.arrowdown,
-		},
+		-- assets = {
+		-- 	sprites.arrowup,
+		-- 	sprites.arrowdown,
+		-- },
 		scene = {
 			{
 				tag = "main",

@@ -15,9 +15,6 @@ roomDefinition = {
 
 room = generateBasicRoom (roomDefinition)
 
-room:add_assets {
-	"door_village_scummbar"
-}
 
 room:add( {
 	{ pos = {0, 0,-3}, components = { { type="gfx", image="gfx/village1_1.png" }}},

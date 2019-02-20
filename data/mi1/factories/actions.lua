@@ -61,6 +61,13 @@ action.animate = function(args)
 	return {type="animate", actor = tag, anim = args.anim, fwd = fwd, sync = sync }
 end
 
+action.set_state = function(args)
+	assert (args.actor, "actor")
+	assert (args.state, "state")
+	return {type="setstate", actor = args.actor, state = args.state}
+end
+
+
 action.say = function(args) 
 	--assert (args.id, "id")
 	assert (args.lines, "lines")
@@ -301,12 +308,11 @@ action.create_object = function(args)
 end
 
 action.remove_object = function(args) 
-
-	local tag = args.tag
+	assert (args.name, "name")
 	if (tag == nil) then
-		local objid = gr(args.name, "Required name in action.create_object")
-		tag = items[objid].tag
+		tag = items2[args.name].tag or args.name
 	end
+	print ("REMOVE OBJECT " .. tag)
 	return { type = "callfunc", func = 
 		function()
 			print ("ciao " .. tag)
@@ -354,27 +360,25 @@ action.set_variable = function(args)
 end
 
 action.show_message = function(args) 
-	local msg = gr(args.message, "Required id in action.create_object")
-	local time = go(args.time, nil)
-	local color = args.color
-	local pos = args.pos
-	
-	return { type="show_message", message = msg, color = color, pos= pos}
+	assert (args.message, "message")
+	assert (args.color, "color")
+	assert (args.pos, "pos")
+	return { type="show_message", message = args.message, color = args.color, pos = args.pos}
 end
 
 action.suspend_script = function(args) 
-	local script = gr(args.script, "Required id in action.create_object")
-	return {type="suspend_script", script = script}
+	assert (args.script, "script")
+	return { type="suspend_script", script = args.script}
 end
 
 action.resume_script = function(args) 
-	local script = gr(args.script, "Required id in action.create_object")
-	return {type="resume_script", script = script}
+	assert (args.script, "script")
+	return {type="resume_script", script = args.script}
 end
 
 action.kill_script = function(args) 
-	local script = gr(args.script, "Required id in action.create_object")
-	return {type="kill_script", script = script}
+	assert (args.script, "script")
+	return {type="kill_script", script = args.script}
 end
 
 

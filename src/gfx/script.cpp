@@ -3,7 +3,7 @@
 #include <iostream>
 #include <gfx/activities/noop.h>
 
-Script::Script() : m_complete{false}, m_suspended{false}, m_loop{-1} {
+Script::Script() : m_complete{false}, m_suspended{false}, m_loop{false}, m_loopId{0} {
     AddActivity(0, std::unique_ptr<NoOp>(new NoOp));
 }
 
@@ -59,6 +59,14 @@ void Script::ResetActivity(int id) {
     }
 }
 
+void Script::SetLoop(int id) {
+    auto it = m_externalToInternalIdMap.find(id);
+    if (it == m_externalToInternalIdMap.end())
+        GLIB_FAIL("In setting loop for script, don't know action " << id);
+    m_loop = true;
+    m_loopId = it->second;
+}
+
 
 void Script::Run (float dt) {
     if (m_suspended) {
@@ -96,7 +104,7 @@ void Script::Run (float dt) {
     // indicated by loop. Of course all actions should be reset
     if (m_frontier.empty())
     {
-        if (m_loop == -1) {
+        if (!m_loop) {
             m_complete = true;
         }
         else {
@@ -104,8 +112,8 @@ void Script::Run (float dt) {
             for (auto& n : m_incomingEdgeCount) {
                 n = 0;
             }
-            ResetActivity(m_loop);
-            PushToFrontier(m_loop);
+            ResetActivity(m_loopId);
+            PushToFrontier(m_loopId);
         }
     }
 

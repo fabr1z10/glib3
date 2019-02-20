@@ -34,13 +34,13 @@ function flatten(a)
     local out = {}
     for _, v in ipairs(a) do
         if (isarray(v)) then
-            --print (tostring(v) .. " is an array")
+            print (tostring(v) .. " is an array")
             tmp = flatten(v)
             for _, j in ipairs(tmp) do
                table.insert(out, j)
             end
         else
-            --print (tostring(v) .. " is not an array")
+            print (tostring(v) .. " is not an array")
             table.insert(out, v)
         end
     end
@@ -55,10 +55,10 @@ function flatten_script(a, offset)
         if (isarray(v)) then
             --print (tostring(v) .. " is an array")
             tmp = flatten_script(v, id)
-            for _, j in ipairs(tmp) do
+            for _, j in ipairs(tmp[1]) do
                table.insert(out, j)
             end
-			id = tmp[#tmp].id
+			id = tmp[1][#tmp[1]].id
         else
             --print (tostring(v) .. " is not an array")
 			if (v.type ~= nil) then
@@ -81,7 +81,7 @@ function flatten_script(a, offset)
 			end
         end
     end
-    return out
+    return {out, ref_id}
 end
 
 
@@ -117,27 +117,31 @@ function ms(args)
     end	
 end
 
-function ms2(args)
+function ms2(args, loop)
 
-        local s = script:new()
-		s.actions = flatten_script (args, 0)
+    local s = script:new()
+	local data = flatten_script (args, 0) 
+	s.actions = data[1]
+	if (loop ~= nil) then
+		s.loop = data[2][loop]
+		print ("script has loop at ref = " .. tostring(loop) .. " which corresponds to id = " .. tostring(s.loop))
+	end
 		
-		for _,v in pairs(s.actions) do 
-			local sa = ""
-			if (v.after == nil) then
-				sa = (v.id == 1) and "-" or "{" .. tostring(v.id-1) .. "}"
-			else
-
-				sa = tostring(#(v.after)) .. "{"
-				for _, after in ipairs(v.after) do
-					sa = sa .. tostring(after) .. ", "
-				end
-				sa = sa .. "}"
+	-- just for debug. print action
+	for _,v in pairs(s.actions) do 
+		local sa = ""
+		if (v.after == nil) then
+			sa = (v.id == 1) and "-" or "{" .. tostring(v.id-1) .. "}"
+		else
+			sa = tostring(#(v.after)) .. "{"
+			for _, after in ipairs(v.after) do
+				sa = sa .. tostring(after) .. ", "
 			end
-
-			print ("id = " .. tostring(v.id) .. ", after = " .. sa .. ", type = " .. v.action.type)	
+			sa = sa .. "}"
 		end
-        return s
+		--print ("id = " .. tostring(v.id) .. ", after = " .. sa .. ", type = " .. v.action.type)	
+	end
+    return s
 end
 
 

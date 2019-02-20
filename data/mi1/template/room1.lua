@@ -32,11 +32,11 @@ function generateBasicRoom (args)
 			} },
 			{ type = "scheduler" }
 		},
-		assets = {
-			"arrow_up",
-			"arrow_down",
-			"guybrush", -- set this as input param
-		},
+		-- assets = {
+		-- 	"arrow_up",
+		-- 	"arrow_down",
+		-- 	"guybrush", -- set this as input param
+		-- },
 		scene = {
 			{
 				tag = "main",
@@ -183,11 +183,7 @@ function generateBasicRoom (args)
 			table.insert(self.scene[1].children, v)
 		end
 	end
-	function p:add_assets(items) 
-		for _,asset in ipairs(items) do
-			table.insert(self.assets, asset)
-		end
-	end
+
 
 	p.depth = args.depth
 	p.scale = args.scale

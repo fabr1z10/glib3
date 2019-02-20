@@ -20,6 +20,7 @@
 #include <gfx/activities/flip.h>
 #include <gfx/activities/scale.h>
 #include <gfx/activities/scriptactions.h>
+#include <gfx/activities/setstate.h>
 
 std::unique_ptr<Activity> NoOpActFactory::Create(luabridge::LuaRef &ref) {
     return std::unique_ptr<NoOp>(new NoOp);
@@ -145,6 +146,15 @@ std::unique_ptr<Activity> AnimateActFactory::Create(luabridge::LuaRef &ref) {
     act->SetSync(sync);
     return std::move(act);
 };
+
+std::unique_ptr<Activity> SetStateActFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    std::string actor = table.Get<std::string>("actor");
+    std::string state = table.Get<std::string>("state");
+    auto act = std::unique_ptr<SetState>(new SetState(actor, state));
+    return std::move(act);
+};
+
 
 
 std::unique_ptr<Activity> ChangeStateActFactory::Create(luabridge::LuaRef &ref) {

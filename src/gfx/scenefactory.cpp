@@ -132,6 +132,7 @@ SceneFactory::SceneFactory() {
     m_activityFactory.Add<ResumeScriptActFactory>("resume_script");
     m_activityFactory.Add<KillScriptActFactory>("kill_script");
     m_activityFactory.Add<ScrollActFactory>("scroll");
+    m_activityFactory.Add<SetStateActFactory>("setstate");
 }
 
 template <>

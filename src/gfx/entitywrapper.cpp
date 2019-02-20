@@ -148,9 +148,6 @@ namespace luaFunctions {
         int loopId = table.Get<int>("loop", -1);
         std::string scriptId = table.Get<std::string>("name", "");
         auto script = std::make_shared<Script>();
-        if (loopId != -1) {
-            script->SetLoop(loopId);
-        }
         luabridge::LuaRef actions = ref["actions"];
 
         std::vector<std::pair<int, int>> edges;
@@ -180,6 +177,9 @@ namespace luaFunctions {
 
         for (auto& i : edges) {
             script->AddEdge(i.first, i.second);
+        }
+        if (loopId != -1) {
+            script->SetLoop(loopId);
         }
 
         if (scriptId.empty())
