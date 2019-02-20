@@ -45,7 +45,7 @@ global_assets = {
 
 -- -- this stuff will change at gametime
 variables = {
-    _room = "scummbar",
+    _room = "kitchen",
 -- 	_previousroom="",
     _actionInfo = {
         verb = nil,
@@ -57,7 +57,7 @@ variables = {
  	first_time_estevan = true,
  	door_village_scummbar = 0,
     door_scummbar_kitchen = 0,
--- 	door_kitchen_pier = 0,
+ 	door_kitchen_pier = 0,
 	door_voodoolady = 0,
 -- 	door_shop = 0,
     cook_in_kitchen = true,
@@ -68,7 +68,7 @@ variables = {
 -- 	talked_to_important_pirates = false,
     talked_to_citizen = false,
     talked_about_map = false,
--- 	fish_taken=false,
+ 	fish_taken=false,
 -- 	talking_to_voodoolady = false,
 -- 	talked_to_voodoolady = false,
 -- 	voodoolady_told_future = false,

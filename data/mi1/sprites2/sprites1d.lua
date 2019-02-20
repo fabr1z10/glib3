@@ -349,6 +349,26 @@ models["door_scummbar_kitchen"] = {
 	}
 }
 
+models["door_kitchen_scummbar"] = {
+    sheet = "sprites2/sprites1.png",
+    type = "sprite",
+    ppu=1,
+	animations = {
+		{ name = "open", frames = { { duration = dt, quads = {{ id = s.door_kitchen_scummbar_open }}}}},
+		{ name = "close", frames = { { duration = dt, quads = {{ id = s.door_kitchen_scummbar_close }}}}}
+	}
+}
+
+models["door_kitchen_pier"] = {
+    sheet = "sprites2/sprites1.png",
+    type = "sprite",
+    ppu=1,
+	animations = {
+		{ name = "open", frames = { { duration = dt, quads = {{ id = s.door_kitchen_pier_open }}}}},
+		{ name = "close", frames = { { duration = dt, quads = {{ id = s.door_kitchen_pier_close }}}}}
+	}
+}
+
 models["scummbar.mancomb"] = {
     sheet = "sprites2/sprites1.png",
     type = "sprite",

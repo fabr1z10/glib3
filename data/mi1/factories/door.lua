@@ -7,7 +7,7 @@ factory.door.create =function(args)
 	assert (args.walk_to, "walk_to")
 	assert (args.dir, "dir")
 	assert (args.model, "model")
-	assert (args.nextroom, "nextroom")
+	--assert (args.nextroom, "nextroom")
 	assert (args.variable, "variable")
 	--local tag = args.name
 	local offset = args.offset

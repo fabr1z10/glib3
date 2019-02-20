@@ -36,6 +36,17 @@ action.turn = function (args)
 
 end
 
+action.runscript = function(args) 
+	assert (args.func, "func")
+	return { type="callfunc", func = function() 
+		local actions = args.func()
+		if (actions ~= nil) then
+			local s = ms2(actions)
+			monkey.play(s)		
+		end
+	end}
+end
+
 action.change_room = function (args) 	
 	assert (args.room, "room")
 	return { type="gotoroom", room = args.room }
@@ -426,9 +437,9 @@ action.change_text_item = function(args)
 end
 
 action.enable_wall = function(args) 
-	local wallId = gr(args.wall,"")
-	local active = gr(args.active,"")
-	return {type="enable_wall", wall = wallId, active = active }
+	assert (args.wall, "wall")
+	assert (args.active, "active")
+	return {type="enable_wall", wall = args.wall, active = args.active }
 end
 
 action.scroll = function (args) 

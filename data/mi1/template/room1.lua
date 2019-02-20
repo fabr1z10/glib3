@@ -53,7 +53,8 @@ function generateBasicRoom (args)
 						pos={startPos.pos[1], startPos.pos[2], 0}, 
 						--tag="player", 
 						dir = startPos.dir,
-						follow = (room_width > 320 and enableScroll)
+						follow = (room_width > 320 and enableScroll),
+						collide = args.collide
 					}
 				}
 					-- factory.player.create { 

@@ -55,6 +55,10 @@ function flatten_script(a, offset)
         if (isarray(v)) then
             --print (tostring(v) .. " is an array")
             tmp = flatten_script(v, id)
+			-- copy all ref id 
+			for k, v in pairs(tmp[2]) do
+				ref_id[k] = v
+			end
             for _, j in ipairs(tmp[1]) do
                table.insert(out, j)
             end

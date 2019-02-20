@@ -7,7 +7,7 @@ roomDefinition = {
 		village1 = { pos = items2["scummbar.door_out"].hotspot.walk_to, dir = "east"},
 		mancomb = { pos = items2["scummbar.mancomb"].hotspot.walk_to, dir = "north"},
 		--estevan = { pos = items2["scummbar.estevan"].hotspot.walk_to, dir = "south"},
-		--kitchen = { pos = items2["scummbar.door_kitchen"].hotspot.walk_to, dir="west" }
+		kitchen = { pos = items2["scummbar.door_kitchen"].hotspot.walk_to, dir="west" }
 
 	},
 	defaultroom = "village1",
@@ -28,7 +28,7 @@ room = generateBasicRoom (roomDefinition)
 -- room:add_asset(sprites.ilp1)
 -- room:add_asset(sprites.ilp2)
 -- room:add_asset(sprites.ilp3)
-variables[items2["scummbar.door_kitchen"].variable] = 0
+
 
 
 room:add( {
@@ -96,10 +96,27 @@ function run_background_script_2(actor, anim_transition, anim2)
 end
 
 local cook = function() 
-	--local s = script:new("cook")
 	local pos = items2["scummbar.door_kitchen"].hotspot.walk_to
-	-- coming from village
-	local actions = {
+	
+	local a1 = nil
+	variables.cook_in_kitchen = true
+	
+	if (variables._previousroom == "kitchen") then
+		variables[items2["scummbar.door_kitchen"].variable] = 1
+		variables.cook_in_kitchen = false
+	 	local mancombPos = items2["scummbar.mancomb"].hotspot.walk_to
+		a1 = {
+			{ type = action.create_object, args = {name="scummbar.cook", pos = {mancombPos[1], mancombPos[2], 0} }},
+			{ type = action.delay, args = {sec = 5 }},
+			{ type = action.walkto, args = { actor ="scummbar.cook", obj = "scummbar.door_kitchen"}},
+			{ type = action.remove_object, args = {name ="scummbar.cook"}},
+			{ type = action.close_door, args = {door="scummbar.door_kitchen"}},
+			{ type = action.set_variable, args = {var = "cook_in_kitchen", value = true }},
+		}
+	else
+		variables[items2["scummbar.door_kitchen"].variable] = 0
+	end
+	local a2 = {
 		{ ref = 1, type = action.delay, args = {sec=10}},
 		{ type = action.open_door, args = {door="scummbar.door_kitchen"}},
 		{ type = action.set_variable, args = {var = "cook_in_kitchen", value = false }},
@@ -113,12 +130,16 @@ local cook = function()
 		{ type = action.close_door, args = {door="scummbar.door_kitchen"}},
 		{ type = action.set_variable, args = {var = "cook_in_kitchen", value = true }},
 	}
+	local actions = {}
+	table.insert(actions, a1)
+	print ("FUCKKK")
+	table.insert(actions, a2)
 	local s = ms2(actions, 1)
 	s.name = "_cook"
 	monkey.play(s)
 
 	-- if (variables._previousroom == "kitchen") then
-	-- 	local mancombPos = items["scummbar.mancomb"].walk_to
+
 	-- 	variables["cook_in_kitchen"] = false
 	-- 	s.actions = {
 	-- 		action.create_object { id = 1, name="scummbar.cook", pos = {mancombPos[1], mancombPos[2], 0}, anim ="idle_back", face = "north", applydepth = true},

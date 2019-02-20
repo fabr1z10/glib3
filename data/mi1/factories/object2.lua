@@ -58,6 +58,9 @@ factory.objc = function(args)
 	if (args.follow == true) then
 		table.insert(obj.components, { type="follow", cam ="maincam", relativepos = {0,0,5}, up={0,1,0}})
 	end
+	if (args.collide == true) then
+		table.insert(obj.components, { type="collider", shape = {type="rect", width=10, height=2, offset={-5,-1}}, tag=1, flag=1, mask=2 })
+	end
 
 
 	-- depth component
