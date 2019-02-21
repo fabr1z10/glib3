@@ -412,10 +412,10 @@ action.add_to_inventory = function(args)
 end
 
 action.remove_from_inventory = function(args) 
-	local objid = gr(args.name, "Required object name in add_to_inventory")
+	assert (args.id, "id")
 	return { type = "callfunc", func = 
 		function()
-			variables.inventory[objid] = nil
+			variables.inventory[args.id] = nil
 			refresh_inventory()
 		end
 	}
@@ -424,11 +424,11 @@ action.remove_from_inventory = function(args)
 end
 
 action.change_text_item = function(args) 
-	local objid = gr(args.name, "Required object name in add_to_inventory")
-	local text = gr(args.text, "Required object name in add_to_inventory")
+	assert (args.id, "id")
+	assert (args.text, "text")
 	return {type = "callfunc", func = 
 		function()
-			items[objid].text = text
+			items2[args.id].hotspot.text = args.text
 			refresh_inventory()
 		end
 	}

@@ -76,15 +76,36 @@ items2["kitchen.potostew"] = {
 		dir ="north"
 	},
  	model = "kitchen.potostew",
- 	actions = {}
+ 	actions = {
+		use = {
+			["kitchen.meat"] = {
+				{ type = action.animate, args = {actor="guybrush", anim="operate_n"}},
+				{ type = action.delay, args = {sec=0.5}},
+				{ type = action.animate, args = {actor="guybrush", anim="idle_n"}},
+				{ type = action.remove_from_inventory, args = {id="kitchen.meat"}},
+				{ type = action.set_variable, args = {var="meat_in_pot", value = true}}
+			}
+		},
+ 		look = function() 
+ 			local line = variables.meat_in_pot and 9 or 5
+			return { type = action.say, args = {actor="guybrush", lines={strings.kitchen[line]}} }
+ 		end,
+		pickup = function()
+			if (variables.meat_in_pot) then
+				return {
+ 					{ type = action.animate, args = {actor="guybrush", anim="operate_n"}},
+ 					{ type = action.delay, args = {sec=0.5}},
+ 					{ type = action.animate, args = {actor="guybrush", anim="idle_n"}},
+ 					{ type = action.change_text_item, args = {id="kitchen.meat", text = strings.objects.stewedmeat }},
+ 					{ type = action.add_to_inventory, args = {id="kitchen.meat"}}
+				}
+			else
+				return script.defaultactions.pickup
+			end
+		end
+	}
 }
--- 		look = function() 
--- 			local line = variables.meat_in_pot and 9 or 5
--- 			local a = ms {
--- 				{action.say, {id=1, actor="guybrush", lines={d[line]}} }
--- 			}
--- 			return a()
--- 		end,
+
 -- 		pickup = function() 
 -- 			local a = nil
 -- 			if (variables.meat_in_pot) then
