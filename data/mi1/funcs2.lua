@@ -297,7 +297,7 @@ function runAction ()
         -- action with two objects
         -- see if there are any two object actions like verb obj1 ...
         if (variables._actionInfo.verb.code == "use") then
-			local obj2 = items2f[variables._actionInfo.obj2]
+			local obj2 = items2[variables._actionInfo.obj2]
 			-- walk action
 			-- 1. If both obejcts are in inventory, stay where you are
 			-- 2. If one object is in inventory, walk to the other object
@@ -305,41 +305,42 @@ function runAction ()
 			-- a. If obj1 has a pickup action, pick it up and go to obj2
 			-- b. If obj2 has a pickup action, pick it up and go to obj1
 			-- c. If no pickup action is there, walk to obj2
+			local actions = {}
 			local IhaveObj1 = variables.inventory[variables._actionInfo.obj1] ~= nil
 			local IhaveObj2 = variables.inventory[variables._actionInfo.obj2] ~= nil
-			print ("I HAVE 1 = " .. tostring(IhaveObj1) .. ", i have 2 = " .. tostring(IhaveObj2))
 			if (IhaveObj1 and (not IhaveObj2)) then
-				s:push { script = walk_to_object(obj2), at="end" }
+				table.insert (actions, action.combo.walk_to_object("guybrush", variables._actionInfo.obj2))
 			elseif (IhaveObj2 and (not IhaveObj1)) then
-				s:push { script = walk_to_object(obj), at="end" }
+				table.insert (actions, action.combo.walk_to_object("guybrush", variables._actionInfo.obj1))
 			elseif ((not IhaveObj1) and (not IhaveObj2)) then
 				local pu1 = obj.actions["pickup"]
 				local pu2 = obj2.actions["pickup"]
 				if (pu1 ~= nil) then
 					-- go pick-up 1st object, walk to 2nd
-					s:push { script = walk_to_object(obj), at="end" }
-					s:push { script = pu1(), at="end" }
-					s:push { script = walk_to_object(obj2), at="end" }
+					table.insert (actions, action.combo.walk_to_object("guybrush", variables._actionInfo.obj1))
+					table.insert (actions, get(pu1))
+					table.insert (actions, action.combo.walk_to_object("guybrush", variables._actionInfo.obj2))
 				elseif (pu2 ~= nil) then
 					-- go pick-up 2nd object, walk to 2nd
-					s:push { script = walk_to_object(obj2), at="end" }
-					s:push { script = pu2(), at="end" }
-					s:push { script = walk_to_object(obj), at="end" }					
+					table.insert (actions, action.combo.walk_to_object("guybrush", variables._actionInfo.obj2))
+					table.insert (actions, get(pu2))
+					table.insert (actions, action.combo.walk_to_object("guybrush", variables._actionInfo.obj1))
 				else 
-					s:push { script = walk_to_object(obj2), at="end" }
+					table.insert (actions, action.combo.walk_to_object("guybrush", variables._actionInfo.obj2))
 				end
 			end
 			-- now, slap the actual use action
 			local u1 = obj.actions["use"] and obj.actions["use"][variables._actionInfo.obj2]
 			local u2 = obj2.actions["use"] and obj2.actions["use"][variables._actionInfo.obj1]
 			if (u1 ~= nil) then
-				s:push {script=u1(), at="end"}
+				table.insert (actions, get(u1))
 			elseif (u2 ~= nil) then
-				s:push {script=u2(), at="end"}
+				table.insert (actions, get(u2))
 			else
-				-- default use handler
-				s:push { script = script.defaultactions["use"](), at="end" }
+				local def = script.defaultactions["use"]
+				table.insert (actions, get(def))
    			end
+			s = ms2(actions)
         elseif (variables._actionInfo.verb.code == "give") then
 			--s = giveActionHandler()
 			local IhaveObj1 = variables.inventory[variables._actionInfo.obj1] ~= nil
@@ -415,7 +416,7 @@ refresh_inventory = function()
 	c:cleartext()
 	for k, v in pairs(variables.inventory) do
 		if (v == 1) then
-			c:addtext( {text = items[k].hotspot.text, obj = k})
+			c:addtext( {text = items2[k].hotspot.text, obj = k})
 		else
 			c:addtext( { text = tostring(v) .. " " .. items2[k].hotspot.text_plural, obj = k}) -- l, obj = k} )
 		end

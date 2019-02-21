@@ -73,6 +73,15 @@ models["guybrush"] = {
 			{ duration = dt, quads = {{ id = s.idle_body_east }, { id = s.talk_head_east_1 }}},
 			{ duration = dt, quads = {{ id = s.idle_body_east }, { id = s.talk_head_east_3 }}},
 		}},
+		{ name = "plank", frames = { { duration = dt, quads = {{ id = s.plank }}}}},
+		{ name = "operate_e", frames = { { duration = dt, quads = {{ id = s.operate_east }}}}},
+		{ name = "operate_n", frames = { { duration = dt, quads = {{ id = s.operate_north }}}}},
+		{ name = "operate_s", frames = { { duration = dt, quads = {{ id = s.operate_south }}}}},
+		--{ name = "kneel_e", frames = { { duration = dt, quads = {{ id = s.kneel_east }}}}},
+		{ name = "kneel_n", frames = { { duration = dt, quads = {{ id = s.kneel_north }}}}},
+		{ name = "kneel_s", frames = { { duration = dt, quads = {{ id = s.kneel_south }}}}},
+
+
 
 	}
 }

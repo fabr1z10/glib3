@@ -378,3 +378,124 @@ models["scummbar.mancomb"] = {
 		{ name = "idle_2", frames = { { duration = dt, quads = {{ id = s.mancomb_2 }}}}}
 	}
 }
+
+models["kitchen.seagull"] = {
+    sheet = "sprites2/sprites1.png",
+    type = "sprite",
+    ppu=1,
+	animations = {
+		{ name = "fly", frames = { 
+			{ duration = dt, quads = {{ id = s.seagull_fly_1, pos = {307, 37} }}},
+			{ duration = dt, quads = {{ id = s.seagull_fly_2, pos = {295, 35} }}},
+			{ duration = dt, quads = {{ id = s.seagull_fly_1, pos = {292, 33} }}},
+			{ duration = dt, quads = {{ id = s.seagull_fly_3, pos = {285, 29} }}},
+			{ duration = dt, quads = {{ id = s.seagull_fly_4, pos = {277, 32} }}},
+			{ duration = dt, quads = {{ id = s.seagull_fly_3, pos = {269, 22} }}},
+			{ duration = dt, quads = {{ id = s.seagull_fly_1, pos = {260, 25} }}},
+			{ duration = dt, quads = {{ id = s.seagull_fly_2, pos = {247, 23} }}},
+			{ duration = dt, quads = {{ id = s.seagull_fly_1, pos = {244, 21} }}},
+			{ duration = dt, quads = {{ id = s.seagull_fly_4, pos = {245, 23} }}},
+			{ duration = dt, quads = {{ id = s.seagull_fly_4, pos = {250, 17} }}},
+			{ duration = dt, quads = {{ id = s.seagull_fly_5, pos = {248, 14} }}},
+			{ duration = dt, quads = {{ id = s.seagull_fly_6, pos = {246, 13} }}},
+			{ duration = dt, quads = {{ id = s.seagull_fly_5, pos = {243, 12} }}},
+			{ duration = dt, quads = {{ id = s.seagull_fly_7, pos = {243, 10} }}},
+		}},
+		{ name = "eat", frames = { 
+			{ duration = dt, quads = {{ id = s.seagull_eat_1, pos = {245, 10} }}},
+			{ duration = dt, quads = {{ id = s.seagull_eat_2, pos = {242, 10} }}},
+			{ duration = dt, quads = {{ id = s.seagull_eat_3, pos = {243, 10} }}},
+			{ duration = dt, quads = {{ id = s.seagull_eat_4, pos = {242, 10} }}},
+			{ duration = dt, quads = {{ id = s.seagull_eat_5, pos = {242, 10} }}},
+			{ duration = 3*dt, quads = {{ id = s.seagull_eat_6, pos = {243, 10} }}},
+			{ duration = dt, quads = {{ id = s.seagull_eat_7, pos = {242, 10} }}},
+			{ duration = dt, quads = {{ id = s.seagull_eat_8, pos = {245, 10} }}},
+			{ duration = dt, quads = {{ id = s.seagull_eat_9, pos = {249, 10} }}},
+			{ duration = dt, quads = {{ id = s.seagull_eat_10, pos = {248, 10} }}},
+			{ duration = dt, quads = {{ id = s.seagull_eat_11, pos = {248, 10} }}},
+		}},
+		{ name = "jump1", frames = { 
+			{ duration = dt, quads = {{ id = s.seagull_eat_1, pos = {245, 40} }}},
+			{ duration = dt, quads = {{ id = s.seagull_eat_1, pos = {245, 64} }}},
+			{ duration = dt, quads = {{ id = s.seagull_eat_1, pos = {245, 94} }}},
+			{ duration = dt, quads = {{ id = s.seagull_eat_1, pos = {245, 100} }}},
+			{ duration = dt, quads = {{ id = s.seagull_fly_4, pos = {237, 82} }}},
+			{ duration = dt, quads = {{ id = s.seagull_fly_4, pos = {237, 64} }}},
+			{ duration = dt, quads = {{ id = s.seagull_fly_4, pos = {237, 40} }}},
+			{ duration = dt, quads = {{ id = s.seagull_fly_4, pos = {237, 10} }}},
+		}},
+		{ name = "jump2", frames = {
+			{duration = dt, quads = {{id = s.seagull_eat_1, pos = {245, 40}}}},
+			{duration = dt, quads = {{id = s.seagull_eat_1, pos = {245, 64}}}},
+			{duration = dt, quads = {{id = s.seagull_eat_1, pos = {245, 94}}}},
+			{duration = dt, quads = {{id = s.seagull_eat_1, pos = {245, 100}}}},
+			{duration = dt, quads = {{id = s.seagull_fly_8, pos = {249, 98}}}},
+			{duration = dt, quads = {{id = s.seagull_fly_8, pos = {255, 94}}}},
+			{duration = dt, quads = {{id = s.seagull_fly_8, pos = {261, 86}}}},
+			{duration = dt, quads = {{id = s.seagull_fly_8, pos = {267, 74}}}},
+			{duration = dt, quads = {{id = s.seagull_fly_8, pos = {273, 58}}}},
+			{duration = dt, quads = {{id = s.seagull_fly_8, pos = {279, 38}}}},
+			{duration = dt, quads = {{id = s.seagull_fly_9, pos = {268, 34}}}},
+			{duration = dt, quads = {{id = s.seagull_fly_3, pos = {259, 27}}}},
+			{duration = dt, quads = {{id = s.seagull_fly_1, pos = {254, 23}}}},
+			{duration = dt, quads = {{id = s.seagull_fly_2, pos = {245, 15}}}},
+			{duration = dt, quads = {{id = s.seagull_fly_4, pos = {250, 17}}}},
+			{duration = dt, quads = {{id = s.seagull_fly_5, pos = {248, 14}}}},
+			{duration = dt, quads = {{id = s.seagull_fly_6, pos = {246, 13}}}},
+			{duration = dt, quads = {{id = s.seagull_fly_5, pos = {244, 12}}}},
+			{duration = dt, quads = {{id = s.seagull_fly_7, pos = {243, 11}}}},
+		}}
+
+
+	}
+}
+
+models["kitchen.plank"] = {
+    sheet = "sprites2/sprites1.png",
+    type = "sprite",
+    ppu=1,
+	animations = {
+		{ name = "idle", frames = { { duration = dt, quads = {{ id = s.plank_idle }}}}},
+		{ name = "pushed", frames = { { duration = dt, quads = {{ id = s.plank_pushed }}}}}
+	}
+}
+
+models["kitchen.meat"] = {
+    sheet = "sprites2/sprites1.png",
+    type = "sprite",
+    ppu=1,
+	animations = {
+		{ name = "idle", frames = { { duration = dt, quads = {{ id = s.meat }}}}},
+	}
+}
+
+models["kitchen.pot"] = {
+    sheet = "sprites2/sprites1.png",
+    type = "sprite",
+    ppu=1,
+	animations = {
+		{ name = "idle", frames = { { duration = dt, quads = {{ id = s.pot }}}}},
+	}
+}
+
+models["kitchen.fish"] = {
+    sheet = "sprites2/sprites1.png",
+    type = "sprite",
+    ppu=1,
+	animations = {
+		{ name = "idle", frames = { { duration = dt, quads = {{ id = s.fish }}}}},
+	}
+}
+
+models["kitchen.potostew"] = {
+    sheet = "sprites2/sprites1.png",
+    type = "sprite",
+    ppu=1,
+	animations = {
+		{ name = "idle", frames = { 
+			{ duration = dt, quads = {{ id = s.pot_o_stew_1 }}},
+			{ duration = dt, quads = {{ id = s.pot_o_stew_2 }}},
+			{ duration = dt, quads = {{ id = s.pot_o_stew_3 }}},
+		}},
+	}
+}

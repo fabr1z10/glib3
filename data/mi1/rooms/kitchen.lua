@@ -49,22 +49,52 @@ room = generateBasicRoom (roomDefinition)
 -- room:add_asset(sprites.seagull)
 -- room:add_asset(sprites.plank)
 
-local ciao = function() 
-	print ("ciao bello")
+local seagull_jump = function()
+	local n = (variables.seagull_jump == 1) and 2 or 1
+	return {	
+		{ type = action.set_variable, args = {var="seagull_on_board", value=false}},
+		{ ref = 1, type = action.animate, args = {actor="kitchen.seagull", anim="jump" .. tostring(variables.seagull_jump), sync=true }},
+		{ type = action.animate, args = {actor="kitchen.seagull", anim="eat", sync=true }},
+		{ type = action.set_variable, after={1}, args = {var="seagull_on_board", value=true}},
+		{ type = action.set_variable, after={1}, args = {var="seagull_jump", value=n}}
+	}
+end
+
+local push_plank = function() 
+	local a = nil
+	if (variables.seagull_on_board == true) then
+		a = { type = action.runscript, after={1}, args = {func = seagull_jump}}
+	end
+
 	return {
-		{ type=action.say, args={actor="guybrush", lines = {"sticazzi!"}}}
+		{ ref = 1, type = action.animate, args = {actor="guybrush", anim="plank", sync = true }},
+		{ type = action.animate, args = {actor="guybrush", anim="idle_s"}},
+		{ type = action.animate, after={1}, args = {actor="kitchen.plank", anim="pushed", sync = true}},
+		{ type = action.animate, args = {actor="kitchen.plank", anim="idle" }},
+		a
+		--{ type=action.say, args={actor="guybrush", lines = {"sticazzi!"}}}
 	}
 end
 
 local showSeagull = function()
-	print ("ciaociao")
+	local actions = {
+		{ type = action.remove_object, args = {tag="seagull_sensor"}},
+		{ type = action.create_object, args ={name="kitchen.seagull"}},
+		{ type = action.animate, args = {actor="kitchen.seagull", anim="fly", sync=true}},
+		{ type = action.animate, args = {actor="kitchen.seagull", anim="eat" }},
+		{ type = action.set_variable, args = {var="seagull_on_board", value=true}}
+
+	}
+	local s = ms2(actions)
+	monkey.play(s)
+
 end
 
 local pushPlank = function()
 	local actions = {
 		{ type = action.walkto, args = {actor="guybrush", pos={292,8}}},
 		{ type = action.turn, args = {actor="guybrush", dir="south" }},
-		{ type = action.runscript, args = {func = ciao }}
+		{ type = action.runscript, args = {func = push_plank }}
 	}
 	local s = ms2(actions)
 	monkey.play(s)
@@ -85,6 +115,11 @@ room:add( {
 	},
 	factory.objc { id="kitchen.door"},
 	factory.objc { id="kitchen.door.pier"},
+	factory.objc { id="kitchen.plank"},
+	factory.objc { id="kitchen.meat"},
+	factory.objc { id="kitchen.pot"},
+	factory.objc { id="kitchen.fish"},
+	factory.objc { id="kitchen.potostew"},
 	factory.hotspot.create { pos ={290, 5, 0}, width=20, height= 10, onclick = pushPlank }
 	-- factory.object.create { object = "kitchen.door" },
 	-- factory.object.create { object = "kitchen.door_pier" },
@@ -160,7 +195,6 @@ room:add( {
 })
 
 if (not variables.fish_taken) then
-	print ("CIICICICICI")
  	room:add( { factory.trap.create { pos ={100,10,0}, tag="seagull_sensor", width=10, height = 10, onenter = showSeagull }})
 end
 -- 			function()			
@@ -181,6 +215,7 @@ function room.afterstartup()
 	for k, v in ipairs(room.initstuff) do
 		v()
 	end
+	variables.seagull_on_board = false
 end
 
 

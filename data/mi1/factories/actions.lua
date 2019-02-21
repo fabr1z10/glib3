@@ -311,7 +311,7 @@ action.create_object = function(args)
 	return { type = "callfunc", func = 
 		function()
 			print ("ciao, creating " .. args.name)
-			local o = factory.objc { id = args.name, pos = args.pos, flipx = args.flipx }
+			local o = factory.objc { id = args.name, pos = args.pos, flfipx = args.flipx }
 			local m1 = monkey.getEntity("main")
 			monkey.addEntity (o, m1)
 		end
@@ -319,8 +319,9 @@ action.create_object = function(args)
 end
 
 action.remove_object = function(args) 
-	assert (args.name, "name")
+	tag = args.tag
 	if (tag == nil) then
+		assert (args.name, "name")	
 		tag = items2[args.name].tag or args.name
 	end
 	print ("REMOVE OBJECT " .. tag)
@@ -392,19 +393,17 @@ action.kill_script = function(args)
 	return {type="kill_script", script = args.script}
 end
 
-
 action.add_to_inventory = function(args) 
-	--local id = gr(args.id, "Required id in action.create_object")
-	--local after= go(args.after, nil)
-	local objid = args.name
-	local qty = args.qty
+	assert (args.id, "id")
+	local qty = args.qty or 1
 	return { type = "callfunc", func = 
 		function()
-			-- the object might already be in inventory
-			if (variables.inventory[objid] == nil) then
-				variables.inventory[objid] = qty
+			print (args.id .. " adding")			
+-- the object might already be in inventory
+			if (variables.inventory[args.id] == nil) then
+				variables.inventory[args.id] = qty
 			else 
-				variables.inventory[objid] = variables.inventory[objid] + qty
+				variables.inventory[args.id] = variables.inventory[args.id] + qty
 			end
 			refresh_inventory()
 	
@@ -461,4 +460,20 @@ action.activate = function (args)
 		m:setactive(activate)
 	end}
 
+end
+
+action.combo.pickup= function(id, anim1, anim2) 
+	return { 
+		{ ref = 1, type = action.animate, args ={actor="guybrush", anim=anim1, sync=true}},
+		{ type = action.remove_object, args ={name=id }},
+		{ type = action.animate, after={1}, args ={actor="guybrush", anim=anim2 }},
+		{ type = action.add_to_inventory, args = {id=id}}
+	}
+end
+
+action.combo.walk_to_object= function(actor, id) 
+	return { 
+		{ type = action.walkto, args ={actor=actor, obj=id}},
+		{ type = action.turn, args = {actor=actor, dir = items2[id].hotspot.dir}}
+	}
 end

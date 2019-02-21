@@ -1,6 +1,113 @@
 --items.scummbar = {}
 local d = strings.kitchen
 
+items2["kitchen.seagull"] = {
+ 	pos = {0, 0, 1},
+ 	model = "kitchen.seagull",
+}
+
+items2["kitchen.plank"] = {
+ 	pos = {248, 0, 1},
+ 	model="kitchen.plank", 
+}
+
+items2["kitchen.meat"] = { 
+	pos = {79, 40, -1},
+	hotspot = {
+		text = strings.objects.meat,	
+		size = {20, 20},
+		walk_to = {90, 18},
+		dir = "north"
+	},
+ 	model = "kitchen.meat",
+ 	actions = {
+ 		pickup = action.combo.pickup ("kitchen.meat", "operate_n", "idle_n"),
+ 		look = { type = action.say, args = {actor="guybrush", lines = {strings.kitchen[1]}}}
+ 	}	
+}
+
+items2["kitchen.pot"] = { 
+ 	pos = {104, 24, -1},
+	hotspot = {
+		text = strings.objects.pot,
+		size = {15, 7},
+	 	walk_to = { 112, 18},
+	 	dir = "north"
+	},
+	model = "kitchen.pot",
+ 	actions = {
+ 		pickup = action.combo.pickup("kitchen.pot", "kneel_n", "idle_n"),
+ 		look = { type = action.say, args ={actor="guybrush", lines = {strings.kitchen[2] }}}
+	}
+}
+
+items2["kitchen.fish"] = {
+	pos = {234, 9, 1},
+	hotspot = {
+		text = strings.objects.fish,	
+		size = {12, 7},
+		walk_to = {234, 12},
+		dir="south",
+	},
+	model = "kitchen.fish",
+	actions = {
+		pickup = function()
+			if (variables.seagull_on_board == false) then
+				return action.combo.pickup ("kitchen.fish", "kneel_s", "idle_s")
+			else
+				return {
+					{ type = action.animate, args = {actor="guybrush", anim="kneel_s"}},
+					{ type = action.delay, args = {sec=0.5}},
+					{ type = action.animate, args = {actor="guybrush", anim="idle_s"}},
+					{ type = action.say, args ={actor="guybrush", lines= {strings.kitchen[4]}}}
+				}
+			end
+		end,
+		look = { type = action.say, args = {actor="guybrush", lines = {strings.kitchen[3] }}}
+	}
+}
+
+items2["kitchen.potostew"] = {
+ 	pos = {153, 39, -1},
+	hotspot = {
+		text = strings.objects.potostew,
+		size = {32, 19},
+		walk_to = {170, 35},
+		dir ="north"
+	},
+ 	model = "kitchen.potostew",
+ 	actions = {}
+}
+-- 		look = function() 
+-- 			local line = variables.meat_in_pot and 9 or 5
+-- 			local a = ms {
+-- 				{action.say, {id=1, actor="guybrush", lines={d[line]}} }
+-- 			}
+-- 			return a()
+-- 		end,
+-- 		pickup = function() 
+-- 			local a = nil
+-- 			if (variables.meat_in_pot) then
+-- 				a = ms {
+-- 					{ action.animate, {id=1, actor="guybrush", anim="operate_back"}},
+-- 					{ action.delay, {id=2, sec=0.5}},
+-- 					{ action.animate, {id=3, actor="guybrush", anim="idle_back"}},
+-- 					{ action.change_text_item, {id=4, name="kitchen.meat", text = strings.objects.stewedmeat }},
+-- 					{ action.add_to_inventory, {id=5, name="kitchen.meat", qty=1}},
+-- 				}
+-- 			else
+-- 				a = script.defaultactions.pickup
+-- 			end
+-- 			return a()
+
+-- 		end,
+-- 		use = {
+-- 		}
+-- 	}
+-- }
+
+
+
 factory.door.create {
 	id = "kitchen.door",
 	pos = {19, 18, -1},
@@ -80,42 +187,7 @@ factory.door.create {
 -- 	}
 -- }
 
--- items["kitchen.potostew"] = {
--- 	text = strings.objects.potostew,
--- 	pos = {153, 39, -1},
--- 	size = {32, 19},
--- 	model = "potostew",
--- 	anim = "default",
--- 	walk_to = {170, 35},
--- 	face ="north",
--- 	actions = {
--- 		look = function() 
--- 			local line = variables.meat_in_pot and 9 or 5
--- 			local a = ms {
--- 				{action.say, {id=1, actor="guybrush", lines={d[line]}} }
--- 			}
--- 			return a()
--- 		end,
--- 		pickup = function() 
--- 			local a = nil
--- 			if (variables.meat_in_pot) then
--- 				a = ms {
--- 					{ action.animate, {id=1, actor="guybrush", anim="operate_back"}},
--- 					{ action.delay, {id=2, sec=0.5}},
--- 					{ action.animate, {id=3, actor="guybrush", anim="idle_back"}},
--- 					{ action.change_text_item, {id=4, name="kitchen.meat", text = strings.objects.stewedmeat }},
--- 					{ action.add_to_inventory, {id=5, name="kitchen.meat", qty=1}},
--- 				}
--- 			else
--- 				a = script.defaultactions.pickup
--- 			end
--- 			return a()
 
--- 		end,
--- 		use = {
--- 		}
--- 	}
--- }
 
 -- items["kitchen.potostew"].actions.use["kitchen.meat"] = ms {
 -- 	{ action.animate, {id=1, actor="guybrush", anim="operate_back"}},
@@ -126,43 +198,8 @@ factory.door.create {
 -- }
 
 
--- items["kitchen.meat"] = { 
--- 	tag = "meat",
--- 	text = strings.objects.meat,	
--- 	pos = {79, 40, -1},
--- 	size = {20, 20},
--- 	walk_to = {90, 18},
--- 	face = "north",
--- 	model = "kitchen_meat",
--- 	anim="default",
--- 	actions = {
--- 		pickup = pick_up_item("kitchen.meat", "operate_back"),
--- 		look = ms {
--- 			{ action.say, { id=1, actor="guybrush", lines = {strings.kitchen[1] }}}
--- 		}
--- 	}	
--- }
 
--- items["kitchen.pot"] = { 
--- 	tag="pot",
--- 	text = strings.objects.pot,
--- 	pos = {104, 24, -1},
--- 	size = {15, 7},
--- 	walk_to = { 112, 18},
--- 	face = "north",
--- 	model = "kitchen_pot",
--- 	anim = "default",
--- 	actions = {
--- 		pickup = pick_up_item("kitchen.pot", "kneel_back"),
--- 		look = ms {
--- 			{ action.say, { id=1, actor="guybrush", lines = {strings.kitchen[2] }}}
--- 		},
--- 		give = {
-			
--- 		}
 
--- 	}	
--- }
 
 -- items["kitchen.pot"].actions.give["circus.purpleclown"] = function() 
 -- 	local s = script:new()
@@ -282,16 +319,3 @@ factory.door.create {
 -- 	return s
 -- end
 
--- items["kitchen.seagull"] = {
--- 	pos = {0, 0, 1},
--- 	tag = "seagull",
--- 	model = "seagull",
--- 	anim = "flying",
--- }
-
--- items["kitchen.plank"] = {
--- 	pos = {248, 0, 1},
--- 	tag = "plank",
--- 	model="plank", 
--- 	anim="default"
--- }

@@ -84,6 +84,41 @@ spritesheets["sprites1"] = {
 	door_kitchen_pier_close = {x=469, y=143, width=32, height=60},
 	mancomb_1 = {x=241, y=68, width=33, height=40},
 	mancomb_2 = {x=277, y=68, width=36, height=39},
+	seagull_fly_1 = {x=3, y = 220, width=20, height=14 },
+	seagull_fly_2 = {x=3, y = 187+49, width=25, height=12},
+	seagull_fly_3 = {x=3, y = 187+63, width=19, height=25},
+	seagull_fly_4 = {x=3, y = 187+90, width=19, height=19},
+	seagull_fly_5 = {x=3, y = 187+111, width=23, height=15},
+	seagull_fly_6 = {x=3, y = 187+128, width=25, height=11},
+	seagull_fly_7 = {x=3, y = 187+141, width=19, height=9},
+	seagull_fly_8 = {x=47, y = 301, width=19, height=19},
+	seagull_fly_9 = {x=46, y = 291, width=23, height=7},
+	seagull_eat_1 = {x=3, y = 339, width=15, height=13},
+	seagull_eat_2 = {x=25, y = 223, width=18, height=11},
+	seagull_eat_3 = {x=30, y= 238, width=17, height=10},
+	seagull_eat_4 = {x=24, y=250, width=19, height=9},
+	seagull_eat_5 = {x=24, y=261, width=19, height=10},
+	seagull_eat_6 = {x=24, y=273, width=17, height=10},
+	seagull_eat_7 = {x=24, y=285, width=18, height=11},
+	seagull_eat_8 = {x=28, y=298, width=15, height=13},
+	seagull_eat_9 = {x=30, y=312, width=11, height=17},
+	seagull_eat_10 = {x=30, y=331, width=12, height=17},
+	seagull_eat_11 = {x=49, y=224, width=12, height=17},
+	fish = {x=23, y=204, width=12, height=7},
+	meat = {x=24, y=213, width=24, height=6},
+	pot = {x=39, y=204, width=15, height=7},
+	pot_o_stew_1 = {x=326, y=104, width=29, height=17},
+	pot_o_stew_2 = {x=326, y=123, width=29, height=17},
+	pot_o_stew_3 = {x=326, y=142, width=29, height=17},
+
+
+	
+
+	plank_idle = {x=65,y=235,width=67,height=24},
+	plank_pushed = {x=65,y=210,width=61,height=24},
+
+
+
 
 
 

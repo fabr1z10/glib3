@@ -37,8 +37,13 @@ spritesheets["guybrush"] = {
 	talk_head_east_3 = { x = 205, y = 101, width = 11, height = 12, anchor = {7,-35}},
 	talk_head_east_4 = { x = 179, y = 115, width = 11, height = 12, anchor = {7,-35}},
 	talk_head_east_5 = { x = 192, y = 115, width = 11, height = 12, anchor = {7,-35}},
-	talk_head_east_6 = { x = 205, y = 115, width = 11, height = 12, anchor = {7,-35}}
-
+	talk_head_east_6 = { x = 205, y = 115, width = 11, height = 12, anchor = {7,-35}},
+	operate_east = {x = 2, y = 150, width = 28, height = 45, anchor = {10, 0}},
+	operate_south = {x = 125, y = 151, width = 18, height = 46, anchor = {12, 0}},
+	operate_north = {x = 33, y = 150, width = 19, height = 45, anchor = {12, 0}},
+	kneel_south = { x = 80, y = 163, width = 17, height = 33, anchor = {10, 0}},
+	kneel_north = { x = 100, y = 163, width = 19, height = 33, anchor = {10, 0}},
+	plank = {x = 57, y = 150, width = 21, height = 47, anchor = {10, 0}}
 
 
 
