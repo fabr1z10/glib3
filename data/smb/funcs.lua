@@ -30,6 +30,12 @@ movingPlatformTag = 90
 
 items = { }
 
+function assert(a, b)
+	if (a == nil) then 
+		error("Required argument: " ..b, 2) 
+	end
+end
+
 -- create object at runtime
 function CreateItem (args) 
 	if (items[args.id].create == nil) then

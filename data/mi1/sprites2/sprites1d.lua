@@ -379,6 +379,21 @@ models["scummbar.mancomb"] = {
 	}
 }
 
+models["scummbar.estevan"] = {
+    sheet = "sprites2/sprites1.png",
+    type = "sprite",
+    ppu=1,
+	animations = {
+		{ name = "idle_1", frames = { { duration = dt, quads = {{ id = s.estevan_1 }}}}},
+		{ name = "idle_2", frames = { 
+			{ duration = dt, quads = {{ id = s.estevan_2 }}},
+			{ duration = dt, quads = {{ id = s.estevan_3 }}}
+		}}
+
+	}
+}
+
+
 models["kitchen.seagull"] = {
     sheet = "sprites2/sprites1.png",
     type = "sprite",
@@ -499,3 +514,18 @@ models["kitchen.potostew"] = {
 		}},
 	}
 }
+
+models["scummbar.fireplace"] = {
+    sheet = "sprites2/sprites1.png",
+    type = "sprite",
+    ppu=1,
+	animations = {
+		{ name = "idle", frames = { 
+			{ duration = dt, quads = {{ id = s.fireplace_1 }}},
+			{ duration = dt, quads = {{ id = s.fireplace_2 }}},
+			{ duration = dt, quads = {{ id = s.fireplace_3 }}},
+		}},
+	}
+}
+
+

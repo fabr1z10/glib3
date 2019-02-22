@@ -6,23 +6,21 @@ local roomInfo = {
 
 room = generateDialogueRoom (roomInfo)
 
-room:add_asset(sprites.estevan2)
-
 room:add( {
 	{ pos = {0, 0, -3}, components = { { type="gfx", image="gfx/estevan.png" }}},
-	factory.object.create { object = "estevan.estevan" },
+	--factory.object.create { object = "estevan.estevan" },
 })
 
 local d = strings.dialogues.estevan
 
 function room.afterstartup() 
-	local s = script:new()	
-	local l = variables.first_time_estevan and {d[1]} or {d[6]}
+	local l = variables.first_time_estevan and {d[1]} or {d[6]}	
 	variables.first_time_estevan = false
-	s.actions = {
-		action.say { id=1, actor="estevan.estevan", lines = l, animate=false},
-		action.start_dialogue {id=2, dialogue ="estevan"}
+	local actions = {
+ 		{ type = action.say, args = {actor="estevan.estevan", lines = l, animate = false}},
+		{ type = action.start_dialogue, args ={ dialogue="estevan"}}
 	}
+	local s = ms2(actions)
 	monkey.play(s)
 end
 

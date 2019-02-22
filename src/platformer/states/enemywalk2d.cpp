@@ -1,60 +1,60 @@
-#include <platformer/states/enemywalk2d.h>
-#include <gfx/components/controller2d.h>
-#include <gfx/entity.h>
-#include <GLFW/glfw3.h>
-#include <gfx/components/renderer.h>
-#include <gfx/math/geom.h>
-#include <gfx/components/dynamics2d.h>
-#include <gfx/lua/luatable.h>
-
-extern GLFWwindow* window;
-
-EnemyWalk2D::EnemyWalk2D(float speed, int dir, bool enableFlip, bool flipPlatformEnd) :
-        PlatformerState(), m_speed(speed), m_dir(dir), m_enableFlip(enableFlip), m_flipPlatformEnd(flipPlatformEnd)
-{}
-
-void EnemyWalk2D::ResetState() {
-    m_entity->SetFlipX(m_dir < 0);
-}
-
-void EnemyWalk2D::ResetState(luabridge::LuaRef ref) {
-    LuaTable table(ref);
-    m_dir = table.Get<int>("dir");
-    m_entity->SetFlipX(m_dir < 0);
-}
-
-bool EnemyWalk2D::Run(double dt) {
-    // apply gravity
-    if (m_controller->m_details.below) {
-        m_dynamics->m_velocity.y = 0.0f;
-        if (m_flipPlatformEnd && m_controller->IsFalling(m_dir)) {
-            m_dir = -m_dir;
-            m_entity->FlipX();
-        }
-    }
-
-
-    m_dynamics->m_velocity.y += m_dynamics->m_gravity * dt;
-
-    float targetVelocityX = m_speed;
-//    if (m_dir < 0) {
-//        targetVelocityX = -m_speed;
-//        if (m_enableFlip)
-//            m_renderer->SetFlipX(true);
-//    } else {
-//        targetVelocityX = m_speed;
-//        if (m_enableFlip)
-//            m_renderer->SetFlipX(false);
+//#include <platformer/states/enemywalk2d.h>
+//#include <gfx/components/controller2d.h>
+//#include <gfx/entity.h>
+//#include <GLFW/glfw3.h>
+//#include <gfx/components/renderer.h>
+//#include <gfx/math/geom.h>
+//#include <gfx/components/dynamics2d.h>
+//#include <gfx/lua/luatable.h>
+//
+//extern GLFWwindow* window;
+//
+//EnemyWalk2D::EnemyWalk2D(float speed, int dir, bool enableFlip, bool flipPlatformEnd) :
+//        PlatformerState(), m_speed(speed), m_dir(dir), m_enableFlip(enableFlip), m_flipPlatformEnd(flipPlatformEnd)
+//{}
+//
+//void EnemyWalk2D::ResetState() {
+//    m_entity->SetFlipX(m_dir < 0);
+//}
+//
+//void EnemyWalk2D::ResetState(luabridge::LuaRef ref) {
+//    LuaTable table(ref);
+//    m_dir = table.Get<int>("dir");
+//    m_entity->SetFlipX(m_dir < 0);
+//}
+//
+//bool EnemyWalk2D::Run(double dt) {
+//    // apply gravity
+//    if (m_controller->m_details.below) {
+//        m_dynamics->m_velocity.y = 0.0f;
+//        if (m_flipPlatformEnd && m_controller->IsFalling(m_dir)) {
+//            m_dir = -m_dir;
+//            m_entity->FlipX();
+//        }
 //    }
-    m_dynamics->m_velocity.x = targetVelocityX;
-    glm::vec2 delta = static_cast<float>(dt) * m_dynamics->m_velocity;
-    m_controller->Move(delta);
-
-    if ((m_controller->m_details.left ) || (m_controller->m_details.right)) {
-        m_dir = -m_dir;
-        m_entity->FlipX();
-    }
-
-    return false;
-
-}
+//
+//
+//    m_dynamics->m_velocity.y += m_dynamics->m_gravity * dt;
+//
+//    float targetVelocityX = m_speed;
+////    if (m_dir < 0) {
+////        targetVelocityX = -m_speed;
+////        if (m_enableFlip)
+////            m_renderer->SetFlipX(true);
+////    } else {
+////        targetVelocityX = m_speed;
+////        if (m_enableFlip)
+////            m_renderer->SetFlipX(false);
+////    }
+//    m_dynamics->m_velocity.x = targetVelocityX;
+//    glm::vec2 delta = static_cast<float>(dt) * m_dynamics->m_velocity;
+//    m_controller->Move(delta);
+//
+//    if ((m_controller->m_details.left ) || (m_controller->m_details.right)) {
+//        m_dir = -m_dir;
+//        m_entity->FlipX();
+//    }
+//
+//    return false;
+//
+//}

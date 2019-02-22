@@ -103,12 +103,9 @@ Bounds3D ComputeBounds(std::vector<Vertex>& vertices) {
     float xM = -xm, yM = -xm, zM = -xm;
     float ym = xm, zm = xm;
     for (auto& v : vertices) {
-        xm = std::min(xm, v.x);
-        ym = std::min(ym, v.y);
-        zm = std::min(zm, v.z);
-        xM = std::max(xM, v.x);
-        yM = std::max(yM, v.y);
-        zM = std::max(zM, v.z);
+        if (v.x < xm) xm = v.x; else if (v.x > xM) xM = v.x;
+        if (v.y < ym) ym = v.y; else if (v.y > yM) yM = v.y;
+        if (v.z < zm) zm = v.z; else if (v.z > zM) zM = v.z;
     }
     Bounds3D bounds;
     bounds.min = glm::vec3(xm, ym, zm);

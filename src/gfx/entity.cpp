@@ -14,6 +14,15 @@
 
 using namespace std;
 
+Entity::Entity(const Entity &) {
+
+}
+
+std::shared_ptr<Entity> Entity::clone() const {
+    return std::make_shared<Entity>(Entity(*this));
+}
+
+
 void Entity::AddChild(std::shared_ptr<Entity> child) {
     auto it = m_children.insert(m_children.end(), child);
     child->SetParent(this);

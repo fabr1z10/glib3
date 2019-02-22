@@ -8,7 +8,9 @@
 
 #ifndef entity_h
 #define entity_h
+
 #define GLM_ENABLE_EXPERIMENTAL
+
 #include <glm/glm.hpp>
 #include <gfx/enums.h>
 #include <gfx/ref.h>
@@ -29,7 +31,8 @@ class Entity : public Ref {
 public:
     Entity() : Ref(), m_parent(nullptr), m_active(true), m_update(true), m_localTransform{glm::mat4(1.0)},
                m_worldTransform{glm::mat4(1.0)}, m_enableControls{true}, m_flipHorizontal{false} {}
-
+    // copy ctor
+    Entity(const Entity&);
     const glm::mat4& GetLocalTransform() const;
     const glm::mat4& GetWorldTransform() const;
 
@@ -48,6 +51,10 @@ public:
         }
         return nullptr;
     }
+
+    virtual std::shared_ptr<Entity> clone() const;
+
+
     void AddChild(std::shared_ptr<Entity>);
     void ClearAllChildren();
     std::list<std::shared_ptr<Entity> >& GetChildren();
@@ -64,8 +71,8 @@ public:
     }
     bool IsDescendantOf (Entity*) const;
     
-    void SetLayer(int);
-    int GetLayer() const;
+    //void SetLayer(int);
+    //int GetLayer() const;
     //Event<GameObject*> onAdd;						// fires when a new node is added to this
     Event<Entity*> onMove;						// fires when this node moves
     Event<Entity*> onAdd;
@@ -136,13 +143,12 @@ private:
     bool m_active;
     bool m_update;
     bool m_enableControls;
-    int m_layer;
+    //int m_layer;
     Entity* m_parent;
     std::list<std::shared_ptr<Entity> >::iterator m_itParent;
     std::list<std::shared_ptr<Entity> > m_children;
     glm::mat4 m_localTransform;
     glm::mat4 m_worldTransform;
-    glm::mat4 m_lastMove;
     std::unordered_map<std::type_index, std::shared_ptr<Component> > m_components;
     // can also be a vec of cameras?
     std::shared_ptr<Camera> m_cameras;
@@ -150,15 +156,15 @@ private:
     std::unordered_map<std::string, Entity*> m_namedChildren;
 };
 
-inline int Entity::GetLayer() const {
-    return m_layer;
-}
-
-inline void Entity::SetLayer(int layer) {
-    m_layer = layer;
-    for (auto& c : m_children)
-        c->SetLayer(layer);
-}
+//inline int Entity::GetLayer() const {
+//    return m_layer;
+//}
+//
+//inline void Entity::SetLayer(int layer) {
+//    m_layer = layer;
+//    for (auto& c : m_children)
+//        c->SetLayer(layer);
+//}
 
 inline glm::vec3 Entity::GetPosition() const {
     return glm::vec3(m_worldTransform[3]);

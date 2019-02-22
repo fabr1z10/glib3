@@ -84,6 +84,9 @@ spritesheets["sprites1"] = {
 	door_kitchen_pier_close = {x=469, y=143, width=32, height=60},
 	mancomb_1 = {x=241, y=68, width=33, height=40},
 	mancomb_2 = {x=277, y=68, width=36, height=39},
+	estevan_1 = {x=318, y=76, width=35, height=27},
+	estevan_2 = {x=355, y=76, width=39, height=27},
+	estevan_3 = {x=396, y=76, width=37, height=27},
 	seagull_fly_1 = {x=3, y = 220, width=20, height=14 },
 	seagull_fly_2 = {x=3, y = 187+49, width=25, height=12},
 	seagull_fly_3 = {x=3, y = 187+63, width=19, height=25},
@@ -110,6 +113,9 @@ spritesheets["sprites1"] = {
 	pot_o_stew_1 = {x=326, y=104, width=29, height=17},
 	pot_o_stew_2 = {x=326, y=123, width=29, height=17},
 	pot_o_stew_3 = {x=326, y=142, width=29, height=17},
+	fireplace_1 = {x=334, y=160, width=32, height=26},
+	fireplace_2 = {x=368, y=160, width=32, height=26},
+	fireplace_3 = {x=402, y=160, width=32, height=26},
 
 
 	

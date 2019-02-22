@@ -33,6 +33,9 @@ room = generateBasicRoom (roomDefinition)
 
 room:add( {
 	{ pos = {0, 0,-3}, components = { { type="gfx", image="gfx/scummbar_1.png" }}},
+	{ pos = {157, 0, 0.99}, components = { { type="gfx", image="gfx/scummbar_3.png" }}},
+	{ pos = {20, 0, 0.99}, components = { { type="gfx", image="gfx/scummbar_4.png" }}},
+	{ pos = {374, 20, 0.95}, components = { { type="gfx", image="gfx/scummbar_2.png" }}},
 	factory.walkarea { shape = { type = "poly", outline = {32,16,70,24,128,19,251,
 		18,311,10,321,10,345,32,467,41,492,50,514,40,565,40,580,35,629,6,626,0,256,0,200,16,149,0,90,0,85,10},
 		holes = {
@@ -42,11 +45,10 @@ room:add( {
 	factory.objc { id="scummbar.door_out" },
 	factory.objc { id="scummbar.door_kitchen" },
 	factory.objc { id="scummbar.mancomb" },
+	factory.objc { id="scummbar.estevan" },
+	factory.objc { id="scummbar.fireplace" },
 
 
-	-- { pos = {157, 0, 0.99}, components = { { type="gfx", image="gfx/scummbar_3.png" }}},
-	-- { pos = {20, 0, 0.99}, components = { { type="gfx", image="gfx/scummbar_4.png" }}},
-	-- { pos = {374, 20, 0.95}, components = { { type="gfx", image="gfx/scummbar_2.png" }}},
 	-- factory.object.create { object = "scummbar.door_out" },
 	-- factory.object.create { object = "scummbar.mancomb" },
 	-- factory.object.create { object = "scummbar.estevan" },

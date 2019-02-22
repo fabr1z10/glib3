@@ -86,6 +86,21 @@ items2["scummbar.mancomb"] = {
 	}
 }
 
+items2["scummbar.estevan"] = {
+ 	pos = {164, 21, 1},
+	hotspot = {
+ 		text = strings.objects.pirate,
+		size = {30, 20},
+		walk_to = {195, 11},
+		dir = "south"
+	},	
+	model = "scummbar.estevan",
+ 	actions = {
+ 		look = { type=action.change_room, args={room = "estevan" }},
+ 		talk = { type=action.change_room, args={room = "estevan" }}
+ 	}
+}
+
 -- items["scummbar.door_kitchen"] = factory.door.create {
 -- 	name = "scummbar.door_kitchen",
 -- 	pos = {591, 9, -1},
@@ -149,20 +164,7 @@ items2["scummbar.mancomb"] = {
 -- 	}
 -- }
 
--- items["scummbar.estevan"] = {
--- 	tag="estevan",
--- 	text = strings.objects.pirate,
--- 	pos = {164, 21, 1},
--- 	size = {30, 20},
--- 	model = "estevan",
--- 	anim = "idle",
--- 	walk_to = {195, 11},
--- 	face = "south",
--- 	actions = {
--- 		look =  ms { { action.change_room, { id=1, room = "estevan" }}},
--- 		talk =  ms { { action.change_room, { id=1, room = "estevan" }}}
--- 	}
--- }
+
 
 -- items["scummbar.loompirate"] = {
 -- 	tag="loompirate",
@@ -179,18 +181,19 @@ items2["scummbar.mancomb"] = {
 -- 	}
 -- }
 
--- items["scummbar.fireplace"] = {
--- 	text = strings.objects.fireplace,
--- 	pos = {509, 44, -1},
--- 	size = {29, 18},
--- 	model = "fireplace",
--- 	anim = "default",
--- 	walk_to = {512, 40},
--- 	face = "east",
--- 	actions = {
--- 		look =  ms { { action.say, { id=1, actor="guybrush", lines = {strings.scummbar[1]} }}}
--- 	}
--- }
+items2["scummbar.fireplace"] = {
+ 	pos = {509, 44, -1},
+	hotspot = {
+ 		text = strings.objects.fireplace,
+	 	size = {29, 18},
+	 	walk_to = {512, 40},
+	 	dir = "east",
+	},
+	model = "scummbar.fireplace",
+ 	actions = {
+ 		look =  { type = action.say, args = {actor="guybrush", lines = {strings.scummbar[1]} }}
+ 	}
+}
 
 
 

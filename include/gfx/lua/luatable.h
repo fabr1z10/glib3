@@ -65,7 +65,8 @@ public:
     
     
     bool HasKey (const std::string& key) const {
-        return !(m_ref[key].isNil());
+
+        return (!m_ref.isNil() && !(m_ref[key].isNil()));
     }
 
     template <typename T>

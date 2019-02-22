@@ -51,7 +51,7 @@ void ShowMessage::Start() {
     else if (currentPos.x + extents[0] + lpos.x > camPos.x + camSize.x)
         displ.x = -((currentPos.x + extents[0]) - (camPos.x + camSize.x));
     parent->SetPosition(glm::vec3(currentPos + displ, 5.0f));
-    parent->SetLayer(1);
+    //parent->SetLayer(1);
     scene->AddChild(parent);
     m_generatedEntity = parent.get();
     m_elapsedTime=0.0f;

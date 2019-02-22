@@ -2,9 +2,9 @@
 #include <gfx/lua/luawrapper.h>
 #include <gfx/lua/luatable.h>
 #include <platformer/platformerfactory.h>
-#include <gfx/monkey.h>
 #include <set>
-#include <gfx/components/statemachine.h>
+#include <gfx/engine.h>
+
 
 int main(int argc, char* argv[])
 {
@@ -13,13 +13,11 @@ int main(int argc, char* argv[])
         return 1;
     }
     try {
-
-
         std::string homeDir(argv[1]);
-        Engine::get().GetAssetManager().SetDirectory(homeDir);
-        Monkey& m = Monkey::get();
-        m.Init<PlatformerFactory>();
-        m.Start();
+        auto& engine = Engine::get();
+        engine.SetSceneFactory(std::unique_ptr<SceneFactory>(new PlatformerFactory));
+        engine.Init(homeDir);
+        engine.MainLoop();
 
     } catch (Error& err) {
         std::cout << err.what() << std::endl;
