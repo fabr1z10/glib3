@@ -170,12 +170,16 @@ std::unique_ptr<Component> ColliderComponentFactory::Create(luabridge::LuaRef &r
     LuaTable table(ref);
 
     // input
-    luabridge::LuaRef shapeR = table.Get<luabridge::LuaRef>("shape");
+    std::shared_ptr<Shape> shape;
+    auto factory = Engine::get().GetSceneFactory();
+    if (table.HasKey("shape")) {
+        luabridge::LuaRef shapeR = table.Get<luabridge::LuaRef>("shape");
+        shape = factory->GetShared<Shape>(shapeR);
+    }
     int tag = table.Get<int>("tag");
     int flag = table.Get<int>("flag");
     int mask = table.Get<int>("mask");
-    auto factory = Engine::get().GetSceneFactory();
-    auto shape = factory->GetShared<Shape>(shapeR);
+    
 
     auto coll = std::unique_ptr<Collider>(new Collider(shape, tag, flag, mask));
     return coll;

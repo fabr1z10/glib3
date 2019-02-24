@@ -45,7 +45,9 @@ room = {
 					model="mario",
 					pos = {128, 128, 0},
 					components = {
-						{ type="collider", shape= {type="rect", width=16, height=16}, flag=1, mask=1, tag=1}
+						{ type="collider", 
+						  --shape= {type="rect", width=16, height=16}, 
+						  flag=1, mask=1, tag=1}
 					}
 				}
             }

@@ -15,6 +15,7 @@ public:
     Collider (const Collider&);
     virtual ~Collider();
     Shape* GetShape();
+    bool HasShape() const;
     void SetShape(std::shared_ptr<Shape> shape);
     void SetParent(Entity* parent) override;
     void Start() override;
@@ -66,4 +67,8 @@ inline int Collider::GetFlag() const {
 
 inline int Collider::GetMask() const {
     return m_mask;
+}
+
+inline bool Collider::HasShape() const {
+    return m_shape != nullptr;
 }

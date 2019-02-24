@@ -53,6 +53,9 @@ void Collider::SetShape(std::shared_ptr<Shape> shape) {
     // call move
     Move(nullptr);
     // notify listeners my shape has changed!
+    if (m_engine != nullptr) {
+        m_engine->Move(this);
+    }
     onShapeChanged.Fire(this);
 }
 

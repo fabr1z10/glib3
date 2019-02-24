@@ -17,10 +17,12 @@ void CollisionEngine::Enable25DCollision(float eps) {
 void CollisionEngine::Add(Collider* c) {
     // this is called when a new collider starts. It registers with the engine
     // get the shape bounding box, transform it, map it
-    auto aabb = c->GetBounds();
-    Location loc = GetLocation(aabb);
-    PushCollider(c, loc);
-    std::cout << "Adding collider " << c->GetShape()->toString() << " from (" << loc.x0 << ", " << loc.y0 << ") to (" << loc.x1 << ", " << loc.y1 << ")\n";
+    if (c->HasShape()) {
+        auto aabb = c->GetBounds();
+        Location loc = GetLocation(aabb);
+        PushCollider(c, loc);
+        std::cout << "Adding collider " << c->GetShape()->toString() << " from (" << loc.x0 << ", " << loc.y0 << ") to (" << loc.x1 << ", " << loc.y1 << ")\n";
+    }
     // register to onmove
 
 }
@@ -37,10 +39,11 @@ void CollisionEngine::Clear() {
 }
 
 void CollisionEngine::Move(Collider * c) {
-    auto aabb = c->GetBounds();
-    Location loc = GetLocation(aabb);
+
     auto it = m_colliderLocations.find(c);
     if (it != m_colliderLocations.end()) {
+        auto aabb = c->GetBounds();
+        Location loc = GetLocation(aabb);
         if (it->second != loc) {
             //std::cout << "Collider " << c->GetShape()->toString() << " moved to loc from (" << loc.x0 << ", " << loc.y0 << ") to (" << loc.x1 << ", " << loc.y1 << ")\n";
             if (loc != it->second) {
@@ -59,7 +62,7 @@ void CollisionEngine::Move(Collider * c) {
             }
         }
     } else {
-        throw;
+        Add(c);
     }
 
 }
