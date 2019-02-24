@@ -8,6 +8,25 @@ roomInfo = {
 
 
 room = {
+	engines = {
+		--{ type = "hotspotmanager", keys = {
+		--	{ key = 299, func = function() monkey.endroom() end }
+		--} },
+		{ type = "scheduler" },
+		{ 
+			type = "collision", 
+			size = {128, 128}, 
+			response = {
+						-- { tag = {1, 2}, onenter=function(e,f) 
+
+						-- 	local info = f:getinfo()
+						-- 	if (info.onenter ~= nil) then
+						-- 		info.onenter()
+						-- 	end
+					 -- 	end}
+			}
+		}
+	},
 	scene = {
 		{
 			tag = "main",
@@ -16,16 +35,30 @@ room = {
 				type="ortho",
 				size = {256, 256},
 				bounds = {0, 0, roomInfo.worldWidth*16, roomInfo.worldHeight*16},
-				viewport = {0, 0, 256, 256}
+				viewport = {0, 0, 256, 256},
+
 			},
 			children = {
-
+				{	
+					type="sprite",
+					tag="player",
+					model="mario",
+					pos = {128, 128, 0},
+					components = {
+						{ type="collider", shape= {type="rect", width=16, height=16}, flag=1, mask=1, tag=1}
+					}
+				}
             }
 		}
 	},
 	dynamic = {
-		factory.rect { pos = {0,0}, width = 69, height = 2, img="gfx/block1.png" },
-		factory.rect { pos = {71, 0}, width = 15, height = 2, img = "gfx/block1.png" }
+		{
+			parent = "main",
+			children = {
+				factory.rect { pos = {0,0}, width = 69, height = 2, img="gfx/block1.png" },
+				factory.rect { pos = {71, 0}, width = 15, height = 2, img = "gfx/block1.png" }
+			}
+		}
 	}
 }
 

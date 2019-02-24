@@ -8,6 +8,15 @@ Component(), m_camId{cam}, m_relativePos(relativePos), m_up(up), m_fixZ{false}
     m_dir = -glm::normalize(m_relativePos);
 }
 
+Follow::Follow(const Follow& orig) : Component(orig),
+m_camId(orig.m_camId), m_relativePos(orig.m_relativePos), m_up(orig.m_up), m_fixZ(orig.m_fixZ) {
+    m_dir = -glm::normalize(m_relativePos);
+}
+
+std::shared_ptr<Component> Follow::clone() const {
+    return std::make_shared<Follow>(Follow(*this));
+}
+
 void Follow::Start() {
 
     m_cam = Engine::get().GetRef<Camera>(m_camId);

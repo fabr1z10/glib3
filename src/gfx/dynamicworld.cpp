@@ -32,7 +32,9 @@ void DynamicWorldBuilder::UpdateWorld(glm::vec3 pos) {
             b.min += glm::vec2(pos.x, pos.y);
             b.max += glm::vec2(pos.x, pos.y);
             if (b.Intersects(m_activeBounds)) {
-                std::cout << "Adding ...\n";
+                std::cout << "Creating item with bounds (" << b.min.x << ", " << b.min.y << "), (" << b.max.x << ", " << b.max.y << ")\n";
+                item.m_object = item.m_blueprint->clone();
+                item.m_parent->AddChild(item.m_object);
             }
         } else {
             // check if it's out of the active area
@@ -54,7 +56,7 @@ void DynamicWorldBuilder::OnCameraMove(Camera * cam) {
     UpdateWorld(pos);
 }
 
-void DynamicWorldBuilder::AddItem(std::shared_ptr<Entity> entity) {
+void DynamicWorldBuilder::AddItem(Entity* parent, std::shared_ptr<Entity> entity) {
 
     // compute bounds;
     auto renderer = entity->GetComponent<Renderer>();
@@ -70,6 +72,7 @@ void DynamicWorldBuilder::AddItem(std::shared_ptr<Entity> entity) {
     }
     DynamicWorldItem item;
     item.m_blueprint = entity;
+    item.m_parent = parent;
     item.m_localBounds.min = glm::vec2(bounds.min);
     item.m_localBounds.max = glm::vec2(bounds.max);
     item.m_bounds.min = item.m_localBounds.min + glm::vec2(pos.x, pos.y);

@@ -8,6 +8,13 @@
 
 extern GLFWwindow* window;
 
+HotSpot::HotSpot(const HotSpot& orig) :
+Component(orig), m_shape(orig.m_shape), m_focus(orig.m_focus), m_priority(orig.m_priority) {
+    
+}
+
+
+
 bool HotSpot::isMouseInside(glm::vec2 pos) {
     glm::mat4 wt = glm::inverse(m_entity->GetWorldTransform());
     glm::vec2 lpos = wt * glm::vec4(pos.x, pos.y, 0.0f, 1.0f);

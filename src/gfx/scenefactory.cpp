@@ -75,7 +75,7 @@ SceneFactory::SceneFactory() {
     m_cameraFactory.Add<OrthoCamFactory>("ortho");
     m_cameraFactory.Add<PerspectiveCamFactory>("perspective");
 
-    m_componentFactory.Add<LuaKeyboardComponentFactory>("luakey");
+    //m_componentFactory.Add<LuaKeyboardComponentFactory>("luakey");
     m_componentFactory.Add<GfxComponentFactory>("gfx");
     m_componentFactory.Add<Gfx3DComponentFactory>("gfx3d");
     m_componentFactory.Add<ColliderComponentFactory>("collider");
@@ -83,9 +83,9 @@ SceneFactory::SceneFactory() {
 
     m_componentFactory.Add<Controller2DComponentFactory>("controller2d");
     m_componentFactory.Add<Dynamics2DComponentFactory>("dynamics2d");
-    m_componentFactory.Add<StateMachineComponentFactory>("statemachine");
+    //m_componentFactory.Add<StateMachineComponentFactory>("statemachine");
     m_componentFactory.Add<FollowComponentFactory>("follow");
-    m_componentFactory.Add<Follow3DComponentFactory>("follow3d");
+    //m_componentFactory.Add<Follow3DComponentFactory>("follow3d");
     m_componentFactory.Add<InfoComponentFactory>("info");
     m_componentFactory.Add<PlatformComponentFactory>("platform");
     m_componentFactory.Add<ParallaxComponentFactory>("parallax");
@@ -93,10 +93,10 @@ SceneFactory::SceneFactory() {
     m_componentFactory.Add<FPSComponentFactory>("fps");
     m_componentFactory.Add<HotSpotComponentFactory>("hotspot");
     m_componentFactory.Add<DepthComponentFactory>("depth");
-    m_componentFactory.Add<CursorComponentFactory>("cursor");
+    //m_componentFactory.Add<CursorComponentFactory>("cursor");
     m_componentFactory.Add<LightComponentFactory>("light");
     //m_componentFactory.Add<RaycastControllerComponentFactory>("raycastcontroller");
-    m_componentFactory.Add<BillboardComponentFactory>("billboard");
+    //m_componentFactory.Add<BillboardComponentFactory>("billboard");
 
     m_shapeFactory.Add<RectFactory>("rect");
     m_shapeFactory.Add<LineFactory>("line");
@@ -116,7 +116,7 @@ SceneFactory::SceneFactory() {
     m_activityFactory.Add<FlipActFactory>("flip");
     m_activityFactory.Add<MoveActFactory>("move");
     m_activityFactory.Add<MoveGravityActFactory>("movegravity");
-    m_activityFactory.Add<ChangeStateActFactory>("changestate");
+    //m_activityFactory.Add<ChangeStateActFactory>("changestate");
     m_activityFactory.Add<ChangeRoomActFactory>("gotoroom");
     m_activityFactory.Add<DelayActFactory>("delay");
     m_activityFactory.Add<BlinkActFactory>("blink");

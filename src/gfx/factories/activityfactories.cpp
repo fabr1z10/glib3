@@ -157,12 +157,12 @@ std::unique_ptr<Activity> SetStateActFactory::Create(luabridge::LuaRef &ref) {
 
 
 
-std::unique_ptr<Activity> ChangeStateActFactory::Create(luabridge::LuaRef &ref) {
-    LuaTable table(ref);
-    std::string actor = table.Get<std::string>("actor");
-    std::string state = table.Get<std::string>("state");
-    return std::unique_ptr<ChangeState>(new ChangeState(actor, state));
-};
+//std::unique_ptr<Activity> ChangeStateActFactory::Create(luabridge::LuaRef &ref) {
+//    LuaTable table(ref);
+//    std::string actor = table.Get<std::string>("actor");
+//    std::string state = table.Get<std::string>("state");
+//    return std::unique_ptr<ChangeState>(new ChangeState(actor, state));
+//};
 
 std::unique_ptr<Activity> ShowMessageActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);

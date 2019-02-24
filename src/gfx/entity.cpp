@@ -14,8 +14,19 @@
 
 using namespace std;
 
-Entity::Entity(const Entity &) {
-
+Entity::Entity(const Entity & e) {
+    m_flipHorizontal = e.m_flipHorizontal;
+    m_active = e.m_active;
+    m_enableControls = e.m_enableControls;
+    for (auto& c : e.m_children) {
+        // this will set the children parents and this' named children
+        this->AddChild(c->clone());
+    }
+    for (auto& comp : e.m_components) {
+        this->AddComponent(comp.second->clone());
+    }
+    m_localTransform = e.m_localTransform;
+    
 }
 
 std::shared_ptr<Entity> Entity::clone() const {

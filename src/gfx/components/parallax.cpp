@@ -6,6 +6,14 @@
 Parallax::Parallax (const std::string& camId, float factor, float width, float height) : m_camId(camId), m_factor(factor), m_width(width),
 m_height(height) {}
 
+Parallax::Parallax(const Parallax& orig) : Component(orig),
+m_factor(orig.m_factor), m_width(orig.m_width), m_height(orig.m_height), m_camId(orig.m_camId){
+    
+}
+
+std::shared_ptr<Component> Parallax::clone() const {
+    return std::make_shared<Parallax>(Parallax(*this));
+}
 void Parallax::Start() {
     m_cam = Engine::get().GetRef<OrthographicCamera>(m_camId);
     // at time 0, we place the background panel in such a way that I see its bottom left corner at the bottom left of the viewport

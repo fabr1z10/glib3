@@ -33,6 +33,7 @@ public:
 class Animator : public Component {
 public:
     Animator(std::shared_ptr<IModel> model) : m_model(model), m_forward(true) {}
+    Animator(const Animator&);
     virtual ~Animator() {}
     void Start() override;
     void AdvanceFrame(int);
@@ -47,6 +48,7 @@ public:
     // allows to backup the status in order to restore it later
     //virtual std::shared_ptr<AnimatorState> SaveState()  = 0;
     //virtual void LoadState(std::shared_ptr<AnimatorState>) = 0;
+    std::shared_ptr<Component> clone() const override;
 protected:
     // play animation forward
     bool m_forward;

@@ -9,8 +9,10 @@
 class Parallax : public Component {
 public:
     Parallax (const std::string& camId, float factor, float width, float height);
+    Parallax(const Parallax&);
     void Start() override;
     void Update(double) override {}
+    std::shared_ptr<Component> clone() const override;
 private:
     void onCameraMove(Camera*);
     std::string m_camId;

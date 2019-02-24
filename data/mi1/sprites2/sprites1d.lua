@@ -528,4 +528,11 @@ models["scummbar.fireplace"] = {
 	}
 }
 
-
+models["kitchen.table"] = {
+    sheet = "sprites2/sprites1.png",
+    type = "sprite",
+    ppu=1,
+	animations = {
+		{ name = "idle", frames = { { duration = dt, quads = {{ id = s.kitchen_table }}}}},
+	}
+}

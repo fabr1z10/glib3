@@ -33,8 +33,8 @@ std::string EntityWrapper::GetTag() const {
     return m_underlying->GetTag();
 }
 std::string EntityWrapper::GetState() const {
-    auto sm = m_underlying->GetComponent<StateMachine>();
-    return sm->GetCurrentState()->GetId();
+    //auto sm = m_underlying->GetComponent<StateMachine>();
+    //return sm->GetCurrentState()->GetId();
 }
 
 std::string EntityWrapper::GetText() const {
@@ -289,22 +289,22 @@ luabridge::LuaRef EntityWrapper::GetTextInfo() {
 
 void EntityWrapper::ChangeState(const std::string& name)
 {
-    m_underlying->GetComponent<StateMachine>()->ChangeState(name);
+    //m_underlying->GetComponent<StateMachine>()->ChangeState(name);
 }
 
 void EntityWrapper::ChangeStateParam(const std::string& name, luabridge::LuaRef param)
 {
-    m_underlying->GetComponent<StateMachine>()->ChangeState(name, param);
+    //m_underlying->GetComponent<StateMachine>()->ChangeState(name, param);
 }
 
 void EntityWrapper::ResetState() {
-    auto sm = m_underlying->GetComponent<StateMachine>();
-    sm->GetCurrentState()->Start();
+    //auto sm = m_underlying->GetComponent<StateMachine>();
+    //sm->GetCurrentState()->Start();
 }
 
 void EntityWrapper::EnableStateMachine(bool value) {
-    auto sm = m_underlying->GetComponent<StateMachine>();
-    sm->SetActive(value);
+    //auto sm = m_underlying->GetComponent<StateMachine>();
+    //sm->SetActive(value);
 }
 
 luabridge::LuaRef EntityWrapper::GetInfo() {

@@ -5,10 +5,12 @@
 class Follow : public Component {
 public:
     Follow (const std::string& cam, glm::vec3 relativePos, glm::vec3 up);
+    Follow (const Follow&);
     void Start() override;
     void Update(double) override;
     void fixZ(float);
     using ParentClass = Follow;
+    std::shared_ptr<Component> clone() const override;
 private:
     // relative position of camera w.r.t. target
     bool m_fixZ;

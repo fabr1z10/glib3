@@ -25,5 +25,10 @@ variables = {
 }
 
 factory = {}
+spritesheets = {}
+models = {}
 
+-- sprites = {}
 require("factories/rect")
+require("sprites/smbs")
+require("sprites/smbd")

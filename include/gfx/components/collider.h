@@ -12,6 +12,7 @@ class Collider : public Component {
 public:
     Collider (int tag, int flag, int mask) : m_shape{nullptr}, m_engine{nullptr}, m_tag{tag}, m_flag{flag}, m_mask{mask}, m_enabled{true} {}
     Collider (std::shared_ptr<Shape> shape, int tag, int flag, int mask) : m_shape{shape}, m_tag{tag}, m_enabled{true}, m_flag{flag}, m_mask{mask} {}
+    Collider (const Collider&);
     virtual ~Collider();
     Shape* GetShape();
     void SetShape(std::shared_ptr<Shape> shape);
@@ -27,6 +28,7 @@ public:
     int GetMask() const;
     Event<Collider*> onShapeChanged;
     void SetEnabled (bool);
+    std::shared_ptr<Component> clone() const override;
 protected:
     int m_flag;
     int m_mask;
@@ -34,7 +36,6 @@ protected:
     std::shared_ptr<Shape> m_shape;
     Bounds m_aabb;
     bool m_enabled;
-
     CollisionEngine* m_engine;
 };
 

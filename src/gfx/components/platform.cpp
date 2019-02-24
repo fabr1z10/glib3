@@ -3,6 +3,10 @@
 
 using namespace glm;
 
+std::shared_ptr<Component> PlatformComponent::clone() const {
+    return std::make_shared<PlatformComponent>(PlatformComponent(*this));
+}
+
 void PlatformComponent::Start() {
     m_entity->onMove.Register(this, [this](Entity* node) { Move(node); });
     m_lastPosition = m_entity->GetPosition();

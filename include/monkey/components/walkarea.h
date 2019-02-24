@@ -13,8 +13,10 @@ struct BlockedLine {
 
 class WalkArea : public HotSpot {
 public:
-    WalkArea (std::shared_ptr<Shape> shape, int priority, const std::string& playerId) : HotSpot(shape, priority), m_playerId{playerId}
-    /* m_depthFunc{nullptr}, m_scaleFunc{nullptr}*/ {}
+    WalkArea (std::shared_ptr<Shape> shape, int priority, const std::string& playerId) : HotSpot(shape, priority), m_playerId{playerId} {}
+    WalkArea (const WalkArea&);
+    std::shared_ptr<Component> clone() const override;
+    /* m_depthFunc{nullptr}, m_scaleFunc{nullptr}*/
     bool isMouseInside(glm::vec2) override {
         return true;
     }

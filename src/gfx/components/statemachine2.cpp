@@ -1,6 +1,18 @@
 #include <gfx/components/statemachine2.h>
 #include <gfx/error.h>
 
+StateMachine2::StateMachine2(const StateMachine2& orig) : Component(orig), m_initialState(orig.m_initialState)
+{
+    for (auto& i : orig.m_states) {
+        AddState(i.first, i.second->clone());
+    }
+}
+
+std::shared_ptr<Component> StateMachine2::clone() const {
+    return std::make_shared<StateMachine2>(StateMachine2(*this));
+}
+
+
 void StateMachine2::Begin() {
     SetState(m_initialState);
 }

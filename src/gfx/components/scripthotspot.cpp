@@ -4,6 +4,14 @@
 #include <gfx/entity.h>
 #include <gfx/entitywrapper.h>
 
+ScriptHotSpot::ScriptHotSpot(const ScriptHotSpot& orig) :
+HotSpot(orig), r_move(orig.r_move), r_click(orig.r_click), r_enter(orig.r_enter), r_leave(orig.r_leave) {
+
+}
+
+std::shared_ptr<Component> ScriptHotSpot::clone() const {
+    return std::make_shared<ScriptHotSpot>(ScriptHotSpot(*this));
+}
 
 void ScriptHotSpot::onLeave() {
     if (r_leave != nullptr)

@@ -92,9 +92,16 @@ std::shared_ptr<Entity> PlatformerFactory::Create() {
     if (roomTable.HasKey("dynamic")) {
         luabridge::LuaRef rdyn = roomTable.Get<luabridge::LuaRef>("dynamic");
         for (int i = 0; i < rdyn.length(); ++i) {
+            
             luabridge::LuaRef rnode = rdyn[i+1];
-            auto node  = GetShared<Entity>(rnode);
-            dynBuilder->AddItem(node);
+            std::string parent = rnode["parent"].cast<std::string>();
+            Entity* p = Engine::get().GetRef<Entity>(parent);
+            luabridge::LuaRef rChildren = rnode["children"];
+            for (int j = 0; j < rChildren.length(); j++) {
+                luabridge::LuaRef rChild = rChildren[j+1];
+                auto node  = GetShared<Entity>(rChild);
+                dynBuilder->AddItem(p, node);
+            }
         }
     }
     dynBuilder->SetCamera(cam);

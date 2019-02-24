@@ -212,75 +212,75 @@ std::unique_ptr<Component> MultiColliderComponentFactory::Create(luabridge::LuaR
     return coll;
 }
 
-std::unique_ptr<Component> StateMachineComponentFactory::Create(luabridge::LuaRef &ref) {
-    LuaTable table(ref);
-
-    std::string initialState = table.Get<std::string>("initialstate");
-    std::unique_ptr<StateMachine> comp;
-    if (table.HasKey("keys")) {
-        auto c  = std::unique_ptr<KeyboardControlledStateMachine>(new KeyboardControlledStateMachine(initialState));
-        // read the transition keys
-        auto keys = table.GetVector<luabridge::LuaRef>("keys");
-        for (auto& key : keys) {
-            LuaTable t(key);
-            int k = t.Get<int>("key");
-            bool press = t.Get<bool>("press", true);
-            std::string current =  t.Get<std::string>("current");
-            
-            if (t.HasKey("next")) {
-                std::string next =  t.Get<std::string>("next");
-                c->AddKey(current, k, press, std::unique_ptr<StateEvent>(new SEChangeState(next)));
-            } else if (t.HasKey("func")) {
-                luabridge::LuaRef func = t.Get<luabridge::LuaRef>("func");
-                c->AddKey(current, k, press, std::unique_ptr<StateEvent>(new SECallback(func)));
-            }
-        }
-        comp = std::move(c);
-    } else {
-        auto c = std::unique_ptr<RandomTransitionStateMachine>(new RandomTransitionStateMachine(initialState));
-        // read the transition keys
-        auto keys = table.GetVector<luabridge::LuaRef>("transitionmatrix");
-        for (auto& key : keys) {
-            float prob =  key["prob"].cast<float>();
-            std::string current =  key["current"].cast<std::string>();
-            std::string next =  key["next"].cast<std::string>();
-            c->Add(current, next, prob);
-        }
-        comp = std::move(c);
-    }
-
-    // get the array of states
-    auto sceneFactory = Engine::get().GetSceneFactory();
-    luabridge::LuaRef ts = table.Get<luabridge::LuaRef>("states");
-    for (int i = 0 ; i < ts.length(); ++i) {
-        luabridge::LuaRef tss = ts[i+1];
-        std::string id = tss["id"].cast<std::string>();
-
-        auto state = std::make_shared<State>();
-        state->SetId(id);
-        if (!tss["init"].isNil()) {
-            luabridge::LuaRef initializer = tss["init"];
-            auto si = sceneFactory->Get<StateInitializer>(initializer);
-            state->SetInitializer(std::move(si));
-        }
-        if (!tss["behavior"].isNil()) {
-            luabridge::LuaRef behavior = tss["behavior"];
-            auto sb = sceneFactory->Get<StateBehaviour>(behavior);
-            state->SetBehaviour(std::move(sb));
-        }
-        if (!tss["finalizer"].isNil()) {
-            luabridge::LuaRef finalizer = tss["finalizer"];
-            auto si = sceneFactory->Get<StateInitializer>(finalizer);
-            state->SetFinalizer(std::move(si));
-        }
-
-
-
-
-        comp->AddState(id, state);
-    }
-    return std::move(comp);
-}
+//std::unique_ptr<Component> StateMachineComponentFactory::Create(luabridge::LuaRef &ref) {
+//    LuaTable table(ref);
+//
+//    std::string initialState = table.Get<std::string>("initialstate");
+//    std::unique_ptr<StateMachine> comp;
+//    if (table.HasKey("keys")) {
+//        auto c  = std::unique_ptr<KeyboardControlledStateMachine>(new KeyboardControlledStateMachine(initialState));
+//        // read the transition keys
+//        auto keys = table.GetVector<luabridge::LuaRef>("keys");
+//        for (auto& key : keys) {
+//            LuaTable t(key);
+//            int k = t.Get<int>("key");
+//            bool press = t.Get<bool>("press", true);
+//            std::string current =  t.Get<std::string>("current");
+//
+//            if (t.HasKey("next")) {
+//                std::string next =  t.Get<std::string>("next");
+//                c->AddKey(current, k, press, std::unique_ptr<StateEvent>(new SEChangeState(next)));
+//            } else if (t.HasKey("func")) {
+//                luabridge::LuaRef func = t.Get<luabridge::LuaRef>("func");
+//                c->AddKey(current, k, press, std::unique_ptr<StateEvent>(new SECallback(func)));
+//            }
+//        }
+//        comp = std::move(c);
+//    } else {
+//        auto c = std::unique_ptr<RandomTransitionStateMachine>(new RandomTransitionStateMachine(initialState));
+//        // read the transition keys
+//        auto keys = table.GetVector<luabridge::LuaRef>("transitionmatrix");
+//        for (auto& key : keys) {
+//            float prob =  key["prob"].cast<float>();
+//            std::string current =  key["current"].cast<std::string>();
+//            std::string next =  key["next"].cast<std::string>();
+//            c->Add(current, next, prob);
+//        }
+//        comp = std::move(c);
+//    }
+//
+//    // get the array of states
+//    auto sceneFactory = Engine::get().GetSceneFactory();
+//    luabridge::LuaRef ts = table.Get<luabridge::LuaRef>("states");
+//    for (int i = 0 ; i < ts.length(); ++i) {
+//        luabridge::LuaRef tss = ts[i+1];
+//        std::string id = tss["id"].cast<std::string>();
+//
+//        auto state = std::make_shared<State>();
+//        state->SetId(id);
+//        if (!tss["init"].isNil()) {
+//            luabridge::LuaRef initializer = tss["init"];
+//            auto si = sceneFactory->Get<StateInitializer>(initializer);
+//            state->SetInitializer(std::move(si));
+//        }
+//        if (!tss["behavior"].isNil()) {
+//            luabridge::LuaRef behavior = tss["behavior"];
+//            auto sb = sceneFactory->Get<StateBehaviour>(behavior);
+//            state->SetBehaviour(std::move(sb));
+//        }
+//        if (!tss["finalizer"].isNil()) {
+//            luabridge::LuaRef finalizer = tss["finalizer"];
+//            auto si = sceneFactory->Get<StateInitializer>(finalizer);
+//            state->SetFinalizer(std::move(si));
+//        }
+//
+//
+//
+//
+//        comp->AddState(id, state);
+//    }
+//    return std::move(comp);
+//}
 
 std::unique_ptr<Component> HotSpotComponentFactory::Create(luabridge::LuaRef& ref) {
     LuaTable table(ref);
@@ -343,14 +343,14 @@ std::unique_ptr<Component> FollowComponentFactory::Create(luabridge::LuaRef &ref
     }
     return f;
 }
-std::unique_ptr<Component> Follow3DComponentFactory::Create(luabridge::LuaRef &ref) {
-    LuaTable table(ref);
-    std::string cam = table.Get<std::string>("cam");
-    float dist = table.Get<float>("distance");
-    float elev = table.Get<float>("elevation");
-    return std::unique_ptr<Component>(new Follow3D(cam, dist, elev));
-
-}
+//std::unique_ptr<Component> Follow3DComponentFactory::Create(luabridge::LuaRef &ref) {
+//    LuaTable table(ref);
+//    std::string cam = table.Get<std::string>("cam");
+//    float dist = table.Get<float>("distance");
+//    float elev = table.Get<float>("elevation");
+//    return std::unique_ptr<Component>(new Follow3D(cam, dist, elev));
+//
+//}
 
 std::unique_ptr<Component> Controller2DComponentFactory::Create(luabridge::LuaRef & ref) {
     LuaTable table(ref);
@@ -409,28 +409,28 @@ std::unique_ptr<Function2D> GetFunc2D(luabridge::LuaRef& ref) {
 }
 
 
-std::unique_ptr<Component> KeyInputComponentFactory::Create(luabridge::LuaRef & ref) {
-    LuaTable table(ref);
-    // read input
-    //int maxLength = table.Get<int>("maxlength");
-    // callback function when user hits enter
-    luabridge::LuaRef callback = table.Get<luabridge::LuaRef>("func");
-    return std::unique_ptr<KeyInput>(new KeyInput(callback));
-}
+//std::unique_ptr<Component> KeyInputComponentFactory::Create(luabridge::LuaRef & ref) {
+//    LuaTable table(ref);
+//    // read input
+//    //int maxLength = table.Get<int>("maxlength");
+//    // callback function when user hits enter
+//    luabridge::LuaRef callback = table.Get<luabridge::LuaRef>("func");
+//    return std::unique_ptr<KeyInput>(new KeyInput(callback));
+//}
 
-std::unique_ptr<Component> LuaKeyboardComponentFactory::Create(luabridge::LuaRef &ref) {
-    LuaTable table(ref);
-    auto keyListener = std::unique_ptr<LuaKeyListener>(new LuaKeyListener);
-    luabridge::LuaRef hotkeys = table.Get<luabridge::LuaRef>("keys");
-    for (int i = 0; i < hotkeys.length(); ++i) {
-        luabridge::LuaRef hotkey = hotkeys[i+1];
-        int key = hotkey["key"].cast<int>();
-        luabridge::LuaRef callback = hotkey["func"];
-        keyListener->AddHotKey(key, callback);
-    }
-    return std::move(keyListener);
-
-}
+//std::unique_ptr<Component> LuaKeyboardComponentFactory::Create(luabridge::LuaRef &ref) {
+//    LuaTable table(ref);
+//    auto keyListener = std::unique_ptr<LuaKeyListener>(new LuaKeyListener);
+//    luabridge::LuaRef hotkeys = table.Get<luabridge::LuaRef>("keys");
+//    for (int i = 0; i < hotkeys.length(); ++i) {
+//        luabridge::LuaRef hotkey = hotkeys[i+1];
+//        int key = hotkey["key"].cast<int>();
+//        luabridge::LuaRef callback = hotkey["func"];
+//        keyListener->AddHotKey(key, callback);
+//    }
+//    return std::move(keyListener);
+//
+//}
 
 
 std::unique_ptr<Component> ShadowComponentFactory::Create(luabridge::LuaRef &) {
@@ -441,20 +441,20 @@ std::unique_ptr<Component> PlatformComponentFactory::Create(luabridge::LuaRef &)
     return std::unique_ptr<PlatformComponent>(new PlatformComponent);
 }
 
-std::unique_ptr<Component> BillboardComponentFactory::Create(luabridge::LuaRef &ref) {
-    LuaTable table(ref);
-    std::string cam = table.Get<std::string>("cam");
-    return std::unique_ptr<Billboard>(new Billboard(cam));
-}
+//std::unique_ptr<Component> BillboardComponentFactory::Create(luabridge::LuaRef &ref) {
+//    LuaTable table(ref);
+//    std::string cam = table.Get<std::string>("cam");
+//    return std::unique_ptr<Billboard>(new Billboard(cam));
+//}
 
 std::unique_ptr<Component> FPSComponentFactory::Create(luabridge::LuaRef &ref) {
     return std::unique_ptr<FPSCounter>(new FPSCounter);
 }
 
-std::unique_ptr<Component> CursorComponentFactory::Create(luabridge::LuaRef& ref) {
-    return std::unique_ptr<Cursor>(new Cursor);
-
-}
+//std::unique_ptr<Component> CursorComponentFactory::Create(luabridge::LuaRef& ref) {
+//    return std::unique_ptr<Cursor>(new Cursor);
+//
+//}
 
 //std::unique_ptr<Component> RaycastControllerComponentFactory::Create(luabridge::LuaRef& ref) {
 //    LuaTable table(ref);

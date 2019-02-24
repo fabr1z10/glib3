@@ -1,9 +1,11 @@
 #pragma once
 
 #include <gfx/components/hotspot.h>
+#include <GLFW/glfw3.h>
 
 class LambdaHotSpot : public HotSpot {
 public:
+    LambdaHotSpot (const LambdaHotSpot&);
     LambdaHotSpot(std::shared_ptr<Shape> shape, int priority) : HotSpot(shape, priority) {}
     void SetOnEnter (std::function<void()> f) {
         m_onEnter = f;
@@ -42,6 +44,7 @@ public:
     }
     using ParentClass = HotSpot;
     std::type_index GetType() override;
+    std::shared_ptr<Component> clone() const override;
 private:
     std::function<void()> m_onEnter;
     std::function<void()> m_onLeave;

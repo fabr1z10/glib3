@@ -1,7 +1,7 @@
 #pragma once
 
-
 #include <gfx/entity.h>
+#include <gfx/lua/luawrapper.h>
 
 class TextView : public Entity {
 public:

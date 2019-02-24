@@ -120,6 +120,7 @@ room:add( {
 	factory.objc { id="kitchen.pot"},
 	factory.objc { id="kitchen.fish"},
 	factory.objc { id="kitchen.potostew"},
+	factory.objc { id="kitchen.table"},
 	factory.hotspot.create { pos ={290, 5, 0}, width=20, height= 10, onclick = pushPlank }
 	-- factory.object.create { object = "kitchen.door" },
 	-- factory.object.create { object = "kitchen.door_pier" },

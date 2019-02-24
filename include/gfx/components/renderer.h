@@ -16,6 +16,7 @@
 class Renderer : public Component {
 public:
     Renderer();
+    Renderer(const Renderer&);
     void Draw(Shader*);
     const glm::mat4& GetTransform() const;
     void SetMesh(std::shared_ptr<IMesh> mesh);
@@ -29,6 +30,7 @@ public:
     using ParentClass = Renderer;
     const glm::mat4& GetRenderingTransform() const;
     void SetMeshInfo (int offset, int count);
+    std::shared_ptr<Component> clone() const override;
 private:
     std::shared_ptr<IMesh> m_mesh;
     glm::vec4 m_tint;

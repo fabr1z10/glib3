@@ -53,6 +53,7 @@ public:
     void AddLight (Light*);
     void RemoveLight(Light*);
     std::unordered_set<Light*>& GetLights();
+    std::shared_ptr<Component> clone() const override {throw;}
 private:
     std::vector<std::unique_ptr<Shader>> m_shaders;
     std::unordered_map<int, std::unique_ptr<Camera>> m_cameras;

@@ -116,10 +116,7 @@ spritesheets["sprites1"] = {
 	fireplace_1 = {x=334, y=160, width=32, height=26},
 	fireplace_2 = {x=368, y=160, width=32, height=26},
 	fireplace_3 = {x=402, y=160, width=32, height=26},
-
-
-	
-
+	kitchen_table = {x=394, y=46, width=33, height=26},
 	plank_idle = {x=65,y=235,width=67,height=24},
 	plank_pushed = {x=65,y=210,width=61,height=24},
 

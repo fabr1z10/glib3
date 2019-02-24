@@ -4,17 +4,17 @@
 #include "gfx/meshfactory.h"
 #include <gfx/engine.h>
 
+Collider::Collider(const Collider& orig) : Component(orig),
+m_shape(orig.m_shape), m_tag(orig.m_tag), m_flag(orig.m_flag), m_mask(orig.m_mask),
+m_enabled(orig.m_enabled)
+{}
+
+std::shared_ptr<Component> Collider::clone() const {
+    return std::make_shared<Collider>(Collider(*this));
+}
+
 void Collider::SetParent(Entity * entity) {
     Component::SetParent(entity);
-
-    // create a debug mesh
-//    auto ce = std::make_shared<Entity>();
-//    auto cer = std::make_shared<Renderer>();
-//    auto debugMesh = MeshFactory::CreateMesh(*(m_shape.get()), 5.0f);
-//    cer->SetMesh(debugMesh);
-//    ce->AddComponent(cer);
-//    ce->SetTag("collidermesh");
-//    m_entity->AddChild(ce);
 }
 
 void Collider::Start() {

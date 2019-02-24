@@ -2,6 +2,18 @@
 #include <gfx/entity.h>
 #include <gfx/components/animator.h>
 
+StateCharacter::StateCharacter(const StateCharacter& orig) : StateMachine2(orig), m_dir(orig.m_dir) {
+    
+}
+
+std::shared_ptr<Component> StateCharacter::clone() const {
+    return std::make_shared<StateCharacter>(StateCharacter(*this));
+}
+
+void AnimateCharState::AttachStateMachine(StateMachine2 * sm) {
+    m_state = dynamic_cast<const StateCharacter*>(sm);
+    m_animator = sm->GetObject()->GetComponent<Animator>();
+}
 
 void AnimateCharState::Init() {
     char dir = m_state->GetDirection();
@@ -9,13 +21,18 @@ void AnimateCharState::Init() {
     m_animator->SetAnimation(m_id + "_"+ dir);
 
 }
-void StateCharacter::Start () {
-    auto animator = m_entity->GetComponent<Animator>();
-    AddState( "idle", std::unique_ptr<State2>(new AnimateCharState(this, animator, "idle")));
-    AddState( "walk", std::unique_ptr<State2>(new AnimateCharState(this, animator, "walk")));
-    AddState( "talk", std::unique_ptr<State2>(new AnimateCharState(this, animator, "talk")));
-    //StateMachine2::Start();
+
+std::shared_ptr<State2> AnimateCharState::clone() const {
+    return std::make_shared<AnimateCharState>(AnimateCharState(*this));
 }
+
+void StateCharacter::Start () {
+    AddState( "idle", std::make_shared<AnimateCharState>("idle"));
+    AddState( "walk", std::make_shared<AnimateCharState>("walk"));
+    AddState( "talk", std::make_shared<AnimateCharState>("talk"));
+}
+
+
 
 void StateCharacter::Begin() {
     SetDirection(m_dir);

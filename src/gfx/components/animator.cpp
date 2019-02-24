@@ -3,6 +3,14 @@
 #include <gfx/entity.h>
 #include <gfx/error.h>
 
+Animator::Animator(const Animator& orig) : Component(orig),
+m_forward(orig.m_forward), m_initAnim(orig.m_initAnim), m_model(orig.m_model) {
+    
+}
+
+std::shared_ptr<Component> Animator::clone() const {
+    return std::make_shared<Animator>(Animator(*this));
+}
 void Animator::Start() {
     m_status = m_model->GetModelStatus();
     m_status->Init(m_entity);

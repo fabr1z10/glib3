@@ -26,6 +26,19 @@ items2["kitchen.meat"] = {
  	}	
 }
 
+items2["kitchen.table"] = { 
+	pos = {114, 0, 1},
+	hotspot = {
+		text = strings.objects.kitchen_table,
+		size = {35, 22},
+		walk_to = {130, 6},
+		dir="south"
+	},	
+	model = "kitchen.table",
+	actions = {}
+}
+
+
 items2["kitchen.pot"] = { 
  	pos = {104, 24, -1},
 	hotspot = {

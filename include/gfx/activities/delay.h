@@ -2,6 +2,7 @@
 
 #include <gfx/activity.h>
 #include <gfx/entity.h>
+#include <gfx/lua/luawrapper.h>
 
 class DelayTime : public Activity {
 public:

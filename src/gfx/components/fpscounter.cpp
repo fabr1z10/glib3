@@ -6,6 +6,11 @@
 
 FPSCounter::FPSCounter() : Component() {}
 
+FPSCounter::FPSCounter(const FPSCounter& orig) : Component(orig) {}
+
+std::shared_ptr<Component> FPSCounter::clone() const {
+    return std::make_shared<FPSCounter>(FPSCounter(*this));
+}
 void FPSCounter::Start() {
 
     m_frameCount = 0;

@@ -13,6 +13,7 @@
 class HotSpot : public Component {
 public:
     HotSpot (int priority) : Component(), m_shape{nullptr}, m_focus{false}, m_priority{false} {}
+    HotSpot (const HotSpot&);
     HotSpot (std::shared_ptr<Shape> shape, int priority) : Component(),
     m_shape{shape}, m_focus{false}, m_priority{priority} {}
     virtual ~HotSpot();

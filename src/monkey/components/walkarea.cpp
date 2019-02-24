@@ -7,6 +7,16 @@
 #include <gfx/math/closest.h>
 #include <gfx/math/shortestpath.h>
 
+WalkArea::WalkArea(const WalkArea& orig) : HotSpot(orig), m_playerId(orig.m_playerId),
+m_walls(orig.m_walls) {
+    
+}
+
+std::shared_ptr<Component> WalkArea::clone() const {
+    return std::make_shared<WalkArea>(WalkArea(*this));
+}
+
+
 void WalkArea::Start() {
     HotSpot::Start();
     m_scheduler = Engine::get().GetRunner<Scheduler>();

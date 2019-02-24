@@ -39,6 +39,7 @@ class Controller2D : public Component {
 public:
 	Controller2D(float maxClimbAngle, float maxDescendAngle, float skinwidth = .015f, int horizontalRayCount = 4, int verticalRayCount = 4)
 		: Component(), m_maxClimbAngle(maxClimbAngle), m_maxDescendAngle(maxDescendAngle), m_skinWidth(skinwidth), m_horizontalRayCount(horizontalRayCount), m_verticalRayCount(verticalRayCount), m_platform(nullptr) {}
+    Controller2D(const Controller2D&);
 	virtual ~Controller2D();
 	virtual void Start();
 	bool IsFalling(int);
@@ -54,6 +55,7 @@ public:
 	using ParentClass = Controller2D;
 	void DetachFromPlatform();
 	void ForceDetach() { m_platform = nullptr; }
+    std::shared_ptr<Component> clone() const override;
 	//RayCastHit2D Raycast(glm::vec2 origin, glm::vec2 direction, float length, int mask);
 private:
 	//std::vector<Collider*> m_ppp;

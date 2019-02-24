@@ -12,6 +12,7 @@ struct DynamicWorldItem {
     Bounds m_bounds;
     Bounds m_localBounds;
     std::shared_ptr<Entity> m_object;
+    Entity* m_parent;
 };
 
 class DynamicWorldBuilder : public Runner {
@@ -21,7 +22,7 @@ public:
     void OnCameraMove(Camera*);
     void UpdateWorld(glm::vec3);
     void Update(double) {}
-    void AddItem(std::shared_ptr<Entity>);
+    void AddItem(Entity*, std::shared_ptr<Entity>);
 private:
     std::vector<DynamicWorldItem> m_items;
     // cam position center in grid coordinates

@@ -4,6 +4,11 @@
 
 Shadow::Shadow() : Component() {}
 
+Shadow::Shadow(const Shadow& orig) : Component(orig) {}
+
+std::shared_ptr<Component> Shadow::clone() const {
+    return std::make_shared<Shadow>(Shadow(*this));
+}
 void Shadow::Start() {
     auto parent = m_entity->GetParent();
     parent->onMove.Register(this, [&] (Entity* e) { this->ResetPosition(e); });

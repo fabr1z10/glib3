@@ -12,6 +12,8 @@
 class PlatformComponent : public Component {
 public:
     PlatformComponent() : Component() {}
+    PlatformComponent(const PlatformComponent& orig) : Component(orig) {}
+    std::shared_ptr<Component> clone() const override;
     virtual ~PlatformComponent();
     void Move(Entity*);
     virtual void Start();
