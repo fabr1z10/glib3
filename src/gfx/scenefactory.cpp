@@ -115,6 +115,7 @@ SceneFactory::SceneFactory() {
     m_activityFactory.Add<AnimateActFactory>("animate");
     m_activityFactory.Add<FlipActFactory>("flip");
     m_activityFactory.Add<MoveActFactory>("move");
+    m_activityFactory.Add<RotateActFactory>("rotate");
     m_activityFactory.Add<MoveGravityActFactory>("movegravity");
     //m_activityFactory.Add<ChangeStateActFactory>("changestate");
     m_activityFactory.Add<ChangeRoomActFactory>("gotoroom");

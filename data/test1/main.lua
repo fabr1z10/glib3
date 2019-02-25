@@ -1,20 +1,23 @@
-require ("sprites")
-require ("funcs")
-require ("script")
-
 engine = {
-    device_size = { 320, 200 },
+    device_size = { 800, 600 },
     window_size = { 800, 600 },
-    title = "Hello world!",
+    title = "The secret of Monkey Island",
+	shaders = { "unlit_textured", "unlit_color", "text" }
 }
 
-fonts = {
-    --{ name = "ui", file  = "fonts/monkeysmall.ttf" },
-    --{ name = "monkey", file  = "fonts/MonkeyIsland-1990.ttf" }
-}
+-- fonts = {
+--     ui = {file  = "./fonts/monkeysmall.ttf" },
+--     monkey = {file  = "./fonts/MonkeyIsland-1990.ttf"}
+-- }
 
+-- global_assets = {
+-- 	fonts = { "ui", "monkey" }
+-- }
 
+require ("script")
+require ("funcs2")
+-- -- this stuff will change at gametime
 variables = {
-    _room = "test4",
-}
+    _room = "test1",
 
+}
