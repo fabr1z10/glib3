@@ -2,7 +2,7 @@
 #include <gfx/lua/luawrapper.h>
 #include <gfx/lua/luatable.h>
 #include <platformer/platformerfactory.h>
-#include <gfx/monkey.h>
+
 #include <spriteview/sv.h>
 #include <set>
 #include <spriteview/sv.h>
@@ -14,10 +14,12 @@ int main(int argc, char* argv[])
         return 1;
     }
     try {
+        std::string homeDir(argv[1]);
+        auto& engine = Engine::get();
+        engine.SetSceneFactory(std::unique_ptr<SceneFactory>(new SpriteViewFactory));
+        engine.Init(homeDir);
+        engine.MainLoop();
 
-        auto& m = SpriteView::get();
-        m.Init(argv[1]);
-        m.Start();
 
     } catch (Error& err) {
         std::cout << err.what() << std::endl;

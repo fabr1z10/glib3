@@ -11,6 +11,7 @@
 
 #include <gfx/ref.h>
 #include <typeindex>
+#include <memory>
 
 class Entity;
 

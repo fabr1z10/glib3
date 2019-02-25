@@ -20,6 +20,20 @@ SpriteViewFactory::SpriteViewFactory() : SceneFactory(), m_animate(true) {
 
 }
 
+
+void SpriteViewFactory::Init(Engine * engine) {
+    LuaWrapper::Init();
+    glm::vec2 devSize (800, 600);
+    glm::ivec2 winSize (800, 600);
+    int fps = 60;
+
+    engine->SetDeviceSize(devSize);
+    engine->SetWindowSize(winSize);
+    engine->SetFPS(fps);
+
+}
+
+
 void SpriteViewFactory::LoadAssets() {
     // read assets
     {

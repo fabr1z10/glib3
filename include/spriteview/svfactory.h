@@ -48,6 +48,8 @@ class SpriteViewFactory : public SceneFactory {
 public:
     SpriteViewFactory();
     std::shared_ptr<Entity> Create() override;
+    void Init(Engine*) override;
+
     void PostInit() override {}
     void CleanUp () override {}
 

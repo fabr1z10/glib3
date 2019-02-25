@@ -45,7 +45,7 @@ global_assets = {
 
 -- -- this stuff will change at gametime
 variables = {
-    _room = "kitchen",
+    _room = "bridge",
 -- 	_previousroom="",
     _actionInfo = {
         verb = nil,
@@ -59,6 +59,7 @@ variables = {
     door_scummbar_kitchen = 0,
  	door_kitchen_pier = 0,
 	door_voodoolady = 0,
+	troll_in = true,
 -- 	door_shop = 0,
     cook_in_kitchen = true,
  	meat_in_pot = false,
@@ -90,7 +91,7 @@ variables.inventory["pieces_of_eight"] = 10000
 -- variables.entered_circus = true
 -- variables.circus_knows_trick = true
 -- variables.circus_knows_helmet = true
--- variables.inventory["kitchen.fish"] = 1
+variables.inventory["kitchen.fish"] = 1
 -- -- END DEBUG
 
 require ("script")

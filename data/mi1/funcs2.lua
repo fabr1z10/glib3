@@ -346,13 +346,16 @@ function runAction ()
 			local IhaveObj1 = variables.inventory[variables._actionInfo.obj1] ~= nil
 			if (not IhaveObj1) then return nil end
 			local obj2 = items2[variables._actionInfo.obj2]
-			s:push { script = walk_to_object(obj2), at="end" }
+			local actions = {}
+			table.insert (actions, action.combo.walk_to_object("guybrush", variables._actionInfo.obj2))
 			local u1 = obj.actions["give"] and obj.actions["give"][variables._actionInfo.obj2]
 			if (u1 ~= nil) then
-				s:push {script=u1()}
+				table.insert (actions, get(u1))		
 			else 
-				s:push {script = script.defaultactions["give"]()}
+				local def = script.defaultactions["give"]
+				table.insert (actions, get(def))
 			end
+			s = ms2(actions)
 		end
 
         -- a1 = variables._actionInfo.obj1[variables._actionInfo.verb.code]

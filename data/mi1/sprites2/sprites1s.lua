@@ -119,7 +119,28 @@ spritesheets["sprites1"] = {
 	kitchen_table = {x=394, y=46, width=33, height=26},
 	plank_idle = {x=65,y=235,width=67,height=24},
 	plank_pushed = {x=65,y=210,width=61,height=24},
+	troll_body = {x=111,y=167,width=36,height=32, anchor={13,0}},
+	troll_body_front = {x=283,y=110,width=41,height=33, anchor={19,0}},
+	troll_head_idle = {x=150, y=167, width=20, z=0.1, height=15, anchor = {10, 0}},
+	troll_head_talk_1 = {x=171,y=166, width=20, z=0.1, height=16, anchor = {10, 0}},
+	troll_head_talk_2 = {x=151,y=183, width=20, z=0.1,height=16, anchor = {10, 0}},
+	troll_head_talk_3 = {x=173,y=183, width=20, z=0.1,height=17, anchor = {10, 0}},
+	troll_head_talk_4 = {x=194,y=166, width=19, z=0.1,height=17, anchor = {9, 0}},
+	troll_head_side = {x=231, y=201, width=20, z=0.1,height=16, anchor = {10, 0}},
+	troll_head_front = {x=231, y=220, width=20, z=0.1,height=15, anchor = {10, 0}},
+	troll_body_pick_fish_1 = {x=131, y=203, width=27, height=34, anchor = {12,1}},
+	troll_body_pick_fish_2 = {x=160, y=203, width=30, height=33, anchor ={13,0}},
+	troll_body_pick_fish_3 = {x=192, y=203, width=37, height=33, anchor={24, 0}},
+	troll_arm_pick_fish_1 = {x=237, y=184, width=12, height=15, anchor={6,15}},
+	troll_arm_pick_fish_2 = {x=196, y=185, width=16, height=14, anchor={5,14}},
+	troll_arm_pick_fish_3 = {x=215, y=185, width=19, height=14, anchor={5,14}},
+	troll_arm_pick_fish_4 = {x=251, y=181, width=16, height=20, anchor={7,20}},
+	troll_fish = {x=216, y=174, z=0.1,width=14, height=8},
 
+
+
+
+	
 
 
 
