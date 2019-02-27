@@ -8,6 +8,7 @@
 //FACTORY(EnemyWalk2DStateFactory, StateBehaviour)
 //FACTORY(EnemyBounce2DStateFactory, StateBehaviour)
 
+FACTORY(CharacterStateCompFactory, Component)
 FACTORY(DropCharactersActFactory, Activity)
 
 

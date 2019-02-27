@@ -45,9 +45,14 @@ room = {
 					model="mario",
 					pos = {128, 128, 0},
 					components = {
-						{ type="collider", 
-						  --shape= {type="rect", width=16, height=16}, 
-						  flag=1, mask=1, tag=1}
+						{ type="collider", flag=1, mask=1, tag=1},
+						-- mario has two additional parameters 
+						-- supermario and fire bothdetermine the animation and 
+						{ type="characterstate", acceleration_ground = 0.05, acceleration_air = 0.05, speed = 75, jump_height = 80, time_jump_apex = 0.5,
+							addinfo = { supermario = false, fire = false },
+							f = function(state) print ("STOCAZZZZZO " .. state) return {"idle", "small"} end
+						},
+						{ type="controller2d", maxclimbangle = 80, maxdescendangle = 80}
 					}
 				}
             }
@@ -164,5 +169,22 @@ room = {
 -- 	end		
 -- end
 
+function room.afterstartup() 
+	local s = script:new()
+	s.actions = {
+		{ id = 1, after={0}, action = {type="callfunc", func = function() 
+			local m = monkey.getEntity("player")
+			monkey.set2(m, "cane") 
+		end }}
+	}	
+	monkey.play(s)
+	-- local s = script:new("_troll")
+	-- s.actions = {
+	-- 	action.say { id=1, actor="bridge.troll", lines = {d[1]}, animstart="talk", animend="idle" },
+	-- 	action.delay { id=2, sec=5},
+	-- }
+	-- s.loop = 1
+	-- monkey.play(s)
+end
 
 

@@ -60,9 +60,11 @@ void Collider::SetShape(std::shared_ptr<Shape> shape) {
 }
 
 void Collider::Move(Entity* e) {
-    m_aabb = m_shape->getBounds();
-    m_aabb.Transform(m_entity->GetWorldTransform());
-    if (m_engine != nullptr)
-        m_engine->Move(this);
+    if (m_shape != nullptr) {
+        m_aabb = m_shape->getBounds();
+        m_aabb.Transform(m_entity->GetWorldTransform());
+        if (m_engine != nullptr)
+            m_engine->Move(this);
+    }
 
 }

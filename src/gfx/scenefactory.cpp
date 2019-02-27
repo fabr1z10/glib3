@@ -20,6 +20,7 @@ void SceneFactory::Init(Engine* engine) {
     engine->SetDeviceSize(devSize);
     engine->SetWindowSize(winSize);
     engine->SetFPS(fps);
+    extendLua();
 }
 
 void SceneFactory::StartUp(Engine * engine) {

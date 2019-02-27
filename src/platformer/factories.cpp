@@ -6,6 +6,7 @@
 #include <platformer/states/jump2d.h>
 #include <platformer/activities/dropcharacters.h>
 #include <gfx/lua/luatable.h>
+#include <platformer/characterstatemachine.h>
 //
 //std::unique_ptr<StateBehaviour> Idle2DStateFactory::Create(luabridge::LuaRef & r) {
 //    LuaTable table(r);
@@ -45,6 +46,26 @@
 //    return std::unique_ptr<EnemyBounce2D>(new EnemyBounce2D(speed, vy, enableFlip));
 //}
 
+std::unique_ptr<Component> CharacterStateCompFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    float speed = table.Get<float>("speed");
+    float accGnd = table.Get<float>("acceleration_ground");
+    float accAir = table.Get<float>("acceleration_air");
+    float jumpHeight = table.Get<float>("jump_height");
+    float timeApex = table.Get<float>("time_jump_apex");
+
+
+    auto ptr = std::unique_ptr<CharacterStateMachine>(
+            new CharacterStateMachine(speed, accGnd, accAir, jumpHeight, timeApex));
+
+    if (table.HasKey("addinfo")) {
+        ptr->SetAdditionalState(table.Get<luabridge::LuaRef>("addinfo"));
+    }
+    if (table.HasKey("f")) {
+        ptr->SetAnimFunc(table.Get<luabridge::LuaRef>("f"));
+    }
+    return ptr;
+}
 
 std::unique_ptr<Activity> DropCharactersActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);

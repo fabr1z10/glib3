@@ -3,7 +3,10 @@
 #include <gfx/entitywrapper.h>
 #include <platformer/luaext.h>
 #include <gfx/engine.h>
+#include <gfx/entity.h>
 #include <gfx/dynamicworld.h>
+#include <platformer/characterstatemachine.h>
+
 PlatformerFactory::PlatformerFactory() : SceneFactory() {
 
     // platformer states
@@ -13,11 +16,15 @@ PlatformerFactory::PlatformerFactory() : SceneFactory() {
 //    m_stateBehaviorFactory.Add<EnemyWalk2DStateFactory>("enemywalk2d");
 //    m_stateBehaviorFactory.Add<EnemyBounce2DStateFactory>("enemybounce2d");
 
+    m_componentFactory.Add<CharacterStateCompFactory>("characterstate");
+
     m_activityFactory.Add<DropCharactersActFactory>("dropcharacters");
 
 }
 
-
+void Ciao(EntityWrapper* p, const std::string& key, luabridge::LuaRef value) {
+    p->m_underlying->GetComponent<CharacterStateMachine>()->UpdateAddInfo(key, value);
+}
 
 
 void PlatformerFactory::extendLua() {
@@ -25,8 +32,8 @@ void PlatformerFactory::extendLua() {
     luabridge::getGlobalNamespace(LuaWrapper::L)
             .beginNamespace("monkey")
             .addFunction("register_platform", &RegisterToPlatform)
-            .addFunction("unregister_platform", &UnregisterToPlatform);
-
+            .addFunction("unregister_platform", &UnregisterToPlatform)
+            .addFunction("set2", &Ciao);
 
 }
 

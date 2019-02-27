@@ -16,3 +16,4 @@ void UnregisterToPlatform(EntityWrapper character, EntityWrapper platform) {
     p->Unregister(c);
 
 }
+

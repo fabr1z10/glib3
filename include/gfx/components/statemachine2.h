@@ -24,10 +24,10 @@ public:
     void Begin() override;
     void Update(double) override;
     void ResetState() ;
-    void SetState (const std::string&);
+    virtual void SetState (const std::string&);
     void AddState(const std::string& id, std::shared_ptr<State2> state);
     std::shared_ptr<Component> clone() const override;
-private:
+protected:
     State2* m_currentState;
     std::string m_currentStateId;
     std::string m_initialState;
