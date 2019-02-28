@@ -56,6 +56,7 @@ FACTORY(ParallaxComponentFactory, Component)
 FACTORY(FPSComponentFactory, Component)
 FACTORY(CursorComponentFactory, Component)
 FACTORY(LightComponentFactory, Component)
+FACTORY(KeyboardInputMethodCompFactory, Component)
 //FACTORY(RaycastControllerComponentFactory, Component)
 
 // Frame handlers

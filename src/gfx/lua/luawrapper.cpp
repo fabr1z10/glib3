@@ -38,6 +38,7 @@ void LuaWrapper::Init() {
             .addProperty("isnil", &EntityWrapper::IsNil)
             .addProperty("text", &EntityWrapper::GetText)
             .addProperty("lines", &EntityWrapper::GetLines)
+            .addFunction("get", &EntityWrapper::GetProperty)
             .addFunction("remove", &EntityWrapper::Remove)
             .addFunction("parent", &EntityWrapper::GetParent)
             .addFunction("setcolor", &EntityWrapper::SetColor)
@@ -60,7 +61,6 @@ void LuaWrapper::Init() {
             .addFunction("gettextinfo", &EntityWrapper::GetTextInfo)
             .addFunction("getinfo",&EntityWrapper::GetInfo)
             .addFunction("enablestatemachine",&EntityWrapper::EnableStateMachine)
-                    //.addFunction("addbutton"), &EntityWrapper::AddButton)
             .endClass();
 }
 

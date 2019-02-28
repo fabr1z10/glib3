@@ -51,18 +51,15 @@ std::unique_ptr<Component> CharacterStateCompFactory::Create(luabridge::LuaRef &
     float speed = table.Get<float>("speed");
     float accGnd = table.Get<float>("acceleration_ground");
     float accAir = table.Get<float>("acceleration_air");
-    float jumpHeight = table.Get<float>("jump_height");
-    float timeApex = table.Get<float>("time_jump_apex");
+    float jumpHeight = table.Get<float>("jump_velocity");
+
 
 
     auto ptr = std::unique_ptr<CharacterStateMachine>(
-            new CharacterStateMachine(speed, accGnd, accAir, jumpHeight, timeApex));
+            new CharacterStateMachine(speed, accGnd, accAir, jumpHeight));
 
-    if (table.HasKey("addinfo")) {
-        ptr->SetAdditionalState(table.Get<luabridge::LuaRef>("addinfo"));
-    }
     if (table.HasKey("f")) {
-        ptr->SetAnimFunc(table.Get<luabridge::LuaRef>("f"));
+        ptr->SetRefreshFunc(table.Get<luabridge::LuaRef>("f"));
     }
     return ptr;
 }

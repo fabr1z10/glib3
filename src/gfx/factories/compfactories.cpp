@@ -14,6 +14,7 @@
 #include <gfx/components/depth.h>
 #include <gfx/components/follow.h>
 #include <gfx/components/follow3d.h>
+#include <gfx/components/inputmethod.h>
 
 #include <gfx/components/billboard.h>
 #include <gfx/components/parallax.h>
@@ -23,7 +24,7 @@
 #include <gfx/components/raycastcontroller.h>
 #include <gfx/model3D/model3D.h>
 
-#include <gfx/components/statemachine.h>
+
 #include <gfx/components/keyinput.h>
 #include <gfx/luacollision.h>
 #include <gfx/walkstate.h>
@@ -368,15 +369,24 @@ std::unique_ptr<Component> Controller2DComponentFactory::Create(luabridge::LuaRe
 
 std::unique_ptr<Component> Dynamics2DComponentFactory::Create(luabridge::LuaRef & ref) {
     LuaTable table(ref);
-    float jumpHeight = table.Get<float>("jumpheight");
-    float timeApex = table.Get<float>("timetojumpapex");
-    return std::unique_ptr<Dynamics2D>(new Dynamics2D(jumpHeight, timeApex));
+    float g = table.Get<float>("gravity");
+    auto ptr =  std::unique_ptr<Dynamics2D>(new Dynamics2D(g));
+    if (table.HasKey("additional_info")) {
+        luabridge::LuaRef ainfo = table.Get<luabridge::LuaRef>("additional_info");
+        ptr->addAdditionalProps(ainfo);
+    }
+    return ptr;
 }
 
 
 std::unique_ptr<Component> InfoComponentFactory::Create(luabridge::LuaRef & ref) {
     auto comp = std::unique_ptr<LuaInfo>(new LuaInfo(ref));
     return std::move(comp);
+}
+
+std::unique_ptr<Component> KeyboardInputMethodCompFactory::Create(luabridge::LuaRef &ref) {
+    auto comp = std::unique_ptr<KeyboardInputMethod>(new KeyboardInputMethod);
+    return comp;
 }
 
 std::unique_ptr<Function2D> GetFunc2D(luabridge::LuaRef& ref) {

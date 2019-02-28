@@ -5,7 +5,7 @@
 
 class StateMachine2;
 
-class State2 {
+class State2 : public Ref {
 public:
     virtual ~State2() = default;
     virtual void Init () = 0;
@@ -24,7 +24,9 @@ public:
     void Begin() override;
     void Update(double) override;
     void ResetState() ;
+    std::string GetState() const;
     virtual void SetState (const std::string&);
+    virtual void Refresh () {}
     void AddState(const std::string& id, std::shared_ptr<State2> state);
     std::shared_ptr<Component> clone() const override;
 protected:
@@ -39,3 +41,6 @@ inline void StateMachine2::AddState(const std::string& id, std::shared_ptr<State
     state->AttachStateMachine(this);
 }
 
+inline std::string StateMachine2::GetState() const {
+    return m_currentStateId;
+}

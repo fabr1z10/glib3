@@ -96,6 +96,8 @@ SceneFactory::SceneFactory() {
     m_componentFactory.Add<DepthComponentFactory>("depth");
     //m_componentFactory.Add<CursorComponentFactory>("cursor");
     m_componentFactory.Add<LightComponentFactory>("light");
+    m_componentFactory.Add<KeyboardInputMethodCompFactory>("keyinput");
+
     //m_componentFactory.Add<RaycastControllerComponentFactory>("raycastcontroller");
     //m_componentFactory.Add<BillboardComponentFactory>("billboard");
 

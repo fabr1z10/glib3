@@ -1,7 +1,6 @@
 #include <gfx/entitywrapper.h>
 #include <gfx/components/renderer.h>
 #include <gfx/textmesh.h>
-#include <gfx/components/statemachine.h>
 #include <glm/gtx/transform.hpp>
 #include <gfx/engine.h>
 #include <gfx/entities/textview.h>
@@ -11,6 +10,8 @@
 #include <gfx/components/depth.h>
 #include <gfx/components/animator.h>
 #include <gfx/components/dynamics2d.h>
+#include <gfx/components/statemachine2.h>
+#include <gfx/properties.h>
 
 float EntityWrapper::GetX() const {
     return m_underlying->GetPosition().x;
@@ -33,8 +34,15 @@ std::string EntityWrapper::GetTag() const {
     return m_underlying->GetTag();
 }
 std::string EntityWrapper::GetState() const {
-    //auto sm = m_underlying->GetComponent<StateMachine>();
-    //return sm->GetCurrentState()->GetId();
+    auto sm = m_underlying->GetComponent<StateMachine2>();
+    return sm->GetState();
+}
+
+luabridge::LuaRef EntityWrapper::GetProperty(const std::string& key) const {
+    auto sm = m_underlying->GetComponent<Properties>();
+    return sm->get(key);
+
+
 }
 
 std::string EntityWrapper::GetText() const {

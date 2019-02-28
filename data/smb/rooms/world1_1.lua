@@ -6,6 +6,20 @@ roomInfo = {
  	g = -10
 }
 
+local mario_refresh = function(mario) 
+	print ("Calling refresh!!!")
+	local state = mario.state
+	print (state)
+	local supermario = mario:get("supermario")
+	local fire = mario:get("fire")
+	print ("supermario = " .. tostring(supermario))
+	local anim = state .. (supermario and "s" or "n") .. (fire and "f" or "n" )
+	local coll = supermario and "large" or "small"
+	print ("anim = " .. anim)
+	print ("coll = " .. coll)
+	return { anim, coll }
+end
+
 
 room = {
 	engines = {
@@ -45,14 +59,40 @@ room = {
 					model="mario",
 					pos = {128, 128, 0},
 					components = {
-						{ type="collider", flag=1, mask=1, tag=1},
+						{ 
+							type = "collider", 
+							flag = 1, 
+							mask = 1, 
+    						tag=1
+						},
 						-- mario has two additional parameters 
 						-- supermario and fire bothdetermine the animation and 
-						{ type="characterstate", acceleration_ground = 0.05, acceleration_air = 0.05, speed = 75, jump_height = 80, time_jump_apex = 0.5,
-							addinfo = { supermario = false, fire = false },
-							f = function(state) print ("STOCAZZZZZO " .. state) return {"idle", "small"} end
+						{ 
+							type="characterstate", 
+							acceleration_ground = 0.05, 
+							acceleration_air = 0.05, 
+							speed = 75, 
+							jump_velocity = variables.jump_velocity,
+							f = mario_refresh
 						},
-						{ type="controller2d", maxclimbangle = 80, maxdescendangle = 80}
+						{
+							-- properties
+							type="dynamics2d", 
+							gravity = variables.gravity,
+							additional_info = {
+								supermario = false,
+								fire = false,
+								invincibility = false
+							}
+						},
+						{ 
+							type="controller2d", 
+							maxclimbangle = 80, 
+							maxdescendangle = 80
+						},
+						{
+							type ="keyinput"
+						}
 					}
 				}
             }
@@ -170,14 +210,14 @@ room = {
 -- end
 
 function room.afterstartup() 
-	local s = script:new()
-	s.actions = {
-		{ id = 1, after={0}, action = {type="callfunc", func = function() 
-			local m = monkey.getEntity("player")
-			monkey.set2(m, "cane") 
-		end }}
-	}	
-	monkey.play(s)
+	-- local s = script:new()
+	-- s.actions = {
+	-- 	{ id = 1, after={0}, action = {type="callfunc", func = function() 
+	-- 		local m = monkey.getEntity("player")
+	-- 		monkey.set2(m, "cane", 10) 
+	-- 	end }}
+	-- }	
+	-- monkey.play(s)
 	-- local s = script:new("_troll")
 	-- s.actions = {
 	-- 	action.say { id=1, actor="bridge.troll", lines = {d[1]}, animstart="talk", animend="idle" },

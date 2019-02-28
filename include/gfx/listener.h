@@ -43,7 +43,7 @@ class KeyboardListener {
 public:
     KeyboardListener();
     virtual~ KeyboardListener();
-    virtual void KeyCallback(GLFWwindow*, int, int, int, int) = 0;
+    virtual void KeyCallback(GLFWwindow*, int key, int scancode, int action, int mods) = 0;
     void AddCallback (const KeyEvent& event, std::function<void()>);
     //virtual void Enable(bool) = 0;
     // enable specific keys

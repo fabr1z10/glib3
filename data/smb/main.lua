@@ -22,7 +22,12 @@ global_assets = {
 
 variables = {
     _room = "world1_1",
+	jump_height = 80,
+	time_to_jump_apex = 0.5
 }
+
+variables.gravity = -(2.0 * variables.jump_height) / (variables.time_to_jump_apex * variables.time_to_jump_apex)
+variables.jump_velocity = math.abs(variables.gravity) * variables.time_to_jump_apex
 
 factory = {}
 spritesheets = {}

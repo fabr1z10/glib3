@@ -22,18 +22,14 @@ PlatformerFactory::PlatformerFactory() : SceneFactory() {
 
 }
 
-void Ciao(EntityWrapper* p, const std::string& key, luabridge::LuaRef value) {
-    p->m_underlying->GetComponent<CharacterStateMachine>()->UpdateAddInfo(key, value);
-}
-
 
 void PlatformerFactory::extendLua() {
 
     luabridge::getGlobalNamespace(LuaWrapper::L)
             .beginNamespace("monkey")
             .addFunction("register_platform", &RegisterToPlatform)
-            .addFunction("unregister_platform", &UnregisterToPlatform)
-            .addFunction("set2", &Ciao);
+            .addFunction("unregister_platform", &UnregisterToPlatform);
+
 
 }
 
