@@ -1,6 +1,7 @@
 #include <gfx/simplemodel.h>
 #include <gfx/entity.h>
 #include <iostream>
+#include <gfx/error.h>
 
 void SimpleModelStatus::Init(Entity* entity) {
     renderer = entity->GetComponent<Renderer>();
@@ -14,6 +15,9 @@ void SimpleModelStatus::SetAnimation(const std::string& anim, bool fwd) {
     animation = anim;
     time = 0.0;
     m_animInfo = m_mesh.GetAnimInfo(anim);
+    if (m_animInfo == nullptr) {
+        GLIB_FAIL("Don't know animation: " << anim);
+    }
     frame = fwd ? 0 : m_animInfo->frameCount-1;
     const FrameInfo& frameInfo = m_animInfo->frameInfo[frame];
     renderer->SetMeshInfo(frameInfo.offset, frameInfo.count);

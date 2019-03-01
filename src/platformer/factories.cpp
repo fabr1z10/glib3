@@ -7,6 +7,7 @@
 #include <platformer/activities/dropcharacters.h>
 #include <gfx/lua/luatable.h>
 #include <platformer/characterstatemachine.h>
+#include <gfx/engine.h>
 //
 //std::unique_ptr<StateBehaviour> Idle2DStateFactory::Create(luabridge::LuaRef & r) {
 //    LuaTable table(r);
@@ -52,14 +53,34 @@ std::unique_ptr<Component> CharacterStateCompFactory::Create(luabridge::LuaRef &
     float accGnd = table.Get<float>("acceleration_ground");
     float accAir = table.Get<float>("acceleration_air");
     float jumpHeight = table.Get<float>("jump_velocity");
+    luabridge::LuaRef animTable = table.Get<luabridge::LuaRef>("anims");
+    LuaTable at (animTable);
+
+    std::string anim_idle = at.Get<std::string>("idle","");
+    std::string anim_walk = at.Get<std::string>("walk","");
+    std::string anim_turn = at.Get<std::string>("turn","");
+    std::string anim_duck = at.Get<std::string>("duck", "");
+    std::string anim_jump_up = at.Get<std::string>("jump_up","");
+    std::string anim_jump_down = at.Get<std::string>("jump_down","");
 
 
 
     auto ptr = std::unique_ptr<CharacterStateMachine>(
-            new CharacterStateMachine(speed, accGnd, accAir, jumpHeight));
+            new CharacterStateMachine(speed, accGnd, accAir, jumpHeight,
+            anim_idle, anim_walk, anim_turn, anim_duck, anim_jump_up, anim_jump_down));
 
     if (table.HasKey("f")) {
         ptr->SetRefreshFunc(table.Get<luabridge::LuaRef>("f"));
+    }
+
+    luabridge::LuaRef rColliders = table.Get<luabridge::LuaRef>("colliders");
+    auto factory = Engine::get().GetSceneFactory();
+    for (int i = 0; i < rColliders.length(); ++i) {
+        luabridge::LuaRef rColl = rColliders[i+1];
+        std::string key = rColl["key"].cast<std::string>();
+        luabridge::LuaRef rShape = rColl["value"];
+        std::shared_ptr<Shape> shape (factory->Get<Shape>(rShape));
+        ptr->AddShape(key, shape);
     }
     return ptr;
 }

@@ -38,7 +38,7 @@ protected:
 
 inline void StateMachine2::AddState(const std::string& id, std::shared_ptr<State2> state) {
     m_states.insert(std::make_pair(id, state));
-    state->AttachStateMachine(this);
+
 }
 
 inline std::string StateMachine2::GetState() const {

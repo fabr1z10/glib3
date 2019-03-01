@@ -8,15 +8,22 @@ roomInfo = {
 
 local mario_refresh = function(mario) 
 	print ("Calling refresh!!!")
-	local state = mario.state
-	print (state)
-	local supermario = mario:get("supermario")
-	local fire = mario:get("fire")
+	local supermario = mario:get("supermario")	
 	print ("supermario = " .. tostring(supermario))
-	local anim = state .. (supermario and "s" or "n") .. (fire and "f" or "n" )
-	local coll = supermario and "large" or "small"
+	local anim = nil
+	local coll = nil
+	
+	if (supermario == true) then
+		local fire = mario:get("fire")
+		anim = anim .. (fire and "fire." or "nofire.")
+		coll = "large."
+	else
+		anim = "small."
+		coll = "small."
+	end
 	print ("anim = " .. anim)
 	print ("coll = " .. coll)
+	-- return class for animation and collision
 	return { anim, coll }
 end
 
@@ -73,6 +80,17 @@ room = {
 							acceleration_air = 0.05, 
 							speed = 75, 
 							jump_velocity = variables.jump_velocity,
+							anims = {
+								idle = "idle",
+								walk = "walk",
+								jump_up = "jump",
+								jump_down = "jump",
+								turn = "walk"
+							},
+							colliders = {
+								{ key = "small.walk", value = { type="rect", width = 16, height = 16, offset={-8,0} }},
+								{ key = "large.walk", value = { type="rect", width = 16, height = 32, offset={-8,0} }}
+							},
 							f = mario_refresh
 						},
 						{
@@ -91,7 +109,7 @@ room = {
 							maxdescendangle = 80
 						},
 						{
-							type ="keyinput"
+							type ="keyinput" 
 						}
 					}
 				}

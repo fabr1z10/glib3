@@ -10,7 +10,7 @@ m_enabled(orig.m_enabled)
 {}
 
 std::shared_ptr<Component> Collider::clone() const {
-    return std::make_shared<Collider>(Collider(*this));
+    return std::make_shared<Collider>(*this);
 }
 
 void Collider::SetParent(Entity * entity) {
@@ -53,10 +53,21 @@ void Collider::SetShape(std::shared_ptr<Shape> shape) {
     // call move
     Move(nullptr);
     // notify listeners my shape has changed!
-    if (m_engine != nullptr) {
-        m_engine->Move(this);
-    }
+//    if (m_engine != nullptr) {
+//        m_engine->Move(this);
+//    }
     onShapeChanged.Fire(this);
+    if (m_shape != nullptr) {
+        m_entity->ClearAllChildren();
+        auto c = std::make_shared<Entity>();
+        auto renderer = std::make_shared<Renderer>();
+        glm::vec4 color(1.0f, 0.0f, 0.0f, 1.0f);
+        auto mesh = MeshFactory::CreateMesh(*(m_shape.get()), 0.0f);
+        renderer->SetMesh(mesh);
+        renderer->SetTint(color);
+        c->AddComponent(renderer);
+        m_entity->AddChild(c);
+    }
 }
 
 void Collider::Move(Entity* e) {

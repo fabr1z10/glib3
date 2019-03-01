@@ -7,9 +7,9 @@ std::shared_ptr<Component> KeyboardInputMethod::clone() const {
     return std::make_shared<KeyboardInputMethod>(*this);
 }
 
-bool KeyboardInputMethod::isKeyDown(int) {
+bool KeyboardInputMethod::isKeyDown(int key) {
 
-    return (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS);
+    return (glfwGetKey(window, key) == GLFW_PRESS);
 }
 
 void KeyboardInputMethod::KeyCallback(GLFWwindow*, int key, int scancode, int action, int mod) {

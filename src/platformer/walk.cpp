@@ -18,8 +18,21 @@ std::shared_ptr<State2> Walk::clone() const {
 }
 
 
+void Walk::UpdateAnimation(bool left, bool right) {
+    if (!left && !right) {
+        m_animFlag = 0;
+    } else {
+        m_animFlag = ((left && m_dynamics->m_velocity.x < 0) || (right && m_dynamics->m_velocity.x > 0)) ? 1 : 2;
+    }
+    if (m_prevAnimFlag != m_animFlag) {
+        m_prevAnimFlag = m_animFlag;
+        m_sm->SetAnimation(m_anims[m_animFlag]);
+    }
+    m_sm->SetCollider(m_colliderId);
+}
+
 void Walk::AttachStateMachine(StateMachine2* sm) {
-    m_sm = sm;
+    m_sm = dynamic_cast<CharacterStateMachine*>(sm);
     m_entity = sm->GetObject();
     m_controller = m_entity->GetComponent<Controller2D>();
     m_dynamics = dynamic_cast<Dynamics2D*>(m_entity->GetComponent<Properties>());
@@ -44,6 +57,14 @@ void Walk::KeyListener(int key) {
     }
 }
 
+void Walk::Init() {
+    m_velocitySmoothing=0.0f;
+    bool left =m_input->isKeyDown(GLFW_KEY_LEFT);
+    bool right =m_input->isKeyDown(GLFW_KEY_RIGHT);
+    UpdateAnimation(left, right);
+
+}
+
 void Walk::Run (double dt) {
     if (!m_controller->m_details.below) {
         m_sm->SetState("jump");
@@ -55,6 +76,7 @@ void Walk::Run (double dt) {
 
     m_dynamics->m_velocity.y = m_dynamics->m_gravity * static_cast<float>(dt);
     float targetVelocityX = 0.0f;
+
     if (left || right) {
         m_entity->SetFlipX(left);
         targetVelocityX = m_speed;
@@ -63,5 +85,7 @@ void Walk::Run (double dt) {
     m_dynamics->m_velocity.x = SmoothDamp(m_dynamics->m_velocity.x, targetVelocityX, m_velocitySmoothing, m_acceleration, dt);
     glm::vec2 delta = static_cast<float>(dt) * m_dynamics->m_velocity;
     m_controller->Move(delta);
+
+    UpdateAnimation(left, right);
 
 }

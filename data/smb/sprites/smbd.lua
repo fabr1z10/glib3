@@ -10,13 +10,13 @@ models["mario"] = {
     ppu=1,
 	animations = {
 		{
-			name = "idle",
+			name = "small.idle",
 			frames = {
 				{ duration = dt, quads = {{ id = s.mario_idle }}}
 			}
 		},
 		{
-			name = "walk",
+			name = "small.walk",
 			frames = {
 				{ duration = dt, quads = {{ id = s.mario_walk_1 } }},
 				{ duration = dt, quads = {{ id = s.mario_walk_2 } }},
@@ -24,7 +24,7 @@ models["mario"] = {
 			}
 		},
 		{
-			name = "jump",
+			name = "small.jump",
 			frames = {
 				{ duration = dt, quads = {{ id = s.mario_jump }}},
 			}
