@@ -31,6 +31,8 @@ struct EntityWrapper {
     std::string GetTag() const;
     std::string GetState() const;
     luabridge::LuaRef GetProperty(const std::string&) const;
+    void SetProperty (const std::string&, luabridge::LuaRef value);
+    void SendMessage (luabridge::LuaRef ref);
     luabridge::LuaRef GetAnim() const;
     void SetAnim(const std::string&);
     void SetModel (const std::string&, const std::string&);

@@ -15,7 +15,7 @@ local mario_refresh = function(mario)
 	
 	if (supermario == true) then
 		local fire = mario:get("fire")
-		anim = anim .. (fire and "fire." or "nofire.")
+		anim = "large." .. (fire and "fire." or "nofire.")
 		coll = "large."
 	else
 		anim = "small."
@@ -100,7 +100,13 @@ room = {
 							additional_info = {
 								supermario = false,
 								fire = false,
-								invincibility = false
+								invincibility = false,
+								supermario_set = function(entity, info, value) 
+									print ("ciao coglione".. tostring(value))
+									info.supermario = value
+									entity:send_message { key = "enable_duck", value = value, trigger_refresh = true}
+									--entity:refresh()
+								end
 							}
 						},
 						{ 
@@ -228,14 +234,15 @@ room = {
 -- end
 
 function room.afterstartup() 
-	-- local s = script:new()
-	-- s.actions = {
-	-- 	{ id = 1, after={0}, action = {type="callfunc", func = function() 
-	-- 		local m = monkey.getEntity("player")
-	-- 		monkey.set2(m, "cane", 10) 
-	-- 	end }}
-	-- }	
-	-- monkey.play(s)
+	local s = script:new()
+	s.actions = {
+		{ id = 1, after={0}, action = {type="delay", sec=5}},
+		{ id = 2, after={1}, action = {type="callfunc", func = function() 
+	 		local m = monkey.getEntity("player")
+	 		m:set("supermario", true)
+	 	end }}
+	}	
+	monkey.play(s)
 	-- local s = script:new("_troll")
 	-- s.actions = {
 	-- 	action.say { id=1, actor="bridge.troll", lines = {d[1]}, animstart="talk", animend="idle" },

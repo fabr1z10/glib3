@@ -13,6 +13,7 @@ public:
     virtual void End () = 0;
     virtual std::shared_ptr<State2> clone() const = 0;
     virtual void AttachStateMachine(StateMachine2*) = 0;
+    virtual void KeyListener (int) {}
 };
 
 

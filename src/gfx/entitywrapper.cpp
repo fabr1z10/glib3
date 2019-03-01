@@ -12,6 +12,7 @@
 #include <gfx/components/dynamics2d.h>
 #include <gfx/components/statemachine2.h>
 #include <gfx/properties.h>
+#include <gfx/components/extstatemachine.h>
 
 float EntityWrapper::GetX() const {
     return m_underlying->GetPosition().x;
@@ -41,7 +42,16 @@ std::string EntityWrapper::GetState() const {
 luabridge::LuaRef EntityWrapper::GetProperty(const std::string& key) const {
     auto sm = m_underlying->GetComponent<Properties>();
     return sm->get(key);
+}
 
+void EntityWrapper::SetProperty (const std::string& key, luabridge::LuaRef value) {
+    auto sm = m_underlying->GetComponent<Properties>();
+    return sm->set(key, value);
+}
+
+void EntityWrapper::SendMessage(luabridge::LuaRef ref) {
+    auto sm = dynamic_cast<ExtendedStateMachine*>(m_underlying->GetComponent<StateMachine2>());
+    return sm->SendMessage(ref);
 
 }
 

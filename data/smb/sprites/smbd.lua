@@ -16,6 +16,12 @@ models["mario"] = {
 			}
 		},
 		{
+			name = "large.nofire.idle",
+			frames = {
+				{ duration = dt, quads = {{ id = s.mario_idle_big }}}
+			}
+		},
+		{
 			name = "small.walk",
 			frames = {
 				{ duration = dt, quads = {{ id = s.mario_walk_1 } }},
@@ -24,9 +30,23 @@ models["mario"] = {
 			}
 		},
 		{
+			name = "large.nofire.walk",
+			frames = {
+				{ duration = dt, quads = {{ id = s.mario_walk_big_1 } }},
+				{ duration = dt, quads = {{ id = s.mario_walk_big_2 } }},
+				{ duration = dt, quads = {{ id = s.mario_walk_big_3 } }},
+			}
+		},
+		{
 			name = "small.jump",
 			frames = {
 				{ duration = dt, quads = {{ id = s.mario_jump }}},
+			}
+		},
+		{
+			name = "large.nofire.jump",
+			frames = {
+				{ duration = dt, quads = {{ id = s.mario_jump_big }}},
 			}
 		},
 	}

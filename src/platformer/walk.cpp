@@ -28,7 +28,6 @@ void Walk::UpdateAnimation(bool left, bool right) {
         m_prevAnimFlag = m_animFlag;
         m_sm->SetAnimation(m_anims[m_animFlag]);
     }
-    m_sm->SetCollider(m_colliderId);
 }
 
 void Walk::AttachStateMachine(StateMachine2* sm) {
@@ -42,7 +41,6 @@ void Walk::AttachStateMachine(StateMachine2* sm) {
         GLIB_FAIL("Walk state requires an input method component attached!");
     }
     // when walking, I want to know when the user press the up key, because this allows me to jump
-    m_input->onKeyDown.Register(this, [&] (int key) { this->KeyListener(key); });
 }
 
 void Walk::KeyListener(int key) {
@@ -58,10 +56,12 @@ void Walk::KeyListener(int key) {
 }
 
 void Walk::Init() {
+    m_prevAnimFlag = -1;
     m_velocitySmoothing=0.0f;
     bool left =m_input->isKeyDown(GLFW_KEY_LEFT);
     bool right =m_input->isKeyDown(GLFW_KEY_RIGHT);
     UpdateAnimation(left, right);
+    m_sm->SetCollider(m_colliderId);
 
 }
 

@@ -1,5 +1,6 @@
 #include <gfx/properties.h>
 #include <gfx/error.h>
+#include <gfx/entitywrapper.h>
 
 Properties::Properties(const Properties & orig) : Component(orig) {
     m_additionalProperties = orig.m_additionalProperties;
@@ -33,10 +34,17 @@ luabridge::LuaRef Properties::get(const std::string & key) {
 void Properties::set(const std::string &key, luabridge::LuaRef value) {
     auto it = m_getters.find(key);
     if (it == m_getters.end()) {
-
+        // see if I have a setter func for this
+        luabridge::LuaRef setter = (*m_additionalProperties.get())[key + "_set"];
+        if (setter.isNil()) {
+            (*m_additionalProperties.get())[key] = value;
+        } else {
+            setter(EntityWrapper(m_entity), (*m_additionalProperties.get()), value);
+        }
+    } else {
+        if (it->second->isReadOnly()) {
+            GLIB_FAIL("Attempting to write a read-only property: " << key);
+        }
+        it->second->set(value);
     }
-    if (it->second->isReadOnly()) {
-        GLIB_FAIL("Attempting to write a read-only property: " << key);
-    }
-    it->second->set(value);
 }

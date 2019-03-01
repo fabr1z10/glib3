@@ -39,6 +39,8 @@ void LuaWrapper::Init() {
             .addProperty("text", &EntityWrapper::GetText)
             .addProperty("lines", &EntityWrapper::GetLines)
             .addFunction("get", &EntityWrapper::GetProperty)
+            .addFunction("set", &EntityWrapper::SetProperty)
+            .addFunction("send_message", &EntityWrapper::SendMessage)
             .addFunction("remove", &EntityWrapper::Remove)
             .addFunction("parent", &EntityWrapper::GetParent)
             .addFunction("setcolor", &EntityWrapper::SetColor)

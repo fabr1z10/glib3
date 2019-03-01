@@ -42,6 +42,7 @@ void Jump::AttachStateMachine(StateMachine2* sm) {
 }
 
 void Jump::Init() {
+    m_prevAnimFlag = -1;
     m_velocitySmoothing=0.0f;
     UpdateAnimation();
     m_stateMachine->SetCollider(m_colliderId);
