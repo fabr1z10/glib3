@@ -1,5 +1,6 @@
 #pragma once
 
+#include <array>
 #include <platformer/characterstatemachine.h>
 
 class Controller2D;
