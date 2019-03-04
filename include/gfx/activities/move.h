@@ -43,9 +43,15 @@ private:
     float m_angle;
 };
 
-class MoveGravity : public Activity {
+class MoveAccelerated : public Activity {
 public:
-    MoveGravity(const std::string &actorId, glm::vec2 initialVelocity, float g, float yStop, float rotationSpeed, float finalRotation);
+    MoveAccelerated(
+        const std::string &actorId,
+        glm::vec2 initialVelocity,
+        glm::vec2 acceleration,
+        float yStop,
+        float rotationSpeed,
+        float finalRotation);
 
     void Start() override;
 
@@ -56,7 +62,7 @@ private:
     float m_yStop;
     glm::vec2 m_initialVelocity;
     glm::vec2 m_velocity;
-    float m_g;
+    glm::vec2 m_acceleration;
     std::string m_actorId;
     float m_angle;
     float m_rotationSpeed;

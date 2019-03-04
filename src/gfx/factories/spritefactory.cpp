@@ -20,6 +20,8 @@ std::unique_ptr<Entity> SpriteFactory::Create (luabridge::LuaRef& ref) {
         auto animator = entity->GetComponent<Animator>();
         animator->SetInitialAnimation(anim);
     }
+
+
     
     // set the position (default origin)
     glm::vec3 pos = table.Get<glm::vec3>("pos", glm::vec3(0.0f));
@@ -44,6 +46,16 @@ std::unique_ptr<Entity> SpriteFactory::Create (luabridge::LuaRef& ref) {
     }
     if (!name.empty()) {
         entity->SetName(name);
+    }
+
+    if (table.HasKey("children")) {
+        luabridge::LuaRef c = table.Get<luabridge::LuaRef>("children");
+        for (int i = 0; i < c.length(); ++i) {
+            luabridge::LuaRef child = c[i+1];
+            auto childEntity = factory->GetShared<Entity>(child);
+            if (childEntity != nullptr)
+                entity->AddChild(childEntity);
+        }
     }
 
     return entity;

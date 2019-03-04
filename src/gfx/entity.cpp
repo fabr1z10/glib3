@@ -30,7 +30,7 @@ Entity::Entity(const Entity & e) {
 }
 
 std::shared_ptr<Entity> Entity::clone() const {
-    return std::make_shared<Entity>(Entity(*this));
+    return std::make_shared<Entity>(*this);
 }
 
 

@@ -44,8 +44,8 @@ void Walk::AttachStateMachine(StateMachine2* sm) {
 }
 
 void Walk::KeyListener(int key) {
-    if (key == GLFW_KEY_DOWN) {
-        // duck
+    if (m_canDuck && key == GLFW_KEY_DOWN) {
+        m_sm->SetState("duck");
     }
 
     if (key == GLFW_KEY_UP) {

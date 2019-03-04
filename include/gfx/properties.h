@@ -45,6 +45,7 @@ public:
     void addAdditionalProps(luabridge::LuaRef ref);
     void Start() override {}
     void Update(double) override  {}
+    using ParentClass = Properties;
 protected:
     std::shared_ptr<luabridge::LuaRef> m_additionalProperties;
     std::unordered_map<std::string, std::unique_ptr<IAccessor>> m_getters;

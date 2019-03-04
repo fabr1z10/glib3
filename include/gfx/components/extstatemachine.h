@@ -27,6 +27,7 @@ public:
     void AddShape (const std::string& key, std::shared_ptr<Shape> value);
     void KeyListener (int) ;
     void SendMessage (luabridge::LuaRef message);
+    void AddMessage (const std::string& key, std::function<void(luabridge::LuaRef)> value);
 private:
     std::unordered_map<std::string, std::shared_ptr<Shape>> m_colliders;
     Animator * m_animator;

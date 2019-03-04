@@ -12,6 +12,7 @@ public:
         float accelerationGround,
         float acceleationAir,
         float jumpVelocity,
+        bool canDuck,
         // animation
         const std::string& idle,
         const std::string& walk,

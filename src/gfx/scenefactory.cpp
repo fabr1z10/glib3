@@ -84,6 +84,7 @@ SceneFactory::SceneFactory() {
 
     m_componentFactory.Add<Controller2DComponentFactory>("controller2d");
     m_componentFactory.Add<Dynamics2DComponentFactory>("dynamics2d");
+    m_componentFactory.Add<PropertiesCompFactory>("properties");
     //m_componentFactory.Add<StateMachineComponentFactory>("statemachine");
     m_componentFactory.Add<FollowComponentFactory>("follow");
     //m_componentFactory.Add<Follow3DComponentFactory>("follow3d");
@@ -119,7 +120,7 @@ SceneFactory::SceneFactory() {
     m_activityFactory.Add<FlipActFactory>("flip");
     m_activityFactory.Add<MoveActFactory>("move");
     m_activityFactory.Add<RotateActFactory>("rotate");
-    m_activityFactory.Add<MoveGravityActFactory>("movegravity");
+    m_activityFactory.Add<MoveAcceleratedActFactory>("moveaccelerated");
     //m_activityFactory.Add<ChangeStateActFactory>("changestate");
     m_activityFactory.Add<ChangeRoomActFactory>("gotoroom");
     m_activityFactory.Add<DelayActFactory>("delay");

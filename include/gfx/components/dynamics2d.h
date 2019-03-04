@@ -11,6 +11,8 @@ public:
     glm::vec2 m_velocity;
     float m_gravity;
     std::type_index GetType() override;
+    using ParentClass = Properties;
+
 };
 
 inline std::type_index Dynamics2D::GetType() {

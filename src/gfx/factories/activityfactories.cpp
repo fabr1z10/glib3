@@ -96,15 +96,15 @@ std::unique_ptr<Activity> MoveActFactory::Create(luabridge::LuaRef &ref) {
     return std::move(m);
 };
 
-std::unique_ptr<Activity> MoveGravityActFactory::Create(luabridge::LuaRef &ref) {
+std::unique_ptr<Activity> MoveAcceleratedActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
     std::string actor = table.Get<std::string>("actor");
     glm::vec2 initialVelocity = table.Get<glm::vec2>("velocity");
-    float g = table.Get<float>("g");
+    glm::vec2 acceleration= table.Get<glm::vec2>("acceleration");
     float yStop = table.Get<float>("ystop");
     float rotSpeed = table.Get<float>("rotationspeed", 0.0f);
     float finRotation = table.Get<float>("finalrotation", 0.0f) * deg2rad;
-    return std::unique_ptr<MoveGravity>(new MoveGravity(actor, initialVelocity, g, yStop, rotSpeed, finRotation));
+    return std::unique_ptr<MoveAccelerated>(new MoveAccelerated(actor, initialVelocity, acceleration, yStop, rotSpeed, finRotation));
 };
 
 

@@ -7,9 +7,9 @@ roomInfo = {
 }
 
 local mario_refresh = function(mario) 
-	print ("Calling refresh!!!")
+	--print ("Calling refresh!!!")
 	local supermario = mario:get("supermario")	
-	print ("supermario = " .. tostring(supermario))
+	--print ("supermario = " .. tostring(supermario))
 	local anim = nil
 	local coll = nil
 	
@@ -21,8 +21,8 @@ local mario_refresh = function(mario)
 		anim = "small."
 		coll = "small."
 	end
-	print ("anim = " .. anim)
-	print ("coll = " .. coll)
+	--print ("anim = " .. anim)
+	--print ("coll = " .. coll)
 	-- return class for animation and collision
 	return { anim, coll }
 end
@@ -34,19 +34,7 @@ room = {
 		--	{ key = 299, func = function() monkey.endroom() end }
 		--} },
 		{ type = "scheduler" },
-		{ 
-			type = "collision", 
-			size = {128, 128}, 
-			response = {
-						-- { tag = {1, 2}, onenter=function(e,f) 
-
-						-- 	local info = f:getinfo()
-						-- 	if (info.onenter ~= nil) then
-						-- 		info.onenter()
-						-- 	end
-					 -- 	end}
-			}
-		}
+		variables.collider
 	},
 	scene = {
 		{
@@ -72,6 +60,12 @@ room = {
 							mask = 1, 
     						tag=1
 						},
+						{
+							type="follow",
+							cam = "maincam",
+							relativepos = {0, 0, 5},
+							up = {0,1,0}
+						},
 						-- mario has two additional parameters 
 						-- supermario and fire bothdetermine the animation and 
 						{ 
@@ -80,16 +74,19 @@ room = {
 							acceleration_air = 0.05, 
 							speed = 75, 
 							jump_velocity = variables.jump_velocity,
+							can_duck = false,
 							anims = {
 								idle = "idle",
 								walk = "walk",
 								jump_up = "jump",
 								jump_down = "jump",
-								turn = "walk"
+								turn = "walk",
+								duck = "duck"
 							},
 							colliders = {
 								{ key = "small.walk", value = { type="rect", width = 16, height = 16, offset={-8,0} }},
-								{ key = "large.walk", value = { type="rect", width = 16, height = 32, offset={-8,0} }}
+								{ key = "large.walk", value = { type="rect", width = 16, height = 32, offset={-8,0} }},
+								{ key = "large.duck", value = { type="rect", width = 16, height = 24, offset={-8,0} }}
 							},
 							f = mario_refresh
 						},
@@ -126,6 +123,7 @@ room = {
 		{
 			parent = "main",
 			children = {
+				factory.basic_brick.create { pos ={4, 5}, sprite ="basicbrick", piece_sprite ="brick_piece" },
 				factory.rect { pos = {0,0}, width = 69, height = 2, img="gfx/block1.png" },
 				factory.rect { pos = {71, 0}, width = 15, height = 2, img = "gfx/block1.png" }
 			}
@@ -234,22 +232,33 @@ room = {
 -- end
 
 function room.afterstartup() 
-	local s = script:new()
-	s.actions = {
-		{ id = 1, after={0}, action = {type="delay", sec=5}},
-		{ id = 2, after={1}, action = {type="callfunc", func = function() 
-	 		local m = monkey.getEntity("player")
-	 		m:set("supermario", true)
-	 	end }}
-	}	
-	monkey.play(s)
+--	local s = script:new()
+
+
+	local s = ms2 {--
+	    { type = action.delay, args = { sec = 2} },
+		{ type = action.callfunc, args = { func = 
+			function()
+				local m = monkey.getEntity("player")
+				m:set("supermario", true)
+			end
+		}}
+	}
+	-- s.actions = {
+	-- 	{ id = 1, after={0}, action = {type="delay", sec=5}},
+	-- 	{ id = 2, after={1}, action = {type="callfunc", func = function() 
+	--  		local m = monkey.getEntity("player")
+	--  		m:set("supermario", true)
+	--  	end }}
+	-- }	
+	--monkey.play(s)
 	-- local s = script:new("_troll")
 	-- s.actions = {
 	-- 	action.say { id=1, actor="bridge.troll", lines = {d[1]}, animstart="talk", animend="idle" },
 	-- 	action.delay { id=2, sec=5},
 	-- }
 	-- s.loop = 1
-	-- monkey.play(s)
+	monkey.play(s)
 end
 
 

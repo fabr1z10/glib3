@@ -53,6 +53,7 @@ std::unique_ptr<Component> CharacterStateCompFactory::Create(luabridge::LuaRef &
     float accGnd = table.Get<float>("acceleration_ground");
     float accAir = table.Get<float>("acceleration_air");
     float jumpHeight = table.Get<float>("jump_velocity");
+    bool canDuck = table.Get<bool>("can_duck");
     luabridge::LuaRef animTable = table.Get<luabridge::LuaRef>("anims");
     LuaTable at (animTable);
 
@@ -66,7 +67,7 @@ std::unique_ptr<Component> CharacterStateCompFactory::Create(luabridge::LuaRef &
 
 
     auto ptr = std::unique_ptr<CharacterStateMachine>(
-            new CharacterStateMachine(speed, accGnd, accAir, jumpHeight,
+            new CharacterStateMachine(speed, accGnd, accAir, jumpHeight, canDuck,
             anim_idle, anim_walk, anim_turn, anim_duck, anim_jump_up, anim_jump_down));
 
     if (table.HasKey("f")) {

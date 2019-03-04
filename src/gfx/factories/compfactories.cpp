@@ -378,6 +378,15 @@ std::unique_ptr<Component> Dynamics2DComponentFactory::Create(luabridge::LuaRef 
     return ptr;
 }
 
+std::unique_ptr<Component> PropertiesCompFactory::Create(luabridge::LuaRef & ref) {
+    LuaTable table(ref);
+    auto ptr =  std::unique_ptr<Properties>(new Properties);
+    if (table.HasKey("additional_info")) {
+        luabridge::LuaRef ainfo = table.Get<luabridge::LuaRef>("additional_info");
+        ptr->addAdditionalProps(ainfo);
+    }
+    return ptr;
+}
 
 std::unique_ptr<Component> InfoComponentFactory::Create(luabridge::LuaRef & ref) {
     auto comp = std::unique_ptr<LuaInfo>(new LuaInfo(ref));

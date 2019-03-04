@@ -18,6 +18,7 @@ public:
 
     // also, it provides methods to check individual keys
     virtual bool isKeyDown (int) = 0;
+    using ParentClass = InputMethod;
 };
 
 

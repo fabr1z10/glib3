@@ -1,4 +1,5 @@
 #include "gfx/dynamicworld.h"
+#include "gfx/engine.h"
 #include "gfx/components/renderer.h"
 #include <iostream>
 
@@ -29,8 +30,8 @@ void DynamicWorldBuilder::UpdateWorld(glm::vec3 pos) {
         if (item.m_object == nullptr) {
             glm::vec3 pos = item.m_blueprint->GetPosition();
             Bounds b = item.m_bounds;
-            b.min += glm::vec2(pos.x, pos.y);
-            b.max += glm::vec2(pos.x, pos.y);
+            //b.min += glm::vec2(pos.x, pos.y);
+            //b.max += glm::vec2(pos.x, pos.y);
             if (b.Intersects(m_activeBounds)) {
                 std::cout << "Creating item with bounds (" << b.min.x << ", " << b.min.y << "), (" << b.max.x << ", " << b.max.y << ")\n";
                 item.m_object = item.m_blueprint->clone();
@@ -40,10 +41,12 @@ void DynamicWorldBuilder::UpdateWorld(glm::vec3 pos) {
             // check if it's out of the active area
             glm::vec3 pos = item.m_object->GetPosition();
             Bounds b = item.m_bounds;
-            b.min += glm::vec2(pos.x, pos.y);
-            b.max += glm::vec2(pos.x, pos.y);
+            //b.min += glm::vec2(pos.x, pos.y);
+            //b.max += glm::vec2(pos.x, pos.y);
             if (!b.Intersects(m_activeBounds)) {
-                std::cout << "Removing ...\n";
+                std::cout << "Removing item at (" << pos.x << ", " << pos.y << "...\n";
+                Engine::get().Remove(item.m_object.get());
+                item.m_object = nullptr;
             }
         }
 

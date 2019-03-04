@@ -90,3 +90,7 @@ void ExtendedStateMachine::SendMessage(luabridge::LuaRef message) {
 
 
 }
+
+void ExtendedStateMachine::AddMessage(const std::string &key, std::function<void(luabridge::LuaRef)> value) {
+    m_messageHandlers.insert(std::make_pair(key, value));
+}

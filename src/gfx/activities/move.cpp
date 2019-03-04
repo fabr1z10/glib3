@@ -100,27 +100,36 @@ void MoveAndRotateTo::Run(float dt) {
     }
 }
 
-MoveGravity::MoveGravity (const std::string& actorId, glm::vec2 initialVelocity, float g, float yStop, float rotationSpeed, float finalRotation) :
-        Activity(), m_entity{nullptr}, m_actorId(actorId), m_initialVelocity(initialVelocity), m_g(g), m_yStop(yStop), m_rotationSpeed(rotationSpeed), m_finalRotation(finalRotation) {}
+MoveAccelerated::MoveAccelerated (
+    const std::string& actorId,
+    glm::vec2 initialVelocity,
+    glm::vec2 acceleration,
+    float yStop,
+    float rotationSpeed,
+    float finalRotation) :
+Activity(), m_entity{nullptr}, m_actorId(actorId),
+m_initialVelocity(initialVelocity), m_acceleration(acceleration), m_yStop(yStop), m_rotationSpeed(rotationSpeed), m_finalRotation(finalRotation) {
+
+}
 
 
-void MoveGravity::Start() {
+void MoveAccelerated::Start() {
     if (m_entity == nullptr) {
         m_entity = Engine::get().GetRef<Entity>(m_actorId);
     }
     m_velocity = m_initialVelocity;
     m_angle = 0.0f;
-    std::cout << "Initial velocity " << m_velocity.x << "," << m_velocity.y << "\n";
-    std::cout << "rot speed  " << m_rotationSpeed << "\n";
+    //std::cout << "Initial velocity " << m_velocity.x << "," << m_velocity.y << "\n";
+    //std::cout << "rot speed  " << m_rotationSpeed << "\n";
 }
 
-void MoveGravity::Run(float dt) {
+void MoveAccelerated::Run(float dt) {
     glm::vec3 p(m_entity->GetPosition());
     //glm::mat4 wt = m_entity->GetWorldTransform();
     m_angle += m_rotationSpeed*dt;
     glm::vec2 pos(p);
     pos += m_velocity * dt;
-    m_velocity += glm::vec2(0, -m_g) *dt;
+    m_velocity += m_acceleration * dt;
     if (pos.y <= m_yStop && m_velocity.y<0) {
         pos.y = m_yStop;
         m_angle = m_finalRotation;

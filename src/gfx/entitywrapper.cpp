@@ -41,6 +41,9 @@ std::string EntityWrapper::GetState() const {
 
 luabridge::LuaRef EntityWrapper::GetProperty(const std::string& key) const {
     auto sm = m_underlying->GetComponent<Properties>();
+    if (sm == nullptr) {
+        return luabridge::LuaRef(LuaWrapper::L);
+    }
     return sm->get(key);
 }
 

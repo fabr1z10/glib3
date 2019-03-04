@@ -30,6 +30,7 @@ public:
     virtual void Refresh () {}
     void AddState(const std::string& id, std::shared_ptr<State2> state);
     std::shared_ptr<Component> clone() const override;
+    using ParentClass = StateMachine2;
 protected:
     State2* m_currentState;
     std::string m_currentStateId;

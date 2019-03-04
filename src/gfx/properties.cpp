@@ -1,6 +1,7 @@
 #include <gfx/properties.h>
 #include <gfx/error.h>
 #include <gfx/entitywrapper.h>
+#include <iostream>
 
 Properties::Properties(const Properties & orig) : Component(orig) {
     m_additionalProperties = orig.m_additionalProperties;
@@ -20,11 +21,13 @@ luabridge::LuaRef Properties::get(const std::string & key) {
     auto it = m_getters.find(key);
     if (it == m_getters.end()) {
         if (m_additionalProperties == nullptr) {
-            GLIB_FAIL("Don't know property: " << key);
+            std::cout << "Don't know property: " << key << "\n";
+            return luabridge::LuaRef(LuaWrapper::L);
         }
         luabridge::LuaRef value = (*m_additionalProperties.get())[key.c_str()];
         if (value.isNil()) {
-            GLIB_FAIL("Don't know property: " << key);
+            std::cout << "Don't know property: " << key << "\n";
+            return luabridge::LuaRef(LuaWrapper::L);
         }
         return value;
     }

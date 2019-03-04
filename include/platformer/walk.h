@@ -22,12 +22,13 @@ public:
     Walk(float speed, float acceleration, float jumpVelocity,
         const std::string& idleAnim, const std::string& walkAnim, const std::string& turnAnim) : State2(),
     m_speed(speed), m_acceleration(acceleration), m_velocitySmoothing(0.0f), m_jumpVelocity(jumpVelocity),
-    m_anims{idleAnim, walkAnim, turnAnim}, m_prevAnimFlag(-1), m_colliderId("walk") {
+    m_anims{idleAnim, walkAnim, turnAnim}, m_prevAnimFlag(-1), m_colliderId("walk"), m_canDuck(false) {
     }
     Walk(const Walk & orig) : State2(orig) {
         m_speed = orig.m_speed;
         m_velocitySmoothing = orig.m_velocitySmoothing;
     }
+    void SetCanDuck (bool);
     void Init () override;
     void Run(double) override;
     void AttachStateMachine(StateMachine2* sm) override;
@@ -48,10 +49,14 @@ private:
     float m_jumpVelocity;
     int m_animFlag;
     int m_prevAnimFlag;
+    bool m_canDuck;
     std::array<std::string, 3> m_anims;
     std::string m_colliderId;
 };
 
+inline void Walk::SetCanDuck(bool value) {
+    m_canDuck = value;
+}
 
 
 

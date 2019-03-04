@@ -1,6 +1,7 @@
 #include <platformer/characterstatemachine.h>
 #include <platformer/walk.h>
 #include <platformer/jump.h>
+#include <platformer/duck.h>
 #include <iostream>
 
 #include <gfx/error.h>
@@ -14,6 +15,7 @@ CharacterStateMachine::CharacterStateMachine(
     float accelerationGround,
     float accelerationAir,
     float jumpVelocity,
+    bool canDuck,
     const std::string& idle,
     const std::string& walk,
     const std::string& turn,
@@ -21,8 +23,17 @@ CharacterStateMachine::CharacterStateMachine(
     const std::string& jumpUp,
     const std::string& jumpDown) : ExtendedStateMachine("walk")
 {
-    AddState ("walk", std::make_shared<Walk> (speed, accelerationGround, jumpVelocity, idle, walk, turn));
-    AddState ("jump", std::make_shared<Jump>(speed, accelerationAir, jumpUp, jumpDown));
+    auto w = std::make_shared<Walk> (speed, accelerationGround, jumpVelocity, idle, walk, turn);
+    AddState ("walk", w);
+    AddState ("jump", std::make_shared<Jump> (speed, accelerationAir, jumpUp, jumpDown));
+    AddState ("duck", std::make_shared<Duck> (accelerationGround, duck));
+
+    // add messages
+    AddMessage("enable_duck", [w] (luabridge::LuaRef ref) {
+        bool value = ref.cast<bool>();
+        w->SetCanDuck(value);
+    } );
+
 }
 //
 //void CharacterStateMachine::AddShape (const std::string& key, std::shared_ptr<Shape> value) {

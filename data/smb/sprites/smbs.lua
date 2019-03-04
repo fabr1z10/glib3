@@ -8,5 +8,8 @@ spritesheets["smb"] = {
 	mario_walk_big_2 = {x=112, y=16, width=16, height=32, anchor={8,0} },
 	mario_walk_big_3 = {x=128, y=16, width=16, height=32, anchor={8,0} },
 	mario_jump = {x=80, y=0, width=16, height=16, anchor={8,0}},
-	mario_jump_big = {x=144, y=16, width=16, height=32, anchor={8,0}}
+	mario_jump_big = {x=144, y=16, width=16, height=32, anchor={8,0}},
+	mario_duck_big = {x=96, y=128, width=16, height=32, anchor={8,0}},
+	brick = {x=240, y=0, width=16, height=16 },
+	brick_piece = {x=64, y=16, width=16, height=16, anchor ={8,0}}
 }

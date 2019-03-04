@@ -4,6 +4,9 @@ require("sprites/smbs")
 
 local s = spritesheets["smb"]
 
+models["basicbrick"] = { sheet="sprites/smb1.png", type="sprite", ppu=1, animations = { { name="idle", frames = { {duration=dt, quads ={{id=s.brick}}}}}}}
+models["brick_piece"] = { sheet="sprites/smb1.png", type="sprite", ppu=1, animations = { { name="idle", frames = { {duration=dt, quads ={{id=s.brick_piece}}}}}}}
+
 models["mario"] = {
     sheet = "sprites/smb1.png",
     type = "sprite",
@@ -49,6 +52,13 @@ models["mario"] = {
 				{ duration = dt, quads = {{ id = s.mario_jump_big }}},
 			}
 		},
+		{
+			name = "large.nofire.duck",
+			frames = {
+				{ duration = dt, quads = {{ id = s.mario_duck_big }}},
+			}
+		},
+
 	}
 }
 

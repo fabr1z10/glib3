@@ -46,7 +46,7 @@ public:
     }
     template <class T>
     T* GetComponent() {
-        auto it = m_components.find(std::type_index(typeid(T)));
+        auto it = m_components.find(std::type_index(typeid(typename T::ParentClass)));
         if (it != m_components.end()) {
             return dynamic_cast<T*>(it->second.get());
         }
