@@ -48,6 +48,7 @@ room = {
 
 			},
 			children = {
+				factory.mushroom.create{ pos={8,2}, sprite="mushroom"},
 				{	
 					type="sprite",
 					tag="player",

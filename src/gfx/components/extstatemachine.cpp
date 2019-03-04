@@ -63,11 +63,13 @@ void ExtendedStateMachine::SetState (const std::string& state) {
 }
 
 void ExtendedStateMachine::Refresh() {
-    luabridge::LuaRef classes = (*m_refreshFunc.get())(EntityWrapper(this->GetObject()));
-    m_animClass = classes[1].cast<std::string>();
-    m_collClass = classes[2].cast<std::string>();
-    if (!m_currentAnim.empty()) SetAnimation(m_currentAnim);
-    if (!m_currentCollider.empty()) SetCollider(m_currentCollider);
+    if (m_refreshFunc != nullptr) {
+        luabridge::LuaRef classes = (*m_refreshFunc.get())(EntityWrapper(this->GetObject()));
+        m_animClass = classes[1].cast<std::string>();
+        m_collClass = classes[2].cast<std::string>();
+        if (!m_currentAnim.empty()) SetAnimation(m_currentAnim);
+        if (!m_currentCollider.empty()) SetCollider(m_currentCollider);
+    }
 }
 
 void ExtendedStateMachine::SetRefreshFunc (luabridge::LuaRef ref) {

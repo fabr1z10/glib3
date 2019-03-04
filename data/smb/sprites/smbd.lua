@@ -6,6 +6,7 @@ local s = spritesheets["smb"]
 
 models["basicbrick"] = { sheet="sprites/smb1.png", type="sprite", ppu=1, animations = { { name="idle", frames = { {duration=dt, quads ={{id=s.brick}}}}}}}
 models["brick_piece"] = { sheet="sprites/smb1.png", type="sprite", ppu=1, animations = { { name="idle", frames = { {duration=dt, quads ={{id=s.brick_piece}}}}}}}
+models["mushroom"] = { sheet="sprites/smb1.png", type="sprite", ppu=1, animations = { { name="idle", frames = { {duration=dt, quads ={{id=s.mushroom}}}}}}}
 
 models["mario"] = {
     sheet = "sprites/smb1.png",

@@ -47,6 +47,7 @@ action={}
 -- sprites = {}
 require("factories/rect")
 require("factories/bricks")
+require("factories/mushroom")
 require("factories/actions")
 require("sprites/smbs")
 require("sprites/smbd")

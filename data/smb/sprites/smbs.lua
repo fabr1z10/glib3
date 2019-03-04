@@ -11,5 +11,6 @@ spritesheets["smb"] = {
 	mario_jump_big = {x=144, y=16, width=16, height=32, anchor={8,0}},
 	mario_duck_big = {x=96, y=128, width=16, height=32, anchor={8,0}},
 	brick = {x=240, y=0, width=16, height=16 },
-	brick_piece = {x=64, y=16, width=16, height=16, anchor ={8,0}}
+	brick_piece = {x=64, y=16, width=16, height=16, anchor ={8,0}},
+	mushroom = {x=48, y=16, width=16, height=16, anchor={8,0}}
 }

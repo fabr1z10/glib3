@@ -35,6 +35,10 @@ public:
 
 };
 
+//class DoNothingInputMethod : public InputMethod {};
+
+
+
 inline std::type_index KeyboardInputMethod::GetType() {
     return std::type_index(typeid(InputMethod));
 }
