@@ -17,9 +17,29 @@ namespace luaFunctions {
 struct EntityWrapper {
     EntityWrapper() : m_underlying(nullptr) {}
     EntityWrapper(Entity* entity) : m_underlying{entity}{}
+
+    /**
+     * Dynamically adds an entity to the parent, described by a lua table.
+     * The newly created id will be returned to LUA, so that it will be possible
+     * to operate on the new entity (for instance, by attaching a script)
+     * @param ref the entity specification
+     * @param parent the parent node the new entity will be a child of
+     * @return the id of the newly created entity
+     */
     static int AddEntity(luabridge::LuaRef ref, EntityWrapper* parent);
+
+    /**
+     * Removes the entity with the specified tag from the scene.
+     * @param tag the tag of the entity that will be removed
+     */
     static void RemoveEntityFromTag (const std::string& tag);
+
+    /**
+     * Removes the entity with the specified id from the scene.
+     * @param tag the tag of the entity that will be removed
+     */
     static void RemoveEntityFromId (int id);
+
     void Clear();
     void ClearText();
     void Remove();
