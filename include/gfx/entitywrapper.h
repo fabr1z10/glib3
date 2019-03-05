@@ -17,8 +17,9 @@ namespace luaFunctions {
 struct EntityWrapper {
     EntityWrapper() : m_underlying(nullptr) {}
     EntityWrapper(Entity* entity) : m_underlying{entity}{}
-    static EntityWrapper AddEntity(luabridge::LuaRef ref, EntityWrapper* parent);
-    static void RemoveEntity(const std::string& tag);
+    static int AddEntity(luabridge::LuaRef ref, EntityWrapper* parent);
+    static void RemoveEntityFromTag (const std::string& tag);
+    static void RemoveEntityFromId (int id);
     void Clear();
     void ClearText();
     void Remove();

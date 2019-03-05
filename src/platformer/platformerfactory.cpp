@@ -17,6 +17,7 @@ PlatformerFactory::PlatformerFactory() : SceneFactory() {
 //    m_stateBehaviorFactory.Add<EnemyBounce2DStateFactory>("enemybounce2d");
 
     m_componentFactory.Add<CharacterStateCompFactory>("characterstate");
+    m_componentFactory.Add<EnemyInputCompFactory>("enemyinput");
 
     m_activityFactory.Add<DropCharactersActFactory>("dropcharacters");
 

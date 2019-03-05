@@ -22,6 +22,9 @@
 #include <gfx/activities/scriptactions.h>
 #include <gfx/activities/setstate.h>
 
+
+
+
 std::unique_ptr<Activity> NoOpActFactory::Create(luabridge::LuaRef &ref) {
     return std::unique_ptr<NoOp>(new NoOp);
 }
@@ -67,7 +70,7 @@ std::unique_ptr<Activity> CollisionCheckActFactory::Create(luabridge::LuaRef &re
 
 std::unique_ptr<Activity> MoveActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
-    std::string actor = table.Get<std::string>("actor");
+    int id = getId(table);
     bool relative = true;
     glm::vec2 dest;
     if (table.HasKey("to")) {
@@ -85,9 +88,9 @@ std::unique_ptr<Activity> MoveActFactory::Create(luabridge::LuaRef &ref) {
     if (table.HasKey("angle")) {
         float angle = table.Get<float>("angle");
         bool relAngle = table.Get<bool>("angle_relative");
-        m = std::unique_ptr<MoveTo>(new MoveAndRotateTo(actor, dest, speed, relative, immediate, angle, relAngle));
+        m = std::unique_ptr<MoveTo>(new MoveAndRotateTo(id, dest, speed, relative, immediate, angle, relAngle));
     } else {
-        m = std::unique_ptr<MoveTo>(new MoveTo(actor, dest, speed, relative, immediate));
+        m = std::unique_ptr<MoveTo>(new MoveTo(id, dest, speed, relative, immediate));
     }
     if (table.HasKey("acceleration")) {
         float acceleration = table.Get<float>("acceleration");
@@ -98,13 +101,13 @@ std::unique_ptr<Activity> MoveActFactory::Create(luabridge::LuaRef &ref) {
 
 std::unique_ptr<Activity> MoveAcceleratedActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
-    std::string actor = table.Get<std::string>("actor");
+    int id = getId(table);
     glm::vec2 initialVelocity = table.Get<glm::vec2>("velocity");
     glm::vec2 acceleration= table.Get<glm::vec2>("acceleration");
     float yStop = table.Get<float>("ystop");
     float rotSpeed = table.Get<float>("rotationspeed", 0.0f);
     float finRotation = table.Get<float>("finalrotation", 0.0f) * deg2rad;
-    return std::unique_ptr<MoveAccelerated>(new MoveAccelerated(actor, initialVelocity, acceleration, yStop, rotSpeed, finRotation));
+    return std::unique_ptr<MoveAccelerated>(new MoveAccelerated(id, initialVelocity, acceleration, yStop, rotSpeed, finRotation));
 };
 
 
@@ -133,7 +136,8 @@ std::unique_ptr<Activity> DelayDynamicActFactory::Create(luabridge::LuaRef &ref)
 
 std::unique_ptr<Activity> AnimateActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
-    std::string actor = table.Get<std::string>("actor");
+    // get id
+    int id = getId(table);
     std::string anim = table.Get<std::string>("anim");
     bool fwd = table.Get<bool>("fwd", true);
     int flip{0};
@@ -142,7 +146,7 @@ std::unique_ptr<Activity> AnimateActFactory::Create(luabridge::LuaRef &ref) {
     }
     //int loopCount = table.Get<int>("loop", 0);
     bool sync = table.Get<bool>("sync", false);
-    auto act = std::unique_ptr<Animate>(new Animate(actor, anim, fwd, flip));
+    auto act = std::unique_ptr<Animate>(new Animate(id, anim, fwd, flip));
     act->SetSync(sync);
     return std::move(act);
 };

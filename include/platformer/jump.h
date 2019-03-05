@@ -14,7 +14,7 @@ class InputMethod;
 // goes to jump state if it does not touch below.
 class Jump : public State2 {
 public:
-    Jump(float speed, float acceleration, const std::string& jumpUp, const std::string& jumpDown);
+    Jump(float speed, float acceleration, const std::string& jumpUp, const std::string& jumpDown, bool flip);
     Jump(const Jump&);
     // when the state changes to idle,
     // we need to update the animation and the
@@ -40,5 +40,6 @@ private:
     int m_prevAnimFlag;
     std::array<std::string, 2> m_anims;
     std::string m_colliderId;
+    bool m_horizontalFlip;
 
 };

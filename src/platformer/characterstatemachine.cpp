@@ -16,6 +16,7 @@ CharacterStateMachine::CharacterStateMachine(
     float accelerationAir,
     float jumpVelocity,
     bool canDuck,
+    bool flip,
     const std::string& idle,
     const std::string& walk,
     const std::string& turn,
@@ -23,9 +24,9 @@ CharacterStateMachine::CharacterStateMachine(
     const std::string& jumpUp,
     const std::string& jumpDown) : ExtendedStateMachine("walk")
 {
-    auto w = std::make_shared<Walk> (speed, accelerationGround, jumpVelocity, idle, walk, turn);
+    auto w = std::make_shared<Walk> (speed, accelerationGround, jumpVelocity, idle, walk, turn, flip);
     AddState ("walk", w);
-    AddState ("jump", std::make_shared<Jump> (speed, accelerationAir, jumpUp, jumpDown));
+    AddState ("jump", std::make_shared<Jump> (speed, accelerationAir, jumpUp, jumpDown, flip));
     AddState ("duck", std::make_shared<Duck> (accelerationGround, duck));
 
     // add messages

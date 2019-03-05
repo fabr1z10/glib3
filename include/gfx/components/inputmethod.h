@@ -32,7 +32,6 @@ public:
     bool isKeyDown(int) override;
     void KeyCallback(GLFWwindow*, int, int, int, int) override;
     std::type_index GetType() override;
-
 };
 
 //class DoNothingInputMethod : public InputMethod {};

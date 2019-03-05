@@ -17,6 +17,10 @@ Ref::~Ref() {
 
 }
 
+bool Ref::IsAlive(int id) {
+    return g_refs.count(id) > 0;
+}
+
 Ref* Ref::Get(int id) {
     auto it = g_refs.find(id);
     if (it == g_refs.end())

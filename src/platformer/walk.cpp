@@ -78,8 +78,13 @@ void Walk::Run (double dt) {
     float targetVelocityX = 0.0f;
 
     if (left || right) {
-        m_entity->SetFlipX(left);
-        targetVelocityX = m_speed;
+        if (m_horizontalFlip) {
+            m_entity->SetFlipX(left);
+            targetVelocityX = m_speed;
+        } else {
+            targetVelocityX = (left ? -1.0f : 1.0f) * m_speed;
+        }
+
     }
 
     m_dynamics->m_velocity.x = SmoothDamp(m_dynamics->m_velocity.x, targetVelocityX, m_velocitySmoothing, m_acceleration, dt);

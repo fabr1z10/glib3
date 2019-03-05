@@ -3,14 +3,23 @@
 #include <gfx/entity.h>
 #include <memory>
 #include <string>
-#include <gfx/lua/luawrapper.h>
+#include <gfx/lua/luatable.h>
 #include <gfx/state.h>
 #include <gfx/error.h>
 #include <gfx/runner.h>
 #include <iostream>
 
+
+class AbstractFactoryMethod {
+public:
+    virtual ~AbstractFactoryMethod() = default;
+    int getId (const LuaTable& table);
+
+};
+
+
 template<class T>
-class FactoryMethod {
+class FactoryMethod : public AbstractFactoryMethod {
 public:
     virtual ~FactoryMethod() {}
     virtual std::unique_ptr<T> Create(luabridge::LuaRef& ref) = 0;

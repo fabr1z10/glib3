@@ -89,21 +89,28 @@ EntityWrapper EntityWrapper::GetEntity(const std::string& id) {
     }
 }
 
-EntityWrapper EntityWrapper::AddEntity(luabridge::LuaRef ref, EntityWrapper* parent) {
+int EntityWrapper::AddEntity(luabridge::LuaRef ref, EntityWrapper* parent) {
 
     auto mf = Engine::get().GetSceneFactory();
     auto ptr = mf->GetShared<Entity>(ref);
     parent->m_underlying->AddChild(ptr);
 
-    EntityWrapper ew(ptr.get());
-    return ew;
+    return ptr->GetId();
 
 
 }
 
-void EntityWrapper::RemoveEntity(const std::string& tag) {
+void EntityWrapper::RemoveEntityFromTag(const std::string& tag) {
+    std::cout << "*** lua request delete item with tag = " << tag << "\n";
     auto entity = Engine::get().GetRef<Entity>(tag);
     Engine::get().Remove(entity);
+}
+
+void EntityWrapper::RemoveEntityFromId (int id) {
+    std::cout << "*** lua request delete item with id = " << id << "\n";
+    auto entity = Ref::GetFromId<Entity>(id);
+    Engine::get().Remove(entity);
+
 }
 
 void EntityWrapper::Clear() {

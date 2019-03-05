@@ -12,8 +12,8 @@ public:
     /*! Animate the given actor with animation animId. If flip is 0, no flip is applied. Otherwise,
     the sprite horizontal flip is set to false if flip = 1, or true if flip = 2.
      */
-    Animate(const std::string& actorId, const std::string& animId, bool forward, int flip = 0);
-    Animate(Entity* entity, const std::string& animId, bool forward, int flip = 0);
+    Animate(int id, const std::string& animId, bool forward, int flip = 0);
+    //Animate(Entity* entity, const std::string& animId, bool forward, int flip = 0);
     //@}
     void Start() override;
     void Reset() override {
@@ -30,7 +30,7 @@ private:
     Entity* m_entity;
     Animator* m_animator;
     std::string m_animId;
-    std::string m_actorId;
+    int m_id;
 };
 
 inline void Animate::SetSync (bool sync) {

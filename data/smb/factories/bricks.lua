@@ -16,17 +16,16 @@ factory.basic_brick.response = function(p1, p2)
 		local main = monkey.getEntity("main")
 		local initial_velocities = { {20, 40}, {40, 20}, {-20,40}, {-40, 20}}
 		for i = 1,4 do
-			local tag = nextTag()
-			print ("create " .. tag)
-			monkey.addEntity ({
+			local id = monkey.addEntity ({
 		 		tag = tag,
 		 		type ="sprite",
 		 		pos = {x, y, 1},
 		 		model = piece
 			}, main)
+			print ("dynamically created entity with id: " .. tostring(id))
 			local s = ms2 {
-				{ type=action.moveaccel, args = { actor = tag, initial_velocity = initial_velocities[i], acceleration = {0, 0.5*variables.gravity}, ystop = -20}},
-				{ type=action.remove_object, args = { tag = tag} }
+				{ type=action.moveaccel, args = { id = id, initial_velocity = initial_velocities[i], acceleration = {0, 0.5*variables.gravity}, ystop = -20}},
+				{ type=action.remove_object, args = { id = id} }
 			}
 			monkey.play(s)
 		end

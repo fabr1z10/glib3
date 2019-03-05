@@ -327,3 +327,10 @@ void Engine::SetDirectory(const std::string& dir)
 
 }
 
+int Engine::getIdFromTag(const std::string& tag) {
+    auto it =  m_taggedReferences.find(tag);
+    if (it == m_taggedReferences.end()) {
+        GLIB_FAIL("Don't know tag: " << tag);
+    }
+    return it->second->GetId();
+}

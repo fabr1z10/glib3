@@ -9,6 +9,8 @@
 //FACTORY(EnemyBounce2DStateFactory, StateBehaviour)
 
 FACTORY(CharacterStateCompFactory, Component)
+FACTORY(EnemyInputCompFactory, Component)
+
 FACTORY(DropCharactersActFactory, Activity)
 
 

@@ -40,7 +40,7 @@ std::unique_ptr<Shape> PolyFactory::Create(luabridge::LuaRef& ref) {
             luabridge::LuaRef h = holes[j + 1];
             std::vector<float> holeOutline = ReadVector<float>(h);
             std::vector<glm::vec2> points;
-            for (int i = 0; i < holeOutline.size(); i = i + 2)
+            for (size_t i = 0; i < holeOutline.size(); i = i + 2)
                 points.push_back(glm::vec2(holeOutline[i], holeOutline[i + 1]));
             poly->AddHole(std::unique_ptr<Polygon>(new Polygon(points)));
         }

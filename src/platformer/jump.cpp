@@ -10,13 +10,13 @@
 
 #include <GLFW/glfw3.h>
 
+Jump::Jump(float speed, float acceleration, const std::string& jumpUp, const std::string& jumpDown, bool flip) : State2(),
+    m_speed(speed), m_acceleration(acceleration), m_anims{jumpUp, jumpDown}, m_prevAnimFlag(-1), m_colliderId("walk"), m_horizontalFlip(flip)  {}
 
-Jump::Jump(float speed, float acceleration, const std::string& jumpUp, const std::string& jumpDown) :
-State2(), m_speed(speed), m_acceleration(acceleration), m_anims{jumpUp, jumpDown}, m_prevAnimFlag(-1), m_colliderId("walk")  {}
-
-Jump::Jump(const Jump & orig) :State2(orig) {
-    m_speed = orig.m_speed;
-}
+Jump::Jump(const Jump & orig) : State2(orig),
+    m_speed(orig.m_speed), m_acceleration(orig.m_acceleration), m_anims(orig.m_anims), m_prevAnimFlag(orig.m_prevAnimFlag),
+    m_colliderId(orig.m_colliderId), m_horizontalFlip(orig.m_horizontalFlip)
+{}
 
 
 std::shared_ptr<State2> Jump::clone() const {
@@ -76,8 +76,12 @@ void Jump::Run(double dt) {
 //
     float targetVelocityX = 0.0f;
     if (left || right) {
-        m_entity->SetFlipX(left);
-        targetVelocityX = m_speed;
+        if (m_horizontalFlip) {
+            m_entity->SetFlipX(left);
+            targetVelocityX = m_speed;
+        } else {
+            targetVelocityX = (left ? -1.0f : 1.0f) * m_speed;
+        }
         //m_renderer->SetFlipX(true);
     }
     m_dynamics->m_velocity.x = SmoothDamp(

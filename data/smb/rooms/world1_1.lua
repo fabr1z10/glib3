@@ -48,7 +48,10 @@ room = {
 
 			},
 			children = {
-				factory.mushroom.create{ pos={8,2}, sprite="mushroom"},
+	 			--factory.basic_brick.create { pos ={4, 5}, sprite ="basicbrick", piece_sprite ="brick_piece" },
+	 			--factory.bonus_brick.create { pos ={5, 5}, sprite ="bonusbrick", factory = factory.mushroom.create_auto },
+				--factory.rect { pos = {71, 0}, width = 15, height = 2, img = "gfx/block1.png" },
+				--factory.mushroom.create{ pos={8,2}, sprite="mushroom"},
 				{	
 					type="sprite",
 					tag="player",
@@ -76,6 +79,7 @@ room = {
 							speed = 75, 
 							jump_velocity = variables.jump_velocity,
 							can_duck = false,
+							flip = true,
 							anims = {
 								idle = "idle",
 								walk = "walk",
@@ -121,14 +125,15 @@ room = {
 		}
 	},
 	dynamic = {
-		{
-			parent = "main",
-			children = {
-				factory.basic_brick.create { pos ={4, 5}, sprite ="basicbrick", piece_sprite ="brick_piece" },
-				factory.rect { pos = {0,0}, width = 69, height = 2, img="gfx/block1.png" },
-				factory.rect { pos = {71, 0}, width = 15, height = 2, img = "gfx/block1.png" }
-			}
-		}
+	 	{
+	 		parent = "main",
+	 		children = {
+	 			factory.basic_brick.create { pos ={4, 5}, sprite ="basicbrick", piece_sprite ="brick_piece" },
+	 			factory.bonus_brick.create { pos ={5, 5}, sprite ="bonusbrick", factory = factory.mushroom.create_auto },
+	 			factory.rect { pos = {0,0}, width = 69, height = 2, img="gfx/block1.png" },
+	 			factory.rect { pos = {71, 0}, width = 15, height = 2, img = "gfx/block1.png" }
+	 		}
+	 	}
 	}
 }
 
@@ -245,20 +250,6 @@ function room.afterstartup()
 			end
 		}}
 	}
-	-- s.actions = {
-	-- 	{ id = 1, after={0}, action = {type="delay", sec=5}},
-	-- 	{ id = 2, after={1}, action = {type="callfunc", func = function() 
-	--  		local m = monkey.getEntity("player")
-	--  		m:set("supermario", true)
-	--  	end }}
-	-- }	
-	--monkey.play(s)
-	-- local s = script:new("_troll")
-	-- s.actions = {
-	-- 	action.say { id=1, actor="bridge.troll", lines = {d[1]}, animstart="talk", animend="idle" },
-	-- 	action.delay { id=2, sec=5},
-	-- }
-	-- s.loop = 1
 	monkey.play(s)
 end
 

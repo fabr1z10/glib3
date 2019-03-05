@@ -1,7 +1,11 @@
 factory.mushroom = {}
 
 factory.mushroom.response = function(p1, p2) 
-	print ("ciao")
+	p2:remove()
+end
+
+factory.mushroom.create_auto = function(args)
+	return factory.mushroom.create { sprite="mushroom", pos ={args.x, args.y}}
 end
 
 factory.mushroom.create = function(args)
@@ -19,7 +23,7 @@ factory.mushroom.create = function(args)
 					type = "collider", 
 					flag = 4, 
 					mask = 1, 
-    				tag=1
+    				tag=variables.tags.mushroom
 				},
 				{ 
 					type="characterstate", 
@@ -28,6 +32,7 @@ factory.mushroom.create = function(args)
 					speed = 75, 
 					jump_velocity = variables.jump_velocity,
 					can_duck = false,
+					flip = false,
 					anims = {
 						idle = "idle",
 						walk = "idle",
@@ -45,10 +50,21 @@ factory.mushroom.create = function(args)
 					-- properties
 					type="dynamics2d", 
 					gravity = variables.gravity,
+				},
+				{ 
+					type="controller2d", 
+					maxclimbangle = 80, 
+					maxdescendangle = 80
+				},
+				{
+					type = "enemyinput", 
+					left = true,
+					flip = true
 				}
 			}
 	}
 end
 
 -- register
-table.insert (variables.collider.response, { tag = { 1, variables.tags.basic_brick}, onenter = factory.basic_brick.response })
+table.insert (variables.collider.response, { tag = { 1, variables.tags.mushroom}, onenter = factory.mushroom.response })
+

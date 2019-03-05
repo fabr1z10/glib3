@@ -8,16 +8,22 @@
 #include <gfx/entity.h>
 
 struct DynamicWorldItem {
+    DynamicWorldItem() : id(-1), ref(nullptr), removed(false) {}
     std::shared_ptr<Entity> m_blueprint;
     Bounds m_bounds;
     Bounds m_localBounds;
-    std::shared_ptr<Entity> m_object;
+    int id;
+    bool createOnce;
+    bool removed;
+    //std::shared_ptr<Entity> m_object;
+    Entity* ref;
     Entity* m_parent;
 };
 
 class DynamicWorldBuilder : public Runner {
 public:
     DynamicWorldBuilder(float cellWidth, float cellHeight) : Runner(), m_width(cellWidth), m_height(cellHeight), m_x(-1), m_y(-1) {}
+
     void SetCamera(Camera*);
     void OnCameraMove(Camera*);
     void UpdateWorld(glm::vec3);

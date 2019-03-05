@@ -5,7 +5,7 @@
 #include <gfx/engine.h>
 
 Collider::Collider(const Collider& orig) : Component(orig),
-m_shape(orig.m_shape), m_tag(orig.m_tag), m_flag(orig.m_flag), m_mask(orig.m_mask),
+m_shape(orig.m_shape), m_tag(orig.m_tag), m_flag(orig.m_flag), m_mask(orig.m_mask), m_engine(nullptr),
 m_enabled(orig.m_enabled)
 {}
 

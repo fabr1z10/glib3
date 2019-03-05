@@ -14,7 +14,7 @@
 
 using namespace std;
 
-Entity::Entity(const Entity & e) {
+Entity::Entity(const Entity & e) : m_update(e.m_update) {
     m_flipHorizontal = e.m_flipHorizontal;
     m_active = e.m_active;
     m_enableControls = e.m_enableControls;

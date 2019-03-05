@@ -25,7 +25,9 @@ variables = {
 	jump_height = 80,
 	time_to_jump_apex = 0.5,
 	tags = {
-		basic_brick = 10
+		basic_brick = 10,
+		mushroom = 11,
+		bonus_brick = 12
 
 	}
 }
@@ -47,6 +49,7 @@ action={}
 -- sprites = {}
 require("factories/rect")
 require("factories/bricks")
+require("factories/bonusbrick")
 require("factories/mushroom")
 require("factories/actions")
 require("sprites/smbs")

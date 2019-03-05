@@ -5,8 +5,7 @@
 
 class MoveTo : public Activity {
 public:
-    MoveTo(Entity* entity, glm::vec2 pos, float speed, bool relative, bool immediate);
-    MoveTo(const std::string& actorId, glm::vec2 pos, float speed, bool relative, bool immediate);
+    MoveTo(int actorId, glm::vec2 pos, float speed, bool relative, bool immediate);
     void Start() override;
     void Run (float dt) override;
     void Reset() override;
@@ -23,7 +22,7 @@ protected:
     float m_acceleration;
     bool m_relative;
     bool m_immediate;
-    std::string m_actorId;
+    int m_actorId;
 };
 
 inline void MoveTo::SetAcceleration(float acceleration) {
@@ -32,7 +31,7 @@ inline void MoveTo::SetAcceleration(float acceleration) {
 
 class MoveAndRotateTo : public MoveTo {
 public:
-    MoveAndRotateTo (const std::string& actorId, glm::vec2 pos, float speed, bool relative, bool immediate, float angle, bool angleRelative);
+    MoveAndRotateTo (int actorId, glm::vec2 pos, float speed, bool relative, bool immediate, float angle, bool angleRelative);
     void Start() override;
     void Run (float dt) override;
 private:
@@ -46,7 +45,7 @@ private:
 class MoveAccelerated : public Activity {
 public:
     MoveAccelerated(
-        const std::string &actorId,
+        int actorId,
         glm::vec2 initialVelocity,
         glm::vec2 acceleration,
         float yStop,
@@ -63,7 +62,7 @@ private:
     glm::vec2 m_initialVelocity;
     glm::vec2 m_velocity;
     glm::vec2 m_acceleration;
-    std::string m_actorId;
+    int m_actorId;
     float m_angle;
     float m_rotationSpeed;
     float m_finalRotation;

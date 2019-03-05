@@ -61,11 +61,10 @@ action.delay = function (args)
 end
 
 action.moveaccel = function(args)
-	assert (args.actor, "actor")
 	assert (args.initial_velocity, "initial_velocity")
 	assert (args.acceleration, "acceleration")
 	assert (args.ystop, "ystop")
-	return { type="moveaccelerated", velocity = args.initial_velocity, acceleration = args.acceleration, ystop = args.ystop, actor = args.actor }
+	return { type="moveaccelerated", tag = args.tag, id = args.id, velocity = args.initial_velocity, acceleration = args.acceleration, ystop = args.ystop, actor = args.actor }
 end
 
 action.callfunc = function (args) 
@@ -333,13 +332,13 @@ action.create_object = function(args)
 end
 
 action.remove_object = function(args) 
-	local tag = args.tag
-	print ("REMOVE OBJECT " .. tag)
 	return { type = "callfunc", func = 
 		function()
-			print ("ciao " .. tag)
-			local i = monkey.getEntity(tag)
-			i:remove()
+			if (args.tag ~= nil) then
+				monkey.removeFromTag(args.tag)
+			else
+				monkey.removeFromId(args.id)
+			end
 		end
 	}
 end

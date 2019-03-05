@@ -7,6 +7,7 @@
 #include <platformer/activities/dropcharacters.h>
 #include <gfx/lua/luatable.h>
 #include <platformer/characterstatemachine.h>
+#include <platformer/enemyinput.h>
 #include <gfx/engine.h>
 //
 //std::unique_ptr<StateBehaviour> Idle2DStateFactory::Create(luabridge::LuaRef & r) {
@@ -47,6 +48,15 @@
 //    return std::unique_ptr<EnemyBounce2D>(new EnemyBounce2D(speed, vy, enableFlip));
 //}
 
+std::unique_ptr<Component> EnemyInputCompFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    bool left = table.Get<bool>("left", true);
+    bool flipIfPlatformEnds = table.Get<bool>("flip", true);
+
+    return std::unique_ptr<EnemyInputMethod>(new EnemyInputMethod(left, flipIfPlatformEnds));
+}
+
+
 std::unique_ptr<Component> CharacterStateCompFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
     float speed = table.Get<float>("speed");
@@ -54,6 +64,7 @@ std::unique_ptr<Component> CharacterStateCompFactory::Create(luabridge::LuaRef &
     float accAir = table.Get<float>("acceleration_air");
     float jumpHeight = table.Get<float>("jump_velocity");
     bool canDuck = table.Get<bool>("can_duck");
+    bool flip = table.Get<bool>("flip");
     luabridge::LuaRef animTable = table.Get<luabridge::LuaRef>("anims");
     LuaTable at (animTable);
 
@@ -67,7 +78,7 @@ std::unique_ptr<Component> CharacterStateCompFactory::Create(luabridge::LuaRef &
 
 
     auto ptr = std::unique_ptr<CharacterStateMachine>(
-            new CharacterStateMachine(speed, accGnd, accAir, jumpHeight, canDuck,
+            new CharacterStateMachine(speed, accGnd, accAir, jumpHeight, canDuck, flip,
             anim_idle, anim_walk, anim_turn, anim_duck, anim_jump_up, anim_jump_down));
 
     if (table.HasKey("f")) {

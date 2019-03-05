@@ -82,6 +82,7 @@ public:
     double GetFrameTime() const;
     void SetDirectory(const std::string&);
     std::string GetDirectory() const;
+    int getIdFromTag(const std::string& tag);
 private:
     friend class Singleton<Engine>;
     Engine() : m_mouseEnabled{true}, m_sceneFactory{nullptr} {}
@@ -185,3 +186,4 @@ inline Keyboard& Engine::GetKeyboard() {
 inline std::string Engine::GetDirectory() const {
     return m_directory;
 }
+
