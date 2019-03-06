@@ -21,6 +21,7 @@ public:
     // called to select animation based on current state and possibly other variables
     void SetRefreshFunc (luabridge::LuaRef ref);
 
+
     std::type_index GetType() override;
     void SetAnimation(const std::string&);
     void SetCollider(const std::string&);

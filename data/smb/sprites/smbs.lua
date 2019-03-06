@@ -13,9 +13,13 @@ spritesheets["smb"] = {
 	brick = {x=240, y=0, width=16, height=16 },
 	brick_piece = {x=64, y=16, width=16, height=16, anchor ={8,0}},
 	mushroom = {x=48, y=16, width=16, height=16, anchor={8,0}},
+	mushroom1up = {x=144, y=48, width=16, height=16, anchor={8,0}},
 	bonus_brick_1 = {x=160, y=0, width=16, height=16 },
 	bonus_brick_2 = {x=176, y=0, width=16, height=16 },
 	bonus_brick_3 = {x=192, y=0, width=16, height=16 },
 	bonus_brick_taken = {x=224, y=0, width=16, height=16},
+	goomba_walk_1 = {x=112, y=0, width=16, height=16, anchor={8,0}},
+	goomba_walk_2 = {x=128, y=0, width=16, height=16, anchor={8,0}},
+
 
 }

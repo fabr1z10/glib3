@@ -76,6 +76,11 @@ void ExtendedStateMachine::SetRefreshFunc (luabridge::LuaRef ref) {
     m_refreshFunc = std::make_shared<luabridge::LuaRef>(ref);
 }
 
+//void ExtendedStateMachine::SetActive(bool value) {
+//    Component::SetActive(value);
+//}
+
+
 void ExtendedStateMachine::SendMessage(luabridge::LuaRef message) {
     LuaTable table(message);
     std::string key = table.Get<std::string>("key");

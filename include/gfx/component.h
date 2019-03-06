@@ -30,7 +30,7 @@ public:
     }
     Entity* GetObject();
     bool IsActive() const;
-    virtual bool SetActive(bool);
+    virtual void SetActive(bool);
     virtual std::type_index GetType();
     virtual std::shared_ptr<Component> clone() const = 0;
 protected:
@@ -43,9 +43,8 @@ inline bool Component::IsActive() const {
     return m_active;
 }
 
-inline bool Component::SetActive(bool value) {
+inline void Component::SetActive(bool value) {
     m_active = value;
-    return true;
 }
 
 

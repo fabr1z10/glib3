@@ -61,10 +61,9 @@ void Entity::SetActive(bool value) {
     m_active = value;
     bool recursive = true;
     for (auto& h : m_components) {
-        recursive = h.second->SetActive(value);
+        h.second->SetActive(value);
     }
     // now call setActive on all children
-
     if (recursive)
         for (auto& c: m_children)
             c->SetActive(value);

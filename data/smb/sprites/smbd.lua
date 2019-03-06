@@ -6,7 +6,14 @@ local s = spritesheets["smb"]
 
 models["basicbrick"] = { sheet="sprites/smb1.png", type="sprite", ppu=1, animations = { { name="idle", frames = { {duration=dt, quads ={{id=s.brick}}}}}}}
 models["brick_piece"] = { sheet="sprites/smb1.png", type="sprite", ppu=1, animations = { { name="idle", frames = { {duration=dt, quads ={{id=s.brick_piece}}}}}}}
-models["mushroom"] = { sheet="sprites/smb1.png", type="sprite", ppu=1, animations = { { name="idle", frames = { {duration=dt, quads ={{id=s.mushroom}}}}}}}
+models["mushroom"] = { sheet="sprites/smb1.png", type="sprite", ppu=1, animations = { { name="walk", frames = { {duration=dt, quads ={{id=s.mushroom}}}}}}}
+models["mushroom1up"] = { sheet="sprites/smb1.png", type="sprite", ppu=1, animations = { { name="walk", frames = { {duration=dt, quads ={{id=s.mushroom1up}}}}}}}
+models["goomba"] = { sheet="sprites/smb1.png", type="sprite", ppu=1, animations = { { name="walk", frames = { 
+	{duration=dt, quads ={{id=s.goomba_walk_1}}},
+	{duration=dt, quads ={{id=s.goomba_walk_2}}}
+}}}}
+
+
 models["bonusbrick"] = { 
 	sheet="sprites/smb1.png", 
 	type="sprite", 

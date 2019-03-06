@@ -15,6 +15,27 @@ factory.rect = function(args)
 	}
 end
 
+-- factory.tiledrect = function (args) 
+-- 	assert(args.width, "width")
+-- 	assert(args.height, "height")
+-- 	assert(args.img, "img")
+-- 	assert(args.pos, "pos")	
+-- 	local z = args.z or 0
+-- 	local width = engine.tilesize * args.width
+-- 	local height = engine.tilesize * args.height
+-- 	return {
+-- 		pos = { args.pos[1] * engine.tilesize, args.pos[2] * tilesize, z },
+-- 		components = {
+-- 			{ type = "gfx", img = args.img, width = width, height = height, sheetsize = {16, 16}, tiledata = args.tiledata
+-- 			{ type = "collider", flag = 2, mask = 1, tag=1, shape = { type="rect", width = width, height = height }}
+-- 		}
+-- 	}
+
+
+-- end
+
+
+
 -- function makeRect(arg)
 -- 	local width = 16 * arg.width
 -- 	local height = 16 * arg.height

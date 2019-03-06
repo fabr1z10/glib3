@@ -28,6 +28,10 @@ struct EntityWrapper {
      */
     static int AddEntity(luabridge::LuaRef ref, EntityWrapper* parent);
 
+
+    static EntityWrapper GetEntityFromTag(const std::string&);
+    static EntityWrapper GetEntityFromId(int id);
+
     /**
      * Removes the entity with the specified tag from the scene.
      * @param tag the tag of the entity that will be removed
@@ -40,10 +44,13 @@ struct EntityWrapper {
      */
     static void RemoveEntityFromId (int id);
 
+
+
     void Clear();
     void ClearText();
     void Remove();
     bool IsNil() const;
+    int GetId() const;
     float GetX() const;
     float GetY() const;
     float GetZ() const;
@@ -51,6 +58,8 @@ struct EntityWrapper {
     void SetVy(float);
     std::string GetTag() const;
     std::string GetState() const;
+    void SetState (const std::string&) ;
+    void EnableStateMachine(bool);
     luabridge::LuaRef GetProperty(const std::string&) const;
     void SetProperty (const std::string&, luabridge::LuaRef value);
     void SendMessage (luabridge::LuaRef ref);
@@ -74,7 +83,6 @@ struct EntityWrapper {
     void SetPosition(float x, float y, float z);
     void Move (float x, float y, float z);
     EntityWrapper GetParent() ;
-    static EntityWrapper GetEntity(const std::string&);
     Entity* m_underlying;
     void AppendText (luabridge::LuaRef);
     void AppendButton (luabridge::LuaRef ref);
@@ -82,7 +90,6 @@ struct EntityWrapper {
     void ChangeStateParam(const std::string& name, luabridge::LuaRef ref);
     void ResetState();
     luabridge::LuaRef GetInfo();
-    void EnableStateMachine(bool);
     static void KillScript(const std::string& scriptName);
 };
 

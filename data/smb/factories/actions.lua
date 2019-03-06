@@ -67,6 +67,12 @@ action.moveaccel = function(args)
 	return { type="moveaccelerated", tag = args.tag, id = args.id, velocity = args.initial_velocity, acceleration = args.acceleration, ystop = args.ystop, actor = args.actor }
 end
 
+action.move = function(args) 
+	assert (args.speed, "speed")
+	return { type="move", tag = args.tag, id = args.id, to = args.to, by = args.by, speed = args.speed }
+end
+
+
 action.callfunc = function (args) 
 	assert (args.func, "func") 
 	return { type="callfunc", func = args.func }
@@ -77,12 +83,11 @@ action.animate = function(args)
 	--assert (args.id, "id")
 	assert (args.anim, "anim")
 	--local after= args.after
-	local tag = getTag(args)
 	local fwd = args.fwd
 	local sync = args.sync
 	if (fwd == nil) then fwd = true end
 	if (sync == nil) then sync = false end
-	return {type="animate", actor = tag, anim = args.anim, fwd = fwd, sync = sync }
+	return {type="animate", tag = args.tag, id = args.id, anim = args.anim, fwd = fwd, sync = sync }
 end
 
 action.set_state = function(args)
@@ -312,6 +317,46 @@ action.flip = function(args)
 
 end
 
+
+action.enable_state_machine = function(args) 
+	return { type = "callfunc", func = 
+		function() 
+			local o = nil
+			if (args.tag ~= nil) then
+				o = monkey.getEntity(args.tag)
+			else
+				o = monkey.getEntityFromId(args.id)
+			end			
+			print ("orswiufher " .. tostring(args.value))
+			o:enablestatemachine(args.value)
+		end
+	}
+end
+-- create a new tntity 
+-- you can also associate a script with it
+action.create_entity = function(args)
+	assert (args.func, "func")
+	return { 
+		type = "callfunc",
+		func = function()
+			local desc= args.func (args.args)
+			print("fweiufiwerf")
+			local m1 = monkey.getEntity("main")
+			local id = monkey.addEntity (desc, m1)
+			if (args.script ~= nil) then
+				for k, v in ipairs(args.script) do
+					if (v.args.id == -1) then 
+						v.args.id = id
+					end
+				end
+				print ("qui .. " .. tostring(id))
+				local s = ms2(args.script)
+				monkey.play(s)
+			end
+		end
+	}
+
+end
 
 
 

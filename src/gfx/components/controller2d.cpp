@@ -99,7 +99,7 @@ void Controller2D::Move(glm::vec2& dx) {
 
 void Controller2D::HorizontalCollisions(glm::vec2& velocity) {
 
-    bool facingLeft = m_entity->GetFlipX();
+    bool facingLeft = m_entity->GetFlipX() || velocity.x < 0;
     float directionX = facingLeft ? -1.0 : 1.0;
     float rayLength = fabs(velocity.x) + m_skinWidth;
 

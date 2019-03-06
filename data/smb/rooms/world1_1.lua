@@ -52,6 +52,7 @@ room = {
 	 			--factory.bonus_brick.create { pos ={5, 5}, sprite ="bonusbrick", factory = factory.mushroom.create_auto },
 				--factory.rect { pos = {71, 0}, width = 15, height = 2, img = "gfx/block1.png" },
 				--factory.mushroom.create{ pos={8,2}, sprite="mushroom"},
+				factory.goomba.create { pos ={15,2} },
 				{	
 					type="sprite",
 					tag="player",
@@ -121,7 +122,7 @@ room = {
 						}
 					}
 				}
-            }
+             }
 		}
 	},
 	dynamic = {
@@ -129,9 +130,12 @@ room = {
 	 		parent = "main",
 	 		children = {
 	 			factory.basic_brick.create { pos ={4, 5}, sprite ="basicbrick", piece_sprite ="brick_piece" },
-	 			factory.bonus_brick.create { pos ={5, 5}, sprite ="bonusbrick", factory = factory.mushroom.create_auto },
+	 			factory.bonus_brick.create { pos ={5, 5}, sprite ="bonusbrick", factory = factory.mushroom.create },
+	 			factory.bonus_brick.create { pos ={8, 5}, sprite ="bonusbrick", factory = factory.mushroom1up.create },
 	 			factory.rect { pos = {0,0}, width = 69, height = 2, img="gfx/block1.png" },
-	 			factory.rect { pos = {71, 0}, width = 15, height = 2, img = "gfx/block1.png" }
+	 			factory.rect { pos = {71, 0}, width = 15, height = 2, img = "gfx/block1.png" },
+	 			factory.rect { pos = {12, 2}, width = 1, height = 1, img = "gfx/block2.png" },
+	 			factory.rect { pos = {16, 2}, width = 1, height = 1, img = "gfx/block2.png" },
 	 		}
 	 	}
 	}
@@ -241,16 +245,16 @@ function room.afterstartup()
 --	local s = script:new()
 
 
-	local s = ms2 {--
-	    { type = action.delay, args = { sec = 2} },
-		{ type = action.callfunc, args = { func = 
-			function()
-				local m = monkey.getEntity("player")
-				m:set("supermario", true)
-			end
-		}}
-	}
-	monkey.play(s)
+	-- local s = ms2 {--
+	--     { type = action.delay, args = { sec = 2} },
+	-- 	{ type = action.callfunc, args = { func = 
+	-- 		function()
+	-- 			local m = monkey.getEntity("player")
+	-- 			m:set("supermario", true)
+	-- 		end
+	-- 	}}
+	-- }
+	-- monkey.play(s)
 end
 
 

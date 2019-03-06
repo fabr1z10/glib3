@@ -18,7 +18,8 @@ void StateMachine2::Begin() {
 }
 
 void StateMachine2::Update(double dt) {
-
+    if (!m_active)
+        return;
     if (m_currentState != nullptr) {
         m_currentState->Run(dt);
     }

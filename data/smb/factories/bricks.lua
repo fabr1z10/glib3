@@ -31,6 +31,11 @@ factory.basic_brick.response = function(p1, p2)
 		end
 	else
 		-- nothing happens
+		local brick = p2:parent()
+		local s = ms2 {
+			{ type=action.moveaccel, args = { id = brick.id, initial_velocity = {0, 50}, acceleration = {0, 0.5*variables.gravity}, ystop = brick.y }}
+		}
+		monkey.play(s)
 	end
 end
 

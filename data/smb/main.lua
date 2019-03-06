@@ -27,7 +27,10 @@ variables = {
 	tags = {
 		basic_brick = 10,
 		mushroom = 11,
-		bonus_brick = 12
+		bonus_brick = 12,
+		mushroom1up = 13,
+		goomba = 14,
+		koopa = 15
 
 	}
 }
@@ -50,7 +53,7 @@ action={}
 require("factories/rect")
 require("factories/bricks")
 require("factories/bonusbrick")
-require("factories/mushroom")
+require("factories/foe")
 require("factories/actions")
 require("sprites/smbs")
 require("sprites/smbd")

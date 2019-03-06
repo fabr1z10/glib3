@@ -24,6 +24,10 @@ float EntityWrapper::GetZ() const {
     return m_underlying->GetPosition().z;
 }
 
+int EntityWrapper::GetId() const {
+    return m_underlying->GetId();
+}
+
 float EntityWrapper::GetVy() const {
     return m_underlying->GetComponent<Dynamics2D>()->m_velocity.y;
 }
@@ -37,6 +41,16 @@ std::string EntityWrapper::GetTag() const {
 std::string EntityWrapper::GetState() const {
     auto sm = m_underlying->GetComponent<StateMachine2>();
     return sm->GetState();
+}
+
+void EntityWrapper::SetState(const std::string& state) {
+    auto sm = m_underlying->GetComponent<StateMachine2>();
+    return sm->SetState(state);
+}
+
+void EntityWrapper::EnableStateMachine(bool value) {
+    auto sm = m_underlying->GetComponent<StateMachine2>();
+    sm->SetActive(value);
 }
 
 luabridge::LuaRef EntityWrapper::GetProperty(const std::string& key) const {
@@ -80,7 +94,7 @@ void EntityWrapper::SetColor(int r, int g, int b, int a) {
 }
 
 
-EntityWrapper EntityWrapper::GetEntity(const std::string& id) {
+EntityWrapper EntityWrapper::GetEntityFromTag(const std::string& id) {
     try {
         auto ref = Engine::get().GetRef<Entity>(id);
         return EntityWrapper(ref);
@@ -88,6 +102,16 @@ EntityWrapper EntityWrapper::GetEntity(const std::string& id) {
         return EntityWrapper();
     }
 }
+
+EntityWrapper EntityWrapper::GetEntityFromId(int id) {
+    try {
+        auto ref = Ref::GetFromId<Entity>(id);
+        return EntityWrapper(ref);
+    } catch (Error& err) {
+        return EntityWrapper();
+    }
+}
+
 
 int EntityWrapper::AddEntity(luabridge::LuaRef ref, EntityWrapper* parent) {
 
@@ -330,10 +354,7 @@ void EntityWrapper::ResetState() {
     //sm->GetCurrentState()->Start();
 }
 
-void EntityWrapper::EnableStateMachine(bool value) {
-    //auto sm = m_underlying->GetComponent<StateMachine>();
-    //sm->SetActive(value);
-}
+
 
 luabridge::LuaRef EntityWrapper::GetInfo() {
     return m_underlying->GetComponent<LuaInfo>()->get();
