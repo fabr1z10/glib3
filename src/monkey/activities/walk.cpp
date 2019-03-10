@@ -15,7 +15,7 @@ void Walk::SetComplete() {
 
     Activity::SetComplete();
     // success if it managed ot get to the final point
-    auto actor = Engine::get().GetRef<Entity>(m_actorId);
+    auto actor = Ref::GetFromId<Entity>(m_actorId);
     glm::vec2 currentPos(actor->GetPosition());
     m_success =(glm::length(m_p - currentPos) < 0.01);
 }
@@ -27,7 +27,7 @@ void Walk::Start() {
     auto blockedLines = walkArea->GetActiveWalls();
 
     //std::cout << "Calling walk for " << m_actorId << " to " << m_p.x << ", " << m_p.y << "\n";
-    auto actor = Engine::get().GetRef<Entity>(m_actorId);
+    auto actor = Ref::GetFromId<Entity>(m_actorId); 
     glm::vec2 currentPos(actor->GetPosition());
 
     // if current position is not in shape
@@ -84,7 +84,7 @@ void Walk::Start() {
                 dir = delta.y > 0 ? 'n' : 's';
             }
             Push(std::make_shared<Turn>(m_actorId, dir));
-            Push(std::make_shared<MoveTo>(actor, currentPos + length * glm::normalize(delta), 200.0f, false, false));
+            Push(std::make_shared<MoveTo>(m_actorId, currentPos + length * glm::normalize(delta), 200.0f, false, false));
             //if (i == points.size() - 1 || tMin < 1.0)
             currentPos = points[i];
             if (tMin < 1.0)

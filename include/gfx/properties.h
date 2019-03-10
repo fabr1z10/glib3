@@ -7,6 +7,7 @@
 
 class IAccessor {
 public:
+    virtual ~IAccessor() = default;
     virtual luabridge::LuaRef get() = 0;
     virtual void set(luabridge::LuaRef) = 0;
     virtual bool isReadOnly() const = 0;

@@ -13,13 +13,13 @@ public:
     ShowMessage(
             const std::string& message,
             const std::string& font,
-            const std::string& actor,
+            int actor,
             float size,
             glm::vec4 color,
             glm::vec4 outlineColor,
             TextAlignment align,
             float time,
-            glm::vec2 offset) : Activity(), m_generatedEntity{nullptr}, m_message{message}, m_time{time}, m_font{font}, m_actor{actor}, m_size{size},
+            glm::vec2 offset) : Activity(), m_generatedEntity{nullptr}, m_message{message}, m_time{time}, m_font{font}, m_actor{-1}, m_size{size},
                                 m_align{align}, m_color{color}, m_outlineColor{outlineColor}, m_offset{offset} {}
     ShowMessage(
             const std::string& message,
@@ -45,7 +45,7 @@ private:
     glm::vec4 m_color;
     glm::vec4 m_outlineColor;
     float m_time;
-    std::string m_actor;
+    int m_actor;
     std::string m_message;
     std::string m_font;
     Entity* m_generatedEntity;

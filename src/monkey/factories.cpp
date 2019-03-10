@@ -58,7 +58,7 @@ std::unique_ptr<Component> WalkAreaComponentFactory::Create(luabridge::LuaRef& r
 std::unique_ptr<Activity> WalkToActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
 
-    std::string actor = table.Get<std::string>("actor");
+    int actor = getId(table);
     glm::vec2 pos = table.Get<glm::vec2>("pos");
     return std::unique_ptr<Walk>(new Walk(actor, pos));
 };
@@ -66,7 +66,7 @@ std::unique_ptr<Activity> WalkToActFactory::Create(luabridge::LuaRef &ref) {
 std::unique_ptr<Activity> TurnActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
 
-    std::string actor = table.Get<std::string>("actor");
+    int actor = getId(table);
     char dir = table.Get<std::string>("dir")[0];
 
     return std::unique_ptr<Turn>(new Turn(actor, dir));
@@ -76,7 +76,7 @@ std::unique_ptr<Activity> TurnActFactory::Create(luabridge::LuaRef &ref) {
 std::unique_ptr<Activity> SayActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
 
-    std::string actor = table.Get<std::string>("actor");
+    int actor = getId(table);
     std::vector<std::string> lines = table.GetVector<std::string>("lines");
     glm::vec4 color = table.Get<glm::vec4>("color");
     color/=255.0f;

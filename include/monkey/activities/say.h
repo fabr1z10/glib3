@@ -7,7 +7,7 @@
 
 class Say : public Sequence {
 public:
-    Say (const std::string& actor, std::vector<std::string>& lines, glm::vec4 color, glm::vec2 offset) :
+    Say (int actor, std::vector<std::string>& lines, glm::vec4 color, glm::vec2 offset) :
             Sequence(), m_actorId{actor}, m_lines{lines}, m_color{color}, m_offset{offset}, m_noAnim{false} {}
     void Start() override;
     // say should also be able to handle override on anim start and anim end
@@ -19,7 +19,7 @@ private:
     std::string m_animStart;
     std::string m_animEnd;
     glm::vec4 m_color;
-    std::string m_actorId;
+    int m_actorId;
     std::vector<std::string> m_lines;
     bool m_noAnim;
 };

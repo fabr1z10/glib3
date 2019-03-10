@@ -4,7 +4,6 @@
 #include <unordered_map>
 #include <gfx/error.h>
 
-
 class Ref {
 public:
     Ref();

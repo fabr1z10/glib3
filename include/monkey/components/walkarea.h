@@ -36,7 +36,7 @@ public:
     using ParentClass = HotSpot;
     std::type_index GetType() override;
 private:
-
+    int m_id;
     std::vector<BlockedLine> m_walls;
     std::string m_playerId;
     //std::unique_ptr<Function2D> m_depthFunc;

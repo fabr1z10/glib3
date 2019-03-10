@@ -41,13 +41,13 @@ public:
 		: Component(), m_maxClimbAngle(maxClimbAngle), m_maxDescendAngle(maxDescendAngle), m_skinWidth(skinwidth), m_horizontalRayCount(horizontalRayCount), m_verticalRayCount(verticalRayCount), m_platform(nullptr) {}
     Controller2D(const Controller2D&);
 	virtual ~Controller2D();
-	virtual void Start();
+	void Start() override;
 	bool IsFalling(int);
 	void Move(glm::vec2&);
 	void ClimbSlope(glm::vec2&, float);
 	void DescendSlope(glm::vec2&);
 	void CalculateRaySpacing();
-	virtual void Update(double) {}
+	void Update(double) override {}
     void ResetShape(Collider*);
 	//void ForceMove(glm::vec2&);
 	CollisionDetails m_details;

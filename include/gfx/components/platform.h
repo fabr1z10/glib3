@@ -16,8 +16,8 @@ public:
     std::shared_ptr<Component> clone() const override;
     virtual ~PlatformComponent();
     void Move(Entity*);
-    virtual void Start();
-    virtual void Update(double) {}
+    void Start() override;
+    void Update(double) override {}
     virtual void Register(Controller2D*);
     virtual void Unregister(Controller2D*);
     virtual void UnregisterAll();

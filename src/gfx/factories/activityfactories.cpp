@@ -153,9 +153,9 @@ std::unique_ptr<Activity> AnimateActFactory::Create(luabridge::LuaRef &ref) {
 
 std::unique_ptr<Activity> SetStateActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
-    std::string actor = table.Get<std::string>("actor");
+    int id = getId(table);
     std::string state = table.Get<std::string>("state");
-    auto act = std::unique_ptr<SetState>(new SetState(actor, state));
+    auto act = std::unique_ptr<SetState>(new SetState(id, state));
     return std::move(act);
 };
 

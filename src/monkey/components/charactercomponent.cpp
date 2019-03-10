@@ -30,6 +30,9 @@ void StateCharacter::Start () {
     AddState( "idle", std::make_shared<AnimateCharState>("idle"));
     AddState( "walk", std::make_shared<AnimateCharState>("walk"));
     AddState( "talk", std::make_shared<AnimateCharState>("talk"));
+    for (auto& s : m_states) {
+        s.second->AttachStateMachine(this);
+    }
 }
 
 

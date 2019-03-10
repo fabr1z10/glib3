@@ -23,12 +23,14 @@ void WalkArea::Start() {
     if (m_scheduler == nullptr) {
         GLIB_FAIL ("Walk area component needs a scheduler runner!");
     }
+    m_id = Engine::get().GetRef<Entity>(m_playerId)->GetId();
+    
 }
 
 void WalkArea::onClick(glm::vec2 worldCoords, int button, int action, int mods) {
 
     auto script = std::make_shared<Script>();
-    script->AddActivity(1, std::unique_ptr<Walk>(new Walk(m_playerId, worldCoords)));
+    script->AddActivity(1, std::unique_ptr<Walk>(new Walk(m_id, worldCoords)));
     script->AddEdge(0, 1);
     m_scheduler->AddScript("_walk", script);
 
