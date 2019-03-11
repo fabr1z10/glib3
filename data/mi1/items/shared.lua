@@ -1,6 +1,6 @@
 -- generally, an item is a blueprint for an object
 -- * it can have graphics attached. To do so, model needs to be specified
-items2["guybrush"] = {
+items["guybrush"] = {
 	tag = "player",
 	model = "guybrush",
 	character = {
@@ -12,7 +12,7 @@ items2["guybrush"] = {
 
 }
 
-items2["pieces_of_eight"] = {
+items["pieces_of_eight"] = {
 	hotspot = {
 		text = strings.objects.pieceofeight,
 		text_plural = strings.objects.piecesofeight,

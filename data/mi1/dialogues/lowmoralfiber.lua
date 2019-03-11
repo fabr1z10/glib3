@@ -123,7 +123,7 @@ dialogues.lowmoralfiber = {
 			{ type = action.say, args = {actor="village2.lmf3", lines={d[42]}, animstart="talk_e", animend="idle_e"}},
 			{ type = action.add_to_inventory, args = {name="pieces_of_eight", qty=2} }
 		}},
-		[19] = { text = d[67], active=false, children={2,3,19,5,6}, script = ms {
+		[19] = { text = d[67], active=false, children={2,3,19,5,6}, script = {
 			{ type = action.say, args = {actor="guybrush", lines={d[67]}}},
 			{ type = action.say, args = {actor="village2.lmf3", lines={d[42]}, animstart="talk_e", animend="idle_e"}},
 			{ type = action.add_to_inventory, args = {name="pieces_of_eight", qty=2} }

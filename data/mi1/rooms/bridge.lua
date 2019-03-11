@@ -1,25 +1,23 @@
-require("template/room1")
-
 roomDefinition = {
 	width = 320,
 	height = 144,
 	startTable = {
-		meleemap = { pos = items2["bridge.path"].hotspot.walk_to, dir = "east"}
+		meleemap = { pos = items["bridge.path"].hotspot.walk_to, dir = "east"}
 	},
 	defaultroom = "meleemap",
 	depth = { type="linear_y", values= {0, 1, 144, 0} },	
 	collide=true
 }
 
-room = generateBasicRoom (roomDefinition)
+room = scumm.factory.basic_room(roomDefinition)
 
 
 room:add({
 	{ pos = {0, 0, -3}, components = { { type="gfx", image="gfx/bridge.png" }}},
-	{ pos = {0, 0, 2}, components = { { type="gfx", image="gfx/bridge2.png" }}},
-	factory.walkarea { shape = { type = "poly", outline = {0,14,80,21, 201, 55, 229, 55,136, 0,0,0}}},
-	factory.objc { id="bridge.path"},
-	factory.objc { id="bridge.troll"}
+	--{ pos = {0, 0, 2}, components = { { type="gfx", image="gfx/bridge2.png" }}},
+	scumm.factory.walkarea { shape = { type = "poly", outline = {0,14,80,21, 201, 55, 229, 55,136, 0,0,0}}},
+	--factory.scumm.object { id="bridge.path"},
+	--factory.scumm.object { id="bridge.troll"}
 })
 
 local gotoTroll = function()
@@ -37,9 +35,9 @@ local gotoTroll = function()
 
 end
 
-if (variables.troll_in) then
- 	room:add( { factory.trap.create { pos ={95, 0, 0}, tag="troll_sensor", width=10, height = 144, onenter = gotoTroll }})
-end
+-- if (variables.troll_in) then
+--  	room:add( { factory.scumm.trap { pos ={95, 0, 0}, tag="troll_sensor", width=10, height = 144, onenter = gotoTroll }})
+-- end
 
 local troll = function() 
 	local d = strings.dialogues.troll
@@ -56,10 +54,11 @@ end
 
 
 function room.afterstartup() 
-	for k, v in ipairs(room.initstuff) do
-		v()
-	end
-	troll()
+	print ("oiwrf")
+	--for k, v in ipairs(room.initstuff) do
+--		v()
+--	end
+	--troll()
 	-- local s = script:new("_troll")
 	-- s.actions = {
 	-- 	action.say { id=1, actor="bridge.troll", lines = {d[1]}, animstart="talk", animend="idle" },
@@ -67,6 +66,7 @@ function room.afterstartup()
 	-- }
 	-- s.loop = 1
 	-- monkey.play(s)
+print ("wefh")
 end
 
 

@@ -44,46 +44,47 @@ dialogues.citizen = {
 				s1
 			}
 		},
-		[6] = { text = d[10], active = false, children ={10, 11}, script = msc {
+		[6] = { text = d[10], active = false, children ={10, 11}, script = 
 			{
-				{ action.say, { id = 1, actor = "guybrush",  lines = {d[10]} }},
-				{ action.say, { id = 2, actor = "village2.citizen",  lines = {d[29], d[30], d[31], d[32]}, animstart="talk_start", animend="talk_end" }},
+				{ type = action.say, args = {actor = "guybrush",  lines = {d[10]}}},
+				{ type = action.say, args = {actor = "village2.citizen",  lines = {d[29], d[30], d[31], d[32]}, animstart="talk_start", animend="talk_end" }},
+				s1
 			},
-			s1}
 		},
-		[7] = { text = d[11], active = false, children ={10, 11}, script = msc {
+		[7] = { text = d[11], active = false, children ={10, 11}, script =
 			{
-				{ action.say, { id = 1, actor = "guybrush",  lines = {d[11]} }},
-				{ action.say, { id = 2, actor = "village2.citizen",  lines = {d[33]}, animstart="talk_start", animend="talk_end" }},
+				{ type = action.say, args = { actor = "guybrush",  lines = {d[11]} }},
+				{ type = action.say, args = { actor = "village2.citizen",  lines = {d[33]}, animstart="talk_start", animend="talk_end" }},
+				s1
 			},
-			s1}
 		},
-		[8] = { text = d[12], active = false, script = msc {
+		[8] = { text = d[12], active = false, script =
 			{
-				{ action.say, { id = 1, actor = "guybrush",  lines = {d[12]} }},
-				{ action.say, { id = 2, actor = "village2.citizen",  lines = {d[29], d[30], d[31], d[32]}, animstart="talk_start", animend="talk_end" }},
-			},
-			s1}
+				{ type = action.say, args={ actor = "guybrush",  lines = {d[12]} }},
+				{ type = action.say, args={ actor = "village2.citizen",  lines = {d[29], d[30], d[31], d[32]}, animstart="talk_start", animend="talk_end" }},
+				s1
+			}
 		},
-		[9] = { text = d[13], active = false, script = ms {
-			{ action.say, { id = 1, actor = "guybrush",  lines = {d[13]} }},
-			{ action.say, { id = 2, actor = "village2.citizen",  lines = {d[14], d[15]}, animstart="talk_start", animend="talk_end" }},
+		[9] = { text = d[13], active = false, script = 
+			{
+				{ type=action.say, args={actor = "guybrush",  lines = {d[13]} }},
+				{ type=action.say, args={actor = "village2.citizen",  lines = {d[14], d[15]}, animstart="talk_start", animend="talk_end" }},
 			}
 		},
 		[10] = { text = d[24], active = function() 
 			return (variables.talked_about_map and (
 				(variables.inventory["piece_of_eight"] == nil) or (variables.inventory["piece_of_eight"]<100)))
-			end, script = ms {
-				{ action.say, { id = 1, actor = "guybrush",  lines = {d[24]} }},
-				{ action.say, { id = 2, actor = "village2.citizen",  lines = {d[26]}, animstart="talk_start", animend="talk_end" }},
+			end, script = {
+				{ type=action.say, args={actor = "guybrush",  lines = {d[24]} }},
+				{ type=action.say, args={actor = "village2.citizen",  lines = {d[26]}, animstart="talk_start", animend="talk_end" }},
 			}
 		},
 		[11] = { text = d[25], active = function() 
 			return (variables.talked_about_map and (
 				(variables.inventory["piece_of_eight"] == nil) or (variables.inventory["piece_of_eight"]<100)))
-			end, script = ms {
-				{ action.say, { id = 1, actor = "guybrush",  lines = {d[25]} }},
-				{ action.say, { id = 2, actor = "village2.citizen",  lines = {d[34], d[35]}, animstart="talk_start", animend="talk_end" }},
+			end, script = {
+				{ type=action.say, args={actor = "guybrush",  lines = {d[25]} }},
+				{ type=action.say, args={actor = "village2.citizen",  lines = {d[34], d[35]}, animstart="talk_start", animend="talk_end" }},
 			}
 		},
 

@@ -39,7 +39,7 @@ factory.objc = function(args)
 	if (object.model ~= nullptr) then
 		obj.type = "sprite"
 		obj.model = object.model
-		obj.anim = get(object.anim)
+		obj.anim = glib.get(object.anim)
 	end
 
 	-- add the hotspot only if size is supplied

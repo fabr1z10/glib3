@@ -1,24 +1,36 @@
+package.path = '/home/fabrizio/glib3/lualib/?.lua;' .. package.path
+
 engine = {
-    device_size = { 320, 200 },
-    window_size = { 320, 200 },
-    title = "The secret of Monkey Island",
+	device_size = { 320, 200 },
+	window_size = { 320, 200 },
+	title = "The secret of Monkey Island",
 	shaders = { "unlit_textured", "unlit_color", "text" }
 }
 
--- this is constant config stuff
+fonts = {
+    ui = {file  = "./fonts/monkeysmall.ttf" },
+    monkey = {file  = "./fonts/MonkeyIsland-1990.ttf"}
+}
+
+-- this is configuration for scumm
 config = {
+	start_room = "bridge",
 	lang = "eng",
     default_verb = "walk",
-    ui_unselected_color = { 0, 170, 0, 255},
-    ui_selected_color = {255, 255, 85, 255},
-    ui_currentaction_color ={0, 170, 170, 255},
-	ui_inv_unselected = {170, 0, 170, 255},
-	ui_inv_selected = {255, 85, 255, 255}
+	ui = {
+		height = 56,
+    	verb_unselected_color = { 0, 170, 0, 255},
+    	verb_selected_color = {255, 255, 85, 255},
+    	currentaction_color ={0, 170, 170, 255},
+		inv_unselected = {170, 0, 170, 255},
+		inv_selected = {255, 85, 255, 255},
+		font = "ui"
+	}
 }
 
 require ("text/" .. config.lang .."/text")
 
-
+-- the verbs for the game. You might have multiple sets here! Watch out
 config.verbs = {
  	open = { code="open", text = strings.ui.open, objects = 1 },
     close = { code="close", text = strings.ui.close, objects = 1 },
@@ -34,25 +46,9 @@ config.verbs = {
     turnoff = { code="turnoff", text = strings.ui.turnoff, objects = 1 }
 }
 
-fonts = {
-    ui = {file  = "./fonts/monkeysmall.ttf" },
-    monkey = {file  = "./fonts/MonkeyIsland-1990.ttf"}
-}
-
-global_assets = {
-	fonts = { "ui", "monkey" }
-}
-
--- -- this stuff will change at gametime
 variables = {
-    _room = "bridge",
 -- 	_previousroom="",
-    _actionInfo = {
-        verb = nil,
-        obj1 = nil,
-        obj2 = nil,
-        selectSecond = false
-    },
+
  	first_time_mancomb = true,
  	first_time_estevan = true,
  	door_village_scummbar = 0,
@@ -85,6 +81,21 @@ variables = {
  	inventory = { 	}
 }
 
+
+
+require ("scumm")
+
+
+
+
+
+
+global_assets = {
+	fonts = { "ui", "monkey" }
+}
+
+-- -- this stuff will change at gametime
+
 -- -- DEBUG STUFF
 variables.inventory["pieces_of_eight"] = 10000
 -- variables.inventory["kitchen.pot"] = 1
@@ -94,27 +105,22 @@ variables.inventory["pieces_of_eight"] = 10000
 variables.inventory["kitchen.fish"] = 1
 -- -- END DEBUG
 
-require ("script")
-require ("funcs2")
+--require ("script")
+--require ("funcs2")
 
 
 -- -- load room specific scripts
 -- scripts = {}
-factory = {}
-action = {}
-action.combo = {}
-items2 = {}
+items = {}
 spritesheets = {}
 models = {}
 dialogues = {}
 -- sprites = {}
-load_all("sprites2")
-load_all("factories")
 
-
-
-load_all("items2")
-load_all("dialogues")
+glib.load_folder("sprites")
+--glib.load_folder("factories")
+glib.load_folder("items")
+glib.load_folder("dialogues")
 
 require("defaultscripts")
 

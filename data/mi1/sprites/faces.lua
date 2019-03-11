@@ -1,11 +1,20 @@
 local dt = 0.1
 
-require("sprites2/facess")
+spritesheets["faces"] = {
+	mancomb_default = {x=80, y=0, width=78, height=78},
+	mancomb_smile = {x=0, y=0, width=78, height=78},
+
+
+
+
+}
+
+
 
 local s = spritesheets["faces"]
 
 models["mancomb.mancomb"] = {
-    sheet = "sprites2/faces.png",
+    sheet = "sprites/faces.png",
     type = "sprite",
     ppu=1,
 	animations = {

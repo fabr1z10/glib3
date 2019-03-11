@@ -48,7 +48,7 @@ function generateBasicRoom (args)
 					viewport = {0, 56, 320, 144}
 				},
 				children = {
-					factory.objc { 
+					factory.scumm.object {
 						id="guybrush", 
 						pos={startPos.pos[1], startPos.pos[2], 0}, 
 						--tag="player", 
@@ -98,18 +98,18 @@ function generateBasicRoom (args)
 
 							},
 
-							factory.verbbutton.create {pos={2, 40}, verb = config.verbs.open},
-							factory.verbbutton.create {pos={2, 32}, verb = config.verbs.close},
-							factory.verbbutton.create {pos={2, 24}, verb = config.verbs.push},
-							factory.verbbutton.create {pos={2, 16}, verb = config.verbs.pull},
-							factory.verbbutton.create {pos={48, 40}, verb = config.verbs.walk},
-							factory.verbbutton.create {pos={48, 32}, verb = config.verbs.pick},
-							factory.verbbutton.create {pos={48, 24}, verb = config.verbs.talk},
-							factory.verbbutton.create {pos={48, 16}, verb = config.verbs.give},
-							factory.verbbutton.create {pos={100, 40}, verb = config.verbs.use},
-							factory.verbbutton.create {pos={100, 32}, verb = config.verbs.look},
-							factory.verbbutton.create {pos={100, 24}, verb = config.verbs.turnon},
-							factory.verbbutton.create {pos={100, 16}, verb = config.verbs.turnoff},
+							factory.scumm.verbbutton {pos={2, 40}, verb = config.verbs.open},
+							factory.scumm.verbbutton {pos={2, 32}, verb = config.verbs.close},
+							factory.scumm.verbbutton {pos={2, 24}, verb = config.verbs.push},
+							factory.scumm.verbbutton {pos={2, 16}, verb = config.verbs.pull},
+							factory.scumm.verbbutton {pos={48, 40}, verb = config.verbs.walk},
+							factory.scumm.verbbutton {pos={48, 32}, verb = config.verbs.pick},
+							factory.scumm.verbbutton {pos={48, 24}, verb = config.verbs.talk},
+							factory.scumm.verbbutton {pos={48, 16}, verb = config.verbs.give},
+							factory.scumm.verbbutton {pos={100, 40}, verb = config.verbs.use},
+							factory.scumm.verbbutton {pos={100, 32}, verb = config.verbs.look},
+							factory.scumm.verbbutton {pos={100, 24}, verb = config.verbs.turnon},
+							factory.scumm.verbbutton {pos={100, 16}, verb = config.verbs.turnoff},
 							{
 								type = "textview", 
 								tag="inventory",
@@ -118,7 +118,7 @@ function generateBasicRoom (args)
 								font_size = 8,
 								lines = 6,
 								deltax = 26,
-								factory = factory.inventorybutton.create
+								factory = factory.scumm.inventorybutton
 							}
 						}
 					},
@@ -133,7 +133,7 @@ function generateBasicRoom (args)
 								font_size = 8,
 								lines = 6,
 								deltax = 26,
-								factory = factory.dialoguebutton.create
+								factory = factory.scumm.dialoguebutton
 							}
 						}
 					}
