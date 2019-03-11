@@ -26,7 +26,7 @@ function flatten_script(a, offset)
 	local ref_id = {}
 	local id = offset
     for _, v in ipairs(a) do
-        if (isarray(v)) then
+        if (glib.isarray(v)) then
             --print (tostring(v) .. " is an array")
             tmp = flatten_script(v, id)
 			-- copy all ref id 

@@ -189,7 +189,7 @@ function scumm.factory.basic_room (args)
 		end
 	end
 
-
+	variables._actionInfo.verb = config.verbs[config.default_verb]
 	p.depth = args.depth
 	p.scale = args.scale
 	return p

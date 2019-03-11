@@ -21,7 +21,7 @@ items["kitchen.meat"] = {
 	},
  	model = "kitchen.meat",
  	actions = {
- 		pickup = action.scumm.pickup ("kitchen.meat", "operate_n", "idle_n"),
+ 		pickup = scumm.action.pickup ("kitchen.meat", "operate_n", "idle_n"),
  		look = { type = action.say, args = {actor="guybrush", lines = {strings.kitchen[1]}}}
  	}	
 }
@@ -49,7 +49,7 @@ items["kitchen.pot"] = {
 	},
 	model = "kitchen.pot",
  	actions = {
- 		pickup = action.scumm.pickup("kitchen.pot", "kneel_n", "idle_n"),
+ 		pickup = scumm.action.pickup("kitchen.pot", "kneel_n", "idle_n"),
  		look = { type = action.say, args ={actor="guybrush", lines = {strings.kitchen[2] }}}
 	}
 }

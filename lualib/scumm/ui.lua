@@ -1,15 +1,16 @@
 scumm.ui = {}
 
 function variables._actionInfo:toString ()
+	
     local t = { self.verb.text }
-
+	
     if (self.obj1 ~= nil) then
         --o1 = objects[self.obj1]
-        t[2] = items2[self.obj1].hotspot.text
+        t[2] = items[self.obj1].hotspot.text
         if (self.obj2 ~= nil) then
             --o2 = objects[self.obj2]
             t[3] = self.verb.prep
-            t[4] = items2[self.obj2].hotspot.text
+            t[4] = items[self.obj2].hotspot.text
         else
             if (self.selectSecond == true) then
                t[3] = self.verb.prep 
@@ -19,7 +20,16 @@ function variables._actionInfo:toString ()
     return table.concat(t, " ")
 end
 
+function variables._actionInfo:reset()
+   self.verb = config.verbs.walk
+   self.obj1 = nil
+   self.obj2 = nil
+   self.selectSecond = false
+end
+
+
 function scumm.ui.updateVerb() 
+	
     a = monkey.getEntity("currentaction")
     a:settext(variables._actionInfo:toString())    
 end
@@ -69,7 +79,7 @@ function scumm.ui.runAction ()
 	-- create a brand new script
     --local s = script:new("_walk")
 	--s.name="_walk"
-	local obj = items2[variables._actionInfo.obj1]
+	local obj = items[variables._actionInfo.obj1]
     if (variables._actionInfo.obj2 == nil) then
         -- try to run a single object action
 		if (variables._actionInfo.verb.code == "give") then
@@ -92,15 +102,15 @@ function scumm.ui.runAction ()
 				local actions = {}
 				if (variables.inventory[variables._actionInfo.obj1] == nil) then		
 					actions = {
-						{ type = action.walkto, args = { actor="guybrush", obj = variables._actionInfo.obj1 }},
-						{ type = action.turn, args = { actor="guybrush", dir = obj.hotspot.dir }}
+						{ type = scumm.action.walkto, args = { tag="player", obj = variables._actionInfo.obj1 }},
+						{ type = scumm.action.turn, args = { tag="player", dir = obj.hotspot.dir }}
 					}			
 				end
-				local b = script.defaultactions[variables._actionInfo.verb.code]
+				local b = config.defaultactions[variables._actionInfo.verb.code]
 				if (b ~= nil) then		
 					table.insert (actions, b)
 				end
-				s = ms2 (actions)
+				s = script.make (actions)
             end
         else
             -- run specific action
@@ -109,18 +119,18 @@ function scumm.ui.runAction ()
 			local actions = {}
 			if (variables.inventory[variables._actionInfo.obj1] == nil) then		
 				actions = {
-					{ type = action.walkto, args = { id=1, actor="guybrush", obj = variables._actionInfo.obj1 }},
-					{ type = action.turn, args = { id=2, actor="guybrush", dir = obj.hotspot.dir }}
+					{ type = scumm.action.walkto, args = { tag="player", obj = variables._actionInfo.obj1 }},
+					{ type = scumm.action.turn, args = {tag="player", dir = obj.hotspot.dir }}
 				}		
 			end
 			table.insert (actions, get(a))
-			s = ms2 (actions)
+			s = script.make (actions)
         end
     else
         -- action with two objects
         -- see if there are any two object actions like verb obj1 ...
         if (variables._actionInfo.verb.code == "use") then
-			local obj2 = items2[variables._actionInfo.obj2]
+			local obj2 = items[variables._actionInfo.obj2]
 			-- walk action
 			-- 1. If both obejcts are in inventory, stay where you are
 			-- 2. If one object is in inventory, walk to the other object
@@ -160,29 +170,70 @@ function scumm.ui.runAction ()
 			elseif (u2 ~= nil) then
 				table.insert (actions, get(u2))
 			else
-				local def = script.defaultactions["use"]
+				local def = config.defaultactions["use"]
 				table.insert (actions, get(def))
    			end
-			s = ms2(actions)
+			s = script.make(actions)
         elseif (variables._actionInfo.verb.code == "give") then
 			--s = giveActionHandler()
 			local IhaveObj1 = variables.inventory[variables._actionInfo.obj1] ~= nil
 			if (not IhaveObj1) then return nil end
-			local obj2 = items2[variables._actionInfo.obj2]
+			local obj2 = items[variables._actionInfo.obj2]
 			local actions = {}
 			table.insert (actions, action.combo.walk_to_object("guybrush", variables._actionInfo.obj2))
 			local u1 = obj.actions["give"] and obj.actions["give"][variables._actionInfo.obj2]
 			if (u1 ~= nil) then
 				table.insert (actions, get(u1))		
 			else 
-				local def = script.defaultactions["give"]
+				local def = config.defaultactions["give"]
 				table.insert (actions, get(def))
 			end
-			s = ms2(actions)
+			s = script.make(actions)
 		end
     end
 	s.name= "_walk"
     monkey.play(s)
     variables._actionInfo:reset()
-    updateVerb()
+    scumm.ui.updateVerb()
+end
+
+
+function scumm.ui.hoverOn (obj)
+	print ("weroifujerwoifhjrei" .. obj)
+    if (variables._actionInfo.obj1 == nil) then 
+		print ("setting to " .. obj)
+        variables._actionInfo.obj1 = obj
+		print ("setting to " .. variables._actionInfo.obj1)
+    else
+        if (variables._actionInfo.verb.objects > 1 and variables._actionInfo.obj1 ~= obj) then
+            variables._actionInfo.obj2 = obj
+        end
+    end
+    scumm.ui.updateVerb()
+end
+
+function scumm.ui.hoverOff ()
+    if (variables._actionInfo.obj2 ~= nil) then
+        variables._actionInfo.obj2 = nil
+    else
+        -- set obj1 to nil unless we are waiting for 2nd object
+        if (variables._actionInfo.selectSecond == false) then
+            variables._actionInfo.obj1 = nil
+        end
+    end
+    scumm.ui.updateVerb()
+end
+
+function scumm.ui.hover_on_inv_button(entity) 
+	local color = config.ui.inv_selected
+	entity:setcolor(color[1], color[2], color[3], color[4])
+	local info = entity:getinfo()
+	scumm.ui.hoverOn(info.data.obj)
+end
+
+function scumm.ui.hover_off_inv_button(entity) 
+	local color = config.ui.inv_unselected
+	entity:setcolor(color[1], color[2], color[3], color[4])
+	local info = entity:getinfo()
+	scumm.hoverOff()
 end

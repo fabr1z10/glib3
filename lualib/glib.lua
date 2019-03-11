@@ -9,13 +9,13 @@ function glib.assert(a, b, c)
 end
 
 function glib.assert_both (a, b, c) 
-	if (a == nil and b == nil) then
+	if (a == nil or b == nil) then
 		error ("Required both argument: " .. c, 2)
 	end
 end
 
 function glib.assert_either (a, b, c) 
-	if (a == nil or b == nil) then
+	if (a == nil and b == nil) then
 		error ("Required both argument: " .. c, 2)
 	end
 end

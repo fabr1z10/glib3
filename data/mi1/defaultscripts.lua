@@ -1,9 +1,9 @@
-defaultactions = {}
+config.defaultactions = {}
 
-local d = strings.defaultactions
+local d = config.defaultactions
 
-defaultactions.open = { type = action.say, args = { actor="guybrush", lines={d[1]}}}
-defaultactions.look = { { type = action.say, args = { actor="guybrush", lines={d[4]}}}}
-defaultactions.use = { { type = action.say, args = { id=1, actor="guybrush", lines={d[2]} }} }
-defaultactions.give = { { type = action.say, args = { id=1, actor="guybrush", lines={d[2]} }} }
-defaultactions.pickup = { { type = action.say, args = { id=1, actor="guybrush", lines={d[5]} }}}
+d.open = { type = action.say, args = { actor="guybrush", lines={d[1]}}}
+d.look = { { type = action.say, args = { actor="guybrush", lines={d[4]}}}}
+d.use = { { type = action.say, args = { id=1, actor="guybrush", lines={d[2]} }} }
+d.give = { { type = action.say, args = { id=1, actor="guybrush", lines={d[2]} }} }
+d.pickup = { { type = action.say, args = { id=1, actor="guybrush", lines={d[5]} }}}

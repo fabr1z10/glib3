@@ -17,7 +17,7 @@ room:add({
 	--{ pos = {0, 0, 2}, components = { { type="gfx", image="gfx/bridge2.png" }}},
 	scumm.factory.walkarea { shape = { type = "poly", outline = {0,14,80,21, 201, 55, 229, 55,136, 0,0,0}}},
 	--factory.scumm.object { id="bridge.path"},
-	--factory.scumm.object { id="bridge.troll"}
+	scumm.factory.object { id="bridge.troll"}
 })
 
 local gotoTroll = function()
