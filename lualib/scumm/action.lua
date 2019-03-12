@@ -35,3 +35,33 @@ scumm.action.walk_to_object= function(actor, id)
 		{ type = action.turn, args = {actor=actor, dir = items2[id].hotspot.dir}}
 	}
 end
+
+scumm.action.say = function(args) 
+	--assert (args.id, "id")
+	glib.assert (args.actor, "actor")
+	glib.assert (args.lines, "lines")
+
+	local item = items[args.actor]
+	local tag = item.tag or args.actor
+
+	local animstart = args.animstart
+	local animend = args.animend
+	local animate = true
+	if (args.animate ~= nil) then animate = args.animate end
+
+	local l = {}
+	for _, li in ipairs(args.lines) do
+		table.insert(l, glib.get(li))
+	end
+
+	return { 
+		type="say", 
+		tag = tag, 
+		lines = l, 
+		offset = item.text_offset, 
+		color = item.text_color,
+		animstart = animstart, 
+		animend = animend, 
+		animate = animate 
+	}
+end

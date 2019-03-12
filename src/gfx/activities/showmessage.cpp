@@ -17,12 +17,14 @@ void ShowMessage::Start() {
         currentPos = m_pos;
     }
 
-    // make this a param
-    currentPos += m_offset; //glm::vec2(0, 60.0);
+    currentPos += m_offset;
 
     auto parent = std::make_shared<Entity>();
     Font* f = Engine::get().GetAssetManager().GetFont(m_font).get();
+
     auto mesh = std::make_shared<TextMesh>(f, m_message, m_size, m_align, 280.0f);
+    Bounds3D ex = mesh->GetBounds();
+
     glm::vec2 outlineOffsets[] = {{0, 0}, {-1, 0}, {-1,1}, {0, 1}, {1,1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1}};
     for (int i =0; i < 9; ++i) {
         auto entity = std::make_shared<Entity>();
@@ -35,22 +37,19 @@ void ShowMessage::Start() {
         parent->AddChild(entity);
     }
 
-    // adjust position
-
-    Bounds3D textBounds = mesh->GetBounds();
-    const auto& lt = mesh->GetLocalTransform();
-    glm::vec2 lpos(lt[3][0], lt[3][1]);
-    glm::vec2 extents (textBounds.GetExtents());
-
-    glm::vec2 displ(0.0f);
+    // adjust position so that the message is all visible
     glm::vec2 camPos(m_mainCam->GetPosition());
     glm::vec2 camSize = 0.5f * m_mainCam->GetSize();
+    float shiftX = 0.0f;
+    if (currentPos.x + ex.min.x < camPos.x - camSize.x) {
+        // we need th shift the message RIGHT
+        shiftX = (camPos.x - camSize.x) - currentPos.x - ex.min.x;
+    } else if (currentPos.x + ex.max.x > camPos.x + camSize.x) {
+        shiftX = (camPos.x + camSize.x) - currentPos.x - ex.max.x;
+    }
 
-    if (currentPos.x - extents[0] - lpos.x < camPos.x - camSize.x)
-        displ.x = (camPos.x - camSize.x) - (currentPos.x - extents[0]);
-    else if (currentPos.x + extents[0] + lpos.x > camPos.x + camSize.x)
-        displ.x = -((currentPos.x + extents[0]) - (camPos.x + camSize.x));
-    parent->SetPosition(glm::vec3(currentPos + displ, 5.0f));
+    currentPos += glm::vec2(shiftX, 0.0f);
+    parent->SetPosition(currentPos);
     //parent->SetLayer(1);
     scene->AddChild(parent);
     m_generatedEntity = parent.get();

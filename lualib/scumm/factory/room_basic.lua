@@ -22,8 +22,8 @@ function scumm.factory.basic_room (args)
 		initstuff = {
 			[1] = function() 
 				variables._actionInfo.verb = config.verbs.walk
-				updateVerb() 
-				refresh_inventory()
+				scumm.ui.updateVerb() 
+				scumm.ui.refresh_inventory()
 			end
 		},
 		engines = {

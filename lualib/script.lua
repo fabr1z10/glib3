@@ -27,10 +27,11 @@ function flatten_script(a, offset)
 	local id = offset
     for _, v in ipairs(a) do
         if (glib.isarray(v)) then
-            --print (tostring(v) .. " is an array")
+            print (tostring(v) .. " is an array")
             tmp = flatten_script(v, id)
 			-- copy all ref id 
 			for k, v in pairs(tmp[2]) do
+				print (v)
 				ref_id[k] = v
 			end
             for _, j in ipairs(tmp[1]) do
@@ -38,10 +39,11 @@ function flatten_script(a, offset)
             end
 			id = tmp[1][#tmp[1]].id
         else
-            --print (tostring(v) .. " is not an array")
+            print (tostring(v) .. " is not an array")
 			if (v.type ~= nil) then
 				id = id + 1
 				local node = { id = id, action = v.type(v.args) }
+				print ("qui")
 				if (v.ref ~= nil) then
 					ref_id[v.ref] = id
 				end

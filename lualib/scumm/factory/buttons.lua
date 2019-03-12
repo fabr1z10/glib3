@@ -39,9 +39,9 @@ scumm.factory.inventorybutton = function (args)
         size = 8, 
         priority = 1,
 		info = { obj = args.obj},
-		onenter = hover_on_inv_button, --scurry2(changecolor, config.ui_inv_selected), 
-        onleave = hover_off_inv_button, --(changecolor, config.ui_inv_unselected),
-		onclick = runAction
+		onenter = scumm.ui.hover_on_inv_button, --scurry2(changecolor, config.ui_inv_selected), 
+        onleave = scumm.ui.hover_off_inv_button, --(changecolor, config.ui_inv_unselected),
+		onclick = scumm.ui.runAction
 	}
 
 end

@@ -248,14 +248,10 @@ void HotSpot::Start() {
     if (m_shape == nullptr) {
         // try to get shape from gfx component
         auto renderer = m_entity->GetComponent<Renderer>();
-        auto& rt = renderer->GetRenderingTransform();
         auto bounds = m_entity->GetComponent<Renderer>()->GetBounds();
-        Bounds b;
-        b.min = glm::vec3(bounds.min);
-        b.max = glm::vec3(bounds.max);
-        b.Transform(rt);
-        auto extents = b.GetSize();
-        SetShape(std::make_shared<Rect>(extents.x, extents.y, b.min));
+        glm::vec2 min(bounds.min);
+        glm::vec3 extents = bounds.GetExtents();
+        SetShape(std::make_shared<Rect>(extents.x, extents.y, min));
         AddDebugMesh();
     }
 

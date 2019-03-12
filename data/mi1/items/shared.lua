@@ -19,7 +19,7 @@ items["pieces_of_eight"] = {
 	},
 	actions = {
 		look = {
-			{ type = action.say, args= { actor="guybrush", lines = {strings.pieces_of_eight}}}
+			{ type = scumm.action.say, args= { actor="guybrush", lines = {strings.pieces_of_eight}}}
 		}
 
  -- function () 

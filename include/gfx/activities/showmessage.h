@@ -19,7 +19,7 @@ public:
             glm::vec4 outlineColor,
             TextAlignment align,
             float time,
-            glm::vec2 offset) : Activity(), m_generatedEntity{nullptr}, m_message{message}, m_time{time}, m_font{font}, m_actor{-1}, m_size{size},
+            glm::vec2 offset) : Activity(), m_generatedEntity{nullptr}, m_message{message}, m_time{time}, m_font{font}, m_actor{actor}, m_size{size},
                                 m_align{align}, m_color{color}, m_outlineColor{outlineColor}, m_offset{offset} {}
     ShowMessage(
             const std::string& message,

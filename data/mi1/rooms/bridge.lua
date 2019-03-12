@@ -55,9 +55,9 @@ end
 
 function room.afterstartup() 
 	print ("oiwrf")
-	--for k, v in ipairs(room.initstuff) do
---		v()
---	end
+	for k, v in ipairs(room.initstuff) do
+		v()
+	end
 	--troll()
 	-- local s = script:new("_troll")
 	-- s.actions = {

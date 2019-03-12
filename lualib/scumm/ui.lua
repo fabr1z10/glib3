@@ -123,7 +123,8 @@ function scumm.ui.runAction ()
 					{ type = scumm.action.turn, args = {tag="player", dir = obj.hotspot.dir }}
 				}		
 			end
-			table.insert (actions, get(a))
+			table.insert (actions, glib.get(a))
+			print ("no. actions = " .. tostring(#actions))
 			s = script.make (actions)
         end
     else
@@ -235,5 +236,19 @@ function scumm.ui.hover_off_inv_button(entity)
 	local color = config.ui.inv_unselected
 	entity:setcolor(color[1], color[2], color[3], color[4])
 	local info = entity:getinfo()
-	scumm.hoverOff()
+	scumm.ui.hoverOff()
 end
+
+function scumm.ui.refresh_inventory()
+	local c = monkey.getEntity("inventory")
+	c:cleartext()
+	for k, v in pairs(variables.inventory) do
+		if (v == 1) then
+			c:addtext( {text = items[k].hotspot.text, obj = k})
+		else
+			c:addtext( { text = tostring(v) .. " " .. items[k].hotspot.text_plural, obj = k}) -- l, obj = k} )
+		end
+	end
+
+end
+
