@@ -143,24 +143,24 @@ function scumm.ui.runAction ()
 			local IhaveObj1 = variables.inventory[variables._actionInfo.obj1] ~= nil
 			local IhaveObj2 = variables.inventory[variables._actionInfo.obj2] ~= nil
 			if (IhaveObj1 and (not IhaveObj2)) then
-				table.insert (actions, action.combo.walk_to_object("guybrush", variables._actionInfo.obj2))
+				table.insert (actions, action.combo.walk_to_object("player", variables._actionInfo.obj2))
 			elseif (IhaveObj2 and (not IhaveObj1)) then
-				table.insert (actions, action.combo.walk_to_object("guybrush", variables._actionInfo.obj1))
+				table.insert (actions, action.combo.walk_to_object("player", variables._actionInfo.obj1))
 			elseif ((not IhaveObj1) and (not IhaveObj2)) then
 				local pu1 = obj.actions["pickup"]
 				local pu2 = obj2.actions["pickup"]
 				if (pu1 ~= nil) then
 					-- go pick-up 1st object, walk to 2nd
-					table.insert (actions, action.combo.walk_to_object("guybrush", variables._actionInfo.obj1))
-					table.insert (actions, get(pu1))
-					table.insert (actions, action.combo.walk_to_object("guybrush", variables._actionInfo.obj2))
+					table.insert (actions, scumm.action.walk_to_object("player", variables._actionInfo.obj1))
+					table.insert (actions, glib.get(pu1))
+					table.insert (actions, scumm.action.walk_to_object("player", variables._actionInfo.obj2))
 				elseif (pu2 ~= nil) then
 					-- go pick-up 2nd object, walk to 2nd
-					table.insert (actions, action.combo.walk_to_object("guybrush", variables._actionInfo.obj2))
-					table.insert (actions, get(pu2))
-					table.insert (actions, action.combo.walk_to_object("guybrush", variables._actionInfo.obj1))
+					table.insert (actions, scumm.action.walk_to_object("player", variables._actionInfo.obj2))
+					table.insert (actions, glib.get(pu2))
+					table.insert (actions, scumm.action.walk_to_object("player", variables._actionInfo.obj1))
 				else 
-					table.insert (actions, action.combo.walk_to_object("guybrush", variables._actionInfo.obj2))
+					table.insert (actions, scumm.action.walk_to_object("player", variables._actionInfo.obj2))
 				end
 			end
 			-- now, slap the actual use action
@@ -178,16 +178,17 @@ function scumm.ui.runAction ()
         elseif (variables._actionInfo.verb.code == "give") then
 			--s = giveActionHandler()
 			local IhaveObj1 = variables.inventory[variables._actionInfo.obj1] ~= nil
+			print ("I have " .. variables._actionInfo.obj1 .. " = " .. tostring(IhaveObj1))
 			if (not IhaveObj1) then return nil end
 			local obj2 = items[variables._actionInfo.obj2]
 			local actions = {}
-			table.insert (actions, action.combo.walk_to_object("guybrush", variables._actionInfo.obj2))
+			table.insert (actions, scumm.action.walk_to_object("player", variables._actionInfo.obj2))
 			local u1 = obj.actions["give"] and obj.actions["give"][variables._actionInfo.obj2]
 			if (u1 ~= nil) then
-				table.insert (actions, get(u1))		
+				table.insert (actions, glib.get(u1))		
 			else 
 				local def = config.defaultactions["give"]
-				table.insert (actions, get(def))
+				table.insert (actions, glib.get(def))
 			end
 			s = script.make(actions)
 		end

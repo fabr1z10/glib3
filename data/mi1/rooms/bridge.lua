@@ -43,9 +43,9 @@ local troll = function()
 	local d = strings.dialogues.troll
 	local actions = {
 		{ ref = 1, type = action.delay, args = {sec = 5}},
-		{ type = action.say, args = {actor="bridge.troll", lines = {d[1]}, animstart="talk", animend="idle"}}
+		{ type = scumm.action.say, args = {actor="bridge.troll", lines = {d[1]}, animstart="talk", animend="idle"}}
 	}
-	local s = ms2(actions, 1)
+	local s = script.make(actions, 1)
 	s.name = "_troll"
 	monkey.play(s)
 end
@@ -54,11 +54,11 @@ end
 
 
 function room.afterstartup() 
-	print ("oiwrf")
+	
 	for k, v in ipairs(room.initstuff) do
 		v()
 	end
-	--troll()
+	troll()
 	-- local s = script:new("_troll")
 	-- s.actions = {
 	-- 	action.say { id=1, actor="bridge.troll", lines = {d[1]}, animstart="talk", animend="idle" },
@@ -66,7 +66,7 @@ function room.afterstartup()
 	-- }
 	-- s.loop = 1
 	-- monkey.play(s)
-print ("wefh")
+
 end
 
 

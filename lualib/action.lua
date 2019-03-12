@@ -59,8 +59,22 @@ end
 
 action.set_state = function(args)
 	glib.assert_either (args.tag, args.id, "id or tag")
-
 	assert (args.actor, "actor")
 	assert (args.state, "state")
 	return {type="setstate", tag = args.tag, id = args.id, state = args.state}
+end
+
+action.suspend_script = function(args) 
+	assert (args.script, "script")
+	return { type="suspend_script", script = args.script}
+end
+
+action.resume_script = function(args) 
+	assert (args.script, "script")
+	return {type="resume_script", script = args.script}
+end
+
+action.kill_script = function(args) 
+	assert (args.script, "script")
+	return {type="kill_script", script = args.script}
 end

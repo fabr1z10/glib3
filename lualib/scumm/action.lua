@@ -31,8 +31,8 @@ end
 
 scumm.action.walk_to_object= function(actor, id) 
 	return { 
-		{ type = action.walkto, args ={actor=actor, obj=id}},
-		{ type = action.turn, args = {actor=actor, dir = items2[id].hotspot.dir}}
+		{ type = scumm.action.walkto, args = { tag=actor, obj=id}},
+		{ type = scumm.action.turn, args = { tag=actor, dir = items[id].hotspot.dir}}
 	}
 end
 
@@ -64,4 +64,17 @@ scumm.action.say = function(args)
 		animend = animend, 
 		animate = animate 
 	}
+end
+
+scumm.action.disable_controls = function(args) 
+	return { type="callfunc", func = function() 
+		local m = monkey.getEntity("mainui")
+		local m1 = monkey.getEntity("main")
+		if (not m.isnil) then
+			m:setactive(false)
+		end
+		if (not m1.isnil) then
+			m1:enablecontrols(false)
+		end
+	end }
 end

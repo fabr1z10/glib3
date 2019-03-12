@@ -134,11 +134,21 @@ spritesheets["sprites1"] = {
 	troll_body_pick_fish_1 = {x=131, y=203, width=27, height=34, anchor = {12,1}},
 	troll_body_pick_fish_2 = {x=160, y=203, width=30, height=33, anchor ={13,0}},
 	troll_body_pick_fish_3 = {x=192, y=203, width=37, height=33, anchor={24, 0}},
+	troll_body_stand = {x = 295, y= 144, width = 29, height=35, anchor = {14, 0}},
 	troll_arm_pick_fish_1 = {x=237, y=184, width=12, height=15, anchor={6,15}},
 	troll_arm_pick_fish_2 = {x=196, y=185, width=16, height=14, anchor={5,14}},
 	troll_arm_pick_fish_3 = {x=215, y=185, width=19, height=14, anchor={5,14}},
 	troll_arm_pick_fish_4 = {x=251, y=181, width=16, height=20, anchor={7,20}},
 	troll_fish = {x=216, y=174, z=0.1,width=14, height=8},
+	troll_arm_1 = {x=332, y=187, width=22, height=32, anchor={22,32}},
+	troll_arm_2 = {x=364, y=187, width=19, height=19, anchor={19,19}},
+	troll_arm_3 = {x=364, y=208, width=21, height=12, anchor={21,12}},
+	troll_arm_4 = {x=388, y=187, width=15, height=12, anchor={15,12}},
+	troll_arm_5 = {x=390, y=201, width=10, height=13, anchor={10,13}},
+	troll_club_1 = {x=254, y=204, width=7, height=20, anchor = {4, 0}},
+	troll_club_2 = {x=264, y=204, width=13, height=14, anchor = {7, 0}},
+	troll_club_3 = {x=254, y=227, width=20, height=6, anchor = {10, 0}},
+	troll_club_4 = {x=248, y=173, width=14, height=7, anchor = {7, 0}},
 
 
 
@@ -740,7 +750,7 @@ models["bridge.troll"] = {
 			{ duration = dt, quads = { { id = s.troll_body_pick_fish_3 }, {id = s.troll_arm_pick_fish_4, pos={9,26}}, {id = s.troll_head_talk_4, pos={7,26} }}},
 		}},
 		{ name = "fish_cutscene", frames = { 
-			{ duration = 5*dt, quads = { { id = s.troll_body_pick_fish_3 }, {id = s.troll_arm_pick_fish_4, pos={9,26}}, {id = s.troll_head_side, pos={10,26} }}},
+			{ duration = 5*dt, quads = { { id = s.troll_body_pick_fish_3 }, {id = s.troll_arm_pick_fish_4, pos={9,26}}, {id = s.troll_head_side, pos={6,26} }}},
 			{ duration = dt, quads = { { id = s.troll_body_front }, {id = s.troll_head_front, pos={0,27} }}},
 			{ duration = dt, quads = { { id = s.troll_body_front }, {id = s.troll_head_idle, flipx=true, pos={-2,27} }}},
 			{ duration = dt, quads = { { id = s.troll_body_front }, {id = s.troll_head_side, flipx=true, pos={-2,27} }}},
@@ -749,16 +759,42 @@ models["bridge.troll"] = {
 			{ duration = dt, quads = { { id = s.troll_body_front }, {id = s.troll_head_idle, pos={2,27} }}},
 			{ duration = dt, quads = { { id = s.troll_body_front }, {id = s.troll_head_side, pos={2,27} }}},
 			{ duration = dt, quads = { { id = s.troll_body_front }, {id = s.troll_head_idle, pos={2,27} }}},
-			{ duration = dt, quads = { { id = s.troll_body_front }, {id = s.troll_head_front, pos={0,27} }}},
-			{ duration = dt, quads = { { id = s.troll_body_front }, {id = s.troll_head_front, pos={0,27} }}},
-			{ duration = dt, quads = { { id = s.troll_body_front }, {id = s.troll_head_idle, flipx=true, pos={-2,27} }}},
-			{ duration = dt, quads = { { id = s.troll_body_front }, {id = s.troll_head_side, flipx=true, pos={-2,27} }}},
-			{ duration = dt, quads = { { id = s.troll_body_front }, {id = s.troll_head_idle, flipx=true, pos={-2,27} }}},
-			{ duration = dt, quads = { { id = s.troll_body_front }, {id = s.troll_head_front, pos={0,27} }}},
-			{ duration = dt, quads = { { id = s.troll_body_front }, {id = s.troll_head_idle, pos={2,27} }}},
-			{ duration = dt, quads = { { id = s.troll_body_front }, {id = s.troll_head_side, pos={2,27} }}},
-			{ duration = dt, quads = { { id = s.troll_body_front }, {id = s.troll_head_idle, pos={2,27} }}},
-			{ duration = dt, quads = { { id = s.troll_body_front }, {id = s.troll_head_front, pos={0,27} }}},
+			{ duration = 2*dt, quads = { { id = s.troll_body_front }, {id = s.troll_head_front, pos={0,27} }}},
+			{ duration = dt, quads = { 
+				{ id = s.troll_body_stand }, 
+				{ id = s.troll_head_front, pos={0,31}},
+				{ id = s.troll_arm_1, pos = {-7, 34}}
+			}},
+			{ duration = dt, quads = { 
+				{ id = s.troll_body_stand }, 
+				{ id = s.troll_head_front, pos={0,31}},
+				{ id = s.troll_arm_2, pos = {-6, 35}},
+				{ id = s.troll_club_1, pos = {-29,0}}
+			}},
+			{ duration = dt, quads = { 
+				{ id = s.troll_body_stand }, 
+				{ id = s.troll_head_front, pos={0,31}},
+				{ id = s.troll_arm_3, pos = {-7, 35}},
+				{ id = s.troll_club_2, pos = {-38,-1}}
+			}},
+			{ duration = dt, quads = { 
+				{ id = s.troll_body_stand }, 
+				{ id = s.troll_head_front, pos={0,31}},
+				{ id = s.troll_arm_4, pos = {-7, 35}},
+				{ id = s.troll_club_3, pos = {-45,-1}}
+			}},
+
+
+
+			-- { duration = dt, quads = { { id = s.troll_body_front }, {id = s.troll_head_front, pos={0,27} }}},
+			-- { duration = dt, quads = { { id = s.troll_body_front }, {id = s.troll_head_idle, flipx=true, pos={-2,27} }}},
+			-- { duration = dt, quads = { { id = s.troll_body_front }, {id = s.troll_head_side, flipx=true, pos={-2,27} }}},
+			-- { duration = dt, quads = { { id = s.troll_body_front }, {id = s.troll_head_idle, flipx=true, pos={-2,27} }}},
+			-- { duration = dt, quads = { { id = s.troll_body_front }, {id = s.troll_head_front, pos={0,27} }}},
+			-- { duration = dt, quads = { { id = s.troll_body_front }, {id = s.troll_head_idle, pos={2,27} }}},
+			-- { duration = dt, quads = { { id = s.troll_body_front }, {id = s.troll_head_side, pos={2,27} }}},
+			-- { duration = dt, quads = { { id = s.troll_body_front }, {id = s.troll_head_idle, pos={2,27} }}},
+			-- { duration = dt, quads = { { id = s.troll_body_front }, {id = s.troll_head_front, pos={0,27} }}},
 		}},
 
 		

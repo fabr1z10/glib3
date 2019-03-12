@@ -79,15 +79,19 @@ items["kitchen.fish"] = {
 		look = { type = action.say, args = {actor="guybrush", lines = {strings.kitchen[3] }}},
 		give = {	
 			["bridge.troll"] = { 
-				{ type = action.disable_controls, args = nil},
-				{ type = action.suspend_script, args = {script="_troll"}},
-				{ ref = 1, type = action.remove_object, args = {tag="troll_sensor"}},
-				{ ref = 2, type = action.animate, after={1}, args ={actor="bridge.troll", anim="pickup_fish", sync = true}},
-				{ ref = 3, type = action.say, after={1}, args={actor="bridge.troll", lines={ strings.dialogues.troll[48] }, animate = false}},
-				{ type = action.say, after={2, 3}, args={actor="bridge.troll", lines={ strings.dialogues.troll[49] }, animstart="talk_fish", animend="idle_fish"}},
-				{ type = action.walkto, args ={actor="guybrush", pos={209, 60}}},
-				{ type = action.turn, args ={actor="guybrush", dir = "north"}},
-				{ type = action.animate, args= {actor="bridge.troll", anim="fish_cutscene"}}
+				{ type = scumm.action.disable_controls, args = nil},
+				{ ref = 1, type = action.suspend_script, args = {script="_troll"}},
+				-- { ref = 1, type = action.remove_object, args = {tag="troll_sensor"}},
+				{ ref = 2, type = action.animate, 
+					after={1}, 
+					args ={tag="bridge.troll", anim="pickup_fish", sync = true}},
+				{ ref = 3, type = scumm.action.say, 
+                    after={1}, 
+                    args={actor="bridge.troll", lines={ strings.dialogues.troll[48] }, animate = false}},
+				{ type = scumm.action.say, after={2, 3}, args={actor="bridge.troll", lines={ strings.dialogues.troll[49] }, animstart="talk_fish", animend="idle_fish"}},
+				{ type = scumm.action.walkto, args ={tag="player", pos={209, 60}}},
+				{ type = scumm.action.turn, args ={tag="player", dir = "north"}},
+				{ type = action.animate, args= {tag="bridge.troll", anim="fish_cutscene"}}
 			}
 
 		}
