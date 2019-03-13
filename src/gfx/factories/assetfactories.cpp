@@ -104,6 +104,8 @@ std::unique_ptr<IModel> SimpleModelFactory::Create (luabridge::LuaRef& ref) {
                 bool flipX = qt.Get<bool>("flipx", false);
                 bool flipY = qt.Get<bool>("flipy", false);
                 glm::vec2 pos = qt.Get<glm::vec2>("pos", glm::vec2(0.0f));
+                float zPos = qt.Get<float>("z", 0.0f);
+                z += zPos;
                 float tx0 = flipX ? tx+tw : tx;
                 float tx1 = flipX ? tx : tx + tw;
                 float ty0 = flipY ? ty : ty+th;
