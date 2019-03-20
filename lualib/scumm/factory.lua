@@ -6,7 +6,8 @@ require ("scumm/factory/walkarea")
 require ("scumm/factory/trap")
 require ("scumm/factory/buttons")
 require ("scumm/factory/room_basic")
-
+require ("scumm/factory/room_map")
+require ("scumm/factory/mapitem")
 
 
 

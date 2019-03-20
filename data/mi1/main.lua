@@ -1,5 +1,8 @@
 package.path = '/home/fabrizio/glib3/lualib/?.lua;' .. package.path
 
+require("test")
+
+
 engine = {
 	device_size = { 320, 200 },
 	window_size = { 320, 200 },
@@ -15,7 +18,7 @@ fonts = {
 -- this is configuration for scumm
 config = {
 	start_room = "bridge",
-	lang = "eng",
+	lang = "fra",
     default_verb = "walk",
 	ui = {
 		height = 56,
@@ -66,6 +69,7 @@ variables = {
     talked_to_citizen = false,
     talked_about_map = false,
  	fish_taken=false,
+	troll_fed = false,
 -- 	talking_to_voodoolady = false,
 -- 	talked_to_voodoolady = false,
 -- 	voodoolady_told_future = false,
@@ -97,12 +101,7 @@ global_assets = {
 -- -- this stuff will change at gametime
 
 -- -- DEBUG STUFF
-variables.inventory["pieces_of_eight"] = 10000
--- variables.inventory["kitchen.pot"] = 1
--- variables.entered_circus = true
--- variables.circus_knows_trick = true
--- variables.circus_knows_helmet = true
-variables.inventory["kitchen.fish"] = 1
+
 -- -- END DEBUG
 
 --require ("script")
@@ -124,3 +123,6 @@ glib.load_folder("dialogues")
 
 require("defaultscripts")
 
+test.meleemap()
+
+print (config.start_room)

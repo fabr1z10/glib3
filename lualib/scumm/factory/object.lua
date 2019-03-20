@@ -7,7 +7,7 @@ scumm.factory.object = function(args)
 		print ("Error! Unknown object " .. args.id)
 		return
 	end
-	print ("CAZZONE")
+	--print ("CAZZONE")
 	-- These values can be overridden in the args
 	local pos = args.pos and args.pos or object.pos
 
@@ -67,7 +67,7 @@ scumm.factory.object = function(args)
 	if (object.applydepth) then
 		table.insert(obj.components, { type="depth", depth = roomDefinition.depth, scale = roomDefinition.scale })
 	end
-print ("CAZZONE2")
+    --print ("CAZZONE2")
 	return obj
 
 end

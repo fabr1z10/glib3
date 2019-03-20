@@ -474,10 +474,9 @@ std::unique_ptr<Component> FPSComponentFactory::Create(luabridge::LuaRef &ref) {
     return std::unique_ptr<FPSCounter>(new FPSCounter);
 }
 
-//std::unique_ptr<Component> CursorComponentFactory::Create(luabridge::LuaRef& ref) {
-//    return std::unique_ptr<Cursor>(new Cursor);
-//
-//}
+std::unique_ptr<Component> CursorComponentFactory::Create(luabridge::LuaRef& ref) {
+    return std::unique_ptr<Cursor>(new Cursor);
+}
 
 //std::unique_ptr<Component> RaycastControllerComponentFactory::Create(luabridge::LuaRef& ref) {
 //    LuaTable table(ref);

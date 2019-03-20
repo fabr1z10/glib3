@@ -95,7 +95,7 @@ SceneFactory::SceneFactory() {
     m_componentFactory.Add<FPSComponentFactory>("fps");
     m_componentFactory.Add<HotSpotComponentFactory>("hotspot");
     m_componentFactory.Add<DepthComponentFactory>("depth");
-    //m_componentFactory.Add<CursorComponentFactory>("cursor");
+    m_componentFactory.Add<CursorComponentFactory>("cursor");
     m_componentFactory.Add<LightComponentFactory>("light");
     m_componentFactory.Add<KeyboardInputMethodCompFactory>("keyinput");
 

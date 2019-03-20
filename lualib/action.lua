@@ -78,3 +78,15 @@ action.kill_script = function(args)
 	assert (args.script, "script")
 	return {type="kill_script", script = args.script}
 end
+
+action.set_variable = function(args)
+	assert (args.var, "var")
+	assert (args.value, "value")
+	return { type = "callfunc", func = 
+		function()
+			print ("Setting " .. args.var .. " to " .. tostring(args.value))
+			variables[args.var] = args.value
+		end
+	}
+end
+

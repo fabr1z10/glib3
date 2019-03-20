@@ -91,7 +91,12 @@ items["kitchen.fish"] = {
 				{ type = scumm.action.say, after={2, 3}, args={actor="bridge.troll", lines={ strings.dialogues.troll[49] }, animstart="talk_fish", animend="idle_fish"}},
 				{ type = scumm.action.walkto, args ={tag="player", pos={209, 60}}},
 				{ type = scumm.action.turn, args ={tag="player", dir = "north"}},
-				{ type = action.animate, args= {tag="bridge.troll", anim="fish_cutscene"}}
+				{ type = action.animate, args= {tag="bridge.troll", anim="fish_cutscene", sync=true}},
+				{ type = scumm.action.turn, args = {tag="player", dir="south"}},
+				{ type = action.delay, args ={ sec = 1}},
+				{ type = scumm.action.turn, args = {tag="player", dir="north"}},
+				{ type = action.set_variable, args = {var="troll_fed", value=true}},
+				{ type = action.change_room, args = {room="meleemap"}}
 			}
 
 		}

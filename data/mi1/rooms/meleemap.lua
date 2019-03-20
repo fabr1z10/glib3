@@ -1,50 +1,57 @@
-require("template/room2")
-
-local roomInfo = {
+roomDefinition = {
 	width = 320,
 	height = 200,
 	startTable = {
-		lookout = { pos = {75, 79}, facing = "north"},
-		clearing = { pos = {135, 113}, facing = "west"},
+		lookout = { pos = {75, 79}, dir = "north"},
+		clearing = { pos = {135, 113}, dir = "west"},
+		bridge = { pos = {169, 67}, dir = "east"}
 	},
 	defaultroom = "lookout",
 	depth = { type="linear_y", values= {0, 1, 144, 0} },
 	scale = { type="constant", value=0.1},
 	collide = true
-
 }
 
-room = generateMapRoom (roomInfo)
+room = scumm.factory.map_room(roomDefinition)
 
 room:add( {
 	{ pos = {0, 0,-3}, components = { { type="gfx", image="gfx/meleemap.png" }}},
-	{
-		pos = {0,0,0},
-		components = {
-      		{ 
-				type ="walkarea",
-				priority = 0,
-       			target = "player",
-            	shape = { type = "graph", vertices = { {76, 80}, {78, 81}, {71,90}, {64, 96}, {48,99}, {49, 114}, {73, 113}, {88, 114},{118,114}, {135,113}, {83,109},
-					{101, 107}, {112, 97}, {157, 78}, {172, 64}, {196, 54}, {217,54}, {232,49}, {245,48}, {254,50}, {275, 95}, {54,131},{57,140}, {60,151},
-					{67,161}, {82, 174}, {113, 177}, {146, 168}, {169,168}, {180, 174}, {196,174}, {227,180} }, edges = { 
-					{0,1}, {1,2}, {2,3},{3,4}, {4,5}, {5,6}, {6,7}, {7,8}, {8,9}, {6,10}, {10,11}, {11,12}, {12,13}, {13,14}, {14,15}, {15,16},{16,17},{17,18},
-					{18,19}, {19,20}, {5,21}, {21,22}, {22,23}, {23,24}, {24,25}, {25,26}, {26,27}, {27, 28}, {28,29}, {29,30}, {30,31}  }},
-			}
-      	}
+	scumm.factory.walkarea { shape = { 
+		type = "graph", 
+		vertices = { {76, 80}, {78, 81}, {71,90}, {64, 96}, {48,99}, {49, 114}, {73, 113}, {88, 114},{118,114}, {135,113}, {83,109},
+			{101, 107}, {112, 97}, {157, 78}, {172, 64}, {196, 54}, {217,54}, {232,49}, {245,48}, {254,50}, {275, 95}, {54,131},{57,140}, {60,151},
+	 		{67,161}, {82, 174}, {113, 177}, {146, 168}, {169,168}, {180, 174}, {196,174}, {227,180} }, 
+		edges = { {0,1}, {1,2}, {2,3},{3,4}, {4,5}, {5,6}, {6,7}, {7,8}, {8,9}, {6,10}, {10,11}, {11,12}, {12,13}, {13,14}, {14,15}, {15,16},{16,17},{17,18},
+			{18,19}, {19,20}, {5,21}, {21,22}, {22,23}, {23,24}, {24,25}, {25,26}, {26,27}, {27, 28}, {28,29}, {29,30}, {30,31} }}
 	},
-	factory.mapitem.create { pos={75, 79}, name = "lookout", room="lookout" },
-	factory.mapitem.create { pos={135, 113}, name = "clearing", room="clearing" },
-	factory.mapitem.create { pos={169, 67}, name = "bridge", room="bridge" },
-	factory.trap.create { pos ={164, 62, 0}, tag="bridge_sensor", width=12, height = 12, onenter = 
-	  	function()			
-			local s = script:new()
-		 	s.actions = {	
-				action.change_room { id = 1, room = "bridge" }
-			}
-			monkey.play(s)
-	  	end
-	}
+
+	-- {
+	-- 	pos = {0,0,0},
+	-- 	components = {
+ --      		{ 
+	-- 			type ="walkarea",
+	-- 			priority = 0,
+ --       			target = "player",
+ --            	shape = { type = "graph", vertices = { {76, 80}, {78, 81}, {71,90}, {64, 96}, {48,99}, {49, 114}, {73, 113}, {88, 114},{118,114}, {135,113}, {83,109},
+	-- 				{101, 107}, {112, 97}, {157, 78}, {172, 64}, {196, 54}, {217,54}, {232,49}, {245,48}, {254,50}, {275, 95}, {54,131},{57,140}, {60,151},
+	-- 				{67,161}, {82, 174}, {113, 177}, {146, 168}, {169,168}, {180, 174}, {196,174}, {227,180} }, edges = { 
+	-- 				{0,1}, {1,2}, {2,3},{3,4}, {4,5}, {5,6}, {6,7}, {7,8}, {8,9}, {6,10}, {10,11}, {11,12}, {12,13}, {13,14}, {14,15}, {15,16},{16,17},{17,18},
+	-- 				{18,19}, {19,20}, {5,21}, {21,22}, {22,23}, {23,24}, {24,25}, {25,26}, {26,27}, {27, 28}, {28,29}, {29,30}, {30,31}  }},
+	-- 		}
+ --      	}
+	-- },
+	scumm.factory.mapitem { pos={75, 79}, name = "lookout", room="lookout" },
+	scumm.factory.mapitem { pos={135, 113}, name = "clearing", room="clearing" },
+	scumm.factory.mapitem { pos={169, 67}, name = "bridge", room="bridge" },
+	-- factory.trap.create { pos ={164, 62, 0}, tag="bridge_sensor", width=12, height = 12, onenter = 
+	--   	function()			
+	-- 		local s = script:new()
+	-- 	 	s.actions = {	
+	-- 			action.change_room { id = 1, room = "bridge" }
+	-- 		}
+	-- 		monkey.play(s)
+	--   	end
+	-- }
 })
 
 
