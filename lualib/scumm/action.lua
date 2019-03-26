@@ -78,3 +78,62 @@ scumm.action.disable_controls = function(args)
 		end
 	end }
 end
+
+scumm.action.start_dialogue = function (args) 
+	assert (args.dialogue, "dialogue")
+	local droot = args.root
+	return { type="callfunc", func = function() 
+		--print ("Starting dialogue: " .. args.dialogue)
+		print ("VIVA!")
+		local dialogue = dialogues[args.dialogue]
+		if (dialogue == nil) then
+			error ("Can't find dialogue " .. args.dialogue)
+		end
+		local root = droot or dialogue.nodes[1]
+		local m = monkey.getEntity("mainui")
+		local m1 = monkey.getEntity("main")
+		local m2 = monkey.getEntity("dialogueui")
+		if (not m.isnil) then
+			m:setactive(false)
+		end
+		if (not m1.isnil) then
+			m1:enablecontrols(false)
+		end
+		m2:setactive(true)
+		local children = glib.get(root.children)
+		print ("Size of children = " .. tostring(#children))
+		m2:cleartext()
+		for k, v in ipairs(children) do
+        	local node = dialogue.nodes[v]
+            if (glib.get(node.active) == true) then
+				m2:addtext { text=node.text, dialogue_node = node, dialogue = args.dialogue }
+			end
+        end
+	end }
+end
+
+scumm.action.end_dialogue = function(args)
+	assert (args.dialogue, "dialogue")
+	return { type="callfunc", func = function() 
+		local dialogue = dialogues[args.dialogue]
+		if (dialogue == nil) then
+			error ("Can't find dialogue " .. args.dialogue)
+		end
+		local m = monkey.getEntity("mainui")
+		local m1 = monkey.getEntity("main")
+		local m2 = monkey.getEntity("dialogueui")
+		m2:cleartext()
+		m2:setactive(false)
+		if (not m.isnil) then
+			m:setactive(true)	
+		end
+		if (not m1.isnil) then
+			m1:enablecontrols(true)			
+		end
+		if (dialogue.close ~= nil) then
+			dialogue.close()
+		end
+	end
+	}
+end
+

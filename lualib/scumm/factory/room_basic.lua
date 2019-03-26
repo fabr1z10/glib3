@@ -124,21 +124,21 @@ function scumm.factory.basic_room (args)
 			 					deltax = 26,
 			 					factory = scumm.factory.inventorybutton
 			 				}
-			-- 			}
-			-- 		},
-			-- 		{
-			-- 			pos  = {0,0,0},
-			-- 			children = {
-			-- 				{
-			-- 					tag = "dialogueui",
-			-- 					type = "textview", 
-			-- 					pos = {0, 0},
-			-- 					size = {320, 56},
-			-- 					font_size = 8,
-			-- 					lines = 6,
-			-- 					deltax = 26,
-			-- 					factory = factory.scumm.dialoguebutton
-			-- 				}
+						}
+					},
+					{
+						pos  = {0,0,0},
+						children = {
+							{
+								tag = "dialogueui",
+								type = "textview", 
+								pos = {0, 0},
+								size = {320, 56},
+								font_size = 8,
+								lines = 6,
+								deltax = 26,
+								factory = scumm.factory.dialoguebutton
+							}
 						}
 			 		}
 				}

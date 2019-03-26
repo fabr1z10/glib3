@@ -20,29 +20,33 @@ room:add({
 	
 })
 
-if (variables.troll_fed == false) then
-	room:add( {scumm.factory.object { id="bridge.troll"}})
-end
-
-
 local gotoTroll = function()
 	local d = strings.dialogues.troll
 	local actions = {	
-		{ ref = 1, type = action.suspend_script, args = {script="_troll"}},
-		{ type = action.kill_script, after={1}, args = {script="_walk"}},
-		{ ref = 2, type = action.walkto, after={1},args = {actor="guybrush", obj="bridge.troll"}},
-		{ type = action.say, after={1}, args = { actor="bridge.troll", lines = {d[2], d[3]}, animstart="talk", animend="idle"}},
-		{ type = action.start_dialogue, args = {dialogue="troll"}},
-		{ type = action.turn, after={2}, args={actor="guybrush", dir="east"}}
+	 	{ ref = 1, type = action.suspend_script, args = {script="_troll"}},
+	 	{ type = action.kill_script, after={1}, args = {script="_walk"}},
+	 	{ ref = 2, type = scumm.action.walkto, after={1}, args = {tag="player", obj="bridge.troll"}},
+	 	{ type = scumm.action.say, after={1}, args = { actor="bridge.troll", lines = {d[2], d[3]}, animstart="talk", animend="idle"}},
+	 	{ type = scumm.action.start_dialogue, args = {dialogue="troll"}},
+	 	{ type = scumm.action.turn, after={2}, args={tag="player", dir="east"}}
 	}
-	local s = ms2(actions)
+	local s = script.make(actions)
 	monkey.play(s)
 
 end
 
+-- additional items to add if troll has not been fed yets
+if (variables.troll_fed == false) then
+	room:add( {scumm.factory.object { id="bridge.troll"}})
+	room:add( {scumm.factory.trap { pos ={95, 0, 0}, tag="troll_sensor", width=10, height = 144, onenter = gotoTroll }})
+end
+
+
+
+
 
 -- if (variables.troll_in) then
---  	room:add( { factory.scumm.trap { pos ={95, 0, 0}, tag="troll_sensor", width=10, height = 144, onenter = gotoTroll }})
+
 -- end
 
 local troll = function() 
