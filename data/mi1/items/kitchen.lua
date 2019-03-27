@@ -50,7 +50,7 @@ items["kitchen.pot"] = {
 	model = "kitchen.pot",
  	actions = {
  		pickup = scumm.action.pickup("kitchen.pot", "kneel_n", "idle_n"),
- 		look = { type = action.say, args ={actor="guybrush", lines = {strings.kitchen[2] }}}
+ 		look = { type = scumm.action.say, args ={actor="guybrush", lines = {strings.kitchen[2] }}}
 	}
 }
 

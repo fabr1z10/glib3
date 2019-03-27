@@ -13,6 +13,6 @@ test.meleemap = function()
 end
 
 test.circus = function() 
-	variables._room = "circus"
-	--variables.inventory["pot"] = 1
+	variables._room = "clearing"
+	variables.inventory["kitchen.pot"] = 1
 end

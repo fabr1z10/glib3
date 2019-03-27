@@ -201,7 +201,7 @@ end
 
 
 function scumm.ui.hoverOn (obj)
-	print ("weroifujerwoifhjrei" .. obj)
+	
     if (variables._actionInfo.obj1 == nil) then 
 		print ("setting to " .. obj)
         variables._actionInfo.obj1 = obj
