@@ -11,7 +11,6 @@ roomDefinition = {
 
 room = scumm.factory.basic_room(roomDefinition)
 
-
 room:add({
 	{ pos = {0, 0, -3}, components = { { type="gfx", image="gfx/bridge.png" }}},
 	--{ pos = {0, 0, 2}, components = { { type="gfx", image="gfx/bridge2.png" }}},
@@ -24,6 +23,7 @@ local gotoTroll = function()
 	local d = strings.dialogues.troll
 	local actions = {	
 	 	{ ref = 1, type = action.suspend_script, args = {script="_troll"}},
+	 	{ type = scumm.action.disable_controls, after= {1}},
 	 	{ type = action.kill_script, after={1}, args = {script="_walk"}},
 	 	{ ref = 2, type = scumm.action.walkto, after={1}, args = {tag="player", obj="bridge.troll"}},
 	 	{ type = scumm.action.say, after={1}, args = { actor="bridge.troll", lines = {d[2], d[3]}, animstart="talk", animend="idle"}},
@@ -41,17 +41,8 @@ if (variables.troll_fed == false) then
 	room:add( {scumm.factory.trap { pos ={95, 0, 0}, tag="troll_sensor", width=10, height = 144, onenter = gotoTroll }})
 end
 
-
-
-
-
--- if (variables.troll_in) then
-
--- end
-
 local troll = function() 
-	if (variables.troll_fed == false) then
-		
+	if (variables.troll_fed == false) then		
 		local d = strings.dialogues.troll
 		local actions = {
 			{ ref = 1, type = action.delay, args = {sec = 5}},
@@ -63,23 +54,24 @@ local troll = function()
 	end
 end
 
+table.insert(room.initstuff, troll)
 
 
 
-function room.afterstartup() 
+-- function room.afterstartup() 
 	
-	for k, v in ipairs(room.initstuff) do
-		v()
-	end
-	if (variables.troll_fed==false) then troll() end
-	-- local s = script:new("_troll")
-	-- s.actions = {
-	-- 	action.say { id=1, actor="bridge.troll", lines = {d[1]}, animstart="talk", animend="idle" },
-	-- 	action.delay { id=2, sec=5},
-	-- }
-	-- s.loop = 1
-	-- monkey.play(s)
+-- 	for k, v in ipairs(room.initstuff) do
+-- 		v()
+-- 	end
+-- 	if (variables.troll_fed==false) then troll() end
+-- 	-- local s = script:new("_troll")
+-- 	-- s.actions = {
+-- 	-- 	action.say { id=1, actor="bridge.troll", lines = {d[1]}, animstart="talk", animend="idle" },
+-- 	-- 	action.delay { id=2, sec=5},
+-- 	-- }
+-- 	-- s.loop = 1
+-- 	-- monkey.play(s)
 
-end
+-- end
 
 

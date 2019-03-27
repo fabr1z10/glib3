@@ -1,11 +1,9 @@
-require("template/room1")
-
-local roomInfo = {
+roomDefinition = {
 	width = 496,
 	height = 144,
 	startTable = {
-		meleemap = { pos = items["clearing.path"].walk_to, facing = "west"},
-		circus = { pos = items["clearing.tent"].walk_to, facing = "south"},
+		meleemap = { pos = items["clearing.path"].hotspot.walk_to, dir = "west"},
+		circus = { pos = items["clearing.tent"].hotspot.walk_to, dir = "south"}
 	},
 	defaultroom = "meleemap",
 	depth = { type="linear_y", values= {0, 1, 144, 0} },
@@ -17,33 +15,16 @@ local roomInfo = {
 	}}	
 }
 
-room = generateBasicRoom (roomInfo)
+room = scumm.factory.basic_room(roomDefinition)
 
 room:add( {
 	{ pos = {0, 0, -3}, components = { { type="gfx", image="gfx/clearing1.png" }}},
 	{ pos = {441, 0, 2}, components = { { type="gfx", image="gfx/clearing2.png" }}},
-	{
-		pos = {0,0,0},
-		components = {
-      		{ 
-				type ="walkarea",
-				priority = 0,
-       			target = "player",
-				shape = { type = "poly", outline = {496,38,496,0, 283, 0, 283, 20, 315, 28,315, 44, 229, 31, 92, 31, 41, 64,54, 75, 80, 64, 115, 58, 119, 48,
-					165, 53, 180,64, 214, 64, 229, 33, 315, 46, 400,38}},
-			}
-      	}
+	scumm.factory.walkarea { shape = { type = "poly", outline = 
+		{496,38,496,0, 283, 0, 283, 20, 315, 28,315, 44, 229, 31, 92, 31, 41, 64,54, 75, 80, 64, 115, 58, 119, 48,
+		165, 53, 180,64, 214, 64, 229, 33, 315, 46, 400,38}},
 	},
- 	factory.object.create { object = "clearing.path"},
-	factory.object.create { object = "clearing.tent" },
-
+	scumm.factory.object { id="clearing.path"},
+	scumm.factory.object { id="clearing.tent"},
 })
-
-
-function room.afterstartup() 
-	for k, v in ipairs(room.initstuff) do
-		v()
-	end
-end
-
 

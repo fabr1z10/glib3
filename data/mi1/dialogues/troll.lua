@@ -5,7 +5,7 @@ local fguy = function(lines)
 	for _, n in ipairs(lines) do
 		table.insert(l, d[n])
 	end
-	return { type = action.say, args = {actor = "guybrush", lines = l }}
+	return { type = scumm.action.say, args = {actor = "guybrush", lines = l }}
 end
 
 local ftro = function(lines)
@@ -13,7 +13,7 @@ local ftro = function(lines)
 	for _, n in ipairs(lines) do
 		table.insert(l, d[n])
 	end
-	return { type = action.say, args = {actor = "bridge.troll", lines = l, animstart = "talk", animend= "idle"}}
+	return { type = scumm.action.say, args = {actor = "bridge.troll", lines = l, animstart = "talk", animend= "idle"}}
 end
 
 dialogues.troll = {
@@ -21,7 +21,7 @@ dialogues.troll = {
 		local actions = {
 			{ type = action.resume_script, args = {script="_troll"}}
 		}
-		local s = ms2(actions)
+		local s = script.make(actions)
 		monkey.play(s)
 	end,
 	nodes = {

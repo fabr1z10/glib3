@@ -15,6 +15,16 @@ function scumm.factory.basic_room (args)
 	
 
 	local p =  {
+
+
+		afterstartup = function()
+			for k, v in ipairs(room.initstuff) do
+				v()
+			end
+			--if (variables.troll_fed==false) then troll() end
+		end,
+
+
 		items = {},
 		dialogues = {},
 		scripts = {},

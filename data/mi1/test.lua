@@ -11,3 +11,8 @@ test.meleemap = function()
 	variables.inventory["kitchen.fish"] = 1
 	variables._room = "meleemap"
 end
+
+test.circus = function() 
+	variables._room = "circus"
+	--variables.inventory["pot"] = 1
+end

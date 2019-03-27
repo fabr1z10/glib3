@@ -5,6 +5,10 @@ action.change_room = function (args)
 	return { type="gotoroom", room = args.room }
 end
 
+action.noop = function(args) 
+	return { type="noop" }	
+end
+
 action.delay = function (args) 
 	glib.assert (args.sec, "sec")
 	return { type="delay", sec = args.sec }

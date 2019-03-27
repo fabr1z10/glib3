@@ -23,7 +23,7 @@ find_package(glm REQUIRED)
 find_package(Freetype REQUIRED)
 find_package(PNG REQUIRED)
 find_package(JPEG REQUIRED)
-#find_package(Lua REQUIRED)
+find_package(Lua REQUIRED)
 
 if(APPLE)
     find_library(BZ2_LIB bz2)
@@ -33,8 +33,14 @@ if(APPLE)
     include_directories(/usr/local/include)
 endif (APPLE)
 
+message(STATUS "GLM included at ${GLEW_INCLUDE_DIRS}")
+message(STATUS "GLFW included at ${GLFW3_INCLUDE_DIR}")
 
-include_directories(${INCLUDE_DIR} ${FREETYPE_INCLUDE_DIRS})
+if (GLM_FOUND)
+    message("ciao")
+endif()
+
+#include_directories(${INCLUDE_DIR} ${FREETYPE_INCLUDE_DIRS} ${GLM_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS} )
 #link_directories(${LIB_DIR})
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${LIB_DIR})

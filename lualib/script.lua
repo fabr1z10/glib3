@@ -45,6 +45,7 @@ function flatten_script(a, offset)
 				local node = { id = id, action = v.type(v.args) }
 				--print ("qui")
 				if (v.ref ~= nil) then
+					print ("ciao " .. v.ref .. " ciao")
 					ref_id[v.ref] = id
 				end
 				if (v.after ~= nil) then 
@@ -71,7 +72,7 @@ script.make = function(args, loop)
 	s.actions = data[1]
 	if (loop ~= nil) then
 		s.loop = data[2][loop]
-		--print ("script has loop at ref = " .. tostring(loop) .. " which corresponds to id = " .. tostring(s.loop))
+		print ("script has loop at ref = " .. tostring(loop) .. " which corresponds to id = " .. tostring(s.loop))
 	end
 		
 	-- just for debug. print action

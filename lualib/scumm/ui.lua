@@ -253,3 +253,39 @@ function scumm.ui.refresh_inventory()
 
 end
 
+function scumm.ui.handleDialogueButton(entity)
+    local m2 = monkey.getEntity("dialogueui")               
+    m2:cleartext()
+    --print ("calling handleDialogueButton ...")
+    local info = entity:getinfo()  
+    local dialogueNode = info.data.node
+    local dialogue = dialogues[info.data.dialogue]
+    if (dialogueNode.deact ~= nil) then
+        for k, v in ipairs(dialogueNode.deact) do
+            dialogue.nodes[v].active = false
+        end
+    end
+    if (dialogueNode.act ~= nil) then
+        for k, v in ipairs(dialogueNode.act) do
+            dialogue.nodes[v].active = true
+        end
+    end
+    local actions = nil
+    if (dialogueNode.script ~= nil) then
+        print ("Running script ...")
+        actions = glib.get(dialogueNode.script)
+    else
+        print ("button has no script attached.")
+    end
+
+
+    local s1 = { type = scumm.action.resume_dialogue, args = { dialogue = info.data.dialogue, node = dialogueNode }}
+     if (actions ~= nil) then
+     	table.insert (actions, s1)
+     else
+        actions = s1
+     end
+     local s = script.make(actions)
+
+     monkey.play(s)
+end

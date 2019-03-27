@@ -122,13 +122,10 @@ spritesheets["sprites1"] = {
 	kitchen_table = {x=394, y=46, width=33, height=26},
 	plank_idle = {x=65,y=235,width=67,height=24},
 	plank_pushed = {x=65,y=210,width=61,height=24},
-
-
+	-- troll quads
 	troll_body = {x=109,y=170,width=25,height=29, anchor={12,0}},
 	troll_body_2= {x=173,y=204,width=29,height=31, anchor={15,0}},
 	troll_body_3= {x=295, y=145,width=28,height=34, anchor={14,0}},
-
-
 	troll_arm_l_0 = {x=207, y=238, width=19, height=27, anchor ={7, 27}},
 	troll_arm_l_1 = {x=275, y=236, z=0.1,width=13, height=28, anchor ={9, 28}},
 	troll_arm_l_2 = {x=306, y=236, width=10, height=15, anchor ={4, 15}},
@@ -147,7 +144,6 @@ spritesheets["sprites1"] = {
 	troll_arm_l_15 = {x=490,y=204,z=0.1,width=14,height=29, anchor= {9,29}},
 	troll_arm_l_16 = {x=386,y=215,z=0.1,width=16,height=14, anchor= {11,14}},
 	troll_arm_l_17 = {x=423,y=227,z=0.1,width=12,height=20, anchor= {3,20}},
-
 	troll_arm_r_0 = {x=135, y=167, width=13, height=17, anchor = {11, 17}},
 	troll_arm_r_1 = {x=262, y=236, width=11, height=18, anchor = {6, 18}},
 	troll_arm_r_2 = {x=290, y=236, width=12, height=32, anchor = {10, 32}},
@@ -163,20 +159,14 @@ spritesheets["sprites1"] = {
 	troll_arm_r_12 = {x=403, y=242, width=11, z=0.1, height=12, anchor={6, 6}},
 	troll_arm_r_13 = {x=318, y=229, width=10, z=0.1, height=12, anchor={9, 12}},
 	troll_arm_r_14 = {x=239, y=236, width=18, height=17, anchor={18,17}},
-
 	troll_club_1 = {x=254, y=204, width=7, height=20, anchor = {4, 0}},
 	troll_club_2 = {x=264, y=204, width=13, height=14, anchor = {7, 0}},
 	troll_club_3 = {x=254, y=227, width=20, height=6, anchor = {10, 0}},
 	troll_club_4 = {x=248, y=173, width=14, height=7, anchor = {7, 0}},
-
 	troll_fish_1 = {x=269, y=180, width=8, height=10, anchor={4,0}},
 	troll_fish_2 = {x=438, y=232, width=8, height=10, anchor={4,0}},
 	troll_fish_3 = {x=447, y=232, width=10, height=6, anchor={5,0}},	
 	troll_fish_4 = {x=459, y=232, width=8, height=10, anchor={4,0}},
-
-	troll_arm_rest_noclub = {x=227, y=238, width=9, height=18, anchor ={7, 18}},
-
-
 	troll_body_front = {x=283,y=110,width=41,height=33, anchor={19,0}},
 	troll_body_front_2 = {x=138,y=239,width=29,height=30, anchor={15,0}},
 	troll_head_idle = {x=150, y=167, width=20, z=0.1, height=15, anchor = {10, 0}},
@@ -200,15 +190,52 @@ spritesheets["sprites1"] = {
 	troll_head_front_12 = {x=268, y=113, width=8, height=13, anchor={4,0}},
 	troll_head_front_13 = {x=470, y=236, width=9, height=12, anchor={4,0}},
 	troll_head_front_14 = {x=330, y=240, width=20, height=15, anchor={10,1}},
-
-	troll_body_pick_fish_1 = {x=131, y=203, width=27, height=34, anchor = {12,1}},
-	troll_body_pick_fish_2 = {x=160, y=203, width=30, height=33, anchor ={13,0}},
-	troll_body_pick_fish_3 = {x=192, y=203, width=37, height=33, anchor={24, 0}},
 	troll_body_stand = {x = 295, y= 144, width = 29, height=34, anchor = {14, 0}},
-	troll_arm_pick_fish_1 = {x=237, y=184, width=12, height=15, anchor={6,15}},
-	troll_arm_pick_fish_2 = {x=196, y=185, width=16, height=14, anchor={5,14}},
-	troll_arm_pick_fish_4 = {x=251, y=181, width=16, height=20, anchor={7,20}},
 	troll_fish = {x=216, y=174, z=0.1,width=14, height=8, anchor ={7,5} },
+	-- fettuccini
+	fettuccini_purple_idle_front = {x=137, y=271, width=27, height=45, anchor= {14,0}},
+	fettuccini_purple_idle_side_body = {x=167, y=278, width=22, height=38, anchor= {13,0}},
+	fettuccini_purple_idle_side_head = {x=170, y=261, width=11, height=12, anchor= {5,0}},
+	fettuccini_purple_idle_back = {x=191, y=271, width=28, height=45, anchor= {14,0}},
+	fettuccini_purple_talk_side_head_1 = {x=194, y=323, width=10, height=13, anchor= {5,0}},
+	fettuccini_purple_talk_side_head_2 = {x=193, y=337, width=11, height=12, anchor= {5,0}},
+	fettuccini_purple_talk_side_head_3 = {x=194, y=350, width=9, height=12, anchor= {5,0}},
+	fettuccini_purple_walk_front_1 = {x=221, y=271, width=23, height=45, anchor={11,0}},
+	fettuccini_purple_walk_front_2 = {x=246, y=270, width=24, height=46, anchor={11,0}},
+	fettuccini_purple_walk_front_3 = {x=272, y=270, width=24, height=46, anchor={11,0}},
+	fettuccini_purple_walk_front_4 = {x=298, y=271, width=23, height=45, anchor={11,0}},
+	fettuccini_purple_walk_front_5 = {x=323, y=270, width=24, height=46, anchor={11,0}},
+	fettuccini_purple_walk_front_6 = {x=349, y=271, width=24, height=45, anchor={11,0}},
+	fettuccini_purple_walk_side_1 = {x=374, y=255, width=28, height=43, anchor={15,0}},
+	fettuccini_purple_walk_side_2 = {x=404, y=256, width=24, height=42, anchor={15,0}},
+	fettuccini_purple_walk_side_3 = {x=429, y=253, width=15, height=45, anchor={10,0}},
+	fettuccini_purple_walk_side_4 = {x=446, y=255, width=26, height=43, anchor={15,0}},
+	fettuccini_purple_walk_side_5 = {x=473, y=256, width=21, height=42, anchor={15,0}},
+	fettuccini_purple_walk_side_6 = {x=496, y=253, width=15, height=45, anchor={10,0}},
+
+
+
+
+
+	fettuccini_green_idle_front = {x=137, y=317, width=27, height=45, anchor= {14,0}},
+	fettuccini_green_idle_side_body = {x=167, y=324, width=22, height=38, anchor= {13,0}},
+	fettuccini_green_idle_side_head = {x=183, y=258, width=10, height=12, anchor= {5,0}},
+	fettuccini_green_idle_back = {x=191, y=271, width=28, height=45, anchor= {14,0}},
+	fettuccini_green_talk_side_head_1 = {x=206, y=324, width=10, height=12, anchor= {5,0}},
+	fettuccini_green_talk_side_head_2 = {x=206, y=337, width=10, height=12, anchor= {5,0}},
+	fettuccini_green_talk_side_head_3 = {x=206, y=350, width=10, height=12, anchor= {5,0}},
+	fettuccini_green_walk_front_1 = {x=221, y=318, width=23, height=45, anchor={11,0}},
+	fettuccini_green_walk_front_2 = {x=246, y=317, width=24, height=46, anchor={11,0}},
+	fettuccini_green_walk_front_3 = {x=272, y=317, width=24, height=46, anchor={11,0}},
+	fettuccini_green_walk_front_4 = {x=298, y=318, width=23, height=45, anchor={11,0}},
+	fettuccini_green_walk_front_5 = {x=323, y=318, width=24, height=45, anchor={11,0}},
+	fettuccini_green_walk_front_6 = {x=349, y=318, width=24, height=45, anchor={11,0}},
+	fettuccini_green_walk_side_1 = {x=374, y=302, width=28, height=43, anchor={15,0}},
+	fettuccini_green_walk_side_2 = {x=404, y=303, width=24, height=42, anchor={15,0}},
+	fettuccini_green_walk_side_3 = {x=429, y=300, width=15, height=45, anchor={10,0}},
+	fettuccini_green_walk_side_4 = {x=446, y=302, width=26, height=43, anchor={15,0}},
+	fettuccini_green_walk_side_5 = {x=473, y=303, width=21, height=42, anchor={15,0}},
+	fettuccini_green_walk_side_6 = {x=496, y=300, width=15, height=45, anchor={10,0}},
 
 
 	
@@ -990,4 +1017,57 @@ models["bridge.troll"] = {
 		
 	}
 
+}
+
+
+models["fettuccini.purple"] = {
+    sheet = sheet,
+    type = "sprite",
+    ppu=1,
+	animations = {
+		{ name = "idle_s", frames = { { duration = dt, quads = {{ id = s.fettuccini_purple_idle_front }}}}},
+		{ name = "idle_e", frames = { { duration = dt, quads = {{ id = s.fettuccini_purple_idle_side_body}, {id = s.fettuccini_purple_idle_side_head, pos={0, 33}}}}}},
+		{ name = "idle_n", frames = { { duration = dt, quads = {{ id = s.fettuccini_purple_idle_back}}}}},
+		{ name = "talk_e", frames = { 
+			{ duration = dt, quads = {{ id = s.fettuccini_purple_idle_side_body}, {id = s.fettuccini_purple_idle_side_head, pos={0, 33}}}},
+			{ duration = dt, quads = {{ id = s.fettuccini_purple_idle_side_body}, {id = s.fettuccini_purple_talk_side_head_1, pos={0, 33}}}},
+			{ duration = dt, quads = {{ id = s.fettuccini_purple_idle_side_body}, {id = s.fettuccini_purple_talk_side_head_2, pos={0, 33}}}},
+			{ duration = dt, quads = {{ id = s.fettuccini_purple_idle_side_body}, {id = s.fettuccini_purple_talk_side_head_3, pos={0, 33}}}},
+		}},
+		{ name = "walk_e", frames = { 
+			{ duration = dt, quads = {{ id = s.fettuccini_purple_walk_side_1}}},
+			{ duration = dt, quads = {{ id = s.fettuccini_purple_walk_side_2}}},
+			{ duration = dt, quads = {{ id = s.fettuccini_purple_walk_side_3}}},
+			{ duration = dt, quads = {{ id = s.fettuccini_purple_walk_side_4}}},
+			{ duration = dt, quads = {{ id = s.fettuccini_purple_walk_side_5}}},
+			{ duration = dt, quads = {{ id = s.fettuccini_purple_walk_side_6}}},
+		}},
+
+	}
+}
+
+models["fettuccini.green"] = {
+    sheet = sheet,
+    type = "sprite",
+    ppu=1,
+	animations = {
+		{ name = "idle_s", frames = { { duration = dt, quads = {{ id = s.fettuccini_green_idle_front }}}}},
+		{ name = "idle_e", frames = { { duration = dt, quads = {{ id = s.fettuccini_green_idle_side_body}, {id = s.fettuccini_green_idle_side_head, pos={0, 33}}}}}},
+		{ name = "idle_n", frames = { { duration = dt, quads = {{ id = s.fettuccini_green_idle_back}}}}},
+		{ name = "talk_e", frames = { 
+			{ duration = dt, quads = {{ id = s.fettuccini_green_idle_side_body}, {id = s.fettuccini_green_idle_side_head, pos={0, 33}}}},
+			{ duration = dt, quads = {{ id = s.fettuccini_green_idle_side_body}, {id = s.fettuccini_green_talk_side_head_1, pos={0, 33}}}},
+			{ duration = dt, quads = {{ id = s.fettuccini_green_idle_side_body}, {id = s.fettuccini_green_talk_side_head_2, pos={0, 33}}}},
+			{ duration = dt, quads = {{ id = s.fettuccini_green_idle_side_body}, {id = s.fettuccini_green_talk_side_head_3, pos={0, 33}}}},
+		}},
+		{ name = "walk_e", frames = { 
+			{ duration = dt, quads = {{ id = s.fettuccini_green_walk_side_1}}},
+			{ duration = dt, quads = {{ id = s.fettuccini_green_walk_side_2}}},
+			{ duration = dt, quads = {{ id = s.fettuccini_green_walk_side_3}}},
+			{ duration = dt, quads = {{ id = s.fettuccini_green_walk_side_4}}},
+			{ duration = dt, quads = {{ id = s.fettuccini_green_walk_side_5}}},
+			{ duration = dt, quads = {{ id = s.fettuccini_green_walk_side_6}}},
+		}},
+
+	}
 }

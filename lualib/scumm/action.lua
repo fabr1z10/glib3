@@ -112,28 +112,100 @@ scumm.action.start_dialogue = function (args)
 	end }
 end
 
-scumm.action.end_dialogue = function(args)
-	assert (args.dialogue, "dialogue")
-	return { type="callfunc", func = function() 
-		local dialogue = dialogues[args.dialogue]
-		if (dialogue == nil) then
-			error ("Can't find dialogue " .. args.dialogue)
-		end
-		local m = monkey.getEntity("mainui")
-		local m1 = monkey.getEntity("main")
-		local m2 = monkey.getEntity("dialogueui")
-		m2:cleartext()
-		m2:setactive(false)
-		if (not m.isnil) then
-			m:setactive(true)	
-		end
-		if (not m1.isnil) then
-			m1:enablecontrols(true)			
-		end
-		if (dialogue.close ~= nil) then
-			dialogue.close()
-		end
+local closeDialogue = function(dialogue) 
+	local m = monkey.getEntity("mainui")
+	local m1 = monkey.getEntity("main")
+	local m2 = monkey.getEntity("dialogueui")
+	m2:cleartext()
+	m2:setactive(false)
+	if (not m.isnil) then
+		m:setactive(true)	
 	end
+	if (not m1.isnil) then
+		m1:enablecontrols(true)			
+	end
+	if (dialogue.close ~= nil) then
+		dialogue.close()
+	end
+end
+
+local showDialogue = function(dialogueId, node) 
+	local m2 = monkey.getEntity("dialogueui")
+	local dialogue = dialogues[dialogueId]
+	m2:setactive(true)
+	m2:cleartext()
+	local ch = glib.get(node.children)
+	for _, v in ipairs(ch) do
+		print ("examine node " .. tostring(v))
+    	local node = dialogue.nodes[v]
+        if (glib.get(node.active) == true) then
+			print ("active " .. node.text)
+			m2:addtext { text=node.text, dialogue_node = node, dialogue = dialogueId }
+		end
+    end
+end
+
+
+scumm.action.resume_dialogue = function(args) 
+	assert (args.node, "node")
+	assert (args.dialogue, "dialogue")
+	local node = args.node
+	local dialogue = dialogues[args.dialogue]
+	return { type="callfunc", func = 
+		function() 
+			print ("... resuming dialogue.")
+			if (node.children == nil) then
+        		-- return to game
+        		print ("return to game.")
+        		closeDialogue (dialogue)
+        	else
+				-- check if node has active children
+				print ("I have children. Check at least one is active.")
+        		atLeastOneActiveChild = false
+        		local ch = glib.get(node.children)
+        		for _, v in ipairs(ch) do
+					print (tostring(v))
+            		if (glib.get(dialogue.nodes[v].active) == true) then
+                		atLeastOneActiveChild = true
+                		break
+        		    end
+        		end
+				if (atLeastOneActiveChild == true) then
+					print ("At least one child is active. Resuming dialogue...")
+					showDialogue (args.dialogue, node)
+				else
+					print ("No active children. Shutting down dialogue, returning to game.")
+					closeDialogue (dialogue)
+				end
+			end
+		end
 	}
 end
+
+
+
+-- scumm.action.end_dialogue = function(args)
+-- 	assert (args.dialogue, "dialogue")
+-- 	return { type="callfunc", func = function() 
+-- 		local dialogue = dialogues[args.dialogue]
+-- 		if (dialogue == nil) then
+-- 			error ("Can't find dialogue " .. args.dialogue)
+-- 		end
+-- 		local m = monkey.getEntity("mainui")
+-- 		local m1 = monkey.getEntity("main")
+-- 		local m2 = monkey.getEntity("dialogueui")
+-- 		m2:cleartext()
+-- 		m2:setactive(false)
+-- 		if (not m.isnil) then
+-- 			m:setactive(true)	
+-- 		end
+-- 		if (not m1.isnil) then
+-- 			m1:enablecontrols(true)			
+-- 		end
+-- 		if (dialogue.close ~= nil) then
+-- 			dialogue.close()
+-- 		end
+-- 	end
+-- 	}
+-- end
 

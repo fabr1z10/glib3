@@ -18,7 +18,7 @@ fonts = {
 -- this is configuration for scumm
 config = {
 	start_room = "bridge",
-	lang = "fra",
+	lang = "eng",
     default_verb = "walk",
 	ui = {
 		height = 56,
@@ -78,9 +78,9 @@ variables = {
 -- 	know_sword_price = false,
 -- 	know_shovel_price = false,
 --     met_fester = false,
--- 	entered_circus = false,
--- 	circus_knows_trick = false,
--- 	circus_knows_helmet = false,
+ 	entered_circus = false,
+ 	circus_knows_trick = false,
+ 	circus_knows_helmet = false,
 -- 	talked_to_troll = false,
  	inventory = { 	}
 }
@@ -123,6 +123,6 @@ glib.load_folder("dialogues")
 
 require("defaultscripts")
 
-test.meleemap()
+test.circus()
 
 print (config.start_room)
