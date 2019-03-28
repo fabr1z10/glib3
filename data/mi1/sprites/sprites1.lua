@@ -249,10 +249,22 @@ spritesheets["sprites1"] = {
 	flying_guybrush_5 = {x = 103, y = 489, width=31, height=22},
 	flying_guybrush_6 = {x = 143, y = 487, width = 25, height = 24},
 	flying_guybrush_7 = {x = 144, y = 463, width = 22, height = 22},
+	door_store_open = {x=479, y=347, width=31, height=51},
+	door_store_closed = {x=446, y=347, width=31, height=51},
+	sword = {x=99, y=49, width=30, height=6},
+	shovel = {x=131, y=49, width = 8, height=25},
 
+	storekeeper_idle_body_side = {x=137, y=365, width=28, height=42, anchor = {12, 0}},
+	storekeeper_idle_head_side = {x=141, y=61, width=10, height=13, anchor = {6,0}},
+	storekeeper_talk_head_side_1 = {x=99, y=33, width=10, height=14, anchor = {6,0}},
+	storekeeper_talk_head_side_2 = {x=111, y=34, width=10, height=13, anchor = {6,0}},
+	storekeeper_talk_head_side_3 = {x=123, y=34, width=12, height=12, anchor = {6,0}},
+	storekeeper_talk_head_side_4 = {x=137, y=33, width=11, height=15, anchor = {6,0}},
+	storekeeper_talk_head_side_5 = {x=150, y=33, width=11, height=15, anchor = {6,0}},
 	
-	troll_head_11 = {x=332, y=221, width=25, height=18, anchor={15,5}},
-	
+
+
+	troll_head_11 = {x=332, y=221, width=25, height=18, anchor={15,5}},	
 	
 	
 	
@@ -1114,3 +1126,45 @@ models["circus.flyingguy"] = {
 	}
 }
 
+models["shop.door"] = {
+    sheet = sheet,
+    type = "sprite",
+    ppu=1,
+	animations = {
+		{ name = "open", frames = { { duration = dt, quads = {{ id = s.door_store_open }}}}},
+		{ name = "close", frames = { { duration = dt, quads = {{ id = s.door_store_closed }}}}}
+	}
+}
+
+models["shop.sword"] = { sheet = sheet, type = "sprite", ppu=1, animations = {{ name = "idle", frames = { { duration = dt, quads = {{ id = s.sword }}}}}}}
+models["shop.shovel"] = { sheet = sheet, type = "sprite", ppu=1, animations = {{ name = "idle", frames = { { duration = dt, quads = {{ id = s.shovel }}}}}}}
+
+models["shop.shopkeeper"] = {
+    sheet = sheet,
+    type = "sprite",
+    ppu=1,
+	animations = {
+		--{ name = "idle_s", frames = { { duration = dt, quads = {{ id = s.fettuccini_purple_idle_front }}}}},
+		{ name = "idle_e", frames = { { duration = dt, quads = {{ id = s.storekeeper_idle_body_side}, {id = s.storekeeper_idle_head_side, pos={9, 30}}}}}},
+		--{ name = "idle_n", frames = { { duration = dt, quads = {{ id = s.fettuccini_purple_idle_back}}}}},
+		{ name = "talk_e", frames = { 
+			{ duration = dt, quads = {{ id = s.storekeeper_idle_body_side}, {id = s.storekeeper_talk_head_side_1, pos={9,30}}}},
+			{ duration = dt, quads = {{ id = s.storekeeper_idle_body_side}, {id = s.storekeeper_talk_head_side_2, pos={9,30}}}},
+			{ duration = dt, quads = {{ id = s.storekeeper_idle_body_side}, {id = s.storekeeper_talk_head_side_3, pos={9,30}}}},
+			{ duration = dt, quads = {{ id = s.storekeeper_idle_body_side}, {id = s.storekeeper_talk_head_side_4, pos={9,30}}}},
+			{ duration = dt, quads = {{ id = s.storekeeper_idle_body_side}, {id = s.storekeeper_talk_head_side_5, pos={9,30}}}},
+			{ duration = dt, quads = {{ id = s.storekeeper_idle_body_side}, {id = s.storekeeper_idle_head_side, pos={9,30}}}},
+		}},
+		-- { name = "talk_n", frames = { { duration = dt, quads = {{ id = s.fettuccini_purple_idle_back}}}}},
+		-- { name = "walk_e", frames = { 
+		-- 	{ duration = dt, quads = {{ id = s.fettuccini_purple_walk_side_1}}},
+		-- 	{ duration = dt, quads = {{ id = s.fettuccini_purple_walk_side_2}}},
+		-- 	{ duration = dt, quads = {{ id = s.fettuccini_purple_walk_side_3}}},
+		-- 	{ duration = dt, quads = {{ id = s.fettuccini_purple_walk_side_4}}},
+		-- 	{ duration = dt, quads = {{ id = s.fettuccini_purple_walk_side_5}}},
+		-- 	{ duration = dt, quads = {{ id = s.fettuccini_purple_walk_side_6}}},
+		-- }},
+		-- { name = "walk_n", frames = { { duration = dt, quads = {{ id = s.fettuccini_purple_idle_back}}}}},
+
+	}
+}

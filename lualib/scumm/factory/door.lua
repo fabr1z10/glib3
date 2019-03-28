@@ -5,9 +5,8 @@ scumm.factory.door = function(args)
 	assert (args.walk_to, "walk_to")
 	assert (args.dir, "dir")
 	assert (args.model, "model")
-	--assert (args.nextroom, "nextroom")
 	assert (args.variable, "variable")
-	--local tag = args.name
+
 	local offset = args.offset
 
 	items[args.id] = {
@@ -39,12 +38,12 @@ scumm.factory.door = function(args)
 			end,
 			open = args.open or function()
 				variables[args.variable] = 1
-				local s = { type = action.animate, args = {actor=args.id, anim="open"}}
+				local s = { type = action.animate, args = {tag=args.id, anim="open"}}
 				return s
 			end,
 			close = args.close or function()
 				variables[args.variable] = 0
-				local s = { type = action.animate, args = {actor=args.id, anim="close"}}
+				local s = { type = action.animate, args = {tag=args.id, anim="close"}}
 				return s
 			end,
 		}

@@ -59,7 +59,7 @@ variables = {
  	door_kitchen_pier = 0,
 	door_voodoolady = 0,
 	troll_in = true,
--- 	door_shop = 0,
+ 	door_shop = 0,
     cook_in_kitchen = true,
  	meat_in_pot = false,
 -- 	can_pickup_fish = true,
@@ -124,6 +124,6 @@ glib.load_folder("dialogues")
 
 require("defaultscripts")
 
-test.circus()
+test.shop()
 
 print (config.start_room)
