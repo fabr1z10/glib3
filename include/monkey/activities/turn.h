@@ -1,16 +1,20 @@
 #pragma once
 
-#include <gfx/activity.h>
+#include <gfx/activities/targetactivity.h>
 #include <string>
 
-class Turn : public Activity {
+class Turn : public TargetActivity {
 public:
-    Turn (int actor, char dir) :
-            Activity(), m_actorId(actor), m_dir(dir) {}
+    Turn (char dir) : TargetActivity(), m_dir(dir) {}
+    Turn (int id, char dir) : Turn(dir) {
+        SetId(id);
+    }
+    Turn (const std::string& tag, char dir) : Turn(dir) {
+        SetTag(tag);
+    }
+
     void Start() override;
     void Run(float) override {}
-
 private:
-    int m_actorId;
     char m_dir;
 };

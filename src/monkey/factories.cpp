@@ -58,30 +58,48 @@ std::unique_ptr<Component> WalkAreaComponentFactory::Create(luabridge::LuaRef& r
 std::unique_ptr<Activity> WalkToActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
 
-    int actor = getId(table);
     glm::vec2 pos = table.Get<glm::vec2>("pos");
-    return std::unique_ptr<Walk>(new Walk(actor, pos));
+    if (table.HasKey("id")) {
+        int id = table.Get<int>("id");
+        return std::unique_ptr<Walk>(new Walk(id, pos));
+    } else {
+
+        auto tag = table.Get<std::string>("tag");
+        return std::unique_ptr<Walk>(new Walk(tag, pos));
+    }
+
 };
 
 std::unique_ptr<Activity> TurnActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
 
-    int actor = getId(table);
+
     char dir = table.Get<std::string>("dir")[0];
 
-    return std::unique_ptr<Turn>(new Turn(actor, dir));
+    auto action =  std::unique_ptr<Turn>(new Turn(dir));
+    setTarget(table, action.get());
+    return action;
+
 };
 
 
 std::unique_ptr<Activity> SayActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
 
-    int actor = getId(table);
+
     std::vector<std::string> lines = table.GetVector<std::string>("lines");
     glm::vec4 color = table.Get<glm::vec4>("color");
     color/=255.0f;
     glm::vec2 offset = table.Get<glm::vec2>("offset");
-    auto say = std::unique_ptr<Say>(new Say(actor, lines, color, offset));
+    std::unique_ptr<Say> say ;
+    if (table.HasKey("id")) {
+        int id = table.Get<int>("id");
+        say = std::unique_ptr<Say>(new Say(id, lines, color, offset));
+    } else {
+        auto tag = table.Get<std::string>("tag");
+        say = std::unique_ptr<Say>(new Say(tag, lines, color, offset));
+
+    }
     bool animate = table.Get<bool>("animate", true);
     if (table.HasKey("animstart")) {
         std::string animStart = table.Get<std::string>("animstart");

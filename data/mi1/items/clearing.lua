@@ -20,7 +20,13 @@ items["clearing.tent"] = {
 		dir = "north",
 	},
 	actions = {
-		walk = { {type=action.change_room, args={room="circus"} } }
+		walk = function() 
+			if (variables.circus_feat_done == false) then
+				return { {type=action.change_room, args={room="circus"} }}
+			else
+				return { {type=scumm.action.say, args={actor="guybrush", lines = {strings.circus[1]}} }}
+			end
+		end
 	}
 }
 

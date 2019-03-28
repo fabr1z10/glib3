@@ -22,6 +22,12 @@ void Walk::SetComplete() {
 
 
 void Walk::Start() {
+
+    // if the walk has a tag, then get the id
+    if (!m_tag.empty()) {
+        m_actorId = Engine::get().getIdFromTag(m_tag);
+    }
+
     auto walkArea = Engine::get().GetRef<WalkArea>("walkarea");
     m_shape = walkArea->GetShape();
     auto blockedLines = walkArea->GetActiveWalls();
@@ -53,7 +59,9 @@ void Walk::Start() {
         //glm::vec2 currentPoint = points.front();
         std::string anim2;
         // set status to walk
-        Push(std::make_shared<SetState>(m_actorId, "walk"));
+        auto setStateAction = std::make_shared<SetState>("walk");
+        setStateAction->SetId(m_actorId);
+        Push(setStateAction);
         for (size_t i = 1; i < points.size(); ++i) {
             delta = points[i] - currentPos;
             float length = glm::length(delta);
@@ -83,6 +91,7 @@ void Walk::Start() {
             } else {
                 dir = delta.y > 0 ? 'n' : 's';
             }
+
             Push(std::make_shared<Turn>(m_actorId, dir));
             Push(std::make_shared<MoveTo>(m_actorId, currentPos + length * glm::normalize(delta), 200.0f, false, false));
             //if (i == points.size() - 1 || tMin < 1.0)
@@ -94,7 +103,11 @@ void Walk::Start() {
             }
             //script->AddActivity(p);
         }
-        Push(std::make_shared<SetState>(m_actorId, "idle"));
+        auto setIdle = std::make_shared<SetState>("idle");
+        setIdle->SetId(m_actorId);
+        Push(setIdle);
+
+        //Push(std::make_shared<SetState>(m_actorId, "idle"));
 
 //        if (!anim2.empty())
   //          Push(std::make_shared<Animate>(actor, anim2, flipX));

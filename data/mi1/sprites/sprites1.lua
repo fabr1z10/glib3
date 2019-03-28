@@ -213,10 +213,6 @@ spritesheets["sprites1"] = {
 	fettuccini_purple_walk_side_5 = {x=473, y=256, width=21, height=42, anchor={15,0}},
 	fettuccini_purple_walk_side_6 = {x=496, y=253, width=15, height=45, anchor={10,0}},
 
-
-
-
-
 	fettuccini_green_idle_front = {x=137, y=317, width=27, height=45, anchor= {14,0}},
 	fettuccini_green_idle_side_body = {x=167, y=324, width=22, height=38, anchor= {13,0}},
 	fettuccini_green_idle_side_head = {x=183, y=258, width=10, height=12, anchor= {5,0}},
@@ -237,24 +233,23 @@ spritesheets["sprites1"] = {
 	fettuccini_green_walk_side_5 = {x=473, y=303, width=21, height=42, anchor={15,0}},
 	fettuccini_green_walk_side_6 = {x=496, y=300, width=15, height=45, anchor={10,0}},
 
+	circus_explosion_1 = {x=45, y=324, width=36, height=36},
+	circus_explosion_2 = {x=87, y=300, width=48, height=41},
+	circus_explosion_3 = {x=89, y=342, width=44, height=46},
+	circus_explosion_4a = {x=2, y=354, width=46, height=50},
+	circus_explosion_4b = {x=51, y=362, width=32, height=29},
+	circus_explosion_5a = {x=1, y=406, width=51, height=48},
+	circus_explosion_5b = {x=55, y=394, width=33, height=20},
+	circus_explosion_6 = {x=2, y=457, width=48, height=43},
+	circus_explosion_7 = {x=54, y=417, width=44, height=46},
+	flying_guybrush_1 = {x = 53, y = 467, width = 20, height = 22},
+	flying_guybrush_2 = {x = 74, y = 467, width = 26, height = 16},
+	flying_guybrush_3 = {x = 74, y = 484, width = 26, height = 27},
+	flying_guybrush_4 = {x = 103, y = 464, width = 37, height = 24},
+	flying_guybrush_5 = {x = 103, y = 489, width=31, height=22},
+	flying_guybrush_6 = {x = 143, y = 487, width = 25, height = 24},
+	flying_guybrush_7 = {x = 144, y = 463, width = 22, height = 22},
 
-	
-	
-	
-	
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	troll_head_11 = {x=332, y=221, width=25, height=18, anchor={15,5}},
 	
@@ -1034,6 +1029,7 @@ models["fettuccini.purple"] = {
 			{ duration = dt, quads = {{ id = s.fettuccini_purple_idle_side_body}, {id = s.fettuccini_purple_talk_side_head_2, pos={0, 33}}}},
 			{ duration = dt, quads = {{ id = s.fettuccini_purple_idle_side_body}, {id = s.fettuccini_purple_talk_side_head_3, pos={0, 33}}}},
 		}},
+		{ name = "talk_n", frames = { { duration = dt, quads = {{ id = s.fettuccini_purple_idle_back}}}}},
 		{ name = "walk_e", frames = { 
 			{ duration = dt, quads = {{ id = s.fettuccini_purple_walk_side_1}}},
 			{ duration = dt, quads = {{ id = s.fettuccini_purple_walk_side_2}}},
@@ -1042,6 +1038,7 @@ models["fettuccini.purple"] = {
 			{ duration = dt, quads = {{ id = s.fettuccini_purple_walk_side_5}}},
 			{ duration = dt, quads = {{ id = s.fettuccini_purple_walk_side_6}}},
 		}},
+		{ name = "walk_n", frames = { { duration = dt, quads = {{ id = s.fettuccini_purple_idle_back}}}}},
 
 	}
 }
@@ -1068,6 +1065,52 @@ models["fettuccini.green"] = {
 			{ duration = dt, quads = {{ id = s.fettuccini_green_walk_side_5}}},
 			{ duration = dt, quads = {{ id = s.fettuccini_green_walk_side_6}}},
 		}},
-
+		{ name = "walk_n", frames = { { duration = dt, quads = {{ id = s.fettuccini_green_idle_back}}}}},
 	}
 }
+
+models["circus.explosion"] = {
+    sheet = sheet,
+    type = "sprite",
+    ppu=1,
+	animations = {
+		{ name = "default", frames = { 
+			{ duration = dt, quads = {{ id = s.circus_explosion_1, pos = {244, 43}}}},
+			{ duration = dt, quads = {{ id = s.circus_explosion_2, pos = {244, 40}}}},
+			{ duration = dt, quads = {{ id = s.circus_explosion_3, pos = {244, 38}}}},
+			{ duration = dt, quads = {{ id = s.circus_explosion_4a, pos = {244, 40}}, { id = s.circus_explosion_4b, pos = {201,72}}}},
+			{ duration = dt, quads = {{ id = s.circus_explosion_5a, pos = {244, 36}}, { id = s.circus_explosion_4b, pos = {200,78}}}},
+			{ duration = dt, quads = {{ id = s.circus_explosion_6, pos = {244, 35}}}},
+			{ duration = dt, quads = {{ id = s.circus_explosion_7, pos = {244, 34}}}},
+		}},
+	}
+}
+
+models["circus.flyingguy"] = {
+    sheet = sheet,
+    type = "sprite",
+    ppu=1,
+	animations = {
+		{ name = "default", loop = false, frames = { 
+			{ duration = dt, quads = {{ id = s.flying_guybrush_1, pos = {213, 75}}}},
+			{ duration = dt, quads = {{ id = s.flying_guybrush_2, pos = {190, 89}}}},
+			{ duration = dt, quads = {{ id = s.flying_guybrush_3, pos = {169, 96}}}},
+			{ duration = dt, quads = {{ id = s.flying_guybrush_4, pos = {148, 100}}}},
+			{ duration = dt, quads = {{ id = s.flying_guybrush_5, pos = {133, 98}}}},
+			{ duration = dt, quads = {{ id = s.flying_guybrush_6, pos = {111, 92}}}},
+			{ duration = dt, quads = {{ id = s.flying_guybrush_7, pos = {93, 89}}}},
+			{ duration = dt, quads = {{ id = s.flying_guybrush_7, pos = {93, 84}}}},
+			{ duration = dt, quads = {{ id = s.flying_guybrush_7, pos = {93, 82}}}},
+			{ duration = dt, quads = {{ id = s.flying_guybrush_7, pos = {93, 70}}}},
+			{ duration = dt, quads = {{ id = s.flying_guybrush_7, pos = {93, 65}}}},
+			{ duration = dt, quads = {{ id = s.flying_guybrush_7, pos = {93, 60}}}},
+			{ duration = dt, quads = {{ id = s.flying_guybrush_7, pos = {93, 55}}}},
+			{ duration = dt, quads = {{ id = s.flying_guybrush_7, pos = {93, 50}}}},
+			{ duration = dt, quads = {{ id = s.flying_guybrush_7, pos = {93, 45}}}},
+			{ duration = dt, quads = {{ id = s.flying_guybrush_7, pos = {93, 40}}}},
+			{ duration = dt, quads = {{ id = s.flying_guybrush_7, pos = {93, 35}}}},
+			{ duration = dt, quads = {{ id = s.flying_guybrush_7, pos = {93, 29}}}},
+		}},
+	}
+}
+

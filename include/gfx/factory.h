@@ -8,12 +8,13 @@
 #include <gfx/error.h>
 #include <gfx/runner.h>
 #include <iostream>
+#include <gfx/activities/targetactivity.h>
 
 
 class AbstractFactoryMethod {
 public:
     virtual ~AbstractFactoryMethod() = default;
-    int getId (const LuaTable& table);
+    void setTarget (const LuaTable& table, TargetActivity* targetActivity );
 
 };
 

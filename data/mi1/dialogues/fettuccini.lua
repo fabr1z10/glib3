@@ -23,8 +23,10 @@ local fettuccini_approach = {
 	{ type =scumm.action.turn, after={2,3}, args={tag="player", dir="south"}},
 }
 
-local s1 = { f(2,{34}), f(3,{35}), f(2,{36}), f(3,{37}), f(2,{38}), f(3,{39}), f(2,{40}), f(3,{41}), f(2,{42}), f(3,{43}), f(2,{44}), f(3,{45}), f(2,{46}), f(3,{47}), f(2,{48}), 
-	f(3,{49}), f(2,{50}), f(3,{51}), f(2,{52}), f(3,{53}), f(2, {54,55}), f(3,{56}), f(2,{57}), f(3,{58}), f(2,{59}), f(3,{60}),
+local s1 = { 
+	--f(2,{34}), f(3,{35}), f(2,{36}), f(3,{37}), f(2,{38}), f(3,{39}), f(2,{40}), f(3,{41}), f(2,{42}), f(3,{43}), f(2,{44}), f(3,{45}), f(2,{46}), f(3,{47}), f(2,{48}), 
+	--f(3,{49}), f(2,{50}), f(3,{51}), f(2,{52}), f(3,{53}), f(2, {54,55}), f(3,{56}), f(2,{57}), f(3,{58}), f(2,{59}), 
+	f(3,{60}),
 	{ type=action.set_variable, args={var="circus_knows_trick", value=true}} }
 
 local s3 = { f(2, {95}), f(3, {96}), f(2, {97}), f(3, {98}), {type=action.delay, args={sec=0.5}},
@@ -76,8 +78,8 @@ dialogues.fettuccini = {
 			{ type = action.set_variable, args = {var="circus_knows_helmet", value=true}}}},
 		[14] = { text = d[66], active=true, script = { f(1, {66}), { type=action.change_room, args={room="clearing"}}}},
 		[15] = { children = {16, 17}},
-		[16] = { text = d[93], active=true, script = { f(1, {93}), s3 }},
-		[17] = { text = d[94], active=true, script = { f(1, {93}), s3 }}
+		[16] = { text = d[93], active=true, script = { {type=action.show_message, args = { message = d[93], color = items["guybrush"].text_color, pos = {93, 60, 5}}}, s3 }},
+		[17] = { text = d[94], active=true, script = { {type=action.show_message, args = { message = d[94], color = items["guybrush"].text_color, pos = {93, 60, 5}}}, s3 }}
 	}
 	
 }

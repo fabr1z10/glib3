@@ -1,6 +1,7 @@
 scumm.factory.object = function(args)
-
+	
 	local objId = args.id
+	print ("*** Creating object " .. objId)
 	-- fetch the object
 	local object = items[objId]
 	if (object == nil) then

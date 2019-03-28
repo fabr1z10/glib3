@@ -44,7 +44,34 @@ spritesheets["guybrush"] = {
 	operate_north = {x = 33, y = 150, width = 19, height = 45, anchor = {12, 0}},
 	kneel_south = { x = 80, y = 163, width = 17, height = 33, anchor = {10, 0}},
 	kneel_north = { x = 100, y = 163, width = 19, height = 33, anchor = {10, 0}},
-	plank = {x = 57, y = 150, width = 21, height = 47, anchor = {10, 0}}
+	plank = {x = 57, y = 150, width = 21, height = 47, anchor = {10, 0}},
+	circus_scene_1 = {x=1, y=199, width=26, height=47, anchor={15, 0}},
+	circus_scene_2 = {x=30, y=199, width=26, height=47, anchor={15, 0}},
+	circus_scene_3 = {x=59, y=199, width=26, height=47, anchor={15, 0}},
+	circus_scene_4 = {x=88, y=199, width=36, height=48, anchor={15, 0}},
+	circus_scene_5 = {x=176, y=193, width=21, height=54, anchor={7, 2}},
+	circus_scene_6 = {x=200, y=200, width=18, height=47, anchor={7, 2}},
+	circus_scene_7 = {x=222, y=198, width=26, height=49, anchor={7, 2}},
+	circus_scene_8 = {x=1, y=249, width=27, height=49, anchor={7, 1}},
+	circus_scene_9 = {x=31, y=248, width=23, height=31, anchor={5, -6}},
+	circus_scene_10 = {x=57, y=248, width=19, height=46, anchor={5, -6}},
+	circus_scene_11 = {x=80, y=249, width=20, height=41, anchor={6, -5}},
+	circus_scene_12 = {x=104, y=249, width=15, height=29, anchor={0, -13}},
+	circus_scene_13 = {x=124, y=249, width=19, height=20, anchor={4, -16}},
+	circus_scene_14 = {x=147, y=249, width=23, height=20, anchor={4, -22}},
+	circus_scene_15 = {x=172, y=252, width=21, height=13, anchor={4, -22}},
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -135,6 +162,30 @@ models["guybrush"] = {
 		--{ name = "kneel_e", frames = { { duration = dt, quads = {{ id = s.kneel_east }}}}},
 		{ name = "kneel_n", frames = { { duration = dt, quads = {{ id = s.kneel_north }}}}},
 		{ name = "kneel_s", frames = { { duration = dt, quads = {{ id = s.kneel_south }}}}},
+		{ name = "show_pot", loop = false, frames = { 
+			{ duration = dt, quads = {{ id = s.circus_scene_1 }}},
+			{ duration = dt, quads = {{ id = s.circus_scene_2 }}},
+			{ duration = dt, quads = {{ id = s.circus_scene_3 }}},
+			{ duration = dt, quads = {{ id = s.circus_scene_4 }}},
+		}},
+		{ name = "get_in_cannon", loop = false, frames = { 
+			{ duration = dt, quads = {{ id = s.circus_scene_1 }}},
+			{ duration = dt, quads = {{ id = s.circus_scene_2 }}},
+			{ duration = dt, quads = {{ id = s.circus_scene_3 }}},
+			{ duration = 3*dt, quads = {{ id = s.circus_scene_4 }}},
+			{ duration = dt, quads = {{ id = s.circus_scene_5 }}},
+			{ duration = dt, quads = {{ id = s.circus_scene_6 }}},
+			{ duration = dt, quads = {{ id = s.circus_scene_7 }}},
+			{ duration = dt, quads = {{ id = s.circus_scene_8 }}},
+			{ duration = dt, quads = {{ id = s.circus_scene_9 }}},
+			{ duration = dt, quads = {{ id = s.circus_scene_10 }}},
+			{ duration = dt, quads = {{ id = s.circus_scene_11 }}},
+			{ duration = dt, quads = {{ id = s.circus_scene_12 }}},
+			{ duration = dt, quads = {{ id = s.circus_scene_13 }}},
+			{ duration = dt, quads = {{ id = s.circus_scene_14 }}},
+			{ duration = dt, quads = {{ id = s.circus_scene_15 }}},
+		}},
+
 
 
 

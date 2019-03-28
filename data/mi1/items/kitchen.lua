@@ -38,6 +38,7 @@ items["kitchen.table"] = {
 	actions = {}
 }
 
+local df = strings.dialogues.fettbros
 
 items["kitchen.pot"] = { 
  	pos = {104, 24, -1},
@@ -50,7 +51,53 @@ items["kitchen.pot"] = {
 	model = "kitchen.pot",
  	actions = {
  		pickup = scumm.action.pickup("kitchen.pot", "kneel_n", "idle_n"),
- 		look = { type = scumm.action.say, args ={actor="guybrush", lines = {strings.kitchen[2] }}}
+ 		look = { type = scumm.action.say, args ={actor="guybrush", lines = {strings.kitchen[2] }}},
+ 		give = {
+ 			["circus.purpleclown"] = {
+ 				{ type = scumm.action.disable_controls },
+ 				{ type = action.animate, args = {tag="player", anim="show_pot", sync = true}},
+				{ type = scumm.action.say, args = {actor="circus.greenclown", lines = {df[82]} }},
+				{ type = action.animate, args = {tag="player", anim="show_pot", fwd = false, sync=true}},
+				{ type = scumm.action.say, args = {actor="circus.purpleclown", lines = {df[83]}}},
+				{ ref=1, type = scumm.action.say, args = {actor="circus.greenclown", lines = {df[84]}}},
+				{ ref=2, type = scumm.action.walkto, after={1}, args = {tag = "circus.purpleclown", pos={333, 1}}},
+				{ ref=3, type = scumm.action.walkto, after={1}, args = {tag = "circus.greenclown", pos={296, 24}}},
+				{ ref=4, type = scumm.action.walkto, after={1}, args = {tag = "player", pos={250, 24}}},
+				{ type = action.scroll, after={1}, args = {by = {48, 0}, speed = 50}},
+				{ ref=5, type = scumm.action.turn, after={2}, args = {tag="circus.purpleclown", dir="north" }},
+				{ ref=6, type = scumm.action.turn, after={3}, args = {tag="circus.greenclown", dir="west" }},
+				{ ref=7, type = scumm.action.turn, after={4}, args = {tag="player", dir="south" }},
+				{ type = scumm.action.say, after = {5,6,7}, args = {actor="circus.purpleclown", lines = {df[85]}}},
+				{ type = scumm.action.say, args = {actor="circus.greenclown", lines = {df[86]} }},
+				{ type = scumm.action.say, args = {actor="circus.purpleclown", lines = {df[87]} }},
+				{ type = scumm.action.walkto, args = {tag="player", pos={264, 23}}},
+				{ type = scumm.action.turn, args = {tag="player", dir="east" }},
+				{ type = scumm.action.say, args = {actor="guybrush", lines ={df[88]}}},
+				{ type = scumm.action.walkto, args = {tag="player", pos={250, 24}}},
+				{ type = scumm.action.turn, args = {tag="player", dir="south" }},
+				{ type = action.animate, args = {tag="player", anim="get_in_cannon", sync = true}},
+				{ ref = 8, type = action.activate, args = {tag="player", value=false}},
+				{ ref = 9, type = action.create_object, after = {8}, args = { factory = scumm.factory.object, args = { id="circus.explosion"}}},
+				{ ref = 10, type = action.create_object, after = {8}, args = { factory = scumm.factory.object, args = { id="circus.flyingguybrush"}}},
+				{ type = action.animate, after={9}, args = {tag="circus.explosion", anim="default", sync=true}},
+				{ type = action.remove_object, args = { tag="circus.explosion" }},
+				{ type = action.animate, after={10}, args = {tag="circus.flyingguybrush", anim="default", sync=true}},
+				{ type = scumm.action.say, args = {actor="circus.purpleclown", lines = {df[89]} }},
+				{ ref = 11, type = scumm.action.say, args = {actor="circus.greenclown", lines = {df[90]} }},
+				{ type = scumm.action.walkto, after = {11}, args = {tag="circus.purpleclown", pos={87, 29}}},
+				{ ref = 12, type = scumm.action.turn, args = {tag="circus.purpleclown", dir="east"}},
+				{ type = scumm.action.walkto, after = {11}, args = {tag="circus.greenclown", pos={126,29}}},
+				{ ref = 13, type = scumm.action.turn, args = {tag="circus.greenclown", dir="west"}},
+				{ type = scumm.action.say, after = {12, 13}, args = {actor="circus.purpleclown", lines = {df[91]} }},
+				{ type = scumm.action.say, args = {actor="circus.greenclown", lines = {df[92]}}},
+				{ type = action.set_variable, args = { var = "circus_feat_done", value=true}},
+				{ type = scumm.action.add_to_inventory, args = { id="pieces_of_eight", qty = 478}},
+				{ type = scumm.action.remove_from_inventory, args = { id="kitchen.pot" }},
+				{ type = scumm.action.start_dialogue, args = { dialogue="fettuccini", root=15 }}
+ 			}
+
+
+ 		}
 	}
 }
 

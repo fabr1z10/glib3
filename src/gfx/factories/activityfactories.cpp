@@ -70,7 +70,6 @@ std::unique_ptr<Activity> CollisionCheckActFactory::Create(luabridge::LuaRef &re
 
 std::unique_ptr<Activity> MoveActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
-    int id = getId(table);
     bool relative = true;
     glm::vec2 dest;
     if (table.HasKey("to")) {
@@ -88,10 +87,11 @@ std::unique_ptr<Activity> MoveActFactory::Create(luabridge::LuaRef &ref) {
     if (table.HasKey("angle")) {
         float angle = table.Get<float>("angle");
         bool relAngle = table.Get<bool>("angle_relative");
-        m = std::unique_ptr<MoveTo>(new MoveAndRotateTo(id, dest, speed, relative, immediate, angle, relAngle));
+        m = std::unique_ptr<MoveTo>(new MoveAndRotateTo(dest, speed, relative, immediate, angle, relAngle));
     } else {
-        m = std::unique_ptr<MoveTo>(new MoveTo(id, dest, speed, relative, immediate));
+        m = std::unique_ptr<MoveTo>(new MoveTo(dest, speed, relative, immediate));
     }
+    setTarget(table, m.get());
     if (table.HasKey("acceleration")) {
         float acceleration = table.Get<float>("acceleration");
         m->SetAcceleration(acceleration);
@@ -101,13 +101,15 @@ std::unique_ptr<Activity> MoveActFactory::Create(luabridge::LuaRef &ref) {
 
 std::unique_ptr<Activity> MoveAcceleratedActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
-    int id = getId(table);
+
     glm::vec2 initialVelocity = table.Get<glm::vec2>("velocity");
     glm::vec2 acceleration= table.Get<glm::vec2>("acceleration");
     float yStop = table.Get<float>("ystop");
     float rotSpeed = table.Get<float>("rotationspeed", 0.0f);
     float finRotation = table.Get<float>("finalrotation", 0.0f) * deg2rad;
-    return std::unique_ptr<MoveAccelerated>(new MoveAccelerated(id, initialVelocity, acceleration, yStop, rotSpeed, finRotation));
+    auto ptr = std::unique_ptr<MoveAccelerated>(new MoveAccelerated(initialVelocity, acceleration, yStop, rotSpeed, finRotation));
+    setTarget(table, ptr.get());
+    return ptr;
 };
 
 
@@ -137,25 +139,28 @@ std::unique_ptr<Activity> DelayDynamicActFactory::Create(luabridge::LuaRef &ref)
 std::unique_ptr<Activity> AnimateActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
     // get id
-    int id = getId(table);
+    //int id = getId(table);
     std::string anim = table.Get<std::string>("anim");
     bool fwd = table.Get<bool>("fwd", true);
     int flip{0};
     if (table.HasKey("flipx")) {
         flip = table.Get<bool>("flipx") ? 2 : 1;
     }
-    //int loopCount = table.Get<int>("loop", 0);
+    auto act = std::unique_ptr<Animate>(new Animate(anim, fwd, flip));
     bool sync = table.Get<bool>("sync", false);
-    auto act = std::unique_ptr<Animate>(new Animate(id, anim, fwd, flip));
     act->SetSync(sync);
+    setTarget(table, act.get());
+
     return std::move(act);
 };
 
 std::unique_ptr<Activity> SetStateActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
-    int id = getId(table);
+
     std::string state = table.Get<std::string>("state");
-    auto act = std::unique_ptr<SetState>(new SetState(id, state));
+    auto act = std::unique_ptr<SetState>(new SetState(state));
+    setTarget(table, act.get());
+
     return std::move(act);
 };
 

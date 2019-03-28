@@ -3,8 +3,8 @@
 #include "gfx/engine.h"
 #include <gfx/math/geom.h>
 
-MoveTo::MoveTo(int actor, glm::vec2 pos, float speed, bool relative, bool immediate) : Activity(),
-    m_entity(nullptr), m_actorId(actor), m_toPos(pos), m_speed{speed}, m_lengthCovered{0.0f}, m_lengthToCover{0.0f},
+MoveTo::MoveTo(glm::vec2 pos, float speed, bool relative, bool immediate) : TargetActivity(),
+    m_toPos(pos), m_speed{speed}, m_lengthCovered{0.0f}, m_lengthToCover{0.0f},
     m_relative{relative}, m_immediate{immediate}, m_acceleration(0.0f), m_accelerationVector(0.0f)
 {
 
@@ -19,7 +19,7 @@ void MoveTo::Reset() {
 }
 
 void MoveTo::Start() {
-    m_entity = Ref::GetFromId<Entity>(m_actorId);
+    TargetActivity::Start();
 
     glm::vec2 displacement;
     //glm::mat4 m = m_entity->GetWorldTransform();
@@ -64,9 +64,8 @@ void MoveTo::Run (float dt) {
 
 }
 
-MoveAndRotateTo::MoveAndRotateTo(int actorId, glm::vec2 pos, float speed, bool relative, bool immediate,
-                                 float angle, bool angleRelative)
-        : MoveTo(actorId, pos, speed, relative, immediate), m_angle(angle), m_angleRelative(angleRelative)
+MoveAndRotateTo::MoveAndRotateTo(glm::vec2 pos, float speed, bool relative, bool immediate,
+    float angle, bool angleRelative) : MoveTo(pos, speed, relative, immediate), m_angle(angle), m_angleRelative(angleRelative)
 {
 
 }
@@ -94,13 +93,11 @@ void MoveAndRotateTo::Run(float dt) {
 }
 
 MoveAccelerated::MoveAccelerated (
-    int actorId,
     glm::vec2 initialVelocity,
     glm::vec2 acceleration,
     float yStop,
     float rotationSpeed,
-    float finalRotation) : Activity(),
-    m_entity{nullptr}, m_actorId(actorId), m_initialVelocity(initialVelocity),
+    float finalRotation) : TargetActivity(), m_initialVelocity(initialVelocity),
     m_acceleration(acceleration), m_yStop(yStop), m_rotationSpeed(rotationSpeed), m_finalRotation(finalRotation)
 {
 
@@ -108,7 +105,7 @@ MoveAccelerated::MoveAccelerated (
 
 
 void MoveAccelerated::Start() {
-    m_entity = Ref::GetFromId<Entity>(m_actorId);
+    TargetActivity::Start();
     m_velocity = m_initialVelocity;
     m_angle = 0.0f;
 }

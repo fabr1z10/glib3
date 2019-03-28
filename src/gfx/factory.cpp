@@ -1,11 +1,11 @@
 #include <gfx/factory.h>
 #include <gfx/engine.h>
 
-int AbstractFactoryMethod::getId(const LuaTable &table) {
-    if (table.HasKey("tag")) {
+void AbstractFactoryMethod::setTarget (const LuaTable& table, TargetActivity* targetActivity ) {
 
-        return Engine::get().getIdFromTag(table.Get<std::string>("tag"));
+    if (table.HasKey("tag")) {
+        targetActivity->SetTag(table.Get<std::string>("tag"));
+    } else {
+        targetActivity->SetId(table.Get<int>("id"));
     }
-    int id = table.Get<int>("id");
-    return id;
 }

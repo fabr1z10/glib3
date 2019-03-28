@@ -11,14 +11,8 @@ items["circus.wayout"] = {
 	}
 }
 
--- items["circus.explosion"] = {
--- 	model ="circus.explosion",
--- 	anim="default"
--- }
--- items["circus.flyingguybrush"] = {
--- 	model ="circus.flyingguy",
--- 	anim="default"
--- }
+items["circus.explosion"] = { model ="circus.explosion" }
+items["circus.flyingguybrush"] = { model ="circus.flyingguy" }
 
 items["circus.purpleclown"] = {
  	pos = {37,34,0},

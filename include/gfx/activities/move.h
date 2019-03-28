@@ -1,17 +1,22 @@
 #pragma once
 
-#include <gfx/activity.h>
+#include <gfx/activities/targetactivity.h>
 #include <gfx/entity.h>
 
-class MoveTo : public Activity {
+class MoveTo : public TargetActivity {
 public:
-    MoveTo(int actorId, glm::vec2 pos, float speed, bool relative, bool immediate);
+    MoveTo(glm::vec2 pos, float speed, bool relative, bool immediate);
+    MoveTo(int id, glm::vec2 pos, float speed, bool relative, bool immediate) : MoveTo(pos, speed, relative, immediate) {
+        SetId(id);
+    }
+    MoveTo(const std::string& tag, glm::vec2 pos, float speed, bool relative, bool immediate) : MoveTo(pos, speed, relative, immediate) {
+        SetTag(tag);
+    }
     void Start() override;
     void Run (float dt) override;
     void Reset() override;
     void SetAcceleration(float acceleration);
 protected:
-    Entity* m_entity;
     glm::vec2 m_toPos;
     glm::vec2 m_velocity;
     glm::vec2 m_finalPosition;
@@ -22,7 +27,6 @@ protected:
     float m_acceleration;
     bool m_relative;
     bool m_immediate;
-    int m_actorId;
 };
 
 inline void MoveTo::SetAcceleration(float acceleration) {
@@ -31,7 +35,7 @@ inline void MoveTo::SetAcceleration(float acceleration) {
 
 class MoveAndRotateTo : public MoveTo {
 public:
-    MoveAndRotateTo (int actorId, glm::vec2 pos, float speed, bool relative, bool immediate, float angle, bool angleRelative);
+    MoveAndRotateTo (glm::vec2 pos, float speed, bool relative, bool immediate, float angle, bool angleRelative);
     void Start() override;
     void Run (float dt) override;
 private:
@@ -42,10 +46,9 @@ private:
     float m_angle;
 };
 
-class MoveAccelerated : public Activity {
+class MoveAccelerated : public TargetActivity {
 public:
     MoveAccelerated(
-        int actorId,
         glm::vec2 initialVelocity,
         glm::vec2 acceleration,
         float yStop,
@@ -57,12 +60,10 @@ public:
     void Run(float dt) override;
 
 private:
-    Entity *m_entity;
     float m_yStop;
     glm::vec2 m_initialVelocity;
     glm::vec2 m_velocity;
     glm::vec2 m_acceleration;
-    int m_actorId;
     float m_angle;
     float m_rotationSpeed;
     float m_finalRotation;

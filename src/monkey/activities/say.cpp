@@ -6,11 +6,21 @@
 
 void Say::Start() {
 
+    // if the walk has a tag, then get the id
+    if (!m_tag.empty()) {
+        m_actorId = Engine::get().getIdFromTag(m_tag);
+    }
+
     if (!m_noAnim) {
+
         if (m_animStart.empty()) {
-            Push (std::make_shared<SetState>(m_actorId, "talk"));
+            auto action =std::make_shared<SetState>("talk");
+            action->SetId(m_actorId);
+            Push (action);
         } else {
-            Push (std::make_shared<Animate>(m_actorId, m_animStart, 0));
+            auto action =std::make_shared<Animate>(m_animStart, true);
+            action->SetId(m_actorId);
+            Push (action);
         }
     }
 
@@ -21,9 +31,14 @@ void Say::Start() {
 
     if (!m_noAnim) {
         if (m_animEnd.empty()) {
-            Push (std::make_shared<SetState>(m_actorId, "idle"));
+            auto action =std::make_shared<SetState>("idle");
+            action->SetId(m_actorId);
+            Push (action);
         } else {
-            Push (std::make_shared<Animate>(m_actorId, m_animEnd, 0));
+            auto action =std::make_shared<Animate>(m_animEnd, true);
+            action->SetId(m_actorId);
+            Push (action);
+            //Push (std::make_shared<Animate>(m_actorId, m_animEnd, 0));
         }
     }
 

@@ -4,9 +4,8 @@
 
 void Turn::Start() {
 
-    auto actor = Ref::GetFromId<Entity>(m_actorId);
-    
-    auto state = dynamic_cast<StateCharacter*>(actor->GetComponent<StateMachine2>());
+    TargetActivity::Start();
+    auto state = dynamic_cast<StateCharacter*>(m_entity->GetComponent<StateMachine2>());
     state->SetDirection(m_dir);
     SetComplete();
 

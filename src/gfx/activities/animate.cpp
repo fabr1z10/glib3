@@ -2,12 +2,14 @@
 #include <gfx/components/animator.h>
 #include <gfx/engine.h>
 
-Animate::Animate(int id, const std::string& animId, bool fwd, int flipX ) : Activity(),
-    m_id(id), m_animId{animId}, m_entity{nullptr}, m_flipX{flipX}, m_forward(fwd) {
+Animate::Animate(const std::string& animId, bool fwd, int flipX ) : TargetActivity(),
+    m_animId{animId}, m_flipX{flipX}, m_forward(fwd) {
 }
 
+
+
 void Animate::Start() {
-    m_entity = Ref::GetFromId<Entity>(m_id);
+    TargetActivity::Start();
     m_animator = m_entity->GetComponent<Animator>();
     if (m_animator == nullptr) {
         GLIB_FAIL("No animator found. Required for animate action\n");

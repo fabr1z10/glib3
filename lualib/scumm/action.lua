@@ -25,7 +25,7 @@ scumm.action.pickup = function(id, anim1, anim2)
 		{ ref = 1, type = action.animate, args ={actor="guybrush", anim=anim1, sync=true}},
 		{ type = action.remove_object, args ={name=id }},
 		{ type = action.animate, after={1}, args ={actor="guybrush", anim=anim2 }},
-		{ type = action.add_to_inventory, args = {id=id}}
+		{ type = scumm.action.add_to_inventory, args = {id=id}}
 	}
 end
 
@@ -81,7 +81,7 @@ end
 
 scumm.action.start_dialogue = function (args) 
 	assert (args.dialogue, "dialogue")
-	local droot = args.root
+	local droot = args.root or 1
 	return { type="callfunc", func = function() 
 		--print ("Starting dialogue: " .. args.dialogue)
 		print ("VIVA!")
@@ -89,7 +89,7 @@ scumm.action.start_dialogue = function (args)
 		if (dialogue == nil) then
 			error ("Can't find dialogue " .. args.dialogue)
 		end
-		local root = droot or dialogue.nodes[1]
+		local root = dialogue.nodes[droot] --droot or dialogue.nodes[1]
 		local m = monkey.getEntity("mainui")
 		local m1 = monkey.getEntity("main")
 		local m2 = monkey.getEntity("dialogueui")
@@ -182,6 +182,36 @@ scumm.action.resume_dialogue = function(args)
 	}
 end
 
+scumm.action.add_to_inventory = function(args) 
+	assert (args.id, "id")
+	local qty = args.qty or 1
+	return { type = "callfunc", func = 
+		function()
+			print (args.id .. " adding")			
+			if (variables.inventory[args.id] == nil) then
+				variables.inventory[args.id] = qty
+			else 
+				variables.inventory[args.id] = variables.inventory[args.id] + qty
+			end
+			print ("ref inv")
+			scumm.ui.refresh_inventory()	
+			print ("done")
+		end
+	}
+end
+
+scumm.action.remove_from_inventory = function(args) 
+	assert (args.id, "id")
+	return { type = "callfunc", func = 
+		function()
+			print ("removing " .. args.id)
+			variables.inventory[args.id] = nil
+			scumm.ui.refresh_inventory()
+		end
+	}
+
+
+end
 
 
 -- scumm.action.end_dialogue = function(args)

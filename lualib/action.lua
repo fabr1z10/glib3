@@ -94,3 +94,55 @@ action.set_variable = function(args)
 	}
 end
 
+action.scroll = function (args) 
+	glib.assert_either(args.by, args.to, "by or to")
+	assert (args.speed, "speed")
+	local by = args.by
+	local to = args.to
+	return { type="scroll", cam = "maincam", by = by, to = to, speed = args.speed }
+end
+
+action.activate = function (args)
+	glib.assert (args.tag, "tag")
+	glib.assert (args.value, "value")
+	return { 
+		type="callfunc", 
+		func = function() 
+			local m = monkey.getEntity(args.tag)
+			m:setactive(args.value)
+		end
+	}
+
+end
+
+-- dynamically creates a new object in the game
+action.create_object = function(args) 
+	assert (args.factory, "factory")
+	assert (args.args, "args")
+	return { type = "callfunc", func = 
+		function()
+			print ("creating a new object ... ")
+			local o = args.factory(args.args)
+			local m1 = monkey.getEntity("main")
+			monkey.addEntity (o, m1)
+		end
+	}
+end
+
+action.remove_object = function(args) 
+	assert (args.tag, "tag")
+	return { type = "callfunc", func = 
+		function()
+			print ("ciao " .. args.tag)
+			local i = monkey.getEntity(args.tag)
+			i:remove()
+		end
+	}
+end
+
+action.show_message = function(args) 
+	glib.assert (args.message, "message")
+	glib.assert (args.color, "color")
+	glib.assert (args.pos, "pos")
+	return { type="show_message", message = args.message, color = args.color, pos = args.pos}
+end
