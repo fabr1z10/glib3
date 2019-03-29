@@ -22,9 +22,9 @@ end
 
 scumm.action.pickup = function(id, anim1, anim2) 
 	return { 
-		{ ref = 1, type = action.animate, args ={actor="guybrush", anim=anim1, sync=true}},
-		{ type = action.remove_object, args ={name=id }},
-		{ type = action.animate, after={1}, args ={actor="guybrush", anim=anim2 }},
+		{ ref = 1, type = action.animate, args ={tag="player", anim=anim1, sync=true}},
+		{ type = action.activate, args ={tag=id, value=false }},
+		{ type = action.animate, after={1}, args ={tag="player", anim=anim2 }},
 		{ type = scumm.action.add_to_inventory, args = {id=id}}
 	}
 end
@@ -209,10 +209,15 @@ scumm.action.remove_from_inventory = function(args)
 			scumm.ui.refresh_inventory()
 		end
 	}
-
-
 end
 
+scumm.say = function(who, lines) 
+	local l = {}
+	for _, n in ipairs(lines) do
+		table.insert(l, d[n])
+	end
+	return { type = scumm.action.say, args = {actor = actor_map[who], lines = l }}
+end
 
 -- scumm.action.end_dialogue = function(args)
 -- 	assert (args.dialogue, "dialogue")

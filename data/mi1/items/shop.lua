@@ -7,6 +7,21 @@ scumm.factory.door {
 	model = "shop.door",
 	variable = "door_shop",
 	nextroom = "village3",
+	-- override the walk action
+	walk = function()
+		local haveSword = (variables.inventory["shop.sword"] ~= nil)
+		local haveShovel = (variables.inventory["shop.shovel"] ~= nil)
+		if (((haveSword and (not variables.sword_paid)) or (haveShovel and (not variables.shovel_paid)))) then
+			-- no paid
+			return {
+				{ type = action.suspend_script, args = {script="_shopkeeper"}},
+				{ type = scumm.action.say, args = { actor="shop.shopkeeper", lines = {strings.dialogues.storekeeper[30]}}},
+				{ type = scumm.action.walkto, args = { tag="player", obj = "shop.shopkeeper"}},
+	 			{ type = scumm.action.start_dialogue, args = {dialogue="storekeeper"}}
+			}
+		end	
+		return nil
+	end
 	-- walk = function()
 	-- 	local s = script:new()
 	-- 	local haveSword = (variables.inventory["shop.sword"] ~= nil)
@@ -76,7 +91,7 @@ items["shop.sword"] = {
 	model ="shop.sword",
  	actions ={
  		look = { type = scumm.action.say, args = {actor="guybrush", lines ={strings.shop[5]}}},
- 		--pickup = pick_up_item("shop.sword", "operate_back"),
+ 		pickup = scumm.action.pickup ("shop.sword", "operate_n", "idle_n"),
  	}
 }
 
@@ -90,9 +105,7 @@ items["shop.shovel"] = {
  	},
  	model = "shop.shovel",
  	actions = {
- 		look = { type = scumm.action.say, args = {actor ="guybrush", lines ={strings.shop[6]}}}
--- 			
--- 		},
--- 		pickup = pick_up_item("shop.shovel", "operate_right"),
+ 		look = { type = scumm.action.say, args = {actor ="guybrush", lines ={strings.shop[6]}}},
+ 		pickup = scumm.action.pickup ("shop.shovel", "operate_e", "idle_e"),
  	}
  }

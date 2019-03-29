@@ -27,8 +27,18 @@ local storekeeper = function()
 	local d = strings.shop
 	local actions = {
 		{ type = scumm.action.say, args = {actor="shop.shopkeeper", lines = {d[1]}}},
+		{ ref=1, type = action.delay, args = {sec=5}},
+		{ type = scumm.action.say, args = {actor="shop.shopkeeper", lines = {d[10]}}},
+		{ type = action.delay, args = {sec=5}},
+		{ type = scumm.action.say, args = {actor="shop.shopkeeper", lines = {d[5]}}},
+		{ type = action.delay, args = {sec=5}},
+		{ type = scumm.action.say, args = {actor="shop.shopkeeper", lines = {d[4]}}},
+		{ type = action.delay, args = {sec=5}},
+		{ type = scumm.action.say, args = {actor="shop.shopkeeper", lines = {d[3]}}},
+		{ type = action.delay, args = {sec=5}},
+		{ type = scumm.action.say, args = {actor="shop.shopkeeper", lines = {d[2]}}},
 	}
-	local s = script.make(actions)
+	local s = script.make(actions, 1)
 	s.name = "_shopkeeper"
 	monkey.play(s)
 end
