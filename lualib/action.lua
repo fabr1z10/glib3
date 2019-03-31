@@ -84,8 +84,10 @@ action.kill_script = function(args)
 end
 
 action.set_variable = function(args)
-	assert (args.var, "var")
-	assert (args.value, "value")
+	print ("ciao ciao2")
+	glib.assert (args.var, "var")
+	glib.assert (args.value, "value")
+	print ("ciao")
 	return { type = "callfunc", func = 
 		function()
 			print ("Setting " .. args.var .. " to " .. tostring(args.value))

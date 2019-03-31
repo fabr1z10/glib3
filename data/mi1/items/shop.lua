@@ -1,6 +1,6 @@
 scumm.factory.door {
 	id = "shop.door",
-	pos = {59, 16, 0},
+	pos = {59, 16, -1},
 	size = {30, 50},			
 	walk_to = {81, 15}, 
 	dir = "west",
@@ -9,18 +9,22 @@ scumm.factory.door {
 	nextroom = "village3",
 	-- override the walk action
 	walk = function()
+		if (variables.door_shop == 0) then
+			return nil
+		end
 		local haveSword = (variables.inventory["shop.sword"] ~= nil)
 		local haveShovel = (variables.inventory["shop.shovel"] ~= nil)
 		if (((haveSword and (not variables.sword_paid)) or (haveShovel and (not variables.shovel_paid)))) then
 			-- no paid
 			return {
+				{ type = scumm.action.disable_controls },
 				{ type = action.suspend_script, args = {script="_shopkeeper"}},
 				{ type = scumm.action.say, args = { actor="shop.shopkeeper", lines = {strings.dialogues.storekeeper[30]}}},
 				{ type = scumm.action.walkto, args = { tag="player", obj = "shop.shopkeeper"}},
 	 			{ type = scumm.action.start_dialogue, args = {dialogue="storekeeper"}}
 			}
 		end	
-		return nil
+		return { type = action.change_room, args = {room="village3"}}
 	end
 	-- walk = function()
 	-- 	local s = script:new()
@@ -60,7 +64,12 @@ items["shop.shopkeeper"] = {
 	},
  	text_offset = {0, 60},
     text_color = {255, 85, 255, 255},
- 	actions = {}
+ 	actions = {
+		talk = { 
+			{ type = action.suspend_script, args = {script="_shopkeeper"}},
+			{ type = scumm.action.start_dialogue, args = {dialogue ="storekeeper"}},
+		}
+	}
  }
 -- 		talk = function() 
 -- 			local d = strings.dialogues.storekeeper
@@ -109,3 +118,32 @@ items["shop.shovel"] = {
  		pickup = scumm.action.pickup ("shop.shovel", "operate_e", "idle_e"),
  	}
  }
+
+items["shop.sign"] = {
+ 	pos = {248, 29, 1},
+ 	hotspot = {
+		text = strings.objects.sign,
+	 	size = {10, 5},
+	 	walk_to = {229, 7},
+	 	dir = "east"
+	},
+	model ="shop.sign",
+ 	actions ={
+ 		look = { type = scumm.action.say, args = {actor="guybrush", lines ={strings.shop[7]}}}
+ 	}
+}
+
+items["shop.bell"] = {
+ 	pos = {264, 26, 1},
+ 	hotspot = {
+		text = strings.objects.bell,
+	 	size = {10, 5},
+	 	walk_to = {229, 7},
+	 	dir = "east"
+	},
+	model ="shop.bell",
+ 	actions ={
+ 		--look = { type = scumm.action.say, args = {actor="guybrush", lines ={strings.shop[5]}}},
+ 		--pickup = scumm.action.pickup ("shop.sword", "operate_n", "idle_n"),
+ 	}
+}

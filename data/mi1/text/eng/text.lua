@@ -584,7 +584,12 @@ strings = {
 			[42] = "I guess I could hike all the way over there...",
 			[43] = "...ONCE.",
 			[44] = "Be right back.",
-			[45] = "AND DON'T TOUCH ANYTHING!"
+			[45] = "AND DON'T TOUCH ANYTHING!",
+			[46] = "I'll take it.",
+			[47] = "It'll pay for itself, believe me.",
+			[48] = "You'll dig up 75 pieces of eight in no time.",
+			[49] = "But hey, save some treasure for the rest of us, would ya?",
+			[50] = "Ha ha ha!"
 		},
 		fester = {
 			[1] = "Hello?",

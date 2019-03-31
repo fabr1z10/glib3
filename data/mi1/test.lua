@@ -21,3 +21,10 @@ test.shop = function()
 	variables._room = "shop"
 	variables.door_shop = 1
 end
+
+test.shop2 = function() 
+	variables._room = "shop"
+	variables.inventory["shop.sword"] = 1
+	variables.sword_paid = true
+	variables.door_shop = 1
+end

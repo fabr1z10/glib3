@@ -41,6 +41,7 @@ function flatten_script(a, offset)
         else
             --print (tostring(v) .. " is not an array")
 			if (v.type ~= nil) then
+				print ("adding an action...")
 				id = id + 1
 				local node = { id = id, action = v.type(v.args) }
 				--print ("qui")

@@ -251,17 +251,36 @@ spritesheets["sprites1"] = {
 	flying_guybrush_7 = {x = 144, y = 463, width = 22, height = 22},
 	door_store_open = {x=479, y=347, width=31, height=51},
 	door_store_closed = {x=446, y=347, width=31, height=51},
+	door_village_store_open = {x=390, y=2, width=20, height=31},
+	door_village_store_closed = {x=413, y=2, width=20, height=31},
+
 	sword = {x=99, y=49, width=30, height=6},
 	shovel = {x=131, y=49, width = 8, height=25},
+	sign = {x=370, y=2, width=16, height=10},
+	bell = {x=370, y=15, width=8, height=5},
 
 	storekeeper_idle_body_side = {x=137, y=365, width=28, height=42, anchor = {12, 0}},
 	storekeeper_idle_head_side = {x=141, y=61, width=10, height=13, anchor = {6,0}},
+	storekeeper_idle_south = {x=359, y=364, width=34, height=44, anchor ={19, 0}},
 	storekeeper_talk_head_side_1 = {x=99, y=33, width=10, height=14, anchor = {6,0}},
 	storekeeper_talk_head_side_2 = {x=111, y=34, width=10, height=13, anchor = {6,0}},
 	storekeeper_talk_head_side_3 = {x=123, y=34, width=12, height=12, anchor = {6,0}},
 	storekeeper_talk_head_side_4 = {x=137, y=33, width=11, height=15, anchor = {6,0}},
 	storekeeper_talk_head_side_5 = {x=150, y=33, width=11, height=15, anchor = {6,0}},
-	
+	storekeeper_walk_south_1 = {x=167, y=364, width=34, height=43, anchor = {20, 0}},
+	storekeeper_walk_south_2 = {x=202, y=364, width=29, height=43, anchor = {17, 0}},
+	storekeeper_walk_south_3 = {x=233, y=366, width=28, height=41, anchor = {15, 0}},
+	storekeeper_walk_south_4 = {x=263, y=365, width=29, height=42, anchor = {14, 0}},
+	storekeeper_walk_south_5 = {x=294, y=365, width=30, height=42, anchor = {15, 0}},
+	storekeeper_walk_south_6 = {x=326, y=366, width=31, height=41, anchor = {17, 0}},
+	storekeeper_walk_east_1 = {x=134, y=408, width=30, height=45, anchor = {16, 0}},
+	storekeeper_walk_east_2 = {x=166, y=410, width=26, height=44, anchor = {16, 0}},
+	storekeeper_walk_east_3 = {x=194, y=408, width=27, height=46, anchor = {16, 0}},
+	storekeeper_walk_east_4 = {x=223, y=409, width=26, height=45, anchor = {18, 0}},
+	storekeeper_walk_east_5 = {x=251, y=411, width=25, height=43, anchor = {17, 0}},
+	storekeeper_walk_east_6 = {x=279, y=409, width=37, height=45, anchor = {18, 0}},
+
+
 
 
 	troll_head_11 = {x=332, y=221, width=25, height=18, anchor={15,5}},	
@@ -1136,15 +1155,29 @@ models["shop.door"] = {
 	}
 }
 
+models["village3.shop_door"] = {
+    sheet = sheet,
+    type = "sprite",
+    ppu=1,
+	animations = {
+		{ name = "open", frames = { { duration = dt, quads = {{ id = s.door_village_store_open }}}}},
+		{ name = "close", frames = { { duration = dt, quads = {{ id = s.door_village_store_closed }}}}}
+	}
+}
+
 models["shop.sword"] = { sheet = sheet, type = "sprite", ppu=1, animations = {{ name = "idle", frames = { { duration = dt, quads = {{ id = s.sword }}}}}}}
 models["shop.shovel"] = { sheet = sheet, type = "sprite", ppu=1, animations = {{ name = "idle", frames = { { duration = dt, quads = {{ id = s.shovel }}}}}}}
+models["shop.sign"] = { sheet = sheet, type = "sprite", ppu=1, animations = {{ name = "idle", frames = { { duration = dt, quads = {{ id = s.sign }}}}}}}
+models["shop.bell"] = { sheet = sheet, type = "sprite", ppu=1, animations = {{ name = "idle", frames = { { duration = dt, quads = {{ id = s.bell }}}}}}}
+
+
 
 models["shop.shopkeeper"] = {
     sheet = sheet,
     type = "sprite",
     ppu=1,
 	animations = {
-		--{ name = "idle_s", frames = { { duration = dt, quads = {{ id = s.fettuccini_purple_idle_front }}}}},
+		{ name = "idle_s", frames = { { duration = dt, quads = {{ id = s.storekeeper_idle_south }}}}},
 		{ name = "idle_e", frames = { { duration = dt, quads = {{ id = s.storekeeper_idle_body_side}, {id = s.storekeeper_idle_head_side, pos={9, 30}}}}}},
 		--{ name = "idle_n", frames = { { duration = dt, quads = {{ id = s.fettuccini_purple_idle_back}}}}},
 		{ name = "talk_e", frames = { 
@@ -1156,14 +1189,31 @@ models["shop.shopkeeper"] = {
 			{ duration = dt, quads = {{ id = s.storekeeper_idle_body_side}, {id = s.storekeeper_idle_head_side, pos={9,30}}}},
 		}},
 		-- { name = "talk_n", frames = { { duration = dt, quads = {{ id = s.fettuccini_purple_idle_back}}}}},
-		-- { name = "walk_e", frames = { 
-		-- 	{ duration = dt, quads = {{ id = s.fettuccini_purple_walk_side_1}}},
-		-- 	{ duration = dt, quads = {{ id = s.fettuccini_purple_walk_side_2}}},
-		-- 	{ duration = dt, quads = {{ id = s.fettuccini_purple_walk_side_3}}},
-		-- 	{ duration = dt, quads = {{ id = s.fettuccini_purple_walk_side_4}}},
-		-- 	{ duration = dt, quads = {{ id = s.fettuccini_purple_walk_side_5}}},
-		-- 	{ duration = dt, quads = {{ id = s.fettuccini_purple_walk_side_6}}},
-		-- }},
+		{ name = "walk_e", frames = { 
+			{ duration = dt, quads = {{ id = s.storekeeper_walk_east_1}}},
+			{ duration = dt, quads = {{ id = s.storekeeper_walk_east_2}}},
+			{ duration = dt, quads = {{ id = s.storekeeper_walk_east_3}}},
+			{ duration = dt, quads = {{ id = s.storekeeper_walk_east_4}}},
+			{ duration = dt, quads = {{ id = s.storekeeper_walk_east_5}}},
+			{ duration = dt, quads = {{ id = s.storekeeper_walk_east_6}}},
+		}},
+		{ name = "walk_s", frames = { 
+			{ duration = dt, quads = {{ id = s.storekeeper_walk_south_1}}},
+			{ duration = dt, quads = {{ id = s.storekeeper_walk_south_2}}},
+			{ duration = dt, quads = {{ id = s.storekeeper_walk_south_3}}},
+			{ duration = dt, quads = {{ id = s.storekeeper_walk_south_4}}},
+			{ duration = dt, quads = {{ id = s.storekeeper_walk_south_5}}},
+			{ duration = dt, quads = {{ id = s.storekeeper_walk_south_6}}},
+		}},
+		{ name = "walk_n", frames = { 
+			{ duration = dt, quads = {{ id = s.storekeeper_walk_south_1}}},
+			{ duration = dt, quads = {{ id = s.storekeeper_walk_south_2}}},
+			{ duration = dt, quads = {{ id = s.storekeeper_walk_south_3}}},
+			{ duration = dt, quads = {{ id = s.storekeeper_walk_south_4}}},
+			{ duration = dt, quads = {{ id = s.storekeeper_walk_south_5}}},
+			{ duration = dt, quads = {{ id = s.storekeeper_walk_south_6}}},
+		}},
+
 		-- { name = "walk_n", frames = { { duration = dt, quads = {{ id = s.fettuccini_purple_idle_back}}}}},
 
 	}

@@ -75,6 +75,7 @@ variables = {
 -- 	voodoolady_told_future = false,
  	sword_paid = false,
  	shovel_paid = false,
+	chasing_shopkeeper = false,
 -- 	know_sword_price = false,
 -- 	know_shovel_price = false,
 --     met_fester = false,
@@ -124,6 +125,6 @@ glib.load_folder("dialogues")
 
 require("defaultscripts")
 
-test.shop()
+test.shop2()
 
 print (config.start_room)
