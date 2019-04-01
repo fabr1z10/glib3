@@ -76,6 +76,7 @@ variables = {
  	sword_paid = false,
  	shovel_paid = false,
 	chasing_shopkeeper = false,
+	shopkeeper_away = 0,
 -- 	know_sword_price = false,
 -- 	know_shovel_price = false,
 --     met_fester = false,
@@ -125,6 +126,6 @@ glib.load_folder("dialogues")
 
 require("defaultscripts")
 
-test.shop2()
+test.meleemap()
 
 print (config.start_room)

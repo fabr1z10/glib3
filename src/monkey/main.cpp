@@ -20,6 +20,8 @@ int main(int argc, char* argv[])
     } catch (Error& err) {
         std::cout << err.what() << std::endl;
         return 1;
+    } catch (luabridge::LuaException& e) {
+        std::cerr << e.what ();
     } catch (...) {
 
     }

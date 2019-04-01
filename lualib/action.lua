@@ -119,8 +119,9 @@ end
 
 -- dynamically creates a new object in the game
 action.create_object = function(args) 
-	assert (args.factory, "factory")
-	assert (args.args, "args")
+	print ("fijfjf")
+	glib.assert (args.factory, "factory")
+	glib.assert (args.args, "args")
 	return { type = "callfunc", func = 
 		function()
 			print ("creating a new object ... ")

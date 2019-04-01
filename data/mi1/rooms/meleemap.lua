@@ -4,7 +4,8 @@ roomDefinition = {
 	startTable = {
 		lookout = { pos = {75, 79}, dir = "north"},
 		clearing = { pos = {135, 113}, dir = "west"},
-		bridge = { pos = {169, 67}, dir = "east"}
+		bridge = { pos = {169, 67}, dir = "east"},
+		forest_1 = { pos = {74, 112}, dir = "west"}
 	},
 	defaultroom = "lookout",
 	depth = { type="linear_y", values= {0, 1, 144, 0} },
@@ -43,6 +44,7 @@ room:add( {
 	scumm.factory.mapitem { pos={75, 79}, name = "lookout", room="lookout" },
 	scumm.factory.mapitem { pos={135, 113}, name = "clearing", room="clearing" },
 	scumm.factory.mapitem { pos={169, 67}, name = "bridge", room="bridge" },
+	scumm.factory.mapitem { pos={74, 112}, name="fork", room="forest_1"}
 	-- factory.trap.create { pos ={164, 62, 0}, tag="bridge_sensor", width=12, height = 12, onenter = 
 	--   	function()			
 	-- 		local s = script:new()

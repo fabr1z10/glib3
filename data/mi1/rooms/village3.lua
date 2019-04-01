@@ -26,6 +26,14 @@ room:add( {
 	scumm.factory.object { id = "village3.shop_door" },
 })
 
+room.onexit = function(nextRoom) 
+	if (variables.chasing_shopkeeper == 1) then
+		-- reset to 0 unless going to village2
+		if (nextRoom ~= "village2") then
+			variables.chasing_shopkeeper = 0
+		end
+	end
+end
 
 local addStorekeeper = function() 
 	if (variables.chasing_shopkeeper == true) then

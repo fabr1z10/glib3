@@ -122,7 +122,7 @@ dialogues.storekeeper = {
 		--monkey.play(s)
 	end,
 	nodes = {
-		[1] = { children = {15, 2, 3, 4} },
+		[1] = { children = {15, 16, 2, 3, 4} },
 		-- about this sword...
 		[2] = {text= d[4], children={5,6,7}, active=function() return ((variables.inventory["shop.sword"] ~= nil) and (variables.sword_paid == false)) end, 
 			script = {
@@ -212,7 +212,7 @@ dialogues.storekeeper = {
 			end,
 			script = glib.curry(buySword, 46)
 		},
-		[15] = { text = d[34], active = function() return hasPaidSword() end, 
+		[15] = { text = d[34], act = {16}, deact={15}, active = function() return hasPaidSword() end, 
 			script = function()
 				return {
 					{ type = scumm.action.say, args = { actor="guybrush", lines = {d[34]}}},
@@ -230,10 +230,34 @@ dialogues.storekeeper = {
 					{ type = action.activate, args = {tag="shop.shopkeeper", value=false}},
 					{ type = action.animate, args = {tag="shop.door", anim="close"}},
 					{ type = action.set_variable, args = {var="door_shop", value = 0}},
-					{ type = action.set_variable, args = {var="chasing_shopkeeper", value=true}}
-
+					{ type = action.set_variable, args = {var="chasing_shopkeeper", value=true}},
+					{ type = action.set_variable, args = {var="shopkeeper_away", value=2}}
 				}
-
+			end
+		},
+		[16] = { text = d[56], active = false, 
+			script = function()
+				return {
+					{ type = scumm.action.say, args = { actor="guybrush", lines = {d[56]}}},
+					{ type = scumm.action.say, args = {actor="shop.shopkeeper", lines = {d[57]}}},
+					{ type = scumm.action.say, args = { actor="guybrush", lines = {d[58]}}},
+					{ type = scumm.action.say, args = {actor="shop.shopkeeper", lines = {d[41], d[42], d[59]}}},
+					{ type = action.create_object, args = {factory = scumm.factory.object, args = {id="shop.sign"}}},
+					{ type = action.create_object, args = {factory = scumm.factory.object, args = {id="shop.bell"}}},
+					{ type = scumm.action.walkto, args = {tag="shop.shopkeeper", pos = {289, 0}}},
+					{ type = scumm.action.walkto, args = {tag="shop.shopkeeper", pos = {260, 0}}},
+					{ type = scumm.action.walkto, args = {tag="shop.shopkeeper", obj = "shop.door"}},
+					{ type = scumm.action.turn, args = {tag="shop.shopkeeper", dir="east"}},
+					{ type = scumm.action.say, args = {actor="shop.shopkeeper", lines = {d[45]}}},
+					{ type = scumm.action.turn, args = {tag="shop.shopkeeper", dir="west"}},
+					{ type = action.animate, args = {tag="shop.door", anim="open"}},
+					{ type = action.delay, args = {sec=0.5}},
+					{ type = action.activate, args = {tag="shop.shopkeeper", value=false}},
+					{ type = action.animate, args = {tag="shop.door", anim="close"}},
+					{ type = action.set_variable, args = {var="door_shop", value = 0}},
+					{ type = action.set_variable, args = {var="chasing_shopkeeper", value=true}},
+					{ type = action.set_variable, args = {var="shopkeeper_away", value=2}}
+				}
 			end
 		}
 	}	

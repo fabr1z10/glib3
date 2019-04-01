@@ -589,7 +589,18 @@ strings = {
 			[47] = "It'll pay for itself, believe me.",
 			[48] = "You'll dig up 75 pieces of eight in no time.",
 			[49] = "But hey, save some treasure for the rest of us, would ya?",
-			[50] = "Ha ha ha!"
+			[50] = "Ha ha ha!",
+			[51] = "Hey, where'd you go?",
+			[52] = "I hike halfway across the island to try and get you a reservation with the Sword Master--",
+			[53] = "--which, by the way, says you can go jump in the lake--",
+			[54] = "--and when I come back, you're gone!",
+			[55] = "See if I ever do you a favor again!",
+			[56] = "I'm looking for the Sword Master of Mêlée Island™.",
+			[57] = "Look, I told you, she doesn't want to see you.",
+			[58] = "Maybe if you asked her again?",
+			[59] = "...AGAIN."
+
+
 		},
 		fester = {
 			[1] = "Hello?",
