@@ -22,6 +22,7 @@ room:add( {
 	}},
 	scumm.factory.object { id = "forest1.1" },
 	scumm.factory.object { id = "forest1.2" },
+	scumm.factory.object { id = "forest1.2b" },
 
 })
 

@@ -4,9 +4,10 @@ roomDefinition = {
 	startTable = {
 		forest_1 = { pos = items["forest2.1"].hotspot.walk_to, dir = "west"},
 		forest_3 = { pos = items["forest2.3"].hotspot.walk_to, dir = "south"},
+		forest_9 = { pos = items["forest2.9"].hotspot.walk_to, dir = "east"},
 
 	},
-	defaultroom = "forest1",
+	defaultroom = "forest_1",
 	depth = { type="linear_y", values= {0, 1, 144, 0} },
 }
 
@@ -22,6 +23,7 @@ room:add( {
 	}},
 	scumm.factory.object { id = "forest2.1" },
 	scumm.factory.object { id = "forest2.3" },
+	scumm.factory.object { id = "forest2.9" },
 
 })
 

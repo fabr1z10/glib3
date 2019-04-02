@@ -3,7 +3,7 @@ roomDefinition = {
 	height = 144,
 	startTable = {
 		forest_5 = { pos = items["forest6.5"].hotspot.walk_to, dir = "east"},
---	forest_6 = { pos = items["forest5.6"].hotspot.walk_to, dir = "east"},
+		forest_7 = { pos = items["forest6.7"].hotspot.walk_to, dir = "south"},
 	},
 	defaultroom = "forest_5",
 	depth = { type="linear_y", values= {0, 1, 144, 0} },
@@ -20,8 +20,7 @@ room:add( {
 		edges = { {0,1}, {1,2}, {1,3} }
 	}},
 	scumm.factory.object { id = "forest6.5" },
-
-
+	scumm.factory.object { id = "forest6.7" },
 })
 
 
