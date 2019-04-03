@@ -24,6 +24,7 @@ room:add( {
 	scumm.factory.object { id = "village3.archway" },
 	scumm.factory.object { id = "village3.alley" },
 	scumm.factory.object { id = "village3.shop_door" },
+	scumm.factory.object { id = "village3.church_door" },
 })
 
 room.onexit = function(nextRoom) 
@@ -35,22 +36,24 @@ room.onexit = function(nextRoom)
 	end
 end
 
-local addStorekeeper = function() 
-	if (variables.chasing_shopkeeper == true) then
-		local actions = {
-			{ type = action.create_object, args = { factory = scumm.factory.object, args = { id="village3.shopkeeper" }}},
-			{ type = scumm.action.walkto, args ={tag="village3.shopkeeper", pos = items["village3.archway"].hotspot.walk_to}},
-			{ type = action.activate, args = {tag="village3.shopkeeper", value=false}},
-			{ type = action.delay, args = {sec=10}},
-			{ type = action.set_variable, args = {var="chasing_shopkeeper", value=false}}
-		}
-		local s = script.make(actions)
-		monkey.play(s)
-	end
+-- local addStorekeeper = function() 
+-- 	if (variables.chasing_shopkeeper == true) then
+-- 		local actions = {
+-- 			{ type = action.create_object, args = { factory = scumm.factory.object, args = { id="village3.shopkeeper" }}},
+-- 			{ type = scumm.action.walkto, args ={tag="village3.shopkeeper", pos = items["village3.archway"].hotspot.walk_to}},
+-- 			{ type = action.activate, args = {tag="village3.shopkeeper", value=false}},
+-- 			{ type = action.delay, args = {sec=10}},
+-- 			{ type = action.set_variable, args = {var="chasing_shopkeeper", value=false}}
+-- 		}
+-- 		local s = script.make(actions)
+-- 		monkey.play(s)
+-- 	end
 
 
-end
-table.insert(room.initstuff, addStorekeeper)
+-- end
+
+-- add the storekeeper if you are chasing him!
+table.insert(room.initstuff, glib.curry (mi.addStorekeeper, { pos = {669, 15, 0}, walkto = { items["village3.archway"].hotspot.walk_to }}))
 
 -- function room.afterstartup() 
 -- 	for k, v in ipairs(room.initstuff) do

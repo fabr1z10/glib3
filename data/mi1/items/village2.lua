@@ -16,10 +16,9 @@ items["village2.archway_to_village1"] = {
 items["village2.archway_to_village3"] = {
 	hotspot = {
 		text = strings.objects.archway,
-		walk_to = {160, 80},
+		walk_to = {160, 59},
 		dir="north",
 		size={30, 30},
-
 	},
 	actions = {
 		walk = { type = action.change_room, args = { room="village3"}}
@@ -69,11 +68,11 @@ items["village2.lmf"] = {
 	hotspot = {
 		text = strings.objects.lowmoralfiber,
 		size = {60, 60},
-		walk_to = {70, 15},
+		walk_to = {85, 14},
 		dir = "west"
 	},
 	actions = {
-		talk = { type = action.start_dialogue, args = {id=1, dialogue="lowmoralfiber"}} 
+		talk = { type = scumm.action.start_dialogue, args = {dialogue="lowmoralfiber"}} 
 	}
 }
 

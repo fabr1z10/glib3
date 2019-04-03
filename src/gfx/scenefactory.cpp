@@ -224,6 +224,7 @@ std::shared_ptr<Entity> SceneFactory::Create() {
 //        LoadModel(a);
 //    }
 
+    std::cout << "ciao\n";
     // read the scene tree
     auto rootNode = std::make_shared<Entity>();
     rootNode->SetTag("_root");
@@ -233,6 +234,7 @@ std::shared_ptr<Entity> SceneFactory::Create() {
         auto node  = GetShared<Entity>(rnode);
         rootNode->AddChild(node);
     }
+    std::cout << "ciao2\n";
 
     // launch the start script
     if (roomTable.HasKey("start")) {

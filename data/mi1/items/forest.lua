@@ -72,29 +72,29 @@ items["forest12.11"] = fr("forest_11")
 items["forest13.14"] = fm(256,"forest_14")
 items["forest13.12"] = fr("forest_12")
 
--- items["forest14.13"] = fl("forest_13")
--- items["forest14.15"] = fm("forest_15")
+items["forest14.13"] = fl("forest_13")
+items["forest14.15"] = fm(48, "forest_15")
 
--- items["forest15.18"] = fl("forest_18")
--- items["forest15.14"] = fm("forest_14")
--- items["forest15.16"] = fr("forest_16")
+items["forest15.18"] = fl("forest_18")
+items["forest15.14"] = fm(153, "forest_14")
+items["forest15.16"] = fr("forest_16")
 
--- items["forest16.17"] = fl("forest_17")
--- items["forest16.15"] = fm("forest_15")
+items["forest16.17"] = fl("forest_17")
+items["forest16.15"] = fm(30,"forest_15")
 
--- items["forest17.21"] = fl("forest_21")
--- items["forest17.treasure"] = fm("treasure")
--- items["forest17.16"] = fr("forest_16")
+items["forest17.21"] = fl("forest_21")
+items["forest17.treasure"] = fm(155, "treasure")
+items["forest17.16"] = fr("forest_16")
 
--- items["forest18.19"] = fl("forest_19")
--- items["forest18.15"] = fm("forest_15")
+items["forest18.19"] = fl("forest_19")
+items["forest18.15"] = fm(135, "forest_15")
 
--- items["forest19.8"] = fl("forest_8")
--- items["forest19.20"] = fm("forest_20")
--- items["forest19.18"] = fr("forest_18")
+items["forest19.8"] = fl("forest_8")
+items["forest19.20"] = fm(155, "forest_20")
+items["forest19.18"] = fr("forest_18")
 
--- items["forest20.19"] = fr("forest_19")
+items["forest20.19"] = fr("forest_19")
 
--- items["forest21.17"] = fr("forest_19")
+items["forest21.17"] = fr("forest_17")
 
 

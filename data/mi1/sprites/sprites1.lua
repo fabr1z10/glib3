@@ -253,6 +253,9 @@ spritesheets["sprites1"] = {
 	door_store_closed = {x=446, y=347, width=31, height=51},
 	door_village_store_open = {x=390, y=2, width=20, height=31},
 	door_village_store_closed = {x=413, y=2, width=20, height=31},
+	door_village_church_open = {x=398, y=347, width=22, height=34},
+	door_village_church_closed = {x=422, y=347, width=22, height=34},
+
 
 	sword = {x=99, y=49, width=30, height=6},
 	shovel = {x=131, y=49, width = 8, height=25},
@@ -1162,6 +1165,16 @@ models["village3.shop_door"] = {
 	animations = {
 		{ name = "open", frames = { { duration = dt, quads = {{ id = s.door_village_store_open }}}}},
 		{ name = "close", frames = { { duration = dt, quads = {{ id = s.door_village_store_closed }}}}}
+	}
+}
+
+models["village3.church_door"] = {
+    sheet = sheet,
+    type = "sprite",
+    ppu=1,
+	animations = {
+		{ name = "open", frames = { { duration = dt, quads = {{ id = s.door_village_church_open }}}}},
+		{ name = "close", frames = { { duration = dt, quads = {{ id = s.door_village_church_closed }}}}}
 	}
 }
 

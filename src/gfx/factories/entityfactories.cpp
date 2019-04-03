@@ -34,7 +34,12 @@ std::unique_ptr<Entity> EntityFactory::Create(luabridge::LuaRef& ref) {
     // setup camera
     if (item.HasKey("camera")) {
         luabridge::LuaRef cam = item.Get<luabridge::LuaRef>("camera");
+        std::cout << "oweifherwfhj\n";
+        auto cam1 = factory->Get<Camera>(cam);
+        std::cout << "orweiuhjrewiufheriufh\n";
         auto camera = factory->GetShared<Camera>(cam);
+        std::cout << "canebello\n";
+
         entity->SetCamera(camera);
     }
 

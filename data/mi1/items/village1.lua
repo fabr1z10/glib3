@@ -35,7 +35,7 @@ items["village1.poster"] = {
 		dir = "north"	
 	},
  	actions = {
- 		look = { type=action.say, args={actor="guybrush", lines = {strings.village1[1], strings.village1[2]}}}
+ 		look = { type = scumm.action.say, args = {actor="guybrush", lines = {strings.village1[1], strings.village1[2]}}}
 	}
 }
 

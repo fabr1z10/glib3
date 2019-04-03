@@ -7,11 +7,14 @@
 #include "gfx/ref.h"
 #include <gfx/event.h>
 #include <gfx/listener.h>
-
+#include <iostream>
 class Camera : public Ref {
 public:
     Camera(glm::vec4 viewport = glm::vec4());
-    virtual ~Camera() {}
+    virtual ~Camera() {
+        std::cout << "attempt to destroy cam\n";
+
+    }
     virtual void Resize(int width, int height) = 0;
     glm::vec3 GetPosition() const;
     virtual void SetPosition(glm::vec3 eye, glm::vec3 direction, glm::vec3 up = glm::vec3(0, 1, 0));

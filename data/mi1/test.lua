@@ -28,3 +28,8 @@ test.shop2 = function()
 	variables.sword_paid = true
 	variables.door_shop = 1
 end
+
+test.village2 = function() 
+	variables._room = "village2"
+	
+end

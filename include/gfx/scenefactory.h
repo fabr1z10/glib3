@@ -32,7 +32,9 @@ public:
 
     template<typename T>
     std::shared_ptr<T> GetShared(luabridge::LuaRef& ref) {
+        std::cout << "a\n";
         auto up = Get<T>(ref);
+        std::cout << "b\n";
         auto s = std::shared_ptr<T>(std::move(up));
         return s;
     }

@@ -45,6 +45,16 @@ scumm.factory.door {
 	nextroom = "shop",
 }
 
+scumm.factory.door {
+	id = "village3.church_door",
+	pos = {533, 32, -1},
+	size = {22, 34},
+	walk_to = {543, 39},
+	dir = "north",
+	model = "village3.church_door",
+	variable = "door_church",
+	nextroom = "church",
+}
 
 -- items["fester"]= {
 -- tag="fester",

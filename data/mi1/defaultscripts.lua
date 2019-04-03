@@ -15,3 +15,23 @@ mi.checkfunds = function(n)
 	if (p8 == nil) then return false end
 	return (p8 >= n)
 end
+
+mi.addStorekeeper = function(args) 
+	-- pos: where it goes
+	-- walkto: where it walks to (might be more than once)
+	if (variables.chasing_shopkeeper == true) then
+		local actions = {
+			{ type = action.create_object, args = { factory = scumm.factory.object, args = { id="village3.shopkeeper", pos = args.pos }}}
+		}
+		for _, v in ipairs(args.walkto) do
+			table.insert(actions, { type = scumm.action.walkto, args ={tag="village3.shopkeeper", pos = v }})
+		end
+		table.insert (actions, { type = action.activate, args = {tag="village3.shopkeeper", value=false}})
+		table.insert (actions, { type = action.delay, args = {sec=10}})
+		table.insert (actions, { type = action.set_variable, args = {var="chasing_shopkeeper", value=false}})
+		local s = script.make(actions)
+		monkey.play(s)
+	end
+
+
+end

@@ -60,6 +60,7 @@ variables = {
 	door_voodoolady = 0,
 	troll_in = true,
  	door_shop = 0,
+    door_church = 0,
     cook_in_kitchen = true,
  	meat_in_pot = false,
 -- 	can_pickup_fish = true,
@@ -126,6 +127,6 @@ glib.load_folder("dialogues")
 
 require("defaultscripts")
 
-test.meleemap()
+test.shop2()
 
 print (config.start_room)
