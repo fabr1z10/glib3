@@ -77,9 +77,18 @@ std::shared_ptr<Component> GfxComponentFactory::Create(luabridge::LuaRef & ref) 
         glm::vec2 offset = table.Get<glm::vec2>("offset", glm::vec2(0.0f));
         auto mesh = std::make_shared<QuadMesh>(image, w, h, repeat.x, repeat.y, skew.x, skew.y, offset);
         renderer->SetMesh(mesh);
+
 //    } else if (table.HasKey("model")) {
 //        std::string model = table.Get<std::string>("model");
 //        std::string anim = table.Get<std::string>("anim", "");
+//        auto entity = std::make_shared<Entity>();
+//        auto renderer = std::make_shared<Renderer>();
+//        renderer->SetMesh(model->GetMesh());
+//
+//        auto animator = std::make_shared<Animator>(model);
+//        entity->AddComponent(renderer);
+//        entity->AddComponent(animator);
+//        return entity;
 //        //bool flip = table.Get<bool>("flip", false);
 //        renderer->SetMesh(Engine::get().GetAssetManager().GetMesh(model));
 //        //renderer->SetFlipX(flip);
@@ -311,6 +320,11 @@ std::shared_ptr<Component> HotSpotComponentFactory::Create(luabridge::LuaRef& re
         luabridge::LuaRef r = table.Get<luabridge::LuaRef>("onclick");
         std::unique_ptr<LuaFunction> f(new LuaFunction(r));
         hotspot->SetOnClick(std::move(f));
+    }
+    if (table.HasKey("onrmbclick")) {
+        luabridge::LuaRef r = table.Get<luabridge::LuaRef>("onrmbclick");
+        std::unique_ptr<LuaFunction> f(new LuaFunction(r));
+        hotspot->SetOnRightMouseButtonClick(std::move(f));
     }
     if (table.HasKey("onmove")) {
         luabridge::LuaRef r = table.Get<luabridge::LuaRef>("onmove");

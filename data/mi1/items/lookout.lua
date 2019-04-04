@@ -8,7 +8,7 @@ items["lookout.stairs"] = {
 		size = {30, 10}
 	},
 	actions = {
-		walk = { type = action.change_room, args = {id=1}}
+		walk = { type = action.change_room, args = {room="village1"}}
 	}
 }
 
@@ -29,6 +29,7 @@ items["lookout.path"] = {
 items["lookout.lookout"] = {
 	pos = {114, 36, 0},
 	hotspot = {
+		text = strings.objects.lookout,
 		walk_to = {134, 36},
 		size = {20, 47},
 		offset = {-10,0},
@@ -37,21 +38,18 @@ items["lookout.lookout"] = {
 	
 	text_offset = {0, 60},
     text_color = {170, 170, 170, 255},
-	text = strings.objects.lookout,
 	applyDepth = true,
 	character = {
 		state = "idle",
 		dir = "west"
 	},
-	model ="lookout",
-	anim ="idle_right",	
+	model ="lookout.lookout",
 	actions = {
-		talk = { type= scumm.start_dialogue, args = {dialogue = "lookout"}}
+		talk = { type= scumm.action.start_dialogue, args = {dialogue = "lookout"}}
 	}
 }
 
 items["lookout.fire"] = {
 	pos = {126, 52, -1},
-	model = "fire",
-    --anim = "default"
+	model = "lookout.fire",
 }

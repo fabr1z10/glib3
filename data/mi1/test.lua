@@ -1,5 +1,8 @@
 test = {}
 
+test.default = function() 
+	variables._room ="lookout"	
+end
 
 test.bridge = function() 
 	variables._room = "bridge"
@@ -31,5 +34,10 @@ end
 
 test.village2 = function() 
 	variables._room = "village2"
+	
+end
+
+test.scummbar = function() 
+	variables._room = "scummbar"
 	
 end

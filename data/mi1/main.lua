@@ -127,6 +127,6 @@ glib.load_folder("dialogues")
 
 require("defaultscripts")
 
-test.shop2()
+test.scummbar()
 
 print (config.start_room)

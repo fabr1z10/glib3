@@ -7,7 +7,11 @@ require ("scumm/factory/trap")
 require ("scumm/factory/buttons")
 require ("scumm/factory/room_basic")
 require ("scumm/factory/room_map")
+require ("scumm/factory/room_dialogue")
+require ("scumm/factory/room_sci")
+
 require ("scumm/factory/mapitem")
+
 
 
 

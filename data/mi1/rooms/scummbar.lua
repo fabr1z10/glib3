@@ -1,13 +1,11 @@
-require("template/room1")
-
 roomDefinition = {
 	width = 640,
 	height = 144,
 	startTable = {
-		village1 = { pos = items2["scummbar.door_out"].hotspot.walk_to, dir = "east"},
-		mancomb = { pos = items2["scummbar.mancomb"].hotspot.walk_to, dir = "north"},
+		village1 = { pos = items["scummbar.door_out"].hotspot.walk_to, dir = "east"},
+		mancomb = { pos = items["scummbar.mancomb"].hotspot.walk_to, dir = "north"},
 		--estevan = { pos = items2["scummbar.estevan"].hotspot.walk_to, dir = "south"},
-		kitchen = { pos = items2["scummbar.door_kitchen"].hotspot.walk_to, dir="west" }
+		kitchen = { pos = items["scummbar.door_kitchen"].hotspot.walk_to, dir="west" }
 
 	},
 	defaultroom = "village1",
@@ -16,37 +14,24 @@ roomDefinition = {
 	--scale = { type="linear_y", values= {0, 0.8, 144, 0.2}}
 }
 
-room = generateBasicRoom (roomDefinition)
-
--- room:add_asset(sprites.door_scummbar_village)
--- room:add_asset(sprites.door_scummbar_kitchen)
--- room:add_asset(sprites.mancomb)
--- room:add_asset(sprites.estevan)
--- room:add_asset(sprites.loompirate)
--- room:add_asset(sprites.fireplace)
--- room:add_asset(sprites.cook)
--- room:add_asset(sprites.ilp1)
--- room:add_asset(sprites.ilp2)
--- room:add_asset(sprites.ilp3)
-
-
+room = scumm.factory.basic_room (roomDefinition)
 
 room:add( {
 	{ pos = {0, 0,-3}, components = { { type="gfx", image="gfx/scummbar_1.png" }}},
 	{ pos = {157, 0, 0.99}, components = { { type="gfx", image="gfx/scummbar_3.png" }}},
 	{ pos = {20, 0, 0.99}, components = { { type="gfx", image="gfx/scummbar_4.png" }}},
 	{ pos = {374, 20, 0.95}, components = { { type="gfx", image="gfx/scummbar_2.png" }}},
-	factory.walkarea { shape = { type = "poly", outline = {32,16,70,24,128,19,251,
+	scumm.factory.walkarea { shape = { type = "poly", outline = {32,16,70,24,128,19,251,
 		18,311,10,321,10,345,32,467,41,492,50,514,40,565,40,580,35,629,6,626,0,256,0,200,16,149,0,90,0,85,10},
 		holes = {
 			{374,6,505,6,505,28,374,28}
 		}
 	}},
-	factory.objc { id="scummbar.door_out" },
-	factory.objc { id="scummbar.door_kitchen" },
-	factory.objc { id="scummbar.mancomb" },
-	factory.objc { id="scummbar.estevan" },
-	factory.objc { id="scummbar.fireplace" },
+	scumm.factory.object { id="scummbar.door_out" },
+	scumm.factory.object { id="scummbar.door_kitchen" },
+	scumm.factory.object { id="scummbar.mancomb" },
+	scumm.factory.object { id="scummbar.estevan" },
+	scumm.factory.object { id="scummbar.fireplace" },
 
 
 	-- factory.object.create { object = "scummbar.door_out" },
@@ -134,7 +119,6 @@ local cook = function()
 	}
 	local actions = {}
 	table.insert(actions, a1)
-	print ("FUCKKK")
 	table.insert(actions, a2)
 	local s = ms2(actions, 1)
 	s.name = "_cook"
@@ -172,16 +156,4 @@ local cook = function()
 
 end
 
-
-function room.afterstartup() 
-	for k, v in ipairs(room.initstuff) do
-		v()
-	end
-	cook()
-	--run_background_script ("scummbar.mancomb", "drink")
-	--run_background_script ("scummbar.estevan", "drink")
-	--run_background_script_2 ("scummbar.loompirate", "move", "idle2")
-	--scripts.cook()
-end
-
-
+--table.insert(room.initstuff, cook)

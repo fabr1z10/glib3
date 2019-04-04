@@ -49,7 +49,8 @@ void ShowMessage::Start() {
     }
 
     currentPos += glm::vec2(shiftX, 0.0f);
-    parent->SetPosition(currentPos);
+    glm::vec3 textpos(currentPos.x, currentPos.y, 5.0);
+    parent->SetPosition(textpos);
     //parent->SetLayer(1);
     scene->AddChild(parent);
     m_generatedEntity = parent.get();

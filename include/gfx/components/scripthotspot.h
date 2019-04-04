@@ -28,6 +28,9 @@ public:
     void SetOnClick(std::shared_ptr<LuaFunction> ref) {
         r_click = (ref);
     }
+    void SetOnRightMouseButtonClick(std::shared_ptr<LuaFunction> ref) {
+        m_rmbClick = ref;
+    }
     void SetOnMove(luabridge::LuaRef ref) {
         r_move= std::make_shared<luabridge::LuaRef>(ref);
     }
@@ -40,6 +43,7 @@ private:
     std::shared_ptr<luabridge::LuaRef> r_enter;
     std::shared_ptr<luabridge::LuaRef> r_leave;
     std::shared_ptr<LuaFunction> r_click;
+    std::shared_ptr<LuaFunction> m_rmbClick;
     std::shared_ptr<luabridge::LuaRef> r_move;
 
 };

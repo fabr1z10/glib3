@@ -283,7 +283,19 @@ spritesheets["sprites1"] = {
 	storekeeper_walk_east_5 = {x=251, y=411, width=25, height=43, anchor = {17, 0}},
 	storekeeper_walk_east_6 = {x=279, y=409, width=37, height=45, anchor = {18, 0}},
 
+	lookout_fire_1 = {x=409, y=479, width = 24, height=32},
+	lookout_fire_2 = {x=435, y=479, width = 24, height=32},
+	lookout_fire_3 = {x=461, y=479, width = 24, height=32},
+	lookout_fire_4 = {x=487, y=479, width = 24, height=32},
 
+	lookout_idle_body_side = {x=170, y=457, width=20, height=37, anchor={11, 0}},
+	lookout_idle_body_front = {x=193, y=459, width=23, height=35, anchor={11, 0}},
+	lookout_idle_head_side = {x=173, y=495, width=11, height=13, anchor={5, 0}},
+	lookout_talk_head_side_1 = {x=197, y=496, width=11, height=14, anchor={5, 0}},
+	lookout_talk_head_side_2 = {x=210, y=496, width=11, height=13, anchor={5, 0}},
+	lookout_idle_head_front = {x=186, y=495, width=9, height=14, anchor={5, 0}},
+	lookout_talk_head_front_1 = {x=223, y=496, width=9, height=15, anchor={5, 0}},
+	lookout_talk_head_front_2 = {x=234, y=496, width=9, height=13, anchor={5, 0}},
 
 
 	troll_head_11 = {x=332, y=221, width=25, height=18, anchor={15,5}},	
@@ -1228,6 +1240,54 @@ models["shop.shopkeeper"] = {
 		}},
 
 		-- { name = "walk_n", frames = { { duration = dt, quads = {{ id = s.fettuccini_purple_idle_back}}}}},
+
+	}
+}
+
+models["lookout.fire"] = {
+    sheet = sheet,
+    type = "sprite",
+    ppu=1,
+	animations = {
+		{ name = "default", frames = { 
+			{ duration = dt, quads = {{ id = s.lookout_fire_1}}},
+			{ duration = dt, quads = {{ id = s.lookout_fire_2}}},
+			{ duration = dt, quads = {{ id = s.lookout_fire_3}}},
+			{ duration = dt, quads = {{ id = s.lookout_fire_4}}}
+		}},
+	}
+}
+
+models["lookout.lookout"] = {
+    sheet = sheet,
+    type = "sprite",
+    ppu=1,
+	animations = {
+		{ name = "idle_s", frames = { { duration = dt, quads = {{ id = s.lookout_idle_body_front}, { id = s.lookout_idle_head_front, pos ={0,31}}}}}},
+		{ name = "idle_e", frames = { { duration = dt, quads = {{ id = s.lookout_idle_body_side}, {id = s.lookout_idle_head_side, pos={2, 31}}}}}},
+		---{ name = "idle_n", frames = { { duration = dt, quads = {{ id = s.fettuccini_purple_idle_back}}}}},
+		{ name = "talk_e", frames = { 
+			{ duration = dt, quads = {{ id = s.lookout_idle_body_side}, {id = s.lookout_idle_head_side, pos={0, 31}}}},
+			{ duration = dt, quads = {{ id = s.lookout_idle_body_side}, {id = s.lookout_talk_head_side_1, pos={0, 31}}}},
+			{ duration = dt, quads = {{ id = s.lookout_idle_body_side}, {id = s.lookout_talk_head_side_2, pos={0, 31}}}},
+			{ duration = dt, quads = {{ id = s.lookout_idle_body_side}, {id = s.lookout_talk_head_side_1, pos={0, 31}}}},
+		}},
+		{ name = "talk_s", frames = { 
+			{ duration = dt, quads = {{ id = s.lookout_idle_body_front}, {id = s.lookout_idle_head_front, pos={0, 31}}}},
+			{ duration = dt, quads = {{ id = s.lookout_idle_body_front}, {id = s.lookout_talk_head_front_1, pos={0, 31}}}},
+			{ duration = dt, quads = {{ id = s.lookout_idle_body_front}, {id = s.lookout_talk_head_front_2, pos={0, 31}}}},
+			{ duration = dt, quads = {{ id = s.lookout_idle_body_front}, {id = s.lookout_talk_head_front_1, pos={0, 31}}}},
+		}},
+		--{ name = "talk_n", frames = { { duration = dt, quads = {{ id = s.fettuccini_purple_idle_back}}}}},
+		-- { name = "walk_e", frames = { 
+		-- 	{ duration = dt, quads = {{ id = s.fettuccini_purple_walk_side_1}}},
+		-- 	{ duration = dt, quads = {{ id = s.fettuccini_purple_walk_side_2}}},
+		-- 	{ duration = dt, quads = {{ id = s.fettuccini_purple_walk_side_3}}},
+		-- 	{ duration = dt, quads = {{ id = s.fettuccini_purple_walk_side_4}}},
+		-- 	{ duration = dt, quads = {{ id = s.fettuccini_purple_walk_side_5}}},
+		-- 	{ duration = dt, quads = {{ id = s.fettuccini_purple_walk_side_6}}},
+		-- }},
+		{ name = "walk_n", frames = { { duration = dt, quads = {{ id = s.fettuccini_purple_idle_back}}}}},
 
 	}
 }

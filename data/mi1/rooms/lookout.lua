@@ -5,7 +5,7 @@ roomDefinition = {
 		village1 = { pos = items["lookout.stairs"].hotspot.walk_to, dir="north"},
 		meleemap = { pos = items["lookout.path"].hotspot.walk_to, dir = "east"},
 	},
-	defaultroom = "village1",
+	defaultroom = "meleemap",
 	depth = { type="linear_y", values= {0, 1, 144, 0} },
 }
 
@@ -21,21 +21,18 @@ room:add( {
 		shape = { type = "poly", outline = {203,51,315,62,315,40,293,40,260,10,260,0,260,-20,234,-20,234,0,234,10,221,26,152,33,152,51}}
     },
 	scumm.factory.object { id = "lookout.stairs" },
-	--scumm.factory.object { object = "lookout.lookout" },
-	-- factory.object.create { object = "lookout.fire" },
+	scumm.factory.object { id = "lookout.lookout" },
+	scumm.factory.object { id = "lookout.fire" },
 	scumm.factory.object { id = "lookout.path" },
-	-- {
-	-- 	pos = {0,0,0},
-	-- 	components = {
- --      		{ 
-	-- 			type ="walkarea",
-	-- 			priority = 0,
- --       			target = "player",
-				
-	-- 		}
- --      	}
-	-- }
-
 })
 
+local entry_cutscene = function() 
+	local actions = {
+		{ type = scumm.action.walkto, args = {tag="player", pos = {240, 30}}}
+	}
+	local s = script.make(actions)
+	s.name = "_walk"
+	monkey.play(s)
+end
 
+table.insert(room.initstuff, entry_cutscene)
