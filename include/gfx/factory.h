@@ -23,13 +23,13 @@ template<class T>
 class FactoryMethod : public AbstractFactoryMethod {
 public:
     virtual ~FactoryMethod() {}
-    virtual std::unique_ptr<T> Create(luabridge::LuaRef& ref) = 0;
+    virtual std::shared_ptr<T> Create(luabridge::LuaRef& ref) = 0;
 };
 
 template<class T>
 class Factory {
 public:
-    std::unique_ptr<T> Create(luabridge::LuaRef ref) {
+    std::shared_ptr<T> Create(luabridge::LuaRef ref) {
         if (ref.isNil())
             return nullptr;
         luabridge::LuaRef r = ref["type"];
@@ -37,8 +37,8 @@ public:
         auto it = m_factories.find(type);
         if (it == m_factories.end())
             GLIB_FAIL("Unknown object " << type);
-        //std::cout << "Reading object of type: "<< type<<"\n";
-        return it->second->Create(ref);
+        auto p = it->second->Create(ref);
+        return p;
     }
 
     void Add(const std::string& name, std::unique_ptr<FactoryMethod<T>> m){
@@ -49,7 +49,7 @@ public:
         m_factories[name] = std::unique_ptr<FM>(new FM);
     }
 private:
-    std::unordered_map<std::string, std::unique_ptr<FactoryMethod<T>> > m_factories;
+    std::unordered_map<std::string, std::shared_ptr<FactoryMethod<T>> > m_factories;
 };
 
 

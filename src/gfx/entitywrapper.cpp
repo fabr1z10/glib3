@@ -116,7 +116,7 @@ EntityWrapper EntityWrapper::GetEntityFromId(int id) {
 int EntityWrapper::AddEntity(luabridge::LuaRef ref, EntityWrapper* parent) {
 
     auto mf = Engine::get().GetSceneFactory();
-    auto ptr = mf->GetShared<Entity>(ref);
+    auto ptr = mf->makeEntity(ref);
     parent->m_underlying->AddChild(ptr);
 
     return ptr->GetId();
@@ -223,7 +223,7 @@ namespace luaFunctions {
                     edges.push_back(std::make_pair(id-1, id));
                 }
             }
-            auto activity= factory->Get<Activity>(ac);
+            auto activity= factory->makeActivity(ac);
             script->AddActivity(id, std::move(activity));
         }
 

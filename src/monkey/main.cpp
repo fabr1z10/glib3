@@ -4,10 +4,12 @@
 #include <monkey/monkeyfactory.h>
 #include <gfx/engine.h>
 #include <set>
+#include <foo.h>
 
 int main(int argc, char* argv[])
 {
     if (argc < 2) {
+        std::cout << "The monkey engine " << VERSION << "\n";
         std::cout << "Usage: monkey <directory>" << std::endl;
         return 1;
     }

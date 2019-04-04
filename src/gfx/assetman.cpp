@@ -34,7 +34,7 @@ std::shared_ptr<IModel> ModelBuilder::operator()(const std::string & modelId) co
     if (modelDef.isNil()) {
         return nullptr;
     }
-    auto asset = Engine::get().GetSceneFactory()->GetShared<IModel>(modelDef);
+    auto asset = Engine::get().GetSceneFactory()->makeModel(modelDef);
     return asset;
 }
 

@@ -2,6 +2,58 @@
 #include <gfx/factories.h>
 #include <iostream>
 #include <gfx/engine.h>
+//
+//template <>
+//std::shared_ptr<Entity> SceneFactory::Get<Entity> (luabridge::LuaRef& ref) {
+//    return m_entityFactory.Create(ref);
+//}
+//
+//template <>
+//std::shared_ptr<Shape> SceneFactory::Get<Shape> (luabridge::LuaRef& ref) {
+//    return m_shapeFactory.Create(ref);
+//}
+//
+//template <>
+//std::shared_ptr<Runner> SceneFactory::Get<Runner> (luabridge::LuaRef& ref) {
+//    return m_runnerFactory.Create(ref);
+//}
+//
+//template <>
+//std::shared_ptr<Camera> SceneFactory::Get<Camera> (luabridge::LuaRef& ref) {
+//    auto p = m_cameraFactory.Create(ref);
+//    std::cout << "ciao ciao bellino\n";
+//    std::cout << p->GetPosition().x << "\n";
+//    std::cout << p->GetTag() << "\n";
+//
+//    return p;
+//
+//}
+//
+////template <>
+////std::shared_ptr<StateInitializer> SceneFactory::Get<StateInitializer> (luabridge::LuaRef& ref) {
+////    return std::move(m_stateInitFactory.Create(ref));
+////}
+////
+////template <>
+////std::shared_ptr<StateBehaviour> SceneFactory::Get<StateBehaviour> (luabridge::LuaRef& ref) {
+////    return m_stateBehaviorFactory.Create(ref);
+////}
+//
+//template <>
+//std::shared_ptr<Component> SceneFactory::Get<Component> (luabridge::LuaRef& ref) {
+//    return m_componentFactory.Create(ref);
+//}
+//
+//template <>
+//std::shared_ptr<Activity> SceneFactory::Get<Activity> (luabridge::LuaRef& ref) {
+//    return m_activityFactory.Create(ref);
+//}
+//
+//template <>
+//std::shared_ptr<IModel> SceneFactory::Get<IModel> (luabridge::LuaRef& ref) {
+//    return m_modelFactory.Create(ref);
+//}
+
 
 void SceneFactory::Init(Engine* engine) {
     // initialize lua
@@ -109,10 +161,10 @@ SceneFactory::SceneFactory() {
     m_shapeFactory.Add<PolyFactory>("poly");
     m_shapeFactory.Add<GraphFactory>("graph");
 
-    m_stateInitFactory.Add<AnimInitializerFactory>("anim");
-    m_stateInitFactory.Add<AnimColliderInitializerFactory>("animcollider");
-    m_stateInitFactory.Add<LuaInitializerFactory>("lua");
-    m_stateInitFactory.Add<LuaAnimColliderInitializerFactory>("luaanim");
+//    m_stateInitFactory.Add<AnimInitializerFactory>("anim");
+//    m_stateInitFactory.Add<AnimColliderInitializerFactory>("animcollider");
+//    m_stateInitFactory.Add<LuaInitializerFactory>("lua");
+//    m_stateInitFactory.Add<LuaAnimColliderInitializerFactory>("luaanim");
 
     m_activityFactory.Add<NoOpActFactory>("noop");
     m_activityFactory.Add<CallFuncActFactory>("callfunc");
@@ -140,50 +192,6 @@ SceneFactory::SceneFactory() {
     m_activityFactory.Add<SetStateActFactory>("setstate");
 }
 
-template <>
-std::unique_ptr<Entity> SceneFactory::Get<Entity> (luabridge::LuaRef& ref) {
-    return m_entityFactory.Create(ref);
-}
-
-template <>
-std::unique_ptr<Shape> SceneFactory::Get<Shape> (luabridge::LuaRef& ref) {
-    return m_shapeFactory.Create(ref);
-}
-
-template <>
-std::unique_ptr<Runner> SceneFactory::Get<Runner> (luabridge::LuaRef& ref) {
-    return m_runnerFactory.Create(ref);
-}
-
-template <>
-std::unique_ptr<Camera> SceneFactory::Get<Camera> (luabridge::LuaRef& ref) {
-    return (m_cameraFactory.Create(ref));
-}
-
-template <>
-std::unique_ptr<StateInitializer> SceneFactory::Get<StateInitializer> (luabridge::LuaRef& ref) {
-    return m_stateInitFactory.Create(ref);
-}
-
-template <>
-std::unique_ptr<StateBehaviour> SceneFactory::Get<StateBehaviour> (luabridge::LuaRef& ref) {
-    return m_stateBehaviorFactory.Create(ref);
-}
-
-template <>
-std::unique_ptr<Component> SceneFactory::Get<Component> (luabridge::LuaRef& ref) {
-    return m_componentFactory.Create(ref);
-}
-
-template <>
-std::unique_ptr<Activity> SceneFactory::Get<Activity> (luabridge::LuaRef& ref) {
-    return m_activityFactory.Create(ref);
-}
-
-template <>
-std::unique_ptr<IModel> SceneFactory::Get<IModel> (luabridge::LuaRef& ref) {
-    return m_modelFactory.Create(ref);
-}
 
 
 
@@ -211,7 +219,7 @@ std::shared_ptr<Entity> SceneFactory::Create() {
         luabridge::LuaRef engines = roomTable.Get<luabridge::LuaRef>("engines");
         for (int i = 0; i < engines.length(); ++i) {
             luabridge::LuaRef e = engines[i+1];
-            auto runner = GetShared<Runner>(e);
+            auto runner = makeRunner(e);
             Engine::get().AddRunner(runner);
         }
     }
@@ -221,20 +229,17 @@ std::shared_ptr<Entity> SceneFactory::Create() {
 //    auto roomAssets = roomTable.GetVector<std::string>("assets");
 //    for (auto& a : roomAssets) {
 //        // load the asset
-//        LoadModel(a);
-//    }
+//        LoadModel(a);//    }
 
-    std::cout << "ciao\n";
     // read the scene tree
     auto rootNode = std::make_shared<Entity>();
     rootNode->SetTag("_root");
     luabridge::LuaRef rscene = roomTable.Get<luabridge::LuaRef>("scene");
     for (int i = 0; i < rscene.length(); ++i) {
         luabridge::LuaRef rnode = rscene[i+1];
-        auto node  = GetShared<Entity>(rnode);
+        auto node  = makeEntity(rnode);
         rootNode->AddChild(node);
     }
-    std::cout << "ciao2\n";
 
     // launch the start script
     if (roomTable.HasKey("start")) {
@@ -291,3 +296,5 @@ void SceneFactory::CleanUp() {
     roomRef = luabridge::Nil();
 
 }
+
+

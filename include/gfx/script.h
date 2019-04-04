@@ -14,7 +14,7 @@ public:
     Script();
     void Run (float);
     void Start();
-    void AddActivity(int id, std::unique_ptr<Activity>);
+    void AddActivity(int id, std::shared_ptr<Activity>);
     void AddEdge (int fromActivity, int toActivity);
     bool IsComplete() const;
     void Kill () { m_complete=true;}
@@ -25,7 +25,7 @@ private:
     void PushToFrontier(int);
     void ResetActivity(int);
     std::unordered_set<size_t> m_frontier;
-    std::vector<std::unique_ptr<Activity>> m_activities;
+    std::vector<std::shared_ptr<Activity>> m_activities;
 
     //std::unordered_map<int, std::vector<int>> m_directedEdges;
     //std::unordered_map<int, int> m_incomingEdgeCount;

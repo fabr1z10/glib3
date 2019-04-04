@@ -11,12 +11,12 @@ class CompositeModel;
 
 class SpriteFactory : public FactoryMethod<Entity> {
 public:
-    std::unique_ptr<Entity> Create(luabridge::LuaRef& ref) override;
-    static std::unique_ptr<Entity> Create (std::shared_ptr<IModel> mesh);
+    std::shared_ptr<Entity> Create(luabridge::LuaRef& ref) override;
+    static std::shared_ptr<Entity> Create (std::shared_ptr<IModel> mesh);
 private:
 
-    static std::unique_ptr<Entity> Create (std::shared_ptr<SimpleModel>);
-    static std::unique_ptr<Entity> Create (std::shared_ptr<CompositeModel>);
+    static std::shared_ptr<Entity> Create (std::shared_ptr<SimpleModel>);
+    static std::shared_ptr<Entity> Create (std::shared_ptr<CompositeModel>);
 
 
 };

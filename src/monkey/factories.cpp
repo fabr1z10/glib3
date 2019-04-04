@@ -8,25 +8,25 @@
 #include <monkey/activities/enableblock.h>
 #include <monkey/components/charactercomponent.h>
 
-std::unique_ptr<Component> CharacterStateFactory::Create(luabridge::LuaRef& ref) {
+std::shared_ptr<Component> CharacterStateFactory::Create(luabridge::LuaRef& ref) {
     LuaTable table(ref);
     char dir = table.Get<std::string>("dir")[0];
     std::string initialState = table.Get<std::string>("state");
-    std::unique_ptr<StateCharacter> c(new StateCharacter(dir, initialState));
+    auto c = std::make_shared<StateCharacter>(dir, initialState);
 
     return c;
 }
 
 
 // Read the walk-area
-std::unique_ptr<Component> WalkAreaComponentFactory::Create(luabridge::LuaRef& ref) {
+std::shared_ptr<Component> WalkAreaComponentFactory::Create(luabridge::LuaRef& ref) {
     LuaTable table(ref);
     int priority = table.Get<int>("priority");
     std::string targetId = table.Get<std::string>("target");
     auto factory = Engine::get().GetSceneFactory();
     luabridge::LuaRef shapeR = table.Get<luabridge::LuaRef>("shape");
-    auto shape = factory->GetShared<Shape>(shapeR);
-    std::unique_ptr<WalkArea> hotspot (new WalkArea(shape, priority, targetId));
+    auto shape = factory->makeShape(shapeR);
+    auto hotspot = std::make_shared<WalkArea>(shape, priority, targetId);
 //
 //    // see if it has a depthfunc
 //    if (table.HasKey("scaling")) {
@@ -55,35 +55,35 @@ std::unique_ptr<Component> WalkAreaComponentFactory::Create(luabridge::LuaRef& r
 }
 
 
-std::unique_ptr<Activity> WalkToActFactory::Create(luabridge::LuaRef &ref) {
+std::shared_ptr<Activity> WalkToActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
 
     glm::vec2 pos = table.Get<glm::vec2>("pos");
     if (table.HasKey("id")) {
         int id = table.Get<int>("id");
-        return std::unique_ptr<Walk>(new Walk(id, pos));
+        return std::make_shared<Walk>(id, pos);
     } else {
 
         auto tag = table.Get<std::string>("tag");
-        return std::unique_ptr<Walk>(new Walk(tag, pos));
+        return std::make_shared<Walk>(tag, pos);
     }
 
 };
 
-std::unique_ptr<Activity> TurnActFactory::Create(luabridge::LuaRef &ref) {
+std::shared_ptr<Activity> TurnActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
 
 
     char dir = table.Get<std::string>("dir")[0];
 
-    auto action =  std::unique_ptr<Turn>(new Turn(dir));
+    auto action =  std::make_shared<Turn>(dir);
     setTarget(table, action.get());
     return action;
 
 };
 
 
-std::unique_ptr<Activity> SayActFactory::Create(luabridge::LuaRef &ref) {
+std::shared_ptr<Activity> SayActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
 
 
@@ -91,13 +91,13 @@ std::unique_ptr<Activity> SayActFactory::Create(luabridge::LuaRef &ref) {
     glm::vec4 color = table.Get<glm::vec4>("color");
     color/=255.0f;
     glm::vec2 offset = table.Get<glm::vec2>("offset");
-    std::unique_ptr<Say> say ;
+    std::shared_ptr<Say> say ;
     if (table.HasKey("id")) {
         int id = table.Get<int>("id");
-        say = std::unique_ptr<Say>(new Say(id, lines, color, offset));
+        say = std::make_shared<Say>(id, lines, color, offset);
     } else {
         auto tag = table.Get<std::string>("tag");
-        say = std::unique_ptr<Say>(new Say(tag, lines, color, offset));
+        say = std::make_shared<Say>(tag, lines, color, offset);
 
     }
     bool animate = table.Get<bool>("animate", true);
@@ -117,13 +117,13 @@ std::unique_ptr<Activity> SayActFactory::Create(luabridge::LuaRef &ref) {
 };
 
 
-std::unique_ptr<Activity> EnableBlockActFactory::Create(luabridge::LuaRef &ref) {
+std::shared_ptr<Activity> EnableBlockActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
 
     int wallId = table.Get<int>("wall");
     bool active = table.Get<bool>("active");
 
-    return std::unique_ptr<EnableBlock>(new EnableBlock(wallId, active));
+    return std::make_shared<EnableBlock>(wallId, active);
 };
 
 

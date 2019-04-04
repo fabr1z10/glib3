@@ -21,7 +21,7 @@ class IFrameChangeHandler;
 #define FACTORY(name, type) \
     class name : public FactoryMethod<type> { \
     public: \
-        std::unique_ptr<type> Create(luabridge::LuaRef& ref) override; \
+        std::shared_ptr<type> Create(luabridge::LuaRef& ref) override; \
     };
 
 // Entities
@@ -125,7 +125,7 @@ FACTORY(LuaInitializerFactory, StateInitializer)
 // helper functions
 //std::shared_ptr<Renderer> ReadTextComponent (luabridge::LuaRef& ref);
 //std::shared_ptr<Shape> ReadShape(luabridge::LuaRef& ref);
-std::unique_ptr<Function2D> GetFunc2D(luabridge::LuaRef& ref);
+std::shared_ptr<Function2D> GetFunc2D(luabridge::LuaRef& ref);
 //std::shared_ptr<HotSpot> GetHotSpot (luabridge::LuaRef& ref, std::shared_ptr<Shape> shape);
 
 //class TextComponentFactory : public ComponentFactory {

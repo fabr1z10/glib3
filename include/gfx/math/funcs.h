@@ -79,9 +79,9 @@ class PatchwiseLinear2D : public Function2D {
 public:
     PatchwiseLinear2D() {}
     float operator() (float x, float y) override;
-    void AddFunction (glm::vec4, std::unique_ptr<Function2D>);
+    void AddFunction (glm::vec4, std::shared_ptr<Function2D>);
 private:
     std::vector<glm::vec4> m_domains;
     std::vector<bool> m_varX;
-    std::vector<std::unique_ptr<Function2D>> m_functions;
+    std::vector<std::shared_ptr<Function2D>> m_functions;
 };

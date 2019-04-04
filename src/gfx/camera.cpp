@@ -22,8 +22,11 @@ extern GLFWwindow* window;
 Camera::Camera(glm::vec4 viewport) : Ref(), m_camViewport{viewport} {
     //App::RegisterToResizeEvent(this);
 
-    if (m_camViewport == glm::vec4())
+    if (m_camViewport == glm::vec4()) {
         m_camViewport = glm::vec4(0.0, 0.0, Engine::get().GetDeviceSize());
+        glm::vec2 size = Engine::get().GetDeviceSize();
+        std::cout << "device size = " << size.x << " " << size.y << "\n";
+    }
 
 }
 

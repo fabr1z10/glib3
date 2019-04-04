@@ -25,23 +25,23 @@
 
 
 
-std::unique_ptr<Activity> NoOpActFactory::Create(luabridge::LuaRef &ref) {
+std::shared_ptr<Activity> NoOpActFactory::Create(luabridge::LuaRef &ref) {
     return std::unique_ptr<NoOp>(new NoOp);
 }
 
-std::unique_ptr<Activity> ChangeRoomActFactory::Create(luabridge::LuaRef &ref) {
+std::shared_ptr<Activity> ChangeRoomActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
     std::string roomId = table.Get<std::string>("room");
     return std::unique_ptr<ChangeRoom>(new ChangeRoom(roomId));
 };
 
-std::unique_ptr<Activity> CallFuncActFactory::Create(luabridge::LuaRef &ref) {
+std::shared_ptr<Activity> CallFuncActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
     luabridge::LuaRef fref = table.Get<luabridge::LuaRef>("func");
     return std::unique_ptr<CallFunc>(new CallFunc(fref));
 };
 
-std::unique_ptr<Activity> ScrollActFactory::Create(luabridge::LuaRef &ref) {
+std::shared_ptr<Activity> ScrollActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
     std::string camId = table.Get<std::string>("cam");
     bool relative{false};
@@ -56,19 +56,19 @@ std::unique_ptr<Activity> ScrollActFactory::Create(luabridge::LuaRef &ref) {
     return std::unique_ptr<Scroll>(new Scroll(camId, displacement, relative, speed));
 };
 
-std::unique_ptr<Activity> CollisionCheckActFactory::Create(luabridge::LuaRef &ref) {
+std::shared_ptr<Activity> CollisionCheckActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
     auto factory = Engine::get().GetSceneFactory();
     std::string actor = table.Get<std::string>("actor");
     luabridge::LuaRef rshape = table.Get<luabridge::LuaRef>("shape");
-    std::shared_ptr<Shape> shape = factory->Get<Shape>(rshape);
+    std::shared_ptr<Shape> shape = factory->makeShape(rshape);
     glm::vec2 offset = table.Get<glm::vec2>("offset");
     int mask = table.Get<float>("mask");
     luabridge::LuaRef callback = table.Get<luabridge::LuaRef>("func");
     return std::unique_ptr<CollisionCheck>(new CollisionCheck(shape, actor, offset, mask, callback));
 };
 
-std::unique_ptr<Activity> MoveActFactory::Create(luabridge::LuaRef &ref) {
+std::shared_ptr<Activity> MoveActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
     bool relative = true;
     glm::vec2 dest;
@@ -83,23 +83,23 @@ std::unique_ptr<Activity> MoveActFactory::Create(luabridge::LuaRef &ref) {
     }
     float speed = table.Get<float>("speed", 0.0f);
     bool immediate = table.Get<bool>("immediate", false);
-    std::unique_ptr<MoveTo> m;
+    std::shared_ptr<MoveTo> m;
     if (table.HasKey("angle")) {
         float angle = table.Get<float>("angle");
         bool relAngle = table.Get<bool>("angle_relative");
-        m = std::unique_ptr<MoveTo>(new MoveAndRotateTo(dest, speed, relative, immediate, angle, relAngle));
+        //m = std::make_shared<MoveTo>((dest, speed, relative, immediate, angle, relAngle));
     } else {
-        m = std::unique_ptr<MoveTo>(new MoveTo(dest, speed, relative, immediate));
+        m = std::make_shared<MoveTo>(dest, speed, relative, immediate);
     }
     setTarget(table, m.get());
     if (table.HasKey("acceleration")) {
         float acceleration = table.Get<float>("acceleration");
         m->SetAcceleration(acceleration);
     }
-    return std::move(m);
+    return (m);
 };
 
-std::unique_ptr<Activity> MoveAcceleratedActFactory::Create(luabridge::LuaRef &ref) {
+std::shared_ptr<Activity> MoveAcceleratedActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
 
     glm::vec2 initialVelocity = table.Get<glm::vec2>("velocity");
@@ -107,36 +107,35 @@ std::unique_ptr<Activity> MoveAcceleratedActFactory::Create(luabridge::LuaRef &r
     float yStop = table.Get<float>("ystop");
     float rotSpeed = table.Get<float>("rotationspeed", 0.0f);
     float finRotation = table.Get<float>("finalrotation", 0.0f) * deg2rad;
-    auto ptr = std::unique_ptr<MoveAccelerated>(new MoveAccelerated(initialVelocity, acceleration, yStop, rotSpeed, finRotation));
+    auto ptr = std::make_shared<MoveAccelerated>(initialVelocity, acceleration, yStop, rotSpeed, finRotation);
     setTarget(table, ptr.get());
     return ptr;
 };
 
 
-std::unique_ptr<Activity> RotateActFactory::Create(luabridge::LuaRef &ref) {
+std::shared_ptr<Activity> RotateActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
     std::string actor = table.Get<std::string>("actor");
     float initialVelocity = table.Get<float>("speed");
     float acceleration = table.Get<float>("acceleration", 0.0f);
     float deg = table.Get<float>("deg");
-    return std::unique_ptr<Rotate>(new Rotate(actor, deg, acceleration, initialVelocity));
-};
+    return std::make_shared<Rotate>(actor, deg, acceleration, initialVelocity);
+}
 
-
-std::unique_ptr<Activity> DelayActFactory::Create(luabridge::LuaRef &ref) {
+std::shared_ptr<Activity> DelayActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
     float sec = table.Get<float>("sec");
     return std::unique_ptr<DelayTime>(new DelayTime(sec));
 };
 
-std::unique_ptr<Activity> DelayDynamicActFactory::Create(luabridge::LuaRef &ref) {
+std::shared_ptr<Activity> DelayDynamicActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
     luabridge::LuaRef func = table.Get<luabridge::LuaRef>("func");
     return std::unique_ptr<DelayTimeDynamic>(new DelayTimeDynamic(func));
 };
 
 
-std::unique_ptr<Activity> AnimateActFactory::Create(luabridge::LuaRef &ref) {
+std::shared_ptr<Activity> AnimateActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
     // get id
     //int id = getId(table);
@@ -146,19 +145,19 @@ std::unique_ptr<Activity> AnimateActFactory::Create(luabridge::LuaRef &ref) {
     if (table.HasKey("flipx")) {
         flip = table.Get<bool>("flipx") ? 2 : 1;
     }
-    auto act = std::unique_ptr<Animate>(new Animate(anim, fwd, flip));
+    auto act = std::make_shared<Animate>(anim, fwd, flip);
     bool sync = table.Get<bool>("sync", false);
     act->SetSync(sync);
     setTarget(table, act.get());
 
-    return std::move(act);
+    return act;
 };
 
-std::unique_ptr<Activity> SetStateActFactory::Create(luabridge::LuaRef &ref) {
+std::shared_ptr<Activity> SetStateActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
 
     std::string state = table.Get<std::string>("state");
-    auto act = std::unique_ptr<SetState>(new SetState(state));
+    auto act = std::make_shared<SetState>(state);
     setTarget(table, act.get());
 
     return std::move(act);
@@ -173,7 +172,7 @@ std::unique_ptr<Activity> SetStateActFactory::Create(luabridge::LuaRef &ref) {
 //    return std::unique_ptr<ChangeState>(new ChangeState(actor, state));
 //};
 
-std::unique_ptr<Activity> ShowMessageActFactory::Create(luabridge::LuaRef &ref) {
+std::shared_ptr<Activity> ShowMessageActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
     std::string msg = table.Get<std::string>("message");
     std::string font = table.Get<std::string>("font", "monkey");
@@ -186,19 +185,19 @@ std::unique_ptr<Activity> ShowMessageActFactory::Create(luabridge::LuaRef &ref) 
     outlineColor /= 255.0f;
     float size = table.Get<float>("size", 8.0f);
     glm::vec3 pos = table.Get<glm::vec3>("pos");
-    return std::unique_ptr<ShowMessage>(new ShowMessage(msg, font, pos, size, color, outlineColor, align, time, offset));
+    return std::make_shared<ShowMessage>(msg, font, pos, size, color, outlineColor, align, time, offset);
 };
 
-std::unique_ptr<Activity> BlinkActFactory::Create(luabridge::LuaRef &ref) {
+std::shared_ptr<Activity> BlinkActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
     std::string actor = table.Get<std::string>("actor");
     float duration = table.Get<float>("duration");
     float blinkDuration = table.Get<float>("blinkduration");
-    return std::unique_ptr<Blink>(new Blink(actor, duration, blinkDuration));
+    return std::make_shared<Blink>(actor, duration, blinkDuration);
 
 
 }
-std::unique_ptr<Activity> CamBoundsActFactory::Create(luabridge::LuaRef &ref) {
+std::shared_ptr<Activity> CamBoundsActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
     std::string cam = table.Get<std::string>("cam");
 
@@ -206,56 +205,56 @@ std::unique_ptr<Activity> CamBoundsActFactory::Create(luabridge::LuaRef &ref) {
     float xMax = table.Get<float>("xmax");
     float yMin = table.Get<float>("ymin");
     float yMax = table.Get<float>("ymax");
-    return std::unique_ptr<ChangeCamBounds>(new ChangeCamBounds(cam, xMin, xMax, yMin, yMax));
+    return std::make_shared<ChangeCamBounds>(cam, xMin, xMax, yMin, yMax);
 
 
 }
 
-std::unique_ptr<Activity> EnableKeyActFactory::Create(luabridge::LuaRef &ref) {
+std::shared_ptr<Activity> EnableKeyActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
     int key = table.Get<int>("key");
     bool enable = table.Get<bool>("enabled");
-    return std::unique_ptr<EnableKey>(new EnableKey(key, enable));
+    return std::make_shared<EnableKey>(key, enable);
 }
 
-std::unique_ptr<Activity> VirtualKeyActFactory::Create(luabridge::LuaRef &ref) {
+std::shared_ptr<Activity> VirtualKeyActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
     int key = table.Get<int>("key");
     int action = table.Get<int>("action");
-    return std::unique_ptr<VirtualKey>(new VirtualKey(key, action));
+    return std::make_shared<VirtualKey>(key, action);
 }
 
-std::unique_ptr<Activity> FlipActFactory::Create(luabridge::LuaRef &ref) {
+std::shared_ptr<Activity> FlipActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
     std::string actor = table.Get<std::string>("actor");
     int mode = table.Get<bool>("mode", 0);
-    return std::unique_ptr<Flip>(new Flip(actor, mode));
+    return std::make_shared<Flip>(actor, mode);
 }
 
-std::unique_ptr<Activity> ScaleActFactory::Create(luabridge::LuaRef &ref) {
+std::shared_ptr<Activity> ScaleActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
     std::string actor = table.Get<std::string>("actor");
     float duration = table.Get<float>("duration");
     float scale = table.Get<float>("scale");
-    return std::unique_ptr<ScaleTo>(new ScaleTo(actor, duration, scale));
+    return std::make_shared<ScaleTo>(actor, duration, scale);
 }
 
-std::unique_ptr<Activity> SuspendScriptActFactory::Create(luabridge::LuaRef &ref) {
+std::shared_ptr<Activity> SuspendScriptActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
     std::string script = table.Get<std::string>("script");
-    return std::unique_ptr<SuspendScript>(new SuspendScript(script));
+    return std::make_shared<SuspendScript>(script);
 }
 
-std::unique_ptr<Activity> ResumeScriptActFactory::Create(luabridge::LuaRef &ref) {
+std::shared_ptr<Activity> ResumeScriptActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
     std::string script = table.Get<std::string>("script");
-    return std::unique_ptr<ResumeScript>(new ResumeScript(script));
+    return std::make_shared<ResumeScript>(script);
 }
 
-std::unique_ptr<Activity> KillScriptActFactory::Create(luabridge::LuaRef &ref) {
+std::shared_ptr<Activity> KillScriptActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
     std::string script = table.Get<std::string>("script");
-    return std::unique_ptr<KillScript>(new KillScript(script));
+    return std::make_shared<KillScript>(script);
 }
 
 

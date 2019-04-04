@@ -6,11 +6,11 @@
 #include <gfx/compositemodel.h>
 #include <gfx/imodel.h>
 
-std::unique_ptr<IModel> CompositeModelFactory::Create (luabridge::LuaRef& ref) {
+std::shared_ptr<IModel> CompositeModelFactory::Create (luabridge::LuaRef& ref) {
 
     LuaTable t(ref);
     auto& am = Engine::get().GetAssetManager();
-    std::unique_ptr<CompositeModel> model(new CompositeModel);
+    auto model = std::make_shared<CompositeModel>();
     luabridge::LuaRef comps = t.Get<luabridge::LuaRef>("components");
     lua_loop_array(comps, [am, &model] (const LuaTable& table) {
         ModelComponent component;
@@ -42,7 +42,7 @@ std::unique_ptr<IModel> CompositeModelFactory::Create (luabridge::LuaRef& ref) {
     return model;
 }
 
-std::unique_ptr<IModel> SimpleModelFactory::Create (luabridge::LuaRef& ref) {
+std::shared_ptr<IModel> SimpleModelFactory::Create (luabridge::LuaRef& ref) {
 
     LuaTable t(ref);
     float ppu = t.Get<float>("ppu", 1.0);

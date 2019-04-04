@@ -12,7 +12,7 @@ float PatchwiseLinear2D::operator() (float x, float y) {
     return 0.0f;
 }
 
-void PatchwiseLinear2D::AddFunction (glm::vec4 domain , std::unique_ptr<Function2D> f) {
+void PatchwiseLinear2D::AddFunction (glm::vec4 domain , std::shared_ptr<Function2D> f) {
     m_domains.push_back(domain);
     m_functions.push_back(std::move(f));
 }

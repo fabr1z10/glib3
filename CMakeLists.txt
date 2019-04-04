@@ -14,7 +14,9 @@ set(LIB_DIR ${PROJECT_DIR}/lib)
 set(INCLUDE_DIR ${PROJECT_DIR}/include)
 set(SRC_DIR ${PROJECT_DIR}/src)
 
-set(CMAKE_CXX_FLAGS "-std=c++11 -Wall -Wno-reorder -pthread")
+set(CMAKE_CXX_STANDARD 14)
+
+set(CMAKE_CXX_FLAGS "-Wall -Wno-reorder -pthread")
 
 find_package(OpenGL REQUIRED)
 find_package(GLEW REQUIRED)
@@ -24,6 +26,9 @@ find_package(Freetype REQUIRED)
 find_package(PNG REQUIRED)
 find_package(JPEG REQUIRED)
 find_package(Lua REQUIRED)
+
+
+configure_file(foo.h.in foo.h)
 
 if(APPLE)
     find_library(BZ2_LIB bz2)
@@ -42,6 +47,7 @@ endif()
 
 #include_directories(${INCLUDE_DIR} ${FREETYPE_INCLUDE_DIRS} ${GLM_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS} )
 #link_directories(${LIB_DIR})
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${LIB_DIR})
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${LIB_DIR})

@@ -247,7 +247,7 @@ void HotSpot::Start() {
 
     if (m_shape == nullptr) {
         // try to get shape from gfx component
-        auto renderer = m_entity->GetComponent<Renderer>();
+        //auto renderer = m_entity->GetComponent<Renderer>();
         auto bounds = m_entity->GetComponent<Renderer>()->GetBounds();
         glm::vec2 min(bounds.min);
         glm::vec3 extents = bounds.GetExtents();

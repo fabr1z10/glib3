@@ -6,12 +6,14 @@
 #include <gfx/entities/textview.h>
 #include <gfx/entities/heightmap.h>
 
-std::unique_ptr<Entity> EntityFactory::Create(luabridge::LuaRef& ref) {
 
-    auto entity = std::unique_ptr<Entity>(new Entity);
+std::shared_ptr<Entity> EntityFactory::Create(luabridge::LuaRef& ref) {
+
+    auto entity = std::make_shared<Entity>();
 
     LuaTable item(ref);
     std::string tag = item.Get<std::string>("tag", "");
+    //std::cout << "creating " << tag << "\n";
     std::string name = item.Get<std::string>("name", "");
     if (!tag.empty()) entity->SetTag(tag);
     if (!name.empty()) entity->SetName(name);
@@ -34,12 +36,8 @@ std::unique_ptr<Entity> EntityFactory::Create(luabridge::LuaRef& ref) {
     // setup camera
     if (item.HasKey("camera")) {
         luabridge::LuaRef cam = item.Get<luabridge::LuaRef>("camera");
-        std::cout << "oweifherwfhj\n";
-        auto cam1 = factory->Get<Camera>(cam);
-        std::cout << "orweiuhjrewiufheriufh\n";
-        auto camera = factory->GetShared<Camera>(cam);
-        std::cout << "canebello\n";
 
+        auto camera = factory->makeCam(cam);
         entity->SetCamera(camera);
     }
 
@@ -48,7 +46,7 @@ std::unique_ptr<Entity> EntityFactory::Create(luabridge::LuaRef& ref) {
         luabridge::LuaRef c = item.Get<luabridge::LuaRef>("components");
         for (int i = 0; i < c.length(); ++i) {
             luabridge::LuaRef rcomponent = c[i+1];
-            auto component = factory->GetShared<Component>(rcomponent);
+            auto component = factory->makeComponent(rcomponent);
             entity->AddComponent(component);
         }
 
@@ -58,7 +56,7 @@ std::unique_ptr<Entity> EntityFactory::Create(luabridge::LuaRef& ref) {
         luabridge::LuaRef c = item.Get<luabridge::LuaRef>("children");
         for (int i = 0; i < c.length(); ++i) {
             luabridge::LuaRef child = c[i+1];
-            auto childEntity = factory->GetShared<Entity>(child);
+            auto childEntity = factory->makeEntity(child);
             if (childEntity != nullptr)
                 entity->AddChild(childEntity);
         }
@@ -70,7 +68,7 @@ std::unique_ptr<Entity> EntityFactory::Create(luabridge::LuaRef& ref) {
     return entity;
 }
 
-std::unique_ptr<Entity> ButtonFactory::Create(luabridge::LuaRef &ref) {
+std::shared_ptr<Entity> ButtonFactory::Create(luabridge::LuaRef &ref) {
 
     LuaTable table(ref);
     auto parent = std::unique_ptr<Entity>(new Entity);
@@ -90,7 +88,7 @@ std::unique_ptr<Entity> ButtonFactory::Create(luabridge::LuaRef &ref) {
 
 }
 
-std::unique_ptr<Entity> OutlineTextFactory::Create(luabridge::LuaRef &ref) {
+std::shared_ptr<Entity> OutlineTextFactory::Create(luabridge::LuaRef &ref) {
 
     LuaTable table(ref);
     auto parent = std::unique_ptr<Entity>(new Entity);
@@ -132,7 +130,7 @@ std::unique_ptr<Entity> OutlineTextFactory::Create(luabridge::LuaRef &ref) {
     return parent;
 }
 
-std::unique_ptr<Entity> TextViewFactory::Create(luabridge::LuaRef &ref) {
+std::shared_ptr<Entity> TextViewFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
     std::string tag = table.Get<std::string>("tag", "");
     glm::vec2 pos = table.Get<glm::vec2>("pos");
@@ -145,7 +143,7 @@ std::unique_ptr<Entity> TextViewFactory::Create(luabridge::LuaRef &ref) {
     //glm::vec4 color = table.Get<glm::vec4>("color", glm::vec4(255.0f));
     //color /= 255.0f;
     //std::string font = table.Get<std::string>("font");
-    auto r = std::unique_ptr<TextView>(new TextView(pos, size.x, size.y, fontSize, lines, factory));
+    auto r = std::make_shared<TextView>(pos, size.x, size.y, fontSize, lines, factory);
     r->SetTag(tag);
     return r;
 

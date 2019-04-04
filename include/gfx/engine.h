@@ -37,6 +37,8 @@ public:
     void SetViewport(float x, float y, float width, float height);
     void Remove(Entity*);
 
+
+
     template <typename T>
     T* GetRef(const std::string& id) {
         auto it = m_taggedReferences.find(id);

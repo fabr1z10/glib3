@@ -5,7 +5,7 @@
 #include <gfx/components/animator.h>
 #include <gfx/engine.h>
 
-std::unique_ptr<Entity> SpriteFactory::Create (luabridge::LuaRef& ref) {
+std::shared_ptr<Entity> SpriteFactory::Create (luabridge::LuaRef& ref) {
     LuaTable table(ref);
     std::string tag = table.Get<std::string>("tag", "");
     std::string name = table.Get<std::string>("name", "");
@@ -36,7 +36,7 @@ std::unique_ptr<Entity> SpriteFactory::Create (luabridge::LuaRef& ref) {
         luabridge::LuaRef c = table.Get<luabridge::LuaRef>("components");
         for (int i = 0; i < c.length(); ++i) {
             luabridge::LuaRef rcomponent = c[i+1];
-            auto component = factory->GetShared<Component>(rcomponent);
+            auto component = factory->makeComponent(rcomponent);
             entity->AddComponent(component);
         }
     }
@@ -52,7 +52,7 @@ std::unique_ptr<Entity> SpriteFactory::Create (luabridge::LuaRef& ref) {
         luabridge::LuaRef c = table.Get<luabridge::LuaRef>("children");
         for (int i = 0; i < c.length(); ++i) {
             luabridge::LuaRef child = c[i+1];
-            auto childEntity = factory->GetShared<Entity>(child);
+            auto childEntity = factory->makeEntity(child);
             if (childEntity != nullptr)
                 entity->AddChild(childEntity);
         }
@@ -61,7 +61,7 @@ std::unique_ptr<Entity> SpriteFactory::Create (luabridge::LuaRef& ref) {
     return entity;
 }
 
-std::unique_ptr<Entity> SpriteFactory::Create (std::shared_ptr<IModel> mesh) {
+std::shared_ptr<Entity> SpriteFactory::Create (std::shared_ptr<IModel> mesh) {
     switch (mesh->GetType()) {
         case ModelType::SIMPLESPRITE: {
             auto ptr = std::dynamic_pointer_cast<SimpleModel>(mesh);
@@ -75,9 +75,9 @@ std::unique_ptr<Entity> SpriteFactory::Create (std::shared_ptr<IModel> mesh) {
     return nullptr;
 }
 
-std::unique_ptr<Entity> SpriteFactory::Create(std::shared_ptr<SimpleModel> model) {
+std::shared_ptr<Entity> SpriteFactory::Create(std::shared_ptr<SimpleModel> model) {
 
-    auto entity = std::unique_ptr<Entity>(new Entity);
+    auto entity = std::make_shared<Entity>();
     auto renderer = std::make_shared<Renderer>();
     renderer->SetMesh(model->GetMesh());
 
@@ -87,8 +87,8 @@ std::unique_ptr<Entity> SpriteFactory::Create(std::shared_ptr<SimpleModel> model
     return entity;
 }
 
-std::unique_ptr<Entity> SpriteFactory::Create (std::shared_ptr<CompositeModel> model) {
-    auto entity = std::unique_ptr<Entity>(new Entity);
+std::shared_ptr<Entity> SpriteFactory::Create (std::shared_ptr<CompositeModel> model) {
+    auto entity = std::make_shared<Entity>();
     //auto& assetManager = Engine::get().GetAssetManager();
 
     std::unordered_map<std::string, std::shared_ptr<Entity>> entities;

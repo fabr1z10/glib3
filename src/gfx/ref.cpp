@@ -4,11 +4,12 @@
 int Ref::g_idCount = 0;
 std::unordered_map<int, Ref*> Ref::g_refs;
 
-Ref::Ref() : m_id{g_idCount++} {
+Ref::Ref() : m_id{g_idCount++}{
     g_refs[m_id] = this;
 }
 
 Ref::~Ref() {
+    //std::cout << "destroying ref\n";
     if (!m_tag.empty()) {
         Engine::get().RemoveTaggedRef(m_tag);
         m_tag.clear();

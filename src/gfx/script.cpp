@@ -17,7 +17,7 @@ void Script::PushToFrontier(int id) {
     m_activities[id]->Start();
 }
 
-void Script::AddActivity(int id, std::unique_ptr<Activity> act) {
+void Script::AddActivity(int id, std::shared_ptr<Activity> act) {
     m_externalToInternalIdMap[id] = m_activities.size();
     m_activities.push_back(std::move(act));
     m_edges.push_back(std::vector<size_t>());
