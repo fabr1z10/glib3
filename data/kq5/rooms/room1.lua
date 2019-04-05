@@ -6,7 +6,7 @@ roomDefinition = {
 	-- 	meleemap = { pos = items["lookout.path"].hotspot.walk_to, dir = "east"},
 	-- },
 	defaultroom = "meleemap",
-	depth = { type="linear_y", values= {0, 1, 144, 0} },
+	depth = { type="linear_y", values= {0, 1, 190, 0} },
 }
 
 room = scumm.factory.sci_room (roomDefinition)
@@ -14,7 +14,11 @@ room = scumm.factory.sci_room (roomDefinition)
 --local d = strings.dialogues.lookout.text
 
 room:add( {
-	-- { pos = {0,0,-3}, components = { { type="gfx", image="gfx/lookout_1.png" }}},
+	{ pos = {0, 0,-3}, components = { { type="gfx", image="gfx/001.png" }}},
+	{ pos = {78, 0,2}, components = { { type="gfx", image="gfx/001a.png" }}},
+	{ pos = {109, 28, glib.depth(1,0,0,190,28)}, components = { { type="gfx", image="gfx/001b.png" }}},
+	
+
  --    { pos = {81, 16, 3}, components = { { type="gfx", image="gfx/lookout_2.png" }}},
  --    { pos = {294, 33, 3}, components = { { type="gfx", image ="gfx/lookout_3.png" }}},
  --    scumm.factory.walkarea {

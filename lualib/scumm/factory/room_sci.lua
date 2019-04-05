@@ -37,9 +37,23 @@ function scumm.factory.sci_room (args)
 			-- end
 		},
 		engines = {
-			{ type = "hotspotmanager", keys = {
-				{ key = 299, func = function() monkey.endroom() end }
-			} },
+			{ 
+				type = "hotspotmanager", 
+				keys = {
+					{ key = 299, func = function() monkey.endroom() end }
+				},
+
+				rmbclick = function() 
+					variables.currentverb = variables.currentverb + 1
+					if (variables.currentverb > #variables.verbs) then
+						variables.currentverb = 1
+					end
+					print ("current verb = " .. variables.verbs[variables.currentverb].mnemonic)
+					local cursor = monkey.getEntity("cursor")
+					cursor.anim = variables.verbs[variables.currentverb].anim
+
+				end
+			},
 			{ type = "scheduler" }
 		},
 		-- assets = {
@@ -58,22 +72,66 @@ function scumm.factory.sci_room (args)
 					viewport = {0, 0, 320, 200}
 				},
 				children = {
-					{
-                	    pos = {0, 0, 0},
+					-- {
+     --            	    pos = {0, 0, 0},
+     --            		components = {
+	    --   					{ 
+					-- 			type ="hotspot",
+					-- 			priority = 0,
+					-- 			shape = {type="rect", width=320, height=200},
+					-- 			-- on click
+					-- 			-- LMB: run action
+					-- 			-- RMB: switch action
+					-- 			onclick = function() print ("ciao") end,
+
+					-- 			onrmbclick = function() 
+					-- 				print ("rmb") 
+					-- 				variables.currentverb = variables.currentverb + 1
+					-- 				if (variables.currentverb > #variables.verbs) then
+					-- 					variables.currentverb = 1
+										
+					-- 				end
+					-- 				print ("current verb = " .. variables.verbs[variables.currentverb].mnemonic)
+					-- 				local cursor = monkey.getEntity("cursor")
+					-- 				cursor.anim = variables.verbs[variables.currentverb].anim
+
+					-- 			end
+     --       					},
+     --       				}
+     --       			},
+           			{
+                	    pos = {20,50, 0},
                 		components = {
 	      					{ 
 								type ="hotspot",
-								priority = 0,
-								shape = {type="rect", width=320, height=200},
+								priority = 1,
+								shape = {type="rect", width=20, height=50},
 								-- on click
 								-- LMB: run action
 								-- RMB: switch action
-								onclick = function() print ("ciao") end,
-
-								onrmbclick = function() print ("rmb") end
-           					}
+								onclick = function() print ("ciao 2") end,
+           					},
            				}
-           			}
+
+           			},
+           			scumm.factory.object {
+						id="graham", 
+						pos={160,100, 0}, 
+						dir = "south",
+						follow = (room_width > 320 and enableScroll),
+						collide = args.collide
+					},
+					scumm.factory.walkarea { 
+						priority = 0, 
+						shape = { 
+			       			type = "poly", 
+
+	        				outline = {4,14,39,9,61,9,84,22,52,29,0,27,0,68,44,70,64,62,82,64,140,84,155,85,171,84,171,80,180,80,189,88,221,85,274,76,249,67,253,60,241,59,248,54,221,44,177,41,184,48,151,44,130,43,122,43,114,38,107,30,108,27,110,12,77,0,0,0},
+      						holes = {
+								{211,78,185,81,185,62,211,59}
+							}
+      					}	
+					},
 					-- scumm.factory.object {
 					-- 	id="guybrush", 
 					-- 	pos={startPos.pos[1], startPos.pos[2], 0}, 

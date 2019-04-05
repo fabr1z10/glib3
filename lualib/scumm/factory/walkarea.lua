@@ -4,7 +4,7 @@ scumm.factory.walkarea = function(args)
 		components = {
 	      	{ 
 				type ="walkarea",
-				priority = 0,
+				priority = args.priority or 0,
        			target = "player",
 				shape = args.shape,
 				blockedlines = args.blockedlines

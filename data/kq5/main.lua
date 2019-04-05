@@ -24,7 +24,14 @@ config = {
 --require ("text/" .. config.lang .."/text")
 
 variables = {
- 	inventory = { 	}
+    verbs = {
+        [1] = { mnemonic = "use", anim = "hand" },
+        [2] = { mnemonic = "talk", anim ="talk" },
+        [3] = { mnemonic = "walk", anim ="walk" },
+        [4] = { mnemonic = "look", anim = "look"}
+    },
+    currentverb = 1,
+    inventory = { 	}
 }
 
 require ("scumm")
@@ -41,7 +48,7 @@ dialogues = {}
 
 glib.load_folder("sprites")
 --glib.load_folder("factories")
---glib.load_folder("items")
+glib.load_folder("items")
 --glib.load_folder("dialogues")
 
 --require("defaultscripts")

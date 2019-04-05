@@ -202,6 +202,12 @@ void HotSpotManager::CursorPosCallback(GLFWwindow*, double x, double y) {
 
 
 void HotSpotManager::MouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
+    // if it's the RMB, we can have a custom handler
+    if (button == GLFW_MOUSE_BUTTON_RIGHT) {
+        if (action == GLFW_PRESS && m_rmbClick) m_rmbClick();
+        return;
+    }
+
     if (m_currentlyActiveHotSpot != nullptr && m_currentlyActiveHotSpot->GetObject()->IsActive()) {
         m_currentlyActiveHotSpot->onClick(m_worldCoordinates, button, action, mods);
     }

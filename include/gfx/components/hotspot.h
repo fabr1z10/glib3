@@ -73,6 +73,7 @@ public:
     void MouseButtonCallback(GLFWwindow*, int, int, int) override;
     void Enable(bool) override;
     void Update(double) override {}
+    void setRmbClickCallback(std::function<void()> f);
     //void Register (HotSpot*);
     //void Unregister (HotSpot*);
     //void AddGroup (int, const std::string& camId);
@@ -88,6 +89,7 @@ protected:
     HotSpot* m_currentlyActiveHotSpot;
     bool m_active;
     float m_pixelRatio;
+    std::function<void()> m_rmbClick;
     //std::unordered_map<int, std::unique_ptr<HotSpotGroup> > m_groups;
 };
 
@@ -95,4 +97,8 @@ inline void HotSpotManager::Enable(bool value) {
     m_active = value;
     if (value == false)
         m_currentlyActiveHotSpot= nullptr;
+}
+
+inline void HotSpotManager::setRmbClickCallback(std::function<void()> f) {
+    m_rmbClick = f;
 }

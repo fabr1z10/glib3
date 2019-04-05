@@ -58,3 +58,9 @@ function glib.curry2(f, arg)
        f(arg, x) 
     end 
 end
+
+function glib.depth(d1, z1, d2, z2, z)
+    local a = (d1-d2)/(z1-z2)
+    local b = d1-a*z1
+    return a*z+b
+end

@@ -642,6 +642,11 @@ std::shared_ptr<Runner> HotSpotManagerFactory::Create(luabridge::LuaRef& ref) {
             hsm->AddCallback(event, [f] () { f.execute(); });
         }
     }
+    if (table.HasKey("rmbclick")) {
+        LuaFunction f(table.Get<luabridge::LuaRef>("rmbclick"));
+        hsm->setRmbClickCallback([f] () { f.execute();});
+
+    }
 
 
     return hsm;
