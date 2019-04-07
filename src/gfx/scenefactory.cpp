@@ -123,6 +123,7 @@ SceneFactory::SceneFactory() {
     m_entityFactory.Add<EntityFactory>("default");
     m_entityFactory.Add<TextViewFactory>("textview");
     m_entityFactory.Add<SpriteFactory>("sprite");
+    m_entityFactory.Add<BoxedMessageFactory>("boxedmessage");
     //m_entityFactory.Add<HeightMapFactory>("heightmap");
 
     m_cameraFactory.Add<OrthoCamFactory>("ortho");

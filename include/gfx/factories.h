@@ -29,6 +29,7 @@ FACTORY(EntityFactory, Entity)
 FACTORY(OutlineTextFactory, Entity)
 FACTORY(ButtonFactory, Entity)
 FACTORY(TextViewFactory, Entity)
+FACTORY(BoxedMessageFactory, Entity)
 //FACTORY(SpriteFactory, Entity)
 //FACTORY(HeightMapFactory, Entity)
 

@@ -14,10 +14,25 @@ room = scumm.factory.sci_room (roomDefinition)
 --local d = strings.dialogues.lookout.text
 
 room:add( {
-	{ pos = {0, 0,-3}, components = { { type="gfx", image="gfx/001.png" }}},
+	--{ pos = {0, 0,-3}, components = { { type="gfx", image="gfx/001.png" }}},
 	{ pos = {78, 0,2}, components = { { type="gfx", image="gfx/001a.png" }}},
 	{ pos = {109, 28, glib.depth(1,0,0,190,28)}, components = { { type="gfx", image="gfx/001b.png" }}},
-	
+	scumm.factory.message { 
+		pos = {160, 100, 2}, 
+		message = "The red fox jumped over the ceiling. I am very happy because of it.", 
+        font="ui", 
+        size = 8,
+		maxwidth = 100, 
+        color = {0,0,0,255}, 
+        bgcolor = {235, 186, 130, 255}, 
+        padding = 16,
+		border = {
+			img = "gfx/border2.png", thickness=3
+		},
+		corner = {
+			img = "gfx/border.png"
+		} 
+    }	
 
  --    { pos = {81, 16, 3}, components = { { type="gfx", image="gfx/lookout_2.png" }}},
  --    { pos = {294, 33, 3}, components = { { type="gfx", image ="gfx/lookout_3.png" }}},
