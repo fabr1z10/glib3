@@ -104,8 +104,10 @@ FACTORY(EnableKeyActFactory, Activity)
 FACTORY(VirtualKeyActFactory, Activity)
 FACTORY(ScaleActFactory, Activity)
 FACTORY(SuspendScriptActFactory, Activity)
+FACTORY(SuspendAllScriptActFactory, Activity)
 FACTORY(ResumeScriptActFactory, Activity)
 FACTORY(KillScriptActFactory, Activity)
+FACTORY(WaitClickActFactory, Activity)
 
 // Asset
 FACTORY(SimpleModelFactory, IModel)

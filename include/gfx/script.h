@@ -21,6 +21,7 @@ public:
     void SetSuspended(bool);
     void SetLoop(int);
     void Print();
+    bool IsSuspended() const;
 private:
     void PushToFrontier(int);
     void ResetActivity(int);
@@ -46,4 +47,8 @@ private:
 
 inline bool Script::IsComplete() const {
     return m_complete;
+}
+
+inline bool Script::IsSuspended() const {
+
 }

@@ -47,3 +47,14 @@ Script* Scheduler::GetScript (const std::string& name) {
         GLIB_FAIL("Unknown script " << name);
     return it->second.get();
 }
+
+
+std::vector<std::string> Scheduler::GetActiveScripts() const {
+    std::vector<std::string> s;
+    for (const auto& p : m_scripts) {
+        if (!p.second->IsSuspended()) {
+            s.push_back(p.first);
+        }
+    }
+    return s;
+}

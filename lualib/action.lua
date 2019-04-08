@@ -73,6 +73,11 @@ action.suspend_script = function(args)
 	return { type="suspend_script", script = args.script}
 end
 
+action.suspend_all_scripts = function(args) 
+	glib.assert (args.value, "value")
+	return { type="suspend_all", value = args.value} 
+end
+
 action.resume_script = function(args) 
 	assert (args.script, "script")
 	return {type="resume_script", script = args.script}
@@ -148,4 +153,8 @@ action.show_message = function(args)
 	glib.assert (args.color, "color")
 	glib.assert (args.pos, "pos")
 	return { type="show_message", message = args.message, color = args.color, pos = args.pos}
+end
+
+action.wait_click = function(args) 
+	return { type="waitclick"}
 end

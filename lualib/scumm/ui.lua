@@ -289,3 +289,40 @@ function scumm.ui.handleDialogueButton(entity)
 
      monkey.play(s)
 end
+
+function scumm.ui.pause_script (value) 
+    return {
+        { type=action.callfunc, args = { func = function() 
+            local a =monkey.getEntity("main")
+            a:enableupdate(not value)
+            a:enablecontrols(not value)
+        end}},
+        { type=action.suspend_all_scripts, args = {value = value}},
+    }
+end
+
+
+function scumm.ui.runSciAction (objId)
+    -- enter paused mode
+    -- get current action
+    local currentVerb = variables.verbs[variables.currentverb].mnemonic
+    print ("current verb: " .. currentVerb)
+    print (tostring(items[objId].pos[1]))
+    if (items[objId].actions == nil or items[objId].actions[currentVerb] == nil) then
+        print ("no action <" .. currentVerb .. "> defined for: " .. objId)
+        return
+    end
+
+    local actions = {
+        scumm.ui.pause_script (true),
+        items[objId].actions[currentVerb],
+        scumm.ui.pause_script (false)
+    }
+    local s = script.make(actions)
+    monkey.play(s)
+
+
+
+end
+
+

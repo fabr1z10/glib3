@@ -154,6 +154,8 @@ std::shared_ptr<Entity> BoxedMessageFactory::Create(luabridge::LuaRef& ref) {
     LuaTable table(ref);
 
     auto entity = std::make_shared<Entity>();
+    std::string tag = table.Get<std::string>("tag");
+    if (!tag.empty()) entity->SetTag(tag);
     glm::vec3 pos = table.Get<glm::vec3>("pos");
     entity->SetPosition(pos);
     std::string font = table.Get<std::string>("font");

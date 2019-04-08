@@ -12,6 +12,16 @@ private:
     std::string m_script;
 };
 
+class SuspendActiveScripts : public Activity {
+public:
+    SuspendActiveScripts(bool) ;
+    void Start() override ;
+    void Run (float dt) override {}
+private:
+    bool m_value;
+    std::vector<std::string> m_scriptsToSuspend;
+};
+
 
 class ResumeScript : public Activity {
 public:

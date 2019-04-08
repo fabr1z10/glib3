@@ -21,7 +21,7 @@ config = {
     default_verb = "walk",
 }
 
---require ("text/" .. config.lang .."/text")
+require ("text/" .. config.lang .."/text")
 
 variables = {
     verbs = {
@@ -45,7 +45,30 @@ spritesheets = {}
 models = {}
 dialogues = {}
 -- sprites = {}
+function box (args) 
+    return {
+        { type = action.create_object, args = { factory = scumm.factory.message, args = {
+            tag = "_msg",
+            pos = {160, 100, 2}, 
+            message = args.msg,
+            font="ui", 
+            size = 8,
+            maxwidth = 100, 
+            color = {0,0,0,255}, 
+            bgcolor = {235, 186, 130, 255}, 
+            padding = 16,
+            border = {
+                img = "gfx/border2.png", thickness=3
+            },
+            corner = {
+                img = "gfx/border.png"
+            } 
+        }}},
+        { type = action.wait_click },
+        { type = action.remove_object, args = {tag="_msg"}}
+    }
 
+end
 glib.load_folder("sprites")
 --glib.load_folder("factories")
 glib.load_folder("items")

@@ -7,6 +7,7 @@ scumm.factory.message = function(args)
 	return {
 		type ="boxedmessage",
 		pos = args.pos,
+		tag = args.tag,
 		-- components = {
 		-- 	{ type="text", font=args.font, id=args.message, size=args.size, color= {255,255,255,255}, maxwidth=100}
 		-- }

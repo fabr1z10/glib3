@@ -21,7 +21,7 @@
 #include <gfx/activities/scale.h>
 #include <gfx/activities/scriptactions.h>
 #include <gfx/activities/setstate.h>
-
+#include <gfx/activities/waitclick.h>
 
 
 
@@ -244,6 +244,17 @@ std::shared_ptr<Activity> SuspendScriptActFactory::Create(luabridge::LuaRef &ref
     std::string script = table.Get<std::string>("script");
     return std::make_shared<SuspendScript>(script);
 }
+
+std::shared_ptr<Activity> SuspendAllScriptActFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    bool value = table.Get<bool>("value");
+    return std::make_shared<SuspendActiveScripts>(value);
+}
+
+std::shared_ptr<Activity> WaitClickActFactory::Create(luabridge::LuaRef &ref) {
+    return std::make_shared<WaitClick>();
+}
+
 
 std::shared_ptr<Activity> ResumeScriptActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);

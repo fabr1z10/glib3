@@ -68,17 +68,17 @@ models["graham"] = {
 	ppu=1, animations = {
 		{ name = "idle_s", frames = { 
 			{ duration = 10*dt, quads = {{ id = s.graham_idle_body_front }, {id = s.graham_idle_head_front_1, pos = idle_s_offset }}},
-			{ duration = 10*dt, quads = {{ id = s.graham_idle_body_front }, {id = s.graham_idle_head_front_2, pos = idle_s_offset }}},
+			{ duration = 10*dt, quads = {{ id = s.graham_idle_body_front }, {id = s.graham_idle_head_front_2, pos = {0,36} }}},
 			{ duration = 10*dt, quads = {{ id = s.graham_idle_body_front }, {id = s.graham_idle_head_front_1, pos = idle_s_offset }}},
-			{ duration = 10*dt, quads = {{ id = s.graham_idle_body_front }, {id = s.graham_idle_head_front_3, pos = idle_s_offset }}}
+			{ duration = 10*dt, quads = {{ id = s.graham_idle_body_front }, {id = s.graham_idle_head_front_3, pos = {0,36}}}}
 		}},
 		{ name = "walk_s", frames = { 
-			{ duration = dt, quads = {{ id = s.graham_walk_body_front_1 }, {id = s.graham_idle_head_front_1, pos=idle_s_offset }}},
-			{ duration = dt, quads = {{ id = s.graham_walk_body_front_2 }, {id = s.graham_idle_head_front_1, pos=idle_s_offset }}},
-			{ duration = dt, quads = {{ id = s.graham_walk_body_front_3 }, {id = s.graham_idle_head_front_1, pos=idle_s_offset }}},
-			{ duration = dt, quads = {{ id = s.graham_walk_body_front_4 }, {id = s.graham_idle_head_front_1, pos=idle_s_offset }}},
-			{ duration = dt, quads = {{ id = s.graham_walk_body_front_5 }, {id = s.graham_idle_head_front_1, pos=idle_s_offset }}},
-			{ duration = dt, quads = {{ id = s.graham_walk_body_front_6 }, {id = s.graham_idle_head_front_1, pos=idle_s_offset }}}
+			{ duration = dt, quads = {{ id = s.graham_walk_body_front_1 }, {id = s.graham_idle_head_front_1, pos={0,37} }}},
+			{ duration = dt, quads = {{ id = s.graham_walk_body_front_2 }, {id = s.graham_idle_head_front_1, pos={0,38} }}},
+			{ duration = dt, quads = {{ id = s.graham_walk_body_front_3 }, {id = s.graham_idle_head_front_1, pos={0,36} }}},
+			{ duration = dt, quads = {{ id = s.graham_walk_body_front_4 }, {id = s.graham_idle_head_front_1, pos={0,37} }}},
+			{ duration = dt, quads = {{ id = s.graham_walk_body_front_5 }, {id = s.graham_idle_head_front_1, pos={0,38} }}},
+			{ duration = dt, quads = {{ id = s.graham_walk_body_front_6 }, {id = s.graham_idle_head_front_1, pos={0,36} }}}
 		}},
 		{ name = "idle_e", frames = { 
 			{ duration = 10*dt, quads = {{ id = s.graham_idle_body_side }, {id = s.graham_idle_head_side_1, pos = idle_e_offset }}},
@@ -87,14 +87,14 @@ models["graham"] = {
 			{ duration = 10*dt, quads = {{ id = s.graham_idle_body_side }, {id = s.graham_idle_head_side_3, pos = idle_e_offset }}}
 		}},
 		{ name = "walk_e", frames = { 
-			{ duration = dt, quads = {{ id = s.graham_walk_body_side_1 }, {id = s.graham_idle_head_side_1, pos = idle_e_offset }}},
-			{ duration = dt, quads = {{ id = s.graham_walk_body_side_2 }, {id = s.graham_idle_head_side_1, pos = idle_e_offset }}},
-			{ duration = dt, quads = {{ id = s.graham_walk_body_side_3 }, {id = s.graham_idle_head_side_1, pos = idle_e_offset }}},
-			{ duration = dt, quads = {{ id = s.graham_walk_body_side_4 }, {id = s.graham_idle_head_side_1, pos = idle_e_offset }}},
-			{ duration = dt, quads = {{ id = s.graham_walk_body_side_5 }, {id = s.graham_idle_head_side_1, pos = idle_e_offset }}},
-			{ duration = dt, quads = {{ id = s.graham_walk_body_side_6 }, {id = s.graham_idle_head_side_1, pos = idle_e_offset }}},
-			{ duration = dt, quads = {{ id = s.graham_walk_body_side_7 }, {id = s.graham_idle_head_side_1, pos = idle_e_offset }}},
-			{ duration = dt, quads = {{ id = s.graham_walk_body_side_8 }, {id = s.graham_idle_head_side_1, pos = idle_e_offset }}}
+			{ duration = dt, quads = {{ id = s.graham_walk_body_side_1 }, {id = s.graham_idle_head_side_1, pos = {0, 37} }}},
+			{ duration = dt, quads = {{ id = s.graham_walk_body_side_2 }, {id = s.graham_idle_head_side_1, pos = {0, 37} }}},
+			{ duration = dt, quads = {{ id = s.graham_walk_body_side_3 }, {id = s.graham_idle_head_side_1, pos = {0, 36} }}},
+			{ duration = dt, quads = {{ id = s.graham_walk_body_side_4 }, {id = s.graham_idle_head_side_1, pos = {0, 36} }}},
+			{ duration = dt, quads = {{ id = s.graham_walk_body_side_5 }, {id = s.graham_idle_head_side_1, pos = {0, 37} }}},
+			{ duration = dt, quads = {{ id = s.graham_walk_body_side_6 }, {id = s.graham_idle_head_side_1, pos = {0, 37} }}},
+			{ duration = dt, quads = {{ id = s.graham_walk_body_side_7 }, {id = s.graham_idle_head_side_1, pos = {0, 36} }}},
+			{ duration = dt, quads = {{ id = s.graham_walk_body_side_8 }, {id = s.graham_idle_head_side_1, pos = {0, 36} }}}
 		}},
 		{ name = "idle_n", frames = { 
 			{ duration = 10*dt, quads = {{ id = s.graham_idle_body_back }, {id = s.graham_idle_head_back_1, pos = idle_n_offset }}},
@@ -103,12 +103,12 @@ models["graham"] = {
 			{ duration = 10*dt, quads = {{ id = s.graham_idle_body_back }, {id = s.graham_idle_head_back_3, pos = idle_n_offset }}}
 		}},
 		{ name = "walk_n", frames = { 
-			{ duration = dt, quads = {{ id = s.graham_walk_body_back_1 }, {id = s.graham_idle_head_back_1, pos = idle_n_offset }}},
-			{ duration = dt, quads = {{ id = s.graham_walk_body_back_2 }, {id = s.graham_idle_head_back_1, pos = idle_n_offset }}},
-			{ duration = dt, quads = {{ id = s.graham_walk_body_back_3 }, {id = s.graham_idle_head_back_1, pos = idle_n_offset }}},
-			{ duration = dt, quads = {{ id = s.graham_walk_body_back_4 }, {id = s.graham_idle_head_back_1, pos = idle_n_offset }}},
-			{ duration = dt, quads = {{ id = s.graham_walk_body_back_5 }, {id = s.graham_idle_head_back_1, pos = idle_n_offset }}},
-			{ duration = dt, quads = {{ id = s.graham_walk_body_back_6 }, {id = s.graham_idle_head_back_1, pos = idle_n_offset }}}
+			{ duration = dt, quads = {{ id = s.graham_walk_body_back_1 }, {id = s.graham_idle_head_back_1, pos = {0, 36} }}},
+			{ duration = dt, quads = {{ id = s.graham_walk_body_back_2 }, {id = s.graham_idle_head_back_1, pos = {0, 38} }}},
+			{ duration = dt, quads = {{ id = s.graham_walk_body_back_3 }, {id = s.graham_idle_head_back_1, pos = {0, 37} }}},
+			{ duration = dt, quads = {{ id = s.graham_walk_body_back_4 }, {id = s.graham_idle_head_back_1, pos = {0, 36} }}},
+			{ duration = dt, quads = {{ id = s.graham_walk_body_back_5 }, {id = s.graham_idle_head_back_1, pos = {0, 38} }}},
+			{ duration = dt, quads = {{ id = s.graham_walk_body_back_6 }, {id = s.graham_idle_head_back_1, pos = {0, 37} }}}
 		}}
 	}
 
