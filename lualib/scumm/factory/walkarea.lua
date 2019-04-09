@@ -1,6 +1,7 @@
 scumm.factory.walkarea = function(args)
 	return 	{
 		pos = {0,0,0},
+		tag = args.tag,
 		components = {
 	      	{ 
 				type ="walkarea",
@@ -9,6 +10,7 @@ scumm.factory.walkarea = function(args)
 				shape = args.shape,
 				blockedlines = args.blockedlines
 			}
-      	}
+      	},
+      	children = args.children
 	}
 end

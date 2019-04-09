@@ -59,7 +59,7 @@ std::shared_ptr<Entity> PlatformerFactory::Create() {
         luabridge::LuaRef engines = roomTable.Get<luabridge::LuaRef>("engines");
         for (int i = 0; i < engines.length(); ++i) {
             luabridge::LuaRef e = engines[i+1];
-            auto runner = GetShared<Runner>(e);
+            auto runner = makeRunner(e);
             Engine::get().AddRunner(runner);
         }
     }
@@ -78,7 +78,7 @@ std::shared_ptr<Entity> PlatformerFactory::Create() {
     luabridge::LuaRef rscene = roomTable.Get<luabridge::LuaRef>("scene");
     for (int i = 0; i < rscene.length(); ++i) {
         luabridge::LuaRef rnode = rscene[i+1];
-        auto node  = GetShared<Entity>(rnode);
+        auto node  = makeEntity(rnode);
         rootNode->AddChild(node);
     }
 
@@ -103,7 +103,7 @@ std::shared_ptr<Entity> PlatformerFactory::Create() {
             luabridge::LuaRef rChildren = rnode["children"];
             for (int j = 0; j < rChildren.length(); j++) {
                 luabridge::LuaRef rChild = rChildren[j+1];
-                auto node  = GetShared<Entity>(rChild);
+                auto node  = makeEntity(rChild);
                 dynBuilder->AddItem(p, node);
             }
         }

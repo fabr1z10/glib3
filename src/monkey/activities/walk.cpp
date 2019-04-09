@@ -27,13 +27,25 @@ void Walk::Start() {
     if (!m_tag.empty()) {
         m_actorId = Engine::get().getIdFromTag(m_tag);
     }
+    // use the walk-area associated with the character
 
-    auto walkArea = Engine::get().GetRef<WalkArea>("walkarea");
+    //auto walkArea = Engine::get().GetRef<WalkArea>("walkarea");
+
+    //std::cout << "Calling walk for " << m_actorId << " to " << m_p.x << ", " << m_p.y << "\n";
+    auto actor = Ref::GetFromId<Entity>(m_actorId);
+
+    // see if you have an associated walk-area
+    auto walkArea = actor->GetParent()->GetComponent<WalkArea>();
+    if (walkArea == nullptr) {
+        std::cerr << ("The character is unable to walk as it's not associated to a walk area!\n");
+        m_success = false;
+        SetComplete();
+        return;
+    }
+
     m_shape = walkArea->GetShape();
     auto blockedLines = walkArea->GetActiveWalls();
 
-    //std::cout << "Calling walk for " << m_actorId << " to " << m_p.x << ", " << m_p.y << "\n";
-    auto actor = Ref::GetFromId<Entity>(m_actorId); 
     glm::vec2 currentPos(actor->GetPosition());
 
     // if current position is not in shape

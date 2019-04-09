@@ -6,6 +6,9 @@ file(GLOB PLATFORMER_SRC *.cpp components/*.cpp activities/*.cpp states/*.cpp lu
 
 
 add_executable(platformer ${PLATFORMER_INCLUDE} ${PLATFORMER_SRC})
+
+include_directories(${INCLUDE_DIR} ${FREETYPE_INCLUDE_DIRS} ${GLM_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS} ${LUA_INCLUDE_DIR})
+
 target_link_libraries(platformer ${OPENGL_LIBRARIES} glfw ${GLEW_LIBRARIES} ${FREETYPE_LIBRARIES} ${LUA_LIBRARIES} ${PNG_LIBRARY}
         ${JPEG_LIBRARIES} gfx)
 if(APPLE)

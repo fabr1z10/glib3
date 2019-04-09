@@ -3,6 +3,7 @@
 #include <gfx/components/hotspot.h>
 #include <gfx/math/funcs.h>
 #include <gfx/math/geom.h>
+#include <gfx/lua/luafunc.h>
 
 class Scheduler;
 
@@ -17,9 +18,9 @@ public:
     WalkArea (const WalkArea&);
     std::shared_ptr<Component> clone() const override;
     /* m_depthFunc{nullptr}, m_scaleFunc{nullptr}*/
-    bool isMouseInside(glm::vec2) override {
-        return true;
-    }
+//    bool isMouseInside(glm::vec2) override {
+//        return true;
+//    }
     //float GetDepth (float x, float y);
     //float GetScale (float x, float y);
     void Start() override;
@@ -37,12 +38,15 @@ public:
     std::type_index GetType() override;
 private:
     int m_id;
+    Entity* m_player;
     std::vector<BlockedLine> m_walls;
     std::string m_playerId;
     //std::unique_ptr<Function2D> m_depthFunc;
     //std::unique_ptr<Function2D> m_scaleFunc;
     Scheduler* m_scheduler;
+
 };
+
 
 
 //inline void WalkArea::SetDepthFunction (std::unique_ptr<Function2D> func) {

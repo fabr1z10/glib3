@@ -16,7 +16,7 @@ fonts = {
 
 -- this is configuration for scumm
 config = {
-	start_room = "room1",
+	start_room = "room2",
 	lang = "eng",
     default_verb = "walk",
 }
@@ -77,5 +77,5 @@ glib.load_folder("items")
 --require("defaultscripts")
 
 --test.scummbar()
-variables._room = "room1"
+variables._room = "room2"
 

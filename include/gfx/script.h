@@ -50,5 +50,5 @@ inline bool Script::IsComplete() const {
 }
 
 inline bool Script::IsSuspended() const {
-
+    return m_suspended;
 }

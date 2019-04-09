@@ -23,17 +23,25 @@ void WalkArea::Start() {
     if (m_scheduler == nullptr) {
         GLIB_FAIL ("Walk area component needs a scheduler runner!");
     }
-    m_id = Engine::get().GetRef<Entity>(m_playerId)->GetId();
+    m_player = Engine::get().GetRef<Entity>(m_playerId);
+    m_id = m_player->GetId();
     
 }
 
 void WalkArea::onClick(glm::vec2 worldCoords, int button, int action, int mods) {
 
-    auto script = std::make_shared<Script>();
-    script->AddActivity(1, std::unique_ptr<Walk>(new Walk(m_id, worldCoords)));
-    script->AddEdge(0, 1);
-    m_scheduler->AddScript("_walk", script);
-
+    // here I need to answer this question:
+    // is the character on the same walkarea? (in this case, just a walk)
+    if (action == GLFW_PRESS) {
+        if (m_player->GetParent() != this->m_entity) {
+            std::cout << "Clicking on a different walkarea...";
+            // see if I have a handler for (from: this, to: that, pos: worldcoords)
+        }
+        auto script = std::make_shared<Script>();
+        script->AddActivity(1, std::unique_ptr<Walk>(new Walk(m_id, worldCoords)));
+        script->AddEdge(0, 1);
+        m_scheduler->AddScript("_walk", script);
+    }
 }
 
 //float WalkArea::GetDepth (float x, float y) {

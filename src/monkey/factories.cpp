@@ -50,7 +50,7 @@ std::shared_ptr<Component> WalkAreaComponentFactory::Create(luabridge::LuaRef& r
             hotspot->AddBlockedLine(A, B, active);
         }
     }
-    hotspot->SetTag("walkarea");
+    //hotspot->SetTag("walkarea");
     return hotspot;
 }
 
