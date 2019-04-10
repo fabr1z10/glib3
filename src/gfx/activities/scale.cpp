@@ -2,14 +2,14 @@
 #include <gfx/entity.h>
 #include <gfx/engine.h>
 
-ScaleTo::ScaleTo(const std::string& id, float duration, float scale) : Activity(), m_duration{duration}, m_scale{scale}, m_id(id)
+ScaleTo::ScaleTo(float duration, float scale) : TargetActivity(), m_duration{duration}, m_scale{scale}
 {}
 
 
 void ScaleTo::Start() {
-
+    TargetActivity::Start();
     // get the initial scale
-    m_entity = Engine::get().GetRef<Entity>(m_id);
+
     if (m_duration == 0.0f) {
 
         // immediate rescale

@@ -1,14 +1,14 @@
 #pragma once
 
 #include <string>
-#include <gfx/activity.h>
+#include <gfx/activities/targetactivity.h>
 
-class Flip : public Activity {
+class Flip : public TargetActivity {
 public:
     // mode = 0: just flip
     // mode = 1: flip right (ie no horizontal flip)
     // mode = 2: flip left (horizontal flip)
-    Flip(const std::string& id, int mode);
+    Flip(int mode);
     void Start() override;
     void Run(float) override {}
 private:

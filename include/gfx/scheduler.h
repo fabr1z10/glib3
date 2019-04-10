@@ -15,6 +15,7 @@ public:
     Script* GetScript (const std::string&);
     using ParentClass = Scheduler;
     std::vector<std::string> GetActiveScripts() const;
+    std::string toString() override;
 private:
     std::unordered_map<std::string, std::shared_ptr<Script> > m_queuedScripts;
     std::unordered_map<std::string, std::shared_ptr<Script> > m_scripts;

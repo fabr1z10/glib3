@@ -2,14 +2,14 @@
 #include <gfx/engine.h>
 #include <gfx/math/geom.h>
 
-Rotate::Rotate(const std::string& actorId, float degrees, float acceleration, float initialSpeed) :
-        Activity(), m_actorId(actorId), m_degrees(degrees), m_acceleration(acceleration), m_speed(initialSpeed), m_degreesCount(0.0f), m_entity(nullptr)
+Rotate::Rotate(float degrees, float acceleration, float initialSpeed) :
+        TargetActivity(), m_degrees(degrees), m_acceleration(acceleration), m_speed(initialSpeed), m_degreesCount(0.0f), m_entity(nullptr)
 {
 }
 
 void Rotate::Start() {
+    TargetActivity::Start();
 
-    m_entity = Engine::get().GetRef<Entity>(m_actorId);
     m_degreesCount = 0.0f;
 }
 

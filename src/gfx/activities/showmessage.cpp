@@ -7,11 +7,11 @@
 #include <glm/gtx/transform.hpp>
 
 void ShowMessage::Start() {
-    m_mainCam = Engine::get().GetRef<OrthographicCamera>("maincam");
-    auto scene = Engine::get().GetRef<Entity>("main");
+    m_mainCam = Ref::Get<OrthographicCamera>("maincam").get();
+    auto scene = Ref::Get<Entity>("main").get();
     glm::vec2 currentPos;
     if (m_actor != -1) {
-        auto actor = Ref::GetFromId<Entity>(m_actor);
+        auto actor = Ref::Get<Entity>(m_actor);
         currentPos = (actor->GetPosition());
     } else {
         currentPos = m_pos;
@@ -53,7 +53,7 @@ void ShowMessage::Start() {
     parent->SetPosition(textpos);
     //parent->SetLayer(1);
     scene->AddChild(parent);
-    m_generatedEntity = parent.get();
+    m_generatedEntity = parent;
     m_elapsedTime=0.0f;
     //SetComplete();
 }

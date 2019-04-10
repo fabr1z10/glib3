@@ -1,11 +1,11 @@
 #pragma once
 
-#include <gfx/activity.h>
+#include <gfx/activities/targetactivity.h>
 #include <gfx/entity.h>
 
-class ScaleTo : public Activity {
+class ScaleTo : public TargetActivity {
 public:
-    ScaleTo(const std::string& id, float duration, float scale);
+    ScaleTo( float duration, float scale);
     void Start() override;
     void Run (float dt) override;
 private:

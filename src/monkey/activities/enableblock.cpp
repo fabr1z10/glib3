@@ -3,7 +3,7 @@
 #include <gfx/engine.h>
 
 void EnableBlock::Start() {
-    auto walkarea = Engine::get().GetRef<WalkArea>("walkarea");
+    auto walkarea = Ref::Get<WalkArea>("walkarea").get();
     walkarea->EnableBlockedLine(m_wall, m_active);
     SetComplete();
 

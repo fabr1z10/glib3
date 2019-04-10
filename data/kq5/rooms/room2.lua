@@ -20,6 +20,18 @@ room:add( {
 	scumm.factory.walkarea {
 		tag = "walkarea_1",
 		priority = 0, 
+		handler = function(walkarea_from, x, y) 
+			print ("sti cazzi! Cerco di andare da walkarea " .. walkarea_from .. " a walk1(" .. tostring(x) .. ", " .. tostring(y)) 
+			-- local actions = {
+			-- 	{ type = scumm.action.walkto, args = {tag="player", pos ={70,120}}},
+			-- 	{ type = scumm.action.turn, args={tag="player", dir="north"}},
+			-- 	{ type = action.treemove, args = {tag="player", parent="walkarea_1"}
+
+			-- }
+			-- local s = script.make(actions)
+			-- s.name="_walk"
+			-- monkey.play(s)
+		end,
 		shape = { 
 			type = "poly", 
 			outline = {0,0,0,110,30,124,52,124,77,119,103,115,142,89,152,86,152,0}
@@ -34,10 +46,12 @@ room:add( {
 			type = "poly", 
 			outline = {188,86,248,66,266,62,320,37,320,0,0,0,0,50,40,70,89,78,152,86}
 		},
+		--handler = 10,
+		--scale = { type="constant", value=0.5},
 		children = {
         	scumm.factory.object {
 				id="graham", 
-				pos={160,100, 0}, 
+				pos={160,50, 0}, 
 				dir = "south",
 				follow = false,
 				--collide = args.collide

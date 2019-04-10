@@ -1,11 +1,11 @@
 #pragma once
 
-#include <gfx/activity.h>
+#include <gfx/activities/targetactivity.h>
 #include <gfx/entity.h>
 
-class Rotate : public Activity {
+class Rotate : public TargetActivity {
 public:
-    Rotate(const std::string& actorId, float degrees, float acceleration, float initialSpeed);
+    Rotate(float degrees, float acceleration, float initialSpeed);
     void Start() override;
     void Run (float dt) override;
     void Reset() override {}

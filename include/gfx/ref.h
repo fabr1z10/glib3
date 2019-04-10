@@ -3,28 +3,64 @@
 #include <string>
 #include <unordered_map>
 #include <gfx/error.h>
+#include <memory>
 
 class Ref {
 public:
-    Ref();
+    template <typename T, typename ...Args>
+    static std::shared_ptr<T> Create (Args... a) {
+        auto ptr = std::make_shared<T>(a...);
+        g_refs[ptr->GetId()] = ptr;
+        return ptr;
+    }
+
     virtual ~Ref();
     std::string GetTag() const;
     void SetTag(const std::string&);
     int GetId() const;
-    static Ref* Get(int);
+    static int GetId(const std::string &tag) {
+        auto it = g_taggedRefs.find(tag);
+        if (it == g_taggedRefs.end())
+            return -1;
+        auto ptr = it->second.lock();
+        if (ptr) {
+            return ptr->GetId();
+        }
+        return -1;
+
+    }
+
     template<class T>
-    static T* GetFromId(int id) {
+    static std::shared_ptr<T> Get(int id) {
         auto it = g_refs.find(id);
         if (it == g_refs.end()) {
             GLIB_FAIL("Unknown id!");
         }
-        return dynamic_cast<T*>(it->second);
+        return std::dynamic_pointer_cast<T>(std::shared_ptr<Ref>(it->second));
     }
 
-    bool IsAlive(int);
-private:
+
+
+    template<class T>
+    static std::shared_ptr<T> Get(const std::string& tag) {
+        auto it = g_taggedRefs.find(tag);
+        if (it == g_taggedRefs.end()) {
+            GLIB_FAIL("Unknown tag!");
+        }
+        return std::dynamic_pointer_cast<T>(std::shared_ptr<Ref>(it->second));
+    }
+
+    static bool isAlive(int);
+    static void dump ();
+    virtual std::string toString();
+    // bool IsAlive(int);
+protected:
+    Ref();
+
     static int g_idCount;
-    static std::unordered_map<int, Ref*> g_refs;
+    static std::unordered_map<int, std::weak_ptr<Ref>> g_refs;
+    static std::unordered_map<std::string, std::weak_ptr<Ref>> g_taggedRefs;
+
     // unique identifier
     int m_id;
     std::string m_tag;

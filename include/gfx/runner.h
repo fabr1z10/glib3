@@ -9,6 +9,7 @@ class Runner : public Ref {
 public:
     Runner() : Ref(), m_active{true} {}
     virtual ~Runner(){}
+    virtual void Init () {}
     virtual void Update(double) = 0;
     bool isActive() const;
     void setActive(bool);

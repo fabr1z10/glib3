@@ -42,7 +42,7 @@
 #include <gfx/components/cursor.h>
 
 std::shared_ptr<Component> TextComponentFactory::Create(luabridge::LuaRef &ref) {
-    auto renderer = std::make_shared<Renderer>();
+    auto renderer = Ref::Create<Renderer>();
     LuaTable table(ref);
     std::string text = table.Get<std::string>("id");
     std::string font = table.Get<std::string>("font");
@@ -64,7 +64,7 @@ std::shared_ptr<Component> TextComponentFactory::Create(luabridge::LuaRef &ref) 
 std::shared_ptr<Component> GfxComponentFactory::Create(luabridge::LuaRef & ref) {
     LuaTable table(ref);
 
-    auto renderer = std::make_shared<Renderer>();
+    auto renderer = Ref::Create<Renderer>();
 
 
 
@@ -134,12 +134,12 @@ std::shared_ptr<Component> LightComponentFactory::Create(luabridge::LuaRef &ref)
 
         glm::vec3 color = table.Get<glm::vec3>("color");
         color /= 255.0f;
-        return std::make_shared<AmbientLight>(color);
+        return Ref::Create<AmbientLight>(color);
     } else if (cl=="directional") {
         glm::vec3 dir = table.Get<glm::vec3>("dir");
         glm::vec3 color = table.Get<glm::vec3>("color");
         color /= 255.0f;
-        return std::make_shared<DirectionalLight>(dir, color);
+        return Ref::Create<DirectionalLight>(dir, color);
 
     } else {
         GLIB_FAIL("Unknown light class: " << cl);
@@ -150,7 +150,7 @@ std::shared_ptr<Component> LightComponentFactory::Create(luabridge::LuaRef &ref)
 std::shared_ptr<Component> Gfx3DComponentFactory::Create(luabridge::LuaRef & ref){
     LuaTable table(ref);
 
-    auto renderer = std::make_shared<Renderer>();
+    auto renderer = Ref::Create<Renderer>();
     std::string shape = table.Get<std::string>("shape");
     if (shape == "plane") {
         float width = table.Get<float>("width");
@@ -191,7 +191,7 @@ std::shared_ptr<Component> ColliderComponentFactory::Create(luabridge::LuaRef &r
     int mask = table.Get<int>("mask");
     
 
-    auto coll = std::make_shared<Collider>(shape, tag, flag, mask);
+    auto coll = Ref::Create<Collider>(shape, tag, flag, mask);
     return coll;
 }
 
@@ -201,7 +201,7 @@ std::shared_ptr<Component> ParallaxComponentFactory::Create(luabridge::LuaRef &r
     float factor = table.Get<float>("factor");
     float width = table.Get<float>("width");
     float height = table.Get<float>("width");
-    return std::make_shared<Parallax>(cam, factor, width, height);
+    return Ref::Create<Parallax>(cam, factor, width, height);
 }
 
 std::shared_ptr<Component> MultiColliderComponentFactory::Create(luabridge::LuaRef &ref) {
@@ -221,7 +221,7 @@ std::shared_ptr<Component> MultiColliderComponentFactory::Create(luabridge::LuaR
         std::string name = shapeR["name"].cast<std::string>();
         shapes[name] = shape;
     }
-    auto coll = std::make_shared<MultiCollider>(shapes, tag, flag, mask, initShape);
+    auto coll = Ref::Create<MultiCollider>(shapes, tag, flag, mask, initShape);
 
     return coll;
 }
@@ -304,9 +304,9 @@ std::shared_ptr<Component> HotSpotComponentFactory::Create(luabridge::LuaRef& re
     if (table.HasKey("shape")) {
         luabridge::LuaRef rshape = table.Get<luabridge::LuaRef>("shape");
         auto shape = factory->makeShape(rshape);
-        hotspot = std::make_shared<ScriptHotSpot>(shape, priority);
+        hotspot = Ref::Create<ScriptHotSpot>(shape, priority);
     } else {
-        hotspot = std::make_shared<ScriptHotSpot>(priority);
+        hotspot = Ref::Create<ScriptHotSpot>(priority);
     }
     if (table.HasKey("onenter")) {
         luabridge::LuaRef r = table.Get<luabridge::LuaRef>("onenter");
@@ -335,7 +335,7 @@ std::shared_ptr<Component> HotSpotComponentFactory::Create(luabridge::LuaRef& re
 
 std::shared_ptr<Component> DepthComponentFactory::Create(luabridge::LuaRef & ref) {
     LuaTable table(ref);
-    auto comp = std::unique_ptr<DepthCalculator>(new DepthCalculator);
+    auto comp = Ref::Create<DepthCalculator>();
     if (table.HasKey("depth")) {
         luabridge::LuaRef dref = table.Get<luabridge::LuaRef>("depth");
         auto depthFunc = GetFunc2D(dref);
@@ -355,7 +355,7 @@ std::shared_ptr<Component> FollowComponentFactory::Create(luabridge::LuaRef &ref
     std::string cam = table.Get<std::string>("cam");
     glm::vec3 relPos = table.Get<glm::vec3>("relativepos");
     glm::vec3 up = table.Get<glm::vec3>("up");
-    auto f = std::unique_ptr<Follow>(new Follow(cam, relPos, up));
+    auto f = Ref::Create<Follow>(cam, relPos, up);
     if (table.HasKey("z")) {
         float z = table.Get<float>("z");
         f->fixZ(z);
@@ -378,13 +378,13 @@ std::shared_ptr<Component> Controller2DComponentFactory::Create(luabridge::LuaRe
     int horCount = table.Get<int>("horizontalrays", 4);
     int vertCount = table.Get<int>("veticalrays", 4);
     float skinWidth = table.Get<float>("skinwidth", .015f);
-    return std::unique_ptr<Controller2D>(new Controller2D(maxClimbAngle, maxDescendAngle, skinWidth, horCount, vertCount));
+    return Ref::Create<Controller2D>(maxClimbAngle, maxDescendAngle, skinWidth, horCount, vertCount);
 }
 
 std::shared_ptr<Component> Dynamics2DComponentFactory::Create(luabridge::LuaRef & ref) {
     LuaTable table(ref);
     float g = table.Get<float>("gravity");
-    auto ptr =  std::unique_ptr<Dynamics2D>(new Dynamics2D(g));
+    auto ptr = Ref::Create<Dynamics2D>(g);
     if (table.HasKey("additional_info")) {
         luabridge::LuaRef ainfo = table.Get<luabridge::LuaRef>("additional_info");
         ptr->addAdditionalProps(ainfo);
@@ -394,7 +394,7 @@ std::shared_ptr<Component> Dynamics2DComponentFactory::Create(luabridge::LuaRef 
 
 std::shared_ptr<Component> PropertiesCompFactory::Create(luabridge::LuaRef & ref) {
     LuaTable table(ref);
-    auto ptr =  std::unique_ptr<Properties>(new Properties);
+    auto ptr = Ref::Create<Properties>();
     if (table.HasKey("additional_info")) {
         luabridge::LuaRef ainfo = table.Get<luabridge::LuaRef>("additional_info");
         ptr->addAdditionalProps(ainfo);
@@ -403,8 +403,9 @@ std::shared_ptr<Component> PropertiesCompFactory::Create(luabridge::LuaRef & ref
 }
 
 std::shared_ptr<Component> InfoComponentFactory::Create(luabridge::LuaRef & ref) {
-    auto comp = std::unique_ptr<LuaInfo>(new LuaInfo(ref));
-    return std::move(comp);
+    //auto comp = Ref::Create<LuaInfo>();
+    //return comp;
+    throw;
 }
 
 std::shared_ptr<Component> KeyboardInputMethodCompFactory::Create(luabridge::LuaRef &ref) {
@@ -471,11 +472,11 @@ std::shared_ptr<Function2D> GetFunc2D(luabridge::LuaRef& ref) {
 
 
 std::shared_ptr<Component> ShadowComponentFactory::Create(luabridge::LuaRef &) {
-    return std::make_shared<Shadow>();
+    return Ref::Create<Shadow>();
 }
 
 std::shared_ptr<Component> PlatformComponentFactory::Create(luabridge::LuaRef &) {
-    return std::make_shared<PlatformComponent>();
+    return Ref::Create<PlatformComponent>();
 }
 
 //std::unique_ptr<Component> BillboardComponentFactory::Create(luabridge::LuaRef &ref) {
@@ -485,7 +486,7 @@ std::shared_ptr<Component> PlatformComponentFactory::Create(luabridge::LuaRef &)
 //}
 
 std::shared_ptr<Component> FPSComponentFactory::Create(luabridge::LuaRef &ref) {
-    return std::make_shared<FPSCounter>();
+    return Ref::Create<FPSCounter>();
 }
 
 std::shared_ptr<Component> CursorComponentFactory::Create(luabridge::LuaRef& ref) {
@@ -626,7 +627,7 @@ std::shared_ptr<Component> CursorComponentFactory::Create(luabridge::LuaRef& ref
 
 
 std::shared_ptr<Runner> HotSpotManagerFactory::Create(luabridge::LuaRef& ref) {
-    auto hsm = std::unique_ptr<HotSpotManager>(new HotSpotManager);
+    auto hsm = Ref::Create<HotSpotManager>();
     LuaTable table(ref);
     if (table.HasKey("keys")) {
 
@@ -644,7 +645,12 @@ std::shared_ptr<Runner> HotSpotManagerFactory::Create(luabridge::LuaRef& ref) {
     }
     if (table.HasKey("rmbclick")) {
         LuaFunction f(table.Get<luabridge::LuaRef>("rmbclick"));
-        hsm->setRmbClickCallback([f] () { f.execute();});
+        hsm->setRmbClickCallback([f] (float x, float y) { f.execute(x, y);});
+
+    }
+    if (table.HasKey("lmbclick")) {
+        LuaFunction f(table.Get<luabridge::LuaRef>("lmbclick"));
+        hsm->setLmbClickCallback([f] (float x, float y) { f.execute(x, y);});
 
     }
 
@@ -655,15 +661,13 @@ std::shared_ptr<Runner> HotSpotManagerFactory::Create(luabridge::LuaRef& ref) {
 }
 
 std::shared_ptr<Runner> SchedulerFactory::Create(luabridge::LuaRef&) {
-    // set-up the scripting engine
-    auto scheduler = std::unique_ptr<Scheduler>(new Scheduler);
-    return scheduler;
+    return Ref::Create<Scheduler>();
 }
 
 std::shared_ptr<Runner> CollisionEngineFactory::Create(luabridge::LuaRef& ref) {
     LuaTable table(ref);
     glm::vec2 collisionSize = table.Get<glm::vec2>("size");
-    auto ce = std::unique_ptr<CollisionEngine>(new CollisionEngine(collisionSize.x, collisionSize.y));
+    auto ce = Ref::Create<CollisionEngine>(collisionSize.x, collisionSize.y);
     bool coll25 = table.Get<bool>("coll25", false);
     if (coll25) {
         float eps = table.Get<float>("eps");
@@ -696,7 +700,7 @@ std::shared_ptr<Runner> CollisionEngineFactory::Create(luabridge::LuaRef& ref) {
         ce->SetResponseManager(std::move(crm));
     }
 
-    return std::move(ce);
+    return ce;
 
 }
 

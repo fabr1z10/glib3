@@ -17,8 +17,6 @@ class Entity;
 
 class Component : public Ref {
 public:
-    Component() : Ref(), m_active{true} {}
-    Component(const Component&);
     virtual ~ Component() {}
     // called once when the entity is added to the scene
     virtual void Start() = 0;
@@ -34,6 +32,9 @@ public:
     virtual std::type_index GetType();
     virtual std::shared_ptr<Component> clone() const = 0;
 protected:
+    Component() : Ref(), m_active{true} {}
+    Component(const Component&);
+
     bool m_active;
     Entity* m_entity;
     

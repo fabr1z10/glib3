@@ -15,7 +15,7 @@ void Walk::SetComplete() {
 
     Activity::SetComplete();
     // success if it managed ot get to the final point
-    auto actor = Ref::GetFromId<Entity>(m_actorId);
+    auto actor = Ref::Get<Entity>(m_actorId);
     glm::vec2 currentPos(actor->GetPosition());
     m_success =(glm::length(m_p - currentPos) < 0.01);
 }
@@ -25,14 +25,14 @@ void Walk::Start() {
 
     // if the walk has a tag, then get the id
     if (!m_tag.empty()) {
-        m_actorId = Engine::get().getIdFromTag(m_tag);
+        m_actorId = Ref::GetId(m_tag);
     }
     // use the walk-area associated with the character
 
     //auto walkArea = Engine::get().GetRef<WalkArea>("walkarea");
 
     //std::cout << "Calling walk for " << m_actorId << " to " << m_p.x << ", " << m_p.y << "\n";
-    auto actor = Ref::GetFromId<Entity>(m_actorId);
+    auto actor = Ref::Get<Entity>(m_actorId);
 
     // see if you have an associated walk-area
     auto walkArea = actor->GetParent()->GetComponent<WalkArea>();

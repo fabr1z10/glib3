@@ -4,15 +4,14 @@
 #include <gfx/components/renderer.h>
 
 Blink::Blink(const std::string& actorId, float totalDuration, float blinkDuration) :
-        Activity(), m_actorId(actorId), m_duration(totalDuration), m_blinkDuration(blinkDuration)
+        TargetActivity(), m_duration(totalDuration), m_blinkDuration(blinkDuration)
 {}
 
 
 
 
 void Blink::Start() {
-
-    m_entity = Engine::get().GetRef<Entity>(m_actorId);
+    TargetActivity::Start();
     m_renderer = m_entity->GetComponent<Renderer>();
 
     if (m_renderer == nullptr)

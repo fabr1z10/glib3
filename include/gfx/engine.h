@@ -35,20 +35,10 @@ public:
     void UnregisterToKeyboardEvent(KeyboardListener*);
     glm::vec4 GetViewport(float x, float y, float width, float height);
     void SetViewport(float x, float y, float width, float height);
-    void Remove(Entity*);
+    void Remove(std::shared_ptr<Entity>);
+    void Remove(int);
 
 
-
-    template <typename T>
-    T* GetRef(const std::string& id) {
-        auto it = m_taggedReferences.find(id);
-        if (it == m_taggedReferences.end())
-            GLIB_FAIL("Unknown reference " << id);
-        T* cref = dynamic_cast<T*>(it->second);
-        if (cref == nullptr)
-            GLIB_FAIL("Reference " << id << " has incorrect type.");
-        return cref;
-    }
     template <class T>
     T* GetRunner() {
         auto it = m_runners.find(std::type_index(typeid(T)));
@@ -63,8 +53,6 @@ public:
         m_runners[c->GetType()] = c;
     }
 
-    void AddTaggedRef (const std::string&, Ref*);
-    void RemoveTaggedRef (const std::string&);
     void EndScene();
     glm::vec2 GetWindowSize() const;
     void SetWindowSize(glm::ivec2);
@@ -85,13 +73,12 @@ public:
     double GetFrameTime() const;
     void SetDirectory(const std::string&);
     std::string GetDirectory() const;
-    int getIdFromTag(const std::string& tag);
+
 private:
     friend class Singleton<Engine>;
     Engine() : m_mouseEnabled{true}, m_sceneFactory{nullptr} {}
-    std::unordered_map<std::string, Ref*> m_taggedReferences;
     void InitGL();
-    std::unordered_set<Entity*> m_garbage;
+    std::vector<std::shared_ptr<Entity>> m_garbage;
     std::unique_ptr<SceneFactory> m_sceneFactory;
     std::unordered_map<ShaderType, std::unique_ptr<Shader>, EnumClassHash> m_shaders;
     std::shared_ptr<Entity> m_scene;
@@ -154,8 +141,12 @@ inline void Engine::SetSceneFactory (std::unique_ptr<SceneFactory> factory) {
     m_sceneFactory = std::move(factory);
 }
 
-inline void Engine::Remove(Entity * entity) {
-    m_garbage.insert(entity);
+inline void Engine::Remove(std::shared_ptr<Entity> entity) {
+    m_garbage.push_back(entity);
+}
+
+inline void Engine::Remove(int id) {
+    m_garbage.push_back(Ref::Get<Entity>(id));
 }
 /*
 inline Shader* Engine::GetShader(ShaderType id) {

@@ -147,8 +147,13 @@ void Engine::MainLoop() {
         
         // start the scene (initialize components)
         m_running = true;
+        // init runners
+        for (auto& r : m_runners) {
+            r.second->Init();
+        }
         m_scene->Start();
         m_scene->Begin();
+
         //for (auto iter = m_scene->begin(); iter != m_scene->end(); ++iter) {
         //    iter->Start();
         //}
@@ -173,7 +178,7 @@ void Engine::MainLoop() {
                 if (!m_garbage.empty()) {
                     for (auto &g : m_garbage) {
                         auto parent = g->GetParent();
-                        parent->Remove(g);
+                        parent->Remove(g->GetId());
                     }
                     m_garbage.clear();
                 }
@@ -296,15 +301,6 @@ Engine::~Engine() {
     glfwTerminate();
 }
 
-void Engine::AddTaggedRef (const std::string& id, Ref* ref) {
-    //if (m_taggedReferences.find(id) != m_taggedReferences.end())
-      //  GLIB_FAIL("Duplicate tag = " << ref);
-    m_taggedReferences.insert(std::make_pair(id, ref));
-}
-
-void Engine::RemoveTaggedRef (const std::string& id) {
-    m_taggedReferences.erase(id);
-}
 
 void Engine::SetRenderingEngine(std::unique_ptr<RenderingEngine> engine) {
 
@@ -325,13 +321,5 @@ void Engine::SetDirectory(const std::string& dir)
     if (m_directory.back() != '/')
         m_directory.push_back('/');
 
-}
-
-int Engine::getIdFromTag(const std::string& tag) {
-    auto it =  m_taggedReferences.find(tag);
-    if (it == m_taggedReferences.end()) {
-        GLIB_FAIL("Don't know tag: " << tag);
-    }
-    return it->second->GetId();
 }
 

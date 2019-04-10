@@ -36,6 +36,7 @@ public:
     int GetGroup() const;
     int GetPriority() const;
     using ParentClass = HotSpot;
+
 protected:
     void AddDebugMesh();
     int m_priority;
@@ -68,12 +69,14 @@ public:
     HotSpotManager();
     //void Start() override ;
     //void Update (double dt) override ;
+    void Init() override;
     void CursorPosCallback(GLFWwindow*, double, double) override;
     void ScrollCallback(GLFWwindow*, double, double) override;
     void MouseButtonCallback(GLFWwindow*, int, int, int) override;
     void Enable(bool) override;
     void Update(double) override {}
-    void setRmbClickCallback(std::function<void()> f);
+    void setRmbClickCallback(std::function<void(float, float)> f);
+    void setLmbClickCallback(std::function<void(float, float)> f);
     //void Register (HotSpot*);
     //void Unregister (HotSpot*);
     //void AddGroup (int, const std::string& camId);
@@ -83,13 +86,17 @@ public:
 
     //void EnableGroup(int);
     //void DisableGroup(int);
+
     using ParentClass = HotSpotManager;
+    std::string toString() override;
 protected:
+    Camera* m_defaultCamera;
     glm::vec2 m_worldCoordinates;
     HotSpot* m_currentlyActiveHotSpot;
     bool m_active;
     float m_pixelRatio;
-    std::function<void()> m_rmbClick;
+    std::function<void(float, float)> m_rmbClick;
+    std::function<void(float, float)> m_lmbClick;
     //std::unordered_map<int, std::unique_ptr<HotSpotGroup> > m_groups;
 };
 
@@ -99,6 +106,10 @@ inline void HotSpotManager::Enable(bool value) {
         m_currentlyActiveHotSpot= nullptr;
 }
 
-inline void HotSpotManager::setRmbClickCallback(std::function<void()> f) {
+inline void HotSpotManager::setLmbClickCallback(std::function<void(float, float)> f) {
+    m_lmbClick = f;
+}
+
+inline void HotSpotManager::setRmbClickCallback(std::function<void(float, float)> f) {
     m_rmbClick = f;
 }

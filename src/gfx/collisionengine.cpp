@@ -345,3 +345,8 @@ RayCastHit2D CollisionEngine::Raycast (glm::vec3 rayOrigin, glm::vec2 rayDir, fl
 
 }
 
+std::string CollisionEngine::toString() {
+    std::stringstream stream;
+    stream << "[CollisionEngine](tag = " << m_tag << ", size = (" << m_width << ", " << m_height << ")";
+    return stream.str();
+}

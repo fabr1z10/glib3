@@ -12,7 +12,7 @@ std::shared_ptr<Component> CharacterStateFactory::Create(luabridge::LuaRef& ref)
     LuaTable table(ref);
     char dir = table.Get<std::string>("dir")[0];
     std::string initialState = table.Get<std::string>("state");
-    auto c = std::make_shared<StateCharacter>(dir, initialState);
+    auto c = Ref::Create<StateCharacter>(dir, initialState);
 
     return c;
 }
@@ -26,7 +26,27 @@ std::shared_ptr<Component> WalkAreaComponentFactory::Create(luabridge::LuaRef& r
     auto factory = Engine::get().GetSceneFactory();
     luabridge::LuaRef shapeR = table.Get<luabridge::LuaRef>("shape");
     auto shape = factory->makeShape(shapeR);
-    auto hotspot = std::make_shared<WalkArea>(shape, priority, targetId);
+
+
+    auto hotspot = Ref::Create<WalkArea>(shape, priority, targetId);
+
+    if (table.HasKey("depth")) {
+        luabridge::LuaRef dref = table.Get<luabridge::LuaRef>("depth");
+        auto depthFunc = GetFunc2D(dref);
+        hotspot->SetDepthFunction(depthFunc);
+    }
+    if (table.HasKey("scale")) {
+        luabridge::LuaRef dref = table.Get<luabridge::LuaRef>("scale");
+        auto scaleFunc = GetFunc2D(dref);
+        hotspot->SetScalingFunction(scaleFunc);
+    }
+    if (table.HasKey("handler")) {
+        luabridge::LuaRef dref = table.Get<luabridge::LuaRef>("handler");
+        auto f = std::make_shared<LuaFunction>(dref);
+        hotspot->SetHandler(f);
+    }
+
+
 //
 //    // see if it has a depthfunc
 //    if (table.HasKey("scaling")) {

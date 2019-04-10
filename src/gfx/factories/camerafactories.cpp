@@ -15,7 +15,7 @@ std::shared_ptr<Camera> OrthoCamFactory::Create(luabridge::LuaRef &ref) {
     glm::vec2 size = tcam.Get<glm::vec2>("size");
     glm::vec4 bounds = tcam.Get<glm::vec4>("bounds", glm::vec4(0.0));
     //std::unique_ptr<Camera> camera = std::unique_ptr<OrthographicCamera>(new OrthographicCamera(size.x, size.y, viewport));
-    auto camera = std::make_shared<OrthographicCamera>(size.x, size.y, viewport);
+    auto camera = Ref::Create<OrthographicCamera>(size.x, size.y, viewport);
 
     if (bounds != glm::vec4(0.0f)) {
         camera->SetBounds(bounds[0], bounds[2], bounds[1], bounds[3]);
@@ -39,7 +39,7 @@ std::shared_ptr<Camera> PerspectiveCamFactory::Create(luabridge::LuaRef &ref) {
     float fov = tcam.Get<float>("fov", 45.0f);
     float near = tcam.Get<float>("near", 0.05f);
     float far = tcam.Get<float>("far", 1000.0f);
-    auto camera = std::make_shared<PerspectiveCamera>(viewport, fov, near, far);
+    auto camera = Ref::Create<PerspectiveCamera>(viewport, fov, near, far);
     camera->SetPosition(pos, direction, up);
     if (!tag.empty())
         camera->SetTag(tag);

@@ -77,8 +77,8 @@ std::shared_ptr<Entity> SpriteFactory::Create (std::shared_ptr<IModel> mesh) {
 
 std::shared_ptr<Entity> SpriteFactory::Create(std::shared_ptr<SimpleModel> model) {
 
-    auto entity = std::make_shared<Entity>();
-    auto renderer = std::make_shared<Renderer>();
+    auto entity = Ref::Create<Entity>();
+    auto renderer = Ref::Create<Renderer>();
     renderer->SetMesh(model->GetMesh());
 
     auto animator = std::make_shared<Animator>(model);
@@ -88,19 +88,19 @@ std::shared_ptr<Entity> SpriteFactory::Create(std::shared_ptr<SimpleModel> model
 }
 
 std::shared_ptr<Entity> SpriteFactory::Create (std::shared_ptr<CompositeModel> model) {
-    auto entity = std::make_shared<Entity>();
+    auto entity = Ref::Create<Entity>();
     //auto& assetManager = Engine::get().GetAssetManager();
 
     std::unordered_map<std::string, std::shared_ptr<Entity>> entities;
 
-    auto animator = std::make_shared<Animator>(model);
+    auto animator = Ref::Create<Animator>(model);
     const auto& components = model->GetComponents();
     for (const auto& component : components) {
         const ModelComponent& mc = component.second;
-        auto ie = std::make_shared<Entity>();
+        auto ie = Ref::Create<Entity>();
         ie->SetName(mc.name);
         //ie->SetPosition(mc.pos);
-        auto renderer = std::make_shared<Renderer>();
+        auto renderer = Ref::Create<Renderer>();
         renderer->SetMesh(mc.model->GetMesh());
         ie->AddComponent(renderer);
         entities[mc.name] = ie;

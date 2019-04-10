@@ -19,7 +19,7 @@ std::shared_ptr<Component> Follow::clone() const {
 
 void Follow::Start() {
 
-    m_cam = Engine::get().GetRef<Camera>(m_camId);
+    m_cam = Ref::Get<Camera>(m_camId).get();
 
 
 }

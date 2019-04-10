@@ -5,7 +5,7 @@ Scroll::Scroll(const std::string &camId, glm::vec2 targetPos, bool relative, flo
     m_targetPos{targetPos}, m_relative{relative}, m_speed{speed}, m_camId{camId}, m_distanceToCover{0.0f}, m_distanceCovered{0.0f} {}
 
 void Scroll::Start() {
-    m_camera = Engine::get().GetRef<Camera>(m_camId);
+    m_camera = Ref::Get<Camera>(m_camId).get();
     glm::vec2 displacement (0.0f);
     if (m_relative) {
         displacement = m_targetPos;

@@ -2,58 +2,6 @@
 #include <gfx/factories.h>
 #include <iostream>
 #include <gfx/engine.h>
-//
-//template <>
-//std::shared_ptr<Entity> SceneFactory::Get<Entity> (luabridge::LuaRef& ref) {
-//    return m_entityFactory.Create(ref);
-//}
-//
-//template <>
-//std::shared_ptr<Shape> SceneFactory::Get<Shape> (luabridge::LuaRef& ref) {
-//    return m_shapeFactory.Create(ref);
-//}
-//
-//template <>
-//std::shared_ptr<Runner> SceneFactory::Get<Runner> (luabridge::LuaRef& ref) {
-//    return m_runnerFactory.Create(ref);
-//}
-//
-//template <>
-//std::shared_ptr<Camera> SceneFactory::Get<Camera> (luabridge::LuaRef& ref) {
-//    auto p = m_cameraFactory.Create(ref);
-//    std::cout << "ciao ciao bellino\n";
-//    std::cout << p->GetPosition().x << "\n";
-//    std::cout << p->GetTag() << "\n";
-//
-//    return p;
-//
-//}
-//
-////template <>
-////std::shared_ptr<StateInitializer> SceneFactory::Get<StateInitializer> (luabridge::LuaRef& ref) {
-////    return std::move(m_stateInitFactory.Create(ref));
-////}
-////
-////template <>
-////std::shared_ptr<StateBehaviour> SceneFactory::Get<StateBehaviour> (luabridge::LuaRef& ref) {
-////    return m_stateBehaviorFactory.Create(ref);
-////}
-//
-//template <>
-//std::shared_ptr<Component> SceneFactory::Get<Component> (luabridge::LuaRef& ref) {
-//    return m_componentFactory.Create(ref);
-//}
-//
-//template <>
-//std::shared_ptr<Activity> SceneFactory::Get<Activity> (luabridge::LuaRef& ref) {
-//    return m_activityFactory.Create(ref);
-//}
-//
-//template <>
-//std::shared_ptr<IModel> SceneFactory::Get<IModel> (luabridge::LuaRef& ref) {
-//    return m_modelFactory.Create(ref);
-//}
-
 
 void SceneFactory::Init(Engine* engine) {
     // initialize lua
@@ -228,7 +176,7 @@ std::shared_ptr<Entity> SceneFactory::Create() {
         }
     }
 
-
+    Ref::dump();
     // load room-specific assets
 //    auto roomAssets = roomTable.GetVector<std::string>("assets");
 //    for (auto& a : roomAssets) {
@@ -236,7 +184,7 @@ std::shared_ptr<Entity> SceneFactory::Create() {
 //        LoadModel(a);//    }
 
     // read the scene tree
-    auto rootNode = std::make_shared<Entity>();
+    auto rootNode = Ref::Create<Entity>();
     rootNode->SetTag("_root");
     luabridge::LuaRef rscene = roomTable.Get<luabridge::LuaRef>("scene");
     for (int i = 0; i < rscene.length(); ++i) {
@@ -250,7 +198,7 @@ std::shared_ptr<Entity> SceneFactory::Create() {
         luabridge::LuaRef r1 = roomTable.Get<luabridge::LuaRef>("start");
         r1();
     }
-
+    Ref::dump();
     return rootNode;
 
 }

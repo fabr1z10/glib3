@@ -1,6 +1,6 @@
 #pragma once
 
-#include <gfx/activity.h>
+#include <gfx/activities/targetactivity.h>
 #include <gfx/math/shape.h>
 #include <gfx/lua/luawrapper.h>
 
@@ -8,7 +8,7 @@ class CollisionEngine;
 class Entity;
 class Renderer;
 
-class CollisionCheck : public Activity {
+class CollisionCheck : public TargetActivity {
 
 public:
     CollisionCheck(std::shared_ptr<Shape> shape, const std::string& actorId, glm::vec2 offset, int mask, luabridge::LuaRef callback);

@@ -96,8 +96,8 @@ void EntityWrapper::SetColor(int r, int g, int b, int a) {
 
 EntityWrapper EntityWrapper::GetEntityFromTag(const std::string& id) {
     try {
-        auto ref = Engine::get().GetRef<Entity>(id);
-        return EntityWrapper(ref);
+        auto ref = Ref::Get<Entity>(id);
+        return EntityWrapper(ref.get());
     } catch (Error& err) {
         return EntityWrapper();
     }
@@ -105,8 +105,8 @@ EntityWrapper EntityWrapper::GetEntityFromTag(const std::string& id) {
 
 EntityWrapper EntityWrapper::GetEntityFromId(int id) {
     try {
-        auto ref = Ref::GetFromId<Entity>(id);
-        return EntityWrapper(ref);
+        auto ref = Ref::Get<Entity>(id);
+        return EntityWrapper(ref.get());
     } catch (Error& err) {
         return EntityWrapper();
     }
@@ -126,13 +126,13 @@ int EntityWrapper::AddEntity(luabridge::LuaRef ref, EntityWrapper* parent) {
 
 void EntityWrapper::RemoveEntityFromTag(const std::string& tag) {
     std::cout << "*** lua request delete item with tag = " << tag << "\n";
-    auto entity = Engine::get().GetRef<Entity>(tag);
+    auto entity = Ref::Get<Entity>(tag);
     Engine::get().Remove(entity);
 }
 
 void EntityWrapper::RemoveEntityFromId (int id) {
     std::cout << "*** lua request delete item with id = " << id << "\n";
-    auto entity = Ref::GetFromId<Entity>(id);
+    auto entity = Ref::Get<Entity>(id);
     Engine::get().Remove(entity);
 
 }
@@ -147,7 +147,7 @@ void EntityWrapper::ClearText() {
 }
 
 void EntityWrapper::Remove() {
-    Engine::get().Remove(m_underlying);
+    Engine::get().Remove(m_underlying->GetId());
 }
 
 void EntityWrapper::EnableDepth(bool value) {
@@ -256,7 +256,7 @@ void EntityWrapper::EnableCollisions(bool value) {
         collider->SetActive(value);
     auto& children = m_underlying->GetChildren();
     for (auto& child : children) {
-        EntityWrapper e(child.get());
+        EntityWrapper e(child.second.get());
         e.EnableCollisions(value);
     }
 }

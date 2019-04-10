@@ -6,15 +6,16 @@
 #include <gfx/collisionengine.h>
 
 CollisionCheck::CollisionCheck(std::shared_ptr<Shape> shape, const std::string& actorId, glm::vec2 offset, int mask, luabridge::LuaRef callback)
-        : Activity(), m_shape(shape), m_actorId(actorId), m_offset(offset), m_mask(mask), m_callback(callback)
+        : TargetActivity(), m_shape(shape), m_offset(offset), m_mask(mask), m_callback(callback)
 {
     m_engine = Engine::get().GetRunner<CollisionEngine>();
-    m_actor = Engine::get().GetRef<Entity>(m_actorId);
+    //m_actor = Engine::get().GetRaw<Entity>(m_actorId);
     //m_renderer = m_actor->GetComponent<Renderer>();
 
 }
 
 void CollisionCheck::Start() {
+    TargetActivity::Start();
     glm::mat4 p = m_actor->GetWorldTransform();
     glm::vec2 offset (p * glm::vec4(m_offset, 0.0f, 0.0f));
     //glm::vec2 offset = m_offset;

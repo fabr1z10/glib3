@@ -14,13 +14,14 @@
 
 using namespace std;
 
+
 Entity::Entity(const Entity & e) : m_update(e.m_update) {
     m_flipHorizontal = e.m_flipHorizontal;
     m_active = e.m_active;
     m_enableControls = e.m_enableControls;
     for (auto& c : e.m_children) {
         // this will set the children parents and this' named children
-        this->AddChild(c->clone());
+        this->AddChild(c.second->clone());
     }
     for (auto& comp : e.m_components) {
         this->AddComponent(comp.second->clone());
@@ -35,14 +36,12 @@ std::shared_ptr<Entity> Entity::clone() const {
 
 
 void Entity::AddChild(std::shared_ptr<Entity> child) {
-    auto it = m_children.insert(m_children.end(), child);
+    m_children.insert(std::make_pair(child->GetId(), child));
     child->SetParent(this);
-    child->m_itParent = it;
-    //child->Notify(m_worldTransform);
 
     std::string name = child->GetName();
     if (!name.empty()) {
-        m_namedChildren[name] = child.get();
+        m_namedChildren[name] = child->GetId();
     }
     // if engine is running, start
     if (Engine::get().isRunning()) {
@@ -66,34 +65,34 @@ void Entity::SetActive(bool value) {
     // now call setActive on all children
     if (recursive)
         for (auto& c: m_children)
-            c->SetActive(value);
+            c.second->SetActive(value);
     SetActiveInnerCheck(value);
 }
 
 
-void Entity::Remove(Entity* entity) {
-    std::string name = entity->GetName();
-    if (!name.empty())
-        m_namedChildren.erase(name);
-    m_children.erase(entity->m_itParent);
+void Entity::Remove(int id) {
+    //std::string name = entity->GetName();
+    //if (!name.empty())
+    //    m_namedChildren.erase(name);
+    m_children.erase(id);
 
 }
 
-Entity* Entity::GetNamedChild(const std::string& name) {
-    auto it = m_namedChildren.find(name);
-    if (it == m_namedChildren.end())
-        return nullptr;
-    return it->second;
-}
+//Entity* Entity::GetNamedChild(const std::string& name) {
+//    auto it = m_namedChildren.find(name);
+//    if (it == m_namedChildren.end())
+//        return nullptr;
+//    return it->second;
+//}
 
 void Entity::ClearAllChildren() {
 
     for (auto& c : m_children) {
-        Engine::get().Remove(c.get());
+        Engine::get().Remove(c.second);
     }
 }
 
- std::list<std::shared_ptr<Entity> >& Entity::GetChildren() {
+std::unordered_map<int, std::shared_ptr<Entity> >& Entity::GetChildren() {
     return m_children;
 }
 
@@ -111,7 +110,7 @@ void Entity::Start() {
         iter.second->Start();
     }
     for (auto& m : m_children)
-        m->Start();
+        m.second->Start();
 }
 
 void Entity::Begin() {
@@ -119,7 +118,7 @@ void Entity::Begin() {
         iter.second->Begin();
     }
     for (auto& m : m_children)
-        m->Begin();
+        m.second->Begin();
 
 }
 
@@ -139,13 +138,13 @@ std::string Entity::ToString() {
     std::stringstream  s ;
     s << GetTag() << ": " ;
     for (auto& c : m_children) {
-        std::string t = c->GetTag();
+        std::string t = c.second->GetTag();
         if (t.empty()) t = "*unknown*";
         s << t << ", ";
     }
     s << "\n";
     for (auto& c : m_children)
-        s << c->ToString();
+        s << c.second->ToString();
     return s.str();
 
 }
@@ -153,8 +152,10 @@ std::string Entity::ToString() {
 void Entity::SetZ(float z) {
     m_localTransform[3][2] = z;
     UpdateWorldTransform();
-
 }
+
+
+
 
 void Entity::SetLocalTransform (glm::mat4 t) {
     m_localTransform = t;
@@ -181,7 +182,7 @@ void Entity::Notify() {
     //m_worldTransform = parentTransform * m_localTransform;
     glm::mat4 t = m_cameras == nullptr ? m_worldTransform : glm::mat4(1.0f);
     for (auto& c : m_children) {
-        c->SetWorldTransform(t);
+        c.second->SetWorldTransform(t);
     }
 
 }
@@ -306,6 +307,20 @@ void Entity::SetScale(float s) {
 
 
 }
+
 float Entity::GetScale() const {
     return glm::length(glm::vec3(m_localTransform[0]));
+}
+
+
+void Entity::setOnMoveEnabled (bool value) {
+    onMove.setEnabled(value);
+    for (const auto& c : m_children) c.second->onMove.setEnabled(value);
+
+}
+
+std::string Entity::toString() {
+    std::stringstream stream;
+    stream << "[Entity](tag = " << m_tag << ", parent = " << (m_parent == nullptr ? "<root>" : std::to_string(m_parent->GetId())) << ")";
+    return stream.str();
 }

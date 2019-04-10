@@ -37,12 +37,12 @@ void DynamicWorldBuilder::UpdateWorld(glm::vec3 pos) {
                 auto obj = item.m_blueprint->clone();
 
                 item.id = obj->GetId();
-                item.ref = obj.get();
+                item.ref = obj;
                 item.m_parent->AddChild(obj);
             }
         } else {
             // already created
-            if (Ref::IsAlive(item.id)) {
+            if (Ref::isAlive(item.id)) {
                 glm::vec3 pos = item.ref->GetPosition();
                 Bounds b = item.m_bounds;
                 //b.min += glm::vec2(pos.x, pos.y);
@@ -73,7 +73,7 @@ void DynamicWorldBuilder::OnCameraMove(Camera * cam) {
     UpdateWorld(pos);
 }
 
-void DynamicWorldBuilder::AddItem(Entity* parent, std::shared_ptr<Entity> entity) {
+void DynamicWorldBuilder::AddItem(std::shared_ptr<Entity> parent, std::shared_ptr<Entity> entity) {
 
     // compute bounds;
     auto renderer = entity->GetComponent<Renderer>();

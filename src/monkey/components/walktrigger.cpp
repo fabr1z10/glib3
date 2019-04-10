@@ -33,7 +33,7 @@ void WalkTrigger::Update(double) {
 
 void WalkTrigger::Start() {
 
-    Entity *e = Engine::get().GetRef<Entity>(m_target);
+    Entity *e = Ref::Get<Entity>(m_target).get();
     e->onMove.Register(this, [&](Entity *entity) { this->onTargetMove(entity); });
 }
 

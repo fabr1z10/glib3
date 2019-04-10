@@ -1,11 +1,11 @@
 #pragma once
 
-#include <gfx/activity.h>
+#include <gfx/activities/targetactivity.h>
 #include <gfx/entity.h>
 
 class Renderer;
 
-class Blink : public Activity {
+class Blink : public TargetActivity {
 public:
     //! \name Constructors
     //@{

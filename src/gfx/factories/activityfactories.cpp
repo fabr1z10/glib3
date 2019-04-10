@@ -119,7 +119,9 @@ std::shared_ptr<Activity> RotateActFactory::Create(luabridge::LuaRef &ref) {
     float initialVelocity = table.Get<float>("speed");
     float acceleration = table.Get<float>("acceleration", 0.0f);
     float deg = table.Get<float>("deg");
-    return std::make_shared<Rotate>(actor, deg, acceleration, initialVelocity);
+    auto ptr = std::make_shared<Rotate>(deg, acceleration, initialVelocity);
+    setTarget (table, ptr.get());
+    return ptr;
 }
 
 std::shared_ptr<Activity> DelayActFactory::Create(luabridge::LuaRef &ref) {
@@ -226,9 +228,11 @@ std::shared_ptr<Activity> VirtualKeyActFactory::Create(luabridge::LuaRef &ref) {
 
 std::shared_ptr<Activity> FlipActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
-    std::string actor = table.Get<std::string>("actor");
+
     int mode = table.Get<bool>("mode", 0);
-    return std::make_shared<Flip>(actor, mode);
+    auto ptr = std::make_shared<Flip>(mode);
+    setTarget(table, ptr.get());
+    return ptr;
 }
 
 std::shared_ptr<Activity> ScaleActFactory::Create(luabridge::LuaRef &ref) {
@@ -236,7 +240,9 @@ std::shared_ptr<Activity> ScaleActFactory::Create(luabridge::LuaRef &ref) {
     std::string actor = table.Get<std::string>("actor");
     float duration = table.Get<float>("duration");
     float scale = table.Get<float>("scale");
-    return std::make_shared<ScaleTo>(actor, duration, scale);
+    auto ptr = std::make_shared<ScaleTo>(duration, scale);
+    setTarget(table, ptr.get());
+    return ptr;
 }
 
 std::shared_ptr<Activity> SuspendScriptActFactory::Create(luabridge::LuaRef &ref) {

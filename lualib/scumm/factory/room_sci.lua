@@ -42,7 +42,17 @@ function scumm.factory.sci_room (args)
 				keys = {
 					{ key = 299, func = function() monkey.endroom() end }
 				},
+				-- lmbclick is the func called when you click on no hotspot
+				lmbclick = function(x, y) 
+					print ("clicked on (" .. tostring(x) .. ", " .. tostring(y) .. ")")
+					local actions = { 
+						{ type = scumm.action.walkto, args = {tag="player", pos ={x,y}}}
+					}
+					local s = script.make(actions)
+					s.name="_walk"
+					monkey.play(s)
 
+				end,	
 				rmbclick = function() 
 					variables.currentverb = variables.currentverb + 1
 					if (variables.currentverb > #variables.verbs) then
@@ -99,21 +109,21 @@ function scumm.factory.sci_room (args)
      --       					},
      --       				}
      --       			},
-           			{
-                	    pos = {20,50, 0},
-                		components = {
-	      					{ 
-								type ="hotspot",
-								priority = 1,
-								shape = {type="rect", width=20, height=50},
-								-- on click
-								-- LMB: run action
-								-- RMB: switch action
-								onclick = function() print ("ciao 2") end,
-           					},
-           				}
+        --    			{
+        --         	    pos = {20,50, 0},
+        --         		components = {
+	      	-- 				{ 
+								-- type ="hotspot",
+								-- priority = 1,
+								-- shape = {type="rect", width=20, height=50},
+								-- -- on click
+								-- -- LMB: run action
+								-- -- RMB: switch action
+								-- onclick = function() print ("ciao 2") end,
+        --    					},
+        --    				}
 
-           			},
+        --    			},
 
 					-- scumm.factory.walkarea { 
 					-- 	priority = 0, 
@@ -157,17 +167,14 @@ function scumm.factory.sci_room (args)
 					viewport = {0, 0, 320, 200}
 				},
 				children = {
-
 					{ 
 						type = "sprite",
-						model="cursor",
-				    	tag = "cursor",
-				    	pos={0,0,0},
-						components = {
-				    		--{ type="text", id = "prova", font="monkey", align = "bottom", color = config.ui_currentaction_color},
-				    		--{ type = "gfx", model="cujrsor" },
+					 	model="cursor",
+				     	tag = "cursor",
+		 		    	pos={0,0,0},
+					 	components = {
 							{ type="cursor"}
-						}
+					 	}
 					}
 				}
 			}

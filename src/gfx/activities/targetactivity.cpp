@@ -12,10 +12,10 @@ TargetActivity::TargetActivity(const std::string& tag) : Activity(), m_tag(tag),
 void TargetActivity::Start() {
     if (m_id == -1) {
         // use tag
-        m_entity = Engine::get().GetRef<Entity>(m_tag);
+        m_entity = Ref::Get<Entity>(m_tag);
     } else {
         // use id
-        m_entity = Ref::GetFromId<Entity>(m_id);
+        m_entity = Ref::Get<Entity>(m_id);
     }
 
 

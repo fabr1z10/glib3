@@ -19,7 +19,7 @@ public:
     void SetTag (const std::string&);
 
 protected:
-    Entity* m_entity;
+    std::shared_ptr<Entity> m_entity;
     int m_id;
     std::string m_tag;
 };

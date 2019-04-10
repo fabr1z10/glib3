@@ -48,6 +48,6 @@ private:
     int m_actor;
     std::string m_message;
     std::string m_font;
-    Entity* m_generatedEntity;
+    std::shared_ptr<Entity> m_generatedEntity;
     OrthographicCamera* m_mainCam;
 };

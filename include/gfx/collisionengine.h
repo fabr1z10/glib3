@@ -50,6 +50,7 @@ public:
     RayCastHit2D Raycast (glm::vec3 rayOrigin, glm::vec2 rayDir, float length, int mask);
     Entity* ShapeCast (std::shared_ptr<Shape>, const glm::mat4& transform, int mask);
     void Enable25DCollision(float);
+    std::string toString() override;
 private:
     std::unordered_map<std::pair<int, int>, CollisionEngineCell> m_cells;
     std::unordered_map<Collider*, Location> m_colliderLocations;

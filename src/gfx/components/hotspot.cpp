@@ -13,7 +13,10 @@ Component(orig), m_shape(orig.m_shape), m_focus(orig.m_focus), m_priority(orig.m
     
 }
 
+void HotSpotManager::Init() {
+    m_defaultCamera = Ref::Get<Camera>("maincam").get();
 
+}
 
 bool HotSpot::isMouseInside(glm::vec2 pos) {
     glm::mat4 wt = glm::inverse(m_entity->GetWorldTransform());
@@ -129,6 +132,12 @@ void HotSpotManager::CursorPosCallback(GLFWwindow*, double x, double y) {
 
 }
 
+std::string HotSpotManager::toString() {
+    std::stringstream stream;
+    stream << "[HotSpotManager](tag = " << m_tag << ")";
+    return stream.str();
+}
+
 //void HotSpotGroup::InitCamera() {
 //    m_cam = Engine::get().GetRef<OrthographicCamera>(m_camId);
 //    m_cam->OnMove.Register(this, [this] (Camera*) { CameraMove(); });
@@ -202,14 +211,21 @@ void HotSpotManager::CursorPosCallback(GLFWwindow*, double x, double y) {
 
 
 void HotSpotManager::MouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
-    // if it's the RMB, we can have a custom handler
     if (button == GLFW_MOUSE_BUTTON_RIGHT) {
-        if (action == GLFW_PRESS && m_rmbClick) m_rmbClick();
+        if (action == GLFW_PRESS && m_rmbClick) m_rmbClick(m_worldCoordinates.x, m_worldCoordinates.y);
         return;
     }
 
-    if (m_currentlyActiveHotSpot != nullptr && m_currentlyActiveHotSpot->GetObject()->IsActive()) {
-        m_currentlyActiveHotSpot->onClick(m_worldCoordinates, button, action, mods);
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
+        if (m_currentlyActiveHotSpot != nullptr && m_currentlyActiveHotSpot->GetObject()->IsActive()) {
+            m_currentlyActiveHotSpot->onClick(m_worldCoordinates, button, action, mods);
+        } else {
+            // convert mouse to world coordinates
+            double xpos, ypos;
+            glfwGetCursorPos(window, &xpos, &ypos);
+            glm::vec2 wp = m_defaultCamera->GetWorldCoordinates(glm::vec2(xpos, ypos));
+            if (m_lmbClick) m_lmbClick(wp.x, wp.y);
+        }
     }
 
 }
@@ -237,8 +253,8 @@ void HotSpot::SetParent(Entity * entity) {
 }
 
 void HotSpot::AddDebugMesh() {
-    auto ce = std::make_shared<Entity>();
-    auto cer = std::make_shared<Renderer>();
+    auto ce = Ref::Create<Entity>();
+    auto cer = Ref::Create<Renderer>();
 
     auto debugMesh = MeshFactory::CreateMesh(*(m_shape.get()), 5.0f);
     cer->SetMesh(debugMesh);

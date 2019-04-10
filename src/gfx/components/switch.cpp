@@ -6,8 +6,8 @@
 void Switch::Start() {
     int i = 0;
     for (auto& c : m_entity->GetChildren()) {
-        m_states[m_stateNames[i++]] = c.get();
-        c->SetActive(false);
+        m_states[m_stateNames[i++]] = c.second.get();
+        c.second->SetActive(false);
     }
     m_currentlyActive.clear();
 

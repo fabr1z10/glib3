@@ -17,16 +17,38 @@ std::shared_ptr<Component> WalkArea::clone() const {
 }
 
 
+void WalkArea::assignScaleAndDepth (Entity* e) {
+    e->setOnMoveEnabled(false);
+    glm::vec2 pos = e->GetPosition();
+    if (m_depthFunc != nullptr) {
+        float z = m_depthFunc->operator()(pos.x, pos.y);
+        e->SetZ(z);
+    }
+
+    if (m_scaleFunc != nullptr) {
+        float scale = m_scaleFunc->operator()(pos.x, pos.y);
+        e->SetScale(scale);
+    }
+    e->setOnMoveEnabled(true);
+}
+
 void WalkArea::Start() {
     HotSpot::Start();
     m_scheduler = Engine::get().GetRunner<Scheduler>();
     if (m_scheduler == nullptr) {
         GLIB_FAIL ("Walk area component needs a scheduler runner!");
     }
-    m_player = Engine::get().GetRef<Entity>(m_playerId);
+    m_player = Ref::Get<Entity>(m_playerId).get();
     m_id = m_player->GetId();
-    
+    // assign depth and scale to all children and register to their move event
+    if (m_depthFunc != nullptr || m_scaleFunc != nullptr) {
+        for (const auto &c : m_entity->GetChildren()) {
+            assignScaleAndDepth(c.second.get());
+            c.second->onMove.Register(this, [&] (Entity* e) { assignScaleAndDepth(e);});
+        }
+    }
 }
+
 
 void WalkArea::onClick(glm::vec2 worldCoords, int button, int action, int mods) {
 
@@ -35,6 +57,12 @@ void WalkArea::onClick(glm::vec2 worldCoords, int button, int action, int mods) 
     if (action == GLFW_PRESS) {
         if (m_player->GetParent() != this->m_entity) {
             std::cout << "Clicking on a different walkarea...";
+            if (m_func != nullptr) {
+
+                m_func->execute(m_player->GetParent()->GetTag(), worldCoords.x, worldCoords.y);
+                return;
+            }
+
             // see if I have a handler for (from: this, to: that, pos: worldcoords)
         }
         auto script = std::make_shared<Script>();

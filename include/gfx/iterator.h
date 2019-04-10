@@ -40,9 +40,9 @@ public:
         // Do something here
         onPop(top);
 
-        auto children = top->GetChildren();
-        for (auto r = children.rbegin(); r != children.rend(); ++r) {
-            m_stack.push(r->get());
+        auto& children = top->GetChildren();
+        for (auto r = children.begin(); r != children.end(); ++r) {
+            m_stack.push(r->second.get());
         }
         if (!m_stack.empty()) {
             onNext();

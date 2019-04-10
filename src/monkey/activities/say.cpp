@@ -8,7 +8,7 @@ void Say::Start() {
 
     // if the walk has a tag, then get the id
     if (!m_tag.empty()) {
-        m_actorId = Engine::get().getIdFromTag(m_tag);
+        m_actorId =  Ref::GetId(m_tag);
     }
 
     if (!m_noAnim) {

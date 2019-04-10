@@ -10,7 +10,8 @@
 
 std::shared_ptr<Entity> EntityFactory::Create(luabridge::LuaRef& ref) {
 
-    auto entity = std::make_shared<Entity>();
+
+    auto entity = Ref::Create<Entity>();
 
     LuaTable item(ref);
     std::string tag = item.Get<std::string>("tag", "");

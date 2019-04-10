@@ -6,7 +6,7 @@ SetModel::SetModel(const std::string &actorId, const std::string &model, const s
         Activity(), m_actorId(actorId), m_model(model), m_animId(animId), m_flipX(flip) {}
 
 void SetModel::Start() {
-    auto entity = Engine::get().GetRef<Entity>(m_actorId);
+    auto entity = Ref::Get<Entity>(m_actorId).get();
     m_renderer = entity->GetComponent<Renderer>();
 
     if (m_renderer == nullptr)

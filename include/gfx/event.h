@@ -27,7 +27,11 @@ private:
         std::function<void(Args)> callback;
     };
 public:
-    
+    Event() : m_enabled(true) {}
+    void setEnabled(bool value) {
+        m_enabled = value;
+    }
+
     // register interest in this event with context
     void Register(Ref* object, std::function<void(Args)> f) {
         m_callbacks[object->GetId()] = Callback{ f };
@@ -38,10 +42,12 @@ public:
     }
 
     void Fire(Args args) {
+        if (!m_enabled)
+            return;
+
         for (auto it = m_callbacks.begin(); it != m_callbacks.end(); /* no inc */)
         {
-            auto ref = Ref::Get(it->first);
-            if (ref == nullptr) {
+            if (!Ref::isAlive(it->first)) {
                 // observer is no longer alive, remove the callback
                 m_callbacks.erase(it++);
             }
@@ -53,6 +59,7 @@ public:
     }
     
 private:
+    bool m_enabled;
     std::unordered_map<int, Callback> m_callbacks;
 };
 

@@ -58,3 +58,9 @@ std::vector<std::string> Scheduler::GetActiveScripts() const {
     }
     return s;
 }
+
+std::string Scheduler::toString() {
+    std::stringstream stream;
+    stream << "[Scheduler](tag = " << m_tag << ")";
+    return stream.str();
+}

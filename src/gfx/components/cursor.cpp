@@ -22,7 +22,7 @@ void Cursor::CursorPosCallback(GLFWwindow*, double x, double y) {
         //if (!m_entity->IsActive())
         //    m_entity->SetActive(true);
         glm::vec2 wp = m_cam->GetWorldCoordinates(glm::vec2(x,y));
-        std::cout << x << ", " << y << " " << wp.x << ", " << wp.y <<std::endl;
+        //std::cout << x << ", " << y << " " << wp.x << ", " << wp.y <<std::endl;
         m_entity->SetPosition(wp);
     } else {
         //m_entity->SetActive(false);
