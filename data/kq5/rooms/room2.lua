@@ -20,16 +20,17 @@ room:add( {
 	{ pos = {0, 0, 0}, components = { { type="gfx", image="gfx/003a.png" }}},
 	scumm.factory.walkarea {
 		tag = "walkarea_1",
-		priority = 0, 
+		priority = 1, 
 		scale = { type="constant", value=0.5},
 		depth = { type="constant", value=-0.5},
 		handler = function(walkarea_from, x, y) 
 			print ("sti cazzi! Cerco di andare da walkarea " .. walkarea_from .. " a walk1(" .. tostring(x) .. ", " .. tostring(y)) 
 			local actions = {
-			 	{ type = scumm.action.walkto, args = {tag="player", pos ={70,120}}},
+			 	{ type = scumm.action.walkto, args = {tag="player", pos ={70,77}}},
 			 	{ type = scumm.action.turn, args={tag="player", dir="north"}},
 			 	{ type = action.treemove, args = {tag="player", parent="walkarea_2_back"}},
-			 	{ type = action.move, args = {tag="player", to ={70,50}}},
+			 	{ type = action.animate, args ={tag="player", anim="walk_n"}},
+			 	{ type = action.move, args = {tag="player", to ={70,30}, speed = items["graham"].character.speed}},
 			 	{ type = action.treemove, args = {tag="player", parent="walkarea_1"}},
 			 	{ type = scumm.action.walkto, args = {tag="player", pos ={x,y}}},			 	
 			}
@@ -46,11 +47,25 @@ room:add( {
 	},
 	scumm.factory.walkarea {
 		tag = "walkarea_2",
-		priority = 1, 
+		priority = 2, 
 		shape = { 
 			type = "poly", 
 			outline = {188,86,248,66,266,62,320,37,320,0,0,0,0,50,40,70,89,78,152,86}
 		},
+		handler = function(walkarea_from, x, y) 
+			print ("sti cazzi! Cerco di andare da walkarea " .. walkarea_from .. " a walk2(" .. tostring(x) .. ", " .. tostring(y)) 
+			local actions = {
+			 	{ type = scumm.action.walkto, args = {tag="player", pos ={70,30}}},
+			 	{ type = action.treemove, args = {tag="player", parent="walkarea_2_back"}},
+			 	{ type = action.animate, args ={tag="player", anim="walk_s"}},
+			 	{ type = action.move, args = {tag="player", to ={70,77}, speed = items["graham"].character.speed}},
+			 	{ type = action.treemove, args = {tag="player", parent="walkarea_2"}},
+			 	{ type = scumm.action.walkto, args = {tag="player", pos ={x,y}}},			 	
+			}
+			local s = script.make(actions)
+			s.name="_walk"
+			monkey.play(s)
+		end,	
 		--handler = 10,
 		depth = { type="constant", value=0.5},		
 		children = {
@@ -65,12 +80,14 @@ room:add( {
 	},
 	scumm.factory.walkarea {
 		tag = "walkarea_2_back",
-		priority = 1, 
+		priority = 0, 
 		shape = { 
 			type = "poly", 
 			outline = {188,86,248,66,266,62,320,37,320,0,0,0,0,50,40,70,89,78,152,86}
 		},
 		--handler = 10,
+		scale = { type="constant", value=1.0},
+
 		depth = { type="constant", value=-0.5},				
 	},
 
