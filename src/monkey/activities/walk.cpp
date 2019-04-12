@@ -10,6 +10,7 @@
 #include <monkey/components/walkarea.h>
 #include <monkey/activities/turn.h>
 #include <gfx/activities/setstate.h>
+#include <monkey/components/charactercomponent.h>
 
 void Walk::SetComplete() {
 
@@ -33,6 +34,7 @@ void Walk::Start() {
 
     //std::cout << "Calling walk for " << m_actorId << " to " << m_p.x << ", " << m_p.y << "\n";
     auto actor = Ref::Get<Entity>(m_actorId);
+    float speed = actor->GetComponent<StateCharacter>()->GetSpeed();
 
     // see if you have an associated walk-area
     auto walkArea = actor->GetParent()->GetComponent<WalkArea>();
@@ -105,7 +107,7 @@ void Walk::Start() {
             }
 
             Push(std::make_shared<Turn>(m_actorId, dir));
-            Push(std::make_shared<MoveTo>(m_actorId, currentPos + length * glm::normalize(delta), 20.0f, false, false));
+            Push(std::make_shared<MoveTo>(m_actorId, currentPos + length * glm::normalize(delta), speed, false, false));
             //if (i == points.size() - 1 || tMin < 1.0)
             currentPos = points[i];
             if (tMin < 1.0)

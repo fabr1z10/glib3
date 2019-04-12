@@ -74,6 +74,10 @@ void Entity::Remove(int id) {
     //std::string name = entity->GetName();
     //if (!name.empty())
     //    m_namedChildren.erase(name);
+    if (!onRemove.isEmpty()) {
+        auto entity = m_children.at(id);
+        onRemove.Fire(entity.get());
+    }
     m_children.erase(id);
 
 }

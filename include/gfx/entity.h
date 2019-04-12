@@ -77,6 +77,7 @@ public:
 
     Event<Entity*> onMove;						// fires when this node moves
     Event<Entity*> onAdd;
+    Event<Entity*> onRemove;
     //Event<GameObject*> onRemove;					// fires when this node goes out of scope
 
     // gets the world position

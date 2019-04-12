@@ -57,7 +57,9 @@ public:
             }
         }
     }
-    
+    bool isEmpty() {
+        return m_callbacks.empty();
+    }
 private:
     bool m_enabled;
     std::unordered_map<int, Callback> m_callbacks;

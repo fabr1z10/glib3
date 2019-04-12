@@ -2,7 +2,12 @@
 #include <gfx/entity.h>
 #include <gfx/components/animator.h>
 
-StateCharacter::StateCharacter(const StateCharacter& orig) : StateMachine2(orig), m_dir(orig.m_dir) {
+StateCharacter::StateCharacter(float speed, char dir, const std::string& initialState) :
+    StateMachine2(initialState), m_speed(speed), m_dir(dir) {
+}
+
+StateCharacter::StateCharacter(const StateCharacter& orig) :
+        StateMachine2(orig), m_dir(orig.m_dir), m_speed(orig.m_speed) {
     
 }
 
@@ -41,9 +46,7 @@ void StateCharacter::Begin() {
     SetDirection(m_dir);
 }
 
-StateCharacter::StateCharacter(char dir, const std::string& initialState) : StateMachine2(initialState), m_dir(dir) {
 
-}
 
 void StateCharacter::SetDirection(char dir) {
     m_entity->SetFlipX(dir == 'w');

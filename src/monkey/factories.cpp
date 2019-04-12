@@ -11,9 +11,9 @@
 std::shared_ptr<Component> CharacterStateFactory::Create(luabridge::LuaRef& ref) {
     LuaTable table(ref);
     char dir = table.Get<std::string>("dir")[0];
+    float speed = table.Get<float>("speed");
     std::string initialState = table.Get<std::string>("state");
-    auto c = Ref::Create<StateCharacter>(dir, initialState);
-
+    auto c = Ref::Create<StateCharacter>(speed, dir, initialState);
     return c;
 }
 

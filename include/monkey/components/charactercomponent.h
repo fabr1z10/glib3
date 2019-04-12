@@ -7,15 +7,17 @@ class Animator;
 
 class StateCharacter : public StateMachine2 {
 public:
-    StateCharacter(char dir, const std::string& initialState);
+    StateCharacter(float speed, char dir, const std::string& initialState);
     StateCharacter(const StateCharacter&);
     void SetDirection(char dir);
     char GetDirection() const;
     void Start () override;
     void Begin () override;
+    float GetSpeed() const;
     std::type_index GetType() override;
     std::shared_ptr<Component> clone() const override;
 private:
+    float m_speed;
     char m_dir;
 };
 
@@ -27,6 +29,10 @@ inline std::type_index StateCharacter::GetType() {
 
 inline char StateCharacter::GetDirection() const {
     return m_dir;
+}
+
+inline float StateCharacter::GetSpeed() const {
+    return m_speed;
 }
 
 class AnimateCharState : public State2 {

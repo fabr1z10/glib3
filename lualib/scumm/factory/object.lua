@@ -54,7 +54,7 @@ scumm.factory.object = function(args)
 			onclick = scumm.ui.runAction })
 	end
 	if (object.character ~= nil) then
-		table.insert (obj.components, { type="character", dir = args.dir or object.character.dir, state = object.character.state })
+		table.insert (obj.components, { type="character", speed = object.character.speed, dir = args.dir or object.character.dir, state = object.character.state })
 	end
 	if (args.follow == true) then
 		table.insert(obj.components, { type="follow", cam ="maincam", relativepos = {0,0,5}, up={0,1,0}})

@@ -158,3 +158,7 @@ end
 action.wait_click = function(args) 
 	return { type="waitclick"}
 end
+
+action.treemove = function(args) 
+	return { type = "treemove", tag = args.tag, to=args.parent}
+end

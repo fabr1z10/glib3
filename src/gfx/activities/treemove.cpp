@@ -9,10 +9,11 @@ TreeMove::TreeMove(const std::string& newParent) : TargetActivity(), m_newParent
 void TreeMove::Start() {
     TargetActivity::Start();
 
-    //auto newParent = Engine::get().GetRef<Entity>(m_newParent);
+    auto newParent = Ref::Get<Entity>(m_newParent);
+    //m_entity->GetParent()->Remove(m_entity->GetId());
+    Engine::get().Move(m_entity, newParent);
 
-    //newParent->AddChild()
-
+    SetComplete();
 
 
 }

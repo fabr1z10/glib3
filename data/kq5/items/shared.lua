@@ -4,7 +4,8 @@ items["graham"] = {
 	tag = "player",
 	model = "graham",
 	character = {
-		state = "idle"
+		state = "idle",
+		speed = 20
 	},
 	applydepth = true
 

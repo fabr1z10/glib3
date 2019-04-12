@@ -108,6 +108,7 @@ FACTORY(SuspendAllScriptActFactory, Activity)
 FACTORY(ResumeScriptActFactory, Activity)
 FACTORY(KillScriptActFactory, Activity)
 FACTORY(WaitClickActFactory, Activity)
+FACTORY(TreeMoveActFactory, Activity);
 
 // Asset
 FACTORY(SimpleModelFactory, IModel)

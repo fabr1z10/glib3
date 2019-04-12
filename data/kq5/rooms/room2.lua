@@ -16,21 +16,26 @@ room = scumm.factory.sci_room (roomDefinition)
 --local d = strings.dialogues.lookout.text
 
 room:add( {
-	{ pos = {0, 0,-3}, components = { { type="gfx", image="gfx/003.png" }}},
+	{ pos = {0, 0,-1}, components = { { type="gfx", image="gfx/003.png" }}},
+	{ pos = {0, 0, 0}, components = { { type="gfx", image="gfx/003a.png" }}},
 	scumm.factory.walkarea {
 		tag = "walkarea_1",
 		priority = 0, 
+		scale = { type="constant", value=0.5},
+		depth = { type="constant", value=-0.5},
 		handler = function(walkarea_from, x, y) 
 			print ("sti cazzi! Cerco di andare da walkarea " .. walkarea_from .. " a walk1(" .. tostring(x) .. ", " .. tostring(y)) 
-			-- local actions = {
-			-- 	{ type = scumm.action.walkto, args = {tag="player", pos ={70,120}}},
-			-- 	{ type = scumm.action.turn, args={tag="player", dir="north"}},
-			-- 	{ type = action.treemove, args = {tag="player", parent="walkarea_1"}
-
-			-- }
-			-- local s = script.make(actions)
-			-- s.name="_walk"
-			-- monkey.play(s)
+			local actions = {
+			 	{ type = scumm.action.walkto, args = {tag="player", pos ={70,120}}},
+			 	{ type = scumm.action.turn, args={tag="player", dir="north"}},
+			 	{ type = action.treemove, args = {tag="player", parent="walkarea_2_back"}},
+			 	{ type = action.move, args = {tag="player", to ={70,50}}},
+			 	{ type = action.treemove, args = {tag="player", parent="walkarea_1"}},
+			 	{ type = scumm.action.walkto, args = {tag="player", pos ={x,y}}},			 	
+			}
+			local s = script.make(actions)
+			s.name="_walk"
+			monkey.play(s)
 		end,
 		shape = { 
 			type = "poly", 
@@ -47,7 +52,7 @@ room:add( {
 			outline = {188,86,248,66,266,62,320,37,320,0,0,0,0,50,40,70,89,78,152,86}
 		},
 		--handler = 10,
-		--scale = { type="constant", value=0.5},
+		depth = { type="constant", value=0.5},		
 		children = {
         	scumm.factory.object {
 				id="graham", 
@@ -57,6 +62,16 @@ room:add( {
 				--collide = args.collide
 			}
 		}
+	},
+	scumm.factory.walkarea {
+		tag = "walkarea_2_back",
+		priority = 1, 
+		shape = { 
+			type = "poly", 
+			outline = {188,86,248,66,266,62,320,37,320,0,0,0,0,50,40,70,89,78,152,86}
+		},
+		--handler = 10,
+		depth = { type="constant", value=-0.5},				
 	},
 
 	--cumm.factory.trap { pos ={10, 0, 0}, tag="troll_sensor", shape = {type="rect", width=10, height = 144}, onenter = function() print("ciao stronzo") end}

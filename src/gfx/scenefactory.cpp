@@ -141,6 +141,7 @@ SceneFactory::SceneFactory() {
     m_activityFactory.Add<ScrollActFactory>("scroll");
     m_activityFactory.Add<SetStateActFactory>("setstate");
     m_activityFactory.Add<WaitClickActFactory>("waitclick");
+    m_activityFactory.Add<TreeMoveActFactory>("treemove");
 
 }
 

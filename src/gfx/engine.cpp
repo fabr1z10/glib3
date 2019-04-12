@@ -176,9 +176,13 @@ void Engine::MainLoop() {
 
                 // remove all entities scheduled for removal
                 if (!m_garbage.empty()) {
-                    for (auto &g : m_garbage) {
-                        auto parent = g->GetParent();
-                        parent->Remove(g->GetId());
+                    for (auto & g : m_garbage) {
+                        // remove from parent
+                        auto parent = g.first->GetParent();
+                        parent->Remove(g.first->GetId());
+                        if (g.second != nullptr) {
+                            g.second->AddChild(g.first);
+                        }
                     }
                     m_garbage.clear();
                 }

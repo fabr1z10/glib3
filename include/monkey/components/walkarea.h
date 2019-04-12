@@ -24,6 +24,7 @@ public:
     //float GetDepth (float x, float y);
     //float GetScale (float x, float y)
     void assignScaleAndDepth (Entity*);
+    void onAdd(Entity*);
     void Start() override;
     void onEnter() override {}
     void onLeave() override {}
@@ -39,7 +40,7 @@ public:
     using ParentClass = HotSpot;
     std::type_index GetType() override;
 private:
-    int m_id;
+    //int m_id;
     Entity* m_player;
     std::vector<BlockedLine> m_walls;
     std::string m_playerId;

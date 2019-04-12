@@ -16,6 +16,12 @@ std::shared_ptr<Component> WalkArea::clone() const {
     return std::make_shared<WalkArea>(WalkArea(*this));
 }
 
+void WalkArea::onAdd(Entity * e) {
+    assignScaleAndDepth(e);
+    e->onMove.Register(this, [&] (Entity* e) { assignScaleAndDepth(e);});
+
+}
+
 
 void WalkArea::assignScaleAndDepth (Entity* e) {
     e->setOnMoveEnabled(false);
@@ -23,6 +29,7 @@ void WalkArea::assignScaleAndDepth (Entity* e) {
     if (m_depthFunc != nullptr) {
         float z = m_depthFunc->operator()(pos.x, pos.y);
         e->SetZ(z);
+        std::cout << "z is " << e->GetPosition().z << "\n";
     }
 
     if (m_scaleFunc != nullptr) {
@@ -47,6 +54,10 @@ void WalkArea::Start() {
             c.second->onMove.Register(this, [&] (Entity* e) { assignScaleAndDepth(e);});
         }
     }
+    m_entity->onAdd.Register(this, [&] (Entity* e) { onAdd(e); });
+    m_entity->onRemove.Register(this, [&] (Entity* e) {
+        e->onMove.Unregister(this);
+    });
 }
 
 
