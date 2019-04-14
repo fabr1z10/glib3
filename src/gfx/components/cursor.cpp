@@ -9,6 +9,12 @@ std::shared_ptr<Component> Cursor::clone() const {
     return std::make_shared<Cursor>(Cursor(*this));
 }
 
+
+void Cursor::setActive(bool value) {
+    Ref::setActive(value);
+    MouseListener::Enable(value);
+}
+
 void Cursor::Start() {
     Entity* e = m_entity;
     while (e->GetCamera() == nullptr)

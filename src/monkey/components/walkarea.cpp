@@ -6,6 +6,7 @@
 #include <iostream>
 #include <gfx/math/closest.h>
 #include <gfx/math/shortestpath.h>
+#include <gfx/properties.h>
 
 WalkArea::WalkArea(const WalkArea& orig) : HotSpot(orig), m_playerId(orig.m_playerId),
 m_walls(orig.m_walls) {
@@ -17,9 +18,33 @@ std::shared_ptr<Component> WalkArea::clone() const {
 }
 
 void WalkArea::onAdd(Entity * e) {
+    auto props = e->GetComponent<Properties>();
+    if (props != nullptr) {
+        luabridge::LuaRef scale = props->get("walkarea_scale");
+        if (!scale.isNil()) {
+            bool wsc = scale.cast<bool>();
+            if (!wsc) {
+                assignDepth(e);
+                e->onMove.Register(this, [&] (Entity*) { assignDepth(e); });
+                return;
+            }
+        }
+    }
     assignScaleAndDepth(e);
     e->onMove.Register(this, [&] (Entity* e) { assignScaleAndDepth(e);});
 
+}
+
+void WalkArea::assignDepth (Entity* e) {
+
+    e->setOnMoveEnabled(false);
+    glm::vec2 pos = e->GetPosition();
+    if (m_depthFunc != nullptr) {
+        float z = m_depthFunc->operator()(pos.x, pos.y);
+        e->SetZ(z);
+        std::cout << "z is " << e->GetPosition().z << "\n";
+    }
+    e->setOnMoveEnabled(true);
 }
 
 
@@ -39,6 +64,16 @@ void WalkArea::assignScaleAndDepth (Entity* e) {
     e->setOnMoveEnabled(true);
 }
 
+std::shared_ptr<Entity> WalkArea::getDebugMesh() {
+    auto ptr = HotSpot::getDebugMesh();
+    auto props = std::make_shared<Properties>();
+    luabridge::LuaRef ciao = luabridge::newTable(LuaWrapper::L);
+    ciao["walkarea_scale"] = false;
+    props->addAdditionalProps(ciao);
+    ptr->AddComponent(props);
+    return ptr;
+}
+
 void WalkArea::Start() {
     HotSpot::Start();
     m_scheduler = Engine::get().GetRunner<Scheduler>();
@@ -50,14 +85,17 @@ void WalkArea::Start() {
     // assign depth and scale to all children and register to their move event
     if (m_depthFunc != nullptr || m_scaleFunc != nullptr) {
         for (const auto &c : m_entity->GetChildren()) {
-            assignScaleAndDepth(c.second.get());
-            c.second->onMove.Register(this, [&] (Entity* e) { assignScaleAndDepth(e);});
+            onAdd(c.second.get());
+            //assignScaleAndDepth(c.second.get());
+            //c.second->onMove.Register(this, [&] (Entity* e) { assignScaleAndDepth(e);});
         }
     }
     m_entity->onAdd.Register(this, [&] (Entity* e) { onAdd(e); });
     m_entity->onRemove.Register(this, [&] (Entity* e) {
         e->onMove.Unregister(this);
     });
+
+
 }
 
 

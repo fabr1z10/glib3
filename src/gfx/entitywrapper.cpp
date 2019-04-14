@@ -50,7 +50,7 @@ void EntityWrapper::SetState(const std::string& state) {
 
 void EntityWrapper::EnableStateMachine(bool value) {
     auto sm = m_underlying->GetComponent<StateMachine2>();
-    sm->SetActive(value);
+    sm->setActive(value);
 }
 
 luabridge::LuaRef EntityWrapper::GetProperty(const std::string& key) const {
@@ -151,7 +151,7 @@ void EntityWrapper::Remove() {
 }
 
 void EntityWrapper::EnableDepth(bool value) {
-    m_underlying->GetComponent<DepthCalculator>()->SetActive(value);
+    m_underlying->GetComponent<DepthCalculator>()->setActive(value);
 }
 
 void EntityWrapper::SetText(const std::string& text) {
@@ -243,7 +243,7 @@ namespace luaFunctions {
 }
 
 void EntityWrapper::SetActive (bool value) {
-    m_underlying->SetActive(value);
+    m_underlying->setActive(value);
 }
 
 void EntityWrapper::SetEnableControls (bool value) {
@@ -253,7 +253,7 @@ void EntityWrapper::SetEnableControls (bool value) {
 void EntityWrapper::EnableCollisions(bool value) {
     auto collider = m_underlying->GetComponent<Collider>();
     if (collider != nullptr)
-        collider->SetActive(value);
+        collider->setActive(value);
     auto& children = m_underlying->GetChildren();
     for (auto& child : children) {
         EntityWrapper e(child.second.get());

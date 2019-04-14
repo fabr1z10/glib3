@@ -653,7 +653,9 @@ std::shared_ptr<Runner> HotSpotManagerFactory::Create(luabridge::LuaRef& ref) {
         hsm->setLmbClickCallback([f] (float x, float y) { f.execute(x, y);});
 
     }
-
+    if (table.HasKey("tag")) {
+        hsm->SetTag(table.Get<std::string>("tag"));
+    }
 
     return hsm;
     //Engine::get().AddRunner(hsm);

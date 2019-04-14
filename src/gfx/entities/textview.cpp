@@ -83,8 +83,8 @@ void TextView::IncreaseTopLine(int inc) {
     m_arrowUp->SetPosition(glm::vec2(0.0f, y - m_arrowUpSize));
     m_arrowDown->SetPosition(glm::vec2(0.0f, y - m_height));
 
-    m_arrowUp->SetActive(m_topLine>0);
-    m_arrowDown->SetActive(m_topLine + m_maxLines < m_nLines);
+    m_arrowUp->setActive(m_topLine>0);
+    m_arrowDown->setActive(m_topLine + m_maxLines < m_nLines);
 }
 
 void TextView::reformat() {
@@ -258,8 +258,8 @@ void TextView::AddArrows() {
 }
 
 void TextView::Start() {
-    m_arrowUp->SetActive(false);
-    m_arrowDown->SetActive(false);
+    m_arrowUp->setActive(false);
+    m_arrowDown->setActive(false);
 
     Entity::Start();
 

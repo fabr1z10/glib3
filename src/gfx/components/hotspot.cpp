@@ -39,7 +39,7 @@ void HotSpot::SetFocus(bool focus) {
 
 }
 
-HotSpotManager::HotSpotManager() : Runner(), MouseListener(), m_active{true}, m_currentlyActiveHotSpot{nullptr} {
+HotSpotManager::HotSpotManager() : Runner(), MouseListener(), m_currentlyActiveHotSpot{nullptr} {
     m_pixelRatio = Engine::get().GetPixelRatio();
 }
 
@@ -56,7 +56,7 @@ HotSpotManager::HotSpotManager() : Runner(), MouseListener(), m_active{true}, m_
 //}
 
 void HotSpotManager::ScrollCallback(GLFWwindow*, double x, double y) {
-    if (m_currentlyActiveHotSpot != nullptr && m_currentlyActiveHotSpot->GetObject()->IsActive()) {
+    if (m_currentlyActiveHotSpot != nullptr && m_currentlyActiveHotSpot->GetObject()->isActive()) {
         m_currentlyActiveHotSpot->onScroll(x, y);
     }
 }
@@ -65,8 +65,8 @@ void HotSpotManager::ScrollCallback(GLFWwindow*, double x, double y) {
 void HotSpotManager::CursorPosCallback(GLFWwindow*, double x, double y) {
 
     // mouse has moved! let's find the current focussed hotspot
-    if (!m_active)
-        return;
+    //if (!m_active)
+    //    return;
     Entity* root = Engine::get().GetScene();
     HotSpotIterator iterator(root);
 
@@ -75,7 +75,7 @@ void HotSpotManager::CursorPosCallback(GLFWwindow*, double x, double y) {
     //glm::vec4 viewport;
     HotSpot* newActiveHotSpot = nullptr;
     while (!iterator.end()) {
-        if (!iterator->IsActive() || !iterator->AreControlsEnabled())
+        if (!iterator->isActive() || !iterator->AreControlsEnabled())
         {
             iterator.advanceSkippingChildren();
             continue;
@@ -217,7 +217,7 @@ void HotSpotManager::MouseButtonCallback(GLFWwindow* window, int button, int act
     }
 
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
-        if (m_currentlyActiveHotSpot != nullptr && m_currentlyActiveHotSpot->GetObject()->IsActive()) {
+        if (m_currentlyActiveHotSpot != nullptr && m_currentlyActiveHotSpot->GetObject()->isActive()) {
             m_currentlyActiveHotSpot->onClick(m_worldCoordinates, button, action, mods);
         } else {
             // convert mouse to world coordinates
@@ -248,20 +248,22 @@ void HotSpotManager::KeyCallback(GLFWwindow *, int key, int scancode, int action
 
 void HotSpot::SetParent(Entity * entity) {
     Component::SetParent(entity);
-    if (m_shape != nullptr)
-        AddDebugMesh();
+    if (m_shape != nullptr) {
+        auto ptr =getDebugMesh();
+        m_entity->AddChild(ptr);
+    }
 }
 
-void HotSpot::AddDebugMesh() {
+std::shared_ptr<Entity> HotSpot::getDebugMesh() {
     auto ce = Ref::Create<Entity>();
     auto cer = Ref::Create<Renderer>();
 
     auto debugMesh = MeshFactory::CreateMesh(*(m_shape.get()), 5.0f);
     cer->SetMesh(debugMesh);
     ce->AddComponent(cer);
-    ce->SetTag("hotspotmesh");
-    m_entity->AddChild(ce);
-
+    ce->SetName("_debugmesh");
+    //m_entity->AddChild(ce);
+    return ce;
 
 }
 
@@ -274,7 +276,10 @@ void HotSpot::Start() {
         glm::vec2 min(bounds.min);
         glm::vec3 extents = bounds.GetExtents();
         SetShape(std::make_shared<Rect>(extents.x, extents.y, min));
-        AddDebugMesh();
+
+        // if debug mode
+        auto mesh = this->getDebugMesh();
+        m_entity->AddChild(mesh);
     }
 
 

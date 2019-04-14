@@ -7,7 +7,10 @@ std::unordered_map<int, std::weak_ptr<Ref> > Ref::g_refs;
 std::unordered_map<std::string, std::weak_ptr<Ref> > Ref::g_taggedRefs;
 
 
-Ref::Ref() : m_id{g_idCount++} {
+Ref::Ref() : m_id{g_idCount++}, m_active{true} {
+}
+
+Ref::Ref(const Ref & orig) : m_id{g_idCount++}, m_active{orig.m_active} {
 }
 
 Ref::~Ref() {

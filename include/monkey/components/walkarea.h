@@ -23,6 +23,7 @@ public:
 //    }
     //float GetDepth (float x, float y);
     //float GetScale (float x, float y)
+    void assignDepth (Entity*);
     void assignScaleAndDepth (Entity*);
     void onAdd(Entity*);
     void Start() override;
@@ -40,6 +41,8 @@ public:
     using ParentClass = HotSpot;
     std::type_index GetType() override;
 private:
+    std::shared_ptr<Entity> getDebugMesh() override ;
+
     //int m_id;
     Entity* m_player;
     std::vector<BlockedLine> m_walls;
@@ -48,7 +51,6 @@ private:
     std::shared_ptr<Function2D> m_depthFunc;
     std::shared_ptr<Function2D> m_scaleFunc;
     Scheduler* m_scheduler;
-
 };
 
 

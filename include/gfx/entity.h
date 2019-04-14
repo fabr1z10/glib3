@@ -29,7 +29,7 @@
 /// and only one parent (i.e. they are organized in a tree)
 class Entity : public Ref {
 public:
-    Entity() : Ref(), m_parent(nullptr), m_active(true), m_update(true), m_localTransform{glm::mat4(1.0)},
+    Entity() : Ref(), m_parent(nullptr), m_update(true), m_localTransform{glm::mat4(1.0)},
                m_worldTransform{glm::mat4(1.0)}, m_enableControls{true}, m_flipHorizontal{false} {}
     // copy ctor
     Entity(const Entity&);
@@ -111,8 +111,8 @@ public:
 
     // an active entity gets updated at every frame,
     // and responds to events (i.e. hot-spots)
-    bool IsActive() const;
-    void SetActive(bool);
+    // bool IsActive() const;
+    void setActive(bool) override;
     void SetEnableUpdate(bool);
     bool IsUpdateEnabled() const;
 
@@ -148,7 +148,7 @@ private:
     void Notify();
     virtual void SetActiveInnerCheck(bool) {}
     bool m_flipHorizontal;
-    bool m_active;
+    //bool m_active;
     bool m_update;
     bool m_enableControls;
     //int m_layer;

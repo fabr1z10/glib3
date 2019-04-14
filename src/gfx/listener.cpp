@@ -2,7 +2,7 @@
 #include <gfx/engine.h>
 
 
-MouseListener::MouseListener() {
+MouseListener::MouseListener() : m_enabled(true) {
     Engine::get().RegisterToMouseEvent(this);
 }
 

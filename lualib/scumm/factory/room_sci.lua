@@ -38,7 +38,8 @@ function scumm.factory.sci_room (args)
 		},
 		engines = {
 			{ 
-				type = "hotspotmanager", 
+				type = "hotspotmanager",
+				tag ="_hotspotmanager", 
 				keys = {
 					{ key = 299, func = function() monkey.endroom() end }
 				},
@@ -171,7 +172,7 @@ function scumm.factory.sci_room (args)
 						type = "sprite",
 					 	model="cursor",
 				     	tag = "cursor",
-		 		    	pos={0,0,0},
+		 		    	pos={0,0,5},
 					 	components = {
 							{ type="cursor"}
 					 	}

@@ -51,7 +51,7 @@ inline Shape* Collider::GetShape() {
 }
 
 inline bool Collider::Enabled() const {
-    return m_enabled && IsActive();
+    return m_enabled && isActive();
 }
 
 inline void Collider::SetEnabled(bool value) {

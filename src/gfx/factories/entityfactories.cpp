@@ -63,17 +63,15 @@ std::shared_ptr<Entity> EntityFactory::Create(luabridge::LuaRef& ref) {
                 entity->AddChild(childEntity);
         }
     }
-    if (active == false) {
-        std::cout << "ciaos";
-    }
-    entity->SetActive(active);
+
+    entity->setActive(active);
     return entity;
 }
 
 std::shared_ptr<Entity> ButtonFactory::Create(luabridge::LuaRef &ref) {
 
     LuaTable table(ref);
-    auto parent = std::unique_ptr<Entity>(new Entity);
+    auto parent = Ref::Create<Entity>();
     std::string tag = table.Get<std::string>("tag", "");
     std::string name = table.Get<std::string>("name", "");
     if (!tag.empty()) parent->SetTag(tag);
@@ -154,7 +152,7 @@ std::shared_ptr<Entity> TextViewFactory::Create(luabridge::LuaRef &ref) {
 std::shared_ptr<Entity> BoxedMessageFactory::Create(luabridge::LuaRef& ref) {
     LuaTable table(ref);
 
-    auto entity = std::make_shared<Entity>();
+    auto entity = Ref::Create<Entity>();
     std::string tag = table.Get<std::string>("tag");
     if (!tag.empty()) entity->SetTag(tag);
     glm::vec3 pos = table.Get<glm::vec3>("pos");
@@ -165,7 +163,7 @@ std::shared_ptr<Entity> BoxedMessageFactory::Create(luabridge::LuaRef& ref) {
     float maxWidth = table.Get<float>("maxwidth");
     float padding = table.Get<float>("padding", 0.0f);
     auto f = Engine::get().GetAssetManager().GetFont(font);
-    auto renderer = std::make_shared<Renderer>();
+    auto renderer = Ref::Create<Renderer>();
     auto textMesh = std::make_shared<TextMesh>(f.get(), message, size, CENTER, maxWidth);
 
     //std::string cornerImage = table.Get<std::string>("corner", std::string());
@@ -181,9 +179,9 @@ std::shared_ptr<Entity> BoxedMessageFactory::Create(luabridge::LuaRef& ref) {
     entity->AddComponent(renderer);
 
     // create the box
-    auto box = std::make_shared<Entity>();
+    auto box = Ref::Create<Entity>();
     glm::vec3 extents = bounds.GetExtents();
-    auto box_renderer = std::make_shared<Renderer>();
+    auto box_renderer = Ref::Create<Renderer>();
     auto rect = std::make_shared<Rect>(extents.x+2*padding, extents.y+2*padding);
     auto boxMesh = MeshFactorySolid::CreateMesh(*(rect.get()), 0.0f);
     box_renderer->SetMesh(boxMesh);
@@ -195,8 +193,8 @@ std::shared_ptr<Entity> BoxedMessageFactory::Create(luabridge::LuaRef& ref) {
     float height = extents.y +2 * padding;
 
     auto fb = [] (const std::string& img, float width, float thickness, float x, float y, float imgw, bool flipv, bool rot) {
-        auto b = std::make_shared<Entity>();
-        auto b_renderer = std::make_shared<Renderer>();
+        auto b = Ref::Create<Entity>();
+        auto b_renderer = Ref::Create<Renderer>();
         auto qm = std::make_shared<QuadMesh>(img, width, thickness, width/imgw, flipv ? -1 : 1 );
         b_renderer->SetMesh(qm);
         b->AddComponent(b_renderer);
@@ -207,8 +205,8 @@ std::shared_ptr<Entity> BoxedMessageFactory::Create(luabridge::LuaRef& ref) {
     };
 
     auto cb = [] (const std::string& img, float x, float y, float w, float h, bool flipx, bool flipy) {
-        auto b = std::make_shared<Entity>();
-        auto b_renderer = std::make_shared<Renderer>();
+        auto b = Ref::Create<Entity>();
+        auto b_renderer = Ref::Create<Renderer>();
         auto qm = std::make_shared<QuadMesh>(img, w, h, flipx ? -1 : 1, flipy ? -1 : 1 );
         b_renderer->SetMesh(qm);
         b->AddComponent(b_renderer);

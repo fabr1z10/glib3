@@ -16,9 +16,8 @@ public:
     void CursorPosCallback(GLFWwindow*, double, double) override;
     void MouseButtonCallback(GLFWwindow*, int, int, int) override {}
     virtual void ScrollCallback(GLFWwindow*, double, double) override {}
-    void Enable(bool) override;
     std::shared_ptr<Component> clone() const override;
-
+    void setActive(bool) override;
     using ParentClass = Cursor;
 private:
     bool m_active;
@@ -26,4 +25,4 @@ private:
 };
 
 
-inline void Cursor::Enable(bool value) { m_active = value; }
+

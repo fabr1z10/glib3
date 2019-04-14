@@ -34,10 +34,10 @@ void MultiCollider::Start() {
         c->AddComponent(renderer);
         m_entity->AddChild(c);
         m_gfx[s.first] = c.get();
-        c->SetActive(false);
+        c->setActive(false);
     }
     if (!m_current.empty())
-        m_gfx.at(m_current)->SetActive(true);
+        m_gfx.at(m_current)->setActive(true);
     
 }
 
@@ -46,7 +46,7 @@ void MultiCollider::SwitchTo (const std::string& shapeId)
     if (shapeId.empty()) {
         Collider::SetEnabled(false);
         if (!m_gfx.empty()) {
-            m_gfx.at(m_current)->SetActive(false);
+            m_gfx.at(m_current)->setActive(false);
         }
     } else {
         Collider::SetEnabled(true);
@@ -56,8 +56,8 @@ void MultiCollider::SwitchTo (const std::string& shapeId)
         SetShape(it->second);
         if (!m_gfx.empty()) {
             if (!m_current.empty())
-                m_gfx.at(m_current)->SetActive(false);
-            m_gfx.at(shapeId)->SetActive(true);
+                m_gfx.at(m_current)->setActive(false);
+            m_gfx.at(shapeId)->setActive(true);
         }
     }
 

@@ -38,7 +38,7 @@ public:
     using ParentClass = HotSpot;
 
 protected:
-    void AddDebugMesh();
+    virtual std::shared_ptr<Entity> getDebugMesh();
     int m_priority;
     std::shared_ptr<Shape> m_shape;
     bool m_focus;
@@ -73,7 +73,7 @@ public:
     void CursorPosCallback(GLFWwindow*, double, double) override;
     void ScrollCallback(GLFWwindow*, double, double) override;
     void MouseButtonCallback(GLFWwindow*, int, int, int) override;
-    void Enable(bool) override;
+    //void Enable(bool) override;
     void Update(double) override {}
     void setRmbClickCallback(std::function<void(float, float)> f);
     void setLmbClickCallback(std::function<void(float, float)> f);
@@ -83,7 +83,7 @@ public:
     //bool IsInViewport(float xScreen, float yScreen, glm::vec4 activeViewport);
     void NotifyHotSpotDestructor(HotSpot*);
     void KeyCallback(GLFWwindow*, int, int, int, int) override;
-
+    void setActive(bool) override;
     //void EnableGroup(int);
     //void DisableGroup(int);
 
@@ -93,15 +93,15 @@ protected:
     Camera* m_defaultCamera;
     glm::vec2 m_worldCoordinates;
     HotSpot* m_currentlyActiveHotSpot;
-    bool m_active;
     float m_pixelRatio;
     std::function<void(float, float)> m_rmbClick;
     std::function<void(float, float)> m_lmbClick;
     //std::unordered_map<int, std::unique_ptr<HotSpotGroup> > m_groups;
 };
 
-inline void HotSpotManager::Enable(bool value) {
-    m_active = value;
+inline void HotSpotManager::setActive(bool value) {
+    Ref::setActive(value);
+    MouseListener::Enable(value);
     if (value == false)
         m_currentlyActiveHotSpot= nullptr;
 }

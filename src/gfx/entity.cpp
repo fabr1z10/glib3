@@ -14,8 +14,7 @@
 
 using namespace std;
 
-
-Entity::Entity(const Entity & e) : m_update(e.m_update) {
+Entity::Entity(const Entity & e) : Ref(e), m_update(e.m_update) {
     m_flipHorizontal = e.m_flipHorizontal;
     m_active = e.m_active;
     m_enableControls = e.m_enableControls;
@@ -31,7 +30,9 @@ Entity::Entity(const Entity & e) : m_update(e.m_update) {
 }
 
 std::shared_ptr<Entity> Entity::clone() const {
-    return std::make_shared<Entity>(*this);
+    auto ptr = Ref::Clone<Entity>(*this);
+
+
 }
 
 
@@ -52,20 +53,17 @@ void Entity::AddChild(std::shared_ptr<Entity> child) {
 }
 
 
-bool Entity::IsActive() const {
-    return m_active;
-}
 
-void Entity::SetActive(bool value) {
-    m_active = value;
+void Entity::setActive(bool value) {
+    Ref::setActive(value);
     bool recursive = true;
     for (auto& h : m_components) {
-        h.second->SetActive(value);
+        h.second->setActive(value);
     }
     // now call setActive on all children
     if (recursive)
         for (auto& c: m_children)
-            c.second->SetActive(value);
+            c.second->setActive(value);
     SetActiveInnerCheck(value);
 }
 

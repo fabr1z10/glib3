@@ -31,7 +31,7 @@ void DepthCalculator::Update(double) {
 }
 
 void DepthCalculator::UpdateDepthAndScale() {
-    if (IsActive()) {
+    if (isActive()) {
         glm::vec2 p(m_entity->GetPosition());
         if (m_depthFunc != nullptr) {
             float z = m_depthFunc->operator()(p.x, p.y);

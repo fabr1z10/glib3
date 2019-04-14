@@ -14,6 +14,15 @@ public:
         return ptr;
     }
 
+    template <typename T>
+    static std::shared_ptr<T> Clone (const T& orig) {
+        auto ptr = std::make_shared<T>(orig);
+        g_refs[ptr->GetId()] = ptr;
+        return ptr;
+
+    }
+
+
     virtual ~Ref();
     std::string GetTag() const;
     void SetTag(const std::string&);
@@ -54,9 +63,12 @@ public:
     static void dump ();
     virtual std::string toString();
     // bool IsAlive(int);
+    virtual void setActive(bool);
+    bool isActive() const;
+
 protected:
     Ref();
-
+    Ref(const Ref&);
     static int g_idCount;
     static std::unordered_map<int, std::weak_ptr<Ref>> g_refs;
     static std::unordered_map<std::string, std::weak_ptr<Ref>> g_taggedRefs;
@@ -64,7 +76,7 @@ protected:
     // unique identifier
     int m_id;
     std::string m_tag;
-
+    bool m_active;
 };
 
 
@@ -73,5 +85,12 @@ inline std::string Ref::GetTag() const {
 }
 inline int Ref::GetId() const {
     return m_id;
+}
+
+inline void Ref::setActive(bool value) {
+    m_active = value;
+}
+inline bool Ref::isActive() const {
+    return m_active;
 }
 

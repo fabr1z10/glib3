@@ -23,7 +23,7 @@
 #include <gfx/activities/setstate.h>
 #include <gfx/activities/waitclick.h>
 #include <gfx/activities/treemove.h>
-
+#include <gfx/activities/setactive.h>
 
 std::shared_ptr<Activity> NoOpActFactory::Create(luabridge::LuaRef &ref) {
     return std::unique_ptr<NoOp>(new NoOp);
@@ -281,6 +281,14 @@ std::shared_ptr<Activity> TreeMoveActFactory::Create(luabridge::LuaRef &ref) {
     std::string parent = table.Get<std::string>("to");
     auto ptr= std::make_shared<TreeMove>(parent);
     ptr->SetTag(tag);
+    return ptr;
+}
+
+std::shared_ptr<Activity> SetActiveActFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    std::string tag = table.Get<std::string>("tag");
+    bool active = table.Get<bool>("active");
+    auto ptr = std::make_shared<SetActive>(tag, active);
     return ptr;
 }
 

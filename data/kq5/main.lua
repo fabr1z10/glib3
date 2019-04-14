@@ -47,6 +47,7 @@ dialogues = {}
 -- sprites = {}
 function box (args) 
     return {
+		{ type = action.activate, args = { tag = "_hotspotmanager", active = false}},
         { type = action.create_object, args = { factory = scumm.factory.message, args = {
             tag = "_msg",
             pos = {160, 100, 2}, 
@@ -65,6 +66,7 @@ function box (args)
             } 
         }}},
         { type = action.wait_click },
+		{ type = action.activate, args = { tag = "_hotspotmanager", active = true}},
         { type = action.remove_object, args = {tag="_msg"}}
     }
 
@@ -77,5 +79,5 @@ glib.load_folder("items")
 --require("defaultscripts")
 
 --test.scummbar()
-variables._room = "room2"
+variables._room = "room1"
 

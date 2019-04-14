@@ -27,26 +27,17 @@ public:
         m_entity = parent;
     }
     Entity* GetObject();
-    bool IsActive() const;
-    virtual void SetActive(bool);
     virtual std::type_index GetType();
     virtual std::shared_ptr<Component> clone() const = 0;
 protected:
-    Component() : Ref(), m_active{true} {}
+    Component() : Ref() {}
     Component(const Component&);
 
-    bool m_active;
+
     Entity* m_entity;
     
 };
 
-inline bool Component::IsActive() const {
-    return m_active;
-}
-
-inline void Component::SetActive(bool value) {
-    m_active = value;
-}
 
 
 inline std::type_index Component::GetType() {

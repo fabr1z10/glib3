@@ -111,27 +111,21 @@ end
 
 action.activate = function (args)
 	glib.assert (args.tag, "tag")
-	glib.assert (args.value, "value")
-	return { 
-		type="callfunc", 
-		func = function() 
-			local m = monkey.getEntity(args.tag)
-			m:setactive(args.value)
-		end
-	}
+	glib.assert (args.active, "active")
+	return { type ="setactive", tag = args.tag, active = args.active }
 
 end
 
 -- dynamically creates a new object in the game
 action.create_object = function(args) 
-	print ("fijfjf")
+	local parent = args.parent or "main"
 	glib.assert (args.factory, "factory")
 	glib.assert (args.args, "args")
 	return { type = "callfunc", func = 
 		function()
 			print ("creating a new object ... ")
 			local o = args.factory(args.args)
-			local m1 = monkey.getEntity("main")
+			local m1 = monkey.getEntity(parent)
 			monkey.addEntity (o, m1)
 		end
 	}

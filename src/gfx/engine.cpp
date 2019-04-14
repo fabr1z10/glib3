@@ -253,26 +253,28 @@ void Engine::WindowResizeCallback(GLFWwindow* win, int width, int height) {
 
 void Engine::mouse_button_callback(GLFWwindow* win, int button, int action, int mods) {
     if (Engine::get().m_mouseEnabled) {
-        for (auto &listener : Engine::get().m_mouseListeners)
-            listener->MouseButtonCallback(win, button, action, mods);
+        for (auto &listener : Engine::get().m_mouseListeners) {
+            if (listener->isEnabled())
+                listener->MouseButtonCallback(win, button, action, mods);
+        }
     }
-//    auto& e = Engine::get().m_mouseListener;
-//    if (e != nullptr)
-//        e->MouseButtonCallback(win, button, action, mods);
 }
 
 void Engine::cursor_pos_callback(GLFWwindow* win, double xpos, double ypos) {
 
     if (Engine::get().m_mouseEnabled) {
-        for (auto &listener : Engine::get().m_mouseListeners)
-            listener->CursorPosCallback(win, xpos, ypos);
+        for (auto &listener : Engine::get().m_mouseListeners) {
+            if (listener->isEnabled())
+                listener->CursorPosCallback(win, xpos, ypos);
+        }
     }
 }
 
 void Engine::scroll_callback(GLFWwindow* win, double xoffset, double yoffset) {
     if (Engine::get().m_mouseEnabled) {
         for (auto &listener : Engine::get().m_mouseListeners)
-            listener->ScrollCallback(win, xoffset, yoffset);
+            if (listener->isEnabled())
+                listener->ScrollCallback(win, xoffset, yoffset);
     }
 }
 

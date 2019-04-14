@@ -7,7 +7,7 @@ void Switch::Start() {
     int i = 0;
     for (auto& c : m_entity->GetChildren()) {
         m_states[m_stateNames[i++]] = c.second.get();
-        c.second->SetActive(false);
+        c.second->setActive(false);
     }
     m_currentlyActive.clear();
 
@@ -26,9 +26,9 @@ void Switch::ChangeState(const std::string& newState) {
     auto entity = it->second;
     if (!m_currentlyActive.empty()) {
         auto old =m_states.at(m_currentlyActive);
-        old->SetActive(false);
+        old->setActive(false);
         entity->SetPosition(old->GetPosition());
     }
-    entity->SetActive(true);
+    entity->setActive(true);
     m_currentlyActive = newState;
 }

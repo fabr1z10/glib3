@@ -14,8 +14,20 @@ public:
     virtual void CursorPosCallback(GLFWwindow*, double, double) = 0;
     virtual void MouseButtonCallback(GLFWwindow*, int, int, int) = 0;
     virtual void ScrollCallback(GLFWwindow*, double, double) = 0;
-    virtual void Enable(bool) = 0;
+    virtual void Enable(bool);
+    bool isEnabled();
+protected:
+    bool m_enabled;
 };
+
+inline void MouseListener::Enable(bool value) {
+    m_enabled = value;
+}
+
+
+inline bool MouseListener::isEnabled() {
+    return m_enabled;
+}
 
 struct KeyEvent {
     int key;
