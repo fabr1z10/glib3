@@ -18,78 +18,93 @@ room = scumm.factory.sci_room (roomDefinition)
 room:add( {
 	{ pos = {0, 0,-1}, components = { { type="gfx", image="gfx/003.png" }}},
 	{ pos = {0, 0, 0}, components = { { type="gfx", image="gfx/003a.png" }}},
-	scumm.factory.walkarea {
-		tag = "walkarea_1",
-		priority = 1, 
-		scale = { type="constant", value=0.5},
-		depth = { type="constant", value=-0.5},
-		handler = function(walkarea_from, x, y) 
-			print ("sti cazzi! Cerco di andare da walkarea " .. walkarea_from .. " a walk1(" .. tostring(x) .. ", " .. tostring(y)) 
-			local actions = {
-			 	{ type = scumm.action.walkto, args = {tag="player", pos ={70,77}}},
-			 	{ type = scumm.action.turn, args={tag="player", dir="north"}},
-			 	{ type = action.treemove, args = {tag="player", parent="walkarea_2_back"}},
-			 	{ type = action.animate, args ={tag="player", anim="walk_n"}},
-			 	{ type = action.move, args = {tag="player", to ={70,30}, speed = items["graham"].character.speed}},
-			 	{ type = action.treemove, args = {tag="player", parent="walkarea_1"}},
-			 	{ type = scumm.action.walkto, args = {tag="player", pos ={x,y}}},			 	
-			}
-			local s = script.make(actions)
-			s.name="_walk"
-			monkey.play(s)
-		end,
-		shape = { 
-			type = "poly", 
-			outline = {0,0,0,110,30,124,52,124,77,119,103,115,142,89,152,86,152,0}
+	scumm.factory.hilly {
+		shape_front = { type = "poly", outline = {188,86,248,66,266,62,320,37,320,0,0,0,0,50,40,70,89,78,152,86} },
+		shape_back = { type = "poly", outline = {0,0,0,110,30,124,52,124,77,119,103,115,142,89,152,86,152,0} },
+		scale_back = { type="constant", value=0.5},
+	 	depth_back = { type="constant", value=-0.5},
+	 	depth_front = { type="constant", value=0.5},
+	 	scale_transition = { type="constant", value=1},
+	 	depth_transition = { type="constant", value=-0.5},
+	 	connection_point_front = {70, 77},
+	 	connection_point_back = {70, 30},
+	}
+
+	-- back
+	-- scumm.factory.walkarea {
+	-- 	tag = "walkarea_1",
+	-- 	priority = 1, 
+	-- 	scale = { type="constant", value=0.5},
+	-- 	depth = { type="constant", value=-0.5},
+	-- 	handler = function(walkarea_from, x, y) 
+	-- 		print ("sti cazzi! Cerco di andare da walkarea " .. walkarea_from .. " a walk1(" .. tostring(x) .. ", " .. tostring(y)) 
+	-- 		local actions = {
+	-- 		 	{ type = scumm.action.walkto, args = {tag="player", pos ={70,77}}},
+	-- 		 	{ type = scumm.action.turn, args={tag="player", dir="north"}},
+	-- 		 	{ type = action.treemove, args = {tag="player", parent="walkarea_2_back"}},
+	-- 		 	{ type = action.animate, args ={tag="player", anim="walk_n"}},
+	-- 		 	{ type = action.move, args = {tag="player", to ={70,30}, speed = items["graham"].character.speed}},
+	-- 		 	{ type = action.treemove, args = {tag="player", parent="walkarea_1"}},
+	-- 		 	{ type = scumm.action.walkto, args = {tag="player", pos ={x,y}}},			 	
+	-- 		}
+	-- 		local s = script.make(actions)
+	-- 		s.name="_walk"
+	-- 		monkey.play(s)
+	-- 	end,
+	-- 	shape = { 
+	-- 		type = "poly", 
+	-- 		outline = {0,0,0,110,30,124,52,124,77,119,103,115,142,89,152,86,152,0}
 
 
-		}
-	},
-	scumm.factory.walkarea {
-		tag = "walkarea_2",
-		priority = 2, 
-		shape = { 
-			type = "poly", 
-			outline = {188,86,248,66,266,62,320,37,320,0,0,0,0,50,40,70,89,78,152,86}
-		},
-		handler = function(walkarea_from, x, y) 
-			print ("sti cazzi! Cerco di andare da walkarea " .. walkarea_from .. " a walk2(" .. tostring(x) .. ", " .. tostring(y)) 
-			local actions = {
-			 	{ type = scumm.action.walkto, args = {tag="player", pos ={70,30}}},
-			 	{ type = action.treemove, args = {tag="player", parent="walkarea_2_back"}},
-			 	{ type = action.animate, args ={tag="player", anim="walk_s"}},
-			 	{ type = action.move, args = {tag="player", to ={70,77}, speed = items["graham"].character.speed}},
-			 	{ type = action.treemove, args = {tag="player", parent="walkarea_2"}},
-			 	{ type = scumm.action.walkto, args = {tag="player", pos ={x,y}}},			 	
-			}
-			local s = script.make(actions)
-			s.name="_walk"
-			monkey.play(s)
-		end,	
-		--handler = 10,
-		depth = { type="constant", value=0.5},		
-		children = {
-        	scumm.factory.object {
-				id="graham", 
-				pos={160,50, 0}, 
-				dir = "south",
-				follow = false,
-				--collide = args.collide
-			}
-		}
-	},
-	scumm.factory.walkarea {
-		tag = "walkarea_2_back",
-		priority = 0, 
-		shape = { 
-			type = "poly", 
-			outline = {188,86,248,66,266,62,320,37,320,0,0,0,0,50,40,70,89,78,152,86}
-		},
-		--handler = 10,
-		scale = { type="constant", value=1.0},
+	-- 	}
+	-- },
+	-- -- front
+	-- scumm.factory.walkarea {
+	-- 	tag = "walkarea_2",
+	-- 	priority = 2, 
+	-- 	shape = { 
+	-- 		type = "poly", 
+	-- 		outline = {188,86,248,66,266,62,320,37,320,0,0,0,0,50,40,70,89,78,152,86}
+	-- 	},
+	-- 	handler = function(walkarea_from, x, y) 
+	-- 		print ("sti cazzi! Cerco di andare da walkarea " .. walkarea_from .. " a walk2(" .. tostring(x) .. ", " .. tostring(y)) 
+	-- 		local actions = {
+	-- 		 	{ type = scumm.action.walkto, args = {tag="player", pos ={70,30}}},
+	-- 		 	{ type = action.treemove, args = {tag="player", parent="walkarea_2_back"}},
+	-- 		 	{ type = action.animate, args ={tag="player", anim="walk_s"}},
+	-- 		 	{ type = action.move, args = {tag="player", to ={70,77}, speed = items["graham"].character.speed}},
+	-- 		 	{ type = action.treemove, args = {tag="player", parent="walkarea_2"}},
+	-- 		 	{ type = scumm.action.walkto, args = {tag="player", pos ={x,y}}},			 	
+	-- 		}
+	-- 		local s = script.make(actions)
+	-- 		s.name="_walk"
+	-- 		monkey.play(s)
+	-- 	end,	
+	-- 	--handler = 10,
+	-- 	depth = { type="constant", value=0.5},		
+	-- 	children = {
+ --        	scumm.factory.object {
+	-- 			id="graham", 
+	-- 			pos={160,50, 0}, 
+	-- 			dir = "south",
+	-- 			follow = false,
+	-- 			--collide = args.collide
+	-- 		}
+	-- 	}
+	-- },
+	-- -- front
+	-- scumm.factory.walkarea {
+	-- 	tag = "walkarea_2_back",
+	-- 	priority = 0, 
+	-- 	shape = { 
+	-- 		type = "poly", 
+	-- 		outline = {188,86,248,66,266,62,320,37,320,0,0,0,0,50,40,70,89,78,152,86}
+	-- 	},
+	-- 	--handler = 10,
+	-- 	scale = { type="constant", value=1.0},
 
-		depth = { type="constant", value=-0.5},				
-	},
+	-- 	depth = { type="constant", value=-0.5},				
+	-- },
 
 	--cumm.factory.trap { pos ={10, 0, 0}, tag="troll_sensor", shape = {type="rect", width=10, height = 144}, onenter = function() print("ciao stronzo") end}
 	-- scumm.factory.message { 

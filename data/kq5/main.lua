@@ -79,5 +79,5 @@ glib.load_folder("items")
 --require("defaultscripts")
 
 --test.scummbar()
-variables._room = "room1"
+variables._room = "room2"
 

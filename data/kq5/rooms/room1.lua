@@ -48,6 +48,18 @@ room:add( {
 
 		}
 	},
+		scumm.factory.walkarea {
+		tag = "walkarea_front",
+		priority = 2, 
+		scale = { type="constant", value=0.5},
+		depth = { type="linear_y", values= {0, 1, 190, 0} },
+		shape = { 
+			type = "poly", 
+			outline = {0,0,0,16,26,11,54,8,72,14,85,19,91,16,98,16,81,0},
+		},
+		children = {
+		}
+	},
 
 	scumm.factory.sciobject { id="crispins_house"},
 	-- scumm.factory.message { 
