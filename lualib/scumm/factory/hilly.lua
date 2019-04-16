@@ -32,6 +32,7 @@ scumm.factory.hilly = function(args)
 					s.name="_walk"
 					monkey.play(s)
 				end,
+				children = args.children_back,
 				shape = args.shape_back
 			},
 			scumm.factory.walkarea {
@@ -45,7 +46,7 @@ scumm.factory.hilly = function(args)
 			 			{ type = action.treemove, args = {tag="player", parent="walkarea_front_back"}},
 					 	{ type = action.animate, args ={tag="player", anim="walk_s"}},
 					 	{ type = action.move, args = {tag="player", to =args.connection_point_front, speed = items["graham"].character.speed}},
-					 	{ type = action.treemove, args = {tag="player", parent="walkarea_back"}},
+					 	{ type = action.treemove, args = {tag="player", parent="walkarea_front"}},
 			 			{ type = scumm.action.walkto, args = {tag="player", pos ={x,y}}},			 	
 					}
 					local s = script.make(actions)
@@ -54,15 +55,7 @@ scumm.factory.hilly = function(args)
 				end,	
 				depth = args.depth_front,
 				scale = args.scale_front,
-				children = {
- 		        	scumm.factory.object {
-						id="graham", 
-						pos={160,50, 0}, 
-		 				dir = "south",
-						follow = false,
-						collide = args.collide
-					}
-				}
+				children = args.children_front,
 			},
 			scumm.factory.walkarea {
 				tag = "walkarea_front_back",
