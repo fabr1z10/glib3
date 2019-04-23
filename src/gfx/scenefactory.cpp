@@ -66,7 +66,7 @@ SceneFactory::SceneFactory() {
     m_runnerFactory.Add<HotSpotManagerFactory>("hotspotmanager");
 
     m_modelFactory.Add<SimpleModelFactory>("sprite");
-    m_modelFactory.Add<CompositeModelFactory>("model");
+    //m_modelFactory.Add<CompositeModelFactory>("model");
 
     m_entityFactory.Add<EntityFactory>("default");
     m_entityFactory.Add<TextViewFactory>("textview");

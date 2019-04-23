@@ -17,10 +17,10 @@ void ScriptHotSpot::onLeave() {
     if (r_leave != nullptr)
         r_leave->operator()(EntityWrapper(m_entity));
 }
-void ScriptHotSpot::onClick(glm::vec2, int button, int action, int mods) {
+void ScriptHotSpot::onClick(glm::vec2 pos, int button, int action, int mods) {
     if (action == GLFW_PRESS) {
         if (button == GLFW_MOUSE_BUTTON_LEFT && r_click != nullptr) {
-            r_click->execute(EntityWrapper(m_entity));
+            r_click->execute(pos.x, pos.y, EntityWrapper(m_entity));
         } else if (button == GLFW_MOUSE_BUTTON_RIGHT && m_rmbClick != nullptr){
             m_rmbClick->execute(EntityWrapper(m_entity));
         }

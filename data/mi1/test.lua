@@ -41,3 +41,8 @@ test.scummbar = function()
 	variables._room = "scummbar"
 	
 end
+
+test.lookout = function() 
+	variables._room = "lookout"
+	
+end

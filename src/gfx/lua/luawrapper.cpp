@@ -67,6 +67,7 @@ void LuaWrapper::Init() {
             .addFunction("gettextinfo", &EntityWrapper::GetTextInfo)
             .addFunction("getinfo",&EntityWrapper::GetInfo)
             .addFunction("enablestatemachine",&EntityWrapper::EnableStateMachine)
+            .addFunction("forceclick", &EntityWrapper::ForceClick)
             .endClass();
 }
 

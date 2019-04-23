@@ -1,4 +1,13 @@
 -- the local objects
+items["lookout.walkarea"] = {
+	walkarea = {
+		shape = { type = "poly", outline = {203,51,315,62,315,40,293,40,260,10,260,0,260,-20,234,-20,234,0,234,10,221,26,152,33,152,51}},
+	},
+	actions = {
+		walk = function(x,y) return scumm.ui.walk {pos={x,y}} end
+	}
+}
+
 items["lookout.stairs"] = {
 	pos = {230, 0, 0},
 	hotspot = {
@@ -41,7 +50,8 @@ items["lookout.lookout"] = {
 	applyDepth = true,
 	character = {
 		state = "idle",
-		dir = "west"
+		dir = "west",
+		speed = 20
 	},
 	model ="lookout.lookout",
 	actions = {
@@ -50,6 +60,6 @@ items["lookout.lookout"] = {
 }
 
 items["lookout.fire"] = {
-	pos = {126, 52, -1},
+	pos = {126, 52, 0},
 	model = "lookout.fire",
 }

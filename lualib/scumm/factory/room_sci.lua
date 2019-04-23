@@ -45,23 +45,18 @@ function scumm.factory.sci_room (args)
 				},
 				-- lmbclick is the func called when you click on no hotspot
 				lmbclick = function(x, y) 
-					print ("clicked on (" .. tostring(x) .. ", " .. tostring(y) .. ")")
-					local actions = { 
-						{ type = scumm.action.walkto, args = {tag="player", pos ={x,y}}}
-					}
-					local s = script.make(actions)
-					s.name="_walk"
-					monkey.play(s)
-
+					if (variables.verbs[variables.currentverb].mnemonic == "walk") then
+						local actions = scumm.ui.walk { pos = {x,y} }
+						local s = script.make(actions)
+						s.name="_walk"
+						monkey.play(s)
+					end
 				end,	
 				rmbclick = function() 
-					variables.currentverb = variables.currentverb + 1
-					if (variables.currentverb > #variables.verbs) then
-						variables.currentverb = 1
-					end
-					print ("current verb = " .. variables.verbs[variables.currentverb].mnemonic)
+					variables._actionInfo.verb = config.verbs[glib.get(variables._actionInfo.verb.next)]
+					print ("current verb = " .. variables._actionInfo.verb.code)
 					local cursor = monkey.getEntity("cursor")
-					cursor.anim = variables.verbs[variables.currentverb].anim
+					cursor.anim = variables._actionInfo.verb.anim
 
 				end
 			},

@@ -24,6 +24,12 @@ class IFrameChangeHandler;
         std::shared_ptr<type> Create(luabridge::LuaRef& ref) override; \
     };
 
+#define FACTORY_SUB(name, sub, type) \
+    class name : public sub { \
+    public: \
+        std::shared_ptr<type> Create(luabridge::LuaRef& ref) override; \
+    };
+
 // Entities
 FACTORY(EntityFactory, Entity)
 FACTORY(OutlineTextFactory, Entity)
@@ -113,7 +119,7 @@ FACTORY(SetActiveActFactory, Activity);
 
 // Asset
 FACTORY(SimpleModelFactory, IModel)
-FACTORY(CompositeModelFactory, IModel)
+//FACTORY(CompositeModelFactory, IModel)
 
 // States
 FACTORY(AnimInitializerFactory, StateInitializer)

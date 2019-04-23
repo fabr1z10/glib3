@@ -41,6 +41,12 @@ spritesheets["sprites"] = {
 	graham_walk_body_back_5 = {x=220, y=18, width=16, height=38, anchor = {9,0}},
 	graham_walk_body_back_6 = {x=237, y=19, width=16, height=37, anchor = {9,0}},
 
+	cedric_talk_body = {x=2, y=97, width=58, height=18, anchor = {29, 0}},
+	cedric_talk_head_1 = {x=63, y=96, width=34, height=29, anchor={16, 0}},
+	cedric_talk_head_2 = {x=98, y=96, width=34, height=29, anchor={16, 0}},
+	cedric_talk_head_3 = {x=133, y=96, width=34, height=29, anchor={16, 0}},
+	cedric_talk_head_4 = {x=168, y=96, width=34, height=29, anchor={16, 0}},
+	cedric_talk_head_5 = {x=203, y=96, width=34, height=29, anchor={16, 0}},
 
 
 }
@@ -111,8 +117,28 @@ models["graham"] = {
 			{ duration = dt, quads = {{ id = s.graham_walk_body_back_6 }, {id = s.graham_idle_head_back_1, pos = {0, 37} }}}
 		}}
 	}
+}
 
+models["cedric.talk"] = {
+	sheet = sheet, 
+	type = "sprite", 
+	ppu=1, 
+	animations = {
+		{ name = "talk", loop=false, frames = { 
+			{ duration = dt, quads = {{ id = s.cedric_talk_body }, {id = s.cedric_talk_head_1, pos ={0,14}} }},
+			{ duration = dt, quads = {{ id = s.cedric_talk_body }, {id = s.cedric_talk_head_2, pos ={0,14}} }},
+			{ duration = dt, quads = {{ id = s.cedric_talk_body }, {id = s.cedric_talk_head_3, pos ={0,14}} }},
+			{ duration = dt, quads = {{ id = s.cedric_talk_body }, {id = s.cedric_talk_head_4, pos ={0,14}} }},
+			{ duration = dt, quads = {{ id = s.cedric_talk_body }, {id = s.cedric_talk_head_5, pos ={0,14}} }},
+			{ duration = dt, quads = {{ id = s.cedric_talk_body }, {id = s.cedric_talk_head_1, pos ={0,14}} }},
+			{ duration = dt, quads = {{ id = s.cedric_talk_body }, {id = s.cedric_talk_head_2, pos ={0,14}} }},
+			{ duration = dt, quads = {{ id = s.cedric_talk_body }, {id = s.cedric_talk_head_3, pos ={0,14}} }},
+			{ duration = dt, quads = {{ id = s.cedric_talk_body }, {id = s.cedric_talk_head_4, pos ={0,14}} }},
+			{ duration = dt, quads = {{ id = s.cedric_talk_body }, {id = s.cedric_talk_head_5, pos ={0,14}} }},
+			{ duration = dt, quads = {{ id = s.cedric_talk_body }, {id = s.cedric_talk_head_1, pos ={0,14}} }},
 
+		}}
+	},
 }
 
 

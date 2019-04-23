@@ -23,6 +23,21 @@ config = {
 
 require ("text/" .. config.lang .."/text")
 
+config.verbs = {
+ 	walk = { code="walk", next="look", anim="walk" },
+    look = { code="look", next="use", anim="look" },
+    use = { code="use", next="talk", anim="hand" },
+    talk = { code="talk", anim="talk", next=function() 
+		if (config.verbs.item.code == "") then 
+			return "walk" 
+		else 
+			return "item" 
+		end 
+	end
+	},
+	item = { code = "", next="walk"}
+}
+
 variables = {
     verbs = {
         [1] = { mnemonic = "use", anim = "hand" },
@@ -35,6 +50,8 @@ variables = {
 }
 
 require ("scumm")
+
+variables._actionInfo.verb = config.verbs.walk
 
 global_assets = {
 	fonts = { "ui", "monkey" }
@@ -52,6 +69,7 @@ function box (args)
             tag = "_msg",
             pos = {160, 100, 2}, 
             message = args.msg,
+			sprite = args.sprite,
             font="ui", 
             size = 8,
             maxwidth = 100, 

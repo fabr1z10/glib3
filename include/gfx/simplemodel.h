@@ -39,7 +39,7 @@ class SimpleModel : public IModel {
 public:
     explicit SimpleModel (std::shared_ptr<SpriteMesh> mesh) : m_mesh(mesh) {}
     std::unique_ptr<IModelStatus> GetModelStatus() override;
-    std::shared_ptr<SpriteMesh> GetMesh();
+    std::shared_ptr<IMesh> GetMesh() override;
     ModelType GetType() const override;
     Bounds3D GetBounds() const override;
     std::vector<std::string> GetAnimations() override;
@@ -55,6 +55,6 @@ inline ModelType SimpleModel::GetType() const {
     return ModelType::SIMPLESPRITE;
 }
 
-inline std::shared_ptr<SpriteMesh> SimpleModel::GetMesh() {
+inline std::shared_ptr<IMesh> SimpleModel::GetMesh() {
     return m_mesh;
 }

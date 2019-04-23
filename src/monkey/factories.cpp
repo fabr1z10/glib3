@@ -20,16 +20,39 @@ std::shared_ptr<Component> CharacterStateFactory::Create(luabridge::LuaRef& ref)
 
 // Read the walk-area
 std::shared_ptr<Component> WalkAreaComponentFactory::Create(luabridge::LuaRef& ref) {
+
     LuaTable table(ref);
     int priority = table.Get<int>("priority");
-    std::string targetId = table.Get<std::string>("target");
     auto factory = Engine::get().GetSceneFactory();
-    luabridge::LuaRef shapeR = table.Get<luabridge::LuaRef>("shape");
-    auto shape = factory->makeShape(shapeR);
+    luabridge::LuaRef rshape = table.Get<luabridge::LuaRef>("shape");
+    auto shape = factory->makeShape(rshape);
+    std::shared_ptr<WalkArea> hotspot =  Ref::Create<WalkArea>(shape, priority);
 
+    if (table.HasKey("onenter")) {
+        luabridge::LuaRef r = table.Get<luabridge::LuaRef>("onenter");
+        hotspot->SetOnEnter(r);
+    }
 
-    auto hotspot = Ref::Create<WalkArea>(shape, priority, targetId);
+    if (table.HasKey("onleave")) {
+        luabridge::LuaRef r = table.Get<luabridge::LuaRef>("onleave");
+        hotspot->SetOnLeave(r);
+    }
 
+    if (table.HasKey("onclick")) {
+        luabridge::LuaRef r = table.Get<luabridge::LuaRef>("onclick");
+        std::unique_ptr<LuaFunction> f(new LuaFunction(r));
+        hotspot->SetOnClick(std::move(f));
+    }
+
+    if (table.HasKey("onrmbclick")) {
+        luabridge::LuaRef r = table.Get<luabridge::LuaRef>("onrmbclick");
+        std::unique_ptr<LuaFunction> f(new LuaFunction(r));
+        hotspot->SetOnRightMouseButtonClick(std::move(f));
+    }
+    if (table.HasKey("onmove")) {
+        luabridge::LuaRef r = table.Get<luabridge::LuaRef>("onmove");
+        hotspot->SetOnMove(r);
+    }
     if (table.HasKey("depth")) {
         luabridge::LuaRef dref = table.Get<luabridge::LuaRef>("depth");
         auto depthFunc = GetFunc2D(dref);
@@ -40,25 +63,7 @@ std::shared_ptr<Component> WalkAreaComponentFactory::Create(luabridge::LuaRef& r
         auto scaleFunc = GetFunc2D(dref);
         hotspot->SetScalingFunction(scaleFunc);
     }
-    if (table.HasKey("handler")) {
-        luabridge::LuaRef dref = table.Get<luabridge::LuaRef>("handler");
-        auto f = std::make_shared<LuaFunction>(dref);
-        hotspot->SetHandler(f);
-    }
 
-
-//
-//    // see if it has a depthfunc
-//    if (table.HasKey("scaling")) {
-//        luabridge::LuaRef sref = table.Get<luabridge::LuaRef>("scaling");
-//        luabridge::LuaRef depthRef = sref["depth"];
-//        auto depthFunc = GetFunc2D(depthRef);
-//        hotspot->SetDepthFunction(std::move(depthFunc));
-//        luabridge::LuaRef scaleRef = sref["scale"];
-//        auto scaleFunc = GetFunc2D(scaleRef);
-//        hotspot->SetScalingFunction(std::move(scaleFunc));
-//    }
-//
     if (table.HasKey("blockedlines")) {
         luabridge::LuaRef ref = table.Get<luabridge::LuaRef>("blockedlines");
         for (int i = 0; i < ref.length(); ++i) {

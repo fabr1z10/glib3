@@ -5,7 +5,7 @@ items["graham"] = {
 	model = "graham",
 	character = {
 		state = "idle",
-		speed = 20
+		speed = 50
 	},
 	applydepth = true
 

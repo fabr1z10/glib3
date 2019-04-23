@@ -4,6 +4,7 @@
 #include <gfx/math/funcs.h>
 #include <gfx/math/geom.h>
 #include <gfx/lua/luafunc.h>
+#include <gfx/components/scripthotspot.h>
 
 class Scheduler;
 
@@ -12,25 +13,20 @@ struct BlockedLine {
     bool active;
 };
 
-class WalkArea : public HotSpot {
+class WalkArea : public ScriptHotSpot {
 public:
-    WalkArea (std::shared_ptr<Shape> shape, int priority, const std::string& playerId) : HotSpot(shape, priority), m_playerId{playerId} {}
+    WalkArea (std::shared_ptr<Shape> shape, int priority);
     WalkArea (const WalkArea&);
     std::shared_ptr<Component> clone() const override;
-    /* m_depthFunc{nullptr}, m_scaleFunc{nullptr}*/
-//    bool isMouseInside(glm::vec2) override {
-//        return true;
-//    }
-    //float GetDepth (float x, float y);
-    //float GetScale (float x, float y)
+
     void assignDepth (Entity*);
     void assignScaleAndDepth (Entity*);
     void onAdd(Entity*);
     void Start() override;
-    void onEnter() override {}
-    void onLeave() override {}
-    void onClick(glm::vec2, int button, int action, int mods) override;
-    void onMove(glm::vec2) override {}
+//    void onEnter() override {}
+//    void onLeave() override {}
+//    void onClick(glm::vec2, int button, int action, int mods) override;
+    //void onMove(glm::vec2) override {}
     void SetDepthFunction (std::shared_ptr<Function2D> func);
     void SetScalingFunction (std::shared_ptr<Function2D> func);
     void SetHandler (std::shared_ptr<LuaFunction> func);
@@ -43,14 +39,9 @@ public:
 private:
     std::shared_ptr<Entity> getDebugMesh() override ;
 
-    //int m_id;
-    Entity* m_player;
     std::vector<BlockedLine> m_walls;
-    std::string m_playerId;
-    std::shared_ptr<LuaFunction> m_func;
     std::shared_ptr<Function2D> m_depthFunc;
     std::shared_ptr<Function2D> m_scaleFunc;
-    Scheduler* m_scheduler;
 };
 
 
@@ -63,9 +54,6 @@ inline void WalkArea::SetScalingFunction (std::shared_ptr<Function2D> func) {
     m_scaleFunc = func;
 }
 
-inline void WalkArea::SetHandler (std::shared_ptr<LuaFunction> func) {
-    m_func = func;
-}
 
 inline std::type_index WalkArea::GetType() {
     return std::type_index(typeid(HotSpot));

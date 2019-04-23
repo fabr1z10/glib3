@@ -32,14 +32,25 @@ function scumm.factory.basic_room (args)
 		initstuff = {
 			[1] = function() 
 				variables._actionInfo.verb = config.verbs.walk
-				scumm.ui.updateVerb() 
-				scumm.ui.refresh_inventory()
+				--scumm.ui.updateVerb() 
+				--scumm.ui.refresh_inventory()
 			end
 		},
 		engines = {
-			{ type = "hotspotmanager", keys = {
-				{ key = 299, func = function() monkey.endroom() end }
-			} },
+			{ 
+                type = "hotspotmanager", 
+			    keys = {
+				    { key = 299, func = function() monkey.endroom() end }
+			    },
+				lmbclick = function(x, y) 
+					if (variables._actionInfo.verb.code == "walk") then
+						local actions = scumm.ui.walk { pos = {x,y} }
+						local s = script.make(actions)
+						s.name="_walk"
+						monkey.play(s)
+					end
+				end,	 
+			},
 			{ type = "scheduler" }
 		},
 		-- assets = {
@@ -58,14 +69,14 @@ function scumm.factory.basic_room (args)
 					viewport = {0, 56, 320, 144}
 				},
 				children = {
-					scumm.factory.object {
-						id="guybrush", 
-						pos={startPos.pos[1], startPos.pos[2], 0}, 
-						--tag="player", 
-						dir = startPos.dir,
-						follow = (room_width > 320 and enableScroll),
-						collide = args.collide
-					}
+					-- scumm.factory.object {
+					-- 	id="guybrush", 
+					-- 	pos={startPos.pos[1], startPos.pos[2], 0}, 
+					-- 	--tag="player", 
+					-- 	dir = startPos.dir,
+					-- 	follow = (room_width > 320 and enableScroll),
+					-- 	collide = args.collide
+					-- }
 				}
 					-- factory.player.create { 
 					-- 	pos= startPos.pos, 
@@ -136,21 +147,21 @@ function scumm.factory.basic_room (args)
 			 				}
 						}
 					},
-					{
-						pos  = {0,0,0},
-						children = {
-							{
-								tag = "dialogueui",
-								type = "textview", 
-								pos = {0, 0},
-								size = {320, 56},
-								font_size = 8,
-								lines = 6,
-								deltax = 26,
-								factory = scumm.factory.dialoguebutton
-							}
-						}
-			 		}
+					-- {
+					-- 	pos  = {0,0,0},
+					-- 	children = {
+					-- 		{
+					-- 			tag = "dialogueui",
+					-- 			type = "textview", 
+					-- 			pos = {0, 0},
+					-- 			size = {320, 56},
+					-- 			font_size = 8,
+					-- 			lines = 6,
+					-- 			deltax = 26,
+					-- 			factory = scumm.factory.dialoguebutton
+					-- 		}
+					-- 	}
+			 	-- 	}
 				}
 			}
 		}

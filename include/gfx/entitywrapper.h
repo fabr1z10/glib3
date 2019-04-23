@@ -75,6 +75,8 @@ struct EntityWrapper {
     void EnableUpdate(bool);
     void SetEnableControls (bool);
     void EnableCollisions (bool);
+    // simulate a hotspot click
+    void ForceClick (float x, float y);
     luabridge::LuaRef GetTextInfo();
     //static void EnableGroup(int);
     //static void DisableGroup(int);

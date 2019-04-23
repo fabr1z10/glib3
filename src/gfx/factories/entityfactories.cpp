@@ -3,6 +3,7 @@
 #include <gfx/engine.h>
 #include <gfx/textmesh.h>
 #include <gfx/components/renderer.h>
+#include <gfx/components/animator.h>
 #include <gfx/entities/textview.h>
 #include <gfx/meshfactory.h>
 #include <gfx/entities/heightmap.h>
@@ -143,7 +144,7 @@ std::shared_ptr<Entity> TextViewFactory::Create(luabridge::LuaRef &ref) {
     //glm::vec4 color = table.Get<glm::vec4>("color", glm::vec4(255.0f));
     //color /= 255.0f;
     //std::string font = table.Get<std::string>("font");
-    auto r = std::make_shared<TextView>(pos, size.x, size.y, fontSize, lines, factory);
+    auto r = Ref::Create<TextView>(pos, size.x, size.y, fontSize, lines, factory);
     r->SetTag(tag);
     return r;
 
@@ -168,7 +169,8 @@ std::shared_ptr<Entity> BoxedMessageFactory::Create(luabridge::LuaRef& ref) {
 
     //std::string cornerImage = table.Get<std::string>("corner", std::string());
     //std::string borders = table.Get<std::string>("border", std::string());
-
+    // add text entity
+    auto textEntity = Ref::Create<Entity>();
     auto bounds =textMesh->GetBounds();
     renderer->SetMesh(textMesh);
     glm::vec4 color = table.Get<glm::vec4>("color");
@@ -176,21 +178,47 @@ std::shared_ptr<Entity> BoxedMessageFactory::Create(luabridge::LuaRef& ref) {
     color/=255.0f;
     bgColor /=255.0f;
     renderer->SetTint(color);
-    entity->AddComponent(renderer);
+    textEntity->AddComponent(renderer);
+    entity->AddChild(textEntity);
+    auto textExtents = bounds.GetExtents();
 
+
+    float boxWidth = textExtents.x + 2 * padding;
+    float boxHeight = textExtents.y + 2*padding;
+
+    if (table.HasKey("sprite")) {
+        std::string modelId = table.Get<std::string>("sprite");
+        auto spriteEntity = SpriteFactory::Create(modelId);
+        auto modelBounds = Engine::get().GetAssetManager().GetModel(modelId)->GetBounds();
+        entity->AddChild(spriteEntity);
+        glm::vec3 extents = modelBounds.GetExtents();
+        float imgWidth = extents.x;
+        float imgHeight = extents.y;
+        boxWidth = std::max(imgWidth, textExtents.x) + 2 * padding;
+        boxHeight += imgHeight;
+        float img_y = 0.5f*boxHeight - padding - imgHeight;
+        spriteEntity->SetPosition(glm::vec2(0.0f, img_y));
+    }
+
+    float box_xm = -0.5f*boxWidth;
+    float box_ym = -0.5f*boxHeight;
+    float box_xM = box_xm + boxWidth;
+    float box_yM = box_ym + boxHeight;
+    float text_y = box_ym + padding + textExtents.y * 0.5f;
+
+    textEntity->SetPosition(glm::vec2(0.0f, text_y));
     // create the box
     auto box = Ref::Create<Entity>();
     glm::vec3 extents = bounds.GetExtents();
     auto box_renderer = Ref::Create<Renderer>();
-    auto rect = std::make_shared<Rect>(extents.x+2*padding, extents.y+2*padding);
+    auto rect = std::make_shared<Rect>(boxWidth, boxHeight);
     auto boxMesh = MeshFactorySolid::CreateMesh(*(rect.get()), 0.0f);
     box_renderer->SetMesh(boxMesh);
     box->AddComponent(box_renderer);
     box_renderer->SetTint(bgColor);
-    box->SetPosition(glm::vec3(bounds.min.x - padding, bounds.min.y - padding, -0.1));
+    // box->SetPosition(glm::vec3(bounds.min.x - padding, bounds.min.y - padding, -0.1));
+    box->SetPosition(glm::vec3(box_xm, box_ym, -0.1));
     entity->AddChild(box);
-    float width = extents.x +2 *padding;
-    float height = extents.y +2 * padding;
 
     auto fb = [] (const std::string& img, float width, float thickness, float x, float y, float imgw, bool flipv, bool rot) {
         auto b = Ref::Create<Entity>();
@@ -221,10 +249,10 @@ std::shared_ptr<Entity> BoxedMessageFactory::Create(luabridge::LuaRef& ref) {
         auto tex = Engine::get().GetAssetManager().GetTex(img);
         float imgw = tex->GetWidth();
         float thickness = border.Get<float>("thickness");
-        auto upperBorder = fb(img, width, thickness, bounds.min.x - padding, bounds.max.y + padding - thickness, imgw, false, false);
-        auto lowerBorder = fb(img, width, thickness, bounds.min.x - padding, bounds.min.y - padding, imgw, true, false);
-        auto leftBorder = fb(img, height, thickness, bounds.min.x - padding + thickness, bounds.min.y - padding, imgw, false, true);
-        auto rb = fb (img, height, thickness, bounds.max.x + padding, bounds.min.y - padding, imgw, true, true);
+        auto upperBorder = fb(img, boxWidth, thickness, box_xm, box_yM - thickness, imgw, false, false);
+        auto lowerBorder = fb(img, boxWidth, thickness, box_xm, box_ym, imgw, true, false);
+        auto leftBorder = fb(img, boxHeight, thickness, box_xm + thickness, box_ym, imgw, false, true);
+        auto rb = fb (img, boxHeight, thickness, box_xM, box_ym, imgw, true, true);
         entity->AddChild(upperBorder);
         entity->AddChild(lowerBorder);
         entity->AddChild(leftBorder);
@@ -239,10 +267,10 @@ std::shared_ptr<Entity> BoxedMessageFactory::Create(luabridge::LuaRef& ref) {
         auto tex = Engine::get().GetAssetManager().GetTex(img);
         float imgw = tex->GetWidth();
         float imgh = tex->GetHeight();
-        auto tl = cb(img, bounds.min.x - padding, bounds.max.y + padding - imgh, imgw, imgh, false, false);
-        auto bl = cb(img, bounds.min.x - padding, bounds.min.y - padding, imgw, imgh, false, true);
-        auto tr = cb(img, bounds.max.x + padding - imgw, bounds.max.y + padding - imgh, imgw, imgh, true, false);
-        auto br = cb(img, bounds.max.x + padding - imgw, bounds.min.y - padding, imgw, imgh, true, true);
+        auto tl = cb(img, box_xm, box_yM - imgh, imgw, imgh, false, false);
+        auto bl = cb(img, box_xm, box_ym, imgw, imgh, false, true);
+        auto tr = cb(img, box_xM - imgw, box_yM - imgh, imgw, imgh, true, false);
+        auto br = cb(img, box_xM - imgw, box_ym, imgw, imgh, true, true);
 
         entity->AddChild(tl);
         entity->AddChild(bl);

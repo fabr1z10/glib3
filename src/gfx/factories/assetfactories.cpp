@@ -5,42 +5,42 @@
 #include <gfx/simplemodel.h>
 #include <gfx/compositemodel.h>
 #include <gfx/imodel.h>
-
-std::shared_ptr<IModel> CompositeModelFactory::Create (luabridge::LuaRef& ref) {
-
-    LuaTable t(ref);
-    auto& am = Engine::get().GetAssetManager();
-    auto model = std::make_shared<CompositeModel>();
-    luabridge::LuaRef comps = t.Get<luabridge::LuaRef>("components");
-    lua_loop_array(comps, [am, &model] (const LuaTable& table) {
-        ModelComponent component;
-        std::string name = table.Get<std::string>("name");
-        std::string parent = table.Get<std::string>("parent", "");
-        std::string mesh = table.Get<std::string>("mesh");
-        // DEPENDENCIES. IF simplemodls are not loaded, then do it now!
-        auto me = Engine::get().GetAssetManager().GetModel(mesh);
-        SimpleModel *m = dynamic_cast<SimpleModel *>(me.get());
-        model->AddComponent(name, m, parent);
-    });
-
-    luabridge::LuaRef anims = t.Get<luabridge::LuaRef>("animations");
-    lua_loop_array(anims, [&model] (const LuaTable& table) {
-        std::string name = table.Get<std::string>("name");
-        std::vector<AnimationDefinition> def;
-        luabridge::LuaRef adef = table.Get<luabridge::LuaRef>("anims");
-        for (int i = 0; i< adef.length(); ++i) {
-            luabridge::LuaRef aa = adef[i+1];
-            LuaTable aatab(aa);
-            std::string comp = aatab.Get<std::string>("name");
-            std::string anim = aatab.Get<std::string>("anim");
-            glm::vec3 pos = aatab.Get<glm::vec3>("pos", glm::vec3(0.0f));
-            def.push_back(AnimationDefinition{comp, anim, pos});
-        }
-        model->AddAnimation(name, def);
-    });
-
-    return model;
-}
+//
+//std::shared_ptr<IModel> CompositeModelFactory::Create (luabridge::LuaRef& ref) {
+//
+//    LuaTable t(ref);
+//    auto& am = Engine::get().GetAssetManager();
+//    auto model = std::make_shared<CompositeModel>();
+//    luabridge::LuaRef comps = t.Get<luabridge::LuaRef>("components");
+//    lua_loop_array(comps, [am, &model] (const LuaTable& table) {
+//        ModelComponent component;
+//        std::string name = table.Get<std::string>("name");
+//        std::string parent = table.Get<std::string>("parent", "");
+//        std::string mesh = table.Get<std::string>("mesh");
+//        // DEPENDENCIES. IF simplemodls are not loaded, then do it now!
+//        auto me = Engine::get().GetAssetManager().GetModel(mesh);
+//        SimpleModel *m = dynamic_cast<SimpleModel *>(me.get());
+//        model->AddComponent(name, m, parent);
+//    });
+//
+//    luabridge::LuaRef anims = t.Get<luabridge::LuaRef>("animations");
+//    lua_loop_array(anims, [&model] (const LuaTable& table) {
+//        std::string name = table.Get<std::string>("name");
+//        std::vector<AnimationDefinition> def;
+//        luabridge::LuaRef adef = table.Get<luabridge::LuaRef>("anims");
+//        for (int i = 0; i< adef.length(); ++i) {
+//            luabridge::LuaRef aa = adef[i+1];
+//            LuaTable aatab(aa);
+//            std::string comp = aatab.Get<std::string>("name");
+//            std::string anim = aatab.Get<std::string>("anim");
+//            glm::vec3 pos = aatab.Get<glm::vec3>("pos", glm::vec3(0.0f));
+//            def.push_back(AnimationDefinition{comp, anim, pos});
+//        }
+//        model->AddAnimation(name, def);
+//    });
+//
+//    return model;
+//}
 
 std::shared_ptr<IModel> SimpleModelFactory::Create (luabridge::LuaRef& ref) {
 

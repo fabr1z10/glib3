@@ -4,7 +4,8 @@ items["guybrush"] = {
 	tag = "player",
 	model = "guybrush",
 	character = {
-		state = "idle"
+		state = "idle",
+		speed = 50
 	},
 	text_color = {255, 255, 255, 255},
 	text_offset = {0, 60},

@@ -15,7 +15,12 @@ scumm.factory.walkarea = function(args)
 				depth = args.depth,
 			}
       	},
-
+		actions = {
+			walk = function(x, y)
+				print ("fanculo") 
+				return scumm.ui.walk { pos = {x, y}, walkarea = args.tag } 
+			end
+		},
       	children = args.children
 	}
 end

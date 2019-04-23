@@ -1,5 +1,6 @@
 #include <gfx/entitywrapper.h>
 #include <gfx/components/renderer.h>
+#include <gfx/components/hotspot.h>
 #include <gfx/textmesh.h>
 #include <glm/gtx/transform.hpp>
 #include <gfx/engine.h>
@@ -259,6 +260,12 @@ void EntityWrapper::EnableCollisions(bool value) {
         EntityWrapper e(child.second.get());
         e.EnableCollisions(value);
     }
+}
+
+void EntityWrapper::ForceClick(float x, float y) {
+    auto hotspot = m_underlying->GetComponent<HotSpot>();
+    hotspot->onClick(glm::vec2(x, y), GLFW_MOUSE_BUTTON_LEFT, GLFW_PRESS, 0);
+
 }
 
 //void EntityWrapper::EnableGroup(int id) {

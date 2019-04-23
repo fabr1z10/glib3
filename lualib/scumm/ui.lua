@@ -301,25 +301,91 @@ function scumm.ui.pause_script (value)
     }
 end
 
+function scumm.ui.walk (args)
+	if (variables._actionInfo.verb.code == "walk") then
 
-function scumm.ui.runSciAction (objId)
+		-- check if the current action is 
+		-- is player on this walkarea?
+		local player = monkey.getEntity("player")
+		local playerWalkarea = player:parent().tag
+		if (args.walkarea == nil or args.walkarea == playerWalkarea) then
+			-- assume same walk area
+print("sifjroifj")
+			local actions = {
+				{ type = scumm.action.walkto, args = {tag="player", pos = args.pos}}
+			}
+			return actions
+		end
+		-- if we get here, we want the player to move to a differnet walk area
+		-- first we need to check whether the two are connected
+		-- and then we see if there's a connecting script
+		print ("Trying to move to apnother walkarea: " .. args.walkarea)
+		local a = roomDefinition.walkareas[playerWalkarea]
+	 	if (a ~= nil) then
+			local b = a[args.walkarea]
+			if (b ~= nil) then
+				print ("Script found.")
+				local actions = {
+					b,
+					{ type = scumm.action.walkto, args = {tag="player", pos = args.pos}}
+				}
+				return actions
+			end
+		end
+		print ("not found.")
+		return nil
+	end
+end
+
+
+function scumm.ui.runSciAction (x, y, objId)
     -- enter paused mode
     -- get current action
-    local currentVerb = variables.verbs[variables.currentverb].mnemonic
+    local currentVerb = variables._actionInfo.verb.code
     print ("current verb: " .. currentVerb)
-    print (tostring(items[objId].pos[1]))
-    if (items[objId].actions == nil or items[objId].actions[currentVerb] == nil) then
-        print ("no action <" .. currentVerb .. "> defined for: " .. objId)
-        return
-    end
+		
+ --    --p  rint ("Click pos = " .. tostring(x) .. "," .. tostring(y) .. " obj id = " .. objId)
+ --  print (tostring(items[objId].pos[1]))
+	-- -- if (currentVerb == "walk") then
+	-- -- 	-- forward the click to a walk-area
+	-- -- 	if (items[objId].walkarea ~= nil) then
+	-- -- 		local wa = monkey.getEntity(items[objId].walkarea)
+	-- -- 		wa:forceclick(x, y)
+	-- -- 	end
+	-- -- 	-- local actions = {
+	-- -- 	-- 	{ type = scumm.action.walkto, args = {tag="player", pos = {x,y}}}
+	-- -- 	-- }
+	-- --  --    local s = script.make(actions)
+	-- -- 	-- s.name="_walk"
+	-- --  --    monkey.play(s)
+	-- -- else 
+ --    	if (items[objId].actions == nil or items[objId].actions[currentVerb] == nil) then
+ --        	print ("no action <" .. currentVerb .. "> defined for: " .. objId)
+ --        	return
+ --    	end
+	local p = items[objId].actions[currentVerb]
+	if (p == nil) then
+		print ("... mm no action")
+		return
+	end
+	local s = nil
+	if (type(p)=="function") then
+		s = p(x, y)
+print ("number actions " .. tostring(#s))
+	else
+		s = p
+	end
+		
+	local actions = {s}
+	--         --scumm.ui.pause_script (true),
+	--         s,
+	--         --scumm.ui.pause_script (false)
+	--     }
+	local a = script.make(actions)
+	a.name="_walk"
+	monkey.play(a)
+	
 
-    local actions = {
-        scumm.ui.pause_script (true),
-        items[objId].actions[currentVerb],
-        scumm.ui.pause_script (false)
-    }
-    local s = script.make(actions)
-    monkey.play(s)
 
 
 

@@ -10,8 +10,9 @@ scumm.factory.object = function(args)
 	end
 	--print ("CAZZONE")
 	-- These values can be overridden in the args
+	
 	local pos = args.pos and args.pos or object.pos
-
+	if (pos == nil) then pos = {0,0,0} end
     -- flipx is optional. If not provided, the default value is false (NOT flipped horizontally)
 	
 	local flipx = args.flipx
@@ -62,7 +63,16 @@ scumm.factory.object = function(args)
 	if (args.collide == true) then
 		table.insert(obj.components, { type="collider", shape = {type="rect", width=10, height=2, offset={-5,-1}}, tag=1, flag=1, mask=2 })
 	end
+	if (object.walkarea) then
+		table.insert (obj.components, { type="walkarea", 
+			priority = object.walkarea.priority or 1,
+			shape = object.walkarea.shape,
+			onclick = function(x, y, obj) scumm.ui.runSciAction(x, y, objId) end,
+			scale = object.walkarea.scale,
+			depth = object.walkarea.depth
+		})
 
+	end
 
 	-- depth component
 	if (object.applydepth) then

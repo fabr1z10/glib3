@@ -8,7 +8,7 @@
 #include <unordered_set>
 #include <gfx/event.h>
 #include <gfx/runner.h>
-
+#include <stack>
 // hotspot is a component I can attach to
 class HotSpot : public Component {
 public:

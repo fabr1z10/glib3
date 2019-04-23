@@ -13,6 +13,7 @@ scumm.factory.message = function(args)
 		-- }
 		font = args.font,
 		message= args.message,
+        sprite = args.sprite,
 		size = args.size,
 		maxwidth = args.maxwidth,
 		color = args.color,
