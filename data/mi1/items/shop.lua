@@ -34,7 +34,7 @@ scumm.factory.door {
 	-- 		s.actions = {
 	-- 			action.suspend_script { id = 1, script = "shopkeeper"},
 	-- 			action.say {id = 2, actor="shop.shopkeeper", lines = {strings.dialogues.storekeeper[30]}},
-	-- 			action.walkto {id = 3, actor="guybrush", obj = items["shop.shopkeeper"]},
+	-- 			action.walkto {id = 3, actor="guybrush", obj = engine.items["shop.shopkeeper"]},
 	-- 			action.start_dialogue {id = 4, dialogue="storekeeper"}
 	-- 		}
 	-- 		return s
@@ -47,7 +47,7 @@ scumm.factory.door {
 	-- end
 }
 
-items["shop.shopkeeper"] = {
+engine.items["shop.shopkeeper"] = {
  	pos = {289, 7, 0},
  	hotspot = {
 		size = {20, 40},
@@ -89,7 +89,7 @@ items["shop.shopkeeper"] = {
 -- 	}
 -- }
 
-items["shop.sword"] = {
+engine.items["shop.sword"] = {
  	pos = {212, 45, -1},
  	hotspot = {
 		text = strings.objects.sword,
@@ -104,7 +104,7 @@ items["shop.sword"] = {
  	}
 }
 
-items["shop.shovel"] = { 
+engine.items["shop.shovel"] = { 
  	pos = {141,	69, -1},
  	hotspot = {
 		text = strings.objects.shovel,
@@ -119,7 +119,7 @@ items["shop.shovel"] = {
  	}
  }
 
-items["shop.sign"] = {
+engine.items["shop.sign"] = {
  	pos = {248, 29, 1},
  	hotspot = {
 		text = strings.objects.sign,
@@ -133,7 +133,7 @@ items["shop.sign"] = {
  	}
 }
 
-items["shop.bell"] = {
+engine.items["shop.bell"] = {
  	pos = {264, 26, 1},
  	hotspot = {
 		text = strings.objects.bell,

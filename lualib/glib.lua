@@ -1,5 +1,3 @@
-print ("Loading <glib> lib")
-
 glib = {}
 
 function glib.assert(a, b, c)
@@ -27,7 +25,7 @@ end
 
 -- load all lua filesi in the given folder
 function glib.load_folder(folder_name)
-    print ("Loading all files in " .. folder_name .. " ...")
+   -- print ("Loading all files in " .. folder_name .. " ...")
     --local s = "find " .. _path .. " -path " .. folder_name .. "/*.lua | cut -c" .. tostring(string.len(_path)+1) .. "- | sed 's/.\\{4\\}$//'"
     s = "find " .. _path .. folder_name .. "/*.lua | cut -c " .. tostring(string.len(_path)+1) .. "- | sed 's/.\\{4\\}$//'"
     --print (s)
@@ -63,4 +61,10 @@ function glib.depth(d1, z1, d2, z2, z)
     local a = (d1-d2)/(z1-z2)
     local b = d1-a*z1
     return a*z+b
+end
+
+function glib.tablelength(T)
+  local count = 0
+  for _ in pairs(T) do count = count + 1 end
+  return count
 end

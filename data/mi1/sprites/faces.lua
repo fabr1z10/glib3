@@ -1,6 +1,6 @@
 local dt = 0.1
 
-spritesheets["faces"] = {
+local s = {
 	mancomb_default = {x=80, y=0, width=78, height=78},
 	mancomb_smile = {x=0, y=0, width=78, height=78},
 
@@ -11,9 +11,7 @@ spritesheets["faces"] = {
 
 
 
-local s = spritesheets["faces"]
-
-models["mancomb.mancomb"] = {
+engine.assets.models["mancomb.mancomb"] = {
     sheet = "sprites/faces.png",
     type = "sprite",
     ppu=1,

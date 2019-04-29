@@ -1,6 +1,6 @@
 -- generally, an item is a blueprint for an object
 -- * it can have graphics attached. To do so, model needs to be specified
-items["village2.archway_to_village1"] = {
+engine.items["village2.archway_to_village1"] = {
 	hotspot = {
 		text = strings.objects.archway,
 		walk_to = {436, 35}, 
@@ -13,7 +13,7 @@ items["village2.archway_to_village1"] = {
 	pos = {416, 34, 0},
 }
 
-items["village2.archway_to_village3"] = {
+engine.items["village2.archway_to_village3"] = {
 	hotspot = {
 		text = strings.objects.archway,
 		walk_to = {160, 59},
@@ -26,7 +26,7 @@ items["village2.archway_to_village3"] = {
 	pos = {146, 63, 0},
 }
 
-items["village2.lmf1"] = {
+engine.items["village2.lmf1"] = {
 	pos = {18, 10, 0},
 	text_color = {255, 85, 255, 255},
 	text_offset = {0,60},
@@ -35,7 +35,7 @@ items["village2.lmf1"] = {
 	applydepth = true,
 }
 
-items["village2.lmf2"] = {
+engine.items["village2.lmf2"] = {
 	pos = {44, 20, 0},
 	text_color = {85, 255, 255, 255},
 	text_offset = {0,60},
@@ -44,7 +44,7 @@ items["village2.lmf2"] = {
 	applydepth = true,
 }
 
-items["village2.lmf3"] = {
+engine.items["village2.lmf3"] = {
 	pos = {56, 23, 0},
 	text_color = {85, 255, 85, 255},
 	text_offset = {0,60},
@@ -53,7 +53,7 @@ items["village2.lmf3"] = {
 	applydepth = true,
 }
 
-items["village2.rat"] = {
+engine.items["village2.rat"] = {
 	pos = {56,10,0},
 	model ="village2.rat",
 	anim="idle",
@@ -63,7 +63,7 @@ items["village2.rat"] = {
 	flipx = true,
 }
 
-items["village2.lmf"] = {
+engine.items["village2.lmf"] = {
 	pos = {0, 0, 0},
 	hotspot = {
 		text = strings.objects.lowmoralfiber,
@@ -76,7 +76,7 @@ items["village2.lmf"] = {
 	}
 }
 
-items["village2.citizen"] = {
+engine.items["village2.citizen"] = {
 	pos = {325, 27, 0},
 	hotspot = {
 		text = strings.objects.citizen,
@@ -120,7 +120,7 @@ scumm.factory.door {
 	variable = "door_voodoolady"
 }
 
-items["village2.fakedoor1"] = {
+engine.items["village2.fakedoor1"] = {
 	pos = {377, 37, -1},
 	hotspot = {
 		text = strings.objects.door,
@@ -133,7 +133,7 @@ items["village2.fakedoor1"] = {
 	anim="close"
 }
 
-items["village2.fakedoor2"] = {
+engine.items["village2.fakedoor2"] = {
 	pos = {208, 59, -1},
 	hotspot = {
 		text = strings.objects.door,

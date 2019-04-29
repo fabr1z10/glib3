@@ -1,4 +1,4 @@
-items["clearing.path"] = {	
+engine.items["clearing.path"] = {	
 	pos = {480, 0, 0},
 	hotspot = {
 		text = strings.objects.path,
@@ -11,7 +11,7 @@ items["clearing.path"] = {
 	}
 }
 
-items["clearing.tent"] = {
+engine.items["clearing.tent"] = {
 	pos = {47, 63, 0},
 	hotspot = {
 		text = strings.objects.circustent,

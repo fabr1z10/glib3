@@ -1,4 +1,4 @@
-items["circus.wayout"] = {
+engine.items["circus.wayout"] = {
 	pos = {280, 32, 0},
 	hotspot = {
 		text = strings.objects.outside,
@@ -11,10 +11,10 @@ items["circus.wayout"] = {
 	}
 }
 
-items["circus.explosion"] = { model ="circus.explosion" }
-items["circus.flyingguybrush"] = { model ="circus.flyingguy" }
+engine.items["circus.explosion"] = { model ="circus.explosion" }
+engine.items["circus.flyingguybrush"] = { model ="circus.flyingguy" }
 
-items["circus.purpleclown"] = {
+engine.items["circus.purpleclown"] = {
  	pos = {37,34,0},
  	hotspot = {
  		text = strings.objects.fettuccini,
@@ -33,7 +33,7 @@ items["circus.purpleclown"] = {
 	}
  }
 
-items["circus.greenclown"] = {
+engine.items["circus.greenclown"] = {
 	pos = {51,34,0},
 	hotspot = {
 		text = strings.objects.fettuccini,

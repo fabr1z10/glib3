@@ -1,6 +1,6 @@
-config.defaultactions = {}
+engine.config.defaultactions = {}
 
-local d = config.defaultactions
+local d = engine.config.defaultactions
 
 d.open = { type = action.say, args = { actor="guybrush", lines={d[1]}}}
 d.look = { { type = action.say, args = { actor="guybrush", lines={d[4]}}}}

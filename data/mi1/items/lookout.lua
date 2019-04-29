@@ -1,5 +1,5 @@
 -- the local objects
-items["lookout.walkarea"] = {
+engine.items["lookout.walkarea"] = {
 	walkarea = {
 		shape = { type = "poly", outline = {203,51,315,62,315,40,293,40,260,10,260,0,260,-20,234,-20,234,0,234,10,221,26,152,33,152,51}},
 	},
@@ -8,7 +8,7 @@ items["lookout.walkarea"] = {
 	}
 }
 
-items["lookout.stairs"] = {
+engine.items["lookout.stairs"] = {
 	pos = {230, 0, 0},
 	hotspot = {
 		text = strings.objects.stairs,
@@ -21,7 +21,7 @@ items["lookout.stairs"] = {
 	}
 }
 
-items["lookout.path"] = {
+engine.items["lookout.path"] = {
 	pos = {294, 0, 0},
 	hotspot = {
 		text = strings.objects.path,
@@ -35,7 +35,7 @@ items["lookout.path"] = {
 }
 
 
-items["lookout.lookout"] = {
+engine.items["lookout.lookout"] = {
 	pos = {114, 36, 0},
 	hotspot = {
 		text = strings.objects.lookout,
@@ -59,7 +59,7 @@ items["lookout.lookout"] = {
 	}
 }
 
-items["lookout.fire"] = {
+engine.items["lookout.fire"] = {
 	pos = {126, 52, 0},
 	model = "lookout.fire",
 }

@@ -1,4 +1,4 @@
-items["bridge.path"] = {
+engine.items["bridge.path"] = {
 	pos = {0, 0, 0},
 	hotspot = {
 		text = strings.objects.path,
@@ -11,7 +11,7 @@ items["bridge.path"] = {
 	}
 }
 
-items["bridge.troll"] = {
+engine.items["bridge.troll"] = {
 	pos = {134, 24, 0},
 	hotspot = {
 		text = strings.objects.troll,
@@ -36,7 +36,7 @@ items["bridge.troll"] = {
 	}
 }
 
--- items["bridge.fish"] = {
+-- engine.items["bridge.fish"] = {
 -- 	pos = {134, 24, 0},
 -- 	flipx = true,
 -- 	tag = "bridge.fish",
@@ -44,7 +44,7 @@ items["bridge.troll"] = {
 -- 	anim = "idle"
 -- }
 
--- items["bridge.troll"] = {
+-- engine.items["bridge.troll"] = {
 -- 	pos = {134, 24, 0},
 -- 	flipx = true,
 -- 	applydepth = true,
@@ -83,4 +83,4 @@ items["bridge.troll"] = {
 -- 	}
 -- }
 
--- items["bridge.troll"].actions.talk = items["bridge.troll"].talk_script
+-- engine.items["bridge.troll"].actions.talk = engine.items["bridge.troll"].talk_script

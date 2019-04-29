@@ -44,7 +44,8 @@ void Engine::Init(const std::string& home) {
     m_running = false;
     SetDirectory(home);
     m_sceneFactory->Init(this);
-
+    // NOW YOU CAN INITIALIZE THE ASSET MANAGER!!!
+    m_assetManager.Init();
     InitGL();
 
     // find pixel ratio
@@ -62,7 +63,7 @@ void Engine::Init(const std::string& home) {
     SetRenderingEngine(std::move(renderingEngine));
 
     m_sceneFactory->StartUp(this);
-
+    //
 
 
 

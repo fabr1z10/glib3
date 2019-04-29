@@ -1,4 +1,4 @@
-items["village3.archway"] = {
+engine.items["village3.archway"] = {
 	pos = {753, 11, 0},
 	hotspot = {	
 		text = strings.objects.archway,
@@ -11,7 +11,7 @@ items["village3.archway"] = {
 	}
 }
 
-items["village3.alley"] = {
+engine.items["village3.alley"] = {
 	pos = {581, 56, 0},
 	hotspot = {		
 		text = strings.objects.alley,
@@ -24,7 +24,7 @@ items["village3.alley"] = {
 	}
 }
 
-items["village3.shopkeeper"] = {
+engine.items["village3.shopkeeper"] = {
  	pos = {669, 15, 0},
  	applydepth = true,
  	model = "shop.shopkeeper",
@@ -56,7 +56,7 @@ scumm.factory.door {
 	nextroom = "church",
 }
 
--- items["fester"]= {
+-- engine.items["fester"]= {
 -- tag="fester",
 -- 	text_color = {255, 85, 85, 255},
 -- 	text_offset = {0, 60},

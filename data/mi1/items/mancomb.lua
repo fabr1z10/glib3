@@ -1,4 +1,4 @@
-items["mancomb.mancomb"] = {
+engine.items["mancomb.mancomb"] = {
 
 	pos = {52, 18, 0},
 	model = "mancomb.mancomb",

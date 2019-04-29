@@ -1,40 +1,43 @@
 package.path = '/home/fabrizio/glib3/lualib/?.lua;' .. package.path
 
-require("test")
-
 
 engine = {
 	device_size = { 320, 200 },
 	window_size = { 320, 200 },
 	title = "The secret of Monkey Island",
-	shaders = { "unlit_textured", "unlit_color", "text" }
-}
-
-fonts = {
-    ui = {file  = "./fonts/monkeysmall.ttf" },
-    monkey = {file  = "./fonts/MonkeyIsland-1990.ttf"}
-}
-
--- this is configuration for scumm
-config = {
-	start_room = "bridge",
+	shaders = { "unlit_textured", "unlit_color", "text" },
+	assets = {
+		fonts = {
+	    	ui = {file  = "./fonts/monkeysmall.ttf" },
+    		monkey = {file  = "./fonts/MonkeyIsland-1990.ttf"}
+		},
+		models = {}
+	},
+	items = {},
+	global_assets = {
+		fonts = { "ui", "monkey" }
+	},
+	start_room = "lookout",
 	lang = "eng",
-    default_verb = "walk",
-	ui = {
-		height = 56,
-    	verb_unselected_color = { 0, 170, 0, 255},
-    	verb_selected_color = {255, 255, 85, 255},
-    	currentaction_color ={0, 170, 170, 255},
-		inv_unselected = {170, 0, 170, 255},
-		inv_selected = {255, 85, 255, 255},
-		font = "ui"
+	config = {
+	    default_verb = "walk",
+		style = "scumm",
+	   	ui = {
+			height = 56,
+	    	verb_unselected_color = { 0, 170, 0, 255},
+	    	verb_selected_color = {255, 255, 85, 255},
+	    	currentaction_color ={0, 170, 170, 255},
+			inv_unselected = {170, 0, 170, 255},
+			inv_selected = {255, 85, 255, 255},
+			font = "ui"
+		}     	
 	}
 }
 
-require ("text/" .. config.lang .."/text")
+require("scumm")
 
 -- the verbs for the game. You might have multiple sets here! Watch out
-config.verbs = {
+engine.config.verbs = {
  	open = { code="open", text = strings.ui.open, objects = 1 },
     close = { code="close", text = strings.ui.close, objects = 1 },
     push = { code="push", text = strings.ui.push, objects = 1 },
@@ -91,16 +94,12 @@ variables = {
 
 
 
-require ("scumm")
 
 
 
 
 
 
-global_assets = {
-	fonts = { "ui", "monkey" }
-}
 
 -- -- this stuff will change at gametime
 
@@ -114,19 +113,17 @@ global_assets = {
 
 -- -- load room specific scripts
 -- scripts = {}
-items = {}
-spritesheets = {}
-models = {}
-dialogues = {}
+-- items = {}
+-- spritesheets = {}
+-- models = {}
+-- dialogues = {}
 -- sprites = {}
 
-glib.load_folder("sprites")
---glib.load_folder("factories")
-glib.load_folder("items")
-glib.load_folder("dialogues")
+
+--glib.load_folder("dialogues")
 
 require("defaultscripts")
 
-test.lookout()
+--test.lookout()
 
-print (config.start_room)
+--print (config.start_room)

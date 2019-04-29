@@ -6,9 +6,17 @@ AssetManager::AssetManager() {
     SetLocal(false);
 }
 
+void FontBuilder::Init() {
+    m_fontLocation = std::make_unique<luabridge::LuaRef>(LuaWrapper::GetGlobal({"engine", "assets", "fonts"}));
+    if (m_fontLocation->isNil()) {
+        GLIB_FAIL("Mmmh, unknown font location!");
+    }
+}
+
+
 std::shared_ptr<Font> FontBuilder::operator()(const std::string & fontId) const {
     std::cout << "*** load font " << fontId << " ... \n";
-    luabridge::LuaRef fonts = LuaWrapper::GetGlobal("fonts");
+    luabridge::LuaRef fonts = (LuaWrapper::GetGlobal("engine"));
     luabridge::LuaRef font = fonts[fontId];
     if (font.isNil()) {
         return nullptr;
@@ -25,7 +33,7 @@ std::shared_ptr<Font> FontBuilder::operator()(const std::string & fontId) const 
 
 std::shared_ptr<IModel> ModelBuilder::operator()(const std::string & modelId) const {
 
-    luabridge::LuaRef modelsDef = LuaWrapper::GetGlobal("models");
+    luabridge::LuaRef modelsDef = LuaWrapper::GetGlobal("engine")["models"];
     if (modelsDef.isNil()) {
         GLIB_FAIL("No models available!")
     }

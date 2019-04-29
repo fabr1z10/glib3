@@ -45,6 +45,8 @@ scumm.factory.object = function(args)
 	end
 
 	-- add the hotspot only if size is supplied
+	-- change size to shape
+	-- allow for multiple handling (scumm - sci)
 	if (object.hotspot ~= nil) then
 		local hotspot = object.hotspot
 		table.insert (obj.components, { type="hotspot", 

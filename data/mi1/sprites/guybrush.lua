@@ -1,5 +1,5 @@
 local dt = 0.1
-spritesheets["guybrush"] = {
+local s = {
 	walk_east_1 = {x=4, y=1, width = 32, height=47, anchor={17, 0}  },
 	walk_east_2 = {x = 39, y=1, width=17, height=47, anchor={13, 0}  },
 	walk_east_3 = {x=60, y=1, width=19, height=47, anchor={12, 0}  },
@@ -84,10 +84,9 @@ spritesheets["guybrush"] = {
 
 
 }
-local s = spritesheets["guybrush"]
 local file = "sprites/guybrush.png"
 
-models["guybrush"] = {
+engine.assets.models["guybrush"] = {
     sheet = file,
     type = "sprite",
     ppu=1,

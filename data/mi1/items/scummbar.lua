@@ -1,4 +1,4 @@
---items.scummbar = {}
+--engine.items.scummbar = {}
 
 local cook_text_color = {85, 255, 255, 255}
 
@@ -57,7 +57,7 @@ scumm.factory.door {
 	end,
 }
 
-items["scummbar.cook"] = {
+engine.items["scummbar.cook"] = {
 	pos = {0, 0, -1},
 	model = "cook",
 	--anim = "idle_right",
@@ -71,7 +71,7 @@ items["scummbar.cook"] = {
 	}
 }
 
-items["scummbar.mancomb"] = {
+engine.items["scummbar.mancomb"] = {
 	hotspot = {
 		text = strings.objects.pirate,
 		size = {30, 30},	
@@ -86,7 +86,7 @@ items["scummbar.mancomb"] = {
 	}
 }
 
-items["scummbar.estevan"] = {
+engine.items["scummbar.estevan"] = {
  	pos = {164, 21, 1},
 	hotspot = {
  		text = strings.objects.pirate,
@@ -101,7 +101,7 @@ items["scummbar.estevan"] = {
  	}
 }
 
--- items["scummbar.door_kitchen"] = factory.door.create {
+-- engine.items["scummbar.door_kitchen"] = factory.door.create {
 -- 	name = "scummbar.door_kitchen",
 -- 	pos = {591, 9, -1},
 -- 	size = {35, 69},
@@ -149,7 +149,7 @@ items["scummbar.estevan"] = {
 -- }
 
 
--- items["scummbar.mancomb"] = {
+-- engine.items["scummbar.mancomb"] = {
 -- 	tag="mancomb",
 -- 	text = strings.objects.pirate,
 -- 	pos = {89, 24, -1},
@@ -166,7 +166,7 @@ items["scummbar.estevan"] = {
 
 
 
--- items["scummbar.loompirate"] = {
+-- engine.items["scummbar.loompirate"] = {
 -- 	tag="loompirate",
 -- 	text = strings.objects.pirate,
 -- 	pos = {260, 17, -1},
@@ -181,7 +181,7 @@ items["scummbar.estevan"] = {
 -- 	}
 -- }
 
-items["scummbar.fireplace"] = {
+engine.items["scummbar.fireplace"] = {
  	pos = {509, 44, -1},
 	hotspot = {
  		text = strings.objects.fireplace,
@@ -197,7 +197,7 @@ items["scummbar.fireplace"] = {
 
 
 
--- items["scummbar.ilp1"] = {
+-- engine.items["scummbar.ilp1"] = {
 -- 	tag ="ilp1",
 -- 	pos = {376, 11, 0.95},
 -- 	text_color = {85, 85, 255, 255},
@@ -206,7 +206,7 @@ items["scummbar.fireplace"] = {
 -- 	anim="idle"
 -- }
 
--- items["scummbar.ilp2"] = {
+-- engine.items["scummbar.ilp2"] = {
 -- 	tag ="ilp2",
 -- 	pos = {413, 11, 0.95},
 -- 	text_color = {255, 255, 85, 255},
@@ -215,7 +215,7 @@ items["scummbar.fireplace"] = {
 -- 	anim="idle"
 -- }
 
--- items["scummbar.ilp3"] = {
+-- engine.items["scummbar.ilp3"] = {
 -- 	tag ="ilp3",
 -- 	pos = {444, 18, 0.95},
 -- 	text_color = {255, 85, 255, 255},
@@ -224,7 +224,7 @@ items["scummbar.fireplace"] = {
 -- 	anim="idle"
 -- }
 
--- items["scummbar.important_looking_pirates"] = {
+-- engine.items["scummbar.important_looking_pirates"] = {
 -- 	text = strings.objects.ilp,
 -- 	pos = {370,30,0},
 -- 	size= {110,25},

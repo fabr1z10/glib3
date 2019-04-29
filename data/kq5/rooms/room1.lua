@@ -57,9 +57,9 @@ room:add( {
 			{ pos = {156, 36, 0}, components = { { type="gfx", image="gfx/001e.png" }, { type="properties", additional_info = { walkarea_scale = false }}}},
 		}
 	},
-	scumm.factory.sciobject { id="room1_walkarea_front" },
-	scumm.factory.sciobject { id="room1_walkarea_hidden" },	
-	scumm.factory.sciobject { id="room1_room2" },	
+	scumm.factory.object { id="room1_walkarea_front" },
+	scumm.factory.object { id="room1_walkarea_hidden" },	
+	scumm.factory.object { id="room1_room2" },	
 
 	-- scumm.factory.hilly {
 	-- 	shape_front = { type = "poly", outline = {0,16,12,13,27,10,42,8,57,8,60,10,75,17,81,21,87,20,91,16,99,16,93,10,84,3,78,0,5,0,0,0} },

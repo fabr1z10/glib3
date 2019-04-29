@@ -1,4 +1,4 @@
-items["village1.cliffside"] = {
+engine.items["village1.cliffside"] = {
 	pos = {0, 0, 0},
 	hotspot = {
 		text = strings.objects.cliffside,
@@ -26,7 +26,7 @@ scumm.factory.door {
 -- 	nextroom = "scummbar"
 }
 
-items["village1.poster"] = {
+engine.items["village1.poster"] = {
 	pos ={259, 27, 0},
 	hotspot= {
 		text = strings.objects.poster,
@@ -39,7 +39,7 @@ items["village1.poster"] = {
 	}
 }
 
-items["village1.archway"] = {
+engine.items["village1.archway"] = {
 	pos = {992, 30, 0},
 	hotspot = {
 		text = strings.objects.archway,

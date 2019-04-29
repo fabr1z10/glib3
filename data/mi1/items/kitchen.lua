@@ -1,17 +1,17 @@
---items.scummbar = {}
+--engine.items.scummbar = {}
 local d = strings.kitchen
 
-items["kitchen.seagull"] = {
+engine.items["kitchen.seagull"] = {
  	pos = {0, 0, 1},
  	model = "kitchen.seagull",
 }
 
-items["kitchen.plank"] = {
+engine.items["kitchen.plank"] = {
  	pos = {248, 0, 1},
  	model="kitchen.plank", 
 }
 
-items["kitchen.meat"] = { 
+engine.items["kitchen.meat"] = { 
 	pos = {79, 40, -1},
 	hotspot = {
 		text = strings.objects.meat,	
@@ -26,7 +26,7 @@ items["kitchen.meat"] = {
  	}	
 }
 
-items["kitchen.table"] = { 
+engine.items["kitchen.table"] = { 
 	pos = {114, 0, 1},
 	hotspot = {
 		text = strings.objects.kitchen_table,
@@ -40,7 +40,7 @@ items["kitchen.table"] = {
 
 local df = strings.dialogues.fettbros
 
-items["kitchen.pot"] = { 
+engine.items["kitchen.pot"] = { 
  	pos = {104, 24, -1},
 	hotspot = {
 		text = strings.objects.pot,
@@ -101,7 +101,7 @@ items["kitchen.pot"] = {
 	}
 }
 
-items["kitchen.fish"] = {
+engine.items["kitchen.fish"] = {
 	pos = {234, 9, 1},
 	hotspot = {
 		text = strings.objects.fish,	
@@ -150,7 +150,7 @@ items["kitchen.fish"] = {
 	}
 }
 
-items["kitchen.potostew"] = {
+engine.items["kitchen.potostew"] = {
  	pos = {153, 39, -1},
 	hotspot = {
 		text = strings.objects.potostew,
@@ -244,7 +244,7 @@ scumm.factory.door {
 	end,
 	walk = function() return nil end
 }
--- items["kitchen.door_pier"] = factory.door.create {
+-- engine.items["kitchen.door_pier"] = factory.door.create {
 -- 	name ="kitchen.door_pier",	
 -- 	pos = {192, 9,-1},
 -- 	size = {40, 64},
@@ -278,7 +278,7 @@ scumm.factory.door {
 -- }
 
 
--- items["kitchen.table"] = {
+-- engine.items["kitchen.table"] = {
 -- 	text = strings.objects.kitchen_table,
 -- 	pos = {114, 0, 1},
 -- 	size = {35, 22},
@@ -293,7 +293,7 @@ scumm.factory.door {
 
 
 
--- items["kitchen.potostew"].actions.use["kitchen.meat"] = ms {
+-- engine.items["kitchen.potostew"].actions.use["kitchen.meat"] = ms {
 -- 	{ action.animate, {id=1, actor="guybrush", anim="operate_back"}},
 -- 	{ action.delay, {id=2, sec=0.5}},
 -- 	{ action.animate, {id=3, actor="guybrush", anim="idle_back"}},
@@ -305,7 +305,7 @@ scumm.factory.door {
 
 
 
--- items["kitchen.pot"].actions.give["circus.purpleclown"] = function() 
+-- engine.items["kitchen.pot"].actions.give["circus.purpleclown"] = function() 
 -- 	local s = script:new()
 -- 	local d = strings.dialogues.fettbros
 -- 	local explTag = nextTag()
@@ -358,7 +358,7 @@ scumm.factory.door {
 
 
 
--- items["kitchen.fish"] = {
+-- engine.items["kitchen.fish"] = {
 -- 	tag="kitchen.fish",
 -- 	text = strings.objects.fish,	
 -- 	pos = {234, 9, 1},
@@ -390,7 +390,7 @@ scumm.factory.door {
 -- 	}
 -- }
 
--- items["kitchen.fish"].actions.give["bridge.troll"] = function()
+-- engine.items["kitchen.fish"].actions.give["bridge.troll"] = function()
 -- 	local dp = strings.dialogues.troll
 -- 	local s = script:new()
 -- 	s.actions = {

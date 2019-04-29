@@ -9,7 +9,7 @@ scumm.factory.door = function(args)
 
 	local offset = args.offset
 
-	items[args.id] = {
+	engine.items[args.id] = {
 		tag = args.id,
 		pos = args.pos,
 		hotspot = {

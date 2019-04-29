@@ -1,4 +1,4 @@
-items["alley.exit"] = {
+engine.items["alley.exit"] = {
 	pos = {753, 11, 0},
 	hotspot = {
 		text = strings.objects.archway,

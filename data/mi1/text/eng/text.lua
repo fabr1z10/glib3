@@ -1,3 +1,4 @@
+print ("Fanculo!")
 strings = {
 	pieces_of_eight = function() 
 		local n = variables.inventory["pieces_of_eight"]

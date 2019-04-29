@@ -37,21 +37,22 @@ void SceneFactory::StartUp(Engine * engine) {
         // engine->AddShader(std::move(sh));
     }
 
-    // load global assets
+    // load global assets (fonts + models)
     std::cout << "Loading global assets ...\n";
-    LuaTable globalAssets(LuaWrapper::GetGlobal("global_assets"));
-    if (globalAssets.HasKey("fonts")) {
-        std::vector<std::string> fonts = globalAssets.GetVector<std::string>("fonts");
+    if (engineDef.HasKey("global_assets")) {
+
+        luabridge::LuaRef gaRef = engineDef.Get<luabridge::LuaRef>("global_assets");
+        LuaTable gaTable(gaRef);
+        auto fonts = gaTable.GetVector<std::string>("fonts");
         for (auto& fontId : fonts) {
             Engine::get().GetAssetManager().GetFont(fontId);
         }
-    }
-    if (globalAssets.HasKey("models")) {
-        std::vector<std::string> models = globalAssets.GetVector<std::string>("models");
-        for (auto& modelId : models) {
-            Engine::get().GetAssetManager().GetModel(modelId);
+        auto models = gaTable.GetVector<std::string>("models");
+        for (auto& model : models) {
+            Engine::get().GetAssetManager().GetModel(model);
         }
     }
+
     Engine::get().GetAssetManager().SetLocal(true);
 
 

@@ -7,7 +7,7 @@ extern "C" {
 }
 
 #include <LuaBridge/LuaBridge.h>
-
+#include <vector>
 
 
 
@@ -29,6 +29,13 @@ public:
     static luabridge::LuaRef GetGlobal (const std::string& name){
         return luabridge::getGlobal(L, name.c_str());
     }
-
+    static luabridge::LuaRef GetGlobal (const std::vector<std::string>& path){
+        luabridge::LuaRef ref = luabridge::getGlobal(L, path[0].c_str());
+        for (size_t i = 1; i < path.size(); ++i) {
+            ref = ref[path[i]];
+        }
+        return ref;
+        //return luabridge::getGlobal(L, name.c_str());
+    }
     static lua_State* L;
 };

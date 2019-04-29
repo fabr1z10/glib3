@@ -1,7 +1,7 @@
 local dt = 0.1
 local sheet = "sprites/sprites1.png"
 
-spritesheets["sprites1"] = {
+local s = {
 	arrow_up = {x=499, y=2, width = 12, height=20 },
 	arrow_down = {x = 486, y=2, width=12, height=20 },
 	arrow_up_focus = {x=499, y=23, width=12, height=20},
@@ -341,9 +341,9 @@ spritesheets["sprites1"] = {
 
 }
 
-local s = spritesheets["sprites1"]
+--local s = spritesheets["sprites1"]
 
-models["arrow_up"] = {
+engine.assets.models["arrow_up"] = {
     sheet = sheet,
     type = "sprite",
     ppu=1,
@@ -353,7 +353,7 @@ models["arrow_up"] = {
 	}
 }
 
-models["arrow_down"] = {
+engine.assets.models["arrow_down"] = {
     sheet = sheet,
     type = "sprite",
     ppu=1,
@@ -364,7 +364,7 @@ models["arrow_down"] = {
 }
 
 
-models["low_moral_fiber_1"] = {
+engine.assets.models["low_moral_fiber_1"] = {
     sheet = sheet,
     type = "sprite",
     ppu=1,
@@ -401,7 +401,7 @@ models["low_moral_fiber_1"] = {
 	}
 }
 
-models["low_moral_fiber_2"] = {
+engine.assets.models["low_moral_fiber_2"] = {
     sheet = sheet,
     type = "sprite",
     ppu=1,
@@ -438,7 +438,7 @@ models["low_moral_fiber_2"] = {
 
 
 
-models["cook"] = {
+engine.assets.models["cook"] = {
     sheet = sheet,
     type = "sprite",
     ppu=1,
@@ -483,7 +483,7 @@ models["cook"] = {
 	}
 }
 
-models["citizen.body"] = {
+engine.assets.models["citizen.body"] = {
     sheet = sheet,
     type = "sprite",
     ppu=1,
@@ -509,7 +509,7 @@ models["citizen.body"] = {
 	}
 }
 
-models["citizen.head"] = {
+engine.assets.models["citizen.head"] = {
     sheet = sheet,
     type = "sprite",
     ppu=1,
@@ -535,7 +535,7 @@ models["citizen.head"] = {
 	}
 }
 
-models["citizen"] = {
+engine.assets.models["citizen"] = {
     type = "model",
 	components = {
 		{ name="body", mesh="citizen.body"},
@@ -552,7 +552,7 @@ models["citizen"] = {
 	}
 }
 
-models["door_village_scummbar"] = {
+engine.assets.models["door_village_scummbar"] = {
     sheet = sheet,
     type = "sprite",
     ppu=1,
@@ -562,7 +562,7 @@ models["door_village_scummbar"] = {
 	}
 }
 
-models["door_village_voodoolady"] = {
+engine.assets.models["door_village_voodoolady"] = {
     sheet = sheet,
     type = "sprite",
     ppu=1,
@@ -572,7 +572,7 @@ models["door_village_voodoolady"] = {
 	}
 }
 
-models["fakedoor_village_1"] = {
+engine.assets.models["fakedoor_village_1"] = {
     sheet = sheet,
     type = "sprite",
     ppu=1,
@@ -582,7 +582,7 @@ models["fakedoor_village_1"] = {
 	}
 }
 
-models["fakedoor_village_2"] = {
+engine.assets.models["fakedoor_village_2"] = {
     sheet = sheet,
     type = "sprite",
     ppu=1,
@@ -592,7 +592,7 @@ models["fakedoor_village_2"] = {
 	}
 }
 
-models["lmf3.body"] = {
+engine.assets.models["lmf3.body"] = {
     sheet = sheet,
     type = "sprite",
     ppu=1,
@@ -613,7 +613,7 @@ models["lmf3.body"] = {
 	}
 }
 
-models["lmf3.head"] = {
+engine.assets.models["lmf3.head"] = {
     sheet = sheet,
     type = "sprite",
     ppu=1,
@@ -633,7 +633,7 @@ models["lmf3.head"] = {
 	}
 }
 
-models["lmf3"] = {
+engine.assets.models["lmf3"] = {
     type = "model",
 	components = {
 		{ name="body", mesh="lmf3.body"},
@@ -655,7 +655,7 @@ models["lmf3"] = {
 }
 
 
-models["village2.rat"] = {
+engine.assets.models["village2.rat"] = {
     sheet = sheet,
     type = "sprite",
     ppu=1,
@@ -668,7 +668,7 @@ models["village2.rat"] = {
 	}
 }
 
-models["door_scummbar_village"] = {
+engine.assets.models["door_scummbar_village"] = {
     sheet = sheet,
     type = "sprite",
     ppu=1,
@@ -678,7 +678,7 @@ models["door_scummbar_village"] = {
 	}
 }
 
-models["door_scummbar_kitchen"] = {
+engine.assets.models["door_scummbar_kitchen"] = {
     sheet = sheet,
     type = "sprite",
     ppu=1,
@@ -688,7 +688,7 @@ models["door_scummbar_kitchen"] = {
 	}
 }
 
-models["door_kitchen_scummbar"] = {
+engine.assets.models["door_kitchen_scummbar"] = {
     sheet = sheet,
     type = "sprite",
     ppu=1,
@@ -698,7 +698,7 @@ models["door_kitchen_scummbar"] = {
 	}
 }
 
-models["door_kitchen_pier"] = {
+engine.assets.models["door_kitchen_pier"] = {
     sheet = sheet,
     type = "sprite",
     ppu=1,
@@ -708,7 +708,7 @@ models["door_kitchen_pier"] = {
 	}
 }
 
-models["scummbar.mancomb"] = {
+engine.assets.models["scummbar.mancomb"] = {
     sheet = sheet,
     type = "sprite",
     ppu=1,
@@ -718,7 +718,7 @@ models["scummbar.mancomb"] = {
 	}
 }
 
-models["scummbar.estevan"] = {
+engine.assets.models["scummbar.estevan"] = {
     sheet = sheet,
     type = "sprite",
     ppu=1,
@@ -733,7 +733,7 @@ models["scummbar.estevan"] = {
 }
 
 
-models["kitchen.seagull"] = {
+engine.assets.models["kitchen.seagull"] = {
     sheet = sheet,
     type = "sprite",
     ppu=1,
@@ -804,7 +804,7 @@ models["kitchen.seagull"] = {
 	}
 }
 
-models["kitchen.plank"] = {
+engine.assets.models["kitchen.plank"] = {
     sheet = sheet,
     type = "sprite",
     ppu=1,
@@ -814,7 +814,7 @@ models["kitchen.plank"] = {
 	}
 }
 
-models["kitchen.meat"] = {
+engine.assets.models["kitchen.meat"] = {
     sheet = sheet,
     type = "sprite",
     ppu=1,
@@ -823,7 +823,7 @@ models["kitchen.meat"] = {
 	}
 }
 
-models["kitchen.pot"] = {
+engine.assets.models["kitchen.pot"] = {
     sheet = sheet,
     type = "sprite",
     ppu=1,
@@ -832,7 +832,7 @@ models["kitchen.pot"] = {
 	}
 }
 
-models["kitchen.fish"] = {
+engine.assets.models["kitchen.fish"] = {
     sheet = sheet,
     type = "sprite",
     ppu=1,
@@ -841,7 +841,7 @@ models["kitchen.fish"] = {
 	}
 }
 
-models["kitchen.potostew"] = {
+engine.assets.models["kitchen.potostew"] = {
     sheet = sheet,
     type = "sprite",
     ppu=1,
@@ -854,7 +854,7 @@ models["kitchen.potostew"] = {
 	}
 }
 
-models["scummbar.fireplace"] = {
+engine.assets.models["scummbar.fireplace"] = {
     sheet = sheet,
     type = "sprite",
     ppu=1,
@@ -867,7 +867,7 @@ models["scummbar.fireplace"] = {
 	}
 }
 
-models["kitchen.table"] = {
+engine.assets.models["kitchen.table"] = {
     sheet = sheet,
     type = "sprite",
     ppu=1,
@@ -954,7 +954,7 @@ local f4 = function(head, arm_left, arm_right, club, fish, dur)
 end
 
 
-models["bridge.troll"] = {
+engine.assets.models["bridge.troll"] = {
     sheet = sheet,
     type = "sprite",
     ppu=1,
@@ -1061,7 +1061,7 @@ models["bridge.troll"] = {
 }
 
 
-models["fettuccini.purple"] = {
+engine.assets.models["fettuccini.purple"] = {
     sheet = sheet,
     type = "sprite",
     ppu=1,
@@ -1089,7 +1089,7 @@ models["fettuccini.purple"] = {
 	}
 }
 
-models["fettuccini.green"] = {
+engine.assets.models["fettuccini.green"] = {
     sheet = sheet,
     type = "sprite",
     ppu=1,
@@ -1115,7 +1115,7 @@ models["fettuccini.green"] = {
 	}
 }
 
-models["circus.explosion"] = {
+engine.assets.models["circus.explosion"] = {
     sheet = sheet,
     type = "sprite",
     ppu=1,
@@ -1132,7 +1132,7 @@ models["circus.explosion"] = {
 	}
 }
 
-models["circus.flyingguy"] = {
+engine.assets.models["circus.flyingguy"] = {
     sheet = sheet,
     type = "sprite",
     ppu=1,
@@ -1160,7 +1160,7 @@ models["circus.flyingguy"] = {
 	}
 }
 
-models["shop.door"] = {
+engine.assets.models["shop.door"] = {
     sheet = sheet,
     type = "sprite",
     ppu=1,
@@ -1170,7 +1170,7 @@ models["shop.door"] = {
 	}
 }
 
-models["village3.shop_door"] = {
+engine.assets.models["village3.shop_door"] = {
     sheet = sheet,
     type = "sprite",
     ppu=1,
@@ -1180,7 +1180,7 @@ models["village3.shop_door"] = {
 	}
 }
 
-models["village3.church_door"] = {
+engine.assets.models["village3.church_door"] = {
     sheet = sheet,
     type = "sprite",
     ppu=1,
@@ -1190,14 +1190,14 @@ models["village3.church_door"] = {
 	}
 }
 
-models["shop.sword"] = { sheet = sheet, type = "sprite", ppu=1, animations = {{ name = "idle", frames = { { duration = dt, quads = {{ id = s.sword }}}}}}}
-models["shop.shovel"] = { sheet = sheet, type = "sprite", ppu=1, animations = {{ name = "idle", frames = { { duration = dt, quads = {{ id = s.shovel }}}}}}}
-models["shop.sign"] = { sheet = sheet, type = "sprite", ppu=1, animations = {{ name = "idle", frames = { { duration = dt, quads = {{ id = s.sign }}}}}}}
-models["shop.bell"] = { sheet = sheet, type = "sprite", ppu=1, animations = {{ name = "idle", frames = { { duration = dt, quads = {{ id = s.bell }}}}}}}
+engine.assets.models["shop.sword"] = { sheet = sheet, type = "sprite", ppu=1, animations = {{ name = "idle", frames = { { duration = dt, quads = {{ id = s.sword }}}}}}}
+engine.assets.models["shop.shovel"] = { sheet = sheet, type = "sprite", ppu=1, animations = {{ name = "idle", frames = { { duration = dt, quads = {{ id = s.shovel }}}}}}}
+engine.assets.models["shop.sign"] = { sheet = sheet, type = "sprite", ppu=1, animations = {{ name = "idle", frames = { { duration = dt, quads = {{ id = s.sign }}}}}}}
+engine.assets.models["shop.bell"] = { sheet = sheet, type = "sprite", ppu=1, animations = {{ name = "idle", frames = { { duration = dt, quads = {{ id = s.bell }}}}}}}
 
 
 
-models["shop.shopkeeper"] = {
+engine.assets.models["shop.shopkeeper"] = {
     sheet = sheet,
     type = "sprite",
     ppu=1,
@@ -1244,7 +1244,7 @@ models["shop.shopkeeper"] = {
 	}
 }
 
-models["lookout.fire"] = {
+engine.assets.models["lookout.fire"] = {
     sheet = sheet,
     type = "sprite",
     ppu=1,
@@ -1258,7 +1258,7 @@ models["lookout.fire"] = {
 	}
 }
 
-models["lookout.lookout"] = {
+engine.assets.models["lookout.lookout"] = {
     sheet = sheet,
     type = "sprite",
     ppu=1,
