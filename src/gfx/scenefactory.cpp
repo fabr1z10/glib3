@@ -153,8 +153,8 @@ SceneFactory::SceneFactory() {
 std::shared_ptr<Entity> SceneFactory::Create() {
 
     // get current room
-    LuaTable vars (LuaWrapper::GetGlobal("variables"));
-    std::string room = vars.Get<std::string>("_room");
+    LuaTable vars (LuaWrapper::GetGlobalPath( {"engine", "state"} ));
+    std::string room = vars.Get<std::string>("room");
 
     std::cout << "=================================\n";
     std::cout << "Loading room: "<< room << std::endl;

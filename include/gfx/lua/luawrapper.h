@@ -8,7 +8,7 @@ extern "C" {
 
 #include <LuaBridge/LuaBridge.h>
 #include <vector>
-
+#include <gfx/error.h>
 
 
 class LuaWrapper {
@@ -29,10 +29,21 @@ public:
     static luabridge::LuaRef GetGlobal (const std::string& name){
         return luabridge::getGlobal(L, name.c_str());
     }
-    static luabridge::LuaRef GetGlobal (const std::vector<std::string>& path){
+    static luabridge::LuaRef GetGlobalPath (const std::vector<std::string>& path){
         luabridge::LuaRef ref = luabridge::getGlobal(L, path[0].c_str());
+        std::stringstream pathSoFar;
+        pathSoFar << path[0];
+        if (ref.isNil()) {
+            GLIB_FAIL("Unknown path: " << pathSoFar.str());
+        }
         for (size_t i = 1; i < path.size(); ++i) {
-            ref = ref[path[i]];
+            pathSoFar << "->" << path[i];
+
+            luabridge::LuaRef ref2 = ref[path[i].c_str()];
+            ref = ref2;
+            if (ref.isNil()) {
+                GLIB_FAIL("Unknown path: " << pathSoFar.str());
+            }
         }
         return ref;
         //return luabridge::getGlobal(L, name.c_str());

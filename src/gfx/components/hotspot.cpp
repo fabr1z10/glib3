@@ -223,8 +223,10 @@ void HotSpotManager::MouseButtonCallback(GLFWwindow* window, int button, int act
             // convert mouse to world coordinates
             double xpos, ypos;
             glfwGetCursorPos(window, &xpos, &ypos);
-            glm::vec2 wp = m_defaultCamera->GetWorldCoordinates(glm::vec2(xpos, ypos));
-            if (m_lmbClick) m_lmbClick(wp.x, wp.y);
+            if (m_defaultCamera->IsInViewport(xpos, ypos)) {
+                glm::vec2 wp = m_defaultCamera->GetWorldCoordinates(glm::vec2(xpos, ypos));
+                if (m_lmbClick) m_lmbClick(wp.x, wp.y);
+            }
         }
     }
 

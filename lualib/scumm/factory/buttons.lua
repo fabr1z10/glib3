@@ -67,18 +67,18 @@ end
 
 scumm.factory.verbbutton = function(args) 
 	local pos = args.pos
-	local verb = args.verb
+	local verb = engine.config.verbs[args.verb]
 	return scumm.factory.button {
 		pos = pos,
-		font = config.ui.font,
+		font = engine.config.ui.font,
         text= verb.text,
         align="bottomleft", 
-        color = config.ui.verb_unselected_color, 
+        color = engine.config.ui.verb_unselected_color, 
 		maxwidth = 170,
         size = 8, 
         priority = 1,
-		onenter = glib.curry2(scumm.ui.changecolor, config.ui.verb_selected_color), 
-        onleave = glib.curry2(scumm.ui.changecolor, config.ui.verb_unselected_color),
-		onclick = glib.curry(scumm.ui.setverb, verb)
+		onenter = glib.curry2(scumm.ui.changecolor, engine.config.ui.verb_selected_color), 
+        onleave = glib.curry2(scumm.ui.changecolor, engine.config.ui.verb_unselected_color),
+		onclick = glib.curry(scumm.ui.setverb, args.verb)
 	}
 end

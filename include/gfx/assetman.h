@@ -56,7 +56,6 @@ private:
 
 class FontBuilder {
 public:
-    FontBuilder();
     void Init();
     std::shared_ptr<Font> operator() (const std::string&) const;
 private:
@@ -67,12 +66,16 @@ class TexBuilder {
 public:
     void Init();
     std::shared_ptr<Tex> operator() (const std::string&) const;
+private:
+    std::string m_gfxDirectory;
 };
 
 class ModelBuilder {
 public:
     void Init();
     std::shared_ptr<IModel> operator() (const std::string&) const;
+private:
+    std::unique_ptr<luabridge::LuaRef> m_modelLocation;
 };
 
 

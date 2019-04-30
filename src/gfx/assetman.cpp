@@ -6,18 +6,34 @@ AssetManager::AssetManager() {
     SetLocal(false);
 }
 
+void AssetManager::Init() {
+    m_fonts2.Init();
+    m_models2.Init();
+    m_textures2.Init();
+}
+
 void FontBuilder::Init() {
-    m_fontLocation = std::make_unique<luabridge::LuaRef>(LuaWrapper::GetGlobal({"engine", "assets", "fonts"}));
+    m_fontLocation = std::make_unique<luabridge::LuaRef>(LuaWrapper::GetGlobalPath({"engine", "assets", "fonts"}));
     if (m_fontLocation->isNil()) {
         GLIB_FAIL("Mmmh, unknown font location!");
     }
 }
 
+void TexBuilder::Init() {
+
+    m_gfxDirectory = Engine::get().GetDirectory() + "gfx/";
+}
+
+void ModelBuilder::Init() {
+    m_modelLocation = std::make_unique<luabridge::LuaRef>(LuaWrapper::GetGlobalPath({"engine", "assets", "models"}));
+    if (m_modelLocation->isNil()) {
+        GLIB_FAIL("Mmmh, unknown model location!");
+    }
+}
 
 std::shared_ptr<Font> FontBuilder::operator()(const std::string & fontId) const {
     std::cout << "*** load font " << fontId << " ... \n";
-    luabridge::LuaRef fonts = (LuaWrapper::GetGlobal("engine"));
-    luabridge::LuaRef font = fonts[fontId];
+    luabridge::LuaRef font = m_fontLocation->operator[](fontId);
     if (font.isNil()) {
         return nullptr;
     }
@@ -33,12 +49,8 @@ std::shared_ptr<Font> FontBuilder::operator()(const std::string & fontId) const 
 
 std::shared_ptr<IModel> ModelBuilder::operator()(const std::string & modelId) const {
 
-    luabridge::LuaRef modelsDef = LuaWrapper::GetGlobal("engine")["models"];
-    if (modelsDef.isNil()) {
-        GLIB_FAIL("No models available!")
-    }
     std::cout << "*** load asset " << modelId << " ... \n";
-    luabridge::LuaRef modelDef = modelsDef[modelId];
+    luabridge::LuaRef modelDef = m_modelLocation->operator[](modelId);
     if (modelDef.isNil()) {
         return nullptr;
     }
@@ -48,8 +60,7 @@ std::shared_ptr<IModel> ModelBuilder::operator()(const std::string & modelId) co
 
 std::shared_ptr<Tex> TexBuilder::operator()(const std::string & file) const {
     std::cout << "*** loading texture " << file << "...\n";
-
-    std::string fileName = Engine::get().GetDirectory() + file;
+    std::string fileName = m_gfxDirectory + file;
     auto texture = std::make_shared<Tex>(fileName, nearest);
     return texture;
 }

@@ -7,16 +7,19 @@ glib.assert (engine.lang, "missing engine.lang!!!", 1)
 glib.assert (engine.config.default_verb, "engine.config.default_verb", 1)
 glib.assert (engine.start_room, "engine.start_room", 1)
 
-variables = {}
--- Initialize key scumm variables
-variables._room = engine.start_room
-variables._previousRoom = ""
-variables._actionInfo = {
-	verb = nil,
-    obj1 = nil,
-    obj2 = nil,
-    selectSecond = false
+engine.state.scumm = {
+	actionInfo = {
+		verb = "",			-- key into engine.c
+		obj1 = "",
+		obj2 = "",
+		selectSecond = false
+	}
+
 }
+print ("fuck")
+
+
+
 	
 scumm = {}
 require ("scumm/ui")
@@ -37,5 +40,4 @@ io.write ("done! loaded " .. tostring(glib.tablelength(engine.assets.models)) ..
 io.write ("loading items ...")
 glib.load_folder("items")
 print ("done! loaded " .. tostring(glib.tablelength(engine.items)) .. " items.\n")
-
 

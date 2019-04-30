@@ -1,9 +1,11 @@
 scumm.ui = {}
 
-function variables._actionInfo:toString ()
-	
-    local t = { self.verb.text }
-	
+
+-- converts the action info to a string (SCUMM based games)
+function engine.state.scumm.actionInfo:toString ()
+	print(self.verb)
+	local verb = engine.config.verbs[self.verb]
+    local t = { verb.text }	
     if (self.obj1 ~= nil) then
         --o1 = objects[self.obj1]
         t[2] = items[self.obj1].hotspot.text
@@ -20,25 +22,24 @@ function variables._actionInfo:toString ()
     return table.concat(t, " ")
 end
 
-function variables._actionInfo:reset()
-   self.verb = config.verbs.walk
+function engine.state.scumm.actionInfo:reset()
+   self.verb = engine.config.default_verb
    self.obj1 = nil
    self.obj2 = nil
    self.selectSecond = false
 end
 
 
-function scumm.ui.updateVerb() 
-	
+function scumm.ui.updateVerb() 	
     a = monkey.getEntity("currentaction")
-    a:settext(variables._actionInfo:toString())    
+    a:settext(engine.state.scumm.actionInfo:toString())    
 end
 
 function scumm.ui.setverb(verb)
-    variables._actionInfo.verb = verb
-    variables._actionInfo.obj1 = nil
-    variables._actionInfo.obj2 = nil
-    variables._actionInfo.selectSecond = false
+    engine.state.scumm.actionInfo.verb = verb
+    engine.state.scumm.actionInfo.obj1 = nil
+    engine.state.scumm.actionInfo.obj2 = nil
+    engine.state.scumm.actionInfo.selectSecond = false
     scumm.ui.updateVerb()
 end
 

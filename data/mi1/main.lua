@@ -51,6 +51,10 @@ engine.config.verbs = {
     turnon = { code="turnon", text = strings.ui.turnon, objects = 1 },
     turnoff = { code="turnoff", text = strings.ui.turnoff, objects = 1 }
 }
+engine.config.verbset = {
+    [1] = { "open", "close", "push", "pull" }
+
+}
 
 variables = {
 -- 	_previousroom="",
@@ -123,6 +127,7 @@ variables = {
 --glib.load_folder("dialogues")
 
 require("defaultscripts")
+
 
 --test.lookout()
 

@@ -1,5 +1,10 @@
 glib = {}
 
+engine.state = {
+    room = engine.start_room,
+    previousRoom = "",
+}
+
 function glib.assert(a, b, c)
 	if (a == nil) then 
 		error("Required argument: " ..b, c or 2) 
