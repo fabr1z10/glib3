@@ -52,7 +52,7 @@ engine.config.verbs = {
     turnoff = { code="turnoff", text = strings.ui.turnoff, objects = 1 }
 }
 engine.config.verbset = {
-    [1] = { "open", "close", "push", "pull" }
+    [1] = { "open", "close", "push", "pull", "walk", "pick", "talk", "give", "use", "look", "turnon", "turnoff" }
 
 }
 

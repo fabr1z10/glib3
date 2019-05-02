@@ -3,7 +3,7 @@ scumm.factory.object = function(args)
 	local objId = args.id
 	print ("*** Creating object " .. objId)
 	-- fetch the object
-	local object = items[objId]
+	local object = engine.items[objId]
 	if (object == nil) then
 		print ("Error! Unknown object " .. args.id)
 		return

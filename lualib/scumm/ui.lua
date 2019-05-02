@@ -8,11 +8,12 @@ function engine.state.scumm.actionInfo:toString ()
     local t = { verb.text }	
     if (self.obj1 ~= nil) then
         --o1 = objects[self.obj1]
-        t[2] = items[self.obj1].hotspot.text
+        print ("sticazi " .. self.obj1)
+        t[2] = engine.items[self.obj1].hotspot.text
         if (self.obj2 ~= nil) then
             --o2 = objects[self.obj2]
             t[3] = self.verb.prep
-            t[4] = items[self.obj2].hotspot.text
+            t[4] = engine.items[self.obj2].hotspot.text
         else
             if (self.selectSecond == true) then
                t[3] = self.verb.prep 
@@ -47,29 +48,9 @@ function scumm.ui.changecolor (color, entity)
     entity:setcolor(color[1], color[2], color[3], color[4])
 end
 
-function scumm.ui.hoverOn (obj)
-    if (variables._actionInfo.obj1 == nil) then 
-		print ("Set")
-        variables._actionInfo.obj1 = obj
-    else
-        if (variables._actionInfo.verb.objects > 1 and variables._actionInfo.obj1 ~= obj) then
-            variables._actionInfo.obj2 = obj
-        end
-    end
-    scumm.ui.updateVerb()
-end
 
-function scumm.ui.hoverOff ()
-    if (variables._actionInfo.obj2 ~= nil) then
-        variables._actionInfo.obj2 = nil
-    else
-        -- set obj1 to nil unless we are waiting for 2nd object
-        if (variables._actionInfo.selectSecond == false) then
-            variables._actionInfo.obj1 = nil
-        end
-    end
-    scumm.ui.updateVerb()
-end
+
+
 
 -- the default behavior when you click on an object
 function scumm.ui.runAction ()
@@ -202,26 +183,29 @@ end
 
 
 function scumm.ui.hoverOn (obj)
-	
-    if (variables._actionInfo.obj1 == nil) then 
-		print ("setting to " .. obj)
-        variables._actionInfo.obj1 = obj
-		print ("setting to " .. variables._actionInfo.obj1)
+	local actionInfo = engine.state.scumm.actionInfo
+    if (actionInfo.obj1 == nil) then
+        -- print ("setting to " .. obj)
+        actionInfo.obj1 = obj
+		--print ("setting to " .. variables._actionInfo.obj1)
     else
-        if (variables._actionInfo.verb.objects > 1 and variables._actionInfo.obj1 ~= obj) then
-            variables._actionInfo.obj2 = obj
+        local verb = scumm.ui.getCurrentVerb()
+        if (verb.objects > 1 and actionInfo.obj1 ~= obj) then
+            actionInfo.obj2 = obj
         end
     end
     scumm.ui.updateVerb()
 end
 
 function scumm.ui.hoverOff ()
-    if (variables._actionInfo.obj2 ~= nil) then
-        variables._actionInfo.obj2 = nil
+	local actionInfo = engine.state.scumm.actionInfo
+
+    if (actionInfo.obj2 ~= nil) then
+        actionInfo.obj2 = nil
     else
         -- set obj1 to nil unless we are waiting for 2nd object
-        if (variables._actionInfo.selectSecond == false) then
-            variables._actionInfo.obj1 = nil
+        if (actionInfo.selectSecond == false) then
+            actionInfo.obj1 = nil
         end
     end
     scumm.ui.updateVerb()
@@ -338,6 +322,9 @@ print("sifjroifj")
 	end
 end
 
+function scumm.ui.getCurrentVerb() 
+	return engine.config.verbs[engine.state.scumm.actionInfo.verb]
+end
 
 function scumm.ui.runSciAction (x, y, objId)
     -- enter paused mode

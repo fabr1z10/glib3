@@ -9,12 +9,13 @@ function scumm.factory.basic_room (args)
 	local room_height = args.height
 	local camWidth = engine.device_size[1]
 	local camHeight = engine.device_size[2] - engine.config.ui.height
+
 	-- start y
-	local verbs_y = engine.config.ui.height - 2*args.font_size
+	local font_size = args.font_size
 
 	local startPos = nil
 	if (args.startTable ~= nil) then
-		startPos = args.startTable[variables._previousroom]
+		startPos = args.startTable[engine.state.previousRoom]
 		if (startPos == nil) then
 			startPos = args.startTable[args.defaultroom]
 		end	
@@ -205,13 +206,58 @@ function scumm.factory.basic_room (args)
 		-- c:addtext( {text="anvedi"})
 	--end)
 	local refs = {
+		main = p.scene[1].children,
 		ui = p.scene[2].children[1].children
 	}
 
+	-- add the verbs
+	local row = 2
+	local count = 0
 	for _, verb in ipairs(engine.config.verbset[1]) do
-		table.insert (refs.ui,scumm.factory.verbbutton {pos={2, 40}, verb = "open"} )
+		local col = 1+ count // 4
+		local x = 2 + (col-1)*46
+		local y = engine.config.ui.height - row*font_size
+		row = row + 1
+		if (row > 5) then row = 2 end
+		count = count +1
+		table.insert (refs.ui,scumm.factory.verbbutton {pos={x, y}, verb = verb} )
 	end
-	table.insert (refs.ui,scumm.factory.verbbutton {pos={2, 40}, verb = "open"} )
+
+	-- add the walkarea(s)
+	if (args.walkareas) then
+		for _, wa in ipairs(args.walkareas) do
+			local tmp = scumm.factory.object { id = wa }
+			table.insert (refs.main, tmp)
+			refs[wa] =  tmp.children
+		end
+
+		-- adding player
+		print("ciao = "..tostring(startPos.pos[1]))
+		print("ciao = "..tostring(startPos.pos[2]))
+		local w1 = refs[startPos.walkarea]
+		table.insert(w1,  
+			scumm.factory.object { 
+				id="guybrush",
+				pos={startPos.pos[1], startPos.pos[2], 0}, 
+				tag="player", 
+				dir = "north"
+			}
+		)
+
+			--scumm.factory.object { 
+		-- 	id="guybrush",
+		-- 	
+		-- 	tag="player", 
+		-- 	dir = startPos.dir,
+		-- 	--follow = (room_width > 320 and enableScroll),
+		-- 	--collide = args.collide
+
+
+		-- } })
+
+	end
+
+	--table.insert (refs.ui,scumm.factory.verbbutton {pos={2, 40}, verb = "open"} )
 
 	if (p.startPos.func ~= nil) then
 
@@ -219,9 +265,11 @@ function scumm.factory.basic_room (args)
 	end
 	
 
-	function p:add(items) 
+	function p:add(to, items) 
 		for k,v in ipairs(items) do
-			table.insert(self.scene[1].children, v)
+			print ("ciaociao")
+			print (refs[to].tag)
+			table.insert(refs[to], v)
 		end
 	end
 

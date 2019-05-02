@@ -10,8 +10,8 @@ glib.assert (engine.start_room, "engine.start_room", 1)
 engine.state.scumm = {
 	actionInfo = {
 		verb = "",			-- key into engine.c
-		obj1 = "",
-		obj2 = "",
+		obj1 = nil,
+		obj2 = nil,
 		selectSecond = false
 	}
 
