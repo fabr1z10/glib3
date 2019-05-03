@@ -403,9 +403,10 @@ std::shared_ptr<Component> PropertiesCompFactory::Create(luabridge::LuaRef & ref
 }
 
 std::shared_ptr<Component> InfoComponentFactory::Create(luabridge::LuaRef & ref) {
-    //auto comp = Ref::Create<LuaInfo>();
-    //return comp;
-    throw;
+    auto comp = Ref::Create<LuaInfo>(ref);
+
+    return comp;
+
 }
 
 std::shared_ptr<Component> KeyboardInputMethodCompFactory::Create(luabridge::LuaRef &ref) {

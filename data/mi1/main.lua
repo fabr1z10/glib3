@@ -13,7 +13,6 @@ engine = {
 		},
 		models = {}
 	},
-	items = {},
 	global_assets = {
 		fonts = { "ui", "monkey" }
 	},

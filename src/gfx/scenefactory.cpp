@@ -159,7 +159,7 @@ std::shared_ptr<Entity> SceneFactory::Create() {
     std::cout << "=================================\n";
     std::cout << "Loading room: "<< room << std::endl;
     std::cout << "=================================\n";
-    LuaWrapper::Load(Engine::get().GetDirectory() + "rooms/" + room + ".lua");
+    LuaWrapper::Load(Engine::get().GetDirectory() + "rooms/" + room + "/room.lua");
 
     // Create the local assets
     luabridge::LuaRef roomRef = luabridge::getGlobal(LuaWrapper::L, "room");

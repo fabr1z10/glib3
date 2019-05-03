@@ -1,5 +1,8 @@
 print ("exec <scumm/action> script")
 
+local items =engine.items
+local dialogues =engine.dialogues
+
 scumm.action = {}
 
 scumm.action.walkto = function (args) 
@@ -83,9 +86,7 @@ scumm.action.start_dialogue = function (args)
 	assert (args.dialogue, "dialogue")
 	local droot = args.root or 1
 	return { type="callfunc", func = function() 
-		--print ("Starting dialogue: " .. args.dialogue)
-		print ("VIVA!")
-		local dialogue = dialogues[args.dialogue]
+		local dialogue = engine.dialogues[args.dialogue]
 		if (dialogue == nil) then
 			error ("Can't find dialogue " .. args.dialogue)
 		end
@@ -105,9 +106,11 @@ scumm.action.start_dialogue = function (args)
 		m2:cleartext()
 		for k, v in ipairs(children) do
         	local node = dialogue.nodes[v]
+    		print (node.text)
             if (glib.get(node.active) == true) then
 				m2:addtext { text=node.text, dialogue_node = node, dialogue = args.dialogue }
 			end
+			print ("cazzo")
         end
 	end }
 end

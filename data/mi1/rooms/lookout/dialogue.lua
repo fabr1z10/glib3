@@ -15,10 +15,10 @@ local lookout_turn = {
 	{ type = scumm.action.say, args = {actor="lookout.lookout", lines = {d[15], d[16]}}},
 }
 
-dialogues.lookout = {
+engine.dialogues.lookout = {
 	-- root
 	init = function()
-		dialogues.lookout.nodes[8].active = true 
+		engine.dialogues.lookout.nodes[8].active = true 
 	end,
 	close = function(n)
 		local actions = {

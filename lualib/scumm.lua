@@ -13,18 +13,20 @@ engine.state.scumm = {
 		obj1 = nil,
 		obj2 = nil,
 		selectSecond = false
-	}
+	},
+	inventory = {}
 
 }
 print ("fuck")
 
-
-
-	
+if (engine.items == nil) then engine.items = {} end
+if (engine.dialogues == nil) then engine.dialogues = {} end
 scumm = {}
 require ("scumm/ui")
 require ("scumm/action")
 require ("scumm/factory")
+	
+
 -- load text
 
 
@@ -37,7 +39,7 @@ glib.load_folder("sprites")
 io.write ("done! loaded " .. tostring(glib.tablelength(engine.assets.models)) .. " models.\n")
 --print (tostring(engine.assets.models["low_moral_fiber_1"].animations[1].frames[1].quads[2]["id"].x))
 
-io.write ("loading items ...")
-glib.load_folder("items")
-print ("done! loaded " .. tostring(glib.tablelength(engine.items)) .. " items.\n")
+
+glib.load_all("items")
+glib.load_all("dialogue")
 

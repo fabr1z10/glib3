@@ -16,7 +16,7 @@ local fman = function(lines,anim)
 	return { type = action.say, args = {actor = "mancomb.mancomb", lines = l, animstart = anim or "idle", animend= anim or "idle"}}
 end
 
-dialogues.mancomb = {
+engine.dialogues.mancomb = {
 	close = function()
 		local actions = {
 			{ type=action.change_room, args={ room="scummbar"}}

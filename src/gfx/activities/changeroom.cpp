@@ -2,8 +2,8 @@
 #include <gfx/engine.h>
 
 void ChangeRoom::Start() {
-    luabridge::LuaRef ref = LuaWrapper::GetGlobal("variables");
-    std::string oldRoom = ref["_room"].cast<std::string>();
+    luabridge::LuaRef ref = LuaWrapper::GetGlobalPath({"engine","state"});
+    std::string oldRoom = ref["room"].cast<std::string>();
     // call the exit script, if any
     luabridge::LuaRef room = LuaWrapper::GetGlobal("room");
     luabridge::LuaRef exitFunc = room["onexit"];
@@ -11,8 +11,8 @@ void ChangeRoom::Start() {
         exitFunc(m_roomId);
     }
 
-    ref["_room"] = m_roomId;
-    ref["_previousroom"] = oldRoom;
+    ref["room"] = m_roomId;
+    ref["previousRoom"] = oldRoom;
     Engine::get().EndScene();
     SetComplete();
 

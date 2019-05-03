@@ -16,7 +16,7 @@ local ftro = function(lines)
 	return { type = scumm.action.say, args = {actor = "bridge.troll", lines = l, animstart = "talk", animend= "idle"}}
 end
 
-dialogues.troll = {
+engine.dialogues.troll = {
 	close = function()
 		local actions = {
 			{ type = action.resume_script, args = {script="_troll"}}

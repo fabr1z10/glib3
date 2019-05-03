@@ -1,4 +1,5 @@
 local d = strings.dialogues.fettbros
+local items = engine.items
 
 local actor_map = {
 	[1] = "guybrush",
@@ -56,7 +57,7 @@ local a1 = function(n)
 end
 
 
-dialogues.fettuccini = {
+engine.dialogues.fettuccini = {
 	close = function() end,
 	nodes = {
 		[1] = { children = {2, 3, 4, 5, 6}},

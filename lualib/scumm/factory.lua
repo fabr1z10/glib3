@@ -1,6 +1,8 @@
 scumm.factory = {}
 
 require ("scumm/factory/door")
+require ("scumm/factory/walkarea")
+
 require ("scumm/factory/object")
 require ("scumm/factory/sciobject")
 require ("scumm/factory/walkarea")

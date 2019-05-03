@@ -1,5 +1,5 @@
 local d = strings.dialogues.storekeeper
-
+local dialogues = engine.dialogues
 local swordPrice = 75
 local shovelPrice = 100
 

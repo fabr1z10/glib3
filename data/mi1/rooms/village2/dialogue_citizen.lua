@@ -24,7 +24,7 @@ local s2 = function(n, k)
 	}
 end
 
-dialogues.citizen = {
+engine.dialogues.citizen = {
 	close = function()
 		local actions = {
 			{ type = action.animate, args = {actor="village2.citizen", anim="idle_s"}}

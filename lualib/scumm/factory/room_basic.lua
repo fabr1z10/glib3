@@ -155,21 +155,21 @@ function scumm.factory.basic_room (args)
 			 				-- }
 						}
 					},
-					-- {
-					-- 	pos  = {0,0,0},
-					-- 	children = {
-					-- 		{
-					-- 			tag = "dialogueui",
-					-- 			type = "textview", 
-					-- 			pos = {0, 0},
-					-- 			size = {320, 56},
-					-- 			font_size = 8,
-					-- 			lines = 6,
-					-- 			deltax = 26,
-					-- 			factory = scumm.factory.dialoguebutton
-					-- 		}
-					-- 	}
-			 	-- 	}
+					{
+						pos  = {0,0,0},
+						children = {
+							{
+								tag = "dialogueui",
+								type = "textview", 
+								pos = {0, 0},
+								size = {320, 56},
+								font_size = 8,
+								lines = 6,
+								deltax = 26,
+								factory = scumm.factory.dialoguebutton
+							}
+						}
+			 		}
 				}
 			}
 		}
@@ -240,7 +240,8 @@ function scumm.factory.basic_room (args)
 				id="guybrush",
 				pos={startPos.pos[1], startPos.pos[2], 0}, 
 				tag="player", 
-				dir = "north"
+				dir = startPos.dir,
+				follow = (room_width > 320 and enableScroll),
 			}
 		)
 
@@ -249,7 +250,6 @@ function scumm.factory.basic_room (args)
 		-- 	
 		-- 	tag="player", 
 		-- 	dir = startPos.dir,
-		-- 	--follow = (room_width > 320 and enableScroll),
 		-- 	--collide = args.collide
 
 

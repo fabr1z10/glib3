@@ -49,16 +49,16 @@ end
 scumm.factory.dialoguebutton = function (args) 
 	return scumm.factory.button {
 		pos = {0,0},
-		font = config.ui.font,
+		font = engine.config.ui.font,
         text= args.text,
 		maxwidth = args.maxwidth,
         align="bottomleft", 
-        color = config.ui.verb_unselected_color, 
+        color = engine.config.ui.verb_unselected_color,
         size = 8, 
         priority = 1,
 		info = { node = args.dialogue_node, dialogue = args.dialogue }, 
-		onenter = glib.curry2(scumm.ui.changecolor, config.ui.verb_selected_color), 
-        onleave = glib.curry2(scumm.ui.changecolor, config.ui.verb_unselected_color),
+		onenter = glib.curry2(scumm.ui.changecolor, engine.config.ui.verb_selected_color),
+        onleave = glib.curry2(scumm.ui.changecolor, engine.config.ui.verb_unselected_color),
 		onclick = scumm.ui.handleDialogueButton
 	}
 
