@@ -102,15 +102,21 @@ void RenderingEngine::Update(double)
 
         // loop through all nodes
         RenderingIterator iterator(root);
-        for (; !iterator.end();  ++iterator) {
+        for (; !iterator.end();) {
             // get the renderer component
 
             auto cam = iterator.GetCamera();
-            if (cam == nullptr)
+            if (cam == nullptr) {
+                ++iterator;
                 continue;
+            }
             Entity& e = *iterator;
             //std::cout << "Examining " << e.GetTag() << "\n";
+            if (!e.isActive()) {
+                iterator.advanceSkippingChildren();
+                continue;
 
+            }
             Renderer* renderer = e.GetComponent<Renderer>();
 
             if (renderer != nullptr && renderer->isActive() && renderer->GetShaderType() == stype) {
@@ -125,7 +131,7 @@ void RenderingEngine::Update(double)
                 glUniformMatrix4fv(mvLoc, 1, GL_FALSE, &mvm[0][0]);
                 renderer->Draw(shader.get());
             }
-                    
+            ++iterator;
 
         }
 

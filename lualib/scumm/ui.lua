@@ -213,14 +213,14 @@ function scumm.ui.hoverOff ()
 end
 
 function scumm.ui.hover_on_inv_button(entity) 
-	local color = config.ui.inv_selected
+	local color = engine.config.ui.inv_selected
 	entity:setcolor(color[1], color[2], color[3], color[4])
 	local info = entity:getinfo()
 	scumm.ui.hoverOn(info.data.obj)
 end
 
 function scumm.ui.hover_off_inv_button(entity) 
-	local color = config.ui.inv_unselected
+	local color = engine.config.ui.inv_unselected
 	entity:setcolor(color[1], color[2], color[3], color[4])
 	local info = entity:getinfo()
 	scumm.ui.hoverOff()
@@ -231,9 +231,9 @@ function scumm.ui.refresh_inventory()
 	c:cleartext()
 	for k, v in pairs(inventory) do
 		if (v == 1) then
-			c:addtext( {text = items[k].hotspot.text, obj = k})
+			c:addtext( {text = engine.items[k].hotspot.text, obj = k})
 		else
-			c:addtext( { text = tostring(v) .. " " .. items[k].hotspot.text_plural, obj = k}) -- l, obj = k} )
+			c:addtext( { text = tostring(v) .. " " .. engine.items[k].hotspot.text_plural, obj = k}) -- l, obj = k} )
 		end
 	end
 

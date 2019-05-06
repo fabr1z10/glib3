@@ -21,6 +21,7 @@ protected:
     glm::vec2 m_velocity;
     glm::vec2 m_finalPosition;
     glm::vec2 m_accelerationVector;
+    glm::vec2 m_unitDisplacement;
     float m_speed;
     float m_lengthToCover;
     float m_lengthCovered;
@@ -32,6 +33,15 @@ protected:
 inline void MoveTo::SetAcceleration(float acceleration) {
     m_acceleration = acceleration;
 }
+
+class MoveToScaled : public MoveTo {
+public:
+    MoveToScaled(glm::vec2 pos, float speed, bool relative, bool immediate);
+    MoveToScaled(int id, glm::vec2 pos, float speed, bool relative, bool immediate);
+
+    void Run (float dt) override;
+};
+
 
 class MoveAndRotateTo : public MoveTo {
 public:

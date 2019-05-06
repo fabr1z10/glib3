@@ -31,11 +31,11 @@ end
 scumm.factory.inventorybutton = function (args) 
 	return scumm.factory.button {
 		pos = {0,0},
-		font = config.ui.font,
+		font = engine.config.ui.font,
         text= args.text,
 		maxwidth = args.maxwidth,
         align="bottomleft", 
-        color = config.ui.inv_unselected, 
+        color = engine.config.ui.inv_unselected,
         size = 8, 
         priority = 1,
 		info = { obj = args.obj},

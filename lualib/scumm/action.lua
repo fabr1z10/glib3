@@ -2,6 +2,7 @@ print ("exec <scumm/action> script")
 
 local items =engine.items
 local dialogues =engine.dialogues
+local inventory = engine.state.scumm.inventory
 
 scumm.action = {}
 
@@ -191,10 +192,10 @@ scumm.action.add_to_inventory = function(args)
 	return { type = "callfunc", func = 
 		function()
 			print (args.id .. " adding")			
-			if (variables.inventory[args.id] == nil) then
-				variables.inventory[args.id] = qty
+			if (inventory[args.id] == nil) then
+				inventory[args.id] = qty
 			else 
-				variables.inventory[args.id] = variables.inventory[args.id] + qty
+				inventory[args.id] = inventory[args.id] + qty
 			end
 			print ("ref inv")
 			scumm.ui.refresh_inventory()	

@@ -107,7 +107,7 @@ void Walk::Start() {
             }
 
             Push(std::make_shared<Turn>(m_actorId, dir));
-            Push(std::make_shared<MoveTo>(m_actorId, currentPos + length * glm::normalize(delta), speed, false, false));
+            Push(std::make_shared<MoveToScaled>(m_actorId, currentPos + length * glm::normalize(delta), speed, false, false));
             //if (i == points.size() - 1 || tMin < 1.0)
             currentPos = points[i];
             if (tMin < 1.0)

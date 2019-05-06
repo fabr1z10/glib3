@@ -32,7 +32,7 @@ local s2 = {
 	{ type = scumm.action.say, args = {actor="village2.lmf1", lines={d[24]}, animstart="looknorth", animend="idle"}},
 }
 
-dialogues.lowmoralfiber = {
+engine.dialogues.lowmoralfiber = {
 	close = function()
 		-- local s = script:new("_citizenclose")
 		-- s.actions = {
@@ -97,19 +97,20 @@ dialogues.lowmoralfiber = {
 		[14] = { text = d[20], active=true},
 		[15] = { text = d[68], children ={16,17,18}, deact={15}, active = function () return not(variables.talked_to_citizen) end, script = {
 			{ type = scumm.action.say, args = {actor="guybrush", lines={d[68]}}},
-			{ ref = 1, type = scumm.action.say, args = {actor="village2.lmf3", lines={d[25]}, animstart="talk_e", animend="idle_e"}},
+			{ type = scumm.action.say, args = {actor="village2.lmf3", lines={d[25]}, animstart="talk_e", animend="idle_e"}},
 			{ type = action.animate, args = {tag="village2.lmf3", anim="open_jacket", sync = true}},
+			{ type = action.delay, args = {sec=1}},
 			{ type = action.animate, args = {tag="village2.lmf3", anim="open_jacket", sync = true, fwd=false}},
-			{ ref = 2, type = scumm.action.say, after={1}, args = {actor="village2.lmf3", lines={d[26]}, animstart="h_talk_e", animend="idle_e"}},
-			{ type = action.animate, args = {tag="village2.lmf1", anim="looknorth"}},
-			{ type = action.animate, after={2}, args = {tag="village2.lmf2", anim="idle_s"}},
-			{ type = action.animate, after={2}, args = {tag="village2.lmf3", anim="idle_s"}},
+			{ ref = 1, type = scumm.action.say, args = {actor="village2.lmf3", lines={d[26]}, animstart="talk_e", animend="idle_e"}},
+			{ type = action.animate, after={1},args = {tag="village2.lmf1", anim="looknorth"}},
+			{ type = action.animate, after={1}, args = {tag="village2.lmf2", anim="idle_s"}},
+			{ type = action.animate, after={1}, args = {tag="village2.lmf3", anim="idle_s"}},
 			{ type = action.delay, args = {sec=1}},
 			{ type = action.animate, args = {tag="village2.lmf1", anim="idle"}},
 			{ ref = 3, type = action.animate, args = {tag="village2.lmf2", anim="laugh"}},
 			{ type = action.animate, after = {3}, args = {tag="village2.lmf3", anim="open_jacket", sync = true}},
 			{ type = action.animate, args = {tag="village2.lmf3", anim="open_jacket", sync= true, fwd=false}},
-			{ type = scumm.action.say, after={3}, args = {actor="village2.lmf3", lines={d[27],d[28], d[29]}, animstart="h_talk_e", animend="idle_e"}},
+			{ type = scumm.action.say, args = {actor="village2.lmf3", lines={d[27],d[28], d[29]}, animstart="talk_e", animend="idle_e"}},
 			punch(0),
 			{ type = scumm.action.say, args = {actor="village2.lmf3", lines={d[30]}, animstart="talk_e", animend="idle_e"}},
 		}},
@@ -121,12 +122,12 @@ dialogues.lowmoralfiber = {
 		[18] = { text = d[33], active=true, deact={18,19}, children = {2,3,5,6}, script = {
 			{ type = scumm.action.say, args = {actor="guybrush", lines={d[33]}}},
 			{ type = scumm.action.say, args = {actor="village2.lmf3", lines={d[42]}, animstart="talk_e", animend="idle_e"}},
-			{ type = action.add_to_inventory, args = {name="pieces_of_eight", qty=2} }
+			{ type = scumm.action.add_to_inventory, args = {id="pieces_of_eight", qty=2} }
 		}},
 		[19] = { text = d[67], active=false, children={2,3,19,5,6}, script = {
 			{ type = scumm.action.say, args = {actor="guybrush", lines={d[67]}}},
 			{ type = scumm.action.say, args = {actor="village2.lmf3", lines={d[42]}, animstart="talk_e", animend="idle_e"}},
-			{ type = action.add_to_inventory, args = {name="pieces_of_eight", qty=2} }
+			{ type = scumm.action.add_to_inventory, args = {id="pieces_of_eight", qty=2} }
 		}},
 		[20] = { text = d[40], active = false, deact={20}, children = {11,12,13,14}, script = {
 			{ type = scumm.action.say, args = {id=1, actor="guybrush", lines={d[40]}}},

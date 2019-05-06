@@ -483,71 +483,149 @@ engine.assets.models["cook"] = {
 	}
 }
 
-engine.assets.models["citizen.body"] = {
-    sheet = sheet,
-    type = "sprite",
-    ppu=1,
-	animations = {
-		{ name = "idle_s", frames = { { duration = dt, quads = {{ id = s.citizen_body_idle_south }}}}},
-		{ name = "idle_e", frames = { { duration = dt, quads = {{ id = s.citizen_body_idle_east }}}}},
-		{ name = "open_jacket", loop=false, frames = {
-			{ duration = dt, quads = {{ id = s.citizen_body_idle_east }}},
-			{ duration = dt, quads = {{ id = s.citizen_open_jacket_1 }}},
-			{ duration = dt, quads = {{ id = s.citizen_open_jacket_2 }}},
-			{ duration = dt, quads = {{ id = s.citizen_open_jacket_3 }}},
-			{ duration = dt, quads = {{ id = s.citizen_open_jacket_4 }}},
-		}},
-		{ name = "rollmap", loop=false, frames = {
-			{ duration = dt, quads = {{ id = s.citizen_body_idle_east }}},
-			{ duration = dt, quads = {{ id = s.citizen_rollmap_1 }}},
-			{ duration = dt, quads = {{ id = s.citizen_rollmap_2 }}},
-			{ duration = dt, quads = {{ id = s.citizen_rollmap_3 }}},
-			{ duration = dt, quads = {{ id = s.citizen_rollmap_4 }}},
-			{ duration = dt, quads = {{ id = s.citizen_rollmap_5 }}},
-		}},
+-- engine.assets.models["citizen.body"] = {
+--     sheet = sheet,
+--     type = "sprite",
+--     ppu=1,
+-- 	animations = {
+-- 		{ name = "idle_s", frames = { { duration = dt, quads = {{ id = s.citizen_body_idle_south }}}}},
+-- 		{ name = "idle_e", frames = { { duration = dt, quads = {{ id = s.citizen_body_idle_east }}}}},
+-- 		{ name = "open_jacket", loop=false, frames = {
+-- 			{ duration = dt, quads = {{ id = s.citizen_body_idle_east }}},
+-- 			{ duration = dt, quads = {{ id = s.citizen_open_jacket_1 }}},
+-- 			{ duration = dt, quads = {{ id = s.citizen_open_jacket_2 }}},
+-- 			{ duration = dt, quads = {{ id = s.citizen_open_jacket_3 }}},
+-- 			{ duration = dt, quads = {{ id = s.citizen_open_jacket_4 }}},
+-- 		}},
+-- 		{ name = "rollmap", loop=false, frames = {
+-- 			{ duration = dt, quads = {{ id = s.citizen_body_idle_east }}},
+-- 			{ duration = dt, quads = {{ id = s.citizen_rollmap_1 }}},
+-- 			{ duration = dt, quads = {{ id = s.citizen_rollmap_2 }}},
+-- 			{ duration = dt, quads = {{ id = s.citizen_rollmap_3 }}},
+-- 			{ duration = dt, quads = {{ id = s.citizen_rollmap_4 }}},
+-- 			{ duration = dt, quads = {{ id = s.citizen_rollmap_5 }}},
+-- 		}},
 
-	}
-}
+-- 	}
+-- }
 
-engine.assets.models["citizen.head"] = {
-    sheet = sheet,
-    type = "sprite",
-    ppu=1,
-	animations = {
-		{ name = "idle_s", frames = { 
-			{ duration = dt, quads = {{ id = s.citizen_head_idle_south1 }}},
-			{ duration = dt, quads = {{ id = s.citizen_head_idle_south2 }}},
-			{ duration = dt, quads = {{ id = s.citizen_head_idle_south1 }}},
-			{ duration = dt, quads = {{ id = s.citizen_head_idle_south2, flipx=true }}}
-		}},
-		{ name = "idle_e", frames = { 
-			{ duration = dt, quads = {{ id = s.citizen_head_idle_south2 }}},
-			{ duration = dt, quads = {{ id = s.citizen_head_idle_east }}},
-			{ duration = dt, quads = {{ id = s.citizen_head_idle_south2 }}},
-			{ duration = dt, quads = {{ id = s.citizen_head_idle_south1 }}}
-		}},
-		{ name = "talk", frames = { 
-			{ duration = dt, quads = {{ id = s.citizen_head_talk_1 }}},
-			{ duration = dt, quads = {{ id = s.citizen_head_talk_2 }}},
-			{ duration = dt, quads = {{ id = s.citizen_head_idle_east }}},
-		}},
+-- engine.assets.models["citizen.head"] = {
+--     sheet = sheet,
+--     type = "sprite",
+--     ppu=1,
+-- 	animations = {
+-- 		{ name = "idle_s", frames = { 
+-- 			{ duration = dt, quads = {{ id = s.citizen_head_idle_south1 }}},
+-- 			{ duration = dt, quads = {{ id = s.citizen_head_idle_south2 }}},
+-- 			{ duration = dt, quads = {{ id = s.citizen_head_idle_south1 }}},
+-- 			{ duration = dt, quads = {{ id = s.citizen_head_idle_south2, flipx=true }}}
+-- 		}},
+-- 		{ name = "idle_e", frames = { 
+-- 			{ duration = dt, quads = {{ id = s.citizen_head_idle_south2 }}},
+-- 			{ duration = dt, quads = {{ id = s.citizen_head_idle_east }}},
+-- 			{ duration = dt, quads = {{ id = s.citizen_head_idle_south2 }}},
+-- 			{ duration = dt, quads = {{ id = s.citizen_head_idle_south1 }}}
+-- 		}},
+-- 		{ name = "talk", frames = { 
+-- 			{ duration = dt, quads = {{ id = s.citizen_head_talk_1 }}},
+-- 			{ duration = dt, quads = {{ id = s.citizen_head_talk_2 }}},
+-- 			{ duration = dt, quads = {{ id = s.citizen_head_idle_east }}},
+-- 		}},
 
-	}
-}
+-- 	}
+-- }
+
+local citizen_head = {0, 26, 0}
+local citizen_head_1 = {-2, 26, 0}
 
 engine.assets.models["citizen"] = {
-    type = "model",
-	components = {
-		{ name="body", mesh="citizen.body"},
-		{ name="head", mesh="citizen.head"},
-	},
+	sheet = sheet,
+	type = "sprite",
+	ppu=1,
 	animations = {
-		{ name = "idle_s", anims = { {name="body", anim="idle_s"}, {name="head", anim="idle_s", pos={0,25,0} }}},
-		{ name = "idle_e", anims = { {name="body", anim="idle_e"}, {name="head", anim="idle_e", pos={-1,25,0} }}},
-		{ name = "talk_start", anims = { {name="head", anim="talk", pos ={-1,25,0} }}},
-		{ name = "talk_end", anims = { {name="head", anim="idle_e", pos ={-1,25,0} }}},
-		{ name = "open_jacket", anims = { { name="body", anim="open_jacket" }}},
-		{ name = "rollmap", anims = { { name="body", anim="rollmap" }}}
+		{ 
+			name = "idle_s",
+			frames = {
+				{ duration = dt, quads = { {id=s.citizen_body_idle_south}, {id = s.citizen_head_idle_south1, pos = citizen_head}}},
+				{ duration = dt, quads = { {id=s.citizen_body_idle_south}, {id = s.citizen_head_idle_south2, pos = citizen_head}}},
+				{ duration = dt, quads = { {id=s.citizen_body_idle_south}, {id = s.citizen_head_idle_south1, pos = citizen_head}}},
+				{ duration = dt, quads = { {id=s.citizen_body_idle_south}, {id = s.citizen_head_idle_south2, flipx=true, pos = citizen_head}}},
+			}
+		},
+		{
+			name = "idle_e",
+			frames = {
+				{ duration = dt, quads = { {id=s.citizen_body_idle_east}, {id = s.citizen_head_idle_south2, pos = citizen_head_1}}},
+				{ duration = dt, quads = { {id=s.citizen_body_idle_east}, {id = s.citizen_head_idle_east, pos = citizen_head_1}}},
+				{ duration = dt, quads = { {id=s.citizen_body_idle_east}, {id = s.citizen_head_idle_south2, pos = citizen_head_1}}},
+				{ duration = dt, quads = { {id=s.citizen_body_idle_east}, {id = s.citizen_head_idle_south1, pos = citizen_head_1}}},
+			}
+		},
+		{
+			name = "idle_e_1",
+			frames = {
+				{ duration = dt, quads = { {id=s.citizen_open_jacket_4}, {id = s.citizen_head_idle_south2, pos = citizen_head_1}}},
+				{ duration = dt, quads = { {id=s.citizen_open_jacket_4}, {id = s.citizen_head_idle_east, pos = citizen_head_1}}},
+				{ duration = dt, quads = { {id=s.citizen_open_jacket_4}, {id = s.citizen_head_idle_south2, pos = citizen_head_1}}},
+				{ duration = dt, quads = { {id=s.citizen_open_jacket_4}, {id = s.citizen_head_idle_south1, pos = citizen_head_1}}},
+			}
+		},
+		{
+			name = "idle_e_2",
+			frames = {
+				{ duration = dt, quads = { {id=s.citizen_rollmap_5}, {id = s.citizen_head_idle_south2, pos = citizen_head_1}}},
+				{ duration = dt, quads = { {id=s.citizen_rollmap_5}, {id = s.citizen_head_idle_east, pos = citizen_head_1}}},
+				{ duration = dt, quads = { {id=s.citizen_rollmap_5}, {id = s.citizen_head_idle_south2, pos = citizen_head_1}}},
+				{ duration = dt, quads = { {id=s.citizen_rollmap_5}, {id = s.citizen_head_idle_south1, pos = citizen_head_1}}},
+			}
+		},
+		{
+			name = "talk_e",
+			frames = {
+				{ duration = dt, quads = { {id=s.citizen_body_idle_east}, {id = s.citizen_head_talk_1, pos = citizen_head_1}}},
+				{ duration = dt, quads = { {id=s.citizen_body_idle_east}, {id = s.citizen_head_talk_2, pos = citizen_head_1}}},
+				{ duration = dt, quads = { {id=s.citizen_body_idle_east}, {id = s.citizen_head_idle_east, pos = citizen_head_1}}},
+			}
+		},
+		{
+			name = "talk_e_1",
+			frames = {
+				{ duration = dt, quads = { {id=s.citizen_open_jacket_4}, {id = s.citizen_head_talk_1, pos = citizen_head_1}}},
+				{ duration = dt, quads = { {id=s.citizen_open_jacket_4}, {id = s.citizen_head_talk_2, pos = citizen_head_1}}},
+				{ duration = dt, quads = { {id=s.citizen_open_jacket_4}, {id = s.citizen_head_idle_east, pos = citizen_head_1}}},
+			}
+		},	
+		{
+			name = "talk_e_2",
+			frames = {
+				{ duration = dt, quads = { {id=s.citizen_rollmap_5}, {id = s.citizen_head_talk_1, pos = citizen_head_1}}},
+				{ duration = dt, quads = { {id=s.citizen_rollmap_5}, {id = s.citizen_head_talk_2, pos = citizen_head_1}}},
+				{ duration = dt, quads = { {id=s.citizen_rollmap_5}, {id = s.citizen_head_idle_east, pos = citizen_head_1}}},
+			}
+		},	
+		{
+			name="open_jacket",
+			loop = false,
+			frames = {
+				{ duration = dt, quads = { {id=s.citizen_body_idle_east}, {id = s.citizen_head_idle_east, pos = citizen_head_1}}},				
+				{ duration = dt, quads = { {id=s.citizen_open_jacket_1}, {id = s.citizen_head_idle_east, pos = citizen_head_1}}},
+				{ duration = dt, quads = { {id=s.citizen_open_jacket_2}, {id = s.citizen_head_idle_east, pos = citizen_head_1}}},
+				{ duration = dt, quads = { {id=s.citizen_open_jacket_3}, {id = s.citizen_head_idle_east, pos = citizen_head_1}}},
+				{ duration = dt, quads = { {id=s.citizen_open_jacket_4}, {id = s.citizen_head_idle_east, pos = citizen_head_1}}},
+			}
+		},
+		{
+			name="rollmap",
+			loop = false,
+			frames = {
+				{ duration = dt, quads = { {id=s.citizen_body_idle_east}, {id = s.citizen_head_idle_east, pos = citizen_head_1}}},				
+				{ duration = dt, quads = { {id=s.citizen_rollmap_1}, {id = s.citizen_head_idle_east, pos = citizen_head_1}}},
+				{ duration = dt, quads = { {id=s.citizen_rollmap_2}, {id = s.citizen_head_idle_east, pos = citizen_head_1}}},
+				{ duration = dt, quads = { {id=s.citizen_rollmap_3}, {id = s.citizen_head_idle_east, pos = citizen_head_1}}},
+				{ duration = dt, quads = { {id=s.citizen_rollmap_4}, {id = s.citizen_head_idle_east, pos = citizen_head_1}}},
+				{ duration = dt, quads = { {id=s.citizen_rollmap_5}, {id = s.citizen_head_idle_east, pos = citizen_head_1}}},
+			}
+		}
 
 	}
 }
@@ -633,25 +711,92 @@ engine.assets.models["lmf3.head"] = {
 	}
 }
 
-engine.assets.models["lmf3"] = {
-    type = "model",
-	components = {
-		{ name="body", mesh="lmf3.body"},
-		{ name="head", mesh="lmf3.head"},
-	},
+local lmf3_head = {-3,34,0}
+local lmf3_head_1 = {-4,34,0}
+engine.assets.models["low_moral_fiber_3"] = {
+	sheet = sheet,
+	type = "sprite",
+	ppu = 1,
 	animations = {
-		{ name = "idle_e", anims = { {name="body", anim="idle_e"}, {name="head", anim="idle_e", pos={-3,34,0} }}},
-		{ name = "idle_s", anims = { {name="body", anim="idle_e"}, {name="head", anim="idle_s", pos={-4,34,0} }}},
-		{ name = "talk_s", anims = { {name="body", anim="idle_e"}, {name="head", anim="talk_s", pos={-4,34,0} }}},
-		{ name = "talk_e", anims = { {name="body", anim="idle_e"}, {name="head", anim="talk_e", pos={-4,34,0} }}},
-		{ name = "punch", loop = false, anims = { {name="body", anim="punch" }, {name="head", anim="talk_s", pos ={-4,34,0} }}},
-		{ name = "h_talk_s", anims = { {name="head", anim="talk_s", pos={-4,34,0} }}},
-		{ name = "h_talk_e", anims = { {name="head", anim="talk_e", pos={-4,34,0} }}},		-- { name = "talk_start", anims = { {name="head", anim="talk", pos ={-1,25,0} }}},
-		-- { name = "talk_end", anims = { {name="head", anim="idle_e", pos ={-1,25,0} }}},
-		{ name = "open_jacket", loop = false, anims = { { name="body", anim="open_jacket" }}},
-		-- { name = "rollmap", anims = { { name="body", anim="rollmap" }}}
+		{
+			name="idle_e",
+			frames = {
+				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_idle}, {id=s.low_moral_fiber_3_head_idle_e, pos=lmf3_head}}}
+
+			}
+		},
+		{
+			name="idle_s",
+			frames = {
+				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_idle}, {id=s.low_moral_fiber_3_head_idle_s, pos=lmf3_head_1}}}
+
+			}
+		},
+		{
+			name="talk_e",
+			frames = {
+				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_idle}, {id=s.low_moral_fiber_3_head_talk_e_1, pos=lmf3_head}}},
+				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_idle}, {id=s.low_moral_fiber_3_head_talk_e_2, pos=lmf3_head}}},
+				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_idle}, {id=s.low_moral_fiber_3_head_talk_e_3, pos=lmf3_head}}},
+			}
+		},
+		{
+			name="talk_e_1",
+			frames = {
+				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_open_jacket_2}, {id=s.low_moral_fiber_3_head_talk_e_1, pos=lmf3_head}}},
+				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_open_jacket_2}, {id=s.low_moral_fiber_3_head_talk_e_2, pos=lmf3_head}}},
+				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_open_jacket_2}, {id=s.low_moral_fiber_3_head_talk_e_3, pos=lmf3_head}}},
+			}
+		},
+		{
+			name="talk_s",
+			frames = {
+				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_idle}, {id=s.low_moral_fiber_3_head_idle_s, pos=lmf3_head_1}}},
+				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_idle}, {id=s.low_moral_fiber_3_head_talk_s_1, pos=lmf3_head_1}}}
+
+			}
+		},
+		{
+			name ="punch",
+			loop = false,
+			frames = {
+				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_idle}, {id=s.low_moral_fiber_3_head_idle_s, pos=lmf3_head_1}}},
+				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_punch_1}, {id=s.low_moral_fiber_3_head_idle_s, pos=lmf3_head_1}}},
+				{ duration = 2*dt, quads = { {id=s.low_moral_fiber_3_body_punch_2}, {id=s.low_moral_fiber_3_head_idle_s, pos=lmf3_head_1}}},
+				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_punch_3}, {id=s.low_moral_fiber_3_head_idle_s, pos=lmf3_head_1}}}
+			}
+		},
+		{
+			name="open_jacket",
+			loop = false,
+			frames = {
+				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_idle}, {id=s.low_moral_fiber_3_head_idle_e, pos=lmf3_head}}},
+				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_open_jacket_1}, {id=s.low_moral_fiber_3_head_idle_e, pos=lmf3_head}}},
+				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_open_jacket_2}, {id=s.low_moral_fiber_3_head_idle_e, pos=lmf3_head}}}
+			}			
+
+		}
 
 	}
+
+ --    type = "model",
+	-- components = {
+	-- 	{ name="body", mesh="lmf3.body"},
+	-- 	{ name="head", mesh="lmf3.head"},
+	-- },
+	-- animations = {
+	-- 	{ name = "idle_e", anims = { {name="body", anim="idle_e"}, {name="head", anim="idle_e", pos={-3,34,0} }}},
+	-- 	{ name = "idle_s", anims = { {name="body", anim="idle_e"}, {name="head", anim="idle_s", pos={-4,34,0} }}},
+	-- 	{ name = "talk_s", anims = { {name="body", anim="idle_e"}, {name="head", anim="talk_s", pos={-4,34,0} }}},
+	-- 	{ name = "talk_e", anims = { {name="body", anim="idle_e"}, {name="head", anim="talk_e", pos={-4,34,0} }}},
+	-- 	{ name = "punch", loop = false, anims = { {name="body", anim="punch" }, {name="head", anim="talk_s", pos ={-4,34,0} }}},
+	-- 	{ name = "h_talk_s", anims = { {name="head", anim="talk_s", pos={-4,34,0} }}},
+	-- 	{ name = "h_talk_e", anims = { {name="head", anim="talk_e", pos={-4,34,0} }}},		-- { name = "talk_start", anims = { {name="head", anim="talk", pos ={-1,25,0} }}},
+	-- 	-- { name = "talk_end", anims = { {name="head", anim="idle_e", pos ={-1,25,0} }}},
+	-- 	{ name = "open_jacket", loop = false, anims = { { name="body", anim="open_jacket" }}},
+	-- 	-- { name = "rollmap", anims = { { name="body", anim="rollmap" }}}
+
+	-- }
 }
 
 

@@ -39,7 +39,7 @@ function scumm.factory.basic_room (args)
 			[1] = function() 
 				engine.state.scumm.actionInfo.verb = engine.config.default_verb
 				--scumm.ui.updateVerb() 
-				--scumm.ui.refresh_inventory()
+				scumm.ui.refresh_inventory()
 			end
 		},
 		engines = {
@@ -76,54 +76,79 @@ function scumm.factory.basic_room (args)
 					bounds = {0, 0, room_width, room_height},
 					viewport = {0, engine.config.ui.height, camWidth, camHeight}
 				},
-				children = {
-					-- scumm.factory.object {
-					-- 	id="guybrush", 
-					-- 	pos={startPos.pos[1], startPos.pos[2], 0}, 
-					-- 	--tag="player", 
-					-- 	dir = startPos.dir,
-					-- 	follow = (room_width > 320 and enableScroll),
-					-- 	collide = args.collide
-					-- }
-				}
-					-- factory.player.create { 
-					-- 	pos= startPos.pos, 
-					-- 	model="guybrush", 
-					-- 	facing = startPos.facing, 
-					-- 	scroll = (room_width > 320 and enableScroll),
-					-- 	depth = args.depth,
-					-- 	scale = args.scale,
-					-- 	collide = args.collide
-					-- }
-				
+				children = {}
 			},
 			{
 			 	tag = "ui",
-			 	camera = {
-			 		tag = "uicam",
-			 		type="ortho",
-			 		size = {camWidth, engine.config.ui.height},
-			 		bounds = {0, 0, camWidth, engine.config.ui.height},
-			 		viewport = {0, 0, camWidth, engine.config.ui.height}
-			 	},
+			 	-- camera = {
+			 	-- 	tag = "uicam",
+			 	-- 	type="ortho",
+			 	-- 	size = {camWidth, engine.config.ui.height},
+			 	-- 	bounds = {0, 0, camWidth, engine.config.ui.height},
+			 	-- 	viewport = {0, 0, camWidth, engine.config.ui.height}
+			 	-- },
 			 	children = {
 			 		{
 			 			tag = "mainui",
 			 			pos = {0,0,0},
 			 			children = {
 			 				{
-			 			    	tag = "currentaction",
-			 			    	pos={160,48,0},
-			 					components = {
-			 			    		{ 
-										type="text", 
-										id = engine.config.verbs[engine.config.default_verb].text, 
-										font = engine.config.ui.font, 
-										align = "bottom", 
-										color = engine.config.ui.currentaction_color
-									}
-			 					}
-			 			    },
+			 					tag = "verbs",
+							 	camera = {
+							 		tag = "uicam",
+							 		type="ortho",
+							 		size = {camWidth, engine.config.ui.height},
+							 		bounds = {0, 0, camWidth, engine.config.ui.height},
+							 		viewport = {0, 0, camWidth, engine.config.ui.height}
+							 	},
+							 	children = {
+							 		{
+					 			    	tag = "currentaction",
+					 			    	pos={160,48,0},
+					 					components = {
+					 			    		{ 
+												type="text", 
+												id = engine.config.verbs[engine.config.default_verb].text, 
+												font = engine.config.ui.font, 
+												align = "bottom", 
+												color = engine.config.ui.currentaction_color
+											}
+					 					}
+					 				}							 		
+							 	}
+			 				},
+			 				{
+								pos = {0,0,0},
+								children =  {
+			 						{
+					 					type = "textview", 
+					 					tag="inventory",
+					 					pos = {150, 0, 0},
+					 					size = {170, 48},
+					 					font_size = 8,
+					 					lines = 6,
+					 					deltax = 26,
+					 					factory = scumm.factory.inventorybutton
+					   				},
+								}
+							}
+			 			}
+			 		},
+			 		{
+						pos  = {0,0,0},
+						children = {
+							{
+								tag = "dialogueui",
+								type = "textview", 
+								pos = {0, 0},
+								size = {320, 56},
+								font_size = 8,
+								lines = 6,
+								deltax = 26,
+								factory = scumm.factory.dialoguebutton
+							}
+						}
+			 		}			 		
 			 			 --    {
 			 				-- 	pos = {320,0,0},
 			 				-- 	components = {
@@ -143,35 +168,11 @@ function scumm.factory.basic_room (args)
 			 				-- scumm.factory.verbbutton {pos={100, 32}, verb = config.verbs.look},
 			 				-- scumm.factory.verbbutton {pos={100, 24}, verb = config.verbs.turnon},
 			 				-- scumm.factory.verbbutton {pos={100, 16}, verb = config.verbs.turnoff},
-			 				-- {
-			 				-- 	type = "textview", 
-			 				-- 	tag="inventory",
-			 				-- 	pos = {150, 0},
-			 				-- 	size = {170, 48},
-			 				-- 	font_size = 8,
-			 				-- 	lines = 6,
-			 				-- 	deltax = 26,
-			 				-- 	factory = scumm.factory.inventorybutton
-			 				-- }
-						}
-					},
-					{
-						pos  = {0,0,0},
-						children = {
-							{
-								tag = "dialogueui",
-								type = "textview", 
-								pos = {0, 0},
-								size = {320, 56},
-								font_size = 8,
-								lines = 6,
-								deltax = 26,
-								factory = scumm.factory.dialoguebutton
-							}
-						}
-			 		}
+
+
 				}
-			}
+			},
+
 		}
 	}
 
@@ -207,7 +208,7 @@ function scumm.factory.basic_room (args)
 	--end)
 	local refs = {
 		main = p.scene[1].children,
-		ui = p.scene[2].children[1].children
+		ui = p.scene[2].children[1].children[1].children
 	}
 
 	-- add the verbs

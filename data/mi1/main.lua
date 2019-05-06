@@ -34,7 +34,7 @@ engine = {
 }
 
 require("scumm")
-
+	engine.state.scumm.inventory["kitchen.fish"] = 1
 -- the verbs for the game. You might have multiple sets here! Watch out
 engine.config.verbs = {
  	open = { code="open", text = strings.ui.open, objects = 1 },

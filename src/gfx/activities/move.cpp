@@ -10,7 +10,17 @@ MoveTo::MoveTo(glm::vec2 pos, float speed, bool relative, bool immediate) : Targ
 
 }
 
+MoveToScaled::MoveToScaled(glm::vec2 pos, float speed, bool relative, bool immediate) :
+        MoveTo(pos,speed,relative,immediate)
+{
 
+}
+
+MoveToScaled::MoveToScaled(int id, glm::vec2 pos, float speed, bool relative, bool immediate)
+        : MoveTo(id,pos,speed,relative,immediate)
+{
+
+}
 void MoveTo::Reset() {
     Activity::Reset();
     m_lengthToCover = 0.0f;
@@ -41,9 +51,9 @@ void MoveTo::Start() {
         if (m_lengthToCover == 0) {
             SetComplete();
         } else {
-            glm::vec2 nd = glm::normalize(displacement);
-            m_velocity = nd * m_speed;
-            m_accelerationVector = nd * m_acceleration;
+            m_unitDisplacement = glm::normalize(displacement);
+            m_velocity = m_unitDisplacement * m_speed;
+            m_accelerationVector = m_unitDisplacement * m_acceleration;
         }
     }
 }
@@ -61,6 +71,14 @@ void MoveTo::Run (float dt) {
     else {
         m_entity->MoveOrigin(delta);
     }
+
+}
+
+void MoveToScaled::Run(float dt) {
+    // simply update velocity at each iteration
+    // scale 1 = full speed
+    m_velocity = m_unitDisplacement * m_speed * m_entity->GetScale();
+    MoveTo::Run(dt);
 
 }
 

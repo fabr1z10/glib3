@@ -1,3 +1,15 @@
+
+engine.items["village2.walkarea"] = scumm.factory.walkarea {
+	shape = { type = "poly", outline = {0, 24, 123, 63, 199, 63, 299, 30, 377, 30, 385, 35, 454, 35, 470, 0, 0}},
+	scale = { type="linear_y", values= {0, 0.8, 144, 0.1}},
+	priority = 0,
+	depth = { type="linear_y", values= {0, 1, 144, 0} },
+	scale = { type="patchwise", rects = {
+    		{ pos = {0, 0}, size={480, 30}, type="constant", value = 1},
+    		{ pos = {0, 30}, size={480, 104}, type="linear_y", values = {30, 1, 59, 0.35}},    		
+    	}
+	}	
+}
 -- generally, an item is a blueprint for an object
 -- * it can have graphics attached. To do so, model needs to be specified
 engine.items["village2.archway_to_village1"] = {
@@ -48,7 +60,7 @@ engine.items["village2.lmf3"] = {
 	pos = {56, 23, 0},
 	text_color = {85, 255, 85, 255},
 	text_offset = {0,60},
-	model = "lmf3",
+	model = "low_moral_fiber_3",
 	anim= "idle_e",
 	applydepth = true,
 }
@@ -99,10 +111,10 @@ engine.items["village2.citizen"] = {
 				table.insert(lines, dp[28])
 			end
 			local s = {
-				{ type = action.disable_controls },
-				{ type = action.animate, args = { actor="village2.citizen", anim="idle_e" } },
-				{ type = action.say, args = {actor="village2.citizen", lines = lines, animstart="talk_start", animend="talk_end" }},
-				{ type = action.start_dialogue, args = {dialogue="citizen"}}
+				{ type = scumm.action.disable_controls },
+				{ type = action.animate, args = { tag="village2.citizen", anim="idle_e" } },
+				{ type = scumm.action.say, args = {actor="village2.citizen", lines = lines, animstart="talk_e", animend="idle_e" }},
+				{ type = scumm.action.start_dialogue, args = {dialogue="citizen"}}
 			}
 			return s
 		end
