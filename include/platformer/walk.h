@@ -19,8 +19,14 @@ class InputMethod;
 // turn -- when button is pressed and horizontal velocity has opposite direction than button
 class Walk : public State2 {
 public:
-    Walk(float speed, float acceleration, float jumpVelocity,
-        const std::string& idleAnim, const std::string& walkAnim, const std::string& turnAnim, bool flip) : State2(),
+    Walk(
+        float speed,
+        float acceleration,
+        float jumpVelocity,
+        const std::string& idleAnim,
+        const std::string& walkAnim,
+        const std::string& turnAnim,
+        bool flip) : State2(),
     m_speed(speed), m_acceleration(acceleration), m_velocitySmoothing(0.0f), m_jumpVelocity(jumpVelocity),
     m_anims{idleAnim, walkAnim, turnAnim}, m_prevAnimFlag(-1), m_colliderId("walk"), m_canDuck(false), m_horizontalFlip(flip) {
     }

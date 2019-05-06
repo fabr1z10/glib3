@@ -71,8 +71,8 @@ void Walk::Run (double dt) {
         return;
     }
 
-    bool left =m_input->isKeyDown(GLFW_KEY_LEFT);
-    bool right =m_input->isKeyDown(GLFW_KEY_RIGHT);
+    bool left = m_input->isKeyDown(GLFW_KEY_LEFT);
+    bool right = m_input->isKeyDown(GLFW_KEY_RIGHT);
 
     m_dynamics->m_velocity.y = m_dynamics->m_gravity * static_cast<float>(dt);
     float targetVelocityX = 0.0f;

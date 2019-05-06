@@ -1,4 +1,6 @@
-spritesheets["smb"] = {
+local models = engine.assets.models
+
+local s = {
 	mario_idle = {x=0, y=0, width=16, height=16, anchor={8,0} },
 	mario_idle_big = {x=80, y=16, width=16, height=32, anchor={8,0} },
 	mario_walk_1 = {x=16, y=0, width=16, height=16, anchor={8,0} },
@@ -23,3 +25,52 @@ spritesheets["smb"] = {
 
 
 }
+local dt=0.1
+models["mario"] = {
+    sheet = "smb1.png",
+    type = "sprite",
+    ppu=1,
+	animations = {
+		{ name = "idle", frames = { {duration = dt, quads = {{ id = s.mario_idle }}}}},
+		{ name = "walk", frames = {
+			{ duration = dt, quads = {{ id = s.mario_walk_1 } }},
+			{ duration = dt, quads = {{ id = s.mario_walk_2 } }},
+			{ duration = dt, quads = {{ id = s.mario_walk_3 } }},
+		}},
+		{ name = "jump", frames = { { duration = dt, quads = {{ id = s.mario_jump }}}}}
+	}
+}
+
+-- models["supermario"] = {
+
+	
+-- }
+-- 		{
+-- 			name = "large.nofire.idle",
+-- 			frames = {
+-- 				{ duration = dt, quads = {{ id = s.mario_idle_big }}}
+-- 			}
+-- 		},
+-- 		{
+-- 			name = "large.nofire.walk",
+-- 			frames = {
+-- 				{ duration = dt, quads = {{ id = s.mario_walk_big_1 } }},
+-- 				{ duration = dt, quads = {{ id = s.mario_walk_big_2 } }},
+-- 				{ duration = dt, quads = {{ id = s.mario_walk_big_3 } }},
+-- 			}
+-- 		},
+-- 		{
+-- 			name = "large.nofire.jump",
+-- 			frames = {
+-- 				{ duration = dt, quads = {{ id = s.mario_jump_big }}},
+-- 			}
+-- 		},
+-- 		{
+-- 			name = "large.nofire.duck",
+-- 			frames = {
+-- 				{ duration = dt, quads = {{ id = s.mario_duck_big }}},
+-- 			}
+-- 		},
+
+-- 	}
+-- }

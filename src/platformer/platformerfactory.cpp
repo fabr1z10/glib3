@@ -35,82 +35,82 @@ void PlatformerFactory::extendLua() {
 }
 
 
-std::shared_ptr<Entity> PlatformerFactory::Create() {
-
-    // get current room
-    LuaTable vars (LuaWrapper::GetGlobal("variables"));
-    std::string room = vars.Get<std::string>("_room");
-
-    std::cout << "=================================\n";
-    std::cout << "Loading room: "<< room << std::endl;
-    std::cout << "=================================\n";
-    LuaWrapper::Load(Engine::get().GetDirectory() + "rooms/" + room + ".lua");
-
-    // Create the local assets
-    luabridge::LuaRef roomRef = luabridge::getGlobal(LuaWrapper::L, "room");
-    LuaTable roomTable(roomRef);
-
-    if (roomTable.HasKey("init")) {
-        luabridge::LuaRef r1 = roomTable.Get<luabridge::LuaRef>("init");
-        r1();
-    }
-
-    if (roomTable.HasKey("engines")) {
-        luabridge::LuaRef engines = roomTable.Get<luabridge::LuaRef>("engines");
-        for (int i = 0; i < engines.length(); ++i) {
-            luabridge::LuaRef e = engines[i+1];
-            auto runner = makeRunner(e);
-            Engine::get().AddRunner(runner);
-        }
-    }
-
-
-    // load room-specific assets
-//    auto roomAssets = roomTable.GetVector<std::string>("assets");
-//    for (auto& a : roomAssets) {
-//        // load the asset
-//        LoadModel(a);
+//std::shared_ptr<Entity> PlatformerFactory::Create() {
+//
+//    // get current room
+//    LuaTable vars (LuaWrapper::GetGlobal("variables"));
+//    std::string room = vars.Get<std::string>("_room");
+//
+//    std::cout << "=================================\n";
+//    std::cout << "Loading room: "<< room << std::endl;
+//    std::cout << "=================================\n";
+//    LuaWrapper::Load(Engine::get().GetDirectory() + "rooms/" + room + ".lua");
+//
+//    // Create the local assets
+//    luabridge::LuaRef roomRef = luabridge::getGlobal(LuaWrapper::L, "room");
+//    LuaTable roomTable(roomRef);
+//
+//    if (roomTable.HasKey("init")) {
+//        luabridge::LuaRef r1 = roomTable.Get<luabridge::LuaRef>("init");
+//        r1();
 //    }
-
-    // read the scene tree
-    auto rootNode = std::make_shared<Entity>();
-    rootNode->SetTag("_root");
-    luabridge::LuaRef rscene = roomTable.Get<luabridge::LuaRef>("scene");
-    for (int i = 0; i < rscene.length(); ++i) {
-        luabridge::LuaRef rnode = rscene[i+1];
-        auto node  = makeEntity(rnode);
-        rootNode->AddChild(node);
-    }
-
-
-
-    // launch the start script
-    if (roomTable.HasKey("start")) {
-        luabridge::LuaRef r1 = roomTable.Get<luabridge::LuaRef>("start");
-        r1();
-    }
-
-    // add the dynamic world builder
-    auto dynBuilder = std::make_shared<DynamicWorldBuilder>(256,256);
-    Camera* cam = Engine::get().GetRef<Camera>("maincam");
-    if (roomTable.HasKey("dynamic")) {
-        luabridge::LuaRef rdyn = roomTable.Get<luabridge::LuaRef>("dynamic");
-        for (int i = 0; i < rdyn.length(); ++i) {
-            
-            luabridge::LuaRef rnode = rdyn[i+1];
-            std::string parent = rnode["parent"].cast<std::string>();
-            Entity* p = Engine::get().GetRef<Entity>(parent);
-            luabridge::LuaRef rChildren = rnode["children"];
-            for (int j = 0; j < rChildren.length(); j++) {
-                luabridge::LuaRef rChild = rChildren[j+1];
-                auto node  = makeEntity(rChild);
-                dynBuilder->AddItem(p, node);
-            }
-        }
-    }
-    dynBuilder->SetCamera(cam);
-    Engine::get().AddRunner(dynBuilder);
-
-    return rootNode;
-
-}
+//
+//    if (roomTable.HasKey("engines")) {
+//        luabridge::LuaRef engines = roomTable.Get<luabridge::LuaRef>("engines");
+//        for (int i = 0; i < engines.length(); ++i) {
+//            luabridge::LuaRef e = engines[i+1];
+//            auto runner = makeRunner(e);
+//            Engine::get().AddRunner(runner);
+//        }
+//    }
+//
+//
+//    // load room-specific assets
+////    auto roomAssets = roomTable.GetVector<std::string>("assets");
+////    for (auto& a : roomAssets) {
+////        // load the asset
+////        LoadModel(a);
+////    }
+//
+//    // read the scene tree
+//    auto rootNode = std::make_shared<Entity>();
+//    rootNode->SetTag("_root");
+//    luabridge::LuaRef rscene = roomTable.Get<luabridge::LuaRef>("scene");
+//    for (int i = 0; i < rscene.length(); ++i) {
+//        luabridge::LuaRef rnode = rscene[i+1];
+//        auto node  = makeEntity(rnode);
+//        rootNode->AddChild(node);
+//    }
+//
+//
+//
+//    // launch the start script
+//    if (roomTable.HasKey("start")) {
+//        luabridge::LuaRef r1 = roomTable.Get<luabridge::LuaRef>("start");
+//        r1();
+//    }
+//
+//    // add the dynamic world builder
+//    auto dynBuilder = std::make_shared<DynamicWorldBuilder>(256,256);
+//    auto cam = Ref::Get<Camera>("maincam");
+//    if (roomTable.HasKey("dynamic")) {
+//        luabridge::LuaRef rdyn = roomTable.Get<luabridge::LuaRef>("dynamic");
+//        for (int i = 0; i < rdyn.length(); ++i) {
+//
+//            luabridge::LuaRef rnode = rdyn[i+1];
+//            std::string parent = rnode["parent"].cast<std::string>();
+//            auto p = Ref::Get<Entity>(parent);
+//            luabridge::LuaRef rChildren = rnode["children"];
+//            for (int j = 0; j < rChildren.length(); j++) {
+//                luabridge::LuaRef rChild = rChildren[j+1];
+//                auto node  = makeEntity(rChild);
+//                dynBuilder->AddItem(p, node);
+//            }
+//        }
+//    }
+//    dynBuilder->SetCamera(cam.get());
+//    Engine::get().AddRunner(dynBuilder);
+//
+//    return rootNode;
+//
+//}

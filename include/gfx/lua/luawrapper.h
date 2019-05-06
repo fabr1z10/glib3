@@ -37,7 +37,7 @@ public:
             GLIB_FAIL("Unknown path: " << pathSoFar.str());
         }
         for (size_t i = 1; i < path.size(); ++i) {
-            pathSoFar << "->" << path[i];
+            pathSoFar << "." << path[i];
 
             luabridge::LuaRef ref2 = ref[path[i].c_str()];
             ref = ref2;

@@ -20,6 +20,10 @@ struct DynamicWorldItem {
     std::shared_ptr<Entity> m_parent;
 };
 
+// The world is divided into rectangular blocks of specified width and height
+// When the player is at (0, 0) only the block (0, 0) is created
+// When the player moves to (x, y)
+
 class DynamicWorldBuilder : public Runner {
 public:
     DynamicWorldBuilder(float cellWidth, float cellHeight) : Runner(), m_width(cellWidth), m_height(cellHeight), m_x(-1), m_y(-1) {}

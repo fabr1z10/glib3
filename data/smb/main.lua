@@ -1,27 +1,28 @@
-require ("sprites")
-require ("funcs")
-require ("script")
+package.path = '/home/fabrizio/glib3/lualib/?.lua;' .. package.path
 
 engine = {
     device_size = { 256, 256 },
     window_size = { 256, 256 },
-	tilesize = 16,
+    lang = "eng",
+	--tilesize = 16,
     title = "Super Mario Bros",
+    assets = {
+    	fonts = {
+	    	diag = { file  = "./fonts/arial.ttf" }
+		},
+		models = {}
+    },
+   	start_room = "world1_1",
+    global_assets = {
+		fonts = { "diag" }
+	},
 	shaders = { "unlit_textured", "unlit_color", "text" }
 
 }
-
-fonts = {
-    diag = { file  = "./fonts/arial.ttf" }
-}
-
-global_assets = {
-	fonts = { "diag" }
-}
-
+require("platformer")
 
 variables = {
-    _room = "world1_1",
+    --_room = "world1_1",
 	jump_height = 80,
 	time_to_jump_apex = 0.5,
 	tags = {
@@ -55,5 +56,4 @@ require("factories/bricks")
 require("factories/bonusbrick")
 require("factories/foe")
 require("factories/actions")
-require("sprites/smbs")
-require("sprites/smbd")
+
