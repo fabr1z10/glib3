@@ -69,21 +69,23 @@ room =  {
 						components = {
 							--{ type="gfx", model="mario", anim="idle" },
 							{ type="controller2d", maxclimbangle = 80, maxdescendangle = 80, horizontalrays=4, verticalrays=4 },
-							-- { type="dynamics2d", jumpheight = 80, timetojumpapex = 0.5 },
-
+							{ type="dynamics2d", gravity = 10 },
 							{ type="multicollider", tag=1, flag=1, mask =2, initialshape="small", shapes = {
 							 	{ name ="small", type="rect", width=14, height=16, offset={-8,0}},
 							 	{ name ="big", type="rect", width=14, height=32, offset={-8,0}},
 							 	{ name ="duck", type="rect", width=14, height=24, offset={-8,0}}
 							}},
-							-- { type="statemachine", initialstate = "idle",
-							-- 	states = {
+							{ type="statemachine", initialstate = "walk",
+							 	states = {
+							 		{ id = "walk", state = {type="walk4w", speed = 75, acceleration = 0.05, fliph = true }}
 							-- 	 	{ id = "idle", init = { type="luaanim", func = curry21(marioinit, "idle") }, behavior = { type ="idle2d", acceleration = marioAcc }},
 							-- 		{ id = "walk", init = { type="luaanim", func = curry21(marioinit, "walk") }, behavior = { type ="walk2d", acceleration = marioAcc, speed= marioSpeed }},
 							-- 		{ id = "jump", init = { type="luaanim", func = curry21(marioinit, "jump") }, behavior = { type ="jump2d", acceleration = marioAcc, speed= marioSpeed }},
 							-- 		{ id = "duck", init = { type="animcollider", anim= "duck", collider="duck" }, behavior = { type ="idle2d", acceleration = marioAcc, speed= marioSpeed }},
 							-- 		{ id = "nophys", init = { type="luaanim", func = curry21(marioinit2, "idle") } }
-							-- 	},
+								}
+							},
+							{ type ="keyinput" },
 							-- 	keys = {
 							-- 	 	{ current = "idle", key =  262, next="walk" },
 							-- 	 	{ current = "idle", key =  263, next="walk" },

@@ -21,6 +21,7 @@ PlatformerFactory::PlatformerFactory() : SceneFactory() {
 
     m_activityFactory.Add<DropCharactersActFactory>("dropcharacters");
 
+    m_stateFactory.Add<Walk4WayStateFactory>("walk4w");
 }
 
 

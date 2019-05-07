@@ -14,6 +14,9 @@ std::shared_ptr<Component> StateMachine2::clone() const {
 
 
 void StateMachine2::Begin() {
+    for (auto& s : m_states) {
+        s.second->AttachStateMachine(this);
+    }
     SetState(m_initialState);
 }
 

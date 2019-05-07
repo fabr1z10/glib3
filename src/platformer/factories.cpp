@@ -1,6 +1,6 @@
 #include <platformer/factories.h>
 #include <platformer/states/idle2d.h>
-#include <platformer/states/walk2d.h>
+#include <platformer/states/walk4way.h>
 #include <platformer/states/enemywalk2d.h>
 #include <platformer/states/enemybounce2d.h>
 #include <platformer/states/jump2d.h>
@@ -102,3 +102,14 @@ std::shared_ptr<Activity> DropCharactersActFactory::Create(luabridge::LuaRef &re
     glm::vec2 targetPos = table.Get<glm::vec2>("pos");
     return std::make_shared<DropCharacters>(actor, targetPos);
 };
+
+std::shared_ptr<State2> Walk4WayStateFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    float speed = table.Get<float>("speed");
+    float a = table.Get<float>("acceleration");
+    bool fliph = table.Get<bool>("fliph");
+    return std::make_shared<Walk4Way>(speed, a, fliph);
+
+
+
+}

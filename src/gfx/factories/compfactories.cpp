@@ -22,6 +22,7 @@
 #include <gfx/components/info.h>
 #include <gfx/components/light.h>
 #include <gfx/components/raycastcontroller.h>
+#include <gfx/components/statemachine2.h>
 #include <gfx/model3D/model3D.h>
 
 
@@ -224,6 +225,24 @@ std::shared_ptr<Component> MultiColliderComponentFactory::Create(luabridge::LuaR
     auto coll = Ref::Create<MultiCollider>(shapes, tag, flag, mask, initShape);
 
     return coll;
+}
+
+std::shared_ptr<Component> StateMachineCompFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    std::string initialState = table.Get<std::string>("initialstate");
+    auto ptr = Ref::Create<StateMachine2>(initialState);
+    auto factory = Engine::get().GetSceneFactory();
+
+    luabridge::LuaRef statesRef = table.Get<luabridge::LuaRef>("states");
+    for (int i = 0; i < statesRef.length(); ++i) {
+        luabridge::LuaRef stateRef = statesRef[i+1];
+        std::string key = stateRef["id"].cast<std::string>();
+        luabridge::LuaRef stateDef = stateRef["state"];
+        auto state = factory->makeState(stateDef);
+        ptr->AddState(key, state);
+    }
+    return ptr;
+
 }
 
 //std::unique_ptr<Component> StateMachineComponentFactory::Create(luabridge::LuaRef &ref) {

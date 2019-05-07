@@ -12,7 +12,7 @@ class Renderer;
 class Function2D;
 class HotSpot;
 class Runner;
-class State;
+class State2;
 class Activity;
 class IMesh;
 class Model;
@@ -65,6 +65,8 @@ FACTORY(CursorComponentFactory, Component)
 FACTORY(LightComponentFactory, Component)
 FACTORY(KeyboardInputMethodCompFactory, Component)
 FACTORY(PropertiesCompFactory, Component)
+FACTORY(StateMachineCompFactory, Component)
+
 //FACTORY(RaycastControllerComponentFactory, Component)
 
 // Frame handlers
