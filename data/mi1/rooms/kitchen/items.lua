@@ -123,7 +123,7 @@ engine.items["kitchen.fish"] = {
 				}
 			end
 		end,
-		look = { type = action.say, args = {actor="guybrush", lines = {strings.kitchen[3] }}},
+		look = { type = scumm.action.say, args = {actor="guybrush", lines = {strings.kitchen[3] }}},
 		give = {	
 			["bridge.troll"] = { 
 				{ type = scumm.action.disable_controls, args = nil},
