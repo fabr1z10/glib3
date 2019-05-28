@@ -1,3 +1,10 @@
+engine.items["bridge.walkarea"] = scumm.factory.walkarea {
+	shape = { type = "poly", outline = {0,14,80,21, 201, 55, 229, 55,136, 0,0,0}},
+	priority = 0,
+	depth = { type="linear_y", values= {0, 1, 144, 0} },
+
+}
+
 engine.items["bridge.path"] = {
 	pos = {0, 0, 0},
 	hotspot = {
@@ -30,7 +37,7 @@ engine.items["bridge.troll"] = {
 		talk = function()
 			return {
 				{ type = action.suspend_script, args = { script ="_troll" }},
-				{ type = action.start_dialogue, args = {dialogue="troll"}}
+				{ type = scumm.action.start_dialogue, args = {dialogue="troll"}}
 			}
 		end
 	}

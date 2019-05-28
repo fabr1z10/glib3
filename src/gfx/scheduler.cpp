@@ -1,5 +1,25 @@
 #include <gfx/scheduler.h>
 #include <gfx/error.h>
+#include <iostream>
+
+Scheduler::~Scheduler() {
+    std::cerr << "ciao\n";
+    for (auto& s : m_scripts) {
+        std::cerr << " killing a current script " << s.first << "\n";
+        s.second->Kill();
+        std::cerr << "done.\n";
+    }
+    for (auto& s : m_queuedScripts) {
+        std::cerr << " killing a q script\n";
+        s.second->Kill();
+    }
+    std::cerr << "clearing scripts\n";
+    m_scripts.clear();
+    std::cerr << "done.\n";
+    m_queuedScripts.clear();
+    std::cerr << "scheduler killed\n";
+}
+
 
 void Scheduler::Update(double dt) {
     std::vector<std::string> toRemove;

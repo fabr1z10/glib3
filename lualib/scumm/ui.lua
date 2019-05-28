@@ -4,20 +4,20 @@ local inventory = engine.state.scumm.inventory
 
 -- converts the action info to a string (SCUMM based games)
 function engine.state.scumm.actionInfo:toString ()
-	print(self.verb)
+	--print(self.verb)
 	local verb = engine.config.verbs[self.verb]
     local t = { verb.text }	
     if (self.obj1 ~= nil) then
         --o1 = objects[self.obj1]
-        print ("sticazi " .. self.obj1)
+        -- print ("sticazi " .. self.obj1)
         t[2] = engine.items[self.obj1].hotspot.text
         if (self.obj2 ~= nil) then
             --o2 = objects[self.obj2]
-            t[3] = self.verb.prep
+            t[3] = verb.prep
             t[4] = engine.items[self.obj2].hotspot.text
         else
             if (self.selectSecond == true) then
-               t[3] = self.verb.prep 
+               t[3] = verb.prep 
             end
         end 
     end
@@ -50,9 +50,6 @@ function scumm.ui.changecolor (color, entity)
 end
 
 
-
-
-
 -- the default behavior when you click on an object
 function scumm.ui.runAction ()
     -- mm, no target object here, just ignore the click
@@ -68,6 +65,7 @@ function scumm.ui.runAction ()
 		if (actionInfo.verb == "give") then
         	actionInfo.selectSecond = true
             scumm.ui.updateVerb()
+			print ("oisrjorijf")
             return		
 		end
         a = obj.actions[actionInfo.verb]
@@ -163,7 +161,7 @@ function scumm.ui.runAction ()
 			local IhaveObj1 = inventory[actionInfo.obj1] ~= nil
 			print ("I have " .. actionInfo.obj1 .. " = " .. tostring(IhaveObj1))
 			if (not IhaveObj1) then return nil end
-			local obj2 = items[actionInfo.obj2]
+			local obj2 = engine.items[actionInfo.obj2]
 			local actions = {}
 			table.insert (actions, scumm.action.walk_to_object("player", actionInfo.obj2))
 			local u1 = obj.actions["give"] and obj.actions["give"][actionInfo.obj2]

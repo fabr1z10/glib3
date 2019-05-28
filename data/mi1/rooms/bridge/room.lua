@@ -1,24 +1,32 @@
+local items = engine.items
+
 roomDefinition = {
 	width = 320,
 	height = 144,
 	startTable = {
-		meleemap = { pos = items["bridge.path"].hotspot.walk_to, dir = "east"}
+		meleemap = { walkarea="bridge.walkarea", pos = items["bridge.path"].hotspot.walk_to, dir = "east"}
 	},
+	walkareas = { "bridge.walkarea"},
 	defaultroom = "meleemap",
-	depth = { type="linear_y", values= {0, 1, 144, 0} },	
-	collide=true
+	--depth = { type="linear_y", values= {0, 1, 144, 0} },	
+	collide=true,
+	font_size = 8
 }
 
 room = scumm.factory.basic_room(roomDefinition)
 
-room:add({
-	{ pos = {0, 0, -3}, components = { { type="gfx", image="gfx/bridge.png" }}},
-	--{ pos = {0, 0, 2}, components = { { type="gfx", image="gfx/bridge2.png" }}},
-	scumm.factory.walkarea { shape = { type = "poly", outline = {0,14,80,21, 201, 55, 229, 55,136, 0,0,0}}},
-	scumm.factory.object { id="bridge.path"},
-	
-})
+room:add ( "main",
+	{ 
+		{ pos = {0, 0, -3}, components = { { type="gfx", image="bridge.png" }}},
+		scumm.factory.object { id = "bridge.path" },
+	}
+)
 
+-- room:add ( "bridge.walkarea",
+-- 	{ 
+-- 		scumm.factory.object { id = "bridge.troll" },
+-- 	}
+-- )
 local gotoTroll = function()
 	local d = strings.dialogues.troll
 	local actions = {	
@@ -37,8 +45,9 @@ end
 
 -- additional items to add if troll has not been fed yets
 if (variables.troll_fed == false) then
-	room:add( {scumm.factory.object { id="bridge.troll"}})
-	room:add( {scumm.factory.trap { pos ={95, 0, 0}, tag="troll_sensor", width=10, height = 144, onenter = gotoTroll }})
+	room:add( "bridge.walkarea", {scumm.factory.object { id="bridge.troll"}})
+	room:add( "main", {scumm.factory.trap { pos ={95, 0, 0}, tag="troll_sensor", 
+		shape = {type="rect",width=10, height = 144}, onenter = gotoTroll }})
 end
 
 local troll = function() 
@@ -58,20 +67,20 @@ table.insert(room.initstuff, troll)
 
 
 
--- function room.afterstartup() 
+-- -- function room.afterstartup() 
 	
--- 	for k, v in ipairs(room.initstuff) do
--- 		v()
--- 	end
--- 	if (variables.troll_fed==false) then troll() end
--- 	-- local s = script:new("_troll")
--- 	-- s.actions = {
--- 	-- 	action.say { id=1, actor="bridge.troll", lines = {d[1]}, animstart="talk", animend="idle" },
--- 	-- 	action.delay { id=2, sec=5},
--- 	-- }
--- 	-- s.loop = 1
--- 	-- monkey.play(s)
+-- -- 	for k, v in ipairs(room.initstuff) do
+-- -- 		v()
+-- -- 	end
+-- -- 	if (variables.troll_fed==false) then troll() end
+-- -- 	-- local s = script:new("_troll")
+-- -- 	-- s.actions = {
+-- -- 	-- 	action.say { id=1, actor="bridge.troll", lines = {d[1]}, animstart="talk", animend="idle" },
+-- -- 	-- 	action.delay { id=2, sec=5},
+-- -- 	-- }
+-- -- 	-- s.loop = 1
+-- -- 	-- monkey.play(s)
 
--- end
+-- -- end
 
 

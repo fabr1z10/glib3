@@ -5,7 +5,7 @@ engine.items["guybrush"] = {
 	model = "guybrush",
 	character = {
 		state = "idle",
-		speed = 100
+		speed = 500
 	},
 	text_color = {255, 255, 255, 255},
 	text_offset = {0, 60},

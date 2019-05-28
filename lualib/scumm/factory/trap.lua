@@ -1,4 +1,5 @@
 scumm.factory.trap = function(args) 
+print ("FIJEOIFJWEOIJF")
 	return {
 		pos = args.pos,
 		tag= args.tag,

@@ -31,6 +31,7 @@ struct CollisionInfo {
 class CollisionEngine : public Runner {
 public:
     CollisionEngine (float cellWidth, float cellHeight);
+    ~CollisionEngine() override;
     void Add (Collider*);
     void Remove(Collider*);
     void Clear();

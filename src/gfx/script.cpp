@@ -7,6 +7,12 @@ Script::Script() : m_complete{false}, m_suspended{false}, m_loop{false}, m_loopI
     AddActivity(0, std::unique_ptr<NoOp>(new NoOp));
 }
 
+Script::~Script() {
+    std::cerr << "script: clearing " << m_activities.size() << " acts\n";
+    m_activities.clear();
+    std::cerr << "done.\n";
+}
+
 void Script::Start() {
     // by convention, the script starts from 0
     PushToFrontier(0);

@@ -44,9 +44,12 @@ void Collider::Start() {
 }
 
 Collider::~Collider() {
-    if (m_engine != nullptr) {
+    std::cerr << "clearing collider\n";
+
+    if (Engine::get().isRunning() && m_engine != nullptr) {
         m_engine->Remove(this);
     }
+    std::cerr << "done\n";
 }
 void Collider::SetShape(std::shared_ptr<Shape> shape) {
     m_shape = shape;

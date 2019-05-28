@@ -128,7 +128,7 @@ engine.items["kitchen.fish"] = {
 			["bridge.troll"] = { 
 				{ type = scumm.action.disable_controls, args = nil},
 				{ ref = 1, type = action.suspend_script, args = {script="_troll"}},
-				-- { ref = 1, type = action.remove_object, args = {tag="troll_sensor"}},
+				{ type = action.remove_object, args = {tag="troll_sensor"}},
 				{ ref = 2, type = action.animate, 
 					after={1}, 
 					args ={tag="bridge.troll", anim="pickup_fish", sync = true}},

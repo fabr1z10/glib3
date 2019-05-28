@@ -67,6 +67,7 @@ inline int HotSpot::GetPriority() const {
 class HotSpotManager : public Runner, public MouseListener, public KeyboardListener {
 public:
     HotSpotManager();
+    ~HotSpotManager() override;
     //void Start() override ;
     //void Update (double dt) override ;
     void Init() override;

@@ -43,6 +43,9 @@ HotSpotManager::HotSpotManager() : Runner(), MouseListener(), m_currentlyActiveH
     m_pixelRatio = Engine::get().GetPixelRatio();
 }
 
+HotSpotManager::~HotSpotManager() {
+std::cerr << "wind down the hs manager\n";
+}
 //bool HotSpotManager::IsInViewport(float xScreen, float yScreen, glm::vec4 activeViewport) {
 //    xScreen *= m_pixelRatio;
 //    yScreen *= m_pixelRatio;

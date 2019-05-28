@@ -16,7 +16,7 @@ engine = {
 	global_assets = {
 		fonts = { "ui", "monkey" }
 	},
-	start_room = "lookout",
+	start_room = "village2",
 	lang = "eng",
 	config = {
 	    default_verb = "walk",

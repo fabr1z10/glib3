@@ -6,6 +6,7 @@
 class Turn : public TargetActivity {
 public:
     Turn (char dir) : TargetActivity(), m_dir(dir) {}
+    ~Turn() override { std::cerr << "clearing turn\n"; }
     Turn (int id, char dir) : Turn(dir) {
         SetId(id);
     }

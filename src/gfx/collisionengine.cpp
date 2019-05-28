@@ -2,6 +2,22 @@
 #include <iostream>
 #include <gfx/math/raycast.h>
 
+CollisionEngine::~CollisionEngine() {
+    std::cerr << "Killing the ce\n";
+    m_cells.clear();
+    std::cerr << "qui\n";
+    m_colliderLocations.clear();
+    std::cerr << "qui2\n";
+    m_intersector = nullptr;
+    std::cerr << "qui3\n";
+    m_responseManager = nullptr;
+    m_previouslyCollidingPairs.clear();
+    std::cerr << "qui4\n";
+
+
+
+}
+
 CollisionEngine::CollisionEngine (float cellWidth, float cellHeight) :
         Runner(), m_width{cellWidth}, m_height{cellHeight}, m_coll25d(false), m_eps(false)
 {

@@ -1,26 +1,28 @@
+local items = engine.items
+
 roomDefinition = {
 	width = 800,
 	height = 144,
 	startTable = {
-		village2 = { pos = items["village3.archway"].hotspot.walk_to, dir = "west"},
-		shop = { pos = items["village3.shop_door"].hotspot.walk_to, dir="south"}
+		village2 = { walkarea="village3.walkarea", pos = items["village3.archway"].hotspot.walk_to, dir = "west"},
+		shop = { walkarea = "village3.walkarea", pos = items["village3.shop_door"].hotspot.walk_to, dir="south"}
 	},
+	walkareas = {"village3.walkarea"},
 	defaultroom = "village2",
-	depth = { type="linear_y", values= {0, 1, 144, 0} },
-	scale = { type="constant", value=0.3 }
+	font_size = 8
 }
 
 room = scumm.factory.basic_room  (roomDefinition)
 
-room:add( {
-	{ pos = {0, 0,-3}, components = { { type="gfx", image="gfx/village3_1.png" }}},
-    { pos = {166, 0, 2}, components = {{type="gfx", image="gfx/village3_2.png" }}},
-	scumm.factory.walkarea { 
-		shape = { 
-	        type = "poly", 
-	        outline = {406,49,425,49,436,63,494,63,494,42,594,42,594,71,600,71,638,23,745,23,752,17,770,17,770,10,762,10,775,0,374,0,396,22}
-	    },
-	},
+room:add( "main", {
+	{ pos = {0, 0,-3}, components = { { type="gfx", image="village3_1.png" }}},
+    { pos = {166, 0, 2}, components = {{type="gfx", image="village3_2.png" }}},
+	-- scumm.factory.walkarea { 
+	-- 	shape = { 
+	--         type = "poly", 
+	--         outline = {406,49,425,49,436,63,494,63,494,42,594,42,594,71,600,71,638,23,745,23,752,17,770,17,770,10,762,10,775,0,374,0,396,22}
+	--     },
+	-- },
 	scumm.factory.object { id = "village3.archway" },
 	scumm.factory.object { id = "village3.alley" },
 	scumm.factory.object { id = "village3.shop_door" },

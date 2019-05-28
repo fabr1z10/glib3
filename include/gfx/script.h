@@ -12,6 +12,7 @@
 class Script {
 public:
     Script();
+    ~Script();
     void Run (float);
     void Start();
     void AddActivity(int id, std::shared_ptr<Activity>);

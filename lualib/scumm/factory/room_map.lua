@@ -166,6 +166,7 @@ function scumm.factory.map_room (args)
 				tag="player", 
 				dir = startPos.dir,
 				follow = (room_width > 320 and enableScroll),
+				collide = args.collide
 			}
 		)
 

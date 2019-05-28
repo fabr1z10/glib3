@@ -213,11 +213,14 @@ void Engine::MainLoop() {
             //glfwSwapBuffers(window);
         }
         // remove assets loaded at scene level
-        m_sceneFactory->CleanUp();
-        m_scene = nullptr;
-        m_runners.clear();
-        m_garbage.clear();
         m_running = false;
+
+        m_sceneFactory->CleanUp();
+        std::cerr << "clearing runners";
+        m_runners.clear();
+        std::cerr << "done\n";
+        m_scene = nullptr;
+        m_garbage.clear();
     }
 }
 

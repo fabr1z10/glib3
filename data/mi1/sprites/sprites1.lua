@@ -1,5 +1,6 @@
 local dt = 0.1
 local sheet = "sprites/sprites1.png"
+local layer_dz = 0.001
 
 local s = {
 	arrow_up = {x=499, y=2, width = 12, height=20 },
@@ -169,7 +170,7 @@ local s = {
 	troll_fish_4 = {x=459, y=232, width=8, height=10, anchor={4,0}},
 	troll_body_front = {x=283,y=110,width=41,height=33, anchor={19,0}},
 	troll_body_front_2 = {x=138,y=239,width=29,height=30, anchor={15,0}},
-	troll_head_idle = {x=150, y=167, width=20, z=0.1, height=15, anchor = {10, 0}},
+	troll_head_idle = {x=150, y=167, width=20, z=layer_dz, height=15, anchor = {10, 0}},
 	troll_head_talk_1 = {x=171,y=166, width=20, z=0.1, height=16, anchor = {10, 0}},
 	troll_head_talk_2 = {x=151,y=183, width=20, z=0.1,height=16, anchor = {10, 0}},
 	troll_head_talk_3 = {x=173,y=183, width=20, z=0.1,height=17, anchor = {10, 0}},

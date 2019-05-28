@@ -1,8 +1,10 @@
 #include <gfx/activity.h>
+#include <iostream>
 
 Activity::~Activity() {
-    if (!m_complete)
-        SetComplete();
+    std::cerr << "clering activity...\n" << &typeid(*this);
+    // if (!m_complete)
+    //    SetComplete();
 }
 
 //void Activity::AddPrevious (Activity* act) {
