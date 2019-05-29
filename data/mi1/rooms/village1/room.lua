@@ -10,6 +10,7 @@ roomDefinition = {
 		lookout = {  walkarea = "village1.walkarea", pos = items["village1.cliffside"].hotspot.walk_to, dir="south"}
 	},
 	font_size = 8,
+	playerid="guybrush",
 	defaultroom = "lookout",
 	walkareas = { "village1.walkarea"},
 	--depth = { type="linear_y", values= {0, 1, 144, 0} },

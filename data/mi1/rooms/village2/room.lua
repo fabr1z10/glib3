@@ -9,6 +9,7 @@ roomDefinition = {
 		--voodoolady = { pos = items["village2.door_voodoolady"].walk_to, facing = "west"},
 	},
 	font_size = 8,
+	playerid="guybrush",
 	defaultroom = "village1",
 	walkareas = { "village2.walkarea"},
 

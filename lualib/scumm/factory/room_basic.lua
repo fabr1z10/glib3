@@ -237,7 +237,7 @@ function scumm.factory.basic_room (args)
 		local w1 = refs[startPos.walkarea]
 		table.insert(w1,  
 			scumm.factory.object { 
-				id="guybrush",
+				id=args.playerid,
 				pos={startPos.pos[1], startPos.pos[2], 0}, 
 				tag="player", 
 				dir = startPos.dir,
