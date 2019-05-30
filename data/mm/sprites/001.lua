@@ -2,6 +2,18 @@ local dt = 0.1
 local sheet = "sprites.png"
 local layer_dz = 0.001
 
+local simple_sprite = function(frame)
+	return {
+    	sheet = sheet,
+    	type = "sprite",
+    	ppu=1,
+		animations = {
+			{ name = "default", frames = { { duration = dt, quads = {{ id = frame }}}}},
+		}
+	}
+
+end
+
 local s = {
 	arrow_up = {x=300, y=0, width = 12, height=20 },
 	arrow_down = {x = 300, y=0, width=12, height=20 },
@@ -24,7 +36,12 @@ local s = {
 	dave_walk_e_3 = {x=76, y=107, width=19, height=49, anchor = {7, 0}},
 	dave_walk_e_4 = {x=97, y=105, width=23, height=49, anchor = {11, 0}},
 	bushes = {x=1, y=476, width=53, height=18 },
-	grating = {x=1, y=495, width = 50, height=16 }
+	grating = {x=1, y=495, width = 50, height=16 },
+	mat_closed = {x=53, y=505, width=88, height=6 },
+	mat_open = {x=53, y=496, width=70, height=7 },
+	frontdoor_key = {x=126, y=498, width = 11, height=4 }
+
+
 }
 
 engine.assets.models["arrow_up"] = {
@@ -78,20 +95,33 @@ engine.assets.models["dave"] = {
 	}
 }
 
-engine.assets.models["grating"] = {
-    sheet = sheet,
-    type = "sprite",
-    ppu=1,
-	animations = {
-		{ name = "default", frames = { { duration = dt, quads = {{ id = s.grating }}}}},
-	}
-}
+engine.assets.models["grating"] = simple_sprite(s.grating)
+engine.assets.models["bushes"] = simple_sprite(s.bushes)
+engine.assets.models["frontdoor_key"] = simple_sprite(s.frontdoor_key)
+-- {
+--     sheet = sheet,
+--     type = "sprite",
+--     ppu=1,
+-- 	animations = {
+-- 		{ name = "default", frames = { { duration = dt, quads = {{ id = s.grating }}}}},
+-- 	}
+-- }
 
-engine.assets.models["bushes"] = {
+-- engine.assets.models["bushes"] = {
+--     sheet = sheet,
+--     type = "sprite",
+--     ppu=1,
+-- 	animations = {
+-- 		{ name = "default", frames = { { duration = dt, quads = {{ id = s.bushes }}}}},
+-- 	}
+-- }
+
+engine.assets.models["door_mat"] = {
     sheet = sheet,
     type = "sprite",
     ppu=1,
 	animations = {
-		{ name = "default", frames = { { duration = dt, quads = {{ id = s.bushes }}}}},
+		{ name = "closed", frames = { { duration = dt, quads = {{ id = s.mat_closed }}}}},
+		{ name = "open", frames = { { duration = dt, quads = {{ id = s.mat_open }}}}},
 	}
 }

@@ -19,6 +19,9 @@ room:add ( "main",
 		{ pos = {0, 0, -3}, components = { { type="gfx", image="frontdoor.png" }}},
 		scumm.factory.object { id="frontdoor.bushes"},
 		scumm.factory.object { id="frontdoor.grating"},
+		scumm.factory.object { id="frontdoor.doormat"},
+		scumm.factory.object { id="frontdoor.key"},
+
 
 	}
 )

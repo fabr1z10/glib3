@@ -16,7 +16,8 @@ strings = {
     },
     objects = {
         bushes = "bushes",
-        grating = "grating"
+        grating = "grating",
+        doormat = "door mat"
 
     },
     defaultactions = {

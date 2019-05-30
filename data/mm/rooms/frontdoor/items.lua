@@ -36,3 +36,36 @@ engine.items["frontdoor.grating"] = {
  		look = { type = action.say, args = {actor="dave", lines = {"prova"}}}
  	}	
 }
+
+engine.items["frontdoor.doormat"] = { 
+	pos = {336, 41, -0.99},
+	model = "door_mat",
+	anim="closed",
+	hotspot = {
+		text = strings.objects.doormat,
+		size = {88, 6},
+		walk_to = {383, 44},
+		dir = "south",
+		priority=2
+	},
+ 	actions = {
+ 		--look = { type = action.say, args = {actor="dave", lines = {"prova"}}},
+ 		pick = { type = action.animate, args = { tag ="frontdoor.doormat", anim="open"} }
+ 	}	
+}
+
+engine.items["frontdoor.key"] = { 
+	pos = {410, 43, -1.00},
+	model = "frontdoor_key",
+	hotspot = {
+		text = strings.objects.key,
+		size = {6, 3},
+		walk_to = {386, 44},
+		dir = "south",
+		priority=1
+	},
+ 	actions = {
+ 		--look = { type = action.say, args = {actor="dave", lines = {"prova"}}},
+ 		--pick = { type = action.animate, args = { tag ="frontdoor.doormat", anim="open"} }
+ 	}	
+}

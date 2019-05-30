@@ -20,6 +20,7 @@ room:add ( "main",
 	{ 
 		{ pos = {0, 0, -3}, components = { { type="gfx", image="start.png" }}},
 		{ pos = {0, 0, 3}, components = { { type="gfx", image="start1.png" }}},
+		
 	}
 )
 
