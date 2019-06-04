@@ -17,6 +17,12 @@ room =  {
 				type = "collision", 
 				size = {roomInfo.collisionSize, roomInfo.collisionSize}, 
 				response = {}
+			},
+			{
+				type ="dynamicworld",
+				width = 64, 
+				height = 64,
+				cam ="maincam"
 			}
 			-- 		{ tag = {1, 20}, onenter = basicBrickResponse },
 			-- 		{ tag = {1, 21}, onenter = bonusBrickResponse },
@@ -69,7 +75,7 @@ room =  {
 						components = {
 							--{ type="gfx", model="mario", anim="idle" },
 							{ type="controller2d", maxclimbangle = 80, maxdescendangle = 80, horizontalrays=4, verticalrays=4 },
-							{ type="dynamics2d", gravity = 10 },
+							{ type="dynamics2d", gravity = -50 },
 							{ type="multicollider", tag=1, flag=1, mask =2, initialshape="small", shapes = {
 							 	{ name ="small", type="rect", width=14, height=16, offset={-8,0}},
 							 	{ name ="big", type="rect", width=14, height=32, offset={-8,0}},
@@ -77,10 +83,10 @@ room =  {
 							}},
 							{ type="statemachine", initialstate = "walk",
 							 	states = {
-							 		{ id = "walk", state = {type="walk4w", speed = 75, acceleration = 0.05, fliph = true }}
+							 		{ id = "walk", state = {type="walkside", speed = 75, acceleration = 0.05, fliph = true, jumpspeed = 100 }},
 							-- 	 	{ id = "idle", init = { type="luaanim", func = curry21(marioinit, "idle") }, behavior = { type ="idle2d", acceleration = marioAcc }},
 							-- 		{ id = "walk", init = { type="luaanim", func = curry21(marioinit, "walk") }, behavior = { type ="walk2d", acceleration = marioAcc, speed= marioSpeed }},
-							-- 		{ id = "jump", init = { type="luaanim", func = curry21(marioinit, "jump") }, behavior = { type ="jump2d", acceleration = marioAcc, speed= marioSpeed }},
+							 		{ id = "jump", state = { type="jump", speed = 75, acceleration = 0.10, fliph = true }},
 							-- 		{ id = "duck", init = { type="animcollider", anim= "duck", collider="duck" }, behavior = { type ="idle2d", acceleration = marioAcc, speed= marioSpeed }},
 							-- 		{ id = "nophys", init = { type="luaanim", func = curry21(marioinit2, "idle") } }
 								}
@@ -101,6 +107,13 @@ room =  {
 							-- { type="info", supermario = false, fire = false, invincible = false },
 							{ type="follow", cam ="maincam", relativepos={0,0,5}, up={0,1,0} }
 						 },
+					},
+					{
+						pos = { 0,0,1 },
+						components = {
+							{ type = "gfx", image = "block1.png", width = 16*5, height = 16*2, rep = {5, 2}},
+							{ type = "collider", flag = 2, mask = 1, tag=1, shape = { type="rect", width = 16*5, height = 16*2 }}
+						}
 					}					
 					-- [3] = {
 					-- 	tag = "restofscene",

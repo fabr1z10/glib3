@@ -9,6 +9,10 @@ void SimpleModelStatus::Init(Entity* entity) {
 }
 
 void SimpleModelStatus::SetAnimation(const std::string& anim, bool fwd) {
+    if (anim == animation)
+    {
+        return;
+    }
     //std::cout << "setting anim to " << anim<<"\n";
     m_animCompleted = false;
     inc = fwd ? 1 : -1;

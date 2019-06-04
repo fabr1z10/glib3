@@ -15,7 +15,8 @@ FACTORY(DropCharactersActFactory, Activity)
 
 // State factories
 FACTORY(Walk4WayStateFactory, State2)
-
+FACTORY(WalkSideFactory, State2)
+FACTORY(Jump2DFactory, State2)
 //class Idle2DStateFactory : public FactoryMethod<StateBehaviour> {
 //    std::unique_ptr<StateBehaviour> Create(luabridge::LuaRef&) override;
 //};

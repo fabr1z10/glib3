@@ -3,28 +3,45 @@
 #include "gfx/components/renderer.h"
 #include <iostream>
 
-void DynamicWorldBuilder::SetCamera(Camera * camera) {
-    camera->OnMove.Register(this, [&] (Camera* cam) { this->OnCameraMove(cam); });
-    glm::vec3 camPos = camera->GetPosition();
+//void DynamicWorldBuilder::SetCamera(Camera * camera) {
+//    camera->OnMove.Register(this, [&] (Camera* cam) { this->OnCameraMove(cam); });
+//    glm::vec3 camPos = camera->GetPosition();
+//    m_x0 = camPos.x;
+//    m_y0 = camPos.y;
+//    std::cout << "Dynamic world builder, set camera with initial position (" << m_x0 << ", " << m_y0 << ")\n";
+//    UpdateWorld(camPos);
+//}
+
+void DynamicWorldBuilder::Init() {
+    auto cam = Ref::Get<OrthographicCamera>(m_camName);
+    cam->OnMove.Register(this, [&] (Camera* cam) { this->OnCameraMove(cam); });
+    glm::vec3 camPos = cam->GetPosition();
     m_x0 = camPos.x;
     m_y0 = camPos.y;
-    std::cout << "Dynamic world builder, set camera with initial position (" << m_x0 << ", " << m_y0 << ")\n";
+    m_x = -1;
+    m_y = -1;
     UpdateWorld(camPos);
+
 }
 
 void DynamicWorldBuilder::UpdateWorld(glm::vec3 pos) {
     int xp = static_cast<int>((pos.x - m_x0) / m_width);
     int yp = static_cast<int>((pos.y - m_y0) / m_height);
+
     if (xp != m_x || yp != m_y) {
         m_x = xp;
         m_y = yp;
+    } else {
+        return;
     }
+
     m_activeBounds.min.x = m_x0 + (m_x-2)*m_width ;
     m_activeBounds.min.y = m_y0 + (m_y-2)*m_height ;
     m_activeBounds.max.x = m_x0 + (m_x+2)*m_width ;
     m_activeBounds.max.y = m_y0 + (m_y+2)*m_height ;
 
-
+    std::cout << "active bounds = " << m_x << ", " << m_y << "\n";
+    // update visible items
     for (auto& item : m_items) {
 
         if (item.id == -1 && !item.removed) {

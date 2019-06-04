@@ -76,6 +76,7 @@ FACTORY(StateMachineCompFactory, Component)
 FACTORY(HotSpotManagerFactory, Runner)
 FACTORY(SchedulerFactory, Runner)
 FACTORY(CollisionEngineFactory, Runner)
+FACTORY(DynamicWorldBuilderFactory, Runner)
 
 // Shapes
 FACTORY(RectFactory, Shape)

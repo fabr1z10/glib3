@@ -26,9 +26,10 @@ struct DynamicWorldItem {
 
 class DynamicWorldBuilder : public Runner {
 public:
-    DynamicWorldBuilder(float cellWidth, float cellHeight) : Runner(), m_width(cellWidth), m_height(cellHeight), m_x(-1), m_y(-1) {}
-
-    void SetCamera(Camera*);
+    DynamicWorldBuilder(float cellWidth, float cellHeight, const std::string& camName) : Runner(),
+        m_width(cellWidth), m_height(cellHeight), m_x(-1), m_y(-1), m_camName(camName) {}
+    void Init() override;
+    //void SetCamera(Camera*);
     void OnCameraMove(Camera*);
     void UpdateWorld(glm::vec3);
     void Update(double) {}
@@ -41,4 +42,5 @@ private:
     int m_x, m_y;
     float m_x0, m_y0;
     Bounds m_activeBounds;
+    std::string m_camName;
 };

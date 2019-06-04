@@ -27,14 +27,20 @@ std::shared_ptr<Component> Controller2D::clone() const {
 }
 
 void Controller2D::Start() {
-    m_cc =  m_entity->GetComponent<Collider>();
-    m_cc->onShapeChanged.Register(this, [&] (Collider* c) { this->ResetShape(c); });
-    CalculateRaySpacing();
     m_details.Reset();
     m_collision = Engine::get().GetRunner<CollisionEngine>();
     if (m_collision == nullptr)
         GLIB_FAIL("Controller2D requires a collision engine running!");
 }
+
+void Controller2D::Begin() {
+    m_cc =  m_entity->GetComponent<Collider>();
+    m_cc->onShapeChanged.Register(this, [&] (Collider* c) { this->ResetShape(c); });
+    CalculateRaySpacing();
+
+}
+
+
 
 void Controller2D::ResetShape(Collider*) {
     CalculateRaySpacing();

@@ -1,21 +1,23 @@
-//#pragma once
-//
-//#include <gfx/components/statemachine.h>
-//#include <glm/glm.hpp>
-//#include <gfx/keyboard.h>
-//
-//class Controller2D;
-//class Renderer;
-//class Dynamics2D;
-//
-//class PlatformerState : public StateBehaviour {
-//public:
-//    PlatformerState();
-//    void Init(Entity* e) override;
-//protected:
-//    Keyboard& m_keyboard;
-//    Entity* m_entity;
-//    Controller2D* m_controller;
-//    Dynamics2D* m_dynamics;
-//    Renderer* m_renderer;
-//};
+#pragma once
+
+
+#include <gfx/components/statemachine2.h>
+
+class Controller2D;
+class Dynamics2D;
+class InputMethod;
+class Animator;
+
+class PlatformerState : public State2 {
+public:
+    PlatformerState();
+    PlatformerState(const PlatformerState&);
+    void AttachStateMachine(StateMachine2*) override;
+protected:
+    Animator* m_animator;
+    StateMachine2* m_sm;
+    Controller2D * m_controller;
+    Dynamics2D * m_dynamics;
+    InputMethod * m_input;
+    Entity * m_entity;
+};

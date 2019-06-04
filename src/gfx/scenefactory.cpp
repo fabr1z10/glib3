@@ -65,6 +65,7 @@ SceneFactory::SceneFactory() {
     m_runnerFactory.Add<SchedulerFactory>("scheduler");
     m_runnerFactory.Add<CollisionEngineFactory>("collision");
     m_runnerFactory.Add<HotSpotManagerFactory>("hotspotmanager");
+    m_runnerFactory.Add<DynamicWorldBuilderFactory>("dynamicworld");
 
     m_modelFactory.Add<SimpleModelFactory>("sprite");
     //m_modelFactory.Add<CompositeModelFactory>("model");

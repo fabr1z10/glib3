@@ -42,6 +42,7 @@ public:
     Controller2D(const Controller2D&);
 	virtual ~Controller2D();
 	void Start() override;
+	void Begin() override;
 	bool IsFalling(int);
 	void Move(glm::vec2&);
 	void ClimbSlope(glm::vec2&, float);

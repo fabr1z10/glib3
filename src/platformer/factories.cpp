@@ -1,9 +1,12 @@
 #include <platformer/factories.h>
-#include <platformer/states/idle2d.h>
+
 #include <platformer/states/walk4way.h>
+#include <platformer/states/walkside.h>
+#include <platformer/states/jump2d.h>
+
+#include <platformer/states/idle2d.h>
 #include <platformer/states/enemywalk2d.h>
 #include <platformer/states/enemybounce2d.h>
-#include <platformer/states/jump2d.h>
 #include <platformer/activities/dropcharacters.h>
 #include <gfx/lua/luatable.h>
 #include <platformer/characterstatemachine.h>
@@ -109,6 +112,31 @@ std::shared_ptr<State2> Walk4WayStateFactory::Create(luabridge::LuaRef &ref) {
     float a = table.Get<float>("acceleration");
     bool fliph = table.Get<bool>("fliph");
     return std::make_shared<Walk4Way>(speed, a, fliph);
+
+
+
+}
+
+std::shared_ptr<State2> WalkSideFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    float speed = table.Get<float>("speed");
+    float a = table.Get<float>("acceleration");
+    bool fliph = table.Get<bool>("fliph");
+    float jumpSpeed= table.Get<float>("jumpspeed");
+    return std::make_shared<WalkSide>(speed, a, fliph, jumpSpeed);
+
+
+
+}
+
+
+std::shared_ptr<State2> Jump2DFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    float speed = table.Get<float>("speed");
+    float a = table.Get<float>("acceleration");
+    bool fliph = table.Get<bool>("fliph");
+    //float jumpSpeed= table.Get<float>("jumpspeed");
+    return std::make_shared<Jump2D>(a, speed, fliph);
 
 
 

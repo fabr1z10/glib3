@@ -1,4 +1,4 @@
-#include <platformer/states/walk4way.h>
+#include <platformer/states/walkside.h>
 
 #include <gfx/math/geom.h>
 
@@ -6,33 +6,48 @@
 #include <gfx/components/controller2d.h>
 #include <gfx/components/inputmethod.h>
 #include <gfx/components/dynamics2d.h>
+#include <gfx/components/animator.h>
+#include <gfx/components/statemachine2.h>
 #include <GLFW/glfw3.h>
 
-Walk4Way::Walk4Way(float speed, float acceleration, bool fliph) : m_speed(speed),
-    m_acceleration(acceleration), m_flipHorizontally(fliph), m_velocitySmoothing(0.0f) {}
+WalkSide::WalkSide(float speed, float acceleration, bool fliph, float jumpSpeed) :
+        m_speed(speed), m_acceleration(acceleration), m_flipHorizontally(fliph), m_velocitySmoothing(0.0f), m_jumpSpeed(jumpSpeed) {}
 
-Walk4Way::Walk4Way(const Walk4Way &orig) : PlatformerState(orig) {
+WalkSide::WalkSide(const WalkSide &orig) : PlatformerState(orig) {
     m_speed = orig.m_speed;
     m_acceleration = orig.m_acceleration;
     m_flipHorizontally =orig.m_flipHorizontally;
 }
 
-std::shared_ptr<State2> Walk4Way::clone() const {
-    return std::make_shared<Walk4Way>(*this);
+std::shared_ptr<State2> WalkSide::clone() const {
+    return std::make_shared<WalkSide>(*this);
 }
 
-void Walk4Way::Init() {
-
-}
-
-void Walk4Way::End() {
+void WalkSide::Init() {
 
 }
 
-void Walk4Way::Run (double dt) {
+void WalkSide::End() {
+
+}
+
+void WalkSide::Run (double dt) {
+
+    if (!m_controller->m_details.below) {
+        m_sm->SetState("jump");
+        return;
+    }
 
     bool left = m_input->isKeyDown(GLFW_KEY_LEFT);
     bool right = m_input->isKeyDown(GLFW_KEY_RIGHT);
+    bool up = m_input->isKeyDown(GLFW_KEY_UP);
+
+    if (up) {
+        m_dynamics->m_velocity.y = m_jumpSpeed;
+        m_sm->SetState("jump");
+        return;
+    }
+
 
     m_dynamics->m_velocity.y = m_dynamics->m_gravity * static_cast<float>(dt);
     float targetVelocityX = 0.0f;
@@ -51,6 +66,11 @@ void Walk4Way::Run (double dt) {
     glm::vec2 delta = static_cast<float>(dt) * m_dynamics->m_velocity;
     m_controller->Move(delta);
 
+    if (fabs(m_dynamics->m_velocity.x) > 1.0f) {
+        m_animator->SetAnimation("walk");
+    } else {
+        m_animator->SetAnimation("idle");
+    }
     //UpdateAnimation(left, right);
 
 }

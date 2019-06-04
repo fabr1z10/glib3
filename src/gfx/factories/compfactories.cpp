@@ -24,7 +24,7 @@
 #include <gfx/components/raycastcontroller.h>
 #include <gfx/components/statemachine2.h>
 #include <gfx/model3D/model3D.h>
-
+#include <gfx/dynamicworld.h>
 
 #include <gfx/components/keyinput.h>
 #include <gfx/luacollision.h>
@@ -685,6 +685,18 @@ std::shared_ptr<Runner> HotSpotManagerFactory::Create(luabridge::LuaRef& ref) {
 std::shared_ptr<Runner> SchedulerFactory::Create(luabridge::LuaRef&) {
     return Ref::Create<Scheduler>();
 }
+
+std::shared_ptr<Runner> DynamicWorldBuilderFactory::Create(luabridge::LuaRef& ref) {
+    LuaTable table(ref);
+    float cellWidth = table.Get<float>("width");
+    float cellHeight = table.Get<float>("height");
+    std::string cam = table.Get<std::string>("cam");
+    return Ref::Create<DynamicWorldBuilder>(cellWidth, cellHeight, cam);
+}
+
+
+
+
 
 std::shared_ptr<Runner> CollisionEngineFactory::Create(luabridge::LuaRef& ref) {
     LuaTable table(ref);

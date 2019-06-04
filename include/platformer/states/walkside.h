@@ -6,7 +6,8 @@ class Controller2D;
 class Dynamics2D;
 class InputMethod;
 
-class Walk4Way : public PlatformerState {
+// this is the walk state used in platformers like SuperMario
+class WalkSide : public PlatformerState {
 public:
     /**
      *
@@ -14,8 +15,8 @@ public:
      * @param acceleration The acceleration
      * @param fliph Flip entity horizontally when going left
      */
-    Walk4Way (float speed, float acceleration, bool fliph);
-    Walk4Way (const Walk4Way& orig);
+    WalkSide (float speed, float acceleration, bool fliph, float jumpSpeed);
+    WalkSide (const WalkSide& orig);
     void Run(double) override;
     void Init () override;
     void End () override;
@@ -25,4 +26,5 @@ private:
     float m_speed;
     float m_acceleration;
     float m_velocitySmoothing;
+    float m_jumpSpeed;
 };
