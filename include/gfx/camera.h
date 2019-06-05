@@ -51,6 +51,7 @@ protected:
     GLsizei m_viewportWidth;
     glm::vec3 m_fwd;
     glm::vec3 m_up;
+    glm::vec3 m_eye;
     std::string m_root;
 };
 

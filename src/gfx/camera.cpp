@@ -46,12 +46,11 @@ void Camera::SetProjectionMatrix() {
 }
 
 void Camera::SetPosition(glm::vec3 eye, glm::vec3 dir, glm::vec3 up) {
-
     m_fwd = dir;
     m_up = up;
-        m_viewMatrix = glm::lookAt(eye, eye + dir, up);
-        OnMove.Fire(this);
-    //}
+    m_eye = eye;
+    m_viewMatrix = glm::lookAt(eye, eye + dir, up);
+    OnMove.Fire(this);
 }
 
 
@@ -117,8 +116,10 @@ void OrthographicCamera::SetPosition(vec3 eye, vec3 direction, vec3 up) {
     //std::cout << "Switch cam pos to " << eye.x << ", " << eye.y << "\n";
     eye.x = Clamp(eye.x, m_xMin, m_xMax);
     eye.y = Clamp(eye.y, m_yMin, m_yMax);
-    //std::cout << "Switch cam pos to " << eye.x << ", " << eye.y << "\n";
-    Camera::SetPosition(eye, direction, up);
+
+    if (!isEqual(eye.x, m_eye.x) || !isEqual(eye.y, m_eye.y)) {
+        Camera::SetPosition(eye, direction, up);
+    }
     //RecomputeScreenToWorldMatrix();
 }
 

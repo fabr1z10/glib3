@@ -16,31 +16,37 @@ void DynamicWorldBuilder::Init() {
     auto cam = Ref::Get<OrthographicCamera>(m_camName);
     cam->OnMove.Register(this, [&] (Camera* cam) { this->OnCameraMove(cam); });
     glm::vec3 camPos = cam->GetPosition();
-    m_x0 = camPos.x;
-    m_y0 = camPos.y;
+    // inititalize the center
+    m_xc0 = camPos.x;
+    m_yc0 = camPos.y;
     m_x = -1;
     m_y = -1;
     UpdateWorld(camPos);
 
 }
 
+// this method is called everytime we need to regenerate the world based on cam position
 void DynamicWorldBuilder::UpdateWorld(glm::vec3 pos) {
-    int xp = static_cast<int>((pos.x - m_x0) / m_width);
-    int yp = static_cast<int>((pos.y - m_y0) / m_height);
 
-    if (xp != m_x || yp != m_y) {
-        m_x = xp;
-        m_y = yp;
-    } else {
-        return;
-    }
+    int ix = static_cast<int>((pos.x - m_xc0) / m_halfWidth + 0.5f);
+    int iy = static_cast<int>((pos.y - m_yc0) / m_halfHeight + 0.5f);
 
-    m_activeBounds.min.x = m_x0 + (m_x-2)*m_width ;
-    m_activeBounds.min.y = m_y0 + (m_y-2)*m_height ;
-    m_activeBounds.max.x = m_x0 + (m_x+2)*m_width ;
-    m_activeBounds.max.y = m_y0 + (m_y+2)*m_height ;
+    // update the center
+    m_xc = m_xc0 + m_halfWidth * ix;
+    m_yc = m_yc0 + m_halfHeight * iy;
 
-    std::cout << "active bounds = " << m_x << ", " << m_y << "\n";
+    // update the inner window (when cam falls outside, triggers an update)
+    m_xmin = m_xc - m_halfWidth;
+    m_xmax = m_xc + m_halfWidth;
+    m_xmin = m_xc - m_halfWidth;
+    m_xmax = m_xc + m_halfWidth;
+
+    m_activeBounds.min.x = m_xc - m_width;
+    m_activeBounds.min.y = m_yc - m_height;
+    m_activeBounds.max.x = m_xc + m_width;
+    m_activeBounds.max.y = m_y0 + m_height;
+
+    std::cout << "UPDATING WORLD! center = (" << m_xc << ", " << m_yc << ")\n";
     // update visible items
     for (auto& item : m_items) {
 
@@ -87,7 +93,11 @@ void DynamicWorldBuilder::UpdateWorld(glm::vec3 pos) {
 
 void DynamicWorldBuilder::OnCameraMove(Camera * cam) {
     glm::vec3 pos = cam->GetPosition();
-    UpdateWorld(pos);
+    std::cout << "cam pos = " << pos.x << "\n";
+    if (pos.x >= m_xmax || pos.x <= m_xmin || pos.y >= m_ymax || pos.y <= m_ymin) {
+        // update the world ONLY if cammera is outside of the inner window
+        UpdateWorld(pos);
+    }
 }
 
 void DynamicWorldBuilder::AddItem(std::shared_ptr<Entity> parent, std::shared_ptr<Entity> entity) {

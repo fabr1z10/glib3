@@ -20,8 +20,8 @@ room =  {
 			},
 			{
 				type ="dynamicworld",
-				width = 64, 
-				height = 64,
+				width = 256, 
+				height = 256,
 				cam ="maincam"
 			}
 			-- 		{ tag = {1, 20}, onenter = basicBrickResponse },
