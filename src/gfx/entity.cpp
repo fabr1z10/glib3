@@ -31,7 +31,7 @@ Entity::Entity(const Entity & e) : Ref(e), m_update(e.m_update) {
 
 std::shared_ptr<Entity> Entity::clone() const {
     auto ptr = Ref::Clone<Entity>(*this);
-
+    return ptr;
 
 }
 

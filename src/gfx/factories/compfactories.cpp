@@ -691,7 +691,16 @@ std::shared_ptr<Runner> DynamicWorldBuilderFactory::Create(luabridge::LuaRef& re
     float cellWidth = table.Get<float>("width");
     float cellHeight = table.Get<float>("height");
     std::string cam = table.Get<std::string>("cam");
-    return Ref::Create<DynamicWorldBuilder>(cellWidth, cellHeight, cam);
+    luabridge::LuaRef items = table.Get<luabridge::LuaRef>("items");
+    auto factory = Engine::get().GetSceneFactory();
+    auto builder = Ref::Create<DynamicWorldBuilder>(cellWidth, cellHeight, cam);
+    for (int i = 0; i <items.length(); ++i) {
+        luabridge::LuaRef rnode = items[i+1];
+        auto node  = factory->makeEntity(rnode);
+        //rootNode->AddChild(node);
+        builder->AddItem(node);
+    }
+    return builder;
 }
 
 

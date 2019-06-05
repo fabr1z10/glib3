@@ -33,7 +33,8 @@ public:
     void OnCameraMove(Camera*);
     void UpdateWorld(glm::vec3);
     void Update(double) {}
-    void AddItem(std::shared_ptr<Entity>, std::shared_ptr<Entity>);
+    //void AddItem(std::shared_ptr<Entity>, std::shared_ptr<Entity>);
+    void AddItem (std::shared_ptr<Entity>);
 private:
     std::vector<DynamicWorldItem> m_items;
     // cam position center in grid coordinates

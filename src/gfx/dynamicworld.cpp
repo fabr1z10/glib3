@@ -44,7 +44,7 @@ void DynamicWorldBuilder::UpdateWorld(glm::vec3 pos) {
     m_activeBounds.min.x = m_xc - m_width;
     m_activeBounds.min.y = m_yc - m_height;
     m_activeBounds.max.x = m_xc + m_width;
-    m_activeBounds.max.y = m_y0 + m_height;
+    m_activeBounds.max.y = m_yc + m_height;
 
     std::cout << "UPDATING WORLD! center = (" << m_xc << ", " << m_yc << ")\n";
     // update visible items
@@ -61,7 +61,9 @@ void DynamicWorldBuilder::UpdateWorld(glm::vec3 pos) {
 
                 item.id = obj->GetId();
                 item.ref = obj;
-                item.m_parent->AddChild(obj);
+                auto main = Ref::Get<Entity>("main");
+                main->AddChild(obj);
+                //item.m_parent->AddChild(obj);
             }
         } else {
             // already created
@@ -100,7 +102,8 @@ void DynamicWorldBuilder::OnCameraMove(Camera * cam) {
     }
 }
 
-void DynamicWorldBuilder::AddItem(std::shared_ptr<Entity> parent, std::shared_ptr<Entity> entity) {
+//void DynamicWorldBuilder::AddItem(std::shared_ptr<Entity> parent, std::shared_ptr<Entity> entity) {
+void DynamicWorldBuilder::AddItem(std::shared_ptr<Entity> entity) {
 
     // compute bounds;
     auto renderer = entity->GetComponent<Renderer>();
@@ -116,8 +119,6 @@ void DynamicWorldBuilder::AddItem(std::shared_ptr<Entity> parent, std::shared_pt
     }
     DynamicWorldItem item;
     item.m_blueprint = entity;
-    item.m_parent = parent;
-    //item.createOnce = createOnce;
     item.m_localBounds.min = glm::vec2(bounds.min);
     item.m_localBounds.max = glm::vec2(bounds.max);
     item.m_bounds.min = item.m_localBounds.min + glm::vec2(pos.x, pos.y);

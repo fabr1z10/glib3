@@ -7,7 +7,7 @@ factory.rect = function(args)
 	local width = engine.tilesize * args.width
 	local height = engine.tilesize * args.height
 	return {
-		pos = { args.pos[1] * engine.tilesize, args.pos[2] * tilesize, z },
+		pos = { args.pos[1] * engine.tilesize, args.pos[2] * engine.tilesize, z },
 		components = {
 			{ type = "gfx", image = args.img, width = width, height = height, rep = {args.width, args.height}},
 			{ type = "collider", flag = 2, mask = 1, tag=1, shape = { type="rect", width = width, height = height }}

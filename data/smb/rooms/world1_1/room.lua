@@ -22,7 +22,10 @@ room =  {
 				type ="dynamicworld",
 				width = 256, 
 				height = 256,
-				cam ="maincam"
+				cam ="maincam",
+				items = {
+					factory.rect { pos = {10, 4}, img = "block1.png", width=1, height=1 }	
+				}
 			}
 			-- 		{ tag = {1, 20}, onenter = basicBrickResponse },
 			-- 		{ tag = {1, 21}, onenter = bonusBrickResponse },
@@ -108,13 +111,14 @@ room =  {
 							{ type="follow", cam ="maincam", relativepos={0,0,5}, up={0,1,0} }
 						 },
 					},
-					{
-						pos = { 0,0,1 },
-						components = {
-							{ type = "gfx", image = "block1.png", width = 16*5, height = 16*2, rep = {5, 2}},
-							{ type = "collider", flag = 2, mask = 1, tag=1, shape = { type="rect", width = 16*5, height = 16*2 }}
-						}
-					}					
+					factory.rect { pos = {0, 0}, img = "block1.png", width=5, height=2 }
+					-- {
+					-- 	pos = { 0,0,1 },
+					-- 	components = {
+					-- 		{ type = "gfx", image = "block1.png", width = 16*5, height = 16*2, rep = {5, 2}},
+					-- 		{ type = "collider", flag = 2, mask = 1, tag=1, shape = { type="rect", width = 16*5, height = 16*2 }}
+					-- 	}
+					-- }					
 					-- [3] = {
 					-- 	tag = "restofscene",
 					-- 	children = {
