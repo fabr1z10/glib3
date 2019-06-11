@@ -16,7 +16,10 @@ room =  {
 			{ 
 				type = "collision", 
 				size = {roomInfo.collisionSize, roomInfo.collisionSize}, 
-				response = {}
+				response = {
+					{ tag = {1, variables.tags.goomba}, onenter = mario_goomba }
+
+				}
 			},
 			{
 				type ="dynamicworld",
@@ -68,7 +71,7 @@ room =  {
 					-- 	}
 				 --    },
 					-- player
-					--items.mario.create { pos = Pos{roomInfo.startPos[1], roomInfo.startPos[2]} },
+					--sitems.mario.create { pos = Pos{roomInfo.startPos[1], roomInfo.startPos[2]} },
 					{	
 						tag="player",
 						type="sprite",
@@ -90,6 +93,7 @@ room =  {
 							-- 	 	{ id = "idle", init = { type="luaanim", func = curry21(marioinit, "idle") }, behavior = { type ="idle2d", acceleration = marioAcc }},
 							-- 		{ id = "walk", init = { type="luaanim", func = curry21(marioinit, "walk") }, behavior = { type ="walk2d", acceleration = marioAcc, speed= marioSpeed }},
 							 		{ id = "jump", state = { type="jump", speed = 75, acceleration = 0.10, fliph = true }},
+							 		{ id = "nil", state = { type="nil" }}
 							-- 		{ id = "duck", init = { type="animcollider", anim= "duck", collider="duck" }, behavior = { type ="idle2d", acceleration = marioAcc, speed= marioSpeed }},
 							-- 		{ id = "nophys", init = { type="luaanim", func = curry21(marioinit2, "idle") } }
 								}
@@ -106,12 +110,13 @@ room =  {
 							-- 		{ current = "duck", key = 264, press=false, next="idle" }
 							-- 		-- event key release when duck returning to idle
 							-- 	}
-							-- },
+							-- },\
 							-- { type="info", supermario = false, fire = false, invincible = false },
 							{ type="follow", cam ="maincam", relativepos={0,0,5}, up={0,1,0} }
 						 },
 					},
-					factory.rect { pos = {0, 0}, img = "block1.png", width=5, height=2 }
+					factory.rect { pos = {0, 0}, img = "block1.png", width=69, height=2 },
+					factory.goomba.create { pos = {12, 4}, flipWhenPlatformEnds = true}
 					-- {
 					-- 	pos = { 0,0,1 },
 					-- 	components = {

@@ -7,11 +7,13 @@
 #include <platformer/states/idle2d.h>
 #include <platformer/states/enemywalk2d.h>
 #include <platformer/states/enemybounce2d.h>
+#include <platformer/states/nilstate.h>
 #include <platformer/activities/dropcharacters.h>
 #include <gfx/lua/luatable.h>
 #include <platformer/characterstatemachine.h>
 #include <platformer/enemyinput.h>
 #include <gfx/engine.h>
+
 //
 //std::unique_ptr<StateBehaviour> Idle2DStateFactory::Create(luabridge::LuaRef & r) {
 //    LuaTable table(r);
@@ -140,4 +142,9 @@ std::shared_ptr<State2> Jump2DFactory::Create(luabridge::LuaRef &ref) {
 
 
 
+}
+
+
+std::shared_ptr<State2> NilStateFactory::Create(luabridge::LuaRef& ) {
+    return std::make_shared<NilState>();
 }

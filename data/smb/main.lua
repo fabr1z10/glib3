@@ -21,6 +21,7 @@ engine = {
 }
 require("platformer")
 
+
 variables = {
     --_room = "world1_1",
 	jump_height = 80,
@@ -49,11 +50,12 @@ variables.jump_velocity = math.abs(variables.gravity) * variables.time_to_jump_a
 factory = {}
 spritesheets = {}
 models = {}
-action={}
+
 -- sprites = {}
 require("factories/rect")
 require("factories/bricks")
 require("factories/bonusbrick")
 require("factories/foe")
-require("factories/actions")
+--require("factories/actions")
+require("script/mario")
 

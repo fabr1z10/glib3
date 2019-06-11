@@ -5,6 +5,11 @@ action.change_room = function (args)
 	return { type="gotoroom", room = args.room }
 end
 
+action.restart_room = function (args) 
+	return { type="gotoroom", room = engine.state.room }
+end
+
+
 action.noop = function(args) 
 	return { type="noop" }	
 end
@@ -62,9 +67,11 @@ action.animate = function(args)
 end
 
 action.set_state = function(args)
+	print("woeiufoif")
 	glib.assert_either (args.tag, args.id, "id or tag")
-	assert (args.actor, "actor")
-	assert (args.state, "state")
+	print ("QUI")
+	--sglib.assert (args.actor, "actor")
+	glib.assert (args.state, "state")
 	return {type="setstate", tag = args.tag, id = args.id, state = args.state}
 end
 

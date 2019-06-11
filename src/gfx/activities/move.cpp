@@ -135,6 +135,7 @@ void MoveAccelerated::Run(float dt) {
     glm::vec2 pos(p);
     pos += m_velocity * dt;
     m_velocity += m_acceleration * dt;
+    std::cerr << m_velocity.y << "\n";
     if (pos.y <= m_yStop && m_velocity.y<0) {
         pos.y = m_yStop;
         m_angle = m_finalRotation;

@@ -36,7 +36,7 @@ end
 
 
 function mario_goomba(mario, goomba, sx, sy)
-	
+	print ("sdihfiwosueh")
 	if (mario.state == "jump" and mario.vy < 0 and sy > 0 and math.abs(sx) < 0.01) then
 		mario.vy = -mario.vy
 		goomba:changestate("dead")

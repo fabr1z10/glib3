@@ -12,6 +12,7 @@ local s = {
 	mario_jump = {x=80, y=0, width=16, height=16, anchor={8,0}},
 	mario_jump_big = {x=144, y=16, width=16, height=32, anchor={8,0}},
 	mario_duck_big = {x=96, y=128, width=16, height=32, anchor={8,0}},
+	mario_die = {x = 96, y=0, width=16, height=16, anchor={8, 0}},
 	brick = {x=240, y=0, width=16, height=16 },
 	brick_piece = {x=64, y=16, width=16, height=16, anchor ={8,0}},
 	mushroom = {x=48, y=16, width=16, height=16, anchor={8,0}},
@@ -37,8 +38,28 @@ models["mario"] = {
 			{ duration = dt, quads = {{ id = s.mario_walk_2 } }},
 			{ duration = dt, quads = {{ id = s.mario_walk_3 } }},
 		}},
-		{ name = "jump", frames = { { duration = dt, quads = {{ id = s.mario_jump }}}}}
+		{ name = "jump", frames = { { duration = dt, quads = {{ id = s.mario_jump }}}}},
+		{ name = "die", frames = { { duration = dt, quads = {{ id = s.mario_die }}}}}
+
 	}
+}
+
+models["goomba"] = {
+    sheet = "smb1.png",
+    type = "sprite",
+    ppu=1,
+	animations = {
+		{ name = "walk", frames = {
+			{ duration = dt, quads = {{ id = s.goomba_walk_1 } }},
+			{ duration = dt, quads = {{ id = s.goomba_walk_2 } }},
+		}},
+		{ name = "jump", frames = {
+			{ duration = dt, quads = {{ id = s.goomba_walk_1 } }},
+			{ duration = dt, quads = {{ id = s.goomba_walk_2 } }},
+		}},
+
+	}
+
 }
 
 -- models["supermario"] = {

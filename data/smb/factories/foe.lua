@@ -82,7 +82,7 @@ factory.goomba.create = function(args)
 		sprite="goomba", 
 		tag = variables.tags.goomba,
 		fliph = false,
-		flipWhenPlatformEnds = false,
+		flipWhenPlatformEnds = args.flipWhenPlatformEnds or false,
 		pos = args.pos
 	}
 end
@@ -101,34 +101,45 @@ factory.foe.create = function(args)
 		type = "sprite",
 		model = args.sprite,
 		-- basic brick
-		pos = { args.pos[1] * engine.tilesize, args.pos[2] * tilesize, z },
+		pos = { args.pos[1] * engine.tilesize, args.pos[2] * engine.tilesize, z },
 		components = {
-				{ 
-					type = "collider", 
-					flag = 4, 
-					mask = 1, 
-    				tag=args.tag
-				},
-				{ 
-					type="characterstate", 
-					acceleration_ground = 0.05, 
-					acceleration_air = 0.05, 
-					speed = 75, 
-					jump_velocity = variables.jump_velocity,
-					can_duck = false,
-					flip = flipHorizontal,
-					anims = {
-						idle = "walk",
-						walk = "walk",
-						jump_up = "walk",
-						jump_down = "walk",
-						turn = "walk",
-						duck = "walk"
-					},
-					colliders = {
-						{ key = "walk", value = { type="rect", width = 16, height = 16, offset={-8,0}}}
-					},
-					f = function() return {"", ""} end
+				-- { 
+				-- 	type = "collider", 
+				-- 	flag = 4, 
+				-- 	mask = 1, 
+    -- 				tag=args.tag
+				-- },
+				-- { 
+				-- 	type="characterstate", 
+				-- 	acceleration_ground = 0.05, 
+				-- 	acceleration_air = 0.05, 
+				-- 	speed = 75, 
+				-- 	jump_velocity = variables.jump_velocity,
+				-- 	can_duck = false,
+				-- 	flip = flipHorizontal,
+				-- 	anims = {
+				-- 		idle = "walk",s
+				-- 		walk = "walk",
+				-- 		jump_up = "walk",
+				-- 		jump_down = "walk",
+				-- 		turn = "walk",
+				-- 		duck = "walk"
+				-- 	},
+				-- 	colliders = {
+				-- 		{ key = "walk", value = { type="rect", width = 16, height = 16, offset={-8,0}}}
+				-- 	},
+				-- 	f = function() return {"", ""} end
+				-- },
+				{ type="multicollider", tag=args.tag, flag=4, mask =1, initialshape="small", shapes = {
+				 	{ name ="small", type="rect", width=14, height=16, offset={-8,0}},
+				 	-- { name ="big", type="rect", width=14, height=32, offset={-8,0}},
+				 	-- { name ="duck", type="rect", width=14, height=24, offset={-8,0}}
+				}},
+				{ type="statemachine", initialstate = "walk",
+				 	states = {
+				 		{ id = "walk", state = {type="walkside", speed = 75, acceleration = 0.05, fliph = true, jumpspeed = 100 }},
+				 		{ id = "jump", state = { type="jump", speed = 75, acceleration = 0.10, fliph = true }},
+					}
 				},
 				{
 					-- properties

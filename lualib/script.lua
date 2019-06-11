@@ -44,7 +44,7 @@ function flatten_script(a, offset)
 				print ("adding an action...")
 				id = id + 1
 				local node = { id = id, action = v.type(v.args) }
-				--print ("qui")
+				print ("qu333i")
 				if (v.ref ~= nil) then
 					print ("ciao " .. v.ref .. " ciao")
 					ref_id[v.ref] = id
@@ -69,6 +69,7 @@ end
 
 script.make = function(args, loop)
     local s = script:new()
+    print ("wefiewfiwoefj")
 	local data = flatten_script (args, 0) 
 	s.actions = data[1]
 	if (loop ~= nil) then
