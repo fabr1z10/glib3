@@ -1,5 +1,18 @@
 function mario_goomba(mario, goomba, sx, sy) 
 
+	print (mario.state)
+	if (mario.state == "jump" and mario.vy < 0 and sy > 0 and math.abs(sx) < 0.01) then
+		mario.vy = -mario.vy
+		-- goomba:changestate("dead")
+		-- local s = script:new()
+		-- s.actions = {
+		-- 	[1] = {type="delay", sec=2},
+		-- 	[2] = {type="callfunc", func = function() goomba:remove() end, after={1}}
+		-- }
+		-- monkey.play(s)
+		return
+	end
+
 	print (mario.id)
 	print (goomba.id)
 	print (action.set_state == nil)
@@ -8,7 +21,7 @@ function mario_goomba(mario, goomba, sx, sy)
 		{ type = action.set_state, args = { id = mario.id, state="nil" }},
 		{ type = action.animate, args = {id =mario.id, anim="die" }},
 		{ type = action.delay, args = { sec = 1}},
-		{ type = action.moveaccel, args = { id=mario.id, initial_velocity = {0,20}, acceleration={0,-10}, ystop = -30}},
+		{ type = action.moveaccel, args = { id=mario.id, initial_velocity = {0, variables.jump_velocity}, acceleration={0,variables.gravity}, ystop = -30}},
 		{ type = action.restart_room }
 	}
 	local s = script.make(actions)

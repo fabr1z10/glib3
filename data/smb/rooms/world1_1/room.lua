@@ -81,7 +81,7 @@ room =  {
 						components = {
 							--{ type="gfx", model="mario", anim="idle" },
 							{ type="controller2d", maxclimbangle = 80, maxdescendangle = 80, horizontalrays=4, verticalrays=4 },
-							{ type="dynamics2d", gravity = -50 },
+							{ type="dynamics2d", gravity = variables.gravity },
 							{ type="multicollider", tag=1, flag=1, mask =2, initialshape="small", shapes = {
 							 	{ name ="small", type="rect", width=14, height=16, offset={-8,0}},
 							 	{ name ="big", type="rect", width=14, height=32, offset={-8,0}},
@@ -89,7 +89,7 @@ room =  {
 							}},
 							{ type="statemachine", initialstate = "walk",
 							 	states = {
-							 		{ id = "walk", state = {type="walkside", speed = 75, acceleration = 0.05, fliph = true, jumpspeed = 100 }},
+							 		{ id = "walk", state = {type="walkside", speed = 75, acceleration = 0.05, fliph = true, jumpspeed = variables.jump_velocity }},
 							-- 	 	{ id = "idle", init = { type="luaanim", func = curry21(marioinit, "idle") }, behavior = { type ="idle2d", acceleration = marioAcc }},
 							-- 		{ id = "walk", init = { type="luaanim", func = curry21(marioinit, "walk") }, behavior = { type ="walk2d", acceleration = marioAcc, speed= marioSpeed }},
 							 		{ id = "jump", state = { type="jump", speed = 75, acceleration = 0.10, fliph = true }},
