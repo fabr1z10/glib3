@@ -138,7 +138,10 @@ std::shared_ptr<State2> Jump2DFactory::Create(luabridge::LuaRef &ref) {
     float a = table.Get<float>("acceleration");
     bool fliph = table.Get<bool>("fliph");
     //float jumpSpeed= table.Get<float>("jumpspeed");
-    return std::make_shared<Jump2D>(a, speed, fliph);
+    std::string anim = table.Get<std::string>("anim");
+    bool bounce = table.Get<bool>("bounce", false);
+    float bounceFactor = table.Get<float>("bouncefactor", 0.0f);
+    return std::make_shared<Jump2D>(a, speed, fliph, anim, bounce, bounceFactor);
 
 
 

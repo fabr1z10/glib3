@@ -131,14 +131,15 @@ factory.foe.create = function(args)
 				-- 	f = function() return {"", ""} end
 				-- },
 				{ type="multicollider", tag=args.tag, flag=4, mask =1, initialshape="small", shapes = {
-				 	{ name ="small", type="rect", width=14, height=16, offset={-8,0}},
+				 	{ name ="small", type="rect", width=16, height=16, offset={-8,0}},
 				 	-- { name ="big", type="rect", width=14, height=32, offset={-8,0}},
 				 	-- { name ="duck", type="rect", width=14, height=24, offset={-8,0}}
 				}},
 				{ type="statemachine", initialstate = "walk",
 				 	states = {
 				 		{ id = "walk", state = {type="walkside", speed = 75, acceleration = 0.05, fliph = true, jumpspeed = 100 }},
-				 		{ id = "jump", state = { type="jump", speed = 75, acceleration = 0.10, fliph = true }},
+				 		{ id = "jump", state = { type="jump", speed = 75, acceleration = 0.10, fliph = true, anim="jump" }},
+				 		{ id = "die", state = { type="jump", speed = 0, acceleration = 0, fliph = true, anim="die", bounce = true}}
 					}
 				},
 				{

@@ -139,11 +139,17 @@ action.create_object = function(args)
 end
 
 action.remove_object = function(args) 
-	assert (args.tag, "tag")
+	glib.assert_either (args.tag, args.id, "id or tag")
 	return { type = "callfunc", func = 
 		function()
-			print ("ciao " .. args.tag)
-			local i = monkey.getEntity(args.tag)
+			local i = nil
+			if (args.id == nil) then
+				print ("qui    22")
+				i = monkey.getEntity(args.tag)
+			else
+				print ("qui    23")
+				i = monkey.getEntityFromId(args.id)
+			end
 			i:remove()
 		end
 	}

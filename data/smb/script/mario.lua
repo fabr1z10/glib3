@@ -1,15 +1,17 @@
 function mario_goomba(mario, goomba, sx, sy) 
 
-	print (mario.state)
+	if (goomba.state == "die") then
+		return
+	end
 	if (mario.state == "jump" and mario.vy < 0 and sy > 0 and math.abs(sx) < 0.01) then
 		mario.vy = -mario.vy
-		-- goomba:changestate("dead")
-		-- local s = script:new()
-		-- s.actions = {
-		-- 	[1] = {type="delay", sec=2},
-		-- 	[2] = {type="callfunc", func = function() goomba:remove() end, after={1}}
-		-- }
-		-- monkey.play(s)
+		local actions = {
+			{ type = action.set_state, args = { id = goomba.id, state="die" }},	
+			{ type = action.delay, args = { sec = 2}},
+			{ type = action.remove_object, args = { id = goomba.id}}
+		}
+		local s = script.make(actions)
+		monkey.play(s)
 		return
 	end
 

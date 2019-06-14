@@ -23,7 +23,7 @@ local s = {
 	bonus_brick_taken = {x=224, y=0, width=16, height=16},
 	goomba_walk_1 = {x=112, y=0, width=16, height=16, anchor={8,0}},
 	goomba_walk_2 = {x=128, y=0, width=16, height=16, anchor={8,0}},
-
+	goomba_die = {x=144, y=0, width=16, height=16, anchor={8,0}}
 
 }
 local dt=0.1
@@ -57,6 +57,7 @@ models["goomba"] = {
 			{ duration = dt, quads = {{ id = s.goomba_walk_1 } }},
 			{ duration = dt, quads = {{ id = s.goomba_walk_2 } }},
 		}},
+		{ name = "die", frames = { { duration = dt, quads = {{ id = s.goomba_die }}}}}
 
 	}
 

@@ -14,8 +14,9 @@
 #include <GLFW/glfw3.h>
 //extern GLFWwindow* window;
 //
-Jump2D::Jump2D(float accelerationTimeAirborne, float speed, bool flipH) :
-    m_accTimeAir(accelerationTimeAirborne), m_velocitySmoothing(0.0f), m_speed(speed), m_flipHorizontally(flipH)
+Jump2D::Jump2D(float accelerationTimeAirborne, float speed, bool flipH, const std::string& anim, bool bounce, float bounceFactor) :
+    m_accTimeAir(accelerationTimeAirborne), m_velocitySmoothing(0.0f), m_speed(speed), m_flipHorizontally(flipH),
+    m_bounce(bounce), m_bounceFactor(bounceFactor), m_jumpAnim(anim)
 {}
 
 Jump2D::Jump2D(const Jump2D &orig) : PlatformerState(orig) {
@@ -28,8 +29,7 @@ std::shared_ptr<State2> Jump2D::clone() const {
 }
 
 void Jump2D::Init() {
-
-    m_animator->SetAnimation("jump");
+    m_animator->SetAnimation(m_jumpAnim);
 }
 
 void Jump2D::Run(double dt) {
@@ -39,8 +39,12 @@ void Jump2D::Run(double dt) {
 //    if (left && right) left = false;
 //
     if (m_controller->m_details.below && m_dynamics->m_velocity.y < 0) {
-        m_dynamics->m_velocity.y = 0.0f;
-        m_sm->SetState("walk");
+        if (!m_bounce) {
+            m_dynamics->m_velocity.y = 0.0f;
+            m_sm->SetState("walk");
+        } else {
+            m_dynamics->m_velocity.y = m_bounceFactor * m_dynamics->m_velocity.y;
+        }
         return;
     }
 
