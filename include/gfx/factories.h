@@ -24,11 +24,18 @@ class IFrameChangeHandler;
         std::shared_ptr<type> Create(luabridge::LuaRef& ref) override; \
     };
 
-#define FACTORY_SUB(name, sub, type) \
-    class name : public sub { \
+#define FACTORY2(name, type) \
+    class name : public FactoryMethod<type> { \
     public: \
+        template <typename T> \
         std::shared_ptr<type> Create(luabridge::LuaRef& ref) override; \
     };
+
+//#define FACTORY_SUB(name, sub, type) \
+//    class name : public sub { \
+//    public: \
+//        std::shared_ptr<type> Create(luabridge::LuaRef& ref) override; \
+//    };
 
 // Entities
 FACTORY(EntityFactory, Entity)
@@ -65,7 +72,11 @@ FACTORY(CursorComponentFactory, Component)
 FACTORY(LightComponentFactory, Component)
 FACTORY(KeyboardInputMethodCompFactory, Component)
 FACTORY(PropertiesCompFactory, Component)
+
+//#include <gfx/factories/statemachinefactory.h>
+
 FACTORY(StateMachineCompFactory, Component)
+FACTORY(ExtStateMachineCompFactory, Component)
 
 //FACTORY(RaycastControllerComponentFactory, Component)
 

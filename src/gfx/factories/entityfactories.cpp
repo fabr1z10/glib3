@@ -209,7 +209,7 @@ std::shared_ptr<Entity> BoxedMessageFactory::Create(luabridge::LuaRef& ref) {
     textEntity->SetPosition(glm::vec2(0.0f, text_y));
     // create the box
     auto box = Ref::Create<Entity>();
-    glm::vec3 extents = bounds.GetExtents();
+    //glm::vec3 extents = bounds.GetExtents();
     auto box_renderer = Ref::Create<Renderer>();
     auto rect = std::make_shared<Rect>(boxWidth, boxHeight);
     auto boxMesh = MeshFactorySolid::CreateMesh(*(rect.get()), 0.0f);

@@ -13,10 +13,16 @@ public:
     virtual void End () = 0;
     virtual std::shared_ptr<State2> clone() const = 0;
     virtual void AttachStateMachine(StateMachine2*) = 0;
-    virtual void KeyListener (int) {}
+    virtual bool KeyListener (int) {}
 };
 
-
+//!  A state machine.
+/*!
+ A state machine is a component that allows an entity to have a different
+ behavior based on what the current state is. A state machine has a set of
+ states, of which only one is active at any given time. It provides methods
+ to get the current state, and change the state to a new one.
+ */
 class StateMachine2 : public Component {
 public:
     StateMachine2(const std::string& initialState) : m_initialState(initialState), m_currentState(nullptr) {}

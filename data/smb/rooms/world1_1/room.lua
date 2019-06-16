@@ -87,7 +87,7 @@ room =  {
 							 	{ name ="big", type="rect", width=14, height=32, offset={-8,0}},
 							 	{ name ="duck", type="rect", width=14, height=24, offset={-8,0}}
 							}},
-							{ type="statemachine", initialstate = "walk",
+							{ type="extstatemachine", initialstate = "walk",
 							 	states = {
 							 		{ id = "walk", state = {type="walkside", speed = 75, acceleration = 0.05, fliph = true, jumpspeed = variables.jump_velocity }},
 							-- 	 	{ id = "idle", init = { type="luaanim", func = curry21(marioinit, "idle") }, behavior = { type ="idle2d", acceleration = marioAcc }},
@@ -96,6 +96,10 @@ room =  {
 							 		{ id = "nil", state = { type="nil" }}
 							-- 		{ id = "duck", init = { type="animcollider", anim= "duck", collider="duck" }, behavior = { type ="idle2d", acceleration = marioAcc, speed= marioSpeed }},
 							-- 		{ id = "nophys", init = { type="luaanim", func = curry21(marioinit2, "idle") } }
+								},
+								keys = {
+									{ id = 299, func = function() print "Hello world!" end }
+
 								}
 							},
 							{ type ="keyinput" },

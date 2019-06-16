@@ -17,7 +17,7 @@ private:
     float m_velocitySmoothing;
     bool m_flipHorizontally;
     //bool m_setJumpDownAnim;
-    bool m_goingUp;
+    //bool m_goingUp;
     bool m_bounce;
     float m_bounceFactor;
     std::string m_jumpAnim;

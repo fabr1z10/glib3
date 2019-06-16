@@ -23,6 +23,7 @@
 #include <gfx/components/light.h>
 #include <gfx/components/raycastcontroller.h>
 #include <gfx/components/statemachine2.h>
+#include <gfx/components/extstatemachine.h>
 #include <gfx/model3D/model3D.h>
 #include <gfx/dynamicworld.h>
 
@@ -227,6 +228,7 @@ std::shared_ptr<Component> MultiColliderComponentFactory::Create(luabridge::LuaR
     return coll;
 }
 
+
 std::shared_ptr<Component> StateMachineCompFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
     std::string initialState = table.Get<std::string>("initialstate");
@@ -244,6 +246,32 @@ std::shared_ptr<Component> StateMachineCompFactory::Create(luabridge::LuaRef &re
     return ptr;
 
 }
+
+std::shared_ptr<Component> ExtStateMachineCompFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    std::string initialState = table.Get<std::string>("initialstate");
+    auto ptr = Ref::Create<ExtendedStateMachine>(initialState);
+    auto factory = Engine::get().GetSceneFactory();
+    
+    luabridge::LuaRef statesRef = table.Get<luabridge::LuaRef>("states");
+    for (int i = 0; i < statesRef.length(); ++i) {
+        luabridge::LuaRef stateRef = statesRef[i+1];
+        std::string key = stateRef["id"].cast<std::string>();
+        luabridge::LuaRef stateDef = stateRef["state"];
+        auto state = factory->makeState(stateDef);
+        ptr->AddState(key, state);
+    }
+    
+    table.ProcessVector("keys", [ptr] (luabridge::LuaRef ref) {
+        int key = ref["id"].cast<int>();
+        luabridge::LuaRef callback = ref["func"];
+        ptr->AddKey(key, callback);
+    });
+    
+    return ptr;
+    
+}
+
 
 //std::unique_ptr<Component> StateMachineComponentFactory::Create(luabridge::LuaRef &ref) {
 //    LuaTable table(ref);

@@ -85,8 +85,8 @@ std::shared_ptr<Activity> MoveActFactory::Create(luabridge::LuaRef &ref) {
     bool immediate = table.Get<bool>("immediate", false);
     std::shared_ptr<MoveTo> m;
     if (table.HasKey("angle")) {
-        float angle = table.Get<float>("angle");
-        bool relAngle = table.Get<bool>("angle_relative");
+        //float angle = table.Get<float>("angle");
+        //bool relAngle = table.Get<bool>("angle_relative");
         //m = std::make_shared<MoveTo>((dest, speed, relative, immediate, angle, relAngle));
     } else {
         m = std::make_shared<MoveTo>(dest, speed, relative, immediate);

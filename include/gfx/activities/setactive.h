@@ -1,5 +1,6 @@
 #pragma once
 
+#include <string>
 #include <gfx/activity.h>
 
 class SetActive : public Activity {

@@ -10,37 +10,19 @@ class Animator;
 class Collider;
 class InputMethod;
 
+// like state machine, plus you can forward input key events
+// to the correct state
 class ExtendedStateMachine : public StateMachine2 {
 public:
     ExtendedStateMachine(const std::string& initialState);
 
     void Start () override ;
-    void SetState (const std::string&) override;
-    void Refresh () override;
-
-    // called to select animation based on current state and possibly other variables
-    void SetRefreshFunc (luabridge::LuaRef ref);
-
-
+    void KeyListener (int key);
+    void AddKey (int, luabridge::LuaRef callback);
     std::type_index GetType() override;
-    void SetAnimation(const std::string&);
-    void SetCollider(const std::string&);
-    void AddShape (const std::string& key, std::shared_ptr<Shape> value);
-    void KeyListener (int) ;
-    void SendMessage (luabridge::LuaRef message);
-    void AddMessage (const std::string& key, std::function<void(luabridge::LuaRef)> value);
 private:
-    std::unordered_map<std::string, std::shared_ptr<Shape>> m_colliders;
-    Animator * m_animator;
-    Collider * m_collider;
+    std::unordered_map<int, luabridge::LuaRef> m_globalKeys;
     InputMethod * m_input;
-    // refresh function.
-    std::shared_ptr<luabridge::LuaRef> m_refreshFunc;
-    std::string m_animClass;
-    std::string m_collClass;
-    std::string m_currentAnim;
-    std::string m_currentCollider;
-    std::unordered_map<std::string, std::function<void(luabridge::LuaRef)>> m_messageHandlers;
 };
 
 inline std::type_index ExtendedStateMachine::GetType() {

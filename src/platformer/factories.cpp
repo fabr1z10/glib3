@@ -10,7 +10,7 @@
 #include <platformer/states/nilstate.h>
 #include <platformer/activities/dropcharacters.h>
 #include <gfx/lua/luatable.h>
-#include <platformer/characterstatemachine.h>
+//#include <platformer/characterstatemachine.h>
 #include <platformer/enemyinput.h>
 #include <gfx/engine.h>
 
@@ -61,45 +61,45 @@ std::shared_ptr<Component> EnemyInputCompFactory::Create(luabridge::LuaRef &ref)
     return std::make_shared<EnemyInputMethod>(left, flipIfPlatformEnds);
 }
 
-
-std::shared_ptr<Component> CharacterStateCompFactory::Create(luabridge::LuaRef &ref) {
-    LuaTable table(ref);
-    float speed = table.Get<float>("speed");
-    float accGnd = table.Get<float>("acceleration_ground");
-    float accAir = table.Get<float>("acceleration_air");
-    float jumpHeight = table.Get<float>("jump_velocity");
-    bool canDuck = table.Get<bool>("can_duck");
-    bool flip = table.Get<bool>("flip");
-    luabridge::LuaRef animTable = table.Get<luabridge::LuaRef>("anims");
-    LuaTable at (animTable);
-
-    std::string anim_idle = at.Get<std::string>("idle","");
-    std::string anim_walk = at.Get<std::string>("walk","");
-    std::string anim_turn = at.Get<std::string>("turn","");
-    std::string anim_duck = at.Get<std::string>("duck", "");
-    std::string anim_jump_up = at.Get<std::string>("jump_up","");
-    std::string anim_jump_down = at.Get<std::string>("jump_down","");
-
-
-
-    auto ptr = std::make_shared<CharacterStateMachine>(speed, accGnd, accAir, jumpHeight, canDuck, flip,
-            anim_idle, anim_walk, anim_turn, anim_duck, anim_jump_up, anim_jump_down);
-
-    if (table.HasKey("f")) {
-        ptr->SetRefreshFunc(table.Get<luabridge::LuaRef>("f"));
-    }
-
-    luabridge::LuaRef rColliders = table.Get<luabridge::LuaRef>("colliders");
-    auto factory = Engine::get().GetSceneFactory();
-    for (int i = 0; i < rColliders.length(); ++i) {
-        luabridge::LuaRef rColl = rColliders[i+1];
-        std::string key = rColl["key"].cast<std::string>();
-        luabridge::LuaRef rShape = rColl["value"];
-        std::shared_ptr<Shape> shape = factory->makeShape(rShape);
-        ptr->AddShape(key, shape);
-    }
-    return ptr;
-}
+//
+//std::shared_ptr<Component> CharacterStateCompFactory::Create(luabridge::LuaRef &ref) {
+//    LuaTable table(ref);
+//    float speed = table.Get<float>("speed");
+//    float accGnd = table.Get<float>("acceleration_ground");
+//    float accAir = table.Get<float>("acceleration_air");
+//    float jumpHeight = table.Get<float>("jump_velocity");
+//    bool canDuck = table.Get<bool>("can_duck");
+//    bool flip = table.Get<bool>("flip");
+//    luabridge::LuaRef animTable = table.Get<luabridge::LuaRef>("anims");
+//    LuaTable at (animTable);
+//
+//    std::string anim_idle = at.Get<std::string>("idle","");
+//    std::string anim_walk = at.Get<std::string>("walk","");
+//    std::string anim_turn = at.Get<std::string>("turn","");
+//    std::string anim_duck = at.Get<std::string>("duck", "");
+//    std::string anim_jump_up = at.Get<std::string>("jump_up","");
+//    std::string anim_jump_down = at.Get<std::string>("jump_down","");
+//
+//
+//
+//    auto ptr = std::make_shared<CharacterStateMachine>(speed, accGnd, accAir, jumpHeight, canDuck, flip,
+//            anim_idle, anim_walk, anim_turn, anim_duck, anim_jump_up, anim_jump_down);
+//
+//    if (table.HasKey("f")) {
+//        ptr->SetRefreshFunc(table.Get<luabridge::LuaRef>("f"));
+//    }
+//
+//    luabridge::LuaRef rColliders = table.Get<luabridge::LuaRef>("colliders");
+//    auto factory = Engine::get().GetSceneFactory();
+//    for (int i = 0; i < rColliders.length(); ++i) {
+//        luabridge::LuaRef rColl = rColliders[i+1];
+//        std::string key = rColl["key"].cast<std::string>();
+//        luabridge::LuaRef rShape = rColl["value"];
+//        std::shared_ptr<Shape> shape = factory->makeShape(rShape);
+//        ptr->AddShape(key, shape);
+//    }
+//    return ptr;
+//}
 
 std::shared_ptr<Activity> DropCharactersActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);

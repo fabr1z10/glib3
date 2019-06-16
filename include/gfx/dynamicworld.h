@@ -32,7 +32,7 @@ public:
     //void SetCamera(Camera*);
     void OnCameraMove(Camera*);
     void UpdateWorld(glm::vec3);
-    void Update(double) {}
+    void Update(double) override {}
     //void AddItem(std::shared_ptr<Entity>, std::shared_ptr<Entity>);
     void AddItem (std::shared_ptr<Entity>);
 private:
@@ -42,7 +42,7 @@ private:
     float m_width, m_height;
     float m_halfWidth, m_halfHeight;
     int m_x, m_y;
-    float m_x0, m_y0;
+    //float m_x0, m_y0;
     float m_xc, m_yc;
     float m_xc0, m_yc0;
     float m_xmin, m_xmax;

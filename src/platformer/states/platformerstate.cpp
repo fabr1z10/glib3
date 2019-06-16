@@ -5,7 +5,7 @@
 #include <gfx/components/controller2d.h>
 #include <gfx/components/inputmethod.h>
 #include <gfx/components/dynamics2d.h>
-#include <gfx/components/animator.h>>
+#include <gfx/components/animator.h>
 //#include <GLFW/glfw3.h>
 //#include <gfx/math/geom.h>
 //#include <gfx/error.h>

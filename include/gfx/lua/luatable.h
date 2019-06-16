@@ -52,6 +52,15 @@ public:
         return ref.cast<T>();
     }
     
+    void ProcessVector (const std::string& name, std::function<void(luabridge::LuaRef)> f)
+    {
+        luabridge::LuaRef vref = this->Get<luabridge::LuaRef>(name);
+        for (int i = 0; i < vref.length(); ++i) {
+            luabridge::LuaRef ref = vref[i+1];
+            f(ref);
+        }
+    }
+    
     //template<> glm::vec2 Get<glm::vec2>(const std::string&);
     //template<> glm::vec3 Get<glm::vec3>(const std::string&);
     

@@ -34,7 +34,7 @@ function glib.load_folder(folder_name)
    -- print ("Loading all files in " .. folder_name .. " ...")
     --local s = "find " .. _path .. " -path " .. folder_name .. "/*.lua | cut -c" .. tostring(string.len(_path)+1) .. "- | sed 's/.\\{4\\}$//'"
     s = "find " .. _path .. folder_name .. "/*.lua | cut -c " .. tostring(string.len(_path)+1) .. "- | sed 's/.\\{4\\}$//'"
-    --print (s)
+    print (s)
     local p = io.popen(s)
     for line in p:lines() do
         --print(" " .. line)

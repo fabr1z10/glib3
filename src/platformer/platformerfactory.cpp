@@ -5,18 +5,9 @@
 #include <gfx/engine.h>
 #include <gfx/entity.h>
 #include <gfx/dynamicworld.h>
-#include <platformer/characterstatemachine.h>
 
 PlatformerFactory::PlatformerFactory() : SceneFactory() {
 
-    // platformer states
-//    m_stateBehaviorFactory.Add<Idle2DStateFactory>("idle2d");
-//    m_stateBehaviorFactory.Add<Walk2DStateFactory>("walk2d");
-//    m_stateBehaviorFactory.Add<Jump2DStateFactory>("jump2d");
-//    m_stateBehaviorFactory.Add<EnemyWalk2DStateFactory>("enemywalk2d");
-//    m_stateBehaviorFactory.Add<EnemyBounce2DStateFactory>("enemybounce2d");
-
-    m_componentFactory.Add<CharacterStateCompFactory>("characterstate");
     m_componentFactory.Add<EnemyInputCompFactory>("enemyinput");
 
     m_activityFactory.Add<DropCharactersActFactory>("dropcharacters");

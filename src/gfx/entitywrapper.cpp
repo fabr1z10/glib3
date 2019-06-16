@@ -68,8 +68,8 @@ void EntityWrapper::SetProperty (const std::string& key, luabridge::LuaRef value
 }
 
 void EntityWrapper::SendMessage(luabridge::LuaRef ref) {
-    auto sm = dynamic_cast<ExtendedStateMachine*>(m_underlying->GetComponent<StateMachine2>());
-    return sm->SendMessage(ref);
+    //auto sm = dynamic_cast<ExtendedStateMachine*>(m_underlying->GetComponent<StateMachine2>());
+    //return sm->SendMessage(ref);
 
 }
 

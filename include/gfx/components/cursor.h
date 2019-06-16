@@ -20,7 +20,7 @@ public:
     void setActive(bool) override;
     using ParentClass = Cursor;
 private:
-    bool m_active;
+    //bool m_active;
     Camera* m_cam;
 };
 

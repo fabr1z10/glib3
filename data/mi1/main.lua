@@ -1,4 +1,4 @@
-package.path = '/home/fabrizio/glib3/lualib/?.lua;' .. package.path
+package.path = '/Users/fabrizioventurini/glib3/lualib/?.lua;' .. package.path
 
 
 engine = {

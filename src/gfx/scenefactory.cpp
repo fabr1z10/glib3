@@ -89,6 +89,7 @@ SceneFactory::SceneFactory() {
     m_componentFactory.Add<Dynamics2DComponentFactory>("dynamics2d");
     m_componentFactory.Add<PropertiesCompFactory>("properties");
     m_componentFactory.Add<StateMachineCompFactory>("statemachine");
+    m_componentFactory.Add<ExtStateMachineCompFactory>("extstatemachine");
     m_componentFactory.Add<FollowComponentFactory>("follow");
     //m_componentFactory.Add<Follow3DComponentFactory>("follow3d");
     m_componentFactory.Add<InfoComponentFactory>("info");
