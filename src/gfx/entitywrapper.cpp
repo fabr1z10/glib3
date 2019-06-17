@@ -11,7 +11,7 @@
 #include <gfx/components/depth.h>
 #include <gfx/components/animator.h>
 #include <gfx/components/dynamics2d.h>
-#include <gfx/components/statemachine2.h>
+#include <gfx/components/statemachine.h>
 #include <gfx/properties.h>
 #include <gfx/components/extstatemachine.h>
 
@@ -40,17 +40,17 @@ std::string EntityWrapper::GetTag() const {
     return m_underlying->GetTag();
 }
 std::string EntityWrapper::GetState() const {
-    auto sm = m_underlying->GetComponent<StateMachine2>();
+    auto sm = m_underlying->GetComponent<StateMachine>();
     return sm->GetState();
 }
 
 void EntityWrapper::SetState(const std::string& state) {
-    auto sm = m_underlying->GetComponent<StateMachine2>();
+    auto sm = m_underlying->GetComponent<StateMachine>();
     return sm->SetState(state);
 }
 
 void EntityWrapper::EnableStateMachine(bool value) {
-    auto sm = m_underlying->GetComponent<StateMachine2>();
+    auto sm = m_underlying->GetComponent<StateMachine>();
     sm->setActive(value);
 }
 
@@ -68,7 +68,7 @@ void EntityWrapper::SetProperty (const std::string& key, luabridge::LuaRef value
 }
 
 void EntityWrapper::SendMessage(luabridge::LuaRef ref) {
-    //auto sm = dynamic_cast<ExtendedStateMachine*>(m_underlying->GetComponent<StateMachine2>());
+    //auto sm = dynamic_cast<ExtendedStateMachine*>(m_underlying->GetComponent<StateMachine>());
     //return sm->SendMessage(ref);
 
 }

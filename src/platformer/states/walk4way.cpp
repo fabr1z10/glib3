@@ -17,7 +17,7 @@ Walk4Way::Walk4Way(const Walk4Way &orig) : PlatformerState(orig) {
     m_flipHorizontally =orig.m_flipHorizontally;
 }
 
-std::shared_ptr<State2> Walk4Way::clone() const {
+std::shared_ptr<State> Walk4Way::clone() const {
     return std::make_shared<Walk4Way>(*this);
 }
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <gfx/components/statemachine2.h>
+#include <gfx/components/statemachine.h>
 // this include walk and idle which is a special
 // case of walk with target speed = 0
 // goes to jump state if it does not touch below.

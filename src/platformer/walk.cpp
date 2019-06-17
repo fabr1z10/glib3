@@ -13,7 +13,7 @@
 //
 //extern GLFWwindow* window;
 //
-//std::shared_ptr<State2> Walk::clone() const {
+//std::shared_ptr<State> Walk::clone() const {
 //    return std::make_shared<Walk>(*this);
 //}
 //
@@ -30,7 +30,7 @@
 //    }
 //}
 //
-//void Walk::AttachStateMachine(StateMachine2* sm) {
+//void Walk::AttachStateMachine(StateMachine* sm) {
 //    m_sm = dynamic_cast<CharacterStateMachine*>(sm);
 //    m_entity = sm->GetObject();
 //    m_controller = m_entity->GetComponent<Controller2D>();

@@ -24,6 +24,7 @@ class FactoryMethod : public AbstractFactoryMethod {
 public:
     virtual ~FactoryMethod() {}
     virtual std::shared_ptr<T> Create(luabridge::LuaRef& ref) = 0;
+    virtual void init (const LuaTable&, std::shared_ptr<T>) {}
 };
 
 template<class T>

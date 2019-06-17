@@ -24,7 +24,7 @@ Jump2D::Jump2D(const Jump2D &orig) : PlatformerState(orig) {
     m_accTimeAir = orig.m_accTimeAir;
 }
 
-std::shared_ptr<State2> Jump2D::clone() const {
+std::shared_ptr<State> Jump2D::clone() const {
     return std::make_shared<Jump2D>(*this);
 }
 

@@ -1,4 +1,6 @@
 #include <gfx/lua/luatable.h>
+#include <gfx/engine.h>
+
 
 LuaTable::LuaTable(const std::string & name) :
         m_ref(luabridge::getGlobal(LuaWrapper::L, name.c_str())) {
@@ -54,4 +56,12 @@ void lua_loop_array (luabridge::LuaRef ref, std::function<void(const LuaTable&)>
         LuaTable table(r);
         f(table);
     }
+}
+
+template<>
+std::shared_ptr<Shape> LuaTable::Get<std::shared_ptr<Shape> >(const std::string& key) const {
+    luabridge::LuaRef ref = m_ref[key];
+    auto factory = Engine::get().GetSceneFactory();
+    auto shape = factory->makeShape(ref);
+    return shape;
 }

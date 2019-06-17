@@ -1,4 +1,5 @@
 #pragma once
+
 #include <gfx/lua/luawrapper.h>
 #include <gfx/error.h>
 #include <gfx/enums.h>
@@ -6,6 +7,9 @@
 #include <glm/glm.hpp>
 #include <unordered_map>
 #include <functional>
+#include <memory>
+
+class Shape;
 
 template <typename T>
 std::vector<T> ReadVector(luabridge::LuaRef& ref) {
@@ -52,9 +56,11 @@ public:
         return ref.cast<T>();
     }
     
-    void ProcessVector (const std::string& name, std::function<void(luabridge::LuaRef)> f)
+    void ProcessVector (const std::string& name, std::function<void(luabridge::LuaRef)> f) const
     {
+        if (!HasKey(name)) return;
         luabridge::LuaRef vref = this->Get<luabridge::LuaRef>(name);
+
         for (int i = 0; i < vref.length(); ++i) {
             luabridge::LuaRef ref = vref[i+1];
             f(ref);
@@ -185,5 +191,8 @@ inline TextAlignment LuaTable::Get<TextAlignment>(const std::string& key) const 
     
     
 }
+
+template<>
+std::shared_ptr<Shape> LuaTable::Get<std::shared_ptr<Shape> >(const std::string& key) const;
 
 void lua_loop_array (luabridge::LuaRef ref, std::function<void(const LuaTable&)>);

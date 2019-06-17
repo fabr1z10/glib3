@@ -12,7 +12,7 @@ class Renderer;
 class Function2D;
 class HotSpot;
 class Runner;
-class State2;
+class State;
 class Activity;
 class IMesh;
 class Model;
@@ -24,18 +24,19 @@ class IFrameChangeHandler;
         std::shared_ptr<type> Create(luabridge::LuaRef& ref) override; \
     };
 
-#define FACTORY2(name, type) \
+#define FACTORY_I(name, type) \
     class name : public FactoryMethod<type> { \
     public: \
-        template <typename T> \
         std::shared_ptr<type> Create(luabridge::LuaRef& ref) override; \
+        void init (const LuaTable&, std::shared_ptr<type>) override; \
     };
 
-//#define FACTORY_SUB(name, sub, type) \
-//    class name : public sub { \
-//    public: \
-//        std::shared_ptr<type> Create(luabridge::LuaRef& ref) override; \
-//    };
+#define FACTORY_S(name, sub, type) \
+    class name : public sub { \
+    public: \
+        std::shared_ptr<type> Create(luabridge::LuaRef& ref) override; \
+        void init (const LuaTable&, std::shared_ptr<type>) override; \
+    };
 
 // Entities
 FACTORY(EntityFactory, Entity)
@@ -136,10 +137,10 @@ FACTORY(SimpleModelFactory, IModel)
 //FACTORY(CompositeModelFactory, IModel)
 
 // States
-FACTORY(AnimInitializerFactory, StateInitializer)
-FACTORY(AnimColliderInitializerFactory, StateInitializer)
-FACTORY(LuaAnimColliderInitializerFactory, StateInitializer)
-FACTORY(LuaInitializerFactory, StateInitializer)
+//FACTORY(AnimInitializerFactory, StateInitializer)
+//FACTORY(AnimColliderInitializerFactory, StateInitializer)
+//FACTORY(LuaAnimColliderInitializerFactory, StateInitializer)
+//FACTORY(LuaInitializerFactory, StateInitializer)
 
 //class EntityFactory : public FactoryMethod<Entity> {
 //public:

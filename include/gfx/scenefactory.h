@@ -7,7 +7,7 @@ class Engine;
 class IModel;
 class Activity;
 class LuaTable;
-class State2;
+class State;
 class Shape;
 class Camera;
 
@@ -47,7 +47,7 @@ public:
     std::shared_ptr<Activity> makeActivity (luabridge::LuaRef ref);
     std::shared_ptr<Runner> makeRunner (luabridge::LuaRef ref);
     std::shared_ptr<Component> makeComponent (luabridge::LuaRef ref);
-    std::shared_ptr<State2> makeState (luabridge::LuaRef ref);
+    std::shared_ptr<State> makeState (luabridge::LuaRef ref);
 
 protected:
     Factory<IModel> m_modelFactory;
@@ -57,7 +57,7 @@ protected:
     Factory<Activity> m_activityFactory;
     Factory<Component> m_componentFactory;
     Factory<Runner> m_runnerFactory;
-    Factory<State2> m_stateFactory;
+    Factory<State> m_stateFactory;
     //Factory<StateInitializer> m_stateInitFactory;
     //Factory<StateBehaviour> m_stateBehaviorFactory;
 };
@@ -83,7 +83,7 @@ inline std::shared_ptr<Runner> SceneFactory::makeRunner (luabridge::LuaRef ref) 
 inline std::shared_ptr<Component> SceneFactory::makeComponent (luabridge::LuaRef ref) {
     return m_componentFactory.Create(ref);
 }
-inline std::shared_ptr<State2> SceneFactory::makeState (luabridge::LuaRef ref) {
+inline std::shared_ptr<State> SceneFactory::makeState (luabridge::LuaRef ref) {
     return m_stateFactory.Create(ref);
 }
 

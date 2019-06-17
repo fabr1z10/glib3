@@ -14,10 +14,14 @@ FACTORY(EnemyInputCompFactory, Component)
 FACTORY(DropCharactersActFactory, Activity)
 
 // State factories
-FACTORY(Walk4WayStateFactory, State2)
-FACTORY(WalkSideFactory, State2)
-FACTORY(Jump2DFactory, State2)
-FACTORY(NilStateFactory, State2)
+FACTORY_I(PlatformerStateFactory, State)
+FACTORY(Walk4WayStateFactory, State)
+FACTORY_S(WalkSideFactory, PlatformerStateFactory, State)
+FACTORY_S(Jump2DFactory, PlatformerStateFactory, State)
+FACTORY(HitFactory, State)
+//FACTORY(HitJumpFactory, State)
+FACTORY(NilStateFactory, State)
+
 //class Idle2DStateFactory : public FactoryMethod<StateBehaviour> {
 //    std::unique_ptr<StateBehaviour> Create(luabridge::LuaRef&) override;
 //};

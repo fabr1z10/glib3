@@ -1,7 +1,7 @@
 #pragma once
 
 #include <functional>
-#include <gfx/components/statemachine2.h>
+#include <gfx/components/statemachine.h>
 #include <glm/glm.hpp>
 #include <gfx/math/shape.h>
 #include <gfx/lua/luawrapper.h>
@@ -12,7 +12,7 @@ class InputMethod;
 
 // like state machine, plus you can forward input key events
 // to the correct state
-class ExtendedStateMachine : public StateMachine2 {
+class ExtendedStateMachine : public StateMachine {
 public:
     ExtendedStateMachine(const std::string& initialState);
 
@@ -26,7 +26,7 @@ private:
 };
 
 inline std::type_index ExtendedStateMachine::GetType() {
-    return std::type_index(typeid(StateMachine2));
+    return std::type_index(typeid(StateMachine));
 }
 
 

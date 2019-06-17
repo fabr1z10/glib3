@@ -17,7 +17,7 @@
 //// idle -- when no button is pressed, and horizontal velocity is below eps
 //// walk -- when button is pressed and horizontal velocity has same direction as button
 //// turn -- when button is pressed and horizontal velocity has opposite direction than button
-//class Walk : public State2 {
+//class Walk : public State {
 //public:
 //    Walk(
 //        float speed,
@@ -26,11 +26,11 @@
 //        const std::string& idleAnim,
 //        const std::string& walkAnim,
 //        const std::string& turnAnim,
-//        bool flip) : State2(),
+//        bool flip) : State(),
 //    m_speed(speed), m_acceleration(acceleration), m_velocitySmoothing(0.0f), m_jumpVelocity(jumpVelocity),
 //    m_anims{idleAnim, walkAnim, turnAnim}, m_prevAnimFlag(-1), m_colliderId("walk"), m_canDuck(false), m_horizontalFlip(flip) {
 //    }
-//    Walk(const Walk & orig) : State2(orig),
+//    Walk(const Walk & orig) : State(orig),
 //        m_speed(orig.m_speed), m_acceleration(orig.m_acceleration), m_velocitySmoothing(orig.m_velocitySmoothing),
 //        m_jumpVelocity(orig.m_jumpVelocity), m_anims(orig.m_anims), m_prevAnimFlag(orig.m_prevAnimFlag),
 //        m_colliderId(orig.m_colliderId), m_canDuck(orig.m_canDuck), m_horizontalFlip(orig.m_horizontalFlip)
@@ -38,10 +38,10 @@
 //    void SetCanDuck (bool);
 //    void Init () override;
 //    void Run(double) override;
-//    void AttachStateMachine(StateMachine2* sm) override;
+//    void AttachStateMachine(StateMachine* sm) override;
 //    void End () override {}
 //    void KeyListener(int) override;
-//    std::shared_ptr<State2> clone() const override;
+//    std::shared_ptr<State> clone() const override;
 //    void UpdateAnimation(bool left, bool right);
 //
 //private:

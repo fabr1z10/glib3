@@ -8,7 +8,7 @@
 #include <iostream>
 #include <gfx/lua/luatable.h>
 
-ExtendedStateMachine::ExtendedStateMachine(const std::string& initialState) : StateMachine2(initialState) {
+ExtendedStateMachine::ExtendedStateMachine(const std::string& initialState) : StateMachine(initialState) {
 }
 
 // forward to the active state

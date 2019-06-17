@@ -1,11 +1,11 @@
 #pragma once
 
-#include <gfx/components/statemachine2.h>
+#include <gfx/components/statemachine.h>
 #include <unordered_map>
 
 class Animator;
 
-class StateCharacter : public StateMachine2 {
+class StateCharacter : public StateMachine {
 public:
     StateCharacter(float speed, char dir, const std::string& initialState);
     StateCharacter(const StateCharacter&);
@@ -23,7 +23,7 @@ private:
 
 
 inline std::type_index StateCharacter::GetType() {
-    return std::type_index(typeid(StateMachine2));
+    return std::type_index(typeid(StateMachine));
 }
 
 
@@ -35,14 +35,14 @@ inline float StateCharacter::GetSpeed() const {
     return m_speed;
 }
 
-class AnimateCharState : public State2 {
+class AnimateCharState : public State {
 public:
     AnimateCharState(const std::string& id) : m_id(id) {}
     void Init () override;
     void Run (double) override {}
     void End () override {}
-    void AttachStateMachine(StateMachine2*) override;
-    std::shared_ptr<State2> clone() const override;
+    void AttachStateMachine(StateMachine*) override;
+    std::shared_ptr<State> clone() const override;
 private:
     const StateCharacter* m_state;
     Animator* m_animator;

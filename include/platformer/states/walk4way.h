@@ -19,7 +19,7 @@ public:
     void Run(double) override;
     void Init () override;
     void End () override;
-    std::shared_ptr<State2> clone() const override;
+    std::shared_ptr<State> clone() const override;
 private:
     bool m_flipHorizontally;
     float m_speed;

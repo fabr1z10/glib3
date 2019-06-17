@@ -7,7 +7,7 @@
 #include <gfx/components/inputmethod.h>
 #include <gfx/components/dynamics2d.h>
 #include <gfx/components/animator.h>
-#include <gfx/components/statemachine2.h>
+#include <gfx/components/statemachine.h>
 #include <GLFW/glfw3.h>
 
 WalkSide::WalkSide(float speed, float acceleration, bool fliph, float jumpSpeed) :
@@ -19,7 +19,7 @@ WalkSide::WalkSide(const WalkSide &orig) : PlatformerState(orig) {
     m_flipHorizontally =orig.m_flipHorizontally;
 }
 
-std::shared_ptr<State2> WalkSide::clone() const {
+std::shared_ptr<State> WalkSide::clone() const {
     return std::make_shared<WalkSide>(*this);
 }
 

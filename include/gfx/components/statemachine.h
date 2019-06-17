@@ -3,18 +3,20 @@
 #include <gfx/component.h>
 #include <memory>
 
-class StateMachine2;
+class StateMachine;
 
-class State2 : public Ref {
+class State : public Ref {
 public:
-    virtual ~State2() = default;
+    virtual ~State() = default;
     virtual void Init () = 0;
     virtual void Run (double) = 0;
     virtual void End () = 0;
-    virtual std::shared_ptr<State2> clone() const = 0;
-    virtual void AttachStateMachine(StateMachine2*) = 0;
-    virtual bool KeyListener (int) {}
+    virtual std::shared_ptr<State> clone() const = 0;
+    virtual void AttachStateMachine(StateMachine*) = 0;
+    virtual bool KeyListener (int) { return false; }
 };
+
+
 
 //!  A state machine.
 /*!
@@ -23,10 +25,10 @@ public:
  states, of which only one is active at any given time. It provides methods
  to get the current state, and change the state to a new one.
  */
-class StateMachine2 : public Component {
+class StateMachine : public Component {
 public:
-    StateMachine2(const std::string& initialState) : m_initialState(initialState), m_currentState(nullptr) {}
-    StateMachine2(const StateMachine2&);
+    StateMachine(const std::string& initialState) : m_initialState(initialState), m_currentState(nullptr) {}
+    StateMachine(const StateMachine&);
     void Start () override {}
     void Begin() override;
     void Update(double) override;
@@ -34,21 +36,27 @@ public:
     std::string GetState() const;
     virtual void SetState (const std::string&);
     virtual void Refresh () {}
-    void AddState(const std::string& id, std::shared_ptr<State2> state);
+    void AddState(const std::string& id, std::shared_ptr<State> state);
     std::shared_ptr<Component> clone() const override;
-    using ParentClass = StateMachine2;
+    using ParentClass = StateMachine;
 protected:
-    State2* m_currentState;
+    State* m_currentState;
     std::string m_currentStateId;
     std::string m_initialState;
-    std::unordered_map<std::string, std::shared_ptr<State2>> m_states;
+    std::unordered_map<std::string, std::shared_ptr<State>> m_states;
 };
 
-inline void StateMachine2::AddState(const std::string& id, std::shared_ptr<State2> state) {
+inline void StateMachine::AddState(const std::string& id, std::shared_ptr<State> state) {
     m_states.insert(std::make_pair(id, state));
 
 }
 
-inline std::string StateMachine2::GetState() const {
+inline std::string StateMachine::GetState() const {
     return m_currentStateId;
 }
+
+
+class StateAction {
+public:
+    virtual void Run (StateMachine*) = 0;
+};
