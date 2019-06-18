@@ -42,6 +42,7 @@ public:
     // runner implementation
     void Update(double) override;
     void SetResponseManager(std::unique_ptr<CollisionResponseManager>);
+    CollisionResponseManager* GetResponseManager();
     using ParentClass = CollisionEngine;
     // Casts a ray against colliders in the scene.
     // A raycast is conceptually like a laser beam that is fired from a point in space along a particular direction.
@@ -49,7 +50,7 @@ public:
     // This function returns a RaycastHit object with a reference to the collider that is hit by the ray
     // (the collider property of the result will be NULL if nothing was hit). The layerMask can be used to detect objects selectively only on certain layers (this allows you to apply the detection only to enemy characters, for example).
     RayCastHit2D Raycast (glm::vec3 rayOrigin, glm::vec2 rayDir, float length, int mask);
-    Entity* ShapeCast (std::shared_ptr<Shape>, const glm::mat4& transform, int mask);
+    Collider* ShapeCast (std::shared_ptr<Shape>, const glm::mat4& transform, int mask);
     void Enable25DCollision(float);
     std::string toString() override;
 private:
@@ -70,3 +71,6 @@ inline void CollisionEngine::SetResponseManager(std::unique_ptr<CollisionRespons
     m_responseManager = std::move(r);
 }
 
+inline CollisionResponseManager* CollisionEngine::GetResponseManager() {
+    return m_responseManager.get();
+}

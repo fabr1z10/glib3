@@ -1,11 +1,10 @@
 #pragma once
 
-#include <platformer/states/platformerstate.h>
+#include <platformer/states/hitbase.h>
 #include <platformer/states/jump2d.h>
-class Shape;
 
 // this is the walk state used in platformers like SuperMario
-class Hit : public PlatformerState {
+class Hit : public HitBase {
 public:
     /**
      *
@@ -13,35 +12,12 @@ public:
      * @param acceleration The acceleration
      * @param fliph Flip entity horizontally when going left
      */
-    Hit (const std::string& anim, int frame, std::shared_ptr<Shape> attackBox);
+    Hit (const std::string& anim, int frame, std::shared_ptr<Shape> attackBox, int mask, int tag, float acceleration);
     Hit (const Hit& orig);
     void Run(double) override;
-    void Init () override;
     void End () override {}
     std::shared_ptr<State> clone() const override;
 private:
-    std::string m_anim;
-    int m_frame;
-    std::shared_ptr<Shape> m_box;
+    float m_acceleration;
 };
 
-//// this is the walk state used in platformers like SuperMario
-//class HitJump : public Jump2D {
-//public:
-//    /**
-//     *
-//     * @param speed The maximum speed
-//     * @param acceleration The acceleration
-//     * @param fliph Flip entity horizontally when going left
-//     */
-//    HitJump (float accelerationTimeAirborne, float speed, bool flipH, const std::string& anim, bool bounce, float bounceFactor, int frame, std::shared_ptr<Shape> attackBox);
-//    HitJump (const HitJump& orig);
-//    void Run(double) override;
-//    void Init () override;
-//    void End () override {}
-//    std::shared_ptr<State> clone() const override;
-//private:
-//    std::string m_anim;
-//    int m_frame;
-//    std::shared_ptr<Shape> m_box;
-//};

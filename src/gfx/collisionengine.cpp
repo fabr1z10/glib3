@@ -233,7 +233,7 @@ void CollisionEngine::Update(double dt) {
     // add the new collision pairs
 }
 
-Entity* CollisionEngine::ShapeCast (std::shared_ptr<Shape> shape, const glm::mat4& transform, int mask) {
+Collider* CollisionEngine::ShapeCast (std::shared_ptr<Shape> shape, const glm::mat4& transform, int mask) {
     auto aabb = shape->getBounds();
     aabb.Transform(transform);
     float z = transform[3][2];
@@ -265,7 +265,7 @@ Entity* CollisionEngine::ShapeCast (std::shared_ptr<Shape> shape, const glm::mat
                     // bounding boxes intersect, so let's make a proper collision test
                     CollisionReport report = m_intersector->Intersect(shape.get(), transform, s, t);
                     if (report.collide) {
-                        return c->GetObject();
+                        return c;
                     }
                 }
             }

@@ -16,7 +16,7 @@ PlatformerFactory::PlatformerFactory() : SceneFactory() {
     m_stateFactory.Add<WalkSideFactory>("walkside");
     m_stateFactory.Add<Jump2DFactory>("jump");
     m_stateFactory.Add<HitFactory>("hit");
-   //m_stateFactory.Add<HitJumpFactory>("hitj");
+    m_stateFactory.Add<HitJumpFactory>("hitj");
     m_stateFactory.Add<NilStateFactory>("nil");
 
 }

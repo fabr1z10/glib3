@@ -19,7 +19,7 @@ FACTORY(Walk4WayStateFactory, State)
 FACTORY_S(WalkSideFactory, PlatformerStateFactory, State)
 FACTORY_S(Jump2DFactory, PlatformerStateFactory, State)
 FACTORY(HitFactory, State)
-//FACTORY(HitJumpFactory, State)
+FACTORY(HitJumpFactory, State)
 FACTORY(NilStateFactory, State)
 
 //class Idle2DStateFactory : public FactoryMethod<StateBehaviour> {

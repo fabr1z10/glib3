@@ -92,7 +92,7 @@ room =  {
 							 		{ id = "walk", state = {type="walkside", speed = 75, acceleration = 0.05, fliph = true, jumpspeed = variables.jump_velocity }},
 							-- 	 	{ id = "idle", init = { type="luaanim", func = curry21(marioinit, "idle") }, behavior = { type ="idle2d", acceleration = marioAcc }},
 							-- 		{ id = "walk", init = { type="luaanim", func = curry21(marioinit, "walk") }, behavior = { type ="walk2d", acceleration = marioAcc, speed= marioSpeed }},
-							 		{ id = "jump", state = { type="jump", speed = 75, acceleration = 0.10, fliph = true, anim = "jump" }},
+							 		{ id = "jump", state = { type="jump", speed = 75, acceleration = 0.10, fliph = true, animup = "jumpup", animdown="jumpdown" }},
 							 		{ id = "nil", state = { type="nil" }}
 							-- 		{ id = "duck", init = { type="animcollider", anim= "duck", collider="duck" }, behavior = { type ="idle2d", acceleration = marioAcc, speed= marioSpeed }},
 							-- 		{ id = "nophys", init = { type="luaanim", func = curry21(marioinit2, "idle") } }

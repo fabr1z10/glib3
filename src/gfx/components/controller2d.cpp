@@ -74,6 +74,7 @@ bool Controller2D::IsFalling(int dir) {
 
 
 void Controller2D::Move(glm::vec2& dx) {
+    float scale = m_entity->GetScale();
     if (dx != vec2(0.0f)) {
         UpdateRaycastOrigins();
         //m_ppp.clear();
@@ -95,7 +96,8 @@ void Controller2D::Move(glm::vec2& dx) {
             HorizontalCollisions(dx);
         if (!isEqual(dx.y, 0.0f))
             VerticalCollisions(dx);
-        m_entity->MoveLocal(glm::vec3(dx.x, dx.y, 0));
+        glm::vec2 actualMove = dx / scale;
+        m_entity->MoveLocal(glm::vec3(actualMove.x, actualMove.y, 0));
         if (!m_wasGnd && m_details.below) {
             glm::vec3 p=m_entity->GetPosition();
             std::cout << "AFTER+++ " << p.x << "," << p.y << std::endl;
@@ -117,7 +119,7 @@ void Controller2D::HorizontalCollisions(glm::vec2& velocity) {
         if (hit.collide) {
 
             float slopeAngle = angle(hit.normal, vec2(0, 1));
-            std::cout << "SLOPE ANGLE = " << rad2deg*slopeAngle << std::endl;
+            //std::cout << "SLOPE ANGLE = " << rad2deg*slopeAngle << std::endl;
             if (i == 0 && (slopeAngle*rad2deg) <= m_maxClimbAngle) {
                 if (m_details.descendingSlope) {
                     m_details.descendingSlope = false;

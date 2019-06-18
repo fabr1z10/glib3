@@ -6,11 +6,13 @@ factory.rect = function(args)
 	local z = args.z or 0
 	local width = engine.tilesize * args.width
 	local height = engine.tilesize * args.height
+	local flag = args.flag or 2
+	local tag = args.tag or 1
 	return {
 		pos = { args.pos[1] * engine.tilesize, args.pos[2] * engine.tilesize, z },
 		components = {
 			{ type = "gfx", image = args.img, width = width, height = height, rep = {args.width, args.height}},
-			{ type = "collider", flag = 2, mask = 1, tag=1, shape = { type="rect", width = width, height = height }}
+			{ type = "collider", flag = flag, mask = 1, tag=tag, shape = { type="rect", width = width, height = height }}
 		}
 	}
 end

@@ -18,7 +18,7 @@ public:
         return renderer->GetObject();
     }
     bool IsAnimComplete() const override;
-
+    int GetFrame() const override;
 private:
     int inc;
     std::string animation;
@@ -34,6 +34,9 @@ inline bool SimpleModelStatus::IsAnimComplete() const {
     return m_animCompleted;
 }
 
+inline int SimpleModelStatus::GetFrame() const {
+    return frame;
+}
 
 class SimpleModel : public IModel {
 public:

@@ -72,8 +72,9 @@ void Entity::Remove(int id) {
     //std::string name = entity->GetName();
     //if (!name.empty())
     //    m_namedChildren.erase(name);
+    auto entity = m_children.at(id);
+    entity->WindDown();
     if (!onRemove.isEmpty()) {
-        auto entity = m_children.at(id);
         onRemove.Fire(entity.get());
     }
     m_children.erase(id);
@@ -113,6 +114,13 @@ void Entity::Start() {
     }
     for (auto& m : m_children)
         m.second->Start();
+}
+
+void Entity::WindDown() {
+    for (auto& iter : m_components) {
+        iter.second->End();
+    }
+
 }
 
 void Entity::Begin() {

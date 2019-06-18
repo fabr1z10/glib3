@@ -33,6 +33,7 @@ public:
     void onStart (Collider*, Collider*, CollisionReport&);
     void onStay (Collider*, Collider*, CollisionReport&);
     void onEnd (Collider*, Collider*, CollisionReport&);
+    CollisionHandler GetHandler (int tag1, int tag2);
 private:
     CollisionHandler GetCollisionResponse(Collider*, Collider*) const;
     std::unordered_map<std::pair<int, int>, std::unique_ptr<CollisionResponse> > m_response;

@@ -1,3 +1,11 @@
+function mario_removeenemy(mario, enemy) 
+	local actions = {
+		{ type = action.remove_object, args = { id = enemy.id}}
+	}
+	local s = script.make(actions)
+	monkey.play(s)
+end
+
 function mario_goomba(mario, goomba, sx, sy) 
 
 	if (goomba.state == "die") then

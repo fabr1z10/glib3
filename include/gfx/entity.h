@@ -64,6 +64,7 @@ public:
     void Remove(int);
     void Update(double);
     virtual void Start();
+    void WindDown();
     void Begin();
     friend class DepthFirstIterator<Entity>;
     DepthFirstIterator<Entity> begin() {

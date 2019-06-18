@@ -1,5 +1,20 @@
 #include "gfx/collisionresponse.h"
 
+CollisionHandler CollisionResponseManager::GetHandler(int tag1, int tag2) {
+
+    auto rm = m_response.find(std::make_pair(tag1, tag2));
+    if (rm == m_response.end()) {
+        rm = m_response.find(std::make_pair(tag2, tag1));
+        if (rm != m_response.end()) {
+            return CollisionHandler(rm->second.get(), true);
+        }
+        return CollisionHandler();
+    } else {
+        return CollisionHandler(rm->second.get(), false);
+    }
+
+}
+
 CollisionHandler CollisionResponseManager::GetCollisionResponse(Collider* c1, Collider* c2) const {
     auto rm = m_response.find(std::make_pair(c1->GetTag(), c2->GetTag()));
     if (rm == m_response.end()) {

@@ -17,6 +17,10 @@ void Collider::SetParent(Entity * entity) {
     Component::SetParent(entity);
 }
 
+void Collider::End() {
+    m_engine->Remove(this);
+}
+
 void Collider::Start() {
     m_engine = Engine::get().GetRunner<CollisionEngine>();
     if (m_engine == nullptr) {
@@ -44,13 +48,16 @@ void Collider::Start() {
 }
 
 Collider::~Collider() {
-    std::cerr << "clearing collider\n";
-
-    if (Engine::get().isRunning() && m_engine != nullptr) {
-        m_engine->Remove(this);
-    }
-    std::cerr << "done\n";
+//    std::cerr << "clearing collider\n";
+//
+//    if (Engine::get().isRunning() && m_engine != nullptr) {
+//        m_engine->Remove(this);
+//    }
+//    std::cerr << "done\n";
 }
+
+
+
 void Collider::SetShape(std::shared_ptr<Shape> shape) {
     m_shape = shape;
     // call move

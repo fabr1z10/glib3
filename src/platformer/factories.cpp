@@ -3,6 +3,7 @@
 #include <platformer/states/walk4way.h>
 #include <platformer/states/walkside.h>
 #include <platformer/states/hit.h>
+#include <platformer/states/hitjump.h>
 #include <platformer/states/jump2d.h>
 
 #include <platformer/states/nilstate.h>
@@ -164,10 +165,11 @@ std::shared_ptr<State> Jump2DFactory::Create(luabridge::LuaRef &ref) {
     float a = table.Get<float>("acceleration");
     bool fliph = table.Get<bool>("fliph");
     //float jumpSpeed= table.Get<float>("jumpspeed");
-    std::string anim = table.Get<std::string>("anim");
+    std::string animUp = table.Get<std::string>("animup");
+    std::string animDown = table.Get<std::string>("animdown");
     bool bounce = table.Get<bool>("bounce", false);
     float bounceFactor = table.Get<float>("bouncefactor", 0.0f);
-    auto ptr = std::make_shared<Jump2D>(a, speed, fliph, anim, bounce, bounceFactor);
+    auto ptr = std::make_shared<Jump2D>(a, speed, fliph, animUp, animDown, bounce, bounceFactor);
     init(table, ptr);
     return ptr;
 
@@ -186,11 +188,26 @@ std::shared_ptr<State> HitFactory::Create(luabridge::LuaRef &ref) {
     std::string anim = table.Get<std::string>("anim");
     int frame = table.Get<int>("frame");
     auto shape = table.Get<std::shared_ptr<Shape>>("shape");
-    return std::make_shared<Hit>(anim, frame, shape);
-
-
-
+    float acc = table.Get<float>("acceleration");
+    int mask = table.Get<int>("mask");
+    int tag = table.Get<int>("tag");
+    return std::make_shared<Hit>(anim, frame, shape, mask, tag, acc);
 }
+
+std::shared_ptr<State> HitJumpFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    std::string anim = table.Get<std::string>("anim");
+    int frame = table.Get<int>("frame");
+    auto shape = table.Get<std::shared_ptr<Shape>>("shape");
+    int mask = table.Get<int>("mask");
+    int tag = table.Get<int>("tag");
+
+    float acc = table.Get<float>("acceleration");
+    float speed = table.Get<float>("speed");
+    return std::make_shared<HitJump>(anim, frame, shape, mask, tag, acc, speed);
+}
+
+
 
 //std::shared_ptr<State> HitJumpFactory::Create(luabridge::LuaRef &ref) {
 //    LuaTable table(ref);

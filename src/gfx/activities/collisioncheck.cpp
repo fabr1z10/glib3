@@ -27,7 +27,7 @@ void CollisionCheck::Start() {
 
     auto result = m_engine->ShapeCast(m_shape, p, m_mask);
     if (result != nullptr) {
-        m_callback(EntityWrapper(result));
+        m_callback(EntityWrapper(result->GetObject()));
     }
     SetComplete();
 }

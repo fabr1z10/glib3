@@ -17,8 +17,8 @@ room =  {
 				type = "collision", 
 				size = {roomInfo.collisionSize, roomInfo.collisionSize}, 
 				response = {
-					{ tag = {1, variables.tags.goomba}, onenter = mario_goomba },
-					{ tag = {40, 50}, onenter = mario_removeenemy }
+					{ tag = {1, variables.tags.goomba}, onenter = mario_goomba }
+
 				}
 			},
 			{
@@ -27,17 +27,7 @@ room =  {
 				height = 256,
 				cam ="maincam",
 				items = {
-					--factory.rect { pos = {30, 2}, flag=2|4, img = "block1.png", width=1, height=1 }	
-					factory.rect { pos = {10, 2}, flag=2|4, tag = 50, img = "block1.png", width=1, height=1 },	
-					factory.rect { pos = {11, 2}, flag=2|4, tag = 50, img = "block1.png", width=1, height=1 },	
-					factory.rect { pos = {12, 2}, flag=2|4, tag = 50, img = "block1.png", width=1, height=1 },	
-					factory.rect { pos = {13, 2}, flag=2|4, tag = 50, img = "block1.png", width=1, height=1 },	
-					factory.rect { pos = {10, 3}, flag=2|4, tag = 50, img = "block1.png", width=1, height=1 },	
-					factory.rect { pos = {11, 3}, flag=2|4, tag = 50, img = "block1.png", width=1, height=1 },	
-					factory.rect { pos = {12, 3}, flag=2|4, tag = 50, img = "block1.png", width=1, height=1 },	
-					factory.rect { pos = {13, 3}, flag=2|4, tag = 50, img = "block1.png", width=1, height=1 },	
-
-
+					factory.rect { pos = {10, 2}, img = "block1.png", width=1, height=1, flag = 2|4 }	
 				}
 			}
 			-- 		{ tag = {1, 20}, onenter = basicBrickResponse },
@@ -92,7 +82,7 @@ room =  {
 						components = {
 							--{ type="gfx", model="mario", anim="idle" },
 							{ type="controller2d", maxclimbangle = 80, maxdescendangle = 80, horizontalrays=4, verticalrays=4 },
-							{ type="dynamics2d", gravity = -50 },
+							{ type="dynamics2d", gravity = variables.gravity },
 							{ type="multicollider", tag=1, flag=1, mask =2, initialshape="small", shapes = {
 							 	{ name ="small", type="rect", width=16, height=16, offset={-8,0}},
 							 	{ name ="big", type="rect", width=16, height=32, offset={-8,0}},
@@ -108,7 +98,7 @@ room =  {
 							 				acceleration = 0.05, 
 							 				fliph = true, 
 							 				--jumpspeed = variables.jump_velocity,
-							 				jumpspeed = 100,
+							 				jumpspeed = 500,
 							 				keys = {
 							 					{ id = 81, action = "changestate", state = "lowkick" },
 							 					{ id = 87, action = "callback", func = function() print ("W") end }
@@ -132,8 +122,8 @@ room =  {
 							 			}
 							 		},
 							 		{ id = "nil", state = { type="nil" }},
-							 		{ id = "lowkick", state = { type="hit", anim="lowkick", frame = 2, mask=4, tag=40, shape = {type="rect", width=34, height=30, offset={39,14}}, acceleration = 0.05}},
-							 		{ id = "jkick", state = { type="hitj", anim="lowkick", frame = 2, mask=4, tag=40, shape = {type="rect", width=34, height=30, offset={39,14}}, acceleration = 0.10, speed=75 }}
+							 		{ id = "lowkick", state = { type="hit", anim="lowkick", frame = 2, mask = 4, shape = {type="rect", width=34, height=30, offset={49,24}}, acceleration = 0.05}},
+							 		{ id = "jkick", state = { type="hitj", anim="lowkick", frame = 2, mask = 4, shape = {type="rect", width=34, height=30, offset={49,24}}, acceleration = 0.10, speed=75 }}
 							-- 		{ id = "duck", init = { type="animcollider", anim= "duck", collider="duck" }, behavior = { type ="idle2d", acceleration = marioAcc, speed= marioSpeed }},
 							-- 		{ id = "nophys", init = { type="luaanim", func = curry21(marioinit2, "idle") } }
 								},
@@ -160,7 +150,6 @@ room =  {
 						 },
 					},
 					factory.rect { pos = {0, 0}, img = "block1.png", width=69, height=2 },
-					--factory.rect { pos = {10, 2}, flag=2|4, tag = 50, img = "block1.png", width=1, height=1 }	
 					--factory.goomba.create { pos = {13, 4}, flipWhenPlatformEnds = true}
 					-- {
 					-- 	pos = { 0,0,1 },

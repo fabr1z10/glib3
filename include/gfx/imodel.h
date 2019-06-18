@@ -18,6 +18,7 @@ public:
     virtual void Init(Entity*) = 0;
     virtual void Update (double) = 0;
     virtual void AdvanceFrame(int) = 0;
+    virtual int GetFrame() const = 0;
     virtual void SetAnimation (const std::string& anim, bool fwd) = 0;
     virtual Entity* GetEntity() = 0;
     virtual bool IsAnimComplete() const = 0;

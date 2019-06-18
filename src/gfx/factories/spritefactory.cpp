@@ -57,7 +57,10 @@ std::shared_ptr<Entity> SpriteFactory::Create (luabridge::LuaRef& ref) {
                 entity->AddChild(childEntity);
         }
     }
-
+    if (table.HasKey("scale")) {
+        float scale = table.Get<float>("scale");
+        entity->SetScale(scale);
+    }
     return entity;
 }
 
