@@ -66,12 +66,12 @@ models["ryu"] = {
 			{duration = dt, quads = {{ id = s.ryu_walk_8 }}},
 		}},
 		{ name = "lowkick", frames = {
-			{duration = dt, quads = {{ id = s.ryu_hit_1 }}},
-			{duration = dt, quads = {{ id = s.ryu_hit_2 }}},
+			{duration = 0.5*dt, quads = {{ id = s.ryu_hit_1 }}},
+			{duration = 0.5*dt, quads = {{ id = s.ryu_hit_2 }}},
 			{duration = dt, quads = {{ id = s.ryu_hit_3 }}},
-			{duration = dt, quads = {{ id = s.ryu_hit_4 }}},
-			{duration = dt, quads = {{ id = s.ryu_hit_5 }}},
-			{duration = dt, quads = {{ id = s.ryu_hit_6 }}},
+			{duration = 0.5*dt, quads = {{ id = s.ryu_hit_4 }}},
+			{duration = 0.5*dt, quads = {{ id = s.ryu_hit_5 }}},
+			{duration = 0.5*dt, quads = {{ id = s.ryu_hit_6 }}},
 		}},
         { name = "jumpup", loop = false, frames = { 
 			{duration = dt, quads = {{ id = s.ryu_jump_begin_1 }}},
