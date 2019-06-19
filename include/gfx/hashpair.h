@@ -31,4 +31,14 @@ struct hash<glm::vec2> {
     }
 };
 
+template<>
+struct hash<std::pair<std::string, int>> {
+    inline size_t operator()(std::pair<std::string, int> p) const {
+        size_t seed = 0;
+        ::hash_combine(seed, p.first);
+        ::hash_combine(seed, p.second);
+        return seed;
+    }
+};
+
 }

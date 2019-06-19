@@ -2,20 +2,27 @@
 
 #include <memory>
 #include "gfx/math/shape.h"
-#include "gfx/component.h"
+#include "gfx/components/icollider.h"
 #include <gfx/event.h>
 
 class Entity;
 class CollisionEngine;
 
-class Collider : public Component {
+class SimpleCollider : public ICollider {
 public:
-    Collider (int tag, int flag, int mask) : m_shape{nullptr}, m_engine{nullptr}, m_tag{tag}, m_flag{flag}, m_mask{mask}, m_enabled{true} {}
-    Collider (std::shared_ptr<Shape> shape, int tag, int flag, int mask) :
+    SimpleCollider (int tag, int flag, int mask) : m_shape{nullptr}, m_engine{nullptr}, m_tag{tag}, m_flag{flag}, m_mask{mask}, m_enabled{true} {}
+    SimpleCollider (std::shared_ptr<Shape> shape, int tag, int flag, int mask) :
     m_shape{shape}, m_tag{tag}, m_enabled{true}, m_flag{flag}, m_mask{mask}, m_engine(nullptr) {}
-    Collider (const Collider&);
-    virtual ~Collider();
-    Shape* GetShape();
+    SimpleCollider (const SimpleCollider&);
+    virtual ~SimpleCollider();
+    
+    // ICollider interface
+    Shape* GetShape() override;
+    int GetCollisionTag() const override;
+    int GetCollisionFlag() const override;
+    int GetCollisionMask() const override;
+    
+    
     bool HasShape() const;
     void SetShape(std::shared_ptr<Shape> shape);
     void SetParent(Entity* parent) override;
@@ -23,13 +30,10 @@ public:
     void End() override;
     void Update(double) override {}
     void Move(Entity*);
-    using ParentClass = Collider;
+    using ParentClass = ICollider;
     bool Enabled() const;
     Bounds GetBounds() const;
-    int GetTag() const;
-    int GetFlag() const;
-    int GetMask() const;
-    Event<Collider*> onShapeChanged;
+    Event<SimpleCollider*> onShapeChanged;
     void SetEnabled (bool);
     CollisionEngine* GetCollisionEngine() { return m_engine;}
     std::shared_ptr<Component> clone() const override;
@@ -43,35 +47,35 @@ protected:
     CollisionEngine* m_engine;
 };
 
-inline Bounds Collider::GetBounds() const {
+inline Bounds SimpleCollider::GetBounds() const {
     return m_aabb;
 }
 
-inline Shape* Collider::GetShape() {
+inline Shape* SimpleCollider::GetShape() {
     return m_shape.get();
 }
 
-inline bool Collider::Enabled() const {
+inline bool SimpleCollider::Enabled() const {
     return m_enabled && isActive();
 }
 
-inline void Collider::SetEnabled(bool value) {
+inline void SimpleCollider::SetEnabled(bool value) {
     m_enabled = value;
 }
 
-inline int Collider::GetTag() const {
+inline int SimpleCollider::GetCollisionTag() const {
     return m_tag;
 
 }
 
-inline int Collider::GetFlag() const {
+inline int SimpleCollider::GetCollisionFlag() const {
     return m_flag;
 }
 
-inline int Collider::GetMask() const {
+inline int SimpleCollider::GetCollisionMask() const {
     return m_mask;
 }
 
-inline bool Collider::HasShape() const {
+inline bool SimpleCollider::HasShape() const {
     return m_shape != nullptr;
 }

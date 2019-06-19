@@ -1,5 +1,5 @@
 #include <platformer/states/hit.h>
-#include <gfx/components/stateactions.h>>
+#include <gfx/components/stateactions.h>
 
 #include <gfx/components/animator.h>
 #include <gfx/components/dynamics2d.h>

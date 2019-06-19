@@ -27,12 +27,12 @@ variables = {
 	jump_height = 80,
 	time_to_jump_apex = 0.5,
 	tags = {
-		basic_brick = 10,
-		mushroom = 11,
-		bonus_brick = 12,
-		mushroom1up = 13,
-		goomba = 14,
-		koopa = 15
+		player = 1,
+		foe = 4,
+		player_attack = 40,
+		foe_attack = 41,
+		foe_attack_2 = 42,
+		hittable_block = 50
 
 	}
 }
@@ -56,6 +56,7 @@ require("factories/rect")
 require("factories/bricks")
 require("factories/bonusbrick")
 require("factories/foe")
+require("factories/enemy")
 --require("factories/actions")
 require("script/mario")
 

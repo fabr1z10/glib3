@@ -2,7 +2,7 @@
 
 #include "entity.h"
 #include <gfx/math/collisionreport.h>
-#include <gfx/components/collider.h>
+#include <gfx/components/icollider.h>
 #include <unordered_map>
 #include <memory>
 #include <gfx/hashpair.h>
@@ -29,12 +29,12 @@ struct CollisionHandler {
 class CollisionResponseManager {
 public:
     void AddCollisionResponse(int tag1, int tag2, std::unique_ptr<CollisionResponse>);
-    bool HasCollision(Collider*, Collider*) const;
-    void onStart (Collider*, Collider*, CollisionReport&);
-    void onStay (Collider*, Collider*, CollisionReport&);
-    void onEnd (Collider*, Collider*, CollisionReport&);
+    bool HasCollision(ICollider*, ICollider*) const;
+    void onStart (ICollider*, ICollider*, CollisionReport&);
+    void onStay (ICollider*, ICollider*, CollisionReport&);
+    void onEnd (ICollider*, ICollider*, CollisionReport&);
     CollisionHandler GetHandler (int tag1, int tag2);
 private:
-    CollisionHandler GetCollisionResponse(Collider*, Collider*) const;
+    CollisionHandler GetCollisionResponse(ICollider*, ICollider*) const;
     std::unordered_map<std::pair<int, int>, std::unique_ptr<CollisionResponse> > m_response;
 };

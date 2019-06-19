@@ -3,7 +3,7 @@
 #include <glm/glm.hpp>
 
 class Entity;
-class Collider;
+class ICollider;
 
 struct CollisionReport {
     CollisionReport()
@@ -19,6 +19,6 @@ struct RayCastHit2D {
     RayCastHit2D(bool collide, float l, glm::vec2 normal) : collide(collide), length(l), entity(nullptr), normal(normal) {}
     bool collide;
     float length;
-    Collider* entity;
+    ICollider* entity;
     glm::vec2 normal;
 };

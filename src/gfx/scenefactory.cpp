@@ -1,5 +1,6 @@
 #include <gfx/scenefactory.h>
 #include <gfx/factories.h>
+#include <gfx/factories/modelfactories.h>
 #include <iostream>
 #include <gfx/engine.h>
 
@@ -68,7 +69,7 @@ SceneFactory::SceneFactory() {
     m_runnerFactory.Add<DynamicWorldBuilderFactory>("dynamicworld");
 
     m_modelFactory.Add<SimpleModelFactory>("sprite");
-    //m_modelFactory.Add<CompositeModelFactory>("model");
+    m_modelFactory.Add<BoxedModelFactory>("boxed_sprite");
 
     m_entityFactory.Add<EntityFactory>("default");
     m_entityFactory.Add<TextViewFactory>("textview");
@@ -83,7 +84,7 @@ SceneFactory::SceneFactory() {
     m_componentFactory.Add<GfxComponentFactory>("gfx");
     m_componentFactory.Add<Gfx3DComponentFactory>("gfx3d");
     m_componentFactory.Add<ColliderComponentFactory>("collider");
-    m_componentFactory.Add<MultiColliderComponentFactory>("multicollider");
+    //m_componentFactory.Add<MultiColliderComponentFactory>("multicollider");
 
     m_componentFactory.Add<Controller2DComponentFactory>("controller2d");
     m_componentFactory.Add<Dynamics2DComponentFactory>("dynamics2d");

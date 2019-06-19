@@ -53,7 +53,7 @@ FACTORY(TextComponentFactory, Component)
 FACTORY(GfxComponentFactory, Component)
 FACTORY(Gfx3DComponentFactory, Component)
 FACTORY(ColliderComponentFactory, Component)
-FACTORY(MultiColliderComponentFactory, Component)
+//FACTORY(MultiColliderComponentFactory, Component)
 FACTORY(StateMachineComponentFactory, Component)
 FACTORY(HotSpotComponentFactory, Component)
 FACTORY(DepthComponentFactory, Component)
@@ -133,7 +133,9 @@ FACTORY(TreeMoveActFactory, Activity);
 FACTORY(SetActiveActFactory, Activity);
 
 // Asset
-FACTORY(SimpleModelFactory, IModel)
+
+//FACTORY(SimpleModelFactory, IModel)
+//FACTORY(BoxedModelFactory, IModel)
 //FACTORY(CompositeModelFactory, IModel)
 
 // States

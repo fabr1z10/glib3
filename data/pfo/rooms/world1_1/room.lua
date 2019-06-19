@@ -17,8 +17,9 @@ room =  {
 				type = "collision", 
 				size = {roomInfo.collisionSize, roomInfo.collisionSize}, 
 				response = {
-					{ tag = {1, variables.tags.goomba}, onenter = mario_goomba },
-					{ tag = {40, 50}, onenter = mario_removeenemy }
+					{ tag = {variables.tags.player_attack, variables.tags.foe}, onenter = player_hits },
+					{ tag = {variables.tags.foe_attack, variables.tags.player}, onenter = player_is_hit },
+					{ tag = {variables.tags.player_attack, variables.tags.hittable_block}, onenter = mario_removeenemy }
 				}
 			},
 			{
@@ -132,8 +133,8 @@ room =  {
 							 			}
 							 		},
 							 		{ id = "nil", state = { type="nil" }},
-							 		{ id = "lowkick", state = { type="hit", anim="lowkick", frame = 2, mask=4, tag=40, shape = {type="rect", width=34, height=30, offset={39,14}}, acceleration = 0.05}},
-							 		{ id = "jkick", state = { type="hitj", anim="lowkick", frame = 2, mask=4, tag=40, shape = {type="rect", width=34, height=30, offset={39,14}}, acceleration = 0.10, speed=75 }}
+							 		{ id = "lowkick", state = { type="hit", anim="lowkick", frame = 2, mask=4, tag=variables.tags.player_hit, shape = {type="rect", width=34, height=30, offset={39,14}}, acceleration = 0.05}},
+							 		{ id = "jkick", state = { type="hitj", anim="lowkick", frame = 2, mask=4, tag=variables.tags.player_hit, shape = {type="rect", width=34, height=30, offset={39,14}}, acceleration = 0.10, speed=75 }}
 							-- 		{ id = "duck", init = { type="animcollider", anim= "duck", collider="duck" }, behavior = { type ="idle2d", acceleration = marioAcc, speed= marioSpeed }},
 							-- 		{ id = "nophys", init = { type="luaanim", func = curry21(marioinit2, "idle") } }
 								},
@@ -160,6 +161,7 @@ room =  {
 						 },
 					},
 					factory.rect { pos = {0, 0}, img = "block1.png", width=69, height=2 },
+					factory.enemy.create { model="ryu", pos = {128, 32, 0}, scale =0.5, width = 32, height=100}
 					--factory.rect { pos = {10, 2}, flag=2|4, tag = 50, img = "block1.png", width=1, height=1 }	
 					--factory.goomba.create { pos = {13, 4}, flipWhenPlatformEnds = true}
 					-- {

@@ -44,11 +44,11 @@ local s = {
 local dt=0.1
 models["ryu"] = {
     sheet = "pfo.png",
-    type = "sprite",
+    type = "boxed_sprite",
     ppu=1,
 	animations = {
 		{ name = "idle", frames = { 
-			{duration = dt, quads = {{ id = s.ryu_idle_1 }}},
+			{duration = dt, quads = {{ id = s.ryu_idle_1 }}, boxes = { {-25, 0, 26, 92 }}},
 			{duration = dt, quads = {{ id = s.ryu_idle_2 }}},
 			{duration = dt, quads = {{ id = s.ryu_idle_3 }}},
 			{duration = dt, quads = {{ id = s.ryu_idle_4 }}},

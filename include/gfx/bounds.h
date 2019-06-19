@@ -21,7 +21,8 @@ struct Bounds {
     glm::vec2 GetSize();
     glm::vec2 GetCenter();
     glm::vec2 GetExtents();
-    
+
+    bool isVoid ();
     void Expand(float);
     bool Contains(glm::vec2 P);
     bool Intersects(Bounds& other) const;
@@ -30,6 +31,10 @@ struct Bounds {
     void TransformXZ (const glm::mat4&);
 };
 
+inline bool Bounds::isVoid() {
+    return (max.x == min.x && max.y == min.y);
+
+}
 inline bool Bounds::Intersects(Bounds& other) const {
     return !(other.min.x >= max.x || other.max.x <= min.x || other.min.y >= max.y || other.max.y <= min.y);
 }

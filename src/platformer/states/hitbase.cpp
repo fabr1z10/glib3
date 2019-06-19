@@ -53,7 +53,7 @@ void HitBase::HandleCollision() {
             // avoid collision with oneself
             if (e != nullptr) {
                 std::cerr << "HIT!\n";
-                auto rm = m_collisionEngine->GetResponseManager()->GetHandler(m_tag, e->GetTag());
+                auto rm = m_collisionEngine->GetResponseManager()->GetHandler(m_tag, e->GetCollisionTag());
                 if (rm.response != nullptr) {
                     std::cerr << "FOUND RESPONSE\n";
                     if (rm.flip) {

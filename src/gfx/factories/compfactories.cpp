@@ -193,7 +193,7 @@ std::shared_ptr<Component> ColliderComponentFactory::Create(luabridge::LuaRef &r
     int mask = table.Get<int>("mask");
     
 
-    auto coll = Ref::Create<Collider>(shape, tag, flag, mask);
+    auto coll = Ref::Create<SimpleCollider>(shape, tag, flag, mask);
     return coll;
 }
 
@@ -206,27 +206,27 @@ std::shared_ptr<Component> ParallaxComponentFactory::Create(luabridge::LuaRef &r
     return Ref::Create<Parallax>(cam, factor, width, height);
 }
 
-std::shared_ptr<Component> MultiColliderComponentFactory::Create(luabridge::LuaRef &ref) {
-    LuaTable table(ref);
-    
-    // input
-    luabridge::LuaRef shapesR = table.Get<luabridge::LuaRef>("shapes");
-    int tag = table.Get<int>("tag");
-    int flag = table.Get<int>("flag");
-    int mask = table.Get<int>("mask");
-    std::string initShape = table.Get<std::string>("initialshape");
-    auto factory = Engine::get().GetSceneFactory();
-    std::unordered_map<std::string, std::shared_ptr<Shape>> shapes;
-    for (int i = 0; i < shapesR.length(); ++i) {
-        luabridge::LuaRef shapeR = shapesR[i+1];
-        auto shape = factory->makeShape(shapeR);
-        std::string name = shapeR["name"].cast<std::string>();
-        shapes[name] = shape;
-    }
-    auto coll = Ref::Create<MultiCollider>(shapes, tag, flag, mask, initShape);
-
-    return coll;
-}
+//std::shared_ptr<Component> MultiColliderComponentFactory::Create(luabridge::LuaRef &ref) {
+//    LuaTable table(ref);
+//
+//    // input
+//    luabridge::LuaRef shapesR = table.Get<luabridge::LuaRef>("shapes");
+//    int tag = table.Get<int>("tag");
+//    int flag = table.Get<int>("flag");
+//    int mask = table.Get<int>("mask");
+//    std::string initShape = table.Get<std::string>("initialshape");
+//    auto factory = Engine::get().GetSceneFactory();
+//    std::unordered_map<std::string, std::shared_ptr<Shape>> shapes;
+//    for (int i = 0; i < shapesR.length(); ++i) {
+//        luabridge::LuaRef shapeR = shapesR[i+1];
+//        auto shape = factory->makeShape(shapeR);
+//        std::string name = shapeR["name"].cast<std::string>();
+//        shapes[name] = shape;
+//    }
+//    auto coll = Ref::Create<MultiCollider>(shapes, tag, flag, mask, initShape);
+//
+//    return coll;
+//}
 
 
 std::shared_ptr<Component> StateMachineCompFactory::Create(luabridge::LuaRef &ref) {

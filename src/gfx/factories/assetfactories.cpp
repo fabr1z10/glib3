@@ -1,63 +1,26 @@
-#include <gfx/factories.h>
+#include <gfx/factories/modelfactories.h>
 #include <gfx/spritemesh.h>
 #include <gfx/assetman.h>
 #include <gfx/engine.h>
 #include <gfx/simplemodel.h>
-#include <gfx/compositemodel.h>
-#include <gfx/imodel.h>
-//
-//std::shared_ptr<IModel> CompositeModelFactory::Create (luabridge::LuaRef& ref) {
-//
-//    LuaTable t(ref);
-//    auto& am = Engine::get().GetAssetManager();
-//    auto model = std::make_shared<CompositeModel>();
-//    luabridge::LuaRef comps = t.Get<luabridge::LuaRef>("components");
-//    lua_loop_array(comps, [am, &model] (const LuaTable& table) {
-//        ModelComponent component;
-//        std::string name = table.Get<std::string>("name");
-//        std::string parent = table.Get<std::string>("parent", "");
-//        std::string mesh = table.Get<std::string>("mesh");
-//        // DEPENDENCIES. IF simplemodls are not loaded, then do it now!
-//        auto me = Engine::get().GetAssetManager().GetModel(mesh);
-//        SimpleModel *m = dynamic_cast<SimpleModel *>(me.get());
-//        model->AddComponent(name, m, parent);
-//    });
-//
-//    luabridge::LuaRef anims = t.Get<luabridge::LuaRef>("animations");
-//    lua_loop_array(anims, [&model] (const LuaTable& table) {
-//        std::string name = table.Get<std::string>("name");
-//        std::vector<AnimationDefinition> def;
-//        luabridge::LuaRef adef = table.Get<luabridge::LuaRef>("anims");
-//        for (int i = 0; i< adef.length(); ++i) {
-//            luabridge::LuaRef aa = adef[i+1];
-//            LuaTable aatab(aa);
-//            std::string comp = aatab.Get<std::string>("name");
-//            std::string anim = aatab.Get<std::string>("anim");
-//            glm::vec3 pos = aatab.Get<glm::vec3>("pos", glm::vec3(0.0f));
-//            def.push_back(AnimationDefinition{comp, anim, pos});
-//        }
-//        model->AddAnimation(name, def);
-//    });
-//
-//    return model;
-//}
 
-std::shared_ptr<IModel> SimpleModelFactory::Create (luabridge::LuaRef& ref) {
+std::shared_ptr<SpriteMesh> SimpleModelFactory::ReadSpriteMesh(LuaTable& t) {
 
-    LuaTable t(ref);
-    float ppu = t.Get<float>("ppu", 1.0);
     std::string sheetName = t.Get<std::string>("sheet");
-    luabridge::LuaRef an = t.Get<luabridge::LuaRef>("animations");
-
     std::string defaultAnimation;
+    float ppu = t.Get<float>("ppu", 1.0);
+
     auto tex = Engine::get().GetAssetManager().GetTex(sheetName);
     float texWidth = static_cast<float>(tex->GetWidth());
     float texHeight = static_cast<float>(tex->GetHeight());
-    int quadCount {0};
+
     std::vector<Vertex3D> vertices;
     std::vector<unsigned int> indices;
 
     auto mesh = std::make_shared<SpriteMesh>(sheetName);
+
+    luabridge::LuaRef an = t.Get<luabridge::LuaRef>("animations");
+    int quadCount {0};
 
     // loop through animations
     for (int i = 0; i < an.length(); ++i) {
@@ -133,7 +96,41 @@ std::shared_ptr<IModel> SimpleModelFactory::Create (luabridge::LuaRef& ref) {
     }
     mesh->Init(vertices, indices);
     mesh->SetDefaultAnimation(defaultAnimation);
+}
+
+std::shared_ptr<IModel> SimpleModelFactory::Create (luabridge::LuaRef& ref) {
+
+    LuaTable t(ref);
+    auto mesh = ReadSpriteMesh(t);
     std::unique_ptr<IModel> m(new SimpleModel(mesh));
     return m;
 }
 
+std::shared_ptr<IModel> BoxedModelFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable t(ref);
+    auto mesh = ReadSpriteMesh(t);
+    // read the additional stuff
+    luabridge::LuaRef an = t.Get<luabridge::LuaRef>("animations");
+    // loop through animations
+    for (int i = 0; i < an.length(); ++i) {
+        luabridge::LuaRef at = an[i+1];
+        std::string anim = at["name"].cast<std::string>();
+        luabridge::LuaRef fr = at["frames"];
+        for (int j = 0; j < fr.length(); ++j) {
+            luabridge::LuaRef a2 = fr[j + 1];
+            // get the shape associated to this frame
+            LuaTable table(a2);
+
+            if (table.HasKey("boxes")) {
+                auto boxes = table.Get<luabridge::LuaRef>("boxes");
+                if (boxes.length() == 1) {
+                    glm::vec4 box = LuaTable::Read<glm::vec4>(boxes[1]);
+                    auto rect = std::make_shared<Rect>(box[2], box[3], glm::vec2(box[0], box[1]));
+                }
+
+            }
+
+        }
+
+    }
+}

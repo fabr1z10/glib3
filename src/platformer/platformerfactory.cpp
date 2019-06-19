@@ -18,6 +18,7 @@ PlatformerFactory::PlatformerFactory() : SceneFactory() {
     m_stateFactory.Add<HitFactory>("hit");
     m_stateFactory.Add<HitJumpFactory>("hitj");
     m_stateFactory.Add<NilStateFactory>("nil");
+    m_stateFactory.Add<CustomHit1StateFactory>("ch1");
 
 }
 

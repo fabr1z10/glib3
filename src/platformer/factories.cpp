@@ -5,12 +5,13 @@
 #include <platformer/states/hit.h>
 #include <platformer/states/hitjump.h>
 #include <platformer/states/jump2d.h>
+#include <platformer/states/ch1.h>
 
 #include <platformer/states/nilstate.h>
 #include <platformer/activities/dropcharacters.h>
 #include <gfx/lua/luatable.h>
 #include <gfx/components/stateactions.h>
-#include <platformer/enemyinput.h>
+#include <platformer/input/enemyinput.h>
 #include <gfx/engine.h>
 
 //
@@ -207,7 +208,14 @@ std::shared_ptr<State> HitJumpFactory::Create(luabridge::LuaRef &ref) {
     return std::make_shared<HitJump>(anim, frame, shape, mask, tag, acc, speed);
 }
 
-
+std::shared_ptr<State> CustomHit1StateFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    std::string target = table.Get<std::string>("target");
+    std::string animUp = table.Get<std::string>("animup");
+    std::string animDown = table.Get<std::string>("animdown");
+    float speed = table.Get<float>("speed");
+    return std::make_shared<CustomHit1>(target, speed, speed, animUp, animDown);
+}
 
 //std::shared_ptr<State> HitJumpFactory::Create(luabridge::LuaRef &ref) {
 //    LuaTable table(ref);

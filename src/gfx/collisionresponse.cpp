@@ -15,10 +15,10 @@ CollisionHandler CollisionResponseManager::GetHandler(int tag1, int tag2) {
 
 }
 
-CollisionHandler CollisionResponseManager::GetCollisionResponse(Collider* c1, Collider* c2) const {
-    auto rm = m_response.find(std::make_pair(c1->GetTag(), c2->GetTag()));
+CollisionHandler CollisionResponseManager::GetCollisionResponse(ICollider* c1, ICollider* c2) const {
+    auto rm = m_response.find(std::make_pair(c1->GetCollisionTag(), c2->GetCollisionTag()));
     if (rm == m_response.end()) {
-        rm = m_response.find(std::make_pair(c2->GetTag(), c1->GetTag()));
+        rm = m_response.find(std::make_pair(c2->GetCollisionTag(), c1->GetCollisionTag()));
         if (rm != m_response.end()) {
             return CollisionHandler(rm->second.get(), true);
         }
@@ -29,7 +29,7 @@ CollisionHandler CollisionResponseManager::GetCollisionResponse(Collider* c1, Co
 
 };
 
-void CollisionResponseManager::onStart (Collider* c1, Collider* c2, CollisionReport& report) {
+void CollisionResponseManager::onStart (ICollider* c1, ICollider* c2, CollisionReport& report) {
     auto handler = GetCollisionResponse(c1, c2);
     if (handler.response != nullptr) {
         if (handler.flip) {
@@ -42,7 +42,7 @@ void CollisionResponseManager::onStart (Collider* c1, Collider* c2, CollisionRep
 }
 
 
-void CollisionResponseManager::onStay (Collider* c1, Collider* c2, CollisionReport& report){
+void CollisionResponseManager::onStay (ICollider* c1, ICollider* c2, CollisionReport& report){
     auto handler = GetCollisionResponse(c1, c2);
     if (handler.response != nullptr) {
         if (handler.flip) {
@@ -54,7 +54,7 @@ void CollisionResponseManager::onStay (Collider* c1, Collider* c2, CollisionRepo
     }
 }
 
-void CollisionResponseManager::onEnd (Collider* c1, Collider* c2, CollisionReport& report) {
+void CollisionResponseManager::onEnd (ICollider* c1, ICollider* c2, CollisionReport& report) {
     auto handler = GetCollisionResponse(c1, c2);
     if (handler.response != nullptr) {
         if (handler.flip) {
@@ -68,7 +68,7 @@ void CollisionResponseManager::onEnd (Collider* c1, Collider* c2, CollisionRepor
 }
 
 
-bool CollisionResponseManager::HasCollision(Collider * c1, Collider * c2) const {
+bool CollisionResponseManager::HasCollision(ICollider * c1, ICollider * c2) const {
     return (GetCollisionResponse(c1, c2).response != nullptr);
 }
 

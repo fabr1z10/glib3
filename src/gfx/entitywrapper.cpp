@@ -252,7 +252,7 @@ void EntityWrapper::SetEnableControls (bool value) {
 }
 
 void EntityWrapper::EnableCollisions(bool value) {
-    auto collider = m_underlying->GetComponent<Collider>();
+    auto collider = m_underlying->GetComponent<ICollider>();
     if (collider != nullptr)
         collider->setActive(value);
     auto& children = m_underlying->GetChildren();

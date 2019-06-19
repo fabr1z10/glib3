@@ -22,6 +22,8 @@ FACTORY(HitFactory, State)
 FACTORY(HitJumpFactory, State)
 FACTORY(NilStateFactory, State)
 
+FACTORY(CustomHit1StateFactory, State)
+
 //class Idle2DStateFactory : public FactoryMethod<StateBehaviour> {
 //    std::unique_ptr<StateBehaviour> Create(luabridge::LuaRef&) override;
 //};

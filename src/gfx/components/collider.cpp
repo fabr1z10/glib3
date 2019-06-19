@@ -4,24 +4,24 @@
 #include "gfx/meshfactory.h"
 #include <gfx/engine.h>
 
-Collider::Collider(const Collider& orig) : Component(orig),
+SimpleCollider::SimpleCollider(const SimpleCollider& orig) : ICollider(orig),
 m_shape(orig.m_shape), m_tag(orig.m_tag), m_flag(orig.m_flag), m_mask(orig.m_mask), m_engine(nullptr),
 m_enabled(orig.m_enabled)
 {}
 
-std::shared_ptr<Component> Collider::clone() const {
-    return std::make_shared<Collider>(*this);
+std::shared_ptr<Component> SimpleCollider::clone() const {
+    return std::make_shared<SimpleCollider>(*this);
 }
 
-void Collider::SetParent(Entity * entity) {
+void SimpleCollider::SetParent(Entity * entity) {
     Component::SetParent(entity);
 }
 
-void Collider::End() {
+void SimpleCollider::End() {
     m_engine->Remove(this);
 }
 
-void Collider::Start() {
+void SimpleCollider::Start() {
     m_engine = Engine::get().GetRunner<CollisionEngine>();
     if (m_engine == nullptr) {
         GLIB_FAIL("The room has a collider component but no collision engine is loaded.");
@@ -47,18 +47,12 @@ void Collider::Start() {
 
 }
 
-Collider::~Collider() {
-//    std::cerr << "clearing collider\n";
-//
-//    if (Engine::get().isRunning() && m_engine != nullptr) {
-//        m_engine->Remove(this);
-//    }
-//    std::cerr << "done\n";
+SimpleCollider::~SimpleCollider() {
 }
 
 
 
-void Collider::SetShape(std::shared_ptr<Shape> shape) {
+void SimpleCollider::SetShape(std::shared_ptr<Shape> shape) {
     m_shape = shape;
     // call move
     Move(nullptr);
@@ -80,7 +74,7 @@ void Collider::SetShape(std::shared_ptr<Shape> shape) {
     }
 }
 
-void Collider::Move(Entity* e) {
+void SimpleCollider::Move(Entity* e) {
     if (m_shape != nullptr) {
         m_aabb = m_shape->getBounds();
         m_aabb.Transform(m_entity->GetWorldTransform());

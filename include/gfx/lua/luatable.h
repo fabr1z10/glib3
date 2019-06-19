@@ -113,6 +113,12 @@ public:
     }
     static std::unordered_map<std::string, luabridge::LuaRef> getKeyValueMap(const luabridge::LuaRef& ref);
     static std::unordered_map<int, luabridge::LuaRef> getIntValueMap(const luabridge::LuaRef& ref);
+
+    template<typename T>
+    static T Read (luabridge::LuaRef) {
+        throw;
+    }
+
 private:
     luabridge::LuaRef m_ref;
 };
@@ -120,6 +126,35 @@ private:
 inline bool LuaTable::isNil() const {
     return m_ref.isNil();
 }
+
+template<>
+inline glm::vec2 LuaTable::Read<glm::vec2>(luabridge::LuaRef ref) {
+    glm::vec2 out;
+    out.x = ref[1].cast<float>();
+    out.y = ref[2].cast<float>();
+    return out;
+}
+
+template<>
+inline glm::vec3 LuaTable::Read<glm::vec2>(luabridge::LuaRef ref) {
+    glm::vec3 out;
+    out.x = ref[1].cast<float>();
+    out.y = ref[2].cast<float>();
+    out.z = ref[3].cast<float>();
+    return out;
+}
+
+template<>
+inline glm::vec4 LuaTable::Read<glm::vec4>(luabridge::LuaRef ref) {
+    glm::vec4 out;
+    out.x = ref[1].cast<float>();
+    out.y = ref[2].cast<float>();
+    out.z = ref[3].cast<float>();
+    out.w = ref[4].cast<float>();
+    return out;
+}
+
+
 
 template<>
 inline glm::vec2 LuaTable::Get<glm::vec2>(const std::string& key) const {

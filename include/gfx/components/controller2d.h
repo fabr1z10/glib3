@@ -5,7 +5,7 @@
 
 
 class CollisionEngine;
-class Collider;
+class ICollider;
 class PlatformComponent;
 
 struct CollisionDetails {
@@ -49,7 +49,7 @@ public:
 	void DescendSlope(glm::vec2&);
 	void CalculateRaySpacing();
 	void Update(double) override {}
-    void ResetShape(Collider*);
+    void ResetShape(ICollider*);
 	//void ForceMove(glm::vec2&);
 	CollisionDetails m_details;
 	RaycastOrigins m_raycastOrigins;
@@ -66,7 +66,7 @@ private:
 
 	//int m_handleNotify;
 	Entity* m_platform;
-	Collider* m_cc;
+	ICollider* m_cc;
 	CollisionEngine * m_collision;
 	//int m_collisionMaskDown;
 	//int m_collisionMaskAny;

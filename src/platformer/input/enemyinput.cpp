@@ -1,8 +1,8 @@
-#include <platformer/enemyinput.h>
+#include <platformer/input/enemyinput.h>
 #include <gfx/components/controller2d.h>
 #include <gfx/entity.h>
 #include <GLFW/glfw3.h>
-
+#include <gfx/random.h>
 std::shared_ptr<Component> EnemyInputMethod::clone() const {
     return std::make_shared<EnemyInputMethod>(*this);
 }
@@ -29,6 +29,12 @@ void EnemyInputMethod::Update(double) {
         if (m_controller->m_details.below && m_controller->IsFalling(m_left ? -1 : 1)) {
             m_left = !m_left;
         }
+    }
+
+    // random action
+    float r = Random::get().GetUniformReal(0, 100);
+    if (r > 99) {
+        //onKeyDown.Fire(GLFW_KEY_Q);
     }
 }
 

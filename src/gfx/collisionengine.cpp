@@ -30,20 +30,18 @@ void CollisionEngine::Enable25DCollision(float eps) {
     m_eps = eps;
 }
 
-void CollisionEngine::Add(Collider* c) {
+void CollisionEngine::Add(ICollider* c) {
     // this is called when a new collider starts. It registers with the engine
     // get the shape bounding box, transform it, map it
-    if (c->HasShape()) {
-        auto aabb = c->GetBounds();
+    auto aabb = c->GetBounds();
+    if (!aabb.isVoid()) {
         Location loc = GetLocation(aabb);
         PushCollider(c, loc);
-        std::cout << "Adding collider " << c->GetShape()->toString() << " from (" << loc.x0 << ", " << loc.y0 << ") to (" << loc.x1 << ", " << loc.y1 << ")\n";
     }
-    // register to onmove
 
 }
 
-void CollisionEngine::Remove(Collider* c) {
+void CollisionEngine::Remove(ICollider* c) {
     // called when a collider dies
     PopCollider(c);
 }
@@ -54,7 +52,7 @@ void CollisionEngine::Clear() {
     m_previouslyCollidingPairs.clear();
 }
 
-void CollisionEngine::Move(Collider * c) {
+void CollisionEngine::Move(ICollider * c) {
 
     auto it = m_colliderLocations.find(c);
     if (it != m_colliderLocations.end()) {
@@ -83,7 +81,7 @@ void CollisionEngine::Move(Collider * c) {
 
 }
 
-void CollisionEngine::PopCollider(Collider* c) {
+void CollisionEngine::PopCollider(ICollider* c) {
 
     auto it = m_colliderLocations.find(c);
     if (it != m_colliderLocations.end()) {
@@ -100,7 +98,7 @@ void CollisionEngine::PopCollider(Collider* c) {
 }
 
 
-void CollisionEngine::PushCollider(Collider* c, Location loc) {
+void CollisionEngine::PushCollider(ICollider* c, Location loc) {
     for (int i = loc.x0; i <= loc.x1; ++i) {
         for (int j = loc.y0; j <= loc.y1; ++j) {
             auto& cell = m_cells[std::make_pair(i,j)];
@@ -130,7 +128,7 @@ Location CollisionEngine::GetLocation(const Bounds& aabb) {
 void CollisionEngine::Update(double dt) {
 
     // loop throught all dirty cells and do a pair-wise collision detection for each collider within the cell.
-    std::unordered_map<std::pair<Collider*, Collider*>, CollisionInfo> currentlyCollidingPairs;
+    std::unordered_map<std::pair<ICollider*, ICollider*>, CollisionInfo> currentlyCollidingPairs;
     //std::cout << "Running collision engine update...\n";
     std::unordered_set<std::pair<int, int>> cellsExamined;
     //std::unordered_set<std::pair<Collider*, Collider*>> testedPairs;
@@ -146,18 +144,18 @@ void CollisionEngine::Update(double dt) {
         }
         //std::cout << "Examining cell " << cell.first.first << ", " << cell.first.second << "\n";
         for (auto iter = cell.second.colliders.begin(); iter != cell.second.colliders.end(); ++iter) {
-            Collider* c1 = *iter;
-            if (!c1->Enabled())
+            ICollider* c1 = *iter;
+            if (!c1->isActive())
                 continue;
             float z1 = c1->GetObject()->GetPosition().z;
             auto iter2 = iter;
             for (++iter2; iter2 != cell.second.colliders.end(); ++iter2) {
-                Collider * c2 = *iter2;
+                ICollider * c2 = *iter2;
                 float z2 = c2->GetObject()->GetPosition().z;
-                if (!c2->Enabled())
+                if (!c2->isActive())
                     continue;
                 // check collision mask
-                if ( ((c1->GetMask() & c2->GetFlag()) == 0) && ((c2->GetMask() & c1->GetFlag()) == 0)) {
+                if ( ((c1->GetCollisionMask() & c2->GetCollisionFlag()) == 0) && ((c2->GetCollisionMask() & c1->GetCollisionFlag()) == 0)) {
                     // If at least one mask is hit, then we keep checking the collision.
                     // if both mask fail, then we skip to the next collider
                     continue;
@@ -233,7 +231,7 @@ void CollisionEngine::Update(double dt) {
     // add the new collision pairs
 }
 
-Collider* CollisionEngine::ShapeCast (std::shared_ptr<Shape> shape, const glm::mat4& transform, int mask) {
+ICollider* CollisionEngine::ShapeCast (std::shared_ptr<Shape> shape, const glm::mat4& transform, int mask) {
     auto aabb = shape->getBounds();
     aabb.Transform(transform);
     float z = transform[3][2];
@@ -244,7 +242,7 @@ Collider* CollisionEngine::ShapeCast (std::shared_ptr<Shape> shape, const glm::m
             if (cell != m_cells.end()) {
                 auto& colliders = cell->second.colliders;
                 for (auto& c : colliders) {
-                    int flag = c->GetFlag();
+                    int flag = c->GetCollisionFlag();
                     int m = flag & mask;
                     if (m == 0) {
                         continue;
@@ -318,10 +316,10 @@ RayCastHit2D CollisionEngine::Raycast (glm::vec3 rayOrigin, glm::vec2 rayDir, fl
         auto lineBounds = line.getBounds();
         if (it != m_cells.end()) {
             for (auto& c : it->second.colliders) {
-                if (!c->Enabled())
+                if (!c->isActive())
                     continue;
                 // aabb check
-                int flag = c->GetFlag();
+                int flag = c->GetCollisionFlag();
                 int m = flag & mask;
 
                 if (m != 0) {

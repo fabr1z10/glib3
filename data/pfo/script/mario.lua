@@ -6,6 +6,10 @@ function mario_removeenemy(mario, enemy)
 	monkey.play(s)
 end
 
+function player_hits ()
+	print ("PLAYER HITS ENEMY")
+end
+
 function mario_goomba(mario, goomba, sx, sy) 
 
 	if (goomba.state == "die") then

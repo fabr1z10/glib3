@@ -10,7 +10,7 @@
 
 struct CollisionEngineCell {
     bool dirty;
-    std::unordered_set<Collider*> colliders;
+    std::unordered_set<ICollider*> colliders;
 };
 
 struct Location {
@@ -32,12 +32,12 @@ class CollisionEngine : public Runner {
 public:
     CollisionEngine (float cellWidth, float cellHeight);
     ~CollisionEngine() override;
-    void Add (Collider*);
-    void Remove(Collider*);
+    void Add (ICollider*);
+    void Remove(ICollider*);
     void Clear();
-    void Move(Collider*);
-    void PopCollider(Collider*);
-    void PushCollider(Collider*, Location);
+    void Move(ICollider*);
+    void PopCollider(ICollider*);
+    void PushCollider(ICollider*, Location);
     Location GetLocation(const Bounds& b);
     // runner implementation
     void Update(double) override;
@@ -50,17 +50,17 @@ public:
     // This function returns a RaycastHit object with a reference to the collider that is hit by the ray
     // (the collider property of the result will be NULL if nothing was hit). The layerMask can be used to detect objects selectively only on certain layers (this allows you to apply the detection only to enemy characters, for example).
     RayCastHit2D Raycast (glm::vec3 rayOrigin, glm::vec2 rayDir, float length, int mask);
-    Collider* ShapeCast (std::shared_ptr<Shape>, const glm::mat4& transform, int mask);
+    ICollider* ShapeCast (std::shared_ptr<Shape>, const glm::mat4& transform, int mask);
     void Enable25DCollision(float);
     std::string toString() override;
 private:
     std::unordered_map<std::pair<int, int>, CollisionEngineCell> m_cells;
-    std::unordered_map<Collider*, Location> m_colliderLocations;
+    std::unordered_map<ICollider*, Location> m_colliderLocations;
     float m_width;
     float m_height;
     std::unique_ptr<Intersector> m_intersector;
     std::unique_ptr<CollisionResponseManager> m_responseManager;
-    std::unordered_map<std::pair<Collider*, Collider*>, CollisionInfo> m_previouslyCollidingPairs;
+    std::unordered_map<std::pair<ICollider*, ICollider*>, CollisionInfo> m_previouslyCollidingPairs;
     bool m_coll25d;
     float m_eps;
 
