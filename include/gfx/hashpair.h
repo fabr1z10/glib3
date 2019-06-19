@@ -2,6 +2,7 @@
 
 #include <glm/glm.hpp>
 #include <functional>
+#include <string>
 
 template <class T>
 inline void hash_combine(std::size_t & seed, const T & v)

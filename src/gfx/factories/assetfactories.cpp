@@ -3,6 +3,7 @@
 #include <gfx/assetman.h>
 #include <gfx/engine.h>
 #include <gfx/simplemodel.h>
+#include <gfx/boxedmodel.h>
 
 std::shared_ptr<SpriteMesh> SimpleModelFactory::ReadSpriteMesh(LuaTable& t) {
 
@@ -133,4 +134,7 @@ std::shared_ptr<IModel> BoxedModelFactory::Create(luabridge::LuaRef &ref) {
         }
 
     }
+    auto pp = std::make_shared<BoxedModel>(mesh);
+    
+    
 }

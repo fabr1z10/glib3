@@ -12,67 +12,67 @@ std::shared_ptr<Component> Animator::clone() const {
     return std::make_shared<Animator>(Animator(*this));
 }
 void Animator::Start() {
-    m_status = m_model->GetModelStatus();
-    m_status->Init(m_entity);
     if (!m_initAnim.empty()) {
         SetAnimation(m_initAnim);
     }
+    m_renderer = m_entity->GetComponent<Renderer>();
+    
 
 }
 void Animator::Update(double dt) {
-    m_status->Update(dt);
+    m_time += dt;
+    float frameDuration = m_animInfo->frameInfo[m_frame].duration;
+    if (m_time >= frameDuration) {
+        int oldFrame = m_frame;
+        m_frame += m_inc;
+        if (m_frame >= m_animInfo->frameCount) {
+            m_frame = m_animInfo->loop ? 0 : m_animInfo->frameCount - 1;
+            m_animCompleted = true;
+        } else if (m_frame < 0) {
+            m_frame = m_animInfo->loop ? m_animInfo->frameCount - 1 : 0;
+            m_animCompleted = true;
+        }
+        // if frame has changed, notify the model that might do something
+        if (oldFrame != m_frame) {
+            // this will be >= 0
+            m_time = m_time - frameDuration;
+            const FrameInfo &frameInfo = m_animInfo->frameInfo[m_frame];
+            m_renderer->SetMeshInfo(frameInfo.offset, frameInfo.count);
+        }
+    }
 }
 
-void Animator::SetAnimation(const std::string &anim) {
-    m_status->SetAnimation(anim, m_forward);
+
+// play the given animation (forward or backward)
+void Animator::SetAnimation(const std::string &anim, bool fwd) {
+    // if the current animation is the same as the new one,
+    // do nothing
+    if (anim == m_animation)
+    {
+        return;
+    }
+    m_animCompleted = false;
+    m_inc = fwd ? 1 : -1;
+    m_animation = anim;
+    m_time = 0.0;
+    m_animInfo = m_mesh.GetAnimInfo(anim);
+    if (m_animInfo == nullptr) {
+        GLIB_FAIL("Don't know animation: " << anim);
+    }
+    m_frame = fwd ? 0 : m_animInfo->frameCount-1;
+    const FrameInfo& frameInfo = m_animInfo->frameInfo[frame];
+    renderer->SetMeshInfo(frameInfo.offset, frameInfo.count);
 }
 
 void Animator::AdvanceFrame(int inc) {
     m_status->AdvanceFrame(inc);
 }
+
 bool Animator::IsComplete() const {
-    return m_status->IsAnimComplete();
+    return m_animCompleted;
 }
 
-//void Animator::SetForward (bool value) {
-//    m_increment = value ? 1 : -1;
-//}
-//
-//
-//
-//
-//
-//void Status::Update(double dt, int inc) {
-//    time += dt;
-//
-//    float frameDuration = m_animInfo->frameInfo[frame].duration;
-//    if (time >= frameDuration) {
-//        frame += inc;
-//        if (frame >= m_animInfo->frameCount) {
-//            frame = m_animInfo->loop ? 0 : m_animInfo->frameCount-1;
-//            loopEnd = true;
-//        } else if (frame < 0) {
-//            frame = m_animInfo->loop ? m_animInfo->frameCount - 1 : 0;
-//            loopEnd = true;
-//        }
-//        // this will be >= 0
-//        time = time - frameDuration;
-//        const FrameInfo& frameInfo = m_animInfo->frameInfo[frame];
-//        renderer->SetMeshInfo(frameInfo.offset, frameInfo.count);
-//    }
-//
-//}
-//
-//void Status::SetAnimation(const std::string& anim, int f) {
-//    animation = anim;
-//    frame = f;
-//    time = 0.0;
-//    loopEnd = false;
-//    m_animInfo = m_mesh->GetAnimInfo(anim);
-//    const FrameInfo& frameInfo = m_animInfo->frameInfo[frame];
-//    renderer->SetMeshInfo(frameInfo.offset, frameInfo.count);
-//}
-//
+
 
 
 

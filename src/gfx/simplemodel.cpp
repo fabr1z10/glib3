@@ -8,24 +8,7 @@ void SimpleModelStatus::Init(Entity* entity) {
     SetAnimation(m_mesh.GetDefaultAnimation(), true);
 }
 
-void SimpleModelStatus::SetAnimation(const std::string& anim, bool fwd) {
-    if (anim == animation)
-    {
-        return;
-    }
-    //std::cout << "setting anim to " << anim<<"\n";
-    m_animCompleted = false;
-    inc = fwd ? 1 : -1;
-    animation = anim;
-    time = 0.0;
-    m_animInfo = m_mesh.GetAnimInfo(anim);
-    if (m_animInfo == nullptr) {
-        GLIB_FAIL("Don't know animation: " << anim);
-    }
-    frame = fwd ? 0 : m_animInfo->frameCount-1;
-    const FrameInfo& frameInfo = m_animInfo->frameInfo[frame];
-    renderer->SetMeshInfo(frameInfo.offset, frameInfo.count);
-}
+
 
 void SimpleModelStatus::AdvanceFrame(int inc) {
     frame += inc;
@@ -53,6 +36,8 @@ void SimpleModelStatus::Update(double dt) {
             frame = m_animInfo->loop ? m_animInfo->frameCount - 1 : 0;
             m_animCompleted = true;
         }
+        // if frame has changed, notify the model that might do something
+        
         // this will be >= 0
         time = time - frameDuration;
         const FrameInfo &frameInfo = m_animInfo->frameInfo[frame];

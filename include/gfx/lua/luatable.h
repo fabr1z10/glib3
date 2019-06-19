@@ -136,7 +136,7 @@ inline glm::vec2 LuaTable::Read<glm::vec2>(luabridge::LuaRef ref) {
 }
 
 template<>
-inline glm::vec3 LuaTable::Read<glm::vec2>(luabridge::LuaRef ref) {
+inline glm::vec3 LuaTable::Read<glm::vec3>(luabridge::LuaRef ref) {
     glm::vec3 out;
     out.x = ref[1].cast<float>();
     out.y = ref[2].cast<float>();

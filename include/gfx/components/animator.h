@@ -23,13 +23,8 @@ public:
     virtual ~AnimatorState() = default;
 };
 
-// the animator doesn't know which model is animating.
-// For instance it doesn't know if it's a simple mesh or a composite model.
-// however it abstracts some functionalities, for instance:
-// set the animation
-// set the animation for a given node
-// check whether animation exists
-//
+// the animator is the component used to change the sprite animation
+// and updating frames.
 class Animator : public Component {
 public:
     Animator(std::shared_ptr<IModel> model) : m_model(model), m_forward(true) {}
@@ -39,13 +34,15 @@ public:
     void AdvanceFrame(int);
     void Update(double dt) override;
     void SetInitialAnimation (const std::string& anim);
-    void SetAnimation (const std::string& anim);
+    void SetAnimation (const std::string& anim, bool forward = true);
+    std::string GetAnimation() const;
     //virtual void SetAnimation (const std::string& node, const std::string& anim) = 0;
     //bool HasAnimation(const std::string&) = 0;
     //virtual bool HasAnimation(const std::string&, const std::string&) = 0;
     bool IsComplete() const;
     int GetFrame() const;
     void SetPlayForward (bool);
+    std::shared_ptr<IModel> GetModel();
     // allows to backup the status in order to restore it later
     //virtual std::shared_ptr<AnimatorState> SaveState()  = 0;
     //virtual void LoadState(std::shared_ptr<AnimatorState>) = 0;
@@ -56,9 +53,20 @@ protected:
     bool m_forward;
     std::string m_initAnim;
     std::shared_ptr<IModel> m_model;
-    std::unique_ptr<IModelStatus> m_status;
+    
+    // the current animation
+    std::string m_animation;
+    double m_time;
+    int m_inc;
+    // the current frame
+    int m_frame;
+    const AnimInfo* m_animInfo;
+    bool m_animCompleted;
+    Renderer* m_renderer;
+    //std::unique_ptr<IModelStatus> m_status;
 
 };
+
 
 inline void Animator::SetPlayForward (bool value) {
     m_forward = value;
