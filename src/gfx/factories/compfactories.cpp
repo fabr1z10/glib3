@@ -8,7 +8,7 @@
 #include <gfx/components/switch.h>
 #include <gfx/quadmesh.h>
 #include <gfx/meshfactory.h>
-#include <gfx/components/multicollider.h>
+#include <gfx/components/smartcollider.h>
 #include <gfx/components/scripthotspot.h>
 #include <gfx/components/luakeylistener.h>
 #include <gfx/components/depth.h>
@@ -196,6 +196,14 @@ std::shared_ptr<Component> ColliderComponentFactory::Create(luabridge::LuaRef &r
     auto coll = Ref::Create<SimpleCollider>(shape, tag, flag, mask);
     return coll;
 }
+
+std::shared_ptr<Component> SmartColliderComponentFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    auto coll = Ref::Create<SmartCollider>();
+    return coll;
+}
+
+
 
 std::shared_ptr<Component> ParallaxComponentFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);

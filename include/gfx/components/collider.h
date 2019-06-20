@@ -37,6 +37,8 @@ public:
     void SetEnabled (bool);
     CollisionEngine* GetCollisionEngine() { return m_engine;}
     std::shared_ptr<Component> clone() const override;
+    std::type_index GetType() override;
+
 protected:
     int m_flag;
     int m_mask;

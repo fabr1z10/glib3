@@ -3,6 +3,7 @@
 #include <gfx/component.h>
 #include <gfx/spritemesh.h>
 #include <gfx/imodel.h>
+#include <gfx/event.h>
 
 class Renderer;
 
@@ -27,11 +28,12 @@ public:
 // and updating frames.
 class Animator : public Component {
 public:
-    Animator(std::shared_ptr<IModel> model) : m_model(model), m_forward(true) {}
+    Animator(std::shared_ptr<IModel> model) : m_model(model), m_forward(true) {
+        m_initAnim = model->GetAnimations().front();
+    }
     Animator(const Animator&);
     virtual ~Animator() {}
     void Start() override;
-    void AdvanceFrame(int);
     void Update(double dt) override;
     void SetInitialAnimation (const std::string& anim);
     void SetAnimation (const std::string& anim, bool forward = true);
@@ -48,12 +50,13 @@ public:
     //virtual void LoadState(std::shared_ptr<AnimatorState>) = 0;
     std::shared_ptr<Component> clone() const override;
     using ParentClass = Animator;
+    Event<Animator*> onFrameUpdate;
 protected:
+
     // play animation forward
     bool m_forward;
     std::string m_initAnim;
     std::shared_ptr<IModel> m_model;
-    
     // the current animation
     std::string m_animation;
     double m_time;
@@ -63,6 +66,7 @@ protected:
     const AnimInfo* m_animInfo;
     bool m_animCompleted;
     Renderer* m_renderer;
+    SpriteMesh* m_mesh;
     //std::unique_ptr<IModelStatus> m_status;
 
 };
@@ -77,5 +81,12 @@ inline void Animator::SetInitialAnimation (const std::string& anim) {
 }
 
 inline int Animator::GetFrame() const {
-    return m_status->GetFrame();
+    return m_frame;
+}
+
+inline std::shared_ptr<IModel> Animator::GetModel() {
+    return m_model;
+}
+inline std::string Animator::GetAnimation() const {
+    return m_animation;
 }

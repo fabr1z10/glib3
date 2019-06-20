@@ -1,5 +1,5 @@
 #include <platformer/states/hitjump.h>
-#include <gfx/components/stateactions.h>>
+#include <gfx/components/stateactions.h>
 
 #include <gfx/components/inputmethod.h>
 #include <gfx/components/animator.h>

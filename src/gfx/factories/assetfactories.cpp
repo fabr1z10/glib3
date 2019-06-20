@@ -97,6 +97,7 @@ std::shared_ptr<SpriteMesh> SimpleModelFactory::ReadSpriteMesh(LuaTable& t) {
     }
     mesh->Init(vertices, indices);
     mesh->SetDefaultAnimation(defaultAnimation);
+    return mesh;
 }
 
 std::shared_ptr<IModel> SimpleModelFactory::Create (luabridge::LuaRef& ref) {
@@ -111,6 +112,8 @@ std::shared_ptr<IModel> BoxedModelFactory::Create(luabridge::LuaRef &ref) {
     LuaTable t(ref);
     auto mesh = ReadSpriteMesh(t);
     // read the additional stuff
+    auto pp = std::make_shared<BoxedModel>(mesh);
+
     luabridge::LuaRef an = t.Get<luabridge::LuaRef>("animations");
     // loop through animations
     for (int i = 0; i < an.length(); ++i) {
@@ -126,15 +129,23 @@ std::shared_ptr<IModel> BoxedModelFactory::Create(luabridge::LuaRef &ref) {
                 auto boxes = table.Get<luabridge::LuaRef>("boxes");
                 if (boxes.length() == 1) {
                     glm::vec4 box = LuaTable::Read<glm::vec4>(boxes[1]);
-                    auto rect = std::make_shared<Rect>(box[2], box[3], glm::vec2(box[0], box[1]));
+                    auto rect = std::make_shared<Rect>(box[2]-box[0], box[3]-box[1], glm::vec2(box[0], box[1]));
+                    std::shared_ptr<Shape> attackShape;
+                    if (table.HasKey("attack")) {
+                        glm::vec4 attackBox = table.Get<glm::vec4>("attack");
+                        attackShape = std::make_shared<Rect>(attackBox[2]-attackBox[0], attackBox[3]-attackBox[1], glm::vec2(attackBox[0], attackBox[1]));
+                    }
+                    pp->AddCollisionData(anim, j, rect, attackShape);
                 }
-
+            } else {
+                GLIB_FAIL("A boxed model need to have collision boxes for each frame!");
             }
 
         }
 
     }
-    auto pp = std::make_shared<BoxedModel>(mesh);
-    
+    pp->generateDebugMesh();
+    return pp;
+
     
 }

@@ -12,3 +12,10 @@ public:
     virtual ~Visitor() {}
     virtual void visit(T&) = 0;
 };
+
+template <class G, class T>
+class VisitorOutput {
+public:
+    virtual ~VisitorOutput() {}
+    virtual G visit(T&) = 0;
+};

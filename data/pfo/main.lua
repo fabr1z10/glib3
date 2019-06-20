@@ -12,7 +12,7 @@ engine = {
 		},
 		models = {}
     },
-   	start_room = "world1_1",
+   	start_room = "sprite",
     global_assets = {
 		fonts = { "diag" }
 	},

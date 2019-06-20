@@ -83,3 +83,7 @@ void SimpleCollider::Move(Entity* e) {
     }
 
 }
+
+std::type_index SimpleCollider::GetType() {
+    return std::type_index(typeid(ICollider));
+}

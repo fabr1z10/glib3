@@ -12,11 +12,11 @@ std::shared_ptr<Component> Animator::clone() const {
     return std::make_shared<Animator>(Animator(*this));
 }
 void Animator::Start() {
+    m_renderer = m_entity->GetComponent<Renderer>();
+    m_mesh = dynamic_cast<SpriteMesh*>(m_model->GetMesh().get());
     if (!m_initAnim.empty()) {
         SetAnimation(m_initAnim);
     }
-    m_renderer = m_entity->GetComponent<Renderer>();
-    
 
 }
 void Animator::Update(double dt) {
@@ -38,6 +38,7 @@ void Animator::Update(double dt) {
             m_time = m_time - frameDuration;
             const FrameInfo &frameInfo = m_animInfo->frameInfo[m_frame];
             m_renderer->SetMeshInfo(frameInfo.offset, frameInfo.count);
+            onFrameUpdate.Fire(this);
         }
     }
 }
@@ -55,18 +56,16 @@ void Animator::SetAnimation(const std::string &anim, bool fwd) {
     m_inc = fwd ? 1 : -1;
     m_animation = anim;
     m_time = 0.0;
-    m_animInfo = m_mesh.GetAnimInfo(anim);
+
+    m_animInfo = m_mesh->GetAnimInfo(anim);
     if (m_animInfo == nullptr) {
         GLIB_FAIL("Don't know animation: " << anim);
     }
     m_frame = fwd ? 0 : m_animInfo->frameCount-1;
-    const FrameInfo& frameInfo = m_animInfo->frameInfo[frame];
-    renderer->SetMeshInfo(frameInfo.offset, frameInfo.count);
+    const FrameInfo& frameInfo = m_animInfo->frameInfo[m_frame];
+    m_renderer->SetMeshInfo(frameInfo.offset, frameInfo.count);
 }
 
-void Animator::AdvanceFrame(int inc) {
-    m_status->AdvanceFrame(inc);
-}
 
 bool Animator::IsComplete() const {
     return m_animCompleted;
