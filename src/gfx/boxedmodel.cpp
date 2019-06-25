@@ -9,7 +9,7 @@ void BoxedModel::AddCollisionData(const std::string &anim
                              , std::shared_ptr<Shape> attack) {
     auto key = std::make_pair(anim, frame);
     m_boxInfo.insert(std::make_pair(key, BoxInfo({collision, attack})));
-
+    collision->getBounds();
 
 //    std::vector<VertexColor> vertices ;
 //    std::vector<unsigned int> indices;
@@ -37,8 +37,9 @@ int BoxedModel::addShapeMesh(const std::shared_ptr<Shape>& shape, int& pc, std::
             indices.emplace_back(pc);
             count += 2;
         }
+        pc++;
     }
-    pc++;
+
     return count;
 }
 
@@ -52,7 +53,7 @@ void BoxedModel::generateDebugMesh() {
         m.second.count = 0;
         m.second.count += addShapeMesh(m.second.m_shape, pc, vertices, indices);
         m.second.count += addShapeMesh(m.second.m_attackShape, pc, vertices, indices);
-        offset += m.second.count+1;
+        offset += m.second.count;
     }
     auto mesh = std::make_shared<Mesh<VertexColor>>(COLOR_SHADER);
     mesh->m_primitive = GL_LINES;

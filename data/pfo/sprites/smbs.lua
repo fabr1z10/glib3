@@ -74,19 +74,19 @@ models["ryu"] = {
 		-- 	{duration = 0.5*dt, quads = {{ id = s.ryu_hit_5 }}},
 		-- 	{duration = 0.5*dt, quads = {{ id = s.ryu_hit_6 }}},
 		-- }},
-  --       { name = "jumpup", loop = false, frames = { 
-		-- 	{duration = dt, quads = {{ id = s.ryu_jump_begin_1 }}},
-		-- 	{duration = dt, quads = {{ id = s.ryu_jump_begin_2 }}},
-		-- 	{duration = dt, quads = {{ id = s.ryu_jump_begin_3 }}},
-		-- 	{duration = dt, quads = {{ id = s.ryu_jump_begin_4 }}},
-		-- 	{duration = dt, quads = {{ id = s.ryu_jump_begin_5 }}},
-		-- }},
-  --       { name = "jumpdown", loop = false, frames = { 
-		-- 	{duration = dt, quads = {{ id = s.ryu_jump_end_1 }}},
-		-- 	{duration = dt, quads = {{ id = s.ryu_jump_end_2 }}},
-		-- 	{duration = dt, quads = {{ id = s.ryu_jump_end_3 }}},
-		-- 	{duration = dt, quads = {{ id = s.ryu_jump_end_4 }}},
-		-- }},
+		{ name = "jumpup", loop = false, frames = { 
+			{duration = dt, quads = {{ id = s.ryu_jump_begin_1 }}, boxes = { {-25, 0, 26, 92 }}},
+			{duration = dt, quads = {{ id = s.ryu_jump_begin_2 }}, boxes = { {-25, 0, 26, 92 }}},
+			{duration = dt, quads = {{ id = s.ryu_jump_begin_3 }}, boxes = { {-25, 0, 26, 92 }}},
+			{duration = dt, quads = {{ id = s.ryu_jump_begin_4 }}, boxes = { {-25, 0, 26, 92 }}},
+			{duration = dt, quads = {{ id = s.ryu_jump_begin_5 }}, boxes = { {-25, 0, 26, 92 }}},
+		}},
+  		{ name = "jumpdown", loop = false, frames = { 
+		 	{duration = dt, quads = {{ id = s.ryu_jump_end_1 }}, boxes = { {-25, 0, 26, 92 }}},
+		 	{duration = dt, quads = {{ id = s.ryu_jump_end_2 }}, boxes = { {-25, 0, 26, 92 }}},
+		 	{duration = dt, quads = {{ id = s.ryu_jump_end_3 }}, boxes = { {-25, 0, 26, 92 }}},
+		 	{duration = dt, quads = {{ id = s.ryu_jump_end_4 }}, boxes = { {-25, 0, 26, 92 }}},
+		}},
 		--{ name = "die", frames = { { duration = dt, quads = {{ id = s.mario_die }}}}}
 	}
 }

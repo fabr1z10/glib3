@@ -56,6 +56,9 @@ int SmartCollider::GetCollisionMask() const {
     
 }
 
+// this returns the max bounds and is used by the collision engine
+// to locate the item in teh collision grid. However, this should not be used in the collider 2d!!!
+
 Bounds SmartCollider::GetBounds() const {
     
 }

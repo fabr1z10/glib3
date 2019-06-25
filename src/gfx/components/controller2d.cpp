@@ -34,7 +34,7 @@ void Controller2D::Start() {
 }
 
 void Controller2D::Begin() {
-    //m_cc =  m_entity->GetComponent<ICollider>();
+    m_cc =  m_entity->GetComponent<ICollider>();
     //m_cc->onShapeChanged.Register(this, [&] (Collider* c) { this->ResetShape(c); });
     CalculateRaySpacing();
 
