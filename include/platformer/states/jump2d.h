@@ -11,6 +11,8 @@ public:
     void Run (double) override;
     void Init () override ;
     void End () override {}
+    void ModifyAnimation() override;
+    void ResetAnimation() override;
 private:
     float m_speed;
     float m_accTimeAir;
@@ -22,5 +24,6 @@ private:
     float m_bounceFactor;
     std::string m_jumpAnimUp;
     std::string m_jumpAnimDown;
+    float m_vy0;
     //std::string m_jumpDownAnim;
 };

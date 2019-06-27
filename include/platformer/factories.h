@@ -19,10 +19,10 @@ FACTORY(Walk4WayStateFactory, State)
 FACTORY_S(WalkSideFactory, PlatformerStateFactory, State)
 FACTORY_S(Jump2DFactory, PlatformerStateFactory, State)
 FACTORY(HitFactory, State)
-FACTORY(HitJumpFactory, State)
+//FACTORY(HitJumpFactory, State)
 FACTORY(NilStateFactory, State)
 
-FACTORY(CustomHit1StateFactory, State)
+//FACTORY(CustomHit1StateFactory, State)
 
 //class Idle2DStateFactory : public FactoryMethod<StateBehaviour> {
 //    std::unique_ptr<StateBehaviour> Create(luabridge::LuaRef&) override;

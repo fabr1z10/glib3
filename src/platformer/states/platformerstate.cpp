@@ -56,6 +56,24 @@ bool PlatformerState::KeyListener(int key) {
     f->second->Run(m_sm);
     return true;
 }
+
+
+void PlatformerState::SetOverrideAnimation(const std::string &anim) {
+    m_overrideAnimation = anim;
+    m_animator->SetAnimation(anim);
+}
+
+
+void PlatformerState::UpdateAnimation() {
+    if (!m_overrideAnimation.empty()) {
+        if (m_animator->IsComplete()) {
+            // in this case we reset the animation based on vy
+            ResetAnimation();
+        }
+        return;
+    }
+    ModifyAnimation();
+}
 //
 //void PlatformerState::Init(Entity* e) {
 //    //StateBehaviour::Init(e);

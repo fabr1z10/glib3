@@ -15,6 +15,12 @@ public:
     void AttachStateMachine(StateMachine*) override;
     void AddKey (int, std::shared_ptr<StateAction>);
     bool KeyListener (int) override;
+    void SetOverrideAnimation(const std::string& anim);
+
+
+    void UpdateAnimation();
+    virtual void ModifyAnimation() = 0;
+    virtual void ResetAnimation() = 0;
 protected:
     Animator* m_animator;
     StateMachine* m_sm;
@@ -23,4 +29,5 @@ protected:
     InputMethod * m_input;
     Entity * m_entity;
     std::unordered_map<int, std::shared_ptr<StateAction>> m_actions;
+    std::string m_overrideAnimation;
 };

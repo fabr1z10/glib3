@@ -64,11 +64,19 @@ void WalkSide::Run (double dt) {
     glm::vec2 delta =m_dynamics->step(dt, targetVelocityX, m_acceleration);
     m_controller->Move(delta);
 
+    UpdateAnimation();
+}
+
+
+void WalkSide::ResetAnimation() {}
+
+void WalkSide::ModifyAnimation() {
     if (fabs(m_dynamics->m_velocity.x) > 1.0f) {
         m_animator->SetAnimation("walk");
     } else {
         m_animator->SetAnimation("idle");
     }
+
 
 }
 

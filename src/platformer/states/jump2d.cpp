@@ -28,18 +28,14 @@ std::shared_ptr<State> Jump2D::clone() const {
 }
 
 void Jump2D::Init() {
-    if (m_dynamics->m_velocity.y >=  0) {
-        m_animator->SetAnimation(m_jumpAnimUp);
-    } else {
-        m_animator->SetAnimation(m_jumpAnimDown);
-    }
+    ResetAnimation();
 }
 
 void Jump2D::Run(double dt) {
     // if not touching the ground, set status to jump
     bool left = m_input->isKeyDown(GLFW_KEY_LEFT);
     bool right = m_input->isKeyDown(GLFW_KEY_RIGHT);
-    float vy0 = m_dynamics->m_velocity.y;
+    m_vy0 = m_dynamics->m_velocity.y;
 
     if (m_controller->m_details.below && m_dynamics->m_velocity.y < 0) {
         if (!m_bounce) {
@@ -70,9 +66,22 @@ void Jump2D::Run(double dt) {
     glm::vec2 delta = m_dynamics->step(dt, targetVelocityX, m_accTimeAir);
 
     m_controller->Move(delta);
+    UpdateAnimation();
+
+
+}
+
+void Jump2D::ModifyAnimation() {
     float vy1 = m_dynamics->m_velocity.y;
-    if (vy0 >= 0 && vy1 < 0) {
+    if (m_vy0 >= 0 && vy1 < 0) {
         m_animator->SetAnimation(m_jumpAnimDown);
     }
+}
 
+void Jump2D::ResetAnimation() {
+    if (m_dynamics->m_velocity.y >=  0) {
+        m_animator->SetAnimation(m_jumpAnimUp);
+    } else {
+        m_animator->SetAnimation(m_jumpAnimDown);
+    }
 }

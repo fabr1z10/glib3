@@ -82,10 +82,11 @@ room = {
 								 		animup = "jumpup",
 								 		animdown = "jumpdown",
 								 		keys = {
-								 			{ id = 81, action = "changestate", state = "jkick" }
+								 			{ id = 81, action = "playanim", anim = "lowkick" }
 								 		}
 								 	}
 								},
+								{ id = "lowkick", state = { type="hit", anim="lowkick", acceleration =0.05 }}
 							}
 						},
 					}

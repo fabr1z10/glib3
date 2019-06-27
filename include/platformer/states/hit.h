@@ -12,7 +12,7 @@ public:
      * @param acceleration The acceleration
      * @param fliph Flip entity horizontally when going left
      */
-    Hit (const std::string& anim, int frame, std::shared_ptr<Shape> attackBox, int mask, int tag, float acceleration);
+    Hit (const std::string& anim, float acceleration);
     Hit (const Hit& orig);
     void Run(double) override;
     void End () override {}

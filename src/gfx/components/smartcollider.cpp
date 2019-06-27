@@ -1,6 +1,7 @@
 #include <gfx/components/smartcollider.h>
 #include <gfx/components/animator.h>
 #include <gfx/boxedmodel.h>
+#include <gfx/collisionengine.h>
 
 #include <gfx/entity.h>
 
@@ -17,6 +18,27 @@ void SmartCollider::ofu(Animator *a) {
     int fr = a->GetFrame();
     const auto& bi = m_model->getBoxInfo(anim,fr);
     m_colliderRenderer->SetMeshInfo(bi.offset, bi.count);
+
+    // now, check if I have an attack box
+    if (bi.m_attackShape != nullptr) {
+        auto t = m_entity->GetWorldTransform();
+        std::cout <<" **** hit ****\n";
+        std::cout << "character at position = " << t[3][0] << ", " << t[3][1] << " scale " << t[0][0] << "\n";
+        auto e = m_engine->ShapeCast(bi.m_attackShape, t, m_mask);
+        if (e != nullptr) {
+            std::cerr << "HIT!\n";
+            auto rm = m_engine->GetResponseManager()->GetHandler(m_tag, e->GetCollisionTag());
+            if (rm.response != nullptr) {
+                std::cerr << "FOUND RESPONSE\n";
+                if (rm.flip) {
+                    rm.response->onStart(e->GetObject(), m_entity, CollisionReport());
+                } else {
+                    rm.response->onStart(m_entity, e->GetObject(), CollisionReport());
+                }
+            }
+        }
+    }
+
 
 }
 void SmartCollider::Start() {

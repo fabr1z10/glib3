@@ -19,3 +19,4 @@ private:
     luabridge::LuaRef m_f;
 
 };
+

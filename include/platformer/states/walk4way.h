@@ -20,6 +20,8 @@ public:
     void Init () override;
     void End () override;
     std::shared_ptr<State> clone() const override;
+    void ResetAnimation() override{}
+    void ModifyAnimation() override {}
 private:
     bool m_flipHorizontally;
     float m_speed;
