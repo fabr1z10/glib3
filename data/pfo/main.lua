@@ -19,7 +19,7 @@ engine = {
 	shaders = { "unlit_textured", "unlit_color", "text" }
 
 }
-require("platformer")
+
 
 
 variables = {
@@ -36,6 +36,7 @@ variables = {
 
 	}
 }
+require("platformer")
 
 variables.collider = { 
 	type = "collision", 

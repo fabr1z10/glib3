@@ -12,14 +12,15 @@ Bounds BoxedModel::GetAnimBounds(const std::string & name) const {
 void BoxedModel::AddCollisionData(const std::string &anim
                              , int frame
                              , std::shared_ptr<Shape> collision
-                             , std::shared_ptr<Shape> attack) {
+                             , std::shared_ptr<Shape> attack
+                             , int attackTag) {
     auto key = std::make_pair(anim, frame);
     if (m_boxInfo.empty()) {
         m_maxBounds = collision->getBounds();
     } else {
         m_maxBounds.ExpandWith(collision->getBounds());
     }
-    m_boxInfo.insert(std::make_pair(key, BoxInfo({collision, attack})));
+    m_boxInfo.insert(std::make_pair(key, BoxInfo({collision, attack, attackTag})));
 }
 
 std::shared_ptr<Shape> BoxedModel::GetShape(const std::string & anim, int frame) {

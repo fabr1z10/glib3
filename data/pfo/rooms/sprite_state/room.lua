@@ -44,6 +44,7 @@ room = {
 			},
 			children = {
 				factory.rect { pos = {0, 0}, img = "block1.png", width=69, height=2 },
+				factory.rect { pos = {10, 2}, flag=2|4, tag = 50, img = "block1.png", width=1, height=1 },	
 				{	
 					 tag="player",
 					 scale = 0.4,
