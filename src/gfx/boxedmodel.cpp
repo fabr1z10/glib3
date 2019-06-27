@@ -3,28 +3,34 @@
 
 BoxedModel::BoxedModel(std::shared_ptr<SpriteMesh> mesh) : SimpleModel(mesh) {}
 
+void BoxedModel::AddAnimationData(const std::string &anim, Bounds b) {
+    m_animBounds.insert(std::make_pair(anim, b));
+}
+Bounds BoxedModel::GetAnimBounds(const std::string & name) const {
+    return m_animBounds.at(name);
+}
 void BoxedModel::AddCollisionData(const std::string &anim
                              , int frame
                              , std::shared_ptr<Shape> collision
                              , std::shared_ptr<Shape> attack) {
     auto key = std::make_pair(anim, frame);
+    if (m_boxInfo.empty()) {
+        m_maxBounds = collision->getBounds();
+    } else {
+        m_maxBounds.ExpandWith(collision->getBounds());
+    }
     m_boxInfo.insert(std::make_pair(key, BoxInfo({collision, attack})));
-    collision->getBounds();
-
-//    std::vector<VertexColor> vertices ;
-//    std::vector<unsigned int> indices;
-//    int n = p.GetVertexCount();
-//    for (int i = 0; i <n; ++i) {
-//        glm::vec2 v = p.GetVertex(i);
-//        vertices.push_back({v.x, v.y, z, 1.0, 1.0, 1.0, 1.0});
-//        indices.push_back(i);
-//    }
-//    auto mesh = std::make_shared<Mesh<VertexColor>>(COLOR_SHADER);
-//    mesh->Init(vertices, indices);
-//    mesh->m_primitive = GL_LINE_LOOP;
-//    return mesh;
-//}
 }
+
+std::shared_ptr<Shape> BoxedModel::GetShape(const std::string & anim, int frame) {
+    auto key = std::make_pair(anim, frame);
+    auto box = m_boxInfo.find(key);
+    if (box == m_boxInfo.end()) {
+        GLIB_FAIL("Don't know shape for anim: " << anim << ", frame: " << frame);
+    }
+    return box->second.m_shape;
+}
+
 
 int BoxedModel::addShapeMesh(const std::shared_ptr<Shape>& shape, int& pc, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices) {
     int count = 0;

@@ -199,7 +199,10 @@ std::shared_ptr<Component> ColliderComponentFactory::Create(luabridge::LuaRef &r
 
 std::shared_ptr<Component> SmartColliderComponentFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
-    auto coll = Ref::Create<SmartCollider>();
+    int tag = table.Get<int>("tag");
+    int flag = table.Get<int>("flag");
+    int mask = table.Get<int>("mask");
+    auto coll = Ref::Create<SmartCollider>(flag, mask, tag);
     return coll;
 }
 

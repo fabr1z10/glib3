@@ -47,7 +47,7 @@ models["ryu"] = {
     type = "boxed_sprite",
     ppu=1,
 	animations = {
-		{ name = "idle", frames = { 
+		{ name = "idle", box = {-25, 0, 26, 92}, frames = { 
 			-- boxes are provided as (xmin, ymin, xmax, ymax)
 			{duration = dt, quads = {{ id = s.ryu_idle_1 }}, boxes = { {-25, 0, 26, 92 }}},
 			{duration = dt, quads = {{ id = s.ryu_idle_2 }}, boxes = { {-25, 0, 26, 90 }}},
@@ -56,16 +56,16 @@ models["ryu"] = {
 			{duration = dt, quads = {{ id = s.ryu_idle_5 }}, boxes = { {-25, 0, 26, 96 }}},
 			{duration = dt, quads = {{ id = s.ryu_idle_6 }}, boxes = { {-25, 0, 26, 93 }}},
 		}},
-		-- { name = "walk", frames = {
-		-- 	{duration = dt, quads = {{ id = s.ryu_walk_1 }}},
-		-- 	{duration = dt, quads = {{ id = s.ryu_walk_2 }}},
-		-- 	{duration = dt, quads = {{ id = s.ryu_walk_3 }}},
-		-- 	{duration = dt, quads = {{ id = s.ryu_walk_4 }}},
-		-- 	{duration = dt, quads = {{ id = s.ryu_walk_5 }}},
-		-- 	{duration = dt, quads = {{ id = s.ryu_walk_6 }}},
-		-- 	{duration = dt, quads = {{ id = s.ryu_walk_7 }}},
-		-- 	{duration = dt, quads = {{ id = s.ryu_walk_8 }}},
-		-- }},
+		{ name = "walk", box = {-25, 0, 26, 92}, frames = {
+		 	{duration = dt, quads = {{ id = s.ryu_walk_1 }}, boxes = {{-23,0,28,96}}},
+		 	{duration = dt, quads = {{ id = s.ryu_walk_2 }}, boxes = {{-23,0, 28,94}}},
+		 	{duration = dt, quads = {{ id = s.ryu_walk_3 }}, boxes = {{-23,0,28,92}}},
+		 	{duration = dt, quads = {{ id = s.ryu_walk_4 }}, boxes = {{-23,0,28,88}}},
+		 	{duration = dt, quads = {{ id = s.ryu_walk_5 }}, boxes = {{-23,0,28,89}}},
+		 	{duration = dt, quads = {{ id = s.ryu_walk_6 }}, boxes = {{-23,0,28,92}}},
+		 	{duration = dt, quads = {{ id = s.ryu_walk_7 }}, boxes = {{-23,0,28,94}}},
+		 	{duration = dt, quads = {{ id = s.ryu_walk_8 }}, boxes = {{-23,0,28,95}}},
+		}},
 		-- { name = "lowkick", frames = {
 		-- 	{duration = 0.5*dt, quads = {{ id = s.ryu_hit_1 }}},
 		-- 	{duration = 0.5*dt, quads = {{ id = s.ryu_hit_2 }}},
@@ -74,18 +74,18 @@ models["ryu"] = {
 		-- 	{duration = 0.5*dt, quads = {{ id = s.ryu_hit_5 }}},
 		-- 	{duration = 0.5*dt, quads = {{ id = s.ryu_hit_6 }}},
 		-- }},
-		{ name = "jumpup", loop = false, frames = { 
-			{duration = dt, quads = {{ id = s.ryu_jump_begin_1 }}, boxes = { {-25, 0, 26, 92 }}},
-			{duration = dt, quads = {{ id = s.ryu_jump_begin_2 }}, boxes = { {-25, 0, 26, 92 }}},
-			{duration = dt, quads = {{ id = s.ryu_jump_begin_3 }}, boxes = { {-25, 0, 26, 92 }}},
-			{duration = dt, quads = {{ id = s.ryu_jump_begin_4 }}, boxes = { {-25, 0, 26, 92 }}},
-			{duration = dt, quads = {{ id = s.ryu_jump_begin_5 }}, boxes = { {-25, 0, 26, 92 }}},
+		{ name = "jumpup", box = {-25, 0, 26, 92}, loop = false, frames = { 
+			{duration = dt, quads = {{ id = s.ryu_jump_begin_1 }}, boxes = { {-19, 0, 27, 81 }}},
+			{duration = dt, quads = {{ id = s.ryu_jump_begin_2 }}, boxes = { {-19, 0, 28, 87 }}},
+			{duration = dt, quads = {{ id = s.ryu_jump_begin_3 }}, boxes = { {-19, 0, 28, 64 }}},
+			{duration = dt, quads = {{ id = s.ryu_jump_begin_4 }}, boxes = { {-19, 0, 29, 57 }}},
+			{duration = dt, quads = {{ id = s.ryu_jump_begin_5 }}, boxes = { {-20, 0, 29, 54 }}},
 		}},
-  		{ name = "jumpdown", loop = false, frames = { 
-		 	{duration = dt, quads = {{ id = s.ryu_jump_end_1 }}, boxes = { {-25, 0, 26, 92 }}},
-		 	{duration = dt, quads = {{ id = s.ryu_jump_end_2 }}, boxes = { {-25, 0, 26, 92 }}},
-		 	{duration = dt, quads = {{ id = s.ryu_jump_end_3 }}, boxes = { {-25, 0, 26, 92 }}},
-		 	{duration = dt, quads = {{ id = s.ryu_jump_end_4 }}, boxes = { {-25, 0, 26, 92 }}},
+  		{ name = "jumpdown", box = {-25, 0, 26, 92}, loop = false, frames = { 
+		 	{duration = dt, quads = {{ id = s.ryu_jump_end_1 }}, boxes = { {-19, 0, 29, 57 }}},
+		 	{duration = dt, quads = {{ id = s.ryu_jump_end_2 }}, boxes = { {-19, 0, 28, 64 }}},
+		 	{duration = dt, quads = {{ id = s.ryu_jump_end_3 }}, boxes = { {-19, 0, 28, 77 }}},
+		 	{duration = dt, quads = {{ id = s.ryu_jump_end_4 }}, boxes = { {-19, 0, 27, 81 }}},
 		}},
 		--{ name = "die", frames = { { duration = dt, quads = {{ id = s.mario_die }}}}}
 	}

@@ -46,14 +46,16 @@ room = {
 				factory.rect { pos = {0, 0}, img = "block1.png", width=69, height=2 },
 				{	
 					 tag="player",
+					 scale = 0.4,
 					 type = "sprite",
 					 model ="ryu",
 					 pos = {112, 64, 0},
 					 components = {
-					 	{ type = "smartcollider" },
+					 	{ type = "smartcollider", tag=1, flag=1, mask =2 },
 						{ type ="keyinput" },
 						{ type ="controller2d", maxclimbangle = 80, maxdescendangle = 80, horizontalrays=4, verticalrays=4 },
 						{ type ="dynamics2d", gravity = -50 },
+						{ type="follow", cam ="maincam", relativepos={0,0,5}, up={0,1,0} },
 						{ type ="extstatemachine", initialstate = "walk",
 							states = {
 								{ 

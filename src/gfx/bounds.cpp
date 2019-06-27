@@ -1,4 +1,5 @@
 #include <gfx/bounds.h>
+#include <algorithm>
 
 void Bounds::Transform(const glm::mat4& m){
     glm::vec2 P[4];

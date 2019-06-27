@@ -5,7 +5,7 @@
 #include <gfx/engine.h>
 
 SimpleCollider::SimpleCollider(const SimpleCollider& orig) : ICollider(orig),
-m_shape(orig.m_shape), m_tag(orig.m_tag), m_flag(orig.m_flag), m_mask(orig.m_mask), m_engine(nullptr),
+m_shape(orig.m_shape), m_tag(orig.m_tag), m_flag(orig.m_flag), m_mask(orig.m_mask),
 m_enabled(orig.m_enabled)
 {}
 
@@ -17,23 +17,11 @@ void SimpleCollider::SetParent(Entity * entity) {
     Component::SetParent(entity);
 }
 
-void SimpleCollider::End() {
-    m_engine->Remove(this);
-}
+
 
 void SimpleCollider::Start() {
-    m_engine = Engine::get().GetRunner<CollisionEngine>();
-    if (m_engine == nullptr) {
-        GLIB_FAIL("The room has a collider component but no collision engine is loaded.");
-    }
-    if (m_shape != nullptr) {
-        m_aabb = m_shape->getBounds();
-        m_aabb.Transform(m_entity->GetWorldTransform());
-    }
-    m_engine->Add(this);
-    GetObject()->onMove.Register(this, [&] (Entity* e) { this->Move(e);} );
-    //m_aabb = m_shape->getBounds();
-    //m_aabb.Transform(m_entity->GetWorldTransform());
+    m_aabb = m_shape->getBounds();
+    ICollider::Start();
     if (m_shape != nullptr) {
         auto c = std::make_shared<Entity>();
         auto renderer = std::make_shared<Renderer>();
@@ -74,15 +62,6 @@ void SimpleCollider::SetShape(std::shared_ptr<Shape> shape) {
     }
 }
 
-void SimpleCollider::Move(Entity* e) {
-    if (m_shape != nullptr) {
-        m_aabb = m_shape->getBounds();
-        m_aabb.Transform(m_entity->GetWorldTransform());
-        if (m_engine != nullptr)
-            m_engine->Move(this);
-    }
-
-}
 
 std::type_index SimpleCollider::GetType() {
     return std::type_index(typeid(ICollider));

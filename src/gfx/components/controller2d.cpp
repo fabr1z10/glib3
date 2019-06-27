@@ -48,7 +48,7 @@ void Controller2D::ResetShape(ICollider*) {
 
 void Controller2D::CalculateRaySpacing() {
     
-    Bounds bounds = m_cc->GetBounds();
+    Bounds bounds = m_cc->GetDynamicBounds();
     bounds.Expand(m_skinWidth * -2);
     m_horizontalRaySpacing = bounds.GetSize().y / (m_horizontalRayCount - 1);
     m_verticalRaySpacing = bounds.GetSize().x / (m_verticalRayCount - 1);
@@ -56,7 +56,7 @@ void Controller2D::CalculateRaySpacing() {
 }
 
 void Controller2D::UpdateRaycastOrigins() {
-    Bounds bounds = m_cc->GetBounds();
+    Bounds bounds = m_cc->GetDynamicBounds();
     bounds.Expand(m_skinWidth * -2);
     m_raycastOrigins.bottomLeft = vec2(bounds.min.x, bounds.min.y);
     m_raycastOrigins.bottomRight = vec2(bounds.max.x, bounds.min.y);

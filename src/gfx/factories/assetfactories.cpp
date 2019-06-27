@@ -119,6 +119,8 @@ std::shared_ptr<IModel> BoxedModelFactory::Create(luabridge::LuaRef &ref) {
     for (int i = 0; i < an.length(); ++i) {
         luabridge::LuaRef at = an[i+1];
         std::string anim = at["name"].cast<std::string>();
+        glm::vec4 box = LuaTable::Read<glm::vec4>(at["box"]);
+        pp->AddAnimationData(anim, Bounds{glm::vec2(box[0], box[1]), glm::vec2(box[2], box[3])});
         luabridge::LuaRef fr = at["frames"];
         for (int j = 0; j < fr.length(); ++j) {
             luabridge::LuaRef a2 = fr[j + 1];

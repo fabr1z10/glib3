@@ -10,9 +10,9 @@ class CollisionEngine;
 
 class SimpleCollider : public ICollider {
 public:
-    SimpleCollider (int tag, int flag, int mask) : m_shape{nullptr}, m_engine{nullptr}, m_tag{tag}, m_flag{flag}, m_mask{mask}, m_enabled{true} {}
+    SimpleCollider (int tag, int flag, int mask) : m_shape{nullptr}, m_tag{tag}, m_flag{flag}, m_mask{mask}, m_enabled{true} {}
     SimpleCollider (std::shared_ptr<Shape> shape, int tag, int flag, int mask) :
-    m_shape{shape}, m_tag{tag}, m_enabled{true}, m_flag{flag}, m_mask{mask}, m_engine(nullptr) {}
+    m_shape{shape}, m_tag{tag}, m_enabled{true}, m_flag{flag}, m_mask{mask} {}
     SimpleCollider (const SimpleCollider&);
     virtual ~SimpleCollider();
     
@@ -27,15 +27,12 @@ public:
     void SetShape(std::shared_ptr<Shape> shape);
     void SetParent(Entity* parent) override;
     void Start() override;
-    void End() override;
     void Update(double) override {}
-    void Move(Entity*);
     using ParentClass = ICollider;
     bool Enabled() const;
-    Bounds GetBounds() const;
+
     Event<SimpleCollider*> onShapeChanged;
     void SetEnabled (bool);
-    CollisionEngine* GetCollisionEngine() { return m_engine;}
     std::shared_ptr<Component> clone() const override;
     std::type_index GetType() override;
 
@@ -46,10 +43,17 @@ protected:
     std::shared_ptr<Shape> m_shape;
     Bounds m_aabb;
     bool m_enabled;
-    CollisionEngine* m_engine;
+private:
+    Bounds GetStaticBoundsI() const override;
+    Bounds GetDynamicBoundsI() const override;
+
 };
 
-inline Bounds SimpleCollider::GetBounds() const {
+inline Bounds SimpleCollider::GetStaticBoundsI() const {
+    return m_aabb;
+}
+
+inline Bounds SimpleCollider::GetDynamicBoundsI() const {
     return m_aabb;
 }
 
