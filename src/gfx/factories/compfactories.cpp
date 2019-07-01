@@ -203,6 +203,13 @@ std::shared_ptr<Component> SmartColliderComponentFactory::Create(luabridge::LuaR
     int flag = table.Get<int>("flag");
     int mask = table.Get<int>("mask");
     auto coll = Ref::Create<SmartCollider>(flag, mask, tag);
+    table.ProcessVector("attack_tags", [coll] (luabridge::LuaRef ref) {
+        std::string anim = ref["anim"].cast<std::string>();
+        int attackTag = ref["tag"].cast<int>();
+        int attackMask = ref["mask"].cast<int>();
+        coll->AddAttackTag(anim, attackTag, attackMask);
+    });
+
     return coll;
 }
 

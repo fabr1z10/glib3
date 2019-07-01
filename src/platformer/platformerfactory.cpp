@@ -19,7 +19,7 @@ PlatformerFactory::PlatformerFactory() : SceneFactory() {
     m_stateFactory.Add<DuckFactory>("duck");
     //m_stateFactory.Add<HitJumpFactory>("hitj");
     m_stateFactory.Add<NilStateFactory>("nil");
-    //m_stateFactory.Add<CustomHit1StateFactory>("ch1");
+    m_stateFactory.Add<CustomHit1StateFactory>("ch1");
 
 }
 

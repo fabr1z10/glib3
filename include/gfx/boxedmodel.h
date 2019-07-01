@@ -8,7 +8,7 @@ struct BoxInfo {
     std::shared_ptr<Shape> m_shape;
     std::shared_ptr<Shape> m_attackShape;
     //int shapeTag;
-    int attackTag;
+    //int attackTag;
     int offset;
     int count;
 };
@@ -21,8 +21,7 @@ public:
     void AddAnimationData (const std::string& anim, Bounds b);
     void AddCollisionData (const std::string& anim, int frame,
                            std::shared_ptr<Shape> collision,
-                           std::shared_ptr<Shape> attack,
-                           int attackTag);
+                           std::shared_ptr<Shape> attack);
     std::shared_ptr<Shape> GetShape (const std::string&, int);
     void generateDebugMesh ();
     std::shared_ptr<IMesh> GetCollisionMesh();

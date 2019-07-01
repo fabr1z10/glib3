@@ -54,7 +54,9 @@ struct EntityWrapper {
     float GetX() const;
     float GetY() const;
     float GetZ() const;
+    float GetVx() const;
     float GetVy() const;
+    void SetVx(float);
     void SetVy(float);
     std::string GetTag() const;
     std::string GetState() const;

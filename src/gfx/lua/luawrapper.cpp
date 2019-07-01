@@ -33,6 +33,7 @@ void LuaWrapper::Init() {
             .addProperty("y", &EntityWrapper::GetY)
             .addProperty("z", &EntityWrapper::GetZ)
             .addProperty("id", &EntityWrapper::GetId)
+            .addProperty("vx", &EntityWrapper::GetVx, &EntityWrapper::SetVx)
             .addProperty("vy", &EntityWrapper::GetVy, &EntityWrapper::SetVy)
             .addProperty("tag", &EntityWrapper::GetTag)
             .addProperty("state", &EntityWrapper::GetState, &EntityWrapper::SetState)

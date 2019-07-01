@@ -26,6 +26,7 @@ public:
     std::shared_ptr<Component> clone() const override;
     std::type_index GetType() override;
     void ofu(Animator*a);
+    void AddAttackTag(const std::string& anim, int tag, int mask);
 private:
     Animator* m_animator;
     BoxedModel* m_model;
@@ -35,4 +36,5 @@ private:
     int m_flag;
     int m_mask;
     int m_tag;
+    std::unordered_map<std::string, std::pair<int, int>> m_attackInfo;
 };

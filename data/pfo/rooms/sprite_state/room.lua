@@ -17,15 +17,23 @@ room = {
 			type = "collision", 
 			size = {roomInfo.collisionSize, roomInfo.collisionSize}, 
 			response = {
-				{ tag = {variables.tags.player, variables.tags.foe}, onenter = function() 
+				{ tag = {variables.tags.player, variables.tags.foe}, onenter = function(player, foe) 
 					--print ("azzzz") 
-					local actions = {
-						{ type = action.blink, args = { tag="player", duration = 5, blink_duration=0.1}}
-					}
-					local s = script.make(actions)
-					monkey.play(s)
+
+					player_info = player:getinfo()
+					if (player_info.invincible == false) then
+						player_info.invincible = true
+						local actions = {
+							{ type = action.blink, args = { tag="player", duration = 5, blink_duration=0.1}},
+							{ type = action.callfunc, args = { func = function() player_info.invincible = false end }}
+						}
+						local s = script.make(actions)
+						monkey.play(s)
 				    end
+				end
 				},
+				{ tag = {variables.tags.player_attack, variables.tags.foe}, onenter = generic_hit },
+				{ tag = {variables.tags.foe_attack, variables.tags.player}, onenter = generic_hit },
 				{ tag = {variables.tags.player_attack, variables.tags.foe}, onenter = player_hits },
 				{ tag = {variables.tags.foe_attack, variables.tags.player}, onenter = player_is_hit },
 				{ tag = {variables.tags.player_attack, variables.tags.hittable_block}, onenter = mario_removeenemy }
@@ -64,22 +72,77 @@ room = {
 					acc_air = 0.10, 
 					jump_speed = 100, 
 					gravity = -50,
+					energy = 3,
 					can_duck = true,
-					attack = {
-						{ type = "w", key = 81, state ="lowkick", anim="lowkick" },
+					custom_states = {
+						{ id = "lowkick", state = { type="hit", anim="lowkick", acceleration = 0.05 }}
+					},
+					attack_tags = {
+						{ anim ="lowkick", tag = variables.tags.player_attack, mask = 4|8 }
+					},
+					attack_moves = {
+						{ type = "w", key = 81, state ="lowkick" },
 						{ type = "j", key = 81, anim = "lowkick" }
-					}
+					},
 				},
+				-- factory.character.create {
+				-- 	class = "enemy_1",
+				-- 	model = "goomba",
+				-- 	pos = {180, 80},
+				-- 	speed = 50,
+				-- 	acc_gnd = 0.05,
+				-- 	acc_air = 0.10,
+				-- 	jump_speed = 0,
+				-- 	gravity = -50,
+				-- 	energy = 5
+				-- },
+				-- factory.character.create {
+				-- 	class = "enemy_2",
+				-- 	scale = 0.4,
+				-- 	model = "ryu",
+				-- 	pos = {32, 32},
+				-- 	speed = 50,
+				-- 	acc_gnd = 0.05,
+				-- 	acc_air = 0.10,
+				-- 	jump_speed = 0,
+				-- 	gravity = -50,
+				-- 	energy = 5,
+				-- 	attack_prob = 0.7,
+				-- 	attack_moves = {
+				-- 		{ key = 81, odds = 10 }
+				-- 	},
+				-- 	attack = {
+				-- 		{ type = "w", key = 81, state ="lowkick", anim="lowkick", tag = variables.tags.foe_attack, mask = 1 },
+				-- 	},
+				-- },
 				factory.character.create {
-					class = "enemy_1",
-					model = "goomba",
-					pos = {180, 80},
+					class = "enemy_2",
+					scale = 0.6,
+					model = "ryu",
+					pos = {32, 32},
 					speed = 50,
 					acc_gnd = 0.05,
 					acc_air = 0.10,
 					jump_speed = 0,
-					gravity = -50					
-				}
+					gravity = -50,
+					energy = 5,
+					custom_states = {
+						{ id = "jump_attack", state = { type="ch1", animup="jumpup", animdown="jumpdown_attack", speed = 300, target="player" }}
+					},
+					attack_tags = {
+						{ anim="jumpdown_attack", tag = variables.tags.foe_attack, mask = 1 }
+					},
+					attack_ia = {
+						prob = 0.7,
+						moves = {
+							{ key = 81, odds = 10 }
+						}
+					},
+					attack_moves = {
+						{ type = "w", key = 81, state ="jump_attack" },
+					},
+				},
+
 
 				-- {	
 				-- 	 tag="player",

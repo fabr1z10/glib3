@@ -6,6 +6,56 @@ function mario_removeenemy(mario, enemy)
 	monkey.play(s)
 end
 
+function generic_hit(hitter, hit) 
+
+	local hit_info = hit:getinfo()
+	if (hit.tag == "player") then
+		if (hit_info.invincible == true) then
+			return
+		end
+	end
+	hit_info.energy = hit_info.energy - 1	
+	if (hit_info.energy > 0) then
+		if (hit.x > hitter.x) then
+			hit.vx = hit.flipx and -500 or 500
+		 else
+		 	hit.vx = hit.flipx and 500 or -500
+		 end
+		 if (hit.tag == "player") then
+		 	hit_info.invincible = true
+		 	local actions = {
+				{ type = action.blink, args = { tag="player", duration = 5, blink_duration=0.1}},
+				{ type = action.callfunc, args = { func = function() hit_info.invincible = false end }}
+			}
+			local s = script.make(actions)
+			monkey.play(s)
+		 end
+	else
+		local fx = {
+			type = "sprite",
+			model = "fx_1",
+			pos = {hit.x, hit.y, 0},
+		}
+		local actions = {
+			{ type = action.remove_object, args = {id=hit.id}},
+			{ type = action.callfunc, args = { func= function()  
+				local m1 = monkey.getEntity("main")
+				local id = monkey.addEntity (fx, m1)
+				local acs = {
+					{ type = action.animate, args = {id = id, anim="default", sync=true}},
+					{ type = action.remove_object, args= {id=id}}
+				}
+				local s1 = script.make(acs)
+				monkey.play(s1)
+				end}
+			}
+		}
+		local s = script.make(actions)
+		monkey.play(s)
+	end
+end
+
+
 function player_hits ()
 	print ("PLAYER HITS ENEMY")
 end

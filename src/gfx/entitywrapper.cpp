@@ -28,11 +28,15 @@ float EntityWrapper::GetZ() const {
 int EntityWrapper::GetId() const {
     return m_underlying->GetId();
 }
-
+float EntityWrapper::GetVx() const {
+    return m_underlying->GetComponent<Dynamics2D>()->m_velocity.x;
+}
 float EntityWrapper::GetVy() const {
     return m_underlying->GetComponent<Dynamics2D>()->m_velocity.y;
 }
-
+void EntityWrapper::SetVx(float value) {
+    m_underlying->GetComponent<Dynamics2D>()->m_velocity.x = value;
+}
 void EntityWrapper::SetVy(float value) {
     m_underlying->GetComponent<Dynamics2D>()->m_velocity.y = value;
 }

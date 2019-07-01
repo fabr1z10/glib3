@@ -59,8 +59,15 @@ std::shared_ptr<Component> EnemyInputCompFactory::Create(luabridge::LuaRef &ref)
     LuaTable table(ref);
     bool left = table.Get<bool>("left", true);
     bool flipIfPlatformEnds = table.Get<bool>("flip", true);
+    float attackProb = table.Get<float>("attack_prob", 0.0f);
+    auto eim = std::make_shared<EnemyInputMethod>(left, flipIfPlatformEnds, attackProb);
+    table.ProcessVector("attack_moves", [eim] (luabridge::LuaRef ref) {
+        int key = ref["key"].cast<int>();
+        int odds = ref["odds"].cast<int>();
+        eim->AddAttackMove(key, odds);
+    });
+    return eim;
 
-    return std::make_shared<EnemyInputMethod>(left, flipIfPlatformEnds);
 }
 
 //
@@ -222,14 +229,14 @@ std::shared_ptr<State> HitFactory::Create(luabridge::LuaRef &ref) {
 //    return std::make_shared<HitJump>(anim, frame, shape, mask, tag, acc, speed);
 //}
 //
-//std::shared_ptr<State> CustomHit1StateFactory::Create(luabridge::LuaRef &ref) {
-//    LuaTable table(ref);
-//    std::string target = table.Get<std::string>("target");
-//    std::string animUp = table.Get<std::string>("animup");
-//    std::string animDown = table.Get<std::string>("animdown");
-//    float speed = table.Get<float>("speed");
-//    return std::make_shared<CustomHit1>(target, speed, speed, animUp, animDown);
-//}
+std::shared_ptr<State> CustomHit1StateFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    std::string target = table.Get<std::string>("target");
+    std::string animUp = table.Get<std::string>("animup");
+    std::string animDown = table.Get<std::string>("animdown");
+    float speed = table.Get<float>("speed");
+    return std::make_shared<CustomHit1>(target, speed, speed, animUp, animDown);
+}
 
 //std::shared_ptr<State> HitJumpFactory::Create(luabridge::LuaRef &ref) {
 //    LuaTable table(ref);

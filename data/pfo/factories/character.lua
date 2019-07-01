@@ -8,19 +8,31 @@ factory.character.classes = {
 		collision_flag = 1,
 		collision_mask = 2 | 4,
 		collision_tag = variables.tags.player,
-		input = function(comps) 
+		input = function(comps,args) 
 			table.insert(comps, { type="keyinput"})
 			table.insert(comps, { type="follow", cam ="maincam", relativepos={0,0,5}, up={0,1,0} })
+			table.insert(comps, { type="info", invincible = false, energy = args.energy})
 		end
 	},
 	enemy_1 = {
 		collision_flag = 4,
 		collision_mask = 1 | 2,
 		collision_tag = variables.tags.foe,
-		input = function(comps) 
-			table.insert(comps, { type="enemyinput" })
+		input = function(comps, args) 
+			table.insert(comps, { type="enemyinput", attack = args.attack })
+			table.insert(comps, {type="info", energy = args.energy})
 		end
-	}
+	},
+	enemy_2 = {
+		collision_flag = 8,
+		collision_mask = 0,
+		collision_tag = variables.tags.foe,
+		input = function(comps, args) 
+			table.insert(comps, { type="enemyinput", attack_moves = args.attack_ia.moves, attack_prob = args.attack_ia.prob})
+			table.insert(comps, {type="info", energy = args.energy})
+		end
+	},
+
 }
 
 factory.character.create = function(args)
@@ -80,11 +92,24 @@ factory.character.create = function(args)
 		table.insert(state_component.states[1].state.keys, {id=264, action="changestate", state="duck"})
 	end
 
-	if (args.attack ~= nil) then
-		for _, value in ipairs(args.attack) do
+	if (args.custom_states ~= nil) then
+		for _, value in ipairs(args.custom_states) do
+			table.insert(state_component.states, value)
+		end
+	end
+
+	local attack_info = {}
+	if (args.attack_tags ~= nil) then
+		for _, value in ipairs(args.attack_tags) do
+			table.insert (attack_info, { anim = value.anim, tag = value.tag,  mask = value.mask })
+		end
+	end
+
+	if (args.attack_moves ~= nil) then
+		for _, value in ipairs(args.attack_moves) do
 			if (value.type == "w") then
 				table.insert(state_component.states[1].state.keys, { id = value.key, action = "changestate", state = value.state })
-				table.insert(state_component.states, { id = value.state, state = { type="hit", anim = value.anim, acceleration = args.acc_gnd} })
+				--table.insert(state_component.states, { id = value.state, state = { type="hit", anim = value.anim, acceleration = args.acc_gnd} })
 			elseif (value.type == "j") then
 				table.insert(state_component.states[2].state.keys, { id = value.key, action = "playanim", anim = value.anim })
 			elseif (value.type == "d") then
@@ -94,13 +119,13 @@ factory.character.create = function(args)
 	end
 
 	local components = {
-		{ type = "smartcollider", tag=cc.collision_tag, flag=cc.collision_flag, mask =cc.collision_mask },
+		{ type = "smartcollider", tag=cc.collision_tag, flag=cc.collision_flag, mask =cc.collision_mask, attack_tags = attack_info },
 		{ type ="controller2d", maxclimbangle = max_climb_angle, maxdescendangle = max_descend_angle, horizontalrays=4, verticalrays=4 },
 		{ type ="dynamics2d", gravity = gravity },
 		state_component
 	}
 
-	cc.input(components)
+	cc.input(components, args)
 
 
 

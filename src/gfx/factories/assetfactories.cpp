@@ -137,9 +137,9 @@ std::shared_ptr<IModel> BoxedModelFactory::Create(luabridge::LuaRef &ref) {
                     if (table.HasKey("attack")) {
                         glm::vec4 attackBox = table.Get<glm::vec4>("attack");
                         attackShape = std::make_shared<Rect>(attackBox[2]-attackBox[0], attackBox[3]-attackBox[1], glm::vec2(attackBox[0], attackBox[1]));
-                        attackTag = table.Get<int>("attack_tag");
+                        //attackTag = table.Get<int>("attack_tag");
                     }
-                    pp->AddCollisionData(anim, j, rect, attackShape, attackTag);
+                    pp->AddCollisionData(anim, j, rect, attackShape);
                 }
             } else {
                 GLIB_FAIL("A boxed model need to have collision boxes for each frame!");

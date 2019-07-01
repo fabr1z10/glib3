@@ -9,6 +9,10 @@ SmartCollider::SmartCollider(const SmartCollider & other) : ICollider(other) {
 
 }
 
+void SmartCollider::AddAttackTag(const std::string& anim, int tag, int mask) {
+    m_attackInfo.insert(std::make_pair(anim, std::make_pair(tag, mask)));
+}
+
 std::shared_ptr<Component> SmartCollider::clone() const {
     return std::make_shared<SmartCollider>(*this);
 }
@@ -22,14 +26,17 @@ void SmartCollider::ofu(Animator *a) {
 
     // now, check if I have an attack box
     if (bi.m_attackShape != nullptr) {
+
+        auto attackInfo = m_attackInfo.at(anim);
+
         auto t = m_entity->GetWorldTransform();
         std::cout <<" **** hit ****\n";
         std::cout << "character at position = " << t[3][0] << ", " << t[3][1] << " scale " << t[0][0] << "\n";
-        auto e = m_engine->ShapeCast(bi.m_attackShape, t, m_mask);
+        auto e = m_engine->ShapeCast(bi.m_attackShape, t, attackInfo.second);
 
         if (e != nullptr) {
             std::cerr << "HIT!\n";
-            auto rm = m_engine->GetResponseManager()->GetHandler(bi.attackTag, e->GetCollisionTag());
+            auto rm = m_engine->GetResponseManager()->GetHandler(attackInfo.first, e->GetCollisionTag());
             if (rm.response != nullptr) {
                 std::cerr << "FOUND RESPONSE\n";
                 if (rm.flip) {

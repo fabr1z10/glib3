@@ -3,12 +3,20 @@
 #include <gfx/entity.h>
 #include <GLFW/glfw3.h>
 #include <gfx/random.h>
+#include <gfx/engine.h>
+
 std::shared_ptr<Component> EnemyInputMethod::clone() const {
     return std::make_shared<EnemyInputMethod>(*this);
 }
 
 void EnemyInputMethod::Start() {
     m_controller = m_entity->GetComponent<Controller2D>();
+    // this is clearly an approx
+    double frameTime = Engine::get().GetFrameTime();
+    double n = 1.0 / frameTime;
+    m_attackProbability = 1.0 - pow(1-m_attackProbability, 1.0/n);
+
+
 }
 
 
@@ -32,10 +40,21 @@ void EnemyInputMethod::Update(double) {
     }
 
     // random action
-    float r = Random::get().GetUniformReal(0, 100);
-    if (r > 99) {
-        //onKeyDown.Fire(GLFW_KEY_Q);
+    if (!m_attackMoves.empty()) {
+
+        float r = Random::get().GetUniformReal(0, 1);
+        if (r <= m_attackProbability) {
+            // let's choose one attack
+
+            int nm = Random::get().GetUniform(0, m_attackOdds);
+            auto iter = m_attackMoves.lower_bound(nm);
+            onKeyDown.Fire(iter->second);
+        }
     }
 }
 
+void EnemyInputMethod::AddAttackMove(int key, int odds) {
+    m_attackMoves.insert (std::make_pair(m_attackOdds+odds, key));
+    m_attackOdds += odds;
 
+}

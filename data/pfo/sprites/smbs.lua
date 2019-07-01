@@ -70,8 +70,8 @@ models["ryu"] = {
 		{ name = "lowkick", box={-25,0,26,92}, frames = {
 		 	{duration = 0.5*dt, quads = {{ id = s.ryu_hit_1 }}, boxes = {{-9, 0, 33, 90}}},
 		 	{duration = 0.5*dt, quads = {{ id = s.ryu_hit_2 }}, boxes = {{-1, 0, 26, 91}}},
-		 	{duration = dt, quads = {{ id = s.ryu_hit_3 }}, boxes = {{6,0,29,91}}, attack = {30,16,71,31}, attack_tag = variables.tags.player_attack},
-		 	{duration = 0.5*dt, quads = {{ id = s.ryu_hit_4 }}, boxes = {{-4,0,28,90}}, attack = {30,16,68,31}, attack_tag = variables.tags.player_attack},
+		 	{duration = dt, quads = {{ id = s.ryu_hit_3 }}, boxes = {{6,0,29,91}}, attack = {30,16,71,31} },
+		 	{duration = 0.5*dt, quads = {{ id = s.ryu_hit_4 }}, boxes = {{-4,0,28,90}}, attack = {30,16,68,31} },
 		 	{duration = 0.5*dt, quads = {{ id = s.ryu_hit_5 }}, boxes = {{0,0,35,92}}},
 		 	{duration = 0.5*dt, quads = {{ id = s.ryu_hit_6 }}, boxes = {{-15,0,33,89}}},
 		}},
@@ -87,6 +87,9 @@ models["ryu"] = {
 		 	{duration = dt, quads = {{ id = s.ryu_jump_end_2 }}, boxes = { {-19, 0, 28, 64 }}},
 		 	{duration = dt, quads = {{ id = s.ryu_jump_end_3 }}, boxes = { {-19, 0, 28, 77 }}},
 		 	{duration = dt, quads = {{ id = s.ryu_jump_end_4 }}, boxes = { {-19, 0, 27, 81 }}},
+		}},
+  		{ name = "jumpdown_attack", box = {-25, 0, 26, 92}, loop = false, frames = { 
+		 	{duration = dt, quads = {{ id = s.ryu_jump_end_4 }}, boxes = { {-19, 0, 27, 81 }}, attack = {-19,0,27,2}},
 		}},
   		{ name = "duck", box = {-20, 0, 26, 62}, frames = { 
 		 	{duration = dt, quads = {{ id = s.ryu_duck }}, boxes = { {-20, 0, 25, 62 }}},
