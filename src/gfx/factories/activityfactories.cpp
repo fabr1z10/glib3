@@ -192,10 +192,12 @@ std::shared_ptr<Activity> ShowMessageActFactory::Create(luabridge::LuaRef &ref) 
 
 std::shared_ptr<Activity> BlinkActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
-    std::string actor = table.Get<std::string>("actor");
     float duration = table.Get<float>("duration");
-    float blinkDuration = table.Get<float>("blinkduration");
-    return std::make_shared<Blink>(actor, duration, blinkDuration);
+    float blinkDuration = table.Get<float>("blink_duration");
+    auto act = std::make_shared<Blink>(duration, blinkDuration);
+    setTarget(table, act.get());
+
+    return act;
 
 
 }

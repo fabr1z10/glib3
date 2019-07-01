@@ -58,6 +58,7 @@ require("factories/bricks")
 require("factories/bonusbrick")
 require("factories/foe")
 require("factories/enemy")
+require("factories/character")
 --require("factories/actions")
 require("script/mario")
 

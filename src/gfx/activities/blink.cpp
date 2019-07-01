@@ -3,7 +3,7 @@
 #include <gfx/engine.h>
 #include <gfx/components/renderer.h>
 
-Blink::Blink(const std::string& actorId, float totalDuration, float blinkDuration) :
+Blink::Blink(float totalDuration, float blinkDuration) :
         TargetActivity(), m_duration(totalDuration), m_blinkDuration(blinkDuration)
 {}
 

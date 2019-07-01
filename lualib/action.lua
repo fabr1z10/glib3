@@ -169,3 +169,10 @@ end
 action.treemove = function(args) 
 	return { type = "treemove", tag = args.tag, to=args.parent}
 end
+
+action.blink = function(args)
+	glib.assert_either (args.tag, args.id, "id or tag")
+	glib.assert (args.duration, "duration")
+	glib.assert (args.blink_duration, "blink_duration")
+	return {type="blink", tag = args.tag, id = args.id, duration = args.duration, blink_duration=args.blink_duration }
+end
