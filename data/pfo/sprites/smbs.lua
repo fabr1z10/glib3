@@ -21,6 +21,7 @@ local s = {
 	ryu_hit_4 = {x=99, y=218, width=85, height=109, anchor ={4, 4}},
 	ryu_hit_5 = {x=189, y=227, width=77, height=100, anchor = {5, 4}},
 	ryu_hit_6 = {x=269, y=224, width=58, height=104, anchor = {18, 7}},
+	ryu_duck = {x=362,y=351,width=56,height=73, anchor= {23,7}},
 	-- ryu_jump_begin_1 = {x=332, y=222, width=54, height=124, anchor = {23, 3}},
 	-- ryu_jump_begin_2 = {x=388, y=224, width=51, height=105, anchor = {19, 7}},
 	-- ryu_jump_begin_3 = {x=443, y=225, width=58, height=80, anchor= {21, 25}},
@@ -87,6 +88,10 @@ models["ryu"] = {
 		 	{duration = dt, quads = {{ id = s.ryu_jump_end_3 }}, boxes = { {-19, 0, 28, 77 }}},
 		 	{duration = dt, quads = {{ id = s.ryu_jump_end_4 }}, boxes = { {-19, 0, 27, 81 }}},
 		}},
+  		{ name = "duck", box = {-20, 0, 26, 62}, frames = { 
+		 	{duration = dt, quads = {{ id = s.ryu_duck }}, boxes = { {-20, 0, 25, 62 }}},
+		}},
+
 		--{ name = "die", frames = { { duration = dt, quads = {{ id = s.mario_die }}}}}
 	}
 }

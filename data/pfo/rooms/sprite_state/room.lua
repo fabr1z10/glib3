@@ -69,7 +69,8 @@ room = {
 								 		jumpspeed = 100,
 								 		keys = {
 								 			{ id = 81, action = "changestate", state = "lowkick" },
-								 			{ id = 87, action = "callback", func = function() print ("W") end }
+								 			{ id = 87, action = "callback", func = function() print ("W") end },
+								 			{ id = 264, action = "changestate", state = "duck"}
 								 		}
 								 	}
 								},
@@ -87,7 +88,12 @@ room = {
 								 		}
 								 	}
 								},
+								{
+									id = "duck",
+									state = { type="duck", acceleration=0.10}
+								},
 								{ id = "lowkick", state = { type="hit", anim="lowkick", acceleration =0.05 }}
+
 							}
 						},
 					}

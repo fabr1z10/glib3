@@ -7,6 +7,7 @@
 #include <platformer/states/hitjump.h>
 #include <platformer/states/jump2d.h>
 #include <platformer/states/ch1.h>
+#include <platformer/states/duck.h>
 
 #include <platformer/states/nilstate.h>
 #include <platformer/activities/dropcharacters.h>
@@ -156,6 +157,18 @@ std::shared_ptr<State> WalkSideFactory::Create(luabridge::LuaRef &ref) {
     auto state = std::make_shared<WalkSide>(speed, a, fliph, jumpSpeed);
     init(table, state);
     return state;
+}
+
+std::shared_ptr<State> DuckFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    float a = table.Get<float>("acceleration");
+    auto state = std::make_shared<Duck>(a);
+    init(table, state);
+    return state;
+}
+void DuckFactory::init(const LuaTable & table, std::shared_ptr<State> state) {
+    PlatformerStateFactory::init(table, state);
+
 }
 
 
