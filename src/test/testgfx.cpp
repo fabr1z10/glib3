@@ -203,7 +203,7 @@ std::shared_ptr<Entity> SceneFactory3::Create() {
 //        glm::vec2 offset = txtMesh->getOffset();
 //        txtRenderer->SetRenderingTransform(glm::translate(glm::vec3(offset, 0.0f)));
 //        txtRenderer->SetTint(color);
-//        txtRenderer->SetMesh(txtMesh);
+//        txtRenderer->SetModel(txtMesh);
 //        txtNode->AddComponent(txtRenderer);
 //        node->AddChild(txtNode);
 //
@@ -379,7 +379,7 @@ std::shared_ptr<Entity> SceneFactory3::Create() {
 //        }
 //    }
 //    PolyLine p(pts,edg);
-//    r1->SetMesh(MeshFactory::CreateMesh(p, 0.0f, glm::vec4(0.2f, 0.8f, 0.8f, 1.0f)));
+//    r1->SetModel(MeshFactory::CreateMesh(p, 0.0f, glm::vec4(0.2f, 0.8f, 0.8f, 1.0f)));
 //    a->AddComponent(r1);
 //    a->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
 //    mainNode->AddChild(a);
@@ -631,7 +631,7 @@ struct StationInfo {
 //    auto r1 = std::make_shared<Renderer>();
 //    Font* f = Engine::get().GetAssetManager().GetFont("main");
 //    std::shared_ptr<IMesh> m(new TextMesh(f, text, size, BOTTOM));
-//    r1->SetMesh(m);
+//    r1->SetModel(m);
 //    gfxNode->AddComponent(r1);
 //    gfxNode->SetPosition(glm::vec3(pos.x, pos.y, 0.0f));
 //    return gfxNode;
@@ -735,7 +735,7 @@ struct StationInfo {
 //        auto gfxNode = std::make_shared<Entity>();
 //        gfxNode->SetLayer(1);
 //        auto r1 = std::make_shared<Renderer>();
-//        r1->SetMesh(MeshFactory::CreateBoxMesh(width, height, glm::vec4(1.0f)));
+//        r1->SetModel(MeshFactory::CreateBoxMesh(width, height, glm::vec4(1.0f)));
 //        gfxNode->AddComponent(r1);
 //        gfxNode->SetPosition(glm::vec3(s.second.x, s.second.y, 0.0f));
 //        entity->AddChild(gfxNode);
@@ -820,7 +820,7 @@ struct StationInfo {
 //                auto gfxNode = std::make_shared<Entity>();
 //                gfxNode->SetLayer(1);
 //                auto r1 = std::make_shared<Renderer>();
-//                r1->SetMesh(MeshFactory::CreateLineMesh(glm::vec2(x0, y0), glm::vec2(x1, y1), glm::vec4(1.0f)));
+//                r1->SetModel(MeshFactory::CreateLineMesh(glm::vec2(x0, y0), glm::vec2(x1, y1), glm::vec4(1.0f)));
 //                gfxNode->AddComponent(r1);
 //                entity->AddChild(gfxNode);
 //                entity->AddChild(CreateLabel(tr.GetShortName(), glm::vec4(1.0f), glm::vec2(0.5f*(x0+x1), 0.5f*(y0+y1)), 8));
@@ -905,7 +905,7 @@ struct StationInfo {
 //                    auto gfxNode = std::make_shared<Entity>();
 //                    gfxNode->SetLayer(1);
 //                    auto r1 = std::make_shared<Renderer>();
-//                    r1->SetMesh(MeshFactory::CreateLineMesh(A, B, glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), 1.0f));
+//                    r1->SetModel(MeshFactory::CreateLineMesh(A, B, glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), 1.0f));
 //                    avgPos += (A + B) * 0.5f;
 //                    gfxNode->AddComponent(r1);
 //                    m_trainNode->AddChild(gfxNode);

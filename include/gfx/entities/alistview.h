@@ -47,7 +47,7 @@ public:
         auto r = std::make_shared<Rect>(m_width, m_height);
         auto mesh = MeshFactorySolid::CreateMesh(*(r.get()), 0.0f, m_bgColor.Get());
         auto rend = std::make_shared<Renderer>();
-        rend->SetMesh(mesh);
+        rend->SetModel(mesh);
         AddComponent(rend);
         m_maxVisibleItems = static_cast<int>(m_height / m_fontSize);
         // Add the hotspot

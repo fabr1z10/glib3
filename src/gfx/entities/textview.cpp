@@ -57,7 +57,7 @@ void TextView::AddEntity(luabridge::LuaRef ref) {
 
 
 
-    int n = dynamic_cast<TextMesh*>(ptr->GetComponent<Renderer>()->GetMesh())->getNumberOfLines();
+    int n = dynamic_cast<TextMesh*>(ptr->GetComponent<Renderer>()->GetModel())->getNumberOfLines();
     m_nLines += n;
     if (!m_scroll && m_nLines > m_maxLines) {
         // recompute all lines

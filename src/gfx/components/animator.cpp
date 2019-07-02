@@ -3,7 +3,7 @@
 #include <gfx/entity.h>
 #include <gfx/error.h>
 
-Animator::Animator(const Animator& orig) : Component(orig),
+Animator::Animator(const Animator& orig) : Component(orig), m_animInfo(orig.m_animInfo),
 m_forward(orig.m_forward), m_initAnim(orig.m_initAnim), m_model(orig.m_model) {
     
 }
@@ -13,7 +13,7 @@ std::shared_ptr<Component> Animator::clone() const {
 }
 void Animator::Start() {
     m_renderer = m_entity->GetComponent<Renderer>();
-    m_mesh = dynamic_cast<SpriteMesh*>(m_model->GetMesh().get());
+    //m_mesh = dynamic_cast<SpriteMesh*>(m_model->GetModel().get());
     if (!m_initAnim.empty()) {
         SetAnimation(m_initAnim);
     }
@@ -57,7 +57,7 @@ void Animator::SetAnimation(const std::string &anim, bool fwd) {
     m_animation = anim;
     m_time = 0.0;
 
-    m_animInfo = m_mesh->GetAnimInfo(anim);
+    m_animInfo = m_model->GetAnimInfo(anim);
     if (m_animInfo == nullptr) {
         GLIB_FAIL("Don't know animation: " << anim);
     }

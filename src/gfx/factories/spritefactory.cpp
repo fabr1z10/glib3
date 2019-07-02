@@ -1,4 +1,4 @@
-#include <gfx/simplemodel.h>
+#include <gfx/model/spritemodel.h>
 #include <gfx/compositemodel.h>
 #include <gfx/spritefactory.h>
 #include <gfx/components/renderer.h>
@@ -72,7 +72,7 @@ std::shared_ptr<Entity> SpriteFactory::Create (const std::string& name) {
 std::shared_ptr<Entity> SpriteFactory::Create (std::shared_ptr<IModel> model) {
     auto entity = Ref::Create<Entity>();
     auto renderer = Ref::Create<Renderer>();
-    renderer->SetMesh(model->GetMesh());
+    renderer->SetModel(model);
     auto animator = std::make_shared<Animator>(model);
     entity->AddComponent(renderer);
     entity->AddComponent(animator);
@@ -95,7 +95,7 @@ std::shared_ptr<Entity> SpriteFactory::Create (std::shared_ptr<IModel> model) {
 //        ie->SetName(mc.name);
 //        //ie->SetPosition(mc.pos);
 //        auto renderer = Ref::Create<Renderer>();
-//        renderer->SetMesh(mc.model->GetMesh());
+//        renderer->SetModel(mc.model->GetModel());
 //        ie->AddComponent(renderer);
 //        entities[mc.name] = ie;
 //    }

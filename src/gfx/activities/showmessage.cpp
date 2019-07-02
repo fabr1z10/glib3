@@ -1,10 +1,9 @@
 #include <gfx/activities/showmessage.h>
 #include <gfx/engine.h>
-#include <gfx/entity.h>
-#include <gfx/enums.h>
 #include <gfx/textmesh.h>
 #include <gfx/components/renderer.h>
 #include <glm/gtx/transform.hpp>
+#include <gfx/model/basicmodel.h>
 
 void ShowMessage::Start() {
     m_mainCam = Ref::Get<OrthographicCamera>("maincam").get();
@@ -29,7 +28,7 @@ void ShowMessage::Start() {
     for (int i =0; i < 9; ++i) {
         auto entity = std::make_shared<Entity>();
         auto renderer = std::make_shared<Renderer>();
-        renderer->SetMesh(mesh);
+        renderer->SetModel(std::make_shared<BasicModel>(mesh));
         entity->SetPosition(glm::vec3(outlineOffsets[i] * 0.5f, i == 0 ? 0 : -1));
         renderer->SetTint(i==0 ? m_color : m_outlineColor);
         //renderer->SetRenderingTransform(glm::translate(glm::vec3(offset, 0.0f)));

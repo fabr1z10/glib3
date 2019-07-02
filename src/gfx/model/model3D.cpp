@@ -1,4 +1,4 @@
-#include "gfx/model3D/model3D.h"
+#include "gfx/model/model3D.h"
 #include <gfx/engine.h>
 
 std::shared_ptr<IMesh> Model3DFactory::CreatePlane (float width, float depth, glm::vec4 color) {

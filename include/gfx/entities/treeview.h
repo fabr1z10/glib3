@@ -65,7 +65,7 @@ public:
             auto tm = std::make_shared<TextMesh>(this->m_font, item.GetText(), this->m_fontSize,
                                                  TextAlignment::BOTTOM_LEFT, 0.0f);
             auto rend = std::make_shared<Renderer>();
-            rend->SetMesh(tm);
+            rend->SetModel(tm);
             node->AddComponent(rend);
             node->SetPosition(glm::vec3(horOffset, y, 1.0f));
             this->AddChild(node);

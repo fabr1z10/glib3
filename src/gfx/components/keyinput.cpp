@@ -5,7 +5,7 @@
 //#include <iostream>
 //
 //void KeyInput::Start() {
-//    m_mesh = dynamic_cast<TextMesh*>(m_entity->GetComponent<Renderer>()->GetMesh());
+//    m_mesh = dynamic_cast<TextMesh*>(m_entity->GetComponent<Renderer>()->GetModel());
 //}
 //
 //

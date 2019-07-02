@@ -2,7 +2,7 @@
 #include <gfx/spritemesh.h>
 #include <gfx/assetman.h>
 #include <gfx/engine.h>
-#include <gfx/simplemodel.h>
+#include <gfx/model/spritemodel.h>
 #include <gfx/boxedmodel.h>
 
 std::shared_ptr<SpriteMesh> SimpleModelFactory::ReadSpriteMesh(LuaTable& t) {
@@ -104,7 +104,7 @@ std::shared_ptr<IModel> SimpleModelFactory::Create (luabridge::LuaRef& ref) {
 
     LuaTable t(ref);
     auto mesh = ReadSpriteMesh(t);
-    std::unique_ptr<IModel> m(new SimpleModel(mesh));
+    std::unique_ptr<IModel> m(new SpriteModel(mesh));
     return m;
 }
 

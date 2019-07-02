@@ -24,9 +24,9 @@
 #include <gfx/components/raycastcontroller.h>
 #include <gfx/components/statemachine.h>
 #include <gfx/components/extstatemachine.h>
-#include <gfx/model3D/model3D.h>
+#include <gfx/model/model3D.h>
 #include <gfx/dynamicworld.h>
-
+#include <gfx/model/basicmodel.h>
 #include <gfx/components/keyinput.h>
 #include <gfx/luacollision.h>
 #include <gfx/walkstate.h>
@@ -58,7 +58,7 @@ std::shared_ptr<Component> TextComponentFactory::Create(luabridge::LuaRef &ref) 
     //glm::vec2 offset = mesh->getOffset();
     //renderer->SetRenderingTransform(glm::translate(glm::vec3(offset, 0.0f)));
     renderer->SetTint(color);
-    renderer->SetMesh(mesh);
+    renderer->SetModel(std::make_shared<BasicModel>(mesh));
     return renderer;
 }
 
@@ -78,21 +78,21 @@ std::shared_ptr<Component> GfxComponentFactory::Create(luabridge::LuaRef & ref) 
         glm::vec2 skew = table.Get<glm::vec2>("skew", glm::vec2(0.0f, 0.0f));
         glm::vec2 offset = table.Get<glm::vec2>("offset", glm::vec2(0.0f));
         auto mesh = std::make_shared<QuadMesh>(image, w, h, repeat.x, repeat.y, skew.x, skew.y, offset);
-        renderer->SetMesh(mesh);
+        renderer->SetModel(std::make_shared<BasicModel>(mesh));
 
 //    } else if (table.HasKey("model")) {
 //        std::string model = table.Get<std::string>("model");
 //        std::string anim = table.Get<std::string>("anim", "");
 //        auto entity = std::make_shared<Entity>();
 //        auto renderer = std::make_shared<Renderer>();
-//        renderer->SetMesh(model->GetMesh());
+//        renderer->SetModel(model->GetModel());
 //
 //        auto animator = std::make_shared<Animator>(model);
 //        entity->AddComponent(renderer);
 //        entity->AddComponent(animator);
 //        return entity;
 //        //bool flip = table.Get<bool>("flip", false);
-//        renderer->SetMesh(Engine::get().GetAssetManager().GetMesh(model));
+//        renderer->SetModel(Engine::get().GetAssetManager().GetModel(model));
 //        //renderer->SetFlipX(flip);
 //        //renderer->SetRenderingTransform(glm::scale(glm::vec3(0.1f))*glm::rotate(90.0f, glm::vec3(1.0f,0.0f,0.0f)));
 //        //renderer->SetScale(0.1f);
@@ -106,10 +106,10 @@ std::shared_ptr<Component> GfxComponentFactory::Create(luabridge::LuaRef & ref) 
         auto shape = factory->makeShape(sref);
         if (draw == "outline") {
             auto mesh = MeshFactory::CreateMesh(*(shape.get()), 0.0f);
-            renderer->SetMesh(mesh);
+            renderer->SetModel(std::make_shared<BasicModel>(mesh));
         } else if (draw == "solid") {
             auto mesh = MeshFactorySolid::CreateMesh(*(shape.get()), 0.0f);
-            renderer->SetMesh(mesh);
+            renderer->SetModel(std::make_shared<BasicModel>(mesh));
         }
         renderer->SetTint(color);
     } else if (table.HasKey("tiledata")) {
@@ -120,7 +120,7 @@ std::shared_ptr<Component> GfxComponentFactory::Create(luabridge::LuaRef & ref) 
         glm::ivec2 sheetSize = table.Get<glm::ivec2>("sheetsize");
         std::vector<int> data = table.GetVector<int>("tiledata");
         auto mesh = std::make_shared<QuadMesh>(image, height, width, size, data, sheetSize.x, sheetSize.y);
-        renderer->SetMesh(mesh);
+        renderer->SetModel(std::make_shared<BasicModel>(mesh));
     }
 //    if (table.HasKey("scale")) {
 //        float scale = table.Get<float>("scale");
@@ -162,7 +162,7 @@ std::shared_ptr<Component> Gfx3DComponentFactory::Create(luabridge::LuaRef & ref
             glm::vec4 color = table.Get<glm::vec4>("color");
             color /= 255.0f;
             auto mesh = Model3DFactory::CreatePlane(width, depth, color);
-            renderer->SetMesh(mesh);
+            renderer->SetModel(std::make_shared<BasicModel>(mesh));
         } else {
             std::string image = table.Get<std::string>("image");
             std::string plane = table.Get<std::string>("plane", "xy");
@@ -171,7 +171,7 @@ std::shared_ptr<Component> Gfx3DComponentFactory::Create(luabridge::LuaRef & ref
             glm::vec2 skew = table.Get<glm::vec2>("skew", glm::vec2(0.0f, 0.0f));
             glm::vec2 offset = table.Get<glm::vec2>("offset", glm::vec2(0.0f));
             auto mesh = std::make_shared<QuadMesh>(image, width, depth, repeat.x, repeat.y, skew.x, skew.y, offset);
-            renderer->SetMesh(mesh);
+            renderer->SetModel(std::make_shared<BasicModel>(mesh));
         }
     }
     return (renderer);
@@ -580,7 +580,7 @@ std::shared_ptr<Component> CursorComponentFactory::Create(luabridge::LuaRef& ref
 //    ce->SetLayer(layer);
 //    auto cer = std::make_shared<Renderer>();
 //    auto debugMesh = MeshFactory::CreateMesh(*s, 1.0f);
-//    cer->SetMesh(debugMesh);
+//    cer->SetModel(debugMesh);
 //    ce->AddComponent(cer);
 //    parent->AddChild(ce);
 //}

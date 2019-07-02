@@ -151,7 +151,7 @@ void SpriteViewFactory::LoadModel (const Item2& item, const std::string& anim) {
 //            item.parentKey = (mc.parent.empty() ? Item2::rootKey : mc.parent);
 //            item.text = mc.name;
 //            m_animList->AddItem(item);
-//            //auto mesh = am.GetMesh(comp.mesh);
+//            //auto mesh = am.GetModel(comp.mesh);
 //            const auto &ai =  mc.m_mesh->GetAnimInfo();
 //            for (auto &a : ai) {
 //                Item2 item;
@@ -166,7 +166,7 @@ void SpriteViewFactory::LoadModel (const Item2& item, const std::string& anim) {
 //        m->AddChild(std::move(entity));
 //    }
 //    if (type == "mesh") {
-//        auto mesh = std::dynamic_pointer_cast<SpriteMesh>(am.GetMesh(name));
+//        auto mesh = std::dynamic_pointer_cast<SpriteMesh>(am.GetModel(name));
 //        const auto& ai = mesh->GetAnimInfo();
 //        for (auto& a : ai) {
 //            Item2 item;

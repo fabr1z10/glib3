@@ -26,7 +26,7 @@
 //    auto p = std::unique_ptr<CompositeModelStatus>(new CompositeModelStatus(this));
 //    for (auto& component : m_components) {
 //        std::unique_ptr<IModelStatus> sms = component.second.model->GetModelStatus();
-//        SimpleModelStatus status(*(component.second.model->GetMesh().get()));
+//        SimpleModelStatus status(*(component.second.model->GetModel().get()));
 //        p->AddComponent(component.first, std::move(sms));
 //
 //    }

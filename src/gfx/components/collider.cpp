@@ -3,6 +3,7 @@
 #include "gfx/entity.h"
 #include "gfx/meshfactory.h"
 #include <gfx/engine.h>
+#include <gfx/model/basicmodel.h>
 
 SimpleCollider::SimpleCollider(const SimpleCollider& orig) : ICollider(orig),
 m_shape(orig.m_shape), m_tag(orig.m_tag), m_flag(orig.m_flag), m_mask(orig.m_mask),
@@ -27,7 +28,7 @@ void SimpleCollider::Start() {
         auto renderer = std::make_shared<Renderer>();
         glm::vec4 color(1.0f, 0.0f, 0.0f, 1.0f);
         auto mesh = MeshFactory::CreateMesh(*(m_shape.get()), 0.0f);
-        renderer->SetMesh(mesh);
+        renderer->SetModel(std::make_shared<BasicModel>(mesh));
         renderer->SetTint(color);
         c->AddComponent(renderer);
         m_entity->AddChild(c);
@@ -55,7 +56,7 @@ void SimpleCollider::SetShape(std::shared_ptr<Shape> shape) {
         auto renderer = std::make_shared<Renderer>();
         glm::vec4 color(1.0f, 0.0f, 0.0f, 1.0f);
         auto mesh = MeshFactory::CreateMesh(*(m_shape.get()), 0.0f);
-        renderer->SetMesh(mesh);
+        renderer->SetModel(std::make_shared<BasicModel>(mesh));
         renderer->SetTint(color);
         c->AddComponent(renderer);
         m_entity->AddChild(c);

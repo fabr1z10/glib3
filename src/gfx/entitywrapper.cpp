@@ -79,13 +79,13 @@ void EntityWrapper::SendMessage(luabridge::LuaRef ref) {
 
 std::string EntityWrapper::GetText() const {
     Renderer* r = m_underlying->GetComponent<Renderer>();
-    auto tm = dynamic_cast<TextMesh*>(r->GetMesh());
+    auto tm = dynamic_cast<TextMesh*>(r->GetModel());
     return tm->GetText();
 }
 
 int EntityWrapper::GetLines() const {
     Renderer* r = m_underlying->GetComponent<Renderer>();
-    auto tm = dynamic_cast<TextMesh*>(r->GetMesh());
+    auto tm = dynamic_cast<TextMesh*>(r->GetModel());
     return tm->getNumberOfLines();
 }
 
@@ -161,7 +161,7 @@ void EntityWrapper::EnableDepth(bool value) {
 
 void EntityWrapper::SetText(const std::string& text) {
     Renderer* r = m_underlying->GetComponent<Renderer>();
-    auto tm = dynamic_cast<TextMesh*>(r->GetMesh());
+    auto tm = dynamic_cast<TextMesh*>(r->GetModel());
     tm->UpdateText(text);
     // glm::vec2 offset = tm->getOffset();
     //r->SetRenderingTransform(glm::translate(glm::vec3(offset, 0.0f)));
@@ -311,8 +311,8 @@ void EntityWrapper::SetAnim(const std::string& anim) {
 void EntityWrapper::SetModel(const std::string& model, const std::string& anim) {
 //    Renderer* r = m_underlying->GetComponent<Renderer>();
 //    Animator* a = m_underlying->GetComponent<Animator>();
-//    auto mesh = Engine::get().GetAssetManager().GetMesh(model);
-//    r->SetMesh(mesh);
+//    auto mesh = Engine::get().GetAssetManager().GetModel(model);
+//    r->SetModel(mesh);
 //
 //    r->SetAnimation(anim);
 }
@@ -341,7 +341,7 @@ void EntityWrapper::AppendButton(luabridge::LuaRef ref) {
 
 luabridge::LuaRef EntityWrapper::GetTextInfo() {
     Renderer* r = m_underlying->GetComponent<Renderer>();
-    TextMesh* tm = dynamic_cast<TextMesh*>(r->GetMesh());
+    TextMesh* tm = dynamic_cast<TextMesh*>(r->GetModel());
     luabridge::LuaRef rr = luabridge::newTable(LuaWrapper::L);
     glm::vec3 f = tm->GetBounds().GetExtents();
     rr["width"] = f.x;

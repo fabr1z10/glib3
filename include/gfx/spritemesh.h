@@ -2,17 +2,7 @@
 
 #include "gfx/texturedmesh.h"
 
-struct FrameInfo {
-    int offset;
-    int count;
-    float duration;
-};
-
-struct AnimInfo {
-    std::vector<FrameInfo> frameInfo;
-    int frameCount;
-    bool loop;
-};
+#include <gfx/animation.h>
 
 // An animation is a vector of frame. A frame is a vector of quads. A quad is defined by
 // the texture position and size and the anchor point. A sprite mesh is a collection of named animations.

@@ -6,7 +6,7 @@
 #include <gfx/mesh.h>
 #include <gfx/imodel.h>
 
-class SimpleModel;
+class SpriteModel;
 class CompositeModel;
 
 class SpriteFactory : public FactoryMethod<Entity> {
@@ -16,7 +16,7 @@ public:
     static std::shared_ptr<Entity> Create (const std::string& name);
 private:
 
-    static std::shared_ptr<Entity> Create (std::shared_ptr<SimpleModel>);
+    static std::shared_ptr<Entity> Create (std::shared_ptr<SpriteModel>);
     static std::shared_ptr<Entity> Create (std::shared_ptr<CompositeModel>);
 
 

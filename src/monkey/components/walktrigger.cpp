@@ -42,7 +42,7 @@ void WalkTrigger::SetParent(Entity * entity) {
     auto ce = std::make_shared<Entity>();
     auto cer = std::make_shared<Renderer>();
     auto debugMesh = MeshFactory::CreateMesh(*(m_shape.get()), 5.0f);
-    cer->SetMesh(debugMesh);
+    cer->SetModel(debugMesh);
     ce->AddComponent(cer);
     ce->SetTag("hotspotmesh");
     m_entity->AddChild(ce);

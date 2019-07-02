@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-BoxedModel::BoxedModel(std::shared_ptr<SpriteMesh> mesh) : SimpleModel(mesh) {}
+BoxedModel::BoxedModel(std::shared_ptr<SpriteMesh> mesh) : SpriteModel(mesh) {}
 
 void BoxedModel::AddAnimationData(const std::string &anim, Bounds b) {
     m_animBounds.insert(std::make_pair(anim, b));

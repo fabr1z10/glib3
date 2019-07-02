@@ -58,8 +58,9 @@ class Shader;
 // abstract class for mesh
 class IMesh {
 public:
-    IMesh(ShaderType type) : m_vb(INVALID_OGL_VALUE), m_ib(INVALID_OGL_VALUE), m_shaderType{type}, m_localTransform{glm::mat4(1.0f)} {}
+    IMesh(ShaderType type) : m_vb(INVALID_OGL_VALUE), m_ib(INVALID_OGL_VALUE), m_shaderType{type} {}
     virtual ~IMesh() {}
+
     GLuint VertexBuffer() const { return m_vb; }
     GLuint IndexBuffer() const { return m_ib; }
     GLuint GetNumberOfIndices() { return m_nindices; }
@@ -69,13 +70,13 @@ public:
     virtual Bounds3D GetBounds() { return m_bounds; }
     void Draw (Shader*, int offset, int count);
     GLenum m_primitive;
-    const glm::mat4& GetLocalTransform() const;
-    ShaderType GetShaderType() const;
+    //const glm::mat4& GetLocalTransform() const;
     std::string GetId() const;
     void SetId(const std::string&);
+    ShaderType GetShaderType() const;
 protected:
     ShaderType m_shaderType;
-    glm::mat4 m_localTransform;
+    //glm::mat4 m_localTransform;
     int m_scope;
     std::string m_id;
     Bounds3D m_bounds;
@@ -87,7 +88,11 @@ protected:
     unsigned int m_shaderMask;
 };
 
-inline const glm::mat4& IMesh::GetLocalTransform() const { return m_localTransform; }
+inline ShaderType IMesh::GetShaderType() const {
+    return m_shaderType;
+}
+
+//inline const glm::mat4& IMesh::GetLocalTransform() const { return m_localTransform; }
 
 inline std::string IMesh::GetId() const {
     return m_id;
@@ -130,9 +135,9 @@ inline Bounds3D ComputeBounds<VertexText>(std::vector<VertexText>& vertices) {
     return bounds;
 }
 
-inline ShaderType IMesh::GetShaderType() const {
-    return m_shaderType;
-}
+//inline ShaderType IMesh::GetShaderType() const {
+//    return m_shaderType;
+//}
 
 
 #endif /* imesh_h */

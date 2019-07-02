@@ -1,6 +1,6 @@
 #pragma once
 
-#include <gfx/simplemodel.h>
+#include <gfx/model/spritemodel.h>
 #include <gfx/compositemodel.h>
 #include <gfx/visitor.h>
 
@@ -8,11 +8,11 @@
 
 class ModelFactory : 
     public AcyclicVisitor,
-    public Visitor<SimpleModel>,
+    public Visitor<SpriteModel>,
     public Visitor<CompositeModel>
 {
 public:
     static std::shared_ptr<Entity> CreateMesh (IModel& s);
-    void visit(SimpleModel&) override;
+    void visit(SpriteModel&) override;
     void visit(CompositeModel&) override;
 };

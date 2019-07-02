@@ -11,28 +11,28 @@
 
 #include <memory>
 #include "gfx/component.h"
-#include "gfx/mesh.h"
+#include "gfx/imodel.h"
 
+// a renderer is the component responsible for rendering a model onto the screen
 class Renderer : public Component {
 public:
     Renderer();
     Renderer(const Renderer&);
     void Draw(Shader*);
-    const glm::mat4& GetTransform() const;
-    void SetMesh(std::shared_ptr<IMesh> mesh);
-    IMesh* GetMesh();
+    //const glm::mat4& GetTransform() const;
+    void SetModel(std::shared_ptr<IModel> mesh);
+    IModel* GetModel();
     Bounds3D GetBounds() const;
     void Start() override {}
     void Update(double) override {}
     void SetParent(Entity* parent) override;
     void SetTint(glm::vec4 c);
-    ShaderType GetShaderType() const { return (m_mesh == nullptr ? ShaderType::NONE : m_mesh->GetShaderType()); }
+    ShaderType GetShaderType() const { return (m_model == nullptr ? ShaderType::NONE : m_model->GetShaderType()); }
     using ParentClass = Renderer;
-    const glm::mat4& GetRenderingTransform() const;
     void SetMeshInfo (int offset, int count);
     std::shared_ptr<Component> clone() const override;
 private:
-    std::shared_ptr<IMesh> m_mesh;
+    std::shared_ptr<IModel> m_model;
     glm::vec4 m_tint;
     int m_count;
     int m_offset;
@@ -41,29 +41,22 @@ private:
 
 
 
-inline const glm::mat4& Renderer::GetRenderingTransform() const{
-    return m_mesh->GetLocalTransform();
-}
-
 
 inline Bounds3D Renderer::GetBounds() const {
-    return m_mesh->GetBounds();
+    return m_model->GetBounds();
 }
 
-inline const glm::mat4& Renderer::GetTransform() const {
-    return m_mesh->GetLocalTransform();
-}
 
 //inline bool Renderer::isVisible() const {
 //    return m_visible;
 //}
 
-inline void Renderer::SetMesh(std::shared_ptr<IMesh> mesh) {
-    m_mesh = mesh;
+inline void Renderer::SetModel(std::shared_ptr<IModel> mesh) {
+    m_model = mesh;
 }
 
-inline IMesh* Renderer::GetMesh() {
-    return m_mesh.get();
+inline IModel* Renderer::GetModel() {
+    return m_model.get();
 }
 
 inline void Renderer::SetTint(glm::vec4 color) {

@@ -88,8 +88,8 @@ void TextMesh::UpdateText(const std::string& msg, float maxLineWidth) {
         }
         y -= m_fontSize;
     }
-    glm::vec2 offset = getOffset();
-     m_localTransform = glm::translate(glm::mat4(1.0f), glm::vec3(offset.x, offset.y, 0.0f));
+    //glm::vec2 offset = getOffset();
+    //m_localTransform = glm::translate(glm::mat4(1.0f), glm::vec3(offset.x, offset.y, 0.0f));
     //m_width = xMax - xMin;
     //m_height = yMax - yMin;
     //m_topLeft = glm::vec2 (xMin, yMax);

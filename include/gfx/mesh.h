@@ -29,8 +29,8 @@ public:
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ib);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * indices.size(), &indices[0], GL_STATIC_DRAW);
         m_bounds = ComputeBounds(vertices);
-        m_bounds.min = m_localTransform * glm::vec4(m_bounds.min, 1.0f);
-        m_bounds.max = m_localTransform * glm::vec4(m_bounds.max, 1.0f);
+        //m_bounds.min = m_localTransform * glm::vec4(m_bounds.min, 1.0f);
+        //m_bounds.max = m_localTransform * glm::vec4(m_bounds.max, 1.0f);
         m_indicesCount = indices.size();
     }
 

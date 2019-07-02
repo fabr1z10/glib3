@@ -8,6 +8,7 @@
 #include <gfx/meshfactory.h>
 #include <gfx/entities/heightmap.h>
 #include <gfx/quadmesh.h>
+#include <gfx/model/basicmodel.h>
 
 std::shared_ptr<Entity> EntityFactory::Create(luabridge::LuaRef& ref) {
 
@@ -121,7 +122,7 @@ std::shared_ptr<Entity> OutlineTextFactory::Create(luabridge::LuaRef &ref) {
     for (int i =0; i < 9; ++i) {
         auto entity = std::make_shared<Entity>();
         auto renderer = std::make_shared<Renderer>();
-        renderer->SetMesh(mesh);
+        renderer->SetModel(std::make_shared<BasicModel>(mesh));
         entity->SetPosition(glm::vec3(outlineOffsets[i] * 0.5f, i == 0 ? 0 : -1));
         renderer->SetTint(i==0 ? fontColor : outlineColor);
         //renderer->SetRenderingTransform(glm::translate(glm::vec3(offset, 0.0f)));
@@ -172,7 +173,7 @@ std::shared_ptr<Entity> BoxedMessageFactory::Create(luabridge::LuaRef& ref) {
     // add text entity
     auto textEntity = Ref::Create<Entity>();
     auto bounds =textMesh->GetBounds();
-    renderer->SetMesh(textMesh);
+    renderer->SetModel(std::make_shared<BasicModel>(textMesh));
     glm::vec4 color = table.Get<glm::vec4>("color");
     glm::vec4 bgColor = table.Get<glm::vec4>("bgcolor");
     color/=255.0f;
@@ -213,7 +214,7 @@ std::shared_ptr<Entity> BoxedMessageFactory::Create(luabridge::LuaRef& ref) {
     auto box_renderer = Ref::Create<Renderer>();
     auto rect = std::make_shared<Rect>(boxWidth, boxHeight);
     auto boxMesh = MeshFactorySolid::CreateMesh(*(rect.get()), 0.0f);
-    box_renderer->SetMesh(boxMesh);
+    box_renderer->SetModel(std::make_shared<BasicModel>(boxMesh));
     box->AddComponent(box_renderer);
     box_renderer->SetTint(bgColor);
     // box->SetPosition(glm::vec3(bounds.min.x - padding, bounds.min.y - padding, -0.1));
@@ -224,7 +225,7 @@ std::shared_ptr<Entity> BoxedMessageFactory::Create(luabridge::LuaRef& ref) {
         auto b = Ref::Create<Entity>();
         auto b_renderer = Ref::Create<Renderer>();
         auto qm = std::make_shared<QuadMesh>(img, width, thickness, width/imgw, flipv ? -1 : 1 );
-        b_renderer->SetMesh(qm);
+        b_renderer->SetModel(std::make_shared<BasicModel>(qm));
         b->AddComponent(b_renderer);
         b->SetPosition(glm::vec3(x, y, 0.09));
         if (rot)
@@ -236,7 +237,7 @@ std::shared_ptr<Entity> BoxedMessageFactory::Create(luabridge::LuaRef& ref) {
         auto b = Ref::Create<Entity>();
         auto b_renderer = Ref::Create<Renderer>();
         auto qm = std::make_shared<QuadMesh>(img, w, h, flipx ? -1 : 1, flipy ? -1 : 1 );
-        b_renderer->SetMesh(qm);
+        b_renderer->SetModel(std::make_shared<BasicModel>(qm));
         b->AddComponent(b_renderer);
         b->SetPosition(glm::vec3(x, y, 0.095));
         return b;

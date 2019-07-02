@@ -69,7 +69,7 @@
 //    }
 //    mesh->Init(vertices, indices);
 //    auto renderer = std::make_shared<Renderer>();
-//    renderer->SetMesh(mesh);
+//    renderer->SetModel(mesh);
 //    AddComponent(renderer);
 //
 //}

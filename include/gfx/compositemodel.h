@@ -4,7 +4,7 @@
 //
 //struct ModelComponent {
 //    std::string name;
-//    SimpleModel* model;
+//    SpriteModel* model;
 //    std::string parent;
 //};
 //
@@ -19,7 +19,7 @@
 //    CompositeModel () {}
 //
 //    std::unique_ptr<IModelStatus> GetModelStatus() override;
-//    void AddComponent(const std::string&, SimpleModel* model, const std::string& parent);
+//    void AddComponent(const std::string&, SpriteModel* model, const std::string& parent);
 //    const std::unordered_map<std::string, ModelComponent>& GetComponents() const;
 //    const std::vector<AnimationDefinition>& GetAnimationDefinition(const std::string&) const;
 //    std::vector<std::string> GetAnimations() override;
@@ -60,7 +60,7 @@
 //    return m_components;
 //}
 //
-//inline void CompositeModel::AddComponent(const std::string& name, SimpleModel* model, const std::string& parent) {
+//inline void CompositeModel::AddComponent(const std::string& name, SpriteModel* model, const std::string& parent) {
 //    m_components.insert (std::make_pair(name, ModelComponent{name, model, parent}));
 //}
 //

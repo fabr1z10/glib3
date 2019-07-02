@@ -16,7 +16,7 @@ void FPSCounter::Start() {
     m_frameCount = 0;
     m_frameStart = 0.0;
     Renderer* r = m_entity->GetComponent<Renderer>();
-    m_textMesh = dynamic_cast<TextMesh*>(r->GetMesh());
+    m_textMesh = dynamic_cast<TextMesh*>(r->GetModel());
 }
 
 void FPSCounter::Update(double) {

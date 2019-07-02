@@ -1,6 +1,6 @@
 #pragma once
 
-#include <gfx/simplemodel.h>
+#include <gfx/model/spritemodel.h>
 #include <gfx/math/shape.h>
 #include <gfx/hashpair.h>
 
@@ -13,7 +13,7 @@ struct BoxInfo {
     int count;
 };
 
-class BoxedModel : public SimpleModel {
+class BoxedModel : public SpriteModel {
 public:
     explicit BoxedModel (std::shared_ptr<SpriteMesh> mesh);
 

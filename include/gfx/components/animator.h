@@ -28,7 +28,7 @@ public:
 // and updating frames.
 class Animator : public Component {
 public:
-    Animator(std::shared_ptr<IModel> model) : m_model(model), m_forward(true) {
+    Animator(std::shared_ptr<IModel> model) : m_model(model), m_forward(true), m_animInfo(model->GetAnimInfo()) {
         m_initAnim = model->GetDefaultAnimation();
     }
     Animator(const Animator&);
@@ -66,7 +66,7 @@ protected:
     const AnimInfo* m_animInfo;
     bool m_animCompleted;
     Renderer* m_renderer;
-    SpriteMesh* m_mesh;
+    // SpriteMesh* m_mesh;
     //std::unique_ptr<IModelStatus> m_status;
 
 };

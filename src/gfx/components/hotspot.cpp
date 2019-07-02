@@ -3,6 +3,7 @@
 #include <gfx/components/renderer.h>
 #include <gfx/meshfactory.h>
 #include <gfx/renderingiterator.h>
+#include <gfx/model/basicmodel.h>
 #include <iostream>
 #include <set>
 
@@ -264,7 +265,7 @@ std::shared_ptr<Entity> HotSpot::getDebugMesh() {
     auto cer = Ref::Create<Renderer>();
 
     auto debugMesh = MeshFactory::CreateMesh(*(m_shape.get()), 5.0f);
-    cer->SetMesh(debugMesh);
+    cer->SetModel(std::make_shared<BasicModel>(debugMesh));
     ce->AddComponent(cer);
     ce->SetName("_debugmesh");
     //m_entity->AddChild(ce);

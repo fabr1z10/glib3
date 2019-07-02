@@ -29,7 +29,7 @@
 //        auto renderer = std::make_shared<Renderer> ();
 //        glm::vec4 color (1.0f, 0.0f, 0.0f, 1.0f);
 //        auto mesh = MeshFactory::CreateMesh(*(s.second.get()), 0.0f);
-//        renderer->SetMesh(mesh);
+//        renderer->SetModel(mesh);
 //        renderer->SetTint(color);
 //        c->AddComponent(renderer);
 //        m_entity->AddChild(c);

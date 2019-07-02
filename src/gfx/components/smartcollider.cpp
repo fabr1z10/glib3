@@ -2,7 +2,7 @@
 #include <gfx/components/animator.h>
 #include <gfx/boxedmodel.h>
 #include <gfx/collisionengine.h>
-
+#include <gfx/model/basicmodel.h>
 #include <gfx/entity.h>
 
 SmartCollider::SmartCollider(const SmartCollider & other) : ICollider(other) {
@@ -62,7 +62,7 @@ void SmartCollider::Start() {
     auto renderer = std::make_shared<Renderer>();
     //glm::vec4 color(1.0f, 0.0f, 0.0f, 1.0f);
     auto mesh = m_model->GetCollisionMesh();
-    renderer->SetMesh(mesh);
+    renderer->SetModel(std::make_shared<BasicModel>(mesh));
     //renderer->SetTint(color);
     c->AddComponent(renderer);
     m_colliderRenderer = renderer.get();
