@@ -11,3 +11,7 @@ std::vector<std::string> SimpleModel::GetAnimations() {
     }
     return animations;
 }
+
+std::string SimpleModel::GetDefaultAnimation() {
+    return m_mesh->GetDefaultAnimation();
+}

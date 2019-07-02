@@ -13,7 +13,7 @@
 //}
 
 void DynamicWorldBuilder::Init() {
-    auto cam = Ref::Get<OrthographicCamera>(m_camName);
+    auto cam = Ref::Get<Camera>(m_camName);
     cam->OnMove.Register(this, [&] (Camera* cam) { this->OnCameraMove(cam); });
     glm::vec3 camPos = cam->GetPosition();
     // inititalize the center
@@ -46,7 +46,7 @@ void DynamicWorldBuilder::UpdateWorld(glm::vec3 pos) {
     m_activeBounds.max.x = m_xc + m_width;
     m_activeBounds.max.y = m_yc + m_height;
 
-    std::cout << "UPDATING WORLD! center = (" << m_xc << ", " << m_yc << ")\n";
+    //std::cout << "UPDATING WORLD! center = (" << m_xc << ", " << m_yc << ")\n";
     // update visible items
     for (auto& item : m_items) {
 
@@ -95,7 +95,7 @@ void DynamicWorldBuilder::UpdateWorld(glm::vec3 pos) {
 
 void DynamicWorldBuilder::OnCameraMove(Camera * cam) {
     glm::vec3 pos = cam->GetPosition();
-    std::cout << "cam pos = " << pos.x << "\n";
+    //std::cout << "cam pos = " << pos.x << "\n";
     if (pos.x >= m_xmax || pos.x <= m_xmin || pos.y >= m_ymax || pos.y <= m_ymin) {
         // update the world ONLY if cammera is outside of the inner window
         UpdateWorld(pos);

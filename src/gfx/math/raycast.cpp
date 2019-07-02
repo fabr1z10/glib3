@@ -32,6 +32,7 @@ RayCastHit2D RayCast2D::SegmentIntersection(glm::vec2 A, glm::vec2 B, std::vecto
         if (l < ret.length) {
             ret.collide = true;
             ret.length = l;
+            ret.normal = glm::normalize(Perp(Dw-Cw));
         }
     }
     return ret;

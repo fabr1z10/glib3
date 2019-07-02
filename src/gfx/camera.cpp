@@ -93,6 +93,9 @@ void PerspectiveCamera::Resize(int w, int h) {
    	if (h == 0)
         h = 1;
     float winAR = static_cast<float>(w) / h;
+    glm::vec2 dsize = Engine::get().GetDeviceSize();
+    winAR = dsize.x /dsize.y;
+
     m_projectionMatrix = glm::perspective (m_fov, winAR, m_near, m_far);
 
 }

@@ -29,7 +29,7 @@ public:
 class Animator : public Component {
 public:
     Animator(std::shared_ptr<IModel> model) : m_model(model), m_forward(true) {
-        m_initAnim = model->GetAnimations().front();
+        m_initAnim = model->GetDefaultAnimation();
     }
     Animator(const Animator&);
     virtual ~Animator() {}

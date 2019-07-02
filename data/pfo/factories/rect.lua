@@ -17,6 +17,20 @@ factory.rect = function(args)
 	}
 end
 
+factory.path = function(args)
+	assert(args.pos, "pos")	
+	local z = args.z or 0
+	local flag = args.flag or 2
+	local tag = args.tag or 1
+	return {
+
+		pos = {args.pos[1], args.pos[2], z},
+		components = {
+			{ type = "collider", flag = flag, mask = 1, tag=tag, shape = { type="poly", outline = {0,16,300,16,310,21,320,31,330,46,340,56,350,61,360,61,400,61,400,0,0,0}}}
+		}
+	}
+
+end
 -- factory.tiledrect = function (args) 
 -- 	assert(args.width, "width")
 -- 	assert(args.height, "height")

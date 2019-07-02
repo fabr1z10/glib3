@@ -18,7 +18,7 @@ struct Bounds {
     glm::vec2 min;
     glm::vec2 max;
     
-    glm::vec2 GetSize();
+    glm::vec2 GetSize() const;
     glm::vec2 GetCenter();
     glm::vec2 GetExtents();
 
@@ -40,7 +40,7 @@ inline bool Bounds::Intersects(Bounds& other) const {
     return !(other.min.x >= max.x || other.max.x <= min.x || other.min.y >= max.y || other.max.y <= min.y);
 }
 
-inline glm::vec2 Bounds::GetSize() {
+inline glm::vec2 Bounds::GetSize() const {
     return glm::vec2(max.x - min.x, max.y - min.y);
 }
 

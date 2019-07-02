@@ -30,6 +30,9 @@ private:
 };
 
 inline void SpriteMesh::AddAnimInfo (const std::string& anim, const AnimInfo& animInfo) {
+    if (m_info.empty()) {
+        m_defaultAnimation = anim;
+    }
     m_info.insert(std::make_pair(anim, animInfo));
 }
 

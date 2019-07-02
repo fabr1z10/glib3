@@ -224,23 +224,23 @@ void Controller2D::VerticalCollisions(glm::vec2& velocity) {
     }
 
     // cast an extra ray at the bottom
-    if (velocity.y < 0 && !m_details.descendingSlope) {
-        vec2 rayOrigin = m_raycastOrigins.bottomLeft + vec2(0.0f, velocity.y);
-        float length = m_raycastOrigins.bottomRight.x - m_raycastOrigins.bottomLeft.x;
-        RayCastHit2D hit = m_collision->Raycast(vec3(rayOrigin, 0.0f), vec2(1.0f, 0.0f), length, 2 | 32);
-        if (hit.collide) {
-            auto m = hit.entity->GetObject()->GetWorldTransform();
-            Shape * s = hit.entity->GetShape();
-            glm::vec2 platformProjection = s->project(glm::vec2(0, 1), m);
-            glm::vec2 charProjection (rayOrigin.y, m_raycastOrigins.topLeft.y + velocity.y);
-            float overlap = ComputeOverlap(charProjection, platformProjection);
-            std::cout << "vy = " << velocity.y << ", Overlap is = " << overlap << "\n";
-            velocity.y += overlap;
-            m_details.below = true;
-            m_obstacle = hit.entity->GetObject();
-        }
-
-    }
+//    if (velocity.y < 0 && !m_details.descendingSlope) {
+//        vec2 rayOrigin = m_raycastOrigins.bottomLeft + vec2(0.0f, velocity.y);
+//        float length = m_raycastOrigins.bottomRight.x - m_raycastOrigins.bottomLeft.x;
+//        RayCastHit2D hit = m_collision->Raycast(vec3(rayOrigin, 0.0f), vec2(1.0f, 0.0f), length, 2 | 32);
+//        if (hit.collide) {
+//            auto m = hit.entity->GetObject()->GetWorldTransform();
+//            Shape * s = hit.entity->GetShape();
+//            glm::vec2 platformProjection = s->project(glm::vec2(0, 1), m);
+//            glm::vec2 charProjection (rayOrigin.y, m_raycastOrigins.topLeft.y + velocity.y);
+//            float overlap = ComputeOverlap(charProjection, platformProjection);
+//            std::cout << "vy = " << velocity.y << ", Overlap is = " << overlap << "\n";
+//            velocity.y += overlap;
+//            m_details.below = true;
+//            m_obstacle = hit.entity->GetObject();
+//        }
+//
+//    }
 
 
 

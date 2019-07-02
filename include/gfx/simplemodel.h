@@ -47,6 +47,7 @@ public:
     ModelType GetType() const override;
     Bounds3D GetBounds() const override;
     std::vector<std::string> GetAnimations() override;
+    std::string GetDefaultAnimation() override;
 private:
     std::shared_ptr<SpriteMesh> m_mesh;
 };

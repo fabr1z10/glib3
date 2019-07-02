@@ -19,6 +19,7 @@ public:
     virtual ModelType GetType() const = 0;
     virtual Bounds3D GetBounds() const = 0;
     virtual std::vector<std::string> GetAnimations() = 0;
+    virtual std::string GetDefaultAnimation() = 0;
     virtual std::shared_ptr<IMesh> GetMesh() = 0;
 };
 

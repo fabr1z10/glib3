@@ -48,7 +48,7 @@ models["ryu"] = {
     type = "boxed_sprite",
     ppu=1,
 	animations = {
-		{ name = "idle", box = {-25, 0, 26, 92}, frames = { 
+		{ name = "idle", box = {-25, 0, 25, 92}, frames = { 
 			-- boxes are provided as (xmin, ymin, xmax, ymax)
 			{duration = dt, quads = {{ id = s.ryu_idle_1 }}, boxes = { {-25, 0, 26, 92 }}},
 			{duration = dt, quads = {{ id = s.ryu_idle_2 }}, boxes = { {-25, 0, 26, 90 }}},
@@ -57,7 +57,7 @@ models["ryu"] = {
 			{duration = dt, quads = {{ id = s.ryu_idle_5 }}, boxes = { {-25, 0, 26, 96 }}},
 			{duration = dt, quads = {{ id = s.ryu_idle_6 }}, boxes = { {-25, 0, 26, 93 }}},
 		}},
-		{ name = "walk", box = {-25, 0, 26, 92}, frames = {
+		{ name = "walk", box = {-25, 0, 25, 92}, frames = {
 		 	{duration = dt, quads = {{ id = s.ryu_walk_1 }}, boxes = {{-23,0,28,96}}},
 		 	{duration = dt, quads = {{ id = s.ryu_walk_2 }}, boxes = {{-23,0, 28,94}}},
 		 	{duration = dt, quads = {{ id = s.ryu_walk_3 }}, boxes = {{-23,0,28,92}}},
@@ -67,6 +67,63 @@ models["ryu"] = {
 		 	{duration = dt, quads = {{ id = s.ryu_walk_7 }}, boxes = {{-23,0,28,94}}},
 		 	{duration = dt, quads = {{ id = s.ryu_walk_8 }}, boxes = {{-23,0,28,95}}},
 		}},
+		{ name = "lowkick", box={-25,0,25,92}, frames = {
+		 	{duration = 0.5*dt, quads = {{ id = s.ryu_hit_1 }}, boxes = {{-9, 0, 33, 90}}},
+		 	{duration = 0.5*dt, quads = {{ id = s.ryu_hit_2 }}, boxes = {{-1, 0, 26, 91}}},
+		 	{duration = dt, quads = {{ id = s.ryu_hit_3 }}, boxes = {{6,0,29,91}}, attack = {30,16,71,31} },
+		 	{duration = 0.5*dt, quads = {{ id = s.ryu_hit_4 }}, boxes = {{-4,0,28,90}}, attack = {30,16,68,31} },
+		 	{duration = 0.5*dt, quads = {{ id = s.ryu_hit_5 }}, boxes = {{0,0,35,92}}},
+		 	{duration = 0.5*dt, quads = {{ id = s.ryu_hit_6 }}, boxes = {{-15,0,33,89}}},
+		}},
+		{ name = "jumpup", box = {-25, 0, 25, 92}, loop = false, frames = { 
+			{duration = dt, quads = {{ id = s.ryu_jump_begin_1 }}, boxes = { {-19, 0, 27, 81 }}},
+			{duration = dt, quads = {{ id = s.ryu_jump_begin_2 }}, boxes = { {-19, 0, 28, 87 }}},
+			{duration = dt, quads = {{ id = s.ryu_jump_begin_3 }}, boxes = { {-19, 0, 28, 64 }}},
+			{duration = dt, quads = {{ id = s.ryu_jump_begin_4 }}, boxes = { {-19, 0, 29, 57 }}},
+			{duration = dt, quads = {{ id = s.ryu_jump_begin_5 }}, boxes = { {-20, 0, 29, 54 }}},
+		}},
+  		{ name = "jumpdown", box = {-25, 0, 25, 92}, loop = false, frames = { 
+		 	{duration = dt, quads = {{ id = s.ryu_jump_end_1 }}, boxes = { {-19, 0, 29, 57 }}},
+		 	{duration = dt, quads = {{ id = s.ryu_jump_end_2 }}, boxes = { {-19, 0, 28, 64 }}},
+		 	{duration = dt, quads = {{ id = s.ryu_jump_end_3 }}, boxes = { {-19, 0, 28, 77 }}},
+		 	{duration = dt, quads = {{ id = s.ryu_jump_end_4 }}, boxes = { {-19, 0, 27, 81 }}},
+		}},
+  		{ name = "jumpdown_attack", box = {-25, 0, 25, 92}, loop = false, frames = { 
+		 	{duration = dt, quads = {{ id = s.ryu_jump_end_4 }}, boxes = { {-19, 0, 27, 81 }}, attack = {-19,0,27,2}},
+		}},
+  		{ name = "duck", box = {-20, 0, 20, 62}, frames = { 
+		 	{duration = dt, quads = {{ id = s.ryu_duck }}, boxes = { {-20, 0, 25, 62 }}},
+		}},
+
+		--{ name = "die", frames = { { duration = dt, quads = {{ id = s.mario_die }}}}}
+	}
+}
+
+local pippo = {-8,0,8,16}
+models["ryu2"] = {
+    sheet = "pfo.png",
+    type = "boxed_sprite",
+    ppu=1,
+	animations = {
+		{ name = "idle", box = pippo, frames = { 
+			-- boxes are provided as (xmin, ymin, xmax, ymax)
+			{duration = dt, quads = {{ id = s.ryu_idle_1 }}, boxes = { pippo }},
+			{duration = dt, quads = {{ id = s.ryu_idle_2 }}, boxes = { pippo }},
+			{duration = dt, quads = {{ id = s.ryu_idle_3 }}, boxes = { pippo }},
+			{duration = dt, quads = {{ id = s.ryu_idle_4 }}, boxes = { pippo }},
+			{duration = dt, quads = {{ id = s.ryu_idle_5 }}, boxes = { pippo }},
+			{duration = dt, quads = {{ id = s.ryu_idle_6 }}, boxes = { pippo }},
+		}},
+		{ name = "walk", box = pippo, frames = {
+		 	{duration = dt, quads = {{ id = s.ryu_walk_1 }}, boxes = {pippo}},
+		 	{duration = dt, quads = {{ id = s.ryu_walk_2 }}, boxes = {pippo}},
+		 	{duration = dt, quads = {{ id = s.ryu_walk_3 }}, boxes = {pippo}},
+		 	{duration = dt, quads = {{ id = s.ryu_walk_4 }}, boxes = {pippo}},
+		 	{duration = dt, quads = {{ id = s.ryu_walk_5 }}, boxes = {pippo}},
+		 	{duration = dt, quads = {{ id = s.ryu_walk_6 }}, boxes = {pippo}},
+		 	{duration = dt, quads = {{ id = s.ryu_walk_7 }}, boxes = {pippo}},
+		 	{duration = dt, quads = {{ id = s.ryu_walk_8 }}, boxes = {pippo}},
+		}},
 		{ name = "lowkick", box={-25,0,26,92}, frames = {
 		 	{duration = 0.5*dt, quads = {{ id = s.ryu_hit_1 }}, boxes = {{-9, 0, 33, 90}}},
 		 	{duration = 0.5*dt, quads = {{ id = s.ryu_hit_2 }}, boxes = {{-1, 0, 26, 91}}},
@@ -75,29 +132,31 @@ models["ryu"] = {
 		 	{duration = 0.5*dt, quads = {{ id = s.ryu_hit_5 }}, boxes = {{0,0,35,92}}},
 		 	{duration = 0.5*dt, quads = {{ id = s.ryu_hit_6 }}, boxes = {{-15,0,33,89}}},
 		}},
-		{ name = "jumpup", box = {-25, 0, 26, 92}, loop = false, frames = { 
-			{duration = dt, quads = {{ id = s.ryu_jump_begin_1 }}, boxes = { {-19, 0, 27, 81 }}},
-			{duration = dt, quads = {{ id = s.ryu_jump_begin_2 }}, boxes = { {-19, 0, 28, 87 }}},
-			{duration = dt, quads = {{ id = s.ryu_jump_begin_3 }}, boxes = { {-19, 0, 28, 64 }}},
-			{duration = dt, quads = {{ id = s.ryu_jump_begin_4 }}, boxes = { {-19, 0, 29, 57 }}},
-			{duration = dt, quads = {{ id = s.ryu_jump_begin_5 }}, boxes = { {-20, 0, 29, 54 }}},
+		{ name = "jumpup", box = pippo, loop = false, frames = { 
+			{duration = dt, quads = {{ id = s.ryu_jump_begin_1 }}, boxes = { pippo}},
+			{duration = dt, quads = {{ id = s.ryu_jump_begin_2 }}, boxes = { pippo}},
+			{duration = dt, quads = {{ id = s.ryu_jump_begin_3 }}, boxes = { pippo}},
+			{duration = dt, quads = {{ id = s.ryu_jump_begin_4 }}, boxes = { pippo}},
+			{duration = dt, quads = {{ id = s.ryu_jump_begin_5 }}, boxes = { pippo}},
 		}},
-  		{ name = "jumpdown", box = {-25, 0, 26, 92}, loop = false, frames = { 
-		 	{duration = dt, quads = {{ id = s.ryu_jump_end_1 }}, boxes = { {-19, 0, 29, 57 }}},
-		 	{duration = dt, quads = {{ id = s.ryu_jump_end_2 }}, boxes = { {-19, 0, 28, 64 }}},
-		 	{duration = dt, quads = {{ id = s.ryu_jump_end_3 }}, boxes = { {-19, 0, 28, 77 }}},
-		 	{duration = dt, quads = {{ id = s.ryu_jump_end_4 }}, boxes = { {-19, 0, 27, 81 }}},
-		}},
-  		{ name = "jumpdown_attack", box = {-25, 0, 26, 92}, loop = false, frames = { 
-		 	{duration = dt, quads = {{ id = s.ryu_jump_end_4 }}, boxes = { {-19, 0, 27, 81 }}, attack = {-19,0,27,2}},
-		}},
-  		{ name = "duck", box = {-20, 0, 26, 62}, frames = { 
-		 	{duration = dt, quads = {{ id = s.ryu_duck }}, boxes = { {-20, 0, 25, 62 }}},
+  		{ name = "jumpdown", box = pippo, loop = false, frames = { 
+		 	{duration = dt, quads = {{ id = s.ryu_jump_end_1 }}, boxes = { pippo}},
+		 	{duration = dt, quads = {{ id = s.ryu_jump_end_2 }}, boxes = { pippo}},
+		 	{duration = dt, quads = {{ id = s.ryu_jump_end_3 }}, boxes = { pippo}},
+		 	{duration = dt, quads = {{ id = s.ryu_jump_end_4 }}, boxes = { pippo}},
 		}},
 
+  		{ name = "duck", box = {-20, 0, 26, 62}, frames = { 
+			{duration = dt, quads = {{ id = s.ryu_duck }}, boxes = { {-20, 0, 25, 62 }}},
+		}},
+  		{ name = "kazzo", box = {-25, 0, 26, 92}, loop = false, frames = { 
+		--  	{duration = dt, quads = {{ id = s.ryu_jump_end_4 }}, boxes = { {-19, 0, 27, 81 }}} --, attack = {-19,0,27,2}},
+		}},
 		--{ name = "die", frames = { { duration = dt, quads = {{ id = s.mario_die }}}}}
 	}
 }
+
+
 
 -- models["goomba"] = {
 --     sheet = "smb1.png",
