@@ -2,7 +2,7 @@
 
 #include <gfx/component.h>
 #include <gfx/spritemesh.h>
-#include <gfx/imodel.h>
+#include <gfx/model/spritemodel.h>
 #include <gfx/event.h>
 
 class Renderer;
@@ -28,9 +28,7 @@ public:
 // and updating frames.
 class Animator : public Component {
 public:
-    Animator(std::shared_ptr<IModel> model) : m_model(model), m_forward(true), m_animInfo(model->GetAnimInfo()) {
-        m_initAnim = model->GetDefaultAnimation();
-    }
+    Animator(std::shared_ptr<IModel> model);
     Animator(const Animator&);
     virtual ~Animator() {}
     void Start() override;
@@ -44,7 +42,7 @@ public:
     bool IsComplete() const;
     int GetFrame() const;
     void SetPlayForward (bool);
-    std::shared_ptr<IModel> GetModel();
+    std::shared_ptr<SpriteModel> GetModel();
     // allows to backup the status in order to restore it later
     //virtual std::shared_ptr<AnimatorState> SaveState()  = 0;
     //virtual void LoadState(std::shared_ptr<AnimatorState>) = 0;
@@ -56,7 +54,7 @@ protected:
     // play animation forward
     bool m_forward;
     std::string m_initAnim;
-    std::shared_ptr<IModel> m_model;
+    std::shared_ptr<SpriteModel> m_model;
     // the current animation
     std::string m_animation;
     double m_time;
@@ -84,9 +82,10 @@ inline int Animator::GetFrame() const {
     return m_frame;
 }
 
-inline std::shared_ptr<IModel> Animator::GetModel() {
+inline std::shared_ptr<SpriteModel> Animator::GetModel() {
     return m_model;
 }
+
 inline std::string Animator::GetAnimation() const {
     return m_animation;
 }

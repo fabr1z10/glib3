@@ -9,7 +9,7 @@ void BoxedModel::AddAnimationData(const std::string &anim, Bounds b) {
     m_animBounds.insert(std::make_pair(anim, b));
 }
 Bounds BoxedModel::GetAnimBounds(const std::string & name) const {
-    std::cout << "asking .. " << name << " " << m_animBounds.at(name).GetSize().x <<"\n";
+    //std::cout << "asking .. " << name << " " << m_animBounds.at(name).GetSize().x <<"\n";
     return m_animBounds.at(name);
 }
 void BoxedModel::AddCollisionData(const std::string &anim

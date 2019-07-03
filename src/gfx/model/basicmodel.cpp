@@ -18,13 +18,7 @@ std::string BasicModel::GetDefaultAnimation() const {
     return "default";
 }
 
-const AnimInfo* BasicModel::GetAnimInfo() const {
-    return nullptr;
-}
 
-const AnimInfo* BasicModel::GetAnimInfo(const std::string &) const {
-    return nullptr;
-}
 
 ShaderType BasicModel::GetShaderType() const {
     return m_mesh->GetShaderType();

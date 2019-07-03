@@ -1,44 +1,49 @@
-#include "gfx/model/model3D.h"
-#include <gfx/engine.h>
-
-std::shared_ptr<IMesh> Model3DFactory::CreatePlane (float width, float depth, glm::vec4 color) {
-    float hw = 0.5f * width;
-    float hh = 0.5f * depth;
-    std::vector<VertexColor> vertices = {
-            {-hw, -hh, 0.0f, color.r, color.g, color.b, color.a},
-            {hw, -hh, 0.0f, color.r, color.g, color.b, color.a},
-            {hw, hh, 0.0f, color.r, color.g, color.b, color.a},
-            {-hw, hh, 0.0f, color.r, color.g, color.b, color.a}};
-    std::vector<unsigned> indices {0, 1, 2, 2, 3, 0};
-    auto mesh = std::make_shared<Mesh<VertexColor>>(COLOR_SHADER_LIGHT);
-    mesh->Init(vertices, indices);
-    mesh->m_primitive = GL_TRIANGLES;
-    return mesh;
-}
-
-
-
-
-
-std::shared_ptr<IMesh> Model3DFactory::CreateBox(float width, float depth, float height, glm::vec4 color) {
-    float hw = 0.5f * width;
-    float hd = 0.5f * depth;
-    float hh = 0.5f * height;
-    std::vector<VertexColor> vertices = {
-            {hw, hh, -hd, color.r, color.g, color.b, color.a},
-            {-hw, hh, -hd, color.r, color.g, color.b, color.a},
-            {-hw, hh, hd, color.r, color.g, color.b, color.a},
-            {hw, hh, hd, color.r, color.g, color.b, color.a},
-            {hw, hh, -hd, color.r, color.g, color.b, color.a},
-            {-hw, hh, -hd, color.r, color.g, color.b, color.a},
-            {-hw, hh, hd, color.r, color.g, color.b, color.a},
-            {hw, hh, hd, color.r, color.g, color.b, color.a}};
-    std::vector<unsigned> indices {
-            0, 1, 2, 2, 3, 1,
-            1, 5, 2, 5, 6, 2};
-    auto mesh = std::make_shared<Mesh<VertexColor>>(COLOR_SHADER_LIGHT);
-    mesh->Init(vertices, indices);
-    mesh->m_primitive = GL_TRIANGLES;
-    return mesh;
-
-}
+//#include "gfx/model/model3D.h"
+//#include <gfx/engine.h>
+//
+//void Model3D::Draw(Shader *, int offset, int count) {
+//
+//
+//}
+//
+////std::shared_ptr<IMesh> Model3DFactory::CreatePlane (float width, float depth, glm::vec4 color) {
+////    float hw = 0.5f * width;
+////    float hh = 0.5f * depth;
+////    std::vector<VertexColor> vertices = {
+////            {-hw, -hh, 0.0f, color.r, color.g, color.b, color.a},
+////            {hw, -hh, 0.0f, color.r, color.g, color.b, color.a},
+////            {hw, hh, 0.0f, color.r, color.g, color.b, color.a},
+////            {-hw, hh, 0.0f, color.r, color.g, color.b, color.a}};
+////    std::vector<unsigned> indices {0, 1, 2, 2, 3, 0};
+////    auto mesh = std::make_shared<Mesh<VertexColor>>(COLOR_SHADER_LIGHT);
+////    mesh->Init(vertices, indices);
+////    mesh->m_primitive = GL_TRIANGLES;
+////    return mesh;
+////}
+////
+////
+////
+////
+////
+////std::shared_ptr<IMesh> Model3DFactory::CreateBox(float width, float depth, float height, glm::vec4 color) {
+////    float hw = 0.5f * width;
+////    float hd = 0.5f * depth;
+////    float hh = 0.5f * height;
+////    std::vector<VertexColor> vertices = {
+////            {hw, hh, -hd, color.r, color.g, color.b, color.a},
+////            {-hw, hh, -hd, color.r, color.g, color.b, color.a},
+////            {-hw, hh, hd, color.r, color.g, color.b, color.a},
+////            {hw, hh, hd, color.r, color.g, color.b, color.a},
+////            {hw, hh, -hd, color.r, color.g, color.b, color.a},
+////            {-hw, hh, -hd, color.r, color.g, color.b, color.a},
+////            {-hw, hh, hd, color.r, color.g, color.b, color.a},
+////            {hw, hh, hd, color.r, color.g, color.b, color.a}};
+////    std::vector<unsigned> indices {
+////            0, 1, 2, 2, 3, 1,
+////            1, 5, 2, 5, 6, 2};
+////    auto mesh = std::make_shared<Mesh<VertexColor>>(COLOR_SHADER_LIGHT);
+////    mesh->Init(vertices, indices);
+////    mesh->m_primitive = GL_TRIANGLES;
+////    return mesh;
+////
+////}

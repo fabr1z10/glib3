@@ -10,7 +10,7 @@ factory.character.classes = {
 		collision_tag = variables.tags.player,
 		input = function(comps,args) 
 			table.insert(comps, { type="keyinput"})
-			table.insert(comps, { type="follow", cam ="maincam", relativepos={0,0,200}, up={0,1,0} })
+			table.insert(comps, { type="follow", cam ="maincam", relativepos={0,60,200}, up={0,1,0} })
 			table.insert(comps, { type="info", invincible = false, energy = args.energy})
 		end
 	},

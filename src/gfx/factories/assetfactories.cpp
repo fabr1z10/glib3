@@ -4,6 +4,7 @@
 #include <gfx/engine.h>
 #include <gfx/model/spritemodel.h>
 #include <gfx/boxedmodel.h>
+#include <gfx/model/combomodel.h>
 
 std::shared_ptr<SpriteMesh> SimpleModelFactory::ReadSpriteMesh(LuaTable& t) {
 
@@ -152,4 +153,30 @@ std::shared_ptr<IModel> BoxedModelFactory::Create(luabridge::LuaRef &ref) {
     return pp;
 
     
+}
+
+
+std::shared_ptr<IModel> GenericModel3DFactory::Create(luabridge::LuaRef &ref) {
+    // reading a 3D model
+
+    LuaTable table(ref);
+
+    // create a combo model
+    auto model = std::make_shared<ComboModel>();
+
+    table.ProcessVector("meshes", [&] (luabridge::LuaRef ref) {
+        LuaTable meshTable(ref);
+        std::string text = meshTable.Get<std::string>("texture");
+        auto mesh = std::make_shared<TexturedMesh<Vertex3DN>>(TEXTURE_SHADER_LIGHT, GL_TRIANGLES, text);
+        std::vector<Vertex3DN> vertices;
+        std::vector<unsigned int> indices = meshTable.GetVector<unsigned int>("indices");
+        meshTable.ProcessVector("vertices", [&vertices] (luabridge::LuaRef ref) {
+            std::vector<float> data = ReadVector<float>(ref);
+            vertices.push_back(Vertex3DN(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7]));
+        });
+        mesh->Init(vertices, indices);
+        model->AddMesh(mesh);
+    });
+    return model;
+
 }

@@ -16,8 +16,8 @@ public:
     static std::shared_ptr<Entity> Create (const std::string& name);
 private:
 
-    static std::shared_ptr<Entity> Create (std::shared_ptr<SpriteModel>);
-    static std::shared_ptr<Entity> Create (std::shared_ptr<CompositeModel>);
+    //static std::shared_ptr<Entity> Create (std::shared_ptr<SpriteModel>);
+    //static std::shared_ptr<Entity> Create (std::shared_ptr<CompositeModel>);
 
 
 };

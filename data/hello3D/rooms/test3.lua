@@ -19,7 +19,7 @@ room =  {
 			camera = {
 				tag = "maincam",
 				type="perspective",
-				pos = {0, 0, 0}
+				pos = {0, 0, 100}
 			},
 			children = {
 				{ pos = {0, 0, 0}, components = { { type ="light", class="ambient", color ={32, 32, 32}}}},

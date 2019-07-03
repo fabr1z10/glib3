@@ -16,8 +16,8 @@ public:
     virtual std::vector<std::string> GetAnimations() const = 0;
     virtual std::string GetDefaultAnimation() const = 0;
     virtual ShaderType GetShaderType() const = 0;
-    virtual const AnimInfo* GetAnimInfo() const = 0;
-    virtual const AnimInfo* GetAnimInfo(const std::string&) const = 0;
+    //virtual const AnimInfo* GetAnimInfo() const = 0;
+    //virtual const AnimInfo* GetAnimInfo(const std::string&) const = 0;
     virtual void Draw (Shader*, int offset, int count) = 0;
 };
 

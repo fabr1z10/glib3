@@ -15,3 +15,9 @@ public:
     std::shared_ptr<IModel> Create(luabridge::LuaRef& ref) override;
 
 };
+
+class GenericModel3DFactory : public FactoryMethod<IModel> {
+public:
+    std::shared_ptr<IModel> Create(luabridge::LuaRef& ref) override;
+
+};

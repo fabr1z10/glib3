@@ -13,8 +13,8 @@ public:
     std::vector<std::string> GetAnimations() const override;
     std::string GetDefaultAnimation() const override;
     ShaderType GetShaderType() const override;
-    const AnimInfo* GetAnimInfo() const override;
-    const AnimInfo* GetAnimInfo(const std::string&) const override;
+    const AnimInfo* GetAnimInfo() const;
+    const AnimInfo* GetAnimInfo(const std::string&) const;
     virtual void Draw (Shader*, int offset, int count) override;
 
 private:

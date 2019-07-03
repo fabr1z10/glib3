@@ -2,16 +2,16 @@
 #include <gfx/imesh.h>
 
 // a model with only one mesh
-class BasicModel : public IModel {
+class ComboModel : public IModel {
 public:
-    BasicModel (std::shared_ptr<IMesh> mesh);
+    ComboModel ();
     Bounds3D GetBounds() const override;
     void Draw (Shader*, int offset, int count) override;
     std::vector<std::string> GetAnimations() const override;
     std::string GetDefaultAnimation() const override ;
     ShaderType GetShaderType() const override;
-
+    void AddMesh (std::shared_ptr<IMesh>);
 private:
-    std::shared_ptr<IMesh> m_mesh;
+    std::vector<std::shared_ptr<IMesh>> m_meshes;
 
 };

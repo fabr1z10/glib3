@@ -6,7 +6,7 @@
 
 // An animation is a vector of frame. A frame is a vector of quads. A quad is defined by
 // the texture position and size and the anchor point. A sprite mesh is a collection of named animations.
-class SpriteMesh : public TexturedMesh {
+class SpriteMesh : public TexturedMesh<Vertex3D> {
 public:
     SpriteMesh (const std::string& filename);
     const AnimInfo* GetAnimInfo(const std::string&) const;

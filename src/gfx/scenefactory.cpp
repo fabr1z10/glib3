@@ -70,6 +70,7 @@ SceneFactory::SceneFactory() {
 
     m_modelFactory.Add<SimpleModelFactory>("sprite");
     m_modelFactory.Add<BoxedModelFactory>("boxed_sprite");
+    m_modelFactory.Add<GenericModel3DFactory>("model3d");
 
     m_entityFactory.Add<EntityFactory>("default");
     m_entityFactory.Add<TextViewFactory>("textview");
@@ -82,7 +83,7 @@ SceneFactory::SceneFactory() {
 
     //m_componentFactory.Add<LuaKeyboardComponentFactory>("luakey");
     m_componentFactory.Add<GfxComponentFactory>("gfx");
-    m_componentFactory.Add<Gfx3DComponentFactory>("gfx3d");
+    //m_componentFactory.Add<Gfx3DComponentFactory>("gfx3d");
     m_componentFactory.Add<ColliderComponentFactory>("collider");
     m_componentFactory.Add<SmartColliderComponentFactory>("smartcollider");
 

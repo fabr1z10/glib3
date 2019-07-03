@@ -121,6 +121,10 @@ std::shared_ptr<Component> GfxComponentFactory::Create(luabridge::LuaRef & ref) 
         std::vector<int> data = table.GetVector<int>("tiledata");
         auto mesh = std::make_shared<QuadMesh>(image, height, width, size, data, sheetSize.x, sheetSize.y);
         renderer->SetModel(std::make_shared<BasicModel>(mesh));
+    } else if (table.HasKey("model")) {
+        std::string modelId = table.Get<std::string>("model");
+        auto model = Engine::get().GetAssetManager().GetModel(modelId);
+        renderer->SetModel(model);
     }
 //    if (table.HasKey("scale")) {
 //        float scale = table.Get<float>("scale");
@@ -149,34 +153,34 @@ std::shared_ptr<Component> LightComponentFactory::Create(luabridge::LuaRef &ref)
 
 }
 
-std::shared_ptr<Component> Gfx3DComponentFactory::Create(luabridge::LuaRef & ref){
-    LuaTable table(ref);
-
-    auto renderer = Ref::Create<Renderer>();
-    std::string shape = table.Get<std::string>("shape");
-    if (shape == "plane") {
-        float width = table.Get<float>("width");
-        float depth = table.Get<float>("depth");
-
-        if (table.HasKey("color")) {
-            glm::vec4 color = table.Get<glm::vec4>("color");
-            color /= 255.0f;
-            auto mesh = Model3DFactory::CreatePlane(width, depth, color);
-            renderer->SetModel(std::make_shared<BasicModel>(mesh));
-        } else {
-            std::string image = table.Get<std::string>("image");
-            std::string plane = table.Get<std::string>("plane", "xy");
-            //Plane p = (plane == "xy") ? Plane::XY : Plane::XZ;
-            glm::vec2 repeat = table.Get<glm::vec2>("rep", glm::vec2(1.0f, 1.0f));
-            glm::vec2 skew = table.Get<glm::vec2>("skew", glm::vec2(0.0f, 0.0f));
-            glm::vec2 offset = table.Get<glm::vec2>("offset", glm::vec2(0.0f));
-            auto mesh = std::make_shared<QuadMesh>(image, width, depth, repeat.x, repeat.y, skew.x, skew.y, offset);
-            renderer->SetModel(std::make_shared<BasicModel>(mesh));
-        }
-    }
-    return (renderer);
-
-}
+//std::shared_ptr<Component> Gfx3DComponentFactory::Create(luabridge::LuaRef & ref){
+//    LuaTable table(ref);
+//
+//    auto renderer = Ref::Create<Renderer>();
+//    std::string shape = table.Get<std::string>("shape");
+//    if (shape == "plane") {
+//        float width = table.Get<float>("width");
+//        float depth = table.Get<float>("depth");
+//
+//        if (table.HasKey("color")) {
+//            glm::vec4 color = table.Get<glm::vec4>("color");
+//            color /= 255.0f;
+//            auto mesh = Model3DFactory::CreatePlane(width, depth, color);
+//            renderer->SetModel(std::make_shared<BasicModel>(mesh));
+//        } else {
+//            std::string image = table.Get<std::string>("image");
+//            std::string plane = table.Get<std::string>("plane", "xy");
+//            //Plane p = (plane == "xy") ? Plane::XY : Plane::XZ;
+//            glm::vec2 repeat = table.Get<glm::vec2>("rep", glm::vec2(1.0f, 1.0f));
+//            glm::vec2 skew = table.Get<glm::vec2>("skew", glm::vec2(0.0f, 0.0f));
+//            glm::vec2 offset = table.Get<glm::vec2>("offset", glm::vec2(0.0f));
+//            auto mesh = std::make_shared<QuadMesh>(image, width, depth, repeat.x, repeat.y, skew.x, skew.y, offset);
+//            renderer->SetModel(std::make_shared<BasicModel>(mesh));
+//        }
+//    }
+//    return (renderer);
+//
+//}
 
 std::shared_ptr<Component> ColliderComponentFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);

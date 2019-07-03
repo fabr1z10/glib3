@@ -65,6 +65,66 @@ models["fx_1"] = {
 	}
 
 }
+
+model_factory = {}
+model_factory.box = function (width, height, depth, tex, tsx, tsy, tsz) 
+	local texture_size_x = tsx or width
+	local texture_size_y = tsy or height
+	local texture_size_z = tsz or depth
+	local rx = width/texture_size_x
+	local ry = height/texture_size_y
+	local rz = depth/texture_size_z
+	return {
+		type = "model3d",
+		meshes = {
+			{
+				texture = tex,
+				vertices = {
+					-- front
+					{ 0, 0, 0,          0, ry,  0, 0, 1}, 
+					{ width, 0, 0,      rx, ry,  0, 0, 1},
+					{ width, height, 0, rx, 0,  0, 0, 1},
+					{ 0, height, 0,     0, 0,  0, 0, 1},
+					-- right
+					{ width, 0, 0,           0, ry,  1, 0, 0}, 
+					{ width, 0, -depth,      rz, ry,  1, 0, 0},
+					{ width, height, -depth, rz, 0,  1, 0, 0},
+					{ width, height, 0,      0, 0,  1, 0, 0},
+					-- back
+					{ width, 0, -depth, 0, ry, 0, 0, -1},
+					{ 0, 0, -depth, rx, ry, 0, 0, -1},
+					{ 0, height, -depth, rx,0, 0, 0, -1 },
+					{width, height, -depth, 0, 0, 0, 0, 1},
+					-- left
+					{0, 0, -depth, 0, ry, -1, 0, 0},
+					{0,0,0, rx,ry, -1, 0, 0},
+					{0, height, 0, rx,0, -1,0,0},
+					{0, height, -depth, 0, 0, -1, 0, 0},
+					-- bottom 
+					{0,0,0, 0, ry, 0,-1,0},
+					{0,0,-depth, 0, 0, 0,-1,0},
+					{width, 0, -depth, rz, 0, 0,-1, 0},
+					{width, 0, 0, 1, rz, 0, -1, 0},
+					--top
+					{0, height, 0, 0, rz, 0, 1, 0},
+					{width, height, 0, rx,rz,0,1,0},
+					{width, height, -depth, rx,0,0,1,0},
+					{0,height,-depth,0,0,0,1,0}
+				},
+				indices = {
+					0, 1, 2, 2, 3, 0, 
+					4, 5, 6, 6, 7, 4,
+					8, 9, 10, 10, 11, 8,
+					12, 13, 14, 14, 15, 12,
+					16, 17, 18, 18, 19, 16,
+					20, 21, 22, 22, 23, 20
+				}
+			}
+		}
+	}
+end
+
+models["cube"] = model_factory.box (100, 16, 16, "block1.png", 10,10,10)
 -- models["goomba"] = {
 --     sheet = "smb1.png",
 --     type = "sprite",

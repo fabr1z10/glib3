@@ -16,7 +16,7 @@ engine = {
     global_assets = {
 		fonts = { "diag" }
 	},
-	shaders = { "unlit_textured", "unlit_color", "text" }
+	shaders = { "light_textured", "unlit_textured", "unlit_color", "text" }
 
 }
 

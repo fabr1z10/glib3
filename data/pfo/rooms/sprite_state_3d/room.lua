@@ -55,9 +55,19 @@ room = {
 			camera = {
 				tag = "maincam",
 				type="perspective",
-				pos = {0,0,-5}
+				pos = {0,0,100}
 			},
 			children = {
+				{ pos = {0, 0, 0}, components = { { type ="light", class="ambient", color ={128, 128, 128}}}},
+				{ pos = {0,0,0}, components = {{type="light", class="directional", color={255, 255, 255}, dir = {-0.8, 0.3, 0.5}}}},
+				{
+					tag=" ciaoppo",
+					pos = {0,0,8},
+					components = {
+						{ type="gfx", model="cube"}
+					}
+
+				},
 				--factory.rect { pos = {0, 0}, img = "block1.png", width=69, height=2 },
 				--factory.rect { pos = {10, 2}, flag=2|4, tag = 50, img = "block1.png", width=1, height=1 },	
 				factory.path { pos={0,0}, A = {0,16}, B = {300,16} },
