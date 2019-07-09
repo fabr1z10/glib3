@@ -1,4 +1,4 @@
-package.path = '/Users/fabrizioventurini/glib3/lualib/?.lua;' .. package.path
+package.path = '/home/fabrizio/glib3/lualib/?.lua;' .. package.path
 
 
 engine = {
@@ -16,7 +16,7 @@ engine = {
 	global_assets = {
 		fonts = { "ui", "monkey" }
 	},
-	start_room = "village2",
+	start_room = "lookout",
 	lang = "eng",
 	config = {
 	    default_verb = "walk",

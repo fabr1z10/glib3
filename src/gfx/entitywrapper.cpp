@@ -1,7 +1,7 @@
 #include <gfx/entitywrapper.h>
 #include <gfx/components/renderer.h>
 #include <gfx/components/hotspot.h>
-#include <gfx/textmesh.h>
+#include <gfx/model/textmodel.h>
 #include <glm/gtx/transform.hpp>
 #include <gfx/engine.h>
 #include <gfx/entities/textview.h>
@@ -161,10 +161,11 @@ void EntityWrapper::EnableDepth(bool value) {
 
 void EntityWrapper::SetText(const std::string& text) {
     Renderer* r = m_underlying->GetComponent<Renderer>();
-    auto tm = dynamic_cast<TextMesh*>(r->GetModel());
-    tm->UpdateText(text);
-    // glm::vec2 offset = tm->getOffset();
-    //r->SetRenderingTransform(glm::translate(glm::vec3(offset, 0.0f)));
+    auto tm = dynamic_cast<TextModel*>(r->GetModel());
+    tm->SetText(text);
+
+    glm::vec2 offset = tm->GetOffset();
+    r->SetTransform(glm::translate(glm::vec3(offset, 0.0f)));
 }
 
 void EntityWrapper::EnableUpdate(bool value) {

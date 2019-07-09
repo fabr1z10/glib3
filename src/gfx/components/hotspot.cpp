@@ -268,6 +268,7 @@ std::shared_ptr<Entity> HotSpot::getDebugMesh() {
     cer->SetModel(std::make_shared<BasicModel>(debugMesh));
     ce->AddComponent(cer);
     ce->SetName("_debugmesh");
+
     //m_entity->AddChild(ce);
     return ce;
 
@@ -278,10 +279,9 @@ void HotSpot::Start() {
     if (m_shape == nullptr) {
         // try to get shape from gfx component
         //auto renderer = m_entity->GetComponent<Renderer>();
-        auto bounds = m_entity->GetComponent<Renderer>()->GetBounds();
-        glm::vec2 min(bounds.min);
-        glm::vec3 extents = bounds.GetExtents();
-        SetShape(std::make_shared<Rect>(extents.x, extents.y, min));
+        auto bounds = m_entity->GetComponent<Renderer>()->GetBounds2D();
+        glm::vec2 extents = bounds.GetSize();
+        SetShape(std::make_shared<Rect>(extents.x, extents.y, bounds.min));
 
         // if debug mode
         auto mesh = this->getDebugMesh();

@@ -19,10 +19,10 @@ public:
     Renderer();
     Renderer(const Renderer&);
     void Draw(Shader*);
-    //const glm::mat4& GetTransform() const;
     void SetModel(std::shared_ptr<IModel> mesh);
     IModel* GetModel();
     Bounds3D GetBounds() const;
+    Bounds GetBounds2D() const;
     void Start() override {}
     void Update(double) override {}
     void SetParent(Entity* parent) override;
@@ -31,7 +31,12 @@ public:
     using ParentClass = Renderer;
     void SetMeshInfo (int offset, int count);
     std::shared_ptr<Component> clone() const override;
+
+    const glm::mat4& GetTransform() const;
+    void SetTransform(const glm::mat4&);
+
 private:
+    glm::mat4 m_renderingTransform;
     std::shared_ptr<IModel> m_model;
     glm::vec4 m_tint;
     int m_count;

@@ -7,7 +7,7 @@
 #include <gfx/components/hotspot.h>
 #include <gfx/spritefactory.h>
 #include <gfx/components/lambdahotspot.h>
-
+#include <gfx/model/textmodel.h>
 
 TextView::TextView (glm::vec2 pos, float width, float height, float fontSize, int lines, luabridge::LuaRef factory) : Entity(),
     m_nLines{0}, m_width{width}, m_height{height}, m_topLine{0}, m_factory(factory), m_maxLines(lines), m_fontSize(fontSize)
@@ -57,7 +57,7 @@ void TextView::AddEntity(luabridge::LuaRef ref) {
 
 
 
-    int n = dynamic_cast<TextMesh*>(ptr->GetComponent<Renderer>()->GetModel())->getNumberOfLines();
+    int n = dynamic_cast<TextModel*>(ptr->GetComponent<Renderer>()->GetModel())->GetNumberOfLines();
     m_nLines += n;
     if (!m_scroll && m_nLines > m_maxLines) {
         // recompute all lines

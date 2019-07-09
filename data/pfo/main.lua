@@ -8,11 +8,12 @@ engine = {
     title = "Super Mario Bros",
     assets = {
     	fonts = {
-	    	diag = { file  = "./fonts/arial.ttf" }
+	    	diag = { file  = "./fonts/arial.ttf" },
+	    	main = { file = "./fonts/prstartk.ttf"}
 		},
 		models = {}
     },
-   	start_room = "sprite_state_3d",
+   	start_room = "text",
     global_assets = {
 		fonts = { "diag" }
 	},

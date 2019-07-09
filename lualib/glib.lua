@@ -18,8 +18,7 @@ function glib.assert_both (a, b, c)
 end
 
 function glib.assert_either (a, b, c) 
-    print ("fuckme")
-	if (a == nil and b == nil) then
+    if (a == nil and b == nil) then
 		error ("Required both argument: " .. c, 2)
 	end
 end

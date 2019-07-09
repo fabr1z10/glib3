@@ -18,8 +18,6 @@ std::string BasicModel::GetDefaultAnimation() const {
     return "default";
 }
 
-
-
 ShaderType BasicModel::GetShaderType() const {
     return m_mesh->GetShaderType();
 }

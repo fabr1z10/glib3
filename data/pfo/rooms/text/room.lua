@@ -43,15 +43,13 @@ room = {
 				viewport = {0, 0, 256, 256}
 			},
 			children = {
-				{	
-					 tag="player",
-					 type = "sprite",
-					 model ="ryu",
-					 pos = {112, 20, 0},
-					 components = {
-					 	{ type = "smartcollider", tag=1,flag=1,mask=1 }
-					 }
-				}
+				{ pos = {0,256,0}, components = { { type = "text", id="TOP LEFT", font="main", size=8 }}},
+				{ pos = {256,256,0}, components = {	{ type = "text", id="TOP RIGHT", font="main", size=8, align = "topright" }}},
+				{ pos = {0,0,0}, components = { { type = "text", id="BOTTOM LEFT", font="main", size=8, align = "bottomleft" }}},
+				{ pos = {256,0,0}, components = {	{ type = "text", id="BOTTOM RIGHT", font="main", size=8, align = "bottomright" }}},
+				{ pos = {128,256,0}, components = {	{ type = "text", id="TOP", font="main", size=8, align = "top" }}},
+				{ pos = {128,0,0}, components = {	{ type = "text", id="BOTTOM", font="main", size=8, align = "bottom" }}},
+				{ pos = {128,128,0}, components = {	{ type = "text", id="CENTER", font="main", size=8, align = "center" }}},
 			}
 		},
 	},

@@ -120,7 +120,7 @@ void RenderingEngine::Update(double)
             Renderer* renderer = e.GetComponent<Renderer>();
 
             if (renderer != nullptr && renderer->isActive() && renderer->GetShaderType() == stype) {
-                glm::mat4 wt = iterator->GetWorldTransform();// * renderer->GetTransform();
+                glm::mat4 wt = iterator->GetWorldTransform() * renderer->GetTransform();
                 // check for frustrum culling ...
                 drawCount++;
                         

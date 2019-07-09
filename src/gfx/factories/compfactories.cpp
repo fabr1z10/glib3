@@ -27,6 +27,7 @@
 #include <gfx/model/model3D.h>
 #include <gfx/dynamicworld.h>
 #include <gfx/model/basicmodel.h>
+#include <gfx/model/textmodel.h>
 #include <gfx/components/keyinput.h>
 #include <gfx/luacollision.h>
 #include <gfx/walkstate.h>
@@ -55,10 +56,10 @@ std::shared_ptr<Component> TextComponentFactory::Create(luabridge::LuaRef &ref) 
     color /= 255.0f;
     Font* f = Engine::get().GetAssetManager().GetFont(font).get();
     auto mesh = std::make_shared<TextMesh>(f, text, size, align, maxWidth);
-    //glm::vec2 offset = mesh->getOffset();
-    //renderer->SetRenderingTransform(glm::translate(glm::vec3(offset, 0.0f)));
+    glm::vec2 offset = mesh->getOffset();
+    renderer->SetTransform(glm::translate(glm::vec3(offset, 0.0f)));
     renderer->SetTint(color);
-    renderer->SetModel(std::make_shared<BasicModel>(mesh));
+    renderer->SetModel(std::make_shared<TextModel>(mesh));
     return renderer;
 }
 

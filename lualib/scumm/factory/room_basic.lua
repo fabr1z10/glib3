@@ -4,7 +4,7 @@ function scumm.factory.basic_room (args)
 	glib.assert(args.width, "width")
 	glib.assert(args.height, "width")
 	glib.assert(args.font_size, "font_size")
-
+	
 	local room_width = args.width
 	local room_height = args.height
 	local camWidth = engine.device_size[1]

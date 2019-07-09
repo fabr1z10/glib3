@@ -2,6 +2,7 @@
 #include "gfx/engine.h"
 #include "gfx/meshfactory.h"
 #include "gfx/components/renderer.h"
+#include "gfx/model/basicmodel.h"
 
 WalkTrigger::WalkTrigger(std::shared_ptr<Shape> shape, const std::string &target) : Component(), m_shape{shape}, m_target{target}, m_isInside{false} {
 
@@ -42,7 +43,8 @@ void WalkTrigger::SetParent(Entity * entity) {
     auto ce = std::make_shared<Entity>();
     auto cer = std::make_shared<Renderer>();
     auto debugMesh = MeshFactory::CreateMesh(*(m_shape.get()), 5.0f);
-    cer->SetModel(debugMesh);
+    auto model = std::make_shared<BasicModel>(debugMesh);
+    cer->SetModel(model);
     ce->AddComponent(cer);
     ce->SetTag("hotspotmesh");
     m_entity->AddChild(ce);
