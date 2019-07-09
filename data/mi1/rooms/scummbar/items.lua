@@ -2,6 +2,18 @@
 
 local cook_text_color = {85, 255, 255, 255}
 
+engine.items["scummbar.walkarea"] = scumm.factory.walkarea {
+	shape = { 
+		type = "poly", 
+		outline = {32,16,70,24,128,19,251,
+			18,311,10,321,10,345,32,467,41,492,50,514,40,565,40,580,35,629,6,626,0,256,0,200,16,149,0,90,0,85,10},
+		holes = {
+			{374,6,505,6,505,28,374,28}
+		}
+	},
+	priority = 0
+}
+
 scumm.factory.door {
 	id = "scummbar.door_out",
 	pos = {32, 24, -1},

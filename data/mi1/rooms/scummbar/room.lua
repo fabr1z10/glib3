@@ -1,37 +1,43 @@
+local items = engine.items
+
 roomDefinition = {
 	width = 640,
 	height = 144,
 	startTable = {
-		village1 = { pos = items["scummbar.door_out"].hotspot.walk_to, dir = "east"},
-		mancomb = { pos = items["scummbar.mancomb"].hotspot.walk_to, dir = "north"},
+		village1 = { walkarea = "scummbar.walkarea", pos = items["scummbar.door_out"].hotspot.walk_to, dir = "east"},
+		mancomb = { walkarea = "scummbar.walkarea", pos = items["scummbar.mancomb"].hotspot.walk_to, dir = "north"},
 		--estevan = { pos = items2["scummbar.estevan"].hotspot.walk_to, dir = "south"},
-		kitchen = { pos = items["scummbar.door_kitchen"].hotspot.walk_to, dir="west" }
+		kitchen = { walkarea = "scummbar.walkarea", pos = items["scummbar.door_kitchen"].hotspot.walk_to, dir="west" }
 
 	},
 	defaultroom = "village1",
 	depth = { type="linear_y", values= {0, 1, 144, 0} },
+	font_size = 8,
+	playerid="guybrush",
+	walkareas = { "scummbar.walkarea"},
+
 	--depth = { type="linear_y", values= {0, 1, 144, 0} },
 	--scale = { type="linear_y", values= {0, 0.8, 144, 0.2}}
 }
 
 room = scumm.factory.basic_room (roomDefinition)
 
-room:add( {
-	{ pos = {0, 0,-3}, components = { { type="gfx", image="gfx/scummbar_1.png" }}},
-	{ pos = {157, 0, 0.99}, components = { { type="gfx", image="gfx/scummbar_3.png" }}},
-	{ pos = {20, 0, 0.99}, components = { { type="gfx", image="gfx/scummbar_4.png" }}},
-	{ pos = {374, 20, 0.95}, components = { { type="gfx", image="gfx/scummbar_2.png" }}},
-	scumm.factory.walkarea { shape = { type = "poly", outline = {32,16,70,24,128,19,251,
-		18,311,10,321,10,345,32,467,41,492,50,514,40,565,40,580,35,629,6,626,0,256,0,200,16,149,0,90,0,85,10},
-		holes = {
-			{374,6,505,6,505,28,374,28}
-		}
-	}},
-	scumm.factory.object { id="scummbar.door_out" },
-	scumm.factory.object { id="scummbar.door_kitchen" },
-	scumm.factory.object { id="scummbar.mancomb" },
-	scumm.factory.object { id="scummbar.estevan" },
-	scumm.factory.object { id="scummbar.fireplace" },
+--room:add( {
+	-- { pos = {0, 0,-3}, components = { { type="gfx", image="gfx/scummbar_1.png" }}},
+	-- { pos = {157, 0, 0.99}, components = { { type="gfx", image="gfx/scummbar_3.png" }}},
+	-- { pos = {20, 0, 0.99}, components = { { type="gfx", image="gfx/scummbar_4.png" }}},
+	-- { pos = {374, 20, 0.95}, components = { { type="gfx", image="gfx/scummbar_2.png" }}},
+	-- scumm.factory.walkarea { shape = { type = "poly", outline = {32,16,70,24,128,19,251,
+	-- 	18,311,10,321,10,345,32,467,41,492,50,514,40,565,40,580,35,629,6,626,0,256,0,200,16,149,0,90,0,85,10},
+	-- 	holes = {
+	-- 		{374,6,505,6,505,28,374,28}
+	-- 	}
+	-- }},
+	-- scumm.factory.object { id="scummbar.door_out" },
+	-- scumm.factory.object { id="scummbar.door_kitchen" },
+	-- scumm.factory.object { id="scummbar.mancomb" },
+	-- scumm.factory.object { id="scummbar.estevan" },
+	-- scumm.factory.object { id="scummbar.fireplace" },
 
 
 	-- factory.object.create { object = "scummbar.door_out" },
@@ -53,7 +59,7 @@ room:add( {
 	--     }
 	-- }
 
-})
+--s})
 
 
 function run_background_script(actor, anim) 

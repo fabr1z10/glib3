@@ -26,7 +26,7 @@ void Say::Start() {
 
     for (auto& s : m_lines) {
 
-        Push(std::make_shared<ShowMessage>(s, "monkey", m_actorId, 8, m_color, glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), BOTTOM, 1.0f, m_offset));
+        Push(std::make_shared<ShowMessage>(s, "monkey", m_actorId, 8, m_color, glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), BOTTOM, 1.0f, m_offset));
     }
 
     if (!m_noAnim) {

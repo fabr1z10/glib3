@@ -3,7 +3,7 @@
 #include <gfx/textmesh.h>
 #include <gfx/components/renderer.h>
 #include <glm/gtx/transform.hpp>
-#include <gfx/model/basicmodel.h>
+#include <gfx/model/textmodel.h>
 
 void ShowMessage::Start() {
     m_mainCam = Ref::Get<OrthographicCamera>("maincam").get();
@@ -22,16 +22,22 @@ void ShowMessage::Start() {
     Font* f = Engine::get().GetAssetManager().GetFont(m_font).get();
 
     auto mesh = std::make_shared<TextMesh>(f, m_message, m_size, m_align, 280.0f);
-    Bounds3D ex = mesh->GetBounds();
+    auto offset = mesh->getOffset();
+    glm::mat4 transform = glm::translate(glm::vec3(offset, 0.0f));
+    Bounds3D ex2 = mesh->GetBounds();
+    Bounds ex;
+    ex.min = ex2.min;
+    ex.max = ex2.max;
+    ex.Transform(transform);
 
     glm::vec2 outlineOffsets[] = {{0, 0}, {-1, 0}, {-1,1}, {0, 1}, {1,1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1}};
     for (int i =0; i < 9; ++i) {
         auto entity = std::make_shared<Entity>();
         auto renderer = std::make_shared<Renderer>();
-        renderer->SetModel(std::make_shared<BasicModel>(mesh));
+        renderer->SetModel(std::make_shared<TextModel>(mesh));
         entity->SetPosition(glm::vec3(outlineOffsets[i] * 0.5f, i == 0 ? 0 : -1));
         renderer->SetTint(i==0 ? m_color : m_outlineColor);
-        //renderer->SetRenderingTransform(glm::translate(glm::vec3(offset, 0.0f)));
+        renderer->SetTransform(transform);
         entity->AddComponent(renderer);
         parent->AddChild(entity);
     }
