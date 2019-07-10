@@ -215,6 +215,31 @@ scumm.action.remove_from_inventory = function(args)
 	}
 end
 
+scumm.action.open_door = function(args) 
+	assert (args.door, "door")
+	return { type = "callfunc", func = 
+		function()
+			local d = items[args.door]
+			print ("tag is " .. d.tag)
+			local e = monkey.getEntity(d.tag)
+			e.anim = "open"
+			variables[d.variable] = 1
+		end
+	}
+end
+
+scumm.action.close_door = function(args) 
+	assert (args.door, "door")
+	return { type = "callfunc", func = 
+		function()
+			local d = items[args.door]
+			local e = monkey.getEntity(d.tag)
+			e.anim = "close"
+			variables[d.variable] = 0
+		end
+	}
+end
+
 scumm.say = function(who, lines) 
 	local l = {}
 	for _, n in ipairs(lines) do
@@ -222,6 +247,8 @@ scumm.say = function(who, lines)
 	end
 	return { type = scumm.action.say, args = {actor = actor_map[who], lines = l }}
 end
+
+
 
 -- scumm.action.end_dialogue = function(args)
 -- 	assert (args.dialogue, "dialogue")

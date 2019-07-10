@@ -22,19 +22,26 @@ roomDefinition = {
 
 room = scumm.factory.basic_room (roomDefinition)
 
---room:add( {
-	-- { pos = {0, 0,-3}, components = { { type="gfx", image="gfx/scummbar_1.png" }}},
-	-- { pos = {157, 0, 0.99}, components = { { type="gfx", image="gfx/scummbar_3.png" }}},
-	-- { pos = {20, 0, 0.99}, components = { { type="gfx", image="gfx/scummbar_4.png" }}},
-	-- { pos = {374, 20, 0.95}, components = { { type="gfx", image="gfx/scummbar_2.png" }}},
+room:add ( "scummbar.walkarea",
+	{ 
+		scumm.factory.object { id="scummbar.fireplace"},
+		scumm.factory.object { id="scummbar.door_out" },
+		scumm.factory.object { id="scummbar.door_kitchen"},
+		--scumm.factory.object{id="lookout.lookout"},
+	}
+)
+
+room:add( "main", {
+	{ pos = {0, 0,-3}, components = { { type="gfx", image="scummbar_1.png" }}},
+	{ pos = {157, 0, 0.99}, components = { { type="gfx", image="scummbar_3.png" }}},
+	{ pos = {20, 0, 0.99}, components = { { type="gfx", image="scummbar_4.png" }}},
+	{ pos = {374, 20, 0.95}, components = { { type="gfx", image="scummbar_2.png" }}},
 	-- scumm.factory.walkarea { shape = { type = "poly", outline = {32,16,70,24,128,19,251,
 	-- 	18,311,10,321,10,345,32,467,41,492,50,514,40,565,40,580,35,629,6,626,0,256,0,200,16,149,0,90,0,85,10},
 	-- 	holes = {
 	-- 		{374,6,505,6,505,28,374,28}
 	-- 	}
 	-- }},
-	-- scumm.factory.object { id="scummbar.door_out" },
-	-- scumm.factory.object { id="scummbar.door_kitchen" },
 	-- scumm.factory.object { id="scummbar.mancomb" },
 	-- scumm.factory.object { id="scummbar.estevan" },
 	-- scumm.factory.object { id="scummbar.fireplace" },
@@ -59,7 +66,7 @@ room = scumm.factory.basic_room (roomDefinition)
 	--     }
 	-- }
 
---s})
+})
 
 
 function run_background_script(actor, anim) 
@@ -89,15 +96,16 @@ function run_background_script_2(actor, anim_transition, anim2)
 end
 
 local cook = function() 
-	local pos = items2["scummbar.door_kitchen"].hotspot.walk_to
+	print ("starting cook")
+	local pos = items["scummbar.door_kitchen"].hotspot.walk_to
 	
 	local a1 = nil
 	variables.cook_in_kitchen = true
 	
 	if (variables._previousroom == "kitchen") then
-		variables[items2["scummbar.door_kitchen"].variable] = 1
+		variables[items["scummbar.door_kitchen"].variable] = 1
 		variables.cook_in_kitchen = false
-	 	local mancombPos = items2["scummbar.mancomb"].hotspot.walk_to
+	 	local mancombPos = items["scummbar.mancomb"].hotspot.walk_to
 		a1 = {
 			{ type = action.create_object, args = {name="scummbar.cook", pos = {mancombPos[1], mancombPos[2], 0} }},
 			{ type = action.delay, args = {sec = 5 }},
@@ -107,26 +115,31 @@ local cook = function()
 			{ type = action.set_variable, args = {var = "cook_in_kitchen", value = true }},
 		}
 	else
-		variables[items2["scummbar.door_kitchen"].variable] = 0
+		variables[items["scummbar.door_kitchen"].variable] = 0
 	end
 	local a2 = {
-		{ ref = 1, type = action.delay, args = {sec=10}},
-		{ type = action.open_door, args = {door="scummbar.door_kitchen"}},
+		{ ref = 1, type = action.delay, args = {sec=2}},
+		{ type = scumm.action.open_door, args = {door="scummbar.door_kitchen"}},
 		{ type = action.set_variable, args = {var = "cook_in_kitchen", value = false }},
-		{ type = action.create_object, args = {name="scummbar.cook", pos = {pos[1], pos[2], 0} }},
-		{ type = action.turn, args = {actor="scummbar.cook", dir="west"}},
-		{ type = action.walkto, args = { actor ="scummbar.cook", obj = "scummbar.mancomb" }}, --obj = items["scummbar.mancomb"]},
-		{ type = action.turn, args = {actor="scummbar.cook", dir="north"}},
-		{ type = action.delay, args = {sec = 5 }},
-		{ type = action.walkto, args = { actor ="scummbar.cook", obj = "scummbar.door_kitchen"}},
-		{ type = action.remove_object, args = {name ="scummbar.cook"}},
-		{ type = action.close_door, args = {door="scummbar.door_kitchen"}},
-		{ type = action.set_variable, args = {var = "cook_in_kitchen", value = true }},
+		{ type = action.log, args = {message = "ciao log"}}
+		
+		
+		
+		-- { type = action.create_object, args = {name="scummbar.cook", pos = {pos[1], pos[2], 0} }},
+		-- { type = action.turn, args = {actor="scummbar.cook", dir="west"}},
+		-- { type = action.walkto, args = { actor ="scummbar.cook", obj = "scummbar.mancomb" }}, --obj = items["scummbar.mancomb"]},
+		-- { type = action.turn, args = {actor="scummbar.cook", dir="north"}},
+		-- { type = action.delay, args = {sec = 5 }},
+		-- { type = action.walkto, args = { actor ="scummbar.cook", obj = "scummbar.door_kitchen"}},
+		-- { type = action.remove_object, args = {name ="scummbar.cook"}},
+		-- { type = action.close_door, args = {door="scummbar.door_kitchen"}},
+		-- { type = action.set_variable, args = {var = "cook_in_kitchen", value = true }},
 	}
 	local actions = {}
 	table.insert(actions, a1)
 	table.insert(actions, a2)
-	local s = ms2(actions, 1)
+	--local s = ms2(actions, 1)
+	local s = script.make(actions)
 	s.name = "_cook"
 	monkey.play(s)
 
@@ -162,4 +175,4 @@ local cook = function()
 
 end
 
---table.insert(room.initstuff, cook)
+table.insert(room.initstuff, cook)

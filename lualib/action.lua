@@ -1,5 +1,10 @@
 action = {}
 
+action.log = function(args) 
+	glib.assert (args.message, "message")
+	return { type="callfunc", func = function() print (args.message) end }
+end
+
 action.change_room = function (args) 	
 	glib.assert (args.room, "room")
 	return { type="gotoroom", room = args.room }

@@ -334,30 +334,7 @@ action.remove_object = function(args)
 	}
 end
 
-action.open_door = function(args) 
-	assert (args.door, "door")
-	return { type = "callfunc", func = 
-		function()
-			local d = items2[args.door]
-			print ("tag is " .. d.tag)
-			local e = monkey.getEntity(d.tag)
-			e.anim = "open"
-			variables[d.variable] = 1
-		end
-	}
-end
 
-action.close_door = function(args) 
-	assert (args.door, "door")
-	return { type = "callfunc", func = 
-		function()
-			local d = items2[args.door]
-			local e = monkey.getEntity(d.tag)
-			e.anim = "close"
-			variables[d.variable] = 0
-		end
-	}
-end
 
 action.set_variable = function(args)
 	assert (args.var, "var")
