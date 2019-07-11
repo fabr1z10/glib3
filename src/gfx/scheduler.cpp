@@ -5,19 +5,19 @@
 Scheduler::~Scheduler() {
     std::cerr << "ciao\n";
     for (auto& s : m_scripts) {
-        std::cerr << " killing a current script " << s.first << "\n";
+        //std::cerr << " killing a current script " << s.first << "\n";
         s.second->Kill();
-        std::cerr << "done.\n";
+        //std::cerr << "done.\n";
     }
     for (auto& s : m_queuedScripts) {
-        std::cerr << " killing a q script\n";
+        //std::cerr << " killing a q script\n";
         s.second->Kill();
     }
-    std::cerr << "clearing scripts\n";
+    //std::cerr << "clearing scripts\n";
     m_scripts.clear();
-    std::cerr << "done.\n";
+    //std::cerr << "done.\n";
     m_queuedScripts.clear();
-    std::cerr << "scheduler killed\n";
+    //std::cerr << "scheduler killed\n";
 }
 
 

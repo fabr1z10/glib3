@@ -91,6 +91,13 @@ local s = {
 	estevan_1 = {x=318, y=76, width=35, height=27},
 	estevan_2 = {x=355, y=76, width=39, height=27},
 	estevan_3 = {x=396, y=76, width=37, height=27},
+	loom_1 = {x = 221, y=457, width=29, height=38},
+	important_looking_pirate_1_idle_1 = {x=319, y=410, width=35, height=55},
+	important_looking_pirate_1_talk_1 = {x=394, y=409, width=35, height=56},
+	important_looking_pirate_1_talk_2 = {x=431, y=411, width=35, height=54},
+	important_looking_pirate_2_idle_1 = {x=2, y=1, width=34, height=53},
+	important_looking_pirate_2_talk_1 = {x=39, y=1, width=34, height=56},
+	important_looking_pirate_2_talk_2 = {x=75, y=1, width=35, height=52},
 	seagull_fly_1 = {x=3, y = 220, width=20, height=14 },
 	seagull_fly_2 = {x=3, y = 187+49, width=25, height=12},
 	seagull_fly_3 = {x=3, y = 187+63, width=19, height=25},
@@ -878,6 +885,33 @@ engine.assets.models["scummbar.estevan"] = {
 	}
 }
 
+engine.assets.models["scummbar.loompirate"] = {
+    sheet = sheet,
+    type = "sprite",
+    ppu=1,
+	animations = {
+		{ name = "idle_1", frames = { { duration = dt, quads = {{ id = s.loom_1 }}}}},
+		-- { name = "idle_2", frames = { 
+		-- 	{ duration = dt, quads = {{ id = s.estevan_2 }}},
+		-- 	{ duration = dt, quads = {{ id = s.estevan_3 }}}
+		-- }}
+
+	}
+}
+
+engine.assets.models["scummbar.ilp1"] = {
+    sheet = sheet,
+    type = "sprite",
+    ppu=1,
+	animations = {
+		{ name = "idle_e", frames = { { duration = dt, quads = {{ id = s.important_looking_pirate_left_1 }}}}},
+		{ name = "talk_e", frames = { 
+			{ duration = dt, quads = {{ id = s.important_looking_pirate_talk_1 }}},
+			{ duration = dt, quads = {{ id = s.important_looking_pirate_talk_2 }}}
+		}
+		},
+	}
+}
 
 engine.assets.models["kitchen.seagull"] = {
     sheet = sheet,

@@ -18,6 +18,7 @@
 
 #include <gfx/components/billboard.h>
 #include <gfx/components/parallax.h>
+#include <gfx/components/parallax3d.h>
 #include <gfx/state.h>
 #include <gfx/components/info.h>
 #include <gfx/components/light.h>
@@ -126,6 +127,11 @@ std::shared_ptr<Component> GfxComponentFactory::Create(luabridge::LuaRef & ref) 
         std::string modelId = table.Get<std::string>("model");
         auto model = Engine::get().GetAssetManager().GetModel(modelId);
         renderer->SetModel(model);
+    } else if (table.HasKey("prim3d")) {
+        auto factory = Engine::get().GetSceneFactory();
+        auto model = factory->makeModel(table.Get<luabridge::LuaRef>("prim3d"));
+        renderer->SetModel(model);
+
     }
 //    if (table.HasKey("scale")) {
 //        float scale = table.Get<float>("scale");
@@ -227,6 +233,14 @@ std::shared_ptr<Component> ParallaxComponentFactory::Create(luabridge::LuaRef &r
     float width = table.Get<float>("width");
     float height = table.Get<float>("width");
     return Ref::Create<Parallax>(cam, factor, width, height);
+}
+
+std::shared_ptr<Component> Parallax3DComponentFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    std::string cam = table.Get<std::string>("cam");
+    std::string img = table.Get<std::string>("img");
+    float z = table.Get<float>("z");
+    return Ref::Create<Parallax3D>(cam,z,img);
 }
 
 //std::shared_ptr<Component> MultiColliderComponentFactory::Create(luabridge::LuaRef &ref) {

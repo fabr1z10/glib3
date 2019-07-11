@@ -95,11 +95,19 @@ void PerspectiveCamera::Resize(int w, int h) {
     float winAR = static_cast<float>(w) / h;
     glm::vec2 dsize = Engine::get().GetDeviceSize();
     winAR = dsize.x /dsize.y;
-
+    m_aspectRatio = winAR;
     m_projectionMatrix = glm::perspective (m_fov, winAR, m_near, m_far);
 
 }
 
+
+float PerspectiveCamera::getFieldOfView() const {
+    return m_fov;
+}
+
+float PerspectiveCamera::getAspectRatio() const {
+    return m_aspectRatio;
+}
 
 void OrthographicCamera::Init() {
 

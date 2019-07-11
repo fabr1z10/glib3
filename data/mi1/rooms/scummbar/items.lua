@@ -40,10 +40,10 @@ scumm.factory.door {
 			if (m.x > 320) then
 				return {
 					{ type = action.suspend_script, args = {script = "_cook"}},
-					{ type = action.turn, args = {actor="scummbar.cook", dir="east"}},
-					{ type = action.say, args = {actor="scummbar.cook", lines = { strings.dialogues.cook[1], strings.dialogues.cook[2] }}},
-					{ type = action.turn, args = {actor="scummbar.cook", dir="west"}},
-					{ type = action.set_state, args = {actor = "scummbar.cook", state="walk"}},
+					{ type = scumm.action.turn, args = { tag = "scummbar.cook", dir="east"}},
+					{ type = scumm.action.say, args = { actor = "scummbar.cook", lines = { strings.dialogues.cook[1], strings.dialogues.cook[2] }}},
+					{ type = scumm.action.turn, args = { tag = "scummbar.cook", dir="west"}},
+					{ type = action.set_state, args = {tag = "scummbar.cook", state="walk"}},
 					{ type = action.resume_script, args = {script = "_cook"}},
 				}
 			else
@@ -79,7 +79,8 @@ engine.items["scummbar.cook"] = {
 	applydepth = true,
 	character = {
 		state = "idle",
-		dir ="east"
+		dir ="west",
+		speed = 100		
 	}
 }
 
@@ -112,6 +113,53 @@ engine.items["scummbar.estevan"] = {
  		talk = { type=action.change_room, args={room = "estevan" }}
  	}
 }
+
+engine.items["scummbar.loompirate"] = {
+	--tag="loompirate",
+	pos = {260, 17, -1},
+	hotspot = {
+		text = strings.objects.pirate,
+		size = {20, 20},
+		walk_to = {250, 16},
+		dir = "north"
+	},
+	model = "scummbar.loompirate",
+	actions = {
+		look =  { type = action.change_room, args = { room = "loompirate" }},
+		talk =  { type = action.change_room, args = { room = "loompirate" }}
+	}
+}
+
+engine.items["scummbar.ilp1"] = {
+	pos = {376, 11, 0.95},
+	text_color = {85, 85, 255, 255},
+	text_offset = {0, 60},
+	model = "scummbar.ilp1", 
+	character = {
+	 	state = "idle",
+	 	dir = "east",
+	 	speed = 0
+	},	
+}
+
+-- engine.items["scummbar.ilp2"] = {
+-- 	tag ="ilp2",
+-- 	pos = {413, 11, 0.95},
+-- 	text_color = {255, 255, 85, 255},
+-- 	text_offset = {0, 60},
+-- 	model = "ilp2", 
+-- 	anim="idle"
+-- }
+
+-- engine.items["scummbar.ilp3"] = {
+-- 	tag ="ilp3",
+-- 	pos = {444, 18, 0.95},
+-- 	text_color = {255, 85, 255, 255},
+-- 	text_offset = {0, 60},
+-- 	model = "ilp3", 
+-- 	anim="idle"
+-- }
+
 
 -- engine.items["scummbar.door_kitchen"] = factory.door.create {
 -- 	name = "scummbar.door_kitchen",
@@ -178,20 +226,7 @@ engine.items["scummbar.estevan"] = {
 
 
 
--- engine.items["scummbar.loompirate"] = {
--- 	tag="loompirate",
--- 	text = strings.objects.pirate,
--- 	pos = {260, 17, -1},
--- 	size = {20, 20},
--- 	model = "loompirate",
--- 	anim = "idle",
--- 	walk_to = {250, 16},
--- 	face = "north",
--- 	actions = {
--- 		look =  ms { { action.change_room, { id=1, room = "loompirate" }}},
--- 		talk =  ms { { action.change_room, { id=1, room = "loompirate" }}}
--- 	}
--- }
+
 
 engine.items["scummbar.fireplace"] = {
  	pos = {509, 44, -1},
@@ -209,32 +244,7 @@ engine.items["scummbar.fireplace"] = {
 
 
 
--- engine.items["scummbar.ilp1"] = {
--- 	tag ="ilp1",
--- 	pos = {376, 11, 0.95},
--- 	text_color = {85, 85, 255, 255},
--- 	text_offset = {0, 60},
--- 	model = "ilp1", 
--- 	anim="idle"
--- }
 
--- engine.items["scummbar.ilp2"] = {
--- 	tag ="ilp2",
--- 	pos = {413, 11, 0.95},
--- 	text_color = {255, 255, 85, 255},
--- 	text_offset = {0, 60},
--- 	model = "ilp2", 
--- 	anim="idle"
--- }
-
--- engine.items["scummbar.ilp3"] = {
--- 	tag ="ilp3",
--- 	pos = {444, 18, 0.95},
--- 	text_color = {255, 85, 255, 255},
--- 	text_offset = {0, 60},
--- 	model = "ilp3", 
--- 	anim="idle"
--- }
 
 -- engine.items["scummbar.important_looking_pirates"] = {
 -- 	text = strings.objects.ilp,

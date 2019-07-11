@@ -5,7 +5,8 @@
 Follow::Follow (const std::string& cam, glm::vec3 relativePos, glm::vec3 up) :
 Component(), m_camId{cam}, m_relativePos(relativePos), m_up(up), m_fixZ{false}
 {
-    m_dir = -glm::normalize(m_relativePos);
+    //m_dir = -glm::normalize(m_relativePos);
+    m_dir = glm::vec3(0,0, -1);
 }
 
 Follow::Follow(const Follow& orig) : Component(orig),

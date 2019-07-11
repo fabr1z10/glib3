@@ -7,6 +7,7 @@ local inventory = engine.state.scumm.inventory
 scumm.action = {}
 
 scumm.action.walkto = function (args) 
+print ("faccncnncn")
 	glib.assert_either (args.tag, args.id, "id or tag")
 	local pos = args.pos
 	if (pos == nil) then

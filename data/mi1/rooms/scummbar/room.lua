@@ -6,9 +6,8 @@ roomDefinition = {
 	startTable = {
 		village1 = { walkarea = "scummbar.walkarea", pos = items["scummbar.door_out"].hotspot.walk_to, dir = "east"},
 		mancomb = { walkarea = "scummbar.walkarea", pos = items["scummbar.mancomb"].hotspot.walk_to, dir = "north"},
-		--estevan = { pos = items2["scummbar.estevan"].hotspot.walk_to, dir = "south"},
-		kitchen = { walkarea = "scummbar.walkarea", pos = items["scummbar.door_kitchen"].hotspot.walk_to, dir="west" }
-
+		estevan = { walkarea = "scummbar.walkarea", pos = items["scummbar.estevan"].hotspot.walk_to, dir = "south"},
+		kitchen = { walkarea = "scummbar.walkarea", pos = items["scummbar.door_kitchen"].hotspot.walk_to, dir="west"}
 	},
 	defaultroom = "village1",
 	depth = { type="linear_y", values= {0, 1, 144, 0} },
@@ -24,10 +23,15 @@ room = scumm.factory.basic_room (roomDefinition)
 
 room:add ( "scummbar.walkarea",
 	{ 
-		scumm.factory.object { id="scummbar.fireplace"},
-		scumm.factory.object { id="scummbar.door_out" },
-		scumm.factory.object { id="scummbar.door_kitchen"},
-		--scumm.factory.object{id="lookout.lookout"},
+		scumm.factory.object { id = "scummbar.fireplace"},
+		scumm.factory.object { id = "scummbar.door_out" },
+		scumm.factory.object { id = "scummbar.door_kitchen"},
+		scumm.factory.object { id = "scummbar.mancomb" },
+		scumm.factory.object { id = "scummbar.estevan" },
+		scumm.factory.object { id = "scummbar.loompirate"},
+		scumm.factory.object { id = "scummbar.ilp1"},
+		scumm.factory.object { id = "scummbar.ilp2"},
+		scumm.factory.object { id = "scummbar.ilp3"},
 	}
 )
 
@@ -36,35 +40,11 @@ room:add( "main", {
 	{ pos = {157, 0, 0.99}, components = { { type="gfx", image="scummbar_3.png" }}},
 	{ pos = {20, 0, 0.99}, components = { { type="gfx", image="scummbar_4.png" }}},
 	{ pos = {374, 20, 0.95}, components = { { type="gfx", image="scummbar_2.png" }}},
-	-- scumm.factory.walkarea { shape = { type = "poly", outline = {32,16,70,24,128,19,251,
-	-- 	18,311,10,321,10,345,32,467,41,492,50,514,40,565,40,580,35,629,6,626,0,256,0,200,16,149,0,90,0,85,10},
-	-- 	holes = {
-	-- 		{374,6,505,6,505,28,374,28}
-	-- 	}
-	-- }},
-	-- scumm.factory.object { id="scummbar.mancomb" },
-	-- scumm.factory.object { id="scummbar.estevan" },
-	-- scumm.factory.object { id="scummbar.fireplace" },
+	
 
 
-	-- factory.object.create { object = "scummbar.door_out" },
-	-- factory.object.create { object = "scummbar.mancomb" },
-	-- factory.object.create { object = "scummbar.estevan" },
-	-- factory.object.create { object = "scummbar.loompirate"},
 	-- factory.object.create { object = "scummbar.fireplace"},
-	-- factory.object.create { object = "scummbar.ilp1"},
-	-- factory.object.create { object = "scummbar.ilp2"},
-	-- factory.object.create { object = "scummbar.ilp3"},
 	-- factory.object.create { object = "scummbar.important_looking_pirates"},
-	-- factory.walkarea.create {
- --   		shape = { 
-	--     	type = "poly", 
-	--         outline = {32,16,70,24,128,19,251,18,311,10,321,10,345,32,467,41,492,50,514,40,565,40,580,35,629,6,626,0,256,0,200,16,149,0,90,0,85,10},
-	--         holes = {
-	--         	{374,6,505,6,505,28,374,28}
-	--         }
-	--     }
-	-- }
 
 })
 
@@ -121,25 +101,21 @@ local cook = function()
 		{ ref = 1, type = action.delay, args = {sec=2}},
 		{ type = scumm.action.open_door, args = {door="scummbar.door_kitchen"}},
 		{ type = action.set_variable, args = {var = "cook_in_kitchen", value = false }},
-		{ type = action.log, args = {message = "ciao log"}}
-		
-		
-		
-		-- { type = action.create_object, args = {name="scummbar.cook", pos = {pos[1], pos[2], 0} }},
-		-- { type = action.turn, args = {actor="scummbar.cook", dir="west"}},
-		-- { type = action.walkto, args = { actor ="scummbar.cook", obj = "scummbar.mancomb" }}, --obj = items["scummbar.mancomb"]},
-		-- { type = action.turn, args = {actor="scummbar.cook", dir="north"}},
-		-- { type = action.delay, args = {sec = 5 }},
-		-- { type = action.walkto, args = { actor ="scummbar.cook", obj = "scummbar.door_kitchen"}},
-		-- { type = action.remove_object, args = {name ="scummbar.cook"}},
-		-- { type = action.close_door, args = {door="scummbar.door_kitchen"}},
-		-- { type = action.set_variable, args = {var = "cook_in_kitchen", value = true }},
+		{ type = action.create_object, args = { factory = scumm.factory.object, args = { id="scummbar.cook", pos = {pos[1], pos[2], 0} }, parent = "scummbar.walkarea"}},
+		{ type = scumm.action.walkto, args = { tag ="scummbar.cook", obj = "scummbar.mancomb" }}, --obj = items["scummbar.mancomb"]},
+		{ type = scumm.action.turn, args = { tag = "scummbar.cook", dir="north"}},
+		{ type = scumm.action.say, args = { actor = "scummbar.ilp1", lines = { strings.dialogues.cook[1], strings.dialogues.cook[2] }}},
+		{ type = action.delay, args = {sec = 5 }},
+		{ type = scumm.action.walkto, args = { tag ="scummbar.cook", obj = "scummbar.door_kitchen"}},
+		{ type = action.remove_object, args = { tag = "scummbar.cook"}},
+		{ type = scumm.action.close_door, args = {door="scummbar.door_kitchen"}},
+		{ type = action.set_variable, args = {var = "cook_in_kitchen", value = true }},
 	}
 	local actions = {}
 	table.insert(actions, a1)
 	table.insert(actions, a2)
 	--local s = ms2(actions, 1)
-	local s = script.make(actions)
+	local s = script.make(actions, 1)
 	s.name = "_cook"
 	monkey.play(s)
 

@@ -67,6 +67,16 @@ models["fx_1"] = {
 }
 
 model_factory = {}
+
+model_factory.trapezoid = function(points, depth, y, textop, texside) 
+	vertices_top = {}
+	hd = depth * 0.5
+	for i, p in points do
+		table.insert (vertices_top, { p[0], p[1], hd })
+		table.insert (vertices_top, { p[0], p[1], -hd })
+	end
+end
+
 model_factory.box = function (width, height, depth, tex, tsx, tsy, tsz) 
 	local texture_size_x = tsx or width
 	local texture_size_y = tsy or height

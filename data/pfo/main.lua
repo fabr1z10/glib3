@@ -13,7 +13,7 @@ engine = {
 		},
 		models = {}
     },
-   	start_room = "text",
+   	start_room = "sprite_state_3d",
     global_assets = {
 		fonts = { "diag" }
 	},

@@ -1,6 +1,7 @@
 #include <gfx/scenefactory.h>
 #include <gfx/factories.h>
 #include <gfx/factories/modelfactories.h>
+#include <gfx/factories/prim3d.h>
 #include <iostream>
 #include <gfx/engine.h>
 
@@ -71,6 +72,8 @@ SceneFactory::SceneFactory() {
     m_modelFactory.Add<SimpleModelFactory>("sprite");
     m_modelFactory.Add<BoxedModelFactory>("boxed_sprite");
     m_modelFactory.Add<GenericModel3DFactory>("model3d");
+    m_modelFactory.Add<ModelBox3D>("box3d");
+    m_modelFactory.Add<ModelTrapezoid3D>("trapezoid3d");
 
     m_entityFactory.Add<EntityFactory>("default");
     m_entityFactory.Add<TextViewFactory>("textview");
@@ -97,6 +100,7 @@ SceneFactory::SceneFactory() {
     m_componentFactory.Add<InfoComponentFactory>("info");
     m_componentFactory.Add<PlatformComponentFactory>("platform");
     m_componentFactory.Add<ParallaxComponentFactory>("parallax");
+    m_componentFactory.Add<Parallax3DComponentFactory>("parallax3d");
     m_componentFactory.Add<TextComponentFactory>("text");
     m_componentFactory.Add<FPSComponentFactory>("fps");
     m_componentFactory.Add<HotSpotComponentFactory>("hotspot");

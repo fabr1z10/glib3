@@ -134,10 +134,13 @@ public:
     void Resize(int w, int h) override;
     bool IsVisible(const Bounds3D&) override {return true;}
     void Notify(float, float) override ;
+    float getFieldOfView() const;
+    float getAspectRatio() const;
 private:
     float m_fov;
     float m_near;
     float m_far;
+    float m_aspectRatio;
 };
 
 

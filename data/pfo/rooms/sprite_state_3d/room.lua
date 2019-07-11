@@ -62,16 +62,50 @@ room = {
 				{ pos = {0,0,0}, components = {{type="light", class="directional", color={255, 255, 255}, dir = {-0.8, 0.3, 0.5}}}},
 				{
 					tag=" ciaoppo",
-					pos = {0,0,8},
+					pos = {0,0,-8},
 					components = {
-						{ type="gfx", model="cube"}
+						{ 
+							type="gfx", 
+							-- prim3d = { 
+							-- 	type="box3d", 
+							-- 	width = 100, height=16, depth = 16, 
+							-- 	texture = { 
+							-- 		top = { name="block1.png", rep={16, 16}},
+							-- 		side = { name="brick2.png", rep={16, 16}}
+							-- 	} 
+							-- }
+							prim3d = {
+								type = "trapezoid3d",
+								points = {0,16,300,16,310,21,320,31,330,46,340,56,350,61,360,61,400,61},
+								depth = 16,
+								y = -100,
+								texture = {
+									top = { name="block1.png", rep={16, 16}},	
+									side = {name="brick2.png", rep={16, 16}}								
+								}
+							}
+						}
 					}
 
 				},
+				{
+					tag = "parallaxback",
+					pos = {0, 0, 0},
+					components ={
+						{ type = "parallax3d", img = "bg3.png", cam = "maincam", z = 400}
+					}
+				},
+				-- {
+				-- 	pos={0,0,-100},
+				-- 	components = {
+				-- 		{ type="gfx", image="bg2.png", width = 1000, height=1000}
+				-- 	}
+
+				-- },
 				--factory.rect { pos = {0, 0}, img = "block1.png", width=69, height=2 },
 				--factory.rect { pos = {10, 2}, flag=2|4, tag = 50, img = "block1.png", width=1, height=1 },	
 				factory.path { pos={0,0}, A = {0,16}, B = {300,16} },
-				factory.path { pos={0,0}, A = {300,16}, B = {400,116} },
+				--factory.path { pos={0,0}, A = {300,16}, B = {400,116} },
 				factory.character.create { 
 					class = "player",
 					model = "ryu", 
@@ -209,5 +243,6 @@ room = {
 				-- }
 			}
 		},
+
 	},
 }
