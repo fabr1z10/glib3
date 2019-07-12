@@ -142,23 +142,29 @@ engine.items["scummbar.ilp1"] = {
 	},	
 }
 
--- engine.items["scummbar.ilp2"] = {
--- 	tag ="ilp2",
--- 	pos = {413, 11, 0.95},
--- 	text_color = {255, 255, 85, 255},
--- 	text_offset = {0, 60},
--- 	model = "ilp2", 
--- 	anim="idle"
--- }
+engine.items["scummbar.ilp2"] = {
+	pos = {413, 11, 0.95},
+	text_color = {255, 255, 85, 255},
+	text_offset = {0, 60},
+	model = "scummbar.ilp2",
+	character = {
+		state="idle",
+		dir="east",
+		speed = 0
+	}
+}
 
--- engine.items["scummbar.ilp3"] = {
--- 	tag ="ilp3",
--- 	pos = {444, 18, 0.95},
--- 	text_color = {255, 85, 255, 255},
--- 	text_offset = {0, 60},
--- 	model = "ilp3", 
--- 	anim="idle"
--- }
+engine.items["scummbar.ilp3"] = {
+	pos = {444, 18, 0.95},
+	text_color = {255, 85, 255, 255},
+	text_offset = {0, 60},
+	model = "scummbar.ilp3", 
+	character = {
+		state = "idle",
+		dir = "east",
+		speed = 0
+	}
+}
 
 
 -- engine.items["scummbar.door_kitchen"] = factory.door.create {
@@ -246,24 +252,24 @@ engine.items["scummbar.fireplace"] = {
 
 
 
--- engine.items["scummbar.important_looking_pirates"] = {
--- 	text = strings.objects.ilp,
--- 	pos = {370,30,0},
--- 	size= {110,25},
--- 	walk_to = {460, 2},
--- 	face="west",
--- 	actions = {
--- 		talk = function() 
--- 			local s = script:new()
--- 			local dp = strings.dialogues.pirates
--- 			local lines = (variables.talked_to_important_pirates == false) and {dp[1]} or {dp[40], dp[41]}
--- 			s.actions = {
--- 				action.disable_controls {id=1},
--- 				action.say {id=2, actor="scummbar.ilp1", lines = lines, animstart="talk", animend="idle"},
--- 				action.start_dialogue{id=3, dialogue="importantpirates"}
--- 			}
--- 			return s
--- 		end
+engine.items["scummbar.important_looking_pirates"] = {
+	pos = {370,30,0},
+	hotspot = {
+		text = strings.objects.ilp,
+		walk_to = {460, 2},
+		size= {110,25},
+		dir="west",
+	},
+	actions = {
+ 		talk = function() 
+ 			local dp = strings.dialogues.pirates
+ 			local actions = {
+				{ type = scumm.action.disable_controls },
+				{ type = scumm.action.say, args = { actor="scummbar.ilp1", lines = { dp[1] }}},
+				{ type = scumm.action.start_dialogue, args = { dialogue = "importantpirates" }}
+			}
+ 			return actions
+ 		end
 
--- 	}
--- }
+ 	}
+}

@@ -14,6 +14,7 @@ engine.state.scumm = {
 		obj2 = nil,
 		selectSecond = false
 	},
+	walk_enabled = true,
 	inventory = {}
 
 }

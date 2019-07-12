@@ -73,6 +73,7 @@ end
 
 scumm.action.disable_controls = function(args) 
 	return { type="callfunc", func = function() 
+		engine.state.scumm.walk_enabled = false
 		local m = monkey.getEntity("mainui")
 		local m1 = monkey.getEntity("main")
 		if (not m.isnil) then
@@ -121,6 +122,7 @@ local closeDialogue = function(dialogue)
 	local m = monkey.getEntity("mainui")
 	local m1 = monkey.getEntity("main")
 	local m2 = monkey.getEntity("dialogueui")
+	engine.state.scumm.walk_enabled = true
 	m2:cleartext()
 	m2:setactive(false)
 	if (not m.isnil) then

@@ -1,5 +1,6 @@
 local dt = 0.1
 local sheet = "sprites/sprites1.png"
+local sheet2 = "sprites/sprites2.png"
 local layer_dz = 0.001
 
 local s = {
@@ -98,6 +99,10 @@ local s = {
 	important_looking_pirate_2_idle_1 = {x=2, y=1, width=34, height=53},
 	important_looking_pirate_2_talk_1 = {x=39, y=1, width=34, height=56},
 	important_looking_pirate_2_talk_2 = {x=75, y=1, width=35, height=52},
+	important_looking_pirate_3_idle_1 = {x=113, y=1, width=35, height=52},
+	important_looking_pirate_3_talk_1 = {x=150, y=1, width=31, height=52},
+	important_looking_pirate_3_talk_2 = {x=183, y=2, width=32, height=51},
+	important_looking_pirate_3_talk_3 = {x=217, y=1, width=31, height=52},
 	seagull_fly_1 = {x=3, y = 220, width=20, height=14 },
 	seagull_fly_2 = {x=3, y = 187+49, width=25, height=12},
 	seagull_fly_3 = {x=3, y = 187+63, width=19, height=25},
@@ -904,14 +909,45 @@ engine.assets.models["scummbar.ilp1"] = {
     type = "sprite",
     ppu=1,
 	animations = {
-		{ name = "idle_e", frames = { { duration = dt, quads = {{ id = s.important_looking_pirate_left_1 }}}}},
+		{ name = "idle_e", frames = { { duration = dt, quads = {{ id = s.important_looking_pirate_1_idle_1 }}}}},
 		{ name = "talk_e", frames = { 
-			{ duration = dt, quads = {{ id = s.important_looking_pirate_talk_1 }}},
-			{ duration = dt, quads = {{ id = s.important_looking_pirate_talk_2 }}}
+			{ duration = dt, quads = {{ id = s.important_looking_pirate_1_talk_1 }}},
+			{ duration = dt, quads = {{ id = s.important_looking_pirate_1_talk_2 }}}
 		}
 		},
 	}
 }
+
+engine.assets.models["scummbar.ilp2"] = {
+    sheet = sheet2,
+    type = "sprite",
+    ppu=1,
+	animations = {
+		{ name = "idle_e", frames = { { duration = dt, quads = {{ id = s.important_looking_pirate_2_idle_1 }}}}},
+		{ name = "talk_e", frames = { 
+			{ duration = dt, quads = {{ id = s.important_looking_pirate_2_talk_1 }}},
+			{ duration = dt, quads = {{ id = s.important_looking_pirate_2_talk_2 }}}
+		}
+		},
+	}
+}
+
+engine.assets.models["scummbar.ilp3"] = {
+    sheet = sheet2,
+    type = "sprite",
+    ppu=1,
+	animations = {
+		{ name = "idle_e", frames = { { duration = dt, quads = {{ id = s.important_looking_pirate_3_idle_1 }}}}},
+		{ name = "talk_e", frames = { 
+			{ duration = dt, quads = {{ id = s.important_looking_pirate_3_talk_1 }}},
+			{ duration = dt, quads = {{ id = s.important_looking_pirate_3_talk_2 }}},
+			{ duration = dt, quads = {{ id = s.important_looking_pirate_3_talk_3 }}},
+
+		}
+		},
+	}
+}
+
 
 engine.assets.models["kitchen.seagull"] = {
     sheet = sheet,

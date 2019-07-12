@@ -50,7 +50,7 @@ function scumm.factory.basic_room (args)
 			    },
 				lmbclick = function(x, y)
 				    print (tostring(x) .. "," .. tostring(y))
-					if (engine.state.scumm.actionInfo.verb == "walk") then
+					if (engine.state.scumm.walk_enabled == true and engine.state.scumm.actionInfo.verb == "walk") then
 						local actions = scumm.ui.walk { pos = {x,y} }
 						local s = script.make(actions)
 						s.name="_walk"

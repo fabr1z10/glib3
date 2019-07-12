@@ -32,6 +32,7 @@ room:add ( "scummbar.walkarea",
 		scumm.factory.object { id = "scummbar.ilp1"},
 		scumm.factory.object { id = "scummbar.ilp2"},
 		scumm.factory.object { id = "scummbar.ilp3"},
+		scumm.factory.object { id = "scummbar.important_looking_pirates"},
 	}
 )
 
@@ -44,7 +45,6 @@ room:add( "main", {
 
 
 	-- factory.object.create { object = "scummbar.fireplace"},
-	-- factory.object.create { object = "scummbar.important_looking_pirates"},
 
 })
 
@@ -104,7 +104,7 @@ local cook = function()
 		{ type = action.create_object, args = { factory = scumm.factory.object, args = { id="scummbar.cook", pos = {pos[1], pos[2], 0} }, parent = "scummbar.walkarea"}},
 		{ type = scumm.action.walkto, args = { tag ="scummbar.cook", obj = "scummbar.mancomb" }}, --obj = items["scummbar.mancomb"]},
 		{ type = scumm.action.turn, args = { tag = "scummbar.cook", dir="north"}},
-		{ type = scumm.action.say, args = { actor = "scummbar.ilp1", lines = { strings.dialogues.cook[1], strings.dialogues.cook[2] }}},
+		--{ type = scumm.action.say, args = { actor = "scummbar.ilp1", lines = { strings.dialogues.cook[1], strings.dialogues.cook[2] }}},
 		{ type = action.delay, args = {sec = 5 }},
 		{ type = scumm.action.walkto, args = { tag ="scummbar.cook", obj = "scummbar.door_kitchen"}},
 		{ type = action.remove_object, args = { tag = "scummbar.cook"}},
