@@ -53,7 +53,7 @@ scumm.factory.door {
 	dir = "north",
 	model = "village3.shop_door",
 	variable = "door_shop",
-	nextroom = "shop",
+	nextroom = "store",
 }
 
 scumm.factory.door {

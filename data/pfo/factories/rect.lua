@@ -21,7 +21,7 @@ factory.path = function(args)
 	assert(args.pos, "pos")	
 	local z = args.z or 0
 	local flag = args.flag or 2
-	local tag = args.tag or 1
+	local tag = args.tag or 2
 	return {
 
 		pos = {args.pos[1], args.pos[2], z},

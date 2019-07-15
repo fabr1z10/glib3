@@ -10,7 +10,16 @@ local initscripts = {}
 
 
 room = {
-
+	afterstartup = function()
+		for k, v in ipairs(room.initstuff) do
+			v()
+		end
+	end,
+	initstuff = {
+		[1] = function() 
+			variables.update_game_variable("energy", variables.game_variables.energy.value)
+		end
+	},
 	engines = {
 		{ type = "scheduler"},
 		{ 
@@ -18,7 +27,7 @@ room = {
 			size = {roomInfo.collisionSize, roomInfo.collisionSize}, 
 			response = {
 				{ tag = {variables.tags.player, variables.tags.foe}, onenter = function(player, foe) 
-					--print ("azzzz") 
+					print ("azzzz") 
 
 					player_info = player:getinfo()
 					if (player_info.invincible == false) then
@@ -27,6 +36,8 @@ room = {
 							{ type = action.blink, args = { tag="player", duration = 5, blink_duration=0.1}},
 							{ type = action.callfunc, args = { func = function() player_info.invincible = false end }}
 						}
+
+						variables.update_game_variable("energy", variables.game_variables.energy.value -1)
 						local s = script.make(actions)
 						monkey.play(s)
 				    end
@@ -108,8 +119,9 @@ room = {
 				--factory.path { pos={0,0}, A = {300,16}, B = {400,116} },
 				factory.character.create { 
 					class = "player",
-					model = "ryu", 
-					scale =0.2,
+					--model = "ryu", 
+					model = "wbml",
+					scale =0.5,
 					pos = {112, 64}, 
 					speed =75, 
 					acc_gnd = 0.05, 
@@ -117,48 +129,62 @@ room = {
 					jump_speed = 100, 
 					gravity = -50,
 					energy = 3,
-					can_duck = true,
+					can_duck = false,
 					custom_states = {
-						{ id = "lowkick", state = { type="hit", anim="lowkick", acceleration = 0.05 }}
+						{ id = "lowkick", state = { type="hit", anim="attack", acceleration = 0.05 }}
 					},
 					attack_tags = {
-						{ anim ="lowkick", tag = variables.tags.player_attack, mask = 4|8 }
+						{ anim ="attack", tag = variables.tags.player_attack, mask = 4|8 }
 					},
 					attack_moves = {
 						{ type = "w", key = 81, state ="lowkick" },
-						{ type = "j", key = 81, anim = "lowkick" }
+						{ type = "j", key = 81, anim = "attack" }
 					},
 				},
 				-- factory.character.create {
 				-- 	class = "enemy_1",
 				-- 	model = "goomba",
 				-- 	pos = {180, 80},
-				-- 	speed = 50,
-				-- 	acc_gnd = 0.05,
-				-- 	acc_air = 0.10,
-				-- 	jump_speed = 0,
-				-- 	gravity = -50,
-				-- 	energy = 5
-				-- },
-				-- factory.character.create {
-				-- 	class = "enemy_2",
-				-- 	scale = 0.4,
-				-- 	model = "ryu",
-				-- 	pos = {32, 32},
+				-- 	scale = 0.2,
 				-- 	speed = 50,
 				-- 	acc_gnd = 0.05,
 				-- 	acc_air = 0.10,
 				-- 	jump_speed = 0,
 				-- 	gravity = -50,
 				-- 	energy = 5,
-				-- 	attack_prob = 0.7,
-				-- 	attack_moves = {
-				-- 		{ key = 81, odds = 10 }
-				-- 	},
-				-- 	attack = {
-				-- 		{ type = "w", key = 81, state ="lowkick", anim="lowkick", tag = variables.tags.foe_attack, mask = 1 },
-				-- 	},
+
+
 				-- },
+				factory.character.create {
+					class = "enemy_2",
+					scale = 0.4,
+					model = "ryu",
+					pos = {32, 32},
+					speed = 30,
+					scale = 0.25,
+					acc_gnd = 0.05,
+					acc_air = 0.10,
+					jump_speed = 0,
+					gravity = -50,
+					energy = 5,
+					attack_prob = 0.7,
+					custom_states = {
+						{ id = "lowkick", state = { type="hit", anim="lowkick", acceleration = 0.05 }}
+					},
+					attack_tags = {
+						{ anim ="lowkick", tag = variables.tags.foe_attack, mask = 1 }
+					},
+					attack_moves = {
+						{ type = "w", key = 81, state ="lowkick" },
+						{ type = "j", key = 81, anim = "lowkick" }
+					},				
+					attack_ia = {
+				 		prob = 0.0,
+						moves = {
+				 			{ key = 81, odds = 10 }
+				 		}
+				 	}
+				},
 				-- factory.character.create {
 				-- 	class = "enemy_2",
 				-- 	scale = 0.6,
@@ -243,6 +269,29 @@ room = {
 				-- }
 			}
 		},
+		[2] = {
+			tag = "main",
+			camera = {
+				tag = "maincam",
+				type="ortho",
+				size = {256, 256},
+				bounds = {0, 0, roomInfo.worldWidth*16, roomInfo.worldHeight*16},
+				viewport = {0, 0, 256, 256}
+			},
+			children = {
+				{ tag="txt_energy", pos = {10,246,0}, components = { { type = "text", id="f", font="main", size=8 }}},
 
+				-- { pos = {256,256,0}, components = {	{ type = "text", id="TOP RIGHT", font="main", size=8, align = "topright" }}},
+				-- { pos = {0,0,0}, components = { { type = "text", id="BOTTOM LEFT", font="main", size=8, align = "bottomleft" }}},
+				-- { pos = {256,0,0}, components = {	{ type = "text", id="BOTTOM RIGHT", font="main", size=8, align = "bottomright" }}},
+				-- { pos = {128,256,0}, components = {	{ type = "text", id="TOP", font="main", size=8, align = "top" }}},
+				-- { pos = {128,0,0}, components = {	{ type = "text", id="BOTTOM", font="main", size=8, align = "bottom" }}},
+				-- { pos = {128,128,0}, components = {	{ type = "text", id="CENTER", font="main", size=8, align = "center" }}},
+			}
+		},
 	},
 }
+
+
+--variables.update_game_variable("energy", variables.game_variables.energy.value)
+

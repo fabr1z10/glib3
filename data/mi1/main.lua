@@ -16,7 +16,7 @@ engine = {
 	global_assets = {
 		fonts = { "ui", "monkey" }
 	},
-	start_room = "scummbar",
+	start_room = "village3",
 	lang = "eng",
 	config = {
 	    default_verb = "walk",

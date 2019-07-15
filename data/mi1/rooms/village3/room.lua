@@ -9,7 +9,8 @@ roomDefinition = {
 	},
 	walkareas = {"village3.walkarea"},
 	defaultroom = "village2",
-	font_size = 8
+	font_size = 8,
+	playerid = "guybrush"
 }
 
 room = scumm.factory.basic_room  (roomDefinition)

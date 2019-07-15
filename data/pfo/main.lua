@@ -35,7 +35,19 @@ variables = {
 		foe_attack_2 = 42,
 		hittable_block = 50
 
-	}
+	},
+	game_variables = {
+		score = { value = 0, label = "txt_score", message = function(val) return "SCORE " .. val end },
+		lives = { value = 3, label = "txt_lives", message = function(val) return "SCORE " .. val end},
+		energy = {value = 5, label = "txt_energy", message = function(val) return "ENERGY " .. val end }
+	},
+	update_game_variable = function(varname, value)
+		local c = variables.game_variables[varname]
+		c.value = value
+		local d = monkey.getEntity(c.label)
+		d:settext(c.message(c.value))
+	end
+
 }
 require("platformer")
 

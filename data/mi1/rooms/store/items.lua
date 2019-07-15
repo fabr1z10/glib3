@@ -1,3 +1,33 @@
+engine.items["store.walkarea"] = scumm.factory.walkarea {
+
+	shape = { 
+		type = "poly", 
+		outline = {62,14,90,20,115,20,150,31,191,31,231,67,154,67,154,69,235,69,235,67,184,25,175,25,181,21,235,21,235,13,248,2,
+ 		248,0,62,0}
+ 	},
+	depth = { type="linear_y", values= {0, 1, 144, 0} },
+	priority = 0,
+	--depth = { type="linear_y", values= {0, 1, 144, 0} },
+	--scale = { type="constant", value=0.3 }
+}
+
+engine.items["store.walkarea.keeper"] = scumm.factory.walkarea {
+
+	shape = { 
+		type = "poly", 
+		outline = {62,14,90,20,115,20,150,31,191,31,231,67,154,67,154,69,235,69,235,67,184,25,175,25,181,21,235,21,235,13,248,2,
+ 		290,2,290,20,320,20,320,0,62,0}
+ 	},
+	depth = { type="patchwise", rects = {
+		{ pos = {0, 0}, size = {248, 100}, type="linear_y", values = {0,1,144,0}},
+		{ pos = {248, 0}, size = {100, 100}, type="constant", value = -0.5},
+	}},
+	priority = 0,
+	--depth = { type="linear_y", values= {0, 1, 144, 0} },
+	--scale = { type="constant", value=0.3 }
+}
+
+
 scumm.factory.door {
 	id = "shop.door",
 	pos = {59, 16, -1},
@@ -60,7 +90,8 @@ engine.items["shop.shopkeeper"] = {
  	model = "shop.shopkeeper",
 	character = {
 		state = "idle",
-		dir = "west"
+		dir = "west",
+		speed = 50,
 	},
  	text_offset = {0, 60},
     text_color = {255, 85, 255, 255},
