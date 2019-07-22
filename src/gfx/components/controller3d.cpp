@@ -96,6 +96,9 @@ void Controller3D::Move(glm::vec3& dx) {
         UpdateRaycastOrigins();
         //m_ppp.clear();
         bool movingHorizontally = !isEqual(dx.x, 0.0f) || !isEqual(dx.z, 0.0f);
+        if (dx.y < 0) {
+            DescendSlope(dx);
+        }
 //        if (m_details.onSlope && movingHorizontally) {
 //            float k = glm::dot(glm::vec3(dx.x * (m_entity->GetFlipX() ? -1 : 1), 0.0f, dx.z), m_details.normal);
 //            if (k >= 0) {
@@ -131,7 +134,8 @@ void Controller3D::Move(glm::vec3& dx) {
 void Controller3D::DescendSlope(glm::vec3& vel) {
     float dxw = vel.x * (m_entity->GetFlipX() ? -1.0f : 1.0f);
     glm::vec3 horizontalShift(dxw, 0.0f, vel.z);
-    glm::vec3 horizontalDir = glm::normalize(horizontalShift);
+    //glm::vec3 horizontalDir = glm::normalize(horizontalShift);
+    glm::vec3 horizontalDir = glm::normalize(glm::vec3(vel.x, 0, vel.z));
 
     float hLength = glm::length(horizontalShift);
 
