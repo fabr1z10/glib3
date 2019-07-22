@@ -6,7 +6,8 @@
 class Line : public Shape {
 public:
     Line (glm::vec2 A, glm::vec2 B);
-    bool isPointInside(glm::vec2) const override;
+    Line (glm::vec3 A, glm::vec3 B);
+    bool isPointInside(glm::vec3) const override;
     void accept (AcyclicVisitor& v) override;
     float GetLength() const;
     glm::vec2 GetDirection() const;
@@ -17,9 +18,9 @@ public:
     std::vector<glm::vec2> getPoints() override;
     std::vector<glm::vec2> getEdges() override;
 private:
-    glm::vec2 m_A;
-    glm::vec2 m_B;
-    glm::vec2 m_dir;
+    glm::vec3 m_A;
+    glm::vec3 m_B;
+    glm::vec3 m_dir;
     float m_length;
     float m_length2;
 };

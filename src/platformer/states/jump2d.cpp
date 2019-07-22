@@ -2,7 +2,7 @@
 #include <gfx/components/inputmethod.h>
 
 
-#include <gfx/components/controller2d.h>
+#include <gfx/components/icontroller.h>
 #include <gfx/entity.h>
 #include <gfx/math/geom.h>
 
@@ -37,7 +37,7 @@ void Jump2D::Run(double dt) {
     bool right = m_input->isKeyDown(GLFW_KEY_RIGHT);
     m_vy0 = m_dynamics->m_velocity.y;
 
-    if (m_controller->m_details.below && m_dynamics->m_velocity.y < 0) {
+    if (m_controller->grounded() && m_dynamics->m_velocity.y < 0) {
         if (!m_bounce) {
             m_dynamics->m_velocity.y = 0.0f;
             m_sm->SetState("walk");
@@ -48,7 +48,7 @@ void Jump2D::Run(double dt) {
     }
 
     // bump head
-    if (m_controller->m_details.above)	{
+    if (m_controller->ceiling())	{
         m_dynamics->m_velocity.y = 0;
         m_animator->SetAnimation(m_jumpAnimDown);
     }
@@ -63,7 +63,7 @@ void Jump2D::Run(double dt) {
         }
 
     }
-    glm::vec2 delta = m_dynamics->step(dt, targetVelocityX, m_accTimeAir);
+    glm::vec3 delta = m_dynamics->step(dt, targetVelocityX, m_accTimeAir);
 
     m_controller->Move(delta);
     UpdateAnimation();

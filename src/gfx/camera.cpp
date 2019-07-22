@@ -160,7 +160,7 @@ bool Camera::IsInViewport(float xScreen, float yScreen) {
 //    m_screenToWorldMat[2][1] = -m_viewMatrix[3][1] - (m_orthoHeight / 2.0f) - b * ((m_winHeight - m_viewportY) / m_pixelRatio);
 //}
 
-bool OrthographicCamera::IsVisible(const Bounds3D& bounds) {
+bool OrthographicCamera::IsVisible(const Bounds& bounds) {
     auto pos = GetPosition();
     bool notVisible = (bounds.min.x >= pos.x + m_extents.x) || (bounds.max.x <= pos.x - m_extents.x) || (bounds.min.y >= pos.y + m_extents.y) || (bounds.max.y <= pos.y - m_extents.y);
     return !notVisible;

@@ -4,8 +4,8 @@
 #include <gfx/math/geomalgo.h>
 
 Polygon::Polygon(const std::vector<glm::vec2> &p) : m_points{p} {
-    m_bounds.min = p[0];
-    m_bounds.max = p[0];
+    m_bounds.min = glm::vec3(p[0], 0.0f);
+    m_bounds.max = glm::vec3(p[0], 0.0f);
     for (int i = 1; i < p.size(); ++i) {
         m_bounds.min.x = std::min(m_bounds.min.x, p[i].x);
         m_bounds.min.y = std::min(m_bounds.min.y, p[i].y);
@@ -26,7 +26,7 @@ bool Polygon::isVertexConcave(int i) const {
     return x < 0;
 }
 
-bool Polygon::isPointInside(glm::vec2 point) const {
+bool Polygon::isPointInside(glm::vec3 point) const {
     int i, j;
     bool c = false;
     int nvert = m_points.size();
@@ -71,7 +71,7 @@ std::vector<glm::vec2> Polygon::getEdges() {
     return edges;
 }
 
-bool Poly::isPointInside(glm::vec2 P) const {
+bool Poly::isPointInside(glm::vec3 P) const {
     if (!m_polygons[0]->isPointInside(P))
         return false;
     for (int i = 1; i < m_polygons.size(); ++i) {

@@ -1,7 +1,7 @@
 #include <gfx/math/compound.h>
 #include <gfx/error.h>
 
-bool CompoundShape::isPointInside(glm::vec2 P) const {
+bool CompoundShape::isPointInside(glm::vec3 P) const {
     for (auto& shape : m_shapes) {
         if (shape->isPointInside(P))
             return true;

@@ -44,3 +44,10 @@ end
 
 -- table.insert(room.initstuff, glib.curry (mi.addStorekeeper, { pos = {781, 34, 0}, walkto = { items["village1.cliffside"].hotspot.walk_to }}))
 table.insert(room.initstuff, entry_cutscene)
+
+table.insert(room.initstuff, glib.curry (mi.addStorekeeper, { 
+	pos = {781, 34, 0}, 
+	parent="village1.walkarea", 
+	from = "village2",
+	walkto = { items["village1.cliffside"].hotspot.walk_to }
+}))

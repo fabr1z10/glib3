@@ -7,7 +7,7 @@ void ComboModel::AddMesh(std::shared_ptr<IMesh> mesh) {
 
 }
 
-Bounds3D ComboModel::GetBounds() const {
+Bounds ComboModel::GetBounds() const {
     return m_meshes.front()->GetBounds();
 }
 

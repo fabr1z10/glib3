@@ -67,7 +67,7 @@ public:
     GLuint GetNumberOfVertices() { return m_nvertices; }
     virtual void InitAttributes() = 0;
     virtual void Setup(Shader*) {}
-    virtual Bounds3D GetBounds() { return m_bounds; }
+    virtual Bounds GetBounds() { return m_bounds; }
     void Draw (Shader*, int offset, int count);
     GLenum m_primitive;
     //const glm::mat4& GetLocalTransform() const;
@@ -79,7 +79,7 @@ protected:
     //glm::mat4 m_localTransform;
     int m_scope;
     std::string m_id;
-    Bounds3D m_bounds;
+    Bounds m_bounds;
     GLuint m_nvertices;
     GLuint m_nindices;
     GLuint m_vb;
@@ -103,7 +103,7 @@ inline void IMesh::SetId(const std::string& name) {
 }
 
 template<class Vertex>
-Bounds3D ComputeBounds(std::vector<Vertex>& vertices) {
+Bounds ComputeBounds(std::vector<Vertex>& vertices) {
     float xm = std::numeric_limits<float>::infinity();
     float xM = -xm, yM = -xm, zM = -xm;
     float ym = xm, zm = xm;
@@ -112,14 +112,14 @@ Bounds3D ComputeBounds(std::vector<Vertex>& vertices) {
         if (v.y < ym) ym = v.y; else if (v.y > yM) yM = v.y;
         if (v.z < zm) zm = v.z; else if (v.z > zM) zM = v.z;
     }
-    Bounds3D bounds;
+    Bounds bounds;
     bounds.min = glm::vec3(xm, ym, zm);
     bounds.max = glm::vec3(xM, yM, zM);
     return bounds;
 }
 
 template<>
-inline Bounds3D ComputeBounds<VertexText>(std::vector<VertexText>& vertices) {
+inline Bounds ComputeBounds<VertexText>(std::vector<VertexText>& vertices) {
     float xm = std::numeric_limits<float>::infinity();
     float xM = -xm, yM = -xm;
     float ym = xm;
@@ -129,15 +129,13 @@ inline Bounds3D ComputeBounds<VertexText>(std::vector<VertexText>& vertices) {
         xM = std::max(xM, v.x);
         yM = std::max(yM, v.y);
     }
-    Bounds3D bounds;
+    Bounds bounds;
     bounds.min = glm::vec3(xm, ym, 0.0f);
     bounds.max = glm::vec3(xM, yM, 0.0f);
     return bounds;
 }
 
-//inline ShaderType IMesh::GetShaderType() const {
-//    return m_shaderType;
-//}
+
 
 
 #endif /* imesh_h */

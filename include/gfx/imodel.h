@@ -12,7 +12,7 @@
 class IModel {
 public:
     virtual ~IModel() = default;
-    virtual Bounds3D GetBounds() const = 0;
+    virtual Bounds GetBounds() const = 0;
     virtual std::vector<std::string> GetAnimations() const = 0;
     virtual std::string GetDefaultAnimation() const = 0;
     virtual ShaderType GetShaderType() const = 0;

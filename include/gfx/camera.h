@@ -24,7 +24,7 @@ public:
     // this needs to be called everything we switch camera
     // sets up viewport and projection matrix
     void SetProjectionMatrix();
-    virtual bool IsVisible(const Bounds3D&) = 0;
+    virtual bool IsVisible(const Bounds&) = 0;
     glm::mat4 m_projectionMatrix;
     glm::mat4 m_viewMatrix;
     //bool IsInViewport(float xScreen, float yScreen);
@@ -92,7 +92,7 @@ public:
     // set the visible rectangle
     void SetBounds(float xMin, float xMax, float yMin, float yMax);
     void Resize(int width, int height) override;
-    bool IsVisible(const Bounds3D&) override;
+    bool IsVisible(const Bounds&) override;
     glm::vec2 GetWorldCoordinates(glm::vec2) override;
     void SetPosition(glm::vec3 eye, glm::vec3 direction, glm::vec3 up = glm::vec3(0, 1, 0)) override;
     glm::vec2 GetSize();
@@ -132,7 +132,7 @@ class PerspectiveCamera : public Camera, public WindowResizeListener {
 public:
     PerspectiveCamera (glm::vec4 viewport, float fov = 45.0f, float nearPlane = 0.05f, float farPlane = 1000.0f);
     void Resize(int w, int h) override;
-    bool IsVisible(const Bounds3D&) override {return true;}
+    bool IsVisible(const Bounds&) override {return true;}
     void Notify(float, float) override ;
     float getFieldOfView() const;
     float getAspectRatio() const;

@@ -6,7 +6,7 @@ ICollider::ICollider() : Component(), m_engine(nullptr) {}
 // when a collider starts, it add itself to the collision engine.
 // A collision engine needs to be running for a collider object to start!
 void ICollider::Start() {
-    m_engine = Engine::get().GetRunner<CollisionEngine>();
+    m_engine = Engine::get().GetRunner<ICollisionEngine>();
     if (m_engine == nullptr) {
         GLIB_FAIL("The room has a collider component but no collision engine is loaded.");
     }

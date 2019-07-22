@@ -1,8 +1,8 @@
 #include "gfx/math/ellipse.h"
 #include "gfx/error.h"
 
-bool Ellipse::isPointInside(glm::vec2 P) const {
-    glm::vec2 rp = P - m_offset;
+bool Ellipse::isPointInside(glm::vec3 P) const {
+    glm::vec3 rp = P - m_offset;
     // ellipse satisfies equation
     // x^2 / r_x^2 + y^2 / r_y^2 \leq 1
     

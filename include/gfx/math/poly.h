@@ -8,7 +8,7 @@
 class Polygon : public Shape {
 public:
     Polygon (const std::vector<glm::vec2>& p);
-    bool isPointInside (glm::vec2 P) const override;
+    bool isPointInside (glm::vec3 P) const override;
     // tests if segment AB is within the polygon
     bool isInLineOfSight(glm::vec2 A, glm::vec2 B);
     int GetVertexCount() const;
@@ -45,7 +45,7 @@ public:
     void AddHole (std::unique_ptr<Polygon> p) {
         m_polygons.push_back(std::move(p));
     }
-    bool isPointInside (glm::vec2 P) const override;
+    bool isPointInside (glm::vec3 P) const override;
     bool isInLineOfSight(glm::vec2 A, glm::vec2 B);
     int GetVertexCount(int polyId = 0) const;
     int GetHoleCount() const;

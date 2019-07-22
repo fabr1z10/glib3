@@ -1,7 +1,7 @@
 #include "gfx/math/circle.h"
 #include "gfx/error.h"
 
-bool Circle::isPointInside(glm::vec2 P) const {
+bool Circle::isPointInside(glm::vec3 P) const {
     glm::vec2 rp = P - m_offset;
     return (rp.x * rp.x + rp.y * rp.y <= m_radius * m_radius);
 }
@@ -22,7 +22,7 @@ std::string Circle::toString() const {
 }
 
 glm::vec2 Circle::project(const glm::vec2 axis, const glm::mat4& worldTransform) {
-    float x = glm::dot(glm::vec2(worldTransform * glm::vec4(m_offset, 0.0f, 1.0f)), axis);
+    float x = glm::dot(glm::vec2(worldTransform * glm::vec4(m_offset, 1.0f)), axis);
     return glm::vec2(x-m_radius, x+ m_radius);
 }
 

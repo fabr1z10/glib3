@@ -108,7 +108,7 @@ void DynamicWorldBuilder::AddItem(std::shared_ptr<Entity> entity) {
     // compute bounds;
     auto renderer = entity->GetComponent<Renderer>();
     glm::vec3 pos = entity->GetPosition();
-    Bounds3D bounds;
+    Bounds bounds;
     if (renderer != nullptr) {
         bounds = renderer->GetBounds();
         //bounds.min += pos;
@@ -119,10 +119,10 @@ void DynamicWorldBuilder::AddItem(std::shared_ptr<Entity> entity) {
     }
     DynamicWorldItem item;
     item.m_blueprint = entity;
-    item.m_localBounds.min = glm::vec2(bounds.min);
-    item.m_localBounds.max = glm::vec2(bounds.max);
-    item.m_bounds.min = item.m_localBounds.min + glm::vec2(pos.x, pos.y);
-    item.m_bounds.max = item.m_localBounds.max + glm::vec2(pos.x, pos.y);
+    item.m_localBounds.min = bounds.min;
+    item.m_localBounds.max = bounds.max;
+    item.m_bounds.min = item.m_localBounds.min + glm::vec3(pos.x, pos.y, 0.0f);
+    item.m_bounds.max = item.m_localBounds.max + glm::vec3(pos.x, pos.y, 0.0f);
     //item.m_object = nullptr;
     std::cout << "Adding item with bounds = (" << item.m_bounds.min.x << ", " << item.m_bounds.min.y << ") to ("
     << item.m_bounds.max.x << ", " << item.m_bounds.max.y << ")\n";

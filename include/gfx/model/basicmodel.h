@@ -5,7 +5,7 @@
 class BasicModel : public IModel {
 public:
     BasicModel (std::shared_ptr<IMesh> mesh);
-    Bounds3D GetBounds() const override;
+    Bounds GetBounds() const override;
     void Draw (Shader*, int offset, int count) override;
     std::vector<std::string> GetAnimations() const override;
     std::string GetDefaultAnimation() const override ;

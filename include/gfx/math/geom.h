@@ -4,9 +4,23 @@
 
 class Poly;
 
+
+namespace monkey {
+    const glm::vec3 left = glm::vec3(-1, 0, 0);
+    const glm::vec3 right = glm::vec3(1, 0, 0);
+    const glm::vec3 down = glm::vec3(0, -1, 0);
+    const glm::vec3 up = glm::vec3(0, 1, 0);
+    const glm::vec3 front = glm::vec3(0, 0, 1);
+    const glm::vec3 back = glm::vec3(0, 0, -1);
+
+}
+
+
 const float epsilon = 0.0001f;
 const float deg2rad = M_PI / 180.0f;
 const float rad2deg = 180.0f / M_PI;
+//const glm::vec3 vec_down = glm::vec3(0, -1, 0);
+
 struct LineSegment {
     glm::vec2 A;
     glm::vec2 B;

@@ -42,4 +42,15 @@ struct hash<std::pair<std::string, int>> {
     }
 };
 
+template<>
+struct hash<glm::ivec3> {
+    inline size_t operator()(const glm::ivec3& p) const {
+        size_t seed = 0;
+        ::hash_combine(seed, p.x);
+        ::hash_combine(seed, p.y);
+        ::hash_combine(seed, p.z);
+        return seed;
+    }
+};
+
 }

@@ -17,7 +17,7 @@ void PolyLine::accept (AcyclicVisitor& v) {
         GLIB_FAIL("not a polyline visitor");
 }
 
-bool PolyLine::isPointInside (glm::vec2 P) const {
+bool PolyLine::isPointInside (glm::vec3 P) const {
     return false;
 }
 

@@ -9,7 +9,7 @@
 class PolyLine : public Shape {
 public:
     PolyLine (const std::vector<glm::vec2>& vertices, const std::vector<std::pair<int, int>>& edges);
-    bool isPointInside (glm::vec2 P) const override;
+    bool isPointInside (glm::vec3 P) const override;
     void accept (AcyclicVisitor& v) override;
     int GetEdgeContaining(glm::vec2 P);
     const std::vector<glm::vec2>& GetVertices() const;

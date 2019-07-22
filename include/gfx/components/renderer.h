@@ -21,7 +21,7 @@ public:
     void Draw(Shader*);
     void SetModel(std::shared_ptr<IModel> mesh);
     IModel* GetModel();
-    Bounds3D GetBounds() const;
+    Bounds GetBounds() const;
     Bounds GetBounds2D() const;
     void Start() override {}
     void Update(double) override {}
@@ -47,7 +47,7 @@ private:
 
 
 
-inline Bounds3D Renderer::GetBounds() const {
+inline Bounds Renderer::GetBounds() const {
     return m_model->GetBounds();
 }
 

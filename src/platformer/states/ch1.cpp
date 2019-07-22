@@ -4,7 +4,7 @@
 #include <gfx/entity.h>
 
 #include <gfx/components/animator.h>
-#include <gfx/components/controller2d.h>
+#include <gfx/components/icontroller.h>
 #include <gfx/components/dynamics2d.h>
 
 using namespace glib3::math;
@@ -43,7 +43,7 @@ void CustomHit1::Init() {
 
 
     m_entity->SetFlipX(targetPos.x < enemyPos.x);
-    m_dynamics->m_velocity = glm::vec2(m_vx, vy);
+    m_dynamics->m_velocity = glm::vec3(m_vx, vy, 0.0f);
     m_animator->SetAnimation(m_jumpAnimUp);
     m_done = false;
     m_timer = 0;
@@ -58,7 +58,7 @@ void CustomHit1::Run(double dt) {
         }
 
     } else {
-        if (m_controller->m_details.below && m_dynamics->m_velocity.y < 0) {
+        if (m_controller->grounded() && m_dynamics->m_velocity.y < 0) {
             m_dynamics->m_velocity.y = 0.0f;
             m_done = true;
             m_timer = 0;
@@ -67,7 +67,7 @@ void CustomHit1::Run(double dt) {
         }
         float vy0 = m_dynamics->m_velocity.y;
 
-        glm::vec2 delta = m_dynamics->step(dt, m_vx, 0.0f);
+        glm::vec3 delta = m_dynamics->step(dt, m_vx, 0.0f);
 
         m_controller->Move(delta);
         float vy1 = m_dynamics->m_velocity.y;

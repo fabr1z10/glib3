@@ -36,14 +36,16 @@ engine.items["village3.alley"] = {
 }
 
 engine.items["village3.shopkeeper"] = {
- 	pos = {669, 15, 0},
- 	applydepth = true,
+ 	applyDepth = true,
  	model = "shop.shopkeeper",
 	character = {
 		state = "idle",
-		dir = "east"
+		dir = "west",
+		speed = 50,
 	},
- }
+ 	text_offset = {0, 60},
+    text_color = {255, 85, 255, 255},
+}
 
 scumm.factory.door {
 	id = "village3.shop_door",

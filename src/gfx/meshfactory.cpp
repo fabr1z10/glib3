@@ -92,6 +92,44 @@ void MeshFactory::visit(Rect& rect) {
     m_mesh = mesh;
 }
 
+void MeshFactory::visit(Plane3D& rect) {
+    float w = rect.width();
+    float h = rect.depth();
+    std::vector<VertexColor> vertices = {
+            {0, 0, 0, m_color.r, m_color.g, m_color.b, m_color.a},
+            {0, 0, h, m_color.r, m_color.g, m_color.b, m_color.a},
+            {w, 0, h, m_color.r, m_color.g, m_color.b, m_color.a},
+            {w, 0, 0, m_color.r, m_color.g, m_color.b, m_color.a},
+    };
+    std::vector<unsigned int> indices = {0, 1, 2, 3};
+    auto mesh = std::make_shared<Mesh<VertexColor>>(COLOR_SHADER);
+    mesh->Init(vertices, indices);
+    mesh->m_primitive = GL_LINE_LOOP;
+    m_mesh = mesh;
+}
+
+
+void MeshFactory::visit(Box& rect) {
+    float w = rect.width();
+    float d = rect.depth();
+    float h = rect.height();
+    std::vector<VertexColor> vertices = {
+            {0, 0, d, m_color.r, m_color.g, m_color.b, m_color.a},
+            {w, 0, d, m_color.r, m_color.g, m_color.b, m_color.a},
+            {w, h, d, m_color.r, m_color.g, m_color.b, m_color.a},
+            {0, h, d, m_color.r, m_color.g, m_color.b, m_color.a},
+            {0, 0, 0, m_color.r, m_color.g, m_color.b, m_color.a},
+            {w, 0, 0, m_color.r, m_color.g, m_color.b, m_color.a},
+            {w, h, 0, m_color.r, m_color.g, m_color.b, m_color.a},
+            {0, h, 0, m_color.r, m_color.g, m_color.b, m_color.a},
+    };
+    std::vector<unsigned int> indices = {0, 1, 1,2,2,3,3,0,1,5,5,6,6,2,2,1,4,5,5,6,6,7,7,4,4,0,0,3,3,7,7,4};
+    auto mesh = std::make_shared<Mesh<VertexColor>>(COLOR_SHADER);
+    mesh->Init(vertices, indices);
+    mesh->m_primitive = GL_LINES;
+    m_mesh = mesh;
+}
+
 void MeshFactory::visit(CompoundShape& shape) {
     auto shapes = shape.GetShapes();
     std::vector<VertexColor> vertices;

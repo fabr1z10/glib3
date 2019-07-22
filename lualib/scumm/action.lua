@@ -28,7 +28,7 @@ end
 scumm.action.pickup = function(id, anim1, anim2) 
 	return { 
 		{ ref = 1, type = action.animate, args ={tag="player", anim=anim1, sync=true}},
-		{ type = action.activate, args ={tag=id, value=false }},
+		{ type = action.activate, args ={tag=id, active=false }},
 		{ type = action.animate, after={1}, args ={tag="player", anim=anim2 }},
 		{ type = scumm.action.add_to_inventory, args = {id=id}}
 	}
@@ -212,7 +212,7 @@ scumm.action.remove_from_inventory = function(args)
 	return { type = "callfunc", func = 
 		function()
 			print ("removing " .. args.id)
-			variables.inventory[args.id] = nil
+			inventory[args.id] = nil
 			scumm.ui.refresh_inventory()
 		end
 	}

@@ -24,10 +24,7 @@ void ShowMessage::Start() {
     auto mesh = std::make_shared<TextMesh>(f, m_message, m_size, m_align, 280.0f);
     auto offset = mesh->getOffset();
     glm::mat4 transform = glm::translate(glm::vec3(offset, 0.0f));
-    Bounds3D ex2 = mesh->GetBounds();
-    Bounds ex;
-    ex.min = ex2.min;
-    ex.max = ex2.max;
+    Bounds ex = mesh->GetBounds();
     ex.Transform(transform);
 
     glm::vec2 outlineOffsets[] = {{0, 0}, {-1, 0}, {-1,1}, {0, 1}, {1,1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1}};

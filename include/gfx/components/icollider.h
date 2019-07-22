@@ -3,7 +3,7 @@
 #include <gfx/component.h>
 #include <gfx/math/shape.h>
 
-class CollisionEngine;
+class ICollisionEngine;
 
 class ICollider : public Component {
 public:
@@ -21,7 +21,7 @@ protected:
     void Move(Entity*);
     virtual Bounds GetStaticBoundsI () const = 0;
     virtual Bounds GetDynamicBoundsI () const = 0;
-    CollisionEngine* m_engine;
+    ICollisionEngine* m_engine;
 
 };
 

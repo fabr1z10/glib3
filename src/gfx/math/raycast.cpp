@@ -19,10 +19,10 @@ float RayCast2D::SegmentIntersection(glm::vec2 A, glm::vec2 B, glm::vec2 C, glm:
 
 }
 
-RayCastHit2D RayCast2D::SegmentIntersection(glm::vec2 A, glm::vec2 B, std::vector<glm::vec2>& p)
+RayCastHit RayCast2D::SegmentIntersection(glm::vec2 A, glm::vec2 B, std::vector<glm::vec2>& p)
 {
     p.push_back(p.front());
-    RayCastHit2D ret;
+    RayCastHit ret;
     ret.collide = false;
     ret.length = m_length;
     for (int i = 1; i < p.size(); ++i) {
@@ -32,7 +32,7 @@ RayCastHit2D RayCast2D::SegmentIntersection(glm::vec2 A, glm::vec2 B, std::vecto
         if (l < ret.length) {
             ret.collide = true;
             ret.length = l;
-            ret.normal = glm::normalize(Perp(Dw-Cw));
+            ret.normal = glm::vec3(glm::normalize(Perp(Dw-Cw)), 0.0f);
         }
     }
     return ret;
@@ -48,7 +48,7 @@ void RayCast2D::visit(Line& l) {
     } else {
         m_result.collide = true;
         m_result.length = t;
-        m_result.normal = glm::normalize(Perp(Dw-Cw));
+        m_result.normal = glm::vec3(glm::normalize(Perp(Dw-Cw)), 0.0f);
     }
 }
 
@@ -63,9 +63,9 @@ void RayCast2D::visit(Polygon& p) {
 }
 
 void RayCast2D::visit(Circle& c) {
-    glm::vec2 C(m_transform * glm::vec4(c.getPoints()[0], 0.0f, 1.0f));
-    glm::vec2 a = m_A - C;
-    glm::vec2 b = m_B - C;
+    glm::vec3 C(m_transform * glm::vec4(c.getPoints()[0], 0.0f, 1.0f));
+    glm::vec3 a = m_A - C;
+    glm::vec3 b = m_B - C;
     float a2 = a.x*a.x + a.y*a.y;
     float b2 = b.x*b.x + b.y*b.y;
     float c2 = c.GetRadius() * c.GetRadius();
@@ -90,4 +90,85 @@ void RayCast2D::visit(CompoundShape& s) {
             m_result = pr;
         }
     }
+}
+
+#include <iostream>
+void RayCast2D::visit(Plane3D& s) {
+    // first, let's transform the ray into obejct coords
+    auto t = glm::inverse(m_transform);
+    glm::vec3 P0 (t * glm::vec4(m_A, 1.0f));
+    glm::vec3 dl (t * glm::vec4(m_dir, 0.0f));
+    float k = -P0.y / dl.y;
+    if (k < 0 || k > m_length) {
+        return;
+    }
+    glm::vec3 ip = P0 + k*dl;
+    if (ip.x < 0 || ip.x > s.width() || ip.z < 0 || ip.z > s.depth())
+        return;
+    // collision here
+    m_result.length = k;
+    m_result.collide = true;
+    glm::vec3 normal_local = P0.y < 0 ? monkey::down : monkey::up;
+    m_result.normal = glm::vec3(m_transform * glm::vec4(normal_local, 0.0f));
+
+
+}
+
+
+#include <iostream>
+void RayCast2D::visit(Box& s) {
+    // first, let's transform the ray into obejct coords
+    auto it = glm::inverse(m_transform);
+    glm::vec3 P0 (it * glm::vec4(m_A, 1.0f));
+    glm::vec3 dl (it * glm::vec4(m_dir, 0.0f));
+    if (s.isPointInside(P0))
+        return;
+    glm::vec3 P1 = P0 +dl*m_length;
+    if (!s.isPointInside(P1))
+        return;
+    float w = s.width();
+    float h = s.height();
+    float d = s.depth();
+
+    // check collision with right face
+    float tm = std::numeric_limits<float>::infinity();
+    glm::vec3 bestNormal;
+    float t = (w - P0.x)/dl.x;
+    if (t >= 0 && t <= m_length && t < tm) {
+        tm = t;
+        bestNormal = monkey::right;
+    }
+    t = -P0.x / dl.x;
+    if (t >= 0 && t <= m_length && t < tm) {
+        tm = t;
+        bestNormal = monkey::left;
+    }
+    t = (h-P0.y) / dl.y;
+    if (t >= 0 && t <= m_length && t < tm) {
+        tm = t;
+        bestNormal = monkey::up;
+    }
+    t = -P0.y/ dl.y;
+    if (t >= 0 && t <= m_length && t < tm) {
+        tm = t;
+        bestNormal = monkey::down;
+    }
+
+    t = (d-P0.z) / dl.z;
+    if (t >= 0 && t <= m_length && t < tm) {
+        tm = t;
+        bestNormal = monkey::front;
+    }
+    t = -P0.z / dl.z;
+    if (t >= 0 && t <= m_length && t < tm) {
+        tm = t;
+        bestNormal = monkey::back;
+    }
+
+    // collision here
+    m_result.length = tm;
+    m_result.collide = true;
+    m_result.normal = glm::vec3(m_transform * glm::vec4(bestNormal, 0.0f));
+
+
 }

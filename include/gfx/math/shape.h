@@ -17,21 +17,21 @@
 
 class Shape {
 public:
-    Shape() : m_offset(glm::vec2(0.0f)) {}
-    Shape(glm::vec2 offset) : m_offset(offset) {}
+    Shape() : m_offset(glm::vec3(0.0f)) {}
+    Shape(glm::vec3 offset) : m_offset(offset) {}
     virtual ~Shape() {}
-    virtual bool isPointInside (glm::vec2) const = 0;
+    virtual bool isPointInside (glm::vec3) const = 0;
     virtual void accept (AcyclicVisitor& v) = 0;
     virtual std::string toString() const = 0;
     Bounds getBounds() const;
     virtual glm::vec2 project(const glm::vec2 axis, const glm::mat4& worldTransform) = 0;
     virtual std::vector<glm::vec2> getPoints() = 0;
     virtual std::vector<glm::vec2> getEdges() = 0;
-    glm::vec2 GetOffset() {
+    glm::vec3 GetOffset() const {
         return m_offset;
     }
 protected:
-    glm::vec2 m_offset;
+    glm::vec3 m_offset;
     Bounds m_bounds;
 };
 

@@ -1,5 +1,5 @@
 #include <platformer/states/duck.h>
-#include <gfx/components/controller2d.h>
+#include <gfx/components/icontroller.h>
 #include <gfx/components/dynamics2d.h>
 #include <gfx/components/inputmethod.h>
 #include <gfx/components/animator.h>
@@ -19,7 +19,7 @@ void Duck::Init() {
 
 void Duck::Run (double dt) {
 
-    if (!m_controller->m_details.below) {
+    if (!m_controller->grounded()) {
         m_sm->SetState("jump");
         return;
     } else {
@@ -35,7 +35,7 @@ void Duck::Run (double dt) {
 
 
     float targetVelocityX = 0.0f;
-    glm::vec2 delta =m_dynamics->step(dt, targetVelocityX, m_acceleration);
+    glm::vec3 delta =m_dynamics->step(dt, targetVelocityX, m_acceleration);
     m_controller->Move(delta);
 
     UpdateAnimation();

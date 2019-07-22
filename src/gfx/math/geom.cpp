@@ -152,7 +152,7 @@ bool inLineOfSight (const Poly& p, glm::vec2 start, glm::vec2 end) {
    	float epsilon = 0.5;
     
     // Not in LOS if any of the ends is outside the polygon
-    if ( !p.isPointInside(start) || !p.isPointInside(end)) {
+    if ( !p.isPointInside(glm::vec3(start, 0.0f)) || !p.isPointInside(glm::vec3(end, 0.0f))) {
         return false;
     }
     

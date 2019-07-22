@@ -42,12 +42,10 @@ void Renderer::SetTransform(const glm::mat4& t) {
 
 
 Bounds Renderer::GetBounds2D() const {
-    Bounds3D b = m_model->GetBounds();
-    Bounds b2d;
-    b2d.min = b.min;
-    b2d.max = b.max;
-    b2d.Transform(m_renderingTransform);
-    return b2d;
+    Bounds b = m_model->GetBounds();
+
+    b.Transform(m_renderingTransform);
+    return b;
 }
 
 //void Renderer::AdvanceFrame(int m) {

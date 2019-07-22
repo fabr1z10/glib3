@@ -6,7 +6,7 @@
 class CompoundShape : public Shape {
 public:
     CompoundShape() : Shape() {}
-    bool isPointInside(glm::vec2) const override;
+    bool isPointInside(glm::vec3) const override;
     void accept (AcyclicVisitor& v) override;
     std::string toString() const override;
     glm::vec2 project(const glm::vec2 axis, const glm::mat4& worldTransform) override;

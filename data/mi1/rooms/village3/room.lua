@@ -5,7 +5,7 @@ roomDefinition = {
 	height = 144,
 	startTable = {
 		village2 = { walkarea="village3.walkarea", pos = items["village3.archway"].hotspot.walk_to, dir = "west"},
-		shop = { walkarea = "village3.walkarea", pos = items["village3.shop_door"].hotspot.walk_to, dir="south"}
+		store = { walkarea = "village3.walkarea", pos = items["village3.shop_door"].hotspot.walk_to, dir="south"}
 	},
 	walkareas = {"village3.walkarea"},
 	defaultroom = "village2",
@@ -56,7 +56,12 @@ end
 -- end
 
 -- add the storekeeper if you are chasing him!
-table.insert(room.initstuff, glib.curry (mi.addStorekeeper, { pos = {669, 15, 0}, walkto = { items["village3.archway"].hotspot.walk_to }}))
+table.insert(room.initstuff, glib.curry (mi.addStorekeeper, { 
+	pos = {669, 15, 0}, 
+	parent="village3.walkarea", 
+	from = "store",
+	walkto = { items["village3.archway"].hotspot.walk_to }
+}))
 
 -- function room.afterstartup() 
 -- 	for k, v in ipairs(room.initstuff) do

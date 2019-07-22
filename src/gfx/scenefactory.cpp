@@ -66,6 +66,8 @@ SceneFactory::SceneFactory() {
     //m_runnerFactory.Add<HotSpotManagerFactory>("hotspotmanager");
     m_runnerFactory.Add<SchedulerFactory>("scheduler");
     m_runnerFactory.Add<CollisionEngineFactory>("collision");
+    m_runnerFactory.Add<CollisionEngine3DFactory>("collision3d");
+
     m_runnerFactory.Add<HotSpotManagerFactory>("hotspotmanager");
     m_runnerFactory.Add<DynamicWorldBuilderFactory>("dynamicworld");
 
@@ -88,9 +90,12 @@ SceneFactory::SceneFactory() {
     m_componentFactory.Add<GfxComponentFactory>("gfx");
     //m_componentFactory.Add<Gfx3DComponentFactory>("gfx3d");
     m_componentFactory.Add<ColliderComponentFactory>("collider");
+
     m_componentFactory.Add<SmartColliderComponentFactory>("smartcollider");
 
     m_componentFactory.Add<Controller2DComponentFactory>("controller2d");
+    m_componentFactory.Add<Controller3DComponentFactory>("controller3d");
+
     m_componentFactory.Add<Dynamics2DComponentFactory>("dynamics2d");
     m_componentFactory.Add<PropertiesCompFactory>("properties");
     m_componentFactory.Add<StateMachineCompFactory>("statemachine");
@@ -118,6 +123,8 @@ SceneFactory::SceneFactory() {
     m_shapeFactory.Add<CompoundFactory>("compound");
     m_shapeFactory.Add<PolyFactory>("poly");
     m_shapeFactory.Add<GraphFactory>("graph");
+    m_shapeFactory.Add<Plane3DFactory>("plane3d");
+    m_shapeFactory.Add<BoxFactory>("box");
 
 //    m_stateInitFactory.Add<AnimInitializerFactory>("anim");
 //    m_stateInitFactory.Add<AnimColliderInitializerFactory>("animcollider");

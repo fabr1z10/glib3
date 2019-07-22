@@ -20,7 +20,8 @@ engine.items["store.walkarea.keeper"] = scumm.factory.walkarea {
  	},
 	depth = { type="patchwise", rects = {
 		{ pos = {0, 0}, size = {248, 100}, type="linear_y", values = {0,1,144,0}},
-		{ pos = {248, 0}, size = {100, 100}, type="constant", value = -0.5},
+		{ pos = {248, 0}, size = {100, 2}, type="linear_y", values = {0,1,144,0}},
+		{ pos = {248, 2}, size = {100, 100}, type="constant", value = -0.5},
 	}},
 	priority = 0,
 	--depth = { type="linear_y", values= {0, 1, 144, 0} },
@@ -42,10 +43,12 @@ scumm.factory.door {
 		if (variables.door_shop == 0) then
 			return nil
 		end
-		local haveSword = (variables.inventory["shop.sword"] ~= nil)
-		local haveShovel = (variables.inventory["shop.shovel"] ~= nil)
+		local haveSword = engine.state.scumm.has("shop.sword")
+		local haveShovel = engine.state.scumm.has("shop.shovel")
+		print ("worfijrwiofj")
 		if (((haveSword and (not variables.sword_paid)) or (haveShovel and (not variables.shovel_paid)))) then
 			-- no paid
+			print ("no pago")
 			return {
 				{ type = scumm.action.disable_controls },
 				{ type = action.suspend_script, args = {script="_shopkeeper"}},
@@ -131,7 +134,7 @@ engine.items["shop.sword"] = {
 	model ="shop.sword",
  	actions ={
  		look = { type = scumm.action.say, args = {actor="guybrush", lines ={strings.shop[5]}}},
- 		pickup = scumm.action.pickup ("shop.sword", "operate_n", "idle_n"),
+ 		pick = scumm.action.pickup ("shop.sword", "operate_n", "idle_n"),
  	}
 }
 

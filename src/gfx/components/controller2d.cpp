@@ -13,7 +13,7 @@
 
 using namespace glm;
 
-Controller2D::Controller2D(const Controller2D& orig) : Component(orig),
+Controller2D::Controller2D(const Controller2D& orig) : IController(orig),
 m_horizontalRayCount(orig.m_horizontalRayCount),
 m_verticalRayCount(orig.m_verticalRayCount),
 m_skinWidth(orig.m_skinWidth), m_maxClimbAngle(orig.m_maxClimbAngle),
@@ -28,7 +28,7 @@ std::shared_ptr<Component> Controller2D::clone() const {
 
 void Controller2D::Start() {
     m_details.Reset();
-    m_collision = Engine::get().GetRunner<CollisionEngine>();
+    m_collision = Engine::get().GetRunner<ICollisionEngine>();
     if (m_collision == nullptr)
         GLIB_FAIL("Controller2D requires a collision engine running!");
 }
@@ -66,22 +66,23 @@ void Controller2D::UpdateRaycastOrigins() {
 
 bool Controller2D::IsFalling(int dir) {
     glm::vec2 rayOrigin = (dir == -1) ? m_raycastOrigins.bottomLeft : m_raycastOrigins.bottomRight;
-    RayCastHit2D hit = m_collision->Raycast(glm::vec3(rayOrigin, 0.0f), glm::vec2(0.0f, -1.0f), 5.0, 2);
+    RayCastHit hit = m_collision->Raycast(glm::vec3(rayOrigin, 0.0f), monkey::down, 5.0, 2);
     if (!hit.collide)
         return true;
     return false;
 }
 
 
-void Controller2D::Move(glm::vec2& dx) {
+void Controller2D::Move(glm::vec3& delta) {
+glm::vec2 dx(delta);
     float scale = m_entity->GetScale();
     if (dx != vec2(0.0f)) {
         UpdateRaycastOrigins();
         //m_ppp.clear();
         // get all the stuff that might be on the way
-        Bounds b;
-        b.min = m_raycastOrigins.bottomLeft + glm::vec2((dx.x < 0.0f) ? dx.x : 0.0f, (dx.y < 0.0f)? dx.y : 0.0f);
-        b.max = m_raycastOrigins.topRight + glm::vec2((dx.x > 0.0f) ? dx.x : 0.0f, (dx.y > 0.0f)? dx.y : 0.0f);
+//        Bounds b;
+//        b.min = m_raycastOrigins.bottomLeft + glm::vec2((dx.x < 0.0f) ? dx.x : 0.0f, (dx.y < 0.0f)? dx.y : 0.0f);
+//        b.max = m_raycastOrigins.topRight + glm::vec2((dx.x > 0.0f) ? dx.x : 0.0f, (dx.y > 0.0f)? dx.y : 0.0f);
         //m_ppp = m_collision->GetNodes(b, 2 | 32);
 
         m_wasGnd = m_details.below;
@@ -116,7 +117,7 @@ void Controller2D::HorizontalCollisions(glm::vec2& velocity) {
         vec2 rayOrigin = facingLeft ? m_raycastOrigins.bottomLeft : m_raycastOrigins.bottomRight;
         rayOrigin += vec2(0.0f, 1.0f) * (i *m_horizontalRaySpacing);
         //RayCastHit2D hit = m_collision->Raycast(rayOrigin, glm::vec2(1, 0) * directionX, rayLength, 2);
-        RayCastHit2D hit = m_collision->Raycast(glm::vec3(rayOrigin, 0.0f), glm::vec2(1.0f, 0.0f) * directionX, rayLength, 2 | 32);
+        RayCastHit hit = m_collision->Raycast(glm::vec3(rayOrigin, 0.0f), monkey::right * directionX, rayLength, 2 | 32);
         if (hit.collide) {
 
             float slopeAngle = angle(hit.normal, vec2(0, 1));
@@ -179,7 +180,7 @@ void Controller2D::DescendSlope(glm::vec2& velocity) {
     float directionX = facingLeft ? -1.0 : 1.0;
     vec2 rayOrigin = ((directionX == -1) ? m_raycastOrigins.bottomRight : m_raycastOrigins.bottomLeft);
     //RayCastHit2D hit = m_collision->Raycast(rayOrigin, vec2(0, -1), 100.0f, m_platform != nullptr ? 2 | 32 : 2);
-    RayCastHit2D hit = m_collision->Raycast(vec3(rayOrigin,0.0f), vec2(0, -1), 100.0f, 2 | 32);
+    RayCastHit hit = m_collision->Raycast(vec3(rayOrigin,0.0f), monkey::down, 100.0f, 2 | 32);
     if (hit.collide) {
         float slopeAngle = angle(hit.normal, vec2(0, 1));
         //std::cout << "DESCEND SLOPE, angle = " << rad2deg * slopeAngle << "\n";
@@ -208,7 +209,7 @@ void Controller2D::VerticalCollisions(glm::vec2& velocity) {
         vec2 rayOrigin = (directionY == -1) ? m_raycastOrigins.bottomLeft : m_raycastOrigins.topLeft;
         rayOrigin += vec2(1, 0) * (i *m_verticalRaySpacing + velx);
         int collMask = (directionY == -1 ? (2 | 32) : 2);
-        RayCastHit2D hit = m_collision->Raycast(vec3(rayOrigin, 0.0f), glm::vec2(0, 1) * directionY, rayLength, collMask);
+        RayCastHit hit = m_collision->Raycast(vec3(rayOrigin, 0.0f), monkey::up * directionY, rayLength, collMask);
         if (hit.collide) {
             velocity.y = (hit.length - m_skinWidth) * directionY;
             rayLength = hit.length;
@@ -261,7 +262,7 @@ void Controller2D::VerticalCollisions(glm::vec2& velocity) {
         rayLength = fabs(velocity.x) + m_skinWidth;
         vec2 rayOrigin = ((directionX == -1) ? m_raycastOrigins.bottomLeft : m_raycastOrigins.bottomRight) + vec2(0, 1) * velocity.y;
         //RayCastHit2D hit = m_collision->Raycast(rayOrigin, vec2(1, 0) * directionX, rayLength, 2);
-        RayCastHit2D hit = m_collision->Raycast(vec3(rayOrigin, 0.0f), vec2(1, 0) * directionX, rayLength, 2);
+        RayCastHit hit = m_collision->Raycast(vec3(rayOrigin, 0.0f), monkey::right * directionX, rayLength, 2);
         if (hit.collide) {
             float slopeAngle = angle(hit.normal, vec2(0, 1));
             if (slopeAngle != m_details.slopeAngle) {

@@ -7,14 +7,16 @@
 #include <gfx/math/polyline.h>
 #include <gfx/math/compound.h>
 #include <gfx/math/circle.h>
+#include <gfx/math/plane3d.h>
 #include <gfx/math/ellipse.h>
+#include <gfx/math/box.h>
 
 std::shared_ptr<Shape> RectFactory::Create(luabridge::LuaRef &ref) {
     LuaTable at (ref);
     glm::vec2 offset = at.Get<glm::vec2>("offset", glm::vec2(0.0f));
     float w = at.Get<float>("width");
     float h = at.Get<float>("height");
-    return std::make_shared<Rect>(w, h, offset);
+    return std::make_shared<Rect>(w, h, glm::vec3(offset, 0.0f));
 }
 
 std::shared_ptr<Shape> LineFactory::Create(luabridge::LuaRef &ref) {
@@ -54,14 +56,14 @@ std::shared_ptr<Shape> CircleFactory::Create(luabridge::LuaRef& ref) {
     LuaTable at (ref);
     glm::vec2 offset = at.Get<glm::vec2>("offset", glm::vec2(0.0f));
     float radius = at.Get<float>("radius");
-    return std::make_shared<Circle>(radius, offset);
+    return std::make_shared<Circle>(radius, glm::vec3(offset, 0.0f));
 }
 
 std::shared_ptr<Shape> EllipseFactory::Create(luabridge::LuaRef& ref) {
     LuaTable at (ref);
     glm::vec2 offset = at.Get<glm::vec2>("offset", glm::vec2(0.0f));
     glm::vec2 axes = at.Get<glm::vec2>("semiaxes");
-    return std::make_shared<Ellipse>(axes.x, axes.y, offset);
+    return std::make_shared<Ellipse>(axes.x, axes.y, glm::vec3(offset, 0.0f));
 }
 
 std::shared_ptr<Shape> GraphFactory::Create(luabridge::LuaRef& ref) {
@@ -98,3 +100,20 @@ std::shared_ptr<Shape> CompoundFactory::Create(luabridge::LuaRef& ref) {
     return std::move(cs);
 }
 
+std::shared_ptr<Shape> Plane3DFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable at (ref);
+    //glm::vec2 offset = at.Get<glm::vec2>("offset", glm::vec2(0.0f));
+    float w = at.Get<float>("width");
+    float d = at.Get<float>("depth");
+    return std::make_shared<Plane3D>(w, d);
+}
+
+std::shared_ptr<Shape> BoxFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable at (ref);
+    //glm::vec2 offset = at.Get<glm::vec2>("offset", glm::vec2(0.0f));
+    float w = at.Get<float>("width");
+    float d = at.Get<float>("depth");
+
+    float h = at.Get<float>("height");
+    return std::make_shared<Box>(w, h, d);
+}

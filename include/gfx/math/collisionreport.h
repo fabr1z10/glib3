@@ -14,11 +14,12 @@ struct CollisionReport {
     
 };
 
-struct RayCastHit2D {
-    RayCastHit2D() : collide(false), length(std::numeric_limits<float>::infinity()), entity(nullptr) {}
-    RayCastHit2D(bool collide, float l, glm::vec2 normal) : collide(collide), length(l), entity(nullptr), normal(normal) {}
+struct RayCastHit {
+    RayCastHit() : collide(false), length(std::numeric_limits<float>::infinity()), entity(nullptr) {}
+    RayCastHit(bool collide, float l, glm::vec3 normal) : collide(collide), length(l), entity(nullptr), normal(normal) {}
     bool collide;
     float length;
     ICollider* entity;
-    glm::vec2 normal;
+    glm::vec3 normal;
 };
+

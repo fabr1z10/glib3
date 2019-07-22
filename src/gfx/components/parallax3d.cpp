@@ -27,7 +27,7 @@ void Parallax3D::Start() {
     auto entity = Ref::Create<Entity>();
     auto renderer = Ref::Create<Renderer>();
     float panelHeight = 2.0*m_z * tan(fov*0.5f);
-    float horizontalCamWidth = panelHeight * m_cam->getAspectRatio();
+    //f<loat horizontalCamWidth = panelHeight * m_cam->getAspectRatio();
     m_panelWidth = panelHeight * (static_cast<float>(w)/h);
     m_halfPanelHeight = 0.5*panelHeight;
     auto mesh = std::make_shared<QuadMesh>(m_img, 3*m_panelWidth, panelHeight, 3, 1);

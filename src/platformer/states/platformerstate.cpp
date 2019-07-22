@@ -2,7 +2,7 @@
 //#include <gfx/components/controller2d.h>
 
 #include <gfx/entity.h>
-#include <gfx/components/controller2d.h>
+#include <gfx/components/icontroller.h>
 #include <gfx/components/inputmethod.h>
 #include <gfx/components/dynamics2d.h>
 #include <gfx/components/animator.h>
@@ -26,7 +26,7 @@ PlatformerState::PlatformerState(const PlatformerState &) {
 void PlatformerState::AttachStateMachine(StateMachine * sm) {
     m_sm = sm;
     m_entity = sm->GetObject();
-    m_controller = m_entity->GetComponent<Controller2D>();
+    m_controller = m_entity->GetComponent<IController>();
     if (m_controller == nullptr) {
         GLIB_FAIL("Walk4Way state requires a <Controller2D> component!");
     }

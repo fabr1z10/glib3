@@ -3,7 +3,7 @@
 
 #include <gfx/components/statemachine.h>
 
-class Controller2D;
+class IController;
 class Dynamics2D;
 class InputMethod;
 class Animator;
@@ -24,7 +24,7 @@ public:
 protected:
     Animator* m_animator;
     StateMachine* m_sm;
-    Controller2D * m_controller;
+    IController * m_controller;
     Dynamics2D * m_dynamics;
     InputMethod * m_input;
     Entity * m_entity;

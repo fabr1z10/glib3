@@ -53,6 +53,8 @@ FACTORY(TextComponentFactory, Component)
 FACTORY(GfxComponentFactory, Component)
 //FACTORY(Gfx3DComponentFactory, Component)
 FACTORY(ColliderComponentFactory, Component)
+//FACTORY(Collider3DComponentFactory, Component)
+
 FACTORY(SmartColliderComponentFactory, Component)
 FACTORY(StateMachineComponentFactory, Component)
 FACTORY(HotSpotComponentFactory, Component)
@@ -60,6 +62,8 @@ FACTORY(DepthComponentFactory, Component)
 FACTORY(FollowComponentFactory, Component)
 FACTORY(Follow3DComponentFactory, Component)
 FACTORY(Controller2DComponentFactory, Component)
+FACTORY(Controller3DComponentFactory, Component)
+
 FACTORY(Dynamics2DComponentFactory, Component)
 FACTORY(InfoComponentFactory, Component)
 FACTORY(KeyInputComponentFactory, Component)
@@ -89,6 +93,8 @@ FACTORY(ExtStateMachineCompFactory, Component)
 FACTORY(HotSpotManagerFactory, Runner)
 FACTORY(SchedulerFactory, Runner)
 FACTORY(CollisionEngineFactory, Runner)
+FACTORY(CollisionEngine3DFactory, Runner)
+
 FACTORY(DynamicWorldBuilderFactory, Runner)
 
 // Shapes
@@ -99,6 +105,8 @@ FACTORY(CircleFactory, Shape)
 FACTORY(EllipseFactory, Shape)
 FACTORY(GraphFactory, Shape)
 FACTORY(CompoundFactory, Shape)
+FACTORY(Plane3DFactory,Shape)
+FACTORY(BoxFactory,Shape)
 
 // Cameras
 FACTORY(OrthoCamFactory, Camera)

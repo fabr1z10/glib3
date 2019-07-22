@@ -10,7 +10,7 @@ CollisionEngine::~CollisionEngine() {
     std::cerr << "qui2\n";
     m_intersector = nullptr;
     std::cerr << "qui3\n";
-    m_responseManager = nullptr;
+    // m_responseManager = nullptr;
     m_previouslyCollidingPairs.clear();
     std::cerr << "qui4\n";
 
@@ -19,7 +19,7 @@ CollisionEngine::~CollisionEngine() {
 }
 
 CollisionEngine::CollisionEngine (float cellWidth, float cellHeight) :
-        Runner(), m_width{cellWidth}, m_height{cellHeight}, m_coll25d(false), m_eps(false)
+        ICollisionEngine(), m_width{cellWidth}, m_height{cellHeight}, m_coll25d(false), m_eps(false)
 {
     m_intersector = std::unique_ptr<Intersector>(new Intersector);
 }
@@ -274,10 +274,10 @@ ICollider* CollisionEngine::ShapeCast (std::shared_ptr<Shape> shape, const glm::
 
 }
 
-RayCastHit2D CollisionEngine::Raycast (glm::vec3 rayOrigin, glm::vec2 rayDir, float length, int mask) {
+RayCastHit CollisionEngine::Raycast (glm::vec3 rayOrigin, glm::vec3 rayDir, float length, int mask) {
 
-    glm::vec2 P(rayOrigin);
-    glm::vec2 P1 = P;
+    glm::vec3 P = rayOrigin;
+    glm::vec3 P1 = P;
     float z = rayOrigin.z;
     // initialize current cell
     int i = static_cast<int>(P.x / m_width);
@@ -293,7 +293,7 @@ RayCastHit2D CollisionEngine::Raycast (glm::vec3 rayOrigin, glm::vec2 rayDir, fl
     float l = 0.0f;
     bool endReached = false;
 
-    RayCastHit2D out;
+    RayCastHit out;
     out.length = length;
 
     while (!endReached && !out.collide) {
@@ -364,4 +364,9 @@ std::string CollisionEngine::toString() {
     std::stringstream stream;
     stream << "[CollisionEngine](tag = " << m_tag << ", size = (" << m_width << ", " << m_height << ")";
     return stream.str();
+}
+
+
+std::type_index CollisionEngine::GetType() {
+    return std::type_index(typeid(ICollisionEngine));
 }

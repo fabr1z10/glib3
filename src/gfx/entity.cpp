@@ -216,6 +216,12 @@ void Entity::SetPosition(glm::vec3 pos, float angle){
     //onMove.Fire(this);
 }
 
+void Entity::Rotate(float angle, glm::vec3 axis) {
+    m_localTransform = glm::rotate(angle, axis);
+    UpdateWorldTransform();
+
+}
+
 
 void Entity::SetPosition(glm::vec2 pos) {
     SetPosition(glm::vec3(pos.x, pos.y, m_localTransform[3][2]));

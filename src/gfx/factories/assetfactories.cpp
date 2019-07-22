@@ -121,7 +121,7 @@ std::shared_ptr<IModel> BoxedModelFactory::Create(luabridge::LuaRef &ref) {
         luabridge::LuaRef at = an[i+1];
         std::string anim = at["name"].cast<std::string>();
         glm::vec4 box = LuaTable::Read<glm::vec4>(at["box"]);
-        pp->AddAnimationData(anim, Bounds{glm::vec2(box[0], box[1]), glm::vec2(box[2], box[3])});
+        pp->AddAnimationData(anim, Bounds{glm::vec3(box[0], box[1], 0.0f), glm::vec3(box[2], box[3], 0.0f)});
         luabridge::LuaRef fr = at["frames"];
         for (int j = 0; j < fr.length(); ++j) {
             luabridge::LuaRef a2 = fr[j + 1];
@@ -132,12 +132,12 @@ std::shared_ptr<IModel> BoxedModelFactory::Create(luabridge::LuaRef &ref) {
                 auto boxes = table.Get<luabridge::LuaRef>("boxes");
                 if (boxes.length() == 1) {
                     glm::vec4 box = LuaTable::Read<glm::vec4>(boxes[1]);
-                    auto rect = std::make_shared<Rect>(box[2]-box[0], box[3]-box[1], glm::vec2(box[0], box[1]));
+                    auto rect = std::make_shared<Rect>(box[2]-box[0], box[3]-box[1], glm::vec3(box[0], box[1],0.0f));
                     std::shared_ptr<Shape> attackShape;
                     int attackTag = -1;
                     if (table.HasKey("attack")) {
                         glm::vec4 attackBox = table.Get<glm::vec4>("attack");
-                        attackShape = std::make_shared<Rect>(attackBox[2]-attackBox[0], attackBox[3]-attackBox[1], glm::vec2(attackBox[0], attackBox[1]));
+                        attackShape = std::make_shared<Rect>(attackBox[2]-attackBox[0], attackBox[3]-attackBox[1], glm::vec3(attackBox[0], attackBox[1], 0.0f));
                         //attackTag = table.Get<int>("attack_tag");
                     }
                     pp->AddCollisionData(anim, j, rect, attackShape);

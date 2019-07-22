@@ -15,52 +15,54 @@
 // An axis-aligned bounding box (AABB)
 struct Bounds {
     
-    glm::vec2 min;
-    glm::vec2 max;
+    glm::vec3 min;
+    glm::vec3 max;
     
-    glm::vec2 GetSize() const;
-    glm::vec2 GetCenter();
-    glm::vec2 GetExtents();
+    glm::vec3 GetSize() const;
+    glm::vec3 GetCenter();
+    glm::vec3 GetExtents();
 
     bool isVoid ();
     void Expand(float);
     void ExpandWith(const Bounds&);
-    bool Contains(glm::vec2 P);
+    bool Contains(glm::vec3 P);
     bool Intersects(Bounds& other) const;
     // rotate a bounding box
     void Transform(const glm::mat4&);
-    void TransformXZ (const glm::mat4&);
+    //void TransformXZ (const glm::mat4&);
 };
 
 inline bool Bounds::isVoid() {
-    return (max.x == min.x && max.y == min.y);
+    return (max.x == min.x && max.y == min.y && max.z == min.z);
 
 }
 inline bool Bounds::Intersects(Bounds& other) const {
-    return !(other.min.x >= max.x || other.max.x <= min.x || other.min.y >= max.y || other.max.y <= min.y);
+    return !(other.min.x > max.x || other.max.x < min.x ||
+        other.min.y > max.y || other.max.y < min.y ||
+        other.min.z > max.z || other.max.z < min.z);
 }
 
-inline glm::vec2 Bounds::GetSize() const {
-    return glm::vec2(max.x - min.x, max.y - min.y);
+inline glm::vec3 Bounds::GetSize() const {
+    return glm::vec3(max.x - min.x, max.y - min.y, max.z - min.z);
 }
 
-inline glm::vec2 Bounds::GetCenter() {
+inline glm::vec3 Bounds::GetCenter() {
     return 0.5f * (min + max);
 }
 
-inline glm::vec2 Bounds::GetExtents() {
+inline glm::vec3 Bounds::GetExtents() {
     return 0.5f * GetSize();
 }
 
 
-struct Bounds3D {
-    glm::vec3 min;
-    glm::vec3 max;
-    glm::vec3 GetExtents() {
-        return max - min;
-    }
-    //Bounds3D Apply(Transform&);
-};
+//struct Bounds3D {
+//    glm::vec3 min;
+//    glm::vec3 max;
+//    glm::vec3 GetExtents() {
+//        return max - min;
+//    }
+//    //Bounds3D Apply(Transform&);
+//};
 
 
 #endif /* bounds_h */

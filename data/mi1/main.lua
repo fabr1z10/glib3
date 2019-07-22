@@ -16,7 +16,7 @@ engine = {
 	global_assets = {
 		fonts = { "ui", "monkey" }
 	},
-	start_room = "village3",
+	start_room = "store",
 	lang = "eng",
 	config = {
 	    default_verb = "walk",
@@ -34,7 +34,8 @@ engine = {
 }
 
 require("scumm")
-	engine.state.scumm.inventory["kitchen.fish"] = 1
+
+
 -- the verbs for the game. You might have multiple sets here! Watch out
 engine.config.verbs = {
  	open = { code="open", text = strings.ui.open, objects = 1 },
@@ -95,7 +96,10 @@ variables = {
  	inventory = { 	}
 }
 
-
+engine.state.scumm.inventory["kitchen.fish"] = 1
+engine.state.scumm.inventory["pieces_of_eight"] = 1000
+engine.state.scumm.inventory["shop.sword"] = 1
+variables.sword_paid = true
 
 
 

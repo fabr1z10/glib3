@@ -31,6 +31,19 @@ std::shared_ptr<Entity> EntityFactory::Create(luabridge::LuaRef& ref) {
     } else {
         entity->SetPosition(pos);
     }
+    if (item.HasKey("position")) {
+        item.ProcessVector("position", [entity] (luabridge::LuaRef ref) {
+            LuaTable t(ref);
+            if (t.HasKey("angle")) {
+                float a = t.Get<float>("angle");
+                glm::vec3 b = t.Get<glm::vec3>("axis");
+                entity->Rotate(a*deg2rad, b);
+            } else {
+                glm::vec3 tr = t.Get<glm::vec3>("translation");
+                entity->MoveLocal(tr);
+            }
+        });
+    }
     if (item.HasKey("scale")) {
         float scale = item.Get<float>("scale");
         entity->SetScale(scale);

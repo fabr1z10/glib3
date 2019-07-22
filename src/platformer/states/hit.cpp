@@ -3,7 +3,7 @@
 
 #include <gfx/components/animator.h>
 #include <gfx/components/dynamics2d.h>
-#include <gfx/components/controller2d.h>
+#include <gfx/components/icontroller.h>
 #include <GLFW/glfw3.h>
 
 Hit::Hit(const std::string &anim, float a) :
@@ -26,7 +26,7 @@ std::shared_ptr<State> Hit::clone() const {
 
 void Hit::Run(double dt) {
 
-    if (!m_controller->m_details.below) {
+    if (!m_controller->grounded()) {
         m_sm->SetState("jump");
         return;
     } else {
@@ -35,7 +35,7 @@ void Hit::Run(double dt) {
 
     HandleCollision();
 
-    glm::vec2 delta =m_dynamics->step(dt, 0.0f, m_acceleration);
+    glm::vec3 delta = m_dynamics->step(dt, 0.0f, m_acceleration);
     m_controller->Move(delta);
 }
 

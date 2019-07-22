@@ -8,6 +8,8 @@
 #include <gfx/math/circle.h>
 #include <gfx/math/ellipse.h>
 #include <gfx/math/compound.h>
+#include <gfx/math/plane3d.h>
+#include <gfx/math/box.h>
 #include <memory>
 
 
@@ -20,7 +22,9 @@ class MeshFactory :
     public Visitor<PolyLine>,
     public Visitor<Circle>,
     public Visitor<Ellipse>,
-    public Visitor<CompoundShape>
+    public Visitor<CompoundShape>,
+    public Visitor<Plane3D>,
+    public Visitor<Box>
 {
 public:
     static std::shared_ptr<IMesh> CreateLineMesh (glm::vec2 A, glm::vec2 B, glm::vec4 color, float z= 0.0f);
@@ -36,6 +40,10 @@ public:
     void visit(Circle&) override;
     void visit(Ellipse&) override;
     void visit(CompoundShape&) override;
+    void visit(Plane3D&) override;
+    void visit(Box&) override;
+
+
 private:
     std::shared_ptr<IMesh> m_mesh;
     glm::vec4 m_color;

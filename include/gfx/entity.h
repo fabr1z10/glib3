@@ -91,7 +91,7 @@ public:
     void SetPosition(glm::vec2);
     void SetPosition(glm::vec3);
     void SetPosition(glm::vec3, float angle);
-
+    void Rotate (float, glm::vec3 axis);
     // move the origin by a given amount
     void MoveOrigin(glm::vec2);
     void MoveOrigin(glm::vec3);

@@ -96,8 +96,10 @@ Bounds SmartCollider::GetStaticBoundsI() const {
 }
 Bounds SmartCollider::GetDynamicBoundsI() const {
     std::string anim = m_animator->GetAnimation();
-    return m_model->GetAnimBounds(anim);
-
+    auto bounds = m_model->GetAnimBounds(anim);
+    bounds.min.z = -1.0f;
+    bounds.max.z = 1.0f;
+    return bounds;
 }
 std::type_index SmartCollider::GetType() {
     return std::type_index(typeid(ICollider));

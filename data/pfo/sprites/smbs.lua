@@ -55,32 +55,34 @@ local s = {
 
 local dt=0.1
 
+local wbml = {-8, 0, 8, 24}
+
 models["wbml"] = {
 	sheet ="s1.png",
 	type = "boxed_sprite",
 	ppu=1,
 	animations = {
-		{ name="idle", box={-12, 0, 22, 24}, frames = { 
-			{duration=dt, quads = {{ id = s.wbml_idle_1}}, boxes = {{-12,0,8,24}}}
+		{ name="idle", box=wbml, frames = { 
+			{duration=dt, quads = {{ id = s.wbml_idle_1}}, boxes = {wbml}}
 		}},
-		{ name="walk", box={-12, 0, 22, 24}, frames = { 
-			{duration=dt, quads = {{ id = s.wbml_walk_1}}, boxes = {{-12,0,8,24}}},
-			{duration=dt, quads = {{ id = s.wbml_walk_2}}, boxes = {{-12,0,8,24}}},
-			{duration=dt, quads = {{ id = s.wbml_idle_1}}, boxes = {{-12,0,8,24}}},
-			{duration=dt, quads = {{ id = s.wbml_walk_3}}, boxes = {{-12,0,8,24}}},
-			{duration=dt, quads = {{ id = s.wbml_walk_4}}, boxes = {{-12,0,8,24}}},
-			{duration=dt, quads = {{ id = s.wbml_idle_1}}, boxes = {{-12,0,8,24}}},
+		{ name="walk", box=wbml, frames = { 
+			{duration=dt, quads = {{ id = s.wbml_walk_1}}, boxes = {wbml}},
+			{duration=dt, quads = {{ id = s.wbml_walk_2}}, boxes = {wbml}},
+			{duration=dt, quads = {{ id = s.wbml_idle_1}}, boxes = {wbml}},
+			{duration=dt, quads = {{ id = s.wbml_walk_3}}, boxes = {wbml}},
+			{duration=dt, quads = {{ id = s.wbml_walk_4}}, boxes = {wbml}},
+			{duration=dt, quads = {{ id = s.wbml_idle_1}}, boxes = {wbml}},
 		}},
-		{ name="jumpup", box={-12, 0, 22, 24}, frames = { 
-			{duration=dt, quads = {{ id = s.wbml_jump_1}}, boxes = {{-12,0,8,24}}}
+		{ name="jumpup", box=wbml, frames = { 
+			{duration=dt, quads = {{ id = s.wbml_jump_1}}, boxes = {wbml}}
 		}},		
-		{ name="jumpdown", box={-12, 0, 22, 24}, frames = { 
-			{duration=dt, quads = {{ id = s.wbml_jump_1}}, boxes = {{-12,0,8,24}}}
+		{ name="jumpdown", box=wbml, frames = { 
+			{duration=dt, quads = {{ id = s.wbml_jump_1}}, boxes = {wbml}}
 		}},		
-		{ name="attack", box={-12, 0, 22, 24}, frames = { 
-			{duration=dt, quads = {{ id = s.wbml_attack_1}}, boxes = {{-12,0,8,24}}},
-			{duration=2*dt, quads = {{ id = s.wbml_attack_2}}, boxes = {{-12,0,8,24}}, attack ={6,10,18,15}},
-			{duration=2*dt, quads = {{ id = s.wbml_attack_1}}, boxes = {{-12,0,8,24}}}
+		{ name="attack", box=wbml, frames = { 
+			{duration=dt, quads = {{ id = s.wbml_attack_1}}, boxes = {wbml}},
+			{duration=2*dt, quads = {{ id = s.wbml_attack_2}}, boxes = {wbml}, attack ={6,10,18,15}},
+			{duration=2*dt, quads = {{ id = s.wbml_attack_1}}, boxes = {wbml}}
 		}},	
 	}
 }

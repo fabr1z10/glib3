@@ -23,7 +23,7 @@ scumm.factory.object = function(args)
 		tag = object.tag or objId
 	end
 	
-	local owned = variables.inventory[objId] ~= nil
+	local owned = engine.state.scumm.has(objId)
 	local createanyway = object.createanyway
 	local createObject = ((not owned) or object.createanyway)
 	if (not createObject) then

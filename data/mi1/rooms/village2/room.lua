@@ -39,6 +39,13 @@ room:add ( "village2.walkarea",
 	}
 )
 
+-- add the storekeeper if you are chasing him!
+table.insert(room.initstuff, glib.curry (mi.addStorekeeper, { 
+	pos = {150, 35, 0}, 
+	parent="village2.walkarea", 
+	from = "village3",
+	walkto = { {150,10}, {350, 10}, items["village2.archway_to_village1"].hotspot.walk_to }
+}))
 
 --table.insert(room.initstuff, glib.curry (mi.addStorekeeper, { pos = {150, 35, 0}, walkto = { {150, 10}, {350, 10}, items["village2.archway_to_village1"].hotspot.walk_to }}))
 

@@ -6,7 +6,7 @@
 #include "gfx/hashpair.h"
 #include <gfx/collisionresponse.h>
 #include "gfx/math/intersect.h"
-#include "gfx/runner.h"
+#include "gfx/icollisionengine.h"
 
 struct CollisionEngineCell {
     bool dirty;
@@ -28,38 +28,40 @@ struct CollisionInfo {
     int i, j;
 };
 
-class CollisionEngine : public Runner {
+
+class CollisionEngine : public ICollisionEngine {
 public:
     CollisionEngine (float cellWidth, float cellHeight);
     ~CollisionEngine() override;
-    void Add (ICollider*);
-    void Remove(ICollider*);
-    void Clear();
-    void Move(ICollider*);
+    void Add (ICollider*) override ;
+    void Remove(ICollider*) override ;
+    void Clear() override ;
+    void Move(ICollider*) override;
     void PopCollider(ICollider*);
     void PushCollider(ICollider*, Location);
     Location GetLocation(const Bounds& b);
     // runner implementation
     void Update(double) override;
-    void SetResponseManager(std::unique_ptr<CollisionResponseManager>);
-    CollisionResponseManager* GetResponseManager();
+
     using ParentClass = CollisionEngine;
     // Casts a ray against colliders in the scene.
     // A raycast is conceptually like a laser beam that is fired from a point in space along a particular direction.
     // Any object making contact with the beam can be detected and reported.
     // This function returns a RaycastHit object with a reference to the collider that is hit by the ray
     // (the collider property of the result will be NULL if nothing was hit). The layerMask can be used to detect objects selectively only on certain layers (this allows you to apply the detection only to enemy characters, for example).
-    RayCastHit2D Raycast (glm::vec3 rayOrigin, glm::vec2 rayDir, float length, int mask);
-    ICollider* ShapeCast (std::shared_ptr<Shape>, const glm::mat4& transform, int mask);
+    RayCastHit Raycast (glm::vec3 rayOrigin, glm::vec3 rayDir, float length, int mask) override ;
+    ICollider* ShapeCast (std::shared_ptr<Shape>, const glm::mat4& transform, int mask) override ;
     void Enable25DCollision(float);
     std::string toString() override;
+    std::type_index GetType() override;
+
 private:
     std::unordered_map<std::pair<int, int>, CollisionEngineCell> m_cells;
     std::unordered_map<ICollider*, Location> m_colliderLocations;
     float m_width;
     float m_height;
     std::unique_ptr<Intersector> m_intersector;
-    std::unique_ptr<CollisionResponseManager> m_responseManager;
+
     std::unordered_map<std::pair<ICollider*, ICollider*>, CollisionInfo> m_previouslyCollidingPairs;
     bool m_coll25d;
     float m_eps;
@@ -67,10 +69,3 @@ private:
 };
 
 
-inline void CollisionEngine::SetResponseManager(std::unique_ptr<CollisionResponseManager> r){
-    m_responseManager = std::move(r);
-}
-
-inline CollisionResponseManager* CollisionEngine::GetResponseManager() {
-    return m_responseManager.get();
-}

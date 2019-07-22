@@ -2,7 +2,7 @@
 
 BasicModel::BasicModel (std::shared_ptr<IMesh> mesh) : m_mesh(mesh) {}
 
-Bounds3D BasicModel::GetBounds() const {
+Bounds BasicModel::GetBounds() const {
     return m_mesh->GetBounds();
 }
 

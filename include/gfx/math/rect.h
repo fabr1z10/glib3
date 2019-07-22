@@ -6,12 +6,14 @@
 // offset is the origin.
 class Rect : public Shape {
 public:
-    Rect (float width, float height, glm::vec2 offset=glm::vec2(0.0f)) :
+    Rect (float width, float height, glm::vec3 offset=glm::vec3(0.0f)) :
     Shape(offset), m_width(width), m_height(height) {
         m_bounds.min = offset;
-        m_bounds.max = offset + glm::vec2(width, height);
+        m_bounds.max = offset + glm::vec3(width, height, 0.0f);
+        m_bounds.min.z -= 1.0f;
+        m_bounds.max.z += 1.0f;
     }
-    bool isPointInside(glm::vec2) const override;
+    bool isPointInside(glm::vec3) const override;
     void accept (AcyclicVisitor& v) override;
     float GetWidth () const;
     float GetHeight () const;

@@ -9,7 +9,7 @@ public:
     explicit SpriteModel (std::shared_ptr<SpriteMesh> mesh) : m_mesh(mesh) {
 
     }
-    Bounds3D GetBounds() const override;
+    Bounds GetBounds() const override;
     std::vector<std::string> GetAnimations() const override;
     std::string GetDefaultAnimation() const override;
     ShaderType GetShaderType() const override;
@@ -21,7 +21,7 @@ private:
     std::shared_ptr<SpriteMesh> m_mesh;
 };
 
-inline Bounds3D SpriteModel::GetBounds() const {
+inline Bounds SpriteModel::GetBounds() const {
     return m_mesh->GetBounds();
 }
 
