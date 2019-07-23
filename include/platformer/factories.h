@@ -10,6 +10,8 @@
 
 //FACTORY(CharacterStateCompFactory, Component)
 FACTORY(EnemyInputCompFactory, Component)
+FACTORY(Enemy3DInputCompFactory, Component)
+
 
 FACTORY(DropCharactersActFactory, Activity)
 

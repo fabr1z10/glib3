@@ -16,6 +16,7 @@
 #include <gfx/lua/luatable.h>
 #include <gfx/components/stateactions.h>
 #include <platformer/input/enemyinput.h>
+#include <platformer/input/enemy3d.h>
 #include <gfx/engine.h>
 
 //
@@ -71,6 +72,16 @@ std::shared_ptr<Component> EnemyInputCompFactory::Create(luabridge::LuaRef &ref)
     return eim;
 
 }
+
+std::shared_ptr<Component> Enemy3DInputCompFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    bool left = table.Get<bool>("left", true);
+    bool flipIfPlatformEnds = table.Get<bool>("flip", true);
+    auto eim = std::make_shared<Enemy3DInputMethod>(left, flipIfPlatformEnds);
+    return eim;
+
+}
+
 
 //
 //std::shared_ptr<Component> CharacterStateCompFactory::Create(luabridge::LuaRef &ref) {

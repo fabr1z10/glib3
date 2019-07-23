@@ -76,7 +76,7 @@ public:
     virtual ~Controller3D() {}
     void Start() override;
     void Begin() override;
-//    bool IsFalling(int);
+    bool IsFalling(int x, int z);
     void Move(glm::vec3&) override;
     bool grounded() const override;
     bool ceiling () const override;

@@ -2,10 +2,11 @@
 #include <gfx/math/box.h>
 #include <gfx/error.h>
 
-Plane3D::Plane3D(float width, float depth) : Shape(), m_width(width), m_depth(depth) {
-
-    m_bounds.min = glm::vec3(0.0f, 0.0f, 0.f);
-    m_bounds.max = glm::vec3(m_width, 0.0f, m_depth);
+// a plane3d always lies at y=0, you can only offset its x and z axes
+Plane3D::Plane3D(float width, float depth, glm::vec2 offset) : Shape(glm::vec3(offset.x, 0, offset.y)), m_width(width), m_depth(depth) {
+    glm::vec3 offset3d (offset.x, 0.0f, offset.y);
+    m_bounds.min = offset3d;
+    m_bounds.max = offset3d + glm::vec3(m_width, 0.0f, m_depth);
 
 }
 
@@ -19,5 +20,5 @@ void Plane3D::accept (AcyclicVisitor& v) {
 }
 
 bool Plane3D::isPointInside(glm::vec3 P) const {
-    return (P.x >= 0 && P.x <= m_width && P.z >= 0 && P.z <= m_depth);
+    return (P.x >= m_bounds.min.x && P.x <= m_bounds.max.x && P.z >= m_bounds.min.z && P.z <= m_bounds.max.z);
 }

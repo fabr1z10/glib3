@@ -103,7 +103,7 @@ void RayCast2D::visit(Plane3D& s) {
         return;
     }
     glm::vec3 ip = P0 + k*dl;
-    if (ip.x < 0 || ip.x > s.width() || ip.z < 0 || ip.z > s.depth())
+    if (!s.isPointInside(ip))
         return;
     // collision here
     m_result.length = k;

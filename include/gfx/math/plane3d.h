@@ -3,7 +3,7 @@
 class Plane3D : public Shape
 {
 public:
-    Plane3D (float width, float depth);
+    Plane3D (float width, float depth, glm::vec2 bounds = glm::vec2(0.0f));
     float width() const;
     float depth() const;
     bool isPointInside(glm::vec3) const override;

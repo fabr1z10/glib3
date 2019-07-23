@@ -40,7 +40,7 @@ std::shared_ptr<Entity> EntityFactory::Create(luabridge::LuaRef& ref) {
                 entity->Rotate(a*deg2rad, b);
             } else {
                 glm::vec3 tr = t.Get<glm::vec3>("translation");
-                entity->MoveLocal(tr);
+                entity->SetPosition(tr);
             }
         });
     }

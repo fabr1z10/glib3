@@ -9,6 +9,7 @@
 PlatformerFactory::PlatformerFactory() : SceneFactory() {
 
     m_componentFactory.Add<EnemyInputCompFactory>("enemyinput");
+    m_componentFactory.Add<Enemy3DInputCompFactory>("enemy3dinput");
 
     m_activityFactory.Add<DropCharactersActFactory>("dropcharacters");
 

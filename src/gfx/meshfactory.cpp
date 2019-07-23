@@ -95,11 +95,12 @@ void MeshFactory::visit(Rect& rect) {
 void MeshFactory::visit(Plane3D& rect) {
     float w = rect.width();
     float h = rect.depth();
+    glm::vec3 offset = rect.GetOffset();
     std::vector<VertexColor> vertices = {
-            {0, 0, 0, m_color.r, m_color.g, m_color.b, m_color.a},
-            {0, 0, h, m_color.r, m_color.g, m_color.b, m_color.a},
-            {w, 0, h, m_color.r, m_color.g, m_color.b, m_color.a},
-            {w, 0, 0, m_color.r, m_color.g, m_color.b, m_color.a},
+            {offset.x, 0, offset.z, m_color.r, m_color.g, m_color.b, m_color.a},
+            {offset.x, 0, offset.z + h, m_color.r, m_color.g, m_color.b, m_color.a},
+            {offset.x + w, 0, offset.z + h, m_color.r, m_color.g, m_color.b, m_color.a},
+            {offset.x + w, 0, offset.z, m_color.r, m_color.g, m_color.b, m_color.a},
     };
     std::vector<unsigned int> indices = {0, 1, 2, 3};
     auto mesh = std::make_shared<Mesh<VertexColor>>(COLOR_SHADER);

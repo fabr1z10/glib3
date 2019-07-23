@@ -81,6 +81,18 @@ void Controller3D::UpdateRaycastOrigins() {
 //    m_raycastOrigins.topRight = vec2(bounds.max.x, bounds.max.y);
 }
 
+bool Controller3D::IsFalling(int x, int z) {
+    //glm::vec3 rayOrigin = m_entity->GetPosition();
+    glm::vec3 rayOrigin;
+    rayOrigin.x = (x == 0 ? m_raycastOrigins.xMid() : (x > 0 ? m_raycastOrigins.xRight() : m_raycastOrigins.xLeft()));
+    rayOrigin.z = (z == 0 ? m_raycastOrigins.zMid() : (z > 0 ? m_raycastOrigins.zFront() : m_raycastOrigins.zBack()));
+    rayOrigin.y = m_raycastOrigins.yBottom();
+
+    RayCastHit hit = m_engine->Raycast(rayOrigin, monkey::down, 5.0, 2);
+    if (!hit.collide)
+        return true;
+    return false;
+}
 //bool Controller2D::IsFalling(int dir) {
 //    glm::vec2 rayOrigin = (dir == -1) ? m_raycastOrigins.bottomLeft : m_raycastOrigins.bottomRight;
 //    RayCastHit2D hit = m_collision->Raycast(glm::vec3(rayOrigin, 0.0f), glm::vec2(0.0f, -1.0f), 5.0, 2);
@@ -151,8 +163,14 @@ void Controller3D::DescendSlope(glm::vec3& vel) {
         if (!isZero(slopeAngle) && slopeAngle*rad2deg <= m_maxDescendAngle) {
             // check if this is a slope, this replaces
             // isDescending = (Mathf.sign(hit.normal.x) == directionX)
-            bool isDescending = (glm::dot (horizontalShift, hit.normal) >= 0);
+            bool isDescending = (glm::dot (horizontalShift, hit.normal) > 0);
             if (isDescending) {
+                if (isZero(dxw)) {
+                int kkfkf=20;
+                }
+                if (isZero(vel.z)) {
+                    int ikk = 10;
+                }
                 if (hit.length - m_skinWidth <= tan(slopeAngle) * hLength) {
                     // it's close enough
                     float descendVelocityY = sin(slopeAngle) * hLength;
@@ -208,6 +226,9 @@ void Controller3D::HorizontalCollisions(glm::vec3& vel) {
                 vel.x = horizontalDir.x * dist;
                 vel.z = horizontalDir.z * dist;
                 rayLength = dist;
+                m_details.left = dxw < 0;
+                m_details.right = dxw > 0;
+
             }
 
         }
@@ -273,11 +294,27 @@ void Controller3D::VerticalCollisions(glm::vec3& velocity) {
     glm::vec3 rayOrigin;
     rayOrigin.x = m_raycastOrigins.xLeft() + velx;
     rayOrigin.y = (directionY == -1 ? m_raycastOrigins.bottomLeft.y : m_raycastOrigins.topRight.y);
-    rayOrigin.z = m_raycastOrigins.zMid() + velocity.z;
+    rayOrigin.z = m_raycastOrigins.zBack() + velocity.z; //(velocity.z >= 0 ? m_raycastOrigins.zFront() : m_raycastOrigins.zBack()) + velocity.z;
+    //glm::vec3 horizontalDir = glm::normalize(glm::vec3(abs(velocity.x), 0.0f, abs(velocity.z)));
+
+    // check x axis
 
     for (int i = 0; i < m_verticalRayCount; i++) {
         //vec2 rayOrigin = (directionY == -1) ? m_raycastOrigins.bottomLeft : m_raycastOrigins.topLeft;
         rayOrigin += monkey::right * (i *m_verticalRaySpacing );
+        int collMask = (directionY == -1 ? (2 | 32) : 2);
+        RayCastHit hit = m_engine->Raycast(rayOrigin, glm::vec3(0, directionY, 0), rayLength, collMask);
+        if (hit.collide) {
+            velocity.y = (hit.length - m_skinWidth) * directionY;
+            rayLength = hit.length;
+
+            m_details.below = directionY == -1;
+            m_details.above = directionY == 1;
+        }
+    }
+    for (int i = 0; i < m_verticalRayCount; i++) {
+        //vec2 rayOrigin = (directionY == -1) ? m_raycastOrigins.bottomLeft : m_raycastOrigins.topLeft;
+        rayOrigin += monkey::front * (i *m_verticalRaySpacing );
         int collMask = (directionY == -1 ? (2 | 32) : 2);
         RayCastHit hit = m_engine->Raycast(rayOrigin, glm::vec3(0, directionY, 0), rayLength, collMask);
         if (hit.collide) {
