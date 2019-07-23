@@ -158,7 +158,7 @@ void CollisionEngine3D::Add(ICollider* c) {
 
 void CollisionEngine3D::Remove(ICollider* c) {
     // called when a collider dies
-    //PopCollider(c);
+    PopCollider(c);
 }
 
 void CollisionEngine3D::Clear() {
