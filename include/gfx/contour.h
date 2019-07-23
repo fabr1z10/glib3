@@ -2,6 +2,7 @@
 
 #include <gfx/mesh.h>
 #include <gfx/math/rect.h>
+#include <gfx/math/box.h>
 #include <gfx/math/line.h>
 #include <gfx/math/poly.h>
 #include <gfx/math/polyline.h>
@@ -13,7 +14,8 @@
 class Contour :
     public AcyclicVisitor,
     public Visitor<Rect>,
-    public Visitor<Line>
+    public Visitor<Line>,
+    public Visitor<Box>
 //    public Visitor<Polygon>,
 //    public Visitor<Poly>,
 //    public Visitor<PolyLine>,
@@ -24,6 +26,7 @@ class Contour :
 public:
     void visit(Rect&) override;
     void visit(Line&) override;
+    void visit(Box&) override;
     static std::vector<glm::vec3> CreateContour (Shape*);
 private:
     std::vector<glm::vec3> m_result;

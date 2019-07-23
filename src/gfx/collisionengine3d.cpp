@@ -5,7 +5,7 @@
 CollisionEngine3D::CollisionEngine3D (float dx, float dy, float dz) :
         ICollisionEngine(), m_width{dx}, m_height{dy}, m_depth(dz)
 {
-    //m_intersector = std::unique_ptr<Intersector>(new Intersector);
+    m_intersector = std::unique_ptr<Intersector>(new Intersector);
 }
 
 
@@ -105,6 +105,7 @@ RayCastHit CollisionEngine3D::Raycast(glm::vec3 rayOrigin, glm::vec3 rayDir, flo
 
 
 ICollider* CollisionEngine3D::ShapeCast (std::shared_ptr<Shape> shape, const glm::mat4& transform, int mask) {
+
     auto aabb = shape->getBounds();
     aabb.Transform(transform);
     float z = transform[3][2];

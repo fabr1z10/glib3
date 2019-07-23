@@ -20,6 +20,18 @@ void Contour::visit(Rect & rect) {
     m_result.emplace_back(glm::vec3 (O.x, O.y, 0.0f));
 }
 
+void Contour::visit(Box & rect) {
+    glm::vec2 O = rect.GetOffset();
+    auto w = rect.width();
+    auto h = rect.height();
+    std::vector <glm::vec3> points;
+    m_result.emplace_back(glm::vec3 (O.x, O.y, 0.0f));
+    m_result.emplace_back(glm::vec3 (O.x + w, O.y, 0.0f));
+    m_result.emplace_back(glm::vec3 (O.x + w, O.y + h, 0.0f));
+    m_result.emplace_back(glm::vec3 (O.x, O.y + h, 0.0f));
+    m_result.emplace_back(glm::vec3 (O.x, O.y, 0.0f));
+
+}
 
 std::vector<glm::vec3> Contour::CreateContour (Shape* s) {
     Contour c;

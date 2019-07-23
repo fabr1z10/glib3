@@ -5,6 +5,7 @@
 #include <gfx/model/spritemodel.h>
 #include <gfx/boxedmodel.h>
 #include <gfx/model/combomodel.h>
+#include <gfx/math/box.h>
 
 std::shared_ptr<SpriteMesh> SimpleModelFactory::ReadSpriteMesh(LuaTable& t) {
 
@@ -114,14 +115,16 @@ std::shared_ptr<IModel> BoxedModelFactory::Create(luabridge::LuaRef &ref) {
     auto mesh = ReadSpriteMesh(t);
     // read the additional stuff
     auto pp = std::make_shared<BoxedModel>(mesh);
-
+    float thickness = t.Get<float>("thickness", 0.0f);
+    float dz = 0.5f * thickness;
+    bool model3d = (thickness > 0.0f);
     luabridge::LuaRef an = t.Get<luabridge::LuaRef>("animations");
     // loop through animations
     for (int i = 0; i < an.length(); ++i) {
         luabridge::LuaRef at = an[i+1];
         std::string anim = at["name"].cast<std::string>();
         glm::vec4 box = LuaTable::Read<glm::vec4>(at["box"]);
-        pp->AddAnimationData(anim, Bounds{glm::vec3(box[0], box[1], 0.0f), glm::vec3(box[2], box[3], 0.0f)});
+        pp->AddAnimationData(anim, Bounds{glm::vec3(box[0], box[1], box[0]), glm::vec3(box[2], box[3], box[2])});
         luabridge::LuaRef fr = at["frames"];
         for (int j = 0; j < fr.length(); ++j) {
             luabridge::LuaRef a2 = fr[j + 1];
@@ -132,15 +135,30 @@ std::shared_ptr<IModel> BoxedModelFactory::Create(luabridge::LuaRef &ref) {
                 auto boxes = table.Get<luabridge::LuaRef>("boxes");
                 if (boxes.length() == 1) {
                     glm::vec4 box = LuaTable::Read<glm::vec4>(boxes[1]);
-                    auto rect = std::make_shared<Rect>(box[2]-box[0], box[3]-box[1], glm::vec3(box[0], box[1],0.0f));
+                    std::shared_ptr<Shape> collisionShape;
+                    float width = box[2]-box[0];
+                    float height = box[3]-box[1];
+                    if (model3d) {
+                        collisionShape = std::make_shared<Box>(width, height, thickness, glm::vec3(box[0], box[1], -dz));
+                    } else {
+                        collisionShape = std::make_shared<Rect>(width, height, glm::vec3(box[0], box[1], 0.0f));
+                    }
+
+
                     std::shared_ptr<Shape> attackShape;
                     int attackTag = -1;
                     if (table.HasKey("attack")) {
                         glm::vec4 attackBox = table.Get<glm::vec4>("attack");
-                        attackShape = std::make_shared<Rect>(attackBox[2]-attackBox[0], attackBox[3]-attackBox[1], glm::vec3(attackBox[0], attackBox[1], 0.0f));
+                        float w = attackBox[2] - attackBox[0];
+                        float h = attackBox[3] - attackBox[1];
+                        if (model3d) {
+                            attackShape = std::make_shared<Box>(w, h, thickness, glm::vec3(attackBox[0], attackBox[1], -dz));
+                        } else {
+                            attackShape = std::make_shared<Rect>(w, h, glm::vec3(attackBox[0], attackBox[1], 0.0f));
+                        }
                         //attackTag = table.Get<int>("attack_tag");
                     }
-                    pp->AddCollisionData(anim, j, rect, attackShape);
+                    pp->AddCollisionData(anim, j, collisionShape, attackShape);
                 }
             } else {
                 GLIB_FAIL("A boxed model need to have collision boxes for each frame!");

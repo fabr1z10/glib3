@@ -2,9 +2,9 @@
 #include <gfx/error.h>
 #include <gfx/visitor.h>
 
-Box::Box(float width, float height, float depth) : Shape(), m_width(width), m_height(height), m_depth(depth) {
-    m_bounds.min = glm::vec3(0.0f, 0.0f, 0.f);
-    m_bounds.max = glm::vec3(m_width, m_height, m_depth);
+Box::Box(float width, float height, float depth, glm::vec3 offset) : Shape(offset), m_width(width), m_height(height), m_depth(depth) {
+    m_bounds.min = offset;
+    m_bounds.max = offset + glm::vec3(m_width, m_height, m_depth);
 }
 
 void Box::accept (AcyclicVisitor& v) {
@@ -16,5 +16,7 @@ void Box::accept (AcyclicVisitor& v) {
 }
 
 bool Box::isPointInside(glm::vec3 P) const {
-    return (P.x >= 0 && P.x <= m_width && P.y >= 0 && P.y <= m_height && P.z >= 0 && P.z <= m_depth);
+    return (P.x >= m_offset.x && P.x <= m_offset.x+m_width &&
+            P.y >= m_offset.y && P.y <= m_offset.y+ m_height &&
+            P.z >= m_offset.z && P.z <= m_offset.z+m_depth);
 }

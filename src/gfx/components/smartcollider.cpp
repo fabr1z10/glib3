@@ -36,13 +36,17 @@ void SmartCollider::ofu(Animator *a) {
 
         if (e != nullptr) {
             std::cerr << "HIT!\n";
-            auto rm = m_engine->GetResponseManager()->GetHandler(attackInfo.first, e->GetCollisionTag());
-            if (rm.response != nullptr) {
+            auto rm = m_engine->GetResponseManager();
+            if (rm == nullptr) {
+                std::cerr << "no handler!\n";
+            }
+            auto handler = rm->GetHandler(attackInfo.first, e->GetCollisionTag());
+            if (handler.response != nullptr) {
                 std::cerr << "FOUND RESPONSE\n";
-                if (rm.flip) {
-                    rm.response->onStart(e->GetObject(), m_entity, CollisionReport());
+                if (handler.flip) {
+                    handler.response->onStart(e->GetObject(), m_entity, CollisionReport());
                 } else {
-                    rm.response->onStart(m_entity, e->GetObject(), CollisionReport());
+                    handler.response->onStart(m_entity, e->GetObject(), CollisionReport());
                 }
             }
         }
@@ -97,8 +101,8 @@ Bounds SmartCollider::GetStaticBoundsI() const {
 Bounds SmartCollider::GetDynamicBoundsI() const {
     std::string anim = m_animator->GetAnimation();
     auto bounds = m_model->GetAnimBounds(anim);
-    bounds.min.z = bounds.min.x;
-    bounds.max.z = bounds.max.x;
+//    bounds.min.z = bounds.min.x;
+//    bounds.max.z = bounds.max.x;
     return bounds;
 }
 std::type_index SmartCollider::GetType() {

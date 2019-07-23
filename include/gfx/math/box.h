@@ -3,7 +3,7 @@
 class Box : public Shape
 {
 public:
-    Box (float width, float height, float depth);
+    Box (float width, float height, float depth, glm::vec3 offset = glm::vec3(0.0f));
     float width() const;
     float height() const;
     float depth() const;

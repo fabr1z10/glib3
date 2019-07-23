@@ -2,12 +2,14 @@
 #include "gfx/components/collider.h"
 #include <iostream>
 #include "gfx/math/geomalgo.h"
+#include <gfx/math/box.h>
 
 Intersector::Intersector() {
     auto convexPolyIntersector = std::make_shared<ConvexPolygonIntersectionFunction>();
     auto convexCirclePolyIntersector = std::make_shared<ConvexCirclePolygonIntersectionFunction>();
     auto circleCircleIntersector = std::make_shared<CircleCircleIntersectionFunction>();
     auto compoundIntersector = std::make_shared<CompoundIntersectionFunction>(this);
+    auto boxIntersector = std::make_shared<BoxVsBox>();
 
     // SAT
     m_func[std::make_pair(std::type_index(typeid(Rect)), std::type_index(typeid(Rect)))] = convexPolyIntersector;
@@ -30,6 +32,9 @@ Intersector::Intersector() {
     m_func[std::make_pair(std::type_index(typeid(CompoundShape)), std::type_index(typeid(Line)))] = compoundIntersector;
     m_func[std::make_pair(std::type_index(typeid(CompoundShape)), std::type_index(typeid(Polygon)))] = compoundIntersector;
     m_func[std::make_pair(std::type_index(typeid(CompoundShape)), std::type_index(typeid(Circle)))] = compoundIntersector;
+
+    m_func[std::make_pair(std::type_index(typeid(Box)), std::type_index(typeid(Box)))] = boxIntersector;
+
 }
 
 CollisionReport Intersector::Intersect(Shape * s1, const glm::mat4& t1, Shape *s2, const glm::mat4& t2) {
@@ -131,4 +136,10 @@ CollisionReport CompoundIntersectionFunction::operator()(Shape *s1, Shape *s2, c
             return report;
     }
     return CollisionReport();
+}
+
+CollisionReport BoxVsBox::operator()(Shape *s1, Shape *s2, const glm::mat4 &t1, const glm::mat4 &t2) {
+    CollisionReport report;
+    report.collide =true;
+    return report;
 }
