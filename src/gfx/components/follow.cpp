@@ -37,6 +37,7 @@ void Follow::Update (double dt) {
         if (m_fixZ) {
             eye.z = m_z;
         }
+        // eye.y = 10;
         //std::cout << "Update cam pos to " << pos.x << ", " << pos.y << "\n";
         m_cam->SetPosition(eye, m_dir, m_up);
         m_previousPosition = pos;

@@ -12,7 +12,8 @@ namespace monkey {
     const glm::vec3 up = glm::vec3(0, 1, 0);
     const glm::vec3 front = glm::vec3(0, 0, 1);
     const glm::vec3 back = glm::vec3(0, 0, -1);
-
+    /// ray intersection between P0 + d0 * u and P1 + d1*v
+    float rayint (glm::vec2 P0, glm::vec2 d0, glm::vec2 P1, glm::vec2 d1);
 }
 
 

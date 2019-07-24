@@ -53,7 +53,7 @@ public:
 
     std::string toString() override { return "";}
     std::type_index GetType() override;
-
+    glm::ivec3 getCell(glm::vec3);
 private:
     void helperLoc(float x0, float x1, int& a, int& b, float size);
     std::unordered_map<glm::ivec3, CollisionEngine3DCell> m_cells;

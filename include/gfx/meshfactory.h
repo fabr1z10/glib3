@@ -52,14 +52,17 @@ private:
 };
 
 class MeshFactorySolid :
-        public AcyclicVisitor,
-        public Visitor<Rect>,
-        public Visitor<Ellipse>
+    public AcyclicVisitor,
+    public Visitor<Rect>,
+    public Visitor<Ellipse>,
+    public Visitor<Plane3D>
 {
 public:
     static std::shared_ptr<IMesh> CreateMesh (Shape& s, float z = 0.0f, glm::vec4 color = glm::vec4(1.0f));
     void visit(Rect&) override;
     void visit(Ellipse&) override;
+    void visit(Plane3D&) override;
+
 private:
     std::shared_ptr<IMesh> m_mesh;
     glm::vec4 m_color;

@@ -114,7 +114,8 @@ std::shared_ptr<Shape> BoxFactory::Create(luabridge::LuaRef &ref) {
     //glm::vec2 offset = at.Get<glm::vec2>("offset", glm::vec2(0.0f));
     float w = at.Get<float>("width");
     float d = at.Get<float>("depth");
+    glm::vec3 offset = at.Get<glm::vec3>("offset", glm::vec3(0.0f));
 
     float h = at.Get<float>("height");
-    return std::make_shared<Box>(w, h, d);
+    return std::make_shared<Box>(w, h, d, offset);
 }

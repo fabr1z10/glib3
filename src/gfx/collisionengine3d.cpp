@@ -9,15 +9,24 @@ CollisionEngine3D::CollisionEngine3D (float dx, float dy, float dz) :
 }
 
 
+glm::ivec3 CollisionEngine3D::getCell(glm::vec3 P) {
+    glm::ivec3 coords;
+    coords.x = P.x >= 0 ? static_cast<int>(P.x / m_width) : -1- static_cast<int>(abs(P.x)/m_width);
+    coords.y = P.y >= 0 ? static_cast<int>(P.y / m_height) : -1- static_cast<int>(abs(P.y)/m_height);
+    coords.z = P.z >= 0 ? static_cast<int>(P.z / m_depth) : -1- static_cast<int>(abs(P.z)/m_depth);
+    return coords;
+}
+
 RayCastHit CollisionEngine3D::Raycast(glm::vec3 rayOrigin, glm::vec3 rayDir, float length, int mask) {
     //std::cerr << "just called " << rayDir.x << " " << rayDir.y << " " << rayDir.z << "\n";
     glm::vec3 P (rayOrigin);
     glm::vec3 P1 = P;
 
     // initialize current cell
-    int i = static_cast<int>(P.x / m_width);
-    int j = static_cast<int>(P.y / m_height);
-    int k = static_cast<int>(P.z / m_depth);
+    glm::ivec3 coords = getCell(P);
+    int i = coords.x;
+    int j = coords.y;
+    int k = coords.z;
     // distance to h0it the vertical lines:
     // ((i+\xi)*delta - P) / u_x, where
 

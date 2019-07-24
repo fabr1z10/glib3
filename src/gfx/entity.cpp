@@ -217,7 +217,7 @@ void Entity::SetPosition(glm::vec3 pos, float angle){
 }
 
 void Entity::Rotate(float angle, glm::vec3 axis) {
-    m_localTransform = glm::rotate(angle, axis);
+    m_localTransform *= glm::rotate(angle, axis);
     UpdateWorldTransform();
 
 }

@@ -114,15 +114,16 @@ void MeshFactory::visit(Box& rect) {
     float w = rect.width();
     float d = rect.depth();
     float h = rect.height();
+    glm::vec3 o = rect.GetOffset();
     std::vector<VertexColor> vertices = {
-            {0, 0, d, m_color.r, m_color.g, m_color.b, m_color.a},
-            {w, 0, d, m_color.r, m_color.g, m_color.b, m_color.a},
-            {w, h, d, m_color.r, m_color.g, m_color.b, m_color.a},
-            {0, h, d, m_color.r, m_color.g, m_color.b, m_color.a},
-            {0, 0, 0, m_color.r, m_color.g, m_color.b, m_color.a},
-            {w, 0, 0, m_color.r, m_color.g, m_color.b, m_color.a},
-            {w, h, 0, m_color.r, m_color.g, m_color.b, m_color.a},
-            {0, h, 0, m_color.r, m_color.g, m_color.b, m_color.a},
+            {o.x, o.y, o.z+d, m_color.r, m_color.g, m_color.b, m_color.a},
+            {o.x+w, o.y, o.z+d, m_color.r, m_color.g, m_color.b, m_color.a},
+            {o.x+w, o.y+h, o.z+d, m_color.r, m_color.g, m_color.b, m_color.a},
+            {o.x, o.y+h, o.z+d, m_color.r, m_color.g, m_color.b, m_color.a},
+            {o.x, o.y, o.z, m_color.r, m_color.g, m_color.b, m_color.a},
+            {o.x+w, o.y, o.z, m_color.r, m_color.g, m_color.b, m_color.a},
+            {o.x+w, o.y+h, o.z, m_color.r, m_color.g, m_color.b, m_color.a},
+            {o.x, o.y+h, o.z, m_color.r, m_color.g, m_color.b, m_color.a},
     };
     std::vector<unsigned int> indices = {0, 1, 1,2,2,3,3,0,1,5,5,6,6,2,2,1,4,5,5,6,6,7,7,4,4,0,0,3,3,7,7,4};
     auto mesh = std::make_shared<Mesh<VertexColor>>(COLOR_SHADER);
@@ -300,6 +301,23 @@ void MeshFactorySolid::visit(Rect& rect) {
             {offset.x, offset.y + h, m_z, m_color.r, m_color.g, m_color.b, m_color.a},
     };
     std::vector<unsigned int> indices = {0, 1, 2, 2, 3, 0};
+    auto mesh = std::make_shared<Mesh<VertexColor>>(COLOR_SHADER);
+    mesh->Init(vertices, indices);
+    mesh->m_primitive = GL_TRIANGLES;
+    m_mesh = mesh;
+}
+
+void MeshFactorySolid::visit(Plane3D& rect) {
+    float w = rect.width();
+    float h = rect.depth();
+    glm::vec3 offset = rect.GetOffset();
+    std::vector<VertexColor> vertices = {
+            {offset.x, 0, offset.z, m_color.r, m_color.g, m_color.b, m_color.a},
+            {offset.x, 0, offset.z + h, m_color.r, m_color.g, m_color.b, m_color.a},
+            {offset.x + w, 0, offset.z + h, m_color.r, m_color.g, m_color.b, m_color.a},
+            {offset.x + w, 0, offset.z, m_color.r, m_color.g, m_color.b, m_color.a},
+    };
+    std::vector<unsigned int> indices = {0, 1, 2, 0, 2, 3};
     auto mesh = std::make_shared<Mesh<VertexColor>>(COLOR_SHADER);
     mesh->Init(vertices, indices);
     mesh->m_primitive = GL_TRIANGLES;

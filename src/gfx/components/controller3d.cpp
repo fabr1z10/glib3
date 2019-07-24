@@ -120,7 +120,7 @@ void Controller3D::Move(glm::vec3& dx) {
 //            }
 //        }
 //        m_wasGnd = m_details.below;
-//        m_detailsOld = m_details;
+        m_detailsOld = m_details;
         m_details.Reset();
 //        m_details.velocityOld = dx;
 //
@@ -135,6 +135,11 @@ void Controller3D::Move(glm::vec3& dx) {
             VerticalCollisions(dx);
         glm::vec3 actualMove = dx / scale;
         m_entity->MoveLocal(actualMove);
+//        if (m_details.climbingSlope) {
+//            UpdateRaycastOrigins();
+//            std::cerr << m_raycastOrigins.topRight.x << ", " << m_raycastOrigins.bottomLeft.y << ", " << m_raycastOrigins.topRight.x*tan() << "\n";
+//
+//        }
         if (!m_wasGnd && m_details.below) {
             glm::vec3 p=m_entity->GetPosition();
             // std::cout << "AFTER+++ " << p.x << "," << p.y << std::endl;
@@ -188,6 +193,9 @@ void Controller3D::DescendSlope(glm::vec3& vel) {
 // this will have x and z components
 void Controller3D::HorizontalCollisions(glm::vec3& vel) {
 
+    if (m_entity->GetPosition().x > 399.007438042){
+        int ciao = 200;
+    }
     float dxw = vel.x * (m_entity->GetFlipX() ? -1.0f : 1.0f);
     glm::vec3 horizontalShift(dxw, 0.0f, vel.z);
     glm::vec3 horizontalDir = glm::normalize(glm::vec3(vel.x, 0.0f, vel.z));
@@ -204,6 +212,9 @@ void Controller3D::HorizontalCollisions(glm::vec3& vel) {
         //vec2 rayOrigin = facingLeft ? m_raycastOrigins.bottomLeft : m_raycastOrigins.bottomRight;
         rayOrigin += monkey::up * (i *m_horizontalRaySpacing);
         RayCastHit hit = m_engine->Raycast(rayOrigin, rayDir, rayLength, 2 | 32);
+        if (i == 0 && !hit.collide) {
+            int frewf = 104213;
+        }
         if (hit.collide) {
             float slopeAngle = glm::angle(hit.normal, monkey::up);
 
@@ -220,6 +231,7 @@ void Controller3D::HorizontalCollisions(glm::vec3& vel) {
                 vel.z += horizontalDir.z * distanceToSlopeStart;
             }
 
+
             if (!m_details.climbingSlope || sadeg > m_maxClimbAngle) {
                 float dist = (hit.length - m_skinWidth) ;//*directionX;
 
@@ -233,7 +245,9 @@ void Controller3D::HorizontalCollisions(glm::vec3& vel) {
 
         }
     }
-
+    if (m_detailsOld.climbingSlope && !m_details.climbingSlope) {
+        int ciao =10000;
+    }
 
 
 }

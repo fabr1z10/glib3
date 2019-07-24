@@ -2,6 +2,20 @@
 #include "gfx/math/poly.h"
 #include "gfx/math/graph.h"
 
+using namespace monkey;
+
+float monkey::rayint (glm::vec2 P0, glm::vec2 d0, glm::vec2 P1, glm::vec2 d1) {
+    float rxs = cross(d0, d1);
+
+    if (isZero(rxs)) {
+        return -1;
+    }
+    glm::vec2 P10 = P1 - P0;
+    float t = cross(P10, d1) / rxs;
+    return t;
+
+}
+
 bool LineSegmentCross (glm::vec2 A, glm::vec2 B, glm::vec2 C, glm::vec2 D) {
     glm::vec2 r = B - A;
     glm::vec2 s = D - C;

@@ -18,6 +18,8 @@ void Shadow::Start() {
 
 void Shadow::ResetPosition(Entity * e) {
     glm::vec3 pos = e->GetPosition();
-    float y = m_depth->GetFloorY(pos.x, pos.z);
-    m_entity->SetPosition(glm::vec3(0.0f, y-pos.y, -pos.z));
+    m_entity->SetPosition(glm::vec3(0.0f, 0.1f, 0.0f));
+    //float y = m_depth->GetFloorY(pos.x, pos.z);
+    // m_entity->SetPosition(glm::vec3(0.0f, y-pos.y, -pos.z));
+    //m_entity->SetPosition(pos);
 }
