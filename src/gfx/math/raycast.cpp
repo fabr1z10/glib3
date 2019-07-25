@@ -129,42 +129,47 @@ void RayCast2D::visit(Box& s) {
     float w = s.width();
     float h = s.height();
     float d = s.depth();
-
+    glm::vec3 o = s.GetOffset();
     // check collision with right face
     float tm = std::numeric_limits<float>::infinity();
     glm::vec3 bestNormal;
-    float t = (w - P0.x)/dl.x;
-    if (t >= 0 && t <= m_length && t < tm) {
-        tm = t;
-        bestNormal = monkey::right;
+    // hit with right side
+    if (dl.x != 0.0f) {
+        float t = ((w + o.x) - P0.x) / dl.x;
+        if (t >= 0 && t <= m_length && t < tm) {
+            tm = t;
+            bestNormal = monkey::right;
+        }
+        t = (o.x - P0.x) / dl.x;
+        if (t >= 0 && t <= m_length && t < tm) {
+            tm = t;
+            bestNormal = monkey::left;
+        }
     }
-    t = -P0.x / dl.x;
-    if (t >= 0 && t <= m_length && t < tm) {
-        tm = t;
-        bestNormal = monkey::left;
+    if (dl.y != 0.0f) {
+        float t = ((h + o.y) - P0.y) / dl.y;
+        if (t >= 0 && t <= m_length && t < tm) {
+            tm = t;
+            bestNormal = monkey::up;
+        }
+        t = (o.y - P0.y) / dl.y;
+        if (t >= 0 && t <= m_length && t < tm) {
+            tm = t;
+            bestNormal = monkey::down;
+        }
     }
-    t = (h-P0.y) / dl.y;
-    if (t >= 0 && t <= m_length && t < tm) {
-        tm = t;
-        bestNormal = monkey::up;
+    if (dl.z != 0.0f) {
+        float t = ((d + o.z) - P0.z) / dl.z;
+        if (t >= 0 && t <= m_length && t < tm) {
+            tm = t;
+            bestNormal = monkey::front;
+        }
+        t = (o.z - P0.z) / dl.z;
+        if (t >= 0 && t <= m_length && t < tm) {
+            tm = t;
+            bestNormal = monkey::back;
+        }
     }
-    t = -P0.y/ dl.y;
-    if (t >= 0 && t <= m_length && t < tm) {
-        tm = t;
-        bestNormal = monkey::down;
-    }
-
-    t = (d-P0.z) / dl.z;
-    if (t >= 0 && t <= m_length && t < tm) {
-        tm = t;
-        bestNormal = monkey::front;
-    }
-    t = -P0.z / dl.z;
-    if (t >= 0 && t <= m_length && t < tm) {
-        tm = t;
-        bestNormal = monkey::back;
-    }
-
     // collision here
     m_result.length = tm;
     m_result.collide = true;
