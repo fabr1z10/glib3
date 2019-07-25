@@ -6,7 +6,7 @@
 //
 std::shared_ptr<IModel> ModelTrapezoid3D::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
-
+    m_topPoints.clear();
     float depth = table.Get<float>("depth");
     std::vector<float> points = table.GetVector<float>("points");
     // get the top texture info. We need the texture, and the period (x, z)
@@ -106,6 +106,8 @@ std::shared_ptr<IMesh> ModelTrapezoid3D::CreateTopMesh (const std::vector<float>
 
     glm::vec3 P00 = pts[0] + normals_xz[0] * d;
     glm::vec3 P01 = pts[0] - normals_xz[0] * d;
+    m_topPoints.push_back(P00);
+    m_topPoints.push_back(P01);
     float l0 = 0.0f;
     float l1 = 0.0f;
     // compute normals for extremal points
@@ -126,6 +128,8 @@ std::shared_ptr<IMesh> ModelTrapezoid3D::CreateTopMesh (const std::vector<float>
 
         glm::vec3 P0_next = P00 + t0 * tangents[i];
         glm::vec3 P1_next = P01 + t1 * tangents[i];
+        m_topPoints.push_back(P0_next);
+        m_topPoints.push_back(P1_next);
 //        glm::vec3 P00 = pts[i] + normals_xz[i]*d;
 //        glm::vec3 P01 = pts[i] - normals_xz[i]*d;
 //        glm::vec3 P10 = pts[i+1] + normals_xz[i+1]*d;
@@ -167,24 +171,97 @@ std::shared_ptr<IMesh> ModelTrapezoid3D::CreateSideMesh(const std::vector<float>
     std::vector<Vertex3DN> vertices;
     std::vector<unsigned> indices;
     unsigned c = 0;
-    // front
-    for (size_t i = 0; i < points.size()-2; i+=2) {
-        glm::vec3 P0(points[i], points[i + 1], d);
-        glm::vec3 P1(points[i + 2], points[i + 3], d);
-        float y0 = (par ? points[i+1]-h : h);
-        float y1 = (par ? points[i+3]-h : h);
-        vertices.emplace_back(Vertex3DN{P0.x, P0.y, d, P0.x / rx, P0.y / ry, 0, 0, 1});
-        vertices.emplace_back(Vertex3DN{P0.x, y0, d, P0.x/rx, y0/ry, 0, 0, 1});
-        vertices.emplace_back(Vertex3DN{P1.x, y1, d, P1.x/rx, y1/ry, 0, 0, 1});
-        vertices.emplace_back(Vertex3DN{P1.x, P1.y, d, P1.x/rx, P1.y/ry, 0, 0, 1});
+    // front. loop through odd points
+    float length = 0;
+    for (size_t i = 1; i < m_topPoints.size()-2; i+=2) {
+        glm::vec3 P0 = m_topPoints[i];
+        glm::vec3 P1 = m_topPoints[i+2];
+        glm::vec3 P0l = P0;
+        glm::vec3 P1l = P1;
+        glm::vec3 n = glm::normalize(glm::cross(P1-P0, monkey::up));
+        float inc = glm::length(glm::vec3(P1.x,0,P1.z) - glm::vec3(P0.x, 0, P0.z));
+        P0l.y = (par ? P0.y-h : h);
+        P1l.y = (par ? P1.y-h : h);
+        vertices.emplace_back(Vertex3DN{P0.x,  P0.y,  P0.z,  length/rx, P0.y / ry, n.x, n.y, n.z});
+        vertices.emplace_back(Vertex3DN{P0l.x, P0l.y, P0l.z, length/rx, P0l.y /ry, n.x, n.y, n.z});
+        vertices.emplace_back(Vertex3DN{P1.x,  P1.y,  P1.z,  (length+inc)/rx, P1.y /ry, n.x, n.y, n.z});
+        vertices.emplace_back(Vertex3DN{P1l.x, P1l.y, P1l.z, (length+inc)/rx, P1l.y /ry, n.x, n.y, n.z});
+        length +=inc;
         indices.emplace_back(c);
         indices.emplace_back(c+1);
-        indices.emplace_back(c+2);
-        indices.emplace_back(c+2);
         indices.emplace_back(c+3);
         indices.emplace_back(c);
+        indices.emplace_back(c+3);
+        indices.emplace_back(c+2);
         c+=4;
     }
+    // back face; loop through even points.
+    for (size_t i = 0; i < m_topPoints.size()-2; i+=2) {
+        glm::vec3 P0 = m_topPoints[i];
+        glm::vec3 P1 = m_topPoints[i+2];
+        glm::vec3 P0l = P0;
+        glm::vec3 P1l = P1;
+        glm::vec3 n = glm::normalize(glm::cross(monkey::up, P1-P0));
+        float inc = glm::length(glm::vec3(P1.x,0,P1.z) - glm::vec3(P0.x, 0, P0.z));
+        P0l.y = (par ? P0.y-h : h);
+        P1l.y = (par ? P1.y-h : h);
+        vertices.emplace_back(Vertex3DN{P0.x,  P0.y,  P0.z,  length/rx, P0.y / ry, n.x, n.y, n.z});
+        vertices.emplace_back(Vertex3DN{P0l.x, P0l.y, P0l.z, length/rx, P0l.y /ry, n.x, n.y, n.z});
+        vertices.emplace_back(Vertex3DN{P1.x,  P1.y,  P1.z,  (length+inc)/rx, P1.y /ry, n.x, n.y, n.z});
+        vertices.emplace_back(Vertex3DN{P1l.x, P1l.y, P1l.z, (length+inc)/rx, P1l.y /ry, n.x, n.y, n.z});
+        length +=inc;
+        indices.emplace_back(c);
+        indices.emplace_back(c+2);
+        indices.emplace_back(c+3);
+        indices.emplace_back(c+1);
+        indices.emplace_back(c);
+        indices.emplace_back(c+3);
+        c+=4;
+    }
+    // left
+    {
+        glm::vec3 P0 = m_topPoints[0];
+        glm::vec3 P1 = m_topPoints[1];
+        glm::vec3 P0l = P0;
+        glm::vec3 P1l = P1;
+        P0l.y = (par ? P0.y - h : h);
+        P1l.y = (par ? P1.y - h : h);
+        glm::vec3 n1 = glm::normalize(glm::cross(P1 - P0, monkey::up));
+        vertices.emplace_back(Vertex3DN{P0.x, P0.y, P0.z, 0.0f, P0.y / ry, n1.x, n1.y, n1.z});
+        vertices.emplace_back(Vertex3DN{P0l.x, P0l.y, P0l.z, 0.0f, P0l.y / ry, n1.x, n1.y, n1.z});
+        vertices.emplace_back(Vertex3DN{P1.x, P1.y, P1.z, d / rx, P1.y / ry, n1.x, n1.y, n1.z});
+        vertices.emplace_back(Vertex3DN{P1l.x, P1l.y, P1l.z, d / rx, P1l.y / ry, n1.x, n1.y, n1.z});
+        indices.emplace_back(c);
+        indices.emplace_back(c+1);
+        indices.emplace_back(c+3);
+        indices.emplace_back(c);
+        indices.emplace_back(c+3);
+        indices.emplace_back(c+2);
+        c+=4;
+    }
+    // right
+    {
+        glm::vec3 P0 = m_topPoints[m_topPoints.size()-2];
+        glm::vec3 P1 = m_topPoints[m_topPoints.size()-1];
+        glm::vec3 P0l = P0;
+        glm::vec3 P1l = P1;
+        P0l.y = (par ? P0.y - h : h);
+        P1l.y = (par ? P1.y - h : h);
+        glm::vec3 n1 = glm::normalize(glm::cross(monkey::up, P1 - P0));
+        vertices.emplace_back(Vertex3DN{P0.x, P0.y, P0.z, 0.0f, P0.y / ry, n1.x, n1.y, n1.z});
+        vertices.emplace_back(Vertex3DN{P0l.x, P0l.y, P0l.z, 0.0f, P0l.y / ry, n1.x, n1.y, n1.z});
+        vertices.emplace_back(Vertex3DN{P1.x, P1.y, P1.z, d / rx, P1.y / ry, n1.x, n1.y, n1.z});
+        vertices.emplace_back(Vertex3DN{P1l.x, P1l.y, P1l.z, d / rx, P1l.y / ry, n1.x, n1.y, n1.z});
+        indices.emplace_back(c);
+        indices.emplace_back(c+2);
+        indices.emplace_back(c+3);
+        indices.emplace_back(c+1);
+        indices.emplace_back(c);
+        indices.emplace_back(c+3);
+        c+=4;
+    }
+
+
     sideMesh->Init(vertices, indices);
     return sideMesh;
 

@@ -17,5 +17,5 @@ public:
 private:
     std::shared_ptr<IMesh> CreateTopMesh (const std::vector<float>& points, float d, const std::string&, float rx, float rz);
     std::shared_ptr<IMesh> CreateSideMesh (const std::vector<float>& points, float d, float h, const std::string&, float rx, float rz, bool parallel);
-
+    std::vector<glm::vec3> m_topPoints;
 };
