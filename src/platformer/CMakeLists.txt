@@ -1,8 +1,10 @@
 cmake_minimum_required(VERSION 3.3)
 
 
-file(GLOB PLATFORMER_INCLUDE ${INCLUDE_DIR}/platformer/*.h ${INCLUDE_DIR}/platformer/components/*.h ${INCLUDE_DIR}/platformer/activities/*.h ${INCLUDE_DIR}/platformer/states/*.h ${INCLUDE_DIR}/platformer/input/*.h)
-file(GLOB PLATFORMER_SRC *.cpp components/*.cpp activities/*.cpp states/*.cpp input/*.cpp lua/*.cpp)
+file(GLOB PLATFORMER_INCLUDE ${INCLUDE_DIR}/platformer/*.h ${INCLUDE_DIR}/platformer/components/*.h
+        ${INCLUDE_DIR}/platformer/activities/*.h ${INCLUDE_DIR}/platformer/states/*.h
+        ${INCLUDE_DIR}/platformer/input/*.h ${INCLUDE_DIR}/platformer/factories/*.h)
+file(GLOB PLATFORMER_SRC *.cpp components/*.cpp activities/*.cpp states/*.cpp input/*.cpp lua/*.cpp factories/*.cpp)
 
 
 add_executable(platformer ${PLATFORMER_INCLUDE} ${PLATFORMER_SRC})

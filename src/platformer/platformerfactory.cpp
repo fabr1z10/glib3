@@ -2,6 +2,7 @@
 #include <platformer/factories.h>
 #include <gfx/entitywrapper.h>
 #include <platformer/luaext.h>
+#include <platformer/factories/building.h>
 #include <gfx/engine.h>
 #include <gfx/entity.h>
 #include <gfx/dynamicworld.h>
@@ -25,6 +26,9 @@ PlatformerFactory::PlatformerFactory() : SceneFactory() {
     //m_stateFactory.Add<HitJumpFactory>("hitj");
     m_stateFactory.Add<NilStateFactory>("nil");
     m_stateFactory.Add<CustomHit1StateFactory>("ch1");
+
+    m_modelFactory.Add<BuildingFactory>("building");
+
 
 }
 
