@@ -363,3 +363,9 @@ void CollisionEngine3D::Update(double dt) {
 std::type_index CollisionEngine3D::GetType() {
     return std::type_index(typeid(ICollisionEngine));
 }
+
+std::string CollisionEngine3D::toString() {
+    std::stringstream stream;
+    stream << "[CollisionEngine3D](tag = " << m_tag << ", size = (" << m_width << ", " << m_height << ", " << m_depth << "))";
+    return stream.str();
+}

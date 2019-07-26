@@ -194,7 +194,7 @@ std::shared_ptr<Entity> SceneFactory::Create() {
         }
     }
 
-    Ref::dump();
+    //Ref::dump();
     // load room-specific assets
 //    auto roomAssets = roomTable.GetVector<std::string>("assets");
 //    for (auto& a : roomAssets) {

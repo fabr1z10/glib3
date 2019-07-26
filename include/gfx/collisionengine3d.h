@@ -51,7 +51,7 @@ public:
     RayCastHit Raycast (glm::vec3 rayOrigin, glm::vec3 rayDir, float length, int mask) override ;
     ICollider* ShapeCast (std::shared_ptr<Shape>, const glm::mat4& transform, int mask) override;
 
-    std::string toString() override { return "";}
+    std::string toString() override ;
     std::type_index GetType() override;
     glm::ivec3 getCell(glm::vec3);
 private:
