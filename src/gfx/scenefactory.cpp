@@ -2,6 +2,7 @@
 #include <gfx/factories.h>
 #include <gfx/factories/modelfactories.h>
 #include <gfx/factories/prim3d.h>
+#include <gfx/factories/skeleton.h>
 #include <iostream>
 #include <gfx/engine.h>
 
@@ -81,6 +82,7 @@ SceneFactory::SceneFactory() {
     m_entityFactory.Add<TextViewFactory>("textview");
     m_entityFactory.Add<SpriteFactory>("sprite");
     m_entityFactory.Add<BoxedMessageFactory>("boxedmessage");
+    m_entityFactory.Add<SkeletonFactory>("skeleton");
     //m_entityFactory.Add<HeightMapFactory>("heightmap");
 
     m_cameraFactory.Add<OrthoCamFactory>("ortho");
