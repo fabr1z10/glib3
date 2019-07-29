@@ -111,9 +111,11 @@ std::shared_ptr<Component> GfxComponentFactory::Create(luabridge::LuaRef & ref) 
         if (draw == "outline") {
             auto mesh = MeshFactory::CreateMesh(*(shape.get()), 0.0f);
             renderer->SetModel(std::make_shared<BasicModel>(mesh));
+            renderer->SetMeshInfo(0, mesh->GetNumberOfIndices());
         } else if (draw == "solid") {
             auto mesh = MeshFactorySolid::CreateMesh(*(shape.get()), 0.0f);
             renderer->SetModel(std::make_shared<BasicModel>(mesh));
+            renderer->SetMeshInfo(0, mesh->GetNumberOfIndices());
         }
         renderer->SetTint(color);
     } else if (table.HasKey("tiledata")) {

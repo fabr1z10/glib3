@@ -3,10 +3,10 @@
 #include <gfx/error.h>
 
 // a plane3d always lies at y=0, you can only offset its x and z axes
-Plane3D::Plane3D(float width, float depth, glm::vec2 offset) : Shape(glm::vec3(offset.x, 0, offset.y)), m_width(width), m_depth(depth) {
-    glm::vec3 offset3d (offset.x, 0.0f, offset.y);
-    m_bounds.min = offset3d;
-    m_bounds.max = offset3d + glm::vec3(m_width, 0.0f, m_depth);
+Plane3D::Plane3D(float width, float depth, int plane, glm::vec3 offset) : Shape(offset), m_width(width), m_depth(depth), m_plane(plane)
+{
+    m_bounds.min = offset;
+    m_bounds.max = offset + glm::vec3(m_width, 0.0f, m_depth);
 
 }
 

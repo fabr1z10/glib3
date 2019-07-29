@@ -310,12 +310,35 @@ void MeshFactorySolid::visit(Rect& rect) {
 void MeshFactorySolid::visit(Plane3D& rect) {
     float w = rect.width();
     float h = rect.depth();
+    int p = rect.plane();
     glm::vec3 offset = rect.GetOffset();
-    std::vector<VertexColor> vertices = {
-            {offset.x, 0, offset.z, m_color.r, m_color.g, m_color.b, m_color.a},
-            {offset.x, 0, offset.z + h, m_color.r, m_color.g, m_color.b, m_color.a},
-            {offset.x + w, 0, offset.z + h, m_color.r, m_color.g, m_color.b, m_color.a},
-            {offset.x + w, 0, offset.z, m_color.r, m_color.g, m_color.b, m_color.a},
+    std::vector<VertexColor> vertices;
+    switch (p) {
+        case 0: // default xz plane
+            vertices = {
+                    {offset.x,     offset.y, offset.z,     m_color.r, m_color.g, m_color.b, m_color.a},
+                    {offset.x,     offset.y, offset.z + h, m_color.r, m_color.g, m_color.b, m_color.a},
+                    {offset.x + w, offset.y, offset.z + h, m_color.r, m_color.g, m_color.b, m_color.a},
+                    {offset.x + w, offset.y, offset.z,     m_color.r, m_color.g, m_color.b, m_color.a}
+            };
+            break;
+        case 1: // xy plane
+            vertices = {
+                    {offset.x,     offset.y + h, offset.z,     m_color.r, m_color.g, m_color.b, m_color.a},
+                    {offset.x,     offset.y,     offset.z,     m_color.r, m_color.g, m_color.b, m_color.a},
+                    {offset.x + w, offset.y,     offset.z,     m_color.r, m_color.g, m_color.b, m_color.a},
+                    {offset.x + w, offset.y + h, offset.z,     m_color.r, m_color.g, m_color.b, m_color.a}
+            };
+            break;
+        case 3: // yz plane
+            vertices = {
+                    {offset.x, offset.y + h, offset.z + w, m_color.r, m_color.g, m_color.b, m_color.a},
+                    {offset.x, offset.y,     offset.z + w, m_color.r, m_color.g, m_color.b, m_color.a},
+                    {offset.x, offset.y,     offset.z,     m_color.r, m_color.g, m_color.b, m_color.a},
+                    {offset.x, offset.y + h, offset.z,     m_color.r, m_color.g, m_color.b, m_color.a}
+            };
+            break;
+
     };
     std::vector<unsigned int> indices = {0, 1, 2, 0, 2, 3};
     auto mesh = std::make_shared<Mesh<VertexColor>>(COLOR_SHADER);

@@ -54,6 +54,7 @@ void SceneFactory::StartUp(Engine * engine) {
         for (auto& model : models) {
             Engine::get().GetAssetManager().GetModel(model);
         }
+
     }
 
     Engine::get().GetAssetManager().SetLocal(true);

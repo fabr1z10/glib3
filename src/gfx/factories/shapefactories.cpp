@@ -105,8 +105,9 @@ std::shared_ptr<Shape> Plane3DFactory::Create(luabridge::LuaRef &ref) {
     //glm::vec2 offset = at.Get<glm::vec2>("offset", glm::vec2(0.0f));
     float w = at.Get<float>("width");
     float d = at.Get<float>("depth");
-    glm::vec2 offset = at.Get<glm::vec2>("offset", glm::vec2(0.0f));
-    return std::make_shared<Plane3D>(w, d, offset);
+    int p = at.Get<int>("plane", 0);
+    glm::vec3 offset = at.Get<glm::vec3>("offset", glm::vec3(0.0f));
+    return std::make_shared<Plane3D>(w, d, p, offset);
 }
 
 std::shared_ptr<Shape> BoxFactory::Create(luabridge::LuaRef &ref) {
