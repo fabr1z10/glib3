@@ -1,6 +1,14 @@
 #include <gfx/factories/skeleton.h>
 #include <gfx/components/renderer.h>
 #include <gfx/engine.h>
+#include <gfx/components/skeletalanimator.h>
+#include <gfx/factories.h>
+
+
+std::shared_ptr<SkeletalAnimation> SkeletalAnimFactory::Create(luabridge::LuaRef &ref) {
+    throw "pippo";
+
+}
 
 std::shared_ptr<Entity> SkeletonFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
@@ -33,6 +41,17 @@ std::shared_ptr<Entity> SkeletonFactory::Create(luabridge::LuaRef &ref) {
 
     auto entity = Ref::Create<Entity>();
     entity->AddChild(bones.at(root));
+
+    auto animator = Ref::Create<SkeletalAnimator>();
+
+
+    std::vector<std::string> animations = table.GetVector<std::string>("animations");
+    for (const auto& a : animations) {
+        auto anim = Engine::get().GetAssetManager().GetSkeletalAnimation(a);
+        animator->AddAnimation(anim);
+    }
+    entity->AddComponent(animator);
+
     return entity;
 
 

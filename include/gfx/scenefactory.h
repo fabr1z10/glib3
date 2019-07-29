@@ -10,6 +10,7 @@ class LuaTable;
 class State;
 class Shape;
 class Camera;
+class SkeletalAnimation;
 
 class SceneFactory {
 public:
@@ -48,7 +49,7 @@ public:
     std::shared_ptr<Runner> makeRunner (luabridge::LuaRef ref);
     std::shared_ptr<Component> makeComponent (luabridge::LuaRef ref);
     std::shared_ptr<State> makeState (luabridge::LuaRef ref);
-
+    std::shared_ptr<SkeletalAnimation> makeSkeletalAnimation(luabridge::LuaRef ref);
 protected:
     Factory<IModel> m_modelFactory;
     Factory<Camera> m_cameraFactory;
@@ -58,6 +59,8 @@ protected:
     Factory<Component> m_componentFactory;
     Factory<Runner> m_runnerFactory;
     Factory<State> m_stateFactory;
+    Factory<SkeletalAnimation> m_skeletalAnimFactory;
+
     //Factory<StateInitializer> m_stateInitFactory;
     //Factory<StateBehaviour> m_stateBehaviorFactory;
 };
@@ -87,3 +90,6 @@ inline std::shared_ptr<State> SceneFactory::makeState (luabridge::LuaRef ref) {
     return m_stateFactory.Create(ref);
 }
 
+inline std::shared_ptr<SkeletalAnimation> SceneFactory::makeSkeletalAnimation(luabridge::LuaRef ref) {
+    return m_skeletalAnimFactory.Create(ref);
+}

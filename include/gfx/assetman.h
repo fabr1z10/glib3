@@ -9,6 +9,7 @@
 #include <gfx/tex.h>
 #include <gfx/mesh.h>
 #include <gfx/imodel.h>
+#include <gfx/skeletalanimation.h>
 #include <gfx/error.h>
 #include <gfx/lua/luawrapper.h>
 
@@ -78,6 +79,13 @@ private:
     std::unique_ptr<luabridge::LuaRef> m_modelLocation;
 };
 
+class SkeletalAnimationBuilder {
+public:
+    void Init();
+    std::shared_ptr<SkeletalAnimation> operator() (const std::string&) const;
+private:
+    std::unique_ptr<luabridge::LuaRef> m_modelLocation;
+};
 
 
 
@@ -88,12 +96,14 @@ public:
     std::shared_ptr<Font> GetFont (const std::string&);
     std::shared_ptr<Tex> GetTex (const std::string&);
     std::shared_ptr<IModel> GetModel (const std::string&);
+    std::shared_ptr<SkeletalAnimation> GetSkeletalAnimation (const std::string&);
     void SetLocal (bool);
     void CleanUp();
 private:
     AssetStore<Font, FontBuilder> m_fonts2;
     AssetStore<Tex, TexBuilder> m_textures2;
     AssetStore<IModel, ModelBuilder> m_models2;
+    AssetStore<SkeletalAnimation, SkeletalAnimationBuilder> m_skeletalAnimations;
 
 };
 
@@ -109,3 +119,6 @@ inline std::shared_ptr<IModel> AssetManager::GetModel (const std::string& id) {
     return m_models2.Get(id);
 }
 
+inline std::shared_ptr<SkeletalAnimation> AssetManager::GetSkeletalAnimation(const std::string & id) {
+    return m_skeletalAnimations.Get(id);
+}

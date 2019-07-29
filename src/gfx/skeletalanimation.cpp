@@ -36,3 +36,12 @@ void SkeletalAnimation::init() {
 
 
 }
+
+SkeletalAnimationState SkeletalAnimation::getTransformation(float t) {
+    SkeletalAnimationState state;
+    for (const auto& i : m_interpolants) {
+        double value = alglib::spline1dcalc(*(i.second.get()), t);
+        state.bones.push_back(BoneInfo {i.first, value});
+    }
+    return state;
+}

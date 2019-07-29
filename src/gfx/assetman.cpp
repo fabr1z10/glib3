@@ -10,6 +10,7 @@ void AssetManager::Init() {
     m_fonts2.Init();
     m_models2.Init();
     m_textures2.Init();
+    m_skeletalAnimations.Init();
 }
 
 void FontBuilder::Init() {
@@ -28,6 +29,13 @@ void ModelBuilder::Init() {
     m_modelLocation = std::make_unique<luabridge::LuaRef>(LuaWrapper::GetGlobalPath({"engine", "assets", "models"}));
     if (m_modelLocation->isNil()) {
         GLIB_FAIL("Mmmh, unknown model location!");
+    }
+}
+
+void SkeletalAnimationBuilder::Init() {
+    m_modelLocation = std::make_unique<luabridge::LuaRef>(LuaWrapper::GetGlobalPath({"engine", "assets", "animations"}));
+    if (m_modelLocation->isNil()) {
+        GLIB_FAIL("Mmmh, unknown animation location!");
     }
 }
 
@@ -56,6 +64,17 @@ std::shared_ptr<IModel> ModelBuilder::operator()(const std::string & modelId) co
     }
     auto asset = Engine::get().GetSceneFactory()->makeModel(modelDef);
     return asset;
+}
+
+std::shared_ptr<SkeletalAnimation> SkeletalAnimationBuilder::operator()(const std::string & animId) const {
+    std::cout << "*** load animation " << animId << " ... \n";
+    luabridge::LuaRef modelDef = m_modelLocation->operator[](animId);
+    if (modelDef.isNil()) {
+        return nullptr;
+    }
+    auto asset = Engine::get().GetSceneFactory()->makeSkeletalAnimation(modelDef);
+    return asset;
+
 }
 
 std::shared_ptr<Tex> TexBuilder::operator()(const std::string & file) const {

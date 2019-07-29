@@ -17,6 +17,10 @@ private:
 };
 
 
+inline const std::unordered_map<std::string, float>& KeyFrame::getAngles() const {
+    return m_angles;
+}
+
 struct BoneInfo {
     std::string name;
     float angle;
@@ -40,3 +44,11 @@ private:
     std::unordered_map<float, KeyFrame> m_keyFrames;
     std::unordered_map<std::string, std::unique_ptr<alglib::spline1dinterpolant>> m_interpolants;
 };
+
+inline std::string SkeletalAnimation::getName() const {
+    return m_name;
+}
+
+inline float SkeletalAnimation::getDuration() const {
+    return m_duration;
+}

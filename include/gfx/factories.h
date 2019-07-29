@@ -16,6 +16,7 @@ class State;
 class Activity;
 class IMesh;
 class Model;
+class SkeletalAnimation;
 class IFrameChangeHandler;
 
 #define FACTORY(name, type) \
@@ -141,6 +142,7 @@ FACTORY(WaitClickActFactory, Activity)
 FACTORY(TreeMoveActFactory, Activity);
 FACTORY(SetActiveActFactory, Activity);
 
+FACTORY(SkeletalAnimFactory, SkeletalAnimation)
 // Asset
 
 //FACTORY(SimpleModelFactory, IModel)
