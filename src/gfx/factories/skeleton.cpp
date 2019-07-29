@@ -6,7 +6,7 @@
 
 
 std::shared_ptr<SkeletalAnimation> SkeletalAnimFactory::Create(luabridge::LuaRef &ref) {
-    throw "pippo";
+    GLIB_FAIL("TO DO SKELETAL ANIMATION LOAD FROM REF");
 
 }
 
