@@ -8,12 +8,14 @@ public:
     SkeletalAnimator();
     SkeletalAnimator(const SkeletalAnimator&);
     virtual ~SkeletalAnimator() {}
-    void AddAnimation (std::shared_ptr<SkeletalAnimation> anim);
+    void AddAnimation (const std::string& id, std::shared_ptr<SkeletalAnimation> anim);
+    void AddBone (const std::string& id, Entity* bone);
     void Start() override;
     void Update(double dt) override;
     void SetAnimation (const std::string& anim, bool forward = true);
     std::string GetAnimation() const;
     std::shared_ptr<Component> clone() const override;
+
     using ParentClass = SkeletalAnimator;
 protected:
     std::unordered_map<std::string, std::shared_ptr<SkeletalAnimation>> m_animations;

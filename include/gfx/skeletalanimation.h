@@ -9,7 +9,7 @@
 class KeyFrame {
 public:
     KeyFrame();
-    void AddAngle (const std::string&, glm::vec3);
+    void AddAngle (const std::string&, float);
     const std::unordered_map<std::string, float>& getAngles() const;
 private:
     glm::vec2 offset;
@@ -33,21 +33,17 @@ struct SkeletalAnimationState {
 
 class SkeletalAnimation {
 public:
-    SkeletalAnimation(const std::string&);
+    SkeletalAnimation(float duration) : m_duration(duration) {}
     SkeletalAnimationState getTransformation (float t);
     void init();
-    std::string getName() const;
     float getDuration() const;
+    void addKeyFrame (float, KeyFrame);
+
 private:
-    std::string m_name;
     float m_duration;
     std::unordered_map<float, KeyFrame> m_keyFrames;
     std::unordered_map<std::string, std::unique_ptr<alglib::spline1dinterpolant>> m_interpolants;
 };
-
-inline std::string SkeletalAnimation::getName() const {
-    return m_name;
-}
 
 inline float SkeletalAnimation::getDuration() const {
     return m_duration;

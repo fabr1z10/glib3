@@ -1,6 +1,16 @@
 #include <gfx/skeletalanimation.h>
 
 
+KeyFrame::KeyFrame() {}
+void KeyFrame::AddAngle(const std::string & boneId, float angle) {
+    m_angles.insert(std::make_pair(boneId, angle));
+
+}
+
+void SkeletalAnimation::addKeyFrame(float t, KeyFrame keyframe) {
+
+    m_keyFrames.insert(std::make_pair(t, keyframe));
+}
 void SkeletalAnimation::init() {
 
     // find the splines for all the bones involved

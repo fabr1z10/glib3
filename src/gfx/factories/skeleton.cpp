@@ -6,8 +6,32 @@
 
 
 std::shared_ptr<SkeletalAnimation> SkeletalAnimFactory::Create(luabridge::LuaRef &ref) {
-    GLIB_FAIL("TO DO SKELETAL ANIMATION LOAD FROM REF");
+    LuaTable table(ref);
+    float duration = table.Get<float>("duration");
+    auto anim = std::make_shared<SkeletalAnimation>(duration);
 
+    KeyFrame firstKeyFrame;
+    int i = 0;
+    table.ProcessVector("frames", [&anim, &i, &firstKeyFrame] (luabridge::LuaRef keyframe) {
+        LuaTable ft(keyframe);
+        float t = ft.Get<float>("t");
+        KeyFrame kf;
+        ft.ProcessVector("bones", [&kf] (luabridge::LuaRef bone) {
+            std::string boneId = bone["name"].cast<std::string>();
+            float angle = bone["angle"].cast<float>();
+            kf.AddAngle(boneId, angle);
+        });
+        anim->addKeyFrame(t, kf);
+        if (i == 0) {
+            firstKeyFrame = kf;
+        }
+        i++;
+    });
+    // add a last keyframe equal to the first in order to loop
+    anim->addKeyFrame(duration, firstKeyFrame);
+
+    anim->init();
+    return anim;
 }
 
 std::shared_ptr<Entity> SkeletonFactory::Create(luabridge::LuaRef &ref) {
@@ -18,7 +42,10 @@ std::shared_ptr<Entity> SkeletonFactory::Create(luabridge::LuaRef &ref) {
     std::unordered_map<std::string, std::shared_ptr<Entity>> bones;
     std::unordered_map<std::string, std::string> parentRelation;
     std::string root;
-    table.ProcessVector("bones", [&bones, &parentRelation, &root, factory] (luabridge::LuaRef ref) {
+
+    auto animator = Ref::Create<SkeletalAnimator>();
+
+    table.ProcessVector("bones", [&bones, &parentRelation, &root, factory, &animator] (luabridge::LuaRef ref) {
         // each bone generates a node
         LuaTable boneRef (ref);
         std::string name = boneRef.Get<std::string>("name");
@@ -32,6 +59,7 @@ std::shared_ptr<Entity> SkeletonFactory::Create(luabridge::LuaRef &ref) {
         // create the bone
         luabridge::LuaRef desc = boneRef.Get<luabridge::LuaRef>("desc");
         auto bone = factory->makeEntity(desc);
+        animator->AddBone(name, bone.get());
         bones.insert(std::make_pair(name, bone));
     });
 
@@ -42,13 +70,12 @@ std::shared_ptr<Entity> SkeletonFactory::Create(luabridge::LuaRef &ref) {
     auto entity = Ref::Create<Entity>();
     entity->AddChild(bones.at(root));
 
-    auto animator = Ref::Create<SkeletalAnimator>();
 
 
     std::vector<std::string> animations = table.GetVector<std::string>("animations");
     for (const auto& a : animations) {
         auto anim = Engine::get().GetAssetManager().GetSkeletalAnimation(a);
-        animator->AddAnimation(anim);
+        animator->AddAnimation(a, anim);
     }
     entity->AddComponent(animator);
 

@@ -13,9 +13,9 @@ std::shared_ptr<Component> SkeletalAnimator::clone() const {
     return std::make_shared<SkeletalAnimator>(SkeletalAnimator(*this));
 }
 
-void SkeletalAnimator::AddAnimation(std::shared_ptr<SkeletalAnimation> anim) {
-    if (m_initAnim.empty()) m_initAnim = anim->getName();
-    m_animations.insert(std::make_pair(anim->getName(), anim));
+void SkeletalAnimator::AddAnimation(const std::string& name, std::shared_ptr<SkeletalAnimation> anim) {
+    if (m_initAnim.empty()) m_initAnim = name;
+    m_animations.insert(std::make_pair(name, anim));
 }
 
 void SkeletalAnimator::Start() {
@@ -23,6 +23,10 @@ void SkeletalAnimator::Start() {
         SetAnimation(m_initAnim);
     }
 
+}
+
+void SkeletalAnimator::AddBone(const std::string &id, Entity *bone) {
+    m_bones.insert(std::make_pair(id, bone));
 }
 
 
