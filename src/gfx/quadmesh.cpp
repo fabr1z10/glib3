@@ -34,6 +34,32 @@ QuadMesh::QuadMesh(const std::string& filename, float width, float height,
     
 }
 
+QuadMesh::QuadMesh(const std::string& filename, float width, float height, glm::vec2 offset, int tx, int ty, int tw, int th) : Mesh<Vertex3D>(TEXTURE_SHADER) {
+    m_primitive = GL_TRIANGLES;
+    auto tex = Engine::get().GetAssetManager().GetTex(filename);
+    m_texId = tex->GetTexId();
+    // if one dimension is zero, keep aspect ratio
+    if (width == 0) {
+        width = height * (static_cast<float>(tw)/th);
+    }
+    if (height == 0) {
+        height = width * (static_cast<float>(th)/tw);
+    }
+    float texWidth = static_cast<float>(tex->GetWidth());
+    float texHeight = static_cast<float>(tex->GetHeight());
+    std::vector<Vertex3D> vertices;
+    vertices = {
+            {offset.x,         offset.y,          0, tx/texWidth, (ty+th)/texHeight },
+            {offset.x + width, offset.y,          0, (tx+tw)/texWidth, (ty+th)/texHeight},
+            {offset.x + width, offset.y + height, 0, (tx+tw)/texWidth, ty/texHeight},
+            {offset.x,         offset.y + height, 0, tx/texWidth, ty/texHeight}
+    };
+    std::vector<unsigned int> indices{ 0, 1, 3, 3, 2, 1 };
+    Init(vertices, indices);
+
+}
+
+
 QuadMesh::QuadMesh(const std::string& filename, int rows, int cols, float size, std::vector<int>& data, int spriteSheetRows, int spriteSheetCols)
 : Mesh<Vertex3D>(TEXTURE_SHADER) {
     m_primitive = GL_TRIANGLES;

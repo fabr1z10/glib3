@@ -78,10 +78,17 @@ std::shared_ptr<Component> GfxComponentFactory::Create(luabridge::LuaRef & ref) 
         std::string image = table.Get<std::string>("image");
         float w = table.Get<float>("width", 0.0f);
         float h = table.Get<float>("height", 0.0f);
-        glm::vec2 repeat = table.Get<glm::vec2>("rep", glm::vec2(1.0f, 1.0f));
-        glm::vec2 skew = table.Get<glm::vec2>("skew", glm::vec2(0.0f, 0.0f));
         glm::vec2 offset = table.Get<glm::vec2>("offset", glm::vec2(0.0f));
-        auto mesh = std::make_shared<QuadMesh>(image, w, h, repeat.x, repeat.y, skew.x, skew.y, offset);
+        std::shared_ptr<IMesh> mesh;
+        if (table.HasKey("quad")) {
+            glm::ivec4 quad = table.Get<glm::ivec4>("quad");
+            mesh = std::make_shared<QuadMesh>(image, w, h, offset, quad[0], quad[1], quad[2], quad[3]);
+
+        } else {
+            glm::vec2 repeat = table.Get<glm::vec2>("rep", glm::vec2(1.0f, 1.0f));
+            glm::vec2 skew = table.Get<glm::vec2>("skew", glm::vec2(0.0f, 0.0f));
+            mesh = std::make_shared<QuadMesh>(image, w, h, repeat.x, repeat.y, skew.x, skew.y, offset);
+        }
         renderer->SetModel(std::make_shared<BasicModel>(mesh));
 
 //    } else if (table.HasKey("model")) {
