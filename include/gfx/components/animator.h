@@ -1,6 +1,6 @@
 #pragma once
 
-#include <gfx/component.h>
+#include <gfx/components/ianimator.h>
 #include <gfx/spritemesh.h>
 #include <gfx/model/spritemodel.h>
 #include <gfx/event.h>
@@ -26,7 +26,7 @@ public:
 
 // the animator is the component used to change the sprite animation
 // and updating frames.
-class Animator : public Component {
+class Animator : public IAnimator {
 public:
     Animator(std::shared_ptr<IModel> model);
     Animator(const Animator&);
@@ -34,12 +34,12 @@ public:
     void Start() override;
     void Update(double dt) override;
     void SetInitialAnimation (const std::string& anim);
-    void SetAnimation (const std::string& anim, bool forward = true);
+    void SetAnimation (const std::string& anim, bool forward = true) override;
     std::string GetAnimation() const;
     //virtual void SetAnimation (const std::string& node, const std::string& anim) = 0;
     //bool HasAnimation(const std::string&) = 0;
     //virtual bool HasAnimation(const std::string&, const std::string&) = 0;
-    bool IsComplete() const;
+    bool IsComplete() const override;
     int GetFrame() const;
     void SetPlayForward (bool);
     std::shared_ptr<SpriteModel> GetModel();
@@ -48,6 +48,8 @@ public:
     //virtual void LoadState(std::shared_ptr<AnimatorState>) = 0;
     std::shared_ptr<Component> clone() const override;
     using ParentClass = Animator;
+    std::type_index GetType() override;
+
     Event<Animator*> onFrameUpdate;
 protected:
 
@@ -88,4 +90,9 @@ inline std::shared_ptr<SpriteModel> Animator::GetModel() {
 
 inline std::string Animator::GetAnimation() const {
     return m_animation;
+}
+
+
+inline std::type_index Animator::GetType() {
+    return std::type_index(typeid(IAnimator));
 }

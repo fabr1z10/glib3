@@ -39,7 +39,7 @@ void PlatformerState::AttachStateMachine(StateMachine * sm) {
     if (m_input == nullptr) {
         GLIB_FAIL("Walk state requires an <InputMethod> component!");
     }
-    m_animator = m_entity->GetComponent<Animator>();
+    m_animator = m_entity->GetComponent<IAnimator>();
 
 
 }

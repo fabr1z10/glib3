@@ -9,7 +9,7 @@ Animator::Animator(std::shared_ptr<IModel> model) : m_forward(true) {
     m_initAnim = model->GetDefaultAnimation();
 }
 
-Animator::Animator(const Animator& orig) : Component(orig), m_animInfo(orig.m_animInfo),
+Animator::Animator(const Animator& orig) : IAnimator(orig), m_animInfo(orig.m_animInfo),
 m_forward(orig.m_forward), m_initAnim(orig.m_initAnim), m_model(orig.m_model) {
     
 }
