@@ -1,8 +1,9 @@
 #include <gfx/components/skeletalanimator.h>
 #include <gfx/entity.h>
 #include <gfx/math/geom.h>
+#include <gfx/components/renderer.h>
 
-SkeletalAnimator::SkeletalAnimator() : IAnimator() {
+SkeletalAnimator::SkeletalAnimator() : IAnimator(), m_looped(false) {
 
 }
 
@@ -23,13 +24,10 @@ void SkeletalAnimator::Start() {
     if (!m_initAnim.empty()) {
         SetAnimation(m_initAnim);
     }
-    m_thighLength = m_bonesLength.at("rthigh");
-    m_shinLength = m_bonesLength.at("rshin");
 
-    m_angles["rthigh"] =m_bones.at("rthigh")->GetAngle();
-    m_angles["rshin"] =m_bones.at("rshin")->GetAngle();
-    m_angles["lthigh"] =m_bones.at("lthigh")->GetAngle();
-    m_angles["lshin"] =m_bones.at("lshin")->GetAngle();
+    m_ls =m_bones.at("lshin")->GetComponent<Renderer>();
+    m_rs =m_bones.at("rshin")->GetComponent<Renderer>();
+
 }
 
 void SkeletalAnimator::AddBone(const std::string &id, Entity *bone, float length) {
@@ -39,9 +37,11 @@ void SkeletalAnimator::AddBone(const std::string &id, Entity *bone, float length
 
 
 void SkeletalAnimator::Update(double dt) {
+    float oldTime = m_time;
     m_time += dt;
     float duration = m_currentAnim->getDuration();
     if (m_time >= duration) {
+        m_looped = true;
         m_time = m_time - duration;
     }
 
@@ -49,20 +49,28 @@ void SkeletalAnimator::Update(double dt) {
     for (const auto& b : state.bones) {
         // set the correct angle for each bone
         m_bones.at(b.name)->SetAngle(b.angle);
-        m_angles[b.name] = b.angle * deg2rad;
     }
 
-
+    // check attacks
+    m_currentAnim->checkAttack(oldTime, m_time);
 
     // update position of torso ... thisshould be in a subclass like human figure skeletal animator
-    float rta = m_angles.at("rthigh");
-    float rsa = m_angles.at("rshin");
-    float lta = m_angles.at("lthigh");
-    float lsa = m_angles.at("lshin");
-    float yR = m_thighLength * cos(rta) + m_shinLength * cos(rta+rsa);
-    float yL = m_thighLength * cos(lta) + m_shinLength * cos(lta+lsa);
-    float yOffset = std::max(yR, yL);
-    m_bones.at("torso")->SetPosition(glm::vec3(0, yOffset, 0));
+
+    auto b = m_rs->GetBounds();
+    const auto& tr = m_rs->GetObject()->GetWorldTransform();
+    b.Transform(tr);
+    auto c = m_ls->GetBounds();
+    const auto& tr2 = m_ls->GetObject()->GetWorldTransform();
+    c.Transform(tr2);
+    auto torso = m_bones.at("torso");
+    glm::vec3 torsoPos = torso->GetPosition();
+    float yMin = std::min(b.min.y, c.min.y);
+    float dist = fabs(torsoPos.y - yMin);
+//    glm::vec3 currentPos = m_entity->GetPosition();
+//
+//    float delta = fabs(currentPos.y-b.min.y);
+    torso->SetPosition(glm::vec3(0, dist, 0));
+    //m_bones.at("torso")->SetPosition(glm::vec3(0, yOffset, 0));
 
 }
 
@@ -77,14 +85,14 @@ void SkeletalAnimator::SetAnimation(const std::string &anim, bool forward) {
     m_time = 0.0;
     m_animation = anim;
     m_currentAnim = m_animations.at(anim).get();
-
+    m_looped=false;
 }
 
-std::string SkeletalAnimator::GetAnimation() const {
-    return m_animation;
-}
+//std::string SkeletalAnimator::GetAnimation() const {
+//    return m_animation;
+//}
 
 
 bool SkeletalAnimator::IsComplete() const {
-    return false;
+    return m_looped;
 }

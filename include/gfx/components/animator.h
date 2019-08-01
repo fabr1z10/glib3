@@ -58,7 +58,7 @@ protected:
     std::string m_initAnim;
     std::shared_ptr<SpriteModel> m_model;
     // the current animation
-    std::string m_animation;
+    //std::string m_animation;
     double m_time;
     int m_inc;
     // the current frame
@@ -88,9 +88,9 @@ inline std::shared_ptr<SpriteModel> Animator::GetModel() {
     return m_model;
 }
 
-inline std::string Animator::GetAnimation() const {
-    return m_animation;
-}
+//inline std::string Animator::GetAnimation() const {
+//    return m_animation;
+//}
 
 
 inline std::type_index Animator::GetType() {

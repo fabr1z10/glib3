@@ -7,6 +7,37 @@ void KeyFrame::AddAngle(const std::string & boneId, float angle) {
 
 }
 
+void SkeletalAnimation::checkAttack(float t0, float t1) {
+    if (!m_hasAttack) {
+        return;
+    }
+
+    if (t0 <=m_attackTime && t1 >= m_attackTime) {
+
+        // do a shapecast!
+        std::cout <<" **** hit ****\n";
+//        std::cout << "character at position = " << t[3][0] << ", " << t[3][1] << " scale " << t[0][0] << "\n";
+//        auto e = m_engine->ShapeCast(bi.m_attackShape, t, attackInfo.second);
+//
+//        if (e != nullptr) {
+//            std::cerr << "HIT!\n";
+//            auto rm = m_engine->GetResponseManager();
+//            if (rm == nullptr) {
+//                std::cerr << "no handler!\n";
+//            }
+//            auto handler = rm->GetHandler(attackInfo.first, e->GetCollisionTag());
+//            if (handler.response != nullptr) {
+//                std::cerr << "FOUND RESPONSE\n";
+//                if (handler.flip) {
+//                    handler.response->onStart(e->GetObject(), m_entity, CollisionReport());
+//                } else {
+//                    handler.response->onStart(m_entity, e->GetObject(), CollisionReport());
+//                }
+//            }
+//        }
+    }
+}
+
 void SkeletalAnimation::addKeyFrame(float t, KeyFrame keyframe) {
 
     m_keyFrames.insert(std::make_pair(t, keyframe));

@@ -27,6 +27,15 @@ std::shared_ptr<SkeletalAnimation> SkeletalAnimFactory::Create(luabridge::LuaRef
         }
         i++;
     });
+
+    if (table.HasKey("attack")) {
+        table.ProcessVector("attack", [&anim](luabridge::LuaRef attack) {
+            LuaTable at(attack);
+            float t = at.Get<float>("time");
+            std::string bone = at.Get<std::string>("bone");
+            anim->addAttack(t, bone);
+        });
+    }
     // add a last keyframe equal to the first in order to loop
     anim->addKeyFrame(duration, firstKeyFrame);
 
