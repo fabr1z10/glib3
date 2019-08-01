@@ -38,8 +38,22 @@ private:
     Bounds GetDynamicBoundsI() const override;
     Bounds m_maxBounds;
     std::unordered_map<std::string, Bounds> m_animationBounds;
+    std::unordered_map<std::string, glm::ivec2> m_animMeshInfo;
     int m_flag;
     int m_mask;
     int m_tag;
 
 };
+
+
+inline int SkeletalCollider::GetCollisionTag() const {
+    return m_tag;
+}
+
+inline int SkeletalCollider::GetCollisionFlag() const {
+    return m_flag;
+}
+
+inline int SkeletalCollider::GetCollisionMask() const {
+    return m_mask;
+}

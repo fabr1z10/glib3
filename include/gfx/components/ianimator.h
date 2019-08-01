@@ -5,7 +5,7 @@
 
 class IAnimator : public Component {
 public:
-    std::string GetAnimation() ;
+    std::string GetAnimation() const ;
     virtual void SetAnimation (const std::string& anim, bool forward = true) = 0;
     virtual bool IsComplete() const = 0;
     using ParentClass = IAnimator;
@@ -15,6 +15,6 @@ protected:
     std::string m_animation;
 };
 
-inline std::string IAnimator::GetAnimation() {
+inline std::string IAnimator::GetAnimation() const {
     return m_animation;
 }

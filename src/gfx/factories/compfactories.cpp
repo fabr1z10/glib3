@@ -10,6 +10,7 @@
 #include <gfx/quadmesh.h>
 #include <gfx/meshfactory.h>
 #include <gfx/components/smartcollider.h>
+#include <gfx/components/skeletalcollider.h>
 #include <gfx/components/scripthotspot.h>
 #include <gfx/components/luakeylistener.h>
 #include <gfx/components/depth.h>
@@ -237,6 +238,26 @@ std::shared_ptr<Component> SmartColliderComponentFactory::Create(luabridge::LuaR
     return coll;
 }
 
+std::shared_ptr<Component> SkeletalColliderComponentFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    int tag = table.Get<int>("tag");
+    int flag = table.Get<int>("flag");
+    int mask = table.Get<int>("mask");
+    auto coll = Ref::Create<SkeletalCollider>(flag, mask, tag);
+    table.ProcessVector("bounds", [coll] (luabridge::LuaRef ref) {
+
+        LuaTable t(ref);
+        std::string anim = t.Get<std::string>("anim");
+        float x = t.Get<float>("x");
+        float y = t.Get<float>("y");
+        float width = t.Get<float>("width");
+        float height = t.Get<float>("height");
+        coll->addBound(anim, x, y, width, height);
+    });
+
+    return coll;
+
+}
 
 
 std::shared_ptr<Component> ParallaxComponentFactory::Create(luabridge::LuaRef &ref) {

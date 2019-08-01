@@ -57,6 +57,7 @@ FACTORY(ColliderComponentFactory, Component)
 //FACTORY(Collider3DComponentFactory, Component)
 
 FACTORY(SmartColliderComponentFactory, Component)
+FACTORY(SkeletalColliderComponentFactory, Component)
 FACTORY(StateMachineComponentFactory, Component)
 FACTORY(HotSpotComponentFactory, Component)
 FACTORY(DepthComponentFactory, Component)

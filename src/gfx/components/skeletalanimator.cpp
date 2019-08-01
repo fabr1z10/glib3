@@ -86,6 +86,7 @@ void SkeletalAnimator::SetAnimation(const std::string &anim, bool forward) {
     m_animation = anim;
     m_currentAnim = m_animations.at(anim).get();
     m_looped=false;
+    onAnimationChange.Fire(this);
 }
 
 //std::string SkeletalAnimator::GetAnimation() const {
@@ -96,3 +97,5 @@ void SkeletalAnimator::SetAnimation(const std::string &anim, bool forward) {
 bool SkeletalAnimator::IsComplete() const {
     return m_looped;
 }
+
+

@@ -95,6 +95,7 @@ SceneFactory::SceneFactory() {
     m_componentFactory.Add<ColliderComponentFactory>("collider");
 
     m_componentFactory.Add<SmartColliderComponentFactory>("smartcollider");
+    m_componentFactory.Add<SkeletalColliderComponentFactory>("skeletalcolliderr");
 
     m_componentFactory.Add<Controller2DComponentFactory>("controller2d");
     m_componentFactory.Add<Controller3DComponentFactory>("controller3d");

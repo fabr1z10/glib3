@@ -35,7 +35,7 @@ public:
     void Update(double dt) override;
     void SetInitialAnimation (const std::string& anim);
     void SetAnimation (const std::string& anim, bool forward = true) override;
-    std::string GetAnimation() const;
+    //std::string GetAnimation() const;
     //virtual void SetAnimation (const std::string& node, const std::string& anim) = 0;
     //bool HasAnimation(const std::string&) = 0;
     //virtual bool HasAnimation(const std::string&, const std::string&) = 0;
