@@ -3,7 +3,7 @@
 #include <gfx/components/statemachine.h>
 #include <unordered_map>
 
-class Animator;
+class IAnimator;
 
 class StateCharacter : public StateMachine {
 public:
@@ -45,6 +45,6 @@ public:
     std::shared_ptr<State> clone() const override;
 private:
     const StateCharacter* m_state;
-    Animator* m_animator;
+    IAnimator* m_animator;
     std::string m_id;
 };

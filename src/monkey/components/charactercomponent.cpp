@@ -17,7 +17,7 @@ std::shared_ptr<Component> StateCharacter::clone() const {
 
 void AnimateCharState::AttachStateMachine(StateMachine * sm) {
     m_state = dynamic_cast<const StateCharacter*>(sm);
-    m_animator = sm->GetObject()->GetComponent<Animator>();
+    m_animator = sm->GetObject()->GetComponent<IAnimator>();
 }
 
 void AnimateCharState::Init() {

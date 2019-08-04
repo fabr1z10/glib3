@@ -3,14 +3,13 @@
 #include <gfx/entity.h>
 #include <gfx/error.h>
 
-Animator::Animator(std::shared_ptr<IModel> model) : m_forward(true) {
+Animator::Animator(std::shared_ptr<IModel> model) : IAnimator() {
     m_model = std::dynamic_pointer_cast<SpriteModel>(model);
     m_animInfo = m_model->GetAnimInfo();
     m_initAnim = model->GetDefaultAnimation();
 }
 
-Animator::Animator(const Animator& orig) : IAnimator(orig), m_animInfo(orig.m_animInfo),
-m_forward(orig.m_forward), m_initAnim(orig.m_initAnim), m_model(orig.m_model) {
+Animator::Animator(const Animator& orig) : IAnimator(orig), m_animInfo(orig.m_animInfo), m_model(orig.m_model) {
     
 }
 

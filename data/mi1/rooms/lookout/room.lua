@@ -42,3 +42,10 @@ local entry_cutscene = function()
 end
 
 table.insert(room.initstuff, entry_cutscene)
+
+table.insert(room.initstuff, glib.curry (mi.addStorekeeper, { 
+	pos = {240, 30, 0}, 
+	parent="lookout.walkarea", 
+	from = "village1",
+	walkto = { items["lookout.path"].hotspot.walk_to }
+}))

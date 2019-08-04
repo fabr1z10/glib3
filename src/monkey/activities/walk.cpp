@@ -48,24 +48,25 @@ void Walk::Start() {
     m_shape = walkArea->GetShape();
     auto blockedLines = walkArea->GetActiveWalls();
 
-    glm::vec2 currentPos(actor->GetPosition());
+    glm::vec3 currentPos(actor->GetPosition());
 
     // if current position is not in shape
     if (!m_shape->isPointInside(currentPos)) {
         glm::vec2 p = ClosestPointOnEdge::Find(*(m_shape), currentPos);
         actor->SetPosition(p);
-        currentPos = p;
+        currentPos = glm::vec3(p, 0.0f);
 
     }
 
     // if target point is not in shape
-    if (!m_shape->isPointInside(m_p)) {
+    if (!m_shape->isPointInside(glm::vec3(m_p, 0.0f))) {
         m_p = ClosestPointOnEdge::Find(*(m_shape), m_p);
     }
 
 
+    glm::vec2 pos2d(currentPos);
+    glm::vec2 delta = m_p - pos2d;
 
-    glm::vec2 delta = m_p - currentPos;
     if (delta != glm::vec2(0.0f))
     {
         std::vector<glm::vec2> points = ShortestPath::Find(*m_shape, currentPos, m_p);
@@ -77,7 +78,7 @@ void Walk::Start() {
         setStateAction->SetId(m_actorId);
         Push(setStateAction);
         for (size_t i = 1; i < points.size(); ++i) {
-            delta = points[i] - currentPos;
+            delta = points[i] - pos2d;
             float length = glm::length(delta);
             if (delta == glm::vec2(0.0f))
                 continue;
@@ -86,7 +87,7 @@ void Walk::Start() {
             // If it does, this is the last movement and it will end here
             float tMin = 1.0;
             for (auto& b : blockedLines) {
-                float t = LineSegmentIntersection(currentPos, points[i], b.A, b.B);
+                float t = LineSegmentIntersection(pos2d, points[i], b.A, b.B);
                 if (t > 0) {
                     tMin = std::min(tMin, t);
                 }
@@ -107,9 +108,9 @@ void Walk::Start() {
             }
 
             Push(std::make_shared<Turn>(m_actorId, dir));
-            Push(std::make_shared<MoveToScaled>(m_actorId, currentPos + length * glm::normalize(delta), speed, false, false));
+            Push(std::make_shared<MoveToScaled>(m_actorId, pos2d + length * glm::normalize(delta), speed, false, false));
             //if (i == points.size() - 1 || tMin < 1.0)
-            currentPos = points[i];
+            pos2d = points[i];
             if (tMin < 1.0)
             {
                 // I hit a wall!

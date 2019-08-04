@@ -20,8 +20,21 @@ QuadMesh::QuadMesh(const std::string& filename, float width, float height,
     m_primitive = GL_TRIANGLES;
     auto tex = Engine::get().GetAssetManager().GetTex(filename);
     m_texId = tex->GetTexId();
-    if (width == 0) width = tex->GetWidth();
-    if (height == 0) height = tex->GetHeight();
+
+    if (width == 0) {
+        if (height != 0) {
+            width = height * (static_cast<float>(tex->GetWidth())/tex->GetHeight());
+        } else {
+            width = tex->GetWidth();
+        }
+    }
+    if (height == 0) {
+        if (width != 0) {
+            height = width * (static_cast<float>(tex->GetHeight())/tex->GetWidth());
+        } else {
+            height = tex->GetHeight();
+        }
+    }
     std::vector<Vertex3D> vertices;
     vertices = {
         {offset.x,         offset.y,          0, 0,               repeaty},

@@ -33,7 +33,7 @@ public:
     virtual ~Animator() {}
     void Start() override;
     void Update(double dt) override;
-    void SetInitialAnimation (const std::string& anim);
+
     void SetAnimation (const std::string& anim, bool forward = true) override;
     //std::string GetAnimation() const;
     //virtual void SetAnimation (const std::string& node, const std::string& anim) = 0;
@@ -41,7 +41,6 @@ public:
     //virtual bool HasAnimation(const std::string&, const std::string&) = 0;
     bool IsComplete() const override;
     int GetFrame() const;
-    void SetPlayForward (bool);
     std::shared_ptr<SpriteModel> GetModel();
     // allows to backup the status in order to restore it later
     //virtual std::shared_ptr<AnimatorState> SaveState()  = 0;
@@ -54,8 +53,6 @@ public:
 protected:
 
     // play animation forward
-    bool m_forward;
-    std::string m_initAnim;
     std::shared_ptr<SpriteModel> m_model;
     // the current animation
     //std::string m_animation;
@@ -72,13 +69,8 @@ protected:
 };
 
 
-inline void Animator::SetPlayForward (bool value) {
-    m_forward = value;
-}
 
-inline void Animator::SetInitialAnimation (const std::string& anim) {
-    m_initAnim = anim;
-}
+
 
 inline int Animator::GetFrame() const {
     return m_frame;

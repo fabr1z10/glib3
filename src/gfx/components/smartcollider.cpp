@@ -56,7 +56,7 @@ void SmartCollider::ofu(Animator *a) {
 }
 void SmartCollider::Start() {
     // a smart collider requires an animator
-    m_animator = m_entity->GetComponent<Animator>();
+    m_animator = dynamic_cast<Animator*>(m_entity->GetComponent<IAnimator>());
     m_model = dynamic_cast<BoxedModel*>(m_animator->GetModel().get());
     m_animator->onFrameUpdate.Register(this, [&] (Animator* a) { this->ofu(a); });
     ICollider::Start();

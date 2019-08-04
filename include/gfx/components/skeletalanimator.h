@@ -28,7 +28,7 @@ protected:
     double m_time;
     int m_inc;
     bool m_forward;
-    std::string m_initAnim;
+    //std::string m_initAnim;
     SkeletalAnimation* m_currentAnim;
     std::unordered_map<std::string, Entity*> m_bones;
     std::unordered_map<std::string, float> m_bonesLength;

@@ -139,7 +139,21 @@ room =  {
 							{ type="follow", cam ="maincam", relativepos={0,0,5}, up={0,1,0} }
 						 },
 					},
-					factory.rect { pos = {0, 0}, img = "block1.png", width=69, height=2 },
+					factory.rect { pos = {0, 0}, img = "block1.png", width=15, height=2 },
+					{
+						pos = {0, 0, 0},
+						components = {
+							{ type ="collider", shape={type="line",A ={16*15,16*2}, B = {16*19,16*6}}, tag=10, flag = 32, mask = 0 }
+						}
+					},
+					{
+						pos = {0, 0, 0},
+						components = {
+							{ type ="collider", shape={type="line",A ={16*19,16*6}, B = {16*23,16*6}}, tag=10, flag = 32, mask = 0 }
+						}
+					},
+
+
 					--factory.goomba.create { pos = {13, 4}, flipWhenPlatformEnds = true}
 					-- {
 					-- 	pos = { 0,0,1 },

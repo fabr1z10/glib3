@@ -119,6 +119,14 @@ public:
         throw;
     }
 
+    template<typename T>
+    static T Read (luabridge::LuaRef ref, T defaultValue) {
+        if (ref.isNil())
+            return defaultValue;
+
+        return Read<T>(ref);
+    }
+
 private:
     luabridge::LuaRef m_ref;
 };

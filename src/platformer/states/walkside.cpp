@@ -59,6 +59,7 @@ void WalkSide::Run (double dt) {
         } else {
             targetVelocityX = (left ? -1.0f : 1.0f) * m_speed;
         }
+        //targetVelocityX = m_speed;
     }
 
     glm::vec3 delta =m_dynamics->step(dt, targetVelocityX, m_acceleration);

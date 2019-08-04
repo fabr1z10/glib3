@@ -15,7 +15,7 @@ void WalkTrigger::onTargetMove(Entity * e) {
         return;
 
     glm::vec3 pos = e->GetPosition();
-    bool isIn = m_shape->isPointInside(glm::vec2(pos));
+    bool isIn = m_shape->isPointInside(pos);
     if (isIn != m_isInside) {
         if (isIn) {
             onEnter();

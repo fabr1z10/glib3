@@ -10,7 +10,7 @@ Animate::Animate(const std::string& animId, bool fwd, int flipX ) : TargetActivi
 
 void Animate::Start() {
     TargetActivity::Start();
-    m_animator = m_entity->GetComponent<Animator>();
+    m_animator = m_entity->GetComponent<IAnimator>();
     if (m_animator == nullptr) {
         GLIB_FAIL("No animator found. Required for animate action\n");
     }

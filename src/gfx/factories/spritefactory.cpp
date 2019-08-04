@@ -17,7 +17,7 @@ std::shared_ptr<Entity> SpriteFactory::Create (luabridge::LuaRef& ref) {
     
     if (table.HasKey("anim")) {
         std::string anim = table.Get<std::string>("anim");
-        auto animator = entity->GetComponent<Animator>();
+        auto animator = entity->GetComponent<IAnimator>();
         animator->SetInitialAnimation(anim);
     }
 

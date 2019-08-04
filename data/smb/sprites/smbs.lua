@@ -27,18 +27,19 @@ local s = {
 
 }
 local dt=0.1
+
 models["mario"] = {
     sheet = "smb1.png",
-    type = "sprite",
+    type = "boxed_sprite",
     ppu=1,
 	animations = {
-		{ name = "idle", frames = { {duration = dt, quads = {{ id = s.mario_idle }}}}},
-		{ name = "walk", frames = {
+		{ name = "idle", box = {-8, 0, 8, 16}, frames = { {duration = dt, quads = {{ id = s.mario_idle }}}}},
+		{ name = "walk", box = {-8, 0, 8, 16}, frames = {
 			{ duration = dt, quads = {{ id = s.mario_walk_1 } }},
 			{ duration = dt, quads = {{ id = s.mario_walk_2 } }},
 			{ duration = dt, quads = {{ id = s.mario_walk_3 } }},
 		}},
-		{ name = "jump", frames = { { duration = dt, quads = {{ id = s.mario_jump }}}}},
+		{ name = "jump", box = {-8, 0, 8, 16}, frames = { { duration = dt, quads = {{ id = s.mario_jump }}}}},
 		{ name = "die", frames = { { duration = dt, quads = {{ id = s.mario_die }}}}}
 
 	}

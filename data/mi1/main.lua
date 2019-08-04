@@ -11,12 +11,13 @@ engine = {
 	    	ui = {file  = "./fonts/monkeysmall.ttf" },
     		monkey = {file  = "./fonts/MonkeyIsland-1990.ttf"}
 		},
-		models = {}
+		models = {},
+		animations = {}
 	},
 	global_assets = {
 		fonts = { "ui", "monkey" }
 	},
-	start_room = "store",
+	start_room = "lookout",
 	lang = "eng",
 	config = {
 	    default_verb = "walk",

@@ -1,4 +1,4 @@
-package.path = '/Users/fabrizioventurini/glib3/lualib/?.lua;' .. package.path
+package.path = '/home/fabrizio/glib3/lualib/?.lua;' .. package.path
 
 engine = {
     device_size = { 256, 256 },
@@ -10,9 +10,10 @@ engine = {
     	fonts = {
 	    	diag = { file  = "./fonts/arial.ttf" }
 		},
-		models = {}
+		models = {},
+		animations = {}
     },
-   	start_room = "world1_1",
+   	start_room = "test2",
     global_assets = {
 		fonts = { "diag" }
 	},

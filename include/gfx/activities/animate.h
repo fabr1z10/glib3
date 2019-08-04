@@ -3,7 +3,7 @@
 #include <gfx/activities/targetactivity.h>
 #include <gfx/entity.h>
 
-class Animator;
+class IAnimator;
 
 class Animate : public TargetActivity {
 public:
@@ -28,7 +28,7 @@ private:
     bool m_forward;
     bool m_sync;
     int m_flipX;
-    Animator* m_animator;
+    IAnimator* m_animator;
     std::string m_animId;
 };
 

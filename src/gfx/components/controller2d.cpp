@@ -91,7 +91,7 @@ glm::vec2 dx(delta);
 
         // before we do that... we have code handling collisions
         if (dx.y < 0 && m_wasGnd) {
-            DescendSlope(dx);
+        //    DescendSlope(dx);
         }
         if (!isEqual(dx.x, 0.0f))
             HorizontalCollisions(dx);
@@ -109,7 +109,7 @@ glm::vec2 dx(delta);
 void Controller2D::HorizontalCollisions(glm::vec2& velocity) {
 
     bool flipx = m_entity->GetFlipX();
-    bool facingLeft = ((flipx && velocity.x > 0) || (!flipx && velocity.x < 0));
+    bool facingLeft = flipx; //((flipx && velocity.x > 0) || (!flipx && velocity.x > 0));
     float directionX = facingLeft ? -1.0 : 1.0;
     float rayLength = fabs(velocity.x) + m_skinWidth;
 

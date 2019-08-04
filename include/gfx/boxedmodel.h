@@ -5,6 +5,7 @@
 #include <gfx/hashpair.h>
 
 struct BoxInfo {
+    BoxInfo(std::shared_ptr<Shape> shape) : m_shape(shape), m_attackShape(nullptr) {}
     std::shared_ptr<Shape> m_shape;
     std::shared_ptr<Shape> m_attackShape;
     //int shapeTag;
@@ -20,8 +21,9 @@ public:
     const BoxInfo& getBoxInfo(const std::string& anim, int frame) const;
     void AddAnimationData (const std::string& anim, Bounds b);
     void AddCollisionData (const std::string& anim, int frame,
-                           std::shared_ptr<Shape> collision,
-                           std::shared_ptr<Shape> attack);
+                           std::shared_ptr<Shape> collision);
+                           //std::shared_ptr<Shape> attack);
+    void AddAttackData (const std::string& anim, int frame, std::shared_ptr<Shape> attack);
     std::shared_ptr<Shape> GetShape (const std::string&, int);
     void generateDebugMesh ();
     std::shared_ptr<IMesh> GetCollisionMesh();
