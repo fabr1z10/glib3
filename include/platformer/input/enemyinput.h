@@ -2,6 +2,7 @@
 
 #include <gfx/components/inputmethod.h>
 #include <map>
+
 class Controller2D;
 
 class EnemyInputMethod : public InputMethod {

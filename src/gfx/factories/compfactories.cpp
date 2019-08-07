@@ -131,9 +131,12 @@ std::shared_ptr<Component> GfxComponentFactory::Create(luabridge::LuaRef & ref) 
         float size = table.Get<float>("size", 1.0f);
         int width = table.Get<int>("width");
         int height = table.Get<int>("height");
+        int repx = table.Get<int>("repx", 1);
+        int repy = table.Get<int>("repy", 1);
+
         glm::ivec2 sheetSize = table.Get<glm::ivec2>("sheetsize");
         std::vector<int> data = table.GetVector<int>("tiledata");
-        auto mesh = std::make_shared<QuadMesh>(image, height, width, size, data, sheetSize.x, sheetSize.y);
+        auto mesh = std::make_shared<QuadMesh>(image, height, width, size, data, sheetSize.x, sheetSize.y, repx, repy);
         renderer->SetModel(std::make_shared<BasicModel>(mesh));
     } else if (table.HasKey("model")) {
         std::string modelId = table.Get<std::string>("model");

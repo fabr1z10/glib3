@@ -29,7 +29,9 @@ void ExtendedStateMachine::KeyListener (int key) {
 
 void ExtendedStateMachine::Start () {
     m_input = m_entity->GetComponent<InputMethod>();
-    m_input->onKeyDown.Register(this, [&] (int key) { this->KeyListener(key); });
+    if (m_input != nullptr) {
+        m_input->onKeyDown.Register(this, [&](int key) { this->KeyListener(key); });
+    }
 }
 
 void ExtendedStateMachine::AddKey(int key, luabridge::LuaRef callback) {

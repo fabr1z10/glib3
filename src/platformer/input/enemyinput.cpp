@@ -10,7 +10,7 @@ std::shared_ptr<Component> EnemyInputMethod::clone() const {
 }
 
 void EnemyInputMethod::Start() {
-    m_controller = m_entity->GetComponent<Controller2D>();
+    m_controller = dynamic_cast<Controller2D*>(m_entity->GetComponent<IController>());
     // this is clearly an approx
     double frameTime = Engine::get().GetFrameTime();
     double n = 1.0 / frameTime;
