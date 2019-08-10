@@ -8,7 +8,7 @@
 */
 class Parallax : public Component {
 public:
-    Parallax (const std::string& camId, float factor, float width, float height);
+    Parallax (const std::string& camId, float factor, float xmin, float xmax);
     Parallax(const Parallax&);
     void Start() override;
     void Update(double) override {}
@@ -24,7 +24,12 @@ private:
     float m_verticalTranslation;
     glm::vec2 m_camSize;
     //glm::vec3 m_previousPos;
-    float m_x0;
+    float m_x0, m_x1;
     float m_deltaX;
+    float m_xMin;
+    float m_xMax;
+    float m_a;
+    float m_b;
+    float m_deviceWidth;
     //int m_prevn;
 };

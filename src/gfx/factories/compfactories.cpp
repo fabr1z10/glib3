@@ -246,8 +246,9 @@ std::shared_ptr<Component> SkeletalColliderComponentFactory::Create(luabridge::L
     int tag = table.Get<int>("tag");
     int flag = table.Get<int>("flag");
     int mask = table.Get<int>("mask");
+    float scale = table.Get<float>("scale");
     auto coll = Ref::Create<SkeletalCollider>(flag, mask, tag);
-    table.ProcessVector("bounds", [coll] (luabridge::LuaRef ref) {
+    table.ProcessVector("bounds", [coll, scale] (luabridge::LuaRef ref) {
 
         LuaTable t(ref);
         std::string anim = t.Get<std::string>("anim");
@@ -255,22 +256,33 @@ std::shared_ptr<Component> SkeletalColliderComponentFactory::Create(luabridge::L
         float y = t.Get<float>("y");
         float width = t.Get<float>("width");
         float height = t.Get<float>("height");
-        coll->addBound(anim, x, y, width, height);
+        coll->addBound(anim, x, y, width, height, scale);
     });
+    table.ProcessVector("attack", [coll,scale ] (luabridge::LuaRef ref) {
 
+        LuaTable t(ref);
+        std::string anim = t.Get<std::string>("anim");
+        float time = t.Get<float>("t");
+        int mask = t.Get<int>("mask");
+        float x = t.Get<float>("x");
+        float y = t.Get<float>("y");
+        float width = t.Get<float>("width");
+        float height = t.Get<float>("height");
+        coll->addAttack(anim, time, x, y, width, height, mask, scale);
+    });
     return coll;
 
 }
 
-
-std::shared_ptr<Component> ParallaxComponentFactory::Create(luabridge::LuaRef &ref) {
-    LuaTable table(ref);
-    std::string cam = table.Get<std::string>("cam");
-    float factor = table.Get<float>("factor");
-    float width = table.Get<float>("width");
-    float height = table.Get<float>("width");
-    return Ref::Create<Parallax>(cam, factor, width, height);
-}
+//
+//std::shared_ptr<Component> ParallaxComponentFactory::Create(luabridge::LuaRef &ref) {
+//    LuaTable table(ref);
+//    std::string cam = table.Get<std::string>("cam");
+//    float factor = table.Get<float>("factor");
+//    float width = table.Get<float>("width");
+//    float height = table.Get<float>("width");
+//    return Ref::Create<Parallax>(cam, factor, width, height,0,0);
+//}
 
 std::shared_ptr<Component> Parallax3DComponentFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);

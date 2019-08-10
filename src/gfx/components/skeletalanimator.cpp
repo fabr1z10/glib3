@@ -37,7 +37,7 @@ void SkeletalAnimator::AddBone(const std::string &id, Entity *bone, float length
 
 
 void SkeletalAnimator::Update(double dt) {
-    float oldTime = m_time;
+    //float oldTime = m_time;
     m_time += dt;
     float duration = m_currentAnim->getDuration();
     if (m_time >= duration) {
@@ -52,7 +52,7 @@ void SkeletalAnimator::Update(double dt) {
     }
 
     // check attacks
-    m_currentAnim->checkAttack(oldTime, m_time);
+    // m_currentAnim->checkAttack(oldTime, m_time);
 
     // update position of torso ... thisshould be in a subclass like human figure skeletal animator
 

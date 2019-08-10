@@ -84,6 +84,7 @@ SceneFactory::SceneFactory() {
     m_entityFactory.Add<SpriteFactory>("sprite");
     m_entityFactory.Add<BoxedMessageFactory>("boxedmessage");
     m_entityFactory.Add<SkeletonFactory>("skeleton");
+    m_entityFactory.Add<ParallaxBackgroundFactory>("parallaxbg");
     //m_entityFactory.Add<HeightMapFactory>("heightmap");
 
     m_cameraFactory.Add<OrthoCamFactory>("ortho");
@@ -95,7 +96,7 @@ SceneFactory::SceneFactory() {
     m_componentFactory.Add<ColliderComponentFactory>("collider");
 
     m_componentFactory.Add<SmartColliderComponentFactory>("smartcollider");
-    m_componentFactory.Add<SkeletalColliderComponentFactory>("skeletalcolliderr");
+    m_componentFactory.Add<SkeletalColliderComponentFactory>("skeletalcollider");
 
     m_componentFactory.Add<Controller2DComponentFactory>("controller2d");
     m_componentFactory.Add<Controller3DComponentFactory>("controller3d");
@@ -108,7 +109,7 @@ SceneFactory::SceneFactory() {
     //m_componentFactory.Add<Follow3DComponentFactory>("follow3d");
     m_componentFactory.Add<InfoComponentFactory>("info");
     m_componentFactory.Add<PlatformComponentFactory>("platform");
-    m_componentFactory.Add<ParallaxComponentFactory>("parallax");
+    //m_componentFactory.Add<ParallaxComponentFactory>("parallax");
     m_componentFactory.Add<Parallax3DComponentFactory>("parallax3d");
     m_componentFactory.Add<TextComponentFactory>("text");
     m_componentFactory.Add<FPSComponentFactory>("fps");
