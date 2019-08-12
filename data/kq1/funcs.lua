@@ -166,73 +166,79 @@ function displayBox(msg)
 			{
 				tag ="msgtext",
 				pos={158, 83, 2},
-				text = {
-					id=msg,
-					align = "center",
-					font="ui",
-					size=7,
-					maxwidth = 160,
-					color = {0,0,0,255}
+				components = {
+					{ 
+						type = "text", 
+						id=msg,
+						align = "center",
+						font="ui",
+						size=7,
+						maxwidth = 160,
+						color = {0,0,0,255}
+					}
 				}
 			}
 		}
 	}, parent)
-	local m  = monkey.getEntity("msg")
-	local mm  = monkey.getEntity("msgtext")
-    local a = mm:gettextinfo()
-	print ("width = " .. a.width)
-	print ("height = " .. a.height)
-	local paddingOuter = {10, 6}
-	local paddingInner = {6, 4}
-	monkey.addEntity ({
-		pos={158 - a.width * 0.5 - paddingOuter[1], 83-a.height*0.5-paddingOuter[2], 1.5},
-		gfx = {
-			shape = {
-				type ="rect",
-				width = a.width + 2*paddingOuter[1],
-				height = a.height + 2*paddingOuter[2]
-			},
-			draw = "solid",
-			color = {255,255,255,255}
-		}
-	}, m)
-	monkey.addEntity ({
-		pos={158 - a.width * 0.5 - paddingInner[1], 83-a.height*0.5-paddingInner[2], 1.7},
-		gfx = {
-			shape = {
-				type ="rect",
-				width = a.width + 2*paddingInner[1],
-				height = a.height + 2*paddingInner[2]
-			},
-			draw = "solid",
-			color = {255,255,255,255}
-		}
-	}, m)
-	monkey.addEntity ({
-		pos={158 - a.width * 0.5 - paddingInner[1] - 2, 83-a.height*0.5-paddingInner[2]-1, 1.7},
-		gfx = {
-			shape = {
-				type ="rect",
-				width = a.width + 2*paddingInner[1] + 4,
-				height = a.height + 2*paddingInner[2]+2,
-			},
-			draw = "solid",
-			color = {170,0,0,255}
-		}
-	}, m)
+
+
+
+	-- local m  = monkey.getEntity("msg")
+	-- local mm  = monkey.getEntity("msgtext")
+ --    local a = mm:gettextinfo()
+	-- print ("width = " .. a.width)
+	-- print ("height = " .. a.height)
+	-- local paddingOuter = {10, 6}
+	-- local paddingInner = {6, 4}
 	-- monkey.addEntity ({
-	-- 	pos={158 - a.width * 0.5 - paddingInner[1] - 2, 83-a.height*0.5-paddingInner[2]-1, 0.6},
+	-- 	pos={158 - a.width * 0.5 - paddingOuter[1], 83-a.height*0.5-paddingOuter[2], 1.5},
 	-- 	gfx = {
 	-- 		shape = {
 	-- 			type ="rect",
-	-- 			width = a.width + 2*paddingInner[1]+4,
+	-- 			width = a.width + 2*paddingOuter[1],
+	-- 			height = a.height + 2*paddingOuter[2]
+	-- 		},
+	-- 		draw = "solid",
+	-- 		color = {255,255,255,255}
+	-- 	}
+	-- }, m)
+	-- monkey.addEntity ({
+	-- 	pos={158 - a.width * 0.5 - paddingInner[1], 83-a.height*0.5-paddingInner[2], 1.7},
+	-- 	gfx = {
+	-- 		shape = {
+	-- 			type ="rect",
+	-- 			width = a.width + 2*paddingInner[1],
+	-- 			height = a.height + 2*paddingInner[2]
+	-- 		},
+	-- 		draw = "solid",
+	-- 		color = {255,255,255,255}
+	-- 	}
+	-- }, m)
+	-- monkey.addEntity ({
+	-- 	pos={158 - a.width * 0.5 - paddingInner[1] - 2, 83-a.height*0.5-paddingInner[2]-1, 1.7},
+	-- 	gfx = {
+	-- 		shape = {
+	-- 			type ="rect",
+	-- 			width = a.width + 2*paddingInner[1] + 4,
 	-- 			height = a.height + 2*paddingInner[2]+2,
 	-- 		},
 	-- 		draw = "solid",
 	-- 		color = {170,0,0,255}
 	-- 	}
 	-- }, m)
-	enterPause()
+	-- -- monkey.addEntity ({
+	-- -- 	pos={158 - a.width * 0.5 - paddingInner[1] - 2, 83-a.height*0.5-paddingInner[2]-1, 0.6},
+	-- -- 	gfx = {
+	-- -- 		shape = {
+	-- -- 			type ="rect",
+	-- -- 			width = a.width + 2*paddingInner[1]+4,
+	-- -- 			height = a.height + 2*paddingInner[2]+2,
+	-- -- 		},
+	-- -- 		draw = "solid",
+	-- -- 		color = {170,0,0,255}
+	-- -- 	}
+	-- -- }, m)
+	-- enterPause()
 end
 
 function setGrahamState (s) 

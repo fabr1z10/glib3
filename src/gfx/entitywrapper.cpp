@@ -305,7 +305,7 @@ luabridge::LuaRef EntityWrapper::GetAnim() const {
 }
 
 void EntityWrapper::SetAnim(const std::string& anim) {
-    Animator* r = m_underlying->GetComponent<Animator>();
+    IAnimator* r = m_underlying->GetComponent<IAnimator>();
     r->SetAnimation(anim);
 }
 

@@ -166,6 +166,8 @@ SceneFactory::SceneFactory() {
     m_activityFactory.Add<SetActiveActFactory>("setactive");
 
     m_skeletalAnimFactory.Add<SkeletalAnimFactory>("default");
+
+    m_stateFactory.Add<Walk25StateFactory>("walk25");
 }
 
 

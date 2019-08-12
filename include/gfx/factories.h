@@ -146,6 +146,7 @@ FACTORY(SetActiveActFactory, Activity);
 
 FACTORY(SkeletalAnimFactory, SkeletalAnimation)
 // Asset
+FACTORY(Walk25StateFactory, State)
 
 //FACTORY(SimpleModelFactory, IModel)
 //FACTORY(BoxedModelFactory, IModel)

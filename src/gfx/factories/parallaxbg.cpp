@@ -14,9 +14,11 @@ std::shared_ptr<Entity> ParallaxBackgroundFactory::Create(luabridge::LuaRef &ref
     glm::vec2 deviceSize = Engine::get().GetDeviceSize();
 
     int left = table.Get<int>("left", 0);
+    int right = table.Get<int>("right", 0);
     if (left == 1) {
         range.x = 0.5f*deviceSize.x - deviceSize.x / factor;
     }
+
     float height = table.Get<float>("height");
     float z = table.Get<float>("z");
     std::string img = table.Get<std::string>("image");
@@ -24,7 +26,10 @@ std::shared_ptr<Entity> ParallaxBackgroundFactory::Create(luabridge::LuaRef &ref
     int texWidth = tex->GetWidth();
     int texHeight = tex->GetHeight();
     float imgAspectRatio = static_cast<float>(texWidth)/texHeight;
+    if (right == 1) {
+        range.y = range.x + (imgAspectRatio*height)/factor;
 
+    }
     // as a first step, we create a renderer
     auto renderer = Ref::Create<Renderer>();
     float quadWidth = (range[1] - range[0]) * (1.0f - factor);
