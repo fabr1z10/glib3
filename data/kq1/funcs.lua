@@ -27,18 +27,21 @@ function changeRoom(o1, o2)
 end
 
 function exitpause() 
-	if (variables.pause == true) then
+	if (engine.config.pause == true) then
 		print ("Exit pause mode")
 	    local parent = monkey.getEntity("main")
-		local ui = monkey.getEntity("ui")
-		monkey.removeEntity("msg")
-		if (variables.callbackAfterPause ~= nil) then
-			variables.callbackAfterPause()
+		--local ui = monkey.getEntity("ui")
+		if (engine.config.msgid ~= -1) then
+			monkey.removeFromId(engine.config.msgid)
+			engine.config.msgid = -1
 		end
+		--if (variables.callbackAfterPause ~= nil) then
+	--		variables.callbackAfterPause()
+	--	end
 		parent:enableupdate(true)
-		ui:enableupdate(true)
+		--ui:enableupdate(true)
 		monkey.enablescriptengine(true) 
-		variables.pause = false
+		engine.config.pause = false
 	end
 
 end
@@ -148,11 +151,14 @@ function processText(command)
 end
 
 function enterPause() 
+	print ("QUI")
 	local main = monkey.getEntity("main")
-	local ui = monkey.getEntity("ui")
+	--local ui = monkey.getEntity("ui")
+	print ("QUI2")
 	main:enableupdate(false)
-	ui:enableupdate(false)
-	variables.pause = true
+	engine.config.pause = true
+--	ui:enableupdate(false)
+	--variables.pause = true
 	monkey.enablescriptengine(false)
 end
 
@@ -160,8 +166,8 @@ end
 function displayBox(msg)
     local parent = monkey.getEntity("main")
 	print (msg)
-    monkey.addEntity ({
-		tag = "msg",
+    local msgid = monkey.addEntity ({
+		--tag = "msg",
 		children = {
 			{
 				tag ="msgtext",
@@ -180,52 +186,61 @@ function displayBox(msg)
 			}
 		}
 	}, parent)
-
-
-
+    engine.config.msgid = msgid
+    print (msgid)
+    local m = monkey.getEntityFromId(msgid)
 	-- local m  = monkey.getEntity("msg")
-	-- local mm  = monkey.getEntity("msgtext")
- --    local a = mm:gettextinfo()
-	-- print ("width = " .. a.width)
-	-- print ("height = " .. a.height)
-	-- local paddingOuter = {10, 6}
-	-- local paddingInner = {6, 4}
-	-- monkey.addEntity ({
-	-- 	pos={158 - a.width * 0.5 - paddingOuter[1], 83-a.height*0.5-paddingOuter[2], 1.5},
-	-- 	gfx = {
-	-- 		shape = {
-	-- 			type ="rect",
-	-- 			width = a.width + 2*paddingOuter[1],
-	-- 			height = a.height + 2*paddingOuter[2]
-	-- 		},
-	-- 		draw = "solid",
-	-- 		color = {255,255,255,255}
-	-- 	}
-	-- }, m)
-	-- monkey.addEntity ({
-	-- 	pos={158 - a.width * 0.5 - paddingInner[1], 83-a.height*0.5-paddingInner[2], 1.7},
-	-- 	gfx = {
-	-- 		shape = {
-	-- 			type ="rect",
-	-- 			width = a.width + 2*paddingInner[1],
-	-- 			height = a.height + 2*paddingInner[2]
-	-- 		},
-	-- 		draw = "solid",
-	-- 		color = {255,255,255,255}
-	-- 	}
-	-- }, m)
-	-- monkey.addEntity ({
-	-- 	pos={158 - a.width * 0.5 - paddingInner[1] - 2, 83-a.height*0.5-paddingInner[2]-1, 1.7},
-	-- 	gfx = {
-	-- 		shape = {
-	-- 			type ="rect",
-	-- 			width = a.width + 2*paddingInner[1] + 4,
-	-- 			height = a.height + 2*paddingInner[2]+2,
-	-- 		},
-	-- 		draw = "solid",
-	-- 		color = {170,0,0,255}
-	-- 	}
-	-- }, m)
+	local mm  = monkey.getEntity("msgtext")
+    local a = mm:gettextinfo()
+	print ("width = " .. a.width)
+	print ("height = " .. a.height)
+	local paddingOuter = {10, 6}
+	local paddingInner = {6, 4}
+	monkey.addEntity ({
+		pos={158 - a.width * 0.5 - paddingOuter[1], 83-a.height*0.5-paddingOuter[2], 1.5},
+		components = {
+			{ 
+				type="gfx",
+		 		shape = {
+	 				type ="rect",
+	 				width = a.width + 2*paddingOuter[1],
+	 				height = a.height + 2*paddingOuter[2]
+	 			},
+	 			draw = "solid",
+	 			color = {255,255,255,255}
+	 		}
+	 	}
+	}, m)
+	monkey.addEntity ({
+		pos={158 - a.width * 0.5 - paddingInner[1], 83-a.height*0.5-paddingInner[2], 1.7},
+		components = {
+			{
+				type ="gfx",
+				shape = {
+					type ="rect",
+					width = a.width + 2*paddingInner[1],
+					height = a.height + 2*paddingInner[2]
+				},
+				draw = "solid",
+				color = {255,255,255,255}
+			}
+		}
+	}, m)
+	monkey.addEntity ({
+	 	pos={158 - a.width * 0.5 - paddingInner[1] - 2, 83-a.height*0.5-paddingInner[2]-1, 1.6},
+	 	components = {
+	 		{
+	 			type = "gfx",
+	 			shape = {
+	 				type ="rect",
+	 				width = a.width + 2*paddingInner[1] + 4,
+	 				height = a.height + 2*paddingInner[2]+2,
+	 			},
+	 			draw = "solid",
+	 			color = {170,0,0,255}
+		 	}
+		 }
+	}, m)
 	-- -- monkey.addEntity ({
 	-- -- 	pos={158 - a.width * 0.5 - paddingInner[1] - 2, 83-a.height*0.5-paddingInner[2]-1, 0.6},
 	-- -- 	gfx = {
@@ -238,7 +253,7 @@ function displayBox(msg)
 	-- -- 		color = {170,0,0,255}
 	-- -- 	}
 	-- -- }, m)
-	-- enterPause()
+	enterPause()
 end
 
 function setGrahamState (s) 

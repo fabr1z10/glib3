@@ -43,6 +43,9 @@ if (engine.dialogues == nil) then engine.dialogues = {} end
 scumm = {}
 require ("scumm/ui")
 require ("scumm/action")
+if (engine.extension ~= nil and engine.extension.action ~= nil) then
+	require (engine.extension.action)
+end
 require ("scumm/factory")
 	
 

@@ -1,4 +1,4 @@
-scumm.factory.object = function(args)
+scumm.factory.item_sci = function(args)
 	
 	local objId = args.id
 	print ("*** Creating object " .. objId)
@@ -52,9 +52,20 @@ scumm.factory.object = function(args)
 		table.insert (obj.components, { type="hotspot", 
 			priority = hotspot.priority or 1,
 			shape = hotspot.shape or {type="rect", width = hotspot.size[1], height = hotspot.size[2], offset = hotspot.offset},
-			onenter = glib.curry(scumm.ui.hoverOn, objId),
-			onleave = scumm.ui.hoverOff,
-			onclick = scumm.ui.runAction })
+			--onenter = glib.curry(scumm.ui.hoverOn, objId),
+			--onleave = scumm.ui.hoverOff,
+			onclick = function() 
+				if (engine.config.pause == false) then
+				local actions = object.actions[engine.config.current_verb]
+				if (actions == nil) then
+					--print "no script found"
+				else
+					local s = script.make(actions)
+					monkey.play(s)
+					print ("executign script")
+				end
+				end
+			end })
 	end
 	if (object.character ~= nil) then
 		table.insert (obj.components, { type="character", speed = object.character.speed, dir = args.dir or object.character.dir, state = object.character.state })

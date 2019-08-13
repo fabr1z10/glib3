@@ -342,9 +342,9 @@ void EntityWrapper::AppendButton(luabridge::LuaRef ref) {
 
 luabridge::LuaRef EntityWrapper::GetTextInfo() {
     Renderer* r = m_underlying->GetComponent<Renderer>();
-    TextMesh* tm = dynamic_cast<TextMesh*>(r->GetModel());
+    TextModel* tm = dynamic_cast<TextModel*>(r->GetModel());
     luabridge::LuaRef rr = luabridge::newTable(LuaWrapper::L);
-    glm::vec3 f = tm->GetBounds().GetExtents();
+    glm::vec3 f = tm->GetBounds().GetSize();
     rr["width"] = f.x;
     rr["height"] = f.y;
     return rr;

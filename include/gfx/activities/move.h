@@ -5,8 +5,8 @@
 
 class MoveTo : public TargetActivity {
 public:
-    MoveTo(glm::vec2 pos, float speed, bool relative, bool immediate);
-    MoveTo(int id, glm::vec2 pos, float speed, bool relative, bool immediate) : MoveTo(pos, speed, relative, immediate) {
+    MoveTo(glm::vec2 pos, float speed, bool relative, bool immediate, bool flip = false);
+    MoveTo(int id, glm::vec2 pos, float speed, bool relative, bool immediate, bool flip = false) : MoveTo(pos, speed, relative, immediate, flip) {
         SetId(id);
     }
     MoveTo(const std::string& tag, glm::vec2 pos, float speed, bool relative, bool immediate) : MoveTo(pos, speed, relative, immediate) {
@@ -17,6 +17,7 @@ public:
     void Reset() override;
     void SetAcceleration(float acceleration);
 protected:
+    bool m_flip;
     glm::vec2 m_toPos;
     glm::vec2 m_velocity;
     glm::vec2 m_finalPosition;

@@ -82,6 +82,7 @@ std::shared_ptr<Activity> MoveActFactory::Create(luabridge::LuaRef &ref) {
         GLIB_FAIL("move action requires to or by attribute.")
     }
     float speed = table.Get<float>("speed", 0.0f);
+    bool flip = table.Get<bool>("flip", false);
     bool immediate = table.Get<bool>("immediate", false);
     std::shared_ptr<MoveTo> m;
     if (table.HasKey("angle")) {
@@ -89,7 +90,7 @@ std::shared_ptr<Activity> MoveActFactory::Create(luabridge::LuaRef &ref) {
         //bool relAngle = table.Get<bool>("angle_relative");
         //m = std::make_shared<MoveTo>((dest, speed, relative, immediate, angle, relAngle));
     } else {
-        m = std::make_shared<MoveTo>(dest, speed, relative, immediate);
+        m = std::make_shared<MoveTo>(dest, speed, relative, immediate, flip);
     }
     setTarget(table, m.get());
     if (table.HasKey("acceleration")) {

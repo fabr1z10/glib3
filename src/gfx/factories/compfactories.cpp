@@ -48,6 +48,7 @@
 #include <gfx/components/fpscounter.h>
 #include <gfx/components/cursor.h>
 #include <gfx/states/walk25.h>
+#include <gfx/states/simple.h>
 
 std::shared_ptr<Component> TextComponentFactory::Create(luabridge::LuaRef &ref) {
     auto renderer = Ref::Create<Renderer>();
@@ -950,6 +951,14 @@ std::shared_ptr<State> Walk25StateFactory::Create(luabridge::LuaRef &ref) {
     float a = table.Get<float>("acceleration");
     bool fliph = table.Get<bool>("fliph");
     auto ptr = std::make_shared<Walk25>(speed, a, fliph);
+    return ptr;
+
+}
+
+std::shared_ptr<State> SimpleStateFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    std::string anim = table.Get<std::string>("anim");
+    auto ptr = std::make_shared<SimpleState>(anim);
     return ptr;
 
 }

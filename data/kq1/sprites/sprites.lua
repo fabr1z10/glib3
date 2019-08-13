@@ -31,13 +31,126 @@ local s = {
 	cursor_use = { x=1, y=53, width=15, height=16, anchor = {9,8}},
 	cursor_talk = { x=17, y=53, width=16, height=16, anchor = {8,8}},
 	cursor_walk = { x=34, y=53, width=11, height=16, anchor = {6,8}},
-	cursor_look = { x=46, y=53, width=12, height=9, anchor ={6,4}}
+	cursor_look = { x=46, y=53, width=12, height=9, anchor ={6,4}},
+
+	graham_drown_1 = {x=181,y=2,width=37,height=10, anchor={15,0}},
+	graham_drown_2 = {x=182,y=13,width=38,height=15, anchor={17,0}},
+	graham_drown_3 = {x=182,y=29,width=38,height=15, anchor={17,0}},
+	graham_drown_4 = {x=182,y=45,width=30,height=12, anchor={15,0}},
+	graham_drown_5 = {x=182,y=58, width=32,height=10, anchor={15,0},},
+	graham_drown_6 = {x=182,y=69,width=38,height=12, anchor={17,0},},
+	graham_drown_7 = {x=182,y=82,width=32,height=12, anchor={15,0}},
+	graham_drown_8 = {x=182,y=95,width=34,height=11, anchor={15,0}},
+	graham_drown_9 = {x=182,y=107,width=38,height=11, anchor={15, 0}},
+
+	purple_flag_1 = {x=1,y=1,width=24,height=9},
+	purple_flag_2 = {x=1,y=11,width=22,height=9},
+	purple_flag_3 = {x=1,y=21,width=20,height=9},
+	purple_flag_4 = {x=1,y=31,width=22,height=9},
+	purple_flag_5 = {x=1,y=41,width=22,height=9},
+
+	yellow_flag_1 = {x=26,y=1,width=24,height=9},
+	yellow_flag_2 = {x=26,y=11,width=22,height=9},
+	yellow_flag_3 = {x=26,y=21,width=22,height=9},
+	yellow_flag_4 = {x=26,y=31,width=22,height=9},
+	yellow_flag_5 = {x=26,y=41,width=24,height=9},
+
+	cyan_flag_1 = {x=51,y=1,width=22,height=9},
+	cyan_flag_2 = {x=51,y=11,width=22,height=9},
+	cyan_flag_3 = {x=51,y=21,width=22,height=9},
+	cyan_flag_4 = {x=51,y=31,width=22,height=9},
+	cyan_flag_5 = {x=52,y=41,width=24,height=9},
+
+	alligator_1 = {x=75, y=23, width = 26, height=4, anchor={15,0}},
+	alligator_2 = {x=75, y=1, width = 26, height=8, anchor={15,0}},
+	alligator_3 = {x=75, y=11, width = 24, height=11, anchor={15,0}},
+
 
 }
 
 local dt=0.1
 
 local wbml = {-8, 0, 8, 24}
+
+models["purple_flag"] = { 
+	sheet ="sprites.png",
+	type = "sprite",
+	ppu=1,
+	animations = {
+		{ 
+			name="default",
+			frames = {
+				{ duration = dt, quads = {{id=s.purple_flag_1}}},
+				{ duration = dt, quads = {{id=s.purple_flag_2}}},
+				{ duration = dt, quads = {{id=s.purple_flag_3}}},
+				{ duration = dt, quads = {{id=s.purple_flag_4}}},
+				{ duration = dt, quads = {{id=s.purple_flag_5}}},				
+			}
+
+		}
+	}
+}
+
+models["yellow_flag"] = { 
+	sheet ="sprites.png",
+	type = "sprite",
+	ppu=1,
+	animations = {
+		{ 
+			name="default",
+			frames = {
+				{ duration = dt, quads = {{id=s.yellow_flag_1}}},
+				{ duration = dt, quads = {{id=s.yellow_flag_2}}},
+				{ duration = dt, quads = {{id=s.yellow_flag_3}}},
+				{ duration = dt, quads = {{id=s.yellow_flag_4}}},
+				{ duration = dt, quads = {{id=s.yellow_flag_5}}},				
+			}
+
+		}
+	}
+}
+
+models["cyan_flag"] = { 
+	sheet ="sprites.png",
+	type = "sprite",
+	ppu=1,
+	animations = {
+		{ 
+			name="default",
+			frames = {
+				{ duration = dt, quads = {{id=s.cyan_flag_1}}},
+				{ duration = dt, quads = {{id=s.cyan_flag_2}}},
+				{ duration = dt, quads = {{id=s.cyan_flag_3}}},
+				{ duration = dt, quads = {{id=s.cyan_flag_4}}},
+				{ duration = dt, quads = {{id=s.cyan_flag_5}}},				
+			}
+
+		}
+	}
+}
+
+models["alligator"] = { 
+	sheet ="sprites.png",
+	type = "sprite",
+	ppu=1,
+	animations = {
+		{ 
+			name="default",
+			frames = {
+				{ duration = dt, quads = {{id=s.alligator_1}}},
+			}
+		},
+		{
+			name = "eat",
+			frames = {
+				{ duration = dt, quads = {{id=s.alligator_2}}},
+				{ duration = dt, quads = {{id=s.alligator_3}}},
+				{ duration = dt, quads = {{id=s.alligator_2}}},
+			}
+		}
+	}
+}
+
 
 models["graham"] = {
 	sheet ="sprites.png",
@@ -77,6 +190,17 @@ models["graham"] = {
 			{duration=dt, quads = {{ id = s.graham_walk_s_5}} },
 			{duration=dt, quads = {{ id = s.graham_walk_s_6}} },
 		}},
+		{ name="drown", box=wbml, frames = {
+			{duration=dt, quads = {{ id = s.graham_drown_1}} },
+			{duration=dt, quads = {{ id = s.graham_drown_2}} },
+			{duration=dt, quads = {{ id = s.graham_drown_3}} },
+			{duration=dt, quads = {{ id = s.graham_drown_4}} },
+			{duration=dt, quads = {{ id = s.graham_drown_5}} },
+			{duration=dt, quads = {{ id = s.graham_drown_6}} },
+			{duration=dt, quads = {{ id = s.graham_drown_7}} },
+			{duration=dt, quads = {{ id = s.graham_drown_8}} },
+			{duration=dt, quads = {{ id = s.graham_drown_9}} },
+		}}
 	}
 }
 

@@ -52,8 +52,8 @@ end
 action.move = function(args) 
 	glib.assert_either (args.tag, args.id, "id or tag")
 	glib.assert_either (args.to, args.by, "to or by")
-	glib.assert (args.speed, "speed")
-	return { type="move", tag = args.tag, id = args.id, to = args.to, by = args.by, speed = args.speed }
+	--glib.assert (args.speed, "speed")
+	return { type="move", tag = args.tag, id = args.id, to = args.to, by = args.by, speed = args.speed, immediate = args.imm or false, flip =  args.flip or false }
 end
 
 action.callfunc = function (args) 

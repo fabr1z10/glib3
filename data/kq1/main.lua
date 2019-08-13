@@ -18,7 +18,12 @@ engine = {
     start_room ="001",
     config = {
         default_verb = "walk",
-        current_verb = "walk"
+        current_verb = "walk",
+        pause = false,
+        msgid =-1
+    },
+    extension = {
+        action = "actio2n"
     }
 }
 
@@ -41,6 +46,7 @@ engine.config.verbs = {
 -- require("script")
 -- require("sprites")
  require("funcs")
+ --quire("actio2n")
 -- require("strings")
 
 -- variables = {

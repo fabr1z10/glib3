@@ -3,8 +3,8 @@
 #include "gfx/engine.h"
 #include <gfx/math/geom.h>
 
-MoveTo::MoveTo(glm::vec2 pos, float speed, bool relative, bool immediate) : TargetActivity(),
-    m_toPos(pos), m_speed{speed}, m_lengthCovered{0.0f}, m_lengthToCover{0.0f},
+MoveTo::MoveTo(glm::vec2 pos, float speed, bool relative, bool immediate, bool flip) : TargetActivity(),
+    m_toPos(pos), m_speed{speed}, m_lengthCovered{0.0f}, m_lengthToCover{0.0f}, m_flip(flip),
     m_relative{relative}, m_immediate{immediate}, m_acceleration(0.0f), m_accelerationVector(0.0f)
 {
 
@@ -41,6 +41,10 @@ void MoveTo::Start() {
         m_finalPosition = m_toPos;
         displacement = m_toPos - pos;
     }
+    //if (displacement.x < 0) {
+    if (m_flip) {
+        m_entity->SetFlipX(displacement.x < 0);
+    }
 
     if (m_immediate) {
         m_entity->MoveOrigin(displacement);
@@ -56,6 +60,7 @@ void MoveTo::Start() {
             m_accelerationVector = m_unitDisplacement * m_acceleration;
         }
     }
+
 }
 
 

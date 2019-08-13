@@ -14,7 +14,15 @@ local startPositionTable = {
 --local startPosition = startPositionTable[variables._previousroom]
 
 room = {
+	afterstartup = function()
+		for k, v in ipairs(room.initstuff) do
+			v()
+		end
+		--if (variables.troll_fed==false) then troll() end
+	end,	
+	initstuff = {},
 	engines = {
+		{ type = "scheduler" },
 
 		{ 
 			type = "collision", 
@@ -27,7 +35,8 @@ room = {
 				type = "hotspotmanager",
 				tag ="_hotspotmanager", 
 				keys = {
-					{ key = 299, func = function() monkey.endroom() end }
+					{ key = 299, func = function() monkey.endroom() end },
+					{ key = 257, func = function() if (engine.config.pause == true) then exitpause() end end}
 				},
 				-- lmbclick is the func called when you click on no hotspot
 				lmbclick = function(x, y) 
@@ -75,7 +84,20 @@ room = {
 					{ type = "collider", flag = 32, mask = 1, tag=10, 
 						shape = { type="line", A = {0,6}, B = {228, 6}}
 					},
-					{ type = "info", func = function() displayBox("ciaociao") end }
+					{ type = "info", func = function() 
+
+						local actions = {
+							{ type = action.move, args = {tag="player", by = {0,-5}, imm=true}},
+							{ type = action.set_state, args = { tag="player",state="drown"}},
+							{ type = action.delay, args = {sec = 2}},
+							{ type = action.kq.showmessage, args = {msg=strings.room001[3]}}
+							--{ type = action.callfunc, args = { func = function() displayBox(strings.room001[3]) end }}
+							
+						}		
+						local s = script.make(actions)
+						monkey.play(s)
+						--displayBox("ciaociao") 
+					end }
 				  }
 				},
 
@@ -102,11 +124,23 @@ room = {
 										acceleration = 0.1, 
 										fliph=true
 									}
+								},
+								{
+									id = "drown",
+									state = { type="simple", anim="drown"}
+
 								}
 							}
 						}
 					}
 				},
+				scumm.factory.item_sci { id="castle" },
+				scumm.factory.item_sci { id="flags" },
+				scumm.factory.item_sci { id="purple_flag"},
+				scumm.factory.item_sci { id="yellow_flag"},
+				scumm.factory.item_sci { id="cyan_flag"},
+				scumm.factory.item_sci { id="alligator_1"},
+
 			},				
 		},
 			{
@@ -133,6 +167,30 @@ room = {
 
 	}
 }
+
+
+
+local entry_cutscene = function() 
+	print ("MIPIACE")
+	local a1act= {
+		{ ref=1, type = action.move, args = { tag="alli1", to = {280, 5}, speed=20, flip=true}},
+		{ type = action.move, args = { tag="alli1", to = {20, 5}, speed=20, flip=true}},
+	}
+
+	local a1eat= {
+		{ ref=1, type = action.delay, args = { sec = 2 }},
+		{ type = action.animate, args = { tag="alli1", anim="eat", sync=true}},
+		{ type = action.animate, args = { tag="alli1", anim="default"}},
+	}
+	local s = script.make(a1act,1)
+	monkey.play(s)
+	local s1 = script.make(a1eat,1)
+	monkey.play(s1)
+
+end
+
+table.insert(room.initstuff, entry_cutscene)
+
 -- 	        { pos = {8, 149, 1}, gfx = { model = "purple_flag", anim = "default" } },   
 -- 			{ pos = {38, 150, 1}, gfx = { model = "yellow_flag", anim = "default" } }, 
 -- 			{ pos = {68, 149, 1}, gfx = { model = "cyan_flag", anim = "default" } },
