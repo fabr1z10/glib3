@@ -27,6 +27,8 @@ struct Bounds {
     void ExpandWith(const Bounds&);
     bool Contains(glm::vec3 P);
     bool Intersects(Bounds& other) const;
+    bool Intersects2D(Bounds& other) const;
+
     // rotate a bounding box
     void Transform(const glm::mat4&);
     //void TransformXZ (const glm::mat4&);
@@ -41,7 +43,10 @@ inline bool Bounds::Intersects(Bounds& other) const {
         other.min.y > max.y || other.max.y < min.y ||
         other.min.z > max.z || other.max.z < min.z);
 }
-
+inline bool Bounds::Intersects2D(Bounds& other) const {
+    return !(other.min.x > max.x || other.max.x < min.x ||
+             other.min.y > max.y || other.max.y < min.y);
+}
 inline glm::vec3 Bounds::GetSize() const {
     return glm::vec3(max.x - min.x, max.y - min.y, max.z - min.z);
 }

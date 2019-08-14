@@ -135,19 +135,23 @@ models["alligator"] = {
 	ppu=1,
 	animations = {
 		{ 
-			name="default",
+			name="walk",
 			frames = {
-				{ duration = dt, quads = {{id=s.alligator_1}}},
-			}
-		},
-		{
-			name = "eat",
-			frames = {
+				{ duration = 5*dt, quads = {{id=s.alligator_1}}},
 				{ duration = dt, quads = {{id=s.alligator_2}}},
 				{ duration = dt, quads = {{id=s.alligator_3}}},
 				{ duration = dt, quads = {{id=s.alligator_2}}},
 			}
-		}
+		},
+		{ 
+			name="idle",
+			frames = {
+				{ duration = 5*dt, quads = {{id=s.alligator_1}}},
+				{ duration = dt, quads = {{id=s.alligator_2}}},
+				{ duration = dt, quads = {{id=s.alligator_3}}},
+				{ duration = dt, quads = {{id=s.alligator_2}}},
+			}
+		},
 	}
 }
 

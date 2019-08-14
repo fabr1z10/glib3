@@ -329,7 +329,7 @@ RayCastHit CollisionEngine::Raycast (glm::vec3 rayOrigin, glm::vec3 rayDir, floa
                         continue;
                     }
                     auto shapeBounds = c->GetBounds();
-                    if (lineBounds.Intersects(shapeBounds)) {
+                    if (lineBounds.Intersects2D(shapeBounds)) {
                         auto t = c->GetObject()->GetWorldTransform();
                         RayCast2D rc(rayOrigin, rayDir, length, t);
                         c->GetShape()->accept(rc);

@@ -35,6 +35,7 @@ public:
     void ResetState() ;
     std::string GetState() const;
     virtual void SetState (const std::string&);
+    State* GetState (const std::string&);
     virtual void Refresh () {}
     void AddState(const std::string& id, std::shared_ptr<State> state);
     std::shared_ptr<Component> clone() const override;

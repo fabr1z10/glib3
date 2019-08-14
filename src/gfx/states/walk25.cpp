@@ -8,8 +8,8 @@
 #include <gfx/engine.h>
 #include <gfx/components/info.h>
 
-Walk25::Walk25(float speed, float acceleration, bool fliph) : State(), m_speed(speed),
-    m_acceleration(acceleration), m_flipHorizontal(fliph), m_velocitySmoothingX(0.0f), m_velocitySmoothingY(0.0f), m_velocity(0.0f) {}
+Walk25::Walk25(float speed, float acceleration, bool fliph, bool anim4) : State(), m_speed(speed),
+    m_acceleration(acceleration), m_flipHorizontal(fliph), m_velocitySmoothingX(0.0f), m_velocitySmoothingY(0.0f), m_velocity(0.0f), m_4WayAnim(anim4) {}
 
 Walk25::Walk25(const Walk25 &) {
 
@@ -26,7 +26,7 @@ void Walk25::AttachStateMachine(StateMachine * sm) {
 
     m_input = m_entity->GetComponent<InputMethod>();
     if (m_input == nullptr) {
-        GLIB_FAIL("Walk state requires an <InputMethod> component!");
+    //    GLIB_FAIL("Walk state requires an <InputMethod> component!");
     }
     m_animator = m_entity->GetComponent<IAnimator>();
     m_collision = Engine::get().GetRunner<ICollisionEngine>();
@@ -43,6 +43,9 @@ void Walk25::End() {
 
 void Walk25::Run (double dt) {
 
+    if (m_input == nullptr) {
+        return;
+    }
     bool left = m_input->isKeyDown(GLFW_KEY_LEFT);
     bool right = m_input->isKeyDown(GLFW_KEY_RIGHT);
     bool up = m_input->isKeyDown(GLFW_KEY_UP);
@@ -66,12 +69,23 @@ void Walk25::Run (double dt) {
     if (pressed) {
         targetVelocity = glm::normalize(targetVelocity) * m_speed;
     }
+    if (!pressed && m_velocity == glm::vec2(0.0f)) {
+        return;
+    }
+
     m_velocity.x = SmoothDamp(m_velocity.x, targetVelocity.x, m_velocitySmoothingX, m_acceleration, dt);
     m_velocity.y = SmoothDamp(m_velocity.y, targetVelocity.y, m_velocitySmoothingY, m_acceleration, dt);
     glm::vec3 delta = static_cast<float>(dt) * glm::vec3(m_velocity, 0.0f);
 
     float vl = glm::length(m_velocity);
-    std::string anim = (vl < 0.01f) ? "idle" : "walk";
+    std::string anim ;
+    if (vl < 0.01f) {
+        anim = "idle";
+        //m_velocity = glm::vec2(0.0f);
+    } else {
+        anim = "walk";
+    }
+
     std::string dir;
     if (fabs(m_velocity.x) > fabs(m_velocity.y)) {
         dir = "e";
@@ -79,6 +93,9 @@ void Walk25::Run (double dt) {
         dir = m_velocity.y>0 ? "n" : "s";
     }
     m_animator->SetAnimation(anim + "_" + dir);
+    if (vl < 0.01f) {
+        m_velocity = glm::vec2(0.0f);
+    }
 
     // do a raycast
     if (delta.x != 0.0f || delta.y != 0.0f) {

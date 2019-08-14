@@ -16,7 +16,7 @@ engine.state.scumm = {
 	},
 	walk_enabled = true,
 	inventory = {},
-
+	play = true
 }
 
 engine.state.scumm.has = function(id)

@@ -44,7 +44,7 @@ void WalkArea::assignDepth (Entity* e) {
     if (m_depthFunc != nullptr) {
         float z = m_depthFunc->operator()(pos.x, pos.y);
         e->SetZ(z);
-        std::cout << "z is " << e->GetPosition().z << "\n";
+        //std::cout << "z is " << e->GetPosition().z << "\n";
     }
     e->setOnMoveEnabled(true);
 }
@@ -56,7 +56,7 @@ void WalkArea::assignScaleAndDepth (Entity* e) {
     if (m_depthFunc != nullptr) {
         float z = m_depthFunc->operator()(pos.x, pos.y);
         e->SetZ(z);
-        std::cout << "z is " << e->GetPosition().z << "\n";
+        //std::cout << "z is " << e->GetPosition().z << "\n";
     }
 
     if (m_scaleFunc != nullptr) {

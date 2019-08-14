@@ -14,6 +14,9 @@ action.restart_room = function (args)
 	return { type="gotoroom", room = engine.state.room }
 end
 
+action.restart_game = function (args) 
+	return { type="gotoroom", room = engine.start_room }
+end
 
 action.noop = function(args) 
 	return { type="noop" }	
@@ -112,6 +115,7 @@ action.set_variable = function(args)
 		end
 	}
 end
+
 
 action.scroll = function (args) 
 	glib.assert_either(args.by, args.to, "by or to")

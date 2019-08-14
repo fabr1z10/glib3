@@ -286,7 +286,7 @@ function scumm.ui.pause_script (value)
 end
 
 function scumm.ui.walk (args)
-	if (engine.state.scumm.actionInfo.verb == "walk") then
+	if (engine.state.scumm.actionInfo.verb == "walk" and engine.state.scumm.play == true) then
 		-- check if the current action is 
 		-- is player on this walkarea?
 		local player = monkey.getEntity("player")
@@ -326,6 +326,9 @@ end
 function scumm.ui.runSciAction (x, y, objId)
     -- enter paused mode
     -- get current action
+    if (engine.state.scumm.play == false) then
+    	return
+    end
     local currentVerb = engine.state.scumm.actionInfo.verb
     print ("current verb: " .. currentVerb)
 	local p = engine.items[objId].actions[currentVerb]

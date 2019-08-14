@@ -7,7 +7,6 @@ local inventory = engine.state.scumm.inventory
 scumm.action = {}
 
 scumm.action.walkto = function (args) 
-print ("faccncnncn")
 	glib.assert_either (args.tag, args.id, "id or tag")
 	local pos = args.pos
 	if (pos == nil) then
@@ -15,13 +14,32 @@ print ("faccncnncn")
 		local obj = items[args.obj]
 		pos = obj.hotspot.walk_to
 	end	
-	return { type="walk", tag = args.tag, id = args.id, pos = pos }
+	return { type=engine.config.walk, tag = args.tag, id = args.id, pos = pos }
 end
+
+scumm.action.walktoitem = function (args) 
+	glib.assert_either (args.tag, args.id, "id or tag")
+	glib.assert(args.item, "item")
+	local item = monkey.getEntity(args.item)
+	local offset = args.offset or {0,0}
+	return { type=engine.config.walk, tag = args.tag, id = args.id, pos = {item.x + offset[1], item.y + offset[2]} }
+end
+
+
 
 scumm.action.turn = function (args) 
 	glib.assert_either (args.tag, args.id, "id or tag")
 	assert (args.dir, "dir")
 	return { type="turn", tag = args.tag, id = args.id, dir = args.dir }
+
+end
+
+scumm.action.enableplay = function(args) 
+	glib.assert (args.value, "value")
+	return { type="callfunc", func = function() 
+		print ("PLAY = " .. tostring(args.value))
+		engine.state.scumm.play = args.value
+	end }
 
 end
 

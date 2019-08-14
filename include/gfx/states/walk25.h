@@ -10,13 +10,16 @@ class ICollisionEngine;
 
 class Walk25 : public State {
 public:
-    Walk25(float speed, float acceleration, bool fliph);
+    Walk25(float speed, float acceleration, bool fliph, bool anim4);
     Walk25(const Walk25&);
     std::shared_ptr<State> clone() const override;
     void Run(double) override;
     void Init () override;
     void End () override;
+    float GetSpeed() const;
     void AttachStateMachine(StateMachine*) override;
+    bool flipHorizontally() const;
+    bool isFourWay() const;
     //void AddKey (int, std::shared_ptr<StateAction>);
     //bool KeyListener (int) override;
     //virtual void ModifyAnimation() = 0;
@@ -28,6 +31,7 @@ protected:
 
     Entity * m_entity;
     bool m_flipHorizontal;
+    bool m_4WayAnim;
     float m_speed;
     glm::vec2 m_velocity;
     float m_velocitySmoothingX;
@@ -36,3 +40,14 @@ protected:
     ICollisionEngine * m_collision;
 
 };
+
+inline bool Walk25::flipHorizontally() const {
+    return m_flipHorizontal;
+}
+inline bool Walk25::isFourWay() const {
+    return m_4WayAnim;
+}
+inline float Walk25::GetSpeed() const {
+
+    return m_speed;
+}

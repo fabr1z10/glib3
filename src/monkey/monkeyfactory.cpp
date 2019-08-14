@@ -7,6 +7,8 @@ MonkeyFactory::MonkeyFactory() : SceneFactory() {
     m_componentFactory.Add<CharacterStateFactory>("character");
 
     m_activityFactory.Add<WalkToActFactory>("walk");
+    m_activityFactory.Add<WalkSciActFactory>("walksci");
+
     m_activityFactory.Add<TurnActFactory>("turn");
     m_activityFactory.Add<SayActFactory>("say");
     m_activityFactory.Add<EnableBlockActFactory>("enable_wall");

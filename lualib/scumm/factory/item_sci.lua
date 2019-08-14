@@ -1,3 +1,11 @@
+scumm.factory.identity = function(args) 
+	return args
+end
+
+scumm.factory.item = function(args) 
+	return (args.factory(args.args))
+end
+
 scumm.factory.item_sci = function(args)
 	
 	local objId = args.id
@@ -54,9 +62,23 @@ scumm.factory.item_sci = function(args)
 			shape = hotspot.shape or {type="rect", width = hotspot.size[1], height = hotspot.size[2], offset = hotspot.offset},
 			--onenter = glib.curry(scumm.ui.hoverOn, objId),
 			--onleave = scumm.ui.hoverOff,
-			onclick = function() 
+			--onenter = function() print ("ciao") end,
+			onclick = function(x,y) 
+				
+				if (engine.state.scumm.play == false) then 
+					return
+				end
+				local currentVerb = engine.state.scumm.actionInfo.verb
+				if (currentVerb == "walk") then
+					local actions = scumm.ui.walk { pos = {x,y} }
+					local s = script.make(actions)
+					s.name="_walk"
+					monkey.play(s)
+					return
+				end
+
 				if (engine.config.pause == false) then
-				local actions = object.actions[engine.config.current_verb]
+					local actions = object.actions[engine.state.scumm.actionInfo.verb]
 				if (actions == nil) then
 					--print "no script found"
 				else
@@ -70,6 +92,35 @@ scumm.factory.item_sci = function(args)
 	if (object.character ~= nil) then
 		table.insert (obj.components, { type="character", speed = object.character.speed, dir = args.dir or object.character.dir, state = object.character.state })
 	end
+
+	if (object.sci_char ~= nil) then
+		if (object.sci_char.player) then
+			table.insert (obj.components, { type ="keyinput" })
+		else
+			--table.insert (obj.components, { type ="keyinput" })
+		end
+		table.insert (obj.components, { 
+			type="extstatemachine", 
+			initialstate = "walk",
+			states = {
+				{ 
+					id = "walk", 
+					state = {
+						type = "walk25", 
+						speed = object.sci_char.speed,  --50
+						acceleration = object.sci_char.acceleration, --0.1 
+						fliph=object.sci_char.fliph,
+						fourway = object.sci_char.fourway,
+					}
+				},
+				{
+					id = "drown",
+					state = { type="simple", anim="drown"}
+				}
+			}
+		})
+	end
+
 	if (args.follow == true) then
 		table.insert(obj.components, { type="follow", cam ="maincam", relativepos = {0,0,5}, up={0,1,0}})
 	end

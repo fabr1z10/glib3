@@ -55,3 +55,6 @@ void StateMachine::SetState(const std::string & state) {
     m_currentState->Init();
 }
 
+State* StateMachine::GetState (const std::string& state) {
+    return m_states.at(state).get();
+}

@@ -2,50 +2,48 @@
 function scumm.factory.sci_room (args) 
 	local room_width = args.width
 	local room_height = args.height
+    -- init verb
+    engine.state.scumm.actionInfo.verb = engine.config.default_verb
+	engine.state.scumm.play = true
+	-- determine start position
+	local startPos = nil
+	if (args.startTable ~= nil) then
+		startPos = args.startTable[engine.state.previousRoom]
+		if (startPos == nil) then
+			startPos = args.startTable[args.defaultroom]
+		end	
+	else
 
-	-- local startPos = nil
-	-- if (args.startTable ~= nil) then
-	-- 	startPos = args.startTable[variables._previousroom]
-	-- 	if (startPos == nil) then
-	-- 		startPos = args.startTable[args.defaultroom]
-	-- 	end	
-	-- end
-	-- local enableScroll = args.enableScroll
-	-- if (enableScroll == nil) then enableScroll = true end
-	
+	end
+
 
 	local p =  {
-
-
 		afterstartup = function()
 			for k, v in ipairs(room.initstuff) do
 				v()
 			end
-			--if (variables.troll_fed==false) then troll() end
 		end,
-
-
-		items = {},
-		dialogues = {},
-		scripts = {},
-		startPos = {},
-		initstuff = {
-			-- [1] = function() 
-			-- 	variables._actionInfo.verb = config.verbs.walk
-			-- 	scumm.ui.updateVerb() 
-			-- 	scumm.ui.refresh_inventory()
-			-- end
-		},
+		initstuff = {},
 		engines = {
+			{ type = "scheduler" },
+	 		{ 
+	 			type = "collision", 
+ 				size = {80, 80}, 
+	 			response = {
+	 				{ tag = {1, 10}, onenter = function() print ("CIAO") end }
+	 			}
+	 		},			
 			{ 
 				type = "hotspotmanager",
 				tag ="_hotspotmanager", 
 				keys = {
-					{ key = 299, func = function() monkey.endroom() end }
+					{ key = 299, func = function() monkey.endroom() end },
+					{ key = 257, func = function() if (engine.config.pause == true) then exitpause() end end}
 				},
 				-- lmbclick is the func called when you click on no hotspot
 				lmbclick = function(x, y) 
-					if (variables.verbs[variables.currentverb].mnemonic == "walk") then
+					if (engine.state.scumm.actionInfo.verb == "walk" and engine.state.scumm.play == true) then
+						--print ("CUIAO")
 						local actions = scumm.ui.walk { pos = {x,y} }
 						local s = script.make(actions)
 						s.name="_walk"
@@ -53,175 +51,96 @@ function scumm.factory.sci_room (args)
 					end
 				end,	
 				rmbclick = function() 
-					variables._actionInfo.verb = config.verbs[glib.get(variables._actionInfo.verb.next)]
-					print ("current verb = " .. variables._actionInfo.verb.code)
-					local cursor = monkey.getEntity("cursor")
-					cursor.anim = variables._actionInfo.verb.anim
-
+ 					local current = glib.get(engine.state.scumm.actionInfo.verb)
+ 					local v = glib.get (engine.config.verbs[current].next)
+ 					engine.state.scumm.actionInfo.verb = v
+ 					--print ("current verb = " .. variables._actionInfo.verb.code)
+ 					local cursor = monkey.getEntity("cursor")
+ 					local a=engine.config.verbs[v].anim
+ 					cursor.anim = a
 				end
 			},
-			{ type = "scheduler" }
 		},
-		-- assets = {
-		-- 	"arrow_up",
-		-- 	"arrow_down",
-		-- 	"guybrush", -- set this as input param
-		-- },
 		scene = {
 			{
 				tag = "main",
-				camera = {
-					tag = "maincam",
-					type="ortho",
-					size = {320, 200},
-					bounds = {0, 0, room_width, room_height},
-					viewport = {0, 0, 320, 200}
-				},
+	 			camera = {
+ 					tag = "maincam",
+ 					type="ortho",
+ 					size = {room_width, room_height},
+ 					bounds = {0, 0, room_width, room_height},
+ 					viewport = {2, 25, 2+room_width, 25+room_height}
+ 				},
 				children = {
-					-- {
-     --            	    pos = {0, 0, 0},
-     --            		components = {
-	    --   					{ 
-					-- 			type ="hotspot",
-					-- 			priority = 0,
-					-- 			shape = {type="rect", width=320, height=200},
-					-- 			-- on click
-					-- 			-- LMB: run action
-					-- 			-- RMB: switch action
-					-- 			onclick = function() print ("ciao") end,
-
-					-- 			onrmbclick = function() 
-					-- 				print ("rmb") 
-					-- 				variables.currentverb = variables.currentverb + 1
-					-- 				if (variables.currentverb > #variables.verbs) then
-					-- 					variables.currentverb = 1
-										
-					-- 				end
-					-- 				print ("current verb = " .. variables.verbs[variables.currentverb].mnemonic)
-					-- 				local cursor = monkey.getEntity("cursor")
-					-- 				cursor.anim = variables.verbs[variables.currentverb].anim
-
-					-- 			end
-     --       					},
-     --       				}
-     --       			},
-        --    			{
-        --         	    pos = {20,50, 0},
-        --         		components = {
-	      	-- 				{ 
-								-- type ="hotspot",
-								-- priority = 1,
-								-- shape = {type="rect", width=20, height=50},
-								-- -- on click
-								-- -- LMB: run action
-								-- -- RMB: switch action
-								-- onclick = function() print ("ciao 2") end,
-        --    					},
-        --    				}
-
-        --    			},
-
-					-- scumm.factory.walkarea { 
-					-- 	priority = 0, 
-					-- 	shape = { 
-			  --      			type = "poly", 
-
-	    --     				outline = {4,14,39,9,61,9,84,22,52,29,0,27,0,68,44,70,64,62,82,64,140,84,155,85,171,84,171,80,180,80,189,88,221,85,274,76,249,67,253,60,241,59,248,54,221,44,177,41,184,48,151,44,130,43,122,43,114,38,107,30,108,27,110,12,77,0,0,0},
-     --  						holes = {
-					-- 			{211,78,185,81,185,62,211,59}
-					-- 		}
-     --  					}	
-					-- },
-					-- scumm.factory.object {
-					-- 	id="guybrush", 
-					-- 	pos={startPos.pos[1], startPos.pos[2], 0}, 
-					-- 	--tag="player", 
-					-- 	dir = startPos.dir,
-					-- 	follow = (room_width > 320 and enableScroll),
-					-- 	collide = args.collide
-					-- }
-					
-					-- factory.player.create { 
-					-- 	pos= startPos.pos, 
-					-- 	model="guybrush", 
-					-- 	facing = startPos.facing, 
-					-- 	scroll = (room_width > 320 and enableScroll),
-					-- 	depth = args.depth,
-					-- 	scale = args.scale,
-					-- 	collide = args.collide
-					-- }
+				}
 				
-			}
-		},
+			},
 			{
 				tag = "diag",
 				camera = {
 					tag = "maincam",
-					type="ortho",
-					size = {320, 200},
+ 					type="ortho",
+ 					size = {320, 200},
 					bounds = {0, 0, 320, 200},
-					viewport = {0, 0, 320, 200}
-				},
-				children = {
-					{ 
-						type = "sprite",
-					 	model="cursor",
-				     	tag = "cursor",
-		 		    	pos={0,0,5},
-					 	components = {
-							{ type="cursor"}
-					 	}
-					}
-				}
-			}
+ 					viewport = {0, 0, 320, 200}
+ 				},
+ 				children = {
+ 					{ 
+ 						type = "sprite",
+ 					 	model="cursor",
+ 				     	tag = "cursor",
+ 		 		    	pos={0,0,5},
+ 					 	components = {
+ 							{ type="cursor"}
+ 					 	}
+ 					}
+ 				}
+ 			}	
 		}
 	}
 
-	if (args.collide == true) then
-		table.insert (p.engines, 
-			{ 
-				type = "collision", 
-				size = {128, 128}, 
-				response = {
-					{ tag = {1, 2}, onenter=function(e,f) 
+	local refs = {
+		main = p.scene[1].children,
+	}
+	-- add the walkarea(s)
+	if (args.walkareas) then
+		for _, wa in ipairs(args.walkareas) do
+			print (wa)
+			local tmp = scumm.factory.object { id = wa }
+			table.insert (refs.main, tmp)
+			refs[wa] =  tmp.children
+		end
 
-							local info = f:getinfo()
-							if (info.onenter ~= nil) then
-								info.onenter()
-							end
-					 end}
-				}
+		-- adding player
+		print("ciao = "..tostring(startPos.pos[1]))
+		print("ciao = "..tostring(startPos.pos[2]))
+		local w1 = refs[startPos.walkarea]
+		table.insert(w1,  
+			scumm.factory.object { 
+				id=args.playerid,
+				pos={startPos.pos[1], startPos.pos[2], 0}, 
+				tag="player", 
+				dir = startPos.dir,
+				follow = (room_width > 320 and enableScroll),
+				collide = args.collisde
 			}
 		)
 	end
 
-	-- get the inventory
-	--table.insert(p.initstuff, function()
-		--setverb (config.verbs.walk)
-		--refresh_inventory()
-		-- c:addtext ( { text="ciao" })
-		-- c:addtext ( { text="come" })
-		-- c:addtext( { text ="stai" })
-		-- c:addtext({ text="alleelelel"})
-		-- c:addtext({ text="stronzo" })
-		-- c:addtext( { text="duro"})
-		-- c:addtext( {text="anvedi"})
-	--end)
 
-	if (p.startPos.func ~= nil) then
-
-	 	table.insert(p.initstuff, p.startPos.func)
-	 end
+	-- if (p.startPos.func ~= nil) then
+	--  	table.insert(p.initstuff, p.startPos.func)
+	--  end
 	
 
-	function p:add(items) 
+
+	function p:add(to, items) 
 		for k,v in ipairs(items) do
-			table.insert(self.scene[1].children, v)
+			print ("ciaociao")
+			print (refs[to].tag)
+			table.insert(refs[to], v)
 		end
 	end
 
-	--variables._actionInfo.verb = config.verbs[config.default_verb]
-	p.depth = args.depth
-	p.scale = args.scale
 	return p
 end

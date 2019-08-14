@@ -950,7 +950,8 @@ std::shared_ptr<State> Walk25StateFactory::Create(luabridge::LuaRef &ref) {
     float speed = table.Get<float>("speed");
     float a = table.Get<float>("acceleration");
     bool fliph = table.Get<bool>("fliph");
-    auto ptr = std::make_shared<Walk25>(speed, a, fliph);
+    bool fourWay = table.Get<bool>("fourway", true);
+    auto ptr = std::make_shared<Walk25>(speed, a, fliph, fourWay);
     return ptr;
 
 }

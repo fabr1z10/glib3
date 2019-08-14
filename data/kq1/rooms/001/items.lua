@@ -1,3 +1,15 @@
+engine.items["001.walkarea"] = scumm.factory.walkarea {
+	shape = { type = "poly", outline = {0, 8, 0, 19, 184, 19, 198, 32, 214, 38, 161, 57, 161,106, 316,106, 316, 10, 269, 26, 245, 26,231,20,219,8}},
+	priority = 0,
+	depth = { type="linear_y", values= {0, 1, 144, 0} },
+}
+
+engine.items["001.moat"] = scumm.factory.walkarea {
+	shape = { type = "poly", outline = {0, 0, 0, 6, 229, 6, 242, 18, 294, 0}},
+	priority = 0,
+	depth = { type="linear_y", values= {0, 1, 144, 0} },
+}
+
 engine.items["castle"] = {
 
 	pos={0,0,0},
@@ -51,6 +63,7 @@ engine.items["alligator_1"] = {
 	tag = "alli1",
 	pos = {10, 5, 0},
 	model = "alligator",
+	sci_char = { speed = 50, acceleration=0.1, fliph=true, fourway=false},
 	hotspot = {
 
 		priority = 1,
@@ -60,8 +73,21 @@ engine.items["alligator_1"] = {
 		look = {
 			{ type = action.kq.showmessage, args = { msg=strings.room001[5]}}
 		}
-
-
 	}
+}
 
+engine.items["alligator_2"] = {
+	tag = "alli2",
+	pos = {150, 5, 0},
+	model = "alligator",
+	sci_char = { speed = 40, acceleration=0.1, fliph=true, fourway=false},
+	hotspot = {
+		priority = 1,
+		size = {25,10}, offset = {-12,0}
+	},
+	actions = {
+		look = {
+			{ type = action.kq.showmessage, args = { msg=strings.room001[5]}}
+		}
+	}
 }

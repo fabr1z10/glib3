@@ -17,8 +17,10 @@ engine = {
     lang="eng",
     start_room ="001",
     config = {
+        walk = "walksci",
         default_verb = "walk",
-        current_verb = "walk",
+        play = true,
+        --current_verb = "walk",
         pause = false,
         msgid =-1
     },
