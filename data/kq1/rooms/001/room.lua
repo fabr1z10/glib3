@@ -5,10 +5,10 @@ roomDefinition = {
 	width = 316,
 	height = 166,
 	startTable = {
-		r002 = { walkarea = "001.walkarea", pos = {10, 15}, dir="east"},
+		['002'] = { walkarea = "001.walkarea", pos = {10, 15}, dir="east"},
 --		meleemap = { walkarea = "lookout.walkarea", pos = items["lookout.path"].hotspot.walk_to, dir = "east"},
 	},
-	defaultroom = "r002",
+	defaultroom = "002",
 	walkareas = { "001.walkarea", "001.moat" },
 	font_size = 8,
 	playerid="graham",
@@ -21,6 +21,14 @@ room:add ( "main",
 	{ 
 		{ pos = {0,0,-3}, components = { { type="gfx", image="bg001.png" }}},
 		scumm.factory.item_sci { id="castle" },
+		scumm.factory.item_sci { id="001.bridge" },
+		scumm.factory.item_sci { id="001.moat.item" },
+		scumm.factory.item_sci { id="001.tree" },
+ 		scumm.factory.item_sci { id="purple_flag"},
+		scumm.factory.item_sci { id="yellow_flag"},
+		scumm.factory.item_sci { id="cyan_flag"},
+		scumm.factory.item_sci { id="flags"},
+		makeRoomChange { x=0, y=10, width=1, height=10, room ="002"},
 		{ 
 			pos = {0,0,0},
 			components = {
@@ -207,9 +215,6 @@ room:add ( "001.moat", {
 -- 				},
 -- 				scumm.factory.item_sci { id="castle" },
 -- 				scumm.factory.item_sci { id="flags" },
--- 				scumm.factory.item_sci { id="purple_flag"},
--- 				scumm.factory.item_sci { id="yellow_flag"},
--- 				scumm.factory.item_sci { id="cyan_flag"},
 -- 				scumm.factory.item_sci { id="alligator_1"},
 
 -- 			},				

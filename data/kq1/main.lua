@@ -15,7 +15,7 @@ engine = {
         animations = {}
     },
     lang="eng",
-    start_room ="001",
+    start_room ="002",
     config = {
         walk = "walksci",
         default_verb = "walk",
@@ -28,7 +28,7 @@ engine = {
         action = "actio2n"
     }
 }
-
+ require("funcs")
 require("scumm")
 
 engine.config.verbs = {
@@ -47,7 +47,7 @@ engine.config.verbs = {
 }
 -- require("script")
 -- require("sprites")
- require("funcs")
+
  --quire("actio2n")
 -- require("strings")
 

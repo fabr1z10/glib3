@@ -4,6 +4,51 @@ function curry(f, arg)
     end 
 end
 
+function makeItem (args)
+	local x  = args.x or 0
+	local y = args.y or 0 
+	local shape = nil
+	if (args.outline) then
+		shape = { type="poly", outline = args.outline }
+	else 
+		shape = { type="rect", width = args.width, height = args.height, offset = args.offset }
+	end
+	return {
+		pos={x,y,0},
+		hotspot = {
+			priority = args.priority or 1,
+			shape = shape
+		},
+		actions = {
+			look = {
+				{ type = action.kq.showmessage, args = { msg=args.msg}}
+			},
+			talk = args.talk
+		}
+	}
+end
+
+function makeRoomChange (args) 
+	return 
+	{ 
+		pos = {args.x,args.y,0},
+		components = {
+			{ type = "collider", flag = 32, mask = 1, tag=10, 
+ 					shape = { type="rect", width = args.width, height = args.height }
+ 			},
+ 			{ type = "info", func = function() 
+ 				local actions = {
+					{ type = action.change_room, args = {room = args.room}}
+				}
+ 				local s = script.make(actions)
+ 				monkey.play(s)
+ 				end 
+			}
+ 		}
+ 	}
+end
+
+
 function makeShape (arg)
 	return {
 		pos = arg.pos,

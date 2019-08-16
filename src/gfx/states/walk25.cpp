@@ -8,8 +8,9 @@
 #include <gfx/engine.h>
 #include <gfx/components/info.h>
 
-Walk25::Walk25(float speed, float acceleration, bool fliph, bool anim4) : State(), m_speed(speed),
-    m_acceleration(acceleration), m_flipHorizontal(fliph), m_velocitySmoothingX(0.0f), m_velocitySmoothingY(0.0f), m_velocity(0.0f), m_4WayAnim(anim4) {}
+Walk25::Walk25(float speed, float acceleration, bool fliph, bool anim4, char dir) : State(), m_speed(speed),
+    m_acceleration(acceleration), m_flipHorizontal(fliph), m_velocitySmoothingX(0.0f), m_velocitySmoothingY(0.0f), m_velocity(0.0f), m_4WayAnim(anim4),
+    m_dir(dir) {}
 
 Walk25::Walk25(const Walk25 &) {
 
@@ -34,7 +35,17 @@ void Walk25::AttachStateMachine(StateMachine * sm) {
 }
 
 void Walk25::Init() {
-
+    if (m_flipHorizontal) {
+        m_entity->SetFlipX(m_dir == 'w');
+    }
+    std::stringstream anim;
+    anim<< "idle";
+    if (m_4WayAnim) {
+        char c = m_dir;
+        if (c == 'w') c='e';
+        anim << "_" << c;
+    }
+    m_animator->SetAnimation(anim.str());
 }
 
 void Walk25::End() {

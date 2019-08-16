@@ -106,7 +106,8 @@ scumm.factory.object = function(args)
 						type = "walk25", 
 						speed = object.sci_char.speed,  --50
 						acceleration = object.sci_char.acceleration, --0.1 
-						fliph=object.sci_char.fliph or true
+						fliph=object.sci_char.fliph or true,
+						dir = args.dir
 					}
 				},
 				{

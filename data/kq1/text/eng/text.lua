@@ -11,5 +11,26 @@ strings = {
 		[5] = "The alligators are swimming in the moat.",
 		[6] = "This is a very beautful tree.",
 		[7] = "It is a very small, wooden barrel bridge."
+	},
+	room002 = {
+		[1] = "The huge doors swing open slowly.",
+		[2] = "These doors are strongly built to keep out unwanted visitors.",
+		[3] = "High above the castle, the flags are waving in the wind.",
+		[4] = "It is a rather small, wooden bridge.",
+		[5] = "They pose as immovable guards for King Edward's castle, and have frightened off numerous intruders."
+	},
+	room003 = {
+		[1] = "This is the armor of one of King Edward's knights from years ago."
+	},
+	room005 = {
+		[1] = "\"Sir Graham, I am an old man. I fear my end is near. ...",
+		[2] = "I have chosen you to prove yourself worthy of the throne. ...",
+		[3] = "As you know, our kingdom is weak and poor. I have knowledge of the existence of three things that would make our kingdom wealth and strong. ...",
+		[4] = "Somewhere within our kingdom, there is a magic mirror that tells the future. ...",
+		[5] = "There is a magic shield that will protect the bearer from mortal harm ...",
+		[6] = "Finally, there is a magic chest that is always filled with gold coins. ...",
+		[7] = "Go, Sir Graham! Go and bring me back these treasures. If you succeed, you will inherit the throne.\"",
+		[8] = "When you speak to King Edward, he sighs and says:",
+		[9] = "King Edward the Benevolent is a very wise, but elderly monarch. His frail body is almost lost in the large throne."
 	}
 }

@@ -10,22 +10,22 @@ engine.items["001.moat"] = scumm.factory.walkarea {
 	depth = { type="linear_y", values= {0, 1, 144, 0} },
 }
 
-engine.items["castle"] = {
-
-	pos={0,0,0},
-	hotspot = {
-		priority = 1,
-		shape = { type ="poly", outline={0,21,0,126,100,126,100,161,187,161,187,142,173,132,173,21}}
-	},
-	actions = {
-		look = {
-			{ type = action.kq.showmessage, args = { msg=strings.room001[1]}}
-		}
-	--		look = box{ msg = strings[args.msg], sprite = args.sprite },
-	--		walk = function(x, y) return scumm.ui.walk { pos ={x,y}, walkarea = args.wa} end,
-	--		use = args.use
-	}
-}
+engine.items["castle"] = makeItem {outline = {0,21,0,126,100,126,100,161,187,161,187,142,173,132,173,21}, msg = strings.room001[1] } 
+engine.items["001.bridge"] = makeItem { outline = {187,8,187,21,202,36,228,36,267,28,294,8}, msg = strings.room001[7]}
+engine.items["001.moat.item"] = makeItem { outline = {0, 0, 0, 6, 229, 6, 242, 18, 294, 0}, msg = strings.room001[4]}
+engine.items["001.tree"] = makeItem { outline = {264,41,264,74,236,110,206,110,206,166,316,166,316,99,289,99,280,80,280,41}, msg = strings.room001[6]}
+-- {	
+-- 	pos={0,0,0},
+-- 	hotspot = {
+-- 		priority = 1,
+-- 		shape = { type ="poly", outline={0,21,0,126,100,126,100,161,187,161,187,142,173,132,173,21}}
+-- 	},
+-- 	actions = {
+-- 		look = {
+-- 			{ type = action.kq.showmessage, args = { msg=strings.room001[1]}}
+-- 		}
+-- 	}
+-- }
 
 engine.items["flags"] = {
 	pos={0,0,0},
@@ -66,7 +66,7 @@ engine.items["alligator_1"] = {
 	sci_char = { speed = 50, acceleration=0.1, fliph=true, fourway=false},
 	hotspot = {
 
-		priority = 1,
+		priority = 2,
 		size = {25,10}, offset = {-12,0}
 	},
 	actions = {
@@ -82,7 +82,7 @@ engine.items["alligator_2"] = {
 	model = "alligator",
 	sci_char = { speed = 40, acceleration=0.1, fliph=true, fourway=false},
 	hotspot = {
-		priority = 1,
+		priority = 2,
 		size = {25,10}, offset = {-12,0}
 	},
 	actions = {

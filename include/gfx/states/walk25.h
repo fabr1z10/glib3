@@ -10,7 +10,7 @@ class ICollisionEngine;
 
 class Walk25 : public State {
 public:
-    Walk25(float speed, float acceleration, bool fliph, bool anim4);
+    Walk25(float speed, float acceleration, bool fliph, bool anim4, char dir='e');
     Walk25(const Walk25&);
     std::shared_ptr<State> clone() const override;
     void Run(double) override;
@@ -38,7 +38,7 @@ protected:
     float m_velocitySmoothingY;
     float m_acceleration;
     ICollisionEngine * m_collision;
-
+    char m_dir;
 };
 
 inline bool Walk25::flipHorizontally() const {

@@ -65,12 +65,37 @@ local s = {
 	alligator_2 = {x=75, y=1, width = 26, height=8, anchor={15,0}},
 	alligator_3 = {x=75, y=11, width = 24, height=11, anchor={15,0}},
 
-
+	castle_door_closed = {x=45, y=123,width=42,height=50},
+	castle_door_open_1 = {x=89, y=123,width=42,height=50},
+	castle_door_open_2 = {x=1,y=123,width=42,height=50}
 }
 
 local dt=0.1
 
 local wbml = {-8, 0, 8, 24}
+
+models["castle_door"] = {
+	sheet="sprites.png",
+	type="sprite",
+	ppu=1,
+	animations = {
+		{
+			name="closed",
+			frames = {
+				{ duration = dt, quads = {{id=s.castle_door_closed}}}
+			}
+		},
+		{
+			name="open",
+			loop=false,
+			frames = {
+				{ duration = dt, quads = {{id=s.castle_door_open_1}}},
+				{ duration = dt, quads = {{id=s.castle_door_open_2}}},
+			}
+		},
+
+	}
+}
 
 models["purple_flag"] = { 
 	sheet ="sprites.png",
