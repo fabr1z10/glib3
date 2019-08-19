@@ -233,28 +233,31 @@ void MeshFactory::visit(Ellipse& e) {
 }
 
 void MeshFactory::visit(Poly& p) {
-    int nPoly = p.GetPolygonCount();
-    std::vector<VertexColor> vertices ;
-    std::vector<unsigned int> indices;
-    int count = 0;
-    for (int i = 0; i < nPoly; ++i) {
-        auto poly = p.GetPolygon(i);
-        int nv = poly->GetVertexCount();
-        int first = count;
-        for (int j = 0; j < nv; ++j) {
-            glm::vec2 v = poly->GetVertex(j);
-            vertices.push_back({v.x, v.y, m_z, 1.0, 1.0, 1.0, 1.0});
-            indices.push_back(count++);
-            indices.push_back((j < nv-1) ? count : first);
-        }
-    }
+    Polygon* p1 = p.GetPolygon();
+    MeshFactory::visit(*p1);
 
-
-
-    auto mesh = std::make_shared<Mesh<VertexColor>>(COLOR_SHADER);
-    mesh->Init(vertices, indices);
-    mesh->m_primitive = GL_LINES;
-    m_mesh = mesh;
+//    int nPoly = p.GetPolygonCount();
+//    std::vector<VertexColor> vertices ;
+//    std::vector<unsigned int> indices;
+//    int count = 0;
+//    for (int i = 0; i < nPoly; ++i) {
+//        auto poly = p.GetPolygon(i);
+//        int nv = poly->GetVertexCount();
+//        int first = count;
+//        for (int j = 0; j < nv; ++j) {
+//            glm::vec2 v = poly->GetVertex(j);
+//            vertices.push_back({v.x, v.y, m_z, 1.0, 1.0, 1.0, 1.0});
+//            indices.push_back(count++);
+//            indices.push_back((j < nv-1) ? count : first);
+//        }
+//    }
+//
+//
+//
+//    auto mesh = std::make_shared<Mesh<VertexColor>>(COLOR_SHADER);
+//    mesh->Init(vertices, indices);
+//    mesh->m_primitive = GL_LINES;
+//    m_mesh = mesh;
 }
 
 void MeshFactory::visit(PolyLine& p) {

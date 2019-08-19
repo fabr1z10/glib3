@@ -177,18 +177,23 @@ bool inLineOfSight (const Poly& p, glm::vec2 start, glm::vec2 end) {
     
     // Not in LOS if any edge is intersected by the start-end line segment
    // bool inSight = true;
-    int n = p.GetHoleCount() + 1;
-    for (int i = 0; i < n; ++i) {
-        int m = p.GetVertexCount(i);
-        glm::vec2 v1 = p.GetVertex(m-1, i);
-        for (int j = 1; j < m; ++j) {
-            glm::vec2 v2 = p.GetVertex(j);
-            if (LineSegmentCross(start, end, v1, v2)) {
-                return false;
-            }
-            v1 = v2;
-        }
-    }
+//    int n = p.GetHoleCount() + 1;
+//
+//    // contour
+//    int m = p.GetVertexCount();
+//    p.GetVertex()
+//
+//    for (int i = 0; i < n; ++i) {
+//        int m = p.GetVertexCount(i);
+//        glm::vec2 v1 = p.GetVertex(m-1, i);
+//        for (int j = 1; j < m; ++j) {
+//            glm::vec2 v2 = p.GetVertex(j);
+//            if (LineSegmentCross(start, end, v1, v2)) {
+//                return false;
+//            }
+//            v1 = v2;
+//        }
+//    }
 
 
     return true;

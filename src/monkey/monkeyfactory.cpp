@@ -4,6 +4,7 @@
 
 MonkeyFactory::MonkeyFactory() : SceneFactory() {
     m_componentFactory.Add<WalkAreaComponentFactory>("walkarea");
+    m_componentFactory.Add<WalkStopComponentFactory>("hole");
     m_componentFactory.Add<CharacterStateFactory>("character");
 
     m_activityFactory.Add<WalkToActFactory>("walk");

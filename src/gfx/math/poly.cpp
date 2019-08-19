@@ -2,7 +2,7 @@
 #include "gfx/math/geom.h"
 #include <gfx/error.h>
 #include <gfx/math/geomalgo.h>
-
+#include <gfx/entity.h>
 Polygon::Polygon(const std::vector<glm::vec2> &p) : m_points{p} {
     m_bounds.min = glm::vec3(p[0], 0.0f);
     m_bounds.max = glm::vec3(p[0], 0.0f);
@@ -72,11 +72,12 @@ std::vector<glm::vec2> Polygon::getEdges() {
 }
 
 bool Poly::isPointInside(glm::vec3 P) const {
-    if (!m_polygons[0]->isPointInside(P))
+    if (!m_contour->isPointInside(P))
         return false;
-    for (int i = 1; i < m_polygons.size(); ++i) {
-        if (m_polygons[i]->isPointInside(P))
+    for (const auto& hole : m_holes) {
+        if (hole.isPointInside(P)) {
             return false;
+        }
     }
     return true;
 }
@@ -89,6 +90,10 @@ void Poly::accept (AcyclicVisitor& v) {
         GLIB_FAIL("not a poly visitor");
 }
 
+
+Polygon* Poly::GetPolygon() {
+    return m_contour.get();
+}
 
 glm::vec2 Polygon::getNormalAtEdge (int edgeIndex) {
     return glm::normalize(Perp(m_points[(edgeIndex+1) % m_points.size()] - m_points[edgeIndex]));
@@ -105,16 +110,32 @@ glm::vec2 Polygon::project(const glm::vec2 axis, const glm::mat4& worldTransform
     return Projection(m_points, axis, worldTransform);
 }
 
-Polygon* Poly::GetPolygon(int i) {
-    return m_polygons[i].get();
+const glm::mat4& Hole::getWorldTransform() const {
+    return m_entity->GetWorldTransform();
+}
+Poly::Poly (std::unique_ptr<Polygon> p) {
+    m_contour = std::move(p);
+    m_bounds = m_contour->getBounds();
 }
 
+
 bool Poly::isInLineOfSight(glm::vec2 A, glm::vec2 B) {
-    for (auto& p : m_polygons) {
-        if (!p->isInLineOfSight(A, B))
+
+    if (!m_contour->isInLineOfSight(A, B)) {
+        return false;
+    }
+    for (const auto& hole : m_holes) {
+        if (!hole.isInLineOfSight(A, B))
             return false;
     }
     return true;
+
+
+//    for (auto& p : m_polygons) {
+//        if (!p->isInLineOfSight(A, B))
+//            return false;
+//    }
+//    return true;
 }
 
 std::string Poly::toString() const {
@@ -126,10 +147,47 @@ std::string Polygon::toString() const {
 }
 
 std::vector<glm::vec2> Poly::getPoints() {
-    return m_polygons.front()->getPoints();
+    return m_contour->getPoints();
 }
 std::vector<glm::vec2> Poly::getEdges() {
-    return m_polygons.front()->getEdges();
+    return m_contour->getEdges();
+}
+
+
+glm::vec2 Poly::GetVertex(int i) const {
+    return m_contour->GetVertex(i);
+}
+
+const std::vector<Hole>& Poly::getHoles() const {
+    return m_holes;
+}
+bool Hole::isPointInside (glm::vec3 P) const {
+    glm::mat4 wt = m_entity->GetWorldTransform();
+    glm::vec3 Plocal (glm::inverse(wt) * glm::vec4(P, 1.0f));
+    return m_polygon->isPointInside(Plocal);
+}
+glm::vec2 Hole::getVertex(int i) const {
+    const glm::mat4& t = m_entity->GetWorldTransform();
+    return t * glm::vec4(m_polygon->GetVertex(i), 0.0f, 1.0f);
+}
+glm::vec2 Hole::getNormalAtVertex(int i) const {
+    glm::vec2 n1 = m_polygon->getNormalAtVertex(i);
+
+    const glm::mat4& t = m_entity->GetWorldTransform();
+
+
+    return t * glm::vec4(m_polygon->getNormalAtVertex(i), 0.0f, 0.0f);
+
+}
+
+bool Hole::isInLineOfSight(glm::vec2 &A, glm::vec2 &B) const{
+    // convert into local
+    glm::mat4 wt = glm::inverse(m_entity->GetWorldTransform());
+    glm::vec2 lA = glm::vec2(wt * glm::vec4(A, 0.0f, 1.0f));
+    glm::vec2 lB = glm::vec2(wt * glm::vec4(B, 0.0f, 1.0f));
+    return m_polygon->isInLineOfSight(lA, lB);
+
+
 }
 
 //for (i in 0...vertices.length)

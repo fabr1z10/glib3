@@ -9,7 +9,7 @@ roomDefinition = {
 --		meleemap = { walkarea = "lookout.walkarea", pos = items["lookout.path"].hotspot.walk_to, dir = "east"},
 	},
 	defaultroom = "002",
-	walkareas = { "001.walkarea", "001.moat" },
+	walkareas = { "001.walkarea"},
 	font_size = 8,
 	playerid="graham",
 	
@@ -22,8 +22,7 @@ room:add ( "main",
 		{ pos = {0,0,-3}, components = { { type="gfx", image="bg001.png" }}},
 		scumm.factory.item_sci { id="castle" },
 		scumm.factory.item_sci { id="001.bridge" },
-		scumm.factory.item_sci { id="001.moat.item" },
-		scumm.factory.item_sci { id="001.tree" },
+		--scumm.factory.item_sci { id="001.moat.item" },
  		scumm.factory.item_sci { id="purple_flag"},
 		scumm.factory.item_sci { id="yellow_flag"},
 		scumm.factory.item_sci { id="cyan_flag"},
@@ -64,18 +63,10 @@ room:add ( "main",
 )
 
 room:add ( "001.walkarea", { 
- 	{ pos = {196, 39, 0}, components = { { type="gfx", image="bg002.png" }}},
-	
--- 	--scumm.factory.object { id="shop.sword" },
--- 	--scumm.factory.object { id="shop.shovel" },	
+	scumm.factory.item_sci { id="001.tree" },
 })	
 
-room:add ( "001.moat", {
-	scumm.factory.item_sci { id="alligator_1"},
-	scumm.factory.item_sci { id="alligator_2"},
-
-
-})
+-- 
 
 -- --require("rooms/001/actions")
 
@@ -345,21 +336,6 @@ function move_alligator(name)
 end
 
 
-table.insert(room.initstuff, glib.curry(move_alligator, "alli1"))
-table.insert(room.initstuff, glib.curry(move_alligator, "alli2"))
-
--- -- 		[1] = { type ="animate", actor =name, anim="default", flipx = flip },
--- -- 		[2] = { type = "move", actor=name, to={x, y}, speed=30.0, after={1} },
--- -- 		[3] = { type = "callfunc", func = curry(moveAlligator, name),after={2}}
--- -- 	}
--- -- 	monkey.play(s)
-	
--- -- end
-
--- -- function room.afterstartup() 
--- -- 	moveAlligator("alli1")
--- -- 	moveAlligator("alli2")
--- -- end
-
-
+--table.insert(room.initstuff, glib.curry(move_alligator, "alli1"))
+--table.insert(room.initstuff, glib.curry(move_alligator, "alli2"))
 

@@ -1,5 +1,6 @@
 #include <monkey/factories.h>
 #include <monkey/components/walkarea.h>
+#include <monkey/components/walkstop.h>
 #include <monkey/activities/walksci.h>
 //#include <monkey/components/scaling.h>
 #include <gfx/engine.h>
@@ -20,6 +21,14 @@ std::shared_ptr<Component> CharacterStateFactory::Create(luabridge::LuaRef& ref)
 }
 
 
+std::shared_ptr<Component> WalkStopComponentFactory::Create(luabridge::LuaRef& ref) {
+    LuaTable table(ref);
+    luabridge::LuaRef rshape = table.Get<luabridge::LuaRef>("shape");
+    auto factory = Engine::get().GetSceneFactory();
+    auto shape = factory->makeShape(rshape);
+    auto ptr = Ref::Create<WalkStop>(shape);
+    return ptr;
+}
 // Read the walk-area
 std::shared_ptr<Component> WalkAreaComponentFactory::Create(luabridge::LuaRef& ref) {
 

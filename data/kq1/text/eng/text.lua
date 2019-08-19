@@ -30,5 +30,10 @@ strings = {
 		[5] = "When you speak to King Edward, he sighs and says:",
 		[6] = "King Edward the Benevolent is a very wise, but elderly monarch. His frail body is almost lost in the large throne.",
 		[7] = "Go, Sir Graham! Go and bring me back these treasures!",
+	},
+	room006 = {
+		[1] = "With a heave and a ho, you manage to move the rock... revealing a dark hole underneath it.",
+		[2] = "There is an intricately carved dagger in the hole.",
+		[3] = "You reach into the hole and grasp the dagger, being careful not to cut yourself."
 	}
 }

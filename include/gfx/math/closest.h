@@ -19,8 +19,8 @@ public:
     void visit(PolyLine&) override;
     //void visit(Poly&) override;
 private:
-
-    glm::vec2 getNearest(Polygon&, float&, glm::vec2 closestPointSoFar);
+    // returns the closest point
+    glm::vec2 getNearest(Polygon&, glm::mat4& t, float&, glm::vec2 closestPointSoFar);
     ClosestPointOnEdge(glm::vec2 P) : m_P{P} {}
     glm::vec2 m_P;
     glm::vec2 m_result;

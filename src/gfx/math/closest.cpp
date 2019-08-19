@@ -1,14 +1,20 @@
 #include <gfx/math/closest.h>
 #include <iostream>
 
-glm::vec2 ClosestPointOnEdge::getNearest(Polygon& p, float& bestSoFar, glm::vec2 closestPointSoFar) {
+glm::vec2 ClosestPointOnEdge::getNearest(
+        Polygon& p,                 // shape in local coordinates
+        glm::mat4& t,               // local trasnform
+        float& bestSoFar,
+        glm::vec2 closestPointSoFar) // best in WORLD coords
+{
     int n = p.GetVertexCount();
-    glm::vec2 bestPoint = closestPointSoFar;
+    // transform the point in local coords
+    glm::vec2 bestPoint = glm::inverse(t) * glm::vec4(closestPointSoFar, 0.0f, 1.0f);
     int ip = n-1;
     glm::vec2 A = p.GetVertex(ip);
     glm::vec2 normal;
-    for (int i = 0; i < n; i++) {
 
+    for (int i = 0; i < n; i++) {
         glm::vec2 B = p.GetVertex(i);
         float l = glm::length(B - A);
         glm::vec2 u = glm::normalize(B - A);
@@ -25,29 +31,35 @@ glm::vec2 ClosestPointOnEdge::getNearest(Polygon& p, float& bestSoFar, glm::vec2
         A = B;
         ip = i;
     }
-
-    return bestPoint;
+    glm::vec4 worldPoint = t * glm::vec4(bestPoint,0.0f,1.0f);
+    return glm::vec2(worldPoint);
 }
 
 
 void ClosestPointOnEdge::visit(Polygon& p) {
     float b = std::numeric_limits<float>::infinity();
-    glm::vec2 P = getNearest(p, b, glm::vec2(0.0f));
+    glm::mat4 I(1.0f);
+    glm::vec2 P = getNearest(p, I, b, glm::vec2(0.0f));
     m_result = P;
 }
 
 void ClosestPointOnEdge::visit(Poly& p) {
     float b = std::numeric_limits<float>::infinity();
-    glm::vec2 P(0.0f);
-    for (int i = 0; i < p.GetHoleCount() + 1; ++i) {
-        auto poly = p.GetPolygon(i);
-        P = getNearest(*poly, b, P);
-        std::cout << "Find nearest of " << m_P.x << ", " << m_P.y << " on poly " << i << " is " << P.x << ", " << P.y << "\n";
-    }
+    glm::mat4 I(1.0f);
+    auto contour = p.GetPolygon();
+    glm::vec2 P = getNearest(*contour, I, b, glm::vec2(0.0f));
+//
+//
+//
+//    for (int i = 0; i < p.GetHoleCount() + 1; ++i) {
+//        auto poly = p.GetPolygon(i);
+//        P = getNearest(*poly, b, P);
+//        std::cout << "Find nearest of " << m_P.x << ", " << m_P.y << " on poly " << i << " is " << P.x << ", " << P.y << "\n";
+//    }
     m_result = P;
-    if (std::isnan(m_result.x) || std::isnan(m_result.y)) {
-        std::cout << "Probelm hgere \n";
-    }
+//    if (std::isnan(m_result.x) || std::isnan(m_result.y)) {
+//        std::cout << "Probelm hgere \n";
+//    }
 }
 
 

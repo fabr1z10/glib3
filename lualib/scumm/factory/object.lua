@@ -134,7 +134,7 @@ scumm.factory.object = function(args)
 			scale = object.walkarea.scale,
 			depth = object.walkarea.depth
 		})
-		table.insert (obj.components, { type = "collider", flag = 2, mask = 1, tag=1, shape = object.walkarea.shape })
+		--table.insert (obj.components, { type = "collider", flag = 2, mask = 1, tag=1, shape = object.walkarea.shape })
 -- 					}
 
 	end

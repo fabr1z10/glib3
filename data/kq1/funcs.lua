@@ -24,7 +24,9 @@ function makeItem (args)
 				{ type = action.kq.showmessage, args = { msg=args.msg}}
 			},
 			talk = args.talk
-		}
+		},
+		gfx = args.gfx,
+		hole = args.hole,
 	}
 end
 

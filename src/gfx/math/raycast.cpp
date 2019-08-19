@@ -38,6 +38,24 @@ RayCastHit RayCast2D::SegmentIntersection(glm::vec2 A, glm::vec2 B, std::vector<
     return ret;
 }
 
+RayCastHit RayCast2D::SegmentIntersectionSimple(glm::vec2 A, glm::vec2 B, std::vector<glm::vec2>& p)
+{
+    p.push_back(p.front());
+    RayCastHit ret;
+    ret.collide = false;
+    ret.length = m_length;
+    for (int i = 1; i < p.size(); ++i) {
+        float l = SegmentIntersection(A, B, p[i-1], p[i]);
+        if (l < ret.length) {
+            ret.collide = true;
+            ret.length = l;
+            ret.normal = glm::vec3(glm::normalize(Perp(p[i]-p[i-1])), 0.0f);
+        }
+    }
+    return ret;
+}
+
+
 void RayCast2D::visit(Line& l) {
     glm::vec2 Cw (m_transform * glm::vec4(l.getA(), 0.0f, 1.0f));
     glm::vec2 Dw (m_transform * glm::vec4(l.getB(), 0.0f, 1.0f));
@@ -61,6 +79,33 @@ void RayCast2D::visit(Polygon& p) {
     auto points = p.getPoints();
     m_result = SegmentIntersection(m_A, m_B, points);
 }
+
+void RayCast2D::visit(Poly & p) {
+    auto cont = p.GetPolygon();
+    auto points = cont->getPoints();
+    m_result = SegmentIntersection(m_A, m_B, points);
+    if (!m_result.collide) {
+
+        const auto& holes = p.getHoles();
+        for (const auto& hole : holes) {
+            const auto& wt = hole.getWorldTransform();
+            const auto& iwt = glm::inverse(wt);
+            glm::vec2 lA (iwt * glm::vec4(m_A, 1.0f));
+            glm::vec2 lB (iwt * glm::vec4(m_B, 1.0f));
+            auto points = hole.getPolygon()->getPoints();
+
+            m_result = SegmentIntersectionSimple (lA, lB, points);
+            if (m_result.collide) {
+                m_result.normal = glm::vec3(wt * glm::vec4(m_result.normal, 0.0f));
+                return;
+            }
+
+        }
+
+    }
+
+}
+
 
 void RayCast2D::visit(Circle& c) {
     glm::vec3 C(m_transform * glm::vec4(c.getPoints()[0], 0.0f, 1.0f));

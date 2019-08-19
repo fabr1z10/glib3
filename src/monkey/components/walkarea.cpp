@@ -89,6 +89,10 @@ void WalkArea::Start() {
         e->onMove.Unregister(this);
     });
 
+    // automatically add a collider component
+    auto coll = Ref::Create<SimpleCollider>(m_shape,1,2,1);
+    m_entity->AddComponent(coll);
+    coll->Start();
 
 }
 

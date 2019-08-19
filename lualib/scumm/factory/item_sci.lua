@@ -51,6 +51,9 @@ scumm.factory.item_sci = function(args)
 		obj.model = object.model
 		obj.anim = glib.get(object.anim)
 	end
+	if (object.gfx ~= nullptr) then
+		table.insert ( obj.components, { type="gfx", image=object.gfx })
+	end
 
 	-- add the hotspot only if size is supplied
 	-- change size to shape
@@ -136,6 +139,10 @@ scumm.factory.item_sci = function(args)
 			depth = object.walkarea.depth
 		})
 
+	end
+
+	if (object.hole) then
+		table.insert (obj.components, {type="hole", shape = {type="poly", outline = object.hole.outline}})
 	end
 
 	-- depth component

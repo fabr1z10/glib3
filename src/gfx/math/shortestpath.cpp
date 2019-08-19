@@ -95,7 +95,7 @@ void ShortestPath::visit(Polygon & p) {
 void ShortestPath::visit(Poly& p) {
 
     std::vector<glm::vec2> nodes;
-    Polygon* pMain = p.GetPolygon(0);
+    Polygon* pMain = p.GetPolygon();
     int n = pMain->GetVertexCount();
     for (int i=0; i<n; ++i) {
         if (pMain->isVertexConcave(i)) {
@@ -105,16 +105,19 @@ void ShortestPath::visit(Poly& p) {
     }
 
     // add convex point of holes
-    int nHoles = p.GetHoleCount();
-    for (int i = 0; i<nHoles; ++i) {
-        Polygon* pHole = p.GetPolygon(i+1);
-        int n = pHole->GetVertexCount();
-        for (int j=0; j<n; ++j) {
-            if (pHole->isVertexConcave(j)) {
-                glm::vec2 n = pHole->getNormalAtVertex(j);
-                nodes.push_back(pHole->GetVertex(j) - n*0.01f);
+    const auto& holes = p.getHoles();
+    for (const auto& hole : holes) {
+
+        int n = hole.getVertexCount();
+        for (int j = 0; j < n; ++j) {
+            if (!hole.isVertexConcave(j)) {
+                glm::vec2 n = hole.getNormalAtVertex(j);
+                glm::vec2 vertex = hole.getVertex(j);
+                nodes.push_back(hole.getVertex(j) + n * 0.01f);
             }
+
         }
+
     }
 
 

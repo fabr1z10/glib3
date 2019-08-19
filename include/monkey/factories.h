@@ -4,6 +4,7 @@
 
 
 FACTORY(WalkAreaComponentFactory, Component)
+FACTORY(WalkStopComponentFactory, Component)
 FACTORY(CharacterStateFactory, Component)
 
 FACTORY(WalkToActFactory, Activity)
