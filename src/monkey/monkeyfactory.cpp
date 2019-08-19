@@ -10,6 +10,7 @@ MonkeyFactory::MonkeyFactory() : SceneFactory() {
     m_activityFactory.Add<WalkSciActFactory>("walksci");
 
     m_activityFactory.Add<TurnActFactory>("turn");
+    m_activityFactory.Add<TurnSciActFactory>("turnsci");
     m_activityFactory.Add<SayActFactory>("say");
     m_activityFactory.Add<EnableBlockActFactory>("enable_wall");
     //AddFactory<WalkAreaComponentFactory>("walkarea");

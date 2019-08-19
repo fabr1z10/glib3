@@ -49,6 +49,7 @@ engine.items["002.door"] = {
 		},
 		use = {
 			{ type = scumm.action.walkto, args = {tag="player", pos ={227, 46}}},
+			{ type = scumm.action.turn, args = {tag="player", dir="n"}},
 			{ type = action.animate, args = { tag="002.door", anim="open", sync = true}},
 			{ type = action.delay, args = {sec=1}},
 			{ type = action.change_room, args ={ room="003" }}

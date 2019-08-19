@@ -4,12 +4,25 @@ engine.items["005.walkarea"] = scumm.factory.walkarea {
 	depth = { type="linear_y", values= {0, 1, 144, 0} },
 }
 
-engine.items["005.king"] = makeItem { x=55, y=74, width =42, height=33, msg = strings.room005[9],
-	talk = {
-		{ type = scumm.action.walkto, args = { tag="player", pos = {145, 71}}},
-		{ type = action.kq.showmessage, args = { msg = strings.room005[8] }},
-		{ type = action.kq.showmessage, args = { msg = strings.room005[1] }},
-		--{ type = action.kq.showmessage, args = { msg = strings.room005[2] }},
-
-	}
+engine.items["005.king"] = makeItem { x=55, y=74, width =42, height=33, msg = strings.room005[6],
+	talk = function() 
+		if (variables.talked_to_king == 0) then
+			variables.talked_to_king = 1
+			return {
+				{ type = scumm.action.walkto, args = { tag="player", pos = {145, 71}}},
+				{ type = scumm.action.turn, args = {tag="player", dir="w"}},
+				{ type = action.animate, args = { tag="player", anim = "bow", sync=true }},
+				{ type = scumm.action.turn, args = {tag="player", dir="w"}},
+				{ type = action.kq.showmessage, args = { msg = strings.room005[5] }},
+				{ type = action.kq.showmessage, args = { msg = strings.room005[1] }},
+				{ type = action.kq.showmessage, args = { msg = strings.room005[2] }},
+				{ type = action.kq.showmessage, args = { msg = strings.room005[3] }},
+				{ type = action.kq.showmessage, args = { msg = strings.room005[4] }},
+			}
+		else
+			return {
+				{ type = action.kq.showmessage, args = { msg = strings.room005[7] }},
+			}
+		end
+end
 } 

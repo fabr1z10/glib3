@@ -30,6 +30,11 @@ room:add ( "main",
 	}
 )
 
+room:add ( "002.walkarea", { 
+ 	{ pos = {8, 44, 0}, components = { { type="gfx", image="002_bg_1.png" }}},
+})	
+
+
 function init_script()
 	local pr = engine.state.previousRoom or roomDefinition.defaultroom
 	if (pr == "003") then

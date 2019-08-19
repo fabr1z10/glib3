@@ -9,6 +9,7 @@ FACTORY(CharacterStateFactory, Component)
 FACTORY(WalkToActFactory, Activity)
 FACTORY(WalkSciActFactory, Activity)
 FACTORY(TurnActFactory, Activity)
+FACTORY(TurnSciActFactory, Activity)
 FACTORY(SayActFactory, Activity)
 FACTORY(EnableBlockActFactory, Activity)
 

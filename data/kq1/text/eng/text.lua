@@ -23,14 +23,12 @@ strings = {
 		[1] = "This is the armor of one of King Edward's knights from years ago."
 	},
 	room005 = {
-		[1] = "\"Sir Graham, I am an old man. I fear my end is near. ...",
-		[2] = "I have chosen you to prove yourself worthy of the throne. ...",
-		[3] = "As you know, our kingdom is weak and poor. I have knowledge of the existence of three things that would make our kingdom wealth and strong. ...",
-		[4] = "Somewhere within our kingdom, there is a magic mirror that tells the future. ...",
-		[5] = "There is a magic shield that will protect the bearer from mortal harm ...",
-		[6] = "Finally, there is a magic chest that is always filled with gold coins. ...",
-		[7] = "Go, Sir Graham! Go and bring me back these treasures. If you succeed, you will inherit the throne.\"",
-		[8] = "When you speak to King Edward, he sighs and says:",
-		[9] = "King Edward the Benevolent is a very wise, but elderly monarch. His frail body is almost lost in the large throne."
+		[1] = "\"Sir Graham, I am an old man. I fear my end is near. I have chosen you to prove yourself worthy of the throne. ...",
+		[2] = "As you know, our kingdom is weak and poor. I have knowledge of the existence of three things that would make our kingdom wealth and strong. ...",
+		[3] = "Somewhere within our kingdom, there is a magic mirror that tells the future. There is a magic shield that will protect the bearer from mortal harm. Finally, there is a magic chest that is always filled with gold coins. ...",
+		[4] = "Go, Sir Graham! Go and bring me back these treasures. If you succeed, you will inherit the throne.\"",
+		[5] = "When you speak to King Edward, he sighs and says:",
+		[6] = "King Edward the Benevolent is a very wise, but elderly monarch. His frail body is almost lost in the large throne.",
+		[7] = "Go, Sir Graham! Go and bring me back these treasures!",
 	}
 }

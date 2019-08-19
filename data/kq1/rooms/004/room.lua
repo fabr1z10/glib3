@@ -5,6 +5,7 @@ roomDefinition = {
 	height = 166,
 	startTable = {
 		['003'] = { walkarea = "004.walkarea", pos = {158, 5}, dir="north"},
+		['005'] = { walkarea = "004.walkarea", pos = {5, 45}, dir="east"},
 	},
 	defaultroom = "003",
 	walkareas = { "004.walkarea" },

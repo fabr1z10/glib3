@@ -5,6 +5,7 @@
 #include <gfx/engine.h>
 #include <monkey/activities/walk.h>
 #include <monkey/activities/turn.h>
+#include <monkey/activities/turnsci.h>
 #include <monkey/activities/say.h>
 #include <monkey/activities/enableblock.h>
 #include <monkey/components/charactercomponent.h>
@@ -123,6 +124,17 @@ std::shared_ptr<Activity> TurnActFactory::Create(luabridge::LuaRef &ref) {
 
 };
 
+std::shared_ptr<Activity> TurnSciActFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+
+
+    char dir = table.Get<std::string>("dir")[0];
+
+    auto action =  std::make_shared<TurnSci>(dir);
+    setTarget(table, action.get());
+    return action;
+
+};
 
 std::shared_ptr<Activity> SayActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);

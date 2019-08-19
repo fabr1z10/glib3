@@ -17,7 +17,8 @@ engine = {
     lang="eng",
     start_room ="002",
     config = {
-        walk = "walksci",
+        walk = "walksci",           -- depends on scumm/sci
+        turn = "turnsci",           -- depends on scumm/sci
         default_verb = "walk",
         play = true,
         --current_verb = "walk",
@@ -28,7 +29,7 @@ engine = {
         action = "actio2n"
     }
 }
- require("funcs")
+require("funcs")
 require("scumm")
 
 engine.config.verbs = {
@@ -44,6 +45,11 @@ engine.config.verbs = {
     end
     },
     item = { code = "", next="walk"}
+}
+
+variables = {
+    talked_to_king = 0
+
 }
 -- require("script")
 -- require("sprites")

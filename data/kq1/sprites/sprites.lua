@@ -27,6 +27,17 @@ local s = {
 	graham_idle_n_1 = {x=106,y=35,width=10,height=32,anchor={5,0}},
 	graham_idle_s_1 = {x=106,y=69,width=10,height=31,anchor={5,0}},
 
+	graham_bow_1 = {x=77,y=29,width=18,height=29, anchor={8, 0}},
+	graham_bow_2 = {x=79,y=60,width=24,height=20, anchor={10, 0}},
+	graham_bow_3 = {x=1, y=71, width=24, height=19, anchor={10, 0}},
+	graham_bow_4 = {x=27, y=71, width=24, height=18, anchor={10, 0}},
+	graham_bow_5 = {x=53,y=72,width=24,height=17, anchor={10, 0}},
+	graham_bow_6 = {x=1,y=91,width=22,height=18, anchor={10, 0}},
+	graham_bow_7 = {x=25,y=91,width=22,height=20, anchor={10, 0}},
+	graham_bow_8 = {x=49,y=91,width=24,height=26, anchor={8, 0}},
+
+
+
 	-- cursor
 	cursor_use = { x=1, y=53, width=15, height=16, anchor = {9,8}},
 	cursor_talk = { x=17, y=53, width=16, height=16, anchor = {8,8}},
@@ -229,6 +240,16 @@ models["graham"] = {
 			{duration=dt, quads = {{ id = s.graham_drown_7}} },
 			{duration=dt, quads = {{ id = s.graham_drown_8}} },
 			{duration=dt, quads = {{ id = s.graham_drown_9}} },
+		}},
+		{ name = "bow", box=wbml, loop=false, frames = {
+			{duration=dt, quads = {{ id = s.graham_bow_1}} },
+			{duration=dt, quads = {{ id = s.graham_bow_2}} },
+			{duration=dt, quads = {{ id = s.graham_bow_3}} },
+			{duration=dt, quads = {{ id = s.graham_bow_4}} },
+			{duration=dt, quads = {{ id = s.graham_bow_5}} },
+			{duration=dt, quads = {{ id = s.graham_bow_6}} },
+			{duration=dt, quads = {{ id = s.graham_bow_7}} },
+			{duration=dt, quads = {{ id = s.graham_bow_8}} },
 		}}
 	}
 }

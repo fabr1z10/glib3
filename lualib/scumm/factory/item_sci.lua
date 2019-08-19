@@ -78,7 +78,7 @@ scumm.factory.item_sci = function(args)
 				end
 
 				if (engine.config.pause == false) then
-					local actions = object.actions[engine.state.scumm.actionInfo.verb]
+					local actions = glib.get (object.actions[engine.state.scumm.actionInfo.verb])
 				if (actions == nil) then
 					--print "no script found"
 				else

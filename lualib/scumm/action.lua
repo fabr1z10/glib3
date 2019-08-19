@@ -30,7 +30,7 @@ end
 scumm.action.turn = function (args) 
 	glib.assert_either (args.tag, args.id, "id or tag")
 	assert (args.dir, "dir")
-	return { type="turn", tag = args.tag, id = args.id, dir = args.dir }
+	return { type=engine.config.turn, tag = args.tag, id = args.id, dir = args.dir }
 
 end
 
