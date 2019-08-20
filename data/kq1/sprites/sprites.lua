@@ -1,6 +1,9 @@
 local models = engine.assets.models
 
 local s = {
+	arrow_up = {x=1,y=117,width=7,height=4},
+	arrow_down = {x=9,y=117,width=7,height=4},
+
 	-- wonderboy in monsterland
 	graham_walk_e_1 = {x=106,y=1,width=13,height=32,anchor={4,0}},
 	graham_walk_e_2 = {x=119,y=1,width=10,height=32,anchor={4,0}},
@@ -78,7 +81,9 @@ local s = {
 
 	castle_door_closed = {x=45, y=123,width=42,height=50},
 	castle_door_open_1 = {x=89, y=123,width=42,height=50},
-	castle_door_open_2 = {x=1,y=123,width=42,height=50}
+	castle_door_open_2 = {x=1,y=123,width=42,height=50},
+
+	rock = {x=140,y=101,width=34,height=23}
 }
 
 local dt=0.1
@@ -107,6 +112,10 @@ models["castle_door"] = {
 
 	}
 }
+
+models["006.rock"] = { sheet="sprites.png", type="sprite", ppu=1, animations = { { name="default", frames = { { duration = dt, quads = {{id=s.rock}}}}}}}
+models["arrow_up"] = { sheet="sprites.png", type="sprite", ppu=1, animations = { { name="default", frames = { { duration = dt, quads = {{id=s.arrow_up}}}}}}}
+models["arrow_down"] = { sheet="sprites.png", type="sprite", ppu=1, animations = { { name="default", frames = { { duration = dt, quads = {{id=s.arrow_down}}}}}}}
 
 models["purple_flag"] = { 
 	sheet ="sprites.png",

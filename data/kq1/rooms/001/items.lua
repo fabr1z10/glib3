@@ -74,7 +74,7 @@ engine.items["cyan_flag"] = {
 	model = "cyan_flag"
 }
 
-engine.items["alligator_1"] = {
+engine.items["001.alligator_1"] = {
 	tag = "alli1",
 	pos = {10, 5, 0},
 	model = "alligator",
@@ -91,7 +91,7 @@ engine.items["alligator_1"] = {
 	}
 }
 
-engine.items["alligator_2"] = {
+engine.items["001.alligator_2"] = {
 	tag = "alli2",
 	pos = {150, 5, 0},
 	model = "alligator",

@@ -46,6 +46,24 @@ scumm.factory.inventorybutton = function (args)
 
 end
 
+scumm.factory.inventorybutton_sci = function (args)
+	return scumm.factory.button {
+		pos = {0,0},
+		font = "ui",
+        text= args.text,
+		maxwidth = args.maxwidth,
+        align="bottomleft",
+        color = {255,0,0,255},
+        size = 8,
+        priority = 1,
+		--info = { obj = args.obj},
+		--onenter = scumm.ui.hover_on_inv_button, --scurry2(changecolor, config.ui_inv_selected),
+        --onleave = scumm.ui.hover_off_inv_button, --(changecolor, config.ui_inv_unselected),
+		--onclick = scumm.ui.runAction
+	}
+
+end
+
 scumm.factory.dialoguebutton = function (args) 
 	return scumm.factory.button {
 		pos = {0,0},

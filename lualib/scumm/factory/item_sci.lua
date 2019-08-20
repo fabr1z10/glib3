@@ -66,6 +66,8 @@ scumm.factory.item_sci = function(args)
 			--onenter = glib.curry(scumm.ui.hoverOn, objId),
 			--onleave = scumm.ui.hoverOff,
 			--onenter = function() print ("ciao") end,
+			onenter = function() print ("qui") end,
+
 			onclick = function(x,y) 
 				
 				if (engine.state.scumm.play == false) then 

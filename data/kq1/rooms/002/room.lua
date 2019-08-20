@@ -26,12 +26,15 @@ room:add ( "main",
 		scumm.factory.item_sci { id="002.lion1"},
 		scumm.factory.item_sci { id="002.lion2"},
 		makeRoomChange { x=315, y=10, width=1, height=10, room ="001"},
+		makeRoomChange { x=0, y=0, width=1, height=128, room ="006"},
 
 	}
 )
 
 room:add ( "002.walkarea", { 
- 	{ pos = {8, 44, 0}, components = { { type="gfx", image="002_bg_1.png" }}},
+ 	--{ pos = {8, 44, 0}, components = { { type="gfx", image="002_bg_1.png" }}},
+	scumm.factory.item_sci { id="002.tree" },
+
 })	
 
 

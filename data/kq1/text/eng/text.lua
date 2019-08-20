@@ -34,6 +34,7 @@ strings = {
 	room006 = {
 		[1] = "With a heave and a ho, you manage to move the rock... revealing a dark hole underneath it.",
 		[2] = "There is an intricately carved dagger in the hole.",
-		[3] = "You reach into the hole and grasp the dagger, being careful not to cut yourself."
+		[3] = "You reach into the hole and grasp the dagger, being careful not to cut yourself.",
+		[4] = "You see a large, grey rock."
 	}
 }

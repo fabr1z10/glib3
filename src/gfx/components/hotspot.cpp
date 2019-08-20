@@ -91,6 +91,11 @@ void HotSpotManager::CursorPosCallback(GLFWwindow*, double x, double y) {
             if (isInViewport) {
                 HotSpot* hotspot = iterator->GetComponent<HotSpot>();
                 // only check if I don't have an active hotspot or if it has lower priority
+                if (hotspot!= nullptr) {
+                    int prio = hotspot->GetPriority();
+                                int a = prio;
+                }
+
                 if (hotspot != nullptr &&
                     (newActiveHotSpot == nullptr || (newActiveHotSpot->GetPriority() < hotspot->GetPriority()))) {
 

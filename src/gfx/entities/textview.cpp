@@ -25,7 +25,7 @@ TextView::TextView (glm::vec2 pos, float width, float height, float fontSize, in
     auto textContainer = std::make_shared<Entity>();
 
     AddChild(textContainer);
-    textContainer->SetPosition(glm::vec2(0.0f));
+    textContainer->SetPosition(glm::vec3(0.0f));
     m_textContainer = textContainer.get();
 }
 
@@ -65,8 +65,10 @@ void TextView::AddEntity(luabridge::LuaRef ref) {
     } else {
         glm::vec2 bottomLeftPos = m_nextPos - glm::vec2(0.0f, m_fontSize*n);
         m_textContainer->AddChild(ptr);
-        ptr->SetPosition(bottomLeftPos);
-        //std::cout << "World pos of " << text << " is " << p.x << ", " << p.y << "\n";
+        ptr->SetPosition(glm::vec3(bottomLeftPos, 0.0f));
+
+        glm::vec3 ps =  ptr->GetPosition();
+        std::cout << "World pos of " << ps.x << ", " << ps.y << ", " << ps.z << "\n";
         m_nextPos = bottomLeftPos;
     }
 

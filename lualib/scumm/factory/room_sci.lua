@@ -38,7 +38,8 @@ function scumm.factory.sci_room (args)
 				tag ="_hotspotmanager", 
 				keys = {
 					{ key = 299, func = function() monkey.endroom() end },
-					{ key = 257, func = function() if (engine.config.pause == true) then exitpause() end end}
+					{ key = 257, func = function() if (engine.config.pause == true) then exitpause() end end},
+					{ key = 258, func = function() displayInventory() end }
 				},
 				-- lmbclick is the func called when you click on no hotspot
 				lmbclick = function(x, y) 

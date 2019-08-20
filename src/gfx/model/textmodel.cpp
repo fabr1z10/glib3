@@ -3,6 +3,7 @@
 TextModel::TextModel (std::shared_ptr<TextMesh> mesh) : m_mesh(mesh) {}
 
 Bounds TextModel::GetBounds() const {
+
     return m_mesh->GetBounds();
 }
 

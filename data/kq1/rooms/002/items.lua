@@ -1,9 +1,20 @@
 engine.items["002.walkarea"] = scumm.factory.walkarea {
-	shape = { type = "poly", outline = {0, 0, 0, 107, 154, 107, 154, 58, 95, 36, 129, 21, 198, 21, 198, 47, 249, 47, 247, 21, 316, 21, 316, 7, 92, 7, 73, 25,  47, 25, 17, 10}},
+	shape = { type = "poly", holes=true, outline = {0, 0, 0, 107, 154, 107, 154, 58, 95, 36, 129, 21, 198, 21, 198, 47, 249, 47, 247, 21, 316, 21, 316, 7, 92, 7, 73, 25,  47, 25, 17, 10}},
 	priority = 0,
 	depth = { type="linear_y", values= {0, 1, 144, 0} },
 }
 
+engine.items["002.tree"] = makeItem { 
+	x = 8, y= 44,
+	--x=0,y=0,
+	outline = {25,0,31,13,34,42,3,69,9,112,73,112,100,85,73,52,49,44,49,0},
+	msg = strings.room001[6],
+	gfx = "002_bg_1.png",
+	hole = { 
+	--s	outline = {50, 50, 50, 150, 250, 150, 250, 50}
+		outline = {23, -1, 23,2, 52, 2, 52, -1}
+	}
+}
 -- engine.items["001.moat"] = scumm.factory.walkarea {
 -- 	shape = { type = "poly", outline = {0, 0, 0, 6, 229, 6, 242, 18, 294, 0}},
 -- 	priority = 0,

@@ -23,10 +23,12 @@ function makeItem (args)
 			look = {
 				{ type = action.kq.showmessage, args = { msg=args.msg}}
 			},
-			talk = args.talk
+			talk = args.talk,
+			use = args.use
 		},
 		gfx = args.gfx,
 		hole = args.hole,
+		model = args.model
 	}
 end
 
@@ -209,6 +211,110 @@ function enterPause()
 	monkey.enablescriptengine(false)
 end
 
+function displayInventory ()
+    local parent = monkey.getEntity("diag")
+	local paddingOuter = {10, 6}
+	local paddingInner = {6, 4}
+	local width = 128
+	local height = 80
+	monkey.addEntity ({
+		pos={160 - width * 0.5 - paddingOuter[1], 100- height*0.5-paddingOuter[2], 1.5},
+		components = {
+			{ 
+				type="gfx",
+		 		shape = {
+	 				type ="rect",
+	 				width = width + 2*paddingOuter[1],
+	 				height = height + 2*paddingOuter[2]
+	 			},
+	 			draw = "solid",
+	 			color = {128,128,128,255}
+	 		}
+	 	},
+	 	children = {
+			 	{
+					pos = {paddingInner[1],height,1},
+					components = {
+						{ type = "text", id="ciao", font="ui", align = "bottomleft", size=7, color ={0,0,0,255}},
+						{ type="hotspot", priority = 2, onenter = function() print ("ciao ello") end }
+
+					}
+				},
+			 	{
+					pos = {paddingInner[1],height-7,1},
+					components = {
+						{ type = "text", id="ciao", font="ui", align = "bottomleft", size=7, color ={0,0,0,255}},
+						{ type="hotspot", priority = 2, onenter = function() print ("ciao") end }
+
+					}
+				},
+
+	 	}
+	}, parent)
+	monkey.addEntity ({
+		pos={160 - width * 0.5 - paddingInner[1], 100-height*0.5-paddingInner[2], 1.7},
+		components = {
+			{
+				type ="gfx",
+				shape = {
+					type ="rect",
+					width = width + 2*paddingInner[1],
+					height = height + 2*paddingInner[2]
+				},
+				draw = "solid",
+				color = {128,128,128,255}
+			}
+		}
+	}, parent)
+	monkey.addEntity ({
+	 	pos={160 - width * 0.5 - paddingInner[1] - 2, 100-height*0.5-paddingInner[2]-1, 1.6},
+	 	components = {
+	 		{
+	 			type = "gfx",
+	 			shape = {
+	 				type ="rect",
+	 				width = width + 2*paddingInner[1] + 4,
+	 				height = height + 2*paddingInner[2]+2,
+	 			},
+	 			draw = "solid",
+	 			color = {170,0,0,255}
+		 	}
+		 }
+	}, parent)	
+	-- monkey.addEntity ({
+	-- 	pos={158 - width * 0.5 - paddingInner[1], 83- height*0.5-paddingInner[2], 1.7},
+	-- 	components = {
+	-- 		{
+	-- 			type ="gfx",
+	-- 			shape = {
+	-- 				type ="rect",
+	-- 				width = width + 2*paddingInner[1],
+	-- 				height = height + 2*paddingInner[2]
+	-- 			},
+	-- 			draw = "solid",
+	-- 			color = {255,255,255,255}
+	-- 		}
+	-- 	}
+	-- }, parent)
+	-- monkey.addEntity ({
+	--  	pos={158 - width * 0.5 - paddingInner[1] - 2, 83-height*0.5-paddingInner[2]-1, 1.6},
+	--  	components = {
+	--  		{
+	--  			type = "gfx",
+	--  			shape = {
+	--  				type ="rect",
+	--  				width = width + 2*paddingInner[1] + 4,
+	--  				height = height + 2*paddingInner[2]+2,
+	--  			},
+	--  			draw = "solid",
+	--  			color = {170,0,0,255}
+	-- 	 	}
+	-- 	 }
+	-- }, parent)
+
+
+	enterPause()
+end
 
 function displayBox(msg)
     local parent = monkey.getEntity("main")

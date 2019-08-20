@@ -15,7 +15,7 @@ engine = {
         animations = {}
     },
     lang="eng",
-    start_room ="001",
+    start_room ="006",
     config = {
         walk = "walksci",           -- depends on scumm/sci
         turn = "turnsci",           -- depends on scumm/sci
