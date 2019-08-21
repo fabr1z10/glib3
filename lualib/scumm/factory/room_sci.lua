@@ -39,7 +39,7 @@ function scumm.factory.sci_room (args)
 				keys = {
 					{ key = 299, func = function() monkey.endroom() end },
 					{ key = 257, func = function() if (engine.config.pause == true) then exitpause() end end},
-					{ key = 258, func = function() displayInventory() end }
+					{ key = 258, func = function() if (engine.config.pause == false) then displayInventory() end end }
 				},
 				-- lmbclick is the func called when you click on no hotspot
 				lmbclick = function(x, y) 
@@ -52,9 +52,11 @@ function scumm.factory.sci_room (args)
 					end
 				end,	
 				rmbclick = function() 
- 					local current = glib.get(engine.state.scumm.actionInfo.verb)
+ 					local current = glib.get(engine.config.verb)
  					local v = glib.get (engine.config.verbs[current].next)
- 					engine.state.scumm.actionInfo.verb = v
+ 					print ("NEXT IS " .. v)
+ 					engine.config.verb = v
+ 					engine.state.scumm.actionInfo.verb = engine.config.verbs[v].code
  					--print ("current verb = " .. variables._actionInfo.verb.code)
  					local cursor = monkey.getEntity("cursor")
  					local a=engine.config.verbs[v].anim

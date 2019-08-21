@@ -46,6 +46,7 @@ local s = {
 	cursor_talk = { x=17, y=53, width=16, height=16, anchor = {8,8}},
 	cursor_walk = { x=34, y=53, width=11, height=16, anchor = {6,8}},
 	cursor_look = { x=46, y=53, width=12, height=9, anchor ={6,4}},
+	cursor_dagger = {x=60, y=56, width=8, height=8, anchor={4,4}},
 
 	graham_drown_1 = {x=181,y=2,width=37,height=10, anchor={15,0}},
 	graham_drown_2 = {x=182,y=13,width=38,height=15, anchor={17,0}},
@@ -271,7 +272,8 @@ models["cursor"] = {
 		{ name="walk", frames = { {duration=dt, quads = {{ id = s.cursor_walk}}}}},
 		{ name="look", frames = { {duration=dt, quads = {{ id = s.cursor_look}}}}},
 		{ name="use", frames = { {duration=dt, quads = {{ id = s.cursor_use}}}}},
-		{ name="talk", frames = { {duration=dt, quads = {{ id = s.cursor_talk}}}}}
+		{ name="talk", frames = { {duration=dt, quads = {{ id = s.cursor_talk}}}}},
+		{ name="dagger", frames = { {duration=dt, quads = {{ id = s.cursor_dagger}}}}},
 	}
 
 }

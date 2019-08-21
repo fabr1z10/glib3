@@ -3,6 +3,9 @@ strings = {
 		[1] = "We, at Sierra, wish to thank you for playing King's Quest. We are very sorry that you did not succeed and hope you will fare better next time. Good luck.",
 		[2] = "I don't understand"
 	},
+	items = {
+		[1] = "dagger"
+	},
 	room001 = {
 		[1] = "This is the castle of King Edward the Benevolent.",
 		[2] = "King Edward's banners are waving in the strong breeze.",
@@ -35,6 +38,7 @@ strings = {
 		[1] = "With a heave and a ho, you manage to move the rock... revealing a dark hole underneath it.",
 		[2] = "There is an intricately carved dagger in the hole.",
 		[3] = "You reach into the hole and grasp the dagger, being careful not to cut yourself.",
-		[4] = "You see a large, grey rock."
+		[4] = "You see a large, grey rock.",
+		[5] = "After moving that rock once, even thinking about it should make you tired."
 	}
 }

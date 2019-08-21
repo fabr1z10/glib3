@@ -40,15 +40,25 @@ engine.config.verbs = {
         if (engine.config.verbs.item.code == "") then 
             return "walk" 
         else 
-            return "item" 
+            return "item"
         end 
     end
     },
-    item = { code = "", next="walk"}
+    item = { code = "", anim = "", next="walk"}
+}
+engine.config.verb = "walk"
+
+engine.state.scumm.items = {
+    dagger = { text = strings.items[1], code="look", anim ="dagger"}
+
+}
+engine.state.scumm.inventory = { 
+    dagger = {}
 }
 
 variables = {
-    talked_to_king = 0
+    talked_to_king = 0,
+    rock_moved = 0,
 
 }
 -- require("script")

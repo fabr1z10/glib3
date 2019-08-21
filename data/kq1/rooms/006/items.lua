@@ -19,11 +19,19 @@ engine.items["006.rock"] = makeItem {
 	--s	outline = {50, 50, 50, 150, 250, 150, 250, 50}
 		outline = {0,0,0,2,34,2,34,0}
 	},
-	use = {
-		{ type = scumm.action.walkto, args = { tag="player", pos = {252, 40}}},
-		{ type = scumm.action.turn, args = {tag="player", dir="s"}},
-		{ type = action.kq.showmessage, args = { msg = strings.room006[1] }},
-		{ type = action.move, args= {tag="006.rock", by = {0,-12}, speed=10}}
-
-	}
+	use = function() 
+		if (variables.rock_moved == 0) then 
+			variables.rock_moved = 1
+			return {
+				{ type = scumm.action.walkto, args = { tag="player", pos = {252, 40}}},
+				{ type = scumm.action.turn, args = {tag="player", dir="s"}},
+				{ type = action.kq.showmessage, args = { msg = strings.room006[1] }},
+				{ type = action.move, args= {tag="006.rock", by = {0,-12}, speed=10}}
+			}
+		else
+			return {
+				{ type = action.kq.showmessage, args = { msg = strings.room006[5] }},
+			}
+		end
+	end
 }
