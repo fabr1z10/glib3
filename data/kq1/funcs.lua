@@ -20,7 +20,7 @@ function makeItem (args)
 			shape = shape
 		},
 		actions = {
-			look = {
+			look = args.look or  {
 				{ type = action.kq.showmessage, args = { msg=args.msg}}
 			},
 			talk = args.talk,
@@ -237,6 +237,7 @@ function displayInventory ()
 
 	count = 0
 	for k, v in pairs(engine.state.scumm.inventory) do
+		print ("CIAO " .. k)
 		local p = engine.state.scumm.items[k]
 		if (p == nil) then
 			print ("Unknown item " .. k)

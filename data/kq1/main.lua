@@ -52,13 +52,14 @@ engine.state.scumm.items = {
     dagger = { text = strings.items[1], code="look", anim ="dagger"}
 
 }
-engine.state.scumm.inventory = { 
-    dagger = {}
-}
+-- engine.state.scumm.inventory = { 
+--     --dagger = {}
+-- }
 
 variables = {
     talked_to_king = 0,
     rock_moved = 0,
+    dagger_taken = 0,
 
 }
 -- require("script")

@@ -7,10 +7,45 @@ engine.items["006.walkarea"] = scumm.factory.walkarea {
 	depth = { type="linear_y", values= {0, 1, 144, 0} },
 }
 
+engine.items["006.hole"] = makeItem { 
+	x = 244, y= 43,
+	--x=0,y=0,
+	outline = {0,0,0,4,16,4,16,0},
+	msg = strings.room006[2],
+	look = function() 
+		if (variables.dagger_taken == 0) then 
+			return {
+				{ type = action.kq.showmessage, args = { msg = strings.room006[2] }},
+			}
+		else
+			return {
+				{ type = action.kq.showmessage, args = { msg = strings.room006[6] }},
+			}
+		end
+
+	end,
+	use = function() 
+		if (variables.dagger_taken == 0) then 
+			variables.dagger_taken = 1
+			return {
+				{ type = action.kq.showmessage, args = { msg = strings.room006[3] }},
+				{ type = scumm.action.add_to_inventory_sci, args= {id = "dagger"}}
+			}
+		else
+			return {
+				{ type = action.kq.showmessage, args = { msg = strings.room006[6] }},
+			}
+		end
+
+	
+	end
+	--gfx = "bg002.png",
+}
 
 engine.items["006.rock"] = makeItem { 
 	x = 236, y= 33,
 	--x=0,y=0,
+	priority=2,
 	outline = {0,0,0,23,34,23,34,0},
 	msg = strings.room006[4],
 	--gfx = "bg002.png",

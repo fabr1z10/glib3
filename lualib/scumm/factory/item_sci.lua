@@ -52,7 +52,7 @@ scumm.factory.item_sci = function(args)
 		obj.anim = glib.get(object.anim)
 	end
 	if (object.gfx ~= nullptr) then
-		table.insert ( obj.components, { type="gfx", image=object.gfx })
+		table.insert ( obj.components, { type="gfx", image=object.gfx, offset = object.gfx_offset })
 	end
 
 	-- add the hotspot only if size is supplied

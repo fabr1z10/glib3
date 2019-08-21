@@ -225,6 +225,22 @@ scumm.action.add_to_inventory = function(args)
 	}
 end
 
+scumm.action.add_to_inventory_sci = function(args) 
+	assert (args.id, "id")
+	local qty = args.qty or 1
+	return { type = "callfunc", func = 
+		function()
+			print (args.id .. " adding")			
+			if (inventory[args.id] == nil) then
+				inventory[args.id] = {}
+				print ("FATTO " .. args.id)
+			else 
+				inventory[args.id] = inventory[args.id] + qty
+			end
+		end
+	}
+end
+
 scumm.action.remove_from_inventory = function(args) 
 	assert (args.id, "id")
 	return { type = "callfunc", func = 

@@ -39,6 +39,14 @@ strings = {
 		[2] = "There is an intricately carved dagger in the hole.",
 		[3] = "You reach into the hole and grasp the dagger, being careful not to cut yourself.",
 		[4] = "You see a large, grey rock.",
-		[5] = "After moving that rock once, even thinking about it should make you tired."
+		[5] = "After moving that rock once, even thinking about it should make you tired.",
+		[6] = "There is nothing in this hole but dirt."
+	},
+	room007 = {
+		[1] = "This is a very large oak tree with branches stretching to the sky.",
+		[2] = "You climb the tree."
+	},
+	room008 = {
+		[1] = "The golden egg is smooth and shiny."
 	}
 }
