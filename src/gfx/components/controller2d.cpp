@@ -91,7 +91,7 @@ glm::vec2 dx(delta);
 
         // before we do that... we have code handling collisions
         if (dx.y < 0 && m_wasGnd) {
-        //    DescendSlope(dx);
+            DescendSlope(dx);
         }
         if (!isEqual(dx.x, 0.0f))
             HorizontalCollisions(dx);

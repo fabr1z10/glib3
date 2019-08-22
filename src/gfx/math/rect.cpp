@@ -37,9 +37,9 @@ glm::vec2 Rect::project(const glm::vec2 axis, const glm::mat4& worldTransform) {
 std::vector<glm::vec2> Rect::getPoints() {
     return {
             {m_offset.x, m_offset.y},
-            {m_offset.x + m_width, m_offset.y},
+            {m_offset.x, m_offset.y + m_height},
             {m_offset.x + m_width, m_offset.y + m_height},
-            {m_offset.x, m_offset.y + m_height}
+            {m_offset.x + m_width, m_offset.y}
     };
 }
 
