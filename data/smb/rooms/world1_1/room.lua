@@ -26,7 +26,9 @@ room =  {
 				height = 256,
 				cam ="maincam",
 				items = {
-					factory.rect { pos = {10, 4}, img = "block1.png", width=1, height=1 }	
+					--factory.rect { pos = {10, 4}, img = "block1.png", width=1, height=1 },
+					factory.rect { pos = {0, 0}, img = "block1.png", width=69, height=2 },
+
 				}
 			}
 			-- 		{ tag = {1, 20}, onenter = basicBrickResponse },
@@ -139,7 +141,6 @@ room =  {
 							{ type="follow", cam ="maincam", relativepos={0,0,5}, up={0,1,0} }
 						 },
 					},
-					factory.rect { pos = {0, 0}, img = "block1.png", width=69, height=2 },
 					--factory.goomba.create { pos = {13, 4}, flipWhenPlatformEnds = true}
 					-- {
 					-- 	pos = { 0,0,1 },

@@ -17,7 +17,7 @@ Renderer::Renderer() : Component(), m_model(nullptr), m_tint(1.0f), m_offset(0),
 }
 
 Renderer::Renderer(const Renderer& orig) : Component(orig),
-m_model(orig.m_model), m_tint(orig.m_tint), m_offset(orig.m_offset), m_count(orig.m_count) {
+m_model(orig.m_model), m_tint(orig.m_tint), m_offset(orig.m_offset), m_count(orig.m_count), m_renderingTransform(orig.m_renderingTransform) {
     
 }
 

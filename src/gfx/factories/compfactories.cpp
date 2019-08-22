@@ -93,7 +93,7 @@ std::shared_ptr<Component> GfxComponentFactory::Create(luabridge::LuaRef & ref) 
             mesh = std::make_shared<QuadMesh>(image, w, h, repeat.x, repeat.y, skew.x, skew.y, offset);
         }
         renderer->SetModel(std::make_shared<BasicModel>(mesh));
-
+        renderer->SetMeshInfo(0, mesh->GetNumberOfIndices());
 //    } else if (table.HasKey("model")) {
 //        std::string model = table.Get<std::string>("model");
 //        std::string anim = table.Get<std::string>("anim", "");
