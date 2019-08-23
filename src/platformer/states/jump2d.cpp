@@ -13,7 +13,7 @@
 Jump2D::Jump2D(float accelerationTimeAirborne, float speed, bool flipH, const std::string& animUp, const std::string& animDown,
                bool bounce, float bounceFactor) :
     m_accTimeAir(accelerationTimeAirborne), m_speed(speed), m_flipHorizontally(flipH),
-    m_bounce(bounce), m_bounceFactor(bounceFactor), m_jumpAnimUp(animUp), m_jumpAnimDown(animDown)
+    m_bounce(bounce), m_bounceFactor(bounceFactor), m_jumpAnimUp(animUp), m_jumpAnimDown(animDown), m_walkState("walk")
 {}
 
 Jump2D::Jump2D(const Jump2D &orig) : PlatformerState(orig) {
@@ -40,7 +40,7 @@ void Jump2D::Run(double dt) {
     if (m_controller->grounded() && m_dynamics->m_velocity.y < 0) {
         if (!m_bounce) {
             m_dynamics->m_velocity.y = 0.0f;
-            m_sm->SetState("walk");
+            m_sm->SetState(m_walkState);
         } else {
             m_dynamics->m_velocity.y = m_bounceFactor * m_dynamics->m_velocity.y;
         }

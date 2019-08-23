@@ -90,4 +90,15 @@ function glib.tablelength(T)
   return count
 end
 
+function glib.basic_model(sheet, anim)
+    return {
+        sheet = sheet,
+        type = "sprite",
+        ppu=1,
+        animations = {
+            { name = "default", frames = { { duration = engine.dt, quads = {{ id = anim }}}}},
+        }
+    }
 
+
+end

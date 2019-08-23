@@ -13,6 +13,7 @@ public:
     void End () override {}
     void ModifyAnimation() override;
     void ResetAnimation() override;
+    void setWalkState (const std::string& state);
 private:
     float m_speed;
     float m_accTimeAir;
@@ -25,5 +26,10 @@ private:
     std::string m_jumpAnimUp;
     std::string m_jumpAnimDown;
     float m_vy0;
+    std::string m_walkState;
     //std::string m_jumpDownAnim;
 };
+
+inline void Jump2D::setWalkState(const std::string &state) {
+    m_walkState =state;
+}

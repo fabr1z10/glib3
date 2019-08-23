@@ -14,7 +14,7 @@ local s = {
 	mario_duck_big = {x=96, y=128, width=16, height=32, anchor={8,0}},
 	mario_die = {x = 96, y=0, width=16, height=16, anchor={8, 0}},
 	brick = {x=240, y=0, width=16, height=16 },
-	brick_piece = {x=64, y=16, width=16, height=16, anchor ={8,0}},
+	brick_piece = {x=64, y=16, width=16, height=16},
 	mushroom = {x=48, y=16, width=16, height=16, anchor={8,0}},
 	mushroom1up = {x=144, y=48, width=16, height=16, anchor={8,0}},
 	bonus_brick_1 = {x=160, y=0, width=16, height=16 },
@@ -40,7 +40,14 @@ models["mario"] = {
 			{ duration = dt, quads = {{ id = s.mario_walk_3 } }},
 		}},
 		{ name = "jump", box = {-8, 0, 8, 16}, frames = { { duration = dt, quads = {{ id = s.mario_jump }}}}},
-		{ name = "die", frames = { { duration = dt, quads = {{ id = s.mario_die }}}}}
+		{ name = "die", frames = { { duration = dt, quads = {{ id = s.mario_die }}}}},
+		{ name = "idle_big", box = {-8, 0, 8, 24}, frames = { {duration = dt, quads = {{ id = s.mario_idle_big }}}}},
+		{ name = "walk_big", box = {-8, 0, 8, 24}, frames = {
+			{ duration = dt, quads = {{ id = s.mario_walk_big_1 } }},
+			{ duration = dt, quads = {{ id = s.mario_walk_big_2 } }},
+			{ duration = dt, quads = {{ id = s.mario_walk_big_3 } }},
+		}},
+		{ name = "jump_big", box = {-8, 0, 8, 24}, frames = { { duration = dt, quads = {{ id = s.mario_jump_big }}}}},
 
 	}
 }
@@ -63,6 +70,9 @@ models["goomba"] = {
 	}
 
 }
+
+models["basicbrick"] = glib.basic_model ("smb1.png", s.brick)
+models["brickpiece"] = glib.basic_model ("smb1.png", s.brick_piece)
 
 -- models["supermario"] = {
 

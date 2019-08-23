@@ -30,7 +30,7 @@
 class Entity : public Ref {
 public:
     Entity() : Ref(), m_parent(nullptr), m_update(true), m_localTransform{glm::mat4(1.0)},
-               m_worldTransform{glm::mat4(1.0)}, m_enableControls{true}, m_flipHorizontal{false} {}
+               m_worldTransform{glm::mat4(1.0)}, m_enableControls{true}, m_flipHorizontal{false}, m_started(false) {}
     // copy ctor
     Entity(const Entity&);
 
@@ -63,7 +63,7 @@ public:
     std::unordered_map<int, std::shared_ptr<Entity> >& GetChildren();
     void Remove(int);
     void Update(double);
-    virtual void Start();
+    void start();
     void WindDown();
     void Begin();
     friend class DepthFirstIterator<Entity>;
@@ -142,6 +142,7 @@ public:
     void setOnMoveEnabled (bool);
     std::string toString() override;
 protected:
+    virtual void Start();
 
 private:
     void UpdateWorldTransform();
@@ -151,6 +152,7 @@ private:
     bool m_flipHorizontal;
     //bool m_active;
     bool m_update;
+    bool m_started;
     bool m_enableControls;
     //int m_layer;
     Entity* m_parent;

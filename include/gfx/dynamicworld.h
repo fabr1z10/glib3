@@ -8,15 +8,18 @@
 #include <gfx/entity.h>
 
 struct DynamicWorldItem {
-    DynamicWorldItem() : id(-1), ref(nullptr), removed(false) {}
+    DynamicWorldItem() : id(-1),
+                         ref(nullptr),
+                         removed(false) {}
     std::shared_ptr<Entity> m_blueprint;
     Bounds m_bounds;
     Bounds m_localBounds;
     int id;
     bool createOnce;
     bool removed;
+    Entity* ref;
     //std::shared_ptr<Entity> m_object;
-    std::shared_ptr<Entity> ref;
+    //std::shared_ptr<Entity> ref;
     std::shared_ptr<Entity> m_parent;
 };
 

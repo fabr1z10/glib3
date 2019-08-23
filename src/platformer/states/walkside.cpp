@@ -11,7 +11,8 @@
 #include <GLFW/glfw3.h>
 
 WalkSide::WalkSide(float speed, float acceleration, bool fliph, float jumpSpeed) :
-        m_speed(speed), m_acceleration(acceleration), m_flipHorizontally(fliph), m_velocitySmoothing(0.0f), m_jumpSpeed(jumpSpeed) {}
+        m_speed(speed), m_acceleration(acceleration), m_flipHorizontally(fliph), m_velocitySmoothing(0.0f), m_jumpSpeed(jumpSpeed),
+        m_jumpState("jump"), m_idleAnim("idle"), m_walkAnim("walk") {}
 
 WalkSide::WalkSide(const WalkSide &orig) : PlatformerState(orig) {
     m_speed = orig.m_speed;
@@ -34,7 +35,7 @@ void WalkSide::End() {
 void WalkSide::Run (double dt) {
 
     if (!m_controller->grounded()) {
-        m_sm->SetState("jump");
+        m_sm->SetState(m_jumpState);
         return;
     } else {
         m_dynamics->m_velocity.y = 0.0f;
@@ -46,7 +47,7 @@ void WalkSide::Run (double dt) {
 
     if (up) {
         m_dynamics->m_velocity.y = m_jumpSpeed;
-        m_sm->SetState("jump");
+        m_sm->SetState(m_jumpState);
         return;
     }
 
@@ -73,9 +74,9 @@ void WalkSide::ResetAnimation() {}
 
 void WalkSide::ModifyAnimation() {
     if (fabs(m_dynamics->m_velocity.x) > 1.0f) {
-        m_animator->SetAnimation("walk");
+        m_animator->SetAnimation(m_walkAnim);
     } else {
-        m_animator->SetAnimation("idle");
+        m_animator->SetAnimation(m_idleAnim);
     }
 
 

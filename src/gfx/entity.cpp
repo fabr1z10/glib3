@@ -18,6 +18,8 @@ Entity::Entity(const Entity & e) : Ref(e), m_update(e.m_update) {
     m_flipHorizontal = e.m_flipHorizontal;
     m_active = e.m_active;
     m_enableControls = e.m_enableControls;
+    m_localTransform = e.m_localTransform;
+    m_worldTransform = glm::mat4(1.0f);
     for (auto& c : e.m_children) {
         // this will set the children parents and this' named children
         this->AddChild(c.second->clone());
@@ -25,8 +27,7 @@ Entity::Entity(const Entity & e) : Ref(e), m_update(e.m_update) {
     for (auto& comp : e.m_components) {
         this->AddComponent(comp.second->clone());
     }
-    m_localTransform = e.m_localTransform;
-    
+
 }
 
 std::shared_ptr<Entity> Entity::clone() const {
@@ -35,6 +36,15 @@ std::shared_ptr<Entity> Entity::clone() const {
 
 }
 
+// make sure start is called only once!!!
+void Entity::start() {
+    if (m_started) {
+        return;
+    }
+    m_started = true;
+    Start();
+
+}
 
 void Entity::AddChild(std::shared_ptr<Entity> child) {
     m_children.insert(std::make_pair(child->GetId(), child));
@@ -45,11 +55,13 @@ void Entity::AddChild(std::shared_ptr<Entity> child) {
         m_namedChildren[name] = child->GetId();
     }
     // if engine is running, start
-    if (Engine::get().isRunning()) {
-        child->Start();
-        child->Begin();
-    }
+    child->UpdateWorldTransform();
     onAdd.Fire(child.get());
+//    if (Engine::get().isRunning()) {
+//        child->Start();
+//        child->Begin();
+//    }
+
 }
 
 
@@ -112,13 +124,17 @@ void Entity::Start() {
     for (auto& iter : m_components) {
         iter.second->Start();
     }
-    for (auto& m : m_children)
+    for (auto& m : m_children) {
         m.second->Start();
+    }
 }
 
 void Entity::WindDown() {
     for (auto& iter : m_components) {
         iter.second->End();
+    }
+    for (auto& child : m_children) {
+        child.second->WindDown();
     }
 
 }

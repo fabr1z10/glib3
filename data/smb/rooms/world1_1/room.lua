@@ -8,7 +8,6 @@ local roomInfo = {
 
 local initscripts = {}
 
-
 room =  {
 		engines = {
 			{ type = "scheduler"},
@@ -16,9 +15,22 @@ room =  {
 				type = "collision", 
 				size = {roomInfo.collisionSize, roomInfo.collisionSize}, 
 				response = {
-					{ tag = {1, variables.tags.goomba}, onenter = mario_goomba }
-
+					{ tag = {variables.collision.tags.player, variables.collision.tags.brick_sensor}, onenter = factory.basic_brick.response }
+					--{ tag = {1, variables.tags.goomba}, onenter = mario_goomba }
+					
 				}
+			},
+			{ 
+				type = "hotspotmanager",
+				tag ="_hotspotmanager", 
+				keys = {
+					{ key = 299, func = function() monkey.endroom() end },
+					{ key = 81, func = function () 
+						local mario = monkey.getEntity("player")
+						local isSuperMario = (mario:getinfo().supermario)
+						factory.mario.supermario(mario, not isSuperMario)
+					end }
+				},
 			},
 			{
 				type ="dynamicworld",
@@ -28,7 +40,7 @@ room =  {
 				items = {
 					--factory.rect { pos = {10, 4}, img = "block1.png", width=1, height=1 },
 					factory.rect { pos = {0, 0}, img = "block1.png", width=69, height=2 },
-
+					factory.basic_brick.create { pos={5*16, 5*16}, sprite="basicbrick" }
 				}
 			}
 			-- 		{ tag = {1, 20}, onenter = basicBrickResponse },
@@ -83,7 +95,15 @@ room =  {
 							--{ type="gfx", model="mario", anim="idle" },
 							{ type="controller2d", maxclimbangle = 80, maxdescendangle = 80, horizontalrays=4, verticalrays=4 },
 							{ type="dynamics2d", gravity = variables.gravity },
-							{ type="smartcollider", tag=1, flag=1, mask=2},
+							{ 
+								type = "smartcollider", 
+								tag = variables.collision.tags.player, 
+								flag = variables.collision.flags.player, 
+								mask = variables.collision.flags.foe | variables.collision.flags.foe_attack
+							},
+							{
+								type="info", supermario = false
+							},
 							-- { type="multicollider", tag=1, flag=1, mask =2, initialshape="small", shapes = {
 							--  	{ name ="small", type="rect", width=14, height=16, offset={-8,0}},
 							--  	{ name ="big", type="rect", width=14, height=32, offset={-8,0}},
@@ -111,7 +131,34 @@ room =  {
 											animup = "jump",
 											animdown = "jump"
 										}
-									}
+									},
+									{ 
+										id = "walk_big", 
+										state = {
+											type = "walkside", 
+											speed = 75, 
+											acceleration = 0.05, 
+											fliph = true, 
+											jumpspeed = variables.jump_velocity,
+											jump_state = "jump_big",
+											walk_anim = "walk_big",
+											idle_anim = "idle_big"
+
+										}
+									},
+									{
+										id = "jump_big",
+										state = {
+											type = "jump",
+											speed = 75,
+											acceleration = 0.10,
+											fliph = true,
+											animup = "jump_big",
+											animdown = "jump_big",
+											walk_state = "walk_big"
+										}
+									},
+
 							-- -- 	 	{ id = "idle", init = { type="luaanim", func = curry21(marioinit, "idle") }, behavior = { type ="idle2d", acceleration = marioAcc }},
 							-- -- 		{ id = "walk", init = { type="luaanim", func = curry21(marioinit, "walk") }, behavior = { type ="walk2d", acceleration = marioAcc, speed= marioSpeed }},
 							--  		{ id = "jump", state = { type="jump", speed = 75, acceleration = 0.10, fliph = true, animup = "jumpup", animdown="jumpdown" }},

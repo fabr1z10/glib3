@@ -147,13 +147,13 @@ void Engine::MainLoop() {
         m_scene = m_sceneFactory->Create();
         
         // start the scene (initialize components)
-        m_running = true;
         // init runners
         for (auto& r : m_runners) {
             r.second->Init();
         }
-        m_scene->Start();
+        m_scene->start();
         m_scene->Begin();
+        m_running = true;
 
         //for (auto iter = m_scene->begin(); iter != m_scene->end(); ++iter) {
         //    iter->Start();

@@ -60,9 +60,13 @@ void DynamicWorldBuilder::UpdateWorld(glm::vec3 pos) {
                 auto obj = item.m_blueprint->clone();
 
                 item.id = obj->GetId();
-                item.ref = obj;
+                item.ref = obj.get();
                 auto main = Ref::Get<Entity>("main");
                 main->AddChild(obj);
+                if (Engine::get().isRunning()) {
+                    obj->start();
+                    obj->Begin();
+                }
                 //item.m_parent->AddChild(obj);
             }
         } else {
@@ -75,7 +79,8 @@ void DynamicWorldBuilder::UpdateWorld(glm::vec3 pos) {
 
                 if (!b.Intersects(m_activeBounds)) {
                     std::cout << "Removing item at (" << pos.x << ", " << pos.y << "...\n";
-                    Engine::get().Remove(item.ref);
+
+                    Engine::get().Remove(Ref::Get<Entity>(item.id));
                     item.ref = nullptr;
                     item.id = -1;
                 }

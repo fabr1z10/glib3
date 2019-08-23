@@ -175,6 +175,17 @@ std::shared_ptr<State> WalkSideFactory::Create(luabridge::LuaRef &ref) {
     bool fliph = table.Get<bool>("fliph");
     float jumpSpeed= table.Get<float>("jumpspeed");
     auto state = std::make_shared<WalkSide>(speed, a, fliph, jumpSpeed);
+
+    if (table.HasKey("jump_state")) {
+        state->setJumpState(table.Get<std::string>("jump_state"));
+    }
+    if (table.HasKey("walk_anim")) {
+        state->setWalkAnimation(table.Get<std::string>("walk_anim"));
+    }
+    if (table.HasKey("idle_anim")) {
+        state->setIdleAnimation(table.Get<std::string>("idle_anim"));
+    }
+
     init(table, state);
     return state;
 }
@@ -224,6 +235,9 @@ std::shared_ptr<State> Jump2DFactory::Create(luabridge::LuaRef &ref) {
     bool bounce = table.Get<bool>("bounce", false);
     float bounceFactor = table.Get<float>("bouncefactor", 0.0f);
     auto ptr = std::make_shared<Jump2D>(a, speed, fliph, animUp, animDown, bounce, bounceFactor);
+    if (table.HasKey("walk_state")) {
+        ptr->setWalkState(table.Get<std::string>("walk_state"));
+    }
     init(table, ptr);
     return ptr;
 

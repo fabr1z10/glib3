@@ -5,6 +5,7 @@ engine = {
     window_size = { 256, 256 },
     lang = "eng",
 	tilesize = 16,
+	dt = 0.1,
     title = "Super Mario Bros",
     assets = {
     	fonts = {
@@ -27,7 +28,25 @@ variables = {
     --_room = "world1_1",
 	jump_height = 160,
 	time_to_jump_apex = 0.5,
+	collision = {
+		flags = {
+			player = 1,
+			platform = 2,
+			foe = 4,
+			player_attack = 8,
+			foe_attack = 16,
+			platform_passthrough = 32
+
+		},
+
+		tags = {
+			player = 1,
+			brick_sensor = 20
+
+		}
+	},
 	tags = {
+
 		basic_brick = 10,
 		mushroom = 11,
 		bonus_brick = 12,
@@ -56,7 +75,10 @@ models = {}
 require("factories/rect")
 require("factories/bricks")
 require("factories/bonusbrick")
+require("factories/basicbrick")
 require("factories/foe")
+require("factories/mario")
+
 --require("factories/actions")
 require("script/mario")
 
