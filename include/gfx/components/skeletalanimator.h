@@ -13,7 +13,7 @@ public:
     void AddBone (const std::string& id, Entity* bone, float length);
     void Start() override;
     void Update(double dt) override;
-    void SetAnimation (const std::string& anim, bool forward = true);
+    void SetAnimation (const std::string& anim, bool forward = true) override;
     //std::string GetAnimation() const;
     std::shared_ptr<Component> clone() const override;
     bool IsComplete() const override;

@@ -51,7 +51,6 @@ void WalkSide::Run (double dt) {
         return;
     }
 
-
     float targetVelocityX = 0.0f;
     if (left || right) {
         if (m_flipHorizontally) {
@@ -64,6 +63,7 @@ void WalkSide::Run (double dt) {
     }
 
     glm::vec3 delta =m_dynamics->step(dt, targetVelocityX, m_acceleration);
+    //if (left) std::cerr<< "W " << m_dynamics->m_velocity.x << " " << delta.x << "\n";
     m_controller->Move(delta);
 
     UpdateAnimation();

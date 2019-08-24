@@ -137,15 +137,19 @@ action.create_object = function(args)
 	local parent = args.parent or "main"
 	glib.assert (args.factory, "factory")
 	glib.assert (args.args, "args")
+	print ("ciao merda " .. tostring(args.pos[1]))
 	return { type = "callfunc", func = 
 		function()
 			print ("creating a new object ... ")
-			local o = args.factory(args.args)
+			local o = args.factory(args.args, args.pos)
 			local m1 = monkey.getEntity(parent)
 			monkey.addEntity (o, m1)
 		end
 	}
 end
+
+
+
 
 action.remove_object = function(args) 
 	glib.assert_either (args.tag, args.id, "id or tag")

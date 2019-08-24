@@ -1,52 +1,91 @@
 factory.bonus_brick = {}
 
-factory.bonus_brick.response = function(p1, p2) 
-	-- if mario is large
-	
-	local taken = p2:get("taken")
-	print ("taken = " .. tostring(taken))
-	if (not taken) then	
-		p2:set ("taken", true)
-		local brick = p2:parent()
-		local s = ms2 {
-			{ type=action.animate, args = { id=brick.id, anim="taken" }},
-			{ type=action.moveaccel, args = { id = brick.id, initial_velocity = {0, 50}, acceleration = {0, 0.5*variables.gravity}, ystop = brick.y}},
-			{ type=action.create_entity, args = { func = p2:get("factory"), args = { pos={p2.x/16,p2.y/16} }, script = {
-				{ type = action.enable_state_machine, args = { id = -1, value = false }},
-				{ type = action.move, args = { id = -1, by = {0, 16}, speed =20}},
-				{ type = action.enable_state_machine, args = { id = -1, value = true }},
-			} } }
+factory.bonus_brick.response = function(p1, p2)
+
+	local brick = p2:parent()
+	local brick_info = brick:getinfo()
+	if brick_info.hitsleft > 0 then
+		brick_info.hitsleft = brick_info.hitsleft - 1
+		local actions = {
+			{ 
+				type = action.moveaccel, 
+				args = { 
+					id = brick.id, 
+					initial_velocity = {0, 50}, 
+					acceleration = {0, 0.5*variables.gravity}, 
+					ystop = brick_info.y
+				}
+			}
 		}
+		if (brick_info.hitsleft == 0) then
+			table.insert (actions, {
+				type = action.animate,
+				args = { id = brick.id, anim = "taken" }
+			})
+		end
+		
+
+		table.insert (actions, {
+			type = action.callfunc,
+			args = {
+				func = function()
+					local pos = {brick.x+0.5*engine.tilesize, brick.y, 1}
+					local o = brick_info.factory(brick_info.args, pos)
+					print("Mio cuggggg")
+					local m1 = monkey.getEntity("main")
+					local id = monkey.addEntity (o, m1)
+					local actions = {
+						{ type=action.move, args = { id = id, by = {0, engine.tilesize}, speed=5}},
+						{ type=action.set_state, args = {id =id, state="walk"}}
+					}
+					local s = script.make(actions)
+					monkey.play(s)
+				end
+				
+			}
+		})
+
+		-- release the bonus
+		local s = script.make(actions)
 		monkey.play(s)
-	end
+	end	
 end
 
-factory.bonus_brick.create = function(args)
-	assert(args.pos, "pos")	
-	assert(args.sprite, "sprite")
-	assert(args.factory, "factory")
-
-	local z = args.z or 0
+factory.bonus_brick.create = function(arg)
+	glib.assert (arg.pos, "pos")
+	glib.assert (arg.sprite, "sprite")
+	glib.assert (arg.factory, "factory")
+	glib.assert (arg.args, "args")
+	local hitsleft = arg.hitsleft or 1
+	local s = { type = "rect", width = engine.tilesize, height = engine.tilesize }
+	local s1 = { type = "rect", width = engine.tilesize-4, height = 1.0}
+	--local b = nextTag()
+	local y = arg.pos[2]
 	return {
+		--tag = b,
 		type = "sprite",
-		tag = "giggi",
-		model = args.sprite,
-		-- basic brick
-		pos = { args.pos[1] * engine.tilesize, args.pos[2] * tilesize, z },
-		components = {
-			{ type="collider", flag=2, mask=1, tag=1, shape = {type="rect", width=engine.tilesize, height=engine.tilesize} },
+		model = arg.sprite,
+		pos = {arg.pos[1], y, 0},
+		components = {			
+			--{ type="gfx", model=arg.sprite, anim="idle", width = engine.tilesize, height = engine.tilesize},	
+			{ type="collider", shape=s, tag=10, flag = variables.collision.flags.platform, mask = 0},
+			{ type="info", y = y, hitsleft = hitsleft, factory = arg.factory, args = arg.args },
 		},
 		children = {
 			{
-				pos = {8, 0, 0},
+				pos = { 2, -0.5, 0},
 				components = {
-					{ type="collider", flag=4, mask=1, tag=variables.tags.bonus_brick, shape = {type="rect", width=8, height=4, offset = {-4,-2}} },
-					{ type="properties", additional_info = { factory = args.factory, taken = false } }
+					{ 
+						-- sensor for head-butt
+						type="collider", 
+						shape = s1, 
+						tag = variables.collision.tags.bonus_brick_sensor, 
+						flag = variables.collision.flags.foe, 
+						mask = variables.collision.flags.player 
+					},
+					{ type="gfx", shape = s1, color = {255,0,0,255}}
 				}
 			}
 		}
 	}
 end
-
--- register
-table.insert (variables.collider.response, { tag = { 1, variables.tags.bonus_brick}, onenter = factory.bonus_brick.response })

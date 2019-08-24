@@ -72,7 +72,38 @@ models["goomba"] = {
 }
 
 models["basicbrick"] = glib.basic_model ("smb1.png", s.brick)
+
 models["brickpiece"] = glib.basic_model ("smb1.png", s.brick_piece)
+
+models["mushroom"] = {
+    sheet = "smb1.png",
+    type = "boxed_sprite",
+    ppu=1,
+	animations = {
+		{ name = "walk", box = {-8, 0, 8, 16}, frames = {
+			{ duration = dt, quads = {{ id = s.mushroom } }},
+		}},
+	}
+}
+
+models["bonusbrick"] = {
+    sheet = "smb1.png",
+    type = "sprite",
+    ppu=1,
+	animations = {
+		{ name = "default", frames = {
+			{ duration = dt, quads = {{ id = s.bonus_brick_1 } }},
+			{ duration = dt, quads = {{ id = s.bonus_brick_2 } }},
+			{ duration = dt, quads = {{ id = s.bonus_brick_3 } }},
+			{ duration = dt, quads = {{ id = s.bonus_brick_2 } }},			
+		}},
+		{ name = "taken", frames = {
+			{ duration = dt, quads = {{ id = s.bonus_brick_taken } }},
+		}},
+
+	}
+
+}
 
 -- models["supermario"] = {
 

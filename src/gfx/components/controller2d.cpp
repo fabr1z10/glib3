@@ -109,7 +109,7 @@ glm::vec2 dx(delta);
 void Controller2D::HorizontalCollisions(glm::vec2& velocity) {
 
     bool flipx = m_entity->GetFlipX();
-    bool facingLeft = flipx; //((flipx && velocity.x > 0) || (!flipx && velocity.x > 0));
+    bool facingLeft = (flipx && velocity.x > 0) || (!flipx && velocity.x < 0);
     float directionX = facingLeft ? -1.0 : 1.0;
     float rayLength = fabs(velocity.x) + m_skinWidth;
 
@@ -176,7 +176,8 @@ void Controller2D::DescendSlope(glm::vec2& velocity) {
     //if (velocity.x == 0.0f)
      //   return;
     //float directionX = sign(velocity.x);
-    bool facingLeft = m_entity->GetFlipX();
+    bool flipx = m_entity->GetFlipX();
+    bool facingLeft = (flipx && velocity.x > 0) || (!flipx && velocity.x < 0);
     float directionX = facingLeft ? -1.0 : 1.0;
     vec2 rayOrigin = ((directionX == -1) ? m_raycastOrigins.bottomRight : m_raycastOrigins.bottomLeft);
     //RayCastHit2D hit = m_collision->Raycast(rayOrigin, vec2(0, -1), 100.0f, m_platform != nullptr ? 2 | 32 : 2);

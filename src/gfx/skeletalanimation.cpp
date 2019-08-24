@@ -52,7 +52,7 @@ SkeletalAnimationState SkeletalAnimation::getTransformation(float t) {
     SkeletalAnimationState state;
     for (const auto& i : m_interpolants) {
         double value = alglib::spline1dcalc(*(i.second.get()), t);
-        state.bones.push_back(BoneInfo {i.first, value});
+        state.bones.push_back(BoneInfo {i.first, static_cast<float>(value)});
     }
     return state;
 }

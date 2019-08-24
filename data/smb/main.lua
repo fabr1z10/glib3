@@ -1,4 +1,4 @@
-package.path = '/home/fabrizio/glib3/lualib/?.lua;' .. package.path
+package.path = '/Users/fabrizioventurini/glib3/lualib/?.lua;' .. package.path
 
 engine = {
     device_size = { 256, 256 },
@@ -41,8 +41,9 @@ variables = {
 
 		tags = {
 			player = 1,
-			brick_sensor = 20
-
+			mushroom = 11,
+			brick_sensor = 20,
+			bonus_brick_sensor = 21
 		}
 	},
 	tags = {
@@ -77,6 +78,7 @@ require("factories/bricks")
 require("factories/bonusbrick")
 require("factories/basicbrick")
 require("factories/foe")
+require("factories/mushroom")
 require("factories/mario")
 
 --require("factories/actions")

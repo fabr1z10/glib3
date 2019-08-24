@@ -15,7 +15,10 @@ room =  {
 				type = "collision", 
 				size = {roomInfo.collisionSize, roomInfo.collisionSize}, 
 				response = {
-					{ tag = {variables.collision.tags.player, variables.collision.tags.brick_sensor}, onenter = factory.basic_brick.response }
+					{ tag = {variables.collision.tags.player, variables.collision.tags.brick_sensor}, onenter = factory.basic_brick.response },
+					{ tag = {variables.collision.tags.player, variables.collision.tags.bonus_brick_sensor}, onenter = factory.bonus_brick.response },
+					{ tag = {variables.collision.tags.player, variables.collision.tags.mushroom}, onenter = factory.mushroom.response },
+					
 					--{ tag = {1, variables.tags.goomba}, onenter = mario_goomba }
 					
 				}
@@ -40,7 +43,8 @@ room =  {
 				items = {
 					--factory.rect { pos = {10, 4}, img = "block1.png", width=1, height=1 },
 					factory.rect { pos = {0, 0}, img = "block1.png", width=69, height=2 },
-					factory.basic_brick.create { pos={5*16, 5*16}, sprite="basicbrick" }
+					factory.basic_brick.create { pos={5*16, 5*16}, sprite="basicbrick" },
+					factory.bonus_brick.create { pos={6*16, 5*16}, sprite="bonusbrick", factory = factory.mushroom.create, args = { sprite="mushroom" } }
 				}
 			}
 			-- 		{ tag = {1, 20}, onenter = basicBrickResponse },

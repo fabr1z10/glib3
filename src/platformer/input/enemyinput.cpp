@@ -35,7 +35,7 @@ void EnemyInputMethod::Update(double) {
     if (m_flipIfPlatformEnds) {
         // check if I reached the end of the platform
         if (m_controller->m_details.below && m_controller->IsFalling(m_left ? -1 : 1)) {
-            m_left = !m_left;
+           m_left = !m_left;
         }
     }
 
