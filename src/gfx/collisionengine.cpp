@@ -85,16 +85,16 @@ void CollisionEngine::Move(ICollider * c) {
 void CollisionEngine::PopCollider(ICollider* c) {
 
     auto it = m_colliderLocations.find(c);
-    std::cerr << "CALLED POP COLLIDER! " << c->GetShape()->getBounds().GetSize().x << "\n";
+    //std::cerr << "CALLED POP COLLIDER! " << c->GetShape()->getBounds().GetSize().x << "\n";
     if (it != m_colliderLocations.end()) {
         Location loc = it->second;
-        std::cerr << "Collider at " << loc.x0 << ", " << loc.x1 << ", " << loc.y0 << ", " << loc.y1 << "\n";
+        //std::cerr << "Collider at " << loc.x0 << ", " << loc.x1 << ", " << loc.y0 << ", " << loc.y1 << "\n";
         for (int i = loc.x0; i <= loc.x1; ++i) {
             for (int j = loc.y0; j <= loc.y1; ++j) {
                 auto& cell = m_cells[std::make_pair(i,j)];
                 cell.colliders.erase(c);
                 cell.dirty = true;
-                std::cerr << "No. of colliders in (" << i << ", " << j << ") = " << cell.colliders.size() << "\n";
+                //std::cerr << "No. of colliders in (" << i << ", " << j << ") = " << cell.colliders.size() << "\n";
             }
         }
 

@@ -13,6 +13,7 @@
 //}
 
 void DynamicWorldBuilder::Init() {
+    std::cerr << "INIT DYNAMIC WORLD!\n";
     auto cam = Ref::Get<Camera>(m_camName);
     cam->OnMove.Register(this, [&] (Camera* cam) { this->OnCameraMove(cam); });
     glm::vec3 camPos = cam->GetPosition();
@@ -48,6 +49,8 @@ void DynamicWorldBuilder::UpdateWorld(glm::vec3 pos) {
 
     //std::cout << "UPDATING WORLD! center = (" << m_xc << ", " << m_yc << ")\n";
     // update visible items
+    //std::cerr << "LOOPING THROUGH ITEMS === " << m_items.size()<<std::endl;
+    //std::cerr << "active bounds = " << m_activeBounds.min.x << " " << m_activeBounds.min.y << " " << m_activeBounds.max.x << " " << m_activeBounds.max.y << std::endl;
     for (auto& item : m_items) {
 
         if (item.id == -1 && !item.removed) {
@@ -55,8 +58,9 @@ void DynamicWorldBuilder::UpdateWorld(glm::vec3 pos) {
             Bounds b = item.m_bounds;
             //b.min += glm::vec2(pos.x, pos.y);
             //b.max += glm::vec2(pos.x, pos.y);
-            if (b.Intersects(m_activeBounds)) {
-                std::cout << "Creating item with bounds (" << b.min.x << ", " << b.min.y << "), (" << b.max.x << ", " << b.max.y << ")\n";
+            //std::cerr << "item has bounds (" << b.min.x << "," << b.min.y << ") (" << b.max.x << "," << b.max.y << ")\n";
+            if (b.Intersects2D(m_activeBounds)) {
+                //std::cout << "Creating item with bounds (" << b.min.x << ", " << b.min.y << "), (" << b.max.x << ", " << b.max.y << ")\n";
                 auto obj = item.m_blueprint->clone();
 
                 item.id = obj->GetId();

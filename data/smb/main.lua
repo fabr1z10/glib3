@@ -68,18 +68,19 @@ variables.collider = {
 variables.gravity = -(2.0 * variables.jump_height) / (variables.time_to_jump_apex * variables.time_to_jump_apex)
 variables.jump_velocity = math.abs(variables.gravity) * variables.time_to_jump_apex
 
-factory = {}
+
 spritesheets = {}
 models = {}
 
 -- sprites = {}
-require("factories/rect")
-require("factories/bricks")
-require("factories/bonusbrick")
-require("factories/basicbrick")
-require("factories/foe")
-require("factories/mushroom")
-require("factories/mario")
+-- require("factories/rect")
+-- require("factories/bricks")
+-- require("factories/bonusbrick")
+-- require("factories/basicbrick")
+-- require("factories/foe")
+-- require("factories/mushroom")
+-- require("factories/mario")
+-- require("factories/goomba")
 
 --require("factories/actions")
 require("script/mario")

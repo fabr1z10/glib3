@@ -54,21 +54,21 @@ models["mario"] = {
 
 models["goomba"] = {
     sheet = "smb1.png",
-    type = "sprite",
+    type = "boxed_sprite",
     ppu=1,
 	animations = {
-		{ name = "walk", frames = {
+		{ name = "walk", box={-8,0,8,16}, frames = {
 			{ duration = dt, quads = {{ id = s.goomba_walk_1 } }},
 			{ duration = dt, quads = {{ id = s.goomba_walk_2 } }},
 		}},
-		{ name = "jump", frames = {
+		{ name = "jump", box={-8,0,8,16}, frames = {
 			{ duration = dt, quads = {{ id = s.goomba_walk_1 } }},
 			{ duration = dt, quads = {{ id = s.goomba_walk_2 } }},
 		}},
-		{ name = "die", frames = { { duration = dt, quads = {{ id = s.goomba_die }}}}}
-
+		{ name = "die", box={-8,0,8,16}, frames = { 
+			{ duration = dt, quads = {{ id = s.goomba_die }}}
+		}}
 	}
-
 }
 
 models["basicbrick"] = glib.basic_model ("smb1.png", s.brick)
