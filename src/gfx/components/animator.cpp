@@ -19,8 +19,9 @@ std::shared_ptr<Component> Animator::clone() const {
 void Animator::Start() {
     m_renderer = m_entity->GetComponent<Renderer>();
     //m_mesh = dynamic_cast<SpriteMesh*>(m_model->GetModel().get());
-    if (!m_initAnim.empty()) {
-        SetAnimation(m_initAnim);
+    std::string anim = m_animation.empty() ? m_initAnim : m_animation;
+    if (!anim.empty()) {
+        SetAnimation(anim);
     }
 
 }

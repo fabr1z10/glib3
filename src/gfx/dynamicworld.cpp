@@ -22,6 +22,7 @@ void DynamicWorldBuilder::Init() {
     m_yc0 = camPos.y;
     m_x = -1;
     m_y = -1;
+    m_parentEntity =Ref::Get<Entity>("main").get();
     UpdateWorld(camPos);
 
 }
@@ -47,55 +48,35 @@ void DynamicWorldBuilder::UpdateWorld(glm::vec3 pos) {
     m_activeBounds.max.x = m_xc + m_width;
     m_activeBounds.max.y = m_yc + m_height;
 
-    //std::cout << "UPDATING WORLD! center = (" << m_xc << ", " << m_yc << ")\n";
-    // update visible items
-    //std::cerr << "LOOPING THROUGH ITEMS === " << m_items.size()<<std::endl;
-    //std::cerr << "active bounds = " << m_activeBounds.min.x << " " << m_activeBounds.min.y << " " << m_activeBounds.max.x << " " << m_activeBounds.max.y << std::endl;
     for (auto& item : m_items) {
 
-        if (item.id == -1 && !item.removed) {
-            // glm::vec3 pos = item.m_blueprint->GetPosition();
-            Bounds b = item.m_bounds;
-            //b.min += glm::vec2(pos.x, pos.y);
-            //b.max += glm::vec2(pos.x, pos.y);
-            //std::cerr << "item has bounds (" << b.min.x << "," << b.min.y << ") (" << b.max.x << "," << b.max.y << ")\n";
-            if (b.Intersects2D(m_activeBounds)) {
-                //std::cout << "Creating item with bounds (" << b.min.x << ", " << b.min.y << "), (" << b.max.x << ", " << b.max.y << ")\n";
-                auto obj = item.m_blueprint->clone();
-
-                item.id = obj->GetId();
-                item.ref = obj.get();
-                auto main = Ref::Get<Entity>("main");
-                main->AddChild(obj);
-                if (Engine::get().isRunning()) {
-                    obj->start();
-                    obj->Begin();
+        if (!item.active) {
+            if (!item.removed) {
+                // if item is not active AND not forcibly removed
+                // then I check if it's in sight and if so, I create it
+                Bounds b = item.m_bounds;
+                if (b.Intersects2D(m_activeBounds)) {
+                    auto obj = item.m_blueprint;
+                    item.active=true;
+                    std::cerr << "adding item " << item.m_blueprint->GetId() << std::endl;
+                    m_parentEntity->AddChild(obj);
+                    if (Engine::get().isRunning()) {
+                        obj->restart();
+                        obj->Begin();
+                    }
                 }
-                //item.m_parent->AddChild(obj);
             }
         } else {
             // already created
-            if (Ref::isAlive(item.id)) {
-                glm::vec3 pos = item.ref->GetPosition();
+            if (!item.removed) {
+
                 Bounds b = item.m_bounds;
-                //b.min += glm::vec2(pos.x, pos.y);
-                //b.max += glm::vec2(pos.x, pos.y);
-
-                if (!b.Intersects(m_activeBounds)) {
-                    std::cout << "Removing item at (" << pos.x << ", " << pos.y << "...\n";
-
-                    Engine::get().Remove(Ref::Get<Entity>(item.id));
-                    item.ref = nullptr;
-                    item.id = -1;
+                if (!b.Intersects2D(m_activeBounds)) {
+                    Engine::get().Remove(Ref::Get<Entity>(item.m_blueprint->GetId()));
+                    std::cerr << "dropping item " << item.m_blueprint->GetId() << std::endl;
+                    item.active=false;
                 }
-
-            } else {
-                // the item has been destroyed externally.
-                item.removed = true;
-                item.id= -1;
-                item.ref = nullptr;
             }
-
         }
 
     }

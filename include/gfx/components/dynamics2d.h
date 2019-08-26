@@ -7,6 +7,8 @@
 class Dynamics2D : public Properties {
 public:
     Dynamics2D(float gravity);
+    Dynamics2D(const Dynamics2D&);
+    std::shared_ptr<Component> clone() const override;
     glm::vec3 step(float dt, float tvx, float a);
     glm::vec3 step(float dt, float tvx, float tvz, float a);
     glm::vec3 m_velocity;

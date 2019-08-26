@@ -15,7 +15,9 @@ class InputMethod;
 class ExtendedStateMachine : public StateMachine {
 public:
     ExtendedStateMachine(const std::string& initialState);
-
+    ExtendedStateMachine(const ExtendedStateMachine&);
+    std::shared_ptr<Component> clone() const override;
+    
     void Start () override ;
     void KeyListener (int key);
     void AddKey (int, luabridge::LuaRef callback);

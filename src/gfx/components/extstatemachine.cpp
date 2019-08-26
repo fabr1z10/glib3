@@ -11,6 +11,16 @@
 ExtendedStateMachine::ExtendedStateMachine(const std::string& initialState) : StateMachine(initialState) {
 }
 
+ExtendedStateMachine::ExtendedStateMachine(const ExtendedStateMachine& orig) : StateMachine(orig)
+{
+    m_globalKeys = orig.m_globalKeys;
+}
+
+std::shared_ptr<Component> ExtendedStateMachine::clone() const {
+    return std::make_shared<ExtendedStateMachine>(*this);
+}
+
+
 // forward to the active state
 void ExtendedStateMachine::KeyListener (int key) {
     bool handled = false;

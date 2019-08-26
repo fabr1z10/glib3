@@ -46,6 +46,11 @@ void Entity::start() {
 
 }
 
+void Entity::restart() {
+    m_started = false;
+    Start();
+}
+
 void Entity::AddChild(std::shared_ptr<Entity> child) {
     m_children.insert(std::make_pair(child->GetId(), child));
     child->SetParent(this);

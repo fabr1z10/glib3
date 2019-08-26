@@ -17,13 +17,13 @@ Controller2D::Controller2D(const Controller2D& orig) : IController(orig),
 m_horizontalRayCount(orig.m_horizontalRayCount),
 m_verticalRayCount(orig.m_verticalRayCount),
 m_skinWidth(orig.m_skinWidth), m_maxClimbAngle(orig.m_maxClimbAngle),
-m_maxDescendAngle(orig.m_maxDescendAngle)
+m_maxDescendAngle(orig.m_maxDescendAngle), m_platform(nullptr)
 {
     
 }
 
 std::shared_ptr<Component> Controller2D::clone() const {
-    return std::make_shared<Controller2D>(Controller2D(*this));
+    return std::make_shared<Controller2D>(*this);
 }
 
 void Controller2D::Start() {

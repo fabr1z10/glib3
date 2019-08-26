@@ -8,6 +8,17 @@ m_velocitySmoothingZ(0.0f)
 
 }
 
+Dynamics2D::Dynamics2D(const Dynamics2D& orig) : Properties(orig) {
+    m_gravity = orig.m_gravity;
+    m_velocity = orig.m_velocity;
+    m_velocitySmoothing = orig.m_velocitySmoothing;
+    m_velocitySmoothingZ = orig.m_velocitySmoothingZ;
+}
+
+std::shared_ptr<Component> Dynamics2D::clone() const {
+    return std::make_shared<Dynamics2D>(*this);
+}
+
 
 glm::vec3 Dynamics2D::step(float dt, float targetVelocityX, float accelerationX) {
     // first, apply gravity

@@ -3,6 +3,7 @@
 
 StateMachine::StateMachine(const StateMachine& orig) : Component(orig), m_initialState(orig.m_initialState)
 {
+    m_currentState = nullptr;
     for (auto& i : orig.m_states) {
         AddState(i.first, i.second->clone());
     }

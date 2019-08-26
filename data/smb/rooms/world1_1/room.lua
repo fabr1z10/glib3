@@ -43,9 +43,9 @@ room =  {
 				items = {
 					--factory.rect { pos = {10, 4}, img = "block1.png", width=1, height=1 },
 					factory.rect { pos = {0, 0}, img = "block1.png", width=69, height=2 },
-					factory.basic_brick.create { pos={5*16, 5*16}, sprite="basicbrick" },
+					--factory.basic_brick.create { pos={5*16, 5*16}, sprite="basicbrick" },
 					factory.bonus_brick.create { pos={6*16, 5*16}, sprite="bonusbrick", factory = factory.mushroom.create, args = { sprite="mushroom" } },
-					--factory.goomba.create { pos={12*16,3*16}, sprite="goomba"}
+					factory.goomba.create { pos={12*16,3*16}, sprite="goomba"}
 				}
 			}
 		},

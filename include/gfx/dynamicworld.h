@@ -10,13 +10,15 @@
 struct DynamicWorldItem {
     DynamicWorldItem() : id(-1),
                          ref(nullptr),
-                         removed(false) {}
+                         removed(false),
+                         active(false) {}
     std::shared_ptr<Entity> m_blueprint;
     Bounds m_bounds;
     Bounds m_localBounds;
     int id;
     bool createOnce;
     bool removed;
+    bool active;
     Entity* ref;
     //std::shared_ptr<Entity> m_object;
     //std::shared_ptr<Entity> ref;
@@ -52,4 +54,5 @@ private:
     float m_ymin, m_ymax;
     Bounds m_activeBounds;
     std::string m_camName;
+    Entity* m_parentEntity;
 };
