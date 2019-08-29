@@ -23,6 +23,17 @@ void DynamicWorldBuilder::Init() {
     m_x = -1;
     m_y = -1;
     m_parentEntity =Ref::Get<Entity>("main").get();
+    m_parentEntity->onRemove.Register(this, [&] (Entity* e) {
+        auto it = m_outBounds.find(e->GetId());
+        if (it != m_outBounds.end()) {
+            // item has been removed by dynamic world
+            m_outBounds.erase(it);
+            return;
+        }
+        std::cerr << "REMOVED EXTERNALLY ENTITY " << e->GetId() << "\n";
+        m_removedItems.insert(e->GetId());
+
+    });
     UpdateWorld(camPos);
 
 }
@@ -49,15 +60,15 @@ void DynamicWorldBuilder::UpdateWorld(glm::vec3 pos) {
     m_activeBounds.max.y = m_yc + m_height;
 
     for (auto& item : m_items) {
-
-        if (!item.active) {
-            if (!item.removed) {
-                // if item is not active AND not forcibly removed
-                // then I check if it's in sight and if so, I create it
+        // if item has been removed, nothing to do
+        //std::cerr << item.id << "\n";
+        bool forciblyRemoved = m_removedItems.count(item.id) > 0;
+        if (!forciblyRemoved) {
+            if (!item.active) {
                 Bounds b = item.m_bounds;
                 if (b.Intersects2D(m_activeBounds)) {
                     auto obj = item.m_blueprint;
-                    item.active=true;
+                    item.active = true;
                     std::cerr << "adding item " << item.m_blueprint->GetId() << std::endl;
                     m_parentEntity->AddChild(obj);
                     if (Engine::get().isRunning()) {
@@ -65,20 +76,17 @@ void DynamicWorldBuilder::UpdateWorld(glm::vec3 pos) {
                         obj->Begin();
                     }
                 }
-            }
-        } else {
-            // already created
-            if (!item.removed) {
-
+            } else {
+                // already created
                 Bounds b = item.m_bounds;
                 if (!b.Intersects2D(m_activeBounds)) {
                     Engine::get().Remove(Ref::Get<Entity>(item.m_blueprint->GetId()));
                     std::cerr << "dropping item " << item.m_blueprint->GetId() << std::endl;
-                    item.active=false;
+                    item.active = false;
+                    m_outBounds.insert(item.id);
                 }
             }
         }
-
     }
 
 }
@@ -109,6 +117,7 @@ void DynamicWorldBuilder::AddItem(std::shared_ptr<Entity> entity) {
     }
     DynamicWorldItem item;
     item.m_blueprint = entity;
+    item.id = entity->GetId();
     item.m_localBounds.min = bounds.min;
     item.m_localBounds.max = bounds.max;
     item.m_bounds.min = item.m_localBounds.min + glm::vec3(pos.x, pos.y, 0.0f);

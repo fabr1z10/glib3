@@ -10,14 +10,14 @@
 struct DynamicWorldItem {
     DynamicWorldItem() : id(-1),
                          ref(nullptr),
-                         removed(false),
+                         removedByDynamicWorld(false),
                          active(false) {}
     std::shared_ptr<Entity> m_blueprint;
     Bounds m_bounds;
     Bounds m_localBounds;
     int id;
     bool createOnce;
-    bool removed;
+    bool removedByDynamicWorld;
     bool active;
     Entity* ref;
     //std::shared_ptr<Entity> m_object;
@@ -42,6 +42,9 @@ public:
     void AddItem (std::shared_ptr<Entity>);
 private:
     std::vector<DynamicWorldItem> m_items;
+    // keep track of items removed externally
+    std::unordered_set<int> m_removedItems;
+    std::unordered_set<int> m_outBounds;
     // cam position center in grid coordinates
     // when cam is in (x, y) we need to build the world in the 16 cells
     float m_width, m_height;

@@ -1,4 +1,4 @@
-package.path = '/Users/fabrizioventurini/glib3/lualib/?.lua;' .. package.path
+package.path = '/home/fabrizio/glib3/lualib/?.lua;' .. package.path
 
 engine = {
     device_size = { 256, 256 },
@@ -42,6 +42,7 @@ variables = {
 		tags = {
 			player = 1,
 			mushroom = 11,
+			goomba = 12,
 			brick_sensor = 20,
 			bonus_brick_sensor = 21
 		}

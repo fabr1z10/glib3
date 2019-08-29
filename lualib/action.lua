@@ -75,9 +75,7 @@ action.animate = function(args)
 end
 
 action.set_state = function(args)
-	print("woeiufoif")
 	glib.assert_either (args.tag, args.id, "id or tag")
-	print ("QUI")
 	--sglib.assert (args.actor, "actor")
 	glib.assert (args.state, "state")
 	return {type="setstate", tag = args.tag, id = args.id, state = args.state}

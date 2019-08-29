@@ -1,7 +1,23 @@
 factory.goomba = {}
 
-factory.goomba.response = function (p1, p2) 
-	monkey.removeFromId(p2.id)
+factory.goomba.response = function (mario, goomba, sx, sy) 
+	if (goomba.state == "dead") then
+		return
+	end
+	if (mario.state == "jump" and mario.vy < 0 and sy > 0 and math.abs(sx) < 0.01) then
+		--monkey.removeFromId(goomba.id)
+		mario.vy = 300
+		local act = {
+			{ type = action.set_state, args = { id = goomba.id, state = "dead"}	},
+			{ type = action.delay, args = { sec= 2}},
+			{ type = action.remove_object, args = {id=goomba.id}}
+		}
+		local s = script.make(act)
+		monkey.play(s)
+	else
+
+	end
+
 end
 
 factory.goomba.create = function (args, pos) 
@@ -15,7 +31,7 @@ factory.goomba.create = function (args, pos)
 			{ type="dynamics2d", gravity = variables.gravity },
 			{ 
 				type = "smartcollider", 
-				tag = variables.collision.tags.mushroom, 
+				tag = variables.collision.tags.goomba, 
 				flag = variables.collision.flags.foe, 
 				mask = variables.collision.flags.player
 			},
@@ -44,6 +60,10 @@ factory.goomba.create = function (args, pos)
 							animdown = "walk"
 						}
 					},
+					{
+						id = "dead",
+						state = { type="simple", anim="die" }
+					},					
 				}
 			},
 			{ type ="enemyinput", left =true, flip=args.flip or false },
