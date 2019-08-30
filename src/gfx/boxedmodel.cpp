@@ -17,10 +17,12 @@ void BoxedModel::AddCollisionData(const std::string &anim
                              , std::shared_ptr<Shape> collision) {
                              //, std::shared_ptr<Shape> attack) {
     auto key = std::make_pair(anim, frame);
-    if (m_boxInfo.empty()) {
-        m_maxBounds = collision->getBounds();
-    } else {
-        m_maxBounds.ExpandWith(collision->getBounds());
+    if (collision != nullptr) {
+        if (m_boxInfo.empty()) {
+            m_maxBounds = collision->getBounds();
+        } else {
+            m_maxBounds.ExpandWith(collision->getBounds());
+        }
     }
     m_boxInfo.insert(std::make_pair(key, BoxInfo(collision))); //, attack})));
 }

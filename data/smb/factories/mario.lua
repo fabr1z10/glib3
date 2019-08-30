@@ -7,8 +7,35 @@ factory.mario.supermario = function(player, value)
 	else
 		player.state = "walk"
 	end
-
 end
+
+factory.mario.hit_by_enemy = function(player, enemy)
+	-- if Mario is hit by enemy, what happens depends on whether mario is supermario or not
+	local marioInfo = player:getinfo()
+	local supermario = marioInfo.supermario
+
+	if (supermario == true) then
+		marioInfo.invincible = true
+		player.state = "walk"
+		local act = {
+			{ type = action.blink, args = { id = player.id, duration=5, blink_duration= 0.2}},
+			{ type = action.callfunc, args = { func = function() marioInfo.invincible=false end }}
+		}
+		local s = script.make(act)
+		monkey.play(s)
+	else
+		local act = {
+			{ type = action.set_state, args = { id = player.id, state = "dead"}	},
+			{ type = action.delay, args = { sec= 1}},
+			{ type = action.moveaccel, args = {id =player.id, initial_velocity = {0, 200}, acceleration = {0, variables.gravity}, ystop= 0}},
+			{ type = action.remove_object, args = {id=player.id}},
+			{ type = action.restart_room}
+		}
+		local s = script.make(act)
+		monkey.play(s)
+	end
+end
+
 
 factory.mario.create = function(args)
 	local pos = args.pos 
@@ -29,7 +56,8 @@ factory.mario.create = function(args)
 			},
 			{
 				type="info", 
-				supermario = false
+				supermario = false,
+				invincible = false
 			},
 			{ 
 				type="extstatemachine", 
@@ -81,6 +109,10 @@ factory.mario.create = function(args)
 							walk_state = "walk_big"
 						}
 					},
+					{
+						id = "dead",
+						state = { type="simple", anim="die" }
+					},	
 				},
 			},
 			{ type ="keyinput" },

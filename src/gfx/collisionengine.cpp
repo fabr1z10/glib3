@@ -196,6 +196,9 @@ void CollisionEngine::Update(double dt) {
                 //std::cout << "aabb do intersect. Now do a proper testing\n";
                 Shape* s1 = c1->GetShape();
                 Shape* s2 = c2->GetShape();
+                if (s1 == nullptr || s2 == nullptr) {
+                    continue;
+                }
                 auto& t1 = c1->GetObject()->GetWorldTransform();
                 auto& t2 = c2->GetObject()->GetWorldTransform();
                 

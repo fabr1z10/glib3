@@ -161,6 +161,8 @@ std::shared_ptr<IModel> BoxedModelFactory::Create(luabridge::LuaRef &ref) {
                     }
                     pp->AddCollisionData(anim, j, collisionShape);
                 }
+            } else {
+                pp->AddCollisionData(anim, j, nullptr);
             }
 
             if (table.HasKey("attack")) {

@@ -20,7 +20,9 @@ std::shared_ptr<Component> SmartCollider::clone() const {
 void SmartCollider::ofu(Animator *a) {
     auto anim = a->GetAnimation();
     int fr = a->GetFrame();
+
     const auto& bi = m_model->getBoxInfo(anim,fr);
+
 
     m_colliderRenderer->SetMeshInfo(bi.offset, bi.count);
 
