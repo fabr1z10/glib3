@@ -113,7 +113,7 @@ std::shared_ptr<Activity> WalkSciActFactory::Create(luabridge::LuaRef &ref) {
     glm::vec2 pos = table.Get<glm::vec2>("pos");
     if (table.HasKey("id")) {
         int id = table.Get<int>("id");
-        return std::make_shared<Walk>(id, pos);
+        return std::make_shared<WalkSci>(id, pos);
     } else {
 
         auto tag = table.Get<std::string>("tag");
