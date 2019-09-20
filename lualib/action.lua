@@ -64,6 +64,12 @@ action.callfunc = function (args)
 	return { type="callfunc", func = args.func }
 end
 
+action.repeat_forever = function (args) 
+	assert (args.func, "func") 
+	assert (args.interval, "interval")
+	return { type="repeat", func = args.func, interval = args.interval }
+end
+
 action.animate = function(args)
 	glib.assert_either (args.tag, args.id, "id or tag")
 	assert (args.anim, "anim")

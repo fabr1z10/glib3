@@ -5,6 +5,7 @@
 #include <gfx/activities/noop.h>
 #include <gfx/activities/changeroom.h>
 #include <gfx/activities/callfunc.h>
+#include <gfx/activities/repeat.h>
 #include <gfx/activities/scroll.h>
 #include <gfx/activities/collisioncheck.h>
 #include <gfx/activities/move.h>
@@ -40,6 +41,15 @@ std::shared_ptr<Activity> CallFuncActFactory::Create(luabridge::LuaRef &ref) {
     luabridge::LuaRef fref = table.Get<luabridge::LuaRef>("func");
     return std::unique_ptr<CallFunc>(new CallFunc(fref));
 };
+
+
+std::shared_ptr<Activity> RepeatActFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    luabridge::LuaRef fref = table.Get<luabridge::LuaRef>("func");
+    float interval = table.Get<float>("interval");
+    return std::make_shared<Repeat>(fref, interval);
+};
+
 
 std::shared_ptr<Activity> ScrollActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);

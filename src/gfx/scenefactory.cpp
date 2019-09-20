@@ -138,6 +138,7 @@ SceneFactory::SceneFactory() {
 
     m_activityFactory.Add<NoOpActFactory>("noop");
     m_activityFactory.Add<CallFuncActFactory>("callfunc");
+    m_activityFactory.Add<RepeatActFactory>("repeat");
     m_activityFactory.Add<AnimateActFactory>("animate");
     m_activityFactory.Add<FlipActFactory>("flip");
     m_activityFactory.Add<MoveActFactory>("move");
