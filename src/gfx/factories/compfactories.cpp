@@ -21,7 +21,6 @@
 #include <gfx/components/billboard.h>
 #include <gfx/components/parallax.h>
 #include <gfx/components/parallax3d.h>
-#include <gfx/state.h>
 #include <gfx/components/info.h>
 #include <gfx/components/light.h>
 #include <gfx/components/raycastcontroller.h>
@@ -48,7 +47,9 @@
 #include <gfx/components/fpscounter.h>
 #include <gfx/components/cursor.h>
 #include <gfx/states/walk25.h>
+#include <gfx/states/hit25.h>
 #include <gfx/states/simple.h>
+#include <gfx/components/stateactions.h>
 
 std::shared_ptr<Component> TextComponentFactory::Create(luabridge::LuaRef &ref) {
     auto renderer = Ref::Create<Renderer>();
@@ -248,7 +249,7 @@ std::shared_ptr<Component> SkeletalColliderComponentFactory::Create(luabridge::L
     int tag = table.Get<int>("tag");
     int flag = table.Get<int>("flag");
     int mask = table.Get<int>("mask");
-    float scale = table.Get<float>("scale");
+    float scale = table.Get<float>("scale", 1.0f);
     auto coll = Ref::Create<SkeletalCollider>(flag, mask, tag);
     table.ProcessVector("bounds", [coll, scale] (luabridge::LuaRef ref) {
 
@@ -266,11 +267,12 @@ std::shared_ptr<Component> SkeletalColliderComponentFactory::Create(luabridge::L
         std::string anim = t.Get<std::string>("anim");
         float time = t.Get<float>("t");
         int mask = t.Get<int>("mask");
+        int tag = t.Get<int>("tag");
         float x = t.Get<float>("x");
         float y = t.Get<float>("y");
         float width = t.Get<float>("width");
         float height = t.Get<float>("height");
-        coll->addAttack(anim, time, x, y, width, height, mask, scale);
+        coll->addAttack(anim, time, x, y, width, height, mask, tag, scale);
     });
     return coll;
 
@@ -839,7 +841,7 @@ std::shared_ptr<Runner> CollisionEngineFactory::Create(luabridge::LuaRef& ref) {
     auto ce = Ref::Create<CollisionEngine>(collisionSize.x, collisionSize.y);
     bool coll25 = table.Get<bool>("coll25", false);
     if (coll25) {
-        float eps = table.Get<float>("eps");
+        float eps = table.Get<float>("eps", 0.01);
         ce->Enable25DCollision(eps);
     }
     if (table.HasKey("response")) {
@@ -945,6 +947,38 @@ std::shared_ptr<Runner> CollisionEngine3DFactory::Create(luabridge::LuaRef& ref)
 //}
 //
 
+std::shared_ptr<State> StateFactory::Create(luabridge::LuaRef &ref) {
+    throw;
+}
+
+void StateFactory::init(const LuaTable& table, std::shared_ptr<State> state) {
+    // need to do this although looks like shit
+    auto platformer_state = std::static_pointer_cast<State>(state);
+    // loop through
+    table.ProcessVector("keys", [platformer_state] (luabridge::LuaRef ref) {
+        int id = ref["id"].cast<int>();
+        std::string action = ref["action"].cast<std::string>();
+        if (action == "changestate") {
+            std::string nextState = ref["state"].cast<std::string>();
+            platformer_state->AddKey(id, std::make_shared<StateTransition>(nextState));
+        } else if (action == "callback") {
+            luabridge::LuaRef func = ref["func"];
+            platformer_state->AddKey(id, std::make_shared<StateCallback>(func));
+//        } else if (action == "playanim") {
+//            std::string anim = ref["anim"].cast<std::string>();
+//            platformer_state->AddKey(id, std::make_shared<PlayAnim>(platformer_state.get(), anim));
+//        }
+        }
+    });
+
+}
+
+
+void Walk25StateFactory::init(const LuaTable & table, std::shared_ptr<State> state) {
+    StateFactory::init(table, state);
+
+}
+
 std::shared_ptr<State> Walk25StateFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
     float speed = table.Get<float>("speed");
@@ -953,7 +987,13 @@ std::shared_ptr<State> Walk25StateFactory::Create(luabridge::LuaRef &ref) {
     bool fourWay = table.Get<bool>("fourway", true);
     char dir = table.Get<char>("dir", 'e');
     auto ptr = std::make_shared<Walk25>(speed, a, fliph, fourWay, dir);
+    init(table, ptr);
     return ptr;
+
+}
+
+void SimpleStateFactory::init(const LuaTable & table, std::shared_ptr<State> state) {
+    StateFactory::init(table, state);
 
 }
 
@@ -961,6 +1001,21 @@ std::shared_ptr<State> SimpleStateFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
     std::string anim = table.Get<std::string>("anim");
     auto ptr = std::make_shared<SimpleState>(anim);
+    init (ref, ptr);
+    return ptr;
+
+}
+
+void Hit25StateFactory::init(const LuaTable & table, std::shared_ptr<State> state) {
+    StateFactory::init(table, state);
+
+}
+
+std::shared_ptr<State> Hit25StateFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    std::string anim = table.Get<std::string>("anim");
+    auto ptr = std::make_shared<Hit25>(anim);
+    init(table, ptr);
     return ptr;
 
 }

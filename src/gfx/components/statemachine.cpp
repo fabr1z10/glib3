@@ -1,6 +1,23 @@
 #include <gfx/components/statemachine.h>
 #include <gfx/error.h>
 
+void State::AddKey(int key, std::shared_ptr<StateAction> action) {
+    m_actions.insert(std::make_pair(key, action));
+
+}
+
+void State::AttachStateMachine(StateMachine * sm) {
+    m_sm = sm;
+}
+
+bool State::KeyListener(int key) {
+    auto f = m_actions.find(key);
+    if (f == m_actions.end())
+        return false;
+    f->second->Run(m_sm);
+    return true;
+}
+
 StateMachine::StateMachine(const StateMachine& orig) : Component(orig), m_initialState(orig.m_initialState)
 {
     m_currentState = nullptr;

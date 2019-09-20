@@ -19,12 +19,13 @@ struct SkeletalAttackInfo {
     float time;
     std::shared_ptr<Shape> shape;
     int mask;
+    int tag;
 };
 
 class SkeletalCollider : public ICollider {
 public:
-    SkeletalCollider(int flag, int mask, int tag) : ICollider(), m_flag(flag), m_mask(mask), m_tag(tag), m_currentAttackInfo(
-            nullptr) {}
+    SkeletalCollider(int flag, int mask, int tag) : ICollider(), m_flag(flag), m_mask(mask), m_tag(tag),
+        m_currentAttackInfo(nullptr) {}
     SkeletalCollider(const SkeletalCollider&);
     void Start() override;
     void Update(double) override;
@@ -35,7 +36,7 @@ public:
     std::shared_ptr<Component> clone() const override;
     std::type_index GetType() override;
     void addBound (const std::string& animation, float x0, float y0, float w, float h, float scale);
-    void addAttack (const std::string& animation, float t, float x0, float y0, float w, float h, int mask, float scale);
+    void addAttack (const std::string& animation, float t, float x0, float y0, float w, float h, int mask, int tag, float scale);
     void notifyAnimationChange (IAnimator*);
 private:
     double m_time;
@@ -46,6 +47,7 @@ private:
     Renderer* m_colliderRenderer;
 
     std::unordered_map<std::string, Bounds> m_animationBounds;
+    std::unordered_map<std::string, std::shared_ptr<Shape>> m_shapes;
     std::unordered_map<std::string, glm::ivec2> m_animMeshInfo;
     int m_flag;
     int m_mask;

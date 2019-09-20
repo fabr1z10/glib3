@@ -4,7 +4,6 @@
 #include <memory>
 #include <string>
 #include <gfx/lua/luatable.h>
-#include <gfx/state.h>
 #include <gfx/error.h>
 #include <gfx/runner.h>
 #include <iostream>

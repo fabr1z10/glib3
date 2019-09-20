@@ -145,9 +145,12 @@ FACTORY(TreeMoveActFactory, Activity);
 FACTORY(SetActiveActFactory, Activity);
 
 FACTORY(SkeletalAnimFactory, SkeletalAnimation)
+
 // Asset
-FACTORY(Walk25StateFactory, State)
-FACTORY(SimpleStateFactory, State)
+FACTORY_I(StateFactory, State)
+FACTORY_S(Walk25StateFactory, StateFactory, State)
+FACTORY_S(Hit25StateFactory, StateFactory, State)
+FACTORY_S(SimpleStateFactory, StateFactory, State)
 
 //FACTORY(SimpleModelFactory, IModel)
 //FACTORY(BoxedModelFactory, IModel)

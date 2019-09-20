@@ -14,7 +14,8 @@
 
 // An axis-aligned bounding box (AABB)
 struct Bounds {
-    
+    Bounds() : min(0.0f), max(0.0f) {}
+    Bounds(const glm::vec3& min, const glm::vec3& max) : min(min), max(max) {}
     glm::vec3 min;
     glm::vec3 max;
     
@@ -59,15 +60,6 @@ inline glm::vec3 Bounds::GetExtents() {
     return 0.5f * GetSize();
 }
 
-
-//struct Bounds3D {
-//    glm::vec3 min;
-//    glm::vec3 max;
-//    glm::vec3 GetExtents() {
-//        return max - min;
-//    }
-//    //Bounds3D Apply(Transform&);
-//};
 
 
 #endif /* bounds_h */

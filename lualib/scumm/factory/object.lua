@@ -45,6 +45,7 @@ scumm.factory.object = function(args)
 		tag = tag,
 		name = object.name,
 		pos = pos,
+		scale = object.scale or 1,
 		flipx = flipx,
 		children = {},
 		components = {}

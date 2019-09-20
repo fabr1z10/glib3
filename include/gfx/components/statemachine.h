@@ -5,6 +5,12 @@
 
 class StateMachine;
 
+class StateAction {
+public:
+    virtual void Run (StateMachine*) = 0;
+};
+
+
 class State : public Ref {
 public:
     virtual ~State() = default;
@@ -12,8 +18,13 @@ public:
     virtual void Run (double) = 0;
     virtual void End () = 0;
     virtual std::shared_ptr<State> clone() const = 0;
-    virtual void AttachStateMachine(StateMachine*) = 0;
-    virtual bool KeyListener (int) { return false; }
+    virtual void AttachStateMachine(StateMachine*);
+    virtual bool KeyListener (int);
+    void AddKey (int, std::shared_ptr<StateAction>);
+
+protected:
+    StateMachine* m_sm;
+    std::unordered_map<int, std::shared_ptr<StateAction>> m_actions;
 };
 
 
@@ -57,7 +68,3 @@ inline std::string StateMachine::GetState() const {
 }
 
 
-class StateAction {
-public:
-    virtual void Run (StateMachine*) = 0;
-};

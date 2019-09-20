@@ -44,18 +44,15 @@ void PlatformerState::AttachStateMachine(StateMachine * sm) {
 
 }
 
-void PlatformerState::AddKey(int key, std::shared_ptr<StateAction> action) {
-    m_actions.insert(std::make_pair(key, action));
 
-}
 
-bool PlatformerState::KeyListener(int key) {
-    auto f = m_actions.find(key);
-    if (f == m_actions.end())
-        return false;
-    f->second->Run(m_sm);
-    return true;
-}
+//bool PlatformerState::KeyListener(int key) {
+//    auto f = m_actions.find(key);
+//    if (f == m_actions.end())
+//        return false;
+//    f->second->Run(m_sm);
+//    return true;
+//}
 
 
 void PlatformerState::SetOverrideAnimation(const std::string &anim) {

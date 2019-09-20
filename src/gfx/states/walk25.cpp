@@ -22,7 +22,7 @@ std::shared_ptr<State> Walk25::clone() const {
 }
 
 void Walk25::AttachStateMachine(StateMachine * sm) {
-    m_sm = sm;
+    State::AttachStateMachine(sm);
     m_entity = sm->GetObject();
 
     m_input = m_entity->GetComponent<InputMethod>();
@@ -36,7 +36,7 @@ void Walk25::AttachStateMachine(StateMachine * sm) {
 
 void Walk25::Init() {
     if (m_flipHorizontal) {
-        m_entity->SetFlipX(m_dir == 'w');
+        //m_entity->SetFlipX(m_dir == 'w');
     }
     std::stringstream anim;
     anim<< "idle";

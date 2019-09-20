@@ -168,6 +168,7 @@ SceneFactory::SceneFactory() {
     m_skeletalAnimFactory.Add<SkeletalAnimFactory>("default");
 
     m_stateFactory.Add<Walk25StateFactory>("walk25");
+    m_stateFactory.Add<Hit25StateFactory>("hit25");
     m_stateFactory.Add<SimpleStateFactory>("simple");
 }
 

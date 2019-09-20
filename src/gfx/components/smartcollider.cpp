@@ -36,19 +36,20 @@ void SmartCollider::ofu(Animator *a) {
         std::cout << "character at position = " << t[3][0] << ", " << t[3][1] << " scale " << t[0][0] << "\n";
         auto e = m_engine->ShapeCast(bi.m_attackShape, t, attackInfo.second);
 
-        if (e != nullptr) {
+        if (e.report.collide) {
             std::cerr << "HIT!\n";
             auto rm = m_engine->GetResponseManager();
             if (rm == nullptr) {
                 std::cerr << "no handler!\n";
             }
-            auto handler = rm->GetHandler(attackInfo.first, e->GetCollisionTag());
+            auto handler = rm->GetHandler(attackInfo.first, e.entity->GetCollisionTag());
             if (handler.response != nullptr) {
+                auto object = e.entity->GetObject();
                 std::cerr << "FOUND RESPONSE\n";
                 if (handler.flip) {
-                    handler.response->onStart(e->GetObject(), m_entity, CollisionReport());
+                    handler.response->onStart(object, m_entity, e.report);
                 } else {
-                    handler.response->onStart(m_entity, e->GetObject(), CollisionReport());
+                    handler.response->onStart(m_entity, object, e.report);
                 }
             }
         }

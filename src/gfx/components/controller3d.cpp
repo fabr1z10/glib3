@@ -170,12 +170,12 @@ void Controller3D::DescendSlope(glm::vec3& vel) {
             // isDescending = (Mathf.sign(hit.normal.x) == directionX)
             bool isDescending = (glm::dot (horizontalShift, hit.normal) > 0);
             if (isDescending) {
-                if (isZero(dxw)) {
-                int kkfkf=20;
-                }
-                if (isZero(vel.z)) {
-                    int ikk = 10;
-                }
+//                if (isZero(dxw)) {
+//                int kkfkf=20;
+//                }
+//                if (isZero(vel.z)) {
+//                    int ikk = 10;
+//                }
                 if (hit.length - m_skinWidth <= tan(slopeAngle) * hLength) {
                     // it's close enough
                     float descendVelocityY = sin(slopeAngle) * hLength;

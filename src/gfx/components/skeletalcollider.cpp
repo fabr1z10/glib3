@@ -18,14 +18,16 @@ void SkeletalCollider::addBound (const std::string& animation, float x0, float y
     Bounds bounds;
     bounds.min = glm::vec3(x0*scale, y0*scale, 0.0f);
     bounds.max = glm::vec3((x0 + w)*scale, (y0 + h)*scale, 0.0f);
+    m_shapes.insert(std::make_pair(animation, std::make_shared<Rect>(w, h, glm::vec3(x0, y0, 0.0f))));
     m_maxBounds.ExpandWith(bounds);
     m_animationBounds.insert(std::make_pair(animation, bounds));
 }
 
-void SkeletalCollider::addAttack(const std::string &animation, float t, float x0, float y0, float w, float h, int mask, float scale) {
+void SkeletalCollider::addAttack(const std::string &animation, float t, float x0, float y0, float w, float h, int mask, int tag, float scale) {
     SkeletalAttackInfo info;
     info.time = t;
     info.mask = mask;
+    info.tag = tag;
     info.shape = std::make_shared<Rect>(w*scale, h*scale, glm::vec3(scale*x0, scale*y0, 0));
     m_attackInfos.insert(std::make_pair(animation, info));
 }
@@ -41,26 +43,26 @@ void SkeletalCollider::Update(double dt) {
             glm::mat4 t = m_entity->GetWorldTransform();
             auto e = m_engine->ShapeCast(m_currentAttackInfo->shape, t, m_currentAttackInfo->mask);
 
-            if (e != nullptr) {
+            if (e.report.collide) {
                 std::cerr << "HIT!\n";
+                auto rm = m_engine->GetResponseManager();
+                if (rm == nullptr) {
+                    std::cerr << "no handler!\n";
+                } else {
+                    auto object = e.entity->GetObject();
+                    auto handler = rm->GetHandler(m_currentAttackInfo->tag, e.entity->GetCollisionTag());
+                    if (handler.response != nullptr) {
+                        std::cerr << "FOUND RESPONSE\n";
+                        if (handler.flip) {
+                            handler.response->onStart(object, m_entity, e.report);
+                        } else {
+                            handler.response->onStart(m_entity, object, e.report);
+                        }
+                    }
+                }
             }
-//                auto rm = m_engine->GetResponseManager();
-//                if (rm == nullptr) {
-//                    std::cerr << "no handler!\n";
-//                }
-//                auto handler = rm->GetHandler(attackInfo.first, e->GetCollisionTag());
-//                if (handler.response != nullptr) {
-//                    std::cerr << "FOUND RESPONSE\n";
-//                    if (handler.flip) {
-//                        handler.response->onStart(e->GetObject(), m_entity, CollisionReport());
-//                    } else {
-//                        handler.response->onStart(m_entity, e->GetObject(), CollisionReport());
-//                    }
-//                }
-            //}
 
         }
-
     }
 }
 
@@ -167,6 +169,7 @@ Bounds SkeletalCollider::GetDynamicBoundsI() const {
 Shape* SkeletalCollider::GetShape() {
     std::string anim = m_animator->GetAnimation();
     // now with these info, I ask the model to give me the current shape
+    return m_shapes.at(anim).get();
     //return m_model->GetShape(anim, frame).get();
-    return nullptr;
+    //return nullptr;
 }

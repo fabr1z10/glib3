@@ -25,7 +25,6 @@ public:
     //virtual void ModifyAnimation() = 0;
     // virtual void ResetAnimation() = 0;
 protected:
-    StateMachine* m_sm;
     InputMethod * m_input;
     IAnimator* m_animator;
 

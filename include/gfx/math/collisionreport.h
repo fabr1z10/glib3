@@ -23,3 +23,11 @@ struct RayCastHit {
     glm::vec3 normal;
 };
 
+struct ShapeCastHit {
+    ShapeCastHit () : entity(nullptr) {}
+    CollisionReport report;
+    ICollider* entity;
+
+
+};
+

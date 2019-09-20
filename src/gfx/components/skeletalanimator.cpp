@@ -84,7 +84,11 @@ void SkeletalAnimator::SetAnimation(const std::string &anim, bool forward) {
     // reset timer
     m_time = 0.0;
     m_animation = anim;
-    m_currentAnim = m_animations.at(anim).get();
+    auto it = m_animations.find(anim);
+    if (it == m_animations.end()) {
+        GLIB_FAIL("Skeleton doesn't have animation " << anim);
+    }
+    m_currentAnim =it->second.get();
     m_looped=false;
     onAnimationChange.Fire(this);
 }

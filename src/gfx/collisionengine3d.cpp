@@ -113,8 +113,8 @@ RayCastHit CollisionEngine3D::Raycast(glm::vec3 rayOrigin, glm::vec3 rayDir, flo
 }
 
 
-ICollider* CollisionEngine3D::ShapeCast (std::shared_ptr<Shape> shape, const glm::mat4& transform, int mask) {
-
+ShapeCastHit CollisionEngine3D::ShapeCast (std::shared_ptr<Shape> shape, const glm::mat4& transform, int mask) {
+    ShapeCastHit result;
     auto aabb = shape->getBounds();
     aabb.Transform(transform);
     float z = transform[3][2];
@@ -142,14 +142,16 @@ ICollider* CollisionEngine3D::ShapeCast (std::shared_ptr<Shape> shape, const glm
                         // bounding boxes intersect, so let's make a proper collision test
                         CollisionReport report = m_intersector->Intersect(shape.get(), transform, s, t);
                         if (report.collide) {
-                            return c;
+                            result.report = report;
+                            result.entity = c;
+                            return result;
                         }
                     }
                 }
             }
         }
     }
-    return nullptr;
+    return result;
 
 }
 

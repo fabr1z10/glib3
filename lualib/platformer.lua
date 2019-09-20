@@ -23,8 +23,9 @@ glib.load_folder("sprites")
 io.write ("done! loaded " .. tostring(glib.tablelength(engine.assets.models)) .. " models.\n")
 --print (tostring(engine.assets.models["low_moral_fiber_1"].animations[1].frames[1].quads[2]["id"].x))
 
-factory ={}
 
+factory ={}
+require ("factories")
 glib.load_folder("factories")
 --glib.load_all("dialogue")
 

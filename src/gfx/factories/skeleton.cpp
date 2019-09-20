@@ -45,7 +45,6 @@ std::shared_ptr<Entity> SkeletonFactory::Create(luabridge::LuaRef &ref) {
     std::string root;
 
     auto animator = Ref::Create<SkeletalAnimator>();
-
     table.ProcessVector("bones", [&bones, &parentRelation, &root, factory, &animator] (luabridge::LuaRef ref) {
         // each bone generates a node
         LuaTable boneRef (ref);
@@ -70,6 +69,9 @@ std::shared_ptr<Entity> SkeletonFactory::Create(luabridge::LuaRef &ref) {
     }
 
     auto entity = Ref::Create<Entity>();
+    std::string tag = table.Get<std::string>("tag", "");
+    if (!tag.empty()) entity->SetTag(tag);
+
     entity->AddChild(bones.at(root));
 
 

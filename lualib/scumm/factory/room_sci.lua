@@ -29,9 +29,11 @@ function scumm.factory.sci_room (args)
 	 		{ 
 	 			type = "collision", 
  				size = {80, 80}, 
-	 			response = {
-	 				{ tag = {1, 10}, onenter = function() print ("CIAO") end }
-	 			}
+	 			response = args.collision_response,
+	 			coll25 = args.coll25
+	 			--{
+	 			--		{ tag = {1, 10}, onenter = function() print ("CIAO") end }
+	 			--}
 	 		},			
 			{ 
 				type = "hotspotmanager",
@@ -118,16 +120,18 @@ function scumm.factory.sci_room (args)
 		print("ciao = "..tostring(startPos.pos[1]))
 		print("ciao = "..tostring(startPos.pos[2]))
 		local w1 = refs[startPos.walkarea]
-		table.insert(w1,  
-			scumm.factory.object { 
-				id=args.playerid,
-				pos={startPos.pos[1], startPos.pos[2], 0}, 
-				tag="player", 
-				dir = startPos.dir,
-				follow = (room_width > 320 and enableScroll),
-				collide = args.collisde
-			}
-		)
+		if (args.playerid) then
+			table.insert(w1,  
+				scumm.factory.object { 
+					id=args.playerid,
+					pos={startPos.pos[1], startPos.pos[2], 0}, 
+					tag="player", 
+					dir = startPos.dir,
+					follow = (room_width > 320 and enableScroll),
+					collide = args.collisde
+				}
+			)
+		end
 	end
 
 
