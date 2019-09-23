@@ -34,7 +34,8 @@ struct SkeletalAnimationState {
 
 class SkeletalAnimation {
 public:
-    SkeletalAnimation(float duration) : m_duration(duration) {}
+    SkeletalAnimation(float duration, int boundltype, double boundl, int boundrtype, double boundr) :
+            m_duration(duration), m_boundltype(boundltype), m_boundl(boundl), m_boundrtype(boundrtype), m_boundr(boundr) {}
     SkeletalAnimationState getTransformation (float t);
     void init();
     float getDuration() const;
@@ -44,6 +45,10 @@ public:
 
 private:
     bool m_loop;
+    int m_boundltype;
+    int m_boundrtype;
+    double m_boundl;
+    double m_boundr;
     float m_duration;
     std::unordered_map<float, KeyFrame> m_keyFrames;
     std::unordered_map<std::string, std::unique_ptr<alglib::spline1dinterpolant>> m_interpolants;

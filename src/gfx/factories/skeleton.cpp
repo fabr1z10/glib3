@@ -8,8 +8,32 @@
 std::shared_ptr<SkeletalAnimation> SkeletalAnimFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
     float duration = table.Get<float>("duration");
-    auto anim = std::make_shared<SkeletalAnimation>(duration);
+    luabridge::LuaRef boundary = table.Get<luabridge::LuaRef>("boundary");
+    LuaTable btable(boundary);
+    int boundltype{0};
+    int boundrtype{0};
+    double boundl{0.0};
+    double boundr{0.0};
+    if (btable.HasKey("periodic")) {
+        boundltype = -1;
+        boundrtype = -1;
+    } else {
+        luabridge::LuaRef left = btable.Get<luabridge::LuaRef>("left");
+        luabridge::LuaRef right = btable.Get<luabridge::LuaRef>("right");
+        std::string ltype = left[1].cast<std::string>();
+        if (ltype == "first") {
+            boundl = left[2].cast<double>();
+            boundltype = 1;
+        }
+        std::string rtype = right[1].cast<std::string>();
+        if (rtype == "first") {
+            boundrtype = 1;
+            boundr = right[2].cast<double>();
+        }
+    }
 
+
+    auto anim = std::make_shared<SkeletalAnimation>(duration, boundltype, boundl, boundrtype, boundr);
     KeyFrame firstKeyFrame;
     int i = 0;
     table.ProcessVector("frames", [&anim, &i, &firstKeyFrame] (luabridge::LuaRef keyframe) {
@@ -81,6 +105,11 @@ std::shared_ptr<Entity> SkeletonFactory::Create(luabridge::LuaRef &ref) {
         auto anim = Engine::get().GetAssetManager().GetSkeletalAnimation(animId);
         animator->AddAnimation(name, anim);
     });
+
+    float offsetY = table.Get<float>("offset_y", 0.0f);
+    if (offsetY != 0.0f) {
+        animator->setOffsetY(offsetY);
+    }
 
     entity->AddComponent(animator);
 

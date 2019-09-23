@@ -125,6 +125,7 @@ SceneFactory::SceneFactory() {
     m_shapeFactory.Add<RectFactory>("rect");
     m_shapeFactory.Add<LineFactory>("line");
     m_shapeFactory.Add<CircleFactory>("circle");
+    m_shapeFactory.Add<EllipseFactory>("ellipse");
     m_shapeFactory.Add<CompoundFactory>("compound");
     m_shapeFactory.Add<PolyFactory>("poly");
     m_shapeFactory.Add<GraphFactory>("graph");

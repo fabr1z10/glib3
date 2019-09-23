@@ -37,7 +37,7 @@ void SkeletalAnimation::init() {
         const auto& values = funcValues.at(b.first);
         y.setcontent(values.size(), &(values[0]));
         auto interp = std::make_unique<alglib::spline1dinterpolant>();
-        alglib::spline1dbuildcubic(x, y, b.second.size(), -1, 0.0, -1, 0.0, *(interp.get()));
+        alglib::spline1dbuildcubic(x, y, b.second.size(), m_boundltype, m_boundl, m_boundrtype, m_boundr, *(interp.get()));
         m_interpolants.insert(std::make_pair(b.first, std::move(interp)));
     }
 

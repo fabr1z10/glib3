@@ -1,6 +1,7 @@
 factory.skeleton = {}
 
 local helper1 = function(c, part)
+print (part)
 	assert (c[part], part)
 	local p = engine.assets.bones[c[part]]
 	if (p == nil) then 
@@ -13,11 +14,12 @@ factory.skeleton.create = function (args)
 
 	glib.assert (args.character, "character")
 	glib.assert (args.pos, "pos")
-
+	glib.assert (args.speed, "speed")
 	-- ensure character is existing
 
 	local c = engine.assets.characters[args.character]
 	if (c == nil) then error ("Unknown character: " .. args.character) end
+	local offset_y = c.offset_y or 0 
 
 	assert (c.gfx, "character requires <gfx>")
 	assert (c.animations, "character requires <animations>")
@@ -25,7 +27,6 @@ factory.skeleton.create = function (args)
 	local scale = args.scale or 1
 
 	local torso = helper1 (c, "torso")
-	local head = helper1 (c, "head")
 	local thigh = helper1 (c, "rthigh")
 	local shin = helper1 (c, "rshin")
 	local lthigh = c.lthigh and helper1(c, "lthigh") or thigh
@@ -39,7 +40,7 @@ factory.skeleton.create = function (args)
 					id = "walk", 
 					state = {
 						type = "walk25", 
-						speed = 50,
+						speed = args.speed,
 						acceleration = 0.1,
 						fliph=true,
 						dir = "e",
@@ -64,13 +65,33 @@ factory.skeleton.create = function (args)
 
 	local total_height = torso_length + rthigh_length + rshin_length
 
+	local c_flag = 0
+	local c_mask = 0
+	local c_tag = 0
+	local c_attack_tag = 0 
+	local c_attack_mask = 0
+	if (args.player) then
+		c_flag = variables.collision.flags.player
+		c_mask = 0
+		c_tag = variables.collision.tags.player
+		c_attack_tag = variables.collision.tags.player_attack
+		c_attack_mask = variables.collision.flags.foe
+	else 
+		c_flag = variables.collision.flags.foe
+		c_mask = 0
+		c_tag = variables.collision.tags.foe
+		c_attack_tag = variables.collision.tags.foe_attack
+		c_attack_mask = variables.collision.flags.player
+	end
+
+
 	-- prepare the skeletal collider
 	if (args.collider ~= nil) then
 		local collider = {
 			type = "skeletalcollider",
-			tag = args.collider.tag,
-			flag = args.collider.flag,
-			mask = args.collider.mask,
+			tag = c_tag,
+			flag = c_flag,
+			mask = c_mask,
 			bounds = {},
 			attack = {}			
 		}
@@ -79,7 +100,16 @@ factory.skeleton.create = function (args)
      		table.insert (collider.bounds, { anim = v[1], x = -0.5*torso_width, y = 0, width = torso_width, height = torso_length })
     	end	
     	for i,v in ipairs(c.attack) do
-    		table.insert (collider.attack, { anim = v.anim, t = v.t, mask = v.mask, tag = v.tag, x = v.x, y= v.y, width = v.width, height = v.height })
+    		table.insert (collider.attack, { 
+    			anim = v.anim, 
+    			t = v.t,                -- attack time
+    			tag = c_attack_tag, 
+    			mask = c_attack_mask, 
+    			x = v.x, 
+    			y= v.y, 
+    			width = v.width, 
+    		    height = v.height 
+    		})
     	end
 		table.insert (components, collider)
 	end
@@ -88,6 +118,9 @@ factory.skeleton.create = function (args)
 		table.insert (components, { type ="keyinput" })
 	end
 
+	if (args.info) then 
+		table.insert (components, args.info)
+	end
 
 
 	local bones = {
@@ -100,18 +133,7 @@ factory.skeleton.create = function (args)
 					{ type ="gfx", image=c.gfx, height=torso_length, offset = {-torso.origin[1]*scale,-torso.origin[2]*scale, 0}, quad = torso.quad}
 				}
 			}
-		},
-		{ 
-			name = "head", 
-			length = head.quad[4]*scale, 
-			parent="torso", desc = 
-			{
-				pos = {(torso.headpos[1]-torso.origin[1])*scale, (torso.headpos[2]-torso.origin[2])*scale, 0},
-				components = {
-					{ type ="gfx", image=c.gfx, height=head.quad[4]*scale, offset = {-head.origin[1]*scale,-head.origin[2]*scale,0 }, quad = head.quad }
-				}
-			}
-		},						
+		},					
 		-- right leg
 		{ 
 			name = "rthigh", 
@@ -158,6 +180,22 @@ factory.skeleton.create = function (args)
 		},
 	}
 
+	if (c.head ~= nil) then
+		local head = helper1 (c, "head")
+
+		table.insert (bones, { 
+			name = "head", 
+			length = head.quad[4]*scale, 
+			parent="torso", desc = 
+			{
+				pos = {(torso.headpos[1]-torso.origin[1])*scale, (torso.headpos[2]-torso.origin[2])*scale, 0},
+				components = {
+					{ type ="gfx", image=c.gfx, height=head.quad[4]*scale, offset = {-head.origin[1]*scale,-head.origin[2]*scale,0 }, quad = head.quad }
+				}
+			}
+		})
+	end
+
 	if (c.rupperarm ~= nil) then
 		local r_upper_arm = engine.assets.bones[c.rupperarm]
 		if (r_upper_arm == nil) then
@@ -185,7 +223,7 @@ factory.skeleton.create = function (args)
 			length = math.abs(r_upper_arm.forearmpos[2])*scale, 
 			parent="torso", 
 			desc = {
-				pos = {(torso.rarmpos[1]-torso.origin[1])*scale,(torso.rarmpos[2]-torso.origin[2])*scale,0.001},
+				pos = {(torso.rarmpos[1]-torso.origin[1])*scale,(torso.rarmpos[2]-torso.origin[2])*scale,2*0.001},
 				components = {
 					{ type ="gfx", image=c.gfx, height=r_upper_arm.quad[4]*scale, offset = {-r_upper_arm.origin[1]*scale,-r_upper_arm.origin[2]*scale}, quad = r_upper_arm.quad}	
 				}
@@ -208,7 +246,7 @@ factory.skeleton.create = function (args)
 			length = math.abs(l_upper_arm.forearmpos[2])*scale, 
 			parent="torso", 
 			desc = {
-				pos = {(torso.larmpos[1] - torso.origin[1])*scale,(torso.larmpos[2]-torso.origin[2])*scale,-0.002},
+				pos = {(torso.larmpos[1] - torso.origin[1])*scale,(torso.larmpos[2]-torso.origin[2])*scale,-2*0.001},
 				components = {
 					{ type ="gfx", image=c.gfx, height=l_upper_arm.quad[4]*scale, offset = {-l_upper_arm.origin[1]*scale,-l_upper_arm.origin[2]*scale}, quad = l_upper_arm.quad}	
 				}
@@ -236,9 +274,23 @@ factory.skeleton.create = function (args)
 	return {	
 		tag = args.tag,
 		type = "skeleton",		
+		offset_y = offset_y*scale,
 		pos = {args.pos[1], args.pos[2], 0},
 		animations = a,
 		components = components,					
-		bones = bones
+		bones = bones,
+		children = {
+			{ 
+				pos = {0,0,0}, 
+				components = { 
+					{ type = "gfx", color = {0,0,0,128},shape = {type="ellipse", 
+						semiaxes = {torso_width, 0.1*torso_width},
+						--width = torso_width, height = torso_width*0.5, 
+						offset ={0,-0.05*torso_width}},
+						draw="solid"
+					}
+				}
+			}
+		}
 	}
 end

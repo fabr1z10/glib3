@@ -19,7 +19,7 @@ public:
     bool IsComplete() const override;
     bool looped() const;
     std::type_index GetType() override;
-
+    void setOffsetY (float);
     using ParentClass = SkeletalAnimator;
 protected:
     std::unordered_map<std::string, std::shared_ptr<SkeletalAnimation>> m_animations;
@@ -35,6 +35,7 @@ protected:
     // TODO move in a subclass
     Renderer* m_ls;
     Renderer* m_rs;
+    float m_offsetY;
 
 
     bool m_looped;

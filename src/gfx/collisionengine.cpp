@@ -342,7 +342,7 @@ RayCastHit CollisionEngine::Raycast (glm::vec3 rayOrigin, glm::vec3 rayDir, floa
 
                 if (m != 0) {
                     float zc = c->GetObject()->GetPosition().z;
-                    if (m_coll25d && fabs(z-zc) > m_eps) {
+                    if (zc > -2 && m_coll25d && fabs(z-zc) > m_eps) {
                         continue;
                     }
                     auto shapeBounds = c->GetBounds();

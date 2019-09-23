@@ -74,7 +74,7 @@ function scumm.factory.sci_room (args)
  					type="ortho",
  					size = {room_width, room_height},
  					bounds = {0, 0, room_width, room_height},
- 					viewport = {2, 25, 2+room_width, 25+room_height}
+ 					viewport = {0, 0, room_width, room_height}
  				},
 				children = {
 				}
@@ -106,12 +106,13 @@ function scumm.factory.sci_room (args)
 
 	local refs = {
 		main = p.scene[1].children,
+		diag = p.scene[2].children
 	}
 	-- add the walkarea(s)
 	if (args.walkareas) then
 		for _, wa in ipairs(args.walkareas) do
 			print (wa)
-			local tmp = scumm.factory.object { id = wa }
+			local tmp = scumm.factory.object { id = wa, pos ={0,0,-3}}
 			table.insert (refs.main, tmp)
 			refs[wa] =  tmp.children
 		end
