@@ -19,7 +19,8 @@ factory.skeleton.create = function (args)
 
 	local c = engine.assets.characters[args.character]
 	if (c == nil) then error ("Unknown character: " .. args.character) end
-	local offset_y = c.offset_y or 0 
+	local l_offset_y = c.l_offset_y or 0 
+	local r_offset_y = c.r_offset_y or 0 
 
 	assert (c.gfx, "character requires <gfx>")
 	assert (c.animations, "character requires <animations>")
@@ -274,7 +275,8 @@ factory.skeleton.create = function (args)
 	return {	
 		tag = args.tag,
 		type = "skeleton",		
-		offset_y = offset_y*scale,
+		l_offset_y = l_offset_y*scale,
+		r_offset_y = r_offset_y*scale,
 		pos = {args.pos[1], args.pos[2], 0},
 		animations = a,
 		components = components,					

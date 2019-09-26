@@ -3,7 +3,7 @@
 #include <gfx/math/geom.h>
 #include <gfx/components/renderer.h>
 
-SkeletalAnimator::SkeletalAnimator() : IAnimator(), m_looped(false), m_offsetY(0.0f) {
+SkeletalAnimator::SkeletalAnimator() : IAnimator(), m_looped(false), m_l_offset_y(0.0f), m_r_offset_y(0.0f) {
 
 }
 
@@ -64,8 +64,8 @@ void SkeletalAnimator::Update(double dt) {
     c.Transform(tr2);
     auto torso = m_bones.at("torso");
     glm::vec3 torsoPos = torso->GetPosition();
-    float yMin = std::min(b.min.y, c.min.y);
-    float dist = fabs(torsoPos.y - yMin) - m_offsetY;
+    float yMin = std::min(b.min.y - m_r_offset_y, c.min.y - m_l_offset_y);
+    float dist = fabs(torsoPos.y - yMin);
 //    glm::vec3 currentPos = m_entity->GetPosition();
 //
 //    float delta = fabs(currentPos.y-b.min.y);
@@ -103,8 +103,9 @@ bool SkeletalAnimator::IsComplete() const {
 }
 
 
-void SkeletalAnimator::setOffsetY(float offsetY) {
-    m_offsetY = offsetY;
+void SkeletalAnimator::setOffsetY(float l, float r) {
+    m_l_offset_y = l;
+    m_r_offset_y = r;
 
 }
 

@@ -106,10 +106,9 @@ std::shared_ptr<Entity> SkeletonFactory::Create(luabridge::LuaRef &ref) {
         animator->AddAnimation(name, anim);
     });
 
-    float offsetY = table.Get<float>("offset_y", 0.0f);
-    if (offsetY != 0.0f) {
-        animator->setOffsetY(offsetY);
-    }
+    float loffset = table.Get<float>("l_offset_y", 0.0f);
+    float roffset = table.Get<float>("r_offset_y", 0.0f);
+    animator->setOffsetY(loffset, roffset);
 
     entity->AddComponent(animator);
 
