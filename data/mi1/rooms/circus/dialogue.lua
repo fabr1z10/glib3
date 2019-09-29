@@ -25,10 +25,11 @@ local fettuccini_approach = {
 }
 
 local s1 = { 
-	--f(2,{34}), f(3,{35}), f(2,{36}), f(3,{37}), f(2,{38}), f(3,{39}), f(2,{40}), f(3,{41}), f(2,{42}), f(3,{43}), f(2,{44}), f(3,{45}), f(2,{46}), f(3,{47}), f(2,{48}), 
-	--f(3,{49}), f(2,{50}), f(3,{51}), f(2,{52}), f(3,{53}), f(2, {54,55}), f(3,{56}), f(2,{57}), f(3,{58}), f(2,{59}), 
+	f(2,{34}), f(3,{35}), f(2,{36}), f(3,{37}), f(2,{38}), f(3,{39}), f(2,{40}), f(3,{41}), f(2,{42}), f(3,{43}), f(2,{44}), f(3,{45}), f(2,{46}), f(3,{47}), f(2,{48}), 
+	f(3,{49}), f(2,{50}), f(3,{51}), f(2,{52}), f(3,{53}), f(2, {54,55}), f(3,{56}), f(2,{57}), f(3,{58}), f(2,{59}), 
 	f(3,{60}),
-	{ type=action.set_variable, args={var="circus_knows_trick", value=true}} }
+	{ type=action.set_variable, args={var="circus_knows_trick", value=true}} 
+}
 
 local s3 = { f(2, {95}), f(3, {96}), f(2, {97}), f(3, {98}), {type=action.delay, args={sec=0.5}},
 	f(3, {99}), f(2, {100}), f(3, {101}), f(2, {102}), f(3, {103}), {type=action.change_room, args= {room="clearing"}}}
@@ -43,7 +44,7 @@ local a1 = function(n)
 				f(1,{n}),
 				fettuccini_approach
 			}
-
+			print ("CIAO CIAO")
 			if (variables.circus_knows_trick == false) then
 				table.insert(actions, s1)
 			elseif (variables.circus_knows_helmet == false) then

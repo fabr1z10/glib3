@@ -1,9 +1,15 @@
+local items = engine.items
+
 roomDefinition = {
 	width = 368,
 	height = 144,
 	startTable = {
-		clearing = { pos = items["circus.wayout"].hotspot.walk_to, dir = "west"},
+		clearing = { walkarea="circus.walkarea", pos = items["circus.wayout"].hotspot.walk_to, dir = "west"},
 	},
+	font_size=8,
+	playerid="guybrush",
+	walkareas = { "circus.walkarea"},
+	collide=true,
 	defaultroom = "clearing",
 	enableScroll = false,
 	depth = { type="linear_y", values= {0, 1, 144, 0} },
@@ -16,23 +22,26 @@ roomDefinition = {
 
 room = scumm.factory.basic_room(roomDefinition)
 
-room:add( {
-	{ pos = {0, 0,-3}, components = { { type="gfx", image="gfx/circus1.png" }}},
-    { pos = {259, 1, 0.99}, components = { {type="gfx", image="gfx/circus2.png" }}},
-    { pos = {233, 1, 0.99}, components = { {type="gfx", image="gfx/circus3.png" }}},
-   	{ pos = {247, 17, 0.99}, components = { {type="gfx", image="gfx/circus4.png"}}},
-   	scumm.factory.walkarea {
-       	shape = { type = "poly", outline = {0,35,368,35,368,0,0,0}},
-	},
+room:add("main", {
+	{ pos = {0, 0,-3}, components = { { type="gfx", image="circus1.png" }}},
+    { pos = {259, 1, 0.99}, components = { {type="gfx", image="circus2.png" }}},
+    { pos = {233, 1, 0.99}, components = { {type="gfx", image="circus3.png" }}},
+   	{ pos = {247, 17, 0.99}, components = { {type="gfx", image="circus4.png"}}},
+ --   	scumm.factory.walkarea {
+ --       	shape = { type = "poly", outline = {0,35,368,35,368,0,0,0}},
+	-- },
 	scumm.factory.object { id="circus.wayout"},
-	scumm.factory.object { id="circus.purpleclown"},
-	scumm.factory.object { id="circus.greenclown"},
 
 	-- factory.object.create { object = "circus.wayout"},
 	-- factory.object.create { object = "circus.greenclown"},
 	-- factory.object.create { object = "circus.purpleclown"}	
 })
 
+
+room:add("circus.walkarea", {
+	scumm.factory.object { id="circus.purpleclown"},
+	scumm.factory.object { id="circus.greenclown"},
+})
 
 local init = function()
 	local d = strings.dialogues.fettbros

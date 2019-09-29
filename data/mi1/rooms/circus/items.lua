@@ -1,3 +1,9 @@
+engine.items["circus.walkarea"] = scumm.factory.walkarea {
+	shape = { type = "poly", outline = {0,35,368,35,368,0,0,0}},
+	priority = 0
+}
+
+
 engine.items["circus.wayout"] = {
 	pos = {280, 32, 0},
 	hotspot = {
@@ -29,9 +35,11 @@ engine.items["circus.purpleclown"] = {
  	model = "fettuccini.purple",
 	character = {
 		state = "idle",
-		dir = "east"
-	}
- }
+		dir = "east",
+		speed=500
+	},
+	actions = {}
+}
 
 engine.items["circus.greenclown"] = {
 	pos = {51,34,0},
@@ -48,6 +56,9 @@ engine.items["circus.greenclown"] = {
  	model = "fettuccini.green",
 	character = {
 		state = "idle",
-		dir = "west"
-	}
+		dir = "west",
+		speed =500
+	},
+	actions = {}
+
 }

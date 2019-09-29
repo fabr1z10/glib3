@@ -98,7 +98,7 @@ variables = {
 
 	save_states = {
 		start = function()
-			engine.state.room = "kitchen"
+			engine.state.room = "clearing"
 			engine.state.previousRoom ="scummbar"
 		end,
 		taken_stuff_from_kitchen = function()
@@ -113,7 +113,7 @@ variables = {
 
 }
 
-variables.save_states.taken_stuff_from_kitchen()
+variables.save_states.start()
 
 --engine.state.scumm.inventory["kitchen.fish"] = 1
 --engine.state.scumm.inventory["pieces_of_eight"] = 1000
