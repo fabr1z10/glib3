@@ -13,6 +13,7 @@ roomDefinition = {
 	playerid="guybrush",
 	defaultroom = "lookout",
 	walkareas = { "village1.walkarea"},
+	collide= true,
 	--depth = { type="linear_y", values= {0, 1, 144, 0} },
 	
 }

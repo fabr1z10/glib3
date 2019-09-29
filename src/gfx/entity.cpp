@@ -62,10 +62,10 @@ void Entity::AddChild(std::shared_ptr<Entity> child) {
     // if engine is running, start
     child->UpdateWorldTransform();
     onAdd.Fire(child.get());
-//    if (Engine::get().isRunning()) {
-//        child->Start();
-//        child->Begin();
-//    }
+    if (Engine::get().isRunning()) {
+        child->Start();
+        child->Begin();
+    }
 
 }
 

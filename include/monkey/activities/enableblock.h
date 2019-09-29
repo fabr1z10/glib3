@@ -6,10 +6,11 @@
 
 class EnableBlock : public Activity {
 public:
-    EnableBlock(int wall, bool active) : Activity(), m_wall{wall}, m_active{active} {}
+    EnableBlock(const std::string& id, int wall, bool active) : Activity(), m_id(id), m_wall{wall}, m_active{active} {}
     void Start() override;
     void Run (float dt) override {}
 private:
+    std::string m_id;
     int m_wall;
     bool m_active;
 };

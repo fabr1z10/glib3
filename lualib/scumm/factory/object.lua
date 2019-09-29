@@ -133,7 +133,8 @@ scumm.factory.object = function(args)
 			shape = object.walkarea.shape,
 			onclick = function(x, y, obj) scumm.ui.runSciAction(x, y, objId) end,
 			scale = object.walkarea.scale,
-			depth = object.walkarea.depth
+			depth = object.walkarea.depth,
+			blockedlines = object.walkarea.blockedlines
 		})
 		--table.insert (obj.components, { type = "collider", flag = 2, mask = 1, tag=1, shape = object.walkarea.shape })
 -- 					}

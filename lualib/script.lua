@@ -41,12 +41,12 @@ function flatten_script(a, offset)
         else
             --print (tostring(v) .. " is not an array")
 			if (v.type ~= nil) then
-				print ("adding an action...")
+				--print ("adding an action...")
 				id = id + 1
 				local node = { id = id, action = v.type(v.args) }
-				print ("qu333i")
+				--print ("qu333i")
 				if (v.ref ~= nil) then
-					print ("ciao " .. v.ref .. " ciao")
+					--print ("ciao " .. v.ref .. " ciao")
 					ref_id[v.ref] = id
 				end
 				if (v.after ~= nil) then 
@@ -69,7 +69,6 @@ end
 
 script.make = function(args, loop)
     local s = script:new()
-    print ("wefiewfiwoefj")
 	local data = flatten_script (args, 0) 
 	s.actions = data[1]
 	if (loop ~= nil) then

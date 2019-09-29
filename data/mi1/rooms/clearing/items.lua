@@ -1,3 +1,9 @@
+engine.items["clearing.walkarea"] = scumm.factory.walkarea {
+	shape = { type = "poly", outline = 
+		{496,38,496,0, 283, 0, 283, 20, 315, 28,315, 44, 229, 31, 92, 31, 41, 64,54, 75, 80, 64, 115, 58, 119, 48,
+		 165, 53, 180,64, 214, 64, 229, 33, 315, 46, 400,38}},
+	priority = 0
+}
 engine.items["clearing.path"] = {	
 	pos = {480, 0, 0},
 	hotspot = {

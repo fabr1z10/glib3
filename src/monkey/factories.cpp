@@ -181,11 +181,11 @@ std::shared_ptr<Activity> SayActFactory::Create(luabridge::LuaRef &ref) {
 
 std::shared_ptr<Activity> EnableBlockActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
-
+    std::string id = table.Get<std::string>("walkarea");
     int wallId = table.Get<int>("wall");
     bool active = table.Get<bool>("active");
 
-    return std::make_shared<EnableBlock>(wallId, active);
+    return std::make_shared<EnableBlock>(id, wallId, active);
 };
 
 

@@ -14,8 +14,9 @@ scumm.action.walkto = function (args)
 		local obj = items[args.obj]
 		pos = obj.hotspot.walk_to
 	end	
-	print ("WALK = " .. engine.config.walk)
-	return { type=engine.config.walk, tag = args.tag, id = args.id, pos = pos }
+	local walk_action = engine.config.scumm.walk[engine.config.style]
+	print ("WALK = " .. walk_action)
+	return { type=walk_action, tag = args.tag, id = args.id, pos = pos }
 end
 
 scumm.action.walktoitem = function (args) 
@@ -31,7 +32,9 @@ end
 scumm.action.turn = function (args) 
 	glib.assert_either (args.tag, args.id, "id or tag")
 	assert (args.dir, "dir")
-	return { type=engine.config.turn, tag = args.tag, id = args.id, dir = args.dir }
+	local turn_action = engine.config.scumm.turn[engine.config.style]
+
+	return { type=turn_action, tag = args.tag, id = args.id, dir = args.dir }
 
 end
 
@@ -44,7 +47,30 @@ scumm.action.enableplay = function(args)
 
 end
 
-scumm.action.pickup = function(id, anim1, anim2) 
+scumm.action.enable_wall = function (args) 
+	glib.assert(args.walkarea, "walkarea")
+	glib.assert(args.wall, "wall")
+	glib.assert(args.active, "active")
+
+	return { type="enable_wall", walkarea = args.walkarea, wall = args.wall, active = args.active }
+
+end
+
+scumm.action.pickup2 = function(args)		
+	if (inventory[args.id] ~= nil and inventory[args.id] > 0) then return {} end
+	return { 
+		{ ref = 1, type = action.animate, args ={tag="player", anim=args.anim1, sync=true}},
+		{ type = action.activate, args ={tag=args.id, active=false }},
+		{ type = action.animate, after={1}, args ={tag="player", anim=args.anim2 }},
+		{ type = scumm.action.add_to_inventory, args = {id=args.id}}
+	}
+end
+
+
+scumm.action.pickup = function(id, anim1, anim2)
+print ("CIAO NERRR")
+	print ("HAS " .. id .. tostring(inventory[id])) 
+	if (inventory[id] ~= nil and inventory[id] > 0) then return {} end
 	return { 
 		{ ref = 1, type = action.animate, args ={tag="player", anim=anim1, sync=true}},
 		{ type = action.activate, args ={tag=id, active=false }},
@@ -134,6 +160,7 @@ scumm.action.start_dialogue = function (args)
 			end
 			print ("cazzo")
         end
+		engine.state.scumm.walk_enabled = false 
 	end }
 end
 

@@ -1,19 +1,11 @@
 #include <gfx/activity.h>
-#include <iostream>
 
 Activity::~Activity() {
-    std::cerr << "clering activity...\n" << &typeid(*this);
+    //std::cerr << "clering activity...\n" << &typeid(*this);
     // if (!m_complete)
     //    SetComplete();
 }
 
-//void Activity::AddPrevious (Activity* act) {
-//    m_previous.push_back(act);
-//}
-//
-//void Activity::AddNext (Activity* act) {
-//    m_following.push_back(act);
-//}
 
 void Activity::Reset() {
     m_complete = false;
@@ -22,15 +14,6 @@ void Activity::Reset() {
 //    }
 }
 
-
-//bool Activity::IsReady() const {
-//    for (const auto& i : m_previous) {
-//        if (!(i->IsComplete()))
-//            return false;
-//    }
-//    return true;
-//
-//}
 
 void Activity::SetComplete() {
     m_complete = true;

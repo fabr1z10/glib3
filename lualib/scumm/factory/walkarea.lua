@@ -5,6 +5,7 @@ scumm.factory.walkarea = function(args)
 			priority = args.priority or 0,
 			depth = args.depth,
 			scale = args.scale,
+			blockedlines = args.blockedlines
 		},
 		actions = {
 			walk = function(x,y) return scumm.ui.walk {pos={x, y}} end

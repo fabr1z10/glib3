@@ -3,7 +3,7 @@ package.path = '/home/fabrizio/glib3/lualib/?.lua;' .. package.path
 
 engine = {
 	device_size = { 320, 200 },
-	window_size = { 320, 200 },
+	window_size = { 640, 400 },
 	title = "The secret of Monkey Island",
 	shaders = { "unlit_textured", "unlit_color", "text" },
 	assets = {
@@ -17,7 +17,7 @@ engine = {
 	global_assets = {
 		fonts = { "ui", "monkey" }
 	},
-	start_room = "lookout",
+	start_room = "kitchen",
 	lang = "eng",
 	config = {
 	    default_verb = "walk",
@@ -94,13 +94,33 @@ variables = {
  	circus_knows_helmet = false,
     circus_feat_done = false,
 -- 	talked_to_troll = false,
- 	inventory = { 	}
+ 	inventory = { 	},
+
+	save_states = {
+		start = function()
+			engine.state.room = "kitchen"
+			engine.state.previousRoom ="scummbar"
+		end,
+		taken_stuff_from_kitchen = function()
+			engine.state.scumm.inventory["kitchen.meat"] = 1
+			engine.state.scumm.inventory["kitchen.pot"] = 1
+			engine.state.scumm.inventory["kitchen.fish"] = 1
+			variables.fish_taken = true
+			engine.state.room = "village1"
+			engine.state.previousRoom ="scummbar"
+		end
+	}
+
 }
 
-engine.state.scumm.inventory["kitchen.fish"] = 1
-engine.state.scumm.inventory["pieces_of_eight"] = 1000
-engine.state.scumm.inventory["shop.sword"] = 1
-variables.sword_paid = true
+variables.save_states.taken_stuff_from_kitchen()
+
+--engine.state.scumm.inventory["kitchen.fish"] = 1
+--engine.state.scumm.inventory["pieces_of_eight"] = 1000
+--engine.state.scumm.inventory["shop.sword"] = 1
+--engine.state.scumm.inventory["shop.shovel"] = 1
+--engine.state.scumm.inventory["kitchen.meat"] = 1
+--variables.sword_paid = true
 
 
 

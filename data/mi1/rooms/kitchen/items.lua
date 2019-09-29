@@ -1,6 +1,15 @@
 --engine.items.scummbar = {}
 local d = strings.kitchen
 
+engine.items["kitchen.walkarea"] = scumm.factory.walkarea {
+	shape = { type = "poly", outline = {40,16,59,21,155,21,180,18,192,18,294,18,307,12,199,9,207,0,160,0,149,11,112,11,100,0,40,0}},
+	blockedlines = {
+	 	{ A = {190, 0}, B = {190, 144}, active =true },
+	 	{ A = {206, 0}, B = {206, 144}, active =true },
+	},
+	priority = 0
+}
+
 engine.items["kitchen.seagull"] = {
  	pos = {0, 0, 1},
  	model = "kitchen.seagull",
@@ -21,8 +30,8 @@ engine.items["kitchen.meat"] = {
 	},
  	model = "kitchen.meat",
  	actions = {
- 		pickup = scumm.action.pickup ("kitchen.meat", "operate_n", "idle_n"),
- 		look = { type = action.say, args = {actor="guybrush", lines = {strings.kitchen[1]}}}
+ 		pick = glib.curry(scumm.action.pickup2, {id="kitchen.meat", anim1="operate_n", anim2="idle_n"}),
+ 		look = { type = scumm.action.say, args = {actor="guybrush", lines = {strings.kitchen[1]}}}
  	}	
 }
 
@@ -50,7 +59,7 @@ engine.items["kitchen.pot"] = {
 	},
 	model = "kitchen.pot",
  	actions = {
- 		pickup = scumm.action.pickup("kitchen.pot", "kneel_n", "idle_n"),
+ 		pick = glib.curry(scumm.action.pickup2, {id="kitchen.pot", anim1="kneel_n", anim2="idle_n"}),
  		look = { type = scumm.action.say, args ={actor="guybrush", lines = {strings.kitchen[2] }}},
  		give = {
  			["circus.purpleclown"] = {
@@ -111,15 +120,17 @@ engine.items["kitchen.fish"] = {
 	},
 	model = "kitchen.fish",
 	actions = {
-		pickup = function()
+		pick = function()
 			if (variables.seagull_on_board == false) then
-				return action.combo.pickup ("kitchen.fish", "kneel_s", "idle_s")
+				variables.fish_taken = true
+				return scumm.action.pickup ("kitchen.fish", "kneel_s", "idle_s")
+				--refeturn action.combo.pickup ("kitchen.fish", "kneel_s", "idle_s")
 			else
 				return {
-					{ type = action.animate, args = {actor="guybrush", anim="kneel_s"}},
+					{ type = action.animate, args = {tag="player", anim="kneel_s"}},
 					{ type = action.delay, args = {sec=0.5}},
-					{ type = action.animate, args = {actor="guybrush", anim="idle_s"}},
-					{ type = action.say, args ={actor="guybrush", lines= {strings.kitchen[4]}}}
+					{ type = action.animate, args = {tag="player", anim="idle_s"}},
+					{ type = scumm.action.say, args ={actor="guybrush", lines= {strings.kitchen[4]}}}
 				}
 			end
 		end,
@@ -171,7 +182,7 @@ engine.items["kitchen.potostew"] = {
 		},
  		look = function() 
  			local line = variables.meat_in_pot and 9 or 5
-			return { type = action.say, args = {actor="guybrush", lines={strings.kitchen[line]}} }
+			return { type = scumm.action.say, args = {actor="guybrush", lines={strings.kitchen[line]}} }
  		end,
 		pickup = function()
 			if (variables.meat_in_pot) then
@@ -226,21 +237,21 @@ scumm.factory.door {
 scumm.factory.door {
 	id = "kitchen.door.pier",
 	pos = {192, 9, -1},
-	size = {40, 64},
+	size = {20, 64},
 	walk_to = {182, 9},
 	dir = "east",
 	model = "door_kitchen_pier",
 	nextroom = nil,
 	variable = "door_kitchen_pier",
 	open = function() return {
-		{ type = action.enable_wall, args = {wall=0, active=false}},
-		{ type = action.enable_wall, args = {wall=1, active=false}},
-		{ type = action.animate, args = {actor="kitchen.door.pier", anim="open"}}}
+		{ type = scumm.action.enable_wall, args = {walkarea = "kitchen.walkarea", wall=0, active=false}},
+		{ type = scumm.action.enable_wall, args = {walkarea = "kitchen.walkarea",wall=1, active=false}},
+		{ type = action.animate, args = {tag="kitchen.door.pier", anim="open"}}}
 	end,
 	close = function() return {
-		{ type = action.enable_wall, args = {wall=0, active=true}},
-		{ type = action.enable_wall, args = {wall=1, active=true}},
-		{ type = action.animate, args = {actor="kitchen.door.pier", anim="close"}}}
+		{ type = scumm.action.enable_wall, args = {walkarea = "kitchen.walkarea",wall=0, active=true}},
+		{ type = scumm.action.enable_wall, args = {walkarea = "kitchen.walkarea",wall=1, active=true}},
+		{ type = action.animate, args = {tag="kitchen.door.pier", anim="close"}}}
 	end,
 	walk = function() return nil end
 }

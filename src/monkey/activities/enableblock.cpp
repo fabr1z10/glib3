@@ -3,7 +3,7 @@
 #include <gfx/engine.h>
 
 void EnableBlock::Start() {
-    auto walkarea = Ref::Get<WalkArea>("walkarea").get();
+    auto walkarea = dynamic_cast<WalkArea*>(Ref::Get<Entity>(m_id)->GetComponent<HotSpot>());
     walkarea->EnableBlockedLine(m_wall, m_active);
     SetComplete();
 

@@ -49,7 +49,6 @@ function glib.load_all(name)
     --print (s)
     local p = io.popen(s)
     for line in p:lines() do
-        print("LOOOAD " .. line)
         require(line)
     end
     io.write ("done! \n")

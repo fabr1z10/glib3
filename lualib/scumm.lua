@@ -19,6 +19,19 @@ engine.state.scumm = {
 	play = true
 }
 
+engine.config.scumm = {
+	walk = {
+		scumm = "walk",
+		sci = "walksci"
+	},
+	turn = {
+		scumm = "turn",
+		sci = "turnsci"
+	}
+
+}
+
+
 engine.state.scumm.has = function(id)
 	return (engine.state.scumm.inventory[id] ~= nil)
 end

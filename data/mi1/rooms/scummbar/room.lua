@@ -14,6 +14,7 @@ roomDefinition = {
 	font_size = 8,
 	playerid="guybrush",
 	walkareas = { "scummbar.walkarea"},
+	collide = true
 
 	--depth = { type="linear_y", values= {0, 1, 144, 0} },
 	--scale = { type="linear_y", values= {0, 0.8, 144, 0.2}}
@@ -76,9 +77,8 @@ function run_background_script_2(actor, anim_transition, anim2)
 end
 
 local cook = function() 
-	print ("starting cook")
 	local pos = items["scummbar.door_kitchen"].hotspot.walk_to
-	
+	print (pos[1])	
 	local a1 = nil
 	variables.cook_in_kitchen = true
 	
@@ -87,7 +87,7 @@ local cook = function()
 		variables.cook_in_kitchen = false
 	 	local mancombPos = items["scummbar.mancomb"].hotspot.walk_to
 		a1 = {
-			{ type = action.create_object, args = {name="scummbar.cook", pos = {mancombPos[1], mancombPos[2], 0} }},
+			{ type = action.create_object, args = { factory = scumm.factory.object, args = { id = "scummbar.cook", pos = {mancombPos[1], mancombPos[2], 0} }}},
 			{ type = action.delay, args = {sec = 5 }},
 			{ type = action.walkto, args = { actor ="scummbar.cook", obj = "scummbar.door_kitchen"}},
 			{ type = action.remove_object, args = {name ="scummbar.cook"}},
@@ -95,13 +95,14 @@ local cook = function()
 			{ type = action.set_variable, args = {var = "cook_in_kitchen", value = true }},
 		}
 	else
+	print ("UQI")
 		variables[items["scummbar.door_kitchen"].variable] = 0
 	end
 	local a2 = {
 		{ ref = 1, type = action.delay, args = {sec=2}},
 		{ type = scumm.action.open_door, args = {door="scummbar.door_kitchen"}},
 		{ type = action.set_variable, args = {var = "cook_in_kitchen", value = false }},
-		{ type = action.create_object, args = { factory = scumm.factory.object, args = { id="scummbar.cook", pos = {pos[1], pos[2], 0} }, parent = "scummbar.walkarea"}},
+		{ type = action.create_object, args = { factory = scumm.factory.object, parent = "scummbar.walkarea", args = {id="scummbar.cook", pos = {pos[1], pos[2], 0}}}, parent = "scummbar.walkarea"},
 		{ type = scumm.action.walkto, args = { tag ="scummbar.cook", obj = "scummbar.mancomb" }}, --obj = items["scummbar.mancomb"]},
 		{ type = scumm.action.turn, args = { tag = "scummbar.cook", dir="north"}},
 		--{ type = scumm.action.say, args = { actor = "scummbar.ilp1", lines = { strings.dialogues.cook[1], strings.dialogues.cook[2] }}},

@@ -17,6 +17,7 @@ engine = {
     lang="eng",
     start_room ="006",
     config = {
+		style = "sci",
         walk = "walksci",           -- depends on scumm/sci
         turn = "turnsci",           -- depends on scumm/sci
         default_verb = "walk",
