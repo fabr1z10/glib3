@@ -85,7 +85,7 @@ engine.items["kitchen.pot"] = {
 				{ type = scumm.action.walkto, args = {tag="player", pos={250, 24}}},
 				{ type = scumm.action.turn, args = {tag="player", dir="south" }},
 				{ type = action.animate, args = {tag="player", anim="get_in_cannon", sync = true}},
-				{ ref = 8, type = action.activate, args = {tag="player", value=false}},
+				{ ref = 8, type = action.activate, args = {tag="player", active=false}},
 				{ ref = 9, type = action.create_object, after = {8}, args = { factory = scumm.factory.object, args = { id="circus.explosion"}}},
 				{ ref = 10, type = action.create_object, after = {8}, args = { factory = scumm.factory.object, args = { id="circus.flyingguybrush"}}},
 				{ type = action.animate, after={9}, args = {tag="circus.explosion", anim="default", sync=true}},

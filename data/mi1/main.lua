@@ -106,14 +106,23 @@ variables = {
 			engine.state.scumm.inventory["kitchen.pot"] = 1
 			engine.state.scumm.inventory["kitchen.fish"] = 1
 			variables.fish_taken = true
-			engine.state.room = "village1"
+			engine.state.room = "clearing"
 			engine.state.previousRoom ="scummbar"
+		end,
+		done_circus = function() 
+			engine.state.scumm.inventory["kitchen.meat"] = 1
+			engine.state.scumm.inventory["pieces_of_eight"] = 478
+			engine.state.scumm.inventory["kitchen.fish"] = 1
+			variables.fish_taken = true
+			variables.circus_feat_done = true
+			engine.state.room = "clearing"
+			engine.state.previousRoom ="circus"
 		end
 	}
 
 }
 
-variables.save_states.start()
+variables.save_states.done_circus()
 
 --engine.state.scumm.inventory["kitchen.fish"] = 1
 --engine.state.scumm.inventory["pieces_of_eight"] = 1000
