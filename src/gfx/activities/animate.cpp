@@ -19,7 +19,7 @@ void Animate::Start() {
         m_entity->SetFlipX(m_flipX == 2);
     }
     m_animator->SetPlayForward(m_forward);
-    m_animator->SetAnimation(m_animId);
+    m_animator->SetAnimation(m_animId, m_forward);
     if (!m_sync) {
         SetComplete();
     }

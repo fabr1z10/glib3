@@ -12,6 +12,7 @@ roomDefinition = {
 	playerid="guybrush",
 	defaultroom = "village1",
 	walkareas = { "village2.walkarea"},
+	collide= true,
 
 }
 

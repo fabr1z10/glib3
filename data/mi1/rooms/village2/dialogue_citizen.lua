@@ -7,7 +7,7 @@ local s1 = {
 	{ type = action.delay, args = {sec= 2}},
 	{ type = action.animate, args = {tag="village2.citizen", anim="open_jacket", fwd = false, sync=true}},
     { type = scumm.action.say, args = {actor="village2.citizen", lines = {d[20]}, animstart="talk_e", animend="idle_e"}},
-	{ type = action.animate, args = {tag="village2.citizen", anim="rollmap", sync=true}},
+    { type = action.animate, args = {tag="village2.citizen", anim="rollmap", sync=true}},
 	{ type = scumm.action.say, args = {actor="village2.citizen", lines = {d[21], d[22]}, animstart="talk_e_2", animend="idle_e_2"}},
 	{ type = action.animate, args = {tag="village2.citizen", anim="rollmap", fwd=false, sync = true}},
 	{ type = action.say, args = {actor="village2.citizen", lines = {d[23]}, animstart="talk_e", animend="idle_e"}},
