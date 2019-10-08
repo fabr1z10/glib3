@@ -74,7 +74,8 @@ strings = {
 		sign = "sign",
 		bell = "bell",
 		alley ="alley",
-		troll = "troll"
+		troll = "troll",
+		map = "map"
 		
 		
     },
@@ -409,7 +410,10 @@ strings = {
 			[32] = "Now, then...",
 			[33] = "I see.",
 			[34] = "Not enough money, eh?",
-			[35] = "Come back when you're serious about treasure hunting, kid."
+			[35] = "Come back when you're serious about treasure hunting, kid.",
+			[36] = "I'll take it. It'll make a swell gift.",
+			[37] = "There ya go. You've made a wise decision.",
+			[38] = "Now get lost."
 		},
 		lowmoralfiber = {
 			[1] = "Hey, nice rat!",

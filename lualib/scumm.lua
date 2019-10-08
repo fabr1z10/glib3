@@ -16,7 +16,8 @@ engine.state.scumm = {
 	},
 	walk_enabled = true,
 	inventory = {},
-	play = true
+	play = true,
+	game_paused = false,
 }
 
 engine.config.scumm = {

@@ -67,6 +67,9 @@ local s = {
 	citizen_rollmap_3 = {x=226, y=34, width=26, height=29, anchor={16, 0}},
 	citizen_rollmap_4 = {x=257, y=34, width=26, height=29, anchor={16, 0}},
 	citizen_rollmap_5 = {x=286, y=34, width=25, height=29, anchor={16, 0}},
+	citizen_givemap_1 = {x=316,y=466,width=29,height=30, anchor={16,0}},
+	citizen_givemap_2 = {x=346,y=466,width=37,height=30, anchor={16,0}},
+	citizen_givemap_3 = {x=470,y=400,width=29,height=30, anchor={16,0}},	
 	rat_body_idle_1 = {x=69, y=166, width=13, height=12, anchor ={5,0}},
 	rat_body_idle_2 = {x=84, y=168, width=13, height=10, anchor ={6,0}},
 	rat_tail_1 = {x=99, y=168, width=5, height=4, anchor ={3,0}},
@@ -565,6 +568,14 @@ engine.assets.models["citizen"] = {
 				{ duration = dt, quads = { {id=s.citizen_body_idle_south}, {id = s.citizen_head_idle_south2, flipx=true, pos = citizen_head}}},
 			}
 		},
+		{ 
+			name = "talk_s",
+			frames = {
+				{ duration = dt, quads = { {id=s.citizen_body_idle_south}, {id = s.citizen_head_talk_1, pos = citizen_head}}},
+				{ duration = dt, quads = { {id=s.citizen_body_idle_south}, {id = s.citizen_head_talk_2, pos = citizen_head}}},
+				{ duration = dt, quads = { {id=s.citizen_body_idle_south}, {id = s.citizen_head_idle_south1, pos = citizen_head}}},
+			}
+		},		
 		{
 			name = "idle_e",
 			frames = {
@@ -638,6 +649,17 @@ engine.assets.models["citizen"] = {
 				{ duration = dt, quads = { {id=s.citizen_rollmap_4}, {id = s.citizen_head_idle_east, pos = citizen_head_1}}},
 				{ duration = dt, quads = { {id=s.citizen_rollmap_5}, {id = s.citizen_head_idle_east, pos = citizen_head_1}}},
 			}
+		},
+		{
+			name = "givemap",
+			loop = false,
+			frames = {
+				{ duration = dt, quads = { {id=s.citizen_givemap_1}, {id = s.citizen_head_idle_east, pos = citizen_head_1}}},				
+				{ duration = dt, quads = { {id=s.citizen_givemap_2}, {id = s.citizen_head_idle_east, pos = citizen_head_1}}},
+				{ duration = dt, quads = { {id=s.citizen_givemap_3}, {id = s.citizen_head_idle_east, pos = citizen_head_1}}},
+				{ duration = dt, quads = { {id=s.citizen_body_idle_east}, {id = s.citizen_head_idle_east, pos = citizen_head_1}}},
+			}
+
 		}
 
 	}

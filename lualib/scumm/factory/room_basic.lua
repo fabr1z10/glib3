@@ -46,7 +46,17 @@ function scumm.factory.basic_room (args)
 			{ 
                 type = "hotspotmanager", 
 			    keys = {
-				    { key = 299, func = function() monkey.endroom() end }
+				    { key = 299, func = function() monkey.endroom() end },
+   					{ key = 32, func = function()
+   						-- toggle pause
+				    	local p = monkey.getEntity("main")
+				    	local ui = monkey.getEntity("ui")
+
+   					    p:setactive(not engine.state.scumm.game_paused)
+   					    ui:setactive(not engine.state.scumm.game_paused)
+   					    engine.state.scumm.game_paused = not engine.state.scumm.game_paused
+   					end },
+
 			    },
 				lmbclick = function(x, y)
 				    --print ("AZONE = " ..tostring(x) .. "," .. tostring(y))

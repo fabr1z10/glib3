@@ -34,3 +34,10 @@ engine.items["pieces_of_eight"] = {
 
 	}
 }
+
+engine.items["map"] = {
+	hotspot = {
+		text = strings.objects.map
+	},
+	actions = {}
+}
