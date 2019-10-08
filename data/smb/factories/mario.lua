@@ -111,7 +111,7 @@ factory.mario.create = function(args)
 					},
 					{
 						id = "dead",
-						state = { type="simple", anim="die" }
+						state = { type ="simple", anim="die" }
 					},	
 				},
 			},

@@ -9,64 +9,60 @@ local roomInfo = {
 local initscripts = {}
 
 room =  {
-		engines = {
-			{ type = "scheduler"},
-			{ 
-				type = "collision", 
-				size = {roomInfo.collisionSize, roomInfo.collisionSize}, 
-				response = {
-					{ tag = {variables.collision.tags.player, variables.collision.tags.brick_sensor}, onenter = factory.basic_brick.response },
-					{ tag = {variables.collision.tags.player, variables.collision.tags.bonus_brick_sensor}, onenter = factory.bonus_brick.response },
-					{ tag = {variables.collision.tags.player, variables.collision.tags.mushroom}, onenter = factory.mushroom.response },
-					{ tag = {variables.collision.tags.player, variables.collision.tags.goomba}, onenter = factory.goomba.response },
-					
-					--{ tag = {1, variables.tags.goomba}, onenter = mario_goomba }
-					
-				}
-			},
-			{ 
-				type = "hotspotmanager",
-				tag ="_hotspotmanager", 
-				keys = {
-					{ key = 299, func = function() monkey.endroom() end },
-					{ key = 81, func = function () 
-						local mario = monkey.getEntity("player")
-						local isSuperMario = (mario:getinfo().supermario)
-						factory.mario.supermario(mario, not isSuperMario)
-					end }
-				},
-			},
-			{
-				type ="dynamicworld",
-				width = 256, 
-				height = 256,
-				cam ="maincam",
-				items = {
-					--factory.rect { pos = {10, 4}, img = "block1.png", width=1, height=1 },
-					factory.rect { pos = {0, 0}, img = "block1.png", width=69, height=2 },
-					factory.basic_brick.create { pos={5*16, 5*16}, sprite="basicbrick" },
-					factory.bonus_brick.create { pos={6*16, 5*16}, sprite="bonusbrick", factory = factory.mushroom.create, args = { sprite="mushroom" } },
-					factory.goomba.create { pos={12*16,3*16}, sprite="goomba"}
-				}
+	engines = {
+		{ type = "scheduler"},
+		{ 
+			type = "collision", 
+			size = {roomInfo.collisionSize, roomInfo.collisionSize}, 
+			response = {
+				{ tag = {variables.collision.tags.player, variables.collision.tags.brick_sensor}, onenter = factory.basic_brick.response },
+				{ tag = {variables.collision.tags.player, variables.collision.tags.bonus_brick_sensor}, onenter = factory.bonus_brick.response },
+				{ tag = {variables.collision.tags.player, variables.collision.tags.mushroom}, onenter = factory.mushroom.response },
+				{ tag = {variables.collision.tags.player, variables.collision.tags.goomba}, onenter = factory.goomba.response },
 			}
 		},
-
-    	scene = {
-			[1] = {
-				tag = "main",
-				camera = {
-					tag = "maincam",
-					type="ortho",
-					size = {256, 256},
-					bounds = {0, 0, roomInfo.worldWidth*16, roomInfo.worldHeight*16},
-					viewport = {0, 0, 256, 256}
-				},
-				children = {
-					factory.mario.create { pos={32,32}}
-				}
+		{ 
+			type = "hotspotmanager",
+			tag ="_hotspotmanager", 
+			keys = {
+				{ key = 299, func = function() monkey.endroom() end },
+				{ key = 81, func = function () 
+					local mario = monkey.getEntity("player")
+					local isSuperMario = (mario:getinfo().supermario)
+					factory.mario.supermario(mario, not isSuperMario)
+				end }
 			},
 		},
-	}
+		{
+			type ="dynamicworld",
+			width = 256, 
+			height = 256,
+			cam ="maincam",
+			items = {
+				factory.rect { pos = {10, 4}, img = "block1.png", width=1, height=1 },
+				factory.rect { pos = {0, 0}, img = "block1.png", width=69, height=2 },
+				factory.basic_brick.create { pos={5*16, 5*16}, sprite="basicbrick" },
+				factory.bonus_brick.create { pos={6*16, 5*16}, sprite="bonusbrick", factory = factory.mushroom.create, args = { sprite="mushroom" } },
+				factory.goomba.create { pos={12*16,3*16}, sprite="goomba"}
+			}
+		}
+	},
+    scene = {
+		[1] = {
+			tag = "main",
+			camera = {
+				tag = "maincam",
+				type="ortho",
+				size = {256, 256},
+				bounds = {0, 0, roomInfo.worldWidth*16, roomInfo.worldHeight*16},
+				viewport = {0, 0, 256, 256}
+			},
+			children = {
+				factory.mario.create { pos={32,32}}
+			}
+		},
+	},
+}
 --room = getBaseRoom(roomInfo)
 -- local mainScene = room.scene[1].children[3].children
 

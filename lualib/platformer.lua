@@ -25,7 +25,7 @@ io.write ("done! loaded " .. tostring(glib.tablelength(engine.assets.models)) ..
 
 
 factory ={}
-require ("factories")
+--require ("factories")
 glib.load_folder("factories")
 --glib.load_all("dialogue")
 

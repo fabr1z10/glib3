@@ -1,4 +1,4 @@
-package.path = '/home/fabrizio/glib3/lualib/?.lua;' .. package.path
+	package.path = '/home/fabrizio/glib3/lualib/?.lua;' .. package.path
 
 engine = {
     device_size = { 256, 256 },

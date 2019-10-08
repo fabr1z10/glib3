@@ -1001,7 +1001,7 @@ std::shared_ptr<State> SimpleStateFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
     std::string anim = table.Get<std::string>("anim");
     auto ptr = std::make_shared<SimpleState>(anim);
-    init (ref, ptr);
+    init (table, ptr);
     return ptr;
 
 }
