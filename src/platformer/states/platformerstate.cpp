@@ -24,7 +24,7 @@ PlatformerState::PlatformerState(const PlatformerState &) {
 
 
 void PlatformerState::AttachStateMachine(StateMachine * sm) {
-    m_sm = sm;
+    State::AttachStateMachine(sm);
     m_entity = sm->GetObject();
     m_controller = m_entity->GetComponent<IController>();
     if (m_controller == nullptr) {

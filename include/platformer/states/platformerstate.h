@@ -20,7 +20,6 @@ public:
     virtual void ResetAnimation() = 0;
 protected:
     IAnimator* m_animator;
-    StateMachine* m_sm;
     IController * m_controller;
     Dynamics2D * m_dynamics;
     InputMethod * m_input;
