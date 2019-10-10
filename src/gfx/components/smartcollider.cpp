@@ -17,6 +17,20 @@ std::shared_ptr<Component> SmartCollider::clone() const {
     return std::make_shared<SmartCollider>(*this);
 }
 
+Bounds SmartCollider::getAttackBounds() const {
+    auto anim = m_animator->GetAnimation();
+    int fr = m_animator->GetFrame();
+
+    const auto& bi = m_model->getBoxInfo(anim,fr);
+    if (bi.m_attackShape == nullptr) {
+        return Bounds();
+    }
+    auto bounds = bi.m_attackShape->getBounds();
+    bounds.Transform(m_entity->GetWorldTransform());
+    return bounds;
+
+}
+
 void SmartCollider::ofu(Animator *a) {
     auto anim = a->GetAnimation();
     int fr = a->GetFrame();

@@ -14,6 +14,7 @@
 #include <gfx/components/statemachine.h>
 #include <gfx/properties.h>
 #include <gfx/components/extstatemachine.h>
+#include <gfx/components/smartcollider.h>
 
 float EntityWrapper::GetX() const {
     return m_underlying->GetPosition().x;
@@ -348,6 +349,21 @@ luabridge::LuaRef EntityWrapper::GetTextInfo() {
     glm::vec3 f = tm->GetBounds().GetSize();
     rr["width"] = f.x;
     rr["height"] = f.y;
+    return rr;
+}
+
+luabridge::LuaRef EntityWrapper::GetAttackRect() {
+    SmartCollider* collider = m_underlying->GetComponent<SmartCollider>();
+    luabridge::LuaRef rr = luabridge::newTable(LuaWrapper::L);
+    auto bounds = collider->getAttackBounds();
+    auto size = bounds.GetSize();
+    rr["width"] = size.x;
+    rr["height"] = size.y;
+    rr["x"] = bounds.min.x;
+    rr["y"] = bounds.min.y;
+    //glm::vec3 f = tm->GetBounds().GetSize();
+    //rr["width"] = f.x;
+    //rr["height"] = f.y;
     return rr;
 }
 

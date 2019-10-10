@@ -23,7 +23,7 @@ struct CollisionHandler {
     CollisionHandler() : response{nullptr}, flip{false} {}
     CollisionHandler(CollisionResponse* resp, bool f) : response(resp), flip(f) {}
     CollisionResponse* response;
-    bool flip;
+bool flip;
 };
 
 class CollisionResponseManager {

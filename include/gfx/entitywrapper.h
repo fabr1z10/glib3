@@ -80,6 +80,7 @@ struct EntityWrapper {
     // simulate a hotspot click
     void ForceClick (float x, float y);
     luabridge::LuaRef GetTextInfo();
+    luabridge::LuaRef GetAttackRect();
     //static void EnableGroup(int);
     //static void DisableGroup(int);
     std::string GetText() const;

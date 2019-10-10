@@ -141,7 +141,6 @@ action.create_object = function(args)
 	local parent = args.parent or "main"
 	glib.assert (args.factory, "factory")
 	glib.assert (args.args, "args")
-
 	return { type = "callfunc", func = 
 		function()
 			print ("creating a new object ... ")

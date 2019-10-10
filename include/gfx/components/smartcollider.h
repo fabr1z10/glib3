@@ -27,6 +27,7 @@ public:
     std::type_index GetType() override;
     void ofu(Animator*a);
     void AddAttackTag(const std::string& anim, int tag, int mask);
+    Bounds getAttackBounds() const;
 private:
     Animator* m_animator;
     BoxedModel* m_model;
