@@ -15,6 +15,7 @@ factory.skeleton.create = function (args)
 	glib.assert (args.character, "character")
 	glib.assert (args.pos, "pos")
 	glib.assert (args.speed, "speed")
+	local is25 = args.is25 or false
 	-- ensure character is existing
 
 	local c = engine.assets.characters[args.character]
@@ -40,18 +41,33 @@ factory.skeleton.create = function (args)
 				{ 
 					id = "walk", 
 					state = {
-						type = "walk25", 
+						type = is25 and "walk25" or "walkside",
 						speed = args.speed,
 						acceleration = 0.1,
 						fliph=true,
 						dir = "e",
+						jumpspeed = 0,
 						keys = {
 							{ id = 81, action = "changestate", state = "attack" },
 						}
 					}
 				},
+				{ 
+					id = "jump", 
+					state = {
+						type = "jump",
+						speed = args.speed,
+						acceleration = 0.1,
+						fliph=true,
+						animup="jump",
+						animdown="jump"
+					}
+				},
+
 			}
-		}
+		},
+		{ type="controller2d", maxclimbangle = 80, maxdescendangle = 80, horizontalrays=4, verticalrays=4},
+		{ type="dynamics2d", gravity = variables.gravity },		
 	}
 
 	for _, state in ipairs(c.additional_states) do
@@ -117,6 +133,19 @@ factory.skeleton.create = function (args)
 
 	if (args.player == true) then
 		table.insert (components, { type ="keyinput" })
+	else 
+		table.insert (components, 
+			{ 
+				type ="enemyinput", 
+				left =true, 
+				flip=args.flip or false,
+				attack_prob = 0.5,
+				attack_moves = {
+					{ key=81, odds=10}
+				}
+			}
+		)
+
 	end
 
 	if (args.info) then 

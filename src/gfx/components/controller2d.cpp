@@ -35,6 +35,9 @@ void Controller2D::Start() {
 
 void Controller2D::Begin() {
     m_cc =  m_entity->GetComponent<ICollider>();
+    if (m_cc == nullptr) {
+        GLIB_FAIL("The controller2D requires a collider!");
+    }
     //m_cc->onShapeChanged.Register(this, [&] (Collider* c) { this->ResetShape(c); });
     CalculateRaySpacing();
 

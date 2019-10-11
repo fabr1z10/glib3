@@ -276,7 +276,13 @@ std::shared_ptr<State> HitFactory::Create(luabridge::LuaRef &ref) {
     float acc = table.Get<float>("acceleration");
     return std::make_shared<Hit>(anim, acc);
 }
-
+std::shared_ptr<State> HitJumpFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    std::string anim = table.Get<std::string>("anim");
+    float acc = table.Get<float>("acceleration");
+    float speed = table.Get<float>("speed");
+    return std::make_shared<HitJump>(anim, speed, acc);
+}
 //std::shared_ptr<State> HitJumpFactory::Create(luabridge::LuaRef &ref) {
 //    LuaTable table(ref);
 //    std::string anim = table.Get<std::string>("anim");

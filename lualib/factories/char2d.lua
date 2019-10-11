@@ -4,6 +4,7 @@ factory.char2d.create = function(args)
 	glib.assert (args.model, "model")
 	glib.assert (args.pos, "pos")
 	glib.assert (args.speed, "speed")
+	local z = args.z or 0
 	local max_climb_angle = args.maxclimbangle or 80
 	local max_descend_angle = args.maxdescendangle or 80
 	local h_rays = args.horizontalrays or 4
@@ -26,26 +27,28 @@ factory.char2d.create = function(args)
 				fliph = true, 
 				jumpspeed = variables.jump_velocity
 			}
+		},
+		{
+			id = "jump",
+			state = {
+				type = "jump",
+				speed = args.speed,
+				acceleration = acceleration*2,
+				fliph = true,
+				animup = "jump",
+				animdown = "jump"
+			}			
 		}
 	}
-	
-	table.insert (states, {
-		id = "jump",
-		state = {
-			type = "jump",
-			speed = 75,
-			acceleration = 0.10,
-			fliph = true,
-			animup = "jump",
-			animdown = "jump"
-		}
-	})
+
 
 	-- add attack states 
 	local attack_tags = nil
 	if (args.attack ~= nil) then
 		ws = states[1]
+		js = states[2]
 		local keys = {}
+		local jkeys = {}
 		attack_tags = {}
 		for _, value in ipairs(args.attack) do
 			print ("adding " .. value.id .. " " .. tostring(value.key))
@@ -57,10 +60,21 @@ factory.char2d.create = function(args)
 					acceleration = acceleration
 				}
 			})
+			table.insert (states, {
+				id = value.id .. "_j",
+				state = {
+					type ="hitj",
+					anim = value.anim,
+					speed = args.speed,
+					acceleration = acceleration
+				}
+			})
 			table.insert (keys, { id=value.key, action="changestate", state=value.id})
+			table.insert (jkeys, { id=value.key, action="changestate", state=value.id .. "_j"})
 			table.insert (attack_tags, { anim=value.anim, tag = collision_attack_tag, mask = collision_mask })
 		end
 		ws.state.keys = keys
+		js.state.keys = jkeys
 	end
 	
 
@@ -103,7 +117,7 @@ factory.char2d.create = function(args)
 		model=args.model,
 		anim="idle",
 		scale =args.scale or 1,
-		pos = {pos[1], pos[2], 0},
+		pos = {pos[1], pos[2], z},
 		components = comp
 	}
 end

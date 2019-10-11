@@ -207,7 +207,7 @@ void MeshFactory::visit(Circle& c) {
 
 void MeshFactory::visit(Ellipse& e) {
     // number of points
-    int n = 20;
+    int n = 50;
     float dAngle = 2.0f * M_PI / n;
     std::vector<VertexColor> vertices ;
     std::vector<unsigned int> indices;
@@ -353,7 +353,7 @@ void MeshFactorySolid::visit(Plane3D& rect) {
 void MeshFactorySolid::visit(Ellipse & e) {
     std::vector<unsigned int> indices;
     std::vector<VertexColor> vertices;
-    int n = 50;
+    int n = 100;
     float dAngle = 2.0f * M_PI / n;
 
     glm::vec2 center = e.GetOffset();

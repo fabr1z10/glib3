@@ -41,6 +41,18 @@ function glib.load_folder(folder_name)
     end
 end
 
+function glib.load_folder_r(folder_name)
+   -- print ("Loading all files in " .. folder_name .. " ...")
+    --local s = "find " .. _path .. " -path " .. folder_name .. "/*.lua | cut -c" .. tostring(string.len(_path)+1) .. "- | sed 's/.\\{4\\}$//'"
+    s = "find " .. _path .. folder_name .. " -name \"*.lua\" | cut -c " .. tostring(string.len(_path)+1) .. "- | sed 's/.\\{4\\}$//'"
+    --print (s)
+    local p = io.popen(s):lines()
+    for line in p do
+        print("found: " .. line)
+        require(line)
+    end
+end
+
 function glib.load_all(name)
     io.write ("loading " .. name .. " ...")
    -- print ("Loading all files in " .. folder_name .. " ...")

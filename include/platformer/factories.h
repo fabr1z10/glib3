@@ -25,7 +25,7 @@ FACTORY_S(Jump3DFactory, PlatformerStateFactory, State)
 
 FACTORY(HitFactory, State)
 FACTORY_S(DuckFactory, PlatformerStateFactory, State)
-//FACTORY(HitJumpFactory, State)
+FACTORY(HitJumpFactory, State)
 FACTORY(NilStateFactory, State)
 FACTORY(CustomHit1StateFactory, State)
 
