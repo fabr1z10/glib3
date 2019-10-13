@@ -93,6 +93,7 @@ variables = {
  	circus_knows_trick = false,
  	circus_knows_helmet = false,
     circus_feat_done = false,
+	map_looked = false,
 -- 	talked_to_troll = false,
  	inventory = { 	},
 
@@ -117,12 +118,22 @@ variables = {
 			variables.circus_feat_done = true
 			engine.state.room = "village2"
 			engine.state.previousRoom ="circus"
+		end,
+		got_map = function() 
+			engine.state.scumm.inventory["kitchen.meat"] = 1
+			engine.state.scumm.inventory["pieces_of_eight"] = 478
+			engine.state.scumm.inventory["kitchen.fish"] = 1
+			engine.state.scumm.inventory["map"] = 1
+			variables.fish_taken = true
+			variables.circus_feat_done = true
+			engine.state.room = "village2"
+			engine.state.previousRoom ="circus"
 		end
 	}
 
 }
 
-variables.save_states.done_circus()
+variables.save_states.got_map()
 
 --engine.state.scumm.inventory["kitchen.fish"] = 1
 --engine.state.scumm.inventory["pieces_of_eight"] = 1000

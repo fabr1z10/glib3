@@ -60,7 +60,12 @@ local s = {
 	circus_scene_13 = {x=124, y=249, width=19, height=20, anchor={4, -16}},
 	circus_scene_14 = {x=147, y=249, width=23, height=20, anchor={4, -22}},
 	circus_scene_15 = {x=172, y=252, width=21, height=13, anchor={4, -22}},
-
+	open_map_1 = {x=21,y=301,width=22,height=47,anchor={14,0}},
+	open_map_2 = {x=44,y=301,width=23,height=47,anchor={15,0}},
+	open_map_3 = {x=68,y=301,width=23,height=47,anchor={14,0}},
+	open_map_4 = {x=93,y=301,width=22,height=47,anchor={10,0}},
+	open_map_5 = {x=116,y=301,width=21,height=47,anchor={9,0}},
+	open_map_6 = {x=140,y=312,width=21,height=36,anchor={9,0}},
 
 
 
@@ -183,6 +188,24 @@ engine.assets.models["guybrush"] = {
 			{ duration = dt, quads = {{ id = s.circus_scene_13 }}},
 			{ duration = dt, quads = {{ id = s.circus_scene_14 }}},
 			{ duration = dt, quads = {{ id = s.circus_scene_15 }}},
+		}},
+		{ name = "open_map", loop = false, frames = { 
+			{ duration = dt, quads = {{ id = s.open_map_1 }}},
+			{ duration = dt, quads = {{ id = s.open_map_2 }}},
+			{ duration = dt, quads = {{ id = s.open_map_1 }}},
+			{ duration = dt, quads = {{ id = s.open_map_2 }}},
+			{ duration = dt, quads = {{ id = s.open_map_3 }}},
+			{ duration = dt, quads = {{ id = s.open_map_2 }}},
+			{ duration = dt, quads = {{ id = s.open_map_4 }}},
+			{ duration = dt, quads = {{ id = s.open_map_5 }}},
+		}},
+		{ name = "open_map_idle", loop = false, frames = { 
+			{ duration = dt, quads = {{ id = s.open_map_5 }}},
+		}},
+		{ name = "open_map_talk", frames = { 
+			{ duration = dt, quads = {{ id = s.open_map_6 }, {id=s.talk_head_east_1}}},
+			{ duration = dt, quads = {{ id = s.open_map_6 }, {id=s.talk_head_east_2}}},
+			{ duration = dt, quads = {{ id = s.open_map_6 }, {id=s.talk_head_east_3}}},
 		}},
 
 

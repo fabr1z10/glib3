@@ -805,6 +805,10 @@ strings = {
 		[1] = "What are YOU looking at?",
 		[2] = "There sure are a lot of spelling errors.",
 		[3] = "I have",
+		[4] = "I think I've been had!",
+		[5] = "This is no map!",
+		[6] = "It looks like...",
+		[7] = "...dancing lessons!"
 	},
 	village3 = {
 		[1] = "Psssst.",

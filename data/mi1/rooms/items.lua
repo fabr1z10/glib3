@@ -39,5 +39,48 @@ engine.items["map"] = {
 	hotspot = {
 		text = strings.objects.map
 	},
-	actions = {}
+	actions = {
+		look = function()
+			local act = {
+				{ type = action.animate, args = {tag="player", anim="open_map", sync=true}}
+			}
+			if (variables.map_looked == false) then 
+				variables.map_looked = true
+				table.insert (act, {type=action.delay, args = {sec=1}})
+				table.insert (act, {
+					type = scumm.action.say, args = {actor="guybrush", animstart="open_map_talk", animend="open_map_idle", lines = 
+						{strings.village2[4], strings.village2[5], strings.village2[6], strings.village2[7]}}
+				})
+			else
+				table.insert(act, {type=action.animate, args ={tag="player", anim="open_map_idle"}})
+			end
+				table.insert (act, {
+					type = action.callfunc, args = { func = function() 
+						local p = monkey.getEntity("main")
+						local ui = monkey.getEntity("ui")
+						local ot = monkey.getEntity("other")
+						monkey.enablescriptengine(false)
+   						p:setactive(false)
+   						ui:setactive(false)
+						local id = monkey.addEntity ({pos={0,0,0}, components = {
+							{type="gfx", image="map.png"}
+						}},ot)
+						engine.state.scumm.lmboverride = function()
+							ot:clear()
+							p:setactive(true)
+							ui:setactive(true)
+							monkey.enablescriptengine(true) 
+							local act2 = {
+								{ type=action.animate, args = {tag="player", anim="open_map", sync=true, fwd=false}},
+								{ type=action.animate, args = {tag="player", anim="idle_e"}}
+							}
+							local s = script.make(act2)
+							engine.state.scumm.lmboverride=nil
+							monkey.play(s)
+						end
+					end }
+				})
+			return act
+		end
+	}
 }

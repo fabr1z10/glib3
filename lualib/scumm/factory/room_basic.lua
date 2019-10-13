@@ -1,4 +1,14 @@
 -- Basic room 
+function scumm.toggle_pause () 
+	local p = monkey.getEntity("main")
+	local ui = monkey.getEntity("ui")
+	monkey.enablescriptengine(not engine.state.scumm.game_paused)
+
+   	p:setactive(not engine.state.scumm.game_paused)
+   	ui:setactive(not engine.state.scumm.game_paused)
+   	engine.state.scumm.game_paused = not engine.state.scumm.game_paused
+end
+
 function scumm.factory.basic_room (args) 
 	-- validation phase
 	glib.assert(args.width, "width")
@@ -49,17 +59,17 @@ function scumm.factory.basic_room (args)
 				    { key = 299, func = function() monkey.endroom() end },
    					{ key = 32, func = function()
    						-- toggle pause
-				    	local p = monkey.getEntity("main")
-				    	local ui = monkey.getEntity("ui")
+						scumm.toggle_pause()
 
-   					    p:setactive(not engine.state.scumm.game_paused)
-   					    ui:setactive(not engine.state.scumm.game_paused)
-   					    engine.state.scumm.game_paused = not engine.state.scumm.game_paused
    					end },
 
 			    },
 				lmbclick = function(x, y)
 				    --print ("AZONE = " ..tostring(x) .. "," .. tostring(y))
+					if (engine.state.scumm.lmboverride ~= nil) then
+						engine.state.scumm.lmboverride()
+						return
+					end
 					if (engine.state.scumm.walk_enabled == true and engine.state.scumm.actionInfo.verb == "walk") then
 						local actions = scumm.ui.walk { pos = {x,y} }
 						local s = script.make(actions)
@@ -181,7 +191,18 @@ function scumm.factory.basic_room (args)
 
 				}
 			},
-
+			{
+				tag ="other",
+				camera = {
+					tag = "othercam",
+					type="ortho",
+					size = engine.device_size,
+					bounds = {0, 0, engine.device_size[1], engine.device_size[2]},
+					viewport = {0, 0, engine.device_size[1], engine.device_size[2]}
+				},
+				children = {}
+			
+			}
 		}
 	}
 

@@ -18,6 +18,7 @@ engine.state.scumm = {
 	inventory = {},
 	play = true,
 	game_paused = false,
+	lmboverride = nil
 }
 
 engine.config.scumm = {
