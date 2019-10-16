@@ -6,6 +6,7 @@ roomDefinition = {
 	startTable = {
 		village1 = { walkarea = "village2.walkarea", pos = items["village2.archway_to_village1"].hotspot.walk_to, dir = "south"},
 		village3 = { walkarea = "village2.walkarea", pos = items["village2.archway_to_village3"].hotspot.walk_to, dir = "south"},
+		voodoolady = { walkarea = "village2.walkarea", pos = items["village2.voodoolady_door"].hotspot.walk_to, dir = "west"},
 		--voodoolady = { pos = items["village2.door_voodoolady"].walk_to, facing = "west"},
 	},
 	font_size = 8,
@@ -25,6 +26,7 @@ room:add ( "main",
 		scumm.factory.object { id="village2.archway_to_village3" },
 		scumm.factory.object { id="village1.archway" },
 		scumm.factory.object { id="village1.door" },
+		scumm.factory.object { id="village2.voodoolady_door"}
 	}
 )
 

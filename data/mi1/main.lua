@@ -127,7 +127,7 @@ variables = {
 			variables.fish_taken = true
 			variables.circus_feat_done = true
 			engine.state.room = "village2"
-			engine.state.previousRoom ="circus"
+			engine.state.previousRoom ="village1"
 		end
 	}
 

@@ -132,6 +132,7 @@ scumm.factory.door {
 	variable = "door_voodoolady"
 }
 
+
 engine.items["village2.fakedoor1"] = {
 	pos = {377, 37, -1},
 	hotspot = {

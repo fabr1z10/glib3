@@ -78,6 +78,8 @@ local s = {
 	door_village_scummbar_close = {x=35, y=126, width=31, height=52 },
 	door_village_voodoolady_open = {x=31, y=179, width=26, height=24 },
 	door_village_voodoolady_close = {x=3, y=179, width=26, height=24 },
+	door_voodoolady_village_open = {x=36,y=55,width=33,height=58},
+	door_voodoolady_village_close = {x=1,y=55,width=33,height=58},		
 	fakedoor1_village_door_open = {x=76, y=179, width=16, height=29},
 	fakedoor1_village_door_close = {x=58, y=179, width=16, height=29},
 	fakedoor2_village_door_open = {x=13, y=204, width=8, height=14},
@@ -313,8 +315,8 @@ local s = {
 	lookout_talk_head_front_1 = {x=223, y=496, width=9, height=15, anchor={5, 0}},
 	lookout_talk_head_front_2 = {x=234, y=496, width=9, height=13, anchor={5, 0}},
 
-
 	troll_head_11 = {x=332, y=221, width=25, height=18, anchor={15,5}},	
+	voodoolady_trunk = {x=71,y=56,width=81,height=24}
 	
 	
 	
@@ -356,6 +358,8 @@ local s = {
 
 
 }
+
+factory.model.create_simple { id="voodoolady.trunk", sheet=sheet2, frame = s.voodoolady_trunk }
 
 --local s = spritesheets["sprites1"]
 
@@ -682,6 +686,16 @@ engine.assets.models["door_village_voodoolady"] = {
 	animations = {
 		{ name = "open", frames = { { duration = dt, quads = {{ id = s.door_village_voodoolady_open }}}}},
 		{ name = "close", frames = { { duration = dt, quads = {{ id = s.door_village_voodoolady_close }}}}}
+	}
+}
+
+engine.assets.models["door_voodoolady"] = {
+    sheet = sheet2,
+    type = "sprite",
+    ppu=1,
+	animations = {
+		{ name = "open", frames = { { duration = dt, quads = {{ id = s.door_voodoolady_village_open }}}}},
+		{ name = "close", frames = { { duration = dt, quads = {{ id = s.door_voodoolady_village_close }}}}}
 	}
 }
 
