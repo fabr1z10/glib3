@@ -33,25 +33,25 @@ std::shared_ptr<Shape> PolyFactory::Create(luabridge::LuaRef& ref) {
     std::vector<glm::vec2> points;
     for (size_t i = 0; i < outline.size(); i = i + 2)
         points.push_back(glm::vec2(outline[i], outline[i + 1]));
-    if (at.HasKey("holes")) {
-        std::unique_ptr<Polygon> mainOutline(new Polygon(points));
-        return std::make_shared<Poly>(std::move(mainOutline));
-    }
 //    if (at.HasKey("holes")) {
 //        std::unique_ptr<Polygon> mainOutline(new Polygon(points));
-//        luabridge::LuaRef holes = at.Get<luabridge::LuaRef>("holes");
-//        LuaTable ha(holes);
-//        auto poly = std::make_shared<Poly>(std::move(mainOutline));
-//        for (int j = 0; j < holes.length(); ++j) {
-//            luabridge::LuaRef h = holes[j + 1];
-//            std::vector<float> holeOutline = ReadVector<float>(h);
-//            std::vector<glm::vec2> points;
-//            for (size_t i = 0; i < holeOutline.size(); i = i + 2)
-//                points.push_back(glm::vec2(holeOutline[i], holeOutline[i + 1]));
-//            poly->AddHole(std::unique_ptr<Polygon>(new Polygon(points)));
-//        }
-//        return poly;
-//    } else {
+//        return std::make_shared<Poly>(std::move(mainOutline));
+//    }
+    if (at.HasKey("holes")) {
+        std::unique_ptr<Polygon> mainOutline(new Polygon(points));
+        luabridge::LuaRef holes = at.Get<luabridge::LuaRef>("holes");
+        LuaTable ha(holes);
+        auto poly = std::make_shared<Poly>(std::move(mainOutline));
+        for (int j = 0; j < holes.length(); ++j) {
+            luabridge::LuaRef h = holes[j + 1];
+            std::vector<float> holeOutline = ReadVector<float>(h);
+            std::vector<glm::vec2> points;
+            for (size_t i = 0; i < holeOutline.size(); i = i + 2)
+                points.push_back(glm::vec2(holeOutline[i], holeOutline[i + 1]));
+            poly->addHole( std::make_shared<Polygon>(points));
+        }
+        return poly;
+    }
     return std::make_shared<Polygon>(points);
     //}
 }

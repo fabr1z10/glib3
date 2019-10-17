@@ -21,7 +21,7 @@ void WalkStop::Start() {
     auto poly = std::dynamic_pointer_cast<Polygon>(m_shape);
     auto walkArea = m_entity->GetParent()->GetComponent<WalkArea>();
     auto o = dynamic_cast<Poly*>(walkArea->GetShape());
-    o->addHole(m_entity, poly);
+    o->addHole( poly);
 
 
     auto ce = Ref::Create<Entity>();

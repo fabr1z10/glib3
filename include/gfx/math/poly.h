@@ -40,7 +40,7 @@ inline glm::vec2 Polygon::GetVertex(int i) const {
 
 struct Hole {
 public:
-    Hole(Entity* e, std::shared_ptr<Polygon> p) : m_entity(e), m_polygon(p) {}
+    Hole(std::shared_ptr<Polygon> p) : m_polygon(p) {}
     bool isPointInside (glm::vec3) const;
     bool isVertexConcave (int i) const {
         return m_polygon->isVertexConcave(i);
@@ -51,10 +51,10 @@ public:
     glm::vec2 getVertex(int i) const;
     glm::vec2 getNormalAtVertex(int i) const;
     bool isInLineOfSight (glm::vec2& A, glm::vec2& B) const;
-    const glm::mat4& getWorldTransform() const;
+
     Polygon* getPolygon() const;
 private:
-    Entity* m_entity;
+    //Entity* m_entity;
     std::shared_ptr<Polygon> m_polygon;
 
 };
@@ -74,8 +74,8 @@ public:
     std::string toString() const override;
     // adding and retrieving holes
     // a hole entity must have a hole component
-    void addHole (Entity* entity, std::shared_ptr<Polygon> poly) {
-        m_holes.push_back(Hole(entity, poly));
+    void addHole (/*Entity* entity,*/ std::shared_ptr<Polygon> poly) {
+        m_holes.push_back(Hole(/*entity,*/ poly));
     }
     const std::vector<Hole>& getHoles() const;
     bool isPointInside (glm::vec3 P) const override;

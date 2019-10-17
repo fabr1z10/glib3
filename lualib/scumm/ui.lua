@@ -111,7 +111,7 @@ function scumm.ui.runAction ()
     else
         -- action with two objects
         -- see if there are any two object actions like verb obj1 ...
-        if (actionInfo.verb.code == "use") then
+        if (actionInfo.verb == "use") then
 			local obj2 = engine.items[actionInfo.obj2]
 			-- walk action
 			-- 1. If both obejcts are in inventory, stay where you are
@@ -124,9 +124,9 @@ function scumm.ui.runAction ()
 			local IhaveObj1 = inventory[actionInfo.obj1] ~= nil
 			local IhaveObj2 = inventory[actionInfo.obj2] ~= nil
 			if (IhaveObj1 and (not IhaveObj2)) then
-				table.insert (actions, action.combo.walk_to_object("player", actionInfo.obj2))
+				table.insert (actions, scumm.action.walk_to_object("player", actionInfo.obj2))
 			elseif (IhaveObj2 and (not IhaveObj1)) then
-				table.insert (actions, action.combo.walk_to_object("player", actionInfo.obj1))
+				table.insert (actions, scumm.action.walk_to_object("player", actionInfo.obj1))
 			elseif ((not IhaveObj1) and (not IhaveObj2)) then
 				local pu1 = obj.actions["pickup"]
 				local pu2 = obj2.actions["pickup"]
@@ -148,12 +148,12 @@ function scumm.ui.runAction ()
 			local u1 = obj.actions["use"] and obj.actions["use"][actionInfo.obj2]
 			local u2 = obj2.actions["use"] and obj2.actions["use"][actionInfo.obj1]
 			if (u1 ~= nil) then
-				table.insert (actions, get(u1))
+				table.insert (actions, glib.get(u1))
 			elseif (u2 ~= nil) then
-				table.insert (actions, get(u2))
+				table.insert (actions, glib.get(u2))
 			else
 				local def = config.defaultactions["use"]
-				table.insert (actions, get(def))
+				table.insert (actions, glib.get(def))
    			end
 			s = script.make(actions)
         elseif (actionInfo.verb == "give") then

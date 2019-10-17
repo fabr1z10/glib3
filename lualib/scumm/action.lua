@@ -313,7 +313,14 @@ scumm.say = function(who, lines)
 	return { type = scumm.action.say, args = {actor = actor_map[who], lines = l }}
 end
 
-
+scumm.action.change_text_item = function (args) 
+	assert (args.id, "id")
+	assert (args.text, "text")
+	return { type="callfunc", func= function()
+		engine.items[args.id].hotspot.text = args.text
+		scumm.ui.refresh_inventory()
+	end}
+end
 
 -- scumm.action.end_dialogue = function(args)
 -- 	assert (args.dialogue, "dialogue")

@@ -173,10 +173,10 @@ engine.items["kitchen.potostew"] = {
  	actions = {
 		use = {
 			["kitchen.meat"] = {
-				{ type = action.animate, args = {actor="guybrush", anim="operate_n"}},
+				{ type = action.animate, args = {tag="player", anim="operate_n"}},
 				{ type = action.delay, args = {sec=0.5}},
-				{ type = action.animate, args = {actor="guybrush", anim="idle_n"}},
-				{ type = action.remove_from_inventory, args = {id="kitchen.meat"}},
+				{ type = action.animate, args = {tag="player", anim="idle_n"}},
+				{ type = scumm.action.remove_from_inventory, args = {id="kitchen.meat"}},
 				{ type = action.set_variable, args = {var="meat_in_pot", value = true}}
 			}
 		},
@@ -184,14 +184,14 @@ engine.items["kitchen.potostew"] = {
  			local line = variables.meat_in_pot and 9 or 5
 			return { type = scumm.action.say, args = {actor="guybrush", lines={strings.kitchen[line]}} }
  		end,
-		pickup = function()
+		pick = function()
 			if (variables.meat_in_pot) then
 				return {
- 					{ type = action.animate, args = {actor="guybrush", anim="operate_n"}},
+ 					{ type = action.animate, args = {tag="player", anim="operate_n"}},
  					{ type = action.delay, args = {sec=0.5}},
- 					{ type = action.animate, args = {actor="guybrush", anim="idle_n"}},
- 					{ type = action.change_text_item, args = {id="kitchen.meat", text = strings.objects.stewedmeat }},
- 					{ type = action.add_to_inventory, args = {id="kitchen.meat"}}
+ 					{ type = action.animate, args = {tag="player", anim="idle_n"}},
+ 					{ type = scumm.action.change_text_item, args = {id="kitchen.meat", text = strings.objects.stewedmeat }},
+ 					{ type = scumm.action.add_to_inventory, args = {id="kitchen.meat"}}
 				}
 			else
 				return script.defaultactions.pickup

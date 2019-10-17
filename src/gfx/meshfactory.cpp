@@ -179,6 +179,7 @@ void MeshFactory::visit(Polygon& p) {
         vertices.push_back({v.x, v.y, m_z, 1.0, 1.0, 1.0, 1.0});
         indices.push_back(i);
     }
+
     auto mesh = std::make_shared<Mesh<VertexColor>>(COLOR_SHADER);
     mesh->Init(vertices, indices);
     mesh->m_primitive = GL_LINE_LOOP;
@@ -233,8 +234,35 @@ void MeshFactory::visit(Ellipse& e) {
 }
 
 void MeshFactory::visit(Poly& p) {
-    Polygon* p1 = p.GetPolygon();
-    MeshFactory::visit(*p1);
+    std::vector<VertexColor> vertices ;
+    std::vector<unsigned int> indices;
+
+    int n = p.getVertexCount();
+    for (int i = 0; i < n; ++i) {
+        glm::vec2 v = p.GetVertex(i);
+        vertices.push_back({v.x, v.y, m_z, 1.0, 1.0, 1.0, 1.0});
+        indices.push_back(i);
+        indices.push_back(i+1);
+    }
+    indices.back() = 0;
+    int offset = n;
+    const auto& holes = p.getHoles();
+    for (const auto& hole : holes) {
+        auto holePoly = hole.getPolygon();
+        n = holePoly->GetVertexCount();
+        for (int i = 0; i < n; ++i) {
+            glm::vec2 v = holePoly->GetVertex(i);
+            vertices.push_back({v.x, v.y, m_z, 1.0, 1.0, 1.0, 1.0});
+            indices.push_back(offset+i);
+            indices.push_back(offset+i+1);
+        }
+        indices.back() = offset;
+        offset += n;
+    }
+    auto mesh = std::make_shared<Mesh<VertexColor>>(COLOR_SHADER);
+    mesh->Init(vertices, indices);
+    mesh->m_primitive = GL_LINES;
+    m_mesh = mesh;
 
 //    int nPoly = p.GetPolygonCount();
 //    std::vector<VertexColor> vertices ;

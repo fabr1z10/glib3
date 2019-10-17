@@ -24,14 +24,16 @@ room:add ( "main",
 		-- scumm.factory.object { id="village2.archway_to_village3" },
 		-- scumm.factory.object { id="village1.archway" },
 		-- scumm.factory.object { id="village1.door" },
-		scumm.factory.object { id="voodoolady.door"}
+		scumm.factory.object { id="voodoolady.door"},
+		scumm.factory.object { id="rubber.chicken"}
 	}
 )
 
 room:add ("voodoolady.walkarea",	
 	{
-		scumm.factory.object {id = "voodoolady.trunk"}
-
+		scumm.factory.object {id = "voodoolady.trunk"},
+		scumm.factory.object {id = "voodoolady.baskets"},
+		scumm.factory.object {id = "voodoolady.basket"}
 	}
 )
 -- room:add_asset(sprites["voodoolady.door"])

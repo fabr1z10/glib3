@@ -316,9 +316,10 @@ local s = {
 	lookout_talk_head_front_2 = {x=234, y=496, width=9, height=13, anchor={5, 0}},
 
 	troll_head_11 = {x=332, y=221, width=25, height=18, anchor={15,5}},	
-	voodoolady_trunk = {x=71,y=56,width=81,height=24}
-	
-	
+	voodoolady_trunk = {x=71,y=56,width=81,height=24},
+	rubber_chicken = {x=472,y=98,width=27,height=20},
+	voodoolady_baskets = {x=71,y=81,width=79,height=35},
+	voodoolady_basket = {x=473,y=121,width=23,height=20},
 	
 	
 	
@@ -360,7 +361,9 @@ local s = {
 }
 
 factory.model.create_simple { id="voodoolady.trunk", sheet=sheet2, frame = s.voodoolady_trunk }
-
+factory.model.create_simple { id="rubber.chicken", sheet=sheet, frame = s.rubber_chicken }
+factory.model.create_simple { id="voodoolady.baskets", sheet=sheet2, frame = s.voodoolady_baskets }
+factory.model.create_simple { id="voodoolady.basket", sheet=sheet, frame = s.voodoolady_basket }
 --local s = spritesheets["sprites1"]
 
 engine.assets.models["arrow_up"] = {

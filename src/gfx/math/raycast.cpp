@@ -88,15 +88,15 @@ void RayCast2D::visit(Poly & p) {
 
         const auto& holes = p.getHoles();
         for (const auto& hole : holes) {
-            const auto& wt = hole.getWorldTransform();
-            const auto& iwt = glm::inverse(wt);
-            glm::vec2 lA (iwt * glm::vec4(m_A, 1.0f));
-            glm::vec2 lB (iwt * glm::vec4(m_B, 1.0f));
+            //const auto& wt = hole.getWorldTransform();
+            //const auto& iwt = glm::inverse(wt);
+            //glm::vec2 lA (iwt * glm::vec4(m_A, 1.0f));
+            //glm::vec2 lB (iwt * glm::vec4(m_B, 1.0f));
             auto points = hole.getPolygon()->getPoints();
 
-            m_result = SegmentIntersectionSimple (lA, lB, points);
+            m_result = SegmentIntersectionSimple (m_A,m_B, points);
             if (m_result.collide) {
-                m_result.normal = glm::vec3(wt * glm::vec4(m_result.normal, 0.0f));
+                //m_result.normal = glm::vec3(wt * glm::vec4(m_result.normal, 0.0f));
                 return;
             }
 
