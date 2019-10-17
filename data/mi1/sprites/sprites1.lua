@@ -320,7 +320,31 @@ local s = {
 	rubber_chicken = {x=472,y=98,width=27,height=20},
 	voodoolady_baskets = {x=71,y=81,width=79,height=35},
 	voodoolady_basket = {x=473,y=121,width=23,height=20},
-	
+	otis_walk_e_1 = {x=1,y=115,width=17,height=44,anchor={11,0}},
+	otis_walk_e_2 = {x=19,y=114,width=19,height=45,anchor={12,0}},
+	otis_walk_e_3 = {x=39,y=115,width=32,height=44,anchor={17,0}},
+	otis_walk_e_4 = {x=72,y=116,width=16,height=43,anchor={10,0}},
+	otis_walk_e_5 = {x=1,y=160,width=19,height=45,anchor={12,0}},
+	otis_walk_e_6 = {x=21,y=161,width=32,height=44,anchor={17,0}},
+	otis_walk_n_1 = {x=1,y=209,width=19,height=43,anchor={9,0}},
+	otis_walk_n_2 = {x=21,y=207,width=20,height=45,anchor={11,0}},
+	otis_walk_n_3 = {x=42,y=207,width=19,height=45,anchor={11,0}},
+	otis_walk_n_4 = {x=62,y=208,width=19,height=44,anchor={9,0}},
+	otis_walk_n_5 = {x=82,y=207,width=20,height=45,anchor={9,0}},
+	otis_walk_n_6 = {x=103,y=207,width=19,height=45,anchor={8,0}},
+	otis_walk_s_1 = {x=55,y=161,width=22,height=44,anchor={11,0}},
+	otis_walk_s_2 = {x=78,y=161,width=20,height=44,anchor={9,0}},
+	otis_walk_s_3 = {x=99,y=161,width=20,height=44,anchor={9,0}},
+	otis_walk_s_4 = {x=120,y=161,width=22,height=44,anchor={11,0}},
+	otis_walk_s_5 = {x=143,y=161,width=21,height=44,anchor={11,0}},
+	otis_walk_s_6 = {x=165,y=161,width=20,height=44,anchor={11,0}},
+	otis_idle_body_e = {x=111,y=124,width=22,height=35,anchor={12,0}},
+	otis_idle_body_s = {x=111,y=124,width=22,height=35,anchor={12,0}},
+	otis_idle_body_n = {x=90,y=123,width=19,height=36,anchor={10,0}},
+	otis_idle_legs = {x=136,y=136,width=17,height=23,anchor={7, 0}},
+	otis_idle_head_e = {x=137,y=123,width=11,height=10,anchor={6,0}},
+	otis_idle_head_s = {x=151,y=123,width=9,height=12,anchor={6,0}},
+
 	
 	
 	
@@ -1543,6 +1567,43 @@ engine.assets.models["lookout.lookout"] = {
 		-- 	{ duration = dt, quads = {{ id = s.fettuccini_purple_walk_side_6}}},
 		-- }},
 		{ name = "walk_n", frames = { { duration = dt, quads = {{ id = s.fettuccini_purple_idle_back}}}}},
+
+	}
+}
+
+engine.assets.models["otis"] = {
+    sheet = sheet2,
+    type = "sprite",
+    ppu=1,
+	animations = {
+		{ name = "idle_e", frames = { { duration = dt, quads = { { id = s.otis_idle_body_e }, { id = s.otis_idle_head_e }}}}},
+		{ name = "idle_n", frames = { { duration = dt, quads = { { id = s.otis_idle_body_e }, { id = s.otis_idle_head_e }}}}},
+		{ name = "idle_s", frames = { { duration = dt, quads = {{ id = s.otis_idle_body_s }, { id=s.otis_idle_head_s }}}}},
+		{ name = "walk_e", frames = { 
+			{ duration = dt, quads = {{ id = s.otis_walk_e_1 }}},
+			{ duration = dt, quads = {{ id = s.otis_walk_e_2 }}},
+			{ duration = dt, quads = {{ id = s.otis_walk_e_3 }}},
+			{ duration = dt, quads = {{ id = s.otis_walk_e_4 }}},
+			{ duration = dt, quads = {{ id = s.otis_walk_e_5 }}},
+			{ duration = dt, quads = {{ id = s.otis_walk_e_6 }}}
+		}},
+		{ name = "walk_n", frames = { 
+			{ duration = dt, quads = {{ id = s.otis_walk_n_1 }}},
+			{ duration = dt, quads = {{ id = s.otis_walk_n_2 }}},
+			{ duration = dt, quads = {{ id = s.otis_walk_n_3 }}},
+			{ duration = dt, quads = {{ id = s.otis_walk_n_4 }}},
+			{ duration = dt, quads = {{ id = s.otis_walk_n_5 }}},
+			{ duration = dt, quads = {{ id = s.otis_walk_n_6 }}}
+		}},
+		{ name = "walk_s", frames = { 
+			{ duration = dt, quads = {{ id = s.otis_walk_s_1 }}},
+			{ duration = dt, quads = {{ id = s.otis_walk_s_2 }}},
+			{ duration = dt, quads = {{ id = s.otis_walk_s_3 }}},
+			{ duration = dt, quads = {{ id = s.otis_walk_s_4 }}},
+			{ duration = dt, quads = {{ id = s.otis_walk_s_5 }}},
+			{ duration = dt, quads = {{ id = s.otis_walk_s_6 }}}
+		}},
+
 
 	}
 }

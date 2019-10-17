@@ -35,6 +35,19 @@ engine.items["village3.alley"] = {
 	}
 }
 
+engine.items["village3.jail"] = {
+	pos = {455, 65, 0},
+	hotspot = {		
+		text = strings.objects.doorway,
+		walk_to = {465, 65}, 
+		dir = "north",
+		size = {19, 22}
+	},		
+	actions = {
+		walk = { type = action.change_room, args = {room="jail"}}
+	}
+}
+
 engine.items["village3.shopkeeper"] = {
  	applyDepth = true,
  	model = "shop.shopkeeper",

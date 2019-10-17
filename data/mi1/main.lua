@@ -126,7 +126,7 @@ variables = {
 			engine.state.scumm.inventory["map"] = 1
 			variables.fish_taken = true
 			variables.circus_feat_done = true
-			engine.state.room = "voodoolady"
+			engine.state.room = "jail"
 			engine.state.previousRoom ="village1"
 		end
 	}

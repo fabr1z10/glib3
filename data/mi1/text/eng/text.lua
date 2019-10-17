@@ -75,9 +75,9 @@ strings = {
 		bell = "bell",
 		alley ="alley",
 		troll = "troll",
-		map = "map"
-		
-		
+		map = "map",
+        doorway ="doorway",		
+        prisoner="prisoner"	
     },
     dialogues = {
         lookout = {
@@ -603,8 +603,6 @@ strings = {
 			[57] = "Look, I told you, she doesn't want to see you.",
 			[58] = "Maybe if you asked her again?",
 			[59] = "...AGAIN."
-
-
 		},
 		fester = {
 			[1] = "Hello?",
@@ -612,6 +610,17 @@ strings = {
 			[3] = "HELLO???",
 			[4] = "You know, bad things could happen to a person in a dark, deserted alley like this one.",
 			[5] = "And at this time of night, nobody would be around to see it."
+		},
+		otis = {
+			[1] = "You gotta get me out of here!",
+			[2] = "I'm a victim of society.",
+			[3] = "Not to mention halitosis.",
+			[4] = "Yuck!",
+			[5] = "Hey, it's hard to keep my breath minty-fresh when there's nothing to eat in here but rats.",
+			[6] = "Talk to death-breath? No thanks.",
+			[7] = "Looks nervous.",
+			[8] = "It's locked."
+
 		},
 		troll = {
 			[1] = "NONE SHALL PASS!!",

@@ -10,6 +10,7 @@ roomDefinition = {
 	font_size = 8,
 	playerid = "guybrush",
 	walkareas = { "store.walkarea", "store.walkarea.keeper"},
+	collide=true
 
 }
 

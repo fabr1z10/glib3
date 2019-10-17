@@ -5,12 +5,14 @@ roomDefinition = {
 	height = 144,
 	startTable = {
 		village2 = { walkarea="village3.walkarea", pos = items["village3.archway"].hotspot.walk_to, dir = "west"},
-		store = { walkarea = "village3.walkarea", pos = items["village3.shop_door"].hotspot.walk_to, dir="south"}
+		store = { walkarea = "village3.walkarea", pos = items["village3.shop_door"].hotspot.walk_to, dir="south"},
+		jail = { walkarea = "village3.walkarea", pos = items["village3.jail"].hotspot.walk_to, dir="south"},
 	},
 	walkareas = {"village3.walkarea"},
 	defaultroom = "village2",
 	font_size = 8,
-	playerid = "guybrush"
+	playerid = "guybrush",
+	collide=true
 }
 
 room = scumm.factory.basic_room  (roomDefinition)
@@ -28,6 +30,7 @@ room:add( "main", {
 	scumm.factory.object { id = "village3.alley" },
 	scumm.factory.object { id = "village3.shop_door" },
 	scumm.factory.object { id = "village3.church_door" },
+	scumm.factory.object { id = "village3.jail" },
 })
 
 room.onexit = function(nextRoom) 
