@@ -13,6 +13,7 @@ public:
     void AddScript (std::shared_ptr<Script> script);
     void KillScript (const std::string& name);
     void Clear ();
+    bool HasScript(const std::string&) const;
     Script* GetScript (const std::string&);
     using ParentClass = Scheduler;
     std::vector<std::string> GetActiveScripts() const;

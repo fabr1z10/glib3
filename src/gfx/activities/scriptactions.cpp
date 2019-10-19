@@ -37,7 +37,9 @@ void ResumeScript::Start() {
 
 void KillScript::Start() {
     auto scheduler = Engine::get().GetRunner<Scheduler>();
-    scheduler->GetScript(m_script)->Kill();
+    if (scheduler->HasScript(m_script)) {
+        scheduler->GetScript(m_script)->Kill();
+    }
     SetComplete();
 
 }

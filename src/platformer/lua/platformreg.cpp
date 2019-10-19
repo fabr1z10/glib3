@@ -1,5 +1,6 @@
 #include <platformer/luaext.h>
 #include <gfx/components/platform.h>
+#include <platformer/input/enemyinput.h>
 #include <gfx/components/controller2d.h>
 
 void RegisterToPlatform(EntityWrapper character, EntityWrapper platform) {
@@ -17,3 +18,8 @@ void UnregisterToPlatform(EntityWrapper character, EntityWrapper platform) {
 
 }
 
+
+void SetEnemyDir(EntityWrapper character, bool left) {
+    auto enemyInput = dynamic_cast<EnemyInputMethod*>(character.m_underlying->GetComponent<InputMethod>());
+    enemyInput->setLeft(left);
+}

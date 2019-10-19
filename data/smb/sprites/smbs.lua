@@ -23,7 +23,11 @@ local s = {
 	bonus_brick_taken = {x=224, y=0, width=16, height=16},
 	goomba_walk_1 = {x=112, y=0, width=16, height=16, anchor={8,0}},
 	goomba_walk_2 = {x=128, y=0, width=16, height=16, anchor={8,0}},
-	goomba_die = {x=144, y=0, width=16, height=16, anchor={8,0}}
+	goomba_die = {x=144, y=0, width=16, height=16, anchor={8,0}},
+	koopa_walk_1 = {x=0, y=16, width=16, height=32, anchor={8,0}},
+	koopa_walk_2 = {x=16, y=16, width=16, height=32, anchor={8,0}},
+	koopa_hide_1 = {x=32, y=32, width=16, height=16, anchor={8,0}},
+	koopa_hide_2 = {x=32, y=16, width=16, height=16, anchor={8,0}},
 
 }
 local dt=0.1
@@ -67,6 +71,29 @@ models["goomba"] = {
 		}},
 		{ name = "die", box={-8,0,8,16}, frames = { 
 			{ duration = dt, quads = {{ id = s.goomba_die }}}
+		}}
+	}
+}
+
+models["koopa"] = {
+    sheet = "smb1.png",
+    type = "boxed_sprite",
+    ppu=1,
+	animations = {
+		{ name = "walk", box={-8,0,8,24}, frames = {
+			{ duration = dt, quads = {{ id = s.koopa_walk_1 } }},
+			{ duration = dt, quads = {{ id = s.koopa_walk_2 } }},
+		}},
+		{ name = "jump", box={-8,0,8,24}, frames = {
+			{ duration = dt, quads = {{ id = s.koopa_walk_1 } }},
+			{ duration = dt, quads = {{ id = s.koopa_walk_2 } }},
+		}},
+		{ name = "hide", box={-8,0,8,16}, frames = { 
+			{ duration = dt, quads = {{ id = s.koopa_hide_1 }}}
+		}},
+		{ name = "hide_blink", box={-8,0,8,16}, frames = { 
+			{ duration = dt, quads = {{ id = s.koopa_hide_1 }}},
+			{ duration = dt, quads = {{ id = s.koopa_hide_2 }}},
 		}}
 	}
 }

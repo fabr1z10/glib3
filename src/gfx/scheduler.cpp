@@ -61,6 +61,10 @@ void Scheduler::AddScript(std::shared_ptr<Script> script) {
 
 }
 
+bool Scheduler::HasScript(const std::string & id) const {
+    return m_scripts.count(id) > 0;
+}
+
 Script* Scheduler::GetScript (const std::string& name) {
     auto it = m_scripts.find(name);
     if (it == m_scripts.end())

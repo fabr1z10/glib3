@@ -370,7 +370,7 @@ luabridge::LuaRef EntityWrapper::GetAttackRect() {
 
 void EntityWrapper::ChangeState(const std::string& name)
 {
-    //m_underlying->GetComponent<StateMachine>()->ChangeState(name);
+    m_underlying->GetComponent<StateMachine>()->SetState(name);
 }
 
 void EntityWrapper::ChangeStateParam(const std::string& name, luabridge::LuaRef param)

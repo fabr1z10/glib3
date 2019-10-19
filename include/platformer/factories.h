@@ -14,7 +14,7 @@ FACTORY(Enemy3DInputCompFactory, Component)
 
 
 FACTORY(DropCharactersActFactory, Activity)
-
+FACTORY(SetEnemyDirActFactory, Activity)
 // State factories
 FACTORY_I(PlatformerStateFactory, State)
 FACTORY(Walk4WayStateFactory, State)

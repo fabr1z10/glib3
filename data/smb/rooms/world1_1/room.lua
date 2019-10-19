@@ -19,6 +19,7 @@ room =  {
 				{ tag = {variables.collision.tags.player, variables.collision.tags.bonus_brick_sensor}, onenter = factory.bonus_brick.response },
 				{ tag = {variables.collision.tags.player, variables.collision.tags.mushroom}, onenter = factory.mushroom.response },
 				{ tag = {variables.collision.tags.player, variables.collision.tags.goomba}, onenter = factory.goomba.response },
+				{ tag = {variables.collision.tags.player, variables.collision.tags.koopa}, onenter = factory.koopa.response },
 			}
 		},
 		{ 
@@ -40,10 +41,13 @@ room =  {
 			cam ="maincam",
 			items = {
 				factory.rect { pos = {10, 4}, img = "block1.png", width=1, height=1 },
+				factory.rect { pos = {14, 2}, img = "block1.png", width=1, height=1 },
+				factory.rect { pos = {24, 2}, img = "block1.png", width=1, height=1 },
 				factory.rect { pos = {0, 0}, img = "block1.png", width=69, height=2 },
 				factory.basic_brick.create { pos={5*16, 5*16}, sprite="basicbrick" },
 				factory.bonus_brick.create { pos={6*16, 5*16}, sprite="bonusbrick", factory = factory.mushroom.create, args = { sprite="mushroom" } },
-				factory.goomba.create { pos={12*16,3*16}, sprite="goomba"}
+				factory.goomba.create { pos={12*16,3*16}, sprite="goomba",flip=true},
+				factory.koopa.create { pos={20*16,3*16}, sprite="koopa", flip=true}
 			}
 		}
 	},

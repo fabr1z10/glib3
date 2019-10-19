@@ -13,6 +13,7 @@ PlatformerFactory::PlatformerFactory() : SceneFactory() {
     m_componentFactory.Add<Enemy3DInputCompFactory>("enemy3dinput");
 
     m_activityFactory.Add<DropCharactersActFactory>("dropcharacters");
+    m_activityFactory.Add<SetEnemyDirActFactory>("setenemydir");
 
     m_stateFactory.Add<Walk4WayStateFactory>("walk4w");
     m_stateFactory.Add<WalkSideFactory>("walkside");
@@ -38,8 +39,8 @@ void PlatformerFactory::extendLua() {
     luabridge::getGlobalNamespace(LuaWrapper::L)
             .beginNamespace("monkey")
             .addFunction("register_platform", &RegisterToPlatform)
-            .addFunction("unregister_platform", &UnregisterToPlatform);
-
+            .addFunction("unregister_platform", &UnregisterToPlatform)
+            .addFunction("set_dir", &SetEnemyDir);
 
 }
 

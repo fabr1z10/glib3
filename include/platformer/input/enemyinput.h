@@ -15,6 +15,7 @@ public:
     void Start() override;
     void Update (double) override;
     bool isKeyDown(int) override;
+    void setLeft (bool);
     std::type_index GetType() override;
     void AddAttackMove (int key, int odds);
     using ParentClass = InputMethod;

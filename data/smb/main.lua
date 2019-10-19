@@ -43,6 +43,7 @@ variables = {
 			player = 1,
 			mushroom = 11,
 			goomba = 12,
+			koopa = 13,
 			brick_sensor = 20,
 			bonus_brick_sensor = 21
 		}

@@ -1,3 +1,9 @@
+action.set_enemy_dir = function(args)
+	glib.assert_either (args.tag, args.id, "id or tag")
+	glib.assert (args.left, "left")
+	return {type="setenemydir", tag = args.tag, id = args.id, left = args.left}
+end
+
 function mario_goomba(mario, goomba, sx, sy) 
 
 	if (goomba.state == "die") then

@@ -18,6 +18,7 @@
 #include <platformer/input/enemyinput.h>
 #include <platformer/input/enemy3d.h>
 #include <gfx/engine.h>
+#include <platformer/activities/setenemydir.h>
 
 //
 //std::unique_ptr<StateBehaviour> Idle2DStateFactory::Create(luabridge::LuaRef & r) {
@@ -156,6 +157,16 @@ std::shared_ptr<Activity> DropCharactersActFactory::Create(luabridge::LuaRef &re
     glm::vec2 targetPos = table.Get<glm::vec2>("pos");
     return std::make_shared<DropCharacters>(actor, targetPos);
 };
+
+std::shared_ptr<Activity> SetEnemyDirActFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    // get id
+    //int id = getId(table);
+    bool left = table.Get<bool>("left");
+    auto act = std::make_shared<SetEnemyDirection>(left);
+    setTarget(table, act.get());
+    return act;
+}
 
 std::shared_ptr<State> Walk4WayStateFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);

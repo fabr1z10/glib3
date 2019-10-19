@@ -19,6 +19,10 @@ void EnemyInputMethod::Start() {
 
 }
 
+void EnemyInputMethod::setLeft(bool left) {
+    m_left = left;
+}
+
 
 bool EnemyInputMethod::isKeyDown(int key) {
     return ((key == GLFW_KEY_LEFT && m_left) || (key == GLFW_KEY_RIGHT && (!m_left)));
