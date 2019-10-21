@@ -50,6 +50,7 @@
 #include <gfx/states/hit25.h>
 #include <gfx/states/simple.h>
 #include <gfx/components/stateactions.h>
+#include <gfx/components/garbagecollect.h>
 
 std::shared_ptr<Component> TextComponentFactory::Create(luabridge::LuaRef &ref) {
     auto renderer = Ref::Create<Renderer>();
@@ -1017,5 +1018,15 @@ std::shared_ptr<State> Hit25StateFactory::Create(luabridge::LuaRef &ref) {
     auto ptr = std::make_shared<Hit25>(anim);
     init(table, ptr);
     return ptr;
+
+}
+
+std::shared_ptr<Component> GarbageCollectCompFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    std::string target = table.Get<std::string>("target");
+    glm::vec2 maxDist = table.Get<glm::vec2>("max_dist");
+    auto ptr = std::make_shared<GarbageCollect>(target, maxDist.x, maxDist.y);
+    return ptr;
+
 
 }

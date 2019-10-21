@@ -1,9 +1,18 @@
 glib = {}
 
+
+
 engine.state = {
     room = engine.start_room,
     previousRoom = "",
+    _nextTag = 0
 }
+
+function glib.next_tag()
+    engine.state._nextTag = engine.state._nextTag+1
+    return "__auto" .. tostring(engine.state._nextTag)
+end
+
 
 function glib.assert(a, b, c)
 	if (a == nil) then 

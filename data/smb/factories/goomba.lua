@@ -33,6 +33,7 @@ factory.goomba.create = function (args, pos)
 		components = {
 			{ type="controller2d", maxclimbangle = 80, maxdescendangle = 80, horizontalrays=4, verticalrays=4 },
 			{ type="dynamics2d", gravity = variables.gravity },
+			{ type="garbage", target="maincam", max_dist = {256, 256}},
 			{ 
 				type = "smartcollider", 
 				tag = variables.collision.tags.goomba, 

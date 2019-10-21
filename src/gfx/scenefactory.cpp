@@ -119,6 +119,7 @@ SceneFactory::SceneFactory() {
     m_componentFactory.Add<LightComponentFactory>("light");
     m_componentFactory.Add<KeyboardInputMethodCompFactory>("keyinput");
     m_componentFactory.Add<ShadowComponentFactory>("shadow");
+    m_componentFactory.Add<GarbageCollectCompFactory>("garbage");
     //m_componentFactory.Add<RaycastControllerComponentFactory>("raycastcontroller");
     //m_componentFactory.Add<BillboardComponentFactory>("billboard");
 

@@ -81,7 +81,7 @@ FACTORY(CursorComponentFactory, Component)
 FACTORY(LightComponentFactory, Component)
 FACTORY(KeyboardInputMethodCompFactory, Component)
 FACTORY(PropertiesCompFactory, Component)
-
+FACTORY(GarbageCollectCompFactory,Component)
 //#include <gfx/factories/statemachinefactory.h>
 
 FACTORY(StateMachineCompFactory, Component)

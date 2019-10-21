@@ -4,6 +4,10 @@ action.set_enemy_dir = function(args)
 	return {type="setenemydir", tag = args.tag, id = args.id, left = args.left}
 end
 
+function P(x, y) return {x*16,y*16} end
+
+
+
 function mario_goomba(mario, goomba, sx, sy) 
 
 	if (goomba.state == "die") then

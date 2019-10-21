@@ -28,6 +28,9 @@ local s = {
 	koopa_walk_2 = {x=16, y=16, width=16, height=32, anchor={8,0}},
 	koopa_hide_1 = {x=32, y=32, width=16, height=16, anchor={8,0}},
 	koopa_hide_2 = {x=32, y=16, width=16, height=16, anchor={8,0}},
+	pickup_coin_1 = {x=128,y=64,width=16,height=16,anchor={0,0}},
+	pickup_coin_2 = {x=144,y=64,width=16,height=16,anchor={0,0}},
+	pickup_coin_3 = {x=160,y=64,width=16,height=16,anchor={0,0}},
 
 }
 local dt=0.1
@@ -129,7 +132,20 @@ models["bonusbrick"] = {
 		}},
 
 	}
+}
 
+models["pickup_coin"] = {
+    sheet = "smb1.png",
+    type = "boxed_sprite",
+    ppu=1,
+	animations = {
+		{ name = "default", box = {-8, 0, 8, 16}, frames = {
+			{ duration = dt, quads = {{ id = s.pickup_coin_1 } }},
+			{ duration = dt, quads = {{ id = s.pickup_coin_2 } }},
+			{ duration = dt, quads = {{ id = s.pickup_coin_3 } }},
+			{ duration = dt, quads = {{ id = s.pickup_coin_2 } }},
+		}},
+	}
 }
 
 -- models["supermario"] = {
