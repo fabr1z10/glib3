@@ -1,25 +1,25 @@
-factory.mushroom = {}
+factory.starman = {}
 
-factory.mushroom.response = function (p1, p2) 
+factory.starman.response = function (p1, p2) 
 	monkey.removeFromId(p2.id)
 end
 
-factory.mushroom.script = function(id) 
+factory.starman.script = function(id) 
 	local actions = {
-		{ type=action.move, args = { id = id, by = {0, engine.tilesize}, speed=5}},
-		{ type=action.set_state, args = {id =id, state="walk"}}
+		{ type=action.move, args = { id = id, by = {0, engine.tilesize}, speed=10}},
+		{ type=action.set_state, args = {id =id, state="jump"}},
+		{ type=action.callfunc, args = { func = function() 
+			local m  = monkey.getEntityFromId(id)
+			m.vy = variables.jump_velocity * 0.5
+		end}}
 	}
 	return actions
 end
 
-factory.mushroom.create = function (args, pos) 
-	print ("qui" .. tostring(pos[1]) .. args.sprite)
+factory.starman.create = function (args, pos) 
 	glib.assert (args.sprite, "sprite")
 	local position = pos or {0, 0, 0}
-	local tag = variables.collision.tags.mushroom
-	if (args.oneup) then tag = variables.collision.tags.mushroom1up end
-
-	print ("ppppp")
+	local tag = variables.collision.tags.starman
 	return {
 		type = "sprite",
 		pos = position,
@@ -45,7 +45,7 @@ factory.mushroom.create = function (args, pos)
 						id = "walk", 
 						state = {
 							type = "walkside", 
-							speed = 20, 
+							speed = 100, 
 							acceleration = 0.05, 
 							fliph = false, 
 							jumpspeed = 0 
@@ -55,16 +55,18 @@ factory.mushroom.create = function (args, pos)
 						id = "jump",
 						state = {
 							type = "jump",
-							speed = 20,
+							speed = 100,
 							acceleration = 0.10,
 							fliph = false,
 							animup = "walk",
-							animdown = "walk"
+							animdown = "walk",
+							bounce = true,
+							bouncefactor=1.0,
 						}
 					},
 				}
 			},
-			{ type ="enemyinput", left =true, flip=false },
+			{ type ="enemyinput", left =false, flip=false },
 
 		}
 	}

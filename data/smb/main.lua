@@ -47,6 +47,8 @@ variables = {
 			moving_platform =14,
 			coin = 15,
 			spawn = 16,
+			mushroom1up = 17,
+			starman = 18,
 			brick_sensor = 20,
 			bonus_brick_sensor = 21
 		}

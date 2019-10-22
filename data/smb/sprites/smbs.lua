@@ -17,6 +17,7 @@ local s = {
 	brick_piece = {x=64, y=16, width=16, height=16},
 	mushroom = {x=48, y=16, width=16, height=16, anchor={8,0}},
 	mushroom1up = {x=144, y=48, width=16, height=16, anchor={8,0}},
+	starman = {x=128, y=48, width=16, height=16, anchor= {8,0}},
 	bonus_brick_1 = {x=160, y=0, width=16, height=16 },
 	bonus_brick_2 = {x=176, y=0, width=16, height=16 },
 	bonus_brick_3 = {x=192, y=0, width=16, height=16 },
@@ -31,9 +32,17 @@ local s = {
 	pickup_coin_1 = {x=128,y=64,width=16,height=16,anchor={0,0}},
 	pickup_coin_2 = {x=144,y=64,width=16,height=16,anchor={0,0}},
 	pickup_coin_3 = {x=160,y=64,width=16,height=16,anchor={0,0}},
+	flying_coin_1 = {x=160,y=16,width=16,height=16,anchor={8,0}},
+	flying_coin_2 = {x=176,y=16,width=16,height=16,anchor={8,0}},
+	flying_coin_3 = {x=192,y=16,width=16,height=16,anchor={8,0}},
+	flying_coin_4 = {x=208,y=16,width=16,height=16,anchor={8,0}},
+	score_100 = {x=0, y=80, width=16,height=16, anchor={8,0}},
+	empty = {x=176,y=80,width=16,height=16,anchor={0,0}},
+
 
 }
 local dt=0.1
+
 
 models["mario"] = {
     sheet = "smb1.png",
@@ -102,8 +111,9 @@ models["koopa"] = {
 }
 
 models["basicbrick"] = glib.basic_model ("smb1.png", s.brick)
-
+models["score_100"] = glib.basic_model ("smb1.png", s.score_100)
 models["brickpiece"] = glib.basic_model ("smb1.png", s.brick_piece)
+
 
 models["mushroom"] = {
     sheet = "smb1.png",
@@ -116,6 +126,27 @@ models["mushroom"] = {
 	}
 }
 
+models["mushroom1up"] = {
+    sheet = "smb1.png",
+    type = "boxed_sprite",
+    ppu=1,
+	animations = {
+		{ name = "walk", box = {-8, 0, 8, 16}, frames = {
+			{ duration = dt, quads = {{ id = s.mushroom1up } }},
+		}},
+	}
+}
+
+models["starman"] = {
+    sheet = "smb1.png",
+    type = "boxed_sprite",
+    ppu=1,
+	animations = {
+		{ name = "walk", box = {-8, 0, 8, 16}, frames = {
+			{ duration = dt, quads = {{ id = s.starman } }},
+		}},
+	}
+}
 models["bonusbrick"] = {
     sheet = "smb1.png",
     type = "sprite",
@@ -134,6 +165,38 @@ models["bonusbrick"] = {
 	}
 }
 
+models["bonusbrick2"] = {
+    sheet = "smb1.png",
+    type = "sprite",
+    ppu=1,
+	animations = {
+		{ name = "default", frames = {
+			{ duration = dt, quads = {{ id = s.brick } }},
+		}},
+		{ name = "taken", frames = {
+			{ duration = dt, quads = {{ id = s.bonus_brick_taken } }},
+		}},
+
+	}
+}
+
+models["hiddenbrick"] = {
+    sheet = "smb1.png",
+    type = "sprite",
+    ppu=1,
+	animations = {
+		{ name = "default", frames = {
+			{ duration = dt, quads = {{ id = s.empty } }},
+		}},
+		{ name = "taken", frames = {
+			{ duration = dt, quads = {{ id = s.bonus_brick_taken } }},
+		}},
+
+	}
+}
+
+
+
 models["pickup_coin"] = {
     sheet = "smb1.png",
     type = "boxed_sprite",
@@ -144,6 +207,20 @@ models["pickup_coin"] = {
 			{ duration = dt, quads = {{ id = s.pickup_coin_2 } }},
 			{ duration = dt, quads = {{ id = s.pickup_coin_3 } }},
 			{ duration = dt, quads = {{ id = s.pickup_coin_2 } }},
+		}},
+	}
+}
+
+models["flying_coin"] = {
+    sheet = "smb1.png",
+    type = "sprite",
+    ppu=1,
+	animations = {
+		{ name = "default", frames = {
+			{ duration = dt, quads = {{ id = s.flying_coin_1 } }},
+			{ duration = dt, quads = {{ id = s.flying_coin_2 } }},
+			{ duration = dt, quads = {{ id = s.flying_coin_3 } }},
+			{ duration = dt, quads = {{ id = s.flying_coin_2 } }},
 		}},
 	}
 }

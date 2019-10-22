@@ -4,10 +4,10 @@ items.brick.create = function(arg)
 	local s = { type = "rect", width = 16, height = 16 }
 	local s1 = { type = "rect", width = 14, height = 0.5}
 	local b = nextTag()
-	local y = arg.pos[2]
+	local y = arg.pos[2]*16
 	return {
 		tag = b,
-		pos = {arg.pos[1], y, 0},
+		pos = {arg.pos[1]*16, y, 0},
 		components = {
 			
 			{ type="gfx", model=arg.sprite, anim="idle", width = 16, height = 16},	

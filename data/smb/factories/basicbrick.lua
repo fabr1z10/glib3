@@ -61,12 +61,12 @@ factory.basic_brick.create = function(arg)
 	local s = { type = "rect", width = engine.tilesize, height = engine.tilesize }
 	local s1 = { type = "rect", width = engine.tilesize-4, height = 1.0}
 	--local b = nextTag()
-	local y = arg.pos[2]
+	local y = arg.pos[2]*engine.tilesize
 	return {
 		--tag = b,
 		type = "sprite",
 		model = arg.sprite,
-		pos = {arg.pos[1], y, 0},
+		pos = {arg.pos[1]*engine.tilesize, y, 0},
 		components = {			
 			--{ type="gfx", model=arg.sprite, anim="idle", width = engine.tilesize, height = engine.tilesize},	
 			{ type="collider", shape=s, tag=10, flag = variables.collision.flags.platform, mask = 0},

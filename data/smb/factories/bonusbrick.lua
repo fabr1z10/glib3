@@ -30,16 +30,20 @@ factory.bonus_brick.response = function(p1, p2)
 			args = {
 				func = function()
 					local pos = {brick.x+0.5*engine.tilesize, brick.y, 1}
-					local o = brick_info.factory(brick_info.args, pos)
+					local o = brick_info.factory.create(brick_info.args, pos)
 					print("Mio cuggggg")
 					local m1 = monkey.getEntity("main")
 					local id = monkey.addEntity (o, m1)
-					local actions = {
-						{ type=action.move, args = { id = id, by = {0, engine.tilesize}, speed=5}},
-						{ type=action.set_state, args = {id =id, state="walk"}}
-					}
-					local s = script.make(actions)
-					monkey.play(s)
+
+					-- hey, do I have to perform a script on this?
+					if (brick_info.factory.script ~= nil) then
+						print ("FATTTTONE")
+						local actions = brick_info.factory.script(id, pos)
+						local s = script.make(actions)
+						monkey.play(s)
+					end
+
+
 				end
 				
 			}
@@ -60,12 +64,12 @@ factory.bonus_brick.create = function(arg)
 	local s = { type = "rect", width = engine.tilesize, height = engine.tilesize }
 	local s1 = { type = "rect", width = engine.tilesize-4, height = 1.0}
 	--local b = nextTag()
-	local y = arg.pos[2]
+	local y = arg.pos[2]*engine.tilesize
 	return {
 		--tag = b,
 		type = "sprite",
 		model = arg.sprite,
-		pos = {arg.pos[1], y, 0},
+		pos = {arg.pos[1]*engine.tilesize, y, 0},
 		components = {			
 			--{ type="gfx", model=arg.sprite, anim="idle", width = engine.tilesize, height = engine.tilesize},	
 			{ type="collider", shape=s, tag=10, flag = variables.collision.flags.platform, mask = 0},

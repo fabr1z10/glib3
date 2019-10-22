@@ -45,13 +45,13 @@ void Jump2D::Run(double dt) {
             m_dynamics->m_velocity.y = 0.0f;
             m_sm->SetState(m_walkState);
         } else {
-            m_dynamics->m_velocity.y = m_bounceFactor * m_dynamics->m_velocity.y;
+            m_dynamics->m_velocity.y = -m_bounceFactor * m_dynamics->m_velocity.y;
         }
         return;
     }
 
     // bump head
-    if (m_controller->ceiling())	{
+    if (m_controller->ceiling()) {
         m_dynamics->m_velocity.y = 0;
         m_animator->SetAnimation(m_jumpAnimDown);
     }

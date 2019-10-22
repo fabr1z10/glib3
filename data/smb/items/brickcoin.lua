@@ -15,7 +15,7 @@ items.brickcoin.script = function(m)
 	print (m.tag .. " " .. tostring(m.y))
 	local s = script:new()
 	s.actions = {
-		[1] = {type="movegravity", actor = m.tag, velocity = {0,100}, g = 100, ystop = m.pos[2]+16},
+		[1] = {type="movegravity", actor = m.tag, velocity = {0,100}, g = 100, ystop = m.pos[2]+32},
 		[2] = {type="callfunc", func = function() monkey.removeEntity(m.tag) end, after={1} },	
 		[3] = {type="callfunc", func = curry(CreateItem, {id="score", args= { pos={m.pos[1], m.pos[2]+16}, z=1, score=100}}), after={1}}
 		-- generate score

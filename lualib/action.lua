@@ -146,7 +146,19 @@ action.create_object = function(args)
 			print ("creating a new object ... ")
 			local o = args.factory(args.args, args.pos)
 			local m1 = monkey.getEntity(parent)
-			monkey.addEntity (o, m1)
+			local id = monkey.addEntity (o, m1)
+
+			-- check if a script is provided in the factory
+			if (args.script ~= nil) then
+				print ("FATTTTONE")
+				local actions = args.script(id, args.pos)
+				local s = script.make(actions)
+				monkey.play(s)
+			end			
+			-- if (args.script ~= nil) then
+			-- 	local actions = args.script
+
+			-- end
 		end
 	}
 end
