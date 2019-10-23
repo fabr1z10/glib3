@@ -144,6 +144,8 @@ FACTORY(KillScriptActFactory, Activity)
 FACTORY(WaitClickActFactory, Activity)
 FACTORY(TreeMoveActFactory, Activity);
 FACTORY(SetActiveActFactory, Activity);
+FACTORY(SetDemoActFactory, Activity);
+
 
 FACTORY(SkeletalAnimFactory, SkeletalAnimation)
 

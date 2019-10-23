@@ -6,7 +6,7 @@ items.coin.create = function(args)
 	local z = args.z or 1
 	return {
 		tag = t,
-		pos = { args.pos[1], args.pos[2], z },
+		pos = { args.pos[1]*engine.tilesize, args.pos[2]*engine.tilesize, z },
 		components = {
 			{ type="gfx", model = "pickupcoin", anim="idle" },
 			{ type="collider", tag=coinTag, flag=collisionFlags.enemy, mask = collisionFlags.player, shape = s },

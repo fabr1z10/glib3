@@ -12,7 +12,7 @@ factory.coin.create = function(args)
 	return {
 		type = "sprite",
 		model = args.model,
-		pos = { args.pos[1], args.pos[2], z },
+		pos = { args.pos[1]*engine.tilesize, args.pos[2]*engine.tilesize, z },
 		components = {
 			--{ type="gfx", model = args.model},
 			{ type="collider", tag=variables.collision.tags.coin, flag = variables.collision.flags.foe, mask = variables.collision.flags.player, shape = s },

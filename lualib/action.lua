@@ -204,3 +204,18 @@ action.blink = function(args)
 	glib.assert (args.blink_duration, "blink_duration")
 	return {type="blink", tag = args.tag, id = args.id, duration = args.duration, blink_duration=args.blink_duration }
 end
+
+
+action.change_cam_bounds = function (args)
+	glib.assert (args.cam, "cam")	
+	glib.assert (args.x, "x")
+	glib.assert (args.y, "y")	
+	return { type = "setcambounds", cam = args.cam, xmin = args.x[1], xmax = args.x[2], ymin = args.y[1], ymax = args.y[2] }
+end
+
+action.set_demo_mode = function(args) 
+print ("CIAO MERDADURA!")
+	glib.assert_either (args.tag, args.id, "id or tag")
+	glib.assert (args.value, "value")
+	return { type = "setdemo", value = args.value,  tag = args.tag, id = args.id, keys = args.keys, length = args.length or 0, sync = args.sync, events = args.events}	
+end

@@ -52,7 +52,11 @@ factory.mario.create = function(args)
 				type = "smartcollider", 
 				tag = variables.collision.tags.player, 
 				flag = variables.collision.flags.player, 
-				mask = variables.collision.flags.foe | variables.collision.flags.foe_attack
+				mask = variables.collision.flags.foe | variables.collision.flags.foe_attack,
+				collision_overrides = {
+					{ state = "warp", flag = 0, mask = 0, tag = 0}
+
+				}
 			},
 			{
 				type="info", 
@@ -70,7 +74,12 @@ factory.mario.create = function(args)
 							speed = 75, 
 							acceleration = 0.05, 
 							fliph = true, 
-							jumpspeed = variables.jump_velocity 
+							jumpspeed = variables.jump_velocity,
+							keys = {
+								{ id = 264, action="callback", func= function() if (variables.warpfunc ~= nil) then variables.warpfunc() end end }	,
+								--{ id = 265, action="callback", func= function() print ("Su!") end }	
+
+							}
 						}
 					},
 					{
@@ -111,8 +120,19 @@ factory.mario.create = function(args)
 					},
 					{
 						id = "dead",
-						state = { type ="simple", anim="die" }
-					},	
+						state = { 
+							type ="simple", 
+							anim="die",							
+						}
+					},
+					{
+						id = "warp",
+						state = {
+							type = "simple",
+							anim = "idle",
+						}
+						
+					}
 				},
 			},
 			{ type ="keyinput" },

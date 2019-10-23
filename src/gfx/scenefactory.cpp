@@ -167,6 +167,7 @@ SceneFactory::SceneFactory() {
     m_activityFactory.Add<WaitClickActFactory>("waitclick");
     m_activityFactory.Add<TreeMoveActFactory>("treemove");
     m_activityFactory.Add<SetActiveActFactory>("setactive");
+    m_activityFactory.Add<SetDemoActFactory>("setdemo");
 
     m_skeletalAnimFactory.Add<SkeletalAnimFactory>("default");
 

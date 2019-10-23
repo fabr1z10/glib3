@@ -3,6 +3,8 @@
 #include <gfx/component.h>
 #include <gfx/event.h>
 #include <gfx/listener.h>
+#include <map>
+#include <unordered_set>
 
 class InputMethod : public Component {
 public:
@@ -21,19 +23,38 @@ public:
     using ParentClass = InputMethod;
 };
 
+struct DemoKeyEvent {
+    int key;
+    int event; // 0 for PRESS, 1 for HOLD DOWN, 2 for RELEASE after holding down
+};
+
 
 class KeyboardInputMethod : public InputMethod, public KeyboardListener {
 public:
-    KeyboardInputMethod() : InputMethod() {}
+    KeyboardInputMethod() : InputMethod(), m_demoMode(false), m_demoTimer(0.0), m_length(0.0f) {}
     KeyboardInputMethod(const KeyboardInputMethod& orig) : InputMethod(orig) {}
     std::shared_ptr<Component> clone() const override;
     void Start() override {}
-    void Update (double) override {}
+    void Update (double) override;
     bool isKeyDown(int) override;
     void KeyCallback(GLFWwindow*, int, int, int, int) override;
     std::type_index GetType() override;
+    void setDemoMode(bool);
+    bool getDemoMode() const;
+    void setDemoSequence(std::map<float, DemoKeyEvent>& sequence, double length);
+private:
+    // this is all for demo
+    bool m_demoMode;
+    std::map<float, DemoKeyEvent> m_demoKeys;
+    std::unordered_set<int> m_keysDown;
+    double m_length;
+    double m_demoTimer;
 };
 
+
+inline bool KeyboardInputMethod::getDemoMode() const {
+    return m_demoMode;
+}
 //class DoNothingInputMethod : public InputMethod {};
 
 

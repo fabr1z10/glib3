@@ -241,7 +241,13 @@ std::shared_ptr<Component> SmartColliderComponentFactory::Create(luabridge::LuaR
         int attackMask = ref["mask"].cast<int>();
         coll->AddAttackTag(anim, attackTag, attackMask);
     });
-
+    table.ProcessVector("collision_overrides", [coll] (luabridge::LuaRef ref) {
+        std::string state = ref["state"].cast<std::string>();
+        int flag = ref["flag"].cast<int>();
+        int mask = ref["mask"].cast<int>();
+        int tag = ref["tag"].cast<int>();
+        coll->addStateCollisionDetails(state, flag, mask, tag);
+    });
     return coll;
 }
 

@@ -21,7 +21,6 @@ public:
     virtual void AttachStateMachine(StateMachine*);
     virtual bool KeyListener (int);
     void AddKey (int, std::shared_ptr<StateAction>);
-
 protected:
     StateMachine* m_sm;
     std::unordered_map<int, std::shared_ptr<StateAction>> m_actions;

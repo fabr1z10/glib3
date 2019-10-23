@@ -49,8 +49,10 @@ variables = {
 			spawn = 16,
 			mushroom1up = 17,
 			starman = 18,
-			brick_sensor = 20,
-			bonus_brick_sensor = 21
+			warp = 19,
+			brick_sensor = 20,			
+			bonus_brick_sensor = 21,
+			hotspot = 22
 		}
 	},
 	tags = {

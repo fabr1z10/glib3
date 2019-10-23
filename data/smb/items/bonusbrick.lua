@@ -43,6 +43,10 @@ function bonusBrickResponse(e1, e2)
 		end
 		a2 = { type="callfunc", func = curry(generateBonus, brick), after={2} } 
 
+
+		
+
+
 		local s = script:new()
 		s.actions = {
 			[1] = a1,

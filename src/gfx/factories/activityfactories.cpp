@@ -25,6 +25,7 @@
 #include <gfx/activities/waitclick.h>
 #include <gfx/activities/treemove.h>
 #include <gfx/activities/setactive.h>
+#include <gfx/activities/setdemo.h>
 
 std::shared_ptr<Activity> NoOpActFactory::Create(luabridge::LuaRef &ref) {
     return std::unique_ptr<NoOp>(new NoOp);
@@ -221,6 +222,29 @@ std::shared_ptr<Activity> CamBoundsActFactory::Create(luabridge::LuaRef &ref) {
     float yMin = table.Get<float>("ymin");
     float yMax = table.Get<float>("ymax");
     return std::make_shared<ChangeCamBounds>(cam, xMin, xMax, yMin, yMax);
+
+
+}
+
+std::shared_ptr<Activity> SetDemoActFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    bool value =table.Get<bool>("value");
+    bool sync = table.Get<bool>("sync");
+    double length = table.Get<double>("length");
+
+    auto ptr = std::make_shared<SetDemo>(value, sync, length);
+    // add all events
+    table.ProcessVector("events", [ptr] (luabridge::LuaRef ref) {
+        float t = ref["t"].cast<float>();
+        int key = ref["key"].cast<int>();
+        std::string event = ref["event"].cast<std::string>();
+        int mode = event[0] == 'p' ? 0 : (event[0] == 'd' ? 1 : 2);
+        ptr->addEvent(t, key, mode);
+    });
+
+
+    setTarget(table, ptr.get());
+    return ptr;
 
 
 }

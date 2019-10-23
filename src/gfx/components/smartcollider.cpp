@@ -3,6 +3,7 @@
 #include <gfx/boxedmodel.h>
 #include <gfx/collisionengine.h>
 #include <gfx/model/basicmodel.h>
+#include <gfx/components/statemachine.h>
 #include <gfx/entity.h>
 
 SmartCollider::SmartCollider(const SmartCollider & other) : ICollider(other) {
@@ -30,6 +31,13 @@ Bounds SmartCollider::getAttackBounds() const {
     return bounds;
 
 }
+
+
+void SmartCollider::addStateCollisionDetails (const std::string& id, int flag, int mask, int tag) {
+    m_collisionDetailsOverride[id] = SmartCollisionDetails {flag, mask, tag};
+}
+
+
 
 void SmartCollider::ofu(Animator *a) {
     auto anim = a->GetAnimation();
@@ -89,6 +97,7 @@ void SmartCollider::Start() {
     m_colliderRenderer = renderer.get();
     //renderer->SetMeshInfo(0, 8);
     m_entity->AddChild(c);
+    m_stateMachine = m_entity->GetComponent<StateMachine>();
 }
 
 Shape* SmartCollider::GetShape() {
@@ -99,15 +108,39 @@ Shape* SmartCollider::GetShape() {
 }
 
 int SmartCollider::GetCollisionTag() const {
-    return m_tag;
+    if (m_stateMachine == nullptr) {
+        return m_tag;
+    }
+    std::string currentState = m_stateMachine->GetState();
+    auto it = m_collisionDetailsOverride.find(currentState);
+    if (it == m_collisionDetailsOverride.end()) {
+        return m_tag;
+    }
+    return it->second.tag;
 }
 
 int SmartCollider::GetCollisionFlag() const {
-    return m_flag;
+    if (m_stateMachine == nullptr) {
+        return m_flag;
+    }
+    std::string currentState = m_stateMachine->GetState();
+    auto it = m_collisionDetailsOverride.find(currentState);
+    if (it == m_collisionDetailsOverride.end()) {
+        return m_flag;
+    }
+    return it->second.flag;
 }
 
 int SmartCollider::GetCollisionMask() const {
-    return m_mask;
+    if (m_stateMachine == nullptr) {
+        return m_mask;
+    }
+    std::string currentState = m_stateMachine->GetState();
+    auto it = m_collisionDetailsOverride.find(currentState);
+    if (it == m_collisionDetailsOverride.end()) {
+        return m_mask;
+    }
+    return it->second.mask;
 }
 
 // this returns the max bounds and is used by the collision engine

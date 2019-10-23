@@ -15,6 +15,8 @@ factory.room.create = function(args)
 					{ tag = {variables.collision.tags.player, variables.collision.tags.koopa}, onenter = factory.koopa.response },
 					{ tag = {variables.collision.tags.player, variables.collision.tags.coin}, onenter = factory.coin.response },
 					{ tag = {variables.collision.tags.player, variables.collision.tags.spawn}, onenter = factory.spawn.response },
+					{ tag = {variables.collision.tags.player, variables.collision.tags.warp}, onenter = factory.warp.response, onleave = factory.warp.onexit },
+					{ tag = {variables.collision.tags.player, variables.collision.tags.hotspot}, onenter = factory.hotspot.response },
 				}
 			},
 			{ 
