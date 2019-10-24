@@ -82,9 +82,43 @@ local items_dynamic = {
 		factory = function(p) 
 			return factory.coin.create { model="pickup_coin", pos = p}
 		end
-	}
-			
-
+	},
+	goombas = {
+		pos = { {42, 2}, {50, 2}, {52, 2}},
+		factory = function(p) return factory.goomba.create {pos = p, sprite="goomba", flip=true} end
+	},
+	bighills = {
+		pos = {{0, 2}, {48, 2}, {96, 2}, {144, 2}, {192, 2}},
+		factory = function(p) return factory.tiled.create_from { pos = p, z=-0.1,template = "big_hill"} end,
+	},
+	smallhills = {
+		pos = {{16, 2}, {64, 2}, {112, 2}, {160, 2}, {208, 2}},
+		factory = function(p) return factory.tiled.create_from { pos = p, z=-0.1,template = "small_hill"} end,
+	},
+	bush1 = {
+		pos = {{23, 2}, {71, 2}, {119, 2}, {167, 2}, {215, 2}},
+		factory = function(p) return factory.tiled.create_from { pos = p, z=-0.1,template = "bush1"} end,
+	},
+	bush2 = {
+		pos = {{41, 2}, {89, 2}, {137, 2}, {185, 2}},
+		factory = function(p) return factory.tiled.create_from { pos = p, z=-0.1,template = "bush2"} end,
+	},
+	bush3 = {
+		pos = {{11, 2}, {59, 2}, {107, 2}, {155, 2}, {203, 2}},
+		factory = function(p) return factory.tiled.create_from { pos = p, z=-0.1,template = "bush3"} end,
+	},
+	cloud1 = {
+		pos = {{8, 10}, {19, 11}, {56, 10}, {67, 11}, {104, 10}, {115, 11}, {152, 10}, {163, 11}, {200, 10}, {211, 11}},
+		factory = function(p) return factory.tiled.create_from { pos = p, z=-0.1,template = "cloud1"} end,
+	},		
+	cloud2 = {
+		pos = { {36, 11}, {84, 11}, {132, 11}, {180, 11}},
+		factory = function(p) return factory.tiled.create_from { pos = p, z=-0.1,template = "cloud2"} end,
+	},		
+	cloud3 = {
+		pos = { {27, 10}, {75, 10}, {123, 10}, {171, 10}, {219, 10}},
+		factory = function(p) return factory.tiled.create_from { pos = p, z=-0.1,template = "cloud3"} end,
+	},	
 }
 
 
@@ -138,6 +172,7 @@ room:add_d( {
 	factory.rect { pos = {186, 7}, img = "block2.png", width=4, height=1 },
 	factory.rect { pos = {187, 8}, img = "block2.png", width=3, height=1 },
 	factory.rect { pos = {188, 9}, img = "block2.png", width=2, height=1 },
+	factory.rect { pos = {198, 2}, img = "block2.png", width=1, height=1 },
 
 	-- bonus
 	factory.rect { pos = {0, 16}, img = "block4.png", width=16, height=2 },
@@ -148,7 +183,6 @@ room:add_d( {
 	factory.tiled.create { pos = {15, 20}, width=2, height=9, collide=true, tiledata = {5,5,6,7,5,5,6,7,5,5,6,7,5,5,6,7,5,5,6,7,5,5,6,7,5,5,6,7,5,5,6,7,5,5,6,7}, img = "smb1.png"},
 	factory.line { pos = {13, 20}, A = {0,0}, B={32, 0}},
 	factory.hotspot.create { pos = {13, 18}, width = 14, height = 2, func = function() 
-
 		local actions = {
 			{ type = action.set_state, args = {tag = "player", state = "walk"}},
 			{ type = action.set_demo_mode, args = { tag="player", value=true, sync = true, length = 1, events = {
@@ -161,18 +195,38 @@ room:add_d( {
 			{ type = action.set_state, args = {tag = "player", state = "walk"}},
 
 		}
-			local s = script.make(actions)
-
+		local s = script.make(actions)
 		monkey.play(s)		
 	end },
-
-	--factory.bonus_brick.create { pos={16*16, 5*16}, sprite="bonusbrick", factory = factory.mushroom, args = { sprite="mushroom" } },
-	--factory.bonus_brick.create { pos={16*16, 5*16}, sprite="bonusbrick", factory = factory.flyingcoin, args = { sprite="flying_coin" } },
-	--factory.basic_brick.create { pos={20*16, 5*16}, sprite="basicbrick" },
-	--factory.basic_brick.create { pos={22*16, 5*16}, sprite="basicbrick" },
-	--factory.basic_brick.create { pos={24*16, 5*16}, sprite="basicbrick" },
+	-- end level stuff
+	factory.tiled.create { pos = {198, 3}, width=1, height=10, collide=false, 
+		tiledata = {3,2,3,2,3,2,3,2,3,2,3,2,3,2,3,2,3,2,4,2}, img = "smb1.png"},
+	factory.simplesprite.create {pos ={197.5, 11}, tag="flag", model = "end_level_flag"},
+	factory.tiled.create_from { pos = {202, 2}, template = "castle"},
+	factory.hotspot.create { pos = {198.5,3}, width = 2, height = 256, func = function(mario, hotspot)
+		local mario = monkey.getEntity("player")
+		hotspot:remove()
+		mario.state = "slide"
+		local delta = math.max(mario.y - 48, 0)
+		local actions = {
+			{ type = action.noop, ref = 1},
+			{ type = action.move, ref = 2, after={1}, args = {tag="player", by = {0, -delta}, speed = 50}},
+			{ type = action.move, after={1}, args = {tag="flag", by = {0, -128}, speed = 50}},
+			{ type = action.set_state, after= {2}, args = {tag = "player", state = "walk"}},
+			{ type = action.set_demo_mode, args = { tag="player", value=true, sync = true, length = 10, events = {
+				{ t=0, key = 262, event ="down"}
+			}}},
+		}
+		local s = script.make(actions)
+		monkey.play(s)	
+	end},
+	factory.hotspot.create { pos = {205,2}, width = 2, height = 2, func = function(mario, hotspot)
+		mario:setactive(false)
+	end},
 	
-	factory.spawn.create { width=1, height=256, use_once=true, pos={3,2}, func = factory.goomba.create, args = {  pos={12*16,3*16}, sprite="goomba",flip=false }}
+	factory.spawn.create { width=1, height=256, use_once=true, pos={3,2}, func = factory.goomba.create, args = 
+		{ pos={23, 	3}, sprite="goomba",flip=false }
+	}
 })
 
 local items_d = {}
@@ -186,3 +240,16 @@ for _, v in pairs(items_dynamic) do
 end
 
 room:add_d(items_d)
+-- room:add_b({
+-- 	{ 
+-- 		pos = {0, 0, -5}, 
+-- 		components = { 
+-- 			{
+-- 				type="gfx", 
+-- 				draw="solid", 
+-- 				shape = { type="rect", width=256, height=256}, 
+-- 				color= {92,148,252,255} 
+-- 			}
+-- 		}
+-- 	}
+-- })

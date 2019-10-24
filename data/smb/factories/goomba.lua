@@ -27,7 +27,7 @@ end
 factory.goomba.create = function (args, pos) 
 	glib.assert (args.sprite, "sprite")
 	return {
-		pos = {args.pos[1], args.pos[2], 0},
+		pos = {args.pos[1]*16, args.pos[2]*16, 0},
 		type = "sprite",
 		model = args.sprite,
 		components = {

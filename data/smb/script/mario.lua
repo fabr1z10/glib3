@@ -6,7 +6,89 @@ end
 
 function P(x, y) return {x*16,y*16} end
 
-
+variables.data = {
+	sheets = {
+		[1] = { img = "smb1.png", tilesize = {16, 16}}
+	},	
+	templates = {
+		castle = {
+			sheet = 1,
+			width = 5,
+			height = 5,
+			data = {
+				15, 1, 15, 1, 13, 4, 15, 1, 15, 1,
+				15, 1, 15, 1, 15, 2, 15, 1, 15, 1,
+				14, 3, 15, 3, 15, 3, 15, 3, 14, 3,
+				-1   , 12, 3, 15, 1, 13, 3,    -1,
+				-1   , 14, 3, 14, 3, 14, 3,    -1
+			}
+		},
+		big_hill = {
+			sheet = 1,
+			width = 5,
+			height = 3,
+			data = {
+				10, 2, 11, 2, 14, 2, 11, 2, 12, 2,
+				   -1, 10, 2, 11, 2, 12, 2,    -1,
+				   -1,    -1, 13, 2,    -1,    -1
+			}
+		},
+		small_hill = {
+			sheet = 1,
+			width = 3,
+			height = 2,
+			data = {
+				10, 2, 11, 2, 12, 2,
+				   -1, 13, 2, 	 -1,
+			}
+		},
+		bush1 = {
+			sheet = 1,
+			width = 3,
+			height = 1,
+			data = { 2,3,3,3,4,3}
+		},
+		bush2 = {
+			sheet = 1,
+			width = 4,
+			height = 1,
+			data = { 2,3,3,3,3,3,4,3}
+		},
+		bush3 = {
+			sheet = 1,
+			width = 5,
+			height = 1,
+			data = { 2,3,3,3,3,3,3,3,4,3}
+		},
+		cloud1 = {
+			sheet = 1,
+			width = 3,
+			height = 2,
+			data = { 
+				5,4,6,4,7,4,
+				5,3,6,3,7,3
+			}
+		},
+		cloud2 = {
+			sheet = 1,
+			width = 4,
+			height = 2,
+			data = { 
+				5,4,6,4,6,4,7,4,
+				5,3,6,3,6,3,7,3
+			}
+		},
+		cloud3 = {
+			sheet = 1,
+			width = 5,
+			height = 2,
+			data = { 
+				5,4,6,4,6,4,6,4,7,4,
+				5,3,6,3,6,3,6,3,7,3
+			}
+		},
+	}
+}
 
 function mario_goomba(mario, goomba, sx, sy) 
 

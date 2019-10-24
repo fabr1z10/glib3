@@ -19,6 +19,6 @@ end
 factory.hotspot.response = function (mario, hotspot, sx, sy) 
 	print ("entering")
 	local hotspot_info = hotspot:getinfo()
-	hotspot_info.func()
+	hotspot_info.func(mario,hotspot)
 end
 

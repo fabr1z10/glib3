@@ -50,9 +50,27 @@ factory.room.create = function(args)
 					viewport = {0, 0, args.screen_size[1]*16, args.screen_size[2]*16}
 				},
 				children = {
-					factory.mario.create { pos={args.start_pos[1]*16,args.start_pos[2]*16}}
+					factory.mario.create { pos={args.start_pos[1]*16,args.start_pos[2]*16}},
 				}
-			},
+			},			
+			[2] = {
+				tag = "diag",
+				camera = {
+					tag = "diagcam",
+					type ="ortho",
+					size = {args.screen_size[1]*16, args.screen_size[2]*16},
+					bounds = {0,0,args.screen_size[1]*16, args.screen_size[2]*16},
+					viewport = {0, 0, args.screen_size[1]*16, args.screen_size[2]*16}
+				},
+				children = {
+			 		{
+						pos = {0,256,0},
+						components = {
+							{ type = "text", id="SCORE", font="main", size=8, }
+						}
+					}
+				}
+			}
 		},
 		initscripts = {}
 	}
@@ -68,7 +86,11 @@ factory.room.create = function(args)
 			table.insert(room.scene[1].children, v)
 		end
 	end
-
+	function room:add_b(items) 
+		for _, v in ipairs(items) do
+			table.insert(room.scene[2].children, v)
+		end
+	end
 	function room:add_d(items) 
 		for _, v in ipairs(items) do
 			print ("CIAO")

@@ -13,6 +13,7 @@ local s = {
 	mario_jump_big = {x=144, y=16, width=16, height=32, anchor={8,0}},
 	mario_duck_big = {x=96, y=128, width=16, height=32, anchor={8,0}},
 	mario_die = {x = 96, y=0, width=16, height=16, anchor={8, 0}},
+	mario_slide = {x=176,y=64,width=16,height=16,anchor={8,0}},
 	brick = {x=240, y=0, width=16, height=16 },
 	brick_piece = {x=64, y=16, width=16, height=16},
 	mushroom = {x=48, y=16, width=16, height=16, anchor={8,0}},
@@ -38,6 +39,7 @@ local s = {
 	flying_coin_4 = {x=208,y=16,width=16,height=16,anchor={8,0}},
 	score_100 = {x=0, y=80, width=16,height=16, anchor={8,0}},
 	empty = {x=176,y=80,width=16,height=16,anchor={0,0}},
+	end_level_flag = {x=224,y=64,width=16,height=16}
 
 
 }
@@ -57,6 +59,7 @@ models["mario"] = {
 		}},
 		{ name = "jump", box = {-8, 0, 8, 16}, frames = { { duration = dt, quads = {{ id = s.mario_jump }}}}},
 		{ name = "die", frames = { { duration = dt, quads = {{ id = s.mario_die }}}}},
+		{ name = "slide", frames = { { duration = dt, quads = {{ id = s.mario_slide }}}}},
 		{ name = "idle_big", box = {-8, 0, 8, 24}, frames = { {duration = dt, quads = {{ id = s.mario_idle_big }}}}},
 		{ name = "walk_big", box = {-8, 0, 8, 24}, frames = {
 			{ duration = dt, quads = {{ id = s.mario_walk_big_1 } }},
@@ -113,6 +116,7 @@ models["koopa"] = {
 models["basicbrick"] = glib.basic_model ("smb1.png", s.brick)
 models["score_100"] = glib.basic_model ("smb1.png", s.score_100)
 models["brickpiece"] = glib.basic_model ("smb1.png", s.brick_piece)
+models["end_level_flag"] = glib.basic_model ("smb1.png", s.end_level_flag)
 
 
 models["mushroom"] = {

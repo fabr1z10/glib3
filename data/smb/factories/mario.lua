@@ -54,7 +54,9 @@ factory.mario.create = function(args)
 				flag = variables.collision.flags.player, 
 				mask = variables.collision.flags.foe | variables.collision.flags.foe_attack,
 				collision_overrides = {
-					{ state = "warp", flag = 0, mask = 0, tag = 0}
+					{ state = "warp", flag = 0, mask = 0, tag = 0},
+					{ state = "slide", flag = 0, mask = 0, tag = 0},
+
 
 				}
 			},
@@ -130,9 +132,15 @@ factory.mario.create = function(args)
 						state = {
 							type = "simple",
 							anim = "idle",
-						}
-						
-					}
+						}						
+					},
+					{
+						id = "slide",
+						state = {
+							type = "simple",
+							anim = "slide",
+						}						
+					},
 				},
 			},
 			{ type ="keyinput" },

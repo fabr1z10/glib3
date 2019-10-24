@@ -9,7 +9,8 @@ engine = {
     title = "Super Mario Bros",
     assets = {
     	fonts = {
-	    	diag = { file  = "./fonts/arial.ttf" }
+	    	diag = { file  = "./fonts/arial.ttf" },
+			main = { file  = "./fonts/prstartk.ttf" }
 		},
 		models = {},
 		animations = {}
