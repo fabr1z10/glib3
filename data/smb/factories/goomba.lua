@@ -10,7 +10,7 @@ factory.goomba.response = function (mario, goomba, sx, sy)
 
 	if (mario.state == "jump" and mario.vy < 0 and sy > 0 and math.abs(sx) < 0.01) then
 		--monkey.removeFromId(goomba.id)
-		mario.vy = 300
+		mario.vy = 300		
 		local act = {
 			{ type = action.set_state, args = { id = goomba.id, state = "dead"}	},
 			{ type = action.delay, args = { sec= 2}},
@@ -18,6 +18,8 @@ factory.goomba.response = function (mario, goomba, sx, sy)
 		}
 		local s = script.make(act)
 		monkey.play(s)
+		add_score (100)
+
 	else
 		factory.mario.hit_by_enemy(mario, goomba)
 	end

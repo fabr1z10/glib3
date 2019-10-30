@@ -4,7 +4,8 @@ local roomInfo = {
 	screen_size = {16, 16},
 	start_pos = {2, 2},
 	collisionSize = 80,
-	g = -10
+	g = -10,
+	name = "1-1"
 }
 
 --local initscripts = {}
@@ -141,6 +142,7 @@ room:add_d( {
 			{ type = action.move, args = {tag="player", by = {0, -32}, speed = 50}},
 			{ type = action.move, args = {tag="player", to = {32, 400}, imm = true}},
 			{ type = action.set_state, args = {tag="player", state="jump"}},
+			{ type = action.activate, args = {tag ="bg", active=false}},
 			{ type = action.change_cam_bounds, args = {cam="maincam", x= {0, 256}, y = {256, 512}}}
 		}
 		local s = script.make(actions)
@@ -190,6 +192,7 @@ room:add_d( {
 			}}},
 			{ type = action.set_state, args = {tag="player", state="warp"}},
 			{ type = action.move, args = {tag="player", to = {164*16,0}, imm = true}},
+			{ type = action.activate, args = {tag ="bg", active=true}},
 			{ type = action.change_cam_bounds, args = {cam="maincam", x= {0, roomInfo.worldWidth*engine.tilesize}, y = {0, roomInfo.worldHeight*engine.tilesize}}},
 			{ type = action.move, args = {tag="player", by = {0, 64}, speed = 50}},
 			{ type = action.set_state, args = {tag = "player", state = "walk"}},
@@ -222,6 +225,14 @@ room:add_d( {
 	end},
 	factory.hotspot.create { pos = {205,2}, width = 2, height = 2, func = function(mario, hotspot)
 		mario:setactive(false)
+		local actions = {
+			{ type = action.create_object, args = { factory = factory.simplesprite.create,
+				args = { tag="end_level", model = "castle_flag", pos ={204, 5} }}},
+			{ type = action.move, args = {tag="end_level", by = {0, 32}, speed = 20}}
+		}
+		local s = script.make(actions)
+		monkey.play(s)	
+
 	end},
 	
 	factory.spawn.create { width=1, height=256, use_once=true, pos={3,2}, func = factory.goomba.create, args = 
@@ -240,16 +251,18 @@ for _, v in pairs(items_dynamic) do
 end
 
 room:add_d(items_d)
--- room:add_b({
--- 	{ 
--- 		pos = {0, 0, -5}, 
--- 		components = { 
--- 			{
--- 				type="gfx", 
--- 				draw="solid", 
--- 				shape = { type="rect", width=256, height=256}, 
--- 				color= {92,148,252,255} 
--- 			}
--- 		}
--- 	}
--- })
+room:add_b({
+	{ 
+ 		tag = "bg",
+		pos = {0, 0, -5}, 
+		components = { 
+			{
+				type="gfx", 
+				draw="solid", 
+				shape = { type="rect", width=256, height=256}, 
+				--color= {92,148,252,255} 
+				color = {0,0,64,255}
+			}
+		}
+	}
+})

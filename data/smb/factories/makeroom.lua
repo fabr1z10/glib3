@@ -1,6 +1,7 @@
 factory.room = {}
 
 factory.room.create = function(args)
+	variables.world_name = args.name or ""
 	local room = {
 		engines = {
 			{ type = "scheduler"},
@@ -58,17 +59,68 @@ factory.room.create = function(args)
 				camera = {
 					tag = "diagcam",
 					type ="ortho",
+					pos = {0,0,5},
 					size = {args.screen_size[1]*16, args.screen_size[2]*16},
 					bounds = {0,0,args.screen_size[1]*16, args.screen_size[2]*16},
 					viewport = {0, 0, args.screen_size[1]*16, args.screen_size[2]*16}
 				},
 				children = {
 			 		{
-						pos = {0,256,0},
+						pos = {24,248,0},
 						components = {
-							{ type = "text", id="SCORE", font="main", size=8, }
+							{ type = "text", id="MARIO", font="main", size=8, }
 						}
-					}
+					},
+					{
+						tag = "score_label",
+						pos = {24, 240, 0},
+						components = {
+							{ type = "text", id=string.format("%06d", variables.score), font="main", size=8, }	
+						}
+					},
+			 		{
+						pos = {144,248,0},
+						components = {
+							{ type = "text", id="WORLD", font="main", size=8, }
+						}
+					},	
+			 		{
+						pos = {164,236,0},
+						components = {
+							{ type = "text", id=variables.world_name, font="main", size=8, align="center" }
+						}
+					},						
+					{
+						pos = {232,248,0},
+						components = {
+							{ type = "text", id="TIME", font="main", size=8, align="topright" }
+						}
+					},	
+					{
+						tag = "time_label",
+						pos = {232,240,0},
+						components = {
+							{ type = "text", id=tostring(variables.time), font="main", size=8, align="topright" }
+						}
+					},				
+					{
+						pos = {96, 232, 0},
+						type="sprite",
+						model="coin_counter"
+					},
+					{
+						pos = {108,240,0},
+						components = {
+							{ type = "text", id="x", font="main", size=8 }
+						}
+					},	
+					{
+						tag = "coin_label",
+						pos = {116, 240, 0},
+						components = {
+							{ type = "text", id=string.format("%02d", variables.coins), font="main", size=8, }	
+						}
+					},
 				}
 			}
 		},
@@ -97,6 +149,21 @@ factory.room.create = function(args)
 			table.insert(room.engines[4].items, v)
 		end
 	end
+
+
+	table.insert (room.initscripts, function()
+		local actions = {
+			{ type = action.repeat_forever, args = { interval = 1, func = function() 
+				variables.time = variables.time - 1
+				local l = monkey.getEntity("time_label")
+				l:settext(tostring(variables.time))
+			end} }
+		}
+		local s = script.make(actions)
+		s.name = "_timer"
+		monkey.play(s)	
+	end)
+
 
  	return room
 end

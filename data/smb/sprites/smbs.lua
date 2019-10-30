@@ -39,10 +39,13 @@ local s = {
 	flying_coin_4 = {x=208,y=16,width=16,height=16,anchor={8,0}},
 	score_100 = {x=0, y=80, width=16,height=16, anchor={8,0}},
 	empty = {x=176,y=80,width=16,height=16,anchor={0,0}},
-	end_level_flag = {x=224,y=64,width=16,height=16}
-
-
+	end_level_flag = {x=224,y=64,width=16,height=16},
+	castle_flag = {x=240,y=64,width=16,height=16},
+	coin_counter_1 = {x=128,y=80,width=16,height=16},
+	coin_counter_2 = {x=144,y=80,width=16,height=16},
+	coin_counter_3 = {x=160,y=80,width=16,height=16},
 }
+
 local dt=0.1
 
 
@@ -117,6 +120,7 @@ models["basicbrick"] = glib.basic_model ("smb1.png", s.brick)
 models["score_100"] = glib.basic_model ("smb1.png", s.score_100)
 models["brickpiece"] = glib.basic_model ("smb1.png", s.brick_piece)
 models["end_level_flag"] = glib.basic_model ("smb1.png", s.end_level_flag)
+models["castle_flag"] = glib.basic_model ("smb1.png", s.castle_flag)
 
 
 models["mushroom"] = {
@@ -126,6 +130,20 @@ models["mushroom"] = {
 	animations = {
 		{ name = "walk", box = {-8, 0, 8, 16}, frames = {
 			{ duration = dt, quads = {{ id = s.mushroom } }},
+		}},
+	}
+}
+
+models["coin_counter"] = {
+    sheet = "smb1.png",
+    type = "sprite",
+    ppu=1,
+	animations = {
+		{ name = "walk", frames = {
+			{ duration = dt, quads = {{ id = s.coin_counter_1 } }},
+			{ duration = dt, quads = {{ id = s.coin_counter_2 } }},
+			{ duration = dt, quads = {{ id = s.coin_counter_3 } }},
+			{ duration = dt, quads = {{ id = s.coin_counter_2 } }},
 		}},
 	}
 }

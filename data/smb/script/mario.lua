@@ -6,6 +6,18 @@ end
 
 function P(x, y) return {x*16,y*16} end
 
+function add_score(n)
+	variables.score = variables.score + n
+	local l = monkey.getEntity("score_label")
+	l:settext(string.format("%06d", variables.score))
+end
+function add_coin(n)
+	variables.coin = variables.coin + n
+	local l = monkey.getEntity("coin_label")
+	l:settext(string.format("%02d", variables.coin))
+end
+
+
 variables.data = {
 	sheets = {
 		[1] = { img = "smb1.png", tilesize = {16, 16}}
