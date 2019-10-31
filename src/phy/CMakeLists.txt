@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.3)
 find_package(BLAS)
 find_package(LAPACK)
 find_package(LAPACKE)
-
+find_package(Bullet REQUIRED)
 
 if(LAPACK_FOUND AND BLAS_FOUND)
    set(lapackblas_libraries ${BLAS_LIBRARIES} ${LAPACKE_LIBRARIES})
