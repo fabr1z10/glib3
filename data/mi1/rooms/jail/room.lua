@@ -31,3 +31,13 @@ room:add( "jail.walkarea2", {
  	scumm.factory.object { id = "otis"},
 })
 
+
+table.insert(room.initstuff, function()
+	local act = {
+		{ ref=1, type = scumm.action.walkto, args = {tag="otis", pos = {60, 25}}},
+		{ type = scumm.action.walkto, args = {tag="otis", pos = {30, 25}}},
+	}
+	local s = script.make(act,1)
+	s.name = "_otis"
+	monkey.play(s)
+end)

@@ -1576,7 +1576,9 @@ engine.assets.models["otis"] = {
     type = "sprite",
     ppu=1,
 	animations = {
-		{ name = "idle_e", frames = { { duration = dt, quads = { { id = s.otis_idle_body_e }, { id = s.otis_idle_head_e }}}}},
+		{ name = "idle_e", frames = { { duration = dt, quads = { 
+			{ id = s.otis_idle_body_e }, 
+			{ id = s.otis_idle_head_e, pos = {1,34,0} }}}}},
 		{ name = "idle_n", frames = { { duration = dt, quads = { { id = s.otis_idle_body_e }, { id = s.otis_idle_head_e }}}}},
 		{ name = "idle_s", frames = { { duration = dt, quads = {{ id = s.otis_idle_body_s }, { id=s.otis_idle_head_s }}}}},
 		{ name = "walk_e", frames = { 

@@ -94,6 +94,8 @@ variables = {
  	circus_knows_helmet = false,
     circus_feat_done = false,
 	map_looked = false,
+	talked_to_otis = false,
+	mint_given = false,
 -- 	talked_to_troll = false,
  	inventory = { 	},
 

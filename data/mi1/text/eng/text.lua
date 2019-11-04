@@ -870,6 +870,10 @@ strings = {
 	},
 	circus = {
 		[1] = "Those crazy Spaghetti Brothers are still in there."
+	},
+	jail = {
+		[1] = "Looks nervous."
+
 	}
 
 }

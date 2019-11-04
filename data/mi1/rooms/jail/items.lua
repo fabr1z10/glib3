@@ -28,7 +28,7 @@ engine.items["jail.door"] = {
 }
 
 engine.items["otis"] = {
-	pos = {32, 24, 0},
+	pos = {45, 24, 0},
 	--pos = {35, 5, 0},
 	hotspot = {
 		text = strings.objects.prisoner,
@@ -43,10 +43,33 @@ engine.items["otis"] = {
 	character = {
 		state = "idle",
 		dir = "east",
-		speed = 20
+		speed = 50
 	},
 	model ="otis",
 	actions = {
+ 		look = { type = scumm.action.say, args = {actor="guybrush", lines = {strings.jail[1]}}},
+		talk = function()
+			if (not variables.talked_to_otis) then
+				variables.talked_to_otis = true
+				return {
+					{type = action.suspend_script, args = { script ="_otis"}},
+					{type = scumm.action.disable_controls },
+					{type = scumm.action.walkto, args = {tag="otis", pos = {55,19}}},
+					{type = scumm.action.say, args = {actor="otis", animstart="idle_e", animend="idle_e", lines = {strings.dialogues.otis[1], strings.dialogues.otis[2]}}},
+					{type = scumm.action.turn, args = {tag="player", dir="s"}},
+					{type = scumm.action.say, args = {actor="guybrush", lines = {strings.dialogues.otis[3]}}},
+					{type = scumm.action.walkto, args = {tag="player", pos = {72, 2}}},
+					{type = scumm.action.say, args = {actor="guybrush", lines = {strings.dialogues.otis[4]}}},
+					{type = scumm.action.say, args = {actor="otis", animstart="idle_e", animend="idle_e", lines = {strings.dialogues.otis[5]}}},
+					{type = action.resume_script, args = { script ="_otis"}},
+					{type = scumm.action.disable_controls, args = {value = false}},
+				}
+			else 
+				if (not variables.mint_given) then
+					return {type = scumm.action.say, args = {actor="guybrush", lines = {strings.dialogues.otis[6]}}}
+				end
+			end
+		end
 		--look = { type = scumm.action.say, args = { actor="guybrush", lines = {strings.dialogues.lookout[50]} }},
 		--talk = { type= scumm.action.start_dialogue, args = {dialogue = "lookout"}}
 	}

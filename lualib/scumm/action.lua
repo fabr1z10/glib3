@@ -117,15 +117,18 @@ scumm.action.say = function(args)
 end
 
 scumm.action.disable_controls = function(args) 
-	return { type="callfunc", func = function() 
-		engine.state.scumm.walk_enabled = false
+	return { type="callfunc", func = function()
+		local value = true
+		if (args ~= nil and args.value ~= nil) then value = args.value end
+		local n = not value 
+		engine.state.scumm.walk_enabled = n
 		local m = monkey.getEntity("mainui")
 		local m1 = monkey.getEntity("main")
 		if (not m.isnil) then
-			m:setactive(false)
+			m:setactive(n)
 		end
 		if (not m1.isnil) then
-			m1:enablecontrols(false)
+			m1:enablecontrols(n)
 		end
 	end }
 end
