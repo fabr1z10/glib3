@@ -48,6 +48,16 @@ std::shared_ptr<SpriteMesh> SimpleModelFactory::ReadSpriteMesh(LuaTable& t) {
             int n = qu.length();
             frame.offset = 6*quadCount;
             frame.count = 6*n;
+
+            if (ft.HasKey("angle") || ft.HasKey("delta")) {
+                frame.move = true;
+                frame.flipx = ft.Get<bool>("flip", false);
+                frame.angle=ft.Get<float>("angle", 0.0f);
+                frame.origin =  ft.Get<glm::vec2>("origin", glm::vec2(0.0f));;
+                frame.translation =  ft.Get<glm::vec2>("delta", glm::vec2(0.0f));;
+            }
+
+
             for (int k = 0; k < n; ++k) {
                 luabridge::LuaRef a3 = qu[k+1];
                 LuaTable qt (a3);

@@ -2,6 +2,9 @@
 #include <gfx/components/renderer.h>
 #include <gfx/entity.h>
 #include <gfx/error.h>
+#include <glm/gtx/transform.hpp>
+#include <gfx/math/geom.h>
+
 
 Animator::Animator(std::shared_ptr<IModel> model) : IAnimator() {
     m_model = std::dynamic_pointer_cast<SpriteModel>(model);
@@ -38,11 +41,25 @@ void Animator::Update(double dt) {
             m_frame = m_animInfo->loop ? m_animInfo->frameCount - 1 : 0;
             m_animCompleted = true;
         }
+
         // if frame has changed, notify the model that might do something
         if (oldFrame != m_frame) {
             // this will be >= 0
             m_time = m_time - frameDuration;
             const FrameInfo &frameInfo = m_animInfo->frameInfo[m_frame];
+            if (frameInfo.move) {
+                glm::mat4 x (1.0f);
+                if (frameInfo.flipx) x[0][0] *= -1;
+
+                x *= glm::translate(glm::vec3(frameInfo.origin, 0.0f)) *
+                        glm::rotate(deg2rad * frameInfo.angle, glm::vec3(0,0,1)) * glm::translate(glm::vec3(-frameInfo.origin, 0.0f));
+                x[3][0] += frameInfo.translation.x;
+                x[3][1] += frameInfo.translation.y;
+
+                m_renderer->SetTransform(x);
+                //                m_entity->SetAngle(frameInfo.angle);
+                //m_entity->SetPosition(frameInfo.translation);
+            }
             m_renderer->SetMeshInfo(frameInfo.offset, frameInfo.count);
             onFrameUpdate.Fire(this);
         }

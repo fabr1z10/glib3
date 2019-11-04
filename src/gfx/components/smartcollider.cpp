@@ -50,13 +50,19 @@ void SmartCollider::ofu(Animator *a) {
 
     // now, check if I have an attack box
     if (bi.m_attackShape != nullptr) {
+        int mask = m_mask;
+        int tag = m_tag;
+        auto it = m_attackInfo.find(anim);
+        if (it != m_attackInfo.end()) {
+            tag = it->second.first;
+            mask = it->second.second;
+        }
 
-        auto attackInfo = m_attackInfo.at(anim);
 
         auto t = m_entity->GetWorldTransform();
         std::cout <<" **** hit ****\n";
         std::cout << "character at position = " << t[3][0] << ", " << t[3][1] << " scale " << t[0][0] << "\n";
-        auto e = m_engine->ShapeCast(bi.m_attackShape, t, attackInfo.second);
+        auto e = m_engine->ShapeCast(bi.m_attackShape, t, mask);
 
         if (e.report.collide) {
             std::cerr << "HIT!\n";
@@ -64,7 +70,7 @@ void SmartCollider::ofu(Animator *a) {
             if (rm == nullptr) {
                 std::cerr << "no handler!\n";
             }
-            auto handler = rm->GetHandler(attackInfo.first, e.entity->GetCollisionTag());
+            auto handler = rm->GetHandler(tag, e.entity->GetCollisionTag());
             if (handler.response != nullptr) {
                 auto object = e.entity->GetObject();
                 std::cerr << "FOUND RESPONSE\n";
