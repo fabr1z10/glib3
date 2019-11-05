@@ -13,6 +13,7 @@ roomDefinition = {
 	walkareas = { "forest2.walkarea"},
 	font_size = 8,
 	playerid="guybrush",
+	collide=true
 }
 
 room = scumm.factory.basic_room (roomDefinition)

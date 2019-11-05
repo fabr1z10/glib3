@@ -2,25 +2,33 @@ local w1 = 20
 local h1 = 50
 local wh = 35
 
-engine.items["forest1.walkarea"] = scumm.factory.walkarea {
-	shape = { 
-		type = "graph", 
-		vertices = { {103, 35}, {154,35}, {238, 35}, {320, 35}, {154, 69}, {238, 69}}, 
-		edges = { {0,1}, {1,2}, {2,3}, {1, 4}, {2, 5}}
-	},
-	depth = { type="linear_y", values= {0, 1, 144, 0} },
-	priority = 0,
-}
 
-engine.items["forest2.walkarea"] = scumm.factory.walkarea {
-	shape = { 
-		type = "graph", 
-		vertices = { {0, 35}, {257,35}, {320, 35}, {257, 69}}, 
-		edges = { {0,1}, {1,2}, {1,3}}
-	},
-	depth = { type="linear_y", values= {0, 1, 144, 0} },
-	priority = 0,
-}
+local fw = function(v, e) 
+	return scumm.factory.walkarea {
+		shape = { 
+			type = "graph", 
+			vertices = v,
+			edges = e
+		},
+		depth = { type="linear_y", values= {0, 1, 144, 0} },
+		priority = 0
+	}
+
+end
+
+engine.items["forest1.walkarea"] = fw (
+	{{103, 35}, {154,35}, {238, 35}, {320, 35}, {154, 69}, {238, 69}}, 
+	{{0,1}, {1,2}, {2,3}, {1, 4}, {2, 5}}
+)
+engine.items["forest2.walkarea"] = fw (
+	{{0, 35}, {257,35}, {320, 35}, {257, 69}}, 
+	{{0,1}, {1,2}, {1,3}}
+)
+engine.items["forest3.walkarea"] = fw ({ {135, 69}, {135,35}, {320, 35}}, { {0,1}, {1,2} })
+engine.items["forest4.walkarea"] = fw ({ {0, 35}, {266,35}, {320, 35}, {266, 20}}, { {0,1}, {1,2}, {1,3} })
+engine.items["forest5.walkarea"] = fw ({ {0, 24}, {241,24}, {320, 24}, {241, 69}}, { {0,1}, {1,2}, {1,3} })
+engine.items["forest6.walkarea"] = fw ({ {0, 35}, {241,35}, {320, 35}, {241, 69}}, { {0,1}, {1,2}, {1,3} })
+
 
 local f = function(x, y, wx, wy, dir, width, height, roomTo) 
 	return {

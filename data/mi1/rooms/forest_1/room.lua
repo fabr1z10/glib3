@@ -12,6 +12,7 @@ roomDefinition = {
 	walkareas = { "forest1.walkarea"},
 	font_size = 8,
 	playerid="guybrush",
+	collide = true
 	--depth = { type="linear_y", values= {0, 1, 144, 0} },
 }
 

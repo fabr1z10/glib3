@@ -101,8 +101,8 @@ variables = {
 
 	save_states = {
 		start = function()
-			engine.state.room = "clearing"
-			engine.state.previousRoom ="scummbar"
+			engine.state.room = "lookout"
+			engine.state.previousRoom =""
 		end,
 		taken_stuff_from_kitchen = function()
 			engine.state.scumm.inventory["kitchen.meat"] = 1
@@ -130,12 +130,27 @@ variables = {
 			variables.circus_feat_done = true
 			engine.state.room = "jail"
 			engine.state.previousRoom ="village1"
+		end,
+		bought_store = function()
+			engine.state.scumm.inventory["kitchen.meat"] = 1
+			engine.state.scumm.inventory["pieces_of_eight"] = 478
+			engine.state.scumm.inventory["kitchen.fish"] = 1
+			engine.state.scumm.inventory["shop.sword"] = 1
+			engine.state.scumm.inventory["shop.shovel"] = 1
+			engine.state.scumm.inventory["map"] = 1
+			variables.fish_taken = true
+			variables.circus_feat_done = true
+			variables.sword_paid = true
+			variables.shovel_paid = true
+			engine.state.room = "store"
+			engine.state.previousRoom ="village3"
+	
 		end
 	}
 
 }
 
-variables.save_states.got_map()
+variables.save_states.start()
 
 --engine.state.scumm.inventory["kitchen.fish"] = 1
 --engine.state.scumm.inventory["pieces_of_eight"] = 1000

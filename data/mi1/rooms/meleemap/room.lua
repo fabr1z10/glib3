@@ -28,6 +28,12 @@ room:add ( "main",
 	}
 )
 
+table.insert(room.initstuff, glib.curry (mi.addStorekeeper, { 
+	pos = {55, 97, 0}, 
+	parent="meleemap.walkarea", 
+	from = "lookout",
+	walkto = { {74, 112} }
+}))
 -- room:add( {
 -- 	{ pos = {0, 0,-3}, components = { { type="gfx", image="gfx/meleemap.png" }}},
 -- 	scumm.factory.walkarea { shape = { 
