@@ -40,15 +40,20 @@ void SkeletalAnimator::Update(double dt) {
     //float oldTime = m_time;
     m_time += dt;
     float duration = m_currentAnim->getDuration();
+    bool loop = m_currentAnim->loop();
     if (m_time >= duration) {
+        if (loop) {
+            m_time = duration;
+        } else {
+            m_time = m_time - duration;
+        }
         m_looped = true;
-        m_time = m_time - duration;
     }
 
     auto state = m_currentAnim->getTransformation(m_time);
-    for (const auto& b : state.bones) {
-        // set the correct angle for each bone
-        m_bones.at(b.name)->SetAngle(b.angle);
+    const auto& boneIds = m_currentAnim->getBoneIds();
+    for (size_t j = 0; j < boneIds.size(); ++j) {
+        m_bones.at(boneIds[j])->SetAngle(state.boneAngles[j]);
     }
 
     // check attacks

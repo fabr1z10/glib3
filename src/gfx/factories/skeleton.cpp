@@ -3,57 +3,65 @@
 #include <gfx/engine.h>
 #include <gfx/components/skeletalanimator.h>
 #include <gfx/factories.h>
-
+#include <gfx/splineanim.h>
+#include <gfx/parabolicanim.h>
 
 std::shared_ptr<SkeletalAnimation> SkeletalAnimFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
-    float duration = table.Get<float>("duration");
-    luabridge::LuaRef boundary = table.Get<luabridge::LuaRef>("boundary");
-    LuaTable btable(boundary);
-    int boundltype{0};
-    int boundrtype{0};
-    double boundl{0.0};
-    double boundr{0.0};
-    if (btable.HasKey("periodic")) {
-        boundltype = -1;
-        boundrtype = -1;
-    } else {
-        luabridge::LuaRef left = btable.Get<luabridge::LuaRef>("left");
-        luabridge::LuaRef right = btable.Get<luabridge::LuaRef>("right");
-        std::string ltype = left[1].cast<std::string>();
-        if (ltype == "first") {
-            boundl = left[2].cast<double>();
-            boundltype = 1;
+
+    bool loop = table.Get<bool>("loop");
+
+    std::string type = table.Get<std::string>("animtype");
+
+
+
+    std::shared_ptr<SkeletalAnimation> anim;
+    if (type == "spline") {
+        luabridge::LuaRef boundary = table.Get<luabridge::LuaRef>("boundary");
+        LuaTable btable(boundary);
+        int boundltype{0};
+        int boundrtype{0};
+        double boundl{0.0};
+        double boundr{0.0};
+        if (btable.HasKey("periodic")) {
+            boundltype = -1;
+            boundrtype = -1;
+        } else {
+            luabridge::LuaRef left = btable.Get<luabridge::LuaRef>("left");
+            luabridge::LuaRef right = btable.Get<luabridge::LuaRef>("right");
+            std::string ltype = left[1].cast<std::string>();
+            if (ltype == "first") {
+                boundl = left[2].cast<double>();
+                boundltype = 1;
+            }
+            std::string rtype = right[1].cast<std::string>();
+            if (rtype == "first") {
+                boundrtype = 1;
+                boundr = right[2].cast<double>();
+            }
         }
-        std::string rtype = right[1].cast<std::string>();
-        if (rtype == "first") {
-            boundrtype = 1;
-            boundr = right[2].cast<double>();
-        }
+        anim = std::make_shared<SplineAnimation>(loop, boundltype, boundl, boundrtype, boundr);
+    } else if (type == "parabolic") {
+        auto pa = std::make_shared<ParabolicAnimation>(loop);
+        anim = pa;
+
     }
 
-
-    auto anim = std::make_shared<SkeletalAnimation>(duration, boundltype, boundl, boundrtype, boundr);
-    KeyFrame firstKeyFrame;
-    int i = 0;
-    table.ProcessVector("frames", [&anim, &i, &firstKeyFrame] (luabridge::LuaRef keyframe) {
+    // load the keyframes
+    std::vector<std::string> boneIds = table.GetVector<std::string>("bones", true);
+    anim->setBoneIds(boneIds);
+    int boneCount = boneIds.size();
+    table.ProcessVector("frames", [&anim, boneCount] (luabridge::LuaRef keyframe) {
         LuaTable ft(keyframe);
         float t = ft.Get<float>("t");
-        KeyFrame kf;
-        ft.ProcessVector("bones", [&kf] (luabridge::LuaRef bone) {
-            std::string boneId = bone["name"].cast<std::string>();
-            float angle = bone["angle"].cast<float>();
-            kf.AddAngle(boneId, angle);
-        });
-        anim->addKeyFrame(t, kf);
-        if (i == 0) {
-            firstKeyFrame = kf;
-        }
-        i++;
+        std::vector<float> angles = ft.GetVector<float>("a", true);
+        if (angles.size() != boneCount) GLIB_FAIL("The number of angles in each keyframe must match the number of bones!");
+        KeyFrame kf(t, angles);
+        anim->addKeyFrame(kf);
     });
 
     // add a last keyframe equal to the first in order to loop
-    anim->addKeyFrame(duration, firstKeyFrame);
+    //  anim->addKeyFrame(duration, firstKeyFrame);
 
     anim->init();
     return anim;

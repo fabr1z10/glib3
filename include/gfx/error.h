@@ -24,3 +24,5 @@ private:
 	_glib_msg_stream << message; \
 	throw Error(__FILE__, __LINE__, _glib_msg_stream.str()); \
 }
+
+

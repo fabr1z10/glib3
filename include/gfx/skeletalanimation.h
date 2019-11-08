@@ -4,21 +4,31 @@
 #include <unordered_map>
 #include <glm/glm.hpp>
 #include <memory>
-#include <alglib/interpolation.h>
 #include <gfx/math/shape.h>
 
 class KeyFrame {
 public:
-    KeyFrame();
-    void AddAngle (const std::string&, float);
-    const std::unordered_map<std::string, float>& getAngles() const;
+    KeyFrame(float t, const std::vector<float>& angles) : m_time(t), m_angles(angles) {}
+    const std::vector<float>& getAngles() const;
+    float getTime() const;
+    float getAngle(size_t) const;
+
 private:
+    float m_time;
     glm::vec2 offset;
-    std::unordered_map<std::string, float> m_angles;
+    std::vector<float> m_angles;
 };
 
+inline float KeyFrame::getAngle(size_t j) const {
+    return m_angles[j];
+}
 
-inline const std::unordered_map<std::string, float>& KeyFrame::getAngles() const {
+inline float KeyFrame::getTime() const {
+    return m_time;
+}
+
+
+inline const std::vector<float>& KeyFrame::getAngles() const {
     return m_angles;
 }
 
@@ -29,34 +39,46 @@ struct BoneInfo {
 
 struct SkeletalAnimationState {
     glm::vec2 pos;
-    std::vector<BoneInfo> bones;
+    std::vector<float> boneAngles;
 };
 
 class SkeletalAnimation {
 public:
-    SkeletalAnimation(float duration, int boundltype, double boundl, int boundrtype, double boundr) :
-            m_duration(duration), m_boundltype(boundltype), m_boundl(boundl), m_boundrtype(boundrtype), m_boundr(boundr) {}
-    SkeletalAnimationState getTransformation (float t);
-    void init();
+    SkeletalAnimation(bool loop) : m_loop(loop) {}
+    virtual SkeletalAnimationState getTransformation (float t) = 0;
+    virtual void init() = 0;
     float getDuration() const;
-    void addKeyFrame (float, KeyFrame);
+    void addKeyFrame (const KeyFrame&);
     void addAttack (float, const std::string&);
     bool loop() const;
-
-private:
+    int getKeyFrameCount() const;
+    const std::vector<std::string>& getBoneIds() const;
+    void setBoneIds(const std::vector<std::string>& boneIds);
+    int getBonesCount() const;
+protected:
     bool m_loop;
-    int m_boundltype;
-    int m_boundrtype;
-    double m_boundl;
-    double m_boundr;
-    float m_duration;
-    std::unordered_map<float, KeyFrame> m_keyFrames;
-    std::unordered_map<std::string, std::unique_ptr<alglib::spline1dinterpolant>> m_interpolants;
+    std::vector<std::string> m_boneIds;
+    std::vector<KeyFrame> m_keyFrames;
+    //std::unordered_map<float, KeyFrame> m_keyFrames;
 };
 
-inline float SkeletalAnimation::getDuration() const {
-    return m_duration;
+inline int SkeletalAnimation::getBonesCount() const {
+    return m_boneIds.size();
 }
+
+inline const std::vector<std::string>& SkeletalAnimation::getBoneIds() const {
+    return m_boneIds;
+}
+
+inline void SkeletalAnimation::setBoneIds(const std::vector<std::string>& boneIds) {
+    m_boneIds =boneIds;
+}
+
+inline int SkeletalAnimation::getKeyFrameCount() const {
+    return m_keyFrames.size();
+}
+
+
 
 inline bool SkeletalAnimation::loop() const {
     return m_loop;
