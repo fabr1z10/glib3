@@ -45,7 +45,7 @@ void Jump2D::Run(double dt) {
             m_dynamics->m_velocity.y = 0.0f;
             m_sm->SetState(m_walkState);
         } else {
-            m_dynamics->m_velocity.y = -m_bounceFactor * m_dynamics->m_velocity.y;
+            m_dynamics->m_velocity.y = m_bounceFactor;
         }
         return;
     }

@@ -53,6 +53,11 @@ local s = {
 	coin_counter_1 = {x=128,y=80,width=16,height=16},
 	coin_counter_2 = {x=144,y=80,width=16,height=16},
 	coin_counter_3 = {x=160,y=80,width=16,height=16},
+	mario_fire_1 = {x=176,y=112,width=16,height=16,anchor={8,8}},
+	mario_fire_2 = {x=192,y=112,width=16,height=16,anchor={8,8}},
+	mario_fire_3 = {x=208,y=112,width=16,height=16,anchor={8,8}},
+	mario_fire_4 = {x=224,y=112,width=16,height=16,anchor={8,8}},
+
 }
 
 local dt=0.1
@@ -273,6 +278,20 @@ models["flower"] = {
 			{ duration = dt, quads = {{ id = s.flower_2 } }},
 			{ duration = dt, quads = {{ id = s.flower_3 } }},
 			{ duration = dt, quads = {{ id = s.flower_4 } }},
+		}},
+	}
+}
+
+models["fire"] = {
+    sheet = "smb1.png",
+    type = "boxed_sprite",
+    ppu=1,
+	animations = {
+		{ name = "walk", box = {-4,-4,4,4}, frames = {
+			{ duration = dt, quads = {{ id = s.mario_fire_1 } }},
+			{ duration = dt, quads = {{ id = s.mario_fire_2 } }},
+			{ duration = dt, quads = {{ id = s.mario_fire_3 } }},
+			{ duration = dt, quads = {{ id = s.mario_fire_4 } }},
 		}},
 	}
 }

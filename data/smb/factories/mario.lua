@@ -7,6 +7,19 @@ factory.mario.supermario = function(player, value)
 	player.state = factory.mario.states[value]
 end
 
+factory.mario.fire = function ()
+	-- create a fire
+	local mario = monkey.getEntity("player")
+	local delta = mario.flipx and -10 or 10
+	local pos = {mario.x + delta, mario.y+24, 0}
+	local o = factory.fire.create({flipx = mario.flipx}, pos)
+
+	local m1 = monkey.getEntity("main")
+	local id = monkey.addEntity (o, m1)
+	
+
+end
+
 factory.mario.hit_by_enemy = function(player, enemy)
 	-- if Mario is hit by enemy, what happens depends on whether mario is supermario or not
 	local marioInfo = player:getinfo()
@@ -61,12 +74,12 @@ factory.mario.create = function(args)
 			{
 				type="info", 
 				supermario = false,
-				state = 1, -- 1 = small, 2 = supermario, 3 = supermario + fire
+				state = 3, -- 1 = small, 2 = supermario, 3 = supermario + fire
 				invincible = false
 			},
 			{ 
 				type="extstatemachine", 
-				initialstate = "walk",
+				initialstate = "walk_fire",
 				states = {
 					{ 
 						id = "walk", 
@@ -129,8 +142,16 @@ factory.mario.create = function(args)
 							jumpspeed = variables.jump_velocity,
 							jump_state = "jump_fire",
 							walk_anim = "walk_fire",
-							idle_anim = "idle_fire"
+							idle_anim = "idle_fire",
+							keys = {
+								{ id = 341, action="callback", func= function() 
+									print ("fire!")
+									factory.mario.fire() 
+									end 
+								}	,
+							}
 						},
+
 					},
 					{
 						id = "jump_fire",
@@ -141,7 +162,14 @@ factory.mario.create = function(args)
 							fliph = true,
 							animup = "jump_fire",
 							animdown = "jump_fire",
-							walk_state = "walk_fire"
+							walk_state = "walk_fire",
+							keys = {
+								{ id = 341, action="callback", func= function() 
+									print ("fire!") 
+									factory.mario.fire()
+									end 
+								}	,
+							}
 						}
 					},
 					{

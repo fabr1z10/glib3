@@ -59,6 +59,7 @@ variables = {
 			bonus_brick_sensor = 21,
 			hotspot = 22,
 			flower = 23,
+			fire = 24
 		}
 	},
 	tags = {
