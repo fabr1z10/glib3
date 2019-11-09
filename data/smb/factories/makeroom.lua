@@ -12,6 +12,7 @@ factory.room.create = function(args)
 					{ tag = {variables.collision.tags.player, variables.collision.tags.brick_sensor}, onenter = factory.basic_brick.response },
 					{ tag = {variables.collision.tags.player, variables.collision.tags.bonus_brick_sensor}, onenter = factory.bonus_brick.response },
 					{ tag = {variables.collision.tags.player, variables.collision.tags.mushroom}, onenter = factory.mushroom.response },
+					{ tag = {variables.collision.tags.player, variables.collision.tags.flower}, onenter = factory.flower.response },
 					{ tag = {variables.collision.tags.player, variables.collision.tags.goomba}, onenter = factory.goomba.response },
 					{ tag = {variables.collision.tags.player, variables.collision.tags.koopa}, onenter = factory.koopa.response },
 					{ tag = {variables.collision.tags.player, variables.collision.tags.coin}, onenter = factory.coin.response },
@@ -27,8 +28,8 @@ factory.room.create = function(args)
 					{ key = 299, func = function() monkey.endroom() end },				-- restart room
 					{ key = 81, func = function () 
 						local mario = monkey.getEntity("player")
-						local isSuperMario = (mario:getinfo().supermario)
-						factory.mario.supermario(mario, not isSuperMario)
+						--local isSuperMario = (mario:getinfo().state)
+						factory.mario.supermario(mario, 2)
 					end }
 				},
 			},

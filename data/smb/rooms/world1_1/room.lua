@@ -40,7 +40,28 @@ local items_dynamic = {
 		pos = { {21,5}, {78, 5}, {109, 9} },
 		factory = function(p) 
 			print ("faccmi")
-			return factory.bonus_brick.create { pos= p, sprite="bonusbrick", factory = factory.mushroom, args = { sprite="mushroom" } } 
+			return factory.bonus_brick.create { 
+				pos= p, 
+				sprite="bonusbrick", 
+				factory = function()
+					local mario = monkey.getEntity("player")
+					local state = mario:getinfo().state
+					if (state == 1) then
+						return factory.mushroom
+					else
+						return factory.flower
+					end
+				end,
+				args = function() 
+					local mario = monkey.getEntity("player")
+					local state = mario:getinfo().state
+					if (state == 1) then
+						return { sprite = "mushroom" }
+					else
+						return { sprite = "flower" }
+					end
+				end
+			}	 
 		end
 	},
 	starman_bonus_bricks = {

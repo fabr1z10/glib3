@@ -7,8 +7,8 @@ factory.goomba.response = function (mario, goomba, sx, sy)
 	if (mario:getinfo().invincible == true) then
 		return
 	end
-
-	if (mario.state == "jump" and mario.vy < 0 and sy > 0 and math.abs(sx) < 0.01) then
+	--str:sub(1, #start) == start
+	if (mario.state:sub(1, 4) == "jump" and mario.vy < 0 and sy > 0 and math.abs(sx) < 0.01) then
 		--monkey.removeFromId(goomba.id)
 		mario.vy = 300		
 		local act = {

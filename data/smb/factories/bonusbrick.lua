@@ -30,15 +30,18 @@ factory.bonus_brick.response = function(p1, p2)
 			args = {
 				func = function()
 					local pos = {brick.x+0.5*engine.tilesize, brick.y, 1}
-					local o = brick_info.factory.create(brick_info.args, pos)
+					local factory = glib.get(brick_info.factory)
+					local args = glib.get(brick_info.args)
+
+					local o = factory.create(args, pos)
 					print("Mio cuggggg")
 					local m1 = monkey.getEntity("main")
 					local id = monkey.addEntity (o, m1)
 
 					-- hey, do I have to perform a script on this?
-					if (brick_info.factory.script ~= nil) then
+					if (factory.script ~= nil) then
 						print ("FATTTTONE")
-						local actions = brick_info.factory.script(id, pos)
+						local actions = factory.script(id, pos)
 						local s = script.make(actions)
 						monkey.play(s)
 					end

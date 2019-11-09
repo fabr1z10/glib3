@@ -1,12 +1,10 @@
 factory.mario = {}
 
+factory.mario.states = {"walk", "walk_big", "walk_fire"}
+
 factory.mario.supermario = function(player, value) 
-	player:getinfo().supermario = value
-	if (value == true) then
-		player.state = "walk_big"
-	else
-		player.state = "walk"
-	end
+	player:getinfo().state = value
+	player.state = factory.mario.states[value]
 end
 
 factory.mario.hit_by_enemy = function(player, enemy)
@@ -63,6 +61,7 @@ factory.mario.create = function(args)
 			{
 				type="info", 
 				supermario = false,
+				state = 1, -- 1 = small, 2 = supermario, 3 = supermario + fire
 				invincible = false
 			},
 			{ 
@@ -118,6 +117,31 @@ factory.mario.create = function(args)
 							animup = "jump_big",
 							animdown = "jump_big",
 							walk_state = "walk_big"
+						}
+					},
+					{ 
+						id = "walk_fire", 
+						state = {
+							type = "walkside", 
+							speed = 75, 
+							acceleration = 0.05, 
+							fliph = true, 
+							jumpspeed = variables.jump_velocity,
+							jump_state = "jump_fire",
+							walk_anim = "walk_fire",
+							idle_anim = "idle_fire"
+						},
+					},
+					{
+						id = "jump_fire",
+						state = {
+							type = "jump",
+							speed = 75,
+							acceleration = 0.10,
+							fliph = true,
+							animup = "jump_fire",
+							animdown = "jump_fire",
+							walk_state = "walk_fire"
 						}
 					},
 					{

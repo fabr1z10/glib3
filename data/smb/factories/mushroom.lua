@@ -1,6 +1,10 @@
 factory.mushroom = {}
 
 factory.mushroom.response = function (p1, p2) 
+	local mario = monkey.getEntity("player")
+	--local isSuperMario = (mario:getinfo().supermario)
+	factory.mario.supermario(mario, 2)
+
 	monkey.removeFromId(p2.id)
 end
 

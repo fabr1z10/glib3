@@ -57,7 +57,8 @@ variables = {
 			warp = 19,
 			brick_sensor = 20,			
 			bonus_brick_sensor = 21,
-			hotspot = 22
+			hotspot = 22,
+			flower = 23,
 		}
 	},
 	tags = {
