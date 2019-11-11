@@ -8,9 +8,9 @@ class Controller2D;
 class EnemyInputMethod : public InputMethod {
 public:
     EnemyInputMethod(bool left, bool flipIfPlatformEnds, float attackProbability) : InputMethod(),
-        m_left(left), m_flipIfPlatformEnds(flipIfPlatformEnds), m_controller(nullptr), m_attackProbability(attackProbability), m_attackOdds(0){}
+        m_left(left), m_idle(false), m_flipIfPlatformEnds(flipIfPlatformEnds), m_controller(nullptr), m_attackProbability(attackProbability), m_attackOdds(0){}
     EnemyInputMethod(const EnemyInputMethod& orig) : InputMethod(orig),
-        m_left(orig.m_left), m_flipIfPlatformEnds(orig.m_flipIfPlatformEnds), m_controller(nullptr) {}
+        m_left(orig.m_left), m_idle(false), m_flipIfPlatformEnds(orig.m_flipIfPlatformEnds), m_controller(nullptr) {}
     std::shared_ptr<Component> clone() const override;
     void Start() override;
     void Update (double) override;
@@ -22,10 +22,12 @@ public:
 private:
     Controller2D * m_controller;
     bool m_left;
+    bool m_idle;
     bool m_flipIfPlatformEnds;
     float m_attackProbability;
     std::map<int, int> m_attackMoves;
     int m_attackOdds;
+    Entity* m_target;
 };
 
 inline std::type_index EnemyInputMethod::GetType() {

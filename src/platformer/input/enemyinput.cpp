@@ -10,6 +10,9 @@ std::shared_ptr<Component> EnemyInputMethod::clone() const {
 }
 
 void EnemyInputMethod::Start() {
+    // find the player
+    m_target = Ref::Get<Entity>("player").get();
+
     m_controller = dynamic_cast<Controller2D*>(m_entity->GetComponent<IController>());
     // this is clearly an approx
     double frameTime = Engine::get().GetFrameTime();
@@ -25,6 +28,7 @@ void EnemyInputMethod::setLeft(bool left) {
 
 
 bool EnemyInputMethod::isKeyDown(int key) {
+    if (m_idle) return false;
     return ((key == GLFW_KEY_LEFT && m_left) || (key == GLFW_KEY_RIGHT && (!m_left)));
 }
 
@@ -44,15 +48,33 @@ void EnemyInputMethod::Update(double) {
     }
 
     // random action
-    if (!m_attackMoves.empty()) {
 
+    if (!m_idle) {
         float r = Random::get().GetUniformReal(0, 1);
-        if (r <= m_attackProbability) {
-            // let's choose one attack
+        if (r < 0.5) {
+            m_idle = true;
+        }
+    } else {
+        float r = Random::get().GetUniformReal(0, 1);
+        if (r < 0.01) {
+            m_idle = false;
+        }
 
-            int nm = Random::get().GetUniform(0, m_attackOdds);
-            auto iter = m_attackMoves.lower_bound(nm);
-            onKeyDown.Fire(iter->second);
+    }
+
+    auto pos = m_entity->GetPosition();
+    auto thispos = this->m_entity->GetPosition();
+    if (glm::length(pos - thispos) < 64.0f) {
+        if (!m_attackMoves.empty()) {
+
+            float r = Random::get().GetUniformReal(0, 1);
+            if (r <= m_attackProbability) {
+                // let's choose one attack
+
+                int nm = Random::get().GetUniform(0, m_attackOdds);
+                auto iter = m_attackMoves.lower_bound(nm);
+                onKeyDown.Fire(iter->second);
+            }
         }
     }
 }

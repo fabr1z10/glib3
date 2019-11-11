@@ -95,6 +95,14 @@ bool Animator::IsComplete() const {
     return m_animCompleted;
 }
 
+void Animator::setModel(std::shared_ptr<IModel> model) {
+    m_model = std::dynamic_pointer_cast<SpriteModel>(model);
+    m_animInfo = m_model->GetAnimInfo();
+    m_initAnim = model->GetDefaultAnimation();
+    Start();
+}
+
+
 
 
 

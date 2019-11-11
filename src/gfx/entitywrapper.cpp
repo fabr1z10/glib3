@@ -35,11 +35,21 @@ float EntityWrapper::GetVx() const {
 float EntityWrapper::GetVy() const {
     return m_underlying->GetComponent<Dynamics2D>()->m_velocity.y;
 }
+
+
+
 void EntityWrapper::SetVx(float value) {
     m_underlying->GetComponent<Dynamics2D>()->m_velocity.x = value;
 }
 void EntityWrapper::SetVy(float value) {
     m_underlying->GetComponent<Dynamics2D>()->m_velocity.y = value;
+}
+
+float EntityWrapper::GetScale() const {
+    return m_underlying->GetScale();
+}
+void EntityWrapper::SetScale(float value) {
+    m_underlying->SetScale(value);
 }
 std::string EntityWrapper::GetTag() const {
     return m_underlying->GetTag();
@@ -311,9 +321,15 @@ void EntityWrapper::SetAnim(const std::string& anim) {
     r->SetAnimation(anim);
 }
 
-void EntityWrapper::SetModel(const std::string& model, const std::string& anim) {
-//    Renderer* r = m_underlying->GetComponent<Renderer>();
-//    Animator* a = m_underlying->GetComponent<Animator>();
+void EntityWrapper::SetModel(const std::string& modelId, const std::string& anim) {
+    Renderer* r = m_underlying->GetComponent<Renderer>();
+    Animator* a = dynamic_cast<Animator*>(m_underlying->GetComponent<IAnimator>());
+    auto model = Engine::get().GetAssetManager().GetModel(modelId);
+    r->SetModel(model);
+    a->setModel(model);
+
+    auto collider = m_underlying->GetComponent<ICollider>();
+    if (collider != nullptr) collider->Start();
 //    auto mesh = Engine::get().GetAssetManager().GetModel(model);
 //    r->SetModel(mesh);
 //

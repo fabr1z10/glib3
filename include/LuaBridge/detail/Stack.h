@@ -72,7 +72,7 @@ struct Stack <int>
   
   static inline int get (lua_State* L, int index)
   {
-    return static_cast <int> (luaL_checkinteger (L, index));
+   return static_cast <int> (luaL_checkinteger (L, index));
   }
 };
 
