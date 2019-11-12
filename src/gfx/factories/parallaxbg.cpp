@@ -19,6 +19,7 @@ std::shared_ptr<Entity> ParallaxBackgroundFactory::Create(luabridge::LuaRef &ref
         range.x = 0.5f*deviceSize.x - deviceSize.x / factor;
     }
 
+
     float height = table.Get<float>("height");
     float z = table.Get<float>("z");
     std::string img = table.Get<std::string>("image");

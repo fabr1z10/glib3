@@ -32,6 +32,11 @@ bool EnemyInputMethod::isKeyDown(int key) {
     return ((key == GLFW_KEY_LEFT && m_left) || (key == GLFW_KEY_RIGHT && (!m_left)));
 }
 
+void EnemyInputMethod::setTransitionProbabilities(float idle2walk, float walk2idle) {
+    m_idle2walk = idle2walk;
+    m_walk2idle = walk2idle;
+}
+
 void EnemyInputMethod::Update(double) {
     // flip if
     // 1. hits a wall
@@ -51,12 +56,12 @@ void EnemyInputMethod::Update(double) {
 
     if (!m_idle) {
         float r = Random::get().GetUniformReal(0, 1);
-        if (r < 0.5) {
+        if (r < m_walk2idle) {
             m_idle = true;
         }
     } else {
         float r = Random::get().GetUniformReal(0, 1);
-        if (r < 0.01) {
+        if (r < m_idle2walk) {
             m_idle = false;
         }
 

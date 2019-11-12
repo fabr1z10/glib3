@@ -61,18 +61,21 @@
 
 std::shared_ptr<Component> EnemyInputCompFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
-    bool left = table.Get<bool>("left", true);
+    int status = table.Get<bool>("status", true);
     bool flipIfPlatformEnds = table.Get<bool>("flip", true);
     float attackProb = table.Get<float>("attack_prob", 0.0f);
-    auto eim = std::make_shared<EnemyInputMethod>(left, flipIfPlatformEnds, attackProb);
+    glm::vec2 tp = table.Get<glm::vec2>("trans_probs", glm::vec2(0.0f));
+    auto eim = std::make_shared<EnemyInputMethod>(status, flipIfPlatformEnds, attackProb);
     table.ProcessVector("attack_moves", [eim] (luabridge::LuaRef ref) {
         int key = ref["key"].cast<int>();
         int odds = ref["odds"].cast<int>();
         eim->AddAttackMove(key, odds);
     });
+    eim->setTransitionProbabilities(tp[0], tp[1]);
     return eim;
 
 }
+
 
 std::shared_ptr<Component> Enemy3DInputCompFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
