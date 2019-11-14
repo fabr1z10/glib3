@@ -1,8 +1,8 @@
 factory.basic_brick = {}
 
-factory.basic_brick.create_piece = function (pos, vx, vy, main) 
+factory.basic_brick.create_piece = function (pos, vx, vy, main, model) 
 
-	local id1 = monkey.addEntity ({ type="sprite", model="brickpiece", pos = pos }, main)
+	local id1 = monkey.addEntity ({ type="sprite", model= model, pos = pos }, main)
 	local act = {
 		{ 
 			type = action.moveaccel, 
@@ -25,18 +25,18 @@ end
 factory.basic_brick.response = function(p1, p2)
 	local sm = p1:getinfo().state
 	brick = p2:parent()
-
+	local brick_info = brick:getinfo()
 	if (sm > 1) then
 		monkey.removeFromId(brick.id)
 		local main = monkey.getEntity("main")
-		factory.basic_brick.create_piece ( {brick.x, brick.y, 0}, 20, 120, main)
-		factory.basic_brick.create_piece ( {brick.x, brick.y, 0}, -20, 120, main)
-		factory.basic_brick.create_piece ( {brick.x, brick.y, 0}, 80, 90, main)
-		factory.basic_brick.create_piece ( {brick.x, brick.y, 0}, -80, 90, main)
+		factory.basic_brick.create_piece ( {brick.x, brick.y, 0}, 20, 120, main, brick_info.piece )
+		factory.basic_brick.create_piece ( {brick.x, brick.y, 0}, -20, 120, main, brick_info.piece)
+		factory.basic_brick.create_piece ( {brick.x, brick.y, 0}, 80, 90, main, brick_info.piece)
+		factory.basic_brick.create_piece ( {brick.x, brick.y, 0}, -80, 90, main, brick_info.piece)
 		-- generate pieces
 
 	else	
-		brick_info = brick:getinfo()
+
 
 		local actions = {
 			{ 
@@ -57,6 +57,7 @@ end
 factory.basic_brick.create = function(arg)
 	glib.assert (arg.pos, "pos")
 	glib.assert (arg.sprite, "sprite")
+	glib.assert (arg.piece, "piece")
 
 	local s = { type = "rect", width = engine.tilesize, height = engine.tilesize }
 	local s1 = { type = "rect", width = engine.tilesize-4, height = 1.0}
@@ -70,7 +71,7 @@ factory.basic_brick.create = function(arg)
 		components = {			
 			--{ type="gfx", model=arg.sprite, anim="idle", width = engine.tilesize, height = engine.tilesize},	
 			{ type="collider", shape=s, tag=10, flag = variables.collision.flags.platform, mask = 0},
-			{ type="info", y = y },
+			{ type="info", y = y, piece = arg.piece },
 		},
 		children = {
 			{

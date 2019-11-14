@@ -1,145 +1,156 @@
 local roomInfo = {
-	worldWidth = 177,
+	worldWidth = 192,
 	worldHeight = 16,
-	startPos = {2.5, 2},
+	screen_size = {16, 16},
+	start_pos = {2, 2},
 	collisionSize = 80,
-	g = -10
+	g = -10,
+	name = "1-2",
+	next = "world1_1"
 }
 
-local initscripts = {}
+--local initscripts = {}
 
-room = getBaseRoom(roomInfo)
-local mainScene = room.scene[1].children[3].children
+local brick_pos = {}
+for i=1,132 do table.insert(brick_pos, {5+i,28}) end
 
-local basicBricks = { {39, 25}, {39, 26}, {39, 27}, {40,25}, {41,25}, {41,26}, {41,27}, {42,27}, {43,27}, {44,27}, {44,26}, {44,25}, {45,25}, {46,25}, {46,26},
-	{52, 25}, {53, 25}, {54,25}, {55,25},{54,24},{55,24},{54,23},{55,23}, {52,26},{53,26},{52,27},{53,27}, {52,28},{53,28},{52,29}, {53,29}, {54,30}, {55,30}, {54,31}, {55,31},
-	{58, 25}, {59, 25}, {60, 25}, {61,25}, {62,25}, {63,25}, {62,26},{63,26},{62,27},{63,27}, {62,28}, {63,28}, {62,29},{63,29},
-	{58, 30}, {59, 30}, {60, 30}, {61,30}, {62,30}, {63,30}, {58, 31}, {59, 31}, {60, 31}, {61,31}, {62,31}, {63,31},
-	{66, 31}, {67, 31}, {68, 31}, {69, 31}, {66,30}, {67,30}, {68,30}, {69,30}, {67,29}, {67,28}, {67,27}, {67, 26}, {67, 25}, {68,25}, {69, 25},
-	{72, 25}, {73, 25}, {72, 26}, {72, 27}, {73, 27}, {72,28}, {73,28}, {72,29}, {73,29},
-	{76, 25}, {77,25}, {78,25}, {79, 25}, {76, 30}, {77,30}, {78,30}, {79,30}, {76,31}, {77,31}, {78,31}, {79,31},
-	{84, 26}, {85, 26}, {86, 26}, {87, 26}, {88, 26}, {89, 26}, {84, 27}, {85, 27}, {86, 27}, {87, 27}, {88, 27}, {89, 27}, {145, 26}, {146,26}, {147,26}, {148,26}, {149,26} }
-for x = 1,83 do table.insert(basicBricks, {5+x, 32}) end
-for x = 1,48 do table.insert(basicBricks, {89+x, 32}) end
-for x = 1,7 do table.insert(basicBricks, {160+x, 32}) end
+local items_dynamic = { 
+	{
+		factory = factory.blocks.platform("block1.png"),
+		pos = { {0, 0, 24, 2} }
+	},	
+	{
+		factory = factory.blocks.platform("block5.png"),
+		pos = { 
+			{17, 18, 1, 1}, {19, 18, 1, 2}, {21, 18, 1, 3}, {23, 18, 1, 4}, {25, 18, 1, 4}, {27, 18, 1, 3}, {31, 18, 1, 3}, {33, 18, 1, 1},
+			{133, 18, 5, 1}, {134, 19, 4, 1}, {135, 20, 3, 1}, {136, 21, 2, 1}
 
-local mushroomBricks = {{10,25}}
-local coinBricks = { {11, 25}, {12, 25}, {13, 25}, {14, 25} }
-local coins = { {40,26}, {41,29}, {42,29}, {43,29}, {44,29}, {45,26}, {58, 26}, {59, 26}, {60, 26}, {61, 26}, {68, 26}, {84, 29}, {85, 29}, {86, 29}, {87, 29}, {88, 29}, {89, 29} }
-local pipe2 = { {115, 22}, {153, 2} }
-local pipe3 = { {103, 22} }
-local pipe4 = { {109, 22} }
+		}
+	},
+	{
+		factory = factory.blocks.platform("block4.png"),
+		pos = { {0, 16, 80, 2}, {83, 16, 37, 2}, {122, 16, 2, 2}, {126, 16, 12, 2}  }
+	},	
+	{
+		factory = factory.blocks.platform("brick2.png"),
+		pos = { {0, 18, 1, 11}, {122, 18, 2, 3}}
+	},		
+	{
+		factory = factory.bg.tiled("castle",-0.5),
+		pos = { {0, 2}},
+	},		
+	{
+		factory = factory.bg.tiled("pipe_x", 1),
+		pos = { {10, 2}},
+	},	
+	{
+		factory = factory.blocks.basicbrick_dark,
+		pos = brick_pos
+	},
+	{
+		factory = factory.blocks.basicbrick_dark,
+		pos = { 
+			{39, 21}, {39, 22}, {39, 23}, {40, 21}, {41, 21}, {41, 22}, {41, 23}, {42, 23}, {43,23},{44,23}, {44,22}, {44,21}, {45,21}, {46,21}, {46, 22},
+			{52, 21}, {52, 22}, {52, 23}, {52, 24}, {52, 25}, {53, 21}, {53, 22}, {53, 23}, {53, 24}, {53, 25}, {54, 19}, {54, 20}, {54, 21}, {54,26}, {54,27},
+			{55, 19}, {55, 20}, {55, 21}, {55,26}, {55,27}, {58, 21}, {59, 21}, {60, 21}, {61, 21}, {62, 21}, {63, 21}, {62, 22}, {63, 22}, {62, 23}, {63, 23},
+			{62, 24}, {63, 24}, {62, 25}, {63, 25}, {58, 26}, {59, 26}, {60, 26}, {61, 26}, {62, 26}, {63, 26}, {58, 27}, {59, 27}, {60, 27}, {61, 27}, {62, 27}, {63, 27},
+			{66, 27}, {67, 27}, {68, 27}, {69, 27}, {66, 26}, {67, 26}, {68, 26}, {69, 26}, {67, 25}, {67, 24}, {67, 23}, {67, 22}, {67, 21}, {68, 21}, {69, 21}, {69, 22},
+			{72, 21}, {73, 21}, {72, 22}, {72, 23}, {73, 23}, {72, 24}, {73, 24}, {72, 25}, {73, 25},
+			{76, 21}, {77, 21}, {78, 21}, {79, 21},{76, 26}, {77, 26}, {78, 26}, {79, 26},{76, 27}, {77, 27}, {78, 27}, {79, 27},
+			{84, 22}, {85, 22}, {86, 22}, {87, 22}, {88, 22}, {89, 22},{84, 23}, {85, 23}, {86, 23}, {87, 23}, {88, 23}, {89, 23}
+		
 
-local sceneItems = {
-	makeRect { pos = Pos{0,0}, width = 24, height = 2, gfx="block1" },
-	makeRect { pos = Pos{150, 0}, width = 42, height = 2, gfx="block1" },
-	items.backgroundelement.castle { pos = Pos{0, 2}},
-	items.backgroundelement.castle { pos = Pos{176, 2}},
-	items.backgroundelement.pipe2ways { pos = Pos{10, 2}},
-	makeRect { pos = Pos{0, 20}, width = 80, height = 2, gfx="block4" },
-	makeRect { pos = Pos{83, 20}, width = 37, height = 2, gfx="block4" },
-	makeRect { pos = Pos{122, 20}, width = 2, height = 2, gfx="block4" },
-	makeRect { pos = Pos{126, 20}, width = 12, height = 2, gfx="block4" },
-	makeRect { pos = Pos{145, 20}, width = 8, height = 2, gfx="block4" },
-	makeRect { pos = Pos{160, 20}, width = 17, height = 2, gfx="block4" },
-	makeRect { pos = Pos{0, 22}, width = 1, height = 11, gfx="brick2" },
-	makeRect { pos = Pos{17, 22}, width = 1, height = 1, gfx="block5" },
-	makeRect { pos = Pos{19, 22}, width = 1, height = 2, gfx="block5" },
-	makeRect { pos = Pos{21, 22}, width = 1, height = 3, gfx="block5" },
-	makeRect { pos = Pos{23, 22}, width = 1, height = 4, gfx="block5" },
-	makeRect { pos = Pos{25, 22}, width = 1, height = 4, gfx="block5" },
-	makeRect { pos = Pos{27, 22}, width = 1, height = 3, gfx="block5" },
-	items.bonusbrick.create { pos = Pos{29, 26}, sprite="basicbrickdark", hits=5, item = "brickcoin" },
-	items.bonusbrick.create { pos = Pos{73, 26}, sprite="basicbrickdark", hits=5, item = "brickcoin" },
-	makeRect { pos = Pos{31, 22}, width = 1, height = 3, gfx="block5" },
-	makeRect { pos = Pos{33, 22}, width = 1, height = 2, gfx="block5" },
-	items.bonusbrick.create { pos = Pos{46, 27}, sprite="basicbrickdark", hits=1, item = "star" },			
-	items.bonusbrick.create { pos = Pos{69, 26}, sprite="basicbrickdark", hits=1, item = "star" },	
-	makeRect { pos = Pos{122, 22}, width = 2, height = 3, gfx="brick2" },
-	makeRect { pos = Pos{133, 22}, width = 5, height = 1, gfx="block5" },
-	makeRect { pos = Pos{134, 23}, width = 4, height = 1, gfx="block5" },
-	makeRect { pos = Pos{135, 24}, width = 3, height = 1, gfx="block5" },
-	makeRect { pos = Pos{136, 25}, width = 2, height = 1, gfx="block5" },
-	items.plant.create { pos = Pos{104, 25}, z = -0.5, initscripts = initscripts },
-	items.plant.create { pos = Pos{110, 26}, z = -0.5, initscripts = initscripts },
-	items.plant.create { pos = Pos{116, 24}, z = -0.5, initscripts = initscripts },
-	items.bonusbrick.create { pos = Pos{150, 26}, sprite="basicbrickdark", hits=1, item = "flower" },	
-	items.movingplatform.create { pos=Pos{140, 20}, width=3, tx=15, ty=5, speed=20, path = { { pos=Pos{140,33}, speed = 20}, {pos=Pos{140,20}}}, initscripts = initscripts },
-	items.movingplatform.create { pos=Pos{140, 26}, width=3, tx=15, ty=5, speed=20, path = { { pos=Pos{140,33}, speed = 20}, {pos=Pos{140,20}}}, initscripts = initscripts },
-	items.movingplatform.create { pos=Pos{155, 21}, width=3, tx=15, ty=5, speed=20, path = { { pos=Pos{155,20}, speed = 20}, {pos=Pos{155,33}}}, initscripts = initscripts },
-	items.movingplatform.create { pos=Pos{155, 27}, width=3, tx=15, ty=5, speed=20, path = { { pos=Pos{155,20}, speed = 20}, {pos=Pos{155,33}}}, initscripts = initscripts },
-	makeRect { pos = Pos{160, 22}, width = 17, height = 3, gfx="brick2" },
-	makeRect { pos = Pos{170, 25}, width = 7, height = 8, gfx="brick2" },
-	makeRect { pos = Pos{166, 25}, z=0.5, width = 3, height = 2, tiledata = {2,5,3,5,4,5,2,4,3,4,4,4}},
-	makeRect { pos = Pos{168, 27}, width = 1, height = 6, gfx="block3" },
-	makeRect { pos = Pos{169, 25}, width = 1, height = 8, gfx="block6" },
-	items.warp.create { pos = Pos{165.5, 25}, width = 8, height = 1, ctag = warpTouch, func = curry(pipeRight, 
-		{x = 154, y = 2, xmin=150*16, xmax=(18+roomInfo.worldWidth)*16, ymin=0, ymax= roomInfo.worldHeight*16}) },
-	makeRect { pos = Pos{155, 2}, width = 9, height = 1, gfx="block2" },
-	makeRect { pos = Pos{156, 3}, width = 8, height = 1, gfx="block2" },
-	makeRect { pos = Pos{157, 4}, width = 7, height = 1, gfx="block2" },
-	makeRect { pos = Pos{158, 5}, width = 6, height = 1, gfx="block2" },
-	makeRect { pos = Pos{159, 6}, width = 5, height = 1, gfx="block2" },
-	makeRect { pos = Pos{160, 7}, width = 4, height = 1, gfx="block2" },
-	makeRect { pos = Pos{161, 8}, width = 3, height = 1, gfx="block2" },
-	makeRect { pos = Pos{162, 9}, width = 2, height = 1, gfx="block2" },
-	makeRect { pos = Pos{172, 2}, width = 1, height = 1, gfx="block2" },
-	items.backgroundelement.create { pos = Pos{172, 3}, z=-1, width=1, height=9, tiledata ={3,2,3,2,3,2,3,2,3,2,3,2,3,2,3,2,3,2}},
-	items.backgroundelement.create { pos = Pos{172, 12}, z=-1, width=1, height=1, tiledata ={4,2}},
-	items.backgroundelement.create { pos = Pos{171.5,11}, tag="flag", z=-0.5, width=1, height=1, tiledata ={14,4}},		
-	items.warp.create { pos = Pos{172.5, 2}, tag="goal", width = 1, height = 15*16, ctag = warpTouch, func = curry(mario_end_level, {x=172, y = 48, deltayflag = -8*16, goal="goal"}) },
-	items.warp.create { pos = Pos{179, 2}, width = 1, height = 15*16, ctag = warpTouch, func = mario_complete },
-	--items.movingplatform.create { pos=Pos{140, 26}, width=3, tx=15, ty=5, speed=20, path = { { pos=Pos{140,33}, speed = 20}, {pos=Pos{140,20}}}, initscripts = initscripts },
-
+		}
+	},
+	{
+		factory = factory.blocks.pipe_3_green,
+		pos = { {103, 18} },
+	},
+	{
+		factory = factory.blocks.pipe_4_green,
+		pos = { {109, 18} },
+	},
+	{
+		factory = factory.blocks.pipe_2_green,
+		pos = { {115, 18} },
+	},
+	{
+		factory = factory.blocks.brickcoin,
+		pos = { {11,21}, {12, 21}, {13, 21}, {14, 21}},	
+	},
+	{
+		factory = factory.blocks.brickcoinmulti_dark,
+		pos = { {29, 22} },
+	},
+	{
+		factory = factory.blocks.brickmushroom,
+		pos = { {10, 21} },
+	},	
+	{
+		factory = factory.blocks.brickstarman_dark,
+		pos = { {46, 23} },
+	},
+	{
+		factory = factory.blocks.pickupcoin,
+		pos = { 
+			{40, 22}, {41,25}, {42,25}, {43,25}, {44,25}, {45,22}, {58, 22}, {59, 22}, {60, 22}, {61, 22}, {68, 22}
+		}
+	},
 }
 
-for k, v in ipairs(sceneItems) do
-	table.insert(mainScene, v)
-end
+room = factory.room.create (roomInfo)
 
-for k, v in ipairs(basicBricks) do
-	table.insert(mainScene, items.brick.create{ pos=Pos(v), sprite="basicbrickdark" })
-end
-for k, v in ipairs(mushroomBricks) do
-	table.insert(mainScene, items.bonusbrick.create { pos = Pos(v), sprite="bonusbrick", hits=1, item = "flower" })
-end
-for k, v in ipairs(coinBricks) do
-	table.insert(mainScene, items.bonusbrick.create { pos = Pos(v), sprite="bonusbrick", hits=1, item = "brickcoin" })
-end
-for k, v in ipairs(coins) do
-	table.insert(mainScene, items.coin.create { pos = Pos(v) })
-end
-for k, v in ipairs(pipe2) do table.insert(mainScene, makeRect { pos = Pos(v), z = 0.5, width = 2, height = 2, tiledata = {0,4,1,4,0,3,1,3}}) end	
-for k, v in ipairs(pipe3) do table.insert(mainScene, makeRect { pos = Pos(v), z = 0.5, width = 2, height = 3, tiledata = {0,4,1,4,0,4,1,4,0,3,1,3}}) end	
-for k, v in ipairs(pipe4) do table.insert(mainScene, makeRect { pos = Pos(v), z = 0.5, width = 2, height = 4, tiledata = {0,4,1,4,0,4,1,4,0,4,1,4,0,3,1,3}}) end	
-
-function room.init()
-end
-
-function room.start()
-
-end
-
-function room.afterstartup() 
-	for k, v in pairs(initscripts) do
-		monkey.play(v)
-	end		
-
-	local s = script:new()
-	s.actions = {
-		[1] = { type="setcambounds", cam ="maincam", xmin=0, xmax = 256, ymin = 0, ymax = 256},
-		[2] = { type="changestate", actor="player", state="nophys", after={1}},
-		[3] = { type="animate", actor ="player", anim="walk", flipx = false, after={2}},
-		[4] = { type="move", by={128, 0}, speed = 250, actor = "player", after={3}},		
-		[5] = { type="setcambounds", cam ="maincam", xmin=0, xmax = 16 * roomInfo.worldWidth, ymin = 320, ymax = 320 + 16 * roomInfo.worldHeight, after={4}},
-		[6] = { type="move", to=Pos{163, 30}, immediate=true, actor="player", after={5}},
-		[7] = { type="changestate", actor="player", state="idle", after={6}},		
+local items_d = {
+	factory.hotspot.create { 
+		pos = {12, 2},
+		width = 2, 
+		height = 2, 
+		func = function(mario, hotspot)
+			local actions = {
+				{ type = action.set_demo_mode, args = { tag="player", value=false, sync = true }},
+				{ type = action.move, args = {tag="player", to = {2*engine.tilesize, 25*engine.tilesize}, imm = true}},
+				{ type = action.change_cam_bounds, args = {cam="maincam", x={0, 192*16}, y = {16*16,32*16}}},
+			}
+			local s = script.make(actions)
+			monkey.play(s)	
+		end
 	}
-	monkey.play(s)
+}
+
+for _, v in pairs(items_dynamic) do
+	for _, p in ipairs(v.pos) do
+		print ("ciao " .. tostring(p[1]) .. ", " .. tostring(p[2]))
+		table.insert(items_d, v.factory(p))
+	end
 end
 
+room:add_d(items_d)
 
+room:add_b({
+	{ 
+ 		tag = "bg",
+		pos = {0, 0, -5}, 
+		components = { 
+			{
+				type="gfx", 
+				draw="solid", 
+				shape = { type="rect", width=256, height=256}, 
+				--color= {92,148,252,255} 
+				color = {0,0,64,255}
+			}
+		}
+	}
+})
 
-
-
-
+-- cutscene
+table.insert (room.initscripts, function()
+	local actions = {
+		{ type = action.change_cam_bounds, args = {cam="maincam", x= {0,256}, y = {0,256}}},
+		{ type = action.set_state, args = {tag = "player", state = "walk"}},
+		{ type = action.set_demo_mode, args = { tag="player", value=true, sync = true, length = 10, events = {
+			{ t=0, key = 262, event ="down"}
+		}}},
+	}
+	local s = script.make(actions)
+	monkey.play(s)	
+end)

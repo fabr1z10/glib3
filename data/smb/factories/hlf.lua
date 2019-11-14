@@ -10,7 +10,11 @@ factory.blocks.platform = function(gfx)
 end
 
 factory.blocks.basicbrick = function(p) 
-	return factory.basic_brick.create { pos = p, sprite="basicbrick" } 
+	return factory.basic_brick.create { pos = p, sprite="basicbrick", piece="brickpiece" } 
+end
+
+factory.blocks.basicbrick_dark = function(p) 
+	return factory.basic_brick.create { pos = p, sprite="basicbrick_dark", piece="brickpiece_dark" } 
 end
 
 factory.blocks.brickcoin = function(p) 
@@ -19,6 +23,10 @@ end
 
 factory.blocks.brickcoinmulti = function(p) 
 	return factory.bonus_brick.create { pos= p, sprite="bonusbrick2", hitsleft=5, factory = factory.flyingcoin, args = { sprite="flying_coin" } } 
+end
+
+factory.blocks.brickcoinmulti_dark = function(p) 
+	return factory.bonus_brick.create { pos= p, sprite="bonusbrick2_dark", hitsleft=5, factory = factory.flyingcoin, args = { sprite="flying_coin" } } 
 end
 
 factory.blocks.brickmushroom = function(p)
@@ -51,7 +59,9 @@ end
 factory.blocks.brickstarman = function(p) 
 	return factory.bonus_brick.create { pos= p, sprite="bonusbrick2", factory = factory.starman, args = { sprite="starman" } } 
 end
-
+factory.blocks.brickstarman_dark = function(p) 
+	return factory.bonus_brick.create { pos= p, sprite="bonusbrick2_dark", factory = factory.starman, args = { sprite="starman" } } 
+end
 factory.blocks.brickoneuphidden = function(p) 
 	return factory.bonus_brick.create { pos= p, sprite="hiddenbrick", factory = factory.mushroom, args = { sprite="mushroom1up", oneup=true } } 
 end
@@ -194,3 +204,4 @@ factory.blocks.touchdown = function(p)
 		end
 	}
 end
+

@@ -17,6 +17,7 @@
 #include <gfx/components/follow.h>
 #include <gfx/components/follow3d.h>
 #include <gfx/components/inputmethod.h>
+#include <gfx/components/mover.h>
 
 #include <gfx/components/billboard.h>
 #include <gfx/components/parallax.h>
@@ -370,6 +371,20 @@ std::shared_ptr<Component> ExtStateMachineCompFactory::Create(luabridge::LuaRef 
 }
 
 
+std::shared_ptr<Component> PolyMoverCompFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    glm::vec2 origin = table.Get<glm::vec2>("origin");
+    int loopType = table.Get<int>("loop_type");
+    auto ptr = std::make_shared<PolygonalMover>(loopType, origin);
+
+    table.ProcessVector("keys", [ptr] (luabridge::LuaRef ref) {
+        LuaTable t(ref);
+        glm::vec2 delta = t.Get<glm::vec2>("delta");
+        float speed = t.Get<float>("speed");
+        ptr->addMovement(delta, speed);
+    });
+    return ptr;
+}
 //std::unique_ptr<Component> StateMachineComponentFactory::Create(luabridge::LuaRef &ref) {
 //    LuaTable table(ref);
 //

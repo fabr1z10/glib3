@@ -22,6 +22,8 @@ local s = {
 	mario_slide_big = {x=192,y=64, width=16, height=32, anchor= {8,0}},
 	brick = {x=240, y=0, width=16, height=16 },
 	brick_piece = {x=64, y=16, width=16, height=16},
+	brick_dark = {x=160,y=48,width=16,height=16},
+	brick_piece_dark = {x=224, y=80, width=16, height=16},
 	mushroom = {x=48, y=16, width=16, height=16, anchor={8,0}},
 	mushroom1up = {x=144, y=48, width=16, height=16, anchor={8,0}},
 	flower_1 = {x=176,y=96,width=16,height=16,anchor={8,0}},
@@ -33,6 +35,7 @@ local s = {
 	bonus_brick_2 = {x=176, y=0, width=16, height=16 },
 	bonus_brick_3 = {x=192, y=0, width=16, height=16 },
 	bonus_brick_taken = {x=224, y=0, width=16, height=16},
+	bonus_brick_taken_dark = {x=240, y=96, width=16, height=16},
 	goomba_walk_1 = {x=112, y=0, width=16, height=16, anchor={8,0}},
 	goomba_walk_2 = {x=128, y=0, width=16, height=16, anchor={8,0}},
 	goomba_die = {x=144, y=0, width=16, height=16, anchor={8,0}},
@@ -62,6 +65,10 @@ local s = {
 }
 
 local dt=0.1
+
+
+local mario_box = {-8,0,8,16}
+local supermario_box = {-8,0,8,16}
 
 
 models["mario"] = {
@@ -171,8 +178,10 @@ models["koopa"] = {
 }
 
 models["basicbrick"] = glib.basic_model ("smb1.png", s.brick)
+models["basicbrick_dark"] = glib.basic_model ("smb1.png", s.brick_dark)
 models["score_100"] = glib.basic_model ("smb1.png", s.score_100)
 models["brickpiece"] = glib.basic_model ("smb1.png", s.brick_piece)
+models["brickpiece_dark"] = glib.basic_model ("smb1.png", s.brick_piece_dark)
 models["end_level_flag"] = glib.basic_model ("smb1.png", s.end_level_flag)
 models["castle_flag"] = glib.basic_model ("smb1.png", s.castle_flag)
 
@@ -251,6 +260,21 @@ models["bonusbrick2"] = {
 		}},
 		{ name = "taken", frames = {
 			{ duration = dt, quads = {{ id = s.bonus_brick_taken } }},
+		}},
+
+	}
+}
+
+models["bonusbrick2_dark"] = {
+    sheet = "smb1.png",
+    type = "sprite",
+    ppu=1,
+	animations = {
+		{ name = "default", frames = {
+			{ duration = dt, quads = {{ id = s.brick_dark } }},
+		}},
+		{ name = "taken", frames = {
+			{ duration = dt, quads = {{ id = s.bonus_brick_taken_dark } }},
 		}},
 
 	}
