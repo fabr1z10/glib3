@@ -1,10 +1,17 @@
 factory.mario = {}
 
-factory.mario.states = {"walk", "walk_big", "walk_fire"}
+factory.mario.models = {"mario", "supermario", "supermario_fire"}
 
-factory.mario.supermario = function(player, value) 
+factory.mario.change_state = function(player, value) 
 	player:getinfo().state = value
-	player.state = factory.mario.states[value]
+	player:setmodel(factory.mario.models[value], "walk")
+	-- Mario can fire only when state == 3
+	variables.can_fire = (value == 3)
+end
+
+factory.mario.warp = function(player) 
+	local st = player:getinfo().state
+	player.state = factory.mario.warp_states[st]	
 end
 
 factory.mario.fire = function ()
@@ -74,12 +81,12 @@ factory.mario.create = function(args)
 			{
 				type="info", 
 				supermario = false,
-				state = 3, -- 1 = small, 2 = supermario, 3 = supermario + fire
+				state = 1, -- 1 = small, 2 = supermario, 3 = supermario + fire
 				invincible = false
 			},
 			{ 
 				type="extstatemachine", 
-				initialstate = "walk_fire",
+				initialstate = "walk",
 				states = {
 					{ 
 						id = "walk", 
@@ -90,9 +97,14 @@ factory.mario.create = function(args)
 							fliph = true, 
 							jumpspeed = variables.jump_velocity,
 							keys = {
-								{ id = 264, action="callback", func= function() if (variables.warpfunc ~= nil) then variables.warpfunc() end end }	,
-								--{ id = 265, action="callback", func= function() print ("Su!") end }	
-
+								{ id = 341, action="callback", func= function() 
+									if (variables.can_fire) then
+										print ("fire!")
+										factory.mario.fire()
+									end 
+									end 
+								},
+								{ id = 264, action="callback", func= function() if (variables.warpfunc ~= nil) then variables.warpfunc() end end },
 							}
 						}
 					},
@@ -105,71 +117,6 @@ factory.mario.create = function(args)
 							fliph = true,
 							animup = "jump",
 							animdown = "jump"
-						}
-					},
-					{ 
-						id = "walk_big", 
-						state = {
-							type = "walkside", 
-							speed = 75, 
-							acceleration = 0.05, 
-							fliph = true, 
-							jumpspeed = variables.jump_velocity,
-							jump_state = "jump_big",
-							walk_anim = "walk_big",
-							idle_anim = "idle_big"
-						},
-					},
-					{
-						id = "jump_big",
-						state = {
-							type = "jump",
-							speed = 75,
-							acceleration = 0.10,
-							fliph = true,
-							animup = "jump_big",
-							animdown = "jump_big",
-							walk_state = "walk_big"
-						}
-					},
-					{ 
-						id = "walk_fire", 
-						state = {
-							type = "walkside", 
-							speed = 75, 
-							acceleration = 0.05, 
-							fliph = true, 
-							jumpspeed = variables.jump_velocity,
-							jump_state = "jump_fire",
-							walk_anim = "walk_fire",
-							idle_anim = "idle_fire",
-							keys = {
-								{ id = 341, action="callback", func= function() 
-									print ("fire!")
-									factory.mario.fire() 
-									end 
-								}	,
-							}
-						},
-
-					},
-					{
-						id = "jump_fire",
-						state = {
-							type = "jump",
-							speed = 75,
-							acceleration = 0.10,
-							fliph = true,
-							animup = "jump_fire",
-							animdown = "jump_fire",
-							walk_state = "walk_fire",
-							keys = {
-								{ id = 341, action="callback", func= function() 
-									print ("fire!") 
-									factory.mario.fire()
-									end 
-								}	,
-							}
 						}
 					},
 					{

@@ -33,6 +33,7 @@ variables = {
 	score = 0,
 	time = 400,
 	coins = 0,
+	can_fire = false,
 	collision = {
 		flags = {
 			player = 1,

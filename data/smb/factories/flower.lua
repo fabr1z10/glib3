@@ -3,7 +3,7 @@ factory.flower = {}
 factory.flower.response = function (p1, p2) 
 	local mario = monkey.getEntity("player")
 	--local isSuperMario = (mario:getinfo().supermario)
-	factory.mario.supermario(mario, 3)
+	factory.mario.change_state(mario, 3)
 	monkey.removeFromId(p2.id)
 end
 

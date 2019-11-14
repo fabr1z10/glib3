@@ -23,10 +23,10 @@ factory.basic_brick.create_piece = function (pos, vx, vy, main)
 end
 
 factory.basic_brick.response = function(p1, p2)
-	local sm = p1:getinfo().supermario
+	local sm = p1:getinfo().state
 	brick = p2:parent()
 
-	if (sm == true) then
+	if (sm > 1) then
 		monkey.removeFromId(brick.id)
 		local main = monkey.getEntity("main")
 		factory.basic_brick.create_piece ( {brick.x, brick.y, 0}, 20, 120, main)

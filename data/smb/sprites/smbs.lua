@@ -19,6 +19,7 @@ local s = {
 	mario_duck_big = {x=96, y=128, width=16, height=32, anchor={8,0}},
 	mario_die = {x = 96, y=0, width=16, height=16, anchor={8, 0}},
 	mario_slide = {x=176,y=64,width=16,height=16,anchor={8,0}},
+	mario_slide_big = {x=192,y=64, width=16, height=32, anchor= {8,0}},
 	brick = {x=240, y=0, width=16, height=16 },
 	brick_piece = {x=64, y=16, width=16, height=16},
 	mushroom = {x=48, y=16, width=16, height=16, anchor={8,0}},
@@ -77,21 +78,53 @@ models["mario"] = {
 		{ name = "jump", box = {-8, 0, 8, 16}, frames = { { duration = dt, quads = {{ id = s.mario_jump }}}}},
 		{ name = "die", frames = { { duration = dt, quads = {{ id = s.mario_die }}}}},
 		{ name = "slide", frames = { { duration = dt, quads = {{ id = s.mario_slide }}}}},
-		{ name = "idle_big", box = {-8, 0, 8, 24}, frames = { {duration = dt, quads = {{ id = s.mario_idle_big }}}}},
-		{ name = "walk_big", box = {-8, 0, 8, 24}, frames = {
+	}
+}
+
+models["supermario"] = {
+    sheet = "smb1.png",
+    type = "boxed_sprite",
+    ppu=1,
+	animations = {
+		{ name = "idle", box = {-8, 0, 8, 32}, frames = { {duration = dt, quads = {{ id = s.mario_idle_big }}}}},
+		{ name = "walk", box = {-8, 0, 8, 32}, frames = {
 			{ duration = dt, quads = {{ id = s.mario_walk_big_1 } }},
 			{ duration = dt, quads = {{ id = s.mario_walk_big_2 } }},
 			{ duration = dt, quads = {{ id = s.mario_walk_big_3 } }},
 		}},
-		{ name = "jump_big", box = {-8, 0, 8, 24}, frames = { { duration = dt, quads = {{ id = s.mario_jump_big }}}}},
-		{ name = "idle_fire", box = {-8, 0, 8, 24}, frames = { {duration = dt, quads = {{ id = s.mario_idle_fire }}}}},
-		{ name = "walk_fire", box = {-8, 0, 8, 24}, frames = {
+		{ name = "jump", box = {-8, 0, 8, 32}, frames = { { duration = dt, quads = {{ id = s.mario_jump_big }}}}},
+		{ name = "slide", frames = { { duration = dt, quads = {{ id = s.mario_slide }}}}},
+	}
+}
+models["supermario"] = {
+    sheet = "smb1.png",
+    type = "boxed_sprite",
+    ppu=1,
+	animations = {
+		{ name = "idle", box = {-8, 0, 8, 32}, frames = { {duration = dt, quads = {{ id = s.mario_idle_big }}}}},
+		{ name = "walk", box = {-8, 0, 8, 32}, frames = {
+			{ duration = dt, quads = {{ id = s.mario_walk_big_1 } }},
+			{ duration = dt, quads = {{ id = s.mario_walk_big_2 } }},
+			{ duration = dt, quads = {{ id = s.mario_walk_big_3 } }},
+		}},
+		{ name = "jump", box = {-8, 0, 8, 32}, frames = { { duration = dt, quads = {{ id = s.mario_jump_big }}}}},
+		{ name = "slide", frames = { { duration = dt, quads = {{ id = s.mario_slide_big }}}}},
+	}
+}
+
+models["supermario_fire"] = {
+    sheet = "smb1.png",
+    type = "boxed_sprite",
+    ppu=1,
+	animations = {
+		{ name = "idle", box = {-8, 0, 8, 32}, frames = { {duration = dt, quads = {{ id = s.mario_idle_fire }}}}},
+		{ name = "walk", box = {-8, 0, 8, 32}, frames = {
 			{ duration = dt, quads = {{ id = s.mario_walk_fire_1 } }},
 			{ duration = dt, quads = {{ id = s.mario_walk_fire_2 } }},
 			{ duration = dt, quads = {{ id = s.mario_walk_fire_3 } }},
 		}},
-		{ name = "jump_fire", box = {-8, 0, 8, 24}, frames = { { duration = dt, quads = {{ id = s.mario_jump_fire }}}}},
-
+		{ name = "jump", box = {-8, 0, 8, 32}, frames = { { duration = dt, quads = {{ id = s.mario_jump_fire }}}}},
+		{ name = "slide", frames = { { duration = dt, quads = {{ id = s.mario_slide_big }}}}},
 	}
 }
 

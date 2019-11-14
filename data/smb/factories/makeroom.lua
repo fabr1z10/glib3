@@ -30,7 +30,12 @@ factory.room.create = function(args)
 					{ key = 81, func = function () 
 						local mario = monkey.getEntity("player")
 						--local isSuperMario = (mario:getinfo().state)
-						factory.mario.supermario(mario, 2)
+						factory.mario.change_state(mario, 2)
+					end },
+					{ key = 87, func = function () 
+						local mario = monkey.getEntity("player")
+						--local isSuperMario = (mario:getinfo().state)
+						factory.mario.change_state(mario, 3)
 					end }
 				},
 			},
@@ -128,6 +133,8 @@ factory.room.create = function(args)
 		},
 		initscripts = {}
 	}
+
+	room.next = args.next
 
 	room.afterstartup = function()
  		for _, script in ipairs(room.initscripts) do
