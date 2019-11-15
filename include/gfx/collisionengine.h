@@ -37,7 +37,7 @@ public:
     void Remove(ICollider*) override ;
     void Clear() override ;
     void Move(ICollider*) override;
-    void PopCollider(ICollider*);
+    void PopCollider(ICollider*, bool rmvPairs);
     void PushCollider(ICollider*, Location);
     Location GetLocation(const Bounds& b);
     // runner implementation

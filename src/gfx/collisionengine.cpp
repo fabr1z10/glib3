@@ -44,7 +44,7 @@ void CollisionEngine::Add(ICollider* c) {
 
 void CollisionEngine::Remove(ICollider* c) {
     // called when a collider dies
-    PopCollider(c);
+    PopCollider(c, true);
 }
 
 void CollisionEngine::Clear() {
@@ -63,7 +63,7 @@ void CollisionEngine::Move(ICollider * c) {
             //std::cout << "Collider " << c->GetShape()->toString() << " moved to loc from (" << loc.x0 << ", " << loc.y0 << ") to (" << loc.x1 << ", " << loc.y1 << ")\n";
             if (loc != it->second) {
                 // if it's still in the same region nbothing to do
-                PopCollider(c);
+                PopCollider(c, false);
                 PushCollider(c, loc);
             }
         }
@@ -82,7 +82,7 @@ void CollisionEngine::Move(ICollider * c) {
 
 }
 
-void CollisionEngine::PopCollider(ICollider* c) {
+void CollisionEngine::PopCollider(ICollider* c, bool rmvPairs) {
 
     auto it = m_colliderLocations.find(c);
     //std::cerr << "CALLED POP COLLIDER! " << c->GetShape()->getBounds().GetSize().x << "\n";
@@ -100,11 +100,13 @@ void CollisionEngine::PopCollider(ICollider* c) {
 
     }
 
-    for (auto it = m_previouslyCollidingPairs.cbegin(); it != m_previouslyCollidingPairs.cend();) {
-        if (it->first.first == c || it->first.second == c) {
-            it =m_previouslyCollidingPairs.erase(it);
-        } else {
-            ++it;
+    if (rmvPairs) {
+        for (auto it = m_previouslyCollidingPairs.cbegin(); it != m_previouslyCollidingPairs.cend();) {
+            if (it->first.first == c || it->first.second == c) {
+                it = m_previouslyCollidingPairs.erase(it);
+            } else {
+                ++it;
+            }
         }
     }
 }

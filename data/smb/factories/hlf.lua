@@ -182,6 +182,7 @@ factory.blocks.warp_up = function(args)
 					{ type = action.set_state, args = {tag = "player", state = "walk"}},
 				}
 				local s = script.make(actions)
+print ("CAZZO DURO")
 				monkey.play(s)				
 			end
 		}

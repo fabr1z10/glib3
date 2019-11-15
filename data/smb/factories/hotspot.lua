@@ -22,3 +22,6 @@ factory.hotspot.response = function (mario, hotspot, sx, sy)
 	hotspot_info.func(mario,hotspot)
 end
 
+factory.hotspot.resp = function()
+	print ("Leaving")
+end

@@ -11,7 +11,7 @@ local roomInfo = {
 
 if (variables.cut_scene_done == true) then
 	--roomInfo.start_pos = {2, 25}
-roomInfo.start_pos = {137, 25	}
+roomInfo.start_pos = {160, 25	}
 	roomInfo.cam_bounds =  {0, 16*16, 192*16,32*16}
 end
 
@@ -25,8 +25,19 @@ for i=1,132 do table.insert(brick_pos, {5+i,28}) end
 local items_dynamic = { 
 	{
 		factory = factory.blocks.platform("block1.png"),
-		pos = { {0, 0, 24, 2} }
+		pos = { {0, 0, 24, 2}, {150,0,42,2} }
+	},
+	{
+		factory = factory.blocks.platform("block2.png"),
+		pos = { {155,2,9,1},{156,3,8,1},{157,4,7,1},{158,5,6,1},{159,6,5,1},{160,7,4,1},
+				{161,8,3,1},{162,9,2,1},{173,2,1,1} }
 	},	
+	{
+		factory = factory.blocks.end_level_pole, pos = {{173.5, 3}}
+	},
+	{
+		factory = factory.blocks.touchdown, pos = {{180,2}},
+	},
 	{
 		factory = factory.blocks.platform("block5.png"),
 		pos = { 
@@ -45,7 +56,7 @@ local items_dynamic = {
 	},		
 	{
 		factory = factory.bg.tiled("castle",-0.5),
-		pos = { {0, 2}},
+		pos = { {0, 2}, {177, 2}},
 	},		
 	{
 		factory = factory.bg.tiled("pipe_x", 1),
@@ -85,7 +96,7 @@ local items_dynamic = {
 	},
 	{
 		factory = factory.blocks.pipe_2_green,
-		pos = { {115, 18} },
+		pos = { {115, 18}, {153, 2} },
 	},
 	{
 		factory = factory.blocks.brickcoin,
@@ -113,6 +124,26 @@ local items_dynamic = {
 			{40, 22}, {41,25}, {42,25}, {43,25}, {44,25}, {45,22}, {58, 22}, {59, 22}, {60, 22}, {61, 22}, {68, 22}
 		}
 	},
+	{
+		factory = factory.bg.tiled("cloud2"),
+		pos = { {3, 10}, {18, 11}, {154,11}},
+	},	
+	{
+		factory = factory.bg.tiled("cloud1"),
+		pos = { {9, 6}, {175, 10}, {186,11}},
+	},	
+	{
+		factory = factory.bg.tiled("big_hill"), 
+		pos = { {167, 2} },
+	},
+	{
+		factory = factory.bg.tiled("small_hill"), 
+		pos = {{183, 2}},
+	},
+	{
+		factory = factory.bg.tiled("bush1"),
+		pos = {{190, 2}, {180, 2}},
+	},
 	-- {
 	-- 	factory = factory.npc.plant,
 	-- 	pos = {{104, 21}, {110, 22}, {116,20}}
@@ -120,7 +151,11 @@ local items_dynamic = {
 	{
 		factory = factory.blocks.moving_platform,
 		pos = { {140, 16, 0, 0, 192}, {140, 16, 0, 0.5, 192}, {155, 28, 0, 0, -192}, {155, 28, 0, 0.5, -192}}
-	}
+	},
+	{
+		factory = factory.blocks.warp_up { to = {154, 0}, x_bounds= {150*16, roomInfo.worldWidth*engine.tilesize}, y_bounds = {0, roomInfo.worldHeight*engine.tilesize}},
+		pos = { {166,21} }
+	},
 }
 
 room = factory.room.create (roomInfo)
@@ -150,6 +185,13 @@ for _, v in pairs(items_dynamic) do
 end
 
 room:add_d(items_d)
+
+room:add_d( {
+	-- end level stuff
+	factory.tiled.create { pos = {173, 3}, width=1, height=10, collide=false, 
+		tiledata = {3,2,3,2,3,2,3,2,3,2,3,2,3,2,3,2,3,2,4,2}, img = "smb1.png"},
+	factory.simplesprite.create {pos ={172.5, 11}, tag="flag", model = "end_level_flag"},
+})
 
 room:add_b({
 	{ 
