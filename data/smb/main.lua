@@ -34,6 +34,7 @@ variables = {
 	time = 400,
 	coins = 0,
 	can_fire = false,
+	cut_scene_done = true,
 	collision = {
 		flags = {
 			player = 1,
@@ -60,7 +61,8 @@ variables = {
 			bonus_brick_sensor = 21,
 			hotspot = 22,
 			flower = 23,
-			fire = 24
+			fire = 24,
+			plant = 25
 		}
 	},
 	tags = {

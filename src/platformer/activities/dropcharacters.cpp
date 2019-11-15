@@ -2,12 +2,12 @@
 #include <gfx/engine.h>
 #include <gfx/components/platform.h>
 
-DropCharacters::DropCharacters(const std::string &actorId, glm::vec2 pos) : Activity(), m_actorId(actorId), m_pos(pos) {}
+DropCharacters::DropCharacters() : TargetActivity() {}
 
 void DropCharacters::Start() {
-    auto entity = Ref::Get<Entity>(m_actorId);
-    entity->GetComponent<PlatformComponent>()->RemoveCharacters();
-    entity->SetPosition(m_pos);
+    TargetActivity::Start();
+    m_entity->GetComponent<PlatformComponent>()->RemoveCharacters();
+    //entity->SetPosition(m_pos);
     SetComplete();
 
 }

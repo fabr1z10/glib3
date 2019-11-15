@@ -373,16 +373,27 @@ std::shared_ptr<Component> ExtStateMachineCompFactory::Create(luabridge::LuaRef 
 
 std::shared_ptr<Component> PolyMoverCompFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
-    glm::vec2 origin = table.Get<glm::vec2>("origin");
+    glm::vec2 origin = table.Get<glm::vec2>("origin", glm::vec2(0.0f));
     int loopType = table.Get<int>("loop_type");
-    auto ptr = std::make_shared<PolygonalMover>(loopType, origin);
+    int startIndex = table.Get<int>("start_index", 0);
+    float pct = table.Get<float>("pct", 0.0f);
 
-    table.ProcessVector("keys", [ptr] (luabridge::LuaRef ref) {
+
+
+    auto ptr = std::make_shared<PolygonalMover>(loopType, origin);
+    ptr->setStartPosition(startIndex, pct);
+    table.ProcessVector("movements", [ptr] (luabridge::LuaRef ref) {
         LuaTable t(ref);
         glm::vec2 delta = t.Get<glm::vec2>("delta");
         float speed = t.Get<float>("speed");
-        ptr->addMovement(delta, speed);
+        float hold = t.Get<float>("hold", 0.0f);
+        ptr->addMovement(delta, speed, hold);
     });
+
+    if (table.HasKey("callback")) {
+        luabridge::LuaRef r = table.Get<luabridge::LuaRef>("callback");
+        ptr->setCompleteCallback(r);
+    }
     return ptr;
 }
 //std::unique_ptr<Component> StateMachineComponentFactory::Create(luabridge::LuaRef &ref) {

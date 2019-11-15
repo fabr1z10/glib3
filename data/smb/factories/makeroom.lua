@@ -2,6 +2,7 @@ factory.room = {}
 
 factory.room.create = function(args)
 	variables.world_name = args.name or ""
+	local cam_bounds = args.cam_bounds or {0, 0, args.worldWidth*16, args.worldHeight*16}
 	local room = {
 		engines = {
 			{ type = "scheduler"},
@@ -54,7 +55,7 @@ factory.room.create = function(args)
 					tag = "maincam",
 					type="ortho",
 					size = {args.screen_size[1]*16, args.screen_size[2]*16},
-					bounds = {0, 0, args.worldWidth*16, args.worldHeight*16},
+					bounds = cam_bounds,
 					viewport = {0, 0, args.screen_size[1]*16, args.screen_size[2]*16}
 				},
 				children = {

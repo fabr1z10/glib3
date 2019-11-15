@@ -64,6 +64,7 @@ struct EntityWrapper {
     std::string GetState() const;
     void SetState (const std::string&) ;
     void EnableStateMachine(bool);
+    void DropCharacters();
     luabridge::LuaRef GetProperty(const std::string&) const;
     void SetProperty (const std::string&, luabridge::LuaRef value);
     void SendMessage (luabridge::LuaRef ref);

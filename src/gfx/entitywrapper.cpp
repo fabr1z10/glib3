@@ -15,6 +15,7 @@
 #include <gfx/properties.h>
 #include <gfx/components/extstatemachine.h>
 #include <gfx/components/smartcollider.h>
+#include <gfx/components/platform.h>
 
 float EntityWrapper::GetX() const {
     return m_underlying->GetPosition().x;
@@ -67,6 +68,11 @@ void EntityWrapper::SetState(const std::string& state) {
 void EntityWrapper::EnableStateMachine(bool value) {
     auto sm = m_underlying->GetComponent<StateMachine>();
     sm->setActive(value);
+}
+
+void EntityWrapper::DropCharacters() {
+    m_underlying->GetComponent<PlatformComponent>()->RemoveCharacters();
+
 }
 
 luabridge::LuaRef EntityWrapper::GetProperty(const std::string& key) const {

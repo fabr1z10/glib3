@@ -156,9 +156,10 @@ void PlatformerStateFactory::init(const LuaTable& table, std::shared_ptr<State> 
 
 std::shared_ptr<Activity> DropCharactersActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
-    std::string actor = table.Get<std::string>("actor");
-    glm::vec2 targetPos = table.Get<glm::vec2>("pos");
-    return std::make_shared<DropCharacters>(actor, targetPos);
+    auto act = std::make_shared<DropCharacters>();
+    setTarget(table, act.get());
+
+    return act;
 };
 
 std::shared_ptr<Activity> SetEnemyDirActFactory::Create(luabridge::LuaRef &ref) {

@@ -61,6 +61,8 @@ local s = {
 	mario_fire_2 = {x=192,y=112,width=16,height=16,anchor={8,8}},
 	mario_fire_3 = {x=208,y=112,width=16,height=16,anchor={8,8}},
 	mario_fire_4 = {x=224,y=112,width=16,height=16,anchor={8,8}},
+	plant_1 = {x=128,y=96,width=16,height=32,anchor={8,0}},
+	plant_2 = {x=144,y=96,width=16,height=32,anchor={8,0}},
 
 }
 
@@ -193,6 +195,18 @@ models["mushroom"] = {
 	animations = {
 		{ name = "walk", box = {-8, 0, 8, 16}, frames = {
 			{ duration = dt, quads = {{ id = s.mushroom } }},
+		}},
+	}
+}
+
+models["plant"] = {
+    sheet = "smb1.png",
+    type = "boxed_sprite",
+    ppu=1,
+	animations = {
+		{ name = "walk", box = {-8, 0, 8, 16}, frames = {
+			{ duration = dt, quads = {{ id = s.plant_1 } }},
+			{ duration = dt, quads = {{ id = s.plant_2 } }},
 		}},
 	}
 }

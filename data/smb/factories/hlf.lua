@@ -52,9 +52,33 @@ factory.blocks.brickmushroom = function(p)
 			end
 		end
 	}	  
-
-
 end
+
+factory.blocks.brickmushroom_dark = function(p)
+	return factory.bonus_brick.create { 
+		pos= p, 
+		sprite="bonusbrick2_dark", 
+		factory = function()
+			local mario = monkey.getEntity("player")
+			local state = mario:getinfo().state
+			if (state == 1) then
+				return factory.mushroom
+			else
+				return factory.flower
+			end
+		end,
+		args = function() 
+			local mario = monkey.getEntity("player")
+			local state = mario:getinfo().state
+			if (state == 1) then
+				return { sprite = "mushroom" }
+			else
+				return { sprite = "flower" }
+			end
+		end
+	}	  
+end
+
 
 factory.blocks.brickstarman = function(p) 
 	return factory.bonus_brick.create { pos= p, sprite="bonusbrick2", factory = factory.starman, args = { sprite="starman" } } 
@@ -103,6 +127,10 @@ factory.npc.goomba = function(p)
 		sprite="goomba",
 		flip = true, 
 	}
+end
+
+factory.npc.plant = function(p)
+	return factory.plant.create {pos=p, sprite="plant"}
 end
 
 factory.bg.tiled = function(temp,z) 
@@ -205,3 +233,27 @@ factory.blocks.touchdown = function(p)
 	}
 end
 
+
+factory.blocks.moving_platform = function(p) 
+	return factory.movingplatform.create { 
+		pos = {p[1], p[2]},
+		width=3, 
+		tile = {15,5},
+		--speed=20, 
+		img="smb1.png", 
+		loop_type = 1,
+		start_index = p[3],
+		pct = p[4],
+		movements = {
+			{ delta = {0, p[5]}, speed = 50 }
+		},
+		callback = function(platform) 
+			platform:dropcharacters()
+		end
+		--p--ath = { 
+		--	{ pos={8*16,7*16}, speed = 20 }, 
+		--	{ pos= {5*16,10*16}}
+		--}, 
+		--initscripts = initscripts 
+	}
+end

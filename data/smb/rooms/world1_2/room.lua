@@ -9,6 +9,14 @@ local roomInfo = {
 	next = "world1_1"
 }
 
+if (variables.cut_scene_done == true) then
+	--roomInfo.start_pos = {2, 25}
+roomInfo.start_pos = {137, 25	}
+	roomInfo.cam_bounds =  {0, 16*16, 192*16,32*16}
+end
+
+
+
 --local initscripts = {}
 
 local brick_pos = {}
@@ -29,11 +37,11 @@ local items_dynamic = {
 	},
 	{
 		factory = factory.blocks.platform("block4.png"),
-		pos = { {0, 16, 80, 2}, {83, 16, 37, 2}, {122, 16, 2, 2}, {126, 16, 12, 2}  }
+		pos = { {0, 16, 80, 2}, {83, 16, 37, 2}, {122, 16, 2, 2}, {126, 16, 12, 2}, {145,16,8,2}, {160,16,32,2}  }
 	},	
 	{
 		factory = factory.blocks.platform("brick2.png"),
-		pos = { {0, 18, 1, 11}, {122, 18, 2, 3}}
+		pos = { {0, 18, 1, 11}, {122, 18, 2, 3}, {160,18,17,3}, {170,21,7,8}}
 	},		
 	{
 		factory = factory.bg.tiled("castle",-0.5),
@@ -42,6 +50,10 @@ local items_dynamic = {
 	{
 		factory = factory.bg.tiled("pipe_x", 1),
 		pos = { {10, 2}},
+	},	
+	{
+		factory = factory.bg.tiled("pipe_1_2", 1),
+		pos = { {166, 21}},
 	},	
 	{
 		factory = factory.blocks.basicbrick_dark,
@@ -57,8 +69,9 @@ local items_dynamic = {
 			{66, 27}, {67, 27}, {68, 27}, {69, 27}, {66, 26}, {67, 26}, {68, 26}, {69, 26}, {67, 25}, {67, 24}, {67, 23}, {67, 22}, {67, 21}, {68, 21}, {69, 21}, {69, 22},
 			{72, 21}, {73, 21}, {72, 22}, {72, 23}, {73, 23}, {72, 24}, {73, 24}, {72, 25}, {73, 25},
 			{76, 21}, {77, 21}, {78, 21}, {79, 21},{76, 26}, {77, 26}, {78, 26}, {79, 26},{76, 27}, {77, 27}, {78, 27}, {79, 27},
-			{84, 22}, {85, 22}, {86, 22}, {87, 22}, {88, 22}, {89, 22},{84, 23}, {85, 23}, {86, 23}, {87, 23}, {88, 23}, {89, 23}
-		
+			{84, 22}, {85, 22}, {86, 22}, {87, 22}, {88, 22}, {89, 22},{84, 23}, {85, 23}, {86, 23}, {87, 23}, {88, 23}, {89, 23},
+			{145, 22}, {146, 22}, {147, 22}, {148, 22}, {149, 22},  
+			{161, 28}, {162, 28},{163, 28},{164, 28},{165, 28},{166, 28},{167, 28},
 
 		}
 	},
@@ -87,6 +100,10 @@ local items_dynamic = {
 		pos = { {10, 21} },
 	},	
 	{
+		factory = factory.blocks.brickmushroom_dark,
+		pos = { {150, 22} },
+	},
+	{
 		factory = factory.blocks.brickstarman_dark,
 		pos = { {46, 23} },
 	},
@@ -96,6 +113,14 @@ local items_dynamic = {
 			{40, 22}, {41,25}, {42,25}, {43,25}, {44,25}, {45,22}, {58, 22}, {59, 22}, {60, 22}, {61, 22}, {68, 22}
 		}
 	},
+	-- {
+	-- 	factory = factory.npc.plant,
+	-- 	pos = {{104, 21}, {110, 22}, {116,20}}
+	-- },
+	{
+		factory = factory.blocks.moving_platform,
+		pos = { {140, 16, 0, 0, 192}, {140, 16, 0, 0.5, 192}, {155, 28, 0, 0, -192}, {155, 28, 0, 0.5, -192}}
+	}
 }
 
 room = factory.room.create (roomInfo)
@@ -144,13 +169,19 @@ room:add_b({
 
 -- cutscene
 table.insert (room.initscripts, function()
-	local actions = {
-		{ type = action.change_cam_bounds, args = {cam="maincam", x= {0,256}, y = {0,256}}},
-		{ type = action.set_state, args = {tag = "player", state = "walk"}},
-		{ type = action.set_demo_mode, args = { tag="player", value=true, sync = true, length = 10, events = {
-			{ t=0, key = 262, event ="down"}
-		}}},
-	}
-	local s = script.make(actions)
-	monkey.play(s)	
+	if (variables.cut_scene_done == false) then
+		variables.cut_scene_done = true
+		local actions = {
+			{ type = action.change_cam_bounds, args = {cam="maincam", x= {0,256}, y = {0,256}}},
+			{ type = action.set_state, args = {tag = "player", state = "walk"}},
+			{ type = action.set_demo_mode, args = { tag="player", value=true, sync = true, length = 10, events = {
+				{ t=0, key = 262, event ="down"}
+			}}},
+		}
+		local s = script.make(actions)
+		monkey.play(s)	
+	else
+	
+		
+	end
 end)

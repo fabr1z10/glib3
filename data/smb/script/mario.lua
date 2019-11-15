@@ -4,6 +4,11 @@ action.set_enemy_dir = function(args)
 	return {type="setenemydir", tag = args.tag, id = args.id, left = args.left}
 end
 
+action.dropcharacters = function(args)
+	return { type="dropcharacters", tag = args.tag, id = args.id }
+
+end
+
 function P(x, y) return {x*16,y*16} end
 
 function add_score(n)
@@ -101,6 +106,9 @@ variables.data = {
 		},
 		pipe_x = {
 			sheet =1, width= 4, height = 4, data = {2,5,3,5,4,5,1,4,2,4,3,4,4,4,1,4,-1,-1,0,4,1,4,-1,-1,0,3,1,3}
+		},
+		pipe_1_2 = {
+			sheet =1, width= 4, height = 8, data = {2,5,3,5,4,5,1,4,2,4,3,4,4,4,1,4,-1,-1,0,4,1,4,-1,-1,0,4,1,4,-1,-1,0,4,1,4,-1,-1,0,4,1,4,-1,-1,0,4,1,4,-1,-1,0,4,1,4}
 		}
 	}
 }

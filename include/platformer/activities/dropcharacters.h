@@ -1,16 +1,11 @@
 #pragma once
 
-#include <gfx/activity.h>
-#include <glm/glm.hpp>
-#include <string>
+#include <gfx/activities/targetactivity.h>
 
-class DropCharacters : public Activity {
+
+class DropCharacters : public TargetActivity {
 public:
-    DropCharacters(const std::string& actorId, glm::vec2 pos);
+    DropCharacters();
     void Start() override;
-    void Run (float dt) override  {}
-private:
-    glm::vec2 m_pos;
-    std::string m_animId;
-    std::string m_actorId;
+    void Run (float dt) override {}
 };
