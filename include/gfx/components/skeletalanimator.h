@@ -42,7 +42,7 @@ protected:
     float m_l_offset_y;
     float m_r_offset_y;
     std::shared_ptr<SkeletalModel> m_model;
-
+    std::vector<float> m_angles;
 
     bool m_looped;
 };
@@ -54,4 +54,8 @@ inline std::type_index SkeletalAnimator::GetType() {
 
 inline bool SkeletalAnimator::looped() const {
     return m_looped;
+}
+
+inline std::vector<float>& SkeletalAnimator::getAngles() {
+    return m_angles;
 }

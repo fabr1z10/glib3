@@ -15,7 +15,7 @@ void Bone::setAngle(float angle) {
 
 Bounds SkeletalModel::GetBounds() const {
     // TODO
-    return Bounds();
+    return Bounds(glm::vec3(-1000.0f), glm::vec3(1000.0f));
 }
 
 ShaderType SkeletalModel::GetShaderType() const {
@@ -46,13 +46,16 @@ void SkeletalModel::Draw(Shader* shader, const std::vector<float>& angles) {
         glm::mat4 nt = top->transform;
         // apply the angle of this node
         float angle = angles[top->id];
-        glm::mat4 m = glm::rotate(deg2rad * angle, glm::vec3(0,0,1));
-        nt[1][0] = m[1][0];
-        nt[1][1] = m[1][1];
-        nt[0][0] = m[0][0];
-        nt[0][1] = m[0][1];
 
-        glm::mat4 nodeTransform = (tm.top() * nt);
+        glm::mat4 m = glm::rotate(deg2rad * angle, glm::vec3(0,0,1));
+        glm::mat4 lpos = glm::translate(glm::vec3(top->pos, 0.0f));
+        glm::mat4 local = lpos*m*glm::translate(glm::vec3(-top->center, top->z));
+//        nt[1][0] = m[1][0];
+//        nt[1][1] = m[1][1];
+//        nt[0][0] = m[0][0];
+//        nt[0][1] = m[0][1];
+
+        glm::mat4 nodeTransform = (tm.top() * local);
         glm::mat4 mvm = viewMatrix * nodeTransform;
 
 
@@ -77,14 +80,14 @@ Bone& SkeletalModel::getBone (const std::string& id) {
     return *(m_boneMap.at(id));
 }
 
-void SkeletalModel::addBone(const std::string& id, Bone& b, const std::string& parent) {
+void SkeletalModel::addBone(const std::string& id, std::unique_ptr<Bone> bone, const std::string& parent) {
 
-    m_bones.push_back(b);
-    m_boneMap.insert(std::make_pair(id, &m_bones.back()));
+    m_bones.push_back(std::move(bone));
+    m_boneMap.insert(std::make_pair(id, m_bones.back().get()));
     if (parent.empty()) {
-        m_root = &m_bones.back();
+        m_root = m_bones.back().get();
     } else {
-        getBone(parent).children.push_back(&m_bones.back());
+        getBone(parent).children.push_back(m_bones.back().get());
     }
 }
 

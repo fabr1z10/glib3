@@ -55,34 +55,35 @@ void SkeletalAnimator::Update(double dt) {
         m_looped = true;
     }
 
-    std::cerr << "t = " << m_time << " " << duration << " " << std::endl;
+    //std::cerr << "t = " << m_time << " " << duration << " " << std::endl;
     auto state = m_currentAnim->getTransformation(m_time);
     const auto& boneIds = m_currentAnim->getBoneIds();
-    for (size_t j = 0; j < boneIds.size(); ++j) {
-        std::cerr << j << " (" << state.boneAngles[j] << ")\n";
-        m_model->getBone(boneIds[j]).setAngle(state.boneAngles[j]);
-        //m_bones.at(boneIds[j])->SetAngle(state.boneAngles[j]);
-    }
+    m_angles = state.boneAngles;
+//    for (size_t j = 0; j < boneIds.size(); ++j) {
+//        std::cerr << j << " (" << state.boneAngles[j] << ")\n";
+//        m_model->getBone(boneIds[j]).setAngle(state.boneAngles[j]);
+//        //m_bones.at(boneIds[j])->SetAngle(state.boneAngles[j]);
+//    }
 
     // check attacks
     // m_currentAnim->checkAttack(oldTime, m_time);
 
     // update position of torso ... thisshould be in a subclass like human figure skeletal animator
 
-    auto b = m_rs->GetBounds();
-    const auto& tr = m_rs->GetObject()->GetWorldTransform();
-    b.Transform(tr);
-    auto c = m_ls->GetBounds();
-    const auto& tr2 = m_ls->GetObject()->GetWorldTransform();
-    c.Transform(tr2);
-    auto torso = m_bones.at("torso");
-    glm::vec3 torsoPos = torso->GetPosition();
-    float yMin = std::min(b.min.y - m_r_offset_y, c.min.y - m_l_offset_y);
-    float dist = fabs(torsoPos.y - yMin);
-//    glm::vec3 currentPos = m_entity->GetPosition();
-//
-//    float delta = fabs(currentPos.y-b.min.y);
-    torso->SetPosition(glm::vec3(0, dist, 0));
+//    auto b = m_rs->GetBounds();
+//    const auto& tr = m_rs->GetObject()->GetWorldTransform();
+//    b.Transform(tr);
+//    auto c = m_ls->GetBounds();
+//    const auto& tr2 = m_ls->GetObject()->GetWorldTransform();
+//    c.Transform(tr2);
+//    auto torso = m_bones.at("torso");
+//    glm::vec3 torsoPos = torso->GetPosition();
+//    float yMin = std::min(b.min.y - m_r_offset_y, c.min.y - m_l_offset_y);
+//    float dist = fabs(torsoPos.y - yMin);
+////    glm::vec3 currentPos = m_entity->GetPosition();
+////
+////    float delta = fabs(currentPos.y-b.min.y);
+//    torso->SetPosition(glm::vec3(0, dist, 0));
     //m_bones.at("torso")->SetPosition(glm::vec3(0, yOffset, 0));
 
 }

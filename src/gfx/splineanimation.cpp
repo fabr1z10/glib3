@@ -6,7 +6,7 @@ SplineAnimation::SplineAnimation(bool loop, int boundltype, double boundl, int b
 
 void SplineAnimation::init() {
     if (m_keyFrames.size() >= 2) {
-        int n = getBonesCount();
+        int n = m_keyFrames[0].getAngleCount();
         for (size_t i = 0; i < n; ++i) {
             std::vector<double> times;
             std::vector<double> angles;

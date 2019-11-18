@@ -12,12 +12,16 @@ public:
     const std::vector<float>& getAngles() const;
     float getTime() const;
     float getAngle(size_t) const;
-
+    int getAngleCount() const;
 private:
     float m_time;
     glm::vec2 offset;
     std::vector<float> m_angles;
 };
+
+inline int KeyFrame::getAngleCount() const {
+    return m_angles.size();
+}
 
 inline float KeyFrame::getAngle(size_t j) const {
     return m_angles[j];
@@ -38,7 +42,6 @@ struct BoneInfo {
 };
 
 struct SkeletalAnimationState {
-    glm::vec2 pos;
     std::vector<float> boneAngles;
 };
 
@@ -59,11 +62,12 @@ protected:
     bool m_loop;
     std::vector<std::string> m_boneIds;
     std::vector<KeyFrame> m_keyFrames;
+    int m_boneCount;
     //std::unordered_map<float, KeyFrame> m_keyFrames;
 };
 
 inline int SkeletalAnimation::getBonesCount() const {
-    return m_boneIds.size();
+    return m_boneCount;
 }
 
 inline const std::vector<std::string>& SkeletalAnimation::getBoneIds() const {

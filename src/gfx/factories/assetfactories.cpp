@@ -234,7 +234,8 @@ std::shared_ptr<IModel> SkeletalModelFactory::Create(luabridge::LuaRef &ref) {
     auto model = std::make_shared<SkeletalModel>();
 
     // load the bones
-    table.ProcessVector("bones", [&] (luabridge::LuaRef ref) {
+    int boneCount = 0;
+    table.ProcessVector("bones", [&, &boneCount] (luabridge::LuaRef ref) {
         LuaTable bt(ref);
         std::string id = bt.Get<std::string>("id");
         glm::vec4 quad = bt.Get<glm::vec4>("quad");
@@ -246,15 +247,17 @@ std::shared_ptr<IModel> SkeletalModelFactory::Create(luabridge::LuaRef &ref) {
         float w = quad[2];      // TODO scale?
         float h = quad[3];
         auto mesh = std::make_shared<QuadMesh>(gfx, w, h, center, quad[0], quad[1], quad[2], quad[3]);
-        Bone bone;
-        bone.center = center;
-        bone.mesh = mesh;
-
-        bone.transform[3][0] = -origin.x+pos.x;
-        bone.transform[3][1] = -origin.y+pos.y;
-        bone.transform[3][2] = z;
+        auto bone = std::make_unique<Bone>();
+        bone->id = boneCount++;
+        bone->center = origin;
+        bone->mesh = mesh;
+        bone->pos = pos;
+        bone->z = z;
+        bone->transform[3][0] = -origin.x+pos.x;
+        bone->transform[3][1] = -origin.y+pos.y;
+        bone->transform[3][2] = z;
         std::cerr << "bone: " << id << ", quad = (" << quad[0] << ", " << quad[1] << ", " << quad[2] << ", " << quad[3] << ")\n";
-        model->addBone(id, bone, parent);
+        model->addBone(id, std::move(bone), parent);
     });
 
     // load the animations
@@ -280,7 +283,7 @@ std::shared_ptr<IModel> SkeletalModelFactory::Create(luabridge::LuaRef &ref) {
         //std::vector<std::string> boneIds = table.GetVector<std::string>("bones", true);
         //anim->setBoneIds(boneIds);
         //int boneCount = boneIds.size();
-        table.ProcessVector("frames", [&anim] (luabridge::LuaRef keyframe) {
+        atable.ProcessVector("frames", [&anim] (luabridge::LuaRef keyframe) {
             LuaTable ft(keyframe);
             float t = ft.Get<float>("t");
             std::vector<float> angles = ft.GetVector<float>("a", true);

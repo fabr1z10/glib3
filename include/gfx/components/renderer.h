@@ -27,7 +27,7 @@ public:
     void Update(double) override {}
     void SetParent(Entity* parent) override;
     void SetTint(glm::vec4 c);
-    ShaderType GetShaderType() const { return (m_model == nullptr ? ShaderType::NONE : m_model->GetShaderType()); }
+    virtual ShaderType GetShaderType() const { return (m_model == nullptr ? ShaderType::NONE : m_model->GetShaderType()); }
     using ParentClass = Renderer;
     //void SetMeshInfo (int offset, int count);
     std::shared_ptr<Component> clone() const override;

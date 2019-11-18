@@ -2,9 +2,11 @@
 #include <gfx/components/renderer.h>
 #include <gfx/engine.h>
 #include <gfx/components/skeletalanimator.h>
+#include <gfx/components/skeletalrenderer.h>
 #include <gfx/factories.h>
 #include <gfx/splineanim.h>
 #include <gfx/parabolicanim.h>
+
 
 std::shared_ptr<SkeletalAnimation> SkeletalAnimFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
@@ -79,8 +81,7 @@ std::shared_ptr<Entity> SkeletonFactory::Create(luabridge::LuaRef &ref) {
     // create the entity
     auto entity = Ref::Create<Entity>();
 
-    auto renderer = Ref::Create<Renderer>();
-    renderer->SetModel(model);
+    auto renderer = Ref::Create<SkeletalRenderer>(model);
     entity->AddComponent(renderer);
     if (!tag.empty()) {
         entity->SetTag(tag);
