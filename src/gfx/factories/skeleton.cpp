@@ -68,60 +68,30 @@ std::shared_ptr<SkeletalAnimation> SkeletalAnimFactory::Create(luabridge::LuaRef
 }
 
 std::shared_ptr<Entity> SkeletonFactory::Create(luabridge::LuaRef &ref) {
+
+    //GLIB_FAIL ("Don't know how to create skeletons!");
     LuaTable table(ref);
-    luabridge::LuaRef bonesRef = table.Get<luabridge::LuaRef>("bones");
-    auto factory = Engine::get().GetSceneFactory();
+    std::string tag = table.Get<std::string>("tag", "");
+    std::string modelId = table.Get<std::string>("model");
+    auto model = Engine::get().GetAssetManager().GetModel(modelId);
+    glm::vec3 pos = table.Get<glm::vec3>("pos", glm::vec3(0.0f));
 
-    std::unordered_map<std::string, std::shared_ptr<Entity>> bones;
-    std::unordered_map<std::string, std::string> parentRelation;
-    std::string root;
+    // create the entity
+    auto entity = Ref::Create<Entity>();
 
-    auto animator = Ref::Create<SkeletalAnimator>();
-    table.ProcessVector("bones", [&bones, &parentRelation, &root, factory, &animator] (luabridge::LuaRef ref) {
-        // each bone generates a node
-        LuaTable boneRef (ref);
-        std::string name = boneRef.Get<std::string>("name");
-        std::string parent = boneRef.Get<std::string>("parent", "");
-        float length = boneRef.Get<float>("length");
-
-        if (!parent.empty()) {
-            parentRelation.insert(std::make_pair(name, parent));
-        } else {
-            root = name;
-        }
-        // create the bone
-        luabridge::LuaRef desc = boneRef.Get<luabridge::LuaRef>("desc");
-        auto bone = factory->makeEntity(desc);
-        animator->AddBone(name, bone.get(), length);
-        bones.insert(std::make_pair(name, bone));
-    });
-
-    for (const auto& p : parentRelation) {
-        bones.at(p.second)->AddChild(bones.at(p.first));
+    auto renderer = Ref::Create<Renderer>();
+    renderer->SetModel(model);
+    entity->AddComponent(renderer);
+    if (!tag.empty()) {
+        entity->SetTag(tag);
     }
 
-    auto entity = Ref::Create<Entity>();
-    std::string tag = table.Get<std::string>("tag", "");
-    if (!tag.empty()) entity->SetTag(tag);
-
-    entity->AddChild(bones.at(root));
-
-
-    table.ProcessVector("animations", [&animator] (luabridge::LuaRef a) {
-        std::string name = a[1].cast<std::string>();
-        std::string animId = a[2].cast<std::string>();
-        auto anim = Engine::get().GetAssetManager().GetSkeletalAnimation(animId);
-        animator->AddAnimation(name, anim);
-    });
-
-    float loffset = table.Get<float>("l_offset_y", 0.0f);
-    float roffset = table.Get<float>("r_offset_y", 0.0f);
-    animator->setOffsetY(loffset, roffset);
-
+    auto animator = std::make_shared<SkeletalAnimator>(model);
     entity->AddComponent(animator);
 
-    // add additional components
-    // add components
+    auto factory = Engine::get().GetSceneFactory();
+
+    // additional components
     if (table.HasKey("components")) {
         luabridge::LuaRef c = table.Get<luabridge::LuaRef>("components");
         for (int i = 0; i < c.length(); ++i) {
@@ -131,20 +101,91 @@ std::shared_ptr<Entity> SkeletonFactory::Create(luabridge::LuaRef &ref) {
         }
     }
 
-    // add additional children
-    if (table.HasKey("children")) {
-        luabridge::LuaRef c = table.Get<luabridge::LuaRef>("children");
-        for (int i = 0; i < c.length(); ++i) {
-            luabridge::LuaRef child = c[i+1];
-            auto childEntity = factory->makeEntity(child);
-            if (childEntity != nullptr)
-                entity->AddChild(childEntity);
-        }
-    }
-
-    glm::vec3 pos = table.Get<glm::vec3>("pos", glm::vec3(0.0f));
     entity->SetPosition(pos);
-    return entity;
 
+    return entity;
+//    auto animator = std::make_shared<Animator>(model);
+//    entity->AddComponent(animator);
+//    return entity;
+//
+//    GLIB_FAIL("mmm, have to create skeleton with model " << modelId << " but do not know why");
+//    luabridge::LuaRef bonesRef = table.Get<luabridge::LuaRef>("bones");
+//    auto factory = Engine::get().GetSceneFactory();
+//
+//    std::unordered_map<std::string, std::shared_ptr<Entity>> bones;
+//    std::unordered_map<std::string, std::string> parentRelation;
+//    std::string root;
+//
+//    auto animator = Ref::Create<SkeletalAnimator>();
+//    table.ProcessVector("bones", [&bones, &parentRelation, &root, factory, &animator] (luabridge::LuaRef ref) {
+//        // each bone generates a node
+//        LuaTable boneRef (ref);
+//        std::string name = boneRef.Get<std::string>("name");
+//        std::string parent = boneRef.Get<std::string>("parent", "");
+//        float length = boneRef.Get<float>("length");
+//
+//        if (!parent.empty()) {
+//            parentRelation.insert(std::make_pair(name, parent));
+//        } else {
+//            root = name;
+//        }
+//        // create the bone
+//        luabridge::LuaRef desc = boneRef.Get<luabridge::LuaRef>("desc");
+//        auto bone = factory->makeEntity(desc);
+//        animator->AddBone(name, bone.get(), length);
+//        bones.insert(std::make_pair(name, bone));
+//    });
+//
+//    for (const auto& p : parentRelation) {
+//        bones.at(p.second)->AddChild(bones.at(p.first));
+//    }
+//
+//    auto entity = Ref::Create<Entity>();
+//    std::string tag = table.Get<std::string>("tag", "");
+//    if (!tag.empty()) entity->SetTag(tag);
+//
+//    entity->AddChild(bones.at(root));
+//
+//
+//    table.ProcessVector("animations", [&animator] (luabridge::LuaRef a) {
+//        std::string name = a[1].cast<std::string>();
+//        std::string animId = a[2].cast<std::string>();
+//        auto anim = Engine::get().GetAssetManager().GetSkeletalAnimation(animId);
+//        animator->AddAnimation(name, anim);
+//    });
+//
+//    float loffset = table.Get<float>("l_offset_y", 0.0f);
+//    float roffset = table.Get<float>("r_offset_y", 0.0f);
+//    animator->setOffsetY(loffset, roffset);
+//
+//    entity->AddComponent(animator);
+//    auto fakeRenderer = std::make_shared<Renderer>();
+//    entity->AddComponent(fakeRenderer);
+//    // add additional components
+//    // add components
+//    if (table.HasKey("components")) {
+//        luabridge::LuaRef c = table.Get<luabridge::LuaRef>("components");
+//        for (int i = 0; i < c.length(); ++i) {
+//            luabridge::LuaRef rcomponent = c[i+1];
+//            auto component = factory->makeComponent(rcomponent);
+//            entity->AddComponent(component);
+//        }
+//    }
+//
+//    // add additional children
+//    if (table.HasKey("children")) {
+//        luabridge::LuaRef c = table.Get<luabridge::LuaRef>("children");
+//        for (int i = 0; i < c.length(); ++i) {
+//            luabridge::LuaRef child = c[i+1];
+//            auto childEntity = factory->makeEntity(child);
+//            if (childEntity != nullptr)
+//                entity->AddChild(childEntity);
+//        }
+//    }
+//
+//    glm::vec3 pos = table.Get<glm::vec3>("pos", glm::vec3(0.0f));
+//    entity->SetPosition(pos);
+//    return entity;
+//
 
 }

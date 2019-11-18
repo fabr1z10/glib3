@@ -27,12 +27,14 @@ void Blink::Run(float dt) {
     if (m_timer2 >= m_blinkDuration) {
 
         m_visible = !m_visible;
-        glm::vec4 color = m_visible ? glm::vec4(1.0f) : glm::vec4(1.0f, 0.0f, 0.0f, 0.0f);
-        m_renderer->SetTint(color);
-        m_timer2=0.0f;
+        m_renderer->setActive(m_visible);
+//        glm::vec4 color = m_visible ? glm::vec4(1.0f) : glm::vec4(1.0f, 0.0f, 0.0f, 0.0f);
+//        m_renderer->SetTint(color);
+//        m_timer2=0.0f;
     }
     if (m_timer >= m_duration) {
-        m_renderer->SetTint(glm::vec4(1.0f));
+        //m_renderer->SetTint(glm::vec4(1.0f));
+        m_renderer->setActive(true);
         SetComplete();
     }
 

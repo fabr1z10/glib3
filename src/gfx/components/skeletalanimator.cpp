@@ -3,11 +3,15 @@
 #include <gfx/math/geom.h>
 #include <gfx/components/renderer.h>
 
-SkeletalAnimator::SkeletalAnimator() : IAnimator(), m_looped(false), m_l_offset_y(0.0f), m_r_offset_y(0.0f) {
-
+SkeletalAnimator::SkeletalAnimator(std::shared_ptr<IModel> model) : IAnimator(), m_currentAnim(nullptr) {
+    m_model = std::dynamic_pointer_cast<SkeletalModel>(model);
 }
 
-SkeletalAnimator::SkeletalAnimator(const SkeletalAnimator & orig) : IAnimator(orig) {
+//SkeletalAnimator::SkeletalAnimator() : IAnimator(), m_looped(false), m_l_offset_y(0.0f), m_r_offset_y(0.0f) {
+//
+//}
+
+SkeletalAnimator::SkeletalAnimator(const SkeletalAnimator & orig) : IAnimator(orig), m_model(orig.m_model), m_currentAnim(nullptr) {
 
 }
 
@@ -15,18 +19,16 @@ std::shared_ptr<Component> SkeletalAnimator::clone() const {
     return std::make_shared<SkeletalAnimator>(SkeletalAnimator(*this));
 }
 
-void SkeletalAnimator::AddAnimation(const std::string& name, std::shared_ptr<SkeletalAnimation> anim) {
-    if (m_initAnim.empty()) m_initAnim = name;
-    m_animations.insert(std::make_pair(name, anim));
-}
+
 
 void SkeletalAnimator::Start() {
     if (!m_initAnim.empty()) {
         SetAnimation(m_initAnim);
     }
+    SetAnimation(m_model->GetDefaultAnimation());
 
-    m_ls =m_bones.at("lshin")->GetComponent<Renderer>();
-    m_rs =m_bones.at("rshin")->GetComponent<Renderer>();
+    //m_ls =m_bones.at("lshin")->GetComponent<Renderer>();
+    //m_rs =m_bones.at("rshin")->GetComponent<Renderer>();
 
 }
 
@@ -37,23 +39,29 @@ void SkeletalAnimator::AddBone(const std::string &id, Entity *bone, float length
 
 
 void SkeletalAnimator::Update(double dt) {
+    if (m_currentAnim == nullptr) {
+        return;
+    }
     //float oldTime = m_time;
     m_time += dt;
     float duration = m_currentAnim->getDuration();
     bool loop = m_currentAnim->loop();
     if (m_time >= duration) {
         if (loop) {
-            m_time = duration;
+            m_time = 0;
         } else {
-            m_time = m_time - duration;
+            m_time = duration;
         }
         m_looped = true;
     }
 
+    std::cerr << "t = " << m_time << " " << duration << " " << std::endl;
     auto state = m_currentAnim->getTransformation(m_time);
     const auto& boneIds = m_currentAnim->getBoneIds();
     for (size_t j = 0; j < boneIds.size(); ++j) {
-        m_bones.at(boneIds[j])->SetAngle(state.boneAngles[j]);
+        std::cerr << j << " (" << state.boneAngles[j] << ")\n";
+        m_model->getBone(boneIds[j]).setAngle(state.boneAngles[j]);
+        //m_bones.at(boneIds[j])->SetAngle(state.boneAngles[j]);
     }
 
     // check attacks
@@ -89,11 +97,7 @@ void SkeletalAnimator::SetAnimation(const std::string &anim, bool forward) {
     // reset timer
     m_time = 0.0;
     m_animation = anim;
-    auto it = m_animations.find(anim);
-    if (it == m_animations.end()) {
-        GLIB_FAIL("Skeleton doesn't have animation " << anim);
-    }
-    m_currentAnim =it->second.get();
+    m_currentAnim = m_model->getAnimation(anim);
     m_looped=false;
     onAnimationChange.Fire(this);
 }

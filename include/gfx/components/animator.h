@@ -49,7 +49,7 @@ public:
     std::shared_ptr<Component> clone() const override;
     using ParentClass = Animator;
     std::type_index GetType() override;
-
+    FrameInfo* getFrameInfo();
     Event<Animator*> onFrameUpdate;
 protected:
 

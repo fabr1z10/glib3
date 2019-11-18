@@ -12,12 +12,12 @@
 #include <gfx/entity.h>
 #include <iostream>
 
-Renderer::Renderer() : Component(), m_model(nullptr), m_tint(1.0f), m_offset(0), m_count(0), m_renderingTransform(1.0f) {
+Renderer::Renderer() : Component(), m_model(nullptr), m_tint(1.0f), m_renderingTransform(1.0f) {
 
 }
 
 Renderer::Renderer(const Renderer& orig) : Component(orig),
-m_model(orig.m_model), m_tint(orig.m_tint), m_offset(orig.m_offset), m_count(orig.m_count), m_renderingTransform(orig.m_renderingTransform) {
+m_model(orig.m_model), m_tint(orig.m_tint), m_renderingTransform(orig.m_renderingTransform) {
     
 }
 
@@ -29,7 +29,7 @@ void Renderer::Draw(Shader* shader) {
     auto tintLoc = shader->GetUniformLocation(TINT);
     if (tintLoc != GL_INVALID)
         glUniform4fv(tintLoc, 1, &m_tint[0]);
-    m_model->Draw(shader, m_offset, m_count);
+    //m_model->Draw(shader, m_offset, m_count);
 }
 
 const glm::mat4& Renderer::GetTransform() const {

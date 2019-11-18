@@ -6,6 +6,10 @@
 #include <gfx/boxedmodel.h>
 #include <gfx/model/combomodel.h>
 #include <gfx/math/box.h>
+#include <gfx/model/skeletalmodel.h>
+#include <gfx/quadmesh.h>
+#include <gfx/splineanim.h>
+#include <gfx/parabolicanim.h>
 
 std::shared_ptr<SpriteMesh> SimpleModelFactory::ReadSpriteMesh(LuaTable& t) {
 
@@ -219,6 +223,82 @@ std::shared_ptr<IModel> GenericModel3DFactory::Create(luabridge::LuaRef &ref) {
         mesh->Init(vertices, indices);
         model->AddMesh(mesh);
     });
+    return model;
+
+}
+
+std::shared_ptr<IModel> SkeletalModelFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    std::string gfx = table.Get<std::string>("gfx");
+    std::cerr << " gfx = " << gfx << "\n";
+    auto model = std::make_shared<SkeletalModel>();
+
+    // load the bones
+    table.ProcessVector("bones", [&] (luabridge::LuaRef ref) {
+        LuaTable bt(ref);
+        std::string id = bt.Get<std::string>("id");
+        glm::vec4 quad = bt.Get<glm::vec4>("quad");
+        std::string parent = bt.Get<std::string>("parent", "");
+        glm::vec2 origin = bt.Get<glm::vec2>("origin", glm::vec2(0.0f));
+        glm::vec2 pos = bt.Get<glm::vec2>("pos", glm::vec2(0.0f));
+        glm::vec2 center = bt.Get<glm::vec2>("center", glm::vec2(0.0f));
+        float z = bt.Get<float>("z");
+        float w = quad[2];      // TODO scale?
+        float h = quad[3];
+        auto mesh = std::make_shared<QuadMesh>(gfx, w, h, center, quad[0], quad[1], quad[2], quad[3]);
+        Bone bone;
+        bone.center = center;
+        bone.mesh = mesh;
+
+        bone.transform[3][0] = -origin.x+pos.x;
+        bone.transform[3][1] = -origin.y+pos.y;
+        bone.transform[3][2] = z;
+        std::cerr << "bone: " << id << ", quad = (" << quad[0] << ", " << quad[1] << ", " << quad[2] << ", " << quad[3] << ")\n";
+        model->addBone(id, bone, parent);
+    });
+
+    // load the animations
+    table.ProcessVector("animations", [&] (luabridge::LuaRef ref) {
+        LuaTable atable(ref);
+        std::string id = atable.Get<std::string>("id");
+        bool loop = atable.Get<bool>("loop");
+        std::string type = atable.Get<std::string>("animtype");
+
+        std::shared_ptr<SkeletalAnimation> anim;
+        if (type == "periodic_spline") {
+            int boundltype {-1};
+            int boundrtype {-1};
+            double boundl {0.0};
+            double boundr {0.0};
+            anim = std::make_shared<SplineAnimation>(loop, boundltype, boundl, boundrtype, boundr);
+        } else if (type == "monotone_spline") {
+            auto pa = std::make_shared<ParabolicAnimation>(loop);
+            anim = pa;
+        }
+
+        // load the keyframes
+        //std::vector<std::string> boneIds = table.GetVector<std::string>("bones", true);
+        //anim->setBoneIds(boneIds);
+        //int boneCount = boneIds.size();
+        table.ProcessVector("frames", [&anim] (luabridge::LuaRef keyframe) {
+            LuaTable ft(keyframe);
+            float t = ft.Get<float>("t");
+            std::vector<float> angles = ft.GetVector<float>("a", true);
+            //if (angles.size() != boneCount) GLIB_FAIL("The number of angles in each keyframe must match the number of bones!");
+            KeyFrame kf(t, angles);
+            anim->addKeyFrame(kf);
+        });
+
+        // add a last keyframe equal to the first in order to loop
+        //  anim->addKeyFrame(duration, firstKeyFrame);
+
+        anim->init();
+        model->addAnimation(id, anim);
+        return anim;
+
+
+    });
+
     return model;
 
 }

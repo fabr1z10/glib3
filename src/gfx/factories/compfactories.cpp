@@ -96,7 +96,7 @@ std::shared_ptr<Component> GfxComponentFactory::Create(luabridge::LuaRef & ref) 
             mesh = std::make_shared<QuadMesh>(image, w, h, repeat.x, repeat.y, skew.x, skew.y, offset);
         }
         renderer->SetModel(std::make_shared<BasicModel>(mesh));
-        renderer->SetMeshInfo(0, mesh->GetNumberOfIndices());
+        //renderer->SetMeshInfo(0, mesh->GetNumberOfIndices());
 //    } else if (table.HasKey("model")) {
 //        std::string model = table.Get<std::string>("model");
 //        std::string anim = table.Get<std::string>("anim", "");
@@ -124,11 +124,11 @@ std::shared_ptr<Component> GfxComponentFactory::Create(luabridge::LuaRef & ref) 
         if (draw == "outline") {
             auto mesh = MeshFactory::CreateMesh(*(shape.get()), 0.0f);
             renderer->SetModel(std::make_shared<BasicModel>(mesh));
-            renderer->SetMeshInfo(0, mesh->GetNumberOfIndices());
+            //renderer->SetMeshInfo(0, mesh->GetNumberOfIndices());
         } else if (draw == "solid") {
             auto mesh = MeshFactorySolid::CreateMesh(*(shape.get()), 0.0f);
             renderer->SetModel(std::make_shared<BasicModel>(mesh));
-            renderer->SetMeshInfo(0, mesh->GetNumberOfIndices());
+            //renderer->SetMeshInfo(0, mesh->GetNumberOfIndices());
         }
         renderer->SetTint(color);
     } else if (table.HasKey("tiledata")) {

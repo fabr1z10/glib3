@@ -15,7 +15,7 @@ public:
     ShaderType GetShaderType() const override;
     const AnimInfo* GetAnimInfo() const;
     const AnimInfo* GetAnimInfo(const std::string&) const;
-    virtual void Draw (Shader*, int offset, int count) override;
+    void Draw (Shader*, int offset, int count);
 
 private:
     std::shared_ptr<SpriteMesh> m_mesh;

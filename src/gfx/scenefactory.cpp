@@ -78,6 +78,7 @@ SceneFactory::SceneFactory() {
     m_modelFactory.Add<GenericModel3DFactory>("model3d");
     m_modelFactory.Add<ModelBox3D>("box3d");
     m_modelFactory.Add<ModelTrapezoid3D>("trapezoid3d");
+    m_modelFactory.Add<SkeletalModelFactory>("skeletal");
 
     m_entityFactory.Add<EntityFactory>("default");
     m_entityFactory.Add<TextViewFactory>("textview");

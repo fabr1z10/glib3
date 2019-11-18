@@ -46,7 +46,7 @@ void SmartCollider::ofu(Animator *a) {
     const auto& bi = m_model->getBoxInfo(anim,fr);
 
 
-    m_colliderRenderer->SetMeshInfo(bi.offset, bi.count);
+    //m_colliderRenderer->SetMeshInfo(bi.offset, bi.count);
 
     // now, check if I have an attack box
     if (bi.m_attackShape != nullptr) {

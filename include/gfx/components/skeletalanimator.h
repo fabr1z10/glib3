@@ -2,14 +2,18 @@
 
 #include <gfx/components/ianimator.h>
 #include <gfx/skeletalanimation.h>
-
+#include <gfx/model/skeletalmodel.h>
 class Renderer;
+
+// a skeletal animator requires a skeletal model!
 class SkeletalAnimator : public IAnimator {
 public:
-    SkeletalAnimator();
+    // a sk anim requires a sk model, as a sprite anim requires a spirtemodel!
+    SkeletalAnimator (std::shared_ptr<IModel> model);
+
+    //SkeletalAnimator();
     SkeletalAnimator(const SkeletalAnimator&);
     virtual ~SkeletalAnimator() {}
-    void AddAnimation (const std::string& id, std::shared_ptr<SkeletalAnimation> anim);
     void AddBone (const std::string& id, Entity* bone, float length);
     void Start() override;
     void Update(double dt) override;
@@ -20,9 +24,9 @@ public:
     bool looped() const;
     std::type_index GetType() override;
     void setOffsetY (float, float);
+    std::vector<float>& getAngles();
     using ParentClass = SkeletalAnimator;
 protected:
-    std::unordered_map<std::string, std::shared_ptr<SkeletalAnimation>> m_animations;
     // the current animation
     //std::string m_animation;
     double m_time;
@@ -37,6 +41,7 @@ protected:
     Renderer* m_rs;
     float m_l_offset_y;
     float m_r_offset_y;
+    std::shared_ptr<SkeletalModel> m_model;
 
 
     bool m_looped;

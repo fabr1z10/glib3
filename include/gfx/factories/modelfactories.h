@@ -21,3 +21,9 @@ public:
     std::shared_ptr<IModel> Create(luabridge::LuaRef& ref) override;
 
 };
+
+class SkeletalModelFactory : public SimpleModelFactory {
+public:
+    std::shared_ptr<IModel> Create(luabridge::LuaRef& ref) override;
+
+};

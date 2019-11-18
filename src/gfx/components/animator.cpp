@@ -60,7 +60,7 @@ void Animator::Update(double dt) {
                 //                m_entity->SetAngle(frameInfo.angle);
                 //m_entity->SetPosition(frameInfo.translation);
             }
-            m_renderer->SetMeshInfo(frameInfo.offset, frameInfo.count);
+            //m_renderer->SetMeshInfo(frameInfo.offset, frameInfo.count);
             onFrameUpdate.Fire(this);
         }
     }
@@ -86,7 +86,7 @@ void Animator::SetAnimation(const std::string &anim, bool fwd) {
     }
     m_frame = fwd ? 0 : m_animInfo->frameCount-1;
     const FrameInfo& frameInfo = m_animInfo->frameInfo[m_frame];
-    m_renderer->SetMeshInfo(frameInfo.offset, frameInfo.count);
+    //m_renderer->SetMeshInfo(frameInfo.offset, frameInfo.count);
     onFrameUpdate.Fire(this);
 }
 

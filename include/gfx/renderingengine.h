@@ -48,17 +48,21 @@ public:
     void AddCamera (std::unique_ptr<Camera>);
     void RemoveCamera(int);
     Camera* GetCamera (int);
+    Camera* getCurrentCamera();
     void Notify(float, float) override;
     using ParentClass = RenderingEngine;
     void AddLight (Light*);
     void RemoveLight(Light*);
     std::unordered_set<Light*>& GetLights();
     std::shared_ptr<Component> clone() const override {throw;}
+    glm::mat4& getModelViewMatrix();
 private:
     std::vector<std::unique_ptr<Shader>> m_shaders;
     std::unordered_map<int, std::unique_ptr<Camera>> m_cameras;
     std::unordered_set<Light*> m_lights;
     std::unordered_map<Camera*, Entity*> m_roots;
+    glm::mat4 m_mvm;
+    Camera* m_currentCamera;
 };
 
 inline Camera* RenderingEngine::GetCamera(int id) {

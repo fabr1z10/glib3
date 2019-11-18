@@ -18,7 +18,10 @@ public:
     virtual ShaderType GetShaderType() const = 0;
     //virtual const AnimInfo* GetAnimInfo() const = 0;
     //virtual const AnimInfo* GetAnimInfo(const std::string&) const = 0;
-    virtual void Draw (Shader*, int offset, int count) = 0;
+    //virtual void Draw (Shader*, int offset, int count) = 0;
 };
 
 
+// imodel does not have a draw method
+// but you have different renderers
+// spriterenderer

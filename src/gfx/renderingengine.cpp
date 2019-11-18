@@ -110,6 +110,7 @@ void RenderingEngine::Update(double)
                 ++iterator;
                 continue;
             }
+            m_currentCamera = cam;
             Entity& e = *iterator;
             //std::cout << "Examining " << e.GetTag() << "\n";
             if (!e.isActive()) {
@@ -118,14 +119,18 @@ void RenderingEngine::Update(double)
 
             }
             Renderer* renderer = e.GetComponent<Renderer>();
+            if (renderer != nullptr && !renderer->isActive()) {
+                iterator.advanceSkippingChildren();
+                continue;
+            }
 
-            if (renderer != nullptr && renderer->isActive() && renderer->GetShaderType() == stype) {
+            if (renderer != nullptr && renderer->GetShaderType() == stype) {
                 glm::mat4 wt = iterator->GetWorldTransform() * renderer->GetTransform();
                 // check for frustrum culling ...
                 drawCount++;
                         
                 // compute model view matrix
-
+                m_mvm = wt;
                 glm::mat4 mvm = cam->m_viewMatrix * wt;
                 GLuint mvLoc = shader->GetUniformLocation(MODELVIEW);
                 glUniformMatrix4fv(mvLoc, 1, GL_FALSE, &mvm[0][0]);
@@ -171,4 +176,12 @@ void RenderingEngine::AddLight (Light* light) {
 
 void RenderingEngine::RemoveLight(Light* light ) {
     m_lights.erase(light);
+}
+
+glm::mat4& RenderingEngine::getModelViewMatrix() {
+    return m_mvm;
+}
+
+Camera* RenderingEngine::getCurrentCamera() {
+    return m_currentCamera;
 }

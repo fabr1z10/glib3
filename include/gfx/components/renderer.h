@@ -18,7 +18,7 @@ class Renderer : public Component {
 public:
     Renderer();
     Renderer(const Renderer&);
-    void Draw(Shader*);
+    virtual void Draw(Shader*);
     void SetModel(std::shared_ptr<IModel> mesh);
     IModel* GetModel();
     Bounds GetBounds() const;
@@ -29,7 +29,7 @@ public:
     void SetTint(glm::vec4 c);
     ShaderType GetShaderType() const { return (m_model == nullptr ? ShaderType::NONE : m_model->GetShaderType()); }
     using ParentClass = Renderer;
-    void SetMeshInfo (int offset, int count);
+    //void SetMeshInfo (int offset, int count);
     std::shared_ptr<Component> clone() const override;
 
     const glm::mat4& GetTransform() const;
@@ -39,8 +39,8 @@ private:
     glm::mat4 m_renderingTransform;
     std::shared_ptr<IModel> m_model;
     glm::vec4 m_tint;
-    int m_count;
-    int m_offset;
+    //int m_count;
+    //int m_offset;
 };
 
 
@@ -69,11 +69,11 @@ inline void Renderer::SetTint(glm::vec4 color) {
 }
 
 
-
-inline void Renderer::SetMeshInfo (int offset, int count) {
-    m_offset = offset;
-    m_count = count;
-}
+//
+//inline void Renderer::SetMeshInfo (int offset, int count) {
+//    m_offset = offset;
+//    m_count = count;
+//}
 
 
 #endif /* renderer_h */

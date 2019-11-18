@@ -70,7 +70,7 @@ void SkeletalCollider::notifyAnimationChange(IAnimator * animator) {
     std::string anim = animator->GetAnimation();
     auto p = m_animMeshInfo.at(anim);
     m_time = 0.0;
-    m_colliderRenderer->SetMeshInfo(p.x, p.y);
+    //m_colliderRenderer->SetMeshInfo(p.x, p.y);
     auto it = m_attackInfos.find(anim);
     if (it != m_attackInfos.end()) {
         m_currentAttackInfo = &(it->second);

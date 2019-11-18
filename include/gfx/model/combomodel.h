@@ -6,7 +6,7 @@ class ComboModel : public IModel {
 public:
     ComboModel ();
     Bounds GetBounds() const override;
-    void Draw (Shader*, int offset, int count) override;
+    void Draw (Shader*, int offset, int count);
     std::vector<std::string> GetAnimations() const override;
     std::string GetDefaultAnimation() const override ;
     ShaderType GetShaderType() const override;
