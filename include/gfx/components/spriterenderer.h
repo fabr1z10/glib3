@@ -13,8 +13,9 @@ public:
     void Draw(Shader*) override;
     std::type_index GetType() override;
     void SetModel(std::shared_ptr<IModel> mesh) override;
+    void Start() override;
 
 private:
-    SpriteModel* m_model;
+    std::shared_ptr<SpriteModel> m_model;
     Animator* m_animator;
 };
