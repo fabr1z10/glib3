@@ -1,6 +1,8 @@
 #pragma once
 
 #include "gfx/components/icollider.h"
+#include <gfx/components/skeletalanimator.h>
+#include <gfx/model/skeletalmodel.h>
 
 class IAnimator;
 class Renderer;
@@ -24,36 +26,25 @@ struct SkeletalAttackInfo {
 
 class SkeletalCollider : public ICollider {
 public:
-    SkeletalCollider(int flag, int mask, int tag) : ICollider(), m_flag(flag), m_mask(mask), m_tag(tag),
-        m_currentAttackInfo(nullptr) {}
+    SkeletalCollider(int flag, int mask, int tag) : ICollider(), m_flag(flag), m_mask(mask), m_tag(tag) {}
     SkeletalCollider(const SkeletalCollider&);
+    std::shared_ptr<Component> clone() const override;
     void Start() override;
     void Update(double) override;
-    Shape* GetShape() override;
-    int GetCollisionTag() const override;
-    int GetCollisionFlag() const override;
-    int GetCollisionMask() const override;
-    std::shared_ptr<Component> clone() const override;
     std::type_index GetType() override;
-    void addBound (const std::string& animation, float x0, float y0, float w, float h, float scale);
-    void addAttack (const std::string& animation, float t, float x0, float y0, float w, float h, int mask, int tag, float scale);
-    void notifyAnimationChange (IAnimator*);
+    int GetCollisionTag() const;
+    int GetCollisionFlag() const;
+    int GetCollisionMask() const;
+    Shape* GetShape() override;
+
 private:
-    double m_time;
-    IAnimator* m_animator;
     Bounds GetStaticBoundsI() const override;
     Bounds GetDynamicBoundsI() const override;
-    Bounds m_maxBounds;
-    Renderer* m_colliderRenderer;
-
-    std::unordered_map<std::string, Bounds> m_animationBounds;
-    std::unordered_map<std::string, std::shared_ptr<Shape>> m_shapes;
-    std::unordered_map<std::string, glm::ivec2> m_animMeshInfo;
+    SkeletalAnimator* m_animator;
+    SkeletalModel* m_model;
     int m_flag;
     int m_mask;
     int m_tag;
-    std::unordered_map<std::string, SkeletalAttackInfo> m_attackInfos;
-    SkeletalAttackInfo* m_currentAttackInfo;
 };
 
 

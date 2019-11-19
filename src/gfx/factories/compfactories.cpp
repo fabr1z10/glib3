@@ -1,5 +1,5 @@
 #include <gfx/factories.h>
-#include <gfx/components/renderer.h>
+#include <gfx/components/basicrenderer.h>
 #include <gfx/font.h>
 #include <gfx/engine.h>
 #include <gfx/textmesh.h>
@@ -54,7 +54,7 @@
 #include <gfx/components/garbagecollect.h>
 
 std::shared_ptr<Component> TextComponentFactory::Create(luabridge::LuaRef &ref) {
-    auto renderer = Ref::Create<Renderer>();
+
     LuaTable table(ref);
     std::string text = table.Get<std::string>("id");
     std::string font = table.Get<std::string>("font");
@@ -66,9 +66,10 @@ std::shared_ptr<Component> TextComponentFactory::Create(luabridge::LuaRef &ref) 
     Font* f = Engine::get().GetAssetManager().GetFont(font).get();
     auto mesh = std::make_shared<TextMesh>(f, text, size, align, maxWidth);
     glm::vec2 offset = mesh->getOffset();
+    auto model = std::make_shared<TextModel>(mesh);
+    auto renderer = Ref::Create<BasicRenderer>(model);
     renderer->SetTransform(glm::translate(glm::vec3(offset, 0.0f)));
     renderer->SetTint(color);
-    renderer->SetModel(std::make_shared<TextModel>(mesh));
     return renderer;
 }
 
@@ -76,9 +77,7 @@ std::shared_ptr<Component> TextComponentFactory::Create(luabridge::LuaRef &ref) 
 std::shared_ptr<Component> GfxComponentFactory::Create(luabridge::LuaRef & ref) {
     LuaTable table(ref);
 
-    auto renderer = Ref::Create<Renderer>();
-
-
+    std::shared_ptr<Component> renderer;
 
     if (table.HasKey("image")) {
         std::string image = table.Get<std::string>("image");
@@ -89,31 +88,13 @@ std::shared_ptr<Component> GfxComponentFactory::Create(luabridge::LuaRef & ref) 
         if (table.HasKey("quad")) {
             glm::ivec4 quad = table.Get<glm::ivec4>("quad");
             mesh = std::make_shared<QuadMesh>(image, w, h, offset, quad[0], quad[1], quad[2], quad[3]);
-
         } else {
             glm::vec2 repeat = table.Get<glm::vec2>("rep", glm::vec2(1.0f, 1.0f));
             glm::vec2 skew = table.Get<glm::vec2>("skew", glm::vec2(0.0f, 0.0f));
             mesh = std::make_shared<QuadMesh>(image, w, h, repeat.x, repeat.y, skew.x, skew.y, offset);
         }
-        renderer->SetModel(std::make_shared<BasicModel>(mesh));
-        //renderer->SetMeshInfo(0, mesh->GetNumberOfIndices());
-//    } else if (table.HasKey("model")) {
-//        std::string model = table.Get<std::string>("model");
-//        std::string anim = table.Get<std::string>("anim", "");
-//        auto entity = std::make_shared<Entity>();
-//        auto renderer = std::make_shared<Renderer>();
-//        renderer->SetModel(model->GetModel());
-//
-//        auto animator = std::make_shared<Animator>(model);
-//        entity->AddComponent(renderer);
-//        entity->AddComponent(animator);
-//        return entity;
-//        //bool flip = table.Get<bool>("flip", false);
-//        renderer->SetModel(Engine::get().GetAssetManager().GetModel(model));
-//        //renderer->SetFlipX(flip);
-//        //renderer->SetRenderingTransform(glm::scale(glm::vec3(0.1f))*glm::rotate(90.0f, glm::vec3(1.0f,0.0f,0.0f)));
-//        //renderer->SetScale(0.1f);
-//        renderer->SetAnimation(anim);
+        auto model = std::make_shared<BasicModel>(mesh);
+        renderer = Ref::Create<BasicRenderer>(model);
     } else if (table.HasKey("shape")) {
         luabridge::LuaRef sref = table.Get<luabridge::LuaRef>("shape");
         std::string draw = table.Get<std::string>("draw","outline");
@@ -121,16 +102,16 @@ std::shared_ptr<Component> GfxComponentFactory::Create(luabridge::LuaRef & ref) 
         color /= 255.0f;
         auto factory = Engine::get().GetSceneFactory();
         auto shape = factory->makeShape(sref);
+        std::shared_ptr<IMesh> mesh;
         if (draw == "outline") {
-            auto mesh = MeshFactory::CreateMesh(*(shape.get()), 0.0f);
-            renderer->SetModel(std::make_shared<BasicModel>(mesh));
-            //renderer->SetMeshInfo(0, mesh->GetNumberOfIndices());
+            mesh = MeshFactory::CreateMesh(*(shape.get()), 0.0f);
         } else if (draw == "solid") {
-            auto mesh = MeshFactorySolid::CreateMesh(*(shape.get()), 0.0f);
-            renderer->SetModel(std::make_shared<BasicModel>(mesh));
-            //renderer->SetMeshInfo(0, mesh->GetNumberOfIndices());
+            mesh = MeshFactorySolid::CreateMesh(*(shape.get()), 0.0f);
         }
-        renderer->SetTint(color);
+        auto model = std::make_shared<BasicModel>(mesh);
+        auto rend =Ref::Create<BasicRenderer>(model);
+        rend->SetTint(color);
+        renderer =rend;
     } else if (table.HasKey("tiledata")) {
         std::string image = table.Get<std::string>("img");
         float size = table.Get<float>("size", 1.0f);
@@ -142,21 +123,17 @@ std::shared_ptr<Component> GfxComponentFactory::Create(luabridge::LuaRef & ref) 
         glm::ivec2 sheetSize = table.Get<glm::ivec2>("sheetsize");
         std::vector<int> data = table.GetVector<int>("tiledata");
         auto mesh = std::make_shared<QuadMesh>(image, height, width, size, data, sheetSize.x, sheetSize.y, repx, repy);
-        renderer->SetModel(std::make_shared<BasicModel>(mesh));
+        auto model = std::make_shared<BasicModel>(mesh);
+        renderer = Ref::Create<BasicRenderer>(model);
     } else if (table.HasKey("model")) {
         std::string modelId = table.Get<std::string>("model");
         auto model = Engine::get().GetAssetManager().GetModel(modelId);
-        renderer->SetModel(model);
+        renderer = Ref::Create<BasicRenderer>(model);
     } else if (table.HasKey("prim3d")) {
         auto factory = Engine::get().GetSceneFactory();
         auto model = factory->makeModel(table.Get<luabridge::LuaRef>("prim3d"));
-        renderer->SetModel(model);
-
+        renderer = Ref::Create<BasicRenderer>(model);
     }
-//    if (table.HasKey("scale")) {
-//        float scale = table.Get<float>("scale");
-//        renderer->SetScale(scale);
-//    }
     return std::move(renderer);
 }
 
@@ -259,29 +236,29 @@ std::shared_ptr<Component> SkeletalColliderComponentFactory::Create(luabridge::L
     int mask = table.Get<int>("mask");
     float scale = table.Get<float>("scale", 1.0f);
     auto coll = Ref::Create<SkeletalCollider>(flag, mask, tag);
-    table.ProcessVector("bounds", [coll, scale] (luabridge::LuaRef ref) {
-
-        LuaTable t(ref);
-        std::string anim = t.Get<std::string>("anim");
-        float x = t.Get<float>("x");
-        float y = t.Get<float>("y");
-        float width = t.Get<float>("width");
-        float height = t.Get<float>("height");
-        coll->addBound(anim, x, y, width, height, scale);
-    });
-    table.ProcessVector("attack", [coll,scale ] (luabridge::LuaRef ref) {
-
-        LuaTable t(ref);
-        std::string anim = t.Get<std::string>("anim");
-        float time = t.Get<float>("t");
-        int mask = t.Get<int>("mask");
-        int tag = t.Get<int>("tag");
-        float x = t.Get<float>("x");
-        float y = t.Get<float>("y");
-        float width = t.Get<float>("width");
-        float height = t.Get<float>("height");
-        coll->addAttack(anim, time, x, y, width, height, mask, tag, scale);
-    });
+//    table.ProcessVector("bounds", [coll, scale] (luabridge::LuaRef ref) {
+//
+//        LuaTable t(ref);
+//        std::string anim = t.Get<std::string>("anim");
+//        float x = t.Get<float>("x");
+//        float y = t.Get<float>("y");
+//        float width = t.Get<float>("width");
+//        float height = t.Get<float>("height");
+//        coll->addBound(anim, x, y, width, height, scale);
+//    });
+//    table.ProcessVector("attack", [coll,scale ] (luabridge::LuaRef ref) {
+//
+//        LuaTable t(ref);
+//        std::string anim = t.Get<std::string>("anim");
+//        float time = t.Get<float>("t");
+//        int mask = t.Get<int>("mask");
+//        int tag = t.Get<int>("tag");
+//        float x = t.Get<float>("x");
+//        float y = t.Get<float>("y");
+//        float width = t.Get<float>("width");
+//        float height = t.Get<float>("height");
+//        coll->addAttack(anim, time, x, y, width, height, mask, tag, scale);
+//    });
     return coll;
 
 }

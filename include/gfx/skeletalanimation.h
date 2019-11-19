@@ -5,7 +5,7 @@
 #include <glm/glm.hpp>
 #include <memory>
 #include <gfx/math/shape.h>
-
+#include <gfx/math/rect.h>
 class KeyFrame {
 public:
     KeyFrame(float t, const std::vector<float>& angles) : m_time(t), m_angles(angles) {}
@@ -58,11 +58,15 @@ public:
     const std::vector<std::string>& getBoneIds() const;
     void setBoneIds(const std::vector<std::string>& boneIds);
     int getBonesCount() const;
+    Shape* getBounds() const;
+    void setBounds(float width, float height, glm::vec2 offset);
 protected:
     bool m_loop;
     std::vector<std::string> m_boneIds;
     std::vector<KeyFrame> m_keyFrames;
     int m_boneCount;
+    std::shared_ptr<Shape> m_collisionBox;
+
     //std::unordered_map<float, KeyFrame> m_keyFrames;
 };
 
@@ -89,4 +93,11 @@ inline bool SkeletalAnimation::loop() const {
 }
 
 
+inline Shape* SkeletalAnimation::getBounds() const {
+    return m_collisionBox.get();
+}
 
+inline void SkeletalAnimation::setBounds(float width, float height, glm::vec2 offset) {
+    m_collisionBox = std::make_shared<Rect>(width, height, glm::vec3(offset, 0.0f));
+
+}

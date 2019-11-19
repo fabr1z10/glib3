@@ -15,7 +15,11 @@ public:
     ShaderType GetShaderType() const override;
     const AnimInfo* GetAnimInfo() const;
     const AnimInfo* GetAnimInfo(const std::string&) const;
+
+    // non è meglio avere un draw con animation e frame?
+
     void Draw (Shader*, int offset, int count);
+
 
 private:
     std::shared_ptr<SpriteMesh> m_mesh;

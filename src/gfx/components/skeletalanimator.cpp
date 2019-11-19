@@ -19,6 +19,9 @@ std::shared_ptr<Component> SkeletalAnimator::clone() const {
     return std::make_shared<SkeletalAnimator>(SkeletalAnimator(*this));
 }
 
+SkeletalModel* SkeletalAnimator::getModel() const {
+    return m_model.get();
+}
 
 
 void SkeletalAnimator::Start() {
@@ -57,8 +60,10 @@ void SkeletalAnimator::Update(double dt) {
 
     //std::cerr << "t = " << m_time << " " << duration << " " << std::endl;
     auto state = m_currentAnim->getTransformation(m_time);
-    const auto& boneIds = m_currentAnim->getBoneIds();
+    //const auto& boneIds = m_currentAnim->getBoneIds();
     m_angles = state.boneAngles;
+
+
 //    for (size_t j = 0; j < boneIds.size(); ++j) {
 //        std::cerr << j << " (" << state.boneAngles[j] << ")\n";
 //        m_model->getBone(boneIds[j]).setAngle(state.boneAngles[j]);

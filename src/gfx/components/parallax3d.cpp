@@ -1,6 +1,6 @@
 #include <gfx/components/parallax3d.h>
 #include <gfx/engine.h>
-#include <gfx/components/renderer.h>
+#include <gfx/components/basicrenderer.h>
 #include <gfx/quadmesh.h>
 #include <gfx/model/basicmodel.h>
 
@@ -25,13 +25,14 @@ void Parallax3D::Start() {
 
     float fov = m_cam->getFieldOfView();
     auto entity = Ref::Create<Entity>();
-    auto renderer = Ref::Create<Renderer>();
     float panelHeight = 2.0*m_z * tan(fov*0.5f);
     //f<loat horizontalCamWidth = panelHeight * m_cam->getAspectRatio();
     m_panelWidth = panelHeight * (static_cast<float>(w)/h);
     m_halfPanelHeight = 0.5*panelHeight;
     auto mesh = std::make_shared<QuadMesh>(m_img, 3*m_panelWidth, panelHeight, 3, 1);
-    renderer->SetModel(std::make_shared<BasicModel>(mesh));
+    auto model = std::make_shared<BasicModel>(mesh);
+    auto renderer = Ref::Create<BasicRenderer>(model);
+
     glm::vec3 camPos = m_cam->GetPosition();
     camPos += glm::vec3(0, -m_halfPanelHeight, -m_z);
     m_camPos = 0;

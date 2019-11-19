@@ -19,7 +19,8 @@ public:
     Renderer();
     Renderer(const Renderer&);
     virtual void Draw(Shader*);
-    void SetModel(std::shared_ptr<IModel> mesh);
+    // dynamically change the model
+    virtual void SetModel(std::shared_ptr<IModel> mesh) = 0;
     IModel* GetModel();
     Bounds GetBounds() const;
     Bounds GetBounds2D() const;
@@ -27,46 +28,36 @@ public:
     void Update(double) override {}
     void SetParent(Entity* parent) override;
     void SetTint(glm::vec4 c);
-    virtual ShaderType GetShaderType() const { return (m_model == nullptr ? ShaderType::NONE : m_model->GetShaderType()); }
+    virtual ShaderType GetShaderType() const;
     using ParentClass = Renderer;
     //void SetMeshInfo (int offset, int count);
-    std::shared_ptr<Component> clone() const override;
+    //std::shared_ptr<Component> clone() const override;
 
     const glm::mat4& GetTransform() const;
     void SetTransform(const glm::mat4&);
 
-private:
+protected:
+    IModel* m_baseModel;
     glm::mat4 m_renderingTransform;
-    std::shared_ptr<IModel> m_model;
     glm::vec4 m_tint;
     //int m_count;
     //int m_offset;
 };
 
 
-
-
-
 inline Bounds Renderer::GetBounds() const {
-    return m_model->GetBounds();
+    return m_baseModel->GetBounds();
 }
 
-
-//inline bool Renderer::isVisible() const {
-//    return m_visible;
-//}
-
-inline void Renderer::SetModel(std::shared_ptr<IModel> mesh) {
-    m_model = mesh;
-}
 
 inline IModel* Renderer::GetModel() {
-    return m_model.get();
+    return m_baseModel;
 }
 
 inline void Renderer::SetTint(glm::vec4 color) {
     m_tint = color;
 }
+
 
 
 //

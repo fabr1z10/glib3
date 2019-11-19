@@ -6,8 +6,8 @@ Bounds BasicModel::GetBounds() const {
     return m_mesh->GetBounds();
 }
 
-void BasicModel::Draw(Shader* shader, int offset, int count) {
-    m_mesh->Draw(shader, offset, count);
+void BasicModel::Draw(Shader* shader) {
+    m_mesh->Draw(shader, 0, 0);
 }
 
 std::vector<std::string> BasicModel::GetAnimations() const {

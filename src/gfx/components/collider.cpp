@@ -1,6 +1,5 @@
 #include "gfx/components/collider.h"
-#include "gfx/components/renderer.h"
-#include "gfx/entity.h"
+#include "gfx/components/basicrenderer.h"
 #include "gfx/meshfactory.h"
 #include <gfx/engine.h>
 #include <gfx/model/basicmodel.h>
@@ -25,10 +24,10 @@ void SimpleCollider::Start() {
     ICollider::Start();
     if (m_shape != nullptr) {
         auto c = std::make_shared<Entity>();
-        auto renderer = std::make_shared<Renderer>();
-        glm::vec4 color(1.0f, 0.0f, 0.0f, 1.0f);
         auto mesh = MeshFactory::CreateMesh(*(m_shape.get()), 0.0f);
-        renderer->SetModel(std::make_shared<BasicModel>(mesh));
+        auto model = std::make_shared<BasicModel>(mesh);
+        auto renderer = std::make_shared<BasicRenderer>(model);
+        glm::vec4 color(1.0f, 0.0f, 0.0f, 1.0f);
         renderer->SetTint(color);
         c->AddComponent(renderer);
         m_entity->AddChild(c);
@@ -53,10 +52,12 @@ void SimpleCollider::SetShape(std::shared_ptr<Shape> shape) {
     if (m_shape != nullptr) {
         m_entity->ClearAllChildren();
         auto c = std::make_shared<Entity>();
-        auto renderer = std::make_shared<Renderer>();
+
         glm::vec4 color(1.0f, 0.0f, 0.0f, 1.0f);
         auto mesh = MeshFactory::CreateMesh(*(m_shape.get()), 0.0f);
-        renderer->SetModel(std::make_shared<BasicModel>(mesh));
+        auto model = std::make_shared<BasicModel>(mesh);
+        auto renderer = std::make_shared<BasicRenderer>(model);
+
         renderer->SetTint(color);
         c->AddComponent(renderer);
         m_entity->AddChild(c);

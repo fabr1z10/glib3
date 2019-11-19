@@ -5,6 +5,7 @@
 #include <gfx/model/basicmodel.h>
 #include <gfx/components/statemachine.h>
 #include <gfx/entity.h>
+#include <gfx/components/basicrenderer.h>
 
 SmartCollider::SmartCollider(const SmartCollider & other) : ICollider(other) {
 
@@ -94,10 +95,11 @@ void SmartCollider::Start() {
 
 
     auto c = std::make_shared<Entity>();
-    auto renderer = std::make_shared<Renderer>();
+
     //glm::vec4 color(1.0f, 0.0f, 0.0f, 1.0f);
     auto mesh = m_model->GetCollisionMesh();
-    renderer->SetModel(std::make_shared<BasicModel>(mesh));
+    auto model = std::make_shared<BasicModel>(mesh);
+    auto renderer = std::make_shared<BasicRenderer>(model);
     //renderer->SetTint(color);
     c->AddComponent(renderer);
     m_colliderRenderer = renderer.get();

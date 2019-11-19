@@ -8,6 +8,10 @@
 class SkeletalRenderer : public Renderer {
 public:
     SkeletalRenderer (std::shared_ptr<IModel>);
+    SkeletalRenderer (const SkeletalRenderer&);
+    std::shared_ptr<Component> clone() const override;
+    void SetModel(std::shared_ptr<IModel> mesh) override;
+
     void Draw(Shader*) override;
     void Start() override;
     std::type_index GetType() override;

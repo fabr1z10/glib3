@@ -12,18 +12,15 @@
 #include <gfx/entity.h>
 #include <iostream>
 
-Renderer::Renderer() : Component(), m_model(nullptr), m_tint(1.0f), m_renderingTransform(1.0f) {
+Renderer::Renderer() : Component(), m_baseModel(nullptr), m_tint(1.0f), m_renderingTransform(1.0f) {
 
 }
 
-Renderer::Renderer(const Renderer& orig) : Component(orig),
-m_model(orig.m_model), m_tint(orig.m_tint), m_renderingTransform(orig.m_renderingTransform) {
+Renderer::Renderer(const Renderer& orig) : Component(orig), m_tint(orig.m_tint), m_renderingTransform(orig.m_renderingTransform), m_baseModel(orig.m_baseModel) {
     
 }
 
-std::shared_ptr<Component> Renderer::clone() const {
-    return std::make_shared<Renderer>(Renderer(*this));
-}
+
 
 void Renderer::Draw(Shader* shader) {
     auto tintLoc = shader->GetUniformLocation(TINT);
@@ -40,9 +37,12 @@ void Renderer::SetTransform(const glm::mat4& t) {
     m_renderingTransform = t;
 }
 
+ShaderType Renderer::GetShaderType() const {
+    return (m_baseModel == nullptr ? ShaderType::NONE : m_baseModel->GetShaderType());
+}
 
 Bounds Renderer::GetBounds2D() const {
-    Bounds b = m_model->GetBounds();
+    Bounds b = GetBounds();
 
     b.Transform(m_renderingTransform);
     return b;

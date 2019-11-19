@@ -265,6 +265,7 @@ std::shared_ptr<IModel> SkeletalModelFactory::Create(luabridge::LuaRef &ref) {
         LuaTable atable(ref);
         std::string id = atable.Get<std::string>("id");
         bool loop = atable.Get<bool>("loop");
+
         std::string type = atable.Get<std::string>("animtype");
 
         std::shared_ptr<SkeletalAnimation> anim;
@@ -294,7 +295,10 @@ std::shared_ptr<IModel> SkeletalModelFactory::Create(luabridge::LuaRef &ref) {
 
         // add a last keyframe equal to the first in order to loop
         //  anim->addKeyFrame(duration, firstKeyFrame);
-
+        if (atable.HasKey("box")) {
+            glm::vec4 box = atable.Get<glm::vec4>("box");
+            anim->setBounds(box[2], box[3], glm::vec2(box[0], box[1]));
+        }
         anim->init();
         model->addAnimation(id, anim);
         return anim;

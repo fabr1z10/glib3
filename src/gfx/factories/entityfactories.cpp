@@ -2,7 +2,7 @@
 #include <gfx/math/geom.h>
 #include <gfx/engine.h>
 #include <gfx/textmesh.h>
-#include <gfx/components/renderer.h>
+#include <gfx/components/basicrenderer.h>
 #include <gfx/components/animator.h>
 #include <gfx/entities/textview.h>
 #include <gfx/meshfactory.h>
@@ -134,8 +134,9 @@ std::shared_ptr<Entity> OutlineTextFactory::Create(luabridge::LuaRef &ref) {
     glm::vec2 outlineOffsets[] = {{0, 0}, {-1, 0}, {-1,1}, {0, 1}, {1,1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1}};
     for (int i =0; i < 9; ++i) {
         auto entity = std::make_shared<Entity>();
-        auto renderer = std::make_shared<Renderer>();
-        renderer->SetModel(std::make_shared<BasicModel>(mesh));
+
+        auto model = std::make_shared<BasicModel>(mesh);
+        auto renderer = std::make_shared<BasicRenderer>(model);
         entity->SetPosition(glm::vec3(outlineOffsets[i] * 0.5f, i == 0 ? 0 : -1));
         renderer->SetTint(i==0 ? fontColor : outlineColor);
         //renderer->SetRenderingTransform(glm::translate(glm::vec3(offset, 0.0f)));
@@ -178,7 +179,7 @@ std::shared_ptr<Entity> BoxedMessageFactory::Create(luabridge::LuaRef& ref) {
     float maxWidth = table.Get<float>("maxwidth");
     float padding = table.Get<float>("padding", 0.0f);
     auto f = Engine::get().GetAssetManager().GetFont(font);
-    auto renderer = Ref::Create<Renderer>();
+
     auto textMesh = std::make_shared<TextMesh>(f.get(), message, size, CENTER, maxWidth);
 
     //std::string cornerImage = table.Get<std::string>("corner", std::string());
@@ -186,7 +187,9 @@ std::shared_ptr<Entity> BoxedMessageFactory::Create(luabridge::LuaRef& ref) {
     // add text entity
     auto textEntity = Ref::Create<Entity>();
     auto bounds =textMesh->GetBounds();
-    renderer->SetModel(std::make_shared<BasicModel>(textMesh));
+    auto model = std::make_shared<BasicModel>(textMesh);
+    auto renderer = Ref::Create<BasicRenderer>(model);
+
     glm::vec4 color = table.Get<glm::vec4>("color");
     glm::vec4 bgColor = table.Get<glm::vec4>("bgcolor");
     color/=255.0f;
@@ -224,10 +227,12 @@ std::shared_ptr<Entity> BoxedMessageFactory::Create(luabridge::LuaRef& ref) {
     // create the box
     auto box = Ref::Create<Entity>();
     //glm::vec3 extents = bounds.GetExtents();
-    auto box_renderer = Ref::Create<Renderer>();
+
     auto rect = std::make_shared<Rect>(boxWidth, boxHeight);
     auto boxMesh = MeshFactorySolid::CreateMesh(*(rect.get()), 0.0f);
-    box_renderer->SetModel(std::make_shared<BasicModel>(boxMesh));
+    auto mod = std::make_shared<BasicModel>(boxMesh);
+    auto box_renderer = Ref::Create<BasicRenderer>(mod);
+
     box->AddComponent(box_renderer);
     box_renderer->SetTint(bgColor);
     // box->SetPosition(glm::vec3(bounds.min.x - padding, bounds.min.y - padding, -0.1));
@@ -236,9 +241,11 @@ std::shared_ptr<Entity> BoxedMessageFactory::Create(luabridge::LuaRef& ref) {
 
     auto fb = [] (const std::string& img, float width, float thickness, float x, float y, float imgw, bool flipv, bool rot) {
         auto b = Ref::Create<Entity>();
-        auto b_renderer = Ref::Create<Renderer>();
+
         auto qm = std::make_shared<QuadMesh>(img, width, thickness, width/imgw, flipv ? -1 : 1 );
-        b_renderer->SetModel(std::make_shared<BasicModel>(qm));
+        auto model = std::make_shared<BasicModel>(qm);
+        auto b_renderer = Ref::Create<BasicRenderer>(model);
+
         b->AddComponent(b_renderer);
         b->SetPosition(glm::vec3(x, y, 0.09));
         if (rot)
@@ -248,9 +255,9 @@ std::shared_ptr<Entity> BoxedMessageFactory::Create(luabridge::LuaRef& ref) {
 
     auto cb = [] (const std::string& img, float x, float y, float w, float h, bool flipx, bool flipy) {
         auto b = Ref::Create<Entity>();
-        auto b_renderer = Ref::Create<Renderer>();
         auto qm = std::make_shared<QuadMesh>(img, w, h, flipx ? -1 : 1, flipy ? -1 : 1 );
-        b_renderer->SetModel(std::make_shared<BasicModel>(qm));
+        auto model = std::make_shared<BasicModel>(qm);
+        auto b_renderer = Ref::Create<BasicRenderer>(model);
         b->AddComponent(b_renderer);
         b->SetPosition(glm::vec3(x, y, 0.095));
         return b;

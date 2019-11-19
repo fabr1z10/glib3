@@ -13,7 +13,7 @@ void Enemy3DInputMethod::Start() {
     m_controller = m_entity->GetComponent<Controller3D>();
     // this is clearly an approx
     double frameTime = Engine::get().GetFrameTime();
-    double n = 1.0 / frameTime;
+    //double n = 1.0 / frameTime;
     //m_attackProbability = 1.0 - pow(1-m_attackProbability, 1.0/n);
 
 

@@ -1,7 +1,7 @@
 #include <gfx/model/spritemodel.h>
 #include <gfx/compositemodel.h>
 #include <gfx/spritefactory.h>
-#include <gfx/components/renderer.h>
+#include <gfx/components/spriterenderer.h>
 #include <gfx/components/animator.h>
 #include <gfx/engine.h>
 
@@ -71,8 +71,7 @@ std::shared_ptr<Entity> SpriteFactory::Create (const std::string& name) {
 
 std::shared_ptr<Entity> SpriteFactory::Create (std::shared_ptr<IModel> model) {
     auto entity = Ref::Create<Entity>();
-    auto renderer = Ref::Create<Renderer>();
-    renderer->SetModel(model);
+    auto renderer = Ref::Create<SpriteRenderer>(model);
     auto animator = std::make_shared<Animator>(model);
     entity->AddComponent(renderer);
     entity->AddComponent(animator);

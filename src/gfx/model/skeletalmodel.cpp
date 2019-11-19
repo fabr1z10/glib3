@@ -23,11 +23,17 @@ ShaderType SkeletalModel::GetShaderType() const {
 }
 
 std::vector<std::string> SkeletalModel::GetAnimations() const {
-    return std::vector<std::string>();
+    std::vector<std::string> anims;
+    for (const auto& m : m_animations) anims.push_back(m.first);
+    return anims;
 }
 
 std::string SkeletalModel::GetDefaultAnimation() const {
     return m_defaultAnimation;
+}
+
+Bounds SkeletalModel::getBoundingBox(const std::vector<float> &angles) {
+
 }
 
 void SkeletalModel::Draw(Shader* shader, const std::vector<float>& angles) {
@@ -37,12 +43,17 @@ void SkeletalModel::Draw(Shader* shader, const std::vector<float>& angles) {
     auto& worldTransform = re->getModelViewMatrix();
     std::stack<glm::mat4> tm;
     s.push(m_root);
-    tm.push(worldTransform);
+    tm.push(glm::mat4(1.0f));
     glm::mat4 viewMatrix = re->getCurrentCamera()->m_viewMatrix;
+    m_dynamicBounds = Bounds();
 
+    // find node transforms
+    std::vector<glm::mat4> a1;
+    std::vector<Bone*> a2;
     while (!s.empty()) {
         // get the top
         auto& top = s.top();
+
         glm::mat4 nt = top->transform;
         // apply the angle of this node
         float angle = angles[top->id];
@@ -56,13 +67,21 @@ void SkeletalModel::Draw(Shader* shader, const std::vector<float>& angles) {
 //        nt[0][1] = m[0][1];
 
         glm::mat4 nodeTransform = (tm.top() * local);
-        glm::mat4 mvm = viewMatrix * nodeTransform;
+        Bounds boneBounds = top->mesh->GetBounds();
+        boneBounds.Transform(nodeTransform);
 
+        m_dynamicBounds.ExpandWith(boneBounds);
 
-        // draw this node
-        GLuint mvLoc = shader->GetUniformLocation(MODELVIEW);
-        glUniformMatrix4fv(mvLoc, 1, GL_FALSE, &mvm[0][0]);
-        top->mesh->Draw(shader, 0, 0);
+        a1.push_back(nodeTransform);
+        a2.push_back(top);
+
+//        glm::mat4 mvm = viewMatrix * nodeTransform;
+//
+//
+//        // draw this node
+//        GLuint mvLoc = shader->GetUniformLocation(MODELVIEW);
+//        glUniformMatrix4fv(mvLoc, 1, GL_FALSE, &mvm[0][0]);
+//        top->mesh->Draw(shader, 0, 0);
         // pop ...
         s.pop();
         tm.pop();
@@ -74,6 +93,15 @@ void SkeletalModel::Draw(Shader* shader, const std::vector<float>& angles) {
         }
     }
 
+    glm::mat4 shift = glm::translate(glm::vec3(0,-m_dynamicBounds.min.y,0));
+    //std::cout << m_maxBounds.min.y << ", " << m_dynamicBounds.min.y << "\n";
+    worldTransform *= shift;
+    for (size_t i = 0; i< a1.size(); ++i) {
+        glm::mat4 mvm = viewMatrix * worldTransform * a1[i];
+        GLuint mvLoc = shader->GetUniformLocation(MODELVIEW);
+        glUniformMatrix4fv(mvLoc, 1, GL_FALSE, &mvm[0][0]);
+        a2[i]->mesh->Draw(shader, 0, 0);
+    }
 }
 
 Bone& SkeletalModel::getBone (const std::string& id) {
@@ -94,6 +122,10 @@ void SkeletalModel::addBone(const std::string& id, std::unique_ptr<Bone> bone, c
 void SkeletalModel::addAnimation(const std::string& name, std::shared_ptr<SkeletalAnimation> anim) {
     if (m_defaultAnimation.empty()) m_defaultAnimation = name;
     m_animations.insert(std::make_pair(name, anim));
+    auto shape = anim->getBounds();
+    if (shape != nullptr ) {
+        m_maxBounds.ExpandWith(shape->getBounds());
+    }
 }
 
 SkeletalAnimation* SkeletalModel::getAnimation(const std::string &id) {

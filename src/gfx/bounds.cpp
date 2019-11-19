@@ -64,8 +64,13 @@ void Bounds::Expand(float amount) {
 }
 
 void Bounds::ExpandWith(const Bounds & b) {
-    min.x = std::min (min.x, b.min.x);
-    min.y = std::min (min.y, b.min.y);
-    max.x = std::max (max.x, b.max.x);
-    max.y = std::max (max.y, b.max.y);
+    if (isVoid()) {
+        min = b.min;
+        max = b.max;
+    } else {
+        min.x = std::min(min.x, b.min.x);
+        min.y = std::min(min.y, b.min.y);
+        max.x = std::max(max.x, b.max.x);
+        max.y = std::max(max.y, b.max.y);
+    }
 }

@@ -103,7 +103,10 @@ std::shared_ptr<Entity> SkeletonFactory::Create(luabridge::LuaRef &ref) {
     }
 
     entity->SetPosition(pos);
-
+    if (table.HasKey("scale")) {
+        float scale = table.Get<float>("scale");
+        entity->SetScale(scale);
+    }
     return entity;
 //    auto animator = std::make_shared<Animator>(model);
 //    entity->AddComponent(animator);

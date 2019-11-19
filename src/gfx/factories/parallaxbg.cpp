@@ -1,7 +1,7 @@
 #include <gfx/factories.h>
 #include <gfx/engine.h>
 #include <gfx/quadmesh.h>
-#include <gfx/components/renderer.h>
+#include <gfx/components/basicrenderer.h>
 #include <gfx/components/parallax.h>
 #include <gfx/model/basicmodel.h>
 
@@ -32,13 +32,15 @@ std::shared_ptr<Entity> ParallaxBackgroundFactory::Create(luabridge::LuaRef &ref
 
     }
     // as a first step, we create a renderer
-    auto renderer = Ref::Create<Renderer>();
+
     float quadWidth = (range[1] - range[0]) * (1.0f - factor);
     float panelAspectRatio = quadWidth / height;
 
     std::shared_ptr<IMesh> mesh = std::make_shared<QuadMesh>(img, quadWidth, height, panelAspectRatio/imgAspectRatio, 1.0f);
 
-    renderer->SetModel(std::make_shared<BasicModel>(mesh));
+    auto model = std::make_shared<BasicModel>(mesh);
+    auto renderer = Ref::Create<BasicRenderer>(model);
+
 
     auto entity = Ref::Create<Entity>();
 
