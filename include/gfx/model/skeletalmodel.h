@@ -10,11 +10,12 @@ struct Bone {
     int id;
     std::shared_ptr<IMesh> mesh;
     glm::vec2 pos;
-    glm::mat4 transform;
+    //glm::mat4 transform;
     glm::vec2 center;
     float z;
+    float scale;
     std::vector<Bone*> children;
-    void setAngle (float);
+    //v<oid setAngle (float);
 };
 
 class SkeletalModel : public IModel {

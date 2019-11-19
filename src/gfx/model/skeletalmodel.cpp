@@ -4,14 +4,9 @@
 #include <glm/gtx/transform.hpp>
 #include <gfx/math/geom.h>
 
-Bone::Bone() : transform(glm::mat4(1.0f)) {}
+Bone::Bone() {}
 
 
-void Bone::setAngle(float angle) {
-    glm::mat4 m = glm::rotate(deg2rad * angle, glm::vec3(0,0,1));
-    transform[1][0] = m[1][0];
-    transform[1][1] = m[1][1];
-}
 
 Bounds SkeletalModel::GetBounds() const {
     // TODO
@@ -54,11 +49,11 @@ void SkeletalModel::Draw(Shader* shader, const std::vector<float>& angles) {
         // get the top
         auto& top = s.top();
 
-        glm::mat4 nt = top->transform;
+        //glm::mat4 nt = top->transform;
         // apply the angle of this node
         float angle = angles[top->id];
 
-        glm::mat4 m = glm::rotate(deg2rad * angle, glm::vec3(0,0,1));
+        glm::mat4 m = glm::scale(glm::vec3(top->scale)) * glm::rotate(deg2rad * angle, glm::vec3(0,0,1));
         glm::mat4 lpos = glm::translate(glm::vec3(top->pos, 0.0f));
         glm::mat4 local = lpos*m*glm::translate(glm::vec3(-top->center, top->z));
 //        nt[1][0] = m[1][0];

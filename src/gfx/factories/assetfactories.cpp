@@ -243,9 +243,12 @@ std::shared_ptr<IModel> SkeletalModelFactory::Create(luabridge::LuaRef &ref) {
         glm::vec2 origin = bt.Get<glm::vec2>("origin", glm::vec2(0.0f));
         glm::vec2 pos = bt.Get<glm::vec2>("pos", glm::vec2(0.0f));
         glm::vec2 center = bt.Get<glm::vec2>("center", glm::vec2(0.0f));
+        float scale = bt.Get<float>("scale", 1.0f);
         float z = bt.Get<float>("z");
+        // width and height of the quad
         float w = quad[2];      // TODO scale?
         float h = quad[3];
+
         auto mesh = std::make_shared<QuadMesh>(gfx, w, h, center, quad[0], quad[1], quad[2], quad[3]);
         auto bone = std::make_unique<Bone>();
         bone->id = boneCount++;
@@ -253,9 +256,10 @@ std::shared_ptr<IModel> SkeletalModelFactory::Create(luabridge::LuaRef &ref) {
         bone->mesh = mesh;
         bone->pos = pos;
         bone->z = z;
-        bone->transform[3][0] = -origin.x+pos.x;
-        bone->transform[3][1] = -origin.y+pos.y;
-        bone->transform[3][2] = z;
+        bone->scale = scale;
+        //bone->transform[3][0] = -origin.x+pos.x;
+        //bone->transform[3][1] = -origin.y+pos.y;
+        //bone->transform[3][2] = z;
         std::cerr << "bone: " << id << ", quad = (" << quad[0] << ", " << quad[1] << ", " << quad[2] << ", " << quad[3] << ")\n";
         model->addBone(id, std::move(bone), parent);
     });
