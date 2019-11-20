@@ -85,7 +85,10 @@ int repx, int repy)
     int quad = 0;
     float dx = 1.0f / spriteSheetCols;
     float dy = 1.0f / spriteSheetRows;
-
+    int inc = 2;
+    if (data.size() == 2) {
+        inc = 0;
+    }
 
     for (int rx = 0; rx < repx; ++rx) {
         for (int ry = 0; ry < repy; ++ry) {
@@ -110,7 +113,7 @@ int repx, int repy)
                     indices.push_back(4 * quad + 1);
                     indices.push_back(4 * quad + 2);
                     indices.push_back(4 * quad + 3);
-                    count += 2;
+                    count += inc;
                     quad++;
                 }
             }

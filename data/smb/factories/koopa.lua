@@ -7,8 +7,8 @@ factory.koopa.response = function (mario, koopa, sx, sy)
 			mario.vy = 300
 		end
 		
-		koopa:move(-5*sx,0,0)
-		monkey.set_dir(koopa, sx>0)
+		koopa:move(-10*sx,0,0)
+		monkey.set_dir(koopa, sx<0)
 		koopa:changestate("walk_2")
 		local act = {
 			--{ type = action.set_enemy_dir, args ={ id = koopa.id, left = sx>0}},
@@ -50,7 +50,7 @@ end
 factory.koopa.create = function (args, pos) 
 	glib.assert (args.sprite, "sprite")
 	return {
-		pos = {args.pos[1], args.pos[2], 0},
+		pos = {args.pos[1]*16, args.pos[2]*16, 0},
 		type = "sprite",
 		model = args.sprite,
 		components = {
@@ -97,7 +97,7 @@ factory.koopa.create = function (args, pos)
 							type = "walkside", 
 							speed = 100, 
 							acceleration = 0.05, 
-							fliph = true, 
+							fliph = false, 
 							jumpspeed = 0,
 							walk_anim = "hide",
 							jump_state = "jump_2"
@@ -109,9 +109,9 @@ factory.koopa.create = function (args, pos)
 							type = "jump",
 							speed = 100,
 							acceleration = 0.10,
-							fliph = true,
-							animup = "walk",
-							animdown = "walk"
+							fliph = false,
+							animup = "hide",
+							animdown = "hide"
 						}
 					},					
 				}

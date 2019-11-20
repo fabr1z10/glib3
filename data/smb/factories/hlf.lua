@@ -106,6 +106,17 @@ factory.blocks.pickupcoin = function(p)
 	return factory.coin.create { model="pickup_coin", pos = p}
 end
 
+factory.blocks.platform1 = function(p) 
+	local td = {1,15}
+	for i = 1, p[3]-2 do 
+		table.insert(td, 2) 
+		table.insert(td, 15)
+	end     -- count from 1 to 3
+	table.insert(td, 3)
+	table.insert(td, 15)
+	return factory.tiled.create { pos = {p[1],p[2]}, width = p[3], height=1, tiledata = td, img="smb1.png", collide=true }
+end
+
 
 factory.blocks.spawn = function(f)
 	return function(p) 
@@ -128,6 +139,13 @@ factory.npc.goomba = function(p)
 		flip = true, 
 	}
 end
+factory.npc.koopa = function(p) 
+	return factory.koopa.create {
+		pos = p, 
+		sprite="koopa",
+		flip = true, 
+	}
+end
 
 factory.npc.plant = function(p)
 	return factory.plant.create {pos=p, sprite="plant"}
@@ -136,6 +154,11 @@ end
 factory.bg.tiled = function(temp,z) 
 	return function(p) return factory.tiled.create_from { pos = p, z=z or -1.0,template = temp } end 
 end
+
+factory.bg.tiled_one = function(args, p)
+	return function(p) return factory.tiled.create { pos = {p[1],p[2]}, z=z or -1.0,width =p[3], height=p[4], tiledata = args.tile, img = args.img, collide=args.collide, sheetsize ={engine.tilesize,engine.tilesize} } end 
+end
+
 
 factory.blocks.warp_down = function(args) 
 	return function(p)
@@ -251,10 +274,24 @@ factory.blocks.moving_platform = function(p)
 		callback = function(platform) 
 			platform:dropcharacters()
 		end
-		--p--ath = { 
-		--	{ pos={8*16,7*16}, speed = 20 }, 
-		--	{ pos= {5*16,10*16}}
-		--}, 
-		--initscripts = initscripts 
+	}
+end
+
+factory.blocks.moving_platform_2 = function(p) 
+	return factory.movingplatform.create { 
+		pos = {p[1], p[2]},
+		width=3, 
+		tile = {15,5},
+		--speed=20, 
+		img="smb1.png", 
+		loop_type = 0,
+		start_index = p[3],
+		pct = p[4],
+		movements = {
+			{ delta = {p[5], p[6]}, speed = 50 }
+		},
+		callback = function(platform) 
+			platform:dropcharacters()
+		end
 	}
 end
