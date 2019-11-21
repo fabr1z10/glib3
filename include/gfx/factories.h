@@ -83,6 +83,7 @@ FACTORY(KeyboardInputMethodCompFactory, Component)
 FACTORY(PropertiesCompFactory, Component)
 FACTORY(GarbageCollectCompFactory,Component)
 FACTORY(PolyMoverCompFactory, Component)
+FACTORY(EllipseMoverCompFactory, Component)
 //#include <gfx/factories/statemachinefactory.h>
 
 FACTORY(StateMachineCompFactory, Component)

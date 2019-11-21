@@ -1,5 +1,9 @@
 factory.plant = {}
 
+factory.plant.response = function (mario, plant, sx, sy) 
+	--factory.mario.hit_by_enemy(mario, plant)
+end
+
 factory.plant.create = function (args, pos) 
 	glib.assert (args.sprite, "sprite")
 	glib.assert (args.pos, "pos")

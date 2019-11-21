@@ -61,6 +61,10 @@ local s = {
 	mario_fire_2 = {x=192,y=112,width=16,height=16,anchor={8,8}},
 	mario_fire_3 = {x=208,y=112,width=16,height=16,anchor={8,8}},
 	mario_fire_4 = {x=224,y=112,width=16,height=16,anchor={8,8}},
+	enemy_fire_1 = {x=180,y=116,width=8,height=8,anchor={4,4}},
+	enemy_fire_2 = {x=196,y=116,width=8,height=8,anchor={4,4}},
+	enemy_fire_3 = {x=212,y=116,width=8,height=8,anchor={4,4}},
+	enemy_fire_4 = {x=228,y=116,width=8,height=8,anchor={4,4}},
 	plant_1 = {x=128,y=96,width=16,height=32,anchor={8,0}},
 	plant_2 = {x=144,y=96,width=16,height=32,anchor={8,0}},
 
@@ -360,6 +364,20 @@ models["fire"] = {
 	animations = {
 		{ name = "walk", box = {-4,-4,4,4}, frames = {
 			{ duration = dt, quads = {{ id = s.mario_fire_1 } }},
+			{ duration = dt, quads = {{ id = s.mario_fire_2 } }},
+			{ duration = dt, quads = {{ id = s.mario_fire_3 } }},
+			{ duration = dt, quads = {{ id = s.mario_fire_4 } }},
+		}},
+	}
+}
+
+models["enemy_fire"] = {
+    sheet = "smb1.png",
+    type = "boxed_sprite",
+    ppu=1,
+	animations = {
+		{ name = "walk", box = {-4,-4,4,4}, frames = {
+			{ duration = dt, quads = {{ id = s.enemy_fire_1 } }},
 			{ duration = dt, quads = {{ id = s.mario_fire_2 } }},
 			{ duration = dt, quads = {{ id = s.mario_fire_3 } }},
 			{ duration = dt, quads = {{ id = s.mario_fire_4 } }},

@@ -15,12 +15,14 @@ factory.room.create = function(args)
 					{ tag = {variables.collision.tags.player, variables.collision.tags.mushroom}, onenter = factory.mushroom.response },
 					{ tag = {variables.collision.tags.player, variables.collision.tags.flower}, onenter = factory.flower.response },
 					{ tag = {variables.collision.tags.player, variables.collision.tags.goomba}, onenter = factory.goomba.response },
+					{ tag = {variables.collision.tags.player, variables.collision.tags.plant}, onenter = factory.plant.response },
 					{ tag = {variables.collision.tags.player, variables.collision.tags.koopa}, onenter = factory.koopa.response },
 					{ tag = {variables.collision.tags.player, variables.collision.tags.coin}, onenter = factory.coin.response },
 					{ tag = {variables.collision.tags.player, variables.collision.tags.spawn}, onenter = factory.spawn.response },
 					{ tag = {variables.collision.tags.player, variables.collision.tags.warp}, onenter = factory.warp.response, onleave = factory.warp.onexit },
 					{ tag = {variables.collision.tags.player, variables.collision.tags.hotspot}, onenter = factory.hotspot.response, onleave = factory.hotspot.resp},
 					{ tag = {variables.collision.tags.fire, variables.collision.tags.goomba}, onenter = factory.fire.response },
+
 				}
 			},
 			{ 

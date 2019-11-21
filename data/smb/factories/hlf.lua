@@ -151,12 +151,16 @@ factory.npc.plant = function(p)
 	return factory.plant.create {pos=p, sprite="plant"}
 end
 
+factory.npc.rotatingfire = function(p)
+	return factory.rotatingfire.create { pos = {p[1],p[2]}, n=p[3], model="enemy_fire"}
+end
+
 factory.bg.tiled = function(temp,z) 
 	return function(p) return factory.tiled.create_from { pos = p, z=z or -1.0,template = temp } end 
 end
 
 factory.bg.tiled_one = function(args, p)
-	return function(p) return factory.tiled.create { pos = {p[1],p[2]}, z=z or -1.0,width =p[3], height=p[4], tiledata = args.tile, img = args.img, collide=args.collide, sheetsize ={engine.tilesize,engine.tilesize} } end 
+	return function(p) return factory.tiled.create { pos = {p[1],p[2]}, z=args.z or -1.0,width =p[3], height=p[4], tiledata = args.tile, img = args.img, collide=args.collide, sheetsize ={engine.tilesize,engine.tilesize} } end 
 end
 
 

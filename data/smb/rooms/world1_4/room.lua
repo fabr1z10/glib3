@@ -24,6 +24,10 @@ local items_dynamic = {
 		pos = { {13, 2, 2, 1 }, {26,1,3,1},{32,1,3,1},{128,1,13,1}}
 	},
 	{
+		factory = factory.bg.tiled_one { img = "smb1.png", tile ={0, 11}, collide=true,z=-0.9},
+		pos = { {23,8,1,1}, {30,4,1,1}, {37,8,1,1},{49,8,1,1},{60,8,1,1}, {67,8,1,1}, {76,5,1,1}, {80,10,1,1}, {84,5,1,1}, {88,10,1,1}, {92,5,1,1} }
+	},	
+	{
 		factory = factory.bg.tiled_one { img = "smb1.png", tile ={4, 13}, collide=true},
 		pos = { {128,4,13,1}}
 	},
@@ -31,11 +35,17 @@ local items_dynamic = {
 		factory = factory.blocks.brickmushroom,
 		pos = { {30,8} },
 	},	
+	{
+		factory = factory.npc.rotatingfire,
+		pos = { {30.5,4.5,6}, {49.5,8.5,6}, {60.5,8.5,6}, {67.5,8.5,6}, {76.5,5.5,6}, {84.5,5.5,6}, {88.5, 10.5, 6} }
+	}
+
 }
 
 room = factory.room.create (roomInfo)
 
 local items_d = {
+	--factory.rotatingfire.create { pos = {5,5}, n=6, model="enemy_fire"}
 }
 
 for _, v in pairs(items_dynamic) do

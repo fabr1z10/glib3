@@ -18,6 +18,7 @@
 #include <gfx/components/follow3d.h>
 #include <gfx/components/inputmethod.h>
 #include <gfx/components/mover.h>
+#include <gfx/components/ellipsemover.h>
 
 #include <gfx/components/billboard.h>
 #include <gfx/components/parallax.h>
@@ -373,6 +374,18 @@ std::shared_ptr<Component> PolyMoverCompFactory::Create(luabridge::LuaRef &ref) 
     }
     return ptr;
 }
+
+std::shared_ptr<Component> EllipseMoverCompFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    glm::vec2 origin = table.Get<glm::vec2>("origin", glm::vec2(0.0f));
+    glm::vec2 radii = table.Get<glm::vec2>("radii");
+    float period = table.Get<float>("period");
+
+
+    auto ptr = std::make_shared<EllipseMover>(radii[0], radii[1], period, origin);
+    return ptr;
+}
+
 //std::unique_ptr<Component> StateMachineComponentFactory::Create(luabridge::LuaRef &ref) {
 //    LuaTable table(ref);
 //
