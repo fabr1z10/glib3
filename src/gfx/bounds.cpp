@@ -1,6 +1,12 @@
 #include <gfx/bounds.h>
 #include <algorithm>
 
+void Bounds::Translate(const glm::vec3 & disp) {
+    min += disp;
+    max += disp;
+
+}
+
 void Bounds::Transform(const glm::mat4& m) {
     glm::vec3 P[] = {
         glm::vec3(min.x, min.y, min.z),

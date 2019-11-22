@@ -63,14 +63,16 @@ void DynamicWorldBuilder::UpdateWorld(glm::vec3 pos) {
         // if item has been removed, nothing to do
         //std::cerr << item.id << "\n";
         bool forciblyRemoved = m_removedItems.count(item.id) > 0;
+        Bounds b = item.m_localBounds;
         if (!forciblyRemoved) {
             if (!item.active) {
-                Bounds b = item.m_bounds;
+                b.Translate(item.m_initPos);
                 if (b.Intersects2D(m_activeBounds)) {
                     auto obj = item.m_blueprint;
                     item.active = true;
                     std::cerr << "adding item " << item.m_blueprint->GetId() << std::endl;
                     m_parentEntity->AddChild(obj);
+                    obj->SetPosition(item.m_initPos);
                     if (Engine::get().isRunning()) {
                         obj->restart();
                         obj->Begin();
@@ -78,7 +80,7 @@ void DynamicWorldBuilder::UpdateWorld(glm::vec3 pos) {
                 }
             } else {
                 // already created
-                Bounds b = item.m_bounds;
+                b.Translate(item.m_blueprint->GetPosition());
                 if (!b.Intersects2D(m_activeBounds)) {
                     Engine::get().Remove(Ref::Get<Entity>(item.m_blueprint->GetId()));
                     std::cerr << "dropping item " << item.m_blueprint->GetId() << std::endl;
@@ -86,6 +88,21 @@ void DynamicWorldBuilder::UpdateWorld(glm::vec3 pos) {
                     m_outBounds.insert(item.id);
                 }
             }
+        } else {
+            b.Translate(item.m_initPos);
+            if (!item.createOnce && b.Intersects2D(m_activeBounds)) {
+                m_removedItems.erase(item.id);
+                auto obj = item.m_blueprint;
+                item.active = true;
+                std::cerr << "adding item " << item.m_blueprint->GetId() << std::endl;
+                m_parentEntity->AddChild(obj);
+                obj->SetPosition(item.m_initPos);
+                if (Engine::get().isRunning()) {
+                    obj->restart();
+                    obj->Begin();
+                }
+            }
+
         }
     }
 
@@ -120,10 +137,14 @@ void DynamicWorldBuilder::AddItem(std::shared_ptr<Entity> entity) {
     item.id = entity->GetId();
     item.m_localBounds.min = bounds.min;
     item.m_localBounds.max = bounds.max;
-    item.m_bounds.min = item.m_localBounds.min + glm::vec3(pos.x, pos.y, 0.0f);
-    item.m_bounds.max = item.m_localBounds.max + glm::vec3(pos.x, pos.y, 0.0f);
-    //item.m_object = nullptr;
-    std::cout << "Adding item with bounds = (" << item.m_bounds.min.x << ", " << item.m_bounds.min.y << ") to ("
-    << item.m_bounds.max.x << ", " << item.m_bounds.max.y << ")\n";
+    item.m_initPos = pos;
+    item.createOnce = true;
+//    item.m_bounds = item.m_localBounds;
+//    item.m_bounds.Tr
+//    item.m_bounds.min = item.m_localBounds.min + glm::vec3(pos.x, pos.y, 0.0f);
+//    item.m_bounds.max = item.m_localBounds.max + glm::vec3(pos.x, pos.y, 0.0f);
+//    //item.m_object = nullptr;
+//    std::cout << "Adding item with bounds = (" << item.m_bounds.min.x << ", " << item.m_bounds.min.y << ") to ("
+//    << item.m_bounds.max.x << ", " << item.m_bounds.max.y << ")\n";
     m_items.push_back(item);
 }

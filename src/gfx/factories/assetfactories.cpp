@@ -181,8 +181,9 @@ std::shared_ptr<IModel> BoxedModelFactory::Create(luabridge::LuaRef &ref) {
 
             if (table.HasKey("attack")) {
                 glm::vec4 attackBox = table.Get<glm::vec4>("attack");
-                float w = attackBox[2] - attackBox[0];
-                float h = attackBox[3] - attackBox[1];
+                // attack box is a 4d vec {x, y, w, h} where x, y are the coords relative to the top left
+                float w = attackBox[2];
+                float h = attackBox[3];
                 std::shared_ptr<Shape> attackShape;
                 if (model3d) {
                     attackShape = std::make_shared<Box>(w, h, thickness, glm::vec3(attackBox[0], attackBox[1], -dz));
@@ -239,6 +240,7 @@ std::shared_ptr<IModel> SkeletalModelFactory::Create(luabridge::LuaRef &ref) {
         LuaTable bt(ref);
         std::string id = bt.Get<std::string>("id");
         glm::vec4 quad = bt.Get<glm::vec4>("quad");
+        std::string gfxi = bt.Get<std::string>("gfx", gfx);
         std::string parent = bt.Get<std::string>("parent", "");
         glm::vec2 origin = bt.Get<glm::vec2>("origin", glm::vec2(0.0f));
         glm::vec2 pos = bt.Get<glm::vec2>("pos", glm::vec2(0.0f));
@@ -249,7 +251,7 @@ std::shared_ptr<IModel> SkeletalModelFactory::Create(luabridge::LuaRef &ref) {
         float w = quad[2];      // TODO scale?
         float h = quad[3];
 
-        auto mesh = std::make_shared<QuadMesh>(gfx, w, h, center, quad[0], quad[1], quad[2], quad[3]);
+        auto mesh = std::make_shared<QuadMesh>(gfxi, w, h, center, quad[0], quad[1], quad[2], quad[3]);
         auto bone = std::make_unique<Bone>();
         bone->id = boneCount++;
         bone->center = origin;

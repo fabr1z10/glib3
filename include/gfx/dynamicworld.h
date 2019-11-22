@@ -13,8 +13,9 @@ struct DynamicWorldItem {
                          removedByDynamicWorld(false),
                          active(false) {}
     std::shared_ptr<Entity> m_blueprint;
-    Bounds m_bounds;
+    //Bounds m_bounds;
     Bounds m_localBounds;
+    glm::vec3 m_initPos;
     int id;
     bool createOnce;
     bool removedByDynamicWorld;

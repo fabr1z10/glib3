@@ -17,7 +17,7 @@ void EnemyInputMethod::Start() {
     // this is clearly an approx
     double frameTime = Engine::get().GetFrameTime();
     double n = 1.0 / frameTime;
-    m_attackProbability = 1.0 - pow(1-m_attackProbability, 1.0/n);
+    //m_attackProbability = 1.0 - pow(1-m_attackProbability, 1.0/n);
 
 
 }
@@ -67,7 +67,7 @@ void EnemyInputMethod::Update(double) {
 
     }
 
-    auto pos = m_entity->GetPosition();
+    auto pos = m_target->GetPosition();
     auto thispos = this->m_entity->GetPosition();
     if (glm::length(pos - thispos) < 64.0f) {
         if (!m_attackMoves.empty()) {

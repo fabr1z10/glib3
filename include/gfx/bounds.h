@@ -31,6 +31,7 @@ struct Bounds {
     bool Intersects2D(Bounds& other) const;
 
     // rotate a bounding box
+    void Translate (const glm::vec3&);
     void Transform(const glm::mat4&);
     //void TransformXZ (const glm::mat4&);
 };
