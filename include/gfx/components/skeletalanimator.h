@@ -15,6 +15,8 @@ public:
     SkeletalAnimator(const SkeletalAnimator&);
     virtual ~SkeletalAnimator() {}
     SkeletalModel* getModel() const;
+    void setModel (std::shared_ptr<IModel> model) override;
+    float getTime() const;
     void AddBone (const std::string& id, Entity* bone, float length);
     void Start() override;
     void Update(double dt) override;

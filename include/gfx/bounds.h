@@ -23,7 +23,7 @@ struct Bounds {
     glm::vec3 GetCenter();
     glm::vec3 GetExtents();
 
-    bool isVoid ();
+    bool isVoid () const;
     void Expand(float);
     void ExpandWith(const Bounds&);
     bool Contains(glm::vec3 P);
@@ -36,7 +36,7 @@ struct Bounds {
     //void TransformXZ (const glm::mat4&);
 };
 
-inline bool Bounds::isVoid() {
+inline bool Bounds::isVoid() const {
     return (max.x == min.x && max.y == min.y && max.z == min.z);
 
 }

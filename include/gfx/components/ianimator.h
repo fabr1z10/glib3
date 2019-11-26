@@ -3,6 +3,8 @@
 #include <gfx/component.h>
 #include <gfx/event.h>
 
+class IModel;
+
 class IAnimator : public Component {
 public:
     IAnimator() : m_forward(true) {}
@@ -11,6 +13,7 @@ public:
     void SetInitialAnimation (const std::string& anim);
     void SetPlayForward (bool);
     virtual bool IsComplete() const = 0;
+    virtual void setModel (std::shared_ptr<IModel> model) = 0;
     using ParentClass = IAnimator;
     Event<IAnimator*> onAnimationChange;
 protected:

@@ -235,8 +235,13 @@ std::shared_ptr<Component> SkeletalColliderComponentFactory::Create(luabridge::L
     int tag = table.Get<int>("tag");
     int flag = table.Get<int>("flag");
     int mask = table.Get<int>("mask");
+
     float scale = table.Get<float>("scale", 1.0f);
+    glm::ivec2 attack = table.Get<glm::ivec2>("attack", glm::ivec2(-1,-1));
     auto coll = Ref::Create<SkeletalCollider>(flag, mask, tag);
+    if (attack[0] != -1) {
+        coll->setAttack(attack[0], attack[1]);
+    }
 //    table.ProcessVector("bounds", [coll, scale] (luabridge::LuaRef ref) {
 //
 //        LuaTable t(ref);

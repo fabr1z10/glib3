@@ -329,11 +329,11 @@ void EntityWrapper::SetAnim(const std::string& anim) {
 
 void EntityWrapper::SetModel(const std::string& modelId, const std::string& anim) {
     Renderer* r = m_underlying->GetComponent<Renderer>();
-    Animator* a = dynamic_cast<Animator*>(m_underlying->GetComponent<IAnimator>());
+    IAnimator* a = m_underlying->GetComponent<IAnimator>();
     auto model = Engine::get().GetAssetManager().GetModel(modelId);
     r->SetModel(model);
     a->setModel(model);
-
+    r->Start();
     auto collider = m_underlying->GetComponent<ICollider>();
     if (collider != nullptr) collider->Start();
 //    auto mesh = Engine::get().GetAssetManager().GetModel(model);

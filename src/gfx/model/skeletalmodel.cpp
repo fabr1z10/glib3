@@ -114,13 +114,44 @@ void SkeletalModel::addBone(const std::string& id, std::unique_ptr<Bone> bone, c
     }
 }
 
+void SkeletalModel::setDefaultBounds(float width, float height, glm::vec2 offset) {
+    m_defaultBounds = std::make_shared<Rect>(width, height, glm::vec3(offset, 0.0f));
+    m_maxBounds.ExpandWith(m_defaultBounds->getBounds());
+
+}
+
+Shape* SkeletalModel::getBounds(const std::string &anim) {
+    return m_defaultBounds.get();
+}
+std::vector<Bounds> SkeletalModel::getAllBounds() const {
+    std::vector<Bounds> bounds;
+    bounds.push_back(m_defaultBounds->getBounds());
+    for (const auto& a : m_animSpecificBounds) bounds.push_back(a.second->getBounds());
+    for (const auto& b : m_attackInfo) {
+        bounds.push_back(b.second.shape->getBounds());
+    }
+    return bounds;
+
+}
 void SkeletalModel::addAnimation(const std::string& name, std::shared_ptr<SkeletalAnimation> anim) {
     if (m_defaultAnimation.empty()) m_defaultAnimation = name;
     m_animations.insert(std::make_pair(name, anim));
-    auto shape = anim->getBounds();
-    if (shape != nullptr ) {
-        m_maxBounds.ExpandWith(shape->getBounds());
-    }
+    //auto shape = anim->getBounds();
+//    if (shape != nullptr ) {
+//        m_maxBounds.ExpandWith(shape->getBounds());
+//    }
+}
+
+float SkeletalModel::addAttack(const std::string &anim, float t, glm::vec4 box) {
+    m_attackInfo[anim] = SkeletalAttackInfo{t, std::make_shared<Rect>(box[2], box[3], glm::vec3(box[0], box[1], 0.0f))};
+}
+
+SkeletalAttackInfo* SkeletalModel::hasAttack(const std::string &anim, float t0, float t1) {
+    auto it = m_attackInfo.find(anim);
+    if (it == m_attackInfo.end()) return nullptr;
+    if (it->second.t >= t0 && it->second.t <= t1)
+        return &(it->second);
+    return nullptr;
 }
 
 SkeletalAnimation* SkeletalModel::getAnimation(const std::string &id) {

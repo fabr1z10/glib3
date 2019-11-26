@@ -191,7 +191,7 @@ void CollisionEngine::Update(double dt) {
                 auto b2 = c2->GetBounds();
                 
                 // perform a aabb testing
-                if (!b1.Intersects(b2)) {
+                if (!b1.Intersects2D(b2)) {
                     //std::cout << "aabb do not intersect\n";
                     continue;
                 }

@@ -23,7 +23,7 @@ void SkeletalRenderer::Draw(Shader * shader) {
     const auto& angles = m_animator->getAngles();
     m_model->Draw(shader, angles);
     Bounds b = m_model->getDynamicBounds();
-    std::cerr << "(" << b.min.x << ", " << b.min.y << ") (" << b.max.x << ", " << b.max.y << ")\n";
+    //std::cerr << "(" << b.min.x << ", " << b.min.y << ") (" << b.max.x << ", " << b.max.y << ")\n";
 }
 
 std::type_index SkeletalRenderer::GetType() {
@@ -37,4 +37,5 @@ ShaderType SkeletalRenderer::GetShaderType() const {
 void SkeletalRenderer::SetModel(std::shared_ptr<IModel> model) {
     m_model = std::dynamic_pointer_cast<SkeletalModel>(model).get();
     m_baseModel = m_model;
+
 }

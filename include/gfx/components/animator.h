@@ -42,7 +42,7 @@ public:
     bool IsComplete() const override;
     int GetFrame() const;
     std::shared_ptr<SpriteModel> GetModel();
-    void setModel (std::shared_ptr<IModel> model);
+    void setModel (std::shared_ptr<IModel> model) override;
     // allows to backup the status in order to restore it later
     //virtual std::shared_ptr<AnimatorState> SaveState()  = 0;
     //virtual void LoadState(std::shared_ptr<AnimatorState>) = 0;

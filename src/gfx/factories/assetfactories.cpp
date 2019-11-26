@@ -301,17 +301,32 @@ std::shared_ptr<IModel> SkeletalModelFactory::Create(luabridge::LuaRef &ref) {
 
         // add a last keyframe equal to the first in order to loop
         //  anim->addKeyFrame(duration, firstKeyFrame);
-        if (atable.HasKey("box")) {
-            glm::vec4 box = atable.Get<glm::vec4>("box");
-            anim->setBounds(box[2], box[3], glm::vec2(box[0], box[1]));
-        }
+//        if (atable.HasKey("box")) {
+//            glm::vec4 box = atable.Get<glm::vec4>("box");
+//            anim->setBounds(box[2], box[3], glm::vec2(box[0], box[1]));
+//        }
         anim->init();
         model->addAnimation(id, anim);
-        return anim;
+        //return anim;
 
 
     });
 
+    if (table.HasKey("box")) {
+        glm::vec4 box = table.Get<glm::vec4>("box");
+        model->setDefaultBounds(box[2], box[3], glm::vec2(box[0], box[1]));
+
+
+    }
+
+
+    table.ProcessVector("attack", [&] (luabridge::LuaRef ref) {
+        LuaTable atable(ref);
+        std::string anim = atable.Get<std::string>("anim");
+        float t = atable.Get<float>("t");
+        glm::vec4 box = atable.Get<glm::vec4>("box");
+        model->addAttack(anim, t, box);
+    });
     return model;
 
 }

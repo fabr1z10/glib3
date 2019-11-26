@@ -17,12 +17,12 @@ class Renderer;
  *
  */
 
-struct SkeletalAttackInfo {
-    float time;
-    std::shared_ptr<Shape> shape;
-    int mask;
-    int tag;
-};
+//struct SkeletalAttackInfo {
+//    float time;
+//    std::shared_ptr<Shape> shape;
+//    int mask;
+//    int tag;
+//};
 
 class SkeletalCollider : public ICollider {
 public:
@@ -36,7 +36,7 @@ public:
     int GetCollisionFlag() const;
     int GetCollisionMask() const;
     Shape* GetShape() override;
-
+    void setAttack(int mask, int tag);
 private:
     Bounds GetStaticBoundsI() const override;
     Bounds GetDynamicBoundsI() const override;
@@ -45,6 +45,8 @@ private:
     int m_flag;
     int m_mask;
     int m_tag;
+    int m_attackTag;
+    int m_attackMask;
 };
 
 

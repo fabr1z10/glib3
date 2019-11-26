@@ -23,6 +23,11 @@ SkeletalModel* SkeletalAnimator::getModel() const {
     return m_model.get();
 }
 
+void SkeletalAnimator::setModel (std::shared_ptr<IModel> model) {
+    m_model = std::dynamic_pointer_cast<SkeletalModel>(model);
+    m_initAnim = model->GetDefaultAnimation();
+    Start();
+}
 
 void SkeletalAnimator::Start() {
     if (!m_initAnim.empty()) {
@@ -33,6 +38,10 @@ void SkeletalAnimator::Start() {
     //m_ls =m_bones.at("lshin")->GetComponent<Renderer>();
     //m_rs =m_bones.at("rshin")->GetComponent<Renderer>();
 
+}
+float SkeletalAnimator::getTime() const {
+
+    return m_time;
 }
 
 void SkeletalAnimator::AddBone(const std::string &id, Entity *bone, float length) {

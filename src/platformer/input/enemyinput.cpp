@@ -32,18 +32,24 @@ bool EnemyInputMethod::isKeyDown(int key) {
     return ((key == GLFW_KEY_LEFT && m_left) || (key == GLFW_KEY_RIGHT && (!m_left)));
 }
 
-void EnemyInputMethod::setTransitionProbabilities(float idle2walk, float walk2idle) {
-    m_idle2walk = idle2walk;
-    m_walk2idle = walk2idle;
+void EnemyInputMethod::setTransitionProbabilities(float idleAvgTime, float walkAvgTime) {
+    float dt = static_cast<float>(Engine::get().GetFrameTime());
+    m_idle2walk = dt / idleAvgTime;
+    m_walk2idle = dt / walkAvgTime;
 }
 
+void EnemyInputMethod::setTurnProbability(float tp) {
+    m_turnProbability = tp;
+}
 void EnemyInputMethod::Update(double) {
     // flip if
     // 1. hits a wall
+    auto pos = m_target->GetPosition();
+    auto thispos = this->m_entity->GetPosition();
+
     if ((m_left && m_controller->m_details.left) || (!m_left && m_controller->m_details.right)) {
         // I bumped into a wall
         m_left = !m_left;
-        return;
     }
     if (m_flipIfPlatformEnds) {
         // check if I reached the end of the platform
@@ -54,22 +60,35 @@ void EnemyInputMethod::Update(double) {
 
     // random action
 
-    if (!m_idle) {
-        float r = Random::get().GetUniformReal(0, 1);
-        if (r < m_walk2idle) {
-            m_idle = true;
-        }
-    } else {
+    if (m_idle) {
         float r = Random::get().GetUniformReal(0, 1);
         if (r < m_idle2walk) {
             m_idle = false;
         }
+    } else {
+        float r = Random::get().GetUniformReal(0, 1);
+        if (r < m_walk2idle) {
+            m_idle = true;
+        }
 
     }
 
-    auto pos = m_target->GetPosition();
-    auto thispos = this->m_entity->GetPosition();
-    if (glm::length(pos - thispos) < 64.0f) {
+
+    // turn around if player is other side
+    bool goingTowardsPlayer = (m_left && (pos.x < thispos.x)) || (!m_left && (pos.x > thispos.x));
+    bool tooclose =fabs(thispos.x - pos.x) < 16;
+    if (!goingTowardsPlayer && !tooclose) {
+        float r = Random::get().GetUniformReal(0, 1);
+        if (r <= m_turnProbability)
+            m_left = !m_left;
+    }
+
+    // too close
+    if (tooclose) {
+        m_idle = false;
+    }
+
+    if (goingTowardsPlayer && glm::length(pos - thispos) < 64.0f) {
         if (!m_attackMoves.empty()) {
 
             float r = Random::get().GetUniformReal(0, 1);

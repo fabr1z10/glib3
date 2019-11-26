@@ -33,9 +33,44 @@ std::shared_ptr<Component> SkeletalCollider::clone() const {
 //    info.shape = std::make_shared<Rect>(w*scale, h*scale, glm::vec3(scale*x0, scale*y0, 0));
 //    m_attackInfos.insert(std::make_pair(animation, info));
 //}
+void SkeletalCollider::setAttack(int mask, int tag) {
+    m_attackMask = mask;
+    m_attackTag = tag;
+}
+
 
 void SkeletalCollider::Update(double dt) {
     // TODO check attacks!
+    std::string anim = m_animator->GetAnimation();
+
+    float t = m_animator->getTime();
+    auto* animInfo = m_model->hasAttack(anim, t-dt, t);
+    if (animInfo == nullptr)
+        return;
+
+    auto transform = m_entity->GetWorldTransform();
+    std::cerr << "CIA " << m_attackMask;
+    auto e = m_engine->ShapeCast(animInfo->shape, transform, m_attackMask);
+    if (e.report.collide) {
+        std::cerr << "HIT!\n";
+        auto rm = m_engine->GetResponseManager();
+        if (rm == nullptr) {
+            std::cerr << "no handler!\n";
+        } else {
+            auto object = e.entity->GetObject();
+            std::cerr << m_attackTag << ", " << e.entity->GetCollisionTag();
+            auto handler = rm->GetHandler(m_attackTag, e.entity->GetCollisionTag());
+            if (handler.response != nullptr) {
+                std::cerr << "FOUND RESPONSE\n";
+                if (handler.flip) {
+                    handler.response->onStart(object, m_entity, e.report);
+                } else {
+                    handler.response->onStart(m_entity, object, e.report);
+                }
+            }
+        }
+     }
+
 //
 //    if (m_currentAttackInfo != nullptr) {
 //        double oldTime = m_time;
@@ -95,12 +130,11 @@ void SkeletalCollider::Start() {
     std::vector<VertexColor> vertices ;
     std::vector<unsigned int> indices;
 
-    // loop through each anim
-    auto anims = m_model->GetAnimations();
+    // get all bounds in the model
+
+    auto anims = m_model->getAllBounds();
     int vc = 0;
-    for (const auto& animId : anims) {
-        auto anim = m_model->getAnimation(animId);
-        Bounds bounds = anim->getBounds()->getBounds();
+    for (const auto& bounds : anims) {
         if (!bounds.isVoid()) {
             // add 4 vertices for each animation shape
             vertices.emplace_back(VertexColor (bounds.min.x, bounds.min.y, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f));
@@ -117,11 +151,9 @@ void SkeletalCollider::Start() {
             indices.emplace_back(vc+3);
             indices.emplace_back(vc);
             vc+=4;
-
         }
-
-
     }
+
     auto mesh = std::make_shared<Mesh<VertexColor>>(COLOR_SHADER);
     mesh->m_primitive = GL_LINES;
     mesh->Init(vertices, indices);
@@ -145,12 +177,13 @@ Bounds SkeletalCollider::GetStaticBoundsI() const {
 
 Bounds SkeletalCollider::GetDynamicBoundsI() const {
     std::string anim = m_animator->GetAnimation();
-    return m_model->getAnimation(anim)->getBounds()->getBounds();
+    return m_model->getBounds(anim)->getBounds();
+    //return m_model->getAnimation(anim)->getBounds()->getBounds();
 
 }
 //
 
 Shape* SkeletalCollider::GetShape() {
     std::string anim = m_animator->GetAnimation();
-    return m_model->getAnimation(anim)->getBounds();
+    return m_model->getBounds(anim);
 }
