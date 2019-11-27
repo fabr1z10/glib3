@@ -91,7 +91,7 @@ SceneFactory::SceneFactory() {
     m_cameraFactory.Add<OrthoCamFactory>("ortho");
     m_cameraFactory.Add<PerspectiveCamFactory>("perspective");
 
-    //m_componentFactory.Add<LuaKeyboardComponentFactory>("luakey");
+    m_componentFactory.Add<LuaKeyboardComponentFactory>("luakey");
     m_componentFactory.Add<GfxComponentFactory>("gfx");
     //m_componentFactory.Add<Gfx3DComponentFactory>("gfx3d");
     m_componentFactory.Add<ColliderComponentFactory>("collider");
