@@ -85,7 +85,7 @@ FACTORY(GarbageCollectCompFactory,Component)
 FACTORY(PolyMoverCompFactory, Component)
 FACTORY(EllipseMoverCompFactory, Component)
 //#include <gfx/factories/statemachinefactory.h>
-
+FACTORY(Depth25CompFactory, Component)
 FACTORY(StateMachineCompFactory, Component)
 FACTORY(ExtStateMachineCompFactory, Component)
 
@@ -154,6 +154,7 @@ FACTORY(SkeletalAnimFactory, SkeletalAnimation)
 // Asset
 FACTORY_I(StateFactory, State)
 FACTORY_S(Walk25StateFactory, StateFactory, State)
+FACTORY_S(Jump25StateFactory, StateFactory, State)
 FACTORY_S(Hit25StateFactory, StateFactory, State)
 FACTORY_S(SimpleStateFactory, StateFactory, State)
 

@@ -123,6 +123,7 @@ SceneFactory::SceneFactory() {
     m_componentFactory.Add<GarbageCollectCompFactory>("garbage");
     m_componentFactory.Add<PolyMoverCompFactory>("polymover");
     m_componentFactory.Add<EllipseMoverCompFactory>("ellipsemover");
+    m_componentFactory.Add<Depth25CompFactory>("depth25");
     //m_componentFactory.Add<RaycastControllerComponentFactory>("raycastcontroller");
     //m_componentFactory.Add<BillboardComponentFactory>("billboard");
 
@@ -172,9 +173,11 @@ SceneFactory::SceneFactory() {
     m_activityFactory.Add<SetActiveActFactory>("setactive");
     m_activityFactory.Add<SetDemoActFactory>("setdemo");
 
+
     m_skeletalAnimFactory.Add<SkeletalAnimFactory>("default");
 
     m_stateFactory.Add<Walk25StateFactory>("walk25");
+    m_stateFactory.Add<Jump25StateFactory>("jump25");
     m_stateFactory.Add<Hit25StateFactory>("hit25");
     m_stateFactory.Add<SimpleStateFactory>("simple");
 }

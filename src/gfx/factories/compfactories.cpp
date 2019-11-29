@@ -17,6 +17,7 @@
 #include <gfx/components/follow.h>
 #include <gfx/components/follow3d.h>
 #include <gfx/components/inputmethod.h>
+#include <gfx/components/depth25.h>
 #include <gfx/components/mover.h>
 #include <gfx/components/ellipsemover.h>
 
@@ -49,6 +50,8 @@
 #include <gfx/components/fpscounter.h>
 #include <gfx/components/cursor.h>
 #include <gfx/states/walk25.h>
+#include <gfx/states/jump25.h>
+
 #include <gfx/states/hit25.h>
 #include <gfx/states/simple.h>
 #include <gfx/components/stateactions.h>
@@ -903,6 +906,15 @@ std::shared_ptr<Runner> CollisionEngineFactory::Create(luabridge::LuaRef& ref) {
 
 }
 
+std::shared_ptr<Component> Depth25CompFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    float g = table.Get<float>("gravity");
+    float x = table.Get<float>("x");
+    float depth = table.Get<float>("depth");
+    float elevation = table.Get<float>("elevation");
+    return std::make_shared<Depth25>(g, x,depth, elevation);
+}
+
 std::shared_ptr<Runner> CollisionEngine3DFactory::Create(luabridge::LuaRef& ref) {
     LuaTable table(ref);
     glm::vec3 collisionSize = table.Get<glm::vec3>("size");
@@ -1015,6 +1027,22 @@ std::shared_ptr<State> Walk25StateFactory::Create(luabridge::LuaRef &ref) {
     bool fourWay = table.Get<bool>("fourway", true);
     char dir = table.Get<char>("dir", 'e');
     auto ptr = std::make_shared<Walk25>(speed, a, fliph, fourWay, dir);
+    init(table, ptr);
+    return ptr;
+
+}
+
+
+
+void Jump25StateFactory::init(const LuaTable & table, std::shared_ptr<State> state) {
+    StateFactory::init(table, state);
+
+}
+std::shared_ptr<State> Jump25StateFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    float speed = table.Get<float>("speed");
+    float a = table.Get<float>("acceleration");
+    auto ptr = std::make_shared<Jump25>(speed, a);
     init(table, ptr);
     return ptr;
 

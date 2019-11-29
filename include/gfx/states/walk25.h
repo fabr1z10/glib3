@@ -1,6 +1,7 @@
 #pragma once
 
 #include <gfx/components/statemachine.h>
+#include <gfx/components/depth25.h>
 #include <glm/glm.hpp>
 
 class InputMethod;
@@ -27,7 +28,6 @@ public:
 protected:
     InputMethod * m_input;
     IAnimator* m_animator;
-
     Entity * m_entity;
     bool m_flipHorizontal;
     bool m_4WayAnim;
@@ -38,6 +38,7 @@ protected:
     float m_acceleration;
     ICollisionEngine * m_collision;
     char m_dir;
+    Depth25* m_depth;
 };
 
 inline bool Walk25::flipHorizontally() const {
