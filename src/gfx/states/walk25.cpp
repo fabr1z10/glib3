@@ -8,9 +8,9 @@
 #include <gfx/engine.h>
 #include <gfx/components/info.h>
 
-Walk25::Walk25(float speed, float acceleration, bool fliph, bool anim4, char dir) : State(), m_speed(speed),
+Walk25::Walk25(float speed, float acceleration, bool fliph, bool anim4, float jumpspeed, char dir) : State(), m_speed(speed),
     m_acceleration(acceleration), m_flipHorizontal(fliph), m_velocitySmoothingX(0.0f), m_velocitySmoothingY(0.0f), m_velocity(0.0f), m_4WayAnim(anim4),
-    m_dir(dir) {}
+    m_dir(dir), m_jumpVelocity(jumpspeed) {}
 
 Walk25::Walk25(const Walk25 &) {
 
@@ -64,6 +64,15 @@ void Walk25::Run (double dt) {
     bool right = m_input->isKeyDown(GLFW_KEY_RIGHT);
     bool up = m_input->isKeyDown(GLFW_KEY_UP);
     bool down = m_input->isKeyDown(GLFW_KEY_DOWN);
+
+    // make it configurable
+    bool jmp = m_input->isKeyDown(GLFW_KEY_LEFT_CONTROL);
+
+    if (jmp) {
+        m_depth->setVelocityY(m_jumpVelocity);
+        m_sm->SetState("jump");
+        return;
+    }
 
     glm::vec2 targetVelocity (0.0f);
     bool pressed = false;
@@ -137,8 +146,11 @@ void Walk25::Run (double dt) {
 
     }
     float dx = m_entity->GetFlipX() ? -delta.x : delta.x;
-    m_depth->move(dx, delta.y, 0.0f);
+    m_depth->move(dx, delta.y, 0);
+    delta.z = -delta.y*0.01f;
     m_entity->MoveLocal(delta);
+   //std::cerr << "z = " << m_entity->GetPosition().z << "\n";
+
 }
 
 

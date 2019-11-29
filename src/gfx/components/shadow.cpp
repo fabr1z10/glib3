@@ -11,15 +11,11 @@ std::shared_ptr<Component> Shadow::clone() const {
 }
 void Shadow::Start() {
     auto parent = m_entity->GetParent();
-    parent->onMove.Register(this, [&] (Entity* e) { this->ResetPosition(e); });
-    m_depth = parent->GetComponent<DepthCalculator>();
+    m_depth = dynamic_cast<Depth25*>(parent->GetComponent<Properties>());
     
 }
 
-void Shadow::ResetPosition(Entity * e) {
-    glm::vec3 pos = e->GetPosition();
-    m_entity->SetPosition(glm::vec3(0.0f, 0.1f, 0.0f));
-    //float y = m_depth->GetFloorY(pos.x, pos.z);
-    // m_entity->SetPosition(glm::vec3(0.0f, y-pos.y, -pos.z));
-    //m_entity->SetPosition(pos);
+void Shadow::Update(double) {
+    float x = m_depth->getElevation();
+    m_entity->SetPosition(glm::vec3(0.0f, -x, 0.0f));
 }

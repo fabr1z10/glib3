@@ -22,6 +22,7 @@ FACTORY_S(WalkSideFactory, PlatformerStateFactory, State)
 FACTORY_S(Walk3DFactory, PlatformerStateFactory, State)
 FACTORY_S(Jump2DFactory, PlatformerStateFactory, State)
 FACTORY_S(Jump3DFactory, PlatformerStateFactory, State)
+FACTORY(EnemyWalk25StateFactory, State)
 
 FACTORY(HitFactory, State)
 FACTORY_S(DuckFactory, PlatformerStateFactory, State)

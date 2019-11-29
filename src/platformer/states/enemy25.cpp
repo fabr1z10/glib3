@@ -1,0 +1,117 @@
+#include <platformer/states/enemy25.h>
+#include <gfx/components/inputmethod.h>
+#include <gfx/entity.h>
+#include <GLFW/glfw3.h>
+#include <gfx/math/geom.h>
+#include <gfx/components/ianimator.h>
+#include <gfx/icollisionengine.h>
+#include <gfx/engine.h>
+#include <gfx/components/info.h>
+#include <gfx/random.h>
+
+EnemyWalk25::EnemyWalk25(float speed, float acceleration, bool fliph, char dir) : State(),
+    m_speed(speed), m_acceleration(acceleration), m_idle(true),  m_flipHorizontal(fliph), m_velocitySmoothingX(0.0f), m_velocitySmoothingY(0.0f), m_velocity(0.0f), m_dir(dir)  {}
+
+EnemyWalk25::EnemyWalk25(const EnemyWalk25 &) {
+
+}
+
+std::shared_ptr<State> EnemyWalk25::clone() const {
+    return std::make_shared<EnemyWalk25>(*this);
+}
+
+void EnemyWalk25::AttachStateMachine(StateMachine * sm) {
+    State::AttachStateMachine(sm);
+    m_entity = sm->GetObject();
+    m_target = Ref::Get<Entity>("player").get();
+
+    m_input = m_entity->GetComponent<InputMethod>();
+    if (m_input == nullptr) {
+        //    GLIB_FAIL("Walk state requires an <InputMethod> component!");
+    }
+    m_animator = m_entity->GetComponent<IAnimator>();
+    m_collision = Engine::get().GetRunner<ICollisionEngine>();
+    m_depth = dynamic_cast<Depth25*>(m_entity->GetComponent<Properties>());
+    if (m_depth == nullptr) {
+        GLIB_FAIL("Walk25 requires a depth25 component!");
+    }
+}
+
+void EnemyWalk25::Init() {
+    m_animator->SetAnimation("idle");
+}
+
+void EnemyWalk25::End() {
+
+}
+
+void EnemyWalk25::Run (double dt) {
+
+    if (!m_idle) {
+        glm::vec3 delta = static_cast<float>(dt) * glm::vec3(m_velocity, 0.0f);
+        //m_animator->SetAnimation(anim);
+        // do a raycast
+        if (delta.x != 0.0f || delta.y != 0.0f) {
+            float l = glm::length(delta);
+            glm::vec3 dir = glm::normalize(delta);
+            glm::vec3 rayDir = dir;
+            if (m_entity->GetFlipX()) rayDir.x *= -1.0f;
+
+            glm::vec3 pos = m_depth->getActualPos();
+            //std::cout << " = " <<  m_depth->getActualPos().y << ", e = " << m_depth->getActualPos().z << ", " << dir.x << ", " << dir.y << ", " << l << "\n";
+
+            //glm::vec3 pos = m_entity->GetPosition();
+            RayCastHit hit = m_collision->Raycast(pos, rayDir, l, 2 | 32);
+
+            if (hit.collide) {
+                int flag = hit.entity->GetCollisionFlag();
+                if (flag == 32) {
+                    luabridge::LuaRef info = hit.entity->GetObject()->GetComponent<LuaInfo>()->get();
+                    info["func"]();
+                } else {
+                    //std::cerr << pos.x << ", " << pos.y << ", (" << dir.x << ", " << dir.y << "), " << l << "\n";
+                    delta = (hit.length - 0.1f) * dir;
+                }
+            }
+
+        }
+        float dx = m_entity->GetFlipX() ? -delta.x : delta.x;
+        m_depth->move(dx, delta.y, 0);
+        delta.z = -delta.y*0.01f;
+
+        m_lengthCount += m_entity->GetScale()*glm::length(delta);
+        m_entity->MoveLocal(delta);
+        if (m_lengthCount >= m_lengthToDo) {
+            m_animator->SetAnimation("idle");
+            m_idle = true;
+        }
+
+    }
+
+    // randomly follow the player
+    float r = Random::get().GetUniformReal(0, 1);
+    if (r < 0.03f) {
+        // update the target position
+        m_targetPosition = m_target->GetPosition();
+        glm::vec3 delta = m_targetPosition - m_entity->GetPosition();
+        m_lengthToDo = glm::length(delta);
+        m_velocity = glm::normalize(delta);
+        m_velocity *= m_speed;
+        m_lengthCount = 0.0f;
+        m_animator->SetAnimation("walk");
+        if (m_velocity.x < 0) {
+            m_entity->SetFlipX(true);
+            m_velocity.x *= -1.0f;
+        } else {
+            m_entity->SetFlipX(false);
+        }
+        m_idle = false;
+
+    }
+
+
+}
+
+
+
+//#inc

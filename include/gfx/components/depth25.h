@@ -9,13 +9,15 @@ public:
     Depth25(float gravity, float x, float depth, float elevation);
     Depth25(const Depth25&);
     std::type_index GetType() override;
-    void step(float dt);
+    float step(float dt);
     void move(float dx, float ddepth, float delev);
     float getElevation () const;
     void setElevation(float);
     glm::vec3 getActualPos() const;
     glm::vec3 getScreenPos() const;
     void Start() override;
+    void setVelocityY(float);
+    float getVelocityY() const;
 private:
     float m_gravity;
     float m_vy;
@@ -34,6 +36,15 @@ inline glm::vec3 Depth25::getActualPos() const {
 
 inline float Depth25::getElevation() const {
     return m_elevation;
+}
+
+inline void Depth25::setVelocityY(float vy) {
+    m_vy = vy;
+}
+
+
+inline float Depth25::getVelocityY() const {
+    return m_vy;
 }
 
 inline void Depth25::setElevation(float e) {

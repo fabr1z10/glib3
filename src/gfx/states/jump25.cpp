@@ -30,7 +30,10 @@ void Jump25::AttachStateMachine(StateMachine * sm) {
     }
     m_animator = m_entity->GetComponent<IAnimator>();
     m_collision = Engine::get().GetRunner<ICollisionEngine>();
-
+    m_depth = dynamic_cast<Depth25*>(m_entity->GetComponent<Properties>());
+    if (m_depth == nullptr) {
+        GLIB_FAIL("Walk25 requires a depth25 component!");
+    }
 }
 
 void Jump25::Init() {
@@ -44,7 +47,7 @@ void Jump25::Init() {
 //        if (c == 'w') c='e';
 //        anim << "_" << c;
 //    }
-//    m_animator->SetAnimation(anim.str());
+
 }
 
 void Jump25::End() {
@@ -57,10 +60,11 @@ void Jump25::Run (double dt) {
         return;
     }
 
-    m_depth->Update(dt);
+    float delev = m_depth->step(dt);
     // if elevation drops below 0, then we hit the ground --> move to <walk> state
     float el = m_depth->getElevation();
-    if (el <= 0) {
+    float vy = m_depth->getVelocityY();
+    if (el <= 0 && vy <= 0) {
         m_depth->setElevation(0.0f);
         m_sm->SetState("walk");
         return;
@@ -85,58 +89,59 @@ void Jump25::Run (double dt) {
     if (pressed) {
         targetVelocity = glm::normalize(targetVelocity) * m_speed;
     }
-    if (!pressed && m_velocity == glm::vec2(0.0f)) {
-        return;
-    }
+    glm::vec3 delta(0.0f);
+    if (pressed || m_velocity != glm::vec2(0.0f)) {
+        m_velocity.x = SmoothDamp(m_velocity.x, targetVelocity.x, m_velocitySmoothingX, m_acceleration, dt);
+        m_velocity.y = SmoothDamp(m_velocity.y, targetVelocity.y, m_velocitySmoothingY, m_acceleration, dt);
+        delta = static_cast<float>(dt) * glm::vec3(m_velocity, 0.0f);
 
-    m_velocity.x = SmoothDamp(m_velocity.x, targetVelocity.x, m_velocitySmoothingX, m_acceleration, dt);
-    m_velocity.y = SmoothDamp(m_velocity.y, targetVelocity.y, m_velocitySmoothingY, m_acceleration, dt);
-    glm::vec3 delta = static_cast<float>(dt) * glm::vec3(m_velocity, 0.0f);
+        float vl = glm::length(m_velocity);
 
-    float vl = glm::length(m_velocity);
-    std::string anim ;
-    if (vl < 0.01f) {
-        anim = "idle";
-        //m_velocity = glm::vec2(0.0f);
-    } else {
-        anim = "walk";
-    }
 
-    std::string dir;
-    if (fabs(m_velocity.x) > fabs(m_velocity.y)) {
-        dir = "e";
-    } else {
-        dir = m_velocity.y>0 ? "n" : "s";
-    }
-    m_animator->SetAnimation(anim);
-    if (vl < 0.01f) {
-        m_velocity = glm::vec2(0.0f);
-    }
+        std::string dir;
+        if (fabs(m_velocity.x) > fabs(m_velocity.y)) {
+            dir = "e";
+        } else {
+            dir = m_velocity.y>0 ? "n" : "s";
+        }
+        if (vl < 0.01f) {
+            m_velocity = glm::vec2(0.0f);
+        }
 
-    // do a raycast
-    if (delta.x != 0.0f || delta.y != 0.0f) {
-        float l = glm::length(delta);
-        glm::vec3 dir = glm::normalize(delta);
-        glm::vec3 rayDir = dir;
-        if (m_entity->GetFlipX()) rayDir.x *= -1.0f;
-        glm::vec3 pos = m_entity->GetPosition();
+        // do a raycast
+        if (delta.x != 0.0f || delta.y != 0.0f) {
+            float l = glm::length(delta);
+            glm::vec3 dir = glm::normalize(delta);
+            glm::vec3 rayDir = dir;
+            if (m_entity->GetFlipX()) rayDir.x *= -1.0f;
+            glm::vec3 pos = m_depth->getActualPos();
 
-        RayCastHit hit = m_collision->Raycast(pos, rayDir, l, 2 | 32);
+            RayCastHit hit = m_collision->Raycast(pos, rayDir, l, 2 | 32);
 
-        if (hit.collide) {
-            int flag = hit.entity->GetCollisionFlag();
-            if (flag == 32) {
-                luabridge::LuaRef info = hit.entity->GetObject()->GetComponent<LuaInfo>()->get();
-                info["func"]();
-            } else {
-                //std::cerr << pos.x << ", " << pos.y << ", (" << dir.x << ", " << dir.y << "), " << l << "\n";
-                delta = (hit.length - 0.1f) * dir;
+            if (hit.collide) {
+                int flag = hit.entity->GetCollisionFlag();
+                if (flag == 32) {
+                    luabridge::LuaRef info = hit.entity->GetObject()->GetComponent<LuaInfo>()->get();
+                    info["func"]();
+                } else {
+                    //std::cerr << pos.x << ", " << pos.y << ", (" << dir.x << ", " << dir.y << "), " << l << "\n";
+                    delta = (hit.length - 0.1f) * dir;
+                }
             }
+
         }
 
     }
 
+    float dx = m_entity->GetFlipX() ? -delta.x : delta.x;
+    m_depth->move(dx, delta.y, 0);
+    delta.z = -delta.y*0.01f;
+    delta.y += delev;
+
+    m_animator->SetAnimation(vy > 0 ? "jumpup" : "jumpdown");
+
     m_entity->MoveLocal(delta);
+    //std::cerr << "z = " << m_entity->GetPosition().z << "\n";
 }
 
 

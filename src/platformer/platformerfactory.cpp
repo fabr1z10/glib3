@@ -18,6 +18,7 @@ PlatformerFactory::PlatformerFactory() : SceneFactory() {
     m_stateFactory.Add<Walk4WayStateFactory>("walk4w");
     m_stateFactory.Add<WalkSideFactory>("walkside");
     m_stateFactory.Add<Walk3DFactory>("walk3d");
+    m_stateFactory.Add<EnemyWalk25StateFactory>("enemywalk25");
 
     m_stateFactory.Add<Jump2DFactory>("jump");
     m_stateFactory.Add<Jump3DFactory>("jump3d");

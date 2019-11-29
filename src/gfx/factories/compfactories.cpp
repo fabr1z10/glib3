@@ -6,7 +6,7 @@
 #include <glm/gtx/transform.hpp>
 #include <gfx/components/keyinput.h>
 #include <gfx/collisionengine3d.h>
-#include <gfx/components/switch.h>
+
 #include <gfx/quadmesh.h>
 #include <gfx/meshfactory.h>
 #include <gfx/components/smartcollider.h>
@@ -1023,10 +1023,11 @@ std::shared_ptr<State> Walk25StateFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
     float speed = table.Get<float>("speed");
     float a = table.Get<float>("acceleration");
+    float js = table.Get<float>("jumpspeed");
     bool fliph = table.Get<bool>("fliph");
     bool fourWay = table.Get<bool>("fourway", true);
     char dir = table.Get<char>("dir", 'e');
-    auto ptr = std::make_shared<Walk25>(speed, a, fliph, fourWay, dir);
+    auto ptr = std::make_shared<Walk25>(speed, a, fliph, fourWay, js,dir );
     init(table, ptr);
     return ptr;
 

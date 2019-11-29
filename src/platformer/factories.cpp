@@ -10,12 +10,14 @@
 #include <platformer/states/jump3d.h>
 #include <platformer/states/ch1.h>
 #include <platformer/states/duck.h>
+#include <platformer/states/enemy25.h>
 
 #include <platformer/states/nilstate.h>
 #include <platformer/activities/dropcharacters.h>
 #include <gfx/lua/luatable.h>
 #include <gfx/components/stateactions.h>
 #include <platformer/input/enemyinput.h>
+
 #include <platformer/input/enemy3d.h>
 #include <gfx/engine.h>
 #include <platformer/activities/setenemydir.h>
@@ -80,6 +82,7 @@ std::shared_ptr<Component> EnemyInputCompFactory::Create(luabridge::LuaRef &ref)
 }
 
 
+
 std::shared_ptr<Component> Enemy3DInputCompFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
     bool left = table.Get<bool>("left", true);
@@ -89,6 +92,15 @@ std::shared_ptr<Component> Enemy3DInputCompFactory::Create(luabridge::LuaRef &re
 
 }
 
+std::shared_ptr<State> EnemyWalk25StateFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    float speed = table.Get<float>("speed");
+    float acceleration = table.Get<float>("acceleration");
+
+    return std::make_shared<EnemyWalk25>(speed, acceleration, true);
+
+
+}
 
 //
 //std::shared_ptr<Component> CharacterStateCompFactory::Create(luabridge::LuaRef &ref) {

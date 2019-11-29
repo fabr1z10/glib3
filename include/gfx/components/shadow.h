@@ -1,7 +1,7 @@
 #pragma once
 
 #include <gfx/component.h>
-#include <gfx/components/depth.h>
+#include <gfx/components/depth25.h>
 
 class Shadow : public Component {
 public:
@@ -9,11 +9,11 @@ public:
     Shadow (const Shadow&);
     std::shared_ptr<Component> clone() const override;
     void Start() override;
-    void Update(double) override {}
+    void Update(double) override ;
     using ParentClass = Shadow;
 private:
     void ResetPosition(Entity *);
-    DepthCalculator* m_depth;
+    Depth25* m_depth;
 };
 
 
