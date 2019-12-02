@@ -37,3 +37,7 @@ Bounds ICollider::GetDynamicBounds() const {
     return b;
 }
 
+Bounds ICollider::getAttackBounds() const {
+
+    return Bounds();
+}

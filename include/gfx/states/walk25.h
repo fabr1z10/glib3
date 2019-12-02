@@ -32,7 +32,6 @@ protected:
     bool m_flipHorizontal;
     bool m_4WayAnim;
     float m_speed;
-    glm::vec2 m_velocity;
     float m_velocitySmoothingX;
     float m_velocitySmoothingY;
     float m_acceleration;

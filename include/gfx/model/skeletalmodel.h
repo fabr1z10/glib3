@@ -43,6 +43,7 @@ public:
     SkeletalAnimation* getAnimation(const std::string& id);
     Bounds getMaxBounds() const;
     Bounds getDynamicBounds() const;
+    void addAnimSpecificShape (const std::string& animId, float w, float h, glm::vec2 offset);
     float addAttack (const std::string& anim, float t, glm::vec4 box);
     SkeletalAttackInfo* hasAttack(const std::string& anim, float t0, float t1);
     const std::unordered_map<std::string, SkeletalAttackInfo>& getAttackInfos();

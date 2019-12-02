@@ -5,6 +5,12 @@
 
 class ICollisionEngine;
 
+struct CollisionTriplet {
+    int flag;
+    int mask;
+    int tag;
+};
+
 class ICollider : public Component {
 public:
     ICollider();
@@ -14,6 +20,7 @@ public:
     virtual int GetCollisionMask() const = 0;
     Bounds GetBounds() const;
     Bounds GetDynamicBounds () const;
+    virtual Bounds getAttackBounds() const;
     void Start() override;
     void End() override;
     using ParentClass = ICollider;

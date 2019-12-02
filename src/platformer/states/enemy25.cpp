@@ -10,7 +10,7 @@
 #include <gfx/random.h>
 
 EnemyWalk25::EnemyWalk25(float speed, float acceleration, bool fliph, char dir) : State(),
-    m_speed(speed), m_acceleration(acceleration), m_idle(true),  m_flipHorizontal(fliph), m_velocitySmoothingX(0.0f), m_velocitySmoothingY(0.0f), m_velocity(0.0f), m_dir(dir)  {}
+    m_speed(speed), m_acceleration(acceleration), m_idle(true),  m_flipHorizontal(fliph), m_velocitySmoothingX(0.0f), m_velocitySmoothingY(0.0f), m_dir(dir)  {}
 
 EnemyWalk25::EnemyWalk25(const EnemyWalk25 &) {
 
@@ -47,8 +47,11 @@ void EnemyWalk25::End() {
 
 void EnemyWalk25::Run (double dt) {
 
-    if (!m_idle) {
-        glm::vec3 delta = static_cast<float>(dt) * glm::vec3(m_velocity, 0.0f);
+    if (true) {
+        glm::vec3& vel = m_depth->getVelocity();
+        vel.x = SmoothDamp(vel.x, m_targetVelocity.x, m_velocitySmoothingX, m_acceleration, dt);
+        vel.z = SmoothDamp(vel.z, m_targetVelocity.y, m_velocitySmoothingY, m_acceleration, dt);
+        glm::vec3 delta = static_cast<float>(dt) * glm::vec3(vel.x, vel.z, 0.0f);
         //m_animator->SetAnimation(anim);
         // do a raycast
         if (delta.x != 0.0f || delta.y != 0.0f) {
@@ -84,6 +87,9 @@ void EnemyWalk25::Run (double dt) {
         if (m_lengthCount >= m_lengthToDo) {
             m_animator->SetAnimation("idle");
             m_idle = true;
+            m_targetVelocity = glm::vec2(0.0f);
+            //vel.x = 0;
+            //vel.z =0;
         }
 
     }
@@ -92,22 +98,34 @@ void EnemyWalk25::Run (double dt) {
     float r = Random::get().GetUniformReal(0, 1);
     if (r < 0.03f) {
         // update the target position
+        glm::vec3& vel = m_depth->getVelocity();
+
         m_targetPosition = m_target->GetPosition();
-        glm::vec3 delta = m_targetPosition - m_entity->GetPosition();
+        glm::vec3 enemyPos = m_entity->GetPosition();
+        bool isRightOfPlayer = enemyPos.x >= m_targetPosition.x;
+        m_targetPosition += glm::vec3(isRightOfPlayer ? 32 : -32, 0.0f, 0.0f);
+        glm::vec3 delta = m_targetPosition - enemyPos;
         m_lengthToDo = glm::length(delta);
-        m_velocity = glm::normalize(delta);
-        m_velocity *= m_speed;
+        glm::vec3 a = glm::normalize(delta);
+        m_targetVelocity.x = a.x * m_speed;
+        m_targetVelocity.y = a.y * m_speed;
+        //m_velocity *= m_speed;
         m_lengthCount = 0.0f;
         m_animator->SetAnimation("walk");
-        if (m_velocity.x < 0) {
+        if (m_targetVelocity.x < 0) {
             m_entity->SetFlipX(true);
-            m_velocity.x *= -1.0f;
+            m_targetVelocity.x *= -1.0f;
         } else {
             m_entity->SetFlipX(false);
         }
         m_idle = false;
+    } else if (r >= 0.03f and r < 0.07) {
+        //m_depth->setVelocityY(1000.0f);
+        m_sm->SetState("attack");
 
     }
+
+
 
 
 }

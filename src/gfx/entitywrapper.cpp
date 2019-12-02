@@ -16,7 +16,7 @@
 #include <gfx/components/extstatemachine.h>
 #include <gfx/components/smartcollider.h>
 #include <gfx/components/platform.h>
-
+#include <gfx/components/depth25.h>
 float EntityWrapper::GetX() const {
     return m_underlying->GetPosition().x;
 }
@@ -36,11 +36,16 @@ float EntityWrapper::GetVx() const {
 float EntityWrapper::GetVy() const {
     return m_underlying->GetComponent<Dynamics2D>()->m_velocity.y;
 }
-
+float EntityWrapper::GetVx25() const {
+    return m_underlying->GetComponent<Depth25>()->getVelocity().x;
+}
 
 
 void EntityWrapper::SetVx(float value) {
     m_underlying->GetComponent<Dynamics2D>()->m_velocity.x = value;
+}
+void EntityWrapper::SetVx25(float value) {
+    m_underlying->GetComponent<Depth25>()->getVelocity().x =  value;
 }
 void EntityWrapper::SetVy(float value) {
     m_underlying->GetComponent<Dynamics2D>()->m_velocity.y = value;
@@ -375,7 +380,7 @@ luabridge::LuaRef EntityWrapper::GetTextInfo() {
 }
 
 luabridge::LuaRef EntityWrapper::GetAttackRect() {
-    SmartCollider* collider = m_underlying->GetComponent<SmartCollider>();
+    ICollider* collider = m_underlying->GetComponent<ICollider>();
     luabridge::LuaRef rr = luabridge::newTable(LuaWrapper::L);
     auto bounds = collider->getAttackBounds();
     auto size = bounds.GetSize();

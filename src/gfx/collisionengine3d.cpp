@@ -17,7 +17,7 @@ glm::ivec3 CollisionEngine3D::getCell(glm::vec3 P) {
     return coords;
 }
 
-RayCastHit CollisionEngine3D::Raycast(glm::vec3 rayOrigin, glm::vec3 rayDir, float length, int mask) {
+RayCastHit CollisionEngine3D::Raycast(glm::vec3 rayOrigin, glm::vec3 rayDir, float length, int mask, bool use_z) {
     //std::cerr << "just called " << rayDir.x << " " << rayDir.y << " " << rayDir.z << "\n";
     glm::vec3 P (rayOrigin);
     glm::vec3 P1 = P;

@@ -9,7 +9,7 @@
 #include <gfx/components/info.h>
 
 Walk25::Walk25(float speed, float acceleration, bool fliph, bool anim4, float jumpspeed, char dir) : State(), m_speed(speed),
-    m_acceleration(acceleration), m_flipHorizontal(fliph), m_velocitySmoothingX(0.0f), m_velocitySmoothingY(0.0f), m_velocity(0.0f), m_4WayAnim(anim4),
+    m_acceleration(acceleration), m_flipHorizontal(fliph), m_velocitySmoothingX(0.0f), m_velocitySmoothingY(0.0f), m_4WayAnim(anim4),
     m_dir(dir), m_jumpVelocity(jumpspeed) {}
 
 Walk25::Walk25(const Walk25 &) {
@@ -92,15 +92,16 @@ void Walk25::Run (double dt) {
     if (pressed) {
         targetVelocity = glm::normalize(targetVelocity) * m_speed;
     }
-    if (!pressed && m_velocity == glm::vec2(0.0f)) {
+    glm::vec3& vel = m_depth->getVelocity();
+    if (!pressed && vel == glm::vec3(0.0f)) {
         return;
     }
 
-    m_velocity.x = SmoothDamp(m_velocity.x, targetVelocity.x, m_velocitySmoothingX, m_acceleration, dt);
-    m_velocity.y = SmoothDamp(m_velocity.y, targetVelocity.y, m_velocitySmoothingY, m_acceleration, dt);
-    glm::vec3 delta = static_cast<float>(dt) * glm::vec3(m_velocity, 0.0f);
+    vel.x = SmoothDamp(vel.x, targetVelocity.x, m_velocitySmoothingX, m_acceleration, dt);
+    vel.z = SmoothDamp(vel.z, targetVelocity.y, m_velocitySmoothingY, m_acceleration, dt);
+    glm::vec3 delta = static_cast<float>(dt) * glm::vec3(vel.x, vel.z, 0.0f);
 
-    float vl = glm::length(m_velocity);
+    float vl = glm::length(delta);
     std::string anim ;
     if (vl < 0.01f) {
         anim = "idle";
@@ -110,15 +111,7 @@ void Walk25::Run (double dt) {
     }
 
     std::string dir;
-    if (fabs(m_velocity.x) > fabs(m_velocity.y)) {
-        dir = "e";
-    } else {
-        dir = m_velocity.y>0 ? "n" : "s";
-    }
     m_animator->SetAnimation(anim);
-    if (vl < 0.01f) {
-        m_velocity = glm::vec2(0.0f);
-    }
 
     // do a raycast
     if (delta.x != 0.0f || delta.y != 0.0f) {
@@ -146,10 +139,9 @@ void Walk25::Run (double dt) {
 
     }
     float dx = m_entity->GetFlipX() ? -delta.x : delta.x;
-    m_depth->move(dx, delta.y, 0);
+    glm::vec3 ad = m_depth->move(dx, delta.y, 0);
     delta.z = -delta.y*0.01f;
     m_entity->MoveLocal(delta);
-   //std::cerr << "z = " << m_entity->GetPosition().z << "\n";
 
 }
 

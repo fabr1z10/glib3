@@ -31,7 +31,7 @@ protected:
     bool m_idle;
     float m_lengthToDo;
     float m_lengthCount;
-    glm::vec2 m_velocity;
+    //glm::vec2 m_velocity;
     float m_velocitySmoothingX;
     float m_velocitySmoothingY;
     float m_acceleration;
@@ -41,6 +41,8 @@ protected:
     char m_dir;
     Depth25* m_depth;
     Entity* m_target;
+    glm::vec2 m_targetVelocity;
+
 
 };
 

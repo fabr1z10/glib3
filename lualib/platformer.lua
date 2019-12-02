@@ -26,7 +26,7 @@ io.write ("done! loaded " .. tostring(glib.tablelength(engine.assets.models)) ..
 
 factory ={}
 require ("factories/factory")
-glib.load_folder("factories")
+glib.load_folder_r("factories")
 
 
 glib.load_folder_r("characters")

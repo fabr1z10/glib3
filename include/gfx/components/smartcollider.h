@@ -34,7 +34,7 @@ public:
     std::type_index GetType() override;
     void ofu(Animator*a);
     void AddAttackTag(const std::string& anim, int tag, int mask);
-    Bounds getAttackBounds() const;
+    Bounds getAttackBounds() const override;
     void addStateCollisionDetails (const std::string&, int flag, int mask, int tag);
 private:
     StateMachine* m_stateMachine;

@@ -37,6 +37,7 @@ public:
     int GetCollisionMask() const;
     Shape* GetShape() override;
     void setAttack(int mask, int tag);
+    Bounds getAttackBounds() const override;
 private:
     Bounds GetStaticBoundsI() const override;
     Bounds GetDynamicBoundsI() const override;
@@ -47,17 +48,7 @@ private:
     int m_tag;
     int m_attackTag;
     int m_attackMask;
+    std::unordered_map<std::string, CollisionTriplet> m_animTriplets;
 };
 
 
-inline int SkeletalCollider::GetCollisionTag() const {
-    return m_tag;
-}
-
-inline int SkeletalCollider::GetCollisionFlag() const {
-    return m_flag;
-}
-
-inline int SkeletalCollider::GetCollisionMask() const {
-    return m_mask;
-}

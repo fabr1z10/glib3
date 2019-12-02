@@ -55,8 +55,10 @@ struct EntityWrapper {
     float GetY() const;
     float GetZ() const;
     float GetVx() const;
+    float GetVx25() const;
     float GetVy() const;
     void SetVx(float);
+    void SetVx25(float);
     void SetVy(float);
     float GetScale() const;
     void SetScale(float);

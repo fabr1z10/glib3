@@ -115,6 +115,7 @@ void SkeletalAnimator::SetAnimation(const std::string &anim, bool forward) {
     m_currentAnim = m_model->getAnimation(anim);
     m_looped=false;
     onAnimationChange.Fire(this);
+    m_angles = m_currentAnim->getTransformation(m_time).boneAngles;
 }
 
 //std::string SkeletalAnimator::GetAnimation() const {

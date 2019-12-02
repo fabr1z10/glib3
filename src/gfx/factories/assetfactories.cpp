@@ -245,6 +245,8 @@ std::shared_ptr<IModel> SkeletalModelFactory::Create(luabridge::LuaRef &ref) {
         glm::vec2 origin = bt.Get<glm::vec2>("origin", glm::vec2(0.0f));
         glm::vec2 pos = bt.Get<glm::vec2>("pos", glm::vec2(0.0f));
         glm::vec2 center = bt.Get<glm::vec2>("center", glm::vec2(0.0f));
+
+
         float scale = bt.Get<float>("scale", 1.0f);
         float z = bt.Get<float>("z");
         // width and height of the quad
@@ -298,6 +300,10 @@ std::shared_ptr<IModel> SkeletalModelFactory::Create(luabridge::LuaRef &ref) {
             KeyFrame kf(t, angles);
             anim->addKeyFrame(kf);
         });
+        if (atable.HasKey("box")) {
+            glm::vec4 box = atable.Get<glm::vec4>("box");
+            model->addAnimSpecificShape(id, box[2], box[3], glm::vec2(box[0], box[1]));
+        }
 
         // add a last keyframe equal to the first in order to loop
         //  anim->addKeyFrame(duration, firstKeyFrame);

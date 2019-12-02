@@ -260,6 +260,10 @@ ShapeCastHit CollisionEngine::ShapeCast (std::shared_ptr<Shape> shape, const glm
             if (cell != m_cells.end()) {
                 auto& colliders = cell->second.colliders;
                 for (auto& c : colliders) {
+                    if (!c->isActive()) {
+                        continue;
+                    }
+
                     int flag = c->GetCollisionFlag();
                     int m = flag & mask;
                     if (m == 0) {
@@ -293,7 +297,7 @@ ShapeCastHit CollisionEngine::ShapeCast (std::shared_ptr<Shape> shape, const glm
 
 }
 
-RayCastHit CollisionEngine::Raycast (glm::vec3 rayOrigin, glm::vec3 rayDir, float length, int mask) {
+RayCastHit CollisionEngine::Raycast (glm::vec3 rayOrigin, glm::vec3 rayDir, float length, int mask, bool use_z) {
 
     glm::vec3 P = rayOrigin;
     glm::vec3 P1 = P;
@@ -344,7 +348,7 @@ RayCastHit CollisionEngine::Raycast (glm::vec3 rayOrigin, glm::vec3 rayDir, floa
 
                 if (m != 0) {
                     float zc = c->GetObject()->GetPosition().z;
-                    if (zc > -2 && m_coll25d && fabs(z-zc) > m_eps) {
+                    if (use_z && zc > -2 && m_coll25d && fabs(z-zc) > m_eps) {
                         continue;
                     }
                     auto shapeBounds = c->GetBounds();

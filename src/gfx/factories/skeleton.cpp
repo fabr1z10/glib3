@@ -107,6 +107,16 @@ std::shared_ptr<Entity> SkeletonFactory::Create(luabridge::LuaRef &ref) {
         float scale = table.Get<float>("scale");
         entity->SetScale(scale);
     }
+
+    if (table.HasKey("children")) {
+        luabridge::LuaRef c = table.Get<luabridge::LuaRef>("children");
+        for (int i = 0; i < c.length(); ++i) {
+            luabridge::LuaRef child = c[i+1];
+            auto childEntity = factory->makeEntity(child);
+            if (childEntity != nullptr)
+                entity->AddChild(childEntity);
+        }
+    }
     return entity;
 //    auto animator = std::make_shared<Animator>(model);
 //    entity->AddComponent(animator);

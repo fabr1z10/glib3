@@ -116,6 +116,19 @@ void SkeletalCollider::Update(double dt) {
 //    }
 //}
 
+Bounds SkeletalCollider::getAttackBounds() const {
+    std::string anim = m_animator->GetAnimation();
+
+    auto a =m_model->hasAttack(anim, 0.0f, 1000.0f);
+    if (a == nullptr) {
+        return Bounds();
+    }
+    auto bounds = a->shape->getBounds();
+    bounds.Transform(m_entity->GetWorldTransform());
+    return bounds;
+
+}
+
 void SkeletalCollider::Start() {
     // a smart collider requires an animator
     m_animator = dynamic_cast<SkeletalAnimator*>(m_entity->GetComponent<IAnimator>());
@@ -166,6 +179,7 @@ void SkeletalCollider::Start() {
 }
 
 std::type_index SkeletalCollider::GetType() {
+
     return std::type_index(typeid(ICollider));
 }
 
@@ -186,4 +200,16 @@ Bounds SkeletalCollider::GetDynamicBoundsI() const {
 Shape* SkeletalCollider::GetShape() {
     std::string anim = m_animator->GetAnimation();
     return m_model->getBounds(anim);
+}
+
+int SkeletalCollider::GetCollisionTag() const {
+    return m_tag;
+}
+
+int SkeletalCollider::GetCollisionFlag() const {
+    return m_flag;
+}
+
+int SkeletalCollider::GetCollisionMask() const {
+    return m_mask;
 }

@@ -120,9 +120,21 @@ void SkeletalModel::setDefaultBounds(float width, float height, glm::vec2 offset
 
 }
 
-Shape* SkeletalModel::getBounds(const std::string &anim) {
-    return m_defaultBounds.get();
+void SkeletalModel::addAnimSpecificShape(const std::string &animId, float w, float h, glm::vec2 offset) {
+        auto rect = std::make_shared<Rect>(w, h, glm::vec3(offset, 0.0f));
+        m_maxBounds.ExpandWith(rect->getBounds());
+        m_animSpecificBounds[animId] = rect;
+
 }
+
+Shape* SkeletalModel::getBounds(const std::string &anim) {
+    auto it = m_animSpecificBounds.find(anim);
+    if (it == m_animSpecificBounds.end())
+        return m_defaultBounds.get();
+    return it->second.get();
+}
+
+
 std::vector<Bounds> SkeletalModel::getAllBounds() const {
     std::vector<Bounds> bounds;
     bounds.push_back(m_defaultBounds->getBounds());

@@ -175,7 +175,7 @@ action.remove_object = function(args)
 				print ("qui    22")
 				i = monkey.getEntity(args.tag)
 			else
-				print ("qui    23")
+				print ("qui " .. tostring(args.id))
 				i = monkey.getEntityFromId(args.id)
 			end
 			i:remove()

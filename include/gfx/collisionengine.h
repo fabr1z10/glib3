@@ -49,7 +49,7 @@ public:
     // Any object making contact with the beam can be detected and reported.
     // This function returns a RaycastHit object with a reference to the collider that is hit by the ray
     // (the collider property of the result will be NULL if nothing was hit). The layerMask can be used to detect objects selectively only on certain layers (this allows you to apply the detection only to enemy characters, for example).
-    RayCastHit Raycast (glm::vec3 rayOrigin, glm::vec3 rayDir, float length, int mask) override ;
+    RayCastHit Raycast (glm::vec3 rayOrigin, glm::vec3 rayDir, float length, int mask, bool use_z = false) override ;
     ShapeCastHit ShapeCast (std::shared_ptr<Shape>, const glm::mat4& transform, int mask) override ;
     void Enable25DCollision(float);
     std::string toString() override;
