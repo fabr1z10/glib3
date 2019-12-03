@@ -17,7 +17,7 @@
 #include <gfx/lua/luatable.h>
 #include <gfx/components/stateactions.h>
 #include <platformer/input/enemyinput.h>
-
+#include <platformer/input/basicenemyinput.h>
 #include <platformer/input/enemy3d.h>
 #include <gfx/engine.h>
 #include <platformer/activities/setenemydir.h>
@@ -60,6 +60,13 @@
 //    bool enableFlip = table.Get<bool>("flip");
 //    return std::unique_ptr<EnemyBounce2D>(new EnemyBounce2D(speed, vy, enableFlip));
 //}
+
+std::shared_ptr<Component> BasicEnemyInputCompFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    int status = table.Get<bool>("status", true);
+    bool flipIfPlatformEnds = table.Get<bool>("flip", true);
+    return std::make_shared<BasicEnemyInputMethod>(status, flipIfPlatformEnds);
+}
 
 std::shared_ptr<Component> EnemyInputCompFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);

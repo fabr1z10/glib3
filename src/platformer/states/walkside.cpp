@@ -67,7 +67,7 @@ void WalkSide::Run (double dt) {
     }
 
     glm::vec3 delta =m_dynamics->step(dt, targetVelocityX, m_acceleration);
-    //if (left) std::cerr<< "W " << m_dynamics->m_velocity.x << " " << delta.x << "\n";
+    //if (m_speed < 30.0f) std::cout << delta.x << "\n";
     m_controller->Move(delta);
 
     UpdateAnimation();
