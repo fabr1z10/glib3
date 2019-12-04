@@ -96,6 +96,9 @@ variables = {
 	map_looked = false,
 	talked_to_otis = false,
 	mint_given = false,
+	swordmaster_trunk_open = false,
+	know_where_sword_master_is = false,
+
 -- 	talked_to_troll = false,
  	inventory = { 	},
 
@@ -142,7 +145,7 @@ variables = {
 			variables.circus_feat_done = true
 			variables.sword_paid = true
 			variables.shovel_paid = true
-			engine.state.room = "store"
+			engine.state.room = "scummbar"
 			engine.state.previousRoom ="village3"
 	
 		end
@@ -150,7 +153,7 @@ variables = {
 
 }
 
-variables.save_states.start()
+variables.save_states.bought_store()
 
 --engine.state.scumm.inventory["kitchen.fish"] = 1
 --engine.state.scumm.inventory["pieces_of_eight"] = 1000

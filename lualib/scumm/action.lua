@@ -66,17 +66,35 @@ scumm.action.pickup2 = function(args)
 	}
 end
 
+scumm.action.pickup = function(args)
+	-- picks up something.
+	-- deact = 0 --> don't remove item from scene
+	glib.assert(args.id, "id")		
+	local id_inv = args.id_inv or args.id
+	local deact = args.deact or 1
 
-scumm.action.pickup = function(id, anim1, anim2)
-print ("CIAO NERRR")
-	print ("HAS " .. id .. tostring(inventory[id])) 
-	if (inventory[id] ~= nil and inventory[id] > 0) then return {} end
-	return { 
-		{ ref = 1, type = action.animate, args ={tag="player", anim=anim1, sync=true}},
-		{ type = action.activate, args ={tag=id, active=false }},
-		{ type = action.animate, after={1}, args ={tag="player", anim=anim2 }},
-		{ type = scumm.action.add_to_inventory, args = {id=id}}
-	}
+	return function()
+		local act = {}
+		local alreadyHaveIt = (inventory[id_inv] ~= nil and inventory[id_inv] > 0)
+		-- if I already have and the alreadyhave msg is set, I say it
+		if (alreadyHaveIt and args.alreadyhave ~= nil) then
+			act = {
+				{ type = scumm.action.say, args = { actor="guybrush", lines = args.alreadyhave }}
+			}
+			return act
+		end
+		if (args.anim1 ~= nil and args.anim2 ~= nil) then
+			table.insert (act, { type = action.animate, args = {tag="player", anim=args.anim1, sync=true}})
+		end
+		if (args.deact == 1) then
+			table.insert (act, { type = action.activate, args ={tag=id, active=false }})
+		end
+		if (args.anim1 ~= nil and args.anim2 ~= nil) then
+			table.insert (act, { type = action.animate, args = {tag="player", anim=args.anim2 }})
+		end
+		table.insert(act, { type = scumm.action.add_to_inventory, args = {id=id_inv}})
+		return act
+	end
 end
 
 scumm.action.walk_to_object= function(actor, id) 

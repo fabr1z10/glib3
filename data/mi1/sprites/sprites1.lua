@@ -4,10 +4,10 @@ local sheet2 = "sprites/sprites2.png"
 local layer_dz = 0.001
 
 local s = {
-	arrow_up = {x=499, y=2, width = 12, height=20 },
-	arrow_down = {x = 486, y=2, width=12, height=20 },
-	arrow_up_focus = {x=499, y=23, width=12, height=20},
-	arrow_down_focus = {x=486, y=23, width=12, height=20},
+	arrow_up = {x=116, y=395, width = 12, height=20 },
+	arrow_down = {x = 103, y=395, width=12, height=20 },
+	arrow_up_focus = {x=116, y=416, width=12, height=20},
+	arrow_down_focus = {x=103, y=416, width=12, height=20},
 	low_moral_fiber_body_1 = { x = 1, y=1, width=31, height=30, anchor={13, 0} },
 	low_moral_fiber_1_talk1 = {x=33, y=1, width=15, height=12, anchor ={8, 0}},
 	low_moral_fiber_1_talk2 = {x=66, y=1, width=15, height=12, anchor ={7, 2} },
@@ -344,8 +344,15 @@ local s = {
 	otis_idle_legs = {x=136,y=136,width=17,height=23,anchor={7, 0}},
 	otis_idle_head_e = {x=137,y=123,width=11,height=10,anchor={6,0}},
 	otis_idle_head_s = {x=151,y=123,width=9,height=12,anchor={6,0}},
+	swordmaster_sign_1 = {x=395,y=382,width=26,height=25},
+	swordmaster_sign_2 = {x=422,y=383,width=21,height=25},
+	trunk_bridge_closed = {x=252,y=1,width=77,height=38},
+	trunk_bridge_open = {x=252,y=41,width=77,height=38},
+	swordmaster_tiny_1 = {x=484,y=465,width=8,height=12,anchor={4,0}},
+	swordmaster_tiny_2 = {x=494,y=465,width=8,height=12,anchor={4,0}},
+	swordmaster_tiny_3 = {x=504,y=465,width=5,height=12,anchor={3,0}},
 
-	
+
 	
 	
 	
@@ -1537,6 +1544,34 @@ engine.assets.models["lookout.fire"] = {
 	}
 }
 
+engine.assets.models["swordmaster.sign"] = {
+    sheet = sheet,
+    type = "sprite",
+    ppu=1,
+	animations = {
+		{ name = "default", frames = { 
+			{ duration = dt, quads = {{ id = s.swordmaster_sign_1}}},
+		}},
+		{ name = "activated", frames = { 
+			{ duration = dt, quads = {{ id = s.swordmaster_sign_2}}},
+		}},
+	}
+}
+
+engine.assets.models["trunk.bridge"] = {
+    sheet = sheet2,
+    type = "sprite",
+    ppu=1,
+	animations = {
+		{ name = "closed", frames = { 
+			{ duration = dt, quads = {{ id = s.trunk_bridge_closed}}},
+		}},
+		{ name = "open", frames = { 
+			{ duration = dt, quads = {{ id = s.trunk_bridge_open}}},
+		}},
+	}
+}
+
 engine.assets.models["lookout.lookout"] = {
     sheet = sheet,
     type = "sprite",
@@ -1607,5 +1642,18 @@ engine.assets.models["otis"] = {
 		}},
 
 
+	}
+}
+
+engine.assets.models["swordmaster.smtiny"] = {
+    sheet = sheet,
+    type = "sprite",
+    ppu=1,
+	animations = {
+		{ name = "idle", frames = { 
+			{ duration = dt, quads = {{ id = s.swordmaster_tiny_1 }}},
+			{ duration = dt, quads = {{ id = s.swordmaster_tiny_2 }}},
+			{ duration = dt, quads = {{ id = s.swordmaster_tiny_3 }}},
+		}},
 	}
 }

@@ -2,7 +2,7 @@
 #include <gfx/entity.h>
 #include <monkey/components/walkarea.h>
 #include <gfx/math/poly.h>
-#include <gfx/components/renderer.h>
+#include <gfx/components/basicrenderer.h>
 
 #include <gfx/meshfactory.h>
 #include <gfx/model/basicmodel.h>
@@ -25,10 +25,11 @@ void WalkStop::Start() {
 
 
     auto ce = Ref::Create<Entity>();
-    auto cer = Ref::Create<Renderer>();
 
     auto debugMesh = MeshFactory::CreateMesh(*(m_shape.get()), 5.0f);
-    cer->SetModel(std::make_shared<BasicModel>(debugMesh));
+    auto model = std::make_shared<BasicModel>(debugMesh);
+    auto cer = Ref::Create<BasicRenderer>(model);
+
     ce->AddComponent(cer);
     ce->SetName("_debugmesh");
 

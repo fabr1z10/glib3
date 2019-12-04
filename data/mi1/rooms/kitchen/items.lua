@@ -44,7 +44,8 @@ engine.items["kitchen.table"] = {
 		dir="south"
 	},	
 	model = "kitchen.table",
-	actions = {}
+	actions = {
+	}
 }
 
 local df = strings.dialogues.fettbros
@@ -123,7 +124,7 @@ engine.items["kitchen.fish"] = {
 		pick = function()
 			if (variables.seagull_on_board == false) then
 				variables.fish_taken = true
-				return scumm.action.pickup ("kitchen.fish", "kneel_s", "idle_s")
+				return scumm.action.pickup { id="kitchen.fish", anim1="kneel_s", anim2="idle_s"}
 				--refeturn action.combo.pickup ("kitchen.fish", "kneel_s", "idle_s")
 			else
 				return {

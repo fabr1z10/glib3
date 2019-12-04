@@ -6,7 +6,8 @@ roomDefinition = {
 		lookout = { walkarea="meleemap.walkarea", pos = {75, 79}, dir = "north"},
 		clearing = { walkarea="meleemap.walkarea", pos = {135, 113}, dir = "west"},
 		bridge = { walkarea="meleemap.walkarea", pos = {169, 67}, dir = "east"},
-		forest_1 = { walkarea="meleemap.walkarea", pos = {74, 112}, dir = "west"}
+		forest_1 = { walkarea="meleemap.walkarea", pos = {74, 112}, dir = "west"},
+		swordmaster = { walkarea="meleemap.walkarea", pos = {74, 112}, dir = "west"},
 	},
 	defaultroom = "lookout",
 	walkareas = { "meleemap.walkarea" },
@@ -20,13 +21,21 @@ room = scumm.factory.map_room(roomDefinition)
 room:add ( "main",
 	{ 
 		{ pos = {0, 0,-3}, components = { { type="gfx", image="meleemap.png" }}},
-		scumm.factory.mapitem { pos={75, 79}, name = "lookout", room="lookout" },
-		scumm.factory.mapitem { pos={169, 67}, name = "bridge", room="bridge" },
-		scumm.factory.mapitem { pos={74, 112}, name = "fork", room ="forest_1"},
-		scumm.factory.mapitem { pos={136, 113}, name = "clearing", room ="clearing"}
+		scumm.factory.mapitem { pos={75, 79}, name = strings.objects.lookout, room="lookout" },
+		scumm.factory.mapitem { pos={169, 67}, name = strings.objects.bridge, room="bridge" },
+		scumm.factory.mapitem { pos={74, 112}, name = strings.objects.fork, room ="forest_1"},
+		scumm.factory.mapitem { pos={136, 113}, name = strings.objects.clearing, room ="clearing"}
 
 	}
 )
+
+if (variables.know_where_sword_master_is) then
+	room:add ("main", {
+		scumm.factory.mapitem { pos={100, 152}, name = "Sword Master's", room="swordmaster" },
+	})
+end
+
+
 
 table.insert(room.initstuff, glib.curry (mi.addStorekeeper, { 
 	pos = {55, 97, 0}, 

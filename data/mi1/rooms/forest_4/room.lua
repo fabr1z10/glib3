@@ -21,6 +21,7 @@ room:add("main", {
 	{ pos = {0, 0,-3}, components = { { type="gfx", image="forest_4.png" }}},
 	scumm.factory.object { id = "forest4.3" },
 	scumm.factory.object { id = "forest4.5" },
+	scumm.factory.object { id = "forest.redplant" },
 
 })
 

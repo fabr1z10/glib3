@@ -8,8 +8,8 @@ engine.items["scummbar.walkarea"] = scumm.factory.walkarea {
 		outline = {32,16,70,24,128,19,251,
 			18,311,10,321,10,345,32,467,41,492,50,514,40,565,40,580,35,629,6,626,0,256,0,200,16,149,0,90,0,85,10},
 		holes = {
-			{374,6,505,6,505,28,374,28}
-		}
+		 	{374,28,505,28,505,6,374,6}
+		 }
 	},
 	priority = 0
 }
@@ -244,7 +244,7 @@ engine.items["scummbar.fireplace"] = {
 	},
 	model = "scummbar.fireplace",
  	actions = {
- 		look =  { type = action.say, args = {actor="guybrush", lines = {strings.scummbar[1]} }}
+ 		look =  { type = scumm.action.say, args = {actor="guybrush", lines = {strings.scummbar[1]} }}
  	}
 }
 

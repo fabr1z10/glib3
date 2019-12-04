@@ -1,7 +1,7 @@
 #include "monkey/components/walktrigger.h"
 #include "gfx/engine.h"
 #include "gfx/meshfactory.h"
-#include "gfx/components/renderer.h"
+#include "gfx/components/basicrenderer.h"
 #include "gfx/model/basicmodel.h"
 
 WalkTrigger::WalkTrigger(std::shared_ptr<Shape> shape, const std::string &target) : Component(), m_shape{shape}, m_target{target}, m_isInside{false} {
@@ -41,10 +41,10 @@ void WalkTrigger::Start() {
 void WalkTrigger::SetParent(Entity * entity) {
     Component::SetParent(entity);
     auto ce = std::make_shared<Entity>();
-    auto cer = std::make_shared<Renderer>();
     auto debugMesh = MeshFactory::CreateMesh(*(m_shape.get()), 5.0f);
     auto model = std::make_shared<BasicModel>(debugMesh);
-    cer->SetModel(model);
+    auto cer = std::make_shared<BasicRenderer>(model);
+
     ce->AddComponent(cer);
     ce->SetTag("hotspotmesh");
     m_entity->AddChild(ce);

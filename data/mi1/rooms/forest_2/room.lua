@@ -22,9 +22,12 @@ room:add ( "main",
 	{ 
 		{ pos = {0, 0,-3}, components = { { type="gfx", image="forest_2.png" }}},
 		{ pos = {122, 21, 1}, components = { { type="gfx", image="forest_2a.png" }}},        
+		{ pos = {247, 0, 1}, components = { { type="gfx", image="forestyp.png" }}},        
 		scumm.factory.object { id = "forest2.1" },
 		scumm.factory.object { id = "forest2.3" },
 		scumm.factory.object { id = "forest2.9" },
+		scumm.factory.object { id = "forest.yellowplant" },
+
 	}
 )
 

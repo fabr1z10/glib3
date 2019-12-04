@@ -77,7 +77,10 @@ strings = {
 		troll = "troll",
 		map = "map",
         doorway ="doorway",		
-        prisoner="prisoner"	
+        prisoner="prisoner",
+        plants = "plants",
+        yellowpetal ="yellow petal",
+        swordmaster ="Sword Master"
     },
     dialogues = {
         lookout = {
@@ -874,6 +877,14 @@ strings = {
 	jail = {
 		[1] = "Looks nervous."
 
+	},
+	forest = {
+		[1] = "My, what an unusually bright yellow they are.",
+		[2] = "It's a striking yellow color.",
+		[3] = "I've already got one.",
+		[4] = "Same old red flowers all over the forest.",
+		[5] = "I don't think strolling through the forest picking up flowers is very good practice for being a pirate.",
+		[6] = "\"DANGER: Open ravine.\""
 	}
 
 }
