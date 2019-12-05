@@ -884,7 +884,8 @@ strings = {
 		[3] = "I've already got one.",
 		[4] = "Same old red flowers all over the forest.",
 		[5] = "I don't think strolling through the forest picking up flowers is very good practice for being a pirate.",
-		[6] = "\"DANGER: Open ravine.\""
+		[6] = "\"DANGER: Open ravine.\"",
+		[7] = "I better just stay back here and eavesdrop."
 	}
 
 }

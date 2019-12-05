@@ -73,6 +73,7 @@ void LuaWrapper::Init() {
             .addFunction("forceclick", &EntityWrapper::ForceClick)
             .addFunction("getattackrect", &EntityWrapper::GetAttackRect)
             .addFunction("dropcharacters", &EntityWrapper::DropCharacters)
+            .addFunction("setfollow", &EntityWrapper::SetFollow)
             .endClass();
 }
 

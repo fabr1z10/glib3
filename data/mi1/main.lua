@@ -98,7 +98,7 @@ variables = {
 	mint_given = false,
 	swordmaster_trunk_open = false,
 	know_where_sword_master_is = false,
-
+	play_swordmaster_storekeeper_cutscene = false,
 -- 	talked_to_troll = false,
  	inventory = { 	},
 
@@ -145,9 +145,9 @@ variables = {
 			variables.circus_feat_done = true
 			variables.sword_paid = true
 			variables.shovel_paid = true
-			engine.state.room = "scummbar"
-			engine.state.previousRoom ="village3"
-	
+			engine.state.room = "forest_6"
+			engine.state.previousRoom ="forest_5"
+			variables.chasing_shopkeeper = true
 		end
 	}
 

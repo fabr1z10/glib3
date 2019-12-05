@@ -23,4 +23,10 @@ room:add("main", {
 	scumm.factory.object { id = "forest6.7" },
 })
 
+table.insert(room.initstuff, glib.curry (mi.addStorekeeper, { 
+	pos = {120, 35, 0}, 
+	parent="forest6.walkarea", 
+	from = "forest_5",
+	walkto = { items["forest6.7"].hotspot.walk_to }
+}))
 

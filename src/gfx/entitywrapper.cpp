@@ -17,6 +17,8 @@
 #include <gfx/components/smartcollider.h>
 #include <gfx/components/platform.h>
 #include <gfx/components/depth25.h>
+#include <gfx/components/follow.h>
+
 float EntityWrapper::GetX() const {
     return m_underlying->GetPosition().x;
 }
@@ -420,4 +422,9 @@ void EntityWrapper::KillScript(const std::string& scriptName) {
 
     Engine::get().GetRunner<Scheduler>()->GetScript(scriptName)->Kill();
 
+}
+
+void EntityWrapper::SetFollow(bool value) {
+
+    m_underlying->GetComponent<Follow>()->setActive(value);
 }

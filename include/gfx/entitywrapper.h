@@ -99,6 +99,7 @@ struct EntityWrapper {
     void ChangeState(const std::string& name);
     void ChangeStateParam(const std::string& name, luabridge::LuaRef ref);
     void ResetState();
+    void SetFollow(bool);
     luabridge::LuaRef GetInfo();
     static void KillScript(const std::string& scriptName);
 };

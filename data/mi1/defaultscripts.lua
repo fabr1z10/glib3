@@ -26,12 +26,12 @@ mi.addStorekeeper = function(args)
 			return nil
 		end
 		local actions = {
-			{ type = action.create_object, args = { factory = scumm.factory.object, parent = args.parent, args = { id="village3.shopkeeper", pos = args.pos }}}
+			{ type = action.create_object, args = { factory = scumm.factory.object, parent = args.parent, args = { id="shop.shopkeeper", pos = args.pos }}}
 		}
 		for _, v in ipairs(args.walkto) do
-			table.insert(actions, { type = scumm.action.walkto, args ={tag="village3.shopkeeper", pos = v }})
+			table.insert(actions, { type = scumm.action.walkto, args ={tag="shop.shopkeeper", pos = v }})
 		end
-		table.insert (actions, { type = action.activate, args = {tag="village3.shopkeeper", active=false}})
+		table.insert (actions, { type = action.activate, args = {tag="shop.shopkeeper", active=false}})
 		table.insert (actions, { type = action.delay, args = {sec=10}})
 		table.insert (actions, { type = action.set_variable, args = {var="chasing_shopkeeper", value=false}})
 		local s = script.make(actions)

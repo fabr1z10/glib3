@@ -263,17 +263,19 @@ function scumm.factory.basic_room (args)
 		end
 
 		-- adding player
-		local w1 = refs[startPos.walkarea]
-		table.insert(w1,  
-			scumm.factory.object { 
-				id=args.playerid,
-				pos={startPos.pos[1], startPos.pos[2], 0}, 
-				tag="player", 
-				dir = startPos.dir,
-				follow = (room_width > 320 and enableScroll),
-				collide = args.collide
-			}
-		)
+		if (startPos) then
+			local w1 = refs[startPos.walkarea]
+			table.insert(w1,  
+				scumm.factory.object { 
+					id=args.playerid,
+					pos={startPos.pos[1], startPos.pos[2], 0}, 
+					tag="player", 
+					dir = startPos.dir,
+					follow = (room_width > 320 and enableScroll),
+					collide = args.collide
+				}
+			)
+		end
 
 			--scumm.factory.object { 
 		-- 	id="guybrush",
@@ -289,7 +291,7 @@ function scumm.factory.basic_room (args)
 
 	--table.insert (refs.ui,scumm.factory.verbbutton {pos={2, 40}, verb = "open"} )
 
-	if (p.startPos.func ~= nil) then
+	if (p.startPos and p.startPos.func ~= nil) then
 
 	 	table.insert(p.initstuff, p.startPos.func)
 	end

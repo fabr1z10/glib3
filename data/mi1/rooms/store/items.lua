@@ -94,7 +94,7 @@ engine.items["shop.shopkeeper"] = {
 	character = {
 		state = "idle",
 		dir = "west",
-		speed = 50,
+		speed = 200,
 	},
  	text_offset = {0, 60},
     text_color = {255, 85, 255, 255},

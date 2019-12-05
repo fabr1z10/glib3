@@ -31,6 +31,7 @@ void Follow::fixZ(float z) {
 }
 
 void Follow::Update (double dt) {
+    if (!m_active) return;
     glm::vec3 pos = m_entity->GetPosition();
     if (m_previousPosition - pos != glm::vec3(0.0f)) {
         glm::vec3 eye = pos + m_relativePos;

@@ -25,3 +25,9 @@ room:add("main", {
 })
 
 
+table.insert(room.initstuff, glib.curry (mi.addStorekeeper, { 
+	pos = {200, 35, 0}, 
+	parent="forest3.walkarea", 
+	from = "forest_2",
+	walkto = { items["forest3.4"].hotspot.walk_to }
+}))

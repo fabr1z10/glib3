@@ -27,6 +27,8 @@ action.delay = function (args)
 	return { type="delay", sec = args.sec }
 
 end
+
+
 action.runscript = function(args) 
 	glib.assert (args.func, "func")
 	return { 
@@ -85,6 +87,24 @@ action.set_state = function(args)
 	--sglib.assert (args.actor, "actor")
 	glib.assert (args.state, "state")
 	return {type="setstate", tag = args.tag, id = args.id, state = args.state}
+end
+
+action.set_follow = function(args)
+	glib.assert_either (args.tag, args.id, "id or tag")
+	glib.assert (args.value, "value")
+	return { 
+		type="callfunc", 
+		func = function() 
+			local m1 = nil
+			if (args.tag) then
+				m1 = monkey.getEntity(args.tag)
+			else
+				m1 = monkey.getEntityFromId(args.id)
+			end
+			m1:setfollow(args.value)
+		end
+	}
+
 end
 
 action.suspend_script = function(args) 
