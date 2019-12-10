@@ -45,9 +45,9 @@ std::shared_ptr<Entity> ParallaxBackgroundFactory::Create(luabridge::LuaRef &ref
     auto entity = Ref::Create<Entity>();
 
 
-    auto parallax = Ref::Create<Parallax>("maincam", factor, range[0], range[1]);
+   // auto parallax = Ref::Create<Parallax>("maincam", factor, range[0], range[1]);
     entity->AddComponent(renderer);
-    entity->AddComponent(parallax);
+    //entity->AddComponent(parallax);
     entity->SetPosition(glm::vec3(range.x + 0.5f*deviceSize.x, deviceSize.y - height, z));
     return entity;
 }

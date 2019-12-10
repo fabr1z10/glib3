@@ -24,7 +24,7 @@ public:
              float skewx = 0.0f, float skewy = 0.0f, glm::vec2 offset = glm::vec2(0.0f));
     QuadMesh (const std::string& filename, float width, float height, glm::vec2 offset, int tx, int ty, int tw, int th);
     QuadMesh(const std::string& filename, int rows, int cols, float size, std::vector<int>& data, int sheetRows, int sheetCols,
-    int repeatx = 1, int repeaty = 1);
+    int repeatx = 1, int repeaty = 1, glm::vec2 delta=glm::vec2(0.0f));
     virtual void Setup(Shader*);
 private:
     GLuint m_texId;

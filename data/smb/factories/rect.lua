@@ -9,7 +9,7 @@ factory.rect = function(args)
 	return {
 		pos = { args.pos[1] * engine.tilesize, args.pos[2] * engine.tilesize, z },
 		components = {
-			{ type = "gfx", image = args.img, width = width, height = height, rep = {args.width, args.height}},
+			{ type = "gfx", image = args.img, width = engine.tilesize, height = engine.tilesize, rep = {args.width, args.height}},
 			{ type = "collider", flag = variables.collision.flags.platform, mask = 1, tag=1, shape = { type="rect", width = width, height = height }}
 		}
 	}

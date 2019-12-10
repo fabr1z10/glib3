@@ -123,10 +123,11 @@ std::shared_ptr<Component> GfxComponentFactory::Create(luabridge::LuaRef & ref) 
         int height = table.Get<int>("height");
         int repx = table.Get<int>("repx", 1);
         int repy = table.Get<int>("repy", 1);
+        glm::vec2 delta = table.Get<glm::vec2>("delta", glm::vec2(0.0f, 0.0f));
 
         glm::ivec2 sheetSize = table.Get<glm::ivec2>("sheetsize");
         std::vector<int> data = table.GetVector<int>("tiledata");
-        auto mesh = std::make_shared<QuadMesh>(image, height, width, size, data, sheetSize.x, sheetSize.y, repx, repy);
+        auto mesh = std::make_shared<QuadMesh>(image, height, width, size, data, sheetSize.x, sheetSize.y, repx, repy, delta);
         auto model = std::make_shared<BasicModel>(mesh);
         renderer = Ref::Create<BasicRenderer>(model);
     } else if (table.HasKey("model")) {
@@ -272,15 +273,15 @@ std::shared_ptr<Component> SkeletalColliderComponentFactory::Create(luabridge::L
 
 }
 
-//
-//std::shared_ptr<Component> ParallaxComponentFactory::Create(luabridge::LuaRef &ref) {
-//    LuaTable table(ref);
-//    std::string cam = table.Get<std::string>("cam");
-//    float factor = table.Get<float>("factor");
+
+std::shared_ptr<Component> ParallaxComponentFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    std::string cam = table.Get<std::string>("cam");
+    glm::vec2 factor = table.Get<glm::vec2>("factor");
 //    float width = table.Get<float>("width");
 //    float height = table.Get<float>("width");
-//    return Ref::Create<Parallax>(cam, factor, width, height,0,0);
-//}
+    return Ref::Create<Parallax>(cam, factor);
+}
 
 std::shared_ptr<Component> Parallax3DComponentFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);

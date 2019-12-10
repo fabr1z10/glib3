@@ -110,7 +110,7 @@ SceneFactory::SceneFactory() {
     //m_componentFactory.Add<Follow3DComponentFactory>("follow3d");
     m_componentFactory.Add<InfoComponentFactory>("info");
     m_componentFactory.Add<PlatformComponentFactory>("platform");
-    //m_componentFactory.Add<ParallaxComponentFactory>("parallax");
+    m_componentFactory.Add<ParallaxComponentFactory>("parallax");
     m_componentFactory.Add<Parallax3DComponentFactory>("parallax3d");
     m_componentFactory.Add<TextComponentFactory>("text");
     m_componentFactory.Add<FPSComponentFactory>("fps");

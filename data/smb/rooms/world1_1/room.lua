@@ -139,7 +139,7 @@ local items_dynamic = {
 room = factory.room.create (roomInfo)
 
 room:add_d( {
-	-- bonus
+	--bonus
 	factory.rect { pos = {0, 16}, img = "block4.png", width=16, height=2 },
 	factory.rect { pos = {0, 18}, img = "brick2.png", width=1, height=11 },
 	factory.rect { pos = {4, 18}, img = "brick2.png", width=7, height=3 },

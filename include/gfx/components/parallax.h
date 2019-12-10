@@ -8,28 +8,21 @@
 */
 class Parallax : public Component {
 public:
-    Parallax (const std::string& camId, float factor, float xmin, float xmax);
+    Parallax (const std::string& camId, glm::vec2 factor);
     Parallax(const Parallax&);
     void Start() override;
+    void Begin() override;
     void Update(double) override {}
     std::shared_ptr<Component> clone() const override;
 private:
     void onCameraMove(Camera*);
     std::string m_camId;
     OrthographicCamera* m_cam;
-    float m_factor;
-    float m_width;
-    float m_height;
-    float m_horizontalTranslation;
-    float m_verticalTranslation;
-    glm::vec2 m_camSize;
-    //glm::vec3 m_previousPos;
-    float m_x0, m_x1;
-    float m_deltaX;
-    float m_xMin;
-    float m_xMax;
-    float m_a;
-    float m_b;
-    float m_deviceWidth;
-    //int m_prevn;
+    glm::vec2 m_factor;
+    glm::vec3 m_camInitPos;
+    glm::vec3 m_entityInitPos;
+    float m_ax;
+    float m_bx;
+    float m_ay;
+    float m_by;
 };

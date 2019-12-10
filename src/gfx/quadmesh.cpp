@@ -35,6 +35,8 @@ QuadMesh::QuadMesh(const std::string& filename, float width, float height,
             height = tex->GetHeight();
         }
     }
+    width *= repeatx;
+    height *= repeaty;
     std::vector<Vertex3D> vertices;
     vertices = {
         {offset.x,         offset.y,          0, 0,               repeaty},
@@ -74,7 +76,7 @@ QuadMesh::QuadMesh(const std::string& filename, float width, float height, glm::
 
 
 QuadMesh::QuadMesh(const std::string& filename, int rows, int cols, float size, std::vector<int>& data, int spriteSheetRows, int spriteSheetCols,
-int repx, int repy)
+int repx, int repy, glm::vec2 delta)
 : Mesh<Vertex3D>(TEXTURE_SHADER) {
     m_primitive = GL_TRIANGLES;
     auto tex = Engine::get().GetAssetManager().GetTex(filename);
@@ -92,7 +94,7 @@ int repx, int repy)
 
     for (int rx = 0; rx < repx; ++rx) {
         for (int ry = 0; ry < repy; ++ry) {
-            glm::vec2 o (cols * size * rx, rows * size * ry);
+            glm::vec2 o (cols * size * rx + delta.x*size*rx, rows * size * ry+ delta.y*size*rx);
             count = 0;
             for (int i = 0; i < rows; i++) {
                 for (int j = 0; j < cols; j++) {
