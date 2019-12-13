@@ -1,8 +1,10 @@
 engine.items["006.walkarea"] = scumm.factory.walkarea {
 	shape = { 
 		type = "poly", 
-		holes = true,
-		outline = {0,0,0,125,316,125,316,0}},
+		holes = {
+		},
+		outline = {0,0,0,125,316,125,316,0}
+	},
 	priority = 0,
 	depth = { type="linear_y", values= {0, 1, 144, 0} },
 }
@@ -10,7 +12,7 @@ engine.items["006.walkarea"] = scumm.factory.walkarea {
 engine.items["006.hole"] = makeItem { 
 	x = 244, y= 43,
 	--x=0,y=0,
-	outline = {0,0,0,4,16,4,16,0},
+	outline = {0,0,16,0,16,4,0,4},
 	msg = strings.room006[2],
 	look = function() 
 		if (variables.dagger_taken == 0) then 
@@ -46,7 +48,7 @@ engine.items["006.rock"] = makeItem {
 	x = 236, y= 33,
 	--x=0,y=0,
 	priority=2,
-	outline = {0,0,0,23,34,23,34,0},
+	outline = {0,0,34,0,34,23,0,23},
 	msg = strings.room006[4],
 	--gfx = "bg002.png",
 	model = "006.rock",

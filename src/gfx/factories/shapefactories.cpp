@@ -44,11 +44,12 @@ std::shared_ptr<Shape> PolyFactory::Create(luabridge::LuaRef& ref) {
         auto poly = std::make_shared<Poly>(std::move(mainOutline));
         for (int j = 0; j < holes.length(); ++j) {
             luabridge::LuaRef h = holes[j + 1];
+
             std::vector<float> holeOutline = ReadVector<float>(h);
             std::vector<glm::vec2> points;
             for (size_t i = 0; i < holeOutline.size(); i = i + 2)
                 points.push_back(glm::vec2(holeOutline[i], holeOutline[i + 1]));
-            poly->addHole( std::make_shared<Polygon>(points));
+            poly->addHole(glm::vec2(0.0f), std::make_shared<Polygon>(points));
         }
         return poly;
     }

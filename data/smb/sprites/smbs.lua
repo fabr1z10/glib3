@@ -68,6 +68,11 @@ local s = {
 	plant_1 = {x=128,y=96,width=16,height=32,anchor={8,0}},
 	plant_2 = {x=144,y=96,width=16,height=32,anchor={8,0}},
 
+
+
+
+
+
 }
 
 local dt=0.1
@@ -159,6 +164,10 @@ models["goomba"] = {
 		}}
 	}
 }
+
+
+
+
 
 models["koopa"] = {
     sheet = "smb1.png",

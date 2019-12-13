@@ -24,11 +24,11 @@ engine.state.scumm = {
 engine.config.scumm = {
 	walk = {
 		scumm = "walk",
-		sci = "walksci"
+		sci = "walk"
 	},
 	turn = {
 		scumm = "turn",
-		sci = "turnsci"
+		sci = "turn"
 	}
 
 }
@@ -56,14 +56,19 @@ end
 if (engine.items == nil) then engine.items = {} end
 if (engine.dialogues == nil) then engine.dialogues = {} end
 scumm = {}
+scumm.factory = {}
 require ("scumm/ui")
 require ("scumm/action")
 if (engine.extension ~= nil and engine.extension.action ~= nil) then
 	require (engine.extension.action)
 end
-require("factories/factory")
-require ("scumm/factory")
+--require("factories/factory")
+--require ("scumm/factory")
 	
+
+-- load game factories
+factory = {}
+glib.load_folder_r("factories")
 
 -- load text
 

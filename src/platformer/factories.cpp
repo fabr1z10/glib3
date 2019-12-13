@@ -103,8 +103,9 @@ std::shared_ptr<State> EnemyWalk25StateFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
     float speed = table.Get<float>("speed");
     float acceleration = table.Get<float>("acceleration");
+    float reach = table.Get<float>("reach");
 
-    return std::make_shared<EnemyWalk25>(speed, acceleration, true);
+    return std::make_shared<EnemyWalk25>(reach, speed, acceleration, true);
 
 
 }

@@ -1,6 +1,8 @@
 package.path = '/home/fabrizio/glib3/lualib/?.lua;' .. package.path
 
 
+
+
 engine = {
 	device_size = { 320, 200 },
 	window_size = { 640, 400 },

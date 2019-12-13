@@ -164,8 +164,11 @@ const std::vector<Hole>& Poly::getHoles() const {
 }
 bool Hole::isPointInside (glm::vec3 P) const {
     //glm::mat4 wt = m_entity->GetWorldTransform();
-    //glm::vec3 Plocal (glm::inverse(wt) * glm::vec4(P, 1.0f));
-    return m_polygon->isPointInside(P);
+    glm::vec3 Plocal = P - glm::vec3(position,0.0f);
+
+    bool inside = m_polygon->isPointInside(Plocal);
+    std::cerr << P.x << ", " << P.y << " is inside == " << inside<< " ... " << position.x << ", " << position.y << "\n";
+    return inside;
 }
 glm::vec2 Hole::getVertex(int i) const {
     //const glm::mat4& t = m_entity->GetWorldTransform();
@@ -178,13 +181,9 @@ glm::vec2 Hole::getNormalAtVertex(int i) const {
 }
 
 bool Hole::isInLineOfSight(glm::vec2 &A, glm::vec2 &B) const{
-    // convert into local
-//    glm::mat4 wt = glm::inverse(m_entity->GetWorldTransform());
-//    glm::vec2 lA = glm::vec2(wt * glm::vec4(A, 0.0f, 1.0f));
-//    glm::vec2 lB = glm::vec2(wt * glm::vec4(B, 0.0f, 1.0f));
-    return m_polygon->isInLineOfSight(A, B);
-
-
+    glm::vec2 lA = A - position;
+    glm::vec2 lB = B - position;
+    return m_polygon->isInLineOfSight(lA, lB);
 }
 
 //for (i in 0...vertices.length)

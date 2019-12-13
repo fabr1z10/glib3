@@ -19,9 +19,11 @@ std::shared_ptr<Component> WalkStop::clone() const {
 
 void WalkStop::Start() {
     auto poly = std::dynamic_pointer_cast<Polygon>(m_shape);
+
     auto walkArea = m_entity->GetParent()->GetComponent<WalkArea>();
     auto o = dynamic_cast<Poly*>(walkArea->GetShape());
-    o->addHole( poly);
+    glm::vec2 p (m_entity->GetPosition());
+    o->addHole(p, poly);
 
 
     auto ce = Ref::Create<Entity>();

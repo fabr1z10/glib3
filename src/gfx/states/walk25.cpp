@@ -32,9 +32,9 @@ void Walk25::AttachStateMachine(StateMachine * sm) {
     m_animator = m_entity->GetComponent<IAnimator>();
     m_collision = Engine::get().GetRunner<ICollisionEngine>();
     m_depth = dynamic_cast<Depth25*>(m_entity->GetComponent<Properties>());
-    if (m_depth == nullptr) {
-        GLIB_FAIL("Walk25 requires a depth25 component!");
-    }
+    //if (m_depth == nullptr) {
+    //GLIB_FAIL("Walk25 requires a depth25 component!");
+    //}
 }
 
 void Walk25::Init() {
@@ -138,10 +138,14 @@ void Walk25::Run (double dt) {
         }
 
     }
-    float dx = m_entity->GetFlipX() ? -delta.x : delta.x;
-    glm::vec3 ad = m_depth->move(dx, delta.y, 0);
-    delta.z = -delta.y*0.01f;
-    m_entity->MoveLocal(delta);
+    if (m_depth == nullptr) {
+        m_entity->MoveLocal(delta);
+    } else {
+        float dx = m_entity->GetFlipX() ? -delta.x : delta.x;
+        glm::vec3 ad = m_depth->move(dx, delta.y, 0);
+        delta.z = -delta.y * 0.01f;
+        m_entity->MoveLocal(delta);
+    }
 
 }
 

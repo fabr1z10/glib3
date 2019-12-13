@@ -52,6 +52,7 @@ void Walk::Start() {
 
     // if current position is not in shape
     if (!m_shape->isPointInside(currentPos)) {
+
         glm::vec2 p = ClosestPointOnEdge::Find(*(m_shape), currentPos);
         actor->SetPosition(p);
         currentPos = glm::vec3(p, 0.0f);
@@ -69,7 +70,9 @@ void Walk::Start() {
 
     if (delta != glm::vec2(0.0f))
     {
+        std::cerr << "finding sp " << m_p.x << " " << m_p.y << "\n";
         std::vector<glm::vec2> points = ShortestPath::Find(*m_shape, currentPos, m_p);
+        std::cerr << "ok\n";
         //int count = 0;
         //glm::vec2 currentPoint = points.front();
         std::string anim2;

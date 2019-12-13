@@ -1,5 +1,7 @@
+#define GLM_ENABLE_EXPERIMENTAL
 #include <gfx/math/closest.h>
 #include <iostream>
+#include <glm/gtx/transform.hpp>
 
 glm::vec2 ClosestPointOnEdge::getNearest(
         Polygon& p,                 // shape in local coordinates
@@ -11,11 +13,11 @@ glm::vec2 ClosestPointOnEdge::getNearest(
     // transform the point in local coords
     glm::vec2 bestPoint = glm::inverse(t) * glm::vec4(closestPointSoFar, 0.0f, 1.0f);
     int ip = n-1;
-    glm::vec2 A = p.GetVertex(ip);
+    glm::vec2 A(t*glm::vec4(p.GetVertex(ip),0.0f, 1.0f));
     glm::vec2 normal;
 
     for (int i = 0; i < n; i++) {
-        glm::vec2 B = p.GetVertex(i);
+        glm::vec2 B (t * glm::vec4(p.GetVertex(i), 0.0f, 1.0f));
         float l = glm::length(B - A);
         glm::vec2 u = glm::normalize(B - A);
         float d = glm::dot(m_P - A, u);
@@ -48,18 +50,15 @@ void ClosestPointOnEdge::visit(Poly& p) {
     glm::mat4 I(1.0f);
     auto contour = p.GetPolygon();
     glm::vec2 P = getNearest(*contour, I, b, glm::vec2(0.0f));
-//
-//
-//
-//    for (int i = 0; i < p.GetHoleCount() + 1; ++i) {
-//        auto poly = p.GetPolygon(i);
-//        P = getNearest(*poly, b, P);
-//        std::cout << "Find nearest of " << m_P.x << ", " << m_P.y << " on poly " << i << " is " << P.x << ", " << P.y << "\n";
-//    }
+    for (const auto& hole : p.getHoles()) {
+        glm::vec2 pos = hole.getPosition();
+        glm::mat4 t = glm::translate(glm::vec3(pos, 0.0f));
+        Polygon* a = hole.getPolygon();
+        P = getNearest(*a, t, b, P);
+
+        std::cout << "Find nearest of " << m_P.x << ", " << m_P.y << " on poly  is " << P.x << ", " << P.y << "\n";
+    }
     m_result = P;
-//    if (std::isnan(m_result.x) || std::isnan(m_result.y)) {
-//        std::cout << "Probelm hgere \n";
-//    }
 }
 
 

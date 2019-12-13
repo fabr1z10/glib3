@@ -30,6 +30,7 @@ public:
     glm::vec3 GetOffset() const {
         return m_offset;
     }
+    void setOffset(glm::vec3);
 protected:
     glm::vec3 m_offset;
     Bounds m_bounds;
@@ -39,7 +40,9 @@ inline Bounds Shape::getBounds() const {
     return m_bounds;
 }
 
-
+inline void Shape::setOffset(glm::vec3 offset) {
+    m_offset = offset;
+}
 
 
 #endif /* shape_h */

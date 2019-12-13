@@ -9,7 +9,7 @@
 #include <gfx/components/info.h>
 #include <gfx/random.h>
 
-EnemyWalk25::EnemyWalk25(float speed, float acceleration, bool fliph, char dir) : State(),
+EnemyWalk25::EnemyWalk25(float reach, float speed, float acceleration, bool fliph, char dir) : State(), m_reach(reach),
     m_speed(speed), m_acceleration(acceleration), m_idle(true),  m_flipHorizontal(fliph), m_velocitySmoothingX(0.0f), m_velocitySmoothingY(0.0f), m_dir(dir)  {}
 
 EnemyWalk25::EnemyWalk25(const EnemyWalk25 &) {
@@ -103,7 +103,7 @@ void EnemyWalk25::Run (double dt) {
         m_targetPosition = m_target->GetPosition();
         glm::vec3 enemyPos = m_entity->GetPosition();
         bool isRightOfPlayer = enemyPos.x >= m_targetPosition.x;
-        m_targetPosition += glm::vec3(isRightOfPlayer ? 32 : -32, 0.0f, 0.0f);
+        m_targetPosition += glm::vec3(isRightOfPlayer ? m_reach : -m_reach, 0.0f, 0.0f);
         glm::vec3 delta = m_targetPosition - enemyPos;
         m_lengthToDo = glm::length(delta);
         glm::vec3 a = glm::normalize(delta);

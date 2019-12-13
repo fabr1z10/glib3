@@ -11,7 +11,7 @@ class ICollisionEngine;
 
 class EnemyWalk25 : public State {
 public:
-    EnemyWalk25(float speed, float acceleration, bool fliph, char dir='e');
+    EnemyWalk25(float reach, float speed, float acceleration, bool fliph, char dir='e');
     EnemyWalk25(const EnemyWalk25&);
     std::shared_ptr<State> clone() const override;
     void Run(double) override;
@@ -42,7 +42,7 @@ protected:
     Depth25* m_depth;
     Entity* m_target;
     glm::vec2 m_targetVelocity;
-
+    float m_reach;
 
 };
 
