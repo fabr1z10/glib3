@@ -6,7 +6,8 @@ end
 
 function makeItem (args)
 	local x  = args.x or 0
-	local y = args.y or 0 
+	local y = args.y or 0
+	local z = args.z or 0 
 	local shape = nil
 	if (args.outline) then
 		shape = { type="poly", outline = args.outline }
@@ -14,7 +15,8 @@ function makeItem (args)
 		shape = { type="rect", width = args.width, height = args.height, offset = args.offset }
 	end
 	return {
-		pos={x,y,0},
+		tag = args.tag,
+		pos={x,y,z},
 		hotspot = {
 			priority = args.priority or 1,
 			shape = shape

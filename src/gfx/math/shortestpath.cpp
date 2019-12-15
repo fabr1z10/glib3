@@ -100,20 +100,21 @@ void ShortestPath::visit(Poly& p) {
     for (int i=0; i<n; ++i) {
         if (pMain->isVertexConcave(i)) {
             glm::vec2 n = pMain->getNormalAtVertex(i);
-            nodes.push_back(pMain->GetVertex(i) - n*0.01f);
+            nodes.push_back(pMain->GetVertex(i)-  n*0.01f);
         }
     }
 
     // add convex point of holes
     const auto& holes = p.getHoles();
     for (const auto& hole : holes) {
-
+        glm::vec2 holePos(hole.getPosition());
         int n = hole.getVertexCount();
         for (int j = 0; j < n; ++j) {
             if (!hole.isVertexConcave(j)) {
                 glm::vec2 n = hole.getNormalAtVertex(j);
                 glm::vec2 vertex = hole.getVertex(j);
-                nodes.push_back(hole.getVertex(j) + n * 0.01f);
+
+                nodes.push_back(hole.getVertex(j) + holePos + n * 0.01f);
             }
 
         }

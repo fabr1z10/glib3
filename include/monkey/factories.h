@@ -8,7 +8,7 @@ FACTORY(WalkStopComponentFactory, Component)
 FACTORY(CharacterStateFactory, Component)
 
 FACTORY(WalkToActFactory, Activity)
-FACTORY(WalkSciActFactory, Activity)
+//FACTORY(WalkSciActFactory, Activity)
 FACTORY(TurnActFactory, Activity)
 FACTORY(TurnSciActFactory, Activity)
 FACTORY(SayActFactory, Activity)

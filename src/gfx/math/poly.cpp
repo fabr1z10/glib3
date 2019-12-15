@@ -72,6 +72,13 @@ std::vector<glm::vec2> Polygon::getEdges() {
     return edges;
 }
 
+std::list<Hole>::iterator Poly::addHole(glm::vec2 pos, std::shared_ptr<Polygon> poly) {
+    m_holes.push_back(Hole(pos, poly));
+    auto it = m_holes.end();
+    it--;
+    return it;
+}
+
 bool Poly::isPointInside(glm::vec3 P) const {
     if (!m_contour->isPointInside(P))
         return false;
@@ -159,9 +166,15 @@ glm::vec2 Poly::GetVertex(int i) const {
     return m_contour->GetVertex(i);
 }
 
-const std::vector<Hole>& Poly::getHoles() const {
+const std::list<Hole>& Poly::getHoles() const {
     return m_holes;
 }
+
+
+void Hole::setPosition(glm::vec2 pos) {
+    position = pos;
+}
+
 bool Hole::isPointInside (glm::vec3 P) const {
     //glm::mat4 wt = m_entity->GetWorldTransform();
     glm::vec3 Plocal = P - glm::vec3(position,0.0f);
@@ -170,6 +183,7 @@ bool Hole::isPointInside (glm::vec3 P) const {
     std::cerr << P.x << ", " << P.y << " is inside == " << inside<< " ... " << position.x << ", " << position.y << "\n";
     return inside;
 }
+
 glm::vec2 Hole::getVertex(int i) const {
     //const glm::mat4& t = m_entity->GetWorldTransform();
     return m_polygon->GetVertex(i);

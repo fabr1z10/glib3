@@ -107,20 +107,20 @@ std::shared_ptr<Activity> WalkToActFactory::Create(luabridge::LuaRef &ref) {
 };
 
 
-std::shared_ptr<Activity> WalkSciActFactory::Create(luabridge::LuaRef &ref) {
-    LuaTable table(ref);
-
-    glm::vec2 pos = table.Get<glm::vec2>("pos");
-    if (table.HasKey("id")) {
-        int id = table.Get<int>("id");
-        return std::make_shared<WalkSci>(id, pos);
-    } else {
-
-        auto tag = table.Get<std::string>("tag");
-        return std::make_shared<WalkSci>(tag, pos);
-    }
-
-};
+//std::shared_ptr<Activity> WalkSciActFactory::Create(luabridge::LuaRef &ref) {
+//    LuaTable table(ref);
+//
+//    glm::vec2 pos = table.Get<glm::vec2>("pos");
+//    if (table.HasKey("id")) {
+//        int id = table.Get<int>("id");
+//        return std::make_shared<WalkSci>(id, pos);
+//    } else {
+//
+//        auto tag = table.Get<std::string>("tag");
+//        return std::make_shared<WalkSci>(tag, pos);
+//    }
+//
+//};
 std::shared_ptr<Activity> TurnActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
 

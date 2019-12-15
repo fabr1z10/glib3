@@ -15,7 +15,7 @@ engine = {
         animations = {}
     },
     lang="eng",
-    start_room ="006",
+    start_room ="008",
     config = {
 		style = "sci",
         walk = "walk",           -- depends on scumm/sci

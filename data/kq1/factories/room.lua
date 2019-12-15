@@ -30,7 +30,10 @@ function scumm.factory.sci_room (args)
 	 			type = "collision", 
  				size = {80, 80}, 
 	 			response = args.collision_response,
-	 			coll25 = args.coll25
+	 			coll25 = args.coll25,
+				response = {
+					{ tag = {1, 10}, onenter = factory.response.basic },
+				}
 	 			--{
 	 			--		{ tag = {1, 10}, onenter = function() print ("CIAO") end }
 	 			--}
@@ -130,7 +133,7 @@ function scumm.factory.sci_room (args)
 					tag="player", 
 					dir = startPos.dir,
 					follow = (room_width > 320 and enableScroll),
-					collide = args.collisde
+					collide = args.collide
 				}
 			)
 		end

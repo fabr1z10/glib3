@@ -33,6 +33,7 @@ std::deque<Key> FindShortestPath (const Graph<Key, Value>& graph, Key start, Key
     std::unordered_set<Key> S {start};
     // set of unexplored nodes
     keys.erase(start);
+    int iter = 0;
     while (true) {
         // find node with min distance
         Key u;
@@ -59,6 +60,10 @@ std::deque<Key> FindShortestPath (const Graph<Key, Value>& graph, Key start, Key
                 l[it->first] = alt;
                 p[it->first] = u;
             }
+        }
+        iter++;
+        if (iter > 100) {
+            break;
         }
     }
 

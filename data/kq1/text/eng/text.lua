@@ -47,6 +47,7 @@ strings = {
 		[2] = "You climb the tree."
 	},
 	room008 = {
-		[1] = "The golden egg is smooth and shiny."
+		[1] = "The golden egg is smooth and shiny.",
+		[2] = "The golden egg is so heavy you almost drop it."
 	}
 }
