@@ -5,12 +5,14 @@ roomDefinition = {
 	height = 166,
 	startTable = {
 		['001'] = { walkarea = "002.walkarea", pos = {313, 16}, dir="west" },
-		['003'] = { walkarea = "002.walkarea", pos = {227, 46}, dir="south" } 
+		['003'] = { walkarea = "002.walkarea", pos = {227, 46}, dir="south" },
+		['009'] = { walkarea = "002.walkarea", pos = {100, 100}, dir="south" } 
 	},
 	defaultroom = "001",
 	walkareas = { "002.walkarea" },
 	font_size = 8,
 	playerid="graham",
+	collide=true
 }
 
 room = scumm.factory.sci_room (roomDefinition)

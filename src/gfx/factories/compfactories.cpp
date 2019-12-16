@@ -41,6 +41,7 @@
 #include <gfx/components/shadow.h>
 #include <gfx/states/animinitializer.h>
 #include <gfx/math/geom.h>
+#include <gfx/math/isoline.h>
 #include <gfx/components/controller2d.h>
 #include <gfx/components/controller3d.h>
 #include <gfx/components/dynamics2d.h>
@@ -622,6 +623,16 @@ std::shared_ptr<Function2D> GetFunc2D(luabridge::LuaRef& ref) {
             p->AddFunction(domain, std::move(fu));
         }
         return p;
+    } else if (type == "isoline") {
+        auto p = std::make_shared<IsoLine>();
+        table.ProcessVector("lines", [p] (luabridge::LuaRef ref) {
+            LuaTable t(ref);
+            float z = t.Get<float>("z");
+            std::vector<float> points = t.GetVector<float>("points");
+            p->addIsoDepthLine(points, z);
+        });
+        return p;
+
     }
     GLIB_FAIL("Unknown function " << type);
 }

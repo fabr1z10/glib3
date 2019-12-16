@@ -4,7 +4,7 @@
 #include <memory>
 #include <glm/glm.hpp>
 #include <gfx/error.h>
-
+#include <map>
 
 // implements a linear function passing through points (x0, y0) and (x1, y1)
 class LinearFunction {
@@ -24,8 +24,9 @@ public:
 private:
     float m_x0, m_y0;//, m_y1;
     float m_delta;
-
 };
+
+
 
 class Function2D {
 public:
@@ -85,3 +86,5 @@ private:
     std::vector<bool> m_varX;
     std::vector<std::shared_ptr<Function2D>> m_functions;
 };
+
+

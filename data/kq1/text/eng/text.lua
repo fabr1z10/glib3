@@ -4,7 +4,9 @@ strings = {
 		[2] = "I don't understand"
 	},
 	items = {
-		[1] = "dagger"
+		[1] = "dagger",
+		[2] = "egg",
+		[3] = "carrot"
 	},
 	room001 = {
 		[1] = "This is the castle of King Edward the Benevolent.",
@@ -49,5 +51,20 @@ strings = {
 	room008 = {
 		[1] = "The golden egg is smooth and shiny.",
 		[2] = "The golden egg is so heavy you almost drop it."
+	},
+	room009 = {
+		[1] = "This is a relatively low, rustic stone fence which runs along the left and rear sides of the garden.",
+		[2] = "This is a well_tended carrot patch. The carrots look tempting to a hungry traveler.",
+		[3] = "You pluck a plump, orange carrot from the ground.",
+		[4] = "You already have a carrot."
+	},
+	room010 = {
+		[1] = "This is a neat little carrot patch. The plump carrots look tempting.",
+		[2] = "It is a relatively low, native stone and masonry fence to the right and rear of a garden."
+
+	},
+	room011 = {
+		[1] = "Gentle Sir Graham, I am your fairy godmother. Your quest is indeed noble. My small part to aid you can be no bigger than this magic spell, protective but for a little while.",
+		[2] = "I will be watching over you, Sir Graham."
 	}
 }

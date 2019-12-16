@@ -16,7 +16,9 @@ function makeItem (args)
 	end
 	return {
 		tag = args.tag,
-		pos={x,y,z},
+		pos = function()
+			return {glib.get(x), glib.get(y), z}
+		end,
 		hotspot = {
 			priority = args.priority or 1,
 			shape = shape

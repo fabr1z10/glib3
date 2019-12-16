@@ -1,5 +1,5 @@
 engine.items["002.walkarea"] = scumm.factory.walkarea {
-	shape = { type = "poly", holes=true, outline = {0, 0, 0, 107, 154, 107, 154, 58, 95, 36, 129, 21, 198, 21, 198, 47, 249, 47, 247, 21, 316, 21, 316, 7, 92, 7, 73, 25,  47, 25, 17, 10}},
+	shape = { type = "poly", holes={}, outline = {0, 0, 0, 107, 154, 107, 154, 58, 95, 36, 129, 21, 198, 21, 198, 47, 249, 47, 247, 21, 316, 21, 316, 7, 92, 7, 73, 25,  47, 25, 17, 10}},
 	priority = 0,
 	depth = { type="linear_y", values= {0, 1, 144, 0} },
 }

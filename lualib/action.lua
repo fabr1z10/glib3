@@ -239,3 +239,4 @@ print ("CIAO MERDADURA!")
 	glib.assert (args.value, "value")
 	return { type = "setdemo", value = args.value,  tag = args.tag, id = args.id, keys = args.keys, length = args.length or 0, sync = args.sync, events = args.events}	
 end
+

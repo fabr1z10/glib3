@@ -22,7 +22,8 @@ engine.items["008.egg"] = makeItem {
 			{ type = scumm.action.walkto, args = { tag="player", pos = {140, 81}}},
 			{ type = scumm.action.turn, args = {tag="player", dir="n"}},
 			{ type = action.kq.showmessage, args = { msg = strings.room008[2] }},
-			{ type = action.activate, args = { tag="008.egg", active=false}}
+			{ type = action.activate, args = { tag="008.egg", active=false}},
+			{ type = scumm.action.add_to_inventory_sci, args= {id = "egg"}}
 		}
 	end
 

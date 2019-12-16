@@ -15,7 +15,7 @@ engine = {
         animations = {}
     },
     lang="eng",
-    start_room ="008",
+    start_room ="009",
     config = {
 		style = "sci",
         walk = "walk",           -- depends on scumm/sci
@@ -50,8 +50,9 @@ engine.config.verbs = {
 engine.config.verb = "walk"
 
 engine.state.scumm.items = {
-    dagger = { text = strings.items[1], code="look", anim ="dagger"}
-
+    dagger = { text = strings.items[1], code="look", anim ="dagger"},
+    egg = { text = strings.items[2], code="look", anim ="egg"},
+    carrot = { text = strings.items[3], code="look", anim ="dagger"},
 }
 -- engine.state.scumm.inventory = { 
 --     --dagger = {}

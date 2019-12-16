@@ -19,7 +19,7 @@ scumm.factory.item_sci = function(args)
 	--print ("CAZZONE")
 	-- These values can be overridden in the args
 	
-	local pos = args.pos and args.pos or object.pos
+	local pos = args.pos and args.pos or glib.get(object.pos)
 	if (pos == nil) then pos = {0,0,0} end
     -- flipx is optional. If not provided, the default value is false (NOT flipped horizontally)
 	

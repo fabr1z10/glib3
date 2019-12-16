@@ -45,7 +45,8 @@ engine.items["006.hole"] = makeItem {
 }
 
 engine.items["006.rock"] = makeItem { 
-	x = 236, y= 33,
+	x = 236,
+	y= function() return (variables.rock_moved == 0) and 33 or 21 end,
 	--x=0,y=0,
 	priority=2,
 	outline = {0,0,34,0,34,23,0,23},

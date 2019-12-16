@@ -38,6 +38,8 @@ local s = {
 	graham_bow_6 = {x=1,y=91,width=22,height=18, anchor={10, 0}},
 	graham_bow_7 = {x=25,y=91,width=22,height=20, anchor={10, 0}},
 	graham_bow_8 = {x=49,y=91,width=24,height=26, anchor={8, 0}},
+	fairy_1 = {x=1,y=174,width=42,height=30,anchor={21,0}},
+	fairy_2 = {x=45,y=174,width=42,height=31,anchor={21,0}},
 
 
 
@@ -47,7 +49,7 @@ local s = {
 	cursor_walk = { x=34, y=53, width=11, height=16, anchor = {6,8}},
 	cursor_look = { x=46, y=53, width=12, height=9, anchor ={6,4}},
 	cursor_dagger = {x=60, y=56, width=8, height=8, anchor={4,4}},
-
+	cursor_egg ={x=81,y=83,width=12,height=13,anchor={6,8}},
 	graham_drown_1 = {x=181,y=2,width=37,height=10, anchor={15,0}},
 	graham_drown_2 = {x=182,y=13,width=38,height=15, anchor={17,0}},
 	graham_drown_3 = {x=182,y=29,width=38,height=15, anchor={17,0}},
@@ -266,6 +268,39 @@ models["graham"] = {
 	}
 }
 
+models["fairy"] = {
+	sheet ="sprites.png",
+	type = "boxed_sprite",
+	ppu=1,
+	animations = {
+		{ name="idle_e", box=wbml, frames = { 
+			{duration=dt, quads = {{ id = s.fairy_1}} },
+			{duration=dt, quads = {{ id = s.fairy_2}} }
+		}},
+		{ name="idle_n", box=wbml, frames = { 
+			{duration=dt, quads = {{ id = s.fairy_1}} },
+			{duration=dt, quads = {{ id = s.fairy_2}} }
+		}},
+		{ name="idle_s", box=wbml, frames = { 
+			{duration=dt, quads = {{ id = s.fairy_1}} },
+			{duration=dt, quads = {{ id = s.fairy_2}} }
+		}},			
+		{ name="walk_e", box=wbml, frames = { 
+			{duration=dt, quads = {{ id = s.fairy_1}} },
+			{duration=dt, quads = {{ id = s.fairy_2}} }
+		}},
+		{ name="walk_n", box=wbml, frames = { 
+			{duration=dt, quads = {{ id = s.fairy_1}} },
+			{duration=dt, quads = {{ id = s.fairy_2}} }
+		}},
+		{ name="walk_s", box=wbml, frames = { 
+			{duration=dt, quads = {{ id = s.fairy_1}} },
+			{duration=dt, quads = {{ id = s.fairy_2}} }
+		}},
+	}
+}
+
+
 models["cursor"] = {
 	sheet="sprites.png",
 	type="sprite",
@@ -276,6 +311,7 @@ models["cursor"] = {
 		{ name="use", frames = { {duration=dt, quads = {{ id = s.cursor_use}}}}},
 		{ name="talk", frames = { {duration=dt, quads = {{ id = s.cursor_talk}}}}},
 		{ name="dagger", frames = { {duration=dt, quads = {{ id = s.cursor_dagger}}}}},
+		{ name="egg", frames = { {duration=dt, quads = {{ id = s.cursor_egg}}}}},
 	}
 
 }

@@ -29,7 +29,7 @@ room:add ( "006.walkarea",
 		{pos={130,71,0}, components = { { type="gfx", image="006_bg_1.png" }}},
 		{pos={241,87,0}, components = { { type="gfx", image="006_bg_2.png" }}},
 		scumm.factory.item_sci { id="006.rock" },
-		--scumm.factory.item_sci { id="006.hole" },
+		scumm.factory.item_sci { id="006.hole" },
 	}
 )
 
