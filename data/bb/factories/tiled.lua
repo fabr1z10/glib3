@@ -78,7 +78,10 @@ factory.tiled.create_from_data = function(args)
 	}
 	if (args.collide) then
 		table.insert(components, { type = "collider", flag = args.collide[3], mask = 1, 
-			tag=1, shape = { type="rect", width = args.collide[1]*8, height = args.collide[2]*8 }})
+			tag=1, shape = { type="line", A = {0,height}, B={args.collide[1]*8, height}}})
+	elseif (args.collide_rect) then 
+		table.insert(components, { type = "collider", flag = args.collide_rect[3], mask = 1, 
+			tag=1, shape = { type="rect", width = args.collide_rect[1]*8, height=args.collide_rect[2]*8}})
 	end
 
 	return {

@@ -57,6 +57,7 @@ factory.goomba.create = function (args, pos)
 							jumpspeed = 0 
 						}
 					},
+
 				}
 			},
 			{ type ="basicenemyinput", left =true, flip=args.flip or false },

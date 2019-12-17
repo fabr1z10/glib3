@@ -30,7 +30,7 @@ void SceneFactory::Init(Engine* engine) {
         std::string libName = engine->GetDirectory() + extension;
         void* handle = dlopen(libName.c_str(), RTLD_NOW);
         if (handle == NULL) {
-            GLIB_FAIL("ERROR! Cannot open extension library " << libName);
+            GLIB_FAIL("ERROR! Cannot open extension library " << libName << ": " << dlerror());
         } else {
             std::cout << "Loaded succesfully extension: " << libName << std::endl;
         }

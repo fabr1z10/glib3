@@ -10,6 +10,7 @@ local s = {
 	bub_jump = {x=80,y=48,width=16,height=16, anchor={8,0}},
 	zenchan_1 = {x=0,y=64,width=16,height=16,anchor={8,0}},
 	zenchan_2 = {x=16,y=64,width=16,height=16,anchor={8,0}},
+	zenchan_3 = {x=32,y=64,width=16,height=16,anchor={8,0}},
 
 }
 
@@ -47,17 +48,25 @@ models["zenchan"] = {
 		{ name = "idle", box=box,frames = {
 			{ duration = dt, quads = {{ id = s.zenchan_1 } }},
 			{ duration = dt, quads = {{ id = s.zenchan_2 } }},
+			{ duration = dt, quads = {{ id = s.zenchan_3 } }},
+			{ duration = dt, quads = {{ id = s.zenchan_2 } }},
 		}},
 		{ name = "walk", box=box, frames = {
 			{ duration = dt, quads = {{ id = s.zenchan_1 } }},
+			{ duration = dt, quads = {{ id = s.zenchan_2 } }},
+			{ duration = dt, quads = {{ id = s.zenchan_3 } }},
 			{ duration = dt, quads = {{ id = s.zenchan_2 } }},
 		}},
 		{ name = "jumpup", box=box, frames = {
 			{ duration = dt, quads = {{ id = s.zenchan_1 } }},
 			{ duration = dt, quads = {{ id = s.zenchan_2 } }},
+			{ duration = dt, quads = {{ id = s.zenchan_3 } }},
+			{ duration = dt, quads = {{ id = s.zenchan_2 } }},
 		}},
 		{ name = "jumpdown", box=box, frames = {
 			{ duration = dt, quads = {{ id = s.zenchan_1 } }},
+			{ duration = dt, quads = {{ id = s.zenchan_2 } }},
+			{ duration = dt, quads = {{ id = s.zenchan_3 } }},
 			{ duration = dt, quads = {{ id = s.zenchan_2 } }},
 		}},		
 	}
