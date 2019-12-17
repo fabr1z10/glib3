@@ -50,6 +50,7 @@ public:
     std::shared_ptr<Component> makeComponent (luabridge::LuaRef ref);
     std::shared_ptr<State> makeState (luabridge::LuaRef ref);
     std::shared_ptr<SkeletalAnimation> makeSkeletalAnimation(luabridge::LuaRef ref);
+    void addStateFactory(const std::string &a, std::unique_ptr<FactoryMethod<State>> f);
 protected:
     Factory<IModel> m_modelFactory;
     Factory<Camera> m_cameraFactory;

@@ -49,28 +49,14 @@ factory.goomba.create = function (args, pos)
 					{ 
 						id = "walk", 
 						state = {
-							type = "walkside", 
-							speed = args.speed, 
+							type = "zenchan", 
+							left=true,
+							speed = {2, 2},
 							acceleration = 0.05, 
 							fliph = true, 
 							jumpspeed = 0 
 						}
 					},
-					{
-						id = "jump",
-						state = {
-							type = "jump",
-							speed = args.speed,
-							acceleration = 0.10,
-							fliph = true,
-							animup = "walk",
-							animdown = "walk"
-						}
-					},
-					{
-						id = "dead",
-						state = { type="simple", anim="die" }
-					},					
 				}
 			},
 			{ type ="basicenemyinput", left =true, flip=args.flip or false },

@@ -5,6 +5,7 @@
 #include <gfx/factories/skeleton.h>
 #include <iostream>
 #include <gfx/engine.h>
+#include <dlfcn.h>
 
 void SceneFactory::Init(Engine* engine) {
     // initialize lua
@@ -23,6 +24,26 @@ void SceneFactory::Init(Engine* engine) {
     engine->SetDeviceSize(devSize);
     engine->SetWindowSize(winSize);
     engine->SetFPS(fps);
+
+    std::string extension = engineDef.Get<std::string>("extension", "");
+    if (!extension.empty()) {
+        std::string libName = engine->GetDirectory() + extension;
+        void* handle = dlopen(libName.c_str(), RTLD_NOW);
+        if (handle == NULL) {
+            GLIB_FAIL("ERROR! Cannot open extension library " << libName);
+        } else {
+            std::cout << "Loaded succesfully extension: " << libName << std::endl;
+        }
+        typedef void (*hello_t)(SceneFactory*);
+
+        hello_t hello = (hello_t) dlsym(handle, "hello");
+        const char *dlsym_error = dlerror();
+        if (dlsym_error) {
+            std::cerr << "Cannot load symbol 'hello': " << dlsym_error << '\n';
+        } else {
+            hello(this);
+        }
+    }
     extendLua();
 }
 
@@ -182,7 +203,9 @@ SceneFactory::SceneFactory() {
     m_stateFactory.Add<SimpleStateFactory>("simple");
 }
 
-
+void SceneFactory::addStateFactory(const std::string &a, std::unique_ptr<FactoryMethod<State>> f) {
+    m_stateFactory.Add(a, std::move(f));
+}
 
 
 std::shared_ptr<Entity> SceneFactory::Create() {

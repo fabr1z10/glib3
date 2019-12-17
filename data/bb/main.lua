@@ -1,6 +1,7 @@
 package.path = '/home/fabrizio/glib3/lualib/?.lua;' .. package.path
 
 engine = {
+	extension = 'lib/libbubble.so',
     device_size = { 256, 224 },
     window_size = { 256, 224 },
     lang = "eng",

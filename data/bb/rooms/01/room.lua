@@ -19,7 +19,7 @@ room = factory.stage.create (roomInfo)
 
 local items_d = {
 	factory.goomba.create {
-		sprite="zenchan", pos ={2, 2}, speed=30,
+		sprite="zenchan", pos ={3, 13},
 	},
 	factory.tiled.create_from_data { 
 		pos={7,5},width=19,height=2,data={
