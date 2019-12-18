@@ -22,6 +22,7 @@ WalkSide::WalkSide(const WalkSide &orig) : PlatformerState(orig) {
     m_jumpState = orig.m_jumpState;
     m_idleAnim = orig.m_idleAnim;
     m_walkAnim = orig.m_walkAnim;
+
 }
 
 std::shared_ptr<State> WalkSide::clone() const {

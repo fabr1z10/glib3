@@ -7,6 +7,13 @@ end
 factory.player.hit_by_enemy = function(player, enemy)
 end
 
+factory.player.makebubble = function(x, y, z) 
+	local m = monkey.getEntity("main")
+	monkey.addEntity({
+		type="sprite",model="bubble", pos = {x+8,y+8,z}
+	}, m)
+end
+
 
 factory.player.create = function(args)
 	glib.assert (args.pos, "pos")
@@ -41,11 +48,12 @@ factory.player.create = function(args)
 					{ 
 						id = "walk", 
 						state = {
-							type = "walkside", 
+							type = "bubwalk", 
 							speed = args.speed,
 							acceleration = 0.10, 
 							fliph = true, 
 							jumpspeed = variables.jump_velocity,
+							firefunc = factory.player.makebubble,
 							keys = {
 								--{ id = 341, action = "changestate", state = "attack" },
 								--{ id = 264, action="callback", func= function() if (variables.warpfunc ~= nil) then variables.warpfunc() end end }	,
@@ -63,7 +71,7 @@ factory.player.create = function(args)
 							animup = "jumpup",
 							animdown = "jumpdown",
 							keys = {
-								{ id = 341, action = "changestate", state = "attack_jump" },
+								--{ id = 341, action = "changestate", state = "attack_jump" },
 							}							
 						}
 					},

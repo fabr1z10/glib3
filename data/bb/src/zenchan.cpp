@@ -41,7 +41,11 @@ void ZenChanWalk::Run(double dt) {
 
     if ((m_left && m_controller2D->m_details.left) || (!m_left && m_controller2D->m_details.right)) {
         // I bumped into a wall
-        flip();
+        if (m_type == WalkType::GROUNDED) {
+            flip();
+        } else {
+            m_delta.x = 0.0f;
+        }
     }
 
     if (m_type == WalkType::JUMPUP) {

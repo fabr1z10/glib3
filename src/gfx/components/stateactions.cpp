@@ -15,3 +15,6 @@ void StateCallback::Run(StateMachine *) {
     m_f();
 }
 
+void StateFunc::Run(StateMachine *) {
+    m_f();
+}

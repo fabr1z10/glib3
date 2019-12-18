@@ -2,6 +2,7 @@
 
 #include <gfx/components/statemachine.h>
 #include <gfx/lua/luawrapper.h>
+#include <functional>
 
 class StateTransition : public StateAction {
 public:
@@ -20,3 +21,11 @@ private:
 
 };
 
+class StateFunc : public StateAction {
+public:
+    StateFunc(std::function<void()> f) : m_f(f) {}
+    void Run (StateMachine*) override;
+private:
+    std::function<void()> m_f;
+
+};
