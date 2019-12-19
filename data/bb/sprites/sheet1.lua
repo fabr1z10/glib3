@@ -19,10 +19,14 @@ local s = {
 	bubble_4 = {x=35, y=32,width=10,height=10, anchor={5,5}},
 	bubble_5 = {x=46, y=32,width=12,height=14, anchor={6,7}},
 	bubble_6 = {x=64, y=32,width=16,height=16, anchor={8,8}},
+	bubble_7 = {x=80, y=32,width=16,height=16, anchor={8,8}},
+	bubble_8 = {x=96, y=32,width=16,height=16, anchor={8,8}},
 
 }
 
 local box = {-8,0,8,16}
+local bb = {-8,-8,8,8}
+
 
 models["bub"] = {
     sheet = "tiles.png",
@@ -90,7 +94,7 @@ models["bubble"] = {
 	type = "boxed_sprite",
     ppu=1,
 	animations = {
-		{ name = "default", box=box, loop = false, frames = {
+		{ name = "default", box=bb, loop = false, frames = {
 			{ duration = dt, quads = {{ id = s.bubble_1 } }},
 			{ duration = dt, quads = {{ id = s.bubble_2 } }},
 			{ duration = dt, quads = {{ id = s.bubble_3 } }},
@@ -98,6 +102,13 @@ models["bubble"] = {
 			{ duration = dt, quads = {{ id = s.bubble_5 } }},
 			{ duration = dt, quads = {{ id = s.bubble_6 } }},
 		}},
+		{ name = "blowingup1", box=bb, loop = false, frames = {
+			{ duration = dt, quads = {{ id = s.bubble_7 } }},
+		}},
+		{ name = "blowingup2", box=bb, loop = false, frames = {
+			{ duration = dt, quads = {{ id = s.bubble_8 } }},
+		}},
+
 	}
 }
 

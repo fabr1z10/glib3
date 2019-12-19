@@ -8,9 +8,38 @@ factory.player.hit_by_enemy = function(player, enemy)
 end
 
 factory.player.makebubble = function(x, y, z) 
+	print ("CIAO!!!")
 	local m = monkey.getEntity("main")
+	local p = monkey.getEntity("player")
+	print ("CIAO!!!")
 	monkey.addEntity({
-		type="sprite",model="bubble", pos = {x+8,y+8,z}
+		type="sprite",
+		model="bubble", 
+		pos = {x+8,y+8,z},
+		components = { 
+		 	{ type="controller2d", maxclimbangle = 80, maxdescendangle = 80, horizontalrays=4, verticalrays=4, maskup = 64 },
+			{ 
+				type = "smartcollider", 
+				tag = variables.collision.tags.bubble, 
+				flag = variables.collision.flags.bubble, 
+				mask = variables.collision.flags.foe | variables.collision.flags.bubble
+			},		 	
+		 	{
+		 	 	type="extstatemachine", 
+		 	 	initialstate = "walk",
+		 	 	states = {
+		 	 		{ 
+		 	 			id = "walk", 
+		 	 			state = {
+		 	 				type = "bubble",
+		 	 				left = p.flipx,
+		 	 				speed = 100,
+		 	 				speedup = 50,
+		 	 			},
+		 	 		},
+ 				}
+ 	 		}
+		 }
 	}, m)
 end
 

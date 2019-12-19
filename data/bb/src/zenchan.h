@@ -28,6 +28,7 @@ private:
     float m_jumpHeight;
     float m_jumpLevel;
     Controller2D* m_controller2D;
+
     Entity* m_player;
     Entity* m_entity;
     glm::vec3 m_delta;

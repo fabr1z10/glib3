@@ -212,7 +212,7 @@ void Controller2D::VerticalCollisions(glm::vec2& velocity) {
     for (int i = 0; i < m_verticalRayCount; i++) {
         vec2 rayOrigin = (directionY == -1) ? m_raycastOrigins.bottomLeft : m_raycastOrigins.topLeft;
         rayOrigin += vec2(1, 0) * (i *m_verticalRaySpacing + velx);
-        int collMask = (directionY == -1 ? (2 | 32) : 2);
+        int collMask = (directionY == -1 ? (m_maskDown) : m_maskUp);
         RayCastHit hit = m_collision->Raycast(vec3(rayOrigin, 0.0f), monkey::up * directionY, rayLength, collMask);
         if (hit.collide) {
             velocity.y = (hit.length - m_skinWidth) * directionY;

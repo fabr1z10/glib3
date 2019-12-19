@@ -548,7 +548,9 @@ std::shared_ptr<Component> Controller2DComponentFactory::Create(luabridge::LuaRe
     int horCount = table.Get<int>("horizontalrays", 4);
     int vertCount = table.Get<int>("veticalrays", 4);
     float skinWidth = table.Get<float>("skinwidth", .015f);
-    return Ref::Create<Controller2D>(maxClimbAngle, maxDescendAngle, skinWidth, horCount, vertCount);
+    int maskUp = table.Get<int>("maskup", 2);
+    int maskDown = table.Get<int>("maskdown", 2|32);
+    return Ref::Create<Controller2D>(maxClimbAngle, maxDescendAngle, maskUp, maskDown, skinWidth, horCount, vertCount);
 }
 
 std::shared_ptr<Component> Controller3DComponentFactory::Create(luabridge::LuaRef & ref) {

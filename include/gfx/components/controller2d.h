@@ -37,8 +37,16 @@ struct RaycastOrigins {
 
 class Controller2D : public IController {
 public:
-	Controller2D(float maxClimbAngle, float maxDescendAngle, float skinwidth = .015f, int horizontalRayCount = 4, int verticalRayCount = 4)
-		: IController(), m_maxClimbAngle(maxClimbAngle), m_maxDescendAngle(maxDescendAngle), m_skinWidth(skinwidth), m_horizontalRayCount(horizontalRayCount), m_verticalRayCount(verticalRayCount), m_platform(nullptr) {}
+	Controller2D(
+			float maxClimbAngle,
+			float maxDescendAngle,
+			int maskUp,
+			int maskDown,
+			float skinwidth = .015f,
+			int horizontalRayCount = 4,
+			int verticalRayCount = 4)
+		: IController(), m_maxClimbAngle(maxClimbAngle), m_maxDescendAngle(maxDescendAngle), m_skinWidth(skinwidth), m_horizontalRayCount(horizontalRayCount),
+		  m_verticalRayCount(verticalRayCount), m_maskUp(maskUp), m_maskDown(maskDown), m_platform(nullptr) {}
     Controller2D(const Controller2D&);
 	virtual ~Controller2D();
 	void Start() override;
@@ -84,6 +92,8 @@ private:
 	float m_maxClimbAngle;
 	float m_maxDescendAngle;
     bool m_wasGnd;
+	int m_maskUp;
+	int m_maskDown;
 };
 
 inline std::type_index Controller2D::GetType() {

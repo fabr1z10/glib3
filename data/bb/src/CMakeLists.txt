@@ -12,5 +12,6 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../lib)
 add_library(bubble SHARED
     zenchan.cpp
     bub.cpp
+    bubble.cpp
     factories.cpp
 )

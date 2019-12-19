@@ -177,7 +177,8 @@ factory.tiled.make_platform = function(args)
 
 		
 
-		local c = (collide == 1) and {args.width, 1, 32, 1} or nil
+		local c = (collide > 0) and {args.width, 1, 32, 1} or nil
+		if (collide == 2) then c[3] = 64 end
 		return factory.tiled.create_from_data {
 			pos={args.pos[1], args.pos[2]-1}, z = args.z or 0, width = w, height=2, data = data,
 			collide_rect=c

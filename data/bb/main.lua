@@ -44,9 +44,10 @@ variables = {
 			player = 1,
 			platform = 2,
 			foe = 4,
-			player_attack = 8,
+			bubble = 8,
 			foe_attack = 16,
-			platform_passthrough = 32
+			platform_passthrough = 32,
+			platform_bubble = 64,
 
 		},
 		tags = {
@@ -57,6 +58,7 @@ variables = {
 			bonus = 5,
 			basicfoe = 6,
 			pickupitem = 7,
+			bubble = 8,
 		}
 	},
 }

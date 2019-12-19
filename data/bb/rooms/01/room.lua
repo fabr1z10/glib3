@@ -7,7 +7,7 @@ local roomInfo = {
 	name = "1",
 	next = "2",
 	player_factory = factory.player.create,
-	player_args = { pos={2, 1}, id = "nayu", speed =150 },	
+	player_args = { pos={2, 1}, id = "nayu", speed =50 },	
 }
 
 local td = {
@@ -45,7 +45,7 @@ local items_d = {
 	factory.tiled.make_platform { pos={28, 10}, z=-1, width=2, left=0, right=1, td=td },
 	factory.tiled.make_platform { pos={28, 15}, z=-1, width=2, left=0, right=1, td=td },
 	factory.tiled.make_platform { pos={2,0}, z=-1, width=28, left=1, right=1, td=td},
-	factory.tiled.make_platform { pos={2,25}, z=-1, width=28, left=1, right=1, td=td, collide=0},
+	factory.tiled.make_platform { pos={2,25}, z=-1, width=28, left=1, right=1, td=td, collide=2},
 	factory.tiled.make_wall {pos={0,0}, z=-2,data ={0,0,0,0,0,0,0,0}, right = 0, height = 26, td=td},
 	factory.tiled.make_wall {pos={30,0}, z=-2,data ={0,0,0,0,0,0,0,0}, right = 1, height = 26, td=td},
 

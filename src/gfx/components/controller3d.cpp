@@ -193,9 +193,6 @@ void Controller3D::DescendSlope(glm::vec3& vel) {
 // this will have x and z components
 void Controller3D::HorizontalCollisions(glm::vec3& vel) {
 
-    if (m_entity->GetPosition().x > 399.007438042){
-        int ciao = 200;
-    }
     float dxw = vel.x * (m_entity->GetFlipX() ? -1.0f : 1.0f);
     glm::vec3 horizontalShift(dxw, 0.0f, vel.z);
     glm::vec3 horizontalDir = glm::normalize(glm::vec3(vel.x, 0.0f, vel.z));
