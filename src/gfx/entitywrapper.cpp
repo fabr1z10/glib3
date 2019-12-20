@@ -18,6 +18,8 @@
 #include <gfx/components/platform.h>
 #include <gfx/components/depth25.h>
 #include <gfx/components/follow.h>
+#include <gfx/components/luahook.h>
+extern GLFWwindow* window;
 
 float EntityWrapper::GetX() const {
     return m_underlying->GetPosition().x;
@@ -153,6 +155,13 @@ int EntityWrapper::AddEntity(luabridge::LuaRef ref, EntityWrapper* parent) {
 
 
 }
+
+bool EntityWrapper::isKeyDown(int id) {
+    int state = glfwGetKey(window, id);
+    return (state == GLFW_PRESS);
+
+}
+
 
 void EntityWrapper::RemoveEntityFromTag(const std::string& tag) {
     std::cout << "*** lua request delete item with tag = " << tag << "\n";
@@ -428,3 +437,11 @@ void EntityWrapper::SetFollow(bool value) {
 
     m_underlying->GetComponent<Follow>()->setActive(value);
 }
+
+
+void EntityWrapper::Call(const std::string& id, luabridge::LuaRef args) {
+    LuaHook* luaHook = m_underlying->GetComponent<LuaHook>();
+    luaHook->call(id, args);
+
+}
+

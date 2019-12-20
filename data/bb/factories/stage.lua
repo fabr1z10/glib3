@@ -11,8 +11,9 @@ factory.stage.create = function(args)
 				type = "collision", 
 				size = {args.collisionSize, args.collisionSize}, 
 				response = {
-					{ tag = {variables.collision.tags.player, variables.collision.tags.pickupitem}, onenter = factory.pickupitem.response },
-
+					--{ tag = {variables.collision.tags.player, variables.collision.tags.pickupitem}, onenter = factory.pickupitem.response },
+					{ tag = {variables.collision.tags.player, variables.collision.tags.bubble}, onenter = factory.bubble.response },
+					{ tag = {variables.collision.tags.bubble, variables.collision.tags.basicfoe}, onenter = factory.bubble.hitenemy },
 				}
 			},
 			{ 

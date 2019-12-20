@@ -145,6 +145,7 @@ SceneFactory::SceneFactory() {
     m_componentFactory.Add<PolyMoverCompFactory>("polymover");
     m_componentFactory.Add<EllipseMoverCompFactory>("ellipsemover");
     m_componentFactory.Add<Depth25CompFactory>("depth25");
+    m_componentFactory.Add<LuaHookCompFactory>("luahook");
     //m_componentFactory.Add<RaycastControllerComponentFactory>("raycastcontroller");
     //m_componentFactory.Add<BillboardComponentFactory>("billboard");
 

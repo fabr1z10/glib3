@@ -30,6 +30,7 @@ public:
     int GetCollisionTag() const override;
     int GetCollisionFlag() const override;
     int GetCollisionMask() const override;
+    int setCollisionMask(int);
     std::shared_ptr<Component> clone() const override;
     std::type_index GetType() override;
     void ofu(Animator*a);

@@ -27,7 +27,7 @@ struct EntityWrapper {
      * @return the id of the newly created entity
      */
     static int AddEntity(luabridge::LuaRef ref, EntityWrapper* parent);
-
+    static bool isKeyDown(int);
 
     static EntityWrapper GetEntityFromTag(const std::string&);
     static EntityWrapper GetEntityFromId(int id);
@@ -100,6 +100,7 @@ struct EntityWrapper {
     void ChangeStateParam(const std::string& name, luabridge::LuaRef ref);
     void ResetState();
     void SetFollow(bool);
+    void Call(const std::string& id, luabridge::LuaRef args);
     luabridge::LuaRef GetInfo();
     static void KillScript(const std::string& scriptName);
 };

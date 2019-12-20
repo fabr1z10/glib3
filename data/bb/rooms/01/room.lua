@@ -28,10 +28,10 @@ local items_dynamic = {
 room = factory.stage.create (roomInfo)
 
 local items_d = {
-	factory.goomba.create {
+	factory.zenchan.create {
 		sprite="zenchan", pos ={8, 15},
 	},
-	factory.goomba.create {
+	factory.zenchan.create {
 		sprite="zenchan", pos ={8, 17},
 	},
 	factory.tiled.make_platform { pos={7, 5}, z=-1, width=18, left=0, right=0, td=td },

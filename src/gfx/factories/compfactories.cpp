@@ -20,7 +20,7 @@
 #include <gfx/components/depth25.h>
 #include <gfx/components/mover.h>
 #include <gfx/components/ellipsemover.h>
-
+#include <gfx/components/luahook.h>
 #include <gfx/components/billboard.h>
 #include <gfx/components/parallax.h>
 #include <gfx/components/parallax3d.h>
@@ -1098,5 +1098,10 @@ std::shared_ptr<Component> GarbageCollectCompFactory::Create(luabridge::LuaRef &
     auto ptr = std::make_shared<GarbageCollect>(target, maxDist.x, maxDist.y);
     return ptr;
 
+
+}
+
+std::shared_ptr<Component> LuaHookCompFactory::Create(luabridge::LuaRef &ref) {
+    return std::make_shared<LuaHook>();
 
 }

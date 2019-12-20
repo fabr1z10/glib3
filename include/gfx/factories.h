@@ -88,7 +88,7 @@ FACTORY(EllipseMoverCompFactory, Component)
 FACTORY(Depth25CompFactory, Component)
 FACTORY(StateMachineCompFactory, Component)
 FACTORY(ExtStateMachineCompFactory, Component)
-
+FACTORY(LuaHookCompFactory, Component)
 //FACTORY(RaycastControllerComponentFactory, Component)
 
 // Frame handlers

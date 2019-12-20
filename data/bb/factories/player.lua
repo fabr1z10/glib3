@@ -8,10 +8,8 @@ factory.player.hit_by_enemy = function(player, enemy)
 end
 
 factory.player.makebubble = function(x, y, z) 
-	print ("CIAO!!!")
 	local m = monkey.getEntity("main")
 	local p = monkey.getEntity("player")
-	print ("CIAO!!!")
 	monkey.addEntity({
 		type="sprite",
 		model="bubble", 
@@ -22,8 +20,9 @@ factory.player.makebubble = function(x, y, z)
 				type = "smartcollider", 
 				tag = variables.collision.tags.bubble, 
 				flag = variables.collision.flags.bubble, 
-				mask = variables.collision.flags.foe | variables.collision.flags.bubble
-			},		 	
+				mask = variables.collision.flags.player | variables.collision.flags.foe | variables.collision.flags.bubble
+			},		
+			{ type ="luahook" },
 		 	{
 		 	 	type="extstatemachine", 
 		 	 	initialstate = "walk",

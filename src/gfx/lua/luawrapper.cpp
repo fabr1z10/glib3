@@ -25,6 +25,8 @@ void LuaWrapper::Init() {
             .addFunction("enablekeyboard", &luaFunctions::EnableKeyboard)
             .addFunction("enablekey", &luaFunctions::EnableKey)
             .addFunction("killscript",&EntityWrapper::KillScript)
+            .addFunction("iskeydown",&EntityWrapper::isKeyDown)
+
 
                     //.addFunction("enableGroup", &EntityWrapper::EnableGroup)
                     //.addFunction("disableGroup", &EntityWrapper::DisableGroup)
@@ -74,6 +76,7 @@ void LuaWrapper::Init() {
             .addFunction("getattackrect", &EntityWrapper::GetAttackRect)
             .addFunction("dropcharacters", &EntityWrapper::DropCharacters)
             .addFunction("setfollow", &EntityWrapper::SetFollow)
+            .addFunction("call", &EntityWrapper::Call)
             .endClass();
 }
 

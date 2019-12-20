@@ -4,7 +4,9 @@
 #include <list>
 #include <functional>
 
+
 class Controller2D;
+class SmartCollider;
 
 struct BubbleMove {
     glm::vec2 toPoint;
@@ -31,14 +33,17 @@ public:
 
 private:
     void initMove(int);
-    void c1();
+    // behaviors
+    void shoot(float);
+    void rise(float);
+    void blowup(float);
+    void pop();
     float m_speed;
     float m_speedUp;
     bool m_left;
-    bool m_shooting;
     Controller2D* m_controller2D;
     IAnimator* m_animator;
-
+    SmartCollider* m_collider;
     Entity* m_entity;
     float m_x0;
     std::vector<BubbleMove> m_moves;
@@ -49,9 +54,10 @@ private:
     glm::vec2 m_direction;
     glm::vec2 m_goal;
     float m_timer;
-    float m_t1;
-    float m_t2;
     std::list<TimedEvent> m_timedEvents;
+    std::vector<std::function<void(float)>> m_behaviors;
+    int m_currentBehavior;
+
 };
 
 

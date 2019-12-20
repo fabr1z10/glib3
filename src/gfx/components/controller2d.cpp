@@ -104,7 +104,7 @@ glm::vec2 dx(delta);
         m_entity->MoveLocal(glm::vec3(actualMove.x, actualMove.y, 0));
         if (!m_wasGnd && m_details.below) {
             glm::vec3 p=m_entity->GetPosition();
-            std::cout << "AFTER+++ " << p.x << "," << p.y << std::endl;
+            //std::cout << "AFTER+++ " << p.x << "," << p.y << std::endl;
         }
     }
 }

@@ -1,6 +1,6 @@
-factory.goomba = {}
+factory.zenchan = {}
 
-factory.goomba.response = function (mario, goomba, sx, sy) 
+factory.zenchan.response = function (mario, goomba, sx, sy) 
 	if (goomba.state == "dead") then
 		return
 	end
@@ -26,7 +26,43 @@ factory.goomba.response = function (mario, goomba, sx, sy)
 
 end
 
-factory.goomba.create = function (args, pos) 
+factory.zenchan.makebubble = function(args) 
+	local m = monkey.getEntity("main")
+	print ("FOTTETETETEETETETETETE" .. tostring(args.x) .. " " .. tostring(args.z) .. " " .. tostring(args.y))
+	monkey.addEntity(
+	{
+		type="sprite",
+		model="zenchan_bubble", 
+		pos = {args.x, args.y, args.z},
+		-- components = { 
+		--  	{ type="controller2d", maxclimbangle = 80, maxdescendangle = 80, horizontalrays=4, verticalrays=4, maskup = 64 },
+		-- 	{ 
+		-- 		type = "smartcollider", 
+		-- 		tag = variables.collision.tags.bubble, 
+		-- 		flag = variables.collision.flags.bubble, 
+		-- 		mask = variables.collision.flags.player
+		-- 	},		
+		-- 	{ type ="luahook" },
+		--  	{
+		--  	 	type="extstatemachine", 
+		--  	 	initialstate = "walk",
+		--  	 	states = {
+		--  	 		{ 
+		--  	 			id = "walk", 
+		--  	 			state = {
+		--  	 				type = "bubble",
+		--  	 				left = false,
+		--  	 				speed = 100,
+		--  	 				speedup = 50,
+		--  	 			},
+		--  	 		},
+ 	-- 			}
+ 	--  		}
+		--  }
+	}, m)
+end
+
+factory.zenchan.create = function (args, pos) 
 	glib.assert (args.sprite, "sprite")
 	return {
 		pos = {args.pos[1]*16, args.pos[2]*16, 0},
@@ -42,6 +78,7 @@ factory.goomba.create = function (args, pos)
 				flag = variables.collision.flags.foe, 
 				mask = variables.collision.flags.player
 			},
+			{ type="info", bubble = factory.zenchan.makebubble },
 			{ 
 				type="extstatemachine", 
 				initialstate = "walk",
