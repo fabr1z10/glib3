@@ -1,9 +1,7 @@
 package.path = '/home/fabrizio/glib3/lualib/?.lua;' .. package.path
 
-
-
-
 engine = {
+	extension = "../lib/libscumm.so",
 	device_size = { 320, 200 },
 	window_size = { 640, 400 },
 	title = "The secret of Monkey Island",
@@ -106,7 +104,7 @@ variables = {
 
 	save_states = {
 		start = function()
-			engine.state.room = "lookout"
+			engine.state.room = "scummbar"
 			engine.state.previousRoom =""
 		end,
 		taken_stuff_from_kitchen = function()
@@ -155,7 +153,7 @@ variables = {
 
 }
 
-variables.save_states.bought_store()
+variables.save_states.start()
 
 --engine.state.scumm.inventory["kitchen.fish"] = 1
 --engine.state.scumm.inventory["pieces_of_eight"] = 1000

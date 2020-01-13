@@ -1,4 +1,3 @@
-print ("Loading <script> lib")
 -- a script is just a wrapper for an array of actions. Each action has an after field which links it to other actions in a graph-like
 -- structure
 script = {

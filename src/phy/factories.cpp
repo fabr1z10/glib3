@@ -1,7 +1,7 @@
 //#include <phy/factories.h>
 //#include <phy/road.h>
-//#include <gfx/quadmesh.h>
-//#include <gfx/components/renderer.h>
+//#include <monkey/quadmesh.h>
+//#include <monkey/components/renderer.h>
 //
 //
 //

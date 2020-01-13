@@ -1,6 +1,6 @@
 #include <iostream>
-#include <gfx/lua/luawrapper.h>
-#include <gfx/lua/luatable.h>
+#include <monkey/lua/luawrapper.h>
+#include <monkey/lua/luatable.h>
 #include <platformer/platformerfactory.h>
 
 #include <spriteview/sv.h>

@@ -299,8 +299,7 @@ function scumm.factory.basic_room (args)
 
 	function p:add(to, items) 
 		for k,v in ipairs(items) do
-			print ("ciaociao")
-			print (refs[to].tag)
+			--print (refs[to].tag)
 			table.insert(refs[to], v)
 		end
 	end

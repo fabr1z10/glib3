@@ -30,6 +30,9 @@ room:add ( "scummbar.walkarea",
 		scumm.factory.object { id = "scummbar.mancomb" },
 		scumm.factory.object { id = "scummbar.estevan" },
 		scumm.factory.object { id = "scummbar.loompirate"},
+		scumm.factory.object { id = "scummbar.pirate1" },
+		scumm.factory.object { id = "scummbar.pirate2" },
+
 		scumm.factory.object { id = "scummbar.ilp1"},
 		scumm.factory.object { id = "scummbar.ilp2"},
 		scumm.factory.object { id = "scummbar.ilp3"},
@@ -50,30 +53,41 @@ room:add( "main", {
 })
 
 
-function run_background_script(actor, anim) 
-	local mancomb_script = script:new()
-	mancomb_script.actions = {
-		action.random_delay { id=1, min=1, max=4 },
-		action.animate_once { id=2, actor = actor, anim = anim },
-		action.animate { id=3, actor = actor, anim = "idle" },
+function run_background_script(actor, a, b, c, d) 	
+	local actions = {
+		{ ref = 1, type = action.random_delay, args = { min=a, max=b }},
+		{ type = action.animate, args = { tag = actor, anim = "idle_2", fwd = true, sync = true }},
+		{ type = action.random_delay, args = { min=c, max=d }},
+		{ type = action.animate, args = { tag = actor, anim = "idle_2", fwd = false, sync = true }},
+		{ type = action.animate, args = { tag = actor, anim = "idle_1", sync = true }},
+		--action.animate { id=3, tag = actor, anim = "idle_1", sync = true },
 	}
-	mancomb_script.loop = 1
-	monkey.play(mancomb_script)
+	local s = script.make(actions, 1)
+	monkey.play(s)
 end
 
 function run_background_script_2(actor, anim_transition, anim2) 
-	local mancomb_script = script:new()
-	mancomb_script.actions = {
-		action.random_delay { id=1, min=1, max=4 },
-		action.animate_once { id=2, actor = actor, anim = anim_transition },
-		action.animate { id=3, actor = actor, anim = anim2, },
-		action.random_delay { id=4, min=1, max=4 },
-		action.animate_once { id=5, actor = actor, anim = anim_transition },		
-		action.animate { id=6, actor = actor, anim = "idle", },
+	-- mactions = {
+	-- 	{ ref = 1, type = action.random_delay, args = { min=1, max=4 }},
+
+	-- 	-- action.animate_once { id=2, actor = actor, anim = anim_transition },
+	-- 	-- action.animate { id=3, actor = actor, anim = anim2, },
+	-- 	-- action.random_delay { id=4, min=1, max=4 },
+	-- 	-- action.animate_once { id=5, actor = actor, anim = anim_transition },		
+	-- 	-- action.animate { id=6, actor = actor, anim = "idle", },
 		
-	}
-	mancomb_script.loop = 1
-	monkey.play(mancomb_script)
+	-- }
+	-- local s = script.make(actions, 1)
+
+	-- mancomb_script.loop = 1
+	-- monkey.play(mancomb_script)
+end
+
+local animate = function() 
+	run_background_script("scummbar.mancomb", 1, 4, 0, 0)
+	run_background_script("scummbar.pirate1", 1, 4, 1, 4)
+	run_background_script("scummbar.pirate2", 1, 4, 1, 4)
+
 end
 
 local cook = function() 
@@ -153,3 +167,4 @@ local cook = function()
 end
 
 table.insert(room.initstuff, cook)
+table.insert(room.initstuff, animate)

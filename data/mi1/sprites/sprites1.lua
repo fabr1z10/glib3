@@ -93,7 +93,7 @@ local s = {
 	door_kitchen_pier_open = {x=435, y=143, width=32, height=60},
 	door_kitchen_pier_close = {x=469, y=143, width=32, height=60},
 	mancomb_1 = {x=241, y=68, width=33, height=40},
-	mancomb_2 = {x=277, y=68, width=36, height=39},
+	mancomb_2 = {x=277, y=68, width=36, height=39, anchor={1,-1}},
 	estevan_1 = {x=318, y=76, width=35, height=27},
 	estevan_2 = {x=355, y=76, width=39, height=27},
 	estevan_3 = {x=396, y=76, width=37, height=27},
@@ -360,6 +360,11 @@ local s = {
 	swordmaster_tiny_2 = {x=494,y=465,width=8,height=12,anchor={4,0}},
 	swordmaster_tiny_3 = {x=504,y=465,width=5,height=12,anchor={3,0}},
 
+	scummbar_pirate_1_1 = {x=330,y=1,width=26,height=27},
+	scummbar_pirate_1_2 = {x=358,y=1,width=27,height=27},
+	scummbar_pirate_1_3 = {x=387,y=1,width=26,height=27},
+	scummbar_pirate_2_1 = {x=330,y=31,width=36,height=37},
+	scummbar_pirate_2_2 = {x=368,y=31,width=36,height=37},
 
 	
 	
@@ -953,6 +958,31 @@ engine.assets.models["scummbar.mancomb"] = {
 		{ name = "idle_2", frames = { { duration = dt, quads = {{ id = s.mancomb_2 }}}}}
 	}
 }
+
+engine.assets.models["scummbar.pirate1"] = {
+    sheet = sheet2,
+    type = "sprite",
+    ppu=1,
+	animations = {
+		{ name = "idle_1", frames = { { duration = dt, quads = {{ id = s.scummbar_pirate_1_1 }}}}},
+		{ name = "idle_2", loop = false, frames = { 
+			{ duration = dt, quads = {{ id = s.scummbar_pirate_1_2 }}},
+			{ duration = dt, quads = {{ id = s.scummbar_pirate_1_3 }}},			
+		}}
+	}
+}
+engine.assets.models["scummbar.pirate2"] = {
+    sheet = sheet2,
+    type = "sprite",
+    ppu=1,
+	animations = {
+		{ name = "idle_1", frames = { { duration = dt, quads = {{ id = s.scummbar_pirate_2_1 }}}}},
+		{ name = "idle_2", loop = false, frames = { 
+			{ duration = dt, quads = {{ id = s.scummbar_pirate_2_2 }}},
+		}}
+	}
+}
+
 
 engine.assets.models["scummbar.estevan"] = {
     sheet = sheet,

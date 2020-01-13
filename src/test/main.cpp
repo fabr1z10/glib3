@@ -1,8 +1,8 @@
 #include <iostream>
-#include <gfx/math/closest.h>
-#include <gfx/math/rect.h>
-#include <gfx/math/geom.h>
-#include <gfx/math/poly.h>
+#include <monkey/math/closest.h>
+#include <monkey/math/rect.h>
+#include <monkey/math/geom.h>
+#include <monkey/math/poly.h>
 
 void help01 (std::shared_ptr<Shape> shape, glm::vec2 P, glm::vec2 o) {
     glm::vec2 p =  ClosestPointOnEdge::Find(*(shape.get()), P);
