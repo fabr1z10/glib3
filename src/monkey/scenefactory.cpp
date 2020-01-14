@@ -5,7 +5,7 @@
 #include <monkey/factories/skeleton.h>
 #include <iostream>
 #include <monkey/engine.h>
-#include <dlfcn.h>
+#include <monkey/dyloader.h>
 
 void SceneFactory::Init(Engine* engine) {
     // initialize lua
@@ -27,22 +27,23 @@ void SceneFactory::Init(Engine* engine) {
 
     std::string extension = engineDef.Get<std::string>("extension", "");
     if (!extension.empty()) {
-        std::string libName = extension;
-        void* handle = dlopen(libName.c_str(), RTLD_NOW);
-        if (handle == NULL) {
-            GLIB_FAIL("ERROR! Cannot open extension library " << libName << ": " << dlerror());
-        } else {
-            std::cout << "Loaded succesfully extension: " << libName << std::endl;
-        }
-        typedef void (*hello_t)(SceneFactory*);
-
-        hello_t hello = (hello_t) dlsym(handle, "hello");
-        const char *dlsym_error = dlerror();
-        if (dlsym_error) {
-            std::cerr << "Cannot load symbol 'hello': " << dlsym_error << '\n';
-        } else {
-            hello(this);
-        }
+        DynamicLoader::load(extension, this);
+//        std::string libName = extension;
+//        void* handle = dlopen(libName.c_str(), RTLD_NOW);
+//        if (handle == NULL) {
+//            GLIB_FAIL("ERROR! Cannot open extension library " << libName << ": " << dlerror());
+//        } else {
+//            std::cout << "Loaded succesfully extension: " << libName << std::endl;
+//        }
+//        typedef void (*hello_t)(SceneFactory*);
+//
+//        hello_t hello = (hello_t) dlsym(handle, "hello");
+//        const char *dlsym_error = dlerror();
+//        if (dlsym_error) {
+//            std::cerr << "Cannot load symbol 'hello': " << dlsym_error << '\n';
+//        } else {
+//            hello(this);
+//        }
     }
     extendLua();
 }
