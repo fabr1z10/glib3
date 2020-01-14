@@ -1,3 +1,4 @@
+#include <algorithm> 
 #include <monkey/math/compound.h>
 #include <monkey/error.h>
 

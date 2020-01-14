@@ -1,7 +1,6 @@
 #pragma once
 
-#pragma once
-
+#include <string>
 #include <monkey/activity.h>
 
 class EnableBlock : public Activity {

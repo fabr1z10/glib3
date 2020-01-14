@@ -28,7 +28,8 @@ std::string SkeletalModel::GetDefaultAnimation() const {
 }
 
 Bounds SkeletalModel::getBoundingBox(const std::vector<float> &angles) {
-
+	// TODO
+	return Bounds();
 }
 
 void SkeletalModel::Draw(Shader* shader, const std::vector<float>& angles) {
@@ -156,6 +157,8 @@ void SkeletalModel::addAnimation(const std::string& name, std::shared_ptr<Skelet
 
 float SkeletalModel::addAttack(const std::string &anim, float t, glm::vec4 box) {
     m_attackInfo[anim] = SkeletalAttackInfo{t, std::make_shared<Rect>(box[2], box[3], glm::vec3(box[0], box[1], 0.0f))};
+	// TODO
+	return 0.0f;
 }
 
 SkeletalAttackInfo* SkeletalModel::hasAttack(const std::string &anim, float t0, float t1) {

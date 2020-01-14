@@ -1,5 +1,7 @@
 #pragma once
 
+#define M_PI 3.14159265358979323846
+
 #include "glm/glm.hpp"
 
 class Poly;
@@ -14,10 +16,10 @@ namespace monkey {
     const glm::vec3 back = glm::vec3(0, 0, -1);
     /// ray intersection between P0 + d0 * u and P1 + d1*v
     float rayint (glm::vec2 P0, glm::vec2 d0, glm::vec2 P1, glm::vec2 d1);
+	const float epsilon = 0.0001f;
 }
 
 
-const float epsilon = 0.0001f;
 const float deg2rad = M_PI / 180.0f;
 const float rad2deg = 180.0f / M_PI;
 //const glm::vec3 vec_down = glm::vec3(0, -1, 0);
@@ -28,12 +30,12 @@ struct LineSegment {
 };
 
 template <class T>
-bool isEqual (T x, T y, T eps = epsilon) {
+bool isEqual (T x, T y, T eps = monkey::epsilon) {
     return std::abs(x-y) < eps;
 }
 
 template <class T>
-bool isZero (T x, T eps = epsilon) {
+bool isZero (T x, T eps = monkey::epsilon) {
     return isEqual(x, 0.0f, eps);
 }
 

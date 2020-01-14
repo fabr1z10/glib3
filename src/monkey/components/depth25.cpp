@@ -37,5 +37,6 @@ glm::vec3 Depth25::move(float dx, float ddepth, float delev) {
     m_x += scale*dx;
     m_depth += scale*ddepth;
     m_elevation += scale*delev;
-
+	// TODO: do we neeed this?
+	return glm::vec3(0.0f);
 }

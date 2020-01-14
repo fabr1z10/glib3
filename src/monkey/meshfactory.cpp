@@ -1,3 +1,4 @@
+#include <monkey/math/geom.h>
 #include <monkey/meshfactory.h>
 #include <monkey/vertices.h>
 #include <cmath>

@@ -2,6 +2,7 @@
 #define __GRAPH_H
 
 #include <vector>
+#include <stdexcept>
 #include <unordered_map>
 #include <unordered_set>
 #include <memory>

@@ -236,7 +236,7 @@ std::shared_ptr<IModel> SkeletalModelFactory::Create(luabridge::LuaRef &ref) {
 
     // load the bones
     int boneCount = 0;
-    table.ProcessVector("bones", [&, &boneCount] (luabridge::LuaRef ref) {
+    table.ProcessVector("bones", [&] (luabridge::LuaRef ref) {
         LuaTable bt(ref);
         std::string id = bt.Get<std::string>("id");
         glm::vec4 quad = bt.Get<glm::vec4>("quad");
