@@ -4,7 +4,8 @@
 #include <map>
 #include <GL/glew.h>
 #include <glm/glm.hpp>
-#include <freetype2/ft2build.h>
+#include <ft2build.h>
+
 #include FT_FREETYPE_H
 
 struct Glyph {
