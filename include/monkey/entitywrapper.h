@@ -29,6 +29,14 @@ struct EntityWrapper {
     static int AddEntity(luabridge::LuaRef ref, EntityWrapper* parent);
     static bool isKeyDown(int);
 
+    /** get all files in folder, return as array
+     *
+     * @param dir this is the name of the folder relative to HOME
+     *        recursive whether the search is recursive
+     * @return a list of lua files in the folder
+     */
+    static luabridge::LuaRef getFiles (const std::string& dir, bool recursive);
+
     static EntityWrapper GetEntityFromTag(const std::string&);
     static EntityWrapper GetEntityFromId(int id);
 

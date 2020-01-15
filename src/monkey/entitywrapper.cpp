@@ -1,3 +1,4 @@
+
 #include <monkey/entitywrapper.h>
 #include <monkey/components/renderer.h>
 #include <monkey/components/hotspot.h>
@@ -19,6 +20,8 @@
 #include <monkey/components/depth25.h>
 #include <monkey/components/follow.h>
 #include <monkey/components/luahook.h>
+#include <boost/filesystem/operations.hpp>
+
 extern GLFWwindow* window;
 
 float EntityWrapper::GetX() const {
@@ -445,3 +448,11 @@ void EntityWrapper::Call(const std::string& id, luabridge::LuaRef args) {
 
 }
 
+
+luabridge::LuaRef EntityWrapper::getFiles(const std::string &dir, bool recursive) {
+    for (boost::filesystem::directory_iterator itr(dir); itr != boost::filesystem::directory_iterator(); ++itr) {
+        std::string current_file = itr->path().string();
+        std::cout << "file = " << current_file << std::endl;
+    }
+
+}

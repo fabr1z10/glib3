@@ -1,18 +1,17 @@
 #include <monkey/lua/luawrapper.h>
-#include <monkey/error.h>
-
 #include <monkey/engine.h>
 #include <monkey/entitywrapper.h>
+#include <boost/filesystem.hpp>
 
 lua_State* LuaWrapper::L;
 
 void LuaWrapper::Init() {
     L = luaL_newstate();
-
     luaL_openlibs(L);
     setLuaPath(Engine::get().GetDirectory());
     luabridge::getGlobalNamespace(L)
             .beginNamespace("monkey")
+            .addFunction("getFiles", &EntityWrapper::getFiles)
             .addFunction("getEntity", &EntityWrapper::GetEntityFromTag)
             .addFunction("getEntityFromId", &EntityWrapper::GetEntityFromId)
             .addFunction("addEntity", &EntityWrapper::AddEntity)

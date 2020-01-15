@@ -26,7 +26,7 @@ find_package(Freetype REQUIRED)
 find_package(PNG REQUIRED)
 find_package(JPEG REQUIRED)
 find_package(Lua REQUIRED)
-
+find_package(Boost COMPONENTS filesystem REQUIRED)
 
 configure_file(foo.h.in foo.h)
 
