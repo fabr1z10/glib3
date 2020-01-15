@@ -2,13 +2,15 @@
 #include <monkey/error.h>
 #include <iostream>
 #include <monkey/scenefactory.h>
+#include <monkey/engine.h>
 
 #ifdef __linux__
 
     #include <dlfcn.h>
     void DynamicLoader::load(const std::string &file, SceneFactory* s) {
+        std::string home = Engine::get().GetDirectory();
 
-        void* handle = dlopen(file.c_str(), RTLD_NOW);
+        void* handle = dlopen((home +"lib/" + file + ".so").c_str(), RTLD_NOW);
         if (handle == NULL) {
             GLIB_FAIL("ERROR! Cannot open extension library " << file << ": " << dlerror());
         } else {

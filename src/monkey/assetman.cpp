@@ -22,7 +22,7 @@ void FontBuilder::Init() {
 
 void TexBuilder::Init() {
 
-    m_gfxDirectory = Engine::get().GetDirectory() + "gfx/";
+    m_gfxDirectory = Engine::get().GetGameDirectory() + "gfx/";
 }
 
 void ModelBuilder::Init() {
@@ -48,7 +48,7 @@ std::shared_ptr<Font> FontBuilder::operator()(const std::string & fontId) const 
     LuaTable table(font);
     std::string file = table.Get<std::string>("file");
     if (file[0] == '.') {
-        file.replace(0, 2, Engine::get().GetDirectory());
+        file.replace(0, 2, Engine::get().GetGameDirectory());
     }
     auto f = std::make_shared<Font>();
     f->loadFromFile(file, 36);

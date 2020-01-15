@@ -19,7 +19,7 @@
 class Engine : public Singleton<Engine> {
 public:
     ~Engine();
-    void Init(const std::string& home);
+    void Init(const std::string& home, const std::string& game);
     void MainLoop();
     bool isRunning() const;
     Entity* GetScene() const;
@@ -73,7 +73,8 @@ public:
     double GetFrameTime() const;
     void SetDirectory(const std::string&);
     std::string GetDirectory() const;
-
+    std::string GetGame() const;
+    std::string GetGameDirectory() const;
 private:
     friend class Singleton<Engine>;
     Engine() : m_mouseEnabled{true}, m_sceneFactory{nullptr} {}
@@ -102,6 +103,8 @@ private:
     std::unordered_map<std::type_index, std::shared_ptr<Runner> > m_runners;
     Keyboard m_keyboard;
     std::string m_directory;
+    std::string m_game;
+    std::string m_gameDirectory;
     std::string m_title;
 };
 
@@ -186,3 +189,9 @@ inline std::string Engine::GetDirectory() const {
     return m_directory;
 }
 
+inline std::string Engine::GetGame() const {
+    return m_game;
+}
+inline std::string Engine::GetGameDirectory() const {
+    return m_gameDirectory;
+}

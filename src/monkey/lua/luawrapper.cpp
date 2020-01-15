@@ -94,9 +94,9 @@ int LuaWrapper::setLuaPath(const std::string& path )
     lua_getfield( L, -1, "path" ); // get field "path" from table at top of stack (-1)
     std::stringstream cur_path;
     cur_path << lua_tostring(L, -1);
-
+    std::string game = Engine::get().GetGame();
     // [NSString stringWithUTF8String:lua_tostring( L, -1 )]; // grab path string from top of stack
-    cur_path << ";" << path << "?.lua"; // do your path magic here
+    cur_path << ";" << path << "data/" << game << "/?.lua;" << path << "lualib/?.lua"; // do your path magic here
     lua_pop( L, 1 ); // get rid of the string on the stack we just pushed on line 5
     lua_pushstring( L, cur_path.str().c_str()); // push the new one
     lua_setfield( L, -2, "path" ); // set the field "path" in table at -2 with value at top of stack

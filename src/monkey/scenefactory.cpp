@@ -10,9 +10,11 @@
 void SceneFactory::Init(Engine* engine) {
     // initialize lua
     LuaWrapper::Init();
-    luabridge::setGlobal(LuaWrapper::L, engine->GetDirectory().c_str(), "_path" );
+    luabridge::LuaRef package = luabridge::getGlobal(LuaWrapper::L, "package");
+    std::cout << "package.path = " << package["path"].cast<std::string>() << "\n";
+    luabridge::setGlobal(LuaWrapper::L, engine->GetGameDirectory().c_str(), "_path" );
     // load main
-    LuaWrapper::Load(Engine::get().GetDirectory() + "main.lua");
+    LuaWrapper::Load(Engine::get().GetGameDirectory() + "main.lua");
 
     LuaTable engineDef(LuaWrapper::GetGlobal("engine"));
 
@@ -225,7 +227,7 @@ std::shared_ptr<Entity> SceneFactory::Create() {
     std::cout << "=================================\n";
     std::cout << "Loading room: "<< room << std::endl;
     std::cout << "=================================\n";
-    LuaWrapper::Load(Engine::get().GetDirectory() + "rooms/" + room + "/room.lua");
+    LuaWrapper::Load(Engine::get().GetGameDirectory() + "rooms/" + room + "/room.lua");
 
     // Create the local assets
     luabridge::LuaRef roomRef = luabridge::getGlobal(LuaWrapper::L, "room");

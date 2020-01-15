@@ -36,13 +36,15 @@ void Engine::EnableKeyboard() {
 }
 
 
-void Engine::Init(const std::string& home) {
+void Engine::Init(const std::string& home, const std::string& game) {
     if (m_sceneFactory == nullptr) {
         GLIB_FAIL("Scene factory has not been set. Please set the factory before calling Init()!");
     }
 
     m_running = false;
     SetDirectory(home);
+    m_game = game;
+    m_gameDirectory = m_directory + "data/" + m_game +"/";
     m_sceneFactory->Init(this);
     // NOW YOU CAN INITIALIZE THE ASSET MANAGER!!!
     m_assetManager.Init();

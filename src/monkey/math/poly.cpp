@@ -180,7 +180,7 @@ bool Hole::isPointInside (glm::vec3 P) const {
     glm::vec3 Plocal = P - glm::vec3(position,0.0f);
 
     bool inside = m_polygon->isPointInside(Plocal);
-    std::cerr << P.x << ", " << P.y << " is inside == " << inside<< " ... " << position.x << ", " << position.y << "\n";
+    //std::cerr << P.x << ", " << P.y << " is inside == " << inside<< " ... " << position.x << ", " << position.y << "\n";
     return inside;
 }
 
