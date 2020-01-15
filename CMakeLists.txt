@@ -16,7 +16,7 @@ set(SRC_DIR ${PROJECT_DIR}/src)
 
 set(CMAKE_CXX_STANDARD 17)
 
-set(CMAKE_CXX_FLAGS "-Wall -Wno-reorder -pthread")
+set(CMAKE_CXX_FLAGS "-pthread")
 
 find_package(OpenGL REQUIRED)
 find_package(GLEW REQUIRED)
@@ -40,18 +40,17 @@ endif (APPLE)
 
 message(STATUS "GLM included at ${GLEW_INCLUDE_DIRS}")
 message(STATUS "GLFW included at ${GLFW3_INCLUDE_DIR}")
-
-if (GLM_FOUND)
-    message("ciao")
-endif()
+message(STATUS "GLEW lib is ${GLEW_LIBRARIES}")
 
 #include_directories(${INCLUDE_DIR} ${FREETYPE_INCLUDE_DIRS} ${GLM_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS} )
 #link_directories(${LIB_DIR})
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
-
+message("OSDIODIDOI")
+message(${BIN_DIR})
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${LIB_DIR})
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${LIB_DIR})
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${BIN_DIR})
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${BIN_DIR})
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${BIN_DIR})
 
 # source directory
 add_subdirectory(src)

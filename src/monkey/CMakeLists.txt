@@ -14,4 +14,11 @@ include_directories(${INCLUDE_DIR} ${FREETYPE_INCLUDE_DIRS} ${GLM_INCLUDE_DIRS} 
 
 target_link_libraries(monkey ${OPENGL_LIBRARIES} glfw ${GLEW_LIBRARIES} ${FREETYPE_LIBRARIES} ${LUA_LIBRARIES} ${PNG_LIBRARY} ${JPEG_LIBRARIES} ${CMAKE_DL_LIBS} alglib)
 
+add_custom_command(
+		TARGET monkey POST_BUILD
+		COMMAND ${CMAKE_COMMAND} -E copy
+				${CMAKE_SOURCE_DIR}/src/config.json
+				${BIN_DIR}/config.json)
+
+message(${CMAKE_CURRENT_BINARY_DIR})
 install(TARGETS monkey DESTINATION ${LIB_DIR})

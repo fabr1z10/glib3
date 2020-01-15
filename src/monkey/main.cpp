@@ -4,6 +4,7 @@
 #include <monkey/engine.h>
 #include <set>
 #include <foo.h>
+#include <nlohmann/json.hpp>
 
 int main(int argc, char* argv[])
 {
