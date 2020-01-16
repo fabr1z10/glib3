@@ -77,12 +77,15 @@ io.write ("loading strings ...")
 require ("text/" .. engine.lang .."/text")
 io.write ("done!\n")
 
-io.write  ("loading sprites ...")
+print  ("===================")
+print  ("loading sprites ...")
 glib.load_folder("sprites")
 io.write ("done! loaded " .. tostring(glib.tablelength(engine.assets.models)) .. " models.\n")
+print  ("===================")
 --print (tostring(engine.assets.models["low_moral_fiber_1"].animations[1].frames[1].quads[2]["id"].x))
 
-
-glib.load_all("items")
-glib.load_all("dialogue")
-
+print  ("===================")
+print ("loading items and dialogues ...")
+glib.load_all("rooms", "items")
+glib.load_all("rooms", "dialogue")
+print  ("===================")

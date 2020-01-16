@@ -44,7 +44,9 @@ void Engine::Init(const std::string& home, const std::string& game) {
     m_running = false;
     SetDirectory(home);
     m_game = game;
-    m_gameDirectory = m_directory + "data/" + m_game +"/";
+    std::stringstream str;
+    str << m_directory << "data/" << m_game << '/';
+    m_gameDirectory = str.str();
     m_sceneFactory->Init(this);
     // NOW YOU CAN INITIALIZE THE ASSET MANAGER!!!
     m_assetManager.Init();

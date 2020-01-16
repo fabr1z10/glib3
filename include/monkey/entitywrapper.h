@@ -35,7 +35,7 @@ struct EntityWrapper {
      *        recursive whether the search is recursive
      * @return a list of lua files in the folder
      */
-    static luabridge::LuaRef getFiles (const std::string& dir, bool recursive);
+    static luabridge::LuaRef getFiles (const std::string& dir, bool recursive, const std::string& pattern);
 
     static EntityWrapper GetEntityFromTag(const std::string&);
     static EntityWrapper GetEntityFromId(int id);
