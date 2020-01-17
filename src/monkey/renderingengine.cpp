@@ -159,7 +159,7 @@ void RenderingEngine::AddCamera(std::unique_ptr<Camera> cam) {
         cam->Resize(widthPixel, heightPixel);
         // get the root entity for each camera
         std::string root = cam->GetRoot();
-        auto rootNode = Ref::Get<Entity>(root).get();
+        auto rootNode = Monkey::get().Get<Entity>(root);
         m_roots.insert(std::make_pair(cam.get(), rootNode));
     }
     m_cameras[cam->GetId()] = std::move(cam);

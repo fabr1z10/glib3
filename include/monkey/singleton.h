@@ -20,6 +20,7 @@ public:
     }
 protected:
     Singleton() = default;
+public:
     Singleton(const Singleton&) = delete;
     Singleton & operator=(Singleton const &) = delete;
 };

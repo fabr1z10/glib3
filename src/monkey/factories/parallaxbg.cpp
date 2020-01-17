@@ -39,10 +39,10 @@ std::shared_ptr<Entity> ParallaxBackgroundFactory::Create(luabridge::LuaRef &ref
     std::shared_ptr<IMesh> mesh = std::make_shared<QuadMesh>(img, quadWidth, height, panelAspectRatio/imgAspectRatio, 1.0f);
 
     auto model = std::make_shared<BasicModel>(mesh);
-    auto renderer = Ref::Create<BasicRenderer>(model);
+    auto renderer = std::make_shared<BasicRenderer>(model);
 
 
-    auto entity = Ref::Create<Entity>();
+    auto entity = std::make_shared<Entity>();
 
 
    // auto parallax = Ref::Create<Parallax>("maincam", factor, range[0], range[1]);

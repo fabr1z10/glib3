@@ -16,7 +16,7 @@ TextView::TextView (glm::vec2 pos, float width, float height, float fontSize, in
     glm::vec2 wpos(GetPosition());
     m_loc = wpos;
 
-    auto cam = Ref::Create<OrthographicCamera>(m_width, m_height,glm::vec4(pos.x, pos.y, m_width, m_height));
+    auto cam = std::make_shared<OrthographicCamera>(m_width, m_height,glm::vec4(pos.x, pos.y, m_width, m_height));
     SetCamera(cam);
     cam->SetPosition(glm::vec3(m_width*0.5f, -m_height*0.5f, 5.0f), glm::vec3(0,0,-1), glm::vec3(0,1,0));
     m_nextPos = glm::vec2(0.0f);

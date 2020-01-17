@@ -7,11 +7,12 @@
 
 
 void ShowMessage::Start() {
-    m_mainCam = Ref::Get<OrthographicCamera>("maincam").get();
-    auto scene = Ref::Get<Entity>("main").get();
+    auto& m = Monkey::get();
+    m_mainCam = m.Get<OrthographicCamera>("maincam");
+    auto scene = m.Get<Entity>("main");
     glm::vec2 currentPos;
     if (m_actor != -1) {
-        auto actor = Ref::Get<Entity>(m_actor);
+        auto actor = m.Get<Entity>(m_actor);
         currentPos = (actor->GetPosition());
     } else {
         currentPos = m_pos;

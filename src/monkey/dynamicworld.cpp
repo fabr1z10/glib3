@@ -14,7 +14,7 @@
 
 void DynamicWorldBuilder::Init() {
     std::cerr << "INIT DYNAMIC WORLD!\n";
-    auto cam = Ref::Get<Camera>(m_camName);
+    auto cam = Monkey::get().Get<Camera>(m_camName);
     cam->OnMove.Register(this, [&] (Camera* cam) { this->OnCameraMove(cam); });
     glm::vec3 camPos = cam->GetPosition();
     // inititalize the center
@@ -22,7 +22,7 @@ void DynamicWorldBuilder::Init() {
     m_yc0 = camPos.y;
     m_x = -1;
     m_y = -1;
-    m_parentEntity =Ref::Get<Entity>("main").get();
+    m_parentEntity = Monkey::get().Get<Entity>("main");
     m_parentEntity->onRemove.Register(this, [&] (Entity* e) {
         auto it = m_outBounds.find(e->GetId());
         if (it != m_outBounds.end()) {
@@ -82,7 +82,7 @@ void DynamicWorldBuilder::UpdateWorld(glm::vec3 pos) {
                 // already created
                 b.Translate(item.m_blueprint->GetPosition());
                 if (!b.Intersects2D(m_activeBounds)) {
-                    Engine::get().Remove(Ref::Get<Entity>(item.m_blueprint->GetId()));
+                    Engine::get().Remove(item.m_blueprint->GetId());
                     std::cerr << "dropping item " << item.m_blueprint->GetId() << std::endl;
                     item.active = false;
                     m_outBounds.insert(item.id);

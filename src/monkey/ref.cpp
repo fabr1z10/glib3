@@ -1,46 +1,42 @@
 #include <monkey/ref.h>
 #include <monkey/engine.h>
 
-int Ref::g_idCount = 0;
+//int Ref::g_idCount = 0;
 
-std::unordered_map<int, std::weak_ptr<Ref> > Ref::g_refs;
-std::unordered_map<std::string, std::weak_ptr<Ref> > Ref::g_taggedRefs;
+//std::unordered_map<int, std::weak_ptr<Ref> > Ref::g_refs;
+//std::unordered_map<std::string, std::weak_ptr<Ref> > Ref::g_taggedRefs;
 
 
-Ref::Ref() : m_id{g_idCount++}, m_active{true} {
+Ref::Ref() : m_id{Monkey::get().getNextId()}, m_active{true} {
+    Monkey::get().add(m_id, this);
 }
 
-Ref::Ref(const Ref & orig) : m_id{g_idCount++}, m_active{orig.m_active} {
+Ref::Ref(const Ref & orig) : m_id{Monkey::get().getNextId()}, m_active{orig.m_active} {
+    Monkey::get().add(m_id, this);
 }
 
 Ref::~Ref() {
+    auto& m = Monkey::get();
     if (!m_tag.empty()) {
-        g_taggedRefs.erase(m_tag);
+        m.remove(m_tag);
     }
-    g_refs.erase(m_id);
+    m.remove(m_id);
 }
 
-bool Ref::isAlive(int id) {
-    return (g_refs.count(id) > 0 && !g_refs.at(id).expired());
-}
 
 
 
 void Ref::SetTag(const std::string & tag) {
+    auto& m = Monkey::get();
+    if (!m_tag.empty()) {
+        m.remove(m_tag);
+    }
     m_tag = tag;
-    Ref::g_taggedRefs.insert(std::make_pair(m_tag, g_refs.at(m_id)));
+    m.add(tag, this);
 }
 
 
 void Ref::dump () {
-    for (const auto& item : g_refs) {
-        auto ptr = item.second.lock();
-//        if (ptr) {
-//            std::cout << item.first << " .. " << ptr->toString() << "\n";
-//        } else {
-//            std::cout << item.first << " !! invalid\n";
-//        }
-    }
 
 }
 

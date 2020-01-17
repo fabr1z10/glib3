@@ -1,12 +1,13 @@
 #include <monkey/activities/setmodel.h>
 #include <monkey/engine.h>
+#include <monkey/monkey.h>
 #include <monkey/components/renderer.h>
 
 SetModel::SetModel(const std::string &actorId, const std::string &model, const std::string &animId, int flip) :
         Activity(), m_actorId(actorId), m_model(model), m_animId(animId), m_flipX(flip) {}
 
 void SetModel::Start() {
-    auto entity = Ref::Get<Entity>(m_actorId).get();
+    auto entity = Monkey::get().Get<Entity>(m_actorId);
     m_renderer = entity->GetComponent<Renderer>();
 
     if (m_renderer == nullptr)

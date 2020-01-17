@@ -13,7 +13,7 @@
 std::shared_ptr<Entity> EntityFactory::Create(luabridge::LuaRef& ref) {
 
 
-    auto entity = Ref::Create<Entity>();
+    auto entity = std::make_shared<Entity>();
 
     LuaTable item(ref);
     std::string tag = item.Get<std::string>("tag", "");
@@ -86,7 +86,7 @@ std::shared_ptr<Entity> EntityFactory::Create(luabridge::LuaRef& ref) {
 std::shared_ptr<Entity> ButtonFactory::Create(luabridge::LuaRef &ref) {
 
     LuaTable table(ref);
-    auto parent = Ref::Create<Entity>();
+    auto parent = std::make_shared<Entity>();
     std::string tag = table.Get<std::string>("tag", "");
     std::string name = table.Get<std::string>("name", "");
     if (!tag.empty()) parent->SetTag(tag);
@@ -159,7 +159,7 @@ std::shared_ptr<Entity> TextViewFactory::Create(luabridge::LuaRef &ref) {
     //glm::vec4 color = table.Get<glm::vec4>("color", glm::vec4(255.0f));
     //color /= 255.0f;
     //std::string font = table.Get<std::string>("font");
-    auto r = Ref::Create<TextView>(pos, size.x, size.y, fontSize, lines, factory);
+    auto r = std::make_shared<TextView>(pos, size.x, size.y, fontSize, lines, factory);
     r->SetTag(tag);
     return r;
 
@@ -168,7 +168,7 @@ std::shared_ptr<Entity> TextViewFactory::Create(luabridge::LuaRef &ref) {
 std::shared_ptr<Entity> BoxedMessageFactory::Create(luabridge::LuaRef& ref) {
     LuaTable table(ref);
 
-    auto entity = Ref::Create<Entity>();
+    auto entity = std::make_shared<Entity>();
     std::string tag = table.Get<std::string>("tag");
     if (!tag.empty()) entity->SetTag(tag);
     glm::vec3 pos = table.Get<glm::vec3>("pos");
@@ -185,10 +185,10 @@ std::shared_ptr<Entity> BoxedMessageFactory::Create(luabridge::LuaRef& ref) {
     //std::string cornerImage = table.Get<std::string>("corner", std::string());
     //std::string borders = table.Get<std::string>("border", std::string());
     // add text entity
-    auto textEntity = Ref::Create<Entity>();
+    auto textEntity = std::make_shared<Entity>();
     auto bounds =textMesh->GetBounds();
     auto model = std::make_shared<BasicModel>(textMesh);
-    auto renderer = Ref::Create<BasicRenderer>(model);
+    auto renderer = std::make_shared<BasicRenderer>(model);
 
     glm::vec4 color = table.Get<glm::vec4>("color");
     glm::vec4 bgColor = table.Get<glm::vec4>("bgcolor");
@@ -225,13 +225,13 @@ std::shared_ptr<Entity> BoxedMessageFactory::Create(luabridge::LuaRef& ref) {
 
     textEntity->SetPosition(glm::vec2(0.0f, text_y));
     // create the box
-    auto box = Ref::Create<Entity>();
+    auto box = std::make_shared<Entity>();
     //glm::vec3 extents = bounds.GetExtents();
 
     auto rect = std::make_shared<Rect>(boxWidth, boxHeight);
     auto boxMesh = MeshFactorySolid::CreateMesh(*(rect.get()), 0.0f);
     auto mod = std::make_shared<BasicModel>(boxMesh);
-    auto box_renderer = Ref::Create<BasicRenderer>(mod);
+    auto box_renderer = std::make_shared<BasicRenderer>(mod);
 
     box->AddComponent(box_renderer);
     box_renderer->SetTint(bgColor);
@@ -240,11 +240,11 @@ std::shared_ptr<Entity> BoxedMessageFactory::Create(luabridge::LuaRef& ref) {
     entity->AddChild(box);
 
     auto fb = [] (const std::string& img, float width, float thickness, float x, float y, float imgw, bool flipv, bool rot) {
-        auto b = Ref::Create<Entity>();
+        auto b = std::make_shared<Entity>();
 
         auto qm = std::make_shared<QuadMesh>(img, width, thickness, width/imgw, flipv ? -1 : 1 );
         auto model = std::make_shared<BasicModel>(qm);
-        auto b_renderer = Ref::Create<BasicRenderer>(model);
+        auto b_renderer = std::make_shared<BasicRenderer>(model);
 
         b->AddComponent(b_renderer);
         b->SetPosition(glm::vec3(x, y, 0.09));
@@ -254,10 +254,10 @@ std::shared_ptr<Entity> BoxedMessageFactory::Create(luabridge::LuaRef& ref) {
     };
 
     auto cb = [] (const std::string& img, float x, float y, float w, float h, bool flipx, bool flipy) {
-        auto b = Ref::Create<Entity>();
+        auto b = std::make_shared<Entity>();
         auto qm = std::make_shared<QuadMesh>(img, w, h, flipx ? -1 : 1, flipy ? -1 : 1 );
         auto model = std::make_shared<BasicModel>(qm);
-        auto b_renderer = Ref::Create<BasicRenderer>(model);
+        auto b_renderer = std::make_shared<BasicRenderer>(model);
         b->AddComponent(b_renderer);
         b->SetPosition(glm::vec3(x, y, 0.095));
         return b;

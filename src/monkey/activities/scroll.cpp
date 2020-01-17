@@ -1,11 +1,12 @@
 #include <monkey/activities/scroll.h>
 #include <monkey/engine.h>
+#include <monkey/monkey.h>
 
 Scroll::Scroll(const std::string &camId, glm::vec2 targetPos, bool relative, float speed) : Activity(),
     m_targetPos{targetPos}, m_relative{relative}, m_speed{speed}, m_camId{camId}, m_distanceToCover{0.0f}, m_distanceCovered{0.0f} {}
 
 void Scroll::Start() {
-    m_camera = Ref::Get<Camera>(m_camId).get();
+    m_camera = Monkey::get().Get<Camera>(m_camId);
     glm::vec2 displacement (0.0f);
     if (m_relative) {
         displacement = m_targetPos;

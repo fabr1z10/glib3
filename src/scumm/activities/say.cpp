@@ -3,12 +3,13 @@
 #include <monkey/activities/animate.h>
 #include <monkey/activities/setstate.h>
 #include <monkey/activities/showmessage.h>
+#include <monkey/monkey.h>
 
 void Say::Start() {
 
     // if the walk has a tag, then get the id
     if (!m_tag.empty()) {
-        m_actorId =  Ref::GetId(m_tag);
+        m_actorId =  Monkey::get().Get<Ref>(m_tag)->GetId();
     }
 
     if (!m_noAnim) {

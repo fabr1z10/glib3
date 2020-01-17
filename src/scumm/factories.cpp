@@ -28,7 +28,7 @@ std::shared_ptr<Component> CharacterComponentFactory::Create(luabridge::LuaRef& 
     char dir = table.Get<std::string>("dir")[0];
     float speed = table.Get<float>("speed");
     std::string initialState = table.Get<std::string>("state");
-    auto c = Ref::Create<StateCharacter>(speed, dir, initialState);
+    auto c = std::make_shared<StateCharacter>(speed, dir, initialState);
     return c;
 }
 
@@ -40,7 +40,7 @@ std::shared_ptr<Component> WalkAreaComponentFactory::Create(luabridge::LuaRef& r
     auto factory = Engine::get().GetSceneFactory();
     luabridge::LuaRef rshape = table.Get<luabridge::LuaRef>("shape");
     auto shape = factory->makeShape(rshape);
-    std::shared_ptr<WalkArea> hotspot =  Ref::Create<WalkArea>(shape, priority);
+    std::shared_ptr<WalkArea> hotspot = std::make_shared<WalkArea>(shape, priority);
 
     if (table.HasKey("onenter")) {
         luabridge::LuaRef r = table.Get<luabridge::LuaRef>("onenter");

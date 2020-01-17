@@ -79,9 +79,9 @@ std::shared_ptr<Entity> SkeletonFactory::Create(luabridge::LuaRef &ref) {
     glm::vec3 pos = table.Get<glm::vec3>("pos", glm::vec3(0.0f));
 
     // create the entity
-    auto entity = Ref::Create<Entity>();
+    auto entity = std::make_shared<Entity>();
 
-    auto renderer = Ref::Create<SkeletalRenderer>(model);
+    auto renderer = std::make_shared<SkeletalRenderer>(model);
     entity->AddComponent(renderer);
     if (!tag.empty()) {
         entity->SetTag(tag);

@@ -1,11 +1,30 @@
 #include <monkey/monkey.h>
 
-//extern std::unordered_map<int, std::weak_ptr<Ref> > Ref::g_refs;
+Monkey::Monkey() : g_id(0) {}
 
-std::shared_ptr<Ref> Monkey::getRef(int id) {
-	auto it = Ref::g_refs.find(id);
-	if (it == Ref::g_refs.end()) {
-		return nullptr;
-	}
-	return std::shared_ptr<Ref>(it->second);
+int Monkey::getNextId() {
+	return g_id++;
+}
+
+void Monkey::add(int id, Ref * ref) {
+	g_refs.insert(std::make_pair(id, ref));
+}
+
+void Monkey::add(const std::string& tag, Ref * ref) {
+	g_taggedRefs.insert(std::make_pair(tag, ref));
+
+}
+
+
+void Monkey::remove(int id) {
+	g_refs.erase(id);
+}
+
+void Monkey::remove(const std::string& tag) {
+	g_taggedRefs.erase(tag);
+}
+
+bool Monkey::isAlive (int id) const {
+	return g_refs.count(id) > 0;
+
 }

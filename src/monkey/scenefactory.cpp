@@ -255,7 +255,7 @@ std::shared_ptr<Entity> SceneFactory::Create() {
 //        LoadModel(a);//    }
 
     // read the scene tree
-    auto rootNode = Ref::Create<Entity>();
+    auto rootNode = std::make_shared<Entity>();
     rootNode->SetTag("_root");
     luabridge::LuaRef rscene = roomTable.Get<luabridge::LuaRef>("scene");
     for (int i = 0; i < rscene.length(); ++i) {

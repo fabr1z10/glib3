@@ -20,7 +20,7 @@ std::shared_ptr<Component> Follow::clone() const {
 
 void Follow::Start() {
 
-    m_cam = Ref::Get<Camera>(m_camId).get();
+    m_cam = Monkey::get().Get<Camera>(m_camId);
 
 
 }

@@ -15,7 +15,7 @@ Component(orig), m_shape(orig.m_shape), m_focus(orig.m_focus), m_priority(orig.m
 }
 
 void HotSpotManager::Init() {
-    m_defaultCamera = Ref::Get<Camera>("maincam").get();
+    m_defaultCamera = Monkey::get().Get<Camera>("maincam");
 
 }
 
@@ -266,11 +266,12 @@ void HotSpot::SetParent(Entity * entity) {
 }
 
 std::shared_ptr<Entity> HotSpot::getDebugMesh() {
-    auto ce = Ref::Create<Entity>();
+
+    auto ce = std::make_shared<Entity>();
 
     auto debugMesh = MeshFactory::CreateMesh(*(m_shape.get()), 5.0f);
     auto model = std::make_shared<BasicModel>(debugMesh);
-    auto cer = Ref::Create<BasicRenderer>(model);
+    auto cer = std::make_shared<BasicRenderer>(model);
 
     ce->AddComponent(cer);
     ce->SetName("_debugmesh");

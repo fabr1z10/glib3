@@ -19,7 +19,7 @@ public:
     void Start() override;
     void Reset() override {
         Activity::Reset();
-        m_entity = nullptr;
+        m_entity = Handle<Entity>();
     }
     void Run (float dt) override ;
     // action ends when animation is completed.

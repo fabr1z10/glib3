@@ -3,6 +3,7 @@
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <monkey/monkey.h>
 #include <monkey/singleton.h>
 #include <monkey/shader.h>
 #include <monkey/scenefactory.h>
@@ -37,7 +38,7 @@ public:
     void SetViewport(float x, float y, float width, float height);
     void Remove(std::shared_ptr<Entity>);
     void Remove(int);
-    void Move (std::shared_ptr<Entity>, std::shared_ptr<Entity>);
+    void Move (Entity*, Entity*);
 
     template <class T>
     T* GetRunner() {
@@ -79,7 +80,7 @@ private:
     friend class Singleton<Engine>;
     Engine() : m_mouseEnabled{true}, m_sceneFactory{nullptr} {}
     void InitGL();
-    std::unordered_map<std::shared_ptr<Entity>, std::shared_ptr<Entity>> m_garbage;
+    std::unordered_map<Entity*, Entity*> m_garbage;
     std::unique_ptr<SceneFactory> m_sceneFactory;
     std::unordered_map<ShaderType, std::unique_ptr<Shader>, EnumClassHash> m_shaders;
     std::shared_ptr<Entity> m_scene;
@@ -145,16 +146,16 @@ inline void Engine::SetSceneFactory (std::unique_ptr<SceneFactory> factory) {
 }
 
 inline void Engine::Remove(std::shared_ptr<Entity> entity) {
-    m_garbage.insert(std::make_pair(entity, nullptr));
+    m_garbage.insert(std::make_pair(entity.get(), nullptr));
 }
 
-inline void Engine::Move(std::shared_ptr<Entity> entity, std::shared_ptr<Entity> parent) {
+inline void Engine::Move(Entity* entity, Entity* parent) {
     m_garbage.insert(std::make_pair(entity, parent));
 }
 
 
 inline void Engine::Remove(int id) {
-    m_garbage.insert(std::make_pair(Ref::Get<Entity>(id), nullptr));
+    m_garbage.insert(std::make_pair(Monkey::get().Get<Entity>(id), nullptr));
 }
 /*
 inline Shader* Engine::GetShader(ShaderType id) {

@@ -1,5 +1,6 @@
 #include <monkey/activities/targetactivity.h>
 #include <monkey/engine.h>
+#include <monkey/monkey.h>
 
 TargetActivity::TargetActivity(int id) : Activity(), m_id(id), m_entity(nullptr) {
 
@@ -12,10 +13,10 @@ TargetActivity::TargetActivity(const std::string& tag) : Activity(), m_tag(tag),
 void TargetActivity::Start() {
     if (m_id == -1) {
         // use tag
-        m_entity = Ref::Get<Entity>(m_tag);
+        m_entity = Handle<Entity>(Monkey::get().Get<Entity>(m_tag));
     } else {
         // use id
-        m_entity = Ref::Get<Entity>(m_id);
+        m_entity = Handle<Entity>(Monkey::get().Get<Entity>(m_id));
     }
 
 
@@ -23,5 +24,5 @@ void TargetActivity::Start() {
 
 void TargetActivity::Reset() {
     Activity::Reset();
-    m_entity = nullptr;
+    m_entity = Handle<Entity>();
 }

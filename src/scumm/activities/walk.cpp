@@ -17,7 +17,7 @@ void Walk::SetComplete() {
 
     Activity::SetComplete();
     // success if it managed ot get to the final point	
-    auto actor = Monkey::get().get<Entity>(m_actorId);
+    auto actor = Monkey::get().Get<Entity>(m_actorId);
     glm::vec2 currentPos(actor->GetPosition());
     m_success =(glm::length(m_p - currentPos) < 0.01);
 }
@@ -27,14 +27,14 @@ void Walk::Start() {
 
     // if the walk has a tag, then get the id
     if (!m_tag.empty()) {
-        m_actorId = Ref::GetId(m_tag);
+        m_actorId = Monkey::get().Get<Ref>(m_tag)->GetId();
     }
     // use the walk-area associated with the character
 
     //auto walkArea = Engine::get().GetRef<WalkArea>("walkarea");
 
     //std::cout << "Calling walk for " << m_actorId << " to " << m_p.x << ", " << m_p.y << "\n";
-    auto actor = Ref::Get<Entity>(m_actorId);
+    auto actor = Monkey::get().Get<Entity>(m_actorId);
     float speed = actor->GetComponent<StateCharacter>()->GetSpeed();
 
     // see if you have an associated walk-area

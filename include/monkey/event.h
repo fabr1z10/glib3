@@ -9,7 +9,7 @@
 #ifndef event_h
 #define event_h
 
-#include <monkey/ref.h>
+#include <monkey/monkey.h>
 #include <functional>
 #include <unordered_map>
 
@@ -47,7 +47,7 @@ public:
 
         for (auto it = m_callbacks.begin(); it != m_callbacks.end(); /* no inc */)
         {
-            if (!Ref::isAlive(it->first)) {
+            if (!Monkey::get().isAlive(it->first)) {
                 // observer is no longer alive, remove the callback
                 m_callbacks.erase(it++);
             }

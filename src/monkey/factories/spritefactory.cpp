@@ -70,8 +70,8 @@ std::shared_ptr<Entity> SpriteFactory::Create (const std::string& name) {
 }
 
 std::shared_ptr<Entity> SpriteFactory::Create (std::shared_ptr<IModel> model) {
-    auto entity = Ref::Create<Entity>();
-    auto renderer = Ref::Create<SpriteRenderer>(model);
+    auto entity = std::make_shared<Entity>();
+    auto renderer = std::make_shared<SpriteRenderer>(model);
     auto animator = std::make_shared<Animator>(model);
     entity->AddComponent(renderer);
     entity->AddComponent(animator);

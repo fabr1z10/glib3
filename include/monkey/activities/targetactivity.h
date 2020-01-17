@@ -2,12 +2,13 @@
 
 #include <monkey/activity.h>
 #include <monkey/entity.h>
+#include <monkey/handle.h>
 
 class TargetActivity : public Activity {
 public:
     //! An activity that acts upon an entity
     //! You can provide the entity by giving the unique identifier or the tag
-    TargetActivity() : Activity(), m_id(-1), m_entity(nullptr) {}
+    TargetActivity() : Activity(), m_id(-1) {}
     virtual ~TargetActivity() { /*std::cerr << "clearing a target act\n";*/ }
     TargetActivity(int id);
     TargetActivity(const std::string& tag);
@@ -20,7 +21,7 @@ public:
     void SetTag (const std::string&);
 
 protected:
-    std::shared_ptr<Entity> m_entity;
+    Handle<Entity> m_entity;
     int m_id;
     std::string m_tag;
 };

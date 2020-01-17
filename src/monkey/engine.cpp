@@ -185,9 +185,9 @@ void Engine::MainLoop() {
                         // remove from parent
                         auto parent = g.first->GetParent();
                         parent->Remove(g.first->GetId());
-                        if (g.second != nullptr) {
-                            g.second->AddChild(g.first);
-                        }
+//                        if (g.second != nullptr) {
+//                            g.second->AddChild(g.first);
+//                        }
                     }
                     m_garbage.clear();
                 }

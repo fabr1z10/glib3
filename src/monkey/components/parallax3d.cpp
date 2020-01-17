@@ -15,7 +15,7 @@ std::shared_ptr<Component> Parallax3D::clone() const {
 }
 
 void Parallax3D::Start() {
-    m_cam = Ref::Get<PerspectiveCamera>(m_camId).get();
+    m_cam = Monkey::get().Get<PerspectiveCamera>(m_camId);
     m_cam->OnMove.Register(this, [&] (Camera* cam) { this->onCameraMove(cam); });
 
     // create the panel
@@ -24,14 +24,14 @@ void Parallax3D::Start() {
     auto h = tex->GetHeight();
 
     float fov = m_cam->getFieldOfView();
-    auto entity = Ref::Create<Entity>();
+    auto entity = std::make_shared<Entity>();
     float panelHeight = 2.0*m_z * tan(fov*0.5f);
     //f<loat horizontalCamWidth = panelHeight * m_cam->getAspectRatio();
     m_panelWidth = panelHeight * (static_cast<float>(w)/h);
     m_halfPanelHeight = 0.5*panelHeight;
     auto mesh = std::make_shared<QuadMesh>(m_img, 3*m_panelWidth, panelHeight, 3, 1);
     auto model = std::make_shared<BasicModel>(mesh);
-    auto renderer = Ref::Create<BasicRenderer>(model);
+    auto renderer = std::make_shared<BasicRenderer>(model);
 
     glm::vec3 camPos = m_cam->GetPosition();
     camPos += glm::vec3(0, -m_halfPanelHeight, -m_z);

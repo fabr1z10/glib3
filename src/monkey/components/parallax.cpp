@@ -17,7 +17,7 @@ std::shared_ptr<Component> Parallax::clone() const {
 }
 
 void Parallax::Begin() {
-    m_cam = Ref::Get<OrthographicCamera>(m_camId).get();
+    m_cam = Monkey::get().Get<OrthographicCamera>(m_camId);
     m_camInitPos = m_cam->GetPosition();
     m_entityInitPos = m_entity->GetPosition();
 

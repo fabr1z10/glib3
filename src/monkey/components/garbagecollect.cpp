@@ -12,7 +12,7 @@ GarbageCollect::GarbageCollect(const GarbageCollect& other) : Component(other){
 }
 
 void GarbageCollect::Start() {
-    m_target = Ref::Get<Camera>(m_tag).get();
+    m_target = Monkey::get().Get<Camera>(m_tag);
 
 
 

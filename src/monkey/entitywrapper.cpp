@@ -130,8 +130,8 @@ void EntityWrapper::SetColor(int r, int g, int b, int a) {
 
 EntityWrapper EntityWrapper::GetEntityFromTag(const std::string& id) {
     try {
-        auto ref = Ref::Get<Entity>(id);
-        return EntityWrapper(ref.get());
+        auto ref = Monkey::get().Get<Entity>(id);
+        return EntityWrapper(ref);
     } catch (Error& err) {
         return EntityWrapper();
     }
@@ -139,8 +139,8 @@ EntityWrapper EntityWrapper::GetEntityFromTag(const std::string& id) {
 
 EntityWrapper EntityWrapper::GetEntityFromId(int id) {
     try {
-        auto ref = Ref::Get<Entity>(id);
-        return EntityWrapper(ref.get());
+        auto ref = Monkey::get().Get<Entity>(id);
+        return EntityWrapper(ref);
     } catch (Error& err) {
         return EntityWrapper();
     }
@@ -168,14 +168,13 @@ bool EntityWrapper::isKeyDown(int id) {
 
 void EntityWrapper::RemoveEntityFromTag(const std::string& tag) {
     std::cout << "*** lua request delete item with tag = " << tag << "\n";
-    auto entity = Ref::Get<Entity>(tag);
-    Engine::get().Remove(entity);
+    auto entity = Monkey::get().Get<Entity>(tag);
+    Engine::get().Remove(entity->GetId());
 }
 
 void EntityWrapper::RemoveEntityFromId (int id) {
     std::cout << "*** lua request delete item with id = " << id << "\n";
-    auto entity = Ref::Get<Entity>(id);
-    Engine::get().Remove(entity);
+    Engine::get().Remove(id);
 
 }
 
