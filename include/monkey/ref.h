@@ -65,12 +65,12 @@ public:
     // bool IsAlive(int);
     virtual void setActive(bool);
     bool isActive() const;
+    static std::unordered_map<int, std::weak_ptr<Ref>> g_refs;
 
 protected:
     Ref();
     Ref(const Ref&);
     static int g_idCount;
-    static std::unordered_map<int, std::weak_ptr<Ref>> g_refs;
     static std::unordered_map<std::string, std::weak_ptr<Ref>> g_taggedRefs;
 
     // unique identifier

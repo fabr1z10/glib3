@@ -1,6 +1,7 @@
 #include "walk.h"
 #include <monkey/engine.h>
 #include <monkey/components/renderer.h>
+#include <monkey/monkey.h>
 #include <monkey/activities/animate.h>
 #include <monkey/activities/move.h>
 #include <monkey/math/shortestpath.h>
@@ -15,8 +16,8 @@
 void Walk::SetComplete() {
 
     Activity::SetComplete();
-    // success if it managed ot get to the final point
-    auto actor = Ref::Get<Entity>(m_actorId);
+    // success if it managed ot get to the final point	
+    auto actor = Monkey::get().get<Entity>(m_actorId);
     glm::vec2 currentPos(actor->GetPosition());
     m_success =(glm::length(m_p - currentPos) < 0.01);
 }
