@@ -52,7 +52,7 @@ public:
 	void Start() override;
 	void Begin() override;
 	bool IsFalling(int);
-
+    void setMask(int maskUp, int maskDown);
 	void Move(glm::vec3&) override;
     bool grounded() const override;
     bool ceiling () const override;

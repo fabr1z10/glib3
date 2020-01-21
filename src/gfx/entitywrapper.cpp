@@ -149,8 +149,8 @@ int EntityWrapper::AddEntity(luabridge::LuaRef ref, EntityWrapper* parent) {
     auto mf = Engine::get().GetSceneFactory();
     auto ptr = mf->makeEntity(ref);
     parent->m_underlying->AddChild(ptr);
-    ptr->start();
-    ptr->Begin();
+    //ptr->start();
+    //ptr->Begin();
     return ptr->GetId();
 
 

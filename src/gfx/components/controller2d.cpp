@@ -325,3 +325,8 @@ void Controller2D::DetachFromPlatform() {
 Controller2D::~Controller2D() {
     DetachFromPlatform();
 }
+
+void Controller2D::setMask(int maskUp, int maskDown) {
+    m_maskDown = maskDown;
+    m_maskUp = maskUp;
+}

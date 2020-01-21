@@ -116,8 +116,8 @@ Shape* SmartCollider::GetShape() {
 }
 
 
-int SmartCollider::setCollisionMask(int tag) {
-    m_tag = tag;
+int SmartCollider::setCollisionMask(int mask) {
+    m_mask = mask;
 }
 int SmartCollider::GetCollisionTag() const {
     if (m_stateMachine == nullptr) {
