@@ -11,6 +11,7 @@ engine.items["scummbar.walkarea"] = scumm.factory.walkarea {
 		 	{374,28,505,28,505,6,374,6}
 		 }
 	},
+	depth = { type="linear_y", values= {0, 1, 144, 0} },
 	priority = 0
 }
 
@@ -96,6 +97,28 @@ engine.items["scummbar.mancomb"] = {
 	actions = {
 		look = { type=action.change_room, args={room = "mancomb" }},
 		talk = { type=action.change_room, args={room = "mancomb" }}
+	}
+}
+
+engine.items["scummbar.pirate1"] = {
+	hotspot = {
+		text = strings.objects.pirate,
+		size = {30, 30},	
+		walk_to = {140, 20},
+		dir = "north",
+	},
+	model = "scummbar.pirate1",
+	pos = {138, 38, -1},
+	actions = {
+ 		look =  { type = scumm.action.say, args = {actor="guybrush", lines = {strings.scummbar[3]} }},
+ 		talk =  { type = scumm.action.say, args = {actor="guybrush", lines = {strings.scummbar[3]} }}		
+	}
+}
+
+engine.items["scummbar.pirate2"] = {
+	model = "scummbar.pirate2",
+	pos = {124, 20, -1},
+	actions = {
 	}
 }
 

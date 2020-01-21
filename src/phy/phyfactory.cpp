@@ -1,6 +1,6 @@
 //#include <phy/phyfactory.h>
 //#include <phy/factories.h>
-//#include <gfx/entitywrapper.h>
+//#include <monkey/entitywrapper.h>
 //#include <platformer/luaext.h>
 //
 //PhyFactory::PhyFactory() : SceneFactory() {

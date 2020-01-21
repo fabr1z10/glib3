@@ -1,11 +1,11 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <spriteview/mousecontrol.h>
-#include <gfx/entity.h>
+#include <monkey/entity.h>
 #include <iostream>
-#include <gfx/math/geom.h>
-#include <gfx/engine.h>
-#include <gfx/components/renderer.h>
+#include <monkey/math/geom.h>
+#include <monkey/engine.h>
+#include <monkey/components/renderer.h>
 
 extern GLFWwindow* window;
 

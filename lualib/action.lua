@@ -25,8 +25,15 @@ end
 action.delay = function (args) 
 	glib.assert (args.sec, "sec")
 	return { type="delay", sec = args.sec }
-
 end
+
+action.random_delay = function (args) 
+	glib.assert (args.min, "min")
+	glib.assert (args.max, "max")
+
+	return { type="delay_dynamic", func = function() return args.min + math.random()*(args.max - args.min) end }
+end
+
 
 
 action.runscript = function(args) 
@@ -128,10 +135,8 @@ action.kill_script = function(args)
 end
 
 action.set_variable = function(args)
-	print ("ciao ciao2")
 	glib.assert (args.var, "var")
 	glib.assert (args.value, "value")
-	print ("ciao")
 	return { type = "callfunc", func = 
 		function()
 			print ("Setting " .. args.var .. " to " .. tostring(args.value))

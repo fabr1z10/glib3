@@ -1,4 +1,4 @@
-print ("exec <scumm/action> script")
+--print ("exec <scumm/action> script")
 
 local items =engine.items
 local dialogues =engine.dialogues

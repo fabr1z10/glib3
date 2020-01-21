@@ -1,18 +1,18 @@
 #include <spriteview/svfactory.h>
-#include <gfx/camera.h>
-#include <gfx/entity.h>
-#include <gfx/components/renderer.h>
-#include <gfx/math/line.h>
-#include <gfx/textmesh.h>
-#include <gfx/meshfactory.h>
-#include <gfx/engine.h>
+#include <monkey/camera.h>
+#include <monkey/entity.h>
+#include <monkey/components/renderer.h>
+#include <monkey/math/line.h>
+#include <monkey/textmesh.h>
+#include <monkey/meshfactory.h>
+#include <monkey/engine.h>
 #include <spriteview/mousecontrol.h>
-#include <gfx/lua/luatable.h>
-#include <gfx/components/hotspot.h>
-#include <gfx/entities/listview.h>
-#include <gfx/entities/treeview.h>
+#include <monkey/lua/luatable.h>
+#include <monkey/components/hotspot.h>
+#include <monkey/entities/listview.h>
+#include <monkey/entities/treeview.h>
 #include <spriteview/sv.h>
-#include <gfx/spritefactory.h>
+#include <monkey/spritefactory.h>
 
 std::string Item2::rootKey = "@@root";
 
