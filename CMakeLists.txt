@@ -18,6 +18,14 @@ set(CMAKE_CXX_STANDARD 17)
 
 set(CMAKE_CXX_FLAGS "-pthread")
 
+if (WIN32)
+    SET(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+endif (WIN32)
+
+IF(MSVC)
+    SET(CMAKE_CXX_FLAGS "/EHsc")
+ENDIF(MSVC)
+
 find_package(OpenGL REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(glfw3 REQUIRED)
@@ -41,11 +49,12 @@ endif (APPLE)
 message(STATUS "GLM included at ${GLEW_INCLUDE_DIRS}")
 message(STATUS "GLFW included at ${GLFW3_INCLUDE_DIR}")
 message(STATUS "GLEW lib is ${GLEW_LIBRARIES}")
+message(STATUS "ISISIS ${Boost_LIBRARIES}")
+message(STATUS "ISISIA ${Boost_FILESYSTEM_LIBRARY}")
 
 #include_directories(${INCLUDE_DIR} ${FREETYPE_INCLUDE_DIRS} ${GLM_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS} )
 #link_directories(${LIB_DIR})
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
-message("OSDIODIDOI")
 message(${BIN_DIR})
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG ${LIB_DIR})
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE ${LIB_DIR})
