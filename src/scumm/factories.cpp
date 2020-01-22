@@ -1,8 +1,8 @@
 #include "factories.h"
-
+//
 #include "components/walkarea.h"
 #include "components/character.h"
-
+//
 #include "activities/turn.h"
 #include "activities/walk.h"
 #include "activities/say.h"
@@ -21,7 +21,6 @@ extern "C" void hello(SceneFactory* f) {
     f->addActivityFactory("say", std::make_unique<SayActFactory>());
     f->addActivityFactory("enable_wall", std::make_unique<EnableBlockActFactory>());
 }
-
 
 std::shared_ptr<Component> CharacterComponentFactory::Create(luabridge::LuaRef& ref) {
     LuaTable table(ref);

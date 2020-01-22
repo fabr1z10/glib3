@@ -49,4 +49,5 @@ public:
         //return luabridge::getGlobal(L, name.c_str());
     }
     static lua_State* L;
+    static luabridge::LuaRef makeTable();
 };

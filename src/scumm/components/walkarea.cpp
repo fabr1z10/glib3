@@ -69,7 +69,8 @@ void WalkArea::assignScaleAndDepth (Entity* e) {
 std::shared_ptr<Entity> WalkArea::getDebugMesh() {
     auto ptr = HotSpot::getDebugMesh();
     auto props = std::make_shared<Properties>();
-    luabridge::LuaRef ciao = luabridge::newTable(LuaWrapper::L);
+    //return nullptr;
+    luabridge::LuaRef ciao = LuaWrapper::makeTable();
     ciao["walkarea_scale"] = false;
     props->addAdditionalProps(ciao);
     ptr->AddComponent(props);

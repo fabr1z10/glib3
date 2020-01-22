@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.3)
 
-add_library(scumm MODULE
+add_library(scumm SHARED
         activities/walk.cpp
         activities/turn.cpp
         activities/say.cpp

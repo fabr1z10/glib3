@@ -103,3 +103,8 @@ int LuaWrapper::setLuaPath(const std::string& path )
     return 0; // all done!
 }
 
+luabridge::LuaRef LuaWrapper::makeTable() {
+
+    luabridge::LuaRef t = luabridge::newTable(LuaWrapper::L);
+    return t;
+}
