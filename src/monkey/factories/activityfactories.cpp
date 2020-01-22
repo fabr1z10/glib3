@@ -12,7 +12,6 @@
 #include <monkey/activities/rotate.h>
 #include <monkey/activities/delay.h>
 #include <monkey/activities/animate.h>
-#include <monkey/activities/changestate.h>
 #include <monkey/activities/showmessage.h>
 #include <monkey/activities/blink.h>
 #include <monkey/activities/cambounds.h>

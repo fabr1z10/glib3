@@ -6,7 +6,6 @@
 #include <monkey/components/animator.h>
 #include <monkey/entities/textview.h>
 #include <monkey/meshfactory.h>
-#include <monkey/entities/heightmap.h>
 #include <monkey/quadmesh.h>
 #include <monkey/model/basicmodel.h>
 

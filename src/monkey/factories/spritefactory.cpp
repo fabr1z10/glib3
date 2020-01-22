@@ -1,5 +1,4 @@
 #include <monkey/model/spritemodel.h>
-#include <monkey/compositemodel.h>
 #include <monkey/spritefactory.h>
 #include <monkey/components/spriterenderer.h>
 #include <monkey/components/animator.h>
