@@ -21,7 +21,8 @@ int main(int argc, char* argv[])
         std::string homeDir = j["home"];
         std::string game(argv[1]);
         auto& engine = Engine::get();
-        engine.SetSceneFactory(std::unique_ptr<SceneFactory>(new SceneFactory));
+        auto factory = std::make_shared<SceneFactory>();
+        engine.SetSceneFactory(factory);
         engine.Init(homeDir, game);
         engine.MainLoop();
     } catch (Error& err) {
@@ -29,7 +30,8 @@ int main(int argc, char* argv[])
         return 1;
     } catch (luabridge::LuaException& e) {
         std::cerr << e.what ();
-    } catch (...) {
+    } catch (nlohmann::json::parse_error& ecd) {
+        std::cerr << ecd.what();
 
     }
     return 0;

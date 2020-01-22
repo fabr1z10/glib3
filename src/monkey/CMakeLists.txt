@@ -8,9 +8,9 @@ file(GLOB MONKEY_SOURCE *.cpp lua/*.cpp components/*.cpp activities/*.cpp math/*
 
 set(CMAKE_ENABLE_EXPORTS ON)
 
-add_executable(monkey ${MONKEY_INCLUDE} ${MONKEY_SOURCE})
+add_library(monkey ${MONKEY_INCLUDE} ${MONKEY_SOURCE})
 
-message(${LUA_INCLUDE_DIR})
+#message(${LUA_INCLUDE_DIR})
 
 include_directories(${INCLUDE_DIR} ${FREETYPE_INCLUDE_DIRS} ${GLM_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS} ${LUA_INCLUDE_DIR})
 

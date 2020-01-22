@@ -25,7 +25,7 @@ public:
     bool isRunning() const;
     Entity* GetScene() const;
     SceneFactory* GetSceneFactory();
-    void SetSceneFactory (std::unique_ptr<SceneFactory> factory);
+    void SetSceneFactory (std::shared_ptr<SceneFactory> factory);
     glm::vec2 GetDeviceSize() const;
     void SetDeviceSize(glm::vec2);
     void RegisterToWindowResizeEvent(WindowResizeListener*);
@@ -81,7 +81,7 @@ private:
     Engine() : m_mouseEnabled{true}, m_sceneFactory{nullptr} {}
     void InitGL();
     std::unordered_map<Entity*, Entity*> m_garbage;
-    std::unique_ptr<SceneFactory> m_sceneFactory;
+    std::shared_ptr<SceneFactory> m_sceneFactory;
     std::unordered_map<ShaderType, std::unique_ptr<Shader>, EnumClassHash> m_shaders;
     std::shared_ptr<Entity> m_scene;
     bool m_running;
@@ -141,8 +141,8 @@ inline bool Engine::isRunning() const {
     return m_running;
 }
 
-inline void Engine::SetSceneFactory (std::unique_ptr<SceneFactory> factory) {
-    m_sceneFactory = std::move(factory);
+inline void Engine::SetSceneFactory (std::shared_ptr<SceneFactory> factory) {
+    m_sceneFactory = factory;
 }
 
 inline void Engine::Remove(std::shared_ptr<Entity> entity) {

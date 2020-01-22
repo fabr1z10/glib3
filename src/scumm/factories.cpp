@@ -11,7 +11,8 @@
 #include <monkey/scenefactory.h>
 #include <monkey/engine.h>
 
-extern "C" void hello(SceneFactory* f) {
+
+void Extension::extend(SceneFactory* f) {
 
     f->addComponentFactory("walkarea", std::make_unique<WalkAreaComponentFactory>());
     f->addComponentFactory("character", std::make_unique<CharacterComponentFactory>());

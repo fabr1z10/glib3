@@ -224,8 +224,10 @@ void Engine::MainLoop() {
         m_runners.clear();
         std::cerr << "done\n";
         m_scene = nullptr;
+        
         m_garbage.clear();
     }
+    m_renderingEngine = nullptr;
 }
 
 // width and height will be pixels!!

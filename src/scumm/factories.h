@@ -2,6 +2,14 @@
 
 #include <monkey/factories.h>
 
+class SceneFactory;
+
+class Extension {
+public:
+	void extend(SceneFactory*);
+
+};
+
 // components
 FACTORY(WalkAreaComponentFactory, Component)
 //FACTORY(WalkStopComponentFactory, Component)

@@ -1,7 +1,7 @@
 --package.path = '/home/fabrizio/glib3/lualib/?.lua;' .. package.path
 
 engine = {
-	extension = "libscumm",
+	extension = "scumm",
 	device_size = { 320, 200 },
 	window_size = { 640, 400 },
 	title = "The secret of Monkey Island",
