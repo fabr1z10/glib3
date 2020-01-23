@@ -159,7 +159,7 @@ models["goomba"] = {
 			{ duration = dt, quads = {{ id = s.goomba_walk_1 } }},
 			{ duration = dt, quads = {{ id = s.goomba_walk_2 } }},
 		}},
-		{ name = "die", box={-8,0,8,16}, frames = { 
+		{ name = "dead", box={-8,0,8,16}, frames = { 
 			{ duration = dt, quads = {{ id = s.goomba_die }}}
 		}}
 	}

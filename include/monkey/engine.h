@@ -155,7 +155,9 @@ inline void Engine::Move(Entity* entity, Entity* parent) {
 
 
 inline void Engine::Remove(int id) {
-    m_garbage.insert(std::make_pair(Monkey::get().Get<Entity>(id), nullptr));
+    if (Monkey::get().isAlive(id)) {
+        m_garbage.insert(std::make_pair(Monkey::get().Get<Entity>(id), nullptr));
+    }
 }
 /*
 inline Shader* Engine::GetShader(ShaderType id) {

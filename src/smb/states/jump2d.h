@@ -1,6 +1,6 @@
 #pragma once
 
-#include "platformerstate.h"
+#include <platformer/states/platformerstate.h>
 
 class Jump2D : public PlatformerState {
 public:

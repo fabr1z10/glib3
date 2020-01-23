@@ -26,7 +26,7 @@ local items_dynamic = {
 	},
 	{
 		factory = factory.blocks.warp_down { to = {2, 25}, x_bounds = {0,256}, y_bounds={256,512} },
-		pos = { {4,2} }
+		pos = { {58,6} }
 	},
 	{
 		factory = factory.blocks.warp_up { to = {164, 0}, x_bounds= {0, roomInfo.worldWidth*engine.tilesize}, y_bounds = {0, roomInfo.worldHeight*engine.tilesize}},
@@ -91,8 +91,12 @@ local items_dynamic = {
 	},
 	{
 		factory = factory.npc.goomba,
-		pos = { {42, 2}, {50, 2}, {52, 2}},
+		pos = { {42, 2}, {50, 2}, {52, 2}, {170, 2}, {172,2}},
 	},
+	-- {
+	-- 	factory = factory.npc.koopa,
+	-- 	pos = { {5,3} },
+	-- },
 	{
 		factory = factory.bg.tiled("big_hill"), 
 		pos = {{0, 2}, {48, 2}, {96, 2}, {144, 2}, {192, 2}},
@@ -129,6 +133,16 @@ local items_dynamic = {
 		factory = factory.bg.tiled("castle",-0.5),
 		pos = { {202, 2}},
 	},		
+	{
+		factory = factory.blocks.spawn(factory.goomba.create, "goomba"),
+		pos = { {3,2,23,3}, {72,2,85,10}, {72,2,87,10}, {90, 2, 102, 2}, {90, 2, 103.5, 2},
+			{105, 2, 117, 2}, {105, 2, 118.5, 2}, {115, 2, 127, 2}, {115, 2, 128.5, 2}, {118, 2, 130.5,2}, {118,2,132,2}  }
+	},
+	{
+		factory = factory.blocks.spawn(factory.koopa.create, "koopa"),
+		pos = { {90, 2, 110, 2},  }
+	},
+
 }
 
 
@@ -139,25 +153,31 @@ local items_dynamic = {
 room = factory.room.create (roomInfo)
 
 room:add_d( {
-	--bonus
-	factory.rect { pos = {0, 16}, img = "block4.png", width=16, height=2 },
-	factory.rect { pos = {0, 18}, img = "brick2.png", width=1, height=11 },
-	factory.rect { pos = {4, 18}, img = "brick2.png", width=7, height=3 },
-	factory.rect { pos = {4, 28}, img = "brick2.png", width=7, height=1 },
-	factory.tiled.create { pos = {13, 18}, z=1,width=4, height=2, collide=false, tiledata = {2,5,3,5,4,5,6,7,2,4,3,4,4,4,6,7}, img = "smb1.png"},
-	factory.tiled.create { pos = {15, 20}, width=2, height=9, collide=true, tiledata = {5,5,6,7,5,5,6,7,5,5,6,7,5,5,6,7,5,5,6,7,5,5,6,7,5,5,6,7,5,5,6,7,5,5,6,7}, img = "smb1.png"},
-	factory.line { pos = {13, 20}, A = {0,0}, B={32, 0}},
+ 	--bonus
+ 	factory.rect { pos = {0, 16}, img = "block4.png", width=16, height=2 },
+ 	factory.rect { pos = {0, 18}, img = "brick2.png", width=1, height=11 },
+ 	factory.rect { pos = {4, 18}, img = "brick2.png", width=7, height=3 },
+ 	factory.rect { pos = {4, 28}, img = "brick2.png", width=7, height=1 },
+ 	factory.tiled.create { pos = {13, 18}, z=1,width=4, height=2, collide=false, tiledata = {2,5,3,5,4,5,6,7,2,4,3,4,4,4,6,7}, img = "smb1.png"},
+ 	factory.tiled.create { pos = {15, 20}, width=2, height=9, collide=true, tiledata = {5,5,6,7,5,5,6,7,5,5,6,7,5,5,6,7,5,5,6,7,5,5,6,7,5,5,6,7,5,5,6,7,5,5,6,7}, img = "smb1.png"},
+ 	factory.line { pos = {13, 20}, A = {0,0}, B={32, 0}},
 
-	-- end level stuff
-	factory.tiled.create { pos = {198, 3}, width=1, height=10, collide=false, 
-		tiledata = {3,2,3,2,3,2,3,2,3,2,3,2,3,2,3,2,3,2,4,2}, img = "smb1.png"},
-	factory.simplesprite.create {pos ={197.5, 11}, tag="flag", model = "end_level_flag"},
-	--factory.tiled.create_from { pos = {202, 2}, template = "castle"},
+ 	-- end level stuff
+ 	factory.tiled.create { pos = {198, 3}, width=1, height=10, collide=false, 
+ 		tiledata = {3,2,3,2,3,2,3,2,3,2,3,2,3,2,3,2,3,2,4,2}, img = "smb1.png"},
+ 	factory.simplesprite.create {pos ={197.5, 11}, tag="flag", model = "end_level_flag"},
+ 	--factory.tiled.create_from { pos = {202, 2}, template = "castle"},
 
 	
-	factory.spawn.create { width=1, height=256, use_once=true, pos={3,2}, func = factory.goomba.create, args = 
-		{ pos={23, 	3}, sprite="goomba",flip=false }
-	}
+	-- factory.spawn.create { width=1, height=256, use_once=true, pos={3,2}, func = factory.goomba.create, args = 
+	-- 	{ pos={23, 	3}, sprite="goomba",flip=false }
+	-- },
+	-- factory.spawn.create { width=1, height=256, use_once=true, pos={72,2}, func = factory.goomba.create, args = 
+	-- 	{ pos={85, 10}, sprite="goomba",flip=false }
+	-- },
+	-- factory.spawn.create { width=1, height=256, use_once=true, pos={72,2}, func = factory.goomba.create, args = 
+	-- 	{ pos={87, 10}, sprite="goomba",flip=false }
+	-- },
 })
 
 local items_d = {}
@@ -165,7 +185,7 @@ local items = {}
 
 for _, v in pairs(items_dynamic) do
 	for _, p in ipairs(v.pos) do
-		print ("ciao " .. tostring(p[1]) .. ", " .. tostring(p[2]))
+		--print ("ciao " .. tostring(p[1]) .. ", " .. tostring(p[2]))
 		table.insert(items_d, v.factory(p))
 	end
 end

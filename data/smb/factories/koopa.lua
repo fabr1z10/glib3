@@ -6,18 +6,16 @@ factory.koopa.response = function (mario, koopa, sx, sy)
 		if (mario.state == "jump" and mario.vy < 0 and sy > 0 and math.abs(sx) < 0.01) then
 			mario.vy = 300
 		end
-		
-		koopa:move(-10*sx,0,0)
-		monkey.set_dir(koopa, sx<0)
-		koopa:changestate("walk_2")
+		koopa:move(-10*sx,0,0)		
+		--print ("mario = " .. tostring(mario.x) .. ", koopa = " .. tostring(koopa.x))
+		local left = (mario.x<koopa.x) and 0 or 1
+		--print ("left =" .. tostring(left))
 		local act = {
-			--{ type = action.set_enemy_dir, args ={ id = koopa.id, left = sx>0}},
-		-- 	{ type = action.set_state, args = { id = koopa.id, state = "walk_2"} },
-			{ type = action.kill_script, args = {script = "koopa_back_" .. tostring(koopa.id)}},
-		-- 	{ type = action.move, args = {id=koopa.id, by = {-2*sx, -2*sy}, imm=true}},
+			{ type = action.set_state, args = { id = koopa.id, state = "walk_2", args = { left = left }}},
 		}
 		local s = script.make(act)
-		monkey.play(s)	
+		monkey.play(s)
+
 		return	
 	end
 
@@ -26,18 +24,18 @@ factory.koopa.response = function (mario, koopa, sx, sy)
 		mario.vy = 300
 		local act = {
 			{ type = action.set_state, args = { id = koopa.id, state = "hide"}	},
-			{ type = action.callfunc, args = { func = function() 
-				local actions = {
-					{ type = action.delay, args = { sec = 3}},
-					{ type = action.animate, args = {id = koopa.id, anim = "hide_blink"}},
-					{ type = action.delay, args = { sec = 3}},
-					{ type = action.set_state, args = { id = koopa.id, state = "walk"}	},
+			-- { type = action.callfunc, args = { func = function() 
+			-- 	local actions = {
+			-- 		{ type = action.delay, args = { sec = 3}},
+			-- 		{ type = action.animate, args = {id = koopa.id, anim = "hide_blink"}},
+			-- 		{ type = action.delay, args = { sec = 3}},
+			-- 		{ type = action.set_state, args = { id = koopa.id, state = "walk"}	},
 
-				}
-				local s = script.make(actions)
-				s.name = "koopa_back_" .. tostring(koopa.id)
-				monkey.play(s)
-			end}},
+			-- 	}
+			-- 	local s = script.make(actions)
+			-- 	s.name = "koopa_back_" .. tostring(koopa.id)
+			-- 	monkey.play(s)
+			-- end}},
 		}
 		local s = script.make(act)
 		monkey.play(s)
@@ -69,54 +67,57 @@ factory.koopa.create = function (args, pos)
 					{ 
 						id = "walk", 
 						state = {
-							type = "walkside", 
+							type = "foewalk", 
+							anim = "walk",
 							speed = 20, 
-							acceleration = 0.05, 
+							acceleration = 0, 
 							fliph = true, 
-							jumpspeed = 0 
+							left = 1,
+							flip_platform = true
 						}
 					},
-					{
-						id = "jump",
-						state = {
-							type = "jump",
-							speed = 20,
-							acceleration = 0.10,
-							fliph = true,
-							animup = "walk",
-							animdown = "walk"
-						}
-					},
+					-- {
+					-- 	id = "jump",
+					-- 	state = {
+					-- 		type = "jump",
+					-- 		speed = 20,
+					-- 		acceleration = 0.10,
+					-- 		fliph = true,
+					-- 		animup = "walk",
+					-- 		animdown = "walk"
+					-- 	}
+					-- },
 					{
 						id = "hide",
-						state = { type="simple", anim="hide" }
+						state = { type="koopashell", time = 2, time_walk = 4 }
 					},
 					{ 
 						id = "walk_2", 
 						state = {
-							type = "walkside", 
+							type = "foewalk", 
 							speed = 100, 
-							acceleration = 0.05, 
+							acceleration = 0, 
 							fliph = false, 
-							jumpspeed = 0,
-							walk_anim = "hide",
+							flip_platform = false,
+							anim = "hide",
+							left = 1,
 							jump_state = "jump_2"
 						}
 					},
-					{
-						id = "jump_2",
-						state = {
-							type = "jump",
-							speed = 100,
-							acceleration = 0.10,
-							fliph = false,
-							animup = "hide",
-							animdown = "hide"
-						}
-					},					
+					-- {
+					-- 	id = "jump_2",
+					-- 	state = {
+					-- 		type = "jump",
+					-- 		speed = 100,
+					-- 		acceleration = 0.10,
+					-- 		fliph = false,
+					-- 		animup = "hide",
+					-- 		animdown = "hide"
+					-- 	}
+					-- },					
 				}
 			},
-			{ type ="enemyinput", left =true, flip=args.flip or false },
+			--{ type ="enemyinput", left =true, flip=args.flip or false },
 
 		}
 	}

@@ -170,9 +170,14 @@ std::shared_ptr<Activity> SetStateActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
 
     std::string state = table.Get<std::string>("state");
-    auto act = std::make_shared<SetState>(state);
+    std::shared_ptr<TargetActivity> act;
+    if (table.HasKey("args")) {
+        luabridge::LuaRef args = table.Get<luabridge::LuaRef>("args");
+        act = std::make_shared<SetStateWithArgs>(state,args);
+    } else {
+        act = std::make_shared<SetState>(state);
+    }
     setTarget(table, act.get());
-
     return std::move(act);
 };
 

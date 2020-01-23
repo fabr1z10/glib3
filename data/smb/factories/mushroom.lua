@@ -49,27 +49,29 @@ factory.mushroom.create = function (args, pos)
 					{ 
 						id = "walk", 
 						state = {
-							type = "walkside", 
+							type = "foewalk", 
 							speed = 20, 
-							acceleration = 0.05, 
+							acceleration = 0, 
 							fliph = false, 
-							jumpspeed = 0 
+							flip_platform = false,
+							anim = "walk",
+							left = 1
 						}
 					},
-					{
-						id = "jump",
-						state = {
-							type = "jump",
-							speed = 20,
-							acceleration = 0.10,
-							fliph = false,
-							animup = "walk",
-							animdown = "walk"
-						}
-					},
+					-- {
+					-- 	id = "jump",
+					-- 	state = {
+					-- 		type = "jump",
+					-- 		speed = 20,
+					-- 		acceleration = 0.10,
+					-- 		fliph = false,
+					-- 		animup = "walk",
+					-- 		animdown = "walk"
+					-- 	}
+					-- },
 				}
 			},
-			{ type ="enemyinput", left =true, flip=false },
+			--{ type ="enemyinput", left =true, flip=false },
 
 		}
 	}

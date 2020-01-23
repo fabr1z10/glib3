@@ -10,6 +10,10 @@ void State::AttachStateMachine(StateMachine * sm) {
     m_sm = sm;
 }
 
+void State::Init(luabridge::LuaRef ref) {
+    Init();
+}
+
 bool State::KeyListener(int key) {
     auto f = m_actions.find(key);
     if (f == m_actions.end())
@@ -72,6 +76,23 @@ void StateMachine::SetState(const std::string & state) {
     m_currentState = it->second.get();
     m_currentState->Init();
 }
+
+void StateMachine::SetState(const std::string & state, luabridge::LuaRef ref) {
+    if (state == m_currentStateId) {
+        return;
+    }
+    m_currentStateId= state;
+    if (m_currentState != nullptr) {
+        m_currentState->End();
+    }
+    auto it = m_states.find(state);
+    if (it == m_states.end()) {
+        GLIB_FAIL("unknown state " << state);
+    }
+    m_currentState = it->second.get();
+    m_currentState->Init(ref);
+}
+
 
 State* StateMachine::GetState (const std::string& state) {
     return m_states.at(state).get();

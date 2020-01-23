@@ -99,7 +99,7 @@ factory.blocks.pipe_3_green = function(p)
 end
 
 factory.blocks.pipe_4_green = function(p) 
-	return factory.tiled.create { pos = p, width=2, height=4, collide=true, tiledata = {0,4,1,4,0,4,1,4,0,4,1,4,0,3,1,3}, img = "smb1.png"} 
+	return factory.tiled.create { pos = p, width=2, height=4, z = 0.1,collide=true, tiledata = {0,4,1,4,0,4,1,4,0,4,1,4,0,3,1,3}, img = "smb1.png"} 
 end
 
 factory.blocks.pickupcoin = function(p) 
@@ -118,7 +118,7 @@ factory.blocks.platform1 = function(p)
 end
 
 
-factory.blocks.spawn = function(f)
+factory.blocks.spawn = function(f, s)
 	return function(p) 
 		return factory.spawn.create { 
 			width=1, 
@@ -126,7 +126,7 @@ factory.blocks.spawn = function(f)
 			use_once=true, 
 			pos= {p[1],p[2]}, 
 			func = f, 
-			itempos = {p[3],p[4]}
+			args = { pos = {p[3], p[4]}, sprite = s, flip = false }
 		}
 	end
 end
@@ -162,6 +162,7 @@ end
 factory.bg.tiled_one = function(args, p)
 	return function(p) return factory.tiled.create { pos = {p[1],p[2]}, z=args.z or -1.0,width =p[3], height=p[4], tiledata = args.tile, img = args.img, collide=args.collide, sheetsize ={engine.tilesize,engine.tilesize} } end 
 end
+
 
 
 factory.blocks.warp_down = function(args) 
@@ -209,7 +210,6 @@ factory.blocks.warp_up = function(args)
 					{ type = action.set_state, args = {tag = "player", state = "walk"}},
 				}
 				local s = script.make(actions)
-print ("CAZZO DURO")
 				monkey.play(s)				
 			end
 		}

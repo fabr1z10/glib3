@@ -2,6 +2,13 @@
 
 #include <monkey/factories.h>
 
+class SceneFactory;
+
+class Extension {
+public:
+    void extend(SceneFactory*);
+
+};
 //FACTORY(Idle2DStateFactory, StateBehaviour)
 //FACTORY(Walk2DStateFactory, StateBehaviour)
 //FACTORY(Jump2DStateFactory, StateBehaviour)
@@ -22,7 +29,11 @@ FACTORY_I(PlatformerStateFactory, State)
 //FACTORY(Walk4WayStateFactory, State)
 FACTORY_S(WalkSideFactory, PlatformerStateFactory, State)
 //FACTORY_S(Walk3DFactory, PlatformerStateFactory, State)
-//FACTORY_S(Jump2DFactory, PlatformerStateFactory, State)
+FACTORY_S(Jump2DFactory, PlatformerStateFactory, State)
+FACTORY_S(FoeWalkFactory, PlatformerStateFactory, State)
+FACTORY_S(FoeDeadFactory, PlatformerStateFactory, State)
+FACTORY_S(KoopaShellFactory, PlatformerStateFactory, State)
+
 //FACTORY_S(Jump3DFactory, PlatformerStateFactory, State)
 //FACTORY(EnemyWalk25StateFactory, State)
 //

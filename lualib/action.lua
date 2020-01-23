@@ -93,7 +93,7 @@ action.set_state = function(args)
 	glib.assert_either (args.tag, args.id, "id or tag")
 	--sglib.assert (args.actor, "actor")
 	glib.assert (args.state, "state")
-	return {type="setstate", tag = args.tag, id = args.id, state = args.state}
+	return {type="setstate", tag = args.tag, id = args.id, state = args.state, args = args.args}
 end
 
 action.set_follow = function(args)

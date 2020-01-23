@@ -5,6 +5,9 @@
 
 #include "states/platformerstate.h"
 #include "states/walkside.h"
+#include "states/foewalk.h"
+#include "states/foedead.h"
+#include "states/koopashell.h"
 
 //#include <platformer/states/walk4way.h>
 //#include <platformer/states/walk3d.h>
@@ -12,7 +15,7 @@
 //#include <platformer/states/hit.h>
 //#include <platformer/states/playanim.h>
 //#include <platformer/states/hitjump.h>
-//#include <platformer/states/jump2d.h>
+#include "states/jump2d.h"
 //#include <platformer/states/jump3d.h>
 //#include <platformer/states/ch1.h>
 //#include <platformer/states/duck.h>
@@ -27,10 +30,15 @@
 //#include <platformer/input/enemy3d.h>
 //#include <monkey/engine.h>
 //#include <platformer/activities/setenemydir.h>
-
-extern "C" void hello(SceneFactory* f) {
+void Extension::extend(SceneFactory* f) {
 
     f->addStateFactory("walkside", std::make_unique<WalkSideFactory>());
+    f->addStateFactory("jump", std::make_unique<Jump2DFactory>());
+
+    f->addStateFactory("foewalk", std::make_unique<FoeWalkFactory>());
+    f->addStateFactory("foedead", std::make_unique<FoeDeadFactory>());
+    f->addStateFactory("koopashell", std::make_unique<KoopaShellFactory>());
+
 }
 
 
@@ -266,35 +274,35 @@ std::shared_ptr<State> WalkSideFactory::Create(luabridge::LuaRef &ref) {
 //}
 //
 //
-//void WalkSideFactory::init(const LuaTable & table, std::shared_ptr<State> state) {
-//    PlatformerStateFactory::init(table, state);
-//
-//}
+void WalkSideFactory::init(const LuaTable & table, std::shared_ptr<State> state) {
+    PlatformerStateFactory::init(table, state);
+
+}
 //
 //void Walk3DFactory::init(const LuaTable & table, std::shared_ptr<State> state) {
 //    PlatformerStateFactory::init(table, state);
 //
 //}
-//std::shared_ptr<State> Jump2DFactory::Create(luabridge::LuaRef &ref) {
-//    LuaTable table(ref);
-//    float speed = table.Get<float>("speed");
-//    float a = table.Get<float>("acceleration");
-//    bool fliph = table.Get<bool>("fliph");
-//    //float jumpSpeed= table.Get<float>("jumpspeed");
-//    std::string animUp = table.Get<std::string>("animup");
-//    std::string animDown = table.Get<std::string>("animdown");
-//    bool bounce = table.Get<bool>("bounce", false);
-//    float bounceFactor = table.Get<float>("bouncefactor", 0.0f);
-//    auto ptr = std::make_shared<Jump2D>(a, speed, fliph, animUp, animDown, bounce, bounceFactor);
-//    if (table.HasKey("walk_state")) {
-//        ptr->setWalkState(table.Get<std::string>("walk_state"));
-//    }
-//    init(table, ptr);
-//    return ptr;
-//
-//
-//
-//}
+std::shared_ptr<State> Jump2DFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    float speed = table.Get<float>("speed");
+    float a = table.Get<float>("acceleration");
+    bool fliph = table.Get<bool>("fliph");
+    //float jumpSpeed= table.Get<float>("jumpspeed");
+    std::string animUp = table.Get<std::string>("animup");
+    std::string animDown = table.Get<std::string>("animdown");
+    bool bounce = table.Get<bool>("bounce", false);
+    float bounceFactor = table.Get<float>("bouncefactor", 0.0f);
+    auto ptr = std::make_shared<Jump2D>(a, speed, fliph, animUp, animDown, bounce, bounceFactor);
+    if (table.HasKey("walk_state")) {
+        ptr->setWalkState(table.Get<std::string>("walk_state"));
+    }
+    init(table, ptr);
+    return ptr;
+
+
+
+}
 //
 //std::shared_ptr<State> Jump3DFactory::Create(luabridge::LuaRef &ref) {
 //    LuaTable table(ref);
@@ -313,10 +321,10 @@ std::shared_ptr<State> WalkSideFactory::Create(luabridge::LuaRef &ref) {
 //
 //
 //}
-//void Jump2DFactory::init(const LuaTable & table, std::shared_ptr<State> state) {
-//    PlatformerStateFactory::init(table, state);
-//
-//}
+void Jump2DFactory::init(const LuaTable & table, std::shared_ptr<State> state) {
+    PlatformerStateFactory::init(table, state);
+
+}
 //void Jump3DFactory::init(const LuaTable & table, std::shared_ptr<State> state) {
 //    PlatformerStateFactory::init(table, state);
 //
@@ -370,3 +378,50 @@ std::shared_ptr<State> WalkSideFactory::Create(luabridge::LuaRef &ref) {
 //std::shared_ptr<State> NilStateFactory::Create(luabridge::LuaRef& ) {
 //    return std::make_shared<NilState>();
 //}
+std::shared_ptr<State> FoeWalkFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    std::string anim = table.Get<std::string>("anim");
+    float speed = table.Get<float>("speed");
+    float a = table.Get<float>("acceleration");
+    bool fliph = table.Get<bool>("fliph");
+    bool flipp = table.Get<bool>("flip_platform");
+
+    int left = table.Get<int>("left");
+    auto ptr = std::make_shared<FoeWalk>(anim, speed,a,fliph, flipp, left);
+    init(table, ptr);
+    return ptr;
+}
+
+void FoeWalkFactory::init(const LuaTable & table, std::shared_ptr<State> state) {
+    PlatformerStateFactory::init(table, state);
+
+}
+
+std::shared_ptr<State> FoeDeadFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    float time = table.Get<float>("time");
+
+    auto ptr = std::make_shared<FoeDead>(time);
+    init(table, ptr);
+    return ptr;
+}
+
+void FoeDeadFactory::init(const LuaTable & table, std::shared_ptr<State> state) {
+    PlatformerStateFactory::init(table, state);
+
+}
+
+std::shared_ptr<State> KoopaShellFactory::Create(luabridge::LuaRef &ref) {
+    LuaTable table(ref);
+    float time = table.Get<float>("time");
+    float time_walk = table.Get<float>("time_walk");
+
+    auto ptr = std::make_shared<KoopaShell>(time, time_walk);
+    init(table, ptr);
+    return ptr;
+}
+
+void KoopaShellFactory::init(const LuaTable & table, std::shared_ptr<State> state) {
+    PlatformerStateFactory::init(table, state);
+
+}

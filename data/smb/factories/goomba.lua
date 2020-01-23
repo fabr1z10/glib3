@@ -13,8 +13,8 @@ factory.goomba.response = function (mario, goomba, sx, sy)
 		mario.vy = 300		
 		local act = {
 			{ type = action.set_state, args = { id = goomba.id, state = "dead"}	},
-			{ type = action.delay, args = { sec= 2}},
-			{ type = action.remove_object, args = {id=goomba.id}}
+			--{ type = action.delay, args = { sec= 2}},
+			--{ type = action.remove_object, args = {id=goomba.id}}
 		}
 		local s = script.make(act)
 		monkey.play(s)
@@ -49,32 +49,21 @@ factory.goomba.create = function (args, pos)
 					{ 
 						id = "walk", 
 						state = {
-							type = "walkside", 
+							type = "foewalk", 
+							anim = "walk",
 							speed = 20, 
-							acceleration = 0.05, 
+							acceleration = 0, 
 							fliph = false, 
-							jumpspeed = 0 
-						}
-					},
-					{
-						id = "jump",
-						state = {
-							type = "jump",
-							speed = 20,
-							acceleration = 0.10,
-							fliph = false,
-							animup = "walk",
-							animdown = "walk"
+							flip_platform = false,
+							left=1
 						}
 					},
 					{
 						id = "dead",
-						state = { type="simple", anim="die" }
+						state = { type="foedead", time = 2 }
 					},					
 				}
 			},
-			{ type ="enemyinput", left =true, flip=args.flip or false },
-
 		}
 	}
 

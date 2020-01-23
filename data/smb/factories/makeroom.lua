@@ -157,7 +157,7 @@ factory.room.create = function(args)
 	end
 	function room:add_d(items) 
 		for _, v in ipairs(items) do
-			print ("CIAO")
+			--print ("CIAO")
 			table.insert(room.engines[4].items, v)
 		end
 	end
