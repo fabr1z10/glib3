@@ -60,7 +60,7 @@ factory.mario.create = function(args)
 	return {	
 		tag="player",
 		type="sprite",
-		model="mario",
+		model=factory.mario.models[variables.state],
 		anim="idle",
 		pos = {pos[1], pos[2], 0},
 		components = {
@@ -81,7 +81,7 @@ factory.mario.create = function(args)
 			{
 				type="info", 
 				supermario = false,
-				state = 1, -- 1 = small, 2 = supermario, 3 = supermario + fire
+				state = variables.state, -- 1 = small, 2 = supermario, 3 = supermario + fire
 				invincible = false
 			},
 			{ 
