@@ -98,6 +98,8 @@ local s = {
 	estevan_2 = {x=355, y=76, width=39, height=27},
 	estevan_3 = {x=396, y=76, width=37, height=27},
 	loom_1 = {x = 221, y=457, width=29, height=38},
+	loom_2 = {x = 252, y=458, width=29, height=37},
+	loom_3 = {x=283,y=458,width=29,height=37},
 	important_looking_pirate_1_idle_1 = {x=319, y=410, width=35, height=55},
 	important_looking_pirate_1_talk_1 = {x=394, y=409, width=35, height=56},
 	important_looking_pirate_1_talk_2 = {x=431, y=411, width=35, height=54},
@@ -365,8 +367,24 @@ local s = {
 	scummbar_pirate_1_3 = {x=387,y=1,width=26,height=27},
 	scummbar_pirate_2_1 = {x=330,y=31,width=36,height=37},
 	scummbar_pirate_2_2 = {x=368,y=31,width=36,height=37},
-
-	
+	scummbar_pirate_3_1 = {x=417,y=3,width=40,height=23},
+	scummbar_pirate_3_2 = {x=459,y=3,width=40,height=23},
+	scummbar_pirate_4_1 = {x=407,y=35,width=33,height=25},
+	scummbar_pirate_4_2 = {x=442,y=35,width=33,height=25},
+	scummbar_pirate_4_3 = {x=477,y=35,width=33,height=25},
+	scummbar_pirate_5_1 = {x=400,y=71,width=35,height=27},
+	scummbar_pirate_5_2 = {x=437,y=71,width=35,height=27},
+	scummbar_pirate_5_3 = {x=474,y=72,width=35,height=26},
+	scummbar_pirate_6_1 = {x=347,y=71,width=50,height=26},
+	scummbar_pirate_7_1 = {x=180,y=73,width=20,height=21},
+	scummbar_pirate_7_2 = {x=202,y=73,width=20,height=22},
+	scummbar_pirate_7_3 = {x=157,y=73,width=20,height=21},
+	scummbar_pirate_8_1 = {x=419,y=103,width=28,height=32},
+	scummbar_pirate_8_2 = {x=448,y=103,width=28,height=32},
+	scummbar_pirate_8_3 = {x=479,y=103,width=29,height=32},
+	scummbar_pirate_9_1 = {x=323,y=100,width=30,height=33},
+	scummbar_pirate_9_2 = {x=354,y=100,width=30,height=35},
+	scummbar_pirate_9_3 = {x=386,y=100,width=30,height=39},
 	
 	
 	
@@ -982,15 +1000,96 @@ engine.assets.models["scummbar.pirate2"] = {
 		}}
 	}
 }
+engine.assets.models["scummbar.pirate3"] = {
+    sheet = sheet2,
+    type = "sprite",
+    ppu=1,
+	animations = {
+		{ name = "idle_1", frames = { { duration = dt, quads = {{ id = s.scummbar_pirate_3_1 }}}}},
+		{ name = "idle_2", loop = false, frames = { 
+			{ duration = dt, quads = {{ id = s.scummbar_pirate_3_2 }}},
+		}}
+	}
+}
+engine.assets.models["scummbar.pirate4"] = {
+    sheet = sheet2,
+    type = "sprite",
+    ppu=1,
+	animations = {
+		{ name = "idle_1", frames = { { duration = dt, quads = {{ id = s.scummbar_pirate_4_1 }}}}},
+		{ name = "idle_2", loop = false, frames = { 
+			{ duration = dt, quads = {{ id = s.scummbar_pirate_4_2 }}},
+			{ duration = dt, quads = {{ id = s.scummbar_pirate_4_3 }}},
+		}}
+	}
+}
 
+engine.assets.models["scummbar.pirate5"] = {
+    sheet = sheet2,
+    type = "sprite",
+    ppu=1,
+	animations = {
+		{ name = "idle_1", frames = { { duration = dt, quads = {{ id = s.scummbar_pirate_5_1 }}}}},
+		{ name = "idle_2", loop = false, frames = { 
+			{ duration = dt, quads = {{ id = s.scummbar_pirate_5_2 }}},
+			{ duration = dt, quads = {{ id = s.scummbar_pirate_5_3 }}},
+		}}
+	}
+}
 
+engine.assets.models["scummbar.pirate6"] = {
+    sheet = sheet2,
+    type = "sprite",
+    ppu=1,
+	animations = {
+		{ name = "idle_1", frames = { { duration = dt, quads = {{ id = s.scummbar_pirate_6_1 }}}}},
+
+	}
+}
+engine.assets.models["scummbar.pirate7"] = {
+    sheet = sheet2,
+    type = "sprite",
+    ppu=1,
+	animations = {
+		{ name = "idle_1", frames = { { duration = dt, quads = {{ id = s.scummbar_pirate_7_1 }}}}},
+		{ name = "idle_2", loop = false, frames = { 
+			{ duration = dt, quads = {{ id = s.scummbar_pirate_7_2 }}},
+			{ duration = dt, quads = {{ id = s.scummbar_pirate_7_3 }}},
+		}}
+	}
+}
+engine.assets.models["scummbar.pirate8"] = {
+    sheet = sheet2,
+    type = "sprite",
+    ppu=1,
+	animations = {
+		{ name = "idle_1", frames = { { duration = dt, quads = {{ id = s.scummbar_pirate_8_1 }}}}},
+		{ name = "idle_2", loop = false, frames = { 
+			{ duration = dt, quads = {{ id = s.scummbar_pirate_8_2 }}},
+			{ duration = dt, quads = {{ id = s.scummbar_pirate_8_3 }}},
+		}}
+	}
+}
+
+engine.assets.models["scummbar.pirate9"] = {
+    sheet = sheet2,
+    type = "sprite",
+    ppu=1,
+	animations = {
+		{ name = "idle_1", frames = { { duration = dt, quads = {{ id = s.scummbar_pirate_9_1 }}}}},
+		{ name = "idle_2", loop = false, frames = { 
+			{ duration = dt, quads = {{ id = s.scummbar_pirate_9_2 }}},
+			{ duration = dt, quads = {{ id = s.scummbar_pirate_9_3 }}},
+		}}
+	}
+}
 engine.assets.models["scummbar.estevan"] = {
     sheet = sheet,
     type = "sprite",
     ppu=1,
 	animations = {
 		{ name = "idle_1", frames = { { duration = dt, quads = {{ id = s.estevan_1 }}}}},
-		{ name = "idle_2", frames = { 
+		{ name = "idle_2", loop=false, frames = { 
 			{ duration = dt, quads = {{ id = s.estevan_2 }}},
 			{ duration = dt, quads = {{ id = s.estevan_3 }}}
 		}}
@@ -1004,10 +1103,10 @@ engine.assets.models["scummbar.loompirate"] = {
     ppu=1,
 	animations = {
 		{ name = "idle_1", frames = { { duration = dt, quads = {{ id = s.loom_1 }}}}},
-		-- { name = "idle_2", frames = { 
-		-- 	{ duration = dt, quads = {{ id = s.estevan_2 }}},
-		-- 	{ duration = dt, quads = {{ id = s.estevan_3 }}}
-		-- }}
+		{ name = "idle_2", loop=false, frames = { 
+		 	{ duration = dt, quads = {{ id = s.loom_2 }}},
+		 	{ duration = dt, quads = {{ id = s.loom_3 }}}
+		}}
 
 	}
 }

@@ -2,7 +2,7 @@ local roomInfo = {
 	worldWidth = 192,
 	worldHeight = 16,
 	screen_size = {16, 16},
-	start_pos = {2, 2},
+	start_pos = {2, 20},
 	collisionSize = 80,
 	g = -10,
 	name = "1-2",
@@ -11,7 +11,7 @@ local roomInfo = {
 
 if (variables.cut_scene_done == true) then
 	--roomInfo.start_pos = {2, 25}
-roomInfo.start_pos = {160, 25	}
+--roomInfo.start_pos = {160, 25	}
 	roomInfo.cam_bounds =  {0, 16*16, 192*16,32*16}
 end
 
@@ -144,10 +144,14 @@ local items_dynamic = {
 		factory = factory.bg.tiled("bush1"),
 		pos = {{190, 2}, {180, 2}},
 	},
-	-- {
-	-- 	factory = factory.npc.plant,
-	-- 	pos = {{104, 21}, {110, 22}, {116,20}}
-	-- },
+	{
+		factory = factory.npc.plant,
+		pos = {{104, 21}, {110, 22}, {116,20}}
+	},
+	{
+		factory = factory.npc.goomba_dark,
+		pos = { {17, 23}, {18.5,23}},
+	},
 	{
 		factory = factory.blocks.moving_platform,
 		pos = { {140, 16, 0, 0, 192}, {140, 16, 0, 0.5, 192}, {155, 28, 0, 0, -192}, {155, 28, 0, 0.5, -192}}

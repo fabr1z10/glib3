@@ -5,7 +5,7 @@ local fguy = function(lines)
 	for _, n in ipairs(lines) do
 		table.insert(l, d[n])
 	end
-	return { type = action.say, args = {actor = "guybrush", lines = l, animate=false }}
+	return { type = scumm.action.say, args = {actor = "guybrush", lines = l, animate=false }}
 end
 
 local fman = function(lines,anim)
@@ -13,7 +13,7 @@ local fman = function(lines,anim)
 	for _, n in ipairs(lines) do
 		table.insert(l, d[n])
 	end
-	return { type = action.say, args = {actor = "mancomb.mancomb", lines = l, animstart = anim or "idle", animend= anim or "idle"}}
+	return { type = scumm.action.say, args = {actor = "mancomb.mancomb", lines = l, animstart = anim or "idle", animend= anim or "idle"}}
 end
 
 engine.dialogues.mancomb = {
@@ -21,8 +21,8 @@ engine.dialogues.mancomb = {
 		local actions = {
 			{ type=action.change_room, args={ room="scummbar"}}
 		}
-		local s = ms2(actions) 
-		monkey.play(s)
+			local s = script.make(actions)
+			monkey.play(s)
 	end,
 	-- root
 	nodes = {

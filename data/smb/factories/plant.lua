@@ -20,7 +20,7 @@ factory.plant.create = function (args, pos)
 			},
 			{
 				type = "polymover",
-				origin = {0,0},
+				origin = {args.pos[1]*16, args.pos[2]*16},
 				loop_type = 1,
 				movements = {
 					{ delta = {0,-32}, speed = 50, hold = 1},

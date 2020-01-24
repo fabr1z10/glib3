@@ -15,7 +15,7 @@ engine = {
 		models = {},
 		animations = {}
     },
-   	start_room = "world1_1",
+   	start_room = "world1_2",
     global_assets = {
 		fonts = { "diag" }
 	},

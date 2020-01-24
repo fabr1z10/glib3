@@ -139,6 +139,15 @@ factory.npc.goomba = function(p)
 		flip = true, 
 	}
 end
+
+factory.npc.goomba_dark = function(p) 
+	return factory.goomba.create {
+		pos = p, 
+		sprite="goomba_dark",
+		flip = true, 
+	}
+end
+
 factory.npc.koopa = function(p) 
 	return factory.koopa.create {
 		pos = p, 

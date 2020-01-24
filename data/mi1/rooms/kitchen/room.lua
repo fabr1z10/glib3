@@ -41,7 +41,6 @@ local pushPlank = function()
 		}
 	end
 	local push_plank = function() 
-		print ("MERD DURA")
 		local a = nil
 		if (variables.seagull_on_board == true) then
 			a = { type = action.runscript, after={1}, args = {func = seagull_jump}}

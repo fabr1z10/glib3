@@ -43,6 +43,7 @@ void WalkArea::assignDepth (Entity* e) {
     glm::vec2 pos = e->GetPosition();
     if (m_depthFunc != nullptr) {
         float z = m_depthFunc->operator()(pos.x, pos.y);
+
         e->SetZ(z);
         //std::cout << "z is " << e->GetPosition().z << "\n";
     }

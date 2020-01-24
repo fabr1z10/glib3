@@ -12,7 +12,7 @@ local s = {
 
 
 engine.assets.models["mancomb.mancomb"] = {
-    sheet = "sprites/faces.png",
+    sheet = "faces.png",
     type = "sprite",
     ppu=1,
 	animations = {

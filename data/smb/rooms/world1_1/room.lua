@@ -6,7 +6,7 @@ local roomInfo = {
 	collisionSize = 80,
 	g = -10,
 	name = "1-1",
-	next = "world1_1"
+	next = "world1_2"
 }
 
 --local initscripts = {}

@@ -121,7 +121,58 @@ engine.items["scummbar.pirate2"] = {
 	actions = {
 	}
 }
+engine.items["scummbar.pirate3"] = {
+	model = "scummbar.pirate3",
+	pos = {30, 0, -1},
+	actions = {
+	}
+}
+engine.items["scummbar.pirate4"] = {
+	model = "scummbar.pirate4",
+	pos = {0, 0, -1},
+	hotspot = {
+		text = strings.objects.pirates,
+		size = {70, 20},	
+		walk_to = {50, 10},
+		dir = "south",
+	},
+	actions = {
+ 		look =  { type = scumm.action.say, args = {actor="guybrush", lines = {strings.scummbar[4]} }},
+ 		talk =  { type = scumm.action.say, args = {actor="guybrush", lines = {strings.scummbar[4]} }}		
+	}
+}
 
+engine.items["scummbar.pirate5"] = {
+	model = "scummbar.pirate5",
+	pos = {200, 18, 1},
+	actions = {
+	}
+}
+engine.items["scummbar.pirate6"] = {
+	model = "scummbar.pirate6",
+	pos = {160, 0, 1},
+	actions = {
+	}
+}
+engine.items["scummbar.pirate7"] = {
+	model = "scummbar.pirate7",
+	pos = {255, 38, 1},
+	actions = {
+	}
+}
+engine.items["scummbar.pirate8"] = {
+	model = "scummbar.pirate8",
+	pos = {215, 44, 1},
+	actions = {
+	}
+}
+
+engine.items["scummbar.pirate9"] = {
+	model = "scummbar.pirate9",
+	pos = {278, 40, 1},
+	actions = {
+	}
+}
 engine.items["scummbar.estevan"] = {
  	pos = {164, 21, 1},
 	hotspot = {

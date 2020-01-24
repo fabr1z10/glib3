@@ -28,10 +28,15 @@ room:add ( "scummbar.walkarea",
 		scumm.factory.object { id = "scummbar.door_out" },
 		scumm.factory.object { id = "scummbar.door_kitchen"},
 		scumm.factory.object { id = "scummbar.mancomb" },
-		scumm.factory.object { id = "scummbar.estevan" },
 		scumm.factory.object { id = "scummbar.loompirate"},
 		scumm.factory.object { id = "scummbar.pirate1" },
 		scumm.factory.object { id = "scummbar.pirate2" },
+		scumm.factory.object { id = "scummbar.pirate3" },
+		scumm.factory.object { id = "scummbar.pirate4" },
+		scumm.factory.object { id = "scummbar.pirate6" },
+		scumm.factory.object { id = "scummbar.pirate7" },
+		scumm.factory.object { id = "scummbar.pirate8" },
+		scumm.factory.object { id = "scummbar.pirate9" },
 
 		scumm.factory.object { id = "scummbar.ilp1"},
 		scumm.factory.object { id = "scummbar.ilp2"},
@@ -45,7 +50,10 @@ room:add( "main", {
 	{ pos = {157, 0, 0.99}, components = { { type="gfx", image="scummbar_3.png" }}},
 	{ pos = {20, 0, 0.99}, components = { { type="gfx", image="scummbar_4.png" }}},
 	{ pos = {374, 20, 0.95}, components = { { type="gfx", image="scummbar_2.png" }}},
-	
+	scumm.factory.object { id = "scummbar.estevan" },
+	scumm.factory.object { id = "scummbar.pirate5" },
+
+
 
 
 	-- factory.object.create { object = "scummbar.fireplace"},
@@ -87,6 +95,15 @@ local animate = function()
 	run_background_script("scummbar.mancomb", 1, 4, 0, 0)
 	run_background_script("scummbar.pirate1", 1, 4, 1, 4)
 	run_background_script("scummbar.pirate2", 1, 4, 1, 4)
+	run_background_script("scummbar.pirate3", 1, 4, 0.5, 0.5)
+	run_background_script("scummbar.pirate4", 1, 4, 0, 0)
+	run_background_script("scummbar.pirate5", 1, 4, 1, 2)
+	run_background_script("scummbar.pirate7", 1, 4, 1, 2)
+	run_background_script("scummbar.pirate8", 1, 4, 0, 0)
+	run_background_script("scummbar.pirate9", 1, 4, 0, 0)
+
+	run_background_script("scummbar.estevan", 1, 4, 0, 0)
+	run_background_script("scummbar.loompirate", 1, 4, 0, 0)
 
 end
 
