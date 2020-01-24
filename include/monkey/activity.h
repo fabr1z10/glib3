@@ -2,10 +2,11 @@
 
 #include <memory>
 #include <vector>
+#include <monkey/ref.h>
 
-class Activity {
+class Activity : public Ref {
 public:
-    Activity () : m_complete{false}, m_success{true} {}
+    Activity () : Ref(), m_complete{false}, m_success{true} {}
     virtual ~Activity();
     virtual void Start() = 0;
     virtual void Run (float dt) = 0;

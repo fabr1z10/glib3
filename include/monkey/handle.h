@@ -9,7 +9,7 @@ public:
     Handle (T* ref) : m_ref(ref), m_id(ref->GetId()) {}
     T* operator->() const { return m_ref; }
     bool isValid() const {
-        return Monkey::get().isAlive(m_ref->GetId());
+        return Monkey::get().isAlive(m_id);
     }
     T* get() {
         return m_ref;

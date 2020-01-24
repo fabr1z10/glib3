@@ -71,6 +71,7 @@ void DynamicWorldBuilder::UpdateWorld(glm::vec3 pos) {
                     auto obj = item.m_blueprint;
                     item.active = true;
                     std::cerr << "adding item " << item.m_blueprint->GetId() << std::endl;
+                    //auto freshItem= obj->clone();
                     m_parentEntity->AddChild(obj);
                     obj->SetPosition(item.m_initPos);
                     if (Engine::get().isRunning()) {
@@ -95,7 +96,9 @@ void DynamicWorldBuilder::UpdateWorld(glm::vec3 pos) {
                 auto obj = item.m_blueprint;
                 item.active = true;
                 std::cerr << "adding item " << item.m_blueprint->GetId() << std::endl;
+                //auto freshItem= obj->clone();
                 m_parentEntity->AddChild(obj);
+
                 obj->SetPosition(item.m_initPos);
                 if (Engine::get().isRunning()) {
                     obj->restart();

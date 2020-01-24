@@ -31,6 +31,7 @@ class Entity : public Ref {
 public:
     Entity() : Ref(), m_parent(nullptr), m_update(true), m_localTransform{glm::mat4(1.0)},
                m_worldTransform{glm::mat4(1.0)}, m_enableControls{true}, m_flipHorizontal{false}, m_started(false) {}
+    ~Entity() override ;
     // copy ctor
     Entity(const Entity&);
 
@@ -80,6 +81,8 @@ public:
     Event<Entity*> onMove;						// fires when this node moves
     Event<Entity*> onAdd;
     Event<Entity*> onRemove;
+    Event<Entity*> onDestroy;
+
     //Event<GameObject*> onRemove;					// fires when this node goes out of scope
 
     // gets the world position

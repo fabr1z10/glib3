@@ -27,7 +27,7 @@ require("platformer")
 
 variables = {
     --_room = "world1_1",
-	state = 2,
+	state = 1,
 	jump_height = 160,
 	time_to_jump_apex = 0.5,
 	world_name = "",

@@ -30,6 +30,12 @@ Entity::Entity(const Entity & e) : Ref(e), m_update(e.m_update) {
 
 }
 
+Entity::~Entity() {
+    if (!onDestroy.isEmpty()) {
+        onDestroy.Fire(this);
+    }
+}
+
 std::shared_ptr<Entity> Entity::clone() const {
     return std::make_shared<Entity>(*this);
 

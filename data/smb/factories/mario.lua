@@ -3,7 +3,7 @@ factory.mario = {}
 factory.mario.models = {"mario", "supermario", "supermario_fire"}
 
 factory.mario.change_state = function(player, value) 
-	player:getinfo().state = value
+	variables.state = value
 	player:setmodel(factory.mario.models[value], "walk")
 	-- Mario can fire only when state == 3
 	variables.can_fire = (value == 3)
@@ -32,8 +32,9 @@ factory.mario.hit_by_enemy = function(player, enemy)
 	local marioInfo = player:getinfo()
 	local supermario = marioInfo.supermario
 
-	if (supermario == true) then
+	if (variables.state > 1) then
 		marioInfo.invincible = true
+		factory.mario.change_state(player, 1)
 		player.state = "walk"
 		local act = {
 			{ type = action.blink, args = { id = player.id, duration=5, blink_duration= 0.2}},

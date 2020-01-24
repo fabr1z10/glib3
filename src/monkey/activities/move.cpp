@@ -65,6 +65,7 @@ void MoveTo::Start() {
 
 
 void MoveTo::Run (float dt) {
+
     glm::vec2 delta = dt * m_velocity;
     m_velocity += m_accelerationVector * dt;
 

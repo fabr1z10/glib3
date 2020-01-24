@@ -83,7 +83,7 @@ void Script::Run (float dt) {
     std::unordered_set<int> toRemove;
     for (auto& id : m_frontier) {
         Activity* activity = m_activities[id].get();
-        activity->Run(dt);
+        //activity->Run(dt);
         if (activity->IsComplete()) {
             // check its children
             // this definitely  needs to be removed rom the froniter
@@ -98,6 +98,8 @@ void Script::Run (float dt) {
                     }
                 }
             }
+        } else {
+            activity->Run(dt);
         }
     }
 
