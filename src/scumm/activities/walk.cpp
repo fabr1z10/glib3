@@ -55,8 +55,9 @@ void Walk::Start() {
     if (!m_shape->isPointInside(currentPos)) {
 
         auto p = ClosestPointOnEdge::Find(*(m_shape), currentPos);
-        actor->SetPosition(p.P);
-        currentPos = glm::vec3(p.P, 0.0f);
+        glm::vec3 a (p.P + 0.5f* p.normal, 0.0f);
+        actor->SetPosition(a);
+        currentPos = a;
 
     }
     //std::cout << "current position is " << currentPos.x << ", " << currentPos.y << "\n";
