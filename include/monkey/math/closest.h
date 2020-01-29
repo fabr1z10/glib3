@@ -27,7 +27,7 @@ public:
 private:
     void replace(float& bestd, glm::vec2& bp, float cand, glm::vec2 bc);
     // returns the closest point
-    void getNearest(Polygon&, float&, glm::vec2& closestPointSoFar, glm::vec2 offset = glm::vec2(0.0f));
+    void getNearest(Polygon&, float&, glm::vec2& closestPointSoFar, glm::vec2 offset = glm::vec2(0.0f), bool flip = false);
     ClosestPointOnEdge(glm::vec2 P) : m_P{P} {}
     glm::vec2 m_P;
     // normal pointing INSIDE

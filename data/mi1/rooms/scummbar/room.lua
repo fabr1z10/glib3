@@ -7,6 +7,7 @@ roomDefinition = {
 		village1 = { walkarea = "scummbar.walkarea", pos = items["scummbar.door_out"].hotspot.walk_to, dir = "east"},
 		mancomb = { walkarea = "scummbar.walkarea", pos = items["scummbar.mancomb"].hotspot.walk_to, dir = "north"},
 		estevan = { walkarea = "scummbar.walkarea", pos = items["scummbar.estevan"].hotspot.walk_to, dir = "south"},
+		loompirate = { walkarea = "scummbar.walkarea", pos = items["scummbar.loompirate"].hotspot.walk_to, dir = "north"},		
 		kitchen = { walkarea = "scummbar.walkarea", pos = items["scummbar.door_kitchen"].hotspot.walk_to, dir="west"}
 	},
 	defaultroom = "village1",

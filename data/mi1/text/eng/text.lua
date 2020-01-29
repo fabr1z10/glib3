@@ -268,7 +268,6 @@ strings = {
 			}
 		},
 		loom_pirate = {
-			text = {
 			[1] = "Aye.",
 			[2] = "Aye, yourself.",
 			[3] = "Nice hat.",
@@ -285,7 +284,6 @@ strings = {
 			[14] = "Geeze, what an obvious sales pitch.",
 			[15] = "Sorry, but on some topics I just get carried away.",
 			[16] = "No thanks. I can't stand salesmen."
-			}
 		},
 		estevan = {
 			[1] = "What are you looking at me for?",

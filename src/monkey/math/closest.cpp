@@ -36,7 +36,7 @@ void ClosestPointOnEdge::getNearest(
         Polygon& p,                 // shape in local coordinates
         float& bestSoFar,
         glm::vec2& closestPointSoFar,
-        glm::vec2 offset) // best in WORLD coords
+        glm::vec2 offset, bool flip) // best in WORLD coords
 {
     int n = p.GetVertexCount();
     // transform the point in local coords
@@ -56,7 +56,7 @@ void ClosestPointOnEdge::getNearest(
         if (dist < bestSoFar) {
             bestSoFar = dist;
             closestPointSoFar = cp + offset;
-            m_normal = -Perp(u);
+            m_normal = -Perp(u) * (flip ? -1.0f : 1.0f);
             //normal = (d >= l ? p.getNormalAtVertex(i) : (d <= 0 ? p.getNormalAtVertex(ip) : p.getNormalAtEdge(ip)));
             //bestPoint = bestPoint - normal*0.01f;
         }
@@ -78,7 +78,7 @@ void ClosestPointOnEdge::visit(Poly& p) {
     for (const auto& hole : p.getHoles()) {
         glm::vec2 pos = hole.getPosition();
         Polygon* a = hole.getPolygon();
-        getNearest(*a, b, m_result, pos);
+        getNearest(*a, b, m_result, pos, true);
     }
 }
 
@@ -113,6 +113,7 @@ ClosestPointResult ClosestPointOnEdge::Find(Shape& s, glm::vec2 P) {
     s.accept(c);
     ClosestPointResult result;
     result.normal = c.m_normal;
+    std::cerr << result.normal.x << " ... " << result.normal.y;
     result.P = c.m_result;
     return result;
 }

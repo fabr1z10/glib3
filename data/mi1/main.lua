@@ -62,6 +62,7 @@ variables = {
 
  	first_time_mancomb = true,
  	first_time_estevan = true,
+ 	first_time_loom = true,
  	door_village_scummbar = 0,
     door_scummbar_kitchen = 0,
  	door_kitchen_pier = 0,
