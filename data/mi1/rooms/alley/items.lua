@@ -6,14 +6,14 @@ engine.items["alley.walkarea"] = scumm.factory.walkarea {
 }
 
 engine.items["alley.exit"] = {
-	pos = {753, 11, 0},
+	pos = {0, 0, 0},
 	hotspot = {
 		text = strings.objects.archway,
 		walk_to = {35, 18}, 
-		face = "west",
-		size = {23, 74}
+		dir = "west",
+		size = {10, 144}
 	},			
 	actions = {
-		walk = { type=action.change_room, args = {room="village2"}}
+		walk = { type=action.change_room, args = {room="village3"}}
 	}
 }

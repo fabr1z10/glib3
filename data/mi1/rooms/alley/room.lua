@@ -18,11 +18,14 @@ room = scumm.factory.basic_room (roomDefinition)
 room:add("main", {
 	{ pos = {0, 0,-3}, components = { { type="gfx", image="alley.png" }}},
 	{ pos = {0, 0, 0.92}, components = { { type="gfx", image="alley_2.png" }}},
+	scumm.factory.object { id = "alley.exit" },
 })
 
 local fester = function()
 	if (variables.met_fester == false) then
+ 		local di = strings.dialogues.fester
 		local a = {
+ 			{ type = scumm.action.say, args = { actor="guybrush", lines={di[1]}}}
 		}
 		local s = script.make(a)
 		monkey.play(s)
