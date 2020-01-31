@@ -84,6 +84,10 @@ local s = {
 	fakedoor1_village_door_close = {x=58, y=179, width=16, height=29},
 	fakedoor2_village_door_open = {x=13, y=204, width=8, height=14},
 	fakedoor2_village_door_close = {x=3, y=204, width=8, height=14},
+	fakedoor3_village_door_open = {x=398, y=484, width=8, height=13},
+	fakedoor3_village_door_close = {x=388, y=484, width=8, height=13},
+	fakedoor4_village_door_open = {x=398, y=498, width=8, height=12},
+	fakedoor4_village_door_close = {x=388, y=498, width=8, height=12},
 	door_scummbar_village_open = {x=472, y=2, width=38, height=47},
 	door_scummbar_village_close = {x=472, y=50, width=38, height=47},
 	door_scummbar_kitchen_open = {x=435, y=73, width=35, height=69},
@@ -386,6 +390,21 @@ local s = {
 	scummbar_pirate_9_2 = {x=354,y=100,width=30,height=35},
 	scummbar_pirate_9_3 = {x=386,y=100,width=30,height=39},
 	
+	fester_walk_side_1 = { x=194, y=145, width=26, height=45},
+	fester_walk_side_2 = { x=222, y=144, width=22, height=46},
+	fester_walk_side_3 = { x=246, y=145, width=31, height=45},
+	fester_walk_side_4 = { x=279, y=145, width=27, height=46},
+	fester_walk_side_5 = { x=308, y=144, width=23, height=46},
+	fester_walk_side_6 = { x=333, y=145, width=32, height=45},
+	fester_idle_side_body = {x=369,y=152,width=28,height=39},
+	fester_idle_side_head_1 = {x=400,y=145,width=9,height=13},
+	fester_idle_side_head_2 = {x=411,y=145,width=10,height=13},
+	fester_idle_side_head_3 = {x=423,y=145,width=10,height=13},
+	fester_idle_side_head_4 = {x=435,y=145,width=9,height=13},
+	fester_idle_side_head_5 = {x=446,y=145,width=9,height=13},
+	fester_idle_side_head_6 = {x=457,y=145,width=9,height=13},
+
+
 	
 	
 	
@@ -781,6 +800,26 @@ engine.assets.models["fakedoor_village_2"] = {
 	animations = {
 		{ name = "open", frames = { { duration = dt, quads = {{ id = s.fakedoor2_village_door_open }}}}},
 		{ name = "close", frames = { { duration = dt, quads = {{ id = s.fakedoor2_village_door_close }}}}}
+	}
+}
+
+engine.assets.models["fakedoor_village_3"] = {
+    sheet = sheet,
+    type = "sprite",
+    ppu=1,
+	animations = {
+		{ name = "open", frames = { { duration = dt, quads = {{ id = s.fakedoor3_village_door_open }}}}},
+		{ name = "close", frames = { { duration = dt, quads = {{ id = s.fakedoor3_village_door_close }}}}}
+	}
+}
+
+engine.assets.models["fakedoor_village_4"] = {
+    sheet = sheet,
+    type = "sprite",
+    ppu=1,
+	animations = {
+		{ name = "open", frames = { { duration = dt, quads = {{ id = s.fakedoor4_village_door_open }}}}},
+		{ name = "close", frames = { { duration = dt, quads = {{ id = s.fakedoor4_village_door_close }}}}}
 	}
 }
 
@@ -1793,3 +1832,31 @@ engine.assets.models["swordmaster.smtiny"] = {
 		}},
 	}
 }
+
+engine.assets.models["fester"] = {
+    sheet = sheet,
+    type = "sprite",
+    ppu=1,
+	animations = {
+		{ name = "idle_s", frames = { { duration = dt, quads = {{ id = s.fester_idle_side_body}, {id = s.fester_idle_side_head_1, pos={0, 33}}}}}},
+		{ name = "idle_e", frames = { { duration = dt, quads = {{ id = s.fester_idle_side_body}, {id = s.fester_idle_side_head_1, pos={0, 33}}}}}},
+		{ name = "idle_n", frames = { { duration = dt, quads = {{ id = s.fester_idle_side_body}, {id = s.fester_idle_side_head_1, pos={0, 33}}}}}},
+		{ name = "talk_e", frames = { 
+			{ duration = dt, quads = {{ id = s.fester_idle_side_body }, {id = s.fester_idle_side_head_1, pos={0, 33}}}},
+			{ duration = dt, quads = {{ id = s.fester_idle_side_body }, {id = s.fester_idle_side_head_2, pos={0, 33}}}},
+			{ duration = dt, quads = {{ id = s.fester_idle_side_body }, {id = s.fester_idle_side_head_3, pos={0, 33}}}},
+			{ duration = dt, quads = {{ id = s.fester_idle_side_body }, {id = s.fester_idle_side_head_4, pos={0, 33}}}},
+			{ duration = dt, quads = {{ id = s.fester_idle_side_body }, {id = s.fester_idle_side_head_5, pos={0, 33}}}},
+			{ duration = dt, quads = {{ id = s.fester_idle_side_body }, {id = s.fester_idle_side_head_6, pos={0, 33}}}},
+		}},
+		{ name = "walk_e", frames = { 
+			{ duration = dt, quads = {{ id = s.fester_walk_side_1}}},
+			{ duration = dt, quads = {{ id = s.fester_walk_side_2}}},
+			{ duration = dt, quads = {{ id = s.fester_walk_side_3}}},
+			{ duration = dt, quads = {{ id = s.fester_walk_side_4}}},
+			{ duration = dt, quads = {{ id = s.fester_walk_side_5}}},
+			{ duration = dt, quads = {{ id = s.fester_walk_side_6}}},
+		}},
+	}
+}
+

@@ -1,25 +1,36 @@
+local items = engine.items
+
 roomDefinition = {
 	width = 344,
 	height = 144,
 	startTable = {
-		village3 = { pos = items["alley.exit"].hotspot.walk_to, dir = "east"},
+		village3 = { walkarea="alley.walkarea", pos = items["alley.exit"].hotspot.walk_to, dir = "east"},
 	},
 	defaultroom = "village3",
-	depth = { type="linear_y", values= {0, 1, 144, 0} },
+	walkareas = {"alley.walkarea"},
+	font_size = 8,
+	playerid = "guybrush",
+	collide=true
 }
 
 room = scumm.factory.basic_room (roomDefinition)
 
-room:add( {
-	{ pos = {0, 0,-3}, components = { { type="gfx", image="gfx/alley.png" }}},
-	scumm.factory.walkarea { 
-		shape = { 
-	        type = "poly", 
-	        outline = {0, 0, 344, 0, 344, 144, 0, 144}
-      	}
-	},
+room:add("main", {
+	{ pos = {0, 0,-3}, components = { { type="gfx", image="alley.png" }}},
+	{ pos = {0, 0, 0.92}, components = { { type="gfx", image="alley_2.png" }}},
 })
 
+local fester = function()
+	if (variables.met_fester == false) then
+		local a = {
+		}
+		local s = script.make(a)
+		monkey.play(s)
+	end
+end
+
+
+table.insert(room.initstuff, fester)
 
 -- function room.afterstartup() 
 -- 	for k, v in ipairs(room.initstuff) do

@@ -89,7 +89,7 @@ variables = {
 	shopkeeper_away = 0,
 -- 	know_sword_price = false,
 -- 	know_shovel_price = false,
---     met_fester = false,
+	met_fester = false,
  	entered_circus = false,
  	circus_knows_trick = false,
  	circus_knows_helmet = false,
@@ -105,7 +105,7 @@ variables = {
 
 	save_states = {
 		start = function()
-			engine.state.room = "scummbar"
+			engine.state.room = "village3"
 			engine.state.previousRoom =""
 		end,
 		taken_stuff_from_kitchen = function()

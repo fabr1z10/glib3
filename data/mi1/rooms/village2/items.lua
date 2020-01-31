@@ -160,3 +160,29 @@ engine.items["village2.fakedoor2"] = {
 	anim="close"
 }
 
+engine.items["village2.fakedoor3"] = {
+	pos = {130, 63, -1},
+	hotspot = {
+		text = strings.objects.door,
+		walk_to= {135, 60},
+		dir = "north",
+		size = {10, 15}	
+	},
+	actions = {},
+	model = "fakedoor_village_3",
+	anim = "close"
+}
+
+engine.items["village2.fakedoor4"] = {
+	pos = {184, 64, -1},
+	hotspot = {
+		text = strings.objects.door,
+		walk_to= {188, 61},
+		dir = "north",
+		size = {10, 15}	
+	},
+	actions = {},
+	model = "fakedoor_village_4",
+	anim="close"
+}
+

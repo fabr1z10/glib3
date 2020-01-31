@@ -26,7 +26,11 @@ room:add ( "main",
 		scumm.factory.object { id="village2.archway_to_village3" },
 		scumm.factory.object { id="village1.archway" },
 		scumm.factory.object { id="village1.door" },
-		scumm.factory.object { id="village2.voodoolady_door"}
+		scumm.factory.object { id="village2.voodoolady_door"},
+		scumm.factory.object { id="village2.fakedoor1"},
+		scumm.factory.object { id="village2.fakedoor2"},
+		scumm.factory.object { id="village2.fakedoor3"},
+		scumm.factory.object { id="village2.fakedoor4"},		
 	}
 )
 
