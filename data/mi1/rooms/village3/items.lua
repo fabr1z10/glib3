@@ -80,6 +80,7 @@ scumm.factory.door {
 	model = "village3.church_door",
 	variable = "door_church",
 	nextroom = "church",
+	open = {}
 }
 
 -- engine.items["fester"]= {

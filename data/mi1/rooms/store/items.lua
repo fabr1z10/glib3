@@ -6,6 +6,12 @@ engine.items["store.walkarea"] = scumm.factory.walkarea {
  		248,0,62,0}
  	},
 	depth = { type="linear_y", values= {0, 1, 144, 0} },
+	scale = { type="patchwise", rects = {
+    		{ pos = {0, 0}, size={320, 20}, type="constant", value = 1},
+    		{ pos = {0,20}, size={320,10}, type="linear_y", values= {20,1,30,0.6}},
+    		{ pos = {0, 30}, size={320, 104}, type="constant",value = 0.6},
+    	}
+	},
 	priority = 0,
 	--depth = { type="linear_y", values= {0, 1, 144, 0} },
 	--scale = { type="constant", value=0.3 }
@@ -134,7 +140,9 @@ engine.items["shop.sword"] = {
 	model ="shop.sword",
  	actions ={
  		look = { type = scumm.action.say, args = {actor="guybrush", lines ={strings.shop[5]}}},
- 		pick = scumm.action.pickup { id="shop.sword", anim1="operate_n", anim2="idle_n"}
+ 		--pick = scumm.action.pickup { id="shop.sword", anim1="operate_n", anim2="idle_n"}
+ 		pick = glib.curry(scumm.action.pickup2, {id="shop.sword", anim1="operate_n", anim2="idle_n"}),
+
  	}
 }
 
@@ -149,7 +157,9 @@ engine.items["shop.shovel"] = {
  	model = "shop.shovel",
  	actions = {
  		look = { type = scumm.action.say, args = {actor ="guybrush", lines ={strings.shop[6]}}},
- 		pickup = scumm.action.pickup { id="shop.shovel", anim1="operate_e", anim2="idle_e"}
+ 		pick = glib.curry(scumm.action.pickup2, {id="shop.shovel", anim1="operate_e", anim2="idle_e"}),
+
+ 		--pickup = scumm.action.pickup { id="shop.shovel", anim1="operate_e", anim2="idle_e"}
  	}
  }
 

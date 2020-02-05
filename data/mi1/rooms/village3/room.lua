@@ -7,6 +7,7 @@ roomDefinition = {
 		village2 = { walkarea="village3.walkarea", pos = items["village3.archway"].hotspot.walk_to, dir = "west"},
 		store = { walkarea = "village3.walkarea", pos = items["village3.shop_door"].hotspot.walk_to, dir="south"},
 		jail = { walkarea = "village3.walkarea", pos = items["village3.jail"].hotspot.walk_to, dir="south"},
+		alley = { walkarea = "village3.walkarea", pos = items["village3.alley"].hotspot.walk_to, dir="south"},
 	},
 	walkareas = {"village3.walkarea"},
 	defaultroom = "village2",

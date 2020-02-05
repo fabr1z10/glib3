@@ -156,44 +156,5 @@ variables = {
 
 variables.save_states.start()
 
---engine.state.scumm.inventory["kitchen.fish"] = 1
---engine.state.scumm.inventory["pieces_of_eight"] = 1000
---engine.state.scumm.inventory["shop.sword"] = 1
---engine.state.scumm.inventory["shop.shovel"] = 1
---engine.state.scumm.inventory["kitchen.meat"] = 1
---variables.sword_paid = true
-
-
-
-
-
-
-
-
--- -- this stuff will change at gametime
-
--- -- DEBUG STUFF
-
--- -- END DEBUG
-
---require ("script")
---require ("funcs2")
-
-
--- -- load room specific scripts
--- scripts = {}
--- items = {}
--- spritesheets = {}
--- models = {}
--- dialogues = {}
--- sprites = {}
-
-
---glib.load_folder("dialogues")
-
 require("defaultscripts")
 
-
---test.lookout()
-
---print (config.start_room)

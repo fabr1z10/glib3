@@ -22,15 +22,16 @@ room:add ( "main",
 		{ pos = {0, 0,-3}, components = { { type="gfx", image="shop.png" }}},
 	 	{ pos = {239, 0, 0}, components = { { type="gfx", image="shop3.png" }}},	-- barrels
 		scumm.factory.object { id = "shop.door" },
-
+		scumm.factory.object { id="shop.sword" },
+	    scumm.factory.object { id="shop.shovel" }
 	}
 )
 
 room:add ( "store.walkarea",
 	{ 
 	 	{ pos = {117, 0, 1}, components = { { type="gfx", image="shop2.png" }}},	-- barrels
-	    scumm.factory.object { id="shop.sword" },
-	    scumm.factory.object { id="shop.shovel" },	}
+	    
+	}
 )	
 -- room:add ( "store.walkarea.keeper",
 -- 	{ 
