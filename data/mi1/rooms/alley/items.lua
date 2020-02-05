@@ -17,3 +17,19 @@ engine.items["alley.exit"] = {
 		walk = { type=action.change_room, args = {room="village3"}}
 	}
 }
+
+
+engine.items["fester"] = {
+	tag = "fester",
+	pos = {0,0,0},
+	text_offset = {0, 60},
+    text_color = {255, 85, 85, 255},
+	applyDepth = true,
+	character = {
+		state = "idle",
+		dir = "east",
+		speed = 100
+	},
+	model ="fester",
+	actions = {}
+}

@@ -23,9 +23,22 @@ room:add("main", {
 
 local fester = function()
 	if (variables.met_fester == false) then
+		variables.met_fester = true
  		local di = strings.dialogues.fester
 		local a = {
- 			{ type = scumm.action.say, args = { actor="guybrush", lines={di[1]}}}
+			{ type = scumm.action.disable_controls, args = {value=true}},
+ 			{ type = scumm.action.say, args = { actor="guybrush", lines={di[1]}}},
+ 			{ type = scumm.action.walkto, args = { tag="player", pos ={150, 10}}},
+			{ type = scumm.action.say, args = { actor="guybrush", lines={di[2]}}},
+			{ type = scumm.action.walkto, args = { tag="player", pos ={200, 10}}},
+			{ type = scumm.action.say, args = { actor="guybrush", lines={di[3]}}},
+			{ type = action.create_object, args = { factory = scumm.factory.object, parent="alley.walkarea", 
+				args = { id="fester", pos = {20, 10, 0}}}},
+			{ type = scumm.action.walkto, args = { tag="fester", pos={150,10} }},
+			{ type = scumm.action.turn, args = { tag="player", dir="west" }},
+			{ type = scumm.action.say, args = { actor="fester", lines={di[4], di[5]}}},
+	 		{ type = scumm.action.start_dialogue, args ={ dialogue="fester"}}
+
 		}
 		local s = script.make(a)
 		monkey.play(s)

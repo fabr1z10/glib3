@@ -175,7 +175,6 @@ action.create_object = function(args)
 
 			-- check if a script is provided in the factory
 			if (args.script ~= nil) then
-				print ("FATTTTONE")
 				local actions = args.script(id, args.pos)
 				local s = script.make(actions)
 				monkey.play(s)
