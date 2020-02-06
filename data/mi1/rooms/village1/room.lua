@@ -36,7 +36,9 @@ local entry_cutscene = function()
  	local proom = engine.state.previousRoom
  	if (proom == "") then proom = roomDefinition.defaultroom end
  	if (proom == "lookout") then
-		local actions = scumm.ui.walk { pos = {230, 0} }
+		local actions = {
+			{ type = scumm.action.walkto, args = { tag="player", pos = {230, 0} }}
+		}
 		local s = script.make(actions)
 		s.name="_walk"
 		monkey.play(s)

@@ -14,7 +14,8 @@ function scumm.factory.basic_room (args)
 	glib.assert(args.width, "width")
 	glib.assert(args.height, "width")
 	glib.assert(args.font_size, "font_size")
-	
+	engine.state.scumm.walk_enabled = true
+
 	local room_width = args.width
 	local room_height = args.height
 	local camWidth = engine.device_size[1]
@@ -65,11 +66,13 @@ function scumm.factory.basic_room (args)
 
 			    },
 				lmbclick = function(x, y)
-				    --print ("AZONE = " ..tostring(x) .. "," .. tostring(y))
+				    print ("AZONE = " ..tostring(x) .. "," .. tostring(y))
 					if (engine.state.scumm.lmboverride ~= nil) then
+						print ("Override")
 						engine.state.scumm.lmboverride()
 						return
 					end
+					print ("scumm walk_enabled = " .. tostring(engine.state.scumm.walk_enabled))
 					if (engine.state.scumm.walk_enabled == true and engine.state.scumm.actionInfo.verb == "walk") then
 						local actions = scumm.ui.walk { pos = {x,y} }
 						local s = script.make(actions)
@@ -305,7 +308,5 @@ function scumm.factory.basic_room (args)
 	end
 
 	engine.state.scumm.actionInfo.verb = engine.config.default_verb
-	p.depth = args.depth
-	p.scale = args.scale
 	return p
 end

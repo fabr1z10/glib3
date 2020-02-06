@@ -3,11 +3,11 @@ engine.config.defaultactions = {}
 local d = engine.config.defaultactions
 local s = strings.defaultactions
 
-d.open = { type = action.say, args = { actor="guybrush", lines={s[1]}}}
+d.open = { type = scumm.action.say, args = { actor="guybrush", lines={s[1]}}}
 d.look = { { type = scumm.action.say, args = { actor="guybrush", lines={s[4]}}}}
-d.use = { { type = action.say, args = { id=1, actor="guybrush", lines={s[2]} }} }
-d.give = { { type = action.say, args = { id=1, actor="guybrush", lines={s[2]} }} }
-d.pickup = { { type = action.say, args = { id=1, actor="guybrush", lines={s[5]} }}}
+d.use = { { type = scumm.action.say, args = { id=1, actor="guybrush", lines={s[2]} }} }
+d.give = { { type = scumm.action.say, args = { id=1, actor="guybrush", lines={s[2]} }} }
+d.pickup = { { type = scumm.action.say, args = { id=1, actor="guybrush", lines={s[5]} }}}
 
 mi = {}
 

@@ -58,8 +58,6 @@ engine.config.verbset = {
 }
 
 variables = {
--- 	_previousroom="",
-
  	first_time_mancomb = true,
  	first_time_estevan = true,
  	first_time_loom = true,
@@ -105,8 +103,10 @@ variables = {
 
 	save_states = {
 		start = function()
-			engine.state.room = "village3"
+			engine.state.room = "lookout"
 			engine.state.previousRoom =""
+			engine.state.scumm.inventory["kitchen.pot"] = 1
+
 		end,
 		taken_stuff_from_kitchen = function()
 			engine.state.scumm.inventory["kitchen.meat"] = 1

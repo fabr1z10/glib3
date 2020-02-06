@@ -12,13 +12,7 @@ roomDefinition = {
 	walkareas = { "clearing.walkarea"},
 	collide=true,
 	defaultroom = "meleemap",
-	depth = { type="linear_y", values= {0, 1, 144, 0} },
-	scale = { type="patchwise", rects = {
-   		{ pos = {0, 0}, size={229, 144}, type="constant", value = 0.2},
-   		{ pos = {229,31}, size={85, 144}, type="constant", type="linear_x", values={229,0.2,314,1.0}},
- 		{ pos = {314,0}, size={200, 144}, type="constant", type="constant", value=1.0},
-		{ pos = {283,0}, size={100, 32}, type="constant", type="constant", value=1.0},
-	}}	
+
 }
 
 room = scumm.factory.basic_room  (roomDefinition)

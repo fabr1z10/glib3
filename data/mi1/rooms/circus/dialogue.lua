@@ -44,7 +44,6 @@ local a1 = function(n)
 				f(1,{n}),
 				fettuccini_approach
 			}
-			print ("CIAO CIAO")
 			if (variables.circus_knows_trick == false) then
 				table.insert(actions, s1)
 			elseif (variables.circus_knows_helmet == false) then
@@ -63,12 +62,18 @@ engine.dialogues.fettuccini = {
 	nodes = {
 		[1] = { children = {2, 3, 4, 5, 6}},
 		[2] = a1(29),
+		-- { text = d[29], active=true, 
+		-- 	children= function() if (variables.circus_knows_helmet == true) then return {10,11} else return {7,8,9} end end,
+		-- 	script = {
+		-- 	f(1,{29}),
+		-- 	fettuccini_approach,
+		-- }},-- a1(29),
 		[3] = a1(30),
 		[4] = a1(31),
 		[5] = a1(32),
 		[6] = a1(33),
 		[7] = { text = d[61], active=true, children={10,11}, script = { f(1, {61}), f(2, {69, 70}) }},
-		[8] = { text = d[62], active=true, children ={13,14}, script = { f(1, {61}), f(2, {64}) }},
+		[8] = { text = d[62], active=true, children ={13,14}, script = { f(1, {62}), f(2, {64}) }},
 		[9] = { text = d[63], active=true, script = { f(1, {63}), { type=action.change_room, args={room="clearing"}}}},
 		[10] = { text = d[71], active=true, script = { f(1, {71}), f(3, {73}), f(2, {74}), f(3, {75}), f(2, {76}), f(3, {77}), 
 			{ type = action.set_variable, args = {var="circus_knows_helmet", value=true}},
@@ -78,7 +83,7 @@ engine.dialogues.fettuccini = {
 		[12] = { text = d[29], active=true, children={10, 11}, script = { { type = action.kill_script, args = {script="_fettuccini"}}, f(1, {29}), fettuccini_approach, f(2, {67}), f(3, {68})}},
 		[13] = { text = d[65], active=true, children={10,11}, script = { f(1, {65}), f(2, {70}),
 			{ type = action.set_variable, args = {var="circus_knows_helmet", value=true}}}},
-		[14] = { text = d[66], active=true, script = { f(1, {66}), { type=action.change_room, args={room="clearing"}}}},
+		[14] = { text = d[66], active=true, script = { f(1, {66}) }},--, { type=action.change_room, args={room="clearing"}}}},
 		[15] = { children = {16, 17}},
 		[16] = { text = d[93], active=true, script = { {type=action.show_message, args = { message = d[93], color = items["guybrush"].text_color, pos = {93, 60, 5}}}, s3 }},
 		[17] = { text = d[94], active=true, script = { {type=action.show_message, args = { message = d[94], color = items["guybrush"].text_color, pos = {93, 60, 5}}}, s3 }}

@@ -100,7 +100,7 @@ function scumm.factory.map_room (args)
 					    	tag = "cursor",
 					    	pos={0,0,0},
 							components = {
-					    		{ type="text", id = "prova", font="monkey", align = "bottom", color = engine.config.ui_currentaction_color},
+					    		{ type="text", id = "", font="monkey", align = "bottom", color = engine.config.ui_currentaction_color},
 								{ type="cursor"}
 							}
 						}

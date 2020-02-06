@@ -12,12 +12,7 @@ roomDefinition = {
 	collide=true,
 	defaultroom = "clearing",
 	enableScroll = false,
-	depth = { type="linear_y", values= {0, 1, 144, 0} },
-	scale = { type="patchwise", rects = {
-    	{ pos = {0, 0}, size={368, 20}, type="constant", value = 1},
-    	{ pos = {0, 20}, size={368, 14}, type="linear_y", values={20,1,34,0.57}}
-		
-	}}
+
 }
 
 room = scumm.factory.basic_room(roomDefinition)
@@ -31,6 +26,7 @@ room:add("main", {
  --       	shape = { type = "poly", outline = {0,35,368,35,368,0,0,0}},
 	-- },
 	scumm.factory.object { id="circus.wayout"},
+	scumm.factory.object { id="circus.fire"},
 
 	-- factory.object.create { object = "circus.wayout"},
 	-- factory.object.create { object = "circus.greenclown"},
@@ -81,7 +77,7 @@ local init = function()
  		variables.entered_circus = true
  		--local s = script:new("_fettuccini")
  		actions = {
- 			{ ref=1, type=scumm.action.disable_controls },
+ 			{ ref=1, type=scumm.action.disable_controls, args = {value=true} },
  			{ type=scumm.action.walkto , args = {tag="player", pos={178, 9}}},
  			{ type=scumm.action.say, after={1}, args = {actor="circus.purpleclown", lines={d[1]}}},
  			{ type=scumm.action.say, args={ actor="circus.greenclown", lines={d[2]}}},
@@ -93,6 +89,7 @@ local init = function()
  			{ type=scumm.action.say, args={ actor="circus.greenclown", lines={d[7]}}},
  			{ type=scumm.action.say, args={ actor="circus.purpleclown", lines={d[8]}}},
  			{ type=scumm.action.say, args={ actor="circus.greenclown", lines={d[9]}}},
+ 			--{ type=scumm.action.disable_controls, args = {value=false} },
 			{ type=scumm.action.start_dialogue, args= { dialogue="fettuccini"}}
  		}
  	else
@@ -103,16 +100,15 @@ local init = function()
  		}
  	end		
 
-	table.insert(actions, s1)
-	local s = script.make(actions, 10)
+	--table.insert(actions, s1)
+	--local s = script.make(actions, 10)
+	local s = script.make(actions)
 	s.name = "_fettuccini"
 	monkey.play(s)
 
 end
 
 table.insert(room.initstuff, init)
-
-
 -- function room.afterstartup() 
 -- 	for k, v in ipairs(room.initstuff) do
 -- 		v()

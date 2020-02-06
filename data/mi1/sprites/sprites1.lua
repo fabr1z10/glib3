@@ -389,7 +389,7 @@ local s = {
 	scummbar_pirate_9_1 = {x=323,y=100,width=30,height=33},
 	scummbar_pirate_9_2 = {x=354,y=100,width=30,height=35},
 	scummbar_pirate_9_3 = {x=386,y=100,width=30,height=39},
-	
+	-- fester	
 	fester_walk_side_1 = { x=194, y=145, width=26, height=45, anchor={17,0}},
 	fester_walk_side_2 = { x=222, y=144, width=22, height=46, anchor={17,0}},
 	fester_walk_side_3 = { x=246, y=145, width=31, height=45, anchor={18,0}},
@@ -403,6 +403,10 @@ local s = {
 	fester_idle_side_head_4 = {x=435,y=145,width=9,height=13},
 	fester_idle_side_head_5 = {x=446,y=145,width=9,height=13},
 	fester_idle_side_head_6 = {x=457,y=145,width=9,height=13},
+	-- other
+	circus_fire_1 = {x=179,y=102,width=10,height=29},
+	circus_fire_2 = {x=191,y=102,width=10,height=29},
+	circus_fire_3 = {x=203,y=102,width=10,height=29},
 
 
 	
@@ -1328,6 +1332,20 @@ engine.assets.models["scummbar.fireplace"] = {
 		}},
 	}
 }
+
+engine.assets.models["circus.fire"] = {
+    sheet = sheet2,
+    type = "sprite",
+    ppu=1,
+	animations = {
+		{ name = "idle", frames = { 
+			{ duration = dt, quads = {{ id = s.circus_fire_1 }}},
+			{ duration = dt, quads = {{ id = s.circus_fire_2 }}},
+			{ duration = dt, quads = {{ id = s.circus_fire_3 }}},
+		}},
+	}
+}
+
 
 engine.assets.models["kitchen.table"] = {
     sheet = sheet,

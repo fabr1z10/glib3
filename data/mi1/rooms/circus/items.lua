@@ -1,5 +1,11 @@
 engine.items["circus.walkarea"] = scumm.factory.walkarea {
-	shape = { type = "poly", outline = {0,35,368,35,368,0,0,0}},
+	shape = { type = "poly", outline = {0,34,368,34,368,0,0,0}},
+	depth = { type="linear_y", values= {0, 1, 144, 0} },
+	scale = { type="patchwise", rects = {
+    	{ pos = {0, 0}, size={368, 20}, type="constant", value = 1},
+    	{ pos = {0, 20}, size={368, 14}, type="linear_y", values={20,1,34,0.57}}
+		
+	}},
 	priority = 0
 }
 
@@ -61,4 +67,9 @@ engine.items["circus.greenclown"] = {
 	},
 	actions = {}
 
+}
+
+engine.items["circus.fire"] = {
+ 	pos = {14, 70, -1},
+	model = "circus.fire",
 }
