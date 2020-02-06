@@ -8,6 +8,15 @@
   * [macOS details](#macos-details)
   * [Linux details](#linux-details)
 
+# Platforms
+
+So far I've compiled glib3 succesfully on the following platforms:
+
+* Windows 10 + Visual Studio Community 2019
+* Linux + gcc 7.4.0
+
+I will update this info as soon as I'm able to build succesfully on macOS too.
+
 # Get the source code
 
 You can get the source code downloading a xyz file from the latest
@@ -31,3 +40,16 @@ The library requires the following packages installed in your system. More detai
 * JPEG library (http://ijg.org/)
 * LUA (https://www.lua.org/home.html)
 * Boost (only the filesystem component) (https://www.boost.org/)
+
+# Compiling
+
+# Windows details
+
+Below you can find some instructions on how to install the dependencies on Windows. In this section, {VC Root} refers to the root where your C++ compiler in installed. For instance, in my setup it is in `C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\14.23.28105`
+
+### GLEW
+* Go to glew.sourceforge.net/ 
+* Get the windows binaries
+* Copy the `glew32.dll` in `bin/Release/x64` into `c:/windows/System32` 
+* Copy `glew32.lib` and `glew32s.lib` in `lib/Release/x64` into `{VC Root}/lib/x64`
+* Copy the content of the include folder in `{VC Root}/include`
