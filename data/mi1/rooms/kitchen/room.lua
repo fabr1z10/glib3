@@ -68,6 +68,7 @@ end
 room = scumm.factory.basic_room  (roomDefinition)
 room:add( "main", {
 	{ pos = {0, 0,-3}, components = { { type="gfx", image="kitchen.png" }}},
+	{ pos = {115, 0, 1}, components = { { type="gfx", image="kitchen3.png" }}},
 	scumm.factory.object { id = "kitchen.potostew"},
 	-- factory.walkarea { 
 	-- 	shape = { type = "poly", outline = {40,16,59,21,155,21,180,18,192,18,294,18,307,12,199,9,207,0,160,0,149,11,112,11,100,0,40,0}},

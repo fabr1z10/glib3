@@ -7,7 +7,7 @@ roomDefinition = {
 		village1 = { walkarea = "lookout.walkarea", pos = items["lookout.stairs"].hotspot.walk_to, dir="north"},
 		meleemap = { walkarea = "lookout.walkarea", pos = items["lookout.path"].hotspot.walk_to, dir = "east"},
 	},
-	defaultroom = "village1",
+	defaultroom = "meleemap",
 	walkareas = { "lookout.walkarea"},
 	font_size = 8,
 	playerid="guybrush",

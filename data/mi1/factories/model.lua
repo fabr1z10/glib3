@@ -1,5 +1,7 @@
 factory.model = {}
 
+local dt = 0.1
+
 factory.model.create_simple = function(args) 
 	engine.assets.models[args.id] = {
     	sheet = args.sheet,

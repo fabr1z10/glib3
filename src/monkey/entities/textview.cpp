@@ -92,6 +92,7 @@ void TextView::IncreaseTopLine(int inc) {
 void TextView::reformat() {
     m_scroll = true;
     m_textContainer->ClearAllChildren();
+    //m_textContainer->SetPosition(glm::vec2(m_arrowWidth, 0.0f));
     m_nextPos = glm::vec2(m_deltax, 0.0f);
     m_nLines = 0;
     for (auto& l : m_lines) {
@@ -229,9 +230,10 @@ void TextView::AddArrows() {
     arrowUp->SetName("arrowUp");
     arrowDown->SetName("arrowDown");
 
-    glm::vec3 auExtents = arrowUpMesh->GetBounds().GetExtents();
-    glm::vec3 adExtents = arrowDownMesh->GetBounds().GetExtents();
-    m_deltax = auExtents.x;
+    glm::vec3 auExtents = arrowUpMesh->GetBounds().GetSize();
+    glm::vec3 adExtents = arrowDownMesh->GetBounds().GetSize();
+    m_deltax = std::max(auExtents.x, adExtents.x) + 2;
+
 
     auto hsu= std::make_shared<LambdaHotSpot>(std::make_shared<Rect>(auExtents[0], auExtents[1]), 1);
     auto hsd= std::make_shared<LambdaHotSpot>(std::make_shared<Rect>(adExtents[0], adExtents[1]), 1);

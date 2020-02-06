@@ -27,7 +27,6 @@ room:add ( "scummbar.walkarea",
 	{ 
 		scumm.factory.object { id = "scummbar.fireplace"},
 		scumm.factory.object { id = "scummbar.door_out" },
-		scumm.factory.object { id = "scummbar.door_kitchen"},
 		scumm.factory.object { id = "scummbar.mancomb" },
 		scumm.factory.object { id = "scummbar.loompirate"},
 		scumm.factory.object { id = "scummbar.pirate1" },
@@ -53,6 +52,7 @@ room:add( "main", {
 	{ pos = {374, 20, 0.95}, components = { { type="gfx", image="scummbar_2.png" }}},
 	scumm.factory.object { id = "scummbar.estevan" },
 	scumm.factory.object { id = "scummbar.pirate5" },
+	scumm.factory.object { id = "scummbar.door_kitchen"},
 
 
 
