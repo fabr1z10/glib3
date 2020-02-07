@@ -53,3 +53,16 @@ Below you can find some instructions on how to install the dependencies on Windo
 * Copy the `glew32.dll` in `bin/Release/x64` into `c:/windows/System32` 
 * Copy `glew32.lib` and `glew32s.lib` in `lib/Release/x64` into `{VC Root}/lib/x64`
 * Copy the content of the include folder in `{VC Root}/include`
+
+## Linux details
+
+You can install the required packages with the following by typying
+
+    sudo apt-get install freeglut3-dev
+    sudo apt-get install libglew-dev
+    sudo apt-get install libglfw3 libglfw3-dev
+    sudo apt-get install libglm-dev
+    sudo apt-get install libfreetype6 libfreetype6-dev
+    sudo apt-get install libjpeg-dev
+    sudo apt-get install libpng-dev
+    sudo apt-get install liblua5.3-dev
