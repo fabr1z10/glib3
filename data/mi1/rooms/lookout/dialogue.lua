@@ -2,11 +2,17 @@ local d = strings.dialogues.lookout
 
 local initDialogue = function(n) 
 	return function() 
-		return {
+		local actions = {
 			{ type = scumm.action.say, args = {actor="guybrush", lines = {d[n]}}},
 			{ type = scumm.action.turn, args = {tag = "lookout.lookout", dir="south"}},
-			{ type = scumm.action.say, args = {actor="lookout.lookout", lines = {d[5], d[6], d[7], d[8], d[9]}}},
 		}
+		if not variables.talked_to_lookout then
+			variables.talked_to_lookout = true
+			table.insert (actions, { type = scumm.action.say, args = {actor="lookout.lookout", lines = {d[5], d[6], d[7], d[8], d[9]}}})
+		else
+			table.insert (actions, { type = scumm.action.say, args = {actor="lookout.lookout", lines = {d[5], d[43]}}})
+		end
+		return actions
 	end
 end
 

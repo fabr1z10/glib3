@@ -43,7 +43,7 @@ The library requires the following packages installed in your system. More detai
 
 # Compiling
 
-# Windows details
+## Windows details
 
 Below you can find some instructions on how to install the dependencies on Windows. In this section, {VC Root} refers to the root where your C++ compiler in installed. For instance, in my setup it is in `C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\14.23.28105`
 

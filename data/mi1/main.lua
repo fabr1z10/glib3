@@ -70,6 +70,7 @@ variables = {
     door_church = 0,
     cook_in_kitchen = true,
  	meat_in_pot = false,
+ 	talked_to_lookout = false,
 -- 	can_pickup_fish = true,
     seagull_jump = 1,
     seagull_on_board = false,
