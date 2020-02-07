@@ -10,7 +10,7 @@ local initDialogue = function(n)
 			variables.talked_to_lookout = true
 			table.insert (actions, { type = scumm.action.say, args = {actor="lookout.lookout", lines = {d[5], d[6], d[7], d[8], d[9]}}})
 		else
-			table.insert (actions, { type = scumm.action.say, args = {actor="lookout.lookout", lines = {d[5], d[43]}}})
+			table.insert (actions, { type = scumm.action.say, args = {actor="lookout.lookout", lines = {d[5], d[43] .. d[53+math.random(0,1)]}}})
 		end
 		return actions
 	end

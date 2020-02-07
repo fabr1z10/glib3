@@ -27,10 +27,11 @@ engine.dialogues.estevan = {
 	end,
 	-- root
 	nodes = {
-		[1] = { children = {2, 3, 4, 5}},
-		[2] = { text = d[2], active=true, script = { fguy({2}), fman({8}) }},
-		[3] = { text = d[3], deact={3}, active=true, script = { fguy({3}), fman({10,11,12,13}) } },
-		[4] = { text = d[4], deact={4}, active=true, script = { fguy({4}), fman({14,15,16,17,18}) } },
+		[1] = { children = {2, 3, 4, 5, 6}},
+		[2] = { text = d[2], deact={2}, children = {2,3,4,5,6}, active=true, script = { fguy({2}), fman({8}) }},
+		[3] = { text = d[3], deact={3}, act={6}, children = {2,3,4,5,6}, active=true, script = { fguy({3}), fman({10,11,12,13}) } },
+		[4] = { text = d[4], deact={4}, children = {2,3,4,5,6}, active=true, script = { fguy({4}), fman({14,15,16,17,18}) } },
 		[5] = { text = d[5], active=true, script = { fguy({5}), fman({7}) } },
+		[6] = { text = d[9], deact={6}, active=false, children = {2,3,4,5,6}, script = {fguy({9}), fman({19,20,21})}}
 	}
 }

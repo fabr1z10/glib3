@@ -104,7 +104,7 @@ variables = {
 
 	save_states = {
 		start = function()
-			engine.state.room = "lookout"
+			engine.state.room = "scummbar"
 			engine.state.previousRoom =""
 		end,
 		taken_stuff_from_kitchen = function()

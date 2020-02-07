@@ -89,7 +89,7 @@ engine.dialogues.importantpirates = {
 			{ type = scumm.action.say, args = { actor = "scummbar.ilp3", lines = {d[78]} }},
 			{ type = scumm.action.say, args = { actor = "scummbar.ilp1", lines = {d[79]} }},
 			{ type = scumm.action.say, args = { actor = "scummbar.ilp2", lines = {d[80], d[81]} }},
-			{ type = scumm.action.say, args = { actor = "scummbar.ilp1", lines = {d[82]}, animstart="talk", animend="idle" }, ref = 1},
+			{ type = scumm.action.say, args = { actor = "scummbar.ilp1", lines = {d[82]}}, ref = 1},
 			{ type = scumm.action.say, args = { actor = "scummbar.ilp1", lines = {d[49]}}, after={1} },
 			{ type = scumm.action.say, args = { actor = "scummbar.ilp2", lines = {d[49]}}, after={1} },
 			{ type = scumm.action.say, args = { actor = "scummbar.ilp3", lines = {d[49]}}, after={1} },
