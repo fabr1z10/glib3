@@ -41,6 +41,8 @@ The library requires the following packages installed in your system. More detai
 * LUA (https://www.lua.org/home.html)
 * Boost (only the filesystem component) (https://www.boost.org/)
 
+You also need CMake to build the engine.
+
 # Compiling
 
 ## Windows details
