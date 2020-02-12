@@ -6,8 +6,21 @@
 #include <monkey/model/basicmodel.h>
 #include <iostream>
 #include <set>
+#include <monkey/lua/luafunc.h>
 
 extern GLFWwindow* window;
+
+HotSpot::HotSpot(const LuaTable & table) : m_shape(nullptr) {
+    m_priority = table.Get<int>("priority", 0);
+    auto factory = Engine::get().GetSceneFactory();
+
+    if (table.HasKey("shape")) {
+        auto shape_table = table.Get<LuaTable>("shape");
+        m_shape = factory->make<Shape>(shape_table);
+    }
+    m_focus = false;
+
+}
 
 HotSpot::HotSpot(const HotSpot& orig) :
 Component(orig), m_shape(orig.m_shape), m_focus(orig.m_focus), m_priority(orig.m_priority) {
@@ -44,8 +57,40 @@ HotSpotManager::HotSpotManager() : Runner(), MouseListener(), m_currentlyActiveH
     m_pixelRatio = Engine::get().GetPixelRatio();
 }
 
+HotSpotManager::HotSpotManager(const LuaTable & table) : Runner(table) {
+    m_currentlyActiveHotSpot = nullptr;
+    m_pixelRatio = Engine::get().GetPixelRatio();
+    // this is the function that gets called
+    // if no hotspot is active when left mouse button is clicked,
+    if (table.HasKey("lmbclick")) {
+        LuaFunction f(table.Get<luabridge::LuaRef>("lmbclick"));
+        setLmbClickCallback([f] (float x, float y) { f.execute(x, y);});
+    }
+
+    // this is the function that gets called whent
+    // the right mouse is clicked (no hotspot check here?)
+    if (table.HasKey("rmbclick")) {
+        LuaFunction f(table.Get<luabridge::LuaRef>("rmbclick"));
+        setRmbClickCallback([f] (float x, float y) { f.execute(x, y);});
+    }
+
+    if (table.HasKey("keys")) {
+        luabridge::LuaRef keys = table.Get<luabridge::LuaRef>("keys");
+        for (int i = 0; i < keys.length(); ++i) {
+            luabridge::LuaRef key = keys[i+1];
+            LuaTable t2(key);
+            KeyEvent event;
+            event.key = t2.Get<int>("key");
+            event.action = GLFW_PRESS;
+            event.mods = 0;
+            LuaFunction f(t2.Get<luabridge::LuaRef>("func"));
+            AddCallback(event, [f] () { f.execute(); });
+        }
+    }
+}
+
 HotSpotManager::~HotSpotManager() {
-std::cerr << "wind down the hs manager\n";
+    std::cerr << "wind down the hs manager\n";
 }
 //bool HotSpotManager::IsInViewport(float xScreen, float yScreen, glm::vec4 activeViewport) {
 //    xScreen *= m_pixelRatio;
@@ -122,12 +167,12 @@ void HotSpotManager::CursorPosCallback(GLFWwindow*, double x, double y) {
 
     if (newActiveHotSpot != m_currentlyActiveHotSpot) {
         if (m_currentlyActiveHotSpot != nullptr) {
-            //std::cout << "LEAVING\n";
+            std::cout << "LEAVING\n";
             m_currentlyActiveHotSpot->onLeave();
         }
         m_currentlyActiveHotSpot = newActiveHotSpot;
         if (newActiveHotSpot != nullptr) {
-            //std::cout << "ENTER\n";
+            std::cout << "ENTER\n";
             // notify me when you die!
             m_currentlyActiveHotSpot->onDestroy.Register(this, [&] (HotSpot* hs) { NotifyHotSpotDestructor(hs); });
             m_currentlyActiveHotSpot->onEnter();

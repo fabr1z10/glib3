@@ -150,7 +150,7 @@ EntityWrapper EntityWrapper::GetEntityFromId(int id) {
 int EntityWrapper::AddEntity(luabridge::LuaRef ref, EntityWrapper* parent) {
 
     auto mf = Engine::get().GetSceneFactory();
-    auto ptr = mf->makeEntity(ref);
+    auto ptr = mf->make<Entity>(ref);
     parent->m_underlying->AddChild(ptr);
     //ptr->start();
     //ptr->Begin();
@@ -198,10 +198,11 @@ void EntityWrapper::EnableDepth(bool value) {
 void EntityWrapper::SetText(const std::string& text) {
     Renderer* r = m_underlying->GetComponent<Renderer>();
     auto tm = dynamic_cast<TextModel*>(r->GetModel());
+    glm::vec2 oldOffset = tm->GetOffset();
     tm->SetText(text);
-
     glm::vec2 offset = tm->GetOffset();
     r->SetTransform(glm::translate(glm::vec3(offset, 0.0f)));
+    //r->GetObject()->MoveLocal(-oldOffset+offset);
 }
 
 void EntityWrapper::EnableUpdate(bool value) {
@@ -213,6 +214,7 @@ void EntityWrapper::EnableUpdate(bool value) {
 namespace luaFunctions {
 
     void EnableScriptEngine (bool value) {
+
         auto schedule = Engine::get().GetRunner<Scheduler>();
         schedule->setActive(value);
     }
@@ -265,7 +267,7 @@ namespace luaFunctions {
                     edges.push_back(std::make_pair(id-1, id));
                 }
             }
-            auto activity= factory->makeActivity(ac);
+            auto activity= factory->make<Activity>(ac);
             script->AddActivity(id, std::move(activity));
         }
 

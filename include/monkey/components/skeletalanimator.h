@@ -1,7 +1,7 @@
 #pragma once
 
 #include <monkey/components/ianimator.h>
-#include <monkey/skeletalanimation.h>
+#include <monkey/assets/skeletalanimation.h>
 #include <monkey/model/skeletalmodel.h>
 class Renderer;
 

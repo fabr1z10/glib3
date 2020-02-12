@@ -9,78 +9,78 @@
 #include <monkey/quadmesh.h>
 #include <monkey/model/basicmodel.h>
 
-std::shared_ptr<Entity> EntityFactory::Create(luabridge::LuaRef& ref) {
-
-
-    auto entity = std::make_shared<Entity>();
-
-    LuaTable item(ref);
-    std::string tag = item.Get<std::string>("tag", "");
-    //std::cout << "creating " << tag << "\n";
-    std::string name = item.Get<std::string>("name", "");
-    if (!tag.empty()) entity->SetTag(tag);
-    if (!name.empty()) entity->SetName(name);
-    bool active = item.Get<bool>("active", true);
-    glm::vec3 pos = item.Get<glm::vec3>("pos", glm::vec3(0.0f));
-    bool flipx = item.Get<bool>("flipx", false);
-    entity->SetFlipX(flipx);
-    if (item.HasKey("angle")) {
-        float angle = item.Get<float>("angle",0.0f);
-        entity->SetPosition(pos, deg2rad* angle);
-    } else {
-        entity->SetPosition(pos);
-    }
-    if (item.HasKey("position")) {
-        item.ProcessVector("position", [entity] (luabridge::LuaRef ref) {
-            LuaTable t(ref);
-            if (t.HasKey("angle")) {
-                float a = t.Get<float>("angle");
-                glm::vec3 b = t.Get<glm::vec3>("axis");
-                entity->Rotate(a*deg2rad, b);
-            } else {
-                glm::vec3 tr = t.Get<glm::vec3>("translation");
-                entity->SetPosition(tr);
-            }
-        });
-    }
-    if (item.HasKey("scale")) {
-        float scale = item.Get<float>("scale");
-        entity->SetScale(scale);
-    }
-    auto factory = Engine::get().GetSceneFactory();
-
-    // setup camera
-    if (item.HasKey("camera")) {
-        luabridge::LuaRef cam = item.Get<luabridge::LuaRef>("camera");
-
-        auto camera = factory->makeCam(cam);
-        entity->SetCamera(camera);
-    }
-
-    // add components
-    if (item.HasKey("components")) {
-        luabridge::LuaRef c = item.Get<luabridge::LuaRef>("components");
-        for (int i = 0; i < c.length(); ++i) {
-            luabridge::LuaRef rcomponent = c[i+1];
-            auto component = factory->makeComponent(rcomponent);
-            entity->AddComponent(component);
-        }
-
-    }
-
-    if (item.HasKey("children")) {
-        luabridge::LuaRef c = item.Get<luabridge::LuaRef>("children");
-        for (int i = 0; i < c.length(); ++i) {
-            luabridge::LuaRef child = c[i+1];
-            auto childEntity = factory->makeEntity(child);
-            if (childEntity != nullptr)
-                entity->AddChild(childEntity);
-        }
-    }
-
-    entity->setActive(active);
-    return entity;
-}
+//std::shared_ptr<Entity> EntityFactory::Create(luabridge::LuaRef& ref) {
+//
+//
+//    auto entity = std::make_shared<Entity>();
+//
+//    LuaTable item(ref);
+//    std::string tag = item.Get<std::string>("tag", "");
+//    //std::cout << "creating " << tag << "\n";
+//    std::string name = item.Get<std::string>("name", "");
+//    if (!tag.empty()) entity->SetTag(tag);
+//    if (!name.empty()) entity->SetName(name);
+//    bool active = item.Get<bool>("active", true);
+//    glm::vec3 pos = item.Get<glm::vec3>("pos", glm::vec3(0.0f));
+//    bool flipx = item.Get<bool>("flipx", false);
+//    entity->SetFlipX(flipx);
+//    if (item.HasKey("angle")) {
+//        float angle = item.Get<float>("angle",0.0f);
+//        entity->SetPosition(pos, deg2rad* angle);
+//    } else {
+//        entity->SetPosition(pos);
+//    }
+//    if (item.HasKey("position")) {
+//        item.ProcessVector("position", [entity] (luabridge::LuaRef ref) {
+//            LuaTable t(ref);
+//            if (t.HasKey("angle")) {
+//                float a = t.Get<float>("angle");
+//                glm::vec3 b = t.Get<glm::vec3>("axis");
+//                entity->Rotate(a*deg2rad, b);
+//            } else {
+//                glm::vec3 tr = t.Get<glm::vec3>("translation");
+//                entity->SetPosition(tr);
+//            }
+//        });
+//    }
+//    if (item.HasKey("scale")) {
+//        float scale = item.Get<float>("scale");
+//        entity->SetScale(scale);
+//    }
+//    auto factory = Engine::get().GetSceneFactory();
+//
+//    // setup camera
+//    if (item.HasKey("camera")) {
+//        luabridge::LuaRef cam = item.Get<luabridge::LuaRef>("camera");
+//
+//        auto camera = factory->makeCam(cam);
+//        entity->SetCamera(camera);
+//    }
+//
+//    // add components
+//    if (item.HasKey("components")) {
+//        luabridge::LuaRef c = item.Get<luabridge::LuaRef>("components");
+//        for (int i = 0; i < c.length(); ++i) {
+//            luabridge::LuaRef rcomponent = c[i+1];
+//            auto component = factory->makeComponent(rcomponent);
+//            entity->AddComponent(component);
+//        }
+//
+//    }
+//
+//    if (item.HasKey("children")) {
+//        luabridge::LuaRef c = item.Get<luabridge::LuaRef>("children");
+//        for (int i = 0; i < c.length(); ++i) {
+//            luabridge::LuaRef child = c[i+1];
+//            auto childEntity = factory->makeEntity(child);
+//            if (childEntity != nullptr)
+//                entity->AddChild(childEntity);
+//        }
+//    }
+//
+//    entity->setActive(active);
+//    return entity;
+//}
 
 std::shared_ptr<Entity> ButtonFactory::Create(luabridge::LuaRef &ref) {
 

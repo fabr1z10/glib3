@@ -97,7 +97,7 @@ std::shared_ptr<Entity> SkeletonFactory::Create(luabridge::LuaRef &ref) {
         luabridge::LuaRef c = table.Get<luabridge::LuaRef>("components");
         for (int i = 0; i < c.length(); ++i) {
             luabridge::LuaRef rcomponent = c[i+1];
-            auto component = factory->makeComponent(rcomponent);
+            auto component = factory->make<Component>(rcomponent);
             entity->AddComponent(component);
         }
     }
@@ -112,7 +112,7 @@ std::shared_ptr<Entity> SkeletonFactory::Create(luabridge::LuaRef &ref) {
         luabridge::LuaRef c = table.Get<luabridge::LuaRef>("children");
         for (int i = 0; i < c.length(); ++i) {
             luabridge::LuaRef child = c[i+1];
-            auto childEntity = factory->makeEntity(child);
+            auto childEntity = factory->make<Entity>(child);
             if (childEntity != nullptr)
                 entity->AddChild(childEntity);
         }

@@ -6,6 +6,7 @@
 class BasicRenderer : public Renderer {
 public:
     BasicRenderer (std::shared_ptr<IModel> model);
+    BasicRenderer (const LuaTable&);
     BasicRenderer (const BasicRenderer&);
     std::shared_ptr<Component> clone() const override;
 

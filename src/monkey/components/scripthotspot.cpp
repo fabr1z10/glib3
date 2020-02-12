@@ -3,6 +3,37 @@
 #include <iostream>
 #include <monkey/entity.h>
 #include <monkey/entitywrapper.h>
+#include <monkey/lua/luatable.h>
+
+ScriptHotSpot::ScriptHotSpot(const LuaTable &t) : HotSpot(t) {
+
+    if (t.HasKey("onenter")) {
+        luabridge::LuaRef r = t.Get<luabridge::LuaRef>("onenter");
+        SetOnEnter(r);
+    }
+
+    if (t.HasKey("onleave")) {
+        luabridge::LuaRef r = t.Get<luabridge::LuaRef>("onleave");
+        SetOnLeave(r);
+    }
+
+    if (t.HasKey("onclick")) {
+        luabridge::LuaRef r = t.Get<luabridge::LuaRef>("onclick");
+        std::unique_ptr<LuaFunction> f(new LuaFunction(r));
+        SetOnClick(std::move(f));
+    }
+
+    if (t.HasKey("onrmbclick")) {
+        luabridge::LuaRef r = t.Get<luabridge::LuaRef>("onrmbclick");
+        std::unique_ptr<LuaFunction> f(new LuaFunction(r));
+        SetOnRightMouseButtonClick(std::move(f));
+    }
+
+    if (t.HasKey("onmove")) {
+        luabridge::LuaRef r = t.Get<luabridge::LuaRef>("onmove");
+        SetOnMove(r);
+    }
+}
 
 ScriptHotSpot::ScriptHotSpot(const ScriptHotSpot& orig) :
 HotSpot(orig), r_move(orig.r_move), r_click(orig.r_click), r_enter(orig.r_enter), r_leave(orig.r_leave) {

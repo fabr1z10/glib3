@@ -3,7 +3,7 @@
 #include <monkey/lua/luatable.h>
 #include <monkey/factory.h>
 #include <memory>
-#include <monkey/imodel.h>
+#include <monkey/assets/imodel.h>
 #include <monkey/spritefactory.h>
 
 class Entity;

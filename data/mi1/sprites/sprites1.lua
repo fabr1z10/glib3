@@ -453,7 +453,7 @@ factory.model.create_simple { id="voodoolady.basket", sheet=sheet, frame = s.voo
 
 engine.assets.models["arrow_up"] = {
     sheet = sheet,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "unselected", frames = { { duration = dt, quads = {{ id = s.arrow_up }}}}},
@@ -463,7 +463,7 @@ engine.assets.models["arrow_up"] = {
 
 engine.assets.models["arrow_down"] = {
     sheet = sheet,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "unselected", frames = { { duration = dt, quads = {{ id = s.arrow_down }}}}},
@@ -474,7 +474,7 @@ engine.assets.models["arrow_down"] = {
 
 engine.assets.models["low_moral_fiber_1"] = {
     sheet = sheet,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{
@@ -511,7 +511,7 @@ engine.assets.models["low_moral_fiber_1"] = {
 
 engine.assets.models["low_moral_fiber_2"] = {
     sheet = sheet,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{
@@ -548,7 +548,7 @@ engine.assets.models["low_moral_fiber_2"] = {
 
 engine.assets.models["cook"] = {
     sheet = sheet,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "idle_e", frames = { { duration = dt, quads = {{ id = s.cook_body_idle_right }, { id = s.cook_head_idle_right, pos={-1,32}}}}}},
@@ -593,7 +593,7 @@ engine.assets.models["cook"] = {
 
 -- engine.assets.models["citizen.body"] = {
 --     sheet = sheet,
---     type = "sprite",
+--     type = "sprite.model",
 --     ppu=1,
 -- 	animations = {
 -- 		{ name = "idle_s", frames = { { duration = dt, quads = {{ id = s.citizen_body_idle_south }}}}},
@@ -619,7 +619,7 @@ engine.assets.models["cook"] = {
 
 -- engine.assets.models["citizen.head"] = {
 --     sheet = sheet,
---     type = "sprite",
+--     type = "sprite.model",
 --     ppu=1,
 -- 	animations = {
 -- 		{ name = "idle_s", frames = { 
@@ -648,7 +648,7 @@ local citizen_head_1 = {-2, 26, 0}
 
 engine.assets.models["citizen"] = {
 	sheet = sheet,
-	type = "sprite",
+	type = "sprite.model",
 	ppu=1,
 	animations = {
 		{ 
@@ -759,7 +759,7 @@ engine.assets.models["citizen"] = {
 
 engine.assets.models["door_village_scummbar"] = {
     sheet = sheet,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "open", frames = { { duration = dt, quads = {{ id = s.door_village_scummbar_open }}}}},
@@ -769,7 +769,7 @@ engine.assets.models["door_village_scummbar"] = {
 
 engine.assets.models["door_village_voodoolady"] = {
     sheet = sheet,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "open", frames = { { duration = dt, quads = {{ id = s.door_village_voodoolady_open }}}}},
@@ -779,7 +779,7 @@ engine.assets.models["door_village_voodoolady"] = {
 
 engine.assets.models["door_voodoolady"] = {
     sheet = sheet2,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "open", frames = { { duration = dt, quads = {{ id = s.door_voodoolady_village_open }}}}},
@@ -789,7 +789,7 @@ engine.assets.models["door_voodoolady"] = {
 
 engine.assets.models["fakedoor_village_1"] = {
     sheet = sheet,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "open", frames = { { duration = dt, quads = {{ id = s.fakedoor1_village_door_open }}}}},
@@ -799,7 +799,7 @@ engine.assets.models["fakedoor_village_1"] = {
 
 engine.assets.models["fakedoor_village_2"] = {
     sheet = sheet,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "open", frames = { { duration = dt, quads = {{ id = s.fakedoor2_village_door_open }}}}},
@@ -809,7 +809,7 @@ engine.assets.models["fakedoor_village_2"] = {
 
 engine.assets.models["fakedoor_village_3"] = {
     sheet = sheet,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "open", frames = { { duration = dt, quads = {{ id = s.fakedoor3_village_door_open }}}}},
@@ -819,7 +819,7 @@ engine.assets.models["fakedoor_village_3"] = {
 
 engine.assets.models["fakedoor_village_4"] = {
     sheet = sheet,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "open", frames = { { duration = dt, quads = {{ id = s.fakedoor4_village_door_open }}}}},
@@ -829,7 +829,7 @@ engine.assets.models["fakedoor_village_4"] = {
 
 engine.assets.models["lmf3.body"] = {
     sheet = sheet,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "idle_e", frames = { { duration = dt, quads = {{ id = s.low_moral_fiber_3_body_idle }}}}},
@@ -850,7 +850,7 @@ engine.assets.models["lmf3.body"] = {
 
 engine.assets.models["lmf3.head"] = {
     sheet = sheet,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "idle_s", frames = { {duration = dt, quads = {{ id = s.low_moral_fiber_3_head_idle_s }}}}},
@@ -872,7 +872,7 @@ local lmf3_head = {-3,34,0}
 local lmf3_head_1 = {-4,34,0}
 engine.assets.models["low_moral_fiber_3"] = {
 	sheet = sheet,
-	type = "sprite",
+	type = "sprite.model",
 	ppu = 1,
 	animations = {
 		{
@@ -959,7 +959,7 @@ engine.assets.models["low_moral_fiber_3"] = {
 
 engine.assets.models["village2.rat"] = {
     sheet = sheet,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "idle", frames = { 
@@ -972,7 +972,7 @@ engine.assets.models["village2.rat"] = {
 
 engine.assets.models["door_scummbar_village"] = {
     sheet = sheet,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "open", frames = { { duration = dt, quads = {{ id = s.door_scummbar_village_open }}}}},
@@ -982,7 +982,7 @@ engine.assets.models["door_scummbar_village"] = {
 
 engine.assets.models["door_scummbar_kitchen"] = {
     sheet = sheet,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "open", frames = { { duration = dt, quads = {{ id = s.door_scummbar_kitchen_open }}}}},
@@ -992,7 +992,7 @@ engine.assets.models["door_scummbar_kitchen"] = {
 
 engine.assets.models["door_kitchen_scummbar"] = {
     sheet = sheet,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "open", frames = { { duration = dt, quads = {{ id = s.door_kitchen_scummbar_open }}}}},
@@ -1002,7 +1002,7 @@ engine.assets.models["door_kitchen_scummbar"] = {
 
 engine.assets.models["door_kitchen_pier"] = {
     sheet = sheet,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "open", frames = { { duration = dt, quads = {{ id = s.door_kitchen_pier_open }}}}},
@@ -1012,7 +1012,7 @@ engine.assets.models["door_kitchen_pier"] = {
 
 engine.assets.models["scummbar.mancomb"] = {
     sheet = sheet,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "idle_1", frames = { { duration = dt, quads = {{ id = s.mancomb_1 }}}}},
@@ -1022,7 +1022,7 @@ engine.assets.models["scummbar.mancomb"] = {
 
 engine.assets.models["scummbar.pirate1"] = {
     sheet = sheet2,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "idle_1", frames = { { duration = dt, quads = {{ id = s.scummbar_pirate_1_1 }}}}},
@@ -1034,7 +1034,7 @@ engine.assets.models["scummbar.pirate1"] = {
 }
 engine.assets.models["scummbar.pirate2"] = {
     sheet = sheet2,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "idle_1", frames = { { duration = dt, quads = {{ id = s.scummbar_pirate_2_1 }}}}},
@@ -1045,7 +1045,7 @@ engine.assets.models["scummbar.pirate2"] = {
 }
 engine.assets.models["scummbar.pirate3"] = {
     sheet = sheet2,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "idle_1", frames = { { duration = dt, quads = {{ id = s.scummbar_pirate_3_1 }}}}},
@@ -1056,7 +1056,7 @@ engine.assets.models["scummbar.pirate3"] = {
 }
 engine.assets.models["scummbar.pirate4"] = {
     sheet = sheet2,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "idle_1", frames = { { duration = dt, quads = {{ id = s.scummbar_pirate_4_1 }}}}},
@@ -1069,7 +1069,7 @@ engine.assets.models["scummbar.pirate4"] = {
 
 engine.assets.models["scummbar.pirate5"] = {
     sheet = sheet2,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "idle_1", frames = { { duration = dt, quads = {{ id = s.scummbar_pirate_5_1 }}}}},
@@ -1082,7 +1082,7 @@ engine.assets.models["scummbar.pirate5"] = {
 
 engine.assets.models["scummbar.pirate6"] = {
     sheet = sheet2,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "idle_1", frames = { { duration = dt, quads = {{ id = s.scummbar_pirate_6_1 }}}}},
@@ -1091,7 +1091,7 @@ engine.assets.models["scummbar.pirate6"] = {
 }
 engine.assets.models["scummbar.pirate7"] = {
     sheet = sheet2,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "idle_1", frames = { { duration = dt, quads = {{ id = s.scummbar_pirate_7_1 }}}}},
@@ -1103,7 +1103,7 @@ engine.assets.models["scummbar.pirate7"] = {
 }
 engine.assets.models["scummbar.pirate8"] = {
     sheet = sheet2,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "idle_1", frames = { { duration = dt, quads = {{ id = s.scummbar_pirate_8_1 }}}}},
@@ -1116,7 +1116,7 @@ engine.assets.models["scummbar.pirate8"] = {
 
 engine.assets.models["scummbar.pirate9"] = {
     sheet = sheet2,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "idle_1", frames = { { duration = dt, quads = {{ id = s.scummbar_pirate_9_1 }}}}},
@@ -1128,7 +1128,7 @@ engine.assets.models["scummbar.pirate9"] = {
 }
 engine.assets.models["scummbar.estevan"] = {
     sheet = sheet,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "idle_1", frames = { { duration = dt, quads = {{ id = s.estevan_1 }}}}},
@@ -1142,7 +1142,7 @@ engine.assets.models["scummbar.estevan"] = {
 
 engine.assets.models["scummbar.loompirate"] = {
     sheet = sheet,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "idle_1", frames = { { duration = dt, quads = {{ id = s.loom_1 }}}}},
@@ -1156,7 +1156,7 @@ engine.assets.models["scummbar.loompirate"] = {
 
 engine.assets.models["scummbar.ilp1"] = {
     sheet = sheet,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "idle_e", frames = { { duration = dt, quads = {{ id = s.important_looking_pirate_1_idle_1 }}}}},
@@ -1170,7 +1170,7 @@ engine.assets.models["scummbar.ilp1"] = {
 
 engine.assets.models["scummbar.ilp2"] = {
     sheet = sheet2,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "idle_e", frames = { { duration = dt, quads = {{ id = s.important_looking_pirate_2_idle_1 }}}}},
@@ -1184,7 +1184,7 @@ engine.assets.models["scummbar.ilp2"] = {
 
 engine.assets.models["scummbar.ilp3"] = {
     sheet = sheet2,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "idle_e", frames = { { duration = dt, quads = {{ id = s.important_looking_pirate_3_idle_1 }}}}},
@@ -1201,7 +1201,7 @@ engine.assets.models["scummbar.ilp3"] = {
 
 engine.assets.models["kitchen.seagull"] = {
     sheet = sheet,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "fly", frames = { 
@@ -1272,7 +1272,7 @@ engine.assets.models["kitchen.seagull"] = {
 
 engine.assets.models["kitchen.plank"] = {
     sheet = sheet,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "idle", frames = { { duration = dt, quads = {{ id = s.plank_idle }}}}},
@@ -1282,7 +1282,7 @@ engine.assets.models["kitchen.plank"] = {
 
 engine.assets.models["kitchen.meat"] = {
     sheet = sheet,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "idle", frames = { { duration = dt, quads = {{ id = s.meat }}}}},
@@ -1291,7 +1291,7 @@ engine.assets.models["kitchen.meat"] = {
 
 engine.assets.models["kitchen.pot"] = {
     sheet = sheet,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "idle", frames = { { duration = dt, quads = {{ id = s.pot }}}}},
@@ -1300,7 +1300,7 @@ engine.assets.models["kitchen.pot"] = {
 
 engine.assets.models["kitchen.fish"] = {
     sheet = sheet,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "idle", frames = { { duration = dt, quads = {{ id = s.fish }}}}},
@@ -1309,7 +1309,7 @@ engine.assets.models["kitchen.fish"] = {
 
 engine.assets.models["kitchen.potostew"] = {
     sheet = sheet,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "idle", frames = { 
@@ -1322,7 +1322,7 @@ engine.assets.models["kitchen.potostew"] = {
 
 engine.assets.models["scummbar.fireplace"] = {
     sheet = sheet,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "idle", frames = { 
@@ -1335,7 +1335,7 @@ engine.assets.models["scummbar.fireplace"] = {
 
 engine.assets.models["circus.fire"] = {
     sheet = sheet2,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "idle", frames = { 
@@ -1349,7 +1349,7 @@ engine.assets.models["circus.fire"] = {
 
 engine.assets.models["kitchen.table"] = {
     sheet = sheet,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "idle", frames = { { duration = dt, quads = {{ id = s.kitchen_table }}}}},
@@ -1436,7 +1436,7 @@ end
 
 engine.assets.models["bridge.troll"] = {
     sheet = sheet,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "idle", frames = { f1(s.troll_body, s.troll_head_idle, s.troll_arm_l_0, s.troll_arm_r_0) }},
@@ -1543,7 +1543,7 @@ engine.assets.models["bridge.troll"] = {
 
 engine.assets.models["fettuccini.purple"] = {
     sheet = sheet,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "idle_s", frames = { { duration = dt, quads = {{ id = s.fettuccini_purple_idle_front }}}}},
@@ -1571,7 +1571,7 @@ engine.assets.models["fettuccini.purple"] = {
 
 engine.assets.models["fettuccini.green"] = {
     sheet = sheet,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "idle_s", frames = { { duration = dt, quads = {{ id = s.fettuccini_green_idle_front }}}}},
@@ -1597,7 +1597,7 @@ engine.assets.models["fettuccini.green"] = {
 
 engine.assets.models["circus.explosion"] = {
     sheet = sheet,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "default", frames = { 
@@ -1614,7 +1614,7 @@ engine.assets.models["circus.explosion"] = {
 
 engine.assets.models["circus.flyingguy"] = {
     sheet = sheet,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "default", loop = false, frames = { 
@@ -1642,7 +1642,7 @@ engine.assets.models["circus.flyingguy"] = {
 
 engine.assets.models["shop.door"] = {
     sheet = sheet,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "open", frames = { { duration = dt, quads = {{ id = s.door_store_open }}}}},
@@ -1652,7 +1652,7 @@ engine.assets.models["shop.door"] = {
 
 engine.assets.models["village3.shop_door"] = {
     sheet = sheet,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "open", frames = { { duration = dt, quads = {{ id = s.door_village_store_open }}}}},
@@ -1662,7 +1662,7 @@ engine.assets.models["village3.shop_door"] = {
 
 engine.assets.models["village3.church_door"] = {
     sheet = sheet,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "open", frames = { { duration = dt, quads = {{ id = s.door_village_church_open }}}}},
@@ -1670,16 +1670,16 @@ engine.assets.models["village3.church_door"] = {
 	}
 }
 
-engine.assets.models["shop.sword"] = { sheet = sheet, type = "sprite", ppu=1, animations = {{ name = "idle", frames = { { duration = dt, quads = {{ id = s.sword }}}}}}}
-engine.assets.models["shop.shovel"] = { sheet = sheet, type = "sprite", ppu=1, animations = {{ name = "idle", frames = { { duration = dt, quads = {{ id = s.shovel }}}}}}}
-engine.assets.models["shop.sign"] = { sheet = sheet, type = "sprite", ppu=1, animations = {{ name = "idle", frames = { { duration = dt, quads = {{ id = s.sign }}}}}}}
-engine.assets.models["shop.bell"] = { sheet = sheet, type = "sprite", ppu=1, animations = {{ name = "idle", frames = { { duration = dt, quads = {{ id = s.bell }}}}}}}
+engine.assets.models["shop.sword"] = { sheet = sheet, type = "sprite.model", ppu=1, animations = {{ name = "idle", frames = { { duration = dt, quads = {{ id = s.sword }}}}}}}
+engine.assets.models["shop.shovel"] = { sheet = sheet, type = "sprite.model", ppu=1, animations = {{ name = "idle", frames = { { duration = dt, quads = {{ id = s.shovel }}}}}}}
+engine.assets.models["shop.sign"] = { sheet = sheet, type = "sprite.model", ppu=1, animations = {{ name = "idle", frames = { { duration = dt, quads = {{ id = s.sign }}}}}}}
+engine.assets.models["shop.bell"] = { sheet = sheet, type = "sprite.model", ppu=1, animations = {{ name = "idle", frames = { { duration = dt, quads = {{ id = s.bell }}}}}}}
 
 
 
 engine.assets.models["shop.shopkeeper"] = {
     sheet = sheet2,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "idle_s", frames = { { duration = dt, quads = {{ id = s.storekeeper_idle_south }}}}},
@@ -1725,7 +1725,7 @@ engine.assets.models["shop.shopkeeper"] = {
 
 engine.assets.models["lookout.fire"] = {
     sheet = sheet,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "default", frames = { 
@@ -1739,7 +1739,7 @@ engine.assets.models["lookout.fire"] = {
 
 engine.assets.models["swordmaster.sign"] = {
     sheet = sheet,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "default", frames = { 
@@ -1753,7 +1753,7 @@ engine.assets.models["swordmaster.sign"] = {
 
 engine.assets.models["trunk.bridge"] = {
     sheet = sheet2,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "closed", frames = { 
@@ -1767,7 +1767,7 @@ engine.assets.models["trunk.bridge"] = {
 
 engine.assets.models["lookout.lookout"] = {
     sheet = sheet,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "idle_s", frames = { { duration = dt, quads = {{ id = s.lookout_idle_body_front}, { id = s.lookout_idle_head_front, pos ={0,31}}}}}},
@@ -1801,7 +1801,7 @@ engine.assets.models["lookout.lookout"] = {
 
 engine.assets.models["otis"] = {
     sheet = sheet2,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "idle_e", frames = { { duration = dt, quads = { 
@@ -1840,7 +1840,7 @@ engine.assets.models["otis"] = {
 
 engine.assets.models["swordmaster.smtiny"] = {
     sheet = sheet,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "idle", frames = { 
@@ -1853,7 +1853,7 @@ engine.assets.models["swordmaster.smtiny"] = {
 
 engine.assets.models["fester"] = {
     sheet = sheet2,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "idle_s", frames = { { duration = dt, quads = {{ id = s.fester_idle_side_body}, {id = s.fester_idle_side_head_1, pos={0, 33}}}}}},

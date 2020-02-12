@@ -42,6 +42,7 @@ protected:
  */
 class StateMachine : public Component {
 public:
+    StateMachine() : m_currentState(nullptr), Component() {}
     StateMachine(const std::string& initialState) : m_initialState(initialState), m_currentState(nullptr) {}
     StateMachine(const StateMachine&);
     void Start () override {}

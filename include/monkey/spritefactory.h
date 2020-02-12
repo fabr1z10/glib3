@@ -4,7 +4,7 @@
 #include <monkey/factory.h>
 #include <memory>
 #include <monkey/mesh.h>
-#include <monkey/imodel.h>
+#include <monkey/assets/imodel.h>
 
 class SpriteModel;
 class CompositeModel;

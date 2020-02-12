@@ -14,13 +14,13 @@
 
 void Extension::extend(SceneFactory* f) {
 
-    f->addComponentFactory("walkarea", std::make_unique<WalkAreaComponentFactory>());
-    f->addComponentFactory("character", std::make_unique<CharacterComponentFactory>());
-
-    f->addActivityFactory("walk", std::make_unique<WalkToActFactory>());
-    f->addActivityFactory("turn", std::make_unique<TurnActFactory>());
-    f->addActivityFactory("say", std::make_unique<SayActFactory>());
-    f->addActivityFactory("enable_wall", std::make_unique<EnableBlockActFactory>());
+    f->add<WalkArea> ("walkarea");
+    f->add<StateCharacter> ("character");
+//
+//    f->addActivityFactory("walk", std::make_unique<WalkToActFactory>());
+//    f->addActivityFactory("turn", std::make_unique<TurnActFactory>());
+//    f->addActivityFactory("say", std::make_unique<SayActFactory>());
+//    f->addActivityFactory("enable_wall", std::make_unique<EnableBlockActFactory>());
 }
 
 std::shared_ptr<Component> CharacterComponentFactory::Create(luabridge::LuaRef& ref) {
@@ -32,65 +32,6 @@ std::shared_ptr<Component> CharacterComponentFactory::Create(luabridge::LuaRef& 
     return c;
 }
 
-// Read the walk-area
-std::shared_ptr<Component> WalkAreaComponentFactory::Create(luabridge::LuaRef& ref) {
-
-    LuaTable table(ref);
-    int priority = table.Get<int>("priority");
-    auto factory = Engine::get().GetSceneFactory();
-    luabridge::LuaRef rshape = table.Get<luabridge::LuaRef>("shape");
-    auto shape = factory->makeShape(rshape);
-    std::shared_ptr<WalkArea> hotspot = std::make_shared<WalkArea>(shape, priority);
-
-    if (table.HasKey("onenter")) {
-        luabridge::LuaRef r = table.Get<luabridge::LuaRef>("onenter");
-        hotspot->SetOnEnter(r);
-    }
-
-    if (table.HasKey("onleave")) {
-        luabridge::LuaRef r = table.Get<luabridge::LuaRef>("onleave");
-        hotspot->SetOnLeave(r);
-    }
-
-    if (table.HasKey("onclick")) {
-        luabridge::LuaRef r = table.Get<luabridge::LuaRef>("onclick");
-        std::unique_ptr<LuaFunction> f(new LuaFunction(r));
-        hotspot->SetOnClick(std::move(f));
-    }
-
-    if (table.HasKey("onrmbclick")) {
-        luabridge::LuaRef r = table.Get<luabridge::LuaRef>("onrmbclick");
-        std::unique_ptr<LuaFunction> f(new LuaFunction(r));
-        hotspot->SetOnRightMouseButtonClick(std::move(f));
-    }
-    if (table.HasKey("onmove")) {
-        luabridge::LuaRef r = table.Get<luabridge::LuaRef>("onmove");
-        hotspot->SetOnMove(r);
-    }
-    if (table.HasKey("depth")) {
-        luabridge::LuaRef dref = table.Get<luabridge::LuaRef>("depth");
-        auto depthFunc = GetFunc2D(dref);
-        hotspot->SetDepthFunction(depthFunc);
-    }
-    if (table.HasKey("scale")) {
-        luabridge::LuaRef dref = table.Get<luabridge::LuaRef>("scale");
-        auto scaleFunc = GetFunc2D(dref);
-        hotspot->SetScalingFunction(scaleFunc);
-    }
-
-    if (table.HasKey("blockedlines")) {
-        luabridge::LuaRef ref = table.Get<luabridge::LuaRef>("blockedlines");
-        for (int i = 0; i < ref.length(); ++i) {
-            luabridge::LuaRef bl = ref[i+1];
-            LuaTable t(bl);
-            glm::vec2 A = t.Get<glm::vec2>("A");
-            glm::vec2 B = t.Get<glm::vec2>("B");
-            bool active = t.Get<bool>("active");
-            hotspot->AddBlockedLine(A, B, active);
-        }
-    }
-    return hotspot;
-}
 
 
 std::shared_ptr<Activity> WalkToActFactory::Create(luabridge::LuaRef &ref) {

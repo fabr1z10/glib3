@@ -14,6 +14,33 @@ WalkArea::WalkArea(const WalkArea& orig) : ScriptHotSpot(orig),
 m_walls(orig.m_walls) {
     
 }
+WalkArea::WalkArea(const LuaTable & t) : ScriptHotSpot(t) {
+    auto factory = Engine::get().GetSceneFactory();
+
+    if (t.HasKey("depth")) {
+        auto dref = t.Get<LuaTable>("depth");
+        auto depthFunc = factory->make<Function2D>(dref);
+        SetDepthFunction(depthFunc);
+    }
+
+    if (t.HasKey("scale")) {
+        auto dref = t.Get<LuaTable>("scale");
+        auto scaleFunc = factory->make<Function2D>(dref);
+        SetScalingFunction(scaleFunc);
+    }
+
+    if (t.HasKey("blockedlines")) {
+        luabridge::LuaRef ref = t.Get<luabridge::LuaRef>("blockedlines");
+        for (int i = 0; i < ref.length(); ++i) {
+            luabridge::LuaRef bl = ref[i+1];
+            LuaTable t(bl);
+            glm::vec2 A = t.Get<glm::vec2>("A");
+            glm::vec2 B = t.Get<glm::vec2>("B");
+            bool active = t.Get<bool>("active");
+            AddBlockedLine(A, B, active);
+        }
+    }
+}
 
 std::shared_ptr<Component> WalkArea::clone() const {
     return std::make_shared<WalkArea>(WalkArea(*this));

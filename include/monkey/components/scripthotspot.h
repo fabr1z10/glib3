@@ -8,6 +8,7 @@ class ScriptHotSpot : public HotSpot {
 public:
     ScriptHotSpot (int priority) : HotSpot(priority), r_enter{nullptr},
                             r_leave{nullptr}, r_click{} {}
+    ScriptHotSpot (const LuaTable& t);
     ScriptHotSpot (
             std::shared_ptr<Shape> shape,
             int priority) : HotSpot(shape, priority), r_enter{nullptr},

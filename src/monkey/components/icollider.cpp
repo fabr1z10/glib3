@@ -3,6 +3,7 @@
 
 ICollider::ICollider() : Component(), m_engine(nullptr) {}
 
+
 // when a collider starts, it add itself to the collision engine.
 // A collision engine needs to be running for a collider object to start!
 void ICollider::Start() {

@@ -1,42 +1,35 @@
 #pragma once
 
-#include <string>
-#include <iostream>
-#include <memory>
-#include <unordered_map>
-#include <unordered_set>
-#include <monkey/font.h>
-#include <monkey/tex.h>
-#include <monkey/mesh.h>
-#include <monkey/imodel.h>
-#include <monkey/skeletalanimation.h>
-#include <monkey/error.h>
-#include <monkey/lua/luawrapper.h>
+#include <monkey/scenefactory.h>
 
-template <typename T, typename Builder>
-class AssetStore {
+#include <monkey/assets/font.h>
+#include <monkey/assets/tex.h>
+#include <monkey/assets/imodel.h>
+#include <monkey/assets/skeletalanimation.h>
+
+template <typename T>
+class IAssetStore {
+private:
+    virtual std::shared_ptr<T> create(const std::string& id) = 0;
 public:
     std::shared_ptr<T> Get (const std::string& id) {
+
         auto it = m_assets.find(id);
         if (it == m_assets.end()) {
-            // try to build
-            std::shared_ptr<T> asset = m_builder(id);
-            if (asset == nullptr) {
-                GLIB_FAIL("Cannot find or create asset: " << id);
-            }
-
-            m_assets[id] = asset;
+            auto asset = create(id);
+            m_assets.insert(std::make_pair(id, asset));
             if (m_local) {
                 m_localAssets.insert(id);
             }
             return asset;
         }
         return it->second;
+    }
 
+    virtual void Init(const std::string& f, SceneFactory* sf) {
+        m_factory = sf;
     }
-    void Init() {
-     m_builder.Init();
-    }
+
     void CleanUp() {
         for (const auto& s : m_localAssets) {
             std::cout << "### dropping asset " << s << "\n";
@@ -48,45 +41,54 @@ public:
         m_local = value;
     }
 
-private:
+protected:
     bool m_local;
-    Builder m_builder;
     std::unordered_map<std::string, std::shared_ptr<T>> m_assets;
     std::unordered_set<std::string> m_localAssets;
+    std::unique_ptr<luabridge::LuaRef> loc;
+    SceneFactory* m_factory;
 };
 
-class FontBuilder {
-public:
-    void Init();
-    std::shared_ptr<Font> operator() (const std::string&) const;
+template <typename T>
+class BasicAssetStore : public IAssetStore<T> {
 private:
-    std::unique_ptr<luabridge::LuaRef> m_fontLocation;
-};
-
-class TexBuilder {
+    std::shared_ptr<T> create(const std::string& id) override {
+        luabridge::LuaRef modelDef = IAssetStore<T>::loc->operator[](id);
+        if (modelDef.isNil()) {
+            GLIB_FAIL("Unknown asset: " << id);
+            return nullptr;
+        }
+        LuaTable table(modelDef);
+        auto asset = IAssetStore<T>::m_factory->template make<T>(table);
+        return asset;
+    }
 public:
-    void Init();
-    std::shared_ptr<Tex> operator() (const std::string&) const;
-private:
-    std::string m_gfxDirectory;
+    void Init(const std::string& f, SceneFactory* sf) override {
+        IAssetStore<T>::Init(f, sf);
+        try {
+            IAssetStore<T>::loc = std::make_unique<luabridge::LuaRef>(LuaWrapper::GetGlobalPath({"engine", "assets", f}));
+        } catch (const Error& e) {
+            std::cerr << e.what()<<std::endl;
+        }
+    }
+
+
 };
 
-class ModelBuilder {
+template <>
+class BasicAssetStore<Tex> : public IAssetStore<Tex> {
+private:
+    std::shared_ptr<Tex> create(const std::string& id) override {
+        std::string fileName = m_gfxDir + id;
+        std::shared_ptr<Tex> tex = std::make_shared<Tex>(fileName);
+        return tex;
+
+    }
+
+    std::string m_gfxDir;
 public:
-    void Init();
-    std::shared_ptr<IModel> operator() (const std::string&) const;
-private:
-    std::unique_ptr<luabridge::LuaRef> m_modelLocation;
+    void Init(const std::string& f, SceneFactory* sf) override;
 };
-
-class SkeletalAnimationBuilder {
-public:
-    void Init();
-    std::shared_ptr<SkeletalAnimation> operator() (const std::string&) const;
-private:
-    std::unique_ptr<luabridge::LuaRef> m_modelLocation;
-};
-
 
 
 class AssetManager {
@@ -100,25 +102,25 @@ public:
     void SetLocal (bool);
     void CleanUp();
 private:
-    AssetStore<Font, FontBuilder> m_fonts2;
-    AssetStore<Tex, TexBuilder> m_textures2;
-    AssetStore<IModel, ModelBuilder> m_models2;
-    AssetStore<SkeletalAnimation, SkeletalAnimationBuilder> m_skeletalAnimations;
-
+    BasicAssetStore<Font> m_fonts;
+    BasicAssetStore<Tex> m_textures;
+    BasicAssetStore<IModel> m_models;
+    BasicAssetStore<SkeletalAnimation> m_skeletalAnimations;
 };
 
 inline std::shared_ptr<Font> AssetManager::GetFont (const std::string& id) {
-    return m_fonts2.Get(id);
+    return m_fonts.Get(id);
 }
 
 inline std::shared_ptr<Tex> AssetManager::GetTex (const std::string& id) {
-    return m_textures2.Get(id);
+    return m_textures.Get(id);
 }
 
 inline std::shared_ptr<IModel> AssetManager::GetModel (const std::string& id) {
-    return m_models2.Get(id);
+    return m_models.Get(id);
 }
 
 inline std::shared_ptr<SkeletalAnimation> AssetManager::GetSkeletalAnimation(const std::string & id) {
     return m_skeletalAnimations.Get(id);
 }
+

@@ -99,7 +99,7 @@ std::shared_ptr<Shape> CompoundFactory::Create(luabridge::LuaRef& ref) {
     auto cs = std::make_shared<CompoundShape>();
     for (int i = 0; i<rshapes.length(); ++i) {
         luabridge::LuaRef rshape = rshapes[i+1];
-        auto s = factory->makeShape(rshape);
+        auto s = factory->make<Shape>(rshape);
         cs->AddShape(s);
     }
     return std::move(cs);

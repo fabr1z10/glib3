@@ -5,6 +5,7 @@
 class Follow : public Component {
 public:
     Follow (const std::string& cam, glm::vec3 relativePos, glm::vec3 up);
+    Follow (const LuaTable&);
     Follow (const Follow&);
     void Start() override;
     void Update(double) override;

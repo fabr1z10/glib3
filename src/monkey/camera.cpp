@@ -13,7 +13,7 @@
 #include <monkey/engine.h>
 #include <monkey/math/geom.h>
 #include <iostream>
-
+#include <monkey/engine.h>
 
 using namespace glm;
 
@@ -27,6 +27,14 @@ Camera::Camera(glm::vec4 viewport) : Ref(), m_camViewport{viewport} {
         glm::vec2 size = Engine::get().GetDeviceSize();
         std::cout << "device size = " << size.x << " " << size.y << "\n";
     }
+
+}
+
+Camera::Camera(const LuaTable & table) : Ref(table) {
+    m_eye = table.Get<glm::vec3>("pos", glm::vec3(0.0f));
+    m_fwd = table.Get<glm::vec3>("direction", glm::vec3(0, 0, -1));
+    m_up = table.Get<glm::vec3>("up", glm::vec3(0, 1, 0));
+    m_camViewport = table.Get<glm::vec4>("viewport", glm::vec4(0.0f, 0.0f, Engine::get().GetDeviceSize()));
 
 }
 
@@ -60,12 +68,31 @@ OrthographicCamera::OrthographicCamera(float orthoWidth, float orthoHeight, glm:
 {
     m_xMax = m_yMax = std::numeric_limits<float>::infinity();
     m_xMin = m_yMin = -m_xMax;
-    m_aspectRatio = m_camViewport[2] / m_camViewport[3];
-    float hw = 0.5f * m_orthoWidth;
-    float hh = 0.5f * m_orthoHeight;
-    m_extents = glm::vec2 (hw, hh);
+    // m_aspectRatio = m_camViewport[2] / m_camViewport[3];
+    //float hw = 0.5f * m_orthoWidth;
+    //float hh = 0.5f * m_orthoHeight;
+    // m_extents = glm::vec2 (hw, hh);
     //m_projectionMatrix = glm::ortho(-hw, hw, -hh, hh, -100.0f, 100.0f);
     Init();
+}
+
+OrthographicCamera::OrthographicCamera(const LuaTable & table) : Camera(table) {
+
+    glm::vec2 size = table.Get<glm::vec2>("size");
+    m_orthoWidth = size.x;
+    m_orthoHeight = size.y;
+
+    auto bounds = table.Get<glm::vec4>("bounds", glm::vec4(0.0));
+
+    m_xMax = m_yMax = std::numeric_limits<float>::infinity();
+    m_xMin = m_yMin = -m_xMax;
+    if (bounds != glm::vec4(0.0f)) {
+        SetBounds(bounds[0], bounds[2], bounds[1], bounds[3]);
+    }
+
+    SetPosition(m_eye, m_fwd, m_up);
+    Init();
+
 }
 
 PerspectiveCamera::PerspectiveCamera (glm::vec4 viewport, float fov, float nearPlane, float farPlane) : Camera(viewport), WindowResizeListener(), m_fov(fov), m_near(nearPlane), m_far(farPlane)
@@ -116,10 +143,7 @@ void OrthographicCamera::Init() {
     float hw = m_orthoWidth / 2.0f;
     float hh = m_orthoHeight / 2.0f;
     m_projectionMatrix = glm::ortho(-hw, hw, -hh, hh, -100.0f, 100.0f);
-//    int widthPixel;
-//    int heightPixel;
-//    glfwGetFramebufferSize(window, &widthPixel, &heightPixel);
-//    Resize(widthPixel, heightPixel);
+
 }
 
 void OrthographicCamera::SetPosition(vec3 eye, vec3 direction, vec3 up) {

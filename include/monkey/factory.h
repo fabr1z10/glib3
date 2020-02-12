@@ -30,15 +30,22 @@ template<class T>
 class Factory {
 public:
     std::shared_ptr<T> Create(luabridge::LuaRef ref) {
-        if (ref.isNil())
-            return nullptr;
-        luabridge::LuaRef r = ref["type"];
-        std::string type = r.isNil() ? "default" : r.cast<std::string>();
-        auto it = m_factories.find(type);
-        if (it == m_factories.end())
-            GLIB_FAIL("Unknown object " << type);
-        auto p = it->second->Create(ref);
-        return p;
+        return nullptr;
+//        if (ref.isNil()) {
+//            return nullptr;
+//        }
+//        luabridge::LuaRef r = ref["type"];
+//        auto it = m_factories.find(type);
+//        if (it == m_factories.end()) {
+//            GLIB_FAIL("Unknown object: " << type);
+//        }
+//        auto ptr = std::make_sha
+//
+//
+//
+//        std::string type = r.isNil() ? "default" : r.cast<std::string>();
+//        auto p = it->second->Create(ref);
+//        return p;
     }
 
     void Add(const std::string& name, std::unique_ptr<FactoryMethod<T>> m){

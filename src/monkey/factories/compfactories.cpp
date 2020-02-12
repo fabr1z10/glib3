@@ -1,6 +1,6 @@
 #include <monkey/factories.h>
 #include <monkey/components/basicrenderer.h>
-#include <monkey/font.h>
+#include <monkey/assets/font.h>
 #include <monkey/engine.h>
 #include <monkey/textmesh.h>
 #include <glm/gtx/transform.hpp>
@@ -68,69 +68,9 @@ std::shared_ptr<Component> TextComponentFactory::Create(luabridge::LuaRef &ref) 
 }
 
 
-std::shared_ptr<Component> GfxComponentFactory::Create(luabridge::LuaRef & ref) {
-    LuaTable table(ref);
-
-    std::shared_ptr<Component> renderer;
-
-    if (table.HasKey("image")) {
-        std::string image = table.Get<std::string>("image");
-        float w = table.Get<float>("width", 0.0f);
-        float h = table.Get<float>("height", 0.0f);
-        glm::vec2 offset = table.Get<glm::vec2>("offset", glm::vec2(0.0f));
-        std::shared_ptr<IMesh> mesh;
-        if (table.HasKey("quad")) {
-            glm::ivec4 quad = table.Get<glm::ivec4>("quad");
-            mesh = std::make_shared<QuadMesh>(image, w, h, offset, quad[0], quad[1], quad[2], quad[3]);
-        } else {
-            glm::vec2 repeat = table.Get<glm::vec2>("rep", glm::vec2(1.0f, 1.0f));
-            glm::vec2 skew = table.Get<glm::vec2>("skew", glm::vec2(0.0f, 0.0f));
-            mesh = std::make_shared<QuadMesh>(image, w, h, repeat.x, repeat.y, skew.x, skew.y, offset);
-        }
-        auto model = std::make_shared<BasicModel>(mesh);
-        renderer = std::make_shared<BasicRenderer>(model);
-    } else if (table.HasKey("shape")) {
-        luabridge::LuaRef sref = table.Get<luabridge::LuaRef>("shape");
-        std::string draw = table.Get<std::string>("draw","outline");
-        glm::vec4 color = table.Get<glm::vec4>("color");
-        color /= 255.0f;
-        auto factory = Engine::get().GetSceneFactory();
-        auto shape = factory->makeShape(sref);
-        std::shared_ptr<IMesh> mesh;
-        if (draw == "outline") {
-            mesh = MeshFactory::CreateMesh(*(shape.get()), 0.0f);
-        } else if (draw == "solid") {
-            mesh = MeshFactorySolid::CreateMesh(*(shape.get()), 0.0f);
-        }
-        auto model = std::make_shared<BasicModel>(mesh);
-        auto rend = std::make_shared<BasicRenderer>(model);
-        rend->SetTint(color);
-        renderer =rend;
-    } else if (table.HasKey("tiledata")) {
-        std::string image = table.Get<std::string>("img");
-        float size = table.Get<float>("size", 1.0f);
-        int width = table.Get<int>("width");
-        int height = table.Get<int>("height");
-        int repx = table.Get<int>("repx", 1);
-        int repy = table.Get<int>("repy", 1);
-        glm::vec2 delta = table.Get<glm::vec2>("delta", glm::vec2(0.0f, 0.0f));
-
-        glm::ivec2 sheetSize = table.Get<glm::ivec2>("sheetsize");
-        std::vector<int> data = table.GetVector<int>("tiledata");
-        auto mesh = std::make_shared<QuadMesh>(image, height, width, size, data, sheetSize.x, sheetSize.y, repx, repy, delta);
-        auto model = std::make_shared<BasicModel>(mesh);
-        renderer = std::make_shared<BasicRenderer>(model);
-    } else if (table.HasKey("model")) {
-        std::string modelId = table.Get<std::string>("model");
-        auto model = Engine::get().GetAssetManager().GetModel(modelId);
-        renderer = std::make_shared<BasicRenderer>(model);
-    } else if (table.HasKey("prim3d")) {
-        auto factory = Engine::get().GetSceneFactory();
-        auto model = factory->makeModel(table.Get<luabridge::LuaRef>("prim3d"));
-        renderer = std::make_shared<BasicRenderer>(model);
-    }
-    return std::move(renderer);
-}
+//std::shared_ptr<Component> GfxComponentFactory::Create(luabridge::LuaRef & ref) {
+//
+//}
 
 std::shared_ptr<Component> LightComponentFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);
@@ -189,7 +129,7 @@ std::shared_ptr<Component> ColliderComponentFactory::Create(luabridge::LuaRef &r
     auto factory = Engine::get().GetSceneFactory();
     if (table.HasKey("shape")) {
         luabridge::LuaRef shapeR = table.Get<luabridge::LuaRef>("shape");
-        shape = factory->makeShape(shapeR);
+        shape = factory->make<Shape>(shapeR);
     }
     int tag = table.Get<int>("tag");
     int flag = table.Get<int>("flag");
@@ -315,7 +255,7 @@ std::shared_ptr<Component> StateMachineCompFactory::Create(luabridge::LuaRef &re
         luabridge::LuaRef stateRef = statesRef[i+1];
         std::string key = stateRef["id"].cast<std::string>();
         luabridge::LuaRef stateDef = stateRef["state"];
-        auto state = factory->makeState(stateDef);
+        auto state = factory->make<State>(stateDef);
         ptr->AddState(key, state);
     }
     return ptr;
@@ -333,7 +273,7 @@ std::shared_ptr<Component> ExtStateMachineCompFactory::Create(luabridge::LuaRef 
         luabridge::LuaRef stateRef = statesRef[i+1];
         std::string key = stateRef["id"].cast<std::string>();
         luabridge::LuaRef stateDef = stateRef["state"];
-        auto state = factory->makeState(stateDef);
+        auto state = factory->make<State>(stateDef);
         ptr->AddState(key, state);
     }
     
@@ -455,42 +395,42 @@ std::shared_ptr<Component> EllipseMoverCompFactory::Create(luabridge::LuaRef &re
 //    return std::move(comp);
 //}
 
-std::shared_ptr<Component> HotSpotComponentFactory::Create(luabridge::LuaRef& ref) {
-    LuaTable table(ref);
-    int priority = table.Get<int>("priority");
-    auto factory = Engine::get().GetSceneFactory();
-    std::shared_ptr<ScriptHotSpot> hotspot;
-    if (table.HasKey("shape")) {
-        luabridge::LuaRef rshape = table.Get<luabridge::LuaRef>("shape");
-        auto shape = factory->makeShape(rshape);
-        hotspot = std::make_shared<ScriptHotSpot>(shape, priority);
-    } else {
-        hotspot = std::make_shared<ScriptHotSpot>(priority);
-    }
-    if (table.HasKey("onenter")) {
-        luabridge::LuaRef r = table.Get<luabridge::LuaRef>("onenter");
-        hotspot->SetOnEnter(r);
-    }
-    if (table.HasKey("onleave")) {
-        luabridge::LuaRef r = table.Get<luabridge::LuaRef>("onleave");
-        hotspot->SetOnLeave(r);
-    }
-    if (table.HasKey("onclick")) {
-        luabridge::LuaRef r = table.Get<luabridge::LuaRef>("onclick");
-        std::unique_ptr<LuaFunction> f(new LuaFunction(r));
-        hotspot->SetOnClick(std::move(f));
-    }
-    if (table.HasKey("onrmbclick")) {
-        luabridge::LuaRef r = table.Get<luabridge::LuaRef>("onrmbclick");
-        std::unique_ptr<LuaFunction> f(new LuaFunction(r));
-        hotspot->SetOnRightMouseButtonClick(std::move(f));
-    }
-    if (table.HasKey("onmove")) {
-        luabridge::LuaRef r = table.Get<luabridge::LuaRef>("onmove");
-        hotspot->SetOnMove(r);
-    }
-    return hotspot;
-}
+//std::shared_ptr<Component> HotSpotComponentFactory::Create(luabridge::LuaRef& ref) {
+//    LuaTable table(ref);
+//    int priority = table.Get<int>("priority");
+//    auto factory = Engine::get().GetSceneFactory();
+//    std::shared_ptr<ScriptHotSpot> hotspot;
+//    if (table.HasKey("shape")) {
+//        luabridge::LuaRef rshape = table.Get<luabridge::LuaRef>("shape");
+//        auto shape = factory->make<Shape>(rshape);
+//        hotspot = std::make_shared<ScriptHotSpot>(shape, priority);
+//    } else {
+//        hotspot = std::make_shared<ScriptHotSpot>(priority);
+//    }
+//    if (table.HasKey("onenter")) {
+//        luabridge::LuaRef r = table.Get<luabridge::LuaRef>("onenter");
+//        hotspot->SetOnEnter(r);
+//    }
+//    if (table.HasKey("onleave")) {
+//        luabridge::LuaRef r = table.Get<luabridge::LuaRef>("onleave");
+//        hotspot->SetOnLeave(r);
+//    }
+//    if (table.HasKey("onclick")) {
+//        luabridge::LuaRef r = table.Get<luabridge::LuaRef>("onclick");
+//        std::unique_ptr<LuaFunction> f(new LuaFunction(r));
+//        hotspot->SetOnClick(std::move(f));
+//    }
+//    if (table.HasKey("onrmbclick")) {
+//        luabridge::LuaRef r = table.Get<luabridge::LuaRef>("onrmbclick");
+//        std::unique_ptr<LuaFunction> f(new LuaFunction(r));
+//        hotspot->SetOnRightMouseButtonClick(std::move(f));
+//    }
+//    if (table.HasKey("onmove")) {
+//        luabridge::LuaRef r = table.Get<luabridge::LuaRef>("onmove");
+//        hotspot->SetOnMove(r);
+//    }
+//    return hotspot;
+//}
 
 std::shared_ptr<Component> DepthComponentFactory::Create(luabridge::LuaRef & ref) {
     LuaTable table(ref);
@@ -509,18 +449,18 @@ std::shared_ptr<Component> DepthComponentFactory::Create(luabridge::LuaRef & ref
 }
 
 
-std::shared_ptr<Component> FollowComponentFactory::Create(luabridge::LuaRef &ref) {
-    LuaTable table(ref);
-    std::string cam = table.Get<std::string>("cam");
-    glm::vec3 relPos = table.Get<glm::vec3>("relativepos");
-    glm::vec3 up = table.Get<glm::vec3>("up");
-    auto f = std::make_shared<Follow>(cam, relPos, up);
-    if (table.HasKey("z")) {
-        float z = table.Get<float>("z");
-        f->fixZ(z);
-    }
-    return f;
-}
+//std::shared_ptr<Component> FollowComponentFactory::Create(luabridge::LuaRef &ref) {
+//    LuaTable table(ref);
+//    std::string cam = table.Get<std::string>("cam");
+//    glm::vec3 relPos = table.Get<glm::vec3>("relativepos");
+//    glm::vec3 up = table.Get<glm::vec3>("up");
+//    auto f = std::make_shared<Follow>(cam, relPos, up);
+//    if (table.HasKey("z")) {
+//        float z = table.Get<float>("z");
+//        f->fixZ(z);
+//    }
+//    return f;
+//}
 //std::unique_ptr<Component> Follow3DComponentFactory::Create(luabridge::LuaRef &ref) {
 //    LuaTable table(ref);
 //    std::string cam = table.Get<std::string>("cam");
@@ -807,46 +747,46 @@ std::shared_ptr<Component> CursorComponentFactory::Create(luabridge::LuaRef& ref
 
 
 
-
-std::shared_ptr<Runner> HotSpotManagerFactory::Create(luabridge::LuaRef& ref) {
-    auto hsm = std::make_shared<HotSpotManager>();
-    LuaTable table(ref);
-    if (table.HasKey("keys")) {
-
-        luabridge::LuaRef keys = table.Get<luabridge::LuaRef>("keys");
-        for (int i = 0; i < keys.length(); ++i) {
-            luabridge::LuaRef key = keys[i+1];
-            LuaTable t2(key);
-            KeyEvent event;
-            event.key = t2.Get<int>("key");
-            event.action = GLFW_PRESS;
-            event.mods = 0;
-            LuaFunction f(t2.Get<luabridge::LuaRef>("func"));
-            hsm->AddCallback(event, [f] () { f.execute(); });
-        }
-    }
-    if (table.HasKey("rmbclick")) {
-        LuaFunction f(table.Get<luabridge::LuaRef>("rmbclick"));
-        hsm->setRmbClickCallback([f] (float x, float y) { f.execute(x, y);});
-
-    }
-    if (table.HasKey("lmbclick")) {
-        LuaFunction f(table.Get<luabridge::LuaRef>("lmbclick"));
-        hsm->setLmbClickCallback([f] (float x, float y) { f.execute(x, y);});
-
-    }
-    if (table.HasKey("tag")) {
-        hsm->SetTag(table.Get<std::string>("tag"));
-    }
-
-    return hsm;
-    //Engine::get().AddRunner(hsm);
-    //g.RegisterToMouseEvent(hsm.get());
-}
-
-std::shared_ptr<Runner> SchedulerFactory::Create(luabridge::LuaRef&) {
-    return std::make_shared<Scheduler>();
-}
+//
+//std::shared_ptr<Runner> HotSpotManagerFactory::Create(luabridge::LuaRef& ref) {
+//    auto hsm = std::make_shared<HotSpotManager>();
+//    LuaTable table(ref);
+//    if (table.HasKey("keys")) {
+//
+//        luabridge::LuaRef keys = table.Get<luabridge::LuaRef>("keys");
+//        for (int i = 0; i < keys.length(); ++i) {
+//            luabridge::LuaRef key = keys[i+1];
+//            LuaTable t2(key);
+//            KeyEvent event;
+//            event.key = t2.Get<int>("key");
+//            event.action = GLFW_PRESS;
+//            event.mods = 0;
+//            LuaFunction f(t2.Get<luabridge::LuaRef>("func"));
+//            hsm->AddCallback(event, [f] () { f.execute(); });
+//        }
+//    }
+//    if (table.HasKey("rmbclick")) {
+//        LuaFunction f(table.Get<luabridge::LuaRef>("rmbclick"));
+//        hsm->setRmbClickCallback([f] (float x, float y) { f.execute(x, y);});
+//
+//    }
+//    if (table.HasKey("lmbclick")) {
+//        LuaFunction f(table.Get<luabridge::LuaRef>("lmbclick"));
+//        hsm->setLmbClickCallback([f] (float x, float y) { f.execute(x, y);});
+//
+//    }
+//    if (table.HasKey("tag")) {
+//        hsm->SetTag(table.Get<std::string>("tag"));
+//    }
+//
+//    return hsm;
+//    //Engine::get().AddRunner(hsm);
+//    //g.RegisterToMouseEvent(hsm.get());
+//}
+//
+//std::shared_ptr<Runner> SchedulerFactory::Create(luabridge::LuaRef&) {
+//    return std::make_shared<Scheduler>();
+//}
 
 std::shared_ptr<Runner> DynamicWorldBuilderFactory::Create(luabridge::LuaRef& ref) {
     LuaTable table(ref);
@@ -858,7 +798,7 @@ std::shared_ptr<Runner> DynamicWorldBuilderFactory::Create(luabridge::LuaRef& re
     auto builder = std::make_shared<DynamicWorldBuilder>(cellWidth, cellHeight, cam);
     for (int i = 0; i <items.length(); ++i) {
         luabridge::LuaRef rnode = items[i+1];
-        auto node  = factory->makeEntity(rnode);
+        auto node  = factory->make<Entity>(rnode);
         //rootNode->AddChild(node);
         builder->AddItem(node);
     }
@@ -869,45 +809,45 @@ std::shared_ptr<Runner> DynamicWorldBuilderFactory::Create(luabridge::LuaRef& re
 
 
 
-std::shared_ptr<Runner> CollisionEngineFactory::Create(luabridge::LuaRef& ref) {
-    LuaTable table(ref);
-    glm::vec2 collisionSize = table.Get<glm::vec2>("size");
-    auto ce = std::make_shared<CollisionEngine>(collisionSize.x, collisionSize.y);
-    bool coll25 = table.Get<bool>("coll25", false);
-    if (coll25) {
-        float eps = table.Get<float>("eps", 0.01);
-        ce->Enable25DCollision(eps);
-    }
-    if (table.HasKey("response")) {
-        // set the collision responsesfg
-        luabridge::LuaRef resp = table.Get<luabridge::LuaRef>("response");
-        std::unique_ptr<CollisionResponseManager> crm (new CollisionResponseManager);
-        for (int i = 0; i < resp.length();++i) {
-            luabridge::LuaRef a = resp[i+1];
-            LuaTable at(a);
-            std::vector<int> tags = at.GetVector<int>("tag");
-            std::unique_ptr<LuaCollisionResponse> l(new LuaCollisionResponse);
-            if (at.HasKey("onenter")) {
-                luabridge::LuaRef onEnter = at.Get<luabridge::LuaRef>("onenter");
-                l->SetOnEnter(onEnter);
-            }
-            if (at.HasKey("onleave")) {
-                luabridge::LuaRef onLeave = at.Get<luabridge::LuaRef>("onleave");
-                l->SetOnLeave(onLeave);
-            }
-            if (at.HasKey("onstay")) {
-                luabridge::LuaRef onStay = at.Get<luabridge::LuaRef>("onstay");
-                l->SetOnStay(onStay);
-            }
-            crm->AddCollisionResponse(tags[0], tags[1], std::move(l));
-
-        }
-        ce->SetResponseManager(std::move(crm));
-    }
-
-    return ce;
-
-}
+//std::shared_ptr<Runner> CollisionEngineFactory::Create(luabridge::LuaRef& ref) {
+//    LuaTable table(ref);
+//    glm::vec2 collisionSize = table.Get<glm::vec2>("size");
+//    auto ce = std::make_shared<CollisionEngine>(collisionSize.x, collisionSize.y);
+//    bool coll25 = table.Get<bool>("coll25", false);
+//    if (coll25) {
+//        float eps = table.Get<float>("eps", 0.01);
+//        ce->Enable25DCollision(eps);
+//    }
+//    if (table.HasKey("response")) {
+//        // set the collision responsesfg
+//        luabridge::LuaRef resp = table.Get<luabridge::LuaRef>("response");
+//        std::unique_ptr<CollisionResponseManager> crm (new CollisionResponseManager);
+//        for (int i = 0; i < resp.length();++i) {
+//            luabridge::LuaRef a = resp[i+1];
+//            LuaTable at(a);
+//            std::vector<int> tags = at.GetVector<int>("tag");
+//            std::unique_ptr<LuaCollisionResponse> l(new LuaCollisionResponse);
+//            if (at.HasKey("onenter")) {
+//                luabridge::LuaRef onEnter = at.Get<luabridge::LuaRef>("onenter");
+//                l->SetOnEnter(onEnter);
+//            }
+//            if (at.HasKey("onleave")) {
+//                luabridge::LuaRef onLeave = at.Get<luabridge::LuaRef>("onleave");
+//                l->SetOnLeave(onLeave);
+//            }
+//            if (at.HasKey("onstay")) {
+//                luabridge::LuaRef onStay = at.Get<luabridge::LuaRef>("onstay");
+//                l->SetOnStay(onStay);
+//            }
+//            crm->AddCollisionResponse(tags[0], tags[1], std::move(l));
+//
+//        }
+//        ce->SetResponseManager(std::move(crm));
+//    }
+//
+//    return ce;
+//
+//}
 
 std::shared_ptr<Component> Depth25CompFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);

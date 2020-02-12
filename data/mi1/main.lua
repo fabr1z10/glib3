@@ -6,16 +6,8 @@ engine = {
 	window_size = { 640, 400 },
 	title = "The secret of Monkey Island",
 	shaders = { "unlit_textured", "unlit_color", "text" },
-	assets = {
-		fonts = {
-	    	ui = {file  = "./fonts/monkeysmall.ttf" },
-    		monkey = {file  = "./fonts/MonkeyIsland-1990.ttf"}
-		},
-		models = {},
-		animations = {}
-	},
 	global_assets = {
-		fonts = { "ui", "monkey" }
+		--	fonts = { "ui", "monkey" }
 	},
 	start_room = "kitchen",
 	lang = "eng",
@@ -33,6 +25,19 @@ engine = {
 		}     	
 	}
 }
+
+-- assets
+engine.assets = {
+	fonts = {
+		ui = { type = "font", file = "./fonts/monkeysmall.ttf" },
+		monkey = { type = "font", file = "./fonts/MonkeyIsland-1990.ttf" }
+	},
+	models = {}
+}
+
+
+
+
 
 require("scumm")
 

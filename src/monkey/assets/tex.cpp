@@ -1,23 +1,18 @@
-//
-//  tex.cpp
-//  glib
-//
-//  Created by Fabrizio Venturini on 19/05/2018.
-//
-//
-
-#include <monkey/tex.h>
+#include <monkey/assets/tex.h>
 #include <iostream>
+
 #define cimg_use_jpeg
 #define cimg_use_png
 #define cimg_display 0
+
 #include <monkey/CImg.h>
 
 using namespace cimg_library;
 
-
-Tex::Tex (const std::string& filename, TexFilter filter) {
-    CImg<unsigned char> data (filename.c_str());
+Tex::Tex (const std::string& file) { //const std::string& filename, TexFilter filter) {
+    //std::string file = table.Get<std::string>("file");
+    TexFilter filter = nearest;
+    CImg<unsigned char> data (file.c_str());
     m_width = data.width();
     m_height = data.height();
     int channels = data.spectrum();

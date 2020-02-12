@@ -30,7 +30,7 @@ int main(int argc, char* argv[])
         engine.MainLoop();
     }
     catch (Error & err) {
-        std::cout << err.what() << std::endl;
+        std::cerr << err.what() << std::endl;
         return 1;
     }
     catch (luabridge::LuaException & e) {

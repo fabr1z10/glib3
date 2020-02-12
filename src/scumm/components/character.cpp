@@ -6,6 +6,14 @@ StateCharacter::StateCharacter(float speed, char dir, const std::string& initial
     StateMachine(initialState), m_speed(speed), m_dir(dir) {
 }
 
+StateCharacter::StateCharacter(const LuaTable &t) : StateMachine() {
+
+    m_dir = t.Get<std::string>("dir")[0];
+    m_speed = t.Get<float>("speed");
+    m_initialState = t.Get<std::string>("state");
+
+}
+
 StateCharacter::StateCharacter(const StateCharacter& orig) :
         StateMachine(orig), m_dir(orig.m_dir), m_speed(orig.m_speed) {
     

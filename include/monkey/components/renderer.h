@@ -11,7 +11,7 @@
 
 #include <memory>
 #include <monkey/component.h>
-#include <monkey/imodel.h>
+#include <monkey/assets/imodel.h>
 
 // a renderer is the component responsible for rendering a model onto the screen
 class Renderer : public Component {

@@ -1,77 +1,28 @@
 #pragma once
 
 #include <string>
+#include <monkey/asset.h>
 #include <unordered_map>
 #include <monkey/error.h>
 #include <memory>
 
-class Ref {
-public:
+class LuaTable;
 
+class Ref : public Object {
+public:
     Ref();
     Ref(const Ref&);
-
-//    template <typename T, typename ...Args>
-//    static std::shared_ptr<T> Create (Args... a) {
-//        auto ptr = std::make_shared<T>(a...);
-//        g_refs[ptr->GetId()] = ptr;
-//        return ptr;
-//    }
-
-//    template <typename T>
-//    static std::shared_ptr<T> Clone (const T& orig) {
-//        auto ptr = std::make_shared<T>(orig);
-//        g_refs[ptr->GetId()] = ptr;
-//        return ptr;
-//
-//    }
-
-
+    Ref(const LuaTable&);
     virtual ~Ref();
     std::string GetTag() const;
     void SetTag(const std::string&);
     int GetId() const;
-//    static int GetId(const std::string &tag) {
-//        auto it = g_taggedRefs.find(tag);
-//        if (it == g_taggedRefs.end())
-//            return -1;
-//        auto ptr = it->second.lock();
-//        if (ptr) {
-//            return ptr->GetId();
-//        }
-//        return -1;
-//
-//    }
-
-//    template<class T>
-//    static std::shared_ptr<T> Get(int id) {
-//        auto it = g_refs.find(id);
-//        if (it == g_refs.end()) {
-//            GLIB_FAIL("Unknown id!");
-//        }
-//        return std::dynamic_pointer_cast<T>(std::shared_ptr<Ref>(it->second));
-//    }
-//
-//
-//
-//    template<class T>
-//    static std::shared_ptr<T> Get(const std::string& tag) {
-//        auto it = g_taggedRefs.find(tag);
-//        if (it == g_taggedRefs.end()) {
-//            GLIB_FAIL("Unknown tag!");
-//        }
-//        return std::dynamic_pointer_cast<T>(std::shared_ptr<Ref>(it->second));
-//    }
-
     static void dump ();
     virtual std::string toString();
     // bool IsAlive(int);
     virtual void setActive(bool);
     bool isActive() const;
-
 protected:
-
-
     // unique identifier
     int m_id;
     std::string m_tag;

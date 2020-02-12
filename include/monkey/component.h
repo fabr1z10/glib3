@@ -17,6 +17,7 @@ class Entity;
 
 class Component : public Ref {
 public:
+    Component (const LuaTable& t) : Ref(t) {}
     virtual ~ Component() {}
     // called once when the entity is added to the scene
     virtual void Start() = 0;

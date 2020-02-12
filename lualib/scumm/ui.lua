@@ -46,6 +46,7 @@ function scumm.ui.setverb(verb)
 end
 
 function scumm.ui.changecolor (color, entity)
+	print ("ECCOCICICICI")
     entity:setcolor(color[1], color[2], color[3], color[4])
 end
 

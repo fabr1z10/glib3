@@ -9,10 +9,12 @@
 #include <monkey/event.h>
 #include <monkey/runner.h>
 #include <stack>
+
 // hotspot is a component I can attach to
 class HotSpot : public Component {
 public:
     HotSpot (int priority) : Component(), m_shape{nullptr}, m_focus{false}, m_priority{priority} {}
+    HotSpot (const LuaTable&);
     HotSpot (const HotSpot&);
     HotSpot (std::shared_ptr<Shape> shape, int priority) : Component(),
     m_shape{shape}, m_focus{false}, m_priority{priority} {}
@@ -67,6 +69,7 @@ inline int HotSpot::GetPriority() const {
 class HotSpotManager : public Runner, public MouseListener, public KeyboardListener {
 public:
     HotSpotManager();
+    HotSpotManager(const LuaTable&);
     ~HotSpotManager() override;
     //void Start() override ;
     //void Update (double dt) override ;

@@ -1,7 +1,8 @@
 #include <algorithm>
-#include <monkey/font.h>
+#include <monkey/lua/luatable.h>
+#include <monkey/assets/font.h>
 #include <freetype/ftglyph.h>
-#include <monkey/error.h>
+#include <monkey/engine.h>
 
 FT_Library Font::s_lib;
 bool Font::s_loaded;
@@ -9,6 +10,15 @@ bool Font::s_loaded;
 Font::Font() {
     if (!Font::Initialize())
         return;
+}
+
+Font::Font(const LuaTable & t) : Font() {
+
+    std::string file = t.Get<std::string>("file");
+    if (file[0] == '.') {
+        file.replace(0, 2, Engine::get().GetGameDirectory());
+    }
+    loadFromFile(file, 36);
 }
 
 Font::~Font() {

@@ -1,4 +1,4 @@
-#include <monkey/skeletalanimation.h>
+#include <monkey/assets/skeletalanimation.h>
 
 
 

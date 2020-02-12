@@ -184,5 +184,5 @@ local cook = function()
 
 end
 
-table.insert(room.initstuff, cook)
-table.insert(room.initstuff, animate)
+--table.insert(room.initstuff, cook)
+--table.insert(room.initstuff, animate)

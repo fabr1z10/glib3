@@ -5,6 +5,9 @@
 #include <glm/glm.hpp>
 #include <monkey/error.h>
 #include <map>
+#include <monkey/asset.h>
+
+class LuaTable;
 
 // implements a linear function passing through points (x0, y0) and (x1, y1)
 class LinearFunction {
@@ -28,7 +31,7 @@ private:
 
 
 
-class Function2D {
+class Function2D : public Object {
 public:
     virtual float operator()(float x, float y) = 0;
     virtual float invY (float x, float z) {
@@ -63,6 +66,7 @@ private:
 class Linear2Dy : public Function2D {
 public:
     Linear2Dy(float y0, float value0, float y1, float value1) : m_y0{y0}, m_value0{value0}, m_delta{(value1-value0)/(y1-y0)} {}
+    Linear2Dy(const LuaTable&);
     float operator()(float x, float y) override {
         return m_value0 + (y - m_y0) * m_delta;
     }

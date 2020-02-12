@@ -4,8 +4,10 @@ function scumm.toggle_pause ()
 	local ui = monkey.getEntity("ui")
 	monkey.enablescriptengine(not engine.state.scumm.game_paused)
 
-   	p:setactive(not engine.state.scumm.game_paused)
-   	ui:setactive(not engine.state.scumm.game_paused)
+	p:enableupdate(not engine.state.scumm.game_paused)
+	ui:enableupdate(not engine.state.scumm.game_paused)
+   	--p:setactive(not engine.state.scumm.game_paused)
+   	--ui:setactive(not engine.state.scumm.game_paused)
    	engine.state.scumm.game_paused = not engine.state.scumm.game_paused
 end
 
@@ -50,7 +52,7 @@ function scumm.factory.basic_room (args)
 			[1] = function() 
 				engine.state.scumm.actionInfo.verb = engine.config.default_verb
 				--scumm.ui.updateVerb() 
-				scumm.ui.refresh_inventory()
+				--scumm.ui.refresh_inventory()
 			end
 		},
 		engines = {
@@ -66,7 +68,6 @@ function scumm.factory.basic_room (args)
 
 			    },
 				lmbclick = function(x, y)
-				    print ("AZONE = " ..tostring(x) .. "," .. tostring(y))
 					if (engine.state.scumm.lmboverride ~= nil) then
 						print ("Override")
 						engine.state.scumm.lmboverride()
@@ -125,52 +126,48 @@ function scumm.factory.basic_room (args)
 							 	},
 							 	children = {
 							 		{
+							 			type = "text",
 					 			    	tag = "currentaction",
-					 			    	pos={160,48,0},
-					 					components = {
-					 			    		{ 
-												type="text", 
-												id = engine.config.verbs[engine.config.default_verb].text, 
-												font = engine.config.ui.font, 
-												align = "bottom", 
-												color = engine.config.ui.currentaction_color
-											}
-					 					}
+					 			    	font = engine.config.ui.font,
+					 			    	text = engine.config.verbs[engine.config.default_verb].text,
+					 			    	align = "bottom",
+					 			    	color = engine.config.ui.currentaction_color,
+					 			    	pos={160,48,0}
 					 				}							 		
 							 	}
 			 				},
-			 				{
-								pos = {0,0,0},
-								children =  {
-			 						{
-					 					type = "textview", 
-					 					tag="inventory",
-					 					pos = {150, 0, 0},
-					 					size = {170, 48},
-					 					font_size = 8,
-					 					lines = 6,
-					 					deltax = 26,
-					 					factory = scumm.factory.inventorybutton
-					   				},
-								}
-							}
+			 			-- 	{
+							-- 	pos = {0,0,0},
+							-- 	children =  {
+			 			-- 			{
+					 	-- 				type = "textview", 
+					 	-- 				tag="inventory",
+					 	-- 				pos = {150, 0, 0},
+					 	-- 				size = {170, 48},
+					 	-- 				font_size = 8,
+					 	-- 				lines = 6,
+					 	-- 				deltax = 26,
+					 	-- 				factory = scumm.factory.inventorybutton
+					  --  				},
+							-- 	}
+							-- }
 			 			}
 			 		},
-			 		{
-						pos  = {0,0,0},
-						children = {
-							{
-								tag = "dialogueui",
-								type = "textview", 
-								pos = {0, 0},
-								size = {320, 56},
-								font_size = 8,
-								lines = 6,
-								deltax = 26,
-								factory = scumm.factory.dialoguebutton
-							}
-						}
-			 		}			 		
+			 		-- {
+						-- pos  = {0,0,0},
+						-- children = {
+						-- 	{
+						-- 		tag = "dialogueui",
+						-- 		type = "textview", 
+						-- 		pos = {0, 0},
+						-- 		size = {320, 56},
+						-- 		font_size = 8,
+						-- 		lines = 6,
+						-- 		deltax = 26,
+						-- 		factory = scumm.factory.dialoguebutton
+						-- 	}
+						-- }
+			 		-- }			 		
 			 			 --    {
 			 				-- 	pos = {320,0,0},
 			 				-- 	components = {

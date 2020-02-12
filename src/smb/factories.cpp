@@ -31,13 +31,13 @@
 //#include <monkey/engine.h>
 //#include <platformer/activities/setenemydir.h>
 void Extension::extend(SceneFactory* f) {
-
-    f->addStateFactory("walkside", std::make_unique<WalkSideFactory>());
-    f->addStateFactory("jump", std::make_unique<Jump2DFactory>());
-
-    f->addStateFactory("foewalk", std::make_unique<FoeWalkFactory>());
-    f->addStateFactory("foedead", std::make_unique<FoeDeadFactory>());
-    f->addStateFactory("koopashell", std::make_unique<KoopaShellFactory>());
+//
+//    f->addStateFactory("walkside", std::make_unique<WalkSideFactory>());
+//    f->addStateFactory("jump", std::make_unique<Jump2DFactory>());
+//
+//    f->addStateFactory("foewalk", std::make_unique<FoeWalkFactory>());
+//    f->addStateFactory("foedead", std::make_unique<FoeDeadFactory>());
+//    f->addStateFactory("koopashell", std::make_unique<KoopaShellFactory>());
 
 }
 

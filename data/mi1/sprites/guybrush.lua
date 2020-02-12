@@ -93,7 +93,7 @@ local file = "sprites/guybrush.png"
 
 engine.assets.models["guybrush"] = {
     sheet = file,
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "idle_e", frames = { { duration = dt, quads = {{ id = s.idle_east }}}}},

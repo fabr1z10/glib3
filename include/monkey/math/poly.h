@@ -77,6 +77,7 @@ public:
     // defines a polygon without holes
     // Note: the polygons are always clockwise oriented!
     Poly (std::unique_ptr<Polygon>);
+    Poly (const LuaTable&);
     std::string toString() const override;
     // adding and retrieving holes
     // a hole entity must have a hole component

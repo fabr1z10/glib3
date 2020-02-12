@@ -1,6 +1,6 @@
 #pragma once
 
-#include <monkey/imodel.h>
+#include <monkey/assets/imodel.h>
 #include <monkey/spritemesh.h>
 #include <monkey/components/renderer.h>
 
@@ -9,6 +9,9 @@ public:
     explicit SpriteModel (std::shared_ptr<SpriteMesh> mesh) : m_mesh(mesh) {
 
     }
+
+    SpriteModel (const LuaTable& t);
+
     Bounds GetBounds() const override;
     std::vector<std::string> GetAnimations() const override;
     std::string GetDefaultAnimation() const override;

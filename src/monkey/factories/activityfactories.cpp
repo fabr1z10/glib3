@@ -71,7 +71,7 @@ std::shared_ptr<Activity> CollisionCheckActFactory::Create(luabridge::LuaRef &re
     auto factory = Engine::get().GetSceneFactory();
     std::string actor = table.Get<std::string>("actor");
     luabridge::LuaRef rshape = table.Get<luabridge::LuaRef>("shape");
-    std::shared_ptr<Shape> shape = factory->makeShape(rshape);
+    std::shared_ptr<Shape> shape = factory->make<Shape>(rshape);
     glm::vec2 offset = table.Get<glm::vec2>("offset");
     int mask = table.Get<float>("mask");
     luabridge::LuaRef callback = table.Get<luabridge::LuaRef>("func");

@@ -6,6 +6,8 @@
 #include <memory>
 #include <monkey/math/shape.h>
 #include <monkey/math/rect.h>
+#include <monkey/asset.h>
+
 class KeyFrame {
 public:
     KeyFrame(float t, const std::vector<float>& angles) : m_time(t), m_angles(angles) {}
@@ -45,7 +47,7 @@ struct SkeletalAnimationState {
     std::vector<float> boneAngles;
 };
 
-class SkeletalAnimation {
+class SkeletalAnimation : public Object {
 public:
     SkeletalAnimation(bool loop) : m_loop(loop) {}
     virtual SkeletalAnimationState getTransformation (float t) = 0;

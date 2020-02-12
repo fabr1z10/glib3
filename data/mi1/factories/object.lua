@@ -142,9 +142,9 @@ scumm.factory.object = function(args)
 	end
 
 	-- depth component
-	if (object.applydepth) then
-		table.insert(obj.components, { type="depth", depth = roomDefinition.depth, scale = roomDefinition.scale })
-	end
+	-- if (object.applydepth) then
+	-- 	table.insert(obj.components, { type="depth", depth = roomDefinition.depth, scale = roomDefinition.scale })
+	-- end
     
 	return obj
 

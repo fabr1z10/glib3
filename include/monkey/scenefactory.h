@@ -1,6 +1,7 @@
 #pragma once
 
 #include <monkey/factory.h>
+#include <monkey/asset.h>
 #include <unordered_set>
 
 class Engine;
@@ -41,59 +42,84 @@ public:
 //    }
     //void LoadModel(const std::string&);
     virtual void extendLua() {}
-    std::shared_ptr<IModel> makeModel (luabridge::LuaRef ref);
-    std::shared_ptr<Camera> makeCam (luabridge::LuaRef ref);
-    std::shared_ptr<Shape> makeShape (luabridge::LuaRef ref);
-    std::shared_ptr<Entity> makeEntity (luabridge::LuaRef ref);
-    std::shared_ptr<Activity> makeActivity (luabridge::LuaRef ref);
-    std::shared_ptr<Runner> makeRunner (luabridge::LuaRef ref);
-    std::shared_ptr<Component> makeComponent (luabridge::LuaRef ref);
-    std::shared_ptr<State> makeState (luabridge::LuaRef ref);
-    std::shared_ptr<SkeletalAnimation> makeSkeletalAnimation(luabridge::LuaRef ref);
+
+
+//    std::shared_ptr<IModel> makeModel (luabridge::LuaRef ref);
+//    std::shared_ptr<Camera> makeCam (luabridge::LuaRef ref);
+//    std::shared_ptr<Shape> makeShape (luabridge::LuaRef ref);
+//    std::shared_ptr<Entity> makeEntity (luabridge::LuaRef ref);
+//    std::shared_ptr<Activity> makeActivity (luabridge::LuaRef ref);
+//    std::shared_ptr<Runner> makeRunner (luabridge::LuaRef ref);
+//    std::shared_ptr<Component> makeComponent (luabridge::LuaRef ref);
+//    std::shared_ptr<State> makeState (luabridge::LuaRef ref);
+//    std::shared_ptr<SkeletalAnimation> makeSkeletalAnimation(luabridge::LuaRef ref);
     void addStateFactory(const std::string &a, std::unique_ptr<FactoryMethod<State>> f);
     void addComponentFactory (const std::string &a, std::unique_ptr<FactoryMethod<Component>> f);
     void addActivityFactory (const std::string &a, std::unique_ptr<FactoryMethod<Activity>> f);
 
-protected:
-    Factory<IModel> m_modelFactory;
-    Factory<Camera> m_cameraFactory;
-    Factory<Shape> m_shapeFactory;
-    Factory<Entity> m_entityFactory;
-    Factory<Activity> m_activityFactory;
-    Factory<Component> m_componentFactory;
-    Factory<Runner> m_runnerFactory;
-    Factory<State> m_stateFactory;
-    Factory<SkeletalAnimation> m_skeletalAnimFactory;
+    template <typename T>
+    void add(const std::string& type) {
+        m_facs.insert(std::make_pair(type, [] (const LuaTable& t) {
+            return std::make_shared<T>(t);
+        }));
+    }
 
+    template <typename T, bool = std::is_base_of<Ref, T>::value >
+    std::shared_ptr<T> make (const LuaTable& t) {
+        std::string type = t.Get<std::string>("type", "default");
+        auto it = m_facs.find(type);
+        if (it == m_facs.end()) {
+            GLIB_FAIL("Unknown type: " << type);
+        }
+        // dynamic? type check?
+
+        return std::static_pointer_cast<T>((it->second)(t));
+    }
+
+
+
+
+protected:
+//    Factory<IModel> m_modelFactory;
+//    Factory<Camera> m_cameraFactory;
+//    Factory<Shape> m_shapeFactory;
+//    Factory<Entity> m_entityFactory;
+//    Factory<Activity> m_activityFactory;
+//    Factory<Component> m_componentFactory;
+//    Factory<Runner> m_runnerFactory;
+//    Factory<State> m_stateFactory;
+//    Factory<SkeletalAnimation> m_skeletalAnimFactory;
+
+    std::unordered_map<std::string, std::function<std::shared_ptr<Object>(const LuaTable&)> > m_facs;
     //Factory<StateInitializer> m_stateInitFactory;
     //Factory<StateBehaviour> m_stateBehaviorFactory;
 };
 
-inline std::shared_ptr<IModel> SceneFactory::makeModel (luabridge::LuaRef ref) {
-    return m_modelFactory.Create(ref);
-}
-inline std::shared_ptr<Camera> SceneFactory::makeCam (luabridge::LuaRef ref) {
-    return m_cameraFactory.Create(ref);
-}
-inline std::shared_ptr<Shape> SceneFactory::makeShape (luabridge::LuaRef ref) {
-    return m_shapeFactory.Create(ref);
-}
-inline std::shared_ptr<Entity> SceneFactory::makeEntity (luabridge::LuaRef ref) {
-    return m_entityFactory.Create(ref);
-}
-inline std::shared_ptr<Activity> SceneFactory::makeActivity (luabridge::LuaRef ref) {
-    return  m_activityFactory.Create(ref);
-}
-inline std::shared_ptr<Runner> SceneFactory::makeRunner (luabridge::LuaRef ref) {
-    return m_runnerFactory.Create(ref);
-}
-inline std::shared_ptr<Component> SceneFactory::makeComponent (luabridge::LuaRef ref) {
-    return m_componentFactory.Create(ref);
-}
-inline std::shared_ptr<State> SceneFactory::makeState (luabridge::LuaRef ref) {
-    return m_stateFactory.Create(ref);
-}
-
-inline std::shared_ptr<SkeletalAnimation> SceneFactory::makeSkeletalAnimation(luabridge::LuaRef ref) {
-    return m_skeletalAnimFactory.Create(ref);
-}
+//inline std::shared_ptr<IModel> SceneFactory::makeModel (luabridge::LuaRef ref) {
+//    return m_modelFactory.Create(ref);
+//}
+//inline std::shared_ptr<Camera> SceneFactory::makeCam (luabridge::LuaRef ref) {
+//    return m_cameraFactory.Create(ref);
+//}
+//inline std::shared_ptr<Shape> SceneFactory::makeShape (luabridge::LuaRef ref) {
+//    return m_shapeFactory.Create(ref);
+//}
+//inline std::shared_ptr<Entity> SceneFactory::makeEntity (luabridge::LuaRef ref) {
+//    return m_entityFactory.Create(ref);
+//}
+//inline std::shared_ptr<Activity> SceneFactory::makeActivity (luabridge::LuaRef ref) {
+//    return  m_activityFactory.Create(ref);
+//}
+//inline std::shared_ptr<Runner> SceneFactory::makeRunner (luabridge::LuaRef ref) {
+//    return m_runnerFactory.Create(ref);
+//}
+//inline std::shared_ptr<Component> SceneFactory::makeComponent (luabridge::LuaRef ref) {
+//    return m_componentFactory.Create(ref);
+//}
+//inline std::shared_ptr<State> SceneFactory::makeState (luabridge::LuaRef ref) {
+//    return m_stateFactory.Create(ref);
+//}
+//
+//inline std::shared_ptr<SkeletalAnimation> SceneFactory::makeSkeletalAnimation(luabridge::LuaRef ref) {
+//    return m_skeletalAnimFactory.Create(ref);
+//}

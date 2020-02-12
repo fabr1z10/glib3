@@ -2,6 +2,10 @@
 #include <monkey/error.h>
 #include <iostream>
 
+Scheduler::Scheduler(const LuaTable & table) : Runner(table) {
+
+}
+
 Scheduler::~Scheduler() {
     std::cerr << "ciao\n";
     for (auto& s : m_scripts) {

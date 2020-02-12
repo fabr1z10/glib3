@@ -1,6 +1,6 @@
 #pragma once
 
-#include <monkey/imodel.h>
+#include <monkey/assets/imodel.h>
 #include <unordered_map>
 #include <monkey/math/shape.h>
 

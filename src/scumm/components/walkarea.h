@@ -16,6 +16,7 @@ struct BlockedLine {
 class WalkArea : public ScriptHotSpot {
 public:
     WalkArea (std::shared_ptr<Shape> shape, int priority);
+    WalkArea (const LuaTable&);
     WalkArea (const WalkArea&);
     std::shared_ptr<Component> clone() const override;
     void assignDepth (Entity*);

@@ -53,7 +53,7 @@ void TextView::AddEntity(luabridge::LuaRef ref) {
 
     // 1. find the number of rows of this
     auto mf = Engine::get().GetSceneFactory();
-    auto ptr = mf->makeEntity(f);
+    auto ptr = mf->make<Entity>(f);
 
 
 

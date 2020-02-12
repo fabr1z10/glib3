@@ -2,11 +2,14 @@
 
 #include <string>
 #include <map>
+#include <monkey/asset.h>
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <ft2build.h>
 
 #include FT_FREETYPE_H
+
+class LuaTable;
 
 struct Glyph {
     // tex coords in the atlas
@@ -18,9 +21,10 @@ struct Glyph {
 
 };
 
-class Font {
+class Font : public Object {
 public:
     Font();
+    Font(const LuaTable&);
     ~Font();
     static bool Initialize();
     bool loadFromFile(const std::string& filename, const int size = 36);

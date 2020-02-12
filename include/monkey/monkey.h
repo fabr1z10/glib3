@@ -18,7 +18,7 @@ class Monkey : public Singleton<Monkey> {
 		T* Get(const std::string& id) {
 			auto it = g_taggedRefs.find(id);
 			if (it == g_taggedRefs.end()) {
-				GLIB_FAIL("Unknown id!");
+				GLIB_FAIL("Unknown id: " << id);
 			}
 			return dynamic_cast<T*>(it->second);
 		}

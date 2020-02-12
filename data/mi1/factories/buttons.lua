@@ -14,7 +14,7 @@ scumm.factory.button = function(args)
 	local color = args.color or {255,255,255,255}
 	local maxwidth = args.maxwidth
 	local components = {
-		{ type="text", id=text, font = font, size = size, color = color, align = align, maxwidth = maxwidth },
+		--{ type="text", id=text, font = font, size = size, color = color, align = align, maxwidth = maxwidth },
 		{ type="hotspot", onenter = onenter, onleave = onleave, onclick = onclick, priority = priority }
 	}
 	if (args.info ~= nil) then
@@ -22,6 +22,13 @@ scumm.factory.button = function(args)
 	end
 
     return {
+    	type = "text",
+    	text = text, 
+    	font = font, 
+    	size = size,
+    	color = color,
+    	align = align,
+    	maxwidth = maxwidth,
         pos = { pos[1], pos[2], 0 },
 		components = components
     }

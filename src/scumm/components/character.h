@@ -9,6 +9,7 @@ class StateCharacter : public StateMachine {
 public:
     StateCharacter(float speed, char dir, const std::string& initialState);
     StateCharacter(const StateCharacter&);
+    StateCharacter(const LuaTable& t);
     void SetDirection(char dir);
     char GetDirection() const;
     void Start () override;

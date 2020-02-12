@@ -1,6 +1,6 @@
 #pragma once
 
-#include <monkey/imodel.h>
+#include <monkey/assets/imodel.h>
 #include <monkey/imesh.h>
 
 // a model with only one mesh

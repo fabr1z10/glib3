@@ -1,7 +1,7 @@
 #pragma once
 
 #include "mesh.h"
-#include "font.h"
+#include <monkey/assets/font.h>
 #include <monkey/enums.h>
 
 class TextMesh : public Mesh<VertexText> {

@@ -242,8 +242,12 @@ inline TextAlignment LuaTable::Get<TextAlignment>(const std::string& key) const 
     else if (as == "center")
         return CENTER;
     GLIB_FAIL("Unknown text alignment " << as);
-    
-    
+}
+
+template<>
+inline LuaTable LuaTable::Get<LuaTable>(const std::string& key) const {
+    luabridge::LuaRef ref = m_ref[key];
+    return LuaTable(ref);
 }
 
 template<>

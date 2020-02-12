@@ -1,6 +1,6 @@
 #pragma once
 
-#include <monkey/skeletalanimation.h>
+#include <monkey/assets/skeletalanimation.h>
 #include <alglib/interpolation.h>
 #include <memory>
 #include <unordered_map>

@@ -1,6 +1,8 @@
 #include <monkey/collisionengine.h>
 #include <iostream>
 #include <monkey/math/raycast.h>
+#include <monkey/luacollision.h>
+#include <monkey/lua/luatable.h>
 
 CollisionEngine::~CollisionEngine() {
     std::cerr << "Killing the ce\n";
@@ -24,6 +26,45 @@ CollisionEngine::CollisionEngine (float cellWidth, float cellHeight) :
     m_intersector = std::unique_ptr<Intersector>(new Intersector);
 }
 
+CollisionEngine::CollisionEngine(const LuaTable & table) : ICollisionEngine(table) {
+
+    glm::vec2 collisionSize = table.Get<glm::vec2>("size");
+
+    m_width = collisionSize.x;
+    m_height = collisionSize.y;
+    m_coll25d = table.Get<bool>("coll25", false);
+    if (m_coll25d) {
+        m_eps = table.Get<float>("eps", 0.01);
+        Enable25DCollision(m_eps);
+    }
+
+    if (table.HasKey("response")) {
+
+        auto resp = table.Get<luabridge::LuaRef>("response");
+        std::unique_ptr<CollisionResponseManager> crm (new CollisionResponseManager);
+        for (int i = 0; i < resp.length();++i) {
+            luabridge::LuaRef a = resp[i+1];
+            LuaTable at(a);
+            std::vector<int> tags = at.GetVector<int>("tag");
+            std::unique_ptr<LuaCollisionResponse> l(new LuaCollisionResponse);
+            if (at.HasKey("onenter")) {
+                auto onEnter = at.Get<luabridge::LuaRef>("onenter");
+                l->SetOnEnter(onEnter);
+            }
+            if (at.HasKey("onleave")) {
+                auto onLeave = at.Get<luabridge::LuaRef>("onleave");
+                l->SetOnLeave(onLeave);
+            }
+            if (at.HasKey("onstay")) {
+                auto onStay = at.Get<luabridge::LuaRef>("onstay");
+                l->SetOnStay(onStay);
+            }
+            crm->AddCollisionResponse(tags[0], tags[1], std::move(l));
+
+        }
+        SetResponseManager(std::move(crm));
+    }
+}
 
 void CollisionEngine::Enable25DCollision(float eps) {
     m_coll25d = true;

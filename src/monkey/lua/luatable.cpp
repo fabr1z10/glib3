@@ -62,6 +62,6 @@ template<>
 std::shared_ptr<Shape> LuaTable::Get<std::shared_ptr<Shape> >(const std::string& key) const {
     luabridge::LuaRef ref = m_ref[key];
     auto factory = Engine::get().GetSceneFactory();
-    auto shape = factory->makeShape(ref);
+    auto shape = factory->make<Shape>(ref);
     return shape;
 }

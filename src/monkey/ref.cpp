@@ -1,10 +1,7 @@
 #include <monkey/ref.h>
 #include <monkey/engine.h>
+#include <monkey/lua/luatable.h>
 
-//int Ref::g_idCount = 0;
-
-//std::unordered_map<int, std::weak_ptr<Ref> > Ref::g_refs;
-//std::unordered_map<std::string, std::weak_ptr<Ref> > Ref::g_taggedRefs;
 
 
 Ref::Ref() : m_id{Monkey::get().getNextId()}, m_active{true} {
@@ -13,6 +10,15 @@ Ref::Ref() : m_id{Monkey::get().getNextId()}, m_active{true} {
 
 Ref::Ref(const Ref & orig) : m_id{Monkey::get().getNextId()}, m_active{orig.m_active} {
     Monkey::get().add(m_id, this);
+}
+
+Ref::Ref(const LuaTable & table) : Ref() {
+    m_tag = table.Get<std::string>("tag", "");
+    m_active = table.Get<bool>("active", true);
+    Monkey::get().add(m_id, this);
+    if (!m_tag.empty()) {
+        Monkey::get().add(m_tag, this);
+    }
 }
 
 Ref::~Ref() {

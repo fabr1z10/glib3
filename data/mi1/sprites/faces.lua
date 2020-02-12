@@ -13,7 +13,7 @@ local s = {
 
 engine.assets.models["mancomb.mancomb"] = {
     sheet = "faces.png",
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "idle", frames = { { duration = dt, quads = {{ id = s.mancomb_default }}}}},
@@ -23,7 +23,7 @@ engine.assets.models["mancomb.mancomb"] = {
 
 engine.assets.models["estevan.estevan"] = {
     sheet = "faces.png",
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "idle", frames = { { duration = dt, quads = {{ id = s.estevan_default }}}}},
@@ -33,7 +33,7 @@ engine.assets.models["estevan.estevan"] = {
 
 engine.assets.models["loompirate.loompirate"] = {
     sheet = "faces.png",
-    type = "sprite",
+    type = "sprite.model",
     ppu=1,
 	animations = {
 		{ name = "idle", frames = { { duration = dt, quads = {{ id = s.loom_default }}}}},

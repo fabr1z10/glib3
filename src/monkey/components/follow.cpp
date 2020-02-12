@@ -9,6 +9,17 @@ Component(), m_camId{cam}, m_relativePos(relativePos), m_up(up), m_fixZ{false}
     m_dir = glm::vec3(0,0, -1);
 }
 
+Follow::Follow(const LuaTable & t) : Component(t) {
+
+    m_camId = t.Get<std::string>("cam");
+    m_relativePos = t.Get<glm::vec3>("relativepos");
+    m_up = t.Get<glm::vec3>("up");
+    if (t.HasKey("z")) {
+        float z = t.Get<float>("z");
+        fixZ(z);
+    }
+}
+
 Follow::Follow(const Follow& orig) : Component(orig),
 m_camId(orig.m_camId), m_relativePos(orig.m_relativePos), m_up(orig.m_up), m_fixZ(orig.m_fixZ) {
     m_dir = -glm::normalize(m_relativePos);
