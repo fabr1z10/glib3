@@ -2,6 +2,10 @@ local dt = 0.1
 local sheet = "sprites/sprites1.png"
 local sheet2 = "sprites/sprites2.png"
 local layer_dz = 0.001
+local citizen_head = {0, 26, 0}
+local citizen_head_1 = {-2, 26, 0}
+local lmf3_head = {-3,34,0}
+local lmf3_head_1 = {-4,34,0}
 
 local s = {
 	arrow_up = {x=116, y=395, width = 12, height=20 },
@@ -408,48 +412,12 @@ local s = {
 	circus_fire_2 = {x=191,y=102,width=10,height=29},
 	circus_fire_3 = {x=203,y=102,width=10,height=29},
 
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
-
-
-
-
-
-
-
-
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
 
-factory.model.create_simple { id="voodoolady.trunk", sheet=sheet2, frame = s.voodoolady_trunk }
-factory.model.create_simple { id="rubber.chicken", sheet=sheet, frame = s.rubber_chicken }
-factory.model.create_simple { id="voodoolady.baskets", sheet=sheet2, frame = s.voodoolady_baskets }
-factory.model.create_simple { id="voodoolady.basket", sheet=sheet, frame = s.voodoolady_basket }
---local s = spritesheets["sprites1"]
+ff.create_simple { id="voodoolady.trunk", sheet=sheet2, frame = s.voodoolady_trunk }
+ff.create_simple { id="rubber.chicken", sheet=sheet, frame = s.rubber_chicken }
+ff.create_simple { id="voodoolady.baskets", sheet=sheet2, frame = s.voodoolady_baskets }
+ff.create_simple { id="voodoolady.basket", sheet=sheet, frame = s.voodoolady_basket }
 
 engine.assets.models["arrow_up"] = {
     sheet = sheet,
@@ -470,7 +438,6 @@ engine.assets.models["arrow_down"] = {
 		{ name = "selected", frames = { { duration = dt, quads = {{ id = s.arrow_down_focus }}}}}
 	}
 }
-
 
 engine.assets.models["low_moral_fiber_1"] = {
     sheet = sheet,
@@ -544,7 +511,72 @@ engine.assets.models["low_moral_fiber_2"] = {
 	}
 }
 
+engine.assets.models["low_moral_fiber_3"] = {
+	sheet = sheet,
+	type = "sprite.model",
+	ppu = 1,
+	animations = {
+		{
+			name="idle_e",
+			frames = {
+				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_idle}, {id=s.low_moral_fiber_3_head_idle_e, pos=lmf3_head}}}
 
+			}
+		},
+		{
+			name="idle_s",
+			frames = {
+				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_idle}, {id=s.low_moral_fiber_3_head_idle_s, pos=lmf3_head_1}}}
+
+			}
+		},
+		{
+			name="talk_e",
+			frames = {
+				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_idle}, {id=s.low_moral_fiber_3_head_talk_e_1, pos=lmf3_head}}},
+				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_idle}, {id=s.low_moral_fiber_3_head_talk_e_2, pos=lmf3_head}}},
+				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_idle}, {id=s.low_moral_fiber_3_head_talk_e_3, pos=lmf3_head}}},
+			}
+		},
+		{
+			name="talk_e_1",
+			frames = {
+				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_open_jacket_2}, {id=s.low_moral_fiber_3_head_talk_e_1, pos=lmf3_head}}},
+				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_open_jacket_2}, {id=s.low_moral_fiber_3_head_talk_e_2, pos=lmf3_head}}},
+				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_open_jacket_2}, {id=s.low_moral_fiber_3_head_talk_e_3, pos=lmf3_head}}},
+			}
+		},
+		{
+			name="talk_s",
+			frames = {
+				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_idle}, {id=s.low_moral_fiber_3_head_idle_s, pos=lmf3_head_1}}},
+				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_idle}, {id=s.low_moral_fiber_3_head_talk_s_1, pos=lmf3_head_1}}}
+
+			}
+		},
+		{
+			name ="punch",
+			loop = false,
+			frames = {
+				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_idle}, {id=s.low_moral_fiber_3_head_idle_s, pos=lmf3_head_1}}},
+				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_punch_1}, {id=s.low_moral_fiber_3_head_idle_s, pos=lmf3_head_1}}},
+				{ duration = 2*dt, quads = { {id=s.low_moral_fiber_3_body_punch_2}, {id=s.low_moral_fiber_3_head_idle_s, pos=lmf3_head_1}}},
+				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_punch_3}, {id=s.low_moral_fiber_3_head_idle_s, pos=lmf3_head_1}}}
+			}
+		},
+		{
+			name="open_jacket",
+			loop = false,
+			frames = {
+				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_idle}, {id=s.low_moral_fiber_3_head_idle_e, pos=lmf3_head}}},
+				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_open_jacket_1}, {id=s.low_moral_fiber_3_head_idle_e, pos=lmf3_head}}},
+				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_open_jacket_2}, {id=s.low_moral_fiber_3_head_idle_e, pos=lmf3_head}}}
+			}			
+
+		}
+
+	}
+}
 
 engine.assets.models["cook"] = {
     sheet = sheet,
@@ -590,61 +622,6 @@ engine.assets.models["cook"] = {
 
 	}
 }
-
--- engine.assets.models["citizen.body"] = {
---     sheet = sheet,
---     type = "sprite.model",
---     ppu=1,
--- 	animations = {
--- 		{ name = "idle_s", frames = { { duration = dt, quads = {{ id = s.citizen_body_idle_south }}}}},
--- 		{ name = "idle_e", frames = { { duration = dt, quads = {{ id = s.citizen_body_idle_east }}}}},
--- 		{ name = "open_jacket", loop=false, frames = {
--- 			{ duration = dt, quads = {{ id = s.citizen_body_idle_east }}},
--- 			{ duration = dt, quads = {{ id = s.citizen_open_jacket_1 }}},
--- 			{ duration = dt, quads = {{ id = s.citizen_open_jacket_2 }}},
--- 			{ duration = dt, quads = {{ id = s.citizen_open_jacket_3 }}},
--- 			{ duration = dt, quads = {{ id = s.citizen_open_jacket_4 }}},
--- 		}},
--- 		{ name = "rollmap", loop=false, frames = {
--- 			{ duration = dt, quads = {{ id = s.citizen_body_idle_east }}},
--- 			{ duration = dt, quads = {{ id = s.citizen_rollmap_1 }}},
--- 			{ duration = dt, quads = {{ id = s.citizen_rollmap_2 }}},
--- 			{ duration = dt, quads = {{ id = s.citizen_rollmap_3 }}},
--- 			{ duration = dt, quads = {{ id = s.citizen_rollmap_4 }}},
--- 			{ duration = dt, quads = {{ id = s.citizen_rollmap_5 }}},
--- 		}},
-
--- 	}
--- }
-
--- engine.assets.models["citizen.head"] = {
---     sheet = sheet,
---     type = "sprite.model",
---     ppu=1,
--- 	animations = {
--- 		{ name = "idle_s", frames = { 
--- 			{ duration = dt, quads = {{ id = s.citizen_head_idle_south1 }}},
--- 			{ duration = dt, quads = {{ id = s.citizen_head_idle_south2 }}},
--- 			{ duration = dt, quads = {{ id = s.citizen_head_idle_south1 }}},
--- 			{ duration = dt, quads = {{ id = s.citizen_head_idle_south2, flipx=true }}}
--- 		}},
--- 		{ name = "idle_e", frames = { 
--- 			{ duration = dt, quads = {{ id = s.citizen_head_idle_south2 }}},
--- 			{ duration = dt, quads = {{ id = s.citizen_head_idle_east }}},
--- 			{ duration = dt, quads = {{ id = s.citizen_head_idle_south2 }}},
--- 			{ duration = dt, quads = {{ id = s.citizen_head_idle_south1 }}}
--- 		}},
--- 		{ name = "talk", frames = { 
--- 			{ duration = dt, quads = {{ id = s.citizen_head_talk_1 }}},
--- 			{ duration = dt, quads = {{ id = s.citizen_head_talk_2 }}},
--- 			{ duration = dt, quads = {{ id = s.citizen_head_idle_east }}},
--- 		}},
-
--- 	}
--- }
-
-local citizen_head = {0, 26, 0}
-local citizen_head_1 = {-2, 26, 0}
 
 engine.assets.models["citizen"] = {
 	sheet = sheet,
@@ -827,136 +804,6 @@ engine.assets.models["fakedoor_village_4"] = {
 	}
 }
 
-engine.assets.models["lmf3.body"] = {
-    sheet = sheet,
-    type = "sprite.model",
-    ppu=1,
-	animations = {
-		{ name = "idle_e", frames = { { duration = dt, quads = {{ id = s.low_moral_fiber_3_body_idle }}}}},
-
-		{ name = "open_jacket", loop=false, frames = {
-			{ duration = dt, quads = {{ id = s.low_moral_fiber_3_body_idle }}},
-			{ duration = dt, quads = {{ id = s.low_moral_fiber_3_body_open_jacket_1 }}},
-			{ duration = dt, quads = {{ id = s.low_moral_fiber_3_body_open_jacket_2 }}},
-		}},
-		{ name = "punch", loop=false, frames = {
-			{ duration = dt, quads = {{ id = s.low_moral_fiber_3_body_idle }}},
-			{ duration = dt, quads = {{ id = s.low_moral_fiber_3_body_punch_1 }}},
-			{ duration = 2*dt, quads = {{ id = s.low_moral_fiber_3_body_punch_2 }}},
-			{ duration = dt, quads = {{ id = s.low_moral_fiber_3_body_punch_3 }}},
-		}},
-	}
-}
-
-engine.assets.models["lmf3.head"] = {
-    sheet = sheet,
-    type = "sprite.model",
-    ppu=1,
-	animations = {
-		{ name = "idle_s", frames = { {duration = dt, quads = {{ id = s.low_moral_fiber_3_head_idle_s }}}}},
-		{ name = "idle_e", frames = { { duration = dt, quads = {{ id = s.low_moral_fiber_3_head_idle_e }}}}},
-		{ name = "talk_e", frames = { 
-			{ duration = dt, quads = {{ id = s.low_moral_fiber_3_head_talk_e_1 }}},
-			{ duration = dt, quads = {{ id = s.low_moral_fiber_3_head_talk_e_2 }}},
-			{ duration = dt, quads = {{ id = s.low_moral_fiber_3_head_talk_e_3 }}},
-		}},
-		{ name = "talk_s", frames = { 
-			{ duration = dt, quads = {{ id = s.low_moral_fiber_3_head_idle_s }}},
-			{ duration = dt, quads = {{ id = s.low_moral_fiber_3_head_talk_s_1 }}}
-		}},
-
-	}
-}
-
-local lmf3_head = {-3,34,0}
-local lmf3_head_1 = {-4,34,0}
-engine.assets.models["low_moral_fiber_3"] = {
-	sheet = sheet,
-	type = "sprite.model",
-	ppu = 1,
-	animations = {
-		{
-			name="idle_e",
-			frames = {
-				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_idle}, {id=s.low_moral_fiber_3_head_idle_e, pos=lmf3_head}}}
-
-			}
-		},
-		{
-			name="idle_s",
-			frames = {
-				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_idle}, {id=s.low_moral_fiber_3_head_idle_s, pos=lmf3_head_1}}}
-
-			}
-		},
-		{
-			name="talk_e",
-			frames = {
-				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_idle}, {id=s.low_moral_fiber_3_head_talk_e_1, pos=lmf3_head}}},
-				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_idle}, {id=s.low_moral_fiber_3_head_talk_e_2, pos=lmf3_head}}},
-				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_idle}, {id=s.low_moral_fiber_3_head_talk_e_3, pos=lmf3_head}}},
-			}
-		},
-		{
-			name="talk_e_1",
-			frames = {
-				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_open_jacket_2}, {id=s.low_moral_fiber_3_head_talk_e_1, pos=lmf3_head}}},
-				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_open_jacket_2}, {id=s.low_moral_fiber_3_head_talk_e_2, pos=lmf3_head}}},
-				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_open_jacket_2}, {id=s.low_moral_fiber_3_head_talk_e_3, pos=lmf3_head}}},
-			}
-		},
-		{
-			name="talk_s",
-			frames = {
-				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_idle}, {id=s.low_moral_fiber_3_head_idle_s, pos=lmf3_head_1}}},
-				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_idle}, {id=s.low_moral_fiber_3_head_talk_s_1, pos=lmf3_head_1}}}
-
-			}
-		},
-		{
-			name ="punch",
-			loop = false,
-			frames = {
-				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_idle}, {id=s.low_moral_fiber_3_head_idle_s, pos=lmf3_head_1}}},
-				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_punch_1}, {id=s.low_moral_fiber_3_head_idle_s, pos=lmf3_head_1}}},
-				{ duration = 2*dt, quads = { {id=s.low_moral_fiber_3_body_punch_2}, {id=s.low_moral_fiber_3_head_idle_s, pos=lmf3_head_1}}},
-				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_punch_3}, {id=s.low_moral_fiber_3_head_idle_s, pos=lmf3_head_1}}}
-			}
-		},
-		{
-			name="open_jacket",
-			loop = false,
-			frames = {
-				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_idle}, {id=s.low_moral_fiber_3_head_idle_e, pos=lmf3_head}}},
-				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_open_jacket_1}, {id=s.low_moral_fiber_3_head_idle_e, pos=lmf3_head}}},
-				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_open_jacket_2}, {id=s.low_moral_fiber_3_head_idle_e, pos=lmf3_head}}}
-			}			
-
-		}
-
-	}
-
- --    type = "model",
-	-- components = {
-	-- 	{ name="body", mesh="lmf3.body"},
-	-- 	{ name="head", mesh="lmf3.head"},
-	-- },
-	-- animations = {
-	-- 	{ name = "idle_e", anims = { {name="body", anim="idle_e"}, {name="head", anim="idle_e", pos={-3,34,0} }}},
-	-- 	{ name = "idle_s", anims = { {name="body", anim="idle_e"}, {name="head", anim="idle_s", pos={-4,34,0} }}},
-	-- 	{ name = "talk_s", anims = { {name="body", anim="idle_e"}, {name="head", anim="talk_s", pos={-4,34,0} }}},
-	-- 	{ name = "talk_e", anims = { {name="body", anim="idle_e"}, {name="head", anim="talk_e", pos={-4,34,0} }}},
-	-- 	{ name = "punch", loop = false, anims = { {name="body", anim="punch" }, {name="head", anim="talk_s", pos ={-4,34,0} }}},
-	-- 	{ name = "h_talk_s", anims = { {name="head", anim="talk_s", pos={-4,34,0} }}},
-	-- 	{ name = "h_talk_e", anims = { {name="head", anim="talk_e", pos={-4,34,0} }}},		-- { name = "talk_start", anims = { {name="head", anim="talk", pos ={-1,25,0} }}},
-	-- 	-- { name = "talk_end", anims = { {name="head", anim="idle_e", pos ={-1,25,0} }}},
-	-- 	{ name = "open_jacket", loop = false, anims = { { name="body", anim="open_jacket" }}},
-	-- 	-- { name = "rollmap", anims = { { name="body", anim="rollmap" }}}
-
-	-- }
-}
-
-
 engine.assets.models["village2.rat"] = {
     sheet = sheet,
     type = "sprite.model",
@@ -1032,6 +879,7 @@ engine.assets.models["scummbar.pirate1"] = {
 		}}
 	}
 }
+
 engine.assets.models["scummbar.pirate2"] = {
     sheet = sheet2,
     type = "sprite.model",
@@ -1043,6 +891,7 @@ engine.assets.models["scummbar.pirate2"] = {
 		}}
 	}
 }
+
 engine.assets.models["scummbar.pirate3"] = {
     sheet = sheet2,
     type = "sprite.model",
@@ -1054,6 +903,7 @@ engine.assets.models["scummbar.pirate3"] = {
 		}}
 	}
 }
+
 engine.assets.models["scummbar.pirate4"] = {
     sheet = sheet2,
     type = "sprite.model",
@@ -1089,6 +939,7 @@ engine.assets.models["scummbar.pirate6"] = {
 
 	}
 }
+
 engine.assets.models["scummbar.pirate7"] = {
     sheet = sheet2,
     type = "sprite.model",
@@ -1101,6 +952,7 @@ engine.assets.models["scummbar.pirate7"] = {
 		}}
 	}
 }
+
 engine.assets.models["scummbar.pirate8"] = {
     sheet = sheet2,
     type = "sprite.model",
@@ -1126,6 +978,7 @@ engine.assets.models["scummbar.pirate9"] = {
 		}}
 	}
 }
+
 engine.assets.models["scummbar.estevan"] = {
     sheet = sheet,
     type = "sprite.model",
@@ -1197,7 +1050,6 @@ engine.assets.models["scummbar.ilp3"] = {
 		},
 	}
 }
-
 
 engine.assets.models["kitchen.seagull"] = {
     sheet = sheet,
@@ -1346,7 +1198,6 @@ engine.assets.models["circus.fire"] = {
 	}
 }
 
-
 engine.assets.models["kitchen.table"] = {
     sheet = sheet,
     type = "sprite.model",
@@ -1355,191 +1206,6 @@ engine.assets.models["kitchen.table"] = {
 		{ name = "idle", frames = { { duration = dt, quads = {{ id = s.kitchen_table }}}}},
 	}
 }
-
-local troll_delta1 = {5,35}
-local troll_info = {
-	head = {8, 26},
-	head_flip = {6, 26},
-	arm_right = {-2, 32},
-	arm_left = {11, 27},
-	head_2 = {2,26},
-	arm_left_2 = {8, 30},
-	arm_right_2 = {-8, 32},
-
-}
-local f1 = function(body, head, arm_left, arm_right, dur) 
-	return { duration = dur or dt, quads = {
-		{ id = body }, 
-		{ id = head, flipx = flipx or false, pos = troll_info.head },
-		{ id = arm_left, pos = troll_info.arm_left},
-		{ id = arm_right, pos = troll_info.arm_right, z=0.1}
-	}}
-end
-
-local f1a = function(arm_right, club, pos_club, dur) 
-	local f = { duration = dur or dt, quads = {
-		{ id = s.troll_body }, 
-		{ id = s.troll_head_idle, flipx = true, pos = troll_info.head_flip },
-		{ id = s.troll_arm_l_5, pos = troll_info.arm_left},
-		{ id = arm_right, pos = troll_info.arm_right, z=0.1},
-		--{ id = club, pos = pos_club }
-	}}
-	if (club ~= nil) then
-		table.insert(f.quads, {id=club, pos=pos_club})
-	end
-	return f
-end
-
-
-
-local f2 = function(body, head, arm_left, arm_right, fish, fish_pos, dur) 
-	return { duration = dur or dt, quads = {
-		{ id = body }, 
-		{ id = head, pos = troll_info.head },
-		{ id = arm_left, pos = troll_info.arm_left},
-		{ id = arm_right, pos = troll_info.arm_right, z=0.1},
-		{ id = fish, pos = fish_pos }
-	}}
-end
-local f3 = function(head, arm_left, arm_right, fish, fliphead, dur) 
-	local f = { duration = dur or dt, quads = {
-		{ id = s.troll_body_2 }, 
-		{ id = head, flipx = fliphead, pos = troll_info.head_2 },
-		{ id = arm_left, pos = troll_info.arm_left_2},
-		{ id = arm_right, pos = troll_info.arm_right_2, z=0.1}
-	}}
-	if (fish ~= nil) then
-		table.insert(f.quads, {id = fish.id, pos = fish.pos})
-	end
-	return f
-end
-local f4 = function(head, arm_left, arm_right, club, fish, dur) 
-	local f = { duration = dur or dt, quads = {
-		{ id = s.troll_body_3 }, 
-		{ id = head, pos = {0,31} },
-		{ id = arm_left, pos = {5, 35}},
-	}}
-	if (arm_right) then
-		table.insert(f.quads, { id = arm_right, pos = {-7, 34}})
-	end
-	if (club ~= nil) then
-		table.insert(f.quads, {id = club.id, pos = club.pos})
-	else
-		table.insert(f.quads, {id = s.troll_club_4, pos = {-50, 1}})
-	end
-	if (fish ~= nil) then
-		table.insert(f.quads, {id = fish.id, pos = fish.pos})
-	end
-	return f
-end
-
-
-engine.assets.models["bridge.troll"] = {
-    sheet = sheet,
-    type = "sprite.model",
-    ppu=1,
-	animations = {
-		{ name = "idle", frames = { f1(s.troll_body, s.troll_head_idle, s.troll_arm_l_0, s.troll_arm_r_0) }},
-		{ name = "talk", frames = { 
-			f1(s.troll_body, s.troll_head_talk_1, s.troll_arm_l_0, s.troll_arm_r_0),
-			f1(s.troll_body, s.troll_head_talk_2, s.troll_arm_l_0, s.troll_arm_r_0),
-			f1(s.troll_body, s.troll_head_talk_1, s.troll_arm_l_0, s.troll_arm_r_0),
-			f1(s.troll_body, s.troll_head_talk_3, s.troll_arm_l_0, s.troll_arm_r_0),
-			f1(s.troll_body, s.troll_head_talk_4, s.troll_arm_l_0, s.troll_arm_r_0),
-			f1(s.troll_body, s.troll_head_talk_1, s.troll_arm_l_0, s.troll_arm_r_0),
-			f1(s.troll_body, s.troll_head_talk_2, s.troll_arm_l_0, s.troll_arm_r_0),
-			f1(s.troll_body, s.troll_head_talk_4, s.troll_arm_l_0, s.troll_arm_r_0)
-		}}, 
-		{ name = "pickup_fish", loop=false, frames = {
-			f1(s.troll_body, s.troll_head_talk_1, s.troll_arm_l_0, s.troll_arm_r_0),
-			f1(s.troll_body, s.troll_head_talk_2, s.troll_arm_l_1, s.troll_arm_r_1),
-			f1(s.troll_body, s.troll_head_talk_1, s.troll_arm_l_2, s.troll_arm_r_2),
-			f1(s.troll_body, s.troll_head_talk_3, s.troll_arm_l_3, s.troll_arm_r_3),
-			f1(s.troll_body, s.troll_head_talk_4, s.troll_arm_l_4, s.troll_arm_r_3),
-			f2(s.troll_body, s.troll_head_talk_1, s.troll_arm_l_4, s.troll_arm_r_3, s.troll_fish, {21, 17}),
-			f2(s.troll_body, s.troll_head_talk_2, s.troll_arm_l_3, s.troll_arm_r_3, s.troll_fish, {19, 17}),
-			f2(s.troll_body, s.troll_head_talk_4, s.troll_arm_l_2, s.troll_arm_r_3, s.troll_fish, {15, 15}),
-			f2(s.troll_body, s.troll_head_talk_1, s.troll_arm_l_5, s.troll_arm_r_3, s.troll_fish, {14, 13}),
-		}},
-		{ name = "idle_fish", frames = { 
-			f2(s.troll_body, s.troll_head_idle, s.troll_arm_l_5, s.troll_arm_r_3, s.troll_fish, {14, 13})
-		}},
-		{ name = "talk_fish", frames = { 
-			f2(s.troll_body, s.troll_head_talk_2, s.troll_arm_l_5, s.troll_arm_r_3, s.troll_fish, {14, 13}),
-			f2(s.troll_body, s.troll_head_talk_1, s.troll_arm_l_5, s.troll_arm_r_3, s.troll_fish, {14, 13}),
-			f2(s.troll_body, s.troll_head_talk_3, s.troll_arm_l_5, s.troll_arm_r_3, s.troll_fish, {14, 13}),
-			f2(s.troll_body, s.troll_head_talk_1, s.troll_arm_l_5, s.troll_arm_r_3, s.troll_fish, {14, 13}),
-			f2(s.troll_body, s.troll_head_talk_4, s.troll_arm_l_5, s.troll_arm_r_3, s.troll_fish, {14, 13}),
-			f2(s.troll_body, s.troll_head_talk_1, s.troll_arm_l_5, s.troll_arm_r_3, s.troll_fish, {14, 13}),
-			f2(s.troll_body, s.troll_head_talk_2, s.troll_arm_l_5, s.troll_arm_r_3, s.troll_fish, {14, 13}),
-			f2(s.troll_body, s.troll_head_talk_4, s.troll_arm_l_5, s.troll_arm_r_3, s.troll_fish, {14, 13}),
-		}},
-		{ name = "fish_cutscene", loop=false, frames = { 
-			f3(s.troll_head_idle, s.troll_arm_l_6, s.troll_arm_r_4, { id=s.troll_fish, pos={14, 13}}, false),
-			f3(s.troll_head_front, s.troll_arm_l_6, s.troll_arm_r_4, { id=s.troll_fish, pos={14, 13}}, false),
-			f3(s.troll_head_idle, s.troll_arm_l_6, s.troll_arm_r_4, { id=s.troll_fish, pos={14, 13}}, true),
-			f3(s.troll_head_side, s.troll_arm_l_6, s.troll_arm_r_4, { id=s.troll_fish, pos={14, 13}}, true),
-			f3(s.troll_head_front, s.troll_arm_l_6, s.troll_arm_r_4, { id=s.troll_fish, pos={14, 13}}, false),
-			f3(s.troll_head_idle, s.troll_arm_l_6, s.troll_arm_r_4, { id=s.troll_fish, pos={14, 13}}, false),
-			f3(s.troll_head_side, s.troll_arm_l_6, s.troll_arm_r_4, { id=s.troll_fish, pos={14, 13}}, false),
-			f3(s.troll_head_front, s.troll_arm_l_6, s.troll_arm_r_4, { id=s.troll_fish, pos={14, 13}}, false),
-			f3(s.troll_head_idle, s.troll_arm_l_6, s.troll_arm_r_4, { id=s.troll_fish, pos={14, 13}}, true),
-			f3(s.troll_head_side, s.troll_arm_l_6, s.troll_arm_r_4, { id=s.troll_fish, pos={14, 13}}, true),
-			f3(s.troll_head_front, s.troll_arm_l_6, s.troll_arm_r_4, { id=s.troll_fish, pos={14, 13}}, false),
-			f4(s.troll_head_front, s.troll_arm_l_7, s.troll_arm_r_5, nil),
-			f4(s.troll_head_front, s.troll_arm_l_7, s.troll_arm_r_6, {id = s.troll_club_1, pos = {-29, 0}}, nil),
-			f4(s.troll_head_front, s.troll_arm_l_7, s.troll_arm_r_7, {id = s.troll_club_2, pos = {-38, 1}}, nil),
-			f4(s.troll_head_front, s.troll_arm_l_7, s.troll_arm_r_8, {id = s.troll_club_3, pos = {-45, 1}}, nil),
-			f4(s.troll_head_front, s.troll_arm_l_7, s.troll_arm_r_9, {id = s.troll_club_4, pos = {-50, 1}}, nil),
-			f4(s.troll_head_front_1, s.troll_arm_l_7, nil, nil, nil),
-			f4(s.troll_head_front_2, s.troll_arm_l_7, nil, nil, nil),
-			f4(s.troll_head_front_3, s.troll_arm_l_7, nil, nil, nil),
-			f4(s.troll_head_front_4, s.troll_arm_l_7, s.troll_arm_r_9, nil, nil),
-			f4(s.troll_head_front_5, s.troll_arm_l_7, s.troll_arm_r_10, nil, nil),
-			f4(s.troll_head_front_6, s.troll_arm_l_7, s.troll_arm_r_10, nil, nil),	
-			f4(s.troll_head_front_7, s.troll_arm_l_8, s.troll_arm_r_10, nil, nil),	
-			f4(s.troll_head_front_7, s.troll_arm_l_9, s.troll_arm_r_10, nil, nil),	
-			f4(s.troll_head_front_9, s.troll_arm_l_10, s.troll_arm_r_10, nil, nil),	
-			f4(s.troll_head_front_8, s.troll_arm_l_11, s.troll_arm_r_10, nil, nil),	
-			f4(s.troll_head_front_9, s.troll_arm_l_12, s.troll_arm_r_10, nil, nil),	
-			f4(s.troll_head_front_8, s.troll_arm_l_13, s.troll_arm_r_10, nil, nil),	
-			f4(s.troll_head_front_9, s.troll_arm_l_14, s.troll_arm_r_10, nil, nil),	
-			f4(s.troll_head_front_8, s.troll_arm_l_15, s.troll_arm_r_10, nil, nil),	
-			f4(s.troll_head_front_9, s.troll_arm_l_16, s.troll_arm_r_10, nil, {id = s.troll_fish_1, pos = {-6,37}}),	
-			f4(s.troll_head_front_8, s.troll_arm_l_17, s.troll_arm_r_10, nil, {id = s.troll_fish_2, pos = {-11,51}}),	
-			f4(s.troll_head_front_9, s.troll_arm_l_17, s.troll_arm_r_10, nil, {id = s.troll_fish_3, pos = {-9,57}}),	
-			f4(s.troll_head_front_10, s.troll_arm_l_17, s.troll_arm_r_10, nil, {id = s.troll_fish_4, pos = {-2,49}}),	
-			f4(s.troll_head_front_11, s.troll_arm_l_17, s.troll_arm_r_10, nil, nil),	
-			f4(s.troll_head_front_12, s.troll_arm_l_17, s.troll_arm_r_10, nil, nil),	
-			f4(s.troll_head_front_13, s.troll_arm_l_17, s.troll_arm_r_10, nil, nil),	
-			f4(s.troll_head_front_9, s.troll_arm_l_17, s.troll_arm_r_10, nil, nil),	
-			f4(s.troll_head_front_8, s.troll_arm_l_17, s.troll_arm_r_10, nil, nil),	
-			f4(s.troll_head_front_9, s.troll_arm_l_17, s.troll_arm_r_10, nil, nil),	
-			f4(s.troll_head_front_8, s.troll_arm_l_17, s.troll_arm_r_10, nil, nil),	
-			f4(s.troll_head_front_9, s.troll_arm_l_17, s.troll_arm_r_10, nil, nil),	
-			f4(s.troll_head_front_8, s.troll_arm_l_17, s.troll_arm_r_10, nil, nil),	
-			f4(s.troll_head_front_6, s.troll_arm_l_17, s.troll_arm_r_11, nil, nil),	
-			f4(s.troll_head_front_2, s.troll_arm_l_17, s.troll_arm_r_12, nil, nil),	
-			f4(s.troll_head_front_14, s.troll_arm_l_17, s.troll_arm_r_13, nil, nil),	
-			f4(s.troll_head_front, s.troll_arm_l_17, s.troll_arm_r_10, nil, nil),	
-			f3(s.troll_head_front, s.troll_arm_l_5, s.troll_arm_r_0, nil, false),
-			f1(s.troll_body, s.troll_head_idle, s.troll_arm_l_5, s.troll_arm_r_0),
-			f1(s.troll_body, s.troll_head_front, s.troll_arm_l_5, s.troll_arm_r_0),
-			f1a(s.troll_arm_r_0, s.troll_club_4, {-50, 1}),
-			f1a(s.troll_arm_r_14, s.troll_club_3, {-45,1}),
-			f1a(s.troll_arm_r_14, s.troll_club_2, {-38,1}),
-			f1a(s.troll_arm_r_14, s.troll_club_1, {-29,0}),
-			f1a(s.troll_arm_r_5, nil, nil),
-			f1(s.troll_body, s.troll_head_front, s.troll_arm_l_5, s.troll_arm_r_2),
-			f1(s.troll_body, s.troll_head_idle, s.troll_arm_l_1, s.troll_arm_r_1),
-			f1(s.troll_body, s.troll_head_idle, s.troll_arm_l_0, s.troll_arm_r_0)
-		}},
-
-		
-	}
-
-}
-
 
 engine.assets.models["fettuccini.purple"] = {
     sheet = sheet,
@@ -1674,8 +1340,6 @@ engine.assets.models["shop.sword"] = { sheet = sheet, type = "sprite.model", ppu
 engine.assets.models["shop.shovel"] = { sheet = sheet, type = "sprite.model", ppu=1, animations = {{ name = "idle", frames = { { duration = dt, quads = {{ id = s.shovel }}}}}}}
 engine.assets.models["shop.sign"] = { sheet = sheet, type = "sprite.model", ppu=1, animations = {{ name = "idle", frames = { { duration = dt, quads = {{ id = s.sign }}}}}}}
 engine.assets.models["shop.bell"] = { sheet = sheet, type = "sprite.model", ppu=1, animations = {{ name = "idle", frames = { { duration = dt, quads = {{ id = s.bell }}}}}}}
-
-
 
 engine.assets.models["shop.shopkeeper"] = {
     sheet = sheet2,

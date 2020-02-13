@@ -13,7 +13,7 @@ public:
     the sprite horizontal flip is set to false if flip = 1, or true if flip = 2.
      */
     Animate(const std::string& animId, bool forward, int flip = 0);
-
+    Animate(const LuaTable&);
     //Animate(Entity* entity, const std::string& animId, bool forward, int flip = 0);
     //@}
     void Start() override;

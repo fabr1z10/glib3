@@ -578,19 +578,7 @@ std::shared_ptr<Function2D> GetFunc2D(luabridge::LuaRef& ref) {
 //    return std::unique_ptr<KeyInput>(new KeyInput(callback));
 //}
 
-std::shared_ptr<Component> LuaKeyboardComponentFactory::Create(luabridge::LuaRef &ref) {
-    LuaTable table(ref);
-    auto keyListener = std::make_shared<LuaKeyListener>();
-    luabridge::LuaRef hotkeys = table.Get<luabridge::LuaRef>("keys");
-    for (int i = 0; i < hotkeys.length(); ++i) {
-        luabridge::LuaRef hotkey = hotkeys[i+1];
-        int key = hotkey["key"].cast<int>();
-        luabridge::LuaRef callback = hotkey["func"];
-        keyListener->addHotKey(key, callback);
-    }
-    return keyListener;
 
-}
 
 
 std::shared_ptr<Component> ShadowComponentFactory::Create(luabridge::LuaRef &) {

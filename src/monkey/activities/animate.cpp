@@ -6,6 +6,17 @@ Animate::Animate(const std::string& animId, bool fwd, int flipX ) : TargetActivi
     m_animId{animId}, m_flipX{flipX}, m_forward(fwd) {
 }
 
+Animate::Animate(const LuaTable & t) : TargetActivity(t) {
+    m_animId = t.Get<std::string>("anim");
+    m_forward = t.Get<bool>("fwd", true);
+    int flip{0};
+    if (t.HasKey("flipx")) {
+        flip = t.Get<bool>("flipx") ? 2 : 1;
+    }
+    m_flipX = flip;
+    bool sync = t.Get<bool>("sync", false);
+    SetSync(sync);
+}
 
 
 void Animate::Start() {

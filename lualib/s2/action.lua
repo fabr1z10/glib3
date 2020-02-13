@@ -14,9 +14,7 @@ scumm.action.walkto = function (args)
 		local obj = items[args.obj]
 		pos = obj.hotspot.walk_to
 	end	
-	local walk_action = engine.config.scumm.walk[engine.config.style]
-	print ("WALK = " .. walk_action)
-	return { type=walk_action, tag = args.tag, id = args.id, pos = pos }
+	return { type='walk', tag = args.tag, id = args.id, pos = pos }
 end
 
 scumm.action.walktoitem = function (args) 

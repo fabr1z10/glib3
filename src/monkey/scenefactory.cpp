@@ -11,6 +11,7 @@
 #include <monkey/components/follow.h>
 #include <monkey/components/scripthotspot.h>
 #include <monkey/components/basicrenderer.h>
+#include <monkey/components/luakeylistener.h>
 
 #include <monkey/scheduler.h>
 #include <monkey/math/funcs.h>
@@ -19,6 +20,9 @@
 #include <monkey/entities/text.h>
 
 #include <monkey/model/spritemodel.h>
+#include <monkey/activities/delay.h>
+#include <monkey/activities/animate.h>
+
 
 void SceneFactory::Init(Engine* engine) {
     // initialize lua
@@ -115,6 +119,14 @@ SceneFactory::SceneFactory() {
     add<SimpleCollider> ("collider");
     add<ScriptHotSpot> ("hotspot");
     add<BasicRenderer> ("gfx");
+    add<LuaKeyListener> ("keylistener");
+
+    // actions
+    add<DelayTime> ("delay");
+    add<DelayTimeDynamic> ("delay_dynamic");
+    add<Animate> ("animate");
+
+
 
     // runners
     add<HotSpotManager> ("hotspotmanager");

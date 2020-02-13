@@ -7,6 +7,7 @@
 class DelayTime : public Activity {
 public:
     DelayTime(float sec) : Activity(), m_time{sec}, m_elapsed{0.0f} {}
+    DelayTime(const LuaTable&);
     void Start() override ;
     void Run (float dt) override;
 private:
@@ -17,6 +18,7 @@ private:
 class DelayTimeDynamic : public Activity {
 public:
     DelayTimeDynamic(luabridge::LuaRef func) : Activity(), m_func{func}, m_elapsed{0.0f} {}
+    DelayTimeDynamic(const LuaTable&);
     void Start() override ;
     void Run (float dt) override;
 private:

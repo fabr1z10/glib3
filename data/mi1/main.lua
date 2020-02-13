@@ -13,6 +13,7 @@ engine = {
 	lang = "eng",
 	config = {
 	    default_verb = "walk",
+	    font_size = 8,
 		style = "scumm",
 	   	ui = {
 			height = 56,
@@ -32,14 +33,24 @@ engine.assets = {
 		ui = { type = "font", file = "./fonts/monkeysmall.ttf" },
 		monkey = { type = "font", file = "./fonts/MonkeyIsland-1990.ttf" }
 	},
-	models = {}
+	models = {},
 }
 
+require ("sc2")
+
+require ("./func")
+
+-- import actions
+
+
+-- load strings
+require ("text/" .. engine.lang .. "/text")
+glib.load_folder ('items')
+glib.load_folder ('sprites')
 
 
 
-
-require("scumm")
+--require("scumm")
 
 
 -- the verbs for the game. You might have multiple sets here! Watch out
@@ -160,5 +171,5 @@ variables = {
 
 variables.save_states.start()
 
-require("defaultscripts")
+--require("defaultscripts")
 

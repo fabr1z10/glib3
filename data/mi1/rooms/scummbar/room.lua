@@ -3,18 +3,21 @@ local items = engine.items
 roomDefinition = {
 	width = 640,
 	height = 144,
+	start_pos = {10, 10},
 	startTable = {
-		village1 = { walkarea = "scummbar.walkarea", pos = items["scummbar.door_out"].hotspot.walk_to, dir = "east"},
-		mancomb = { walkarea = "scummbar.walkarea", pos = items["scummbar.mancomb"].hotspot.walk_to, dir = "north"},
-		estevan = { walkarea = "scummbar.walkarea", pos = items["scummbar.estevan"].hotspot.walk_to, dir = "south"},
-		loompirate = { walkarea = "scummbar.walkarea", pos = items["scummbar.loompirate"].hotspot.walk_to, dir = "north"},		
-		kitchen = { walkarea = "scummbar.walkarea", pos = items["scummbar.door_kitchen"].hotspot.walk_to, dir="west"}
+		-- village1 = { walkarea ="sc"}
+		-- village1 = { walkarea = "scummbar.walkarea", pos = items["scummbar.door_out"].hotspot.walk_to, dir = "east"},
+		-- mancomb = { walkarea = "scummbar.walkarea", pos = items["scummbar.mancomb"].hotspot.walk_to, dir = "north"},
+		-- estevan = { walkarea = "scummbar.walkarea", pos = items["scummbar.estevan"].hotspot.walk_to, dir = "south"},
+		-- loompirate = { walkarea = "scummbar.walkarea", pos = items["scummbar.loompirate"].hotspot.walk_to, dir = "north"},		
+		-- kitchen = { walkarea = "scummbar.walkarea", pos = items["scummbar.door_kitchen"].hotspot.walk_to, dir="west"}
 	},
+
 	defaultroom = "village1",
 	depth = { type="linear_y", values= {0, 1, 144, 0} },
-	font_size = 8,
+	--font_size = 8,
 	playerid="guybrush",
-	walkareas = { "scummbar.walkarea"},
+	walkareas = { 'scummbar.walkarea' },
 	collide = true
 
 	--depth = { type="linear_y", values= {0, 1, 144, 0} },
@@ -23,36 +26,35 @@ roomDefinition = {
 
 room = scumm.factory.basic_room (roomDefinition)
 
-room:add ( "scummbar.walkarea",
-	{ 
-		scumm.factory.object { id = "scummbar.fireplace"},
-		scumm.factory.object { id = "scummbar.door_out" },
-		scumm.factory.object { id = "scummbar.mancomb" },
-		scumm.factory.object { id = "scummbar.loompirate"},
-		scumm.factory.object { id = "scummbar.pirate1" },
-		scumm.factory.object { id = "scummbar.pirate2" },
-		scumm.factory.object { id = "scummbar.pirate3" },
-		scumm.factory.object { id = "scummbar.pirate4" },
-		scumm.factory.object { id = "scummbar.pirate6" },
-		scumm.factory.object { id = "scummbar.pirate7" },
-		scumm.factory.object { id = "scummbar.pirate8" },
-		scumm.factory.object { id = "scummbar.pirate9" },
+room:add ( "scummbar.walkarea", {
+-- 		scumm.factory.object { id = "scummbar.fireplace"},
+-- 		scumm.factory.object { id = "scummbar.door_out" },
+-- 		scumm.factory.object { id = "scummbar.mancomb" },
+-- 		scumm.factory.object { id = "scummbar.loompirate"},
+	scumm.factory.object { id = "scummbar.pirate1" },
+-- 		scumm.factory.object { id = "scummbar.pirate2" },
+-- 		scumm.factory.object { id = "scummbar.pirate3" },
+-- 		scumm.factory.object { id = "scummbar.pirate4" },
+-- 		scumm.factory.object { id = "scummbar.pirate6" },
+-- 		scumm.factory.object { id = "scummbar.pirate7" },
+-- 		scumm.factory.object { id = "scummbar.pirate8" },
+-- 		scumm.factory.object { id = "scummbar.pirate9" },
 
-		scumm.factory.object { id = "scummbar.ilp1"},
-		scumm.factory.object { id = "scummbar.ilp2"},
-		scumm.factory.object { id = "scummbar.ilp3"},
-		scumm.factory.object { id = "scummbar.important_looking_pirates"},
-	}
-)
+-- 		scumm.factory.object { id = "scummbar.ilp1"},
+-- 		scumm.factory.object { id = "scummbar.ilp2"},
+-- 		scumm.factory.object { id = "scummbar.ilp3"},
+-- 		scumm.factory.object { id = "scummbar.important_looking_pirates"},
+})
+-- )
 
 room:add( "main", {
 	{ pos = {0, 0,-3}, components = { { type="gfx", image="scummbar_1.png" }}},
-	{ pos = {157, 0, 0.99}, components = { { type="gfx", image="scummbar_3.png" }}},
-	{ pos = {20, 0, 0.99}, components = { { type="gfx", image="scummbar_4.png" }}},
-	{ pos = {374, 20, 0.95}, components = { { type="gfx", image="scummbar_2.png" }}},
-	scumm.factory.object { id = "scummbar.estevan" },
-	scumm.factory.object { id = "scummbar.pirate5" },
-	scumm.factory.object { id = "scummbar.door_kitchen"},
+	-- { pos = {157, 0, 0.99}, components = { { type="gfx", image="scummbar_3.png" }}},
+	-- { pos = {20, 0, 0.99}, components = { { type="gfx", image="scummbar_4.png" }}},
+	-- { pos = {374, 20, 0.95}, components = { { type="gfx", image="scummbar_2.png" }}},
+	-- scumm.factory.object { id = "scummbar.estevan" },
+	-- scumm.factory.object { id = "scummbar.pirate5" },
+	-- scumm.factory.object { id = "scummbar.door_kitchen"},
 
 
 
@@ -93,18 +95,18 @@ function run_background_script_2(actor, anim_transition, anim2)
 end
 
 local animate = function() 
-	run_background_script("scummbar.mancomb", 1, 4, 0, 0)
+	--run_background_script("scummbar.mancomb", 1, 4, 0, 0)
 	run_background_script("scummbar.pirate1", 1, 4, 1, 4)
-	run_background_script("scummbar.pirate2", 1, 4, 1, 4)
-	run_background_script("scummbar.pirate3", 1, 4, 0.5, 0.5)
-	run_background_script("scummbar.pirate4", 1, 4, 0, 0)
-	run_background_script("scummbar.pirate5", 1, 4, 1, 2)
-	run_background_script("scummbar.pirate7", 1, 4, 1, 2)
-	run_background_script("scummbar.pirate8", 1, 4, 0, 0)
-	run_background_script("scummbar.pirate9", 1, 4, 0, 0)
+	--run_background_script("scummbar.pirate2", 1, 4, 1, 4)
+	--run_background_script("scummbar.pirate3", 1, 4, 0.5, 0.5)
+	--run_background_script("scummbar.pirate4", 1, 4, 0, 0)
+	--run_background_script("scummbar.pirate5", 1, 4, 1, 2)
+	--run_background_script("scummbar.pirate7", 1, 4, 1, 2)
+	--run_background_script("scummbar.pirate8", 1, 4, 0, 0)
+	--run_background_script("scummbar.pirate9", 1, 4, 0, 0)
 
-	run_background_script("scummbar.estevan", 1, 4, 0, 0)
-	run_background_script("scummbar.loompirate", 1, 4, 0, 0)
+--	--run_background_script("scummbar.estevan", 1, 4, 0, 0)
+	--run_background_script("scummbar.loompirate", 1, 4, 0, 0)
 
 end
 
@@ -185,4 +187,4 @@ local cook = function()
 end
 
 --table.insert(room.initstuff, cook)
---table.insert(room.initstuff, animate)
+table.insert(room.initstuff, animate)

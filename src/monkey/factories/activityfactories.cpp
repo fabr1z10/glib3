@@ -135,11 +135,7 @@ std::shared_ptr<Activity> RotateActFactory::Create(luabridge::LuaRef &ref) {
     return ptr;
 }
 
-std::shared_ptr<Activity> DelayActFactory::Create(luabridge::LuaRef &ref) {
-    LuaTable table(ref);
-    float sec = table.Get<float>("sec");
-    return std::unique_ptr<DelayTime>(new DelayTime(sec));
-};
+
 
 std::shared_ptr<Activity> DelayDynamicActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);

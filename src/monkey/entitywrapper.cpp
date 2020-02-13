@@ -267,7 +267,8 @@ namespace luaFunctions {
                     edges.push_back(std::make_pair(id-1, id));
                 }
             }
-            auto activity= factory->make<Activity>(ac);
+            LuaTable tac(ac);
+            auto activity= factory->make<Activity>(tac);
             script->AddActivity(id, std::move(activity));
         }
 
