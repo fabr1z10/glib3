@@ -10,6 +10,8 @@
 
 class Walk : public Sequence {
 public:
+    Walk (const LuaTable&);
+
     Walk (int actor, glm::vec2 p) : Sequence(), m_actorId{actor}, m_p{p} {}
     ~Walk() override { std::cerr << "clearing walk...\n"; }
     Walk (const std::string& tag, glm::vec2 p) : Sequence(), m_tag{tag}, m_actorId(-1), m_p{p} {}

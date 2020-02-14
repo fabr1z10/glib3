@@ -7,6 +7,7 @@ scumm = {}
 scumm.func = {}
 scumm.ifac = {}
 scumm.factory = {}
+scumm.script = {}
 
 engine.items = {}
 engine.state = {}
@@ -28,3 +29,4 @@ scumm.state = {
 require ("s2/action")
 require ("s2/items")
 require ("s2/factories")
+require ("s2/script")

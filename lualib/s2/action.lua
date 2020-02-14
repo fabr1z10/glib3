@@ -30,9 +30,7 @@ end
 scumm.action.turn = function (args) 
 	glib.assert_either (args.tag, args.id, "id or tag")
 	assert (args.dir, "dir")
-	local turn_action = engine.config.scumm.turn[engine.config.style]
-
-	return { type=turn_action, tag = args.tag, id = args.id, dir = args.dir }
+	return { type = 'turn', tag = args.tag, id = args.id, dir = args.dir }
 
 end
 
@@ -104,11 +102,20 @@ end
 
 scumm.action.say = function(args) 
 	--assert (args.id, "id")
-	glib.assert (args.actor, "actor")
+	glib.assert_either (args.tag, args.id, "id or tag")
 	glib.assert (args.lines, "lines")
 
-	local item = items[args.actor]
-	local tag = item.tag or args.actor
+	local entity = nil
+	if args.tag then
+		entity = monkey.getEntity(args.tag)
+	else
+		entity = monkey.getEntityFromId(args.id)
+	end
+	print ('ddd')
+	local info = entity:getinfo()
+	print ('ddd2')
+
+	local item = items[info.id]
 
 	local animstart = args.animstart
 	local animend = args.animend
@@ -120,15 +127,16 @@ scumm.action.say = function(args)
 		table.insert(l, glib.get(li))
 	end
 
-	return { 
-		type="say", 
-		tag = tag, 
-		lines = l, 
-		offset = item.text_offset, 
+	return {
+		type = 'say',
+		tag = args.tag,
+		id = args.id,
+		lines = l,
+		offset = item.text_offset,
 		color = item.text_color,
-		animstart = animstart, 
-		animend = animend, 
-		animate = animate 
+		animstart = animstart,
+		animend = animend,
+		animate = animate
 	}
 end
 

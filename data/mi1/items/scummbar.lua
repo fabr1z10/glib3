@@ -1,8 +1,4 @@
-print ("SCUMMBAR * ITEMS *")
-
-
 engine.items["scummbar.walkarea"] = {
-
 	type = 'walkarea',
 	shape = { 
 		type = "poly", 
@@ -12,7 +8,9 @@ engine.items["scummbar.walkarea"] = {
 		holes = {
 		 	{374, 28, 505, 28, 505, 6, 374, 6}
 		}
-	}
+	},
+	depth = { type="linear_y", values= {0, 1, 144, 0} },
+
 }
 
 engine.items["scummbar.pirate1"] = {
@@ -27,10 +25,39 @@ engine.items["scummbar.pirate1"] = {
  	model = "scummbar.pirate1",
  	pos = {138, 38, -1},
  	actions = {
-  		look =  { type = scumm.action.say, args = {actor="guybrush", lines = {strings.scummbar[3]} }},
-  		talk =  { type = scumm.action.say, args = {actor="guybrush", lines = {strings.scummbar[3]} }}		
+  		look =  { type = scumm.action.say, args = { tag = 'player', lines = {strings.scummbar[3]} }},
+  		talk =  { type = scumm.action.say, args = { tag = 'player', lines = {strings.scummbar[3]} }}		
  	}
 }
+
+
+engine.items["scummbar.pirate2"] = {
+	type = 'object',
+ 	model = "scummbar.pirate2",
+ 	pos = {124, 20, -1},
+}
+
+
+engine.items["scummbar.pirate3"] = {
+	type = 'object',
+ 	model = "scummbar.pirate3",
+ 	pos = {30, 0, -1},
+}
+
+-- engine.items["scummbar.pirate4"] = {
+-- 	model = "scummbar.pirate4",
+-- 	pos = {0, 0, -1},
+-- 	hotspot = {
+-- 		text = strings.objects.pirates,
+-- 		size = {70, 20},	
+-- 		walk_to = {50, 10},
+-- 		dir = "south",
+-- 	},
+-- 	actions = {
+--  		look =  { type = scumm.action.say, args = {actor="guybrush", lines = {strings.scummbar[4]} }},
+--  		talk =  { type = scumm.action.say, args = {actor="guybrush", lines = {strings.scummbar[4]} }}		
+-- 	}
+-- }
 
 
 
@@ -153,32 +180,6 @@ engine.items["scummbar.pirate1"] = {
 -- }
 
 
--- engine.items["scummbar.pirate2"] = {
--- 	model = "scummbar.pirate2",
--- 	pos = {124, 20, -1},
--- 	actions = {
--- 	}
--- }
--- engine.items["scummbar.pirate3"] = {
--- 	model = "scummbar.pirate3",
--- 	pos = {30, 0, -1},
--- 	actions = {
--- 	}
--- }
--- engine.items["scummbar.pirate4"] = {
--- 	model = "scummbar.pirate4",
--- 	pos = {0, 0, -1},
--- 	hotspot = {
--- 		text = strings.objects.pirates,
--- 		size = {70, 20},	
--- 		walk_to = {50, 10},
--- 		dir = "south",
--- 	},
--- 	actions = {
---  		look =  { type = scumm.action.say, args = {actor="guybrush", lines = {strings.scummbar[4]} }},
---  		talk =  { type = scumm.action.say, args = {actor="guybrush", lines = {strings.scummbar[4]} }}		
--- 	}
--- }
 
 -- engine.items["scummbar.pirate5"] = {
 -- 	model = "scummbar.pirate5",

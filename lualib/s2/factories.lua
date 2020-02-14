@@ -20,21 +20,26 @@ end
 function scumm.factory.object (args)
 	
 	glib.assert(args.id, 'required item <id>')
-
+	print (args.id)
 	local item = engine.items[args.id]
 
 	if not item then error("Hey! Don't know item: " .. args.id, 1) end
 
 	local f = scumm.ifac.fmap[item.type]
-	print ('tyy = ' .. item.type)
 	if not f then error("Unknown factory func for item: " .. args.id,1) end
 
-	local tag = nil
-	if item.tag then 
-		tag = args.id
-	end
+	--local tag = nil
+	--i-f item.tag then 
+	--	tag = args.id
+	--end
 
-	return f { item = item, pos = args.pos, tag = tag }
+	-- 1. if args.params.tag is specified nothing to do
+	-- 2. if not specified, and item 
+	local params = args.params or {}
+	if not params.tag and item.tag then params.tag = args.id end
+
+	params._id = args.id
+	return f { item = item, args = params }
 
 
 end
@@ -43,6 +48,7 @@ function scumm.factory.basic_room (args)
 	-- validation phase
 	glib.assert(args.width, "width")
 	glib.assert(args.height, "width")
+	glib.assert(args.defaultroom, "Room requires <defaultroom>")
 	
 	local font_size = args.font_size or 8
 
@@ -58,16 +64,10 @@ function scumm.factory.basic_room (args)
 	-- a start location might be used
 	local start_pos = nil
 	if args.startTable then
-		start_pos = args.startTable[engine.state.previousRoom]
-		if not start_pos then
-			start_pos = args.start_pos
-		end
-	else 
-		local start_pos = args.start_pos
-	end
-	print (start_pos[1])
-	if not start_pos then
-		error ("cannot determine start position!", 1)
+		print ("CICICICI")
+		local proom = (engine.state.previousRoom == '') and args.defaultroom or engine.state.previousRoom
+		start_pos = args.startTable[proom]
+		if not start_pos then error ("Unable to find start position for " .. proom, 1) end
 	end
 
 	local enableScroll = args.enableScroll
@@ -111,10 +111,7 @@ function scumm.factory.basic_room (args)
 						return
 					end
 					if (scumm.state.walk_enabled == true and scumm.state.actionInfo.verb == "walk") then
-						local actions = scumm.action.walkto { tag = 'player', pos = {x,y} }
-						local s = script.make(actions)
-						s.name="_walk"
-						monkey.play(s)
+						scumm.script.walk(x, y) 
 					end
 				end,	 
 			},
@@ -248,19 +245,36 @@ function scumm.factory.basic_room (args)
 			tmp.children = {}
 			refs[w] = tmp.children
 		end
+
+
 	end
-	-- -- add the verbs
-	-- local row = 2
-	-- local count = 0
-	-- for _, verb in ipairs(engine.config.verbset[1]) do
-	-- 	local col = 1+ count // 4
-	-- 	local x = 2 + (col-1)*46
-	-- 	local y = engine.config.ui.height - row*font_size
-	-- 	row = row + 1
-	-- 	if (row > 5) then row = 2 end
-	-- 	count = count +1
-	-- 	table.insert (refs.ui,scumm.factory.verbbutton {pos={x, y}, verb = verb} )
-	-- end
+
+	if start_pos then
+		print ("ADDDD")
+		table.insert (refs[start_pos.walkarea], scumm.factory.object {
+			id = args.playerid,
+			params = {
+				tag = 'player',
+				pos = start_pos.pos,
+				dir = start_pos.dir
+			}
+		})
+	end
+
+
+	-- add the verbs
+	local row = 2
+	local count = 0
+	
+	for _, verb in ipairs(engine.config.verbset[1]) do
+	 	local col = 1+ count // 4
+	 	local x = 2 + (col-1)*46
+	 	local y = engine.config.ui.height - row*font_size
+	 	row = row + 1
+	 	if (row > 5) then row = 2 end
+	 	count = count +1
+	 	table.insert (refs.ui,scumm.factory.verbbutton {pos={x, y}, verb = verb} )
+	end
 
 	-- -- add the walkarea(s)
 	-- if (args.walkareas) then
@@ -304,3 +318,5 @@ function scumm.factory.basic_room (args)
 	scumm.state.actionInfo.verb = engine.config.default_verb
 	return p
 end
+
+require ('s2/factories/buttons')

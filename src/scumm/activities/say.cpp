@@ -5,6 +5,32 @@
 #include <monkey/activities/showmessage.h>
 #include <monkey/monkey.h>
 
+Say::Say(const LuaTable& t) : Sequence() {
+    m_lines = t.GetVector<std::string>("lines");
+    m_color = t.Get<glm::vec4>("color");
+    m_color /= 255.0f;
+    m_offset = t.Get<glm::vec2>("offset");
+
+    if (t.HasKey("id")) {
+        m_actorId = t.Get<int>("id");
+    } else {
+        m_tag = t.Get<std::string>("tag");
+    }
+
+    bool animate = t.Get<bool>("animate", true);
+    if (t.HasKey("animstart")) {
+        auto animStart = t.Get<std::string>("animstart");
+        SetAnimationStart(animStart);
+    }
+    if (t.HasKey("animend")) {
+        auto animEnd = t.Get<std::string>("animend");
+        SetAnimationEnd(animEnd);
+    }
+
+    SetNoAnim(!animate);
+
+}
+
 void Say::Start() {
 
     // if the walk has a tag, then get the id

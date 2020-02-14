@@ -22,6 +22,7 @@
 #include <monkey/model/spritemodel.h>
 #include <monkey/activities/delay.h>
 #include <monkey/activities/animate.h>
+#include <monkey/components/info.h>
 
 
 void SceneFactory::Init(Engine* engine) {
@@ -120,6 +121,7 @@ SceneFactory::SceneFactory() {
     add<ScriptHotSpot> ("hotspot");
     add<BasicRenderer> ("gfx");
     add<LuaKeyListener> ("keylistener");
+    add<LuaInfo> ("info");
 
     // actions
     add<DelayTime> ("delay");

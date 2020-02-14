@@ -3,10 +3,10 @@ local items = engine.items
 roomDefinition = {
 	width = 640,
 	height = 144,
-	start_pos = {10, 10},
+
 	startTable = {
-		-- village1 = { walkarea ="sc"}
-		-- village1 = { walkarea = "scummbar.walkarea", pos = items["scummbar.door_out"].hotspot.walk_to, dir = "east"},
+		village1 = { walkarea ="scummbar.walkarea", pos = {50, 10}, dir ='e'}
+		--village1 = { walkarea = "scummbar.walkarea", pos = items["scummbar.door_out"].hotspot.walk_to, dir = "east"},
 		-- mancomb = { walkarea = "scummbar.walkarea", pos = items["scummbar.mancomb"].hotspot.walk_to, dir = "north"},
 		-- estevan = { walkarea = "scummbar.walkarea", pos = items["scummbar.estevan"].hotspot.walk_to, dir = "south"},
 		-- loompirate = { walkarea = "scummbar.walkarea", pos = items["scummbar.loompirate"].hotspot.walk_to, dir = "north"},		
@@ -32,8 +32,8 @@ room:add ( "scummbar.walkarea", {
 -- 		scumm.factory.object { id = "scummbar.mancomb" },
 -- 		scumm.factory.object { id = "scummbar.loompirate"},
 	scumm.factory.object { id = "scummbar.pirate1" },
--- 		scumm.factory.object { id = "scummbar.pirate2" },
--- 		scumm.factory.object { id = "scummbar.pirate3" },
+	scumm.factory.object { id = "scummbar.pirate2" },
+	scumm.factory.object { id = "scummbar.pirate3" },
 -- 		scumm.factory.object { id = "scummbar.pirate4" },
 -- 		scumm.factory.object { id = "scummbar.pirate6" },
 -- 		scumm.factory.object { id = "scummbar.pirate7" },
@@ -49,8 +49,8 @@ room:add ( "scummbar.walkarea", {
 
 room:add( "main", {
 	{ pos = {0, 0,-3}, components = { { type="gfx", image="scummbar_1.png" }}},
-	-- { pos = {157, 0, 0.99}, components = { { type="gfx", image="scummbar_3.png" }}},
-	-- { pos = {20, 0, 0.99}, components = { { type="gfx", image="scummbar_4.png" }}},
+	{ pos = {157, 0, 0.99}, components = { { type="gfx", image="scummbar_3.png" }}},
+	{ pos = {20, 0, 0.99}, components = { { type="gfx", image="scummbar_4.png" }}},
 	-- { pos = {374, 20, 0.95}, components = { { type="gfx", image="scummbar_2.png" }}},
 	-- scumm.factory.object { id = "scummbar.estevan" },
 	-- scumm.factory.object { id = "scummbar.pirate5" },

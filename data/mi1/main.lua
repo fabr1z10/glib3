@@ -52,22 +52,27 @@ glib.load_folder ('sprites')
 
 --require("scumm")
 
+local a = function(l) 
+	return { type = scumm.action.say, args = { tag = 'player', lines = l}}
+end
+
 
 -- the verbs for the game. You might have multiple sets here! Watch out
 engine.config.verbs = {
- 	open = { code="open", text = strings.ui.open, objects = 1 },
-    close = { code="close", text = strings.ui.close, objects = 1 },
-    push = { code="push", text = strings.ui.push, objects = 1 },
-    pull = { code="pull", text = strings.ui.pull, objects = 1 },
-    walk = { code="walk", text = strings.ui.walkto, objects = 1 },
-    pick = { code="pickup", text = strings.ui.pickup, objects = 1 },
-    talk = { code="talk", text = strings.ui.talkto, objects = 1 },
+ 	open = { code="open", text = strings.ui.open, objects = 1, callback = scumm.script.default_handler, def = glib.curry(a, {strings.defaultactions[1]}) },
+    close = { code="close", text = strings.ui.close, objects = 1, callback = scumm.script.default_handler, def = glib.curry(a, {strings.defaultactions[2]}) },
+    push = { code="push", text = strings.ui.push, objects = 1, callback = scumm.script.default_handler, def = glib.curry(a, {strings.defaultactions[3]}) },
+    pull = { code="pull", text = strings.ui.pull, objects = 1, callback = scumm.script.default_handler, def = glib.curry(a, {strings.defaultactions[3]}) },
+    walk = { code="walk", text = strings.ui.walkto, objects = 1, callback = scumm.script.default_handler },
+    pick = { code="pickup", text = strings.ui.pickup, objects = 1, callback = scumm.script.default_handler, def = glib.curry(a, {strings.defaultactions[5]}) },
+    talk = { code="talk", text = strings.ui.talkto, objects = 1, callback = scumm.script.default_handler, def = glib.curry(a, {strings.defaultactions[2]}) },
     give = { code="give", text = strings.ui.give, objects = 2, prep = strings.ui.giveprep },
     use = { code="use", text = strings.ui.use, objects = 2, prep= strings.ui.useprep },
-    look = { code="look", text = strings.ui.lookat, objects = 1 },
-    turnon = { code="turnon", text = strings.ui.turnon, objects = 1 },
-    turnoff = { code="turnoff", text = strings.ui.turnoff, objects = 1 }
+    look = { code="look", text = strings.ui.lookat, objects = 1, callback = scumm.script.default_handler, def = glib.curry(a, {strings.defaultactions[4]}) },
+    turnon = { code="turnon", text = strings.ui.turnon, objects = 1, callback = scumm.script.default_handler, def = glib.curry(a, {strings.defaultactions[2]}) },
+    turnoff = { code="turnoff", text = strings.ui.turnoff, objects = 1, callback = scumm.script.default_handler, def = glib.curry(a, {strings.defaultactions[2]}) }
 }
+
 engine.config.verbset = {
     [1] = { "open", "close", "push", "pull", "walk", "pick", "talk", "give", "use", "look", "turnon", "turnoff" }
 

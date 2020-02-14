@@ -513,12 +513,12 @@ std::shared_ptr<Component> PropertiesCompFactory::Create(luabridge::LuaRef & ref
     return ptr;
 }
 
-std::shared_ptr<Component> InfoComponentFactory::Create(luabridge::LuaRef & ref) {
-    auto comp = std::make_shared<LuaInfo>(ref);
-
-    return comp;
-
-}
+//std::shared_ptr<Component> InfoComponentFactory::Create(luabridge::LuaRef & ref) {
+//    auto comp = std::make_shared<LuaInfo>(ref);
+//
+//    return comp;
+//
+//}
 
 std::shared_ptr<Component> KeyboardInputMethodCompFactory::Create(luabridge::LuaRef &ref) {
     auto comp = std::unique_ptr<KeyboardInputMethod>(new KeyboardInputMethod);
