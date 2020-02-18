@@ -7,6 +7,6 @@ engine.items["guybrush"] = {
 	state = 'idle',
 	speed = speed,
 	text_color = {255, 255, 255, 255},
-	text_offset = text_offset
+	text_offset = text_offset,
 }
 

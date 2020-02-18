@@ -5,8 +5,8 @@ roomDefinition = {
 	height = 144,
 
 	startTable = {
-		village1 = { walkarea ="scummbar.walkarea", pos = {50, 10}, dir ='e'}
-		--village1 = { walkarea = "scummbar.walkarea", pos = items["scummbar.door_out"].hotspot.walk_to, dir = "east"},
+		--village1 = { walkarea ="scummbar.walkarea", pos = {50, 10}, dir ='e'}
+		village1 = { walkarea = 'scummbar.walkarea', pos = items['scummbar.door.out'].hotspot.walk_to, dir = 'e'},
 		-- mancomb = { walkarea = "scummbar.walkarea", pos = items["scummbar.mancomb"].hotspot.walk_to, dir = "north"},
 		-- estevan = { walkarea = "scummbar.walkarea", pos = items["scummbar.estevan"].hotspot.walk_to, dir = "south"},
 		-- loompirate = { walkarea = "scummbar.walkarea", pos = items["scummbar.loompirate"].hotspot.walk_to, dir = "north"},		
@@ -28,13 +28,13 @@ room = scumm.factory.basic_room (roomDefinition)
 
 room:add ( "scummbar.walkarea", {
 -- 		scumm.factory.object { id = "scummbar.fireplace"},
--- 		scumm.factory.object { id = "scummbar.door_out" },
+	scumm.factory.object { id = "scummbar.door.out" },
 -- 		scumm.factory.object { id = "scummbar.mancomb" },
 -- 		scumm.factory.object { id = "scummbar.loompirate"},
 	scumm.factory.object { id = "scummbar.pirate1" },
 	scumm.factory.object { id = "scummbar.pirate2" },
 	scumm.factory.object { id = "scummbar.pirate3" },
--- 		scumm.factory.object { id = "scummbar.pirate4" },
+	scumm.factory.object { id = "scummbar.pirate4" },
 -- 		scumm.factory.object { id = "scummbar.pirate6" },
 -- 		scumm.factory.object { id = "scummbar.pirate7" },
 -- 		scumm.factory.object { id = "scummbar.pirate8" },

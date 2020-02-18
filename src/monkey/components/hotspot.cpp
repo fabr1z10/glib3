@@ -167,13 +167,13 @@ void HotSpotManager::CursorPosCallback(GLFWwindow*, double x, double y) {
 
     if (newActiveHotSpot != m_currentlyActiveHotSpot) {
         if (m_currentlyActiveHotSpot != nullptr) {
-            std::cout << "leaving\n";
+            //std::cout << "leaving\n";
             m_currentlyActiveHotSpot->onLeave();
         }
         m_currentlyActiveHotSpot = newActiveHotSpot;
         if (newActiveHotSpot != nullptr) {
             // notify me when you die!
-            std::cout << "entering\n";
+            //std::cout << "entering\n";
             m_currentlyActiveHotSpot->onDestroy.Register(this, [&] (HotSpot* hs) { NotifyHotSpotDestructor(hs); });
             m_currentlyActiveHotSpot->onEnter();
         }

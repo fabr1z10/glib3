@@ -6,6 +6,7 @@
 class CallFunc : public Activity {
 public:
     CallFunc(luabridge::LuaRef func) : Activity(), m_func{func} {}
+    CallFunc(const LuaTable& t);
     void Start() override;
     void Run (float dt) override {}
 private:

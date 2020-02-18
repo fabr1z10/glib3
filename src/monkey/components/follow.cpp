@@ -9,7 +9,8 @@ Component(), m_camId{cam}, m_relativePos(relativePos), m_up(up), m_fixZ{false}
     m_dir = glm::vec3(0,0, -1);
 }
 
-Follow::Follow(const LuaTable & t) : Component(t) {
+Follow::Follow(const LuaTable & t) : Component(t), m_fixZ{false} {
+    m_dir = glm::vec3(0,0, -1);
 
     m_camId = t.Get<std::string>("cam");
     m_relativePos = t.Get<glm::vec3>("relativepos");

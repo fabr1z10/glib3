@@ -1,5 +1,21 @@
 local ai = scumm.state.actionInfo
 
+scumm.script.say = function(l) 
+    return { type = scumm.action.say, args = { tag = 'player', lines = l}}
+end
+
+scumm.script.changeroom = function(room, walkarea, pos, dir) 
+    return {
+        { type = action.callfunc, args = { func = function() 
+            variables.dynamic_items[engine.state.room][variables.current_player] = nil
+            if not variables.dynamic_items[room] then variables.dynamic_items[room] = {} end
+            variables.dynamic_items[room][variables.current_player] = { wa = walkarea, pos = pos, dir = dir }
+        end}},
+        { type = action.change_room, args = { room = room }}
+    }
+        
+end
+
 
 scumm.script.walk = function(x, y) 
 	local actions = {
@@ -34,12 +50,16 @@ end
 
 
 scumm.script.getCurrentVerb = function()
-	return engine.config.verbs[state.scumm.actionInfo.verb]
+	return engine.config.verbs[ai.verb]
 end
 
 scumm.script.updateVerb = function()
     a = monkey.getEntity("currentaction")
     a:settext(scumm.script.action_to_string(scumm.state.actionInfo))
+end
+
+scumm.script.reset_verb = function()
+    scumm.script.set_verb(engine.config.default_verb)
 end
 
 scumm.script.set_verb = function(verb)
@@ -56,7 +76,7 @@ scumm.script.hoverOn = function(obj)
     if (actionInfo.obj1 == nil) then
         actionInfo.obj1 = obj
     else
-        local verb = scumm.ui.getCurrentVerb()
+        local verb = scumm.script.getCurrentVerb()
         if (verb.objects > 1 and actionInfo.obj1 ~= obj) then
             actionInfo.obj2 = obj
         end
@@ -97,7 +117,7 @@ scumm.script.run_action = function()
 end
 
 scumm.script.default_handler = function(verb)
-    print ('default handler! verb = ' .. verb)
+    --print ('default handler! verb = ' .. verb)
 
     local item = engine.items[ai.obj1]
     if not item then
@@ -107,7 +127,7 @@ scumm.script.default_handler = function(verb)
 
     -- check if item has a walkto
     local hs = item.hotspot
-
+    print ("eccoci " .. tostring(hs.walk_to[1]))
     local actions = {
         { type = scumm.action.walkto, args = {tag='player', pos = hs.walk_to }},
         -- turn towards item
@@ -126,6 +146,8 @@ scumm.script.default_handler = function(verb)
             end
         end
     end
+
+    table.insert (actions, { type = action.callfunc, args = { func = function() scumm.script.reset_verb() end }})
 
     local s = script.make(actions)
     s.name="_walk"

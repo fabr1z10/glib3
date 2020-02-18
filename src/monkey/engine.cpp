@@ -16,6 +16,10 @@ void Engine::SetDeviceSize(glm::vec2 size) {
     m_aspectRatio = size.x / size.y;
 }
 
+void Engine::SetTitle(const std::string & title) {
+    m_title = title;
+}
+
 void Engine::SetWindowSize(glm::ivec2 size) {
     m_winSize = size;
 }

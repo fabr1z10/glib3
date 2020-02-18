@@ -28,6 +28,7 @@ public:
     void SetSceneFactory (std::shared_ptr<SceneFactory> factory);
     glm::vec2 GetDeviceSize() const;
     void SetDeviceSize(glm::vec2);
+    void SetTitle(const std::string&);
     void RegisterToWindowResizeEvent(WindowResizeListener*);
     void UnregisterToWindowResizeEvent(WindowResizeListener*);
     void RegisterToMouseEvent(MouseListener*);

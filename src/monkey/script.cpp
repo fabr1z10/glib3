@@ -8,9 +8,9 @@ Script::Script() : m_complete{false}, m_suspended{false}, m_loop{false}, m_loopI
 }
 
 Script::~Script() {
-    std::cerr << "script: clearing " << m_activities.size() << " acts\n";
+    //std::cerr << "script: clearing " << m_activities.size() << " acts\n";
     m_activities.clear();
-    std::cerr << "done.\n";
+    //std::cerr << "done.\n";
 }
 
 void Script::Start() {

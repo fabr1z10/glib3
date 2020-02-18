@@ -23,6 +23,8 @@
 #include <monkey/activities/delay.h>
 #include <monkey/activities/animate.h>
 #include <monkey/components/info.h>
+#include <monkey/activities/changeroom.h>
+#include <monkey/activities/callfunc.h>
 
 
 void SceneFactory::Init(Engine* engine) {
@@ -44,27 +46,8 @@ void SceneFactory::Init(Engine* engine) {
     engine->SetDeviceSize(devSize);
     engine->SetWindowSize(winSize);
     engine->SetFPS(fps);
+    engine->SetTitle(title);
 
-//    std::string extension = engineDef.Get<std::string>("extension", "");
-//    if (!extension.empty()) {
-//        DynamicLoader::load(extension, this);
-////        std::string libName = extension;
-////        void* handle = dlopen(libName.c_str(), RTLD_NOW);
-////        if (handle == NULL) {
-////            GLIB_FAIL("ERROR! Cannot open extension library " << libName << ": " << dlerror());
-////        } else {
-////            std::cout << "Loaded succesfully extension: " << libName << std::endl;
-////        }
-////        typedef void (*hello_t)(SceneFactory*);
-////
-////        hello_t hello = (hello_t) dlsym(handle, "hello");
-////        const char *dlsym_error = dlerror();
-////        if (dlsym_error) {
-////            std::cerr << "Cannot load symbol 'hello': " << dlsym_error << '\n';
-////        } else {
-////            hello(this);
-////        }
-//    }
     extendLua();
 }
 
@@ -127,6 +110,8 @@ SceneFactory::SceneFactory() {
     add<DelayTime> ("delay");
     add<DelayTimeDynamic> ("delay_dynamic");
     add<Animate> ("animate");
+    add<ChangeRoom> ("gotoroom");
+    add<CallFunc> ("callfunc");
 
 
 
@@ -141,6 +126,7 @@ SceneFactory::SceneFactory() {
     // shapes
     add<Poly> ("poly");
     add<Rect> ("rect");
+    add<PolyLine> ("graph");
 
     // models
     add<SpriteModel> ("sprite.model");

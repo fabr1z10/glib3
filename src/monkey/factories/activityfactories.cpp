@@ -36,11 +36,6 @@ std::shared_ptr<Activity> ChangeRoomActFactory::Create(luabridge::LuaRef &ref) {
     return std::unique_ptr<ChangeRoom>(new ChangeRoom(roomId));
 };
 
-std::shared_ptr<Activity> CallFuncActFactory::Create(luabridge::LuaRef &ref) {
-    LuaTable table(ref);
-    luabridge::LuaRef fref = table.Get<luabridge::LuaRef>("func");
-    return std::unique_ptr<CallFunc>(new CallFunc(fref));
-};
 
 
 std::shared_ptr<Activity> RepeatActFactory::Create(luabridge::LuaRef &ref) {

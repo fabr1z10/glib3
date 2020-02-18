@@ -1,31 +1,19 @@
-engine.items["village1.walkarea"] = scumm.factory.walkarea {
-	shape = { type = "graph", 
-		vertices = { {8, 71}, {23, 63}, {49, 49}, {40, 37}, {56, 24}, {84, 13}, {770, 13}, {780,34}, {1000,34} }, 
-		edges = { {0,1}, {1,2}, {2,3},{3,4}, {4,5},{5,6},{6,7},{7,8} }},
-	scale = { type="linear_y", values= {0, 0.8, 144, 0.1}},
-	priority = 0,
+-- engine.items["village1.walkarea"] = scumm.factory.walkarea {
+-- 	shape = { type = "graph", 
+-- 		vertices = { {8, 71}, {23, 63}, {49, 49}, {40, 37}, {56, 24}, {84, 13}, {770, 13}, {780,34}, {1000,34} }, 
+-- 		edges = { {0,1}, {1,2}, {2,3},{3,4}, {4,5},{5,6},{6,7},{7,8} }},
+-- 	scale = { type="linear_y", values= {0, 0.8, 144, 0.1}},
+-- 	priority = 0,
 
-}
+-- }
 
-engine.items["village1.cliffside"] = {
-	pos = {0, 0, 0},
-	hotspot = {
-		text = strings.objects.cliffside,
-		walk_to = {11, 70}, 
-		dir = "west",
-		size = {20, 144},			
-	},
-	actions = {
-		walk = { type=action.change_room, args={room="lookout"}}
-	}
-}
 
 scumm.factory.door {
 	id = "village1.door",
 -- 	name = "village1.door",
  	pos = {699, 7, -1},
  	size = {30, 45},
- 	walk_to = {715, 15},
+ 	walk_to = {715, 13},
  	dir = "north",
 	model = "door_village_scummbar",
 	nextroom="scummbar",

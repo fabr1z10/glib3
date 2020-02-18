@@ -113,7 +113,7 @@ ClosestPointResult ClosestPointOnEdge::Find(Shape& s, glm::vec2 P) {
     s.accept(c);
     ClosestPointResult result;
     result.normal = c.m_normal;
-    std::cerr << result.normal.x << " ... " << result.normal.y;
+    //std::cerr << result.normal.x << " ... " << result.normal.y;
     result.P = c.m_result;
     return result;
 }

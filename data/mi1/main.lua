@@ -1,13 +1,12 @@
 --package.path = '/home/fabrizio/glib3/lualib/?.lua;' .. package.path
 
 engine = {
-	extension = "scumm",
 	device_size = { 320, 200 },
 	window_size = { 640, 400 },
 	title = "The secret of Monkey Island",
 	shaders = { "unlit_textured", "unlit_color", "text" },
 	global_assets = {
-		--	fonts = { "ui", "monkey" }
+		fonts = { "ui", "monkey" }
 	},
 	start_room = "kitchen",
 	lang = "eng",
@@ -38,39 +37,25 @@ engine.assets = {
 
 require ("sc2")
 
-require ("./func")
 
--- import actions
-
-
--- load strings
 require ("text/" .. engine.lang .. "/text")
-glib.load_folder ('items')
-glib.load_folder ('sprites')
 
-
-
---require("scumm")
-
-local a = function(l) 
-	return { type = scumm.action.say, args = { tag = 'player', lines = l}}
-end
 
 
 -- the verbs for the game. You might have multiple sets here! Watch out
 engine.config.verbs = {
- 	open = { code="open", text = strings.ui.open, objects = 1, callback = scumm.script.default_handler, def = glib.curry(a, {strings.defaultactions[1]}) },
-    close = { code="close", text = strings.ui.close, objects = 1, callback = scumm.script.default_handler, def = glib.curry(a, {strings.defaultactions[2]}) },
-    push = { code="push", text = strings.ui.push, objects = 1, callback = scumm.script.default_handler, def = glib.curry(a, {strings.defaultactions[3]}) },
-    pull = { code="pull", text = strings.ui.pull, objects = 1, callback = scumm.script.default_handler, def = glib.curry(a, {strings.defaultactions[3]}) },
+ 	open = { code="open", text = strings.ui.open, objects = 1, callback = scumm.script.default_handler, def = glib.curry(scumm.script.say, {strings.defaultactions[1]}) },
+    close = { code="close", text = strings.ui.close, objects = 1, callback = scumm.script.default_handler, def = glib.curry(scumm.script.say, {strings.defaultactions[2]}) },
+    push = { code="push", text = strings.ui.push, objects = 1, callback = scumm.script.default_handler, def = glib.curry(scumm.script.say, {strings.defaultactions[3]}) },
+    pull = { code="pull", text = strings.ui.pull, objects = 1, callback = scumm.script.default_handler, def = glib.curry(scumm.script.say, {strings.defaultactions[3]}) },
     walk = { code="walk", text = strings.ui.walkto, objects = 1, callback = scumm.script.default_handler },
-    pick = { code="pickup", text = strings.ui.pickup, objects = 1, callback = scumm.script.default_handler, def = glib.curry(a, {strings.defaultactions[5]}) },
-    talk = { code="talk", text = strings.ui.talkto, objects = 1, callback = scumm.script.default_handler, def = glib.curry(a, {strings.defaultactions[2]}) },
+    pick = { code="pickup", text = strings.ui.pickup, objects = 1, callback = scumm.script.default_handler, def = glib.curry(scumm.script.say, {strings.defaultactions[5]}) },
+    talk = { code="talk", text = strings.ui.talkto, objects = 1, callback = scumm.script.default_handler, def = glib.curry(scumm.script.say, {strings.defaultactions[2]}) },
     give = { code="give", text = strings.ui.give, objects = 2, prep = strings.ui.giveprep },
     use = { code="use", text = strings.ui.use, objects = 2, prep= strings.ui.useprep },
-    look = { code="look", text = strings.ui.lookat, objects = 1, callback = scumm.script.default_handler, def = glib.curry(a, {strings.defaultactions[4]}) },
-    turnon = { code="turnon", text = strings.ui.turnon, objects = 1, callback = scumm.script.default_handler, def = glib.curry(a, {strings.defaultactions[2]}) },
-    turnoff = { code="turnoff", text = strings.ui.turnoff, objects = 1, callback = scumm.script.default_handler, def = glib.curry(a, {strings.defaultactions[2]}) }
+    look = { code="look", text = strings.ui.lookat, objects = 1, callback = scumm.script.default_handler, def = glib.curry(scumm.script.say, {strings.defaultactions[4]}) },
+    turnon = { code="turnon", text = strings.ui.turnon, objects = 1, callback = scumm.script.default_handler, def = glib.curry(scumm.script.say, {strings.defaultactions[2]}) },
+    turnoff = { code="turnoff", text = strings.ui.turnoff, objects = 1, callback = scumm.script.default_handler, def = glib.curry(scumm.script.say, {strings.defaultactions[2]}) }
 }
 
 engine.config.verbset = {
@@ -173,8 +158,14 @@ variables = {
 	}
 
 }
+-- add any custom methods here
+require ("./func")
+require("ff")
 
+glib.load_folder ('items')
+glib.load_folder ('sprites')
 variables.save_states.start()
+
 
 --require("defaultscripts")
 

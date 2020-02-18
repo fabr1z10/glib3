@@ -32,6 +32,7 @@ scumm.ifac.item = function(args)
 	if item.model then
 		entity.type = 'sprite'
 		entity.model = item.model
+		entity.anim = glib.get(item.anim)
 	end
 
 	if item.hotspot then
@@ -51,6 +52,8 @@ scumm.ifac.item = function(args)
 			onclick = scumm.script.run_action,
 		})
 	end
+
+
 	
 	return entity
 	
@@ -68,6 +71,7 @@ scumm.ifac.char = function(args)
 	local entity = Entity:new(args)
 
 	entity.type = 'sprite'
+	print ('ciao ' .. item.model)
 	entity.model = item.model
 
 	-- direction character is facing
@@ -76,6 +80,10 @@ scumm.ifac.char = function(args)
 
 	table.insert (entity.components, { type="character", speed = item.speed, dir = dir, state = state })
 	table.insert (entity.components, { type="info", info = { id = args.args._id }})
+
+	if args.args.follow then
+		table.insert(entity.components, { type='follow', cam='maincam', relativepos = {0, 0, 5}, up = {0, 1, 0} })
+	end	
 	return entity
 end
 
@@ -105,9 +113,36 @@ scumm.ifac.walkarea =  function(args)
 	return entity
 end
 
+scumm.ifac.door = function(args)
+
+	glib.assert(args.item, 'item!')
+
+	local item = args.item
+
+	glib.assert(item.model, 'character requires a model!')
+
+	local entity = Entity:new(args)
+	local priority = args.priority or 1
+
+	entity.type = 'sprite'
+	entity.model = item.model
+
+	table.insert(entity.components, {
+		type = "hotspot",
+		priority = priority,
+		shape = { type = 'rect', width = item.size[1], height= item.size[2]},
+		onenter = glib.curry (scumm.script.hoverOn, args.args._id),
+		onleave = scumm.script.hoverOff,
+		onclick = scumm.script.run_action,
+	})
+
+	return entity
+end
+
 
 scumm.ifac.fmap = {
 	object = scumm.ifac.item,
 	walkarea = scumm.ifac.walkarea,
-	char = scumm.ifac.char
+	char = scumm.ifac.char,
+	door = scumm.ifac.door
 }

@@ -10,6 +10,7 @@ Say::Say(const LuaTable& t) : Sequence() {
     m_color = t.Get<glm::vec4>("color");
     m_color /= 255.0f;
     m_offset = t.Get<glm::vec2>("offset");
+    m_fontId = t.Get<std::string>("font");
 
     if (t.HasKey("id")) {
         m_actorId = t.Get<int>("id");
@@ -53,7 +54,7 @@ void Say::Start() {
 
     for (auto& s : m_lines) {
 
-        Push(std::make_shared<ShowMessage>(s, "monkey", m_actorId, 8, m_color, glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), BOTTOM, 1.0f, m_offset));
+        Push(std::make_shared<ShowMessage>(s, m_fontId, m_actorId, 8, m_color, glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), BOTTOM, 1.0f, m_offset));
     }
 
     if (!m_noAnim) {

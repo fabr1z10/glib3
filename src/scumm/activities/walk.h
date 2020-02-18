@@ -13,7 +13,7 @@ public:
     Walk (const LuaTable&);
 
     Walk (int actor, glm::vec2 p) : Sequence(), m_actorId{actor}, m_p{p} {}
-    ~Walk() override { std::cerr << "clearing walk...\n"; }
+    ~Walk() override { }
     Walk (const std::string& tag, glm::vec2 p) : Sequence(), m_tag{tag}, m_actorId(-1), m_p{p} {}
     void Start() override;
     void SetComplete() override;

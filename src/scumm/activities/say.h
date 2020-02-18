@@ -21,6 +21,7 @@ private:
     glm::vec2 m_offset;
     std::string m_animStart;
     std::string m_animEnd;
+    std::string m_fontId;
     glm::vec4 m_color;
     int m_actorId;
     std::string m_tag;

@@ -130,6 +130,7 @@ scumm.action.say = function(args)
 	return {
 		type = 'say',
 		tag = args.tag,
+		font = engine.config.dialogue_font,
 		id = args.id,
 		lines = l,
 		offset = item.text_offset,

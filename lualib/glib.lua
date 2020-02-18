@@ -70,6 +70,9 @@ end
 
 -- if ref is a function, call the funtion otherwise gets the value
 function glib.get(ref)
+    if not ref then
+        return ref
+    end
 	if (type(ref)=="function") then
 		return ref()
 	else

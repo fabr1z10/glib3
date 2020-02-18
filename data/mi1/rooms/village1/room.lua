@@ -6,8 +6,8 @@ roomDefinition = {
 	startTable = {
 		--lookout = { pos = items2["village1.cliffside"].hotspot.walk_to, facing = "east"},
 		scummbar = {  walkarea = "village1.walkarea", pos = items["village1.door"].hotspot.walk_to, dir = "south"},
-		village2 = {  walkarea = "village1.walkarea", pos = items["village1.archway"].hotspot.walk_to, dir="west"},
-		lookout = {  walkarea = "village1.walkarea", pos = items["village1.cliffside"].hotspot.walk_to, dir="south"}
+		--village2 = {  walkarea = "village1.walkarea", pos = items["village1.archway"].hotspot.walk_to, dir="west"},
+		--lookout = {  walkarea = "village1.walkarea", pos = items["village1.cliffside"].hotspot.walk_to, dir="south"}
 	},
 	font_size = 8,
 	playerid="guybrush",
@@ -25,10 +25,10 @@ room:add ( "main",
 		{ pos = {73, 0, 1}, components = { { type="gfx", image="village1_2.png" }}},
 		{ pos = {229, 0, 1}, components = { { type="gfx", image="village1_3.png" }}},
 		{ pos = {606, 0, 1}, components = { { type="gfx", image="village1_4.png" }}},
-		scumm.factory.object { id="village1.archway" },
+		--scumm.factory.object { id="village1.archway" },
 		scumm.factory.object { id="village1.cliffside" },
 		scumm.factory.object { id="village1.door" },
-		scumm.factory.object { id="village1.poster" },
+		--scumm.factory.object { id="village1.poster" },
 	}
 )
 

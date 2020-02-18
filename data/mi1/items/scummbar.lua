@@ -44,55 +44,36 @@ engine.items["scummbar.pirate3"] = {
  	pos = {30, 0, -1},
 }
 
--- engine.items["scummbar.pirate4"] = {
--- 	model = "scummbar.pirate4",
--- 	pos = {0, 0, -1},
--- 	hotspot = {
--- 		text = strings.objects.pirates,
--- 		size = {70, 20},	
--- 		walk_to = {50, 10},
--- 		dir = "south",
--- 	},
--- 	actions = {
---  		look =  { type = scumm.action.say, args = {actor="guybrush", lines = {strings.scummbar[4]} }},
---  		talk =  { type = scumm.action.say, args = {actor="guybrush", lines = {strings.scummbar[4]} }}		
--- 	}
--- }
+engine.items["scummbar.pirate4"] = {
+	type = 'object',
+	model = 'scummbar.pirate4',
+ 	pos = {0, 0, -1},
+ 	hotspot = {
+ 		text = strings.objects.pirates,
+ 		size = {70, 20},	
+ 		walk_to = {50, 10},
+ 		dir = "south",
+ 	},
+ 	actions = {
+  		look = { type = scumm.action.say, args = {tag='player', lines = {strings.scummbar[4]} }},
+  		talk = { type = scumm.action.say, args = {tag='player', lines = {strings.scummbar[4]} }}		
+ 	}
+}
 
+engine.items['scummbar.door.out'] = make_door {
+	tag = 'scummbar.door.out',
+	model = 'door_scummbar_village',
+	pos = {32, 24, -1},
+	size = {38, 47},
+	walk_to = {65, 15},
+	dir = 'w',
+	var = 'door_village_scummbar',
+	room = 'village1'
+}
 
 
 -- local cook_text_color = {85, 255, 255, 255}
 
--- engine.items["scummbar.walkarea"] = {
--- 	components = {
--- 		{ 
--- 			type = "walkarea",
--- 			shape = { 
--- 				type = "poly", 
--- 				outline = {32,16,70,24,128,19,251,
--- 					18,311,10,321,10,345,32,467,41,492,50,514,40,565,40,580,35,629,6,626,0,256,0,200,16,149,0,90,0,85,10},
--- 				holes = {
--- 				 	{374,28,505,28,505,6,374,6}
--- 				 }
--- 			},
--- 			depth = { type="linear_y", values = {0, 1, 144, 0}},
--- 		}
--- 	}
--- }
-
-
--- scumm.factory.walkarea {
--- 	shape = { 
--- 		type = "poly", 
--- 		outline = {32,16,70,24,128,19,251,
--- 			18,311,10,321,10,345,32,467,41,492,50,514,40,565,40,580,35,629,6,626,0,256,0,200,16,149,0,90,0,85,10},
--- 		holes = {
--- 		 	{374,28,505,28,505,6,374,6}
--- 		 }
--- 	},
--- 	depth = { type="linear_y", values= {0, 1, 144, 0} },
--- 	priority = 0
--- }
 
 -- scumm.factory.door {
 -- 	id = "scummbar.door_out",

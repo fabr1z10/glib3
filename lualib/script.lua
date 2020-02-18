@@ -72,7 +72,7 @@ script.make = function(args, loop)
 	s.actions = data[1]
 	if (loop ~= nil) then
 		s.loop = data[2][loop]
-		print ("script has loop at ref = " .. tostring(loop) .. " which corresponds to id = " .. tostring(s.loop))
+		--print ("script has loop at ref = " .. tostring(loop) .. " which corresponds to id = " .. tostring(s.loop))
 	end
 		
 	-- just for debug. print action

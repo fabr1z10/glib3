@@ -7,14 +7,10 @@
 CollisionEngine::~CollisionEngine() {
     std::cerr << "Killing the ce\n";
     m_cells.clear();
-    std::cerr << "qui\n";
     m_colliderLocations.clear();
-    std::cerr << "qui2\n";
     m_intersector = nullptr;
-    std::cerr << "qui3\n";
     // m_responseManager = nullptr;
     m_previouslyCollidingPairs.clear();
-    std::cerr << "qui4\n";
 
 
 
