@@ -18,6 +18,7 @@ strings = {
         turnoff = "Turn off",
         giveprep = "to",
         useprep = "with",
+        newkid = "New kid",
 		pause_message = "Game Paused. Press SPACE to Continue."
     },
     defaultactions = {

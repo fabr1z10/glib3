@@ -4,16 +4,11 @@ engine = {
 	device_size = { 320, 200 },
 	window_size = { 640, 400 },
 	title = "Maniac Mansion",
-	shaders = { "unlit_textured", "unlit_color", "text" },
-	global_assets = {
-		fonts = { "ui" }
-	},
 	start_room = "1",
 	lang = "eng",
 	config = {
 	    default_verb = "walk",
 	    font_size = 8,
-		style = "scumm",
 	   	ui = {
 			height = 56,
 	    	verb_unselected_color = { 0, 170, 0, 255},
@@ -35,6 +30,10 @@ engine.assets = {
 	models = {},
 }
 
+engine.global_assets = {
+	fonts = { "ui" }
+},
+
 require ("sc2")
 require ("text/" .. engine.lang .. "/text")
 
@@ -51,24 +50,17 @@ engine.config.verbs = {
     use = { code="use", text = strings.ui.use, objects = 2, prep= strings.ui.useprep },
     look = { code="look", text = strings.ui.lookat, objects = 1, callback = scumm.script.default_handler, def = glib.curry(scumm.script.say, {strings.defaultactions[4]}) },
     turnon = { code="turnon", text = strings.ui.turnon, objects = 1, callback = scumm.script.default_handler, def = glib.curry(scumm.script.say, {strings.defaultactions[2]}) },
-    turnoff = { code="turnoff", text = strings.ui.turnoff, objects = 1, callback = scumm.script.default_handler, def = glib.curry(scumm.script.say, {strings.defaultactions[2]}) }
+    turnoff = { code="turnoff", text = strings.ui.turnoff, objects = 1, callback = scumm.script.default_handler, def = glib.curry(scumm.script.say, {strings.defaultactions[2]}) },
+	newkid = { code="newkid", text = strings.ui.newkid, objects = 0, callback = function() print ("ciao") end }
 }
 
 engine.config.verbset = {
-    [1] = { "open", "close", "push", "pull", "walk", "pick", "talk", "give", "use", "look", "turnon", "turnoff" }
+    [1] = { "open", "close", "push", "pull", "walk", "pick", "newkid", "give", "use", "look", "turnon", "turnoff" }
 }
 
 
 variables = {
-	current_player = 'dave_1',
-	dynamic_items = {},
-	players = { 'dave_1', 'dave_2', 'dave_3' },
-	-- require one inventory for each player, do this dynamically!
-	inventory = {
-		dave_1 = {},
-		dave_2 = {},
-		dave_3 = {},
-	},
+
 	-- game status
 	frontdoor_open = false,
 	doormat_pulled = false,
@@ -76,22 +68,14 @@ variables = {
 	frontdoor_bush_removed = false
 }
 
-variables.dynamic_items['1'] = {
-	-- dynamic items for room 1
-	-- when a room loads, it will look up in this table for dynamic items
-	--dave_1 = {wa = 'gate.walkarea', pos = {180, 10}, dir='s'},
-	dave_2 = {wa = 'gate.walkarea', pos = {200, 10}, dir='s'},
-	dave_3 = {wa = 'gate.walkarea', pos = {220, 10}, dir='e'},
-}
--- add any custom methods here
---require ("./func")
---require("ff")
-engine.state.room = '1'
 
-variables.dynamic_items['1'] = { dave_1 = { pos = {10, 10}, dir='e' }}
 
---variables.inventory['dave_1']['frontdoor.key'] = 1
 
+
+require('states')
+
+-- initialize player position and initial room
+states.start ()
 
 glib.load_folder ('items')
 glib.load_folder ('sprites')

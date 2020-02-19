@@ -65,6 +65,21 @@ scumm.script.action_to_string = function(ai)
     return table.concat(t, " ")
 end
 
+scumm.utils.init = function(args) 
+    variables.players = {}
+    variables.inventory = {}
+    variables.dynamic_items = {}
+    for _, i in ipairs(args) do
+        if i.type == 'player' then
+            table.insert(variables.players, i.id)
+            variables.inventory[i.id] = {}
+        end
+        if not variables.dynamic_items[i.room] then variables.dynamic_items[i.room] = {} end
+        variables.dynamic_items[i.room][i.id] = { pos = i.pos, dir = i.dir }
+    end
+    variables.current_player = variables.players[1]
+end
+
 scumm.utils.mm2 = function(id, sheet, anim, frames)
     local m = {
         sheet = sheet, 

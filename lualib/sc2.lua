@@ -2,6 +2,8 @@ require ('glib')
 require ('script')
 require ('action')
 
+engine.shaders = { "unlit_textured", "unlit_color", "text" }
+
 
 scumm = {}
 scumm.func = {}
