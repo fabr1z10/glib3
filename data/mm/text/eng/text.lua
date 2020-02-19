@@ -31,7 +31,12 @@ strings = {
 
     objects = {
     	sign = 'sign',
-    	path = 'path'
+    	path = 'path',
+    	frontdoor = 'front door',
+    	doormat = 'door mat',
+    	key = 'key',
+    	grating = 'grating',
+    	bushes = 'bushes'
     },
     gate = {
     	[1] = 'WARNING!!',

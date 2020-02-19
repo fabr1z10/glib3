@@ -9,14 +9,26 @@
 #include <monkey/components/lambdahotspot.h>
 #include <monkey/model/textmodel.h>
 
-TextView::TextView (glm::vec2 pos, float width, float height, float fontSize, int lines, luabridge::LuaRef factory) : Entity(),
-    m_nLines{0}, m_width{width}, m_height{height}, m_topLine{0}, m_factory(factory), m_maxLines(lines), m_fontSize(fontSize)
-{
-    SetPosition(pos);
+TextView::TextView(const LuaTable & t) : Entity(t), m_factory(t.Get<luabridge::LuaRef>("factory")) {
+    glm::vec2 size = t.Get<glm::vec2>("size");
+    float fontSize = t.Get<float>("font_size");
+    int lines = t.Get<int>("lines");
+
+    m_width = size.x;
+    m_height = size.y;
+    m_fontSize = fontSize;
+    m_nLines = 0;
+    m_maxLines = lines;
+    m_topLine = 0;
+    init();
+
+}
+
+
+void TextView::init() {
     glm::vec2 wpos(GetPosition());
     m_loc = wpos;
-
-    auto cam = std::make_shared<OrthographicCamera>(m_width, m_height,glm::vec4(pos.x, pos.y, m_width, m_height));
+    auto cam = std::make_shared<OrthographicCamera>(m_width, m_height,glm::vec4(wpos.x, wpos.y, m_width, m_height));
     SetCamera(cam);
     cam->SetPosition(glm::vec3(m_width*0.5f, -m_height*0.5f, 5.0f), glm::vec3(0,0,-1), glm::vec3(0,1,0));
     m_nextPos = glm::vec2(0.0f);
@@ -27,11 +39,18 @@ TextView::TextView (glm::vec2 pos, float width, float height, float fontSize, in
     AddChild(textContainer);
     textContainer->SetPosition(glm::vec3(0.0f));
     m_textContainer = textContainer.get();
+
+}
+
+TextView::TextView (glm::vec2 pos, float width, float height, float fontSize, int lines, luabridge::LuaRef factory) : Entity(),
+    m_nLines{0}, m_width{width}, m_height{height}, m_topLine{0}, m_factory(factory), m_maxLines(lines), m_fontSize(fontSize)
+{
+    init();
 }
 
 
 void TextView::AddItem(luabridge::LuaRef ref) {
-    std::string text = ref["text"].cast<std::string>();
+    //std::string text = ref["text"].cast<std::string>();
     m_lines.push_back(ref);
     AddEntity(ref);
 
@@ -53,7 +72,8 @@ void TextView::AddEntity(luabridge::LuaRef ref) {
 
     // 1. find the number of rows of this
     auto mf = Engine::get().GetSceneFactory();
-    auto ptr = mf->make<Entity>(f);
+    LuaTable ft(f);
+    auto ptr = mf->make<Entity>(ft);
 
 
 

@@ -11,9 +11,7 @@ function Entity:new (a)
 	local pos = a.args.pos or (item.pos or {0, 0, 0})
 	if #pos == 2 then pos = { pos[1], pos[2], 0 } end
 	o.pos = pos
-
-
-
+	o.active = a.args.active
 	o.components = {}
 	o.tag = a.args.tag
 	return o

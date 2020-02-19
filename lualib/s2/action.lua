@@ -2,7 +2,7 @@
 
 local items =engine.items
 local dialogues =engine.dialogues
-local inventory = scumm.state.inventory
+--local inventory = variables.inventory
 
 scumm.action = {}
 
@@ -99,6 +99,7 @@ scumm.action.walk_to_object= function(actor, id)
 		{ type = scumm.action.turn, args = { tag=actor, dir = items[id].hotspot.dir}}
 	}
 end
+
 
 scumm.action.say = function(args) 
 	--assert (args.id, "id")
@@ -264,19 +265,18 @@ scumm.action.resume_dialogue = function(args)
 end
 
 scumm.action.add_to_inventory = function(args) 
+	local inv = variables.inventory[variables.current_player]
 	assert (args.id, "id")
 	local qty = args.qty or 1
 	return { type = "callfunc", func = 
 		function()
 			print (args.id .. " adding")			
-			if (inventory[args.id] == nil) then
-				inventory[args.id] = qty
+			if (inv[args.id] == nil) then
+				inv[args.id] = qty
 			else 
-				inventory[args.id] = inventory[args.id] + qty
+				inv[args.id] = inv[args.id] + qty
 			end
-			print ("ref inv")
-			scumm.ui.refresh_inventory()	
-			print ("done")
+			scumm.script.refresh_inventory()
 		end
 	}
 end

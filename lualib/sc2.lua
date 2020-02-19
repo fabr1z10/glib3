@@ -8,7 +8,7 @@ scumm.func = {}
 scumm.ifac = {}
 scumm.factory = {}
 scumm.script = {}
-
+scumm.utils = {}
 engine.items = {}
 engine.state = {}
 

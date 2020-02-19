@@ -29,6 +29,7 @@ function scumm.factory.room_base (args)
 			[1] = function() 
 				scumm.state.actionInfo.verb = engine.config.default_verb
 				scumm.script.reset_verb()
+				scumm.script.refresh_inventory()
 			end
 		},
 		engines = {
@@ -106,21 +107,21 @@ function scumm.factory.room_base (args)
 					 				}							 		
 							 	}
 			 				},
-			 			-- 	{
-							-- 	pos = {0,0,0},
-							-- 	children =  {
-			 			-- 			{
-					 	-- 				type = "textview", 
-					 	-- 				tag="inventory",
-					 	-- 				pos = {150, 0, 0},
-					 	-- 				size = {170, 48},
-					 	-- 				font_size = 8,
-					 	-- 				lines = 6,
-					 	-- 				deltax = 26,
-					 	-- 				factory = scumm.factory.inventorybutton
-					  --  				},
-							-- 	}
-							-- }
+			 			 	{
+							 	pos = {0,0,0},
+							 	children =  {
+			 			 			{
+					 	 				type = 'textview', 
+					 	 				tag = 'inventory',
+					 	 				pos = {150, 0, 0},
+					 	 				size = {170, 48},
+					 	 				font_size = 8,
+					 	 				lines = 6,
+					 	 				deltax = 26,
+					 	 				factory = scumm.factory.inventorybutton
+					  				}
+					 			}
+							}
 			 			}
 			 		},
 			 		-- {

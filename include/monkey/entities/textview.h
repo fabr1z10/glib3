@@ -6,6 +6,7 @@
 class TextView : public Entity {
 public:
     TextView (glm::vec2 pos, float width, float height, float fontSize, int lines, luabridge::LuaRef factory) ;
+    TextView (const LuaTable&);
     //virtual ~TextView();
 
     void AddItem (luabridge::LuaRef ref);
@@ -23,6 +24,7 @@ public:
 //    bool ScrollUpVisible() const;
 //    // bool SetActive(bool) override;
 private:
+    void init();
     void SetActiveInnerCheck(bool) override;
     void AddArrows();
     void AddEntity(luabridge::LuaRef);

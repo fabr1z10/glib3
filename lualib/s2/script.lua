@@ -4,18 +4,35 @@ scumm.script.say = function(l)
     return { type = scumm.action.say, args = { tag = 'player', lines = l}}
 end
 
-scumm.script.changeroom = function(room, walkarea, pos, dir) 
+scumm.script.changeroom = function (args)
     return {
         { type = action.callfunc, args = { func = function() 
+            -- remove player from current room
             variables.dynamic_items[engine.state.room][variables.current_player] = nil
-            if not variables.dynamic_items[room] then variables.dynamic_items[room] = {} end
-            variables.dynamic_items[room][variables.current_player] = { wa = walkarea, pos = pos, dir = dir }
+            if not variables.dynamic_items[args.room] then variables.dynamic_items[args.room] = {} end
+            variables.dynamic_items[args.room][variables.current_player] = { wa = args.walkarea, pos = args.pos, dir = args.dir }
         end}},
-        { type = action.change_room, args = { room = room }}
+        { type = action.change_room, args = { room = args.room }}
     }
         
 end
 
+scumm.script.pickup = function(id, flag)
+    return {
+        { type = action.callfunc, args = { func = function()
+            local e = monkey.getEntity(id)
+            e:setactive(false)
+            if flag then
+                variables[flag] = true
+            end end}
+        },
+        {
+            type = scumm.action.add_to_inventory, args = {id=id}
+        }
+
+    }
+        
+end
 
 scumm.script.walk = function(x, y) 
 	local actions = {
@@ -46,6 +63,27 @@ scumm.script.action_to_string = function(ai)
         end
     end
     return table.concat(t, " ")
+end
+
+scumm.utils.mm2 = function(id, sheet, anim, frames)
+    local m = {
+        sheet = sheet, 
+        type = 'sprite.model',
+        ppu = 1
+    }
+    local dt = 0.1
+    local anims = {}
+    for i, a in ipairs(anim) do
+        local fs = {}
+        for _, f in ipairs(frames[i]) do
+            table.insert(fs, { duration = dt, quads = { {id = f }}})
+        end
+        local p = { name = a, frames = fs }
+        table.insert(anims, p)
+    end
+    m.animations = anims
+
+    engine.assets.models[id] = m
 end
 
 
@@ -96,6 +134,20 @@ scumm.script.hoverOff = function()
         end
     end
     scumm.script.updateVerb()
+end
+
+scumm.script.hover_on_inv_button = function(entity) 
+    local color = engine.config.ui.inv_selected
+    entity:setcolor(color[1], color[2], color[3], color[4])
+    local info = entity:getinfo()
+    scumm.script.hoverOn(info.obj)
+end
+
+scumm.script.hover_off_inv_button = function(entity) 
+    local color = engine.config.ui.inv_unselected
+    entity:setcolor(color[1], color[2], color[3], color[4])
+    local info = entity:getinfo()
+    scumm.script.hoverOff()
 end
 
 scumm.script.run_action = function()
@@ -153,4 +205,20 @@ scumm.script.default_handler = function(verb)
     s.name="_walk"
     monkey.play(s)  
 
+end
+
+
+
+scumm.script.refresh_inventory = function()
+    local c = monkey.getEntity('inventory')
+    c:cleartext()
+    for k, v in pairs(variables.inventory[variables.current_player]) do
+        c:addtext ({id=k, qty = v})
+    end
+    --     if (v == 1) then
+    --         c:addtext( {text = engine.items[k].hotspot.text, obj = k})
+    --     else
+    --         c:addtext( { text = tostring(v) .. " " .. engine.items[k].hotspot.text_plural, obj = k}) -- l, obj = k} )
+    --     end
+    -- end
 end

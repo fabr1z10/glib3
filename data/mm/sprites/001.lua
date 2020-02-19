@@ -39,30 +39,15 @@ local s = {
 	grating = {x=1, y=495, width = 50, height=16 },
 	mat_closed = {x=53, y=505, width=88, height=6 },
 	mat_open = {x=53, y=496, width=70, height=7 },
-	frontdoor_key = {x=126, y=498, width = 11, height=4 }
+	frontdoor_key = {x=126, y=498, width = 11, height=4 },
+	frontdoor_open = {x=1, y=397, width=40, height=78},
+	frontdoor_close = {x=42, y=397, width=40, height=78},
 
 
 }
 
-engine.assets.models["arrow_up"] = {
-    sheet = sheet,
-    type = "sprite",
-    ppu=1,
-	animations = {
-		{ name = "unselected", frames = { { duration = dt, quads = {{ id = s.arrow_up }}}}},
-		{ name = "selected", frames = { { duration = dt, quads = {{ id = s.arrow_up }}}}}
-	}
-}
-
-engine.assets.models["arrow_down"] = {
-    sheet = sheet,
-    type = "sprite",
-    ppu=1,
-	animations = {
-		{ name = "unselected", frames = { { duration = dt, quads = {{ id = s.arrow_down }}}}},
-		{ name = "selected", frames = { { duration = dt, quads = {{ id = s.arrow_down }}}}}
-	}
-}
+scumm.utils.mm2 ('arrow_up', sheet, { 'unselected', 'selected' }, { {s.arrow_up}, {s.arrow_up} })
+scumm.utils.mm2 ('arrow_down', sheet, { 'unselected', 'selected' }, { {s.arrow_down}, {s.arrow_down} })
 
 
 engine.assets.models["dave"] = {
@@ -92,37 +77,14 @@ engine.assets.models["dave"] = {
 			{ duration = dt, quads = {{ id = s.dave_walk_e_4}, { id=s.dave_head_e, pos ={-4,46} }}}
 		}},
 		{ name = "talk_s", frames = { { duration = dt, quads = {{ id = s.dave_idle_s}, { id=s.dave_head_s, pos = {0, 45} }}}}},
+		{ name = "talk_n", frames = { { duration = dt, quads = {{ id = s.dave_idle_n}, { id=s.dave_head_n, pos = {0, 50} }}}}},
+		{ name = "talk_e", frames = { { duration = dt, quads = {{ id = s.dave_idle_e}, { id=s.dave_head_e, pos = {-8, 46} }}}}},
 			
 	}
 }
 
-engine.assets.models["grating"] = simple_sprite(s.grating)
-engine.assets.models["bushes"] = simple_sprite(s.bushes)
-engine.assets.models["frontdoor_key"] = simple_sprite(s.frontdoor_key)
--- {
---     sheet = sheet,
---     type = "sprite",
---     ppu=1,
--- 	animations = {
--- 		{ name = "default", frames = { { duration = dt, quads = {{ id = s.grating }}}}},
--- 	}
--- }
-
--- engine.assets.models["bushes"] = {
---     sheet = sheet,
---     type = "sprite",
---     ppu=1,
--- 	animations = {
--- 		{ name = "default", frames = { { duration = dt, quads = {{ id = s.bushes }}}}},
--- 	}
--- }
-
-engine.assets.models["door_mat"] = {
-    sheet = sheet,
-    type = "sprite",
-    ppu=1,
-	animations = {
-		{ name = "closed", frames = { { duration = dt, quads = {{ id = s.mat_closed }}}}},
-		{ name = "open", frames = { { duration = dt, quads = {{ id = s.mat_open }}}}},
-	}
-}
+scumm.utils.mm2 ('front.door', sheet, { 'open', 'closed' }, { {s.frontdoor_open}, {s.frontdoor_close} })
+scumm.utils.mm2 ('door.mat', sheet, { 'open', 'closed' }, { {s.mat_open}, {s.mat_closed} })
+scumm.utils.mm2 ('front.door.key', sheet, { 'default' }, { {s.frontdoor_key} })
+scumm.utils.mm2 ('front.door.grating', sheet, { 'default' }, { {s.grating} })
+scumm.utils.mm2 ('front.door.bush', sheet, { 'default' }, { {s.bushes} })

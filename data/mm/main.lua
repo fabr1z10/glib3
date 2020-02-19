@@ -62,13 +62,24 @@ engine.config.verbset = {
 variables = {
 	current_player = 'dave_1',
 	dynamic_items = {},
-	players = { 'dave_1', 'dave_2', 'dave_3' }
+	players = { 'dave_1', 'dave_2', 'dave_3' },
+	-- require one inventory for each player, do this dynamically!
+	inventory = {
+		dave_1 = {},
+		dave_2 = {},
+		dave_3 = {},
+	},
+	-- game status
+	frontdoor_open = false,
+	doormat_pulled = false,
+	frontdoor_key_taken = false,
+	frontdoor_bush_removed = false
 }
 
 variables.dynamic_items['1'] = {
 	-- dynamic items for room 1
 	-- when a room loads, it will look up in this table for dynamic items
-	dave_1 = {wa = 'gate.walkarea', pos = {180, 10}, dir='s'},
+	--dave_1 = {wa = 'gate.walkarea', pos = {180, 10}, dir='s'},
 	dave_2 = {wa = 'gate.walkarea', pos = {200, 10}, dir='s'},
 	dave_3 = {wa = 'gate.walkarea', pos = {220, 10}, dir='e'},
 }
@@ -76,6 +87,12 @@ variables.dynamic_items['1'] = {
 --require ("./func")
 --require("ff")
 engine.state.room = '1'
+
+variables.dynamic_items['1'] = { dave_1 = { pos = {10, 10}, dir='e' }}
+
+--variables.inventory['dave_1']['frontdoor.key'] = 1
+
+
 glib.load_folder ('items')
 glib.load_folder ('sprites')
 

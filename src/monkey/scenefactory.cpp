@@ -25,6 +25,7 @@
 #include <monkey/components/info.h>
 #include <monkey/activities/changeroom.h>
 #include <monkey/activities/callfunc.h>
+#include <monkey/entities/textview.h>
 
 
 void SceneFactory::Init(Engine* engine) {
@@ -97,6 +98,7 @@ SceneFactory::SceneFactory() {
     add<Entity> ("default");
     add<Sprite> ("sprite");
     add<Text> ("text");
+    add<TextView> ("textview");
 
     // components
     add<Follow> ("follow");

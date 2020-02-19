@@ -27,11 +27,11 @@ engine.items["gate.path"] = {
 	pos ={0, 0, 0},
 	hotspot= {
 		text = strings.objects.path,
-		size = {10, 140},
+		size = {10, 128},
 		walk_to = {0, 7},
 		dir = 'w',
 	},
  	actions = {
- 		walk = scumm.script.changeroom ('2', 'frontdoor.walkarea', {10, 10}, 'w')
+ 		walk = scumm.script.changeroom { room='2', pos ={950, 14}, dir = 'w'}
 	}
 }

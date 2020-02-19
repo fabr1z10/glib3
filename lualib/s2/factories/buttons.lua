@@ -38,20 +38,40 @@ scumm.factory.button = function(args)
 end
 
 scumm.factory.inventorybutton = function (args) 
-	return scumm.factory.button {
+	glib.assert(args.id, "id")
+	local qty = args.qty or 1
+
+	local item = engine.items[args.id]
+    if not item then error("Hey, I don't know item: " .. args.id,1) end
+	local button = scumm.factory.button {
 		pos = {0,0},
 		font = engine.config.ui.font,
-        text= args.text,
-		maxwidth = args.maxwidth,
+        text= item.hotspot.text,
         align="bottomleft", 
-        color = engine.config.ui.inv_unselected,
+        color = engine.config.ui.inv_unselected, 
+		maxwidth = 170,
         size = 8, 
         priority = 1,
-		info = { obj = args.obj},
-		onenter = scumm.ui.hover_on_inv_button, --scurry2(changecolor, config.ui_inv_selected), 
-        onleave = scumm.ui.hover_off_inv_button, --(changecolor, config.ui_inv_unselected),
-		onclick = scumm.ui.runAction
+		onenter = scumm.script.hover_on_inv_button,
+        onleave = scumm.script.hover_off_inv_button,
+		onclick = function() end
 	}
+	table.insert (button.components, { type='info', info = { obj = args.obj }})
+	return button
+	-- return scumm.factory.button {
+	-- 	pos = {0,0},
+	-- 	font = engine.config.ui.font,
+ --        text= args.text,
+	-- 	maxwidth = args.maxwidth,
+ --        align="bottomleft", 
+ --        color = engine.config.ui.inv_unselected,
+ --        size = 8, 
+ --        priority = 1,
+	-- 	info = { obj = args.obj},
+	-- 	--onenter = scumm.ui.hover_on_inv_button, --scurry2(changecolor, config.ui_inv_selected),
+ --        --onleave = scumm.ui.hover_off_inv_button, --(changecolor, config.ui_inv_unselected),
+	-- 	--onclick = scumm.ui.runAction
+	-- }
 
 end
 
