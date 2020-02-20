@@ -37,7 +37,9 @@ strings = {
     	doormat = 'door mat',
     	key = 'key',
     	grating = 'grating',
-    	bushes = 'bushes'
+    	bushes = 'bushes',
+    	mailbox = 'mailbox',
+    	flag ='flag'
     },
     gate = {
     	[1] = 'WARNING!!',

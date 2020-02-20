@@ -26,6 +26,7 @@ engine.items["frontdoor.path"] = {
 engine.items["frontdoor.door"] = {
 	type = 'object',
 	pos ={384, 50, -2},
+	tag = true,
 	model = 'front.door',
 	anim = function() return variables.frontdoor_open and 'open' or 'closed' end,
 	hotspot= {
@@ -35,6 +36,12 @@ engine.items["frontdoor.door"] = {
 		dir = 'n'	
 	},
  	actions = {
+ 		use = {
+ 			['frontdoor.key'] = function() 
+ 				variables.frontdoor_open = true
+ 				return { type = action.animate, args = { tag = 'frontdoor.door', anim='open'}}
+ 			end
+ 		}
  		--look = scumm.script.say ({ strings.gate[1], strings.gate[2]})
 	}
 }
@@ -105,6 +112,41 @@ engine.items["frontdoor.grating"] = {
 	}
 }
 
+engine.items["frontdoor.flag"] = {
+	type = 'object',
+	pos ={9, 37, 2},
+	tag =true,
+	model = 'front.door.flag',
+	anim = function() return variables.frontdoor_flag_up and 'up' or 'down' end,
+	hotspot= {
+		text = strings.objects.flag,
+		size = {15, 10},
+		offset = {-5,-5},
+		walk_to = {10, 5},
+		dir = 's',
+		priority = 2
+	},
+ 	actions = {
+ 		pull = function()
+ 			variables.frontdoor_flag_up = not variables.frontdoor_flag_up
+ 			return { type = action.animate, args = { tag = 'frontdoor.flag',anim = variables.frontdoor_flag_up and 'up' or 'down' }}
+ 		end
+ 		--pick = scumm.script.pickup('frontdoor.key', 'frontdoor_key_taken')
+	}
+}
+engine.items["frontdoor.mailbox"] = {
+	type = 'object',
+	pos ={0, 1, 2},
+	tag =true,
+	hotspot= {
+		text = strings.objects.mailbox,
+		size = {30, 45},
+		walk_to = {38, 1},
+		dir = 'w',
+	},
+ 	actions = {
+	}
+}
 engine.items["frontdoor.bush.l"] = {
 	type = 'object',
 	pos ={257, 16, -3.5},
@@ -122,6 +164,21 @@ engine.items["frontdoor.bush.l"] = {
  			{ type = action.callfunc, args = { func = function() variables.frontdoor_bush_removed = true end }},
  			{ type = action.remove_object, args = { tag = 'frontdoor.bush.l'}}
  		}
- 		--pick = scumm.script.pickup('frontdoor.key', 'frontdoor_key_taken')
 	}
 }
+
+
+engine.items["frontdoor.bush.r"] = {
+	type = 'object',
+	pos ={449, 15, 0},
+	hotspot= {
+		text = strings.objects.bushes,
+		size = {47, 23},
+		walk_to = {478, 14},
+		dir = 'n',
+	},
+ 	actions = {
+
+	}
+}
+

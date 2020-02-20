@@ -10,8 +10,13 @@
 
 #include <monkey/scenefactory.h>
 #include <monkey/engine.h>
+#include <monkey/entitywrapper.h>
 
+void Extension::extendLua() {
 
+    LuaWrapper::addMethod("getdir", &GetDirection);
+
+}
 void Extension::extend(SceneFactory* f) {
 
     f->add<WalkArea> ("walkarea");
@@ -20,6 +25,9 @@ void Extension::extend(SceneFactory* f) {
     f->add<Walk> ("walk");
     f->add<Turn> ("turn");
     f->add<Say> ("say");
+
+    //LuaWrapper::addMethod("get_direction", [&] (EntityWrapper* e) { return getDirection(e); });
+
 //    f->addActivityFactory("walk", std::make_unique<WalkToActFactory>());
 //    f->addActivityFactory("turn", std::make_unique<TurnActFactory>());
 //    f->addActivityFactory("say", std::make_unique<SayActFactory>());

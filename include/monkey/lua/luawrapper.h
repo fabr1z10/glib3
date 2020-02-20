@@ -50,4 +50,11 @@ public:
     }
     static lua_State* L;
     static luabridge::LuaRef makeTable();
+
+    template <typename F>
+    static void addMethod (const std::string& name, F f) {
+        luabridge::getGlobalNamespace(L)
+            .beginNamespace("monkey")
+            .addFunction(name.c_str(), f);
+    }
 };

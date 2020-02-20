@@ -27,6 +27,7 @@ int main(int argc, char* argv[])
         ext.extend(factory.get());
         engine.SetSceneFactory(factory);
         engine.Init(homeDir, game);
+        ext.extendLua();
         engine.MainLoop();
     }
     catch (Error & err) {

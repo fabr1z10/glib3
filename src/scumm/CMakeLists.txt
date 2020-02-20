@@ -8,7 +8,8 @@ add_executable(scumm
         activities/enableblock.cpp
         components/character.cpp
         components/walkarea.cpp
-        factories.cpp)
+        factories.cpp
+		lua.cpp)
 
 include_directories(${INCLUDE_DIR} ${FREETYPE_INCLUDE_DIRS} ${GLM_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS} ${LUA_INCLUDE_DIR})
 

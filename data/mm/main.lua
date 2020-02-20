@@ -36,7 +36,7 @@ engine.global_assets = {
 
 require ("sc2")
 require ("text/" .. engine.lang .. "/text")
-
+require ("./funcs")
 -- the verbs for the game. You might have multiple sets here! Watch out
 engine.config.verbs = {
  	open = { code="open", text = strings.ui.open, objects = 1, callback = scumm.script.default_handler, def = glib.curry(scumm.script.say, {strings.defaultactions[1]}) },
@@ -47,11 +47,11 @@ engine.config.verbs = {
     pick = { code="pickup", text = strings.ui.pickup, objects = 1, callback = scumm.script.default_handler, def = glib.curry(scumm.script.say, {strings.defaultactions[5]}) },
     talk = { code="talk", text = strings.ui.talkto, objects = 1, callback = scumm.script.default_handler, def = glib.curry(scumm.script.say, {strings.defaultactions[2]}) },
     give = { code="give", text = strings.ui.give, objects = 2, prep = strings.ui.giveprep },
-    use = { code="use", text = strings.ui.use, objects = 2, prep= strings.ui.useprep },
+    use = { code="use", text = strings.ui.use, objects = 2, callback = scumm.script.d2_handler, prep= strings.ui.useprep, def = glib.curry(scumm.script.say, {strings.defaultactions[2]}) },
     look = { code="look", text = strings.ui.lookat, objects = 1, callback = scumm.script.default_handler, def = glib.curry(scumm.script.say, {strings.defaultactions[4]}) },
     turnon = { code="turnon", text = strings.ui.turnon, objects = 1, callback = scumm.script.default_handler, def = glib.curry(scumm.script.say, {strings.defaultactions[2]}) },
     turnoff = { code="turnoff", text = strings.ui.turnoff, objects = 1, callback = scumm.script.default_handler, def = glib.curry(scumm.script.say, {strings.defaultactions[2]}) },
-	newkid = { code="newkid", text = strings.ui.newkid, objects = 0, callback = function() print ("ciao") end }
+	newkid = { code="newkid", text = strings.ui.newkid, objects = 0, callback = newkid }
 }
 
 engine.config.verbset = {
@@ -65,7 +65,8 @@ variables = {
 	frontdoor_open = false,
 	doormat_pulled = false,
 	frontdoor_key_taken = false,
-	frontdoor_bush_removed = false
+	frontdoor_bush_removed = false,
+	frontdoor_flag_up = false
 }
 
 

@@ -22,6 +22,7 @@ public:
     virtual std::shared_ptr<Entity> Create();
     virtual void CleanUp ();
     virtual void PostInit();
+
     //virtual std::shared_ptr<Entity> ReadItem(luabridge::LuaRef& ref) = 0;
 
     // generic function to create an object of a class T from a lua reference
@@ -57,12 +58,19 @@ public:
     void addComponentFactory (const std::string &a, std::unique_ptr<FactoryMethod<Component>> f);
     void addActivityFactory (const std::string &a, std::unique_ptr<FactoryMethod<Activity>> f);
 
+    template <typename F>
+    void addMethod(const std::string& name, F f) {
+        LuaWrapper::addMethod<F>(name, f);
+    }
+
     template <typename T>
     void add(const std::string& type) {
         m_facs.insert(std::make_pair(type, [] (const LuaTable& t) {
             return std::make_shared<T>(t);
         }));
     }
+
+
 
     template <typename T, bool = std::is_base_of<Ref, T>::value >
     std::shared_ptr<T> make (const LuaTable& t) {

@@ -42,7 +42,8 @@ local s = {
 	frontdoor_key = {x=126, y=498, width = 11, height=4 },
 	frontdoor_open = {x=1, y=397, width=40, height=78},
 	frontdoor_close = {x=42, y=397, width=40, height=78},
-
+	flag_down = {x=56,y=476,width=13,height=6, anchor = {5,4}},
+	flag_up = {x=56,y=483,width=8,height=12}
 
 }
 
@@ -88,3 +89,4 @@ scumm.utils.mm2 ('door.mat', sheet, { 'open', 'closed' }, { {s.mat_open}, {s.mat
 scumm.utils.mm2 ('front.door.key', sheet, { 'default' }, { {s.frontdoor_key} })
 scumm.utils.mm2 ('front.door.grating', sheet, { 'default' }, { {s.grating} })
 scumm.utils.mm2 ('front.door.bush', sheet, { 'default' }, { {s.bushes} })
+scumm.utils.mm2 ('front.door.flag', sheet, { 'up', 'down' }, { {s.flag_up}, {s.flag_down} })

@@ -31,4 +31,5 @@ scumm.state = {
 require ("s2/action")
 require ("s2/items")
 require ("s2/factories")
+require ("s2/utils")
 require ("s2/script")

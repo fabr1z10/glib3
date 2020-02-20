@@ -150,7 +150,8 @@ EntityWrapper EntityWrapper::GetEntityFromId(int id) {
 int EntityWrapper::AddEntity(luabridge::LuaRef ref, EntityWrapper* parent) {
 
     auto mf = Engine::get().GetSceneFactory();
-    auto ptr = mf->make<Entity>(ref);
+    LuaTable table(ref);
+    auto ptr = mf->make<Entity>(table);
     parent->m_underlying->AddChild(ptr);
     //ptr->start();
     //ptr->Begin();

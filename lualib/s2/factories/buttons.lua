@@ -1,9 +1,7 @@
-local function changecolor (color, entity)
-    entity:setcolor(color[1], color[2], color[3], color[4])
-end
-
-
 scumm.factory.button = function(args)
+	glib.assert(args.pos, "pos")
+	glib.assert(args.font, "font")
+	glib.assert(args.text, "text")
 	local pos = args.pos
 	local font = args.font 
 	local size = args.size or 8
@@ -54,9 +52,9 @@ scumm.factory.inventorybutton = function (args)
         priority = 1,
 		onenter = scumm.script.hover_on_inv_button,
         onleave = scumm.script.hover_off_inv_button,
-		onclick = function() end
+		onclick = scumm.script.run_action 
 	}
-	table.insert (button.components, { type='info', info = { obj = args.obj }})
+	table.insert (button.components, { type='info', info = { obj = args.id }})
 	return button
 	-- return scumm.factory.button {
 	-- 	pos = {0,0},
@@ -124,8 +122,8 @@ scumm.factory.verbbutton = function(args)
 		maxwidth = 170,
         size = 8, 
         priority = 1,
-		onenter = glib.curry2(changecolor, engine.config.ui.verb_selected_color), 
-        onleave = glib.curry2(changecolor, engine.config.ui.verb_unselected_color),
+		onenter = glib.curry2(scumm.script.changecolor, engine.config.ui.verb_selected_color), 
+        onleave = glib.curry2(scumm.script.changecolor, engine.config.ui.verb_unselected_color),
 		onclick = glib.curry(scumm.script.set_verb, args.verb)
 	}
 end

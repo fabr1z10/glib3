@@ -52,6 +52,8 @@ void SceneFactory::Init(Engine* engine) {
     extendLua();
 }
 
+
+
 void SceneFactory::StartUp(Engine * engine) {
     engine->EnableMouse();
     engine->EnableKeyboard();

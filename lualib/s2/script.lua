@@ -1,8 +1,13 @@
 local ai = scumm.state.actionInfo
 
+scumm.script.changecolor = function(color, entity)
+    entity:setcolor(color[1], color[2], color[3], color[4])
+end
+
 scumm.script.say = function(l) 
     return { type = scumm.action.say, args = { tag = 'player', lines = l}}
 end
+
 
 scumm.script.changeroom = function (args)
     return {
@@ -11,6 +16,7 @@ scumm.script.changeroom = function (args)
             variables.dynamic_items[engine.state.room][variables.current_player] = nil
             if not variables.dynamic_items[args.room] then variables.dynamic_items[args.room] = {} end
             variables.dynamic_items[args.room][variables.current_player] = { wa = args.walkarea, pos = args.pos, dir = args.dir }
+            variables.player_pos[variables.current_player] = args.room
         end}},
         { type = action.change_room, args = { room = args.room }}
     }
@@ -65,41 +71,8 @@ scumm.script.action_to_string = function(ai)
     return table.concat(t, " ")
 end
 
-scumm.utils.init = function(args) 
-    variables.players = {}
-    variables.inventory = {}
-    variables.dynamic_items = {}
-    for _, i in ipairs(args) do
-        if i.type == 'player' then
-            table.insert(variables.players, i.id)
-            variables.inventory[i.id] = {}
-        end
-        if not variables.dynamic_items[i.room] then variables.dynamic_items[i.room] = {} end
-        variables.dynamic_items[i.room][i.id] = { pos = i.pos, dir = i.dir }
-    end
-    variables.current_player = variables.players[1]
-end
 
-scumm.utils.mm2 = function(id, sheet, anim, frames)
-    local m = {
-        sheet = sheet, 
-        type = 'sprite.model',
-        ppu = 1
-    }
-    local dt = 0.1
-    local anims = {}
-    for i, a in ipairs(anim) do
-        local fs = {}
-        for _, f in ipairs(frames[i]) do
-            table.insert(fs, { duration = dt, quads = { {id = f }}})
-        end
-        local p = { name = a, frames = fs }
-        table.insert(anims, p)
-    end
-    m.animations = anims
 
-    engine.assets.models[id] = m
-end
 
 
 scumm.script.getCurrentVerb = function()
@@ -115,14 +88,21 @@ scumm.script.reset_verb = function()
     scumm.script.set_verb(engine.config.default_verb)
 end
 
-scumm.script.set_verb = function(verb)
-    ai.verb = verb
-    ai.obj1 = nil
-    ai.obj2 = nil
-    ai.selectSecond = false
-    scumm.script.updateVerb()
-end
 
+
+scumm.script.set_verb = function(verb)
+    local v = engine.config.verbs[verb]
+    if v.objects > 0 then
+        ai.verb = verb
+        ai.obj1 = nil
+        ai.obj2 = nil
+        ai.selectSecond = false
+        scumm.script.updateVerb()
+    else
+        v.callback()
+
+    end
+end
 
 scumm.script.hoverOn = function(obj)
 	local actionInfo = scumm.state.actionInfo
@@ -183,6 +163,89 @@ scumm.script.run_action = function()
 
 end
 
+
+
+-- handler for verbs taking two objects (i.e. use, and give)
+scumm.script.d2_handler = function(verb)
+    --print ('verb is ' .. verb)
+
+    -- clearly, if no object is selected, do nothing
+    local item1 = engine.items[ai.obj1]
+    if not item1 then
+        return
+    end
+
+    local actions = {}
+
+    -- if only one object is selected, check out if use is available for obj1
+    if ai.obj1 and not ai.obj2 then
+        -- check if item has a walkto. If so, walk the player to the object, unless player owns it
+        if (item1.actions and item1.actions[verb] and not item1.actions[verb] == 'table') then
+            if not scumm.utils.has_player(ai.obj1) then
+                scumm.utils.add_walk_to (actions, ai.obj1)
+            end            
+            local add = glib.get(item.actions[verb])
+            table.insert (actions, add)
+        else
+            -- add the preposition
+            ai.selectSecond = true
+            scumm.script.updateVerb()
+
+        end
+
+
+    end
+
+    if ai.obj1 and ai.obj2 then
+        local item2 = engine.items[ai.obj2]
+        -- both objects specified. Here we need to make some distinctions
+
+        -- easy. player has ONE of the items
+        -- in this case we walk to 
+        has_o1 = scumm.utils.has_player (ai.obj1)
+        has_o2 = scumm.utils.has_player (ai.obj2)
+        if (has_o1 ~= has_o2) or (has_o1 and has_o2) then
+            if (has_o1 ~= has_o2) then
+                external_item = has_o1 and item2 or item1            
+                scumm.utils.add_walk_to (actions, external_item)
+            end
+            -- check if item1 has the action
+            custom_action = nil
+            i1a = item1.actions and item1.actions[verb] and item1.actions[verb][ai.obj2]
+
+            if not i1a then
+                i2a = item2.actions and item2.actions[verb] and item2.actions[verb][ai.obj1]
+                if not i2a then 
+                    -- default 
+                    table.insert (actions, engine.config.verbs[verb].def())                    
+                else
+                    custom_action = item2.actions[verb][ai.obj1]
+                end
+            else
+                custom_action = item1.actions[verb][ai.obj2]
+            end
+            if custom_action then
+                local add = glib.get(custom_action)
+                table.insert (actions, add)
+            end
+        else
+            -- player doesn't have any of the items...
+            print ('not supported yet.')
+        end
+    end
+
+    if next(actions) == nil then
+        return
+    end
+    table.insert (actions, { type = action.callfunc, args = { func = function() scumm.script.reset_verb() end }})
+
+    local s = script.make(actions)
+    s.name="_walk"
+    monkey.play(s)  
+
+end
+
+
 scumm.script.default_handler = function(verb)
     --print ('default handler! verb = ' .. verb)
 
@@ -192,14 +255,13 @@ scumm.script.default_handler = function(verb)
         return
     end
 
-    -- check if item has a walkto
-    local hs = item.hotspot
-    print ("eccoci " .. tostring(hs.walk_to[1]))
-    local actions = {
-        { type = scumm.action.walkto, args = {tag='player', pos = hs.walk_to }},
-        -- turn towards item
-        { type = scumm.action.turn, args = { tag = 'player', dir = hs.dir }},
-    }
+    local actions = {}
+    -- check if item has a walkto. If so, walk the player to the object, unless player owns it
+    if not scumm.utils.has_player(ai.obj1) then
+        local hs = item.hotspot
+        table.insert (actions, { type = scumm.action.walkto, args = {tag='player', pos = hs.walk_to }})
+        table.insert (actions, { type = scumm.action.turn, args = { tag = 'player', dir = hs.dir }})
+    end
 
     if item.actions then
         if item.actions[verb] then
