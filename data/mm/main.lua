@@ -63,6 +63,7 @@ variables = {
 
 	-- game status
 	frontdoor_open = false,
+	cellar_door_open = false,
 	doormat_pulled = false,
 	frontdoor_key_taken = false,
 	frontdoor_bush_removed = false,

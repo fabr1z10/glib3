@@ -13,6 +13,7 @@ scumm.utils.init = function(args)
     variables.player_pos = {}
     variables.inventory = {}
     variables.dynamic_items = {}
+    variables.pending_action = {}
     for _, i in ipairs(args) do
         if i.type == 'player' then
             table.insert(variables.players, i.id)
@@ -33,13 +34,13 @@ scumm.utils.has_player = function(id)
 end
 
 -- helper function to buils prite models!
-scumm.utils.mm2 = function(id, sheet, anim, frames)
+scumm.utils.mm2 = function(id, sheet, anim, frames, frametime)
     local m = {
         sheet = sheet, 
         type = 'sprite.model',
         ppu = 1
     }
-    local dt = 0.1
+    local dt = frametime or 0.1
     local anims = {}
     for i, a in ipairs(anim) do
         local fs = {}

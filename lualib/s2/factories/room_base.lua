@@ -3,7 +3,7 @@ function scumm.factory.room_base (args)
 	-- validation phase
 	glib.assert(args.width, "width")
 	glib.assert(args.height, "width")
-	glib.assert(args.defaultroom, "Room requires <defaultroom>")
+	--glib.assert(args.defaultroom, "Room requires <defaultroom>")
 	
 	local font_size = args.font_size or 8
 

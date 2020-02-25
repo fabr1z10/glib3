@@ -41,6 +41,7 @@ scumm.script.pickup = function(id, flag)
 end
 
 scumm.script.walk = function(x, y) 
+    scumm.script.check_pending_script()
 	local actions = {
 		{ type = scumm.action.walkto, args = {tag='player', pos = {x, y}}}
 	}
@@ -145,11 +146,25 @@ scumm.script.hover_off_inv_button = function(entity)
     scumm.script.hoverOff()
 end
 
+scumm.script.check_pending_script = function()
+    -- check if the player has a pending action
+    if variables.pending_action[variables.current_player] then
+        local s = script.make(variables.pending_action[variables.current_player])        
+        monkey.play(s)  
+        variables.pending_action[variables.current_player] = nil
+    end
+
+end
+
 scumm.script.run_action = function()
     -- mm, no target object here, just ignore the click
+
+
     if not ai.obj1 then
         return
     end
+
+    scumm.script.check_pending_script()
 
     -- get the verb handler
     local f = engine.config.verbs[ai.verb].callback

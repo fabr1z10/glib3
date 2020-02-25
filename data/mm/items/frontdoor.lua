@@ -41,7 +41,8 @@ engine.items["frontdoor.door"] = {
  				variables.frontdoor_open = true
  				return { type = action.animate, args = { tag = 'frontdoor.door', anim='open'}}
  			end
- 		}
+ 		},
+ 		walk = function() if variables.frontdoor_open then return scumm.script.changeroom { room = 'entrance', pos = {10, 10}, dir='e' } end end
  		--look = scumm.script.say ({ strings.gate[1], strings.gate[2]})
 	}
 }

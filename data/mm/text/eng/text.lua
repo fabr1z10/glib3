@@ -39,11 +39,21 @@ strings = {
     	grating = 'grating',
     	bushes = 'bushes',
     	mailbox = 'mailbox',
-    	flag ='flag'
+    	flag ='flag',
+        gfclock = 'grandfather clock',
+        vase = 'vase',
+        door = 'door',
+        gargoyle = 'gargoyle'
+
     },
     gate = {
     	[1] = 'WARNING!!',
     	[2] = 'Trespassers will be horribly mutilated.'
+    },
+    entrance = {
+        [1] = 'It\'s the correct time.',
+        [2] = 'There\'s no handle here!'
+        
     }
 }
 

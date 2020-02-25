@@ -42,8 +42,16 @@ local s = {
 	frontdoor_key = {x=126, y=498, width = 11, height=4 },
 	frontdoor_open = {x=1, y=397, width=40, height=78},
 	frontdoor_close = {x=42, y=397, width=40, height=78},
+	--frontdoor_open_in = {x=1, y=397, width=40, height=78},
+	frontdoor_open_in = {x=28, y=284, width=25, height=112},
+	frontdoor_close_in = {x=1, y=284, width=25, height=112},
+	entr_cellar_door_open = {x = 97, y=307, width=42, height=89},
+	entr_cellar_door_closed = {x = 54, y=307, width=42, height=89},
+
 	flag_down = {x=56,y=476,width=13,height=6, anchor = {5,4}},
-	flag_up = {x=56,y=483,width=8,height=12}
+	flag_up = {x=56,y=483,width=8,height=12},
+	gf_clock_1 = {x=83, y=426, width=16, height=49},
+	gf_clock_2 = {x=100, y=426, width=16, height=49},
 
 }
 
@@ -85,8 +93,11 @@ engine.assets.models["dave"] = {
 }
 
 scumm.utils.mm2 ('front.door', sheet, { 'open', 'closed' }, { {s.frontdoor_open}, {s.frontdoor_close} })
+scumm.utils.mm2 ('entrance.door.out', sheet, { 'open', 'closed' }, { {s.frontdoor_open_in}, {s.frontdoor_close_in} })
+scumm.utils.mm2 ('entrance.cellar.door', sheet, { 'open', 'closed' }, { {s.entr_cellar_door_open}, {s.entr_cellar_door_closed} })
 scumm.utils.mm2 ('door.mat', sheet, { 'open', 'closed' }, { {s.mat_open}, {s.mat_closed} })
 scumm.utils.mm2 ('front.door.key', sheet, { 'default' }, { {s.frontdoor_key} })
 scumm.utils.mm2 ('front.door.grating', sheet, { 'default' }, { {s.grating} })
 scumm.utils.mm2 ('front.door.bush', sheet, { 'default' }, { {s.bushes} })
 scumm.utils.mm2 ('front.door.flag', sheet, { 'up', 'down' }, { {s.flag_up}, {s.flag_down} })
+scumm.utils.mm2 ('grandfather.clock', sheet, { 'default' }, { {s.gf_clock_1, s.gf_clock_2} }, 1)
