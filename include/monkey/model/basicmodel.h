@@ -6,6 +6,7 @@
 // a model with only one mesh
 class BasicModel : public IModel {
 public:
+    BasicModel();
     BasicModel (std::shared_ptr<IMesh> mesh);
     Bounds GetBounds() const override;
     void Draw (Shader*);

@@ -1,5 +1,6 @@
 #include <monkey/model/basicmodel.h>
 
+BasicModel::BasicModel() {}
 BasicModel::BasicModel (std::shared_ptr<IMesh> mesh) : m_mesh(mesh) {}
 
 Bounds BasicModel::GetBounds() const {

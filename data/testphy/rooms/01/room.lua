@@ -8,17 +8,17 @@ room = {
 				tag = "main",
 				camera = {
 					tag = "maincam",
-					type="ortho",
-					size = {320, 200},
-					bounds = {0, 0, 320, 200},
-					viewport = {0, 0, 320, 200}
+					type="perspective",
+					pos = {0, 0, 200},
+					direction = {0,0,-1}
 				},
 				children = {
 					{ 
 						tag = 'gnd',
 						pos = {0, -56, 0},
 						components = {
-							{ type = 'rigidbody', mass = 0, shape = { type = 'btbox', half_extents = {50, 50, 50} } }
+							{ type = 'rigidbody', mass = 0, shape = { type = 'btbox', half_extents = {50, 50, 50} } },
+							{ type = 'gfx', model = 'box1'}
 						}							
 					},
 					{ 

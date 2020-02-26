@@ -56,6 +56,7 @@ BasicRenderer::BasicRenderer(const LuaTable & t) : Renderer() {
     } else if (t.HasKey("model")) {
         std::string modelId = t.Get<std::string>("model");
         m_model = std::dynamic_pointer_cast<BasicModel>(Engine::get().GetAssetManager().GetModel(modelId));
+        m_baseModel = m_model.get();
     }
 //    } else if (t.HasKey("prim3d")) {
 //        auto factory = Engine::get().GetSceneFactory();

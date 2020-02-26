@@ -8,12 +8,14 @@
 
 #include <monkey/shader.h>
 #include <monkey/error.h>
-#include <sstream>
+
 #include <iostream>
-#include <monkey/lightshader.h>
-#include <monkey/shader/tex_unlit.h>
-#include <monkey/shader/color_unlit.h>
-#include <monkey/shader/tex_light.h>
+
+#include <monkey/shader/texunlit.h>
+#include <monkey/shader/colorunlit.h>
+#include <monkey/shader/text.h>
+//#include <monkey/shader/colorlight.h>
+
 
 Shader* Shader::g_currentShader = nullptr;
 
@@ -29,14 +31,7 @@ void Shader::SetCurrentShader(Shader* s) {
     g_currentShader->Start();
 }
 
-Shader::Shader(
-    ShaderType type,
-    const char* vertex,
-    const char* fragment,
-    unsigned int attributes,
-    std::unordered_map<ShaderUniform, std::string, EnumClassHash> m_uniforms) :
-m_nAttributes(attributes), m_shaderId(type)
-{
+Shader::Shader(const char* vertex, const char* fragment) {
     GLint result;
     auto vid = glCreateShader(GL_VERTEX_SHADER);
     auto fid = glCreateShader(GL_FRAGMENT_SHADER);
@@ -84,11 +79,7 @@ m_nAttributes(attributes), m_shaderId(type)
     m_programId = progId;
     
     glUseProgram(progId);
-    AddUniform(MODELVIEW, "MVmat");
-    AddUniform(PROJECTION, "ProjMat");
-    for (auto iter = m_uniforms.begin(); iter != m_uniforms.end(); iter++)
-        AddUniform(iter->first, iter->second.c_str());
-        
+
 }
 
 void Shader::Start() {
@@ -108,49 +99,57 @@ void Shader::AddUniform(ShaderUniform unif, const char* name) {
     m_locations[unif] = loc;
 }
 
-std::unique_ptr<Shader> ShaderFactory::GetShader(const std::string& shaderId) {
-    // IMPROVE HERE
-    if (shaderId == "unlit_textured")
-        return GetTextureShader();
-    else if (shaderId == "unlit_color")
-        return GetColorShader();
-    else if (shaderId == "text")
-        return GetTextShader();
-    else if (shaderId == "light_color")
-        return GetLightColorShader();
-    else if (shaderId == "light_textured")
-        return GetLightTexShader();
-    else
-        GLIB_FAIL("Unknown shader " << shaderId);
-}
-
-std::unique_ptr<Shader> ShaderFactory::GetTextureShader() {
-    std::unordered_map <ShaderUniform, std::string, EnumClassHash> uniforms;
-    uniforms[TEXTURE] = "Tex1";
-    uniforms[TINT] = "color";
-    return std::unique_ptr<Shader> (
-            new Shader(TEXTURE_SHADER, vs_tex_unlit, fs_tex_unlit, 2, uniforms));
-}
-
-std::unique_ptr<Shader> ShaderFactory::GetColorShader() {
-    std::unordered_map <ShaderUniform, std::string, EnumClassHash> uniforms;
-    uniforms[TINT] = "color";
-    return std::unique_ptr<Shader>(new Shader(COLOR_SHADER, vs_color_unlit, fs_color_unlit, 2, uniforms));
-}
-
-std::unique_ptr<Shader> ShaderFactory::GetLightColorShader() {
-    std::unordered_map <ShaderUniform, std::string, EnumClassHash> uniforms;
-    uniforms[LIGHTCOLOR] = "lightColor";
-    return std::unique_ptr<Shader>(new LightShader(COLOR_SHADER_LIGHT, basic_vshader_light, basic_fshader_light, 2, uniforms));
-}
-
-std::unique_ptr<Shader> ShaderFactory::GetLightTexShader() {
-    std::unordered_map <ShaderUniform, std::string, EnumClassHash> uniforms;
-    uniforms[LIGHTCOLOR] = "lightColor";
-    uniforms[LIGHTDIR] = "lightDir";
-    uniforms[AMBIENT] = "ambient";
-    return std::unique_ptr<Shader>(new LightShader(TEXTURE_SHADER_LIGHT, vs_tex_light, fs_tex_light, 3, uniforms));
-}
+//std::unique_ptr<Shader> ShaderFactory::GetShader(const std::string& shaderId) {
+//    // IMPROVE HERE
+//    if (shaderId == "unlit_textured")
+//        return GetTextureShader();
+//    else if (shaderId == "unlit_color")
+//        return GetColorShader();
+//    else if (shaderId == "text")
+//        return GetTextShader();
+//    else if (shaderId == "light_color")
+//        return GetLightColorShader();
+//    else if (shaderId == "light_textured")
+//        return GetLightTexShader();
+//    else
+//        GLIB_FAIL("Unknown shader " << shaderId);
+//}
+//
+//std::unique_ptr<Shader> ShaderFactory::GetTextureShader() {
+//    std::unordered_map <ShaderUniform, std::string, EnumClassHash> uniforms;
+//
+//
+//    return std::unique_ptr<Shader> (
+//            new Shader(TEXTURE_SHADER, vs_tex_unlit, fs_tex_unlit, 2, uniforms));
+//}
+//
+//std::unique_ptr<Shader> ShaderFactory::GetColorShader() {
+//    std::unordered_map <ShaderUniform, std::string, EnumClassHash> uniforms;
+//    uniforms[MODELVIEW] = "MVmat";
+//    uniforms[PROJECTION] = "ProjMat";
+//    uniforms[TINT] = "color";
+//    return std::unique_ptr<Shader>(new Shader(COLOR_SHADER, vs_color_unlit, fs_color_unlit, 2, uniforms));
+//}
+//
+//std::unique_ptr<Shader> ShaderFactory::GetLightColorShader() {
+//    std::unordered_map <ShaderUniform, std::string, EnumClassHash> uniforms;
+//    uniforms[MODEL] = "modelMat";
+//    uniforms[VIEW] = "viewMat";
+//    uniforms[PROJECTION] = "ProjMat";
+//    uniforms[LIGHTCOLOR] = "lightColor";
+//    return std::unique_ptr<Shader>(new LightShader(COLOR_SHADER_LIGHT, basic_vshader_light, basic_fshader_light, 2, uniforms));
+//}
+//
+//std::unique_ptr<Shader> ShaderFactory::GetLightTexShader() {
+//    std::unordered_map <ShaderUniform, std::string, EnumClassHash> uniforms;
+//    uniforms[MODEL] = "modelMat";
+//    uniforms[VIEW] = "viewMat";
+//    uniforms[PROJECTION] = "ProjMat";
+//    uniforms[LIGHTCOLOR] = "lightColor";
+//    uniforms[LIGHTDIR] = "lightDir";
+//    uniforms[AMBIENT] = "ambient";
+//    return std::unique_ptr<Shader>(new LightShader(TEXTURE_SHADER_LIGHT, vs_tex_light, fs_tex_light, 3, uniforms));
+//}
 
 
 GLuint Shader::GetUniformLocation(ShaderUniform uniform) {
@@ -160,15 +159,31 @@ GLuint Shader::GetUniformLocation(ShaderUniform uniform) {
     return iter->second;
 }
 
-std::unique_ptr<Shader> ShaderFactory::GetTestShader() {
-    std::unordered_map <ShaderUniform, std::string, EnumClassHash> uniforms;
-    return std::unique_ptr<Shader>(new Shader(COLOR_SHADER, test_vertex_shader, test_frag_shader, 1, uniforms));
-}
+//std::unique_ptr<Shader> ShaderFactory::GetTestShader() {
+//    std::unordered_map <ShaderUniform, std::string, EnumClassHash> uniforms;
+//    return std::unique_ptr<Shader>(new Shader(COLOR_SHADER, test_vertex_shader, test_frag_shader, 1, uniforms));
+//}
 
-std::unique_ptr<Shader> ShaderFactory::GetTextShader() {
-    std::unordered_map <ShaderUniform, std::string, EnumClassHash> uniforms;
-    uniforms[TEXTURE] = "Tex1";
-    uniforms[TINT] = "color";
-    return std::unique_ptr<Shader>(new Shader(TEXT_SHADER, text_vshader, text_fshader, 3, uniforms));
+//std::unique_ptr<Shader> ShaderFactory::GetTextShader() {
+//    std::unordered_map <ShaderUniform, std::string, EnumClassHash> uniforms;
+//    uniforms[TEXTURE] = "Tex1";
+//    uniforms[TINT] = "color";
+//    return std::unique_ptr<Shader>(new Shader(TEXT_SHADER, text_vshader, text_fshader, 3, uniforms));
+//
+//}
+
+ShaderFactory::ShaderFactory() {
+    m_facs["unlit_textured"] = [] () { return std::make_unique<TexturedUnlit>(); };
+    m_facs["unlit_color"] = [] () { return std::make_unique<ColorUnlit>(); };
+    m_facs["text"] = [] () { return std::make_unique<TextShader>(); };
+
+
+}
+std::unique_ptr<Shader> ShaderFactory::getShader(const std::string &shaderId) {
+    auto factory = m_facs.find(shaderId);
+    if (factory == m_facs.end()) {
+        GLIB_FAIL("unknown shader " << shaderId);
+    }
+    return factory->second();
 
 }

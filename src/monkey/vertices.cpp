@@ -24,6 +24,14 @@ void VertexColor::InitAttributes() {
 
 }
 
+void VertexColorNormal::InitAttributes() {
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(VertexColorNormal), (void*)offsetof(VertexColorNormal, x));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(VertexColorNormal), (void*)offsetof(VertexColorNormal, nx));
+    glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(VertexColorNormal), (void*)offsetof(VertexColorNormal, r));
+
+}
+
+
 void VertexText::InitAttributes() {
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(VertexText), (void*)offsetof(VertexText, x));
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(VertexText), (void*)offsetof(VertexText, s));

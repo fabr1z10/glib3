@@ -98,6 +98,7 @@ void RenderingEngine::Update(double)
     //std::cout << root->ToString() << "\n";
     for (auto& shader : m_shaders) {
         ShaderType stype = shader->GetShaderId();
+        // start the shader
         Shader::SetCurrentShader(shader.get());
 
         // loop through all nodes
@@ -134,6 +135,8 @@ void RenderingEngine::Update(double)
                 glm::mat4 mvm = cam->m_viewMatrix * wt;
                 GLuint mvLoc = shader->GetUniformLocation(MODELVIEW);
                 glUniformMatrix4fv(mvLoc, 1, GL_FALSE, &mvm[0][0]);
+                shader->initMesh(wt, cam);
+
                 renderer->Draw(shader.get());
             }
             ++iterator;

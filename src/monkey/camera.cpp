@@ -101,6 +101,14 @@ PerspectiveCamera::PerspectiveCamera (glm::vec4 viewport, float fov, float nearP
     
 }
 
+PerspectiveCamera::PerspectiveCamera(const LuaTable & t) : Camera(t), WindowResizeListener() {
+    // get field of view
+    m_fov = t.Get<float>("fov", 45.0f);
+    m_near = t.Get<float>("near", 0.05f);
+    m_far = t.Get<float>("far", 1000.0f);
+    SetPosition(m_eye, m_fwd, m_up);
+}
+
 void PerspectiveCamera::Notify(float w, float h) {
     Resize(w, h);
 }

@@ -26,6 +26,7 @@
 #include <monkey/activities/changeroom.h>
 #include <monkey/activities/callfunc.h>
 #include <monkey/entities/textview.h>
+#include <monkey/mesh3dfactory.h>
 
 
 void SceneFactory::Init(Engine* engine) {
@@ -61,9 +62,10 @@ void SceneFactory::StartUp(Engine * engine) {
     LuaTable engineDef(LuaWrapper::GetGlobal("engine"));
     std::vector<std::string> shaders = engineDef.GetVector<std::string>("shaders");
     auto re = engine->GetRenderingEngine();
+    ShaderFactory sf;
     for (auto& shaderId : shaders) {
         std::cout << "Loading shader: " << shaderId << "\n";
-        auto sh = ShaderFactory::GetShader(shaderId);
+        auto sh = sf.getShader(shaderId);
         re->AddShader(std::move(sh));
         // engine->AddShader(std::move(sh));
     }
@@ -126,6 +128,7 @@ SceneFactory::SceneFactory() {
 
     // cameras
     add<OrthographicCamera> ("ortho");
+    add<PerspectiveCamera> ("perspective");
 
     // shapes
     add<Poly> ("poly");
@@ -137,6 +140,8 @@ SceneFactory::SceneFactory() {
     // other
     add<Font> ("font");
     add<Linear2Dy> ("linear_y");
+
+    add<Box3D> ("box3d");
 //    m_runnerFactory.Add<CollisionEngineFactory>("collision");
 //    m_runnerFactory.Add<CollisionEngine3DFactory>("collision3d");
 //

@@ -21,41 +21,6 @@
 
 class Shader;
 
-
-
-//struct FrameInfo {
-//    int offset, count;
-//    float duration;
-//};
-//
-//struct AnimInfo {
-//public:
-//    AnimInfo (bool loop) : loop(loop) {}
-//    size_t getFrameCount () const {
-//        return frameInfo.size();
-//    }
-//    bool isLoop() const {
-//        return loop;
-//    }
-//    void AddFrameInfo(FrameInfo& f) {
-//        frameInfo.emplace_back(f);
-//    }
-//    int getCount(int frame) const {
-//        return frameInfo[frame].count;
-//    }
-//    int getOffset(int frame) const {
-//        return frameInfo[frame].offset;
-//    }
-//    float getDuration (int frame) const {
-//        return frameInfo[frame].duration;
-//    }
-//private:
-//    bool loop;
-//    std::vector<FrameInfo> frameInfo;
-//
-//};
-
-// abstract class for mesh
 class IMesh {
 public:
     IMesh(ShaderType type) : m_vb(INVALID_OGL_VALUE), m_ib(INVALID_OGL_VALUE), m_shaderType{type} {}

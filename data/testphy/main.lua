@@ -2,7 +2,7 @@ engine = {
 	device_size = { 320, 200 },
 	window_size = { 640, 400 },
 	title = "Test Physics",
-	shaders = { "unlit_textured", "unlit_color", "text" },
+	shaders = { "light_color", "light_textured", "text" },
 	assets = {
 		fonts = {
 	    	main = {type ="font", file  = "./fonts/arial.ttf" },
@@ -18,6 +18,6 @@ engine = {
 }
 
 require("glib")
-
+glib.load_folder ('models')
 
 
