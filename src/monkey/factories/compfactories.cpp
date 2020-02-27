@@ -72,25 +72,25 @@ std::shared_ptr<Component> TextComponentFactory::Create(luabridge::LuaRef &ref) 
 //
 //}
 
-std::shared_ptr<Component> LightComponentFactory::Create(luabridge::LuaRef &ref) {
-    LuaTable table(ref);
-    std::string cl = table.Get<std::string>("class");
-    if (cl == "ambient") {
-
-        glm::vec3 color = table.Get<glm::vec3>("color");
-        color /= 255.0f;
-        return std::make_shared<AmbientLight>(color);
-    } else if (cl=="directional") {
-        glm::vec3 dir = table.Get<glm::vec3>("dir");
-        glm::vec3 color = table.Get<glm::vec3>("color");
-        color /= 255.0f;
-        return std::make_shared<DirectionalLight>(dir, color);
-
-    } else {
-        GLIB_FAIL("Unknown light class: " << cl);
-    }
-
-}
+//std::shared_ptr<Component> LightComponentFactory::Create(luabridge::LuaRef &ref) {
+//    LuaTable table(ref);
+//    std::string cl = table.Get<std::string>("class");
+//    if (cl == "ambient") {
+//
+//        glm::vec3 color = table.Get<glm::vec3>("color");
+//        color /= 255.0f;
+//        return std::make_shared<AmbientLight>(color);
+//    } else if (cl=="directional") {
+//        glm::vec3 dir = table.Get<glm::vec3>("dir");
+//        glm::vec3 color = table.Get<glm::vec3>("color");
+//        color /= 255.0f;
+//        return std::make_shared<DirectionalLight>(dir, color);
+//
+//    } else {
+//        GLIB_FAIL("Unknown light class: " << cl);
+//    }
+//
+//}
 
 //std::shared_ptr<Component> Gfx3DComponentFactory::Create(luabridge::LuaRef & ref){
 //    LuaTable table(ref);

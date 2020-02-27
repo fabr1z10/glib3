@@ -19,7 +19,13 @@ enum ShaderType {
 };
 
 enum ShaderUniform {
-    PROJECTION, MODELVIEW, MODEL, VIEW, TEXTURE, TINT, LIGHTDIR, LIGHTCOLOR, AMBIENT
+    PROJECTION,
+    MODELVIEW,
+    MODEL,
+    VIEW,
+    TEXTURE,
+    TINT,
+    LIGHTDIR, LIGHTCOLOR, AMBIENT
 };
 
 enum TextAlignment {

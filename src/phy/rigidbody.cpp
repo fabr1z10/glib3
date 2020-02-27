@@ -88,7 +88,8 @@ void RigidBody::Update(double dt) {
     // associate this transform to entity
     // ...
 
-    std::cerr << m_entity->GetTag() << " --> " << wt[3][0] << ", " << wt[3][1] << ", " << wt[3][2] << "\n";
+    //std::cerr << m_entity->GetTag() << " --> " << wt[3][0] << ", " << wt[3][1] << ", " << wt[3][2] << "\n";
+    m_entity->SetLocalTransform(wt);
 
 }
 

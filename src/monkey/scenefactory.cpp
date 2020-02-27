@@ -111,6 +111,7 @@ SceneFactory::SceneFactory() {
     add<BasicRenderer> ("gfx");
     add<LuaKeyListener> ("keylistener");
     add<LuaInfo> ("info");
+    add<DirectionalLight> ("directional.light");
 
     // actions
     add<DelayTime> ("delay");
@@ -142,6 +143,7 @@ SceneFactory::SceneFactory() {
     add<Linear2Dy> ("linear_y");
 
     add<Box3D> ("box3d");
+    add<Sphere3D> ("sphere3d");
 //    m_runnerFactory.Add<CollisionEngineFactory>("collision");
 //    m_runnerFactory.Add<CollisionEngine3DFactory>("collision3d");
 //

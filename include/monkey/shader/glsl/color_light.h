@@ -40,7 +40,7 @@ const char basic_fshader_light[] =
         "    float diff = max(dot(normal, lightDir), 0.0);\n"
         "    vec3 ambient = dirLight.ambient * vec3(col);\n"
         "    vec3 diffuse = dirLight.diffuse * diff * vec3(col);\n"
-        "    vec3 result = (ambient + diffuse);\n"
-        "    FragColor = vec4(1.0);\n //vec4(result, 1.0);\n"
+        "    vec3 result = diffuse; // (ambient + diffuse);\n"
+        "    FragColor = vec4(result, 1.0);\n"
         "}\n"
 ;

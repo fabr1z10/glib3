@@ -52,10 +52,11 @@ struct VertexColor {
 };
 
 struct VertexColorNormal {
+    VertexColorNormal() : x(0), y(0), z(0), nx(0), ny(0), nz(0), r(0), g(0), b(0), a(0) {}
     VertexColorNormal(GLfloat x, GLfloat y, GLfloat z,
         GLfloat nx, GLfloat ny, GLfloat nz,
         GLfloat r = 1.0f, GLfloat g = 1.0f, GLfloat b = 1.0f, GLfloat a = 1.0f)
-            : x(x), y(y), z(z), r(r), g(g), b(b), a(a) {}
+            : x(x), y(y), z(z), nx(nx), ny(ny), nz(nz), r(r), g(g), b(b), a(a) {}
     GLfloat x, y, z;
     GLfloat nx, ny, nz;
     GLfloat r, g, b, a;
