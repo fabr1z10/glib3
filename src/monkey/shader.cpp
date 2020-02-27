@@ -14,6 +14,7 @@
 #include <monkey/shader/texunlit.h>
 #include <monkey/shader/colorunlit.h>
 #include <monkey/shader/text.h>
+#include <monkey/shader/lightshader.h>
 //#include <monkey/shader/colorlight.h>
 
 
@@ -176,6 +177,7 @@ ShaderFactory::ShaderFactory() {
     m_facs["unlit_textured"] = [] () { return std::make_unique<TexturedUnlit>(); };
     m_facs["unlit_color"] = [] () { return std::make_unique<ColorUnlit>(); };
     m_facs["text"] = [] () { return std::make_unique<TextShader>(); };
+    m_facs["light_color"] = [] () { return std::make_unique<LightShader>(); };
 
 
 }
