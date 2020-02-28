@@ -3,17 +3,11 @@
 engine = {
 	device_size = { 320, 200 },
 	window_size = { 640, 400 },
-	title = "The secret of Monkey Island",
-	shaders = { "unlit_textured", "unlit_color", "text" },
-	global_assets = {
-		fonts = { "ui", "monkey" }
-	},
-	start_room = "kitchen",
-	lang = "eng",
+	title = 'The secret of Monkey Island',
+	lang = "eng",	
 	config = {
-	    default_verb = "walk",
+	    default_verb = 'walk',
 	    font_size = 8,
-		style = "scumm",
 	   	ui = {
 			height = 56,
 	    	verb_unselected_color = { 0, 170, 0, 255},
@@ -22,8 +16,13 @@ engine = {
 			inv_unselected = {170, 0, 170, 255},
 			inv_selected = {255, 85, 255, 255},
 			font = "ui"
-		}     	
-	}
+		},
+		dialogue_font = 'monkey'    	
+	},
+	--shaders = { "unlit_textured", "unlit_color", "text" },
+	global_assets = {
+		fonts = { "ui", "monkey" }
+	},
 }
 
 -- assets
@@ -37,10 +36,8 @@ engine.assets = {
 
 require ("sc2")
 
-
+-- load strings
 require ("text/" .. engine.lang .. "/text")
-
-
 
 -- the verbs for the game. You might have multiple sets here! Watch out
 engine.config.verbs = {
@@ -60,7 +57,6 @@ engine.config.verbs = {
 
 engine.config.verbset = {
     [1] = { "open", "close", "push", "pull", "walk", "pick", "talk", "give", "use", "look", "turnon", "turnoff" }
-
 }
 
 variables = {
@@ -106,7 +102,7 @@ variables = {
 	know_where_sword_master_is = false,
 	play_swordmaster_storekeeper_cutscene = false,
 -- 	talked_to_troll = false,
- 	inventory = { 	},
+ 	--inventory = { 	},
 
 	save_states = {
 		start = function()
@@ -162,10 +158,17 @@ variables = {
 require ("./func")
 require("ff")
 
+
+
 glib.load_folder ('items')
 glib.load_folder ('sprites')
-variables.save_states.start()
+glib.load_folder ('dialogues')
 
+--variables.save_states.start()
 
+require('states')
+
+-- initialize player position and initial room
+states.start ()
 --require("defaultscripts")
 

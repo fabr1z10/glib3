@@ -2,6 +2,7 @@
 
 require ('s2/factories/room_base')
 require ('s2/factories/room_mp')
+require ('s2/factories/room_dialogue')
 
 function scumm.func.toggle_pause () 
 	scumm.state.game_paused = not scumm.state.game_paused;

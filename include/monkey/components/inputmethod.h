@@ -11,6 +11,7 @@ public:
     // input method abstracts an input control
     // it can be human driven
     InputMethod() = default;
+    InputMethod(const LuaTable& t) : Component(t) {}
     InputMethod(const InputMethod& orig) : Component(orig) {}
 
     // first of all, it has a keydown event.
@@ -33,6 +34,7 @@ class KeyboardInputMethod : public InputMethod, public KeyboardListener {
 public:
     KeyboardInputMethod() : InputMethod(), m_demoMode(false), m_demoTimer(0.0), m_length(0.0f) {}
     KeyboardInputMethod(const KeyboardInputMethod& orig) : InputMethod(orig) {}
+    KeyboardInputMethod(const LuaTable&);
     std::shared_ptr<Component> clone() const override;
     void Start() override {}
     void Update (double) override;

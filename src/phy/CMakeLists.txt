@@ -13,6 +13,7 @@ add_executable(phy
         factories.cpp
         rigidbody.cpp
         btshapewrapper.cpp
+        c3d.cpp
         bulletengine.cpp)
 
 include_directories(${INCLUDE_DIR} ${FREETYPE_INCLUDE_DIRS} ${GLM_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS} ${LUA_INCLUDE_DIR} ${BULLET_INCLUDE_DIRS})

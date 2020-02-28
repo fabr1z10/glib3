@@ -3,33 +3,17 @@ local items = engine.items
 roomDefinition = {
 	width = 640,
 	height = 144,
-
-	startTable = {
-		--village1 = { walkarea ="scummbar.walkarea", pos = {50, 10}, dir ='e'}
-		village1 = { walkarea = 'scummbar.walkarea', pos = items['scummbar.door.out'].hotspot.walk_to, dir = 'e'},
-		-- mancomb = { walkarea = "scummbar.walkarea", pos = items["scummbar.mancomb"].hotspot.walk_to, dir = "north"},
-		-- estevan = { walkarea = "scummbar.walkarea", pos = items["scummbar.estevan"].hotspot.walk_to, dir = "south"},
-		-- loompirate = { walkarea = "scummbar.walkarea", pos = items["scummbar.loompirate"].hotspot.walk_to, dir = "north"},		
-		-- kitchen = { walkarea = "scummbar.walkarea", pos = items["scummbar.door_kitchen"].hotspot.walk_to, dir="west"}
-	},
-
-	defaultroom = "village1",
-	depth = { type="linear_y", values= {0, 1, 144, 0} },
-	--font_size = 8,
-	playerid="guybrush",
 	walkareas = { 'scummbar.walkarea' },
-	collide = true
-
-	--depth = { type="linear_y", values= {0, 1, 144, 0} },
-	--scale = { type="linear_y", values= {0, 0.8, 144, 0.2}}
+	collide = true,
+	id = 'scummbar'
 }
 
-room = scumm.factory.basic_room (roomDefinition)
+room = scumm.factory.dynamic_room (roomDefinition)
 
 room:add ( "scummbar.walkarea", {
 -- 		scumm.factory.object { id = "scummbar.fireplace"},
 	scumm.factory.object { id = "scummbar.door.out" },
--- 		scumm.factory.object { id = "scummbar.mancomb" },
+	scumm.factory.object { id = "scummbar.mancomb" },
 -- 		scumm.factory.object { id = "scummbar.loompirate"},
 	scumm.factory.object { id = "scummbar.pirate1" },
 	scumm.factory.object { id = "scummbar.pirate2" },

@@ -12,7 +12,14 @@ public:
     void Start() override;
     void Update(double) override;
     std::shared_ptr<Component> clone() const override;
+    btRigidBody* getRigidBody();
+    using ParentClass = RigidBody;
+
 private:
     std::shared_ptr<btRigidBody> m_rigidBody;
     std::shared_ptr<btCollisionShape> m_collisionShape;
 };
+
+inline btRigidBody* RigidBody::getRigidBody() {
+    return m_rigidBody.get();
+}

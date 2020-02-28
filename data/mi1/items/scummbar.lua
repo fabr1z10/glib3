@@ -13,6 +13,22 @@ engine.items["scummbar.walkarea"] = {
 
 }
 
+engine.items["scummbar.mancomb"] = {
+	type = 'object',
+	hotspot = {
+		text = strings.objects.pirate,
+		size = {30, 30},	
+		walk_to = {125, 17},
+		dir = "north",
+	},
+	model = "scummbar.mancomb",
+	pos = {89, 24, -1},
+	actions = {
+		look = scumm.script.changeroom { room = "mancomb" },
+		talk = scumm.script.changeroom { room = "mancomb" },
+	}
+}
+
 engine.items["scummbar.pirate1"] = {
 	type = 'object',
 	tag = true,
@@ -65,10 +81,14 @@ engine.items['scummbar.door.out'] = make_door {
 	model = 'door_scummbar_village',
 	pos = {32, 24, -1},
 	size = {38, 47},
-	walk_to = {65, 15},
+	walk_to = mi.rooms.scummbar.door_out,
 	dir = 'w',
 	var = 'door_village_scummbar',
-	room = 'village1'
+	go_to = {
+		room = 'village1',
+		pos = mi.rooms.village1.door,
+		dir = 's'
+	}
 }
 
 
@@ -145,20 +165,7 @@ engine.items['scummbar.door.out'] = make_door {
 -- 	}
 -- }
 
--- engine.items["scummbar.mancomb"] = {
--- 	hotspot = {
--- 		text = strings.objects.pirate,
--- 		size = {30, 30},	
--- 		walk_to = {125, 17},
--- 		dir = "north",
--- 	},
--- 	model = "scummbar.mancomb",
--- 	pos = {89, 24, -1},
--- 	actions = {
--- 		look = { type=action.change_room, args={room = "mancomb" }},
--- 		talk = { type=action.change_room, args={room = "mancomb" }}
--- 	}
--- }
+
 
 
 

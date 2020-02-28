@@ -85,6 +85,24 @@ scumm.ifac.char = function(args)
 	return entity
 end
 
+scumm.ifac.mockchar = function(args)
+	glib.assert(args.item, 'item!')
+
+	local item = args.item
+
+	local entity = Entity:new(args)
+
+	entity.type = item.model and 'sprite' or 'default'
+	entity.model = item.model
+
+	-- direction character is facing
+	local dir = args.args.dir and (args.args.dir) or (item.dir)
+	local state = args.args.state and (args.args.state) or (item.state or 'idle')
+
+	table.insert (entity.components, { type="info", info = { id = args.args._id }})
+
+	return entity
+end
 
 scumm.ifac.walkarea =  function(args)
 
@@ -142,5 +160,6 @@ scumm.ifac.fmap = {
 	object = scumm.ifac.item,
 	walkarea = scumm.ifac.walkarea,
 	char = scumm.ifac.char,
+	mockchar = scumm.ifac.mockchar,
 	door = scumm.ifac.door
 }

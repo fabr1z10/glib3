@@ -12,6 +12,7 @@ scumm.factory = {}
 scumm.script = {}
 scumm.utils = {}
 engine.items = {}
+engine.dialogues = {}
 engine.state = {}
 
 scumm.state = {

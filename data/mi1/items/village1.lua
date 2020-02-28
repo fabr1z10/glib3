@@ -15,7 +15,7 @@ engine.items['village1.door'] = make_door {
  	walk_to = {715, 13},
  	dir = 'n',
 	var = 'door_village_scummbar',
-	room = 'scummbar'
+	go_to = { room = 'scummbar', pos = mi.rooms.scummbar.door_out, dir = 'e' }
 }
 
 engine.items["village1.cliffside"] = {

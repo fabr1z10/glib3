@@ -3,11 +3,10 @@
 engine = {
 	device_size = { 320, 200 },
 	window_size = { 640, 400 },
-	title = "Maniac Mansion",
-	start_room = "1",
+	title = 'Maniac Mansion',
 	lang = "eng",
 	config = {
-	    default_verb = "walk",
+	    default_verb = 'walk',
 	    font_size = 8,
 	   	ui = {
 			height = 56,
@@ -35,8 +34,13 @@ engine.global_assets = {
 },
 
 require ("sc2")
+
+-- load strings
 require ("text/" .. engine.lang .. "/text")
+
+-- load game specific function
 require ("./funcs")
+
 -- the verbs for the game. You might have multiple sets here! Watch out
 engine.config.verbs = {
  	open = { code="open", text = strings.ui.open, objects = 1, callback = scumm.script.default_handler, def = glib.curry(scumm.script.say, {strings.defaultactions[1]}) },
@@ -58,9 +62,7 @@ engine.config.verbset = {
     [1] = { "open", "close", "push", "pull", "walk", "pick", "newkid", "give", "use", "look", "turnon", "turnoff" }
 }
 
-
 variables = {
-
 	-- game status
 	frontdoor_open = false,
 	cellar_door_open = false,
@@ -72,19 +74,12 @@ variables = {
 
 
 
+-- load items
+glib.load_folder ('items')
 
-
+-- load sprites
+glib.load_folder ('sprites')
 require('states')
 
 -- initialize player position and initial room
 states.start ()
-
-glib.load_folder ('items')
-glib.load_folder ('sprites')
-
-
-
-
-
---require("defaultscripts")
-

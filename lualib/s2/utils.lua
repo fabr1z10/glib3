@@ -15,6 +15,7 @@ scumm.utils.init = function(args)
     variables.dynamic_items = {}
     variables.pending_action = {}
     for _, i in ipairs(args) do
+        print ('adding ' .. i.id)
         if i.type == 'player' then
             table.insert(variables.players, i.id)
             variables.inventory[i.id] = {}
@@ -25,6 +26,7 @@ scumm.utils.init = function(args)
     end
 
     variables.current_player = variables.players[1]
+    print ('the current player is ' .. variables.current_player)
 end
 
 

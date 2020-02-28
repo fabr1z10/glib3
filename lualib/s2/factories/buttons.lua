@@ -56,21 +56,6 @@ scumm.factory.inventorybutton = function (args)
 	}
 	table.insert (button.components, { type='info', info = { obj = args.id }})
 	return button
-	-- return scumm.factory.button {
-	-- 	pos = {0,0},
-	-- 	font = engine.config.ui.font,
- --        text= args.text,
-	-- 	maxwidth = args.maxwidth,
- --        align="bottomleft", 
- --        color = engine.config.ui.inv_unselected,
- --        size = 8, 
- --        priority = 1,
-	-- 	info = { obj = args.obj},
-	-- 	--onenter = scumm.ui.hover_on_inv_button, --scurry2(changecolor, config.ui_inv_selected),
- --        --onleave = scumm.ui.hover_off_inv_button, --(changecolor, config.ui_inv_unselected),
-	-- 	--onclick = scumm.ui.runAction
-	-- }
-
 end
 
 scumm.factory.inventorybutton_sci = function (args)
@@ -92,20 +77,23 @@ scumm.factory.inventorybutton_sci = function (args)
 end
 
 scumm.factory.dialoguebutton = function (args) 
-	return scumm.factory.button {
+	local button = scumm.factory.button {
 		pos = {0,0},
 		font = engine.config.ui.font,
-        text= args.text,
+        text = args.text,
 		maxwidth = args.maxwidth,
-        align="bottomleft", 
+        align = "bottomleft", 
         color = engine.config.ui.verb_unselected_color,
         size = 8, 
         priority = 1,
-		info = { node = args.dialogue_node, dialogue = args.dialogue }, 
-		onenter = glib.curry2(scumm.ui.changecolor, engine.config.ui.verb_selected_color),
-        onleave = glib.curry2(scumm.ui.changecolor, engine.config.ui.verb_unselected_color),
-		onclick = scumm.ui.handleDialogueButton
+		--info = { node = args.dialogue_node, dialogue = args.dialogue }, 
+		onenter = glib.curry2(scumm.script.changecolor, engine.config.ui.verb_selected_color),
+        onleave = glib.curry2(scumm.script.changecolor, engine.config.ui.verb_unselected_color),
+		onclick = scumm.script.handleDialogueButton	
 	}
+	table.insert (button.components, { type='info', info = { ciao = 'ciaone' }})
+
+	return button
 
 end
 

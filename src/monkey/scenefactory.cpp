@@ -27,6 +27,7 @@
 #include <monkey/activities/callfunc.h>
 #include <monkey/entities/textview.h>
 #include <monkey/mesh3dfactory.h>
+#include <monkey/components/inputmethod.h>
 
 
 void SceneFactory::Init(Engine* engine) {
@@ -112,6 +113,7 @@ SceneFactory::SceneFactory() {
     add<LuaKeyListener> ("keylistener");
     add<LuaInfo> ("info");
     add<DirectionalLight> ("directional.light");
+    add<KeyboardInputMethod> ("keyinput");
 
     // actions
     add<DelayTime> ("delay");

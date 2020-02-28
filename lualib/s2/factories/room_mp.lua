@@ -1,10 +1,12 @@
 -- room for multiplayer with dynamic objects
 
 function scumm.factory.dynamic_room (args) 
+	glib.assert (args.id, 'Need room id!')
 
 	local p = scumm.factory.room_base(args)
 
 	-- load dynamic stuff
+	print ('.... ' .. args.id)
 	local di = variables.dynamic_items[args.id]
 	if di then
 		print ("shflidsfslk")

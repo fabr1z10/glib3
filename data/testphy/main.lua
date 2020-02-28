@@ -13,7 +13,7 @@ engine = {
 	global_assets = {
 		fonts = { "main" }
 	},
-	start_room = "01",
+	start_room = "02",
 	lang = "eng",
 }
 

@@ -1,5 +1,16 @@
 mi = {}
 
+mi.rooms = {
+	scummbar = {
+		door_out = {65, 15},			
+	},
+	village1 = {
+		door = {715, 13}
+	}
+
+}
+
+
 mi.addStorekeeper = function()
 end
 make_door = function(args)
@@ -11,7 +22,10 @@ make_door = function(args)
 	assert (args.dir, "dir")
 	assert (args.model, "model")
 	assert (args.var, "var - the controlling variable")
-	assert (args.room, 'room')
+	assert (args.go_to, 'go_to')
+	assert (args.go_to.room, 'go_to.room')
+	assert (args.go_to.pos, 'go_to.pos')
+	assert (args.go_to.dir, 'go_to.dir')
 
 	local cv = variables[args.var]
 	if not cv then
@@ -32,7 +46,11 @@ make_door = function(args)
 		actions = {
 			walk = args.walk or function() 
 				if variables[args.var] == 1 then
-					return { type = action.change_room, args = {room = args.room }}
+					return scumm.script.changeroom { 
+						room = args.go_to.room,
+						pos = args.go_to.pos,
+						dir = args.go_to.dir
+					}
 				else
 					return nil
 				end

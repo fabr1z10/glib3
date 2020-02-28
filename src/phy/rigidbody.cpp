@@ -8,6 +8,11 @@
 RigidBody::RigidBody(const LuaTable & t) : Component(t) {
 
     btScalar mass = t.Get<btScalar>("mass");
+
+
+
+
+
     bool isDynamic = (mass != 0.0f);
 
     luabridge::LuaRef sref = t.Get<luabridge::LuaRef>("shape");
@@ -22,6 +27,12 @@ RigidBody::RigidBody(const LuaTable & t) : Component(t) {
     }
     btRigidBody::btRigidBodyConstructionInfo rbInfo (mass, nullptr, m_collisionShape.get(), localIntertia);
     m_rigidBody = std::make_shared<btRigidBody>(rbInfo);
+
+    if (t.HasKey("restitution")) {
+        btScalar restitution = t.Get<btScalar>("restitution");
+        m_rigidBody->setRestitution(restitution);
+    }
+
     //btRigidBody::btRigidBodyConstructionInfo rbInfo (mass, nullptr,
     //m_rigidBody = std::make_unique<btRigidBody>();
 }
@@ -68,6 +79,7 @@ void RigidBody::Start() {
     transform.setFromOpenGLMatrix(glm::value_ptr(wt));
     btDefaultMotionState* motionState = new btDefaultMotionState(transform);
     m_rigidBody->setMotionState(motionState);
+
 
     auto be = Engine::get().GetRunner<BulletEngine>();
     std::cerr << "is static = " << m_rigidBody->isStaticObject();

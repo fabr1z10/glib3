@@ -189,7 +189,7 @@ scumm.action.start_dialogue = function (args)
 			end
 			print ("cazzo")
         end
-		engine.state.scumm.walk_enabled = false 
+		scumm.state.walk_enabled = false
 	end }
 end
 
