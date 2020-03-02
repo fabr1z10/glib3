@@ -28,6 +28,9 @@
 #include <monkey/entities/textview.h>
 #include <monkey/mesh3dfactory.h>
 #include <monkey/components/inputmethod.h>
+#include <monkey/activities/scriptactions.h>
+#include <monkey/activities/showmessage.h>
+#include <monkey/activities/setstate.h>
 
 
 void SceneFactory::Init(Engine* engine) {
@@ -121,6 +124,11 @@ SceneFactory::SceneFactory() {
     add<Animate> ("animate");
     add<ChangeRoom> ("gotoroom");
     add<CallFunc> ("callfunc");
+    add<SuspendScript> ("suspend_script");
+    add<ResumeScript> ("resume_script");
+    add<KillScript> ("kill_script");
+    add<ShowMessage> ("show_message");
+    add<SetState> ("setstate");
 
 
 

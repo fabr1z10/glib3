@@ -56,7 +56,13 @@ void ClosestPointOnEdge::getNearest(
         if (dist < bestSoFar) {
             bestSoFar = dist;
             closestPointSoFar = cp + offset;
-            m_normal = -Perp(u) * (flip ? -1.0f : 1.0f);
+            if (d <= 0) {
+                m_normal = -p.getNormalAtVertex(ip);
+            } else if (d >= l) {
+                m_normal = -p.getNormalAtVertex(i);
+            } else {
+                m_normal = -Perp(u) * (flip ? -1.0f : 1.0f);
+            }
             //normal = (d >= l ? p.getNormalAtVertex(i) : (d <= 0 ? p.getNormalAtVertex(ip) : p.getNormalAtEdge(ip)));
             //bestPoint = bestPoint - normal*0.01f;
         }

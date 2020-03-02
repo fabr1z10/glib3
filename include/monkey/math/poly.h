@@ -19,14 +19,13 @@ public:
     bool isVertexConcave (int i) const;
     // gets the outward normal at the j-th index (connecting vertices j to j+1)
     // ASSUMPTION: vertices are listed in a clockwise order
-    glm::vec2 getNormalAtEdge (int edgeIndex);
-    glm::vec2 getNormalAtVertex(int);
+    glm::vec2 getNormalAtEdge (int edgeIndex) const;
+    glm::vec2 getNormalAtVertex(int) const;
     void accept (AcyclicVisitor& v) override;
     std::string toString() const override;
     glm::vec2 project(const glm::vec2 axis, const glm::mat4& worldTransform) override;
     std::vector<glm::vec2> getPoints() override;
     std::vector<glm::vec2> getEdges() override;
-
 private:
     std::vector <glm::vec2> m_points;
 };

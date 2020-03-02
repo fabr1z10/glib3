@@ -33,7 +33,7 @@ engine.global_assets = {
 	fonts = { "ui" }
 },
 
-require ("sc2")
+require ("scumm")
 
 -- load strings
 require ("text/" .. engine.lang .. "/text")
@@ -79,6 +79,7 @@ glib.load_folder ('items')
 
 -- load sprites
 glib.load_folder ('sprites')
+
 require('states')
 
 -- initialize player position and initial room

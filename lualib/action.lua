@@ -211,7 +211,8 @@ action.show_message = function(args)
 	glib.assert (args.message, "message")
 	glib.assert (args.color, "color")
 	glib.assert (args.pos, "pos")
-	return { type="show_message", message = args.message, color = args.color, pos = args.pos}
+	glib.assert (args.font, "font")
+	return { type="show_message", font = args.font, message = args.message, color = args.color, pos = args.pos}
 end
 
 action.wait_click = function(args) 

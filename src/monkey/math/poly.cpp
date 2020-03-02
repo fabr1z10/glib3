@@ -73,6 +73,8 @@ std::vector<glm::vec2> Polygon::getEdges() {
     return edges;
 }
 
+
+
 std::list<Hole>::iterator Poly::addHole(glm::vec2 pos, std::shared_ptr<Polygon> poly) {
     m_holes.push_back(Hole(pos, poly));
     auto it = m_holes.end();
@@ -128,11 +130,11 @@ Polygon* Poly::GetPolygon() {
     return m_contour.get();
 }
 
-glm::vec2 Polygon::getNormalAtEdge (int edgeIndex) {
+glm::vec2 Polygon::getNormalAtEdge (int edgeIndex) const {
     return glm::normalize(Perp(m_points[(edgeIndex+1) % m_points.size()] - m_points[edgeIndex]));
 }
 
-glm::vec2 Polygon::getNormalAtVertex (int i) {
+glm::vec2 Polygon::getNormalAtVertex (int i) const{
     glm::vec2 a = getNormalAtEdge(i);
     glm::vec2 b = getNormalAtEdge((i-1 >= 0) ? (i-1) : m_points.size()-1);
     return (glm::normalize(0.5f*(a+b)));

@@ -31,10 +31,7 @@ function scumm.factory.dialogue_room (args)
 					viewport = {0, 56, 320, 144}
 				},
 				children = {
-					{ 
-						pos= args.player_pos,
-						tag = "player"
-					}
+					scumm.factory.object { id = args.player },
 				}
 			},
 			{

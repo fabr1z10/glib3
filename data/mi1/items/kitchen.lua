@@ -1,13 +1,18 @@
 --engine.items.scummbar = {}
 local d = strings.kitchen
 
-engine.items["kitchen.walkarea"] = scumm.factory.walkarea {
-	shape = { type = "poly", outline = {40,16,59,21,155,21,180,18,192,18,294,18,307,12,199,9,207,0,160,0,149,11,112,11,100,0,40,0}},
+engine.items["kitchen.walkarea"] = {
+	type = 'walkarea',
+	tag = true,
+	shape = { 
+		type = "poly", 
+		outline = {40,16,59,21,155,21,180,18,192,18,294,18,307,12,199,9,207,0,160,0,149,11,112,11,100,0,40,0}
+	},
 	blockedlines = {
 	 	{ A = {190, 0}, B = {190, 144}, active =true },
 	 	{ A = {206, 0}, B = {206, 144}, active =true },
 	},
-	priority = 0
+	depth = { type="linear_y", values= {0, 1, 144, 0} },	
 }
 
 engine.items["kitchen.seagull"] = {
@@ -224,41 +229,59 @@ engine.items["kitchen.potostew"] = {
 -- 		}
 -- 	}
 -- }
+--[[
+make_door {
+	tag = 'scummbar.door.out',
+	model = 'door_scummbar_village',
+	pos = {32, 24, -1},
+	size = {38, 47},
+	walk_to = mi.rooms.scummbar.door_out,
+	dir = 'w',
+	var = 'door_village_scummbar',
+	go_to = {
+		room = 'village1',
+		pos = mi.rooms.village1.door,
+		dir = 's'
+	}
+}--]]
 
 
-
-scumm.factory.door {
-	id = "kitchen.door",
+engine['kitchen.door'] = make_door { 
+	tag ='kitchen.door',
+	model = 'door_kitchen_scummbar',	
 	pos = {19, 18, -1},
 	size = {38, 53},
 	walk_to = {36, 16},
-	dir = "west",
-	model = "door_kitchen_scummbar",
-	nextroom="scummbar",
-	variable = "door_scummbar_kitchen"
+	dir = 'w',
+	var = "door_scummbar_kitchen",
+	go_to = {
+		room = 'scummbar',
+		pos = mi.rooms.scummbar.door_kitchen,
+		dir = 'e'
+	}
 }
 
-scumm.factory.door {
-	id = "kitchen.door.pier",
-	pos = {192, 9, -1},
-	size = {20, 64},
-	walk_to = {182, 9},
-	dir = "east",
-	model = "door_kitchen_pier",
-	nextroom = nil,
-	variable = "door_kitchen_pier",
-	open = function() return {
-		{ type = scumm.action.enable_wall, args = {walkarea = "kitchen.walkarea", wall=0, active=false}},
-		{ type = scumm.action.enable_wall, args = {walkarea = "kitchen.walkarea",wall=1, active=false}},
-		{ type = action.animate, args = {tag="kitchen.door.pier", anim="open"}}}
-	end,
-	close = function() return {
-		{ type = scumm.action.enable_wall, args = {walkarea = "kitchen.walkarea",wall=0, active=true}},
-		{ type = scumm.action.enable_wall, args = {walkarea = "kitchen.walkarea",wall=1, active=true}},
-		{ type = action.animate, args = {tag="kitchen.door.pier", anim="close"}}}
-	end,
-	walk = function() return nil end
-}
+-- scumm.factory.door {
+-- 	id = "kitchen.door.pier",
+-- 	pos = {192, 9, -1},
+-- 	size = {20, 64},
+-- 	walk_to = {182, 9},
+-- 	dir = "east",
+-- 	model = "door_kitchen_pier",
+-- 	nextroom = nil,
+-- 	variable = "door_kitchen_pier",
+-- 	open = function() return {
+-- 		{ type = scumm.action.enable_wall, args = {walkarea = "kitchen.walkarea", wall=0, active=false}},
+-- 		{ type = scumm.action.enable_wall, args = {walkarea = "kitchen.walkarea",wall=1, active=false}},
+-- 		{ type = action.animate, args = {tag="kitchen.door.pier", anim="open"}}}
+-- 	end,
+-- 	close = function() return {
+-- 		{ type = scumm.action.enable_wall, args = {walkarea = "kitchen.walkarea",wall=0, active=true}},
+-- 		{ type = scumm.action.enable_wall, args = {walkarea = "kitchen.walkarea",wall=1, active=true}},
+-- 		{ type = action.animate, args = {tag="kitchen.door.pier", anim="close"}}}
+-- 	end,
+-- 	walk = function() return nil end
+-- }
 -- engine.items["kitchen.door_pier"] = factory.door.create {
 -- 	name ="kitchen.door_pier",	
 -- 	pos = {192, 9,-1},

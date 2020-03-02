@@ -3,43 +3,39 @@
 -- @param item the template, always Require
 -- @param pos the optional position. if not provided, the item pos is used, or {0, 0} if item has no pos 
 
+local Entity = {}
+
+function Entity:new (a)
+	o = {}
+	local item = a.item
+	local pos = a.args.pos or (item.pos or {0, 0, 0})
+	if #pos == 2 then pos = { pos[1], pos[2], 0 } end
+	o.pos = pos
+	o.active = a.args.active
+	o.components = {}
+	o.tag = a.args.tag
+	return o
+end
+
 scumm.ifac.item = function(args) 
 
-	-- Required:
-	-- nothing
-	-- Optional:
-	--     pos				; the default position
-	--     model            ; the model to use - nothing if item is not visible
-	--     hotspot          ; the hotspot details if user is allowed to interact with it.
-	-- If hotspot is provided, you need to provide:
-	--     shape or size    ; if shape is not provided, the shape will be a rect with width and height as provided by size
-	--     priority (opt)   ; the hot-spot priority, 1 is the default value
-	--     text             ; the text displayed by the ui when hovering over the hotspot
-
+-- @param item the item to create
+-- @param args the modifiers (position, tag)
 	glib.assert(args.item, 'item!')
 
 	local item = args.item
 
-	local pos = args.pos or (item.pos or {0, 0, 0})
-
-	local comp = {}
-
-
-	entity = {
-		pos = pos,
-		components = {}
-	}
-
-	info = {}
+	local entity = Entity:new(args)
 
 	if item.model then
 		entity.type = 'sprite'
 		entity.model = item.model
+		entity.anim = glib.get(item.anim)
 	end
 
 	if item.hotspot then
 		glib.assert(item.hotspot.text, 'entity with hotspot requires text!')
-		glib.assert_either(item.hotspot.size, args.hotspot.shape, 'entity with hotspot requires size!')
+		glib.assert_either(item.hotspot.size, item.hotspot.shape, 'entity with hotspot requires size!')
 		glib.assert(item.hotspot.walk_to, 'entity with hotspot requires walkto!')
 		glib.assert(item.hotspot.dir, 'entity with hotspot requires dir!')
 
@@ -49,41 +45,112 @@ scumm.ifac.item = function(args)
 		table.insert(entity.components, { 
 			type = "hotspot", priority = priority,
 			shape = shape,
-			onenter = function() print ("entering ...") end,
-			onleave = function() print ("leaving ...") end,
-			onclick = function() print ("run act") end
+			onenter = glib.curry (scumm.script.hoverOn, args.args._id),
+			onleave = scumm.script.hoverOff,
+			onclick = scumm.script.run_action,
 		})
 	end
 
-	return {
-		entity = entity,
-		info = info
-	}
+
+	
+	return entity
 	
 end
 
 -- create a character
 scumm.ifac.char = function(args) 
+	glib.assert(args.item, 'item!')
 
+	local item = args.item
+
+	glib.assert(item.model, 'character requires a model!')
+	glib.assert(item.speed, 'character requires a speed!')
+
+	local entity = Entity:new(args)
+
+	entity.type = 'sprite'
+	print ('ciao ' .. item.model)
+	entity.model = item.model
+
+	-- direction character is facing
+	local dir = args.args.dir and (args.args.dir) or (item.dir)
+	local state = args.args.state and (args.args.state) or (item.state or 'idle')
+
+	table.insert (entity.components, { type="character", speed = item.speed, dir = dir, state = state })
+	table.insert (entity.components, { type="info", info = { id = args.args._id }})
+
+	if args.args.follow then
+		table.insert(entity.components, { type='follow', cam='maincam', relativepos = {0, 0, 5}, up = {0, 1, 0} })
+	end	
+	return entity
 end
 
+scumm.ifac.mockchar = function(args)
+	glib.assert(args.item, 'item!')
+
+	local item = args.item
+
+	local entity = Entity:new(args)
+
+	entity.type = item.model and 'sprite' or 'default'
+	entity.model = item.model
+
+	-- direction character is facing
+	local dir = args.args.dir and (args.args.dir) or (item.dir)
+	local state = args.args.state and (args.args.state) or (item.state or 'idle')
+
+	table.insert (entity.components, { type="info", info = { id = args.args._id }})
+
+	return entity
+end
 
 scumm.ifac.walkarea =  function(args)
 
 	glib.assert(args.item, 'item!')
 	local item = args.item
+	local entity = Entity:new(args)
 
 	glib.assert(item.shape, '<walkarea> requires shape!')
 
-	local pos = args.pos or (item.pos or {0, 0, 0})
 	local priority = item.priority or 0
 
-	entity = {
-		pos = pos,
-		components = {
-			{ type = 'walkarea', priority = priority, shape = item.shape, depth = item.depth, scale = item.scale, blockedlines = item.blockedlines  }
-		}
-	}
+	table.insert(entity.components, { 
+		type = 'walkarea', 
+		priority = priority, 
+		shape = item.shape, 
+		depth = item.depth, 
+		scale = item.scale, 
+		onclick = function(x, y, obj) 
+			scumm.script.walk(x, y) 
+		end,
+		blockedlines = item.blockedlines 
+	})	
+
+	return entity
+end
+
+scumm.ifac.door = function(args)
+
+	glib.assert(args.item, 'item!')
+
+	local item = args.item
+
+	glib.assert(item.model, 'character requires a model!')
+
+	local entity = Entity:new(args)
+	local priority = args.priority or 1
+
+	entity.type = 'sprite'
+	entity.model = item.model
+
+	table.insert(entity.components, {
+		type = "hotspot",
+		priority = priority,
+		shape = { type = 'rect', width = item.size[1], height= item.size[2]},
+		onenter = glib.curry (scumm.script.hoverOn, args.args._id),
+		onleave = scumm.script.hoverOff,
+		onclick = scumm.script.run_action,
+	})
 
 	return entity
 end
@@ -91,5 +158,8 @@ end
 
 scumm.ifac.fmap = {
 	object = scumm.ifac.item,
-	walkarea = scumm.ifac.walkarea
+	walkarea = scumm.ifac.walkarea,
+	char = scumm.ifac.char,
+	mockchar = scumm.ifac.mockchar,
+	door = scumm.ifac.door
 }

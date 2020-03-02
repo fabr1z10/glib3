@@ -157,20 +157,20 @@ std::shared_ptr<Activity> AnimateActFactory::Create(luabridge::LuaRef &ref) {
     return act;
 };
 
-std::shared_ptr<Activity> SetStateActFactory::Create(luabridge::LuaRef &ref) {
-    LuaTable table(ref);
-
-    std::string state = table.Get<std::string>("state");
-    std::shared_ptr<TargetActivity> act;
-    if (table.HasKey("args")) {
-        luabridge::LuaRef args = table.Get<luabridge::LuaRef>("args");
-        act = std::make_shared<SetStateWithArgs>(state,args);
-    } else {
-        act = std::make_shared<SetState>(state);
-    }
-    setTarget(table, act.get());
-    return std::move(act);
-};
+//std::shared_ptr<Activity> SetStateActFactory::Create(luabridge::LuaRef &ref) {
+//    LuaTable table(ref);
+//
+//    std::string state = table.Get<std::string>("state");
+//    std::shared_ptr<TargetActivity> act;
+//    if (table.HasKey("args")) {
+//        luabridge::LuaRef args = table.Get<luabridge::LuaRef>("args");
+//        act = std::make_shared<SetStateWithArgs>(state,args);
+//    } else {
+//        act = std::make_shared<SetState>(state);
+//    }
+//    setTarget(table, act.get());
+//    return std::move(act);
+//};
 
 
 
@@ -181,21 +181,7 @@ std::shared_ptr<Activity> SetStateActFactory::Create(luabridge::LuaRef &ref) {
 //    return std::unique_ptr<ChangeState>(new ChangeState(actor, state));
 //};
 
-std::shared_ptr<Activity> ShowMessageActFactory::Create(luabridge::LuaRef &ref) {
-    LuaTable table(ref);
-    std::string msg = table.Get<std::string>("message");
-    std::string font = table.Get<std::string>("font", "monkey");
-    TextAlignment align = table.Get<TextAlignment>("align", BOTTOM);
-    glm::vec4 color = table.Get<glm::vec4>("color");
-    glm::vec2 offset = table.Get<glm::vec2>("offset", glm::vec2(0.0f));
-    float time = table.Get<float>("time", 1.0f);
-    glm::vec4 outlineColor = table.Get<glm::vec4>("outlinecolor", glm::vec4(0.0f, 0.0f, 0.0f, 255.0f));
-    color/=255.0f;
-    outlineColor /= 255.0f;
-    float size = table.Get<float>("size", 8.0f);
-    glm::vec3 pos = table.Get<glm::vec3>("pos");
-    return std::make_shared<ShowMessage>(msg, font, pos, size, color, outlineColor, align, time, offset);
-};
+
 
 std::shared_ptr<Activity> BlinkActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);

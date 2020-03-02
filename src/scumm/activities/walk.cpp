@@ -45,7 +45,7 @@ void Walk::Start() {
 
     //auto walkArea = Engine::get().GetRef<WalkArea>("walkarea");
 
-    std::cout << "Calling walk for " << m_actorId << " to " << m_p.x << ", " << m_p.y << "\n";
+    //std::cout << "Calling walk for " << m_actorId << " to " << m_p.x << ", " << m_p.y << "\n";
     auto actor = Monkey::get().Get<Entity>(m_actorId);
     float speed = actor->GetComponent<StateCharacter>()->GetSpeed();
 
@@ -88,8 +88,8 @@ void Walk::Start() {
 
     if (delta != glm::vec2(0.0f))
     {
-        std::cerr << "cpos " << currentPos.x << " " << currentPos.y << "\n";
-        std::cerr << "finding sp to " << m_p.x << " " << m_p.y << "\n";
+        //std::cerr << "cpos " << currentPos.x << " " << currentPos.y << "\n";
+        //std::cerr << "finding sp to " << m_p.x << " " << m_p.y << "\n";
         std::vector<glm::vec2> points = ShortestPath::Find(*m_shape, currentPos, m_p);
         //std::cerr << "ok\n";
         //int count = 0;
@@ -132,7 +132,7 @@ void Walk::Start() {
             Push(std::make_shared<Turn>(m_actorId, dir));
             glm::vec2 P = pos2d + length * glm::normalize(delta);
             Push(std::make_shared<MoveToScaled>(m_actorId, P, speed, false, false));
-            std::cerr << "adding move to " << P.x << ", " << P.y << "\n";
+            //std::cerr << "adding move to " << P.x << ", " << P.y << "\n";
             //if (i == points.size() - 1 || tMin < 1.0)
             pos2d = points[i];
             if (tMin < 1.0)

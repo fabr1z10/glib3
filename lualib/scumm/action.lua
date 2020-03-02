@@ -2,7 +2,7 @@
 
 local items =engine.items
 local dialogues =engine.dialogues
-local inventory = scumm.state.inventory
+--local inventory = variables.inventory
 
 scumm.action = {}
 
@@ -12,11 +12,10 @@ scumm.action.walkto = function (args)
 	if (pos == nil) then
 		assert (args.obj, "pos or obj")
 		local obj = items[args.obj]
+		if not obj then error('Don\'t know item: ' .. args.obj) end
 		pos = obj.hotspot.walk_to
 	end	
-	local walk_action = engine.config.scumm.walk[engine.config.style]
-	print ("WALK = " .. walk_action)
-	return { type=walk_action, tag = args.tag, id = args.id, pos = pos }
+	return { type='walk', tag = args.tag, id = args.id, pos = pos }
 end
 
 scumm.action.walktoitem = function (args) 
@@ -32,9 +31,7 @@ end
 scumm.action.turn = function (args) 
 	glib.assert_either (args.tag, args.id, "id or tag")
 	assert (args.dir, "dir")
-	local turn_action = engine.config.scumm.turn[engine.config.style]
-
-	return { type=turn_action, tag = args.tag, id = args.id, dir = args.dir }
+	return { type = 'turn', tag = args.tag, id = args.id, dir = args.dir }
 
 end
 
@@ -104,13 +101,24 @@ scumm.action.walk_to_object= function(actor, id)
 	}
 end
 
+
 scumm.action.say = function(args) 
 	--assert (args.id, "id")
-	glib.assert (args.actor, "actor")
+	glib.assert_either (args.tag, args.id, "id or tag")
 	glib.assert (args.lines, "lines")
 
-	local item = items[args.actor]
-	local tag = item.tag or args.actor
+	local entity = nil
+	if args.tag then
+		entity = monkey.getEntity(args.tag)
+		if not entity then Error('don\'t know item ' + args.tag, 1) end
+	else
+		entity = monkey.getEntityFromId(args.id)
+		if not entity then Error('don\'t know item!' + args.id, 1) end
+	end
+	print ('found')
+	local info = entity:getinfo()
+
+	local item = items[info.id]
 
 	local animstart = args.animstart
 	local animend = args.animend
@@ -122,33 +130,36 @@ scumm.action.say = function(args)
 		table.insert(l, glib.get(li))
 	end
 
-	return { 
-		type="say", 
-		tag = tag, 
-		lines = l, 
-		offset = item.text_offset, 
+	return {
+		type = 'say',
+		tag = args.tag,
+		font = engine.config.dialogue_font,
+		id = args.id,
+		lines = l,
+		offset = item.text_offset,
 		color = item.text_color,
-		animstart = animstart, 
-		animend = animend, 
-		animate = animate 
+		animstart = animstart,
+		animend = animend,
+		animate = animate
 	}
 end
 
-scumm.action.disable_controls = function(args) 
-	return { type="callfunc", func = function()
-		local value = true
-		if (args ~= nil and args.value ~= nil) then value = args.value end
-		local n = not value 
-		engine.state.scumm.walk_enabled = n
-		local m = monkey.getEntity("mainui")
-		local m1 = monkey.getEntity("main")
-		if (not m.isnil) then
-			m:setactive(n)
+
+scumm.action.toggle_controls = function(args)
+	return {
+		type = 'callfunc',
+		func = function()
+			scumm.state.walk_enabled = args.active
+			if args.ui then
+				local m = monkey.getEntity("mainui")
+				if not m.isnil then m:setactive(args.active) end
+			end
+			local m1 = monkey.getEntity("main")
+			if not m1.isnil then
+				m1:enablecontrols(args.active)
+			end
 		end
-		if (not m1.isnil) then
-			m1:enablecontrols(n)
-		end
-	end }
+	}
 end
 
 scumm.action.start_dialogue = function (args) 
@@ -171,37 +182,18 @@ scumm.action.start_dialogue = function (args)
 		end
 		m2:setactive(true)
 		local children = glib.get(root.children)
-		print ("Size of children = " .. tostring(#children))
 		m2:cleartext()
 		for k, v in ipairs(children) do
         	local node = dialogue.nodes[v]
-    		print (node.text)
             if (glib.get(node.active) == true) then
 				m2:addtext { text=node.text, dialogue_node = node, dialogue = args.dialogue }
 			end
-			print ("cazzo")
         end
-		engine.state.scumm.walk_enabled = false 
+		scumm.state.walk_enabled = false
 	end }
 end
 
-local closeDialogue = function(dialogue) 
-	local m = monkey.getEntity("mainui")
-	local m1 = monkey.getEntity("main")
-	local m2 = monkey.getEntity("dialogueui")
-	engine.state.scumm.walk_enabled = true
-	m2:cleartext()
-	m2:setactive(false)
-	if (not m.isnil) then
-		m:setactive(true)	
-	end
-	if (not m1.isnil) then
-		m1:enablecontrols(true)			
-	end
-	if (dialogue.close ~= nil) then
-		dialogue.close()
-	end
-end
+
 
 local showDialogue = function(dialogueId, node) 
 	local m2 = monkey.getEntity("dialogueui")
@@ -231,7 +223,7 @@ scumm.action.resume_dialogue = function(args)
 			if (node.children == nil) then
         		-- return to game
         		print ("return to game.")
-        		closeDialogue (dialogue)
+        		scumm.script.closeDialogue (dialogue)
         	else
 				-- check if node has active children
 				print ("I have children. Check at least one is active.")
@@ -257,19 +249,18 @@ scumm.action.resume_dialogue = function(args)
 end
 
 scumm.action.add_to_inventory = function(args) 
+	local inv = variables.inventory[variables.current_player]
 	assert (args.id, "id")
 	local qty = args.qty or 1
 	return { type = "callfunc", func = 
 		function()
 			print (args.id .. " adding")			
-			if (inventory[args.id] == nil) then
-				inventory[args.id] = qty
+			if (inv[args.id] == nil) then
+				inv[args.id] = qty
 			else 
-				inventory[args.id] = inventory[args.id] + qty
+				inv[args.id] = inv[args.id] + qty
 			end
-			print ("ref inv")
-			scumm.ui.refresh_inventory()	
-			print ("done")
+			scumm.script.refresh_inventory()
 		end
 	}
 end
@@ -301,18 +292,6 @@ scumm.action.remove_from_inventory = function(args)
 	}
 end
 
-scumm.action.open_door = function(args) 
-	assert (args.door, "door")
-	return { type = "callfunc", func = 
-		function()
-			local d = items[args.door]
-			print ("tag is " .. d.tag)
-			local e = monkey.getEntity(d.tag)
-			e.anim = "open"
-			variables[d.variable] = 1
-		end
-	}
-end
 
 scumm.action.close_door = function(args) 
 	assert (args.door, "door")

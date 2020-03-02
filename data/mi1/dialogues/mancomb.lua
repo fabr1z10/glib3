@@ -18,11 +18,14 @@ end
 
 engine.dialogues.mancomb = {
 	close = function()
-		local actions = {
-			{ type=action.change_room, args={ room="scummbar"}}
+		-- on close, return to scummbar
+		local actions = scumm.script.changeroom { 
+			room = 'scummbar', 
+			pos = engine.items['scummbar.mancomb'].hotspot.walk_to, 
+			dir='n'
 		}
-			local s = script.make(actions)
-			monkey.play(s)
+		local s = script.make(actions)
+		monkey.play(s)
 	end,
 	-- root
 	nodes = {

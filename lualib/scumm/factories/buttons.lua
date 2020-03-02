@@ -91,8 +91,7 @@ scumm.factory.dialoguebutton = function (args)
         onleave = glib.curry2(scumm.script.changecolor, engine.config.ui.verb_unselected_color),
 		onclick = scumm.script.handleDialogueButton	
 	}
-	table.insert (button.components, { type='info', info = { ciao = 'ciaone' }})
-
+	table.insert (button.components, { type='info', info = { node = args.dialogue_node, dialogue = args.dialogue }})
 	return button
 
 end

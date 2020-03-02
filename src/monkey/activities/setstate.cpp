@@ -3,6 +3,10 @@
 #include <monkey/engine.h>
 #include <monkey/entity.h>
 
+SetState::SetState(const LuaTable& t) : TargetActivity(t) {
+    m_state = t.Get<std::string>("state");
+}
+
 void SetState::Start() {
     TargetActivity::Start();
     if (m_entity.isValid()) {

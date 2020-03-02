@@ -34,7 +34,7 @@ engine.assets = {
 	models = {},
 }
 
-require ("sc2")
+require ('scumm')
 
 -- load strings
 require ("text/" .. engine.lang .. "/text")

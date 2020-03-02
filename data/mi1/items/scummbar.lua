@@ -1,5 +1,6 @@
 engine.items["scummbar.walkarea"] = {
 	type = 'walkarea',
+	tag = true,
 	shape = { 
 		type = "poly", 
  		outline = {
@@ -15,6 +16,7 @@ engine.items["scummbar.walkarea"] = {
 
 engine.items["scummbar.mancomb"] = {
 	type = 'object',
+	tag = true,
 	hotspot = {
 		text = strings.objects.pirate,
 		size = {30, 30},	
@@ -24,10 +26,45 @@ engine.items["scummbar.mancomb"] = {
 	model = "scummbar.mancomb",
 	pos = {89, 24, -1},
 	actions = {
-		look = scumm.script.changeroom { room = "mancomb" },
-		talk = scumm.script.changeroom { room = "mancomb" },
+		look = scumm.script.changeroom { room = 'mancomb' },
+		talk = scumm.script.changeroom { room = 'mancomb' },
 	}
 }
+
+engine.items["scummbar.loompirate"] = {
+	type = 'object',
+	tag = true,
+	pos = {260, 17, -1},
+	hotspot = {
+		text = strings.objects.pirate,
+		size = {20, 20},
+		walk_to = {250, 16},
+		dir = "north"
+	},
+	model = "scummbar.loompirate",
+	actions = {
+		look =  scumm.script.changeroom { room = 'loompirate' },
+		talk =  scumm.script.changeroom { room = 'loompirate' },
+	}
+}
+
+engine.items['scummbar.estevan'] = {
+	type = 'object',
+	tag = true,
+ 	pos = {164, 21, 1},
+	hotspot = {
+ 		text = strings.objects.pirate,
+		size = {30, 20},
+		walk_to = {195, 11},
+		dir = 's'
+	},	
+	model = 'scummbar.estevan',
+ 	actions = {
+		look =  scumm.script.changeroom { room = 'estevan' },
+		talk =  scumm.script.changeroom { room = 'estevan' },
+ 	}
+}
+
 
 engine.items["scummbar.pirate1"] = {
 	type = 'object',
@@ -49,6 +86,7 @@ engine.items["scummbar.pirate1"] = {
 
 engine.items["scummbar.pirate2"] = {
 	type = 'object',
+	tag = true,	
  	model = "scummbar.pirate2",
  	pos = {124, 20, -1},
 }
@@ -56,12 +94,15 @@ engine.items["scummbar.pirate2"] = {
 
 engine.items["scummbar.pirate3"] = {
 	type = 'object',
+	tag = true,	
+
  	model = "scummbar.pirate3",
  	pos = {30, 0, -1},
 }
 
 engine.items["scummbar.pirate4"] = {
 	type = 'object',
+	tag = true,	
 	model = 'scummbar.pirate4',
  	pos = {0, 0, -1},
  	hotspot = {
@@ -75,6 +116,45 @@ engine.items["scummbar.pirate4"] = {
   		talk = { type = scumm.action.say, args = {tag='player', lines = {strings.scummbar[4]} }}		
  	}
 }
+
+engine.items["scummbar.pirate5"] = {
+	type = 'object',
+ 	model = "scummbar.pirate5",
+ 	tag = true,
+ 	pos = {200, 18, 1},
+}
+
+engine.items["scummbar.pirate6"] = {
+	type = 'object',
+	tag = true,
+	model = "scummbar.pirate6",
+	pos = {160, 0, 1},
+}
+
+engine.items["scummbar.pirate7"] = {
+	type = 'object',
+	tag = true,
+	model = "scummbar.pirate7",
+	pos = {255, 38, 1},
+}
+
+engine.items["scummbar.pirate8"] = {
+	type = 'object',
+	tag = true,
+	model = "scummbar.pirate8",
+	pos = {215, 44, 1},
+}
+
+engine.items["scummbar.pirate9"] = {
+	type = 'object',
+	tag = true,
+	model = "scummbar.pirate9",
+	pos = {278, 40, 1},
+}
+
+
+
+
 
 engine.items['scummbar.door.out'] = make_door {
 	tag = 'scummbar.door.out',
@@ -91,8 +171,104 @@ engine.items['scummbar.door.out'] = make_door {
 	}
 }
 
+engine.items['scummbar.door.kitchen'] = make_door {
+	tag = 'scummbar.door.kitchen',
+ 	model = 'door_scummbar_kitchen',
+ 	pos = {591, 9, -1},
+ 	size = {35, 69},
+ 	walk_to = mi.rooms.scummbar.door_kitchen, 
+ 	dir = 'east',
+ 	go_to = {
+ 		room = 'kitchen',
+ 		pos = mi.rooms.kitchen.door,
+ 		dir = 'e'
+ 	},
+ 	var = 'door_scummbar_kitchen',
+ 	walk = function() 
+ 		if not variables.cook_in_kitchen then
+ 			local m = monkey.getEntity('scummbar.cook')
+ 			if (m.x > 320) then
+ 				return {
+	 				{ type = scumm.action.toggle_controls, args =  { active = false, ui = false }},
+ 					{ type = action.suspend_script, args = {script = "_cook"}},
+ 					{ type = scumm.action.turn, args = { tag = "scummbar.cook", dir="east"}},
+ 					{ type = scumm.action.say, args = { tag = "scummbar.cook", lines = { strings.dialogues.cook[1], strings.dialogues.cook[2] }}},
+ 					{ type = scumm.action.turn, args = { tag = "scummbar.cook", dir="west"}},
+ 					{ type = action.set_state, args = {tag = "scummbar.cook", state="walk"}},
+ 					{ type = action.resume_script, args = {script = "_cook"}},
+	 				{ type = scumm.action.toggle_controls, args =  { active = true, ui = false }},
 
--- local cook_text_color = {85, 255, 255, 255}
+ 				}
+ 			else
+ 				-- sneak into kitchen
+ 				return scumm.script.changeroom { room = 'kitchen', pos = mi.rooms.kitchen.door, dir='e' }
+ 			end
+ 		else
+ 			return nil
+ 		end
+ 	end,
+ 	open = function() 
+ 		if variables.cook_in_kitchen then
+ 			return {
+ 				{ type = scumm.action.toggle_controls, args =  { active = false, ui = false }},
+ 				{ type = action.suspend_script, args = {script = "_cook"}},
+ 				{ type = action.animate, args = {tag ="scummbar.door.kitchen", anim="open" }},
+ 				{ type = action.show_message, args = { 
+ 					message = strings.dialogues.cook[3], 
+ 					color = mi.data.cook_text_color, 
+ 					pos= {591, 100,1},
+ 					font = 'monkey'
+ 				}},
+ 				{ type = action.animate, args = {tag="scummbar.door.kitchen", anim="close" }},
+ 				{ type = action.resume_script, args = {script = "_cook"}},
+ 				{ type = scumm.action.toggle_controls, args =  { active = true, ui = false }},
+ 			}
+ 		else
+ 			return { type = action.open_door, args = {door="scummbar.door.kitchen"}}
+ 		end
+ 	end
+}
+
+
+
+engine.items["scummbar.fireplace"] = {
+	type = 'object',
+	tag = true,
+ 	pos = {509, 44, -1},
+ 	hotspot = {
+  		text = strings.objects.fireplace,
+ 	 	size = {29, 18},
+ 	 	walk_to = {512, 40},
+ 	 	dir = 'east',
+ 	},
+ 	model = 'scummbar.fireplace',
+  	actions = {
+  		look =  { type = scumm.action.say, args = {tag='player', lines = {strings.scummbar[1]} }}
+  	}
+}
+
+engine.items["scummbar.important_looking_pirates"] = {
+	type = 'object',
+	pos = {370,30,0},
+	hotspot = {
+		text = strings.objects.ilp,
+		walk_to = {460, 2},
+		size = {110,25},
+		dir = 'w',
+	},
+	actions = {
+ 		talk = function() 
+ 			local dp = strings.dialogues.pirates
+ 			local actions = {
+				{ type = scumm.action.toggle_controls, args = { active=false, ui=true } },
+				{ type = scumm.action.say, args = { tag='scummbar.ilp1', lines = { dp[1] }}},
+				{ type = scumm.action.start_dialogue, args = { dialogue = "importantpirates" }}
+			}
+ 			return actions
+ 		end
+ 	}
+}
+
 
 
 -- scumm.factory.door {
@@ -106,166 +282,20 @@ engine.items['scummbar.door.out'] = make_door {
 -- 	variable = "door_village_scummbar"
 -- }
 
--- scumm.factory.door {
--- 	id = "scummbar.door_kitchen",
--- 	pos = {591, 9, -1},
--- 	size = {35, 69},
--- 	walk_to = {588, 14},
--- 	dir = "east",
--- 	model = "door_scummbar_kitchen",
--- 	nextroom = "kitchen",
--- 	variable = "door_scummbar_kitchen",
--- 	walk = function() 
--- 		if (variables.cook_in_kitchen == false) then
--- 			local m = monkey.getEntity("scummbar.cook")
--- 			if (m.x > 320) then
--- 				return {
--- 					{ type = action.suspend_script, args = {script = "_cook"}},
--- 					{ type = scumm.action.turn, args = { tag = "scummbar.cook", dir="east"}},
--- 					{ type = scumm.action.say, args = { actor = "scummbar.cook", lines = { strings.dialogues.cook[1], strings.dialogues.cook[2] }}},
--- 					{ type = scumm.action.turn, args = { tag = "scummbar.cook", dir="west"}},
--- 					{ type = action.set_state, args = {tag = "scummbar.cook", state="walk"}},
--- 					{ type = action.resume_script, args = {script = "_cook"}},
--- 				}
--- 			else
--- 				-- sneak into kitchen
--- 				return { type = action.change_room, args = { room="kitchen"}}
--- 			end
--- 		else
--- 			return nil
--- 		end
--- 	end,
--- 	open = function() 
--- 		if (variables.cook_in_kitchen == true) then
--- 			return {
--- 				{ type = action.suspend_script, args = {script = "_cook"}},
--- 				{ type = action.animate, args = {actor="scummbar.door_kitchen", anim="open" }},
--- 				{ type = action.show_message, args = {message = strings.dialogues.cook[3], color = cook_text_color, pos= {591, 100,1}}},
--- 				{ type = action.animate, args = {actor="scummbar.door_kitchen", anim="close" }},
--- 				{ type = action.resume_script, args = {script = "_cook"}}
--- 			}
--- 		else
--- 			return { type = action.open_door, args = {door="scummbar.door_kitchen"}}
--- 		end
--- 	end,
--- }
 
--- engine.items["scummbar.cook"] = {
--- 	pos = {0, 0, -1},
--- 	model = "cook",
--- 	--anim = "idle_right",
--- 	dir = "east",
--- 	text_color = cook_text_color,
--- 	text_offset = {0,60},
--- 	applydepth = true,
--- 	character = {
--- 		state = "idle",
--- 		dir ="west",
--- 		speed = 100		
--- 	}
+
+
+
+
+
+
 -- }
 
 
 
 
 
--- engine.items["scummbar.pirate5"] = {
--- 	model = "scummbar.pirate5",
--- 	pos = {200, 18, 1},
--- 	actions = {
--- 	}
--- }
--- engine.items["scummbar.pirate6"] = {
--- 	model = "scummbar.pirate6",
--- 	pos = {160, 0, 1},
--- 	actions = {
--- 	}
--- }
--- engine.items["scummbar.pirate7"] = {
--- 	model = "scummbar.pirate7",
--- 	pos = {255, 38, 1},
--- 	actions = {
--- 	}
--- }
--- engine.items["scummbar.pirate8"] = {
--- 	model = "scummbar.pirate8",
--- 	pos = {215, 44, 1},
--- 	actions = {
--- 	}
--- }
 
--- engine.items["scummbar.pirate9"] = {
--- 	model = "scummbar.pirate9",
--- 	pos = {278, 40, 1},
--- 	actions = {
--- 	}
--- }
--- engine.items["scummbar.estevan"] = {
---  	pos = {164, 21, 1},
--- 	hotspot = {
---  		text = strings.objects.pirate,
--- 		size = {30, 20},
--- 		walk_to = {195, 11},
--- 		dir = "south"
--- 	},	
--- 	model = "scummbar.estevan",
---  	actions = {
---  		look = { type=action.change_room, args={room = "estevan" }},
---  		talk = { type=action.change_room, args={room = "estevan" }}
---  	}
--- }
-
--- engine.items["scummbar.loompirate"] = {
--- 	--tag="loompirate",
--- 	pos = {260, 17, -1},
--- 	hotspot = {
--- 		text = strings.objects.pirate,
--- 		size = {20, 20},
--- 		walk_to = {250, 16},
--- 		dir = "north"
--- 	},
--- 	model = "scummbar.loompirate",
--- 	actions = {
--- 		look =  { type = action.change_room, args = { room = "loompirate" }},
--- 		talk =  { type = action.change_room, args = { room = "loompirate" }}
--- 	}
--- }
-
--- engine.items["scummbar.ilp1"] = {
--- 	pos = {376, 11, 0.95},
--- 	text_color = {85, 85, 255, 255},
--- 	text_offset = {0, 60},
--- 	model = "scummbar.ilp1", 
--- 	character = {
--- 	 	state = "idle",
--- 	 	dir = "east",
--- 	 	speed = 0
--- 	},	
--- }
-
--- engine.items["scummbar.ilp2"] = {
--- 	pos = {413, 11, 0.95},
--- 	text_color = {255, 255, 85, 255},
--- 	text_offset = {0, 60},
--- 	model = "scummbar.ilp2",
--- 	character = {
--- 		state="idle",
--- 		dir="east",
--- 		speed = 0
--- 	}
--- }
-
--- engine.items["scummbar.ilp3"] = {
--- 	pos = {444, 18, 0.95},
--- 	text_color = {255, 85, 255, 255},
--- 	text_offset = {0, 60},
--- 	model = "scummbar.ilp3", 
--- 	character = {
--- 		state = "idle",
--- 		dir = "east",
--- 		speed = 0
--- 	}
--- }
 
 
 -- -- engine.items["scummbar.door_kitchen"] = factory.door.create {
@@ -335,42 +365,8 @@ engine.items['scummbar.door.out'] = make_door {
 
 
 
--- engine.items["scummbar.fireplace"] = {
---  	pos = {509, 44, -1},
--- 	hotspot = {
---  		text = strings.objects.fireplace,
--- 	 	size = {29, 18},
--- 	 	walk_to = {512, 40},
--- 	 	dir = "east",
--- 	},
--- 	model = "scummbar.fireplace",
---  	actions = {
---  		look =  { type = scumm.action.say, args = {actor="guybrush", lines = {strings.scummbar[1]} }}
---  	}
--- }
 
 
 
 
 
--- engine.items["scummbar.important_looking_pirates"] = {
--- 	pos = {370,30,0},
--- 	hotspot = {
--- 		text = strings.objects.ilp,
--- 		walk_to = {460, 2},
--- 		size= {110,25},
--- 		dir="west",
--- 	},
--- 	actions = {
---  		talk = function() 
---  			local dp = strings.dialogues.pirates
---  			local actions = {
--- 				{ type = scumm.action.disable_controls },
--- 				{ type = scumm.action.say, args = { actor="scummbar.ilp1", lines = { dp[1] }}},
--- 				{ type = scumm.action.start_dialogue, args = { dialogue = "importantpirates" }}
--- 			}
---  			return actions
---  		end
-
---  	}
--- }

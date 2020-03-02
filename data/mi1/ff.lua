@@ -1,8 +1,17 @@
 mi = {}
+mi.script = {}
+mi.data = {
+	cook_text_color = {85, 255, 255, 255}
+
+}
 
 mi.rooms = {
 	scummbar = {
-		door_out = {65, 15},			
+		door_out = {65, 15},
+		door_kitchen = {588, 14},
+	},
+	kitchen = {
+		door = {36, 16}
 	},
 	village1 = {
 		door = {715, 13}
@@ -13,6 +22,22 @@ mi.rooms = {
 
 mi.addStorekeeper = function()
 end
+
+mi.script.open_door = function(args)
+    glib.assert(args.door, 'door')
+    glib.assert(args.value, 'value')
+    local d = engine.items[args.door]
+    if not d then Error('unknown item ' .. args.door, 1) end
+    return {
+        { type = action.animate, args = { tag = args.door, anim = args.value and 'open' or 'close' }},
+        { type = action.callfunc, args = { func = function()
+            variables[d.var] = args.value and 1 or 0
+        end }}
+    }    
+end
+
+
+
 make_door = function(args)
 
 	assert (args.tag, "tag")
@@ -42,6 +67,7 @@ make_door = function(args)
  			walk_to = args.walk_to,
  			dir = args.dir
  		},
+ 		var = args.var,
 		anim = function() return variables[args.var] == 0 and 'close' or 'open' end,
 		actions = {
 			walk = args.walk or function() 

@@ -1,5 +1,5 @@
 roomDefinition = {
-	player_pos = {300,0,0}
+	player = 'mancomb.guybrush'
 }
 
 room = scumm.factory.dialogue_room (roomDefinition)

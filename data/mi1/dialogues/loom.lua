@@ -1,12 +1,11 @@
 local d = strings.dialogues.loom_pirate
 
-
 local fguy = function(lines) 
 	local l = {}
 	for _, n in ipairs(lines) do
 		table.insert(l, d[n])
 	end
-	return { type = scumm.action.say, args = {actor = "guybrush", lines = l, animate=false }}
+	return { type = scumm.action.say, args = {tag = 'player', lines = l, animate=false }}
 end
 
 local fman = function(lines,anim)
@@ -14,13 +13,16 @@ local fman = function(lines,anim)
 	for _, n in ipairs(lines) do
 		table.insert(l, d[n])
 	end
-	return { type = scumm.action.say, args = {actor = "loompirate.loompirate", lines = l, animstart = anim or "idle", animend= anim or "idle"}}
+	return { type = scumm.action.say, args = {tag = 'loompirate.loompirate', lines = l, animstart = anim or "idle", animend= anim or "idle"}}
 end
 
 engine.dialogues.loompirate = {
 	close = function()
-		local actions = {
-			{ type = action.change_room, args={ room="scummbar" }}
+		-- on close, return to scummbar
+		local actions = scumm.script.changeroom { 
+			room = 'scummbar', 
+			pos = engine.items['scummbar.loompirate'].hotspot.walk_to, 
+			dir='n'
 		}
 		local s = script.make(actions)
 		monkey.play(s)

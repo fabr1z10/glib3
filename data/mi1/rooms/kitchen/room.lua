@@ -3,16 +3,52 @@ local items = engine.items
 roomDefinition = {
 	width = 320,
 	height = 144,
-	startTable = {
-		scummbar = { walkarea="kitchen.walkarea", pos = items["kitchen.door"].hotspot.walk_to, dir = "east"},
-	},
-	font_size = 8,
-	playerid="guybrush",
-	walkareas = { "kitchen.walkarea"},
-	defaultroom = "scummbar",
-	depth = { type="linear_y", values= {0, 1, 144, 0} },
-	collide = true
+	walkareas = {'kitchen.walkarea'},
+	collide = true,
+	id = 'kitchen'
 }
+
+room = scumm.factory.dynamic_room (roomDefinition)
+
+room:add( "main", {
+	{ pos = {0, 0,-3}, components = { { type="gfx", image="kitchen.png" }}},
+	--{ pos = {115, 0, 1}, components = { { type="gfx", image="kitchen3.png" }}},
+	--scumm.factory.object { id = "kitchen.potostew"},
+	-- factory.walkarea { 
+	-- 	shape = { type = "poly", outline = {40,16,59,21,155,21,180,18,192,18,294,18,307,12,199,9,207,0,160,0,149,11,112,11,100,0,40,0}},
+	--  	blockedlines = {
+	--  		{ A = {190, 0}, B = {190, 144}, active =true },
+	--  		{ A = {206, 0}, B = {206, 144}, active =true },
+	--  	},
+	-- },
+	-- factory.objc { id="kitchen.door"},
+	-- factory.objc { id="kitchen.door.pier"},
+	-- factory.objc { id="kitchen.plank"},
+	-- factory.objc { id="kitchen.meat"},
+	-- factory.objc { id="kitchen.pot"},
+	-- factory.objc { id="kitchen.fish"},
+	-- factory.objc { id="kitchen.potostew"},
+	-- factory.objc { id="kitchen.table"},
+	--{
+	--	pos = {290, 5, 0},
+	--	components = {
+	--		{type="hotspot", shape = {type="rect", width = 20, height = 10}, priority=0, onclick = pushPlank }
+	--	}
+	--}
+	-- factory.hotspot.create { pos ={290, 5, 0}, width=20, height= 10, onclick = pushPlank }
+})
+
+room:add( "kitchen.walkarea", {
+	--scumm.factory.object { id = "kitchen.meat"},
+	--scumm.factory.object { id = "kitchen.pot"},
+	--scumm.factory.object { id = "kitchen.door"},
+	--scumm.factory.object { id = "kitchen.door.pier"},
+	--scumm.factory.object { id = "kitchen.fish"},
+	--scumm.factory.object { id = "kitchen.plank"}
+	
+
+})
+
 
 
 local pushPlank = function()
@@ -65,47 +101,6 @@ local pushPlank = function()
 	monkey.play(s)
 end
 
-room = scumm.factory.basic_room  (roomDefinition)
-room:add( "main", {
-	{ pos = {0, 0,-3}, components = { { type="gfx", image="kitchen.png" }}},
-	{ pos = {115, 0, 1}, components = { { type="gfx", image="kitchen3.png" }}},
-	scumm.factory.object { id = "kitchen.potostew"},
-	-- factory.walkarea { 
-	-- 	shape = { type = "poly", outline = {40,16,59,21,155,21,180,18,192,18,294,18,307,12,199,9,207,0,160,0,149,11,112,11,100,0,40,0}},
-	--  	blockedlines = {
-	--  		{ A = {190, 0}, B = {190, 144}, active =true },
-	--  		{ A = {206, 0}, B = {206, 144}, active =true },
-	--  	},
-	-- },
-	-- factory.objc { id="kitchen.door"},
-	-- factory.objc { id="kitchen.door.pier"},
-	-- factory.objc { id="kitchen.plank"},
-	-- factory.objc { id="kitchen.meat"},
-	-- factory.objc { id="kitchen.pot"},
-	-- factory.objc { id="kitchen.fish"},
-	-- factory.objc { id="kitchen.potostew"},
-	-- factory.objc { id="kitchen.table"},
-	{
-		pos = {290, 5, 0},
-		components = {
-			{type="hotspot", shape = {type="rect", width = 20, height = 10}, priority=0, onclick = pushPlank }
-		}
-	}
-	-- factory.hotspot.create { pos ={290, 5, 0}, width=20, height= 10, onclick = pushPlank }
-})
-
-room:add( "kitchen.walkarea", {
-	scumm.factory.object { id = "kitchen.meat"},
-	scumm.factory.object { id = "kitchen.pot"},
-	scumm.factory.object { id = "kitchen.door"},
-	scumm.factory.object { id = "kitchen.door.pier"},
-	scumm.factory.object { id = "kitchen.fish"},
-	scumm.factory.object { id = "kitchen.plank"}
-	
-
-})
-
-
 
 
 
@@ -132,11 +127,11 @@ if (not variables.fish_taken) then
   	room:add("main", { scumm.factory.trap { pos ={100,10,0}, tag="seagull_sensor", shape = {type="rect", width=10, height = 10}, onenter = showSeagull }})
 end
 
-function room.afterstartup() 
-	for k, v in ipairs(room.initstuff) do
-		v()
-	end
-	variables.seagull_on_board = false
-end
+-- function room.afterstartup() 
+-- 	for k, v in ipairs(room.initstuff) do
+-- 		v()
+-- 	end
+-- 	variables.seagull_on_board = false
+-- end
 
 

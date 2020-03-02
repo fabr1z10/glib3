@@ -320,36 +320,69 @@ scumm.script.handleDialogueButton = function (x,y,entity)
     m2:cleartext()
     --print ("calling handleDialogueButton ...")
     local info = entity:getinfo()  
-    print (info.ciao)
-    --local dialogueNode = info.data.node
-    --local dialogue = engine.dialogues[info.data.dialogue]
+    
+    local dialogueNode = info.node
+    local dialogue = engine.dialogues[info.dialogue]
 
-    -- if (dialogueNode.deact ~= nil) then
-    --     for k, v in ipairs(dialogueNode.deact) do
-    --         dialogue.nodes[v].active = false
-    --     end
-    -- end
-    -- if (dialogueNode.act ~= nil) then
-    --     for k, v in ipairs(dialogueNode.act) do
-    --         dialogue.nodes[v].active = true
-    --     end
-    -- end
-    -- local actions = nil
-    -- if (dialogueNode.script ~= nil) then
-    --     print ("Running script ...")
-    --     actions = glib.get(dialogueNode.script)
-    -- else
-    --     print ("button has no script attached.")
-    -- end
+    if (dialogueNode.deact ~= nil) then
+        for k, v in ipairs(dialogueNode.deact) do
+            dialogue.nodes[v].active = false
+        end
+    end
+    if (dialogueNode.act ~= nil) then
+        for k, v in ipairs(dialogueNode.act) do
+            dialogue.nodes[v].active = true
+        end
+    end
+    local actions = nil
+    if (dialogueNode.script ~= nil) then
+        --print ("Running script ...")
+        actions = glib.get(dialogueNode.script)
+    else
+        print ("button has no script attached.")
+    end
 
+    print ('ij')
+    local s1 = { type = scumm.action.resume_dialogue, args = { dialogue = info.dialogue, node = dialogueNode }}
+    if (actions ~= nil) then
+        table.insert (actions, s1)
+    else
+        actions = s1
+    end
+    local s = script.make(actions)
 
-    -- local s1 = { type = scumm.action.resume_dialogue, args = { dialogue = info.data.dialogue, node = dialogueNode }}
-    --  if (actions ~= nil) then
-    --     table.insert (actions, s1)
-    --  else
-    --     actions = s1
-    --  end
-    --  local s = script.make(actions)
+    monkey.play(s)
+end
 
-    --  monkey.play(s)
+scumm.script.closeDialogue = function(dialogue) 
+    local m = monkey.getEntity('mainui')
+    local m1 = monkey.getEntity('main')
+    local m2 = monkey.getEntity('dialogueui')
+
+    scumm.state.walk_enabled = true
+    m2:cleartext()
+    m2:setactive(false)
+    print ('ddd')
+    if not m.isnil then
+        print ('ddd')
+        m:setactive(true)  
+        print ('ddd')
+    end
+    if not m1.isnil then
+        print ('ddd')
+        m1:enablecontrols(true)      
+        print ('ddd')
+    end
+    print ('ccc')
+    if dialogue.close then
+        dialogue.close()
+    end
+end
+
+scumm.script.open_door = function(args)
+    return {
+        { type = action.animate, args = { tag = args.door, anim = 'open' }},
+        { type = action.callfunc, args = { func = function() print ('ok') end }}
+    }
+    
 end

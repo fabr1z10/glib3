@@ -6,6 +6,21 @@
 #include <monkey/model/textmodel.h>
 
 
+ShowMessage::ShowMessage(const LuaTable & table) {
+    m_actor = -1;
+    m_message = table.Get<std::string>("message");
+    m_font = table.Get<std::string>("font");
+    m_align = table.Get<TextAlignment>("align", BOTTOM);
+    m_color = table.Get<glm::vec4>("color");
+    m_offset = table.Get<glm::vec2>("offset", glm::vec2(0.0f));
+    m_time = table.Get<float>("time", 1.0f);
+    m_outlineColor = table.Get<glm::vec4>("outlinecolor", glm::vec4(0.0f, 0.0f, 0.0f, 255.0f));
+    m_size = table.Get<float>("size", 8.0f);
+    m_color/=255.0f;
+    m_outlineColor /= 255.0f;
+    m_pos = table.Get<glm::vec3>("pos");
+}
+
 void ShowMessage::Start() {
     auto& m = Monkey::get();
     m_mainCam = m.Get<OrthographicCamera>("maincam");
