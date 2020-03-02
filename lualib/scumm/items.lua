@@ -45,9 +45,9 @@ scumm.ifac.item = function(args)
 		table.insert(entity.components, { 
 			type = "hotspot", priority = priority,
 			shape = shape,
-			onenter = glib.curry (scumm.script.hoverOn, args.args._id),
-			onleave = scumm.script.hoverOff,
-			onclick = scumm.script.run_action,
+			onenter = glib.curry (scumm.func.hoverOn, args.args._id),
+			onleave = scumm.func.hoverOff,
+			onclick = scumm.func.run_action,
 		})
 	end
 
@@ -82,6 +82,16 @@ scumm.ifac.char = function(args)
 	if args.args.follow then
 		table.insert(entity.components, { type='follow', cam='maincam', relativepos = {0, 0, 5}, up = {0, 1, 0} })
 	end	
+
+	if item.collide and roomDefinition.collide then
+		table.insert(entity.components, { 
+			type='collider', 
+			shape = { type='rect', width = item.collide.size[1], height=item.collide.size[2], offset = item.collide.offset },
+			tag = item.collide.tag,
+			flag = item.collide.flag,
+			mask=item.collide.mask
+		})
+	end
 	return entity
 end
 
@@ -121,7 +131,7 @@ scumm.ifac.walkarea =  function(args)
 		depth = item.depth, 
 		scale = item.scale, 
 		onclick = function(x, y, obj) 
-			scumm.script.walk(x, y) 
+			scumm.func.walk(x, y) 
 		end,
 		blockedlines = item.blockedlines 
 	})	
@@ -147,19 +157,39 @@ scumm.ifac.door = function(args)
 		type = "hotspot",
 		priority = priority,
 		shape = { type = 'rect', width = item.size[1], height= item.size[2]},
-		onenter = glib.curry (scumm.script.hoverOn, args.args._id),
-		onleave = scumm.script.hoverOff,
-		onclick = scumm.script.run_action,
+		onenter = glib.curry (scumm.func.hoverOn, args.args._id),
+		onleave = scumm.func.hoverOff,
+		onclick = scumm.func.run_action,
 	})
 
 	return entity
 end
 
 
+scumm.ifac.trap = function(args) 
+	glib.assert(args.item, 'item!')
+
+	local item = args.item
+
+	glib.assert(item.shape, 'trap requires a shape!')
+	glib.assert(item.onenter, 'trap requires a onenter!')
+
+	local entity = Entity:new(args)
+
+	entity.type = 'default'
+
+	table.insert (entity.components, { type="collider", shape = item.shape, tag = 2, flag = 2, mask = 1 })
+	table.insert (entity.components, { type="info", info = { onenter = item.onenter }})
+
+
+	return entity
+end
+
 scumm.ifac.fmap = {
 	object = scumm.ifac.item,
 	walkarea = scumm.ifac.walkarea,
 	char = scumm.ifac.char,
 	mockchar = scumm.ifac.mockchar,
-	door = scumm.ifac.door
+	door = scumm.ifac.door,
+	trap = scumm.ifac.trap
 }

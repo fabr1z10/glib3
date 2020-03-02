@@ -28,8 +28,8 @@ function scumm.factory.room_base (args)
 		initstuff = {
 			[1] = function() 
 				scumm.state.actionInfo.verb = engine.config.default_verb
-				scumm.script.reset_verb()
-				scumm.script.refresh_inventory()
+				scumm.func.reset_verb()
+				scumm.func.refresh_inventory()
 			end
 		},
 		engines = {
@@ -52,7 +52,7 @@ function scumm.factory.room_base (args)
 						return
 					end
 					if (scumm.state.walk_enabled == true and scumm.state.actionInfo.verb == "walk") then
-						scumm.script.walk(x, y) 
+						scumm.func.walk(x, y) 
 					end
 				end,	 
 			},
@@ -157,14 +157,13 @@ function scumm.factory.room_base (args)
 		}
 	}
 
-	if (args.collide == true) then
+	if args.collide then
 		table.insert (p.engines, 
 			{ 
 				type = "collision", 
 				size = {128, 128}, 
 				response = {
 					{ tag = {1, 2}, onenter=function(e,f) 
-
 							local info = f:getinfo()
 							if (info.onenter ~= nil) then
 								info.onenter()

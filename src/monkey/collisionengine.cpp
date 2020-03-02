@@ -60,6 +60,9 @@ CollisionEngine::CollisionEngine(const LuaTable & table) : ICollisionEngine(tabl
         }
         SetResponseManager(std::move(crm));
     }
+
+    m_intersector = std::make_unique<Intersector>();
+
 }
 
 void CollisionEngine::Enable25DCollision(float eps) {

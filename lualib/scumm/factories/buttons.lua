@@ -50,30 +50,12 @@ scumm.factory.inventorybutton = function (args)
 		maxwidth = 170,
         size = 8, 
         priority = 1,
-		onenter = scumm.script.hover_on_inv_button,
-        onleave = scumm.script.hover_off_inv_button,
-		onclick = scumm.script.run_action 
+		onenter = scumm.func.hover_on_inv_button,
+        onleave = scumm.func.hover_off_inv_button,
+		onclick = scumm.func.run_action 
 	}
 	table.insert (button.components, { type='info', info = { obj = args.id }})
 	return button
-end
-
-scumm.factory.inventorybutton_sci = function (args)
-	return scumm.factory.button {
-		pos = {0,0},
-		font = "ui",
-        text= args.text,
-		maxwidth = args.maxwidth,
-        align="bottomleft",
-        color = {255,0,0,255},
-        size = 8,
-        priority = 1,
-		--info = { obj = args.obj},
-		--onenter = scumm.ui.hover_on_inv_button, --scurry2(changecolor, config.ui_inv_selected),
-        --onleave = scumm.ui.hover_off_inv_button, --(changecolor, config.ui_inv_unselected),
-		--onclick = scumm.ui.runAction
-	}
-
 end
 
 scumm.factory.dialoguebutton = function (args) 
@@ -87,9 +69,9 @@ scumm.factory.dialoguebutton = function (args)
         size = 8, 
         priority = 1,
 		--info = { node = args.dialogue_node, dialogue = args.dialogue }, 
-		onenter = glib.curry2(scumm.script.changecolor, engine.config.ui.verb_selected_color),
-        onleave = glib.curry2(scumm.script.changecolor, engine.config.ui.verb_unselected_color),
-		onclick = scumm.script.handleDialogueButton	
+		onenter = glib.curry2(scumm.func.changecolor, engine.config.ui.verb_selected_color),
+        onleave = glib.curry2(scumm.func.changecolor, engine.config.ui.verb_unselected_color),
+		onclick = scumm.func.handleDialogueButton	
 	}
 	table.insert (button.components, { type='info', info = { node = args.dialogue_node, dialogue = args.dialogue }})
 	return button
@@ -109,8 +91,8 @@ scumm.factory.verbbutton = function(args)
 		maxwidth = 170,
         size = 8, 
         priority = 1,
-		onenter = glib.curry2(scumm.script.changecolor, engine.config.ui.verb_selected_color), 
-        onleave = glib.curry2(scumm.script.changecolor, engine.config.ui.verb_unselected_color),
-		onclick = glib.curry(scumm.script.set_verb, args.verb)
+		onenter = glib.curry2(scumm.func.changecolor, engine.config.ui.verb_selected_color), 
+        onleave = glib.curry2(scumm.func.changecolor, engine.config.ui.verb_unselected_color),
+		onclick = glib.curry(scumm.func.set_verb, args.verb)
 	}
 end

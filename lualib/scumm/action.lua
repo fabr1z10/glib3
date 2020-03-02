@@ -4,6 +4,12 @@ local items =engine.items
 local dialogues =engine.dialogues
 --local inventory = variables.inventory
 
+-- scumm.action holds functions that return single actions
+-- i.e. every function here will return a table like
+-- { type = 'typeid', ... } where typeid is a class recognized by glib3
+-- and ... are params depending on the specific functions.
+-- If you want complex actions, look for scumm.script
+
 scumm.action = {}
 
 scumm.action.walkto = function (args) 
@@ -17,16 +23,6 @@ scumm.action.walkto = function (args)
 	end	
 	return { type='walk', tag = args.tag, id = args.id, pos = pos }
 end
-
-scumm.action.walktoitem = function (args) 
-	glib.assert_either (args.tag, args.id, "id or tag")
-	glib.assert(args.item, "item")
-	local item = monkey.getEntity(args.item)
-	local offset = args.offset or {0,0}
-	return { type=engine.config.walk, tag = args.tag, id = args.id, pos = {item.x + offset[1], item.y + offset[2]} }
-end
-
-
 
 scumm.action.turn = function (args) 
 	glib.assert_either (args.tag, args.id, "id or tag")
@@ -53,46 +49,46 @@ scumm.action.enable_wall = function (args)
 
 end
 
-scumm.action.pickup2 = function(args)		
-	if (inventory[args.id] ~= nil and inventory[args.id] > 0) then return {} end
-	return { 
-		{ ref = 1, type = action.animate, args ={tag="player", anim=args.anim1, sync=true}},
-		{ type = action.activate, args ={tag=args.id, active=false }},
-		{ type = action.animate, after={1}, args ={tag="player", anim=args.anim2 }},
-		{ type = scumm.action.add_to_inventory, args = {id=args.id}}
-	}
-end
+-- scumm.action.pickup2 = function(args)		
+-- 	if (inventory[args.id] ~= nil and inventory[args.id] > 0) then return {} end
+-- 	return { 
+-- 		{ ref = 1, type = action.animate, args ={tag="player", anim=args.anim1, sync=true}},
+-- 		{ type = action.activate, args ={tag=args.id, active=false }},
+-- 		{ type = action.animate, after={1}, args ={tag="player", anim=args.anim2 }},
+-- 		{ type = scumm.action.add_to_inventory, args = {id=args.id}}
+-- 	}
+-- end
 
-scumm.action.pickup = function(args)
-	-- picks up something.
-	-- deact = 0 --> don't remove item from scene
-	glib.assert(args.id, "id")		
-	local id_inv = args.id_inv or args.id
-	local deact = args.deact or 1
+-- scumm.action.pickup = function(args)
+-- 	-- picks up something.
+-- 	-- deact = 0 --> don't remove item from scene
+-- 	glib.assert(args.id, "id")		
+-- 	local id_inv = args.id_inv or args.id
+-- 	local deact = args.deact or 1
 
-	return function()
-		local act = {}
-		local alreadyHaveIt = (inventory[id_inv] ~= nil and inventory[id_inv] > 0)
-		-- if I already have and the alreadyhave msg is set, I say it
-		if (alreadyHaveIt and args.alreadyhave ~= nil) then
-			act = {
-				{ type = scumm.action.say, args = { actor="guybrush", lines = args.alreadyhave }}
-			}
-			return act
-		end
-		if (args.anim1 ~= nil and args.anim2 ~= nil) then
-			table.insert (act, { type = action.animate, args = {tag="player", anim=args.anim1, sync=true}})
-		end
-		if (args.deact == 1) then
-			table.insert (act, { type = action.activate, args ={tag=id, active=false }})
-		end
-		if (args.anim1 ~= nil and args.anim2 ~= nil) then
-			table.insert (act, { type = action.animate, args = {tag="player", anim=args.anim2 }})
-		end
-		table.insert(act, { type = scumm.action.add_to_inventory, args = {id=id_inv}})
-		return act
-	end
-end
+-- 	return function()
+-- 		local act = {}
+-- 		local alreadyHaveIt = (inventory[id_inv] ~= nil and inventory[id_inv] > 0)
+-- 		-- if I already have and the alreadyhave msg is set, I say it
+-- 		if (alreadyHaveIt and args.alreadyhave ~= nil) then
+-- 			act = {
+-- 				{ type = scumm.action.say, args = { actor="guybrush", lines = args.alreadyhave }}
+-- 			}
+-- 			return act
+-- 		end
+-- 		if (args.anim1 ~= nil and args.anim2 ~= nil) then
+-- 			table.insert (act, { type = action.animate, args = {tag="player", anim=args.anim1, sync=true}})
+-- 		end
+-- 		if (args.deact == 1) then
+-- 			table.insert (act, { type = action.activate, args ={tag=id, active=false }})
+-- 		end
+-- 		if (args.anim1 ~= nil and args.anim2 ~= nil) then
+-- 			table.insert (act, { type = action.animate, args = {tag="player", anim=args.anim2 }})
+-- 		end
+-- 		table.insert(act, { type = scumm.action.add_to_inventory, args = {id=id_inv}})
+-- 		return act
+-- 	end
+-- end
 
 scumm.action.walk_to_object= function(actor, id) 
 	return { 
@@ -144,7 +140,10 @@ scumm.action.say = function(args)
 	}
 end
 
-
+-- switch controls on/off. 
+-- active REQ (bool) -> tells whether you want to switch controls on or off
+-- ui REQ (bool) -> tells whether you want to include the ui 
+--              (if true, the verbs will disappear/appear if active is off/on)
 scumm.action.toggle_controls = function(args)
 	return {
 		type = 'callfunc',
@@ -162,6 +161,8 @@ scumm.action.toggle_controls = function(args)
 	}
 end
 
+-- Starts a dialogue.
+-- dialogue REQ (string) --> the dialogue to start (required)
 scumm.action.start_dialogue = function (args) 
 	assert (args.dialogue, "dialogue")
 	local droot = args.root or 1
@@ -223,7 +224,7 @@ scumm.action.resume_dialogue = function(args)
 			if (node.children == nil) then
         		-- return to game
         		print ("return to game.")
-        		scumm.script.closeDialogue (dialogue)
+        		scumm.func.closeDialogue (dialogue)
         	else
 				-- check if node has active children
 				print ("I have children. Check at least one is active.")
@@ -260,23 +261,7 @@ scumm.action.add_to_inventory = function(args)
 			else 
 				inv[args.id] = inv[args.id] + qty
 			end
-			scumm.script.refresh_inventory()
-		end
-	}
-end
-
-scumm.action.add_to_inventory_sci = function(args) 
-	assert (args.id, "id")
-	local qty = args.qty or 1
-	return { type = "callfunc", func = 
-		function()
-			print (args.id .. " adding")			
-			if (inventory[args.id] == nil) then
-				inventory[args.id] = {}
-				print ("FATTO " .. args.id)
-			else 
-				inventory[args.id] = inventory[args.id] + qty
-			end
+			scumm.func.refresh_inventory()
 		end
 	}
 end
@@ -285,13 +270,12 @@ scumm.action.remove_from_inventory = function(args)
 	assert (args.id, "id")
 	return { type = "callfunc", func = 
 		function()
-			print ("removing " .. args.id)
-			inventory[args.id] = nil
-			scumm.ui.refresh_inventory()
+			local inv = variables.inventory[variables.current_player]
+			inv[args.id] = nil
+			scumm.func.refresh_inventory()
 		end
 	}
 end
-
 
 scumm.action.close_door = function(args) 
 	assert (args.door, "door")
@@ -318,6 +302,6 @@ scumm.action.change_text_item = function (args)
 	assert (args.text, "text")
 	return { type="callfunc", func= function()
 		engine.items[args.id].hotspot.text = args.text
-		scumm.ui.refresh_inventory()
+		scumm.func.refresh_inventory()
 	end}
 end

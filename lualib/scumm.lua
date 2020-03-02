@@ -11,6 +11,7 @@ scumm.ifac = {}
 scumm.factory = {}
 scumm.script = {}
 scumm.utils = {}
+scumm.func = {}
 engine.items = {}
 engine.dialogues = {}
 --engine.state = {}
@@ -33,4 +34,5 @@ require ("scumm/action")
 require ("scumm/items")
 require ("scumm/factories")
 require ("scumm/utils")
+require ("scumm/func")
 require ("scumm/script")

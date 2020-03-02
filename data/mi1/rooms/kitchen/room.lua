@@ -12,7 +12,7 @@ room = scumm.factory.dynamic_room (roomDefinition)
 
 room:add( "main", {
 	{ pos = {0, 0,-3}, components = { { type="gfx", image="kitchen.png" }}},
-	--{ pos = {115, 0, 1}, components = { { type="gfx", image="kitchen3.png" }}},
+	{ pos = {115, 0, 1}, components = { { type="gfx", image="kitchen3.png" }}},
 	--scumm.factory.object { id = "kitchen.potostew"},
 	-- factory.walkarea { 
 	-- 	shape = { type = "poly", outline = {40,16,59,21,155,21,180,18,192,18,294,18,307,12,199,9,207,0,160,0,149,11,112,11,100,0,40,0}},
@@ -24,10 +24,10 @@ room:add( "main", {
 	-- factory.objc { id="kitchen.door"},
 	-- factory.objc { id="kitchen.door.pier"},
 	-- factory.objc { id="kitchen.plank"},
-	-- factory.objc { id="kitchen.meat"},
+	
 	-- factory.objc { id="kitchen.pot"},
 	-- factory.objc { id="kitchen.fish"},
-	-- factory.objc { id="kitchen.potostew"},
+	scumm.factory.object { id="kitchen.potostew"},
 	-- factory.objc { id="kitchen.table"},
 	--{
 	--	pos = {290, 5, 0},
@@ -39,7 +39,7 @@ room:add( "main", {
 })
 
 room:add( "kitchen.walkarea", {
-	--scumm.factory.object { id = "kitchen.meat"},
+	scumm.factory.object { id = "kitchen.meat"},
 	--scumm.factory.object { id = "kitchen.pot"},
 	--scumm.factory.object { id = "kitchen.door"},
 	--scumm.factory.object { id = "kitchen.door.pier"},
@@ -124,7 +124,10 @@ end
 
 
 if (not variables.fish_taken) then
-  	room:add("main", { scumm.factory.trap { pos ={100,10,0}, tag="seagull_sensor", shape = {type="rect", width=10, height = 10}, onenter = showSeagull }})
+  	room:add('main',  { 
+  		scumm.factory.object { id = 'kitchen.trap' }
+  	})
+
 end
 
 -- function room.afterstartup() 

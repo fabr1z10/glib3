@@ -6,10 +6,8 @@ function scumm.factory.dynamic_room (args)
 	local p = scumm.factory.room_base(args)
 
 	-- load dynamic stuff
-	print ('.... ' .. args.id)
 	local di = variables.dynamic_items[args.id]
 	if di then
-		print ("shflidsfslk")
 		local it = {}
 		for id, item in pairs(di) do
 			local tag = (id == variables.current_player) and 'player' or nil

@@ -9,6 +9,13 @@ engine.items["guybrush"] = {
 	speed = speed,
 	text_color = {255, 255, 255, 255},
 	text_offset = text_offset,
+	collide = {
+		size = {10, 1},
+		offset = {-5, 0},
+		tag = 1,
+		flag = 1,
+		mask = 2
+	}
 }
 
 engine.items["scummbar.cook"] = {

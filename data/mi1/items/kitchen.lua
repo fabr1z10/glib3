@@ -15,6 +15,14 @@ engine.items["kitchen.walkarea"] = {
 	depth = { type="linear_y", values= {0, 1, 144, 0} },	
 }
 
+engine.items["kitchen.trap"] = {
+	type = 'trap',
+	tag="seagull_sensor",
+	pos = {100, 10, 0}, 
+	shape = {type="rect", width=10, height = 10}, 
+	onenter = function() print 'ciao!' end
+}
+
 engine.items["kitchen.seagull"] = {
  	pos = {0, 0, 1},
  	model = "kitchen.seagull",
@@ -26,6 +34,8 @@ engine.items["kitchen.plank"] = {
 }
 
 engine.items["kitchen.meat"] = { 
+	type = 'object',
+	tag = true,
 	pos = {79, 40, -1},
 	hotspot = {
 		text = strings.objects.meat,	
@@ -35,8 +45,11 @@ engine.items["kitchen.meat"] = {
 	},
  	model = "kitchen.meat",
  	actions = {
- 		pick = glib.curry(scumm.action.pickup2, {id="kitchen.meat", anim1="operate_n", anim2="idle_n"}),
- 		look = { type = scumm.action.say, args = {actor="guybrush", lines = {strings.kitchen[1]}}}
+ 		pick = {
+ 			scumm.script.pickup { id="kitchen.meat", anim_start="operate_n", anim_end="idle_n"},
+ 			--{ type = scumm.action.say, args = { tag = 'player', lines = {strings.kitchen[1]}}}	
+ 		},
+ 		look = { type = scumm.action.say, args = { tag = 'player', lines = {strings.kitchen[1]}}}
  	}	
 }
 
@@ -170,15 +183,16 @@ engine.items["kitchen.fish"] = {
 	}
 }
 
-engine.items["kitchen.potostew"] = {
+engine.items['kitchen.potostew'] = {
+	type = 'object',
+ 	model = 'kitchen.potostew',
  	pos = {153, 39, -1},
 	hotspot = {
 		text = strings.objects.potostew,
 		size = {32, 19},
 		walk_to = {170, 35},
-		dir ="north"
+		dir = 'n'
 	},
- 	model = "kitchen.potostew",
  	actions = {
 		use = {
 			["kitchen.meat"] = {
@@ -191,7 +205,7 @@ engine.items["kitchen.potostew"] = {
 		},
  		look = function() 
  			local line = variables.meat_in_pot and 9 or 5
-			return { type = scumm.action.say, args = {actor="guybrush", lines={strings.kitchen[line]}} }
+			return { type = scumm.action.say, args = {tag='player', lines={strings.kitchen[line]}} }
  		end,
 		pick = function()
 			if (variables.meat_in_pot) then

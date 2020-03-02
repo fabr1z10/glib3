@@ -153,9 +153,6 @@ engine.items["scummbar.pirate9"] = {
 }
 
 
-
-
-
 engine.items['scummbar.door.out'] = make_door {
 	tag = 'scummbar.door.out',
 	model = 'door_scummbar_village',
