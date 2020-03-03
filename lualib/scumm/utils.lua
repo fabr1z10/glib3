@@ -32,6 +32,10 @@ end
 
 -- returns whether current player has a particular item
 scumm.utils.has_player = function(id)
+    print ('-- has ' .. id .. '? ')
+    if (variables.inventory[variables.current_player][id]) then
+        print (variables.inventory[variables.current_player][id])
+    end
     return variables.inventory[variables.current_player][id] ~= nil
 end
 

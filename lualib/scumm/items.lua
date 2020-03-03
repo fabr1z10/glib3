@@ -57,6 +57,28 @@ scumm.ifac.item = function(args)
 	
 end
 
+scumm.ifac.hotspot = function(args) 
+	glib.assert(args.item, 'item!')
+
+	local item = args.item
+
+	local entity = Entity:new(args)
+	local priority = item.priority or 1
+
+	table.insert (entity.components, {
+		type = 'hotspot',
+		priority = priority,
+		shape = item.shape,
+		onenter = item.onenter,
+		onleave = item.onleave,
+		onclick = item.onclick
+
+	})
+	return entity
+end
+
+
+
 -- create a character
 scumm.ifac.char = function(args) 
 	glib.assert(args.item, 'item!')
@@ -191,5 +213,6 @@ scumm.ifac.fmap = {
 	char = scumm.ifac.char,
 	mockchar = scumm.ifac.mockchar,
 	door = scumm.ifac.door,
-	trap = scumm.ifac.trap
+	trap = scumm.ifac.trap,
+	hotspot = scumm.ifac.hotspot
 }

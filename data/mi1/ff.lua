@@ -47,6 +47,7 @@ make_door = function(args)
 	assert (args.dir, "dir")
 	assert (args.model, "model")
 	assert (args.var, "var - the controlling variable")
+	
 	assert (args.go_to, 'go_to')
 	assert (args.go_to.room, 'go_to.room')
 	assert (args.go_to.pos, 'go_to.pos')

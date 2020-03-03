@@ -81,20 +81,21 @@ local cook = function()
 	local a1 = nil
 	
 	-- if coming from kitchen, cook should be added to the scene!
-	if engine.state.previousroom == 'kitchen' then
+	
+	if engine.state.previousRoom == 'kitchen' then
 	 	--variables[items["scummbar.door_kitchen"].variable] = 1
 	 	variables.cook_in_kitchen = false
 	  	local mancombPos = items['scummbar.mancomb'].hotspot.walk_to
 	 	a1 = {
 	 		{ type = action.create_object, args = { 
 	 			factory = scumm.factory.object, 
-	 			args = { id = 'scummbar.cook', params = { pos = {mancombPos[1], mancombPos[2], 0} }},
+	 			args = { id = 'scummbar.cook', params = { pos = {mancombPos[1], mancombPos[2], 0}, dir='n' }},
 	 			parent = 'scummbar.walkarea'
 	 		}},
 	 		{ type = action.delay, args = {sec = 5 }},
-	 		{ type = action.walkto, args = { actor ='scummbar.cook', obj = 'scummbar.door.kitchen'}},
-	 		{ type = action.remove_object, args = { name ="scummbar.cook" }},
-	 		mi.script.open_door { door='scummbar.door_kitchen', value = false },
+	 		{ type = scumm.action.walkto, args = { tag ='scummbar.cook', obj = 'scummbar.door.kitchen'}},
+	 		{ type = action.remove_object, args = { tag ="scummbar.cook" }},
+	 		mi.script.open_door { door='scummbar.door.kitchen', value = false },
 	 		{ type = action.set_variable, args = {var = 'cook_in_kitchen', value = true }}
 	 	}
 	else

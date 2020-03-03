@@ -6,6 +6,7 @@
 class EnableBlock : public Activity {
 public:
     EnableBlock(const std::string& id, int wall, bool active) : Activity(), m_id(id), m_wall{wall}, m_active{active} {}
+    EnableBlock(const LuaTable&);
     void Start() override;
     void Run (float dt) override {}
 private:

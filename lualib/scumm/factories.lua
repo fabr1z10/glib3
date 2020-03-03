@@ -22,7 +22,10 @@ end
 
 
 function scumm.factory.object (args)
-	
+	if scumm.utils.has_player(args.id) then
+		return {}
+	end
+
 	glib.assert(args.id, 'required item <id>')
 	print ('    adding item: ' .. args.id)
 	local item = engine.items[args.id]

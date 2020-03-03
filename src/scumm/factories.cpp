@@ -25,6 +25,7 @@ void Extension::extend(SceneFactory* f) {
     f->add<Walk> ("walk");
     f->add<Turn> ("turn");
     f->add<Say> ("say");
+    f->add<EnableBlock> ("enable_wall");
 
     //LuaWrapper::addMethod("get_direction", [&] (EntityWrapper* e) { return getDirection(e); });
 
@@ -103,15 +104,15 @@ std::shared_ptr<Component> CharacterComponentFactory::Create(luabridge::LuaRef& 
 //
 //    say->SetNoAnim(!animate);
 //    return std::move(say);
+////};
+////
+//
+//std::shared_ptr<Activity> EnableBlockActFactory::Create(luabridge::LuaRef &ref) {
+//    LuaTable table(ref);
+//    std::string id = table.Get<std::string>("walkarea");
+//    int wallId = table.Get<int>("wall");
+//    bool active = table.Get<bool>("active");
+//
+//    return std::make_shared<EnableBlock>(id, wallId, active);
 //};
 //
-
-std::shared_ptr<Activity> EnableBlockActFactory::Create(luabridge::LuaRef &ref) {
-    LuaTable table(ref);
-    std::string id = table.Get<std::string>("walkarea");
-    int wallId = table.Get<int>("wall");
-    bool active = table.Get<bool>("active");
-
-    return std::make_shared<EnableBlock>(id, wallId, active);
-};
-
