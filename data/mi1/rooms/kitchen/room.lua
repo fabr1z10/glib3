@@ -40,10 +40,10 @@ room:add( "main", {
 
 room:add( "kitchen.walkarea", {
 	scumm.factory.object { id = "kitchen.meat"},
-	--scumm.factory.object { id = "kitchen.pot"},
+	scumm.factory.object { id = "kitchen.pot"},
 	--scumm.factory.object { id = "kitchen.door"},
 	--scumm.factory.object { id = "kitchen.door.pier"},
-	--scumm.factory.object { id = "kitchen.fish"},
+	scumm.factory.object { id = "kitchen.fish"},
 	--scumm.factory.object { id = "kitchen.plank"}
 	
 

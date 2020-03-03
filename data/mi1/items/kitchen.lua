@@ -1,6 +1,18 @@
 --engine.items.scummbar = {}
 local d = strings.kitchen
 
+local showSeagull = function()
+	local actions = {
+		{ type = action.remove_object, args = { tag='seagull_sensor'}},
+		{ type = action.create_object, args ={ factory = scumm.factory.object, args = { id='kitchen.seagull'}}},
+		{ type = action.animate, args = { tag='kitchen.seagull', anim='fly', sync=true}},
+		{ type = action.animate, args = { tag='kitchen.seagull', anim="eat" }},
+		{ type = action.set_variable, args = {var='seagull_on_board', value=true}}
+	}
+	local s = script.make(actions)
+	monkey.play(s)
+end
+
 engine.items["kitchen.walkarea"] = {
 	type = 'walkarea',
 	tag = true,
@@ -20,10 +32,12 @@ engine.items["kitchen.trap"] = {
 	tag="seagull_sensor",
 	pos = {100, 10, 0}, 
 	shape = {type="rect", width=10, height = 10}, 
-	onenter = function() print 'ciao!' end
+	onenter = showSeagull
 }
 
 engine.items["kitchen.seagull"] = {
+	type = 'object',
+	tag = true,
  	pos = {0, 0, 1},
  	model = "kitchen.seagull",
 }
@@ -52,6 +66,82 @@ engine.items["kitchen.meat"] = {
  		look = { type = scumm.action.say, args = { tag = 'player', lines = {strings.kitchen[1]}}}
  	}	
 }
+
+engine.items["kitchen.pot"] = {
+	type = 'object',
+	tag = true, 
+ 	pos = {104, 24, -1},
+	hotspot = {
+		text = strings.objects.pot,
+		size = {15, 7},
+	 	walk_to = { 112, 18},
+	 	dir = 'n'
+	},
+	model = 'kitchen.pot',
+ 	actions = {
+ 		pick = scumm.script.pickup { id="kitchen.pot", anim_start='kneel_n', anim_end='idle_n'},
+ 		look = { type = scumm.action.say, args ={tag="player", lines = {strings.kitchen[2] }}},
+ 		give = {
+			["circus.greenclown"] = circus_cutscene,
+ 			["circus.purpleclown"] = circus_cutscene
+ 		}
+	}
+}
+
+engine.items["kitchen.fish"] = {
+	type = 'object',
+	tag = true, 	
+	pos = {234, 9, 1},
+	hotspot = {
+		text = strings.objects.fish,	
+		size = {12, 7},
+		walk_to = {234, 12},
+		dir='south',
+	},
+	model = 'kitchen.fish',
+	actions = {
+		pick = function()
+			if (variables.seagull_on_board == false) then
+				variables.fish_taken = true
+				print ("QUIAIIFJEIWFJ")
+				return glib.curry(scumm.action.pickup2, { id="kitchen.fish", anim1="kneel_s", anim2="idle_s"})()
+				--refeturn action.combo.pickup ("kitchen.fish", "kneel_s", "idle_s")
+			else
+				return {
+					{ type = action.animate, args = {tag="player", anim="kneel_s"}},
+					{ type = action.delay, args = {sec=0.5}},
+					{ type = action.animate, args = {tag="player", anim="idle_s"}},
+					{ type = scumm.action.say, args ={actor="guybrush", lines= {strings.kitchen[4]}}}
+				}
+			end
+		end,
+		look = { type = scumm.action.say, args = {tag='player', lines = {strings.kitchen[3] }}},
+		give = {	
+			["bridge.troll"] = { 
+				{ type = scumm.action.disable_controls, args = nil},
+				{ ref = 1, type = action.suspend_script, args = {script="_troll"}},
+				{ type = action.remove_object, args = {tag="troll_sensor"}},
+				{ ref = 2, type = action.animate, 
+					after={1}, 
+					args ={tag="bridge.troll", anim="pickup_fish", sync = true}},
+				{ ref = 3, type = scumm.action.say, 
+                    after={1}, 
+                    args={actor="bridge.troll", lines={ strings.dialogues.troll[48] }, animate = false}},
+				{ type = scumm.action.say, after={2, 3}, args={actor="bridge.troll", lines={ strings.dialogues.troll[49] }, animstart="talk_fish", animend="idle_fish"}},
+				{ type = scumm.action.walkto, args ={tag="player", pos={209, 60}}},
+				{ type = scumm.action.turn, args ={tag="player", dir = "north"}},
+				{ type = action.animate, args= {tag="bridge.troll", anim="fish_cutscene", sync=true}},
+				{ type = scumm.action.turn, args = {tag="player", dir="south"}},
+				{ type = action.delay, args ={ sec = 1}},
+				{ type = scumm.action.turn, args = {tag="player", dir="north"}},
+				{ type = action.set_variable, args = {var="troll_fed", value=true}},
+				{ type = action.change_room, args = {room="meleemap"}}
+			}
+
+		}
+	}
+}
+
 
 engine.items["kitchen.table"] = { 
 	pos = {114, 0, 1},
@@ -112,76 +202,9 @@ local circus_cutscene = {
 	{ type = scumm.action.start_dialogue, args = { dialogue="fettuccini", root=15 }}
 }
 
-engine.items["kitchen.pot"] = { 
- 	pos = {104, 24, -1},
-	hotspot = {
-		text = strings.objects.pot,
-		size = {15, 7},
-	 	walk_to = { 112, 18},
-	 	dir = "north"
-	},
-	model = "kitchen.pot",
- 	actions = {
- 		pick = glib.curry(scumm.action.pickup2, {id="kitchen.pot", anim1="kneel_n", anim2="idle_n"}),
- 		look = { type = scumm.action.say, args ={actor="guybrush", lines = {strings.kitchen[2] }}},
- 		give = {
-			["circus.greenclown"] = circus_cutscene,
- 			["circus.purpleclown"] = circus_cutscene
- 		}
-	}
-}
 
-engine.items["kitchen.fish"] = {
-	pos = {234, 9, 1},
-	hotspot = {
-		text = strings.objects.fish,	
-		size = {12, 7},
-		walk_to = {234, 12},
-		dir="south",
-	},
-	model = "kitchen.fish",
-	actions = {
-		pick = function()
-			if (variables.seagull_on_board == false) then
-				variables.fish_taken = true
-				print ("QUIAIIFJEIWFJ")
-				return glib.curry(scumm.action.pickup2, { id="kitchen.fish", anim1="kneel_s", anim2="idle_s"})()
-				--refeturn action.combo.pickup ("kitchen.fish", "kneel_s", "idle_s")
-			else
-				return {
-					{ type = action.animate, args = {tag="player", anim="kneel_s"}},
-					{ type = action.delay, args = {sec=0.5}},
-					{ type = action.animate, args = {tag="player", anim="idle_s"}},
-					{ type = scumm.action.say, args ={actor="guybrush", lines= {strings.kitchen[4]}}}
-				}
-			end
-		end,
-		look = { type = scumm.action.say, args = {actor="guybrush", lines = {strings.kitchen[3] }}},
-		give = {	
-			["bridge.troll"] = { 
-				{ type = scumm.action.disable_controls, args = nil},
-				{ ref = 1, type = action.suspend_script, args = {script="_troll"}},
-				{ type = action.remove_object, args = {tag="troll_sensor"}},
-				{ ref = 2, type = action.animate, 
-					after={1}, 
-					args ={tag="bridge.troll", anim="pickup_fish", sync = true}},
-				{ ref = 3, type = scumm.action.say, 
-                    after={1}, 
-                    args={actor="bridge.troll", lines={ strings.dialogues.troll[48] }, animate = false}},
-				{ type = scumm.action.say, after={2, 3}, args={actor="bridge.troll", lines={ strings.dialogues.troll[49] }, animstart="talk_fish", animend="idle_fish"}},
-				{ type = scumm.action.walkto, args ={tag="player", pos={209, 60}}},
-				{ type = scumm.action.turn, args ={tag="player", dir = "north"}},
-				{ type = action.animate, args= {tag="bridge.troll", anim="fish_cutscene", sync=true}},
-				{ type = scumm.action.turn, args = {tag="player", dir="south"}},
-				{ type = action.delay, args ={ sec = 1}},
-				{ type = scumm.action.turn, args = {tag="player", dir="north"}},
-				{ type = action.set_variable, args = {var="troll_fed", value=true}},
-				{ type = action.change_room, args = {room="meleemap"}}
-			}
 
-		}
-	}
-}
+
 
 engine.items['kitchen.potostew'] = {
 	type = 'object',
