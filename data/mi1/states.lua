@@ -2,7 +2,7 @@ states = {
 }
 
 states.start = function()
-	local room = 'scummbar'
+	local room = 'lookout'
 	scumm.utils.init { 
 		{ id = 'guybrush', room = room, pos = {0,0}, dir = 'e', type = 'player'},
 	}

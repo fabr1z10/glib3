@@ -18,6 +18,29 @@ engine.items["guybrush"] = {
 	}
 }
 
+engine.items["lookout.lookout"] = {
+	type = 'char',
+	model ="lookout.lookout",
+	tag =true,
+	text_offset = {0, 60},
+    text_color = {170, 170, 170, 255},
+	state = 'idle',
+	dir = 'west',
+	speed = normal_speed,
+	pos = {114, 36, 0},
+	hotspot = {
+		text = strings.objects.lookout,
+		walk_to = {134, 36},
+		size = {20, 47},
+		offset = {-10,0},
+		dir = "west",
+	},
+	actions = {
+		look = { type = scumm.action.say, args = { tag="player", lines = {strings.dialogues.lookout[50]} }},
+		talk = { type= scumm.action.start_dialogue, args = {dialogue = "lookout"}}
+	}
+}
+
 engine.items["scummbar.cook"] = {
 	type = 'char',
 	tag=true,

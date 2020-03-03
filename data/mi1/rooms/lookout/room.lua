@@ -13,7 +13,7 @@ room = scumm.factory.room_ui (roomDefinition)
 room:add ( "lookout.walkarea",
  	{ 
  		scumm.factory.object{id="lookout.fire"},
--- 		scumm.factory.object{id="lookout.lookout"},
+ 		scumm.factory.object{id="lookout.lookout"},
  	}
 )
 

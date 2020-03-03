@@ -38,30 +38,7 @@ engine.items["lookout.path"] = {
 }
 
 
-engine.items["lookout.lookout"] = {
-	pos = {114, 36, 0},
-	hotspot = {
-		text = strings.objects.lookout,
-		walk_to = {134, 36},
-		size = {20, 47},
-		offset = {-10,0},
-		dir = "west",
-	},
-	
-	text_offset = {0, 60},
-    text_color = {170, 170, 170, 255},
-	applyDepth = true,
-	character = {
-		state = "idle",
-		dir = "west",
-		speed = 20
-	},
-	model ="lookout.lookout",
-	actions = {
-		look = { type = scumm.action.say, args = { actor="guybrush", lines = {strings.dialogues.lookout[50]} }},
-		talk = { type= scumm.action.start_dialogue, args = {dialogue = "lookout"}}
-	}
-}
+
 
 engine.items["lookout.fire"] = {
 	type ='object',

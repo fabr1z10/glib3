@@ -114,6 +114,24 @@ scumm.ifac.char = function(args)
 			mask=item.collide.mask
 		})
 	end
+
+	if item.hotspot then
+		glib.assert(item.hotspot.text, 'entity with hotspot requires text!')
+		glib.assert_either(item.hotspot.size, item.hotspot.shape, 'entity with hotspot requires size!')
+		glib.assert(item.hotspot.walk_to, 'entity with hotspot requires walkto!')
+		glib.assert(item.hotspot.dir, 'entity with hotspot requires dir!')
+
+		local priority = item.hotspot.priority or 1
+		local shape = item.hotspot.shape or { type="rect", width = item.hotspot.size[1], height = item.hotspot.size[2], offset = item.hotspot.offset }
+
+		table.insert(entity.components, { 
+			type = "hotspot", priority = priority,
+			shape = shape,
+			onenter = glib.curry (scumm.func.hoverOn, args.args._id),
+			onleave = scumm.func.hoverOff,
+			onclick = scumm.func.run_action,
+		})
+	end	
 	return entity
 end
 
