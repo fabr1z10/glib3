@@ -5,7 +5,7 @@ roomDefinition = {
 
 room = scumm.factory.room_dialogue (roomDefinition)
 
-room:add( {
+room:add('main', {
 	{ pos = {0, 0, -3}, components = { { type="gfx", image="estevan.png" }}},
 	scumm.factory.object { id = "estevan.estevan" },
 })

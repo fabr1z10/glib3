@@ -8,7 +8,7 @@ roomDefinition = {
 	id = 'kitchen'
 }
 
-room = scumm.factory.dynamic_room (roomDefinition)
+room = scumm.factory.room_ui (roomDefinition)
 
 room:add( "main", {
 	{ pos = {0, 0,-3}, components = { { type="gfx", image="kitchen.png" }}},

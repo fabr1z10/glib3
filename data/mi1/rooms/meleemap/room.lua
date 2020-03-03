@@ -18,7 +18,7 @@ roomDefinition = {
 	
 }
 
-room = scumm.factory.roommap(roomDefinition)
+room = scumm.factory.room_map(roomDefinition)
 
 room:add ( "main",
 	{ 
