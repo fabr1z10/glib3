@@ -24,3 +24,7 @@ Linear2Dy::Linear2Dy(const LuaTable & t) : Function2D() {
     m_value0 = values[1];
     m_delta = (values[3] - values[1]) / (values[2] - values[0]);
 }
+
+Constant2D::Constant2D(const LuaTable & t) : Function2D() {
+    m_value = t.Get<float>("value");
+}

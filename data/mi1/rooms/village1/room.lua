@@ -3,22 +3,12 @@ local items = engine.items
 roomDefinition = {
 	width = 1008,
 	height = 144,
-	startTable = {
-		--lookout = { pos = items2["village1.cliffside"].hotspot.walk_to, facing = "east"},
-		scummbar = {  walkarea = "village1.walkarea", pos = items["village1.door"].hotspot.walk_to, dir = "south"},
-		--village2 = {  walkarea = "village1.walkarea", pos = items["village1.archway"].hotspot.walk_to, dir="west"},
-		--lookout = {  walkarea = "village1.walkarea", pos = items["village1.cliffside"].hotspot.walk_to, dir="south"}
-	},
-	font_size = 8,
-	playerid="guybrush",
-	defaultroom = "lookout",
 	walkareas = { "village1.walkarea"},
 	collide= true,
-	--depth = { type="linear_y", values= {0, 1, 144, 0} },
-	
+	id = 'village1'
 }
 
-room = scumm.factory.basic_room (roomDefinition)
+room = scumm.factory.room_ui (roomDefinition)
 room:add ( "main",
 	{ 
 		{ pos = {0, 0,-3}, components = { { type="gfx", image="village1_1.png" }}},

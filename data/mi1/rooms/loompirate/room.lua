@@ -1,8 +1,9 @@
 roomDefinition = {
-	player ='loompirate.guybrush'
+	player ='loompirate.guybrush',
+	id = 'loompirate'
 }
 
-room = scumm.factory.dialogue_room (roomDefinition)
+room = scumm.factory.room_dialogue (roomDefinition)
 
 room:add( {
 	{ pos = {0, 0, -3}, components = { { type="gfx", image="loompirate.png" }}},

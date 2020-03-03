@@ -8,7 +8,7 @@ roomDefinition = {
 	id = 'scummbar'
 }
 
-room = scumm.factory.dynamic_room (roomDefinition)
+room = scumm.factory.room_ui (roomDefinition)
 
 if engine.state.previousRoom ~= 'kitchen' then 
 	variables.door_scummbar_kitchen = 0 

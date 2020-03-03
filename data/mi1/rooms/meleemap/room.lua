@@ -1,48 +1,52 @@
-
 roomDefinition = {
 	width = 320,
 	height = 200,
-	startTable = {
-		lookout = { walkarea="meleemap.walkarea", pos = {75, 79}, dir = "north"},
-		clearing = { walkarea="meleemap.walkarea", pos = {135, 113}, dir = "west"},
-		bridge = { walkarea="meleemap.walkarea", pos = {169, 67}, dir = "east"},
-		forest_1 = { walkarea="meleemap.walkarea", pos = {74, 112}, dir = "west"},
-		swordmaster = { walkarea="meleemap.walkarea", pos = {74, 112}, dir = "west"},
-	},
-	defaultroom = "lookout",
 	walkareas = { "meleemap.walkarea" },
+	collide = true,
+	id = 'meleemap'
+	-- startTable = {
+	-- 	lookout = { walkarea="meleemap.walkarea", pos = {75, 79}, dir = "north"},
+	-- 	clearing = { walkarea="meleemap.walkarea", pos = {135, 113}, dir = "west"},
+	-- 	bridge = { walkarea="meleemap.walkarea", pos = {169, 67}, dir = "east"},
+	-- 	forest_1 = { walkarea="meleemap.walkarea", pos = {74, 112}, dir = "west"},
+	-- 	swordmaster = { walkarea="meleemap.walkarea", pos = {74, 112}, dir = "west"},
+	-- },
+	-- defaultroom = "lookout",
+	
 	--depth = { type="linear_y", values= {0, 1, 144, 0} },
 	--scale = { type="constant", value=0.1},
-	collide = true
+	
 }
 
-room = scumm.factory.map_room(roomDefinition)
+room = scumm.factory.roommap(roomDefinition)
 
 room:add ( "main",
 	{ 
 		{ pos = {0, 0,-3}, components = { { type="gfx", image="meleemap.png" }}},
-		scumm.factory.mapitem { pos={75, 79}, name = strings.objects.lookout, room="lookout" },
-		--scumm.factory.mapitem { pos={169, 67}, name = strings.objects.bridge, room="bridge" },
-		scumm.factory.mapitem { pos={74, 112}, name = strings.objects.fork, room ="forest_1"},
-		scumm.factory.mapitem { pos={136, 113}, name = strings.objects.clearing, room ="clearing"}
+		-- scumm.factory.mapitem { pos={75, 79}, name = strings.objects.lookout, room="lookout" },
+		-- --scumm.factory.mapitem { pos={169, 67}, name = strings.objects.bridge, room="bridge" },
+		-- scumm.factory.mapitem { pos={74, 112}, name = strings.objects.fork, room ="forest_1"},
+		-- scumm.factory.mapitem { pos={136, 113}, name = strings.objects.clearing, room ="clearing"}
 
 	}
 )
 
-if (variables.know_where_sword_master_is) then
-	room:add ("main", {
-		scumm.factory.mapitem { pos={100, 152}, name = "Sword Master's", room="swordmaster" },
-	})
-end
+-- if (variables.know_where_sword_master_is) then
+-- 	room:add ("main", {
+-- 		scumm.factory.mapitem { pos={100, 152}, name = "Sword Master's", room="swordmaster" },
+-- 	})
+-- end
 
 
 
-table.insert(room.initstuff, glib.curry (mi.addStorekeeper, { 
-	pos = {55, 97, 0}, 
-	parent="meleemap.walkarea", 
-	from = "lookout",
-	walkto = { {74, 112} }
-}))
+-- table.insert(room.initstuff, glib.curry (mi.addStorekeeper, { 
+-- 	pos = {55, 97, 0}, 
+-- 	parent="meleemap.walkarea", 
+-- 	from = "lookout",
+-- 	walkto = { {74, 112} }
+-- }))
+
+
 -- room:add( {
 -- 	{ pos = {0, 0,-3}, components = { { type="gfx", image="gfx/meleemap.png" }}},
 -- 	scumm.factory.walkarea { shape = { 

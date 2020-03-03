@@ -1,5 +1,6 @@
 -- the local objects
-engine.items["meleemap.walkarea"] = scumm.factory.walkarea {
+engine.items["meleemap.walkarea"] = {
+	type = 'walkarea',
 	shape = { 
 		type = "graph", 
 		vertices = { {76, 80}, {78, 81}, {71,90}, {64, 96}, {48,99}, {49, 114}, {73, 113}, {88, 114},{118,114}, {135,113}, {83,109},
@@ -10,5 +11,4 @@ engine.items["meleemap.walkarea"] = scumm.factory.walkarea {
 	},
 	priority = 0,
 	scale = { type="constant", value = 0.2},
-
 }

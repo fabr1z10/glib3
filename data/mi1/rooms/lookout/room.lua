@@ -8,7 +8,7 @@ roomDefinition = {
 	id = 'lookout'
 }
 
-room = scumm.factory.dynamic_room (roomDefinition)
+room = scumm.factory.room_ui (roomDefinition)
 
 room:add ( "lookout.walkarea",
  	{ 
@@ -23,8 +23,8 @@ room:add ( "main",
 		{ pos = {81, 16, 3}, components = { { type="gfx", image="lookout_2.png" }}},
         { pos = {294, 33, 3}, components = { { type="gfx", image ="lookout_3.png" }}},
         { pos = {226, 0, 3}, components = { { type="gfx", image="lookout_4.png" }}},
-        --scumm.factory.object { id = "lookout.stairs" },
-		--scumm.factory.object { id = "lookout.path" },
+        scumm.factory.object { id = "lookout.stairs" },
+		scumm.factory.object { id = "lookout.path" },
 	}
 )
 

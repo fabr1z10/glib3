@@ -43,6 +43,7 @@ public:
 class Constant2D : public Function2D {
 public:
     Constant2D(float value) : m_value{value} {}
+    Constant2D(const LuaTable&);
     float operator()(float, float) override {
         return m_value;
     }

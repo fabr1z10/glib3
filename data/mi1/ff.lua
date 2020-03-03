@@ -14,11 +14,15 @@ mi.rooms = {
 		door = {36, 16}
 	},
 	village1 = {
-		door = {715, 13}
+		door = {715, 13},
+		to_lookout = {11, 70}
 	},
 	lookout = {
 		to_village = {250, 0},
 		to_map = {320, 50}
+	},
+	meleemap = {
+		lookout = {0,0}
 	}
 
 }

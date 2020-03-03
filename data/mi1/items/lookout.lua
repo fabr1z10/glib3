@@ -10,6 +10,7 @@ engine.items['lookout.walkarea'] = {
 }
 
 engine.items["lookout.stairs"] = {
+	type ='object',
 	pos = {230, 0, 0},
 	hotspot = {
 		text = strings.objects.stairs,
@@ -18,11 +19,12 @@ engine.items["lookout.stairs"] = {
 		size = {30, 10}
 	},
 	actions = {
-		walk = { type = action.change_room, args = {room="village1"}}
+		walk = scumm.script.changeroom { room = 'village1', pos = mi.rooms.village1.to_lookout, dir='e' }
 	}
 }
 
 engine.items["lookout.path"] = {
+	type ='object',
 	pos = {294, 0, 0},
 	hotspot = {
 		text = strings.objects.path,
@@ -31,7 +33,7 @@ engine.items["lookout.path"] = {
 		size = {26, 144},			
 	},
 	actions = {
-		walk = { type = action.change_room, args = {room="meleemap"}}
+		walk = scumm.script.changeroom { room = 'meleemap', pos = mi.rooms.meleemap.lookout, dir='n'}
 	}
 }
 

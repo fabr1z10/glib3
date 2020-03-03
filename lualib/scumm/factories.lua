@@ -1,8 +1,14 @@
 -- Basic room 
 
-require ('scumm/factories/room_base')
-require ('scumm/factories/room_mp')
+require ('scumm/factories/room')
+require ('scumm/factories/room_ui')
+require ('scumm/factories/room_map')
 require ('scumm/factories/room_dialogue')
+
+--require ('scumm/factories/room_base')
+--require ('scumm/factories/room_mp')
+
+
 
 function scumm.func.toggle_pause () 
 	scumm.state.game_paused = not scumm.state.game_paused;

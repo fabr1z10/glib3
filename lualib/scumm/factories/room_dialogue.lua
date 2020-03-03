@@ -1,75 +1,65 @@
--- Dialogue room 
-function scumm.factory.dialogue_room (args) 
+function scumm.factory.room_dialogue (args) 
+	
+	glib.assert(args.player, 'player')
 
-	local room_width = 320
-	local room_height = 144
+	local room_width = engine.device_size[1]
+	local room_height = engine.device_size[2] - engine.config.ui.height
+	local camWidth = engine.device_size[1]
+	local camHeight = engine.device_size[2] - engine.config.ui.height
+	local font_size = args.font_size or 8
 
-	local p =  {
-		afterstartup = function()
-			for k, v in ipairs(room.initstuff) do
-				v()
-			end
-			--if (variables.troll_fed==false) then troll() end
-		end,
-		items = {},
-		dialogues = {},
-		scripts = {},
-		startPos = startPos,
-		initstuff = {},
-		engines = {
-			{ type = "hotspotmanager" },
-			{ type = "scheduler" }
+	local p = Room:new(args)
+
+	-- add the main scene
+	table.insert (p.scene, 
+	{
+		tag = "main",
+		camera = {
+			tag = "maincam",
+			type="ortho",
+			size = {room_width, room_height},
+			bounds = {0, 0, room_width, room_height},
+			viewport = {0, engine.config.ui.height, room_width, room_height}
 		},
-		scene = {
+		children = {
+			scumm.factory.object { id = args.player },
+		}
+	})		
+
+	p.refs['main'] = p.scene[1].children
+
+	-- add the ui
+	table.insert(p.scene, 			
+	{
+		tag = 'ui',
+		camera = {
+			tag = 'uicam',
+			type= 'ortho',
+			size = {320, 56},
+			bounds = {0, 0, 320, 56},
+			viewport = {0, 0, 320, 56}
+		},
+		children = {
 			{
-				tag = "main",
-				camera = {
-					tag = "maincam",
-					type="ortho",
-					size = {320, 144},
-					bounds = {0, 0, room_width, room_height},
-					viewport = {0, 56, 320, 144}
-				},
-				children = {
-					scumm.factory.object { id = args.player },
-				}
-			},
-			{
-				tag = 'ui',
-				camera = {
-					tag = 'uicam',
-					type= 'ortho',
-					size = {320, 56},
-					bounds = {0, 0, 320, 56},
-					viewport = {0, 0, 320, 56}
-				},
-				children = {
-					{
-						pos  = {0,0,0},
-						children =  {
-			 				{
-					 			type = 'textview', 
-					 			tag = 'dialogueui',
-					 	 		pos = {0, 0, 0},
-					 	 		size = {320, 56},
-					 	 		font_size = 8,
-					 	 		lines = 6,
-					 	 		deltax = 26,
-					 	 		factory = scumm.factory.dialoguebutton
-					  		}
-					 	}						
-					}
-				}
+				pos  = {0,0,0},
+				children =  {
+	 				{
+			 			type = 'textview', 
+			 			tag = 'dialogueui',
+			 	 		pos = {0, 0, 0},
+			 	 		size = {320, 56},
+			 	 		font_size = 8,
+			 	 		lines = 6,
+			 	 		deltax = 26,
+			 	 		factory = scumm.factory.dialoguebutton
+			  		}
+			 	}						
 			}
 		}
-	}
+	})
 
-
-	function p:add(items) 
-		for k,v in ipairs(items) do
-			table.insert(self.scene[1].children, v)
-		end
-	end
-
+	p.refs['ui'] = p.scene[2].children[1].children[1].children
+	print ('sfioo')
 	return p
 end
+

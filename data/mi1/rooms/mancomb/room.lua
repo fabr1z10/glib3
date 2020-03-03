@@ -1,12 +1,13 @@
 roomDefinition = {
-	player = 'mancomb.guybrush'
+	player = 'mancomb.guybrush',
+	id = 'mancomb'
 }
 
-room = scumm.factory.dialogue_room (roomDefinition)
+room = scumm.factory.room_dialogue (roomDefinition)
 
 --room:add_asset(sprites.mancomb2)
 
-room:add( {
+room:add('main', {
 	{ pos = {0, 0, -3}, components = { { type="gfx", image="mancomb.png" }}},
 	scumm.factory.object { id = "mancomb.mancomb" },
 	scumm.factory.object { id = "mancomb.guybrush" },
