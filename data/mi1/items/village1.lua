@@ -28,6 +28,21 @@ engine.items["village1.cliffside"] = {
 		size = {20, 144},			
 	},
 	actions = {
-		walk = { type = action.change_room, args = {room='lookout'}}
+		walk = scumm.script.changeroom { room = 'lookout', pos = mi.rooms.lookout.to_village, dir='n' }
+	}
+}
+
+
+engine.items["village1.poster"] = {
+	type = 'object',	
+	pos ={259, 27, 0},
+	hotspot= {
+		text = strings.objects.poster,
+		size = {20, 23},
+		walk_to = {269, 15},
+		dir = 'n'	
+	},
+ 	actions = {
+ 		look = { type = scumm.action.say, args = { tag="player", lines = {strings.village1[1], strings.village1[2]}}}
 	}
 }

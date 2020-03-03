@@ -15,6 +15,10 @@ mi.rooms = {
 	},
 	village1 = {
 		door = {715, 13}
+	},
+	lookout = {
+		to_village = {250, 0},
+		to_map = {320, 50}
 	}
 
 }

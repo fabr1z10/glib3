@@ -28,7 +28,7 @@ room:add ( "main",
 		--scumm.factory.object { id="village1.archway" },
 		scumm.factory.object { id="village1.cliffside" },
 		scumm.factory.object { id="village1.door" },
-		--scumm.factory.object { id="village1.poster" },
+		scumm.factory.object { id="village1.poster" },
 	}
 )
 

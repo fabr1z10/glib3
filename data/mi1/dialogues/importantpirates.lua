@@ -95,9 +95,9 @@ engine.dialogues.importantpirates = {
 			{ type = scumm.action.say, args = { tag = "scummbar.ilp3", lines = {d[49]}}, after={1} },
 		}},
 		[10] = { text = d[37], active=false, script = {
-		 	{ type = scumm.action.say, args = { id = 1, tag = "player", lines = {d[37]} }},
-		 	{ type = scumm.action.say, args = { id = 2, tag = "scummbar.ilp1", lines = {d[38]} }},
-		 	{ type = scumm.action.say, args = { id = 3, tag = "scummbar.ilp2", lines = {d[39]} }}
+		 	{ type = scumm.action.say, args = { tag = "player", lines = {d[37]} }},
+		 	{ type = scumm.action.say, args = { tag = "scummbar.ilp1", lines = {d[38]} }},
+		 	{ type = scumm.action.say, args = { tag = "scummbar.ilp2", lines = {d[39]} }}
 		}},
 		[11] = { text= d[50], active=false, children = {5,11,6,12,7,13,8,9,10}, script = {
 		 	{ type = scumm.action.say, args = { tag = "player",  lines = {d[50]} }},

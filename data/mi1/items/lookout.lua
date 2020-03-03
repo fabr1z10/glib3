@@ -1,7 +1,12 @@
 -- the local objects
-engine.items["lookout.walkarea"] = scumm.factory.walkarea {
-	shape = { type = "poly", outline = {203,51,315,62,315,40,293,40,260,10,260,0,260,-20,234,-20,234,0,234,10,221,26,152,33,152,51}},
-	priority = 0,
+engine.items['lookout.walkarea'] = { 
+	type = 'walkarea',
+	shape = { 
+		type = 'poly', 
+		outline = {203,51,315,62,315,40,293,40,260,10,260,0,260,-20,234,-20,234,0,234,10,221,26,152,33,152,51}
+	},
+	depth = { type = 'linear_y', values= {0, 1, 144, 0} },	
+	priority = 0
 }
 
 engine.items["lookout.stairs"] = {
@@ -57,6 +62,7 @@ engine.items["lookout.lookout"] = {
 }
 
 engine.items["lookout.fire"] = {
+	type ='object',
 	pos = {126, 52, 0},
 	model = "lookout.fire",
 }
