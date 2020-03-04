@@ -154,6 +154,7 @@ SceneFactory::SceneFactory() {
     add<Font> ("font");
     add<Constant2D> ("constant");
     add<Linear2Dy> ("linear_y");
+    add<PatchwiseLinear2D> ("patchwise");
 
     add<Box3D> ("box3d");
     add<Sphere3D> ("sphere3d");

@@ -14,6 +14,7 @@ function Entity:new (a)
 	o.active = a.args.active
 	o.components = {}
 	o.tag = a.args.tag
+	o.flipx = item.flipx
 	return o
 end
 
@@ -51,6 +52,9 @@ scumm.ifac.item = function(args)
 		})
 	end
 
+	if item.info then 
+		table.insert (entity.components, { type="info", info = item.info })
+	end
 
 	
 	return entity

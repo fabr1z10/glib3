@@ -15,7 +15,11 @@ mi.rooms = {
 	},
 	village1 = {
 		door = {715, 13},
-		to_lookout = {11, 70}
+		to_lookout = {11, 70},
+		to_village2 = {1008, 34}
+	},
+	village2 = {
+		to_village1 = {436, 35}
 	},
 	lookout = {
 		to_village = {250, 0},

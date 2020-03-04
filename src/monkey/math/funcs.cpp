@@ -1,5 +1,24 @@
 #include <monkey/math/funcs.h>
 #include <monkey/lua/luatable.h>
+#include <monkey/engine.h>
+#include <monkey/scenefactory.h>
+
+
+PatchwiseLinear2D::PatchwiseLinear2D(const LuaTable& t) {
+    luabridge::LuaRef quads = t.Get<luabridge::LuaRef>("rects");
+    auto factory = Engine::get().GetSceneFactory();
+    for (int i = 0; i < quads.length(); ++i) {
+        luabridge::LuaRef f = quads[i + 1];
+        LuaTable funcTable(f);
+        glm::vec2 pos = funcTable.Get<glm::vec2>("pos");
+        glm::vec2 size = funcTable.Get<glm::vec2>("size");
+        glm::vec4 domain (pos.x, pos.y, pos.x+size.x, pos.y +size.y);
+        auto fref = funcTable.Get<luabridge::LuaRef>("func");
+        LuaTable ft(fref);
+        auto func = factory->make<Function2D>(ft);
+        AddFunction(domain, func);
+    }
+}
 
 float PatchwiseLinear2D::operator() (float x, float y) {
     int i{0};

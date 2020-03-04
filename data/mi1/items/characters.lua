@@ -113,3 +113,90 @@ engine.items["scummbar.ilp3"] = {
 	dir = "east",
 	speed = 0
 }
+
+engine.items["village2.lmf1"] = {
+	type = 'object',
+	model = "low_moral_fiber_1",
+	anim = 'rock',
+	tag = true,
+	pos = {18, 10, 0},
+	info = { id = 'village2.lmf1'},
+	text_color = {255, 85, 255, 255},
+	text_offset = {0,60},
+	speed = 0
+	
+	
+}
+
+engine.items["village2.lmf2"] = {
+	type = 'object',
+	model = "low_moral_fiber_2",	
+	tag = true,
+	pos = {44, 20, 0},
+	text_color = {85, 255, 255, 255},
+	text_offset = {0,60},
+	-- in order to use the SAY action, I need to add an id to the info, 
+	-- so say can read the text_color and text_offset here!
+	info = { id = 'village2.lmf2'},
+	anim= "idle",
+	speed = 0,
+}
+
+engine.items["village2.lmf3"] = {
+	type = 'object',
+	model = "low_moral_fiber_3",
+	tag = true,
+	pos = {56, 23, 0},
+	text_color = {85, 255, 85, 255},
+	text_offset = {0,60},
+	info = { id = 'village2.lmf3'},
+	anim= "idle_e",
+	speed = 0
+}
+
+engine.items["village2.rat"] = {
+	type = 'object',
+	model ="village2.rat",
+	tag =true,
+	pos = {56,10,0},
+	anim="idle",
+	applydepth = true,
+	text_color = {170, 170, 170, 255},
+	info = { id = 'village2.rat'},	
+	text_offset = {0,60},
+	flipx = true,
+}
+
+engine.items["village2.citizen"] = {
+	type = 'object',
+	tag =true,
+	pos = {325, 27, 0},
+	hotspot = {
+		text = strings.objects.citizen,
+		walk_to = {360, 27}, 
+		dir = "west",
+		size = {30, 40},		
+		offset = {-15,0}
+	},
+	model = "citizen",
+	text_color = {255, 85, 85, 255},
+	text_offset = {0,60},
+	info = { id = 'village2.citizen'},	
+	actions = {
+		talk = function() 
+			local dp = strings.dialogues.citizen
+			local lines = (variables.talked_to_citizen == false) and {dp[1]} or {dp[8], dp[9]}
+			if (variables.talked_about_map) then
+				table.insert(lines, dp[27])
+				table.insert(lines, dp[28])
+			end
+			local s = {
+				{ type = scumm.action.disable_controls },
+				{ type = action.animate, args = { tag="village2.citizen", anim="idle_e" } },
+				{ type = scumm.action.say, args = {tag="village2.citizen", lines = lines, animstart="talk_e", animend="idle_e" }},
+				{ type = scumm.action.start_dialogue, args = {dialogue="citizen"}}
+			}
+			return s
+		end
+	}
+}

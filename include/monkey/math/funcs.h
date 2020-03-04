@@ -84,6 +84,7 @@ private:
 class PatchwiseLinear2D : public Function2D {
 public:
     PatchwiseLinear2D() {}
+    PatchwiseLinear2D(const LuaTable&);
     float operator() (float x, float y) override;
     void AddFunction (glm::vec4, std::shared_ptr<Function2D>);
 private:

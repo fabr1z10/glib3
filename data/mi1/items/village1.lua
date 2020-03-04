@@ -32,6 +32,19 @@ engine.items["village1.cliffside"] = {
 	}
 }
 
+engine.items["village1.archway"] = {
+	type = 'object',
+	pos = {992, 30, 0},
+	hotspot = {
+		text = strings.objects.archway,
+		walk_to = mi.rooms.village1.to_village2,
+		dir = 'e',
+		size = {16, 40}
+	},
+	actions = {
+		walk = scumm.script.changeroom { room = 'village2', pos = mi.rooms.village2.to_village1, dir='s' }
+	}
+}
 
 engine.items["village1.poster"] = {
 	type = 'object',	

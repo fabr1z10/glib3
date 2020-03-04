@@ -1,7 +1,9 @@
 strings = {
-	pieces_of_eight = function() 
-		local n = variables.inventory["pieces_of_eight"]
-		return ("I have " .. tostring(n) .. " pieces of eight.")
+	pieces_of_eight = function()
+		--if variables.inventory and variables.inventory[variables.current_player] then 
+			local n = variables.inventory[variables.current_player]["pieces_of_eight"]
+			return ("I have " .. tostring(n) .. " pieces of eight.")
+		--end
 	end,
     ui = {
         open = "Open",
