@@ -9,6 +9,7 @@ class Camera;
 class Cursor : public Component, public MouseListener {
 public:
     Cursor () : Component() {}
+    Cursor (const LuaTable&) : Component(), MouseListener() {}
     Cursor(const Cursor& other);
 
     void Start() override ;

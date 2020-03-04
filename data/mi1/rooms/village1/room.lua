@@ -25,7 +25,7 @@ room:add ( "main",
 local entry_cutscene = function() 
  	local proom = engine.state.previousRoom
  	if (proom == "") then proom = roomDefinition.defaultroom end
- 	if (proom == "lookout") then
+ 	if (proom == "lookout" or proom == 'meleemap') then
 		local actions = {
 			{ type = scumm.action.walkto, args = { tag="player", pos = {230, 0} }}
 		}

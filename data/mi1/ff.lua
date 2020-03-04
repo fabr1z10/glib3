@@ -22,7 +22,14 @@ mi.rooms = {
 		to_map = {320, 50}
 	},
 	meleemap = {
-		lookout = {0,0}
+		lookout = {75, 79},
+		clearing = {136, 113}
+	},
+	clearing = {
+		to_map = {320,10}
+	},
+	forest1 = {
+		to_map = {0,0}
 	}
 
 }

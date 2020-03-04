@@ -12,3 +12,47 @@ engine.items["meleemap.walkarea"] = {
 	priority = 0,
 	scale = { type="constant", value = 0.2},
 }
+
+engine.items['meleemap.lookout'] = {
+	type = 'mapitem',
+	pos = {75, 79, 0},
+	name = strings.objects.lookout,
+	go_to = {
+		room = 'lookout',
+		pos = mi.rooms.lookout.to_map,
+		dir = 'w'
+	}
+}	
+
+engine.items['meleemap.village'] = {
+	type = 'mapitem',
+	pos = {68, 73, 0},
+	name = strings.objects.village,
+	go_to = {
+		room = 'village1',
+		pos = mi.rooms.village1.to_lookout,
+		dir = 'e'
+	}
+}	
+
+engine.items['meleemap.clearing'] = {
+	type = 'mapitem',
+	pos = {136, 113, 0},
+	name = strings.objects.clearing,
+	go_to = {
+		room = 'clearing',
+		pos = mi.rooms.clearing.to_map,
+		dir = 'w'
+	}
+}	
+engine.items['meleemap.fork'] = {
+	type = 'mapitem',
+	pos = {74, 112, 0},
+	name = strings.objects.fork,
+	go_to = {
+		room = 'forest_1',
+		pos = mi.rooms.forest1.to_map,
+		dir = 'w'
+	}
+}
+		

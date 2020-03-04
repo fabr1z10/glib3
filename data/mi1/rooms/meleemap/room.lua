@@ -23,9 +23,12 @@ room = scumm.factory.room_map(roomDefinition)
 room:add ( "main",
 	{ 
 		{ pos = {0, 0,-3}, components = { { type="gfx", image="meleemap.png" }}},
+		scumm.factory.object { id = 'meleemap.lookout'},
+		scumm.factory.object { id = 'meleemap.village'},
+		scumm.factory.object { id = 'meleemap.clearing'},
+		scumm.factory.object { id = 'meleemap.fork'},
 		-- scumm.factory.mapitem { pos={75, 79}, name = strings.objects.lookout, room="lookout" },
 		-- --scumm.factory.mapitem { pos={169, 67}, name = strings.objects.bridge, room="bridge" },
-		-- scumm.factory.mapitem { pos={74, 112}, name = strings.objects.fork, room ="forest_1"},
 		-- scumm.factory.mapitem { pos={136, 113}, name = strings.objects.clearing, room ="clearing"}
 
 	}

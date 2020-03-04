@@ -31,6 +31,7 @@
 #include <monkey/activities/scriptactions.h>
 #include <monkey/activities/showmessage.h>
 #include <monkey/activities/setstate.h>
+#include <monkey/components/cursor.h>
 
 
 void SceneFactory::Init(Engine* engine) {
@@ -117,6 +118,7 @@ SceneFactory::SceneFactory() {
     add<LuaInfo> ("info");
     add<DirectionalLight> ("directional.light");
     add<KeyboardInputMethod> ("keyinput");
+    add<Cursor> ("cursor");
 
     // actions
     add<DelayTime> ("delay");

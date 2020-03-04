@@ -225,6 +225,40 @@ scumm.ifac.trap = function(args)
 	return entity
 end
 
+scumm.ifac.mapitem = function(args)
+	local item = args.item
+	glib.assert(item.go_to, 'mapitem requires a go_to')
+	glib.assert(item.name, 'mapitem requires a name')
+
+	local entity = Entity:new(args)
+	entity.type = 'default'
+	table.insert (entity.components, {
+		type = 'hotspot',
+		priority = 1,
+		shape = { type='rect', width=10, height=10, offset={-5,-5}},
+		onenter = function()
+			local a = monkey.getEntity('cursor')
+			a:settext(item.name)
+		end,
+		onleave = function()
+			local a = monkey.getEntity('cursor')
+			a:settext('')
+		end,
+		onclick = function()
+			local actions = {
+				{ type = scumm.action.walkto, args = { tag='player', pos = {entity.pos[1], entity.pos[2]}}},
+				scumm.script.changeroom { room = item.go_to.room, pos = item.go_to.pos, dir = item.go_to.dir }
+			}
+			local s = script.make(actions)
+			s.name = "_walk"
+			monkey.play(s)
+		end
+	})
+	return entity
+	
+end
+
+
 scumm.ifac.fmap = {
 	object = scumm.ifac.item,
 	walkarea = scumm.ifac.walkarea,
@@ -232,5 +266,6 @@ scumm.ifac.fmap = {
 	mockchar = scumm.ifac.mockchar,
 	door = scumm.ifac.door,
 	trap = scumm.ifac.trap,
-	hotspot = scumm.ifac.hotspot
+	hotspot = scumm.ifac.hotspot,
+	mapitem = scumm.ifac.mapitem
 }

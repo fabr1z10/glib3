@@ -599,9 +599,9 @@ std::shared_ptr<Component> FPSComponentFactory::Create(luabridge::LuaRef &ref) {
     return std::make_shared<FPSCounter>();
 }
 
-std::shared_ptr<Component> CursorComponentFactory::Create(luabridge::LuaRef& ref) {
-    return std::make_shared<Cursor>();
-}
+//std::shared_ptr<Component> CursorComponentFactory::Create(luabridge::LuaRef& ref) {
+//    return std::make_shared<Cursor>();
+//}
 
 //std::unique_ptr<Component> RaycastControllerComponentFactory::Create(luabridge::LuaRef& ref) {
 //    LuaTable table(ref);

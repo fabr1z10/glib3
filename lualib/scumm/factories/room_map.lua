@@ -11,8 +11,6 @@ function scumm.factory.room_map (args)
 
 	local p = Room:new(args)
 
-
-	print ("NOW SCENE HAS SIZE:"..tostring(#p.scene))
 	-- add the main scene
 	table.insert (p.scene, {
 		tag = "main",
@@ -23,10 +21,42 @@ function scumm.factory.room_map (args)
 			bounds = {0, 0, room_width, room_height},
 			viewport = {0, 0, camWidth, camHeight}
 		},
-		children = {}
+		children={}
 	})
-	
+
 	p.refs['main'] = p.scene[1].children
+
+	table.insert (p.scene, {
+		tag = "diag",
+		camera = {
+			tag = "diagcam",
+			type="ortho",
+			size = {320, 200},
+			bounds = {0, 0, 320, 200},
+			viewport = {0, 0, 320, 200}
+		},
+		children = {
+			{ 
+				type = 'text',
+				text = '',
+    			font = engine.config.dialogue_font,
+    			size = engine.config.font_size,
+    			color = {255, 255, 255, 255},
+    			align = 'bottom',
+				tag = "cursor",
+				components = {
+					{ type = 'cursor'}
+				}
+			}
+		}
+	})
+ 				--components = {
+-- 					 --    		{ type="text", id = "prova", font="monkey", align = "bottom", color = engine.config.ui_currentaction_color},
+-- 						-- 		{ type="cursor"}
+-- 						-- 	}
+-- 						-- }
+-- 					}
+-- 			} )
 
 	p:add_walkareas(args)
 	p:load_dynamic_items()
