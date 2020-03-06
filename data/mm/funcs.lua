@@ -11,6 +11,8 @@ mm.switch_cellar_lights = function()
 	
 	monkey.getEntity('ciao'):setcolors { mult = mult }
 	monkey.getEntity('ciao2'):setcolors { mult = mult }	
+	monkey.getEntity('ciao3'):setcolors { mult = mult }	
+
 	monkey.getEntity('player'):setcolors { mult = mult, add = add }
 	
 

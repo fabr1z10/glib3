@@ -14,6 +14,7 @@ room = scumm.factory.room_ui (roomDefinition)
 room:add ( "main",
 	{ 
 		{ tag = 'ciao', pos = {0,0,-3}, components = { { type="gfx", image="cellar.png" }}},
+		{ tag = 'ciao3', pos = {561, 122, 3}, components = { { type="gfx", image="cellar3.png" }}},
 		scumm.factory.object { id = 'cellar.light' },
 		scumm.factory.object { id = 'cellar.slime' },
 		scumm.factory.object { id = 'cellar.silverkey' },
