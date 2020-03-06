@@ -28,7 +28,7 @@ Text::Text(const LuaTable & t) : Entity(t) {
     glm::vec2 offset = mesh->getOffset();
     auto model = std::make_shared<TextModel>(mesh);
     auto renderer = std::make_shared<BasicRenderer>(model);
-    renderer->SetTint(color);
+    renderer->setMultColor(color);
 
     //MoveLocal(glm::vec3(offset, 0.0f));
 

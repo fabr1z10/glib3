@@ -72,6 +72,13 @@ engine.items["entrance.cellar.door"] = {
 				return scumm.script.say ({ strings.entrance[2] })
  			end
  		end,
+ 		walk = function() 
+ 			if variables.cellar_door_open then
+ 				return scumm.script.changeroom { room = 'cellar', pos = {0,0}, dir='w' }
+ 			else
+ 				return scumm.script.changeroom { room = 'cellar', pos = {573, 111}, dir='s' }
+ 			end
+ 		end
 
  		--look = scumm.script.say ({ strings.gate[1], strings.gate[2]})
 	}

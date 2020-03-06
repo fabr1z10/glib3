@@ -124,8 +124,27 @@ EntityWrapper EntityWrapper::GetParent() {
 }
 
 void EntityWrapper::SetColor(int r, int g, int b, int a) {
-    m_underlying->GetComponent<Renderer>()->SetTint(glm::vec4(r/255.0f, g/255.0f, b/255.0f, a/255.0f));
+    m_underlying->GetComponent<Renderer>()->setMultColor(glm::vec4(r/255.0f, g/255.0f, b/255.0f, a/255.0f));
 }
+void EntityWrapper::SetAddColor(int r, int g, int b, int a) {
+    m_underlying->GetComponent<Renderer>()->setAddColor(glm::vec4(r/255.0f, g/255.0f, b/255.0f, a/255.0f));
+}
+
+void EntityWrapper::SetColors(luabridge::LuaRef ref) {
+    LuaTable t(ref);
+    glm::vec4 mult = t.Get<glm::vec4>("mult", glm::vec4(255.0f));
+    glm::vec4 add = t.Get<glm::vec4>("add", glm::vec4(0.0f));
+    mult /= 255.0f;
+    add /= 255.0f;
+    auto renderer = m_underlying->GetComponent<Renderer>();
+    renderer->setMultColor(mult);
+    renderer->setAddColor(add);
+}
+
+void EntityWrapper::SetVisible(bool value) {
+    m_underlying->GetComponent<Renderer>()->setActive(value);
+}
+
 
 
 EntityWrapper EntityWrapper::GetEntityFromTag(const std::string& id) {

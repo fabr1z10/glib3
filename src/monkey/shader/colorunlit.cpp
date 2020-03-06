@@ -12,7 +12,8 @@ ColorUnlit::ColorUnlit() : Shader(vs_color_unlit, fs_color_unlit) {
     m_locations[MODELVIEW] = m_mvMat;
 
     AddUniform(PROJECTION, "ProjMat");
-    AddUniform(TINT, "color");
+    AddUniform(MULTCOLOR, "color");
+    //AddUniform(MULTCOLOR, "color");
 }
 
 void ColorUnlit::initMesh(const glm::mat4 &modelMatrix, Camera *cam) {

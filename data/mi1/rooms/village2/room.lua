@@ -15,7 +15,7 @@ room:add ( "main",
 	{ 
 		{ pos = {0, 0,-3}, components = { { type="gfx", image="village2.png" }}},
 		scumm.factory.object { id="village2.archway_to_village1" },
-		-- scumm.factory.object { id="village2.archway_to_village3" },
+		scumm.factory.object { id="village2.archway_to_village3" },
 		-- scumm.factory.object { id="village1.archway" },
 		-- scumm.factory.object { id="village1.door" },
 		-- scumm.factory.object { id="village2.voodoolady_door"},

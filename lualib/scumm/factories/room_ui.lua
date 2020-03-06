@@ -92,6 +92,21 @@ function scumm.factory.room_ui (args)
 		}
 	})
 
+	-- add other
+	table.insert(p.scene, 			
+	{
+		tag = "other",
+	 	camera = {
+	 		tag = "uicam",
+	 		type="ortho",
+	 		size = {camWidth, camHeight},
+	 		bounds = {0, 0, camWidth, camHeight},
+	 		viewport = {0, 0, camWidth, camHeight}
+	 	},
+	 	children = {
+		}
+	})
+
 	p.refs['ui'] = p.scene[2].children[1].children[1].children
 	-- add the verbs
 	local row = 2

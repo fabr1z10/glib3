@@ -84,6 +84,9 @@ struct EntityWrapper {
     bool GetFlipX() const;
     void SetFlipX(bool);
     void SetColor(int, int, int, int);
+    void SetAddColor(int, int, int, int);
+    void SetColors (luabridge::LuaRef ref);
+    void SetVisible (bool);
     void SetText(const std::string&);
     void SetActive (bool);
     void EnableDepth(bool);

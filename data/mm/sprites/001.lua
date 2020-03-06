@@ -52,6 +52,9 @@ local s = {
 	flag_up = {x=56,y=483,width=8,height=12},
 	gf_clock_1 = {x=83, y=426, width=16, height=49},
 	gf_clock_2 = {x=100, y=426, width=16, height=49},
+	silver_key = {x=71,y=476,width=6,height=12},
+	fusebox_closed = {x=117,y=442,width=33,height=33},
+	fusebox_open = {x=151,y=442,width=49,height=33, anchor = {16,0}},
 
 }
 
@@ -101,3 +104,5 @@ scumm.utils.mm2 ('front.door.grating', sheet, { 'default' }, { {s.grating} })
 scumm.utils.mm2 ('front.door.bush', sheet, { 'default' }, { {s.bushes} })
 scumm.utils.mm2 ('front.door.flag', sheet, { 'up', 'down' }, { {s.flag_up}, {s.flag_down} })
 scumm.utils.mm2 ('grandfather.clock', sheet, { 'default' }, { {s.gf_clock_1, s.gf_clock_2} }, 1)
+scumm.utils.mm2 ('cellar.silverkey', sheet, { 'default' }, { {s.silver_key} })
+scumm.utils.mm2 ('cellar.fusebox', sheet, { 'closed', 'open' }, { {s.fusebox_closed}, {s.fusebox_open} })

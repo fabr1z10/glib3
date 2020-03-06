@@ -43,8 +43,12 @@ strings = {
         gfclock = 'grandfather clock',
         vase = 'vase',
         door = 'door',
-        gargoyle = 'gargoyle'
-
+        gargoyle = 'gargoyle',
+        lightswitch = 'light switch',
+        slime = 'radioactive slime',
+        silverkey = 'silver key',
+        fusebox = 'fuse box',
+        circuitbreakers = 'circuit breakers'
     },
     gate = {
     	[1] = 'WARNING!!',
@@ -54,6 +58,9 @@ strings = {
         [1] = 'It\'s the correct time.',
         [2] = 'There\'s no handle here!'
         
+    },
+    cellar = {
+        [1] = 'Yuck! I\'m not touching that!'
     }
 }
 

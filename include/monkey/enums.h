@@ -24,7 +24,8 @@ enum ShaderUniform {
     MODEL,
     VIEW,
     TEXTURE,
-    TINT,
+    MULTCOLOR,
+    ADDCOLOR,
     LIGHTDIR, LIGHTCOLOR, AMBIENT
 };
 

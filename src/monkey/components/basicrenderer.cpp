@@ -40,7 +40,7 @@ BasicRenderer::BasicRenderer(const LuaTable & t) : Renderer() {
             mesh = MeshFactorySolid::CreateMesh(*(shape.get()), 0.0f);
         }
         m_model = std::make_shared<BasicModel>(mesh);
-        SetTint(color);
+        setMultColor(color);
     } else if (t.HasKey("tiledata")) {
         std::string image = t.Get<std::string>("img");
         float size = t.Get<float>("size", 1.0f);

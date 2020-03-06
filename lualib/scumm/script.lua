@@ -20,6 +20,10 @@ scumm.script.changeroom = function (args)
 end
 
 scumm.script.pickup = function(args)
+    -- optional arguments:
+    -- anim_start, anim_end the animation to play before picking up and after picking up
+    -- req args:
+    -- id, the object to pick up
     local actions = {}
     if args.anim_start then
         table.insert (actions, { type = action.animate, args = { tag='player', anim = args.anim_start}})

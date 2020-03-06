@@ -12,20 +12,27 @@
 #include <monkey/entity.h>
 #include <iostream>
 
-Renderer::Renderer() : Component(), m_baseModel(nullptr), m_tint(1.0f), m_renderingTransform(1.0f) {
+Renderer::Renderer() : Component(), m_baseModel(nullptr),
+    m_multColor(1.0f), m_addColor(0.0f), m_renderingTransform(1.0f) {
 
 }
 
-Renderer::Renderer(const Renderer& orig) : Component(orig), m_tint(orig.m_tint), m_renderingTransform(orig.m_renderingTransform), m_baseModel(orig.m_baseModel) {
+Renderer::Renderer(const Renderer& orig) : Component(orig),
+    m_multColor(orig.m_multColor), m_addColor(orig.m_addColor), m_renderingTransform(orig.m_renderingTransform), m_baseModel(orig.m_baseModel) {
     
 }
 
 
 
 void Renderer::Draw(Shader* shader) {
-    auto tintLoc = shader->GetUniformLocation(TINT);
-    if (tintLoc != GL_INVALID)
-        glUniform4fv(tintLoc, 1, &m_tint[0]);
+    auto mcolor = shader->GetUniformLocation(MULTCOLOR);
+    auto acolor = shader->GetUniformLocation(ADDCOLOR);
+    if (mcolor != GL_INVALID) {
+        glUniform4fv(mcolor, 1, &m_multColor[0]);
+    }
+    if (acolor != GL_INVALID) {
+        glUniform4fv(acolor, 1, &m_addColor[0]);
+    }
     //m_model->Draw(shader, m_offset, m_count);
 }
 

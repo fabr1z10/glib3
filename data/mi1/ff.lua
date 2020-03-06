@@ -21,6 +21,9 @@ mi.rooms = {
 	village2 = {
 		to_village1 = {436, 35}
 	},
+	village3 = {
+		to_village2 = {762, 16}
+	},
 	lookout = {
 		to_village = {250, 0},
 		to_map = {320, 50}

@@ -33,16 +33,17 @@ engine.items["village2.archway_to_village1"] = {
 }
 
 engine.items["village2.archway_to_village3"] = {
+	type = 'object',
+	pos = {146, 63, 0},
 	hotspot = {
 		text = strings.objects.archway,
 		walk_to = {160, 59},
-		dir="north",
-		size={30, 30},
+		dir = 'n',
+		size = {30, 30},
 	},
 	actions = {
-		walk = { type = action.change_room, args = { room="village3"}}
+		walk = scumm.script.changeroom { room = 'village3', pos = mi.rooms.village3.to_village2, dir = 'w' }
 	},
-	pos = {146, 63, 0},
 }
 
 

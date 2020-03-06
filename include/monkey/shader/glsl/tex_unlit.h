@@ -21,6 +21,7 @@ const char fs_tex_unlit[] =
                 "in vec2 tex;\n"
                 "uniform sampler2D Tex1;\n"
                 "uniform vec4 color;\n"
+                "uniform vec4 additive;\n"
                 "out vec4 fragColor;\n"
                 "\n"
                 "void main()\n"
@@ -29,5 +30,6 @@ const char fs_tex_unlit[] =
                 "if (texColor.a < 0.5)\n"
                 "discard;\n"
                 "texColor *= color;\n"
+                "texColor += additive;\n"
                 "fragColor = texColor;\n"
                 "}\n";

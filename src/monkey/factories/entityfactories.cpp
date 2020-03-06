@@ -137,7 +137,7 @@ std::shared_ptr<Entity> OutlineTextFactory::Create(luabridge::LuaRef &ref) {
         auto model = std::make_shared<BasicModel>(mesh);
         auto renderer = std::make_shared<BasicRenderer>(model);
         entity->SetPosition(glm::vec3(outlineOffsets[i] * 0.5f, i == 0 ? 0 : -1));
-        renderer->SetTint(i==0 ? fontColor : outlineColor);
+        renderer->setMultColor(i==0 ? fontColor : outlineColor);
         //renderer->SetRenderingTransform(glm::translate(glm::vec3(offset, 0.0f)));
         //entity->AddComponent(renderer);
         parent->AddChild(entity);
@@ -175,7 +175,7 @@ std::shared_ptr<Entity> BoxedMessageFactory::Create(luabridge::LuaRef& ref) {
     glm::vec4 bgColor = table.Get<glm::vec4>("bgcolor");
     color/=255.0f;
     bgColor /=255.0f;
-    renderer->SetTint(color);
+    renderer->setMultColor(color);
     textEntity->AddComponent(renderer);
     entity->AddChild(textEntity);
     auto textExtents = bounds.GetExtents();
@@ -215,7 +215,7 @@ std::shared_ptr<Entity> BoxedMessageFactory::Create(luabridge::LuaRef& ref) {
     auto box_renderer = std::make_shared<BasicRenderer>(mod);
 
     box->AddComponent(box_renderer);
-    box_renderer->SetTint(bgColor);
+    box_renderer->setMultColor(bgColor);
     // box->SetPosition(glm::vec3(bounds.min.x - padding, bounds.min.y - padding, -0.1));
     box->SetPosition(glm::vec3(box_xm, box_ym, -0.1));
     entity->AddChild(box);

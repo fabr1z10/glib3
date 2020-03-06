@@ -1,3 +1,21 @@
+mm = {
+}
+
+mm.switch_cellar_lights = function() 
+	local mult = nil
+	local add = nil
+	if not variables.cellar_light_on then
+		mult = {0, 0, 0, 255}
+		add = {85, 85, 85, 255}
+	end
+	
+	monkey.getEntity('ciao'):setcolors { mult = mult }
+	monkey.getEntity('ciao2'):setcolors { mult = mult }	
+	monkey.getEntity('player'):setcolors { mult = mult, add = add }
+	
+
+end
+
 newkid = function()
 	local m = monkey.getEntity('ui')
 	m:setactive(false)
@@ -11,8 +29,8 @@ newkid = function()
 			font = 'ui',
 			text = p,
 			color = engine.config.ui.verb_unselected_color,
-			onenter = glib.curry2(scumm.script.changecolor, engine.config.ui.verb_selected_color),
-			onleave = glib.curry2(scumm.script.changecolor, engine.config.ui.verb_unselected_color),
+			onenter = glib.curry2(scumm.func.changecolor, engine.config.ui.verb_selected_color),
+			onleave = glib.curry2(scumm.func.changecolor, engine.config.ui.verb_unselected_color),
 			onclick = function()
 				if variables.current_player == p then
 					--local m = monkey.getEntity('ui')

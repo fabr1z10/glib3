@@ -40,7 +40,7 @@ void SimpleCollider::Start() {
         auto model = std::make_shared<BasicModel>(mesh);
         auto renderer = std::make_shared<BasicRenderer>(model);
         glm::vec4 color(1.0f, 0.0f, 0.0f, 1.0f);
-        renderer->SetTint(color);
+        renderer->setMultColor(color);
         c->AddComponent(renderer);
         m_entity->AddChild(c);
     }
@@ -70,7 +70,7 @@ void SimpleCollider::SetShape(std::shared_ptr<Shape> shape) {
         auto model = std::make_shared<BasicModel>(mesh);
         auto renderer = std::make_shared<BasicRenderer>(model);
 
-        renderer->SetTint(color);
+        renderer->setMultColor(color);
         c->AddComponent(renderer);
         m_entity->AddChild(c);
     }

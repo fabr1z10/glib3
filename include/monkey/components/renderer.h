@@ -27,7 +27,8 @@ public:
     void Start() override {}
     void Update(double) override {}
     void SetParent(Entity* parent) override;
-    void SetTint(glm::vec4 c);
+    void setMultColor(glm::vec4 c);
+    void setAddColor(glm::vec4 c);
     virtual ShaderType GetShaderType() const;
     using ParentClass = Renderer;
     //void SetMeshInfo (int offset, int count);
@@ -39,7 +40,8 @@ public:
 protected:
     IModel* m_baseModel;
     glm::mat4 m_renderingTransform;
-    glm::vec4 m_tint;
+    glm::vec4 m_multColor;
+    glm::vec4 m_addColor;
     //int m_count;
     //int m_offset;
 };
@@ -54,10 +56,13 @@ inline IModel* Renderer::GetModel() {
     return m_baseModel;
 }
 
-inline void Renderer::SetTint(glm::vec4 color) {
-    m_tint = color;
+inline void Renderer::setMultColor(glm::vec4 c) {
+    m_multColor = c;
 }
 
+inline void Renderer::setAddColor(glm::vec4 c) {
+    m_addColor = c;
+}
 
 
 //

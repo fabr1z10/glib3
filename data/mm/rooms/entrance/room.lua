@@ -9,7 +9,7 @@ roomDefinition = {
 	id ='entrance'
 }
 
-room = scumm.factory.dynamic_room (roomDefinition)
+room = scumm.factory.room_ui (roomDefinition)
 
 room:add ( "main",
 	{ 

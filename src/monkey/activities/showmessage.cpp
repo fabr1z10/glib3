@@ -52,7 +52,7 @@ void ShowMessage::Start() {
         auto renderer = std::make_shared<BasicRenderer>(model);
 
         entity->SetPosition(glm::vec3(outlineOffsets[i] * 0.5f, i == 0 ? 0 : -1));
-        renderer->SetTint(i==0 ? m_color : m_outlineColor);
+        renderer->setMultColor(i==0 ? m_color : m_outlineColor);
         renderer->SetTransform(transform);
         entity->AddComponent(renderer);
         parent->AddChild(entity);
