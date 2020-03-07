@@ -32,9 +32,9 @@ public:
     void Start() override;
     void Update(double) override;
     std::type_index GetType() override;
-    int GetCollisionTag() const;
-    int GetCollisionFlag() const;
-    int GetCollisionMask() const;
+    int GetCollisionTag() const override;
+    int GetCollisionFlag() const override;
+    int GetCollisionMask() const override;
     Shape* GetShape() override;
     void setAttack(int mask, int tag);
     Bounds getAttackBounds() const override;

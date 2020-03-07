@@ -3,7 +3,7 @@
 #include <monkey/lua/luatable.h>
 #include <monkey/engine.h>
 #include <set>
-#include <foo.h>
+#include <version.h>
 #include <nlohmann/json.hpp>
 #include <fstream>
 #include "factories.h"

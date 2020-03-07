@@ -61,6 +61,11 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELEASE ${LIB_DIR})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${BIN_DIR})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${BIN_DIR})
 
+configure_file (
+    "${INCLUDE_DIR}/version.h.in"
+    "${INCLUDE_DIR}/version.h"
+)
+
 # source directory
 add_subdirectory(src)
 

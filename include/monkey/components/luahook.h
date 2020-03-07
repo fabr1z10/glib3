@@ -12,8 +12,8 @@ public:
     std::shared_ptr<Component> clone() const override;
     void addHook (const std::string&, std::function<void(luabridge::LuaRef)> );
     void call(const std::string&, luabridge::LuaRef args);
-    void Start() {}
-    void Update(double dt) {}
+    void Start() override {}
+    void Update(double dt) override {}
     using ParentClass = LuaHook;
 
 private:

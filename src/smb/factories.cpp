@@ -3,7 +3,7 @@
 #include <monkey/scenefactory.h>
 #include <monkey/components/stateactions.h>
 
-#include "states/platformerstate.h"
+//#include "states/platformerstate.h"
 #include "states/walkside.h"
 #include "states/foewalk.h"
 #include "states/foedead.h"
