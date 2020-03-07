@@ -110,6 +110,12 @@ You can install the dependencies using brew
 
     brew install glew
     brew install glfw3
+    brew install glm
+    brew install libpng
+    brew install libjpeg
+    brew install freetype
+    brew install lua
+    brew install boost
 
 ## Linux details
 
