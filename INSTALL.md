@@ -14,8 +14,7 @@ So far I've compiled glib3 succesfully on the following platforms:
 
 * Windows 10 + Visual Studio Community 2019
 * Linux + gcc 7.4.0
-
-I will update this info as soon as I'm able to build succesfully on macOS too.
+* MacOS High Sierra 10.13.6 + AppleClang 10.0.0.10001145 + XCode 10.0
 
 # Get the source code
 
@@ -107,7 +106,10 @@ Get the Windows binaries from http://luabinaries.sourceforge.net/download.html. 
 
 ## macOS details
 
-TO DO
+You can install the dependencies using brew
+
+    brew install glew
+    brew install glfw3
 
 ## Linux details
 
