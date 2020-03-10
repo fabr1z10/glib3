@@ -45,6 +45,7 @@ scumm.factory.inventorybutton = function (args)
 	if not args.qty or args.qty == 1 then
 		label = item.hotspot.text
 	else
+	    print ("ciao " .. tostring(args.qty) .. " " .. args.id)
 		label = tostring(args.qty) .. ' ' .. item.hotspot.text_plural
 	end
 

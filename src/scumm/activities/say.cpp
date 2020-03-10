@@ -4,12 +4,13 @@
 #include <monkey/activities/setstate.h>
 #include <monkey/activities/showmessage.h>
 #include <monkey/monkey.h>
+#include <monkey/components/info.h>
 
 Say::Say(const LuaTable& t) : Sequence() {
     m_lines = t.GetVector<std::string>("lines");
-    m_color = t.Get<glm::vec4>("color");
-    m_color /= 255.0f;
-    m_offset = t.Get<glm::vec2>("offset");
+    //m_color = t.Get<glm::vec4>("color");
+    // m_color /= 255.0f;
+    //m_offset = t.Get<glm::vec2>("offset");
     m_fontId = t.Get<std::string>("font");
 
     if (t.HasKey("id")) {
@@ -35,9 +36,24 @@ Say::Say(const LuaTable& t) : Sequence() {
 void Say::Start() {
 
     // if the walk has a tag, then get the id
+    Entity* item = nullptr;
     if (!m_tag.empty()) {
-        m_actorId =  Monkey::get().Get<Ref>(m_tag)->GetId();
+        item = Monkey::get().Get<Entity>(m_tag);
+        m_actorId = item->GetId();
+        //m_actorId =  Monkey::get().Get<Ref>(m_tag)->GetId();
+    } else {
+        item = Monkey::get().Get<Entity>(m_actorId);
     }
+
+    // need to check the character information. offset and text color
+    auto infoc = item->GetComponent<LuaInfo>();
+    if (infoc == nullptr) GLIB_FAIL("<Say> action requires an info component!");
+    luabridge::LuaRef addInfo = infoc->get();
+    LuaTable infoTable(addInfo);
+    m_color = infoTable.Get<glm::vec4>("color");
+    m_color /= 255.0f;
+    m_offset = infoTable.Get<glm::vec2>("offset");
+
 
     if (!m_noAnim) {
 

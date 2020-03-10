@@ -32,6 +32,7 @@
 #include <monkey/activities/showmessage.h>
 #include <monkey/activities/setstate.h>
 #include <monkey/components/cursor.h>
+#include <monkey/activities/setactive.h>
 
 
 void SceneFactory::Init(Engine* engine) {
@@ -131,7 +132,7 @@ SceneFactory::SceneFactory() {
     add<KillScript> ("kill_script");
     add<ShowMessage> ("show_message");
     add<SetState> ("setstate");
-
+    add<SetActive> ("setactive");
 
 
     // runners

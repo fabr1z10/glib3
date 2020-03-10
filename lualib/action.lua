@@ -171,6 +171,9 @@ action.create_object = function(args)
 			print ("creating a new object ... ")
 			local o = args.factory(args.args, args.pos)
 			local m1 = monkey.getEntity(parent)
+			if m1.isnil then error('Cannot find parent item: ' .. parent,1) end
+			--if not m1.isnil then print ('found ' .. parent) end
+			print ('cicococococ')	
 			local id = monkey.addEntity (o, m1)
 
 			-- check if a script is provided in the factory

@@ -3,17 +3,12 @@ local items = engine.items
 roomDefinition = {
 	width = 344,
 	height = 144,
-	startTable = {
-		village3 = { walkarea="alley.walkarea", pos = items["alley.exit"].hotspot.walk_to, dir = "east"},
-	},
-	defaultroom = "village3",
 	walkareas = {"alley.walkarea"},
-	font_size = 8,
-	playerid = "guybrush",
-	collide=true
+	collide=true,
+	id = 'alley'
 }
 
-room = scumm.factory.basic_room (roomDefinition)
+room = scumm.factory.room_ui (roomDefinition)
 
 room:add("main", {
 	{ pos = {0, 0,-3}, components = { { type="gfx", image="alley.png" }}},
@@ -26,17 +21,21 @@ local fester = function()
 		variables.met_fester = true
  		local di = strings.dialogues.fester
 		local a = {
-			{ type = scumm.action.disable_controls, args = {value=true}},
- 			{ type = scumm.action.say, args = { actor="guybrush", lines={di[1]}}},
+
+			{ type = scumm.action.toggle_controls, args = {active=false, ui=true}},
+ 			{ type = scumm.action.say, args = { tag="player", lines={di[1]}}},
  			{ type = scumm.action.walkto, args = { tag="player", pos ={150, 10}}},
-			{ type = scumm.action.say, args = { actor="guybrush", lines={di[2]}}},
+			{ type = scumm.action.say, args = { tag="player", lines={di[2]}}},
 			{ type = scumm.action.walkto, args = { tag="player", pos ={200, 10}}},
-			{ type = scumm.action.say, args = { actor="guybrush", lines={di[3]}}},
-			{ type = action.create_object, args = { factory = scumm.factory.object, parent="alley.walkarea", 
-				args = { id="fester", pos = {20, 10, 0}}}},
+			{ type = scumm.action.say, args = { tag="player", lines={di[3]}}},
+			{ type = action.create_object, args = { 
+				factory = scumm.factory.object, 
+				parent = 'alley.walkarea', 
+				args = { id="fester", params = { pos = {20, 10, 0}, dir = 'e' }}
+			}},
 			{ type = scumm.action.walkto, args = { tag="fester", pos={150,10} }},
-			{ type = scumm.action.turn, args = { tag="player", dir="west" }},
-			{ type = scumm.action.say, args = { actor="fester", lines={di[4], di[5]}}},
+			{ type = scumm.action.turn, args = { tag="player", dir="w" }},
+			{ type = scumm.action.say, args = { tag="fester", lines={di[4], di[5]}}},
 	 		{ type = scumm.action.start_dialogue, args ={ dialogue="fester"}}
 
 		}

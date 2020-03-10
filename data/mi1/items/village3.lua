@@ -11,19 +11,21 @@ engine.items["village3.walkarea"] = {
 }
 
 engine.items["village3.archway"] = {
+	type = 'object',
 	pos = {753, 11, 0},
 	hotspot = {	
 		text = strings.objects.archway,
-		walk_to = {762, 16}, 
+		walk_to = mi.rooms.village3.to_village2, 
 		dir = "east",
 		size = {23, 74}
 	},	
 	actions = {
-		walk = { type = action.change_room, args ={room="village2"}}
+		walk = scumm.script.changeroom{ room='village2', pos = mi.rooms.village2.to_village3, dir = 's'}
 	}
 }
 
 engine.items["village3.alley"] = {
+	type = 'object',
 	pos = {581, 56, 0},
 	hotspot = {		
 		text = strings.objects.alley,
@@ -32,7 +34,7 @@ engine.items["village3.alley"] = {
 		size = {20, 30}
 	},		
 	actions = {
-		walk = { type = action.change_room, args = {room="alley"}}
+		walk = scumm.script.changeroom{ room='alley', pos = mi.rooms.alley.to_village3, dir = 'e'}
 	}
 }
 
@@ -59,6 +61,17 @@ engine.items["village3.shopkeeper"] = {
 	},
  	text_offset = {0, 60},
     text_color = {255, 85, 255, 255},
+}
+
+engine.items['village3.door.shop'] = make_door {
+	tag = 'village3.door.shop',
+	model = 'village3.shop_door',
+ 	pos = {659, 17, -1},
+ 	size = {20, 32},
+ 	walk_to = mi.rooms.village3.to_shop,
+ 	dir = 'n',
+	var = 'door_shop',
+	go_to = { room = 'store', pos = mi.rooms.store.to_village3, dir = 'e' }
 }
 
 -- scumm.factory.door {

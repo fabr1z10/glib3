@@ -103,7 +103,11 @@ scumm.ifac.char = function(args)
 	local state = args.args.state and (args.args.state) or (item.state or 'idle')
 
 	table.insert (entity.components, { type="character", speed = item.speed, dir = dir, state = state })
-	table.insert (entity.components, { type="info", info = { id = args.args._id }})
+	table.insert (entity.components, { type="info", info = { 
+		color = item.text_color,
+		offset = item.text_offset	
+		--id = args.args._id 
+	}})
 
 	if args.args.follow then
 		table.insert(entity.components, { type='follow', cam='maincam', relativepos = {0, 0, 5}, up = {0, 1, 0} })
@@ -136,6 +140,7 @@ scumm.ifac.char = function(args)
 			onclick = scumm.func.run_action,
 		})
 	end	
+
 	return entity
 end
 

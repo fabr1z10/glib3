@@ -19,10 +19,13 @@ mi.rooms = {
 		to_village2 = {1008, 34}
 	},
 	village2 = {
-		to_village1 = {436, 35}
+		to_village1 = {436, 35},
+		to_village3 = {160, 59}
 	},
 	village3 = {
-		to_village2 = {762, 16}
+		to_village2 = {762, 16},
+		to_alley = {605, 55},
+		to_shop = {668, 22}
 	},
 	lookout = {
 		to_village = {250, 0},
@@ -37,7 +40,14 @@ mi.rooms = {
 	},
 	forest1 = {
 		to_map = {0,0}
+	},
+	alley = {
+		to_village3 = {35, 18}
+	},
+	store = {
+		to_village3 = {81, 15}
 	}
+
 
 }
 
@@ -105,6 +115,7 @@ make_door = function(args)
 				end
 			end,
 			open = args.open or function()
+				--print ('ciao ' .. args.tag)
 				variables[args.var] = 1
 				return { type = action.animate, args = {tag=args.tag, anim="open"}}
 			end,

@@ -40,7 +40,7 @@ function scumm.factory.object (args)
 
 	local f = scumm.ifac.fmap[item.type]
 	if not f then error("Unknown factory func for item: " .. args.id,1) end
-
+	
 	--local tag = nil
 	--i-f item.tag then 
 	--	tag = args.id

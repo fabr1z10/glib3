@@ -19,9 +19,9 @@ room:add( "main", {
 	--         outline = {406,49,425,49,436,63,494,63,494,42,594,42,594,71,600,71,638,23,745,23,752,17,770,17,770,10,762,10,775,0,374,0,396,22}
 	--     },
 	-- },
---	scumm.factory.object { id = "village3.archway" },
---	scumm.factory.object { id = "village3.alley" },
---	scumm.factory.object { id = "village3.shop_door" },
+	scumm.factory.object { id = "village3.archway" },
+	scumm.factory.object { id = "village3.alley" },
+	scumm.factory.object { id = "village3.door.shop" },
 --	scumm.factory.object { id = "village3.church_door" },
 --	scumm.factory.object { id = "village3.jail" },
 })

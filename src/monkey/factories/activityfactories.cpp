@@ -302,11 +302,11 @@ std::shared_ptr<Activity> TreeMoveActFactory::Create(luabridge::LuaRef &ref) {
     return ptr;
 }
 
-std::shared_ptr<Activity> SetActiveActFactory::Create(luabridge::LuaRef &ref) {
-    LuaTable table(ref);
-    std::string tag = table.Get<std::string>("tag");
-    bool active = table.Get<bool>("active");
-    auto ptr = std::make_shared<SetActive>(tag, active);
-    return ptr;
-}
-
+//std::shared_ptr<Activity> SetActiveActFactory::Create(luabridge::LuaRef &ref) {
+//    LuaTable table(ref);
+//    std::string tag = table.Get<std::string>("tag");
+//    bool active = table.Get<bool>("active");
+//    auto ptr = std::make_shared<SetActive>(tag, active);
+//    return ptr;
+//}
+//

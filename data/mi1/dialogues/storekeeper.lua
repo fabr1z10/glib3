@@ -1,7 +1,7 @@
 local d = strings.dialogues.storekeeper
 local dialogues = engine.dialogues
-local swordPrice = 75
-local shovelPrice = 100
+local swordPrice = 100
+local shovelPrice = 75
 
 local cantAffordItem = function(n, checkChildren, m, putBackScript) 
 	return {
@@ -16,12 +16,12 @@ local cantAffordItem = function(n, checkChildren, m, putBackScript)
 		end,
 		script = function() 
 			local actions = {
-				{ type = scumm.action.say, args = {actor="guybrush", lines = {d[n]}}},
-				{ type = scumm.action.say, args = {actor="shop.shopkeeper", lines={d[m]}}},
+				{ type = scumm.action.say, args = {tag="player", lines = {d[n]}}},
+				{ type = scumm.action.say, args = {tag="storekeeper", lines={d[m]}}},
  				putBackScript
 			}
 			if (not checkChildren()) then
-				table.insert (actions, { type = scumm.action.say, args = {actor="guybrush", lines={d[2]}}})
+				table.insert (actions, { type = scumm.action.say, args = {tag="player", lines={d[2]}}})
 			end
 			return actions
  		end
@@ -31,10 +31,12 @@ end
 local buyShovel = function(n) 
  	variables.shovel_paid = true
  	--variables.inventory["pieces_of_eight"] = variables.inventory["pieces_of_eight"] - shovelPrice
-	engine.state.scumm.remove_from_inventory ("pieces_of_eight", shovelPrice)
- 	local actions = { 
- 		{ type = scumm.action.say, args = {actor="guybrush", lines = {d[n]}}},
- 		{ type = scumm.action.say, args = {actor="shop.shopkeeper", lines = {d[47], d[48], d[49], d[50], d[33]}}}
+	--engine.state.scumm.remove_from_inventory ("pieces_of_eight", shovelPrice)
+ 	local actions = {
+		--	{ type = scumm.action.add_to_inventory, args = {id = 'shop.shovel'} },
+		{ type = scumm.action.remove_from_inventory, args = {id = 'pieces_of_eight', qty=shovelPrice} }, 
+ 		{ type = scumm.action.say, args = {tag="player", lines = {d[n]}}},
+ 		{ type = scumm.action.say, args = {tag="storekeeper", lines = {d[47], d[48], d[49], d[50], d[33]}}}
  	}
  	return actions
 end
@@ -43,19 +45,21 @@ local getPriceShovel = function(n)
     local lines = variables.know_shovel_price and {d[28], d[29]} or {d[23], d[24]}     		
  	variables.know_shovel_price = true
  	local actions = { 
- 		{ type = scumm.action.say, args = {actor="guybrush", lines = {d[n]}}},
- 		{ type = scumm.action.say, args = {actor="shop.shopkeeper", lines = lines}}
+ 		{ type = scumm.action.say, args = {tag="player", lines = {d[n]}}},
+ 		{ type = scumm.action.say, args = {tag="storekeeper", lines = lines}}
  	}
  	return actions
 end
 
 local buySword = function() 
  	variables.sword_paid = true
-	engine.state.scumm.remove_from_inventory ("pieces_of_eight", swordPrice)
+	--engine.state.scumm.remove_from_inventory ("pieces_of_eight", swordPrice)
  	--variables.inventory["pieces_of_eight"] = variables.inventory["pieces_of_eight"] - swordPrice
  	local actions = { 
- 		{ type = scumm.action.say, args = {actor="guybrush", lines = {d[n]}}},
- 		{ type = scumm.action.say, args = {actor="shop.shopkeeper", lines = {d[31], d[32], d[33]}}}
+		--{ type = scumm.action.add_to_inventory, args = {id = 'shop.sword'} },
+		{ type = scumm.action.remove_from_inventory, args = {id = 'pieces_of_eight', qty=swordPrice} }, 
+ 		{ type = scumm.action.say, args = {tag="player", lines = {d[n]}}},
+ 		{ type = scumm.action.say, args = {tag="storekeeper", lines = {d[31], d[32], d[33]}}}
  	}
 	return actions
 end
@@ -64,8 +68,8 @@ local getPriceSword = function(n)
     local lines = variables.know_sword_price and {d[21], d[22]} or {d[16], d[17]}
  	variables.know_sword_price = true
  	local actions = { 
- 		{ type = scumm.action.say, args = {actor="guybrush", lines = {d[n]}}},
- 		{ type = scumm.action.say, args = {actor="shop.shopkeeper", lines = lines}}
+ 		{ type = scumm.action.say, args = {tag="player", lines = {d[n]}}},
+ 		{ type = scumm.action.say, args = {tag="storekeeper", lines = lines}}
  	}
  	return actions
 end
@@ -76,9 +80,9 @@ local s1 = {
 	{ type = action.delay, args = {sec=0.5}},
 	{ type = action.activate, args = {tag="shop.sword", active=true}},
 	{ type = scumm.action.remove_from_inventory, args = {id="shop.sword"}},
- 	{ type = scumm.action.walkto, args = {tag="player", obj="shop.shopkeeper"} },
+ 	{ type = scumm.action.walkto, args = {tag="player", obj="storekeeper"} },
 	{ type = scumm.action.turn, args = {tag="player", dir="east"}},
-	{ type = scumm.action.say, args = {actor="shop.shopkeeper", lines = {d[20]}}}
+	{ type = scumm.action.say, args = {tag="storekeeper", lines = {d[20]}}}
 }
 	
 
@@ -88,25 +92,25 @@ local s2 = {
 	{ type = action.delay, args = {sec=0.5}},
 	{ type = action.activate, args = {tag="shop.shovel", active=true}},
 	{ type = scumm.action.remove_from_inventory, args = {id="shop.shovel"}},
- 	{ type = scumm.action.walkto, args = {tag="player", obj="shop.shopkeeper"} },
+ 	{ type = scumm.action.walkto, args = {tag="player", obj="storekeeper"} },
 	{ type = scumm.action.turn, args = {tag="player", dir="east"}},
-	{ type = scumm.action.say, args = {actor="shop.shopkeeper", lines = {d[20]}}}
+	{ type = scumm.action.say, args = {tag="storekeeper", lines = {d[20]}}}
 }
 
 local hasSword = function() 
-	return engine.state.scumm.has("shop.sword")
+	return scumm.utils.has_player ("shop.sword")
 end
 
 local hasPaidSword = function() 
-	return (engine.state.scumm.has("shop.sword") and variables.sword_paid == true)
+	return (scumm.utils.has_player("shop.sword") and variables.sword_paid == true)
 end
 
 local hasUnpaidSword = function() 
-	return (engine.state.scumm.has("shop.sword") and variables.sword_paid == false)
+	return (scumm.utils.has_player ("shop.sword") and variables.sword_paid == false)
 end
 
 local hasUnpaidShovel = function()
-	return (engine.state.scumm.has("shop.shovel") and variables.shovel_paid == false)
+	return scumm.utils.has_player("shop.shovel") and variables.shovel_paid == false
 end
 
 dialogues.storekeeper = {
@@ -127,29 +131,29 @@ dialogues.storekeeper = {
 	nodes = {
 		[1] = { children = {15, 16, 2, 3, 4} },
 		-- about this sword...
-		[2] = {text= d[4], children={5,6,7}, active=function() return (engine.state.scumm.has("shop.sword") and (variables.sword_paid == false)) end, 
+		[2] = {text= d[4], children={5,6,7}, active=function() return (scumm.utils.has_player ("shop.sword") and (variables.sword_paid == false)) end, 
 			script = {
-				{ type = scumm.action.say, args = {actor="guybrush", lines = {d[4]}}},
-				{ type = scumm.action.say, args = {actor="shop.shopkeeper", lines = {d[12]}}}
+				{ type = scumm.action.say, args = {tag="player", lines = {d[4]}}},
+				{ type = scumm.action.say, args = {tag="storekeeper", lines = {d[12]}}}
 			}
 		},
 		-- about this shovel...
-		[3] = {text= d[5], children = {9,10,11}, active=function() return (engine.state.scumm.has("shop.shovel") and (variables.shovel_paid == false)) end,
+		[3] = {text= d[5], children = {9,10,11}, active=function() return (scumm.utils.has_player ("shop.shovel") and (variables.shovel_paid == false)) end,
 			script = {
-				{ type = scumm.action.say, args = {actor="guybrush", lines = {d[5]}}},
-				{ type = scumm.action.say, args = {actor="shop.shopkeeper", lines = {d[12]}}}
+				{ type = scumm.action.say, args = {tag="player", lines = {d[5]}}},
+				{ type = scumm.action.say, args = {tag="storekeeper", lines = {d[12]}}}
 			}
 		},
 		[4] = {text=d[35], active=true, 
 			script = {
-				{ type = scumm.action.say, args = {actor="guybrush", lines = {d[35]}}},
-				{ type = scumm.action.say, args = {actor="shop.shopkeeper", lines = {d[9], d[10]}}}
+				{ type = scumm.action.say, args = {tag="player", lines = {d[35]}}},
+				{ type = scumm.action.say, args = {tag="storekeeper", lines = {d[9], d[10]}}}
 			}
 		},
 		-- I want the sword
  		[5] = {text=d[13], active=true, children = 
  			function() 
-	 			if (engine.state.scumm.has_at_least("pieces_of_eight", 100)) then 
+	 			if (scumm.utils.has_player("pieces_of_eight", 100) or variables.sword_paid) then 
 	 				return {15, 2, 3, 4} 
 	 			else 
 	 				return {8,7} 
@@ -157,11 +161,16 @@ dialogues.storekeeper = {
  			end, 
  			script = function() 
 	 			local lines = nil
-	 			if (engine.state.scumm.has_at_least("pieces_of_eight", 100)) then
-					return buySword(13)
+				local actions = nil
+	 			if (scumm.utils.has_player("pieces_of_eight", 100)) then
+					actions = {
+						{ type = scumm.action.say, args = { tag = 'player', lines = {d[13]}}}
+					}
+					table.insert(actions, buySword(13))
  			    else
 					return getPriceSword(13)
 				end
+				return actions
  			end
  		},
 		-- How much is the sword
@@ -172,7 +181,7 @@ dialogues.storekeeper = {
 		-- I want the shovel
  		[9] = {text=d[13], active=true, 
 			children = function() 
-				if (engine.state.scumm.has_at_least("pieces_of_eight", 75)) then 
+				if (scumm.utils.has_player("pieces_of_eight", 75) or variables.shovel_paid) then 
 					-- If I have the sword, whether paid or unpaid, I will have something to say afterwards...
 					if (hasSword()) then
 	 					return {15,2,3,4}
@@ -184,7 +193,7 @@ dialogues.storekeeper = {
 	 			end
 			end,
  			script = function() 
-	 			if (engine.state.scumm.has_at_least("pieces_of_eight", 75)) then
+	 			if (scumm.utils.has_player("pieces_of_eight", 75)) then
 					return buyShovel(13)
  			    else
 					return getPriceShovel(13)
@@ -199,16 +208,16 @@ dialogues.storekeeper = {
 		-- I'll take it (the shovel)
 		[13] = {text=d[46], 
 			active = function()
-				--only active if Guybrush has enough money
-				return (engine.state.scumm.has_at_least("pieces_of_eight", 75))
+				--only active if player has enough money
+				return (scumm.utils.has_player("pieces_of_eight", 75))
 			end,
 			script = glib.curry(buyShovel, 46)
 		},
 		-- I'll take it (the sword)
 		[14] = {text=d[46], 
 			active = function()
-				--only active if Guybrush has enough money
-				return engine.state.scumm.has_at_least("pieces_of_eight", 100)
+				--only active if player has enough money
+				return scumm.utils.has_player("pieces_of_eight", 100)
 			end,
 			children = function() 
 				if (hasSword()) then return {15,2,3,4} else return {} end
@@ -218,19 +227,19 @@ dialogues.storekeeper = {
 		[15] = { text = d[34], act = {16}, deact={15}, active = function() return hasPaidSword() end, 
 			script = function()
 				return {
-					{ type = scumm.action.say, args = { actor="guybrush", lines = {d[34]}}},
-					{ type = scumm.action.say, args = {actor="shop.shopkeeper", lines = {d[36], d[37], d[38], d[39], d[40], d[41], d[42], d[43]}}},
+					{ type = scumm.action.say, args = { tag="player", lines = {d[34]}}},
+					{ type = scumm.action.say, args = { tag="storekeeper", lines = {d[36], d[37], d[38], d[39], d[40], d[41], d[42], d[43]}}},
 					{ type = action.create_object, args = {factory = scumm.factory.object, args = {id="shop.sign"}, parent="store.walkarea"}},
 					{ type = action.create_object, args = {factory = scumm.factory.object, args = {id="shop.bell"}, parent="store.walkarea"}},
-					{ type = scumm.action.walkto, args = {tag="shop.shopkeeper", pos = {289, 0}}},
-					{ type = scumm.action.walkto, args = {tag="shop.shopkeeper", pos = {260, 0}}},
-					{ type = scumm.action.walkto, args = {tag="shop.shopkeeper", obj = "shop.door"}},
-					{ type = scumm.action.turn, args = {tag="shop.shopkeeper", dir="east"}},
-					{ type = scumm.action.say, args = {actor="shop.shopkeeper", lines = {d[45]}}},
-					{ type = scumm.action.turn, args = {tag="shop.shopkeeper", dir="west"}},
+					{ type = scumm.action.walkto, args = {tag="storekeeper", pos = {289, 0}}},
+					{ type = scumm.action.walkto, args = {tag="storekeeper", pos = {260, 0}}},
+					{ type = scumm.action.walkto, args = {tag="storekeeper", obj = "shop.door"}},
+					{ type = scumm.action.turn, args = {tag="storekeeper", dir="east"}},
+					{ type = scumm.action.say, args = {tag="storekeeper", lines = {d[45]}}},
+					{ type = scumm.action.turn, args = {tag="storekeeper", dir="west"}},
 					{ type = action.animate, args = {tag="shop.door", anim="open"}},
 					{ type = action.delay, args = {sec=0.5}},
-					{ type = action.activate, args = {tag="shop.shopkeeper", active=false}},
+					{ type = action.activate, args = {tag="storekeeper", active=false}},
 					{ type = action.animate, args = {tag="shop.door", anim="close"}},
 					{ type = action.set_variable, args = {var="door_shop", value = 0}},
 					{ type = action.set_variable, args = {var="chasing_shopkeeper", value=true}},
@@ -241,21 +250,21 @@ dialogues.storekeeper = {
 		[16] = { text = d[56], active = false, 
 			script = function()
 				return {
-					{ type = scumm.action.say, args = { actor="guybrush", lines = {d[56]}}},
-					{ type = scumm.action.say, args = {actor="shop.shopkeeper", lines = {d[57]}}},
-					{ type = scumm.action.say, args = { actor="guybrush", lines = {d[58]}}},
-					{ type = scumm.action.say, args = {actor="shop.shopkeeper", lines = {d[41], d[42], d[59]}}},
-					{ type = action.create_object, args = {factory = scumm.factory.object, args = {id="shop.sign"}, parent = "store.walkarea"}},
-					{ type = action.create_object, args = {factory = scumm.factory.object, args = {id="shop.bell"}, parent = "store.walkarea"}},
-					{ type = scumm.action.walkto, args = {tag="shop.shopkeeper", pos = {289, 0}}},
-					{ type = scumm.action.walkto, args = {tag="shop.shopkeeper", pos = {260, 0}}},
-					{ type = scumm.action.walkto, args = {tag="shop.shopkeeper", obj = "shop.door"}},
-					{ type = scumm.action.turn, args = {tag="shop.shopkeeper", dir="east"}},
-					{ type = scumm.action.say, args = {actor="shop.shopkeeper", lines = {d[45]}}},
-					{ type = scumm.action.turn, args = {tag="shop.shopkeeper", dir="west"}},
+					{ type = scumm.action.say, args = { tag="player", lines = {d[56]}}},
+					{ type = scumm.action.say, args = {tag="storekeeper", lines = {d[57]}}},
+					{ type = scumm.action.say, args = { tag="player", lines = {d[58]}}},
+					{ type = scumm.action.say, args = {tag="storekeeper", lines = {d[41], d[42], d[59]}}},
+					{ type = action.create_object, args = {ftagy = scumm.ftagy.object, args = {id="shop.sign"}, parent = "store.walkarea"}},
+					{ type = action.create_object, args = {ftagy = scumm.ftagy.object, args = {id="shop.bell"}, parent = "store.walkarea"}},
+					{ type = scumm.action.walkto, args = {tag="storekeeper", pos = {289, 0}}},
+					{ type = scumm.action.walkto, args = {tag="storekeeper", pos = {260, 0}}},
+					{ type = scumm.action.walkto, args = {tag="storekeeper", obj = "shop.door"}},
+					{ type = scumm.action.turn, args = {tag="storekeeper", dir="east"}},
+					{ type = scumm.action.say, args = {tag="storekeeper", lines = {d[45]}}},
+					{ type = scumm.action.turn, args = {tag="storekeeper", dir="west"}},
 					{ type = action.animate, args = {tag="shop.door", anim="open"}},
 					{ type = action.delay, args = {sec=0.5}},
-					{ type = action.activate, args = {tag="shop.shopkeeper", active=false}},
+					{ type = action.activate, args = {tag="storekeeper", active=false}},
 					{ type = action.animate, args = {tag="shop.door", anim="close"}},
 					{ type = action.set_variable, args = {var="door_shop", value = 0}},
 					{ type = action.set_variable, args = {var="chasing_shopkeeper", value=true}},

@@ -103,19 +103,6 @@ scumm.action.say = function(args)
 	glib.assert_either (args.tag, args.id, "id or tag")
 	glib.assert (args.lines, "lines")
 
-	local entity = nil
-	if args.tag then
-		entity = monkey.getEntity(args.tag)
-		if not entity then Error('don\'t know item ' + args.tag, 1) end
-	else
-		entity = monkey.getEntityFromId(args.id)
-		if not entity then Error('don\'t know item!' + args.id, 1) end
-	end
-	print ('found')
-	local info = entity:getinfo()
-
-	local item = items[info.id]
-
 	local animstart = args.animstart
 	local animend = args.animend
 	local animate = true
@@ -132,8 +119,6 @@ scumm.action.say = function(args)
 		font = engine.config.dialogue_font,
 		id = args.id,
 		lines = l,
-		offset = item.text_offset,
-		color = item.text_color,
 		animstart = animstart,
 		animend = animend,
 		animate = animate
@@ -242,7 +227,7 @@ scumm.action.resume_dialogue = function(args)
 					showDialogue (args.dialogue, node)
 				else
 					print ("No active children. Shutting down dialogue, returning to game.")
-					closeDialogue (dialogue)
+					scumm.func.closeDialogue (dialogue)
 				end
 			end
 		end
@@ -271,7 +256,20 @@ scumm.action.remove_from_inventory = function(args)
 	return { type = "callfunc", func = 
 		function()
 			local inv = variables.inventory[variables.current_player]
-			inv[args.id] = nil
+			if not inv[args.id] then return end
+			cqty = inv[args.id]
+			print (' now I have ' .. tostring(cqty))
+			if args.qty then
+				cqty = cqty - args.qty
+				print (' now I have ' .. tostring(cqty))
+				if cqty >= 0 then
+					inv[args.id] = cqty
+				else
+					inv[args.id] = nil
+				end
+			else
+				inv[args.id] = nil
+			end
 			scumm.func.refresh_inventory()
 		end
 	}

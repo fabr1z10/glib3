@@ -40,6 +40,47 @@ engine.items["lookout.lookout"] = {
 		talk = { type= scumm.action.start_dialogue, args = {dialogue = "lookout"}}
 	}
 }
+engine.items["fester"] = {
+	type = 'char',
+	model ="fester",
+	tag =true,
+	pos = {0,0,0},
+	text_offset = {0, 60},
+    text_color = {255, 85, 85, 255},
+	--applyDepth = true,
+	state = "idle",
+	dir = "east",
+	speed = normal_speed,
+	actions = {}
+}
+
+engine.items["storekeeper"] = {
+ 	type = 'char',
+ 	model = 'shop.shopkeeper',
+	tag = true,	
+	pos = {289, 7, 0},
+ 	hotspot = {
+		size = {20, 40},
+	 	offset ={-10,0},
+	 	text = strings.objects.storekeeper,
+		walk_to = {229, 7},
+		dir = "east"
+	},
+	state = "idle",
+	dir = "west",
+	speed = normal_speed,
+ 	text_offset = {0, 60},
+    text_color = {255, 85, 255, 255},
+ 	actions = {
+		talk = { 
+			{ type = action.suspend_script, args = {script="_shopkeeper"}},
+			{ type = scumm.action.start_dialogue, args = {dialogue ="storekeeper"}},
+		}
+	}
+ }
+
+
+
 
 engine.items["scummbar.cook"] = {
 	type = 'char',
@@ -200,3 +241,4 @@ engine.items["village2.citizen"] = {
 		end
 	}
 }
+

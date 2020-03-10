@@ -31,13 +31,13 @@ end
 
 
 -- returns whether current player has a particular item
-scumm.utils.has_player = function(id)
+scumm.utils.has_player = function(id, n)
+	local qty = n or 1
     print ('-- has ' .. id .. '? ')
-    if (variables.inventory[variables.current_player][id]) then
-        print (variables.inventory[variables.current_player][id])
-    end
-    return variables.inventory[variables.current_player][id] ~= nil
+	local inv = variables.inventory[variables.current_player]
+	return inv[id] and inv[id] >= qty
 end
+
 
 -- helper function to buils prite models!
 scumm.utils.mm2 = function(id, sheet, anim, frames, frametime)
