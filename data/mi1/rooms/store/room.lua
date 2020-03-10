@@ -26,11 +26,11 @@ room:add ( "store.walkarea",
 	    
 	}
 )	
-room:add ( "store.walkarea.keeper",
- 	{ 
- 	    scumm.factory.object { id="storekeeper" },
-	}
-)	
+-- room:add ( "store.walkarea.keeper",
+--  	{ 
+--  	    scumm.factory.object { id="storekeeper" },
+-- 	}
+-- )	
 -- room:add( {
 -- 	{ pos = {0, 0,-3}, components = { { type="gfx", image="gfx/shop.png" }}},
 -- 	scumm.factory.walkarea { shape = { type = "poly", outline = {62,14,90,20,115,20,150,31,191,31,231,67,154,67,154,69,235,69,235,67,184,25,175,25,181,21,235,21,235,13,248,2,
