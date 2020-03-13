@@ -40,14 +40,15 @@ room:add ( "main",
 -- 	})
 -- end
 
-
-
--- table.insert(room.initstuff, glib.curry (mi.addStorekeeper, { 
--- 	pos = {55, 97, 0}, 
--- 	parent="meleemap.walkarea", 
--- 	from = "lookout",
--- 	walkto = { {74, 112} }
--- }))
+table.insert(
+	room.initstuff, 
+	glib.curry (mi.addStorekeeper, { 
+		from = 'lookout', 
+		pos = {55, 97}, 
+		dir = 'n', 
+		parent = 'meleemap.walkarea',
+		walkto = { {74, 112} } 
+	})) 
 
 
 -- room:add( {

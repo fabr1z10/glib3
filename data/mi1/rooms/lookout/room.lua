@@ -28,18 +28,13 @@ room:add ( "main",
 	}
 )
 
--- local entry_cutscene = function() 
--- 	local actions = scumm.ui.walk { pos = {240, 30} }
--- 	local s = script.make(actions)
--- 	s.name="_walk"
--- 	monkey.play(s)
--- end
+table.insert(
+	room.initstuff, 
+	glib.curry (mi.addStorekeeper, { 
+		from = 'village1', 
+		pos = {240, 30}, 
+		dir = 'n', 
+		parent = 'lookout.walkarea',
+		walkto = { mi.rooms.lookout.to_map } 
+	})) 
 
--- table.insert(room.initstuff, entry_cutscene)
-
--- table.insert(room.initstuff, glib.curry (mi.addStorekeeper, { 
--- 	pos = {240, 30, 0}, 
--- 	parent="lookout.walkarea", 
--- 	from = "village1",
--- 	walkto = { items["lookout.path"].hotspot.walk_to }
--- }))

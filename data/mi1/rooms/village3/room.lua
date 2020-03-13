@@ -22,7 +22,7 @@ room:add( "main", {
 	scumm.factory.object { id = "village3.archway" },
 	scumm.factory.object { id = "village3.alley" },
 	scumm.factory.object { id = "village3.door.shop" },
---	scumm.factory.object { id = "village3.church_door" },
+	scumm.factory.object { id = "village3.door.church" },
 --	scumm.factory.object { id = "village3.jail" },
 })
 
@@ -35,7 +35,15 @@ room:add( "main", {
 -- 	end
 -- end
 
--- table.insert(room.initstuff, glib.curry (mi.addStorekeeper, { 
+table.insert(
+	room.initstuff, 
+	glib.curry (mi.addStorekeeper, { 
+		from = 'store', 
+		pos = {678, 15}, 
+		dir = 'e', 
+		parent = 'village3.walkarea',
+		walkto = { mi.rooms.village3.to_village2 } 
+	})) 
 -- 	pos = {669, 15, 0}, 
 -- 	parent="village3.walkarea", 
 -- 	from = "store",

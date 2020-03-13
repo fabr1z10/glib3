@@ -3,20 +3,12 @@ local items = engine.items
 roomDefinition = {
 	width = 320,
 	height = 144,
-	startTable = {
-		meleemap = { walkarea = "forest1.walkarea", pos = items["forest1.1"].hotspot.walk_to, dir = "west"},
-		forest_2 = { walkarea = "forest1.walkarea", pos = items["forest1.2"].hotspot.walk_to, dir = "south"},
-
-	},
-	defaultroom = "meleemap",
 	walkareas = { "forest1.walkarea"},
-	font_size = 8,
-	playerid="guybrush",
-	collide = true
-	--depth = { type="linear_y", values= {0, 1, 144, 0} },
+	collide = true,
+	id='forest_1'
 }
 
-room = scumm.factory.basic_room (roomDefinition)
+room = scumm.factory.room_ui (roomDefinition)
 
 room:add ( "main",
 	{ 
@@ -28,10 +20,10 @@ room:add ( "main",
 	}
 )
 
-table.insert(room.initstuff, glib.curry (mi.addStorekeeper, { 
-	pos = {240, 35, 0}, 
-	parent="forest1.walkarea", 
-	from = "meleemap",
-	walkto = { items["forest1.2"].hotspot.walk_to }
-}))
+-- table.insert(room.initstuff, glib.curry (mi.addStorekeeper, { 
+-- 	pos = {240, 35, 0}, 
+-- 	parent="forest1.walkarea", 
+-- 	from = "meleemap",
+-- 	walkto = { items["forest1.2"].hotspot.walk_to }
+-- }))
 

@@ -1,6 +1,7 @@
 -- the local objects
 engine.items["meleemap.walkarea"] = {
 	type = 'walkarea',
+	tag = true,
 	shape = { 
 		type = "graph", 
 		vertices = { {76, 80}, {78, 81}, {71,90}, {64, 96}, {48,99}, {49, 114}, {73, 113}, {88, 114},{118,114}, {135,113}, {83,109},
@@ -51,7 +52,7 @@ engine.items['meleemap.fork'] = {
 	name = strings.objects.fork,
 	go_to = {
 		room = 'forest_1',
-		pos = mi.rooms.forest1.to_map,
+		pos = mi.rooms.forest_1.to_map,
 		dir = 'w'
 	}
 }

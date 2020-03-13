@@ -9,6 +9,7 @@ local fguy = function(lines)
 	return { type = scumm.action.say, args = {tag = "player", lines = l, animate=false }}
 end
 
+
 local fman = function(lines,anim)
 	local l = {}
 	for _, n in ipairs(lines) do

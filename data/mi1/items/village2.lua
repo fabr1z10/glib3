@@ -1,5 +1,6 @@
 engine.items["village2.walkarea"] = {
 	type = 'walkarea',
+	tag = true,
 	shape = { 
 		type = 'poly', 
 		outline = {0, 24, 123, 63, 199, 63, 299, 30, 377, 30, 385, 35, 454, 35, 470, 0, 0}

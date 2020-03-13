@@ -1,5 +1,6 @@
 engine.items['village1.walkarea'] = {
 	type = 'walkarea',
+	tag = true,
 	shape = { type = "graph", 
 		vertices = { {8, 71}, {23, 63}, {49, 49}, {40, 37}, {56, 24}, {84, 13}, {770, 13}, {780,34}, {1000,34} }, 
 		edges = { {0,1}, {1,2}, {2,3},{3,4}, {4,5},{5,6},{6,7},{7,8} }},

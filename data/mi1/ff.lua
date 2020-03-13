@@ -25,7 +25,8 @@ mi.rooms = {
 	village3 = {
 		to_village2 = {762, 16},
 		to_alley = {605, 55},
-		to_shop = {668, 22}
+		to_shop = {668, 22},
+		to_church = {543, 39}
 	},
 	lookout = {
 		to_village = {250, 0},
@@ -33,26 +34,100 @@ mi.rooms = {
 	},
 	meleemap = {
 		lookout = {75, 79},
-		clearing = {136, 113}
+		clearing = {136, 113},
+		fork = {74, 112}
 	},
 	clearing = {
 		to_map = {320,10}
-	},
-	forest1 = {
-		to_map = {0,0}
 	},
 	alley = {
 		to_village3 = {35, 18}
 	},
 	store = {
 		to_village3 = {81, 15}
-	}
+	},
+	church = {
+		to_village3_1 = {0,0},
+		to_village3_2 = {0,0}
+	},
+	forest_1 = {
+		to_map = {320, 35},
+		to_forest_2_1 = {238, 69},
+		to_forest_2_2 = {158, 69}
+	},
+	forest_2 = {
+		to_forest_1 = {320, 35},
+		to_forest_3 = {257, 69},
+		to_forest_9 = {0, 35}
+	},
+	forest_3 = {
+		to_forest_2 = {135, 68},
+		to_forest_4 = {320, 35}
+	},
+	forest_4 = {
+		to_forest_3 = {0, 35},
+		to_forest_5 = {320, 35}
+	},
+	forest_5 = {
+		to_forest_4 = {241, 68},
+		to_forest_6 = {0, 24},
+		to_forest_8 = {320, 24},
+	},
+	forest_6 = {
+		to_forest_5 = {0,35},
+		to_forest_7 = {151, 68}
+	},
+	forest_7 = {
+		to_forest_6 = {0, 35},
+		to_swordmaster = {320, 35}
+	},
+	forest_8 = {
+		to_forest_5 = {0,0}
+	},
 
+	forest_9 = {
+		to_forest_2 = {0, 0},
+	},
+	swordmaster = {
+		to_map = {0,10}
+	}
 
 }
 
 
-mi.addStorekeeper = function()
+mi.addStorekeeper = function(args)
+	-- pos: where it goes
+	-- walkto: where it walks to (might be more than once)
+	print ('fFOFOFOFOFOFOFOFOFOFO ' .. tostring(variables.chasing_shopkeeper))
+	if variables.chasing_shopkeeper then
+		if engine.state.previousRoom ~= args.from then
+			variables.chasing_shopkeeper = false
+			return nil
+		end
+		local actions = {
+			{ 
+				type = action.create_object, 
+				args = { 
+					factory = scumm.factory.object, 
+					parent = args.parent, 
+					args = { 
+						id='storekeeper', 
+						params = { pos = {args.pos[1], args.pos[2], 0}, dir = args.dir} 
+					}
+				}
+			}
+		}
+		print ('ciaociao')
+		for _, v in ipairs(args.walkto) do
+			table.insert(actions, { type = scumm.action.walkto, args ={tag='storekeeper', pos = v }})
+		end
+	 	table.insert (actions, { type = action.remove_object, args = { tag = 'storekeeper'}})
+		-- table.insert (actions, { type = action.activate, args = {tag='storekeeper', active=false}})
+		table.insert (actions, { type = action.delay, args = {sec=10}})
+		table.insert (actions, { type = action.set_variable, args = {var="chasing_shopkeeper", value=false}})
+		local s = script.make(actions)
+		monkey.play(s)
+end
 end
 
 mi.script.open_door = function(args)
