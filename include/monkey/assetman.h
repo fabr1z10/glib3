@@ -103,7 +103,10 @@ public:
     void CleanUp();
 private:
     pybind11::dict m_fontDict;
-    BasicAssetStore<Font> m_fonts;
+    
+    std::unordered_map<std::string, std::shared_ptr<Font> > m_fonts;
+
+    //BasicAssetStore<Font> m_fonts;
     BasicAssetStore<Tex> m_textures;
     BasicAssetStore<IModel> m_models;
     BasicAssetStore<SkeletalAnimation> m_skeletalAnimations;

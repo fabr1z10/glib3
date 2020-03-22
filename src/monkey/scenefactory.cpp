@@ -161,6 +161,7 @@ SceneFactory::SceneFactory() {
     add<SpriteModel> ("sprite.model");
     // other
     add<Font> ("font");
+    add2<Font> ("font");
     add<Constant2D> ("constant");
     add<Linear2Dy> ("linear_y");
     add<PatchwiseLinear2D> ("patchwise");

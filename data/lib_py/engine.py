@@ -16,7 +16,7 @@ class Engine:
         self.assets = {}
         self.assets['fonts'] = {}
         
-    def addFont (font):
+    def addFont (self, font):
         self.assets['fonts'][font.id] = font
 
 

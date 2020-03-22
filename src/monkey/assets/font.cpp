@@ -12,6 +12,15 @@ Font::Font() {
         return;
 }
 
+Font::Font(const PyTable& t) : Font() {
+    
+    std::string file = t.get<std::string>("file");
+    if (file[0] == '.') {
+        file.replace(0, 2, Engine::get().GetGameDirectory());
+    }
+    loadFromFile(file, 36);
+
+}
 Font::Font(const LuaTable & t) : Font() {
 
     std::string file = t.Get<std::string>("file");

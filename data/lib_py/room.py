@@ -30,6 +30,7 @@ class RoomUI(Room):
 	def __init__(self, width, height, collide = False):
 		super().__init__(width, height, collide)
 		uisize = settings.monkey.uiHeight
+		print ('uisize is '+str(uisize))
 		camWidth = settings.monkey.deviceSize[0]
 		camHeight = settings.monkey.deviceSize[1] - uisize
 

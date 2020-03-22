@@ -20,9 +20,10 @@ Engine::Engine() : m_mouseEnabled{true}, m_sceneFactory{nullptr} {
 
     py::exec(R"(
         import sys
-        sys.path.append('/home/fabrizio/glib3/data/mi1_py')
+        sys.path.append('/Users/fabrizioventurini/glib3/data/mi1_py')
     )");
 
+    m_gameDirectory = "/Users/fabrizioventurini/glib3/data/mi1_py/";
     auto module = py::module::import("main");
     m_mainTable = std::make_unique<PyTable>(module.attr("settings").attr("monkey").cast<py::object>());
 

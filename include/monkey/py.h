@@ -127,7 +127,7 @@ private:
     T cast(pybind11::detail::str_attr_accessor o, T value) const {
         // default impl
         try {
-            return o.cast<T>();
+            return cast<T>(o);
         } catch (...) {
             return value;
         }
@@ -176,3 +176,4 @@ inline PyTable PyTable::cast(pybind11::detail::str_attr_accessor o) const {
     PyTable table( o.cast<pybind11::object>());
     return table;
 }
+

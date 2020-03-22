@@ -23,21 +23,31 @@ void AssetManager::Init() {
 }
 
 std::shared_ptr<Font> AssetManager::GetFont (const std::string& fontId) {
+    // check if font is cached
+    auto it = m_fonts.find(fontId);
+    if (it != m_fonts.end()) {
+        return it->second;
+    }
+    
     if (m_fontDict.is_none()) {
+    
     } else {
-        PyTable t(m_fontDict["fontId"].cast<py::object>());
-        Engine::get().GetSceneFactory()->make2<Font>(t);
+        PyTable t(m_fontDict[fontId.c_str()].cast<py::object>());
+        
+        auto font= Engine::get().GetSceneFactory()->make2<Font>(t);
+        m_fonts.insert(std::make_pair(fontId, font));
+        return font;
     }
 }
 void AssetManager::SetLocal (bool value) {
-    m_fonts.SetLocal(value);
+    //m_fonts.SetLocal(value);
     m_models.SetLocal(value);
     m_textures.SetLocal(value);
 }
 
 
 void AssetManager::CleanUp() {
-    m_fonts.CleanUp();
+    //m_fonts.CleanUp();
     m_models.CleanUp();
     m_textures.CleanUp();
 }
