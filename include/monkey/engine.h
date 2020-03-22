@@ -1,6 +1,7 @@
 #pragma once
 
-
+#include <pybind11/embed.h>
+//#include <monkey/py.h>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <monkey/monkey.h>
@@ -17,9 +18,13 @@
 #include <monkey/runner.h>
 #include <monkey/keyboard.h>
 
+class SceneFactory;
+class PyTable;
+
 class Engine : public Singleton<Engine> {
 public:
     ~Engine();
+    void init();
     void Init(const std::string& home, const std::string& game);
     void MainLoop();
     bool isRunning() const;
@@ -77,9 +82,12 @@ public:
     std::string GetDirectory() const;
     std::string GetGame() const;
     std::string GetGameDirectory() const;
+    PyTable& getMainTable() const;
 private:
+    pybind11::scoped_interpreter m_guard;
+    std::unique_ptr<PyTable> m_mainTable;
     friend class Singleton<Engine>;
-    Engine() : m_mouseEnabled{true}, m_sceneFactory{nullptr} {}
+    Engine();
     void InitGL();
     std::unordered_map<Entity*, Entity*> m_garbage;
     std::shared_ptr<SceneFactory> m_sceneFactory;
@@ -109,6 +117,10 @@ private:
     std::string m_gameDirectory;
     std::string m_title;
 };
+
+inline PyTable& Engine::getMainTable() const {
+    return *(m_mainTable.get());
+}
 
 inline double Engine::GetFrameTime() const {
     return m_frameTime;

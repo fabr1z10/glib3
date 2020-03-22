@@ -3,6 +3,7 @@
 #include <monkey/factory.h>
 #include <monkey/asset.h>
 #include <unordered_set>
+#include <monkey/py.h>
 
 class Engine;
 class IModel;
@@ -69,7 +70,12 @@ public:
             return std::make_shared<T>(t);
         }));
     }
-
+    template <typename T>
+    void add2(const std::string& type) {
+        m_facs2.insert(std::make_pair(type, [] (const PyTable& t) {
+            return std::make_shared<T>(t);
+        }));
+    }
 
 
     template <typename T, bool = std::is_base_of<Ref, T>::value >
@@ -84,7 +90,15 @@ public:
         return std::static_pointer_cast<T>((it->second)(t));
     }
 
-
+    template <typename T, bool = std::is_base_of<Ref, T>::value >
+    std::shared_ptr<T> make2 (const PyTable& t) {
+        auto type = t.get<std::string>( {"type"} );
+        auto it = m_facs2.find(type);
+        if (it == m_facs2.end()) {
+            GLIB_FAIL("Unknown type: " << type);
+        }
+        return std::static_pointer_cast<T>((it->second)(t));
+    }
 
 
 protected:
@@ -99,6 +113,7 @@ protected:
 //    Factory<SkeletalAnimation> m_skeletalAnimFactory;
 
     std::unordered_map<std::string, std::function<std::shared_ptr<Object>(const LuaTable&)> > m_facs;
+    std::unordered_map<std::string, std::function<std::shared_ptr<Object>(const PyTable&)> > m_facs2;
     //Factory<StateInitializer> m_stateInitFactory;
     //Factory<StateBehaviour> m_stateBehaviorFactory;
 };

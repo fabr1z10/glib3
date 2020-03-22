@@ -102,15 +102,13 @@ public:
     void SetLocal (bool);
     void CleanUp();
 private:
+    pybind11::dict m_fontDict;
     BasicAssetStore<Font> m_fonts;
     BasicAssetStore<Tex> m_textures;
     BasicAssetStore<IModel> m_models;
     BasicAssetStore<SkeletalAnimation> m_skeletalAnimations;
 };
 
-inline std::shared_ptr<Font> AssetManager::GetFont (const std::string& id) {
-    return m_fonts.Get(id);
-}
 
 inline std::shared_ptr<Tex> AssetManager::GetTex (const std::string& id) {
     return m_textures.Get(id);

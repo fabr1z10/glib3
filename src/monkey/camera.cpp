@@ -38,6 +38,14 @@ Camera::Camera(const LuaTable & table) : Ref(table) {
 
 }
 
+Camera::Camera(const PyTable & t) : Ref(t) {
+    m_eye = t.get<glm::vec3>("pos", glm::vec3(0.0f));
+    m_fwd = t.get<glm::vec3>("direction", glm::vec3(0, 0, -1));
+    m_up = t.get<glm::vec3>("up", glm::vec3(0, 1, 0));
+    m_camViewport = t.get<glm::vec4>("viewport", glm::vec4(0.0f, 0.0f, Engine::get().GetDeviceSize()));
+
+}
+
 glm::vec3 Camera::GetPosition() const {
     return glm::vec3(-m_viewMatrix[3][0], -m_viewMatrix[3][1], -m_viewMatrix[3][2]);
 }
@@ -94,6 +102,26 @@ OrthographicCamera::OrthographicCamera(const LuaTable & table) : Camera(table) {
     Init();
 
 }
+
+OrthographicCamera::OrthographicCamera(const PyTable & table) : Camera(table) {
+
+    glm::vec2 size = table.get<glm::vec2>("size");
+    m_orthoWidth = size.x;
+    m_orthoHeight = size.y;
+
+    auto bounds = table.get<glm::vec4>("bounds", glm::vec4(0.0));
+
+    m_xMax = m_yMax = std::numeric_limits<float>::infinity();
+    m_xMin = m_yMin = -m_xMax;
+    if (bounds != glm::vec4(0.0f)) {
+        SetBounds(bounds[0], bounds[2], bounds[1], bounds[3]);
+    }
+
+    SetPosition(m_eye, m_fwd, m_up);
+    Init();
+
+}
+
 
 PerspectiveCamera::PerspectiveCamera (glm::vec4 viewport, float fov, float nearPlane, float farPlane) : Camera(viewport), WindowResizeListener(), m_fov(fov), m_near(nearPlane), m_far(farPlane)
 {

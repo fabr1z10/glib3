@@ -2,11 +2,23 @@
 #include <monkey/lua/luatable.h>
 #include <GLFW/glfw3.h>
 
+namespace py = pybind11;
+
 LuaKeyListener::LuaKeyListener(const LuaTable & t) : Runner() {
 
-    t.ProcessVector("keys", [&] (luabridge::LuaRef ref) {
-        int key = ref["key"].cast<int>();
-        luabridge::LuaRef callback = ref["func"];
+//    t.ProcessVector("keys", [&] (luabridge::LuaRef ref) {
+//        int key = ref["key"].cast<int>();
+//        luabridge::LuaRef callback = ref["func"];
+//        addHotKey (key, callback);
+//    });
+
+}
+
+LuaKeyListener::LuaKeyListener(const PyTable & t) : Runner() {
+
+    t.foreach<py::dict>("keys", [&] (const py::dict& d) {
+        int key = d["key"].cast<int>();
+        py::function callback = d["func"].cast<py::function>();
         addHotKey (key, callback);
     });
 
@@ -15,7 +27,7 @@ LuaKeyListener::LuaKeyListener(const LuaTable & t) : Runner() {
 LuaKeyListener::LuaKeyListener(const LuaKeyListener & orig) : Runner(orig), m_hotkeys(orig.m_hotkeys) {}
 
 
-void LuaKeyListener::addHotKey (int key, luabridge::LuaRef callback) {
+void LuaKeyListener::addHotKey (int key, pybind11::function callback) {
     m_hotkeys.insert(std::make_pair(key, callback));
 }
 

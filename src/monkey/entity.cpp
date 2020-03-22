@@ -12,7 +12,50 @@
 #include <glm/gtx/transform.hpp>
 #include <monkey/math/geom.h>
 
+namespace py = pybind11;
+
 using namespace std;
+
+Entity::Entity(const PyTable& t) : Ref(t),
+    m_localTransform{glm::mat4(1.0)}, m_worldTransform{glm::mat4(1.0)}, m_parent(nullptr), m_flipHorizontal{false},
+    m_enableControls{true}, m_update{true}
+{
+    auto pos = t.get<glm::vec3>("pos", glm::vec3(0.0f));
+    if (t.hasKey("angle")) {
+        auto angle = t.get<float>("angle", 0.0f);
+        SetPosition(pos, deg2rad* angle);
+    } else {
+        SetPosition(pos);
+    }
+
+    auto flipx = t.get<bool>("flipx", false);
+    SetFlipX(flipx);
+
+    if (t.hasKey("scale")) {
+        auto scale = t.get<float>("scale");
+        SetScale(scale);
+    }
+
+    auto factory = Engine::get().GetSceneFactory();
+
+    if (t.hasKey("camera")) {
+        auto camt = t.get<PyTable>("camera");
+        auto camera = factory->make2<Camera>(camt);
+        SetCamera(camera);
+
+    }
+
+    // Add components ...
+    t.foreach<PyTable>("components", [&] (const PyTable& t) {
+        AddComponent(factory->make2<Component>(t));
+    });
+
+    // ... and children
+    t.foreach<PyTable>("children", [&] (const PyTable& t) {
+        AddChild(factory->make2<Entity>(t));
+    });
+
+}
 
 Entity::Entity(const LuaTable & t) : Ref(t),
     m_localTransform{glm::mat4(1.0)}, m_worldTransform{glm::mat4(1.0)}, m_parent(nullptr), m_flipHorizontal{false},

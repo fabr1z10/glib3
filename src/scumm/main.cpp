@@ -17,17 +17,19 @@ int main(int argc, char* argv[])
     }
     try {
         // read config file
-        std::ifstream ifs("config.json");
-        nlohmann::json j = nlohmann::json::parse(ifs);
-        std::string homeDir = j["home"];
-        std::string game(argv[1]);
+//        std::ifstream ifs("config.json");
+//        nlohmann::json j = nlohmann::json::parse(ifs);
+//        std::string homeDir = j["home"];
+//        std::string game(argv[1])
         auto& engine = Engine::get();
-        auto factory = std::make_shared<SceneFactory>();
-        Extension ext;
-        ext.extend(factory.get());
-        engine.SetSceneFactory(factory);
-        engine.Init(homeDir, game);
-        ext.extendLua();
+        engine.init();
+        //engine.MainLoop();
+//        auto factory = std::make_shared<SceneFactory>();
+//        Extension ext;
+//        ext.extend(factory.get());
+//        engine.SetSceneFactory(factory);
+//        engine.Init(homeDir, game);
+//        ext.extendLua();
         engine.MainLoop();
     }
     catch (Error & err) {

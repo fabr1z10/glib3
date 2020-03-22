@@ -13,10 +13,11 @@ set(BIN_DIR ${PROJECT_DIR}/bin)
 set(LIB_DIR ${PROJECT_DIR}/lib)
 set(INCLUDE_DIR ${PROJECT_DIR}/include)
 set(SRC_DIR ${PROJECT_DIR}/src)
+set(PYBIND_INCLUDE_DIR ${PROJECT_DIR}/include/py/include)
 
 set(CMAKE_CXX_STANDARD 17)
 
-set(CMAKE_CXX_FLAGS "-pthread -DBT_USE_DOUBLE_PRECISION")
+set(CMAKE_CXX_FLAGS "-pthread -DBT_USE_DOUBLE_PRECISION -fvisibility=hidden")
 set(Boost_USE_STATIC_LIBS ON)
 if (WIN32)
     SET(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
@@ -34,6 +35,7 @@ find_package(Freetype REQUIRED)
 find_package(PNG REQUIRED)
 find_package(JPEG REQUIRED)
 find_package(Lua REQUIRED)
+find_package(Python COMPONENTS Interpreter Development REQUIRED)
 find_package(Boost COMPONENTS filesystem REQUIRED)
 
 if(APPLE)
@@ -48,7 +50,8 @@ message(STATUS "GLM included at ${GLEW_INCLUDE_DIRS}")
 message(STATUS "GLFW included at ${GLFW3_INCLUDE_DIR}")
 message(STATUS "GLEW lib is ${GLEW_LIBRARIES}")
 message(STATUS "ISISIS ${Boost_LIBRARIES}")
-message(STATUS "ISISIA ${Boost_FILESYSTEM_LIBRARY}")
+message(STATUS "ISISIA ${Python_VERSION}")
+message(STATUS "ISISIA ${Python_INCLUDE_DIRS}")
 
 #include_directories(${INCLUDE_DIR} ${FREETYPE_INCLUDE_DIRS} ${GLM_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS} )
 #link_directories(${LIB_DIR})
@@ -67,6 +70,7 @@ configure_file (
 )
 
 # source directory
+add_subdirectory(include/py)
 add_subdirectory(src)
 
 

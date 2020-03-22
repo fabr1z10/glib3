@@ -1,8 +1,13 @@
+#include <memory>
+
 #include <monkey/engine.h>
-#include <monkey/error.h>
-#include <iostream>
+#include <monkey/scenefactory.h>
 #include <monkey/renderingiterator.h>
 
+#include <monkey/py.h>
+#include <pybind11/stl.h>
+
+namespace py = pybind11;
 //#ifdef __APPLE__
 //#define glGenVertexArrays glGenVertexArraysAPPLE
 //#define glBindVertexArray glBindVertexArrayAPPLE
@@ -10,6 +15,24 @@
 //#endif
 
 GLFWwindow* window;
+
+Engine::Engine() : m_mouseEnabled{true}, m_sceneFactory{nullptr} {
+
+    py::exec(R"(
+        import sys
+        sys.path.append('/home/fabrizio/glib3/data/mi1_py')
+    )");
+
+    auto module = py::module::import("main");
+    m_mainTable = std::make_unique<PyTable>(module.attr("settings").attr("monkey").cast<py::object>());
+
+    m_deviceSize = m_mainTable->get<glm::vec2>("deviceSize");
+    m_winSize = m_mainTable->get<glm::vec2>("windowSize");
+    m_title = m_mainTable->get<std::string>("title");
+
+    m_sceneFactory = std::make_shared<SceneFactory>();
+
+}
 
 void Engine::SetDeviceSize(glm::vec2 size) {
     m_deviceSize = size;
@@ -38,12 +61,32 @@ void Engine::EnableKeyboard() {
     glfwSetKeyCallback(window, key_callback );
 
 }
+void Engine::init() {
 
+    // initialize Open GL
+    InitGL();
+
+    int widthPixel;
+    int widthPoint;
+    int heightPixel;
+    int heightPoint;
+    glfwGetWindowSize(window, &widthPoint, &heightPoint);
+    glfwGetFramebufferSize(window, &widthPixel, &heightPixel);
+    m_pixelRatio = static_cast<float>(widthPixel) / widthPoint;
+
+
+    // set-up the rendering engine
+    auto renderingEngine = std::make_unique<RenderingEngine>();
+    SetRenderingEngine(std::move(renderingEngine));
+
+    EnableMouse();
+    EnableKeyboard();
+
+    m_assetManager.Init();
+
+}
 
 void Engine::Init(const std::string& home, const std::string& game) {
-    if (m_sceneFactory == nullptr) {
-        GLIB_FAIL("Scene factory has not been set. Please set the factory before calling Init()!");
-    }
 
     m_running = false;
     SetDirectory(home);
@@ -150,8 +193,6 @@ void Engine::MainLoop() {
 
     while (!glfwWindowShouldClose(window)) {
 
-        // load the scene
-        // scene is an entity (often a container entity)
         m_scene = m_sceneFactory->Create();
         
         // start the scene (initialize components)
@@ -159,15 +200,15 @@ void Engine::MainLoop() {
         for (auto& r : m_runners) {
             r.second->Init();
         }
-        m_scene->start();
-        m_scene->Begin();
-        m_running = true;
-
-        //for (auto iter = m_scene->begin(); iter != m_scene->end(); ++iter) {
-        //    iter->Start();
-        //}
-        
-        m_sceneFactory->PostInit();
+//        m_scene->start();
+//        m_scene->Begin();
+//        m_running = true;
+//
+//        //for (auto iter = m_scene->begin(); iter != m_scene->end(); ++iter) {
+//        //    iter->Start();
+//        //}
+//
+//        m_sceneFactory->PostInit();
         // call startUp
         int widthPixel, heightPixel;
         glfwGetFramebufferSize(window, &widthPixel, &heightPixel);

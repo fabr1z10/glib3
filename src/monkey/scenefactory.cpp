@@ -33,30 +33,33 @@
 #include <monkey/activities/setstate.h>
 #include <monkey/components/cursor.h>
 #include <monkey/activities/setactive.h>
+#include <monkey/py.h>
+
+namespace py = pybind11;
 
 
 void SceneFactory::Init(Engine* engine) {
     // initialize lua
-    LuaWrapper::Init();
-    luabridge::LuaRef package = luabridge::getGlobal(LuaWrapper::L, "package");
-    std::cout << "package.path = " << package["path"].cast<std::string>() << "\n";
-    luabridge::setGlobal(LuaWrapper::L, engine->GetGameDirectory().c_str(), "_path" );
-    // load main
-    LuaWrapper::Load(Engine::get().GetGameDirectory() + "main.lua");
-
-    LuaTable engineDef(LuaWrapper::GetGlobal("engine"));
-
-    glm::vec2 devSize = engineDef.Get<glm::vec2>("device_size");
-    glm::ivec2 winSize = engineDef.Get<glm::ivec2>("window_size");
-    int fps = engineDef.Get<int>("fps", 60);
-    std::string title = engineDef.Get<std::string>("title");
-
-    engine->SetDeviceSize(devSize);
-    engine->SetWindowSize(winSize);
-    engine->SetFPS(fps);
-    engine->SetTitle(title);
-
-    extendLua();
+//    LuaWrapper::Init();
+//    luabridge::LuaRef package = luabridge::getGlobal(LuaWrapper::L, "package");
+//    std::cout << "package.path = " << package["path"].cast<std::string>() << "\n";
+//    luabridge::setGlobal(LuaWrapper::L, engine->GetGameDirectory().c_str(), "_path" );
+//    // load main
+//    LuaWrapper::Load(Engine::get().GetGameDirectory() + "main.lua");
+//
+//    LuaTable engineDef(LuaWrapper::GetGlobal("engine"));
+//
+//    glm::vec2 devSize = engineDef.Get<glm::vec2>("device_size");
+//    glm::ivec2 winSize = engineDef.Get<glm::ivec2>("window_size");
+//    int fps = engineDef.Get<int>("fps", 60);
+//    std::string title = engineDef.Get<std::string>("title");
+//
+//    engine->SetDeviceSize(devSize);
+//    engine->SetWindowSize(winSize);
+//    engine->SetFPS(fps);
+//    engine->SetTitle(title);
+//
+//    extendLua();
 }
 
 
@@ -106,8 +109,11 @@ SceneFactory::SceneFactory() {
 
     // entities
     add<Entity> ("default");
+    add2<Entity> ("entity");
+
     add<Sprite> ("sprite");
     add<Text> ("text");
+    add2<Text> ("text");
     add<TextView> ("textview");
 
     // components
@@ -116,6 +122,7 @@ SceneFactory::SceneFactory() {
     add<ScriptHotSpot> ("hotspot");
     add<BasicRenderer> ("gfx");
     add<LuaKeyListener> ("keylistener");
+    add2<LuaKeyListener> ("runner.keylistener");
     add<LuaInfo> ("info");
     add<DirectionalLight> ("directional.light");
     add<KeyboardInputMethod> ("keyinput");
@@ -142,6 +149,7 @@ SceneFactory::SceneFactory() {
 
     // cameras
     add<OrthographicCamera> ("ortho");
+    add2<OrthographicCamera> ("cam.ortho");
     add<PerspectiveCamera> ("perspective");
 
     // shapes
@@ -287,33 +295,60 @@ SceneFactory::SceneFactory() {
 
 std::shared_ptr<Entity> SceneFactory::Create() {
 
+    auto& engine = Engine::get();
+
     // get current room
-    LuaTable vars (LuaWrapper::GetGlobalPath( {"engine", "state"} ));
-    std::string room = vars.Get<std::string>("room");
+    const auto& table = engine.getMainTable();
+    auto room = table.get<std::string>("currentRoom");
+    std::cout << "room is = " << room << "\n";
+
+    py::function builder;
+    try {
+        builder = table.get<py::dict>("rooms")[room.c_str()].cast<py::function>();
+    } catch (...) {
+        GLIB_FAIL("Unable to find the builder for room: " << room)
+    }
 
     std::cout << "=================================\n";
     std::cout << "Loading room: "<< room << std::endl;
     std::cout << "=================================\n";
-    LuaWrapper::Load(Engine::get().GetGameDirectory() + "rooms/" + room + "/room.lua");
 
-    // Create the local assets
-    luabridge::LuaRef roomRef = luabridge::getGlobal(LuaWrapper::L, "room");
-    LuaTable roomTable(roomRef);
+    auto roomDef = builder().cast<py::object>();
+    auto engineList = roomDef.attr("engines").cast<py::list>();
 
-    if (roomTable.HasKey("init")) {
-        luabridge::LuaRef r1 = roomTable.Get<luabridge::LuaRef>("init");
-        r1();
+    for (const auto& p : engineList) {
+        PyTable t(p.cast<py::object>());
+        engine.AddRunner(make2<Runner>(t));
     }
 
-    if (roomTable.HasKey("engines")) {
-        luabridge::LuaRef engines = roomTable.Get<luabridge::LuaRef>("engines");
-        for (int i = 0; i < engines.length(); ++i) {
-            luabridge::LuaRef e = engines[i+1];
-            LuaTable t(e);
-            auto runner = make<Runner>(t);
-            Engine::get().AddRunner(runner);
-        }
-    }
+
+
+    //return nullptr;
+
+
+//    LuaTable vars (LuaWrapper::GetGlobalPath( {"engine", "state"} ));
+//    std::string room = vars.Get<std::string>("room");
+//
+//    LuaWrapper::Load(Engine::get().GetGameDirectory() + "rooms/" + room + "/room.lua");
+//
+//    // Create the local assets
+//    luabridge::LuaRef roomRef = luabridge::getGlobal(LuaWrapper::L, "room");
+//    LuaTable roomTable(roomRef);
+//
+//    if (roomTable.HasKey("init")) {
+//        luabridge::LuaRef r1 = roomTable.Get<luabridge::LuaRef>("init");
+//        r1();
+//    }
+//
+//    if (roomTable.HasKey("engines")) {
+//        luabridge::LuaRef engines = roomTable.Get<luabridge::LuaRef>("engines");
+//        for (int i = 0; i < engines.length(); ++i) {
+//            luabridge::LuaRef e = engines[i+1];
+//            LuaTable t(e);
+//            auto runner = make<Runner>(t);
+//            Engine::get().AddRunner(runner);
+//        }
+//    }
 
     //Ref::dump();
     // load room-specific assets
@@ -323,24 +358,30 @@ std::shared_ptr<Entity> SceneFactory::Create() {
 //        LoadModel(a);//    }
 
     // read the scene tree
-    auto rootNode = std::make_shared<Entity>();
-    rootNode->SetTag("_root");
-    luabridge::LuaRef rscene = roomTable.Get<luabridge::LuaRef>("scene");
-    for (int i = 0; i < rscene.length(); ++i) {
-        luabridge::LuaRef rnode = rscene[i+1];
-        LuaTable t(rnode);
-        auto node  = make<Entity>(t);
-        rootNode->AddChild(node);
+    auto scene = std::make_shared<Entity>();
+    auto sceneList = roomDef.attr("scene").cast<py::list>();
+    for (const auto& p : sceneList) {
+        PyTable t(p.cast<py::object>());
+        scene->AddChild(make2<Entity>(t));
     }
 
-    // launch the start script
-    if (roomTable.HasKey("start")) {
-        luabridge::LuaRef r1 = roomTable.Get<luabridge::LuaRef>("start");
-        r1();
-    }
-    Ref::dump();
-    return rootNode;
-
+    //auto rootNode = std::make_shared<Entity>();
+//    rootNode->SetTag("_root");
+//    luabridge::LuaRef rscene = roomTable.Get<luabridge::LuaRef>("scene");
+//    for (int i = 0; i < rscene.length(); ++i) {
+//        luabridge::LuaRef rnode = rscene[i+1];
+//        LuaTable t(rnode);
+//        auto node  = make<Entity>(t);
+//        rootNode->AddChild(node);
+//    }
+//
+//    // launch the start script
+//    if (roomTable.HasKey("start")) {
+//        luabridge::LuaRef r1 = roomTable.Get<luabridge::LuaRef>("start");
+//        r1();
+//    }
+//    Ref::dump();
+    return scene;
 }
 
 
@@ -355,10 +396,10 @@ void SceneFactory::PostInit() {
     }
 }
 
-
 //void SceneFactory::LoadModel (const std::string& model) {
 //    // check if model is already loaded:
-//    auto& am = Engine::get().GetAssetManager();
+//    aujr
+// to& am = Engine::get().GetAssetManager();
 //
 //    if (am.HasModel(model)) {
 //        return;
@@ -379,14 +420,13 @@ void SceneFactory::PostInit() {
 //}
 
 void SceneFactory::CleanUp() {
-    luabridge::LuaRef roomRef = LuaWrapper::GetGlobal("room");
-    LuaTable table (roomRef);
-
-    // unload room-specific assets
-    Engine::get().GetAssetManager().CleanUp();
-
-    roomRef = luabridge::Nil();
-
+//    luabridge::LuaRef roomRef = LuaWrapper::GetGlobal("room");
+//    LuaTable table (roomRef);
+//
+//    // unload room-specific assets
+//    Engine::get().GetAssetManager().CleanUp();
+//
+//    roomRef = luabridge::Nil();
 }
 
 

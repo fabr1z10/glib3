@@ -14,6 +14,7 @@
 #include <glm/glm.hpp>
 #include <monkey/enums.h>
 #include <monkey/ref.h>
+#include <monkey/py.h>
 #include <monkey/camera.h>
 #include <monkey/iterator.h>
 #include <monkey/component.h>
@@ -33,6 +34,8 @@ public:
                m_worldTransform{glm::mat4(1.0)}, m_enableControls{true}, m_flipHorizontal{false}, m_started(false) {}
     ~Entity() override ;
     Entity(const LuaTable&);
+    Entity(const PyTable&);
+
     // copy ctor
     Entity(const Entity&);
 

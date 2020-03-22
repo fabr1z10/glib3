@@ -14,6 +14,8 @@ function scumm.factory.room_ui (args)
 
 	print ("NOW SCENE HAS SIZE:"..tostring(#p.scene))
 	-- add the main scene
+	
+
 	table.insert (p.scene, {
 		tag = "main",
 		camera = {

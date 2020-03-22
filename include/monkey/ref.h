@@ -2,6 +2,7 @@
 
 #include <string>
 #include <monkey/asset.h>
+#include <monkey/py.h>
 #include <unordered_map>
 #include <monkey/error.h>
 #include <memory>
@@ -13,6 +14,7 @@ public:
     Ref();
     Ref(const Ref&);
     Ref(const LuaTable&);
+    Ref(const PyTable&);
     virtual ~Ref();
     std::string GetTag() const;
     void SetTag(const std::string&);
