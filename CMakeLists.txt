@@ -16,9 +16,11 @@ set(SRC_DIR ${PROJECT_DIR}/src)
 set(PYBIND_INCLUDE_DIR ${PROJECT_DIR}/include/py/include)
 
 set(CMAKE_CXX_STANDARD 17)
+#set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fpic")
 
 set(CMAKE_CXX_FLAGS "-pthread -DBT_USE_DOUBLE_PRECISION -fvisibility=hidden")
-set(Boost_USE_STATIC_LIBS ON)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fpic")
+#set(Boost_USE_STATIC_LIBS ON)
 if (WIN32)
     SET(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 endif (WIN32)

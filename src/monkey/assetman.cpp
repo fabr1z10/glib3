@@ -39,17 +39,30 @@ std::shared_ptr<Font> AssetManager::GetFont (const std::string& fontId) {
         return font;
     }
 }
+
+
+std::shared_ptr<Tex> AssetManager::GetTex (const std::string& fontId) {
+    // check if font is cached
+    auto it = m_textures.find(fontId);
+    if (it != m_textures.end()) {
+        return it->second;
+    }
+    std::string file = Engine::get().GetGameDirectory() + fontId;
+    auto tex = std::make_shared<Tex>(file);
+    m_textures[fontId] = tex;
+    return tex;
+}
 void AssetManager::SetLocal (bool value) {
     //m_fonts.SetLocal(value);
-    m_models.SetLocal(value);
-    m_textures.SetLocal(value);
+    //m_models.SetLocal(value);
+    //m_textures.SetLocal(value);
 }
 
 
 void AssetManager::CleanUp() {
     //m_fonts.CleanUp();
     m_models.CleanUp();
-    m_textures.CleanUp();
+    //m_textures.CleanUp();
 }
 
 void BasicAssetStore<Tex>::Init(const std::string &f, SceneFactory *sf) {

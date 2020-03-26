@@ -20,9 +20,9 @@ int main(int argc, char* argv[])
 //        std::ifstream ifs("config.json");
 //        nlohmann::json j = nlohmann::json::parse(ifs);
 //        std::string homeDir = j["home"];
-//        std::string game(argv[1])
+        std::string gameDir(argv[1]);
         auto& engine = Engine::get();
-        engine.init();
+        engine.init(gameDir);
         //engine.MainLoop();
 //        auto factory = std::make_shared<SceneFactory>();
 //        Extension ext;

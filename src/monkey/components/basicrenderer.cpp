@@ -8,6 +8,29 @@ BasicRenderer::BasicRenderer(std::shared_ptr<IModel> model) : Renderer() {
     m_baseModel = model.get();
 }
 
+BasicRenderer::BasicRenderer(const PyTable & t) : Renderer() {
+
+    if (t.hasKey("image")) {
+        auto image = t.get<std::string>("image");
+        auto w = t.get<float>("width", 0.0f);
+        auto h = t.get<float>("height", 0.0f);
+        glm::vec2 offset = t.get<glm::vec2>("offset", glm::vec2(0.0f));
+        std::shared_ptr<IMesh> mesh;
+        if (t.hasKey("quad")) {
+            glm::ivec4 quad = t.get<glm::ivec4>("quad");
+            mesh = std::make_shared<QuadMesh>(image, w, h, offset, quad[0], quad[1], quad[2], quad[3]);
+        } else {
+            glm::vec2 repeat = t.get<glm::vec2>("rep", glm::vec2(1.0f, 1.0f));
+            glm::vec2 skew = t.get<glm::vec2>("skew", glm::vec2(0.0f, 0.0f));
+            mesh = std::make_shared<QuadMesh>(image, w, h, repeat.x, repeat.y, skew.x, skew.y, offset);
+        }
+        SetModel(std::make_shared<BasicModel>(mesh));
+        //m_model = std::make_shared<BasicModel>(mesh);
+
+    }
+}
+
+
 BasicRenderer::BasicRenderer(const LuaTable & t) : Renderer() {
 
     if (t.HasKey("image")) {

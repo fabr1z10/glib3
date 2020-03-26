@@ -16,14 +16,14 @@ Text::Text(const LuaTable & t) : Entity(t) {
     auto text = t.Get<std::string>("text");
     auto font = t.Get<std::string>("font");
     auto size = t.Get<float>("size", 8);
-    auto align = t.Get<TextAlignment>("align", TOP_LEFT);
+    auto align = t.Get<int>("align", TOP_LEFT);
     auto maxWidth = t.Get<float>("maxwidth", 0.0f);
     auto color = t.Get<glm::vec4>("color", glm::vec4(255.0f));
     color /= 255.0f;
 
     Font* f = Engine::get().GetAssetManager().GetFont(font).get();
 
-    auto mesh = std::make_shared<TextMesh>(f, text, size, align, maxWidth);
+    auto mesh = std::make_shared<TextMesh>(f, text, size, static_cast<TextAlignment >(align), maxWidth);
 
     glm::vec2 offset = mesh->getOffset();
     auto model = std::make_shared<TextModel>(mesh);
@@ -42,14 +42,14 @@ Text::Text(const PyTable & t) : Entity(t) {
     auto text = t.get<std::string>("text");
     auto font = t.get<std::string>("font");
     auto size = t.get<float>("size", 8);
-    auto align = t.get<TextAlignment>("align", TextAlignment::TOP_LEFT);
+    auto align = t.get<int>("align", TextAlignment::TOP_LEFT);
     auto maxWidth = t.get<float>("maxwidth", 0.0f);
     auto color = t.get<glm::vec4>("color", glm::vec4(255.0f));
     color /= 255.0f;
 
     Font* f = Engine::get().GetAssetManager().GetFont(font).get();
 
-    auto mesh = std::make_shared<TextMesh>(f, text, size, align, maxWidth);
+    auto mesh = std::make_shared<TextMesh>(f, text, size, static_cast<TextAlignment >(align), maxWidth);
 
     glm::vec2 offset = mesh->getOffset();
     auto model = std::make_shared<TextModel>(mesh);

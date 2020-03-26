@@ -26,23 +26,4 @@ class Room:
 			self.ref[ref].append(entity)
 
 
-class RoomUI(Room):
-	def __init__(self, width, height, collide = False):
-		super().__init__(width, height, collide)
-		uisize = settings.monkey.uiHeight
-		print ('uisize is '+str(uisize))
-		camWidth = settings.monkey.deviceSize[0]
-		camHeight = settings.monkey.deviceSize[1] - uisize
 
-		# add the main node     
-		main = e.Entity (tag='main')
-		main.camera = e.cam.OrthoCamera(width, height, camWidth, camHeight, [0, uisize, camWidth, camHeight], tag='maincam')
-
-		# add the ui node
-		ui = e.Entity (tag='ui')
-		ui.camera = e.cam.OrthoCamera(camWidth, uisize, camWidth, uisize, [0, 0, camWidth, uisize], tag = 'uicam')
-		ui.add (e.Text(font='ui', text='ciao', color = [255, 255, 255, 255], align = e.TextAlignment.bottom, tag=None, pos = [camWidth/2, 0]))
-		
-
-		self.scene.append(main)
-		self.scene.append(ui)

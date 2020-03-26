@@ -30,13 +30,15 @@ enum ShaderUniform {
 };
 
 enum TextAlignment {
-    BOTTOM_LEFT,
-    BOTTOM_RIGHT,
-    BOTTOM,
     TOP_LEFT,
-    TOP_RIGHT,
     TOP,
-    CENTER
+    TOP_RIGHT,
+    LEFT,
+    CENTER,
+    RIGHT,
+    BOTTOM_LEFT,
+    BOTTOM,
+    BOTTOM_RIGHT
 };
 
 struct EnumClassHash

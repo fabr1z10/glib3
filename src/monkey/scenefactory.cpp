@@ -68,35 +68,45 @@ void SceneFactory::StartUp(Engine * engine) {
     engine->EnableMouse();
     engine->EnableKeyboard();
 
-    LuaTable engineDef(LuaWrapper::GetGlobal("engine"));
-    std::vector<std::string> shaders = engineDef.GetVector<std::string>("shaders");
-    auto re = engine->GetRenderingEngine();
+    const auto& mt = engine->getMainTable();
+    auto shaders = mt.get<std::vector<std::string>>("shaders");
+
     ShaderFactory sf;
-    for (auto& shaderId : shaders) {
-        std::cout << "Loading shader: " << shaderId << "\n";
-        auto sh = sf.getShader(shaderId);
+    auto re = engine->GetRenderingEngine();
+    for (const auto& s : shaders) {
+        std::cout << "loading shader " << s << std::endl;
+        auto sh = sf.getShader(s);
         re->AddShader(std::move(sh));
-        // engine->AddShader(std::move(sh));
     }
-
-    // load global assets (fonts + models)
-    std::cout << "Loading global assets ...\n";
-    if (engineDef.HasKey("global_assets")) {
-
-        luabridge::LuaRef gaRef = engineDef.Get<luabridge::LuaRef>("global_assets");
-        LuaTable gaTable(gaRef);
-        auto fonts = gaTable.GetVector<std::string>("fonts");
-        for (auto& fontId : fonts) {
-            Engine::get().GetAssetManager().GetFont(fontId);
-        }
-        auto models = gaTable.GetVector<std::string>("models");
-        for (auto& model : models) {
-            Engine::get().GetAssetManager().GetModel(model);
-        }
-
-    }
-
-    Engine::get().GetAssetManager().SetLocal(true);
+//    LuaTable engineDef(LuaWrapper::GetGlobal("engine"));
+//    std::vector<std::string> shaders = engineDef.GetVector<std::string>("shaders");
+//    auto re = engine->GetRenderingEngine();
+//    ShaderFactory sf;
+//    for (auto& shaderId : shaders) {
+//        std::cout << "Loading shader: " << shaderId << "\n";
+//        auto sh = sf.getShader(shaderId);
+//        re->AddShader(std::move(sh));
+//        // engine->AddShader(std::move(sh));
+//    }
+//
+//    // load global assets (fonts + models)
+//    std::cout << "Loading global assets ...\n";
+//    if (engineDef.HasKey("global_assets")) {
+//
+//        luabridge::LuaRef gaRef = engineDef.Get<luabridge::LuaRef>("global_assets");
+//        LuaTable gaTable(gaRef);
+//        auto fonts = gaTable.GetVector<std::string>("fonts");
+//        for (auto& fontId : fonts) {
+//            Engine::get().GetAssetManager().GetFont(fontId);
+//        }
+//        auto models = gaTable.GetVector<std::string>("models");
+//        for (auto& model : models) {
+//            Engine::get().GetAssetManager().GetModel(model);
+//        }
+//
+//    }
+//
+//    Engine::get().GetAssetManager().SetLocal(true);
 
 
 
@@ -120,7 +130,9 @@ SceneFactory::SceneFactory() {
     add<Follow> ("follow");
     add<SimpleCollider> ("collider");
     add<ScriptHotSpot> ("hotspot");
+    add2<ScriptHotSpot> ("components.hotspot");
     add<BasicRenderer> ("gfx");
+    add2<BasicRenderer> ("components.gfx");
     add<LuaKeyListener> ("keylistener");
     add2<LuaKeyListener> ("runner.keylistener");
     add<LuaInfo> ("info");
@@ -144,6 +156,7 @@ SceneFactory::SceneFactory() {
 
     // runners
     add<HotSpotManager> ("hotspotmanager");
+    add2<HotSpotManager> ("runner.hotspotmanager");
     add<Scheduler> ("scheduler");
     add<CollisionEngine> ("collision");
 

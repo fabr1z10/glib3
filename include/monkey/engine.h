@@ -24,7 +24,7 @@ class PyTable;
 class Engine : public Singleton<Engine> {
 public:
     ~Engine();
-    void init();
+    void init(const std::string&);
     void Init(const std::string& home, const std::string& game);
     void MainLoop();
     bool isRunning() const;

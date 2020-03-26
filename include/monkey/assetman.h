@@ -105,17 +105,16 @@ private:
     pybind11::dict m_fontDict;
     
     std::unordered_map<std::string, std::shared_ptr<Font> > m_fonts;
+    std::unordered_map<std::string, std::shared_ptr<Tex> > m_textures;
 
     //BasicAssetStore<Font> m_fonts;
-    BasicAssetStore<Tex> m_textures;
+    //BasicAssetStore<Tex> m_textures;
     BasicAssetStore<IModel> m_models;
     BasicAssetStore<SkeletalAnimation> m_skeletalAnimations;
 };
 
 
-inline std::shared_ptr<Tex> AssetManager::GetTex (const std::string& id) {
-    return m_textures.Get(id);
-}
+
 
 inline std::shared_ptr<IModel> AssetManager::GetModel (const std::string& id) {
     return m_models.Get(id);

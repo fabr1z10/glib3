@@ -10,12 +10,26 @@
 
 extern GLFWwindow* window;
 
+namespace py = pybind11;
+
 HotSpot::HotSpot(const LuaTable & table) : m_shape(nullptr) {
     m_priority = table.Get<int>("priority", 0);
     auto factory = Engine::get().GetSceneFactory();
 
     if (table.HasKey("shape")) {
         auto shape_table = table.Get<LuaTable>("shape");
+        m_shape = factory->make<Shape>(shape_table);
+    }
+    m_focus = false;
+
+}
+
+HotSpot::HotSpot(const PyTable & table) : m_shape(nullptr) {
+    m_priority = table.get<int>("priority", 0);
+    auto factory = Engine::get().GetSceneFactory();
+
+    if (table.hasKey("shape")) {
+        auto shape_table = table.get<LuaTable>("shape");
         m_shape = factory->make<Shape>(shape_table);
     }
     m_focus = false;
@@ -56,6 +70,21 @@ void HotSpot::SetFocus(bool focus) {
 HotSpotManager::HotSpotManager() : Runner(), MouseListener(), m_currentlyActiveHotSpot{nullptr} {
     m_pixelRatio = Engine::get().GetPixelRatio();
 }
+
+HotSpotManager::HotSpotManager(const PyTable & table) : Runner() {
+    m_currentlyActiveHotSpot = nullptr;
+    m_pixelRatio = Engine::get().GetPixelRatio();
+
+    // this is the function that gets called
+    // if no hotspot is active when left mouse button is clicked,
+    if (table.hasKey("lmbclick")) {
+        auto f = table.get<py::function>("lmbclick");
+        setLmbClickCallback([f] (float x, float y) { f(x, y); });
+        //setLmbClickCallback([f] (float x, float y) { f.execute(x, y);});
+    }
+
+}
+
 
 HotSpotManager::HotSpotManager(const LuaTable & table) : Runner(table) {
     m_currentlyActiveHotSpot = nullptr;

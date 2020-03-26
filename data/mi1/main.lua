@@ -1,3 +1,4 @@
+
 --package.path = '/home/fabrizio/glib3/lualib/?.lua;' .. package.path
 
 engine = {
@@ -24,6 +25,8 @@ engine = {
 		fonts = { "ui", "monkey" }
 	},
 }
+
+a = 
 
 -- assets
 engine.assets = {

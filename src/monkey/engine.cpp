@@ -5,34 +5,14 @@
 #include <monkey/renderingiterator.h>
 
 #include <monkey/py.h>
+#include <monkey/python/pymonkey.h>
 #include <pybind11/stl.h>
 
 namespace py = pybind11;
-//#ifdef __APPLE__
-//#define glGenVertexArrays glGenVertexArraysAPPLE
-//#define glBindVertexArray glBindVertexArrayAPPLE
-//#define glDeleteVertexArrays glDeleteVertexArraysAPPLE
-//#endif
 
 GLFWwindow* window;
 
 Engine::Engine() : m_mouseEnabled{true}, m_sceneFactory{nullptr} {
-
-    py::exec(R"(
-        import sys
-        sys.path.append('/Users/fabrizioventurini/glib3/data/mi1_py')
-    )");
-
-    m_gameDirectory = "/Users/fabrizioventurini/glib3/data/mi1_py/";
-    auto module = py::module::import("main");
-    m_mainTable = std::make_unique<PyTable>(module.attr("settings").attr("monkey").cast<py::object>());
-
-    m_deviceSize = m_mainTable->get<glm::vec2>("deviceSize");
-    m_winSize = m_mainTable->get<glm::vec2>("windowSize");
-    m_title = m_mainTable->get<std::string>("title");
-
-    m_sceneFactory = std::make_shared<SceneFactory>();
-
 }
 
 void Engine::SetDeviceSize(glm::vec2 size) {
@@ -62,8 +42,35 @@ void Engine::EnableKeyboard() {
     glfwSetKeyCallback(window, key_callback );
 
 }
-void Engine::init() {
+void Engine::init(const std::string& gameFolder) {
 
+    std::stringstream dir;
+    dir << gameFolder;
+    if (gameFolder[gameFolder.size()-1] != '/')
+        dir << '/';
+    m_gameDirectory = dir.str();
+
+    std::stringstream pycode ;
+    pycode << "import example\nimport sys\nsys.path.append('" << gameFolder << "')\n";//example.what=150";
+
+    py::exec(pycode.str().c_str());
+
+    Monkey& m = Monkey::get();
+    py::object pye = py::module::import("example").attr("engine");
+
+    PyEngine py2(&m);
+    pybind11::object w = py::cast(py2);
+    py::module::import("example").attr("what") = w;
+
+    auto module = py::module::import("main");
+    m_mainTable = std::make_unique<PyTable>(module.attr("settings").attr("monkey").cast<py::object>());
+
+    glm::vec2 deviceSize = m_mainTable->get<glm::vec2>("deviceSize");
+    SetDeviceSize(deviceSize);
+    m_winSize = m_mainTable->get<glm::vec2>("windowSize");
+    m_title = m_mainTable->get<std::string>("title");
+
+    m_sceneFactory = std::make_shared<SceneFactory>();
     // initialize Open GL
     InitGL();
 
@@ -82,8 +89,10 @@ void Engine::init() {
 
     EnableMouse();
     EnableKeyboard();
+    SetFPS(60);
 
     m_assetManager.Init();
+    m_sceneFactory->StartUp(this);
 
 }
 
@@ -201,7 +210,7 @@ void Engine::MainLoop() {
         for (auto& r : m_runners) {
             r.second->Init();
         }
-//        m_scene->start();
+        m_scene->start();
 //        m_scene->Begin();
 //        m_running = true;
 //

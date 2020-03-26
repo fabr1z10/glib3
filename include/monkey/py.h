@@ -154,19 +154,19 @@ inline void PyTable::foreach(const std::string& name, std::function<void(const P
 //// cast to 2d - 3d - 4d vectors
 template <>
 inline glm::vec2 PyTable::cast(pybind11::detail::str_attr_accessor o) const {
-    auto vec = o.cast<std::vector<int>>();
+    auto vec = o.cast<std::vector<float>>();
     return glm::vec2(vec[0], vec[1]);
 }
 
 template <>
 inline glm::vec3 PyTable::cast(pybind11::detail::str_attr_accessor o) const {
-    auto vec = o.cast<std::vector<int>>();
+    auto vec = o.cast<std::vector<float>>();
     return glm::vec3(vec[0], vec[1], vec[2]);
 }
 
 template <>
 inline glm::vec4 PyTable::cast(pybind11::detail::str_attr_accessor o) const {
-    auto vec = o.cast<std::vector<int>>();
+    auto vec = o.cast<std::vector<float>>();
     return glm::vec4(vec[0], vec[1], vec[2], vec[3]);
 }
 
