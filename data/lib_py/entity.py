@@ -18,7 +18,17 @@ class TextAlignment(enum.Enum):
 
 
 class Entity:
-    def __init__(self, tag = None, pos = [0, 0, 0]):
+    def __init__(self, tag : str = None, pos: list= [0, 0, 0]):
+        """
+        Parameters
+        ----------
+        tag : str, optional
+            A string that uniquely identifier the entity
+        
+        pos : list, optional
+            The position in the world where the entity is located
+        """
+
         self.type = 'entity'
         self.pos = pos
         self.tag = tag
@@ -27,6 +37,7 @@ class Entity:
         self.children = []
 
     def add(self, entity):
+        """A simple function that says hello... Richie style"""
         self.children.append(entity)
 
     def addComponent(self, comp):

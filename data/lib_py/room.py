@@ -1,6 +1,6 @@
 import settings
-import lib_py.entity as e
 import lib_py.engine as engine
+import numpy
 
 def toggle_pause():
     print ('toggling pause! ')
@@ -15,9 +15,11 @@ class Room:
 		self.engines = []
 
 		# add a key listener to the engine
-		keyl = engine.KeyListener()
+		keyl = engine.runner.KeyListener()
 		keyl.addKey (32, toggle_pause)
+		#a = engine.entity.Entity()
 
+		
 		self.engines.append(keyl)
 		self.scene = []
 

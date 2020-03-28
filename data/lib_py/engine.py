@@ -1,6 +1,11 @@
 from typing import Callable
 
 import enum
+import lib_py.components as components
+import lib_py.assets as assets
+import lib_py.entity as entity
+import lib_py.camera as camera
+import lib_py.runner as runner
 
 # creating enumerations using class 
 class ShaderType(enum.Enum): 
@@ -35,19 +40,5 @@ class Engine:
     def addShader(self, s : ShaderType):
         self.shaders.append(s.name)
 
-class KeyListener:
-    def __init__(self):
-        self.type = 'runner.keylistener'
-        self.keys = []
-    
-    def addKey (self, key : int, func : Callable):
-        self.keys.append ({ 'key': key, 'func': func })
 
-def pippo(x, y):
-    print ('clicked at ' + str(x) + ', ' + str(y))
-
-class HotSpotManager:
-    def __init__(self):
-        self.type = 'runner.hotspotmanager'
-        self.lmbclick = pippo
         

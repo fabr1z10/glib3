@@ -2,22 +2,35 @@ import lib_py.entity as e
 import lib_py.components as compo
 import lib_py.room as room
 import lib_py.engine as engine
+import lib_py.entity as entity
 import example
 
 import settings
 from types import SimpleNamespace
+
+# scumm requires a list of verb. Each verb 
+
+class Verb:
+    def __init__(self, id : str, text: str, items: int):
+        self.text = text
+        self.id = id
+        self.items = items
+
 
 class ScummConfig:
     class Colors:
         current_action = [0, 170, 170, 255]
         verb_selected = [255, 255, 85, 255]
         verb_unselected = [0, 170, 0, 255]
-    
+    __verbs = {}
+    @staticmethod
+    def addVerb(v : Verb):
+        ScummConfig.__verbs[v.id] = v
+    @staticmethod
+    def getVerb(id : str) -> Verb:
+        return __verbs[id]
+        
 
-class Verb:
-    def __init__(self, text: str, items: int):
-        self.text = text
-        self.items = items
 
 def print_msg(msg):
     def h(e : example.Wrap1):
@@ -93,9 +106,10 @@ class RoomUI(room.Room):
         for a in verbset[0]:
             col = 1 + count // 4
             x = 2 + (col - 1) * 46
+            verb = ScummConfig.getVerb(a)
             ui.add (VerbButton(
                 font = 'ui',
-                text = verbs[a].text,
+                text = verb.text,
                 colorInactive = ScummConfig.Colors.verb_unselected,
                 colorActive = ScummConfig.Colors.verb_selected,
                 align = e.TextAlignment.bottomleft,
@@ -120,3 +134,16 @@ class RoomUI(room.Room):
 
         # create a hotspot manager
         self.engines.append(engine.HotSpotManager())
+
+class BackgroundItem(entity.Entity):
+    def __init__(self, image = None, tag = None, pos = [0, 0, 0]):
+        super().__init__(tag, pos)
+        self.addComponent (compo.Gfx(image=image))
+
+class Sprite(entity.Entity):
+    def __init__(self, sprite : str, tag = None, pos = [0, 0, 0]):
+        super().__init__(tag, pos)
+        self.type = 'sprite'
+        self.model = sprite
+        #self.addComponent (compo.Gfx(image=image))
+
