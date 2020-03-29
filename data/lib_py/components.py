@@ -6,8 +6,9 @@ class Gfx:
         self.image = image
 
 class HotSpot:
-    def __init__(self, onenter: Callable = None, onleave: Callable = None, onclick: Callable = None):
+    def __init__(self, shape, onenter: Callable = None, onleave: Callable = None, onclick: Callable = None):
         self.type = 'components.hotspot'
+        self.shape = shape
         self.onenter = onenter
         self.onleave = onleave
         self.onclick = onclick

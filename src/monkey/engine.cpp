@@ -13,6 +13,9 @@ namespace py = pybind11;
 GLFWwindow* window;
 
 Engine::Engine() : m_mouseEnabled{true}, m_sceneFactory{nullptr} {
+
+    m_sceneFactory = std::make_shared<SceneFactory>();
+
 }
 
 void Engine::SetDeviceSize(glm::vec2 size) {
@@ -73,7 +76,6 @@ void Engine::init(const std::string& gameFolder) {
     m_winSize = m_mainTable->get<glm::vec2>("window_size");
     m_title = m_mainTable->get<std::string>("title");
 
-    m_sceneFactory = std::make_shared<SceneFactory>();
     // initialize Open GL
     InitGL();
 

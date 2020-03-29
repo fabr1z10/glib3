@@ -8,7 +8,7 @@
 
 namespace py = pybind11;
 
-ScriptHotSpot::ScriptHotSpot(const PyTable &t) : HotSpot(t) {
+ScriptHotSpot::ScriptHotSpot(const PyTable &t) : HotSpot(t), r_enter(py::none()), r_leave(py::none()), r_move(py::none()), r_click(py::none()) {
 
     if (t.hasKey("onenter")) {
         auto r = t.get<py::function>("onenter");

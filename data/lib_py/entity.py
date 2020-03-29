@@ -54,3 +54,4 @@ class Text(Entity):
         self.align = align.value
         self.color = color
         
+    

@@ -29,8 +29,8 @@ HotSpot::HotSpot(const PyTable & table) : m_shape(nullptr) {
     auto factory = Engine::get().GetSceneFactory();
 
     if (table.hasKey("shape")) {
-        auto shape_table = table.get<LuaTable>("shape");
-        m_shape = factory->make<Shape>(shape_table);
+        auto shape_table = table.get<PyTable>("shape");
+        m_shape = factory->make2<Shape>(shape_table);
     }
     m_focus = false;
 

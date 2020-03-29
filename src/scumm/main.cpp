@@ -22,11 +22,13 @@ int main(int argc, char* argv[])
 //        std::string homeDir = j["home"];
         std::string gameDir(argv[1]);
         auto& engine = Engine::get();
+        auto* factory = engine.GetSceneFactory();
+        Extension ext;
+        ext.extend(factory);
+
         engine.init(gameDir);
         //engine.MainLoop();
-//        auto factory = std::make_shared<SceneFactory>();
-//        Extension ext;
-//        ext.extend(factory.get());
+
 //        engine.SetSceneFactory(factory);
 //        engine.Init(homeDir, game);
 //        ext.extendLua();

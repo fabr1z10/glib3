@@ -32,6 +32,8 @@ scumm.Config.ui_height = 56
 
 
 engine.data['strings'] = text.strings
+
+engine.loadSprites()
 # e.strings = text.strings
 
 # # add verbs and verb sets

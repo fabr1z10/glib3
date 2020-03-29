@@ -9,6 +9,7 @@ class Font(Asset):
         self.type = 'font'
         self.file = file
 
-    
-
+class SpriteModel(Asset):
+    def __init__(self, id : str):
+        super().__init__(id)
 

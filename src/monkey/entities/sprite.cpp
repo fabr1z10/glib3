@@ -5,6 +5,9 @@
 #include <monkey/components/spriterenderer.h>
 #include <monkey/components/animator.h>
 
+Sprite::Sprite(const PyTable & t) : Entity(t) {
+}
+
 Sprite::Sprite(const LuaTable & t) : Entity(t) {
 
     auto modelId = t.Get<std::string>("model");

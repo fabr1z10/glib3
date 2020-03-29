@@ -82,6 +82,31 @@ std::list<Hole>::iterator Poly::addHole(glm::vec2 pos, std::shared_ptr<Polygon> 
     return it;
 }
 
+Poly::Poly(const PyTable & t) : Shape(t) {
+    std::vector<float> outline = t.get<std::vector<float> >("outline");
+    
+    std::vector<glm::vec2> points;
+    for (size_t i = 0; i < outline.size(); i = i + 2)
+        points.push_back(glm::vec2(outline[i], outline[i + 1]));
+    m_contour = std::make_unique<Polygon>(points);
+    
+    //  holes
+    if (t.hasKey("holes")) {
+//        std::unique_ptr<Polygon> mainOutline(new Polygon(points));
+//        auto holes = t.Get<luabridge::LuaRef>("holes");
+//        for (int j = 0; j < holes.length(); ++j) {
+//            luabridge::LuaRef h = holes[j + 1];
+//            std::vector<float> holeOutline = ReadVector<float>(h);
+//            std::vector<glm::vec2> points;
+//            for (size_t i = 0; i < holeOutline.size(); i = i + 2)
+//                points.push_back(glm::vec2(holeOutline[i], holeOutline[i + 1]));
+//            addHole(glm::vec2(0.0f), std::make_shared<Polygon>(points));
+//        }
+      }
+
+
+}
+
 Poly::Poly(const LuaTable & t) : Shape(t) {
 
     std::vector<float> outline = t.GetVector<float>("outline");

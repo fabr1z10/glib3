@@ -14,6 +14,8 @@ WalkArea::WalkArea(const WalkArea& orig) : ScriptHotSpot(orig),
 m_walls(orig.m_walls) {
     
 }
+
+
 WalkArea::WalkArea(const LuaTable & t) : ScriptHotSpot(t) {
     auto factory = Engine::get().GetSceneFactory();
 
@@ -41,6 +43,35 @@ WalkArea::WalkArea(const LuaTable & t) : ScriptHotSpot(t) {
         }
     }
 }
+
+WalkArea::WalkArea(const PyTable & t) : ScriptHotSpot(t) {
+    auto factory = Engine::get().GetSceneFactory();
+    
+    if (t.hasKey("depth")) {
+        //auto dref = t.Get<LuaTable>("depth");
+        //auto depthFunc = factory->make<Function2D>(dref);
+        //SetDepthFunction(depthFunc);
+    }
+    
+    if (t.hasKey("scale")) {
+        //auto dref = t.Get<LuaTable>("scale");
+        //auto scaleFunc = factory->make<Function2D>(dref);
+        //SetScalingFunction(scaleFunc);
+    }
+    
+    if (t.hasKey("blockedlines")) {
+//        luabridge::LuaRef ref = t.Get<luabridge::LuaRef>("blockedlines");
+//        for (int i = 0; i < ref.length(); ++i) {
+//            luabridge::LuaRef bl = ref[i+1];
+//            LuaTable t(bl);
+//            glm::vec2 A = t.Get<glm::vec2>("A");
+//            glm::vec2 B = t.Get<glm::vec2>("B");
+//            bool active = t.Get<bool>("active");
+//            AddBlockedLine(A, B, active);
+//        }
+     }
+}
+
 
 std::shared_ptr<Component> WalkArea::clone() const {
     return std::make_shared<WalkArea>(WalkArea(*this));
@@ -96,12 +127,12 @@ void WalkArea::assignScaleAndDepth (Entity* e) {
 
 std::shared_ptr<Entity> WalkArea::getDebugMesh() {
     auto ptr = HotSpot::getDebugMesh();
-    auto props = std::make_shared<Properties>();
-    //return nullptr;
-    luabridge::LuaRef ciao = LuaWrapper::makeTable();
-    ciao["walkarea_scale"] = false;
-    props->addAdditionalProps(ciao);
-    ptr->AddComponent(props);
+//    auto props = std::make_shared<Properties>();
+//    //return nullptr;
+//    luabridge::LuaRef ciao = LuaWrapper::makeTable();
+//    ciao["walkarea_scale"] = false;
+//    props->addAdditionalProps(ciao);
+//    ptr->AddComponent(props);
     return ptr;
 }
 
@@ -118,10 +149,10 @@ void WalkArea::Start() {
         e->onMove.Unregister(this);
     });
 
-    // automatically add a collider component
-    auto coll = std::make_shared<SimpleCollider>(m_shape,1,2,1);
-    m_entity->AddComponent(coll);
-    coll->Start();
+    // automatically add a collider component. WHY ???
+    //auto coll = std::make_shared<SimpleCollider>(m_shape,1,2,1);
+    //m_entity->AddComponent(coll);
+    //coll->Start();
 
 }
 

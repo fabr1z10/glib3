@@ -122,6 +122,7 @@ SceneFactory::SceneFactory() {
     add2<Entity> ("entity");
 
     add<Sprite> ("sprite");
+    add2<Sprite> ("sprite");
     add<Text> ("text");
     add2<Text> ("text");
     add<TextView> ("textview");
@@ -167,6 +168,7 @@ SceneFactory::SceneFactory() {
 
     // shapes
     add<Poly> ("poly");
+    add2<Poly> ("shape.poly");
     add<Rect> ("rect");
     add<PolyLine> ("graph");
 

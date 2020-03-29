@@ -14,13 +14,31 @@ void AssetManager::Init() {
     auto assets = mt.get<py::dict>("data");
 
     m_fontDict = assets["assets"]["fonts"];
-
+    m_modelDict = assets["assets"]["spritemodels"];
 //    auto factory = Engine::get().GetSceneFactory();
 //    m_fonts.Init("fonts", factory);
 //    m_models.Init("models", factory);
 //    m_textures.Init("tex", factory
 //    );
 }
+
+std::shared_ptr<IModel> AssetManager::GetModel(const std::string & id) {
+    // check if model is cached
+    auto it = m_models.find(id);
+    if (it != m_models.end()) {
+        return it->second;
+    }
+    if (m_modelDict.is_none()) {
+        
+    } else {
+    
+        PyTable t(m_modelDict[id.c_str()].cast<py::object>());
+        
+        auto font= Engine::get().GetSceneFactory()->make2<IModel>(t);
+        m_models.insert(std::make_pair(id, font));
+        return font;
+    }}
+
 
 std::shared_ptr<Font> AssetManager::GetFont (const std::string& fontId) {
     // check if font is cached
@@ -61,7 +79,7 @@ void AssetManager::SetLocal (bool value) {
 
 void AssetManager::CleanUp() {
     //m_fonts.CleanUp();
-    m_models.CleanUp();
+    //m_models.CleanUp();
     //m_textures.CleanUp();
 }
 

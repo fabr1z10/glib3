@@ -2,6 +2,7 @@ from typing import Callable
 from typing import List, Tuple
 
 import enum
+import yaml
 
 import lib_py.assets as assets
 import lib_py.runner as runner
@@ -45,6 +46,10 @@ def addRoom (id : str, f : Callable):
 def addShader(s : ShaderType):
     shaders.append(s.name)
 
+def loadSprites():
+    with open('/Users/fabrizioventurini/glib3/data/mi1_py/sprites/01.yaml') as f:
+        data['assets']['spritemodels'] = yaml.load(f, Loader=yaml.FullLoader)
+    print(data)
 
 
 # # creating enumerations using class 

@@ -20,6 +20,7 @@ void Extension::extendLua() {
 void Extension::extend(SceneFactory* f) {
 
     f->add<WalkArea> ("walkarea");
+    f->add2<WalkArea> ("components.walkarea");
     f->add<StateCharacter> ("character");
 //
     f->add<Walk> ("walk");

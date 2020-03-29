@@ -15,6 +15,7 @@
 #include <monkey/asset.h>
 #include <string>
 #include <vector>
+#include <monkey/py.h>
 
 class LuaTable;
 
@@ -22,6 +23,7 @@ class Shape : public Object {
 public:
     Shape() : m_offset(glm::vec3(0.0f)) {}
     Shape(const LuaTable&);
+    Shape(const PyTable&);
     Shape(glm::vec3 offset) : m_offset(offset) {}
     virtual ~Shape() {}
     virtual bool isPointInside (glm::vec3) const = 0;
