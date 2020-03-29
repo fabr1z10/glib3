@@ -8,14 +8,17 @@ file(GLOB MONKEY_SOURCE *.cpp lua/*.cpp python/*.cpp components/*.cpp activities
 
 #set(CMAKE_ENABLE_EXPORTS ON)
 
-add_library(monkey ${MONKEY_INCLUDE} ${MONKEY_SOURCE})
+add_library(monkey SHARED ${MONKEY_INCLUDE} ${MONKEY_SOURCE})
 
 #message(${LUA_INCLUDE_DIR})
 
 include_directories(${INCLUDE_DIR} ${PYBIND_INCLUDE_DIR} ${Python_INCLUDE_DIRS} ${FREETYPE_INCLUDE_DIRS} ${GLM_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS} ${LUA_INCLUDE_DIR})
 
-target_link_libraries(monkey ${OPENGL_LIBRARIES} ${Python_LIBRARIES} glfw GLEW::GLEW ${FREETYPE_LIBRARIES}
-		${LUA_LIBRARIES} ${PNG_LIBRARY} ${JPEG_LIBRARIES} ${CMAKE_DL_LIBS} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY} alglib)
+target_link_libraries(monkey
+    ${OPENGL_LIBRARIES} ${Python_LIBRARIES} glfw
+    GLEW::GLEW ${FREETYPE_LIBRARIES} ${LUA_LIBRARIES}
+    ${PNG_LIBRARY} ${JPEG_LIBRARIES} ${CMAKE_DL_LIBS} ${Boost_FILESYSTEM_LIBRARY}
+    ${Boost_SYSTEM_LIBRARY} alglib)
 
 
 add_custom_command(
@@ -26,4 +29,5 @@ add_custom_command(
 
 message(${CMAKE_CURRENT_BINARY_DIR})
 
-install(TARGETS monkey DESTINATION ${LIB_DIR})
+#install(TARGETS monkey DESTINATION ${LIB_DIR})
+install(TARGETS monkey DESTINATION lib)

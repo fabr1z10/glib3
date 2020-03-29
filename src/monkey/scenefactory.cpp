@@ -313,12 +313,12 @@ std::shared_ptr<Entity> SceneFactory::Create() {
 
     // get current room
     const auto& table = engine.getMainTable();
-    auto room = table.get<std::string>("currentRoom");
+    auto room = table.get<std::string>("room");
     std::cout << "room is = " << room << "\n";
 
     py::function builder;
     try {
-        builder = table.get<py::dict>("rooms")[room.c_str()].cast<py::function>();
+        builder = table.get<py::dict>("data")["rooms"][room.c_str()].cast<py::function>();
     } catch (...) {
         GLIB_FAIL("Unable to find the builder for room: " << room)
     }

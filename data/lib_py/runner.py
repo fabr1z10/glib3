@@ -1,3 +1,5 @@
+from typing import Callable
+
 class KeyListener:
     def __init__(self):
         self.type = 'runner.keylistener'

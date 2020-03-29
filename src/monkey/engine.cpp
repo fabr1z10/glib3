@@ -51,7 +51,9 @@ void Engine::init(const std::string& gameFolder) {
     m_gameDirectory = dir.str();
 
     std::stringstream pycode ;
-    pycode << "import example\nimport sys\nsys.path.append('" << gameFolder << "')\n";//example.what=150";
+    pycode << "import example\n"
+        "import sys\nsys.path.append('" << gameFolder << "')\n"
+        "sys.path.append('" << m_gameDirectory << "../')\n";//example.what=150";
 
     py::exec(pycode.str().c_str());
 
@@ -63,11 +65,12 @@ void Engine::init(const std::string& gameFolder) {
     py::module::import("example").attr("what") = w;
 
     auto module = py::module::import("main");
-    m_mainTable = std::make_unique<PyTable>(module.attr("settings").attr("monkey").cast<py::object>());
+    //module.attr("engine.device)
+    m_mainTable = std::make_unique<PyTable>(module.attr("engine"));
 
-    glm::vec2 deviceSize = m_mainTable->get<glm::vec2>("deviceSize");
+    glm::vec2 deviceSize = m_mainTable->get<glm::vec2>("device_size");
     SetDeviceSize(deviceSize);
-    m_winSize = m_mainTable->get<glm::vec2>("windowSize");
+    m_winSize = m_mainTable->get<glm::vec2>("window_size");
     m_title = m_mainTable->get<std::string>("title");
 
     m_sceneFactory = std::make_shared<SceneFactory>();

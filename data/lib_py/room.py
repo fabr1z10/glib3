@@ -1,6 +1,4 @@
-import settings
 import lib_py.engine as engine
-import numpy
 
 def toggle_pause():
     print ('toggling pause! ')

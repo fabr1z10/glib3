@@ -1,0 +1,67 @@
+import lib_py.room as room
+import lib_py.engine as engine
+import lib_py.entity as entity
+import lib_py.runner as runner
+import lib_py.camera as cam
+import lib_py.scumm.scumm as scumm
+
+
+class RoomUI(room.Room):
+    def __init__(self, width, height, collide = False):
+        super().__init__(width, height, collide)
+        uisize = scumm.Config.ui_height
+        print ('uisize is '+str(uisize))
+        camWidth = engine.device_size[0]
+        camHeight = engine.device_size[1] - uisize
+
+        # get the verbset used in this room
+        verbset : scumm.VerbSet = scumm.Config.verbSets[0]
+        defv : scumm.Verb = scumm.Config.getVerb (verbset.defaultVerb)
+        #verbs = settings.monkey.config['verbs']
+        default_verb = scumm.Config.getVerb
+        # add the main node     
+        main = entity.Entity (tag='main')
+        main.camera = cam.OrthoCamera(width, height, camWidth, camHeight, [0, uisize, camWidth, camHeight], tag='maincam')
+        #main.add (e.Text(font='ui', text='ciao', color = [255, 255, 255, 255], align = e.TextAlignment.bottom, pos = [camWidth/2, 16, 0]))
+
+        # add the ui node
+        ui = entity.Entity (tag='ui')
+        ui.camera = cam.OrthoCamera(camWidth, uisize, camWidth, uisize, [0, 0, camWidth, uisize], tag = 'uicam')
+        ui.add (entity.Text(font='ui', text = defv.text, color = scumm.Config.Colors.current_action, 
+            align = entity.TextAlignment.bottom, tag = 'current_verb', pos = [camWidth/2, 48, 0]))
+
+        row = 2
+        count = 0
+        for a in verbset.verbs:
+            col = 1 + count // 4
+            x = 2 + (col - 1) * 46
+            verb = scumm.Config.getVerb(a)
+            ui.add (scumm.entity.VerbButton(
+                font = 'ui',
+                text = verb.text,
+                colorInactive = scumm.Config.Colors.verb_unselected,
+                colorActive = scumm.Config.Colors.verb_selected,
+                align = entity.TextAlignment.bottomleft,
+                pos = [x, uisize - row*8, 0]
+            ))  
+            count +=1
+            row += 1
+            if (row > 5):
+                row = 2
+
+
+		#ui.add (VerbButton (font='ui', text='Open', colorInactive = ScummConfig.Colors.verb_unselected, colorActive = ScummConfig.Colors.verb_selected, align = e.TextAlignment.bottomleft, pos = [0,0,0]))
+		# ui.add (e.Text(font='ui', text=verbs[verbset[1]].text, color = [255, 255, 255, 255], align = e.TextAlignment.topleft, pos = [0, 56, 0]))
+		# ui.add (e.Text(font='ui', text=verbs[verbset[1]].text, color = [255, 255, 255, 255], align = e.TextAlignment.bottomleft, pos = [0, 0, 0]))
+		# ui.add (e.Text(font='ui', text=verbs[verbset[1]].text, color = [255, 255, 255, 255], align = e.TextAlignment.topright, pos = [320, 56, 0]))
+		# ui.add (e.Text(font='ui', text=verbs[verbset[1]].text, color = [255, 255, 255, 255], align = e.TextAlignment.bottomright, pos = [320, 0, 0]))
+		
+        self.ref['main'] = main.children
+
+        self.scene.append(main)
+        self.scene.append(ui)
+
+        # create a hotspot manager
+        self.engines.append(runner.HotSpotManager())
+
+

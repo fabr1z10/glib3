@@ -11,9 +11,9 @@ AssetManager::AssetManager() {
 void AssetManager::Init() {
 
     auto& mt = Engine::get().getMainTable();
-    auto assets = mt.get<py::dict>("assets");
+    auto assets = mt.get<py::dict>("data");
 
-    m_fontDict = assets["fonts"];
+    m_fontDict = assets["assets"]["fonts"];
 
 //    auto factory = Engine::get().GetSceneFactory();
 //    m_fonts.Init("fonts", factory);

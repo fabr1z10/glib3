@@ -3,9 +3,11 @@ cmake_minimum_required(VERSION 3.3)
 file(GLOB GFX_INCLUDE ${INCLUDE_DIR}/alglib/*.h )
 file(GLOB GFX_SOURCE *.cpp)
 
-add_library(alglib SHARED ${GFX_INCLUDE} ${GFX_SOURCE})
+add_executable(pippo ${GFX_SOURCE})
 
 include_directories(${INCLUDE_DIR} ${FREETYPE_INCLUDE_DIRS} ${GLM_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS} ${LUA_INCLUDE_DIR})
 
+
+target_link_libraries(pippo pippolib)
 #install(TARGETS alglib DESTINATION ${LIB_DIR})
-INSTALL(TARGETS alglib DESTINATION lib)
+#INSTALL(TARGETS alglib DESTINATION lib)

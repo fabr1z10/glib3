@@ -18,8 +18,8 @@ set(PYBIND_INCLUDE_DIR ${PROJECT_DIR}/include/py/include)
 set(CMAKE_CXX_STANDARD 17)
 #set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fpic")
 
-set(CMAKE_CXX_FLAGS "-pthread -DBT_USE_DOUBLE_PRECISION -fvisibility=hidden")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fpic")
+set(CMAKE_CXX_FLAGS "-pthread -DBT_USE_DOUBLE_PRECISION")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fpic")
 #set(Boost_USE_STATIC_LIBS ON)
 if (WIN32)
     SET(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
@@ -54,17 +54,13 @@ message(STATUS "GLEW lib is ${GLEW_LIBRARIES}")
 message(STATUS "ISISIS ${Boost_LIBRARIES}")
 message(STATUS "ISISIA ${Python_VERSION}")
 message(STATUS "ISISIA ${Python_INCLUDE_DIRS}")
+message(STATUS "ISISIA ${CMAKE_INSTALL_PREFIX}")
 
 #include_directories(${INCLUDE_DIR} ${FREETYPE_INCLUDE_DIRS} ${GLM_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS} )
 #link_directories(${LIB_DIR})
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 message(${BIN_DIR})
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG ${LIB_DIR})
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE ${LIB_DIR})
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_DEBUG ${LIB_DIR})
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELEASE ${LIB_DIR})
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${BIN_DIR})
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${BIN_DIR})
+
 
 configure_file (
     "${INCLUDE_DIR}/version.h.in"
@@ -73,7 +69,8 @@ configure_file (
 
 # source directory
 add_subdirectory(include/py)
-add_subdirectory(src)
-
-
+add_subdirectory(src/alglib)
+add_subdirectory(src/monkey)
+add_subdirectory(src/scumm)
+add_subdirectory(src/prova)
 
