@@ -1,7 +1,6 @@
 
 # scumm requires a list of verb. Each verb 
 import lib_py.scumm.entity as entity
-import lib_py.scumm.room as room
 
 class Verb:
     def __init__(self, id : str, text: str, items: int):
@@ -28,8 +27,27 @@ class Config:
     @staticmethod
     def getVerb(id : str) -> Verb:
         return Config.__verbs[id]
-        
 
+class DynamicItem:
+    def __init__(self, id : str, params : dict = {}, parent: str = 'main'):
+        self.id = id
+        self.params = params
+        self.parent = parent
+
+    
+class State:
+    # map that associate room with dynamic items to create on the fly
+    room_items = {}
+    items_room = {}
+    @staticmethod
+    def setDynamicItem(room : str, item : DynamicItem):
+        if room not in State.room_items:
+            State.room_items[room] = {}
+        # if item is already somewhere, remove it from current location
+        if item.id in State.items_room:
+            current_room = State.items_room[item.id]
+            del State.room_items[current_room][item.id]
+        State.room_items[room][item.id] = item
 
 # def print_msg(msg):
 #     def h(e : example.Wrap1):

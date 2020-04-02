@@ -45,6 +45,7 @@ void Engine::EnableKeyboard() {
     glfwSetKeyCallback(window, key_callback );
 
 }
+
 void Engine::init(const std::string& gameFolder) {
 
     std::stringstream dir;
@@ -52,7 +53,7 @@ void Engine::init(const std::string& gameFolder) {
     if (gameFolder[gameFolder.size()-1] != '/')
         dir << '/';
     m_gameDirectory = dir.str();
-
+    std::cout << m_gameDirectory << " ---\n";
     std::stringstream pycode ;
     pycode << "import example\n"
         "import sys\nsys.path.append('" << gameFolder << "')\n"
@@ -63,7 +64,7 @@ void Engine::init(const std::string& gameFolder) {
     Monkey& m = Monkey::get();
     py::object pye = py::module::import("example").attr("engine");
 
-    PyEngine py2(&m);
+    PyEngine py2(&m, this);
     pybind11::object w = py::cast(py2);
     py::module::import("example").attr("what") = w;
 
@@ -216,7 +217,7 @@ void Engine::MainLoop() {
             r.second->Init();
         }
         m_scene->start();
-//        m_scene->Begin();
+        m_scene->Begin();
 //        m_running = true;
 //
 //        //for (auto iter = m_scene->begin(); iter != m_scene->end(); ++iter) {

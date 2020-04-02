@@ -38,7 +38,7 @@ Camera::Camera(const LuaTable & table) : Ref(table) {
 
 }
 
-Camera::Camera(const PyTable & t) : Ref(t) {
+Camera::Camera(const ITable & t) : Ref(t) {
     m_eye = t.get<glm::vec3>("pos", glm::vec3(0.0f));
     m_fwd = t.get<glm::vec3>("direction", glm::vec3(0, 0, -1));
     m_up = t.get<glm::vec3>("up", glm::vec3(0, 1, 0));
@@ -103,7 +103,7 @@ OrthographicCamera::OrthographicCamera(const LuaTable & table) : Camera(table) {
 
 }
 
-OrthographicCamera::OrthographicCamera(const PyTable & table) : Camera(table) {
+OrthographicCamera::OrthographicCamera(const ITable & table) : Camera(table) {
 
     glm::vec2 size = table.get<glm::vec2>("size");
     m_orthoWidth = size.x;

@@ -37,7 +37,7 @@ Text::Text(const LuaTable & t) : Entity(t) {
     renderer->SetTransform(glm::translate(glm::vec3(offset, 0.0f)));
 }
 
-Text::Text(const PyTable & t) : Entity(t) {
+Text::Text(const ITable & t) : Entity(t) {
 
     auto text = t.get<std::string>("text");
     auto font = t.get<std::string>("font");

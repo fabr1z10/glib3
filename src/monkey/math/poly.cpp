@@ -82,7 +82,7 @@ std::list<Hole>::iterator Poly::addHole(glm::vec2 pos, std::shared_ptr<Polygon> 
     return it;
 }
 
-Poly::Poly(const PyTable & t) : Shape(t) {
+Poly::Poly(const ITable & t) : Shape(t) {
     std::vector<float> outline = t.get<std::vector<float> >("outline");
     
     std::vector<glm::vec2> points;

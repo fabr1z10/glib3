@@ -15,7 +15,7 @@ class HotSpot : public Component {
 public:
     HotSpot (int priority) : Component(), m_shape{nullptr}, m_focus{false}, m_priority{priority} {}
     HotSpot (const LuaTable&);
-    HotSpot (const PyTable&);
+    HotSpot (const ITable&);
     HotSpot (const HotSpot&);
     HotSpot (std::shared_ptr<Shape> shape, int priority) : Component(),
     m_shape{shape}, m_focus{false}, m_priority{priority} {}
@@ -71,7 +71,7 @@ class HotSpotManager : public Runner, public MouseListener, public KeyboardListe
 public:
     HotSpotManager();
     HotSpotManager(const LuaTable&);
-    HotSpotManager(const PyTable&);
+    HotSpotManager(const ITable&);
 
     ~HotSpotManager() override;
     //void Start() override ;

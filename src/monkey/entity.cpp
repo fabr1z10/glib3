@@ -16,7 +16,7 @@ namespace py = pybind11;
 
 using namespace std;
 
-Entity::Entity(const PyTable& t) : Ref(t),
+Entity::Entity(const ITable& t) : Ref(t),
     m_localTransform{glm::mat4(1.0)}, m_worldTransform{glm::mat4(1.0)}, m_parent(nullptr), m_flipHorizontal{false},
     m_enableControls{true}, m_update{true}
 {

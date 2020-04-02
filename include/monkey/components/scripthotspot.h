@@ -8,7 +8,7 @@ class ScriptHotSpot : public HotSpot {
 public:
     ScriptHotSpot (int priority) : HotSpot(priority) {}
     ScriptHotSpot (const LuaTable& t);
-    ScriptHotSpot (const PyTable& t);
+    ScriptHotSpot (const ITable& t);
 
     ScriptHotSpot (
             std::shared_ptr<Shape> shape,

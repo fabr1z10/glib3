@@ -77,7 +77,7 @@ public:
     // Note: the polygons are always clockwise oriented!
     Poly (std::unique_ptr<Polygon>);
     Poly (const LuaTable&);
-    Poly (const PyTable&);
+    Poly (const ITable&);
 
     std::string toString() const override;
     // adding and retrieving holes

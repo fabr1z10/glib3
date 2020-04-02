@@ -15,3 +15,9 @@ class HotSpotManager:
     def __init__(self):
         self.type = 'runner.hotspotmanager'
         self.lmbclick = pippo
+
+
+class Scheduler:
+    def __init__(self):
+        self.type = 'runner.scheduler'
+        self.lmbclick = pippo        

@@ -8,7 +8,7 @@ BasicRenderer::BasicRenderer(std::shared_ptr<IModel> model) : Renderer() {
     m_baseModel = model.get();
 }
 
-BasicRenderer::BasicRenderer(const PyTable & t) : Renderer() {
+BasicRenderer::BasicRenderer(const ITable & t) : Renderer() {
 
     if (t.hasKey("image")) {
         auto image = t.get<std::string>("image");

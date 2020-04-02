@@ -158,7 +158,10 @@ SceneFactory::SceneFactory() {
     // runners
     add<HotSpotManager> ("hotspotmanager");
     add2<HotSpotManager> ("runner.hotspotmanager");
+
     add<Scheduler> ("scheduler");
+    add2<Scheduler> ("runner.scheduler");
+
     add<CollisionEngine> ("collision");
 
     // cameras
@@ -174,6 +177,7 @@ SceneFactory::SceneFactory() {
 
     // models
     add<SpriteModel> ("sprite.model");
+    add2<SpriteModel> ("asset.sprite");
     // other
     add<Font> ("font");
     add2<Font> ("font");

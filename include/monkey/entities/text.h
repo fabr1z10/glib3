@@ -8,7 +8,7 @@
 class Text : public Entity {
 public:
     Text (const LuaTable&);
-    Text (const PyTable&);
+    Text (const ITable&);
 
 
 };

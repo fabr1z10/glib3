@@ -11,8 +11,8 @@ def change_color(color):
     return f    
 
 def set_verb(verb):
-    def f(e : example.Wrap1):
-        a : example.Wrap1 = example.what.get('current_verb')
+    def f(x, y, e : example.Wrap1):
+        a : example.Wrap1 = example.get('current_verb')
         a.setText (verb)
     return f
 
@@ -39,12 +39,86 @@ class WalkArea(entity.Entity):
         #self.priority = priority
 
 class Sprite(entity.Entity):
-    def __init__(self, model: str, tag = None, pos = [0,0,0]):
+    def __init__(self, model: str, anim : str = None, tag = None, pos = [0,0,0]):
         super().__init__(tag, pos)
         self.type = 'sprite'
         self.model = model
+        self.anim = anim
 
+class Character(Sprite):
+    def __init__(self, model: str, speed:float, dir:str, state:str, anim: str = None, tag = None, pos = [0,0,0]):
+        super().__init__(model, anim, tag, pos)
+        self.__charcomp = sc.Character(speed=speed,dir=dir,state=state)
+        self.addComponent (self.__charcomp)
+    def __setattr__(self, name, value):
+        if name == 'state':
+            self.__charcomp.state = value
+        elif name == 'dir':
+            self.__charcomp.dir = value
+        else:
+            super().__setattr__(name, value)
 
+# -- create a character
+# scumm.ifac.char = function(args) 
+# 	glib.assert(args.item, 'item!')
+
+# 	local item = args.item
+
+# 	glib.assert(item.model, 'character requires a model!')
+# 	glib.assert(item.speed, 'character requires a speed!')
+
+# 	local entity = Entity:new(args)
+
+# 	entity.type = 'sprite'
+# 	print ('ciao ' .. item.model)
+# 	entity.model = item.model
+
+# 	-- direction character is facing
+# 	local dir = args.args.dir and (args.args.dir) or (item.dir)
+# 	local state = args.args.state and (args.args.state) or (item.state or 'idle')
+
+# 	table.insert (entity.components, { type="character", speed = item.speed, dir = dir, state = state })
+# 	table.insert (entity.components, { type="info", info = { 
+# 		color = item.text_color,
+# 		offset = item.text_offset	
+# 		--id = args.args._id 
+# 	}})
+
+# 	if args.args.follow then
+# 		table.insert(entity.components, { type='follow', cam='maincam', relativepos = {0, 0, 5}, up = {0, 1, 0} })
+# 	end	
+
+# 	if item.collide and roomDefinition.collide then
+# 		table.insert(entity.components, { 
+# 			type='collider', 
+# 			shape = { type='rect', width = item.collide.size[1], height=item.collide.size[2], offset = item.collide.offset },
+# 			tag = item.collide.tag,
+# 			flag = item.collide.flag,
+# 			mask=item.collide.mask
+# 		})
+# 	end
+
+# 	if item.hotspot then
+# 		glib.assert(item.hotspot.text, 'entity with hotspot requires text!')
+# 		glib.assert_either(item.hotspot.size, item.hotspot.shape, 'entity with hotspot requires size!')
+# 		glib.assert(item.hotspot.walk_to, 'entity with hotspot requires walkto!')
+# 		glib.assert(item.hotspot.dir, 'entity with hotspot requires dir!')
+
+# 		local priority = item.hotspot.priority or 1
+# 		local shape = item.hotspot.shape or { type="rect", width = item.hotspot.size[1], height = item.hotspot.size[2], offset = item.hotspot.offset }
+
+# 		table.insert(entity.components, { 
+# 			type = "hotspot", priority = priority,
+# 			shape = shape,
+# 			onenter = glib.curry (scumm.func.hoverOn, args.args._id),
+# 			onleave = scumm.func.hoverOff,
+# 			onclick = scumm.func.run_action,
+# 		})
+# 	end	
+
+# 	return entity
+# end
+        
 # class Sprite(entity.Entity):
 #     def __init__(self, sprite : str, tag = None, pos = [0, 0, 0]):
 #         super().__init__(tag, pos)

@@ -26,7 +26,7 @@ class Font : public Object {
 public:
     Font();
     Font(const LuaTable&);
-    Font(const PyTable&);
+    Font(const ITable&);
     ~Font();
     static bool Initialize();
     bool loadFromFile(const std::string& filename, const int size = 36);

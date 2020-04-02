@@ -31,9 +31,7 @@ std::shared_ptr<IModel> AssetManager::GetModel(const std::string & id) {
     if (m_modelDict.is_none()) {
         
     } else {
-    
-        PyTable t(m_modelDict[id.c_str()].cast<py::object>());
-        
+        PyDict t(m_modelDict[id.c_str()].cast<py::dict>());
         auto font= Engine::get().GetSceneFactory()->make2<IModel>(t);
         m_models.insert(std::make_pair(id, font));
         return font;
@@ -59,17 +57,19 @@ std::shared_ptr<Font> AssetManager::GetFont (const std::string& fontId) {
 }
 
 
-std::shared_ptr<Tex> AssetManager::GetTex (const std::string& fontId) {
-    // check if font is cached
-    auto it = m_textures.find(fontId);
+std::shared_ptr<Tex> AssetManager::GetTex (const std::string& texId) {
+    // check if tex is cached
+    auto it = m_textures.find(texId);
     if (it != m_textures.end()) {
         return it->second;
     }
-    std::string file = Engine::get().GetGameDirectory() + fontId;
+
+    std::string file = Engine::get().GetGameDirectory() + texId;
     auto tex = std::make_shared<Tex>(file);
-    m_textures[fontId] = tex;
+    m_textures[texId] = tex;
     return tex;
 }
+
 void AssetManager::SetLocal (bool value) {
     //m_fonts.SetLocal(value);
     //m_models.SetLocal(value);

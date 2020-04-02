@@ -18,7 +18,7 @@ public:
 
     }
     Camera(const LuaTable&);
-    Camera(const PyTable&);
+    Camera(const ITable&);
     virtual void Resize(int width, int height) = 0;
     glm::vec3 GetPosition() const;
     virtual void SetPosition(glm::vec3 eye, glm::vec3 direction, glm::vec3 up = glm::vec3(0, 1, 0));
@@ -92,7 +92,7 @@ class OrthographicCamera : public Camera {
 public:
     OrthographicCamera(float orthoWidth, float orthoHeight, glm::vec4 viewport = glm::vec4());
     OrthographicCamera(const LuaTable&);
-    OrthographicCamera(const PyTable&);
+    OrthographicCamera(const ITable&);
     void setOrthoSize(float w, float h);
     glm::vec2 getOrthoSize() const;
     // set the visible rectangle

@@ -24,6 +24,7 @@ class ShaderType(enum.Enum):
 # All games require these infos.
 device_size : List[int] = [320, 200]
 window_size : List[int] = [640, 400]
+frame_time = 0.1
 title = 'Untitled project'
 room = ''
 previous_room = ''
@@ -34,8 +35,12 @@ data = {
         'spritemodels': {}
     },
     'rooms': {},
-    'strings': {}
+    'strings': {},
+    'entities': {}
 }
+
+def addEntity (id : str, e):
+    data['entities'][id] = e
 
 def addFont (font : assets.Font):
     data['assets']['fonts'][font.id] = font
@@ -47,7 +52,7 @@ def addShader(s : ShaderType):
     shaders.append(s.name)
 
 def loadSprites():
-    with open('/Users/fabrizioventurini/glib3/data/mi1_py/sprites/01.yaml') as f:
+    with open('/home/fabrizio/glib3/data/mi1_py/sprites/01.yaml') as f:
         data['assets']['spritemodels'] = yaml.load(f, Loader=yaml.FullLoader)
     print(data)
 

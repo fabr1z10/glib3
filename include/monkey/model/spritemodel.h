@@ -11,7 +11,7 @@ public:
     }
 
     SpriteModel (const LuaTable& t);
-
+    SpriteModel (const ITable& t);
     Bounds GetBounds() const override;
     std::vector<std::string> GetAnimations() const override;
     std::string GetDefaultAnimation() const override;

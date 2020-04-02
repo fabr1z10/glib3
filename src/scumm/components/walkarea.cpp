@@ -44,7 +44,7 @@ WalkArea::WalkArea(const LuaTable & t) : ScriptHotSpot(t) {
     }
 }
 
-WalkArea::WalkArea(const PyTable & t) : ScriptHotSpot(t) {
+WalkArea::WalkArea(const ITable & t) : ScriptHotSpot(t) {
     auto factory = Engine::get().GetSceneFactory();
     
     if (t.hasKey("depth")) {

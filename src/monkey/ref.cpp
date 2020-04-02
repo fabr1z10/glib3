@@ -21,9 +21,9 @@ Ref::Ref(const LuaTable & table) : Ref() {
     }
 }
 
-Ref::Ref(const PyTable& table) : Ref() {
-    m_tag = table.get<std::string>({"tag"}, "");
-    m_active = table.get<bool>({"active"}, true);
+Ref::Ref(const ITable& table) : Ref() {
+    m_tag = table.get<std::string>("tag", "");
+    m_active = table.get<bool>("active", true);
     Monkey::get().add(m_id, this);
     if (!m_tag.empty()) {
         Monkey::get().add(m_tag, this);

@@ -2,6 +2,26 @@
 #include <monkey/error.h>
 #include <iostream>
 #include <monkey/activities/noop.h>
+#include <monkey/engine.h>
+
+namespace py = pybind11;
+
+Script::Script(const ITable & table) : m_complete(false), m_suspended(false), m_loop(false) {
+    auto factory = Engine::get().GetSceneFactory();
+
+    int id = 0;
+    table.foreach<PyTable>("actions", [&] (const PyTable& a) {
+        auto action = factory->make2<Activity>(a);
+        AddActivity(id, action);
+        ++id;
+    });
+
+    table.foreach<py::list>("edges", [&] (const py::list& a) {
+        int tailId = a[0].cast<int>();
+        int headId = a[1].cast<int>();
+        AddEdge (tailId, headId);
+    });
+}
 
 Script::Script() : m_complete{false}, m_suspended{false}, m_loop{false}, m_loopId{0} {
     AddActivity(0, std::unique_ptr<NoOp>(new NoOp));
@@ -24,27 +44,26 @@ void Script::PushToFrontier(int id) {
 }
 
 void Script::AddActivity(int id, std::shared_ptr<Activity> act) {
-    m_externalToInternalIdMap[id] = m_activities.size();
+    //m_externalToInternalIdMap[id] = m_activities.size();
     m_activities.push_back(std::move(act));
-    m_edges.push_back(std::vector<size_t>());
+    m_edges.emplace_back(std::vector<size_t>());
     m_incomingEdgeCount.push_back(0);
 }
 
-void Script::AddEdge (int fromActivity, int toActivity) {
-    if (m_externalToInternalIdMap.count(fromActivity) == 0)
-        GLIB_FAIL("Don't know activity " << fromActivity);
-    if (m_externalToInternalIdMap.count(toActivity) == 0)
-        GLIB_FAIL("Don't know activity " << toActivity);
-    size_t head = m_externalToInternalIdMap.at(toActivity);
-    m_edges[m_externalToInternalIdMap.at(fromActivity)].push_back(head);
-    m_incomingEdgeCount[head] ++;
-
+void Script::AddEdge (int tail, int head) {
+    //if (m_externalToInternalIdMap.count(fromActivity) == 0)
+    //    GLIB_FAIL("Don't know activity " << fromActivity);
+    //if (m_externalToInternalIdMap.count(toActivity) == 0)
+    //    GLIB_FAIL("Don't know activity " << toActivity);
+    //size_t head = m_externalToInternalIdMap.at(toActivity);
+    //m_edges[m_externalToInternalIdMap.at(fromActivity)].push_back(head);
+    //7m_incomingEdgeCount[head] ++;
+    m_edges[tail].push_back(head);
+    m_incomingEdgeCount[head]++;
 }
 
 void Script::Print() {
-//    for (auto& a: m_activities) {
-//        std::cout << a.first << typeid(*a.second.get()).name() << "\n";
-//    }
+
 }
 
 void Script::SetSuspended(bool value) {

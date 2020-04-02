@@ -8,7 +8,7 @@
 
 namespace py = pybind11;
 
-ScriptHotSpot::ScriptHotSpot(const PyTable &t) : HotSpot(t), r_enter(py::none()), r_leave(py::none()), r_move(py::none()), r_click(py::none()) {
+ScriptHotSpot::ScriptHotSpot(const ITable &t) : HotSpot(t), r_enter(py::none()), r_leave(py::none()), r_move(py::none()), r_click(py::none()) {
 
     if (t.hasKey("onenter")) {
         auto r = t.get<py::function>("onenter");
@@ -83,7 +83,7 @@ void ScriptHotSpot::onClick(glm::vec2 pos, int button, int action, int mods) {
             pybind11::object w = example();
             Wrap1* wo = w.cast<Wrap1*>();
             wo->setEntity(m_entity);
-            r_click(w);
+            r_click(pos.x, pos.y, w);
             //r_click->execute(pos.x, pos.y, EntityWrapper(m_entity));
         } else if (button == GLFW_MOUSE_BUTTON_RIGHT && !m_rmbClick.is_none()){
             //m_rmbClick->execute(EntityWrapper(m_entity));

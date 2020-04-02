@@ -7,6 +7,7 @@
 class Scheduler : public Runner {
 public:
     Scheduler() : Runner(), m_count{0} {}
+    Scheduler(const ITable&);
     Scheduler(const LuaTable&);
     ~Scheduler() override;
     void Update(double) override;

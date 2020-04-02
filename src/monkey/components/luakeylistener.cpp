@@ -14,7 +14,7 @@ LuaKeyListener::LuaKeyListener(const LuaTable & t) : Runner() {
 
 }
 
-LuaKeyListener::LuaKeyListener(const PyTable & t) : Runner() {
+LuaKeyListener::LuaKeyListener(const ITable & t) : Runner() {
 
     t.foreach<py::dict>("keys", [&] (const py::dict& d) {
         int key = d["key"].cast<int>();

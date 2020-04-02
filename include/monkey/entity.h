@@ -34,7 +34,7 @@ public:
                m_worldTransform{glm::mat4(1.0)}, m_enableControls{true}, m_flipHorizontal{false}, m_started(false) {}
     ~Entity() override ;
     Entity(const LuaTable&);
-    Entity(const PyTable&);
+    Entity(const ITable&);
 
     // copy ctor
     Entity(const Entity&);

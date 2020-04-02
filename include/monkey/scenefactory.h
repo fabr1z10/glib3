@@ -72,7 +72,7 @@ public:
     }
     template <typename T>
     void add2(const std::string& type) {
-        m_facs2.insert(std::make_pair(type, [] (const PyTable& t) {
+        m_facs2.insert(std::make_pair(type, [] (const ITable& t) {
             return std::make_shared<T>(t);
         }));
     }
@@ -91,8 +91,8 @@ public:
     }
 
     template <typename T, bool = std::is_base_of<Ref, T>::value >
-    std::shared_ptr<T> make2 (const PyTable& t) {
-        auto type = t.get<std::string>( {"type"} );
+    std::shared_ptr<T> make2 (const ITable& t) {
+        auto type = t.get<std::string>("type" );
         auto it = m_facs2.find(type);
         if (it == m_facs2.end()) {
             GLIB_FAIL("Unknown type: " << type);
@@ -101,7 +101,7 @@ public:
     }
 
 
-protected:
+        protected:
 //    Factory<IModel> m_modelFactory;
 //    Factory<Camera> m_cameraFactory;
 //    Factory<Shape> m_shapeFactory;
@@ -113,10 +113,12 @@ protected:
 //    Factory<SkeletalAnimation> m_skeletalAnimFactory;
 
     std::unordered_map<std::string, std::function<std::shared_ptr<Object>(const LuaTable&)> > m_facs;
-    std::unordered_map<std::string, std::function<std::shared_ptr<Object>(const PyTable&)> > m_facs2;
+    std::unordered_map<std::string, std::function<std::shared_ptr<Object>(const ITable&)> > m_facs2;
     //Factory<StateInitializer> m_stateInitFactory;
     //Factory<StateBehaviour> m_stateBehaviorFactory;
 };
+
+
 
 //inline std::shared_ptr<IModel> SceneFactory::makeModel (luabridge::LuaRef ref) {
 //    return m_modelFactory.Create(ref);

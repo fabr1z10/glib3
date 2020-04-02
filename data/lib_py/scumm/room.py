@@ -1,3 +1,4 @@
+import copy
 import lib_py.room as room
 import lib_py.engine as engine
 import lib_py.entity as entity
@@ -7,8 +8,8 @@ import lib_py.scumm.scumm as scumm
 
 
 class RoomUI(room.Room):
-    def __init__(self, width, height, collide = False):
-        super().__init__(width, height, collide)
+    def __init__(self, id: str, width, height, collide = False):
+        super().__init__(id, width, height, collide)
         uisize = scumm.Config.ui_height
         print ('uisize is '+str(uisize))
         camWidth = engine.device_size[0]
@@ -63,5 +64,15 @@ class RoomUI(room.Room):
 
         # create a hotspot manager
         self.engines.append(runner.HotSpotManager())
-
+        self.engines.append(runner.Scheduler())
+    def addDynamicItems(self):
+        print (type(scumm.State.room_items[self.id]))
+        for key, value in scumm.State.room_items[self.id].items():
+            # get a shallow copy of item
+            item = copy.copy(engine.data['entities'][key])
+            # apply ajustments
+            for pk, pv in value.params.items():
+                setattr(item, pk, pv)
+            self.add(e=item, ref = value.parent)
+            print('adding item ' + key)
 

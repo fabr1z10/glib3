@@ -23,7 +23,7 @@ class Shape : public Object {
 public:
     Shape() : m_offset(glm::vec3(0.0f)) {}
     Shape(const LuaTable&);
-    Shape(const PyTable&);
+    Shape(const ITable&);
     Shape(glm::vec3 offset) : m_offset(offset) {}
     virtual ~Shape() {}
     virtual bool isPointInside (glm::vec3) const = 0;

@@ -1,0 +1,9 @@
+from distutils.core import setup
+setup (name = 'example',
+       version = '@VERSION@',
+       author = "Nobody",
+       description = """Install precompiled extension""",
+       py_modules = ["example"],
+       packages=[''],
+       package_data={'': ['example*.so']},
+       )

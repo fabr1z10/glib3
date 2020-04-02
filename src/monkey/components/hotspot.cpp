@@ -24,7 +24,7 @@ HotSpot::HotSpot(const LuaTable & table) : m_shape(nullptr) {
 
 }
 
-HotSpot::HotSpot(const PyTable & table) : m_shape(nullptr) {
+HotSpot::HotSpot(const ITable & table) : m_shape(nullptr) {
     m_priority = table.get<int>("priority", 0);
     auto factory = Engine::get().GetSceneFactory();
 
@@ -71,7 +71,7 @@ HotSpotManager::HotSpotManager() : Runner(), MouseListener(), m_currentlyActiveH
     m_pixelRatio = Engine::get().GetPixelRatio();
 }
 
-HotSpotManager::HotSpotManager(const PyTable & table) : Runner() {
+HotSpotManager::HotSpotManager(const ITable & table) : Runner() {
     m_currentlyActiveHotSpot = nullptr;
     m_pixelRatio = Engine::get().GetPixelRatio();
 

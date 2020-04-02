@@ -7,7 +7,7 @@
 class Sprite : public Entity {
 public:
     Sprite (const LuaTable&);
-    Sprite (const PyTable&);
+    Sprite (const ITable&);
 
 
 };
