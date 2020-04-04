@@ -1,7 +1,8 @@
 # a script is a graph whose nodes are actions
 
 class Script:
-    def __init__(self):
+    def __init__(self, id : str = None):
+        self.id = id
         self.actions = []
         self.edges = []
         self.map = {}        
@@ -14,6 +15,9 @@ class Script:
         if after:
             for aid in after:
                 self.edges.append([self.map[aid], iid])
-                
+        else:
+            # if after is not provided, we assum it goes after the last added action
+            if iid>0:
+                self.edges.append([iid-1, iid])        
     
 

@@ -8,6 +8,11 @@ Rect::Rect(const LuaTable & t) : Shape(t) {
     m_height = t.Get<float>("height");
     initBounds();
 }
+Rect::Rect(const ITable & t) : Shape(t) {
+    m_width = t.get<float>("width");
+    m_height = t.get<float>("height");
+    initBounds();
+}
 
 void Rect::initBounds() {
     m_bounds.min = m_offset;

@@ -7,6 +7,7 @@ class Turn : public TargetActivity {
 public:
     Turn (char dir) : TargetActivity(), m_dir(dir) {}
     Turn (const LuaTable&);
+    Turn (const ITable&);
     ~Turn() override {}
     Turn (int id, char dir) : Turn(dir) {
         SetId(id);

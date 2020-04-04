@@ -2,6 +2,22 @@
 
 namespace py = pybind11;
 
+PyTable::PyTable(const PyTable & other) : obj(other.obj) {
+
+}
+
+PyDict::PyDict(const PyDict & other) : obj(other.obj) {
+
+}
+
+std::shared_ptr<ITable> PyTable::clone() const {
+    return std::make_shared<PyTable>(*this);
+}
+
+std::shared_ptr<ITable> PyDict::clone() const {
+    return std::make_shared<PyDict>(*this);
+}
+
 py::object PyTable::getHandle (const std::string& key) const {
     auto a = obj.attr(key.c_str());
     return a;

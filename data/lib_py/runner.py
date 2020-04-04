@@ -12,9 +12,9 @@ def pippo(x, y):
     print ('clicked at ' + str(x) + ', ' + str(y))
 
 class HotSpotManager:
-    def __init__(self):
+    def __init__(self, lmbclick = None):
         self.type = 'runner.hotspotmanager'
-        self.lmbclick = pippo
+        self.lmbclick = lmbclick
 
 
 class Scheduler:

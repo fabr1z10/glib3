@@ -10,6 +10,7 @@ public:
     //! You can provide the entity by giving the unique identifier or the tag
     TargetActivity() : Activity(), m_id(-1) {}
     TargetActivity(const LuaTable&);
+    TargetActivity(const ITable&);
     virtual ~TargetActivity() { /*std::cerr << "clearing a target act\n";*/ }
     TargetActivity(int id);
     TargetActivity(const std::string& tag);

@@ -1,7 +1,13 @@
+import lib_py.scumm.scumm as s
 import lib_py.entity as entity
 import lib_py.components as compo
 import lib_py.scumm.components as sc
 import lib_py.shape as sh
+import lib_py.scumm.functions as sf
+
+
+#import lib_py.scumm.scumm as scumm
+
 
 import example
 
@@ -10,11 +16,45 @@ def change_color(color):
         e.setColor(color)
     return f    
 
-def set_verb(verb):
+def set_verb(verbId):
     def f(x, y, e : example.Wrap1):
-        a : example.Wrap1 = example.get('current_verb')
-        a.setText (verb)
+        s.Config.verb = verbId
+        s.Config.item1 = ''
+        s.Config.item2 = ''
+        update_current_action()
     return f
+
+def update_current_action():
+    a : example.Wrap1 = example.get('current_verb')
+    verb = s.Config.getVerb(s.Config.verb)
+    text = verb.text
+    if s.Config.item1:
+        item = s.State.items[s.Config.item1]
+        text += ' ' + item.text
+    a.setText (text)
+
+def hoverOn(obj):
+    def f(item):
+    	#local actionfo = scumm.state.actionInfo
+        if not s.Config.item1:
+            s.Config.item1 = obj
+        else:
+            print('oo')
+            #local verb = scumm.func.getCurrentVerb()
+            #if (verb.objects > 1 and actionInfo.obj1 ~= obj) then
+            #    actionInfo.obj2 = obj
+            #end
+        update_current_action()
+    return f
+
+def hoverOff(obj):
+    if s.Config.item2:
+        s.Config.item2 = ''
+    else:
+        # set obj1 to nil unless we are waiting for 2nd object
+        #if (actionInfo.selectSecond == false) then
+        s.Config.item1 = ''
+    update_current_action()
 
 class BackgroundItem(entity.Entity):
     def __init__(self, image = None, tag = None, pos = [0, 0, 0]):
@@ -22,13 +62,14 @@ class BackgroundItem(entity.Entity):
         self.addComponent (compo.Gfx(image=image))
 
 class VerbButton(entity.Text):
-    def __init__(self, font: str, text: str, colorInactive, colorActive, align: entity.TextAlignment = entity.TextAlignment.topleft, tag=None, pos=[0,0,0]):
-        super().__init__(font, text, colorInactive, align, tag, pos)          
+    def __init__(self, font: str, verbId: str, colorInactive, colorActive, align: entity.TextAlignment = entity.TextAlignment.topleft, tag=None, pos=[0,0,0]):
+        verb = s.Config.getVerb(verbId)
+        super().__init__(font, verb.text, colorInactive, align, tag, pos)          
         self.addComponent(compo.HotSpot(
             shape = None,
             onenter = change_color(colorActive), 
             onleave = change_color(colorInactive),
-            onclick = set_verb(text) )) 
+            onclick = verb.callback )) 
 
 class WalkArea(entity.Entity):
     def __init__(self, shape, depth = None, priority : int = 0, tag = None, pos = [0,0,0]):
@@ -39,17 +80,27 @@ class WalkArea(entity.Entity):
         #self.priority = priority
 
 class Sprite(entity.Entity):
-    def __init__(self, model: str, anim : str = None, tag = None, pos = [0,0,0]):
+    def __init__(self, model: str = None, anim : str = None, item : str = None, tag = None, pos = [0,0,0]):
         super().__init__(tag, pos)
-        self.type = 'sprite'
+        if model:
+            self.type = 'sprite'
         self.model = model
         self.anim = anim
+        if item:
+            it : scumm.Item = s.State.items[item]
+            self.addComponent(compo.HotSpot(
+                shape = sh.Rect(width=it.width, height=it.height),
+                priority=it.priority,
+                onenter = hoverOn(item), 
+                onleave = hoverOff,
+                onclick = sf.run_action))
 
 class Character(Sprite):
-    def __init__(self, model: str, speed:float, dir:str, state:str, anim: str = None, tag = None, pos = [0,0,0]):
+    def __init__(self, model: str, speed:float, dir:str, state:str, text_color : list, text_offset : list = [0, 60], anim: str = None, tag = None, pos = [0,0,0]):
         super().__init__(model, anim, tag, pos)
         self.__charcomp = sc.Character(speed=speed,dir=dir,state=state)
         self.addComponent (self.__charcomp)
+        self.addComponent (sc.CharacterInfo(text_color, text_offset))
     def __setattr__(self, name, value):
         if name == 'state':
             self.__charcomp.state = value

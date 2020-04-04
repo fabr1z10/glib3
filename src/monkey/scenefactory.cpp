@@ -34,6 +34,7 @@
 #include <monkey/components/cursor.h>
 #include <monkey/activities/setactive.h>
 #include <monkey/py.h>
+#include <monkey/activities/runscript.h>
 
 namespace py = pybind11;
 
@@ -137,6 +138,7 @@ SceneFactory::SceneFactory() {
     add<LuaKeyListener> ("keylistener");
     add2<LuaKeyListener> ("runner.keylistener");
     add<LuaInfo> ("info");
+    add2<LuaInfo> ("components.info");
     add<DirectionalLight> ("directional.light");
     add<KeyboardInputMethod> ("keyinput");
     add<Cursor> ("cursor");
@@ -153,7 +155,7 @@ SceneFactory::SceneFactory() {
     add<ShowMessage> ("show_message");
     add<SetState> ("setstate");
     add<SetActive> ("setactive");
-
+    add2<RunScript> ("action.runscript");
 
     // runners
     add<HotSpotManager> ("hotspotmanager");
@@ -173,6 +175,7 @@ SceneFactory::SceneFactory() {
     add<Poly> ("poly");
     add2<Poly> ("shape.poly");
     add<Rect> ("rect");
+    add2<Rect> ("rect");
     add<PolyLine> ("graph");
 
     // models

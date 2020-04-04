@@ -5,6 +5,8 @@ import lib_py.entity as entity
 import lib_py.runner as runner
 import lib_py.camera as cam
 import lib_py.scumm.scumm as scumm
+import lib_py.scumm.entity as se
+import lib_py.scumm.functions as func
 
 
 class RoomUI(room.Room):
@@ -18,6 +20,7 @@ class RoomUI(room.Room):
         # get the verbset used in this room
         verbset : scumm.VerbSet = scumm.Config.verbSets[0]
         defv : scumm.Verb = scumm.Config.getVerb (verbset.defaultVerb)
+        scumm.Config.verb = verbset.defaultVerb
         #verbs = settings.monkey.config['verbs']
         default_verb = scumm.Config.getVerb
         # add the main node     
@@ -36,10 +39,11 @@ class RoomUI(room.Room):
         for a in verbset.verbs:
             col = 1 + count // 4
             x = 2 + (col - 1) * 46
-            verb = scumm.Config.getVerb(a)
-            ui.add (scumm.entity.VerbButton(
+            verb : scumm.Verb = scumm.Config.getVerb(a)
+            print ('here ' + a + ' ' + verb.text)
+            ui.add (se.VerbButton(
                 font = 'ui',
-                text = verb.text,
+                verbId = a,
                 colorInactive = scumm.Config.Colors.verb_unselected,
                 colorActive = scumm.Config.Colors.verb_selected,
                 align = entity.TextAlignment.bottomleft,
@@ -63,13 +67,14 @@ class RoomUI(room.Room):
         self.scene.append(ui)
 
         # create a hotspot manager
-        self.engines.append(runner.HotSpotManager())
+        self.engines.append(runner.HotSpotManager(lmbclick=func.walkto))
         self.engines.append(runner.Scheduler())
     def addDynamicItems(self):
-        print (type(scumm.State.room_items[self.id]))
-        for key, value in scumm.State.room_items[self.id].items():
+        roomId = self.id
+        for key, value in scumm.State.room_items[roomId].items():
+            print ('creating dynamic item = ' + key)
             # get a shallow copy of item
-            item = copy.copy(engine.data['entities'][key])
+            item = engine.data['entities'][key]
             # apply ajustments
             for pk, pv in value.params.items():
                 setattr(item, pk, pv)

@@ -63,9 +63,13 @@ void Scheduler::AddScript(const std::string &name, std::shared_ptr<Script> scrip
 }
 
 void Scheduler::AddScript(std::shared_ptr<Script> script) {
-    std::stringstream stream;
-    stream << "_unknown_" << m_count++ ;
-    AddScript(stream.str(), script);
+    std::string name = script->getName();
+    if (name.empty()) {
+        std::stringstream stream;
+        stream << "_unknown_" << m_count++ ;
+        name = stream.str();
+    }
+    AddScript(name, script);
 
 }
 

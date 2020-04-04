@@ -16,6 +16,7 @@ public:
     Script();
     Script(const ITable&);
     ~Script();
+
     void Run (float);
     void Start();
     void AddActivity(int id, std::shared_ptr<Activity>);
@@ -26,13 +27,14 @@ public:
     void SetLoop(int);
     void Print();
     bool IsSuspended() const;
+    std::string getName() const;
 private:
     void PushToFrontier(int);
     void ResetActivity(int);
     // the nodes currently being executed
     std::unordered_set<size_t> m_frontier;
     std::vector<std::shared_ptr<Activity>> m_activities;
-
+    std::string m_name;
     //std::unordered_map<int, std::vector<int>> m_directedEdges;
     //std::unordered_map<int, int> m_incomingEdgeCount;
     // use of vector to make it more efficient
@@ -56,4 +58,8 @@ inline bool Script::IsComplete() const {
 
 inline bool Script::IsSuspended() const {
     return m_suspended;
+}
+
+inline std::string Script::getName() const {
+    return m_name;
 }

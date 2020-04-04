@@ -7,8 +7,8 @@
 namespace py = pybind11;
 
 Script::Script(const ITable & table) : m_complete(false), m_suspended(false), m_loop(false) {
+    m_name = table.get<std::string>("id", "");
     auto factory = Engine::get().GetSceneFactory();
-
     int id = 0;
     table.foreach<PyTable>("actions", [&] (const PyTable& a) {
         auto action = factory->make2<Activity>(a);

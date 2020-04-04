@@ -73,6 +73,8 @@ public:
 
     }
 
+    virtual std::shared_ptr<ITable> clone() const = 0;
+
 private:
     virtual pybind11::object getHandle (const std::string& key) const = 0;
 
@@ -102,6 +104,8 @@ inline glm::vec4 ITable::cast(pybind11::object o) const {
 class PyTable : public ITable {
 public:
     PyTable (pybind11::object o) : obj(o) {}
+    PyTable (const PyTable&);
+    std::shared_ptr<ITable> clone() const override;
 private:
     virtual pybind11::object getHandle (const std::string& key) const;
     pybind11::object obj;
@@ -110,6 +114,9 @@ private:
 class PyDict : public ITable {
 public:
     PyDict (pybind11::dict o) : obj(o) {}
+    PyDict (const PyDict&);
+    std::shared_ptr<ITable> clone() const override;
+
 private:
     virtual pybind11::object getHandle (const std::string& key) const;
     pybind11::dict obj;

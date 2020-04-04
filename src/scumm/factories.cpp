@@ -28,7 +28,9 @@ void Extension::extend(SceneFactory* f) {
     f->add2<Walk> ("scumm.action.walk");
 
     f->add<Turn> ("turn");
+    f->add2<Turn> ("scumm.action.turn");
     f->add<Say> ("say");
+    f->add2<Say> ("scumm.action.say");
     f->add<EnableBlock> ("enable_wall");
 
     //LuaWrapper::addMethod("get_direction", [&] (EntityWrapper* e) { return getDirection(e); });

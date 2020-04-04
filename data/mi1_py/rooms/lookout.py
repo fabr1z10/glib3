@@ -5,7 +5,7 @@ import lib_py.shape as sh
 
 import lib_py.scumm.scumm as scumm
 import lib_py.scumm.room as room
-# import lib_py.entity as entity
+import lib_py.scumm.entity as se
 
 def builder():
     r =  room.RoomUI(id='lookout', width = 320, height = 200)
@@ -18,14 +18,15 @@ def builder():
     #     { pos = {226, 0, 3}, components = { { type="gfx", image="lookout_4.png" }}},
 
     # r.add(sfondo, 'main')
-    r.add (scumm.entity.BackgroundItem(image='gfx/lookout_1.png', pos = [0,0,-1]), 'main')
-    r.add (scumm.entity.BackgroundItem(image='gfx/lookout_2.png', pos = [81, 16, 3]), 'main')
-    r.add (scumm.entity.BackgroundItem(image='gfx/lookout_3.png', pos = [294, 33, 3]), 'main')
-    r.add (scumm.entity.BackgroundItem(image='gfx/lookout_4.png', pos = [226, 0, 3]), 'main')
-    r.add (scumm.entity.WalkArea (tag='walkarea', shape = sh.Polygon (
+    r.add (se.BackgroundItem(image='gfx/lookout_1.png', pos = [0,0,-1]), 'main')
+    r.add (se.BackgroundItem(image='gfx/lookout_2.png', pos = [81, 16, 3]), 'main')
+    r.add (se.BackgroundItem(image='gfx/lookout_3.png', pos = [294, 33, 3]), 'main')
+    r.add (se.BackgroundItem(image='gfx/lookout_4.png', pos = [226, 0, 3]), 'main')
+    r.add (se.WalkArea (tag='walkarea', shape = sh.Polygon (
         outline = [203,51,315,62,315,40,293,40,260,10,260,0,260,-20,234,-20,234,0,234,10,221,26,152,33,152,51]
     )), 'main')
-    r.add (scumm.entity.Sprite (model = 'fire', pos = [126, 52, 0]), 'walkarea')
+    r.add (se.Sprite (model = 'fire', pos = [126, 52, 0]), 'walkarea')
+    r.add (se.Sprite (item = 'lookout.stairs', pos = [230,0,0]), 'main')
     r.addDynamicItems()
 
     #r.add()

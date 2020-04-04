@@ -129,8 +129,9 @@ void Walk25::Run (double dt) {
         if (hit.collide) {
             int flag = hit.entity->GetCollisionFlag();
             if (flag == 32) {
-                luabridge::LuaRef info = hit.entity->GetObject()->GetComponent<LuaInfo>()->get();
-                info["func"]();
+                // TODO
+                //luabridge::LuaRef info = hit.entity->GetObject()->GetComponent<LuaInfo>()->get();
+                //info["func"]();
             } else {
                 //std::cerr << pos.x << ", " << pos.y << ", (" << dir.x << ", " << dir.y << "), " << l << "\n";
                 delta = (hit.length - 0.1f) * dir;

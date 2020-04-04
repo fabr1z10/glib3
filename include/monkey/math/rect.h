@@ -11,6 +11,7 @@ public:
         initBounds();
     }
     Rect (const LuaTable&);
+    Rect (const ITable&);
     bool isPointInside(glm::vec3) const override;
     void accept (AcyclicVisitor& v) override;
     float GetWidth () const;

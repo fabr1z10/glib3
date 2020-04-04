@@ -5,7 +5,9 @@ import lib_py.engine as engine
 import lib_py.entity as entity
 
 import lib_py.scumm.scumm as scumm
-import mi1_py.text.eng.text as text
+import lib_py.scumm.functions as func
+import lib_py.scumm.scripts as sscripts
+#import mi1_py.text.eng.text as text
 
 engine.addShader (engine.ShaderType.unlit_textured)
 engine.addShader (engine.ShaderType.unlit_color)
@@ -20,31 +22,36 @@ example.init(example.what)
 
 
 engine.addFont (engine.assets.Font('ui', './fonts/monkeysmall.ttf'))
+engine.addFont (engine.assets.Font('monkey', './fonts/MonkeyIsland-1990.ttf'))
 
 # configure scumm related stuff
 scumm.Config.ui_height = 56
 
-engine.data['strings'] = text.strings
 
 engine.loadSprites()
+engine.loadText ('eng')
 
-engine.addEntity('guybrush', scumm.entity.Character(model = 'guybrush', speed=500, dir='e', state='idle'))
+t = engine.data['strings']
 
-
-scumm.State.setDynamicItem(room='lookout', item=scumm.DynamicItem(
-    id = 'guybrush', params = { 'tag': 'player', 'pos': [200,30,0], 'dir': 's', 'state': 'walk'}, parent='walkarea' ))
+import mi1_py.items
 
 # e.strings = text.strings
 
 # # add verbs and verb sets
-scumm.Config.addVerb (scumm.Verb (id = 'open', text = text.strings['ui']['open'], items=1))
-scumm.Config.addVerb (scumm.Verb (id = 'close', text = text.strings['ui']['close'], items=1))
-scumm.Config.addVerb (scumm.Verb (id = 'push', text = text.strings['ui']['push'], items=1))
-scumm.Config.addVerb (scumm.Verb (id = 'pull', text = text.strings['ui']['pull'], items=1))
-scumm.Config.addVerb (scumm.Verb (id = 'walkto', text = text.strings['ui']['walkto'], items=1))
-scumm.Config.addVerb (scumm.Verb (id = 'pickup', text = text.strings['ui']['pickup'], items=1))
-scumm.Config.addVerb (scumm.Verb (id = 'talkto', text = text.strings['ui']['talkto'], items=1))
-scumm.Config.addVerb (scumm.Verb (id = 'give', text = text.strings['ui']['give'], items=1))
+scumm.Config.addVerb (scumm.Verb (id = 'open', text = t['ui']['open'], items=1, callback=func.set_verb('open'), handler = func.handler1,
+    default_action = sscripts.say( lines = [t['defaultactions'][1]])))
+scumm.Config.addVerb (scumm.Verb (id = 'close', text = t['ui']['close'], items=1, callback=func.set_verb('close'), handler = func.handler1,
+    default_action = sscripts.say( lines = [t['defaultactions'][2]])))
+scumm.Config.addVerb (scumm.Verb (id = 'push', text = t['ui']['push'], items=1, callback=func.set_verb('push' ), handler = func.handler1,
+    default_action = sscripts.say( lines = [t['defaultactions'][3]])))
+scumm.Config.addVerb (scumm.Verb (id = 'pull', text = t['ui']['pull'], items=1, callback=func.set_verb('pull' ), handler = func.handler1,
+    default_action = sscripts.say( lines = [t['defaultactions'][3]])))
+scumm.Config.addVerb (scumm.Verb (id = 'walkto', text = t['ui']['walkto'], items=1, callback=func.set_verb('walkto' ), handler = func.handler1))
+scumm.Config.addVerb (scumm.Verb (id = 'pickup', text = t['ui']['pickup'], items=1, callback=func.set_verb('pickup' ), handler = func.handler1,
+    default_action = sscripts.say( lines = [t['defaultactions'][5]])))
+scumm.Config.addVerb (scumm.Verb (id = 'talkto', text = t['ui']['talkto'], items=1, callback=func.set_verb('talkto' ), handler = func.handler1,
+    default_action = sscripts.say( lines = [t['defaultactions'][2]])))
+scumm.Config.addVerb (scumm.Verb (id = 'give', text = t['ui']['give'], items=1, callback=func.set_verb('give' ), handler = func.handler1))
 
 
 scumm.Config.verbSets.append (scumm.VerbSet(verbs= ['open', 'close', 'push', 'pull', 'walkto', 'pickup'],

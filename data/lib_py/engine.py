@@ -56,6 +56,10 @@ def loadSprites():
         data['assets']['spritemodels'] = yaml.load(f, Loader=yaml.FullLoader)
     print(data)
 
+def loadText(lang: str):
+    with open('/home/fabrizio/glib3/data/mi1_py/text/eng/text.yaml') as f:
+        data['strings']= yaml.load(f, Loader=yaml.FullLoader)
+    print(data)
 
 # # creating enumerations using class 
 

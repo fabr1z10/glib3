@@ -449,7 +449,7 @@ void EntityWrapper::ResetState() {
 
 
 luabridge::LuaRef EntityWrapper::GetInfo() {
-    return m_underlying->GetComponent<LuaInfo>()->get();
+    //return m_underlying->GetComponent<LuaInfo>()->get();
 }
 
 void EntityWrapper::KillScript(const std::string& scriptName) {

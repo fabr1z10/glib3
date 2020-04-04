@@ -8,9 +8,6 @@
 
 Say::Say(const LuaTable& t) : Sequence() {
     m_lines = t.GetVector<std::string>("lines");
-    //m_color = t.Get<glm::vec4>("color");
-    // m_color /= 255.0f;
-    //m_offset = t.Get<glm::vec2>("offset");
     m_fontId = t.Get<std::string>("font");
 
     if (t.HasKey("id")) {
@@ -33,6 +30,35 @@ Say::Say(const LuaTable& t) : Sequence() {
 
 }
 
+Say::Say(const ITable& t) : Sequence() {
+    m_lines = t.get<std::vector<std::string>>("lines");
+    //m_color = t.Get<glm::vec4>("color");
+    // m_color /= 255.0f;
+    //m_offset = t.Get<glm::vec2>("offset");
+    m_fontId = t.get<std::string>("font");
+
+    if (t.hasKey("id")) {
+        m_actorId = t.get<int>("id");
+    } else {
+        m_tag = t.get<std::string>("tag");
+    }
+
+    bool animate = t.get<bool>("animate", true);
+    if (t.hasKey("animstart")) {
+        auto animStart = t.get<std::string>("animstart");
+        SetAnimationStart(animStart);
+    }
+    if (t.hasKey("animend")) {
+        auto animEnd = t.get<std::string>("animend");
+        SetAnimationEnd(animEnd);
+    }
+
+    SetNoAnim(!animate);
+
+}
+
+
+
 void Say::Start() {
 
     // if the walk has a tag, then get the id
@@ -48,12 +74,11 @@ void Say::Start() {
     // need to check the character information. offset and text color
     auto infoc = item->GetComponent<LuaInfo>();
     if (infoc == nullptr) GLIB_FAIL("<Say> action requires an info component!");
-    luabridge::LuaRef addInfo = infoc->get();
-    LuaTable infoTable(addInfo);
-    m_color = infoTable.Get<glm::vec4>("color");
-    m_color /= 255.0f;
-    m_offset = infoTable.Get<glm::vec2>("offset");
+    const auto* addInfo = infoc->get2();
 
+    m_color = addInfo->get<glm::vec4>("text_color");
+    m_color /= 255.0f;
+    m_offset = addInfo->get<glm::vec2>("text_offset");
 
     if (!m_noAnim) {
 
