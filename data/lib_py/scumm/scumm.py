@@ -36,10 +36,11 @@ class Config:
 
 # a interactive item
 class Item:
-    def __init__(self, text: str, width: float, height: float, walkto: list, dir: str, priority=1, actions : dict = {}):
+    def __init__(self, text: str, width: float, height: float, walkto: list, dir: str, offset = [0,0], priority=1, actions : dict = {}):
         self.text = text
         self.width = width
         self.height  =height
+        self.offset = offset
         self.walkto = walkto
         self.dir = dir
         self.priority = priority

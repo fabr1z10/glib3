@@ -15,4 +15,7 @@ class Polygon(Shape):
         super().__init__(offset)
         self.outline = outline
         
-
+class LinY:
+    def __init__(self, y0 : float, z0: float, y1: float, z1: float):
+        self.type = 'func.liny'
+        self.values = [y0, z0, y1, z1]

@@ -186,6 +186,7 @@ SceneFactory::SceneFactory() {
     add2<Font> ("font");
     add<Constant2D> ("constant");
     add<Linear2Dy> ("linear_y");
+    add2<Linear2Dy> ("func.liny");
     add<PatchwiseLinear2D> ("patchwise");
 
     add<Box3D> ("box3d");

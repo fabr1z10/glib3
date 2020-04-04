@@ -44,6 +44,14 @@ Linear2Dy::Linear2Dy(const LuaTable & t) : Function2D() {
     m_delta = (values[3] - values[1]) / (values[2] - values[0]);
 }
 
+Linear2Dy::Linear2Dy(const ITable & t) : Function2D() {
+    auto values = t.get<glm::vec4>("values");
+    m_y0 = values[0];
+    m_value0 = values[1];
+    m_delta = (values[3] - values[1]) / (values[2] - values[0]);
+}
+
+
 Constant2D::Constant2D(const LuaTable & t) : Function2D() {
     m_value = t.Get<float>("value");
 }

@@ -74,7 +74,7 @@ class VerbButton(entity.Text):
 class WalkArea(entity.Entity):
     def __init__(self, shape, depth = None, priority : int = 0, tag = None, pos = [0,0,0]):
         super().__init__(tag, pos)
-        self.addComponent(sc.Walkarea(shape = shape))
+        self.addComponent(sc.Walkarea(shape = shape, depth=depth))
         #self.shape = shape
         #self.depth = depth
         #self.priority = priority
@@ -89,15 +89,15 @@ class Sprite(entity.Entity):
         if item:
             it : scumm.Item = s.State.items[item]
             self.addComponent(compo.HotSpot(
-                shape = sh.Rect(width=it.width, height=it.height),
+                shape = sh.Rect(width=it.width, height=it.height, offset = it.offset),
                 priority=it.priority,
                 onenter = hoverOn(item), 
                 onleave = hoverOff,
                 onclick = sf.run_action))
 
 class Character(Sprite):
-    def __init__(self, model: str, speed:float, dir:str, state:str, text_color : list, text_offset : list = [0, 60], anim: str = None, tag = None, pos = [0,0,0]):
-        super().__init__(model, anim, tag, pos)
+    def __init__(self, model: str, speed:float, dir:str, state:str, text_color : list, text_offset : list = [0, 60], item: str=None, anim: str = None, tag = None, pos = [0,0,0]):
+        super().__init__(model = model, item=item,anim= anim, tag=tag, pos=pos)
         self.__charcomp = sc.Character(speed=speed,dir=dir,state=state)
         self.addComponent (self.__charcomp)
         self.addComponent (sc.CharacterInfo(text_color, text_offset))

@@ -7,10 +7,11 @@ import example
 
 
 class Walkarea(compo.HotSpot):
-    def __init__(self, shape):
+    def __init__(self, shape, depth = None):
         super().__init__(shape)
         self.type = 'components.walkarea'
         self.onclick = func.walkto
+        self.depth= depth
 
 class Character():
     def __init__(self, speed: float, dir: str, state: str):

@@ -48,9 +48,9 @@ WalkArea::WalkArea(const ITable & t) : ScriptHotSpot(t) {
     auto factory = Engine::get().GetSceneFactory();
     
     if (t.hasKey("depth")) {
-        //auto dref = t.Get<LuaTable>("depth");
-        //auto depthFunc = factory->make<Function2D>(dref);
-        //SetDepthFunction(depthFunc);
+        auto dref = t.get<PyTable>("depth");
+        auto depthFunc = factory->make2<Function2D>(dref);
+        SetDepthFunction(depthFunc);
     }
     
     if (t.hasKey("scale")) {

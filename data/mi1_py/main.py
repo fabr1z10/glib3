@@ -52,9 +52,18 @@ scumm.Config.addVerb (scumm.Verb (id = 'pickup', text = t['ui']['pickup'], items
 scumm.Config.addVerb (scumm.Verb (id = 'talkto', text = t['ui']['talkto'], items=1, callback=func.set_verb('talkto' ), handler = func.handler1,
     default_action = sscripts.say( lines = [t['defaultactions'][2]])))
 scumm.Config.addVerb (scumm.Verb (id = 'give', text = t['ui']['give'], items=1, callback=func.set_verb('give' ), handler = func.handler1))
+scumm.Config.addVerb (scumm.Verb (id = 'use', text = t['ui']['use'], items=1, callback=func.set_verb('use' ), handler = func.handler1,
+    default_action = sscripts.say( lines = [t['defaultactions'][2]])))
+scumm.Config.addVerb (scumm.Verb (id = 'look', text = t['ui']['lookat'], items=1, callback=func.set_verb('look' ), handler = func.handler1,
+    default_action = sscripts.say( lines = [t['defaultactions'][4]])))
+scumm.Config.addVerb (scumm.Verb (id = 'turnon', text = t['ui']['turnon'], items=1, callback=func.set_verb('turnon' ), handler = func.handler1,
+    default_action = sscripts.say( lines = [t['defaultactions'][2]])))
+scumm.Config.addVerb (scumm.Verb (id = 'turnoff', text = t['ui']['turnoff'], items=1, callback=func.set_verb('turnoff' ), handler = func.handler1,
+    default_action = sscripts.say( lines = [t['defaultactions'][2]])))
 
 
-scumm.Config.verbSets.append (scumm.VerbSet(verbs= ['open', 'close', 'push', 'pull', 'walkto', 'pickup'],
+
+scumm.Config.verbSets.append (scumm.VerbSet(verbs= ['open', 'close', 'push', 'pull', 'walkto', 'pickup', 'talkto', 'give', 'use', 'look', 'turnon', 'turnoff'],
     defaultVerb='walkto'))
 
 # # add fonts

@@ -16,10 +16,10 @@ def handler1():
     if item.dir:
         sc.addAction( sa.Turn(dir = item.dir, tag = 'player'))
     # check if we have a custom script for this action
+    print ('ciao ' + s.Config.verb)
     if s.Config.verb in item.actions:
-         a = script.Script()
-         a.addAction(sa.Say(lines = ['cia0'], tag = 'player', font = 'monkey'))
-         sc.addAction (actions.RunScript(s = a))
+        a = item.actions[s.Config.verb]()
+        sc.addAction (actions.RunScript(s = a))
     else:
         v = s.Config.getVerb(s.Config.verb)
         if v.default_action:
