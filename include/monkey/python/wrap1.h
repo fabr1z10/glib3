@@ -12,6 +12,7 @@ public:
     void setEntity(Entity* e);
     void setColor (std::vector<float>& l);
     void setText (const std::string&);
+    void appendText (const std::string&);
 private:
     int g;
     Entity* m_entity;

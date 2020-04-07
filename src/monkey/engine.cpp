@@ -209,7 +209,20 @@ void Engine::MainLoop() {
 
     while (!glfwWindowShouldClose(window)) {
 
-        m_scene = m_sceneFactory->Create();
+        // get current room
+        auto room = m_mainTable->get<std::string>("room");
+        py::function builder;
+        try {
+            builder = m_mainTable->get<py::dict>("data")["rooms"][room.c_str()].cast<py::function>();
+        } catch (...) {
+            GLIB_FAIL("Unable to find the builder for room: " << room)
+        }
+        auto roomDef = builder().cast<py::object>();
+        std::cout << "=================================\n";
+        std::cout << "Loading room: "<< room << std::endl;
+        std::cout << "=================================\n";
+
+        m_scene = m_sceneFactory->Create(roomDef);
         
         // start the scene (initialize components)
         // init runners
@@ -224,7 +237,13 @@ void Engine::MainLoop() {
 //        //    iter->Start();
 //        //}
 //
-//        m_sceneFactory->PostInit();
+        auto initFunc = roomDef.attr("init").cast<py::list>();
+        for (auto ifunc : initFunc) {
+            ifunc();
+        }
+        //m_sceneFactory->PostInit();
+
+
         // call startUp
         int widthPixel, heightPixel;
         glfwGetFramebufferSize(window, &widthPixel, &heightPixel);

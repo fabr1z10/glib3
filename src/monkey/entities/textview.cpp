@@ -9,7 +9,9 @@
 #include <monkey/components/lambdahotspot.h>
 #include <monkey/model/textmodel.h>
 
-TextView::TextView(const LuaTable & t) : Entity(t), m_factory(t.Get<luabridge::LuaRef>("factory")) {
+namespace py = pybind11;
+
+TextView::TextView(const LuaTable & t) : Entity(t) {
     glm::vec2 size = t.Get<glm::vec2>("size");
     float fontSize = t.Get<float>("font_size");
     int lines = t.Get<int>("lines");
@@ -24,7 +26,21 @@ TextView::TextView(const LuaTable & t) : Entity(t), m_factory(t.Get<luabridge::L
 
 }
 
+TextView::TextView(const ITable & t) : Entity(t) {
+    glm::vec2 size = t.get<glm::vec2>("size");
+    float fontSize = t.get<float>("fontSize");
+    int lines = t.get<int>("lines");
+    m_factory = t.get<pybind11::function>("factory");
 
+    m_width = size.x;
+    m_height = size.y;
+    m_fontSize = fontSize;
+    m_nLines = 0;
+    m_maxLines = lines;
+    m_topLine = 0;
+    init();
+
+}
 void TextView::init() {
     glm::vec2 wpos(GetPosition());
     m_loc = wpos;
@@ -33,7 +49,7 @@ void TextView::init() {
     cam->SetPosition(glm::vec3(m_width*0.5f, -m_height*0.5f, 5.0f), glm::vec3(0,0,-1), glm::vec3(0,1,0));
     m_nextPos = glm::vec2(0.0f);
     m_scroll =false;
-    AddArrows();
+  //  AddArrows();
     auto textContainer = std::make_shared<Entity>();
 
     AddChild(textContainer);
@@ -43,17 +59,15 @@ void TextView::init() {
 }
 
 TextView::TextView (glm::vec2 pos, float width, float height, float fontSize, int lines, luabridge::LuaRef factory) : Entity(),
-    m_nLines{0}, m_width{width}, m_height{height}, m_topLine{0}, m_factory(factory), m_maxLines(lines), m_fontSize(fontSize)
+    m_nLines{0}, m_width{width}, m_height{height}, m_topLine{0}, m_maxLines(lines), m_fontSize(fontSize)
 {
     init();
 }
 
 
-void TextView::AddItem(luabridge::LuaRef ref) {
-    //std::string text = ref["text"].cast<std::string>();
-    m_lines.push_back(ref);
-    AddEntity(ref);
-
+void TextView::AddItem(const std::string& line) {
+    m_lines.push_back(line);
+    AddEntity(line);
 }
 
 void TextView::ClearText() {
@@ -66,16 +80,14 @@ void TextView::ClearText() {
 
 }
 
-void TextView::AddEntity(luabridge::LuaRef ref) {
-    ref["maxwidth"] = m_scroll ? m_width - m_deltax : m_width;
-    luabridge::LuaRef f = m_factory(ref);
+void TextView::AddEntity(const std::string& ref) {
+    //ref["maxwidth"] = m_scroll ? m_width - m_deltax : m_width;
+    py::object obj = m_factory(ref);
+    PyTable ft(obj);
 
     // 1. find the number of rows of this
     auto mf = Engine::get().GetSceneFactory();
-    LuaTable ft(f);
-    auto ptr = mf->make<Entity>(ft);
-
-
+    auto ptr = mf->make2<Entity>(ft);
 
     int n = dynamic_cast<TextModel*>(ptr->GetComponent<Renderer>()->GetModel())->GetNumberOfLines();
     m_nLines += n;
@@ -86,9 +98,6 @@ void TextView::AddEntity(luabridge::LuaRef ref) {
         glm::vec2 bottomLeftPos = m_nextPos - glm::vec2(0.0f, m_fontSize*n);
         m_textContainer->AddChild(ptr);
         ptr->SetPosition(glm::vec3(bottomLeftPos, 0.0f));
-
-        //glm::vec3 ps =  ptr->GetPosition();
-        //std::cout << "World pos of " << ps.x << ", " << ps.y << ", " << ps.z << "\n";
         m_nextPos = bottomLeftPos;
     }
 
@@ -123,112 +132,6 @@ void TextView::reformat() {
 
 }
 
-//TextViewButton::TextViewButton(int n, TextView* textView, std::shared_ptr<Shape> shape, int priority) : HotSpot(shape, priority), m_textView{textView}, m_n{n} {}
-//
-//void TextViewButton::onEnter() {
-//    m_entity->GetComponent<Renderer>()->SetAnimation("selected");
-//}
-//
-//void TextViewButton::onLeave() {
-//    m_entity->GetComponent<Renderer>()->SetAnimation("unselected");
-//}
-//
-//void TextViewButton::onClick(glm::vec2){
-//    m_textView->Scroll(m_n);
-//}
-//
-//void TextView::Scroll(int nlines) {
-//    m_topLine += nlines;
-//    UpdateCamPosition(m_topLine);
-//}
-//
-//
-//bool TextView::ScrollDownVisible() const {
-////    int total = 0;
-////    for (int i = m_topLine; i < m_textItems.size(); ++i) {
-////        total += m_textItems[i].lines;
-////        if (total > m_maxLines)
-////            return true;
-////    }
-////    return false;
-//}
-//bool TextView::ScrollUpVisible() const {
-//    return m_topLine > 0;
-//}
-//
-//void TextView::SetParent(Entity *parent) {
-//    Component::SetParent(parent);
-//    //AddArrows();
-//
-//}
-//
-////void TextView::notifyAddChild(Entity * e) {
-////    //auto mf = Engine::get().GetSceneFactory();
-////    //auto ptr = mf->GetShared<Entity>(ref);
-////
-////    int n = dynamic_cast<TextMesh*>(e->GetComponent<Renderer>()->GetMesh())->getNumberOfLines();
-////    std::cout << "Number of lines = " << n << "\n";
-////
-////}
-//
-//void TextView::Start() {
-//
-//    // create a new camera for this
-//    //auto re = Engine::get().GetRenderingEngine();
-//    //m_font = Engine::get().GetAssetManager().GetFont(m_fontName);
-//    // create a new camera
-//
-//
-//}
-//
-//void TextView::UpdateCamPosition(int line) {
-////    if (line < 0)
-////        line = 0;
-////    else if (line > m_textItems.size()-1)
-////        line = m_textItems.size()-1;
-////    //if (m_topLine == line)
-////    //    return;
-////    int nlines {0};
-////    int linesLeft{0};
-////    for (int i = 0; i < line; ++i)
-////        nlines += m_textItems[i].lines;
-////    for (int i = line; i < m_textItems.size(); ++i)
-////        linesLeft += m_textItems[i].lines;
-////    float x = m_orthoWidth * 0.5f;
-////    float y = -m_orthoHeight * 0.5f - nlines * m_fontSize;
-////    //std::cout << "set cam pos to " << x << ", " << y << std::endl;
-////    m_entity->GetCamera()->SetPosition(glm::vec3(x, y, -5.0f), glm::vec3(0, 0, -1));
-////    glm::vec3 dp = glm::vec3(0.0f, y - m_orthoHeight*0.5f, 1.0f);
-////    glm::vec3 up = glm::vec3(0.0f, y + m_orthoHeight*0.5f - m_arrowHeight, 1.0f);
-////
-////    m_arrowDown->SetPosition(dp);
-////    m_arrowUp->SetPosition(up);
-////    //std::cout << "setting down pos to " << m_arrowDown->GetPosition().x << ", " << m_arrowDown->GetPosition().y << "\n";
-////    //std::cout << "setting up pos to " << m_arrowUp->GetPosition().x << ", " << m_arrowUp->GetPosition().y << "\n";
-////    m_topLine = line;
-////    //std::cout << "up active = " << (m_topLine>0) << " down active = " << (linesLeft>m_maxLines) <<"\n";
-////    m_arrowUp->SetActive(m_topLine > 0);
-////    m_arrowDown->SetActive(linesLeft > m_maxLines);
-////    //m_arrowUp->SetActive(m_topLine > 0);
-////    //m_arrowDown->SetActive(linesLeft > m_maxLines);
-////    //std::cout << m_arrowUp->IsActive() << ", " << m_arrowDown->IsActive() << "\n";
-//}
-//
-//
-//bool TextView::SetActive(bool value) {
-//    //Component::SetActive(value);
-//    //UpdateCamPosition(m_topLine);
-//    //m_itemContainer->SetActive(value);
-//    //m_arrowUp->SetActive(m_topLine > 0);
-//    //m_arrowDown->SetActive(linesLeft > m_maxLines);
-//    return false;
-//}
-//
-//TextView::~TextView() {
-//
-//    //Engine::get().GetRef<RenderingEngine>("_renderingengine")->RemoveCamera(m_camId);
-//}
-//
 
 void TextView::SetActiveInnerCheck(bool value) {
     if (value) {
@@ -282,8 +185,8 @@ void TextView::AddArrows() {
 }
 
 void TextView::Start() {
-    m_arrowUp->setActive(false);
-    m_arrowDown->setActive(false);
+    // m_arrowUp->setActive(false);
+    //m_arrowDown->setActive(false);
 
     Entity::Start();
 

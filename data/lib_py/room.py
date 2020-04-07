@@ -13,7 +13,7 @@ class Room:
 		self.collide = collide
 		self.ref = {}
 		self.engines = []
-
+		self.init = []
 		# add a key listener to the engine
 		keyl = engine.runner.KeyListener()
 		keyl.addKey (32, toggle_pause)

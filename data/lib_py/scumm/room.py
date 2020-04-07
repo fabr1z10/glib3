@@ -34,6 +34,9 @@ class RoomUI(room.Room):
         ui.add (entity.Text(font='ui', text = defv.text, color = scumm.Config.Colors.current_action, 
             align = entity.TextAlignment.bottom, tag = 'current_verb', pos = [camWidth/2, 48, 0]))
 
+        # add the dialogue node
+        dialogue_node = entity.TextView(None, size=[320,56], fontSize=8, lines=6, deltax=26, tag='dialogue')
+
         row = 2
         count = 0
         for a in verbset.verbs:
@@ -65,6 +68,7 @@ class RoomUI(room.Room):
 
         self.scene.append(main)
         self.scene.append(ui)
+        self.scene.append(dialogue_node)
 
         # create a hotspot manager
         self.engines.append(runner.HotSpotManager(lmbclick=func.walkto))

@@ -3,6 +3,7 @@
 #include <monkey/components/renderer.h>
 #include <monkey/model/textmodel.h>
 #include <glm/gtx/transform.hpp>
+#include <monkey/entities/textview.h>
 
 Wrap1::Wrap1() : m_entity(nullptr) {
     //m_entity = x.cast<Entity *>();
@@ -27,4 +28,9 @@ void Wrap1::setText(const std::string& text) {
     tm->SetText(text);
     glm::vec2 offset = tm->GetOffset();
     r->SetTransform(glm::translate(glm::vec3(offset, 0.0f)));
+}
+
+void Wrap1::appendText(const std::string& text) {
+    TextView* r = dynamic_cast<TextView*>(m_entity);
+    r->AddItem(text);
 }

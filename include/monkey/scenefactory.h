@@ -20,7 +20,7 @@ public:
     virtual ~SceneFactory() {}
     virtual void Init(Engine*);
     virtual void StartUp (Engine*);
-    virtual std::shared_ptr<Entity> Create();
+    virtual std::shared_ptr<Entity> Create(pybind11::object&);
     virtual void CleanUp ();
     virtual void PostInit();
 

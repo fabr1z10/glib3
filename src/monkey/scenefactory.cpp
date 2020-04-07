@@ -127,7 +127,7 @@ SceneFactory::SceneFactory() {
     add<Text> ("text");
     add2<Text> ("text");
     add<TextView> ("textview");
-
+    add2<TextView> ("textview");
     // components
     add<Follow> ("follow");
     add<SimpleCollider> ("collider");
@@ -317,27 +317,23 @@ SceneFactory::SceneFactory() {
 //    m_activityFactory.Add(a, std::move(f));
 //}
 
-std::shared_ptr<Entity> SceneFactory::Create() {
+std::shared_ptr<Entity> SceneFactory::Create(py::object& roomDef) {
 
     auto& engine = Engine::get();
+//
+//    // get current room
+//    const auto& table = engine.getMainTable();
+//    auto room = table.get<std::string>("room");
+//    std::cout << "room is = " << room << "\n";
+//
+//    py::function builder;
+//    try {
+//        builder = table.get<py::dict>("data")["rooms"][room.c_str()].cast<py::function>();
+//    } catch (...) {
+//        GLIB_FAIL("Unable to find the builder for room: " << room)
+//    }
 
-    // get current room
-    const auto& table = engine.getMainTable();
-    auto room = table.get<std::string>("room");
-    std::cout << "room is = " << room << "\n";
 
-    py::function builder;
-    try {
-        builder = table.get<py::dict>("data")["rooms"][room.c_str()].cast<py::function>();
-    } catch (...) {
-        GLIB_FAIL("Unable to find the builder for room: " << room)
-    }
-
-    std::cout << "=================================\n";
-    std::cout << "Loading room: "<< room << std::endl;
-    std::cout << "=================================\n";
-
-    auto roomDef = builder().cast<py::object>();
     auto engineList = roomDef.attr("engines").cast<py::list>();
 
     for (const auto& p : engineList) {

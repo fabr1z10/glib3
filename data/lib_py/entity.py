@@ -54,4 +54,12 @@ class Text(Entity):
         self.align = align.value
         self.color = color
         
-    
+class TextView(Entity):
+    def __init__(self, factory: callable,size, fontSize: int, lines: int, deltax: int, tag = None, pos = [0,0,0]):
+        super().__init__(tag, pos)
+        self.type = 'textview'
+        self.size = size
+        self.fontSize = fontSize
+        self.lines = lines
+        self.deltax = deltax
+        self.factory = factory

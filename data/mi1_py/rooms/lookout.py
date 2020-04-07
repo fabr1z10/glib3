@@ -7,6 +7,9 @@ import lib_py.scumm.scumm as scumm
 import lib_py.scumm.room as room
 import lib_py.scumm.entity as se
 
+def a1():
+    print ('LLLLLLLLLLLLLLLLLLLLLLLLOKKO')
+
 def builder():
     r =  room.RoomUI(id='lookout', width = 320, height = 200)
 
@@ -30,6 +33,7 @@ def builder():
     r.add (se.Character (item='lookout.lookout', model='lookout', speed = 100, dir = 'w', state='idle', text_color=[170, 170, 170, 255], text_offset=[0,60], tag='lookout', pos = [114,36,0]), 'walkarea')
     r.addDynamicItems()
 
+    r.init.append(a1)
     #r.add()
     return r
 

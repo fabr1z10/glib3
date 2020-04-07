@@ -27,7 +27,8 @@ PYBIND11_MODULE(example, m) {
         .def(py::init<>())
         .def("x", &Wrap1::x)
         .def("setColor", &Wrap1::setColor)
-        .def("setText", &Wrap1::setText);
+        .def("setText", &Wrap1::setText)
+        .def("appendText", &Wrap1::appendText);
 
     py::class_<PyEngine>(m, "engine")
         //.def("get", &PyEngine::get, py::arg("tag"))
