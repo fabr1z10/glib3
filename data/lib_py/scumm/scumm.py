@@ -1,3 +1,5 @@
+from lib_py.scumm.dialogue import Dialogue
+
 
 class Verb:
     # bear in mind the difference between callback and handler
@@ -58,12 +60,24 @@ class DynamicItem:
 class State:
     # map that associate room with dynamic items to create on the fly
     items = {}
+    dialogues = {}
     room_items = {}
     items_room = {}
+ 
     @staticmethod
     def addItem (id : str, item : Item):
         State.items[id]= item
     
+    @staticmethod
+    def addDialogue (dialogue : Dialogue):
+        State.dialogues[dialogue.id] = dialogue
+    
+    @staticmethod
+    def getDialogue (id: str):
+        if id not in State.dialogues:
+            print ('*** unknown dialogue: ' + id)
+        return State.dialogues[id]
+
     @staticmethod
     def setDynamicItem(room : str, item : DynamicItem):
         if room not in State.room_items:

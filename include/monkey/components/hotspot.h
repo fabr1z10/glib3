@@ -60,39 +60,34 @@ inline int HotSpot::GetPriority() const {
     return m_priority;
 }
 
-
-
-
 // I have one only mouse listener
 // so when mouse moves, I just need to call one function and not one func for every hotspot.
 // Each hotspoot registers to the hotspot handler at startup and it has a group id. For each group,
 // only one hotspot can be active at any given time.
-class HotSpotManager : public Runner, public MouseListener, public KeyboardListener {
+class HotSpotManager : public Component, public MouseListener, public KeyboardListener {
 public:
     HotSpotManager();
+    HotSpotManager(const HotSpotManager&);
     HotSpotManager(const LuaTable&);
     HotSpotManager(const ITable&);
+    std::shared_ptr<Component> clone() const override;
+
 
     ~HotSpotManager() override;
-    //void Start() override ;
-    //void Update (double dt) override ;
-    void Init() override;
+
+    void Start() override;
+    void Update(double) override {}
+
     void CursorPosCallback(GLFWwindow*, double, double) override;
     void ScrollCallback(GLFWwindow*, double, double) override;
     void MouseButtonCallback(GLFWwindow*, int, int, int) override;
-    //void Enable(bool) override;
-    void Update(double) override {}
+
     void setRmbClickCallback(std::function<void(float, float)> f);
     void setLmbClickCallback(std::function<void(float, float)> f);
-    //void Register (HotSpot*);
-    //void Unregister (HotSpot*);
-    //void AddGroup (int, const std::string& camId);
-    //bool IsInViewport(float xScreen, float yScreen, glm::vec4 activeViewport);
+
     void NotifyHotSpotDestructor(HotSpot*);
     void KeyCallback(GLFWwindow*, int, int, int, int) override;
     void setActive(bool) override;
-    //void EnableGroup(int);
-    //void DisableGroup(int);
 
     using ParentClass = HotSpotManager;
     std::string toString() override;

@@ -11,10 +11,7 @@ class KeyListener:
 def pippo(x, y):
     print ('clicked at ' + str(x) + ', ' + str(y))
 
-class HotSpotManager:
-    def __init__(self, lmbclick = None):
-        self.type = 'runner.hotspotmanager'
-        self.lmbclick = lmbclick
+
 
 
 class Scheduler:

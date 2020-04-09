@@ -14,4 +14,7 @@ class HotSpot:
         self.onclick = onclick
         self.priority = priority
 
-    
+class HotSpotManager:
+    def __init__(self, lmbclick = None):
+        self.type = 'components.hotspotmanager'
+        self.lmbclick = lmbclick

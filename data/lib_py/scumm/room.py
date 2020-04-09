@@ -1,12 +1,43 @@
 import copy
 import lib_py.room as room
 import lib_py.engine as engine
+import lib_py.components as compo
 import lib_py.entity as entity
 import lib_py.runner as runner
 import lib_py.camera as cam
 import lib_py.scumm.scumm as scumm
 import lib_py.scumm.entity as se
 import lib_py.scumm.functions as func
+import lib_py.actions as act
+import lib_py.scumm.actions as scact
+
+from lib_py.script import Script
+import example
+
+def runDialogueScript(s):
+    def f(x, y, obj = None):
+        dial = example.get('dialogue')
+        dial.clearText()
+        # check if there's any script to run
+        a = Script()
+        ds = s.script()
+        if ds:
+            a.addAction(act.RunScript(s = ds))
+        if s.next_group == -1:
+            a.addAction(scact.EndDialogue())
+        else:
+            a.addAction(scact.StartDialogue(s.dialid, group=s.next_group))
+        example.play(a)
+    return f
+
+def makeDialogueButton(dialogueline):
+    return se.DialogueButton(
+        font = 'ui', 
+        text = dialogueline.text, 
+        script = runDialogueScript(dialogueline),
+        colorInactive = scumm.Config.Colors.verb_unselected,
+        colorActive = scumm.Config.Colors.verb_selected)
+
 
 
 class RoomUI(room.Room):
@@ -26,6 +57,7 @@ class RoomUI(room.Room):
         # add the main node     
         main = entity.Entity (tag='main')
         main.camera = cam.OrthoCamera(width, height, camWidth, camHeight, [0, uisize, camWidth, camHeight], tag='maincam')
+        main.addComponent (compo.HotSpotManager(lmbclick=func.walkto))
         #main.add (e.Text(font='ui', text='ciao', color = [255, 255, 255, 255], align = e.TextAlignment.bottom, pos = [camWidth/2, 16, 0]))
 
         # add the ui node
@@ -33,9 +65,11 @@ class RoomUI(room.Room):
         ui.camera = cam.OrthoCamera(camWidth, uisize, camWidth, uisize, [0, 0, camWidth, uisize], tag = 'uicam')
         ui.add (entity.Text(font='ui', text = defv.text, color = scumm.Config.Colors.current_action, 
             align = entity.TextAlignment.bottom, tag = 'current_verb', pos = [camWidth/2, 48, 0]))
+        ui.addComponent (compo.HotSpotManager())
 
         # add the dialogue node
-        dialogue_node = entity.TextView(None, size=[320,56], fontSize=8, lines=6, deltax=26, tag='dialogue')
+        dialogue_node = entity.TextView(factory=makeDialogueButton, size=[320,56], fontSize=8, lines=6, deltax=26, tag='dialogue')
+        dialogue_node.addComponent(compo.HotSpotManager())
 
         row = 2
         count = 0
@@ -71,7 +105,7 @@ class RoomUI(room.Room):
         self.scene.append(dialogue_node)
 
         # create a hotspot manager
-        self.engines.append(runner.HotSpotManager(lmbclick=func.walkto))
+        #self.engines.append(runner.HotSpotManager(lmbclick=func.walkto))
         self.engines.append(runner.Scheduler())
     def addDynamicItems(self):
         roomId = self.id

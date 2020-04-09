@@ -5,14 +5,17 @@
 
 class Entity;
 
-class Wrap1 {
+class PYBIND11_EXPORT Wrap1 {
 public:
     Wrap1();
     float x() const ;
     void setEntity(Entity* e);
     void setColor (std::vector<float>& l);
     void setText (const std::string&);
-    void appendText (const std::string&);
+    void appendText (pybind11::object);
+    void clearText ();
+    void setActive (bool);
+    void enableControls(bool);
 private:
     int g;
     Entity* m_entity;

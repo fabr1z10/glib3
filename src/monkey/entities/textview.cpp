@@ -65,7 +65,7 @@ TextView::TextView (glm::vec2 pos, float width, float height, float fontSize, in
 }
 
 
-void TextView::AddItem(const std::string& line) {
+void TextView::AddItem(pybind11::object& line) {
     m_lines.push_back(line);
     AddEntity(line);
 }
@@ -80,9 +80,10 @@ void TextView::ClearText() {
 
 }
 
-void TextView::AddEntity(const std::string& ref) {
+void TextView::AddEntity(pybind11::object& ref) {
     //ref["maxwidth"] = m_scroll ? m_width - m_deltax : m_width;
     py::object obj = m_factory(ref);
+    obj.attr("maxwidth") = m_width;
     PyTable ft(obj);
 
     // 1. find the number of rows of this
@@ -111,11 +112,11 @@ void TextView::IncreaseTopLine(int inc) {
     glm::vec3 camPos (m_width * 0.5f,y -m_height*0.5f, 5.0f);
     GetCamera()->SetPosition(camPos, glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
     // update arrow position
-    m_arrowUp->SetPosition(glm::vec2(0.0f, y - m_arrowUpSize));
-    m_arrowDown->SetPosition(glm::vec2(0.0f, y - m_height));
+    //m_arrowUp->SetPosition(glm::vec2(0.0f, y - m_arrowUpSize));
+    //m_arrowDown->SetPosition(glm::vec2(0.0f, y - m_height));
 
-    m_arrowUp->setActive(m_topLine>0);
-    m_arrowDown->setActive(m_topLine + m_maxLines < m_nLines);
+    //m_arrowUp->setActive(m_topLine>0);
+    //m_arrowDown->setActive(m_topLine + m_maxLines < m_nLines);
 }
 
 void TextView::reformat() {

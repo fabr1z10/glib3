@@ -5,10 +5,11 @@
 
 class CallFunc : public Activity {
 public:
-    CallFunc(luabridge::LuaRef func) : Activity(), m_func{func} {}
+    //CallFunc(luabridge::LuaRef func) : Activity(), m_func{func} {}
     CallFunc(const LuaTable& t);
+    CallFunc(const ITable& t);
     void Start() override;
     void Run (float dt) override {}
 private:
-    luabridge::LuaRef m_func;
+    pybind11::function m_f;
 };

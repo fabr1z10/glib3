@@ -149,6 +149,7 @@ SceneFactory::SceneFactory() {
     add<Animate> ("animate");
     add<ChangeRoom> ("gotoroom");
     add<CallFunc> ("callfunc");
+    add2<CallFunc> ("action.callfunc");
     add<SuspendScript> ("suspend_script");
     add<ResumeScript> ("resume_script");
     add<KillScript> ("kill_script");
@@ -159,7 +160,7 @@ SceneFactory::SceneFactory() {
 
     // runners
     add<HotSpotManager> ("hotspotmanager");
-    add2<HotSpotManager> ("runner.hotspotmanager");
+    add2<HotSpotManager> ("components.hotspotmanager");
 
     add<Scheduler> ("scheduler");
     add2<Scheduler> ("runner.scheduler");

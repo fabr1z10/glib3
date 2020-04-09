@@ -71,6 +71,16 @@ class VerbButton(entity.Text):
             onleave = change_color(colorInactive),
             onclick = verb.callback )) 
 
+class DialogueButton(entity.Text):
+    def __init__(self, font: str, text: str, colorInactive, colorActive, align: entity.TextAlignment = entity.TextAlignment.bottomleft, 
+        script: callable = None, tag=None, pos=[0,0,0]):
+        super().__init__(font, text, colorInactive, align, tag, pos)          
+        self.addComponent(compo.HotSpot(
+            shape = None,
+            onenter = change_color(colorActive), 
+            onleave = change_color(colorInactive),
+            onclick = script )) 
+
 class WalkArea(entity.Entity):
     def __init__(self, shape, depth = None, priority : int = 0, tag = None, pos = [0,0,0]):
         super().__init__(tag, pos)
@@ -82,6 +92,8 @@ class WalkArea(entity.Entity):
 class Sprite(entity.Entity):
     def __init__(self, model: str = None, anim : str = None, item : str = None, tag = None, pos = [0,0,0]):
         super().__init__(tag, pos)
+        if not tag:
+            self.tag = item
         if model:
             self.type = 'sprite'
         self.model = model

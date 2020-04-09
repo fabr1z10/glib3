@@ -3,6 +3,7 @@
 #include <monkey/engine.h>
 #include <monkey/entity.h>
 #include <monkey/script.h>
+#include <monkey/entities/textview.h>
 
 Wrap1 get(const std::string & tag) {
     auto e = m_monkey->Get<Entity>(tag);
@@ -12,6 +13,12 @@ Wrap1 get(const std::string & tag) {
 
 }
 
+
+//void addLine(const std::string& tag, pybind11::object& o) {
+//    auto entity = m_monkey->Get<Entity>(tag);
+//    auto* t = dynamic_cast<TextView*>(entity);
+//    t->AddItem(o);
+//}
 
 void play (pybind11::object o) {
     std::cout << "CIAO!\n";

@@ -41,9 +41,14 @@ Component(orig), m_shape(orig.m_shape), m_focus(orig.m_focus), m_priority(orig.m
     
 }
 
-void HotSpotManager::Init() {
-    m_defaultCamera = Monkey::get().Get<Camera>("maincam");
+void HotSpotManager::Start() {
 
+    // a hotspot manager requires a CAMERA!
+    //m_entity->GetCamera();
+    m_defaultCamera = m_entity->GetCamera(); //Monkey::get().Get<Camera>("maincam");
+    if (m_defaultCamera == nullptr) {
+        GLIB_FAIL("A hotspot manager needs to be attached to an entity with a camera!");
+    }
 }
 
 bool HotSpot::isMouseInside(glm::vec2 pos) {
@@ -67,11 +72,19 @@ void HotSpot::SetFocus(bool focus) {
 
 }
 
-HotSpotManager::HotSpotManager() : Runner(), MouseListener(), m_currentlyActiveHotSpot{nullptr} {
+HotSpotManager::HotSpotManager() : Component(), MouseListener(), m_currentlyActiveHotSpot{nullptr} {
     m_pixelRatio = Engine::get().GetPixelRatio();
 }
 
-HotSpotManager::HotSpotManager(const ITable & table) : Runner() {
+
+HotSpotManager::HotSpotManager(const HotSpotManager & orig) : Component(orig) {
+
+}
+std::shared_ptr<Component> HotSpotManager::clone() const {
+    return std::make_shared<HotSpotManager>(*this);
+}
+
+HotSpotManager::HotSpotManager(const ITable & table) : Component(table) {
     m_currentlyActiveHotSpot = nullptr;
     m_pixelRatio = Engine::get().GetPixelRatio();
 
@@ -86,7 +99,7 @@ HotSpotManager::HotSpotManager(const ITable & table) : Runner() {
 }
 
 
-HotSpotManager::HotSpotManager(const LuaTable & table) : Runner(table) {
+HotSpotManager::HotSpotManager(const LuaTable & table) : Component(table) {
     m_currentlyActiveHotSpot = nullptr;
     m_pixelRatio = Engine::get().GetPixelRatio();
     // this is the function that gets called
@@ -145,50 +158,31 @@ void HotSpotManager::CursorPosCallback(GLFWwindow*, double x, double y) {
     // mouse has moved! let's find the current focussed hotspot
     //if (!m_active)
     //    return;
-    Entity* root = Engine::get().GetScene();
-    HotSpotIterator iterator(root);
+    HotSpotIterator iterator(m_entity);
 
     //bool isInViewport {false};
     //OrthographicCamera* currentCam {nullptr};
     //glm::vec4 viewport;
     HotSpot* newActiveHotSpot = nullptr;
     while (!iterator.end()) {
-        if (!iterator->isActive() || !iterator->AreControlsEnabled())
-        {
-            iterator.advanceSkippingChildren();
-            continue;
-        }
-        Camera* cam = iterator.GetCamera();
-        if (cam != nullptr) {
-            //viewport = iterator.GetCamera()->GetScreenViewPort();
-            bool isInViewport = cam->IsInViewport(x, y);
-            if (isInViewport) {
-                HotSpot* hotspot = iterator->GetComponent<HotSpot>();
-                // only check if I don't have an active hotspot or if it has lower priority
-                if (hotspot!= nullptr) {
-                    int prio = hotspot->GetPriority();
-                                int a = prio;
-                }
+        bool isInViewport = m_defaultCamera->IsInViewport(x, y);
+        if (isInViewport) {
 
-                if (hotspot != nullptr &&
+            //std::cout << iterator->GetPosition().x <<"\n";
+            HotSpot* hotspot = iterator->GetComponent<HotSpot>();
+            // only check if I don't have an active hotspot or if it has lower priority
+            if (hotspot != nullptr &&
                     (newActiveHotSpot == nullptr || (newActiveHotSpot->GetPriority() < hotspot->GetPriority()))) {
-
-                    // we need to convert screen coordinates to world coordinates
-                    // first observation we make is that the bottom left screen point given
-                    // by viewport.x and viewport.y, corresponds to the world point (cam.x - cam.width, cam.y - cam.height)
-                    glm::vec2 worldCoords = cam->GetWorldCoordinates(glm::vec2(x, y));
-                    if (hotspot->isMouseInside(worldCoords)) {
-                        //std::cout << "INSIDE!\n";
-                        newActiveHotSpot = hotspot;
-                        m_worldCoordinates = worldCoords;
-                    }
+                // we need to convert screen coordinates to world coordinates
+                // first observation we make is that the bottom left screen point given
+                // by viewport.x and viewport.y, corresponds to the world point (cam.x - cam.width, cam.y - cam.height)
+                glm::vec2 worldCoords = m_defaultCamera->GetWorldCoordinates(glm::vec2(x, y));
+                if (hotspot->isMouseInside(worldCoords)) {
+                    newActiveHotSpot = hotspot;
+                    m_worldCoordinates = worldCoords;
                 }
-                ++iterator;
-
-            } else {
-                iterator.advanceSkippingChildren();
-                continue;
             }
+            ++iterator;
         } else {
             ++iterator;
         }

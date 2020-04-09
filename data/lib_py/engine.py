@@ -59,7 +59,7 @@ def loadSprites():
 def loadText(lang: str):
     with open('/home/fabrizio/glib3/data/mi1_py/text/eng/text.yaml') as f:
         data['strings']= yaml.load(f, Loader=yaml.FullLoader)
-    print(data)
+    print(data['strings'])
 
 # # creating enumerations using class 
 

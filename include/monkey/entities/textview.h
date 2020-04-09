@@ -1,16 +1,17 @@
 #pragma once
 
 #include <monkey/entity.h>
+#include <monkey/py.h>
 #include <monkey/lua/luawrapper.h>
 
-class TextView : public Entity {
+class TextView: public Entity {
 public:
     TextView (glm::vec2 pos, float width, float height, float fontSize, int lines, luabridge::LuaRef factory) ;
     TextView (const LuaTable&);
     TextView (const ITable&);
     //virtual ~TextView();
 
-    void AddItem (const std::string&);
+    void AddItem (pybind11::object&);
     void ClearText();
     void IncreaseTopLine(int);
     void Start() override;
@@ -28,12 +29,12 @@ private:
     void init();
     void SetActiveInnerCheck(bool) override;
     void AddArrows();
-    void AddEntity(const std::string&);
+    void AddEntity(pybind11::object&);
     void reformat();
     pybind11::function m_factory;
     //luabridge::LuaRef m_factory;
     // number of lines in text view
-    std::vector<std::string> m_lines;
+    std::vector<pybind11::object> m_lines;
     int m_nLines;
     int m_maxLines;
     float m_width;

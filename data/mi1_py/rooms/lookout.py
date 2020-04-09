@@ -7,7 +7,14 @@ import lib_py.scumm.scumm as scumm
 import lib_py.scumm.room as room
 import lib_py.scumm.entity as se
 
+import example
+
 def a1():
+    #du: example.Wrap1 = example.get('ui')
+    #du.setActive(False)
+    #dd: example.Wrap1 = example.get('dialogue')
+    #print (type(dd.appendText))
+    #dd.appendText('Questo ciao nello')    
     print ('LLLLLLLLLLLLLLLLLLLLLLLLOKKO')
 
 def builder():
@@ -30,7 +37,7 @@ def builder():
     ), depth=sh.LinY(y0=0,z0=1,y1=144,z1=0)), 'main')
     r.add (se.Sprite (model = 'fire', pos = [126, 52, 0]), 'walkarea')
     r.add (se.Sprite (item = 'lookout.stairs', pos = [230,0,0]), 'main')
-    r.add (se.Character (item='lookout.lookout', model='lookout', speed = 100, dir = 'w', state='idle', text_color=[170, 170, 170, 255], text_offset=[0,60], tag='lookout', pos = [114,36,0]), 'walkarea')
+    r.add (se.Character (item='lookout.lookout', model='lookout', speed = 100, dir = 'w', state='idle', text_color=[170, 170, 170, 255], text_offset=[0,60], pos = [114,36,0]), 'walkarea')
     r.addDynamicItems()
 
     r.init.append(a1)

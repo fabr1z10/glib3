@@ -25,6 +25,7 @@ objects:
   path: path
   poster: poster
   door: door
+  lookout: lookout
 dialogues:
   lookout: 
     1: "I heard there was going to be a weenie roast here."

@@ -1,0 +1,1 @@
+talked_to_lookout = False

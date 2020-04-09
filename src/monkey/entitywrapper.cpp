@@ -392,8 +392,8 @@ void EntityWrapper::SetFlipX(bool value) {
     m_underlying->SetFlipX(value);
 }
 void EntityWrapper::AppendText(luabridge::LuaRef ref) {
-    TextView* r = dynamic_cast<TextView*>(m_underlying);
-    r->AddItem(ref);
+    //TextView* r = dynamic_cast<TextView*>(m_underlying);
+    //r->AddItem(ref);
 }
 
 void EntityWrapper::AppendButton(luabridge::LuaRef ref) {

@@ -4,6 +4,7 @@
 #include <monkey/model/textmodel.h>
 #include <glm/gtx/transform.hpp>
 #include <monkey/entities/textview.h>
+#include <monkey/components/hotspot.h>
 
 Wrap1::Wrap1() : m_entity(nullptr) {
     //m_entity = x.cast<Entity *>();
@@ -30,7 +31,23 @@ void Wrap1::setText(const std::string& text) {
     r->SetTransform(glm::translate(glm::vec3(offset, 0.0f)));
 }
 
-void Wrap1::appendText(const std::string& text) {
+void Wrap1::appendText(pybind11::object text) {
     TextView* r = dynamic_cast<TextView*>(m_entity);
     r->AddItem(text);
+}
+
+void Wrap1::clearText() {
+    auto r = dynamic_cast<TextView*>(m_entity);
+    r->ClearText();
+}
+
+void Wrap1::setActive(bool value) {
+    m_entity->setActive(value);
+}
+
+void Wrap1::enableControls(bool value) {
+    auto hs = m_entity->GetComponent<HotSpotManager>();
+    hs->setActive(value);
+
+    //m_entity->SetControlsEnabled(value);
 }

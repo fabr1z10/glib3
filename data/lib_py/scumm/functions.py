@@ -1,8 +1,15 @@
 import example
 import lib_py.script as script
 import lib_py.actions as actions
+from lib_py.scumm.scumm import Config 
 import lib_py.scumm.actions as sa
 import lib_py.scumm.scumm as s
+import lib_py.scumm.helper as helper
+
+def start_dialogue():
+    # first of all, set UI to inactive
+    ui : example.Wrap1 = example.get('ui')
+    ui.setActive(False)
 
 # handle 1-verb actions
 def handler1():
@@ -19,12 +26,14 @@ def handler1():
     print ('ciao ' + s.Config.verb)
     if s.Config.verb in item.actions:
         a = item.actions[s.Config.verb]()
-        sc.addAction (actions.RunScript(s = a))
+        if a:
+            sc.addAction (actions.RunScript(s = a))
     else:
         v = s.Config.getVerb(s.Config.verb)
         if v.default_action:
             a = v.default_action()
             sc.addAction (actions.RunScript(s = a))
+    sc.addAction (sa.ResetVerb())
     example.play(sc)
         # run default script
     
@@ -39,22 +48,8 @@ def walkto(x, y, obj=None):
     example.play(s)    
     print ('clicked on ' + str(x) + ', ' + str(y))
 
-def set_verb(verbId):
-    def f(x, y, e : example.Wrap1):
-        s.Config.verb = verbId
-        s.Config.item1 = ''
-        s.Config.item2 = ''
-        update_current_action()
-    return f
 
-def update_current_action():
-    a : example.Wrap1 = example.get('current_verb')
-    verb = s.Config.getVerb(s.Config.verb)
-    text = verb.text
-    if s.Config.item1:
-        item = s.State.items[s.Config.item1]
-        text += ' ' + item.text
-    a.setText (text)
+
 
 # this is called whenever you click on a item
 def run_action(x,y,obj=None):
@@ -63,3 +58,4 @@ def run_action(x,y,obj=None):
     print ('action: ' + verb.text + ' ' + s.Config.item1)
     # next, call the handler for the current verb
     verb.handler()
+
