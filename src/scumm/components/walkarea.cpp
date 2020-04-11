@@ -54,9 +54,9 @@ WalkArea::WalkArea(const ITable & t) : ScriptHotSpot(t) {
     }
     
     if (t.hasKey("scale")) {
-        //auto dref = t.Get<LuaTable>("scale");
-        //auto scaleFunc = factory->make<Function2D>(dref);
-        //SetScalingFunction(scaleFunc);
+        auto dref = t.get<PyTable>("scale");
+        auto scaleFunc = factory->make2<Function2D>(dref);
+        SetScalingFunction(scaleFunc);
     }
     
     if (t.hasKey("blockedlines")) {

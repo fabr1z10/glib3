@@ -6,6 +6,10 @@ class RunScript:
         self.type = 'action.runscript'
         self.script = s
 
+class ChangeRoom:
+    def __init__(self, room: str):
+        self.type = 'action.changeroom'
+        self.room = room
 
 class CallFunc:
     def __init__(self, f : callable):

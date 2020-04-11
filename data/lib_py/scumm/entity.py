@@ -82,9 +82,9 @@ class DialogueButton(entity.Text):
             onclick = script )) 
 
 class WalkArea(entity.Entity):
-    def __init__(self, shape, depth = None, priority : int = 0, tag = None, pos = [0,0,0]):
+    def __init__(self, shape, depth = None, scale = None, priority : int = 0, tag = None, pos = [0,0,0]):
         super().__init__(tag, pos)
-        self.addComponent(sc.Walkarea(shape = shape, depth=depth))
+        self.addComponent(sc.Walkarea(shape = shape, depth=depth, scale = scale))
         #self.shape = shape
         #self.depth = depth
         #self.priority = priority

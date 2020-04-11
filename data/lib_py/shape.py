@@ -15,6 +15,14 @@ class Polygon(Shape):
         super().__init__(offset)
         self.outline = outline
         
+class Graph(Shape):
+    def __init__(self, nodes : list, edges: list, offset = [0, 0]):
+        self.type='shape.graph'
+        super().__init__(offset)
+        self.nodes = nodes
+        self.edges = edges
+
+
 class LinY:
     def __init__(self, y0 : float, z0: float, y1: float, z1: float):
         self.type = 'func.liny'

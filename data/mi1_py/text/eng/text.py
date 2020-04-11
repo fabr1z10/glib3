@@ -44,7 +44,7 @@ strings = {
 		'pirate' : 'pirate',
 		'pirates' : 'pirates',
 		'archway' : 'archway',
-		'citizen' : 'Citizen of M�l�e',
+		'citizen' : 'Citizen of Mél�e',
 		'lowmoralfiber': 'Men of Low Moral Fiber (pirates)',
 		'pieceofeight' : 'piece of eight',
 		'piecesofeight' : 'pieces of eight',

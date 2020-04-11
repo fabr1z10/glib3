@@ -19,6 +19,7 @@ public:
         }
     }
 
+
     template <typename T>
     T get(const std::string& key, T defaultValue) const {
         try {
@@ -106,6 +107,9 @@ public:
     PyTable (pybind11::object o) : obj(o) {}
     PyTable (const PyTable&);
     std::shared_ptr<ITable> clone() const override;
+    pybind11::object& getObject() {
+        return obj;
+    }
 private:
     virtual pybind11::object getHandle (const std::string& key) const;
     pybind11::object obj;

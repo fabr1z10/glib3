@@ -5,6 +5,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <unordered_set>
 #include <limits>
+#include <string>
+#include <locale>
+#include <codecvt>
 
 using namespace std;
 
@@ -48,12 +51,14 @@ void TextMesh::UpdateText(const std::string& msg, float maxLineWidth) {
 
     // loop through lines
     for (size_t n = 0; n < lines.size(); n++) {
+        auto sss = std::wstring_convert<std::codecvt_utf8<wchar_t>>().from_bytes(lines[n].c_str());
 
         float x = 0.0f;					// current cursor position
-        for (size_t i = 0; i < lines[n].length(); i++) {
-            char c = lines[n][i];
+        for (const auto& w : sss) {
+
+            //char c = lines[n][i];
             //bool isLastCharacter = i == lines[n].length()-1;
-            Glyph glyph = m_font->getGlyph(c);
+            Glyph glyph = m_font->getGlyph(w);
 
             float scaledWidth = glyph.width * scalingFactor;
             float scaledHeight = glyph.height * scalingFactor;

@@ -10,7 +10,7 @@ import lib_py.scumm.entity as se
 import lib_py.scumm.functions as func
 import lib_py.actions as act
 import lib_py.scumm.actions as scact
-
+from lib_py.scumm.dialogue import NodeStatus
 from lib_py.script import Script
 import example
 
@@ -20,13 +20,24 @@ def runDialogueScript(s):
         dial.clearText()
         # check if there's any script to run
         a = Script()
+        node = s.node
+        for cn in node.closeNodes:
+            s.node.dialogue.nodes[cn].status = NodeStatus.CLOSED
+
+
+        #for l in s.deact:
+        #    dialogue.lines[l] = False
+        #for l in s.act:
+        #    dialogue.lines[l].active = True
+        s.node.status = s.node.nextStatus
+        s.node.dialogue.openNode(s.node)
         ds = s.script()
         if ds:
             a.addAction(act.RunScript(s = ds))
-        if s.next_group == -1:
-            a.addAction(scact.EndDialogue())
+        if s.node.resume:
+            a.addAction(scact.ResumeDialogue(s.node.dialogue.id))
         else:
-            a.addAction(scact.StartDialogue(s.dialid, group=s.next_group))
+            a.addAction(scact.EndDialogue(s.node.dialogue.id))
         example.play(a)
     return f
 
@@ -109,13 +120,20 @@ class RoomUI(room.Room):
         self.engines.append(runner.Scheduler())
     def addDynamicItems(self):
         roomId = self.id
-        for key, value in scumm.State.room_items[roomId].items():
-            print ('creating dynamic item = ' + key)
-            # get a shallow copy of item
-            item = engine.data['entities'][key]
-            # apply ajustments
-            for pk, pv in value.params.items():
-                setattr(item, pk, pv)
-            self.add(e=item, ref = value.parent)
-            print('adding item ' + key)
+        if roomId in scumm.State.room_items:
+            for key, value in scumm.State.room_items[roomId].items():
+                print ('creating dynamic item = ' + key)
+                # get the fac
+                if key in engine.data['factories']:
+                    print ('found fac')
+                    print(value)
+                    entity = engine.data['factories'][key](**value)
+                    self.add (e=entity, ref=value['parent'])
+                # # get a shallow copy of item
+                # item = engine.data['entities'][key]
+                # # apply ajustments
+                # for pk, pv in value.params.items():
+                #     setattr(item, pk, pv)
+                # self.add(e=item, ref = value.parent)
+                # print('adding item ' + key)
 

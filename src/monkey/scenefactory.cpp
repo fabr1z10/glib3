@@ -130,6 +130,7 @@ SceneFactory::SceneFactory() {
     add2<TextView> ("textview");
     // components
     add<Follow> ("follow");
+    add2<Follow> ("components.follow");
     add<SimpleCollider> ("collider");
     add<ScriptHotSpot> ("hotspot");
     add2<ScriptHotSpot> ("components.hotspot");
@@ -148,6 +149,7 @@ SceneFactory::SceneFactory() {
     add<DelayTimeDynamic> ("delay_dynamic");
     add<Animate> ("animate");
     add<ChangeRoom> ("gotoroom");
+    add2<ChangeRoom> ("action.changeroom");
     add<CallFunc> ("callfunc");
     add2<CallFunc> ("action.callfunc");
     add<SuspendScript> ("suspend_script");
@@ -178,7 +180,7 @@ SceneFactory::SceneFactory() {
     add<Rect> ("rect");
     add2<Rect> ("rect");
     add<PolyLine> ("graph");
-
+    add2<PolyLine> ("shape.graph");
     // models
     add<SpriteModel> ("sprite.model");
     add2<SpriteModel> ("asset.sprite");

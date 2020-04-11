@@ -1,6 +1,7 @@
 from typing import Callable
 from typing import List, Tuple
 
+import example
 import enum
 import yaml
 
@@ -19,6 +20,11 @@ class ShaderType(enum.Enum):
     unlit_color = 1,
     text = 2
 
+def startUp():
+    example.init(example.what)
+    addShader (ShaderType.unlit_textured)
+    addShader (ShaderType.unlit_color)
+    addShader (ShaderType.text)
 
 # contains engine related infos.
 # All games require these infos.
@@ -36,7 +42,8 @@ data = {
     },
     'rooms': {},
     'strings': {},
-    'entities': {}
+    'entities': {},
+    'factories': {}
 }
 
 def addEntity (id : str, e):

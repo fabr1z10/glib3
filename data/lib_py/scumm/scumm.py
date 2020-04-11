@@ -63,6 +63,7 @@ class State:
     dialogues = {}
     room_items = {}
     items_room = {}
+    player = ''
  
     @staticmethod
     def addItem (id : str, item : Item):
@@ -79,14 +80,16 @@ class State:
         return State.dialogues[id]
 
     @staticmethod
-    def setDynamicItem(room : str, item : DynamicItem):
+    def setDynamicItem(id: str, room : str, **kwargs):
+        print ('ciaociao')
+        print(kwargs)
         if room not in State.room_items:
             State.room_items[room] = {}
         # if item is already somewhere, remove it from current location
-        if item.id in State.items_room:
-            current_room = State.items_room[item.id]
-            del State.room_items[current_room][item.id]
-        State.room_items[room][item.id] = item
+        if id in State.items_room:
+            current_room = State.items_room[id]
+            del State.room_items[current_room][id]
+        State.room_items[room][id] = kwargs 
 
 # def print_msg(msg):
 #     def h(e : example.Wrap1):

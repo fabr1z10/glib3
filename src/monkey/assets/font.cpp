@@ -50,6 +50,9 @@ bool Font::loadFromFile(const std::string& filename, const int size) {
         return false;
 
     FT_Error err = FT_New_Face(s_lib, filename.c_str(), 0, &m_fontFace);
+    auto mp = m_fontFace->charmap;
+
+    //FT_Select_Charmap(m_fontFace, ft_encoding_unicode);
     if (err != 0) {
         GLIB_FAIL("Unable to load font " << filename);
         return false;
@@ -97,7 +100,7 @@ bool Font::loadFromFile(const std::string& filename, const int size) {
     unsigned int currentLine = 1;
 
     //for (size_t i = ' '; i <= '~'; ++i) {
-    for (size_t i = 32; i <= 255; ++i) {
+    for (size_t i = 32; i <= 256; ++i) {
         FT_Glyph glyph;
         unsigned int index = FT_Get_Char_Index(m_fontFace, i);
         if (index == 0)
