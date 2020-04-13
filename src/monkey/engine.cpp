@@ -58,15 +58,17 @@ void Engine::init(const std::string& gameFolder) {
     pycode << "import example\n"
         "import sys\nsys.path.append('" << gameFolder << "')\n"
         "sys.path.append('" << m_gameDirectory << "../')\n";//example.what=150";
-
+    
     py::exec(pycode.str().c_str());
 
     Monkey& m = Monkey::get();
     py::object pye = py::module::import("example").attr("engine");
-
+    //pye.attr("__dir") = gameFolder;
+    
     PyEngine py2(&m, this);
     pybind11::object w = py::cast(py2);
     py::module::import("example").attr("what") = w;
+    py::module::import("example").attr("dir") = gameFolder;
 
     auto module = py::module::import("main");
     //module.attr("engine.device)

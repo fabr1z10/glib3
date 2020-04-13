@@ -50,6 +50,7 @@ PYBIND11_MODULE(example, m) {
     //m.def("addLine", &addLine);
     m.def("getDeviceSize", &getDeviceSize);
     m.def("init", &init);
+    m.attr("dir") = "_not set_";
 
     m.attr("what") = PyEngine();
 

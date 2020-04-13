@@ -4,6 +4,7 @@ from typing import List, Tuple
 import example
 import enum
 import yaml
+import os
 
 import lib_py.assets as assets
 import lib_py.runner as runner
@@ -28,6 +29,7 @@ def startUp():
 
 # contains engine related infos.
 # All games require these infos.
+__dir = ''
 device_size : List[int] = [320, 200]
 window_size : List[int] = [640, 400]
 frame_time = 0.1
@@ -59,12 +61,13 @@ def addShader(s : ShaderType):
     shaders.append(s.name)
 
 def loadSprites():
-    with open('/home/fabrizio/glib3/data/mi1_py/sprites/01.yaml') as f:
+    print ('dir = ' + __dir)
+    with open('sprites/01.yaml') as f:
         data['assets']['spritemodels'] = yaml.load(f, Loader=yaml.FullLoader)
     print(data)
 
 def loadText(lang: str):
-    with open('/home/fabrizio/glib3/data/mi1_py/text/eng/text.yaml') as f:
+    with open('text/eng/text.yaml') as f:
         data['strings']= yaml.load(f, Loader=yaml.FullLoader)
     print(data['strings'])
 

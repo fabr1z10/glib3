@@ -6,16 +6,33 @@ include_directories(${INCLUDE_DIR} ${PYBIND_INCLUDE_DIR} ${FREETYPE_INCLUDE_DIRS
 
 pybind11_add_module(example example.cpp rect.cpp funx.cpp)
 
-configure_file(
-        "${SRC_DIR}/prova/setup.py.in"
-        "${CMAKE_CURRENT_BINARY_DIR}/setup.py"
-)
+message(STATUS "plo")
+message(STATUS ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+
+#file(GENERATE OUTPUT "${CMAKE_RUNTIME_OUTPUT_DIRECTORY_<CONFIG>}/setup.py"
+#INPUT "${SRC_DIR}/prova/setup.py.in")
+#configure_file(
+#        "${SRC_DIR}/prova/setup.py.in"
+#        "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/setup.py"
+#)
 
 configure_file(
-        "${SRC_DIR}/prova/install.sh"
-        "${BIN_DIR}/install.sh"
+    "${SRC_DIR}/prova/install.sh"
+    "${BIN_DIR}/install.sh"
 )
+
+
 target_link_libraries(example PUBLIC monkey)
 
-#install(TARGETS example DESTINATION ${BIN_DIR})
-INSTALL(CODE "execute_process(COMMAND ${BIN_DIR}/install.sh)")
+add_custom_command(
+    TARGET example
+    POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy
+    "${SRC_DIR}/prova/setup.py.in"
+    "${BIN_DIR}/setup.py"
+)
+
+install(TARGETS example DESTINATION ${BIN_DIR})
+install(CODE "execute_process(COMMAND ${BIN_DIR}/install.sh)")
+
+#INSTALL(CODE "execute_process(COMMAND ${BIN_DIR}/install.sh)")
