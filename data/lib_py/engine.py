@@ -61,13 +61,13 @@ def addShader(s : ShaderType):
     shaders.append(s.name)
 
 def loadSprites():
-    print ('dir = ' + __dir)
-    with open('sprites/01.yaml') as f:
+    print ('dir = ' + example.dir)
+    with open(example.dir + '/sprites/01.yaml') as f:
         data['assets']['spritemodels'] = yaml.load(f, Loader=yaml.FullLoader)
     print(data)
 
 def loadText(lang: str):
-    with open('text/eng/text.yaml') as f:
+    with open(example.dir+'/text/eng/text.yaml') as f:
         data['strings']= yaml.load(f, Loader=yaml.FullLoader)
     print(data['strings'])
 
