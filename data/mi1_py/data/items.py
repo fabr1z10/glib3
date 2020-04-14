@@ -1,5 +1,6 @@
 import mi1_py.data.lookout
 import mi1_py.data.village1
+import mi1_py.data.scummbar
 
 from lib_py.scumm.scumm import State
 import lib_py.engine as engine
@@ -39,4 +40,7 @@ engine.data['factories']['guybrush'] = makeGuybrush
 
 # a dynamic item is created ON THE FLY. It is simply a callable that creates an entity
 
-State.setDynamicItem (id='guybrush', room='lookout', pos=[200,30,0], dir='s', parent='walkarea')
+#State.setDynamicItem (id='guybrush', room='lookout', pos=[200,30,0], dir='s', parent='walkarea')
+State.setDynamicItem (id='guybrush', room='village1', pos=[700,30,0], dir='s', parent='walkarea')
+
+engine.room = 'village1'

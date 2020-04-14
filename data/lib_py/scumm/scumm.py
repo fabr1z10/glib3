@@ -30,6 +30,12 @@ class Config:
     __verbs = {}
     verbSets = []
     @staticmethod
+    def resetVerb():
+        Config.verb = Config.verbSets[0].defaultVerb
+        Config.item1 = ''
+        Config.item2 = ''
+
+    @staticmethod
     def addVerb(v : Verb):
         Config.__verbs[v.id] = v
     @staticmethod
@@ -63,6 +69,7 @@ class State:
     dialogues = {}
     room_items = {}
     items_room = {}
+    variables = {}
     player = ''
  
     @staticmethod

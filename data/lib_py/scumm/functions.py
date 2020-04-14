@@ -19,6 +19,7 @@ def handler1():
     if item.walkto:
         x = item.walkto[0]
         y = item.walkto[1]
+        print ('walking to ' + str(x) + ', ' + str(y))
         sc.addAction( sa.Walk(pos = [x, y], tag = 'player'))
     if item.dir:
         sc.addAction( sa.Turn(dir = item.dir, tag = 'player'))

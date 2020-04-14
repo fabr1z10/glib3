@@ -12,6 +12,7 @@ class Walk:
         self.tag = tag
         self.pos = pos
 
+
 class Turn:
     def __init__(self, dir : str, id = None, tag = None):
         self.type = 'scumm.action.turn'

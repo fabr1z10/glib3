@@ -21,7 +21,7 @@ State.addItem (
         walkto = [250, 0], 
         dir = 's',
         actions = {
-            'walkto': ssc.changeRoom(room = 'village1', pos = [20, 20, 0], dir='s')
+            'walkto': ssc.changeRoom(room = 'village1', pos = [8, 71, 0], dir='s')
         }))
 
 State.addItem (

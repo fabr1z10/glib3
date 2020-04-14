@@ -95,7 +95,7 @@ void SceneFactory::StartUp(Engine * engine) {
 //    if (engineDef.HasKey("global_assets")) {
 //
 //        luabridge::LuaRef gaRef = engineDef.Get<luabridge::LuaRef>("global_assets");
-//        LuaTable gaTable(gaRef);
+//        LuaTable gaTable(gaRef);b
 //        auto fonts = gaTable.GetVector<std::string>("fonts");
 //        for (auto& fontId : fonts) {
 //            Engine::get().GetAssetManager().GetFont(fontId);
@@ -148,6 +148,7 @@ SceneFactory::SceneFactory() {
     add<DelayTime> ("delay");
     add<DelayTimeDynamic> ("delay_dynamic");
     add<Animate> ("animate");
+    add2<Animate> ("action.animate");
     add<ChangeRoom> ("gotoroom");
     add2<ChangeRoom> ("action.changeroom");
     add<CallFunc> ("callfunc");

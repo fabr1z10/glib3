@@ -104,4 +104,34 @@ lookout:
         - [[193,459,23,35,11,0], [223,496,9,15,5,-32]]
         - [[193,459,23,35,11,0], [234,496,9,13,5,-32]]
         - [[193,459,23,35,11,0], [223,496,9,15,5,-32]]
-        
+door_village_scummbar:
+  sheet: "gfx/sprites/sprites1.png"
+  type: "asset.sprite"
+  animations:
+    open:
+      frames:
+        - [3,126,31,52]
+    closed:
+      frames:
+        - [35,126,31,52]
+door_scummbar_village:
+  sheet: "gfx/sprites/sprites1.png"
+  type: "asset.sprite"
+  animations:
+    open:
+      frames:
+        - [472,2,38,47]
+    closed:
+      frames:
+        - [472,50,38,47]
+door_scummbar_kitchen:
+  sheet: "gfx/sprites/sprites1.png"
+  type: "asset.sprite"
+  animations:
+    open:
+      frames:
+        - [435,73,35,69]
+    closed:
+      frames:
+        - [435,2,35,69]
+

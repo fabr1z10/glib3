@@ -56,6 +56,10 @@ scumm.Config.addVerb (scumm.Verb (id = 'turnoff', text = t['ui']['turnoff'], ite
 scumm.Config.verbSets.append (scumm.VerbSet(verbs= ['open', 'close', 'push', 'pull', 'walkto', 'pickup', 'talkto', 'give', 'use', 'look', 'turnon', 'turnoff'],
     defaultVerb='walkto'))
 
+# sets door to closed
+scumm.State.variables['door.village.scummbar'] = 'closed'
+
 import mi1_py.data.items
 import mi1_py.rooms.lookout
 import mi1_py.rooms.village1
+import mi1_py.rooms.scummbar

@@ -1,7 +1,7 @@
 #include <monkey/lua/luawrapper.h>
 #include <monkey/engine.h>
 #include <monkey/entitywrapper.h>
-#include <boost/filesystem.hpp>
+//#include <boost/filesystem.hpp>
 
 lua_State* LuaWrapper::L;
 

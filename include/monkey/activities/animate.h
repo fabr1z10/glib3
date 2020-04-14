@@ -14,6 +14,7 @@ public:
      */
     Animate(const std::string& animId, bool forward, int flip = 0);
     Animate(const LuaTable&);
+    Animate(const ITable&);
     //Animate(Entity* entity, const std::string& animId, bool forward, int flip = 0);
     //@}
     void Start() override;

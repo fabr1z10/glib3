@@ -115,6 +115,8 @@ class RoomUI(room.Room):
         self.scene.append(ui)
         self.scene.append(dialogue_node)
 
+        scumm.Config.resetVerb()
+        
         # create a hotspot manager
         #self.engines.append(runner.HotSpotManager(lmbclick=func.walkto))
         self.engines.append(runner.Scheduler())

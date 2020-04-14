@@ -39,7 +39,7 @@ def hoverOn(obj):
         if not s.Config.item1:
             s.Config.item1 = obj
         else:
-            print('oo')
+            print ('suca')
             #local verb = scumm.func.getCurrentVerb()
             #if (verb.objects > 1 and actionInfo.obj1 ~= obj) then
             #    actionInfo.obj2 = obj

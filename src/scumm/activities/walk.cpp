@@ -83,7 +83,7 @@ void Walk::Start() {
 
     }
     //std::cout << "current position is " << currentPos.x << ", " << currentPos.y << "\n";
-    //std::cout << "target point is " << m_p.x << ", " << m_p.y << "\n";
+    std::cout << "target point is " << m_p.x << ", " << m_p.y << "\n";
 
     // if target point is not in shape
     if (!m_shape->isPointInside(glm::vec3(m_p, 0.0f))) {
@@ -98,8 +98,9 @@ void Walk::Start() {
 
     if (delta != glm::vec2(0.0f))
     {
-        //std::cerr << "cpos " << currentPos.x << " " << currentPos.y << "\n";
-        //std::cerr << "finding sp to " << m_p.x << " " << m_p.y << "\n";
+        std::cerr << "delta " << delta.x << " " << delta.y << "\n";
+        std::cerr << "finding sp to " << m_p.x << " " << m_p.y << "\n";
+        std::cerr << "cpos " << currentPos.x << " " << currentPos.y << "\n";
         std::vector<glm::vec2> points = ShortestPath::Find(*m_shape, currentPos, m_p);
         //std::cerr << "ok\n";
         //int count = 0;
