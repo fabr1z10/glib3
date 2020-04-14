@@ -38,7 +38,7 @@ find_package(PNG REQUIRED)
 find_package(JPEG REQUIRED)
 find_package(Lua REQUIRED)
 find_package(Python COMPONENTS Interpreter Development REQUIRED)
-find_package(Boost COMPONENTS filesystem REQUIRED)
+#find_package(Boost COMPONENTS filesystem REQUIRED)
 
 if(APPLE)
     find_library(BZ2_LIB bz2)
@@ -48,18 +48,10 @@ if(APPLE)
     include_directories(/usr/local/include)
 endif (APPLE)
 
-message(STATUS "GLM included at ${GLEW_INCLUDE_DIRS}")
-message(STATUS "GLFW included at ${GLFW3_INCLUDE_DIR}")
-message(STATUS "GLEW lib is ${GLEW_LIBRARIES}")
-message(STATUS "ISISIS ${Boost_LIBRARIES}")
-message(STATUS "ISISIA ${Python_VERSION}")
-message(STATUS "ISISIA ${Python_INCLUDE_DIRS}")
-message(STATUS "ISISIA ${CMAKE_INSTALL_PREFIX}")
 
 #include_directories(${INCLUDE_DIR} ${FREETYPE_INCLUDE_DIRS} ${GLM_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS} )
 #link_directories(${LIB_DIR})
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
-message(${BIN_DIR})
 
 
 configure_file (

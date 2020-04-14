@@ -20,7 +20,7 @@
 #include <monkey/components/depth25.h>
 #include <monkey/components/follow.h>
 #include <monkey/components/luahook.h>
-#include <boost/filesystem/operations.hpp>
+//#include <boost/filesystem/operations.hpp>
 
 extern GLFWwindow* window;
 
@@ -471,30 +471,30 @@ void EntityWrapper::Call(const std::string& id, luabridge::LuaRef args) {
 }
 
 
-luabridge::LuaRef EntityWrapper::getFiles(const std::string &dir, bool recursive, const std::string& pattern) {
-    std::string gameDir = Engine::get().GetGameDirectory();
-    size_t l = gameDir.length();
-    std::string folder = gameDir + dir;
-    luabridge::LuaRef rr = luabridge::newTable(LuaWrapper::L);
-    int i = 1;
-    std::regex reg(pattern);
-    auto lambda = [&] (const boost::filesystem::path& path) {
-        std::string full_path = path.string();
-        if (std::regex_match(path.filename().string(), reg)) {
-            rr[i++] = full_path.substr(l, full_path.length()-l-4);
-        }
-    };
-
-    if (recursive) {
-        for (boost::filesystem::recursive_directory_iterator itr(folder); itr != boost::filesystem::recursive_directory_iterator(); ++itr) {
-            lambda (itr->path());
-        }
-    } else {
-        for (boost::filesystem::directory_iterator itr(folder); itr != boost::filesystem::directory_iterator(); ++itr) {
-            lambda (itr->path());
-        }
-    }
-
-    return rr;
-
-}
+//luabridge::LuaRef EntityWrapper::getFiles(const std::string &dir, bool recursive, const std::string& pattern) {
+//    std::string gameDir = Engine::get().GetGameDirectory();
+//    size_t l = gameDir.length();
+//    std::string folder = gameDir + dir;
+//    luabridge::LuaRef rr = luabridge::newTable(LuaWrapper::L);
+//    int i = 1;
+//    std::regex reg(pattern);
+//    auto lambda = [&] (const boost::filesystem::path& path) {
+//        std::string full_path = path.string();
+//        if (std::regex_match(path.filename().string(), reg)) {
+//            rr[i++] = full_path.substr(l, full_path.length()-l-4);
+//        }
+//    };
+//
+//    if (recursive) {
+//        for (boost::filesystem::recursive_directory_iterator itr(folder); itr != boost::filesystem::recursive_directory_iterator(); ++itr) {
+//            lambda (itr->path());
+//        }
+//    } else {
+//        for (boost::filesystem::directory_iterator itr(folder); itr != boost::filesystem::directory_iterator(); ++itr) {
+//            lambda (itr->path());
+//        }
+//    }
+//
+//    return rr;
+//
+//}

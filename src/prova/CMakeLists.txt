@@ -6,8 +6,6 @@ include_directories(${INCLUDE_DIR} ${PYBIND_INCLUDE_DIR} ${FREETYPE_INCLUDE_DIRS
 
 pybind11_add_module(example example.cpp rect.cpp funx.cpp)
 
-message(STATUS "plo")
-message(STATUS ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 
 #file(GENERATE OUTPUT "${CMAKE_RUNTIME_OUTPUT_DIRECTORY_<CONFIG>}/setup.py"
 #INPUT "${SRC_DIR}/prova/setup.py.in")

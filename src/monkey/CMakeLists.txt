@@ -17,7 +17,7 @@ include_directories(${INCLUDE_DIR} ${PYBIND_INCLUDE_DIR} ${Python_INCLUDE_DIRS} 
 target_link_libraries(monkey
     ${OPENGL_LIBRARIES} ${Python_LIBRARIES} glfw
     GLEW::GLEW ${FREETYPE_LIBRARIES} ${LUA_LIBRARIES}
-    ${PNG_LIBRARY} ${JPEG_LIBRARIES} ${CMAKE_DL_LIBS} ${Boost_FILESYSTEM_LIBRARY}
+    ${PNG_LIBRARY} ${JPEG_LIBRARIES} ${CMAKE_DL_LIBS}
     ${Boost_SYSTEM_LIBRARY} alglib)
 
 
@@ -27,7 +27,6 @@ add_custom_command(
 				${CMAKE_SOURCE_DIR}/src/config.json
 				${BIN_DIR}/config.json)
 
-message(${CMAKE_CURRENT_BINARY_DIR})
 
 #install(TARGETS monkey DESTINATION ${LIB_DIR})
 install(TARGETS monkey DESTINATION lib)

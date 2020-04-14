@@ -11,7 +11,7 @@ void LuaWrapper::Init() {
     setLuaPath(Engine::get().GetDirectory());
     luabridge::getGlobalNamespace(L)
             .beginNamespace("monkey")
-            .addFunction("getFiles", &EntityWrapper::getFiles)
+            //.addFunction("getFiles", &EntityWrapper::getFiles)
             .addFunction("getEntity", &EntityWrapper::GetEntityFromTag)
             .addFunction("getEntityFromId", &EntityWrapper::GetEntityFromId)
             .addFunction("addEntity", &EntityWrapper::AddEntity)
