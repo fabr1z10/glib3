@@ -4,6 +4,8 @@
 #include <monkey/luacollision.h>
 #include <monkey/lua/luatable.h>
 
+namespace py = pybind11;
+
 CollisionEngine::~CollisionEngine() {
     std::cerr << "Killing the ce\n";
     m_cells.clear();
@@ -22,6 +24,45 @@ CollisionEngine::CollisionEngine (float cellWidth, float cellHeight) :
     m_intersector = std::unique_ptr<Intersector>(new Intersector);
 }
 
+CollisionEngine::CollisionEngine(const ITable & table) : ICollisionEngine(table) {
+
+    auto collisionSize = table.get<glm::vec2>("size");
+
+    m_width = collisionSize.x;
+    m_height = collisionSize.y;
+    m_coll25d = table.get<bool>("coll25", false);
+    if (m_coll25d) {
+        m_eps = table.get<float>("eps", 0.01);
+        Enable25DCollision(m_eps);
+    }
+
+    auto crm = std::make_unique<CollisionResponseManager>();
+    table.foreach<py::tuple>("response", [&] (py::tuple p) {
+        auto tag0 = p[0].cast<int>();
+        auto tag1 = p[1].cast<int>();
+        PyTable t(p[2].cast<py::object>());
+        std::unique_ptr<LuaCollisionResponse> l(new LuaCollisionResponse);
+        if (t.hasKey("onenter")) {
+            auto f = t.get<py::function>("onenter");
+            l->setOnEnter(f);
+        }
+        if (t.hasKey("onleave")) {
+            auto f = t.get<py::function>("onleave");
+            l->setOnLeave(f);
+        }
+        if (t.hasKey("onstay")) {
+            auto f = t.get<py::function>("onstay");
+            l->setOnStay(f);
+        }
+        crm->AddCollisionResponse(tag0, tag1, std::move(l));
+    });
+
+    SetResponseManager(std::move(crm));
+    m_intersector = std::make_unique<Intersector>();
+
+}
+
+
 CollisionEngine::CollisionEngine(const LuaTable & table) : ICollisionEngine(table) {
 
     glm::vec2 collisionSize = table.Get<glm::vec2>("size");
@@ -34,32 +75,32 @@ CollisionEngine::CollisionEngine(const LuaTable & table) : ICollisionEngine(tabl
         Enable25DCollision(m_eps);
     }
 
-    if (table.HasKey("response")) {
-
-        auto resp = table.Get<luabridge::LuaRef>("response");
-        std::unique_ptr<CollisionResponseManager> crm (new CollisionResponseManager);
-        for (int i = 0; i < resp.length();++i) {
-            luabridge::LuaRef a = resp[i+1];
-            LuaTable at(a);
-            std::vector<int> tags = at.GetVector<int>("tag");
-            std::unique_ptr<LuaCollisionResponse> l(new LuaCollisionResponse);
-            if (at.HasKey("onenter")) {
-                auto onEnter = at.Get<luabridge::LuaRef>("onenter");
-                l->SetOnEnter(onEnter);
-            }
-            if (at.HasKey("onleave")) {
-                auto onLeave = at.Get<luabridge::LuaRef>("onleave");
-                l->SetOnLeave(onLeave);
-            }
-            if (at.HasKey("onstay")) {
-                auto onStay = at.Get<luabridge::LuaRef>("onstay");
-                l->SetOnStay(onStay);
-            }
-            crm->AddCollisionResponse(tags[0], tags[1], std::move(l));
-
-        }
-        SetResponseManager(std::move(crm));
-    }
+//    if (table.HasKey("response")) {
+//
+//        auto resp = table.Get<luabridge::LuaRef>("response");
+//        std::unique_ptr<CollisionResponseManager> crm (new CollisionResponseManager);
+//        for (int i = 0; i < resp.length();++i) {
+//            luabridge::LuaRef a = resp[i+1];
+//            LuaTable at(a);
+//            std::vector<int> tags = at.GetVector<int>("tag");
+//            std::unique_ptr<LuaCollisionResponse> l(new LuaCollisionResponse);
+//            if (at.HasKey("onenter")) {
+//                auto onEnter = at.Get<luabridge::LuaRef>("onenter");
+//                l->SetOnEnter(onEnter);
+//            }
+//            if (at.HasKey("onleave")) {
+//                auto onLeave = at.Get<luabridge::LuaRef>("onleave");
+//                l->SetOnLeave(onLeave);
+//            }
+//            if (at.HasKey("onstay")) {
+//                auto onStay = at.Get<luabridge::LuaRef>("onstay");
+//                l->SetOnStay(onStay);
+//            }
+//            crm->AddCollisionResponse(tags[0], tags[1], std::move(l));
+//
+//        }
+//        SetResponseManager(std::move(crm));
+//    }
 
     m_intersector = std::make_unique<Intersector>();
 

@@ -16,6 +16,8 @@ public:
     void clearText ();
     void setActive (bool);
     void enableControls(bool);
+
+    static pybind11::object create(Entity*);
 private:
     int g;
     Entity* m_entity;

@@ -1,13 +1,37 @@
 #include <monkey/components/smartcollider.h>
 #include <monkey/components/animator.h>
-#include <monkey/boxedmodel.h>
+#include <monkey/model/boxedmodel.h>
 #include <monkey/collisionengine.h>
 #include <monkey/model/basicmodel.h>
 #include <monkey/components/statemachine.h>
 #include <monkey/entity.h>
-#include <monkey/components/basicrenderer.h>
+#include <monkey/components/multirenderer.h>
+#include <monkey/meshfactory.h>
+
 
 SmartCollider::SmartCollider(const SmartCollider & other) : ICollider(other) {
+
+}
+
+SmartCollider::SmartCollider(const ITable & table) : ICollider() {
+    m_tag = table.get<int>("tag");
+    m_flag = table.get<int>("flag");
+    m_mask = table.get<int>("mask");
+//    table.foreach<
+//    table.ProcessVector("attack_tags", [coll] (luabridge::LuaRef ref) {
+//        std::string anim = ref["anim"].cast<std::string>();
+//        int attackTag = ref["tag"].cast<int>();
+//        int attackMask = ref["mask"].cast<int>();
+//        coll->AddAttackTag(anim, attackTag, attackMask);
+//    });
+//    table.ProcessVector("collision_overrides", [coll] (luabridge::LuaRef ref) {
+//        std::string state = ref["state"].cast<std::string>();
+//        int flag = ref["flag"].cast<int>();
+//        int mask = ref["mask"].cast<int>();
+//        int tag = ref["tag"].cast<int>();
+//        coll->addStateCollisionDetails(state, flag, mask, tag);
+//    });
+    /// coll;
 
 }
 
@@ -23,11 +47,12 @@ Bounds SmartCollider::getAttackBounds() const {
     auto anim = m_animator->GetAnimation();
     int fr = m_animator->GetFrame();
 
-    const auto& bi = m_model->getBoxInfo(anim,fr);
-    if (bi.m_attackShape == nullptr) {
+
+    const auto& bi = m_model->getShapeCast(anim,fr);
+    if (bi == nullptr) {
         return Bounds();
     }
-    auto bounds = bi.m_attackShape->getBounds();
+    auto bounds = bi->getBounds();
     bounds.Transform(m_entity->GetWorldTransform());
     return bounds;
 
@@ -40,17 +65,15 @@ void SmartCollider::addStateCollisionDetails (const std::string& id, int flag, i
 
 
 
-void SmartCollider::ofu(Animator *a) {
+void SmartCollider::onFrameUpdate(Animator *a) {
     auto anim = a->GetAnimation();
     int fr = a->GetFrame();
 
-    const auto& bi = m_model->getBoxInfo(anim,fr);
-
-
-    //m_colliderRenderer->SetMeshInfo(bi.offset, bi.count);
+    auto shape = m_model->getShape(anim,fr);
+    auto castShape = m_model->getShapeCast(anim, fr);
 
     // now, check if I have an attack box
-    if (bi.m_attackShape != nullptr) {
+    if (castShape != nullptr) {
         int mask = m_mask;
         int tag = m_tag;
         auto it = m_attackInfo.find(anim);
@@ -63,7 +86,7 @@ void SmartCollider::ofu(Animator *a) {
         auto t = m_entity->GetWorldTransform();
         std::cout <<" **** hit ****\n";
         std::cout << "character at position = " << t[3][0] << ", " << t[3][1] << " scale " << t[0][0] << "\n";
-        auto e = m_engine->ShapeCast(bi.m_attackShape, t, mask);
+        auto e = m_engine->ShapeCast(castShape, t, mask);
 
         if (e.report.collide) {
             std::cerr << "HIT!\n";
@@ -90,29 +113,36 @@ void SmartCollider::Start() {
     // a smart collider requires an animator
     m_animator = dynamic_cast<Animator*>(m_entity->GetComponent<IAnimator>());
     m_model = dynamic_cast<BoxedModel*>(m_animator->GetModel().get());
-    m_animator->onFrameUpdate.Register(this, [&] (Animator* a) { this->ofu(a); });
+    m_animator->onFrameUpdate.Register(this, [&] (Animator* a) { this->onFrameUpdate(a); });
     ICollider::Start();
 
 
     auto c = std::make_shared<Entity>();
+//
+    glm::vec4 color(1.0f, 0.0f, 0.0f, 1.0f);
+//    auto mesh = m_model->GetCollisionMesh();
+//    auto model = std::make_shared<BasicModel>(mesh);
+    auto renderer = std::make_shared<MultiRenderer>();
 
-    //glm::vec4 color(1.0f, 0.0f, 0.0f, 1.0f);
-    auto mesh = m_model->GetCollisionMesh();
-    auto model = std::make_shared<BasicModel>(mesh);
-    auto renderer = std::make_shared<BasicRenderer>(model);
-    //renderer->SetTint(color);
+    for (const auto& shape : m_model->getShapes()) {
+        auto mesh = MeshFactory::CreateMesh(*(shape.get()));
+        auto model = std::make_shared<BasicModel>(mesh);
+        renderer->addModel(model);
+    }
+
+    renderer->setAddColor(color);
     c->AddComponent(renderer);
     m_colliderRenderer = renderer.get();
-    //renderer->SetMeshInfo(0, 8);
+//    //renderer->SetMeshInfo(0, 8);
     m_entity->AddChild(c);
-    m_stateMachine = m_entity->GetComponent<StateMachine>();
+//    m_stateMachine = m_entity->GetComponent<StateMachine>();
 }
 
 Shape* SmartCollider::GetShape() {
     int frame = m_animator->GetFrame();
     std::string anim = m_animator->GetAnimation();
     // now with these info, I ask the model to give me the current shape
-    return m_model->GetShape(anim, frame).get();
+    return m_model->getShape(anim, frame).get();
 }
 
 
@@ -121,39 +151,25 @@ int SmartCollider::setCollisionMask(int tag) {
 	return tag;
 }
 int SmartCollider::GetCollisionTag() const {
-    if (m_stateMachine == nullptr) {
-        return m_tag;
-    }
-    std::string currentState = m_stateMachine->GetState();
-    auto it = m_collisionDetailsOverride.find(currentState);
-    if (it == m_collisionDetailsOverride.end()) {
-        return m_tag;
-    }
-    return it->second.tag;
+    return m_tag;
 }
 
 int SmartCollider::GetCollisionFlag() const {
-    if (m_stateMachine == nullptr) {
-        return m_flag;
-    }
-    std::string currentState = m_stateMachine->GetState();
-    auto it = m_collisionDetailsOverride.find(currentState);
-    if (it == m_collisionDetailsOverride.end()) {
-        return m_flag;
-    }
-    return it->second.flag;
+
+    return m_flag;
 }
 
 int SmartCollider::GetCollisionMask() const {
-    if (m_stateMachine == nullptr) {
-        return m_mask;
-    }
-    std::string currentState = m_stateMachine->GetState();
-    auto it = m_collisionDetailsOverride.find(currentState);
-    if (it == m_collisionDetailsOverride.end()) {
-        return m_mask;
-    }
-    return it->second.mask;
+    return m_mask;
+//    if (m_stateMachine == nullptr) {
+//        return m_mask;
+//    }
+//    std::string currentState = m_stateMachine->GetState();
+//    auto it = m_collisionDetailsOverride.find(currentState);
+//    if (it == m_collisionDetailsOverride.end()) {
+//        return m_mask;
+//    }
+//    return it->second.mask;
 }
 
 // this returns the max bounds and is used by the collision engine

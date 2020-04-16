@@ -61,15 +61,21 @@ def addShader(s : ShaderType):
     shaders.append(s.name)
 
 def loadSprites():
-    print ('dir = ' + example.dir)
-    with open(example.dir + '/sprites/01.yaml') as f:
-        data['assets']['spritemodels'] = yaml.load(f, Loader=yaml.FullLoader)
-    print(data)
+    #print ('dir = ' + example.dir)
+    dir = example.dir +'/sprites'
+    if os.path.exists(dir):
+        files = os.listdir(dir)
+        for fi in files:
+            print ('reading: ' + fi)
+            with open(dir+'/'+fi) as f:
+                data['assets']['spritemodels'] = yaml.load(f, Loader=yaml.FullLoader)
 
 def loadText(lang: str):
-    with open(example.dir+'/text/eng/text.yaml') as f:
-        data['strings']= yaml.load(f, Loader=yaml.FullLoader)
-    print(data['strings'])
+    dir = example.dir +'/text/'+lang;
+    if os.path.exists(dir):
+        with open(dir+ '/text.yaml') as f:
+            data['strings']= yaml.load(f, Loader=yaml.FullLoader)
+        print(data['strings'])
 
 # # creating enumerations using class 
 

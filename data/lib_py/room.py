@@ -17,16 +17,20 @@ class Room:
 		# add a key listener to the engine
 		keyl = engine.runner.KeyListener()
 		keyl.addKey (32, toggle_pause)
-		#a = engine.entity.Entity()
-
-		
+		#a = engine.entity.Entity()	
 		self.engines.append(keyl)
 		self.scene = []
 
-	def add(self, e : entity.Entity, ref):
-		if ref in self.ref:
-			self.ref[ref].append(e)
+	def add(self, e : entity.Entity, ref:str = None):
+		if ref:
+			if ref in self.ref:
+				self.ref[ref].append(e)
+			else:
+				raise
+		else:
+			self.scene.append(e)
 		if e.tag:
 			self.ref[e.tag] = e.children
 
-
+	def addRunner (self, r):
+		self.engines.append(r)

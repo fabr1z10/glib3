@@ -2,6 +2,29 @@
 #include <monkey/components/ianimator.h>
 #include <monkey/entity.h>
 
+NullState::NullState() : State() {}
+
+NullState::NullState(const ITable & t) : State(t) {
+
+}
+
+NullState::NullState(const NullState& t) : State(t) {
+
+}
+
+std::shared_ptr<State> NullState::clone() const {
+    return std::make_shared<NullState>(*this);
+}
+
+void NullState::Init() {}
+
+void NullState::End() {}
+
+void NullState::Run (double dt) {
+
+}
+
+
 SimpleState::SimpleState(const std::string &anim) : State(), m_anim(anim) {}
 
 SimpleState::SimpleState(const SimpleState&) {
@@ -30,5 +53,3 @@ void SimpleState::End() {
 void SimpleState::Run (double dt) {}
 
 
-
-//#inc

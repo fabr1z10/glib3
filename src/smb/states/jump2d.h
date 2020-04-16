@@ -6,6 +6,7 @@ class Jump2D : public PlatformerState {
 public:
     Jump2D(float accelerationTimeAirborne, float speed, bool fliph, const std::string& animUp, const std::string& animDown, bool bounce, float bounceFactor);
     Jump2D (const Jump2D& orig);
+    Jump2D(const ITable&);
     std::shared_ptr<State> clone() const override;
     //void Start() override;
     void Run (double) override;

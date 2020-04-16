@@ -17,6 +17,7 @@ public:
      */
     WalkSide (float speed, float acceleration, bool fliph, float jumpSpeed);
     WalkSide (const WalkSide& orig);
+    WalkSide (const ITable&);
     void Run(double) override;
     void Init () override;
     void End () override;

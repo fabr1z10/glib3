@@ -4,6 +4,7 @@
 extern GLFWwindow* window;
 
 KeyboardInputMethod::KeyboardInputMethod(const LuaTable & t) : InputMethod(t) {}
+KeyboardInputMethod::KeyboardInputMethod(const ITable & t) : InputMethod(t) {}
 
 std::shared_ptr<Component> KeyboardInputMethod::clone() const {
     return std::make_shared<KeyboardInputMethod>(*this);

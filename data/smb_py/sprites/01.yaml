@@ -1,0 +1,26 @@
+---
+mario:
+  sheet: "gfx/smb1.png"
+  thickness: 1
+  type: "asset.boxed"
+  boxes:
+    - [-6, 0, 6, 16]
+  # casts
+  animations:
+    idle:
+      loop: true
+      box: 0
+      frames:
+        - [0, 0, 16, 16, 8, 0]
+    walk:
+      box: 0
+      frames:
+        - [16, 0, 16, 16, 8, 0]
+        - [32, 0, 16, 16, 8, 0]
+        - [48, 0, 16, 16, 8, 0]
+    jump:
+      box: 0
+      frames:
+        - [80, 0, 16, 16, 8, 0]
+
+

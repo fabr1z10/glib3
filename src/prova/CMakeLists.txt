@@ -18,17 +18,20 @@ configure_file(
     "${SRC_DIR}/prova/install.sh"
     "${BIN_DIR}/install.sh"
 )
-
-
-target_link_libraries(example PUBLIC monkey)
-
-add_custom_command(
-    TARGET example
-    POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy
+configure_file(
     "${SRC_DIR}/prova/setup.py.in"
     "${BIN_DIR}/setup.py"
 )
+
+target_link_libraries(example PUBLIC monkey)
+
+#add_custom_command(
+#    TARGET example
+#    POST_BUILD
+#    COMMAND ${CMAKE_COMMAND} -E copy
+#    "${SRC_DIR}/prova/setup.py.in"
+#    "${BIN_DIR}/setup.py"
+#)
 
 install(TARGETS example DESTINATION ${BIN_DIR})
 install(CODE "execute_process(COMMAND ${BIN_DIR}/install.sh)")

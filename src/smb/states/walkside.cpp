@@ -25,6 +25,21 @@ WalkSide::WalkSide(const WalkSide &orig) : PlatformerState(orig) {
 
 }
 
+WalkSide::WalkSide(const ITable & t) : PlatformerState(t) {
+    m_speed = t.get<float>("speed");
+    m_acceleration = t.get<float>("acceleration");
+    m_flipHorizontally = t.get<bool>("flipH");
+    m_jumpSpeed = t.get<float>("jumpSpeed");
+    //auto state = std::make_shared<WalkSide>(speed, a, fliph, jumpSpeed);
+    std::string jumpState = t.get<std::string>("jumpState", "jump");
+    std::string idleAnim = t.get<std::string>("idleAnim", "idle");
+    std::string walkAnim = t.get<std::string>("walkAnim", "walk");
+    setJumpState(jumpState);
+    setIdleAnimation(idleAnim);
+    setWalkAnimation(walkAnim);
+
+}
+
 std::shared_ptr<State> WalkSide::clone() const {
     return std::make_shared<WalkSide>(*this);
 }

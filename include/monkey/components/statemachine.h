@@ -14,6 +14,8 @@ public:
 
 class State : public Ref {
 public:
+    State() {}
+    State(const ITable&);
     virtual ~State() = default;
     // init is called every time this state is set, so DON't put initialization code here!
     virtual void Init () = 0;
@@ -25,13 +27,17 @@ public:
     // This is called only once when the statemachine begins, so PUT your initialization code here!
     virtual void AttachStateMachine(StateMachine*);
     virtual bool KeyListener (int);
+    std::string getId() const;
     void AddKey (int, std::shared_ptr<StateAction>);
 protected:
+    std::string m_id;
     StateMachine* m_sm;
     std::unordered_map<int, std::shared_ptr<StateAction>> m_actions;
 };
 
-
+inline std::string State::getId() const {
+    return m_id;
+}
 
 //!  A state machine.
 /*!

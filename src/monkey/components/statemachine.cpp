@@ -1,6 +1,11 @@
 #include <monkey/components/statemachine.h>
 #include <monkey/error.h>
 
+State::State(const ITable & t) : Ref(t) {
+    m_id = t.get<std::string>("id");
+    // TODO read keys
+}
+
 void State::AddKey(int key, std::shared_ptr<StateAction> action) {
     m_actions.insert(std::make_pair(key, action));
 

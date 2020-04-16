@@ -16,6 +16,38 @@ ExtendedStateMachine::ExtendedStateMachine(const ExtendedStateMachine& orig) : S
     m_globalKeys = orig.m_globalKeys;
 }
 
+ExtendedStateMachine::ExtendedStateMachine(const ITable & t) {
+    m_initialState = t.get<std::string>("initialState");
+    m_currentState = nullptr;
+    auto factory = Engine::get().GetSceneFactory();
+
+
+    t.foreach<PyTable>("states", [&] (PyTable table) {
+        auto state = factory->make2<State>(table);
+        this->AddState(state->getId(), state);
+    });
+
+//        luabridge::LuaRef statesRef = table.Get<luabridge::LuaRef>("states");
+//        for (int i = 0; i < statesRef.length(); ++i) {
+//            luabridge::LuaRef stateRef = statesRef[i+1];
+//            std::string key = stateRef["id"].cast<std::string>();
+//            luabridge::LuaRef stateDef = stateRef["state"];
+//            auto state = factory->make<State>(stateDef);
+//            ptr->AddState(key, state);
+//        }
+//
+//        table.ProcessVector("keys", [ptr] (luabridge::LuaRef ref) {
+//            int key = ref["id"].cast<int>();
+//            luabridge::LuaRef callback = ref["func"];
+//            ptr->AddKey(key, callback);
+//        });
+//
+//        return ptr;
+//
+//    }
+
+}
+
 std::shared_ptr<Component> ExtendedStateMachine::clone() const {
     return std::make_shared<ExtendedStateMachine>(*this);
 }

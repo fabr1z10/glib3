@@ -1,4 +1,4 @@
-#include <platformer/states/jump2d.h>
+#include "jump2d.h"
 #include <monkey/components/inputmethod.h>
 
 
@@ -15,6 +15,18 @@ Jump2D::Jump2D(float accelerationTimeAirborne, float speed, bool flipH, const st
     m_accTimeAir(accelerationTimeAirborne), m_speed(speed), m_flipHorizontally(flipH),
     m_bounce(bounce), m_bounceFactor(bounceFactor), m_jumpAnimUp(animUp), m_jumpAnimDown(animDown), m_walkState("walk")
 {}
+
+Jump2D::Jump2D(const ITable& t) : PlatformerState(t) {
+    m_speed = t.get<float>("speed");
+    m_accTimeAir = t.get<float>("acceleration");
+    m_flipHorizontally = t.get<bool>("flipH");
+    //float jumpSpeed= table.Get<float>("jumpspeed");
+    m_jumpAnimUp = t.get<std::string>("animUp");
+    m_jumpAnimDown = t.get<std::string>("animDown");
+    m_bounce = t.get<bool>("bounce", false);
+    m_bounceFactor = t.get<float>("bouncefactor", 0.0f);
+    m_walkState = t.get<std::string>("walkState", "walk");
+}
 
 Jump2D::Jump2D(const Jump2D &orig) : PlatformerState(orig) {
     m_speed = orig.m_speed;

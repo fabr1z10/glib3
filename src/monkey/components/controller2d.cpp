@@ -22,6 +22,21 @@ m_maxDescendAngle(orig.m_maxDescendAngle), m_platform(nullptr)
     
 }
 
+Controller2D::Controller2D(const ITable &t) {
+    m_maxClimbAngle = t.get<float>("maxClimbAngle");
+    m_maxDescendAngle = t.get<float>("maxDescendAngle");
+    m_horizontalRayCount = t.get<int>("horRays", 4);
+    m_verticalRayCount = t.get<int>("vertRays", 4);
+    m_skinWidth = t.get<float>("skinWidth", .015f);
+    m_maskUp = t.get<int>("maskUp");
+    m_maskDown = t.get<int>("maskDown");
+    m_platform = nullptr;
+    //mint maskUp = table.Get<int>("maskup", 2);
+    //int maskDown = table.Get<int>("maskdown", 2|32);
+    //return std::make_shared<Controller2D>(maxClimbAngle, maxDescendAngle, maskUp, maskDown, skinWidth, horCount, vertCount);
+
+}
+
 std::shared_ptr<Component> Controller2D::clone() const {
     return std::make_shared<Controller2D>(*this);
 }

@@ -34,7 +34,9 @@ class DynamicWorldBuilder : public Runner {
 public:
     DynamicWorldBuilder(float cellWidth, float cellHeight, const std::string& camName) : Runner(),
         m_width(cellWidth), m_height(cellHeight), m_x(-1), m_y(-1), m_camName(camName), m_halfWidth(cellWidth*0.5f), m_halfHeight(cellHeight*0.5f) {}
+    DynamicWorldBuilder(const ITable& t);
     void Init() override;
+
     //void SetCamera(Camera*);
     void OnCameraMove(Camera*);
     void UpdateWorld(glm::vec3);

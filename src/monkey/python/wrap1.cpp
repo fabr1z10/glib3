@@ -6,6 +6,8 @@
 #include <monkey/entities/textview.h>
 #include <monkey/components/hotspot.h>
 
+namespace py = pybind11;
+
 Wrap1::Wrap1() : m_entity(nullptr) {
     //m_entity = x.cast<Entity *>();
 }
@@ -50,4 +52,13 @@ void Wrap1::enableControls(bool value) {
     hs->setActive(value);
 
     //m_entity->SetControlsEnabled(value);
+}
+
+pybind11::object Wrap1::create(Entity* e) {
+    pybind11::object example = py::module::import("example").attr("Wrap1");
+    pybind11::object w = example();
+    Wrap1* wo = w.cast<Wrap1*>();
+    wo->setEntity(e);
+    return w;
+
 }

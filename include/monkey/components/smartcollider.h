@@ -24,6 +24,7 @@ class SmartCollider : public ICollider {
 public:
     SmartCollider(int flag, int mask, int tag) : ICollider(), m_flag(flag), m_mask(mask), m_tag(tag) {}
     SmartCollider(const SmartCollider&);
+    SmartCollider (const ITable&);
     void Start() override;
     void Update(double) override {}
     Shape* GetShape() override;
@@ -33,7 +34,7 @@ public:
     int setCollisionMask(int);
     std::shared_ptr<Component> clone() const override;
     std::type_index GetType() override;
-    void ofu(Animator*a);
+    void onFrameUpdate(Animator*a);
     void AddAttackTag(const std::string& anim, int tag, int mask);
     Bounds getAttackBounds() const override;
     void addStateCollisionDetails (const std::string&, int flag, int mask, int tag);

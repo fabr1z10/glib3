@@ -31,8 +31,12 @@
 //#include <monkey/engine.h>
 //#include <platformer/activities/setenemydir.h>
 void Extension::extend(SceneFactory* f) {
+    std::cout << "smb extension\n";
 //
-//    f->addStateFactory("walkside", std::make_unique<WalkSideFactory>());
+    f->add2<WalkSide> ("state.walkside");
+    f->add2<Jump2D> ("state.jump");
+
+    //f->addStateFactory("walkside", std::make_unique<WalkSideFactory>());
 //    f->addStateFactory("jump", std::make_unique<Jump2DFactory>());
 //
 //    f->addStateFactory("foewalk", std::make_unique<FoeWalkFactory>());

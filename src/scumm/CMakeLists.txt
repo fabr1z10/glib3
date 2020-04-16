@@ -14,4 +14,5 @@ add_executable(scumm
 include_directories(${INCLUDE_DIR} ${PYBIND_INCLUDE_DIR} ${Python_INCLUDE_DIRS} ${FREETYPE_INCLUDE_DIRS} ${GLM_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS} ${LUA_INCLUDE_DIR})
 
 target_link_libraries(scumm PUBLIC monkey)
+
 install(TARGETS scumm DESTINATION ${BIN_DIR})

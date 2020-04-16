@@ -3,7 +3,7 @@
 #include <monkey/assetman.h>
 #include <monkey/engine.h>
 #include <monkey/model/spritemodel.h>
-#include <monkey/boxedmodel.h>
+#include <monkey/model/boxedmodel.h>
 #include <monkey/model/combomodel.h>
 #include <monkey/math/box.h>
 #include <monkey/model/skeletalmodel.h>
@@ -124,83 +124,6 @@ std::shared_ptr<IModel> SimpleModelFactory::Create (luabridge::LuaRef& ref) {
     return m;
 }
 
-std::shared_ptr<IModel> BoxedModelFactory::Create(luabridge::LuaRef &ref) {
-    LuaTable t(ref);
-    auto mesh = ReadSpriteMesh(t);
-    // read the additional stuff
-    auto pp = std::make_shared<BoxedModel>(mesh);
-    float thickness = t.Get<float>("thickness", 0.0f);
-    float dz = 0.5f * thickness;
-    bool model3d = (thickness > 0.0f);
-    luabridge::LuaRef an = t.Get<luabridge::LuaRef>("animations");
-    // loop through animations
-    for (int i = 0; i < an.length(); ++i) {
-        luabridge::LuaRef at = an[i+1];
-        std::string anim = at["name"].cast<std::string>();
-        glm::vec4 box = LuaTable::Read<glm::vec4>(at["box"], glm::vec4(0.0f));
-        if (box != glm::vec4(0.0f)) {
-            pp->AddAnimationData(anim, Bounds{glm::vec3(box[0], box[1], box[0]), glm::vec3(box[2], box[3], box[2])});
-        }
-        luabridge::LuaRef fr = at["frames"];
-        for (int j = 0; j < fr.length(); ++j) {
-            luabridge::LuaRef a2 = fr[j + 1];
-            // get the shape associated to this frame
-            LuaTable table(a2);
-            if (box != glm::vec4(0.0f)) {
-                if (table.HasKey("boxes")) {
-                    auto boxes = table.Get<luabridge::LuaRef>("boxes");
-                    if (boxes.length() == 1) {
-                        glm::vec4 box = LuaTable::Read<glm::vec4>(boxes[1]);
-                        std::shared_ptr<Shape> collisionShape;
-                        float width = box[2] - box[0];
-                        float height = box[3] - box[1];
-                        if (model3d) {
-                            collisionShape = std::make_shared<Box>(width, height, thickness,
-                                                                   glm::vec3(box[0], box[1], -dz));
-                        } else {
-                            collisionShape = std::make_shared<Rect>(width, height, glm::vec3(box[0], box[1], 0.0f));
-                        }
-                        pp->AddCollisionData(anim, j, collisionShape);
-                    }
-                } else {
-                    // if no boxes field is specified for this frame, use the box at animation level
-                    std::shared_ptr<Shape> collisionShape;
-                    float width = box[2] - box[0];
-                    float height = box[3] - box[1];
-                    if (model3d) {
-                        collisionShape = std::make_shared<Box>(width, height, thickness,
-                                                               glm::vec3(box[0], box[1], -dz));
-                    } else {
-                        collisionShape = std::make_shared<Rect>(width, height, glm::vec3(box[0], box[1], 0.0f));
-                    }
-                    pp->AddCollisionData(anim, j, collisionShape);
-                }
-            } else {
-                pp->AddCollisionData(anim, j, nullptr);
-            }
-
-            if (table.HasKey("attack")) {
-                glm::vec4 attackBox = table.Get<glm::vec4>("attack");
-                // attack box is a 4d vec {x, y, w, h} where x, y are the coords relative to the top left
-                float w = attackBox[2];
-                float h = attackBox[3];
-                std::shared_ptr<Shape> attackShape;
-                if (model3d) {
-                    attackShape = std::make_shared<Box>(w, h, thickness, glm::vec3(attackBox[0], attackBox[1], -dz));
-                } else {
-                    attackShape = std::make_shared<Rect>(w, h, glm::vec3(attackBox[0], attackBox[1], 0.0f));
-                }
-                pp->AddAttackData(anim, j, attackShape);
-                //attackTag = table.Get<int>("attack_tag");
-            }
-        }
-
-    }
-    pp->generateDebugMesh();
-    return pp;
-
-
-}
 
 
 std::shared_ptr<IModel> GenericModel3DFactory::Create(luabridge::LuaRef &ref) {

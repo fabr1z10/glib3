@@ -2,7 +2,7 @@
 #include <monkey/engine.h>
 #include <monkey/components/renderer.h>
 #include <iostream>
-
+namespace py = pybind11;
 //void DynamicWorldBuilder::SetCamera(Camera * camera) {
 //    camera->OnMove.Register(this, [&] (Camera* cam) { this->OnCameraMove(cam); });
 //    glm::vec3 camPos = camera->GetPosition();
@@ -11,6 +11,22 @@
 //    std::cout << "Dynamic world builder, set camera with initial position (" << m_x0 << ", " << m_y0 << ")\n";
 //    UpdateWorld(camPos);
 //}
+DynamicWorldBuilder::DynamicWorldBuilder(const ITable &t) : Runner(t), m_x(-1), m_y(-1) {
+    m_width = t.get<float>("width");
+    m_height = t.get<float>("height");
+
+    m_halfWidth = m_width *0.5f;
+    m_halfHeight = m_height * 0.5f;
+
+    m_camName = t.get<std::string>("cam");
+    auto factory = Engine::get().GetSceneFactory();
+    // get dynamic entities
+    t.foreach<py::object>("items", [&] (py::object obj) {
+        PyTable table(obj);
+        auto node = factory->make2<Entity>(table);
+        this->AddItem(node);
+    });
+}
 
 void DynamicWorldBuilder::Init() {
     std::cerr << "INIT DYNAMIC WORLD!\n";

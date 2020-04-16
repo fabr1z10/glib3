@@ -419,16 +419,16 @@ std::shared_ptr<Component> Controller3DComponentFactory::Create(luabridge::LuaRe
     return std::make_shared<Controller3D>(maxClimbAngle, maxDescendAngle, skinWidth, horCount, vertCount);
 }
 
-std::shared_ptr<Component> Dynamics2DComponentFactory::Create(luabridge::LuaRef & ref) {
-    LuaTable table(ref);
-    float g = table.Get<float>("gravity");
-    auto ptr = std::make_shared<Dynamics2D>(g);
-    if (table.HasKey("additional_info")) {
-        luabridge::LuaRef ainfo = table.Get<luabridge::LuaRef>("additional_info");
-        ptr->addAdditionalProps(ainfo);
-    }
-    return ptr;
-}
+//std::shared_ptr<Component> Dynamics2DComponentFactory::Create(luabridge::LuaRef & ref) {
+//    LuaTable table(ref);
+//    float g = table.Get<float>("gravity");
+//    auto ptr = std::make_shared<Dynamics2D>(g);
+//    if (table.HasKey("additional_info")) {
+//        luabridge::LuaRef ainfo = table.Get<luabridge::LuaRef>("additional_info");
+//        ptr->addAdditionalProps(ainfo);
+//    }
+//    return ptr;
+//}
 
 std::shared_ptr<Component> PropertiesCompFactory::Create(luabridge::LuaRef & ref) {
     LuaTable table(ref);
@@ -778,32 +778,32 @@ std::shared_ptr<Runner> CollisionEngine3DFactory::Create(luabridge::LuaRef& ref)
     glm::vec3 collisionSize = table.Get<glm::vec3>("size");
     auto ce = std::make_shared<CollisionEngine3D>(collisionSize.x, collisionSize.y,collisionSize.z);
 
-    if (table.HasKey("response")) {
-        // set the collision responsesfg
-        luabridge::LuaRef resp = table.Get<luabridge::LuaRef>("response");
-        std::unique_ptr<CollisionResponseManager> crm (new CollisionResponseManager);
-        for (int i = 0; i < resp.length();++i) {
-            luabridge::LuaRef a = resp[i+1];
-            LuaTable at(a);
-            std::vector<int> tags = at.GetVector<int>("tag");
-            std::unique_ptr<LuaCollisionResponse> l(new LuaCollisionResponse);
-            if (at.HasKey("onenter")) {
-                luabridge::LuaRef onEnter = at.Get<luabridge::LuaRef>("onenter");
-                l->SetOnEnter(onEnter);
-            }
-            if (at.HasKey("onleave")) {
-                luabridge::LuaRef onLeave = at.Get<luabridge::LuaRef>("onleave");
-                l->SetOnLeave(onLeave);
-            }
-            if (at.HasKey("onstay")) {
-                luabridge::LuaRef onStay = at.Get<luabridge::LuaRef>("onstay");
-                l->SetOnStay(onStay);
-            }
-            crm->AddCollisionResponse(tags[0], tags[1], std::move(l));
-
-        }
-        ce->SetResponseManager(std::move(crm));
-    }
+//    if (table.HasKey("response")) {
+//        // set the collision responsesfg
+//        luabridge::LuaRef resp = table.Get<luabridge::LuaRef>("response");
+//        std::unique_ptr<CollisionResponseManager> crm (new CollisionResponseManager);
+//        for (int i = 0; i < resp.length();++i) {
+//            luabridge::LuaRef a = resp[i+1];
+//            LuaTable at(a);
+//            std::vector<int> tags = at.GetVector<int>("tag");
+//            std::unique_ptr<LuaCollisionResponse> l(new LuaCollisionResponse);
+//            if (at.HasKey("onenter")) {
+//                luabridge::LuaRef onEnter = at.Get<luabridge::LuaRef>("onenter");
+//                l->SetOnEnter(onEnter);
+//            }
+//            if (at.HasKey("onleave")) {
+//                luabridge::LuaRef onLeave = at.Get<luabridge::LuaRef>("onleave");
+//                l->SetOnLeave(onLeave);
+//            }
+//            if (at.HasKey("onstay")) {
+//                luabridge::LuaRef onStay = at.Get<luabridge::LuaRef>("onstay");
+//                l->SetOnStay(onStay);
+//            }
+//            crm->AddCollisionResponse(tags[0], tags[1], std::move(l));
+//
+//        }
+//        ce->SetResponseManager(std::move(crm));
+//    }
 
     return ce;
 

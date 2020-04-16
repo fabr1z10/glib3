@@ -64,5 +64,6 @@ add_subdirectory(include/py)
 add_subdirectory(src/alglib)
 add_subdirectory(src/monkey)
 add_subdirectory(src/scumm)
+add_subdirectory(src/smb)
 add_subdirectory(src/prova)
 

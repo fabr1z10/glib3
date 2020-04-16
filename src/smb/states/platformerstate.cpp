@@ -22,6 +22,8 @@ PlatformerState::PlatformerState(const PlatformerState &) {
 
 }
 
+PlatformerState::PlatformerState(const ITable & t) : State(t) {}
+
 
 void PlatformerState::AttachStateMachine(StateMachine * sm) {
     State::AttachStateMachine(sm);

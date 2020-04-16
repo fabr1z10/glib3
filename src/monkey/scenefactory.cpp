@@ -1,18 +1,19 @@
 #include <monkey/scenefactory.h>
 #include <monkey/factories.h>
 #include <monkey/factories/modelfactories.h>
-#include <monkey/factories/prim3d.h>
-#include <monkey/factories/skeleton.h>
-#include <iostream>
-#include <monkey/engine.h>
+#include <monkey/components/smartcollider.h>
+#include <monkey/components/controller2d.h>
+#include <monkey/components/dynamics2d.h>
+#include <monkey/components/extstatemachine.h>
 #include <monkey/dyloader.h>
+#include <monkey/states/simple.h>
 
 #include <monkey/components/hotspot.h>
 #include <monkey/components/follow.h>
 #include <monkey/components/scripthotspot.h>
 #include <monkey/components/basicrenderer.h>
 #include <monkey/components/luakeylistener.h>
-
+#include <monkey/dynamicworld.h>
 #include <monkey/scheduler.h>
 #include <monkey/math/funcs.h>
 
@@ -20,6 +21,8 @@
 #include <monkey/entities/text.h>
 
 #include <monkey/model/spritemodel.h>
+#include <monkey/model/boxedmodel.h>
+
 #include <monkey/activities/delay.h>
 #include <monkey/activities/animate.h>
 #include <monkey/components/info.h>
@@ -132,6 +135,8 @@ SceneFactory::SceneFactory() {
     add<Follow> ("follow");
     add2<Follow> ("components.follow");
     add<SimpleCollider> ("collider");
+    add2<SimpleCollider> ("components.collider");
+    add2<SmartCollider> ("components.smartcollider");
     add<ScriptHotSpot> ("hotspot");
     add2<ScriptHotSpot> ("components.hotspot");
     add<BasicRenderer> ("gfx");
@@ -142,7 +147,14 @@ SceneFactory::SceneFactory() {
     add2<LuaInfo> ("components.info");
     add<DirectionalLight> ("directional.light");
     add<KeyboardInputMethod> ("keyinput");
+    add2<KeyboardInputMethod> ("components.keyinput");
     add<Cursor> ("cursor");
+    add2<Controller2D> ("components.controller2D");
+    add2<Dynamics2D> ("components.dynamics2D");
+    add2<ExtendedStateMachine> ("components.statemachine");
+
+    // states
+    add2<NullState> ("state.null");
 
     // actions
     add<DelayTime> ("delay");
@@ -169,7 +181,8 @@ SceneFactory::SceneFactory() {
     add2<Scheduler> ("runner.scheduler");
 
     add<CollisionEngine> ("collision");
-
+    add2<CollisionEngine> ("runner.collisionengine");
+    add2<DynamicWorldBuilder> ("runner.dynamicworld");
     // cameras
     add<OrthographicCamera> ("ortho");
     add2<OrthographicCamera> ("cam.ortho");
@@ -185,6 +198,7 @@ SceneFactory::SceneFactory() {
     // models
     add<SpriteModel> ("sprite.model");
     add2<SpriteModel> ("asset.sprite");
+    add2<BoxedModel> ("asset.boxed");
     // other
     add<Font> ("font");
     add2<Font> ("font");
@@ -195,6 +209,7 @@ SceneFactory::SceneFactory() {
 
     add<Box3D> ("box3d");
     add<Sphere3D> ("sphere3d");
+    //DynamicWorldBuilderFactory
 //    m_runnerFactory.Add<CollisionEngineFactory>("collision");
 //    m_runnerFactory.Add<CollisionEngine3DFactory>("collision3d");
 //

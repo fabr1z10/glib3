@@ -8,6 +8,29 @@ class KeyListener:
     def addKey (self, key : int, func : Callable):
         self.keys.append ({ 'key': key, 'func': func })
 
+class CollisionResponse:
+    def __init__(self, onenter: callable = None, onleave:callable = None):
+        self.onenter = onenter
+        self.onleave = onleave
+
+class CollisionEngine:
+    def __init__(self, width: int, height: int):
+        self.type = 'runner.collisionengine'
+        self.size = [width, height]
+        self.response = []
+
+    def addResponse(self, tag1: int, tag2: int, response: CollisionResponse):
+        self.response.append ([tag1, tag2, response])
+
+class DynamicWorld:
+    def __init__(self, width: int, height: int, cam: str):
+        self.type = 'runner.dynamicworld'
+        self.width = width
+        self.height = height
+        self.cam = cam
+        self.items = []
+
+
 def pippo(x, y):
     print ('clicked at ' + str(x) + ', ' + str(y))
 

@@ -8,6 +8,11 @@ m_velocitySmoothingZ(0.0f)
 
 }
 
+Dynamics2D::Dynamics2D(const ITable & t) : m_velocity(0.0f), m_velocitySmoothing(0.0f), m_velocitySmoothingZ(0.0f) {
+    //LuaTable table(ref);mics2
+    m_gravity = t.get<float>("gravity");
+}
+
 Dynamics2D::Dynamics2D(const Dynamics2D& orig) : Properties(orig) {
     m_gravity = orig.m_gravity;
     m_velocity = orig.m_velocity;

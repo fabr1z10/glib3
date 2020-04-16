@@ -21,6 +21,20 @@ SimpleCollider::SimpleCollider(const LuaTable & t) : ICollider() {
     m_mask = t.Get<int>("mask");
 }
 
+SimpleCollider::SimpleCollider(const ITable & t) : ICollider() {
+
+    auto factory = Engine::get().GetSceneFactory();
+
+
+    auto shapeR = t.get<PyTable>("shape");
+    m_shape = factory->make2<Shape>(shapeR);
+
+    m_tag = t.get<int>("tag");
+    m_flag = t.get<int>("flag");
+    m_mask = t.get<int>("mask");
+}
+
+
 std::shared_ptr<Component> SimpleCollider::clone() const {
     return std::make_shared<SimpleCollider>(*this);
 }
