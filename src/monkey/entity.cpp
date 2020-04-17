@@ -200,7 +200,7 @@ void Entity::Remove(int id) {
 void Entity::ClearAllChildren() {
 
     for (auto& c : m_children) {
-        Engine::get().Remove(c.second);
+        Engine::get().Remove(c.second.get());
     }
 }
 

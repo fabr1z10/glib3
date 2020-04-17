@@ -127,6 +127,17 @@ MoveAccelerated::MoveAccelerated (
 
 }
 
+MoveAccelerated::MoveAccelerated(const ITable & t) : TargetActivity(t) {
+    //std::shared_ptr<Activity> MoveAcceleratedActFactory::Create(luabridge::LuaRef &ref) {
+    //LuaTable table(ref);
+
+    m_initialVelocity = t.get<glm::vec2>("initialVelocity");
+    m_acceleration= t.get<glm::vec2>("acceleration");
+    m_yStop = t.get<float>("yStop");
+    m_rotationSpeed = t.get<float>("rotationspeed", 0.0f);
+    m_finalRotation = t.get<float>("finalrotation", 0.0f) * deg2rad;
+
+}
 
 void MoveAccelerated::Start() {
     TargetActivity::Start();

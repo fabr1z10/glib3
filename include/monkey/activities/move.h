@@ -65,6 +65,7 @@ public:
         float yStop,
         float rotationSpeed,
         float finalRotation);
+    MoveAccelerated(const ITable&);
 
     void Start() override;
 

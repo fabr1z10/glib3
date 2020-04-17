@@ -21,8 +21,3 @@ class Character():
         self.dir = dir
         self.state = state
 
-class CharacterInfo():
-    def __init__(self, text_color : list, text_offset : list):
-        self.type = 'components.info'
-        self.text_color = text_color
-        self.text_offset = text_offset

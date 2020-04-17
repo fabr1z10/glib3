@@ -25,12 +25,18 @@ PYBIND11_MODULE(example, m) {
 
     py::class_<Wrap1>(m, "Wrap1")
         .def(py::init<>())
+        .def("id", &Wrap1::id)
         .def("x", &Wrap1::x)
+        .def("y", &Wrap1::y)
+        .def("parent", &Wrap1::getParent)
         .def("setColor", &Wrap1::setColor)
         .def("setText", &Wrap1::setText)
+        .def("setModel", &Wrap1::setModel)
         .def("setActive", &Wrap1::setActive)
         .def("enableControls", &Wrap1::enableControls)
         .def("appendText", &Wrap1::appendText)
+        .def("add", &Wrap1::add)
+        .def("getInfo", &Wrap1::getInfo)
         .def("clearText", &Wrap1::clearText);
 
     py::class_<PyEngine>(m, "engine")
@@ -46,6 +52,7 @@ PYBIND11_MODULE(example, m) {
 
     m.def("adder", &add, "A functione which adds two numbers");
     m.def("get", &get, "Gets a entity by tag");
+    m.def("remove", &rmv, "Removes an entity by id");
     m.def("play", &play);
     //m.def("addLine", &addLine);
     m.def("getDeviceSize", &getDeviceSize);

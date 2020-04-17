@@ -116,7 +116,7 @@ void SmartCollider::Start() {
     m_animator->onFrameUpdate.Register(this, [&] (Animator* a) { this->onFrameUpdate(a); });
     ICollider::Start();
 
-
+    m_entity->ClearAllChildren();
     auto c = std::make_shared<Entity>();
 //
     glm::vec4 color(1.0f, 0.0f, 0.0f, 1.0f);

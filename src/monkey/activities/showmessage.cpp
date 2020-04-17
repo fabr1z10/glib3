@@ -85,7 +85,7 @@ void ShowMessage::Run(float dt) {
 
         SetComplete();
         if (m_generatedEntity != nullptr) {
-            Engine::get().Remove(m_generatedEntity);
+            Engine::get().Remove(m_generatedEntity.get());
             m_generatedEntity = nullptr;
         }
     }
@@ -94,14 +94,14 @@ void ShowMessage::Run(float dt) {
 void ShowMessage::NotifySuspend(){
     SetComplete();
     if (m_generatedEntity != nullptr) {
-        Engine::get().Remove(m_generatedEntity);
+        Engine::get().Remove(m_generatedEntity.get());
         m_generatedEntity = nullptr;
     }
 }
 
 ShowMessage::~ShowMessage() {
     if (m_generatedEntity != nullptr) {
-        Engine::get().Remove(m_generatedEntity);
+        Engine::get().Remove(m_generatedEntity.get());
         m_generatedEntity = nullptr;
     }
 }

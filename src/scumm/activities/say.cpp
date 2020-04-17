@@ -74,11 +74,11 @@ void Say::Start() {
     // need to check the character information. offset and text color
     auto infoc = item->GetComponent<LuaInfo>();
     if (infoc == nullptr) GLIB_FAIL("<Say> action requires an info component!");
-    const auto* addInfo = infoc->get2();
+    auto addInfo = infoc->get2();
 
-    m_color = addInfo->get<glm::vec4>("text_color");
+    m_color = addInfo.get<glm::vec4>("text_color");
     m_color /= 255.0f;
-    m_offset = addInfo->get<glm::vec2>("text_offset");
+    m_offset = addInfo.get<glm::vec2>("text_offset");
 
     if (!m_noAnim) {
 

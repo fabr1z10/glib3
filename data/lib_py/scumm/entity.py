@@ -112,7 +112,7 @@ class Character(Sprite):
         super().__init__(model = model, item=item,anim= anim, tag=tag, pos=pos)
         self.__charcomp = sc.Character(speed=speed,dir=dir,state=state)
         self.addComponent (self.__charcomp)
-        self.addComponent (sc.CharacterInfo(text_color, text_offset))
+        self.addComponent (compo.Info(text_color = text_color, text_offset = text_offset))
     def __setattr__(self, name, value):
         if name == 'state':
             self.__charcomp.state = value

@@ -77,3 +77,9 @@ class NullState(State):
         super().__init__(id)
         self.type = 'state.null'
 
+
+class Info():
+    #def __init__(self, text_color : list, text_offset : list):
+    def __init__(self, **kwargs):
+        self.type = 'components.info'
+        self.stuff = kwargs

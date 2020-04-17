@@ -1,4 +1,5 @@
 import lib_py.script as script
+import example
 
 class Animate:
     def __init__(self, anim: str, id = None, tag = None):
@@ -23,3 +24,22 @@ class CallFunc:
         self.type = 'action.callfunc'
         self.func = f
 
+class MoveAccelerated:
+    def __init__(self, v0, a, yStop, id = None, tag = None):
+        self.type = 'action.moveaccelerated'
+        self.id = id
+        self.tag = tag
+        self.initialVelocity = v0
+        self.acceleration = a
+        self.yStop = yStop
+
+
+class RemoveEntity(CallFunc):
+    @staticmethod
+    def pippo(id):
+        def f():
+            example.remove(id)
+        return f
+
+    def __init__(self, id : int):
+        super().__init__(f = RemoveEntity.pippo(id))

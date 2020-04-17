@@ -42,8 +42,9 @@ public:
     void UnregisterToKeyboardEvent(KeyboardListener*);
     glm::vec4 GetViewport(float x, float y, float width, float height);
     void SetViewport(float x, float y, float width, float height);
-    void Remove(std::shared_ptr<Entity>);
+    void Remove(Entity*);
     void Remove(int);
+    void RemoveUnsafe(int);
     void Move (Entity*, Entity*);
 
     template <class T>
@@ -158,8 +159,8 @@ inline void Engine::SetSceneFactory (std::shared_ptr<SceneFactory> factory) {
     m_sceneFactory = factory;
 }
 
-inline void Engine::Remove(std::shared_ptr<Entity> entity) {
-    m_garbage.insert(std::make_pair(entity.get(), nullptr));
+inline void Engine::Remove(Entity* entity) {
+    m_garbage.insert(std::make_pair(entity, nullptr));
 }
 
 inline void Engine::Move(Entity* entity, Entity* parent) {
@@ -171,6 +172,10 @@ inline void Engine::Remove(int id) {
     if (Monkey::get().isAlive(id)) {
         m_garbage.insert(std::make_pair(Monkey::get().Get<Entity>(id), nullptr));
     }
+}
+
+inline void Engine::RemoveUnsafe(int id) {
+    m_garbage.insert(std::make_pair(Monkey::get().Get<Entity>(id), nullptr));
 }
 /*
 inline Shader* Engine::GetShader(ShaderType id) {

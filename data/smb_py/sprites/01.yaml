@@ -22,5 +22,64 @@ mario:
       box: 0
       frames:
         - [80, 0, 16, 16, 8, 0]
-
+supermario:
+  sheet: "gfx/smb1.png"
+  thickness: 1
+  type: "asset.boxed"
+  boxes:
+    - [-6, 0, 6, 32]
+  # casts
+  animations:
+    idle:
+      loop: true
+      box: 0
+      frames:
+        - [80, 16, 16, 32, 8, 0]
+    walk:
+      box: 0
+      frames:
+        - [96, 16, 16, 32, 8, 0]
+        - [112, 16, 16, 32, 8, 0]
+        - [128, 16, 16, 32, 8, 0]
+    jump:
+      box: 0
+      frames:
+        - [144, 16, 16, 32, 8, 0]
+brick:
+  sheet: "gfx/smb1.png"
+  type: "asset.sprite"
+  animations:
+    idle:
+      frames:
+        - [240, 0, 16, 16]
+bonusbrick:
+  sheet: "gfx/smb1.png"
+  type: "asset.sprite"
+  animations:
+    default:
+      frames:
+        - [160, 0, 16, 16]
+        - [176, 0, 16, 16]
+        - [192, 0, 16, 16]
+        - [176, 0, 16, 16]
+    taken:
+      frames:
+        - [224, 0, 16, 16]
+brickpiece:
+  sheet: "gfx/smb1.png"
+  type: "asset.sprite"
+  animations:
+    idle:
+      frames:
+        - [64,16,16,16]
+mushroom:
+  sheet: "gfx/smb1.png"
+  type: "asset.boxed"
+  boxes:
+    - [-8, 0, 8, 16]
+  animations:
+    idle:
+      box: 0
+      frames:
+        - [48, 16, 16, 16, 8, 0]
 

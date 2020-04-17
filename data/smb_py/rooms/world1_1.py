@@ -6,13 +6,18 @@ import lib_py.shape as sh
 import lib_py.components as compo
 import smb_py.vars as vars
 import smb_py.funcs as func
+import smb_py.factories as fact
 import lib_py.platformer.components as pc
-from lib_py.runner import CollisionEngine, CollisionResponse, DynamicWorld
+from lib_py.runner import CollisionEngine, CollisionResponse, DynamicWorld, Scheduler
 import example
+
+def f():
+    print('ciao!')
+    func.upgradePlayer()
 
 def builder():
     r = room.Room(id='world1_1', width=256, height=256)
-    
+    r.keyl.addKey(key=32, func = f)
     main = entity.Entity (tag='main')
     main.camera = OrthoCamera(worldwidth= 224 * vars.tileSize, worldheight = 16 * vars.tileSize, 
         camwidth=256, camheight=256, viewport=[0, 0, 256, 256], tag='maincam')
@@ -20,12 +25,16 @@ def builder():
 
     # create the collision engine (maybe to put into the ctor of the room subclass)
     ce = CollisionEngine(80, 80)
+    ce.addResponse(vars.tags.player, vars.tags.brick_sensor, CollisionResponse(onenter=func.brickResponse))
+    ce.addResponse(vars.tags.player, vars.tags.bonus_brick_sensor, CollisionResponse(onenter=func.bonusBrickResponse))
+
     r.addRunner(ce)
+    r.addRunner(Scheduler())
 
     dw = DynamicWorld(256, 256, 'maincam')
     r.addRunner(dw)
 
-    f1 = func.makePlatform
+    f1 = fact.makePlatform
     # add a platform
     
     a = [
@@ -60,7 +69,9 @@ def builder():
         f1('gfx/block2.png', 186, 7, 4, 1),
         f1('gfx/block2.png', 187, 8, 3, 1),
         f1('gfx/block2.png', 188, 9, 2, 1),
-        f1('gfx/block2.png', 198, 2, 1, 1)
+        f1('gfx/block2.png', 198, 2, 1, 1),
+        fact.makeBrick('brick', 5, 5),
+        fact.bonusBrick (model = 'bonusbrick', x= 7, y=5)
     ]
     #{71, 0, 15, 2}, {89, 0, 64, 2}, {155, 0, 69, 2}}
     #a = entity.Entity()
@@ -68,7 +79,7 @@ def builder():
     #a.addComponent (compo.Collider(flag = vars.flags.platform, mask = vars.flags.player, tag = 1, shape = sh.Rect(width=69*16, height=16*2)))
 
     # add player
-    mario = entity.Sprite(model = 'mario', pos = [16,5*16])
+    mario = entity.Sprite(model = 'mario', pos = [16,5*16], tag='player')
     mario.addComponent (compo.SmartCollider(
         flag = vars.flags.player,
         mask = vars.flags.foe | vars.flags.foe_attack,

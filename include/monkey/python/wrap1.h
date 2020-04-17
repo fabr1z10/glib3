@@ -9,14 +9,21 @@ class PYBIND11_EXPORT Wrap1 {
 public:
     Wrap1();
     float x() const ;
+    float y() const ;
+    int id() const;
     void setEntity(Entity* e);
     void setColor (std::vector<float>& l);
     void setText (const std::string&);
+    void setModel (const std::string&, const std::string& animId);
     void appendText (pybind11::object);
+    int add(pybind11::object);
+
+
     void clearText ();
     void setActive (bool);
     void enableControls(bool);
-
+    pybind11::object getParent();
+    pybind11::object getInfo ();
     static pybind11::object create(Entity*);
 private:
     int g;

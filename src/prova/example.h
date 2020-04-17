@@ -10,6 +10,7 @@ extern Engine * m_engine;
 
 
 Wrap1 get(const std::string & tag) ;
+void rmv(int);
 
 void play (pybind11::object);
 //void addLine (const std::string&, pybind11::object&);

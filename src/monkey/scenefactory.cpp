@@ -38,6 +38,7 @@
 #include <monkey/activities/setactive.h>
 #include <monkey/py.h>
 #include <monkey/activities/runscript.h>
+#include <monkey/activities/move.h>
 
 namespace py = pybind11;
 
@@ -172,6 +173,7 @@ SceneFactory::SceneFactory() {
     add<SetState> ("setstate");
     add<SetActive> ("setactive");
     add2<RunScript> ("action.runscript");
+    add2<MoveAccelerated> ("action.moveaccelerated");
 
     // runners
     add<HotSpotManager> ("hotspotmanager");

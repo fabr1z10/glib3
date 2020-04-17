@@ -13,6 +13,13 @@ Wrap1 get(const std::string & tag) {
 
 }
 
+void rmv(int id) {
+    if (m_monkey->isAlive(id)) {
+        std::cerr << "is alive tes " << id;
+        auto entity = m_monkey->Get<Entity>(id);
+        m_engine->Remove(entity);
+    }
+}
 
 //void addLine(const std::string& tag, pybind11::object& o) {
 //    auto entity = m_monkey->Get<Entity>(tag);

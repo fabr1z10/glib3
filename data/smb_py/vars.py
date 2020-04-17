@@ -3,6 +3,11 @@ jump_height = 160
 time_to_jump_apex = 0.5
 gravity = -(2.0 * jump_height) / (time_to_jump_apex * time_to_jump_apex)
 jump_velocity = abs(gravity) * time_to_jump_apex
+state = 0
+stateInfo = [
+    'mario',
+    'supermario'
+]
 
 class flags:
     player = 1
