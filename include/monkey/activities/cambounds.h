@@ -6,6 +6,7 @@
 class ChangeCamBounds : public Activity {
 public:
     ChangeCamBounds(const std::string& cam, float xMin, float xMax, float yMin, float yMax);
+    ChangeCamBounds(const ITable&);
     void Start() override ;
     void Run (float dt) override {}
 private:

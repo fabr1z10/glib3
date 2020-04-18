@@ -53,7 +53,8 @@ def makeDialogueButton(dialogueline):
 
 class RoomUI(room.Room):
     def __init__(self, id: str, width, height, collide = False):
-        super().__init__(id, width, height, collide)
+        super().__init__(id, width, height)
+        self.collide = collide
         uisize = scumm.Config.ui_height
         print ('uisize is '+str(uisize))
         camWidth = engine.device_size[0]

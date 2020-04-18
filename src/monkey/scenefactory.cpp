@@ -39,6 +39,7 @@
 #include <monkey/py.h>
 #include <monkey/activities/runscript.h>
 #include <monkey/activities/move.h>
+#include <monkey/activities/cambounds.h>
 
 namespace py = pybind11;
 
@@ -177,7 +178,7 @@ SceneFactory::SceneFactory() {
     add2<RunScript> ("action.runscript");
     add2<MoveAccelerated> ("action.moveaccelerated");
     add2<MoveTo> ("action.move");
-
+    add2<ChangeCamBounds> ("action.changecambounds");
     // runners
     add<HotSpotManager> ("hotspotmanager");
     add2<HotSpotManager> ("components.hotspotmanager");

@@ -1,4 +1,5 @@
-import lib_py.room as room
+#import lib_py.room as room
+from smb_py.room import PlatformerRoom
 import lib_py.engine as engine
 from lib_py.camera import OrthoCamera
 import lib_py.entity as entity
@@ -11,29 +12,38 @@ import lib_py.platformer.components as pc
 from lib_py.runner import CollisionEngine, CollisionResponse, DynamicWorld, Scheduler
 import example
 
-def f():
-    print('ciao!')
-    func.upgradePlayer()
+
+
 
 def builder():
-    r = room.Room(id='world1_1', width=256, height=256)
-    r.keyl.addKey(key=32, func = f)
-    main = entity.Entity (tag='main')
-    main.camera = OrthoCamera(worldwidth= 224 * vars.tileSize, worldheight = 16 * vars.tileSize, 
-        camwidth=256, camheight=256, viewport=[0, 0, 256, 256], tag='maincam')
-    r.add(main)
+    r = PlatformerRoom(
+        id = 'world1_1', 
+        width = 256, 
+        height = 256, 
+        worldWidth = 224, 
+        worldHeight = 16, 
+        playerModel = 'mario', 
+        startPos = [1, 5])
+    # room.Room(id='world1_1', width=256, height=256)
+    # r.keyl.addKey(key=32, func = f)
+    # main = entity.Entity (tag='main')
+    # main.camera = OrthoCamera(worldwidth= 224 * vars.tileSize, worldheight = 16 * vars.tileSize, 
+    #     camwidth=256, camheight=256, viewport=[0, 0, 256, 256], tag='maincam')
+    # r.add(main)
 
-    # create the collision engine (maybe to put into the ctor of the room subclass)
-    ce = CollisionEngine(80, 80)
-    ce.addResponse(vars.tags.player, vars.tags.brick_sensor, CollisionResponse(onenter=func.brickResponse))
-    ce.addResponse(vars.tags.player, vars.tags.bonus_brick_sensor, CollisionResponse(onenter=func.bonusBrickResponse))
-    ce.addResponse(vars.tags.player, vars.tags.mushroom, CollisionResponse(onenter=func.mushroomResponse))
+    # # create the collision engine (maybe to put into the ctor of the room subclass)
+    # ce = CollisionEngine(80, 80)
+    # ce.addResponse(vars.tags.player, vars.tags.brick_sensor, CollisionResponse(onenter=func.brickResponse))
+    # ce.addResponse(vars.tags.player, vars.tags.bonus_brick_sensor, CollisionResponse(onenter=func.bonusBrickResponse))
+    # ce.addResponse(vars.tags.player, vars.tags.mushroom, CollisionResponse(onenter=func.mushroomResponse))
+    # ce.addResponse(vars.tags.player, vars.tags.warp, CollisionResponse(onenter = func.warpEnter, onleave= func.warpExit))
 
-    r.addRunner(ce)
-    r.addRunner(Scheduler())
 
-    dw = DynamicWorld(256, 256, 'maincam')
-    r.addRunner(dw)
+    # r.addRunner(ce)
+    # r.addRunner(Scheduler())
+
+    # dw = DynamicWorld(256, 256, 'maincam')
+    # r.addRunner(dw)
 
     f1 = fact.makePlatform
     # add a platform
@@ -71,9 +81,14 @@ def builder():
         f1('gfx/block2.png', 187, 8, 3, 1),
         f1('gfx/block2.png', 188, 9, 2, 1),
         f1('gfx/block2.png', 198, 2, 1, 1),
+        f1('gfx/block4.png', 0, 16, 16, 2),
+        f1('gfx/brick2.png', 0, 18, 1, 11),
+        f1('gfx/brick2.png', 4, 18, 7, 3),
+        f1('gfx/brick2.png', 4, 28, 7, 1),
         fact.makeBrick('brick', 5, 5),
         fact.bonusBrick (model = 'bonusbrick', x= 7, y=5, callback = fact.m1),
-        fact.bonusBrick (model = 'bonusbrick', x= 9, y=5, callback = fact.m2)
+        fact.bonusBrick (model = 'bonusbrick', x= 9, y=5, callback = fact.m2),
+        fact.warpDown (x=5, y=2, width=16, height=2, callback = func.warpIn(warpTo=[2, 25], newCamBounds=[0,256,256,512]))
     ]
     #{71, 0, 15, 2}, {89, 0, 64, 2}, {155, 0, 69, 2}}
     #a = entity.Entity()
@@ -81,28 +96,29 @@ def builder():
     #a.addComponent (compo.Collider(flag = vars.flags.platform, mask = vars.flags.player, tag = 1, shape = sh.Rect(width=69*16, height=16*2)))
 
     # add player
-    mario = entity.Sprite(model = 'mario', pos = [16,5*16], tag='player')
-    mario.addComponent (compo.SmartCollider(
-        flag = vars.flags.player,
-        mask = vars.flags.foe | vars.flags.foe_attack,
-        tag = vars.tags.player))
-    mario.addComponent (compo.Controller2D(
-        maskUp = vars.flags.platform, 
-        maskDown = vars.flags.platform | vars.flags.platform_passthrough, 
-        maxClimbAngle = 80, 
-        maxDescendAngle = 80))
-    mario.addComponent (compo.Dynamics2D(gravity= vars.gravity))
-    stateMachine = compo.StateMachine(initialState='walk')
-    stateMachine.states.append (pc.WalkSide(id='walk', speed=75, acceleration=0.05, jumpSpeed= vars.jump_velocity, flipHorizontal=True))
-    stateMachine.states.append (pc.Jump(id='jump', speed=75, acceleration=0.10, flipHorizontal=True, animUp='jump', animDown='jump'))
+    # mario = entity.Sprite(model = 'mario', pos = [16,5*16], tag='player')
+    # mario.addComponent (compo.SmartCollider(
+    #     flag = vars.flags.player,
+    #     mask = vars.flags.foe | vars.flags.foe_attack,
+    #     tag = vars.tags.player))
+    # mario.addComponent (compo.Controller2D(
+    #     maskUp = vars.flags.platform, 
+    #     maskDown = vars.flags.platform | vars.flags.platform_passthrough, 
+    #     maxClimbAngle = 80, 
+    #     maxDescendAngle = 80))
+    # mario.addComponent (compo.Dynamics2D(gravity= vars.gravity))
+    # stateMachine = compo.StateMachine(initialState='walk')
+    # stateMachine.states.append (pc.WalkSide(id='walk', speed=75, acceleration=0.05, jumpSpeed= vars.jump_velocity, flipHorizontal=True))
+    # stateMachine.states.append (pc.Jump(id='jump', speed=75, acceleration=0.10, flipHorizontal=True, animUp='jump', animDown='jump'))
 
-    mario.addComponent (stateMachine)
-    mario.addComponent (compo.KeyInput())    
-    mario.addComponent (compo.Follow())
+    # mario.addComponent (stateMachine)
+    # mario.addComponent (compo.KeyInput())    
+    # mario.addComponent (compo.Follow())
 
-    main.add(mario)
+    # main.add(mario)
     for e in a:
-        dw.items.append(e)  
+        r.addToDynamicWorld(e)
+        #dw.items.append(e)  
     return r
 
 engine.addRoom (id = 'world1_1', f=builder)

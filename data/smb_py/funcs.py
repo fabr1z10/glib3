@@ -63,6 +63,29 @@ def mushroomResponse (player: example.Wrap1, mushroom: example.Wrap1, x, y):
     example.remove(mushroom.id())
     upgradePlayer()
 
+def warpEnter( player: example.Wrap1, warp: example.Wrap1, x,y):
+    info = warp.getInfo()
+    # set the warp function
+    if 'func' in info:
+        vars.warp_func = info['func']
+
+def warpExit (player: example.Wrap1, warp: example.Wrap1, x, y):
+    vars.warp_func = None
+
+
+def warpIn(warpTo : list, newCamBounds : list = None):
+    def f():
+        vars.warp_func = None
+        s = Script()
+        s.addAction (act.SetState(tag='player', state='warp'))
+        s.addAction (act.Move(speed=50, by =[0,-64], tag='player'))
+        if newCamBounds:
+            s.addAction (act.ChangeCamBounds('maincam', newCamBounds[0], newCamBounds[1], newCamBounds[2], newCamBounds[3]))
+        s.addAction (act.Move(speed=0, to = [warpTo[0] * vars.tileSize, warpTo[1]*vars.tileSize], immediate= True, tag = 'player'))
+        s.addAction (act.SetState(tag='player', state='walk'))
+        example.play(s)
+    return f
+
 # factory.bonus_brick.response = function(p1, p2)
 
 # 	local brick = p2:parent()

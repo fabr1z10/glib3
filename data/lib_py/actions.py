@@ -60,3 +60,13 @@ class RemoveEntity(CallFunc):
 
     def __init__(self, id : int):
         super().__init__(f = RemoveEntity.pippo(id))
+
+
+class ChangeCamBounds():
+    def __init__(self, camId: str, xmin: float, xmax: float, ymin: float, ymax: float):
+        self.type = 'action.changecambounds'
+        self.cam = camId
+        self.xmin = xmin
+        self.xmax = xmax
+        self.ymin = ymin
+        self.ymax = ymax

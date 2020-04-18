@@ -1,16 +1,13 @@
 import lib_py.engine as engine
 import lib_py.entity as entity
 
-def toggle_pause():
-    print ('toggling pause! ')
-
 class Room:
 
-	def __init__(self, id:str, width, height, collide = False):
+	def __init__(self, id:str, width, height):
 		self.id = id
 		self.width = width
 		self.height = height
-		self.collide = collide
+		#self.collide = collide
 		self.ref = {}
 		self.engines = []
 		self.init = []

@@ -6,7 +6,31 @@ from lib_py.script import Script
 import smb_py.vars as vars
 import lib_py.platformer.components as pc
 import lib_py.actions as act
+from lib_py.camera import OrthoCamera
+from lib_py.room import Room
+from lib_py.runner import CollisionEngine, CollisionResponse, Scheduler, DynamicWorld
 import example
+
+def makePlayer(model: str, x: float, y: float):
+    player = Sprite(model = model, pos = [x * vars.tileSize, y*vars.tileSize], tag='player')
+    player.addComponent (compo.SmartCollider(
+        flag = vars.flags.player,
+        mask = vars.flags.foe | vars.flags.foe_attack,
+        tag = vars.tags.player))
+    player.addComponent (compo.Controller2D(
+        maskUp = vars.flags.platform, 
+        maskDown = vars.flags.platform | vars.flags.platform_passthrough, 
+        maxClimbAngle = 80, 
+        maxDescendAngle = 80))
+    player.addComponent (compo.Dynamics2D(gravity= vars.gravity))
+    stateMachine = compo.StateMachine(initialState='walk')
+    stateMachine.states.append (compo.SimpleState (id='warp', anim='idle'))
+    stateMachine.states.append (pc.WalkSide(id='walk', speed=75, acceleration=0.05, jumpSpeed= vars.jump_velocity, flipHorizontal=True))
+    stateMachine.states.append (pc.Jump(id='jump', speed=75, acceleration=0.10, flipHorizontal=True, animUp='jump', animDown='jump'))
+    player.addComponent (stateMachine)
+    player.addComponent (compo.KeyInput())    
+    player.addComponent (compo.Follow())
+    return player
 
 def makePlatform(img : str, x:float, y:float, width : int, height: int):
     a = Entity()
@@ -87,6 +111,12 @@ def mushroom(x: float, y: float):
     stateMachine.states.append (pc.FoeWalk(id='walk', anim='walk', speed=30, acceleration=0, flipHorizontal=False, flipWhenPlatformEnds=False, left=1))
     a.addComponent (stateMachine)
     return a
+
+def warpDown(x : float, y : float, width: float, height: float, callback: callable):
+    e = Entity(pos = [x * vars.tileSize, y * vars.tileSize])
+    e.addComponent (compo.Collider (flag = vars.flags.foe, mask = vars.flags.player, tag = vars.tags.warp, shape = sh.Rect (width, height)))
+    e.addComponent (compo.Info (func = callback))
+    return e
 
 def bonusBrick(model: str, x: float, y: float, callback: callable, hits: int = 1):
     a = Sprite(model = model, pos= [x * vars.tileSize, y * vars.tileSize, 0])
