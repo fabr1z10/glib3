@@ -27,6 +27,7 @@ def builder():
     ce = CollisionEngine(80, 80)
     ce.addResponse(vars.tags.player, vars.tags.brick_sensor, CollisionResponse(onenter=func.brickResponse))
     ce.addResponse(vars.tags.player, vars.tags.bonus_brick_sensor, CollisionResponse(onenter=func.bonusBrickResponse))
+    ce.addResponse(vars.tags.player, vars.tags.mushroom, CollisionResponse(onenter=func.mushroomResponse))
 
     r.addRunner(ce)
     r.addRunner(Scheduler())
@@ -71,7 +72,8 @@ def builder():
         f1('gfx/block2.png', 188, 9, 2, 1),
         f1('gfx/block2.png', 198, 2, 1, 1),
         fact.makeBrick('brick', 5, 5),
-        fact.bonusBrick (model = 'bonusbrick', x= 7, y=5)
+        fact.bonusBrick (model = 'bonusbrick', x= 7, y=5, callback = fact.m1),
+        fact.bonusBrick (model = 'bonusbrick', x= 9, y=5, callback = fact.m2)
     ]
     #{71, 0, 15, 2}, {89, 0, 64, 2}, {155, 0, 69, 2}}
     #a = entity.Entity()

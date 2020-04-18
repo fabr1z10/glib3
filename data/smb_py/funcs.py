@@ -59,6 +59,9 @@ def bonusBrickResponse (player: example.Wrap1, brick: example.Wrap1, x, y):
         s.addAction (act.CallFunc (f = p))
         example.play(s)
 
+def mushroomResponse (player: example.Wrap1, mushroom: example.Wrap1, x, y):
+    example.remove(mushroom.id())
+    upgradePlayer()
 
 # factory.bonus_brick.response = function(p1, p2)
 

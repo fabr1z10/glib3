@@ -156,6 +156,7 @@ SceneFactory::SceneFactory() {
 
     // states
     add2<NullState> ("state.null");
+    add2<SimpleState> ("state.simple");
 
     // actions
     add<DelayTime> ("delay");
@@ -171,9 +172,11 @@ SceneFactory::SceneFactory() {
     add<KillScript> ("kill_script");
     add<ShowMessage> ("show_message");
     add<SetState> ("setstate");
+    add2<SetState> ("action.setstate");
     add<SetActive> ("setactive");
     add2<RunScript> ("action.runscript");
     add2<MoveAccelerated> ("action.moveaccelerated");
+    add2<MoveTo> ("action.move");
 
     // runners
     add<HotSpotManager> ("hotspotmanager");

@@ -24,6 +24,23 @@ class CallFunc:
         self.type = 'action.callfunc'
         self.func = f
 
+class Move:
+    def __init__(self, speed: float, to = None, by = None, immediate: bool = False, id = None, tag = None):
+        self.type = 'action.move'
+        self.id = id
+        self.tag = tag        
+        self.speed = speed
+        self.to = to
+        self.by = by
+        self.immediate = immediate
+
+class SetState:
+    def __init__(self, state: str, id = None, tag = None):
+        self.type = 'action.setstate'
+        self.id = id
+        self.tag = tag
+        self.state = state
+
 class MoveAccelerated:
     def __init__(self, v0, a, yStop, id = None, tag = None):
         self.type = 'action.moveaccelerated'

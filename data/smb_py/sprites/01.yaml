@@ -78,8 +78,26 @@ mushroom:
   boxes:
     - [-8, 0, 8, 16]
   animations:
-    idle:
+    walk:
       box: 0
       frames:
         - [48, 16, 16, 16, 8, 0]
+flyingcoin:
+  sheet: "gfx/smb1.png"
+  type: "asset.sprite"
+  animations:
+    walk:
+      frames:
+        - [160, 16, 16, 16, 8, 0]
+        - [176, 16, 16, 16, 8, 0]
+        - [192, 16, 16, 16, 8, 0]
+        - [208, 16, 16, 16, 8, 0]
+score100:
+  sheet: 'gfx/smb1.png'
+  type: 'asset.sprite'
+  animations:
+    def:
+      frames:
+        - [0, 80, 16, 16, 8, 0]
 
+        

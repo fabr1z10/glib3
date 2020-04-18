@@ -15,6 +15,7 @@ public:
      */
     FoeWalk (const std::string& anim, float speed, float acceleration, bool fliph, bool flipIfPlatformEnds, int left);
     FoeWalk (const FoeWalk& orig);
+    FoeWalk (const ITable&);
     std::shared_ptr<State> clone() const override;
     void AttachStateMachine(StateMachine*) override;
 

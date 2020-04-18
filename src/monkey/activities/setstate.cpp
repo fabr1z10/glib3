@@ -7,6 +7,10 @@ SetState::SetState(const LuaTable& t) : TargetActivity(t) {
     m_state = t.Get<std::string>("state");
 }
 
+SetState::SetState(const ITable& t) : TargetActivity(t) {
+    m_state = t.get<std::string>("state");
+}
+
 void SetState::Start() {
     TargetActivity::Start();
     if (m_entity.isValid()) {

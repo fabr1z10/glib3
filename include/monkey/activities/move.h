@@ -6,6 +6,7 @@
 class MoveTo : public TargetActivity {
 public:
     MoveTo(glm::vec2 pos, float speed, bool relative, bool immediate, bool flip = false);
+    MoveTo(const ITable&);
     MoveTo(int id, glm::vec2 pos, float speed, bool relative, bool immediate, bool flip = false) : MoveTo(pos, speed, relative, immediate, flip) {
         SetId(id);
     }

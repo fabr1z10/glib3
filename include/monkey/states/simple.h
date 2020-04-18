@@ -20,6 +20,7 @@ class SimpleState : public State {
 public:
     SimpleState(const std::string& anim);
     SimpleState(const SimpleState&);
+    SimpleState(const ITable&);
     std::shared_ptr<State> clone() const override;
     void Run(double) override;
     void Init () override;

@@ -35,7 +35,7 @@ void Extension::extend(SceneFactory* f) {
 //
     f->add2<WalkSide> ("state.walkside");
     f->add2<Jump2D> ("state.jump");
-
+    f->add2<FoeWalk> ("state.foewalk");
     //f->addStateFactory("walkside", std::make_unique<WalkSideFactory>());
 //    f->addStateFactory("jump", std::make_unique<Jump2DFactory>());
 //
@@ -382,19 +382,6 @@ void Jump2DFactory::init(const LuaTable & table, std::shared_ptr<State> state) {
 //std::shared_ptr<State> NilStateFactory::Create(luabridge::LuaRef& ) {
 //    return std::make_shared<NilState>();
 //}
-std::shared_ptr<State> FoeWalkFactory::Create(luabridge::LuaRef &ref) {
-    LuaTable table(ref);
-    std::string anim = table.Get<std::string>("anim");
-    float speed = table.Get<float>("speed");
-    float a = table.Get<float>("acceleration");
-    bool fliph = table.Get<bool>("fliph");
-    bool flipp = table.Get<bool>("flip_platform");
-
-    int left = table.Get<int>("left");
-    auto ptr = std::make_shared<FoeWalk>(anim, speed,a,fliph, flipp, left);
-    init(table, ptr);
-    return ptr;
-}
 
 void FoeWalkFactory::init(const LuaTable & table, std::shared_ptr<State> state) {
     PlatformerStateFactory::init(table, state);

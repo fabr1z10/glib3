@@ -77,6 +77,11 @@ class NullState(State):
         super().__init__(id)
         self.type = 'state.null'
 
+class SimpleState (State):
+    def __init__(self, id: str, anim: str):
+        super().__init__(id)
+        self.type = 'state.simple'
+        self.anim = anim
 
 class Info():
     #def __init__(self, text_color : list, text_offset : list):

@@ -10,6 +10,24 @@ MoveTo::MoveTo(glm::vec2 pos, float speed, bool relative, bool immediate, bool f
 
 }
 
+MoveTo::MoveTo(const ITable & t) : TargetActivity(t), m_lengthCovered(0.0f), m_lengthToCover(0.0f), m_acceleration(0.0f), m_accelerationVector(0.0f) {
+    if (t.hasKey("to")) {
+        m_relative = false;
+        m_toPos = t.get<glm::vec2>("to");
+    } else {
+        m_relative = true;
+        m_toPos = t.get<glm::vec2>("by");
+    }
+    m_speed = t.get<float>("speed", 0.0f);
+    m_flip = t.get<bool>("flip", false);
+    m_immediate = t.get<bool>("immediate", false);
+    if (t.hasKey("acceleration")) {
+        float acceleration = t.get<float>("acceleration");
+        SetAcceleration(acceleration);
+    }
+
+}
+
 MoveToScaled::MoveToScaled(glm::vec2 pos, float speed, bool relative, bool immediate) :
         MoveTo(pos,speed,relative,immediate)
 {

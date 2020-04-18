@@ -31,6 +31,10 @@ SimpleState::SimpleState(const SimpleState&) {
 
 }
 
+SimpleState::SimpleState(const ITable & t) : State(t) {
+    m_anim = t.get<std::string>("anim");
+}
+
 std::shared_ptr<State> SimpleState::clone() const {
     return std::make_shared<SimpleState>(*this);
 }
