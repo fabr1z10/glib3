@@ -90,6 +90,13 @@ inline glm::vec2 ITable::cast(pybind11::object o) const {
 }
 
 template <>
+inline glm::ivec2 ITable::cast(pybind11::object o) const {
+    auto vec = o.cast<std::vector<int>>();
+    return glm::ivec2(vec[0], vec[1]);
+}
+
+
+template <>
 inline glm::vec3 ITable::cast(pybind11::object o) const  {
     auto vec = o.cast<std::vector<float>>();
     return glm::vec3(vec[0], vec[1], vec[2]);

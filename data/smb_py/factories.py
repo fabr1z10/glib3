@@ -166,3 +166,23 @@ def bonusBrick(model: str, x: float, y: float, callback: callable, hits: int = 1
 	# 		}
 	# 	}
 	# }
+
+def tiled(x: float, y: float, tileSheet : str, sheetSize, tileData: list, 
+    width: int, height:int, size: float, z: float = 0):
+    e = Entity(pos = [x*vars.tileSize, y*vars.tileSize, z])
+    e.addComponent (compo.TiledGfx(
+        tilesheet = tileSheet, 
+        sheetSize = sheetSize, 
+        tileData = tileData, 
+        width = width, 
+        height = height,
+        size = size))
+	#if (args.collide) then
+	#	table.insert(components, { type = "collider", flag = variables.collision.flags.platform, mask = 1, tag=1, shape = { type="rect", width = args.width*engine.tilesize, height = 
+    #		args.height*engine.tilesize }})
+	#end
+    return e
+
+def pipe2(x: float, y: float):
+    return tiled(x, y, z=1, size=vars.tileSize, tileSheet='gfx/smb1.png',
+        sheetSize=[16, 16], tileData=[0, 4, 1, 4, 0, 3, 1, 3], width=2, height=2)

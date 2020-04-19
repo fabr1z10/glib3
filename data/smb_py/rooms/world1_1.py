@@ -88,7 +88,9 @@ def builder():
         fact.makeBrick('brick', 5, 5),
         fact.bonusBrick (model = 'bonusbrick', x= 7, y=5, callback = fact.m1),
         fact.bonusBrick (model = 'bonusbrick', x= 9, y=5, callback = fact.m2),
-        fact.warpDown (x=5, y=2, width=16, height=2, callback = func.warpIn(warpTo=[2, 25], newCamBounds=[0,256,256,512]))
+        fact.warpDown (x=5, y=2, width=16, height=2, callback = func.warpIn(warpTo=[2, 25], newCamBounds=[0,256,256,512])),
+        fact.pipe2 (6, 2)
+        #fact.tiled(x=6, y=2, z=-1, size=16, tileSheet='gfx/smb1.png', sheetSize=[16, 16], tileData=[0, 4, 1, 4, 0, 3, 1, 3], width=2, height=2)
     ]
     #{71, 0, 15, 2}, {89, 0, 64, 2}, {155, 0, 69, 2}}
     #a = entity.Entity()

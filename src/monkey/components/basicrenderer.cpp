@@ -9,9 +9,9 @@ BasicRenderer::BasicRenderer(std::shared_ptr<IModel> model) : Renderer() {
 }
 
 BasicRenderer::BasicRenderer(const ITable & t) : Renderer() {
-
-    if (t.hasKey("image")) {
-        auto image = t.get<std::string>("image");
+    int cls = t.get<int>("cls");
+    auto image = t.get<std::string>("image");
+    if (cls == 0) {
         auto w = t.get<float>("width", 0.0f);
         auto h = t.get<float>("height", 0.0f);
         glm::vec2 offset = t.get<glm::vec2>("offset", glm::vec2(0.0f));
@@ -27,6 +27,18 @@ BasicRenderer::BasicRenderer(const ITable & t) : Renderer() {
         SetModel(std::make_shared<BasicModel>(mesh));
         //m_model = std::make_shared<BasicModel>(mesh);
 
+    } else if (cls == 1) {
+        float size = t.get<float>("size", 1.0f);
+        int width = t.get<int>("width");
+        int height = t.get<int>("height");
+        int repx = t.get<int>("repx", 1);
+        int repy = t.get<int>("repy", 1);
+        glm::vec2 delta = t.get<glm::vec2>("delta", glm::vec2(0.0f, 0.0f));
+        glm::ivec2 sheetSize = t.get<glm::ivec2>("sheetSize");
+        std::vector<int> data = t.get<std::vector<int>>("tileData");
+        auto mesh = std::make_shared<QuadMesh>(image, height, width, size, data, sheetSize.x, sheetSize.y, repx, repy, delta);
+        //m_model = std::make_shared<BasicModel>(mesh)//;
+        SetModel( std::make_shared<BasicModel>(mesh));
     }
 }
 

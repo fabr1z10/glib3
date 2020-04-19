@@ -7,6 +7,18 @@ class Gfx:
         self.width = width
         self.height = height
         self.rep = repeat
+        self.cls = 0
+
+class TiledGfx:
+    def __init__(self, tilesheet : str, sheetSize, tileData : list, width: int, height: int, size: float):
+        self.type = 'components.gfx'
+        self.image = tilesheet
+        self.sheetSize = sheetSize
+        self.tileData = tileData
+        self.width = width
+        self.height = height
+        self.size = size
+        self.cls = 1
 
 class HotSpot:
     def __init__(self, shape, priority:int=0,onenter: Callable = None, onleave: Callable = None, onclick: Callable = None):
