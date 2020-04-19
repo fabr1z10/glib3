@@ -16,7 +16,7 @@ std::shared_ptr<State> NullState::clone() const {
     return std::make_shared<NullState>(*this);
 }
 
-void NullState::Init() {}
+void NullState::Init(pybind11::dict&) {}
 
 void NullState::End() {}
 
@@ -46,7 +46,7 @@ void SimpleState::AttachStateMachine(StateMachine * sm) {
     m_animator = m_entity->GetComponent<IAnimator>();
 }
 
-void SimpleState::Init() {
+void SimpleState::Init(pybind11::dict&) {
     m_animator->SetAnimation(m_anim);
 }
 

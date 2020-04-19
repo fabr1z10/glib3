@@ -12,7 +12,7 @@ public:
     NullState (const NullState&);
     std::shared_ptr<State> clone() const override;
     void Run(double) override;
-    void Init () override;
+    void Init (pybind11::dict&) override;
     void End () override;
 };
 
@@ -23,7 +23,7 @@ public:
     SimpleState(const ITable&);
     std::shared_ptr<State> clone() const override;
     void Run(double) override;
-    void Init () override;
+    void Init (pybind11::dict&) override;
     void End () override;
     void AttachStateMachine(StateMachine*) override;
 protected:

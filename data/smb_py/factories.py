@@ -27,6 +27,8 @@ def makePlayer(model: str, x: float, y: float):
     stateMachine.states.append (compo.SimpleState (id='warp', anim='idle'))
     stateMachine.states.append (pc.WalkSide(id='walk', speed=75, acceleration=0.05, jumpSpeed= vars.jump_velocity, flipHorizontal=True))
     stateMachine.states.append (pc.Jump(id='jump', speed=75, acceleration=0.10, flipHorizontal=True, animUp='jump', animDown='jump'))
+    stateMachine.states.append (pc.FoeWalk(id='demo', anim='walk', speed = 75, 
+        acceleration=0.05, flipHorizontal=True, flipWhenPlatformEnds = False, left=1))
     player.addComponent (stateMachine)
     player.addComponent (compo.KeyInput())    
     player.addComponent (compo.Follow())
@@ -39,6 +41,11 @@ def makePlatform(img : str, x:float, y:float, width : int, height: int):
         shape = sh.Rect(width = width * vars.tileSize, height = height * vars.tileSize)))
     a.pos = [x * vars.tileSize, y * vars.tileSize]
     return a
+
+def platform (img : str):
+    def f(x: float, y: float, width: int, height: int):
+        return makePlatform(img, x, y, width, height)
+    return f
 
 def makeBrick(model: str, x: float, y: float):
     a = Sprite(model = model)
@@ -112,9 +119,24 @@ def mushroom(x: float, y: float):
     a.addComponent (stateMachine)
     return a
 
-def warpDown(x : float, y : float, width: float, height: float, callback: callable):
+def coin(x: float, y: float):
+    a = Sprite(model = 'pickupcoin', pos = [x*vars.tileSize, y*vars.tileSize, 1])
+    a.addComponent(compo.SmartCollider(
+        flag = vars.flags.foe,
+        mask = vars.flags.player,
+        tag = vars.tags.coin))
+    return a
+
+
+def warp(x : float, y : float, width: float, height: float, callback: callable):
     e = Entity(pos = [x * vars.tileSize, y * vars.tileSize])
     e.addComponent (compo.Collider (flag = vars.flags.foe, mask = vars.flags.player, tag = vars.tags.warp, shape = sh.Rect (width, height)))
+    e.addComponent (compo.Info (func = callback))
+    return e
+
+def hotspot(x : float, y : float, width: float, height: float, callback: callable):
+    e = Entity(pos = [x * vars.tileSize, y * vars.tileSize])
+    e.addComponent (compo.Collider (flag = vars.flags.foe, mask = vars.flags.player, tag = vars.tags.hotspot, shape = sh.Rect (width, height)))
     e.addComponent (compo.Info (func = callback))
     return e
 
@@ -168,7 +190,7 @@ def bonusBrick(model: str, x: float, y: float, callback: callable, hits: int = 1
 	# }
 
 def tiled(x: float, y: float, tileSheet : str, sheetSize, tileData: list, 
-    width: int, height:int, size: float, z: float = 0):
+    width: int, height:int, size: float, z: float = 0, shape: sh.Shape = None):
     e = Entity(pos = [x*vars.tileSize, y*vars.tileSize, z])
     e.addComponent (compo.TiledGfx(
         tilesheet = tileSheet, 
@@ -177,6 +199,13 @@ def tiled(x: float, y: float, tileSheet : str, sheetSize, tileData: list,
         width = width, 
         height = height,
         size = size))
+    if shape:
+        e.addComponent (compo.Collider (
+            flag=vars.flags.platform,
+            mask = 1,
+            tag = 1,
+            shape = shape
+        ))
 	#if (args.collide) then
 	#	table.insert(components, { type = "collider", flag = variables.collision.flags.platform, mask = 1, tag=1, shape = { type="rect", width = args.width*engine.tilesize, height = 
     #		args.height*engine.tilesize }})
@@ -185,4 +214,28 @@ def tiled(x: float, y: float, tileSheet : str, sheetSize, tileData: list,
 
 def pipe2(x: float, y: float):
     return tiled(x, y, z=1, size=vars.tileSize, tileSheet='gfx/smb1.png',
-        sheetSize=[16, 16], tileData=[0, 4, 1, 4, 0, 3, 1, 3], width=2, height=2)
+        sheetSize=[16, 16], tileData=[0, 4, 1, 4, 0, 3, 1, 3], width=2, height=2, shape= sh.Rect(width=2*vars.tileSize, height=2*vars.tileSize))
+
+def pipe3(x:float, y:float): 
+    return tiled(x, y, z=1, size=vars.tileSize, tileSheet='gfx/smb1.png',
+        sheetSize=[16, 16], tileData=[0, 4, 1, 4, 0, 4, 1, 4, 0, 3, 1, 3], width=2, height=3, 
+        shape= sh.Rect(width=2*vars.tileSize, height=3*vars.tileSize))
+
+def pipe4(x:float, y:float): 
+    return tiled(x, y, z=1, size=vars.tileSize, tileSheet='gfx/smb1.png',
+        sheetSize=[16, 16], tileData=[0, 4, 1, 4, 0, 4, 1, 4, 0, 4, 1, 4, 0, 3, 1, 3], width=2, height=4, 
+        shape= sh.Rect(width=2*vars.tileSize, height=4*vars.tileSize))
+
+def makeTiled (x: float, y: float, templ, z: float = 0):
+    shape = None
+    if templ[2]:
+        shape =sh.Rect(width = templ[0] * vars.tileSize, height = templ[1] * vars.tileSize) 
+    return tiled(x, y, z = z, size=vars.tileSize, tileSheet='gfx/smb1.png',
+        sheetSize=[16, 16], tileData=templ[3], width=templ[0], height=templ[1], 
+        shape= shape)
+
+def line(x: float, y: float, A, B):
+    e = Entity(pos = [x*vars.tileSize, y*vars.tileSize])
+    e.addComponent (compo.Collider(flag = vars.flags.platform, mask=1, tag=1, 
+        shape= sh.Line(A, B)))
+    return e

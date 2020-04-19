@@ -35,11 +35,17 @@ class Move:
         self.immediate = immediate
 
 class SetState:
-    def __init__(self, state: str, id = None, tag = None):
+    def __init__(self, state: str, id = None, tag = None, args = None):
         self.type = 'action.setstate'
         self.id = id
         self.tag = tag
         self.state = state
+        self.args = args
+
+class Delay:
+    def __init__(self, sec: float):
+        self.type = 'action.delay'
+        self.sec = sec
 
 class MoveAccelerated:
     def __init__(self, v0, a, yStop, id = None, tag = None):

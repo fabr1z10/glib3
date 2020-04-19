@@ -16,7 +16,7 @@ public:
     std::shared_ptr<State> clone() const override;
 
     void Run(double) override;
-    void Init () override;
+    void Init (pybind11::dict&) override;
     void End () override;
     void ResetAnimation() override {}
     void ModifyAnimation() override {}

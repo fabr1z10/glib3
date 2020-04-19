@@ -161,6 +161,7 @@ SceneFactory::SceneFactory() {
 
     // actions
     add<DelayTime> ("delay");
+    add2<DelayTime> ("action.delay");
     add<DelayTimeDynamic> ("delay_dynamic");
     add<Animate> ("animate");
     add2<Animate> ("action.animate");
@@ -199,6 +200,7 @@ SceneFactory::SceneFactory() {
     add2<Poly> ("shape.poly");
     add<Rect> ("rect");
     add2<Rect> ("rect");
+    add2<Line> ("line");
     add<PolyLine> ("graph");
     add2<PolyLine> ("shape.graph");
     // models

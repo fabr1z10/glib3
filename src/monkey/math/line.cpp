@@ -4,6 +4,30 @@
 #include <monkey/error.h>
 #include <vector>
 
+
+Line::Line(const ITable& t) : Shape() {
+    m_A = t.get<glm::vec3>("A");
+    m_B = t.get<glm::vec3>("B");
+    if (m_A.x < m_B.x) {
+        m_bounds.min.x = m_A.x;
+        m_bounds.max.x = m_B.x;
+    } else {
+        m_bounds.min.x = m_B.x;
+        m_bounds.max.x = m_A.x;
+    }
+    if (m_A.y < m_B.y) {
+        m_bounds.min.y = m_A.y;
+        m_bounds.max.y = m_B.y;
+    } else {
+        m_bounds.min.y = m_B.y;
+        m_bounds.max.y = m_A.y;
+    }
+    m_bounds.min.z = -1.0f;
+    m_bounds.max.z = 1.0f;
+    m_length = glm::length(m_B - m_A);
+    m_length = glm::dot(m_B - m_A, m_B - m_A);
+    m_dir = glm::normalize(m_B - m_A);
+}
 Line::Line (glm::vec2 A, glm::vec2 B) : Shape(), m_A(A, 0.0f), m_B(B, 0.0f) {
     if (m_A.x < m_B.x) {
         m_bounds.min.x = m_A.x;

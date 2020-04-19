@@ -7,6 +7,7 @@ class Line : public Shape {
 public:
     Line (glm::vec2 A, glm::vec2 B);
     Line (glm::vec3 A, glm::vec3 B);
+    Line (const ITable&);
     bool isPointInside(glm::vec3) const override;
     void accept (AcyclicVisitor& v) override;
     float GetLength() const;

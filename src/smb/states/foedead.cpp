@@ -18,7 +18,7 @@ std::shared_ptr<State> FoeDead::clone() const {
 }
 
 
-void FoeDead::Init() {
+void FoeDead::Init(pybind11::dict&) {
     m_animator->SetAnimation("dead");
     m_timer = 0.0f;
     m_id = m_entity->GetId();

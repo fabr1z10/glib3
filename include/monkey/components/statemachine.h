@@ -18,9 +18,7 @@ public:
     State(const ITable&);
     virtual ~State() = default;
     // init is called every time this state is set, so DON't put initialization code here!
-    virtual void Init () = 0;
-    // init with data
-    virtual void Init (luabridge::LuaRef);
+    virtual void Init (pybind11::dict& d) = 0;
     virtual void Run (double) = 0;
     virtual void End () = 0;
     virtual std::shared_ptr<State> clone() const = 0;
@@ -56,8 +54,9 @@ public:
     void Update(double) override;
     void ResetState() ;
     std::string GetState() const;
-    virtual void SetState (const std::string&);
-    void SetState (const std::string&, luabridge::LuaRef);
+    void SetState(const std::string&);
+    void SetState (const std::string&, pybind11::dict& d);
+    //void SetState (const std::string&, luabridge::LuaRef);
 
     State* GetState (const std::string&);
     virtual void Refresh () {}

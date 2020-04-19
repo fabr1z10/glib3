@@ -15,9 +15,6 @@ void State::AttachStateMachine(StateMachine * sm) {
     m_sm = sm;
 }
 
-void State::Init(luabridge::LuaRef ref) {
-    Init();
-}
 
 bool State::KeyListener(int key) {
     auto f = m_actions.find(key);
@@ -44,6 +41,7 @@ void StateMachine::Begin() {
     for (auto& s : m_states) {
         s.second->AttachStateMachine(this);
     }
+    auto n = pybind11::none();
     SetState(m_initialState);
 }
 
@@ -66,23 +64,12 @@ void StateMachine::ResetState() {
     SetState(state);
 }
 
-void StateMachine::SetState(const std::string & state) {
-    if (state == m_currentStateId) {
-        return;
-    }
-    m_currentStateId= state;
-    if (m_currentState != nullptr) {
-        m_currentState->End();
-    }
-    auto it = m_states.find(state);
-    if (it == m_states.end()) {
-        GLIB_FAIL("unknown state " << state);
-    }
-    m_currentState = it->second.get();
-    m_currentState->Init();
+void StateMachine::SetState(const std::string& state) {
+    pybind11::dict n;
+    SetState(state, n);
 }
 
-void StateMachine::SetState(const std::string & state, luabridge::LuaRef ref) {
+void StateMachine::SetState(const std::string & state, pybind11::dict& d) {
     if (state == m_currentStateId) {
         return;
     }
@@ -95,8 +82,24 @@ void StateMachine::SetState(const std::string & state, luabridge::LuaRef ref) {
         GLIB_FAIL("unknown state " << state);
     }
     m_currentState = it->second.get();
-    m_currentState->Init(ref);
+    m_currentState->Init(d);
 }
+
+//void StateMachine::SetState(const std::string & state, luabridge::LuaRef ref) {
+//    if (state == m_currentStateId) {
+//        return;
+//    }
+//    m_currentStateId= state;
+//    if (m_currentState != nullptr) {
+//        m_currentState->End();
+//    }
+//    auto it = m_states.find(state);
+//    if (it == m_states.end()) {
+//        GLIB_FAIL("unknown state " << state);
+//    }
+//    m_currentState = it->second.get();
+//    m_currentState->Init(ref);
+//}
 
 
 State* StateMachine::GetState (const std::string& state) {

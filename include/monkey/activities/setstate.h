@@ -13,15 +13,6 @@ public:
     void Run (float dt) override {}
 private:
     std::string m_state;
+    pybind11::dict m_args;
 };
 
-class SetStateWithArgs : public TargetActivity {
-public:
-    SetStateWithArgs (const std::string& state, luabridge::LuaRef args) : TargetActivity(), m_state(state), m_args(args) {}
-    void Start() override;
-    void Run (float dt) override {}
-private:
-    luabridge::LuaRef m_args;
-    std::string m_state;
-
-};

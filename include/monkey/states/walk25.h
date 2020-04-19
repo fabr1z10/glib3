@@ -15,7 +15,7 @@ public:
     Walk25(const Walk25&);
     std::shared_ptr<State> clone() const override;
     void Run(double) override;
-    void Init () override;
+    void Init (pybind11::dict&) override;
     void End () override;
     float GetSpeed() const;
     void AttachStateMachine(StateMachine*) override;

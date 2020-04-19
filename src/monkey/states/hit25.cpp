@@ -26,7 +26,7 @@ void Hit25::Run(double dt) {
 }
 
 
-void Hit25::Init() {
+void Hit25::Init(pybind11::dict&) {
     m_animator->SetAnimation(m_anim);
 }
 

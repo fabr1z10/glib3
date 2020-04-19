@@ -38,16 +38,21 @@ void FoeWalk::AttachStateMachine(StateMachine * sm) {
     m_c = dynamic_cast<Controller2D*>(m_controller);
 }
 
-void FoeWalk::Init() {
+void FoeWalk::Init(pybind11::dict& d) {
+    PyDict dict(d);
+    if (dict.hasKey("left")) {
+        m_left = dict.get<int>("left");
+    }
     setDirection(m_left);
+
     m_animator->SetAnimation(m_anim);
 }
 
-void FoeWalk::Init (luabridge::LuaRef ref) {
-    LuaTable t(ref);
-    m_left = t.Get<int>("left");
-    Init();
-}
+//void FoeWalk::Init (luabridge::LuaRef ref) {
+//    LuaTable t(ref);
+//    m_left = t.Get<int>("left");
+//    Init();
+//}
 
 void FoeWalk::setDirection(int left) {
     m_entity->SetFlipX(m_fliph && (left == 1));

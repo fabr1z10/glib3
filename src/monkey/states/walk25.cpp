@@ -37,7 +37,7 @@ void Walk25::AttachStateMachine(StateMachine * sm) {
     //}
 }
 
-void Walk25::Init() {
+void Walk25::Init(pybind11::dict&) {
     if (m_flipHorizontal) {
         //m_entity->SetFlipX(m_dir == 'w');
     }

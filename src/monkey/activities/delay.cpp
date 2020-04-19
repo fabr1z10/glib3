@@ -5,6 +5,10 @@ DelayTime::DelayTime(const LuaTable & t) : Activity() {
     m_time = t.Get<float>("sec");
 }
 
+DelayTime::DelayTime(const ITable & t) : Activity() {
+    m_time = t.get<float>("sec");
+}
+
 void DelayTime::Start()  {
     m_elapsed = 0.0f;
 }

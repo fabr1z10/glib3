@@ -19,7 +19,7 @@ public:
     WalkSide (const WalkSide& orig);
     WalkSide (const ITable&);
     void Run(double) override;
-    void Init () override;
+    void Init (pybind11::dict&) override;
     void End () override;
     std::shared_ptr<State> clone() const override;
     void ResetAnimation() override;

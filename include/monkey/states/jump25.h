@@ -17,7 +17,7 @@ public:
     void AttachStateMachine(StateMachine*) override;
 
     void Run(double) override;
-    void Init () override;
+    void Init (pybind11::dict&) override;
     void End () override;
 protected:
     float m_speed;

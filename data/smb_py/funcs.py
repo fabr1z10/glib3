@@ -24,6 +24,9 @@ def makePiece(pos, vx, vy, model, parent : example.Wrap1):
     #		type = action.remove_object, args = { id = id1}
     example.play(s)
 
+def coinResponse(player:example.Wrap1, coin:example.Wrap1, x, y):
+    example.remove(coin.id())
+
 def brickResponse (player : example.Wrap1, brick : example.Wrap1, x, y):
     b = brick.parent()
     brick_id = b.id()
@@ -69,6 +72,12 @@ def warpEnter( player: example.Wrap1, warp: example.Wrap1, x,y):
     if 'func' in info:
         vars.warp_func = info['func']
 
+def hotspotEnter (player: example.Wrap1, warp: example.Wrap1, x, y):
+    info = warp.getInfo()
+    if 'func' in info:
+        info['func']()
+
+
 def warpExit (player: example.Wrap1, warp: example.Wrap1, x, y):
     vars.warp_func = None
 
@@ -82,6 +91,20 @@ def warpIn(warpTo : list, newCamBounds : list = None):
         if newCamBounds:
             s.addAction (act.ChangeCamBounds('maincam', newCamBounds[0], newCamBounds[1], newCamBounds[2], newCamBounds[3]))
         s.addAction (act.Move(speed=0, to = [warpTo[0] * vars.tileSize, warpTo[1]*vars.tileSize], immediate= True, tag = 'player'))
+        s.addAction (act.SetState(tag='player', state='walk'))
+        example.play(s)
+    return f
+
+def warpUp(warpTo : list, newCamBounds : list = None):
+    def f():
+        s = Script()
+        s.addAction (act.SetState(tag='player', state='demo', args = { 'left': 0 })),
+        s.addAction (act.Delay (sec=1))
+        s.addAction (act.SetState(tag='player', state='warp'))
+        if newCamBounds:
+            s.addAction (act.ChangeCamBounds('maincam', newCamBounds[0], newCamBounds[1], newCamBounds[2], newCamBounds[3]))
+        s.addAction (act.Move(speed=0, to = [warpTo[0] * vars.tileSize, warpTo[1]*vars.tileSize], immediate= True, tag = 'player'))
+        s.addAction (act.Move(speed=50, by =[0, 64], tag='player'))
         s.addAction (act.SetState(tag='player', state='walk'))
         example.play(s)
     return f

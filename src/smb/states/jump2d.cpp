@@ -42,7 +42,7 @@ std::shared_ptr<State> Jump2D::clone() const {
     return std::make_shared<Jump2D>(*this);
 }
 
-void Jump2D::Init() {
+void Jump2D::Init(pybind11::dict&) {
     ResetAnimation();
 }
 

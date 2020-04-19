@@ -8,6 +8,7 @@ class DelayTime : public Activity {
 public:
     DelayTime(float sec) : Activity(), m_time{sec}, m_elapsed{0.0f} {}
     DelayTime(const LuaTable&);
+    DelayTime(const ITable&);
     void Start() override ;
     void Run (float dt) override;
 private:

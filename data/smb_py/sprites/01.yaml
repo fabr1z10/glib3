@@ -82,6 +82,18 @@ mushroom:
       box: 0
       frames:
         - [48, 16, 16, 16, 8, 0]
+pickupcoin:
+  sheet: 'gfx/smb1.png'
+  type: 'asset.boxed'
+  boxes: 
+    - [2, 0, 14, 16]
+  animations:
+    def:
+      box: 0
+      frames:
+        - [128, 64, 16, 16]
+        - [144, 64, 16, 16]
+        - [160, 64, 16, 16]
 flyingcoin:
   sheet: "gfx/smb1.png"
   type: "asset.sprite"

@@ -44,7 +44,7 @@ std::shared_ptr<State> WalkSide::clone() const {
     return std::make_shared<WalkSide>(*this);
 }
 
-void WalkSide::Init() {
+void WalkSide::Init(pybind11::dict&) {
 
 }
 

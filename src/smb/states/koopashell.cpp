@@ -18,7 +18,7 @@ std::shared_ptr<State> KoopaShell::clone() const {
 }
 
 
-void KoopaShell::Init() {
+void KoopaShell::Init(pybind11::dict&) {
     m_animator->SetAnimation("hide");
     m_timer = 0.0f;
     m_id = m_entity->GetId();

@@ -2,6 +2,13 @@ class Shape:
     def __init__(self, offset = [0, 0]):
         self.offset = offset
 
+class Line(Shape):
+    def __init__(self, A, B, offset = [0, 0]):
+        super().__init__(offset)
+        self.type = 'line'
+        self.A = A
+        self.B = B
+
 class Rect(Shape):
     def __init__(self, width : float, height : float, offset = [0, 0]):
         super().__init__(offset)
