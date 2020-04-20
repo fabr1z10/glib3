@@ -47,12 +47,23 @@ def warp():
         return b.warp(x, y, warpTo, newCamBounds)
     return f
 
-def hotspot():
+def warph():
     def f(x : float, y : float, warpTo, newCamBounds):
         return b.hotspot(x, y, warpTo, newCamBounds)
     return f
     #     fact.hotspot (x=13, y=18, width=16, height=2, callback = func.warpUp(warpTo=[164, 0],
     #         newCamBounds=[0, 224*vars.tileSize, 0, 16*vars.tileSize])),
+
+def hotspot(f:str):
+    def h(x : float, y : float, width: float, height: float):
+        g = getattr(func, f)
+        return b.hotspot2(x, y, width, height, g)
+    return h
+
+def sprite(model: str):
+    def f(x: float, y: float, z: float = 0, tag: str = None):
+        return b.spr(model, x, y,z, tag)
+    return f
 
 def spawn(factory: callable):
     def f(x : float, y : float, *args):

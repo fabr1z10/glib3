@@ -25,6 +25,10 @@ mario:
     dead:
       frames:
         - [96, 0, 16, 16, 8, 0]
+    slide:
+      frames:
+        - [176, 64, 16, 16, 8, 0]
+
 supermario:
   sheet: "gfx/smb1.png"
   thickness: 1
@@ -48,6 +52,10 @@ supermario:
       box: 0
       frames:
         - [144, 16, 16, 32, 8, 0]
+    slide:
+      frames:
+        - [192, 64, 16, 32, 8, 0]
+
 brick:
   sheet: "gfx/smb1.png"
   type: "asset.sprite"
@@ -85,6 +93,15 @@ mushroom:
       box: 0
       frames:
         - [48, 16, 16, 16, 8, 0]
+flag:
+  sheet: "gfx/smb1.png"
+  type: "asset.sprite"
+  animations:
+    def:
+      frames:
+        - [224, 64, 16, 16, 8, 0]
+
+
 goomba:
   sheet: 'gfx/smb1.png'
   type: 'asset.boxed'

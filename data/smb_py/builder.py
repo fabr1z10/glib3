@@ -200,6 +200,13 @@ def hotspot(x : float, y : float, warpTo, newCamBounds):
     e.addComponent (compo.Info (func = func.warpUp(warpTo, newCamBounds)))
     return e
 
+def hotspot2(x : float, y : float, width: float, height: float, f: callable):
+    e = Entity(pos = [x * vars.tileSize, y * vars.tileSize])
+    e.addComponent (compo.Collider (flag = vars.flags.foe, mask = vars.flags.player, tag = vars.tags.hotspot, 
+        shape = sh.Rect (width*vars.tileSize, height*vars.tileSize)))
+    e.addComponent (compo.Info (func = f))
+    return e
+
 
 def makeSpawn(x: float, y: float, f: callable, *args):
     print (args)
@@ -241,7 +248,7 @@ def line(x: float, y: float, A, B):
         shape= sh.Line(A, B)))
     return e
 
-def spr(model: str, x: float, y: float):
-    a = Sprite(model= model, pos = [x*vars.tileSize, y*vars.tileSize])
+def spr(model: str, x: float, y: float, z: float = 0.0, tag: str = None):
+    a = Sprite(model= model, pos = [x*vars.tileSize, y*vars.tileSize, z], tag = tag)
     return a
 

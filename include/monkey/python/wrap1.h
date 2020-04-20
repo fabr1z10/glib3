@@ -12,6 +12,8 @@ public:
     float y() const ;
     float getVy() const;
     void setVy(float);
+    float getVx() const;
+    void setVx(float);
     void move(float dx, float dy, float dz);
     int id() const;
     void setEntity(Entity* e);

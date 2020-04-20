@@ -9,7 +9,7 @@ class Script:
     # add an action
     def addAction (self, action, id = None, after = None):
         iid = len(self.actions)
-        if id:
+        if id is not None:
             self.map[id] = iid
         self.actions.append(action)
         if after:

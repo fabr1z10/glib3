@@ -36,7 +36,13 @@ float Wrap1::getVy() const {
 void Wrap1::setVy(float value) {
     m_entity->GetComponent<Dynamics2D>()->m_velocity.y = value;
 }
+float Wrap1::getVx() const {
+    return m_entity->GetComponent<Dynamics2D>()->m_velocity.x;
+}
 
+void Wrap1::setVx(float value) {
+    m_entity->GetComponent<Dynamics2D>()->m_velocity.x = value;
+}
 
 void Wrap1::move(float dx, float dy, float dz) {
     m_entity->MoveOrigin(glm::vec3(dx, dy, dz));

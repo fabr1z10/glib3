@@ -181,6 +181,46 @@ def warpUp(warpTo : list, newCamBounds : list = None):
         example.play(s)
     return f
 
+
+def flag(p, h):
+    p.vx = 0
+    p.vy = 0
+    example.remove(h.id())
+    flag = example.get('flag')
+    s = Script()
+    s.addAction(act.SetState (state = 'warp', tag='player', args = {'anim': 'slide'}), id = 0)
+    s.addAction (act.Move (speed = 80, by = [0, -(flag.y()-h.y())], tag='flag'), after= [0])
+    s.addAction (act.Move (speed = 80, to = [p.x(), h.y()], tag='player'), after= [0])
+    s.addAction (act.SetState(tag='player', state='demo', args = { 'left': 0 })),
+    #s.addAction (act.SetState (state='walk', tag='player'))
+    example.play(s)
+
+def endlevel(p, h):
+    example.remove(p.id())
+
+    # 	return factory.hotspot.create { 
+	# 	pos = p, 
+	# 	width = 2, 
+	# 	height = 256, 
+	# 	func = function(mario, hotspot)
+	# 		local mario = monkey.getEntity("player")
+	# 		hotspot:remove()
+	# 		mario.state = "slide"
+	# 		local delta = math.abs(mario.y - 48, 0)
+	# 		local actions = {
+	# 			{ type = action.noop, ref = 1},
+	# 			{ type = action.move, ref = 2, after={1}, args = {tag="player", by = {0, -delta}, speed = 50}},
+	# 			{ type = action.move, after={1}, args = {tag="flag", by = {0, -128}, speed = 50}},
+	# 			{ type = action.set_state, after= {2}, args = {tag = "player", state = "walk"}},
+	# 			{ type = action.set_demo_mode, args = { tag="player", value=true, sync = true, length = 10, events = {
+	# 				{ t=0, key = 262, event ="down"}
+	# 			}}},
+	# 		}
+	# 		local s = script.make(actions)
+	# 		monkey.play(s)		
+	# 	end
+    # print ('fuckme')
+    
 # factory.bonus_brick.response = function(p1, p2)
 
 # 	local brick = p2:parent()
