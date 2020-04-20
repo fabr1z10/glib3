@@ -13,6 +13,8 @@ public:
      */
     FoeDead (float time);
     FoeDead (const FoeDead& orig);
+    FoeDead (const ITable&);
+
     std::shared_ptr<State> clone() const override;
 
     void Run(double) override;
@@ -24,4 +26,5 @@ private:
     float m_time;
     float m_timer;
     int m_id;
+    std::string m_anim;
 };

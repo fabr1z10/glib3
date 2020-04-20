@@ -138,7 +138,12 @@ void BoxedModel::setShapeCast(const std::string &anim, int frame, int shapeId) {
 //    m_animBounds.insert(std::make_pair(anim, b));
 //}
 Bounds BoxedModel::GetAnimBounds(const std::string & name) const {
-    return m_animBounds.at(name);
+    auto it = m_animBounds.find(name);
+    if (it == m_animBounds.end()) {
+        return Bounds();
+    }
+
+    return it->second;
 }
 //
 //void BoxedModel::AddCollisionData(const std::string &anim

@@ -14,6 +14,12 @@ def upgradePlayer():
     pl = example.get('player')
     pl.setModel(vars.stateInfo[vars.state], 'idle')
 
+def setPlayer(state : int):
+    vars.state = state
+    pl = example.get('player')
+    pl.setModel(vars.stateInfo[state], 'idle')
+    
+
 
 def makePiece(pos, vx, vy, model, parent : example.Wrap1):
     a = Sprite(model = model, pos = pos)
@@ -62,6 +68,72 @@ def bonusBrickResponse (player: example.Wrap1, brick: example.Wrap1, x, y):
         s.addAction (act.CallFunc (f = p))
         example.play(s)
 
+def playerHitByEnemy(player : example.Wrap1):
+    # if Mario is hit by enemy, what happens depends on whether mario is supermario or not
+    #local marioInfo = player:getinfo()
+    #local supermario = marioInfo.supermario
+    if vars.state > 0:
+        setPlayer(0)
+        vars.invincibility = True
+        # marioInfo.invincible = true
+        # factory.mario.change_state(player, 1)
+        # player.state = "walk"
+        # local act = {
+        # 	{ type = action.blink, args = { id = player.id, duration=5, blink_duration= 0.2}},
+        # 	{ type = action.callfunc, args = { func = function() marioInfo.invincible=false end }}
+        # }
+        # local s = script.make(act)
+        # monkey.play(s)
+    else:
+        s = Script()
+        s.addAction (act.SetState(state='warp', tag='player', args = {'anim': 'dead'}))
+        s.addAction (act.Delay(sec=1))
+        s.addAction (act.MoveAccelerated(v0 = [0    , 200], a= [0, vars.gravity], yStop= 0, tag='player'))
+        s.addAction (act.RemoveEntity(id = player.id()))
+        s.addAction (act.RestartRoom())        
+        example.play(s)
+
+def goombaResponse (player : example.Wrap1, goomba : example.Wrap1, x, y):
+    if vars.invincibility:
+        return
+    print ('qui')
+    if (player.getState() == 'jump' and y > 0 and abs(x) < 0.01):
+        s = Script()
+        player.vy = 300
+        s.addAction (act.SetState (state = 'dead', id = goomba.id() ))
+        example.play(s)
+        print ('ciao')
+    else:
+        playerHitByEnemy(player)
+
+
+def createItem (f: callable, *args):
+    def g(player: example.Wrap1, hotspot: example.Wrap1):
+        example.remove(hotspot.id())
+        m : example.Wrap1 = example.get('main')
+        item = f(*args)
+        m.add (item)
+    return g
+
+def koopaResponse (player : example.Wrap1, koopa : example.Wrap1, x, y):
+    if koopa.getState() == 'hide':
+        if (player.getState() == 'jump' and y > 0 and abs(x) < 0.01):
+            player.vy = 300
+        koopa.move(-10 * x, 0, 0)		
+        left = 0 if (player.x() <koopa.x()) else 1
+        s = Script()
+        s.addAction (act.SetState(state='walk2', id=koopa.id(), args = {'left': left}))
+        example.play(s)
+    else:
+        if (player.getState() == "jump" and y > 0 and abs(x) < 0.01):
+            player.vy = 300
+            s = Script()
+            s.addAction (act.SetState(state='hide', id=koopa.id()))
+            example.play(s)     
+        else:
+            playerHitByEnemy(player)
+
+
 def mushroomResponse (player: example.Wrap1, mushroom: example.Wrap1, x, y):
     example.remove(mushroom.id())
     upgradePlayer()
@@ -75,7 +147,7 @@ def warpEnter( player: example.Wrap1, warp: example.Wrap1, x,y):
 def hotspotEnter (player: example.Wrap1, warp: example.Wrap1, x, y):
     info = warp.getInfo()
     if 'func' in info:
-        info['func']()
+        info['func'](player, warp)
 
 
 def warpExit (player: example.Wrap1, warp: example.Wrap1, x, y):
@@ -96,7 +168,7 @@ def warpIn(warpTo : list, newCamBounds : list = None):
     return f
 
 def warpUp(warpTo : list, newCamBounds : list = None):
-    def f():
+    def f(player, hotspot):
         s = Script()
         s.addAction (act.SetState(tag='player', state='demo', args = { 'left': 0 })),
         s.addAction (act.Delay (sec=1))

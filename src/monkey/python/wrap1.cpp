@@ -8,6 +8,8 @@
 #include <monkey/components/ianimator.h>
 #include <monkey/engine.h>
 #include <monkey/components/info.h>
+#include <monkey/components/statemachine.h>
+#include <monkey/components/dynamics2d.h>
 
 namespace py = pybind11;
 
@@ -25,6 +27,19 @@ float Wrap1::x() const {
 
 float Wrap1::y() const {
     return m_entity->GetPosition().y;
+}
+
+float Wrap1::getVy() const {
+    return m_entity->GetComponent<Dynamics2D>()->m_velocity.y;
+}
+
+void Wrap1::setVy(float value) {
+    m_entity->GetComponent<Dynamics2D>()->m_velocity.y = value;
+}
+
+
+void Wrap1::move(float dx, float dy, float dz) {
+    m_entity->MoveOrigin(glm::vec3(dx, dy, dz));
 }
 
 void Wrap1::setColor(std::vector<float> &l) {
@@ -102,4 +117,8 @@ py::object Wrap1::getInfo() {
     auto hs = m_entity->GetComponent<LuaInfo>();
     return hs->getStuff();
 
+}
+
+std::string Wrap1::getState() {
+    return m_entity->GetComponent<StateMachine>()->GetState();
 }

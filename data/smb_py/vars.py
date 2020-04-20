@@ -5,6 +5,7 @@ gravity = -(2.0 * jump_height) / (time_to_jump_apex * time_to_jump_apex)
 jump_velocity = abs(gravity) * time_to_jump_apex
 warp_func = None
 state = 0
+invincibility = False
 stateInfo = [
     'mario',
     'supermario'

@@ -1,4 +1,5 @@
 import lib_py.script as script
+import lib_py.engine as engine
 import example
 
 class Animate:
@@ -18,6 +19,12 @@ class ChangeRoom:
     def __init__(self, room: str):
         self.type = 'action.changeroom'
         self.room = room
+
+class RestartRoom:
+    def __init__(self):
+        self.type = 'action.changeroom'
+        self.room = engine.room
+
 
 class CallFunc:
     def __init__(self, f : callable):

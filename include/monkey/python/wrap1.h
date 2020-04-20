@@ -10,6 +10,9 @@ public:
     Wrap1();
     float x() const ;
     float y() const ;
+    float getVy() const;
+    void setVy(float);
+    void move(float dx, float dy, float dz);
     int id() const;
     void setEntity(Entity* e);
     void setColor (std::vector<float>& l);
@@ -17,7 +20,7 @@ public:
     void setModel (const std::string&, const std::string& animId);
     void appendText (pybind11::object);
     int add(pybind11::object);
-
+    std::string getState();
 
     void clearText ();
     void setActive (bool);

@@ -13,6 +13,7 @@ public:
      */
     KoopaShell (float time, float timeWalk);
     KoopaShell (const KoopaShell& orig);
+    KoopaShell (const ITable&);
     std::shared_ptr<State> clone() const override;
 
     void Run(double) override;

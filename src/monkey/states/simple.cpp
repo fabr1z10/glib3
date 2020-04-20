@@ -46,7 +46,11 @@ void SimpleState::AttachStateMachine(StateMachine * sm) {
     m_animator = m_entity->GetComponent<IAnimator>();
 }
 
-void SimpleState::Init(pybind11::dict&) {
+void SimpleState::Init(pybind11::dict& d) {
+    PyDict dict(d);
+    if (dict.hasKey("anim")) {
+        m_anim = dict.get<std::string>("anim");
+    }
     m_animator->SetAnimation(m_anim);
 }
 

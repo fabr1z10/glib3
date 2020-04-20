@@ -3,7 +3,7 @@ from lib_py.entity import Entity
 from lib_py.camera import OrthoCamera
 from lib_py.runner import CollisionEngine, CollisionResponse, Scheduler, DynamicWorld
 import smb_py.funcs as func
-import smb_py.factories as fac
+import smb_py.builder as build
 import smb_py.vars as vars
 
 def f():
@@ -34,6 +34,8 @@ class PlatformerRoom(Room):
         ce.addResponse(vars.tags.player, vars.tags.warp, CollisionResponse(onenter = func.warpEnter, onleave= func.warpExit))
         ce.addResponse(vars.tags.player, vars.tags.hotspot, CollisionResponse(onenter = func.hotspotEnter))
         ce.addResponse(vars.tags.player, vars.tags.coin, CollisionResponse(onenter = func.coinResponse))
+        ce.addResponse(vars.tags.player, vars.tags.goomba, CollisionResponse(onenter = func.goombaResponse))
+        ce.addResponse(vars.tags.player, vars.tags.koopa, CollisionResponse(onenter = func.koopaResponse))
 
         self.addRunner(ce)
         self.addRunner(Scheduler())
@@ -42,7 +44,7 @@ class PlatformerRoom(Room):
         self.addRunner(self.dw)
 
         # add player
-        mario = fac.makePlayer(playerModel, startPos[0], startPos[1])
+        mario = build.makePlayer(playerModel, startPos[0], startPos[1])
         main.add(mario)
 
     def addToDynamicWorld(self, e):

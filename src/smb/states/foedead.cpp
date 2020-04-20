@@ -13,13 +13,19 @@ FoeDead::FoeDead(const FoeDead &orig) : PlatformerState(orig) {
     m_time = orig.m_time;
 }
 
+FoeDead::FoeDead(const ITable & t) : PlatformerState(t) {
+    m_time = t.get<float>("time");
+    m_anim = t.get<std::string>("anim");
+}
+
+
 std::shared_ptr<State> FoeDead::clone() const {
     return std::make_shared<FoeDead>(*this);
 }
 
 
 void FoeDead::Init(pybind11::dict&) {
-    m_animator->SetAnimation("dead");
+    m_animator->SetAnimation(m_anim);
     m_timer = 0.0f;
     m_id = m_entity->GetId();
 }

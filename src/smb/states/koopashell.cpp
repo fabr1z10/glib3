@@ -8,6 +8,12 @@ KoopaShell::KoopaShell(float time, float timeWalk) : PlatformerState(), m_time(t
 
 }
 
+KoopaShell::KoopaShell(const ITable & t) : PlatformerState(t) {
+    m_time = t.get<float>("time");
+    m_time_walk = t.get<float>("time_walk");
+
+}
+
 KoopaShell::KoopaShell(const KoopaShell &orig) : PlatformerState(orig) {
     m_time = orig.m_time;
     m_time_walk = orig.m_time_walk;

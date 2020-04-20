@@ -36,6 +36,8 @@ void Extension::extend(SceneFactory* f) {
     f->add2<WalkSide> ("state.walkside");
     f->add2<Jump2D> ("state.jump");
     f->add2<FoeWalk> ("state.foewalk");
+    f->add2<FoeDead> ("state.foedead");
+    f->add2<KoopaShell> ("state.koopashell");
     //f->addStateFactory("walkside", std::make_unique<WalkSideFactory>());
 //    f->addStateFactory("jump", std::make_unique<Jump2DFactory>());
 //

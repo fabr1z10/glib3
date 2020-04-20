@@ -20,6 +20,20 @@ class FoeWalk(compo.State):
         self.flipWhenPlatformEnds = flipWhenPlatformEnds
         self.left = left
 
+class KoopaShell(compo.State):
+    def __init__(self, id, time: float, time_walk: float):
+        super().__init__(id)
+        self.type = 'state.koopashell'
+        self.time = time
+        self.time_walk = time_walk
+
+class FoeDead(compo.State):
+    def __init__(self, id: str, anim: str, time: float):
+        super().__init__(id)
+        self.type = 'state.foedead'
+        self.anim = anim
+        self.time = time
+
 
 class Jump(compo.State):
     def __init__(self, id, speed: float, acceleration: float, flipHorizontal: bool, animUp: str, animDown: str):

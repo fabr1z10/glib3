@@ -34,10 +34,12 @@ def builder():
             method_to_call = getattr(fact, f, None)
             if method_to_call:
                 template = method_to_call(*args)
+                print (f + ' found')
                 for im in a['d']:
+                    print (im)
                     e = template(*im)
                     r.addToDynamicWorld(e)
-                print (f + ' found')
+                    #print ('ciao ' + e.type + ' ' + e.image)
             else:
                 print (f + ' not found')
             #result = method_to_call()
@@ -117,25 +119,6 @@ def builder():
     #     fact.makeTiled (13, 18, ti.pipeh, 1),
     #     fact.makeTiled (15, 20, ti.pipeh2),
     #     fact.line (13, 20, [0, 0], [32, 0]),
-    #     fact.coin(4, 21),
-    #     fact.coin(5, 21),
-    #     fact.coin(6, 21),
-    #     fact.coin(7, 21),
-    #     fact.coin(8, 21),
-    #     fact.coin(9, 21),
-    #     fact.coin(10, 21),
-    #     fact.coin(4, 23),
-    #     fact.coin(5, 23),
-    #     fact.coin(6, 23),
-    #     fact.coin(7, 23),
-    #     fact.coin(8, 23),
-    #     fact.coin(9, 23),
-    #     fact.coin(10, 23),
-    #     fact.coin(5, 25),
-    #     fact.coin(6, 25),
-    #     fact.coin(7, 25),
-    #     fact.coin(8, 25),
-    #     fact.coin(9, 25),
     # ]
     #{71, 0, 15, 2}, {89, 0, 64, 2}, {155, 0, 69, 2}}
     #a = entity.Entity()

@@ -28,6 +28,7 @@ PYBIND11_MODULE(example, m) {
         .def("id", &Wrap1::id)
         .def("x", &Wrap1::x)
         .def("y", &Wrap1::y)
+        .def_property("vy", &Wrap1::getVy, &Wrap1::setVy)
         .def("parent", &Wrap1::getParent)
         .def("setColor", &Wrap1::setColor)
         .def("setText", &Wrap1::setText)
@@ -37,6 +38,8 @@ PYBIND11_MODULE(example, m) {
         .def("appendText", &Wrap1::appendText)
         .def("add", &Wrap1::add)
         .def("getInfo", &Wrap1::getInfo)
+        .def("getState", &Wrap1::getState)
+        .def("move", &Wrap1::move)
         .def("clearText", &Wrap1::clearText);
 
     py::class_<PyEngine>(m, "engine")

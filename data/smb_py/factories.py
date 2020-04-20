@@ -1,162 +1,84 @@
-from lib_py.entity import Entity, Sprite
-import lib_py.components as compo
+import smb_py.builder as b
+import smb_py.tiles as tiles
 import lib_py.shape as sh
-import smb_py.funcs as func
-from lib_py.script import Script
 import smb_py.vars as vars
-import lib_py.platformer.components as pc
-import lib_py.actions as act
-from lib_py.camera import OrthoCamera
-from lib_py.room import Room
-from lib_py.runner import CollisionEngine, CollisionResponse, Scheduler, DynamicWorld
-import example
+import smb_py.funcs as func
 
-def makePlayer(model: str, x: float, y: float):
-    player = Sprite(model = model, pos = [x * vars.tileSize, y*vars.tileSize], tag='player')
-    player.addComponent (compo.SmartCollider(
-        flag = vars.flags.player,
-        mask = vars.flags.foe | vars.flags.foe_attack,
-        tag = vars.tags.player))
-    player.addComponent (compo.Controller2D(
-        maskUp = vars.flags.platform, 
-        maskDown = vars.flags.platform | vars.flags.platform_passthrough, 
-        maxClimbAngle = 80, 
-        maxDescendAngle = 80))
-    player.addComponent (compo.Dynamics2D(gravity= vars.gravity))
-    stateMachine = compo.StateMachine(initialState='walk')
-    stateMachine.states.append (compo.SimpleState (id='warp', anim='idle'))
-    stateMachine.states.append (pc.WalkSide(id='walk', speed=75, acceleration=0.05, jumpSpeed= vars.jump_velocity, flipHorizontal=True))
-    stateMachine.states.append (pc.Jump(id='jump', speed=75, acceleration=0.10, flipHorizontal=True, animUp='jump', animDown='jump'))
-    stateMachine.states.append (pc.FoeWalk(id='demo', anim='walk', speed = 75, 
-        acceleration=0.05, flipHorizontal=True, flipWhenPlatformEnds = False, left=1))
-    player.addComponent (stateMachine)
-    player.addComponent (compo.KeyInput())    
-    player.addComponent (compo.Follow())
-    return player
-
-def makePlatform(img : str, x:float, y:float, width : int, height: int):
-    a = Entity()
-    a.addComponent (compo.Gfx(image = img, repeat = [width, height]))
-    a.addComponent (compo.Collider(flag = vars.flags.platform, mask = vars.flags.player, tag = 1, 
-        shape = sh.Rect(width = width * vars.tileSize, height = height * vars.tileSize)))
-    a.pos = [x * vars.tileSize, y * vars.tileSize]
-    return a
 
 def platform (img : str):
     def f(x: float, y: float, width: int, height: int):
-        return makePlatform(img, x, y, width, height)
+        print ('img = ' + img)
+        return b.makePlatform(img, x, y, width, height)
     return f
 
-def makeBrick(model: str, x: float, y: float):
-    a = Sprite(model = model)
-    a.addComponent (compo.Collider (flag = vars.flags.platform, mask = 0, tag = 0, 
-        shape = sh.Rect(width=vars.tileSize, height=vars.tileSize)))
-    a.pos = [x * vars.tileSize, y * vars.tileSize]
-    
-    b = Entity()
-    b.pos = [2, -0.5, 0]
-    b.addComponent (compo.Collider (
-        flag=vars.flags.foe,
-        mask=vars.flags.player,
-        tag = vars.tags.brick_sensor,
-        shape = sh.Rect(width = vars.tileSize-4, height = 1.0)
-    ))
-    a.add(b)
-    return a
+def brick(model: str):
+    def f(x: float, y: float):
+        return b.makeBrick(model, x, y)
+    return f
 
-def m1(x: float, y: float):
-    a = mushroom(x, y)
-    main = example.get('main')
-    id = main.add(a)
-    s = Script()
-    s.addAction(act.Move(id =id, speed=10, by=[0, 16]))
-    s.addAction(act.SetState (id = id, state='walk'))
-    example.play(s) 
+def mushroomBrick ():
+    def f(x: float, y: float):
+        return b.bonusBrick (model = 'bonusbrick', x = x, y= y, callback = b.m1)
+    return f
 
-def m2(x: float, y: float):
-    def score():
-        m3(x, y+1)
-    a = spr('flyingcoin', x, y+1)
-    main = example.get('main')
-    id = main.add(a)
-    s = Script()
-    s.addAction(act.MoveAccelerated(v0 = [0, 100], a = [0, -100], yStop = (y*vars.tileSize) +16, id = id))
-    s.addAction(act.RemoveEntity(id=id))
-    s.addAction(act.CallFunc(f = score))
-    #s.addAction(act.SetState (id = id, state='walk'))
-    example.play(s) 
+def coinBrick ():
+    def f(x: float, y: float):
+        return b.bonusBrick (model = 'bonusbrick', x = x, y= y, callback = b.m2)
+    return f
 
-def m3(x: float, y: float):
-    a = spr('score100', x, y)
-    main = example.get('main')
-    id = main.add(a)
-    s = Script()
-    s.addAction(act.Move(speed=100, by=[0, 64], id = id))
-    s.addAction(act.RemoveEntity(id=id))
-    example.play(s)
-
-def spr(model: str, x: float, y: float):
-    a = Sprite(model= model, pos = [x*vars.tileSize, y*vars.tileSize])
-    return a
+def tileMap (template: str):
+    def f(x: float, y: float, z: float = 0):
+        shape = None
+        tm = getattr(tiles, template)
+        width = tm[0]
+        height = tm[1]
+        collision = tm[2]
+        data = tm[3]
+        if collision:
+            shape = sh.Rect(width = width * vars.tileSize, height = height * vars.tileSize) 
+        return b.tiled (x, y, z = z, size=vars.tileSize, tileSheet='gfx/smb1.png',
+            sheetSize = [16, 16], tileData = data, width = width, height = height, 
+            shape = shape) 
+    return f        
 
 
+def warp():
+    def f(x : float, y : float, warpTo, newCamBounds):
+        return b.warp(x, y, warpTo, newCamBounds)
+    return f
 
-def mushroom(x: float, y: float):
-    a = Sprite(model='mushroom', pos = [x*vars.tileSize, y*vars.tileSize, 1])
-    a.addComponent (compo.SmartCollider(
-        flag = vars.flags.foe,
-        mask = vars.flags.player,
-        tag = vars.tags.mushroom))
-    a.addComponent (compo.Controller2D(
-        maskUp = vars.flags.platform, 
-        maskDown = vars.flags.platform | vars.flags.platform_passthrough, 
-        maxClimbAngle = 80, 
-        maxDescendAngle = 80))
-    a.addComponent (compo.Dynamics2D(gravity= vars.gravity))
-    stateMachine = compo.StateMachine (initialState='idle')
-    stateMachine.states.append (compo.SimpleState (id='idle', anim = 'walk'))
-    stateMachine.states.append (pc.FoeWalk(id='walk', anim='walk', speed=30, acceleration=0, flipHorizontal=False, flipWhenPlatformEnds=False, left=1))
-    a.addComponent (stateMachine)
-    return a
+def hotspot():
+    def f(x : float, y : float, warpTo, newCamBounds):
+        return b.hotspot(x, y, warpTo, newCamBounds)
+    return f
+    #     fact.hotspot (x=13, y=18, width=16, height=2, callback = func.warpUp(warpTo=[164, 0],
+    #         newCamBounds=[0, 224*vars.tileSize, 0, 16*vars.tileSize])),
 
-def coin(x: float, y: float):
-    a = Sprite(model = 'pickupcoin', pos = [x*vars.tileSize, y*vars.tileSize, 1])
-    a.addComponent(compo.SmartCollider(
-        flag = vars.flags.foe,
-        mask = vars.flags.player,
-        tag = vars.tags.coin))
-    return a
+def spawn(factory: callable):
+    def f(x : float, y : float, *args):
+        print (args)
+        f = globals()[factory]()
+        return b.makeSpawn(x, y, f, *args)
+    return f
 
 
-def warp(x : float, y : float, width: float, height: float, callback: callable):
-    e = Entity(pos = [x * vars.tileSize, y * vars.tileSize])
-    e.addComponent (compo.Collider (flag = vars.flags.foe, mask = vars.flags.player, tag = vars.tags.warp, shape = sh.Rect (width, height)))
-    e.addComponent (compo.Info (func = callback))
-    return e
+def coin():
+    def f(x: float, y: float):
+        return b.coin(x, y)
+    return f
 
-def hotspot(x : float, y : float, width: float, height: float, callback: callable):
-    e = Entity(pos = [x * vars.tileSize, y * vars.tileSize])
-    e.addComponent (compo.Collider (flag = vars.flags.foe, mask = vars.flags.player, tag = vars.tags.hotspot, shape = sh.Rect (width, height)))
-    e.addComponent (compo.Info (func = callback))
-    return e
+def goomba():
+    def f(x: float, y: float):
+        return b.makeGoomba('goomba', x, y)
+    return f
 
-def bonusBrick(model: str, x: float, y: float, callback: callable, hits: int = 1):
-    a = Sprite(model = model, pos= [x * vars.tileSize, y * vars.tileSize, 0])
-    a.addComponent (compo.Collider (flag = vars.flags.platform, mask = 0, tag = 0, 
-        shape = sh.Rect(width=vars.tileSize, height=vars.tileSize)))
-    a.addComponent (compo.Info ( 
-        hitsLeft = hits,
-        callback = callback ))
-    b = Entity()
-    b.pos = [2, -0.5, 0]
-    b.addComponent (compo.Collider (
-        flag = vars.flags.foe,
-        mask = vars.flags.player,
-        tag = vars.tags.bonus_brick_sensor,
-        shape = sh.Rect(width = vars.tileSize - 4, height = 1.0)
-    ))
-    a.add(b)
-    return a
+def koopa():
+    def f(x: float, y: float):
+        return b.makeKoopa('koopa', x, y)
+    return f
+
+
+
 	# local s = { type = "rect", width = engine.tilesize, height = engine.tilesize }
 	# local s1 = { type = "rect", width = engine.tilesize-4, height = 1.0}
 	# --local b = nextTag()
@@ -189,53 +111,5 @@ def bonusBrick(model: str, x: float, y: float, callback: callable, hits: int = 1
 	# 	}
 	# }
 
-def tiled(x: float, y: float, tileSheet : str, sheetSize, tileData: list, 
-    width: int, height:int, size: float, z: float = 0, shape: sh.Shape = None):
-    e = Entity(pos = [x*vars.tileSize, y*vars.tileSize, z])
-    e.addComponent (compo.TiledGfx(
-        tilesheet = tileSheet, 
-        sheetSize = sheetSize, 
-        tileData = tileData, 
-        width = width, 
-        height = height,
-        size = size))
-    if shape:
-        e.addComponent (compo.Collider (
-            flag=vars.flags.platform,
-            mask = 1,
-            tag = 1,
-            shape = shape
-        ))
-	#if (args.collide) then
-	#	table.insert(components, { type = "collider", flag = variables.collision.flags.platform, mask = 1, tag=1, shape = { type="rect", width = args.width*engine.tilesize, height = 
-    #		args.height*engine.tilesize }})
-	#end
-    return e
 
-def pipe2(x: float, y: float):
-    return tiled(x, y, z=1, size=vars.tileSize, tileSheet='gfx/smb1.png',
-        sheetSize=[16, 16], tileData=[0, 4, 1, 4, 0, 3, 1, 3], width=2, height=2, shape= sh.Rect(width=2*vars.tileSize, height=2*vars.tileSize))
 
-def pipe3(x:float, y:float): 
-    return tiled(x, y, z=1, size=vars.tileSize, tileSheet='gfx/smb1.png',
-        sheetSize=[16, 16], tileData=[0, 4, 1, 4, 0, 4, 1, 4, 0, 3, 1, 3], width=2, height=3, 
-        shape= sh.Rect(width=2*vars.tileSize, height=3*vars.tileSize))
-
-def pipe4(x:float, y:float): 
-    return tiled(x, y, z=1, size=vars.tileSize, tileSheet='gfx/smb1.png',
-        sheetSize=[16, 16], tileData=[0, 4, 1, 4, 0, 4, 1, 4, 0, 4, 1, 4, 0, 3, 1, 3], width=2, height=4, 
-        shape= sh.Rect(width=2*vars.tileSize, height=4*vars.tileSize))
-
-def makeTiled (x: float, y: float, templ, z: float = 0):
-    shape = None
-    if templ[2]:
-        shape =sh.Rect(width = templ[0] * vars.tileSize, height = templ[1] * vars.tileSize) 
-    return tiled(x, y, z = z, size=vars.tileSize, tileSheet='gfx/smb1.png',
-        sheetSize=[16, 16], tileData=templ[3], width=templ[0], height=templ[1], 
-        shape= shape)
-
-def line(x: float, y: float, A, B):
-    e = Entity(pos = [x*vars.tileSize, y*vars.tileSize])
-    e.addComponent (compo.Collider(flag = vars.flags.platform, mask=1, tag=1, 
-        shape= sh.Line(A, B)))
-    return e
