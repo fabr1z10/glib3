@@ -89,7 +89,8 @@ Poly::Poly(const ITable & t) : Shape(t) {
     for (size_t i = 0; i < outline.size(); i = i + 2)
         points.push_back(glm::vec2(outline[i], outline[i + 1]));
     m_contour = std::make_unique<Polygon>(points);
-    
+    m_bounds = m_contour->getBounds();
+
     //  holes
     if (t.hasKey("holes")) {
 //        std::unique_ptr<Polygon> mainOutline(new Polygon(points));

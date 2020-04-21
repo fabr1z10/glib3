@@ -1,6 +1,11 @@
 #include <monkey/math/ellipse.h>
 #include <monkey/error.h>
 
+Ellipse::Ellipse(const ITable &t) : Shape(t) {
+    m_xSemiAxis = t.get<float>("width");
+    m_ySemiAxis = t.get<float>("height");
+}
+
 bool Ellipse::isPointInside(glm::vec3 P) const {
     glm::vec3 rp = P - m_offset;
     // ellipse satisfies equation

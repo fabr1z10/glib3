@@ -7,6 +7,8 @@
 #include <monkey/icollisionengine.h>
 #include <monkey/engine.h>
 #include <monkey/components/info.h>
+#include <monkey/components/dynamics2d.h>
+#include <monkey/components/icontroller.h>
 
 Walk25::Walk25(float speed, float acceleration, bool fliph, bool anim4, float jumpspeed, char dir) : State(), m_speed(speed),
     m_acceleration(acceleration), m_flipHorizontal(fliph), m_velocitySmoothingX(0.0f), m_velocitySmoothingY(0.0f), m_4WayAnim(anim4),
@@ -15,6 +17,12 @@ Walk25::Walk25(float speed, float acceleration, bool fliph, bool anim4, float ju
 Walk25::Walk25(const Walk25 &) {
 
 
+}
+
+Walk25::Walk25(const ITable & t) : State(t), m_velocitySmoothingX(0.0f), m_velocitySmoothingY(0.0f), m_4WayAnim(false) {
+    m_speed = t.get<float>("speed");
+    m_acceleration = t.get<float> ("acceleration");
+    m_flipHorizontal = t.get<bool>("flipH");
 }
 
 std::shared_ptr<State> Walk25::clone() const {
@@ -27,11 +35,17 @@ void Walk25::AttachStateMachine(StateMachine * sm) {
 
     m_input = m_entity->GetComponent<InputMethod>();
     if (m_input == nullptr) {
-    //    GLIB_FAIL("Walk state requires an <InputMethod> component!");
+        GLIB_FAIL("Walk state requires an <InputMethod> component!");
     }
+    m_dynamics = m_entity->GetComponent<Dynamics2D>();
     m_animator = m_entity->GetComponent<IAnimator>();
     m_collision = Engine::get().GetRunner<ICollisionEngine>();
-    m_depth = dynamic_cast<Depth25*>(m_entity->GetComponent<Properties>());
+    m_controller = m_entity->GetComponent<IController>();
+    if (m_controller == nullptr) {
+        GLIB_FAIL("Platformer state requires a <Controller2D> component!");
+    }
+
+    //m_depth = dynamic_cast<Depth25*>(m_entity->GetComponent<Properties>());
     //if (m_depth == nullptr) {
     //GLIB_FAIL("Walk25 requires a depth25 component!");
     //}
@@ -57,97 +71,37 @@ void Walk25::End() {
 
 void Walk25::Run (double dt) {
 
-    if (m_input == nullptr) {
-        return;
-    }
     bool left = m_input->isKeyDown(GLFW_KEY_LEFT);
     bool right = m_input->isKeyDown(GLFW_KEY_RIGHT);
     bool up = m_input->isKeyDown(GLFW_KEY_UP);
     bool down = m_input->isKeyDown(GLFW_KEY_DOWN);
 
-    // make it configurable
-    bool jmp = m_input->isKeyDown(GLFW_KEY_LEFT_CONTROL);
 
-    if (jmp) {
-        m_depth->setVelocityY(m_jumpVelocity);
-        m_sm->SetState("jump");
-        return;
-    }
-
-    glm::vec2 targetVelocity (0.0f);
-    bool pressed = false;
+    float targetVelocityX = 0.0f;
+    float targetVelocityZ = 0.0f;
     if (left || right) {
         if (m_flipHorizontal) {
             m_entity->SetFlipX(left);
-            targetVelocity.x = 1.0;
+            targetVelocityX = m_speed;
         } else {
-            targetVelocity.x = (left ? -1.0f : 1.0f);
+            targetVelocityX = (left ? -1.0f : 1.0f) * m_speed;
         }
-        pressed = true;
     }
     if (up || down) {
-        pressed = true;
-        targetVelocity.y = (up ? 1.0f : -1.0f);
-    }
-    if (pressed) {
-        targetVelocity = glm::normalize(targetVelocity) * m_speed;
-    }
-    glm::vec3& vel = m_depth->getVelocity();
-    if (!pressed && vel == glm::vec3(0.0f)) {
-        return;
+        targetVelocityZ = (up ? 1.0f : -1.0f) * m_speed;
     }
 
-    vel.x = SmoothDamp(vel.x, targetVelocity.x, m_velocitySmoothingX, m_acceleration, dt);
-    vel.z = SmoothDamp(vel.z, targetVelocity.y, m_velocitySmoothingY, m_acceleration, dt);
-    glm::vec3 delta = static_cast<float>(dt) * glm::vec3(vel.x, vel.z, 0.0f);
-
-    float vl = glm::length(delta);
-    std::string anim ;
-    if (vl < 0.01f) {
-        anim = "idle";
-        //m_velocity = glm::vec2(0.0f);
+    glm::vec3 delta =m_dynamics->step(dt, targetVelocityX, targetVelocityZ, m_acceleration);
+    glm::vec3 deltaH(delta.x, 0.0f, delta.z);
+    m_controller->Move(deltaH);
+    //std::cerr << "new z = " << m_entity->GetPosition().z << "\n";
+    //UpdateAnimation();
+    //std::cerr << deltaH.x << " " << deltaH.y << deltaH.z << "\n";
+    if (glm::length(deltaH) >0.2f) {
+        m_animator->SetAnimation("walk");
     } else {
-        anim = "walk";
+        m_animator->SetAnimation("idle");
     }
-
-    std::string dir;
-    m_animator->SetAnimation(anim);
-
-    // do a raycast
-    if (delta.x != 0.0f || delta.y != 0.0f) {
-        float l = glm::length(delta);
-        glm::vec3 dir = glm::normalize(delta);
-        glm::vec3 rayDir = dir;
-        if (m_entity->GetFlipX()) rayDir.x *= -1.0f;
-
-        glm::vec3 pos = m_depth->getActualPos();
-        //std::cout << " = " <<  m_depth->getActualPos().y << ", e = " << m_depth->getActualPos().z << ", " << dir.x << ", " << dir.y << ", " << l << "\n";
-
-        //glm::vec3 pos = m_entity->GetPosition();
-        RayCastHit hit = m_collision->Raycast(pos, rayDir, l, 2 | 32);
-
-        if (hit.collide) {
-            int flag = hit.entity->GetCollisionFlag();
-            if (flag == 32) {
-                // TODO
-                //luabridge::LuaRef info = hit.entity->GetObject()->GetComponent<LuaInfo>()->get();
-                //info["func"]();
-            } else {
-                //std::cerr << pos.x << ", " << pos.y << ", (" << dir.x << ", " << dir.y << "), " << l << "\n";
-                delta = (hit.length - 0.1f) * dir;
-            }
-        }
-
-    }
-    if (m_depth == nullptr) {
-        m_entity->MoveLocal(delta);
-    } else {
-        float dx = m_entity->GetFlipX() ? -delta.x : delta.x;
-        glm::vec3 ad = m_depth->move(dx, delta.y, 0);
-        delta.z = -delta.y * 0.01f;
-        m_entity->MoveLocal(delta);
-    }
-
 }
 
 

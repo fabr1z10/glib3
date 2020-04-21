@@ -13,7 +13,7 @@ SmartCollider::SmartCollider(const SmartCollider & other) : ICollider(other) {
 
 }
 
-SmartCollider::SmartCollider(const ITable & table) : ICollider() {
+SmartCollider::SmartCollider(const ITable & table) : ICollider(), m_shapeEntity(nullptr) {
     m_tag = table.get<int>("tag");
     m_flag = table.get<int>("flag");
     m_mask = table.get<int>("mask");
@@ -115,10 +115,14 @@ void SmartCollider::Start() {
     m_model = dynamic_cast<BoxedModel*>(m_animator->GetModel().get());
     m_animator->onFrameUpdate.Register(this, [&] (Animator* a) { this->onFrameUpdate(a); });
     ICollider::Start();
+    auto shapeEntity = std::make_shared<Entity>();
 
-    m_entity->ClearAllChildren();
-    auto c = std::make_shared<Entity>();
-//
+    if (m_shapeEntity == nullptr) {
+        auto c = std::make_shared<Entity>();
+        m_entity->AddChild(c);
+        m_shapeEntity = c.get();
+    }
+    m_shapeEntity->ClearAllChildren();
     glm::vec4 color(1.0f, 0.0f, 0.0f, 1.0f);
 //    auto mesh = m_model->GetCollisionMesh();
 //    auto model = std::make_shared<BasicModel>(mesh);
@@ -131,10 +135,10 @@ void SmartCollider::Start() {
     }
 
     renderer->setAddColor(color);
-    c->AddComponent(renderer);
+    m_shapeEntity->AddComponent(renderer);
     m_colliderRenderer = renderer.get();
 //    //renderer->SetMeshInfo(0, 8);
-    m_entity->AddChild(c);
+    //m_entity->AddChild(c);
 //    m_stateMachine = m_entity->GetComponent<StateMachine>();
 }
 

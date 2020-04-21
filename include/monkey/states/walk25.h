@@ -7,12 +7,16 @@
 class InputMethod;
 class Entity;
 class IAnimator;
+class IController;
 class ICollisionEngine;
+class Dynamics2D;
+
 
 class Walk25 : public State {
 public:
     Walk25(float speed, float acceleration, bool fliph, bool anim4, float jumpspeed, char dir='e');
     Walk25(const Walk25&);
+    Walk25 (const ITable&);
     std::shared_ptr<State> clone() const override;
     void Run(double) override;
     void Init (pybind11::dict&) override;
@@ -27,8 +31,11 @@ public:
     // virtual void ResetAnimation() = 0;
 protected:
     InputMethod * m_input;
+    IController* m_controller;
     IAnimator* m_animator;
     Entity * m_entity;
+    Dynamics2D * m_dynamics;
+
     bool m_flipHorizontal;
     bool m_4WayAnim;
     float m_speed;

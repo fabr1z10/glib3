@@ -69,3 +69,22 @@ private:
     float m_z;
     MeshFactorySolid(float z, glm::vec4 color) : m_color{color}, m_z{z} {}
 };
+
+
+class MeshFactoryTextured :
+    public AcyclicVisitor,
+    public Visitor<Poly>
+{
+public:
+    static std::shared_ptr<IMesh> CreateMesh (Shape& s, const std::string& texture, float x0, float y0, float repx, float repy);
+    void visit(Poly&) override;
+private:
+    MeshFactoryTextured(const std::string& texture, float x0, float y0, float repx, float repy);
+    float m_x0;
+    float m_y0;
+    float m_rx;
+    float m_ry;
+    std::string m_texId;
+    std::shared_ptr<IMesh> m_mesh;
+
+};

@@ -2,6 +2,8 @@
 #include <monkey/meshfactory.h>
 #include <monkey/vertices.h>
 #include <cmath>
+#include <monkey/math/earcut.h>
+#include <monkey/quadmesh.h>
 
 std::shared_ptr<IMesh> MeshFactory::CreateLineMesh (glm::vec2 A, glm::vec2 B, glm::vec4 color, float z) {
     std::vector<VertexColor> vertices = {
@@ -407,5 +409,54 @@ void MeshFactorySolid::visit(Ellipse & e) {
     mesh->Init(vertices, indices);
     mesh->m_primitive = GL_TRIANGLE_FAN;
     m_mesh = mesh;
+
+}
+
+
+MeshFactoryTextured::MeshFactoryTextured(const std::string &texture, float x0, float y0, float repx, float repy)
+: m_texId(texture), m_x0(x0), m_y0(y0), m_rx(repx), m_ry(repy) {
+
+}
+
+std::shared_ptr<IMesh> MeshFactoryTextured::CreateMesh(Shape &s, const std::string &texture, float x0, float y0, float repx, float repy) {
+    MeshFactoryTextured m(texture, x0, y0, repx, repy);
+    s.accept(m);
+    return m.m_mesh;
+}
+
+void MeshFactoryTextured::visit(Poly & poly) {
+
+    // The number type to use for tessellation
+    using Coord = float;
+
+    // The index type. Defaults to uint32_t, but you can also pass uint16_t if you know that your
+    // data won't have more than 65536 vertices.
+    using N = uint32_t;
+
+    // Create array
+    using Point = std::array<Coord, 2>;
+    std::vector<std::vector<Point>> polygon;
+    auto p = poly.getPoints();
+    // Fill polygon structure with actual data. Any winding order works.
+    // The first polyline defines the main polygon.
+    std::vector<Vertex3D> vertices;
+
+    std::vector<Point> outline;
+    for (const auto& vec : p) {
+        outline.push_back({vec.x, vec.y});
+        float tx = (vec.x - m_x0) / m_rx;
+        float ty = (vec.y - m_x0) / m_rx;
+        vertices.emplace_back( Vertex3D(vec.x, vec.y, 0.0f, tx, ty));
+    }
+    polygon.push_back(outline);
+    auto mesh  = std::make_shared<QuadMesh>(GL_TRIANGLES, m_texId);
+    // Run tessellation
+    // Returns array of indices that refer to the vertices of the input polygon.
+    // e.g: the index 6 would refer to {25, 75} in this example.
+    // Three subsequent indices form a triangle. Output triangles are clockwise.
+    std::vector<N> indices = mapbox::earcut<N>(polygon);
+    mesh->Init(vertices, indices);
+    m_mesh = mesh;
+
 
 }

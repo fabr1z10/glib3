@@ -8,6 +8,7 @@ public:
         m_bounds.min = offset - glm::vec3(m_xSemiAxis, m_ySemiAxis, 1.0f);
         m_bounds.max = offset + glm::vec3(m_xSemiAxis, m_ySemiAxis, 1.0f);
     }
+    Ellipse (const ITable& t);
     bool isPointInside(glm::vec3) const override;
     void accept (AcyclicVisitor& v) override;
     glm::vec2 GetSemiAxes () const;

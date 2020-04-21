@@ -10,8 +10,8 @@ BasicRenderer::BasicRenderer(std::shared_ptr<IModel> model) : Renderer() {
 
 BasicRenderer::BasicRenderer(const ITable & t) : Renderer() {
     int cls = t.get<int>("cls");
-    auto image = t.get<std::string>("image");
     if (cls == 0) {
+        auto image = t.get<std::string>("image");
         auto w = t.get<float>("width", 0.0f);
         auto h = t.get<float>("height", 0.0f);
         glm::vec2 offset = t.get<glm::vec2>("offset", glm::vec2(0.0f));
@@ -28,6 +28,7 @@ BasicRenderer::BasicRenderer(const ITable & t) : Renderer() {
         //m_model = std::make_shared<BasicModel>(mesh);
 
     } else if (cls == 1) {
+        auto image = t.get<std::string>("image");
         float size = t.get<float>("size", 1.0f);
         int width = t.get<int>("width");
         int height = t.get<int>("height");
@@ -39,6 +40,28 @@ BasicRenderer::BasicRenderer(const ITable & t) : Renderer() {
         auto mesh = std::make_shared<QuadMesh>(image, height, width, size, data, sheetSize.x, sheetSize.y, repx, repy, delta);
         //m_model = std::make_shared<BasicModel>(mesh)//;
         SetModel( std::make_shared<BasicModel>(mesh));
+    } else if (cls == 2) {
+        // shape renderer
+        auto factory = Engine::get().GetSceneFactory();
+        auto shapeT = t.get<PyTable>("shape");
+        auto shape = factory->make2<Shape>(shapeT);
+        auto tex = t.get<std::string>("tex");
+        float x0 = t.get<float>("x0", 0.0f);
+        float y0 = t.get<float>("y0", 0.0f);
+        float repx = t.get<float>("repx");
+        float repy = t.get<float>("repy");
+
+        auto mesh = MeshFactoryTextured::CreateMesh(*(shape.get()), tex, x0, y0, repx, repy);
+        SetModel (std::make_shared<BasicModel>(mesh));
+    } else if (cls ==3) {
+        auto factory = Engine::get().GetSceneFactory();
+        auto shapeT = t.get<PyTable>("shape");
+        auto shape = factory->make2<Shape>(shapeT);
+        auto color = t.get<glm::vec4>("color");
+        color /= 255.0f;
+        auto mesh = MeshFactorySolid::CreateMesh(*(shape.get()), 0.0f, color);
+        SetModel (std::make_shared<BasicModel>(mesh));
+
     }
 }
 

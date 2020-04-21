@@ -45,7 +45,7 @@ private:
     Renderer* m_colliderRenderer;
     Bounds GetStaticBoundsI() const override;
     Bounds GetDynamicBoundsI() const override;
-
+    Entity* m_shapeEntity;
     int m_flag;
     int m_mask;
     int m_tag;

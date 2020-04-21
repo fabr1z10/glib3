@@ -40,6 +40,9 @@
 #include <monkey/activities/runscript.h>
 #include <monkey/activities/move.h>
 #include <monkey/activities/cambounds.h>
+#include <monkey/states/walk25.h>
+#include <monkey/components/controller25.h>
+#include <monkey/math/ellipse.h>
 
 namespace py = pybind11;
 
@@ -152,12 +155,14 @@ SceneFactory::SceneFactory() {
     add2<KeyboardInputMethod> ("components.keyinput");
     add<Cursor> ("cursor");
     add2<Controller2D> ("components.controller2D");
+    add2<Controller25> ("components.controller25");
     add2<Dynamics2D> ("components.dynamics2D");
     add2<ExtendedStateMachine> ("components.statemachine");
 
     // states
     add2<NullState> ("state.null");
     add2<SimpleState> ("state.simple");
+    add2<Walk25> ("state.walk25");
 
     // actions
     add<DelayTime> ("delay");
@@ -203,6 +208,7 @@ SceneFactory::SceneFactory() {
     add2<Line> ("line");
     add<PolyLine> ("graph");
     add2<PolyLine> ("shape.graph");
+    add2<Ellipse> ("shape.ellipse");
     // models
     add<SpriteModel> ("sprite.model");
     add2<SpriteModel> ("asset.sprite");
