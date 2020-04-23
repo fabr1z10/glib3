@@ -11,6 +11,7 @@ public:
     float x() const ;
     float y() const ;
     float getVy() const;
+    bool getFlipx() const;
     void setVy(float);
     float getVx() const;
     void setVx(float);
@@ -23,7 +24,7 @@ public:
     void appendText (pybind11::object);
     int add(pybind11::object);
     std::string getState();
-
+    void setState(const std::string&, pybind11::dict d = pybind11::dict());
     void clearText ();
     void setActive (bool);
     void enableControls(bool);

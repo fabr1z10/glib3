@@ -23,6 +23,7 @@ Walk25::Walk25(const ITable & t) : State(t), m_velocitySmoothingX(0.0f), m_veloc
     m_speed = t.get<float>("speed");
     m_acceleration = t.get<float> ("acceleration");
     m_flipHorizontal = t.get<bool>("flipH");
+    m_jumpVelocity = t.get<float>("jumpvelocity");
 }
 
 std::shared_ptr<State> Walk25::clone() const {
@@ -75,6 +76,17 @@ void Walk25::Run (double dt) {
     bool right = m_input->isKeyDown(GLFW_KEY_RIGHT);
     bool up = m_input->isKeyDown(GLFW_KEY_UP);
     bool down = m_input->isKeyDown(GLFW_KEY_DOWN);
+    bool kjump = m_input->isKeyDown(GLFW_KEY_LEFT_CONTROL);
+
+    bool attack = m_input->isKeyDown(GLFW_KEY_LEFT_SHIFT);
+    if (attack) {
+        m_sm->SetState("attack");
+        return;
+    }
+    if (kjump && m_controller->grounded() ) {
+        m_dynamics->m_velocity.y = m_jumpVelocity;
+
+    }
 
 
     float targetVelocityX = 0.0f;
@@ -92,15 +104,19 @@ void Walk25::Run (double dt) {
     }
 
     glm::vec3 delta =m_dynamics->step(dt, targetVelocityX, targetVelocityZ, m_acceleration);
-    glm::vec3 deltaH(delta.x, 0.0f, delta.z);
+    glm::vec3 deltaH(delta.x, delta.y, delta.z);
     m_controller->Move(deltaH);
     //std::cerr << "new z = " << m_entity->GetPosition().z << "\n";
     //UpdateAnimation();
     //std::cerr << deltaH.x << " " << deltaH.y << deltaH.z << "\n";
-    if (glm::length(deltaH) >0.2f) {
-        m_animator->SetAnimation("walk");
+    if (m_controller->grounded()) {
+        if (glm::length(glm::vec2(delta.x, delta.z)) > 0.2f) {
+            m_animator->SetAnimation("walk");
+        } else {
+            m_animator->SetAnimation("idle");
+        }
     } else {
-        m_animator->SetAnimation("idle");
+        m_animator->SetAnimation("jump");
     }
 }
 

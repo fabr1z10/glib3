@@ -19,7 +19,8 @@ Controller25::Controller25(const ITable &t) : IController() {
     m_verticalRayCount = t.get<int>("vertRays", 4);
     m_maskWall = t.get<int>("mask");
     m_skinWidth = t.get<float>("skinWidth", .015f);
-
+    m_elevation = t.get<float>("elevation", 0.0f);
+    m_depth = t.get<float>("depth", 0.0f);
 }
 
 Controller25::Controller25(const Controller25& orig) : IController(orig) {
@@ -32,8 +33,15 @@ std::shared_ptr<Component> Controller25::clone() const {
 void Controller25::Start() {
     m_collision = Engine::get().GetRunner<ICollisionEngine>();
     auto pos = m_entity->GetPosition();
-    m_depth = pos.y;
-    m_elevation = 0.0f;
+    //m_depth = pos.y;
+    //m_elevation = 0.0f;
+    //pos.x += velocity.x * (flipx? -1.0f : 1.0f);
+    pos.y = m_elevation + m_depth;
+    pos.z = -0.01f * m_depth;
+    m_entity->SetPosition(pos);
+
+    //m_entity->SetZ(-0.01f * m_depth);
+
 }
 
 void Controller25::Begin() {
@@ -72,7 +80,7 @@ void Controller25::UpdateRaycastOrigins() {
 
 // (dx, d(elevation), d(depth))
 void Controller25::Move(glm::vec3 & velocity) {
-    std::cerr << velocity.y << "\n";
+    //std::cerr << velocity.y << "\n";
     if (glm::length(velocity) < 0.5f)
         return;
     UpdateRaycastOrigins();
@@ -102,7 +110,7 @@ void Controller25::Move(glm::vec3 & velocity) {
     }
 
     // y displacemente
-    float directionY = (velocity.y > 0) ? 1.0f: -1.0f;
+    float directionY = (velocity.z > 0) ? 1.0f: -1.0f;
     rayLength = fabs(velocity.z) + m_skinWidth;
 
     for (int i = 0; i < m_verticalRayCount; i++) {
@@ -123,7 +131,8 @@ void Controller25::Move(glm::vec3 & velocity) {
     m_elevation += dElevation;
     m_elevation = std::max(0.0f, m_elevation);
     m_depth += dDepth;
-    pos.x += velocity.x * directionX;
+   // std::cout << " depth = " << m_depth << ", elev " << m_elevation << "\n";
+    pos.x += velocity.x * (flipx? -1.0f : 1.0f);
     pos.y = m_elevation + m_depth;
     pos.z = -0.01f * m_depth;
     m_entity->SetPosition(pos);
@@ -132,3 +141,6 @@ void Controller25::Move(glm::vec3 & velocity) {
 }
 
 
+bool Controller25::grounded() const {
+    return m_elevation == 0.0f;
+}

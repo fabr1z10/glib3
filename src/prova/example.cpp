@@ -28,6 +28,7 @@ PYBIND11_MODULE(example, m) {
         .def("id", &Wrap1::id)
         .def("x", &Wrap1::x)
         .def("y", &Wrap1::y)
+        .def_property_readonly("flipx", &Wrap1::getFlipx)
         .def_property("vy", &Wrap1::getVy, &Wrap1::setVy)
         .def_property("vx", &Wrap1::getVx, &Wrap1::setVx)
         .def("parent", &Wrap1::getParent)
@@ -40,6 +41,7 @@ PYBIND11_MODULE(example, m) {
         .def("add", &Wrap1::add)
         .def("getInfo", &Wrap1::getInfo)
         .def("getState", &Wrap1::getState)
+        .def("setState", &Wrap1::setState)
         .def("move", &Wrap1::move)
         .def("clearText", &Wrap1::clearText);
 
@@ -58,6 +60,7 @@ PYBIND11_MODULE(example, m) {
     m.def("get", &get, "Gets a entity by tag");
     m.def("remove", &rmv, "Removes an entity by id");
     m.def("play", &play);
+    m.def("restart", &restart);
     //m.def("addLine", &addLine);
     m.def("getDeviceSize", &getDeviceSize);
     m.def("init", &init);

@@ -104,6 +104,12 @@ void Engine::init(const std::string& gameFolder) {
 
 }
 
+void Engine::restart() {
+
+    m_scene->restart();
+    m_scene->Begin();
+}
+
 void Engine::Init(const std::string& home, const std::string& game) {
 
     m_running = false;

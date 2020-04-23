@@ -46,7 +46,7 @@ public:
     void Remove(int);
     void RemoveUnsafe(int);
     void Move (Entity*, Entity*);
-
+    void restart();
     template <class T>
     T* GetRunner() {
         auto it = m_runners.find(std::type_index(typeid(T)));

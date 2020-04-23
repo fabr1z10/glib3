@@ -76,14 +76,16 @@ class MeshFactoryTextured :
     public Visitor<Poly>
 {
 public:
-    static std::shared_ptr<IMesh> CreateMesh (Shape& s, const std::string& texture, float x0, float y0, float repx, float repy);
+    static std::shared_ptr<IMesh> CreateMesh (Shape& s, const std::string& texture, float x0, float y0, float repx, float repy, float slantx, float slanty);
     void visit(Poly&) override;
 private:
-    MeshFactoryTextured(const std::string& texture, float x0, float y0, float repx, float repy);
+    MeshFactoryTextured(const std::string& texture, float x0, float y0, float repx, float repy, float slantx, float slanty);
     float m_x0;
     float m_y0;
     float m_rx;
     float m_ry;
+    float m_a;
+    float m_b;
     std::string m_texId;
     std::shared_ptr<IMesh> m_mesh;
 

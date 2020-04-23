@@ -38,6 +38,9 @@ void play (pybind11::object o) {
 
 }
 
+void restart() {
+    m_engine->restart();
+}
 pybind11::list getDeviceSize() {
     glm::vec2 size=  m_engine->GetDeviceSize();
     pybind11::list c;

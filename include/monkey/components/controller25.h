@@ -31,7 +31,8 @@ public:
     std::shared_ptr<Component> clone() const override;
     std::type_index GetType() override;
     void ResetShape(ICollider*);
-
+    float getDepth() const;
+    float getElevation() const;
 private:
     float m_verticalRaySpacing;
 
@@ -50,10 +51,15 @@ private:
     float m_elevation;
 };
 
-inline bool Controller25::grounded() const {
-    return true;
-}
 
 inline bool Controller25::ceiling () const {
     return false;
+}
+
+inline float Controller25::getDepth() const {
+    return m_depth;
+}
+
+inline float Controller25::getElevation() const {
+    return m_elevation;
 }

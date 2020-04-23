@@ -17,6 +17,8 @@ SmartCollider::SmartCollider(const ITable & table) : ICollider(), m_shapeEntity(
     m_tag = table.get<int>("tag");
     m_flag = table.get<int>("flag");
     m_mask = table.get<int>("mask");
+    m_castTag = table.get<int>("cast_tag", 0);
+    m_castMask = table.get<int>("cast_mask", 0);
 //    table.foreach<
 //    table.ProcessVector("attack_tags", [coll] (luabridge::LuaRef ref) {
 //        std::string anim = ref["anim"].cast<std::string>();
@@ -74,19 +76,11 @@ void SmartCollider::onFrameUpdate(Animator *a) {
 
     // now, check if I have an attack box
     if (castShape != nullptr) {
-        int mask = m_mask;
-        int tag = m_tag;
-        auto it = m_attackInfo.find(anim);
-        if (it != m_attackInfo.end()) {
-            tag = it->second.first;
-            mask = it->second.second;
-        }
-
 
         auto t = m_entity->GetWorldTransform();
         std::cout <<" **** hit ****\n";
         std::cout << "character at position = " << t[3][0] << ", " << t[3][1] << " scale " << t[0][0] << "\n";
-        auto e = m_engine->ShapeCast(castShape, t, mask);
+        auto e = m_engine->ShapeCast(castShape, t, m_castMask);
 
         if (e.report.collide) {
             std::cerr << "HIT!\n";
@@ -94,7 +88,7 @@ void SmartCollider::onFrameUpdate(Animator *a) {
             if (rm == nullptr) {
                 std::cerr << "no handler!\n";
             }
-            auto handler = rm->GetHandler(tag, e.entity->GetCollisionTag());
+            auto handler = rm->GetHandler(m_castTag, e.entity->GetCollisionTag());
             if (handler.response != nullptr) {
                 auto object = e.entity->GetObject();
                 std::cerr << "FOUND RESPONSE\n";

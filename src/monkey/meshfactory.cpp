@@ -413,13 +413,21 @@ void MeshFactorySolid::visit(Ellipse & e) {
 }
 
 
-MeshFactoryTextured::MeshFactoryTextured(const std::string &texture, float x0, float y0, float repx, float repy)
-: m_texId(texture), m_x0(x0), m_y0(y0), m_rx(repx), m_ry(repy) {
+MeshFactoryTextured::MeshFactoryTextured(const std::string &texture, float x0, float y0, float repx, float repy, float slantx, float slanty)
+: m_texId(texture), m_x0(x0), m_y0(y0), m_rx(repx), m_ry(repy), m_a(slantx), m_b(slanty) {
 
 }
 
-std::shared_ptr<IMesh> MeshFactoryTextured::CreateMesh(Shape &s, const std::string &texture, float x0, float y0, float repx, float repy) {
-    MeshFactoryTextured m(texture, x0, y0, repx, repy);
+std::shared_ptr<IMesh> MeshFactoryTextured::CreateMesh(
+    Shape &s,
+    const std::string &texture,
+    float x0,
+    float y0,
+    float repx,
+    float repy,
+    float slantx,
+    float slanty) {
+    MeshFactoryTextured m(texture, x0, y0, repx, repy, slantx, slanty);
     s.accept(m);
     return m.m_mesh;
 }
@@ -444,8 +452,8 @@ void MeshFactoryTextured::visit(Poly & poly) {
     std::vector<Point> outline;
     for (const auto& vec : p) {
         outline.push_back({vec.x, vec.y});
-        float tx = (vec.x - m_x0) / m_rx;
-        float ty = (vec.y - m_x0) / m_rx;
+        float tx = (vec.x - m_a * vec.y - m_x0) / m_rx;
+        float ty = (vec.y - m_b * vec.x - m_y0) / m_ry;
         vertices.emplace_back( Vertex3D(vec.x, vec.y, 0.0f, tx, ty));
     }
     polygon.push_back(outline);

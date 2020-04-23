@@ -10,6 +10,10 @@ Hit25::Hit25(const std::string &anim) : m_anim(anim)
     AddKey(GLFW_KEY_RIGHT, std::make_shared<StateTransition>("walk"));
 }
 
+Hit25::Hit25(const ITable &t) : State(t) {
+    m_anim = t.get<std::string>("anim");
+}
+
 
 Hit25::Hit25(const Hit25& orig) : State(orig) {
     m_anim = orig.m_anim;

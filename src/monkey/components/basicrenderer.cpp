@@ -50,8 +50,10 @@ BasicRenderer::BasicRenderer(const ITable & t) : Renderer() {
         float y0 = t.get<float>("y0", 0.0f);
         float repx = t.get<float>("repx");
         float repy = t.get<float>("repy");
+        float slantx = t.get<float>("slantx", 0.0f);
+        float slanty = t.get<float>("slanty", 0.0f);
 
-        auto mesh = MeshFactoryTextured::CreateMesh(*(shape.get()), tex, x0, y0, repx, repy);
+        auto mesh = MeshFactoryTextured::CreateMesh(*(shape.get()), tex, x0, y0, repx, repy, slantx, slanty);
         SetModel (std::make_shared<BasicModel>(mesh));
     } else if (cls ==3) {
         auto factory = Engine::get().GetSceneFactory();

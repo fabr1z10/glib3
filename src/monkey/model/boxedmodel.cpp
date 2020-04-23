@@ -34,6 +34,13 @@ BoxedModel::BoxedModel(const ITable &t) : SpriteModel(t) {
             int boxId = animData.get<int>("box");
             this->setAnimShape(animId, boxId);
         }
+        if (animData.hasKey("shapecast")) {
+            auto sc = animData.get<py::list>("shapecast");
+            for (auto p : sc) {
+                auto pp = p.cast<std::vector<int>>();
+                setShapeCast(animId, pp[0], pp[1]);
+            }
+        }
     }
 
     // read shape-casts
@@ -115,6 +122,7 @@ BoxedModel::BoxedModel(const ITable &t) : SpriteModel(t) {
 
 void BoxedModel::addShape(std::shared_ptr<Shape> s) {
     m_shapes.push_back(s);
+    m_maxBounds.ExpandWith(s->getBounds());
 }
 
 void BoxedModel::setAnimShape(const std::string &anim, int shapeId) {

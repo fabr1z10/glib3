@@ -14,5 +14,5 @@ void rmv(int);
 
 void play (pybind11::object);
 //void addLine (const std::string&, pybind11::object&);
-
+void restart();
 pybind11::list getDeviceSize();

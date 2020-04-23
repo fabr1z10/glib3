@@ -33,6 +33,10 @@ float Wrap1::getVy() const {
     return m_entity->GetComponent<Dynamics2D>()->m_velocity.y;
 }
 
+bool Wrap1::getFlipx() const {
+    return m_entity->GetFlipX();
+}
+
 void Wrap1::setVy(float value) {
     m_entity->GetComponent<Dynamics2D>()->m_velocity.y = value;
 }
@@ -127,4 +131,8 @@ py::object Wrap1::getInfo() {
 
 std::string Wrap1::getState() {
     return m_entity->GetComponent<StateMachine>()->GetState();
+}
+
+void Wrap1::setState(const std::string & s, py::dict d) {
+    m_entity->GetComponent<StateMachine>()->SetState(s, d);
 }

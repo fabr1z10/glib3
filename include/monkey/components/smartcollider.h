@@ -49,6 +49,8 @@ private:
     int m_flag;
     int m_mask;
     int m_tag;
+    int m_castTag;
+    int m_castMask;
 
     // one per state
     std::unordered_map<std::string, SmartCollisionDetails> m_collisionDetailsOverride;

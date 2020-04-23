@@ -43,6 +43,9 @@
 #include <monkey/states/walk25.h>
 #include <monkey/components/controller25.h>
 #include <monkey/math/ellipse.h>
+#include <monkey/states/hit25.h>
+#include <monkey/states/foewalk25.h>
+#include <monkey/states/ishit25.h>
 
 namespace py = pybind11;
 
@@ -163,7 +166,9 @@ SceneFactory::SceneFactory() {
     add2<NullState> ("state.null");
     add2<SimpleState> ("state.simple");
     add2<Walk25> ("state.walk25");
-
+    add2<FoeWalk25> ("state.foewalk25");
+    add2<Hit25> ("state.hit25");
+    add2<IsHit25> ("state.ishit25");
     // actions
     add<DelayTime> ("delay");
     add2<DelayTime> ("action.delay");
