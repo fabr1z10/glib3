@@ -1,11 +1,11 @@
 #include <monkey/shader/texunlit.h>
 #include <monkey/camera.h>
-#include <monkey/shader/glsl/tex_unlit.h>
+#include <monkey/shader/glsl/tex_unlitc.h>
 
-TexturedUnlit::TexturedUnlit() : Shader(vs_tex_unlit, fs_tex_unlit) {
+TexturedUnlit::TexturedUnlit() : Shader(vs_tex_unlitc, fs_tex_unlitc) {
 
     m_shaderId = TEXTURE_SHADER;
-    m_nAttributes = 2;
+    m_nAttributes = 3;
 
     m_mvMat = glGetUniformLocation(m_programId, "MVmat");
     m_locations[MODELVIEW] = m_mvMat;

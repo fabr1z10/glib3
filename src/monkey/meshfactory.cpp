@@ -454,7 +454,8 @@ void MeshFactoryTextured::visit(Poly & poly) {
         outline.push_back({vec.x, vec.y});
         float tx = (vec.x - m_a * vec.y - m_x0) / m_rx;
         float ty = (vec.y - m_b * vec.x - m_y0) / m_ry;
-        vertices.emplace_back( Vertex3D(vec.x, vec.y, 0.0f, tx, ty));
+        float c = -(1.0f/256.0f)*vec.y +1;
+        vertices.emplace_back( Vertex3D(vec.x, vec.y, 0.0f, tx, ty, c, c, c, 1.0f));
     }
     polygon.push_back(outline);
     auto mesh  = std::make_shared<QuadMesh>(GL_TRIANGLES, m_texId);

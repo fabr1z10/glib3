@@ -22,11 +22,24 @@ struct Vertex3D {
     Vertex3D(GLfloat x, GLfloat y, GLfloat z)
     :x(x), y(y), z(z), s(0.0f), t(0.0f) {}
     Vertex3D(GLfloat x, GLfloat y, GLfloat z, GLfloat s, GLfloat t)
-    : x(x), y(y), z(z), s(s), t(t) {}
+    : x(x), y(y), z(z), s(s), t(t), r(1.0f), g(1.0f), b(1.0f), a(1.0f) {}
+    Vertex3D(GLfloat x, GLfloat y, GLfloat z, GLfloat s, GLfloat t, GLfloat r, GLfloat g, GLfloat b, GLfloat a)
+    : x(x), y(y), z(z), s(s), t(t), r(r), g(g), b(b), a(a) {}
     GLfloat x, y, z;
     GLfloat s, t;
+    GLfloat r, g, b, a;
     static void InitAttributes();
 };
+
+struct Vertex3DC {
+    Vertex3DC(GLfloat x, GLfloat y, GLfloat z, GLfloat s, GLfloat t, GLfloat r, GLfloat g, GLfloat b, GLfloat a)
+            : x(x), y(y), z(z), s(s), t(t), r(r), g(g), b(b), a(a) {}
+    GLfloat x, y, z;
+    GLfloat s, t;
+    GLfloat r, g, b, a;
+    static void InitAttributes();
+};
+
 
 // vertex with texture and normal
 
