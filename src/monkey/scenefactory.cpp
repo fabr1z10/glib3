@@ -46,6 +46,8 @@
 #include <monkey/states/hit25.h>
 #include <monkey/states/foewalk25.h>
 #include <monkey/states/ishit25.h>
+#include <monkey/components/parallax.h>
+#include <monkey/fill.h>
 
 namespace py = pybind11;
 
@@ -161,7 +163,7 @@ SceneFactory::SceneFactory() {
     add2<Controller25> ("components.controller25");
     add2<Dynamics2D> ("components.dynamics2D");
     add2<ExtendedStateMachine> ("components.statemachine");
-
+    add2<Parallax>("components.parallax");
     // states
     add2<NullState> ("state.null");
     add2<SimpleState> ("state.simple");
@@ -214,6 +216,13 @@ SceneFactory::SceneFactory() {
     add<PolyLine> ("graph");
     add2<PolyLine> ("shape.graph");
     add2<Ellipse> ("shape.ellipse");
+
+    // fill
+    add2<SolidFill>("fill.solid");
+    add2<LinearGradient>("fill.lineargradient");
+
+
+
     // models
     add<SpriteModel> ("sprite.model");
     add2<SpriteModel> ("asset.sprite");

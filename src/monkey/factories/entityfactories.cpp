@@ -146,144 +146,144 @@ std::shared_ptr<Entity> OutlineTextFactory::Create(luabridge::LuaRef &ref) {
 }
 
 
-std::shared_ptr<Entity> BoxedMessageFactory::Create(luabridge::LuaRef& ref) {
-    LuaTable table(ref);
-
-    auto entity = std::make_shared<Entity>();
-    std::string tag = table.Get<std::string>("tag");
-    if (!tag.empty()) entity->SetTag(tag);
-    glm::vec3 pos = table.Get<glm::vec3>("pos");
-    entity->SetPosition(pos);
-    std::string font = table.Get<std::string>("font");
-    std::string message = table.Get<std::string>("message");
-    float size = table.Get<float>("size");
-    float maxWidth = table.Get<float>("maxwidth");
-    float padding = table.Get<float>("padding", 0.0f);
-    auto f = Engine::get().GetAssetManager().GetFont(font);
-
-    auto textMesh = std::make_shared<TextMesh>(f.get(), message, size, CENTER, maxWidth);
-
-    //std::string cornerImage = table.Get<std::string>("corner", std::string());
-    //std::string borders = table.Get<std::string>("border", std::string());
-    // add text entity
-    auto textEntity = std::make_shared<Entity>();
-    auto bounds =textMesh->GetBounds();
-    auto model = std::make_shared<BasicModel>(textMesh);
-    auto renderer = std::make_shared<BasicRenderer>(model);
-
-    glm::vec4 color = table.Get<glm::vec4>("color");
-    glm::vec4 bgColor = table.Get<glm::vec4>("bgcolor");
-    color/=255.0f;
-    bgColor /=255.0f;
-    renderer->setMultColor(color);
-    textEntity->AddComponent(renderer);
-    entity->AddChild(textEntity);
-    auto textExtents = bounds.GetExtents();
-
-
-    float boxWidth = textExtents.x + 2 * padding;
-    float boxHeight = textExtents.y + 2*padding;
-
-    if (table.HasKey("sprite")) {
-        std::string modelId = table.Get<std::string>("sprite");
-        auto spriteEntity = SpriteFactory::Create(modelId);
-        auto modelBounds = Engine::get().GetAssetManager().GetModel(modelId)->GetBounds();
-        entity->AddChild(spriteEntity);
-        glm::vec3 extents = modelBounds.GetExtents();
-        float imgWidth = extents.x;
-        float imgHeight = extents.y;
-        boxWidth = std::max(imgWidth, textExtents.x) + 2 * padding;
-        boxHeight += imgHeight;
-        float img_y = 0.5f*boxHeight - padding - imgHeight;
-        spriteEntity->SetPosition(glm::vec2(0.0f, img_y));
-    }
-
-    float box_xm = -0.5f*boxWidth;
-    float box_ym = -0.5f*boxHeight;
-    float box_xM = box_xm + boxWidth;
-    float box_yM = box_ym + boxHeight;
-    float text_y = box_ym + padding + textExtents.y * 0.5f;
-
-    textEntity->SetPosition(glm::vec2(0.0f, text_y));
-    // create the box
-    auto box = std::make_shared<Entity>();
-    //glm::vec3 extents = bounds.GetExtents();
-
-    auto rect = std::make_shared<Rect>(boxWidth, boxHeight);
-    auto boxMesh = MeshFactorySolid::CreateMesh(*(rect.get()), 0.0f);
-    auto mod = std::make_shared<BasicModel>(boxMesh);
-    auto box_renderer = std::make_shared<BasicRenderer>(mod);
-
-    box->AddComponent(box_renderer);
-    box_renderer->setMultColor(bgColor);
-    // box->SetPosition(glm::vec3(bounds.min.x - padding, bounds.min.y - padding, -0.1));
-    box->SetPosition(glm::vec3(box_xm, box_ym, -0.1));
-    entity->AddChild(box);
-
-    auto fb = [] (const std::string& img, float width, float thickness, float x, float y, float imgw, bool flipv, bool rot) {
-        auto b = std::make_shared<Entity>();
-
-        auto qm = std::make_shared<QuadMesh>(img, width, thickness, width/imgw, flipv ? -1 : 1 );
-        auto model = std::make_shared<BasicModel>(qm);
-        auto b_renderer = std::make_shared<BasicRenderer>(model);
-
-        b->AddComponent(b_renderer);
-        b->SetPosition(glm::vec3(x, y, 0.09));
-        if (rot)
-            b->SetAngle(90.0f);
-        return b;
-    };
-
-    auto cb = [] (const std::string& img, float x, float y, float w, float h, bool flipx, bool flipy) {
-        auto b = std::make_shared<Entity>();
-        auto qm = std::make_shared<QuadMesh>(img, w, h, flipx ? -1 : 1, flipy ? -1 : 1 );
-        auto model = std::make_shared<BasicModel>(qm);
-        auto b_renderer = std::make_shared<BasicRenderer>(model);
-        b->AddComponent(b_renderer);
-        b->SetPosition(glm::vec3(x, y, 0.095));
-        return b;
-    };
-
-    if (table.HasKey("border")) {
-        luabridge::LuaRef borders = table.Get<luabridge::LuaRef>("border");
-        LuaTable border(borders);
-        std::string img = border.Get<std::string>("img");
-        auto tex = Engine::get().GetAssetManager().GetTex(img);
-        float imgw = tex->GetWidth();
-        float thickness = border.Get<float>("thickness");
-        auto upperBorder = fb(img, boxWidth, thickness, box_xm, box_yM - thickness, imgw, false, false);
-        auto lowerBorder = fb(img, boxWidth, thickness, box_xm, box_ym, imgw, true, false);
-        auto leftBorder = fb(img, boxHeight, thickness, box_xm + thickness, box_ym, imgw, false, true);
-        auto rb = fb (img, boxHeight, thickness, box_xM, box_ym, imgw, true, true);
-        entity->AddChild(upperBorder);
-        entity->AddChild(lowerBorder);
-        entity->AddChild(leftBorder);
-        entity->AddChild(rb);
-    }
-
-
-    if (table.HasKey("corner")) {
-        luabridge::LuaRef corners = table.Get<luabridge::LuaRef>("corner");
-        LuaTable corner(corners);
-        std::string img = corner.Get<std::string>("img");
-        auto tex = Engine::get().GetAssetManager().GetTex(img);
-        float imgw = tex->GetWidth();
-        float imgh = tex->GetHeight();
-        auto tl = cb(img, box_xm, box_yM - imgh, imgw, imgh, false, false);
-        auto bl = cb(img, box_xm, box_ym, imgw, imgh, false, true);
-        auto tr = cb(img, box_xM - imgw, box_yM - imgh, imgw, imgh, true, false);
-        auto br = cb(img, box_xM - imgw, box_ym, imgw, imgh, true, true);
-
-        entity->AddChild(tl);
-        entity->AddChild(bl);
-        entity->AddChild(tr);
-        entity->AddChild(br);
-        //entity->AddChild(lowerBorder);
-        //entity->AddChild(leftBorder);
-        //entity->AddChild(rb);
-
-    }
-
-    return entity;
-
-}
+//std::shared_ptr<Entity> BoxedMessageFactory::Create(luabridge::LuaRef& ref) {
+//    LuaTable table(ref);
+//
+//    auto entity = std::make_shared<Entity>();
+//    std::string tag = table.Get<std::string>("tag");
+//    if (!tag.empty()) entity->SetTag(tag);
+//    glm::vec3 pos = table.Get<glm::vec3>("pos");
+//    entity->SetPosition(pos);
+//    std::string font = table.Get<std::string>("font");
+//    std::string message = table.Get<std::string>("message");
+//    float size = table.Get<float>("size");
+//    float maxWidth = table.Get<float>("maxwidth");
+//    float padding = table.Get<float>("padding", 0.0f);
+//    auto f = Engine::get().GetAssetManager().GetFont(font);
+//
+//    auto textMesh = std::make_shared<TextMesh>(f.get(), message, size, CENTER, maxWidth);
+//
+//    //std::string cornerImage = table.Get<std::string>("corner", std::string());
+//    //std::string borders = table.Get<std::string>("border", std::string());
+//    // add text entity
+//    auto textEntity = std::make_shared<Entity>();
+//    auto bounds =textMesh->GetBounds();
+//    auto model = std::make_shared<BasicModel>(textMesh);
+//    auto renderer = std::make_shared<BasicRenderer>(model);
+//
+//    glm::vec4 color = table.Get<glm::vec4>("color");
+//    glm::vec4 bgColor = table.Get<glm::vec4>("bgcolor");
+//    color/=255.0f;
+//    bgColor /=255.0f;
+//    renderer->setMultColor(color);
+//    textEntity->AddComponent(renderer);
+//    entity->AddChild(textEntity);
+//    auto textExtents = bounds.GetExtents();
+//
+//
+//    float boxWidth = textExtents.x + 2 * padding;
+//    float boxHeight = textExtents.y + 2*padding;
+//
+//    if (table.HasKey("sprite")) {
+//        std::string modelId = table.Get<std::string>("sprite");
+//        auto spriteEntity = SpriteFactory::Create(modelId);
+//        auto modelBounds = Engine::get().GetAssetManager().GetModel(modelId)->GetBounds();
+//        entity->AddChild(spriteEntity);
+//        glm::vec3 extents = modelBounds.GetExtents();
+//        float imgWidth = extents.x;
+//        float imgHeight = extents.y;
+//        boxWidth = std::max(imgWidth, textExtents.x) + 2 * padding;
+//        boxHeight += imgHeight;
+//        float img_y = 0.5f*boxHeight - padding - imgHeight;
+//        spriteEntity->SetPosition(glm::vec2(0.0f, img_y));
+//    }
+//
+//    float box_xm = -0.5f*boxWidth;
+//    float box_ym = -0.5f*boxHeight;
+//    float box_xM = box_xm + boxWidth;
+//    float box_yM = box_ym + boxHeight;
+//    float text_y = box_ym + padding + textExtents.y * 0.5f;
+//
+//    textEntity->SetPosition(glm::vec2(0.0f, text_y));
+//    // create the box
+//    auto box = std::make_shared<Entity>();
+//    //glm::vec3 extents = bounds.GetExtents();
+//
+//    auto rect = std::make_shared<Rect>(boxWidth, boxHeight);
+//    auto boxMesh = MeshFactorySolid::CreateMesh(*(rect.get()), 0.0f);
+//    auto mod = std::make_shared<BasicModel>(boxMesh);
+//    auto box_renderer = std::make_shared<BasicRenderer>(mod);
+//
+//    box->AddComponent(box_renderer);
+//    box_renderer->setMultColor(bgColor);
+//    // box->SetPosition(glm::vec3(bounds.min.x - padding, bounds.min.y - padding, -0.1));
+//    box->SetPosition(glm::vec3(box_xm, box_ym, -0.1));
+//    entity->AddChild(box);
+//
+//    auto fb = [] (const std::string& img, float width, float thickness, float x, float y, float imgw, bool flipv, bool rot) {
+//        auto b = std::make_shared<Entity>();
+//
+//        auto qm = std::make_shared<QuadMesh>(img, width, thickness, width/imgw, flipv ? -1 : 1 );
+//        auto model = std::make_shared<BasicModel>(qm);
+//        auto b_renderer = std::make_shared<BasicRenderer>(model);
+//
+//        b->AddComponent(b_renderer);
+//        b->SetPosition(glm::vec3(x, y, 0.09));
+//        if (rot)
+//            b->SetAngle(90.0f);
+//        return b;
+//    };
+//
+//    auto cb = [] (const std::string& img, float x, float y, float w, float h, bool flipx, bool flipy) {
+//        auto b = std::make_shared<Entity>();
+//        auto qm = std::make_shared<QuadMesh>(img, w, h, flipx ? -1 : 1, flipy ? -1 : 1 );
+//        auto model = std::make_shared<BasicModel>(qm);
+//        auto b_renderer = std::make_shared<BasicRenderer>(model);
+//        b->AddComponent(b_renderer);
+//        b->SetPosition(glm::vec3(x, y, 0.095));
+//        return b;
+//    };
+//
+//    if (table.HasKey("border")) {
+//        luabridge::LuaRef borders = table.Get<luabridge::LuaRef>("border");
+//        LuaTable border(borders);
+//        std::string img = border.Get<std::string>("img");
+//        auto tex = Engine::get().GetAssetManager().GetTex(img);
+//        float imgw = tex->GetWidth();
+//        float thickness = border.Get<float>("thickness");
+//        auto upperBorder = fb(img, boxWidth, thickness, box_xm, box_yM - thickness, imgw, false, false);
+//        auto lowerBorder = fb(img, boxWidth, thickness, box_xm, box_ym, imgw, true, false);
+//        auto leftBorder = fb(img, boxHeight, thickness, box_xm + thickness, box_ym, imgw, false, true);
+//        auto rb = fb (img, boxHeight, thickness, box_xM, box_ym, imgw, true, true);
+//        entity->AddChild(upperBorder);
+//        entity->AddChild(lowerBorder);
+//        entity->AddChild(leftBorder);
+//        entity->AddChild(rb);
+//    }
+//
+//
+//    if (table.HasKey("corner")) {
+//        luabridge::LuaRef corners = table.Get<luabridge::LuaRef>("corner");
+//        LuaTable corner(corners);
+//        std::string img = corner.Get<std::string>("img");
+//        auto tex = Engine::get().GetAssetManager().GetTex(img);
+//        float imgw = tex->GetWidth();
+//        float imgh = tex->GetHeight();
+//        auto tl = cb(img, box_xm, box_yM - imgh, imgw, imgh, false, false);
+//        auto bl = cb(img, box_xm, box_ym, imgw, imgh, false, true);
+//        auto tr = cb(img, box_xM - imgw, box_yM - imgh, imgw, imgh, true, false);
+//        auto br = cb(img, box_xM - imgw, box_ym, imgw, imgh, true, true);
+//
+//        entity->AddChild(tl);
+//        entity->AddChild(bl);
+//        entity->AddChild(tr);
+//        entity->AddChild(br);
+//        //entity->AddChild(lowerBorder);
+//        //entity->AddChild(leftBorder);
+//        //entity->AddChild(rb);
+//
+//    }
+//
+//    return entity;
+//
+//}

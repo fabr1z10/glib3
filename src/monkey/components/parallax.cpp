@@ -12,6 +12,11 @@ Parallax::Parallax(const Parallax& orig) : Component(orig), m_factor(orig.m_fact
     
 }
 
+Parallax::Parallax(const ITable & t) : Component(t) {
+    m_camId = t.get<std::string>("cam");
+    m_factor = t.get<glm::vec2>("factor");
+}
+
 std::shared_ptr<Component> Parallax::clone() const {
     return std::make_shared<Parallax>(Parallax(*this));
 }

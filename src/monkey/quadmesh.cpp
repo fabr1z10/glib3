@@ -75,8 +75,17 @@ QuadMesh::QuadMesh(const std::string& filename, float width, float height, glm::
 }
 
 
-QuadMesh::QuadMesh(const std::string& filename, int rows, int cols, float size, std::vector<int>& data, int spriteSheetRows, int spriteSheetCols,
-int repx, int repy, glm::vec2 delta)
+QuadMesh::QuadMesh(
+    const std::string& filename,
+    int rows,
+    int cols,
+    float size,
+    std::vector<int>& data,
+    int spriteSheetRows,
+    int spriteSheetCols,
+    int repx,
+    int repy,
+    glm::vec2 delta, float angle)
 : Mesh<Vertex3D>(TEXTURE_SHADER) {
     m_primitive = GL_TRIANGLES;
     auto tex = Engine::get().GetAssetManager().GetTex(filename);
@@ -92,9 +101,17 @@ int repx, int repy, glm::vec2 delta)
         inc = 0;
     }
 
+    float q = size;
+    float r = 0.0f;
+    if (angle != 0.0f) {
+        q = size * cos(angle);
+        r = size * sin(angle);
+    }
     for (int rx = 0; rx < repx; ++rx) {
         for (int ry = 0; ry < repy; ++ry) {
-            glm::vec2 o (cols * size * rx + delta.x*size*rx, rows * size * ry+ delta.y*size*rx);
+            glm::vec2 o (
+                cols * rx * q + delta.x * rx * q,
+                cols * rx * r + delta.y * ry * r);
             count = 0;
             for (int i = 0; i < rows; i++) {
                 for (int j = 0; j < cols; j++) {
@@ -105,10 +122,14 @@ int repx, int repy, glm::vec2 delta)
                     }
                     int t1 = data[count];
                     int t2 = data[count + 1];
-                    vertices.push_back(Vertex3D(o.x + j*size, o.y + i*size, 0.0f, t1*dx, (t2 + 1) * dy));
-                    vertices.push_back(Vertex3D(o.x + (j + 1)*size, o.y + i*size, 0.0f, (t1 + 1)*dx, (t2 + 1)*dx));
-                    vertices.push_back(Vertex3D(o.x + (j + 1)*size, o.y + (i + 1)*size, 0.0f, (t1 + 1)*dx, t2*dy));
-                    vertices.push_back(Vertex3D(o.x + j*size, o.y + (i + 1)*size, 0.0f, t1*dx, t2*dy));
+                    // bottom left
+                    vertices.emplace_back(Vertex3D(o.x + j*q,       o.y + j*r + i * size,       0.0f, t1*dx, (t2 + 1) * dy));
+                    // bottom right
+                    vertices.emplace_back(Vertex3D(o.x + (j + 1)*q, o.y + (j+1)*r + i*size,     0.0f, (t1 + 1)*dx, (t2 + 1)*dy));
+                    // top right
+                    vertices.emplace_back(Vertex3D(o.x + (j + 1)*q, o.y + (j+1)*r + (i+1)*size, 0.0f, (t1 + 1)*dx, t2*dy));
+                    // top left
+                    vertices.emplace_back(Vertex3D(o.x + j*q,       o.y + j*r +(i + 1)*size,    0.0f, t1*dx, t2*dy));
                     indices.push_back(4 * quad);
                     indices.push_back(4 * quad + 1);
                     indices.push_back(4 * quad + 3);

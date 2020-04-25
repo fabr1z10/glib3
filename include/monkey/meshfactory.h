@@ -10,6 +10,7 @@
 #include <monkey/math/compound.h>
 #include <monkey/math/plane3d.h>
 #include <monkey/math/box.h>
+#include <monkey/fill.h>
 #include <memory>
 
 
@@ -54,20 +55,24 @@ private:
 class MeshFactorySolid :
     public AcyclicVisitor,
     public Visitor<Rect>,
-    public Visitor<Ellipse>,
-    public Visitor<Plane3D>
+    public Visitor<Ellipse>
+    //public Visitor<Plane3D>
 {
 public:
-    static std::shared_ptr<IMesh> CreateMesh (Shape& s, float z = 0.0f, glm::vec4 color = glm::vec4(1.0f));
+    static std::shared_ptr<IMesh> CreateMesh (
+        Shape& s,
+        std::shared_ptr<Fill> fill,
+        float z = 0.0f);
     void visit(Rect&) override;
     void visit(Ellipse&) override;
-    void visit(Plane3D&) override;
+    //void visit(Plane3D&) override;
 
 private:
+    void addPoint (std::vector<VertexColor>& v, float x, float y);
     std::shared_ptr<IMesh> m_mesh;
-    glm::vec4 m_color;
+    std::shared_ptr<Fill> m_fill;
     float m_z;
-    MeshFactorySolid(float z, glm::vec4 color) : m_color{color}, m_z{z} {}
+    MeshFactorySolid(float z, std::shared_ptr<Fill> fill) : m_fill{fill}, m_z{z} {}
 };
 
 
@@ -76,16 +81,32 @@ class MeshFactoryTextured :
     public Visitor<Poly>
 {
 public:
-    static std::shared_ptr<IMesh> CreateMesh (Shape& s, const std::string& texture, float x0, float y0, float repx, float repy, float slantx, float slanty);
+    // you can provide colors (r, g, b, a) as functions of x and y
+    // each channel (red, green, blue, alpha) is a linear func ax + by + c
+    static std::shared_ptr<IMesh> CreateMesh (
+        Shape& s,
+        const std::string& texture,
+        float x0,
+        float y0,
+        float repx,
+        float repy,
+        float slantx,
+        float slanty,
+        std::shared_ptr<Fill> fill);
     void visit(Poly&) override;
 private:
-    MeshFactoryTextured(const std::string& texture, float x0, float y0, float repx, float repy, float slantx, float slanty);
+    MeshFactoryTextured(const std::string& texture, float x0, float y0, float repx, float repy, float slantx, float slanty, std::shared_ptr<Fill>);
     float m_x0;
     float m_y0;
     float m_rx;
     float m_ry;
     float m_a;
     float m_b;
+    std::shared_ptr<Fill> m_fill;
+    //glm::vec3 m_red;
+    //glm::vec3 m_green;
+    //glm::vec3 m_blue;
+    //glm::vec3 m_alpha;
     std::string m_texId;
     std::shared_ptr<IMesh> m_mesh;
 
