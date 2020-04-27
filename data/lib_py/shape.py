@@ -1,3 +1,17 @@
+class SolidFill:
+    def __init__(self, r: float, g: float, b: float, a: float = 255):
+        self.type = 'fill.solid'
+        self.color = [r, g, b, a]
+
+class LinearGradient:
+    def __init__(self, color0, p0, color1, p1):
+        self.type = 'fill.lineargradient'
+        self.color0 = color0
+        self.color1 = color1
+        self.p0 = p0
+        self.p1 = p1
+
+
 class Shape:
     def __init__(self, offset = [0, 0]):
         self.offset = offset
@@ -15,6 +29,14 @@ class Rect(Shape):
         self.type = 'rect'
         self.width = width
         self.height = height
+
+class Ellipse(Shape):
+    def __init__(self, width : float, height : float, offset = [0, 0]):
+        super().__init__(offset)
+        self.type = 'shape.ellipse'
+        self.width = width
+        self.height = height
+
 
 class Polygon(Shape):
     def __init__(self, outline : list, offset = [0, 0]):

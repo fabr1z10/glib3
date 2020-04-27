@@ -14,10 +14,11 @@ class CollisionResponse:
         self.onleave = onleave
 
 class CollisionEngine:
-    def __init__(self, width: int, height: int):
+    def __init__(self, width: int, height: int, coll25: bool = False):
         self.type = 'runner.collisionengine'
         self.size = [width, height]
         self.response = []
+        self.coll25 = coll25
 
     def addResponse(self, tag1: int, tag2: int, response: CollisionResponse):
         self.response.append ([tag1, tag2, response])

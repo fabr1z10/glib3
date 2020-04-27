@@ -35,6 +35,7 @@ class Entity:
         self.camera = None
         self.components = []
         self.children = []
+        self.scale = None
 
     def add(self, entity):
         """A simple function that says hello... Richie style"""

@@ -5,7 +5,6 @@
 #include <monkey/components/controller2d.h>
 #include <monkey/components/dynamics2d.h>
 #include <monkey/components/extstatemachine.h>
-#include <monkey/dyloader.h>
 #include <monkey/states/simple.h>
 
 #include <monkey/components/hotspot.h>

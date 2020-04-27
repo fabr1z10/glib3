@@ -10,7 +10,7 @@ class Gfx:
         self.cls = 0
 
 class TiledGfx:
-    def __init__(self, tilesheet : str, sheetSize, tileData : list, width: int, height: int, size: float):
+    def __init__(self, tilesheet : str, sheetSize, tileData : list, width: int, height: int, size: float, repx: int =None, repy: int=None, angle: float = None):
         self.type = 'components.gfx'
         self.image = tilesheet
         self.sheetSize = sheetSize
@@ -18,7 +18,39 @@ class TiledGfx:
         self.width = width
         self.height = height
         self.size = size
+        self.repx = repx
+        self.repy = repy
+        self.angle = angle
         self.cls = 1
+
+class ShapeGfx:
+    def __init__(self, shape, texture:str, repx: float, repy: float, x0: float = 0, y0: float = 0,slantx : float = 0, 
+    slanty: float = 0, fill = None):
+        self.type ='components.gfx'
+        self.cls = 2
+        self.shape = shape
+        self.tex = texture
+        self.x0 = x0
+        self.y0 = y0
+        self.repx = repx
+        self.repy = repy
+        self.slantx = slantx
+        self.slanty = slanty
+        self.fill = fill
+
+# create a colored shape
+class ShapeGfxColor:
+    def __init__(self, shape, fill):
+        self.type ='components.gfx'
+        self.cls = 3
+        self.shape = shape
+        self.fill = fill
+
+class Parallax:
+    def __init__(self, cam: str, factor: float):
+        self.type = 'components.parallax'
+        self.factor = factor
+        self.cam = cam
 
 class HotSpot:
     def __init__(self, shape, priority:int=0,onenter: Callable = None, onleave: Callable = None, onclick: Callable = None):
@@ -50,9 +82,11 @@ class Collider:
         self.shape = shape
 
 class SmartCollider(Collider):
-    def __init__(self, flag: int, mask: int, tag: int):
+    def __init__(self, flag: int, mask: int, tag: int, castTag: int = 0, castMask: int = 0):
         super().__init__(flag, mask, tag, None)
         self.type = 'components.smartcollider'
+        self.cast_tag = castTag
+        self.cast_mask = castMask
 
 class Controller2D:
     def __init__(self, maskUp: int, maskDown: int, maxClimbAngle : float, maxDescendAngle, horRays : int = 4, vertRays: int = 4):
@@ -63,6 +97,16 @@ class Controller2D:
         self.vertRays = vertRays
         self.maskUp = maskUp
         self.maskDown = maskDown
+
+class Controller25:
+    def __init__(self, mask: int, horRays : int = 4, vertRays: int = 4, depth: float = 0, elevation: float = 0):
+        self.type = 'components.controller25'
+        self.horRays = horRays
+        self.vertRays = vertRays
+        self.mask = mask
+        self.depth = depth
+        self.elevation = elevation
+
 
 class Dynamics2D:
     def __init__(self, gravity):
@@ -94,6 +138,38 @@ class SimpleState (State):
         super().__init__(id)
         self.type = 'state.simple'
         self.anim = anim
+
+class Walk25 (State):
+    def __init__(self, id: str, speed: float, acceleration: float, flipHorizontal: bool, jumpvelocity: float):
+        super().__init__(id)
+        self.type = 'state.walk25'
+        self.speed = speed
+        self.acceleration = acceleration
+        self.flipH = flipHorizontal
+        self.jumpvelocity = jumpvelocity
+
+class FoeWalk25 (State):
+    def __init__(self, id: str, speed: float, acceleration: float, flipHorizontal: bool, delta: float):
+        super().__init__(id)
+        self.type = 'state.foewalk25'
+        self.speed = speed
+        self.acceleration = acceleration
+        self.flipH = flipHorizontal
+        self.delta = delta
+
+class Hit25 (State):
+    def __init__(self, id: str, anim: str):
+        super().__init__(id)
+        self.type = 'state.hit25'
+        self.anim = anim
+
+class IsHit25 (State):
+    def __init__(self, id: str, anim: str, acceleration: float):
+        super().__init__(id)
+        self.type = 'state.ishit25'
+        self.anim = anim
+        self.acceleration = acceleration
+
 
 class Info():
     #def __init__(self, text_color : list, text_offset : list):
