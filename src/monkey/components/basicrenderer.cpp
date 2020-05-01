@@ -50,8 +50,8 @@ BasicRenderer::BasicRenderer(const ITable & t) : Renderer() {
         auto tex = t.get<std::string>("tex");
         float x0 = t.get<float>("x0", 0.0f);
         float y0 = t.get<float>("y0", 0.0f);
-        float repx = t.get<float>("repx");
-        float repy = t.get<float>("repy");
+        float repx = t.get<float>("repx", 1.0f);
+        float repy = t.get<float>("repy",1.0f);
         float slantx = t.get<float>("slantx", 0.0f);
         float slanty = t.get<float>("slanty", 0.0f);
         std::shared_ptr<Fill> fill;

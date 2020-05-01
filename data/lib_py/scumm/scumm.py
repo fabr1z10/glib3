@@ -71,7 +71,8 @@ class State:
     items_room = {}
     variables = {}
     player = ''
- 
+    md = None
+
     @staticmethod
     def addItem (id : str, item : Item):
         State.items[id]= item

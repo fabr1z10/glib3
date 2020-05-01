@@ -134,4 +134,213 @@ door_scummbar_kitchen:
     closed:
       frames:
         - [435,2,35,69]
-
+scummbar.mancomb:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: 'asset.sprite'
+  animations:
+    idle_1:
+      frames:
+        - [241,68,33,40]
+    idle_2:
+      frames:
+        - [277,68,36,39,1,-1]
+scummbar.estevan:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: 'asset.sprite'
+  animations:
+    idle_1:
+      frames:
+        - [318,76,35,27]
+    idle_2:
+      loop: false
+      frames:
+        - [355,76,39,27]
+        - [396,76,37,27]
+scummbar.loom:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: 'asset.sprite'
+  animations:
+    idle_1:
+      frames:
+        - [221,457,29,38]
+    idle_2:
+      loop: false
+      frames:
+        - [252,458,29,37]
+        - [283,458,29,37]
+scummbar.fireplace:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: 'asset.sprite'
+  animations:
+    idle_1:
+      frames:
+        - [334,160,32,26]
+        - [368,160,32,26]
+        - [402,160,32,26]
+scummbar.pirate1:
+  sheet: 'gfx/sprites/sprites2.png'
+  type: 'asset.sprite'
+  animations:
+    idle_1:
+      frames:
+        - [330,1,26,27]
+    idle_2:
+      loop: false
+      frames:
+        - [358,1,27,27]
+        - [387,1,26,27]
+scummbar.pirate2:
+  sheet: 'gfx/sprites/sprites2.png'
+  type: 'asset.sprite'
+  animations:
+    idle_1:
+      frames:
+        - [330,31,36,37]
+    idle_2:
+      frames:
+        - [368,31,36,37]
+scummbar.pirate3:
+  sheet: 'gfx/sprites/sprites2.png'
+  type: 'asset.sprite'
+  animations:
+    idle_1:
+      frames:
+        - [417,3,40,23]
+    idle_2:
+      frames:
+        - [459,3,40,23]
+scummbar.pirate4:
+  sheet: 'gfx/sprites/sprites2.png'
+  type: 'asset.sprite'
+  animations:
+    idle_1:
+      frames:
+        - [407,35,33,25]
+    idle_2:
+      loop: false
+      frames:
+        - [442,35,33,25]
+        - [477,35,33,25]
+scummbar.pirate5:
+  sheet: 'gfx/sprites/sprites2.png'
+  type: 'asset.sprite'
+  animations:
+    idle_1:
+      frames:
+        - [400,71,35,27]
+    idle_2:
+      loop: false
+      frames:
+        - [437,71,35,27]
+        - [474,72,35,26]
+scummbar.pirate6:
+  sheet: 'gfx/sprites/sprites2.png'
+  type: 'asset.sprite'
+  animations:
+    idle_1:
+      frames:
+        - [347,71,50,26]
+scummbar.pirate7:
+  sheet: 'gfx/sprites/sprites2.png'
+  type: 'asset.sprite'
+  animations:
+    idle_1:
+      frames:
+        - [180,73,20,21]
+    idle_2:
+      loop: false
+      frames:
+        - [202,73,20,22]
+        - [157,73,20,21]
+scummbar.pirate8:
+  sheet: 'gfx/sprites/sprites2.png'
+  type: 'asset.sprite'
+  animations:
+    idle_1:
+      frames:
+        - [419,103,28,32]
+    idle_2:
+      loop: false
+      frames:
+        - [448,103,28,32]
+        - [479,103,29,32]
+scummbar.pirate9:
+  sheet: 'gfx/sprites/sprites2.png'
+  type: 'asset.sprite'
+  animations:
+    idle_1:
+      frames:
+        - [323,100,30,33]
+    idle_2:
+      loop: false
+      frames:
+        - [354,100,30,35]
+        - [386,100,30,39]
+ilp1:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: 'asset.sprite'
+  animations:
+    idle_e:
+      frames:
+        - [319,410,35,55]
+    talk_e:
+      frames:
+        - [394,409,35,56]
+        - [431,411,35,54]
+ilp2:
+  sheet: 'gfx/sprites/sprites2.png'
+  type: 'asset.sprite'
+  animations:
+    idle_e:
+      frames:
+        - [2,1,34,53]
+    talk_e:
+      frames:
+        - [39,1,34,56]
+        - [75,1,35,52]
+ilp3:
+  sheet: 'gfx/sprites/sprites2.png'
+  type: 'asset.sprite'
+  animations:
+    idle_e:
+      frames:
+        - [113,1,35,52]
+    talk_e:
+      frames:
+        - [150,1,31,52]
+        - [183,2,32,51]
+        - [217,1,31,52]
+cook:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: 'asset.sprite'
+  animations:
+    idle_e:
+      frames:
+        - [ [2, 34, 28, 35, 17, 0], [36, 57, 11, 16, 7, -32] ]
+    idle_n:
+      frames:
+        - [2, 72, 36, 48, 17, 0]
+    idle_s:
+      frames:
+        - [39, 77, 31, 48, 15, 0]
+    talk_e:
+      frames:
+        - [ [2, 34, 28, 35, 17, 0], [90, 57, 11, 16, 8, 0]]
+        - [ [2, 34, 28, 35, 17, 0], [50, 57, 12, 18, 7, 2]]
+        - [ [2, 34, 28, 35, 17, 0], [64, 57, 11, 17, 8, 1]]
+        - [ [2, 34, 28, 35, 17, 0], [77, 57, 11, 17, 8, 1]]
+        - [ [2, 34, 28, 35, 17, 0], [103, 57, 11, 18, 7, 2]]
+    walk_e:
+      frames:
+        - [72,77,25,48,13,0]
+        - [99,78,31,47,17,0]
+        - [132,76,20,49,12,0]
+        - [154,76,28,49,16,0]
+        - [184, 77, 26, 48, 16, 0]
+        - [212, 77, 22, 48, 13, 0]
+    walk_n:
+      frames:
+        - [2, 72, 36, 48, 17, 0]
+    walk_s:
+      frames:
+        - [39, 77, 31, 48, 15, 0]

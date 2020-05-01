@@ -94,7 +94,7 @@ class Sprite(entity.Entity):
         super().__init__(tag, pos)
         if not tag:
             self.tag = item
-        if model:
+        if model is not None:
             self.type = 'sprite'
         self.model = model
         self.anim = anim

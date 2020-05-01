@@ -5,7 +5,9 @@ import lib_py.scumm.entity as se
 import lib_py.shape as sh
 from lib_py.script import Script
 from lib_py.scumm.scumm import State
+import mi1_py.variables as var
 import example
+
 
 def init():
     if engine.previous_room == 'lookout':
@@ -25,7 +27,8 @@ def builder():
         scale = sh.LinY(y0=0, z0=0.8, y1 = 144, z1 = 0.1),
         depth = sh.LinY(y0=0,z0=1,y1=144,z1=0)), 'main')
     r.add (se.Sprite (item='village1.poster', pos = [259, 27, 0]), 'main')
-    r.add (se.Sprite (item='village1.door', anim = State.variables['door.village.scummbar'], model='door_village_scummbar', pos = [699, 7, 0]), 'main')
+    r.add (se.Sprite (item='village1.door', anim = var.doors.village_scummbar, 
+        model = 'door_village_scummbar', pos = [699, 7, 0]), 'main')
     r.addDynamicItems()
     r.init.append(init)
     print (State.items['scummbar.door.out'].walkto)

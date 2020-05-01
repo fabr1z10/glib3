@@ -15,7 +15,8 @@ def say(lines : list, tag: str = 'player'):
 def openDoor (doorId: str, var: str):
     def f():
         def g():
-            State.variables[var] = 'open'
+            setattr(State.md.doors, var, 'open')
+            #State.variables[var] = 'open'
         s = script.Script()
         s.addAction (act.Animate(anim='open', tag=doorId))
         s.addAction (act.CallFunc(f = g))
@@ -25,7 +26,8 @@ def openDoor (doorId: str, var: str):
 def closeDoor (doorId: str, var: str):
     def f():
         def g():
-            State.variables[var] = 'closed'
+            setattr(State.md.doors, var, 'closed')
+            #State.variables[var] = 'closed'
         s = script.Script()
         s.addAction (act.Animate(anim='closed', tag=doorId))
         s.addAction (act.CallFunc(f = g))
@@ -34,7 +36,7 @@ def closeDoor (doorId: str, var: str):
 
 def walkDoor (var: str, room: str, pos, dir):
     def f():
-        if State.variables[var] == 'open':
+        if getattr(State.md.doors, var) == 'open':
             return changeRoom(room = room, pos = pos, dir=dir)()
         return None
     return f

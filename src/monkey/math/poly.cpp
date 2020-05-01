@@ -93,6 +93,14 @@ Poly::Poly(const ITable & t) : Shape(t) {
 
     //  holes
     if (t.hasKey("holes")) {
+        t.foreach<pybind11::list>("holes", [&](const pybind11::list l) {
+            auto holeOutline = l.cast<std::vector<float>>();
+            std::vector<glm::vec2> points;
+            for (size_t i = 0; i < holeOutline.size(); i = i + 2)
+                points.push_back(glm::vec2(holeOutline[i], holeOutline[i + 1]));
+            addHole(glm::vec2(0.0f), std::make_shared<Polygon>(points));
+        });
+    }
 //        std::unique_ptr<Polygon> mainOutline(new Polygon(points));
 //        auto holes = t.Get<luabridge::LuaRef>("holes");
 //        for (int j = 0; j < holes.length(); ++j) {
@@ -103,7 +111,6 @@ Poly::Poly(const ITable & t) : Shape(t) {
 //                points.push_back(glm::vec2(holeOutline[i], holeOutline[i + 1]));
 //            addHole(glm::vec2(0.0f), std::make_shared<Polygon>(points));
 //        }
-      }
 
 
 }

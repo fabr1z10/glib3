@@ -25,18 +25,18 @@ QuadMesh::QuadMesh(const std::string& filename, float width, float height,
         if (height != 0) {
             width = height * (static_cast<float>(tex->GetWidth())/tex->GetHeight());
         } else {
-            width = tex->GetWidth();
+            width = tex->GetWidth() * repeatx;
+            height = tex->GetHeight() * repeaty;
         }
-    }
-    if (height == 0) {
-        if (width != 0) {
+    } else {
+        if (height == 0) {
             height = width * (static_cast<float>(tex->GetHeight())/tex->GetWidth());
         } else {
-            height = tex->GetHeight();
+            //height = tex->GetHeight() * repeaty;
         }
     }
-    width *= repeatx;
-    height *= repeaty;
+    //width *= repeatx;
+    //height *= repeaty;
     std::vector<Vertex3D> vertices;
     vertices = {
         {offset.x,         offset.y,          0, 0,               repeaty},

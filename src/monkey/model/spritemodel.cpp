@@ -64,6 +64,36 @@ SpriteModel::SpriteModel (const ITable& t) : IModel() {
 
     };
 
+    auto rf = [&] (PyDict& d, AnimInfo& ai) {
+        auto frames = d.get<py::list>("frames_desc");
+        for (auto frame : frames) {
+            PyDict a(frame.cast<py::dict>());
+            FrameInfo frameInfo;
+            frameInfo.duration = a.get<float>("time");
+            frameInfo.angle = a.get<float>("angle", 0.0f);
+            frameInfo.offset = 6 * quadCount;
+            frameInfo.move = true;
+            frameInfo.origin = glm::vec2(0.0f);
+            frameInfo.translation = a.get<glm::vec2>("pos", glm::vec2(0.0f));
+            int fq=0;
+            a.foreach<py::list>("quads_pc", [&] (const py::list& l) {
+                auto p = l.cast<std::vector<int>>();
+                p[0] *= texWidth;
+                p[1] *= texHeight;
+                p[2] *= texWidth;
+                p[3] *= texHeight;
+                addQuad(p);
+                quadCount++;
+                fq++;
+            });
+            frameInfo.flipx = false;
+            frameInfo.count = 6 * fq;
+            ai.frameInfo.push_back(frameInfo);
+
+        }
+    };
+
+
     m_mesh = std::make_shared<SpriteMesh>(sheetId);
     auto anims = t.get<py::dict>("animations");
 
@@ -75,40 +105,45 @@ SpriteModel::SpriteModel (const ITable& t) : IModel() {
         }
         PyDict animData(anim.second.cast<py::dict>());
         animInfo.loop = animData.get<bool>("loop", true);
-        auto frames = animData.get<py::list>("frames");
 
-        for (auto frame : frames) {
-            FrameInfo frameInfo;
-            frameInfo.duration = dt;
-            frameInfo.offset = 6 * quadCount;
+        if (animData.hasKey("frames_desc")) {
+            rf (animData, animInfo);
+        } else {
 
-            // check if this frame is defined as a vec of ints
-            int frameQuads = 0;
-            try {
-                auto fi = frame.cast<std::vector<int>>();
-                addQuad (fi);
-                quadCount++;
-                frameQuads = 1;
-                frameInfo.count = 6;
-                animInfo.frameInfo.push_back(frameInfo);
-                continue;
-            } catch (...) {}
+            auto frames = animData.get<py::list>("frames");
+            for (auto frame : frames) {
+                FrameInfo frameInfo;
+                frameInfo.duration = dt;
+                frameInfo.offset = 6 * quadCount;
 
-            // check if this frame is defined as a list of quads
-            try {
-                auto quads = frame.cast<py::list>();
-                for (auto quad : quads) {
-                    std::vector<int> quadInfo = quad.cast<std::vector<int>>();
-                    addQuad (quadInfo);
+                // check if this frame is defined as a vec of ints
+                int frameQuads = 0;
+                try {
+                    auto fi = frame.cast<std::vector<int>>();
+                    addQuad(fi);
                     quadCount++;
-                    frameQuads++;
-                }
-                frameInfo.count = 6 * frameQuads;
-                animInfo.frameInfo.push_back(frameInfo);
-            } catch (...) {
-                GLIB_FAIL("Cannot read frame")
-            }
+                    frameQuads = 1;
+                    frameInfo.count = 6;
+                    animInfo.frameInfo.push_back(frameInfo);
+                    continue;
+                } catch (...) {}
 
+                // check if this frame is defined as a list of quads
+                try {
+                    auto quads = frame.cast<py::list>();
+                    for (auto quad : quads) {
+                        std::vector<int> quadInfo = quad.cast<std::vector<int>>();
+                        addQuad(quadInfo);
+                        quadCount++;
+                        frameQuads++;
+                    }
+                    frameInfo.count = 6 * frameQuads;
+                    animInfo.frameInfo.push_back(frameInfo);
+                } catch (...) {
+                    GLIB_FAIL("Cannot read frame")
+                }
+
+            }
         }
         animInfo.frameCount = animInfo.frameInfo.size();
         m_mesh->AddAnimInfo(animId, animInfo);
@@ -119,7 +154,6 @@ SpriteModel::SpriteModel (const ITable& t) : IModel() {
 
 
 }
-
 
 
 SpriteModel::SpriteModel (const LuaTable& t) : IModel() {

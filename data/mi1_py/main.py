@@ -4,7 +4,7 @@ import lib_py.scumm.scumm as scumm
 import lib_py.scumm.functions as func
 import lib_py.scumm.helper as helper
 import lib_py.scumm.scripts as sscripts
-
+import mi1_py.variables as variables
 
 engine.startUp()
 
@@ -58,6 +58,9 @@ scumm.Config.verbSets.append (scumm.VerbSet(verbs= ['open', 'close', 'push', 'pu
 
 # sets door to closed
 scumm.State.variables['door.village.scummbar'] = 'closed'
+
+scumm.State.md = variables
+
 
 import mi1_py.data.items
 import mi1_py.rooms.lookout

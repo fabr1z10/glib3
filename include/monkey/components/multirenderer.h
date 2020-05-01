@@ -12,6 +12,8 @@ public:
     void Draw(Shader*) override;
     void Start() override {}
     std::type_index GetType() override;
+    void setVisible(int);
+    void clearVisible();
     void SetModel(std::shared_ptr<IModel> mesh) override;
     void addModel (std::shared_ptr<BasicModel>);
 private:

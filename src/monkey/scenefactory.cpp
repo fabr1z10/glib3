@@ -47,6 +47,8 @@
 #include <monkey/states/ishit25.h>
 #include <monkey/components/parallax.h>
 #include <monkey/fill.h>
+#include <monkey/activities/repeat.h>
+#include <monkey/components/shadow.h>
 
 namespace py = pybind11;
 
@@ -163,6 +165,7 @@ SceneFactory::SceneFactory() {
     add2<Dynamics2D> ("components.dynamics2D");
     add2<ExtendedStateMachine> ("components.statemachine");
     add2<Parallax>("components.parallax");
+    add2<Shadow>("components.shadow");
     // states
     add2<NullState> ("state.null");
     add2<SimpleState> ("state.simple");
@@ -174,6 +177,7 @@ SceneFactory::SceneFactory() {
     add<DelayTime> ("delay");
     add2<DelayTime> ("action.delay");
     add<DelayTimeDynamic> ("delay_dynamic");
+    add2<DelayTimeDynamic> ("action.delaydynamic");
     add<Animate> ("animate");
     add2<Animate> ("action.animate");
     add<ChangeRoom> ("gotoroom");
@@ -191,6 +195,7 @@ SceneFactory::SceneFactory() {
     add2<MoveAccelerated> ("action.moveaccelerated");
     add2<MoveTo> ("action.move");
     add2<ChangeCamBounds> ("action.changecambounds");
+    add2<Repeat>("action.repeat");
     // runners
     add<HotSpotManager> ("hotspotmanager");
     add2<HotSpotManager> ("components.hotspotmanager");

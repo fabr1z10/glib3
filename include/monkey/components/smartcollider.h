@@ -4,7 +4,7 @@
 
 class Animator;
 class BoxedModel;
-class Renderer;
+class MultiRenderer;
 class StateMachine;
 
 struct SmartCollisionDetails {
@@ -42,7 +42,7 @@ private:
     StateMachine* m_stateMachine;
     Animator* m_animator;
     BoxedModel* m_model;
-    Renderer* m_colliderRenderer;
+    MultiRenderer* m_colliderRenderer;
     Bounds GetStaticBoundsI() const override;
     Bounds GetDynamicBoundsI() const override;
     Entity* m_shapeEntity;

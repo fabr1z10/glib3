@@ -71,11 +71,16 @@ void SmartCollider::onFrameUpdate(Animator *a) {
     auto anim = a->GetAnimation();
     int fr = a->GetFrame();
 
-    auto shape = m_model->getShape(anim,fr);
-    auto castShape = m_model->getShapeCast(anim, fr);
+    m_colliderRenderer->clearVisible();
+    int shapeId = m_model->getShapeId(anim,fr);
+    m_colliderRenderer->setVisible(shapeId);
+    // show only the shape
+    auto castShapeId = m_model->getShapeCastId(anim, fr);
 
     // now, check if I have an attack box
-    if (castShape != nullptr) {
+    if (castShapeId != -1) {
+        auto castShape = m_model->shape(castShapeId);
+        m_colliderRenderer->setVisible(castShapeId);
 
         auto t = m_entity->GetWorldTransform();
         std::cout <<" **** hit ****\n";

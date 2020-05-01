@@ -21,6 +21,11 @@ Script::Script(const ITable & table) : m_complete(false), m_suspended(false), m_
         int headId = a[1].cast<int>();
         AddEdge (tailId, headId);
     });
+
+    if (table.hasKey("loop")) {
+        m_loop = true;
+        m_loopId = table.get<int>("loop");
+    }
 }
 
 Script::Script() : m_complete{false}, m_suspended{false}, m_loop{false}, m_loopId{0} {

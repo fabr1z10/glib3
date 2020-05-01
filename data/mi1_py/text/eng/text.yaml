@@ -26,6 +26,10 @@ objects:
   poster: poster
   door: door
   lookout: lookout
+  pirate: pirate
+  pirates: pirates
+  fireplace: fireplace
+  ilp: important-looking pirates
 dialogues:
   lookout: 
     1: "I heard there was going to be a weenie roast here."
@@ -85,3 +89,7 @@ dialogues:
 lines:
   1: "Re-elect Governor Marley."
   2: "\"When there's only one candidate, there's only one choice.\""
+  3: "Cozy."
+  4: "I don't want to bother them."
+  5: "They're busy listening to the guy on the left."
+  6: "I don't think it's wise to wake a sleeping pirate."

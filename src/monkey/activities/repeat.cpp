@@ -1,8 +1,9 @@
 #include <monkey/activities/repeat.h>
 
-Repeat::Repeat(luabridge::LuaRef func, float interval) : Activity(),
-    m_func{func}, m_interval(interval), m_timer(0.0f)
-{}
+Repeat::Repeat(const ITable & t) : Activity() {
+    m_func = t.get<pybind11::function>("func");
+    m_interval = t.get<float>("every");
+}
 
 void Repeat::Start() {
     m_func();

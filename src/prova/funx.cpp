@@ -21,6 +21,15 @@ void rmv(int id) {
     }
 }
 
+void rmvt(const std::string& tag) {
+    auto entity = m_monkey->Get<Entity>(tag);
+    m_engine->Remove(entity);
+}
+
+std::vector<float> campos(const std::string& camId) {
+    glm::vec3 pos = m_monkey->Get<Camera>(camId)->GetPosition();
+    return {pos.x, pos.y, pos.z};
+}
 //void addLine(const std::string& tag, pybind11::object& o) {
 //    auto entity = m_monkey->Get<Entity>(tag);
 //    auto* t = dynamic_cast<TextView*>(entity);

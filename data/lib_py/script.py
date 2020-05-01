@@ -1,11 +1,12 @@
 # a script is a graph whose nodes are actions
 
 class Script:
-    def __init__(self, id : str = None):
+    def __init__(self, id : str = None, loop: int = None):
         self.id = id
         self.actions = []
         self.edges = []
         self.map = {}        
+        self.loop = loop
     # add an action
     def addAction (self, action, id = None, after = None):
         iid = len(self.actions)

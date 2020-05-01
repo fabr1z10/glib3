@@ -38,13 +38,6 @@ std::shared_ptr<Activity> ChangeRoomActFactory::Create(luabridge::LuaRef &ref) {
 
 
 
-std::shared_ptr<Activity> RepeatActFactory::Create(luabridge::LuaRef &ref) {
-    LuaTable table(ref);
-    luabridge::LuaRef fref = table.Get<luabridge::LuaRef>("func");
-    float interval = table.Get<float>("interval");
-    return std::make_shared<Repeat>(fref, interval);
-};
-
 
 std::shared_ptr<Activity> ScrollActFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);

@@ -1,13 +1,16 @@
 import lib_py.script as script
 import lib_py.engine as engine
 import example
+import random
 
 class Animate:
-    def __init__(self, anim: str, id = None, tag = None):
+    def __init__(self, anim: str, id = None, tag = None, fwd: bool = True, sync: bool = False):
         self.type = 'action.animate'
         self.id = id
         self.tag = tag
         self.anim = anim
+        self.fwd = fwd
+        self.sync = sync
 
 
 class RunScript:
@@ -54,6 +57,12 @@ class Delay:
         self.type = 'action.delay'
         self.sec = sec
 
+class DelayRandom:
+    def __init__(self, min: float, max: float):
+        self.type = 'action.delaydynamic'
+        self.func = lambda : random.uniform(min, max)
+
+
 class MoveAccelerated:
     def __init__(self, v0, a, yStop, id = None, tag = None):
         self.type = 'action.moveaccelerated'
@@ -64,15 +73,29 @@ class MoveAccelerated:
         self.yStop = yStop
 
 
-class RemoveEntity(CallFunc):
+class AddEntity(CallFunc):
     @staticmethod
-    def pippo(id):
+    def pippo(entity, parent):
         def f():
-            example.remove(id)
+            m : example.Wrap1 = example.get(parent)
+            m.add (entity)
         return f
 
-    def __init__(self, id : int):
-        super().__init__(f = RemoveEntity.pippo(id))
+    def __init__(self, entity, parent = 'main'):
+        super().__init__(f = AddEntity.pippo(entity, parent))
+
+class RemoveEntity(CallFunc):
+    @staticmethod
+    def pippo(id = None, tag = None):
+        def f():
+            if id is not None:
+                example.remove(id)
+            else:
+                example.removeByTag(tag)
+        return f
+
+    def __init__(self, id : int = None, tag: str = None):
+        super().__init__(f = RemoveEntity.pippo(id, tag))
 
 
 class ChangeCamBounds():

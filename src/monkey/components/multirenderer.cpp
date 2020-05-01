@@ -27,6 +27,18 @@ void MultiRenderer::Draw(Shader * shader) {
     }
 }
 
+
+void MultiRenderer::setVisible(int id) {
+    m_models[id].first = true;
+
+}
+
+void MultiRenderer::clearVisible() {
+    for (auto& m : m_models) {
+        m.first = false;
+    }
+}
+
 void MultiRenderer::SetModel(std::shared_ptr<IModel> model) {
     //m_model = std::dy/m_baseModel = model.get();
 }

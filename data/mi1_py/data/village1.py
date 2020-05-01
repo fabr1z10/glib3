@@ -33,9 +33,9 @@ State.addItem(
         walkto = var.village1_door_pos,
         dir = 'n',
         actions = {
-            'open': ssc.openDoor (doorId='village1.door', var='door.village.scummbar'),
-            'close': ssc.closeDoor (doorId='village1.door', var = 'door.village.scummbar'),
-            'walkto': ssc.walkDoor (var='door.village.scummbar', room='scummbar', pos = var.scummbar_door_pos, dir='e')
+            'open': ssc.openDoor (doorId='village1.door', var='village_scummbar'),
+            'close': ssc.closeDoor (doorId='village1.door', var = 'village_scummbar'),
+            'walkto': ssc.walkDoor (var='village_scummbar', room='scummbar', pos = var.scummbar_door_pos, dir='e')
         }
     )
 )

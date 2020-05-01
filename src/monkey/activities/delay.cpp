@@ -20,12 +20,16 @@ void DelayTime::Run(float dt) {
     }
 }
 
-DelayTimeDynamic::DelayTimeDynamic(const LuaTable & t) : Activity(), m_func(t.Get<luabridge::LuaRef>("func")) {
+DelayTimeDynamic::DelayTimeDynamic(const LuaTable & t) : Activity() {
 
 }
 
+DelayTimeDynamic::DelayTimeDynamic(const ITable & t) : Activity() {
+    m_func = t.get<pybind11::function>("func");
+}
+
 void DelayTimeDynamic::Start()  {
-    m_time = m_func();
+    m_time = m_func().cast<float>();
     m_elapsed = 0.0f;
 }
 

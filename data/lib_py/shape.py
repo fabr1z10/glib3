@@ -39,10 +39,11 @@ class Ellipse(Shape):
 
 
 class Polygon(Shape):
-    def __init__(self, outline : list, offset = [0, 0]):
+    def __init__(self, outline : list, offset = [0, 0], holes: list = None):
         self.type='shape.poly'
         super().__init__(offset)
         self.outline = outline
+        self.holes = holes
         
 class Graph(Shape):
     def __init__(self, nodes : list, edges: list, offset = [0, 0]):

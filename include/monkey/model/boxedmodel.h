@@ -21,6 +21,9 @@ public:
     void AddAttackData (const std::string& anim, int frame, std::shared_ptr<Shape> attack);
     std::shared_ptr<Shape> getShape (const std::string&, int);
     std::shared_ptr<Shape> getShapeCast (const std::string&, int);
+    std::shared_ptr<Shape> shape(int);
+    int getShapeId (const std::string&, int);
+    int getShapeCastId (const std::string&, int);
     void generateDebugMesh ();
     std::shared_ptr<IMesh> GetCollisionMesh();
     Bounds GetMaxBounds() const;

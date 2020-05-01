@@ -173,6 +173,29 @@ Bounds BoxedModel::GetAnimBounds(const std::string & name) const {
 //    m_boxInfo.at(std::make_pair(anim, frame)).m_attackShape = attack;
 //}
 
+int BoxedModel::getShapeId(const std::string & anim, int frame) {
+    auto key = std::make_pair(anim, frame);
+    auto box = m_boxInfo.find(key);
+    if (box == m_boxInfo.end()) {
+        return -1;
+    }
+    return box->second;
+}
+
+std::shared_ptr<Shape> BoxedModel::shape(int id) {
+    return m_shapes[id];
+}
+
+int BoxedModel::getShapeCastId(const std::string & anim, int frame) {
+    auto key = std::make_pair(anim, frame);
+    auto box = m_shapeCast.find(key);
+    if (box == m_shapeCast.end()) {
+        return -1;
+    }
+    return box->second;
+
+}
+
 std::shared_ptr<Shape> BoxedModel::getShape(const std::string & anim, int frame) {
     auto key = std::make_pair(anim, frame);
     auto box = m_boxInfo.find(key);
