@@ -17,6 +17,25 @@ Polygon::Polygon(const std::vector<glm::vec2> &p) : m_points{p} {
 
 }
 
+Polygon::Polygon(const ITable & t) : Shape(t) {
+    std::vector<float> outline = t.get<std::vector<float> >("outline");
+    
+    for (size_t i = 0; i < outline.size(); i = i + 2)
+        m_points.push_back(glm::vec2(outline[i], outline[i + 1]));
+    
+    m_bounds.min = glm::vec3(m_points[0], 0.0f);
+    m_bounds.max = glm::vec3(m_points[0], 0.0f);
+    for (int i = 1; i < m_points.size(); ++i) {
+        m_bounds.min.x = std::min(m_bounds.min.x, m_points[i].x);
+        m_bounds.min.y = std::min(m_bounds.min.y, m_points[i].y);
+        m_bounds.max.x = std::max(m_bounds.max.x, m_points[i].x);
+        m_bounds.max.y = std::max(m_bounds.max.y, m_points[i].y);
+    }
+
+}
+
+
+
 
 bool Polygon::isVertexConcave(int i) const {
     int n = m_points.size();

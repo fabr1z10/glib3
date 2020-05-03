@@ -18,7 +18,7 @@ public:
     void move(float dx, float dy, float dz);
     int id() const;
     void setEntity(Entity* e);
-    void setColor (std::vector<float>& l);
+    void setColor (std::vector<float>& mult, std::vector<float>& add);
     void setText (const std::string&);
     void setModel (const std::string&, const std::string& animId);
     void appendText (pybind11::object);

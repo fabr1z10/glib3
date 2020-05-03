@@ -40,6 +40,8 @@
 #include <monkey/activities/move.h>
 #include <monkey/activities/cambounds.h>
 #include <monkey/states/walk25.h>
+#include <monkey/states/walk3d.h>
+
 #include <monkey/components/controller25.h>
 #include <monkey/math/ellipse.h>
 #include <monkey/states/hit25.h>
@@ -170,6 +172,7 @@ SceneFactory::SceneFactory() {
     add2<NullState> ("state.null");
     add2<SimpleState> ("state.simple");
     add2<Walk25> ("state.walk25");
+    add2<Walk3D> ("state.walk3d");
     add2<FoeWalk25> ("state.foewalk25");
     add2<Hit25> ("state.hit25");
     add2<IsHit25> ("state.ishit25");
@@ -214,13 +217,15 @@ SceneFactory::SceneFactory() {
     // shapes
     add<Poly> ("poly");
     add2<Poly> ("shape.poly");
+    add2<Polygon>("shape.polygon");
     add<Rect> ("rect");
     add2<Rect> ("rect");
     add2<Line> ("line");
     add<PolyLine> ("graph");
     add2<PolyLine> ("shape.graph");
     add2<Ellipse> ("shape.ellipse");
-
+    add2<Circle> ("shape.circle");
+    
     // fill
     add2<SolidFill>("fill.solid");
     add2<LinearGradient>("fill.lineargradient");

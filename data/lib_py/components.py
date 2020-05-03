@@ -46,6 +46,15 @@ class ShapeGfxColor:
         self.shape = shape
         self.fill = fill
 
+class ShapeGfxOutline:
+    def __init__(self, shape, color, z:float=0):
+        self.type ='components.gfx'
+        self.cls = 4
+        self.shape = shape
+        self.color = color
+        self.z =z
+
+
 class Parallax:
     def __init__(self, cam: str, factor: float):
         self.type = 'components.parallax'
@@ -139,6 +148,12 @@ class SimpleState (State):
         self.type = 'state.simple'
         self.anim = anim
 
+class Walk3D (State):
+    def __init__(self, id: str, acceleration: float):
+        super().__init__(id)
+        self.type = 'state.walk3d'
+        self.acceleration = acceleration
+        
 class Walk25 (State):
     def __init__(self, id: str, speed: float, acceleration: float, flipHorizontal: bool, jumpvelocity: float):
         super().__init__(id)

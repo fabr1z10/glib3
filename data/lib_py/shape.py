@@ -30,6 +30,12 @@ class Rect(Shape):
         self.width = width
         self.height = height
 
+class Circle(Shape):
+    def __init__(self, radius: float, offset = [0, 0]):
+        super().__init__(offset)
+        self.type = 'shape.circle'
+        self.radius = radius
+
 class Ellipse(Shape):
     def __init__(self, width : float, height : float, offset = [0, 0]):
         super().__init__(offset)
@@ -44,7 +50,13 @@ class Polygon(Shape):
         super().__init__(offset)
         self.outline = outline
         self.holes = holes
-        
+
+class PolygonSimple(Shape):
+    def __init__(self, outline : list, offset = [0, 0], holes: list = None):
+        self.type='shape.polygon'
+        super().__init__(offset)
+        self.outline = outline
+
 class Graph(Shape):
     def __init__(self, nodes : list, edges: list, offset = [0, 0]):
         self.type='shape.graph'

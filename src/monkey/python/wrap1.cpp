@@ -52,10 +52,12 @@ void Wrap1::move(float dx, float dy, float dz) {
     m_entity->MoveOrigin(glm::vec3(dx, dy, dz));
 }
 
-void Wrap1::setColor(std::vector<float> &l) {
+void Wrap1::setColor(std::vector<float> & mult, std::vector<float>& add) {
     if (m_entity) {
         m_entity->GetComponent<Renderer>()->setMultColor(
-                glm::vec4(l[0] / 255.0f, l[1] / 255.0f, l[2] / 255.0f, l[3] / 255.0f));
+                glm::vec4(mult[0] / 255.0f, mult[1] / 255.0f, mult[2] / 255.0f, mult[3] / 255.0f));
+        m_entity->GetComponent<Renderer>()->setAddColor(
+                                                        glm::vec4(add[0] / 255.0f, add[1] / 255.0f, add[2] / 255.0f, add[3] / 255.0f));
     }
 }
 

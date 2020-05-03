@@ -8,6 +8,7 @@ public:
         m_bounds.min = offset - glm::vec3(m_radius, m_radius, 1.0f);
         m_bounds.max = offset + glm::vec3(m_radius, m_radius, 1.0f);
     }
+    Circle(const ITable&);
     bool isPointInside(glm::vec3) const override;
     void accept (AcyclicVisitor& v) override;
     float GetRadius () const;

@@ -1,6 +1,13 @@
 #include <monkey/math/circle.h>
 #include <monkey/error.h>
 
+Circle::Circle(const ITable& t) : Shape(t) {
+    m_radius = t.get<float>("radius");
+    m_bounds.min = m_offset - glm::vec3(m_radius, m_radius, 1.0f);
+    m_bounds.max = m_offset + glm::vec3(m_radius, m_radius, 1.0f);
+
+}
+
 bool Circle::isPointInside(glm::vec3 P) const {
     glm::vec2 rp = P - m_offset;
     return (rp.x * rp.x + rp.y * rp.y <= m_radius * m_radius);

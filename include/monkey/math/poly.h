@@ -11,6 +11,7 @@ class Entity;
 class Polygon : public Shape {
 public:
     Polygon (const std::vector<glm::vec2>& p);
+    Polygon(const ITable&);
     bool isPointInside (glm::vec3 P) const override;
     // tests if segment AB is within the polygon
     bool isInLineOfSight(glm::vec2 A, glm::vec2 B);
