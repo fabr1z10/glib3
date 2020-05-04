@@ -3,6 +3,7 @@
 #include <iostream>
 #include <monkey/math/geomalgo.h>
 #include <monkey/math/box.h>
+#include <monkey/math/triangle.h>
 #include <monkey/math/polytri.h>
 
 Intersector::Intersector() {
@@ -20,6 +21,7 @@ Intersector::Intersector() {
     m_func[std::make_pair(std::type_index(typeid(Line)), std::type_index(typeid(Rect)))] = convexPolyIntersector;
     m_func[std::make_pair(std::type_index(typeid(Polygon)), std::type_index(typeid(Rect)))] = convexPolyIntersector;
     m_func[std::make_pair(std::type_index(typeid(Line)), std::type_index(typeid(Polygon)))] = convexPolyIntersector;
+    m_func[std::make_pair(std::type_index(typeid(Rect)), std::type_index(typeid(Triangle)))] = convexPolyIntersector;
 
     
     // extended SAT for circle
@@ -37,9 +39,9 @@ Intersector::Intersector() {
     m_func[std::make_pair(std::type_index(typeid(CompoundShape)), std::type_index(typeid(Circle)))] = compoundIntersector;
 
     // tessellated poly
-    m_func[std::make_pair(std::type_index(typeid(PolyTri)), std::type_index(typeid(Rect)))] = multiSAT;
-    m_func[std::make_pair(std::type_index(typeid(PolyTri)), std::type_index(typeid(Line)))] = multiSAT;
-    m_func[std::make_pair(std::type_index(typeid(PolyTri)), std::type_index(typeid(Polygon)))] = multiSAT;
+    m_func[std::make_pair(std::type_index(typeid(PolyTri)), std::type_index(typeid(Rect)))] = compoundIntersector;
+    m_func[std::make_pair(std::type_index(typeid(PolyTri)), std::type_index(typeid(Line)))] = compoundIntersector;
+    m_func[std::make_pair(std::type_index(typeid(PolyTri)), std::type_index(typeid(Polygon)))] = compoundIntersector;
     // add here tess vs circle, and tess vs tess
     
     m_func[std::make_pair(std::type_index(typeid(Box)), std::type_index(typeid(Box)))] = boxIntersector;

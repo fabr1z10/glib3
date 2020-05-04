@@ -20,6 +20,6 @@ public:
 private:
     std::vector<glm::vec2> m_points;
     std::vector<glm::vec2> m_edges;
-    
+    void computeBounds();
     
 };

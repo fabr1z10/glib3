@@ -1,19 +1,18 @@
 #pragma once
 
-#include <monkey/math/shape.h>
+#include <monkey/math/compound.h>
 
-class PolyTri : public Shape {
+// Tessellated holes. At the moment holes not included, but TODO add holes
+// The polygon is triangulated
+class PolyTri : public CompoundShape {
 public:
     PolyTri(const ITable&);
-    bool isPointInside (glm::vec3) const override;
-    void accept (AcyclicVisitor& v) override;
     std::string toString() const override;
+    std::vector<glm::vec2> getPoints() override;
 
-    std::vector<glm::vec2> getEdges() override;
-
+    void accept (AcyclicVisitor& v) override;
 private:
-    std::vector <glm::vec2> m_points;
-    std::vector <glm::vec2> m_edges;
-    std::vector <uint32_t> m_tri;
+    std::vector<glm::vec2> m_points;
+    std::vector<uint32_t> m_tri;
 };
 

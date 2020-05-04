@@ -185,6 +185,23 @@ void MeshFactory::visit(Polygon& p) {
     m_mesh = mesh;
 }
 
+void MeshFactory::visit(PolyTri& p) {
+    std::vector<VertexColor> vertices ;
+    std::vector<unsigned int> indices;
+    const auto& points = p.getPoints();
+    int i = 0;
+    for (const auto& point : points) {
+        vertices.push_back({point.x, point.y, m_z, 1.0, 1.0, 1.0, 1.0});
+        indices.push_back(i++);
+    }
+    indices.push_back(0);
+    auto mesh = std::make_shared<Mesh<VertexColor>>(COLOR_SHADER);
+    mesh->Init(vertices, indices);
+    mesh->m_primitive = GL_LINE_LOOP;
+    m_mesh = mesh;
+
+}
+
 void MeshFactory::visit(Circle& c) {
     // number of points
     int n = 20;

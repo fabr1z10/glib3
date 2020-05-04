@@ -5,7 +5,7 @@ import lib_py.engine as engine
 
 from lib_py.entity import Entity
 from lib_py.components import ShapeGfxOutline, StateMachine, Walk3D, KeyInput, Collider
-from lib_py.shape import Rect, Line, PolygonSimple, Circle
+from lib_py.shape import Rect, Line, PolygonSimple, PolygonTri, Circle
 
 import physics.vars as var
 
@@ -40,6 +40,7 @@ def builder():
     r.add (s(10,80,Line(A=[0,0],B=[50,25])), 'main')
     r.add (s(30,130,PolygonSimple(outline=[0, 0, 10, 0, 5, 20])), 'main')
     r.add (s(150,30,Circle(20)), 'main')
+    r.add (s(190,20,PolygonTri(outline=[0,0,10,10,10,20,20,20,20,0,30,0,30,40,20,40,20,30,0,30])), 'main')
     #r.add (s(-150,80,Line(A=[0,0],B=[50,25])), 'main')
     return r
 

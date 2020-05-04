@@ -57,6 +57,13 @@ class PolygonSimple(Shape):
         super().__init__(offset)
         self.outline = outline
 
+class PolygonTri(Shape):
+    def __init__(self, outline : list, offset = [0, 0]):
+        self.type='shape.polygontri'
+        super().__init__(offset)
+        self.outline = outline
+
+
 class Graph(Shape):
     def __init__(self, nodes : list, edges: list, offset = [0, 0]):
         self.type='shape.graph'

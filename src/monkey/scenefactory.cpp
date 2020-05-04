@@ -51,6 +51,7 @@
 #include <monkey/fill.h>
 #include <monkey/activities/repeat.h>
 #include <monkey/components/shadow.h>
+#include <monkey/math/polytri.h>
 
 namespace py = pybind11;
 
@@ -218,6 +219,7 @@ SceneFactory::SceneFactory() {
     add<Poly> ("poly");
     add2<Poly> ("shape.poly");
     add2<Polygon>("shape.polygon");
+    add2<PolyTri>("shape.polygontri");
     add<Rect> ("rect");
     add2<Rect> ("rect");
     add2<Line> ("line");

@@ -28,9 +28,11 @@ std::string CompoundShape::toString() const {
 glm::vec2 CompoundShape::project(const glm::vec2 axis, const glm::mat4& worldTransform) {
     return glm::vec2(0.0f);
 }
+
 std::vector<glm::vec2> CompoundShape::getPoints() {
     return std::vector<glm::vec2>();
 }
+
 std::vector<glm::vec2> CompoundShape::getEdges(){
     return std::vector<glm::vec2>();
 }

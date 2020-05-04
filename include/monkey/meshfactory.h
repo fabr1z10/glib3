@@ -10,6 +10,7 @@
 #include <monkey/math/compound.h>
 #include <monkey/math/plane3d.h>
 #include <monkey/math/box.h>
+#include <monkey/math/polytri.h>
 #include <monkey/fill.h>
 #include <memory>
 
@@ -21,6 +22,7 @@ class MeshFactory :
     public Visitor<Polygon>,
     public Visitor<Poly>,
     public Visitor<PolyLine>,
+    public Visitor<PolyTri>,
     public Visitor<Circle>,
     public Visitor<Ellipse>,
     public Visitor<CompoundShape>,
@@ -38,6 +40,7 @@ public:
     void visit(Polygon&) override;
     void visit(Poly&) override;
     void visit(PolyLine&) override;
+    void visit(PolyTri&) override;
     void visit(Circle&) override;
     void visit(Ellipse&) override;
     void visit(CompoundShape&) override;
