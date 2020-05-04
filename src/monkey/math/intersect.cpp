@@ -3,6 +3,7 @@
 #include <iostream>
 #include <monkey/math/geomalgo.h>
 #include <monkey/math/box.h>
+#include <monkey/math/polytri.h>
 
 Intersector::Intersector() {
     auto convexPolyIntersector = std::make_shared<ConvexPolygonIntersectionFunction>();
@@ -10,6 +11,7 @@ Intersector::Intersector() {
     auto circleCircleIntersector = std::make_shared<CircleCircleIntersectionFunction>();
     auto compoundIntersector = std::make_shared<CompoundIntersectionFunction>(this);
     auto boxIntersector = std::make_shared<BoxVsBox>();
+    auto multiSAT = std::make_shared<MultiSAT>();
 
     // SAT
     m_func[std::make_pair(std::type_index(typeid(Rect)), std::type_index(typeid(Rect)))] = convexPolyIntersector;
@@ -19,6 +21,7 @@ Intersector::Intersector() {
     m_func[std::make_pair(std::type_index(typeid(Polygon)), std::type_index(typeid(Rect)))] = convexPolyIntersector;
     m_func[std::make_pair(std::type_index(typeid(Line)), std::type_index(typeid(Polygon)))] = convexPolyIntersector;
 
+    
     // extended SAT for circle
     m_func[std::make_pair(std::type_index(typeid(Circle)), std::type_index(typeid(Rect)))] = convexCirclePolyIntersector;
     m_func[std::make_pair(std::type_index(typeid(Circle)), std::type_index(typeid(Line)))] = convexCirclePolyIntersector;
@@ -33,6 +36,12 @@ Intersector::Intersector() {
     m_func[std::make_pair(std::type_index(typeid(CompoundShape)), std::type_index(typeid(Polygon)))] = compoundIntersector;
     m_func[std::make_pair(std::type_index(typeid(CompoundShape)), std::type_index(typeid(Circle)))] = compoundIntersector;
 
+    // tessellated poly
+    m_func[std::make_pair(std::type_index(typeid(PolyTri)), std::type_index(typeid(Rect)))] = multiSAT;
+    m_func[std::make_pair(std::type_index(typeid(PolyTri)), std::type_index(typeid(Line)))] = multiSAT;
+    m_func[std::make_pair(std::type_index(typeid(PolyTri)), std::type_index(typeid(Polygon)))] = multiSAT;
+    // add here tess vs circle, and tess vs tess
+    
     m_func[std::make_pair(std::type_index(typeid(Box)), std::type_index(typeid(Box)))] = boxIntersector;
 
 }
@@ -142,4 +151,35 @@ CollisionReport BoxVsBox::operator()(Shape *s1, Shape *s2, const glm::mat4 &t1, 
     CollisionReport report;
     report.collide =true;
     return report;
+}
+
+// this is used for checking collision between a tessellated polygon and a convex shape
+// like rect, line, or convex poly. There's a different routine for tessellated vs circle
+// and tessellated vs tessellated
+CollisionReport MultiSAT::operator()(Shape *s1, Shape *s2, const glm::mat4 &t1, const glm::mat4 &t2) {
+    // the first element is a tessellated polygon.
+    // Run a intersection for every triangle in it
+    PolyTri* cs = static_cast<PolyTri*>(s1);
+    auto e1 = s1->getEdges();
+    auto e2 = s2->getEdges();
+    int ntri = e1.size() / 3;
+    std::vector<glm::vec2> s2edges;
+    for (auto& e : e2) {
+        s2edges.push_back(glm::normalize(glm::vec2(t2 * glm::vec4(-e.y, e.x, 0.0f, 0.0f))));
+    }
+    for (int i = 0; i < ntri; ++i) {
+        int k = 3 * i;
+        std::unordered_set<glm::vec2> axes;
+        axes.insert (glm::normalize(glm::vec2(t1 * glm::vec4(-e1[k].y, e1[k].x, 0.0f, 0.0f))));
+        axes.insert (glm::normalize(glm::vec2(t1 * glm::vec4(-e1[k+1].y, e1[k+1].x, 0.0f, 0.0f))));
+        axes.insert (glm::normalize(glm::vec2(t1 * glm::vec4(-e1[k+2].y, e1[k+2].x, 0.0f, 0.0f))));
+        // now add edges of other shape
+        for (const auto& s2e : s2edges)
+            axes.insert(s2e);
+        auto report = SAT(axes, s1, s2, t1,t2);
+        if (report.collide)
+            return report;
+    }
+    return CollisionReport();
+    
 }

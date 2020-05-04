@@ -57,5 +57,8 @@ class BoxVsBox : public IntersectionFunction{
     CollisionReport operator() (Shape* s1, Shape* s2, const glm::mat4& t1, const glm::mat4& t2) override;
 };
 
+class MultiSAT : public IntersectionFunction{
+    CollisionReport operator() (Shape* s1, Shape* s2, const glm::mat4& t1, const glm::mat4& t2) override;
+};
 
 CollisionReport LineVsLine(Line*, Line*, glm::mat4&, glm::mat4&);
