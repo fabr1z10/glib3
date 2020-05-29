@@ -2,6 +2,7 @@
 
 #include <monkey/components/icollider.h>
 #include <monkey/components/skeletalanimator.h>
+#include <monkey/components/multirenderer.h>
 #include <monkey/model/skeletalmodel.h>
 
 class IAnimator;
@@ -27,6 +28,7 @@ class Renderer;
 class SkeletalCollider : public ICollider {
 public:
     SkeletalCollider(int flag, int mask, int tag) : ICollider(), m_flag(flag), m_mask(mask), m_tag(tag) {}
+    SkeletalCollider (const ITable&);
     SkeletalCollider(const SkeletalCollider&);
     std::shared_ptr<Component> clone() const override;
     void Start() override;
@@ -36,8 +38,9 @@ public:
     int GetCollisionFlag() const override;
     int GetCollisionMask() const override;
     Shape* GetShape() override;
-    void setAttack(int mask, int tag);
+    // void setAttack(int mask, int tag);
     Bounds getAttackBounds() const override;
+    void onAnimChange(IAnimator*);
 private:
     Bounds GetStaticBoundsI() const override;
     Bounds GetDynamicBoundsI() const override;
@@ -46,9 +49,12 @@ private:
     int m_flag;
     int m_mask;
     int m_tag;
-    int m_attackTag;
-    int m_attackMask;
+    int m_castTag;
+    int m_castMask;
     std::unordered_map<std::string, CollisionTriplet> m_animTriplets;
+    Entity* m_shapeEntity;
+    MultiRenderer* m_colliderRenderer;
+
 };
 
 

@@ -20,7 +20,9 @@ Entity::Entity(const ITable& t) : Ref(t),
     m_localTransform{glm::mat4(1.0)}, m_worldTransform{glm::mat4(1.0)}, m_parent(nullptr), m_flipHorizontal{false},
     m_enableControls{true}, m_update{true}
 {
+
     auto pos = t.get<glm::vec3>("pos", glm::vec3(0.0f));
+    std::cerr << m_tag << " .... " << pos.x << "\n";
     if (t.hasKey("angle")) {
         auto angle = t.get<float>("angle", 0.0f);
         SetPosition(pos, deg2rad* angle);

@@ -361,14 +361,16 @@ ShapeCastHit CollisionEngine::ShapeCast (std::shared_ptr<Shape> shape, const glm
                         continue;
                     }
                     Shape* s = c->GetShape();
-                    auto& t = c->GetObject()->GetWorldTransform();
+                    if (s != nullptr) {
+                        auto &t = c->GetObject()->GetWorldTransform();
 
-                    // bounding boxes intersect, so let's make a proper collision test
-                    CollisionReport report = m_intersector->Intersect(shape.get(), transform, s, t);
-                    if (report.collide) {
-                        result.report = report;
-                        result.entity = c;
-                        return result;
+                        // bounding boxes intersect, so let's make a proper collision test
+                        CollisionReport report = m_intersector->Intersect(shape.get(), transform, s, t);
+                        if (report.collide) {
+                            result.report = report;
+                            result.entity = c;
+                            return result;
+                        }
                     }
                 }
             }

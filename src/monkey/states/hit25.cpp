@@ -30,8 +30,13 @@ void Hit25::Run(double dt) {
 }
 
 
-void Hit25::Init(pybind11::dict&) {
-    m_animator->SetAnimation(m_anim);
+void Hit25::Init(pybind11::dict& d) {
+    std::string anim = m_anim;
+    if (!d.empty()) {
+        anim = d["anim"].cast<std::string>();
+    }
+    m_animator->SetAnimation(anim);
+
 }
 
 

@@ -15,6 +15,8 @@ public:
     void setVy(float);
     float getVx() const;
     void setVx(float);
+    float getScale() const;
+    void setScale(float);
     void move(float dx, float dy, float dz);
     int id() const;
     void setEntity(Entity* e);
@@ -30,6 +32,7 @@ public:
     void enableControls(bool);
     pybind11::object getParent();
     pybind11::object getInfo ();
+    pybind11::list getAttackPos();
     static pybind11::object create(Entity*);
 private:
     int g;

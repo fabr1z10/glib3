@@ -26,8 +26,8 @@ void Animator::Start() {
     if (!anim.empty()) {
         SetAnimation(anim);
     }
-
 }
+
 void Animator::Update(double dt) {
     m_time += dt;
     float frameDuration = m_animInfo->frameInfo[m_frame].duration;
@@ -35,7 +35,7 @@ void Animator::Update(double dt) {
         int oldFrame = m_frame;
         m_frame += m_inc;
         if (m_frame >= m_animInfo->frameCount) {
-            m_frame = m_animInfo->loop ? 0 : m_animInfo->frameCount - 1;
+            m_frame = m_animInfo->loop ? m_animInfo->loopFrame : m_animInfo->frameCount - 1;
             m_animCompleted = true;
         } else if (m_frame < 0) {
             m_frame = m_animInfo->loop ? m_animInfo->frameCount - 1 : 0;

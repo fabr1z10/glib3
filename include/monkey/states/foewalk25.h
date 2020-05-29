@@ -43,5 +43,6 @@ protected:
     float m_delta;
     float m_sdelta;
     ICollisionEngine *m_collision;
-
+    std::vector<std::string> m_attacks;
+    size_t m_attackCount;
 };

@@ -10,6 +10,8 @@ public:
     BoxedModel(const ITable& t);
     void addShape (std::shared_ptr<Shape>);
     void setAnimShape (const std::string& anim, int shapeId);
+    void setFrameShape (const std::string& anim, int frame, int shapeId);
+
     void setShape (const std::string& anim, int frame, int shapeId);
     void setShapeCast (const std::string& anim, int frame, int shapeId);
 

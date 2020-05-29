@@ -64,29 +64,35 @@ SpriteModel::SpriteModel (const ITable& t) : IModel() {
 
     };
 
+    // this is the routine which is used if you specify the frames using the frames desc
     auto rf = [&] (PyDict& d, AnimInfo& ai) {
-        auto frames = d.get<py::list>("frames_desc");
+
+        // EACH FRAME has
+        // quads (mandatory)
+        // shape (a collision shape -> if not, the anim shape is assigned, if any)
+        // cast shape
+        auto frames = d.get<py::list>("elements");
         for (auto frame : frames) {
             PyDict a(frame.cast<py::dict>());
             FrameInfo frameInfo;
-            frameInfo.duration = a.get<float>("time");
+            frameInfo.duration = a.get<float>("ticks") * (1.0f/60.0f);
+            frameInfo.flipx = a.get<bool>("flipx", false);
             frameInfo.angle = a.get<float>("angle", 0.0f);
             frameInfo.offset = 6 * quadCount;
             frameInfo.move = true;
             frameInfo.origin = glm::vec2(0.0f);
             frameInfo.translation = a.get<glm::vec2>("pos", glm::vec2(0.0f));
             int fq=0;
-            a.foreach<py::list>("quads_pc", [&] (const py::list& l) {
+            a.foreach<py::list>("quads", [&] (const py::list& l) {
                 auto p = l.cast<std::vector<int>>();
-                p[0] *= texWidth;
-                p[1] *= texHeight;
-                p[2] *= texWidth;
-                p[3] *= texHeight;
+                //p[0] *= texWidth;
+                //p[1] *= texHeight;
+                // p[2] *= texWidth;
+                //p[3] *= texHeight;
                 addQuad(p);
                 quadCount++;
                 fq++;
             });
-            frameInfo.flipx = false;
             frameInfo.count = 6 * fq;
             ai.frameInfo.push_back(frameInfo);
 
@@ -105,8 +111,9 @@ SpriteModel::SpriteModel (const ITable& t) : IModel() {
         }
         PyDict animData(anim.second.cast<py::dict>());
         animInfo.loop = animData.get<bool>("loop", true);
+        animInfo.loopFrame = animData.get<int>("loop_frame", 0);
 
-        if (animData.hasKey("frames_desc")) {
+        if (animData.hasKey("elements")) {
             rf (animData, animInfo);
         } else {
 

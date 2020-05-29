@@ -13,7 +13,7 @@ import example
 
 def change_color(color):
     def f(e : example.Wrap1):
-        e.setColor(color)
+        e.setColor([0,0,0,0], color)
     return f    
 
 def set_verb(verbId):
@@ -35,6 +35,7 @@ def update_current_action():
 
 def hoverOn(obj):
     def f(item):
+        print (obj)
     	#local actionfo = scumm.state.actionInfo
         if not s.Config.item1:
             s.Config.item1 = obj
@@ -94,12 +95,12 @@ class Sprite(entity.Entity):
         super().__init__(tag, pos)
         if not tag:
             self.tag = item
-        if model is not None:
-            self.type = 'sprite'
-        self.model = model
-        self.anim = anim
         if item:
             it : scumm.Item = s.State.items[item]
+            if it.model is not None:
+                self.type = 'sprite'
+                self.model = model if model is not None else it.model
+                self.anim = anim if anim is not None else it.anim
             self.addComponent(compo.HotSpot(
                 shape = sh.Rect(width=it.width, height=it.height, offset = it.offset),
                 priority=it.priority,
@@ -108,11 +109,13 @@ class Sprite(entity.Entity):
                 onclick = sf.run_action))
 
 class Character(Sprite):
-    def __init__(self, model: str, speed:float, dir:str, state:str, text_color : list, text_offset : list = [0, 60], item: str=None, anim: str = None, tag = None, pos = [0,0,0]):
-        super().__init__(model = model, item=item,anim= anim, tag=tag, pos=pos)
-        self.__charcomp = sc.Character(speed=speed,dir=dir,state=state)
+    def __init__(self, model: str = None, item: str = None, tag: str = None, pos = [0, 0, 0]): 
+        #speed:float, dir:str, state:str, text_color : list, text_offset : list = [0, 60], item: str=None, anim: str = None, tag = None, pos = [0,0,0]):
+        super().__init__(model = model, item = item, anim = anim, tag = tag, pos=pos)
+        it = s.State.items[item]
+        self.__charcomp = sc.Character(speed = it.speed, dir= dir, state = state)
         self.addComponent (self.__charcomp)
-        self.addComponent (compo.Info(text_color = text_color, text_offset = text_offset))
+        self.addComponent (compo.Info(text_color = it.text_color, text_offset = it.text_offset))
     def __setattr__(self, name, value):
         if name == 'state':
             self.__charcomp.state = value
@@ -121,6 +124,77 @@ class Character(Sprite):
         else:
             super().__setattr__(name, value)
 
+
+# an item template. This can be used for visible (invisible) items, 
+# with or without hotspot
+class Item:
+    def __init__(self, id: str, text: str = None, model: str = None, 
+        width: float = None, height: float = None, walkto: tuple = (), dir: str = '', 
+        offset = [0,0], priority=1, actions : dict = {}, pos: tuple = (0,0), tag: str = None):
+        self.id = id
+        self.text = text
+        self.width = width
+        self.height  =height
+        self.offset = offset
+        self.walkto = walkto
+        self.dir = dir
+        self.priority = priority
+        self.actions = actions
+        self.model = model
+        self.anim = None
+        self.pos = pos
+        self.tag = tag
+    def create(self, **kwargs):
+        pos = kwargs.get('pos', self.pos)
+        tag = kwargs.get('tag', self.id)
+        anim = kwargs.get('anim', self.anim)
+        e = entity.Entity (tag, pos)
+        if self.model is not None:
+            e.type = 'sprite'
+            e.model = self.model
+            e.anim = anim
+        # check if hotspot is to be added
+        if self.text is not None:
+            if self.width is None or self.height is None:
+                raise('you need to specify width & height for hotspots!')
+            e.addComponent(compo.HotSpot(
+                shape = sh.Rect(width = self.width, height = self.height, offset = self.offset),
+                priority= self.priority,
+                onenter = hoverOn(self.id), 
+                onleave = hoverOff,
+                onclick = sf.run_action))
+        return e
+
+class CharItem(Item):
+    def __init__(self, id: str, text: str = None, model: str = None, 
+        width: float = None, height: float = None, walkto: tuple = (), dir: str = '', 
+        offset = [0,0], priority=1, actions : dict = {}, pos: tuple = (0,0), tag: str = None,
+        speed: float = 0, state: str= None, chardir:str= None, text_color: tuple = (), text_offset: tuple = ()):
+        super().__init__(id, text, model, width, height, walkto, dir, offset, priority, actions, pos, tag)
+        self.speed = speed
+        self.state = state
+        self.chardir = chardir
+        self.text_color = text_color
+        self.text_offset = text_offset
+        #     if State.player == 'guybrush':
+#         e.tag = 'player'
+#         e.addComponent (compo.Follow())
+    def create(self, **kwargs):
+        e = super().create(**kwargs)
+        # add the character stuff
+        charDir = kwargs.get('chardir', self.chardir)
+        state = kwargs.get('state', self.state)
+        print ('char dir = ' + charDir)
+        print ('state = ' + state)
+        print ('type = ' + e.type)
+        e.addComponent (sc.Character(self.speed, charDir, state))
+        e.addComponent (compo.Info(text_color = self.text_color, text_offset = self.text_offset))
+        # check if this is the current player
+        if s.State.player == self.id:
+            e.tag = 'player'
+            e.addComponent (compo.Follow())
+        return e
+  
 # -- create a character
 # scumm.ifac.char = function(args) 
 # 	glib.assert(args.item, 'item!')

@@ -91,45 +91,6 @@ std::shared_ptr<Component> SmartColliderComponentFactory::Create(luabridge::LuaR
     return coll;
 }
 
-std::shared_ptr<Component> SkeletalColliderComponentFactory::Create(luabridge::LuaRef &ref) {
-    LuaTable table(ref);
-    int tag = table.Get<int>("tag");
-    int flag = table.Get<int>("flag");
-    int mask = table.Get<int>("mask");
-
-    float scale = table.Get<float>("scale", 1.0f);
-    glm::ivec2 attack = table.Get<glm::ivec2>("attack", glm::ivec2(-1,-1));
-    auto coll = std::make_shared<SkeletalCollider>(flag, mask, tag);
-    if (attack[0] != -1) {
-        coll->setAttack(attack[0], attack[1]);
-    }
-//    table.ProcessVector("bounds", [coll, scale] (luabridge::LuaRef ref) {
-//
-//        LuaTable t(ref);
-//        std::string anim = t.Get<std::string>("anim");
-//        float x = t.Get<float>("x");
-//        float y = t.Get<float>("y");
-//        float width = t.Get<float>("width");
-//        float height = t.Get<float>("height");
-//        coll->addBound(anim, x, y, width, height, scale);
-//    });
-//    table.ProcessVector("attack", [coll,scale ] (luabridge::LuaRef ref) {
-//
-//        LuaTable t(ref);
-//        std::string anim = t.Get<std::string>("anim");
-//        float time = t.Get<float>("t");
-//        int mask = t.Get<int>("mask");
-//        int tag = t.Get<int>("tag");
-//        float x = t.Get<float>("x");
-//        float y = t.Get<float>("y");
-//        float width = t.Get<float>("width");
-//        float height = t.Get<float>("height");
-//        coll->addAttack(anim, time, x, y, width, height, mask, tag, scale);
-//    });
-    return coll;
-
-}
-
 
 std::shared_ptr<Component> ParallaxComponentFactory::Create(luabridge::LuaRef &ref) {
     LuaTable table(ref);

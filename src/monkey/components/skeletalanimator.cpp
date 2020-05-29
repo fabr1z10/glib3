@@ -32,9 +32,9 @@ void SkeletalAnimator::setModel (std::shared_ptr<IModel> model) {
 void SkeletalAnimator::Start() {
     if (!m_initAnim.empty()) {
         SetAnimation(m_initAnim);
+    } else {
+        SetAnimation(m_model->GetDefaultAnimation());
     }
-    SetAnimation(m_model->GetDefaultAnimation());
-
     //m_ls =m_bones.at("lshin")->GetComponent<Renderer>();
     //m_rs =m_bones.at("rshin")->GetComponent<Renderer>();
 

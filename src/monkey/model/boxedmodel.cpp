@@ -14,14 +14,23 @@ BoxedModel::BoxedModel(const ITable &t) : SpriteModel(t) {
     bool model3d = (thickness > 0.0f);
 
     t.foreach<py::list>("boxes", [&] (py::list p) {
-        float x0 = p[0].cast<float>();
-        float y0 = p[1].cast<float>();
-        float x1 = p[2].cast<float>();
-        float y1 = p[3].cast<float>();
-        float width = x1 - x0;
-        float height = y1 - y0;
-        auto rect = std::make_shared<Rect>(width, height, glm::vec3(x0, y0, 0.0f));
-        this->addShape(rect);
+        std::vector<float> pp = p.cast<std::vector<float>>();
+        std::shared_ptr<Shape> shape;
+        if (pp.size() == 4) {
+            float width = pp[2] - pp[0];
+            float height = pp[3] - pp[1];
+            shape = std::make_shared<Rect>(width, height, glm::vec3(pp[0], pp[1], 0.0f));
+        } else {
+            auto cs = std::make_shared<CompoundShape>();
+            for (int i = 0; i < pp.size(); i+= 4) {
+                float width = pp[i+2] - pp[i];
+                float height = pp[i+3] - pp[i+1];
+                auto rect = std::make_shared<Rect>(width, height, glm::vec3(pp[i], pp[i+1], 0.0f));
+                cs->AddShape(rect);
+            }
+            shape = cs;
+        }
+        this->addShape(shape);
     });
 
     auto anims = t.get<py::dict>("animations");
@@ -34,13 +43,31 @@ BoxedModel::BoxedModel(const ITable &t) : SpriteModel(t) {
             int boxId = animData.get<int>("box");
             this->setAnimShape(animId, boxId);
         }
-        if (animData.hasKey("shapecast")) {
-            auto sc = animData.get<py::list>("shapecast");
-            for (auto p : sc) {
-                auto pp = p.cast<std::vector<int>>();
-                setShapeCast(animId, pp[0], pp[1]);
+
+        if (animData.hasKey("elements")) {
+            auto frames = animData.get<py::list>("elements");
+            int frameId = 0;
+            for (auto frame : frames) {
+                PyDict a(frame.cast<py::dict>());
+                int box = a.get<int>("box", -1);
+                int attack = a.get<int>("attack", -1);
+                if (box != -1) {
+                    this->setFrameShape(animId, frameId, box);
+                }
+                if (attack != -1) {
+                    this->setShapeCast(animId, frameId, attack);
+                }
+                frameId++;
             }
+
         }
+//        if (animData.hasKey("shapecast")) {
+//            auto sc = animData.get<py::list>("shapecast");
+//            for (auto p : sc) {
+//                auto pp = p.cast<std::vector<int>>();
+//                setShapeCast(animId, pp[0], pp[1]);
+//            }
+//        }
     }
 
     // read shape-casts
@@ -133,6 +160,15 @@ void BoxedModel::setAnimShape(const std::string &anim, int shapeId) {
     m_maxBounds.ExpandWith(m_shapes[shapeId]->getBounds());
     m_animBounds[anim] = m_shapes[shapeId]->getBounds();
 }
+
+
+void BoxedModel::setFrameShape(const std::string &anim, int frame, int shapeId) {
+    m_boxInfo[std::make_pair(anim, frame)] = shapeId;
+    m_maxBounds.ExpandWith(m_shapes[shapeId]->getBounds());
+    m_animBounds[anim] = m_shapes[shapeId]->getBounds();
+
+}
+
 
 void BoxedModel::setShape(const std::string &anim, int frame, int shapeId) {
     m_boxInfo[std::make_pair(anim, frame)] = shapeId;

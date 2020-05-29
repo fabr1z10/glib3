@@ -28,6 +28,8 @@ public:
     std::type_index GetType() override;
     void setOffsetY (float, float);
     std::vector<float>& getAngles();
+    //Event<Animator*> onChangeAnimation;
+
     using ParentClass = SkeletalAnimator;
 protected:
     // the current animation

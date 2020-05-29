@@ -9,6 +9,9 @@
 #include <monkey/components/info.h>
 #include <monkey/components/dynamics2d.h>
 #include <monkey/components/icontroller.h>
+#include <py/include/pybind11/pytypes.h>
+
+namespace py = pybind11;
 
 Walk25::Walk25(float speed, float acceleration, bool fliph, bool anim4, float jumpspeed, char dir) : State(), m_speed(speed),
     m_acceleration(acceleration), m_flipHorizontal(fliph), m_velocitySmoothingX(0.0f), m_velocitySmoothingY(0.0f), m_4WayAnim(anim4),
@@ -19,11 +22,20 @@ Walk25::Walk25(const Walk25 &) {
 
 }
 
-Walk25::Walk25(const ITable & t) : State(t), m_velocitySmoothingX(0.0f), m_velocitySmoothingY(0.0f), m_4WayAnim(false) {
+Walk25::Walk25(const ITable & t) : State(t), m_velocitySmoothingX(0.0f), m_velocitySmoothingY(0.0f), m_4WayAnim(false),
+m_airAttack(false) {
     m_speed = t.get<float>("speed");
     m_acceleration = t.get<float> ("acceleration");
     m_flipHorizontal = t.get<bool>("flipH");
     m_jumpVelocity = t.get<float>("jumpvelocity");
+
+
+    // read attack keys and anims
+    t.foreach<py::tuple>("attack", [&] (const py::tuple& t) {
+        auto key = t[0].cast<int>();
+        auto anim = t[1].cast<std::string>();
+        m_attacks.insert(std::make_pair(key, anim));
+    });
 }
 
 std::shared_ptr<State> Walk25::clone() const {
@@ -78,16 +90,28 @@ void Walk25::Run (double dt) {
     bool down = m_input->isKeyDown(GLFW_KEY_DOWN);
     bool kjump = m_input->isKeyDown(GLFW_KEY_LEFT_CONTROL);
 
-    bool attack = m_input->isKeyDown(GLFW_KEY_LEFT_SHIFT);
-    if (attack) {
-        m_sm->SetState("attack");
-        return;
+
+    // check attacks
+    for (const auto& p : m_attacks) {
+        bool attack = m_input->isKeyDown(p.first);
+        if (attack) {
+            if (m_controller->grounded()) {
+                py::dict d;
+                d["anim"]= p.second;
+                m_sm->SetState("attack", d);
+                return;
+            } else {
+                m_airAttack = true;
+                m_currentAttack = p.second;
+            }
+        }
     }
+
     if (kjump && m_controller->grounded() ) {
         m_dynamics->m_velocity.y = m_jumpVelocity;
 
     }
-
+    //std::cout << "vely " << m_dynamics->m_velocity.y<<"\n";
 
     float targetVelocityX = 0.0f;
     float targetVelocityZ = 0.0f;
@@ -110,13 +134,27 @@ void Walk25::Run (double dt) {
     //UpdateAnimation();
     //std::cerr << deltaH.x << " " << deltaH.y << deltaH.z << "\n";
     if (m_controller->grounded()) {
+        m_dynamics->m_velocity.y = 0.0f;
         if (glm::length(glm::vec2(delta.x, delta.z)) > 0.2f) {
             m_animator->SetAnimation("walk");
         } else {
             m_animator->SetAnimation("idle");
         }
     } else {
-        m_animator->SetAnimation("jump");
+        if (m_airAttack) {
+
+            m_animator->SetAnimation(m_currentAttack);
+            if (m_animator->IsComplete()) {
+                m_airAttack = false;
+            }
+        } else {
+            if (m_dynamics->m_velocity.y > 0) {
+                m_animator->SetAnimation("jumpup");
+            } else {
+                m_animator->SetAnimation("jumpdown");
+
+            }
+        }
     }
 }
 

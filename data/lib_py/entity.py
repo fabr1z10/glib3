@@ -18,7 +18,7 @@ class TextAlignment(enum.Enum):
 
 
 class Entity:
-    def __init__(self, tag : str = None, pos: list= [0, 0, 0]):
+    def __init__(self, tag : str = None, pos: tuple = (0,0,0)):
         """
         Parameters
         ----------
@@ -30,7 +30,11 @@ class Entity:
         """
 
         self.type = 'entity'
-        self.pos = pos
+        if len(pos) == 2:
+            self.pos = (pos[0], pos[1], 0)
+        else:
+            self.pos = pos
+        
         self.tag = tag
         self.camera = None
         self.components = []

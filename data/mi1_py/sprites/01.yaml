@@ -344,3 +344,16 @@ cook:
     walk_s:
       frames:
         - [39, 77, 31, 48, 15, 0]
+mancomb.mancomb:
+  sheet: 'gfx/faces.png'
+  type: 'asset.sprite'
+  animations:
+    idle_e:
+      frames:
+        - [80,0,78,78]
+    talk_e:
+      frames:
+        - [80,0,78,78]
+    smile:
+      frames:
+        - [0,0,78,78]

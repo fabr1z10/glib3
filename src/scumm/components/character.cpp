@@ -32,6 +32,9 @@ std::shared_ptr<Component> StateCharacter::clone() const {
 void AnimateCharState::AttachStateMachine(StateMachine * sm) {
     m_state = dynamic_cast<const StateCharacter*>(sm);
     m_animator = sm->GetObject()->GetComponent<IAnimator>();
+    if (m_animator == nullptr) {
+        GLIB_FAIL("Animate char state needs an animator!");
+    }
 }
 
 void AnimateCharState::Init(pybind11::dict&) {

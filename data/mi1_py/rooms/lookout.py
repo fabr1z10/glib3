@@ -35,12 +35,15 @@ def builder():
     r.add (se.WalkArea (tag='walkarea', shape = sh.Polygon (
         outline = [203,51,315,62,315,40,293,40,260,10,260,0,260,-20,234,-20,234,0,234,10,221,26,152,33,152,51]
     ), depth=sh.LinY(y0=0,z0=1,y1=144,z1=0)), 'main')
-    r.add (se.Sprite (model = 'fire', pos = [126, 52, 0]), 'walkarea')
-    r.add (se.Sprite (item = 'lookout.stairs', pos = [230,0,0]), 'main')
-    r.add (se.Character (item='lookout.lookout', model='lookout', speed = 100, dir = 'w', state='idle', text_color=[170, 170, 170, 255], text_offset=[0,60], pos = [114,36,0]), 'walkarea')
+
+    r.addItem(id='lookout.stairs')
+    r.addItem(id='lookout.fire',parent='walkarea')
+    #r.add (se.Sprite (model = 'fire', pos = [126, 52, 0]), 'walkarea')
+    #r.add (se.Sprite (item = 'lookout.stairs', pos = [230,0,0]), 'main')
+    #r.add (se.Character (item='lookout.lookout', model='lookout', speed = 100, dir = 'w', state='idle', text_color=[170, 170, 170, 255], text_offset=[0,60], pos = [114,36,0]), 'walkarea')
     r.addDynamicItems()
 
-    r.init.append(a1)
+    #r.init.append(a1)
     #r.add()
     return r
 

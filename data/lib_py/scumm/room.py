@@ -49,6 +49,27 @@ def makeDialogueButton(dialogueline):
         colorInactive = scumm.Config.Colors.verb_unselected,
         colorActive = scumm.Config.Colors.verb_selected)
 
+class RoomDialogue(room.Room):
+    def __init__(self, id: str):
+        width = engine.device_size[0]
+        uisize = scumm.Config.ui_height
+        height = engine.device_size[1] - uisize
+        super().__init__(id, width, height)
+        self.collide = False
+
+        # add the main node     
+        main = entity.Entity (tag='main')
+        main.camera = cam.OrthoCamera(width, height, width, height, [0, uisize, width, height], tag='maincam')
+
+        # add the dialogue node
+        dialogue_node = entity.TextView(factory=makeDialogueButton, size=[320,56], fontSize=8, lines=6, deltax=26, tag='dialogue')
+        dialogue_node.addComponent(compo.HotSpotManager())
+        self.ref['main'] = main.children
+
+        self.scene.append(main)
+        self.scene.append(dialogue_node)
+        self.engines.append(runner.Scheduler())
+
 
 
 class RoomUI(room.Room):
@@ -121,17 +142,27 @@ class RoomUI(room.Room):
         # create a hotspot manager
         #self.engines.append(runner.HotSpotManager(lmbclick=func.walkto))
         self.engines.append(runner.Scheduler())
+    def addItem(self, id: str, parent: str = 'main', **kwargs):
+        entity = scumm.State.items[id].create(**kwargs)
+        self.add (e = entity, ref =parent)
+
     def addDynamicItems(self):
         roomId = self.id
         if roomId in scumm.State.room_items:
             for key, value in scumm.State.room_items[roomId].items():
                 print ('creating dynamic item = ' + key)
-                # get the fac
-                if key in engine.data['factories']:
-                    print ('found fac')
-                    print(value)
-                    entity = engine.data['factories'][key](**value)
-                    self.add (e=entity, ref=value['parent'])
+                # get the item
+                print(value)
+                entity = scumm.State.items[key].create(**value)
+                print ('focami ' + str(entity.pos[0]))
+                self.add (e = entity, ref = value['parent'])
+                #if key in engine.data['factories']:
+                #    print ('found fac')
+                #    print(value)
+                #    entity = engine.data['factories'][key](**value)
+                #    self.add (e=entity, ref=value['parent'])
+                #else:
+                #    print ('factory not found')
                 # # get a shallow copy of item
                 # item = engine.data['entities'][key]
                 # # apply ajustments

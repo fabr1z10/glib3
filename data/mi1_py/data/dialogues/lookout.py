@@ -1,43 +1,13 @@
-from lib_py.scumm.scumm import State
-from lib_py.scumm.scumm import Item
-from lib_py.scumm.dialogue import Dialogue, NodeStatus
-from lib_py.scumm.dialogue import Line, DialogueNode
+from lib_py.scumm.dialogue import Dialogue, NodeStatus, DialogueNode, Line
 from lib_py.script import Script
-import lib_py.scumm.actions as sa
-import lib_py.scumm.scripts as ssc
+from lib_py.scumm.scumm import State
 import lib_py.engine as engine
 import mi1_py.variables as var
+import lib_py.scumm.actions as sa
 import example
 
 st = engine.data['strings']
 sl = st['dialogues']['lookout']
-
-State.addItem (
-    id = 'lookout.stairs', 
-    item = Item(
-        text = st['objects']['stairs'], 
-        width = 30, 
-        height = 10, 
-        walkto = [250, 0], 
-        dir = 's',
-        actions = {
-            'walkto': ssc.changeRoom(room = 'village1', pos = [8, 71, 0], dir='s')
-        }))
-
-State.addItem (
-    id = 'lookout.lookout', 
-    item = Item(
-        text = st['objects']['lookout'],
-        width = 20, 
-        height = 47, 
-        offset= [-10,0],
-        walkto = [134, 36], 
-        dir = 'w',
-        actions = {
-            'look': ssc.say(lines=[st['dialogues']['lookout'][50]]),
-            'talkto': ssc.startDialogue('lookout')
-        }))
-
 d = Dialogue('lookout')
 
 def f():
@@ -186,24 +156,5 @@ d.addEdge('whoru', 'whyexp')
 d.addEdge('whoru', 'bat')
 d.addEdge('init', 'exit')
 d.addEdge('imguy', 'whatswrong')
-# d.addLine (1, 0, DialogueLine(sl[1], g(1), 1))
-# d.addLine (2, 0, DialogueLine(sl[2], g(2), 1))
-# d.addLine (3, 0, DialogueLine(sl[3], g(3), 1))
-# d.addLine (4, 0, DialogueLine(sl[4], g(4), 1))
-# # I'm Guybrush
-# d.addLine (6, 1, DialogueLine(sl[10], dialogue_helper(sl, ['player', 10, 17], ['lookout.lookout', 18, 19, 20, 21]), 1, deact=[6]))
-# # THREEPWOOD
-# #d.addLine (15, 1, DialogueLine(sl[47],))
-# # what's wrong with GT?
-# d.addLine (11, 1, DialogueLine(sl[22], dialogue_helper(sl, ['player', 22], ['lookout.lookout', 23, 24, 25, 26]), 1, deact = [11], active = False))
-# d.addLine (7, 1, DialogueLine(sl[11], dialogue_helper(sl, ['player', 11], ['lookout.lookout', 41]), True, 1))
-# d.addLine (8, 1, DialogueLine(sl[12], lookoutTurn(12), True, 1))
-# # whoa re YOU
-# d.addLine (9, 1, DialogueLine(sl[13], dialogue_helper(sl, ['player', 13], ['lookout.lookout', 30, 31, 32]), 1, act =[] True, 2))
-# d.addLine (10, 1, DialogueLine(sl[14], dialogue_helper(sl, ['player', 14], ['lookout.lookout', 42]), False, -1))
-# d.addLine (12, 2, DialogueLine(sl[34], dialogue_helper(sl, ['player', 34], ['lookout.lookout', 35, 36, 37]), True, 2))
-# d.addLine (13, 2, DialogueLine(sl[38], dialogue_helper(sl, ['player', 38], ['lookout.lookout', 39, 40]), True, 2))
-# d.addLine (14, 2, DialogueLine(sl[52], lookoutTurn(52), True, 2))
-# d.addToGroup (10, 2)
 
 State.addDialogue (d)

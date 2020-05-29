@@ -52,6 +52,11 @@
 #include <monkey/activities/repeat.h>
 #include <monkey/components/shadow.h>
 #include <monkey/math/polytri.h>
+#include <monkey/entities/skeleton.h>
+#include <monkey/model/skeletalmodel.h>
+#include <monkey/components/skeletalcollider.h>
+#include <monkey/activities/freemove.h>
+#include <monkey/model/skeletalmodel2.h>
 
 namespace py = pybind11;
 
@@ -141,6 +146,7 @@ SceneFactory::SceneFactory() {
 
     add<Sprite> ("sprite");
     add2<Sprite> ("sprite");
+    add2<Skeleton> ("skeleton");
     add<Text> ("text");
     add2<Text> ("text");
     add<TextView> ("textview");
@@ -151,6 +157,7 @@ SceneFactory::SceneFactory() {
     add<SimpleCollider> ("collider");
     add2<SimpleCollider> ("components.collider");
     add2<SmartCollider> ("components.smartcollider");
+    add2<SkeletalCollider> ("components.skeletalcollider");
     add<ScriptHotSpot> ("hotspot");
     add2<ScriptHotSpot> ("components.hotspot");
     add<BasicRenderer> ("gfx");
@@ -169,6 +176,7 @@ SceneFactory::SceneFactory() {
     add2<ExtendedStateMachine> ("components.statemachine");
     add2<Parallax>("components.parallax");
     add2<Shadow>("components.shadow");
+    add2<ShadowX>("components.shadowx");
     // states
     add2<NullState> ("state.null");
     add2<SimpleState> ("state.simple");
@@ -198,6 +206,7 @@ SceneFactory::SceneFactory() {
     add2<RunScript> ("action.runscript");
     add2<MoveAccelerated> ("action.moveaccelerated");
     add2<MoveTo> ("action.move");
+    add2<FreeMove> ("action.freemove");
     add2<ChangeCamBounds> ("action.changecambounds");
     add2<Repeat>("action.repeat");
     // runners
@@ -238,6 +247,8 @@ SceneFactory::SceneFactory() {
     add<SpriteModel> ("sprite.model");
     add2<SpriteModel> ("asset.sprite");
     add2<BoxedModel> ("asset.boxed");
+    add2<SkeletalModel> ("asset.skeleton");
+    add2<SkeletalModel2> ("asset.skeleton2");
     // other
     add<Font> ("font");
     add2<Font> ("font");

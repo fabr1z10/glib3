@@ -12,8 +12,9 @@ TextShader::TextShader() : Shader(text_vshader, text_fshader) {
 
     AddUniform(PROJECTION, "ProjMat");
     AddUniform(TEXTURE, "Tex1");
+
     AddUniform(MULTCOLOR, "color");
-}
+    AddUniform(ADDCOLOR, "additive");}
 
 void TextShader::initMesh(const glm::mat4 &modelMatrix, Camera *cam) {
     glm::mat4 mvm = cam->m_viewMatrix * modelMatrix;

@@ -21,7 +21,34 @@ void Shadow::Start() {
 }
 
 void Shadow::Update(double) {
-    float x = m_depth->getElevation();
+    float yShadow = -2*m_depth->getElevation();
 
-    m_entity->SetPosition(glm::vec3(0.0f, -2*x, 0.0f));
+
+    m_entity->SetPosition(glm::vec3(0.0f, yShadow, 0.0f));
+}
+
+ShadowX::ShadowX() : Component() {}
+
+ShadowX::ShadowX(const ShadowX& orig) : Component(orig) {}
+
+ShadowX::ShadowX(const ITable &t) : Component() {
+    m_target = t.get<std::string>("target");
+    m_y = t.get<float>("y");
+}
+
+
+std::shared_ptr<Component> ShadowX::clone() const {
+    return std::make_shared<ShadowX>(ShadowX(*this));
+}
+
+void ShadowX::Start() {
+    m_followed = Monkey::get().Get<Entity>(m_target);
+    //m_depth = dynamic_cast<Controller25*>(parent->GetComponent<IController>());
+
+}
+
+void ShadowX::Update(double) {
+    float x = m_followed->GetPosition().x;
+
+    m_entity->SetPosition(glm::vec3(x, m_y, 0.0f));
 }

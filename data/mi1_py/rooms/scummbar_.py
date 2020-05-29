@@ -1,4 +1,4 @@
-from lib_py.scumm.scumm import State
+from lib_py.scumm.scumm import State, ni
 from lib_py.scumm.scumm import Item
 from lib_py.scumm.dialogue import Dialogue, NodeStatus
 from lib_py.scumm.dialogue import Line, DialogueNode
@@ -11,6 +11,7 @@ import example
 
 st = engine.data['strings']
 sl = st['lines']
+
 
 # engine.items['scummbar.door.out'] = make_door {
 # 	tag = 'scummbar.door.out',
@@ -28,21 +29,36 @@ sl = st['lines']
 # }
 
 # door leading out
-State.addItem(
-    id = 'scummbar.door.out',
-    item = Item(
-        text = st['objects']['door'],
-        width = 38,
-        height = 47,
-        walkto = var.scummbar_door_pos,
-        dir = 'w',
-        actions = {
-            'open': ssc.openDoor (doorId='scummbar.door.out', var = 'village_scummbar'),
-            'close': ssc.closeDoor (doorId='scummbar.door.out', var = 'village_scummbar'),
-            'walkto': ssc.walkDoor (var = 'village_scummbar', room='village1', pos=var.village1_door_pos, dir='s')
-        }
-    )
+ni (
+    id = 'scummbar.door.out', 
+    model = 'door_scummbar_village',
+    text = st['objects']['door'], 
+    width = 38, 
+    height = 47, 
+    walkto = var.scummbar_door_pos, 
+    dir='w',
+    actions= {
+        'open': ssc.openDoor (doorId='scummbar.door.out', var = 'village_scummbar'),
+        'close': ssc.closeDoor (doorId='scummbar.door.out', var = 'village_scummbar'),
+        'walkto': ssc.walkDoor (var = 'village_scummbar', room='village1', pos=var.village1_door_pos, dir='s')
+    }
 )
+
+# State.addItem(
+#     id = 'scummbar.door.out',
+#     item = Item(
+#         text = st['objects']['door'],
+#         width = 38,
+#         height = 47,
+#         walkto = var.scummbar_door_pos,
+#         dir = 'w',
+#         actions = {
+#             'open': ssc.openDoor (doorId='scummbar.door.out', var = 'village_scummbar'),
+#             'close': ssc.closeDoor (doorId='scummbar.door.out', var = 'village_scummbar'),
+#             'walkto': ssc.walkDoor (var = 'village_scummbar', room='village1', pos=var.village1_door_pos, dir='s')
+#         }
+#     )
+# )
 
 State.addItem(
     id = 'scummbar.door.kitchen',
@@ -126,7 +142,10 @@ State.addItem(
         text = st['objects']['pirate'],
         width = 30, height = 30,
         walkto = [125, 17],
-        dir = 'n'
+        dir = 'n',
+        actions = {
+            'look': ssc.changeRoom(room = 'mancomb')
+        }
     )
 )
 

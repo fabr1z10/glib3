@@ -43,9 +43,15 @@ void Wrap1::setVy(float value) {
 float Wrap1::getVx() const {
     return m_entity->GetComponent<Dynamics2D>()->m_velocity.x;
 }
+float Wrap1::getScale() const {
+    return m_entity->GetScale();
+}
 
 void Wrap1::setVx(float value) {
     m_entity->GetComponent<Dynamics2D>()->m_velocity.x = value;
+}
+void Wrap1::setScale(float value) {
+    m_entity->SetScale(value);
 }
 
 void Wrap1::move(float dx, float dy, float dz) {
@@ -124,6 +130,19 @@ pybind11::object Wrap1::create(Entity* e) {
 pybind11::object Wrap1::getParent() {
     return Wrap1::create(m_entity->GetParent());
 }
+
+pybind11::list Wrap1::getAttackPos() {
+    ICollider* collider = m_entity->GetComponent<ICollider>();
+    auto bounds = collider->getAttackBounds();
+    auto size = bounds.GetSize();
+    auto center = bounds.GetCenter();
+    pybind11::list l;
+    l.append(center.x);
+    l.append(center.y);
+    return l;
+}
+
+
 
 py::object Wrap1::getInfo() {
     auto hs = m_entity->GetComponent<LuaInfo>();

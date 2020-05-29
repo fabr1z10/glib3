@@ -31,6 +31,8 @@ PYBIND11_MODULE(example, m) {
         .def_property_readonly("flipx", &Wrap1::getFlipx)
         .def_property("vy", &Wrap1::getVy, &Wrap1::setVy)
         .def_property("vx", &Wrap1::getVx, &Wrap1::setVx)
+        .def_property("scale", &Wrap1::getScale, &Wrap1::setScale)
+        .def("getAttackPos", &Wrap1::getAttackPos)
         .def("parent", &Wrap1::getParent)
         .def("setColor", &Wrap1::setColor)
         .def("setText", &Wrap1::setText)

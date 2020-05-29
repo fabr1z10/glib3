@@ -7,11 +7,16 @@
 #include <monkey/components/animator.h>
 #include <monkey/random.h>
 
+namespace py = pybind11;
+
 FoeWalk25::FoeWalk25(const ITable & t) : State(t) {
     m_speed = t.get<float>("speed");
     m_acceleration = t.get<float>("acceleration");
     m_flipHorizontal = t.get<bool>("flipH");
     m_sdelta = t.get<float>("delta");
+
+    m_attacks = t.get<std::vector<std::string>>("attacks", std::vector<std::string>());
+    m_attackCount = m_attacks.size();
 }
 
 FoeWalk25::FoeWalk25(const FoeWalk25 & orig) : State(orig) {
@@ -48,10 +53,17 @@ void FoeWalk25::Run(double dt) {
         m_animator->SetAnimation("walk");
     } else {
         m_animator->SetAnimation("idle");
+        if (m_attackCount > 0) {
+            float f = Random::get().GetUniformReal(0.0f, 1.0f);
+            if (f < 0.02f) {
+                // choose a random attack
+                int n = Random::get().GetUniform(0, m_attackCount-1);
+                py::dict d;
+                d["anim"] = m_attacks[n];
+                m_sm->SetState("attack", d);
 
-        float f = Random::get().GetUniformReal(0.0f, 1.0f);
-        if (f < 0.02f) {
-            m_sm->SetState("attack");
+                //m_sm->SetState("attack");
+            }
         }
     }
     //std::cerr << "new z = " << m_entity->GetPosition().z << "\n";

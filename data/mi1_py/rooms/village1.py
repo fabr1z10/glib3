@@ -26,12 +26,15 @@ def builder():
         edges = [ [0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 8]]),
         scale = sh.LinY(y0=0, z0=0.8, y1 = 144, z1 = 0.1),
         depth = sh.LinY(y0=0,z0=1,y1=144,z1=0)), 'main')
-    r.add (se.Sprite (item='village1.poster', pos = [259, 27, 0]), 'main')
-    r.add (se.Sprite (item='village1.door', anim = var.doors.village_scummbar, 
-        model = 'door_village_scummbar', pos = [699, 7, 0]), 'main')
+
+    
+    r.addItem (id = 'village1.poster')
+    r.addItem (id = 'village1.door', anim = var.doors.village_scummbar)
+    r.addItem (id = 'village1.cliffside')
+    
     r.addDynamicItems()
     r.init.append(init)
-    print (State.items['scummbar.door.out'].walkto)
+    #print (State.items['scummbar.door.out'].walkto)
     return r
 
 engine.addRoom (id = 'village1', f=builder)

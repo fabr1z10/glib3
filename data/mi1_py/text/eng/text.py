@@ -1,3 +1,4 @@
+
 strings = {
     'ui': {
         'open': 'Open',

@@ -8,7 +8,7 @@ import os
 
 import lib_py.assets as assets
 import lib_py.runner as runner
-
+from lib_py.skeletalmodel import SkeletalModel
 
 
 # import lib_py.components as components
@@ -40,7 +40,7 @@ shaders = []
 data = {
     'assets': {
         'fonts': {},
-        'spritemodels': {}
+        'models': {}            # include sprite + skeletal
     },
     'rooms': {},
     'strings': {},
@@ -60,6 +60,7 @@ def addRoom (id : str, f : Callable):
 def addShader(s : ShaderType):
     shaders.append(s.name)
 
+
 def loadSprites():
     #print ('dir = ' + example.dir)
     dir = example.dir +'/sprites'
@@ -68,7 +69,21 @@ def loadSprites():
         for fi in files:
             print ('reading: ' + fi)
             with open(dir+'/'+fi) as f:
-                data['assets']['spritemodels'] = yaml.load(f, Loader=yaml.FullLoader)
+                data['assets']['models'] = yaml.load(f, Loader=yaml.FullLoader)
+
+def loadSkeletalModels():
+    dir = example.dir +'/skeletons'
+    if os.path.exists(dir):
+        files = os.listdir(dir)
+        for fi in files:
+            print ('reading: ' + fi)
+            with open(dir+'/'+fi) as f:
+                data['assets']['skeletalmodels'] = yaml.load(f, Loader=yaml.FullLoader)
+    if 'models' in data['assets']['skeletalmodels']:
+        for a, b in data['assets']['skeletalmodels']['models'].items():
+            print ("ASSO: " + a)
+            print (data['assets']['skeletalmodels'])
+            data['assets']['models'][a] = SkeletalModel(b, data)
 
 def loadText(lang: str):
     dir = example.dir +'/text/'+lang;

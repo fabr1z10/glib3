@@ -15,6 +15,7 @@
 #include <monkey/shader/colorunlit.h>
 #include <monkey/shader/text.h>
 #include <monkey/shader/lightshader.h>
+#include <monkey/shader/skeletal.h>
 //#include <monkey/shader/colorlight.h>
 
 
@@ -160,6 +161,10 @@ GLuint Shader::GetUniformLocation(ShaderUniform uniform) {
     return iter->second;
 }
 
+
+GLuint Shader::GetProgId() const {
+    return m_programId;
+}
 //std::unique_ptr<Shader> ShaderFactory::GetTestShader() {
 //    std::unordered_map <ShaderUniform, std::string, EnumClassHash> uniforms;
 //    return std::unique_ptr<Shader>(new Shader(COLOR_SHADER, test_vertex_shader, test_frag_shader, 1, uniforms));
@@ -178,7 +183,7 @@ ShaderFactory::ShaderFactory() {
     m_facs["unlit_color"] = [] () { return std::make_unique<ColorUnlit>(); };
     m_facs["text"] = [] () { return std::make_unique<TextShader>(); };
     m_facs["light_color"] = [] () { return std::make_unique<LightShader>(); };
-
+    m_facs["skeletal"] = [] () { return std::make_unique<SkeletalShader>(); };
 
 }
 std::unique_ptr<Shader> ShaderFactory::getShader(const std::string &shaderId) {

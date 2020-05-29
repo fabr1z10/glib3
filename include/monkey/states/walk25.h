@@ -46,6 +46,9 @@ protected:
     ICollisionEngine * m_collision;
     char m_dir;
     Depth25* m_depth;
+    bool m_airAttack;
+    std::string m_currentAttack;
+    std::unordered_map<int, std::string> m_attacks;
 };
 
 inline bool Walk25::flipHorizontally() const {

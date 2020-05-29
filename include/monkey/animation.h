@@ -18,4 +18,5 @@ struct AnimInfo {
     std::vector<FrameInfo> frameInfo;
     int frameCount;
     bool loop;
+    int loopFrame;
 };

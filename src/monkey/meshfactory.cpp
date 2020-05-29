@@ -132,6 +132,7 @@ void MeshFactory::visit(Box& rect) {
 }
 
 void MeshFactory::visit(CompoundShape& shape) {
+
     auto shapes = shape.GetShapes();
     std::vector<VertexColor> vertices;
     std::vector<unsigned int> indices;
@@ -141,7 +142,7 @@ void MeshFactory::visit(CompoundShape& shape) {
         glm::vec2 offset = shape->GetOffset();
         size_t j = 0;
         for (auto& p : points) {
-            vertices.push_back({offset.x + p.x, offset.y + p.y, m_z, m_color.g, m_color.r, m_color.b, m_color.a});
+            vertices.push_back({p.x, p.y, m_z, m_color.g, m_color.r, m_color.b, m_color.a});
             indices.push_back(i);
             indices.push_back((j+1 >= points.size()) ? 0 : i+1);
             i++;

@@ -1,7 +1,7 @@
 import example
 import lib_py.script as script
 import lib_py.scumm.actions as sa
-from lib_py.scumm.scumm import State, DynamicItem
+from lib_py.scumm.scumm import State
 import lib_py.actions as act
 
 
@@ -49,11 +49,11 @@ def startDialogue (character : str):
         return s
     return f
 
-def changeRoom (room: str, pos, dir):
+def changeRoom (room: str, pos = None, dir = None):
     def f():
         # get the current player
         currentPlayer = State.player
-        State.setDynamicItem(id = currentPlayer, room = room, pos = pos, dir =  dir, state = 'idle', parent='walkarea')
+        State.setDynamicItem(id = currentPlayer, room = room, pos = pos, chardir =  dir, state = 'idle', parent='walkarea')
         s = script.Script()
         s.addAction(act.ChangeRoom(room=room))
         return s

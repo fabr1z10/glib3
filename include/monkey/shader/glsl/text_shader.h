@@ -25,6 +25,7 @@ const char text_fshader[] =
                 "in vec4 col;\n"
                 "uniform sampler2D Tex1;\n"
                 "uniform vec4 color;\n"
+                "uniform vec4 additive;\n"
                 "out vec4 fragColor;\n"
                 "\n"
                 "void main()\n"
@@ -34,6 +35,7 @@ const char text_fshader[] =
                 "if (texColor.a < 0.5)\n"
                 "discard;\n"
                 "texColor *= color;\n"
+                "texColor += additive;\n"
                 "fragColor = texColor;\n"
                 "}\n"
 ;

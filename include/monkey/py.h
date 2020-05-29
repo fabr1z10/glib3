@@ -4,6 +4,7 @@
 #include <pybind11/stl.h>
 #include <monkey/error.h>
 #include <sstream>
+#include <tuple>
 #include <functional>
 #include <glm/glm.hpp>
 
@@ -85,27 +86,27 @@ private:
 //// cast to 2d - 3d - 4d vectors
 template <>
 inline glm::vec2 ITable::cast(pybind11::object o) const {
-    auto vec = o.cast<std::vector<float>>();
-    return glm::vec2(vec[0], vec[1]);
+    auto vec = o.cast<std::tuple<float, float>>();
+    return glm::vec2(std::get<0>(vec), std::get<1>(vec));
 }
 
 template <>
 inline glm::ivec2 ITable::cast(pybind11::object o) const {
-    auto vec = o.cast<std::vector<int>>();
-    return glm::ivec2(vec[0], vec[1]);
+    auto vec = o.cast<std::tuple<int, int>>();
+    return glm::ivec2(std::get<0>(vec), std::get<1>(vec));
 }
 
 
 template <>
 inline glm::vec3 ITable::cast(pybind11::object o) const  {
-    auto vec = o.cast<std::vector<float>>();
-    return glm::vec3(vec[0], vec[1], vec[2]);
+    auto vec = o.cast<std::tuple<float, float, float>>();
+    return glm::vec3(std::get<0>(vec), std::get<1>(vec), std::get<2>(vec));
 }
 
 template <>
 inline glm::vec4 ITable::cast(pybind11::object o) const {
-    auto vec = o.cast<std::vector<float>>();
-    return glm::vec4(vec[0], vec[1], vec[2], vec[3]);
+    auto vec = o.cast<std::tuple<float, float, float, float>>();
+    return glm::vec4(std::get<0>(vec), std::get<1>(vec), std::get<2>(vec), std::get<3>(vec));
 }
 
 

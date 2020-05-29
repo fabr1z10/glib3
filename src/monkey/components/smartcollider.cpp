@@ -72,7 +72,8 @@ void SmartCollider::onFrameUpdate(Animator *a) {
     int fr = a->GetFrame();
 
     m_colliderRenderer->clearVisible();
-    int shapeId = m_model->getShapeId(anim,fr);
+    int shapeId = m_model->getShapeId(anim, fr);
+    std::cerr << "(" << anim << ", " << fr << ", " << shapeId<< ")\n";
     m_colliderRenderer->setVisible(shapeId);
     // show only the shape
     auto castShapeId = m_model->getShapeCastId(anim, fr);
@@ -83,8 +84,8 @@ void SmartCollider::onFrameUpdate(Animator *a) {
         m_colliderRenderer->setVisible(castShapeId);
 
         auto t = m_entity->GetWorldTransform();
-        std::cout <<" **** hit ****\n";
-        std::cout << "character at position = " << t[3][0] << ", " << t[3][1] << " scale " << t[0][0] << "\n";
+        //std::cout <<" **** hit ****\n";
+        //std::cout << "character at position = " << t[3][0] << ", " << t[3][1] << " scale " << t[0][0] << "\n";
         auto e = m_engine->ShapeCast(castShape, t, m_castMask);
 
         if (e.report.collide) {
@@ -180,6 +181,7 @@ int SmartCollider::GetCollisionMask() const {
 Bounds SmartCollider::GetStaticBoundsI() const {
     return m_model->GetMaxBounds();
 }
+
 Bounds SmartCollider::GetDynamicBoundsI() const {
     std::string anim = m_animator->GetAnimation();
     auto bounds = m_model->GetAnimBounds(anim);

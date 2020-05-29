@@ -14,7 +14,7 @@ void AssetManager::Init() {
     auto assets = mt.get<py::dict>("data");
 
     m_fontDict = assets["assets"]["fonts"];
-    m_modelDict = assets["assets"]["spritemodels"];
+    m_modelDict = assets["assets"]["models"];
 //    auto factory = Engine::get().GetSceneFactory();
 //    m_fonts.Init("fonts", factory);
 //    m_models.Init("models", factory);
@@ -31,10 +31,18 @@ std::shared_ptr<IModel> AssetManager::GetModel(const std::string & id) {
     if (m_modelDict.is_none()) {
         
     } else {
-        PyDict t(m_modelDict[id.c_str()].cast<py::dict>());
-        auto font= Engine::get().GetSceneFactory()->make2<IModel>(t);
-        m_models.insert(std::make_pair(id, font));
-        return font;
+        try {
+            PyDict t(m_modelDict[id.c_str()].cast<py::dict>());
+            auto font = Engine::get().GetSceneFactory()->make2<IModel>(t);
+            m_models.insert(std::make_pair(id, font));
+            return font;
+        } catch (...) {
+            PyTable t(m_modelDict[id.c_str()].cast<py::object>());
+            auto font = Engine::get().GetSceneFactory()->make2<IModel>(t);
+            m_models.insert(std::make_pair(id, font));
+            return font;
+
+        }
     }}
 
 
