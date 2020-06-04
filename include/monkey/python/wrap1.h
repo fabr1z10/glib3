@@ -8,6 +8,7 @@ class Entity;
 class PYBIND11_EXPORT Wrap1 {
 public:
     Wrap1();
+    bool valid() const;
     float x() const ;
     float y() const ;
     float getVy() const;

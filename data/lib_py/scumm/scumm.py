@@ -100,6 +100,12 @@ class State:
     variables = {}
     player = ''
     md = None
+    # we can have more than one inventory for each player
+    inventory = {}
+
+    @staticmethod
+    def has (id: str, qty: int = 1):
+        return State.player in State.inventory and id in State.inventory[State.player] and State.inventory[State.player][id] >= qty
 
     @staticmethod
     def addItem (item):

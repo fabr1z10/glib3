@@ -10,7 +10,6 @@ import lib_py.scumm.entity as se
 import lib_py.scumm.functions as func
 import lib_py.actions as act
 import lib_py.scumm.actions as scact
-from lib_py.scumm.dialogue import NodeStatus
 from lib_py.script import Script
 import example
 
@@ -20,24 +19,25 @@ def runDialogueScript(s):
         dial.clearText()
         # check if there's any script to run
         a = Script()
-        node = s.node
+        node = s
         for cn in node.closeNodes:
-            s.node.dialogue.nodes[cn].status = NodeStatus.CLOSED
+            s.dialogue.nodes[cn].active = False
+        for an in node.activateNodes:
+            s.dialogue.nodes[an].active = True
+        for id, d in s.dialogue.nodes.items():
+            print (str(d.id) + ' ' + str(d.active))
 
-
-        #for l in s.deact:
-        #    dialogue.lines[l] = False
-        #for l in s.act:
-        #    dialogue.lines[l].active = True
-        s.node.status = s.node.nextStatus
-        s.node.dialogue.openNode(s.node)
+        #if s.node.nextStatus != NodeStatus.SAME:
+        #   s.node.status = s.node.nextStatus
+        #s.node.dialogue.openNode(s.node)
         ds = s.script()
         if ds:
             a.addAction(act.RunScript(s = ds))
-        if s.node.resume:
-            a.addAction(scact.ResumeDialogue(s.node.dialogue.id))
+        if s.nextId == -1:
+            a.addAction(scact.EndDialogue(s.dialogue.id))
         else:
-            a.addAction(scact.EndDialogue(s.node.dialogue.id))
+            s.dialogue.current = s.nextId
+            a.addAction(scact.ResumeDialogue(s.dialogue.id))
         example.play(a)
     return f
 
@@ -69,6 +69,9 @@ class RoomDialogue(room.Room):
         self.scene.append(main)
         self.scene.append(dialogue_node)
         self.engines.append(runner.Scheduler())
+    def addItem(self, id: str, parent: str = 'main', **kwargs):
+        entity = scumm.State.items[id].create(**kwargs)
+        self.add (e = entity, ref =parent)
 
 
 

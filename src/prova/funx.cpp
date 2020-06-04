@@ -6,10 +6,14 @@
 #include <monkey/entities/textview.h>
 
 Wrap1 get(const std::string & tag) {
-    auto e = m_monkey->Get<Entity>(tag);
     Wrap1 w;
-    w.setEntity(e);
+    try {
+        auto e = m_monkey->Get<Entity>(tag);
+        w.setEntity(e);
+    } catch (Error& e) {}
+
     return w;
+
 
 }
 

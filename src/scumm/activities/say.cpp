@@ -44,14 +44,14 @@ Say::Say(const ITable& t) : Sequence() {
     }
 
     bool animate = t.get<bool>("animate", true);
-    if (t.hasKey("animstart")) {
-        auto animStart = t.get<std::string>("animstart");
-        SetAnimationStart(animStart);
-    }
-    if (t.hasKey("animend")) {
-        auto animEnd = t.get<std::string>("animend");
-        SetAnimationEnd(animEnd);
-    }
+//    if (t.hasKey("animstart")) {
+//        auto animStart = t.get<std::string>("animstart");
+//        SetAnimationStart(animStart);
+//    }
+//    if (t.hasKey("animend")) {
+//        auto animEnd = t.get<std::string>("animend");
+//        SetAnimationEnd(animEnd);
+//    }
 
     SetNoAnim(!animate);
 

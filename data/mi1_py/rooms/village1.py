@@ -31,6 +31,7 @@ def builder():
     r.addItem (id = 'village1.poster')
     r.addItem (id = 'village1.door', anim = var.doors.village_scummbar)
     r.addItem (id = 'village1.cliffside')
+    r.addItem (id = 'village1.archway')
     
     r.addDynamicItems()
     r.init.append(init)

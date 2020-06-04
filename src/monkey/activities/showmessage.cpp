@@ -21,6 +21,22 @@ ShowMessage::ShowMessage(const LuaTable & table) {
     m_pos = table.Get<glm::vec3>("pos");
 }
 
+ShowMessage::ShowMessage(const ITable & t) {
+    m_actor = -1;
+    m_message = t.get<std::string>("text");
+    m_font = t.get<std::string>("font");
+    m_size = t.get<float>("size", 8.0f);
+    m_color = t.get<glm::vec4>("color");
+    m_outlineColor = t.get<glm::vec4>("outlinecolor", glm::vec4(0.0f, 0.0f, 0.0f, 255.0f));
+    m_color /= 255.0f;
+    m_outlineColor /= 255.0f;
+    m_align = BOTTOM; //t.Get<TextAlignment>("align", BOTTOM);
+    m_offset = t.get<glm::vec2>("offset", glm::vec2(0.0f));
+    m_time = t.get<float>("time", 1.0f);
+    m_pos = t.get<glm::vec3>("pos");
+
+}
+
 void ShowMessage::Start() {
     auto& m = Monkey::get();
     m_mainCam = m.Get<OrthographicCamera>("maincam");

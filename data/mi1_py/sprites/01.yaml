@@ -357,3 +357,182 @@ mancomb.mancomb:
     smile:
       frames:
         - [0,0,78,78]
+citizen:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: 'asset.sprite'
+  animations:
+    idle_s:
+      frames:
+        - [ [164, 1, 29, 31, 15, 0], [196, 11, 9, 9, 5,-27]]
+        - [ [164, 1, 29, 31, 15, 0], [196, 1, 9, 9, 5, -27]]
+        - [ [164, 1, 29, 31, 15, 0], [196, 11, 9, 9, 5, -27]]
+        - [ [164, 1, 29, 31, 15, 0], [196, 1, 9, 9, 5, -27, 1]]
+    talk_s:
+      frames:
+        - [ [164, 1, 29, 31, 15, 0], [231, 1, 9, 9, 5, -27]]
+        - [ [164, 1, 29, 31, 15, 0], [231, 11, 9, 9, 5, -27]]
+        - [ [164, 1, 29, 31, 15, 0], [196, 11, 9, 9, 5, -27]]
+    idle_e:
+      frames:
+        - [ [207, 3, 22, 29, 17, 0], [196, 1, 9, 9, 7, -27]]
+        - [ [207, 3, 22, 29, 17, 0], [196, 21, 9, 9, 7, -27]]
+        - [ [207, 3, 22, 29, 17, 0], [196, 1, 9, 9, 7, -27]]
+        - [ [207, 3, 22, 29, 17, 0], [196, 11, 9, 9, 7, -27]]
+    idle_e_1:
+      frames:
+        - [ [328, 3, 38, 29, 25, 0], [196, 1, 9, 9, 7,-27]]
+        - [ [328, 3, 38, 29, 25, 0], [196, 21, 9, 9, 7,-27]]
+        - [ [328, 3, 38, 29, 25, 0], [196, 1, 9, 9, 7, -27]]
+        - [ [328, 3, 38, 29, 25, 0], [196, 11, 9, 9, 7, -27]]
+    idle_e_2:
+      frames:
+        - [ [286, 34, 25, 29, 16, 0], [196, 1, 9, 9, 7, -27]]
+        - [ [286, 34, 25, 29, 16, 0], [196, 21, 9, 9, 7,-27]]
+        - [ [286, 34, 25, 29, 16, 0], [196, 1, 9, 9, 7, -27]]
+        - [ [286, 34, 25, 29, 16, 0], [196, 11, 9, 9, 7, -27]]
+    talk_e:
+      frames:
+        - [ [207, 3, 22, 29, 17, 0], [231, 1, 9, 9, 7, -27]]
+        - [ [207, 3, 22, 29, 17, 0], [231, 11, 9, 9, 7, -27]]
+        - [ [207, 3, 22, 29, 17, 0], [196,21,9,9,7,-27]]
+    talk_e_1:
+      frames:
+        - [[328,3,38,29,25,0],[231,1,9,9,7,-27]]
+        - [[328,3,38,29,25,0],[231,11,9,9,7,-27]]
+        - [[328,3,38,29,25,0],[196,21,9,9,7,-27]]
+    talk_e_2:
+      frames:
+        - [[286,34,25,29,16,0],[231,1,9,9,7,-27]]
+        - [[286,34,25,29,16,0],[231,11,9,9,7,-27]]
+        - [[286,34,25,29,16,0],[196,21,9,9,7,-27]]
+    open_jacket:
+      loop: false
+      frames:
+        - [[207, 3, 22, 29, 17, 0], [196, 21, 9, 9, 7, -27]]
+        - [[241, 3, 26, 29, 20, 0], [196, 21, 9, 9, 7, -27]]
+        - [[269, 3, 23, 29, 17, 0], [196, 21, 9, 9, 7, -27]]
+        - [[293, 3, 33, 29, 25, 0], [196, 21, 9, 9, 7, -27]]
+        - [[328, 3, 38, 29, 25, 0], [196, 21, 9, 9, 7, -27]]
+    rollmap:
+      loop: false
+      frames:
+        - [[207, 3, 22, 29, 17, 0], [196, 21, 9, 9, 7, -27]]
+        - [[165, 34, 29, 29, 17, 0], [196, 21, 9, 9, 7, -27]]
+        - [[197, 34, 26, 29, 16, 0], [196, 21, 9, 9, 7, -27]]
+        - [[226, 34, 26, 29, 16, 0], [196, 21, 9, 9, 7, -27]]
+        - [[257, 34, 26, 29, 16, 0], [196, 21, 9, 9, 7, -27]]
+        - [[286, 34, 25, 29, 16, 0], [196, 21, 9, 9, 7, -27]]
+    givemap:
+      frames:
+        - [[316, 466, 29, 30, 16, 0], [196, 21, 9, 9, 5, 0]]
+        - [[346, 466, 37, 30, 16, 0], [196, 21, 9, 9, 5, 0]]
+        - [[470, 400, 29, 30, 16, 0], [196, 21, 9, 9, 5, 0]]
+        - [[207, 3, 22, 29, 17, 0], [196, 21, 9, 9, 5, 0]]
+lowmoral1:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: 'asset.sprite'
+  animations:
+    idle_e_1:
+      frames:
+        - [[1,1,31,30,13,0], [33,1,15,12,8,0]]
+    talk_e:
+      frames:
+        - [[1,1,31,30,13,0], [33,1,15,12,8,0]]
+        - [[1,1,31,30,13,0], [66,1,15,12,7,2]]
+        - [[1,1,31,30,13,0], [50,1,15,13,7,1]]
+    idle_e:
+      frames:
+        - [33,15,34,39,17,0]
+        - [[1,1,31,30,13,0], [33,1,15,12,8,-28]]
+        - [69,16,27,39,9,0]
+        - [[1,1,31,30,13,0], [33,1,15,12,8,-28]]
+    idle_n:
+      frames:
+        - [[1,1,31,30,13,0], [83,1,14,12,8,0]]
+
+lowmoral2:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: 'asset.sprite'
+  animations:
+    idle_e:
+      frames:
+        - [[100,1,24,30,14,0],[127,1,12,9,7,-28]]
+    idle_s:
+      frames:
+        - [[100,1,24,30,14,0],[141,1,10,9,7,0]]
+        - [[100,1,24,30,14,0],[153,1,19,9,7,0]]
+    talk_e:
+      frames:
+        - [314,34,24,39,14,0]
+        - [340,35,25,38,15,0]
+        - [367,34,24,39,14,0]        
+    hit:
+      frames:
+        - [[100,1,24,30,14,0], [128,11,11,8,7,0]]
+
+lowmoral3:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: 'asset.sprite'
+  animations:
+    idle_e:
+      frames:
+        - [[67,127,24,37,14,0],[93,127,13,15,13,-34]]
+    idle_s:
+      frames:
+        - [[67,127,24,37,14,0],[176,127,11,13,6,0]]
+rat:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: 'asset.sprite'
+  animations:
+    idle_e:
+      frames:
+        - [[69,166,13,12,5,0],[99,168,5,4,3,0]]
+        - [[69,166,13,12,5,0],[99,175,6,2,4,0]]
+        - [[84,168,13,10,6,0],[99,175,6,2,4,0]]
+# 		{
+# 			name="talk_e",
+# 			frames = {
+# 				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_idle}, {id=s.low_moral_fiber_3_head_talk_e_1, pos=lmf3_head}}},
+# 				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_idle}, {id=s.low_moral_fiber_3_head_talk_e_2, pos=lmf3_head}}},
+# 				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_idle}, {id=s.low_moral_fiber_3_head_talk_e_3, pos=lmf3_head}}},
+# 			}
+# 		},
+# 		{
+# 			name="talk_e_1",
+# 			frames = {
+# 				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_open_jacket_2}, {id=s.low_moral_fiber_3_head_talk_e_1, pos=lmf3_head}}},
+# 				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_open_jacket_2}, {id=s.low_moral_fiber_3_head_talk_e_2, pos=lmf3_head}}},
+# 				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_open_jacket_2}, {id=s.low_moral_fiber_3_head_talk_e_3, pos=lmf3_head}}},
+# 			}
+# 		},
+# 		{
+# 			name="talk_s",
+# 			frames = {
+# 				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_idle}, {id=s.low_moral_fiber_3_head_idle_s, pos=lmf3_head_1}}},
+# 				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_idle}, {id=s.low_moral_fiber_3_head_talk_s_1, pos=lmf3_head_1}}}
+
+# 			}
+# 		},
+# 		{
+# 			name ="punch",
+# 			loop = false,
+# 			frames = {
+# 				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_idle}, {id=s.low_moral_fiber_3_head_idle_s, pos=lmf3_head_1}}},
+# 				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_punch_1}, {id=s.low_moral_fiber_3_head_idle_s, pos=lmf3_head_1}}},
+# 				{ duration = 2*dt, quads = { {id=s.low_moral_fiber_3_body_punch_2}, {id=s.low_moral_fiber_3_head_idle_s, pos=lmf3_head_1}}},
+# 				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_punch_3}, {id=s.low_moral_fiber_3_head_idle_s, pos=lmf3_head_1}}}
+# 			}
+# 		},
+# 		{
+# 			name="open_jacket",
+# 			loop = false,
+# 			frames = {
+# 				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_idle}, {id=s.low_moral_fiber_3_head_idle_e, pos=lmf3_head}}},
+# 				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_open_jacket_1}, {id=s.low_moral_fiber_3_head_idle_e, pos=lmf3_head}}},
+# 				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_open_jacket_2}, {id=s.low_moral_fiber_3_head_idle_e, pos=lmf3_head}}}
+# 			}			
+
+# 		}
+
+# 	}
+# }

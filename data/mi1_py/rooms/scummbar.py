@@ -154,38 +154,41 @@ def builder():
  			492, 50, 514, 40, 565, 40, 580, 35, 629, 6, 626, 0, 256, 0, 200, 16, 149, 0, 90, 0, 85, 10],
         holes = [ [374, 28, 505, 28, 505, 6, 374, 6]]),
         depth = sh.LinY(y0=0,z0=1,y1=144,z1=0)), 'main')
-    
+
     # doors
-    r.add (se.Sprite (item='scummbar.door.out', anim = var.doors.village_scummbar, model='door_scummbar_village', pos = [32, 24, 0]), 'main')	
-    r.add (se.Sprite (item='scummbar.door.kitchen', anim = var.doors.scummbar_kitchen, model='door_scummbar_kitchen', pos = [591, 9, 0]), 'main')	
+    r.addItem (id='scummbar.door.out', anim = var.doors.village_scummbar)
+    r.addItem (id='scummbar.door.kitchen', anim = var.doors.scummbar_kitchen)
+    # doors
+    # r.add (se.Sprite (item='scummbar.door.out', anim = var.doors.village_scummbar, model='door_scummbar_village', pos = [32, 24, 0]), 'main')	
+    # r.add (se.Sprite (item='scummbar.door.kitchen', anim = var.doors.scummbar_kitchen, model='door_scummbar_kitchen', pos = [591, 9, 0]), 'main')	
     
     # other
-    r.add (se.Sprite (model = 'scummbar.fireplace', item = 'scummbar.fireplace', pos = [509, 44,1]), 'walkarea')
+    r.addItem (id = 'scummbar.fireplace', parent = 'walkarea')
 
 
     # pirates
-    r.add (se.Sprite (item = 'scummbar.mancomb', model = 'scummbar.mancomb', pos = [89, 24, -1]), 'main')
-    r.add (se.Sprite (item = 'scummbar.estevan', model = 'scummbar.estevan', pos = [164, 21, 1]), 'main')
-    r.add (se.Sprite (item = 'scummbar.loom', model = 'scummbar.loom', pos = [260, 17, 1]), 'walkarea')
-    r.add (se.Sprite (item = 'scummbar.pirate1', model = 'scummbar.pirate1', pos = [138, 38, -1]), 'main')
-    r.add (se.Sprite (model = 'scummbar.pirate2', pos = [124,20,-1], tag = 'scummbar.pirate2'), 'main')
-    r.add (se.Sprite (model = 'scummbar.pirate3', pos = [30,0,-1], tag = 'scummbar.pirate3'), 'walkarea')
-    r.add (se.Sprite (item = 'scummbar.pirate4', model = 'scummbar.pirate4', pos = [0, 0, -1]), 'walkarea')
-    r.add (se.Sprite (model = 'scummbar.pirate5', pos = [200,18,1], tag = 'scummbar.pirate5'), 'main')
-    r.add (se.Sprite (model = 'scummbar.pirate6', pos = [160,0,1], tag = 'scummbar.pirate6'), 'main')
-    r.add (se.Sprite (model = 'scummbar.pirate7', pos = [255,38,1], tag = 'scummbar.pirate7'), 'walkarea')
-    r.add (se.Sprite (model = 'scummbar.pirate8', pos = [215,44,1], tag = 'scummbar.pirate8'), 'walkarea')
-    r.add (se.Sprite (model = 'scummbar.pirate9', pos = [278,40,1], tag = 'scummbar.pirate9'), 'walkarea')
-    r.add (se.Character (model='ilp1', speed = 100, dir = 'e', 
-        state='idle', text_color=[85, 85, 255, 255], text_offset=[0,60], pos = [376, 11, 0.95]), 'walkarea')
-    r.add (se.Character (model='ilp2', speed = 100, dir = 'e', 
-        state='idle', text_color=[255, 255, 85, 255], text_offset=[0,60], pos = [413,11,0.95]), 'walkarea')
-    r.add (se.Character (model='ilp3', speed = 100, dir = 'e', 
-        state='idle', text_color=[255, 85, 255, 255], text_offset=[0,60], pos = [444,18,0.95]), 'walkarea')
-    r.add (se.Sprite (item = 'scummbar.important_looking_pirates', pos=[370,30,0]), 'main')
+    r.addItem (id = 'scummbar.mancomb')
+    # r.add (se.Sprite (item = 'scummbar.estevan', model = 'scummbar.estevan', pos = [164, 21, 1]), 'main')
+    # r.add (se.Sprite (item = 'scummbar.loom', model = 'scummbar.loom', pos = [260, 17, 1]), 'walkarea')
+    # r.add (se.Sprite (item = 'scummbar.pirate1', model = 'scummbar.pirate1', pos = [138, 38, -1]), 'main')
+    # r.add (se.Sprite (model = 'scummbar.pirate2', pos = [124,20,-1], tag = 'scummbar.pirate2'), 'main')
+    # r.add (se.Sprite (model = 'scummbar.pirate3', pos = [30,0,-1], tag = 'scummbar.pirate3'), 'walkarea')
+    # r.add (se.Sprite (item = 'scummbar.pirate4', model = 'scummbar.pirate4', pos = [0, 0, -1]), 'walkarea')
+    # r.add (se.Sprite (model = 'scummbar.pirate5', pos = [200,18,1], tag = 'scummbar.pirate5'), 'main')
+    # r.add (se.Sprite (model = 'scummbar.pirate6', pos = [160,0,1], tag = 'scummbar.pirate6'), 'main')
+    # r.add (se.Sprite (model = 'scummbar.pirate7', pos = [255,38,1], tag = 'scummbar.pirate7'), 'walkarea')
+    # r.add (se.Sprite (model = 'scummbar.pirate8', pos = [215,44,1], tag = 'scummbar.pirate8'), 'walkarea')
+    # r.add (se.Sprite (model = 'scummbar.pirate9', pos = [278,40,1], tag = 'scummbar.pirate9'), 'walkarea')
+    # r.add (se.Character (model='ilp1', speed = 100, dir = 'e', 
+    #     state='idle', text_color=[85, 85, 255, 255], text_offset=[0,60], pos = [376, 11, 0.95]), 'walkarea')
+    # r.add (se.Character (model='ilp2', speed = 100, dir = 'e', 
+    #     state='idle', text_color=[255, 255, 85, 255], text_offset=[0,60], pos = [413,11,0.95]), 'walkarea')
+    # r.add (se.Character (model='ilp3', speed = 100, dir = 'e', 
+    #     state='idle', text_color=[255, 85, 255, 255], text_offset=[0,60], pos = [444,18,0.95]), 'walkarea')
+    # r.add (se.Sprite (item = 'scummbar.important_looking_pirates', pos=[370,30,0]), 'main')
 
-    r.init.append (animate)
-    r.init.append (cook)
+    # r.init.append (animate)
+    # r.init.append (cook)
     r.addDynamicItems()
     return r
 

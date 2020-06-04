@@ -40,16 +40,23 @@ SpriteModel::SpriteModel (const ITable& t) : IModel() {
 
         // check if quad has anchor
         glm::vec2 anchor(0.0f);
-        if (q.size() > 4) {
+        auto qs = q.size();
+        if (qs > 4) {
             anchor.x = q[4];
             anchor.y = q[5];
         }
+        bool flipX = qs > 6 ? (q[6] == 1) : false;
+        bool flipY = qs > 7 ? (q[7] == 1) : false;
+        float tx0 = flipX ? tx+tw : tx;
+        float tx1 = flipX ? tx : tx + tw;
+        float ty0 = flipY ? ty : ty+th;
+        float ty1 = flipY ? ty+th : ty;
 
         glm::vec2 bottomLeft{-anchor.x / ppu, -anchor.y / ppu};
-        float tx0 = tx;
-        float tx1 = tx + tw;
-        float ty0 = ty + th;
-        float ty1 = ty;
+//        float tx0 = tx;
+//        float tx1 = tx + tw;
+//        float ty0 = ty + th;
+//        float ty1 = ty;
         vertices.emplace_back(Vertex3D(bottomLeft.x, bottomLeft.y, z, tx0, ty0));
         vertices.emplace_back(Vertex3D(bottomLeft.x + w, bottomLeft.y, z, tx1, ty0));
         vertices.emplace_back(Vertex3D(bottomLeft.x + w, bottomLeft.y + h, z, tx1, ty1));

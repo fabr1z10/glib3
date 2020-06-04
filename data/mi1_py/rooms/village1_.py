@@ -19,6 +19,19 @@ State.addItem (Item(
     }))
     
 State.addItem (Item(
+    id = 'village1.archway', 
+    text = st['objects']['archway'],
+    pos = (992, 30),
+    width = 16, 
+    height = 40, 
+    walkto = var.village1_village2,
+    dir = 'e',
+    actions = {
+        'walkto': ssc.changeRoom(room = 'village2', pos = var.village2_village1, dir='s')
+    }))
+
+
+State.addItem (Item(
     id = 'village1.poster', 
     text = st['objects']['poster'],
     pos = (259, 27),

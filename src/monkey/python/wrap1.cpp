@@ -17,6 +17,10 @@ Wrap1::Wrap1() : m_entity(nullptr) {
     //m_entity = x.cast<Entity *>();
 }
 
+bool Wrap1::valid() const {
+    return m_entity != nullptr;
+}
+
 int Wrap1::id() const {
     return m_entity->GetId();
 }
@@ -113,7 +117,8 @@ void Wrap1::setActive(bool value) {
 
 void Wrap1::enableControls(bool value) {
     auto hs = m_entity->GetComponent<HotSpotManager>();
-    hs->setActive(value);
+    if (hs != nullptr)
+        hs->setActive(value);
 
     //m_entity->SetControlsEnabled(value);
 }

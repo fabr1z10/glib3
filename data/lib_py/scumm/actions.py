@@ -3,7 +3,7 @@ import lib_py.actions as actions
 import lib_py.scumm.scumm as s
 import lib_py.scumm.helper as func
 from lib_py.scumm.scumm import Config
-from lib_py.scumm.dialogue import Dialogue, Line
+from lib_py.scumm.dialogue import Dialogue
 
 class Walk:
     def __init__(self, pos : list, id = None, tag = None):
@@ -21,12 +21,14 @@ class Turn:
         self.dir = dir
 
 class Say:
-    def __init__(self, lines: list, font:str ='monkey', id = None, tag = None):
+    def __init__(self, lines: list, font:str ='monkey', id = None, tag = None, animate = True):
         self.type = 'scumm.action.say'
         self.font = font
         self.id = id
         self.tag = tag
         self.lines = lines
+        self.animate = animate
+
 
 class ResetVerb(actions.CallFunc):
     @staticmethod
@@ -48,8 +50,9 @@ class EndDialogue(actions.CallFunc):
                 d.onEnd()            
             main : example.Wrap1 = example.get('main')
             ui : example.Wrap1 = example.get('ui')
+            if ui.valid:
+                ui.setActive(True)
             dial : example.Wrap1 = example.get('dialogue')
-            ui.setActive(True)
             dial.setActive(False)
             main.enableControls(True)
         return f
@@ -57,25 +60,45 @@ class EndDialogue(actions.CallFunc):
         super().__init__(f = EndDialogue.pippo(dialogueId))
 
 
+class EnableControls(actions.CallFunc):
+    @staticmethod
+    def pippo(value: bool):
+        def f():
+            main : example.Wrap1 = example.get('main')
+            ui : example.Wrap1 = example.get('ui')
+            if ui.valid:
+                ui.setActive(value)
+            main.enableControls(value)
+        return f
+
+    def __init__(self, value: bool):
+        super().__init__(f = EnableControls.pippo(value))
+
+
 class StartDialogue(actions.CallFunc):
     @staticmethod
     def pippo(dialogueId: str, group: int):
         def f():
-            main : example.Wrap1 = example.get('main')
-            ui : example.Wrap1 = example.get('ui')
-            dial : example.Wrap1 = example.get('dialogue')
-            ui.setActive(False)
-            dial.setActive(True)
-            main.enableControls(False)
-            # get the dialogue
             print ('opening dialogue: ' + dialogueId)
             d : Dialogue = s.State.getDialogue(dialogueId)
+            d.reset()
             if d.onStart:
                 d.onStart()
-            d.reset()
             lines = d.getLines()
-            for line in lines:
-                dial.appendText(line)
+            if lines:
+                main : example.Wrap1 = example.get('main')
+                ui : example.Wrap1 = example.get('ui')
+                if ui.valid:
+                    ui.setActive(False)
+                dial : example.Wrap1 = example.get('dialogue')
+                dial.setActive(True)
+                main.enableControls(False)
+                # get the dialogue
+                for line in lines:
+                    dial.appendText(line)
+            else:
+                # no lines, just exit dialogue
+                return EndDialogue.pippo(dialogueId)()
         return f
 
     def __init__(self, dialogueId : str, group: int = 0):

@@ -18,8 +18,8 @@ def f():
 def builder():
     r = RoomDialogue(id='scummbar')
     r.add (se.BackgroundItem(image='gfx/mancomb.png', pos = [0,0,-1]), 'main')
-    r.add (se.Character(model='mancomb.mancomb', tag='mancomb.mancomb', speed=0,dir='e',state='idle',
-        text_color=[255,85,85,255], text_offset=[0,90], pos=[52,18]), 'main')
+    r.addItem (id = 'mancomb.mancomb')
+    #r.addItem (id = 'guybrush.dialogue')
     r.init.append(f)
     return r
 

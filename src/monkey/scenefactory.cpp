@@ -200,6 +200,7 @@ SceneFactory::SceneFactory() {
     add<ResumeScript> ("resume_script");
     add<KillScript> ("kill_script");
     add<ShowMessage> ("show_message");
+    add2<ShowMessage> ("action.msg");
     add<SetState> ("setstate");
     add2<SetState> ("action.setstate");
     add<SetActive> ("setactive");

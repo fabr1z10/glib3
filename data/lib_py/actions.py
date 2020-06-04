@@ -106,3 +106,11 @@ class ChangeCamBounds():
         self.xmax = xmax
         self.ymin = ymin
         self.ymax = ymax
+
+class Msg:
+    def __init__(self, text: str, font : str, pos: tuple, color: tuple):
+        self.type = 'action.msg'
+        self.font = font
+        self.text = text
+        self.pos = pos
+        self.color = color

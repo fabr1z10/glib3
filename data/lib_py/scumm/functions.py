@@ -60,3 +60,68 @@ def run_action(x,y,obj=None):
     # next, call the handler for the current verb
     verb.handler()
 
+def dialogueHelper1(strings, characters, *args):
+    def f():
+        sc = script.Script()
+        for b in args:
+            pos= characters[b[0]][0]
+            col = characters[b[0]][1]
+            print ('position = ' + str(pos[0]))
+            for c in b[1:]:
+                sc.addAction (actions.Msg(text = strings[c], font='monkey', pos = (pos[0], pos[1], 5), color = col))
+        return sc
+    return f
+
+
+def dialogueHelper2(s, *args):
+    def f():
+        sc = script.Script()
+        for b in args:
+            lines = []
+            for c in b[1:]:
+                lines.append(s[c])
+            #print ('adding action ' + str(lines))
+            sc.addAction(sa.Say(lines=lines, tag=b[0]))
+        return sc
+    return f
+
+
+# a: animate forward - async
+# ab: aimate backward - async
+# A: animate forward - sync
+# Ab: animate backward - async
+# d: delay
+# (...) lines to say
+
+# dialogue with anim control
+# supercool and quick way to create a dialogue
+d3h = {
+    'a': lambda tag, c : actions.Animate (anim = c, tag = tag, fwd = True, sync = False),
+    'ab': lambda tag, c : actions.Animate (anim = c, tag = tag, fwd = False, sync = False),
+    'A': lambda tag, c : actions.Animate (anim = c, tag = tag, fwd = True, sync = True),
+    'Ab': lambda tag, c : actions.Animate (anim = c, tag = tag, fwd = False, sync = True),
+    'd': lambda tag, c: actions.Delay (sec = float(c))
+}
+
+def d3(s, *args):
+    def f():
+        sc = script.Script()
+        an = True
+        for b in args:
+            tag = b[0]
+            print (tag)
+            for c in b[1:]:
+                if isinstance(c, tuple):
+                    animate = True if c[0] == 'a' else False
+                    l = [s[x] for x in list(c[1:])]
+                    #print ('say ' + str(l))
+                    sc.addAction (sa.Say (lines = l, tag = tag, animate = animate)) 
+                elif isinstance(c, str):
+                    # check if we have pending lines
+                    i = c.find(':')
+                    act = c[:i]
+                    print ('adding ' + act)
+                    sc.addAction (d3h[act](tag, c[i+1:]))
+        print ('script has ' + str(len(sc.actions))  + ' acts.')
+        return sc
+    return f

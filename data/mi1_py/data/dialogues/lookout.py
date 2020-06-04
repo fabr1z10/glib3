@@ -1,160 +1,80 @@
-from lib_py.scumm.dialogue import Dialogue, NodeStatus, DialogueNode, Line
+from lib_py.scumm.dialogue import Dialogue, DialogueNode
 from lib_py.script import Script
 from lib_py.scumm.scumm import State
+from lib_py.scumm.functions import dialogueHelper2
 import lib_py.engine as engine
 import mi1_py.variables as var
 import lib_py.scumm.actions as sa
 import example
+import random
 
-st = engine.data['strings']
-sl = st['dialogues']['lookout']
-d = Dialogue('lookout')
+# define the string array
+sl = engine.data['strings']['dialogues']['lookout']
 
-def f():
-    print ('cane!')
+# create the dialogue
+d = Dialogue('lookout', sl)
 
 def g(n):
     def f():
         s = Script()
         l = None
-        if var.talked_to_lookout>00:
-            l = [sl[5], sl[43], sl[53]]
-            #dl = State.getDialogue('lookout')
-            #dl.lines[6].active = False
-            #dl.lines[7].active = False
+        if var.talked_to_lookout>0:
+            names = [sl[53],sl[54]]
+            l = [sl[5], sl[43] + random.choice(names)]
         else:
             l = [sl[5], sl[6], sl[7], sl[8], sl[9]]
         var.talked_to_lookout +=1    
         s.addAction (sa.Say(lines = [sl[n]], tag='player'))
-        s.addAction (sa.Turn(tag='lookout.lookout', dir='s'))
-        s.addAction (sa.Say(tag='lookout.lookout', lines = l))
+        s.addAction (sa.Turn(tag='lookout', dir='s'))
+        s.addAction (sa.Say(tag='lookout', lines = l))
         return s
-    return f
-
-def dialogue_helper(s, *args):
-    def f():
-        script = Script()
-        for b in args:
-            lines = []
-            for c in b[1:]:
-                lines.append(s[c])
-            script.addAction(sa.Say(lines=lines, tag=b[0]))
-        return script
     return f
 
 def lookoutTurn(n):
     def f():
         s = Script()
         s.addAction(sa.Say(tag="player", lines = [sl[n]]))
-        s.addAction(sa.Turn(tag='lookout.lookout', dir='e'))
-        s.addAction(sa.Say(tag="lookout.lookout", lines = [sl[15], sl[16]]))
+        s.addAction(sa.Turn(tag='lookout', dir='e'))
+        s.addAction(sa.Say(tag="lookout", lines = [sl[15], sl[16]]))
         return s
     return f
 
 def squinky():
     if d.nodes['imguy'].status == NodeStatus.CLOSED:
-        return dialogue_helper(sl, ['player', 11], ['lookout.lookout', 27], ['player',28], ['lookout.lookout', 29])()        
+        return dialogueHelper2(sl, ['player', 11], ['lookout', 27], ['player',28], ['lookout', 29])()        
     else:
-        return dialogue_helper(sl, ['player', 11], ['lookout.lookout', 41])()        
+        return dialogueHelper2(sl, ['player', 11], ['lookout', 41])()        
 
 def start(self):
+    d.nodes[12].active = True
+    if (not d.nodes[10].active or not d.nodes[13].active):
+        d.nodes[47].active = True
     return
-    #self.lines[8].active=True
-    #self.lines[14].active=True
 
 def end(self):
     s = Script()
-    s.addAction(sa.Turn(tag='lookout.lookout', dir='w'))
+    s.addAction(sa.Turn(tag='lookout', dir='w'))
     example.play(s)
     
-import types
-d.onStart = types.MethodType( start, d )
-d.onEnd = types.MethodType( end, d )
+d.addStartScript (start)
+d.addEndScript (end)
 
-d.addNode (DialogueNode ('init', lines = [
-    Line (sl[1], g(1)),
-    Line (sl[2], g(2)),
-    Line (sl[3], g(3)),
-    Line (sl[4], g(4))
-], status = NodeStatus.ACTIVE, nextStatus= NodeStatus.ACTIVE, resume= True))
+# nodes
+d.add (1, g(1), 1, True)
+d.add (2, g(2), 1, True)
+d.add (3, g(3), 1, True)
+d.add (4, g(4), 1, True)
 
-d.addNode (DialogueNode (
-    'imguy', 
-    lines = [ Line(sl[10], dialogue_helper(sl, ['player', 10, 17], ['lookout.lookout', 18, 19, 20, 21])) ],
-    status = NodeStatus.ACTIVE,
-    nextStatus = NodeStatus.CLOSED,
-    resume=True,
-    active = lambda: var.talked_to_lookout == 1 ))
+d.add (10, dialogueHelper2 (sl, ['player', 10, 17], ['lookout', 18, 19, 20, 21]), 1, lambda: 1 if var.talked_to_lookout == 1 else 3, [10], [22], parent=[1])
+d.add (22, dialogueHelper2(sl, ['player', 22], ['lookout', 23,24,25,26]), 1, False, parent=[1])
+d.add (11, squinky, 1, lambda: 1 if var.talked_to_lookout == 1 else 3, parent=[1])
+d.add (47, dialogueHelper2(sl, ['player', 47], ['lookout', 49]), 1, False, [47], parent=[1])
 
-d.addNode (DialogueNode (
-    'squinky',
-    lines = [ Line(sl[11], squinky, 2)],
-    status = NodeStatus.ACTIVE,
-    nextStatus= NodeStatus.CLOSED,
-    resume=True,
-    active = lambda: var.talked_to_lookout==1
-))
+d.add (12, lookoutTurn(12), 1, True, closeNodes=[12], parent=[1])
+d.add (13, dialogueHelper2 (sl, ['player', 13], ['lookout', 30, 31, 32]), 1, True, [13,10,11], [34,38,47], parent=[1])
+d.add (14, dialogueHelper2 (sl, ['player', 14], ['lookout', 42]), -1, True, parent=[1],order=10)
 
-d.addNode (DialogueNode (
-    'THR', 
-    lines = [ Line(sl[47], dialogue_helper(sl, ['player', 47], ['lookout.lookout', 49])) ],
-    status = NodeStatus.ACTIVE,
-    nextStatus = NodeStatus.ACTIVE,
-    resume=True,
-    active = lambda: var.talked_to_lookout > 1 ))
-
-d.addNode (DialogueNode (
-    'exit', 
-    lines = [ Line(sl[14], dialogue_helper(sl, ['player', 14], ['lookout.lookout', 42]), 100) ],
-    status = NodeStatus.ACTIVE,
-    nextStatus = NodeStatus.ACTIVE,
-    resume=False))
-
-d.addNode (DialogueNode (
-    'whatswrong', 
-    lines = [ Line(sl[22], dialogue_helper(sl, ['player', 22], ['lookout.lookout', 23,24,25,26]), 3) ],
-    status = NodeStatus.ACTIVE,
-    nextStatus = NodeStatus.CLOSED,
-    resume=True))
-
-d.addNode (DialogueNode (
-    'whoru', 
-    lines = [ Line(sl[13], dialogue_helper(sl, ['player', 13], ['lookout.lookout', 30, 31, 32]),4) ],
-    status = NodeStatus.ACTIVE,
-    nextStatus = NodeStatus.OPEN,
-    resume = True,
-    closeNodes=['imguy', 'squinky']))
-
-d.addNode (DialogueNode (
-    'whyexp', 
-    lines = [ Line(sl[34], dialogue_helper(sl, ['player', 34], ['lookout.lookout', 35, 36, 37])) ],
-    status = NodeStatus.ACTIVE,
-    nextStatus = NodeStatus.CLOSED,
-    resume = True))
-
-d.addNode (DialogueNode (
-    'bat', 
-    lines = [ Line(sl[38], dialogue_helper(sl, ['player', 38], ['lookout.lookout', 39, 40])) ],
-    status = NodeStatus.ACTIVE,
-    nextStatus = NodeStatus.CLOSED,
-    resume = True))
-
-d.addNode (DialogueNode (
-    'imoverhere', 
-    lines = [ Line(sl[12], lookoutTurn(12), 3) ],
-    status = NodeStatus.ACTIVE,
-    nextStatus = NodeStatus.ACTIVE,
-    resume = True))
-
-
-d.addEdge('init', 'imguy')
-d.addEdge('init', 'squinky')
-d.addEdge('init', 'THR')
-d.addEdge('init', 'imoverhere')
-d.addEdge('init', 'whoru')
-d.addEdge('whoru', 'whyexp')
-d.addEdge('whoru', 'bat')
-d.addEdge('init', 'exit')
-d.addEdge('imguy', 'whatswrong')
+d.add (34, dialogueHelper2(sl, ['player', 34], ['lookout', 35, 36, 37]), 1, False, [34], parent=[1])
+d.add (38, dialogueHelper2(sl, ['player', 38], ['lookout', 39, 40]), 1, False, [38], parent=[1])
 
 State.addDialogue (d)

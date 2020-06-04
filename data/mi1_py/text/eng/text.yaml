@@ -23,6 +23,7 @@ defaultactions:
 objects: 
   stairs: stairs
   cliffside : cliffside
+  archway: archway
   path: path
   poster: poster
   door: door
@@ -31,6 +32,9 @@ objects:
   pirates: pirates
   fireplace: fireplace
   ilp: important-looking pirates
+  citizen : Citizen of Mêlée
+  lowmoralfiber: Men of Low Moral Fiber (pirates)
+
 dialogues:
   mancomb:
     1: "Ahoy there, stranger."
@@ -39,18 +43,18 @@ dialogues:
     4: "Are you a pirate? Can I be on your crew?"
     5: "Who's in charge here?"
     6: "Nice talking to you."
-    7: "Have fun on M�l�e Island�."
+    7: "Have fun on Mêlée Island�."
     8: "Hey, nice to see you again."
     9: "Guybrush Threepwood?"
     10: "Ha ha ha!!!"
     11: "That's the stupidest name I've ever heard!"
-    12: "I don't know... I kind of like 'Guybrush'"
+    12: "I don't know... I kind of like 'Guybrush'."
     13: "Well, what's YOUR name?"
     14: "Yeah, it's pretty dumb, isn't it?"
     15: "I'm insulted. Goodbye."
     16: "But it's not even a name!"
     17: "My name is Mancomb Seepgood."
-    18: "So what brings you to M�l�e Island� anyway?"
+    18: "So what brings you to Mêlée Island� anyway?"
     19: "I want to be a pirate!"
     20: "I've come seeking my fortune."
     21: "I really don't know."
@@ -99,6 +103,45 @@ dialogues:
     64: "Whatever you say."
     65: "Just watch out for those guard dogs!"
     66: "Uh-oh, it looks like my grog is going flat, so you'll have to excuse me."
+  citizen:
+    1: "Excuse me, but do you have a cousin named Sven?"
+    2: "What?"
+    3: "No, I don't."
+    4: "What is that? Some sort of code?"
+    5: "No, but I once had a barber named Dominique."
+    6: "Never mind."
+    7: "Good night."
+    8: "Excuse me, but do--"
+    9: "Oh, it's only you again."
+    10: "I just want a map."
+    11: "My cousin Sven sends his regards."
+    12: "Could you tell me that code again?"
+    13: "Never mind. I can get a map somewhere else."
+    14: "Wanna bet?"
+    15: "Now get lost."
+    16: "Of course it's a code, you idiot."
+    17: "Close enough."
+    18: "Let's talk business."
+    19: "You want to buy a map to the Legendary Lost Treasure of Mêlée Island�?"
+    20: "Only one in existence."
+    21: "Rare."
+    22: "Very rare."
+    23: "Only 100 pieces of eight..."
+    24: "No thanks. I don't have enough money."
+    25: "No thanks. I don't want it."
+    26: "Well then, buzz off kid, it's bad for business."
+    27: "Come back for the map to the Legendary Lost Treasure of Mêlée Island�, eh?"
+    28: "I hope you brought enough money this time."
+    29: "Shhhhhhh!"
+    30: "Pipe down, will ya?"
+    31: "That ugly sheriff might be around here."
+    32: "Now, then..."
+    33: "I see."
+    34: "Not enough money, eh?"
+    35: "Come back when you're serious about treasure hunting, kid."
+    36: "I'll take it. It'll make a swell gift."
+    37: "There ya go. You've made a wise decision."
+    38: "Now get lost."
   lookout: 
     1: "I heard there was going to be a weenie roast here."
     2: "I'm looking for fun. Seen any?"
@@ -149,7 +192,7 @@ dialogues:
     47: "That's THREEPWOOD."
     48: "Actually, my name is Guybrush Threepwood."
     49: "Oh, right."
-    50: "I am not sure, but I think he may be asleep."
+    50: "I am not sure, but I think he may be *asleep."
     51: "It's the only one I've ever heard that was more ridiculous than \"Squinky\"."
     52: "I'm over here."
     53: "Thranwook."
