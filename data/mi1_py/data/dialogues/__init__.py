@@ -1,1 +1,1 @@
-__all__ = ["lookout", "mancomb","citizen"]
+__all__ = ["lookout", "mancomb","citizen", "lowmoral"]

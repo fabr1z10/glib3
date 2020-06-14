@@ -57,6 +57,8 @@
 #include <monkey/components/skeletalcollider.h>
 #include <monkey/activities/freemove.h>
 #include <monkey/model/skeletalmodel2.h>
+#include <monkey/activities/noop.h>
+#include <monkey/activities/scroll.h>
 
 namespace py = pybind11;
 
@@ -192,6 +194,8 @@ SceneFactory::SceneFactory() {
     add2<DelayTimeDynamic> ("action.delaydynamic");
     add<Animate> ("animate");
     add2<Animate> ("action.animate");
+    add2<NoOp>("action.noop");
+    add2<Scroll> ("action.scroll");
     add<ChangeRoom> ("gotoroom");
     add2<ChangeRoom> ("action.changeroom");
     add<CallFunc> ("callfunc");

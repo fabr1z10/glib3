@@ -3,6 +3,10 @@ import lib_py.engine as engine
 import example
 import random
 
+class NoOp:
+    def __init__(self):
+        self.type = 'action.noop'
+
 class Animate:
     def __init__(self, anim: str, id = None, tag = None, fwd: bool = True, sync: bool = False):
         self.type = 'action.animate'
@@ -28,11 +32,28 @@ class RestartRoom:
         self.type = 'action.changeroom'
         self.room = engine.room
 
+class Scroll:
+    def __init__(self, pos, relative, speed, cam):
+        self.type = 'action.scroll'
+        self.pos = pos
+        self.relative = relative
+        self.speed = speed
+        self.cam = cam
 
 class CallFunc:
     def __init__(self, f : callable):
         self.type = 'action.callfunc'
         self.func = f
+
+class SetActive(CallFunc):
+    @staticmethod
+    def pippo(tag, value):
+        def f():
+            m : example.Wrap1 = example.get(tag)
+            m.setActive(value)
+        return f
+    def __init__(self, tag: str, value: bool):
+        super().__init__(f = SetActive.pippo(tag, value))
 
 class Move:
     def __init__(self, speed: float, to = None, by = None, immediate: bool = False, id = None, tag = None):

@@ -5,9 +5,28 @@ from lib_py.scumm.functions import d3
 import lib_py.engine as engine
 import mi1_py.variables as var
 from lib_py.script import Script
-from lib_py.actions import RunScript
-from lib_py.scumm.actions import EnableControls
+from lib_py.actions import RunScript,Animate,SetActive,Scroll,Move,Delay
+from lib_py.scumm.actions import EnableControls, Turn
 st = engine.data['strings']
+
+def openFake(doorIn, doorOut, scrollPos, gotoPos, dir):
+    def f():
+        s = Script()
+        s.addAction (Animate(tag=doorIn, anim = 'open'))
+        s.addAction (Delay(0.5))
+        s.addAction (SetActive(tag='player', value=False))
+        s.addAction (Animate(tag=doorIn, anim = 'closed'))
+        s.addAction (Scroll(pos=scrollPos, relative=False,speed=50,cam='maincam'))
+        s.addAction (Animate(tag=doorOut, anim = 'open'))
+        s.addAction (Delay(0.5))
+        s.addAction (Move(immediate=True, speed=0, tag='player', to=gotoPos))
+        s.addAction (Turn(dir=dir, tag='player'))
+        s.addAction (SetActive(tag='player', value=True))
+        s.addAction (Animate(tag=doorOut, anim = 'closed'))
+        return s
+    return f
+
+
 
 State.addItem (Item(
     id = 'village2.archway', 
@@ -74,7 +93,11 @@ State.addItem(Item(
     width =60,
     height=60,
     walkto = (85,14),
-    dir = 'w'
+    dir = 'w',
+    actions = {
+        'talkto': ssc.startDialogue('lowmoral')
+    }
+
 ))
 
 State.addItem(CharItem(
@@ -116,3 +139,73 @@ State.addItem(CharItem(
     state='idle',
     chardir='w',
 	speed = 0))
+
+State.addItem(Item(
+    id = 'village2.fakedoor1',
+    text = st['objects']['door'],
+    model = 'fakedoor1',
+    width = 20,
+    height = 30,
+    walkto= (389, 36),
+    dir = 'w',
+    pos = (377, 37, -1),
+    actions = {
+        'open': openFake ('village2.fakedoor1', 'village2.fakedoor3', (160, 0), (135, 60), 's')
+    }))
+
+State.addItem(Item(
+    id = 'village2.fakedoor2',
+    text = st['objects']['door'],
+    model = 'fakedoor2',
+    width = 10,
+    height = 20,
+    walkto= (206, 58),
+    dir = 'e',
+    pos = (208, 59, -1),
+    actions = {
+        'open': openFake ('village2.fakedoor2', 'village2.fakedoor4', (188, 0), (188, 60), 'w')
+    }))
+
+State.addItem(Item(
+    id = 'village2.fakedoor3',
+    text = st['objects']['door'],
+    model = 'fakedoor3',
+    width = 10,
+    height = 15,
+    walkto= (135, 60),
+    dir = 'n',
+    pos = (130,63,-1),
+    actions = {
+        'open': openFake ('village2.fakedoor3', 'village2.fakedoor1', (389, 0), (389, 36), 'e')
+    }))
+
+
+State.addItem(Item(
+    id = 'village2.fakedoor4',
+    text = st['objects']['door'],
+    model = 'fakedoor4',
+    width = 10,
+    height = 15,
+    walkto= (188, 61),
+    dir = 'n',
+    pos = (184,64,-1),
+    actions = {
+        'open': openFake ('village2.fakedoor4', 'village2.fakedoor2', (206, 0), (206, 58), 'w')
+    }))
+
+
+# door to voodoo lady
+State.addItem( Item(
+    id = 'village2.door',
+    text = st['objects']['door'],
+    model = 'door_village_voodoolady',
+    pos = (220, 52),
+    width= 26,
+    height= 26,
+    walkto = (220, 48),
+    dir = 'e',
+    actions = {
+        'open': ssc.openDoor (doorId='village2.door', var='village_voodoolady'),
+        'close': ssc.closeDoor (doorId='village2.door', var = 'village_voodoolady'),
+        'walkto': ssc.walkDoor (var='village_voodoolady', room='voodoolady', pos = var.voodoolady_door_pos, dir='e')
+    }))

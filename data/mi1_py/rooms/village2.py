@@ -34,6 +34,11 @@ def builder():
     r.addItem (id='lmf2', parent='walkarea')
     r.addItem (id='lmf3', parent='walkarea')
     r.addItem (id='village2.rat', parent='walkarea')
+    r.addItem (id='village2.fakedoor1')
+    r.addItem (id='village2.fakedoor2')
+    r.addItem (id='village2.fakedoor3')
+    r.addItem (id='village2.fakedoor4')
+    r.addItem (id = 'village2.door', anim = var.doors.village_voodoolady)
 
     r.addDynamicItems()
     r.init.append(init)

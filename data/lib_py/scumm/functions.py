@@ -57,8 +57,9 @@ def run_action(x,y,obj=None):
     # first, get the current verb
     verb = s.Config.getVerb(s.Config.verb)
     print ('action: ' + verb.text + ' ' + s.Config.item1)
-    # next, call the handler for the current verb
-    verb.handler()
+    if s.Config.item1:
+        # next, call the handler for the current verb
+        verb.handler()
 
 def dialogueHelper1(strings, characters, *args):
     def f():
@@ -123,5 +124,14 @@ def d3(s, *args):
                     print ('adding ' + act)
                     sc.addAction (d3h[act](tag, c[i+1:]))
         print ('script has ' + str(len(sc.actions))  + ' acts.')
+        return sc
+    return f
+
+
+def d4(s, *args):
+    def f():
+        sc = script.Script()
+        for b in args:
+            sc.addAction(b)
         return sc
     return f
