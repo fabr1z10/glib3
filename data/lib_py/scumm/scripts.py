@@ -12,6 +12,14 @@ def say(lines : list, tag: str = 'player'):
         return s
     return f
 
+def pickup(id: str):
+    def f():
+        s = script.Script()
+        s.addAction (act.RemoveEntity(tag=id))
+        s.addAction (sa.AddToInventory(id, 1))
+        return s
+    return f
+
 def openDoor (doorId: str, var: str):
     def f():
         def g():

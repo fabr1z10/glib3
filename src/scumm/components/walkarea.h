@@ -3,7 +3,6 @@
 #include <monkey/components/hotspot.h>
 #include <monkey/math/funcs.h>
 #include <monkey/math/geom.h>
-#include <monkey/lua/luafunc.h>
 #include <monkey/components/scripthotspot.h>
 
 class Scheduler;
@@ -16,7 +15,6 @@ struct BlockedLine {
 class WalkArea : public ScriptHotSpot {
 public:
     WalkArea (std::shared_ptr<Shape> shape, int priority);
-    WalkArea (const LuaTable&);
     WalkArea (const ITable&);
     WalkArea (const WalkArea&);
     std::shared_ptr<Component> clone() const override;
@@ -30,7 +28,7 @@ public:
     //void onMove(glm::vec2) override {}
     void SetDepthFunction (std::shared_ptr<Function2D> func);
     void SetScalingFunction (std::shared_ptr<Function2D> func);
-    void SetHandler (std::shared_ptr<LuaFunction> func);
+    //void SetHandler (std::shared_ptr<LuaFunction> func);
 
     void AddBlockedLine(glm::vec2 A, glm::vec2 B, bool active);
     void EnableBlockedLine(int, bool);

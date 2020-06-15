@@ -3,7 +3,6 @@
 #include <monkey/error.h>
 #include <monkey/math/geomalgo.h>
 #include <monkey/entity.h>
-#include <monkey/lua/luatable.h>
 
 Polygon::Polygon(const std::vector<glm::vec2> &p) : m_points{p} {
     m_bounds.min = glm::vec3(p[0], 0.0f);
@@ -132,30 +131,6 @@ Poly::Poly(const ITable & t) : Shape(t) {
 //        }
 
 
-}
-
-Poly::Poly(const LuaTable & t) : Shape(t) {
-
-    std::vector<float> outline = t.GetVector<float>("outline");
-
-    std::vector<glm::vec2> points;
-    for (size_t i = 0; i < outline.size(); i = i + 2)
-        points.push_back(glm::vec2(outline[i], outline[i + 1]));
-    m_contour = std::make_unique<Polygon>(points);
-
-    //  holes
-    if (t.HasKey("holes")) {
-        std::unique_ptr<Polygon> mainOutline(new Polygon(points));
-        auto holes = t.Get<luabridge::LuaRef>("holes");
-        for (int j = 0; j < holes.length(); ++j) {
-            luabridge::LuaRef h = holes[j + 1];
-            std::vector<float> holeOutline = ReadVector<float>(h);
-            std::vector<glm::vec2> points;
-            for (size_t i = 0; i < holeOutline.size(); i = i + 2)
-                points.push_back(glm::vec2(holeOutline[i], holeOutline[i + 1]));
-            addHole(glm::vec2(0.0f), std::make_shared<Polygon>(points));
-        }
-    }
 }
 
 bool Poly::isPointInside(glm::vec3 P) const {

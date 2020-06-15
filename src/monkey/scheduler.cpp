@@ -2,9 +2,6 @@
 #include <monkey/error.h>
 #include <iostream>
 
-Scheduler::Scheduler(const LuaTable & table) : Runner(table) {
-
-}
 
 Scheduler::Scheduler(const ITable & table) : Runner(table) {
 

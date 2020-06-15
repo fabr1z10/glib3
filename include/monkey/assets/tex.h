@@ -1,8 +1,7 @@
 #pragma once
 
 #include <GL/glew.h>
-
-#include <monkey/lua/luatable.h>
+#include <string>
 #include <monkey/asset.h>
 
 enum TexFilter { nearest, linear, linear_mipmap };

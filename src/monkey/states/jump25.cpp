@@ -30,7 +30,7 @@ void Jump25::AttachStateMachine(StateMachine * sm) {
     }
     m_animator = m_entity->GetComponent<IAnimator>();
     m_collision = Engine::get().GetRunner<ICollisionEngine>();
-    m_depth = dynamic_cast<Depth25*>(m_entity->GetComponent<Properties>());
+    //m_depth = dynamic_cast<Depth25*>(m_entity->GetComponent<Properties>());
     if (m_depth == nullptr) {
         GLIB_FAIL("Walk25 requires a depth25 component!");
     }

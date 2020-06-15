@@ -2,9 +2,6 @@
 #include <monkey/engine.h>
 
 
-ChangeRoom::ChangeRoom(const LuaTable & t) : Activity() {
-    m_roomId = t.Get<std::string>("room");
-}
 
 ChangeRoom::ChangeRoom(const ITable & t) : Activity() {
     m_roomId = t.get<std::string>("room");

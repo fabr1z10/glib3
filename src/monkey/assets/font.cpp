@@ -1,5 +1,4 @@
 #include <algorithm>
-#include <monkey/lua/luatable.h>
 #include <monkey/assets/font.h>
 #include <freetype/ftglyph.h>
 #include <monkey/engine.h>
@@ -21,14 +20,7 @@ Font::Font(const ITable& t) : Font() {
     loadFromFile(file, 36);
 
 }
-Font::Font(const LuaTable & t) : Font() {
 
-    std::string file = t.Get<std::string>("file");
-    if (file[0] == '.') {
-        file.replace(0, 2, Engine::get().GetGameDirectory());
-    }
-    loadFromFile(file, 36);
-}
 
 Font::~Font() {
     glDeleteTextures(1, &m_tex);

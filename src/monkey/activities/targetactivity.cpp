@@ -6,15 +6,6 @@ TargetActivity::TargetActivity(int id) : Activity(), m_id(id), m_entity(nullptr)
 
 }
 
-TargetActivity::TargetActivity(const LuaTable & t) : Activity(), m_id(-1) {
-    if (t.HasKey("tag")) {
-        m_tag = t.Get<std::string>("tag");
-    } else {
-        m_id = t.Get<int>("id");
-    }
-}
-
-
 TargetActivity::TargetActivity(const ITable & t) : Activity(), m_id(-1) {
     if (t.hasKey("tag")) {
         m_tag = t.get<std::string>("tag");

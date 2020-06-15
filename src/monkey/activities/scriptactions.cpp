@@ -2,18 +2,6 @@
 #include <monkey/engine.h>
 #include <monkey/scheduler.h>
 
-SuspendScript::SuspendScript(const LuaTable & t) : Activity() {
-    m_script = t.Get<std::string>("script");
-}
-
-ResumeScript::ResumeScript(const LuaTable & t) : Activity() {
-    m_script = t.Get<std::string>("script");
-}
-
-KillScript::KillScript(const LuaTable & t) : Activity() {
-    m_script = t.Get<std::string>("script");
-}
-
 
 
 

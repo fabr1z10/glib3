@@ -1,29 +1,9 @@
 #include <monkey/math/polyline.h>
 #include <monkey/error.h>
 #include <monkey/math/geom.h>
-#include <monkey/lua/luatable.h>
 
 namespace py = pybind11;
 
-PolyLine::PolyLine(const LuaTable & t) : Shape(t) {
-    auto rVert = t.Get<luabridge::LuaRef>("vertices");
-    for (int i = 0; i< rVert.length(); ++i) {
-        luabridge::LuaRef vertex = rVert[i+1];
-        glm::vec2 p(vertex[1].cast<float>(), vertex[2].cast<float>());
-        m_vertices.push_back(p);
-    }
-    auto rEdges = t.Get<luabridge::LuaRef>("edges");
-    for (int i = 0; i< rEdges.length(); ++i) {
-        luabridge::LuaRef edge = rEdges[i+1];
-        std::pair<int, int> e(edge[1].cast<int>(), edge[2].cast<int>());
-        m_edgeIndices.push_back(e);
-    }
-    for (auto& e : m_edgeIndices) {
-        m_edges.emplace_back(std::make_pair(m_vertices[e.first], m_vertices[e.second]));
-    }
-
-
-}
 
 PolyLine::PolyLine(const ITable & t) : Shape(t) {
     auto rVert = t.get<py::list>("nodes");

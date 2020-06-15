@@ -2,10 +2,10 @@
 #include <monkey/entity.h>
 
 
-Depth25::Depth25(float gravity, float x, float depth, float elevation) : Properties(), m_gravity(gravity), m_x(x),
+Depth25::Depth25(float gravity, float x, float depth, float elevation) : Component(), m_gravity(gravity), m_x(x),
                                                                 m_depth(depth), m_elevation(elevation), m_velocity(glm::vec3(0.0f))
 {
-    m_getters.insert(std::make_pair("vx", std::unique_ptr<Accessor<float>>(new Accessor<float>(&(m_velocity.x), true))));
+    //m_getters.insert(std::make_pair("vx", std::unique_ptr<Accessor<float>>(new Accessor<float>(&(m_velocity.x), true))));
 
 
 }

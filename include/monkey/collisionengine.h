@@ -32,7 +32,6 @@ struct CollisionInfo {
 class CollisionEngine : public ICollisionEngine {
 public:
     CollisionEngine (float cellWidth, float cellHeight);
-    CollisionEngine (const LuaTable&);
     CollisionEngine (const ITable&);
     ~CollisionEngine() override;
     void Add (ICollider*) override ;

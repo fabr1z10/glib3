@@ -11,7 +11,6 @@ class CollisionEngine;
 class SimpleCollider : public ICollider {
 public:
     SimpleCollider (int tag, int flag, int mask) : m_shape{nullptr}, m_tag{tag}, m_flag{flag}, m_mask{mask}, m_enabled{true} {}
-    SimpleCollider (const LuaTable&);
     SimpleCollider (const ITable&);
     SimpleCollider (std::shared_ptr<Shape> shape, int tag, int flag, int mask) :
     m_shape{shape}, m_tag{tag}, m_enabled{true}, m_flag{flag}, m_mask{mask} {}

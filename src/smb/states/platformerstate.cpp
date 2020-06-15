@@ -32,7 +32,7 @@ void PlatformerState::AttachStateMachine(StateMachine * sm) {
     if (m_controller == nullptr) {
         GLIB_FAIL("Platformer state requires a <Controller2D> component!");
     }
-    m_dynamics = dynamic_cast<Dynamics2D*>(m_entity->GetComponent<Properties>());
+    m_dynamics = m_entity->GetComponent<Dynamics2D>();
     if (m_dynamics == nullptr) {
         GLIB_FAIL("Walk4Way state requires a <Dynamics2D> component!");
     }

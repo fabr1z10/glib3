@@ -1,7 +1,6 @@
 #pragma once
 
 #include <monkey/activities/targetactivity.h>
-#include <monkey/lua/luawrapper.h>
 #include <string>
 
 class SetState : public TargetActivity {

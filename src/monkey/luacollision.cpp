@@ -1,5 +1,4 @@
 #include <monkey/luacollision.h>
-#include <monkey/entitywrapper.h>
 #include <monkey/python/wrap1.h>
 
 void LuaCollisionResponse::setOnEnter(pybind11::function& ref) {

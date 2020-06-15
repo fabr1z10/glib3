@@ -1,6 +1,5 @@
 #include <monkey/ref.h>
 #include <monkey/engine.h>
-#include <monkey/lua/luatable.h>
 
 
 
@@ -12,14 +11,6 @@ Ref::Ref(const Ref & orig) : m_id{Monkey::get().getNextId()}, m_active{orig.m_ac
     Monkey::get().add(m_id, this);
 }
 
-Ref::Ref(const LuaTable & table) : Ref() {
-    m_tag = table.Get<std::string>("tag", "");
-    m_active = table.Get<bool>("active", true);
-    Monkey::get().add(m_id, this);
-    if (!m_tag.empty()) {
-        Monkey::get().add(m_tag, this);
-    }
-}
 
 Ref::Ref(const ITable& table) : Ref() {
     m_tag = table.get<std::string>("tag", "");

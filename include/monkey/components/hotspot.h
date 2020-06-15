@@ -68,7 +68,6 @@ class HotSpotManager : public Component, public MouseListener, public KeyboardLi
 public:
     HotSpotManager();
     HotSpotManager(const HotSpotManager&);
-    HotSpotManager(const LuaTable&);
     HotSpotManager(const ITable&);
     std::shared_ptr<Component> clone() const override;
 

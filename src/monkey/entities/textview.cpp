@@ -11,20 +11,7 @@
 
 namespace py = pybind11;
 
-TextView::TextView(const LuaTable & t) : Entity(t) {
-    glm::vec2 size = t.Get<glm::vec2>("size");
-    float fontSize = t.Get<float>("font_size");
-    int lines = t.Get<int>("lines");
 
-    m_width = size.x;
-    m_height = size.y;
-    m_fontSize = fontSize;
-    m_nLines = 0;
-    m_maxLines = lines;
-    m_topLine = 0;
-    init();
-
-}
 
 TextView::TextView(const ITable & t) : Entity(t) {
     glm::vec2 size = t.get<glm::vec2>("size");
@@ -58,7 +45,7 @@ void TextView::init() {
 
 }
 
-TextView::TextView (glm::vec2 pos, float width, float height, float fontSize, int lines, luabridge::LuaRef factory) : Entity(),
+TextView::TextView (glm::vec2 pos, float width, float height, float fontSize, int lines, pybind11::function factory) : Entity(),
     m_nLines{0}, m_width{width}, m_height{height}, m_topLine{0}, m_maxLines(lines), m_fontSize(fontSize)
 {
     init();
@@ -148,8 +135,8 @@ void TextView::AddArrows() {
     auto arrowUpMesh = Engine::get().GetAssetManager().GetModel("arrow_up");
     auto arrowDownMesh = Engine::get().GetAssetManager().GetModel("arrow_down");
 
-    std::shared_ptr<Entity> arrowUp = SpriteFactory::Create(arrowUpMesh);
-    std::shared_ptr<Entity> arrowDown = SpriteFactory::Create(arrowDownMesh);
+    std::shared_ptr<Entity> arrowUp;// = SpriteFactory::Create(arrowUpMesh);
+    std::shared_ptr<Entity> arrowDown;// = SpriteFactory::Create(arrowDownMesh);
 
     arrowUp->SetName("arrowUp");
     arrowDown->SetName("arrowDown");

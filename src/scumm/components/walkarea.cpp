@@ -16,33 +16,6 @@ m_walls(orig.m_walls) {
 }
 
 
-WalkArea::WalkArea(const LuaTable & t) : ScriptHotSpot(t) {
-    auto factory = Engine::get().GetSceneFactory();
-
-    if (t.HasKey("depth")) {
-        auto dref = t.Get<LuaTable>("depth");
-        auto depthFunc = factory->make<Function2D>(dref);
-        SetDepthFunction(depthFunc);
-    }
-
-    if (t.HasKey("scale")) {
-        auto dref = t.Get<LuaTable>("scale");
-        auto scaleFunc = factory->make<Function2D>(dref);
-        SetScalingFunction(scaleFunc);
-    }
-
-    if (t.HasKey("blockedlines")) {
-        luabridge::LuaRef ref = t.Get<luabridge::LuaRef>("blockedlines");
-        for (int i = 0; i < ref.length(); ++i) {
-            luabridge::LuaRef bl = ref[i+1];
-            LuaTable t(bl);
-            glm::vec2 A = t.Get<glm::vec2>("A");
-            glm::vec2 B = t.Get<glm::vec2>("B");
-            bool active = t.Get<bool>("active");
-            AddBlockedLine(A, B, active);
-        }
-    }
-}
 
 WalkArea::WalkArea(const ITable & t) : ScriptHotSpot(t) {
     auto factory = Engine::get().GetSceneFactory();
@@ -78,18 +51,18 @@ std::shared_ptr<Component> WalkArea::clone() const {
 }
 
 void WalkArea::onAdd(Entity * e) {
-    auto props = e->GetComponent<Properties>();
-    if (props != nullptr) {
-        luabridge::LuaRef scale = props->get("walkarea_scale");
-        if (!scale.isNil()) {
-            bool wsc = scale.cast<bool>();
-            if (!wsc) {
-                assignDepth(e);
-                e->onMove.Register(this, [&] (Entity*) { assignDepth(e); });
-                return;
-            }
-        }
-    }
+//    auto props = e->GetComponent<Properties>();
+//    if (props != nullptr) {
+//        luabridge::LuaRef scale = props->get("walkarea_scale");
+//        if (!scale.isNil()) {
+//            bool wsc = scale.cast<bool>();
+//            if (!wsc) {
+//                assignDepth(e);
+//                e->onMove.Register(this, [&] (Entity*) { assignDepth(e); });
+//                return;
+//            }
+//        }
+//    }
     assignScaleAndDepth(e);
     e->onMove.Register(this, [&] (Entity* e) { assignScaleAndDepth(e);});
 

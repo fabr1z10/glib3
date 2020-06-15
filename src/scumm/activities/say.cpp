@@ -6,29 +6,6 @@
 #include <monkey/monkey.h>
 #include <monkey/components/info.h>
 
-Say::Say(const LuaTable& t) : Sequence() {
-    m_lines = t.GetVector<std::string>("lines");
-    m_fontId = t.Get<std::string>("font");
-
-    if (t.HasKey("id")) {
-        m_actorId = t.Get<int>("id");
-    } else {
-        m_tag = t.Get<std::string>("tag");
-    }
-
-    bool animate = t.Get<bool>("animate", true);
-    if (t.HasKey("animstart")) {
-        auto animStart = t.Get<std::string>("animstart");
-        SetAnimationStart(animStart);
-    }
-    if (t.HasKey("animend")) {
-        auto animEnd = t.Get<std::string>("animend");
-        SetAnimationEnd(animEnd);
-    }
-
-    SetNoAnim(!animate);
-
-}
 
 Say::Say(const ITable& t) : Sequence() {
     m_lines = t.get<std::vector<std::string>>("lines");

@@ -13,6 +13,8 @@ class State;
 class Shape;
 class Camera;
 class SkeletalAnimation;
+class Entity;
+class Ref;
 
 class SceneFactory {
 public:
@@ -55,14 +57,7 @@ public:
 //    std::shared_ptr<Component> makeComponent (luabridge::LuaRef ref);
 //    std::shared_ptr<State> makeState (luabridge::LuaRef ref);
 //    std::shared_ptr<SkeletalAnimation> makeSkeletalAnimation(luabridge::LuaRef ref);
-    void addStateFactory(const std::string &a, std::unique_ptr<FactoryMethod<State>> f);
-    void addComponentFactory (const std::string &a, std::unique_ptr<FactoryMethod<Component>> f);
-    void addActivityFactory (const std::string &a, std::unique_ptr<FactoryMethod<Activity>> f);
 
-    template <typename F>
-    void addMethod(const std::string& name, F f) {
-        LuaWrapper::addMethod<F>(name, f);
-    }
 
     template <typename T>
     void add(const std::string& type) {
@@ -78,17 +73,6 @@ public:
     }
 
 
-    template <typename T, bool = std::is_base_of<Ref, T>::value >
-    std::shared_ptr<T> make (const LuaTable& t) {
-        std::string type = t.Get<std::string>("type", "default");
-        auto it = m_facs.find(type);
-        if (it == m_facs.end()) {
-            GLIB_FAIL("Unknown type: " << type);
-        }
-        // dynamic? type check?
-
-        return std::static_pointer_cast<T>((it->second)(t));
-    }
 
     template <typename T, bool = std::is_base_of<Ref, T>::value >
     std::shared_ptr<T> make2 (const ITable& t) {

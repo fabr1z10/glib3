@@ -13,17 +13,6 @@
 #include <monkey/activities/setstate.h>
 #include "../components/character.h"
 
-Walk::Walk(const LuaTable & t) : Sequence() {
-    m_p = t.Get<glm::vec2>("pos");
-
-    if (t.HasKey("id")) {
-        m_actorId = t.Get<int>("id");
-    } else {
-        m_actorId = -1;
-        m_tag = t.Get<std::string>("tag");
-    }
-
-}
 Walk::Walk(const ITable & t) : Sequence() {
     m_p = t.get<glm::vec2>("pos");
 

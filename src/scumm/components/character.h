@@ -9,7 +9,6 @@ class StateCharacter : public StateMachine {
 public:
     StateCharacter(float speed, char dir, const std::string& initialState);
     StateCharacter(const StateCharacter&);
-    StateCharacter(const LuaTable& t);
     StateCharacter(const ITable& t);
 
     void SetDirection(char dir);

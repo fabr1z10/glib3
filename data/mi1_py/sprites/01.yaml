@@ -567,6 +567,38 @@ door_village_voodoolady:
     open:
       frames:
         - [31,179,26,24]
+door_voodoolady_village:
+  sheet: 'gfx/sprites/sprites2.png'
+  type: 'asset.sprite'
+  animations:
+    closed:
+      frames:
+        - [1,55,33,58]
+    open:
+      frames:
+        - [36,55,33,58]
+baskets:
+  sheet: 'gfx/sprites/sprites2.png'
+  type: 'asset.sprite'
+  animations:
+    default:
+      frames:
+        - [71,81,79,35]
+voodoolady_trunk:
+  sheet: 'gfx/sprites/sprites2.png'
+  type: 'asset.sprite'
+  animations:
+    default:
+      frames:
+        - [71,56,81,24]
+rubberchicken:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: 'asset.sprite'
+  animations:
+    default:
+      frames:
+        - [472,98,27,20]
+
 
 
 

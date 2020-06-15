@@ -9,7 +9,7 @@ add_executable(scumm
         components/character.cpp
         components/walkarea.cpp
         factories.cpp
-		lua.cpp)
+        )
 
 include_directories(${INCLUDE_DIR} ${PYBIND_INCLUDE_DIR} ${Python_INCLUDE_DIRS} ${FREETYPE_INCLUDE_DIRS} ${GLM_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS} ${LUA_INCLUDE_DIR})
 

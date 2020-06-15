@@ -6,23 +6,10 @@
 #include <monkey/model/basicmodel.h>
 #include <iostream>
 #include <set>
-#include <monkey/lua/luafunc.h>
 
 extern GLFWwindow* window;
 
 namespace py = pybind11;
-
-HotSpot::HotSpot(const LuaTable & table) : m_shape(nullptr) {
-    m_priority = table.Get<int>("priority", 0);
-    auto factory = Engine::get().GetSceneFactory();
-
-    if (table.HasKey("shape")) {
-        auto shape_table = table.Get<LuaTable>("shape");
-        m_shape = factory->make<Shape>(shape_table);
-    }
-    m_focus = false;
-
-}
 
 HotSpot::HotSpot(const ITable & table) : m_shape(nullptr) {
     m_priority = table.get<int>("priority", 0);
@@ -96,39 +83,6 @@ HotSpotManager::HotSpotManager(const ITable & table) : Component(table) {
         //setLmbClickCallback([f] (float x, float y) { f.execute(x, y);});
     }
 
-}
-
-
-HotSpotManager::HotSpotManager(const LuaTable & table) : Component(table) {
-    m_currentlyActiveHotSpot = nullptr;
-    m_pixelRatio = Engine::get().GetPixelRatio();
-    // this is the function that gets called
-    // if no hotspot is active when left mouse button is clicked,
-    if (table.HasKey("lmbclick")) {
-        LuaFunction f(table.Get<luabridge::LuaRef>("lmbclick"));
-        setLmbClickCallback([f] (float x, float y) { f.execute(x, y);});
-    }
-
-    // this is the function that gets called whent
-    // the right mouse is clicked (no hotspot check here?)
-    if (table.HasKey("rmbclick")) {
-        LuaFunction f(table.Get<luabridge::LuaRef>("rmbclick"));
-        setRmbClickCallback([f] (float x, float y) { f.execute(x, y);});
-    }
-
-    if (table.HasKey("keys")) {
-        luabridge::LuaRef keys = table.Get<luabridge::LuaRef>("keys");
-        for (int i = 0; i < keys.length(); ++i) {
-            luabridge::LuaRef key = keys[i+1];
-            LuaTable t2(key);
-            KeyEvent event;
-            event.key = t2.Get<int>("key");
-            event.action = GLFW_PRESS;
-            event.mods = 0;
-            LuaFunction f(t2.Get<luabridge::LuaRef>("func"));
-            AddCallback(event, [f] () { f.execute(); });
-        }
-    }
 }
 
 HotSpotManager::~HotSpotManager() {
@@ -295,11 +249,13 @@ void HotSpotManager::MouseButtonCallback(GLFWwindow* window, int button, int act
 
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
         if (m_currentlyActiveHotSpot != nullptr && m_currentlyActiveHotSpot->GetObject()->isActive()) {
+            std::cerr << "acco\n";
             m_currentlyActiveHotSpot->onClick(m_worldCoordinates, button, action, mods);
         } else {
             // convert mouse to world coordinates
             double xpos, ypos;
             glfwGetCursorPos(window, &xpos, &ypos);
+            std::cerr << xpos << ", " << ypos << " " << m_defaultCamera->GetTag() << "\n";
             if (m_defaultCamera->IsInViewport(xpos, ypos)) {
                 glm::vec2 wp = m_defaultCamera->GetWorldCoordinates(glm::vec2(xpos, ypos));
                 if (m_lmbClick) m_lmbClick(wp.x, wp.y);

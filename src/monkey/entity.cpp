@@ -59,48 +59,7 @@ Entity::Entity(const ITable& t) : Ref(t),
 
 }
 
-Entity::Entity(const LuaTable & t) : Ref(t),
-    m_localTransform{glm::mat4(1.0)}, m_worldTransform{glm::mat4(1.0)}, m_parent(nullptr), m_flipHorizontal{false},
-    m_enableControls{true}, m_update{true}
-{
 
-    glm::vec3 pos = t.Get<glm::vec3>("pos", glm::vec3(0.0f));
-    if (t.HasKey("angle")) {
-        float angle = t.Get<float>("angle", 0.0f);
-        SetPosition(pos, deg2rad* angle);
-    } else {
-        SetPosition(pos);
-    }
-
-    bool flipx = t.Get<bool>("flipx", false);
-    SetFlipX(flipx);
-
-    if (t.HasKey("scale")) {
-        float scale = t.Get<float>("scale");
-        SetScale(scale);
-    }
-
-    auto factory = Engine::get().GetSceneFactory();
-
-    // setup camera, if any
-    if (t.HasKey("camera")) {
-        LuaTable tc = t.Get<LuaTable>("camera");
-        auto camera = factory->make<Camera>(tc);
-        SetCamera(camera);
-    }
-
-    // add components
-    t.ProcessVector("components", [&] (luabridge::LuaRef ref) {
-        LuaTable tc(ref);
-        AddComponent(factory->make<Component>(tc));
-    });
-
-    t.ProcessVector("children", [&] (luabridge::LuaRef ref) {
-        LuaTable tc(ref);
-        AddChild(factory->make<Entity>(tc));
-    });
-
-}
 
 Entity::Entity(const Entity & e) : Ref(e), m_update(e.m_update) {
     m_flipHorizontal = e.m_flipHorizontal;

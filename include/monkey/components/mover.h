@@ -3,7 +3,6 @@
 #include <monkey/component.h>
 #include <glm/glm.hpp>
 #include <vector>
-#include <monkey/lua/luawrapper.h>
 
 class Mover : public Component {
 
@@ -28,7 +27,7 @@ public:
     void Start() override ;
     void Update(double) override ;
     void setStartPosition(int, float);
-    void setCompleteCallback(luabridge::LuaRef ref);
+    void setCompleteCallback(pybind11::function f);
 private:
     struct Movement {
         Movement(glm::vec2 delta, float speed, float hold);
@@ -49,7 +48,7 @@ private:
     int m_currentMovement;
     float m_cumulatedLength;
     bool m_fwd;
-    std::shared_ptr<luabridge::LuaRef> m_hook;
+    std::shared_ptr<pybind11::function> m_hook;
 
 };
 

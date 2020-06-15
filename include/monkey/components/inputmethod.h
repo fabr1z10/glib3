@@ -11,7 +11,6 @@ public:
     // input method abstracts an input control
     // it can be human driven
     InputMethod() = default;
-    InputMethod(const LuaTable& t) : Component(t) {}
     InputMethod(const ITable& t) : Component(t                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ) {}
     InputMethod(const InputMethod& orig) : Component(orig) {}
 

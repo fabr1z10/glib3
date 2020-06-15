@@ -1,13 +1,10 @@
 #include <monkey/activities/setstate.h>
 #include <monkey/components/statemachine.h>
 #include <monkey/engine.h>
-#include <monkey/entity.h>
 
 namespace py = pybind11;
 
-SetState::SetState(const LuaTable& t) : TargetActivity(t) {
-    m_state = t.Get<std::string>("state");
-}
+
 
 SetState::SetState(const ITable& t) : TargetActivity(t) {
     m_state = t.get<std::string>("state");

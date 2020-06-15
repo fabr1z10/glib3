@@ -33,7 +33,7 @@ public:
     Entity() : Ref(), m_parent(nullptr), m_update(true), m_localTransform{glm::mat4(1.0)},
                m_worldTransform{glm::mat4(1.0)}, m_enableControls{true}, m_flipHorizontal{false}, m_started(false) {}
     ~Entity() override ;
-    Entity(const LuaTable&);
+
     Entity(const ITable&);
 
     // copy ctor

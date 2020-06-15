@@ -10,28 +10,17 @@
 
 #include <monkey/scenefactory.h>
 #include <monkey/engine.h>
-#include <monkey/entitywrapper.h>
 
-void Extension::extendLua() {
-
-    LuaWrapper::addMethod("getdir", &GetDirection);
-
-}
 void Extension::extend(SceneFactory* f) {
 
-    f->add<WalkArea> ("walkarea");
     f->add2<WalkArea> ("components.walkarea");
-    f->add<StateCharacter> ("character");
     f->add2<StateCharacter> ("components.character");
 //
-    f->add<Walk> ("walk");
     f->add2<Walk> ("scumm.action.walk");
 
-    f->add<Turn> ("turn");
     f->add2<Turn> ("scumm.action.turn");
-    f->add<Say> ("say");
     f->add2<Say> ("scumm.action.say");
-    f->add<EnableBlock> ("enable_wall");
+    //f->add<EnableBlock> ("enable_wall");
 
     //LuaWrapper::addMethod("get_direction", [&] (EntityWrapper* e) { return getDirection(e); });
 
@@ -41,14 +30,6 @@ void Extension::extend(SceneFactory* f) {
 //    f->addActivityFactory("enable_wall", std::make_unique<EnableBlockActFactory>());
 }
 
-std::shared_ptr<Component> CharacterComponentFactory::Create(luabridge::LuaRef& ref) {
-    LuaTable table(ref);
-    char dir = table.Get<std::string>("dir")[0];
-    float speed = table.Get<float>("speed");
-    std::string initialState = table.Get<std::string>("state");
-    auto c = std::make_shared<StateCharacter>(speed, dir, initialState);
-    return c;
-}
 
 
 

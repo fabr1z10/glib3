@@ -9,17 +9,6 @@ m_shape(orig.m_shape), m_tag(orig.m_tag), m_flag(orig.m_flag), m_mask(orig.m_mas
 m_enabled(orig.m_enabled)
 {}
 
-SimpleCollider::SimpleCollider(const LuaTable & t) : ICollider() {
-
-    auto factory = Engine::get().GetSceneFactory();
-
-    auto shapeR = t.Get<LuaTable>("shape");
-    m_shape = factory->make<Shape>(shapeR);
-
-    m_tag = t.Get<int>("tag");
-    m_flag = t.Get<int>("flag");
-    m_mask = t.Get<int>("mask");
-}
 
 SimpleCollider::SimpleCollider(const ITable & t) : ICollider() {
 

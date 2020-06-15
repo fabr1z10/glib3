@@ -11,7 +11,6 @@
 class ICollisionEngine : public Runner {
 public:
     ICollisionEngine();
-    ICollisionEngine(const LuaTable& t) : Runner(t) {}
     ICollisionEngine(const ITable& t) : Runner(t) {}
     virtual void Add (ICollider*) = 0;
     virtual void Remove(ICollider*) = 0;

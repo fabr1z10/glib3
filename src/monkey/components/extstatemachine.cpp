@@ -1,19 +1,17 @@
 #include <monkey/components/extstatemachine.h>
 
 #include <monkey/error.h>
-#include <monkey/entitywrapper.h>
 #include <monkey/components/animator.h>
 #include <monkey/components/collider.h>
 #include <monkey/components/inputmethod.h>
 #include <iostream>
-#include <monkey/lua/luatable.h>
 
 ExtendedStateMachine::ExtendedStateMachine(const std::string& initialState) : StateMachine(initialState) {
 }
 
 ExtendedStateMachine::ExtendedStateMachine(const ExtendedStateMachine& orig) : StateMachine(orig)
 {
-    m_globalKeys = orig.m_globalKeys;
+    //m_globalKeys = orig.m_globalKeys;
 }
 
 ExtendedStateMachine::ExtendedStateMachine(const ITable & t) {
@@ -61,10 +59,10 @@ void ExtendedStateMachine::KeyListener (int key) {
     }
     if (!handled) {
         // global key handling...
-        auto f = m_globalKeys.find(key);
-        if (f != m_globalKeys.end()) {
-            f->second();
-        }
+        //auto f = m_globalKeys.find(key);
+        //if (f != m_globalKeys.end()) {
+        //    f->second();
+        // }
     }
     
 }
@@ -76,6 +74,3 @@ void ExtendedStateMachine::Start () {
     }
 }
 
-void ExtendedStateMachine::AddKey(int key, luabridge::LuaRef callback) {
-    m_globalKeys.insert(std::make_pair(key, callback));
-}

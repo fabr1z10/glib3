@@ -2,7 +2,6 @@
 
 #include <monkey/listener.h>
 #include <monkey/runner.h>
-#include <monkey/lua/luawrapper.h>
 #include <monkey/py.h>
 #include <unordered_map>
 
@@ -12,7 +11,6 @@
 class LuaKeyListener : public Runner, public KeyboardListener {
 public:
     LuaKeyListener() : KeyboardListener(), Runner() {}
-    LuaKeyListener(const LuaTable&);
     LuaKeyListener(const ITable&);
     LuaKeyListener(const LuaKeyListener&);
 

@@ -30,13 +30,6 @@ Camera::Camera(glm::vec4 viewport) : Ref(), m_camViewport{viewport} {
 
 }
 
-Camera::Camera(const LuaTable & table) : Ref(table) {
-    m_eye = table.Get<glm::vec3>("pos", glm::vec3(0.0f));
-    m_fwd = table.Get<glm::vec3>("direction", glm::vec3(0, 0, -1));
-    m_up = table.Get<glm::vec3>("up", glm::vec3(0, 1, 0));
-    m_camViewport = table.Get<glm::vec4>("viewport", glm::vec4(0.0f, 0.0f, Engine::get().GetDeviceSize()));
-
-}
 
 Camera::Camera(const ITable & t) : Ref(t) {
     m_eye = t.get<glm::vec3>("pos", glm::vec3(0.0f));
@@ -84,25 +77,6 @@ OrthographicCamera::OrthographicCamera(float orthoWidth, float orthoHeight, glm:
     Init();
 }
 
-OrthographicCamera::OrthographicCamera(const LuaTable & table) : Camera(table) {
-
-    glm::vec2 size = table.Get<glm::vec2>("size");
-    m_orthoWidth = size.x;
-    m_orthoHeight = size.y;
-
-    auto bounds = table.Get<glm::vec4>("bounds", glm::vec4(0.0));
-
-    m_xMax = m_yMax = std::numeric_limits<float>::infinity();
-    m_xMin = m_yMin = -m_xMax;
-    if (bounds != glm::vec4(0.0f)) {
-        SetBounds(bounds[0], bounds[2], bounds[1], bounds[3]);
-    }
-
-    SetPosition(m_eye, m_fwd, m_up);
-    Init();
-
-}
-
 OrthographicCamera::OrthographicCamera(const ITable & table) : Camera(table) {
 
     glm::vec2 size = table.get<glm::vec2>("size");
@@ -129,13 +103,6 @@ PerspectiveCamera::PerspectiveCamera (glm::vec4 viewport, float fov, float nearP
     
 }
 
-PerspectiveCamera::PerspectiveCamera(const LuaTable & t) : Camera(t), WindowResizeListener() {
-    // get field of view
-    m_fov = t.Get<float>("fov", 45.0f);
-    m_near = t.Get<float>("near", 0.05f);
-    m_far = t.Get<float>("far", 1000.0f);
-    SetPosition(m_eye, m_fwd, m_up);
-}
 
 void PerspectiveCamera::Notify(float w, float h) {
     Resize(w, h);

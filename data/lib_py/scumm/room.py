@@ -8,10 +8,13 @@ import lib_py.camera as cam
 import lib_py.scumm.scumm as scumm
 import lib_py.scumm.entity as se
 import lib_py.scumm.functions as func
+from lib_py.scumm.helper import refresh_inventory
 import lib_py.actions as act
 import lib_py.scumm.actions as scact
 from lib_py.script import Script
 import example
+
+
 
 def runDialogueScript(s):
     def f(x, y, obj = None):
@@ -40,6 +43,14 @@ def runDialogueScript(s):
             a.addAction(scact.ResumeDialogue(s.dialogue.id))
         example.play(a)
     return f
+
+def makeInventoryButton(item):
+    return se.InventoryButton(
+        font='ui', 
+        itemId=item[0], 
+        qty=item[1],
+        colorInactive = scumm.Config.Colors.inv_unselected, 
+        colorActive= scumm.Config.Colors.inv_selected)
 
 def makeDialogueButton(dialogueline):
     return se.DialogueButton(
@@ -74,6 +85,10 @@ class RoomDialogue(room.Room):
         self.add (e = entity, ref =parent)
 
 
+def startupRoomUI():
+    print ('starting up inventory')
+    refresh_inventory()
+    return
 
 class RoomUI(room.Room):
     def __init__(self, id: str, width, height, collide = False):
@@ -102,6 +117,8 @@ class RoomUI(room.Room):
         ui.add (entity.Text(font='ui', text = defv.text, color = scumm.Config.Colors.current_action, 
             align = entity.TextAlignment.bottom, tag = 'current_verb', pos = [camWidth/2, 48, 0]))
         ui.addComponent (compo.HotSpotManager())
+        inventory_node = entity.TextView (factory=makeInventoryButton, pos=(160,0),  size=(140,48), fontSize=8, lines=6, deltax=26, tag='inventory')
+        inventory_node.addComponent(compo.HotSpotManager())
 
         # add the dialogue node
         dialogue_node = entity.TextView(factory=makeDialogueButton, size=[320,56], fontSize=8, lines=6, deltax=26, tag='dialogue')
@@ -139,13 +156,20 @@ class RoomUI(room.Room):
         self.scene.append(main)
         self.scene.append(ui)
         self.scene.append(dialogue_node)
+        self.scene.append(inventory_node)
 
         scumm.Config.resetVerb()
         
         # create a hotspot manager
         #self.engines.append(runner.HotSpotManager(lmbclick=func.walkto))
         self.engines.append(runner.Scheduler())
+        self.init.append(startupRoomUI)
+
+
     def addItem(self, id: str, parent: str = 'main', **kwargs):
+        inv = scumm.State.getCurrentInventory()
+        if id in inv:
+            return
         entity = scumm.State.items[id].create(**kwargs)
         self.add (e = entity, ref =parent)
 

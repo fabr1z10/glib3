@@ -1,18 +1,9 @@
 #include <monkey/components/luakeylistener.h>
-#include <monkey/lua/luatable.h>
 #include <GLFW/glfw3.h>
 
 namespace py = pybind11;
 
-LuaKeyListener::LuaKeyListener(const LuaTable & t) : Runner() {
 
-//    t.ProcessVector("keys", [&] (luabridge::LuaRef ref) {
-//        int key = ref["key"].cast<int>();
-//        luabridge::LuaRef callback = ref["func"];
-//        addHotKey (key, callback);
-//    });
-
-}
 
 LuaKeyListener::LuaKeyListener(const ITable & t) : Runner() {
 

@@ -137,7 +137,6 @@ inline glm::vec2 OrthographicCamera::GetSize() {
 class PerspectiveCamera : public Camera, public WindowResizeListener {
 public:
     PerspectiveCamera (glm::vec4 viewport, float fov = 45.0f, float nearPlane = 0.05f, float farPlane = 1000.0f);
-    PerspectiveCamera (const LuaTable&);
     void Resize(int w, int h) override;
     bool IsVisible(const Bounds&) override {return true;}
     void Notify(float, float) override ;

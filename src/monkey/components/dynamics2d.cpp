@@ -1,10 +1,10 @@
 #include <monkey/components/dynamics2d.h>
 #include <monkey/math/geom.h>
 #include <iostream>
-Dynamics2D::Dynamics2D(float gravity) : Properties(), m_gravity(gravity), m_velocity(0.0f), m_velocitySmoothing(0.0f),
+Dynamics2D::Dynamics2D(float gravity) : Component(), m_gravity(gravity), m_velocity(0.0f), m_velocitySmoothing(0.0f),
 m_velocitySmoothingZ(0.0f)
 {
-    m_getters.insert(std::make_pair("vx", std::unique_ptr<Accessor<float>>(new Accessor<float>(&(m_velocity.x), true))));
+    // m_getters.insert(std::make_pair("vx", std::unique_ptr<Accessor<float>>(new Accessor<float>(&(m_velocity.x), true))));
 
 }
 
@@ -13,7 +13,7 @@ Dynamics2D::Dynamics2D(const ITable & t) : m_velocity(0.0f), m_velocitySmoothing
     m_gravity = t.get<float>("gravity");
 }
 
-Dynamics2D::Dynamics2D(const Dynamics2D& orig) : Properties(orig) {
+Dynamics2D::Dynamics2D(const Dynamics2D& orig) : Component(orig) {
     m_gravity = orig.m_gravity;
     m_velocity = orig.m_velocity;
     m_velocitySmoothing = orig.m_velocitySmoothing;

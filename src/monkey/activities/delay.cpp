@@ -1,9 +1,5 @@
 #include <monkey/activities/delay.h>
-#include <monkey/lua/luatable.h>
 
-DelayTime::DelayTime(const LuaTable & t) : Activity() {
-    m_time = t.Get<float>("sec");
-}
 
 DelayTime::DelayTime(const ITable & t) : Activity() {
     m_time = t.get<float>("sec");
@@ -20,9 +16,6 @@ void DelayTime::Run(float dt) {
     }
 }
 
-DelayTimeDynamic::DelayTimeDynamic(const LuaTable & t) : Activity() {
-
-}
 
 DelayTimeDynamic::DelayTimeDynamic(const ITable & t) : Activity() {
     m_func = t.get<pybind11::function>("func");

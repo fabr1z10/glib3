@@ -1,4 +1,5 @@
 import lib_py.scumm.scumm as s
+
 import lib_py.entity as entity
 import lib_py.components as compo
 import lib_py.scumm.components as sc
@@ -82,6 +83,26 @@ class DialogueButton(entity.Text):
             onleave = change_color(colorInactive),
             onclick = script )) 
 
+class InventoryButton(entity.Text):
+    def __init__(self, font: str, itemId: str, qty: int, colorInactive, colorActive, align: entity.TextAlignment = entity.TextAlignment.bottomleft, 
+        script: callable = None, tag=None, pos=[0,0,0]):
+        if itemId not in s.State.items:
+            raise BaseException('Hey! unknown item: ' + itemId)
+        item = s.State.items[itemId]  
+        # get the item text
+        text = ''
+        if qty == 1:
+            text = item.text
+        else:
+            text = str(qty) + ' ' + item.plural
+
+        super().__init__(font, item.text, colorInactive, align, tag, pos)                  
+        self.addComponent(compo.HotSpot(
+            shape = None,
+            onenter = change_color(colorActive), 
+            onleave = change_color(colorInactive),
+            onclick = script )) 
+
 class WalkArea(entity.Entity):
     def __init__(self, shape, depth = None, scale = None, priority : int = 0, tag = None, pos = [0,0,0]):
         super().__init__(tag, pos)
@@ -127,12 +148,14 @@ class Character(Sprite):
 
 # an item template. This can be used for visible (invisible) items, 
 # with or without hotspot
+
 class Item:
     def __init__(self, id: str, text: str = None, model: str = None, 
         width: float = None, height: float = None, walkto: tuple = (), dir: str = '', 
-        offset = [0,0], priority=1, actions : dict = {}, pos: tuple = (0,0), tag: str = None):
+        offset = [0,0], priority=1, actions : dict = {}, pos: tuple = (0,0), tag: str = None, plural: str = None):
         self.id = id
         self.text = text
+        self.plural = plural if plural is not None else text
         self.width = width
         self.height  =height
         self.offset = offset

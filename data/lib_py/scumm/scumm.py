@@ -26,6 +26,8 @@ class Config:
         current_action = [0, 170, 170, 255]
         verb_selected = [255, 255, 85, 255]
         verb_unselected = [0, 170, 0, 255]
+        inv_unselected = [170, 0, 170, 255]
+        inv_selected = [255, 85, 255, 255]
     ui_height : int
     verb: str = ''
     item1 : str = ''
@@ -70,25 +72,17 @@ class Config:
 #         self.params = params
 #         self.parent = parent
 
-# new item
-# an item can have 
-# model ... optional, if this is provided the item will have a gfx
-# -- a hotspot 
-# if the item has an hotspot, it means the player can iteract with it. In order to have
-# a hotspot, you must provide: text, width, height, walkto, dir
-# optionally, you can provide an actions table to specify the script attached to each action
-def ni (id: str, model: str, text: str, width: float, height: float, walkto: tuple, dir: str, actions: dict = {}):
-    State.addItem(
-        id = id, 
-        item = Item(
-            model = model,
-            text = text, 
-            width = 30, 
-            height = 10, 
-            walkto = walkto,
-            dir = dir,
-            actions = actions
-        ))
+
+
+
+# initialize the scumm engine
+# it requires a player list, and an initial player
+def init(players: list, current_player : str):
+    # initialize inventories
+    for player in players:
+        State.inventory[player] = {}
+    State.player = current_player
+    
 
     
 class State:
@@ -104,11 +98,17 @@ class State:
     inventory = {}
 
     @staticmethod
+    def getCurrentInventory():
+        return State.inventory[State.player]
+
+    @staticmethod
     def has (id: str, qty: int = 1):
         return State.player in State.inventory and id in State.inventory[State.player] and State.inventory[State.player][id] >= qty
 
     @staticmethod
     def addItem (item):
+        if item.id in State.items:
+            raise BaseException('Duplicate item ' + item.id)
         State.items[item.id]= item
     
     

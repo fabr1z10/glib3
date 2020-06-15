@@ -1,6 +1,5 @@
 #include <monkey/assetman.h>
 #include <monkey/engine.h>
-#include <monkey/lua/luatable.h>
 
 namespace py = pybind11;
 
@@ -89,11 +88,5 @@ void AssetManager::CleanUp() {
     //m_fonts.CleanUp();
     //m_models.CleanUp();
     //m_textures.CleanUp();
-}
-
-void BasicAssetStore<Tex>::Init(const std::string &f, SceneFactory *sf) {
-
-    IAssetStore<Tex>::Init(f, sf);
-    m_gfxDir = Engine::get().GetGameDirectory() + "gfx/";
 }
 

@@ -117,3 +117,19 @@ class ResumeDialogue(actions.CallFunc):
 
     def __init__(self, dialogueId : str, group: int = 0):
         super().__init__(f = ResumeDialogue.pippo(dialogueId, group))
+
+class AddToInventory(actions.CallFunc):
+    @staticmethod
+    def pippo(id:str, qty: int):
+        def f():
+            print ('eccocococococo')
+            inv = s.State.getCurrentInventory()
+            if id in inv:
+                inv[id]+=qty
+            else:
+                inv[id] = qty
+            func.refresh_inventory()
+        return f
+
+    def __init__(self, id : str, qty: int = 1):
+        super().__init__(f = AddToInventory.pippo(id,qty))

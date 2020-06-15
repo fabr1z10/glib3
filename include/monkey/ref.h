@@ -13,7 +13,6 @@ class Ref : public Object {
 public:
     Ref();
     Ref(const Ref&);
-    Ref(const LuaTable&);
     Ref(const ITable&);
     virtual ~Ref();
     std::string GetTag() const;

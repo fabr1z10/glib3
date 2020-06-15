@@ -18,6 +18,7 @@ public:
     void setVx(float);
     float getScale() const;
     void setScale(float);
+    void follow(bool);
     void move(float dx, float dy, float dz);
     int id() const;
     void setEntity(Entity* e);

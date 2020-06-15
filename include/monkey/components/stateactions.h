@@ -1,7 +1,6 @@
 #pragma once
 
 #include <monkey/components/statemachine.h>
-#include <monkey/lua/luawrapper.h>
 #include <functional>
 
 class StateTransition : public StateAction {
@@ -12,14 +11,7 @@ private:
     std::string m_state;
 };
 
-class StateCallback : public StateAction {
-public:
-    StateCallback(luabridge::LuaRef f);
-    void Run (StateMachine*) override;
-private:
-    luabridge::LuaRef m_f;
 
-};
 
 class StateFunc : public StateAction {
 public:

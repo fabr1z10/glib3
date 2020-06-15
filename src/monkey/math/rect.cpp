@@ -1,13 +1,7 @@
 #include <monkey/math/rect.h>
 #include <monkey/error.h>
 #include <monkey/math/geomalgo.h>
-#include <monkey/lua/luatable.h>
 
-Rect::Rect(const LuaTable & t) : Shape(t) {
-    m_width = t.Get<float>("width");
-    m_height = t.Get<float>("height");
-    initBounds();
-}
 Rect::Rect(const ITable & t) : Shape(t) {
     m_width = t.get<float>("width");
     m_height = t.get<float>("height");

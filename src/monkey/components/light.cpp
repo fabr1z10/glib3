@@ -16,14 +16,6 @@ DirectionalLight::DirectionalLight(const DirectionalLight & orig) : Light(orig) 
     m_diffuse = orig.m_diffuse;
 }
 
-DirectionalLight::DirectionalLight(const LuaTable & t) : Light(t) {
-    m_ambient = t.Get<glm::vec3>("ambient");
-    m_ambient /= 255.0f;
-    m_diffuse = t.Get<glm::vec3>("diffuse");
-    m_diffuse /= 255.0f;
-    m_direction = t.Get<glm::vec3>("direction");
-}
-
 
 std::shared_ptr<Component> DirectionalLight::clone() const {
     return std::make_shared<DirectionalLight>(DirectionalLight(*this));

@@ -20,7 +20,10 @@ engine.addFont (engine.assets.Font('monkey', './fonts/arial.ttf'))
 
 # configure scumm related stuff
 scumm.Config.ui_height = 56
-scumm.State.player = 'guybrush'
+
+scumm.init(players = ['guybrush'], current_player= 'guybrush')
+
+#scumm.State.inventory['guybrush']['rubber.chicken'] = 1
 
 engine.loadSprites()
 engine.loadText ('eng')

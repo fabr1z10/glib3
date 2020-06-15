@@ -1,6 +1,5 @@
 #include <monkey/components/mover.h>
 #include <monkey/entity.h>
-#include <monkey/entitywrapper.h>
 
 Mover::Mover() : Component(), m_pause(false), m_hold(false) {}
 
@@ -75,7 +74,7 @@ void PolygonalMover::Update(double dt) {
                 } else {
 
                     if (m_hook != nullptr) {
-                        m_hook->operator()(EntityWrapper(m_entity));
+                     //   m_hook->operator()(EntityWrapper(m_entity));
                     }
                     m_entity->SetPosition(m_O);
                     m_currentMovement = 0;
@@ -108,6 +107,6 @@ void PolygonalMover::setStartPosition(int si, float pct) {
     m_pctComplete = pct;
 }
 
-void PolygonalMover::setCompleteCallback(luabridge::LuaRef ref) {
-    m_hook = std::make_shared<luabridge::LuaRef>(ref);
+void PolygonalMover::setCompleteCallback(pybind11::function f) {
+    m_hook = std::make_shared<pybind11::function>(f);
 }

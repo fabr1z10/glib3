@@ -9,7 +9,6 @@ class LightShader;
 class Light : public Component {
 public:
     Light () : Component() {}
-    Light (const LuaTable& t) : Component(t) {}
     Light(const Light& orig) : Component(orig) {}
     virtual ~Light() ;
     void Start() override;
@@ -31,7 +30,6 @@ public:
 class DirectionalLight : public Light {
 public:
     //DirectionalLight (glm::vec3 direction, glm::vec3 color) ;
-    DirectionalLight (const LuaTable&);
     DirectionalLight (const DirectionalLight&);
     void setUp(LightShader*) override ;
     std::shared_ptr<Component> clone() const override;

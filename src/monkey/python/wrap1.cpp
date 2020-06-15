@@ -10,6 +10,7 @@
 #include <monkey/components/info.h>
 #include <monkey/components/statemachine.h>
 #include <monkey/components/dynamics2d.h>
+#include <monkey/components/follow.h>
 
 namespace py = pybind11;
 
@@ -56,6 +57,11 @@ void Wrap1::setVx(float value) {
 }
 void Wrap1::setScale(float value) {
     m_entity->SetScale(value);
+}
+
+void Wrap1::follow(bool value) {
+    m_entity->GetComponent<Follow>()->setActive(value);
+
 }
 
 void Wrap1::move(float dx, float dy, float dz) {

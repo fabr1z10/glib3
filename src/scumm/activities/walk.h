@@ -10,7 +10,6 @@
 
 class Walk : public Sequence {
 public:
-    Walk (const LuaTable&);
     Walk (const ITable&);
     Walk (int actor, glm::vec2 p) : Sequence(), m_actorId{actor}, m_p{p} {}
     ~Walk() override { }

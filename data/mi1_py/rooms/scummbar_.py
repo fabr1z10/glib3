@@ -1,4 +1,4 @@
-from lib_py.scumm.scumm import State, ni
+from lib_py.scumm.scumm import State
 from lib_py.scumm.entity import Item, CharItem
 from lib_py.scumm.dialogue import Dialogue, DialogueNode
 from lib_py.script import Script

@@ -1,13 +1,10 @@
 #pragma once
 
 #include <monkey/components/hotspot.h>
-#include <monkey/lua/luawrapper.h>
-#include <monkey/lua/luafunc.h>
 
 class ScriptHotSpot : public HotSpot {
 public:
     ScriptHotSpot (int priority) : HotSpot(priority) {}
-    ScriptHotSpot (const LuaTable& t);
     ScriptHotSpot (const ITable& t);
 
     ScriptHotSpot (

@@ -1,5 +1,6 @@
 import example
 from lib_py.scumm.scumm import Config, State
+#from lib_py.scumm.entity import Item, CharItem
 
 def set_verb(verbId):
     def f(x, y, e : example.Wrap1):
@@ -17,3 +18,10 @@ def update_current_action():
         item = State.items[Config.item1]
         text += ' ' + item.text
     a.setText (text)
+
+def refresh_inventory():
+    p = example.get('inventory')
+    inv = State.getCurrentInventory()
+    p.clearText()
+    for key, value in inv.items():
+        p.appendText ((key, value))

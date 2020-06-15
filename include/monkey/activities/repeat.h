@@ -1,7 +1,6 @@
 #pragma once
 
 #include <monkey/activity.h>
-#include <monkey/lua/luawrapper.h>
 
 class Repeat : public Activity {
 public:

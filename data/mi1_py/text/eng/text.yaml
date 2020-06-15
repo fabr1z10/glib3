@@ -34,7 +34,13 @@ objects:
   ilp: important-looking pirates
   citizen : Citizen of Mêlée
   lowmoralfiber: Men of Low Moral Fiber (pirates)
-
+  baskets: baskets
+  trunk: trunk
+  couch: couch
+  chalice: chalice
+  knickknacks: knickknacks
+  statue: statue
+  rubberchicken: rubber chicken
 dialogues:
   mancomb:
     1: "Ahoy there, stranger."
@@ -273,3 +279,28 @@ lines:
   4: "I don't want to bother them."
   5: "They're busy listening to the guy on the left."
   6: "I don't think it's wise to wake a sleeping pirate."
+  7: "Actually, I'm not THAT curious to find out what's inside."
+  8: "Probably poisonous snakes."
+  9: "No thanks, I'd rather not touch any of this creepy voodoo stuff."
+  10: "Gee, I wonder what's in these baskets."
+  11: "Hmmm... I think I hear slithering inside."
+  12: "No thanks. Something would probably jump out and bite me."
+  13: "Poor chickens..."
+  14: "I'd better not. They're probably being saved for a pagan ritual, and I wouldn't want to spoil it."
+  15: "Kind of an emaciated Charles Atlas."
+  16: "Let's see, there's a jar of bat drippings..."
+  17: "...a box that says, \"Assorted Scales\"..."
+  18: "...a shaker full of monkey flakes..."
+  19: "...and some cat knuckles."
+  20: "Cat knuckles?!?"
+  21: "How barbaric!"
+  22: "No thanks. I can never fall asleep in strange places."
+  23: "Looks comfortable, in a spooky sort of way."
+  24: "Probably got a body in it."
+  25: "Hmmm..."
+  26: "A rubber chicken with a pulley in the middle..."
+  27: "What possible use could that have?"
+  28: "Maybe no one will miss just this one thing..."
+  29: "Poor little thing..."
+  30: "Whatever it was."
+  31: "Now, THIS is the cup of a carpenter."

@@ -7,7 +7,6 @@
 class Runner : public Ref {
 public:
     Runner() : Ref() {}
-    Runner (const LuaTable& t) : Ref(t) {}
     Runner (const ITable& t) : Ref(t) {}
     virtual ~Runner(){}
     virtual void Init () {}

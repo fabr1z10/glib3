@@ -1,7 +1,6 @@
 #pragma once
 
 #include <monkey/component.h>
-#include <monkey/lua/luawrapper.h>
 #include <memory>
 
 class StateMachine;

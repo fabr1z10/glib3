@@ -1,10 +1,10 @@
 #pragma once
 
-#include <monkey/properties.h>
+#include <monkey/component.h>
 #include <glm/glm.hpp>
 
 // properties for dynamics
-class Dynamics2D : public Properties {
+class Dynamics2D : public Component {
 public:
     Dynamics2D(float gravity);
     Dynamics2D(const Dynamics2D&);
@@ -13,15 +13,14 @@ public:
     glm::vec3 step(float dt, float tvx, float a);
     glm::vec3 step(float dt, float tvx, float tvz, float a);
     glm::vec3 m_velocity;
+    void Start() override {}
+    void Update(double) override {}
     float m_gravity;
-    std::type_index GetType() override;
-    using ParentClass = Properties;
+    using ParentClass = Dynamics2D;
+    //std::type_index GetType() override;
 private:
     float m_velocitySmoothing;
     float m_velocitySmoothingZ;
 };
 
-inline std::type_index Dynamics2D::GetType() {
-    return std::type_index(typeid(Properties));
-}
 

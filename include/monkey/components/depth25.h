@@ -1,14 +1,13 @@
 #pragma once
 
-#include <monkey/properties.h>
+#include <monkey/component.h>
 #include <glm/glm.hpp>
 
 // properties for dynamics
-class Depth25 : public Properties {
+class Depth25 : public Component {
 public:
     Depth25(float gravity, float x, float depth, float elevation);
     Depth25(const Depth25&);
-    std::type_index GetType() override;
     float step(float dt);
     glm::vec3 move(float dx, float ddepth, float delev);
     float getElevation () const;
@@ -29,9 +28,7 @@ private:
     float m_elevation;
 };
 
-inline std::type_index Depth25::GetType() {
-    return std::type_index(typeid(Properties));
-}
+
 
 inline glm::vec3 Depth25::getActualPos() const {
     return glm::vec3(m_x, m_depth, 0.0f);

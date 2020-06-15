@@ -7,7 +7,6 @@
 class ChangeRoom : public Activity {
 public:
     ChangeRoom(const std::string& roomId) : Activity(), m_roomId{roomId}{}
-    ChangeRoom(const LuaTable&);
     ChangeRoom(const ITable&);
     void Start() override;
     void Run (float dt) override {}

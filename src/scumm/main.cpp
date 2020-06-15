@@ -1,6 +1,4 @@
 #include <iostream>
-#include <monkey/lua/luawrapper.h>
-#include <monkey/lua/luatable.h>
 #include <monkey/engine.h>
 #include <set>
 #include <version.h>
@@ -37,9 +35,6 @@ int main(int argc, char* argv[])
     catch (Error & err) {
         std::cerr << err.what() << std::endl;
         return 1;
-    }
-    catch (luabridge::LuaException & e) {
-        std::cerr << e.what();
     }
     catch (nlohmann::json::parse_error & ecd) {
         std::cerr << ecd.what();

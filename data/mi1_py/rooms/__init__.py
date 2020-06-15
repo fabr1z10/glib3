@@ -3,4 +3,6 @@ __all__ = [
     "mancomb", 
     "village1", "village1_",
     "village2", "village2_",
+    "village3", "village3_",
+    "voodoolady", 'voodoolady_',
     "scummbar", "scummbar_"]
