@@ -21,11 +21,13 @@ class ShaderType(enum.Enum):
     unlit_color = 1,
     text = 2
 
-def startUp():
+def startUp(lang: str):
     example.init(example.what)
     addShader (ShaderType.unlit_textured)
     addShader (ShaderType.unlit_color)
     addShader (ShaderType.text)
+    loadAssets()
+    loadText (lang)
 
 # contains engine related infos.
 # All games require these infos.
@@ -40,12 +42,28 @@ shaders = []
 data = {
     'assets': {
         'fonts': {},
-        'models': {}            # include sprite + skeletal
+        'models': {},            # include sprite + skeletal
+        'skeletalanimations': {}
     },
     'rooms': {},
     'strings': {},
     'entities': {},
     'factories': {}
+}
+
+def identity(x): 
+    return x
+
+asset_fac = {
+    'asset.sprite': identity,
+    'asset.skeletalmodel': identity,
+    'asset.skeletalanimation': identity
+}
+asset_loc = {
+    'asset.sprite': 'models',
+    'asset.skeletalmodel': 'models',
+    'asset.skeletalanimation': 'skeletalanimations'
+
 }
 
 def addEntity (id : str, e):
@@ -59,6 +77,24 @@ def addRoom (id : str, f : Callable):
 
 def addShader(s : ShaderType):
     shaders.append(s.name)
+
+
+
+def loadAssets():
+    dir = example.dir + '/assets'
+    if os.path.exists(dir):
+        files = os.listdir(dir)
+        for fi in files:
+            print ('reading ' + fi)
+            with open(dir+'/'+fi) as f:
+                models = yaml.load(f, Loader = yaml.FullLoader) 
+                for key, value in models.items():                    
+                    print ('reading asset: ' + key + ', type: ' + value['type'])
+                    tp = value['type']
+                    if tp not in asset_fac:
+                        raise ValueError("Don't know how to build " + tp)
+                    data['assets'][asset_loc[tp]][key] = asset_fac[tp](value)
+
 
 
 def loadSprites():

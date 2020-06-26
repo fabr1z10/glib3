@@ -1,6 +1,8 @@
 #include <monkey/entities/skeleton.h>
 #include <monkey/engine.h>
 #include <monkey/components/skeletalrenderer.h>
+#include <monkey/skeletal/skanimator.hpp>
+
 
 Skeleton::Skeleton(const ITable& t) : Entity(t) {
 
@@ -11,8 +13,8 @@ Skeleton::Skeleton(const ITable& t) : Entity(t) {
     this->AddComponent(renderer);
 
     auto anim = t.get<std::string>("anim", "");
-    auto animator = std::make_shared<SkeletalAnimator>(model);
-    animator->SetInitialAnimation(anim);
+    auto animator = std::make_shared<SkAnimator>(model);
+    //animator->SetInitialAnimation(anim);
     AddComponent(animator);
 
 }

@@ -141,6 +141,12 @@ inline PyTable ITable::cast(pybind11::object o) const {
 }
 
 
+template <>
+inline PyDict ITable::cast(pybind11::object o) const {
+    PyDict table(o);
+    return table;
+}
+
 //template <>
 //inline void PyTable::foreach(const std::string& name, std::function<void(const PyTable&)> f) const {
 //    if (this->hasKey(name)) {

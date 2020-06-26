@@ -7,8 +7,8 @@ import lib_py.scumm.scripts as sscripts
 import lib_py.scumm.entity as se
 import mi1_py.variables as variables
 
-engine.startUp()
-
+# for a different language, change the lang argument
+engine.startUp(lang='eng')
 engine.device_size = (320, 200)
 engine.window_size = (640, 400)
 engine.title = 'The secret of Monkey Island'
@@ -25,8 +25,6 @@ scumm.init(players = ['guybrush'], current_player= 'guybrush')
 
 #scumm.State.inventory['guybrush']['rubber.chicken'] = 1
 
-engine.loadSprites()
-engine.loadText ('eng')
 
 t = engine.data['strings']
 

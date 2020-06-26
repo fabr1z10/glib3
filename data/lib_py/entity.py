@@ -55,6 +55,13 @@ class Sprite(Entity):
         self.model = model
         self.anim = anim
         
+class Skeleton(Entity):
+    def __init__(self, model: str, anim: str = None, tag = None, pos = [0,0,0]):
+        super().__init__(tag, pos)
+        self.type = 'skeleton'
+        self.model = model
+        self.anim = anim
+
 
 class Text(Entity):
     def __init__(self, font: str, text: str, color, align: TextAlignment = TextAlignment.topleft, tag=None, pos=[0,0,0]):

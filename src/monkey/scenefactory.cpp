@@ -58,6 +58,8 @@
 #include <monkey/model/skeletalmodel2.h>
 #include <monkey/activities/noop.h>
 #include <monkey/activities/scroll.h>
+#include <monkey/skeletal/skmodel.hpp>
+#include <monkey/skeletal/animation.hpp>
 
 namespace py = pybind11;
 
@@ -142,6 +144,7 @@ SceneFactory::SceneFactory() {
     add2<Entity> ("entity");
     add2<Sprite> ("sprite");
     add2<Skeleton> ("skeleton");
+
     add2<Text> ("text");
     add2<TextView> ("textview");
     add2<Follow> ("components.follow");
@@ -197,10 +200,14 @@ SceneFactory::SceneFactory() {
     add2<Circle> ("shape.circle");
     add2<SolidFill>("fill.solid");
     add2<LinearGradient>("fill.lineargradient");
+
+    // assets
     add2<SpriteModel> ("asset.sprite");
     add2<BoxedModel> ("asset.boxed");
     add2<SkeletalModel> ("asset.skeleton");
     add2<SkeletalModel2> ("asset.skeleton2");
+    add2<SkModel> ("asset.skeletalmodel");
+    add2<SkAnimation> ("asset.skeletalanimation");
     add2<Font> ("font");
     add2<Linear2Dy> ("func.liny");
 }

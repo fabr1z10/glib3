@@ -14,6 +14,8 @@ void AssetManager::Init() {
 
     m_fontDict = assets["assets"]["fonts"];
     m_modelDict = assets["assets"]["models"];
+    m_skeletalAnimDict = assets["assets"]["skeletalanimations"];
+
 //    auto factory = Engine::get().GetSceneFactory();
 //    m_fonts.Init("fonts", factory);
 //    m_models.Init("models", factory);
@@ -59,6 +61,21 @@ std::shared_ptr<Font> AssetManager::GetFont (const std::string& fontId) {
         
         auto font= Engine::get().GetSceneFactory()->make2<Font>(t);
         m_fonts.insert(std::make_pair(fontId, font));
+        return font;
+    }
+}
+
+
+std::shared_ptr<SkAnimation> AssetManager::getSkeletalAnimation(const std::string &id) {
+    auto it = m_sanim.find(id);
+    if (it != m_sanim.end()) {
+        return it->second;
+    }
+    else {
+        PyDict t(m_skeletalAnimDict[id.c_str()].cast<py::object>());
+
+        auto font= Engine::get().GetSceneFactory()->make2<SkAnimation>(t);
+        m_sanim.insert(std::make_pair(id, font));
         return font;
     }
 }

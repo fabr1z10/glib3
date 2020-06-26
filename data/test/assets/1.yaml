@@ -1,0 +1,32 @@
+---
+idle:
+  type: 'asset.skeletalanimation'
+  length: 10
+  loop: True
+  keyframes:
+    - t: 0
+      pose: 
+        - [torso, 0, 0, -30]
+    - t: 5
+      pose:
+        - [torso, 0, 0, 30]
+prova:
+  type: 'asset.skeletalmodel'
+  texture: 'gfx/skeleton.png'
+  polygons:    
+    - 
+      id: 'torso'
+      points: [
+        -20, 100, 0, 32, 30, 0, 0, 0, 0, 0, 0,
+        20,  100, 0, 37, 30, 0, 0, 0, 0, 0, 0,
+        20,  150, 0, 37, 25, 0, 0, 0, 0, 0, 0,
+        -20, 150, 0, 32, 25, 0, 0, 0, 0, 0, 0
+      ]
+  joints:
+    - id: 'hip'
+      root: True
+  animations:
+    - idle
+
+
+      # children: ['up_leg_r', 'up_leg_l', 'torso']
