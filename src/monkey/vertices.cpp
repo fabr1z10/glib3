@@ -42,10 +42,9 @@ void VertexText::InitAttributes() {
 void VertexSkeletal::InitAttributes() {
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(VertexSkeletal), (void*)offsetof(VertexSkeletal, x));
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(VertexSkeletal), (void*)offsetof(VertexSkeletal, s));
-    glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(VertexSkeletal), (void*)offsetof(VertexSkeletal, index0));
-    glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(VertexSkeletal), (void*)offsetof(VertexSkeletal, index1));
-    glVertexAttribPointer(4, 1, GL_FLOAT, GL_FALSE, sizeof(VertexSkeletal), (void*)offsetof(VertexSkeletal, weight0));
-    glVertexAttribPointer(5, 1, GL_FLOAT, GL_FALSE, sizeof(VertexSkeletal), (void*)offsetof(VertexSkeletal, weight1));
+    glVertexAttribIPointer(2, 3, GL_INT, sizeof(VertexSkeletal), (void*)offsetof(VertexSkeletal, index0));
+    glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(VertexSkeletal), (void*)offsetof(VertexSkeletal, weight0));
+
 
 
 }

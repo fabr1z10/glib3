@@ -39,6 +39,7 @@ public:
     ShaderType GetShaderId() const { return m_shaderId; }
     static Shader* GetCurrentShader();
     static void SetCurrentShader(Shader*);
+    virtual void initVertexAttributes () = 0;
 protected:
     ShaderType m_shaderId;
     unsigned int m_nAttributes;

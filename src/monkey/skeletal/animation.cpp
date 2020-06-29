@@ -12,7 +12,7 @@ SkAnimation::SkAnimation(const ITable & t) {
             float x = tup[1].cast<float>();
             float y = tup[2].cast<float>();
             float alpha = tup[3].cast<float>();
-            pose[jointName] = JointTransform {x, y, alpha};
+            pose[jointName] = JointTransform (x, y, alpha);
         });
         m_keyFrames.push_back(std::make_shared<SKeyFrame>(t, pose));
     });

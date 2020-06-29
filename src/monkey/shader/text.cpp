@@ -1,6 +1,7 @@
 #include <monkey/shader/text.h>
 #include <monkey/camera.h>
 #include <monkey/shader/glsl/text_shader.h>
+#include <monkey/vertices.h>
 
 TextShader::TextShader() : Shader(text_vshader, text_fshader) {
 
@@ -23,4 +24,8 @@ void TextShader::initMesh(const glm::mat4 &modelMatrix, Camera *cam) {
 
 
 
+}
+
+void TextShader::initVertexAttributes() {
+    VertexText::InitAttributes();
 }

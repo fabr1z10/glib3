@@ -19,7 +19,8 @@ from lib_py.skeletalmodel import SkeletalModel
 class ShaderType(enum.Enum): 
     unlit_textured = 0,
     unlit_color = 1,
-    text = 2
+    text = 2,
+    skeletal = 3
 
 def startUp(lang: str):
     example.init(example.what)

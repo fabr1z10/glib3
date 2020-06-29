@@ -67,6 +67,7 @@ public:
     void calcInverseBindTransform (glm::mat4 parentBindTransform);
     const std::vector<std::shared_ptr<Joint>>& getChildren() const;
     std::string getName() const;
+    int getIndex() const;
 private:
     int m_index;
     std::string m_name;
@@ -82,4 +83,12 @@ inline const std::vector<std::shared_ptr<Joint>>& Joint::getChildren() const {
 
 inline glm::mat4 Joint::getInverseBindTransform() const {
     return m_inverseBindTransform;
+}
+
+inline std::string Joint::getName() const {
+    return m_name;
+}
+
+inline int Joint::getIndex() const {
+    return m_index;
 }

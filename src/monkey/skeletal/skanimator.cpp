@@ -33,7 +33,7 @@ void SkAnimator::Update(double dt) {
 
 /**
  * This method returns the current animation pose of the entity. It returns
- * the desired local-space transforms for all the joints in a map, indexed
+ * the desired ***local-space*** transforms for all the joints in a map, indexed
  * by the name of the joint that they correspond to.
  *
  * The pose is calculated based on the previous and next keyframes in the
@@ -54,7 +54,7 @@ std::unordered_map<std::string, glm::mat4> SkAnimator::calculateCurrentAnimation
     auto frames = getPreviousAndNextFrames();
     float totalTime = frames.second->getTimeStamp() - frames.first->getTimeStamp();
     float currentTime = m_animationTime - frames.first->getTimeStamp();
-    float progression = currentTime / totalTime;
+    float progression = (totalTime == 0.0f) ? 0.0f : (currentTime / totalTime);
     return interpolatePoses(frames.first, frames.second, progression);
 }
 
@@ -107,6 +107,7 @@ std::unordered_map<std::string, glm::mat4> SkAnimator::interpolatePoses(SKeyFram
         // previosTransform is p.second
         JointTransform nextTransform = nf.at(p.first);
         JointTransform currentTransform = JointTransform::interpolate(p.second, nextTransform, progression);
+        std::cout << m_animationTime << " . " << currentTransform.alpha << "\n";
         currentPose.insert(std::make_pair(p.first, currentTransform.getLocalTransform()));
     }
     return currentPose;

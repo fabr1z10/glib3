@@ -1,6 +1,7 @@
 #include <monkey/shader/texunlit.h>
 #include <monkey/camera.h>
 #include <monkey/shader/glsl/tex_unlitc.h>
+#include <monkey/vertices.h>
 
 TexturedUnlit::TexturedUnlit() : Shader(vs_tex_unlitc, fs_tex_unlitc) {
 
@@ -23,4 +24,8 @@ void TexturedUnlit::initMesh(const glm::mat4 &modelMatrix, Camera *cam) {
 
 
 
+}
+
+void TexturedUnlit::initVertexAttributes() {
+    Vertex3D::InitAttributes();
 }

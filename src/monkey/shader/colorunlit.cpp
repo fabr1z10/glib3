@@ -2,6 +2,7 @@
 #include <monkey/camera.h>
 
 #include <monkey/shader/glsl/color_unlit.h>
+#include <monkey/vertices.h>
 
 ColorUnlit::ColorUnlit() : Shader(vs_color_unlit, fs_color_unlit) {
 
@@ -24,4 +25,9 @@ void ColorUnlit::initMesh(const glm::mat4 &modelMatrix, Camera *cam) {
     glUniformMatrix4fv(m_mvMat, 1, GL_FALSE, &mvm[0][0]);
 
 
+}
+
+
+void ColorUnlit::initVertexAttributes() {
+    VertexColor::InitAttributes();
 }

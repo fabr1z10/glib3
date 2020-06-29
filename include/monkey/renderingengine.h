@@ -41,6 +41,7 @@
 // handles camera and loops through all rendering components
 class RenderingEngine : public Component, public WindowResizeListener {
 public:
+    RenderingEngine();
     //virtual ~RenderingEngine();
     void Start() override;
     void Update(double) override;
@@ -57,6 +58,7 @@ public:
     std::shared_ptr<Component> clone() const override {throw;}
     glm::mat4& getModelViewMatrix();
 private:
+    int m_i;
     std::vector<std::unique_ptr<Shader>> m_shaders;
     std::unordered_map<int, std::unique_ptr<Camera>> m_cameras;
     std::unordered_set<Light*> m_lights;

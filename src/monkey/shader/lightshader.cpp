@@ -46,3 +46,7 @@ void LightShader::Start() {
         lightCount++;
     }
 }
+
+void LightShader::initVertexAttributes() {
+    throw;
+}

@@ -8,6 +8,7 @@ import lib_py.scumm.entity as se
 
 engine.startUp(lang='eng')
 
+engine.addShader (engine.ShaderType.skeletal)
 engine.device_size = (320, 200)
 engine.window_size = (640, 400)
 engine.title = 'Test'

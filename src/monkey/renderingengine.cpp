@@ -15,6 +15,9 @@
 
 extern GLFWwindow* window;
 
+
+RenderingEngine::RenderingEngine() : Component(), WindowResizeListener(), m_i(0) {}
+
 //void RenderingStack::push(Entity* entity) {
 //    // if the entity has a camera, we need to activate
 //    Camera* cam = entity->GetCamera();
@@ -98,6 +101,8 @@ void RenderingEngine::Update(double)
     //std::cout << root->ToString() << "\n";
     for (auto& shader : m_shaders) {
         ShaderType stype = shader->GetShaderId();
+        //shader->initVertexAttributes();
+        //GLuint mvLoc = shader->GetUniformLocation(MODELVIEW);
         // start the shader
         Shader::SetCurrentShader(shader.get());
 
@@ -133,8 +138,7 @@ void RenderingEngine::Update(double)
                 // compute model view matrix
                 m_mvm = wt;
                 glm::mat4 mvm = cam->m_viewMatrix * wt;
-                GLuint mvLoc = shader->GetUniformLocation(MODELVIEW);
-                glUniformMatrix4fv(mvLoc, 1, GL_FALSE, &mvm[0][0]);
+                //glUniformMatrix4fv(mvLoc, 1, GL_FALSE, &mvm[0][0]);
                 shader->initMesh(wt, cam);
 
                 renderer->Draw(shader.get());
@@ -142,7 +146,7 @@ void RenderingEngine::Update(double)
             ++iterator;
 
         }
-
+        shader->Stop();
     }
 }
 
