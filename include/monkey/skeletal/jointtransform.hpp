@@ -15,6 +15,10 @@ struct JointTransform {
     // the angle in radians
     float alpha;
 
+    // comp assignment
+    JointTransform& operator+=(const JointTransform& b);
+
+
     static JointTransform interpolate(const JointTransform& A, const JointTransform& B, float progression);
     glm::mat4 getLocalTransform() const;
 };

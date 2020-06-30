@@ -97,8 +97,9 @@ SkModel::SkModel(const ITable & t) {
         bool root = dict.get<bool>("root", false);
         auto pos = dict.get<glm::vec3>("pos");
         JointTransform tr(pos.x, pos.y, pos.z);
-        glm::mat4 bindTransform = tr.getLocalTransform();
-        auto joint = std::make_shared<Joint>(curr++, id, bindTransform);
+        //glm::mat4 bindTransform = tr.getLocalTransform();
+        m_restTransforms[id] = tr;
+        auto joint = std::make_shared<Joint>(curr++, id, tr);
         if (root) {
             m_rootJoint = joint;
         } else {
@@ -111,11 +112,13 @@ SkModel::SkModel(const ITable & t) {
     // ##################
     // read skeleton
     // ##################
-    auto anim = t.get<std::vector<std::string>>("animations");
-    m_defaultAnimation = anim.front();
-    for (const auto& a : anim) {
-        auto sanim = Engine::get().GetAssetManager().getSkeletalAnimation(a);
-        m_animations[a] = sanim;
+    auto anim = t.get<std::vector<std::string>>("animations", std::vector<std::string>());
+    if (anim.size()>0) {
+        m_defaultAnimation = anim.front();
+        for (const auto &a : anim) {
+            auto sanim = Engine::get().GetAssetManager().getSkeletalAnimation(a);
+            m_animations[a] = sanim;
+        }
     }
 
     glm::mat4 identity(1.0f);

@@ -14,7 +14,8 @@ Skeleton::Skeleton(const ITable& t) : Entity(t) {
 
     auto anim = t.get<std::string>("anim", "");
     auto animator = std::make_shared<SkAnimator>(model);
-    //animator->SetInitialAnimation(anim);
+    if (!anim.empty())
+        animator->SetInitialAnimation(anim);
     AddComponent(animator);
 
 }

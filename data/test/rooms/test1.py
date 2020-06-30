@@ -10,7 +10,9 @@ def builder():
     
     r =  room.RoomBasic(id='test1', width = 320, height = 200)
 
-    r.add(e.Skeleton(model='prova2', pos =(160,20)), 'main')
+    b = e.Skeleton(model='uomo1', pos =(160,0), anim='walkprova2')
+    b.scale = 0.5
+    r.add(b, 'main')
     #a = entity.Entity(pos=(160,100))
     #a.addComponent(compo.Gfx(image='gfx/block1.png'))
     #r.add(a, 'main')

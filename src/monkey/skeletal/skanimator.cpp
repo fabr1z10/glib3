@@ -17,6 +17,8 @@ std::shared_ptr<Component> SkAnimator::clone() const {
 void SkAnimator::Update(double dt) {
 
     if (m_currentAnimation == nullptr) {
+        // set rest pose
+        m_model->getRootJoint()->setRest();
         return;
     }
     // increase animation time
@@ -106,7 +108,8 @@ std::unordered_map<std::string, glm::mat4> SkAnimator::interpolatePoses(SKeyFram
     for (const auto& p : previousFrame->getJointKeyFrames()) {
         // previosTransform is p.second
         JointTransform nextTransform = nf.at(p.first);
-        JointTransform currentTransform = JointTransform::interpolate(p.second, nextTransform, progression);
+        JointTransform currentTransform = m_model->getRestTransform(p.first);
+        currentTransform += JointTransform::interpolate(p.second, nextTransform, progression);
         std::cout << m_animationTime << " . " << currentTransform.alpha << "\n";
         currentPose.insert(std::make_pair(p.first, currentTransform.getLocalTransform()));
     }
@@ -118,7 +121,10 @@ std::unordered_map<std::string, glm::mat4> SkAnimator::interpolatePoses(SKeyFram
 void SkAnimator::Start() {
 
     m_animationTime = 0.0f;
-    SetAnimation (m_model->GetDefaultAnimation());
+    if (!m_initAnim.empty()) {
+        SetAnimation(m_initAnim);
+    }
+    //SetAnimation (m_model->GetDefaultAnimation());
 }
 
 

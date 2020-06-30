@@ -20,3 +20,11 @@ glm::mat4 JointTransform::getLocalTransform() const {
     r[3][1] = y;
     return r;
 }
+
+JointTransform& JointTransform::operator+=(const JointTransform &b) {
+    x += b.x;
+    y += b.y;
+    alpha += b.alpha;
+    return *this;
+
+}

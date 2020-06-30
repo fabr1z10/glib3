@@ -27,6 +27,7 @@ public:
      *         animation pose.
      */
     std::vector<glm::mat4> getJointTransforms();
+    JointTransform getRestTransform(const std::string& id) const;
 private:
     std::shared_ptr<Joint> m_rootJoint;
     int m_jointCount;
@@ -34,8 +35,14 @@ private:
     std::unordered_map<std::string, std::shared_ptr<SkAnimation>> m_animations;
     std::string m_defaultAnimation;
     void addJointsToArray(Joint*, std::vector<glm::mat4>&);
+    std::unordered_map<std::string, JointTransform> m_restTransforms;
 };
 
 inline std::shared_ptr<Joint> SkModel::getRootJoint() {
     return m_rootJoint;
+}
+
+inline JointTransform SkModel::getRestTransform(const std::string& id) const {
+    return m_restTransforms.at(id);
+
 }

@@ -5,6 +5,7 @@
 #include <vector>
 #include <memory>
 #include <glm/glm.hpp>
+#include <monkey/skeletal/jointtransform.hpp>
 
 /**
  *
@@ -34,7 +35,7 @@
  */
 class Joint {
 public:
-    Joint (int index, std::string name, glm::mat4 bindLocalTransform);
+    Joint (int index, std::string name, JointTransform localTransform);
 
     void addChild (std::shared_ptr<Joint>);
 
@@ -68,6 +69,8 @@ public:
     const std::vector<std::shared_ptr<Joint>>& getChildren() const;
     std::string getName() const;
     int getIndex() const;
+    void setRest();
+    JointTransform getRestTransform() const;
 private:
     int m_index;
     std::string m_name;
@@ -75,6 +78,7 @@ private:
     glm::mat4 m_transform;
     glm::mat4 m_localBindTransform;
     glm::mat4 m_inverseBindTransform;
+    JointTransform m_localTransform;
 };
 
 inline const std::vector<std::shared_ptr<Joint>>& Joint::getChildren() const {
@@ -91,4 +95,8 @@ inline std::string Joint::getName() const {
 
 inline int Joint::getIndex() const {
     return m_index;
+}
+
+inline JointTransform Joint::getRestTransform() const {
+    return m_localTransform;
 }
