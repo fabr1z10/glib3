@@ -48,7 +48,8 @@ data = {
     'assets': {
         'fonts': {},
         'models': {},            # include sprite + skeletal
-        'skeletalanimations': {}
+        'skeletalanimations': {},
+        'mesh': {}
     },
     'rooms': {},
     'strings': {},
@@ -68,12 +69,12 @@ def grouper(iterable, n, fillvalue=None):
     return zip_longest(*args, fillvalue=fillvalue)
 
 def ms1(x):
+    print ('-------- generating skeletal model -----------')
     im = Image.open(example.dir+'/'+x['texture'])
     tex_height = im.size[1]
-    o = vec2(l = x['origin'])
-    o.y = tex_height - o.y
-    origin = vec3(o.x, o.y, 0)
-    print ('origin is ' +str(o))
+    print ('image height = ' + str(tex_height))     
+    joint_data = {}
+    root = ''
     out = {
         'type': 'asset.skeletalmodel',
         'texture': x['texture'],
@@ -81,26 +82,104 @@ def ms1(x):
         'polygons': [],
         'animations': x['animations']
     }
-
-    # adjust position so that each one refers to parent
-    joint_data = {}
-    root = ''
+    root_joint_pos = vec3()
+    # 1st joint must be root joint!!!
+    # create a map that associates bone name with its index
+    jmap = {}
+    jc = 0
     for k in x['joints']:
-        joint_data[k['id']] = {}
-        joint_data[k['id']]['root'] = k.get('root', False)
-        joint_data[k['id']]['pos'] = k['pos']
-        joint_data[k['id']]['parent'] =  k.get('parent',None)
-        joint_data[k['id']]['children'] = []
-        
-    for key, value in joint_data.items():
-        if value['parent'] is not None:
-            joint_data[value['parent']]['children'].append(key)
-        if value['root']==True:
-            root = key
+        jmap[k['id']] = jc
+        jc += 1
+
+
+    for k in x['joints']:
+        jointId = k['id']
+        isRoot = k.get('root', False)
+        pos = k['pos']
+        poly = k['poly'] 
+        polyId = poly[0]
+        parent = k.get('parent', None)
+        joint_data [jointId] = {
+            'root': isRoot,
+            'pos': pos,
+            'poly': polyId,
+            'parent': parent,
+            'children': []
+        }
+        if parent:
+            joint_data[parent]['children'].append(jointId)
+        print ('    root: ' + str(isRoot))
+        print ('    pos: ' + str(pos))
+        print ('    poly: ' + str(polyId))
+        print ('    parent: ' + str(joint_data[jointId]['parent']))
+        if isRoot:
+            root = jointId
+            root_joint_pos = vec3(pos[0], pos[1])
+        joint_pos = vec3(pos[0], pos[1], pos[2])
+        # generate polygon for this joint
+        print ('reading mesh: ' + polyId)
+        p = data['assets']['mesh'][polyId]
+        po = {
+            'id': jointId,
+            'points': []
+        }
+        mesh_origin = vec2(p['origin'][0], p['origin'][1])
+        indices = [0, 0, 0]
+        for j in range(1, len(poly)):
+            indices[j-1] = jmap[poly[j]]
+        for vertex in grouper(p['points'], 5, 0):
+            tex_coords = vec2(vertex[0], vertex[1])
+            po['points'].extend( [
+                joint_pos.x - root_joint_pos.x + (tex_coords.x - mesh_origin.x),
+                -(joint_pos.y - root_joint_pos.y + (tex_coords.y - mesh_origin.y)),
+                joint_pos.z - root_joint_pos.z,
+                tex_coords.x,
+                tex_coords.y,
+                indices[0],
+                indices[1],
+                indices[2],
+                vertex[2],
+                vertex[3],
+                vertex[4]])
+        out['polygons'].append(po)
+
+
+
+        # for vertex in grouper(p['points'], 9, 0):
+        #     z = vertex[2]
+        #     po['points'].extend( [
+        #         joint_pos.x - root_joint_pos.x + (tex_coords.x - mesh_origin.x),
+        #         -(joint_pos.y - root_joint_pos.y + (tex_coords.y - mesh_origin.y)),
+        #         joint_pos.z - root_joint_pos.z,
+        #         tex_coords.x,
+        #         tex_coords.y,
+        #         vertex[3],
+        #         vertex[4],
+        #         vertex[5],
+        #         vertex[6],
+        #         vertex[7],
+        #         vertex[8]])
+
+                
+            #     vertex[0] - origin.x,
+            #     (tex_height - vertex[1]) - origin.z,
+            #     vertex[2],
+            #     vertex[0],
+            #     vertex[1],
+            # ])
+   
+        # joint_data[k['id']] = {}
+        # joint_data[k['id']]['root'] = k.get('root', False)
+        # joint_data[k['id']]['pos'] = k['pos']
+        # joint_data[k['id']]['parent'] =  k.get('parent',None)
+        # joint_data[k['id']]['children'] = []
+    
+    # find joint position relative to parent
     l = [root]
     while l:
         currentJoint = l.pop(0)
         joint = joint_data[currentJoint]
+        # get joint absolute position
         pos = vec3(l=joint['pos'])
         pos.y = tex_height - pos.y
         ppos = None
@@ -108,51 +187,89 @@ def ms1(x):
             ppos = vec3(l=joint_data[joint['parent']]['pos'])
             ppos.y = tex_height - ppos.y
         else:
-            ppos = origin
-        print(str(pos))
-        print(str(ppos))
+            ppos = pos
         joint_data[currentJoint]['relpos'] = (pos - ppos)
         for child in joint['children']:
             l.append(child)
 
-    for k,v in joint_data.items():
-        p = v['relpos']
+    for key, value in joint_data.items():
+        print ('*** joint: ' + str(key) + ' ***')
+        print ('pos: ' + str(value['pos']))
+        print ('relative pos: ' + str(value['relpos']))
+        print ('parent: ' + str(value['parent']))
+        print ('mesh: ' + str(value['poly']))
+        p = value['relpos']
         j = {
-            'id': k,
+            'id': key,
             'pos': [p.x,p.y,p.z],
-            'root': v['root']
+            'root': value['root']
         }
-        if v['parent'] is not None:
-            j['parent'] = v['parent']
+        if value['parent'] is not None:
+            j['parent'] = value['parent']
         out['joints'].append(j)
+
+    # raise BaseException('CAZZO')
+    # o = vec2(l = x['origin'])
+    # o.y = tex_height - o.y
+    # origin = vec3(o.x, o.y, 0)
+    # print ('origin is ' +str(o))
+
+
+    # # adjust position so that each one refers to parent
+    # joint_data = {}
+    # root = ''
+    # for k in x['joints']:
+    #     joint_data[k['id']] = {}
+    #     joint_data[k['id']]['root'] = k.get('root', False)
+    #     joint_data[k['id']]['pos'] = k['pos']
+    #     joint_data[k['id']]['parent'] =  k.get('parent',None)
+    #     joint_data[k['id']]['children'] = []
+        
+    # for key, value in joint_data.items():
+    #     if value['parent'] is not None:
+    #         joint_data[value['parent']]['children'].append(key)
+    #     if value['root']==True:
+    #         root = key
+
+
+    # for k,v in joint_data.items():
+    #     p = v['relpos']
+    #     j = {
+    #         'id': k,
+    #         'pos': [p.x,p.y,p.z],
+    #         'root': v['root']
+    #     }
+    #     if v['parent'] is not None:
+    #         j['parent'] = v['parent']
+    #     out['joints'].append(j)
         
 
 
-    # prepare skin
-    for k in x['polygons']:
-        id = k['id']
-        po = {
-            'id': id,
-            'points': []
-        }
-        for vertex in grouper(k['points'], 9, 0):
-            print(vertex)
-            po['points'].extend( [
-                vertex[0] - origin.x,
-                (tex_height - vertex[1]) - origin.z,
-                vertex[2],
-                vertex[0],
-                vertex[1],
-                vertex[3],
-                vertex[4],
-                vertex[5],
-                vertex[6],
-                vertex[7],
-                vertex[8]
-            ])
-        out['polygons'].append(po)
+    # # prepare skin
+    # for k in x['polygons']:
+    #     id = k['id']
+    #     po = {
+    #         'id': id,
+    #         'points': []
+    #     }
+    #     for vertex in grouper(k['points'], 9, 0):
+    #         print(vertex)
+    #         po['points'].extend( [
+    #             vertex[0] - origin.x,
+    #             (tex_height - vertex[1]) - origin.z,
+    #             vertex[2],
+    #             vertex[0],
+    #             vertex[1],
+    #             vertex[3],
+    #             vertex[4],
+    #             vertex[5],
+    #             vertex[6],
+    #             vertex[7],
+    #             vertex[8]
+    #         ])
+    #     out['polygons'].append(po)
+    # print(out)
     print(out)
-
     return out
         
 
@@ -167,13 +284,15 @@ asset_fac = {
     'asset.sprite': identity,
     'asset.skeletalmodel': identity,
     'asset.skeletalanimation': identity,
-    'custom.model1': ms1
+    'custom.model1': ms1,
+    'mesh': identity
 }
 asset_loc = {
     'asset.sprite': 'models',
     'asset.skeletalmodel': 'models',
     'asset.skeletalanimation': 'skeletalanimations',
-    'custom.model1': 'models'
+    'custom.model1': 'models',
+    'mesh': 'mesh'
 
 }
 
