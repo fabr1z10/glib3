@@ -117,14 +117,15 @@ def makePlatform(img : str, x:float, y:float, width : int, height: int):
     a.addComponent (compo.Gfx(image = img, repeat = [width, height]))
     a.addComponent (compo.Collider(flag = vars.flags.platform, mask = vars.flags.player, tag = 1, 
         shape = sh.Rect(width = width * vars.tileSize, height = height * vars.tileSize)))
-    a.pos = [x * vars.tileSize, y * vars.tileSize]
+    print ('position ' + str(x*vars.tileSize))
+    a.pos = (x * vars.tileSize, y * vars.tileSize, 0)
     return a
 
 def makeBrick(model: str, x: float, y: float):
     a = Sprite(model = model)
     a.addComponent (compo.Collider (flag = vars.flags.platform, mask = 0, tag = 0, 
         shape = sh.Rect(width=vars.tileSize, height=vars.tileSize)))
-    a.pos = [x * vars.tileSize, y * vars.tileSize]
+    a.pos = [x * vars.tileSize, y * vars.tileSize, 0]
     
     b = Entity()
     b.pos = [2, -0.5, 0]
