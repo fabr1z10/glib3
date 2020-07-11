@@ -282,6 +282,7 @@ def ms1(x):
 
 asset_fac = {
     'asset.sprite': identity,
+    'asset.boxed': identity,
     'asset.skeletalmodel': identity,
     'asset.skeletalanimation': identity,
     'custom.model1': ms1,
@@ -289,6 +290,7 @@ asset_fac = {
 }
 asset_loc = {
     'asset.sprite': 'models',
+    'asset.boxed': 'models',
     'asset.skeletalmodel': 'models',
     'asset.skeletalanimation': 'skeletalanimations',
     'custom.model1': 'models',
@@ -324,7 +326,7 @@ def loadAssets():
                     if tp not in asset_fac:
                         raise ValueError("Don't know how to build " + tp)
                     data['assets'][asset_loc[tp]][key] = asset_fac[tp](value)
-                    print ('stored ' + key)
+                    #print ('stored ' + key)
                     
 
 

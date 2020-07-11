@@ -153,7 +153,11 @@ void SkAnimator::applyPoseToJoints(const std::unordered_map<std::string, glm::ma
                                    std::shared_ptr<Joint> joint, glm::mat4& parentTransform)
 {
     // get the local transform of the current joint
-    glm::mat4 currentLocalTransform = currentPose.at(joint->getName());
+    glm::mat4 currentLocalTransform(1.0f);
+    if (currentPose.count(joint->getName()) > 0) {
+        currentLocalTransform = currentPose.at(joint->getName());
+
+    }
     // mutliply by the parent
     glm::mat4 currentTransform = parentTransform * currentLocalTransform;
     // call children
