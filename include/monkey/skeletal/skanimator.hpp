@@ -4,6 +4,7 @@
 #include <monkey/components/ianimator.h>
 #include <monkey/skeletal/animation.hpp>
 #include <monkey/skeletal/skmodel.hpp>
+#include <monkey/components/renderer.h>
 
 class SkAnimator : public IAnimator {
 public:
@@ -24,11 +25,14 @@ public:
 protected:
     float m_animationTime;
     SkAnimation* m_currentAnimation;
+    std::string m_currentAnimId;
     std::shared_ptr<SkModel> m_model;
+    Renderer* m_renderer;
 private:
     std::unordered_map<std::string, glm::mat4> calculateCurrentAnimationPose();
     std::pair<SKeyFrame*, SKeyFrame*> getPreviousAndNextFrames();
     std::unordered_map<std::string, glm::mat4> interpolatePoses(SKeyFrame* previousFrame, SKeyFrame* nextFrame, float progression);
     void applyPoseToJoints(const std::unordered_map<std::string, glm::mat4>& currentPose, std::shared_ptr<Joint> joint, glm::mat4& parentTransform);
 
+    std::vector<std::pair<std::string, glm::vec3>> m_offsetPoints;
 };

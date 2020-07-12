@@ -157,7 +157,7 @@ uomo1:
   type: 'custom.model1'
   texture: 'gfx/man.png'  
   animations:
-    - walkprova
+    - ['default', 'walkprova']
   joints:
     - id: 'hip'
       root: True

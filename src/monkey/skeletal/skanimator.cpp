@@ -1,4 +1,5 @@
 #include <monkey/skeletal/skanimator.hpp>
+#include <glm/gtx/transform.hpp>
 
 SkAnimator::SkAnimator(std::shared_ptr<IModel> model) : IAnimator(), m_currentAnimation(nullptr) {
     m_model = std::dynamic_pointer_cast<SkModel>(model);
@@ -31,6 +32,18 @@ void SkAnimator::Update(double dt) {
     // pass the identity mat
     glm::mat4 I(1.0f);
     applyPoseToJoints (currentPose, m_model->getRootJoint(), I);
+
+    // apply offset
+    if (!m_offsetPoints.empty()) {
+        glm::vec3 offset(0.0f);
+        for (const auto &a : m_offsetPoints) {
+            // find coordinates of offset point
+            glm::vec4 p = currentPose.at(a.first) * glm::vec4(a.second, 1.0f);
+            offset.y = std::max(p.y, offset.y);
+        }
+        m_renderer->SetTransform(glm::translate(offset));
+    }
+
 }
 
 /**
@@ -124,12 +137,19 @@ void SkAnimator::Start() {
     if (!m_initAnim.empty()) {
         SetAnimation(m_initAnim);
     }
+    m_renderer = m_entity->GetComponent<Renderer>();
     //SetAnimation (m_model->GetDefaultAnimation());
 }
 
 
 void SkAnimator::SetAnimation(const std::string &anim, bool forward) {
+    if (m_currentAnimId == anim) {
+        return;
+    }
+    m_currentAnimId = anim;
+
     m_currentAnimation = m_model->getAnimation(anim);
+
     m_animationTime = 0.0f;
 }
 

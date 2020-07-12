@@ -1,6 +1,7 @@
 #include <monkey/skeletal/skmodel.hpp>
 #include <monkey/math/earcut.h>
 #include <monkey/skeletal/joint.hpp>
+#include <py/include/pybind11/pytypes.h>
 
 ShaderType SkModel::GetShaderType() const {
     return SKELETAL_SHADER;
@@ -112,14 +113,30 @@ SkModel::SkModel(const ITable & t) {
     // ##################
     // read skeleton
     // ##################
-    auto anim = t.get<std::vector<std::string>>("animations", std::vector<std::string>());
-    if (anim.size()>0) {
-        m_defaultAnimation = anim.front();
-        for (const auto &a : anim) {
-            auto sanim = Engine::get().GetAssetManager().getSkeletalAnimation(a);
-            m_animations[a] = sanim;
+    int ac = 0;
+    t.foreach<pybind11::tuple>("animations", [&] (const pybind11::tuple& tu) {
+        auto id = tu[0].cast<std::string>();
+        auto animId = tu[1].cast<std::string>();
+        if (ac == 0) {
+            m_defaultAnimation = id;
         }
-    }
+        auto sanim = Engine::get().GetAssetManager().getSkeletalAnimation(animId);
+        m_animations[id] = sanim;
+        ac++;
+    });
+//    auto anim = t.get<std::vector<std::string>>("animations", std::vector<std::string>());
+//    if (anim.size()>0) {
+//        m_defaultAnimation = anim.front();
+//        for (const auto &a : anim) {
+//            auto sanim = Engine::get().GetAssetManager().getSkeletalAnimation(a);
+//            m_animations[a] = sanim;
+//        }
+//    }
+
+    // ##################
+    // read offset
+    // ##################
+    
 
     glm::mat4 identity(1.0f);
     m_rootJoint->calcInverseBindTransform(identity);

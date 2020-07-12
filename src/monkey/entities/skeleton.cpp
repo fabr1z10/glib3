@@ -14,6 +14,10 @@ Skeleton::Skeleton(const ITable& t) : Entity(t) {
 
     auto anim = t.get<std::string>("anim", "");
     auto animator = std::make_shared<SkAnimator>(model);
+
+    // check if we have offset
+
+
     if (!anim.empty())
         animator->SetInitialAnimation(anim);
     AddComponent(animator);
