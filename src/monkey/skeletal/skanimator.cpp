@@ -37,10 +37,12 @@ void SkAnimator::Update(double dt) {
     if (!m_offsetPoints.empty()) {
         glm::vec3 offset(0.0f);
         for (const auto &a : m_offsetPoints) {
-            // find coordinates of offset point
-            glm::vec4 p = currentPose.at(a.first) * glm::vec4(a.second, 1.0f);
-            offset.y = std::max(p.y, offset.y);
+            // find coordinates of offset pointg
+            glm::mat4 t = m_model->getJoint(a.first)->getAnimatedTransform();
+            glm::vec4 p = t * glm::vec4(a.second, 1.0f);
+            offset.y = std::max(-p.y, offset.y);
         }
+        std::cerr << offset.y << "\n";
         m_renderer->SetTransform(glm::translate(offset));
     }
 
@@ -123,7 +125,7 @@ std::unordered_map<std::string, glm::mat4> SkAnimator::interpolatePoses(SKeyFram
         JointTransform nextTransform = nf.at(p.first);
         JointTransform currentTransform = m_model->getRestTransform(p.first);
         currentTransform += JointTransform::interpolate(p.second, nextTransform, progression);
-        std::cout << m_animationTime << " . " << currentTransform.alpha << "\n";
+        //std::cout << m_animationTime << " . " << currentTransform.alpha << "\n";
         currentPose.insert(std::make_pair(p.first, currentTransform.getLocalTransform()));
     }
     return currentPose;
@@ -137,6 +139,7 @@ void SkAnimator::Start() {
     if (!m_initAnim.empty()) {
         SetAnimation(m_initAnim);
     }
+    m_offsetPoints = m_model->getOffsetPoints();
     m_renderer = m_entity->GetComponent<Renderer>();
     //SetAnimation (m_model->GetDefaultAnimation());
 }

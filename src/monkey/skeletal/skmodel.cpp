@@ -108,6 +108,7 @@ SkModel::SkModel(const ITable & t) {
             joints.at(parent)->addChild(joint);
         }
         joints.insert(std::make_pair(id, joint));
+        m_allJoints[id] = joint.get();
     });
 
     // ##################
@@ -136,7 +137,9 @@ SkModel::SkModel(const ITable & t) {
     // ##################
     // read offset
     // ##################
-    
+    t.foreach<pybind11::tuple> ("offset", [&] (const pybind11::tuple& P) {
+        m_offsetPoints.push_back(std::make_pair(P[0].cast<std::string>(), glm::vec3(P[1].cast<float>(), P[2].cast<float>(), 0.0f)));
+    }) ;
 
     glm::mat4 identity(1.0f);
     m_rootJoint->calcInverseBindTransform(identity);

@@ -16,6 +16,7 @@ public:
     ShaderType GetShaderType() const override;
     SkAnimation* getAnimation(const std::string&);
     std::shared_ptr<Joint> getRootJoint();
+    Joint* getJoint (const std::string&);
     void Draw (Shader*);
     /**
      * Gets an array of the all important model-space transforms of all the
@@ -28,6 +29,7 @@ public:
      */
     std::vector<glm::mat4> getJointTransforms();
     JointTransform getRestTransform(const std::string& id) const;
+    const std::vector<std::pair<std::string, glm::vec3>>& getOffsetPoints() const;
 private:
     std::shared_ptr<Joint> m_rootJoint;
     int m_jointCount;
@@ -36,6 +38,9 @@ private:
     std::string m_defaultAnimation;
     void addJointsToArray(Joint*, std::vector<glm::mat4>&);
     std::unordered_map<std::string, JointTransform> m_restTransforms;
+    std::vector<std::pair<std::string, glm::vec3>> m_offsetPoints;
+    std::unordered_map<std::string, Joint*> m_allJoints;
+
 };
 
 inline std::shared_ptr<Joint> SkModel::getRootJoint() {
@@ -45,4 +50,13 @@ inline std::shared_ptr<Joint> SkModel::getRootJoint() {
 inline JointTransform SkModel::getRestTransform(const std::string& id) const {
     return m_restTransforms.at(id);
 
+}
+
+inline const std::vector<std::pair<std::string, glm::vec3>>& SkModel::getOffsetPoints() const {
+    return m_offsetPoints;
+
+}
+
+inline Joint* SkModel::getJoint(const std::string & id) {
+    return m_allJoints.at(id);
 }

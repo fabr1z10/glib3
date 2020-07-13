@@ -10,7 +10,7 @@ def builder():
     
     r =  room.RoomBasic(id='test1', width = 320, height = 200)
 
-    b = e.Skeleton(model='uomo1', pos =(160,100), anim='default')
+    b = e.Skeleton(model='uomo1', pos =(160,10), anim='default')
     b.scale = 0.5
     r.add(b, 'main')
     #a = entity.Entity(pos=(160,100))

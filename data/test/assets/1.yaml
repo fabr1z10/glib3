@@ -152,12 +152,24 @@ poly.foot.1:
     56, 283, 0, 1, 0,
     57, 275, 0.5, 0.5, 0,
     34, 264, 1, 0, 0
-  ]  
+  ]
+  keypoints: 
+    heel: [15, 283]    
+    tip: [56, 283]
 uomo1:
   type: 'custom.model1'
   texture: 'gfx/man.png'  
   animations:
     - ['default', 'walkprova']
+  offset:
+    - joint: 'rfoot'
+      keypoint: 'heel'
+    - joint: 'rfoot'
+      keypoint: 'tip' 
+    - joint: 'lfoot'
+      keypoint: 'heel'           
+    - joint: 'lfoot'
+      keypoint: 'tip'
   joints:
     - id: 'hip'
       root: True
