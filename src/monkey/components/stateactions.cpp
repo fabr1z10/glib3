@@ -5,6 +5,9 @@
 
 StateTransition::StateTransition(const std::string &state) : StateAction(), m_state(state) {}
 
+StateTransition::StateTransition(const ITable & t) {
+    m_state = t.get<std::string>("state");
+}
 void StateTransition::Run(StateMachine * sm) {
     sm->SetState(m_state);
 }

@@ -30,7 +30,16 @@ public:
     std::vector<glm::mat4> getJointTransforms();
     JointTransform getRestTransform(const std::string& id) const;
     const std::vector<std::pair<std::string, glm::vec3>>& getOffsetPoints() const;
+    const std::vector<std::shared_ptr<Shape>>& getShapes();
+    int getShapeId (const std::string& animId);
+    Shape* getShape (const std::string& animId);
+    int getShapeCastId (const std::string& animId, float t0, float t1);
 private:
+    std::shared_ptr<Shape> m_defaultShape;
+    std::vector<std::shared_ptr<Shape>> m_shapes;
+    std::unordered_map<std::string, int> m_animToShape;
+    std::unordered_map<std::string, std::unordered_map<float, int>> m_attackTimes;
+
     std::shared_ptr<Joint> m_rootJoint;
     int m_jointCount;
     std::shared_ptr<TexturedMesh<VertexSkeletal> > m_mesh;
@@ -40,7 +49,7 @@ private:
     std::unordered_map<std::string, JointTransform> m_restTransforms;
     std::vector<std::pair<std::string, glm::vec3>> m_offsetPoints;
     std::unordered_map<std::string, Joint*> m_allJoints;
-
+    Bounds m_maxBounds;
 };
 
 inline std::shared_ptr<Joint> SkModel::getRootJoint() {

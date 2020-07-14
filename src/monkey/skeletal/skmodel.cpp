@@ -9,7 +9,7 @@ ShaderType SkModel::GetShaderType() const {
 
 Bounds SkModel::GetBounds() const {
     // TODO
-    return Bounds(glm::vec3(-1000.0f), glm::vec3(1000.0f));
+    return m_maxBounds;
 }
 
 std::vector<std::string> SkModel::GetAnimations() const {
@@ -18,6 +18,30 @@ std::vector<std::string> SkModel::GetAnimations() const {
 
 std::string SkModel::GetDefaultAnimation() const {
     return m_defaultAnimation;
+}
+
+const std::vector<std::shared_ptr<Shape>>& SkModel::getShapes() {
+    return m_shapes;
+}
+
+Shape* SkModel::getShape (const std::string& animId) {
+    auto it = m_animToShape.find(animId);
+    if (it == m_animToShape.end()) {
+        return m_defaultShape.get();
+
+    }
+    return m_shapes[it->second].get();
+
+}
+
+int SkModel::getShapeId(const std::string& animId) {
+    auto it = m_animToShape.find(animId);
+    if (it == m_animToShape.end()) {
+        return -1;
+
+    }
+    return it->second;
+
 }
 
 SkModel::SkModel(const ITable & t) {
@@ -55,6 +79,7 @@ SkModel::SkModel(const ITable & t) {
             vertex.x = points[i];
             vertex.y = points[i+1];
             vertex.z = points[i+2];
+            m_maxBounds.addPoint(glm::vec3(vertex.x, vertex.y, vertex.z));
             if (autotc) {
                 vertex.s = vertex.x / texw;
                 vertex.t = vertex.y / texh;
@@ -125,6 +150,23 @@ SkModel::SkModel(const ITable & t) {
         m_animations[id] = sanim;
         ac++;
     });
+
+    // ################## read boxes
+    if (t.hasKey("boxes")) {
+        auto b = t.get<PyDict>("boxes");
+        auto defaultBox = b.get<glm::vec2> ("default");
+        m_defaultShape = std::make_shared<Rect>(defaultBox[0], defaultBox[1], glm::vec3(-0.5f*defaultBox[0], 0, 0));
+        m_shapes.push_back(m_defaultShape);
+        b.foreach<PyDict> ("attack", [&] (const PyDict& d) {
+            auto anim = d.get<std::string>("anim");
+            auto t = d.get<float>("t");
+            glm::vec4 box = d.get<glm::vec4>("box");
+            m_shapes.push_back(std::make_shared<Rect>(box[2], box[3], glm::vec3(box[0], box[1], 0.0f)));
+            m_attackTimes[anim].insert(std::make_pair(t, m_shapes.size()-1));
+        });
+
+    }
+
 //    auto anim = t.get<std::vector<std::string>>("animations", std::vector<std::string>());
 //    if (anim.size()>0) {
 //        m_defaultAnimation = anim.front();
@@ -148,6 +190,21 @@ SkModel::SkModel(const ITable & t) {
 SkAnimation* SkModel::getAnimation(const std::string& id) {
     return m_animations.at(id).get();
 }
+
+int SkModel::getShapeCastId (const std::string& animId, float t0, float t1) {
+    auto it = m_attackTimes.find(animId);
+    if (it == m_attackTimes.end()) {
+        return -1;
+    }
+    for (const auto& p : it->second) {
+        if (t0 <= p.first && t1 > p.first) {
+            return p.second;
+        }
+    }
+    return -1;
+
+}
+
 
 void SkModel::Draw(Shader * shader) {
     m_mesh->Draw(shader,0,0);

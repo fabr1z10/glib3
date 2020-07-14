@@ -1,13 +1,14 @@
 #include <monkey/skeletal/skanimator.hpp>
 #include <glm/gtx/transform.hpp>
 
-SkAnimator::SkAnimator(std::shared_ptr<IModel> model) : IAnimator(), m_currentAnimation(nullptr) {
+SkAnimator::SkAnimator(std::shared_ptr<IModel> model) : IAnimator(), m_currentAnimation(nullptr), m_complete(false) {
     m_model = std::dynamic_pointer_cast<SkModel>(model);
 
 
 }
 
-SkAnimator::SkAnimator(const SkAnimator & orig) : IAnimator(orig), m_model(orig.m_model), m_currentAnimation(orig.m_currentAnimation) {
+SkAnimator::SkAnimator(const SkAnimator & orig) : IAnimator(orig), m_model(orig.m_model), m_currentAnimation(orig.m_currentAnimation),
+m_complete(false) {
 
 }
 
@@ -25,7 +26,7 @@ void SkAnimator::Update(double dt) {
     // increase animation time
     m_animationTime += dt;
     if (m_animationTime > m_currentAnimation->getLength()) {
-
+        m_complete = true;
         m_animationTime = fmod(m_animationTime, m_currentAnimation->getLength());
     }
     auto currentPose = calculateCurrentAnimationPose();
@@ -136,6 +137,7 @@ std::unordered_map<std::string, glm::mat4> SkAnimator::interpolatePoses(SKeyFram
 void SkAnimator::Start() {
 
     m_animationTime = 0.0f;
+
     if (!m_initAnim.empty()) {
         SetAnimation(m_initAnim);
     }
@@ -146,14 +148,15 @@ void SkAnimator::Start() {
 
 
 void SkAnimator::SetAnimation(const std::string &anim, bool forward) {
-    if (m_currentAnimId == anim) {
+    if (m_animation == anim) {
         return;
     }
-    m_currentAnimId = anim;
+    m_animation = anim;
 
     m_currentAnimation = m_model->getAnimation(anim);
-
+    // m_animation = m_currentAnimId;
     m_animationTime = 0.0f;
+    m_complete = false;
 }
 
 void SkAnimator::setModel(std::shared_ptr<IModel> model) {
@@ -168,7 +171,7 @@ std::type_index SkAnimator::GetType() {
 }
 
 bool SkAnimator::IsComplete() const {
-    return false;
+    return m_complete;
 }
 
 

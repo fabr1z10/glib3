@@ -61,6 +61,8 @@
 #include <monkey/skeletal/skmodel.hpp>
 #include <monkey/skeletal/animation.hpp>
 #include <monkey/components/stateactions.h>
+#include <monkey/states/attack.h>
+#include <monkey/skeletal/skcollider.hpp>
 
 namespace py = pybind11;
 
@@ -151,7 +153,7 @@ SceneFactory::SceneFactory() {
     add2<Follow> ("components.follow");
     add2<SimpleCollider> ("components.collider");
     add2<SmartCollider> ("components.smartcollider");
-    add2<SkeletalCollider> ("components.skeletalcollider");
+    add2<SkCollider> ("components.skeletalcollider");
     add2<ScriptHotSpot> ("components.hotspot");
     add2<BasicRenderer> ("components.gfx");
     add2<LuaKeyListener> ("runner.keylistener");
@@ -169,6 +171,7 @@ SceneFactory::SceneFactory() {
     add2<Walk25> ("state.walk25");
     add2<Walk3D> ("state.walk3d");
     add2<FoeWalk25> ("state.foewalk25");
+    add2<Attack> ("state.attack");
     add2<Hit25> ("state.hit25");
     add2<IsHit25> ("state.ishit25");
     add2<DelayTime> ("action.delay");
@@ -202,7 +205,7 @@ SceneFactory::SceneFactory() {
     add2<SolidFill>("fill.solid");
     add2<LinearGradient>("fill.lineargradient");
     add2<StateFunc> ("stateaction.callback");
-
+    add2<StateTransition> ("stateaction.statetransition");
     // assets
     add2<SpriteModel> ("asset.sprite");
     add2<BoxedModel> ("asset.boxed");

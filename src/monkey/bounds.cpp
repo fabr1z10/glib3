@@ -69,6 +69,14 @@ void Bounds::Expand(float amount) {
     max += halfAmounts;
 }
 
+void Bounds::addPoint(glm::vec3 P) {
+    min.x = std::min(min.x, P.x);
+    min.y = std::min(min.y, P.y);
+    max.x = std::max(max.x, P.x);
+    max.y = std::max(max.y, P.y);
+
+}
+
 void Bounds::ExpandWith(const Bounds & b) {
     if (isVoid()) {
         min = b.min;

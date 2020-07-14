@@ -26,6 +26,7 @@ struct Bounds {
     bool isVoid () const;
     void Expand(float);
     void ExpandWith(const Bounds&);
+    void addPoint (glm::vec3 P);
     bool Contains(glm::vec3 P);
     bool Intersects(Bounds& other) const;
     bool Intersects2D(Bounds& other) const;

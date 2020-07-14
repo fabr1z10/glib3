@@ -20,12 +20,13 @@ public:
     void SetAnimation (const std::string& anim, bool forward = true) override;
     bool IsComplete() const override;
     std::type_index GetType() override;
-
+    SkModel* getModel() const;
+    float getAnimationTime() const;
     using ParentClass = IAnimator;
 protected:
     float m_animationTime;
     SkAnimation* m_currentAnimation;
-    std::string m_currentAnimId;
+    //std::string m_currentAnimId;
     std::shared_ptr<SkModel> m_model;
     Renderer* m_renderer;
 private:
@@ -35,4 +36,15 @@ private:
     void applyPoseToJoints(const std::unordered_map<std::string, glm::mat4>& currentPose, std::shared_ptr<Joint> joint, glm::mat4& parentTransform);
 
     std::vector<std::pair<std::string, glm::vec3>> m_offsetPoints;
+    bool m_complete;
 };
+
+
+inline SkModel* SkAnimator::getModel() const {
+    return m_model.get();
+}
+
+inline float SkAnimator::getAnimationTime() const {
+    return m_animationTime;
+
+}
