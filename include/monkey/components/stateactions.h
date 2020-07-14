@@ -6,6 +6,8 @@
 class StateTransition : public StateAction {
 public:
     StateTransition(const std::string& state);
+    StateTransition(const ITable&);
+
     void Run (StateMachine*) override;
 private:
     std::string m_state;
@@ -15,9 +17,9 @@ private:
 
 class StateFunc : public StateAction {
 public:
-    StateFunc(std::function<void()> f) : m_f(f) {}
+    StateFunc(const ITable& t);
     void Run (StateMachine*) override;
 private:
-    std::function<void()> m_f;
 
+    pybind11::function m_callback;
 };

@@ -38,17 +38,17 @@ def brickResponse (player : example.Wrap1, brick : example.Wrap1, x, y):
     brick_id = b.id()
     if vars.state == 0:
         s = Script()
-        ystop = b.y()
+        ystop = b.y
         s.addAction (act.MoveAccelerated (v0 = [0, 50], a = [0, 0.5 * vars.gravity], yStop = ystop, id = brick_id))
         example.play(s)
     else:
         print ('removing ' + str(brick_id))
         example.remove(brick_id)
         m = example.get('main')
-        makePiece(pos = [b.x(), b.y(), 1], vx = 60, vy = 180, model ='brickpiece', parent=m)
-        makePiece(pos = [b.x(), b.y(), 1], vx = -60, vy = 180, model ='brickpiece', parent=m)
-        makePiece(pos = [b.x(), b.y(), 1], vx = 120, vy = 120, model ='brickpiece', parent=m)
-        makePiece(pos = [b.x(), b.y(), 1], vx = -120, vy = 120, model ='brickpiece', parent=m)
+        makePiece(pos = [b.x, b.y, 1], vx = 60, vy = 180, model ='brickpiece', parent=m)
+        makePiece(pos = [b.x, b.y, 1], vx = -60, vy = 180, model ='brickpiece', parent=m)
+        makePiece(pos = [b.x, b.y, 1], vx = 120, vy = 120, model ='brickpiece', parent=m)
+        makePiece(pos = [b.x, b.y, 1], vx = -120, vy = 120, model ='brickpiece', parent=m)
 
 def bonusBrickResponse (player: example.Wrap1, brick: example.Wrap1, x, y):
     b = brick.parent()
@@ -58,13 +58,13 @@ def bonusBrickResponse (player: example.Wrap1, brick: example.Wrap1, x, y):
     if hitsLeft > 0:
         info['hitsLeft'] -= 1
         s = Script()
-        ystop = b.y()
+        ystop = b.y
         s.addAction (act.MoveAccelerated (v0 = [0, 50], a = [0, 0.5 * vars.gravity], yStop = ystop, id = brick_id))
         if hitsLeft == 1:
            s.addAction (act.Animate (anim='taken', id=brick_id)) 
         # release the bonus
         def p():
-            info['callback'](b.x()/ vars.tileSize + 0.5, b.y() / vars.tileSize)
+            info['callback'](b.x / vars.tileSize + 0.5, b.y / vars.tileSize)
         s.addAction (act.CallFunc (f = p))
         example.play(s)
 
@@ -189,8 +189,8 @@ def flag(p, h):
     flag = example.get('flag')
     s = Script()
     s.addAction(act.SetState (state = 'warp', tag='player', args = {'anim': 'slide'}), id = 0)
-    s.addAction (act.Move (speed = 80, by = [0, -(flag.y()-h.y())], tag='flag'), after= [0])
-    s.addAction (act.Move (speed = 80, to = [p.x(), h.y()], tag='player'), after= [0])
+    s.addAction (act.Move (speed = 80, by = [0, -(flag.y-h.y)], tag='flag'), after= [0])
+    s.addAction (act.Move (speed = 80, to = [p.x, h.y], tag='player'), after= [0])
     s.addAction (act.SetState(tag='player', state='demo', args = { 'left': 0 })),
     #s.addAction (act.SetState (state='walk', tag='player'))
     example.play(s)

@@ -73,7 +73,7 @@ void SmartCollider::onFrameUpdate(Animator *a) {
 
     m_colliderRenderer->clearVisible();
     int shapeId = m_model->getShapeId(anim, fr);
-    std::cerr << "(" << anim << ", " << fr << ", " << shapeId<< ")\n";
+    //std::cerr << "(" << anim << ", " << fr << ", " << shapeId<< ")\n";
     m_colliderRenderer->setVisible(shapeId);
     // show only the shape
     auto castShapeId = m_model->getShapeCastId(anim, fr);

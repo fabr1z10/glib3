@@ -1,9 +1,21 @@
 #include <monkey/components/statemachine.h>
 #include <monkey/error.h>
+#include <monkey/engine.h>
 
 State::State(const ITable & t) : Ref(t) {
     m_id = t.get<std::string>("id");
-    // TODO read keys
+
+    auto factory = Engine::get().GetSceneFactory();
+    t.foreach<pybind11::tuple>("keys", [&] (const pybind11::tuple& p) {
+
+        auto key = p[0].cast<int>();
+        PyTable table(p[1]);
+
+        auto action = factory->make2<StateAction>(table);
+        m_actions.insert(std::make_pair(key, action));
+
+    });
+
 }
 
 void State::AddKey(int key, std::shared_ptr<StateAction> action) {

@@ -60,6 +60,7 @@
 #include <monkey/activities/scroll.h>
 #include <monkey/skeletal/skmodel.hpp>
 #include <monkey/skeletal/animation.hpp>
+#include <monkey/components/stateactions.h>
 
 namespace py = pybind11;
 
@@ -200,6 +201,7 @@ SceneFactory::SceneFactory() {
     add2<Circle> ("shape.circle");
     add2<SolidFill>("fill.solid");
     add2<LinearGradient>("fill.lineargradient");
+    add2<StateFunc> ("stateaction.callback");
 
     // assets
     add2<SpriteModel> ("asset.sprite");

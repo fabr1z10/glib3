@@ -79,7 +79,6 @@ void Jump2D::Run(double dt) {
 
     }
     glm::vec3 delta = m_dynamics->step(dt, targetVelocityX, m_accTimeAir);
-    //if (left) std::cerr<< "J " << m_dynamics->m_velocity.x << " " << delta.x << "\n";
 
     m_controller->Move(delta);
     UpdateAnimation();

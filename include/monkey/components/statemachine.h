@@ -5,7 +5,7 @@
 
 class StateMachine;
 
-class StateAction {
+class StateAction : public Object {
 public:
     virtual void Run (StateMachine*) = 0;
 };

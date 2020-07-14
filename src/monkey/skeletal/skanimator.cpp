@@ -42,7 +42,7 @@ void SkAnimator::Update(double dt) {
             glm::vec4 p = t * glm::vec4(a.second, 1.0f);
             offset.y = std::max(-p.y, offset.y);
         }
-        std::cerr << offset.y << "\n";
+        //std::cerr << offset.y << "\n";
         m_renderer->SetTransform(glm::translate(offset));
     }
 
