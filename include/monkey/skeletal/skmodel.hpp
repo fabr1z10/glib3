@@ -32,17 +32,22 @@ public:
     const std::vector<std::pair<std::string, glm::vec3>>& getOffsetPoints() const;
     const std::vector<std::shared_ptr<Shape>>& getShapes();
     int getShapeId (const std::string& animId);
+
     Shape* getShape (const std::string& animId);
+    Shape* getShape (int shapeId);
     int getShapeCastId (const std::string& animId, float t0, float t1);
 private:
-    std::shared_ptr<Shape> m_defaultShape;
+    //std::shared_ptr<Shape> m_defaultShape;
     std::vector<std::shared_ptr<Shape>> m_shapes;
     std::unordered_map<std::string, int> m_animToShape;
     std::unordered_map<std::string, std::unordered_map<float, int>> m_attackTimes;
 
     std::shared_ptr<Joint> m_rootJoint;
     int m_jointCount;
-    std::shared_ptr<TexturedMesh<VertexSkeletal> > m_mesh;
+
+    // create one mesh per texture!
+
+    std::vector<std::shared_ptr<TexturedMesh<VertexSkeletal> > > m_meshes;
     std::unordered_map<std::string, std::shared_ptr<SkAnimation>> m_animations;
     std::string m_defaultAnimation;
     void addJointsToArray(Joint*, std::vector<glm::mat4>&);
@@ -68,4 +73,9 @@ inline const std::vector<std::pair<std::string, glm::vec3>>& SkModel::getOffsetP
 
 inline Joint* SkModel::getJoint(const std::string & id) {
     return m_allJoints.at(id);
+}
+
+inline Shape* SkModel::getShape(int shapeId) {
+    return m_shapes[shapeId].get();
+
 }

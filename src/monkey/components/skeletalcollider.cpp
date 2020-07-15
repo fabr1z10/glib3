@@ -105,7 +105,7 @@ void SkeletalCollider::Update(double dt) {
     auto transform = m_entity->GetWorldTransform();
     auto castShape = m_model->shape(shapeCastId);
 
-    auto e = m_engine->ShapeCast(castShape, transform, m_castMask);
+    auto e = m_engine->ShapeCast(castShape.get(), transform, m_castMask);
     if (e.report.collide) {
         std::cerr << "HIT!\n";
         auto rm = m_engine->GetResponseManager();

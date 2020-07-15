@@ -14,6 +14,7 @@ public:
     std::type_index GetType() override;
     void setVisible(int);
     void clearVisible();
+    void setAllVisible();
     void SetModel(std::shared_ptr<IModel> mesh) override;
     void addModel (std::shared_ptr<BasicModel>);
 private:

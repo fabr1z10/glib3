@@ -62,7 +62,6 @@ public:
 	void DescendSlope(glm::vec2&);
 	void CalculateRaySpacing();
 	void Update(double) override {}
-    void ResetShape(ICollider*);
 	//void ForceMove(glm::vec2&);
 	CollisionDetails m_details;
 	RaycastOrigins m_raycastOrigins;

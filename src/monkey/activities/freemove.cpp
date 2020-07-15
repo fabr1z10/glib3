@@ -112,7 +112,7 @@ void FreeMove::updateTransform() {
     m_entity->SetLocalTransform(transform);
     if (m_shape != nullptr && m_time >= m_c1 && m_time < m_c2) {
         // cast shape
-        auto e = m_engine->ShapeCast(m_shape, transform, m_castMask);
+        auto e = m_engine->ShapeCast(m_shape.get(), transform, m_castMask);
         if (e.report.collide) {
             std::cerr << "HIT!\n";
             auto rm = m_engine->GetResponseManager();

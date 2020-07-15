@@ -1,18 +1,25 @@
 from lib_py.room import Room
 from lib_py.entity import Entity
 from lib_py.camera import OrthoCamera
-from lib_py.runner import CollisionEngine, CollisionResponse, Scheduler, DynamicWorld
+from lib_py.runner import CollisionEngine, CollisionResponse, Scheduler, DynamicWorld, KeyListener
 import smb_py.funcs as func
 import smb_py.builder as build
 import smb_py.vars as vars
+import example
 
 def f():
     print('toggle pause!')
     func.upgradePlayer()
 
 def checkWarp():
+    print ('qui')
     if vars.warp_func:
         vars.warp_func()
+
+def restart():
+    print ('ciao')
+    example.restart()    
+
 
 class PlatformerRoom(Room):
     def __init__(self, id:str, width, height, worldWidth: int, worldHeight : int, playerModel: str, startPos):
@@ -20,6 +27,8 @@ class PlatformerRoom(Room):
         # adding pause button
         self.keyl.addKey(key=32, func = f)
         self.keyl.addKey(key=264, func = checkWarp)
+        # restart on F10
+        self.keyl.addKey(key=299, func = restart)
 
         main = Entity (tag='main')
         main.camera = OrthoCamera(worldwidth = worldWidth * vars.tileSize, worldheight = worldHeight * vars.tileSize, 
@@ -39,6 +48,7 @@ class PlatformerRoom(Room):
 
         self.addRunner(ce)
         self.addRunner(Scheduler())
+
 
         self.dw = DynamicWorld(256, 256, 'maincam')
         self.addRunner(self.dw)

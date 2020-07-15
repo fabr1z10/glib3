@@ -17,7 +17,7 @@ public:
     virtual void Move(ICollider*) = 0;
     virtual void Clear() = 0;
     virtual RayCastHit Raycast (glm::vec3 rayOrigin, glm::vec3 rayDir, float length, int mask, bool use_z = false) = 0;
-    virtual ShapeCastHit ShapeCast (std::shared_ptr<Shape>, const glm::mat4& transform, int mask) = 0;
+    virtual ShapeCastHit ShapeCast (Shape*, const glm::mat4& transform, int mask) = 0;
     void SetResponseManager(std::unique_ptr<CollisionResponseManager>);
     CollisionResponseManager* GetResponseManager();
 protected:

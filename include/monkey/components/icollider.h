@@ -2,6 +2,7 @@
 
 #include <monkey/component.h>
 #include <monkey/math/shape.h>
+#include <monkey/event.h>
 
 class ICollisionEngine;
 
@@ -24,6 +25,7 @@ public:
     void Start() override;
     void End() override;
     using ParentClass = ICollider;
+    Event<ICollider*> onShapeChange;
 protected:
     void Move(Entity*);
     virtual Bounds GetStaticBoundsI () const = 0;

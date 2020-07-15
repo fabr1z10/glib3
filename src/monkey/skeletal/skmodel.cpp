@@ -27,7 +27,7 @@ const std::vector<std::shared_ptr<Shape>>& SkModel::getShapes() {
 Shape* SkModel::getShape (const std::string& animId) {
     auto it = m_animToShape.find(animId);
     if (it == m_animToShape.end()) {
-        return m_defaultShape.get();
+        return nullptr;
 
     }
     return m_shapes[it->second].get();
@@ -54,20 +54,37 @@ SkModel::SkModel(const ITable & t) {
     // ##################
     // read skin
     // ##################
-    std::vector<VertexSkeletal> vertices;
-    std::vector<unsigned> indices;
+    std::vector<std::vector<VertexSkeletal>> vertices;
+    std::vector<std::vector<unsigned>> indices;
     // read each polygon
-    auto texId = t.get<std::string>("texture");
-    m_mesh = std::make_shared<TexturedMesh<VertexSkeletal>>(SKELETAL_SHADER, GL_TRIANGLES, texId);
-    // get texture
-    auto tex = Engine::get().GetAssetManager().GetTex(texId);
-    float texw = tex->GetWidth();
-    float texh = tex->GetHeight();
 
+    // first of all, I need to know how many meshes I need.
+    std::unordered_map<std::string, std::tuple<unsigned long, int, int>> textureInfo;
+
+    t.foreach<PyDict>("polygons", [&] (const PyDict& po) {
+        auto texName = po.get<std::string>("texture");
+        if (textureInfo.count(texName) == 0) {
+            auto tex = Engine::get().GetAssetManager().GetTex(texName);
+            // add one mesh
+            auto texw = tex->GetWidth();
+            auto texh = tex->GetHeight();
+            textureInfo[texName] = std::make_tuple(m_meshes.size(), texw, texh);
+            m_meshes.push_back(std::make_shared<TexturedMesh<VertexSkeletal>>(SKELETAL_SHADER, GL_TRIANGLES, texName));
+            vertices.push_back(std::vector<VertexSkeletal>());
+            indices.push_back(std::vector<unsigned>());
+        }
+    });
 
     unsigned polyOffset = 0;
     t.foreach<PyDict>("polygons", [&] (const PyDict& po) {
         auto id = po.get<std::string>("id");
+        auto texName = po.get<std::string>("texture");
+        // get the tex info
+        auto texInfo = textureInfo.at(texName);
+        auto meshLoc = std::get<0>(texInfo);
+        auto texw = std::get<1>(texInfo);
+        auto texh = std::get<2>(texInfo);
+
         auto autotc = po.get<bool>("auto_tex_coord", false);
         using Point = std::array<Coord, 2>;
         std::vector<Point> polygon;
@@ -95,7 +112,7 @@ SkModel::SkModel(const ITable & t) {
             vertex.weight1 = points[i+9];
             vertex.weight2 = points[i+10];
             polygon.push_back({vertex.x, vertex.y});
-            vertices.push_back(vertex);
+            vertices[meshLoc].push_back(vertex);
         }
         /// triangualate pol
         std::vector<std::vector<Point>> p;
@@ -103,14 +120,16 @@ SkModel::SkModel(const ITable & t) {
         auto tri = mapbox::earcut<N>(p);
         // now add indices
         for (const auto& i : tri) {
-            indices.push_back(polyOffset + i);
+            indices[meshLoc].push_back(polyOffset + i);
         }
         // update offset
         polyOffset += polygon.size();
     });
 
-    // initilize mesh
-    m_mesh->Init(vertices, indices);
+    // initilize meshes
+    for (unsigned long i = 0; i < m_meshes.size(); ++i) {
+        m_meshes[i]->Init(vertices[i], indices[i]);
+    }
     // ##################
     // read skeleton
     // ##################
@@ -154,15 +173,23 @@ SkModel::SkModel(const ITable & t) {
     // ################## read boxes
     if (t.hasKey("boxes")) {
         auto b = t.get<PyDict>("boxes");
-        auto defaultBox = b.get<glm::vec2> ("default");
-        m_defaultShape = std::make_shared<Rect>(defaultBox[0], defaultBox[1], glm::vec3(-0.5f*defaultBox[0], 0, 0));
-        m_shapes.push_back(m_defaultShape);
+        //#auto defaultBox = b.get<glm::vec2> ("default");
+        //m_defaultShape = std::make_shared<Rect>(defaultBox[0], defaultBox[1], glm::vec3(-0.5f*defaultBox[0], 0, 0));
+        //m_shapes.push_back(m_defaultShape);
+        auto anim = b.get<pybind11::dict>("anim");
+        for (const auto& a : anim) {
+            auto animId = a.first.cast<std::string>();
+            auto size = a.second.cast<std::vector<int>>();
+            auto shape = std::make_shared<Rect> (size[0], size[1], glm::vec3(-0.5f*size[0], 0.0f, 0.0f));
+            m_animToShape[animId] = m_shapes.size();
+            m_shapes.push_back(shape);
+        }
         b.foreach<PyDict> ("attack", [&] (const PyDict& d) {
             auto anim = d.get<std::string>("anim");
             auto t = d.get<float>("t");
-            glm::vec4 box = d.get<glm::vec4>("box");
+            auto box = d.get<glm::vec4>("box");
+            m_attackTimes[anim].insert(std::make_pair(t, m_shapes.size()));
             m_shapes.push_back(std::make_shared<Rect>(box[2], box[3], glm::vec3(box[0], box[1], 0.0f)));
-            m_attackTimes[anim].insert(std::make_pair(t, m_shapes.size()-1));
         });
 
     }
@@ -207,9 +234,10 @@ int SkModel::getShapeCastId (const std::string& animId, float t0, float t1) {
 
 
 void SkModel::Draw(Shader * shader) {
-    m_mesh->Draw(shader,0,0);
+    for (const auto &m : m_meshes) {
+        m->Draw(shader, 0, 0);
+    }
 }
-
 
 std::vector<glm::mat4> SkModel::getJointTransforms() {
     std::vector<glm::mat4> jointMatrices(m_jointCount);

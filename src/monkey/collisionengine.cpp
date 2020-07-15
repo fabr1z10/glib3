@@ -285,7 +285,7 @@ void CollisionEngine::Update(double dt) {
     // add the new collision pairs
 }
 
-ShapeCastHit CollisionEngine::ShapeCast (std::shared_ptr<Shape> shape, const glm::mat4& transform, int mask) {
+ShapeCastHit CollisionEngine::ShapeCast (Shape* shape, const glm::mat4& transform, int mask) {
     ShapeCastHit result;
     auto aabb = shape->getBounds();
     aabb.Transform(transform);
@@ -321,7 +321,7 @@ ShapeCastHit CollisionEngine::ShapeCast (std::shared_ptr<Shape> shape, const glm
                         auto &t = c->GetObject()->GetWorldTransform();
 
                         // bounding boxes intersect, so let's make a proper collision test
-                        CollisionReport report = m_intersector->Intersect(shape.get(), transform, s, t);
+                        CollisionReport report = m_intersector->Intersect(shape, transform, s, t);
                         if (report.collide) {
                             result.report = report;
                             result.entity = c;

@@ -20,6 +20,8 @@ public:
     std::shared_ptr<Component> clone() const override;
 
     void Start() override;
+    void Begin() override;
+
     void Update(double) override;
     Shape* GetShape() override;
 
@@ -30,6 +32,8 @@ public:
     std::type_index GetType() override;
     Bounds getAttackBounds() const override;
 private:
+    void updateShape();
+    int m_shapeId;
     SkAnimator* m_animator;
     Entity* m_shapeEntity;
     MultiRenderer* m_colliderRenderer;

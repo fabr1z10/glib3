@@ -53,6 +53,10 @@ void Controller2D::Begin() {
     if (m_cc == nullptr) {
         GLIB_FAIL("The controller2D requires a collider!");
     }
+    // recalc ray spacing when shape changes
+    m_cc->onShapeChange.Register(this, [&] (ICollider* c) {
+        CalculateRaySpacing();
+    });
     //m_cc->onShapeChanged.Register(this, [&] (Collider* c) { this->ResetShape(c); });
     CalculateRaySpacing();
 
@@ -60,9 +64,6 @@ void Controller2D::Begin() {
 
 
 
-void Controller2D::ResetShape(ICollider*) {
-    CalculateRaySpacing();
-}
 
 void Controller2D::CalculateRaySpacing() {
     
@@ -70,7 +71,7 @@ void Controller2D::CalculateRaySpacing() {
     bounds.Expand(m_skinWidth * -2);
     m_horizontalRaySpacing = bounds.GetSize().y / (m_horizontalRayCount - 1);
     m_verticalRaySpacing = bounds.GetSize().x / (m_verticalRayCount - 1);
-    //std::cout <<"ray spacing = "<< m_horizontalRaySpacing << ","<<m_verticalRaySpacing<<"\n";
+    std::cout <<"ray spacing = "<< m_horizontalRaySpacing << ","<<m_verticalRaySpacing<<"\n";
 }
 
 void Controller2D::UpdateRaycastOrigins() {
@@ -111,6 +112,7 @@ glm::vec2 dx(delta);
         if (dx.y < 0 && m_wasGnd) {
             DescendSlope(dx);
         }
+        //std::cout << m_raycastOrigins.bottomLeft.y << "\n";
         if (!isEqual(dx.x, 0.0f))
             HorizontalCollisions(dx);
         if (!isEqual(dx.y, 0.0f))

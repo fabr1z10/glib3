@@ -4,7 +4,7 @@
 #include <monkey/components/multirenderer.h>
 #include <monkey/meshfactory.h>
 
-SkCollider::SkCollider(const ITable& table) : ICollider(), m_shapeEntity(nullptr) {
+SkCollider::SkCollider(const ITable& table) : ICollider(), m_shapeEntity(nullptr), m_shapeId(-1) {
     m_tag = table.get<int>("tag");
     m_flag = table.get<int>("flag");
     m_mask = table.get<int>("mask");
@@ -29,8 +29,10 @@ Bounds SkCollider::GetStaticBoundsI() const {
 Bounds SkCollider::GetDynamicBoundsI() const {
 
     std::string anim = m_animator->GetAnimation();
-    auto bounds = m_model->getShape(anim)->getBounds();
-    return bounds;
+    auto shape = m_model->getShape(anim);
+    if (shape == nullptr)
+        return Bounds();
+    return shape->getBounds();
 }
 
 int SkCollider::GetCollisionTag() const {
@@ -52,10 +54,15 @@ Bounds SkCollider::getAttackBounds() const {
 }
 
 Shape* SkCollider::GetShape() {
-    std::string anim = m_animator->GetAnimation();
-    return nullptr;
+    if (m_shapeId == -1)
+        return nullptr;
+    return m_model->getShape(m_shapeId);
 }
 
+
+void SkCollider::Begin() {
+    updateShape();
+}
 
 void SkCollider::Start() {
     // a smart collider requires an animator
@@ -86,7 +93,6 @@ void SkCollider::Start() {
     renderer->setAddColor(color);
     m_shapeEntity->AddComponent(renderer);
     m_colliderRenderer = renderer.get();
-
 //    auto shapeEntity = std::make_shared<Entity>();
 //    if (m_shapeEntity == nullptr) {
 //        auto c = std::make_shared<Entity>();
@@ -113,48 +119,63 @@ void SkCollider::Start() {
 //    m_stateMachine = m_entity->GetComponent<StateMachine>();
 }
 
+void SkCollider::updateShape() {
 
+    std::string anim = m_animator->GetAnimation();
+    int shapeId = m_model->getShapeId(anim);
+    if (m_shapeId != shapeId) {
+        // notify listeners that shape has changed
+        m_shapeId = shapeId;
+        onShapeChange.Fire(this);
+    }
+
+
+}
 
 void SkCollider::Update(double dt) {
 
-    std::string anim = m_animator->GetAnimation();
-    std::cout << anim << "\n";
+    updateShape();
+
     m_colliderRenderer->clearVisible();
-    int shapeId = m_model->getShapeId(anim);
-    m_colliderRenderer->setVisible(shapeId);
+
+    if (m_shapeId != -1) {
+        m_colliderRenderer->setVisible(m_shapeId);
+    }
 
     float t = m_animator->getAnimationTime();
 
     // check attack
+    std::string anim = m_animator->GetAnimation();
     int shapeCastId = m_model->getShapeCastId(anim, t - dt, t);
     if (shapeCastId == -1) {
         return;
     }
     std::cerr << "CAZZO!\n";
     m_colliderRenderer->setVisible(shapeCastId);
-//    auto transform = m_entity->GetWorldTransform();
-//    auto castShape = m_model->shape(shapeCastId);
-//
-//    auto e = m_engine->ShapeCast(castShape, transform, m_castMask);
-//    if (e.report.collide) {
-//        std::cerr << "HIT!\n";
-//        auto rm = m_engine->GetResponseManager();
-//        if (rm == nullptr) {
-//            std::cerr << "no handler!\n";
-//        } else {
-//            auto object = e.entity->GetObject();
-//            //std::cerr << m_attackTag << ", " << e.entity->GetCollisionTag();
-//            auto handler = rm->GetHandler(m_castTag, e.entity->GetCollisionTag());
-//            if (handler.response != nullptr) {
-//                std::cerr << "FOUND RESPONSE\n";
-//                if (handler.flip) {
-//                    handler.response->onStart(object, m_entity, e.report);
-//                } else {
-//                    handler.response->onStart(m_entity, object, e.report);
-//                }
-//            }
-//        }
-//    }
+
+    auto transform = m_entity->GetWorldTransform();
+    auto castShape = m_model->getShape(shapeCastId);
+
+    auto e = m_engine->ShapeCast(castShape, transform, m_castMask);
+    if (e.report.collide) {
+        std::cerr << "HIT!\n";
+        auto rm = m_engine->GetResponseManager();
+        if (rm == nullptr) {
+            std::cerr << "no handler!\n";
+        } else {
+            auto object = e.entity->GetObject();
+            //std::cerr << m_attackTag << ", " << e.entity->GetCollisionTag();
+            auto handler = rm->GetHandler(m_castTag, e.entity->GetCollisionTag());
+            if (handler.response != nullptr) {
+                std::cerr << "FOUND RESPONSE\n";
+                if (handler.flip) {
+                    handler.response->onStart(object, m_entity, e.report);
+                } else {
+                    handler.response->onStart(m_entity, object, e.report);
+                }
+            }
+        }
+    }
 
 //
 //    if (m_currentAttackInfo != nullptr) {

@@ -86,7 +86,7 @@ void SmartCollider::onFrameUpdate(Animator *a) {
         auto t = m_entity->GetWorldTransform();
         //std::cout <<" **** hit ****\n";
         //std::cout << "character at position = " << t[3][0] << ", " << t[3][1] << " scale " << t[0][0] << "\n";
-        auto e = m_engine->ShapeCast(castShape, t, m_castMask);
+        auto e = m_engine->ShapeCast(castShape.get(), t, m_castMask);
 
         if (e.report.collide) {
             std::cerr << "HIT!\n";
