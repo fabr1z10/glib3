@@ -56,6 +56,7 @@ SkModel::SkModel(const ITable & t) {
     // ##################
     std::vector<std::vector<VertexSkeletal>> vertices;
     std::vector<std::vector<unsigned>> indices;
+    std::vector<unsigned> polyOffsets;
     // read each polygon
 
     // first of all, I need to know how many meshes I need.
@@ -72,10 +73,11 @@ SkModel::SkModel(const ITable & t) {
             m_meshes.push_back(std::make_shared<TexturedMesh<VertexSkeletal>>(SKELETAL_SHADER, GL_TRIANGLES, texName));
             vertices.push_back(std::vector<VertexSkeletal>());
             indices.push_back(std::vector<unsigned>());
+            polyOffsets.push_back(0);
         }
     });
 
-    unsigned polyOffset = 0;
+
     t.foreach<PyDict>("polygons", [&] (const PyDict& po) {
         auto id = po.get<std::string>("id");
         auto texName = po.get<std::string>("texture");
@@ -84,7 +86,7 @@ SkModel::SkModel(const ITable & t) {
         auto meshLoc = std::get<0>(texInfo);
         auto texw = std::get<1>(texInfo);
         auto texh = std::get<2>(texInfo);
-
+        auto polyOffset = polyOffsets[meshLoc];
         auto autotc = po.get<bool>("auto_tex_coord", false);
         using Point = std::array<Coord, 2>;
         std::vector<Point> polygon;
@@ -123,7 +125,7 @@ SkModel::SkModel(const ITable & t) {
             indices[meshLoc].push_back(polyOffset + i);
         }
         // update offset
-        polyOffset += polygon.size();
+        polyOffsets[meshLoc] += polygon.size();
     });
 
     // initilize meshes

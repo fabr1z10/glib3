@@ -191,7 +191,8 @@ void SkAnimator::applyPoseToJoints(const std::unordered_map<std::string, glm::ma
         applyPoseToJoints(currentPose, c, currentTransform);
     }
     // revert to model space
-    glm::mat4 ct = currentTransform * joint->getInverseBindTransform();
+    //glm::mat4 ct = joint->getInverseBindTransform()*currentTransform;
+    glm::mat4 ct = currentTransform *joint->getInverseBindTransform();
     joint->setAnimationTransform(ct);
 
 }
