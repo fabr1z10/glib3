@@ -91,12 +91,14 @@ class InventoryButton(entity.Text):
         item = s.State.items[itemId]  
         # get the item text
         text = ''
+        print ('foccami ' + itemId + str(qty))
+        print ()
         if qty == 1:
             text = item.text
         else:
             text = str(qty) + ' ' + item.plural
-
-        super().__init__(font, item.text, colorInactive, align, tag, pos)                  
+        print(text)
+        super().__init__(font, text, colorInactive, align, tag, pos)                  
         self.addComponent(compo.HotSpot(
             shape = None,
             onenter = change_color(colorActive), 

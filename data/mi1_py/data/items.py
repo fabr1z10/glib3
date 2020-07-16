@@ -5,6 +5,8 @@ import lib_py.engine as engine
 import lib_py.scumm.entity as se
 import lib_py.components as compo
 
+st = engine.data['strings']
+
 # guybrush
 State.addItem (se.CharItem (
     id = 'guybrush',
@@ -13,6 +15,11 @@ State.addItem (se.CharItem (
     text_color = [255, 255, 255, 255],
 	text_offset = [0, 60]))
 
+State.addItem(se.Item(
+    id = 'pieces.of.eight',
+    text = st['objects']['pieceofeight'],
+    plural= st['objects']['piecesofeight']
+))
 
 # engine.addEntity(
 #     id = 'guybrush',

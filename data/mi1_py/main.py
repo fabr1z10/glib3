@@ -68,13 +68,17 @@ from mi1_py.data.dialogues import *
 from mi1_py.rooms import *
 
 # initialize room
-engine.room = 'village1'
+#engine.room = 'village1'
 scumm.State.setDynamicItem (
     id = 'guybrush', 
     room = engine.room, 
     pos = variables.village1_door_pos,
     state = 'idle',
     chardir = 's', parent = 'walkarea')
+
+inv = scumm.State.getCurrentInventory()
+inv['pieces.of.eight'] = 10
+scumm.Data.loadItems()
 
 #State.setDynamicItem (id='guybrush', room='lookout', pos=[200,30,0], dir='s', parent='walkarea')
 #State.setDynamicItem (id='guybrush', room=startRoom, pos=[700,30,0], dir='s', parent='walkarea')

@@ -1,0 +1,13 @@
+---
+lookout.fire:
+  model: fire
+  pos: [126, 52]
+  room: lookout
+lookout.stairs:
+  text: objects.stairs
+  pos: [230, 0]
+  width: 30
+  height: 10 
+  walkto: '@lookout_stairs'
+  dir: 's'
+  room: lookout

@@ -41,6 +41,8 @@ objects:
   knickknacks: knickknacks
   statue: statue
   rubberchicken: rubber chicken
+  pieceofeight: piece of eight
+  piecesofeight: pieces of eight
 dialogues:
   mancomb:
     1: "Ahoy there, stranger."

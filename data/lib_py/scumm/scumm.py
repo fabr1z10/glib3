@@ -83,7 +83,57 @@ def init(players: list, current_player : str):
         State.inventory[player] = {}
     State.player = current_player
     
+import yaml
+import example
+import sys
+class Data:
+    items = {}
+    locator = {}
+    @staticmethod
+    def makeRoom (roomid: str):
+        filename = example.dir +'/rooms/'+ roomid+ '.yaml'
+        from lib_py.scumm.room import RoomUI
+        try:
+            with open(filename) as f:
+                room = yaml.load(f, Loader=yaml.FullLoader)
+                r = RoomUI(id= room['id'], width = ['width'], height = ['height'])
+                if roomid in Data.locator:
+                    for key, value in Data.locator[roomid].items():
+                        print ('found item: ' + key)
+                return r
+        except EnvironmentError as error:
+            print (error)
+            sys.exit(1)
 
+
+    @staticmethod
+    def putItem (id: str, room: str, pos, parent: str = 'main'):
+        # locate an item in a room at a certain pos
+        # check if item is in another room
+        item = Data.items[id]
+        if 'room' in item and item['room'] != room:
+            Data.locator[item['room']].pop(id)
+        Data.items[id]['room'] = room
+        Data.items[id]['pos'] = pos
+        if room not in Data.locator:
+            Data.locator[room] = {}
+        Data.locator[room][id] = (id, pos, parent)
+
+
+    @staticmethod
+    def loadItems():
+        print ('ciaomerd')
+        filename = example.dir +'/items.yaml'
+        with open(filename) as f:
+            Data.items = yaml.load(f, Loader=yaml.FullLoader)
+        print ('loaded items')
+        for k, v in Data.items.items():
+            if 'room' in v:
+                parent = 'main' if 'parent' not in v else v['parent']
+                Data.putItem (k, v['room'], v['pos'], parent)
+                
+        print (Data.items)
+        print (Data.locator)
     
 class State:
     # map that associate room with dynamic items to create on the fly

@@ -1,0 +1,20 @@
+---
+  id: lookout
+  width: 320
+  height: 144
+  bg:
+    - image: gfx/lookout_1.png
+      pos: [0, 0, -1]
+    - image: gfx/lookout_2.png
+      pos: [81, 16, 3]
+    - image: gfx/lookout_3.png
+      pos: [294, 33, 3]
+    - image: gfx/lookout_4.png
+      pos: [226, 0, 3]
+  walkarea:
+    type: poly
+    outline: [203, 51, 315, 62, 315, 40, 293, 40, 260, 10, 260, 0, 260, -20, 234, -20, 234, 0, 234, 10, 221, 26, 152, 33, 152, 51]
+    depth: 
+      type: linear.y
+      data: [0, 1, 144, 0]
+
