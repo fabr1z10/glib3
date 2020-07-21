@@ -181,7 +181,7 @@ SkModel::SkModel(const ITable & t) {
         auto anim = b.get<pybind11::dict>("anim");
         for (const auto& a : anim) {
             auto animId = a.first.cast<std::string>();
-            auto size = a.second.cast<std::vector<int>>();
+            auto size = a.second.cast<std::vector<float>>();
             auto shape = std::make_shared<Rect> (size[0], size[1], glm::vec3(-0.5f*size[0], 0.0f, 0.0f));
             m_animToShape[animId] = m_shapes.size();
             m_shapes.push_back(shape);
