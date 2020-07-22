@@ -52,10 +52,7 @@
 #include <monkey/components/shadow.h>
 #include <monkey/math/polytri.h>
 #include <monkey/entities/skeleton.h>
-#include <monkey/model/skeletalmodel.h>
-#include <monkey/components/skeletalcollider.h>
 #include <monkey/activities/freemove.h>
-#include <monkey/model/skeletalmodel2.h>
 #include <monkey/activities/noop.h>
 #include <monkey/activities/scroll.h>
 #include <monkey/skeletal/skmodel.hpp>
@@ -209,8 +206,8 @@ SceneFactory::SceneFactory() {
     // assets
     add2<SpriteModel> ("asset.sprite");
     add2<BoxedModel> ("asset.boxed");
-    add2<SkeletalModel> ("asset.skeleton");
-    add2<SkeletalModel2> ("asset.skeleton2");
+    //add2<SkeletalModel> ("asset.skeleton");
+    //add2<SkeletalModel2> ("asset.skeleton2");
     add2<SkModel> ("asset.skeletalmodel");
     add2<SkAnimation> ("asset.skeletalanimation");
     add2<Font> ("font");

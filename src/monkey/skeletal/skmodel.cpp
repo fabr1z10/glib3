@@ -254,3 +254,15 @@ void SkModel::addJointsToArray(Joint * j, std::vector<glm::mat4> & jointMatrices
         addJointsToArray(child.get(), jointMatrices);
     }
 }
+
+
+std::vector<std::shared_ptr<Shape>> SkModel::getAttackShapes() const {
+
+    std::vector<std::shared_ptr<Shape>> shapes;
+    for (const auto& m : m_attackTimes) {
+        for (const auto& c : m.second) {
+            shapes.push_back(m_shapes[c.second]);
+        }
+    }
+    return shapes;
+}

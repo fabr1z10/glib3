@@ -20,7 +20,8 @@ public:
     void SetAnimation (const std::string& anim, bool forward = true) override;
     bool IsComplete() const override;
     std::type_index GetType() override;
-    SkModel* getModel() const;
+    IModel* getModel() const override;
+    SkModel* getSkeletalModel() const;
     float getAnimationTime() const;
     using ParentClass = IAnimator;
 protected:
@@ -40,7 +41,7 @@ private:
 };
 
 
-inline SkModel* SkAnimator::getModel() const {
+inline SkModel* SkAnimator::getSkeletalModel() const {
     return m_model.get();
 }
 

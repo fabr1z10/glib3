@@ -104,6 +104,9 @@ void Animator::setModel(std::shared_ptr<IModel> model) {
     Start();
 }
 
+IModel* Animator::getModel() const {
+    return m_model.get();
+}
 
 const FrameInfo* Animator::getFrameInfo() {
     return &(m_animInfo->frameInfo[m_frame]);

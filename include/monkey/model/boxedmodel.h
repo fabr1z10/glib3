@@ -31,6 +31,8 @@ public:
     Bounds GetMaxBounds() const;
     Bounds GetAnimBounds(const std::string&) const;
     const std::vector<std::shared_ptr<Shape>>& getShapes();
+    std::vector<std::shared_ptr<Shape>> getAttackShapes() const override;
+
 private:
     std::vector<std::shared_ptr<Shape>> m_shapes;
     std::unordered_map<std::pair<std::string, int>, int> m_boxInfo;

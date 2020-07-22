@@ -22,6 +22,7 @@ public:
     // non è meglio avere un draw con animation e frame?
 
     void Draw (Shader*, int offset, int count);
+    std::vector<std::shared_ptr<Shape>> getAttackShapes() const override;
 
 
 private:

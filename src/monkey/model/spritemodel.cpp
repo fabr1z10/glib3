@@ -200,3 +200,8 @@ const AnimInfo* SpriteModel::GetAnimInfo(const std::string& anim) const {
 void SpriteModel::Draw(Shader* shader, int offset, int count) {
     m_mesh->Draw(shader, offset, count);
 }
+
+
+std::vector<std::shared_ptr<Shape>> SpriteModel::getAttackShapes() const {
+    return std::vector<std::shared_ptr<Shape>>();
+}

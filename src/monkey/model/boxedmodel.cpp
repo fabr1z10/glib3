@@ -7,6 +7,16 @@ namespace py = pybind11;
 
 BoxedModel::BoxedModel(std::shared_ptr<SpriteMesh> mesh) : SpriteModel(mesh) {}
 
+
+std::vector<std::shared_ptr<Shape>> BoxedModel::getAttackShapes() const {
+
+    std::vector<std::shared_ptr<Shape>> shapes;
+    for (const auto& m : m_shapeCast) {
+        shapes.push_back(m_shapes[m.second]);
+    }
+    return shapes;
+}
+
 BoxedModel::BoxedModel(const ITable &t) : SpriteModel(t) {
 
     float thickness = t.get<float>("thickness", 0.0f);

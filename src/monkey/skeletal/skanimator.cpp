@@ -165,10 +165,14 @@ void SkAnimator::setModel(std::shared_ptr<IModel> model) {
 
 }
 
+IModel* SkAnimator::getModel() const {
+    return m_model.get();
+}
 
 std::type_index SkAnimator::GetType() {
     return std::type_index(typeid(IAnimator));
 }
+
 
 bool SkAnimator::IsComplete() const {
     return m_complete;

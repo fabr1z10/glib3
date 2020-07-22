@@ -6,6 +6,7 @@
 //#include "states/platformerstate.h"
 #include "states/walkside.h"
 #include "states/foewalk.h"
+#include "states/foechase.h"
 #include "states/foedead.h"
 #include "states/koopashell.h"
 
@@ -36,6 +37,7 @@ void Extension::extend(SceneFactory* f) {
     f->add2<WalkSide> ("state.walkside");
     f->add2<Jump2D> ("state.jump");
     f->add2<FoeWalk> ("state.foewalk");
+    f->add2<FoeChase> ("state.foechase");
     f->add2<FoeDead> ("state.foedead");
     f->add2<KoopaShell> ("state.koopashell");
     //f->addStateFactory("walkside", std::make_unique<WalkSideFactory>());

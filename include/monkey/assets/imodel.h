@@ -8,6 +8,9 @@
 #include <monkey/animation.h>
 #include <monkey/asset.h>
 
+
+class Shape;
+
 // interface for generic model.
 // in general a model is made of a collection of mesh
 // and it provides the concept of animation, so it can draw only a subset of the entire mesh
@@ -18,5 +21,8 @@ public:
     virtual std::vector<std::string> GetAnimations() const = 0;
     virtual std::string GetDefaultAnimation() const = 0;
     virtual ShaderType GetShaderType() const = 0;
+    virtual std::vector<std::shared_ptr<Shape>> getAttackShapes() const {
+        return std::vector<std::shared_ptr<Shape>>();
+    }
 };
 

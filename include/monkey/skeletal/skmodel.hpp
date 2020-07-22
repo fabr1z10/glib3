@@ -36,6 +36,8 @@ public:
     Shape* getShape (const std::string& animId);
     Shape* getShape (int shapeId);
     int getShapeCastId (const std::string& animId, float t0, float t1);
+    std::vector<std::shared_ptr<Shape>> getAttackShapes() const override;
+
 private:
     //std::shared_ptr<Shape> m_defaultShape;
     std::vector<std::shared_ptr<Shape>> m_shapes;

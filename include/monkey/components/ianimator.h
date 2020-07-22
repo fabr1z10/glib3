@@ -14,6 +14,7 @@ public:
     void SetPlayForward (bool);
     virtual bool IsComplete() const = 0;
     virtual void setModel (std::shared_ptr<IModel> model) = 0;
+    virtual IModel* getModel() const = 0 ;
     using ParentClass = IAnimator;
     Event<IAnimator*> onAnimationChange;
 protected:
