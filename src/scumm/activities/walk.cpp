@@ -38,7 +38,14 @@ void Walk::Start() {
 
     // if the walk has a tag, then get the id
     if (!m_tag.empty()) {
-        m_actorId = Monkey::get().Get<Ref>(m_tag)->GetId();
+        try {
+            m_actorId = Monkey::get().Get<Ref>(m_tag)->GetId();
+        } catch (Error& err) {
+            std::cerr << err.what();
+            SetComplete();
+            return;
+
+        }
     }
     // use the walk-area associated with the character
 

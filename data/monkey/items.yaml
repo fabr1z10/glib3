@@ -1,0 +1,22 @@
+---
+guybrush:
+  model: 'guybrush'
+  pos: [126, 52]
+  room: lookout
+  node: walkarea
+  dir: s
+  speed: 500
+  text_color: [255, 255, 255]
+  text_offset: [0, 60]
+lookout_fire:
+  model: fire
+  pos: [126, 52]
+  room: lookout
+lookout_stairs:
+  text: stairs
+  pos: [230, 0]
+  width: 30
+  height: 10 
+  walkto: '@lookout_stairs'
+  wdir: 's'
+  room: lookout

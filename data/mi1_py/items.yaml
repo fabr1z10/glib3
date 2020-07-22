@@ -1,4 +1,5 @@
 ---
+
 lookout.fire:
   model: fire
   pos: [126, 52]

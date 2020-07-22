@@ -59,31 +59,39 @@ scumm.Config.verbSets.append (scumm.VerbSet(verbs= ['open', 'close', 'push', 'pu
     defaultVerb='walkto'))
 
 # sets door to closed
+
 scumm.State.variables['door.village.scummbar'] = 'closed'
 
 scumm.State.md = variables
 
-from mi1_py.data import *
-from mi1_py.data.dialogues import *
-from mi1_py.rooms import *
+#from mi1_py.data import *
+#from mi1_py.data.dialogues import *
+#from mi1_py.rooms import *
+
+# load all rooms
 
 # initialize room
 #engine.room = 'village1'
-scumm.State.setDynamicItem (
-    id = 'guybrush', 
-    room = engine.room, 
-    pos = variables.village1_door_pos,
-    state = 'idle',
-    chardir = 's', parent = 'walkarea')
+# scumm.State.setDynamicItem (
+#     id = 'guybrush', 
+#     room = engine.room, 
+#     pos = variables.village1_door_pos,
+#     state = 'idle',
+#     chardir = 's', parent = 'walkarea')
 
-inv = scumm.State.getCurrentInventory()
-inv['pieces.of.eight'] = 10
-
-
-
+#inv = scumm.State.getCurrentInventory()
+#inv['pieces.of.eight'] = 10
 scumm.Data.loadItems()
+scumm.Data.loadRooms()
 
-#State.setDynamicItem (id='guybrush', room='lookout', pos=[200,30,0], dir='s', parent='walkarea')
+import importlib
+engine.scripts = importlib.import_module('monkey.scripts', package=None)
+
+from inspect import getmembers, isfunction
+
+
+functions_list = [o for o in getmembers(engine.scripts) if isfunction(o[1])]#State.setDynamicItem (id='guybrush', room='lookout', pos=[200,30,0], dir='s', parent='walkarea')
+print (functions_list)
 #State.setDynamicItem (id='guybrush', room=startRoom, pos=[700,30,0], dir='s', parent='walkarea')
 
 

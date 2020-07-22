@@ -1,6 +1,29 @@
 import example
 from lib_py.scumm.scumm import Config, State
+from lib_py.engine import data
 #from lib_py.scumm.entity import Item, CharItem
+
+def gdd(d: dict, key: str, defaultvalue):
+    if key in d:
+        return gd(d, key)
+    return defaultvalue
+
+
+def gd(d: dict, key: str):
+    if key not in d:
+        raise BaseException('key ' + key + ' not found!')
+    val = d[key]
+    if isinstance(val, str) and val[0] == '@':
+        # lookup in variables
+        cc = data['vars']
+        print (cc)
+        for b in val[1:].split('/'):
+            print(b)
+            cc = cc[b]
+        return cc
+    else:
+        return val
+
 
 def set_verb(verbId):
     def f(x, y, e : example.Wrap1):

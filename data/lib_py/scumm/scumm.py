@@ -1,7 +1,7 @@
 from lib_py.entity import Entity
 from lib_py.components import HotSpot
-from lib_py.shape import Rect
 from lib_py.scumm.dialogue import Dialogue
+import lib_py.engine as engine
 
 
 class Verb:
@@ -86,24 +86,18 @@ def init(players: list, current_player : str):
 import yaml
 import example
 import sys
+
+
+def builder(id):
+    def f():
+        from lib_py.scumm.builder.room import makeRoom
+        return makeRoom(id)
+    return f        
+
 class Data:
     items = {}
     locator = {}
-    @staticmethod
-    def makeRoom (roomid: str):
-        filename = example.dir +'/rooms/'+ roomid+ '.yaml'
-        from lib_py.scumm.room import RoomUI
-        try:
-            with open(filename) as f:
-                room = yaml.load(f, Loader=yaml.FullLoader)
-                r = RoomUI(id= room['id'], width = ['width'], height = ['height'])
-                if roomid in Data.locator:
-                    for key, value in Data.locator[roomid].items():
-                        print ('found item: ' + key)
-                return r
-        except EnvironmentError as error:
-            print (error)
-            sys.exit(1)
+
 
 
     @staticmethod
@@ -122,7 +116,6 @@ class Data:
 
     @staticmethod
     def loadItems():
-        print ('ciaomerd')
         filename = example.dir +'/items.yaml'
         with open(filename) as f:
             Data.items = yaml.load(f, Loader=yaml.FullLoader)
@@ -135,6 +128,16 @@ class Data:
         print (Data.items)
         print (Data.locator)
     
+    @staticmethod
+    def loadRooms():
+        # create one room builder for each yaml in rooms
+        dir = example.dir +'/rooms'
+        import os, glob
+        if os.path.exists(dir):
+            for file in glob.glob(dir+"/*.yaml"):
+                roomName = os.path.splitext(os.path.basename(file))[0]
+                engine.addRoom (roomName, builder(roomName))
+
 class State:
     # map that associate room with dynamic items to create on the fly
     items = {}

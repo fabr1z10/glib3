@@ -5,6 +5,7 @@ from lib_py.scumm.scumm import Config
 import lib_py.scumm.actions as sa
 import lib_py.scumm.scumm as s
 import lib_py.scumm.helper as helper
+import lib_py.engine as engine
 
 def start_dialogue():
     # first of all, set UI to inactive
@@ -13,28 +14,36 @@ def start_dialogue():
 
 # handle 1-verb actions
 def handler1():
-    item : s.Item = s.State.items[s.Config.item1]
+    item : s.Item = s.Data.items[s.Config.item1] # s.State.items[s.Config.item1]
     sc = script.Script(id = '_main')
     # if item has a walk-to attribute, walk to it
-    if item.walkto:
-        x = item.walkto[0]
-        y = item.walkto[1]
-        print ('walking to ' + str(x) + ', ' + str(y))
-        sc.addAction( sa.Walk(pos = [x, y], tag = 'player'))
-    if item.dir:
-        sc.addAction( sa.Turn(dir = item.dir, tag = 'player'))
+    walkto = helper.gdd(item, 'walkto', None)
+    wdir = helper.gdd (item, 'wdir', None)
+    if walkto is not None:
+        sc.addAction( sa.Walk(pos = walkto, tag = 'player'))    
+    if wdir is not None:
+        sc.addAction( sa.Turn(dir = wdir, tag = 'player'))
     # check if we have a custom script for this action
-    print ('ciao ' + s.Config.verb)
-    if s.Config.verb in item.actions:
-        a = item.actions[s.Config.verb]()
+    func = s.Config.verb+'_'+s.Config.item1
+    print ('checking ' + func)
+    if hasattr(engine.scripts, func):
+        a = getattr(engine.scripts, func)()
         if a:
-            sc.addAction (actions.RunScript(s = a))
+            sc.addAction (actions.RunScript(s=a))        
+        print ('dodo')
     else:
-        v = s.Config.getVerb(s.Config.verb)
-        if v.default_action:
-            a = v.default_action()
-            sc.addAction (actions.RunScript(s = a))
-    sc.addAction (sa.ResetVerb())
+        print ('not found')
+    # print ('ciao ' + s.Config.verb)
+    # if s.Config.verb in item.actions:
+    #     a = item.actions[s.Config.verb]()
+    #     if a:
+    #         sc.addAction (actions.RunScript(s = a))
+    # else:
+    #     v = s.Config.getVerb(s.Config.verb)
+    #     if v.default_action:
+    #         a = v.default_action()
+    #         sc.addAction (actions.RunScript(s = a))
+    # sc.addAction (sa.ResetVerb())
     example.play(sc)
         # run default script
     

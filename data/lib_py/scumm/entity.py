@@ -5,7 +5,7 @@ import lib_py.components as compo
 import lib_py.scumm.components as sc
 import lib_py.shape as sh
 import lib_py.scumm.functions as sf
-
+import lib_py.engine as engine
 
 #import lib_py.scumm.scumm as scumm
 
@@ -30,8 +30,9 @@ def update_current_action():
     verb = s.Config.getVerb(s.Config.verb)
     text = verb.text
     if s.Config.item1:
-        item = s.State.items[s.Config.item1]
-        text += ' ' + item.text
+        item = s.Data.items[s.Config.item1]
+        label = engine.data['strings']['objects'][item['text']]
+        text += ' ' + label
     a.setText (text)
 
 def hoverOn(obj):

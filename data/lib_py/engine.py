@@ -32,6 +32,9 @@ def startUp(lang: str):
     for k,v in data['assets']['models'].items():
         print("key: " + k)
         print(v)
+    # read game variables
+    with open(example.dir+'/variables.yaml') as f:
+        data['vars'] = yaml.load(f, Loader = yaml.FullLoader) 
 
 
 # contains engine related infos.
@@ -54,8 +57,11 @@ data = {
     'rooms': {},
     'strings': {},
     'entities': {},
-    'factories': {}
+    'factories': {},
+    'vars': {}
 }
+
+scripts = None
 
 def identity(x): 
     return x

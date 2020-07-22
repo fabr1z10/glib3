@@ -1,0 +1,652 @@
+---
+fire:
+  sheet: "gfx/sprites/sprites1.png"
+  type: "asset.sprite"
+  animations:
+    def:
+      loop: true
+      frames:
+        - [409, 479, 24, 32]
+        - [[435, 479, 24, 32]]
+        - [461, 479, 24, 32]
+        - [487, 479, 24, 32]
+guybrush:
+  sheet: "gfx/sprites/guybrush.png"
+  type: 'asset.sprite'
+  animations:
+    idle_e:
+      frames:
+        - [2, 51, 19, 47, 10, 0]
+    idle_n:
+      frames:
+        - [49, 51, 20, 47, 12, 0]
+    idle_s:
+      frames:
+        - [24, 51, 22, 47, 12, 0]
+    walk_e:
+      frames:
+        - [4,1,32,47,17,0]
+        - [39,1,17,47,13,0]
+        - [60,1,19,47,12,0]
+        - [83,1,31,47,16,0]
+        - [117,1,18,47,13,0]
+        - [141,1,19,47,12,0]
+    walk_s:
+      frames:
+        - [207,51,22,47,11,0]
+        - [231,51,21,47,11,0]
+        - [3,101,20,47,10,0]
+        - [25,101,22,47,12,0]
+        - [49,101,21,47,11,0]
+        - [72,101,20,47,11,0]
+    walk_n:
+      frames:
+        - [72,51,21,47,10,0]
+        - [95,51,21,47,10,0]
+        - [118,51,21,47,10,0]
+        - [139,51,21,47,10,0]
+        - [163,51,21,47,10,0]
+        - [186,51,19,47,8,0]
+    talk_e:
+      frames:
+        - [[157,112,19,36,10,0], [179,101,11,12,7,-35]]
+        - [[157,112,19,36,10,0], [192,101,11,12,7,-35]]
+        - [[157,112,19,36,10,0], [205,101,11,12,7,-35]]
+        - [[157,112,19,36,10,0], [179,115,11,12,7,-35]]
+        - [[157,112,19,36,10,0], [192,101,11,12,7,-35]]
+        - [[157,112,19,36,10,0], [179,101,11,12,7,-35]]
+        - [[157,112,19,36,10,0], [192,115,11,12,7,-35]]
+        - [[157,112,19,36,10,0], [205,115,11,12,7,-35]]
+        - [[157,112,19,36,10,0], [179,101,11,12,7,-35]]
+        - [[157,112,19,36,10,0], [192,115,11,12,7,-35]]
+        - [[157,112,19,36,10,0], [179,101,11,12,7,-35]]
+        - [[157,112,19,36,10,0], [205,101,11,12,7,-35]]
+    talk_s:
+      frames:
+        - [[164,12,22,36,12,0], [179,129,11,13,6,-34]]
+        - [[164,12,22,36,12,0], [192,129,11,13,6,-34]]
+        - [[164,12,22,36,12,0], [179,129,11,13,6,-34]]
+        - [[164,12,22,36,12,0], [192,129,11,13,6,-34]]
+        - [[164,12,22,36,12,0], [205,129,11,13,6,-34]]
+        - [[164,12,22,36,12,0], [179,143,11,13,6,-34]]
+        - [[164,12,22,36,12,0], [192,129,11,13,6,-34]]
+        - [[164,12,22,36,12,0], [192,143,11,13,6,-34]]
+        - [[164,12,22,36,12,0], [205,143,11,13,6,-34]]
+        - [[164,12,22,36,12,0], [192,143,11,13,6,-34]]
+        - [[164,12,22,36,12,0], [179,129,11,13,6,-34]]
+        - [[164,12,22,36,12,0], [192,129,11,13,6,-34]]
+        - [[164,12,22,36,12,0], [205,143,11,13,6,-34]]
+    talk_n:
+      frames:
+        - [[189,12,20,36,12,0], [220,101,11,12,7,-35]]
+        - [[189,12,20,36,12,0], [233,101,11,12,7,-35]]
+        - [[189,12,20,36,12,0], [220,101,11,12,7,-35]]
+        - [[189,12,20,36,12,0], [233,101,11,12,7,-35]]
+        - [[189,12,20,36,12,0], [220,115,11,12,7,-35]]
+lookout:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: 'asset.sprite'
+  animations:
+    idle_e:
+      frames:
+        - [[170,457,20,37,11,0],[173,495,11,13,4,-32]]
+    idle_s:
+      frames:
+        - [[193,459,23,35,11,0],[186,495,9,14,5,-32]]
+    talk_e:
+      frames:
+        - [[170,457,20,37,11,0],[173,495,11,13,5,0]]
+        - [[170,457,20,37,11,0],[197,496,11,14,5,0]]
+        - [[170,457,20,37,11,0],[210,496,11,13,5,0]]
+    talk_s:
+      frames:
+        - [[193,459,23,35,11,0], [186,495,9,14,5,-32]]
+        - [[193,459,23,35,11,0], [223,496,9,15,5,-32]]
+        - [[193,459,23,35,11,0], [234,496,9,13,5,-32]]
+        - [[193,459,23,35,11,0], [223,496,9,15,5,-32]]
+door_village_scummbar:
+  sheet: "gfx/sprites/sprites1.png"
+  type: "asset.sprite"
+  animations:
+    open:
+      frames:
+        - [3,126,31,52]
+    closed:
+      frames:
+        - [35,126,31,52]
+door_scummbar_village:
+  sheet: "gfx/sprites/sprites1.png"
+  type: "asset.sprite"
+  animations:
+    open:
+      frames:
+        - [472,2,38,47]
+    closed:
+      frames:
+        - [472,50,38,47]
+door_scummbar_kitchen:
+  sheet: "gfx/sprites/sprites1.png"
+  type: "asset.sprite"
+  animations:
+    open:
+      frames:
+        - [435,73,35,69]
+    closed:
+      frames:
+        - [435,2,35,69]
+scummbar.mancomb:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: 'asset.sprite'
+  animations:
+    idle_1:
+      frames:
+        - [241,68,33,40]
+    idle_2:
+      frames:
+        - [277,68,36,39,1,-1]
+scummbar.estevan:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: 'asset.sprite'
+  animations:
+    idle_1:
+      frames:
+        - [318,76,35,27]
+    idle_2:
+      loop: false
+      frames:
+        - [355,76,39,27]
+        - [396,76,37,27]
+scummbar.loom:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: 'asset.sprite'
+  animations:
+    idle_1:
+      frames:
+        - [221,457,29,38]
+    idle_2:
+      loop: false
+      frames:
+        - [252,458,29,37]
+        - [283,458,29,37]
+scummbar.fireplace:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: 'asset.sprite'
+  animations:
+    idle_1:
+      frames:
+        - [334,160,32,26]
+        - [368,160,32,26]
+        - [402,160,32,26]
+scummbar.pirate1:
+  sheet: 'gfx/sprites/sprites2.png'
+  type: 'asset.sprite'
+  animations:
+    idle_1:
+      frames:
+        - [330,1,26,27]
+    idle_2:
+      loop: false
+      frames:
+        - [358,1,27,27]
+        - [387,1,26,27]
+scummbar.pirate2:
+  sheet: 'gfx/sprites/sprites2.png'
+  type: 'asset.sprite'
+  animations:
+    idle_1:
+      frames:
+        - [330,31,36,37]
+    idle_2:
+      frames:
+        - [368,31,36,37]
+scummbar.pirate3:
+  sheet: 'gfx/sprites/sprites2.png'
+  type: 'asset.sprite'
+  animations:
+    idle_1:
+      frames:
+        - [417,3,40,23]
+    idle_2:
+      frames:
+        - [459,3,40,23]
+scummbar.pirate4:
+  sheet: 'gfx/sprites/sprites2.png'
+  type: 'asset.sprite'
+  animations:
+    idle_1:
+      frames:
+        - [407,35,33,25]
+    idle_2:
+      loop: false
+      frames:
+        - [442,35,33,25]
+        - [477,35,33,25]
+scummbar.pirate5:
+  sheet: 'gfx/sprites/sprites2.png'
+  type: 'asset.sprite'
+  animations:
+    idle_1:
+      frames:
+        - [400,71,35,27]
+    idle_2:
+      loop: false
+      frames:
+        - [437,71,35,27]
+        - [474,72,35,26]
+scummbar.pirate6:
+  sheet: 'gfx/sprites/sprites2.png'
+  type: 'asset.sprite'
+  animations:
+    idle_1:
+      frames:
+        - [347,71,50,26]
+scummbar.pirate7:
+  sheet: 'gfx/sprites/sprites2.png'
+  type: 'asset.sprite'
+  animations:
+    idle_1:
+      frames:
+        - [180,73,20,21]
+    idle_2:
+      loop: false
+      frames:
+        - [202,73,20,22]
+        - [157,73,20,21]
+scummbar.pirate8:
+  sheet: 'gfx/sprites/sprites2.png'
+  type: 'asset.sprite'
+  animations:
+    idle_1:
+      frames:
+        - [419,103,28,32]
+    idle_2:
+      loop: false
+      frames:
+        - [448,103,28,32]
+        - [479,103,29,32]
+scummbar.pirate9:
+  sheet: 'gfx/sprites/sprites2.png'
+  type: 'asset.sprite'
+  animations:
+    idle_1:
+      frames:
+        - [323,100,30,33]
+    idle_2:
+      loop: false
+      frames:
+        - [354,100,30,35]
+        - [386,100,30,39]
+ilp1:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: 'asset.sprite'
+  animations:
+    idle_e:
+      frames:
+        - [319,410,35,55]
+    talk_e:
+      frames:
+        - [394,409,35,56]
+        - [431,411,35,54]
+ilp2:
+  sheet: 'gfx/sprites/sprites2.png'
+  type: 'asset.sprite'
+  animations:
+    idle_e:
+      frames:
+        - [2,1,34,53]
+    talk_e:
+      frames:
+        - [39,1,34,56]
+        - [75,1,35,52]
+ilp3:
+  sheet: 'gfx/sprites/sprites2.png'
+  type: 'asset.sprite'
+  animations:
+    idle_e:
+      frames:
+        - [113,1,35,52]
+    talk_e:
+      frames:
+        - [150,1,31,52]
+        - [183,2,32,51]
+        - [217,1,31,52]
+cook:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: 'asset.sprite'
+  animations:
+    idle_e:
+      frames:
+        - [ [2, 34, 28, 35, 17, 0], [36, 57, 11, 16, 7, -32] ]
+    idle_n:
+      frames:
+        - [2, 72, 36, 48, 17, 0]
+    idle_s:
+      frames:
+        - [39, 77, 31, 48, 15, 0]
+    talk_e:
+      frames:
+        - [ [2, 34, 28, 35, 17, 0], [90, 57, 11, 16, 8, 0]]
+        - [ [2, 34, 28, 35, 17, 0], [50, 57, 12, 18, 7, 2]]
+        - [ [2, 34, 28, 35, 17, 0], [64, 57, 11, 17, 8, 1]]
+        - [ [2, 34, 28, 35, 17, 0], [77, 57, 11, 17, 8, 1]]
+        - [ [2, 34, 28, 35, 17, 0], [103, 57, 11, 18, 7, 2]]
+    walk_e:
+      frames:
+        - [72,77,25,48,13,0]
+        - [99,78,31,47,17,0]
+        - [132,76,20,49,12,0]
+        - [154,76,28,49,16,0]
+        - [184, 77, 26, 48, 16, 0]
+        - [212, 77, 22, 48, 13, 0]
+    walk_n:
+      frames:
+        - [2, 72, 36, 48, 17, 0]
+    walk_s:
+      frames:
+        - [39, 77, 31, 48, 15, 0]
+mancomb.mancomb:
+  sheet: 'gfx/faces.png'
+  type: 'asset.sprite'
+  animations:
+    idle_e:
+      frames:
+        - [80,0,78,78]
+    talk_e:
+      frames:
+        - [80,0,78,78]
+    smile:
+      frames:
+        - [0,0,78,78]
+citizen:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: 'asset.sprite'
+  animations:
+    idle_s:
+      frames:
+        - [ [164, 1, 29, 31, 15, 0], [196, 11, 9, 9, 5,-27]]
+        - [ [164, 1, 29, 31, 15, 0], [196, 1, 9, 9, 5, -27]]
+        - [ [164, 1, 29, 31, 15, 0], [196, 11, 9, 9, 5, -27]]
+        - [ [164, 1, 29, 31, 15, 0], [196, 1, 9, 9, 5, -27, 1]]
+    talk_s:
+      frames:
+        - [ [164, 1, 29, 31, 15, 0], [231, 1, 9, 9, 5, -27]]
+        - [ [164, 1, 29, 31, 15, 0], [231, 11, 9, 9, 5, -27]]
+        - [ [164, 1, 29, 31, 15, 0], [196, 11, 9, 9, 5, -27]]
+    idle_e:
+      frames:
+        - [ [207, 3, 22, 29, 17, 0], [196, 1, 9, 9, 7, -27]]
+        - [ [207, 3, 22, 29, 17, 0], [196, 21, 9, 9, 7, -27]]
+        - [ [207, 3, 22, 29, 17, 0], [196, 1, 9, 9, 7, -27]]
+        - [ [207, 3, 22, 29, 17, 0], [196, 11, 9, 9, 7, -27]]
+    idle_e_1:
+      frames:
+        - [ [328, 3, 38, 29, 25, 0], [196, 1, 9, 9, 7,-27]]
+        - [ [328, 3, 38, 29, 25, 0], [196, 21, 9, 9, 7,-27]]
+        - [ [328, 3, 38, 29, 25, 0], [196, 1, 9, 9, 7, -27]]
+        - [ [328, 3, 38, 29, 25, 0], [196, 11, 9, 9, 7, -27]]
+    idle_e_2:
+      frames:
+        - [ [286, 34, 25, 29, 16, 0], [196, 1, 9, 9, 7, -27]]
+        - [ [286, 34, 25, 29, 16, 0], [196, 21, 9, 9, 7,-27]]
+        - [ [286, 34, 25, 29, 16, 0], [196, 1, 9, 9, 7, -27]]
+        - [ [286, 34, 25, 29, 16, 0], [196, 11, 9, 9, 7, -27]]
+    talk_e:
+      frames:
+        - [ [207, 3, 22, 29, 17, 0], [231, 1, 9, 9, 7, -27]]
+        - [ [207, 3, 22, 29, 17, 0], [231, 11, 9, 9, 7, -27]]
+        - [ [207, 3, 22, 29, 17, 0], [196,21,9,9,7,-27]]
+    talk_e_1:
+      frames:
+        - [[328,3,38,29,25,0],[231,1,9,9,7,-27]]
+        - [[328,3,38,29,25,0],[231,11,9,9,7,-27]]
+        - [[328,3,38,29,25,0],[196,21,9,9,7,-27]]
+    talk_e_2:
+      frames:
+        - [[286,34,25,29,16,0],[231,1,9,9,7,-27]]
+        - [[286,34,25,29,16,0],[231,11,9,9,7,-27]]
+        - [[286,34,25,29,16,0],[196,21,9,9,7,-27]]
+    open_jacket:
+      loop: false
+      frames:
+        - [[207, 3, 22, 29, 17, 0], [196, 21, 9, 9, 7, -27]]
+        - [[241, 3, 26, 29, 20, 0], [196, 21, 9, 9, 7, -27]]
+        - [[269, 3, 23, 29, 17, 0], [196, 21, 9, 9, 7, -27]]
+        - [[293, 3, 33, 29, 25, 0], [196, 21, 9, 9, 7, -27]]
+        - [[328, 3, 38, 29, 25, 0], [196, 21, 9, 9, 7, -27]]
+    rollmap:
+      loop: false
+      frames:
+        - [[207, 3, 22, 29, 17, 0], [196, 21, 9, 9, 7, -27]]
+        - [[165, 34, 29, 29, 17, 0], [196, 21, 9, 9, 7, -27]]
+        - [[197, 34, 26, 29, 16, 0], [196, 21, 9, 9, 7, -27]]
+        - [[226, 34, 26, 29, 16, 0], [196, 21, 9, 9, 7, -27]]
+        - [[257, 34, 26, 29, 16, 0], [196, 21, 9, 9, 7, -27]]
+        - [[286, 34, 25, 29, 16, 0], [196, 21, 9, 9, 7, -27]]
+    givemap:
+      frames:
+        - [[316, 466, 29, 30, 16, 0], [196, 21, 9, 9, 5, 0]]
+        - [[346, 466, 37, 30, 16, 0], [196, 21, 9, 9, 5, 0]]
+        - [[470, 400, 29, 30, 16, 0], [196, 21, 9, 9, 5, 0]]
+        - [[207, 3, 22, 29, 17, 0], [196, 21, 9, 9, 5, 0]]
+lowmoral1:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: 'asset.sprite'
+  animations:
+    idle_e_1:
+      frames:
+        - [[1,1,31,30,13,0], [33,1,15,12,8,-28]]
+    talk_e:
+      frames:
+        - [[1,1,31,30,13,0], [33,1,15,12,8,-28]]
+        - [[1,1,31,30,13,0], [66,1,15,12,7,-28]]
+        - [[1,1,31,30,13,0], [50,1,15,13,7,-28]]
+    idle_e:
+      frames:
+        - [33,15,34,39,17,0]
+        - [[1,1,31,30,13,0], [33,1,15,12,8,-28]]
+        - [69,16,27,39,9,0]
+        - [[1,1,31,30,13,0], [33,1,15,12,8,-28]]
+    idle_n:
+      frames:
+        - [[1,1,31,30,13,0], [83,1,14,12,8,-28]]
+
+lowmoral2:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: 'asset.sprite'
+  animations:
+    idle_e:
+      frames:
+        - [[100,1,24,30,14,0],[127,1,12,9,7,-28]]
+    idle_s:
+      frames:
+        - [[100,1,24,30,14,0],[141,1,10,9,7,-28]]
+        - [[100,1,24,30,14,0],[153,1,10,9,7,-28]]
+    talk_e:
+      frames:
+        - [314,34,24,39,14,0]
+        - [340,35,25,38,15,0]
+        - [367,34,24,39,14,0]        
+    hit:
+      frames:
+        - [[100,1,24,30,14,0], [128,11,11,8,7,-28]]
+
+lowmoral3:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: 'asset.sprite'
+  animations:
+    idle_e:
+      frames:
+        - [[67,127,24,37,14,0],[93,127,13,15,13,-34]]
+    idle_s:
+      frames:
+        - [[67,127,24,37,14,0],[176,127,11,13,10,-34]]
+    talk_e:
+      frames:
+        - [[67,127,24,37,14,0],[93,144,13,15,13,-34]]
+        - [[67,127,24,37,14,0],[108,127,13,15,13,-34]]
+        - [[67,127,24,37,14,0],[108,144,13,15,13,-34]]
+    talk_e_1:
+      frames:
+        - [[149,127,24,37,13,0], [93,144,13,15,13,-34]]
+        - [[149,127,24,37,13,0], [108,127,13,15,13,-34]]
+        - [[149,127,24,37,13,0], [108,144,13,15,13,-34]]
+    talk_s:
+      frames:
+        - [[67,127,24,37,14,0], [176,127,11,13,10,-34]]
+        - [[67,127,24,37,14,0], [175,142,13,14,11,-34]]
+    punch:
+      loop: false
+      frames:
+        - [[67,127,24,37,14,0], [176,127,11,13,10,-34]]
+        - [[190,127,23,37,13,0], [176,127,11,13,10,-34]]
+        - [[213,127,30,45,18,0], [176,127,11,13,10,-34]]
+        - [[244,127,32,37,20,0], [176,127,11,13,10,-34]]
+    open_jacket:
+      frames:
+        - [[67,127,24,37,14,0],[93,127,13,15,13,-34]]
+        - [[124,127,23,37,13,0],[93,127,13,15,13,-34]]
+        - [[149,127,24,37,13,0],[93,127,13,15,13,-34]]
+rat:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: 'asset.sprite'
+  animations:
+    idle_e:
+      frames:
+        - [[69,166,13,12,5,0],[99,168,5,4,3,0]]
+        - [[69,166,13,12,5,0],[99,175,6,2,4,0]]
+        - [[84,168,13,10,6,0],[99,175,6,2,4,0]]
+
+fakedoor1:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: 'asset.sprite'
+  animations:
+    closed:
+      frames:
+        - [58,179,16,29]
+    open:
+      frames:
+        - [76,179,16,29]
+
+fakedoor2:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: 'asset.sprite'
+  animations:
+    closed:
+      frames:
+        - [3,204,8,14]
+    open:
+      frames:
+        - [13,204,8,14]
+fakedoor3:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: 'asset.sprite'
+  animations:
+    closed:
+      frames:
+        - [388,484,8,13]
+    open:
+      frames:
+        - [398,484,8,13]
+fakedoor4:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: 'asset.sprite'
+  animations:
+    closed:
+      frames:
+        - [388,498,8,12]
+    open:
+      frames:
+        - [398,398,8,12]
+door_village_voodoolady:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: 'asset.sprite'
+  animations:
+    closed:
+      frames:
+        - [3,179,26,24]
+    open:
+      frames:
+        - [31,179,26,24]
+door_voodoolady_village:
+  sheet: 'gfx/sprites/sprites2.png'
+  type: 'asset.sprite'
+  animations:
+    closed:
+      frames:
+        - [1,55,33,58]
+    open:
+      frames:
+        - [36,55,33,58]
+baskets:
+  sheet: 'gfx/sprites/sprites2.png'
+  type: 'asset.sprite'
+  animations:
+    default:
+      frames:
+        - [71,81,79,35]
+voodoolady_trunk:
+  sheet: 'gfx/sprites/sprites2.png'
+  type: 'asset.sprite'
+  animations:
+    default:
+      frames:
+        - [71,56,81,24]
+rubberchicken:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: 'asset.sprite'
+  animations:
+    default:
+      frames:
+        - [472,98,27,20]
+
+
+
+
+
+        # 		{
+# 			name="talk_e",
+# 			frames = {
+# 				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_idle}, {id=s.low_moral_fiber_3_head_talk_e_1, pos=lmf3_head}}},
+# 				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_idle}, {id=s.low_moral_fiber_3_head_talk_e_2, pos=lmf3_head}}},
+# 				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_idle}, {id=s.low_moral_fiber_3_head_talk_e_3, pos=lmf3_head}}},
+# 			}
+# 		},
+# 		{
+# 			name="talk_e_1",
+# 			frames = {
+# 				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_open_jacket_2}, {id=s.low_moral_fiber_3_head_talk_e_1, pos=lmf3_head}}},
+# 				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_open_jacket_2}, {id=s.low_moral_fiber_3_head_talk_e_2, pos=lmf3_head}}},
+# 				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_open_jacket_2}, {id=s.low_moral_fiber_3_head_talk_e_3, pos=lmf3_head}}},
+# 			}
+# 		},
+# 		{
+# 			name="talk_s",
+# 			frames = {
+# 				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_idle}, {id=s.low_moral_fiber_3_head_idle_s, pos=lmf3_head_1}}},
+# 				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_idle}, {id=s.low_moral_fiber_3_head_talk_s_1, pos=lmf3_head_1}}}
+
+# 			}
+# 		},
+# 		{
+# 			name ="punch",
+# 			loop = false,
+# 			frames = {
+# 				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_idle}, {id=s.low_moral_fiber_3_head_idle_s, pos=lmf3_head_1}}},
+# 				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_punch_1}, {id=s.low_moral_fiber_3_head_idle_s, pos=lmf3_head_1}}},
+# 				{ duration = 2*dt, quads = { {id=s.low_moral_fiber_3_body_punch_2}, {id=s.low_moral_fiber_3_head_idle_s, pos=lmf3_head_1}}},
+# 				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_punch_3}, {id=s.low_moral_fiber_3_head_idle_s, pos=lmf3_head_1}}}
+# 			}
+# 		},
+# 		{
+# 			name="open_jacket",
+# 			loop = false,
+# 			frames = {
+# 				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_idle}, {id=s.low_moral_fiber_3_head_idle_e, pos=lmf3_head}}},
+# 				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_open_jacket_1}, {id=s.low_moral_fiber_3_head_idle_e, pos=lmf3_head}}},
+# 				{ duration = dt, quads = { {id=s.low_moral_fiber_3_body_open_jacket_2}, {id=s.low_moral_fiber_3_head_idle_e, pos=lmf3_head}}}
+# 			}			
+
+# 		}
+
+# 	}
+# }
