@@ -211,7 +211,13 @@ SceneFactory::SceneFactory() {
     add2<SkModel> ("asset.skeletalmodel");
     add2<SkAnimation> ("asset.skeletalanimation");
     add2<Font> ("font");
+
+    // functions
     add2<Linear2Dy> ("func.liny");
+    add2<Linear2Dx> ("func.linx");
+    add2<Constant2D> ("func.const");
+    add2<PatchwiseLinear2D> ("func.patch2d");
+
 }
 
 //void SceneFactory::addStateFactory(const std::string &a, std::unique_ptr<FactoryMethod<State>> f) {

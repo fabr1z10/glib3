@@ -71,8 +71,30 @@ class Graph(Shape):
         self.nodes = nodes
         self.edges = edges
 
+class LinX:
+    def __init__(self, x0 : float, z0: float, x1: float, z1: float):
+        self.type = 'func.linx'
+        self.values = [x0, z0, x1, z1]
+
 
 class LinY:
     def __init__(self, y0 : float, z0: float, y1: float, z1: float):
         self.type = 'func.liny'
         self.values = [y0, z0, y1, z1]
+
+class Const:
+    def __init__(self, x: float):
+        self.type = 'func.const'
+        self.value = x
+
+class Patch2D:
+    def __init__(self):
+        self.type = 'func.patch2d'
+        self.rect = []
+
+    def addFunc (self, x: float, y: float, width: float, height: float, f):
+        self.rect.append({
+            'pos': [x, y],
+            'size': [width, height],
+            'func': f
+        })
