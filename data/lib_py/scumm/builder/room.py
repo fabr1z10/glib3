@@ -3,7 +3,7 @@ import yaml
 import sys
 
 from lib_py.scumm.entity import WalkArea, BackgroundItem
-from lib_py.shape import Polygon, LinY
+from lib_py.shape import Polygon, LinY, Graph
 from lib_py.scumm.scumm import Data
 from lib_py.scumm.builder.item import buildItem
 
@@ -24,7 +24,9 @@ def makeRoom (roomid: str):
                 for wa in room['walkareas']:                        
                     shape = None
                     if wa['type'] == 'poly':
-                        shape = Polygon(outline = wa['outline'])     
+                        shape = Polygon(outline = wa['outline'])
+                    elif wa['type'] == 'polyline':
+                        shape = Graph(nodes = wa['nodes'], edges=wa['edges'])  
                     d = wa.get('depth', None)
                     depth = None
                     if d == 'auto':

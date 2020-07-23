@@ -6,8 +6,23 @@ guybrush:
   node: walkarea
   dir: s
   speed: 500
-  text_color: [255, 255, 255]
+  text_color: [255, 255, 255, 255]
   text_offset: [0, 60]
+lookout:
+  model: 'lookout'
+  pos: [114, 36]
+  room: lookout
+  node: walkarea
+  dir: w
+  width: 20
+  height: 47
+  offset: [-10, 0]
+  text: lookout
+  speed: 100
+  walkto: [134, 36]
+  wdir: w
+  text_color: [170, 170, 170, 255]
+  text_offset: [0,60]
 lookout_fire:
   model: fire
   pos: [126, 52]
@@ -20,3 +35,55 @@ lookout_stairs:
   walkto: '@lookout_stairs'
   wdir: 's'
   room: lookout
+village1_poster:
+  text: poster
+  pos: [259, 27]
+  room: village1
+  width: 20
+  height: 23
+  walkto: [269, 15]
+  wdir: n
+village1_cliffside:
+  text: cliffside
+  pos: [0, 0]
+  width: 10
+  height: 144 
+  walkto: '@village1_lookout'
+  wdir: 'w'
+  room: village1
+village1_archway:
+  text: archway
+  pos: [992, 30]
+  width: 16
+  height: 40
+  walkto: '@village1_village2'
+  wdir: e
+  room: village1
+village1_door:
+  text: door
+  width: 30
+  height: 45
+  pos: [699, 7]
+  room: village1
+  walkto: '@village1_door'
+  wdir: n
+  anim: '@doors/scummbar'
+  model: door_village_scummbar
+scummbar_door_out:
+  text: door
+  width: 38
+  height: 47
+  pos: [32, 24]
+  room: scummbar
+  walkto: '@scummbar_entrance'
+  wdir: w
+  anim: '@doors/scummbar'
+  model: door_scummbar_village
+village2_archway1:
+  text: archway
+  pos: [416, 34]
+  width: 40
+  height: 50
+  walkto: '@village2_village1'
+  wdir: n
+  room: village2

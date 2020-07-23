@@ -40,6 +40,10 @@ Script::~Script() {
 
 void Script::Start() {
     // by convention, the script starts from 0
+    if (m_activities.empty()) {
+        m_complete = true;
+        return;
+    }
     PushToFrontier(0);
 }
 

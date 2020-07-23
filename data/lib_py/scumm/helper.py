@@ -8,11 +8,7 @@ def gdd(d: dict, key: str, defaultvalue):
         return gd(d, key)
     return defaultvalue
 
-
-def gd(d: dict, key: str):
-    if key not in d:
-        raise BaseException('key ' + key + ' not found!')
-    val = d[key]
+def gv(val: str):
     if isinstance(val, str) and val[0] == '@':
         # lookup in variables
         cc = data['vars']
@@ -23,6 +19,36 @@ def gd(d: dict, key: str):
         return cc
     else:
         return val
+
+def sv(id: str, val):
+    if id[0] == '@':
+        # lookup in variables
+        cc = data['vars']
+        xo = id[1:].split('/')
+        print(xo)
+        for b in xo[:-1]:
+            cc = cc[b]
+        print ('before ' + str(cc[xo[-1]]))
+        cc[xo[-1]] = val
+        print ('after' + str(cc[xo[-1]]))
+
+def gd(d: dict, key: str):
+    if key not in d:
+        raise BaseException('key ' + key + ' not found!')
+    val = d[key]
+    return gv(val)
+
+def gt(key: str):
+    x = data['strings']
+    print ('ccocococo222')
+    if key[0] == '@':
+        print ('ccocococo')
+        for b in key[1:].split('/'):
+            if b.isnumeric():
+                x = x[int(b)]
+            else:
+                x = x[b]
+    return x
 
 
 def set_verb(verbId):

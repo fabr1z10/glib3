@@ -3,12 +3,14 @@ import lib_py.script as script
 import lib_py.scumm.actions as sa
 from lib_py.scumm.scumm import State
 import lib_py.actions as act
-
+from lib_py.scumm.helper import gt
 
 def say(lines : list, tag: str = 'player'):
     def f():
         s = script.Script()
-        s.addAction (sa.Say (lines = lines, tag = tag, font = 'monkey'))
+        l = [gt(line) for line in lines]
+        
+        s.addAction (sa.Say (lines = l, tag = tag, font = 'monkey'))
         return s
     return f
 

@@ -5,12 +5,14 @@ from lib_py.shape import Rect
 from lib_py.scumm.scumm import Data, State
 from lib_py.scumm.entity import hoverOn, hoverOff
 from lib_py.scumm.functions import run_action
+from lib_py.scumm.helper import gv
 
 # create an entity from an item description
 def buildItem (id: str = None):
     desc = Data.items[id]
     # create the entity
-    tag = desc.get ('tag', None)
+    tag = desc.get ('tag', id)    
+        
     pos = desc.get ('pos', [0, 0, 0])
     e = Entity (tag, pos)
     
@@ -19,7 +21,8 @@ def buildItem (id: str = None):
     if model is not None:
         e.type = 'sprite'
         e.model = model
-        e.anim = desc.get('anim', None)
+        if 'anim' in desc:
+            e.anim = gv(desc['anim'])
     
     # check if hotspot is to be added
     text = desc.get ('text', None)

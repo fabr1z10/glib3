@@ -1,0 +1,17 @@
+---
+  id: scummbar
+  width: 640
+  height: 144
+  bg:
+    - image: gfx/scummbar_1.png
+      pos: [0, 0, -3]
+    - image: gfx/scummbar_2.png
+      pos: [374, 20, 0.95]
+    - image: gfx/scummbar_3.png
+      pos: [157, 0, 0.99]
+    - image: gfx/scummbar_4.png
+      pos: [20, 0, 0.99]
+  walkareas:
+    - type: poly
+      outline: [32, 16, 70, 24, 128, 19, 251, 18, 311, 10, 321, 10, 345, 32, 467, 41, 492, 50, 514, 40, 565, 40, 580, 35, 629, 6, 626, 0, 256, 0, 200, 16, 149, 0, 90, 0, 85, 10]
+      depth: auto

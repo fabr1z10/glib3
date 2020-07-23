@@ -1,0 +1,11 @@
+---
+  id: village2
+  width: 480
+  height: 144
+  bg:
+    - image: gfx/village2.png
+      pos: [0, 0, -1]
+  walkareas:
+    - type: poly
+      outline: [0, 24, 123, 63, 199, 63, 299, 30, 377, 30, 385, 35, 454, 35, 470, 0, 0]
+      depth: auto

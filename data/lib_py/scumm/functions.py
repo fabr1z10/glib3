@@ -32,6 +32,12 @@ def handler1():
             sc.addAction (actions.RunScript(s=a))        
         print ('dodo')
     else:
+        # look for default action
+        func = s.Config.verb + '_'
+        if hasattr(engine.scripts, func):
+            a = getattr(engine.scripts, func)()
+            if a:
+                sc.addAction (actions.RunScript(s=a))                    
         print ('not found')
     # print ('ciao ' + s.Config.verb)
     # if s.Config.verb in item.actions:

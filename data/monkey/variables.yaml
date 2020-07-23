@@ -1,4 +1,9 @@
 ---
-lookout_stairs: [230, 10]
+lookout_stairs: [250, 0]
+village1_lookout: [8, 71]
+village1_door: [715, 13]
+village1_village2: [1008, 34]
+village2_village1: [436, 35]
+scummbar_entrance: [65, 15]
 doors:
-  scummbar: open
+  scummbar: closed
