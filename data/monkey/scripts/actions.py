@@ -55,3 +55,10 @@ open_scummbar_door_out = toggleDoor ('scummbar_door_out', True)
 close_scummbar_door_out = toggleDoor ('scummbar_door_out', False)
 walkto_scummbar_door_out = gotoDoor ('scummbar_door_out', 'village1', '@village1_door', 's')
 walkto_village2_archway1 = goto ('village1', '@village1_village2', 'w')
+walkto_village2_archway3 = goto ('village3', '@village3_village2', 'w')
+walkto_village3_archway = goto ('village2', '@village2_village3', 's')
+open_village2_door = toggleDoor ('village2_door', True)
+close_village2_door = toggleDoor ('village2_door', False)
+walkto_village2_door = gotoDoor ('village2_door', 'voodoolady', '@voodoolady_door', 'e')
+
+

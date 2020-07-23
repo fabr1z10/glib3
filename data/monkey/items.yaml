@@ -87,3 +87,29 @@ village2_archway1:
   walkto: '@village2_village1'
   wdir: n
   room: village2
+village2_archway3:
+  text: archway
+  pos: [146, 63]
+  width: 30
+  height: 30
+  walkto: '@village2_village3'
+  wdir: n
+  room: village2
+village3_archway:
+  text: archway
+  pos: [753, 11]
+  width: 23
+  height: 74
+  walkto: '@village3_village2'
+  wdir: e
+  room: village3
+village2_door:
+  text: door
+  model: door_village_voodoolady
+  anim: '@doors/voodoolady'
+  pos: [220, 52]
+  width: 26
+  height: 26
+  walkto: [220, 48]
+  wdir: e
+  room: village2

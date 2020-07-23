@@ -1,0 +1,11 @@
+---
+  id: voodoolady
+  width: 496
+  height: 144
+  bg:
+    - image: gfx/voodoolady1.png
+      pos: [0, 0, -1]
+  walkareas:
+    - type: poly
+      outline: [78,37,124,47,146,42,320,42,320,40,320,0,156,0,145,22]
+      depth: auto
