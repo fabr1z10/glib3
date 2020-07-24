@@ -1,13 +1,17 @@
 ---
 lookout_stairs: [250, 0]
+lookout_path: [320, 50]
 village1_lookout: [8, 71]
 village1_door: [715, 13]
 village1_village2: [1008, 34]
 village2_village1: [436, 35]
 village2_village3: [160, 59]
 village3_village2: [762, 16]
+meleemap_lookout: [75, 79]
 voodoolady_door: [113, 38]
+clearing_path: [496, 10]
 scummbar_entrance: [65, 15]
 doors:
   scummbar: closed
   voodoolady: closed
+talked_to_lookout: False

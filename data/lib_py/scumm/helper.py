@@ -1,7 +1,15 @@
 import example
 from lib_py.scumm.scumm import Config, State
 from lib_py.engine import data
+from lib_py.actions import RunScript
 #from lib_py.scumm.entity import Item, CharItem
+
+def addCustomScript (ns, f: str, s = None):
+    if hasattr(ns, f):
+        scr = getattr(ns, f)()
+        if s is not None and scr:
+            s.addAction (RunScript(s=scr))   
+        return scr
 
 def gdd(d: dict, key: str, defaultvalue):
     if key in d:

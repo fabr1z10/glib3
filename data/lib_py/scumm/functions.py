@@ -26,16 +26,16 @@ def handler1():
     # check if we have a custom script for this action
     func = s.Config.verb+'_'+s.Config.item1
     print ('checking ' + func)
-    if hasattr(engine.scripts, func):
-        a = getattr(engine.scripts, func)()
+    if hasattr(engine.scripts.actions, func):
+        a = getattr(engine.scripts.actions, func)()
         if a:
             sc.addAction (actions.RunScript(s=a))        
         print ('dodo')
     else:
         # look for default action
         func = s.Config.verb + '_'
-        if hasattr(engine.scripts, func):
-            a = getattr(engine.scripts, func)()
+        if hasattr(engine.scripts.actions, func):
+            a = getattr(engine.scripts.actions, func)()
             if a:
                 sc.addAction (actions.RunScript(s=a))                    
         print ('not found')

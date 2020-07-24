@@ -12,6 +12,8 @@ from lib_py.scumm.helper import refresh_inventory
 import lib_py.actions as act
 import lib_py.scumm.actions as scact
 from lib_py.script import Script
+from lib_py.actions import RunScript
+from lib_py.scumm.helper import addCustomScript
 import example
 
 
@@ -33,12 +35,18 @@ def runDialogueScript(s):
         #if s.node.nextStatus != NodeStatus.SAME:
         #   s.node.status = s.node.nextStatus
         #s.node.dialogue.openNode(s.node)
-        ds = s.script()
-        if ds:
-            a.addAction(act.RunScript(s = ds))
-        if s.nextId == -1:
+        # check if I have a script associated to this line
+        func = s.dialogue.id + '_'+node.id
+        print ('check if ' + func)
+        addCustomScript (engine.scripts.dialogues, func, a)
+        #ds = s.script()
+        #if ds:
+        #    a.addAction(act.RunScript(s = ds))
+        if s.nextId == None:
+            print ('ending')
             a.addAction(scact.EndDialogue(s.dialogue.id))
         else:
+            print ('next is ' + s.nextId)
             s.dialogue.current = s.nextId
             a.addAction(scact.ResumeDialogue(s.dialogue.id))
         example.play(a)
@@ -85,10 +93,42 @@ class RoomDialogue(room.Room):
         self.add (e = entity, ref =parent)
 
 
-def startupRoomUI():
-    print ('starting up inventory')
-    refresh_inventory()
-    return
+def startupRoomFullscreen(id: str):
+    def f():
+        if hasattr(engine.scripts.rooms, 'onstart_' + id):
+            a = getattr(engine.scripts.rooms, 'onstart_' + id)()
+            if a:
+                example.play(a)
+    return f
+
+def startupRoomUI(id: str):
+    def f():
+        print ('starting up inventory')
+        refresh_inventory()
+        # check if room has a onstart script
+        if hasattr(engine.scripts.rooms, 'onstart_' + id):
+            a = getattr(engine.scripts.rooms, 'onstart_' + id)()
+            if a:
+                example.play(a)
+    return f
+
+class RoomFullscreen(room.Room):
+    def __init__(self, id: str, width, height, collide = False):
+        super().__init__(id, width, height)
+        self.collide = collide
+        camWidth = engine.device_size[0]
+        camHeight = engine.device_size[1]
+        main = entity.Entity (tag='main')
+        main.camera = cam.OrthoCamera(width, height, camWidth, camHeight, [0, 0, camWidth, camHeight], tag='maincam')
+        main.addComponent (compo.HotSpotManager(lmbclick=func.walkto))
+
+        self.ref['main'] = main.children
+        self.scene.append(main)
+        
+        # create a hotspot manager
+        self.engines.append(runner.Scheduler())
+        self.init.append(startupRoomFullscreen(id))
+
 
 class RoomUI(room.Room):
     def __init__(self, id: str, width, height, collide = False):
@@ -163,7 +203,7 @@ class RoomUI(room.Room):
         # create a hotspot manager
         #self.engines.append(runner.HotSpotManager(lmbclick=func.walkto))
         self.engines.append(runner.Scheduler())
-        self.init.append(startupRoomUI)
+        self.init.append(startupRoomUI(id))
 
 
     def addItem(self, id: str, parent: str = 'main', **kwargs):

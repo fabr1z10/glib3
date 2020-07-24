@@ -4,6 +4,7 @@ import lib_py.scumm.scumm as s
 import lib_py.scumm.helper as func
 from lib_py.scumm.scumm import Config
 from lib_py.scumm.dialogue import Dialogue
+import lib_py.engine as engine
 
 class Walk:
     def __init__(self, pos : list, id = None, tag = None):
@@ -45,9 +46,16 @@ class EndDialogue(actions.CallFunc):
     @staticmethod
     def pippo(dialogueId: str):
         def f():
-            d : Dialogue = s.State.getDialogue(dialogueId)
-            if d.onEnd:
-                d.onEnd()            
+            d : Dialogue = s.Data.dialogues[dialogueId]
+            # check if this dialogue has an onend script associated
+            onEnd = func.addCustomScript (engine.scripts.dialogues, 'onend_' + dialogueId)
+            if onEnd:
+                print ('found script')
+                example.play(onEnd)
+            else:
+                print ('not found end!')
+            #if d.onEnd:
+            #    d.onEnd()            
             main : example.Wrap1 = example.get('main')
             ui : example.Wrap1 = example.get('ui')
             if ui.valid:
@@ -79,8 +87,8 @@ class StartDialogue(actions.CallFunc):
     @staticmethod
     def pippo(dialogueId: str, group: int):
         def f():
-            print ('opening dialogue: ' + dialogueId)
-            d : Dialogue = s.State.getDialogue(dialogueId)
+            print ('opening dialogue: ' + dialogueId)            
+            d : Dialogue = s.Data.dialogues[dialogueId]
             d.reset()
             if d.onStart:
                 d.onStart()
@@ -108,8 +116,10 @@ class ResumeDialogue(actions.CallFunc):
     @staticmethod
     def pippo(dialogueId: str, group: int):
         def f():
+            print ('resuming')
             dial : example.Wrap1 = example.get('dialogue')
-            d : Dialogue = s.State.getDialogue(dialogueId)
+            d : Dialogue = s.Data.dialogues[dialogueId]
+            print ('current node ' + d.current)
             actlines = d.getLines()
             for line in actlines:
                 dial.appendText(line)

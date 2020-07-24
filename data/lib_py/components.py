@@ -54,6 +54,10 @@ class ShapeGfxOutline:
         self.color = color
         self.z =z
 
+class Cursor:
+    def __init__(self):
+        self.type = 'components.cursor'
+
 
 class Parallax:
     def __init__(self, cam: str, factor: float):

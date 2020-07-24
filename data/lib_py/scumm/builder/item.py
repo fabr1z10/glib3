@@ -1,15 +1,67 @@
 from lib_py.entity import Entity
 from lib_py.components import HotSpot, Info, Follow
 from lib_py.scumm.components import Character
+from lib_py.scumm.actions import Walk
 from lib_py.shape import Rect
 from lib_py.scumm.scumm import Data, State
 from lib_py.scumm.entity import hoverOn, hoverOff
 from lib_py.scumm.functions import run_action
 from lib_py.scumm.helper import gv
+from lib_py.script import Script
+from lib_py.actions import ChangeRoom
+import example
 
-# create an entity from an item description
-def buildItem (id: str = None):
-    desc = Data.items[id]
+def updateText(text: str):
+    def f(id):
+        a : example.Wrap1 = example.get('cursor')
+        a.setText (text)
+    return f
+
+def clearText(id):
+    a : example.Wrap1 = example.get('cursor')
+    a.setText ('')
+
+def gotohotspot(id):
+    def f(x,y,obj):
+        desc = Data.items[id]   
+        pos = desc.get ('pos', [0, 0, 0])
+        goto = desc.get ('goto')
+        dir = goto.get('dir', None)
+        gnode = goto.get('node', 'walkarea')
+        Data.putItem (State.player, goto['room'], gv(goto['pos']), gnode)
+        if dir is not None:
+            Data.items[State.player]['dir'] = dir
+        s = Script('_main')
+        s.addAction(Walk(pos = pos, tag='player'))
+        s.addAction (ChangeRoom(room = goto['room']))
+        example.play(s)
+    return f
+
+
+def mapHotSpotItem (id: str):
+    desc = Data.items[id]   
+    tag = desc.get ('tag', id)            
+    pos = desc.get ('pos', [0, 0, 0])
+    e = Entity (tag, pos)
+    width = desc.get ('width', 10)
+    height = desc.get ('height', 10)
+    textid = desc['text']
+    from lib_py.engine import data
+    text = data['strings']['objects'][textid]
+    e.addComponent(HotSpot(
+        shape = Rect(width = width, height = height, offset = (-width/2, -height/2)),
+        priority= 0,
+        onenter = updateText(text),
+        onleave = clearText,
+        onclick = gotohotspot(id)))
+    return e
+    #onenter = hoverOn(id),
+    #onleave = hoverOff,
+    #onclick = run_action))
+
+
+def basicItem (id: str):
+    desc = Data.items[id]   
     # create the entity
     tag = desc.get ('tag', id)    
         
@@ -57,3 +109,12 @@ def buildItem (id: str = None):
             e.addComponent (Follow())
              
     return e
+item_factories = {
+    'basic': basicItem,
+    'maphotspot': mapHotSpotItem
+}
+# create an entity from an item description
+def buildItem (id: str = None):
+    desc = Data.items[id]   
+    itype = desc.get('type', 'basic')
+    return item_factories[itype](id)

@@ -161,6 +161,7 @@ SceneFactory::SceneFactory() {
     add2<Dynamics2D> ("components.dynamics2D");
     add2<ExtendedStateMachine> ("components.statemachine");
     add2<Parallax>("components.parallax");
+    add2<Cursor> ("components.cursor");
     add2<Shadow>("components.shadow");
     add2<ShadowX>("components.shadowx");
     add2<NullState> ("state.null");

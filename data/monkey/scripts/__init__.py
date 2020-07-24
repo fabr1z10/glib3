@@ -1,3 +1,4 @@
 #__all__ = ["actions"]
-from scripts.actions import *
-from scripts.lacc import *
+import monkey.scripts.actions
+import monkey.scripts.rooms
+import monkey.scripts.dialogues

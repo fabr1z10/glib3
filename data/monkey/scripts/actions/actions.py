@@ -1,5 +1,5 @@
 from lib_py.script import Script
-from lib_py.scumm.actions import Say
+from lib_py.scumm.actions import Say, StartDialogue
 from lib_py.actions import ChangeRoom, Animate
 from lib_py.scumm.helper import gt, gd, gv, sv
 from lib_py.scumm.scumm import Data, State
@@ -41,11 +41,20 @@ def toggleDoor (itemId: str, open: bool):
         return s
     return f
 
+def openDialogue (dialogueId: str):
+    def f():
+        s = Script()
+        s.addAction (StartDialogue(dialogueId))
+        return s
+    return f
+
 
 look_ = say(['@defaultactions/4'], 'player')
 look_lookout = say(['@dialogues/lookout/50'], 'player')
+talkto_lookout = openDialogue('lookout')
 look_village1_poster = say(['@lines/1', '@lines/2'], 'player')
 walkto_lookout_stairs = goto ('village1', '@village1_lookout', 'e')
+walkto_lookout_path = goto ('meleemap', '@meleemap_lookout', 'n')
 walkto_village1_cliffside = goto ('lookout', '@lookout_stairs', 'n')
 walkto_village1_archway = goto ('village2', '@village2_village1', 's')
 open_village1_door = toggleDoor ('village1_door', True)

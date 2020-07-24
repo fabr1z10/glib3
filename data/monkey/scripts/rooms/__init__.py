@@ -1,0 +1,1 @@
+from monkey.scripts.rooms.rooms import *

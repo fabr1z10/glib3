@@ -35,6 +35,14 @@ lookout_stairs:
   walkto: '@lookout_stairs'
   wdir: 's'
   room: lookout
+lookout_path:
+  text: path
+  pos: [294, 0]
+  width: 26
+  height: 144
+  walkto: '@lookout_path'
+  wdir: e
+  room: lookout
 village1_poster:
   text: poster
   pos: [259, 27]
@@ -113,3 +121,21 @@ village2_door:
   walkto: [220, 48]
   wdir: e
   room: village2
+meleemap_lookout:
+  pos: [75, 79]
+  type: maphotspot
+  text: lookout
+  goto:
+    room: lookout
+    pos: '@lookout_path' 
+    dir: w   
+  room: meleemap
+meleemap_clearing:
+  pos: [135, 113]
+  type: maphotspot
+  text: clearing
+  goto:
+    room: clearing
+    pos: '@clearing_path' 
+    dir: w 
+  room: meleemap  

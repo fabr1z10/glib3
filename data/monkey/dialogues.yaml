@@ -1,0 +1,25 @@
+---
+lookout:
+  stringset: lookout
+  nodes:
+    intro1:
+      active: True
+      next: intro1
+      order: 10 
+    intro2:
+      active: True
+      next: intro1
+      order: 20      
+    intro3:
+      active: True
+      next: intro1
+      order: 30      
+    intro4:
+      active: True
+      next: intro1
+      order: 40          
+    imguy:
+      active: True
+      #next: _root
+      order: 10
+      parent: intro1

@@ -1,6 +1,6 @@
 from lib_py.entity import Entity
 from lib_py.components import HotSpot
-from lib_py.scumm.dialogue import Dialogue
+from lib_py.scumm.dialogue import Dialogue, DialogueNode
 import lib_py.engine as engine
 
 
@@ -96,6 +96,7 @@ def builder(id):
 
 class Data:
     items = {}
+    dialogues = {}
     locator = {}
 
 
@@ -124,9 +125,26 @@ class Data:
             if 'room' in v:
                 parent = 'main' if 'parent' not in v else v['parent']
                 Data.putItem (k, v['room'], v['pos'], parent)
-                
         print (Data.items)
         print (Data.locator)
+        Data.loadDialogues()
+
+    @staticmethod
+    def loadDialogues():
+        filename = example.dir +'/dialogues.yaml'
+        with open(filename) as f:
+            dial = yaml.load(f, Loader=yaml.FullLoader)
+            for k, v in dial.items():
+                print ('making dialog ' + k)
+                stringset = v['stringset']
+                a = Dialogue(k, stringset)
+                for nodeId, value in v['nodes'].items():
+                    nex = value.get('next', None)
+                    active = value['active']
+                    parent = value.get('parent', None)
+                    print ('adding node ' + nodeId)
+                    node = a.add(nodeId, active, nex, parent = parent)
+                Data.dialogues[k] = a
     
     @staticmethod
     def loadRooms():
@@ -173,7 +191,7 @@ class State:
     def getDialogue (id: str):
         if id not in State.dialogues:
             print ('*** unknown dialogue: ' + id)
-        return State.dialogues[id]
+        return Data.dialogues[id]
 
     @staticmethod
     def setDynamicItem(id: str, room : str, **kwargs):

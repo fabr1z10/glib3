@@ -1,5 +1,7 @@
 from enum import Enum
 
+from lib_py.engine import data
+
 import types
 
 # class NodeStatus(Enum):
@@ -18,10 +20,9 @@ import types
 # a dialogue line contains:
 class DialogueNode:
     # next_group: the next group of lines to show. -1 to exit dialogue
-    def __init__(self, id: int, text: str = '', script: callable = None, active = True, nextId = 0, closeNodes = [], activateNodes = [], order=1):
+    def __init__(self, id: int, text: str = '', active = True, nextId = None, closeNodes = [], activateNodes = [], order=1):
         self.id = id
         self.text = text
-        self.script = script
         self.dialogue = None
         self.active = active
         self.nextId = nextId
@@ -42,18 +43,19 @@ class DialogueNode:
 # a node may be also OPEN, this means that this node has already been explored and we need to go further down
 # a node may be CLOSED; in this case we stop the depth -a analysis 
 class Dialogue:
-    def __init__(self, id: str, strings: list):
+    def __init__(self, id: str, stringset: str):
         self.id = id
         self.nodes = {}
         self.edges = {}
         self.onStart = None
         self.onEnd = None
-        self.current = 0
-        self.strings = strings
+        self.current = '_root'
+        self.stringset = stringset
+        #self.strings = strings
         self.addNode(DialogueNode(0))
 
     def reset(self):
-        self.current = 0
+        self.current = '_root'
 
     def addStartScript(self, script):
         self.onStart = types.MethodType(script, self)
@@ -90,20 +92,26 @@ class Dialogue:
         node.dialogue = self
         self.nodes[node.id] = node
 
+    def addEdge(self, u: str, v: str):
+        if u not in self.edges:
+            self.edges[u]= []
+        self.edges[u].append(v)    
 
-
-    def add(self, id: int, script, nextId, active, closeNodes = [], actNodes = [], parent = [0], order=1):
+    def add(self, id: str, active, nextId : str = None, closeNodes = [], actNodes = [], parent = None, order=1):
+        se = data['strings']['dialogues'][self.stringset]
         self.addNode(DialogueNode(
             id = id, 
-            text = self.strings[id], 
-            script = script, 
+            text = se[id],
             active = active, 
             nextId = nextId, 
             closeNodes = closeNodes, 
             activateNodes= actNodes,
             order = order))
-        for p in parent:
-            if p not in self.edges:
-                self.edges[p] = []
-            self.edges[p].append(id)
+        if parent is None:
+            self.addEdge ('_root', id)
+        elif isinstance(parent, str):
+            self.addEdge (parent, id)
+        else:
+            for p in parent:
+                self.addEdge (p, id)
 

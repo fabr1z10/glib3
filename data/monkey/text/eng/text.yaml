@@ -28,6 +28,7 @@ objects:
   poster: poster
   door: door
   lookout: lookout
+  clearing: clearing
   pirate: pirate
   pirates: pirates
   fireplace: fireplace
@@ -220,19 +221,19 @@ dialogues:
     67: "I'll take those minutes if you give me two pieces of eight."
     68: "Do you know where I can find a treasure map around here?"
   lookout: 
-    1: "I heard there was going to be a weenie roast here."
-    2: "I'm looking for fun. Seen any?"
-    3: "What's green and hairy and has a thousand legs?"
-    4: "Do you ever wonder if we're all just characters in a novel?"
+    intro1: "I heard there was going to be a weenie roast here."
+    intro2: "I'm looking for fun. Seen any?"
+    intro3: "What's green and hairy and has a thousand legs?"
+    intro4: "Do you ever wonder if we're all just characters in a novel?"
     5: "Yikes!"
     6: "You almost scared me to death."
     7: "I thought you were a--"
     8: "--never mind."
     9: "What did you say your name was, again?"
-    10: "I'm Guybrush Threepwood."
-    11: "Call me Squinky."
-    12: "I'm over this way."
-    13: "Who are YOU?"
+    imguy: "I'm Guybrush Threepwood."
+    squinky: "Call me Squinky."
+    overthisway: "I'm over this way."
+    whoru: "Who are YOU?"
     14: "I'll just be off to seek my fortune now."
     15: "Eh?"
     16: "Oh."
