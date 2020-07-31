@@ -3,7 +3,6 @@ cmake_minimum_required(VERSION 3.3)
 add_executable(smb
         main.cpp
         factories.cpp
-        states/platformerstate.cpp
         states/walkside.cpp
         states/jump2d.cpp
         states/foewalk.cpp

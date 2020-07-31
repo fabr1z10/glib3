@@ -60,6 +60,7 @@
 #include <monkey/components/stateactions.h>
 #include <monkey/states/attack.h>
 #include <monkey/skeletal/skcollider.hpp>
+#include <monkey/states/jumpattack.h>
 
 namespace py = pybind11;
 
@@ -170,6 +171,7 @@ SceneFactory::SceneFactory() {
     add2<Walk3D> ("state.walk3d");
     add2<FoeWalk25> ("state.foewalk25");
     add2<Attack> ("state.attack");
+    add2<JumpAttack> ("state.jumpattack");
     add2<Hit25> ("state.hit25");
     add2<IsHit25> ("state.ishit25");
     add2<DelayTime> ("action.delay");

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "platformerstate.h"
+#include <monkey/states/platformerstate.h>
 
 class Controller2D;
 class Dynamics2D;

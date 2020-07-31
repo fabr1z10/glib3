@@ -1,6 +1,6 @@
 #pragma once
 
-#include "platformerstate.h"
+#include <monkey/states/platformerstate.h>
 
 class Jump2D : public PlatformerState {
 public:

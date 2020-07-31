@@ -1,6 +1,6 @@
 #pragma once
 
-#include "platformerstate.h"
+#include <monkey/states/platformerstate.h>
 
 // this is the walk state used in platformers like SuperMario
 class FoeDead : public PlatformerState {
