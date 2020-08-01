@@ -161,6 +161,7 @@ void SkAnimator::SetAnimation(const std::string &anim, bool forward) {
 
 void SkAnimator::setModel(std::shared_ptr<IModel> model) {
     m_model = std::dynamic_pointer_cast<SkModel>(model);
+    Start();
     SetAnimation(m_model->GetDefaultAnimation());
 
 }

@@ -3,6 +3,8 @@
 #include <monkey/components/renderer.h>
 #include <monkey/skeletal/skmodel.hpp>
 
+class IAnimator;
+
 class SkRenderer : public Renderer {
 public:
     // requires a skmodel
@@ -18,5 +20,6 @@ public:
     std::type_index GetType() override;
     ShaderType GetShaderType() const override;
 private:
+    IAnimator* m_ic;
     SkModel* m_model;
 };

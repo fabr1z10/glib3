@@ -98,7 +98,7 @@ SkModel::SkModel(const ITable & t) {
             vertex.x = points[i];
             vertex.y = points[i+1];
             vertex.z = points[i+2];
-            m_maxBounds.addPoint(glm::vec3(vertex.x, vertex.y, vertex.z));
+            //m_maxBounds.addPoint(glm::vec3(vertex.x, vertex.y, vertex.z));
             if (autotc) {
                 vertex.s = vertex.x / texw;
                 vertex.t = vertex.y / texh;
@@ -179,13 +179,16 @@ SkModel::SkModel(const ITable & t) {
         //m_defaultShape = std::make_shared<Rect>(defaultBox[0], defaultBox[1], glm::vec3(-0.5f*defaultBox[0], 0, 0));
         //m_shapes.push_back(m_defaultShape);
         auto anim = b.get<pybind11::dict>("anim");
+        Bounds maxSize;
         for (const auto& a : anim) {
             auto animId = a.first.cast<std::string>();
             auto size = a.second.cast<std::vector<float>>();
             auto shape = std::make_shared<Rect> (size[0], size[1], glm::vec3(-0.5f*size[0], 0.0f, 0.0f));
+            maxSize.ExpandWith(shape->getBounds());
             m_animToShape[animId] = m_shapes.size();
             m_shapes.push_back(shape);
         }
+        m_maxBounds = maxSize;
         b.foreach<PyDict> ("attack", [&] (const PyDict& d) {
             auto anim = d.get<std::string>("anim");
             auto t = d.get<float>("t");
