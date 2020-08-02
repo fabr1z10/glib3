@@ -85,8 +85,8 @@ void FoeWalk25::computeDirection() {
         rx = true;
     }
     max_vel_x = std::min(m_speed, fabs(dx)/dt);
-    std::cerr << "dx = " << dx;
-    std::cerr << "dy = " << dy;
+    //std::cerr << "dx = " << dx;
+    //std::cerr << "dy = " << dy;
     glm::vec2 vel(sign(dx) * max_vel_x, sign(dy) * max_vel_y);
     // normalize, making sure the length is
     float absvel = glm::length(vel);

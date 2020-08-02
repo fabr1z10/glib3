@@ -11,6 +11,7 @@ public:
     bool valid() const;
     float x() const ;
     float y() const ;
+    float z() const;
     float getVy() const;
     bool getFlipx() const;
     void setVy(float);
