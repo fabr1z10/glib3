@@ -49,6 +49,9 @@ protected:
     bool m_airAttack;
     std::string m_currentAttack;
     std::unordered_map<int, std::string> m_attacks;
+    std::string m_jumpUpAnim;
+    std::string m_jumpDownAnim;
+    int m_jumpKey;
 };
 
 inline bool Walk25::flipHorizontally() const {

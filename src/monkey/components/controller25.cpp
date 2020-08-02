@@ -126,7 +126,7 @@ void Controller25::Move(glm::vec3 & velocity) {
     float dDepth = velocity.z;
     float dx = velocity.x;
     float dElevation = velocity.y;
-
+    std::cerr << "ddeèth="<< dDepth;
     glm::vec3 pos = m_entity->GetPosition();
     m_elevation += dElevation;
     m_elevation = std::max(0.0f, m_elevation);

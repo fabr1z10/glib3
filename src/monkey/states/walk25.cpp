@@ -28,7 +28,9 @@ m_airAttack(false) {
     m_acceleration = t.get<float> ("acceleration");
     m_flipHorizontal = t.get<bool>("flipH");
     m_jumpVelocity = t.get<float>("jumpvelocity");
-
+    m_jumpUpAnim = t.get<std::string>("jumpup", "jumpup");
+    m_jumpDownAnim = t.get<std::string>("jumpdown", "jumpdown");
+    m_jumpKey = t.get<int>("jumpkey");
 
     // read attack keys and anims
     t.foreach<py::tuple>("attack", [&] (const py::tuple& t) {
@@ -88,7 +90,7 @@ void Walk25::Run (double dt) {
     bool right = m_input->isKeyDown(GLFW_KEY_RIGHT);
     bool up = m_input->isKeyDown(GLFW_KEY_UP);
     bool down = m_input->isKeyDown(GLFW_KEY_DOWN);
-    bool kjump = m_input->isKeyDown(GLFW_KEY_LEFT_CONTROL);
+    bool kjump = m_input->isKeyDown(m_jumpKey);
 
 
     // check attacks
@@ -149,9 +151,9 @@ void Walk25::Run (double dt) {
             }
         } else {
             if (m_dynamics->m_velocity.y > 0) {
-                m_animator->SetAnimation("jumpup");
+                m_animator->SetAnimation(m_jumpUpAnim);
             } else {
-                m_animator->SetAnimation("jumpdown");
+                m_animator->SetAnimation(m_jumpDownAnim);
 
             }
         }

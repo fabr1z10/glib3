@@ -29,19 +29,23 @@ public:
     void End() override;
 
     void AttachStateMachine(StateMachine *) override;
-
+    void computeDirection();
 protected:
     Controller25 *m_controller;
     IAnimator *m_animator;
     Entity *m_entity;
-    Entity *m_player;
+    Entity *m_target;
     Controller25* m_pc;
     Dynamics2D *m_dynamics;
     bool m_flipHorizontal;
     float m_speed;
     float m_acceleration;
-    float m_delta;
+    float m_attackPos;
     float m_sdelta;
+    float m_targetVelocityX;
+    float m_targetVelocityY;
+    bool m_inRange;
+
     ICollisionEngine *m_collision;
     std::vector<std::string> m_attacks;
     size_t m_attackCount;

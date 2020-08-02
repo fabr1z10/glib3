@@ -21,10 +21,10 @@ void Shadow::Start() {
 }
 
 void Shadow::Update(double) {
-    float yShadow = -2*m_depth->getElevation();
+    float yShadow = -m_depth->getElevation();
 
-
-    m_entity->SetPosition(glm::vec3(0.0f, yShadow, 0.0f));
+    std::cerr << yShadow<<"\n";
+    m_entity->SetPosition(glm::vec3(0.0f, yShadow, -1.0f));
 }
 
 ShadowX::ShadowX() : Component() {}
