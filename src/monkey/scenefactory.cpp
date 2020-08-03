@@ -61,6 +61,7 @@
 #include <monkey/states/attack.h>
 #include <monkey/skeletal/skcollider.hpp>
 #include <monkey/states/jumpattack.h>
+#include <monkey/activities/blink.h>
 
 namespace py = pybind11;
 
@@ -177,6 +178,7 @@ SceneFactory::SceneFactory() {
     add2<DelayTime> ("action.delay");
     add2<DelayTimeDynamic> ("action.delaydynamic");
     add2<Animate> ("action.animate");
+    add2<Blink> ("action.blink");
     add2<NoOp>("action.noop");
     add2<Scroll> ("action.scroll");
     add2<ChangeRoom> ("action.changeroom");

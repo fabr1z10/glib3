@@ -21,17 +21,23 @@ std::shared_ptr<State> IsHit25::clone() const {
 
 void IsHit25::Run(double dt) {
 
-    glm::vec3 delta = m_dynamics->step(dt, 0.0f, 0.0f, m_acceleration);
+    glm::vec3 delta = m_dynamics->step(dt, m_sgn * 100.0f, 0.0f, 0.0f);
     glm::vec3 deltaH(delta.x, delta.y, delta.z);
+
     m_controller->Move(deltaH);
-    if (abs(m_dynamics->m_velocity.x) < 20.0f) {
+    m_distanceTravelled += deltaH.x;
+    std::cerr << "aa:" << deltaH.x;
+    if (fabs(m_distanceTravelled) > 32 || fabs(deltaH.x) <0.01f) {
+    // if (abs(m_dynamics->m_velocity.x) < 20.0f) {
         m_sm->SetState("walk");
     }
 }
 
 
-void IsHit25::Init(pybind11::dict &) {
+void IsHit25::Init(pybind11::dict & d) {
     m_animator->SetAnimation(m_anim);
+    m_sgn = d["sign"].cast<float>();
+    m_distanceTravelled = 0.0f;
 }
 
 void IsHit25::End() {

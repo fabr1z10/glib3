@@ -33,6 +33,7 @@ public:
     void ResetShape(ICollider*);
     float getDepth() const;
     float getElevation() const;
+    void setElevation(float);
 private:
     float m_verticalRaySpacing;
 
@@ -62,4 +63,10 @@ inline float Controller25::getDepth() const {
 
 inline float Controller25::getElevation() const {
     return m_elevation;
+}
+
+
+inline void Controller25::setElevation(float elevation) {
+
+    m_elevation = elevation;
 }

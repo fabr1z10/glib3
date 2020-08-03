@@ -31,6 +31,7 @@ public:
     void AttachStateMachine(StateMachine *) override;
 
 protected:
+    float m_distanceTravelled;
     Controller25 *m_controller;
     IAnimator *m_animator;
     Entity *m_entity;
@@ -38,6 +39,7 @@ protected:
     Controller25* m_pc;
     Dynamics2D *m_dynamics;
     float m_acceleration;
+    float m_sgn;
     std::string m_anim;
     ICollisionEngine *m_collision;
 

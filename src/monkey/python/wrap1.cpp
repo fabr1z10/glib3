@@ -11,6 +11,7 @@
 #include <monkey/components/statemachine.h>
 #include <monkey/components/dynamics2d.h>
 #include <monkey/components/follow.h>
+#include <monkey/components/controller25.h>
 
 namespace py = pybind11;
 
@@ -43,6 +44,15 @@ float Wrap1::getVy() const {
     return m_entity->GetComponent<Dynamics2D>()->m_velocity.y;
 }
 
+float Wrap1::getElevation() const {
+
+    return m_entity->GetComponent<Controller25>()->getElevation();
+}
+void Wrap1::setElevation(float value) {
+
+    m_entity->GetComponent<Controller25>()->setElevation(value);
+}
+
 bool Wrap1::getFlipx() const {
     return m_entity->GetFlipX();
 }
@@ -69,6 +79,11 @@ void Wrap1::follow(bool value) {
 
 }
 
+
+void Wrap1::setPosition(float x, float y, float z) {
+
+    m_entity->SetPosition(glm::vec3(x,y,z));
+}
 void Wrap1::move(float dx, float dy, float dz) {
     m_entity->MoveOrigin(glm::vec3(dx, dy, dz));
 }

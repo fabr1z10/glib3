@@ -92,7 +92,7 @@ void Walk25::Run (double dt) {
     bool down = m_input->isKeyDown(GLFW_KEY_DOWN);
     bool kjump = m_input->isKeyDown(m_jumpKey);
 
-
+    //std::cerr << "LEFT = " << left << "\n";
     // check attacks
     for (const auto& p : m_attacks) {
         bool attack = m_input->isKeyDown(p.first);

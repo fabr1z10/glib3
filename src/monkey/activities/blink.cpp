@@ -8,7 +8,10 @@ Blink::Blink(float totalDuration, float blinkDuration) :
 {}
 
 
-
+Blink::Blink(const ITable & t) : TargetActivity(t) {
+    m_duration = t.get<float>("duration");
+    m_blinkDuration = t.get<float>("blink_duration");
+}
 
 void Blink::Start() {
     TargetActivity::Start();

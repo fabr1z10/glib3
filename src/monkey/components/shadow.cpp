@@ -23,7 +23,6 @@ void Shadow::Start() {
 void Shadow::Update(double) {
     float yShadow = -m_depth->getElevation();
 
-    std::cerr << yShadow<<"\n";
     m_entity->SetPosition(glm::vec3(0.0f, yShadow, -1.0f));
 }
 

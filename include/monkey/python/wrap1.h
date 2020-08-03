@@ -13,6 +13,8 @@ public:
     float y() const ;
     float z() const;
     float getVy() const;
+    float getElevation() const;
+    void setElevation(float);
     bool getFlipx() const;
     void setVy(float);
     float getVx() const;
@@ -20,6 +22,7 @@ public:
     float getScale() const;
     void setScale(float);
     void follow(bool);
+    void setPosition(float x, float y, float z);
     void move(float dx, float dy, float dz);
     int id() const;
     void setEntity(Entity* e);

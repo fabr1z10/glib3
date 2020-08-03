@@ -41,7 +41,8 @@ protected:
     float m_speed;
     float m_acceleration;
     float m_attackPos;
-    float m_sdelta;
+    //float m_sdelta;
+    float m_probAttack;
     float m_targetVelocityX;
     float m_targetVelocityY;
     bool m_inRange;

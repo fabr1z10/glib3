@@ -13,8 +13,9 @@ FoeWalk25::FoeWalk25(const ITable & t) : State(t) {
     m_speed = t.get<float>("speed");
     m_acceleration = t.get<float>("acceleration");
     m_flipHorizontal = t.get<bool>("flipH");
-    m_sdelta = t.get<float>("delta",0);
+    //m_sdelta = t.get<float>("delta",0);
 
+    m_probAttack = t.get<float>("prob_attack");
     m_attacks = t.get<std::vector<std::string>>("attacks", std::vector<std::string>());
     m_attackCount = m_attacks.size();
 }
@@ -32,7 +33,7 @@ void FoeWalk25::computeDirection() {
     // the difference between this and foechase and here
     // the foe should also move in the y direction
     auto targetPos = m_target->GetPosition();
-
+    float attackPos = m_attackPos * m_entity->GetScale();
     float td = m_pc->getDepth();
 //    std::cerr << "player depth = " <<playerDepth << "\n";
     float md = m_controller->getDepth();
@@ -41,8 +42,8 @@ void FoeWalk25::computeDirection() {
     float ey = mePos.y;
     float x = targetPos.x;
     float y = targetPos.y;
-    float x0 = x - m_attackPos;
-    float x1 = x + m_attackPos;
+    float x0 = x - attackPos;
+    float x1 = x + attackPos;
     // y is the easiest
     m_targetVelocityY = 0.0f;
     float eps = 0.01f;
@@ -110,17 +111,22 @@ void FoeWalk25::computeDirection() {
 }
 
 void FoeWalk25::Run(double dt) {
+    if (!m_target->isActive())
+        return;
 
     computeDirection();
     // if I'm at the right position, go to idle
+
     // randomly attack if within range
-//    if (m_inRange) {
-//        float u = Random::get().GetUniformReal(0.0f, 1.0f);
-//        if (u < m_probAttack) {
-//            m_sm->SetState("attack1");
-//        }
+    if (m_inRange) {
+        float u = Random::get().GetUniformReal(0.0f, 1.0f);
+        if (u < m_probAttack) {
+            // choose random attack
+            int chosenAttack = Random::get().GetUniform(0, m_attackCount-1);
+            m_sm->SetState(m_attacks[chosenAttack]);
+        }
 //
-//    }
+    }
     glm::vec3 delta =m_dynamics->step(dt, m_targetVelocityX, m_targetVelocityY, 0.0f);
     //if (m_speed < 30.0f) std::cout << delta.x << "\n";
     m_controller->Move(delta);
@@ -200,8 +206,8 @@ void FoeWalk25::AttachStateMachine(StateMachine * sm) {
     float scale = m_entity->GetScale();
     for (const auto& shape : shapes) {
         auto sb = shape->getBounds();
-        am = std::min(am, scale*sb.min.x);
-        aM = std::max(aM, scale*sb.max.x);
+        am = std::min(am, sb.min.x);
+        aM = std::max(aM, sb.max.x);
     }
     m_attackPos = 0.5f* (am + aM);
 

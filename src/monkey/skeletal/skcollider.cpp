@@ -150,7 +150,7 @@ void SkCollider::Update(double dt) {
     if (shapeCastId == -1) {
         return;
     }
-    std::cerr << "CAZZO!\n";
+    //std::cerr << "CAZZO!\n";
     m_colliderRenderer->setVisible(shapeCastId);
 
     auto transform = m_entity->GetWorldTransform();
@@ -158,7 +158,7 @@ void SkCollider::Update(double dt) {
 
     auto e = m_engine->ShapeCast(castShape, transform, m_castMask);
     if (e.report.collide) {
-        std::cerr << "HIT!\n";
+        //std::cerr << "HIT!\n";
         auto rm = m_engine->GetResponseManager();
         if (rm == nullptr) {
             std::cerr << "no handler!\n";
