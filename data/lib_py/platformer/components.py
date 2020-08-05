@@ -1,8 +1,8 @@
 import lib_py.components as compo
 
 class WalkSide(compo.State):
-    def __init__(self, id, speed: float, acceleration: float, jumpSpeed: float, flipHorizontal: bool):
-        super().__init__(id)
+    def __init__(self, id, speed: float, acceleration: float, jumpSpeed: float, flipHorizontal: bool, keys = []):
+        super().__init__(id, keys)
         self.type = 'state.walkside'
         self.speed = speed
         self.acceleration = acceleration
@@ -20,6 +20,21 @@ class FoeWalk(compo.State):
         self.flipWhenPlatformEnds = flipWhenPlatformEnds
         self.left = left
 
+class FoeChase(compo.State):
+    def __init__(self, id, walkanim: str, idleanim: str, speed: float, acceleration: float):
+        super().__init__(id)
+        self.type = 'state.foechase'
+        self.walkanim = walkanim
+        self.idleanim = idleanim
+        self.speed = speed
+        self.acceleration = acceleration
+        self.attacks = ['ciao']
+        self.probattack = 0.01
+        #self.flipH = flipHorizontal
+        #self.flipWhenPlatformEnds = flipWhenPlatformEnds
+        #self.left = left
+
+
 class KoopaShell(compo.State):
     def __init__(self, id, time: float, time_walk: float):
         super().__init__(id)
@@ -36,8 +51,8 @@ class FoeDead(compo.State):
 
 
 class Jump(compo.State):
-    def __init__(self, id, speed: float, acceleration: float, flipHorizontal: bool, animUp: str, animDown: str):
-        super().__init__(id)
+    def __init__(self, id, speed: float, acceleration: float, flipHorizontal: bool, animUp: str, animDown: str, keys = []):
+        super().__init__(id, keys)
         self.type = 'state.jump'
         self.speed = speed
         self.acceleration = acceleration
