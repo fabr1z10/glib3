@@ -94,6 +94,13 @@ class Collider:
         self.tag = tag
         self.shape = shape
 
+class SkeletalCollider(Collider):
+    def __init__(self, flag: int, mask: int, tag: int, castTag: int = 0, castMask: int = 0):
+        super().__init__(flag, mask, tag, None)
+        self.type = 'components.skeletalcollider'
+        self.cast_tag = castTag
+        self.cast_mask = castMask
+
 class SmartCollider(Collider):
     def __init__(self, flag: int, mask: int, tag: int, castTag: int = 0, castMask: int = 0):
         super().__init__(flag, mask, tag, None)
@@ -137,9 +144,9 @@ class KeyInput:
         self.type = 'components.keyinput'
 
 class State:
-    def __init__(self, id: str):
+    def __init__(self, id: str, keys = []):
         self.id = id
-        self.keys = []
+        self.keys = keys
 
 class NullState(State):
     def __init__(self, id: str):
@@ -159,22 +166,42 @@ class Walk3D (State):
         self.acceleration = acceleration
         
 class Walk25 (State):
-    def __init__(self, id: str, speed: float, acceleration: float, flipHorizontal: bool, jumpvelocity: float):
-        super().__init__(id)
+    def __init__(self, id: str, speed: float, acceleration: float, flipHorizontal: bool, jumpvelocity: float, keys: dict, jumpkey: int, jumpup: str = "jumpup", jumpdown: str = "jumpdown"):
+        super().__init__(id, keys)
         self.type = 'state.walk25'
         self.speed = speed
         self.acceleration = acceleration
         self.flipH = flipHorizontal
         self.jumpvelocity = jumpvelocity
+        self.jumpup = jumpup
+        self.jumpdown = jumpdown
+        self.jumpkey = jumpkey
 
 class FoeWalk25 (State):
-    def __init__(self, id: str, speed: float, acceleration: float, flipHorizontal: bool, delta: float):
+    def __init__(self, id: str, speed: float, acceleration: float, flipHorizontal: bool, prob_attack : float, attacks: list = []):
         super().__init__(id)
         self.type = 'state.foewalk25'
         self.speed = speed
         self.acceleration = acceleration
         self.flipH = flipHorizontal
-        self.delta = delta
+        self.attacks = attacks
+        self.prob_attack = prob_attack
+
+class Attack (State):
+    def __init__(self, id: str, anim: str):
+        super().__init__(id)
+        self.type = 'state.attack'
+        self.anim = anim
+
+class JumpAttack (State):
+    def __init__(self, id: str, anim: str, speed: float, acceleration: float, flipHorizontal: bool):
+        super().__init__(id)
+        self.type = 'state.jumpattack'
+        self.speed = speed
+        self.acceleration = acceleration
+        self.flipH = flipHorizontal
+        self.anim = anim
+
 
 class Hit25 (State):
     def __init__(self, id: str, anim: str):
@@ -195,3 +222,17 @@ class Info():
     def __init__(self, **kwargs):
         self.type = 'components.info'
         self.stuff = kwargs
+
+class StateTransition():
+    def __init__(self, state : str):
+        self.type = 'stateaction.statetransition'
+        self.state = state
+
+class StateCallback():
+    def __init__(self, f: callable):
+        self.type = 'stateaction.callback'
+        self.f = f
+
+class Shadow():
+    def __init__(self):
+        self.type = 'components.shadow'
