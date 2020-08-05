@@ -135,3 +135,17 @@ class Msg:
         self.text = text
         self.pos = pos
         self.color = color
+
+class Blink():
+    def __init__(self, duration: float, blink_duration: float, id = None, tag = None):
+        self.type = 'action.blink'
+        self.duration = duration
+        self.blink_duration = blink_duration
+        self.id = id
+        self.tag = tag          
+        
+class Repeat():
+    def __init__(self, func: callable, interval: float):
+        self.type = 'action.repeat'
+        self.func = func
+        self.every = interval
