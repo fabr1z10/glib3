@@ -22,26 +22,43 @@ class ShaderType(enum.Enum):
     text = 2,
     skeletal = 3
 
-def startUp(lang: str):
+def startUp():
+    print ('# starting up ...')
     example.init(example.what)
     addShader (ShaderType.unlit_textured)
     addShader (ShaderType.unlit_color)
     addShader (ShaderType.text)
-    loadAssets()
-    loadText (lang)
-    for k,v in data['assets']['models'].items():
-        print("key: " + k)
-        print(v)
-    # read game variables
-    with open(example.dir+'/variables.yaml') as f:
-        data['vars'] = yaml.load(f, Loader = yaml.FullLoader) 
+    
+    global device_size
+    global window_size
+    global room
+    global title
+
+    with open(example.dir+'/main.yaml') as f:
+        a = yaml.load(f, Loader = yaml.FullLoader)  
+        language = a['lang']
+        device_size = tuple(a['device_size'])
+        window_size = tuple(a['window_size'])
+        room = a['start_room']
+        title = a['title']
+        print ('# loading assets ...')
+        loadAssets()
+        print ('# loading strings ...')
+        loadText (language)
+        # read game variables
+        with open(example.dir+'/variables.yaml') as f:
+            data['vars'] = yaml.load(f, Loader = yaml.FullLoader)
+        for f in a['fonts']:
+            print ('# loading font ' + f['id'])
+            addFont (assets.Font (f['id'], f['file']))
+        return a                    
 
 
 # contains engine related infos.
 # All games require these infos.
 __dir = ''
-device_size : List[int] = [320, 200]
-window_size : List[int] = [640, 400]
+device_size = [320, 200]
+window_size = [640, 400]
 frame_time = 0.1
 title = 'Untitled project'
 room = ''
@@ -67,6 +84,43 @@ def identity(x):
     return x
 
 
+def getString (s: str):
+    d = data['strings']
+    for a in s.split('/'):
+        d = d[a]
+    return d
+
+def getVariable (s: str):
+    d = data['vars']
+    for a in s.split('/'):
+        d = d[a]
+    return d
+
+def getRef(s: str):
+    if s.startswith ('@s:'):
+        return getString(s)
+    elif s.startswith ('@v:'):
+        return getVariable(s)
+    return None
+
+def getFunc (f):
+    func = f['func']
+    d = scripts
+    for a in func.split('/'):
+        d = getattr (d, a)
+    # check if I have args
+    args = f.get('args', None)
+    if args:
+        # convert reference arguments
+        real_args = {}
+        for key, value in args.items():
+            if isinstance(a, str) and a[0] == '@':
+                real_args[key] = (getRef(a))
+            else:
+                real_args[key] = (a)
+        return d(**real_args)
+    else:
+        return d
 
 
         
@@ -115,11 +169,11 @@ def loadAssets():
     if os.path.exists(dir):
         files = os.listdir(dir)
         for fi in files:
-            print ('reading ' + fi)
+            #print ('reading ' + fi)
             with open(dir+'/'+fi) as f:
                 models = yaml.load(f, Loader = yaml.FullLoader) 
                 for key, value in models.items():                    
-                    print ('reading asset: ' + key + ', type: ' + value['type'])
+                    #print ('reading asset: ' + key + ', type: ' + value['type'])
                     tp = value['type']
                     if tp not in asset_fac:
                         raise ValueError("Don't know how to build " + tp)

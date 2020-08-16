@@ -31,6 +31,7 @@ PYBIND11_MODULE(example, m) {
         .def_property_readonly("z", &Wrap1::z)
         .def_property_readonly("valid", &Wrap1::valid)
         .def_property_readonly("flipx", &Wrap1::getFlipx)
+        .def_property_readonly("anim", &Wrap1::getAnim)
         .def_property("vy", &Wrap1::getVy, &Wrap1::setVy)
         .def_property("vx", &Wrap1::getVx, &Wrap1::setVx)
         .def_property("elevation", &Wrap1::getElevation, &Wrap1::setElevation)

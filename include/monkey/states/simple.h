@@ -27,6 +27,8 @@ public:
     void End () override;
     void AttachStateMachine(StateMachine*) override;
 protected:
+    bool m_endOnAnimComplete;
+    std::string m_nextState;
     std::string m_anim;
     IAnimator* m_animator;
     Entity * m_entity;

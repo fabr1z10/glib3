@@ -1,0 +1,58 @@
+---
+  title: The secret of Monkey Island
+  lang: eng
+  device_size: [320, 200]
+  window_size: [640, 400]
+  start_room: lookout
+  fonts:
+    - id: ui
+      file: './fonts/monkeysmall.ttf'
+    - id: monkey
+      file: './fonts/MonkeyIsland-1990.ttf'
+  custom:
+    ui_height: 56
+    players:
+      - guybrush
+    current_player: guybrush
+    verbs:
+      open:
+        text: ui/open
+        items: 1
+        # callback is setverb
+        default_action: 
+          func: actions/say
+          args:
+            lines: [ defaultactions/1 ]
+            tag: player
+      close:
+        text: ui/close
+        items: 1
+        # callback is setverb
+        default_action: 
+          func: actions/say
+          args:
+            lines: [ defaultactions/1 ]
+            tag: player
+      push:
+        text: ui/push
+        items: 1
+        # callback is setverb
+        default_action: 
+          func: actions/say
+          args:
+            lines: [ defaultactions/1 ]
+            tag: player
+      pull:
+        text: ui/pull
+        items: 1
+        # callback is setverb
+        default_action: 
+          func: actions/say
+          args:
+            lines: [ defaultactions/1 ]
+            tag: player                                    
+    verbsets:
+      - verbs: [open, close, push, pull]
+        default_verb: open
+          
+

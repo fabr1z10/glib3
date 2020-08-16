@@ -10,6 +10,7 @@
 namespace py = pybind11;
 
 FoeWalk25::FoeWalk25(const ITable & t) : State(t) {
+    m_jumping = false;
     m_speed = t.get<float>("speed");
     m_acceleration = t.get<float>("acceleration");
     m_flipHorizontal = t.get<bool>("flipH");
@@ -18,6 +19,7 @@ FoeWalk25::FoeWalk25(const ITable & t) : State(t) {
     m_probAttack = t.get<float>("prob_attack");
     m_attacks = t.get<std::vector<std::string>>("attacks", std::vector<std::string>());
     m_attackCount = m_attacks.size();
+
 }
 
 FoeWalk25::FoeWalk25(const FoeWalk25 & orig) : State(orig) {
@@ -32,6 +34,19 @@ std::shared_ptr<State> FoeWalk25::clone() const {
 void FoeWalk25::computeDirection() {
     // the difference between this and foechase and here
     // the foe should also move in the y direction
+    if (m_jumping) {
+        if (!m_controller->grounded()) {
+            if (m_dynamics->m_velocity.y < 0) {
+                m_animator->SetAnimation("jumpdown");
+                m_targetVelocityX = 0.0f;
+                m_targetVelocityY = 0.0f;
+                m_dynamics->m_velocity.y = -1000.0f;
+            }
+            return;
+        } else {
+
+        }
+    }
     auto targetPos = m_target->GetPosition();
     float attackPos = m_attackPos * m_entity->GetScale();
     float td = m_pc->getDepth();
@@ -54,11 +69,14 @@ void FoeWalk25::computeDirection() {
     float max_vel_y = 0.0f;
     bool ry = false;
     bool rx = false;
-    if (!isZero(td-md, 0.01f)) {
+    std::cerr << " td = " << td << ", md = " << md << "\n";
+    if (!isZero(fabs(td-md), 2*eps)) {
         // this is the distance to target depth
         // I need to make sure not to overshoot
-        dy =-(md-td);
+        dy =td-md;
+
         max_vel_y = std::min(m_speed, fabs(dy) / dt);
+        std::cerr << max_vel_y;
     } else {
         ry = true;
     }
@@ -98,7 +116,7 @@ void FoeWalk25::computeDirection() {
     //std::cout << abs(ex-x) << ", " << m_attackPos << abs(abs(ex-x)-m_attackPos) << "\n";
     m_targetVelocityX = vel.x;
     m_targetVelocityY = vel.y;
-    //std::cerr << m_targetVelocityX << ", " << m_targetVelocityY<<"\n";
+    std::cerr << m_targetVelocityX << ", " << m_targetVelocityY<<"\n";
     if (m_inRange) {
         // TODO make tem params
         m_animator->SetAnimation("idle");
@@ -113,20 +131,56 @@ void FoeWalk25::computeDirection() {
 void FoeWalk25::Run(double dt) {
     if (!m_target->isActive())
         return;
-
+    //m_animator->SetAnimation("landed");
     computeDirection();
+    std::cerr << "elev = " << m_controller->getElevation()<<"\n";
+    if (m_controller->grounded()) {
+        m_dynamics->m_velocity.y = 0;
+        if (m_jumping) {
+            m_jumping = false;
+            if (m_targetSM->GetState() == "dead2") {
+                m_sm->SetState("landed");
+                return;
+            }
+        }
+        if (m_targetSM->GetState() != "dead2") {
+            float u = Random::get().GetUniformReal(0.0f, 1.0f);
+            if (u < 0.005f) {
+                m_animator->SetAnimation("jumpup");
+                auto targetPos = m_target->GetPosition();
+                auto targetDepth = m_pc->getDepth();
+                auto mePos = m_entity->GetPosition();
+                auto meDepth = m_controller->getDepth();
+                float dxToCover = targetPos.x - mePos.x;
+                float dzToCover = targetDepth - meDepth;
+                float js = 1000.0f;
+                float tja = (js/fabs(m_dynamics->m_gravity));
+                m_targetVelocityX = dxToCover / tja;
+                if (m_entity->GetFlipX()) {
+                    m_targetVelocityX *= -1.0f;
+                }
+                m_targetVelocityY = dzToCover / tja;
+                m_dynamics->m_velocity.y = js;
+                m_jumping = true;
+            }
+        }
+
+        // randomly attack if within range
+        if (m_inRange) {
+            float u = Random::get().GetUniformReal(0.0f, 1.0f);
+            std::cerr << u << "\n";
+            if (u < m_probAttack) {
+                // choose random attack
+                int chosenAttack = Random::get().GetUniform(0, m_attackCount-1);
+                m_sm->SetState(m_attacks[chosenAttack]);
+            }
+//
+        }
+
+    }
     // if I'm at the right position, go to idle
 
-    // randomly attack if within range
-    if (m_inRange) {
-        float u = Random::get().GetUniformReal(0.0f, 1.0f);
-        if (u < m_probAttack) {
-            // choose random attack
-            int chosenAttack = Random::get().GetUniform(0, m_attackCount-1);
-            m_sm->SetState(m_attacks[chosenAttack]);
-        }
-//
-    }
+    // stomp
     glm::vec3 delta =m_dynamics->step(dt, m_targetVelocityX, m_targetVelocityY, 0.0f);
     //if (m_speed < 30.0f) std::cout << delta.x << "\n";
     m_controller->Move(delta);
@@ -202,17 +256,19 @@ void FoeWalk25::AttachStateMachine(StateMachine * sm) {
     auto animator = sm->GetObject()->GetComponent<IAnimator>();
     auto shapes = animator->getModel()->getAttackShapes();
     float am = std::numeric_limits<float>::infinity();
-    float aM = -std::numeric_limits<float>::infinity();
+    float aM = std::numeric_limits<float>::infinity();
     float scale = m_entity->GetScale();
     for (const auto& shape : shapes) {
         auto sb = shape->getBounds();
         am = std::min(am, sb.min.x);
-        aM = std::max(aM, sb.max.x);
+        aM = std::min(aM, sb.max.x);
     }
-    m_attackPos = 0.5f* (am + aM);
+    m_attackPos = 0.9f* (aM);
 
 
     m_pc = dynamic_cast<Controller25*>(m_target->GetComponent<IController>());
+    m_targetSM = m_target->GetComponent<StateMachine>();
+
     m_dynamics = m_entity->GetComponent<Dynamics2D>();
     m_controller = dynamic_cast<Controller25*>(m_entity->GetComponent<IController>());
     m_animator = m_entity->GetComponent<IAnimator>();

@@ -57,6 +57,10 @@ bool Wrap1::getFlipx() const {
     return m_entity->GetFlipX();
 }
 
+std::string Wrap1::getAnim() const {
+    return m_entity->GetComponent<IAnimator>()->GetAnimation();
+}
+
 void Wrap1::setVy(float value) {
     m_entity->GetComponent<Dynamics2D>()->m_velocity.y = value;
 }

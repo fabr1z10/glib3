@@ -81,7 +81,7 @@ void Controller25::UpdateRaycastOrigins() {
 // (dx, d(elevation), d(depth))
 void Controller25::Move(glm::vec3 & velocity) {
     //std::cerr << velocity.y << "\n";
-    if (glm::length(velocity) < 0.5f)
+    if (glm::length(velocity) < 0.01f)
         return;
     UpdateRaycastOrigins();
 

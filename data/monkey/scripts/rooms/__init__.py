@@ -1,1 +1,1 @@
-from monkey.scripts.rooms.rooms import *
+from scripts.rooms.rooms import *

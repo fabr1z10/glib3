@@ -33,6 +33,8 @@ SimpleState::SimpleState(const SimpleState&) {
 
 SimpleState::SimpleState(const ITable & t) : State(t) {
     m_anim = t.get<std::string>("anim");
+    m_endOnAnimComplete = t.get<bool>("end_on_anim_complete", false);
+    m_nextState = t.get<std::string>("next", "");
 }
 
 std::shared_ptr<State> SimpleState::clone() const {
@@ -40,10 +42,11 @@ std::shared_ptr<State> SimpleState::clone() const {
 }
 
 void SimpleState::AttachStateMachine(StateMachine * sm) {
-    //m_sm = sm;
+    m_sm = sm;
     m_entity = sm->GetObject();
 
     m_animator = m_entity->GetComponent<IAnimator>();
+
 }
 
 void SimpleState::Init(pybind11::dict& d) {
@@ -58,6 +61,10 @@ void SimpleState::End() {
 
 }
 
-void SimpleState::Run (double dt) {}
+void SimpleState::Run (double dt) {
+    if (m_endOnAnimComplete && !m_nextState.empty() && m_animator->IsComplete()) {
+        m_sm->SetState(m_nextState);
+    }
+}
 
 

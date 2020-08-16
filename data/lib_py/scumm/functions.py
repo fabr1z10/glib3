@@ -34,6 +34,7 @@ def handler1():
     else:
         # look for default action
         func = s.Config.verb + '_'
+        print ('look for ' + func)
         if hasattr(engine.scripts.actions, func):
             a = getattr(engine.scripts.actions, func)()
             if a:

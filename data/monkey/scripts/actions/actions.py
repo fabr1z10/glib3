@@ -49,6 +49,7 @@ def openDialogue (dialogueId: str):
     return f
 
 
+open_ = say(['@defaultactions/1'], 'player')
 look_ = say(['@defaultactions/4'], 'player')
 look_lookout = say(['@dialogues/lookout/50'], 'player')
 talkto_lookout = openDialogue('lookout')

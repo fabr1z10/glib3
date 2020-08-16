@@ -1,1 +1,1 @@
-from monkey.scripts.actions.actions import *
+from scripts.actions.actions import *

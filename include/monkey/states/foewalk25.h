@@ -37,8 +37,10 @@ protected:
     Entity *m_target;
     Controller25* m_pc;
     Dynamics2D *m_dynamics;
+    StateMachine* m_targetSM;
     bool m_flipHorizontal;
     float m_speed;
+    bool m_jumping;
     float m_acceleration;
     float m_attackPos;
     //float m_sdelta;

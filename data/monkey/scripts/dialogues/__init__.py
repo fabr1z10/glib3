@@ -1,3 +1,3 @@
-from monkey.scripts.dialogues.dial import *
+from scripts.dialogues.dial import *
 
 
