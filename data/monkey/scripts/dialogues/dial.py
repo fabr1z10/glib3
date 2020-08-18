@@ -91,7 +91,27 @@ mancomb_rupirate = make_dialogue_mancomb([
     ['player', 'rupirate'],
     ['o', 29, 30, 24, 25, 26 ]
 ])
+mancomb_leaders = make_dialogue_mancomb([
+    ['player', 'leaders'],
+    ['o', 24, 25, 26 ]
+])
 
+mancomb_charge = make_dialogue_mancomb([
+    ['player', 'charge'],
+    ['o',40,41]
+])
+mancomb_bye = make_dialogue_mancomb([
+    ['player', 'bye'],
+    ['o', 'bye',7 ]
+])
+mancomb_gothere = make_dialogue_mancomb([
+    ['player', 'gothere'],
+    ['o', 37, 'bye',7 ]
+])
+mancomb_nice = make_dialogue_mancomb([
+    ['player', 'nice'],
+    ['o', 'bye',7 ]
+])
 mancomb_insulted = make_dialogue_mancomb([
     ['player', 'insulted'],
     ['o', 47, 48 ]
@@ -103,4 +123,30 @@ mancomb_yourname2 = make_dialogue_mancomb([
 mancomb_ilikeguy = make_dialogue_mancomb([
     ['player', 'ilikeguy'],
     ['o', 16 ]
+])
+mancomb_guvnor = make_dialogue_mancomb([
+    ['player', 'guvnor'],
+    ['o', 31,32,33 ]
+])
+mancomb_guvnor2 = make_dialogue_mancomb([
+    ['player', 'guvnor2'],
+    ['o', 31,32,33 ]
+])
+mancomb_whynot = make_dialogue_mancomb([
+    ['player', 'whynot'],
+    ['o', 52, 53 ]
+])
+mancomb_welcome = make_dialogue_mancomb([
+    ['player', 'welcome'],
+    ['o', 64, 65 ]
+])
+
+mancomb_howsthat = make_dialogue_mancomb([
+    ['player', 'howsthat'],
+    ['o', 59, 60, 61, 62, 63]
+])
+
+mancomb_whois = make_dialogue_mancomb([
+    ['player', 'whois'],
+    ['o', 58,59,60,61,62,63]
 ])

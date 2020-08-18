@@ -77,3 +77,6 @@ walkto_village2_door = gotoDoor ('village2_door', 'voodoolady', '@voodoolady_doo
 look_scummbar_pirate1 = say (['@lines/5'], 'player')
 talkto_scummbar_pirate1 = say (['@lines/5'], 'player')
 talkto_scummbar_mancomb = goto('mancomb', None)
+look_scummbar_fireplace = say (['@lines/3'], 'player')
+look_scummbar_pirate4 = say (['@lines/6'], 'player')
+talkto_scummbar_pirate4 = say (['@lines/6'], 'player')

@@ -23,6 +23,14 @@ def onstart_scummbar():
     run_background_script('scummbar_pirate1', 1, 4, 1, 4)
     run_background_script('scummbar_pirate2', 1, 4, 1, 4)
     run_background_script('scummbar_mancomb', 1, 4, 0, 0)    
+    run_background_script("scummbar_pirate3", 1, 4, 0.5, 0.5)
+    run_background_script("scummbar_pirate4", 1, 4, 0, 0)
+    run_background_script("scummbar_pirate5", 1, 4, 1, 2)
+    run_background_script("scummbar_pirate7", 1, 4, 1, 2)
+    run_background_script("scummbar_pirate8", 1, 4, 0, 0)
+    run_background_script("scummbar_pirate9", 1, 4, 0, 0)
+    run_background_script("scummbar_estevan", 1, 4, 0, 0)
+    run_background_script("scummbar_loom", 1, 4, 0, 0)
 
 def onstart_mancomb():
     print ('ciao')

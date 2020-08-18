@@ -93,6 +93,17 @@ scummbar_door_out:
   wdir: w
   anim: '@doors/scummbar'
   model: door_scummbar_village
+scummbar_door_kitchen:
+  text: door
+  width: 35
+  height: 69
+  pos: [591, 9,-1]
+  room: scummbar
+  walkto: '@scummbar_kitchen'
+  wdir: e
+  anim: '@doors/kitchen'
+  model: door_scummbar_kitchen
+
 village2_archway1:
   text: archway
   pos: [416, 34]
@@ -160,6 +171,41 @@ scummbar_pirate2:
   model: scummbar.pirate2
   room: scummbar   
   node: walkarea
+scummbar_pirate3:
+  pos: [30, 0]
+  model: scummbar.pirate3
+  room: scummbar   
+  node: walkarea
+scummbar_pirate4:
+  pos: [0, 0]
+  model: scummbar.pirate4
+  text: pirates
+  width: 70
+  height: 20
+  walkto: [50, 10]
+  wdir: s
+  room: scummbar   
+  node: walkarea  
+scummbar_pirate5:
+  pos: [200,18,1]
+  model: scummbar.pirate5
+  room: scummbar   
+scummbar_pirate6:
+  pos: [160,0,1]
+  model: scummbar.pirate6
+  room: scummbar     
+scummbar_pirate7:
+  pos: [255,38,-1]
+  model: scummbar.pirate7
+  room: scummbar       
+scummbar_pirate8:
+  pos: [215,44,-1]
+  model: scummbar.pirate8
+  room: scummbar       
+scummbar_pirate9:
+  pos: [278,40,-1]
+  model: scummbar.pirate9
+  room: scummbar
 scummbar_mancomb:
   text: pirate
   pos: [89,24]
@@ -170,3 +216,30 @@ scummbar_mancomb:
   wdir: n
   room: scummbar
   node: walkarea
+scummbar_estevan:
+  text: pirate
+  pos: [164,21,1]
+  model: scummbar.estevan
+  width: 30
+  height: 20
+  walkto: '@scummbar_estevan'
+  wdir: s
+  room: scummbar
+scummbar_loom:
+  text: pirate
+  pos: [260,17,-0.99]
+  model: scummbar.loom
+  width: 20
+  height: 20
+  walkto: '@scummbar_loom'
+  wdir: n
+  room: scummbar
+scummbar_fireplace:
+  model: scummbar.fireplace
+  pos: [509, 44]
+  text: fireplace
+  width: 29
+  height: 18
+  walkto: [512, 40]
+  wdir: e
+  room: scummbar

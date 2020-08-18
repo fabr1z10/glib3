@@ -61,6 +61,6 @@
         items: 1
     verbsets:
       - verbs: [open, close, push, pull, walkto, pickup, talkto, give, use, look, turnon, turnoff ]
-        default_verb: open
+        default_verb: walkto
           
 
