@@ -3,6 +3,7 @@ from lib_py.scumm.actions import Say, StartDialogue
 from lib_py.actions import ChangeRoom, Animate
 from lib_py.scumm.helper import gt, gd, gv, sv
 from lib_py.scumm.scumm import Data, State
+from monkey.scripts.builder import goto
 
 def say(lines, tag):
     def f():
@@ -12,16 +13,7 @@ def say(lines, tag):
         return s
     return f
 
-def goto(room, pos, dir = None, node = 'walkarea' ):
-    def f():
-        s = Script()
-        Data.putItem (State.player, room, gv(pos), node)
-        if dir is not None:
-            Data.items[State.player]['dir'] = dir
-        s = Script()
-        s.addAction (ChangeRoom(room = room))
-        return s
-    return f
+
 
 def gotoDoor(doorId: str, room, pos, dir = None, node = 'walkarea' ):
     def f():
@@ -48,9 +40,21 @@ def openDialogue (dialogueId: str):
         return s
     return f
 
-
+####################
+# default scripts
+####################
 open_ = say(['@defaultactions/1'], 'player')
+close_ = say(['@defaultactions/2'], 'player')
+push_ = say(['@defaultactions/3'], 'player')
+pull_ = say(['@defaultactions/3'], 'player')
 look_ = say(['@defaultactions/4'], 'player')
+pickup_ = say(['@defaultactions/5'], 'player')
+talkto_ = say(['@defaultactions/2'], 'player')
+turnon_ = say(['@defaultactions/2'], 'player')
+turnoff_ = say(['@defaultactions/2'], 'player')
+use_ = say(['@defaultactions/2'], 'player')
+give_ = say(['@defaultactions/2'], 'player')
+
 look_lookout = say(['@dialogues/lookout/50'], 'player')
 talkto_lookout = openDialogue('lookout')
 look_village1_poster = say(['@lines/1', '@lines/2'], 'player')
@@ -70,5 +74,6 @@ walkto_village3_archway = goto ('village2', '@village2_village3', 's')
 open_village2_door = toggleDoor ('village2_door', True)
 close_village2_door = toggleDoor ('village2_door', False)
 walkto_village2_door = gotoDoor ('village2_door', 'voodoolady', '@voodoolady_door', 'e')
-
-
+look_scummbar_pirate1 = say (['@lines/5'], 'player')
+talkto_scummbar_pirate1 = say (['@lines/5'], 'player')
+talkto_scummbar_mancomb = goto('mancomb', None)

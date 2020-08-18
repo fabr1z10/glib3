@@ -30,6 +30,7 @@ void TextMesh::UpdateText(const std::string& msg, float maxLineWidth) {
         m_ib = INVALID_OGL_VALUE;
         return;
     }
+    std::cerr << "qui " << msg<<"\n";
 
     vector <VertexText> vertices;
     vector <unsigned int> indices;
@@ -51,8 +52,11 @@ void TextMesh::UpdateText(const std::string& msg, float maxLineWidth) {
 
     // loop through lines
     for (size_t n = 0; n < lines.size(); n++) {
-        auto sss = std::wstring_convert<std::codecvt_utf8<wchar_t>>().from_bytes(lines[n].c_str());
+        //std::u32string sss(lines[n].c_str());
+        //auto sss = std::wstring_convert<std::codecvt_utf8<char32_t >>().from_bytes(lines[n].c_str());
 
+        auto sss = std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t >().from_bytes(lines[n].c_str());
+        //std::string sss = lines[n];
         float x = 0.0f;					// current cursor position
         for (const auto& w : sss) {
 
@@ -103,6 +107,7 @@ void TextMesh::UpdateText(const std::string& msg, float maxLineWidth) {
 
     Init(vertices, indices);
     //material.texId = font.getTexId();
+    std::cerr << "qui\n";
 }
 
 void TextMesh::splitIntoLines(Font* font, const string& msg, vector<string>& lines, float scalingFactor, float mll) {
@@ -135,11 +140,15 @@ void TextMesh::splitIntoLines(Font* font, const string& msg, vector<string>& lin
 //        words.push_back(word);
 //    } while (iss);
 
-    for (vector<string>::iterator iter = words.begin(); iter != words.end(); iter++) {
+    for (const auto& word : words) {
+
         float wordLength = 0;
-        for (size_t i = 0; i < iter->length(); i++) {
-            Glyph glyph = font->getGlyph((*iter)[i]);
-            wordLength += ((i == iter->length() - 1) ? glyph.width : glyph.advanceToNext) * scalingFactor;
+        int charcount = 0;
+        auto sss = std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t >().from_bytes(word.c_str());
+        for (const auto& ch : sss) {
+            Glyph glyph = font->getGlyph(ch);
+            wordLength += ((charcount == word.size()-1) ? glyph.width : glyph.advanceToNext) * scalingFactor;
+            charcount += 1;
         }
         wlenghts.push_back(wordLength);
     }

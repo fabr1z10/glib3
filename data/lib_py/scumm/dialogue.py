@@ -20,20 +20,26 @@ import types
 # a dialogue line contains:
 class DialogueNode:
     # next_group: the next group of lines to show. -1 to exit dialogue
-    def __init__(self, id: int, text: str = '', active = True, nextId = None, closeNodes = [], activateNodes = [], order=1):
+    def __init__(self, id: str, text: str = '', status = 1, nextId = None, closeNodes = [], activateNodes = [], order=1):
         self.id = id
         self.text = text
         self.dialogue = None
-        self.active = active
+        # status:
+        # 0 = Inactive
+        # 1 = Active
+        # 2 = Closed
+        self.status = status
+        self.said = False
+        #self.active = active
         self.nextId = nextId
         self.closeNodes = closeNodes
         self.order = order
         self.activateNodes = activateNodes
 
     def isActive(self):
-        if callable(self.active):
-            return self.active()
-        return self.active
+        if callable(self.status):
+            return self.status() == 1
+        return self.status == 1
 
 
 # A dialogue is a graph-like structure.
@@ -97,12 +103,12 @@ class Dialogue:
             self.edges[u]= []
         self.edges[u].append(v)    
 
-    def add(self, id: str, active, nextId : str = None, closeNodes = [], actNodes = [], parent = None, order=1):
+    def add(self, id: str, status, nextId : str = None, closeNodes = [], actNodes = [], parent = None, order=1):
         se = data['strings']['dialogues'][self.stringset]
         self.addNode(DialogueNode(
             id = id, 
             text = se[id],
-            active = active, 
+            status = status,
             nextId = nextId, 
             closeNodes = closeNodes, 
             activateNodes= actNodes,

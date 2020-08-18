@@ -1,0 +1,8 @@
+---
+  id: mancomb  
+  type: dialogue
+  width: 320
+  height: 144
+  bg:
+    - image: gfx/mancomb.png
+      pos: [0, 0, -3]

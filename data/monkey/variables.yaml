@@ -11,6 +11,7 @@ meleemap_lookout: [75, 79]
 voodoolady_door: [113, 38]
 clearing_path: [496, 10]
 scummbar_entrance: [65, 15]
+scummbar_mancomb: [125, 17]
 doors:
   scummbar: closed
   voodoolady: closed

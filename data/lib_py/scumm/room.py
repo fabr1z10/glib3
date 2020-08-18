@@ -25,12 +25,15 @@ def runDialogueScript(s):
         # check if there's any script to run
         a = Script()
         node = s
+        node.said = True
         for cn in node.closeNodes:
-            s.dialogue.nodes[cn].active = False
+            s.dialogue.nodes[cn].status = 2
         for an in node.activateNodes:
-            s.dialogue.nodes[an].active = True
-        for id, d in s.dialogue.nodes.items():
-            print (str(d.id) + ' ' + str(d.active))
+            n = s.dialogue.nodes[an]
+            if n.status != 2:
+                n.status = 1
+        #for id, d in s.dialogue.nodes.items():
+        #    print (str(d.id) + ' ' + str(d.active))
 
         #if s.node.nextStatus != NodeStatus.SAME:
         #   s.node.status = s.node.nextStatus
@@ -106,8 +109,11 @@ def startupRoomUI(id: str):
         print ('starting up inventory')
         refresh_inventory()
         # check if room has a onstart script
-        if hasattr(engine.scripts.rooms, 'onstart_' + id):
-            a = getattr(engine.scripts.rooms, 'onstart_' + id)()
+        start_script = 'onstart_' + id
+        print ('start : ' + start_script)
+        if hasattr(engine.scripts.rooms, start_script):
+            print ('YES!')
+            a = getattr(engine.scripts.rooms, start_script)()
             if a:
                 example.play(a)
     return f
@@ -131,7 +137,7 @@ class RoomFullscreen(room.Room):
 
 
 class RoomUI(room.Room):
-    def __init__(self, id: str, width, height, collide = False):
+    def __init__(self, id: str, width, height, collide = False, addui: bool = True):
         super().__init__(id, width, height)
         self.collide = collide
         uisize = scumm.Config.ui_height
@@ -148,42 +154,48 @@ class RoomUI(room.Room):
         # add the main node     
         main = entity.Entity (tag='main')
         main.camera = cam.OrthoCamera(width, height, camWidth, camHeight, [0, uisize, camWidth, camHeight], tag='maincam')
-        main.addComponent (compo.HotSpotManager(lmbclick=func.walkto))
         #main.add (e.Text(font='ui', text='ciao', color = [255, 255, 255, 255], align = e.TextAlignment.bottom, pos = [camWidth/2, 16, 0]))
 
         # add the ui node
-        ui = entity.Entity (tag='ui')
-        ui.camera = cam.OrthoCamera(camWidth, uisize, camWidth, uisize, [0, 0, camWidth, uisize], tag = 'uicam')
-        ui.add (entity.Text(font='ui', text = defv.text, color = scumm.Config.Colors.current_action, 
-            align = entity.TextAlignment.bottom, tag = 'current_verb', pos = [camWidth/2, 48, 0]))
-        ui.addComponent (compo.HotSpotManager())
-        inventory_node = entity.TextView (factory=makeInventoryButton, pos=(160,0),  size=(140,48), fontSize=8, lines=6, deltax=26, tag='inventory')
-        inventory_node.addComponent(compo.HotSpotManager())
+        if addui:
+            main.addComponent (compo.HotSpotManager(lmbclick=func.walkto))
+
+            ui = entity.Entity (tag='ui')
+            ui.camera = cam.OrthoCamera(camWidth, uisize, camWidth, uisize, [0, 0, camWidth, uisize], tag = 'uicam')
+            ui.add (entity.Text(font='ui', text = defv.text, color = scumm.Config.Colors.current_action, 
+                align = entity.TextAlignment.bottom, tag = 'current_verb', pos = [camWidth/2, 48, 0]))
+            ui.addComponent (compo.HotSpotManager())
+            inventory_node = entity.TextView (factory=makeInventoryButton, pos=(160,0),  size=(140,48), fontSize=8, lines=6, deltax=26, tag='inventory')
+            inventory_node.addComponent(compo.HotSpotManager())
+
+            row = 2
+            count = 0
+            for a in verbset.verbs:
+                col = 1 + count // 4
+                x = 2 + (col - 1) * 46
+                verb : scumm.Verb = scumm.Config.getVerb(a)
+                print ('here ' + a + ' ' + verb.text)
+                ui.add (se.VerbButton(
+                    font = 'ui',
+                    verbId = a,
+                    colorInactive = scumm.Config.Colors.verb_unselected,
+                    colorActive = scumm.Config.Colors.verb_selected,
+                    align = entity.TextAlignment.bottomleft,
+                    pos = [x, uisize - row*8, 0]
+                ))  
+                count +=1
+                row += 1
+                if (row > 5):
+                    row = 2
+            self.scene.append(ui)
+            self.scene.append(inventory_node)
+
+            scumm.Config.resetVerb()
+                    
 
         # add the dialogue node
         dialogue_node = entity.TextView(factory=makeDialogueButton, size=[320,56], fontSize=8, lines=6, deltax=26, tag='dialogue')
         dialogue_node.addComponent(compo.HotSpotManager())
-
-        row = 2
-        count = 0
-        for a in verbset.verbs:
-            col = 1 + count // 4
-            x = 2 + (col - 1) * 46
-            verb : scumm.Verb = scumm.Config.getVerb(a)
-            print ('here ' + a + ' ' + verb.text)
-            ui.add (se.VerbButton(
-                font = 'ui',
-                verbId = a,
-                colorInactive = scumm.Config.Colors.verb_unselected,
-                colorActive = scumm.Config.Colors.verb_selected,
-                align = entity.TextAlignment.bottomleft,
-                pos = [x, uisize - row*8, 0]
-            ))  
-            count +=1
-            row += 1
-            if (row > 5):
-                row = 2
-
 
 		#ui.add (VerbButton (font='ui', text='Open', colorInactive = ScummConfig.Colors.verb_unselected, colorActive = ScummConfig.Colors.verb_selected, align = e.TextAlignment.bottomleft, pos = [0,0,0]))
 		# ui.add (e.Text(font='ui', text=verbs[verbset[1]].text, color = [255, 255, 255, 255], align = e.TextAlignment.topleft, pos = [0, 56, 0]))
@@ -194,11 +206,9 @@ class RoomUI(room.Room):
         self.ref['main'] = main.children
 
         self.scene.append(main)
-        self.scene.append(ui)
         self.scene.append(dialogue_node)
-        self.scene.append(inventory_node)
 
-        scumm.Config.resetVerb()
+        
         
         # create a hotspot manager
         #self.engines.append(runner.HotSpotManager(lmbclick=func.walkto))

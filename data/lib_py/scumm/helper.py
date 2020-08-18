@@ -64,6 +64,7 @@ def set_verb(verbId):
         Config.verb = verbId
         Config.item1 = ''
         Config.item2 = ''
+        Config.wait_for_second_item = False
         update_current_action()
     return f
 
@@ -78,7 +79,8 @@ def update_current_action():
 
 def refresh_inventory():
     p = example.get('inventory')
-    inv = State.getCurrentInventory()
-    p.clearText()
-    for key, value in inv.items():
-        p.appendText ((key, value))
+    if p.valid:
+        inv = State.getCurrentInventory()
+        p.clearText()
+        for key, value in inv.items():
+            p.appendText ((key, value))

@@ -85,6 +85,8 @@ def identity(x):
 
 
 def getString (s: str):
+    if s is None:
+        return None
     d = data['strings']
     for a in s.split('/'):
         d = d[a]
@@ -209,7 +211,7 @@ def loadSkeletalModels():
 def loadText(lang: str):
     dir = example.dir +'/text/'+lang;
     if os.path.exists(dir):
-        with open(dir+ '/text.yaml') as f:
+        with open(dir+ '/text.yaml', encoding='utf8') as f:
             data['strings']= yaml.load(f, Loader=yaml.FullLoader)
         print(data['strings'])
 

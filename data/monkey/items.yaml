@@ -23,6 +23,12 @@ lookout:
   wdir: w
   text_color: [170, 170, 170, 255]
   text_offset: [0,60]
+mancomb:
+  pos: [52, 18]
+  model: mancomb.mancomb
+  text_color: [255, 85, 85, 255]
+  text_offset: [0, 90]
+  room: mancomb  
 lookout_fire:
   model: fire
   pos: [126, 52]
@@ -139,3 +145,28 @@ meleemap_clearing:
     pos: '@clearing_path' 
     dir: w 
   room: meleemap  
+scummbar_pirate1:
+  text: pirate
+  pos: [138, 38]
+  width: 30
+  height: 30
+  model: scummbar.pirate1
+  walkto: [140,20]
+  wdir: n
+  room: scummbar 
+  node: walkarea
+scummbar_pirate2:
+  pos: [124, 20]
+  model: scummbar.pirate2
+  room: scummbar   
+  node: walkarea
+scummbar_mancomb:
+  text: pirate
+  pos: [89,24]
+  model: scummbar.mancomb
+  width: 30
+  height: 30
+  walkto: '@scummbar_mancomb'
+  wdir: n
+  room: scummbar
+  node: walkarea

@@ -89,6 +89,11 @@ class StartDialogue(actions.CallFunc):
         def f():
             print ('opening dialogue: ' + dialogueId)            
             d : Dialogue = s.Data.dialogues[dialogueId]
+            # check if this dialogue has an onstart script associated
+            onStart = func.addCustomScript (engine.scripts.dialogues, 'onstart_' + dialogueId)
+            if onStart:
+                print ('found script')
+                example.play(onStart)
             d.reset()
             if d.onStart:
                 d.onStart()
@@ -122,6 +127,7 @@ class ResumeDialogue(actions.CallFunc):
             print ('current node ' + d.current)
             actlines = d.getLines()
             for line in actlines:
+                print ('APPENDIG ' + line.id)
                 dial.appendText(line)
         return f
 

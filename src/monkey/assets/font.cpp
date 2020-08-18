@@ -40,16 +40,14 @@ bool Font::loadFromFile(const std::string& filename, const int size) {
     m_size = size;
     if (!s_loaded)
         return false;
-
     FT_Error err = FT_New_Face(s_lib, filename.c_str(), 0, &m_fontFace);
     auto mp = m_fontFace->charmap;
 
-    //FT_Select_Charmap(m_fontFace, ft_encoding_unicode);
+    FT_Select_Charmap(m_fontFace, ft_encoding_unicode);
     if (err != 0) {
         GLIB_FAIL("Unable to load font " << filename);
         return false;
     }
-
     // set the size of the font face
     // since the function expects a size in 1/64 pixels, we multiply by 64 (same as left-shift by 6)
     // the 96 represents a 96-dpi font bitmap
@@ -57,19 +55,28 @@ bool Font::loadFromFile(const std::string& filename, const int size) {
         return false;
 
     m_maxHeight = 0;
-
     // length of the texture in pixels
     unsigned int totalLength = 0;
     //for (size_t i = ' '; i <= '~'; ++i) {
-    for (size_t i = 32; i <= 255; ++i) {
-        //FT_Glyph glyph;
-        unsigned int index = FT_Get_Char_Index(m_fontFace, i);
-        if (index == 0)
-            continue;
+    FT_UInt ff = 0;
+    FT_ULong charcode = FT_Get_First_Char(m_fontFace, &ff);
+    size_t nChars = 512;
+    //for (size_t i = 0; i < nChars; ++i) {
+    while (true) {
+        //auto ciao = FT_Get_Next_Char(m_fontFace, i, ff);
+        //std::cerr << "working charcode " << charcode << "\n";
+        auto index = FT_Get_Char_Index(m_fontFace, charcode);
+        //std::cerr << index<<"\n";
+        //if (index == 0)
+        //    break;
         FT_Load_Glyph(m_fontFace, index, FT_LOAD_RENDER);
         FT_GlyphSlot slot = m_fontFace->glyph;
         m_maxHeight = std::max(m_maxHeight, slot->bitmap.rows);
         totalLength += slot->bitmap.width + (slot->advance.x >> 6);
+        charcode = FT_Get_Next_Char(m_fontFace, charcode, &ff);
+        if (ff == 0)
+            // no  more chars to read
+            break;
     }
     m_size = m_maxHeight;
     // divide total length by the
@@ -92,11 +99,14 @@ bool Font::loadFromFile(const std::string& filename, const int size) {
     unsigned int currentLine = 1;
 
     //for (size_t i = ' '; i <= '~'; ++i) {
-    for (size_t i = 32; i <= 256; ++i) {
+    ff = 0;
+    charcode = FT_Get_First_Char(m_fontFace, &ff);
+    //for (size_t i = 0; i < nChars; ++i) {
+    while (true) {
         FT_Glyph glyph;
-        unsigned int index = FT_Get_Char_Index(m_fontFace, i);
-        if (index == 0)
-            continue;
+        auto index = FT_Get_Char_Index(m_fontFace, charcode);
+        //if (index == 0)
+        //    break;
         FT_Load_Glyph(m_fontFace, index, FT_LOAD_RENDER);
         FT_Render_Glyph(m_fontFace->glyph, FT_RENDER_MODE_NORMAL);
         FT_Get_Glyph(m_fontFace->glyph, &glyph);
@@ -131,10 +141,13 @@ bool Font::loadFromFile(const std::string& filename, const int size) {
         g.height = bh;
         g.advanceToNext = (slot->advance.x >> 6);
         g.heightOffset = (slot->metrics.horiBearingY >> 6);
-        m_glyphs[static_cast<unsigned char>(i)] = g;
+        m_glyphs[charcode] = g;
         currentCol += (bw + (slot->advance.x >> 6));
-    }
+        charcode = FT_Get_Next_Char(m_fontFace, charcode, &ff);
+        if (ff == 0)
+            break;
 
+    }
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);

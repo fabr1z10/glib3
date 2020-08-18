@@ -28,11 +28,20 @@ def set_verb(verbId):
 def update_current_action():
     a : example.Wrap1 = example.get('current_verb')
     verb = s.Config.getVerb(s.Config.verb)
+    print ('items = ' + str(verb.items))
     text = verb.text
     if s.Config.item1:
         item = s.Data.items[s.Config.item1]
         label = engine.data['strings']['objects'][item['text']]
         text += ' ' + label
+    if verb.items == 2 and (s.Config.wait_for_second_item or s.Config.item2):
+        print ('qui ' + verb.prep)
+        text += ' ' + verb.prep
+        if s.Config.item2:
+            item = s.Data.items[s.Config.item2]
+            label = engine.data['strings']['objects'][item['text']]
+            text += ' ' + label
+
     a.setText (text)
 
 def hoverOn(obj):
@@ -42,11 +51,9 @@ def hoverOn(obj):
         if not s.Config.item1:
             s.Config.item1 = obj
         else:
-            print ('suca')
-            #local verb = scumm.func.getCurrentVerb()
-            #if (verb.objects > 1 and actionInfo.obj1 ~= obj) then
-            #    actionInfo.obj2 = obj
-            #end
+            # if this verb takes 2 objects...
+            if s.Config.getVerb(s.Config.verb).items > 1 and s.Config.item1 != obj:
+                s.Config.item2 = obj
         update_current_action()
     return f
 
@@ -55,8 +62,8 @@ def hoverOff(obj):
         s.Config.item2 = ''
     else:
         # set obj1 to nil unless we are waiting for 2nd object
-        #if (actionInfo.selectSecond == false) then
-        s.Config.item1 = ''
+        if s.Config.getVerb(s.Config.verb).items == 1:
+            s.Config.item1 = ''
     update_current_action()
 
 class BackgroundItem(entity.Entity):

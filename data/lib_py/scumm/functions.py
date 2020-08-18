@@ -12,7 +12,16 @@ def start_dialogue():
     ui : example.Wrap1 = example.get('ui')
     ui.setActive(False)
 
-# handle 1-verb actions
+def get_action_script(s: str, ds: str = None):            
+    if hasattr(engine.scripts.actions, s):
+        return getattr(engine.scripts.actions, s)
+    else:
+        if ds is not None:
+            if hasattr(engine.scripts.actions, ds):
+                return getattr(engine.scripts.actions, ds)
+    return None
+
+# handle 1-item actions
 def handler1():
     item : s.Item = s.Data.items[s.Config.item1] # s.State.items[s.Config.item1]
     sc = script.Script(id = '_main')
@@ -55,6 +64,76 @@ def handler1():
         # run default script
     
 
+def handler2_sub(item: str):
+    def f():
+        sc = script.Script(id = '_main2')
+        if s.State.has(item):
+            handler2_do (sc)
+        else:
+            # fail
+            func = s.Config.verb + '_'
+            if hasattr(engine.scripts.actions, func):
+                a = getattr(engine.scripts.actions, func)()
+                sc.addAction (actions.RunScript(s=a))  
+            example.play(sc)
+                        
+
+def handler2_do(sc : script.Script):
+    item2 : s.Item = s.Data.items[s.Config.item2] # s.State.items[s.Config.item1]
+    walkto = helper.gdd(item2, 'walkto', None)
+    wdir = helper.gdd (item2, 'wdir', None)
+    if walkto is not None:
+        sc.addAction( sa.Walk(pos = walkto, tag = 'player'))    
+    if wdir is not None:
+        sc.addAction( sa.Turn(dir = wdir, tag = 'player'))
+    asc = get_action_script (s.Config.verb + '_' + s.Config.item1 + '_' + s.Config.item2, s.Config.verb +'_')
+    if asc:
+        sc.addAction (actions.RunScript (s = asc))
+
+
+
+
+
+# handle 2-item actions
+def handler2():
+    # the rule is. Walk to item 2, but you need to HAVE item 1.
+    # so if you 
+    print ('A')
+    sc = script.Script(id = '_main')
+    if s.Config.item2:
+        print ('B')
+        item1 : s.Item = s.Data.items[s.Config.item1] # s.State.items[s.Config.item1]
+        if s.State.has(s.Config.item1):
+            handler2_do(sc)
+        else:
+            # try to pick up item1
+            print ('try to pick up ' + s.Config.item1)
+            walkto = helper.gdd(item1, 'walkto', None)
+            wdir = helper.gdd (item1, 'wdir', None)
+            if walkto is not None:
+                sc.addAction( sa.Walk(pos = walkto, tag = 'player'))    
+            if wdir is not None:
+                sc.addAction( sa.Turn(dir = wdir, tag = 'player'))
+            # ok, now check if pickup action is available            
+            func = 'pickup_'+s.Config.item1
+            if hasattr(engine.scripts.actions, func):
+                a = getattr(engine.scripts.actions, func)()
+                sc.addAction (actions.RunScript(s=a))        
+                # now go to item 2 ONLY IF item is in inventory
+                sc.addAction (actions.CallFunc (f = handler2_sub))
+            else:
+                # no pick up action, then do nothing.
+                func = s.Config.verb + '_'
+                if hasattr(engine.scripts.actions, func):
+                    a = getattr(engine.scripts.actions, func)()
+                    sc.addAction (actions.RunScript(s=a))  
+        example.play(sc)           
+    else:
+        s.Config.wait_for_second_item = True
+        print ('QUI')
+        from lib_py.scumm.entity import update_current_action
+        update_current_action()
+        # if I don't have an item2, then 
 
 
 def walkto(x, y, obj=None):

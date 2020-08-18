@@ -3,23 +3,107 @@ lookout:
   stringset: lookout
   nodes:
     intro1:
-      active: True
+      status: 1
       next: intro1
       order: 10 
     intro2:
-      active: True
+      status: 1
       next: intro1
       order: 20      
     intro3:
-      active: True
+      status: 1
       next: intro1
       order: 30      
     intro4:
-      active: True
+      status: 1
       next: intro1
       order: 40          
     imguy:
-      active: True
-      #next: _root
+      status: 1
+      next: intro1
+      once: True
+      close_nodes: [actuallyimguy]      
       order: 10
       parent: intro1
+    actuallyimguy:
+      status: 0
+      next: intro1
+      once: True
+      order: 10
+      parent: intro1
+    squinky:
+      status: 1
+      order: 20
+      next: intro1
+      once: True
+      close_nodes: [imguy]
+      activate_nodes: [actuallyimguy]
+      parent: intro1
+    overhere:
+      status: 1
+      order: 30
+      next: intro1
+      once: True
+      parent: intro1
+    whoru:
+      status: 1
+      order: 40
+      next: intro1
+      once: True
+      activate_nodes: [whyguvworried, bat]
+      parent: intro1
+    whyguvworried:
+      status: 0
+      order: 40
+      next: intro1
+      once: True
+      parent: intro1
+    bat:
+      status: 0
+      order: 50
+      next: intro1
+      once: True
+      parent: intro1      
+    fortune:
+      status: 1
+      order: 100
+      parent: intro1
+      
+
+mancomb:
+  stringset: mancomb
+  nodes:
+    imguy: 
+      status: 1
+      next: imguy
+      activate_nodes: [yourname2]
+      once: True
+      order: 10     
+    yourname2:
+      status: 0
+      order: 10  
+      once: True
+    rupirate: 
+      status: 1
+      next: imguy
+      once: True
+      order: 10       
+    charge: 
+      status: 1
+      next: imguy
+      once: True
+      order: 10       
+    bye:       
+      status: 1
+      next: imguy
+      order: 10
+    ilikeguy:
+      status: 1
+      parent: imguy
+      once: True
+      order: 10    
+    insulted:
+      status: 1
+      parent: imguy
+      order: 50
+

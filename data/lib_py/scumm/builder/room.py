@@ -56,6 +56,15 @@ def makeStandardRoom(roomid, room):
     addDynamicEntities (roomid, r)    
     return r
 
+def makeDialogueRoom(roomid, room):
+    from lib_py.scumm.room import RoomUI
+    r = RoomUI(id= room['id'], width = room['width'], height = room['height'], addui=False)
+    # add background
+    addBackground (room, r)
+    #addWalkareas (room, r)
+    addDynamicEntities (roomid, r)    
+    return r
+
 def makeFullscreenRoom(roomid, room):
     from lib_py.scumm.room import RoomFullscreen
     r = RoomFullscreen(id= room['id'], width = room['width'], height = room['height'])
@@ -73,8 +82,8 @@ def makeFullscreenRoom(roomid, room):
 
 roomFactories = {
     'standard': makeStandardRoom,
-    'full': makeFullscreenRoom
-    #'dialogue': makeDialogueRoom
+    'full': makeFullscreenRoom,
+    'dialogue': makeDialogueRoom
 }
 
 def makeRoom (roomid: str):

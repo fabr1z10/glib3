@@ -30,7 +30,7 @@ public:
     ~Font();
     static bool Initialize();
     bool loadFromFile(const std::string& filename, const int size = 36);
-    Glyph getGlyph(unsigned char) const;
+    Glyph getGlyph(unsigned long) const;
     GLuint getTexId() const;
     unsigned int getMaxHeight() const;
     int size() const;
@@ -39,15 +39,18 @@ private:
     static FT_Library s_lib;
     static bool s_loaded;
     GLuint m_tex;
-    std::map <unsigned char, Glyph> m_glyphs;
+    std::map <FT_ULong, Glyph> m_glyphs;
     FT_Face m_fontFace;
     bool m_loaded;
     unsigned int m_maxHeight;
 
 };
 
-inline Glyph Font::getGlyph(unsigned char c) const {
+inline Glyph Font::getGlyph(unsigned long c) const {
     auto iter = m_glyphs.find(c);
+    if (iter == m_glyphs.end()) {
+        GLIB_FAIL("Unknown character: " << c);
+    }
     return iter->second;
 }
 
