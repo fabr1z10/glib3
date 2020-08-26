@@ -4,7 +4,7 @@ from lib_py.actions import ChangeRoom, Animate
 from lib_py.scumm.helper import gt, gd, gv, sv
 from lib_py.scumm.scumm import Data, State
 from lib_py.engine import data
-from monkey.scripts.builder import make_dialogue, make_dialogue_mancomb, goto
+from scripts.builder import make_dialogue, make_dialogue_mancomb, goto
 
 slo = data['strings']['dialogues']['lookout']
 

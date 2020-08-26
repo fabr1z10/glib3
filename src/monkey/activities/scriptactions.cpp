@@ -3,7 +3,13 @@
 #include <monkey/scheduler.h>
 
 
+SuspendScript::SuspendScript(const ITable & t)  {
+    m_script = t.get<std::string>("script");
+}
 
+ResumeScript::ResumeScript(const ITable & t)  {
+    m_script = t.get<std::string>("script");
+}
 
 void SuspendScript::Start() {
     auto scheduler = Engine::get().GetRunner<Scheduler>();

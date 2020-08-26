@@ -243,3 +243,12 @@ scummbar_fireplace:
   walkto: [512, 40]
   wdir: e
   room: scummbar
+cook:
+  model: cook
+  pos: [589, 14]
+  #room: scummbar
+  node: walkarea
+  dir: w
+  speed: 100
+  text_color: [170, 170, 170, 255]
+  text_offset: [0,60]

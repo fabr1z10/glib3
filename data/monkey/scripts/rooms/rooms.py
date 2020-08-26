@@ -1,7 +1,12 @@
 from lib_py.script import Script
-from lib_py.scumm.actions import Walk, StartDialogue
-from lib_py.actions import DelayRandom, Animate, Msg
-from monkey.scripts.builder import make_dialogue_mancomb
+from lib_py.scumm.actions import Walk, Turn, StartDialogue
+from lib_py.scumm.builder.item import buildItem
+
+from lib_py.actions import Delay, DelayRandom, Animate, Msg, RunScript, AddEntity,RemoveEntity
+from scripts.builder import make_dialogue_mancomb
+from scripts.actions import toggleDoor
+
+
 import example
 
 def onstart_lookout():
@@ -31,6 +36,19 @@ def onstart_scummbar():
     run_background_script("scummbar_pirate9", 1, 4, 0, 0)
     run_background_script("scummbar_estevan", 1, 4, 0, 0)
     run_background_script("scummbar_loom", 1, 4, 0, 0)
+    # play the cook script
+    s = Script (id = '_cook', loop= 0)
+    s.addAction (Delay (sec = 10))
+    s.addAction (RunScript ( toggleDoor('scummbar_door_kitchen', True)() ))
+    s.addAction (AddEntity (buildItem (id = 'cook'), 'walkarea'))
+    s.addAction (Walk (tag ='cook', pos = [125, 17]))
+    s.addAction (Turn (tag = 'cook', dir='n'))
+    s.addAction (Delay (sec = 10))
+    s.addAction (Walk (tag = 'cook', pos = [589, 14]))
+    s.addAction (RemoveEntity (tag='cook'))
+    s.addAction (RunScript ( toggleDoor('scummbar_door_kitchen', False)() ))
+    example.play(s)
+
 
 def onstart_mancomb():
     print ('ciao')
@@ -38,3 +56,4 @@ def onstart_mancomb():
     s.addAction (StartDialogue ('mancomb'))
     example.play(s)
     pass
+

@@ -186,6 +186,8 @@ SceneFactory::SceneFactory() {
     add2<ShowMessage> ("action.msg");
     add2<SetState> ("action.setstate");
     add2<RunScript> ("action.runscript");
+    add2<SuspendScript> ("action.suspendscript");
+    add2<ResumeScript> ("action.resumescript");
     add2<MoveAccelerated> ("action.moveaccelerated");
     add2<MoveTo> ("action.move");
     add2<FreeMove> ("action.freemove");

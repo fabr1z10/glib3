@@ -22,6 +22,17 @@ class RunScript:
         self.type = 'action.runscript'
         self.script = s
 
+class SuspendScript:
+    def __init__(self, s : str):
+        self.type = 'action.suspendscript'
+        self.script = s
+
+class ResumeScript:
+    def __init__(self, s : str):
+        self.type = 'action.resumescript'
+        self.script = s
+
+
 class ChangeRoom:
     def __init__(self, room: str):
         self.type = 'action.changeroom'
@@ -98,6 +109,7 @@ class AddEntity(CallFunc):
     @staticmethod
     def pippo(entity, parent):
         def f():
+            print ('jjjj')
             m : example.Wrap1 = example.get(parent)
             m.add (entity)
         return f

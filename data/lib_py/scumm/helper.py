@@ -48,9 +48,7 @@ def gd(d: dict, key: str):
 
 def gt(key: str):
     x = data['strings']
-    print ('ccocococo222')
     if key[0] == '@':
-        print ('ccocococo')
         for b in key[1:].split('/'):
             if b.isnumeric():
                 x = x[int(b)]

@@ -1,9 +1,12 @@
 from lib_py.script import Script
-from lib_py.scumm.actions import Say, StartDialogue
-from lib_py.actions import ChangeRoom, Animate
+from lib_py.scumm.actions import Say, StartDialogue, Turn
+from lib_py.actions import ChangeRoom, CallFunc, Animate, SuspendScript, ResumeScript
 from lib_py.scumm.helper import gt, gd, gv, sv
 from lib_py.scumm.scumm import Data, State
-from monkey.scripts.builder import goto
+from scripts.builder import goto
+
+
+import example
 
 def say(lines, tag):
     def f():
@@ -22,13 +25,20 @@ def gotoDoor(doorId: str, room, pos, dir = None, node = 'walkarea' ):
             return goto(room, pos, dir, node)()
     return f
 
+def setvar (varname, value):
+    def f():
+        sv (varname, value)
+    return f
 
 def toggleDoor (itemId: str, open: bool):
     def f():
+        print ('ciao')
         s = Script()
         status = 'open' if open else 'closed'
+        s.addAction (CallFunc (f = setvar(Data.items[itemId]['anim'], status)))
         # set corresponding variables
-        sv(Data.items[itemId]['anim'], status)
+        #sv(Data.items[itemId]['anim'], status)
+        #print ('set to ' + status)
         s.addAction (Animate(anim = status, tag = itemId))
         return s
     return f
@@ -80,3 +90,22 @@ talkto_scummbar_mancomb = goto('mancomb', None)
 look_scummbar_fireplace = say (['@lines/3'], 'player')
 look_scummbar_pirate4 = say (['@lines/6'], 'player')
 talkto_scummbar_pirate4 = say (['@lines/6'], 'player')
+
+def walkto_scummbar_door_kitchen():
+    a = gv(Data.items['scummbar_door_kitchen']['anim'])
+    print ('a = ' + str(a))
+    if a == 'open':
+        c : example.Wrap1 = example.get('cook')
+        if c.valid:
+            if c.x > 320:
+                going_left = c.flipx 
+                s = Script()
+                s.addAction (SuspendScript ('_cook'))
+                s.addAction ( Turn(tag='cook', dir='e'))
+                s.addAction ( Say(lines= [gt('@lines/32'), gt('@lines/33')], tag='cook'))
+                if going_left:
+                    s.addAction ( Turn(tag='cook', dir='w'))
+                s.addAction ( Animate (tag ='cook', anim='walk_e'))
+                s.addAction (ResumeScript ('_cook'))
+                return s
+    return None

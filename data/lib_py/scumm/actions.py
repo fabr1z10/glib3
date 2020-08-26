@@ -149,3 +149,4 @@ class AddToInventory(actions.CallFunc):
 
     def __init__(self, id : str, qty: int = 1):
         super().__init__(f = AddToInventory.pippo(id,qty))
+
