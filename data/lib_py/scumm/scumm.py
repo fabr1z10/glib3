@@ -77,6 +77,7 @@ class Data:
             if 'room' in v:
                 parent = 'main' if 'parent' not in v else v['parent']
                 Data.putItem (k, v['room'], v['pos'], parent)
+        print ('--- items ---')
         print (Data.items)
         print (Data.locator)
         Data.loadDialogues()
@@ -115,12 +116,13 @@ class Data:
 
 class State:
     # map that associate room with dynamic items to create on the fly
-    items = {}
+    #items = {}
     dialogues = {}
     room_items = {}
     items_room = {}
     variables = {}
     player = ''
+    collision_enabled = False
     md = None
     # we can have more than one inventory for each player
     inventory = {}

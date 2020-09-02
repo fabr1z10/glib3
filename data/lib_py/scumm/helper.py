@@ -4,6 +4,9 @@ from lib_py.engine import data
 from lib_py.actions import RunScript
 #from lib_py.scumm.entity import Item, CharItem
 
+
+
+
 def addCustomScript (ns, f: str, s = None):
     if hasattr(ns, f):
         scr = getattr(ns, f)()

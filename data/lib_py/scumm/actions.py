@@ -30,6 +30,12 @@ class Say:
         self.lines = lines
         self.animate = animate
 
+class EnableBlock:
+    def __init__(self, walkarea: str, wall: int, active: bool):
+        self.type = 'scumm.action.enable_block'
+        self.walkarea = walkarea
+        self.wall = wall
+        self.active = active
 
 class ResetVerb(actions.CallFunc):
     @staticmethod

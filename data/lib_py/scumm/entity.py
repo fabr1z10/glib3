@@ -17,6 +17,18 @@ def change_color(color):
         e.setColor([0,0,0,0], color)
     return f    
 
+def hover_on_inventory_button (item):
+    def f (e: example.Wrap1):
+        e.setColor([0,0,0,0], s.Config.Colors.inv_selected)
+        hoverOn (item)(e)
+    return f
+
+def hover_off_inventory_button (item):
+    def f (e: example.Wrap1):
+        e.setColor([0,0,0,0], s.Config.Colors.inv_unselected)
+        hoverOff (e)
+    return f
+
 def set_verb(verbId):
     def f(x, y, e : example.Wrap1):
         s.Config.verb = verbId
@@ -32,14 +44,14 @@ def update_current_action():
     text = verb.text
     if s.Config.item1:
         item = s.Data.items[s.Config.item1]
-        label = engine.data['strings']['objects'][item['text']]
+        label = engine.read (item, 'text')#engine.data['strings']['objects'][item['text']]
         text += ' ' + label
     if verb.items == 2 and (s.Config.wait_for_second_item or s.Config.item2):
         print ('qui ' + verb.prep)
         text += ' ' + verb.prep
         if s.Config.item2:
             item = s.Data.items[s.Config.item2]
-            label = engine.data['strings']['objects'][item['text']]
+            label = engine.read (item, 'text')#data['strings']['objects'][item['text']]
             text += ' ' + label
 
     a.setText (text)
@@ -94,29 +106,27 @@ class DialogueButton(entity.Text):
 class InventoryButton(entity.Text):
     def __init__(self, font: str, itemId: str, qty: int, colorInactive, colorActive, align: entity.TextAlignment = entity.TextAlignment.bottomleft, 
         script: callable = None, tag=None, pos=[0,0,0]):
-        if itemId not in s.State.items:
+        if itemId not in s.Data.items:
             raise BaseException('Hey! unknown item: ' + itemId)
-        item = s.State.items[itemId]  
+        item = s.Data.items[itemId]  
         # get the item text
         text = ''
-        print ('foccami ' + itemId + str(qty))
-        print ()
+        print ('func0' + str(script))
         if qty == 1:
-            text = item.text
+            text = engine.fetch (item['text'])
         else:
-            text = str(qty) + ' ' + item.plural
-        print(text)
+            text = str(qty) + ' ' + engine.fetch(item['plural'])
         super().__init__(font, text, colorInactive, align, tag, pos)                  
         self.addComponent(compo.HotSpot(
             shape = None,
-            onenter = change_color(colorActive), 
-            onleave = change_color(colorInactive),
-            onclick = script )) 
+            onenter = hover_on_inventory_button (itemId),# change_color(colorActive), 
+            onleave = hover_off_inventory_button (itemId),
+            onclick = sf.run_action )) 
 
 class WalkArea(entity.Entity):
-    def __init__(self, shape, depth = None, scale = None, priority : int = 0, tag = None, pos = [0,0,0]):
+    def __init__(self, shape, depth = None, scale = None, priority : int = 0, tag = None, pos = [0,0,0], blocked_lines=None):
         super().__init__(tag, pos)
-        self.addComponent(sc.Walkarea(shape = shape, depth=depth, scale = scale))
+        self.addComponent(sc.Walkarea(shape = shape, depth=depth, scale = scale, blocked_lines=blocked_lines))
         #self.shape = shape
         #self.depth = depth
         #self.priority = priority

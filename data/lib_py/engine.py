@@ -22,6 +22,9 @@ class ShaderType(enum.Enum):
     text = 2,
     skeletal = 3
 
+########################################################
+# this is where all begins ... :-)
+########################################################
 def startUp():
     print ('# starting up ...')
     example.init(example.what)
@@ -45,9 +48,9 @@ def startUp():
         loadAssets()
         print ('# loading strings ...')
         loadText (language)
-        # read game variables
+        # read game variables, and functions
         with open(example.dir+'/variables.yaml') as f:
-            data['vars'] = yaml.load(f, Loader = yaml.FullLoader)
+            data['vars'] = yaml.load(f, Loader = yaml.FullLoader)            
         for f in a['fonts']:
             print ('# loading font ' + f['id'])
             addFont (assets.Font (f['id'], f['file']))
@@ -74,6 +77,7 @@ data = {
     'rooms': {},
     'strings': {},
     'entities': {},
+    'functions': {},
     'factories': {},
     'vars': {}
 }
@@ -125,6 +129,62 @@ def getFunc (f):
         return d
 
 
+def write (key: str, value):
+    if key[0] == '@':
+        c = key[1]
+        if c == '&':
+            # Set a variable
+            cc = data['vars']
+            ks = key[2:].split('/')
+            for b in ks[:-1]:
+                cc = cc[b]
+            cc[ks[-1]] = value
+        else:
+            raise Exception('don''t know how to read ' + key + ' in dict ' + str(d))
+
+def fetch (key: str):
+    if isinstance(key, str):
+        if key[0] == '@':
+            c = key[1]
+            if c == '@':
+                return key[1:]
+            elif c == '$':
+                # get a string
+                x = data['strings']
+                for b in key[2:].split('/'):
+                    if b.isnumeric():
+                        x = x[int(b)]
+                    else:
+                        x = x[b]
+                return x
+            elif c == '&':
+                # get a variable
+                cc = data['vars']
+                for b in key[2:].split('/'):
+                    cc = cc[b]
+                return cc
+            elif c == ')':
+                # get a function value
+                cc = data['functions']
+                for b in key[2:].split('/'):
+                    cc = cc[b]
+                return cc()
+            else:
+                raise Exception('don''t know how to read ' + key)
+        else:
+            return key
+    else:
+        return key
+    
+
+def read(d: dict, key: str, **kwargs):
+    if key in d:
+        return fetch(d[key])
+    else:
+        if 'default_value' in kwargs:
+            return kwargs['default_value']
+        else:
+            raise BaseException('Can''t read ' + key + ' in dictionary')
         
 
 

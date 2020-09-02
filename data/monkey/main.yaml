@@ -3,7 +3,7 @@
   lang: eng
   device_size: [320, 200]
   window_size: [640, 400]
-  start_room: scummbar
+  start_room: kitchen
   fonts:
     - id: ui
       file: './fonts/monkeysmall.ttf'

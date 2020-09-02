@@ -8,6 +8,12 @@ guybrush:
   speed: 500
   text_color: [255, 255, 255, 255]
   text_offset: [0, 60]
+  collision:
+    size: [4, 1]
+    offset: [-2, 0]
+    flag: 0
+    mask: 1
+    tag: 0
 lookout:
   model: 'lookout'
   pos: [114, 36]
@@ -81,7 +87,7 @@ village1_door:
   room: village1
   walkto: '@village1_door'
   wdir: n
-  anim: '@doors/scummbar'
+  anim: '@&doors/scummbar'
   model: door_village_scummbar
 scummbar_door_out:
   text: door
@@ -91,7 +97,7 @@ scummbar_door_out:
   room: scummbar
   walkto: '@scummbar_entrance'
   wdir: w
-  anim: '@doors/scummbar'
+  anim: '@&doors/scummbar'
   model: door_scummbar_village
 scummbar_door_kitchen:
   text: door
@@ -99,9 +105,9 @@ scummbar_door_kitchen:
   height: 69
   pos: [591, 9,-1]
   room: scummbar
-  walkto: '@scummbar_kitchen'
+  walkto: '@&scummbar_kitchen'
   wdir: e
-  anim: '@doors/kitchen'
+  anim: '@&doors/kitchen'
   model: door_scummbar_kitchen
 
 village2_archway1:
@@ -250,5 +256,64 @@ cook:
   node: walkarea
   dir: w
   speed: 100
-  text_color: [170, 170, 170, 255]
+  text_color: [85, 255, 255, 255]
   text_offset: [0,60]
+kitchen_door:
+  text: door
+  width: 38
+  height: 53
+  pos: [19, 18, -1]
+  room: kitchen
+  walkto: '@&kitchen_door'
+  wdir: w
+  anim: '@&doors/kitchen'
+  model: door_kitchen_scummbar
+kitchen_potostew:
+  model: potostew
+  pos: [153,39,-0.9]
+  room: kitchen
+kitchen_door_pier:
+  model: door_kitchen_pier
+  pos: [192, 9, -1]
+  room: kitchen
+  text: door
+  width: 20
+  height: 64
+  walkto: [182, 9]
+  anim: '@&doors/pier'
+  wdir: e
+meat:
+  model: meat
+  pos: [79, 40, -0.9]
+  text: '@$objects/meat'
+  width: 20
+  height: 20
+  room: kitchen
+  walkto: [90, 18]
+  wdir: n
+fish:
+  model: fish
+  pos: [234, 9, 1]
+  text: '@$objects/fish'
+  width: 12
+  height: 7
+  room: kitchen
+  walkto: [234, 12]
+  wdir: s
+pot:
+  model: pot
+  pos: [104, 24, -0.90]
+  text: '@$objects/pot'
+  width: 15
+  height: 7
+  room: kitchen
+  walkto: [112,18]
+  wdir: n
+kitchen_trap:
+  pos: [100, 0, 0]
+  room: kitchen
+  collision:
+    size: [10, 144]
+    flag: 1
+    mask: 0
+    tag: 1

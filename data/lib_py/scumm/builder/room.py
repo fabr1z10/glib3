@@ -4,7 +4,7 @@ import sys
 
 from lib_py.scumm.entity import WalkArea, BackgroundItem
 from lib_py.shape import Polygon, LinY, Graph
-from lib_py.scumm.scumm import Data
+from lib_py.scumm.scumm import Data, State
 from lib_py.scumm.builder.item import buildItem
 from lib_py.builder.build import make_object
 from lib_py.entity import Text, TextAlignment
@@ -32,9 +32,10 @@ def addWalkareas(room, r):
                 depth = LinY (0,1,room['height'],0)                        
             sc = wa.get('scale', None)
             scale = None
+            bl = wa.get('blocked_lines',None)
             if sc:
                 scale = make_object(sc)
-            r.add (WalkArea(tag = 'walkarea', shape = shape, depth = depth, scale = scale), 'main')
+            r.add (WalkArea(tag = 'walkarea', shape = shape, depth = depth, scale = scale, blocked_lines = bl), 'main')
 
 def addDynamicEntities(roomid, r):
     if roomid in Data.locator:
@@ -42,14 +43,17 @@ def addDynamicEntities(roomid, r):
             print ('found item: ' + key)
             d = Data.items[key]
             node = d.get('node', 'main')
-            e = buildItem (key)
-            r.add(e, node)
+            # check if item is owned
+            if not State.has(key):
+                e = buildItem (key)
+                r.add(e, node)
 
 
 
 def makeStandardRoom(roomid, room):
     from lib_py.scumm.room import RoomUI
-    r = RoomUI(id= room['id'], width = room['width'], height = room['height'])
+    collide = room.get ('collide', False)
+    r = RoomUI(id= room['id'], width = room['width'], height = room['height'], collide=collide)
     # add background
     addBackground (room, r)
     addWalkareas (room, r)

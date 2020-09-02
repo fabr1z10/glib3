@@ -15,9 +15,11 @@ scummbar_kitchen: [588, 14]
 scummbar_mancomb: [125, 17]
 scummbar_estevan: [195, 11]
 scummbar_loom: [250, 16]
+kitchen_door: [45, 12]
 
 doors:
   scummbar: closed
   voodoolady: closed
   kitchen: closed
+  pier: closed
 talked_to_lookout: False

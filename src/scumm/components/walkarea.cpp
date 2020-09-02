@@ -32,7 +32,13 @@ WalkArea::WalkArea(const ITable & t) : ScriptHotSpot(t) {
         SetScalingFunction(scaleFunc);
     }
     
-    if (t.hasKey("blockedlines")) {
+    if (t.hasKey("blocked_lines")) {
+        t.foreach<PyDict>("blocked_lines", [&] (const PyDict& d) {
+            auto A = d.get<glm::vec2>("A");
+            auto B = d.get<glm::vec2>("B");
+            auto active = d.get<bool>("active", true);
+            AddBlockedLine(A, B, active);
+        });
 //        luabridge::LuaRef ref = t.Get<luabridge::LuaRef>("blockedlines");
 //        for (int i = 0; i < ref.length(); ++i) {
 //            luabridge::LuaRef bl = ref[i+1];

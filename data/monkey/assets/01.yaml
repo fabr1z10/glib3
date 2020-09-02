@@ -10,6 +10,16 @@ fire:
         - [[435, 479, 24, 32]]
         - [461, 479, 24, 32]
         - [487, 479, 24, 32]
+potostew:
+  sheet: "gfx/sprites/sprites1.png"
+  type: "asset.sprite"
+  animations:
+    def:
+      loop: true
+      frames:
+        - [326,104,29,17]
+        - [326,123,29,17]
+        - [326,142,29,17]
 guybrush:
   sheet: "gfx/sprites/guybrush.png"
   type: 'asset.sprite'
@@ -134,6 +144,16 @@ door_scummbar_kitchen:
     closed:
       frames:
         - [435,2,35,69]
+door_kitchen_scummbar:
+  sheet: "gfx/sprites/sprites1.png"
+  type: "asset.sprite"
+  animations:
+    open:
+      frames:
+        - [358,104,37,53]
+    closed:
+      frames:
+        - [397,104,37,53]
 scummbar.mancomb:
   sheet: 'gfx/sprites/sprites1.png'
   type: 'asset.sprite'
@@ -577,6 +597,16 @@ door_voodoolady_village:
     open:
       frames:
         - [36,55,33,58]
+door_kitchen_pier:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: 'asset.sprite'
+  animations:
+    closed:
+      frames:
+        - [469, 143, 32, 60]
+    open:
+      frames:
+        - [435, 143, 32, 60]
 baskets:
   sheet: 'gfx/sprites/sprites2.png'
   type: 'asset.sprite'
@@ -598,7 +628,27 @@ rubberchicken:
     default:
       frames:
         - [472,98,27,20]
-
+meat:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: 'asset.sprite'
+  animations:
+    default:
+      frames:
+        - [24,213,24,6]
+pot:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: 'asset.sprite'
+  animations:
+    default:
+      frames:
+        - [39,204,15,7]
+fish:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: 'asset.sprite'
+  animations:
+    default:
+      frames:
+        - [23,204,12,7]
 
 
 

@@ -26,6 +26,7 @@ PYBIND11_MODULE(example, m) {
     py::class_<Wrap1>(m, "Wrap1")
         .def(py::init<>())
         .def("id", &Wrap1::id)
+        .def_property_readonly("tag", &Wrap1::tag)
         .def_property_readonly("x", &Wrap1::x)
         .def_property_readonly("y", &Wrap1::y)
         .def_property_readonly("z", &Wrap1::z)

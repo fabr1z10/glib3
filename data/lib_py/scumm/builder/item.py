@@ -1,5 +1,6 @@
 from lib_py.entity import Entity
-from lib_py.components import HotSpot, Info, Follow
+from lib_py.engine import read
+from lib_py.components import HotSpot, Info, Follow, Collider
 from lib_py.scumm.components import Character
 from lib_py.scumm.actions import Walk
 from lib_py.shape import Rect
@@ -63,21 +64,21 @@ def mapHotSpotItem (id: str):
 def basicItem (id: str):
     desc = Data.items[id]   
     # create the entity
-    tag = desc.get ('tag', id)    
+    tag = read (desc, 'tag', default_value = id)# desc.get ('tag', id)
         
-    pos = desc.get ('pos', [0, 0, 0])
+    pos = read (desc, 'pos', default_value = [0, 0, 0])
     e = Entity (tag, pos)
     
     # if the item has model
-    model = desc.get ('model', None)
+    model = read(desc,'model', default_value = None)
     if model is not None:
         e.type = 'sprite'
         e.model = model
         if 'anim' in desc:
-            e.anim = gv(desc['anim'])
+            e.anim =read(desc, 'anim')
     
     # check if hotspot is to be added
-    text = desc.get ('text', None)
+    text = read(desc, 'text', default_value = None)
     if text is not None:
         width = desc.get('width', None)
         height = desc.get('height', None)
@@ -107,7 +108,16 @@ def basicItem (id: str):
         if State.player == id:
             e.tag = 'player'
             e.addComponent (Follow())
-             
+
+    if State.collision_enabled and 'collision' in desc:
+        coll = desc['collision']
+        box = read (coll, 'size')
+        offset = read (coll, 'offset', default_value=[0,0])
+        flag = read (coll, 'flag')
+        mask = read (coll, 'mask')
+        tag = read (coll, 'tag')
+        e.addComponent (Collider (flag, mask, tag, Rect(box[0], box[1], offset = offset)))
+        
     return e
 item_factories = {
     'basic': basicItem,

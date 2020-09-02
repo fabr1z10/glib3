@@ -2,11 +2,11 @@
 #include "../components/walkarea.h"
 #include <monkey/engine.h>
 
-/*EnableBlock::EnableBlock(const LuaTable & table) : Activity() {
-    m_id = table.Get<std::string>("walkarea");
-    m_wall = table.Get<int>("wall");
-    m_active = table.Get<bool>("active");
-}*/
+EnableBlock::EnableBlock(const ITable & table) : Activity() {
+    m_id = table.get<std::string>("walkarea");
+    m_wall = table.get<int>("wall");
+    m_active = table.get<bool>("active");
+}
 
 void EnableBlock::Start() {
     auto walkarea = dynamic_cast<WalkArea*>(Monkey::get().Get<Entity>(m_id)->GetComponent<HotSpot>());

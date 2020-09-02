@@ -38,14 +38,3 @@ def make_dialogue(dialogueId, dialogue):
         return s
     return f
 
-def goto(room, pos, dir = None, node = 'walkarea' ):
-    def f():
-        s = Script()
-        if pos is not None:
-            Data.putItem (State.player, room, gv(pos), node)
-            if dir is not None:
-                Data.items[State.player]['dir'] = dir
-        s = Script()
-        s.addAction (ChangeRoom(room = room))
-        return s
-    return f

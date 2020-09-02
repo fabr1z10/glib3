@@ -11,6 +11,7 @@ def start_dialogue():
     # first of all, set UI to inactive
     ui : example.Wrap1 = example.get('ui')
     ui.setActive(False)
+    
 
 def get_action_script(s: str, ds: str = None):            
     if hasattr(engine.scripts.actions, s):
@@ -26,24 +27,23 @@ def handler1():
     item : s.Item = s.Data.items[s.Config.item1] # s.State.items[s.Config.item1]
     sc = script.Script(id = '_main')
     # if item has a walk-to attribute, walk to it
-    walkto = helper.gdd(item, 'walkto', None)
-    wdir = helper.gdd (item, 'wdir', None)
-    if walkto is not None:
-        sc.addAction( sa.Walk(pos = walkto, tag = 'player'))    
-    if wdir is not None:
-        sc.addAction( sa.Turn(dir = wdir, tag = 'player'))
+    # only if item is not owned
+    if not s.State.has(s.Config.item1):
+        walkto = engine.read (item, 'walkto', default_value=None)
+        wdir = engine.read (item, 'wdir', default_value=None)
+        if walkto is not None:
+            sc.addAction( sa.Walk(pos = walkto, tag = 'player'))    
+        if wdir is not None:
+            sc.addAction( sa.Turn(dir = wdir, tag = 'player'))
     # check if we have a custom script for this action
     func = s.Config.verb+'_'+s.Config.item1
-    print ('checking ' + func)
     if hasattr(engine.scripts.actions, func):
         a = getattr(engine.scripts.actions, func)()
         if a:
             sc.addAction (actions.RunScript(s=a))        
-        print ('dodo')
     else:
         # look for default action
         func = s.Config.verb + '_'
-        print ('look for ' + func)
         if hasattr(engine.scripts.actions, func):
             a = getattr(engine.scripts.actions, func)()
             if a:

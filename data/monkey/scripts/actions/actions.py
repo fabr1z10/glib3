@@ -1,44 +1,31 @@
 from lib_py.script import Script
-from lib_py.scumm.actions import Say, StartDialogue, Turn
-from lib_py.actions import ChangeRoom, CallFunc, Animate, SuspendScript, ResumeScript
+from lib_py.scumm.actions import Say, StartDialogue, Turn, EnableControls, EnableBlock
+from lib_py.actions import ChangeRoom, CallFunc, Animate, SuspendScript, ResumeScript, Msg, RunScript
 from lib_py.scumm.helper import gt, gd, gv, sv
 from lib_py.scumm.scumm import Data, State
-from scripts.builder import goto
-
+#from scripts.builder import goto
+from lib_py.engine import write, read, fetch
+from lib_py.scumm.scripts import say, pickup, goto, gotoDoor
 
 import example
 
-def say(lines, tag):
-    def f():
-        s = Script()
-        l = [gt(line) for line in lines]
-        s.addAction (Say(lines=l, tag=tag, font='monkey'))
-        return s
-    return f
 
-
-
-def gotoDoor(doorId: str, room, pos, dir = None, node = 'walkarea' ):
-    def f():
-        a =gv(Data.items[doorId]['anim'])
-        if gv(Data.items[doorId]['anim']) == 'open':
-            return goto(room, pos, dir, node)()
-    return f
 
 def setvar (varname, value):
     def f():
-        sv (varname, value)
+        print(varname + ' setttt')
+        write (varname, value)
     return f
 
 def toggleDoor (itemId: str, open: bool):
     def f():
-        print ('ciao')
+        print ('ciao'+itemId)
         s = Script()
         status = 'open' if open else 'closed'
         s.addAction (CallFunc (f = setvar(Data.items[itemId]['anim'], status)))
         # set corresponding variables
         #sv(Data.items[itemId]['anim'], status)
-        #print ('set to ' + status)
+        print ('set to ' + status)
         s.addAction (Animate(anim = status, tag = itemId))
         return s
     return f
@@ -90,9 +77,37 @@ talkto_scummbar_mancomb = goto('mancomb', None)
 look_scummbar_fireplace = say (['@lines/3'], 'player')
 look_scummbar_pirate4 = say (['@lines/6'], 'player')
 talkto_scummbar_pirate4 = say (['@lines/6'], 'player')
+open_kitchen_door = toggleDoor ('kitchen_door', True)
+close_kitchen_door = toggleDoor ('kitchen_door', False)
+walkto_kitchen_door = gotoDoor ('kitchen_door', 'scummbar', '@&scummbar_kitchen', 'w')
+look_meat = say(['@lines/35'], 'player')
+look_pot = say(['@lines/36'], 'player')
+look_fish = say(['@lines/37'], 'player')
+pickup_meat = pickup('meat')
+pickup_pot = pickup('pot')
+
+def collide_with_kitchen_trap():
+    print ('ciappo') 
+
+def open_scummbar_door_kitchen():
+    c : example.Wrap1 = example.get('cook')
+    if c.valid:
+        return toggleDoor ('scummbar_door_kitchen', True)()
+    else:
+        s = Script()
+        s.addAction ( SuspendScript ('_cook'))
+        s.addAction ( EnableControls(False))
+        s.addAction ( Animate (tag='scummbar_door_kitchen', anim='open'))
+        s.addAction ( Msg (text = gt('@lines/34'), font = 'monkey', pos = [588,90,1], color = [85, 255, 255, 255] ))
+        s.addAction ( Animate (tag='scummbar_door_kitchen', anim='closed'))
+        s.addAction ( EnableControls(True))
+        s.addAction ( ResumeScript ('_cook'))
+        return s
+
+close_scummbar_door_kitchen = toggleDoor ('scummbar_door_kitchen', False)
 
 def walkto_scummbar_door_kitchen():
-    a = gv(Data.items['scummbar_door_kitchen']['anim'])
+    a =  fetch (Data.items['scummbar_door_kitchen']['anim'])
     print ('a = ' + str(a))
     if a == 'open':
         c : example.Wrap1 = example.get('cook')
@@ -108,4 +123,20 @@ def walkto_scummbar_door_kitchen():
                 s.addAction ( Animate (tag ='cook', anim='walk_e'))
                 s.addAction (ResumeScript ('_cook'))
                 return s
+            else:
+                return goto ('kitchen', '@&kitchen_door', 'e')()
+        else:
+            return goto ('kitchen', '@&kitchen_door', 'e')()
     return None
+
+def open_kitchen_door_pier():
+    s = Script()
+    s.addAction ( RunScript (toggleDoor('kitchen_door_pier', True)()))
+    s.addAction ( EnableBlock ('walkarea', 0, False))
+    return s
+
+def close_kitchen_door_pier():
+    s = Script()
+    s.addAction ( RunScript (toggleDoor('kitchen_door_pier', False)()))
+    s.addAction ( EnableBlock ('walkarea', 0, True))
+    return s

@@ -39,6 +39,10 @@ float Wrap1::z() const {
     return m_entity->GetPosition().z;
 }
 
+std::string Wrap1::tag() const {
+    return m_entity->GetTag();
+}
+
 
 float Wrap1::getVy() const {
     return m_entity->GetComponent<Dynamics2D>()->m_velocity.y;

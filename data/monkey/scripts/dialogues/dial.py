@@ -1,10 +1,11 @@
 from lib_py.script import Script
 from lib_py.scumm.actions import Say, StartDialogue, Turn
+from lib_py.scumm.scripts import goto
 from lib_py.actions import ChangeRoom, Animate
 from lib_py.scumm.helper import gt, gd, gv, sv
 from lib_py.scumm.scumm import Data, State
 from lib_py.engine import data
-from scripts.builder import make_dialogue, make_dialogue_mancomb, goto
+from scripts.builder import make_dialogue, make_dialogue_mancomb
 
 slo = data['strings']['dialogues']['lookout']
 

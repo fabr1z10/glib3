@@ -9,6 +9,7 @@ class PYBIND11_EXPORT Wrap1 {
 public:
     Wrap1();
     bool valid() const;
+    std::string tag() const;
     float x() const ;
     float y() const ;
     float z() const;

@@ -44,6 +44,9 @@ objects:
   rubberchicken: rubber chicken
   pieceofeight: piece of eight
   piecesofeight: pieces of eight
+  meat: hunk of meat
+  fish: fish
+  pot: pot
 dialogues:
   mancomb:
     1: "Ahoy there, stranger."
@@ -310,3 +313,6 @@ lines:
   32: Hey!
   33: Don't go into the kitchen!
   34: You can't come back here!
+  35: It's some sort of meat or meatlike substance...
+  36: Someone cooked a headcheese in this.
+  37: I think it's a herring.

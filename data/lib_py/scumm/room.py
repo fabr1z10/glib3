@@ -16,7 +16,17 @@ from lib_py.actions import RunScript
 from lib_py.scumm.helper import addCustomScript
 import example
 
-
+def ciao(player : example.Wrap1, other : example.Wrap1, x, y):
+    f = 'collide_with_'+other.tag
+    print ('check if exists func ' + f)
+    if hasattr(engine.scripts.actions, f):
+        print ('YES')
+        a = getattr(engine.scripts.actions, f)()
+        if a:
+            a()     
+    else:
+        print ('no')   
+    example.remove(other.id())
 
 def runDialogueScript(s):
     def f(x, y, obj = None):
@@ -140,6 +150,7 @@ class RoomUI(room.Room):
     def __init__(self, id: str, width, height, collide = False, addui: bool = True):
         super().__init__(id, width, height)
         self.collide = collide
+        scumm.State.collision_enabled = collide
         uisize = scumm.Config.ui_height
         print ('uisize is '+str(uisize))
         camWidth = engine.device_size[0]
@@ -159,7 +170,7 @@ class RoomUI(room.Room):
         # add the ui node
         if addui:
             main.addComponent (compo.HotSpotManager(lmbclick=func.walkto))
-
+            
             ui = entity.Entity (tag='ui')
             ui.camera = cam.OrthoCamera(camWidth, uisize, camWidth, uisize, [0, 0, camWidth, uisize], tag = 'uicam')
             ui.add (entity.Text(font='ui', text = defv.text, color = scumm.Config.Colors.current_action, 
@@ -213,6 +224,11 @@ class RoomUI(room.Room):
         # create a hotspot manager
         #self.engines.append(runner.HotSpotManager(lmbclick=func.walkto))
         self.engines.append(runner.Scheduler())
+        if collide:
+            #self.engines.append (runner.CollisionEngine(128, 128))
+            ce = runner.CollisionEngine(128, 128)
+            ce.addResponse(0, 1, runner.CollisionResponse(onenter=ciao))
+            self.engines.append (ce)
         self.init.append(startupRoomUI(id))
 
 
