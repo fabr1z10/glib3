@@ -649,10 +649,61 @@ fish:
     default:
       frames:
         - [23,204,12,7]
+seagull:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: asset.sprite
+  animations:
+    fly:
+      frames:
+        - [3,220,20,14,-307,-37]
+        - [3,236,25,12,-295,-35]
+        - [3,220,20,14,-292,-33]
+        - [3,250,19,25,-285,-29]
+        - [3,277,19,19,-277,-32]
+        - [3,250,19,25,-269,-22]
+        - [3,220,20,14,-260,-25]
+        - [3,236,25,12,-247,-23]
+        - [3,220,20,14,-244,-21]
+        - [3,277,19,19,-245,-23]
+        - [3,277,19,19,-250,-17]
+        - [3,298,23,15,-248,-14]
+        - [3,315,25,11,-246,-13]
+        - [3,298,23,15,-243,-12]
+        - [3,328,19,9,-243,-10]
+    eat:
+      frames:
+        - [3,339,15,13,-245,-10]
+        - [25,223,18,11,-242,-10]
+        - [30,238,17,10,-243,-10]
+        - [24,250,19,9,-242,-10]
+        - [24,261,19,10,-242,-10]
+        - [24,273,17,10,-243,-10]
+        - [24,285,18,11,-242,-10]
+        - [28,298,15,13,-245,-10]
+        - [30,312,11,17,-249,-10]
+        - [24,331,12,17,-248,-10]
+        - [49,224,12,17,-248,-10]
 
-
-
-
+# seagull_fly_1 = {x=3, y = 220, width=20, height=14 },
+# seagull_fly_2 = {x=3, y = 187+49, width=25, height=12},
+# seagull_fly_3 = {x=3, y = 187+63, width=19, height=25},
+# seagull_fly_4 = {x=3, y = 187+90, width=19, height=19},
+# seagull_fly_5 = {x=3, y = 187+111, width=23, height=15},
+# seagull_fly_6 = {x=3, y = 187+128, width=25, height=11},
+# seagull_fly_7 = {x=3, y = 187+141, width=19, height=9},
+# seagull_fly_8 = {x=47, y = 301, width=19, height=19},
+# seagull_fly_9 = {x=46, y = 291, width=23, height=7},
+# seagull_eat_1 = {x=3, y = 339, width=15, height=13},
+# seagull_eat_2 = {x=25, y = 223, width=18, height=11},
+# seagull_eat_3 = {x=30, y= 238, width=17, height=10},
+# seagull_eat_4 = {x=24, y=250, width=19, height=9},
+# seagull_eat_5 = {x=24, y=261, width=19, height=10},
+# seagull_eat_6 = {x=24, y=273, width=17, height=10},
+# seagull_eat_7 = {x=24, y=285, width=18, height=11},
+# seagull_eat_8 = {x=28, y=298, width=15, height=13},
+# seagull_eat_9 = {x=30, y=312, width=11, height=17},
+# seagull_eat_10 = {x=30, y=331, width=12, height=17},
+# seagull_eat_11 = {x=49, y=224, width=12, height=17},
         # 		{
 # 			name="talk_e",
 # 			frames = {

@@ -59,7 +59,7 @@ def handler1():
     #     if v.default_action:
     #         a = v.default_action()
     #         sc.addAction (actions.RunScript(s = a))
-    # sc.addAction (sa.ResetVerb())
+    sc.addAction (sa.ResetVerb())
     example.play(sc)
         # run default script
     

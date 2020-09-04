@@ -19,7 +19,7 @@ FoeWalk25::FoeWalk25(const ITable & t) : State(t) {
     m_probAttack = t.get<float>("prob_attack");
     m_attacks = t.get<std::vector<std::string>>("attacks", std::vector<std::string>());
     m_attackCount = m_attacks.size();
-
+	m_jumpAttack = t.get<bool>("jump_attack", false);
 }
 
 FoeWalk25::FoeWalk25(const FoeWalk25 & orig) : State(orig) {
@@ -143,7 +143,7 @@ void FoeWalk25::Run(double dt) {
                 return;
             }
         }
-        if (m_targetSM->GetState() != "dead2") {
+        if (m_jumpAttack && m_targetSM->GetState() != "dead2") {
             float u = Random::get().GetUniformReal(0.0f, 1.0f);
             if (u < 0.005f) {
                 m_animator->SetAnimation("jumpup");

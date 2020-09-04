@@ -27,7 +27,7 @@ void IsHit25::Run(double dt) {
     m_controller->Move(deltaH);
     m_distanceTravelled += deltaH.x;
     std::cerr << "aa:" << deltaH.x;
-    if (fabs(m_distanceTravelled) > 32 || fabs(deltaH.x) <0.01f) {
+    if (fabs(m_distanceTravelled) > 64 || fabs(deltaH.x) <0.01f) {
     // if (abs(m_dynamics->m_velocity.x) < 20.0f) {
         m_sm->SetState("walk");
     }

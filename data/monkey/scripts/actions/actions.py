@@ -1,11 +1,12 @@
 from lib_py.script import Script
 from lib_py.scumm.actions import Say, StartDialogue, Turn, EnableControls, EnableBlock
-from lib_py.actions import ChangeRoom, CallFunc, Animate, SuspendScript, ResumeScript, Msg, RunScript
+from lib_py.actions import ChangeRoom, CallFunc, Animate, SuspendScript, ResumeScript, Msg, RunScript, AddEntity
 from lib_py.scumm.helper import gt, gd, gv, sv
 from lib_py.scumm.scumm import Data, State
 #from scripts.builder import goto
 from lib_py.engine import write, read, fetch
 from lib_py.scumm.scripts import say, pickup, goto, gotoDoor
+from lib_py.scumm.builder.item import buildItem
 
 import example
 
@@ -87,7 +88,12 @@ pickup_meat = pickup('meat')
 pickup_pot = pickup('pot')
 
 def collide_with_kitchen_trap():
-    print ('ciappo') 
+    print ('ciappo')
+    s = Script()
+    s.addAction (AddEntity (buildItem (id = 'seagull'), 'main'))
+    s.addAction (Animate (anim='fly', tag='seagull', sync=True))
+    s.addAction (Animate (anim='eat', tag='seagull'))
+    example.play(s)
 
 def open_scummbar_door_kitchen():
     c : example.Wrap1 = example.get('cook')

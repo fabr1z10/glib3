@@ -48,6 +48,7 @@ protected:
     float m_targetVelocityX;
     float m_targetVelocityY;
     bool m_inRange;
+    bool m_jumpAttack;
 
     ICollisionEngine *m_collision;
     std::vector<std::string> m_attacks;

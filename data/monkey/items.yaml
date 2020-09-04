@@ -258,6 +258,9 @@ cook:
   speed: 100
   text_color: [85, 255, 255, 255]
   text_offset: [0,60]
+seagull:
+  model: seagull
+  pos: [0,0,1]  
 kitchen_door:
   text: door
   width: 38
