@@ -128,4 +128,4 @@ You can install the required packages with the following by typying
     sudo apt-get install libfreetype6 libfreetype6-dev
     sudo apt-get install libjpeg-dev
     sudo apt-get install libpng-dev
-    sudo apt-get install liblua5.3-dev
+    sudo apt-get install python-dev python3-dev
