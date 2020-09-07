@@ -9,7 +9,7 @@
 #include <monkey/components/info.h>
 #include <monkey/components/dynamics2d.h>
 #include <monkey/components/icontroller.h>
-#include <py/include/pybind11/pytypes.h>
+#include <pybind11/pytypes.h>
 
 namespace py = pybind11;
 

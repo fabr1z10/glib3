@@ -1,7 +1,7 @@
 #include <monkey/skeletal/skmodel.hpp>
 #include <monkey/math/earcut.h>
 #include <monkey/skeletal/joint.hpp>
-#include <py/include/pybind11/pytypes.h>
+#include <pybind11/pytypes.h>
 
 ShaderType SkModel::GetShaderType() const {
     return SKELETAL_SHADER;
