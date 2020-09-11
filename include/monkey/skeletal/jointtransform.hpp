@@ -15,6 +15,8 @@ struct JointTransform {
     // the angle in radians
     float alpha;
 
+    // adding scalex and scaley ?
+
     // comp assignment
     JointTransform& operator+=(const JointTransform& b);
 

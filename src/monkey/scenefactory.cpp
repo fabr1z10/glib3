@@ -198,6 +198,7 @@ SceneFactory::SceneFactory() {
     add2<CollisionEngine> ("runner.collisionengine");
     add2<DynamicWorldBuilder> ("runner.dynamicworld");
     add2<OrthographicCamera> ("cam.ortho");
+    add2<PerspectiveCamera> ("cam.perspective");
     add2<Poly> ("shape.poly");
     add2<Polygon>("shape.polygon");
     add2<PolyTri>("shape.polygontri");
@@ -213,6 +214,7 @@ SceneFactory::SceneFactory() {
     // assets
     add2<SpriteModel> ("asset.sprite");
     add2<BoxedModel> ("asset.boxed");
+
     //add2<SkeletalModel> ("asset.skeleton");
     //add2<SkeletalModel2> ("asset.skeleton2");
     add2<SkModel> ("asset.skeletalmodel");

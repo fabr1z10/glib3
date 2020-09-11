@@ -3,8 +3,7 @@
 #include "monkey/component.h"
 #include <glm/glm.hpp>
 
-class LightShader;
-
+class Shader;
 
 class Light : public Component {
 public:
@@ -13,7 +12,7 @@ public:
     virtual ~Light() ;
     void Start() override;
     void Update(double) override {}
-    virtual void setUp(LightShader*) = 0;
+    virtual void setUp(Shader*) = 0;
 };
 
 
@@ -31,11 +30,11 @@ class DirectionalLight : public Light {
 public:
     //DirectionalLight (glm::vec3 direction, glm::vec3 color) ;
     DirectionalLight (const DirectionalLight&);
-    void setUp(LightShader*) override ;
+    void setUp(Shader*) override ;
     std::shared_ptr<Component> clone() const override;
 private:
-    glm::vec3 m_ambient;
-    glm::vec3 m_diffuse;
+    glm::vec4 m_ambient;
+    glm::vec4 m_diffuse;
     glm::vec3 m_direction;
 };
 

@@ -16,7 +16,7 @@
 #include <monkey/shader/text.h>
 #include <monkey/shader/lightshader.h>
 #include <monkey/shader/skeletal.h>
-//#include <monkey/shader/colorlight.h>
+#include <monkey/shader/texlight.h>
 
 
 Shader* Shader::g_currentShader = nullptr;
@@ -184,6 +184,7 @@ ShaderFactory::ShaderFactory() {
     m_facs["text"] = [] () { return std::make_unique<TextShader>(); };
     m_facs["light_color"] = [] () { return std::make_unique<LightShader>(); };
     m_facs["skeletal"] = [] () { return std::make_unique<SkeletalShader>(); };
+    m_facs["textured_light"] = [] () { return std::make_unique<TexturedLight>(); };
 
 }
 std::unique_ptr<Shader> ShaderFactory::getShader(const std::string &shaderId) {

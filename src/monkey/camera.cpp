@@ -103,6 +103,13 @@ PerspectiveCamera::PerspectiveCamera (glm::vec4 viewport, float fov, float nearP
     
 }
 
+PerspectiveCamera::PerspectiveCamera(const ITable & t) : Camera(t) {
+	m_fov = t.get<float>("fov", 45.0f);
+	m_near = t.get<float>("near", 0.05f);
+	m_far = t.get<float>("far", 100.0f);
+
+}
+
 
 void PerspectiveCamera::Notify(float w, float h) {
     Resize(w, h);
@@ -138,6 +145,8 @@ float PerspectiveCamera::getFieldOfView() const {
 float PerspectiveCamera::getAspectRatio() const {
     return m_aspectRatio;
 }
+
+
 
 void OrthographicCamera::Init() {
 

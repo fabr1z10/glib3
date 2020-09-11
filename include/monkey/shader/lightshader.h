@@ -1,16 +1,9 @@
 #pragma once
 
 #include <monkey/shader.h>
-
-
+#include <monkey/light.h>
 
 class LightShader : public Shader {
-private:
-    struct DirLightLocation {
-        GLint ambient;
-        GLint diffuse;
-        GLint dir;
-    };
 public:
     //LightShader(ShaderType type, const char* vertex, const char* fragment, unsigned int attributes, std::unordered_map<ShaderUniform, std::string, EnumClassHash> m_uniforms = std::unordered_map<ShaderUniform, std::string, EnumClassHash>());
     LightShader ();

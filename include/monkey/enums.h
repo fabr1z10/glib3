@@ -27,7 +27,10 @@ enum ShaderUniform {
     TEXTURE,
     MULTCOLOR,
     ADDCOLOR,
-    LIGHTDIR, LIGHTCOLOR, AMBIENT, BONES
+    LIGHTDIR,
+    LIGHTCOLOR,
+    AMBIENT,
+    BONES
 };
 
 enum TextAlignment {

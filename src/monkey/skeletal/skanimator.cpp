@@ -1,7 +1,8 @@
 #include <monkey/skeletal/skanimator.hpp>
 #include <glm/gtx/transform.hpp>
 
-SkAnimator::SkAnimator(std::shared_ptr<IModel> model) : IAnimator(), m_currentAnimation(nullptr), m_complete(false) {
+SkAnimator::SkAnimator(std::shared_ptr<IModel> model) : IAnimator(), m_currentAnimation(nullptr), m_complete(false)
+{
     m_model = std::dynamic_pointer_cast<SkModel>(model);
 
 

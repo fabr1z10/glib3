@@ -22,7 +22,9 @@ std::shared_ptr<Component> DirectionalLight::clone() const {
 }
 
 
-void DirectionalLight::setUp(LightShader* s) {
-    s->setDirectionalLight(m_direction, m_ambient, m_diffuse);
+void DirectionalLight::setUp(Shader* s) {
+	glUniform3fv(s->GetUniformLocation(ShaderUniform::LIGHTDIR), 1, &m_direction[0]);
+	glUniform4fv(s->GetUniformLocation(ShaderUniform::AMBIENT), 1, &m_ambient[0]);
+	glUniform4fv(s->GetUniformLocation(ShaderUniform::LIGHTCOLOR), 1, &m_diffuse[0]);
 
 }
