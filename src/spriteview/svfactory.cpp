@@ -2,7 +2,7 @@
 #include <monkey/camera.h>
 #include <monkey/entity.h>
 #include <monkey/components/renderer.h>
-#include <monkey/math/line.h>
+#include <monkey/math/shapes/line.h>
 #include <monkey/textmesh.h>
 #include <monkey/meshfactory.h>
 #include <monkey/engine.h>

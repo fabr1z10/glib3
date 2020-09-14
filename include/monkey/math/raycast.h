@@ -1,14 +1,14 @@
 #include <monkey/visitor.h>
 #include <monkey/math/shape.h>
-#include <monkey/math/poly.h>
-#include <monkey/math/polyline.h>
-#include <monkey/math/line.h>
-#include <monkey/math/rect.h>
-#include <monkey/math/circle.h>
+#include <monkey/math/shapes/poly.h>
+#include <monkey/math/shapes/polyline.h>
+#include <monkey/math/shapes/line.h>
+#include <monkey/math/shapes/rect.h>
+#include <monkey/math/shapes/circle.h>
 #include <monkey/math/collisionreport.h>
 #include <monkey/math/compound.h>
-#include <monkey/math/plane3d.h>
-#include <monkey/math/box.h>
+#include <monkey/math/shapes/plane3d.h>
+#include <monkey/math/shapes/box3d.h>
 
 class RayCast2D :
         public AcyclicVisitor,
@@ -20,7 +20,7 @@ class RayCast2D :
         public Visitor<Circle>,
         public Visitor<CompoundShape>,
         public Visitor<Plane3D>,
-    public Visitor<Box>
+    public Visitor<Box3D>
 
 {
 public:
@@ -33,7 +33,7 @@ public:
     void visit(Circle&) override;
     void visit(CompoundShape&) override;
     void visit(Plane3D&) override;
-    void visit(Box&) override;
+    void visit(Box3D&) override;
 
 RayCastHit GetResult();
 private:

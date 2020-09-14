@@ -1,10 +1,10 @@
 #pragma once
 
-#include <monkey/math/line.h>
-#include <monkey/math/rect.h>
-#include <monkey/math/poly.h>
-#include <monkey/math/polyline.h>
-#include <monkey/math/circle.h>
+#include <monkey/math/shapes/line.h>
+#include <monkey/math/shapes/rect.h>
+#include <monkey/math/shapes/poly.h>
+#include <monkey/math/shapes/polyline.h>
+#include <monkey/math/shapes/circle.h>
 #include <monkey/math/compound.h>
 
 #include <typeinfo>

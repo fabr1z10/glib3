@@ -1,6 +1,6 @@
 #include <algorithm>
 #include <monkey/math/geom.h>
-#include <monkey/math/poly.h>
+#include <monkey/math/shapes/poly.h>
 #include <monkey/math/graph.h>
 
 using namespace monkey;

@@ -161,7 +161,7 @@ void RayCast2D::visit(Plane3D& s) {
 
 
 #include <iostream>
-void RayCast2D::visit(Box& s) {
+void RayCast2D::visit(Box3D& s) {
     // first, let's transform the ray into obejct coords
     auto it = glm::inverse(m_transform);
     glm::vec3 P0 (it * glm::vec4(m_A, 1.0f));

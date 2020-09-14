@@ -3,7 +3,7 @@
 #include <vector>
 #include <list>
 #include <memory>
-#include "shape.h"
+#include "monkey/math/shape.h"
 
 class Entity;
 

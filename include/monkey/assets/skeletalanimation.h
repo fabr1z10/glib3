@@ -5,7 +5,7 @@
 #include <glm/glm.hpp>
 #include <memory>
 #include <monkey/math/shape.h>
-#include <monkey/math/rect.h>
+#include <monkey/math/shapes/rect.h>
 #include <monkey/asset.h>
 
 class KeyFrame {

@@ -1,4 +1,4 @@
-#include <monkey/math/ellipse.h>
+#include <monkey/math/shapes/ellipse.h>
 #include <monkey/error.h>
 
 Ellipse::Ellipse(const ITable &t) : Shape(t) {

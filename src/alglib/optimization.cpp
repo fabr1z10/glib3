@@ -4848,7 +4848,7 @@ This function allows to solve different problem:
     min(0.5*(x-x_origin)'*A*(x-x_origin)+b'*(x-x_origin))
 
 Specification of non-zero origin affects function being minimized, but not
-constraints. Box and  linear  constraints  are  still  calculated  without
+constraints. Box3D and  linear  constraints  are  still  calculated  without
 origin.
 
 INPUT PARAMETERS:
@@ -5304,7 +5304,7 @@ void minqpsetalgoquickqp(const minqpstate &state, const double epsg, const doubl
 /*************************************************************************
 This function sets box constraints for QP solver
 
-Box constraints are inactive by default (after  initial  creation).  After
+Box3D constraints are inactive by default (after  initial  creation).  After
 being  set,  they  are  preserved until explicitly turned off with another
 SetBC() call.
 
@@ -22753,7 +22753,7 @@ Step S[i]*TestStep is performed along I-th variable.
 
 NeedFiJ rcomm protocol is used to request derivative information.
 
-Box constraints BndL/BndU are expected to be feasible. It is  possible  to
+Box3D constraints BndL/BndU are expected to be feasible. It is  possible  to
 have BndL=BndU.
 
   -- ALGLIB --
@@ -32494,7 +32494,7 @@ static void qpdenseaulsolver_generateexmodel(/* Real    */ ae_matrix* sclsfta,
     }
     
     /*
-     * Box constraints - move primary, add slack
+     * Box3D constraints - move primary, add slack
      */
     for(i=0; i<=nmain-1; i++)
     {
@@ -37168,7 +37168,7 @@ This function allows to solve different problem:
     min(0.5*(x-x_origin)'*A*(x-x_origin)+b'*(x-x_origin))
     
 Specification of non-zero origin affects function being minimized, but not
-constraints. Box and  linear  constraints  are  still  calculated  without
+constraints. Box3D and  linear  constraints  are  still  calculated  without
 origin.
     
 INPUT PARAMETERS:
@@ -37621,7 +37621,7 @@ void minqpsetalgoquickqp(minqpstate* state,
 /*************************************************************************
 This function sets box constraints for QP solver
 
-Box constraints are inactive by default (after  initial  creation).  After
+Box3D constraints are inactive by default (after  initial  creation).  After
 being  set,  they  are  preserved until explicitly turned off with another
 SetBC() call.
 
@@ -41527,7 +41527,7 @@ static void reviseddualsimplex_invokephase1(dualsimplexstate* state,
 
 
 /*************************************************************************
-Box-constrained solver; sets State.RepX, State.RepStats and State.RepTerminationType,
+Box3D-constrained solver; sets State.RepX, State.RepStats and State.RepTerminationType,
 does not change other fields.
 
   -- ALGLIB --
@@ -49710,7 +49710,7 @@ lbl_37:
     }
     
     /*
-     * Box constraint is violated by 4-point centered formula, use 2-point uncentered one
+     * Box3D constraint is violated by 4-point centered formula, use 2-point uncentered one
      */
     if( state->hasbndl.ptr.p_bool[k]&&ae_fp_less(vleft,state->bndl.ptr.p_double[k]) )
     {

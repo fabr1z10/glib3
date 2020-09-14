@@ -1,4 +1,4 @@
-#include <monkey/math/circle.h>
+#include <monkey/math/shapes/circle.h>
 #include <monkey/error.h>
 
 Circle::Circle(const ITable& t) : Shape(t) {

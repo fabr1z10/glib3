@@ -5,50 +5,24 @@
 #include <monkey/math/earcut.h>
 #include <monkey/quadmesh.h>
 
-std::shared_ptr<IMesh> MeshFactory::CreateLineMesh (glm::vec2 A, glm::vec2 B, glm::vec4 color, float z) {
-    std::vector<VertexColor> vertices = {
-            {A.x, A.y, z, color.r, color.g, color.b, color.a},
-            {B.x, B.y, z, color.r, color.g, color.b, color.a}};
 
-    std::vector<unsigned> indices {0, 1};
-    auto mesh = std::make_shared<Mesh<VertexColor>>(COLOR_SHADER);
-    mesh->Init(vertices, indices);
-    mesh->m_primitive = GL_LINES;
-    return mesh;
-}
-
-std::shared_ptr<IMesh> MeshFactory::CreateBoxMesh (float width, float height, glm::vec4 color) {
-    std::vector<VertexColor> vertices = {
-            {0.0f, 0.0f, 0.0f, color.r, color.g, color.b, color.a},
-            {width, 0.0f, 0.0f, color.r, color.g, color.b, color.a},
-            {width, height, 0.0f, color.r, color.g, color.b, color.a},
-            {0.0f, height, 0.0f, color.r, color.g, color.b, color.a}};
-
-    std::vector<unsigned> indices {0, 1, 2, 3};
-    auto mesh = std::make_shared<Mesh<VertexColor>>(COLOR_SHADER);
-    mesh->Init(vertices, indices);
-    mesh->m_primitive = GL_LINE_LOOP;
-    return mesh;
-}
+//std::shared_ptr<IMesh> MeshFactory::CreateBoxMesh (float width, float height, glm::vec4 color) {
+//    std::vector<VertexColor> vertices = {
+//            {0.0f, 0.0f, 0.0f, color.r, color.g, color.b, color.a},
+//            {width, 0.0f, 0.0f, color.r, color.g, color.b, color.a},
+//            {width, height, 0.0f, color.r, color.g, color.b, color.a},
+//            {0.0f, height, 0.0f, color.r, color.g, color.b, color.a}};
+//
+//    std::vector<unsigned> indices {0, 1, 2, 3};
+//    auto mesh = std::make_shared<Mesh<VertexColor>>(COLOR_SHADER);
+//    mesh->Init(vertices, indices);
+//    mesh->m_primitive = GL_LINE_LOOP;
+//    return mesh;
+//}
 
 
-std::shared_ptr<IMesh> MeshFactory::CreateLineMesh (glm::vec2 A, glm::vec2 B) {
-    std::vector<SimpleVertex3D> vertices = {
-            {-0.5f, -0.5f, 0.0f},
-            {0.5f, -0.5f, 0.0f},
-            {0.0f,  0.5f, 0.0f}};
-
-    std::vector<unsigned> indices {0, 1,2};
-    auto mesh = std::make_shared<Mesh<SimpleVertex3D>>(COLOR_SHADER);
-    mesh->Init(vertices, indices);
-    mesh->m_primitive = GL_TRIANGLES;
-    return mesh;
-}
 
 
-std::shared_ptr<IMesh> CreateBoxMesh (float width, float height) {
-    return nullptr;
-}
 
 
 std::shared_ptr<IMesh> MeshFactory::CreateMesh (const Polygon& p, float z) {
@@ -92,24 +66,34 @@ void MeshFactory::visit(Rect& rect) {
 }
 
 void MeshFactory::visit(Plane3D& rect) {
-    float w = rect.width();
-    float h = rect.depth();
-    glm::vec3 offset = rect.GetOffset();
-    std::vector<VertexColor> vertices = {
-            {offset.x, 0, offset.z, m_color.r, m_color.g, m_color.b, m_color.a},
-            {offset.x, 0, offset.z + h, m_color.r, m_color.g, m_color.b, m_color.a},
-            {offset.x + w, 0, offset.z + h, m_color.r, m_color.g, m_color.b, m_color.a},
-            {offset.x + w, 0, offset.z, m_color.r, m_color.g, m_color.b, m_color.a},
-    };
-    std::vector<unsigned int> indices = {0, 1, 2, 3};
-    auto mesh = std::make_shared<Mesh<VertexColor>>(COLOR_SHADER);
-    mesh->Init(vertices, indices);
-    mesh->m_primitive = GL_LINE_LOOP;
-    m_mesh = mesh;
+
+	float hw = rect.width() * 0.5f;
+	float hh = rect.height() * 0.5f;
+
+//	auto tex = t.get<std::string>("tex", "");
+//
+//	glm::vec2 repeat = t.get<glm::vec2>("repeat", glm::vec2(1.0f, 1.0f));
+//
+//	auto m = std::make_shared<TexturedMesh<Vertex3DN>>(TEXTURE_SHADER_LIGHT, GL_TRIANGLES, tex);
+//	std::vector<Vertex3DN> vertices;
+//	std::vector<unsigned int> indices;
+//
+//	vertices.push_back( Vertex3DN (-hw, 0, hh, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f));
+//	vertices.push_back( Vertex3DN (-hw, 0, -hh, 0.0f, repeat.y, 0.0f, -1.0f, 0.0f));
+//	vertices.push_back( Vertex3DN (hw, 0, -hh, repeat.x, repeat.y, 0.0f, -1.0f, 0.0f));
+//	vertices.push_back( Vertex3DN (hw, 0, hh, repeat.x, 0.0f, 0.0f, -1.0f, 0.0f));
+//	indices.push_back(0);
+//	indices.push_back(1);
+//	indices.push_back(2);
+//	indices.push_back(2);
+//	indices.push_back(3);
+//	indices.push_back(0);
+//	m->Init(vertices, indices);
+//	m_meshes.push_back(m);
 }
 
 
-void MeshFactory::visit(Box& rect) {
+void MeshFactory::visit(Box3D& rect) {
     float w = rect.width();
     float d = rect.depth();
     float h = rect.height();

@@ -1,4 +1,4 @@
-#include <monkey/math/line.h>
+#include <monkey/math/shapes/line.h>
 #include <monkey/math/geom.h>
 #include <monkey/math/geomalgo.h>
 #include <monkey/error.h>

@@ -20,7 +20,7 @@ void Contour::visit(Rect & rect) {
     m_result.emplace_back(glm::vec3 (O.x, O.y, 0.0f));
 }
 
-void Contour::visit(Box & rect) {
+void Contour::visit(Box3D & rect) {
     glm::vec2 O = rect.GetOffset();
     auto w = rect.width();
     auto h = rect.height();

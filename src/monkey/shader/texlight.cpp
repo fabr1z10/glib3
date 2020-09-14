@@ -12,14 +12,14 @@ TexturedLight::TexturedLight() : Shader(vs_tex_light, fs_tex_light) {
 	m_mvMat = glGetUniformLocation(m_programId, "MVmat");
 	m_normalMat = glGetUniformLocation(m_programId, "nMat");
 
-	m_dirLight.ambient = glGetUniformLocation(m_programId, "lightDir");
-	m_dirLight.diffuse = glGetUniformLocation(m_programId, "diffuse");
-	m_dirLight.dir = glGetUniformLocation(m_programId, "ambient");
+	AddUniform( LIGHTDIR, "lightDir");
+	AddUniform( AMBIENT, "ambient");
+	AddUniform( LIGHTCOLOR, "diffuse");
 
-	m_locations[AMBIENT] = m_dirLight.ambient;
-	m_locations[LIGHTCOLOR] = m_dirLight.diffuse;
-	m_locations[LIGHTDIR] = m_dirLight.dir;
 	m_locations[MODELVIEW] = m_mvMat;
+
+	AddUniform(PROJECTION, "ProjMat");
+	AddUniform(TEXTURE, "Tex1");
 
 }
 

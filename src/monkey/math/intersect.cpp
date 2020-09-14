@@ -2,9 +2,9 @@
 #include <monkey/components/collider.h>
 #include <iostream>
 #include <monkey/math/geomalgo.h>
-#include <monkey/math/box.h>
+#include <monkey/math/shapes/box3d.h>
 #include <monkey/math/triangle.h>
-#include <monkey/math/polytri.h>
+#include <monkey/math/shapes/polytri.h>
 
 Intersector::Intersector() {
     auto convexPolyIntersector = std::make_shared<ConvexPolygonIntersectionFunction>();
@@ -44,7 +44,7 @@ Intersector::Intersector() {
     m_func[std::make_pair(std::type_index(typeid(PolyTri)), std::type_index(typeid(Polygon)))] = compoundIntersector;
     // add here tess vs circle, and tess vs tess
     
-    m_func[std::make_pair(std::type_index(typeid(Box)), std::type_index(typeid(Box)))] = boxIntersector;
+    m_func[std::make_pair(std::type_index(typeid(Box3D)), std::type_index(typeid(Box3D)))] = boxIntersector;
 
 }
 

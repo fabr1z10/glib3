@@ -186,7 +186,7 @@ std::string SpriteModel::GetDefaultAnimation() const {
 
 
 ShaderType SpriteModel::GetShaderType() const {
-    return TEXTURE_SHADER;
+    return TEXTURE_SHADER_UNLIT;
 }
 
 const AnimInfo* SpriteModel::GetAnimInfo() const {

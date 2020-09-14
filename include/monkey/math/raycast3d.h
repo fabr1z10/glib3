@@ -1,18 +1,18 @@
 #include <monkey/visitor.h>
 #include <monkey/math/collisionreport.h>
-#include <monkey/math/plane3d.h>
-#include <monkey/math/box.h>
+#include <monkey/math/shapes/plane3d.h>
+#include <monkey/math/shapes/box3d.h>
 
 class RayCast3D :
     public AcyclicVisitor,
     public Visitor<Plane3D>,
-    public Visitor<Box>
+    public Visitor<Box3D>
     // public Visitor<Poly3D>
 {
 public:
     RayCast3D (glm::vec3 O, glm::vec3 dir, float length, glm::mat4& t) : m_A(O), m_dir(dir), m_B(O + dir*length), m_transform(t), m_length(length) {}
     void visit(Plane3D&) override;
-    void visit(Box&) override;
+    void visit(Box3D&) override;
 
     RayCastHit GetResult();
 private:

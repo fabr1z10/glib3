@@ -10,7 +10,7 @@
 #define enums_h
 
 enum ShaderType {
-    TEXTURE_SHADER,
+    TEXTURE_SHADER_UNLIT,
     TEXT_SHADER,
     COLOR_SHADER,
     TEXTURE_SHADER_LIGHT,

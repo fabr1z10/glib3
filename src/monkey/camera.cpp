@@ -105,9 +105,10 @@ PerspectiveCamera::PerspectiveCamera (glm::vec4 viewport, float fov, float nearP
 
 PerspectiveCamera::PerspectiveCamera(const ITable & t) : Camera(t) {
 	m_fov = t.get<float>("fov", 45.0f);
-	m_near = t.get<float>("near", 0.05f);
+	m_near = t.get<float>("near", 0.1f);
 	m_far = t.get<float>("far", 100.0f);
-
+	SetPosition(m_eye, m_fwd, m_up);
+	//Init();
 }
 
 
@@ -133,7 +134,7 @@ void PerspectiveCamera::Resize(int w, int h) {
     glm::vec2 dsize = Engine::get().GetDeviceSize();
     winAR = dsize.x /dsize.y;
     m_aspectRatio = winAR;
-    m_projectionMatrix = glm::perspective (m_fov, winAR, m_near, m_far);
+    m_projectionMatrix = glm::perspective (glm::radians(m_fov), winAR, m_near, m_far);
 
 }
 

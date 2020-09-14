@@ -30,6 +30,7 @@ class DirectionalLight : public Light {
 public:
     //DirectionalLight (glm::vec3 direction, glm::vec3 color) ;
     DirectionalLight (const DirectionalLight&);
+    DirectionalLight (const ITable&);
     void setUp(Shader*) override ;
     std::shared_ptr<Component> clone() const override;
 private:

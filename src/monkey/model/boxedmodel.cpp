@@ -107,7 +107,7 @@ BoxedModel::BoxedModel(const ITable &t) : SpriteModel(t) {
 //                            float width = box[2] - box[0];
 //                            float height = box[3] - box[1];
 //                            if (model3d) {
-//                                collisionShape = std::make_shared<Box>(width, height, thickness,
+//                                collisionShape = std::make_shared<Box3D>(width, height, thickness,
 //                                                                       glm::vec3(box[0], box[1], -dz));
 //                            } else {
 //                                collisionShape = std::make_shared<Rect>(width, height, glm::vec3(box[0], box[1], 0.0f));
@@ -120,7 +120,7 @@ BoxedModel::BoxedModel(const ITable &t) : SpriteModel(t) {
 //                        float width = box[2] - box[0];
 //                        float height = box[3] - box[1];
 //                        if (model3d) {
-//                            collisionShape = std::make_shared<Box>(width, height, thickness,
+//                            collisionShape = std::make_shared<Box3D>(width, height, thickness,
 //                                                                   glm::vec3(box[0], box[1], -dz));
 //                        } else {
 //                            collisionShape = std::make_shared<Rect>(width, height, glm::vec3(box[0], box[1], 0.0f));
@@ -138,7 +138,7 @@ BoxedModel::BoxedModel(const ITable &t) : SpriteModel(t) {
 //                    float h = attackBox[3];
 //                    std::shared_ptr<Shape> attackShape;
 //                    if (model3d) {
-//                        attackShape = std::make_shared<Box>(w, h, thickness, glm::vec3(attackBox[0], attackBox[1], -dz));
+//                        attackShape = std::make_shared<Box3D>(w, h, thickness, glm::vec3(attackBox[0], attackBox[1], -dz));
 //                    } else {
 //                        attackShape = std::make_shared<Rect>(w, h, glm::vec3(attackBox[0], attackBox[1], 0.0f));
 //                    }

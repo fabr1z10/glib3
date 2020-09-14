@@ -1,8 +1,8 @@
 #include <monkey/visitor.h>
 #include <monkey/math/shape.h>
-#include <monkey/math/poly.h>
-#include <monkey/math/polyline.h>
-#include "rect.h"
+#include <monkey/math/shapes/poly.h>
+#include <monkey/math/shapes/polyline.h>
+#include "monkey/math/shapes/rect.h"
 #include <glm/glm.hpp>
 
 struct ClosestPointResult {

@@ -13,6 +13,6 @@ public:
 private:
 	GLint m_mvMat;
 	GLint m_normalMat;
-	DirLightLocation m_dirLight;
+	//DirLightLocation m_dirLight;
 
 };

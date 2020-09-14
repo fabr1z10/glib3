@@ -1,4 +1,4 @@
-#include <monkey/math/polytri.h>
+#include <monkey/math/shapes/polytri.h>
 #include <monkey/math/earcut.h>
 #include <monkey/math/triangle.h>
 

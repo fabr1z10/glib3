@@ -1,9 +1,9 @@
 #include <monkey/math/shape.h>
 
-class Box : public Shape
+class Box3D: public Shape
 {
 public:
-    Box (float width, float height, float depth, glm::vec3 offset = glm::vec3(0.0f));
+    Box3D (float width, float height, float depth, glm::vec3 offset = glm::vec3(0.0f));
     float width() const;
     float height() const;
     float depth() const;
@@ -21,14 +21,14 @@ private:
 
 };
 
-inline float Box::width() const {
+inline float Box3D::width() const {
     return m_width;
 }
 
-inline float Box::depth() const {
+inline float Box3D::depth() const {
     return m_depth;
 }
-inline float Box::height() const {
+inline float Box3D::height() const {
     return m_height;
 }
 

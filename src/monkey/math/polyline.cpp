@@ -1,4 +1,4 @@
-#include <monkey/math/polyline.h>
+#include <monkey/math/shapes/polyline.h>
 #include <monkey/error.h>
 #include <monkey/math/geom.h>
 

@@ -4514,7 +4514,7 @@ This function allows to solve different problem:
     min(0.5*(x-x_origin)'*A*(x-x_origin)+b'*(x-x_origin))
 
 Specification of non-zero origin affects function being minimized, but not
-constraints. Box and  linear  constraints  are  still  calculated  without
+constraints. Box3D and  linear  constraints  are  still  calculated  without
 origin.
 
 INPUT PARAMETERS:
@@ -4856,7 +4856,7 @@ void minqpsetalgoquickqp(const minqpstate &state, const double epsg, const doubl
 /*************************************************************************
 This function sets box constraints for QP solver
 
-Box constraints are inactive by default (after  initial  creation).  After
+Box3D constraints are inactive by default (after  initial  creation).  After
 being  set,  they  are  preserved until explicitly turned off with another
 SetBC() call.
 

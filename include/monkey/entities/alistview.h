@@ -7,7 +7,7 @@
 #include <monkey/color.h>
 #include <vector>
 #include <monkey/engine.h>
-#include <monkey/math/rect.h>
+#include <monkey/math/shapes/rect.h>
 #include <monkey/components/lambdahotspot.h>
 #include <monkey/meshfactory.h>
 #include <monkey/math/geom.h>

@@ -9,14 +9,14 @@
 #include <monkey/quadmesh.h>
 #include <monkey/engine.h>
 
-QuadMesh::QuadMesh(GLenum prim, const std::string& filename) : Mesh<Vertex3D>(TEXTURE_SHADER) {
+QuadMesh::QuadMesh(GLenum prim, const std::string& filename) : Mesh<Vertex3D>(TEXTURE_SHADER_UNLIT) {
     m_primitive = prim;
     auto tex = Engine::get().GetAssetManager().GetTex(filename);
     m_texId = tex->GetTexId();
 }
 
 QuadMesh::QuadMesh(const std::string& filename, float width, float height,
-                   float repeatx, float repeaty, float skewx, float skewy, glm::vec2 offset) : Mesh<Vertex3D>(TEXTURE_SHADER) {
+                   float repeatx, float repeaty, float skewx, float skewy, glm::vec2 offset) : Mesh<Vertex3D>(TEXTURE_SHADER_UNLIT) {
     m_primitive = GL_TRIANGLES;
     auto tex = Engine::get().GetAssetManager().GetTex(filename);
     m_texId = tex->GetTexId();
@@ -49,7 +49,7 @@ QuadMesh::QuadMesh(const std::string& filename, float width, float height,
     
 }
 
-QuadMesh::QuadMesh(const std::string& filename, float width, float height, glm::vec2 offset, int tx, int ty, int tw, int th) : Mesh<Vertex3D>(TEXTURE_SHADER) {
+QuadMesh::QuadMesh(const std::string& filename, float width, float height, glm::vec2 offset, int tx, int ty, int tw, int th) : Mesh<Vertex3D>(TEXTURE_SHADER_UNLIT) {
     m_primitive = GL_TRIANGLES;
     auto tex = Engine::get().GetAssetManager().GetTex(filename);
     m_texId = tex->GetTexId();
@@ -86,7 +86,7 @@ QuadMesh::QuadMesh(
     int repx,
     int repy,
     glm::vec2 delta, float angle)
-: Mesh<Vertex3D>(TEXTURE_SHADER) {
+: Mesh<Vertex3D>(TEXTURE_SHADER_UNLIT) {
     m_primitive = GL_TRIANGLES;
     auto tex = Engine::get().GetAssetManager().GetTex(filename);
     m_texId = tex->GetTexId();

@@ -42,7 +42,7 @@
 #include <monkey/states/walk3d.h>
 
 #include <monkey/components/controller25.h>
-#include <monkey/math/ellipse.h>
+#include <monkey/math/shapes/ellipse.h>
 #include <monkey/states/hit25.h>
 #include <monkey/states/foewalk25.h>
 #include <monkey/states/ishit25.h>
@@ -50,7 +50,7 @@
 #include <monkey/fill.h>
 #include <monkey/activities/repeat.h>
 #include <monkey/components/shadow.h>
-#include <monkey/math/polytri.h>
+#include <monkey/math/shapes/polytri.h>
 #include <monkey/entities/skeleton.h>
 #include <monkey/activities/freemove.h>
 #include <monkey/activities/noop.h>
@@ -62,6 +62,8 @@
 #include <monkey/skeletal/skcollider.hpp>
 #include <monkey/states/jumpattack.h>
 #include <monkey/activities/blink.h>
+#include <monkey/math/shapes/plane3d.h>
+
 
 namespace py = pybind11;
 
@@ -227,6 +229,9 @@ SceneFactory::SceneFactory() {
     add2<Constant2D> ("func.const");
     add2<PatchwiseLinear2D> ("func.patch2d");
 
+    add2<DirectionalLight> ("light.directional");
+    // mesh
+    add2<Plane3D> ("shape.plane3d");
 }
 
 //void SceneFactory::addStateFactory(const std::string &a, std::unique_ptr<FactoryMethod<State>> f) {

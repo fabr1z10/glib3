@@ -5,7 +5,7 @@
 
 TexturedUnlit::TexturedUnlit() : Shader(vs_tex_unlitc, fs_tex_unlitc) {
 
-    m_shaderId = TEXTURE_SHADER;
+    m_shaderId = TEXTURE_SHADER_UNLIT;
     m_nAttributes = 3;
 
     m_mvMat = glGetUniformLocation(m_programId, "MVmat");

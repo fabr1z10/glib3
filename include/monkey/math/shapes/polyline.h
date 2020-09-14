@@ -2,7 +2,7 @@
 
 #include <vector>
 #include <memory>
-#include "shape.h"
+#include "monkey/math/shape.h"
 #include <monkey/math/graph.h>
 
 // simple polygon (can be concave), no holes

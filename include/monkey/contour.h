@@ -1,13 +1,13 @@
 #pragma once
 
 #include <monkey/mesh.h>
-#include <monkey/math/rect.h>
-#include <monkey/math/box.h>
-#include <monkey/math/line.h>
-#include <monkey/math/poly.h>
-#include <monkey/math/polyline.h>
-#include <monkey/math/circle.h>
-#include <monkey/math/ellipse.h>
+#include <monkey/math/shapes/rect.h>
+#include <monkey/math/shapes/box3d.h>
+#include <monkey/math/shapes/line.h>
+#include <monkey/math/shapes/poly.h>
+#include <monkey/math/shapes/polyline.h>
+#include <monkey/math/shapes/circle.h>
+#include <monkey/math/shapes/ellipse.h>
 #include <monkey/math/compound.h>
 #include <memory>
 
@@ -15,7 +15,7 @@ class Contour :
     public AcyclicVisitor,
     public Visitor<Rect>,
     public Visitor<Line>,
-    public Visitor<Box>
+    public Visitor<Box3D>
 //    public Visitor<Polygon>,
 //    public Visitor<Poly>,
 //    public Visitor<PolyLine>,
@@ -26,7 +26,7 @@ class Contour :
 public:
     void visit(Rect&) override;
     void visit(Line&) override;
-    void visit(Box&) override;
+    void visit(Box3D&) override;
     static std::vector<glm::vec3> CreateContour (Shape*);
 private:
     std::vector<glm::vec3> m_result;

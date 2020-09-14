@@ -1746,7 +1746,7 @@ ae_int_t kdtreetsqueryaknn(const kdtree &kdt, const kdtreerequestbuffer &buf, co
 #endif
 
 /*************************************************************************
-Box query: all points within user-specified box.
+Box3D query: all points within user-specified box.
 
 IMPORTANT: this function can not be used in multithreaded code because  it
            uses internal temporary buffer of kd-tree object, which can not
@@ -1802,7 +1802,7 @@ ae_int_t kdtreequerybox(const kdtree &kdt, const real_1d_array &boxmin, const re
 }
 
 /*************************************************************************
-Box query: all points within user-specified box, using thread-local buffer.
+Box3D query: all points within user-specified box, using thread-local buffer.
 
 You can call this function from multiple threads for same kd-tree instance,
 assuming that different instances of buffer object are passed to different
@@ -4975,7 +4975,7 @@ ae_int_t kdtreetsqueryaknn(kdtree* kdt,
 
 
 /*************************************************************************
-Box query: all points within user-specified box.
+Box3D query: all points within user-specified box.
 
 IMPORTANT: this function can not be used in multithreaded code because  it
            uses internal temporary buffer of kd-tree object, which can not
@@ -5022,7 +5022,7 @@ ae_int_t kdtreequerybox(kdtree* kdt,
 
 
 /*************************************************************************
-Box query: all points within user-specified box, using thread-local buffer.
+Box3D query: all points within user-specified box, using thread-local buffer.
 
 You can call this function from multiple threads for same kd-tree instance,
 assuming that different instances of buffer object are passed to different

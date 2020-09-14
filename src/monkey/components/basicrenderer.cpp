@@ -2,6 +2,7 @@
 #include <monkey/meshfactory.h>
 #include <monkey/quadmesh.h>
 #include <monkey/math/geom.h>
+#include <monkey/texmeshfactory.h>
 
 BasicRenderer::BasicRenderer(std::shared_ptr<IModel> model) : Renderer() {
     m_model = std::dynamic_pointer_cast<BasicModel>(model);
@@ -82,6 +83,26 @@ BasicRenderer::BasicRenderer(const ITable & t) : Renderer() {
         auto z = t.get<float>("z", 0.0f);
         auto mesh = MeshFactory::CreateMesh(*(shape.get()), z, color);
         SetModel (std::make_shared<BasicModel>(mesh));
+    } else if (cls == 5) {
+		// textured mesh
+		auto factory = Engine::get().GetSceneFactory();
+		TexMeshFactory meshFactory;
+		t.foreach<PyDict>("texinfo", [&] (const PyDict& d) {
+			auto id = d.get<std::string>("id", "default");
+			auto tex = d.get<std::string>("tex");
+			auto repeat = d.get<glm::vec2>("repeat", glm::vec2(1.0f, 1.0f));
+			meshFactory.addTexInfo( TexInfo{id,tex,repeat});
+		});
+		auto shapeT = t.get<PyTable>("shape");
+		auto shape = factory->make2<Shape>(shapeT);
+		auto meshes = meshFactory.CreateMesh(*(shape.get()));
+		if (meshes.size() == 1) {
+			SetModel (std::make_shared<BasicModel>(meshes.front()));
+		}
+		// you can provide a list of textures. Each texture has
+		// id, tex, repeat (offset, skew)
+
+
     }
 }
 

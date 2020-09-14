@@ -1,4 +1,4 @@
-#include <monkey/math/poly.h>
+#include <monkey/math/shapes/poly.h>
 #include <monkey/math/geom.h>
 #include <monkey/error.h>
 #include <monkey/math/geomalgo.h>
