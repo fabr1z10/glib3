@@ -101,6 +101,7 @@ void FoeChase::Init(pybind11::dict& d) {
         m_left = dict.get<int>("left");
     }
     m_inRange = false;
+    m_c->UpdateRaycastOrigins();
     // character will go towards player
 
 
@@ -112,7 +113,10 @@ void FoeChase::Init(pybind11::dict& d) {
 
 void FoeChase::Run(double dt) {
 
+
+
     if (m_controller->grounded()) {
+
         m_dynamics->m_velocity.y = 0.0f;
     }
     computeDirection();
@@ -121,10 +125,30 @@ void FoeChase::Run(double dt) {
     if (m_inRange) {
         float u = Random::get().GetUniformReal(0.0f, 1.0f);
         if (u < m_probAttack) {
-            m_sm->SetState("attack1");
+			int chosenAttack = Random::get().GetUniform(0, m_attacks.size()-1);
+			m_sm->SetState(m_attacks[chosenAttack]);
         }
 
     }
+
+//	if (m_jumpAttack) {
+//		float u = Random::get().GetUniformReal(0.0f, 1.0f);
+//		if (u < 0.005f) {
+//			m_animator->SetAnimation("jumpup");
+//			auto targetPos = m_target->GetPosition();
+//			auto mePos = m_entity->GetPosition();
+//			float dxToCover = targetPos.x - mePos.x;
+//			float js = 1000.0f;
+//			float tja = (js/fabs(m_dynamics->m_gravity));
+//			m_targetVelocityX = dxToCover / tja;
+//			if (m_entity->GetFlipX()) {
+//				m_targetVelocityX *= -1.0f;
+//			}
+//			m_targetVelocityY = dzToCover / tja;
+//			m_dynamics->m_velocity.y = js;
+//			m_jumping = true;
+//		}
+//	}
 
 //    if ((m_left && m_c->m_details.left) || (!m_left && m_c->m_details.right)) {
 //        // I bumped into a wall
@@ -139,9 +163,13 @@ void FoeChase::Run(double dt) {
 //        }
 //    }
 
-    glm::vec3 delta =m_dynamics->step(dt, m_targetVelocityX, m_acceleration);
-    //if (m_speed < 30.0f) std::cout << delta.x << "\n";
-    m_controller->Move(delta);
+	if (!m_c->IsFalling( m_targetVelocityX > 0 ? 1 : -1)) {
+		glm::vec3 delta = m_dynamics->step(dt, m_targetVelocityX, m_acceleration);
+		//if (m_speed < 30.0f) std::cout << delta.x << "\n";
+		// before moving, check if I'm falling off the platform
+
+		m_controller->Move(delta);
+	}
 
     UpdateAnimation();
 }

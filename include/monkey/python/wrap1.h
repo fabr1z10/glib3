@@ -13,6 +13,7 @@ public:
     float x() const ;
     float y() const ;
     float z() const;
+    void rotx(float) ;
     float getVy() const;
     float getElevation() const;
     void setElevation(float);

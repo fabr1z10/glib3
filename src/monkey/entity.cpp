@@ -30,6 +30,9 @@ Entity::Entity(const ITable& t) : Ref(t),
         SetPosition(pos);
     }
 
+	if (t.hasKey("rotx")) {
+		Rotate(glm::radians(t.get<float>("rotx")), glm::vec3(1.0f, 0.0f, 0.0f));
+	}
     auto flipx = t.get<bool>("flipx", false);
     SetFlipX(flipx);
 

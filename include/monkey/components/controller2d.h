@@ -70,13 +70,13 @@ public:
 	void ForceDetach() { m_platform = nullptr; }
     std::shared_ptr<Component> clone() const override;
     std::type_index GetType() override;
+	void UpdateRaycastOrigins();
 
     //RayCastHit2D Raycast(glm::vec2 origin, glm::vec2 direction, float length, int mask);
 private:
 	//std::vector<Collider*> m_ppp;
 	void HorizontalCollisions(glm::vec2& velocity);
 	void VerticalCollisions(glm::vec2& velocity);
-	void UpdateRaycastOrigins();
 
 	//int m_handleNotify;
 	Entity* m_platform;

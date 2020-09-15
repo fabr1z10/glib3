@@ -22,7 +22,7 @@ m_maxDescendAngle(orig.m_maxDescendAngle), m_platform(nullptr)
     
 }
 
-Controller2D::Controller2D(const ITable &t) {
+Controller2D::Controller2D(const ITable &t) : m_cc(nullptr) {
     m_maxClimbAngle = t.get<float>("maxClimbAngle");
     m_maxDescendAngle = t.get<float>("maxDescendAngle");
     m_horizontalRayCount = t.get<int>("horRays", 4);
@@ -59,7 +59,7 @@ void Controller2D::Begin() {
     });
     //m_cc->onShapeChanged.Register(this, [&] (Collider* c) { this->ResetShape(c); });
     CalculateRaySpacing();
-
+	UpdateRaycastOrigins();
 }
 
 
@@ -75,12 +75,14 @@ void Controller2D::CalculateRaySpacing() {
 }
 
 void Controller2D::UpdateRaycastOrigins() {
-    Bounds bounds = m_cc->GetDynamicBounds();
-    bounds.Expand(m_skinWidth * -2);
-    m_raycastOrigins.bottomLeft = vec2(bounds.min.x, bounds.min.y);
-    m_raycastOrigins.bottomRight = vec2(bounds.max.x, bounds.min.y);
-    m_raycastOrigins.topLeft = vec2(bounds.min.x, bounds.max.y);
-    m_raycastOrigins.topRight = vec2(bounds.max.x, bounds.max.y);
+	if (m_cc != nullptr) {
+		Bounds bounds = m_cc->GetDynamicBounds();
+		bounds.Expand(m_skinWidth * -2);
+		m_raycastOrigins.bottomLeft = vec2(bounds.min.x, bounds.min.y);
+		m_raycastOrigins.bottomRight = vec2(bounds.max.x, bounds.min.y);
+		m_raycastOrigins.topLeft = vec2(bounds.min.x, bounds.max.y);
+		m_raycastOrigins.topRight = vec2(bounds.max.x, bounds.max.y);
+	}
 }
 
 bool Controller2D::IsFalling(int dir) {

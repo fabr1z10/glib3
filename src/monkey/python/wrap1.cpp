@@ -196,3 +196,8 @@ std::string Wrap1::getState() {
 void Wrap1::setState(const std::string & s, py::dict d) {
     m_entity->GetComponent<StateMachine>()->SetState(s, d);
 }
+
+void Wrap1::rotx(float angle) {
+	m_entity->Rotate(glm::radians(angle), glm::vec3(1.0f, 0.0f, 0.0f));
+
+}

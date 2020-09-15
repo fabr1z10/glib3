@@ -2,6 +2,7 @@
 
 #include <monkey/scenefactory.h>
 #include <monkey/components/stateactions.h>
+#include "states/jumpattack.h"
 
 //#include "states/platformerstate.h"
 #include "states/walkside.h"
@@ -17,6 +18,7 @@
 //#include <platformer/states/playanim.h>
 //#include <platformer/states/hitjump.h>
 #include "states/jump2d.h"
+#include "states/ishit.h"
 //#include <platformer/states/jump3d.h>
 //#include <platformer/states/ch1.h>
 //#include <platformer/states/duck.h>
@@ -31,6 +33,8 @@
 //#include <platformer/input/enemy3d.h>
 //#include <monkey/engine.h>
 //#include <platformer/activities/setenemydir.h>
+
+
 void Extension::extend(SceneFactory* f) {
     std::cout << "smb extension\n";
 //
@@ -38,6 +42,8 @@ void Extension::extend(SceneFactory* f) {
     f->add2<Jump2D> ("state.jump");
     f->add2<FoeWalk> ("state.foewalk");
     f->add2<FoeChase> ("state.foechase");
+    f->add2<IsHit> ("state.hit");
+	f->add2<JAttack> ("state.jattack");
     f->add2<FoeDead> ("state.foedead");
     f->add2<KoopaShell> ("state.koopashell");
     //f->addStateFactory("walkside", std::make_unique<WalkSideFactory>());

@@ -20,6 +20,11 @@ void Monkey::remove(int id) {
 	g_refs.erase(id);
 }
 
+void Monkey::dump() {
+
+	std::cout << "# of items: " << g_refs.size() << "\n";
+}
+
 void Monkey::remove(const std::string& tag) {
 	g_taggedRefs.erase(tag);
 }

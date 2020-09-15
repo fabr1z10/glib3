@@ -52,7 +52,8 @@ PYBIND11_MODULE(example, m) {
         .def("setState", &Wrap1::setState)
         .def("move", &Wrap1::move)
         .def("clearText", &Wrap1::clearText)
-        .def("follow", &Wrap1::follow);
+        .def("follow", &Wrap1::follow)
+    	.def("rotatex", &Wrap1::rotx);
 
     py::class_<PyEngine>(m, "engine")
         //.def("get", &PyEngine::get, py::arg("tag"))

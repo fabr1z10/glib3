@@ -49,4 +49,6 @@ private:
     float m_targetVelocityX;
     Entity* m_target;
     bool m_inRange;
+    bool m_jumpAttack;
+    bool m_jumping;
 };

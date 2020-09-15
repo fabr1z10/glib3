@@ -218,7 +218,9 @@ void Engine::MainLoop() {
     while (!glfwWindowShouldClose(window)) {
 
         // get current room
+        std::cerr << "abc\n";
         auto room = m_mainTable->get<std::string>("room");
+		std::cerr << "room: " << room;
         py::function builder;
         try {
             builder = m_mainTable->get<py::dict>("data")["rooms"][room.c_str()].cast<py::function>();
@@ -306,16 +308,19 @@ void Engine::MainLoop() {
         }
         // remove assets loaded at scene level
         m_running = false;
-
+		std::cerr << "CLEAN!\n";
         m_sceneFactory->CleanUp();
+		std::cerr << "DONE!\n";
         std::cerr << "clearing runners";
         m_runners.clear();
         std::cerr << "done\n";
         m_scene = nullptr;
-        
         m_garbage.clear();
+		std::cerr << "done2\n";
+		Monkey::get().dump();
     }
-    m_renderingEngine = nullptr;
+    //m_renderingEngine = nullptr;
+	std::cerr << "done3\n";
 }
 
 // width and height will be pixels!!

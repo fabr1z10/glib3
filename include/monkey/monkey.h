@@ -29,6 +29,7 @@ class Monkey : public Singleton<Monkey> {
 		void add (const std::string&, Ref*);
 		void remove (int);
 		void remove (const std::string&);
+		void dump();
 	protected:
 		Monkey();
 	private:
