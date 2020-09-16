@@ -16,6 +16,7 @@ enum ShaderType {
     TEXTURE_SHADER_LIGHT,
     COLOR_SHADER_LIGHT,
     SKELETAL_SHADER,
+	SKELETAL_SHADER_COLOR,
     NONE
 };
 
@@ -30,7 +31,9 @@ enum ShaderUniform {
     LIGHTDIR,
     LIGHTCOLOR,
     AMBIENT,
-    BONES
+    BONES,
+    FORCEZ,
+    FORCEDZ
 };
 
 enum TextAlignment {

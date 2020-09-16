@@ -29,6 +29,7 @@ public:
     void SetParent(Entity* parent) override;
     void setMultColor(glm::vec4 c);
     void setAddColor(glm::vec4 c);
+    void setForcedZ(float);
     virtual ShaderType GetShaderType() const;
     using ParentClass = Renderer;
     //void SetMeshInfo (int offset, int count);
@@ -42,6 +43,8 @@ protected:
     glm::mat4 m_renderingTransform;
     glm::vec4 m_multColor;
     glm::vec4 m_addColor;
+    bool m_forceZ;
+    float m_forcedZ;
     //int m_count;
     //int m_offset;
 };
@@ -64,7 +67,10 @@ inline void Renderer::setAddColor(glm::vec4 c) {
     m_addColor = c;
 }
 
-
+inline void Renderer::setForcedZ(float value) {
+	m_forcedZ = value;
+	m_forceZ = true;
+}
 //
 //inline void Renderer::SetMeshInfo (int offset, int count) {
 //    m_offset = offset;

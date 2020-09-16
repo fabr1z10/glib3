@@ -21,6 +21,8 @@ TexturedLight::TexturedLight() : Shader(vs_tex_light, fs_tex_light) {
 	AddUniform(PROJECTION, "ProjMat");
 	AddUniform(TEXTURE, "Tex1");
 
+	AddUniform (FORCEZ, "forceZ");
+	AddUniform (FORCEDZ, "forcedZ");
 }
 
 // here we compute the normal matrix

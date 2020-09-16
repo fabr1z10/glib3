@@ -48,3 +48,13 @@ void VertexSkeletal::InitAttributes() {
 
 
 }
+
+void VertexSkeletalColor::InitAttributes() {
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(VertexSkeletalColor), (void*)offsetof(VertexSkeletalColor, x));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(VertexSkeletalColor), (void*)offsetof(VertexSkeletalColor, r));
+    glVertexAttribIPointer(2, 3, GL_INT, sizeof(VertexSkeletalColor), (void*)offsetof(VertexSkeletalColor, index0));
+    glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(VertexSkeletalColor), (void*)offsetof(VertexSkeletalColor, weight0));
+
+
+
+}

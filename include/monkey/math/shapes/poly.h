@@ -26,6 +26,7 @@ public:
     std::string toString() const override;
     glm::vec2 project(const glm::vec2 axis, const glm::mat4& worldTransform) override;
     std::vector<glm::vec2> getPoints() override;
+    void setPoints (std::vector<glm::vec2>& pts);
     std::vector<glm::vec2> getEdges() override;
 private:
     std::vector <glm::vec2> m_points;
@@ -37,6 +38,11 @@ inline int Polygon::GetVertexCount() const {
 
 inline glm::vec2 Polygon::GetVertex(int i) const {
     return m_points[i];
+}
+
+inline void Polygon::setPoints(std::vector<glm::vec2> &pts) {
+	m_points = pts;
+
 }
 
 struct Hole {

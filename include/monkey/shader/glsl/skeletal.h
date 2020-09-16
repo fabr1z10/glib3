@@ -12,6 +12,8 @@ const char sk_vshader[] =
         // "out float bb;\n"
         "uniform mat4 MVmat;\n"
         "uniform mat4 ProjMat;\n"
+		"uniform int forceZ;"
+		"uniform float forcedZ;"
         "uniform mat4 Bone[MAX_JOINTS];\n"  // Array of bones that you compute (animate) on the CPU and you upload to the shader
         "void main()\n"
         "{\n"
@@ -30,6 +32,7 @@ const char sk_vshader[] =
         //"}\n"
         "pass_texCoord= vTexture;\n"
         "gl_Position = ProjMat * MVmat * totalLocalPos;\n"
+		"if (forceZ == 1) { gl_Position.z = forcedZ * gl_Position.w; }\n"
         "}\n";
 
 

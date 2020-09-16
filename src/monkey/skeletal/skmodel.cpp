@@ -2,6 +2,7 @@
 #include <monkey/math/earcut.h>
 #include <monkey/skeletal/joint.hpp>
 #include <pybind11/pytypes.h>
+#include <monkey/math/geom.h>
 
 ShaderType SkModel::GetShaderType() const {
     return SKELETAL_SHADER;
@@ -178,24 +179,38 @@ SkModel::SkModel(const ITable & t) {
         //#auto defaultBox = b.get<glm::vec2> ("default");
         //m_defaultShape = std::make_shared<Rect>(defaultBox[0], defaultBox[1], glm::vec3(-0.5f*defaultBox[0], 0, 0));
         //m_shapes.push_back(m_defaultShape);
-        auto anim = b.get<pybind11::dict>("anim");
-        Bounds maxSize;
-        for (const auto& a : anim) {
-            auto animId = a.first.cast<std::string>();
-            auto size = a.second.cast<std::vector<float>>();
-            auto shape = std::make_shared<Rect> (size[0], size[1], glm::vec3(-0.5f*size[0], 0.0f, 0.0f));
-            maxSize.ExpandWith(shape->getBounds());
-            m_animToShape[animId] = m_shapes.size();
-            m_shapes.push_back(shape);
-        }
-        m_maxBounds = maxSize;
-        b.foreach<PyDict> ("attack", [&] (const PyDict& d) {
-            auto anim = d.get<std::string>("anim");
-            auto t = d.get<float>("t");
-            auto box = d.get<glm::vec4>("box");
-            m_attackTimes[anim].insert(std::make_pair(t, m_shapes.size()));
-            m_shapes.push_back(std::make_shared<Rect>(box[2], box[3], glm::vec3(box[0], box[1], 0.0f)));
-        });
+		b.foreach<PyDict> ("collider", [&] (const PyDict& d) {
+			auto anim = d.get<std::string>("anim");
+			auto joint = d.get<std::string>("joint");
+			auto P0 = d.get<glm::vec2>("P0");
+			auto P1 = d.get<glm::vec2>("P1");
+			auto width = d.get<float>("width");
+			//auto box = d.get<glm::vec4>("box");
+			glm::vec2 axis0 = P1 - P0;
+			glm::vec2 axis1 = glm::normalize(Perp(axis0));
+			std::vector<glm::vec2> pts ({ P0 + axis1 * width, P1 + axis1*width, P1-axis1*width, P0 - axis1*width });
+			m_shapes.push_back(std::make_shared<Polygon>(pts));
+			//m_attackTimes[anim].insert(std::make_pair(t, m_shapes.size()));
+			//m_shapes.push_back(std::make_shared<Rect>(box[2], box[3], glm::vec3(box[0], box[1], 0.0f)));
+		});
+//        auto anim = b.get<pybind11::dict>("anim");
+//        Bounds maxSize;
+//        for (const auto& a : anim) {
+//            auto animId = a.first.cast<std::string>();
+//            auto size = a.second.cast<std::vector<float>>();
+//            auto shape = std::make_shared<Rect> (size[0], size[1], glm::vec3(-0.5f*size[0], 0.0f, 0.0f));
+//            maxSize.ExpandWith(shape->getBounds());
+//            m_animToShape[animId] = m_shapes.size();
+//            m_shapes.push_back(shape);
+//        }
+//        m_maxBounds = maxSize;
+//        b.foreach<PyDict> ("attack", [&] (const PyDict& d) {
+//            auto anim = d.get<std::string>("anim");
+//            auto t = d.get<float>("t");
+//            auto box = d.get<glm::vec4>("box");
+//            m_attackTimes[anim].insert(std::make_pair(t, m_shapes.size()));
+//            m_shapes.push_back(std::make_shared<Rect>(box[2], box[3], glm::vec3(box[0], box[1], 0.0f)));
+//        });
 
     }
 
@@ -243,6 +258,8 @@ void SkModel::Draw(Shader * shader) {
         m->Draw(shader, 0, 0);
     }
 }
+
+
 
 std::vector<glm::mat4> SkModel::getJointTransforms() {
     std::vector<glm::mat4> jointMatrices(m_jointCount);

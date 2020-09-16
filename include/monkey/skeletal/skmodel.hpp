@@ -6,6 +6,18 @@
 #include <monkey/vertices.h>
 #include <monkey/skeletal/joint.hpp>
 
+struct SkPointInfo {
+	glm::vec2 point;
+	glm::ivec3 joints;
+	glm::vec3 weights;
+};
+
+struct SkBoxInfo {
+	SkPointInfo A;
+	SkPointInfo B;
+	float width;
+};
+
 class SkModel : public IModel {
 public:
     SkModel (const ITable&);
@@ -57,6 +69,7 @@ private:
     std::vector<std::pair<std::string, glm::vec3>> m_offsetPoints;
     std::unordered_map<std::string, Joint*> m_allJoints;
     Bounds m_maxBounds;
+    std::vector<SkBoxInfo> m_skeletalBoxes;
 };
 
 inline std::shared_ptr<Joint> SkModel::getRootJoint() {

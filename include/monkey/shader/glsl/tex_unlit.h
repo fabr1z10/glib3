@@ -8,11 +8,15 @@ const char vs_tex_unlit[] =
                 "layout (location = 1) in vec2 vTexture;\n"
                 "uniform mat4 MVmat;\n"
                 "uniform mat4 ProjMat;\n"
+		        "uniform int forceZ;"
+		        "uniform float forcedZ;"
                 "out vec2 tex;\n"
                 "void main()\n"
                 "{\n"
                 "tex = vTexture;\n"
                 "gl_Position = ProjMat * MVmat * vec4(vPosition, 1.0);\n"
+		        "if (forceZ == 1) { gl_Position.z = forcedZ * gl_Position.w; }\n"
+
                 "}\n";
 
 const char fs_tex_unlit[] =

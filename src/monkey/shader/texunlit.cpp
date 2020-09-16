@@ -15,6 +15,8 @@ TexturedUnlit::TexturedUnlit() : Shader(vs_tex_unlitc, fs_tex_unlitc) {
     AddUniform(TEXTURE, "Tex1");
     AddUniform(MULTCOLOR, "color");
     AddUniform(ADDCOLOR, "additive");
+	AddUniform (FORCEZ, "forceZ");
+	AddUniform (FORCEDZ, "forcedZ");
 }
 
 void TexturedUnlit::initMesh(const glm::mat4 &modelMatrix, Camera *cam) {

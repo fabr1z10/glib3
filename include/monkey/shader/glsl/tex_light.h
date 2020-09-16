@@ -10,6 +10,8 @@ const char vs_tex_light[] =
                 "uniform mat4 MVmat;\n"
                 "uniform mat4 ProjMat;\n"
 				"uniform mat3 nMat;\n"			// the normal matrix
+				"uniform int forceZ;"
+	            "uniform float forcedZ;"
                 "out vec2 tex;\n"
                 "out vec3 Normal;\n"
 				"out vec4 eye;\n"
@@ -20,6 +22,7 @@ const char vs_tex_light[] =
 				"Normal = normalize(nMat * vNormal);\n"
 	            "eye = - (MVmat * vec4(vPosition, 1.0));\n"
                 "gl_Position = ProjMat * MVmat * vec4(vPosition, 1.0);\n"
+				"if (forceZ == 1) { gl_Position.z = forcedZ * gl_Position.w; }\n"
 				//"FragPos = vec3(modelMat * vec4(vPosition, 1.0));"
                 "}\n";
 

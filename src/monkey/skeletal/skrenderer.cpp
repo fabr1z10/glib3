@@ -24,7 +24,7 @@ void SkRenderer::Start() {
 }
 
 void SkRenderer::Draw(Shader * shader) {
-
+    Renderer::Draw(shader);
     // we need to send the bone transforms to the shader
     auto boneId = shader->GetUniformLocation(BONES);
 
@@ -35,6 +35,7 @@ void SkRenderer::Draw(Shader * shader) {
     m_model->Draw(shader);
 
 }
+
 
 ShaderType SkRenderer::GetShaderType() const {
     return SKELETAL_SHADER;

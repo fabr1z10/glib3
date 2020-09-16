@@ -16,6 +16,9 @@ SkeletalShader::SkeletalShader() : Shader(sk_vshader, sk_fshader) {
     AddUniform(PROJECTION, "ProjMat");
 
     AddUniform(BONES, "Bone");
+
+	AddUniform (FORCEZ, "forceZ");
+	AddUniform (FORCEDZ, "forcedZ");
 }
 
 void SkeletalShader::initMesh(const glm::mat4 &modelMatrix, Camera *cam) {
@@ -30,3 +33,4 @@ void SkeletalShader::initMesh(const glm::mat4 &modelMatrix, Camera *cam) {
 void SkeletalShader::initVertexAttributes() {
     VertexSkeletal::InitAttributes();
 }
+
