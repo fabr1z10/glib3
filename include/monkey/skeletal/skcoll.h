@@ -8,6 +8,7 @@
 #include <monkey/math/shapes/poly.h>
 
 class SkModel;
+class Renderer;
 
 class SkColl : public ICollider {
 public:

@@ -64,6 +64,7 @@
 #include <monkey/activities/blink.h>
 #include <monkey/math/shapes/plane3d.h>
 #include <monkey/skeletal/skcoll.h>
+#include <monkey/skeletal/skeletalcollidermanager.h>
 
 
 namespace py = pybind11;
@@ -157,6 +158,7 @@ SceneFactory::SceneFactory() {
     add2<SmartCollider> ("components.smartcollider");
     add2<SkCollider> ("components.skeletalcollider");
 	add2<SkColl> ("components.skc");
+	add2<SkeletalColliderManager>("components.collidermanager");
     add2<ScriptHotSpot> ("components.hotspot");
     add2<BasicRenderer> ("components.gfx");
     add2<LuaKeyListener> ("runner.keylistener");

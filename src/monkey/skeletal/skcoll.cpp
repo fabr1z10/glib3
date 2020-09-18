@@ -93,8 +93,8 @@ void SkColl::Update(double dt) {
 	glm::vec2 offset (rt[3][0], rt[3][1]);
 	m_offset = glm::vec3(offset, 0.0f);
 	auto jointTransforms = m_model->getJointTransforms();
-	glm::vec4 a0;
-	glm::vec4 a1;
+	glm::vec4 a0 (0.0f);
+	glm::vec4 a1 (0.0f);
 	for (size_t i = 0; i < jointIds0.size(); ++i) {
 		a0 += weights0[i] * jointTransforms[jointIds0[i]] * glm::vec4(m_P0+offset, 0.0f, 1.0f);
 	}
