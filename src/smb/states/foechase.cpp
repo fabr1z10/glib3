@@ -118,18 +118,31 @@ void FoeChase::Run(double dt) {
     if (m_controller->grounded()) {
 
         m_dynamics->m_velocity.y = 0.0f;
-    }
-    computeDirection();
-    // if I'm at the right position, go to idle
-    // randomly attack if within range
-    if (m_inRange) {
-        float u = Random::get().GetUniformReal(0.0f, 1.0f);
-        if (u < m_probAttack) {
-			int chosenAttack = Random::get().GetUniform(0, m_attacks.size()-1);
-			m_sm->SetState(m_attacks[chosenAttack]);
-        }
+        computeDirection();
+        // if I'm at the right position, go to idle
+        // randomly attack if within range
+        if (m_inRange) {
+            float u = Random::get().GetUniformReal(0.0f, 1.0f);
+            if (u < m_probAttack) {
+                int chosenAttack = Random::get().GetUniform(0, m_attacks.size()-1);
+                m_sm->SetState(m_attacks[chosenAttack]);
+            }
 
+        }
+        if (!m_c->IsFalling( m_targetVelocityX > 0 ? 1 : -1)) {
+            glm::vec3 delta = m_dynamics->step(dt, m_targetVelocityX, m_acceleration);
+            //if (m_speed < 30.0f) std::cout << delta.x << "\n";
+            // before moving, check if I'm falling off the platform
+
+            m_controller->Move(delta);
+        }
+    } else {
+
+        m_animator->SetAnimation(m_walkAnim);
+        glm::vec3 delta = m_dynamics->step(dt, 0.0f, m_acceleration);
+        m_controller->Move(delta);
     }
+
 
 //	if (m_jumpAttack) {
 //		float u = Random::get().GetUniformReal(0.0f, 1.0f);
@@ -163,13 +176,6 @@ void FoeChase::Run(double dt) {
 //        }
 //    }
 
-	if (!m_c->IsFalling( m_targetVelocityX > 0 ? 1 : -1)) {
-		glm::vec3 delta = m_dynamics->step(dt, m_targetVelocityX, m_acceleration);
-		//if (m_speed < 30.0f) std::cout << delta.x << "\n";
-		// before moving, check if I'm falling off the platform
-
-		m_controller->Move(delta);
-	}
 
     UpdateAnimation();
 }
