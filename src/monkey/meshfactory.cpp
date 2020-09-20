@@ -121,17 +121,19 @@ void MeshFactory::visit(CompoundShape& shape) {
     std::vector<VertexColor> vertices;
     std::vector<unsigned int> indices;
     unsigned int i{0};
+    unsigned int first = 0;
     for (auto& shape : shapes) {
         auto points = shape->getPoints();
         glm::vec2 offset = shape->GetOffset();
         size_t j = 0;
         for (auto& p : points) {
-            vertices.push_back({p.x, p.y, m_z, m_color.g, m_color.r, m_color.b, m_color.a});
+            vertices.emplace_back(VertexColor(p.x, p.y, m_z, m_color.g, m_color.r, m_color.b, m_color.a));
             indices.push_back(i);
-            indices.push_back((j+1 >= points.size()) ? 0 : i+1);
+            indices.push_back((j+1 >= points.size()) ? first : i+1);
             i++;
             j++;
         }
+        first = i;
     }
     auto mesh = std::make_shared<Mesh<VertexColor>>(COLOR_SHADER);
     mesh->Init(vertices, indices);
