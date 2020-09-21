@@ -4,6 +4,7 @@
 #include <monkey/math/shapes/plane3d.h>
 #include "visitor.h"
 #include <memory>
+#include <monkey/math/shapes/polychain3d.h>
 
 struct TexInfo {
 	std::string id;
@@ -16,7 +17,8 @@ struct TexInfo {
 // creates a mesh from a shape
 class TexMeshFactory :
     public AcyclicVisitor,
-	public Visitor<Plane3D>
+	public Visitor<Plane3D>,
+	public Visitor<PolyChain3D>
 {
 public:
 	TexMeshFactory ();
@@ -28,6 +30,8 @@ private:
 	std::unordered_map<std::string, TexInfo> m_textureInfo;
 	std::vector<std::shared_ptr<IMesh>> m_meshes;
 	void visit(Plane3D&) override;
+	void visit(PolyChain3D&) override;
+
 };
 
 inline void TexMeshFactory::addTexInfo (const TexInfo& info) {
