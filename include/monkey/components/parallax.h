@@ -18,7 +18,7 @@ public:
 private:
     void onCameraMove(Camera*);
     std::string m_camId;
-    OrthographicCamera* m_cam;
+    Camera* m_cam;
     glm::vec2 m_factor;
     glm::vec3 m_camInitPos;
     glm::vec3 m_entityInitPos;
@@ -26,4 +26,5 @@ private:
     float m_bx;
     float m_ay;
     float m_by;
+    glm::vec2 m_offset;
 };

@@ -36,7 +36,26 @@ Camera::Camera(const ITable & t) : Ref(t) {
     m_fwd = t.get<glm::vec3>("direction", glm::vec3(0, 0, -1));
     m_up = t.get<glm::vec3>("up", glm::vec3(0, 1, 0));
     m_camViewport = t.get<glm::vec4>("viewport", glm::vec4(0.0f, 0.0f, Engine::get().GetDeviceSize()));
+    m_xMax = m_yMax = std::numeric_limits<float>::infinity();
+    m_xMin = m_yMin = -m_xMax;
+    auto bounds = t.get<glm::vec4>("bounds", glm::vec4(0.0));
+    if (bounds != glm::vec4(0.0f)) {
+        SetBounds(bounds[0], bounds[2], bounds[1], bounds[3]);
+    }
+}
 
+void Camera::SetBounds(float xMin, float xMax, float yMin, float yMax) {
+    m_xMin = xMin;
+    m_xMax = xMax;
+    m_yMin = yMin;
+    m_yMax = yMax;
+}
+
+void OrthographicCamera::SetBounds(float xMin, float xMax, float yMin, float yMax) {
+    m_xMin = xMin + m_orthoWidth*0.5f;
+    m_xMax = xMax - m_orthoWidth*0.5f;
+    m_yMin = yMin + m_orthoHeight*0.5f;
+    m_yMax = yMax - m_orthoHeight*0.5f;
 }
 
 glm::vec3 Camera::GetPosition() const {
@@ -55,11 +74,17 @@ void Camera::SetProjectionMatrix() {
 }
 
 void Camera::SetPosition(glm::vec3 eye, glm::vec3 dir, glm::vec3 up) {
-    m_fwd = dir;
-    m_up = up;
-    m_eye = eye;
-    m_viewMatrix = glm::lookAt(eye, eye + dir, up);
-    OnMove.Fire(this);
+    eye.x = Clamp(eye.x, m_xMin, m_xMax);
+    eye.y = Clamp(eye.y, m_yMin, m_yMax);
+
+    if (!isEqual(eye.x, m_eye.x) || !isEqual(eye.y, m_eye.y)) {
+        m_fwd = dir;
+        m_up = up;
+        m_eye = eye;
+        m_viewMatrix = glm::lookAt(eye, eye + dir, up);
+        OnMove.Fire(this);
+    }
+
 }
 
 
@@ -67,8 +92,7 @@ void Camera::SetPosition(glm::vec3 eye, glm::vec3 dir, glm::vec3 up) {
 OrthographicCamera::OrthographicCamera(float orthoWidth, float orthoHeight, glm::vec4 viewport)
         : Camera(viewport), m_orthoWidth{orthoWidth}, m_orthoHeight{orthoHeight}
 {
-    m_xMax = m_yMax = std::numeric_limits<float>::infinity();
-    m_xMin = m_yMin = -m_xMax;
+
     // m_aspectRatio = m_camViewport[2] / m_camViewport[3];
     //float hw = 0.5f * m_orthoWidth;
     //float hh = 0.5f * m_orthoHeight;
@@ -83,13 +107,8 @@ OrthographicCamera::OrthographicCamera(const ITable & table) : Camera(table) {
     m_orthoWidth = size.x;
     m_orthoHeight = size.y;
 
-    auto bounds = table.get<glm::vec4>("bounds", glm::vec4(0.0));
 
-    m_xMax = m_yMax = std::numeric_limits<float>::infinity();
-    m_xMin = m_yMin = -m_xMax;
-    if (bounds != glm::vec4(0.0f)) {
-        SetBounds(bounds[0], bounds[2], bounds[1], bounds[3]);
-    }
+
 
     SetPosition(m_eye, m_fwd, m_up);
     Init();
@@ -159,17 +178,17 @@ void OrthographicCamera::Init() {
 
 }
 
-void OrthographicCamera::SetPosition(vec3 eye, vec3 direction, vec3 up) {
-    //std::cout << "update cam pos...\n";
-    //std::cout << "Switch cam pos to " << eye.x << ", " << eye.y << "\n";
-    eye.x = Clamp(eye.x, m_xMin, m_xMax);
-    eye.y = Clamp(eye.y, m_yMin, m_yMax);
-
-    if (!isEqual(eye.x, m_eye.x) || !isEqual(eye.y, m_eye.y)) {
-        Camera::SetPosition(eye, direction, up);
-    }
-    //RecomputeScreenToWorldMatrix();
-}
+//void OrthographicCamera::SetPosition(vec3 eye, vec3 direction, vec3 up) {
+//    //std::cout << "update cam pos...\n";
+//    //std::cout << "Switch cam pos to " << eye.x << ", " << eye.y << "\n";
+//    eye.x = Clamp(eye.x, m_xMin, m_xMax);
+//    eye.y = Clamp(eye.y, m_yMin, m_yMax);
+//
+//    if (!isEqual(eye.x, m_eye.x) || !isEqual(eye.y, m_eye.y)) {
+//        Camera::SetPosition(eye, direction, up);
+//    }
+//    //RecomputeScreenToWorldMatrix();
+//}
 
 
 

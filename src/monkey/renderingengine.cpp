@@ -147,6 +147,7 @@ void RenderingEngine::Update(double)
 
         }
         shader->Stop();
+
     }
 }
 

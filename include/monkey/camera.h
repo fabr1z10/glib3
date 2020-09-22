@@ -44,6 +44,8 @@ public:
     glm::vec3 getForward() const;
     glm::vec3 getUp() const;
     glm::vec3 getRight () const;
+    virtual void SetBounds(float xMin, float xMax, float yMin, float yMax);
+
 protected:
     // this is static and it's the viewport in device coordinates
     glm::vec4 m_camViewport;
@@ -57,6 +59,9 @@ protected:
     glm::vec3 m_up;
     glm::vec3 m_eye;
     std::string m_root;
+    // bounds
+    float m_xMin, m_xMax;
+    float m_yMin, m_yMax;
 };
 
 inline glm::vec3 Camera::getForward() const {
@@ -96,13 +101,14 @@ public:
     void setOrthoSize(float w, float h);
     glm::vec2 getOrthoSize() const;
     // set the visible rectangle
-    void SetBounds(float xMin, float xMax, float yMin, float yMax);
     void Resize(int width, int height) override;
     bool IsVisible(const Bounds&) override;
     glm::vec2 GetWorldCoordinates(glm::vec2) override;
-    void SetPosition(glm::vec3 eye, glm::vec3 direction, glm::vec3 up = glm::vec3(0, 1, 0)) override;
+    //void SetPosition(glm::vec3 eye, glm::vec3 direction, glm::vec3 up = glm::vec3(0, 1, 0)) override;
     glm::vec2 GetSize();
     virtual void Init();
+    void SetBounds(float xMin, float xMax, float yMin, float yMax) override;
+
     using ParentClass = Camera;
 protected:
 
@@ -112,9 +118,7 @@ protected:
     glm::vec2 m_extents;
     float m_orthoWidth;
     float m_orthoHeight;
-    // bounds
-    float m_xMin, m_xMax;
-    float m_yMin, m_yMax;
+
     glm::mat3 m_screenToWorldMat;
 };
 
@@ -122,12 +126,7 @@ inline glm::vec2 OrthographicCamera::getOrthoSize() const{
     return glm::vec2(m_orthoWidth, m_orthoHeight);
 }
 
-inline void OrthographicCamera::SetBounds(float xMin, float xMax, float yMin, float yMax) {
-    m_xMin = xMin + m_orthoWidth*0.5f;
-    m_xMax = xMax - m_orthoWidth*0.5f;
-    m_yMin = yMin + m_orthoHeight*0.5f;
-    m_yMax = yMax - m_orthoHeight*0.5f;
-}
+
 
 inline glm::vec2 OrthographicCamera::GetSize() {
     return glm::vec2(m_orthoWidth, m_orthoHeight);

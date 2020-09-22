@@ -66,6 +66,7 @@
 #include <monkey/skeletal/skcoll.h>
 #include <monkey/skeletal/skeletalcollidermanager.h>
 #include <monkey/math/shapes/polychain3d.h>
+#include <monkey/math/shapes/surf2d.h>
 
 
 namespace py = pybind11;
@@ -238,7 +239,7 @@ SceneFactory::SceneFactory() {
     // mesh
     add2<Plane3D> ("shape.plane3d");
     add2<PolyChain3D> ("shape.polychain3d");
-
+    add2<PySurf2D>("shape.surf2d");
 }
 
 //void SceneFactory::addStateFactory(const std::string &a, std::unique_ptr<FactoryMethod<State>> f) {

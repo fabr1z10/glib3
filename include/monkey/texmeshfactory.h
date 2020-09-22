@@ -5,6 +5,7 @@
 #include "visitor.h"
 #include <memory>
 #include <monkey/math/shapes/polychain3d.h>
+#include <monkey/math/shapes/surf2d.h>
 
 struct TexInfo {
 	std::string id;
@@ -18,7 +19,9 @@ struct TexInfo {
 class TexMeshFactory :
     public AcyclicVisitor,
 	public Visitor<Plane3D>,
-	public Visitor<PolyChain3D>
+	public Visitor<PolyChain3D>,
+	public Visitor<Polygon>,
+	public Visitor<ISurf2D>
 {
 public:
 	TexMeshFactory ();
@@ -31,6 +34,8 @@ private:
 	std::vector<std::shared_ptr<IMesh>> m_meshes;
 	void visit(Plane3D&) override;
 	void visit(PolyChain3D&) override;
+    void visit(Polygon&) override;
+    void visit(ISurf2D&) override;
 
 };
 

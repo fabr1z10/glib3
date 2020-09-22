@@ -15,6 +15,7 @@ Parallax::Parallax(const Parallax& orig) : Component(orig), m_factor(orig.m_fact
 Parallax::Parallax(const ITable & t) : Component(t) {
     m_camId = t.get<std::string>("cam");
     m_factor = t.get<glm::vec2>("factor");
+    m_offset = t.get<glm::vec2>("offset", glm::vec2(0.0f));
 }
 
 std::shared_ptr<Component> Parallax::clone() const {
@@ -22,7 +23,7 @@ std::shared_ptr<Component> Parallax::clone() const {
 }
 
 void Parallax::Begin() {
-    m_cam = Monkey::get().Get<OrthographicCamera>(m_camId);
+    m_cam = Monkey::get().Get<Camera>(m_camId);
     m_camInitPos = m_cam->GetPosition();
     m_entityInitPos = m_entity->GetPosition();
 
@@ -45,8 +46,9 @@ void Parallax::Start() {
 void Parallax::onCameraMove(Camera * cam) {
     glm::vec3 pos = cam->GetPosition();
 
-    float nx = m_ax * pos.x + m_bx;
-    float ny = m_ay * pos.y + m_by;
+    float nx = m_ax * pos.x + m_bx ;
+    nx += m_offset.x;
+    float ny = m_ay * pos.y + m_by + m_offset.y;
     float nz = m_entityInitPos.z;
     m_entity->SetPosition(glm::vec3 (nx,  ny, nz));
 }
