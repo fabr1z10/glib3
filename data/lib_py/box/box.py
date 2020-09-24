@@ -18,7 +18,7 @@ import box
 from box.converters import (_to_json, _from_json, _from_toml, _to_toml, _from_yaml, _to_yaml, BOX_PARAMETERS)
 from box.exceptions import BoxError, BoxKeyError, BoxTypeError, BoxValueError, BoxWarning
 
-__all__ = ['Box']
+__all__ = ['Box3D']
 
 _first_cap_re = re.compile('(.)([A-Z][a-z]+)')
 _all_cap_re = re.compile('([a-z0-9])([A-Z])')
@@ -71,13 +71,13 @@ def _get_box_config():
     }
 
 
-class Box(dict):
+class Box3D(dict):
     """
     Improved dictionary access through dot notation with additional tools.
 
     :param default_box: Similar to defaultdict, return a default value
     :param default_box_attr: Specify the default replacement.
-        WARNING: If this is not the default 'Box', it will not be recursive
+        WARNING: If this is not the default 'Box3D', it will not be recursive
     :param default_box_none_transform: When using default_box, treat keys with none values as absent. True by default
     :param frozen_box: After creation, the box cannot be modified
     :param camel_killer_box: Convert CamelCase to snake_case
@@ -103,7 +103,7 @@ class Box(dict):
         Due to the way pickling works in python 3, we need to make sure
         the box config is created as early as possible.
         """
-        obj = super(Box, cls).__new__(cls, *args, **kwargs)
+        obj = super(Box3D, cls).__new__(cls, *args, **kwargs)
         obj._box_config = _get_box_config()
         obj._box_config.update({
             'default_box': default_box,
@@ -146,7 +146,7 @@ class Box(dict):
             raise BoxError('box_duplicates are only for conversion_boxes')
         if len(args) == 1:
             if isinstance(args[0], str):
-                raise BoxValueError('Cannot extrapolate Box from string')
+                raise BoxValueError('Cannot extrapolate Box3D from string')
             if isinstance(args[0], Mapping):
                 for k, v in args[0].items():
                     if v is args[0]:
@@ -160,7 +160,7 @@ class Box(dict):
             else:
                 raise BoxValueError('First argument must be mapping or iterable')
         elif args:
-            raise BoxTypeError(f'Box expected at most 1 argument, got {len(args)}')
+            raise BoxTypeError(f'Box3D expected at most 1 argument, got {len(args)}')
 
         for k, v in kwargs.items():
             if args and isinstance(args[0], Mapping) and v is args[0]:
@@ -172,7 +172,7 @@ class Box(dict):
     def __add__(self, other: dict):
         new_box = self.copy()
         if not isinstance(other, dict):
-            raise BoxTypeError(f'Box can only merge two boxes or a box and a dictionary.')
+            raise BoxTypeError(f'Box3D can only merge two boxes or a box and a dictionary.')
         new_box.merge_update(other)
         return new_box
 
@@ -182,7 +182,7 @@ class Box(dict):
             for item in self.items():
                 hashing ^= hash(item)
             return hashing
-        raise BoxTypeError('unhashable type: "Box"')
+        raise BoxTypeError('unhashable type: "Box3D"')
 
     def __dir__(self):
         allowed = string.ascii_letters + string.digits + '_'
@@ -213,18 +213,18 @@ class Box(dict):
                     return self.__get_default(key)
                 else:
                     return None
-            if isinstance(default, dict) and not isinstance(default, Box):
-                return Box(default)
+            if isinstance(default, dict) and not isinstance(default, Box3D):
+                return Box3D(default)
             if isinstance(default, list) and not isinstance(default, box.BoxList):
                 return box.BoxList(default)
             return default
         return self[key]
 
     def copy(self):
-        return Box(super().copy(), **self.__box_config())
+        return Box3D(super().copy(), **self.__box_config())
 
     def __copy__(self):
-        return Box(super().copy(), **self.__box_config())
+        return Box3D(super().copy(), **self.__box_config())
 
     def __deepcopy__(self, memodict=None):
         frozen = self._box_config['frozen_box']
@@ -293,7 +293,7 @@ class Box(dict):
         if self._box_config['box_intact_types'] and isinstance(value, self._box_config['box_intact_types']):
             return super().__setitem__(item, value)
         # This is the magic sauce that makes sub dictionaries into new box objects
-        if isinstance(value, dict) and not isinstance(value, Box):
+        if isinstance(value, dict) and not isinstance(value, Box3D):
             value = self.__class__(value, **self.__box_config())
         elif isinstance(value, list) and not isinstance(value, box.BoxList):
             if self._box_config['frozen_box']:
@@ -348,7 +348,7 @@ class Box(dict):
 
     def __setitem__(self, key, value):
         if key != '_box_config' and self._box_config['__created'] and self._box_config['frozen_box']:
-            raise BoxError('Box is frozen')
+            raise BoxError('Box3D is frozen')
         if self._box_config['box_dots'] and isinstance(key, str) and '.' in key:
             first_item, children = _parse_box_dots(key)
             if first_item in self.keys():
@@ -364,7 +364,7 @@ class Box(dict):
 
     def __setattr__(self, key, value):
         if key != '_box_config' and self._box_config['frozen_box'] and self._box_config['__created']:
-            raise BoxError('Box is frozen')
+            raise BoxError('Box3D is frozen')
         if key in self._protected_keys:
             raise BoxKeyError(f'Key name "{key}" is protected')
         if key == '_box_config':
@@ -377,7 +377,7 @@ class Box(dict):
 
     def __delitem__(self, key):
         if self._box_config['frozen_box']:
-            raise BoxError('Box is frozen')
+            raise BoxError('Box3D is frozen')
         if key not in self.keys() and self._box_config['box_dots'] and isinstance(key, str) and '.' in key:
             first_item, children = key.split('.', 1)
             if first_item in self.keys() and isinstance(self[first_item], dict):
@@ -392,7 +392,7 @@ class Box(dict):
 
     def __delattr__(self, item):
         if self._box_config['frozen_box']:
-            raise BoxError('Box is frozen')
+            raise BoxError('Box3D is frozen')
         if item == '_box_config':
             raise BoxError('"_box_config" is protected')
         if item in self._protected_keys:
@@ -439,7 +439,7 @@ class Box(dict):
         return key, self.pop(key)
 
     def __repr__(self):
-        return f'<Box: {self.to_dict()}>'
+        return f'<Box3D: {self.to_dict()}>'
 
     def __str__(self):
         return str(self.to_dict())
@@ -454,9 +454,9 @@ class Box(dict):
 
     def to_dict(self):
         """
-        Turn the Box and sub Boxes back into a native python dictionary.
+        Turn the Box3D and sub Boxes back into a native python dictionary.
 
-        :return: python dictionary of this Box
+        :return: python dictionary of this Box3D
         """
         out_dict = dict(self)
         for k, v in out_dict.items():
@@ -483,11 +483,11 @@ class Box(dict):
         def convert_and_set(k, v):
             intact_type = (self._box_config['box_intact_types'] and isinstance(v, self._box_config['box_intact_types']))
             if isinstance(v, dict) and not intact_type:
-                # Box objects must be created in case they are already
+                # Box3D objects must be created in case they are already
                 # in the `converted` box_config set
                 v = self.__class__(v, **self.__box_config())
                 if k in self and isinstance(self[k], dict):
-                    if isinstance(self[k], Box):
+                    if isinstance(self[k], Box3D):
                         self[k].merge_update(v)
                     else:
                         self[k].update(v)
@@ -573,7 +573,7 @@ class Box(dict):
     def to_json(self, filename: Union[str, Path] = None, encoding: str = 'utf-8', errors: str = 'strict',
                 **json_kwargs):
         """
-        Transform the Box object into a JSON string.
+        Transform the Box3D object into a JSON string.
 
         :param filename: If provided will save to file
         :param encoding: File encoding
@@ -587,15 +587,15 @@ class Box(dict):
     def from_json(cls, json_string: str = None, filename: Union[str, Path] = None, encoding: str = 'utf-8',
                   errors: str = 'strict', **kwargs):
         """
-        Transform a json object string into a Box object. If the incoming
+        Transform a json object string into a Box3D object. If the incoming
         json is a list, you must use BoxList.from_json.
 
         :param json_string: string to pass to `json.loads`
         :param filename: filename to open and pass to `json.load`
         :param encoding: File encoding
         :param errors: How to handle encoding errors
-        :param kwargs: parameters to pass to `Box()` or `json.loads`
-        :return: Box object from json data
+        :param kwargs: parameters to pass to `Box3D()` or `json.loads`
+        :return: Box3D object from json data
         """
         box_args = {}
         for arg in kwargs.copy():
@@ -611,7 +611,7 @@ class Box(dict):
     def to_yaml(self, filename: Union[str, Path] = None, default_flow_style: bool = False, encoding: str = 'utf-8',
                 errors: str = 'strict', **yaml_kwargs):
         """
-        Transform the Box object into a YAML string.
+        Transform the Box3D object into a YAML string.
 
         :param filename:  If provided will save to file
         :param default_flow_style: False will recursively dump dicts
@@ -627,14 +627,14 @@ class Box(dict):
     def from_yaml(cls, yaml_string: str = None, filename: Union[str, Path] = None, encoding: str = 'utf-8',
                   errors: str = 'strict', **kwargs):
         """
-        Transform a yaml object string into a Box object. By default will use SafeLoader.
+        Transform a yaml object string into a Box3D object. By default will use SafeLoader.
 
         :param yaml_string: string to pass to `yaml.load`
         :param filename: filename to open and pass to `yaml.load`
         :param encoding: File encoding
         :param errors: How to handle encoding errors
-        :param kwargs: parameters to pass to `Box()` or `yaml.load`
-        :return: Box object from yaml data
+        :param kwargs: parameters to pass to `Box3D()` or `yaml.load`
+        :return: Box3D object from yaml data
         """
         box_args = {}
         for arg in kwargs.copy():
@@ -648,7 +648,7 @@ class Box(dict):
 
     def to_toml(self, filename: Union[str, Path] = None, encoding: str = 'utf-8', errors: str = 'strict'):
         """
-        Transform the Box object into a toml string.
+        Transform the Box3D object into a toml string.
 
         :param filename: File to write toml object too
         :param encoding: File encoding
@@ -661,13 +661,13 @@ class Box(dict):
     def from_toml(cls, toml_string: str = None, filename: Union[str, Path] = None,
                   encoding: str = 'utf-8', errors: str = 'strict', **kwargs):
         """
-        Transforms a toml string or file into a Box object
+        Transforms a toml string or file into a Box3D object
 
         :param toml_string: string to pass to `toml.load`
         :param filename: filename to open and pass to `toml.load`
         :param encoding: File encoding
         :param errors: How to handle encoding errors
-        :param kwargs: parameters to pass to `Box()`
+        :param kwargs: parameters to pass to `Box3D()`
         :return:
         """
         box_args = {}

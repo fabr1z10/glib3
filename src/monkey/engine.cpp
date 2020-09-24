@@ -222,15 +222,15 @@ void Engine::MainLoop() {
         auto room = m_mainTable->get<std::string>("room");
 		std::cerr << "room: " << room;
         py::function builder;
-        try {
-            builder = m_mainTable->get<py::dict>("data")["rooms"][room.c_str()].cast<py::function>();
-        } catch (...) {
-            GLIB_FAIL("Unable to find the builder for room: " << room)
-        }
-        auto roomDef = builder().cast<py::object>();
+//        try {
+//            builder = m_mainTable->get<py::dict>("data")["rooms"][room.c_str()].cast<py::function>();
+//        } catch (...) {
+//            GLIB_FAIL("Unable to find the builder for room: " << room)
+//        }
         std::cout << "=================================\n";
         std::cout << "Loading room: "<< room << std::endl;
         std::cout << "=================================\n";
+		auto roomDef = m_mainTable->get<py::function>("createRoom") (room);//   builder().cast<py::object>();
 
         m_scene = m_sceneFactory->Create(roomDef);
         

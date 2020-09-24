@@ -5,6 +5,7 @@ import example
 import enum
 import yaml
 import os
+import sys
 
 import lib_py.assets as assets
 import lib_py.runner as runner
@@ -22,10 +23,33 @@ class ShaderType(enum.Enum):
     text = 2,
     skeletal = 3
 
+data = {
+    'assets': {
+        'fonts': {},
+        'models': {},            # include sprite + skeletal
+        'skeletalanimations': {},
+        'mesh': {}
+    },
+    'rooms': {},
+    'strings': {},
+    'entities': {},
+    'functions': {},
+    'factories': {
+        'rooms': {},
+        'items': {}
+    },
+    # here go all the variables defined in variables.yaml 
+    # these are game-related variables
+    'vars': {}
+}
+
 ########################################################
 # this is where all begins ... :-)
+# you should provide 
+# - room factories
+# - item factories
 ########################################################
-def startUp():
+def startUp(roomFactories = {}, itemFactories = {}):
     print ('# starting up ...')
     example.init(example.what)
     addShader (ShaderType.unlit_textured)
@@ -36,6 +60,10 @@ def startUp():
     global window_size
     global room
     global title
+    
+    data ['factories']['rooms'] = roomFactories
+    data ['factories']['items'] = itemFactories
+
 
     with open(example.dir+'/main.yaml') as f:
         a = yaml.load(f, Loader = yaml.FullLoader)  
@@ -49,12 +77,34 @@ def startUp():
         print ('# loading strings ...')
         loadText (language)
         # read game variables, and functions
-        with open(example.dir+'/variables.yaml') as f:
-            data['vars'] = yaml.load(f, Loader = yaml.FullLoader)            
+        if os.path.isfile(example.dir+'/variables.yaml'):
+            with open(example.dir+'/variables.yaml') as f:
+                data['vars'] = yaml.load(f, Loader = yaml.FullLoader)            
         for f in a['fonts']:
             print ('# loading font ' + f['id'])
             addFont (assets.Font (f['id'], f['file']))
+        #loadRooms()
         return a                    
+
+
+def createRoom (room: str):
+    print ('creating room ' + room)
+    filename = example.dir +'/rooms/'+ room+ '.yaml'
+    try:
+        with open(filename) as f:
+            room = yaml.load(f, Loader=yaml.FullLoader)
+            print ('ID: ' + room['id'])            
+            rt = room['type']
+            factory = data['factories']['rooms'].get(rt, None)
+            if factory is None:
+                print ('Unable to find factory for room type: ' + rt)
+                exit(1)
+            return factory(room)
+    except EnvironmentError as error:
+        print (error)
+        sys.exit(1)            
+    return None
+
 
 
 # contains engine related infos.
@@ -67,20 +117,7 @@ title = 'Untitled project'
 room = ''
 previous_room = ''
 shaders = []
-data = {
-    'assets': {
-        'fonts': {},
-        'models': {},            # include sprite + skeletal
-        'skeletalanimations': {},
-        'mesh': {}
-    },
-    'rooms': {},
-    'strings': {},
-    'entities': {},
-    'functions': {},
-    'factories': {},
-    'vars': {}
-}
+
 
 scripts = None
 
@@ -275,6 +312,13 @@ def loadText(lang: str):
             data['strings']= yaml.load(f, Loader=yaml.FullLoader)
         print(data['strings'])
 
+# loading factories
+def loadFactories(lang: str):
+    dir = example.dir +'//'+lang;
+    if os.path.exists(dir):
+        with open(dir+ '/text.yaml', encoding='utf8') as f:
+            data['strings']= yaml.load(f, Loader=yaml.FullLoader)
+        print(data['strings'])
 # # creating enumerations using class 
 
 # class Engine:

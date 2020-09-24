@@ -169,5 +169,15 @@ score100:
     def:
       frames:
         - [0, 80, 16, 16, 8, 0]
+coin_counter:
+  sheet: 'gfx/smb1.png'
+  type: 'asset.sprite'
+  animations:
+    def:
+      frames:
+        - [128,80,16,16]
+        - [144,80,16,16]
+        - [160,80,16,16]
+        - [144,80,16,16]
 
         

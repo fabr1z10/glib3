@@ -64,11 +64,12 @@ class Skeleton(Entity):
 
 
 class Text(Entity):
-    def __init__(self, font: str, text: str, color, align: TextAlignment = TextAlignment.topleft, tag=None, pos=[0,0,0]):
+    def __init__(self, font: str, size, text: str, color, align: TextAlignment = TextAlignment.topleft, tag=None, pos=[0,0,0]):
         super().__init__(tag, pos)
         self.type = 'text'
         self.font = font
         self.text = text
+        self.size = size
         #print ('cazz0 ' + str(align.value))
         self.align = align.value
         self.color = color

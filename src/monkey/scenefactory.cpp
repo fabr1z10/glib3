@@ -67,6 +67,7 @@
 #include <monkey/skeletal/skeletalcollidermanager.h>
 #include <monkey/math/shapes/polychain3d.h>
 #include <monkey/math/shapes/surf2d.h>
+#include <monkey/components/fpscounter.h>
 
 
 namespace py = pybind11;
@@ -159,6 +160,7 @@ SceneFactory::SceneFactory() {
     add2<SimpleCollider> ("components.collider");
     add2<SmartCollider> ("components.smartcollider");
     add2<SkCollider> ("components.skeletalcollider");
+    add2<FPSCounter> ("components.fpscounter");
 	add2<SkColl> ("components.skc");
 	add2<SkeletalColliderManager>("components.collidermanager");
     add2<ScriptHotSpot> ("components.hotspot");

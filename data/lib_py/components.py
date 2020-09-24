@@ -10,7 +10,7 @@ class Gfx:
         self.cls = 0
 
 class TiledGfx:
-    def __init__(self, tilesheet : str, sheetSize, tileData : list, width: int, height: int, size: float, repx: int =None, repy: int=None, angle: float = None):
+    def __init__(self, tilesheet : str, sheetSize, tileData : list, width: int, height: int, size: float=1.0, repx: int =None, repy: int=None, angle: float = None):
         self.type = 'components.gfx'
         self.image = tilesheet
         self.sheetSize = sheetSize

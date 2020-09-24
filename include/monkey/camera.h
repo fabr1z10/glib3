@@ -21,7 +21,7 @@ public:
     Camera(const ITable&);
     virtual void Resize(int width, int height) = 0;
     glm::vec3 GetPosition() const;
-    virtual void SetPosition(glm::vec3 eye, glm::vec3 direction, glm::vec3 up = glm::vec3(0, 1, 0));
+    void SetPosition(glm::vec3 eye, glm::vec3 direction, glm::vec3 up = glm::vec3(0, 1, 0), bool alwaysUpdate = false);
     virtual void Start();
     virtual void Update(double) {}
     virtual void InitCamera() {}
@@ -44,7 +44,7 @@ public:
     glm::vec3 getForward() const;
     glm::vec3 getUp() const;
     glm::vec3 getRight () const;
-    virtual void SetBounds(float xMin, float xMax, float yMin, float yMax);
+    void SetBounds(float xMin, float xMax, float yMin, float yMax);
 
 protected:
     // this is static and it's the viewport in device coordinates
@@ -107,7 +107,7 @@ public:
     //void SetPosition(glm::vec3 eye, glm::vec3 direction, glm::vec3 up = glm::vec3(0, 1, 0)) override;
     glm::vec2 GetSize();
     virtual void Init();
-    void SetBounds(float xMin, float xMax, float yMin, float yMax) override;
+    //void SetBounds(float xMin, float xMax, float yMin, float yMax) override;
 
     using ParentClass = Camera;
 protected:

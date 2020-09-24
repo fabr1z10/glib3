@@ -6,6 +6,10 @@ jump_velocity = abs(gravity) * time_to_jump_apex
 warp_func = None
 state = 0
 invincibility = False
+player = 'mario'
+score = 0
+coins = 0
+time = 0
 stateInfo = [
     'mario',
     'supermario'
