@@ -9,6 +9,7 @@ public:
     std::string GetText () const;
     void SetText(const std::string&);
     glm::vec2 GetOffset() const;
+    Bounds getBounds() const;
     int GetNumberOfLines() const;
 private:
    TextMesh* m_textMesh;

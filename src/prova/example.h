@@ -10,6 +10,7 @@ extern Engine * m_engine;
 
 
 Wrap1 get(const std::string & tag) ;
+void killScript (const std::string&);
 void rmv(int);
 void rmvt(const std::string&);
 std::vector<float> campos(const std::string&);

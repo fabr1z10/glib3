@@ -16,6 +16,10 @@ void TextModel::SetText(const std::string& text) {
 
 }
 
+Bounds TextModel::getBounds() const {
+	return m_textMesh->GetBounds();
+}
+
 int TextModel::GetNumberOfLines() const {
     return m_textMesh->getNumberOfLines();
 }

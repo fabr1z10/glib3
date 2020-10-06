@@ -57,7 +57,7 @@ public:
 	void Move(glm::vec3&) override;
     bool grounded() const override;
     bool ceiling () const override;
-
+	bool side () const override;
 	void ClimbSlope(glm::vec2&, float);
 	void DescendSlope(glm::vec2&);
 	void CalculateRaySpacing();
@@ -106,4 +106,8 @@ inline bool Controller2D::grounded() const {
 
 inline bool Controller2D::ceiling () const {
 return m_details.above;
+}
+
+inline bool Controller2D::side() const {
+	return m_details.left || m_details.right;
 }

@@ -105,7 +105,7 @@ void Wrap1::setColor(std::vector<float> & mult, std::vector<float>& add) {
     }
 }
 
-void Wrap1::setModel(const std::string& modelId, const std::string& anim) {
+void Wrap1::setModel(const std::string& modelId) {
     Renderer* r = m_entity->GetComponent<Renderer>();
     IAnimator* a = m_entity->GetComponent<IAnimator>();
     auto model = Engine::get().GetAssetManager().GetModel(modelId);
@@ -157,6 +157,9 @@ void Wrap1::enableControls(bool value) {
     //m_entity->SetControlsEnabled(value);
 }
 
+void Wrap1::setEnableUpdate(bool value) {
+	m_entity->SetEnableUpdate(value);
+}
 pybind11::object Wrap1::create(Entity* e) {
     pybind11::object example = py::module::import("example").attr("Wrap1");
     pybind11::object w = example();
@@ -179,6 +182,17 @@ pybind11::list Wrap1::getAttackPos() {
     l.append(center.x);
     l.append(center.y);
     return l;
+}
+
+pybind11::list Wrap1::getTextSize() {
+	auto b = dynamic_cast<TextModel*>(m_entity->GetComponent<Renderer>()->GetModel())->getBounds();
+	pybind11::list l;
+	l.append(b.min.x);
+	l.append(b.min.y);
+	l.append(b.max.x);
+	l.append(b.max.y);
+	return l;
+
 }
 
 

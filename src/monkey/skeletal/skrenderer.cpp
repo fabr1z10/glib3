@@ -2,7 +2,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <monkey/components/ianimator.h>
 
-SkRenderer::SkRenderer(std::shared_ptr<IModel> model) {
+SkRenderer::SkRenderer(std::shared_ptr<IModel> model) : Renderer() {
     m_model = dynamic_cast<SkModel*>(model.get());
 }
 

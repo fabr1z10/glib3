@@ -83,7 +83,8 @@ void FoeChase::computeDirection() {
         m_entity->SetFlipX(true);
         m_targetVelocityX = -m_speed;
     }
-    m_inRange =abs(abs(ex-x)-m_attackPos) < 0.2f;
+    //m_inRange =abs(abs(ex-x)-m_attackPos) < 0.2f;
+	m_inRange =abs(ex-x) < m_attackPos;
     //std::cout << abs(ex-x) << ", " << m_attackPos << abs(abs(ex-x)-m_attackPos) << "\n";
     if (m_inRange) {
         m_animator->SetAnimation(m_idleAnim);
@@ -129,7 +130,8 @@ void FoeChase::Run(double dt) {
             }
 
         }
-        if (!m_c->IsFalling( m_targetVelocityX > 0 ? 1 : -1)) {
+        //if (!m_c->IsFalling( m_targetVelocityX > 0 ? 1 : -1)) {
+        if (true) {
             glm::vec3 delta = m_dynamics->step(dt, m_targetVelocityX, m_acceleration);
             //if (m_speed < 30.0f) std::cout << delta.x << "\n";
             // before moving, check if I'm falling off the platform

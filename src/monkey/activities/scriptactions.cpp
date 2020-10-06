@@ -10,7 +10,9 @@ SuspendScript::SuspendScript(const ITable & t)  {
 ResumeScript::ResumeScript(const ITable & t)  {
     m_script = t.get<std::string>("script");
 }
-
+KillScript::KillScript(const ITable & t)  {
+	m_script = t.get<std::string>("script");
+}
 void SuspendScript::Start() {
     auto scheduler = Engine::get().GetRunner<Scheduler>();
     scheduler->GetScript(m_script)->SetSuspended(true);

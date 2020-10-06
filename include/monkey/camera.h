@@ -17,7 +17,6 @@ public:
         std::cout << "attempt to destroy cam\n";
 
     }
-    Camera(const LuaTable&);
     Camera(const ITable&);
     virtual void Resize(int width, int height) = 0;
     glm::vec3 GetPosition() const;
@@ -96,7 +95,6 @@ inline void Camera::SetScreenViewPort(glm::vec4 viewport) {
 class OrthographicCamera : public Camera {
 public:
     OrthographicCamera(float orthoWidth, float orthoHeight, glm::vec4 viewport = glm::vec4());
-    OrthographicCamera(const LuaTable&);
     OrthographicCamera(const ITable&);
     void setOrthoSize(float w, float h);
     glm::vec2 getOrthoSize() const;

@@ -146,7 +146,7 @@ void SkCollider::Update(double dt) {
 
     // check attack
     std::string anim = m_animator->GetAnimation();
-    int shapeCastId = m_model->getShapeCastId(anim, t - dt, t);
+    int shapeCastId = m_model->getShapeCastId(anim, t);
     if (shapeCastId == -1) {
         return;
     }

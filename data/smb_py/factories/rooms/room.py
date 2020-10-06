@@ -11,6 +11,8 @@ def f():
     print('toggle pause!')
     func.upgradePlayer()
 
+
+
 def checkWarp():
     print ('qui')
     if vars.warp_func:

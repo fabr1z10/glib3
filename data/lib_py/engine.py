@@ -264,20 +264,26 @@ def addShader(s : ShaderType):
 
 
 def loadAssets():
-    dir = example.dir + '/assets'
-    if os.path.exists(dir):
-        files = os.listdir(dir)
-        for fi in files:
-            #print ('reading ' + fi)
-            with open(dir+'/'+fi) as f:
-                models = yaml.load(f, Loader = yaml.FullLoader) 
-                for key, value in models.items():                    
-                    #print ('reading asset: ' + key + ', type: ' + value['type'])
-                    tp = value['type']
-                    if tp not in asset_fac:
-                        raise ValueError("Don't know how to build " + tp)
-                    data['assets'][asset_loc[tp]][key] = asset_fac[tp](value)
-                    #print ('stored ' + key)
+    #dir = example.dir + '/assets'
+    dirs = ['/assets/sprites/', '/assets/meshes/', '/assets/animations/', '/assets/skeletalmodels/', '/assets/']    
+    for d in dirs:
+        print ('checking directory ' + d)
+        dir = example.dir + d
+        if os.path.exists(dir):
+            files = os.listdir(dir)
+            for fi in files:
+                if os.path.isdir(dir+fi):
+                    continue                
+                #print ('reading ' + fi)
+                with open(dir+'/'+fi) as f:
+                    models = yaml.load(f, Loader = yaml.FullLoader) 
+                    for key, value in models.items():                    
+                        #print ('reading asset: ' + key + ', type: ' + value['type'])
+                        tp = value['type']
+                        if tp not in asset_fac:
+                            raise ValueError("Don't know how to build " + tp)
+                        data['assets'][asset_loc[tp]][key] = asset_fac[tp](value)
+                        #print ('stored ' + key)
                     
 
 

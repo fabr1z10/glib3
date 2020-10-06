@@ -68,6 +68,7 @@
 #include <monkey/math/shapes/polychain3d.h>
 #include <monkey/math/shapes/surf2d.h>
 #include <monkey/components/fpscounter.h>
+#include <monkey/activities/scale.h>
 
 
 namespace py = pybind11;
@@ -198,11 +199,13 @@ SceneFactory::SceneFactory() {
     add2<RunScript> ("action.runscript");
     add2<SuspendScript> ("action.suspendscript");
     add2<ResumeScript> ("action.resumescript");
+	add2<KillScript> ("action.killscript");
     add2<MoveAccelerated> ("action.moveaccelerated");
     add2<MoveTo> ("action.move");
     add2<FreeMove> ("action.freemove");
     add2<ChangeCamBounds> ("action.changecambounds");
     add2<Repeat>("action.repeat");
+    add2<ScaleTo>("action.scale");
     add2<HotSpotManager> ("components.hotspotmanager");
     add2<Scheduler> ("runner.scheduler");
     add2<CollisionEngine> ("runner.collisionengine");

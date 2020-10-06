@@ -103,7 +103,7 @@ void Script::SetLoop(int id) {
 
 
 void Script::Run (float dt) {
-    if (m_suspended) {
+    if (m_suspended || m_complete) {
         return;
     }
 

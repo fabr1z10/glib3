@@ -30,7 +30,6 @@ void TextMesh::UpdateText(const std::string& msg, float maxLineWidth) {
         m_ib = INVALID_OGL_VALUE;
         return;
     }
-    std::cerr << "qui " << msg<<"\n";
 
     vector <VertexText> vertices;
     vector <unsigned int> indices;
@@ -107,7 +106,6 @@ void TextMesh::UpdateText(const std::string& msg, float maxLineWidth) {
 
     Init(vertices, indices);
     //material.texId = font.getTexId();
-    std::cerr << "qui\n";
 }
 
 void TextMesh::splitIntoLines(Font* font, const string& msg, vector<string>& lines, float scalingFactor, float mll) {

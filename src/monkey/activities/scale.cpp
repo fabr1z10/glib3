@@ -5,6 +5,10 @@
 ScaleTo::ScaleTo(float duration, float scale) : TargetActivity(), m_duration{duration}, m_scale{scale}
 {}
 
+ScaleTo::ScaleTo(const ITable & t) : TargetActivity(t) {
+	m_duration = t.get<float>("duration");
+	m_scale = t.get<float>("scale");
+}
 
 void ScaleTo::Start() {
     TargetActivity::Start();

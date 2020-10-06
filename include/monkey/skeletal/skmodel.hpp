@@ -18,6 +18,12 @@ struct SkBoxInfo {
 	float width;
 };
 
+struct AttackBox {
+	float t0;
+	float t1;
+	int boxId;
+};
+
 class SkModel : public IModel {
 public:
     SkModel (const ITable&);
@@ -47,14 +53,14 @@ public:
 
     Shape* getShape (const std::string& animId);
     Shape* getShape (int shapeId);
-    int getShapeCastId (const std::string& animId, float t0, float t1);
+    int getShapeCastId (const std::string& animId, float t);
     std::vector<std::shared_ptr<Shape>> getAttackShapes() const override;
 
 private:
     //std::shared_ptr<Shape> m_defaultShape;
     std::vector<std::shared_ptr<Shape>> m_shapes;
     std::unordered_map<std::string, int> m_animToShape;
-    std::unordered_map<std::string, std::unordered_map<float, int>> m_attackTimes;
+    std::unordered_map<std::string, AttackBox > m_attackTimes;
 
     std::shared_ptr<Joint> m_rootJoint;
     int m_jointCount;

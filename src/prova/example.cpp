@@ -45,6 +45,7 @@ PYBIND11_MODULE(example, m) {
         .def("setModel", &Wrap1::setModel)
         .def("setActive", &Wrap1::setActive)
         .def("enableControls", &Wrap1::enableControls)
+        .def("enableUpdate", &Wrap1::setEnableUpdate)
         .def("appendText", &Wrap1::appendText)
         .def("add", &Wrap1::add)
         .def("getInfo", &Wrap1::getInfo)
@@ -53,7 +54,8 @@ PYBIND11_MODULE(example, m) {
         .def("move", &Wrap1::move)
         .def("clearText", &Wrap1::clearText)
         .def("follow", &Wrap1::follow)
-    	.def("rotatex", &Wrap1::rotx);
+    	.def("rotatex", &Wrap1::rotx)
+    	.def("getTextSize", &Wrap1::getTextSize);
 
     py::class_<PyEngine>(m, "engine")
         //.def("get", &PyEngine::get, py::arg("tag"))
@@ -68,6 +70,7 @@ PYBIND11_MODULE(example, m) {
 
     m.def("adder", &add, "A functione which adds two numbers");
     m.def("get", &get, "Gets a entity by tag");
+    m.def("killScript", &killScript, "Kills a script");
     m.def("remove", &rmv, "Removes an entity by id");
     m.def("removeByTag", &rmvt, "Removes an entity by tag");
     m.def("campos", &campos);

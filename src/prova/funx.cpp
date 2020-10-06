@@ -25,6 +25,16 @@ void rmv(int id) {
     }
 }
 
+
+void killScript(const std::string& scriptId) {
+	try {
+		auto script = m_engine->GetRunner<Scheduler>()->GetScript(scriptId);
+		script->Kill();
+	} catch (Error& e) {}
+
+}
+
+
 void rmvt(const std::string& tag) {
     auto entity = m_monkey->Get<Entity>(tag);
     m_engine->Remove(entity);

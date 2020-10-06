@@ -27,7 +27,8 @@ public:
     void Move(glm::vec3&) override;
     bool grounded() const override;
     bool ceiling () const override;
-    void Update(double) override {}
+	bool side () const override {return false;}
+	void Update(double) override {}
     std::shared_ptr<Component> clone() const override;
     std::type_index GetType() override;
     void ResetShape(ICollider*);

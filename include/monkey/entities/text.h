@@ -7,8 +7,5 @@
 // it takes a MODEL parameter
 class Text : public Entity {
 public:
-    Text (const LuaTable&);
     Text (const ITable&);
-
-
 };

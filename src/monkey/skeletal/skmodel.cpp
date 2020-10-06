@@ -179,38 +179,41 @@ SkModel::SkModel(const ITable & t) {
         //#auto defaultBox = b.get<glm::vec2> ("default");
         //m_defaultShape = std::make_shared<Rect>(defaultBox[0], defaultBox[1], glm::vec3(-0.5f*defaultBox[0], 0, 0));
         //m_shapes.push_back(m_defaultShape);
-		b.foreach<PyDict> ("collider", [&] (const PyDict& d) {
-			auto anim = d.get<std::string>("anim");
-			auto joint = d.get<std::string>("joint");
-			auto P0 = d.get<glm::vec2>("P0");
-			auto P1 = d.get<glm::vec2>("P1");
-			auto width = d.get<float>("width");
-			//auto box = d.get<glm::vec4>("box");
-			glm::vec2 axis0 = P1 - P0;
-			glm::vec2 axis1 = glm::normalize(Perp(axis0));
-			std::vector<glm::vec2> pts ({ P0 + axis1 * width, P1 + axis1*width, P1-axis1*width, P0 - axis1*width });
-			m_shapes.push_back(std::make_shared<Polygon>(pts));
-			//m_attackTimes[anim].insert(std::make_pair(t, m_shapes.size()));
-			//m_shapes.push_back(std::make_shared<Rect>(box[2], box[3], glm::vec3(box[0], box[1], 0.0f)));
-		});
-//        auto anim = b.get<pybind11::dict>("anim");
-//        Bounds maxSize;
-//        for (const auto& a : anim) {
-//            auto animId = a.first.cast<std::string>();
-//            auto size = a.second.cast<std::vector<float>>();
-//            auto shape = std::make_shared<Rect> (size[0], size[1], glm::vec3(-0.5f*size[0], 0.0f, 0.0f));
-//            maxSize.ExpandWith(shape->getBounds());
-//            m_animToShape[animId] = m_shapes.size();
-//            m_shapes.push_back(shape);
-//        }
-//        m_maxBounds = maxSize;
-//        b.foreach<PyDict> ("attack", [&] (const PyDict& d) {
-//            auto anim = d.get<std::string>("anim");
-//            auto t = d.get<float>("t");
-//            auto box = d.get<glm::vec4>("box");
-//            m_attackTimes[anim].insert(std::make_pair(t, m_shapes.size()));
-//            m_shapes.push_back(std::make_shared<Rect>(box[2], box[3], glm::vec3(box[0], box[1], 0.0f)));
-//        });
+//		b.foreach<pydict> ("collider", [&] (const pydict& d) {
+//			auto anim = d.get<std::string>("anim");
+//			auto joint = d.get<std::string>("joint");
+//			auto p0 = d.get<glm::vec2>("p0");
+//			auto p1 = d.get<glm::vec2>("p1");
+//			auto width = d.get<float>("width");
+//			//auto box = d.get<glm::vec4>("box");
+//			glm::vec2 axis0 = p1 - p0;
+//			glm::vec2 axis1 = glm::normalize(perp(axis0));
+//			std::vector<glm::vec2> pts ({ p0 + axis1 * width, p1 + axis1*width, p1-axis1*width, p0 - axis1*width });
+//			m_shapes.push_back(std::make_shared<polygon>(pts));
+//			//m_attacktimes[anim].insert(std::make_pair(t, m_shapes.size()));
+//			//m_shapes.push_back(std::make_shared<rect>(box[2], box[3], glm::vec3(box[0], box[1], 0.0f)));
+//		});
+
+
+        auto anim = b.get<pybind11::dict>("anim");
+        Bounds maxSize;
+        for (const auto& a : anim) {
+            auto animId = a.first.cast<std::string>();
+            auto size = a.second.cast<std::vector<float>>();
+            auto shape = std::make_shared<Rect> (size[0], size[1], glm::vec3(-0.5f*size[0], 0.0f, 0.0f));
+            maxSize.ExpandWith(shape->getBounds());
+            m_animToShape[animId] = m_shapes.size();
+            m_shapes.push_back(shape);
+        }
+        m_maxBounds = maxSize;
+        b.foreach<PyDict> ("attack", [&] (const PyDict& d) {
+            auto anim = d.get<std::string>("anim");
+            auto t0 = d.get<float>("t0");
+			auto t1 = d.get<float>("t1");
+            auto box = d.get<glm::vec4>("box");
+            m_attackTimes[anim] = AttackBox { t0, t1, m_shapes.size()};
+            m_shapes.push_back(std::make_shared<Rect>(box[2], box[3], glm::vec3(box[0], box[1], 0.0f)));
+        });
 
     }
 
@@ -238,15 +241,14 @@ SkAnimation* SkModel::getAnimation(const std::string& id) {
     return m_animations.at(id).get();
 }
 
-int SkModel::getShapeCastId (const std::string& animId, float t0, float t1) {
+int SkModel::getShapeCastId (const std::string& animId, float t) {
     auto it = m_attackTimes.find(animId);
     if (it == m_attackTimes.end()) {
         return -1;
     }
-    for (const auto& p : it->second) {
-        if (t0 <= p.first && t1 > p.first) {
-            return p.second;
-        }
+
+    if (it->second.t0 <= t && t < it->second.t1) {
+    	return it->second.boxId;
     }
     return -1;
 
@@ -280,9 +282,9 @@ std::vector<std::shared_ptr<Shape>> SkModel::getAttackShapes() const {
 
     std::vector<std::shared_ptr<Shape>> shapes;
     for (const auto& m : m_attackTimes) {
-        for (const auto& c : m.second) {
-            shapes.push_back(m_shapes[c.second]);
-        }
+		//for (const auto& c : m.second) {
+        shapes.push_back(m_shapes[m.second.boxId]);
+		//}
     }
     return shapes;
 }

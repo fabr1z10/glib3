@@ -4,7 +4,7 @@
 SkAnimator::SkAnimator(std::shared_ptr<IModel> model) : IAnimator(), m_currentAnimation(nullptr), m_complete(false)
 {
     m_model = std::dynamic_pointer_cast<SkModel>(model);
-
+	m_initAnim = m_model->GetDefaultAnimation();
 
 }
 

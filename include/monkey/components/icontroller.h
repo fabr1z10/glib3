@@ -9,6 +9,7 @@ public:
     virtual void Move(glm::vec3&) = 0;
     virtual bool grounded() const = 0;
     virtual bool ceiling () const = 0;
+    virtual bool side () const = 0;
     using ParentClass = IController;
 
 };

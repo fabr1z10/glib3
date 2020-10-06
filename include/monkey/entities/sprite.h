@@ -6,8 +6,5 @@
 // it takes a MODEL parameter
 class Sprite : public Entity {
 public:
-    Sprite (const LuaTable&);
     Sprite (const ITable&);
-
-
 };

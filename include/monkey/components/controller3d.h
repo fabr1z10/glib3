@@ -80,6 +80,7 @@ public:
     void Move(glm::vec3&) override;
     bool grounded() const override;
     bool ceiling () const override;
+	bool side () const override {return false;}
 
     void ClimbSlope(glm::vec3&, float);
     void DescendSlope(glm::vec3&);

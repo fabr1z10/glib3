@@ -6,7 +6,6 @@
 class SetActive : public Activity {
 public:
     SetActive(const std::string& tag, bool active);
-    SetActive(const LuaTable&);
     void Start() override;
     void Run (float) override {}
 private:

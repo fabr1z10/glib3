@@ -6,11 +6,12 @@
 class ScaleTo : public TargetActivity {
 public:
     ScaleTo( float duration, float scale);
+	ScaleTo(const ITable&);
     void Start() override;
     void Run (float dt) override;
 private:
-    Entity* m_entity;
-    std::string m_id;
+    // Entity* m_entity;
+    //std::string m_id;
     float m_duration;
     float m_scale;
     float m_scaleSpeed;

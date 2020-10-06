@@ -31,8 +31,9 @@ public:
     void setEntity(Entity* e);
     void setColor (std::vector<float>& mult, std::vector<float>& add);
     void setText (const std::string&);
-    void setModel (const std::string&, const std::string& animId);
+    void setModel (const std::string&);
     void appendText (pybind11::object);
+    void setEnableUpdate (bool);
     int add(pybind11::object);
     std::string getState();
     void setState(const std::string&, pybind11::dict d = pybind11::dict());
@@ -42,7 +43,9 @@ public:
     pybind11::object getParent();
     pybind11::object getInfo ();
     pybind11::list getAttackPos();
+	pybind11::list getTextSize();
     static pybind11::object create(Entity*);
+
 private:
     int g;
     Entity* m_entity;

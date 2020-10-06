@@ -7,7 +7,6 @@
 #include <monkey/error.h>
 #include <memory>
 
-class LuaTable;
 
 class Ref : public Object {
 public:
