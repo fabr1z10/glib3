@@ -2,7 +2,7 @@
 #include <monkey/components/inputmethod.h>
 
 
-#include <monkey/components/icontroller.h>
+#include <monkey/components/controller2d.h>
 #include <monkey/entity.h>
 #include <monkey/math/geom.h>
 

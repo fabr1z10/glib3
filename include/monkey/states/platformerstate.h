@@ -2,7 +2,7 @@
 
 #include <monkey/components/statemachine.h>
 
-class IController;
+class Controller2D;
 class Dynamics2D;
 class InputMethod;
 class IAnimator;
@@ -20,7 +20,7 @@ public:
     virtual void ResetAnimation() = 0;
 protected:
     IAnimator* m_animator;
-    IController * m_controller;
+    Controller2D * m_controller;
     Dynamics2D * m_dynamics;
     InputMethod * m_input;
     Entity * m_entity;

@@ -10,6 +10,7 @@ extern Engine * m_engine;
 
 
 Wrap1 get(const std::string & tag) ;
+Wrap1 getById(int id);
 void killScript (const std::string&);
 void rmv(int);
 void rmvt(const std::string&);

@@ -17,6 +17,18 @@ Wrap1 get(const std::string & tag) {
 
 }
 
+Wrap1 getById(int id) {
+	Wrap1 w;
+	try {
+		auto e = m_monkey->Get<Entity>(id);
+		w.setEntity(e);
+	} catch (Error& e) {}
+
+	return w;
+
+
+}
+
 void rmv(int id) {
     if (m_monkey->isAlive(id)) {
         std::cerr << "is alive tes " << id;

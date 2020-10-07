@@ -70,6 +70,7 @@ PYBIND11_MODULE(example, m) {
 
     m.def("adder", &add, "A functione which adds two numbers");
     m.def("get", &get, "Gets a entity by tag");
+    m.def("getById", &getById, "Gets an entity by id");
     m.def("killScript", &killScript, "Kills a script");
     m.def("remove", &rmv, "Removes an entity by id");
     m.def("removeByTag", &rmvt, "Removes an entity by tag");

@@ -3,7 +3,7 @@
 #include <monkey/math/geom.h>
 
 #include <monkey/entity.h>
-#include <monkey/components/icontroller.h>
+#include <monkey/components/controller2d.h>
 #include <monkey/components/inputmethod.h>
 #include <monkey/components/dynamics2d.h>
 #include <monkey/components/animator.h>

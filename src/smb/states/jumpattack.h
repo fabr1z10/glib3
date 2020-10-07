@@ -37,6 +37,8 @@ private:
 	float m_jumpHeight;
 	float m_timeToJumpApex;
 	Entity* m_target;
+	StateMachine* m_targetStateMachine;
+	pybind11::function m_callback;
 	float m_jumpSpeed;
 	float m_targetVelocityX;
 	float m_timeDown;

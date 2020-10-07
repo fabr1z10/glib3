@@ -1,5 +1,5 @@
 #include <monkey/states/platformerstate.h>
-//#include <monkey/components/controller2d.h>
+#include <monkey/components/controller2d.h>
 
 #include <monkey/entity.h>
 #include <monkey/components/icontroller.h>
@@ -28,7 +28,7 @@ PlatformerState::PlatformerState(const ITable & t) : State(t) {}
 void PlatformerState::AttachStateMachine(StateMachine * sm) {
     State::AttachStateMachine(sm);
     m_entity = sm->GetObject();
-    m_controller = m_entity->GetComponent<IController>();
+    m_controller = dynamic_cast<Controller2D*>(m_entity->GetComponent<IController>());
     if (m_controller == nullptr) {
         GLIB_FAIL("Platformer state requires a <Controller2D> component!");
     }
