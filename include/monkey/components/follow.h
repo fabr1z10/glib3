@@ -8,6 +8,7 @@ public:
     Follow (const ITable&);
     Follow (const Follow&);
     void Start() override;
+    void Begin() override;
     void Update(double) override;
     void fixZ(float);
     using ParentClass = Follow;

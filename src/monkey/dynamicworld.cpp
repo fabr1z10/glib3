@@ -28,7 +28,7 @@ DynamicWorldBuilder::DynamicWorldBuilder(const ITable &t) : Runner(t), m_x(-1), 
     });
 }
 
-void DynamicWorldBuilder::Init() {
+void DynamicWorldBuilder::Begin() {
     std::cerr << "INIT DYNAMIC WORLD!\n";
     auto cam = Monkey::get().Get<Camera>(m_camName);
     cam->OnMove.Register(this, [&] (Camera* cam) { this->OnCameraMove(cam); });

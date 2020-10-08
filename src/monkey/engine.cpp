@@ -242,6 +242,9 @@ void Engine::MainLoop() {
         m_scene->start();
         m_scene->Begin();
         m_running = true;
+		for (auto& r : m_runners) {
+			r.second->Begin();
+		}
 //
 //        //for (auto iter = m_scene->begin(); iter != m_scene->end(); ++iter) {
 //        //    iter->Start();

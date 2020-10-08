@@ -10,6 +10,7 @@ public:
     Runner (const ITable& t) : Ref(t) {}
     virtual ~Runner(){}
     virtual void Init () {}
+    virtual void Begin () {}
     virtual void Update(double) = 0;
     virtual std::type_index GetType();
 };
