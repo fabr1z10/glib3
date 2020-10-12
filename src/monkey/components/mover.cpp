@@ -15,6 +15,19 @@ PolygonalMover::Movement::Movement(glm::vec2 delta, float speed, float hold) : s
 PolygonalMover::PolygonalMover(int loopType, glm::vec2 origin) : Mover(), m_O(origin), m_loopType(loopType), m_startIndex(0), m_pctComplete(0.0f) {}
 
 
+PolygonalMover::PolygonalMover(const ITable & t) : Mover(), m_O(glm::vec2(0.0f)), m_startIndex(0), m_pctComplete(0.0f){
+	m_O = t.get<glm::vec2>("origin");
+	m_loopType = t.get<int>("loop");
+	m_pctComplete = t.get<float>("pct", 0.0f);
+	t.foreach<PyDict>("moves", [&] (const PyDict& d) {
+		auto delta = d.get<glm::vec2>("delta");
+		auto speed = d.get<float>("speed");
+		auto hold = d.get<float>("hold");
+		this->addMovement(delta, speed, hold);
+	});
+
+}
+
 PolygonalMover::PolygonalMover(const PolygonalMover& orig) : Mover(orig), m_O(orig.m_O), m_loopType(orig.m_loopType), m_startIndex(orig.m_startIndex),
 m_pctComplete(orig.m_pctComplete)
 {

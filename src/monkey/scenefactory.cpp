@@ -1,4 +1,5 @@
 #include <monkey/scenefactory.h>
+#include <monkey/scenefactory.h>
 #include <monkey/factories.h>
 #include <monkey/components/smartcollider.h>
 #include <monkey/components/controller2d.h>
@@ -33,6 +34,7 @@
 #include <monkey/activities/showmessage.h>
 #include <monkey/activities/setstate.h>
 #include <monkey/components/cursor.h>
+#include <monkey/components/platform.h>
 #include <monkey/activities/setactive.h>
 #include <monkey/py.h>
 #include <monkey/activities/runscript.h>
@@ -69,6 +71,7 @@
 #include <monkey/math/shapes/surf2d.h>
 #include <monkey/components/fpscounter.h>
 #include <monkey/activities/scale.h>
+#include <monkey/components/mover.h>
 
 
 namespace py = pybind11;
@@ -168,10 +171,12 @@ SceneFactory::SceneFactory() {
     add2<BasicRenderer> ("components.gfx");
     add2<LuaKeyListener> ("runner.keylistener");
     add2<LuaInfo> ("components.info");
+	add2<PolygonalMover> ("components.polymover");
     add2<KeyboardInputMethod> ("components.keyinput");
     add2<Controller2D> ("components.controller2D");
     add2<Controller25> ("components.controller25");
     add2<Dynamics2D> ("components.dynamics2D");
+    add2<PlatformComponent>("components.platform");
     add2<ExtendedStateMachine> ("components.statemachine");
     add2<Parallax>("components.parallax");
     add2<Cursor> ("components.cursor");
