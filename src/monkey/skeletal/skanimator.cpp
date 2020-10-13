@@ -1,7 +1,7 @@
 #include <monkey/skeletal/skanimator.hpp>
 #include <glm/gtx/transform.hpp>
 
-SkAnimator::SkAnimator(std::shared_ptr<IModel> model) : IAnimator(), m_currentAnimation(nullptr), m_complete(false)
+SkAnimator::SkAnimator(std::shared_ptr<IModel> model) : IAnimator(), m_currentAnimation(nullptr), m_complete(false), m_speedUp(1.0f)
 {
     m_model = std::dynamic_pointer_cast<SkModel>(model);
 	m_initAnim = m_model->GetDefaultAnimation();
@@ -9,7 +9,7 @@ SkAnimator::SkAnimator(std::shared_ptr<IModel> model) : IAnimator(), m_currentAn
 }
 
 SkAnimator::SkAnimator(const SkAnimator & orig) : IAnimator(orig), m_model(orig.m_model), m_currentAnimation(orig.m_currentAnimation),
-m_complete(false) {
+m_complete(false), m_speedUp(orig.m_speedUp) {
 
 }
 
@@ -25,7 +25,7 @@ void SkAnimator::Update(double dt) {
         return;
     }
     // increase animation time
-    m_animationTime += dt;
+    m_animationTime += m_speedUp * dt;
     if (m_animationTime > m_currentAnimation->getLength()) {
         m_complete = true;
         m_animationTime = fmod(m_animationTime, m_currentAnimation->getLength());
@@ -158,6 +158,10 @@ void SkAnimator::SetAnimation(const std::string &anim, bool forward) {
     // m_animation = m_currentAnimId;
     m_animationTime = 0.0f;
     m_complete = false;
+}
+
+void SkAnimator::setSpeedUp(float value) {
+	m_speedUp = value;
 }
 
 void SkAnimator::setModel(std::shared_ptr<IModel> model) {

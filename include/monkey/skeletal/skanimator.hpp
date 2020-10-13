@@ -13,7 +13,7 @@ public:
     std::shared_ptr<Component> clone() const override;
 
     virtual ~SkAnimator() {}
-
+	void setSpeedUp(float);
     void setModel (std::shared_ptr<IModel> model) override;
     void Start() override;
     void Update(double dt) override;
@@ -38,6 +38,7 @@ private:
 
     std::vector<std::pair<std::string, glm::vec3>> m_offsetPoints;
     bool m_complete;
+    float m_speedUp;
 };
 
 

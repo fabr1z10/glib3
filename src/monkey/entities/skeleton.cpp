@@ -9,12 +9,15 @@ Skeleton::Skeleton(const ITable& t) : Entity(t) {
     auto modelId = t.get<std::string>("model");
     auto model = Engine::get().GetAssetManager().GetModel(modelId);
 
+    auto speedUp = t.get<float>("speed_up", 1.0f);
+
     auto renderer = std::make_shared<SkRenderer>(model);
     // renderer->setForcedZ(0.0);
     this->AddComponent(renderer);
 
     auto anim = t.get<std::string>("anim", "");
     auto animator = std::make_shared<SkAnimator>(model);
+    animator->setSpeedUp(speedUp);
 
     // check if we have offset
 

@@ -21,7 +21,17 @@ FoeChase::FoeChase(const ITable & t) : PlatformerState(t) {
     //m_fliph = t.get<bool>("flipH");
     // m_flipIfPlatformEnds = t.get<bool>("flipWhenPlatformEnds");
     //m_left = t.get<int>("left");
-    m_attacks = t.get<std::vector<std::string>>("attacks");
+    float cumProb = 0.0f;
+    t.foreach<PyDict>("attacks", [&] (const PyDict& dict) {
+    	auto state = dict.get<std::string>("state");
+    	auto prob = dict.get<float>("prob");
+    	auto inRange = dict.get<bool> ("in_range");
+    	cumProb += prob;
+    	m_attackMap.insert(std::make_pair(cumProb, m_attacks.size()));
+		m_attacks.push_back( AttackInfo {state, prob, inRange});
+    });
+
+    //m_attacks = t.get<std::vector<std::string>>("attacks");
     m_probAttack = t.get<float>("probattack");
 }
 
@@ -55,7 +65,7 @@ void FoeChase::AttachStateMachine(StateMachine * sm) {
         am = std::min(am, scale*sb.min.x);
         aM = std::max(aM, scale*sb.max.x);
     }
-    m_attackPos = 0.5f* (am + aM);
+    m_attackPos = am + 0.8f * (aM-am);
 
     m_target = Monkey::get().Get<Entity>("player");
 }
@@ -122,14 +132,24 @@ void FoeChase::Run(double dt) {
         computeDirection();
         // if I'm at the right position, go to idle
         // randomly attack if within range
-        if (m_inRange) {
-            float u = Random::get().GetUniformReal(0.0f, 1.0f);
-            if (u < m_probAttack) {
-                int chosenAttack = Random::get().GetUniform(0, m_attacks.size()-1);
-                m_sm->SetState(m_attacks[chosenAttack]);
-            }
+		float u = Random::get().GetUniformReal(0.0f, 1.0f);
+		auto iter = m_attackMap.lower_bound(u);
+		if (iter != m_attackMap.end()) {
+			const auto& attack = m_attacks[iter->second];
+			if (!attack.inRange || m_inRange) {
+				m_sm->SetState(attack.nextState);
+			}
+		}
 
-        }
+
+//		if (m_inRange) {
+//            float u = Random::get().GetUniformReal(0.0f, 1.0f);
+//            if (u < m_probAttack) {
+//                int chosenAttack = Random::get().GetUniform(0, m_attacks.size()-1);
+//                m_sm->SetState(m_attacks[chosenAttack]);
+//            }
+//
+//        }
         //if (!m_c->IsFalling( m_targetVelocityX > 0 ? 1 : -1)) {
         if (true) {
             glm::vec3 delta = m_dynamics->step(dt, m_targetVelocityX, m_acceleration);

@@ -4,6 +4,13 @@
 
 class Controller2D;
 
+
+struct AttackInfo {
+	std::string nextState;
+	float prob;
+	bool inRange;
+
+};
 /**
  * This enemy follows the player and places himself at a distance where he's able to attack him
  * If player is at range, the enemy will attack with some probability
@@ -37,7 +44,9 @@ private:
 
     std::string m_walkAnim;
     std::string m_idleAnim;
-    std::vector<std::string> m_attacks;
+    //std::vector<std::string> m_attacks;
+    std::vector<AttackInfo> m_attacks;
+    std::map<float, int> m_attackMap;
     float m_speed;
     float m_acceleration;
     float m_probAttack;
