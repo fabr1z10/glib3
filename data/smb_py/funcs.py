@@ -6,18 +6,20 @@ from lib_py.script import Script
 import smb_py.vars as vars
 import example
 
+from smb_py.factories.items.items1 import makeSimpleFoe
+
 def upgradePlayer():
     vars.state += 1
     if vars.state >= len(vars.stateInfo):
         vars.state = 0
     # update model
     pl = example.get('player')
-    pl.setModel(vars.stateInfo[vars.state], 'idle')
+    pl.setModel(vars.stateInfo[vars.state])
 
 def setPlayer(state : int):
     vars.state = state
     pl = example.get('player')
-    pl.setModel(vars.stateInfo[state], 'idle')
+    pl.setModel(vars.stateInfo[state])
     
 
 
@@ -101,8 +103,10 @@ def goombaResponse (player : example.Wrap1, goomba : example.Wrap1, x, y):
         s = Script()
         player.vy = 300
         s.addAction (act.SetState (state = 'dead', id = goomba.id() ))
+        s.addAction (act.Delay (sec = 2))
+        s.addAction (act.RemoveEntity (id=goomba.id()))
         example.play(s)
-        print ('ciao')
+        
     else:
         playerHitByEnemy(player)
 
@@ -194,6 +198,16 @@ def flag(p, h):
     s.addAction (act.SetState(tag='player', state='demo', args = { 'left': 0 })),
     #s.addAction (act.SetState (state='walk', tag='player'))
     example.play(s)
+
+def onSpawn(player: example.Wrap1, spawn: example.Wrap1, x, y):
+    # get the detail
+    info = spawn.getInfo()
+    a = info['info']
+    delta = info['delta']
+    foe = makeSimpleFoe ([None,a])([spawn.x/vars.tileSize + delta[0], spawn.y/vars.tileSize +delta[1]])
+    example.get('main').add(foe)    
+    example.remove(spawn.id())
+
 
 def endlevel(p, h):
     example.remove(p.id())

@@ -2,6 +2,7 @@ from lib_py.room import Room
 from lib_py.entity import Entity, Text, TextAlignment, Sprite
 from lib_py.camera import OrthoCamera
 from lib_py.runner import CollisionEngine, CollisionResponse, Scheduler, DynamicWorld, KeyListener
+from lib_py.components import FPSCounter
 import smb_py.funcs as func
 import smb_py.builder as build
 import smb_py.vars as vars
@@ -35,6 +36,7 @@ class PlatformerRoom(Room):
         main = Entity (tag='main')
         main.camera = OrthoCamera(worldwidth = worldWidth * vars.tileSize, worldheight = worldHeight * vars.tileSize, 
         camwidth=width, camheight=height, viewport=[0, 0, width, height], tag='maincam')
+        self.main = main
         self.add(main)
 
         # create the collision engine (maybe to put into the ctor of the room subclass)
@@ -47,6 +49,7 @@ class PlatformerRoom(Room):
         ce.addResponse(vars.tags.player, vars.tags.coin, CollisionResponse(onenter = func.coinResponse))
         ce.addResponse(vars.tags.player, vars.tags.goomba, CollisionResponse(onenter = func.goombaResponse))
         ce.addResponse(vars.tags.player, vars.tags.koopa, CollisionResponse(onenter = func.koopaResponse))
+        ce.addResponse (vars.tags.player, vars.tags.spawn, CollisionResponse (onenter = func.onSpawn))
 
         self.addRunner(ce)
         self.addRunner(Scheduler())
@@ -67,6 +70,11 @@ class PlatformerRoom(Room):
         diag.add(Sprite (model = 'coin_counter', pos=[96, 232, 0]))
         diag.add(Text ('main', 8, 'x', [255,255,255,255], pos=[108,240,0]))
         diag.add(Text ('main', 8, '{:02d}'.format(vars.coins), [255, 255, 255, 255], TextAlignment.topleft, tag='score_label', pos=[116, 240, 0]))
+
+        fpsCount = Text ('main', 8, '0', [255,255,255,255], align = TextAlignment.topleft, tag='fps', pos = [0, 256, 2])
+        fpsCount.addComponent (FPSCounter())
+        diag.add (fpsCount)
+
         self.add(diag)
 
 	    # scene = {

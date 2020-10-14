@@ -60,10 +60,12 @@ class Cursor:
 
 
 class Parallax:
-    def __init__(self, cam: str, factor: float):
+    def __init__(self, cam: str, factor: float, campos0, pos0):
         self.type = 'components.parallax'
         self.factor = factor
         self.cam = cam
+        self.cam0 = campos0
+        self.pos0 = pos0
 
 class HotSpot:
     def __init__(self, shape, priority:int=0,onenter: Callable = None, onleave: Callable = None, onclick: Callable = None):
@@ -236,3 +238,7 @@ class StateCallback():
 class Shadow():
     def __init__(self):
         self.type = 'components.shadow'
+
+class FPSCounter():
+    def __init__(self):
+        self.type = 'components.fpscounter'

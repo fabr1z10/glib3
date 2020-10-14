@@ -6,7 +6,7 @@ import lib_py.scumm.helper as helper
 import lib_py.scumm.scripts as sscripts
 
 from smb_py.factories.rooms.default import defaultRoom
-from smb_py.factories.items.items1 import platform, brick, tilemap, coinbrick, mushroombrick
+from smb_py.factories.items.items1 import platform, brick, tilemap, coinbrick, mushroombrick, bg, makeSpawn
 
 rf = {
     'default': defaultRoom
@@ -18,6 +18,8 @@ fi = {
     'tilemap': tilemap,
     'coinbrick': coinbrick,
     'mushroombrick': mushroombrick,
+    'spawn': makeSpawn,
+    'bg': bg
 }
 
 engine.startUp(rf,fi)

@@ -9,6 +9,11 @@
   world_height: 16 
   start: [2, 2]
   items:
+    - factory: [bg, 92, 148, 252]
+      dynamic: False
+      d: [ [0,0,-5] ]
+    - factory: [spawn, {model: 'goomba', fliph: False, flipAtPlatformEnd: False }]
+      d: [ [6,2,12,0]]      
     - factory: [platform, '/gfx/block1.png']
       d: [ [0, 0, 69, 2], [71, 0, 15, 2], [89, 0, 64, 2], [155, 0, 69, 2] ]
     - factory: [platform, 'gfx/block2.png']
