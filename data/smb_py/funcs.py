@@ -87,12 +87,13 @@ def brickResponse (player : example.Wrap1, brick : example.Wrap1, x, y):
         example.play(s)
     else:
         print ('removing ' + str(brick_id))
+        piece=b.getInfo()['piece']
         example.remove(brick_id)
         m = example.get('main')
-        makePiece(pos = [b.x, b.y, 1], vx = 60, vy = 180, model ='brickpiece', parent=m)
-        makePiece(pos = [b.x, b.y, 1], vx = -60, vy = 180, model ='brickpiece', parent=m)
-        makePiece(pos = [b.x, b.y, 1], vx = 120, vy = 120, model ='brickpiece', parent=m)
-        makePiece(pos = [b.x, b.y, 1], vx = -120, vy = 120, model ='brickpiece', parent=m)
+        makePiece(pos = [b.x, b.y, 1], vx = 60, vy = 180, model =piece, parent=m)
+        makePiece(pos = [b.x, b.y, 1], vx = -60, vy = 180, model =piece, parent=m)
+        makePiece(pos = [b.x, b.y, 1], vx = 120, vy = 120, model =piece, parent=m)
+        makePiece(pos = [b.x, b.y, 1], vx = -120, vy = 120, model =piece, parent=m)
 
 def bonusBrickResponse (player: example.Wrap1, brick: example.Wrap1, x, y):
     b = brick.parent()

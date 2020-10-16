@@ -93,6 +93,7 @@ def brick(props):
         a = Sprite(model = model)
         a.addComponent (Collider (flag = vars.flags.platform, mask = 0, tag = 0, shape = sh.Rect(width=vars.tileSize, height=vars.tileSize)))
         a.pos = [x * vars.tileSize, y * vars.tileSize, 0]
+        a.addComponent (Info(piece = props[2]))
         b = Entity()
         b.pos = [2, -0.5, 0]
         b.addComponent (Collider (

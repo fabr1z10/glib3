@@ -103,6 +103,14 @@ brickpiece:
     idle:
       frames:
         - [64,16,16,16]
+brickpiece2:
+  sheet: "gfx/smb1.png"
+  type: "asset.sprite"
+  animations:
+    idle:
+      frames:
+        - [224,80,16,16]
+
 mushroom:
   sheet: "gfx/smb1.png"
   type: "asset.boxed"
