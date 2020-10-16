@@ -10,6 +10,10 @@ player = 'mario'
 score = 0
 coins = 0
 time = 0
+start_pos = 0
+currentWarp = -1
+paused = False
+
 stateInfo = [
     'mario',
     'supermario'
@@ -39,4 +43,5 @@ class tags:
     hotspot = 22
     flower = 23
     fire = 24
-    plant = 25
+    plant = 25,
+    key = 26

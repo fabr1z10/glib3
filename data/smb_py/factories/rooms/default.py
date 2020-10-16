@@ -1,6 +1,7 @@
 from smb_py.factories.rooms.room import PlatformerRoom
 from lib_py.engine import data
 import smb_py.vars as vars
+import smb_py.scripts as scripts
 
 
 def defaultRoom (room):
@@ -12,8 +13,9 @@ def defaultRoom (room):
     # the world size (in tiles)
     world_width = room['world_width']
     world_height = room['world_height']
-
-    start_pos = room['start']
+    start = room['start'][vars.start_pos]
+    start_pos = start['pos']
+    #start_pos = room['start']
 
     r = PlatformerRoom(
         id = visibleName,
@@ -40,6 +42,6 @@ def defaultRoom (room):
                         r.addToDynamicWorld(e)
                     else:
                         r.main.add(e)
-    #if 'script' in start:
-    #    r.init.append(getattr(scripts, start['script']))
+    if 'script' in start:
+        r.init.append(getattr(scripts, start['script']))
     return r

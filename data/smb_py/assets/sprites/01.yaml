@@ -23,9 +23,11 @@ mario:
       frames:
         - [80, 0, 16, 16, 8, 0]
     dead:
+      box: 0
       frames:
         - [96, 0, 16, 16, 8, 0]
     slide:
+      box: 0
       frames:
         - [176, 64, 16, 16, 8, 0]
 
@@ -63,6 +65,13 @@ brick:
     idle:
       frames:
         - [240, 0, 16, 16]
+brick2:
+  sheet: "gfx/smb1.png"
+  type: "asset.sprite"
+  animations:
+    idle:
+      frames:
+        - [160, 48, 16, 16]
 bonusbrick:
   sheet: "gfx/smb1.png"
   type: "asset.sprite"
@@ -76,6 +85,17 @@ bonusbrick:
     taken:
       frames:
         - [224, 0, 16, 16]
+bonusbrick2:
+  sheet: "gfx/smb1.png"
+  type: "asset.sprite"
+  animations:
+    default:
+      frames:
+        - [160, 48, 16, 16]
+    taken:
+      frames:
+        - [240, 96, 16, 16]
+
 brickpiece:
   sheet: "gfx/smb1.png"
   type: "asset.sprite"

@@ -43,6 +43,27 @@ def m3(x: float, y: float):
     s.addAction(act.RemoveEntity(id=id))
     example.play(s)
 
+def fire(a : example.Wrap1):
+    print ('FIRE!')
+    return
+    b = Sprite (model='fire',pos=[a.x + (-2 if a.flipx else 2),a.y+16,0])
+    b.addComponent (compo.SmartCollider(flag=vars.flags.player_attack, mask= vars.flags.foe|vars.flags.platform, tag=vars.tags.player_fire))   
+    sm = compo.StateMachine (initialState='jmp')
+    id = example.get('main').add(b)
+    c = Script()
+    c.addAction (act.MoveAccelerated (v0=[-300 if a.flipx else 300, 0], a=[0,vars.gravity], yStop = -100, id = id))
+    c.addAction (act.RemoveEntity (id=id))
+    example.play(c)
+
+
+def enterPipe (a: example.Wrap1):
+    if not vars.paused and vars.currentWarp != -1:
+        a.setState('pipe', {})
+        info = example.getById(vars.currentWarp).getInfo()
+        s = Script()
+        s.addAction (act.Move(speed=100,by=[0,-64], tag='player'))
+        s.addAction (act.CallFunc (f = func.gotoWorld (info['world'], info['start'])))
+        example.play(s)
 
 def makePlayer(model: str, x: float, y: float):
     player = Sprite(model = model, pos = [x * vars.tileSize, y*vars.tileSize], tag='player')
@@ -58,11 +79,22 @@ def makePlayer(model: str, x: float, y: float):
     speed = 75
     player.addComponent (compo.Dynamics2D(gravity= vars.gravity))
     stateMachine = compo.StateMachine(initialState='walk')
-    stateMachine.states.append (compo.SimpleState (id='warp', anim='idle'))
-    stateMachine.states.append (pc.WalkSide(id='walk', speed=200, acceleration=0.05, jumpSpeed= vars.jump_velocity, flipHorizontal=True))
+    stateMachine.states.append (compo.SimpleState (id='dead', anim='dead'))
+    stateMachine.states.append (pc.WalkSide(
+        id = 'walk', 
+        speed = 200, 
+        acceleration = 0.05, 
+        jumpSpeed = vars.jump_velocity, 
+        keys = [
+            [90, compo.StateCallback(f=fire)],
+            [264, compo.StateCallback(f=enterPipe)],
+        ],        
+        flipHorizontal=True))
     stateMachine.states.append (pc.Jump(id='jump', speed=200, acceleration=0.10, flipHorizontal=True, animUp='jump', animDown='jump'))
     stateMachine.states.append (pc.FoeWalk(id='demo', anim='walk', speed = 75, 
         acceleration=0.05, flipHorizontal=True, flipWhenPlatformEnds = False, left=1))
+    stateMachine.states.append (compo.SimpleState (id='pipe', anim='idle'))
+    stateMachine.states.append (compo.SimpleState (id='slide', anim='slide'))
     player.addComponent (stateMachine)
     player.addComponent (compo.KeyInput())    
     player.addComponent (compo.Follow())

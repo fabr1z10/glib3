@@ -1,5 +1,5 @@
 from lib_py.entity import Entity, Sprite
-from lib_py.components import Gfx, ShapeGfxColor, Parallax, Collider, TiledGfx, Info, SmartCollider, Controller2D, Dynamics2D, StateMachine, SimpleState
+from lib_py.components import Gfx, ShapeGfxColor, Parallax, Collider, TiledGfx, Info, SmartCollider, Controller2D, Dynamics2D, StateMachine, SimpleState, PolygonalMover, Platform
 from lib_py.platformer.components import FoeWalk
 from lib_py.script import Script
 from lib_py.actions import Move, MoveAccelerated, RemoveEntity, CallFunc, SetState
@@ -57,6 +57,18 @@ def m3(x: float, y: float):
     s.addAction(RemoveEntity(id=id))
     example.play(s)
 
+def line(props):
+    def f(args):
+        x = args[0]
+        y = args[1]
+        a = Entity()
+        a.addComponent (Collider(flag = vars.flags.platform, mask = vars.flags.player, tag = 1, 
+            shape = sh.Line(A=[args[2]*vars.tileSize,args[3]*vars.tileSize,0], B=[args[4]*vars.tileSize,args[5]*vars.tileSize,0])))
+        a.pos = (x * vars.tileSize, y * vars.tileSize, 0)
+        return a
+    return f
+
+
 # creates a rectangular platform
 def platform (props):
     def f(args):
@@ -75,7 +87,7 @@ def platform (props):
 
 def brick(props):
     def f(args):
-        model = props[0]
+        model = props[1]
         x = args[0]
         y = args[1]
         a = Sprite(model = model)
@@ -195,9 +207,20 @@ def makePipeIn (prop):
 
 def makeCollect(prop):
     def f(args):
-        a = Sprite(model=prop[1], pos=[args[0]*vars.tileSize,args[1]*vars.tileSize])
-        a.addComponent (SmartCollider(flag=vars.flags.foe, mask = vars.flags.player, tag = vars.tags.key))
-        a.addComponent (Info (func =prop[2]))
+        # the first argument is the callback function
+        # the second, if present, is the model
+        model = prop[1].get('model', None)
+        func = prop[1].get('func')
+        info = prop[1].get('info', None)
+        pos = [args[0]*vars.tileSize,args[1]*vars.tileSize]
+        if model is None:
+            a = Entity(pos=pos)
+            size = prop[1].get('size')
+            a.addComponent (Collider (flag = vars.flags.foe, mask = vars.flags.player, tag= vars.tags.key, shape=sh.Rect(width=size[0],height=size[1])))
+        else:
+            a = Sprite(model=model, pos=pos)
+            a.addComponent (SmartCollider(flag=vars.flags.foe, mask = vars.flags.player, tag = vars.tags.key))
+        a.addComponent (Info (func = func, info = info))
         return a
     return f
 

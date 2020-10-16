@@ -7,7 +7,10 @@
   height: 256
   world_width: 224
   world_height: 16 
-  start: [2, 2]
+  start: 
+    - pos: [2, 2]
+    - pos: [58, 2]
+      script: cippo
   items:
     - factory: [bg, 92, 148, 252]
       dynamic: False
@@ -32,6 +35,8 @@
       d: [ [38, 2] ]
     - factory: [tilemap, pipe4]
       d: [ [46, 2], [57, 2, 1]]
+    - factory: [warp, { tag: w1 }]
+      d: [[58,6,'world1_1b',0]]
     - factory: [tilemap, flagpole]
       d: [ [198, 3] ]
     - factory: [tilemap, castle]
@@ -40,7 +45,10 @@
       d: [[16, 5], [22, 9], [23, 5], [94, 9], [106,5], [109, 5], [112, 5], [129,9], [130,9], [170, 5]]      
     - factory: [mushroombrick]
       d: [[21,5], [78, 5], [109, 9]]
-
+    - factory: [collect, {'func': winSlide, 'size': [1,256]}]
+      d: [[198.5,3]]
+    - factory: [collect, {'func': gotoNext, 'size': [2,2], 'info': {'world': 'world1_2', 'pos': 0} }]
+      d: [[205,2]]
     # - template: [sprite, flag]
     #   d: [[198, 11,-0.5, 'flag']]
 

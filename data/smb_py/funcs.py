@@ -4,9 +4,51 @@ import lib_py.shape as sh
 import lib_py.actions as act
 from lib_py.script import Script
 import smb_py.vars as vars
+import smb_py.scripts as scr
+
 import example
 
 from smb_py.factories.items.items1 import makeSimpleFoe
+
+def togglePause():
+    if vars.paused:
+        example.get('main').enableUpdate(True)
+        example.removeByTag('shader')
+        #msg : example.Wrap1 = example.get('msg')
+        #if msg.valid:
+        #    example.killScript('msgscript')
+        #    example.removeByTag('msg')
+        #    example.removeByTag('msgbox')
+        #    example.get('player').setState('walk', {})    
+    else:
+        example.get('main').enableUpdate(False)
+        a = Entity(pos=[0,0,1], tag='shader')
+        a.addComponent (compo.ShapeGfxColor(shape = sh.Rect(256, 256), fill = sh.SolidFill(r=0, g=0, b=0, a=64)))
+        example.get('diag').add(a)
+    vars.paused = not vars.paused
+
+def restart():
+    vars.invincibility = False
+    vars.currentWarp = -1
+    example.restart()   
+
+def gotoWorld (worldId: str, startLocation: int):
+    def f():
+        print ('CIAO +'+ worldId  + ';;;' + str(startLocation))
+        vars.invincibility = False
+        
+        # Don't reset energy! This only should be done after player dies!
+        #vars.energy = vars.init_energy
+        
+        # Important! Reset these or otherwise you will get runtime errors!
+        vars.currentWarp = -1
+        
+        vars.start_pos = startLocation
+        
+        s = Script()
+        s.addAction (act.ChangeRoom (worldId))
+        example.play(s)
+    return f
 
 def upgradePlayer():
     vars.state += 1
@@ -88,7 +130,7 @@ def playerHitByEnemy(player : example.Wrap1):
         # monkey.play(s)
     else:
         s = Script()
-        s.addAction (act.SetState(state='warp', tag='player', args = {'anim': 'dead'}))
+        s.addAction (act.SetState(state='dead', tag='player'))
         s.addAction (act.Delay(sec=1))
         s.addAction (act.MoveAccelerated(v0 = [0    , 200], a= [0, vars.gravity], yStop= 0, tag='player'))
         s.addAction (act.RemoveEntity(id = player.id()))
@@ -142,11 +184,14 @@ def mushroomResponse (player: example.Wrap1, mushroom: example.Wrap1, x, y):
     example.remove(mushroom.id())
     upgradePlayer()
 
-def warpEnter( player: example.Wrap1, warp: example.Wrap1, x,y):
-    info = warp.getInfo()
-    # set the warp function
-    if 'func' in info:
-        vars.warp_func = info['func']
+def onWarpEnter (player: example.Wrap1, warp: example.Wrap1, x, y):
+    print ('entering warp')
+    vars.currentWarp = warp.id()
+    
+def onWarpExit (player: example.Wrap1, warp: example.Wrap1, x, y):
+    print ('exiting warp')
+    vars.currentWarp = -1
+
 
 def hotspotEnter (player: example.Wrap1, warp: example.Wrap1, x, y):
     info = warp.getInfo()
@@ -207,6 +252,14 @@ def onSpawn(player: example.Wrap1, spawn: example.Wrap1, x, y):
     foe = makeSimpleFoe ([None,a])([spawn.x/vars.tileSize + delta[0], spawn.y/vars.tileSize +delta[1]])
     example.get('main').add(foe)    
     example.remove(spawn.id())
+
+def onCollectItem(player: example.Wrap1, item: example.Wrap1, x, y):
+    f = item.getInfo()['func']
+    print (f)
+    print ('----')
+    getattr(scr, f)(player, item, x, y)
+
+
 
 
 def endlevel(p, h):

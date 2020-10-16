@@ -1,0 +1,32 @@
+---
+  type: default
+  id: world1_1b
+  label: '1_1'
+  time: 300
+  width: 256
+  height: 256
+  world_width: 16
+  world_height: 16 
+  start: 
+    - pos: [2, 6]
+  foes: []
+  items:
+    - factory: [bg, 0,47,70]
+      d: [ [0,0,-5] ]
+    - factory: [platform, '/gfx/block4.png']
+      d: [ [0, 0, 16, 2] ]
+    - factory: [platform, 'gfx/brick2.png']
+      d: [ [0,2,1,11], [4,2,7,3], [4,12,7,1] ]
+    - factory: [tilemap, pipeh]
+      d: [[13,2,1]]
+    - factory: [tilemap, pipeh2]
+      d: [[15,4,1]]      
+    - factory: [line]
+      d: [[13,4,0,0,2,0]]
+    - factory: [collect, {'model': pickupcoin, 'func': pickupCoin}]
+      d: [ 
+        [4, 5], [5, 5], [6, 5], [7, 5], [8, 5], [9, 5], [10, 5],
+        [4, 7], [5, 7], [6, 7], [7, 7], [8, 7], [9, 7], [10, 7],
+        [5, 9], [6, 9], [7, 9], [8, 9], [9, 9]]
+    - factory: [collect, {'func': pipe_out, 'size': [2,2], 'info': {'world': 'world1_1', 'pos': 1}}]
+      d: [[12.9,2]]

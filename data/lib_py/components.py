@@ -242,3 +242,16 @@ class Shadow():
 class FPSCounter():
     def __init__(self):
         self.type = 'components.fpscounter'
+
+class PolygonalMover:
+    def __init__(self, origin, loop, moves, pct=0):
+        self.type ='components.polymover'
+        self.moves = moves
+        self.origin = origin
+        self.loop = loop
+        self.pct = pct
+
+
+class Platform:
+    def __init__(self):
+        self.type = 'components.platform'

@@ -19,19 +19,19 @@ def checkWarp():
     if vars.warp_func:
         vars.warp_func()
 
-def restart():
-    print ('ciao')
-    example.restart()    
+#def restart():
+##    print ('ciao')
+#    example.restart()    
 
 
 class PlatformerRoom(Room):
     def __init__(self, id:str, width, height, worldWidth: int, worldHeight : int, startPos):
         super().__init__(id, width, height)
         # adding pause button
-        self.keyl.addKey(key=32, func = f)
-        self.keyl.addKey(key=264, func = checkWarp)
+        self.keyl.addKey(key=32, func = func.togglePause)
+        #self.keyl.addKey(key=264, func = checkWarp)
         # restart on F10
-        self.keyl.addKey(key=299, func = restart)
+        self.keyl.addKey(key=299, func = func.restart)
 
         main = Entity (tag='main')
         main.camera = OrthoCamera(worldwidth = worldWidth * vars.tileSize, worldheight = worldHeight * vars.tileSize, 
@@ -44,12 +44,13 @@ class PlatformerRoom(Room):
         ce.addResponse(vars.tags.player, vars.tags.brick_sensor, CollisionResponse(onenter=func.brickResponse))
         ce.addResponse(vars.tags.player, vars.tags.bonus_brick_sensor, CollisionResponse(onenter=func.bonusBrickResponse))
         ce.addResponse(vars.tags.player, vars.tags.mushroom, CollisionResponse(onenter=func.mushroomResponse))
-        ce.addResponse(vars.tags.player, vars.tags.warp, CollisionResponse(onenter = func.warpEnter, onleave= func.warpExit))
+        ce.addResponse(vars.tags.player, vars.tags.warp, CollisionResponse(onenter = func.onWarpEnter, onleave= func.onWarpExit))
         ce.addResponse(vars.tags.player, vars.tags.hotspot, CollisionResponse(onenter = func.hotspotEnter))
         ce.addResponse(vars.tags.player, vars.tags.coin, CollisionResponse(onenter = func.coinResponse))
         ce.addResponse(vars.tags.player, vars.tags.goomba, CollisionResponse(onenter = func.goombaResponse))
-        ce.addResponse(vars.tags.player, vars.tags.koopa, CollisionResponse(onenter = func.koopaResponse))
+        ce.addResponse(vars.tags.player, vars.tags.koopa, CollisionResponse(onenter = func.koopaResponse))		
         ce.addResponse (vars.tags.player, vars.tags.spawn, CollisionResponse (onenter = func.onSpawn))
+        ce.addResponse (vars.tags.player, vars.tags.key, CollisionResponse (onenter = func.onCollectItem))
 
         self.addRunner(ce)
         self.addRunner(Scheduler())
@@ -69,7 +70,7 @@ class PlatformerRoom(Room):
         diag.add(Text ('main', 8, str(vars.time), [255, 255, 255, 255], TextAlignment.topright, tag='score_label', pos=[232, 240, 0]))
         diag.add(Sprite (model = 'coin_counter', pos=[96, 232, 0]))
         diag.add(Text ('main', 8, 'x', [255,255,255,255], pos=[108,240,0]))
-        diag.add(Text ('main', 8, '{:02d}'.format(vars.coins), [255, 255, 255, 255], TextAlignment.topleft, tag='score_label', pos=[116, 240, 0]))
+        diag.add(Text ('main', 8, '{:02d}'.format(vars.coins), [255, 255, 255, 255], TextAlignment.topleft, tag='coin_label', pos=[116, 240, 0]))
 
         fpsCount = Text ('main', 8, '0', [255,255,255,255], align = TextAlignment.topleft, tag='fps', pos = [0, 256, 2])
         fpsCount.addComponent (FPSCounter())
