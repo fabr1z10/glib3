@@ -251,6 +251,17 @@ class PolygonalMover:
         self.loop = loop
         self.pct = pct
 
+class Fader:
+    def __init__(self):
+        self.type ='components.fader'
+        self.colors = []
+    def addColor (self, t, color):
+        self.colors.append ({'t': t, 'color': color})
+        
+class TexAnim:
+    def __init__(self, period):
+        self.type = 'components.texanimator'
+        self.period = period
 
 class Platform:
     def __init__(self):

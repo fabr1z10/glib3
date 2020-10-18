@@ -1,9 +1,9 @@
 #include <monkey/shader/texunlit.h>
 #include <monkey/camera.h>
-#include <monkey/shader/glsl/tex_unlitc.h>
+#include <monkey/shader/glsl/tex_unlit_exp.h>
 #include <monkey/vertices.h>
 
-TexturedUnlit::TexturedUnlit() : Shader(vs_tex_unlitc, fs_tex_unlitc) {
+TexturedUnlit::TexturedUnlit() : Shader(vs_tex_unlitc_exp, fs_tex_unlitc_exp) {
 
     m_shaderId = TEXTURE_SHADER_UNLIT;
     m_nAttributes = 3;
@@ -17,6 +17,7 @@ TexturedUnlit::TexturedUnlit() : Shader(vs_tex_unlitc, fs_tex_unlitc) {
     AddUniform(ADDCOLOR, "additive");
 	AddUniform (FORCEZ, "forceZ");
 	AddUniform (FORCEDZ, "forcedZ");
+	AddUniform (TEXOFFSET, "texOffset");
 }
 
 void TexturedUnlit::initMesh(const glm::mat4 &modelMatrix, Camera *cam) {

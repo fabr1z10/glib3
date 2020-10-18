@@ -33,7 +33,8 @@ enum ShaderUniform {
     AMBIENT,
     BONES,
     FORCEZ,
-    FORCEDZ
+    FORCEDZ,
+    TEXOFFSET
 };
 
 enum TextAlignment {

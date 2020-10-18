@@ -13,12 +13,13 @@
 #include <iostream>
 
 Renderer::Renderer() : Component(), m_baseModel(nullptr),
-    m_multColor(1.0f), m_addColor(0.0f), m_renderingTransform(1.0f), m_forceZ(false), m_forcedZ(0.0f) {
+    m_multColor(1.0f), m_addColor(0.0f), m_renderingTransform(1.0f), m_forceZ(false), m_forcedZ(0.0f), m_texOffset(0.0f) {
 
 }
 
 Renderer::Renderer(const Renderer& orig) : Component(orig),
-    m_multColor(orig.m_multColor), m_addColor(orig.m_addColor), m_renderingTransform(orig.m_renderingTransform), m_baseModel(orig.m_baseModel) {
+    m_multColor(orig.m_multColor), m_addColor(orig.m_addColor), m_renderingTransform(orig.m_renderingTransform), m_baseModel(orig.m_baseModel), m_texOffset(0.0f)
+{
     
 }
 
@@ -33,12 +34,15 @@ void Renderer::Draw(Shader* shader) {
     if (acolor != GL_INVALID) {
         glUniform4fv(acolor, 1, &m_addColor[0]);
     }
-    auto fz = shader->GetUniformLocation(FORCEZ);
-	auto fzv = shader->GetUniformLocation(FORCEDZ);
-    if (fz != GL_INVALID) {
-    	glUniform1i(fz, m_forceZ ? 1 : 0);
-    	glUniform1f(fzv, m_forcedZ);
-    }
+//    auto fz = shader->GetUniformLocation(FORCEZ);
+//	auto fzv = shader->GetUniformLocation(FORCEDZ);
+//    if (fz != GL_INVALID) {
+//    	glUniform1i(fz, m_forceZ ? 1 : 0);
+//    	glUniform1f(fzv, m_forcedZ);
+//    }
+
+    auto to = shader->GetUniformLocation(TEXOFFSET);
+    glUniform2fv (to, 1, &m_texOffset[0]);
     //m_model->Draw(shader, m_offset, m_count);
 }
 

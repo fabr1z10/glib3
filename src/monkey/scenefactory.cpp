@@ -72,6 +72,8 @@
 #include <monkey/components/fpscounter.h>
 #include <monkey/activities/scale.h>
 #include <monkey/components/mover.h>
+#include <monkey/components/fader.h>
+#include <monkey/components/texanimator.h>
 
 
 namespace py = pybind11;
@@ -182,6 +184,9 @@ SceneFactory::SceneFactory() {
     add2<Cursor> ("components.cursor");
     add2<Shadow>("components.shadow");
     add2<ShadowX>("components.shadowx");
+    add2<Fader>("components.fader");
+    add2<TexAnimator> ("components.texanimator");
+
     add2<NullState> ("state.null");
     add2<SimpleState> ("state.simple");
     add2<Walk25> ("state.walk25");
