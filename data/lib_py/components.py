@@ -145,6 +145,15 @@ class KeyInput:
     def __init__(self):
         self.type = 'components.keyinput'
 
+class GarbageCollect:
+    def __init__(self, timeout):
+        self.type = 'components.garbagecollect'
+        self.timeout = timeout
+
+class ScriptPlayer:
+    def __init__(self):
+        self.type = 'components.scriptplayer'
+
 class State:
     def __init__(self, id: str, keys = []):
         self.id = id
@@ -188,6 +197,14 @@ class FoeWalk25 (State):
         self.flipH = flipHorizontal
         self.attacks = attacks
         self.prob_attack = prob_attack
+
+class Bounce(State):
+    def __init__(self, id: str, speed: float, a:float, b:float):
+        super().__init__(id)
+        self.type = 'state.bounce'
+        self.speed = speed
+        self.a = a
+        self.b = b
 
 class Attack (State):
     def __init__(self, id: str, anim: str):
@@ -266,3 +283,5 @@ class TexAnim:
 class Platform:
     def __init__(self):
         self.type = 'components.platform'
+
+    

@@ -12,6 +12,7 @@
 #include <monkey/components/dynamics2d.h>
 #include <monkey/components/follow.h>
 #include <monkey/components/controller25.h>
+#include <monkey/components/scriptplayer.h>
 
 namespace py = pybind11;
 
@@ -214,4 +215,16 @@ void Wrap1::setState(const std::string & s, py::dict d) {
 void Wrap1::rotx(float angle) {
 	m_entity->Rotate(glm::radians(angle), glm::vec3(1.0f, 0.0f, 0.0f));
 
+}
+
+void Wrap1::play(pybind11::object o) {
+
+    auto sp = m_entity->GetComponent<ScriptPlayer>();
+    PyTable t(o);
+    auto script = std::make_shared<Script>(t);
+    sp->play(script);
+}
+
+void Wrap1::killScripts() {
+    m_entity->GetComponent<ScriptPlayer>()->killScripts();
 }

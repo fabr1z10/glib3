@@ -40,6 +40,7 @@ class Entity:
         self.components = []
         self.children = []
         self.scale = None
+        self.flipx= False
 
     def add(self, entity):
         """A simple function that says hello... Richie style"""

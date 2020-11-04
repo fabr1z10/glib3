@@ -13,6 +13,12 @@ Blink::Blink(const ITable & t) : TargetActivity(t) {
     m_blinkDuration = t.get<float>("blink_duration");
 }
 
+void Blink::SetComplete() {
+    Activity::SetComplete();
+    m_renderer->setActive(true);
+
+}
+
 void Blink::Start() {
     TargetActivity::Start();
     m_renderer = m_entity->GetComponent<Renderer>();
@@ -37,7 +43,6 @@ void Blink::Run(float dt) {
     }
     if (m_timer >= m_duration) {
         //m_renderer->SetTint(glm::vec4(1.0f));
-        m_renderer->setActive(true);
         SetComplete();
     }
 

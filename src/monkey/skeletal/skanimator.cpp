@@ -123,7 +123,10 @@ std::unordered_map<std::string, glm::mat4> SkAnimator::interpolatePoses(SKeyFram
     std::unordered_map<std::string, glm::mat4> currentPose;
     const auto& nf = nextFrame->getJointKeyFrames();
     for (const auto& p : previousFrame->getJointKeyFrames()) {
+        if (!m_model->hasJoint(p.first))
+            continue;
         // previosTransform is p.second
+
         JointTransform nextTransform = nf.at(p.first);
         JointTransform currentTransform = m_model->getRestTransform(p.first);
         currentTransform += JointTransform::interpolate(p.second, nextTransform, progression);
@@ -193,6 +196,8 @@ void SkAnimator::applyPoseToJoints(const std::unordered_map<std::string, glm::ma
     if (currentPose.count(joint->getName()) > 0) {
         currentLocalTransform = currentPose.at(joint->getName());
 
+    } else {
+        currentLocalTransform = joint->getRestTransform().getLocalTransform();
     }
     // mutliply by the parent
     glm::mat4 currentTransform = parentTransform * currentLocalTransform;

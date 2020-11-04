@@ -25,7 +25,7 @@ PYBIND11_MODULE(example, m) {
 
     py::class_<Wrap1>(m, "Wrap1")
         .def(py::init<>())
-        .def("id", &Wrap1::id)
+        .def_property_readonly("id", &Wrap1::id)
         .def_property_readonly("tag", &Wrap1::tag)
         .def_property_readonly("x", &Wrap1::x)
         .def_property_readonly("y", &Wrap1::y)
@@ -37,6 +37,8 @@ PYBIND11_MODULE(example, m) {
         .def_property("vx", &Wrap1::getVx, &Wrap1::setVx)
         .def_property("elevation", &Wrap1::getElevation, &Wrap1::setElevation)
         .def_property("scale", &Wrap1::getScale, &Wrap1::setScale)
+        .def("play", &Wrap1::play)
+        .def("killScripts", &Wrap1::killScripts)
         .def("setPosition", &Wrap1::setPosition)
         .def("getAttackPos", &Wrap1::getAttackPos)
         .def("parent", &Wrap1::getParent)

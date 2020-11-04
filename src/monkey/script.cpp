@@ -101,6 +101,13 @@ void Script::SetLoop(int id) {
     m_loopId = it->second;
 }
 
+void Script::Kill() {
+
+    m_complete = true;
+    for (auto& id : m_frontier) {
+        m_activities[id]->SetComplete();
+    }
+}
 
 void Script::Run (float dt) {
     if (m_suspended || m_complete) {

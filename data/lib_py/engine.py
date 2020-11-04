@@ -6,6 +6,7 @@ import enum
 import yaml
 import os
 import sys
+import importlib
 
 import lib_py.assets as assets
 import lib_py.runner as runner
@@ -49,7 +50,7 @@ data = {
 # - room factories
 # - item factories
 ########################################################
-def startUp(roomFactories = {}, itemFactories = {}):
+def startUp():
     print ('# starting up ...')
     example.init(example.what)
     addShader (ShaderType.unlit_textured)
@@ -61,8 +62,9 @@ def startUp(roomFactories = {}, itemFactories = {}):
     global room
     global title
     
-    data ['factories']['rooms'] = roomFactories
-    data ['factories']['items'] = itemFactories
+    #importlib.import_module (
+
+
 
 
     with open(example.dir+'/main.yaml') as f:

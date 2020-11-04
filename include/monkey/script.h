@@ -22,7 +22,7 @@ public:
     void AddActivity(int id, std::shared_ptr<Activity>);
     void AddEdge (int fromActivity, int toActivity);
     bool IsComplete() const;
-    void Kill () { m_complete=true;}
+    void Kill () ;
     void SetSuspended(bool);
     void SetLoop(int);
     void Print();

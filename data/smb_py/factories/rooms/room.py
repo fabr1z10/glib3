@@ -4,7 +4,7 @@ from lib_py.camera import OrthoCamera
 from lib_py.runner import CollisionEngine, CollisionResponse, Scheduler, DynamicWorld, KeyListener
 from lib_py.components import FPSCounter
 import smb_py.funcs as func
-import smb_py.builder as build
+import smb_py.factories.items.items1 as build
 import smb_py.vars as vars
 import lib_py.engine as engine
 
@@ -62,15 +62,15 @@ class PlatformerRoom(Room):
         diag = Entity (tag = 'diag')
         diag.camera = OrthoCamera(worldwidth = width, worldheight = height, 
             camwidth=width, camheight=height, viewport=[0, 0, width, height], tag='diagcam')
-        diag.add(Text ('main', 8, engine.getString('mario'), [255, 255, 255, 255], TextAlignment.topleft, pos=[24, 248, 0]))
-        diag.add(Text ('main', 8, '{:06d}'.format(vars.score), [255, 255, 255, 255], TextAlignment.topleft, tag='score_label', pos=[24, 240, 0]))
-        diag.add(Text ('main', 8, engine.getString('world'), [255, 255, 255, 255], TextAlignment.topleft, pos=[144, 248, 0]))
-        diag.add(Text ('main', 8, id, [255, 255, 255, 255], TextAlignment.top, pos=[164, 240, 0]))
-        diag.add(Text ('main', 8, engine.getString('time'), [255, 255, 255, 255], TextAlignment.topright, pos=[232, 248, 0]))
-        diag.add(Text ('main', 8, str(vars.time), [255, 255, 255, 255], TextAlignment.topright, tag='score_label', pos=[232, 240, 0]))
-        diag.add(Sprite (model = 'coin_counter', pos=[96, 232, 0]))
-        diag.add(Text ('main', 8, 'x', [255,255,255,255], pos=[108,240,0]))
-        diag.add(Text ('main', 8, '{:02d}'.format(vars.coins), [255, 255, 255, 255], TextAlignment.topleft, tag='coin_label', pos=[116, 240, 0]))
+        diag.add(Text ('main', 8, engine.getString('mario'), [255, 255, 255, 255], TextAlignment.topleft, pos=[24, 248, 2]))
+        diag.add(Text ('main', 8, '{:06d}'.format(vars.score), [255, 255, 255, 255], TextAlignment.topleft, tag='score_label', pos=[24, 240, 2]))
+        diag.add(Text ('main', 8, engine.getString('world'), [255, 255, 255, 255], TextAlignment.topleft, pos=[144, 248, 2]))
+        diag.add(Text ('main', 8, id, [255, 255, 255, 255], TextAlignment.top, pos=[164, 240, 2]))
+        diag.add(Text ('main', 8, engine.getString('time'), [255, 255, 255, 255], TextAlignment.topright, pos=[232, 248, 2]))
+        diag.add(Text ('main', 8, str(vars.time), [255, 255, 255, 255], TextAlignment.topright, tag='score_label', pos=[232, 240, 2]))
+        diag.add(Sprite (model = 'coin_counter', pos=[96, 232, 2]))
+        diag.add(Text ('main', 8, 'x', [255,255,255,255], pos=[108,240,2]))
+        diag.add(Text ('main', 8, '{:02d}'.format(vars.coins), [255, 255, 255, 255], TextAlignment.topleft, tag='coin_label', pos=[116, 240, 2]))
 
         fpsCount = Text ('main', 8, '0', [255,255,255,255], align = TextAlignment.topleft, tag='fps', pos = [0, 256, 2])
         fpsCount.addComponent (FPSCounter())
@@ -152,7 +152,7 @@ class PlatformerRoom(Room):
 		# },
 
         # add player
-        mario = build.makePlayer(vars.player, startPos[0], startPos[1])
+        mario = build.makePlayer(vars.stateInfo[vars.state], startPos[0], startPos[1])
         main.add(mario)
 
     def addToDynamicWorld(self, e):

@@ -45,7 +45,8 @@ public:
     pybind11::list getAttackPos();
 	pybind11::list getTextSize();
     static pybind11::object create(Entity*);
-
+    void play (pybind11::object o);
+    void killScripts ();
 private:
     int g;
     Entity* m_entity;

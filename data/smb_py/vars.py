@@ -4,7 +4,7 @@ time_to_jump_apex = 0.5
 gravity = -(2.0 * jump_height) / (time_to_jump_apex * time_to_jump_apex)
 jump_velocity = abs(gravity) * time_to_jump_apex
 warp_func = None
-state = 0
+state = 2
 invincibility = False
 player = 'mario'
 score = 0
@@ -16,7 +16,8 @@ paused = False
 
 stateInfo = [
     'mario',
-    'supermario'
+    'supermario',
+    'fierymario'
 ]
 
 class flags:
@@ -43,5 +44,6 @@ class tags:
     hotspot = 22
     flower = 23
     fire = 24
-    plant = 25,
+    plant = 25
     key = 26
+    player_fire = 27

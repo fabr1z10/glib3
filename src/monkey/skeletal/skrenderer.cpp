@@ -4,6 +4,8 @@
 
 SkRenderer::SkRenderer(std::shared_ptr<IModel> model) : Renderer() {
     m_model = dynamic_cast<SkModel*>(model.get());
+    m_baseModel = model.get();
+
 }
 
 std::shared_ptr<Component> SkRenderer::clone() const {

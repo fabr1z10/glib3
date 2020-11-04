@@ -16,6 +16,8 @@ public:
     //@}
     void Start() override;
     void Run (float dt) override ;
+    virtual void SetComplete();
+
 private:
     float m_timer;
     float m_timer2;

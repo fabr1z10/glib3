@@ -35,6 +35,7 @@ public:
     SkAnimation* getAnimation(const std::string&);
     std::shared_ptr<Joint> getRootJoint();
     Joint* getJoint (const std::string&);
+    bool hasJoint (const std::string&);
     void Draw (Shader*);
     /**
      * Gets an array of the all important model-space transforms of all the
@@ -99,4 +100,8 @@ inline Joint* SkModel::getJoint(const std::string & id) {
 inline Shape* SkModel::getShape(int shapeId) {
     return m_shapes[shapeId].get();
 
+}
+
+inline bool SkModel::hasJoint(const std::string & id) {
+    return m_allJoints.count(id) > 0;
 }

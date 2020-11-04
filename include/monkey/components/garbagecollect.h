@@ -6,7 +6,8 @@
 
 class GarbageCollect : public Component {
 public:
-    GarbageCollect(const std::string& target, float deltaXMax, float deltaYMax);
+    //GarbageCollect(const std::string& target, float deltaXMax, float deltaYMax);
+    GarbageCollect(const ITable&);
     GarbageCollect(const GarbageCollect&);
     void Start() override ;
     void Update(double) override;
@@ -16,4 +17,6 @@ private:
     Camera* m_target;
     float m_Dxmax;
     float m_Dymax;
+    float m_timeout;
+    float m_t;
 };

@@ -57,6 +57,52 @@ supermario:
     slide:
       frames:
         - [192, 64, 16, 32, 8, 0]
+fierymario:
+  sheet: "gfx/smb1.png"
+  thickness: 1
+  type: "asset.boxed"
+  boxes:
+    - [-6, 0, 6, 32]
+  # casts
+  animations:
+    idle:
+      loop: true
+      box: 0
+      frames:
+        - [0, 112, 16, 32, 8, 0]
+    walk:
+      box: 0
+      frames:
+        - [16, 112, 16, 32, 8, 0]
+        - [32, 112, 16, 32, 8, 0]
+        - [48, 112, 16, 32, 8, 0]
+    jump:
+      box: 0
+      frames:
+        - [64, 128, 16, 32, 8, 0]
+    slide:
+      frames:
+        - [192, 64, 16, 32, 8, 0]
+    fire:
+      frames:
+        - [80,128,16,32,8,0]
+    slide:
+      frames:
+        - [0, 144, 16, 32, 8, 0]        
+fire:
+  sheet: 'gfx/smb1.png'
+  type: asset.boxed
+  boxes:
+    - [-4,-4,4,4]
+  animations:
+    default:
+      loop: true
+      box: 0
+      frames:
+        - [176,112,16,16,8,8]
+        - [192,112,16,16,8,8]
+        - [208,112,16,16,8,8]
+        - [224,112,16,16,8,8]
 
 brick:
   sheet: "gfx/smb1.png"
@@ -121,6 +167,20 @@ mushroom:
       box: 0
       frames:
         - [48, 16, 16, 16, 8, 0]
+flower:
+  sheet: "gfx/smb1.png"
+  type: "asset.boxed"
+  boxes:
+    - [-8, 0, 8, 16]
+  animations:
+    walk:
+      box: 0
+      frames:
+        - [176, 96,16,16,8,0]
+        - [192, 96,16,16,8,0]
+        - [208, 96,16,16,8,0]
+        - [224, 96,16,16,8,0]
+
 flag:
   sheet: "gfx/smb1.png"
   type: "asset.sprite"

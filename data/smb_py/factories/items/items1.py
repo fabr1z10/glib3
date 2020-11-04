@@ -1,15 +1,61 @@
 from lib_py.entity import Entity, Sprite
-from lib_py.components import Gfx, TexAnim, ShapeGfxColor, Parallax, Collider, TiledGfx, Info, SmartCollider, Controller2D, Dynamics2D, StateMachine, SimpleState, PolygonalMover, Platform, Fader
-from lib_py.platformer.components import FoeWalk
+from lib_py.components import Gfx, TexAnim, ShapeGfxColor, Parallax, Collider, ScriptPlayer, Follow, KeyInput, StateCallback, TiledGfx, Info, SmartCollider, Controller2D, Dynamics2D, StateMachine, SimpleState, PolygonalMover, Platform, Fader, Attack, JumpAttack
+from lib_py.platformer.components import FoeWalk, Jump, WalkSide
 from lib_py.script import Script
 from lib_py.actions import Move, MoveAccelerated, RemoveEntity, CallFunc, SetState
 import lib_py.shape as sh
 import smb_py.vars as vars
 import smb_py.tiles as tiles
+import smb_py.scripts as scripts
 import example
 
+def makePlayer(model: str, x: float, y: float):
+    player = Sprite(model = model, pos = [x * vars.tileSize, y*vars.tileSize], tag='player')
+    player.addComponent (SmartCollider(
+        flag = vars.flags.player,
+        mask = vars.flags.foe | vars.flags.foe_attack,
+        tag = vars.tags.player))
+    player.addComponent (Controller2D(
+        maskUp = vars.flags.platform, 
+        maskDown = vars.flags.platform | vars.flags.platform_passthrough, 
+        maxClimbAngle = 80, 
+        maxDescendAngle = 80))
+    speed = 75
+    player.addComponent (Dynamics2D(gravity= vars.gravity))
+    stateMachine = StateMachine(initialState='walk')
+    stateMachine.states.append (SimpleState (id='dead', anim='dead'))
+    stateMachine.states.append (WalkSide(
+        id = 'walk', 
+        speed = 200, 
+        acceleration = 0.05, 
+        jumpSpeed = vars.jump_velocity, 
+        keys = [
+            [90, StateCallback(f=scripts.fire)],
+            [264, StateCallback(f=scripts.enterPipe)],
+        ],        
+        flipHorizontal=True))
+    stateMachine.states.append (Jump(id='jump', speed=200, acceleration=0.10, 
+        keys = [
+            [90, StateCallback(f=scripts.firej)],
+        ], 
+        flipHorizontal=True, animUp='jump', animDown='jump'))
+    stateMachine.states.append (Attack(id='attack1', anim= 'fire'))
+    stateMachine.states.append (JumpAttack(id='attack2', anim= 'fire', speed = 200, acceleration = 0.10, flipHorizontal = True))        
+    stateMachine.states.append (FoeWalk(id='demo', anim='walk', speed = 75, 
+        acceleration=0.05, flipHorizontal=True, flipWhenPlatformEnds = False, left=1))
+    stateMachine.states.append (SimpleState (id='pipe', anim='idle'))
+    stateMachine.states.append (SimpleState (id='slide', anim='slide'))
+    player.addComponent (stateMachine)
+    player.addComponent (KeyInput())    
+    player.addComponent (Follow())
+    return player
+
 def m1(x: float, y: float):
-    a = mushroom(x, y)
+    a = None
+    if vars.state == 0:
+        a = mushroom(x, y)
+    else:
+        a = flower (x, y)
     main = example.get('main')
     id = main.add(a)
     s = Script()
@@ -34,6 +80,25 @@ def mushroom(x: float, y: float):
     stateMachine.states.append (FoeWalk(id='walk', anim='walk', speed=30, acceleration=0, flipHorizontal=False, flipWhenPlatformEnds=False, left=1))
     a.addComponent (stateMachine)
     return a
+
+def flower(x: float, y: float):
+    a = Sprite(model='flower', pos = [x*vars.tileSize, y*vars.tileSize, -0.1])
+    a.addComponent (SmartCollider(
+        flag = vars.flags.foe,
+        mask = vars.flags.player,
+        tag = vars.tags.mushroom))
+    a.addComponent (Controller2D(
+        maskUp = vars.flags.platform, 
+        maskDown = vars.flags.platform | vars.flags.platform_passthrough, 
+        maxClimbAngle = 80, 
+        maxDescendAngle = 80))
+    a.addComponent (Dynamics2D(gravity= vars.gravity))
+    stateMachine = StateMachine (initialState='idle')
+    stateMachine.states.append (SimpleState (id='idle', anim = 'walk'))
+    stateMachine.states.append (FoeWalk(id='walk', anim='walk', speed=0, acceleration=0, flipHorizontal=False, flipWhenPlatformEnds=False, left=1))
+    a.addComponent (stateMachine)
+    return a
+
 
 def m2(x: float, y: float):
     print ('x='+ str(x))
@@ -274,6 +339,7 @@ def makeSimpleFoe(prop):
         model = props['model']
         fliph = props['fliph']
         flipp = props['flipAtPlatformEnd']
+        ctag = props['ctag']
         scale = props.get('scale', 1)
         speed = props.get('speed', 20)
         goomba = Sprite(model = model, pos = [args[0] * vars.tileSize, args[1] * vars.tileSize, -0.1])
@@ -281,7 +347,7 @@ def makeSimpleFoe(prop):
         goomba.addComponent (SmartCollider(
             flag = vars.flags.foe,
             mask = vars.flags.player,
-            tag = vars.tags.goomba))
+            tag = getattr(vars.tags, ctag)))
         goomba.addComponent (Controller2D(
             maskUp = vars.flags.platform, 
             maskDown = vars.flags.platform | vars.flags.platform_passthrough, 
@@ -305,7 +371,55 @@ def makeSimpleFoe(prop):
             flipHorizontal = fliph,
             flipWhenPlatformEnds= flipp,
             left = 1))
+        goomba.addComponent (stateMachine)
+        return goomba
+    return f
 
+
+def makeKoopa(prop):
+    def f(args):
+        props=prop[1]
+        model = props['model']
+        fliph = props['fliph']
+        flipp = props['flipAtPlatformEnd']
+        speed = props.get('speed', 20)
+        goomba = Sprite(model = model, pos = [args[0] * vars.tileSize, args[1] * vars.tileSize, -0.1])
+        goomba.addComponent (SmartCollider(
+            flag = vars.flags.foe,
+            mask = vars.flags.player,
+            tag = vars.tags.koopa))
+        goomba.addComponent (Controller2D(
+            maskUp = vars.flags.platform, 
+            maskDown = vars.flags.platform | vars.flags.platform_passthrough, 
+            maxClimbAngle = 80, 
+            maxDescendAngle = 80))
+        goomba.addComponent (Dynamics2D(gravity= vars.gravity))
+        goomba.addComponent (ScriptPlayer())
+        stateMachine = StateMachine(initialState='walk')
+        stateMachine.states.append (FoeWalk(
+            id = 'walk', 
+            anim = 'walk',  
+            speed = speed, 
+            acceleration = 0,
+            flipHorizontal = fliph,
+            flipWhenPlatformEnds= flipp,
+            left = 1))
+        stateMachine.states.append (FoeWalk(
+            id = 'walk2', 
+            anim = 'hide',  
+            speed = 200,
+            acceleration = 0,
+            flipHorizontal = fliph,
+            flipWhenPlatformEnds= flipp,
+            left = 1))
+        stateMachine.states.append (FoeWalk(
+            id = 'hide', 
+            anim = 'hide',  
+            speed = 0, 
+            acceleration = 0,
+            flipHorizontal = fliph,
+            flipWhenPlatformEnds= flipp,
+            left = 1))
         goomba.addComponent (stateMachine)
         return goomba
     return f
