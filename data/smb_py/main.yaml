@@ -3,7 +3,7 @@
   lang: eng
   device_size: [256, 256]
   window_size: [512, 512]
-  start_room: world1_1
+  start_room: test
   fonts:
     - id: main
       file: './fonts/prstartk.ttf'

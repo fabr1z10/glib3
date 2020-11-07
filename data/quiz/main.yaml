@@ -1,0 +1,9 @@
+---
+  title: Outrun
+  lang: eng
+  device_size: [320, 200]
+  window_size: [640, 400]
+  start_room: tracktest
+  fonts:
+    - id: main
+      file: './fonts/prstartk.ttf'

@@ -310,6 +310,7 @@ void Engine::MainLoop() {
             //glfwSwapBuffers(window);
         }
         // remove assets loaded at scene level
+        Monkey::get().dump();
         m_running = false;
 		std::cerr << "CLEAN!\n";
         m_sceneFactory->CleanUp();
@@ -321,9 +322,15 @@ void Engine::MainLoop() {
         m_garbage.clear();
 		std::cerr << "done2\n";
 		Monkey::get().dump();
+
     }
-    //m_renderingEngine = nullptr;
-	std::cerr << "done3\n";
+    // shutdown
+
+    std::cerr << "shutting down the engine.\n";
+    m_renderingEngine = nullptr;
+    std::cerr << "lll\n";
+    glfwDestroyWindow(window);
+    glfwTerminate();
 }
 
 // width and height will be pixels!!
@@ -410,7 +417,7 @@ void Engine::UnregisterToKeyboardEvent(KeyboardListener* listener) {
 }
 
 Engine::~Engine() {
-    glfwTerminate();
+
 }
 
 

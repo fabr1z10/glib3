@@ -1,0 +1,16 @@
+---
+  type: default
+  id: test
+  label: '1_1'
+  time: 300
+  width: 256
+  height: 256
+  world_width: 16
+  world_height: 16 
+  start: 
+    - pos: [2, 2]
+  items:
+    - factory: [foe, {model: 'goomba', fliph: True, flipAtPlatformEnd: True, ctag: 'goomba' }]
+      d: [ [5, 2]]
+    - factory: [platform, '/gfx/block1.png']
+      d: [ [0, 0, 16, 2] ]

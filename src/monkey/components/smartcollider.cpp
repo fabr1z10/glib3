@@ -19,22 +19,6 @@ SmartCollider::SmartCollider(const ITable & table) : ICollider(), m_shapeEntity(
     m_mask = table.get<int>("mask");
     m_castTag = table.get<int>("cast_tag", 0);
     m_castMask = table.get<int>("cast_mask", 0);
-//    table.foreach<
-//    table.ProcessVector("attack_tags", [coll] (luabridge::LuaRef ref) {
-//        std::string anim = ref["anim"].cast<std::string>();
-//        int attackTag = ref["tag"].cast<int>();
-//        int attackMask = ref["mask"].cast<int>();
-//        coll->AddAttackTag(anim, attackTag, attackMask);
-//    });
-//    table.ProcessVector("collision_overrides", [coll] (luabridge::LuaRef ref) {
-//        std::string state = ref["state"].cast<std::string>();
-//        int flag = ref["flag"].cast<int>();
-//        int mask = ref["mask"].cast<int>();
-//        int tag = ref["tag"].cast<int>();
-//        coll->addStateCollisionDetails(state, flag, mask, tag);
-//    });
-    /// coll;
-
 }
 
 void SmartCollider::AddAttackTag(const std::string& anim, int tag, int mask) {
