@@ -15,6 +15,7 @@ struct CollisionTriplet {
 class ICollider : public Component {
 public:
     ICollider();
+    ~ICollider() override = default;
     virtual Shape* GetShape() = 0;
     virtual int GetCollisionTag() const = 0;
     virtual int GetCollisionFlag() const = 0;

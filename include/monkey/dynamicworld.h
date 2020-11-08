@@ -7,34 +7,50 @@
 #include <monkey/bounds.h>
 #include <monkey/entity.h>
 
-struct DynamicWorldItem {
-    DynamicWorldItem() : id(-1),
-                         ref(nullptr),
-                         removedByDynamicWorld(false),
-                         active(false) {}
-    std::shared_ptr<Entity> m_blueprint;
-    //Bounds m_bounds;
+class DynamicWorldItem : public Ref {
+public:
+    DynamicWorldItem(const PyTable& table, const Bounds& localBounds, const glm::vec3& initPos);
+    std::shared_ptr<Entity> create ();
+    void destroy ();
+    glm::vec3 getPosition() const;
+    Bounds getInitBounds() const;
+    Bounds getCurrentBounds() const;
+    bool candidateForCreation() const;
+    bool candidateForDestruct() const;
+private:
+    //std::shared_ptr<Entity> m_blueprint;
+
+    PyTable m_template;
+    // when player active bounds intersect the item bounds,
+    // item is created (if not created already). When player leaves the area
+    // item is removed.
     Bounds m_localBounds;
+    Bounds m_initBounds;
     glm::vec3 m_initPos;
-    int id;
-    bool createOnce;
-    bool removedByDynamicWorld;
-    bool active;
-    Entity* ref;
-    //std::shared_ptr<Entity> m_object;
-    //std::shared_ptr<Entity> ref;
-    std::shared_ptr<Entity> m_parent;
+    bool m_alive;
+    bool m_active;
+    bool m_removedByDynamicWorld;
+    int m_id;
+    Entity* m_entity;
 };
 
-// The world is divided into rectangular blocks of specified width and height
-// When the player is at (0, 0) only the block (0, 0) is created
-// When the player moves to (x, y)
+inline bool DynamicWorldItem::candidateForCreation() const {
+    return !m_alive && m_active;
+}
+inline bool DynamicWorldItem::candidateForDestruct() const {
+    return m_alive;
+}
+
+inline Bounds DynamicWorldItem::getInitBounds() const {
+    return m_initBounds;
+}
 
 class DynamicWorldBuilder : public Runner {
 public:
     DynamicWorldBuilder(float cellWidth, float cellHeight, const std::string& camName) : Runner(),
-        m_width(cellWidth), m_height(cellHeight), m_x(-1), m_y(-1), m_camName(camName), m_halfWidth(cellWidth*0.5f), m_halfHeight(cellHeight*0.5f) {}
+        m_width(cellWidth), m_height(cellHeight), m_x(-1), m_y(-1), m_camName(camName), m_halfWidth(cellWidth*0.5f), m_halfHeight(cellHeight*0.5f), m_itemCount(0) {}
     DynamicWorldBuilder(const ITable& t);
+    ~DynamicWorldBuilder() override;
     //void Init() override;
 	void Begin() override;
     //void SetCamera(Camera*);
@@ -42,9 +58,9 @@ public:
     void UpdateWorld(glm::vec3);
     void Update(double) override {}
     //void AddItem(std::shared_ptr<Entity>, std::shared_ptr<Entity>);
-    void AddItem (std::shared_ptr<Entity>);
+    //void AddItem (std::shared_ptr<Entity>);
 private:
-    std::vector<DynamicWorldItem> m_items;
+    std::vector<std::shared_ptr<DynamicWorldItem> > m_items;
     // keep track of items removed externally
     std::unordered_set<int> m_removedItems;
     std::unordered_set<int> m_outBounds;
@@ -61,4 +77,5 @@ private:
     Bounds m_activeBounds;
     std::string m_camName;
     Entity* m_parentEntity;
+    size_t m_itemCount;
 };

@@ -18,6 +18,7 @@ class Renderer : public Component {
 public:
     Renderer();
     Renderer(const Renderer&);
+    ~ Renderer() override = default;
     virtual void Draw(Shader*);
     // dynamically change the model
     virtual void SetModel(std::shared_ptr<IModel> mesh) = 0;

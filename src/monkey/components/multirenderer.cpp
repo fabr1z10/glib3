@@ -1,7 +1,12 @@
 #include <monkey/components/multirenderer.h>
 
 
-MultiRenderer::MultiRenderer() {}
+MultiRenderer::MultiRenderer() : Renderer() {
+
+}
+MultiRenderer::~MultiRenderer() noexcept {
+    std::cout << "2";
+}
 
 MultiRenderer::MultiRenderer(const MultiRenderer & orig) : Renderer(orig), m_models(orig.m_models) {}
 

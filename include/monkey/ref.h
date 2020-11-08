@@ -13,7 +13,7 @@ public:
     Ref();
     Ref(const Ref&);
     Ref(const ITable&);
-    virtual ~Ref();
+    ~Ref() override;
     std::string GetTag() const;
     void SetTag(const std::string&);
     int GetId() const;

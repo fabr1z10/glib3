@@ -23,6 +23,7 @@ struct SmartCollisionDetails {
 class SmartCollider : public ICollider {
 public:
     SmartCollider(int flag, int mask, int tag) : ICollider(), m_flag(flag), m_mask(mask), m_tag(tag) {}
+    ~SmartCollider() override;
     SmartCollider(const SmartCollider&);
     SmartCollider (const ITable&);
     void Start() override;

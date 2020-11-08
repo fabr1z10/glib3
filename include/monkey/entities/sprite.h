@@ -7,4 +7,5 @@
 class Sprite : public Entity {
 public:
     Sprite (const ITable&);
+    ~Sprite() override = default;
 };
