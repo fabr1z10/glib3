@@ -5,8 +5,6 @@
 class EllipseMover : public Mover {
 public:
     EllipseMover (float xrad, float yrad, float period, glm::vec2 origin);
-    EllipseMover (const EllipseMover&);
-    std::shared_ptr<Component> clone() const override;
     std::type_index GetType() override;
     void Start() override;
     void Update(double) override ;

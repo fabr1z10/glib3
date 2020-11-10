@@ -37,7 +37,7 @@ public:
     Entity(const ITable&);
 
     // copy ctor
-    Entity(const Entity&);
+    //Entity(const Entity&);
 
     //static std::shared_ptr<Entity> Create ();
 
@@ -60,7 +60,7 @@ public:
         return nullptr;
     }
 
-    virtual std::shared_ptr<Entity> clone() const;
+    //virtual std::shared_ptr<Entity> clone() const;
 
 
     void AddChild(std::shared_ptr<Entity>);

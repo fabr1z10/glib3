@@ -4,7 +4,6 @@ from lib_py.actions import Delay,SetState,Move,CallFunc, ChangeRoom
 from lib_py.entity import Sprite
 from lib_py.components import SmartCollider, Info, StateMachine, Controller2D, Dynamics2D, Bounce, GarbageCollect
 from lib_py.platformer.components import Jump
-import smb_py.funcs as func
 import smb_py.vars as vars
 
 def _fire(a: example.Wrap1, state: str):

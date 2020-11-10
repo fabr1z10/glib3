@@ -13,12 +13,6 @@ GarbageCollect::GarbageCollect(const ITable& t) : Component()
 }
 
 
-GarbageCollect::GarbageCollect(const GarbageCollect& other) : Component(other){
-    m_tag = other.m_tag;
-    m_Dxmax=other.m_Dxmax;
-    m_Dymax=other.m_Dymax;
-
-}
 
 void GarbageCollect::Start() {
     if (!m_tag.empty())
@@ -43,7 +37,3 @@ void GarbageCollect::Update(double dt) {
 
 }
 
-
-std::shared_ptr<Component> GarbageCollect::clone() const {
-    return std::make_shared<GarbageCollect>(GarbageCollect(*this));
-}

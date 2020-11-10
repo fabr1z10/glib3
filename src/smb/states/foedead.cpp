@@ -9,18 +9,9 @@ m_time(time) {
 
 }
 
-FoeDead::FoeDead(const FoeDead &orig) : PlatformerState(orig) {
-    m_time = orig.m_time;
-}
-
 FoeDead::FoeDead(const ITable & t) : PlatformerState(t) {
     m_time = t.get<float>("time");
     m_anim = t.get<std::string>("anim");
-}
-
-
-std::shared_ptr<State> FoeDead::clone() const {
-    return std::make_shared<FoeDead>(*this);
 }
 
 

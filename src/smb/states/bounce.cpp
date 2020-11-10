@@ -14,14 +14,6 @@ void Bounce::AttachStateMachine(StateMachine * sm) {
 }
 //Bounce::Bounce(float speed, float acceleration) : PlatformerState(), m_speed(speed), m_acceleration(acceleration) {}
 //
-Bounce::Bounce(const Bounce &orig) : PlatformerState(orig) {
-    m_speed = orig.m_speed;
-//    m_acceleration = orig.m_acceleration;
-}
-//
-std::shared_ptr<State> Bounce::clone() const {
-    return std::make_shared<Bounce>(*this);
-}
 
 void Bounce::Init(pybind11::dict&) {
 

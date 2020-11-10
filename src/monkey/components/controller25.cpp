@@ -23,12 +23,6 @@ Controller25::Controller25(const ITable &t) : IController() {
     m_depth = t.get<float>("depth", 0.0f);
 }
 
-Controller25::Controller25(const Controller25& orig) : IController(orig) {
-}
-
-std::shared_ptr<Component> Controller25::clone() const {
-    return std::make_shared<Controller25>(*this);
-}
 
 void Controller25::Start() {
     m_collision = Engine::get().GetRunner<ICollisionEngine>();

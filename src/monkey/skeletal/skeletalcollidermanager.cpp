@@ -13,14 +13,6 @@ SkeletalColliderManager::SkeletalColliderManager(const ITable & t) {
 
 }
 
-SkeletalColliderManager::SkeletalColliderManager(const SkeletalColliderManager &) {
-
-}
-
-std::shared_ptr<Component> SkeletalColliderManager::clone() const {
-	return std::make_shared<SkeletalColliderManager>(*this);
-}
-
 void SkeletalColliderManager::Start() {
 
 	for (const auto& collider : m_colliders) {

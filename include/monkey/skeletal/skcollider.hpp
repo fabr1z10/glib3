@@ -15,10 +15,7 @@ class MultiRenderer;
 class SkCollider : public ICollider {
 public:
     // ctor and clone
-    SkCollider(const SkCollider&);
     SkCollider (const ITable&);
-    std::shared_ptr<Component> clone() const override;
-
     void Start() override;
     void Begin() override;
 

@@ -20,9 +20,7 @@ protected:
 class PolygonalMover : public Mover {
 public:
     PolygonalMover (int loopType, glm::vec2 origin = glm::vec2(0.0f));
-    PolygonalMover (const PolygonalMover&);
     PolygonalMover (const ITable&);
-    std::shared_ptr<Component> clone() const override;
     std::type_index GetType() override;
     void addMovement(glm::vec2 delta, float speed, float hold);
     void Start() override ;

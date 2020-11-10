@@ -11,13 +11,6 @@ IsHit25::IsHit25(const ITable & t) : State(t) {
     m_anim = t.get<std::string>("anim");
 }
 
-IsHit25::IsHit25(const IsHit25 & orig) : State(orig) {
-}
-
-std::shared_ptr<State> IsHit25::clone() const {
-    return std::make_shared<IsHit25>(*this);
-}
-
 
 void IsHit25::Run(double dt) {
 

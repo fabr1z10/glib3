@@ -4,10 +4,7 @@
 
 class JumpAttack : public PlatformerState {
 public:
-    JumpAttack (const JumpAttack& orig);
     JumpAttack (const ITable& t);
-    std::shared_ptr<State> clone() const override;
-
     //void AttachStateMachine(StateMachine * sm) override;
 
     void Init (pybind11::dict&) override;

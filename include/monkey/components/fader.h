@@ -7,12 +7,10 @@ class Renderer;
 class Fader : public IAnimator {
 public:
     Fader (const ITable&);
-    Fader (const Fader&);
     virtual ~Fader() {}
     bool IsComplete() const override;
     void Start() override;
     void Update(double dt) override;
-    std::shared_ptr<Component> clone() const override;
     std::type_index GetType() override;
     void setModel (std::shared_ptr<IModel> model) override { throw; }
     void SetAnimation (const std::string& anim, bool forward = true) override { throw; }

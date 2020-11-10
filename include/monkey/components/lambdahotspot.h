@@ -44,7 +44,6 @@ public:
     }
     using ParentClass = HotSpot;
     std::type_index GetType() override;
-    std::shared_ptr<Component> clone() const override;
 private:
     std::function<void()> m_onEnter;
     std::function<void()> m_onLeave;

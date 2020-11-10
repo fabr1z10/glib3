@@ -14,16 +14,6 @@ WalkSide::WalkSide(float speed, float acceleration, bool fliph, float jumpSpeed)
         m_speed(speed), m_acceleration(acceleration), m_flipHorizontally(fliph), m_velocitySmoothing(0.0f), m_jumpSpeed(jumpSpeed),
         m_jumpState("jump"), m_idleAnim("idle"), m_walkAnim("walk") {}
 
-WalkSide::WalkSide(const WalkSide &orig) : PlatformerState(orig) {
-    m_speed = orig.m_speed;
-    m_acceleration = orig.m_acceleration;
-    m_flipHorizontally =orig.m_flipHorizontally;
-    m_jumpSpeed = orig.m_jumpSpeed;
-    m_jumpState = orig.m_jumpState;
-    m_idleAnim = orig.m_idleAnim;
-    m_walkAnim = orig.m_walkAnim;
-
-}
 
 WalkSide::WalkSide(const ITable & t) : PlatformerState(t) {
     m_speed = t.get<float>("speed");
@@ -40,9 +30,6 @@ WalkSide::WalkSide(const ITable & t) : PlatformerState(t) {
 
 }
 
-std::shared_ptr<State> WalkSide::clone() const {
-    return std::make_shared<WalkSide>(*this);
-}
 
 void WalkSide::Init(pybind11::dict&) {
 

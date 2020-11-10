@@ -11,9 +11,7 @@ class IAnimator;
 class Walk3D : public State {
 public:
     Walk3D(float acceleration);
-    Walk3D(const Walk3D&);
     Walk3D (const ITable&);
-    std::shared_ptr<State> clone() const override;
     void Run(double) override;
     void Init (pybind11::dict&) override;
     void End () override;

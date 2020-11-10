@@ -6,13 +6,6 @@ SpriteRenderer::SpriteRenderer(std::shared_ptr<IModel> model) : Renderer(), m_an
     m_baseModel = model.get();
 }
 
-SpriteRenderer::SpriteRenderer(const SpriteRenderer & orig) : Renderer(orig), m_model(orig.m_model) {}
-
-
-std::shared_ptr<Component> SpriteRenderer::clone() const {
-    return std::make_shared<SpriteRenderer>(*this);
-}
-
 
 void SpriteRenderer::Start() {
     m_animator = dynamic_cast<Animator*>(m_entity->GetComponent<IAnimator>());

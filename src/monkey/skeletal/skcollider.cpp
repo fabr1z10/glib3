@@ -13,14 +13,6 @@ SkCollider::SkCollider(const ITable& table) : ICollider(), m_shapeEntity(nullptr
 
 }
 
-SkCollider::SkCollider(const SkCollider & other) : ICollider(other) {
-
-}
-
-std::shared_ptr<Component> SkCollider::clone() const {
-    return std::make_shared<SkCollider>(*this);
-}
-
 Bounds SkCollider::GetStaticBoundsI() const {
     return m_model->GetBounds();
 

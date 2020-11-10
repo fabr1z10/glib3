@@ -13,15 +13,6 @@
 
 using namespace glm;
 
-Controller2D::Controller2D(const Controller2D& orig) : IController(orig),
-m_horizontalRayCount(orig.m_horizontalRayCount),
-m_verticalRayCount(orig.m_verticalRayCount),
-m_skinWidth(orig.m_skinWidth), m_maxClimbAngle(orig.m_maxClimbAngle),
-m_maxDescendAngle(orig.m_maxDescendAngle), m_platform(nullptr)
-{
-    
-}
-
 Controller2D::Controller2D(const ITable &t) : m_cc(nullptr) {
     m_maxClimbAngle = t.get<float>("maxClimbAngle");
     m_maxDescendAngle = t.get<float>("maxDescendAngle");
@@ -37,9 +28,7 @@ Controller2D::Controller2D(const ITable &t) : m_cc(nullptr) {
 
 }
 
-std::shared_ptr<Component> Controller2D::clone() const {
-    return std::make_shared<Controller2D>(*this);
-}
+
 
 void Controller2D::Start() {
     m_details.Reset();

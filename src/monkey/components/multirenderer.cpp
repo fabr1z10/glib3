@@ -1,17 +1,10 @@
 #include <monkey/components/multirenderer.h>
 
-
 MultiRenderer::MultiRenderer() : Renderer() {
 
 }
 MultiRenderer::~MultiRenderer() noexcept {
     std::cout << "2";
-}
-
-MultiRenderer::MultiRenderer(const MultiRenderer & orig) : Renderer(orig), m_models(orig.m_models) {}
-
-std::shared_ptr<Component> MultiRenderer::clone() const {
-    return std::make_shared<MultiRenderer>(*this);
 }
 
 void MultiRenderer::addModel(std::shared_ptr<BasicModel> model) {

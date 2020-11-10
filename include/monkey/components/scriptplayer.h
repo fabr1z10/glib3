@@ -6,8 +6,6 @@
 class ScriptPlayer : public Component {
 public:
     ScriptPlayer(const ITable&);
-    ScriptPlayer(const ScriptPlayer&);
-    std::shared_ptr<Component> clone() const override;
 
     virtual ~ScriptPlayer();
 

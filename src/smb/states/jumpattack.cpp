@@ -16,13 +16,6 @@ JAttack::JAttack(const ITable & t) : PlatformerState(t) {
 	m_callback = t.get<pybind11::function>("callback");
 }
 
-JAttack::JAttack(const JAttack & orig) : PlatformerState(orig) {
-}
-
-std::shared_ptr<State> JAttack::clone() const {
-	return std::make_shared<JAttack>(*this);
-}
-
 void JAttack::End() {
 
 }

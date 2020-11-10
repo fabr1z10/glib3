@@ -19,8 +19,6 @@ public:
 	 * @param fliph Flip entity horizontally when going left
 	 */
 	JAttack (const ITable&);
-	JAttack (const JAttack &);
-	std::shared_ptr<State> clone() const override;
 	void AttachStateMachine(StateMachine * sm) override;
 
 	void Run(double) override;

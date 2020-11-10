@@ -9,8 +9,6 @@
 class SkAnimator : public IAnimator {
 public:
     SkAnimator(std::shared_ptr<IModel>);
-    SkAnimator(const SkAnimator&);
-    std::shared_ptr<Component> clone() const override;
 
     virtual ~SkAnimator() {}
 	void setSpeedUp(float);

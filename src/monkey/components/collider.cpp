@@ -4,12 +4,6 @@
 #include <monkey/engine.h>
 #include <monkey/model/basicmodel.h>
 
-SimpleCollider::SimpleCollider(const SimpleCollider& orig) : ICollider(orig),
-m_shape(orig.m_shape), m_tag(orig.m_tag), m_flag(orig.m_flag), m_mask(orig.m_mask),
-m_enabled(orig.m_enabled)
-{}
-
-
 SimpleCollider::SimpleCollider(const ITable & t) : ICollider() {
 
     auto factory = Engine::get().GetSceneFactory();
@@ -23,10 +17,6 @@ SimpleCollider::SimpleCollider(const ITable & t) : ICollider() {
     m_mask = t.get<int>("mask");
 }
 
-
-std::shared_ptr<Component> SimpleCollider::clone() const {
-    return std::make_shared<SimpleCollider>(*this);
-}
 
 void SimpleCollider::SetParent(Entity * entity) {
     Component::SetParent(entity);

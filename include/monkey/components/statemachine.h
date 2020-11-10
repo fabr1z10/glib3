@@ -20,7 +20,6 @@ public:
     virtual void Init (pybind11::dict& d) = 0;
     virtual void Run (double) = 0;
     virtual void End () = 0;
-    virtual std::shared_ptr<State> clone() const = 0;
     // This is called only once when the statemachine begins, so PUT your initialization code here!
     virtual void AttachStateMachine(StateMachine*);
     virtual bool KeyListener (int);
@@ -47,7 +46,6 @@ class StateMachine : public Component {
 public:
     StateMachine() : m_currentState(nullptr), Component() {}
     StateMachine(const std::string& initialState) : m_initialState(initialState), m_currentState(nullptr) {}
-    StateMachine(const StateMachine&);
     void Start () override {}
     void Begin() override;
     void Update(double) override;
@@ -60,7 +58,6 @@ public:
     State* GetState (const std::string&);
     virtual void Refresh () {}
     void AddState(const std::string& id, std::shared_ptr<State> state);
-    std::shared_ptr<Component> clone() const override;
     using ParentClass = StateMachine;
 protected:
     State* m_currentState;

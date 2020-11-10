@@ -12,9 +12,6 @@ Fader::Fader(const ITable & t) {
     });
 
 }
-Fader::Fader(const Fader &) {
-
-}
 
 void Fader::Start() {
     m_renderer = m_entity->GetComponent<Renderer>();
@@ -37,9 +34,5 @@ void Fader::Update(double dt) {
 
     m_renderer->setMultColor (color);
 
-}
-
-std::shared_ptr<Component> Fader::clone() const {
-    return std::make_shared<Fader>(Fader(*this));
 }
 

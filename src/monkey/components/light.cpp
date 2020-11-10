@@ -10,12 +10,6 @@ Light::~Light() {
     Engine::get().GetRenderingEngine()->RemoveLight(this);
 }
 
-DirectionalLight::DirectionalLight(const DirectionalLight & orig) : Light(orig) {
-    m_direction = orig.m_direction;
-    m_ambient = orig.m_ambient;
-    m_diffuse = orig.m_diffuse;
-}
-
 DirectionalLight::DirectionalLight(const ITable & t) {
 	m_direction = t.get<glm::vec3>("direction");
 	m_ambient = t.get<glm::vec4>("ambient");
@@ -24,9 +18,6 @@ DirectionalLight::DirectionalLight(const ITable & t) {
 	m_diffuse /= 255.0f;
 }
 
-std::shared_ptr<Component> DirectionalLight::clone() const {
-    return std::make_shared<DirectionalLight>(DirectionalLight(*this));
-}
 
 
 void DirectionalLight::setUp(Shader* s) {

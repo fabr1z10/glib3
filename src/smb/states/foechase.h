@@ -26,9 +26,7 @@ public:
      */
     FoeChase (const std::string& walkAnim, const std::string& idleAnim,
               float speed, float acceleration, bool fliph, bool flipIfPlatformEnds, int left);
-    FoeChase (const FoeChase& orig);
     FoeChase (const ITable&);
-    std::shared_ptr<State> clone() const override;
     void AttachStateMachine(StateMachine*) override;
 
     void Run(double) override;

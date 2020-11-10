@@ -16,8 +16,6 @@ class WalkArea : public ScriptHotSpot {
 public:
     WalkArea (std::shared_ptr<Shape> shape, int priority);
     WalkArea (const ITable&);
-    WalkArea (const WalkArea&);
-    std::shared_ptr<Component> clone() const override;
     void assignDepth (Entity*);
     void assignScaleAndDepth (Entity*);
     void onAdd(Entity*);

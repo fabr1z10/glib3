@@ -8,9 +8,6 @@ class SkRend : public Renderer {
 public:
 	// requires a skmodel
 	SkRend (SkModel*, std::shared_ptr<Mesh<VertexSkeletalColor>> mesh);
-	SkRend (const SkRend&);
-	std::shared_ptr<Component> clone() const override;
-
 	void SetModel(std::shared_ptr<IModel> mesh) override;
 
 	void Draw(Shader*) override;

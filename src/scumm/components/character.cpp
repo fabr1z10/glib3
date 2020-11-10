@@ -13,15 +13,6 @@ StateCharacter::StateCharacter(const ITable &t) : StateMachine() {
     m_initialState = t.get<std::string>("state");
 }
 
-StateCharacter::StateCharacter(const StateCharacter& orig) :
-        StateMachine(orig), m_dir(orig.m_dir), m_speed(orig.m_speed) {
-    
-}
-
-std::shared_ptr<Component> StateCharacter::clone() const {
-    return std::make_shared<StateCharacter>(StateCharacter(*this));
-}
-
 void AnimateCharState::AttachStateMachine(StateMachine * sm) {
     m_state = dynamic_cast<const StateCharacter*>(sm);
     m_animator = sm->GetObject()->GetComponent<IAnimator>();
@@ -37,9 +28,6 @@ void AnimateCharState::Init(pybind11::dict&) {
 
 }
 
-std::shared_ptr<State> AnimateCharState::clone() const {
-    return std::make_shared<AnimateCharState>(AnimateCharState(*this));
-}
 
 void StateCharacter::Start () {
     AddState( "idle", std::make_shared<AnimateCharState>("idle"));

@@ -12,8 +12,6 @@ class ICollisionEngine;
 class Jump25 : public State {
 public:
     Jump25(float speed, float acceleration);
-    Jump25(const Jump25&);
-    std::shared_ptr<State> clone() const override;
     void AttachStateMachine(StateMachine*) override;
 
     void Run(double) override;

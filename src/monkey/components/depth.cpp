@@ -12,13 +12,6 @@ void DepthCalculator::Start() {
     UpdateDepthAndScale();
 }
 
-DepthCalculator::DepthCalculator(const DepthCalculator& orig) : Component(orig),
-m_scaleFunc(orig.m_scaleFunc), m_depthFunc(orig.m_depthFunc)
-{}
-
-std::shared_ptr<Component> DepthCalculator::clone() const {
-    return std::make_shared<DepthCalculator>(DepthCalculator(*this));
-}
 
 void DepthCalculator::Update(double) {
     glm::vec2 pos(m_entity->GetPosition());

@@ -47,7 +47,6 @@ public:
 			int verticalRayCount = 4)
 		: IController(), m_maxClimbAngle(maxClimbAngle), m_maxDescendAngle(maxDescendAngle), m_skinWidth(skinwidth), m_horizontalRayCount(horizontalRayCount),
 		  m_verticalRayCount(verticalRayCount), m_maskUp(maskUp), m_maskDown(maskDown), m_platform(nullptr) {}
-    Controller2D(const Controller2D&);
     Controller2D(const ITable&);
 	virtual ~Controller2D();
 	void Start() override;
@@ -68,7 +67,6 @@ public:
 	using ParentClass = Controller2D;
 	void DetachFromPlatform();
 	void ForceDetach() { m_platform = nullptr; }
-    std::shared_ptr<Component> clone() const override;
     std::type_index GetType() override;
 	void UpdateRaycastOrigins();
 

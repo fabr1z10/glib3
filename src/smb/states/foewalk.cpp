@@ -20,18 +20,6 @@ FoeWalk::FoeWalk(const ITable & t) : PlatformerState(t) {
 
 }
 
-FoeWalk::FoeWalk(const FoeWalk &orig) : PlatformerState(orig) {
-    m_anim = orig.m_anim;
-    m_speed = orig.m_speed;
-    m_acceleration = orig.m_acceleration;
-    m_fliph = orig.m_fliph;
-    m_flipIfPlatformEnds = orig.m_flipIfPlatformEnds;
-    m_left = orig.m_left;
-}
-
-std::shared_ptr<State> FoeWalk::clone() const {
-    return std::make_shared<FoeWalk>(*this);
-}
 
 void FoeWalk::AttachStateMachine(StateMachine * sm) {
     PlatformerState::AttachStateMachine(sm);

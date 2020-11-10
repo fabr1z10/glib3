@@ -7,9 +7,7 @@
 class MultiRenderer : public Renderer {
 public:
     MultiRenderer ();
-    MultiRenderer (const MultiRenderer&);
     ~MultiRenderer() override;
-    std::shared_ptr<Component> clone() const override;
     void Draw(Shader*) override;
     void Start() override {}
     std::type_index GetType() override;

@@ -14,18 +14,6 @@
 
 using namespace glm;
 
-Controller3D::Controller3D(const Controller3D& orig) : IController(orig),
-    m_horizontalRayCount(orig.m_horizontalRayCount),
-    m_verticalRayCount(orig.m_verticalRayCount),
-    m_skinWidth(orig.m_skinWidth), m_maxClimbAngle(orig.m_maxClimbAngle),
-    m_maxDescendAngle(orig.m_maxDescendAngle)
-{
-
-}
-
-std::shared_ptr<Component> Controller3D::clone() const {
-    return std::make_shared<Controller3D>(Controller3D(*this));
-}
 
 void Controller3D::Start() {
     m_details.Reset();

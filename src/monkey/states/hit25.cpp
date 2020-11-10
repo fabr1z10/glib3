@@ -15,14 +15,6 @@ Hit25::Hit25(const ITable &t) : State(t) {
 }
 
 
-Hit25::Hit25(const Hit25& orig) : State(orig) {
-    m_anim = orig.m_anim;
-}
-
-std::shared_ptr<State> Hit25::clone() const {
-    return std::make_shared<Hit25>(*this);
-}
-
 void Hit25::Run(double dt) {
     if (m_animator->IsComplete()) {
         m_sm->SetState("walk");

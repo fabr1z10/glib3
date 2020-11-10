@@ -64,21 +64,21 @@ Entity::Entity(const ITable& t) : Ref(t),
 
 
 
-Entity::Entity(const Entity & e) : Ref(e), m_update(e.m_update) {
-    m_flipHorizontal = e.m_flipHorizontal;
-    m_active = e.m_active;
-    m_enableControls = e.m_enableControls;
-    m_localTransform = e.m_localTransform;
-    m_worldTransform = glm::mat4(1.0f);
-    for (auto& c : e.m_children) {
-        // this will set the children parents and this' named children
-        this->AddChild(c.second->clone());
-    }
-    for (auto& comp : e.m_components) {
-        this->AddComponent(comp.second->clone());
-    }
-
-}
+//Entity::Entity(const Entity & e) : Ref(e), m_update(e.m_update) {
+//    m_flipHorizontal = e.m_flipHorizontal;
+//    m_active = e.m_active;
+//    m_enableControls = e.m_enableControls;
+//    m_localTransform = e.m_localTransform;
+//    m_worldTransform = glm::mat4(1.0f);
+//    for (auto& c : e.m_children) {
+//        // this will set the children parents and this' named children
+//        this->AddChild(c.second->clone());
+//    }
+//    for (auto& comp : e.m_components) {
+//        this->AddComponent(comp.second->clone());
+//    }
+//
+//}
 
 Entity::~Entity() {
     if (!onDestroy.isEmpty()) {
@@ -86,11 +86,11 @@ Entity::~Entity() {
     }
 }
 
-std::shared_ptr<Entity> Entity::clone() const {
-    return std::make_shared<Entity>(*this);
-
-
-}
+//std::shared_ptr<Entity> Entity::clone() const {
+//    return std::make_shared<Entity>(*this);
+//
+//
+//}
 
 // make sure start is called only once!!!
 void Entity::start() {

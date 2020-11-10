@@ -14,10 +14,8 @@ class InputMethod;
 class ExtendedStateMachine : public StateMachine {
 public:
     ExtendedStateMachine(const std::string& initialState);
-    ExtendedStateMachine(const ExtendedStateMachine&);
     ExtendedStateMachine(const ITable&);
-    std::shared_ptr<Component> clone() const override;
-    
+
     void Start () override ;
     void KeyListener (int key);
     std::type_index GetType() override;

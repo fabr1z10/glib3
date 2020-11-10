@@ -12,13 +12,6 @@ Animator::Animator(std::shared_ptr<IModel> model) : IAnimator() {
     m_initAnim = model->GetDefaultAnimation();
 }
 
-Animator::Animator(const Animator& orig) : IAnimator(orig), m_animInfo(orig.m_animInfo), m_model(orig.m_model) {
-    
-}
-
-std::shared_ptr<Component> Animator::clone() const {
-    return std::make_shared<Animator>(Animator(*this));
-}
 void Animator::Start() {
     m_renderer = m_entity->GetComponent<Renderer>();
     //m_mesh = dynamic_cast<SpriteMesh*>(m_model->GetModel().get());

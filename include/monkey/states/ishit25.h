@@ -16,11 +16,7 @@ class IsHit25 : public State {
 public:
     //FoeWalk25(float speed, float acceleration, bool fliph);
 
-    IsHit25(const IsHit25 &);
-
     IsHit25(const ITable &);
-
-    std::shared_ptr<State> clone() const override;
 
     void Run(double) override;
 

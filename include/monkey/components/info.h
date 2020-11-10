@@ -12,9 +12,6 @@ public:
     PyDict get2() const {
         return PyDict(m_stuff);
     }
-    std::shared_ptr<Component> clone() const override {
-        return std::make_shared<LuaInfo>(LuaInfo(*this));
-    }
     pybind11::dict& getStuff() {
         return m_stuff;
     }

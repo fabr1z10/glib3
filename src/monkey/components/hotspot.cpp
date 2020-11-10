@@ -64,12 +64,6 @@ HotSpotManager::HotSpotManager() : Component(), MouseListener(), m_currentlyActi
 }
 
 
-HotSpotManager::HotSpotManager(const HotSpotManager & orig) : Component(orig) {
-
-}
-std::shared_ptr<Component> HotSpotManager::clone() const {
-    return std::make_shared<HotSpotManager>(*this);
-}
 
 HotSpotManager::HotSpotManager(const ITable & table) : Component(table) {
     m_currentlyActiveHotSpot = nullptr;

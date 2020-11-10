@@ -12,7 +12,6 @@ class Renderer;
 
 class SkColl : public ICollider {
 public:
-	SkColl(const SkColl&);
 	SkColl (const ITable&);
 	void Start() override;
 	void Update(double) override;
@@ -20,7 +19,6 @@ public:
 	int GetCollisionTag() const override;
 	int GetCollisionFlag() const override;
 	int GetCollisionMask() const override;
-	std::shared_ptr<Component> clone() const override;
 	std::type_index GetType() override;
 private:
 	Renderer * m_renderer;

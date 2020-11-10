@@ -5,10 +5,6 @@ extern GLFWwindow* window;
 
 KeyboardInputMethod::KeyboardInputMethod(const ITable & t) : InputMethod(t), m_demoMode(false) {}
 
-std::shared_ptr<Component> KeyboardInputMethod::clone() const {
-    return std::make_shared<KeyboardInputMethod>(*this);
-}
-
 bool KeyboardInputMethod::isKeyDown(int key) {
     if (m_demoMode) {
         return m_keysDown.count(key) > 0;

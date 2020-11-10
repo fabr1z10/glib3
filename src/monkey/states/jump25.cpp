@@ -11,15 +11,6 @@
 Jump25::Jump25(float speed, float acceleration) : State(),
     m_speed(speed), m_acceleration(acceleration), m_velocitySmoothingX(0.0f), m_velocitySmoothingY(0.0f) {}
 
-Jump25::Jump25(const Jump25 &) {
-
-
-}
-
-std::shared_ptr<State> Jump25::clone() const {
-    return std::make_shared<Jump25>(*this);
-}
-
 void Jump25::AttachStateMachine(StateMachine * sm) {
     State::AttachStateMachine(sm);
     m_entity = sm->GetObject();

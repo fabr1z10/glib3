@@ -14,7 +14,6 @@ public:
     SimpleCollider (const ITable&);
     SimpleCollider (std::shared_ptr<Shape> shape, int tag, int flag, int mask) :
     m_shape{shape}, m_tag{tag}, m_enabled{true}, m_flag{flag}, m_mask{mask} {}
-    SimpleCollider (const SimpleCollider&);
     virtual ~SimpleCollider();
     
     // ICollider interface
@@ -34,7 +33,6 @@ public:
 
     Event<SimpleCollider*> onShapeChanged;
     void SetEnabled (bool);
-    std::shared_ptr<Component> clone() const override;
     std::type_index GetType() override;
 
 

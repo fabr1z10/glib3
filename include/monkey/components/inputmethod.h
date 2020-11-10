@@ -33,9 +33,7 @@ struct DemoKeyEvent {
 class KeyboardInputMethod : public InputMethod, public KeyboardListener {
 public:
     KeyboardInputMethod() : InputMethod(), m_demoMode(false), m_demoTimer(0.0), m_length(0.0f) {}
-    KeyboardInputMethod(const KeyboardInputMethod& orig) : InputMethod(orig) {}
     KeyboardInputMethod(const ITable&);
-    std::shared_ptr<Component> clone() const override;
     void Start() override {}
     void Update (double) override;
     bool isKeyDown(int) override;

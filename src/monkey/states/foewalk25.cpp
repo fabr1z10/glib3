@@ -22,14 +22,6 @@ FoeWalk25::FoeWalk25(const ITable & t) : State(t) {
 	m_jumpAttack = t.get<bool>("jump_attack", false);
 }
 
-FoeWalk25::FoeWalk25(const FoeWalk25 & orig) : State(orig) {
-
-}
-
-std::shared_ptr<State> FoeWalk25::clone() const {
-    return std::make_shared<FoeWalk25>(*this);
-}
-
 
 void FoeWalk25::computeDirection() {
     // the difference between this and foechase and here

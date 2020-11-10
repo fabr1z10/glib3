@@ -5,15 +5,10 @@
 
 FPSCounter::FPSCounter() : Component(), m_frameCount(0), m_frameStart(0.0), m_textMesh(nullptr) {}
 
-FPSCounter::FPSCounter(const FPSCounter& orig) : Component(orig) {}
-
 FPSCounter::FPSCounter(const ITable & t) : FPSCounter() {
 
 }
 
-std::shared_ptr<Component> FPSCounter::clone() const {
-    return std::make_shared<FPSCounter>(FPSCounter(*this));
-}
 
 void FPSCounter::Start() {
 

@@ -9,12 +9,10 @@
 class Parallax : public Component {
 public:
     Parallax (const std::string& camId, glm::vec2 factor);
-    Parallax(const Parallax&);
     Parallax(const ITable&);
     void Start() override;
     void Begin() override;
     void Update(double) override {}
-    std::shared_ptr<Component> clone() const override;
 private:
     void onCameraMove(Camera*);
     std::string m_camId;

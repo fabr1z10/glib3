@@ -108,11 +108,7 @@ BasicRenderer::BasicRenderer(const ITable & t) : Renderer() {
 
 
 
-BasicRenderer::BasicRenderer(const BasicRenderer & orig) : Renderer(orig), m_model(orig.m_model) {}
 
-std::shared_ptr<Component> BasicRenderer::clone() const {
-    return std::make_shared<BasicRenderer>(*this);
-}
 
 void BasicRenderer::Draw(Shader* shader) {
     Renderer::Draw(shader);

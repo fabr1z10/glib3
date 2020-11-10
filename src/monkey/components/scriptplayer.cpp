@@ -4,13 +4,6 @@
 
 ScriptPlayer::ScriptPlayer(const ITable &) {}
 
-ScriptPlayer::ScriptPlayer(const ScriptPlayer &) {}
-
-std::shared_ptr<Component> ScriptPlayer::clone() const {
-    return std::make_shared<ScriptPlayer>(*this);
-}
-
-
 ScriptPlayer::~ScriptPlayer() noexcept {
     // stop all scripts associated to this entity
     for (const auto& script : m_scripts) {

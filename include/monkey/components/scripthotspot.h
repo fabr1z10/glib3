@@ -11,8 +11,6 @@ public:
             std::shared_ptr<Shape> shape,
             int priority) : HotSpot(shape, priority) {}
     
-    ScriptHotSpot (const ScriptHotSpot&);
-
     void onLeave() override;
     void onClick(glm::vec2, int, int, int) override;
     void onEnter() override;
@@ -34,7 +32,6 @@ public:
     }
     using ParentClass = HotSpot;
     std::type_index GetType() override;
-    std::shared_ptr<Component> clone() const override;
 
 private:
     //bool m_inShape;

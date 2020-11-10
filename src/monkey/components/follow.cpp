@@ -33,14 +33,6 @@ Follow::Follow(const ITable & t) : Component(t), m_fixZ{false} {
 }
 
 
-Follow::Follow(const Follow& orig) : Component(orig),
-m_camId(orig.m_camId), m_relativePos(orig.m_relativePos), m_up(orig.m_up), m_fixZ(orig.m_fixZ) {
-    m_dir = -glm::normalize(m_relativePos);
-}
-
-std::shared_ptr<Component> Follow::clone() const {
-    return std::make_shared<Follow>(Follow(*this));
-}
 
 void Follow::Start() {
 

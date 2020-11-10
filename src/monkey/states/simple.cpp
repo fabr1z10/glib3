@@ -8,13 +8,6 @@ NullState::NullState(const ITable & t) : State(t) {
 
 }
 
-NullState::NullState(const NullState& t) : State(t) {
-
-}
-
-std::shared_ptr<State> NullState::clone() const {
-    return std::make_shared<NullState>(*this);
-}
 
 void NullState::Init(pybind11::dict&) {}
 
@@ -27,10 +20,6 @@ void NullState::Run (double dt) {
 
 SimpleState::SimpleState(const std::string &anim) : State(), m_anim(anim) {}
 
-SimpleState::SimpleState(const SimpleState& t) : State(t) {
-
-}
-
 SimpleState::SimpleState(const ITable & t) : State(t) {
     m_anim = t.get<std::string>("anim");
     m_endOnAnimComplete = t.get<bool>("end_on_anim_complete", false);
@@ -38,9 +27,6 @@ SimpleState::SimpleState(const ITable & t) : State(t) {
     std::cerr << m_anim << "!!!\n";
 }
 
-std::shared_ptr<State> SimpleState::clone() const {
-    return std::make_shared<SimpleState>(*this);
-}
 
 void SimpleState::AttachStateMachine(StateMachine * sm) {
     m_sm = sm;

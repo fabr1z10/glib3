@@ -31,10 +31,10 @@ public:
     //bool Enabled () const;
     Entity* GetObject();
     virtual std::type_index GetType();
-    virtual std::shared_ptr<Component> clone() const = 0;
+    //virtual std::shared_ptr<Component> clone() const = 0;
 protected:
     Component() : Ref() {}
-    Component(const Component&);
+    //Component(const Component&);
 
     //bool m_enabled;
     Entity* m_entity;

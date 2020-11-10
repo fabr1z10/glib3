@@ -7,14 +7,6 @@ EllipseMover::EllipseMover(float xrad, float yrad, float period, glm::vec2 origi
     m_ab = xrad*yrad;
 }
 
-EllipseMover::EllipseMover(const EllipseMover & orig) : Mover(orig), m_xrad(orig.m_xrad), m_yrad(orig.m_yrad),
-                                                        m_period(orig.m_period), m_angularSpeed(orig.m_angularSpeed) {
-
-}
-
-std::shared_ptr<Component> EllipseMover::clone() const {
-    return std::make_shared<EllipseMover>(*this);
-}
 
 std::type_index EllipseMover::GetType() {
     return std::type_index(typeid(Mover));

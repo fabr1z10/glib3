@@ -29,7 +29,6 @@ public:
 class Animator : public IAnimator {
 public:
     Animator(std::shared_ptr<IModel> model);
-    Animator(const Animator&);
     virtual ~Animator() {}
     void Start() override;
     void Update(double dt) override;
@@ -47,7 +46,6 @@ public:
     // allows to backup the status in order to restore it later
     //virtual std::shared_ptr<AnimatorState> SaveState()  = 0;
     //virtual void LoadState(std::shared_ptr<AnimatorState>) = 0;
-    std::shared_ptr<Component> clone() const override;
     using ParentClass = Animator;
     std::type_index GetType() override;
     const FrameInfo* getFrameInfo();

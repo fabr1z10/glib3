@@ -14,15 +14,6 @@ KoopaShell::KoopaShell(const ITable & t) : PlatformerState(t) {
 
 }
 
-KoopaShell::KoopaShell(const KoopaShell &orig) : PlatformerState(orig) {
-    m_time = orig.m_time;
-    m_time_walk = orig.m_time_walk;
-}
-
-std::shared_ptr<State> KoopaShell::clone() const {
-    return std::make_shared<KoopaShell>(*this);
-}
-
 
 void KoopaShell::Init(pybind11::dict&) {
     m_animator->SetAnimation("hide");

@@ -28,15 +28,7 @@ PolygonalMover::PolygonalMover(const ITable & t) : Mover(), m_O(glm::vec2(0.0f))
 
 }
 
-PolygonalMover::PolygonalMover(const PolygonalMover& orig) : Mover(orig), m_O(orig.m_O), m_loopType(orig.m_loopType), m_startIndex(orig.m_startIndex),
-m_pctComplete(orig.m_pctComplete)
-{
-    m_movements = orig.m_movements;
-}
 
-std::shared_ptr<Component> PolygonalMover::clone() const {
-    return std::make_shared<PolygonalMover>(*this);
-}
 
 void PolygonalMover::addMovement(glm::vec2 delta, float speed, float hold) {
 

@@ -15,14 +15,6 @@ JumpAttack::JumpAttack(const ITable &t) : PlatformerState(t) {
 }
 
 
-JumpAttack::JumpAttack(const JumpAttack& orig) : PlatformerState(orig) {
-    m_anim = orig.m_anim;
-}
-
-std::shared_ptr<State> JumpAttack::clone() const {
-    return std::make_shared<JumpAttack>(*this);
-}
-
 void JumpAttack::Run(double dt) {
 
     if (m_animator->IsComplete()) {

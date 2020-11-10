@@ -5,9 +5,7 @@
 
 class Attack : public State {
 public:
-    Attack (const Attack& orig);
     Attack (const ITable& t);
-    std::shared_ptr<State> clone() const override;
 
     void AttachStateMachine(StateMachine * sm) override;
 

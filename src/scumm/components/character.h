@@ -8,7 +8,6 @@ class IAnimator;
 class StateCharacter : public StateMachine {
 public:
     StateCharacter(float speed, char dir, const std::string& initialState);
-    StateCharacter(const StateCharacter&);
     StateCharacter(const ITable& t);
 
     void SetDirection(char dir);
@@ -17,7 +16,6 @@ public:
     void Begin () override;
     float GetSpeed() const;
     std::type_index GetType() override;
-    std::shared_ptr<Component> clone() const override;
 private:
     float m_speed;
     char m_dir;
@@ -44,7 +42,6 @@ public:
     void Run (double) override {}
     void End () override {}
     void AttachStateMachine(StateMachine*) override;
-    std::shared_ptr<State> clone() const override;
 private:
     const StateCharacter* m_state;
     IAnimator* m_animator;

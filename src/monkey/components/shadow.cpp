@@ -3,16 +3,11 @@
 
 Shadow::Shadow() : Component() {}
 
-Shadow::Shadow(const Shadow& orig) : Component(orig) {}
-
 Shadow::Shadow(const ITable &t) : Component() {
 
 }
 
 
-std::shared_ptr<Component> Shadow::clone() const {
-    return std::make_shared<Shadow>(Shadow(*this));
-}
 
 void Shadow::Start() {
     auto parent = m_entity->GetParent();
@@ -28,17 +23,12 @@ void Shadow::Update(double) {
 
 ShadowX::ShadowX() : Component() {}
 
-ShadowX::ShadowX(const ShadowX& orig) : Component(orig) {}
-
 ShadowX::ShadowX(const ITable &t) : Component() {
     m_target = t.get<std::string>("target");
     m_y = t.get<float>("y");
 }
 
 
-std::shared_ptr<Component> ShadowX::clone() const {
-    return std::make_shared<ShadowX>(ShadowX(*this));
-}
 
 void ShadowX::Start() {
     m_followed = Monkey::get().Get<Entity>(m_target);

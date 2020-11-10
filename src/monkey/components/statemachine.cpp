@@ -36,17 +36,6 @@ bool State::KeyListener(int key) {
     return true;
 }
 
-StateMachine::StateMachine(const StateMachine& orig) : Component(orig), m_initialState(orig.m_initialState)
-{
-    m_currentState = nullptr;
-    for (auto& i : orig.m_states) {
-        AddState(i.first, i.second->clone());
-    }
-}
-
-std::shared_ptr<Component> StateMachine::clone() const {
-    return std::make_shared<StateMachine>(StateMachine(*this));
-}
 
 
 void StateMachine::Begin() {

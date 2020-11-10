@@ -11,10 +11,6 @@ TexAnimator::TexAnimator(const ITable & t) {
     m_T.y = fabs(m_T.y);
 }
 
-TexAnimator::TexAnimator(const TexAnimator &) {
-
-}
-
 void TexAnimator::Start() {
     m_renderer = m_entity->GetComponent<Renderer>();
     m_t = glm::vec2(0.0f);
@@ -38,7 +34,4 @@ void TexAnimator::Update(double dt) {
 
 }
 
-std::shared_ptr<Component> TexAnimator::clone() const {
-    return std::make_shared<TexAnimator>(*this);
-}
 

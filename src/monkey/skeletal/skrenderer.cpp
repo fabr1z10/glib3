@@ -8,18 +8,12 @@ SkRenderer::SkRenderer(std::shared_ptr<IModel> model) : Renderer() {
 
 }
 
-std::shared_ptr<Component> SkRenderer::clone() const {
-    return std::make_shared<SkRenderer>(*this);
-}
-
 void SkRenderer::SetModel(std::shared_ptr<IModel> model) {
     m_model = dynamic_cast<SkModel*>(model.get());
     m_baseModel = model.get();
     m_ic->setModel(model);
 }
 
-
-SkRenderer::SkRenderer(const SkRenderer & orig): Renderer(orig), m_model(orig.m_model) {}
 
 void SkRenderer::Start() {
     m_ic = m_entity->GetComponent<IAnimator>();

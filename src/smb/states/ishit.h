@@ -16,8 +16,6 @@ public:
 	 * @param fliph Flip entity horizontally when going left
 	 */
 	IsHit (const ITable&);
-	IsHit (const IsHit &);
-	std::shared_ptr<State> clone() const override;
 
 	void Run(double) override;
 	void Init (pybind11::dict&) override;

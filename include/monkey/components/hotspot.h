@@ -67,9 +67,7 @@ inline int HotSpot::GetPriority() const {
 class HotSpotManager : public Component, public MouseListener, public KeyboardListener {
 public:
     HotSpotManager();
-    HotSpotManager(const HotSpotManager&);
     HotSpotManager(const ITable&);
-    std::shared_ptr<Component> clone() const override;
 
 
     ~HotSpotManager() override;

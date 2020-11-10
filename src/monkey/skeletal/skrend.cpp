@@ -7,17 +7,11 @@ SkRend::SkRend(SkModel* model, std::shared_ptr<Mesh<VertexSkeletalColor>> mesh) 
 	m_mesh = mesh;
 }
 
-std::shared_ptr<Component> SkRend::clone() const {
-	return std::make_shared<SkRend>(*this);
-}
-
 void SkRend::SetModel(std::shared_ptr<IModel> model) {
 	m_model = dynamic_cast<SkModel*>(model.get());
 	m_baseModel = model.get();
 }
 
-
-SkRend::SkRend(const SkRend & orig): Renderer(orig), m_model(orig.m_model) {}
 
 void SkRend::Start() {
 	m_forceZ=true;

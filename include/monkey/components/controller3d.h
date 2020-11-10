@@ -72,7 +72,6 @@ class Controller3D : public IController {
 public:
     Controller3D(float maxClimbAngle, float maxDescendAngle, float skinwidth = .015f, int horizontalRayCount = 4, int verticalRayCount = 4)
             : IController(), m_maxClimbAngle(maxClimbAngle), m_maxDescendAngle(maxDescendAngle), m_skinWidth(skinwidth), m_horizontalRayCount(horizontalRayCount), m_verticalRayCount(verticalRayCount), m_platform(nullptr) {}
-    Controller3D(const Controller3D&);
     virtual ~Controller3D() {}
     void Start() override;
     void Begin() override;
@@ -93,7 +92,6 @@ public:
 //    using ParentClass = Controller3D;
 //    void DetachFromPlatform();
 //    void ForceDetach() { m_platform = nullptr; }
-    std::shared_ptr<Component> clone() const override;
     std::type_index GetType() override;
 
     //RayCastHit2D Raycast(glm::vec2 origin, glm::vec2 direction, float length, int mask);

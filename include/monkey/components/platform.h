@@ -13,8 +13,6 @@ class PlatformComponent : public Component {
 public:
     PlatformComponent() : Component() {}
     PlatformComponent(const ITable&);
-    PlatformComponent(const PlatformComponent& orig) : Component(orig) {}
-    std::shared_ptr<Component> clone() const override;
     virtual ~PlatformComponent();
     void Move(Entity*);
     void Start() override;

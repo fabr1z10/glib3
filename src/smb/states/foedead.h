@@ -12,10 +12,8 @@ public:
      * @param fliph Flip entity horizontally when going left
      */
     FoeDead (float time);
-    FoeDead (const FoeDead& orig);
     FoeDead (const ITable&);
 
-    std::shared_ptr<State> clone() const override;
 
     void Run(double) override;
     void Init (pybind11::dict&) override;

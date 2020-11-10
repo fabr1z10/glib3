@@ -10,13 +10,6 @@
 
 WalkArea::WalkArea(std::shared_ptr<Shape> shape, int priority) : ScriptHotSpot(shape, priority) {}
 
-WalkArea::WalkArea(const WalkArea& orig) : ScriptHotSpot(orig),
-m_walls(orig.m_walls) {
-    
-}
-
-
-
 WalkArea::WalkArea(const ITable & t) : ScriptHotSpot(t) {
     auto factory = Engine::get().GetSceneFactory();
     
@@ -49,11 +42,6 @@ WalkArea::WalkArea(const ITable & t) : ScriptHotSpot(t) {
 //            AddBlockedLine(A, B, active);
 //        }
      }
-}
-
-
-std::shared_ptr<Component> WalkArea::clone() const {
-    return std::make_shared<WalkArea>(WalkArea(*this));
 }
 
 void WalkArea::onAdd(Entity * e) {

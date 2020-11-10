@@ -16,12 +16,10 @@ public:
      * @param fliph Flip entity horizontally when going left
      */
     WalkSide (float speed, float acceleration, bool fliph, float jumpSpeed);
-    WalkSide (const WalkSide& orig);
     WalkSide (const ITable&);
     void Run(double) override;
     void Init (pybind11::dict&) override;
     void End () override;
-    std::shared_ptr<State> clone() const override;
     void ResetAnimation() override;
     void ModifyAnimation() override;
     void setWalkAnimation (const std::string& anim);

@@ -4,7 +4,7 @@ import lib_py.shape as sh
 import lib_py.actions as act
 from lib_py.script import Script
 import smb_py.vars as vars
-import smb_py.scripts as scr
+import scripts as scr
 
 import example
 

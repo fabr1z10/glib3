@@ -35,21 +35,6 @@ FoeChase::FoeChase(const ITable & t) : PlatformerState(t) {
     m_probAttack = t.get<float>("probattack");
 }
 
-FoeChase::FoeChase(const FoeChase &orig) : PlatformerState(orig) {
-    m_walkAnim = orig.m_walkAnim;
-    m_idleAnim = orig.m_idleAnim;
-    m_attacks = orig.m_attacks;
-    m_speed = orig.m_speed;
-    m_acceleration = orig.m_acceleration;
-    //m_fliph = orig.m_fliph;
-    //m_flipIfPlatformEnds = orig.m_flipIfPlatformEnds;
-    // m_left = orig.m_left;
-}
-
-std::shared_ptr<State> FoeChase::clone() const {
-    return std::make_shared<FoeChase>(*this);
-}
-
 void FoeChase::AttachStateMachine(StateMachine * sm) {
     PlatformerState::AttachStateMachine(sm);
     m_c = dynamic_cast<Controller2D*>(m_controller);

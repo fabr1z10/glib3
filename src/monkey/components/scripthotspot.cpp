@@ -36,14 +36,6 @@ ScriptHotSpot::ScriptHotSpot(const ITable &t) : HotSpot(t), r_enter(py::none()),
 
 
 
-ScriptHotSpot::ScriptHotSpot(const ScriptHotSpot& orig) :
-HotSpot(orig), r_move(orig.r_move), r_click(orig.r_click), r_enter(orig.r_enter), r_leave(orig.r_leave) {
-
-}
-
-std::shared_ptr<Component> ScriptHotSpot::clone() const {
-    return std::make_shared<ScriptHotSpot>(ScriptHotSpot(*this));
-}
 
 
 void ScriptHotSpot::onClick(glm::vec2 pos, int button, int action, int mods) {

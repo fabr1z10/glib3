@@ -28,19 +28,6 @@ Jump2D::Jump2D(const ITable& t) : PlatformerState(t) {
     m_walkState = t.get<std::string>("walkState", "walk");
 }
 
-Jump2D::Jump2D(const Jump2D &orig) : PlatformerState(orig) {
-    m_speed = orig.m_speed;
-    m_accTimeAir = orig.m_accTimeAir;
-    m_jumpAnimDown = orig.m_jumpAnimDown;
-    m_jumpAnimUp = orig.m_jumpAnimUp;
-    m_walkState = orig.m_walkState;
-    m_flipHorizontally = orig.m_flipHorizontally;
-    
-}
-
-std::shared_ptr<State> Jump2D::clone() const {
-    return std::make_shared<Jump2D>(*this);
-}
 
 void Jump2D::Init(pybind11::dict&) {
     ResetAnimation();

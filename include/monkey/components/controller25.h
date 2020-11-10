@@ -17,7 +17,6 @@ public:
         int horizontalRayCount = 4,
         int verticalRayCount = 4) : IController(), m_skinWidth(0.015f), m_horizontalRayCount(horizontalRayCount),
               m_verticalRayCount(verticalRayCount), m_maskWall(maskWall) {}
-    Controller25(const Controller25&);
     Controller25(const ITable&);
     virtual ~Controller25();
     void CalculateRaySpacing();
@@ -29,7 +28,6 @@ public:
     bool ceiling () const override;
 	bool side () const override {return false;}
 	void Update(double) override {}
-    std::shared_ptr<Component> clone() const override;
     std::type_index GetType() override;
     void ResetShape(ICollider*);
     float getDepth() const;

@@ -7,8 +7,6 @@
 class SkeletalColliderManager : public Component {
 public:
 	SkeletalColliderManager (const ITable&);
-	SkeletalColliderManager (const SkeletalColliderManager&);
-	std::shared_ptr<Component> clone() const override;
 	void Start() override;
 	void Update(double) override;
 private:

@@ -9,10 +9,6 @@
 ExtendedStateMachine::ExtendedStateMachine(const std::string& initialState) : StateMachine(initialState) {
 }
 
-ExtendedStateMachine::ExtendedStateMachine(const ExtendedStateMachine& orig) : StateMachine(orig)
-{
-    //m_globalKeys = orig.m_globalKeys;
-}
 
 ExtendedStateMachine::ExtendedStateMachine(const ITable & t) {
     m_initialState = t.get<std::string>("initialState");
@@ -45,11 +41,6 @@ ExtendedStateMachine::ExtendedStateMachine(const ITable & t) {
 //    }
 
 }
-
-std::shared_ptr<Component> ExtendedStateMachine::clone() const {
-    return std::make_shared<ExtendedStateMachine>(*this);
-}
-
 
 // forward to the active state
 void ExtendedStateMachine::KeyListener (int key) {

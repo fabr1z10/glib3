@@ -55,7 +55,6 @@ public:
     void AddLight (Light*);
     void RemoveLight(Light*);
     std::unordered_set<Light*>& GetLights();
-    std::shared_ptr<Component> clone() const override {throw;}
     glm::mat4& getModelViewMatrix();
 private:
     int m_i;

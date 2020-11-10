@@ -9,8 +9,6 @@ class Bounce : public PlatformerState {
 public:
     Bounce (const ITable&);
 
-    Bounce (const Bounce& orig);
-    std::shared_ptr<State> clone() const override;
     void AttachStateMachine(StateMachine*) override;
 
     void Run(double) override;

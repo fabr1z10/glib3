@@ -14,13 +14,6 @@ Attack::Attack(const ITable &t) : State(t) {
 }
 
 
-Attack::Attack(const Attack& orig) : State(orig) {
-    m_anim = orig.m_anim;
-}
-
-std::shared_ptr<State> Attack::clone() const {
-    return std::make_shared<Attack>(*this);
-}
 
 void Attack::Run(double dt) {
     if (m_animator->IsComplete()) {

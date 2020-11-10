@@ -15,9 +15,7 @@ class Dynamics2D;
 class Walk25 : public State {
 public:
     Walk25(float speed, float acceleration, bool fliph, bool anim4, float jumpspeed, char dir='e');
-    Walk25(const Walk25&);
     Walk25 (const ITable&);
-    std::shared_ptr<State> clone() const override;
     void Run(double) override;
     void Init (pybind11::dict&) override;
     void End () override;

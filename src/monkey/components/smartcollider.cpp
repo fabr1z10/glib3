@@ -9,9 +9,6 @@
 #include <monkey/meshfactory.h>
 
 
-SmartCollider::SmartCollider(const SmartCollider & other) : ICollider(other) {
-
-}
 SmartCollider::~SmartCollider() {
 
 
@@ -29,9 +26,6 @@ void SmartCollider::AddAttackTag(const std::string& anim, int tag, int mask) {
     m_attackInfo.insert(std::make_pair(anim, std::make_pair(tag, mask)));
 }
 
-std::shared_ptr<Component> SmartCollider::clone() const {
-    return std::make_shared<SmartCollider>(*this);
-}
 
 Bounds SmartCollider::getAttackBounds() const {
     auto anim = m_animator->GetAnimation();

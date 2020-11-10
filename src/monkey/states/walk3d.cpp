@@ -4,16 +4,8 @@
 #include <monkey/entity.h>
 
 
-Walk3D::Walk3D(const Walk3D &) {
-    
-}
-
 Walk3D::Walk3D(const ITable & t) : State(t) {
     m_acceleration = t.get<float> ("acceleration");
-}
-
-std::shared_ptr<State> Walk3D::clone() const {
-    return std::make_shared<Walk3D>(*this);
 }
 
 void Walk3D::AttachStateMachine(StateMachine * sm) {

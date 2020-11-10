@@ -6,13 +6,7 @@
 
 Parallax3D::Parallax3D(const std::string &camId, float z, const std::string &img) : m_camId(camId), m_img(img), m_z(z) {}
 
-Parallax3D::Parallax3D(const Parallax3D& orig) : Component(orig),
-    m_camId(orig.m_camId), m_img(orig.m_img), m_z(orig.m_z) {}
 
-
-std::shared_ptr<Component> Parallax3D::clone() const {
-    return std::make_shared<Parallax3D>(Parallax3D(*this));
-}
 
 void Parallax3D::Start() {
     m_cam = Monkey::get().Get<PerspectiveCamera>(m_camId);

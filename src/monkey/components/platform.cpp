@@ -3,10 +3,6 @@
 
 using namespace glm;
 
-std::shared_ptr<Component> PlatformComponent::clone() const {
-    return std::make_shared<PlatformComponent>(PlatformComponent(*this));
-}
-
 PlatformComponent::PlatformComponent(const ITable & t) : Component(t) {}
 
 void PlatformComponent::Start() {

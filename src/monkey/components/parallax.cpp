@@ -8,10 +8,6 @@
 Parallax::Parallax (const std::string& camId, glm::vec2 factor) :
 m_camId(camId), m_factor(factor) {}
 
-Parallax::Parallax(const Parallax& orig) : Component(orig), m_factor(orig.m_factor), m_camId(orig.m_camId){
-    
-}
-
 Parallax::Parallax(const ITable & t) : Component(t) {
     m_camId = t.get<std::string>("cam");
     m_factor = t.get<glm::vec2>("factor");
@@ -22,10 +18,6 @@ Parallax::Parallax(const ITable & t) : Component(t) {
 	m_bx = m_pos0.x - m_ax * m_campos0.x ;
 	m_ay = m_factor.y;
 	m_by = m_pos0.y - m_ay * m_campos0.y ;
-}
-
-std::shared_ptr<Component> Parallax::clone() const {
-    return std::make_shared<Parallax>(Parallax(*this));
 }
 
 void Parallax::Begin() {

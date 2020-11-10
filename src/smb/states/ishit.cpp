@@ -9,13 +9,6 @@ IsHit::IsHit(const ITable & t) : PlatformerState(t) {
 	m_dist = t.get<float>("dist");
 }
 
-IsHit::IsHit(const IsHit & orig) : PlatformerState(orig) {
-}
-
-std::shared_ptr<State> IsHit::clone() const {
-	return std::make_shared<IsHit>(*this);
-}
-
 void IsHit::Init(pybind11::dict & d) {
 	m_animator->SetAnimation(m_anim);
 	m_sgn = d["sign"].cast<float>();

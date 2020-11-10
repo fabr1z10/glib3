@@ -8,15 +8,6 @@ SkAnimator::SkAnimator(std::shared_ptr<IModel> model) : IAnimator(), m_currentAn
 
 }
 
-SkAnimator::SkAnimator(const SkAnimator & orig) : IAnimator(orig), m_model(orig.m_model), m_currentAnimation(orig.m_currentAnimation),
-m_complete(false), m_speedUp(orig.m_speedUp) {
-
-}
-
-std::shared_ptr<Component> SkAnimator::clone() const {
-    return std::make_shared<SkAnimator>(*this);
-}
-
 void SkAnimator::Update(double dt) {
 
     if (m_currentAnimation == nullptr) {

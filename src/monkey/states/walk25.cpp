@@ -17,11 +17,6 @@ Walk25::Walk25(float speed, float acceleration, bool fliph, bool anim4, float ju
     m_acceleration(acceleration), m_flipHorizontal(fliph), m_velocitySmoothingX(0.0f), m_velocitySmoothingY(0.0f), m_4WayAnim(anim4),
     m_dir(dir), m_jumpVelocity(jumpspeed) {}
 
-Walk25::Walk25(const Walk25 &) {
-
-
-}
-
 Walk25::Walk25(const ITable & t) : State(t), m_velocitySmoothingX(0.0f), m_velocitySmoothingY(0.0f), m_4WayAnim(false),
 m_airAttack(false) {
     m_speed = t.get<float>("speed");
@@ -40,9 +35,6 @@ m_airAttack(false) {
     });
 }
 
-std::shared_ptr<State> Walk25::clone() const {
-    return std::make_shared<Walk25>(*this);
-}
 
 void Walk25::AttachStateMachine(StateMachine * sm) {
     State::AttachStateMachine(sm);

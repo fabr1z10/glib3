@@ -9,11 +9,6 @@
 #include "monkey/math/geom.h"
 #include "monkey/components/renderer.h"
 
-SkColl::SkColl(const SkColl & other) : ICollider(other) {
-
-}
-
-
 void SkColl::Start() {
 	// a sk collider requires a model
 	m_renderer = m_entity->GetComponent<Renderer>();
@@ -82,11 +77,6 @@ SkColl::SkColl(const ITable & table) : ICollider() {
 	weights1 = table.get<std::vector<float>>("w1");
 }
 
-std::shared_ptr<Component> SkColl::clone() const {
-	return std::make_shared<SkColl>(*this);
-}
-
-
 void SkColl::Update(double dt) {
 	// get the current trnasnforms
 	glm::mat4 rt = m_renderer->GetTransform();
@@ -95,6 +85,7 @@ void SkColl::Update(double dt) {
 	auto jointTransforms = m_model->getJointTransforms();
 	glm::vec4 a0 (0.0f);
 	glm::vec4 a1 (0.0f);
+
 	for (size_t i = 0; i < jointIds0.size(); ++i) {
 		a0 += weights0[i] * jointTransforms[jointIds0[i]] * glm::vec4(m_P0+offset, 0.0f, 1.0f);
 	}

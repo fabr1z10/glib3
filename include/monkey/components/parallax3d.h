@@ -9,10 +9,8 @@
 class Parallax3D : public Component {
 public:
     Parallax3D (const std::string& camId, float z, const std::string& img);
-    Parallax3D(const Parallax3D&);
     void Start() override;
     void Update(double) override {}
-    std::shared_ptr<Component> clone() const override;
 private:
     Entity* m_bg;
     void onCameraMove(Camera*);
