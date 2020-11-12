@@ -14,7 +14,7 @@ SmartCollider::~SmartCollider() {
 
 }
 
-SmartCollider::SmartCollider(const ITable & table) : ICollider(), m_shapeEntity(nullptr) {
+SmartCollider::SmartCollider(const ITable & table) : ICollider(), m_shapeEntity(nullptr), m_colliderRenderer(nullptr) {
     m_tag = table.get<int>("tag");
     m_flag = table.get<int>("flag");
     m_mask = table.get<int>("mask");
@@ -53,41 +53,41 @@ void SmartCollider::onFrameUpdate(Animator *a) {
     auto anim = a->GetAnimation();
     int fr = a->GetFrame();
 
-    m_colliderRenderer->clearVisible();
-    int shapeId = m_model->getShapeId(anim, fr);
-    //std::cerr << "(" << anim << ", " << fr << ", " << shapeId<< ")\n";
-    m_colliderRenderer->setVisible(shapeId);
-    // show only the shape
-    auto castShapeId = m_model->getShapeCastId(anim, fr);
+    if (m_colliderRenderer != nullptr) {
+		m_colliderRenderer->clearVisible();
+		int shapeId = m_model->getShapeId(anim, fr);
+		m_colliderRenderer->setVisible(shapeId);
+		auto castShapeId = m_model->getShapeCastId(anim, fr);
 
-    // now, check if I have an attack box
-    if (castShapeId != -1) {
-        auto castShape = m_model->shape(castShapeId);
-        m_colliderRenderer->setVisible(castShapeId);
+		// now, check if I have an attack box
+		if (castShapeId != -1) {
+			auto castShape = m_model->shape(castShapeId);
+			m_colliderRenderer->setVisible(castShapeId);
 
-        auto t = m_entity->GetWorldTransform();
-        //std::cout <<" **** hit ****\n";
-        //std::cout << "character at position = " << t[3][0] << ", " << t[3][1] << " scale " << t[0][0] << "\n";
-        auto e = m_engine->ShapeCast(castShape.get(), t, m_castMask);
+			auto t = m_entity->GetWorldTransform();
+			//std::cout <<" **** hit ****\n";
+			//std::cout << "character at position = " << t[3][0] << ", " << t[3][1] << " scale " << t[0][0] << "\n";
+			auto e = m_engine->ShapeCast(castShape.get(), t, m_castMask);
 
-        if (e.report.collide) {
-            std::cerr << "HIT!\n";
-            auto rm = m_engine->GetResponseManager();
-            if (rm == nullptr) {
-                std::cerr << "no handler!\n";
-            }
-            auto handler = rm->GetHandler(m_castTag, e.entity->GetCollisionTag());
-            if (handler.response != nullptr) {
-                auto object = e.entity->GetObject();
-                std::cerr << "FOUND RESPONSE\n";
-                if (handler.flip) {
-                    handler.response->onStart(object, m_entity, e.report);
-                } else {
-                    handler.response->onStart(m_entity, object, e.report);
-                }
-            }
-        }
-    }
+			if (e.report.collide) {
+				std::cerr << "HIT!\n";
+				auto rm = m_engine->GetResponseManager();
+				if (rm == nullptr) {
+					std::cerr << "no handler!\n";
+				}
+				auto handler = rm->GetHandler(m_castTag, e.entity->GetCollisionTag());
+				if (handler.response != nullptr) {
+					auto object = e.entity->GetObject();
+					std::cerr << "FOUND RESPONSE\n";
+					if (handler.flip) {
+						handler.response->onStart(object, m_entity, e.report);
+					} else {
+						handler.response->onStart(m_entity, object, e.report);
+					}
+				}
+			}
+		}
+	}
 
 
 }
@@ -97,27 +97,26 @@ void SmartCollider::Start() {
     m_model = dynamic_cast<BoxedModel*>(m_animator->GetModel().get());
     m_animator->onFrameUpdate.Register(this, [&] (Animator* a) { this->onFrameUpdate(a); });
     ICollider::Start();
-    //auto shapeEntity = std::make_shared<Entity>();
+
+    auto shapeEntity = std::make_shared<Entity>();
 
     if (m_shapeEntity != nullptr) {
         m_entity->Remove(m_shapeEntity->GetId());
         m_shapeEntity = nullptr;
     }
-    //if (m_shapeEntity == nullptr) {m
-    auto c = std::make_shared<Entity>();
-    m_entity->AddChild(c);
-    m_shapeEntity = c.get();
+    m_entity->AddChild(shapeEntity);
+    m_shapeEntity = shapeEntity.get();
     glm::vec4 color(1.0f, 0.0f, 0.0f, 1.0f);
-//    auto mesh = m_model->GetCollisionMesh();
-//    auto model = std::make_shared<BasicModel>(mesh);
+////    auto mesh = m_model->GetCollisionMesh();
+////    auto model = std::make_shared<BasicModel>(mesh);
     auto renderer = std::make_shared<MultiRenderer>();
-
+//
     for (const auto& shape : m_model->getShapes()) {
         auto mesh = MeshFactory::CreateMesh(*(shape.get()));
         auto model = std::make_shared<BasicModel>(mesh);
         renderer->addModel(model);
     }
-
+//
     renderer->setAddColor(color);
     m_shapeEntity->AddComponent(renderer);
     m_colliderRenderer = renderer.get();

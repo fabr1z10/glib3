@@ -27,6 +27,8 @@ void MultiRenderer::Draw(Shader * shader) {
 
 
 void MultiRenderer::setVisible(int id) {
+	if (id >= m_models.size())
+		return;
     m_models[id].first = true;
 
 }
