@@ -288,7 +288,7 @@ def makeSpawn (prop):
     def f(args):
         spawn = Entity(pos = [args[0] * vars.tileSize, args[1] * vars.tileSize])
         spawn.addComponent (Collider(flag=vars.flags.foe,mask=vars.flags.player,tag=vars.tags.spawn, shape=sh.Rect(1,256)))
-        spawn.addComponent (Info(info = prop[1], delta = [args[2], args[3]]))
+        spawn.addComponent (Info(factory=prop[1], info = prop[2], delta = [args[2], args[3]]))
         return spawn
     return f
 
@@ -343,7 +343,7 @@ def makeSimpleFoe(prop):
         ctag = props['ctag']
         scale = props.get('scale', 1)
         speed = props.get('speed', 20)
-        goomba = Sprite(model = model, pos = [args[0] * vars.tileSize, args[1] * vars.tileSize, -0.1])
+        goomba = Sprite(model = model, pos = [args[0] * vars.tileSize, args[1] * vars.tileSize, 0.1])
         goomba.scale = scale
         goomba.addComponent (SmartCollider(
             flag = vars.flags.foe,
@@ -372,6 +372,7 @@ def makeSimpleFoe(prop):
             flipHorizontal = fliph,
             flipWhenPlatformEnds= flipp,
             left = 1))
+        stateMachine.states.append (SimpleState(id='dead2', anim='idle'))
         goomba.addComponent (stateMachine)
         return goomba
     return f

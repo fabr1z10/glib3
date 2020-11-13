@@ -196,6 +196,9 @@ goomba:
   boxes:
     - [-8, 0, 8, 16]
   animations:
+    idle:
+      frames:
+        - [112, 0, 16, 16, 8, 0]
     walk:
       box: 0
       frames:

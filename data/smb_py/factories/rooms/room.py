@@ -51,7 +51,7 @@ class PlatformerRoom(Room):
         ce.addResponse(vars.tags.player, vars.tags.koopa, CollisionResponse(onenter = func.koopaResponse))		
         ce.addResponse (vars.tags.player, vars.tags.spawn, CollisionResponse (onenter = func.onSpawn))
         ce.addResponse (vars.tags.player, vars.tags.key, CollisionResponse (onenter = func.onCollectItem))
-
+        ce.addResponse(vars.tags.goomba, vars.tags.player_fire, CollisionResponse (onenter = func.fireHitsFoe))
         self.addRunner(ce)
         self.addRunner(Scheduler())
 

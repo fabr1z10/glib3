@@ -1,4 +1,6 @@
+from lib_py.actions import MoveAccelerated, RemoveEntity
 from lib_py.entity import Entity, Sprite
+from lib_py.engine import data
 import lib_py.components as compo
 import lib_py.shape as sh
 import lib_py.actions as act
@@ -259,9 +261,11 @@ def flag(p, h):
 def onSpawn(player: example.Wrap1, spawn: example.Wrap1, x, y):
     # get the detail
     info = spawn.getInfo()
-    a = info['info']
+    fct = info['factory']
+    func = data['factories']['items'][fct]
+    props = info['info']
     delta = info['delta']
-    foe = makeSimpleFoe ([None,a])([spawn.x/vars.tileSize + delta[0], spawn.y/vars.tileSize +delta[1]])
+    foe = func ([None, props])([spawn.x/vars.tileSize + delta[0], spawn.y/vars.tileSize +delta[1]])
     example.get('main').add(foe)    
     example.remove(spawn.id)
 
@@ -271,6 +275,14 @@ def onCollectItem(player: example.Wrap1, item: example.Wrap1, x, y):
     print ('----')
     getattr(scr, f)(player, item, x, y)
 
+def fireHitsFoe(foe: example.Wrap1, fire: example.Wrap1, x, y):
+    example.remove(fire.id)
+    foe.setState ('dead2', {})
+    s = Script()
+    s.addAction (MoveAccelerated(v0=[50 if fire.x < foe.x else -50, 150], a=[0,vars.gravity], yStop = -32, id=foe.id))
+    s.addAction (RemoveEntity (id=foe.id))
+    example.play(s)
+    #example.remove(foe.id)
 
 
 
