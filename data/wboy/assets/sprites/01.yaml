@@ -1,0 +1,36 @@
+---
+start:
+  sheet: "gfx/sprites.png"
+  type: "asset.sprite"
+  animations:
+    default:
+      loop: true
+      frames:
+        - [34,44,26,20,0,0]
+wonderboy:
+  sheet: "gfx/sprites.png"
+  thickness: 1
+  type: "asset.boxed"
+  boxes:
+    - [-6, 0, 6, 16]
+  # casts
+  animations:
+    idle:
+      loop: true
+      box: 0
+      frames:
+        - [1,1,17,32,10,0]
+        - [20,1,17,32,10,0]
+    walk:
+      box: 0
+      frames:
+        - [39,1,16,33,9,0]
+        - [57,1,16,32,9,0]
+        - [75,1,19,30,9,0]
+        - [57,1,16,32,9,0]
+        - [39,1,16,33,9,0]
+        - [97,1,21,31,9,0]
+    jump:
+      box: 0
+      frames:
+        - [97,1,21,31,9,0]

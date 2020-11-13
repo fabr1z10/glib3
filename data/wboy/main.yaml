@@ -1,0 +1,9 @@
+---
+  title: Wonderboy
+  lang: eng
+  device_size: [256, 224]
+  window_size: [512, 448]
+  start_room: world1_1
+  fonts:
+    - id: main
+      file: './fonts/prstartk.ttf'

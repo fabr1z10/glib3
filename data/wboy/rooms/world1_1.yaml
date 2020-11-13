@@ -1,0 +1,16 @@
+---
+  type: default
+  id: world1_1
+  label: '1_1'
+  time: 300
+  width: 256
+  height: 256
+  world_width: 224
+  world_height: 16 
+  start: 
+    - pos: [2, 4]
+  items:
+    - factory: [platform, '/gfx/floor1.png']
+      d: [ [0, 0, 303, 4, 151.5, 1] ]
+    - factory: [sprite, start]
+      d: [ [2,4,-0.1]]
