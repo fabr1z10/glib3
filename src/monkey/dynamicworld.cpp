@@ -6,11 +6,19 @@
 
 namespace py = pybind11;
 
-DynamicWorldItem::DynamicWorldItem(const PyTable &table, const Bounds& b, const glm::vec3& pos) :
-    m_template(table), m_id(-1), m_alive(false), m_removedByDynamicWorld(false), m_active(true), m_entity(nullptr), m_localBounds(b)
+DynamicWorldItem::DynamicWorldItem(std::shared_ptr<Entity> entity, /*const PyTable &table*/ const Bounds& b, const glm::vec3& pos) :
+    /*m_template(table)*/ m_entity(entity), m_id(entity->GetId()), m_alive(false), m_removedByDynamicWorld(false), m_active(true), m_localBounds(b)
 {
     m_initBounds = m_localBounds;
     m_initBounds.Translate(pos);
+}
+
+void DynamicWorldItem::onRemove() {
+	m_alive = false;
+	if (!m_removedByDynamicWorld) {
+		m_active = false;
+	}
+	m_removedByDynamicWorld = false;
 }
 
 Bounds DynamicWorldItem::getCurrentBounds() const {
@@ -21,27 +29,29 @@ Bounds DynamicWorldItem::getCurrentBounds() const {
 }
 
 std::shared_ptr<Entity> DynamicWorldItem::create() {
-    auto factory = Engine::get().GetSceneFactory();
-    auto node = factory->make2<Entity>(this->m_template);
-    node->onDestroy.Register(this, [&] (Entity* cam) {
-        // this is called when the entity is removed
-        // now, if the entity has been removed by the dynamic world, then
-        m_entity = nullptr;
-        m_alive = false;
-        if (!m_removedByDynamicWorld) {
-            m_active = false;
-        }
-    });
+    //auto factory = Engine::get().GetSceneFactory();
+    //auto node = factory->make2<Entity>(this->m_template);
+    //node->onDestroy.Register(this, [&] (Entity* cam) {
+    // this is called when the entity is removed
+    // now, if the entity has been removed by the dynamic world, then
+    //m_entity = nullptr;
+    //    m_alive = false;
+    //    if (!m_removedByDynamicWorld) {
+    //        m_active = false;
+    //    }
+    //});
+    std::cout << "create " << m_id << "\n";
     m_alive = true;
     m_removedByDynamicWorld = false;
-    m_id = node->GetId();
-    m_entity = node.get();
-    return node;
+    //m_id = node->GetId();
+    //m_entity = node.get();
+    return m_entity;
 }
 
 void DynamicWorldItem::destroy() {
+	std::cout << "removing " << m_id << "\n";
+	m_removedByDynamicWorld = true;
     Engine::get().Remove(m_id);
-    m_removedByDynamicWorld = true;
 }
 
 DynamicWorldBuilder::DynamicWorldBuilder(const ITable &t) : Runner(t), m_x(-1), m_y(-1) {
@@ -57,6 +67,12 @@ DynamicWorldBuilder::DynamicWorldBuilder(const ITable &t) : Runner(t), m_x(-1), 
     t.foreach<py::object>("items", [&] (py::object obj) {
         PyTable table(obj);
         auto node = factory->make2<Entity>(table);
+		node->onRemove.Register(this, [&] (Entity* e) {
+			// problem is: if we keep a shared_ptr here, the dtor will never be called.
+			// that's why we register to onRemove
+			auto& item = m_items.at(e->GetId());
+			item->onRemove();
+		});
         auto renderer = node->GetComponent<Renderer>();
         glm::vec3 pos = node->GetPosition();
         Bounds bounds;
@@ -65,8 +81,11 @@ DynamicWorldBuilder::DynamicWorldBuilder(const ITable &t) : Runner(t), m_x(-1), 
         } else {
             // TODO
         }
-        auto item = std::make_shared<DynamicWorldItem>(table, bounds, pos);
-        m_items.push_back(item);
+        auto item = std::make_shared<DynamicWorldItem>(node, /*table*/ bounds, pos);
+        m_items[node->GetId()] = item;
+		// now, let's store the entity! This way entities will keep their state, even if they
+		// go out of scope (i.e. removed by dynamic world and then recreated).
+
     });
 }
 
@@ -123,10 +142,10 @@ void DynamicWorldBuilder::UpdateWorld(glm::vec3 pos) {
     m_activeBounds.max.y = m_yc + m_height;
 
     for (auto& item : m_items) {
-        if (item->candidateForCreation()) {
-            auto b = item->getInitBounds();
+        if (item.second->candidateForCreation()) {
+            auto b = item.second->getInitBounds();
             if (b.Intersects2D(m_activeBounds)) {
-                auto entity = item->create();
+                auto entity = item.second->create();
                 m_parentEntity->AddChild(entity);
                 m_itemCount++;
                 //if (Engine::get().isRunning()) {
@@ -134,10 +153,10 @@ void DynamicWorldBuilder::UpdateWorld(glm::vec3 pos) {
                 //   obj->Begin();
                 //}
             }
-        } else if (item->candidateForDestruct()) {
-            auto b = item->getCurrentBounds();
+        } else if (item.second->candidateForDestruct()) {
+            auto b = item.second->getCurrentBounds();
             if (!b.Intersects2D(m_activeBounds)) {
-                item->destroy();
+                item.second->destroy();
                 m_itemCount--;
             }
         }

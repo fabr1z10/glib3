@@ -144,7 +144,8 @@ def platform (props):
         h = args[3]
         a = Entity()
         #print ('image = ' + props[1])
-        a.addComponent (Gfx(image = props[1], repeat = [w, h]))
+        if len(props) > 1:
+            a.addComponent (Gfx(image = props[1], repeat = [w, h]))
         a.addComponent (Collider(flag = vars.flags.platform, mask = vars.flags.player, tag = 1, 
             shape = sh.Rect(width = w * vars.tileSize, height = h * vars.tileSize)))
         a.pos = (x * vars.tileSize, y * vars.tileSize, 0)

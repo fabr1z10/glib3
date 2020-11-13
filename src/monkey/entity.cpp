@@ -22,7 +22,6 @@ Entity::Entity(const ITable& t) : Ref(t),
 {
 
     auto pos = t.get<glm::vec3>("pos", glm::vec3(0.0f));
-    std::cerr << m_tag << " .... " << pos.x << "\n";
     if (t.hasKey("angle")) {
         auto angle = t.get<float>("angle", 0.0f);
         SetPosition(pos, deg2rad* angle);
@@ -126,9 +125,6 @@ void Entity::Remove(int id) {
     if (m_children.count(id) > 0) {
 		auto entity = m_children.at(id);
 		entity->WindDown();
-		if (!onRemove.isEmpty()) {
-			onRemove.Fire(entity.get());
-		}
 		m_children.erase(id);
 	}
 
@@ -177,6 +173,9 @@ void Entity::WindDown() {
     for (auto& child : m_children) {
         child.second->WindDown();
     }
+	if (!onRemove.isEmpty()) {
+		onRemove.Fire(this);
+	}
 
 }
 

@@ -84,7 +84,9 @@ public:
 
     Event<Entity*> onMove;						// fires when this node moves
     Event<Entity*> onAdd;
+    // this is called when entity is removed
     Event<Entity*> onRemove;
+    // this is called when entity is destroyed (from dtor)
     Event<Entity*> onDestroy;
 
     //Event<GameObject*> onRemove;					// fires when this node goes out of scope

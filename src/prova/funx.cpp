@@ -63,7 +63,6 @@ std::vector<float> campos(const std::string& camId) {
 //}
 
 void play (pybind11::object o) {
-    std::cout << "CIAO!\n";
 
     auto scheduler = m_engine->GetRunner<Scheduler>();
     PyTable t(o);

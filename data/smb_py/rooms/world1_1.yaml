@@ -21,6 +21,8 @@
       d: [ [42, 2], [50, 2], [51.5, 2]]
     #- factory: [koopa, {model: 'koopa', fliph: True, flipAtPlatformEnd: True, ctag: 'koopa' }]
     #  d: [ [5, 2]]
+    - factory: [platform]
+      d: [[-1,0,1,16]]
     - factory: [platform, '/gfx/block1.png']
       d: [ [0, 0, 69, 2], [71, 0, 15, 2], [89, 0, 64, 2], [155, 0, 69, 2] ]
     - factory: [platform, 'gfx/block2.png']

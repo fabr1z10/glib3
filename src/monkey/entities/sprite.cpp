@@ -6,11 +6,9 @@
 
 Sprite::Sprite(const ITable & t) : Entity(t) {
     auto modelId = t.get<std::string>("model");
-    std::cerr << "model = " << modelId << "\n";
     auto model = Engine::get().GetAssetManager().GetModel(modelId);
     auto renderer = std::make_shared<SpriteRenderer>(model);
     auto animator = std::make_shared<Animator>(model);
-    std::cout << "pos = " << GetLocalTransform()[3][0]<<" " << GetLocalTransform()[3][2] <<"\n";
     AddComponent(renderer);
     AddComponent(animator);
 

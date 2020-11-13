@@ -60,7 +60,7 @@ void Controller2D::CalculateRaySpacing() {
     bounds.Expand(m_skinWidth * -2);
     m_horizontalRaySpacing = bounds.GetSize().y / (m_horizontalRayCount - 1);
     m_verticalRaySpacing = bounds.GetSize().x / (m_verticalRayCount - 1);
-    std::cout <<"ray spacing = "<< m_horizontalRaySpacing << ","<<m_verticalRaySpacing<<"\n";
+    //std::cout <<"ray spacing = "<< m_horizontalRaySpacing << ","<<m_verticalRaySpacing<<"\n";
 }
 
 void Controller2D::UpdateRaycastOrigins() {

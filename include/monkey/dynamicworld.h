@@ -9,9 +9,10 @@
 
 class DynamicWorldItem : public Ref {
 public:
-    DynamicWorldItem(const PyTable& table, const Bounds& localBounds, const glm::vec3& initPos);
+    DynamicWorldItem(std::shared_ptr<Entity> entity,/*const PyTable& table*/ const Bounds& localBounds, const glm::vec3& initPos);
     std::shared_ptr<Entity> create ();
     void destroy ();
+    void onRemove();
     glm::vec3 getPosition() const;
     Bounds getInitBounds() const;
     Bounds getCurrentBounds() const;
@@ -19,8 +20,8 @@ public:
     bool candidateForDestruct() const;
 private:
     //std::shared_ptr<Entity> m_blueprint;
-
-    PyTable m_template;
+	std::shared_ptr<Entity> m_entity;
+    //PyTable m_template;
     // when player active bounds intersect the item bounds,
     // item is created (if not created already). When player leaves the area
     // item is removed.
@@ -31,7 +32,7 @@ private:
     bool m_active;
     bool m_removedByDynamicWorld;
     int m_id;
-    Entity* m_entity;
+
 };
 
 inline bool DynamicWorldItem::candidateForCreation() const {
@@ -60,7 +61,7 @@ public:
     //void AddItem(std::shared_ptr<Entity>, std::shared_ptr<Entity>);
     //void AddItem (std::shared_ptr<Entity>);
 private:
-    std::vector<std::shared_ptr<DynamicWorldItem> > m_items;
+    std::unordered_map<int, std::shared_ptr<DynamicWorldItem> > m_items;
     // keep track of items removed externally
     std::unordered_set<int> m_removedItems;
     std::unordered_set<int> m_outBounds;
