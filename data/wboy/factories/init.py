@@ -1,5 +1,5 @@
 from factories.rooms.default import defaultRoom
-from factories.items.items1 import img, sprite, platform, brick, tilemap, coinbrick, makeKoopa, mushroombrick, bg, makeSpawn, makePipeIn, line, makeCollect, multicoinbrick, makeMovingPlatform, makeSimpleFoe
+from factories.items.items1 import img, sprite, platform, brick, tilemap, bgp, coinbrick, makeKoopa, mushroombrick, bg, makeSpawn, makePipeIn, line, makeCollect, multicoinbrick, makeMovingPlatform, makeSimpleFoe
 
 from lib_py.engine import data
 
@@ -19,7 +19,7 @@ def initFactories():
         'mcoinbrick': multicoinbrick,
         'mushroombrick': mushroombrick,
         'spawn': makeSpawn,
-        'bg': bg,
+        'bg': bgp,
         'warp': makePipeIn,
         'collect': makeCollect,
         'movingplatform': makeMovingPlatform,

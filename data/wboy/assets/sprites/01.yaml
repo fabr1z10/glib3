@@ -7,6 +7,22 @@ start:
       loop: true
       frames:
         - [34,44,26,20,0,0]
+checkpoint2:
+  sheet: "gfx/sprites.png"
+  type: "asset.sprite"
+  animations:
+    default:
+      loop: true
+      frames:
+        - [61,44,26,20,0,0]        
+checkpoint3:
+  sheet: "gfx/sprites.png"
+  type: "asset.sprite"
+  animations:
+    default:
+      loop: true
+      frames:
+        - [88,44,26,20,0,0]        
 wonderboy:
   sheet: "gfx/sprites.png"
   thickness: 1

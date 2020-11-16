@@ -4,13 +4,28 @@
   label: '1_1'
   time: 300
   width: 256
-  height: 256
-  world_width: 224
-  world_height: 16 
+  height: 224
+  world_width: 510
+  world_height: 32 
   start: 
-    - pos: [2, 4]
+    - pos: [300, 4]
   items:
     - factory: [platform, '/gfx/floor1.png']
       d: [ [0, 0, 303, 4, 151.5, 1] ]
+    - factory: [platform, '/gfx/pl4.png']
+      d: [ [367,14,32,4,16,1]]
     - factory: [sprite, start]
-      d: [ [2,4,-0.1]]
+      d: [ [0.125,4,-0.1]]
+    - factory: [sprite, checkpoint2]
+      d: [ [128.125,4,-0.1]]
+    - factory: [sprite, checkpoint3]
+      d: [ [256.125,4,-0.1]]
+    - factory: [img, 'gfx/bg2.png']
+      d: [ [303,0,0,1,1], [311,2,0,1,1], [319,4,0,1,1], [327,6,0,1,1], [335,8,0,1,1], [343,10,0,1,1], [351,12,0,1,1]]
+    - factory: [img, 'gfx/bg3.png']
+      d: [ [359,12,0,1,1]]
+    - factory: [bg, {'image': 'gfx/bg1.png', 'parallax': [0.5,1], 'repeat': [7.5,1]}]
+      dynamic: False
+      d: [ [0, 0, -1]]
+    - factory: [line]
+      d: [ [303, 4, 0, 0, 56 , 14], [359,18,0,0,8,0]]

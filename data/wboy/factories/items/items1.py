@@ -47,7 +47,7 @@ def makePlayer(model: str, x: float, y: float):
     stateMachine.states.append (SimpleState (id='slide', anim='slide'))
     player.addComponent (stateMachine)
     player.addComponent (KeyInput())    
-    player.addComponent (Follow())
+    player.addComponent (Follow(relpos=[0,32,5]))
     return player
 
 def m1(x: float, y: float):
@@ -124,12 +124,23 @@ def m3(x: float, y: float):
 
 def line(props):
     def f(args):
-        x = args[0]
-        y = args[1]
+        print ('xxx')
+        x = args[0] * vars.tileSize
+        y = args[1] * vars.tileSize
+        Ax = args[2] * vars.tileSize
+        Ay = args[3] * vars.tileSize
+        Bx = args[4] * vars.tileSize
+        By = args[5] * vars.tileSize
+        minx = min(Ax, Bx)
+        maxx = max(Ax, Bx)
+        miny = min(Ay, By)
+        maxy = max(Ay, By)
         a = Entity()
+        print ('xxx')
         a.addComponent (Collider(flag = vars.flags.platform, mask = vars.flags.player, tag = 1, 
-            shape = sh.Line(A=[args[2]*vars.tileSize,args[3]*vars.tileSize,0], B=[args[4]*vars.tileSize,args[5]*vars.tileSize,0])))
-        a.pos = (x * vars.tileSize, y * vars.tileSize, 0)
+            shape = sh.Line(A=[Ax,Ay,0], B=[Bx,By,0])))
+        a.addComponent (Info (bounds = [minx,miny,maxx,maxy]))
+        a.pos = (x,y,0)
         return a
     return f
 
@@ -177,7 +188,7 @@ def img(props):
         #f.addColor (1, [255,255,255,0])
         #f.addColor (2, [255,255,255,255])
         #a.addComponent (f)
-        a.addComponent (TexAnim (period=[0,-1]))
+        #a.addComponent (TexAnim (period=[0,-1]))
         a.pos = (x * vars.tileSize, y * vars.tileSize, z)
         return a
     return f
@@ -274,6 +285,16 @@ def bg(props):
         a = Entity(pos=[args[0],args[1],args[2]])
         a.addComponent (ShapeGfxColor(shape = sh.Rect(256, 256), fill = sh.SolidFill(r=props[1], g=props[2], b=props[3])))
         a.addComponent (Parallax(cam='maincam', factor=[1,1], campos0=[128,128], pos0=[0,0]))
+        return a
+    return f
+
+def bgp(props):
+    def f(args):
+        p = props[1]
+        print (p)
+        a = Entity(pos=[args[0],args[1],args[2]])
+        a.addComponent (Gfx(image=p['image'], repeat=p['repeat']))
+        a.addComponent (Parallax(cam='maincam', factor=p['parallax'], campos0=[128,112], pos0=[0,64]))
         return a
     return f
 
