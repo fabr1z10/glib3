@@ -5,6 +5,7 @@ from lib_py.entity import Sprite
 from lib_py.components import SmartCollider, Info, StateMachine, Controller2D, Dynamics2D, Bounce, GarbageCollect
 from lib_py.platformer.components import Jump
 import smb_py.vars as vars
+import funcs as func
 
 def _fire(a: example.Wrap1, state: str):
     if vars.state >= 2:
@@ -68,6 +69,11 @@ def pipe_out(p : example.Wrap1,k,x,y):
     s.addAction(Delay(sec=0.5))
     s.addAction (CallFunc (gotoWorld(addInfo['world'], addInfo['pos'])))
     example.play(s)
+
+def dead(p:example.Wrap1, k,x,y):
+    p.setModel(vars.stateInfo[0])
+    vars.state = 0
+    func.downgradePlayer()
 
 def winSlide(p:example.Wrap1,k,x,y):
     example.remove(k.id)

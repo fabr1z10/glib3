@@ -1,4 +1,5 @@
 from lib_py.actions import MoveAccelerated, RemoveEntity
+
 from lib_py.entity import Entity, Sprite
 from lib_py.engine import data
 import lib_py.components as compo
@@ -11,6 +12,7 @@ import scripts as scr
 import example
 
 from smb_py.factories.items.items1 import makeSimpleFoe
+
 
 def togglePause():
     if vars.paused:

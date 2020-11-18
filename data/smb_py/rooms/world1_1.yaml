@@ -9,7 +9,7 @@
   world_height: 16 
   start: 
     - pos: [2, 2]
-    - pos: [58, 2]
+    - pos: [164, 0]
       script: cippo
   items:
     - factory: [bg, 92, 148, 252]
@@ -53,10 +53,12 @@
       d: [[16, 5], [22, 9], [23, 5], [94, 9], [106,5], [109, 5], [112, 5], [129,9], [130,9], [170, 5]]      
     - factory: [mushroombrick]
       d: [[21,5], [78, 5], [109, 9]]
-    - factory: [collect, {'func': winSlide, 'size': [1,256]}]
-      d: [[198.5,3]]
-    - factory: [collect, {'func': gotoNext, 'size': [2,2], 'info': {'world': 'world1_2', 'pos': 0} }]
-      d: [[205,2]]
+    - factory: [collect, {'func': winSlide }]
+      d: [[198.5,3,1,256]]
+    - factory: [collect, {'func': gotoNext, 'info': {'world': 'world1_2', 'pos': 0} }]
+      d: [[205,2,2,2]]
+    - factory: [collect, {'func': dead' }]
+      d: [[69,0,32,2]]
     - factory: [tilemap, hill]
       d: [[0, 2, -1], [48, 2, -1], [96,2,-1], [144,2,-1], [192,2,-1]]
     - factory: [tilemap, hillsmall]

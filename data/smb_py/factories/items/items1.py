@@ -124,12 +124,23 @@ def m3(x: float, y: float):
 
 def line(props):
     def f(args):
-        x = args[0]
-        y = args[1]
+        print ('xxx')
+        x = args[0] * vars.tileSize
+        y = args[1] * vars.tileSize
+        Ax = args[2] * vars.tileSize
+        Ay = args[3] * vars.tileSize
+        Bx = args[4] * vars.tileSize
+        By = args[5] * vars.tileSize
+        minx = min(Ax, Bx)
+        maxx = max(Ax, Bx)
+        miny = min(Ay, By)
+        maxy = max(Ay, By)
         a = Entity()
+        print ('xxx')
         a.addComponent (Collider(flag = vars.flags.platform, mask = vars.flags.player, tag = 1, 
-            shape = sh.Line(A=[args[2]*vars.tileSize,args[3]*vars.tileSize,0], B=[args[4]*vars.tileSize,args[5]*vars.tileSize,0])))
-        a.pos = (x * vars.tileSize, y * vars.tileSize, 0)
+            shape = sh.Line(A=[Ax,Ay,0], B=[Bx,By,0])))
+        a.addComponent (Info (bounds = [minx,miny,maxx,maxy]))
+        a.pos = (x,y,0)
         return a
     return f
 
@@ -146,6 +157,8 @@ def platform (props):
         #print ('image = ' + props[1])
         if len(props) > 1:
             a.addComponent (Gfx(image = props[1], repeat = [w, h]))
+        else:
+            a.addComponent (Info (bounds = [0,0,w*vars.tileSize, h*vars.tileSize]))
         a.addComponent (Collider(flag = vars.flags.platform, mask = vars.flags.player, tag = 1, 
             shape = sh.Rect(width = w * vars.tileSize, height = h * vars.tileSize)))
         a.pos = (x * vars.tileSize, y * vars.tileSize, 0)
@@ -287,8 +300,8 @@ def makeDoor (props):
 def makeSpawn (prop):
     def f(args):
         spawn = Entity(pos = [args[0] * vars.tileSize, args[1] * vars.tileSize])
-        spawn.addComponent (Collider(flag=vars.flags.foe,mask=vars.flags.player,tag=vars.tags.spawn, shape=sh.Rect(1,256)))
-        spawn.addComponent (Info(factory=prop[1], info = prop[2], delta = [args[2], args[3]]))
+        spawn.addComponent (Collider(flag=vars.flags.foe,mask=vars.flags.player,tag=vars.tags.spawn, shape=sh.Rect(1,256)))        
+        spawn.addComponent (Info(factory=prop[1], info = prop[2], delta = [args[2], args[3]], bounds = [0,0,1,256]))
         return spawn
     return f
 
@@ -296,8 +309,9 @@ def makePipeIn (prop):
     def f(args):
         ps = prop[1] if len(prop)>0 else {}
         pin = Entity(pos = [args[0] * vars.tileSize, args[1] * vars.tileSize], tag=ps.get('tag',None))
-        pin.addComponent (Collider(flag=vars.flags.foe, mask=vars.flags.player, tag=vars.tags.warp, shape = sh.Rect(4, 2)))
-        pin.addComponent (Info (world=args[2], start=args[3]))
+        
+        pin.addComponent (Collider(flag=vars.flags.foe, mask=vars.flags.player, tag=vars.tags.warp, shape = sh.Rect(4, 2, [-2,0])))
+        pin.addComponent (Info (world=args[2], start=args[3], bounds = [0,0,4,2]))
         return pin
     return f
 
@@ -311,12 +325,14 @@ def makeCollect(prop):
         pos = [args[0]*vars.tileSize,args[1]*vars.tileSize]
         if model is None:
             a = Entity(pos=pos)
-            size = prop[1].get('size')
+            #size = prop[1].get('size')
+            size = [args[2], args[3]]
             a.addComponent (Collider (flag = vars.flags.foe, mask = vars.flags.player, tag= vars.tags.key, shape=sh.Rect(width=size[0],height=size[1])))
+            a.addComponent (Info (func = func, info = info, bounds = [0,0,size[0],size[1]]))
         else:
             a = Sprite(model=model, pos=pos)
             a.addComponent (SmartCollider(flag=vars.flags.foe, mask = vars.flags.player, tag = vars.tags.key))
-        a.addComponent (Info (func = func, info = info))
+            a.addComponent (Info (func = func, info = info))
         return a
     return f
 
