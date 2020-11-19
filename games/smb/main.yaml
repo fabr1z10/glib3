@@ -1,0 +1,9 @@
+---
+  title: Super Mario Bros
+  lang: eng
+  device_size: [256, 256]
+  window_size: [512, 512]
+  start_room: world1_1
+  fonts:
+    - id: main
+      file: './fonts/prstartk.ttf'

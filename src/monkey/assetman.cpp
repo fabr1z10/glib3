@@ -10,17 +10,11 @@ AssetManager::AssetManager() {
 void AssetManager::Init() {
 
     auto& mt = Engine::get().getMainTable();
-    auto assets = mt.get<py::dict>("data");
+    auto assets = mt.get<py::dict>("assets");
 
-    m_fontDict = assets["assets"]["fonts"];
-    m_modelDict = assets["assets"]["models"];
-    m_skeletalAnimDict = assets["assets"]["skeletalanimations"];
-
-//    auto factory = Engine::get().GetSceneFactory();
-//    m_fonts.Init("fonts", factory);
-//    m_models.Init("models", factory);
-//    m_textures.Init("tex", factory
-//    );
+    m_fontDict = assets["fonts"];
+    m_modelDict = assets["models"];
+    m_skeletalAnimDict = assets["skeletal_animations"];
 }
 
 std::shared_ptr<IModel> AssetManager::GetModel(const std::string & id) {

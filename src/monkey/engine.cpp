@@ -230,7 +230,7 @@ void Engine::MainLoop() {
         std::cout << "=================================\n";
         std::cout << "Loading room: "<< room << std::endl;
         std::cout << "=================================\n";
-		auto roomDef = m_mainTable->get<py::function>("createRoom") (room);//   builder().cast<py::object>();
+		auto roomDef = m_mainTable->get<py::function>("create_room") ();//   builder().cast<py::object>();
 
         m_scene = m_sceneFactory->Create(roomDef);
         

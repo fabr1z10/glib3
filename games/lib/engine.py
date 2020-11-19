@@ -1,11 +1,112 @@
 import example
+import yaml
+import os
+import font
+
+engine = None
 
 
 class Engine:
     def __init__(self):
+        global engine
         example.init(example.what)
+        engine = self
+        with open(example.dir + '/main.yaml') as f:
+            a = yaml.load(f, Loader=yaml.FullLoader)
+            self.lang = a['lang']
+            self.device_size = tuple(a['device_size'])
+            self.window_size = tuple(a['window_size'])
+            self.room = a['start_room']
+            self.title = a['title']
+            print('# loading assets ...')
+            self.load_assets()
+            print ('# loading strings ...')
+            self.load_strings()
+            # read game variables, and functions
+            if os.path.isfile(example.dir+'/variables.yaml'):
+                with open(example.dir+'/variables.yaml') as fv:
+                    self.vars = yaml.load(fv, Loader=yaml.FullLoader)
+            for file in a['fonts']:
+                self.add_font(file['id'], file['file'])
 
     def add_shader(self, shader):
         self.shaders.append(shader)
 
+    def add_font(self, uid, file):
+        self.assets['fonts'][uid] = font.Font(uid, file)
+
+    def load_assets(self):
+        pass
+
+    def load_strings(self):
+        pass
+
+    def create_room(self):
+        print('Hey, creating room: ' + self.room)
+        filename = example.dir + '/rooms/' + self.room + '.yaml'
+        try:
+            with open(filename) as f:
+                room = yaml.load(f, Loader=yaml.FullLoader)
+                rt = room['type']
+                # check if a factory exists for this room type
+                factory = self.factories['rooms'].get(rt, None)
+                if factory is None:
+                    print('Unable to find factory for room type: ' + rt)
+                    exit(1)
+                return factory(room)
+        except EnvironmentError as error:
+            print(error)
+            exit(1)
+
+    # read a string
+    def read(self, value):
+        if isinstance(value, str):
+            if value[0] == '@':
+                c = value[1]
+                if c == '@':
+                    return value[1:]
+                else:
+                    # get a variable
+                    cc = self.vars
+                    for b in value[1:].split('/'):
+                        cc = getattr(cc, b)
+                    # if the value is a function, call it
+                    if callable(cc):
+                        return cc()
+                    else:
+                        return cc
+            elif value[0] == '$':
+                c = value[1]
+                if c == '$':
+                    return value[1:]
+                else:
+                    # get a string
+                    cc = self.assets['strings']
+                    for b in value[1:].split('/'):
+                        cc = cc[str(b)]
+                    return cc
+        return value
+
     shaders = []
+    device_size = []
+    window_size = []
+    title = ''
+    room = ''
+    previous_room = ''
+    lang = ''
+    vars = {}
+    assets = {
+        'fonts': {},
+        'models': {},  # include sprite + skeletal
+        'skeletal_animations': {},
+        'strings': {},
+        # here go all the variables defined in variables.yaml
+        # these are game-related variables
+        'vars': {}
+    }
+    factories = {
+        'rooms': {},
+        'items': {}
+    }
+
+
