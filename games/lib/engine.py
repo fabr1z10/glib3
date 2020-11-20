@@ -87,6 +87,13 @@ class Engine:
                     return cc
         return value
 
+    def add_room_factory(self, uid: str, f: callable):
+        self.factories['rooms'][uid] = f
+
+    def add_item_factory(self, uid: str, f: callable):
+        self.factories['items'][uid] = f
+
+
     shaders = []
     device_size = []
     window_size = []

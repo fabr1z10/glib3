@@ -62,7 +62,7 @@ class Skeleton(Entity):
 
 
 class Text(Entity):
-    def __init__(self, font: str, size, text: str, color, align: TextAlignment = TextAlignment.topleft, tag = None,
+    def __init__(self, font: str, size, text: str, color, align: TextAlignment = TextAlignment.top_left, tag = None,
                  pos: tuple = (0, 0, 0)):
         super().__init__(tag, pos)
         self.type = 'text'

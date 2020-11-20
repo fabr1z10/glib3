@@ -7,6 +7,22 @@ import func
 from engine import engine
 
 
+def make_platformer_room(room: dict):
+    room_d = room['id']
+    visible_name = room['label']
+    width = room['width']
+    height = room['height']
+    vars.time = room['time']
+    # the world size (in tiles)
+    world_width = room['world_width']
+    world_height = room['world_height']
+    start = room['start'][vars.start_pos]
+    start_pos = start['pos']
+    r = PlatformerRoom(visible_name, width, height, world_width, world_height, start_pos)
+    print('ok')
+    exit(1)
+
+
 class PlatformerRoom(room.Room):
     def __init__(self, uid: str, width, height, world_width: int, world_height: int, start_pos):
         super().__init__(uid, width, height)
@@ -30,12 +46,12 @@ class PlatformerRoom(room.Room):
 
         # create the collision engine
         ce = runners.CollisionEngine(80, 80)
-        ce.add_response(vars.tags.player, vars.tags.brick_sensor, runners.CollisionResponse(on_enter=func.brickResponse))
-        ce.add_response(vars.tags.player, vars.tags.bonus_brick_sensor, runners.CollisionResponse(on_enter=func.bonusBrickResponse))
-        ce.add_response(vars.tags.player, vars.tags.mushroom, runners.CollisionResponse(on_enter=func.mushroomResponse))
-        ce.add_response(vars.tags.player, vars.tags.warp, runners.CollisionResponse(on_enter=func.onWarpEnter, on_leave=func.onWarpExit))
+        ce.add_response(vars.tags.player, vars.tags.brick_sensor, runners.CollisionResponse(on_enter=func.brick_response))
+        ce.add_response(vars.tags.player, vars.tags.bonus_brick_sensor, runners.CollisionResponse(on_enter=func.bonus_brick_response))
+        ce.add_response(vars.tags.player, vars.tags.mushroom, runners.CollisionResponse(on_enter=func.mushroom_response))
+        ce.add_response(vars.tags.player, vars.tags.warp, runners.CollisionResponse(on_enter=func.on_warp_enter, on_leave=func.on_warp_exit))
         ce.add_response(vars.tags.player, vars.tags.hotspot, runners.CollisionResponse(on_enter=func.hotspotEnter))
-        ce.add_response(vars.tags.player, vars.tags.coin, runners.CollisionResponse(on_enter=func.coinResponse))
+        ce.add_response(vars.tags.player, vars.tags.coin, runners.CollisionResponse(on_enter=func.coin_response))
         ce.add_response(vars.tags.player, vars.tags.goomba, runners.CollisionResponse(on_enter=func.goombaResponse))
         ce.add_response(vars.tags.player, vars.tags.koopa, runners.CollisionResponse(on_enter=func.koopaResponse))
         ce.add_response(vars.tags.player, vars.tags.spawn, runners.CollisionResponse(on_enter=func.onSpawn))

@@ -9,6 +9,7 @@ import example
 import sys
 import vars as v
 
+
 from pathlib import Path
 
 # add folder
@@ -16,8 +17,14 @@ path = Path(__file__)
 sys.path.append(str(path.parent.parent / 'lib'))
 
 import lib.engine as eng
+import factories.roomdefault
 
 engine = eng.Engine()
+
+engine.add_room_factory('default', factories.roomdefault.make_platformer_room)
+
+
+
 
 engine.vars = v
 #engine.startUp()
