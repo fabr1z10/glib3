@@ -7,6 +7,7 @@ paused = False
 invincibility = False
 currentWarp = -1
 score = 0
+coins = 0
 time = 300
 start_pos = 0
 state = 0                           # 0 = Mario, 1 = SuperMario, 2 = Fiery Mario

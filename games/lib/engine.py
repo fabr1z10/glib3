@@ -2,15 +2,13 @@ import example
 import yaml
 import os
 import font
-
-engine = None
+import monkey
 
 
 class Engine:
     def __init__(self):
-        global engine
         example.init(example.what)
-        engine = self
+        monkey.engine = self
         with open(example.dir + '/main.yaml') as f:
             a = yaml.load(f, Loader=yaml.FullLoader)
             self.lang = a['lang']
@@ -30,16 +28,37 @@ class Engine:
                 self.add_font(file['id'], file['file'])
 
     def add_shader(self, shader):
-        self.shaders.append(shader)
+        self.shaders.append(shader.name)
 
     def add_font(self, uid, file):
         self.assets['fonts'][uid] = font.Font(uid, file)
 
     def load_assets(self):
-        pass
+        dirs = [
+            ('sprites', 'models'),
+            ('animations', 'skeletal_animations'),
+            ('skeletalmodels', 'models')
+        ]
+        for d in dirs:
+            directory = example.dir + '/assets/' + d[0]
+            print('checking directory ' + directory)
+            if os.path.exists(directory):
+                print ('exists')
+                files = os.listdir(directory)
+                for fi in files:
+                    if os.path.isdir(directory + fi):
+                        continue
+                    with open(directory + '/' + fi) as f:
+                        models = yaml.load(f, Loader=yaml.FullLoader)
+                        for key, value in models.items():
+                            tp = value['type']
+                            self.assets[d[1]][key] = value
 
     def load_strings(self):
-        pass
+        directory = example.dir + '/text/' + self.lang;
+        if os.path.exists(directory):
+            with open(directory + '/text.yaml', encoding='utf8') as f:
+                self.assets['strings'] = yaml.load(f, Loader=yaml.FullLoader)
 
     def create_room(self):
         print('Hey, creating room: ' + self.room)
@@ -93,10 +112,16 @@ class Engine:
     def add_item_factory(self, uid: str, f: callable):
         self.factories['items'][uid] = f
 
+    def get_room_factory(self, uid: str):
+        return self.factories['rooms'][uid]
+
+    def get_item_factory(self, uid: str):
+        return self.factories['items'][uid]
 
     shaders = []
     device_size = []
     window_size = []
+    frame_time = 0.1
     title = ''
     room = ''
     previous_room = ''

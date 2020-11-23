@@ -2,6 +2,8 @@
 import vars
 import example
 import entity
+import monkey
+import sys
 import actions as act
 from script import Script
 
@@ -100,3 +102,113 @@ def upgrade_player():
 
 def coin_response(player: example.Wrap1, coin: example.Wrap1, x, y):
     example.remove(coin.id)
+
+
+def on_hotspot_enter(player: example.Wrap1, warp: example.Wrap1, x, y):
+    info = warp.getInfo()
+    if 'func' in info:
+        info['func'](player, warp)
+
+
+def goomba_response(player: example.Wrap1, goomba: example.Wrap1, x, y):
+    if player.getState() == 'jump' and y > 0 and abs(x) < 0.01:
+        s = Script()
+        player.vy = 300
+        s.add_action(act.SetState(state='dead', entity_id=goomba.id ))
+        s.add_action(act.Delay(2))
+        s.add_action(act.RemoveEntity(goomba.id))
+        example.play(s)
+    else:
+        player_hit_by_enemy(player)
+
+
+def koopa_response(player: example.Wrap1, koopa: example.Wrap1, x, y):
+    if koopa.getState() == 'hide':
+        koopa.killScripts()
+        if player.getState() == 'jump' and y > 0 and abs(x) < 0.01:
+            player.vy = 300
+        koopa.move(-10 * x, 0, 0)
+        left = 0 if (player.x < koopa.x) else 1
+        s = Script()
+        s.add_action(act.SetState(state='walk2', entity_id=koopa.id, args={'left': left}))
+        koopa.play(s)
+    else:
+        if player.getState() == "jump" and y > 0 and abs(x) < 0.01:
+            player.vy = 300
+            s = Script()
+            s.add_action(act.SetState(state='hide', entity_id=koopa.id))
+            s.add_action(act.Delay(2))
+            s.add_action(act.Blink(duration=2,blink_duration=0.2,entity_id=koopa.id))
+            s.add_action(act.SetState(state='walk', entity_id = koopa.id))
+            koopa.play(s)
+        else:
+            player_hit_by_enemy(player)
+
+
+def player_hit_by_enemy(player: example.Wrap1):
+    if vars.invincibility:
+        return
+    downgrade_player()
+
+
+def downgrade_player():
+    vars.state -= 1
+    if vars.state < 0:
+        player_dead()
+    else:
+        vars.invincibility = True
+        pl = example.get('player')
+        pl.setModel(vars.stateInfo[vars.state])
+        s = Script()
+        s.add_action(act.Blink(duration=5, blink_duration=0.2, entity_id=pl.id))
+        s.add_action(act.CallFunc(reset_invincible))
+        example.play(s)
+
+
+def reset_invincible():
+    vars.invincibility = False
+
+
+def restart():
+    vars.invincibility = False
+    vars.currentWarp = -1
+    example.restart()
+
+
+def player_dead():
+    s = Script()
+    vars.state = 0
+    s.add_action(act.SetState(state='dead', tag='player'))
+    s.add_action(act.Delay(1))
+    s.add_action(act.MoveAccelerated(v0=[0, 200], a=[0, vars.gravity], yStop=0, tag='player'))
+    s.add_action(act.RemoveEntity(tag='player'))
+    s.add_action(act.CallFunc(restart))
+    example.play(s)
+
+
+def on_spawn(player: example.Wrap1, spawn: example.Wrap1, x, y):
+    # get the detail
+    info = spawn.getInfo()
+    fct = info['factory']
+    func = monkey.engine.get_item_factory(fct)
+    props = info['info']
+    delta = info['delta']
+    px = spawn.x / vars.tile_size + delta[0]
+    py = spawn.y / vars.tile_size + delta[1]
+    spawned = func(props)(px, py)
+    example.get('main').add(spawned)
+    example.remove(spawn.id)
+
+
+def on_collect_item(player: example.Wrap1, item: example.Wrap1, x, y):
+    f = item.getInfo()['func']
+    getattr(sys.modules[__name__], f)(player, item, x, y)
+
+
+def fire_hits_foe(foe: example.Wrap1, fire: example.Wrap1, x, y):
+    example.remove(fire.id)
+    foe.setState('dead2', {})
+    s = Script()
+    s.add_action(act.MoveAccelerated(v0=[50 if fire.x < foe.x else -50, 150], a=[0, vars.gravity], yStop=-32, entity_id=foe.id))
+    s.add_action(act.RemoveEntity(entity_id=foe.id))
+    example.play(s)

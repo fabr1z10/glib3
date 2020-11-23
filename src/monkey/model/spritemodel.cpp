@@ -123,7 +123,6 @@ SpriteModel::SpriteModel (const ITable& t) : IModel() {
         if (animData.hasKey("elements")) {
             rf (animData, animInfo);
         } else {
-
             auto frames = animData.get<py::list>("frames");
             for (auto frame : frames) {
                 FrameInfo frameInfo;

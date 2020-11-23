@@ -1,0 +1,286 @@
+---
+mario:
+  sheet: "gfx/smb1.png"
+  thickness: 1
+  type: "asset.boxed"
+  boxes:
+    - [-6, 0, 6, 16]
+  # casts
+  animations:
+    idle:
+      loop: true
+      box: 0
+      frames:
+        - [0, 0, 16, 16, 8, 0]
+    walk:
+      box: 0
+      frames:
+        - [16, 0, 16, 16, 8, 0]
+        - [32, 0, 16, 16, 8, 0]
+        - [48, 0, 16, 16, 8, 0]
+    jump:
+      box: 0
+      frames:
+        - [80, 0, 16, 16, 8, 0]
+    dead:
+      box: 0
+      frames:
+        - [96, 0, 16, 16, 8, 0]
+    slide:
+      box: 0
+      frames:
+        - [176, 64, 16, 16, 8, 0]
+
+supermario:
+  sheet: "gfx/smb1.png"
+  thickness: 1
+  type: "asset.boxed"
+  boxes:
+    - [-6, 0, 6, 32]
+  # casts
+  animations:
+    idle:
+      loop: true
+      box: 0
+      frames:
+        - [80, 16, 16, 32, 8, 0]
+    walk:
+      box: 0
+      frames:
+        - [96, 16, 16, 32, 8, 0]
+        - [112, 16, 16, 32, 8, 0]
+        - [128, 16, 16, 32, 8, 0]
+    jump:
+      box: 0
+      frames:
+        - [144, 16, 16, 32, 8, 0]
+    slide:
+      frames:
+        - [192, 64, 16, 32, 8, 0]
+fierymario:
+  sheet: "gfx/smb1.png"
+  thickness: 1
+  type: "asset.boxed"
+  boxes:
+    - [-6, 0, 6, 32]
+  # casts
+  animations:
+    idle:
+      loop: true
+      box: 0
+      frames:
+        - [0, 112, 16, 32, 8, 0]
+    walk:
+      box: 0
+      frames:
+        - [16, 112, 16, 32, 8, 0]
+        - [32, 112, 16, 32, 8, 0]
+        - [48, 112, 16, 32, 8, 0]
+    jump:
+      box: 0
+      frames:
+        - [64, 128, 16, 32, 8, 0]
+    slide:
+      frames:
+        - [192, 64, 16, 32, 8, 0]
+    fire:
+      frames:
+        - [80,128,16,32,8,0]
+    slide:
+      frames:
+        - [0, 144, 16, 32, 8, 0]        
+fire:
+  sheet: 'gfx/smb1.png'
+  type: asset.boxed
+  boxes:
+    - [-4,-4,4,4]
+  animations:
+    default:
+      loop: true
+      box: 0
+      frames:
+        - [176,112,16,16,8,8]
+        - [192,112,16,16,8,8]
+        - [208,112,16,16,8,8]
+        - [224,112,16,16,8,8]
+
+brick:
+  sheet: "gfx/smb1.png"
+  type: "asset.sprite"
+  animations:
+    idle:
+      frames:
+        - [240, 0, 16, 16]
+brick2:
+  sheet: "gfx/smb1.png"
+  type: "asset.sprite"
+  animations:
+    idle:
+      frames:
+        - [160, 48, 16, 16]
+bonusbrick:
+  sheet: "gfx/smb1.png"
+  type: "asset.sprite"
+  animations:
+    default:
+      frames:
+        - [160, 0, 16, 16]
+        - [176, 0, 16, 16]
+        - [192, 0, 16, 16]
+        - [176, 0, 16, 16]
+    taken:
+      frames:
+        - [224, 0, 16, 16]
+bonusbrick2:
+  sheet: "gfx/smb1.png"
+  type: "asset.sprite"
+  animations:
+    default:
+      frames:
+        - [160, 48, 16, 16]
+    taken:
+      frames:
+        - [240, 96, 16, 16]
+
+brickpiece:
+  sheet: "gfx/smb1.png"
+  type: "asset.sprite"
+  animations:
+    idle:
+      frames:
+        - [64,16,16,16]
+brickpiece2:
+  sheet: "gfx/smb1.png"
+  type: "asset.sprite"
+  animations:
+    idle:
+      frames:
+        - [224,80,16,16]
+
+mushroom:
+  sheet: "gfx/smb1.png"
+  type: "asset.boxed"
+  boxes:
+    - [-8, 0, 8, 16]
+  animations:
+    walk:
+      box: 0
+      frames:
+        - [48, 16, 16, 16, 8, 0]
+flower:
+  sheet: "gfx/smb1.png"
+  type: "asset.boxed"
+  boxes:
+    - [-8, 0, 8, 16]
+  animations:
+    walk:
+      box: 0
+      frames:
+        - [176, 96,16,16,8,0]
+        - [192, 96,16,16,8,0]
+        - [208, 96,16,16,8,0]
+        - [224, 96,16,16,8,0]
+
+flag:
+  sheet: "gfx/smb1.png"
+  type: "asset.sprite"
+  animations:
+    def:
+      frames:
+        - [224, 64, 16, 16, 8, 0]
+
+
+goomba:
+  sheet: 'gfx/smb1.png'
+  type: 'asset.boxed'
+  boxes:
+    - [-8, 0, 8, 16]
+  animations:
+    idle:
+      frames:
+        - [112, 0, 16, 16, 8, 0]
+    walk:
+      box: 0
+      frames:
+        - [112, 0, 16, 16, 8, 0]
+        - [128, 0, 16, 16, 8, 0]
+    dead:
+      frames:
+        - [144, 0, 16, 16, 8, 0]
+
+koopa:
+  sheet: 'gfx/smb1.png'
+  type: 'asset.boxed'
+  boxes:
+    - [-8, 0, 8, 24]
+    - [-8, 0, 8, 16]
+  animations:
+    walk:
+      box: 0
+      frames:
+        - [0, 16, 16, 32, 8, 0]
+        - [16, 16, 16, 32, 8, 0]
+    hide:
+      box: 1
+      frames:
+        - [32, 32, 16, 16, 8, 0]
+    hide_blink:
+      box: 1
+      frames:
+        - [32, 32, 16, 16, 8, 0]
+        - [32, 16, 16, 16, 8, 0]
+
+
+pickupcoin:
+  sheet: 'gfx/smb1.png'
+  type: 'asset.boxed'
+  boxes: 
+    - [2, 0, 14, 16]
+  animations:
+    def:
+      box: 0
+      frames:
+        - [128, 64, 16, 16]
+        - [144, 64, 16, 16]
+        - [160, 64, 16, 16]
+flyingcoin:
+  sheet: "gfx/smb1.png"
+  type: "asset.sprite"
+  animations:
+    walk:
+      frames:
+        - [160, 16, 16, 16, 8, 0]
+        - [176, 16, 16, 16, 8, 0]
+        - [192, 16, 16, 16, 8, 0]
+        - [208, 16, 16, 16, 8, 0]
+score100:
+  sheet: 'gfx/smb1.png'
+  type: 'asset.sprite'
+  animations:
+    def:
+      frames:
+        - [0, 80, 16, 16, 8, 0]
+coin_counter:
+  sheet: 'gfx/smb1.png'
+  type: 'asset.sprite'
+  animations:
+    def:
+      frames:
+        - [128,80,16,16]
+        - [144,80,16,16]
+        - [160,80,16,16]
+        - [144,80,16,16]
+foam:
+  sheet: 'gfx/smb1.png'
+  type: 'asset.sprite'
+  animations:
+    def:
+      frames:
+        - [112,128,16,16]
+        - [128,128,16,16]
+        - [144,128,16,16]
+        - [160,128,16,16]
+        - [176,128,16,16]
+        - [192,128,16,16]
+        - [208,128,16,16]
+

@@ -82,27 +82,7 @@ namespace py = pybind11;
 
 
 void SceneFactory::Init(Engine* engine) {
-    // initialize lua
-//    LuaWrapper::Init();
-//    luabridge::LuaRef package = luabridge::getGlobal(LuaWrapper::L, "package");
-//    std::cout << "package.path = " << package["path"].cast<std::string>() << "\n";
-//    luabridge::setGlobal(LuaWrapper::L, engine->GetGameDirectory().c_str(), "_path" );
-//    // load main
-//    LuaWrapper::Load(Engine::get().GetGameDirectory() + "main.lua");
-//
-//    LuaTable engineDef(LuaWrapper::GetGlobal("engine"));
-//
-//    glm::vec2 devSize = engineDef.Get<glm::vec2>("device_size");
-//    glm::ivec2 winSize = engineDef.Get<glm::ivec2>("window_size");
-//    int fps = engineDef.Get<int>("fps", 60);
-//    std::string title = engineDef.Get<std::string>("title");
-//
-//    engine->SetDeviceSize(devSize);
-//    engine->SetWindowSize(winSize);
-//    engine->SetFPS(fps);
-//    engine->SetTitle(title);
-//
-//    extendLua();
+
 }
 
 
