@@ -41,16 +41,16 @@ CollisionEngine::CollisionEngine(const ITable & table) : ICollisionEngine(table)
         auto tag1 = p[1].cast<int>();
         PyTable t(p[2].cast<py::object>());
         std::unique_ptr<LuaCollisionResponse> l(new LuaCollisionResponse);
-        if (t.hasKey("onenter")) {
-            auto f = t.get<py::function>("onenter");
+        if (t.hasKey("on_enter")) {
+            auto f = t.get<py::function>("on_enter");
             l->setOnEnter(f);
         }
-        if (t.hasKey("onleave")) {
-            auto f = t.get<py::function>("onleave");
+        if (t.hasKey("on_leave")) {
+            auto f = t.get<py::function>("on_leave");
             l->setOnLeave(f);
         }
-        if (t.hasKey("onstay")) {
-            auto f = t.get<py::function>("onstay");
+        if (t.hasKey("on_stay")) {
+            auto f = t.get<py::function>("on_stay");
             l->setOnStay(f);
         }
         crm->AddCollisionResponse(tag0, tag1, std::move(l));

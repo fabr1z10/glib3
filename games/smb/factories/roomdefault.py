@@ -26,12 +26,13 @@ def make_platformer_room(room: dict):
             dynamic = item.get('dynamic', True)
             factory = monkey.engine.get_item_factory(factory_id[0])
             if factory is None:
-                print ('Unable to find factory for item: ' + factory_id[0])
+                print('Unable to find factory for item: ' + factory_id[0])
                 exit(1)
             else:
-                f = factory(factoryId)
+                props = {} if len(factory_id) == 1 else factory_id[1]
+                f = factory(**props)
                 for a in item['d']:
-                    e = f (a)
+                    e = f(*a)
                     if dynamic:
                         r.addToDynamicWorld(e)
                     else:
@@ -57,7 +58,7 @@ class PlatformerRoom(room.Room):
 
         main = Entity(tag='main')
         main.camera = camera.OrthoCamera(world_width=world_width * vars.tile_size,
-                                         world_height=world_width * vars.tile_size,
+                                         world_height=world_height * vars.tile_size,
                                          cam_width=width, cam_height=height, viewport=[0, 0, width, height],
                                          tag='maincam')
         self.main = main
@@ -102,8 +103,9 @@ class PlatformerRoom(room.Room):
         self.add(diag)
 
         # add player
+        mario = monkey.engine.get_item_factory('player')(model=vars.stateInfo[vars.state], speed=200)(start_pos[0], start_pos[1], 0)
         #mario = build.makePlayer(vars.stateInfo[vars.state], startPos[0], startPos[1])
-        #main.add(mario)
+        main.add(mario)
 
     def addToDynamicWorld(self, e):
         self.dw.items.append(e)

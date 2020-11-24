@@ -17,6 +17,8 @@ sys.path.append(str(path.parent.parent / 'lib'))
 
 import lib.engine as eng
 import factories.roomdefault
+import factories.items
+
 import shader
 
 engine = eng.Engine()
@@ -27,8 +29,9 @@ engine.add_shader(shader.ShaderType.text)
 
 
 engine.add_room_factory('default', factories.roomdefault.make_platformer_room)
-
-
+engine.add_item_factory('platform', factories.items.platform)
+engine.add_item_factory('player', factories.items.player)
+engine.add_item_factory('brick', factories.items.brick)
 
 
 engine.vars = v

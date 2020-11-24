@@ -113,10 +113,10 @@ class Engine:
         self.factories['items'][uid] = f
 
     def get_room_factory(self, uid: str):
-        return self.factories['rooms'][uid]
+        return self.factories['rooms'].get(uid, None)
 
     def get_item_factory(self, uid: str):
-        return self.factories['items'][uid]
+        return self.factories['items'].get(uid, None)
 
     shaders = []
     device_size = []

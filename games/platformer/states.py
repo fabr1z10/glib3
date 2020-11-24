@@ -1,0 +1,33 @@
+import lib.states
+
+
+class WalkSide(lib.states.State):
+    def __init__(self, uid, speed: float, acceleration: float, jump_speed: float, flip_horizontal: bool, keys=None):
+        super().__init__(uid, keys)
+        self.type = 'state.walkside'
+        self.speed = speed
+        self.acceleration = acceleration
+        self.jumpSpeed = jump_speed
+        self.flipH = flip_horizontal
+
+
+class Jump(lib.states.State):
+    def __init__(self, uid, speed: float, acceleration: float, flip_horizontal: bool, anim_up: str, anim_down: str, keys=None):
+        super().__init__(uid, keys)
+        self.type = 'state.jump'
+        self.speed = speed
+        self.acceleration = acceleration
+        self.flipH = flip_horizontal
+        self.animUp = anim_up
+        self.animDown = anim_down
+
+
+class Bounce(lib.states.State):
+    def __init__(self, uid: str, speed: float, a: float, b: float):
+        super().__init__(uid)
+        self.type = 'state.bounce'
+        self.speed = speed
+        self.a = a
+        self.b = b
+
+

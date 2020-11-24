@@ -10,8 +10,18 @@ score = 0
 coins = 0
 time = 300
 start_pos = 0
-state = 0                           # 0 = Mario, 1 = SuperMario, 2 = Fiery Mario
+state = 2                           # 0 = Mario, 1 = SuperMario, 2 = Fiery Mario
 stateInfo = ['mario', 'supermario', 'fierymario']
+
+
+class flags:
+    player = 1
+    platform = 2
+    foe = 4
+    player_attack = 8
+    foe_attack = 16
+    platform_passthrough = 32
+
 
 class tags:
     player = 1

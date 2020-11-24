@@ -5,7 +5,10 @@ import entity
 import monkey
 import sys
 import actions as act
+import components as comp
+import platformer.states
 from script import Script
+
 
 def toggle_pause():
     if vars.paused:
@@ -20,6 +23,24 @@ def toggle_pause():
     vars.paused = not vars.paused
 
 
+def goto_world(world_id: str, start_location: int):
+    def f():
+        vars.invincibility = False
+        # Don't reset energy! This only should be done after player dies!
+        # vars.energy = vars.init_energy
+
+        # Important! Reset these or otherwise you will get runtime errors!
+        vars.currentWarp = -1
+
+        vars.start_pos = start_location
+
+        s = Script()
+        s.add_action(act.ChangeRoom(world_id))
+        example.play(s)
+
+    return f
+
+
 def restart():
     vars.invincibility = False
     vars.currentWarp = -1
@@ -28,6 +49,7 @@ def restart():
 
 # player hitting a brick sensor
 def brick_response(player: example.Wrap1, brick: example.Wrap1, x, y):
+    print ('HAZ')
     # get the actual brick
     b = brick.parent()
     brick_id = b.id
@@ -212,3 +234,42 @@ def fire_hits_foe(foe: example.Wrap1, fire: example.Wrap1, x, y):
     s.add_action(act.MoveAccelerated(v0=[50 if fire.x < foe.x else -50, 150], a=[0, vars.gravity], yStop=-32, entity_id=foe.id))
     s.add_action(act.RemoveEntity(entity_id=foe.id))
     example.play(s)
+
+
+def _fire(a: example.Wrap1, state: str):
+    if vars.state >= 2:
+        a.setState(state, {})
+        b = entity.Sprite(model='fire', pos=(a.x + (-2 if a.flipx else 2), a.y+16, 0))
+        b.flipx = a.flipx
+        b.add_component(comp.Controller2D(
+            mask_up=vars.flags.platform,
+            mask_down=vars.flags.platform | vars.flags.platform_passthrough,
+            max_climb_angle=80,
+            max_descend_angle=80))
+        b.add_component(comp.GarbageCollect(10))
+        b.add_component(comp.Dynamics2D(gravity=vars.gravity))
+        b.add_component(comp.SmartCollider(flag=vars.flags.player_attack, mask=vars.flags.foe | vars.flags.platform, tag=vars.tags.player_fire))
+        sm = comp.StateMachine(initial_state='jmp')
+        sm.states.append(platformer.states.Bounce(uid='jmp', speed=300, a=0, b=200))
+        b.add_component(sm)
+        example.get('main').add(b)
+
+
+def fire(a: example.Wrap1):
+    _fire(a, 'attack1')
+
+
+def firej(a: example.Wrap1):
+    _fire(a, 'attack2')
+
+
+def enter_pipe(a: example.Wrap1):
+    if not vars.paused and vars.currentWarp != -1:
+        a.setState('pipe', {})
+        info = example.getById(vars.currentWarp).getInfo()
+        s = Script()
+        s.add_action(act.Move(speed=100, by=[0, -64], tag='player'))
+        s.add_action(act.CallFunc(goto_world(info['world'], info['start'])))
+        example.play(s)
+
+
