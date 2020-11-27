@@ -32,6 +32,9 @@ engine.add_room_factory('default', factories.roomdefault.make_platformer_room)
 engine.add_item_factory('platform', factories.items.platform)
 engine.add_item_factory('player', factories.items.player)
 engine.add_item_factory('brick', factories.items.brick)
+engine.add_item_factory('mushroom_brick', factories.items.mushroom_brick)
+engine.add_item_factory('moving_bonus', factories.items.moving_bonus)
+
 
 
 engine.vars = v

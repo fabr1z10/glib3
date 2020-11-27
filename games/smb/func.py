@@ -78,7 +78,7 @@ def bonus_brick_response(player: example.Wrap1, brick: example.Wrap1, x, y):
         info['hitsLeft'] -= 1
         s = Script()
         ystop = b.y
-        s.add_action(act.MoveAccelerated(v0=[0, 50], a=[0, 0.5 * vars.gravity], yStop=ystop, id=brick_id))
+        s.add_action(act.MoveAccelerated(v0=[0, 50], a=[0, 0.5 * vars.gravity], yStop=ystop, entity_id=brick_id))
         if hits_left == 1:
             s.add_action(act.Animate(anim='taken', entity_id=brick_id))
 

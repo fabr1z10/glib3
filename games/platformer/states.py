@@ -31,3 +31,13 @@ class Bounce(lib.states.State):
         self.b = b
 
 
+class FoeWalk(lib.states.State):
+    def __init__(self, uid, anim: str, speed: float, acceleration: float, flip_horizontal: bool, flip_when_platform_ends: bool, left: int):
+        super().__init__(uid)
+        self.type = 'state.foewalk'
+        self.anim = anim
+        self.speed = speed
+        self.acceleration = acceleration
+        self.flipH = flip_horizontal
+        self.flipWhenPlatformEnds = flip_when_platform_ends
+        self.left = left
