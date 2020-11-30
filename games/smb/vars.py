@@ -12,7 +12,7 @@ time = 300
 start_pos = 0
 state = 2                           # 0 = Mario, 1 = SuperMario, 2 = Fiery Mario
 stateInfo = ['mario', 'supermario', 'fierymario']
-
+tile_data = {}
 
 class flags:
     player = 1

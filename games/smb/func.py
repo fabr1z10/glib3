@@ -49,7 +49,6 @@ def restart():
 
 # player hitting a brick sensor
 def brick_response(player: example.Wrap1, brick: example.Wrap1, x, y):
-    print ('HAZ')
     # get the actual brick
     b = brick.parent()
     brick_id = b.id
@@ -273,3 +272,51 @@ def enter_pipe(a: example.Wrap1):
         example.play(s)
 
 
+def dead(p: example.Wrap1, k, x, y):
+    p.setModel(vars.stateInfo[0])
+    vars.state = 0
+    downgrade_player()
+
+
+def win_slide(p: example.Wrap1, k, x, y):
+    example.remove(k.id)
+    p.setState('slide', {})
+    s = Script()
+    p.vy = 0
+    s.add_action(act.Move(speed=50, to=[p.x, 48], tag='player'))
+    s.add_action(act.SetState(tag='player', state='demo', args={'left': 0}))
+    example.play(s)
+
+
+def goto_stage(p: example.Wrap1, k: example.Wrap1, x, y):
+    add_info = k.getInfo()['info']
+    example.remove(k.id)
+    p.setActive(False)
+    s = Script()
+    s.add_action(act.Delay(0.5))
+    s.add_action(act.CallFunc(goto_world(add_info['world'], add_info['pos'])))
+    example.play(s)
+
+
+def pickup_coin(p, k, x, y):
+    example.remove(k.id)
+    vars.coins += 1
+    example.get('coin_label').setText ('{:02d}'.format(vars.coins))
+
+
+def pipe_out(p: example.Wrap1, k, x, y):
+    p.setState('demo', {'left': 0})
+    add_info = k.getInfo()['info']
+    s = Script()
+    s.add_action(act.Delay(0.5))
+    s.add_action(act.CallFunc(goto_world(add_info['world'], add_info['pos'])))
+    example.play(s)
+
+
+def cippo():
+    example.get('w1').setActive(False)
+    s = Script()
+    s.add_action(act.SetState(tag='player', state='pipe'))
+    s.add_action(act.Move(tag='player', speed=50, by=[0, 64]))
+    s.add_action(act.SetState(tag='player', state='walk'))
+    example.play(s)

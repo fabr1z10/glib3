@@ -27,6 +27,12 @@ class Engine:
             for file in a['fonts']:
                 self.add_font(file['id'], file['file'])
 
+    @staticmethod
+    def open_data_file(filename):
+        with open(example.dir + '/' + filename) as f:
+            a = yaml.load(f, Loader=yaml.FullLoader)
+            return a
+
     def add_shader(self, shader):
         self.shaders.append(shader.name)
 

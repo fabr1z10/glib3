@@ -38,7 +38,7 @@ def make_platformer_room(room: dict):
                     else:
                         r.main.add(e)
     if 'script' in start:
-        r.init.append(getattr(scripts, start['script']))
+        r.init.append(getattr(func, start['script']))
     return r
     return r
 

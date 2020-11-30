@@ -78,3 +78,50 @@ class GarbageCollect:
         self.type = 'components.garbagecollect'
         self.timeout = timeout
 
+
+class TiledGfx:
+    def __init__(self, tile_sheet: str, sheet_size, tile_data: list, width: int, height: int, size: float = 1.0,
+                 repx: int = None, repy: int = None, angle: float = None):
+        self.type = 'components.gfx'
+        self.image = tile_sheet
+        self.sheetSize = sheet_size
+        self.tileData = tile_data
+        self.width = width
+        self.height = height
+        self.size = size
+        self.repx = repx
+        self.repy = repy
+        self.angle = angle
+        self.cls = 1
+
+
+# create a colored shape
+class ShapeGfxColor:
+    def __init__(self, shape, fill):
+        self.type ='components.gfx'
+        self.cls = 3
+        self.shape = shape
+        self.fill = fill
+
+
+class Parallax:
+    def __init__(self, cam: str, factor, campos0, pos0):
+        self.type = 'components.parallax'
+        self.factor = factor
+        self.cam = cam
+        self.cam0 = campos0
+        self.pos0 = pos0
+
+
+class PolygonalMover:
+    def __init__(self, origin, loop, moves, pct=0):
+        self.type ='components.polymover'
+        self.moves = moves
+        self.origin = origin
+        self.loop = loop
+        self.pct = pct
+
+
+class Platform:
+    def __init__(self):
+        self.type = 'components.platform'
