@@ -36,6 +36,14 @@ class SmartCollider(Collider):
         self.cast_mask = cast_mask
 
 
+class SkeletalCollider(Collider):
+    def __init__(self, flag: int, mask: int, tag: int, cast_tag: int = 0, cast_mask: int = 0):
+        super().__init__(flag, mask, tag, None)
+        self.type = 'components.skeletalcollider'
+        self.cast_tag = cast_tag
+        self.cast_mask = cast_mask
+
+
 class Controller2D:
     def __init__(self, mask_up: int, mask_down: int, max_climb_angle: float, max_descend_angle, hor_rays : int = 4, vert_rays: int = 4):
         self.type = 'components.controller2D'

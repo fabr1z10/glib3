@@ -41,3 +41,15 @@ class FoeWalk(lib.states.State):
         self.flipH = flip_horizontal
         self.flipWhenPlatformEnds = flip_when_platform_ends
         self.left = left
+
+
+class FoeChase(lib.states.State):
+    def __init__(self, uid, walk_anim: str, idle_anim: str, speed: float, acceleration: float, attacks, prob_attack: float = 0):
+        super().__init__(uid)
+        self.type = 'state.foechase'
+        self.walkanim = walk_anim
+        self.idleanim = idle_anim
+        self.speed = speed
+        self.acceleration = acceleration
+        self.attacks = attacks
+        self.probattack = prob_attack
