@@ -43,7 +43,8 @@ class Engine:
         dirs = [
             ('sprites', 'models'),
             ('animations', 'skeletal_animations'),
-            ('skeletalmodels', 'models')
+            ('skeletalmodels', 'models'),
+            ('mesh', 'mesh')
         ]
         for d in dirs:
             directory = example.dir + '/assets/' + d[0]
@@ -136,6 +137,7 @@ class Engine:
     assets = {
         'fonts': {},
         'models': {},  # include sprite + skeletal
+        'mesh': {},
         'skeletal_animations': {},
         'strings': {},
         # here go all the variables defined in variables.yaml

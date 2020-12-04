@@ -1,5 +1,6 @@
 #include <monkey/assetman.h>
 #include <monkey/engine.h>
+#include <monkey/texturedmesh.h>
 
 namespace py = pybind11;
 
@@ -15,6 +16,22 @@ void AssetManager::Init() {
     m_fontDict = assets["fonts"];
     m_modelDict = assets["models"];
     m_skeletalAnimDict = assets["skeletal_animations"];
+    m_mesh = assets["mesh"];
+}
+
+std::shared_ptr<IMesh> AssetManager::GetMesh(const std::string & id) {
+	// check if the mesh is cached
+	auto iter = m_meshes.find(id);
+	if (iter != m_meshes.end()) {
+		return iter->second;
+	}
+
+	PyDict t(m_mesh[id.c_str()]);
+	auto mesh = Engine::get().GetSceneFactory()->make2<IMesh>(t);
+	m_meshes.insert(std::make_pair(id, mesh));
+	return mesh;
+
+
 }
 
 std::shared_ptr<IModel> AssetManager::GetModel(const std::string & id) {

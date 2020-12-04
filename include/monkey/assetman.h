@@ -60,6 +60,7 @@ public:
     std::shared_ptr<Font> GetFont (const std::string&);
     std::shared_ptr<Tex> GetTex (const std::string&);
     std::shared_ptr<IModel> GetModel (const std::string&);
+    std::shared_ptr<IMesh> GetMesh (const std::string&);
     std::shared_ptr<SkAnimation> getSkeletalAnimation(const std::string &);
     void SetLocal (bool);
     void CleanUp();
@@ -67,9 +68,11 @@ private:
     pybind11::dict m_fontDict;
     pybind11::dict m_modelDict;
     pybind11::dict m_skeletalAnimDict;
+    pybind11::dict m_mesh;
 
     std::unordered_map<std::string, std::shared_ptr<Font> > m_fonts;
     std::unordered_map<std::string, std::shared_ptr<IModel> > m_models;
+    std::unordered_map<std::string, std::shared_ptr<IMesh> > m_meshes;
     std::unordered_map<std::string, std::shared_ptr<Tex> > m_textures;
     std::unordered_map<std::string, std::shared_ptr<SkAnimation> > m_sanim;
 

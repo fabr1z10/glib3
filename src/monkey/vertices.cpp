@@ -1,6 +1,8 @@
 #include <monkey/vertices.h>
 #include <stddef.h>
 
+unsigned VertexSkeletal::point_size = 11;
+
 void SimpleVertex3D::InitAttributes() {
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(SimpleVertex3D), (void*)offsetof(SimpleVertex3D, x));
 }

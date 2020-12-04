@@ -12,6 +12,7 @@
 #include <monkey/bounds.h>
 #include <monkey/enums.h>
 #include "vertices.h"
+#include <monkey/asset.h>
 #include <vector>
 #include <string>
 #include <algorithm>
@@ -21,7 +22,7 @@
 
 class Shader;
 
-class IMesh {
+class IMesh : public Object {
 public:
     IMesh(ShaderType type) : m_vb(INVALID_OGL_VALUE), m_ib(INVALID_OGL_VALUE), m_shaderType{type} {}
     virtual ~IMesh() {}
