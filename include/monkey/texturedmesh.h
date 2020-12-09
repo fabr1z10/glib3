@@ -15,7 +15,7 @@ public:
         m_texId = tex->GetTexId();
     }
 
-    TexturedMesh(const ITable& t){
+    TexturedMesh(const ITable& t) : Mesh<T>(t) {
 		using Coord = float;
 		using N = uint32_t;
 		using Point = std::array<Coord, 2>;

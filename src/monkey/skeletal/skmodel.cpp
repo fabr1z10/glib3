@@ -58,9 +58,50 @@ SkModel::SkModel(const ITable & t) {
 		auto parent = dict.get<std::string>("parent", "");
 		auto meshId = dict.get<std::string>("mesh");
 		auto mesh = Engine::get().GetAssetManager().GetMesh(meshId);
+		m_meshes.push_back(mesh);
+		if (!parent.empty()) {
+			const auto& parentTransform = m_restTransforms.at(parent);
 
+			//JointTransform transform(parentTransform.x )
+		} else {
+			// for the parent root the joint transform is the identity
+			m_restTransforms[id] = JointTransform();
+		}
+//        JointTransform tr(pos.x, pos.y, pos.z);
+//        //glm::mat4 bindTransform = tr.getLocalTransform();
+//        m_restTransforms[id] = tr;
+//        auto joint = std::make_shared<Joint>(curr++, id, tr);
+//        if (root) {
+//            m_rootJoint = joint;
+//        } else {
+//            auto parent = dict.get<std::string>("parent");
+//            joints.at(parent)->addChild(joint);
+//        }
+//        joints.insert(std::make_pair(id, joint));
+//        m_allJoints[id] = joint.get();
 		m_jointCount++;
 	});
+
+    int ac = 0;
+    t.foreach<pybind11::tuple>("animations", [&] (const pybind11::tuple& tu) {
+        auto id = tu[0].cast<std::string>();
+        auto animId = tu[1].cast<std::string>();
+        if (ac == 0) {
+            m_defaultAnimation = id;
+        }
+        auto sanim = Engine::get().GetAssetManager().getSkeletalAnimation(animId);
+        m_animations[id] = sanim;
+        ac++;
+    });
+//        m_maxBounds = maxSize;
+//        b.foreach<PyDict> ("attack", [&] (const PyDict& d) {
+//            auto anim = d.get<std::string>("anim");
+//            auto t0 = d.get<float>("t0");
+//			auto t1 = d.get<float>("t1");
+//            auto box = d.get<glm::vec4>("box");
+//            m_attackTimes[anim] = AttackBox { t0, t1, m_shapes.size()};
+//            m_shapes.push_back(std::make_shared<Rect>(box[2], box[3], glm::vec3(box[0], box[1], 0.0f)));
+//        });
 
 //        bool root = dict.get<bool>("root", false);
 //        auto pos = dict.get<glm::vec3>("pos");

@@ -36,6 +36,7 @@ public:
     std::shared_ptr<Joint> getRootJoint();
     Joint* getJoint (const std::string&);
     bool hasJoint (const std::string&);
+    void setMesh (const std::string& jointId, const std::string& meshId);
     void Draw (Shader*);
     /**
      * Gets an array of the all important model-space transforms of all the

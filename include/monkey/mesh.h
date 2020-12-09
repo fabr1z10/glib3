@@ -11,6 +11,7 @@ public:
     Mesh(std::vector<Vertex>& vertices, std::vector<unsigned int>& indices) {
         Init(vertices, indices);
     }
+    Mesh(const ITable& t) : IMesh(t) {}
     ~Mesh() {
         if (m_vb != INVALID_OGL_VALUE)
             glDeleteBuffers(1, &m_vb);

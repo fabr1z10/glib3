@@ -17,6 +17,7 @@
 #include <string>
 #include <algorithm>
 #include <unordered_map>
+#include <monkey/py.h>
 
 #define INVALID_OGL_VALUE 0xFFFFFFFF
 
@@ -25,6 +26,7 @@ class Shader;
 class IMesh : public Object {
 public:
 	IMesh() = default;
+	IMesh(const ITable&);
     IMesh(ShaderType type) : m_vb(INVALID_OGL_VALUE), m_ib(INVALID_OGL_VALUE), m_shaderType{type} {}
     virtual ~IMesh() {}
 
@@ -41,6 +43,8 @@ public:
     std::string GetId() const;
     void SetId(const std::string&);
     ShaderType GetShaderType() const;
+    glm::vec2 getKeyPoint(const std::string&) const;
+    bool hasKeyPoint (const std::string&) const;
 protected:
     ShaderType m_shaderType;
     //glm::mat4 m_localTransform;
@@ -53,6 +57,7 @@ protected:
     GLuint m_ib;
     int m_indicesCount;
     unsigned int m_shaderMask;
+    std::unordered_map<std::string, glm::vec2> m_keyPoints;
 };
 
 inline ShaderType IMesh::GetShaderType() const {
@@ -102,6 +107,13 @@ inline Bounds ComputeBounds<VertexText>(std::vector<VertexText>& vertices) {
     return bounds;
 }
 
+inline glm::vec2 IMesh::getKeyPoint(const std::string & id) const {
+	return m_keyPoints.at(id);
+}
+
+inline bool IMesh::hasKeyPoint(const std::string & id) const {
+	return m_keyPoints.count(id) > 0;
+}
 
 
 

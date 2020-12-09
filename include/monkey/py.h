@@ -129,6 +129,14 @@ public:
     PyDict (const PyDict&);
     std::shared_ptr<ITable> clone() const override;
 
+	template<typename Key, typename Value>
+	std::unordered_map<Key, Value> toDict() {
+		std::unordered_map<Key, Value> d;
+		for (const auto a : obj) {
+			d [cast<Key>(a.first.cast<pybind11::object>())] = cast<Value>(a.second.cast<pybind11::object>());
+		}
+		return d;
+	}
 private:
     virtual pybind11::object getHandle (const std::string& key) const;
     pybind11::dict obj;
