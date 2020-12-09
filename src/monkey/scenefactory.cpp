@@ -221,6 +221,7 @@ SceneFactory::SceneFactory() {
     // assets
     add2<SpriteModel> ("asset.sprite");
     add2<BoxedModel> ("asset.boxed");
+    add2<TexturedMesh<VertexSkeletal>>("asset.mesh");
 
     //add2<SkeletalModel> ("asset.skeleton");
     //add2<SkeletalModel2> ("asset.skeleton2");

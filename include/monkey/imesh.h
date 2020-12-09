@@ -24,6 +24,7 @@ class Shader;
 
 class IMesh : public Object {
 public:
+	IMesh() = default;
     IMesh(ShaderType type) : m_vb(INVALID_OGL_VALUE), m_ib(INVALID_OGL_VALUE), m_shaderType{type} {}
     virtual ~IMesh() {}
 

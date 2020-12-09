@@ -6,6 +6,7 @@
 template<class Vertex>
 class Mesh : public IMesh {
 public:
+	Mesh() = default;
     Mesh(ShaderType type) : IMesh(type) {}
     Mesh(std::vector<Vertex>& vertices, std::vector<unsigned int>& indices) {
         Init(vertices, indices);

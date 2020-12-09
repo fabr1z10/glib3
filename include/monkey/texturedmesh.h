@@ -7,24 +7,32 @@
 template <typename T>
 class TexturedMesh : public Mesh<T> {
 public:
+	TexturedMesh() = default;
+
     TexturedMesh(ShaderType type, GLenum prim, const std::string& filename) : Mesh<T>(type) {
         this->m_primitive = prim;
         auto tex = Engine::get().GetAssetManager().GetTex(filename);
         m_texId = tex->GetTexId();
     }
 
-    TexturedMesh(const ITable& t) {
+    TexturedMesh(const ITable& t){
 		using Coord = float;
 		using N = uint32_t;
 		using Point = std::array<Coord, 2>;
 		std::vector<std::vector<Point>> polygon;
 		std::vector<T> vertices;
 		std::vector<N> indices;
+		auto texId = t.get<std::string>("tex");
+		auto tex = Engine::get().GetAssetManager().GetTex(texId);
+		m_texId = tex->GetTexId();
+
+
 		auto points = t.get<std::vector<Coord>>("data");
+		polygon.push_back(std::vector<Point>());
 		assert(points.size() % T::point_size == 0);
 		for (unsigned int i = 0 ; i < points.size(); i += T::point_size) {
-			T vertex(points[i]);
-			polygon.push_back({vertex.x, vertex.y});
+			T vertex(&points[i]);
+			polygon[0].push_back({vertex.x, vertex.y});
 			vertices.push_back(vertex);
 		}
 		// calculate indices by doing triangulation
@@ -34,7 +42,7 @@ public:
 			indices.push_back(tri[i+1]);
 			indices.push_back(tri[i+2]);
 		}
-		//this->Init()
+		this->Init(vertices, indices);
     }
 
     void Setup(Shader* shader) override {

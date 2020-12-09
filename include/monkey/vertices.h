@@ -87,6 +87,8 @@ struct VertexText {
 
 struct VertexSkeletal
 {
+	VertexSkeletal () = default;
+	VertexSkeletal (const float* s);
     GLfloat x, y, z;            // Vertex
     GLfloat s, t;               // Texcoord
     GLint index0, index1, index2;     // Index into the bone/offset matrix array (2 bones)

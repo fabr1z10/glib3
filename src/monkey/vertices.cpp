@@ -41,6 +41,20 @@ void VertexText::InitAttributes() {
     glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(VertexText), (void*)offsetof(VertexText, r));
 }
 
+VertexSkeletal::VertexSkeletal(const float *data) {
+	x = data[0];
+	y = data[1];
+	z = data[2];
+	s = data[3];
+	t = data[4];
+	index0 = static_cast<int>(data[5]);
+	index1 = static_cast<int>(data[6]);
+	index2 = static_cast<int>(data[7]);
+	weight0 = data[8];
+	weight1 = data[9];
+	weight2 = data[10];
+}
+
 void VertexSkeletal::InitAttributes() {
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(VertexSkeletal), (void*)offsetof(VertexSkeletal, x));
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(VertexSkeletal), (void*)offsetof(VertexSkeletal, s));
