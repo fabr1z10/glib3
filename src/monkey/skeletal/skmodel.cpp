@@ -302,8 +302,8 @@ SkModel::SkModel(const ITable & t) {
 //        m_offsetPoints.push_back(std::make_pair(P[0].cast<std::string>(), glm::vec3(P[1].cast<float>(), P[2].cast<float>(), 0.0f)));
 //    }) ;
 //
-//    glm::mat4 identity(1.0f);
-//    m_rootJoint->calcInverseBindTransform(identity);
+    glm::mat4 identity(1.0f);
+    m_rootJoint->calcInverseBindTransform(identity);
 }
 
 SkAnimation* SkModel::getAnimation(const std::string& id) {
