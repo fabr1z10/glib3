@@ -59,14 +59,23 @@ SkModel::SkModel(const ITable & t) {
 		auto meshId = dict.get<std::string>("mesh");
 		auto mesh = Engine::get().GetAssetManager().GetMesh(meshId);
 		m_meshes.push_back(mesh);
+		m_meshMap[id] = mesh.get();
+		JointTransform transform;
 		if (!parent.empty()) {
+			auto keyPointId = dict.get<std::string>("attach_to");
+			glm::vec2 keyPointPos = m_meshMap.at(parent)->getKeyPoint(keyPointId);
 			const auto& parentTransform = m_restTransforms.at(parent);
-
-			//JointTransform transform(parentTransform.x )
-		} else {
-			// for the parent root the joint transform is the identity
-			m_restTransforms[id] = JointTransform();
+			transform.x = parentTransform.x + keyPointPos.x;
+			transform.y = parentTransform.y + keyPointPos.y;
 		}
+		auto joint = std::make_shared<Joint>(curr++, id, transform);
+		m_restTransforms[id] = transform;
+		if (parent.empty()) {
+			m_rootJoint = joint;
+		} else {
+			joints.at(parent)->addChild(joint);
+		}
+		joints.insert(std::make_pair(id, joint));
 //        JointTransform tr(pos.x, pos.y, pos.z);
 //        //glm::mat4 bindTransform = tr.getLocalTransform();
 //        m_restTransforms[id] = tr;
@@ -78,7 +87,7 @@ SkModel::SkModel(const ITable & t) {
 //            joints.at(parent)->addChild(joint);
 //        }
 //        joints.insert(std::make_pair(id, joint));
-//        m_allJoints[id] = joint.get();
+        m_allJoints[id] = joint.get();
 		m_jointCount++;
 	});
 

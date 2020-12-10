@@ -43,18 +43,15 @@ std::shared_ptr<IModel> AssetManager::GetModel(const std::string & id) {
     if (m_modelDict.is_none()) {
         
     } else {
+    	std::unique_ptr<ITable> t;
         try {
-            PyDict t(m_modelDict[id.c_str()].cast<py::dict>());
-            auto font = Engine::get().GetSceneFactory()->make2<IModel>(t);
-            m_models.insert(std::make_pair(id, font));
-            return font;
-        } catch (...) {
-            PyTable t(m_modelDict[id.c_str()].cast<py::object>());
-            auto font = Engine::get().GetSceneFactory()->make2<IModel>(t);
-            m_models.insert(std::make_pair(id, font));
-            return font;
-
-        }
+			t = std::make_unique<PyDict>(m_modelDict[id.c_str()].cast<py::dict>());
+		} catch (...) {
+        	t = std::make_unique<PyTable>(m_modelDict[id.c_str()].cast<py::dict>());
+		}
+		auto model = Engine::get().GetSceneFactory()->make2<IModel>(*(t.get()));
+        m_models.insert(std::make_pair(id, model));
+        return model;
     }}
 
 

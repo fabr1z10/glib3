@@ -70,6 +70,7 @@ private:
     // create one mesh per texture!
 
     std::vector<std::shared_ptr<IMesh> > m_meshes;
+    std::unordered_map<std::string, IMesh*> m_meshMap;
     std::unordered_map<std::string, std::shared_ptr<SkAnimation>> m_animations;
     std::string m_defaultAnimation;
     void addJointsToArray(Joint*, std::vector<glm::mat4>&);

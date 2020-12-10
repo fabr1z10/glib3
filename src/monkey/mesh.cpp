@@ -24,7 +24,7 @@ IMesh::IMesh(const ITable& t) {
 }
 
 void IMesh::Draw(Shader* shader, int offset, int count) {
-    if (count == 0) count = m_indicesCount;
+    if (count == 0) count = m_nindices;
     glBindBuffer(GL_ARRAY_BUFFER, m_vb);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ib);
     Setup(shader);

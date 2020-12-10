@@ -55,8 +55,8 @@ protected:
     GLuint m_nindices;
     GLuint m_vb;
     GLuint m_ib;
-    int m_indicesCount;
-    unsigned int m_shaderMask;
+    //int m_indicesCount;
+    //unsigned int m_shaderMask;
     std::unordered_map<std::string, glm::vec2> m_keyPoints;
 };
 

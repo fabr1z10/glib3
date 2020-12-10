@@ -33,7 +33,7 @@ public:
         m_bounds = ComputeBounds(vertices);
         //m_bounds.min = m_localTransform * glm::vec4(m_bounds.min, 1.0f);
         //m_bounds.max = m_localTransform * glm::vec4(m_bounds.max, 1.0f);
-        m_indicesCount = indices.size();
+        //m_indicesCount = indices.size();
     }
 
     virtual void InitAttributes() {
