@@ -119,8 +119,8 @@ std::unordered_map<std::string, glm::mat4> SkAnimator::interpolatePoses(SKeyFram
         // previosTransform is p.second
 
         JointTransform nextTransform = nf.at(p.first);
-        JointTransform currentTransform = m_model->getRestTransform(p.first);
-        currentTransform += JointTransform::interpolate(p.second, nextTransform, progression);
+        //JointTransform currentTransform = m_model->getRestTransform(p.first);
+        JointTransform currentTransform = JointTransform::interpolate(p.second, nextTransform, progression);
         //std::cout << m_animationTime << " . " << currentTransform.alpha << "\n";
         currentPose.insert(std::make_pair(p.first, currentTransform.getLocalTransform()));
     }
@@ -197,8 +197,8 @@ void SkAnimator::applyPoseToJoints(const std::unordered_map<std::string, glm::ma
         applyPoseToJoints(currentPose, c, currentTransform);
     }
     // revert to model space
-    //glm::mat4 ct = joint->getInverseBindTransform()*currentTransform;
-    glm::mat4 ct = currentTransform *joint->getInverseBindTransform();
+    glm::mat4 ct = joint->getInverseBindTransform()*currentTransform;
+    //glm::mat4 ct = currentTransform *joint->getInverseBindTransform();
     joint->setAnimationTransform(ct);
 
 }
