@@ -33,6 +33,7 @@ private:
     std::pair<SKeyFrame*, SKeyFrame*> getPreviousAndNextFrames();
     std::unordered_map<std::string, glm::mat4> interpolatePoses(SKeyFrame* previousFrame, SKeyFrame* nextFrame, float progression);
     void applyPoseToJoints(const std::unordered_map<std::string, glm::mat4>& currentPose, std::shared_ptr<Joint> joint, glm::mat4& parentTransform);
+    void applyPoseToJoints(const std::unordered_map<std::string, glm::mat4>& currentPose, std::shared_ptr<Joint> joint);
 
     std::vector<std::pair<std::string, glm::vec3>> m_offsetPoints;
     bool m_complete;

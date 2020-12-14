@@ -29,7 +29,7 @@ void Joint::setAnimationTransform(glm::mat4 animationTransform) {
 
 void Joint::calcInverseBindTransform(glm::mat4 parentBindTransform) {
 
-    glm::mat4 bindTransform = parentBindTransform * m_localBindTransform;
+    glm::mat4 bindTransform = parentBindTransform * m_localBindTransform ;
     m_inverseBindTransform = glm::inverse(bindTransform);
     for (const auto& child : m_children) {
         child->calcInverseBindTransform(bindTransform);

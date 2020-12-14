@@ -43,6 +43,7 @@ public:
     glm::mat4 getAnimatedTransform();
 
     glm::mat4 getInverseBindTransform() const;
+    glm::mat4 getLocalBindTransform()const;
 
     void setAnimationTransform(glm::mat4 animationTransform);
 
@@ -76,6 +77,7 @@ private:
     std::string m_name;
     std::vector<std::shared_ptr<Joint>> m_children;
     glm::mat4 m_transform;
+    // local space to parent space
     glm::mat4 m_localBindTransform;
     glm::mat4 m_inverseBindTransform;
     JointTransform m_localTransform;
@@ -87,6 +89,10 @@ inline const std::vector<std::shared_ptr<Joint>>& Joint::getChildren() const {
 
 inline glm::mat4 Joint::getInverseBindTransform() const {
     return m_inverseBindTransform;
+}
+
+inline glm::mat4 Joint::getLocalBindTransform() const {
+    return m_localBindTransform;
 }
 
 inline std::string Joint::getName() const {

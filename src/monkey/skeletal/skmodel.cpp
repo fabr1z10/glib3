@@ -64,12 +64,14 @@ SkModel::SkModel(const ITable & t) {
 		if (!parent.empty()) {
 			auto keyPointId = dict.get<std::string>("attach_to");
 			glm::vec2 keyPointPos = m_meshMap.at(parent)->getKeyPoint(keyPointId);
-			const auto& parentTransform = m_restTransforms.at(parent);
-			transform.x = parentTransform.x + keyPointPos.x;
-			transform.y = parentTransform.y + keyPointPos.y;
+			//const auto& parentTransform = m_restTransforms.at(parent);
+			transform.x = keyPointPos.x;
+			transform.y = keyPointPos.y;
 		}
+        m_restTransforms[id] = transform;
+        //transform.x = -transform.x;
+        //transform.y = -transform.y;
 		auto joint = std::make_shared<Joint>(curr++, id, transform);
-		m_restTransforms[id] = transform;
 		if (parent.empty()) {
 			m_rootJoint = joint;
 		} else {
