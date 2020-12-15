@@ -18,7 +18,9 @@ void AssetManager::Init() {
     m_skeletalAnimDict = assets["skeletal_animations"];
     m_mesh = assets["mesh"];
 }
-
+PyDict AssetManager::getMeshTemplate(const std::string & id) {
+    return PyDict(m_mesh[id.c_str()]);
+}
 std::shared_ptr<IMesh> AssetManager::GetMesh(const std::string & id) {
 	// check if the mesh is cached
 	auto iter = m_meshes.find(id);

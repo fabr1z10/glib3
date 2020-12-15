@@ -1,12 +1,10 @@
 #include <monkey/skeletal/skanimator.hpp>
 #include <glm/gtx/transform.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtx/transform.hpp>
 
 SkAnimator::SkAnimator(std::shared_ptr<IModel> model) : IAnimator(), m_currentAnimation(nullptr), m_complete(false), m_speedUp(1.0f)
 {
     m_model = std::dynamic_pointer_cast<SkModel>(model);
-	m_initAnim = m_model->GetDefaultAnimation();
+    m_initAnim = m_model->GetDefaultAnimation();
 
 }
 
@@ -26,8 +24,7 @@ void SkAnimator::Update(double dt) {
     auto currentPose = calculateCurrentAnimationPose();
     // pass the identity mat
     glm::mat4 I(1.0f);
-    applyPoseToJoints(currentPose, m_model->getRootJoint());
-    //applyPoseToJoints (currentPose, m_model->getRootJoint(), I);
+    applyPoseToJoints (currentPose, m_model->getRootJoint(), I);
 
     // apply offset
     if (!m_offsetPoints.empty()) {
@@ -122,9 +119,8 @@ std::unordered_map<std::string, glm::mat4> SkAnimator::interpolatePoses(SKeyFram
         // previosTransform is p.second
 
         JointTransform nextTransform = nf.at(p.first);
-
-        //JointTransform currentTransform = m_model->getRestTransform(p.first);
-        JointTransform currentTransform = JointTransform::interpolate(p.second, nextTransform, progression);
+        JointTransform currentTransform = m_model->getRestTransform(p.first);
+        currentTransform += JointTransform::interpolate(p.second, nextTransform, progression);
         //std::cout << m_animationTime << " . " << currentTransform.alpha << "\n";
         currentPose.insert(std::make_pair(p.first, currentTransform.getLocalTransform()));
     }
@@ -159,7 +155,7 @@ void SkAnimator::SetAnimation(const std::string &anim, bool forward) {
 }
 
 void SkAnimator::setSpeedUp(float value) {
-	m_speedUp = value;
+    m_speedUp = value;
 }
 
 void SkAnimator::setModel(std::shared_ptr<IModel> model) {
@@ -182,38 +178,10 @@ bool SkAnimator::IsComplete() const {
     return m_complete;
 }
 
-void SkAnimator::applyPoseToJoints(const std::unordered_map<std::string, glm::mat4> &currentPose, std::shared_ptr<Joint> rootJoint) {
-    // we want to find the local -> model transform.
-    // therefore what we need to do for each joint is:
-    // local -> model = parent -> model * local -> parent * local_transform
-    // the local transform is provided in the currentPose structure
-    // the local -> parent transform is the joint's local bind transform
-    // the parent -> model is passed to each node from the parent in the joints list
-    std::list<std::pair<std::shared_ptr<Joint>, glm::mat4>> joints;
-    joints.emplace_back(rootJoint, glm::mat4(1.0f));
-    // the list will contain the joint and its parent->model transform
-    while (!joints.empty()) {
-        auto current = joints.front();
-        joints.pop_front();
-        auto iter = currentPose.find(current.first->getName());
-        glm::mat4 localTransform(1.0f);
-        if (iter != currentPose.end()) {
-            localTransform = iter->second;
-        }
-        glm::mat4 lb = current.first->getLocalBindTransform();
-        glm::mat4 localToModel = current.second * lb * localTransform;
-        current.first->setAnimationTransform(localToModel);
-        for (const auto& c : current.first->getChildren()) {
-            joints.emplace_back(c, localToModel);
-        }
-    }
-}
 
 void SkAnimator::applyPoseToJoints(const std::unordered_map<std::string, glm::mat4> &currentPose,
                                    std::shared_ptr<Joint> joint, glm::mat4& parentTransform)
 {
-
-
     // get the local transform of the current joint
     glm::mat4 currentLocalTransform(1.0f);
     if (currentPose.count(joint->getName()) > 0) {
@@ -229,8 +197,8 @@ void SkAnimator::applyPoseToJoints(const std::unordered_map<std::string, glm::ma
         applyPoseToJoints(currentPose, c, currentTransform);
     }
     // revert to model space
-    glm::mat4 ct = joint->getInverseBindTransform()*currentTransform;
-    //glm::mat4 ct = currentTransform *joint->getInverseBindTransform();
+    //glm::mat4 ct = joint->getInverseBindTransform()*currentTransform;
+    glm::mat4 ct = currentTransform *joint->getInverseBindTransform();
     joint->setAnimationTransform(ct);
 
 }

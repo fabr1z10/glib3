@@ -46,107 +46,137 @@ int SkModel::getShapeId(const std::string& animId) {
 }
 
 SkModel::SkModel(const ITable & t) {
+
     // ##################
     // read skeleton
     // ##################
     int curr = 0;
     m_jointCount = 0;
-    auto factory = Engine::get().GetSceneFactory();
     std::unordered_map<std::string, std::shared_ptr<Joint>> joints;
+    std::unordered_map<std::string, std::unordered_map<std::string, glm::vec2>> meshInfo;
     t.foreach<PyDict>("joints", [&] (const PyDict& dict) {
-		auto id = dict.get<std::string>("id");
-		auto parent = dict.get<std::string>("parent", "");
-		auto meshId = dict.get<std::string>("mesh");
-		auto mesh = Engine::get().GetAssetManager().GetMesh(meshId);
-		m_meshes.push_back(mesh);
-		m_meshMap[id] = mesh.get();
-		JointTransform transform;
-		if (!parent.empty()) {
-			auto keyPointId = dict.get<std::string>("attach_to");
-			glm::vec2 keyPointPos = m_meshMap.at(parent)->getKeyPoint(keyPointId);
-			//const auto& parentTransform = m_restTransforms.at(parent);
-			transform.x = keyPointPos.x;
-			transform.y = keyPointPos.y;
-		}
-        m_restTransforms[id] = transform;
-        //transform.x = -transform.x;
-        //transform.y = -transform.y;
-		auto joint = std::make_shared<Joint>(curr++, id, transform);
-		if (parent.empty()) {
-			m_rootJoint = joint;
-		} else {
-			joints.at(parent)->addChild(joint);
-		}
-		joints.insert(std::make_pair(id, joint));
-//        JointTransform tr(pos.x, pos.y, pos.z);
-//        //glm::mat4 bindTransform = tr.getLocalTransform();
-//        m_restTransforms[id] = tr;
-//        auto joint = std::make_shared<Joint>(curr++, id, tr);
-//        if (root) {
-//            m_rootJoint = joint;
-//        } else {
-//            auto parent = dict.get<std::string>("parent");
-//            joints.at(parent)->addChild(joint);
-//        }
-//        joints.insert(std::make_pair(id, joint));
-        m_allJoints[id] = joint.get();
-		m_jointCount++;
-	});
-
-    int ac = 0;
-    t.foreach<pybind11::tuple>("animations", [&] (const pybind11::tuple& tu) {
-        auto id = tu[0].cast<std::string>();
-        auto animId = tu[1].cast<std::string>();
-        if (ac == 0) {
-            m_defaultAnimation = id;
+        m_jointCount++;
+        auto id = dict.get<std::string>("id");
+        auto mesh = dict.get<std::string>("mesh", "");
+        auto z = dict.get<float>("z", 0.0f);
+        if (!mesh.empty()) {
+            PyDict meshTemplate = Engine::get().GetAssetManager().getMeshTemplate(mesh);
+            if (meshTemplate.hasKey("key_points"))
+                meshInfo[id] = meshTemplate.get<PyDict>("key_points").toDict<std::string, glm::vec2>();
         }
-        auto sanim = Engine::get().GetAssetManager().getSkeletalAnimation(animId);
-        m_animations[id] = sanim;
-        ac++;
+        bool root = !dict.hasKey("parent");
+        // this is the position relative to the parent (only)
+        glm::vec2 pos (0.0f);
+        if (!root) {
+            auto parent = dict.get<std::string>("parent");
+            auto attach_to = dict.get<std::string>("attach_to");
+            pos = meshInfo[parent][attach_to];
+        }
+        JointTransform tr(pos.x, pos.y, z);
+        m_restTransforms[id] = tr;
+        auto joint = std::make_shared<Joint>(curr++, id, tr);
+        if (root) {
+            m_rootJoint = joint;
+        } else {
+            auto parent = dict.get<std::string>("parent");
+            joints.at(parent)->addChild(joint);
+        }
+        joints.insert(std::make_pair(id, joint));
+        m_allJoints[id] = joint.get();
     });
-//        m_maxBounds = maxSize;
-//        b.foreach<PyDict> ("attack", [&] (const PyDict& d) {
-//            auto anim = d.get<std::string>("anim");
-//            auto t0 = d.get<float>("t0");
-//			auto t1 = d.get<float>("t1");
-//            auto box = d.get<glm::vec4>("box");
-//            m_attackTimes[anim] = AttackBox { t0, t1, m_shapes.size()};
-//            m_shapes.push_back(std::make_shared<Rect>(box[2], box[3], glm::vec3(box[0], box[1], 0.0f)));
-//        });
+    glm::mat4 identity(1.0f);
+    m_rootJoint->calcInverseBindTransform(identity);
 
-//        bool root = dict.get<bool>("root", false);
-//        auto pos = dict.get<glm::vec3>("pos");
-//        JointTransform tr(pos.x, pos.y, pos.z);
+    using Coord = float;
+    using Point = std::array<Coord, 2>;
+    using N = uint32_t;
 
-//    using Coord = float;
-//    using N = uint32_t;
-//
-//    const int point_size = 11;
-//
-//    // ##################
-//    // read skin
-//    // ##################
-//    std::vector<std::vector<VertexSkeletal>> vertices;
-//    std::vector<std::vector<unsigned>> indices;
-//    std::vector<unsigned> polyOffsets;
-//    // read each polygon
-//
-//    // first of all, I need to know how many meshes I need.
-//    std::unordered_map<std::string, std::tuple<unsigned long, int, int>> textureInfo;
-//
-//    t.foreach<PyDict>("polygons", [&] (const PyDict& po) {
-//        auto texName = po.get<std::string>("texture");
-//        if (textureInfo.count(texName) == 0) {
-//            auto tex = Engine::get().GetAssetManager().GetTex(texName);
-//            // add one mesh
-//            auto texw = tex->GetWidth();
-//            auto texh = tex->GetHeight();
-//            textureInfo[texName] = std::make_tuple(m_meshes.size(), texw, texh);
-//            m_meshes.push_back(std::make_shared<TexturedMesh<VertexSkeletal>>(SKELETAL_SHADER, GL_TRIANGLES, texName));
-//            vertices.push_back(std::vector<VertexSkeletal>());
-//            indices.push_back(std::vector<unsigned>());
-//            polyOffsets.push_back(0);
-//        }
+    //const int point_size = VertexSkeletal::point_size;
+
+    // ##################
+    // read skin
+    // ##################
+    std::vector<std::vector<VertexSkeletal>> vertices;
+    std::vector<std::vector<unsigned>> indices;
+    std::vector<unsigned> polyOffsets;
+    // read each polygon
+
+    // first of all, I need to know how many meshes I need.
+    // the answer is: one per texture
+    std::unordered_map<std::string, std::tuple<unsigned long, int, int>> textureInfo;
+
+    //t.foreach<PyDict>("polygons", [&] (const PyDict& po) {
+    int jointCount = 0;
+    t.foreach<PyDict>("joints", [&] (const PyDict& dict) {
+        auto id = dict.get<std::string>("id");
+        auto transform = glm::inverse(m_allJoints.at(id)->getInverseBindTransform());
+        auto mesh = dict.get<std::string>("mesh", "");
+        if (mesh.empty())
+            return;
+        PyDict meshTemplate = Engine::get().GetAssetManager().getMeshTemplate(mesh);
+        auto texName = meshTemplate.get<std::string>("tex");
+        int parentId = 0;
+        bool root = true;
+        if (dict.hasKey("parent")) {
+            root = false;
+            parentId = m_allJoints.at(dict.get<std::string>("parent"))->getIndex();
+        }
+        // determine mesh location
+        auto iter = textureInfo.find(texName);
+        if (iter == textureInfo.end()) {
+            auto tex = Engine::get().GetAssetManager().GetTex(texName);
+            // add one mesh
+            auto texw = tex->GetWidth();
+            auto texh = tex->GetHeight();
+            textureInfo[texName] = std::make_tuple(m_meshes.size(), texw, texh);
+            m_meshes.push_back(std::make_shared<TexturedMesh<VertexSkeletal>>(SKELETAL_SHADER, GL_TRIANGLES, texName));
+            vertices.emplace_back();
+            indices.emplace_back();
+            polyOffsets.push_back(0);
+        }
+        auto meshLoc = std::get<0>(textureInfo.at(texName));
+        auto points = meshTemplate.get<std::vector<Coord>>("data");
+        assert(points.size() % 7 == 0);
+        std::vector<Point> polygon;
+        for (unsigned int i = 0 ; i < points.size(); i += 7) {
+            VertexSkeletal vertex;
+            // transform local to model
+            glm::vec3 modelPos = transform * glm::vec4(points[i], points[i+1], points[i+2], 1.0f);
+//            //auto tup = po[i].cast<pybind11::tuple>();
+            vertex.x = modelPos.x;
+            vertex.y = modelPos.y;
+            vertex.z = modelPos.z;
+            m_maxBounds.addPoint(glm::vec3(vertex.x, vertex.y, vertex.z));
+//            if (autotc) {
+            vertex.s = points[i+3];
+            vertex.t = points[i+4];
+            vertex.index0 = jointCount;
+            vertex.index1 = parentId;
+            vertex.index2 = 0.0f;
+            vertex.weight0 = points[i+5];
+            vertex.weight1 = points[i+6];
+            vertex.weight2 = 0.0f;
+            polygon.push_back({vertex.x, vertex.y});
+            vertices[meshLoc].push_back(vertex);
+        }
+        // triangualate pol
+        std::vector<std::vector<Point>> p;
+        p.push_back(polygon);
+        auto tri = mapbox::earcut<N>(p);
+        // now add indices
+        auto polyOffset = polyOffsets[meshLoc];
+        for (const auto& i : tri) {
+            indices[meshLoc].push_back(polyOffset + i);
+        }
+        // update offset
+        polyOffsets[meshLoc] += polygon.size();
+        jointCount++;
+    });
+
+    // initiliaze meshes
+    for (unsigned long i = 0; i < m_meshes.size(); ++i) {
+        m_meshes[i]->Init(vertices[i], indices[i]);
+    }
 //    });
 //
 //
@@ -204,49 +234,26 @@ SkModel::SkModel(const ITable & t) {
 //    for (unsigned long i = 0; i < m_meshes.size(); ++i) {
 //        m_meshes[i]->Init(vertices[i], indices[i]);
 //    }
-//    // ##################
-//    // read skeleton
-//    // ##################
-//    int curr = 0;
-//    m_jointCount = 0;
-//    std::unordered_map<std::string, std::shared_ptr<Joint>> joints;
-//    t.foreach<PyDict>("joints", [&] (const PyDict& dict) {
-//        auto id = dict.get<std::string>("id");
-//        m_jointCount++;
-//        bool root = dict.get<bool>("root", false);
-//        auto pos = dict.get<glm::vec3>("pos");
-//        JointTransform tr(pos.x, pos.y, pos.z);
-//        //glm::mat4 bindTransform = tr.getLocalTransform();
-//        m_restTransforms[id] = tr;
-//        auto joint = std::make_shared<Joint>(curr++, id, tr);
-//        if (root) {
-//            m_rootJoint = joint;
-//        } else {
-//            auto parent = dict.get<std::string>("parent");
-//            joints.at(parent)->addChild(joint);
-//        }
-//        joints.insert(std::make_pair(id, joint));
-//        m_allJoints[id] = joint.get();
-//    });
+//
 //
 //    // ##################
 //    // read skeleton
 //    // ##################
-//    int ac = 0;
-//    t.foreach<pybind11::tuple>("animations", [&] (const pybind11::tuple& tu) {
-//        auto id = tu[0].cast<std::string>();
-//        auto animId = tu[1].cast<std::string>();
-//        if (ac == 0) {
-//            m_defaultAnimation = id;
-//        }
-//        auto sanim = Engine::get().GetAssetManager().getSkeletalAnimation(animId);
-//        m_animations[id] = sanim;
-//        ac++;
-//    });
-//
-//    // ################## read boxes
-//    if (t.hasKey("boxes")) {
-//        auto b = t.get<PyDict>("boxes");
+    int ac = 0;
+    t.foreach<pybind11::tuple>("animations", [&] (const pybind11::tuple& tu) {
+        auto id = tu[0].cast<std::string>();
+        auto animId = tu[1].cast<std::string>();
+        if (ac == 0) {
+            m_defaultAnimation = id;
+        }
+        auto sanim = Engine::get().GetAssetManager().getSkeletalAnimation(animId);
+        m_animations[id] = sanim;
+        ac++;
+    });
+
+    // ################## read boxes
+    if (t.hasKey("boxes")) {
+        auto b = t.get<PyDict>("boxes");
 //        //#auto defaultBox = b.get<glm::vec2> ("default");
 //        //m_defaultShape = std::make_shared<Rect>(defaultBox[0], defaultBox[1], glm::vec3(-0.5f*defaultBox[0], 0, 0));
 //        //m_shapes.push_back(m_defaultShape);
@@ -266,27 +273,27 @@ SkModel::SkModel(const ITable & t) {
 ////		});
 //
 //
-//        auto anim = b.get<pybind11::dict>("anim");
-//        Bounds maxSize;
-//        for (const auto& a : anim) {
-//            auto animId = a.first.cast<std::string>();
-//            auto size = a.second.cast<std::vector<float>>();
-//            auto shape = std::make_shared<Rect> (size[0], size[1], glm::vec3(-0.5f*size[0], 0.0f, 0.0f));
-//            maxSize.ExpandWith(shape->getBounds());
-//            m_animToShape[animId] = m_shapes.size();
-//            m_shapes.push_back(shape);
-//        }
-//        m_maxBounds = maxSize;
+        auto anim = b.get<pybind11::dict>("anim");
+        Bounds maxSize;
+        for (const auto& a : anim) {
+            auto animId = a.first.cast<std::string>();
+            auto size = a.second.cast<std::vector<float>>();
+            auto shape = std::make_shared<Rect> (size[0], size[1], glm::vec3(-0.5f*size[0], 0.0f, 0.0f));
+            maxSize.ExpandWith(shape->getBounds());
+            m_animToShape[animId] = m_shapes.size();
+            m_shapes.push_back(shape);
+        }
+        m_maxBounds = maxSize;
 //        b.foreach<PyDict> ("attack", [&] (const PyDict& d) {
 //            auto anim = d.get<std::string>("anim");
 //            auto t0 = d.get<float>("t0");
-//			auto t1 = d.get<float>("t1");
+//            auto t1 = d.get<float>("t1");
 //            auto box = d.get<glm::vec4>("box");
 //            m_attackTimes[anim] = AttackBox { t0, t1, m_shapes.size()};
 //            m_shapes.push_back(std::make_shared<Rect>(box[2], box[3], glm::vec3(box[0], box[1], 0.0f)));
 //        });
 //
-//    }
+    }
 //
 ////    auto anim = t.get<std::vector<std::string>>("animations", std::vector<std::string>());
 ////    if (anim.size()>0) {
@@ -297,15 +304,21 @@ SkModel::SkModel(const ITable & t) {
 ////        }
 ////    }
 //
-//    // ##################
-//    // read offset
-//    // ##################
-//    t.foreach<pybind11::tuple> ("offset", [&] (const pybind11::tuple& P) {
-//        m_offsetPoints.push_back(std::make_pair(P[0].cast<std::string>(), glm::vec3(P[1].cast<float>(), P[2].cast<float>(), 0.0f)));
-//    }) ;
+    // ##################
+    // read offset
+    // ##################
+    t.foreach<pybind11::tuple> ("offset", [&] (const pybind11::tuple& P) {
+        auto joint = P[0].cast<std::string>();
+        auto point = P[1].cast<std::string>();
+        auto p = meshInfo[joint][point];
+        std::cerr << " Joint: " << joint << ", " << point << ": " << p.x << ", " << p.y << "\n";
+        auto transform = glm::inverse(m_allJoints.at(joint)->getInverseBindTransform());
+        glm::vec3 tp = transform * glm::vec4(p.x, p.y, 0.0f, 1.0f);
+        m_offsetPoints.emplace_back(joint, glm::vec3(tp.x, tp.y, 0.0f));
+    }) ;
 //
-    glm::mat4 identity(1.0f);
-    m_rootJoint->calcInverseBindTransform(identity);
+//    glm::mat4 identity(1.0f);
+//    m_rootJoint->calcInverseBindTransform(identity);
 }
 
 SkAnimation* SkModel::getAnimation(const std::string& id) {
@@ -319,7 +332,7 @@ int SkModel::getShapeCastId (const std::string& animId, float t) {
     }
 
     if (it->second.t0 <= t && t < it->second.t1) {
-    	return it->second.boxId;
+        return it->second.boxId;
     }
     return -1;
 
@@ -353,9 +366,9 @@ std::vector<std::shared_ptr<Shape>> SkModel::getAttackShapes() const {
 
     std::vector<std::shared_ptr<Shape>> shapes;
     for (const auto& m : m_attackTimes) {
-		//for (const auto& c : m.second) {
+        //for (const auto& c : m.second) {
         shapes.push_back(m_shapes[m.second.boxId]);
-		//}
+        //}
     }
     return shapes;
 }

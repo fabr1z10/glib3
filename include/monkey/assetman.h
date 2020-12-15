@@ -64,6 +64,7 @@ public:
     std::shared_ptr<SkAnimation> getSkeletalAnimation(const std::string &);
     void SetLocal (bool);
     void CleanUp();
+    PyDict getMeshTemplate (const std::string&);
 private:
     pybind11::dict m_fontDict;
     pybind11::dict m_modelDict;

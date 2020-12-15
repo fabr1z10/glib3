@@ -59,6 +59,7 @@ public:
     std::vector<std::shared_ptr<Shape>> getAttackShapes() const override;
 
 private:
+    std::shared_ptr<IMesh> makeMesh(const std::string&);
     //std::shared_ptr<Shape> m_defaultShape;
     std::vector<std::shared_ptr<Shape>> m_shapes;
     std::unordered_map<std::string, int> m_animToShape;
@@ -69,7 +70,7 @@ private:
 
     // create one mesh per texture!
 
-    std::vector<std::shared_ptr<IMesh> > m_meshes;
+    std::vector<std::shared_ptr<Mesh<VertexSkeletal>> > m_meshes;
     std::unordered_map<std::string, IMesh*> m_meshMap;
     std::unordered_map<std::string, std::shared_ptr<SkAnimation>> m_animations;
     std::string m_defaultAnimation;
