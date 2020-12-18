@@ -35,15 +35,18 @@
  */
 class Joint {
 public:
-    Joint (int index, std::string name, JointTransform localTransform);
+    Joint (int index, const std::string& name);
 
     void addChild (std::shared_ptr<Joint>);
 
+    void setLocalToParentTransform(const JointTransform& t, const glm::mat4& parentBindTransform);
+    void setParent (const std::string& parent, const std::string& attachPoint);
     /// the animated transform that gets loaded up to the shader
     glm::mat4 getAnimatedTransform();
 
     glm::mat4 getInverseBindTransform() const;
-    glm::mat4 getLocalBindTransform()const;
+    glm::mat4 getBindTransform() const;
+    glm::mat4 getLocalBindTransform() const;
 
     void setAnimationTransform(glm::mat4 animationTransform);
 
@@ -67,23 +70,31 @@ public:
      *            - the model-space bind transform of the parent joint.
      */
     void calcInverseBindTransform (glm::mat4 parentBindTransform);
-    const std::vector<std::shared_ptr<Joint>>& getChildren() const;
+    std::vector<std::shared_ptr<Joint>>& getChildren();
     std::string getName() const;
+    std::string getParent() const;
+    std::string getAttachPoint() const;
+    bool isRoot() const;
     int getIndex() const;
     void setRest();
     JointTransform getRestTransform() const;
 private:
     int m_index;
+    bool m_root;
     std::string m_name;
+    std::string m_parent;
+    std::string m_attachPoint;
     std::vector<std::shared_ptr<Joint>> m_children;
     glm::mat4 m_transform;
     // local space to parent space
     glm::mat4 m_localBindTransform;
+    // local space to model space
+    glm::mat4 m_bindTransform;
     glm::mat4 m_inverseBindTransform;
     JointTransform m_localTransform;
 };
 
-inline const std::vector<std::shared_ptr<Joint>>& Joint::getChildren() const {
+inline std::vector<std::shared_ptr<Joint>>& Joint::getChildren()  {
     return m_children;
 }
 
@@ -93,6 +104,10 @@ inline glm::mat4 Joint::getInverseBindTransform() const {
 
 inline glm::mat4 Joint::getLocalBindTransform() const {
     return m_localBindTransform;
+}
+
+inline glm::mat4 Joint::getBindTransform() const {
+    return m_bindTransform;
 }
 
 inline std::string Joint::getName() const {
@@ -105,4 +120,16 @@ inline int Joint::getIndex() const {
 
 inline JointTransform Joint::getRestTransform() const {
     return m_localTransform;
+}
+
+inline std::string Joint::getParent() const {
+    return m_parent;
+}
+
+inline std::string Joint::getAttachPoint() const {
+    return m_attachPoint;
+}
+
+inline bool Joint::isRoot() const {
+    return m_parent.empty();
 }

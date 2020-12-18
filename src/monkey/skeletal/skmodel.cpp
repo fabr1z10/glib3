@@ -45,6 +45,103 @@ int SkModel::getShapeId(const std::string& animId) {
 
 }
 
+void SkModel::setMesh(const std::string &jointId, const std::string &meshId) {
+    // when I apply a mesh to a joint, I
+    // 1 - set the joint's children local transform (this updates their bind transform and inverse bind transforms)
+    // 2 - I assume that if I'm setting a joint, my bind transform is SET. Otherwise I have a problem )add a check
+
+    using Coord = float;
+    using Point = std::array<Coord, 2>;
+    using N = uint32_t;
+
+    PyDict meshTemplate = Engine::get().GetAssetManager().getMeshTemplate(meshId);
+    if (meshTemplate.hasKey("key_points"))
+        m_keyPoints[jointId] = meshTemplate.get<PyDict>("key_points").toDict<std::string, glm::vec2>();
+
+    const auto& joint = m_allJoints.at(jointId);
+    for (auto& child : joint->getChildren()) {
+        const auto& attachPoint = child->getAttachPoint();
+        // get coordinates of attach point
+        glm::vec2 p = m_keyPoints.at(jointId).at(attachPoint);
+        JointTransform tr(p.x, p.y, 0.0f);
+        child->setLocalToParentTransform(tr, joint->getBindTransform());
+        m_restTransforms[child->getName()] = tr;
+    }
+
+    auto texName = meshTemplate.get<std::string>("tex");
+    int parentId = 0;
+    bool root = true;
+    auto jointIndex = joint->getIndex();
+    if (!joint->isRoot()) {
+        root = false;
+        auto parent = joint->getParent();
+        parentId = m_allJoints.at(parent)->getIndex();
+    }
+    std::vector<VertexSkeletal> vertices;
+    std::vector<unsigned> indices;
+    // determine mesh location
+    //auto iter = textureInfo.find(texName);
+    //if (iter == textureInfo.end()) {
+    auto tex = Engine::get().GetAssetManager().GetTex(texName);
+    // add one mesh
+    //auto texw = tex->GetWidth();
+    //auto texh = tex->GetHeight();
+    //textureInfo[texName] = std::make_tuple(m_meshes.size(), texw, texh);
+    auto mesh = std::make_shared<TexturedMesh<VertexSkeletal>>(SKELETAL_SHADER, GL_TRIANGLES, texName);
+    m_meshes[jointId] = mesh;
+    auto points = meshTemplate.get<std::vector<Coord>>("data");
+    assert(points.size() % 7 == 0);
+    std::vector<Point> polygon;
+    //auto transform = glm::inverse(joint->getInverseBindTransform());
+    auto transform = joint->getBindTransform();
+    for (unsigned int i = 0 ; i < points.size(); i += 7) {
+        VertexSkeletal vertex{};
+        // transform local to model
+        glm::vec3 modelPos = transform * glm::vec4(points[i], points[i+1], points[i+2], 1.0f);
+//            //auto tup = po[i].cast<pybind11::tuple>();
+        vertex.x = modelPos.x;
+        vertex.y = modelPos.y;
+        vertex.z = modelPos.z;
+        m_maxBounds.addPoint(glm::vec3(vertex.x, vertex.y, vertex.z));
+//            if (autotc) {
+        vertex.s = points[i+3];
+        vertex.t = points[i+4];
+        vertex.index0 = jointIndex;
+        vertex.index1 = parentId;
+        vertex.index2 = 0.0f;
+        vertex.weight0 = points[i+5];
+        vertex.weight1 = points[i+6];
+        vertex.weight2 = 0.0f;
+        polygon.push_back({vertex.x, vertex.y});
+        vertices.push_back(vertex);
+    }
+    // triangualate pol
+    std::vector<std::vector<Point>> p;
+    p.push_back(polygon);
+    auto tri = mapbox::earcut<N>(p);
+    // now add indices
+    for (const auto& i : tri) {
+        indices.push_back(i);
+    }
+    // update offset
+    mesh->Init(vertices, indices);
+    // m_jointToMesh[id] = m_meshes.size();
+    // update children local transform
+
+}
+
+void SkModel::computeOffset() {
+    for (const auto& p : m_offsetPointIds) {
+        auto iter = m_keyPoints.find(p.first);
+        if (iter != m_keyPoints.end()) {
+            auto point = iter->second.at(p.second);
+            auto transform = m_allJoints.at(p.first)->getBindTransform();
+            glm::vec3 tp = transform * glm::vec4(point.x, point.y, 0.0f, 1.0f);
+            m_offsetPoints.emplace_back(p.first, glm::vec3(tp.x, tp.y, 0.0f));
+        }
+    }
+}
+
 SkModel::SkModel(const ITable & t) {
 
     // ##################
@@ -52,68 +149,77 @@ SkModel::SkModel(const ITable & t) {
     // ##################
     int curr = 0;
     m_jointCount = 0;
-    std::unordered_map<std::string, std::shared_ptr<Joint>> joints;
-    std::unordered_map<std::string, std::unordered_map<std::string, glm::vec2>> meshInfo;
+    //std::unordered_map<std::string, std::shared_ptr<Joint>> joints;
     t.foreach<PyDict>("joints", [&] (const PyDict& dict) {
-        m_jointCount++;
         auto id = dict.get<std::string>("id");
-        auto mesh = dict.get<std::string>("mesh", "");
-        auto z = dict.get<float>("z", 0.0f);
-        if (!mesh.empty()) {
-            PyDict meshTemplate = Engine::get().GetAssetManager().getMeshTemplate(mesh);
-            if (meshTemplate.hasKey("key_points"))
-                meshInfo[id] = meshTemplate.get<PyDict>("key_points").toDict<std::string, glm::vec2>();
-        }
-        bool root = !dict.hasKey("parent");
-        // this is the position relative to the parent (only)
-        glm::vec2 pos (0.0f);
-        if (!root) {
-            auto parent = dict.get<std::string>("parent");
+        auto joint = std::make_shared<Joint>(curr++, id);
+        auto parent = dict.get<std::string>("parent", "");
+        if (!parent.empty()) {
             auto attach_to = dict.get<std::string>("attach_to");
-            pos = meshInfo[parent][attach_to];
-        }
-        JointTransform tr(pos.x, pos.y, z);
-        m_restTransforms[id] = tr;
-        auto joint = std::make_shared<Joint>(curr++, id, tr);
-        if (root) {
-            m_rootJoint = joint;
+            joint->setParent(parent, attach_to);
+            m_allJoints.at(parent)->addChild(joint);
         } else {
-            auto parent = dict.get<std::string>("parent");
-            joints.at(parent)->addChild(joint);
+            m_rootJoint = joint;
         }
-        joints.insert(std::make_pair(id, joint));
-        m_allJoints[id] = joint.get();
+        m_allJoints[id] = joint;
+        m_jointCount++;
+//        //auto mesh = dict.get<std::string>("mesh", "");
+//        auto z = dict.get<float>("z", 0.0f);
+//        //if (!mesh.empty()) {
+//        //    PyDict meshTemplate = Engine::get().GetAssetManager().getMeshTemplate(mesh);
+//        //    if (meshTemplate.hasKey("key_points"))
+//        //        meshInfo[id] = meshTemplate.get<PyDict>("key_points").toDict<std::string, glm::vec2>();
+//        //}
+//        //bool root = !dict.hasKey("parent");
+//        bool root = parent.empty();
+//        // this is the position relative to the parent (only)
+//        glm::vec2 pos (0.0f);
+//        if (!root) {
+//            pos = meshInfo[parent][attach_to];
+//        }
+//        JointTransform tr(pos.x, pos.y, z);
+//        m_restTransforms[id] = tr;
+//        if (root) {
+//            m_rootJoint = joint;
+//        } else {
+//        }
+//        joints.insert(std::make_pair(id, joint));
     });
-    glm::mat4 identity(1.0f);
-    m_rootJoint->calcInverseBindTransform(identity);
 
-    using Coord = float;
-    using Point = std::array<Coord, 2>;
-    using N = uint32_t;
+
+    //using Coord = float;
+    //using Point = std::array<Coord, 2>;
+    //using N = uint32_t;
 
     //const int point_size = VertexSkeletal::point_size;
+    // ##################
+    // read offset
+    // ##################
+    t.foreach<pybind11::tuple> ("offset", [&] (const pybind11::tuple& P) {
+        auto joint = P[0].cast<std::string>();
+        auto point = P[1].cast<std::string>();
+        m_offsetPointIds.push_back(std::make_pair<>(joint, point));
+//        auto iter = meshInfo.find(joint);
+//        if (iter != meshInfo.end()) {
+//            auto p = iter->second.at(point);
+//            std::cerr << " Joint: " << joint << ", " << point << ": " << p.x << ", " << p.y << "\n";
+//            auto transform = glm::inverse(m_allJoints.at(joint)->getInverseBindTransform());
+//            glm::vec3 tp = transform * glm::vec4(p.x, p.y, 0.0f, 1.0f);
+//            m_offsetPoints.emplace_back(joint, glm::vec3(tp.x, tp.y, 0.0f));
+//        }
+    }) ;
 
     // ##################
     // read skin
     // ##################
-    std::vector<std::vector<VertexSkeletal>> vertices;
-    std::vector<std::vector<unsigned>> indices;
-    std::vector<unsigned> polyOffsets;
-    // read each polygon
-
-    // first of all, I need to know how many meshes I need.
-    // the answer is: one per texture
-    std::unordered_map<std::string, std::tuple<unsigned long, int, int>> textureInfo;
-
-    //t.foreach<PyDict>("polygons", [&] (const PyDict& po) {
-    int jointCount = 0;
     t.foreach<PyDict>("joints", [&] (const PyDict& dict) {
-        auto id = dict.get<std::string>("id");
-        auto transform = glm::inverse(m_allJoints.at(id)->getInverseBindTransform());
-        auto mesh = dict.get<std::string>("mesh", "");
-        if (mesh.empty())
+        //auto transform = glm::inverse(m_allJoints.at(id)->getInverseBindTransform());
+        auto meshId = dict.get<std::string>("mesh", "");
+        if (meshId.empty()) {
             return;
-        PyDict meshTemplate = Engine::get().GetAssetManager().getMeshTemplate(mesh);
+        }
+        auto id = dict.get<std::string>("id");
+        PyDict meshTemplate = Engine::get().GetAssetManager().getMeshTemplate(meshId);
         auto texName = meshTemplate.get<std::string>("tex");
         int parentId = 0;
         bool root = true;
@@ -121,62 +227,63 @@ SkModel::SkModel(const ITable & t) {
             root = false;
             parentId = m_allJoints.at(dict.get<std::string>("parent"))->getIndex();
         }
-        // determine mesh location
-        auto iter = textureInfo.find(texName);
-        if (iter == textureInfo.end()) {
-            auto tex = Engine::get().GetAssetManager().GetTex(texName);
-            // add one mesh
-            auto texw = tex->GetWidth();
-            auto texh = tex->GetHeight();
-            textureInfo[texName] = std::make_tuple(m_meshes.size(), texw, texh);
-            m_meshes.push_back(std::make_shared<TexturedMesh<VertexSkeletal>>(SKELETAL_SHADER, GL_TRIANGLES, texName));
-            vertices.emplace_back();
-            indices.emplace_back();
-            polyOffsets.push_back(0);
-        }
-        auto meshLoc = std::get<0>(textureInfo.at(texName));
-        auto points = meshTemplate.get<std::vector<Coord>>("data");
-        assert(points.size() % 7 == 0);
-        std::vector<Point> polygon;
-        for (unsigned int i = 0 ; i < points.size(); i += 7) {
-            VertexSkeletal vertex;
-            // transform local to model
-            glm::vec3 modelPos = transform * glm::vec4(points[i], points[i+1], points[i+2], 1.0f);
-//            //auto tup = po[i].cast<pybind11::tuple>();
-            vertex.x = modelPos.x;
-            vertex.y = modelPos.y;
-            vertex.z = modelPos.z;
-            m_maxBounds.addPoint(glm::vec3(vertex.x, vertex.y, vertex.z));
-//            if (autotc) {
-            vertex.s = points[i+3];
-            vertex.t = points[i+4];
-            vertex.index0 = jointCount;
-            vertex.index1 = parentId;
-            vertex.index2 = 0.0f;
-            vertex.weight0 = points[i+5];
-            vertex.weight1 = points[i+6];
-            vertex.weight2 = 0.0f;
-            polygon.push_back({vertex.x, vertex.y});
-            vertices[meshLoc].push_back(vertex);
-        }
-        // triangualate pol
-        std::vector<std::vector<Point>> p;
-        p.push_back(polygon);
-        auto tri = mapbox::earcut<N>(p);
-        // now add indices
-        auto polyOffset = polyOffsets[meshLoc];
-        for (const auto& i : tri) {
-            indices[meshLoc].push_back(polyOffset + i);
-        }
-        // update offset
-        polyOffsets[meshLoc] += polygon.size();
-        jointCount++;
+        // TODO call setMesh to avoid code duplication
+        setMesh(id, meshId);
+//        std::vector<VertexSkeletal> vertices;
+//        std::vector<unsigned> indices;
+//        // determine mesh location
+//        //auto iter = textureInfo.find(texName);
+//        //if (iter == textureInfo.end()) {
+//        auto tex = Engine::get().GetAssetManager().GetTex(texName);
+//        // add one mesh
+//        //auto texw = tex->GetWidth();
+//        //auto texh = tex->GetHeight();
+//        //textureInfo[texName] = std::make_tuple(m_meshes.size(), texw, texh);
+//        auto mesh = std::make_shared<TexturedMesh<VertexSkeletal>>(SKELETAL_SHADER, GL_TRIANGLES, texName);
+//        m_meshes[id] = mesh;
+//        auto points = meshTemplate.get<std::vector<Coord>>("data");
+//        assert(points.size() % 7 == 0);
+//        std::vector<Point> polygon;
+//        for (unsigned int i = 0 ; i < points.size(); i += 7) {
+//            VertexSkeletal vertex{};
+//            // transform local to model
+//            glm::vec3 modelPos = transform * glm::vec4(points[i], points[i+1], points[i+2], 1.0f);
+////            //auto tup = po[i].cast<pybind11::tuple>();
+//            vertex.x = modelPos.x;
+//            vertex.y = modelPos.y;
+//            vertex.z = modelPos.z;
+//            m_maxBounds.addPoint(glm::vec3(vertex.x, vertex.y, vertex.z));
+////            if (autotc) {
+//            vertex.s = points[i+3];
+//            vertex.t = points[i+4];
+//            vertex.index0 = jointCount;
+//            vertex.index1 = parentId;
+//            vertex.index2 = 0.0f;
+//            vertex.weight0 = points[i+5];
+//            vertex.weight1 = points[i+6];
+//            vertex.weight2 = 0.0f;
+//            polygon.push_back({vertex.x, vertex.y});
+//            vertices.push_back(vertex);
+//        }
+//        // triangualate pol
+//        std::vector<std::vector<Point>> p;
+//        p.push_back(polygon);
+//        auto tri = mapbox::earcut<N>(p);
+//        // now add indices
+//        for (const auto& i : tri) {
+//            indices.push_back(i);
+//        }
+//        // update offset
+//        mesh->Init(vertices, indices);
+//        // m_jointToMesh[id] = m_meshes.size();
+//        jointCount++;
     });
-
+    computeOffset();
+    //glm::mat4 identity(1.0f);
+    //m_rootJoint->calcInverseBindTransform(identity);
     // initiliaze meshes
-    for (unsigned long i = 0; i < m_meshes.size(); ++i) {
-        m_meshes[i]->Init(vertices[i], indices[i]);
-    }
+    //for (unsigned long i = 0; i < m_meshes.size(); ++i) {
+   // }
 //    });
 //
 //
@@ -304,18 +411,7 @@ SkModel::SkModel(const ITable & t) {
 ////        }
 ////    }
 //
-    // ##################
-    // read offset
-    // ##################
-    t.foreach<pybind11::tuple> ("offset", [&] (const pybind11::tuple& P) {
-        auto joint = P[0].cast<std::string>();
-        auto point = P[1].cast<std::string>();
-        auto p = meshInfo[joint][point];
-        std::cerr << " Joint: " << joint << ", " << point << ": " << p.x << ", " << p.y << "\n";
-        auto transform = glm::inverse(m_allJoints.at(joint)->getInverseBindTransform());
-        glm::vec3 tp = transform * glm::vec4(p.x, p.y, 0.0f, 1.0f);
-        m_offsetPoints.emplace_back(joint, glm::vec3(tp.x, tp.y, 0.0f));
-    }) ;
+
 //
 //    glm::mat4 identity(1.0f);
 //    m_rootJoint->calcInverseBindTransform(identity);
@@ -341,7 +437,7 @@ int SkModel::getShapeCastId (const std::string& animId, float t) {
 
 void SkModel::Draw(Shader * shader) {
     for (const auto &m : m_meshes) {
-        m->Draw(shader, 0, 0);
+        m.second->Draw(shader, 0, 0);
     }
 }
 

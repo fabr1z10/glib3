@@ -21,9 +21,9 @@ WalkSide::WalkSide(const ITable & t) : PlatformerState(t) {
     m_flipHorizontally = t.get<bool>("flipH");
     m_jumpSpeed = t.get<float>("jumpSpeed");
     //auto state = std::make_shared<WalkSide>(speed, a, fliph, jumpSpeed);
-    std::string jumpState = t.get<std::string>("jumpState", "jump");
-    std::string idleAnim = t.get<std::string>("idleAnim", "idle");
-    std::string walkAnim = t.get<std::string>("walkAnim", "walk");
+    auto jumpState = t.get<std::string>("jumpState", "jump");
+    auto idleAnim = t.get<std::string>("idleAnim", "idle");
+    auto walkAnim = t.get<std::string>("walkAnim", "walk");
     setJumpState(jumpState);
     setIdleAnimation(idleAnim);
     setWalkAnimation(walkAnim);

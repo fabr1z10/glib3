@@ -24,6 +24,10 @@ struct AttackBox {
 	int boxId;
 };
 
+struct JointInfo {
+    unsigned meshLoc;
+};
+
 class SkModel : public IModel {
 public:
     SkModel (const ITable&);
@@ -59,7 +63,6 @@ public:
     std::vector<std::shared_ptr<Shape>> getAttackShapes() const override;
 
 private:
-    std::shared_ptr<IMesh> makeMesh(const std::string&);
     //std::shared_ptr<Shape> m_defaultShape;
     std::vector<std::shared_ptr<Shape>> m_shapes;
     std::unordered_map<std::string, int> m_animToShape;
@@ -70,16 +73,20 @@ private:
 
     // create one mesh per texture!
 
-    std::vector<std::shared_ptr<Mesh<VertexSkeletal>> > m_meshes;
+    std::unordered_map<std::string, std::shared_ptr<Mesh<VertexSkeletal>> > m_meshes;
     std::unordered_map<std::string, IMesh*> m_meshMap;
     std::unordered_map<std::string, std::shared_ptr<SkAnimation>> m_animations;
     std::string m_defaultAnimation;
     void addJointsToArray(Joint*, std::vector<glm::mat4>&);
     std::unordered_map<std::string, JointTransform> m_restTransforms;
     std::vector<std::pair<std::string, glm::vec3>> m_offsetPoints;
-    std::unordered_map<std::string, Joint*> m_allJoints;
+    std::unordered_map<std::string, std::shared_ptr<Joint>> m_allJoints;
     Bounds m_maxBounds;
     std::vector<SkBoxInfo> m_skeletalBoxes;
+    std::vector<std::pair<std::string, std::string>> m_offsetPointIds;
+    void computeOffset();
+    std::unordered_map<std::string, std::unordered_map<std::string, glm::vec2>> m_keyPoints;
+
 };
 
 inline std::shared_ptr<Joint> SkModel::getRootJoint() {
@@ -97,7 +104,7 @@ inline const std::vector<std::pair<std::string, glm::vec3>>& SkModel::getOffsetP
 }
 
 inline Joint* SkModel::getJoint(const std::string & id) {
-    return m_allJoints.at(id);
+    return m_allJoints.at(id).get();
 }
 
 inline Shape* SkModel::getShape(int shapeId) {
