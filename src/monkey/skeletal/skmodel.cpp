@@ -3,6 +3,7 @@
 #include <monkey/skeletal/joint.hpp>
 #include <pybind11/pytypes.h>
 #include <monkey/math/geom.h>
+#include <glm/gtx/transform.hpp>
 
 ShaderType SkModel::GetShaderType() const {
     return SKELETAL_SHADER;
@@ -45,7 +46,7 @@ int SkModel::getShapeId(const std::string& animId) {
 
 }
 
-void SkModel::setMesh(const std::string &jointId, const std::string &meshId) {
+void SkModel::setMesh(const std::string &jointId, const std::string &meshId, float scale) {
     // when I apply a mesh to a joint, I
     // 1 - set the joint's children local transform (this updates their bind transform and inverse bind transforms)
     // 2 - I assume that if I'm setting a joint, my bind transform is SET. Otherwise I have a problem )add a check
@@ -58,11 +59,13 @@ void SkModel::setMesh(const std::string &jointId, const std::string &meshId) {
     if (meshTemplate.hasKey("key_points"))
         m_keyPoints[jointId] = meshTemplate.get<PyDict>("key_points").toDict<std::string, glm::vec2>();
 
+    glm::mat4 scalingMat = glm::scale(glm::vec3(scale));
     const auto& joint = m_allJoints.at(jointId);
+    joint->setScale(scale);
     for (auto& child : joint->getChildren()) {
         const auto& attachPoint = child->getAttachPoint();
         // get coordinates of attach point
-        glm::vec2 p = m_keyPoints.at(jointId).at(attachPoint);
+        glm::vec2 p = glm::vec4(m_keyPoints.at(jointId).at(attachPoint), 0.0f, 1.0f);
         JointTransform tr(p.x, p.y, 0.0f);
         child->setLocalToParentTransform(tr, joint->getBindTransform());
         m_restTransforms[child->getName()] = tr;
@@ -98,7 +101,7 @@ void SkModel::setMesh(const std::string &jointId, const std::string &meshId) {
     for (unsigned int i = 0 ; i < points.size(); i += 7) {
         VertexSkeletal vertex{};
         // transform local to model
-        glm::vec3 modelPos = transform * glm::vec4(points[i], points[i+1], points[i+2], 1.0f);
+        glm::vec3 modelPos = transform * scalingMat * glm::vec4(points[i], points[i+1], points[i+2], 1.0f);
 //            //auto tup = po[i].cast<pybind11::tuple>();
         vertex.x = modelPos.x;
         vertex.y = modelPos.y;
@@ -137,8 +140,10 @@ void SkModel::computeOffset() {
         auto iter = m_keyPoints.find(p.first);
         if (iter != m_keyPoints.end()) {
             auto point = iter->second.at(p.second);
-            auto transform = m_allJoints.at(p.first)->getBindTransform();
-            glm::vec3 tp = transform * glm::vec4(point.x, point.y, 0.0f, 1.0f);
+            const auto& joint = m_allJoints.at(p.first);
+            auto transform = joint->getBindTransform();
+            auto scaling = glm::scale(glm::vec3(joint->getScale()));
+            glm::vec3 tp = transform * scaling * glm::vec4(point.x, point.y, 0.0f, 1.0f);
             m_offsetPoints.emplace_back(p.first, glm::vec3(tp.x, tp.y, 0.0f));
         }
     }
@@ -231,7 +236,7 @@ SkModel::SkModel(const ITable & t) {
             parentId = m_allJoints.at(dict.get<std::string>("parent"))->getIndex();
         }
         // TODO call setMesh to avoid code duplication
-        setMesh(id, meshId);
+        setMesh(id, meshId, 1.0f);
 //        std::vector<VertexSkeletal> vertices;
 //        std::vector<unsigned> indices;
 //        // determine mesh location

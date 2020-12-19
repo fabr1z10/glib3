@@ -77,6 +77,8 @@ public:
     bool isRoot() const;
     int getIndex() const;
     void setRest();
+    void setScale(float);
+    float getScale() const;
     JointTransform getRestTransform() const;
 private:
     int m_index;
@@ -93,6 +95,7 @@ private:
     glm::mat4 m_inverseBindTransform;
     JointTransform m_localTransform;
     float m_z;
+    float m_scale;
 };
 
 inline std::vector<std::shared_ptr<Joint>>& Joint::getChildren()  {
@@ -137,4 +140,11 @@ inline bool Joint::isRoot() const {
 
 inline float Joint::getZ() const {
     return m_z;
+}
+
+inline float Joint::getScale() const {
+    return m_scale;
+}
+inline void Joint::setScale(float scale) {
+    m_scale = scale;
 }

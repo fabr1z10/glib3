@@ -107,11 +107,13 @@ void Wrap1::setColor(std::vector<float> & mult, std::vector<float>& add) {
     }
 }
 
-void Wrap1::setMesh(const std::string & jointId, const std::string & meshId) {
+void Wrap1::setMesh(const std::string & jointId, const std::string & meshId, float scale) {
     auto* a = m_entity->GetComponent<IAnimator>();
     auto* model = static_cast<SkModel*>(a->getModel());
-    model->setMesh(jointId, meshId);
+    model->setMesh(jointId, meshId, scale);
+    model->getRootJoint()->calcInverseBindTransform(glm::mat4(1.0f));
     model->computeOffset();
+
 
 }
 

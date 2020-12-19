@@ -51,6 +51,8 @@ void Joint::calcInverseBindTransform(glm::mat4 parentBindTransform) {
 
     glm::mat4 bindTransform = parentBindTransform * m_localBindTransform ;
     m_inverseBindTransform = glm::inverse(bindTransform);
+    m_inverseBindTransform[3][2]=m_z;
+
     for (const auto& child : m_children) {
         child->calcInverseBindTransform(bindTransform);
     }
