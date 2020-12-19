@@ -66,6 +66,7 @@ void SkModel::setMesh(const std::string &jointId, const std::string &meshId) {
         JointTransform tr(p.x, p.y, 0.0f);
         child->setLocalToParentTransform(tr, joint->getBindTransform());
         m_restTransforms[child->getName()] = tr;
+
     }
 
     auto texName = meshTemplate.get<std::string>("tex");
@@ -131,6 +132,7 @@ void SkModel::setMesh(const std::string &jointId, const std::string &meshId) {
 }
 
 void SkModel::computeOffset() {
+    m_offsetPoints.clear();
     for (const auto& p : m_offsetPointIds) {
         auto iter = m_keyPoints.find(p.first);
         if (iter != m_keyPoints.end()) {
@@ -152,7 +154,8 @@ SkModel::SkModel(const ITable & t) {
     //std::unordered_map<std::string, std::shared_ptr<Joint>> joints;
     t.foreach<PyDict>("joints", [&] (const PyDict& dict) {
         auto id = dict.get<std::string>("id");
-        auto joint = std::make_shared<Joint>(curr++, id);
+        auto z = dict.get<float>("z", 0.0f);
+        auto joint = std::make_shared<Joint>(curr++, id, z);
         auto parent = dict.get<std::string>("parent", "");
         if (!parent.empty()) {
             auto attach_to = dict.get<std::string>("attach_to");
@@ -211,7 +214,7 @@ SkModel::SkModel(const ITable & t) {
 
     // ##################
     // read skin
-    // ##################
+    // #################
     t.foreach<PyDict>("joints", [&] (const PyDict& dict) {
         //auto transform = glm::inverse(m_allJoints.at(id)->getInverseBindTransform());
         auto meshId = dict.get<std::string>("mesh", "");

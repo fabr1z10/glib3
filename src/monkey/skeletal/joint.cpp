@@ -1,7 +1,7 @@
 #include <monkey/skeletal/joint.hpp>
 
-Joint::Joint(int index, const std::string& name) :
-    m_index(index), m_name(name), m_root(true), m_localBindTransform(1.0f), m_inverseBindTransform(1.0f), m_bindTransform(1.0f)
+Joint::Joint(int index, const std::string& name, float z) :
+    m_index(index), m_name(name), m_root(true), m_localBindTransform(1.0f), m_inverseBindTransform(1.0f), m_bindTransform(1.0f), m_z(z)
 {
     // bind and inverse bind transforms are initialized to identity
 
@@ -36,8 +36,10 @@ void Joint::setRest() {
 void Joint::setLocalToParentTransform(const JointTransform &t, const glm::mat4& parentBindTransform) {
     m_localTransform = t;
     m_localBindTransform = m_localTransform.getLocalTransform();
+    //m_localBindTransform[3][2] = m_z;
     m_bindTransform = parentBindTransform * m_localBindTransform;
     m_inverseBindTransform = glm::inverse(m_bindTransform);
+    m_inverseBindTransform[3][2]=m_z;
 }
 
 void Joint::setAnimationTransform(glm::mat4 animationTransform) {

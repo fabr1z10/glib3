@@ -45,6 +45,7 @@ PYBIND11_MODULE(example, m) {
         .def("setColor", &Wrap1::setColor)
         .def("setText", &Wrap1::setText)
         .def("setModel", &Wrap1::setModel)
+        .def("setMesh", &Wrap1::setMesh)
         .def("setActive", &Wrap1::setActive)
         .def("enableControls", &Wrap1::enableControls)
         .def("enableUpdate", &Wrap1::setEnableUpdate)

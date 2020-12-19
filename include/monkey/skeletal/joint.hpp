@@ -35,7 +35,7 @@
  */
 class Joint {
 public:
-    Joint (int index, const std::string& name);
+    Joint (int index, const std::string& name, float z);
 
     void addChild (std::shared_ptr<Joint>);
 
@@ -43,7 +43,7 @@ public:
     void setParent (const std::string& parent, const std::string& attachPoint);
     /// the animated transform that gets loaded up to the shader
     glm::mat4 getAnimatedTransform();
-
+    float getZ() const;
     glm::mat4 getInverseBindTransform() const;
     glm::mat4 getBindTransform() const;
     glm::mat4 getLocalBindTransform() const;
@@ -92,6 +92,7 @@ private:
     glm::mat4 m_bindTransform;
     glm::mat4 m_inverseBindTransform;
     JointTransform m_localTransform;
+    float m_z;
 };
 
 inline std::vector<std::shared_ptr<Joint>>& Joint::getChildren()  {
@@ -132,4 +133,8 @@ inline std::string Joint::getAttachPoint() const {
 
 inline bool Joint::isRoot() const {
     return m_parent.empty();
+}
+
+inline float Joint::getZ() const {
+    return m_z;
 }

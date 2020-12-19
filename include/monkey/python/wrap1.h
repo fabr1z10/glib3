@@ -32,6 +32,7 @@ public:
     void setColor (std::vector<float>& mult, std::vector<float>& add);
     void setText (const std::string&);
     void setModel (const std::string&);
+    void setMesh (const std::string&, const std::string&);
     void appendText (pybind11::object);
     void setEnableUpdate (bool);
     int add(pybind11::object);

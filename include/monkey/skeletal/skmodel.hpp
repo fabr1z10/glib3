@@ -61,6 +61,7 @@ public:
     Shape* getShape (int shapeId);
     int getShapeCastId (const std::string& animId, float t);
     std::vector<std::shared_ptr<Shape>> getAttackShapes() const override;
+    void computeOffset();
 
 private:
     //std::shared_ptr<Shape> m_defaultShape;
@@ -84,7 +85,6 @@ private:
     Bounds m_maxBounds;
     std::vector<SkBoxInfo> m_skeletalBoxes;
     std::vector<std::pair<std::string, std::string>> m_offsetPointIds;
-    void computeOffset();
     std::unordered_map<std::string, std::unordered_map<std::string, glm::vec2>> m_keyPoints;
 
 };

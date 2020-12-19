@@ -13,6 +13,7 @@
 #include <monkey/components/follow.h>
 #include <monkey/components/controller25.h>
 #include <monkey/components/scriptplayer.h>
+#include <monkey/skeletal/skmodel.hpp>
 
 namespace py = pybind11;
 
@@ -104,6 +105,14 @@ void Wrap1::setColor(std::vector<float> & mult, std::vector<float>& add) {
         m_entity->GetComponent<Renderer>()->setAddColor(
                                                         glm::vec4(add[0] / 255.0f, add[1] / 255.0f, add[2] / 255.0f, add[3] / 255.0f));
     }
+}
+
+void Wrap1::setMesh(const std::string & jointId, const std::string & meshId) {
+    auto* a = m_entity->GetComponent<IAnimator>();
+    auto* model = static_cast<SkModel*>(a->getModel());
+    model->setMesh(jointId, meshId);
+    model->computeOffset();
+
 }
 
 void Wrap1::setModel(const std::string& modelId) {
