@@ -41,7 +41,7 @@ std::shared_ptr<Entity> DynamicWorldItem::create() {
     //        m_active = false;
     //    }
     //});
-    std::cout << "create " << m_id << "\n";
+    //std::cout << "create " << m_id << "\n";
     m_alive = true;
     m_removedByDynamicWorld = false;
     //m_id = node->GetId();
@@ -50,7 +50,7 @@ std::shared_ptr<Entity> DynamicWorldItem::create() {
 }
 
 void DynamicWorldItem::destroy() {
-	std::cout << "removing " << m_id << "\n";
+	//std::cout << "removing " << m_id << "\n";
 	m_removedByDynamicWorld = true;
     Engine::get().Remove(m_id);
 }

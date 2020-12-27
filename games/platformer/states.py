@@ -53,3 +53,12 @@ class FoeChase(lib.states.State):
         self.acceleration = acceleration
         self.attacks = attacks
         self.probattack = prob_attack
+
+
+class IsHit (lib.states.State):
+    def __init__(self, uid,anim: str, acceleration: float, dist):
+        super().__init__(uid)
+        self.type = 'state.hit'
+        self.anim = anim
+        self.acceleration = acceleration
+        self.dist = dist

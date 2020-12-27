@@ -9,6 +9,7 @@ ShaderType SkModel::GetShaderType() const {
     return SKELETAL_SHADER;
 }
 
+
 Bounds SkModel::GetBounds() const {
     // TODO
     return m_maxBounds;
@@ -46,7 +47,7 @@ int SkModel::getShapeId(const std::string& animId) {
 
 }
 
-void SkModel::setMesh(const std::string &jointId, const std::string &meshId, float scale) {
+void SkModel::setMesh(const std::string &jointId, const std::string &meshId, float scale, glm::vec2 offset) {
     // when I apply a mesh to a joint, I
     // 1 - set the joint's children local transform (this updates their bind transform and inverse bind transforms)
     // 2 - I assume that if I'm setting a joint, my bind transform is SET. Otherwise I have a problem )add a check
@@ -61,11 +62,21 @@ void SkModel::setMesh(const std::string &jointId, const std::string &meshId, flo
 
     glm::mat4 scalingMat = glm::scale(glm::vec3(scale));
     const auto& joint = m_allJoints.at(jointId);
+    // update if needed
+//    if (offset != glm::vec2(0.0f)) {
+//        JointTransform rt = joint->getRestTransform();
+//        rt.x += offset.x;
+//        rt.y += offset.y;
+//        auto prent = joint->getParent();
+//        glm::mat4 a = (prent.empty()) ? glm::mat4(1.0f) : m_allJoints.at(prent)->getBindTransform();
+//        joint->setLocalToParentTransform(rt, a);
+//    }
+
     joint->setScale(scale);
     for (auto& child : joint->getChildren()) {
         const auto& attachPoint = child->getAttachPoint();
         // get coordinates of attach point
-        glm::vec2 p = glm::vec4(m_keyPoints.at(jointId).at(attachPoint), 0.0f, 1.0f);
+        glm::vec2 p = m_keyPoints.at(jointId).at(attachPoint);
         JointTransform tr(p.x, p.y, 0.0f);
         child->setLocalToParentTransform(tr, joint->getBindTransform());
         m_restTransforms[child->getName()] = tr;
@@ -103,8 +114,8 @@ void SkModel::setMesh(const std::string &jointId, const std::string &meshId, flo
         // transform local to model
         glm::vec3 modelPos = transform * scalingMat * glm::vec4(points[i], points[i+1], points[i+2], 1.0f);
 //            //auto tup = po[i].cast<pybind11::tuple>();
-        vertex.x = modelPos.x;
-        vertex.y = modelPos.y;
+        vertex.x = modelPos.x + offset.x;
+        vertex.y = modelPos.y + offset.y;
         vertex.z = modelPos.z;
         m_maxBounds.addPoint(glm::vec3(vertex.x, vertex.y, vertex.z));
 //            if (autotc) {
@@ -134,6 +145,23 @@ void SkModel::setMesh(const std::string &jointId, const std::string &meshId, flo
 
 }
 
+std::vector<glm::vec2> SkModel::getOffsetPoints(const std::unordered_map<std::string, glm::mat4> &pose) const {
+    std::vector<glm::vec2> ops;
+    for (const auto& p : m_offsetPointIds) {
+        auto iter = m_keyPoints.find(p.first);
+        if (iter != m_keyPoints.end()) {
+            auto point = iter->second.at(p.second);
+            const auto& joint = m_allJoints.at(p.first);
+            auto transform = pose.at(p.first);
+            auto scaling = glm::scale(glm::vec3(joint->getScale()));
+            glm::vec3 tp = transform * scaling * glm::vec4(point.x, point.y, 0.0f, 1.0f);
+            ops.emplace_back(glm::vec2(tp.x, tp.y));
+        }
+    }
+    return ops;
+
+}
+
 void SkModel::computeOffset() {
     m_offsetPoints.clear();
     for (const auto& p : m_offsetPointIds) {
@@ -150,7 +178,7 @@ void SkModel::computeOffset() {
 }
 
 SkModel::SkModel(const ITable & t) {
-
+    m_shareable = false;
     // ##################
     // read skeleton
     // ##################
@@ -389,24 +417,38 @@ SkModel::SkModel(const ITable & t) {
 //
 //
         auto anim = b.get<pybind11::dict>("anim");
-        Bounds maxSize;
+        //Bounds maxSize;
         for (const auto& a : anim) {
             auto animId = a.first.cast<std::string>();
-            auto size = a.second.cast<std::vector<float>>();
-            auto shape = std::make_shared<Rect> (size[0], size[1], glm::vec3(-0.5f*size[0], 0.0f, 0.0f));
-            maxSize.ExpandWith(shape->getBounds());
-            m_animToShape[animId] = m_shapes.size();
-            m_shapes.push_back(shape);
+            auto lb = a.second.cast<pybind11::list>();
+            for (size_t i = 0; i < lb.size(); ++i) {
+                auto tup = lb[i].cast<pybind11::tuple>();
+                auto jointId = tup[0].cast<std::string>();
+                auto pointId = tup[1].cast<std::string>();
+                m_boxInfo[animId].pts.emplace_back(PointLocator{jointId, pointId});
+            }
+//
+//            lb[0].cast<>()
+//            auto size = a.second.cast<std::vector<float>>();
+//            auto shape = std::make_shared<Rect> (size[0], size[1], glm::vec3(-0.5f*size[0], 0.0f, 0.0f));
+//            maxSize.ExpandWith(shape->getBounds());
+//            m_animToShape[animId] = m_shapes.size();
+//            m_shapes.push_back(shape);
         }
-        m_maxBounds = maxSize;
-//        b.foreach<PyDict> ("attack", [&] (const PyDict& d) {
-//            auto anim = d.get<std::string>("anim");
-//            auto t0 = d.get<float>("t0");
-//            auto t1 = d.get<float>("t1");
-//            auto box = d.get<glm::vec4>("box");
-//            m_attackTimes[anim] = AttackBox { t0, t1, m_shapes.size()};
-//            m_shapes.push_back(std::make_shared<Rect>(box[2], box[3], glm::vec3(box[0], box[1], 0.0f)));
-//        });
+        //m_maxBounds = maxSize;
+        b.foreach<PyDict> ("attack", [&] (const PyDict& d) {
+            auto anim = d.get<std::string>("anim");
+            auto abox = std::make_shared<AttackBox>();
+            abox->t0 = d.get<float>("t0");
+            abox->t1 = d.get<float>("t1");
+
+            d.foreach<pybind11::tuple>("points", [&] (const pybind11::tuple& t) {
+                auto jointId = t[0].cast<std::string>();
+                auto pointId = t[1].cast<std::string>();
+                abox->pts.emplace_back(PointLocator{jointId, pointId});
+            });
+            m_attackTimes[anim] = abox;
+        });
 //
     }
 //
@@ -425,20 +467,49 @@ SkModel::SkModel(const ITable & t) {
 //    m_rootJoint->calcInverseBindTransform(identity);
 }
 
+void SkModel::setAnimation(const std::string &animId, const std::string &anim) {
+    auto sanim = Engine::get().GetAssetManager().getSkeletalAnimation(anim);
+    m_animations[animId] = sanim;
+}
+
+
+void SkModel::addShape(const std::string& animId, std::shared_ptr<Shape> shape) {
+
+//            lb[0].cast<>()
+//            auto size = a.second.cast<std::vector<float>>();
+//            auto shape = std::make_shared<Rect> (size[0], size[1], glm::vec3(-0.5f*size[0], 0.0f, 0.0f));
+//            maxSize.ExpandWith(shape->getBounds());
+//            m_animToShape[animId] = m_shapes.size();
+//            m_shapes.push_back(shape);
+    m_maxBounds.ExpandWith(shape->getBounds());
+    m_animToShape[animId] = m_shapes.size();
+    m_shapes.emplace_back(shape);
+}
+
+void SkModel::resetShapes() {
+    m_shapes.clear();
+    m_maxBounds = Bounds();
+}
+
+const std::unordered_map<std::string, std::shared_ptr<AttackBox>> & SkModel::getAttackInfo() const {
+    return m_attackTimes;
+
+}
+
 SkAnimation* SkModel::getAnimation(const std::string& id) {
     return m_animations.at(id).get();
 }
 
-int SkModel::getShapeCastId (const std::string& animId, float t) {
+Shape* SkModel::getShapeCastId (const std::string& animId, float t) {
+    // check if the current animations has any shapes to cast
     auto it = m_attackTimes.find(animId);
-    if (it == m_attackTimes.end()) {
-        return -1;
+    if (it == m_attackTimes.end() || it->second->shape == nullptr) {
+        return nullptr;
     }
-
-    if (it->second.t0 <= t && t < it->second.t1) {
-        return it->second.boxId;
+    if (it->second->t0 <= t && t < it->second->t1) {
+        return it->second->shape.get();
     }
-    return -1;
+    return nullptr;
 
 }
 
@@ -471,8 +542,15 @@ std::vector<std::shared_ptr<Shape>> SkModel::getAttackShapes() const {
     std::vector<std::shared_ptr<Shape>> shapes;
     for (const auto& m : m_attackTimes) {
         //for (const auto& c : m.second) {
-        shapes.push_back(m_shapes[m.second.boxId]);
+        if (m.second->shape) {
+            shapes.emplace_back(m.second->shape);
+        }
+        //shapes.push_back(m_shapes[m.second.boxId]);
         //}
     }
     return shapes;
+}
+
+const std::unordered_map<std::string, std::unordered_map<std::string, glm::vec2>> & SkModel::getKeyPoints() const {
+    return m_keyPoints;
 }

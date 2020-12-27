@@ -24,5 +24,13 @@ public:
     virtual std::vector<std::shared_ptr<Shape>> getAttackShapes() const {
         return std::vector<std::shared_ptr<Shape>>();
     }
+    bool isShareable() const;
+
+protected:
+    bool m_shareable;
 };
+
+inline bool IModel::isShareable() const {
+    return m_shareable;
+}
 

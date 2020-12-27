@@ -14,6 +14,7 @@
 #include <monkey/components/controller25.h>
 #include <monkey/components/scriptplayer.h>
 #include <monkey/skeletal/skmodel.hpp>
+#include <monkey/skeletal/skcollider.hpp>
 
 namespace py = pybind11;
 
@@ -107,13 +108,28 @@ void Wrap1::setColor(std::vector<float> & mult, std::vector<float>& add) {
     }
 }
 
-void Wrap1::setMesh(const std::string & jointId, const std::string & meshId, float scale) {
+void Wrap1::setMesh(const std::string & jointId, const std::string & meshId, float scale, float ox, float oy) {
     auto* a = m_entity->GetComponent<IAnimator>();
     auto* model = static_cast<SkModel*>(a->getModel());
-    model->setMesh(jointId, meshId, scale);
+    model->setMesh(jointId, meshId, scale, glm::vec2(ox, oy));
     model->getRootJoint()->calcInverseBindTransform(glm::mat4(1.0f));
     model->computeOffset();
+    auto* collider = m_entity->GetComponent<ICollider>();
+    if (collider != nullptr) {
+        static_cast<SkCollider*>(collider)->computeAttackBoxes();
+    }
 
+}
+
+void Wrap1::setAnim(const std::string & animId, const std::string & anim) {
+    auto* a = m_entity->GetComponent<IAnimator>();
+    auto* model = static_cast<SkModel*>(a->getModel());
+    model->setAnimation(animId, anim);
+    a->resetAnimation();
+    auto* collider = m_entity->GetComponent<ICollider>();
+    if (collider != nullptr) {
+        static_cast<SkCollider*>(collider)->computeAttackBoxes();
+    }
 
 }
 
@@ -207,6 +223,16 @@ pybind11::list Wrap1::getTextSize() {
 
 }
 
+pybind11::list Wrap1::getBoxSize(const std::string& animId) {
+    auto* a = m_entity->GetComponent<IAnimator>();
+    auto* model = static_cast<SkModel*>(a->getModel());
+
+    auto bounds = model->getShape(animId)->getBounds().GetSize();
+    pybind11::list l;
+    l.append(bounds[0]);
+    l.append(bounds[1]);
+    return l;
+}
 
 
 py::object Wrap1::getInfo() {

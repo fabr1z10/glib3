@@ -24,7 +24,7 @@ SimpleState::SimpleState(const ITable & t) : State(t) {
     m_anim = t.get<std::string>("anim");
     m_endOnAnimComplete = t.get<bool>("end_on_anim_complete", false);
     m_nextState = t.get<std::string>("next", "");
-    std::cerr << m_anim << "!!!\n";
+    //std::cerr << m_anim << "!!!\n";
 }
 
 

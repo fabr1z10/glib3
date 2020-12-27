@@ -23,7 +23,7 @@ QuadMesh::QuadMesh(const std::string& filename, float width, float height,
 
     if (width == 0) {
         if (height != 0) {
-            width = height * (static_cast<float>(tex->GetWidth())/tex->GetHeight());
+            width = repeatx* height * (static_cast<float>(tex->GetWidth())/tex->GetHeight());
         } else {
             width = tex->GetWidth() * repeatx;
             height = tex->GetHeight() * repeaty;

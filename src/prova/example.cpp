@@ -46,6 +46,7 @@ PYBIND11_MODULE(example, m) {
         .def("setText", &Wrap1::setText)
         .def("setModel", &Wrap1::setModel)
         .def("setMesh", &Wrap1::setMesh)
+        .def("setAnim", &Wrap1::setAnim)
         .def("setActive", &Wrap1::setActive)
         .def("enableControls", &Wrap1::enableControls)
         .def("enableUpdate", &Wrap1::setEnableUpdate)
@@ -58,7 +59,8 @@ PYBIND11_MODULE(example, m) {
         .def("clearText", &Wrap1::clearText)
         .def("follow", &Wrap1::follow)
     	.def("rotatex", &Wrap1::rotx)
-    	.def("getTextSize", &Wrap1::getTextSize);
+    	.def("getTextSize", &Wrap1::getTextSize)
+        .def("getBoxSize", &Wrap1::getBoxSize);
 
     py::class_<PyEngine>(m, "engine")
         //.def("get", &PyEngine::get, py::arg("tag"))

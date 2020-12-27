@@ -16,12 +16,14 @@ public:
     void Start() override;
     void Update(double dt) override;
     void SetAnimation (const std::string& anim, bool forward = true) override;
+    //oid resetAnimation();
     bool IsComplete() const override;
     std::type_index GetType() override;
     IModel* getModel() const override;
     SkModel* getSkeletalModel() const;
     float getAnimationTime() const;
     using ParentClass = IAnimator;
+    std::unordered_map<std::string, glm::mat4> computePose (const std::string& animation, float t);
 protected:
     float m_animationTime;
     SkAnimation* m_currentAnimation;

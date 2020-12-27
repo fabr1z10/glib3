@@ -4,6 +4,7 @@ Joint::Joint(int index, const std::string& name, float z) :
     m_index(index), m_name(name), m_root(true), m_localBindTransform(1.0f), m_inverseBindTransform(1.0f), m_bindTransform(1.0f), m_z(z)
 {
     // bind and inverse bind transforms are initialized to identity
+    m_inverseBindTransform[3][2] = m_z;
 
     //, m_localTransform(localTransform), m_parent(parent) {
     //m_localBindTransform = localTransform.getLocalTransform();

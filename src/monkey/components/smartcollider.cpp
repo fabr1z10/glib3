@@ -70,7 +70,7 @@ void SmartCollider::onFrameUpdate(Animator *a) {
 			auto e = m_engine->ShapeCast(castShape.get(), t, m_castMask);
 
 			if (e.report.collide) {
-				std::cerr << "HIT!\n";
+				//std::cerr << "HIT!\n";
 				auto rm = m_engine->GetResponseManager();
 				if (rm == nullptr) {
 					std::cerr << "no handler!\n";
@@ -78,7 +78,7 @@ void SmartCollider::onFrameUpdate(Animator *a) {
 				auto handler = rm->GetHandler(m_castTag, e.entity->GetCollisionTag());
 				if (handler.response != nullptr) {
 					auto object = e.entity->GetObject();
-					std::cerr << "FOUND RESPONSE\n";
+					//std::cerr << "FOUND RESPONSE\n";
 					if (handler.flip) {
 						handler.response->onStart(object, m_entity, e.report);
 					} else {

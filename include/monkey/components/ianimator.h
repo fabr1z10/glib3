@@ -10,6 +10,7 @@ public:
     IAnimator() : m_forward(true) {}
     std::string GetAnimation() const ;
     virtual void SetAnimation (const std::string& anim, bool forward = true) = 0;
+    void resetAnimation();
     void SetInitialAnimation (const std::string& anim);
     void SetPlayForward (bool);
     virtual bool IsComplete() const = 0;
@@ -37,3 +38,4 @@ inline void IAnimator::SetInitialAnimation (const std::string& anim) {
 inline void IAnimator::SetPlayForward (bool value) {
     m_forward = value;
 }
+

@@ -16,6 +16,7 @@ public:
     void setAllVisible();
     void SetModel(std::shared_ptr<IModel> mesh) override;
     void addModel (std::shared_ptr<BasicModel>);
+    void clear();
 private:
     std::vector<std::pair<bool, std::shared_ptr<BasicModel>>> m_models;
 };

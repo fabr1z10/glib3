@@ -18,15 +18,23 @@ struct SkBoxInfo {
 	float width;
 };
 
+struct PointLocator {
+    std::string jointId;
+    std::string pointId;
+};
+
 struct AttackBox {
 	float t0;
 	float t1;
-	int boxId;
+	std::vector<PointLocator> pts; // points contained within the attack box
+	std::shared_ptr<Shape> shape;
 };
 
-struct JointInfo {
-    unsigned meshLoc;
+struct CollisionBox {
+    std::vector<PointLocator> pts; // points contained within the attack box
 };
+
+
 
 class SkModel : public IModel {
 public:
@@ -40,7 +48,8 @@ public:
     std::shared_ptr<Joint> getRootJoint();
     Joint* getJoint (const std::string&);
     bool hasJoint (const std::string&);
-    void setMesh (const std::string& jointId, const std::string& meshId, float scale);
+    void setMesh (const std::string& jointId, const std::string& meshId, float scale, glm::vec2 offset = glm::vec2(0.0f));
+    void setAnimation (const std::string& animId, const std::string& anim);
     void Draw (Shader*);
     /**
      * Gets an array of the all important model-space transforms of all the
@@ -54,20 +63,26 @@ public:
     std::vector<glm::mat4> getJointTransforms();
     JointTransform getRestTransform(const std::string& id) const;
     const std::vector<std::pair<std::string, glm::vec3>>& getOffsetPoints() const;
+    std::vector<glm::vec2> getOffsetPoints(const std::unordered_map<std::string, glm::mat4>& pose) const;
     const std::vector<std::shared_ptr<Shape>>& getShapes();
     int getShapeId (const std::string& animId);
 
     Shape* getShape (const std::string& animId);
     Shape* getShape (int shapeId);
-    int getShapeCastId (const std::string& animId, float t);
+    Shape* getShapeCastId (const std::string& animId, float t);
     std::vector<std::shared_ptr<Shape>> getAttackShapes() const override;
     void computeOffset();
-
+    const std::unordered_map<std::string, std::unordered_map<std::string, glm::vec2>>& getKeyPoints() const;
+    const std::unordered_map<std::string, std::shared_ptr<AttackBox>>& getAttackInfo() const;
+    const std::unordered_map<std::string, CollisionBox>& getBoxInfo() const;
+    void addShape(const std::string& animId, std::shared_ptr<Shape> shape);
+    void resetShapes();
 private:
     //std::shared_ptr<Shape> m_defaultShape;
     std::vector<std::shared_ptr<Shape>> m_shapes;
     std::unordered_map<std::string, int> m_animToShape;
-    std::unordered_map<std::string, AttackBox > m_attackTimes;
+    std::unordered_map<std::string, std::shared_ptr<AttackBox> > m_attackTimes;
+    std::unordered_map<std::string, CollisionBox> m_boxInfo;
 
     std::shared_ptr<Joint> m_rootJoint;
     int m_jointCount;
@@ -113,5 +128,9 @@ inline Shape* SkModel::getShape(int shapeId) {
 }
 
 inline bool SkModel::hasJoint(const std::string & id) {
-    return m_allJoints.count(id) > 0;
+    return m_meshes.count(id)> 0;
+}
+
+inline const std::unordered_map<std::string, CollisionBox> & SkModel::getBoxInfo() const {
+    return m_boxInfo;
 }

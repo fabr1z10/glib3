@@ -44,6 +44,10 @@ void MultiRenderer::setAllVisible() {
     }
 }
 
+void MultiRenderer::clear() {
+    m_models.clear();
+}
+
 void MultiRenderer::SetModel(std::shared_ptr<IModel> model) {
     //m_model = std::dy/m_baseModel = model.get();
 }

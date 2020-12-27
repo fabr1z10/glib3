@@ -59,6 +59,7 @@ class Skeleton(Entity):
         self.type = 'skeleton'
         self.model = model
         self.anim = anim
+        self.speed_up = 1.0
 
 
 class Text(Entity):

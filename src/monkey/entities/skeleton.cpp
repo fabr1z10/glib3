@@ -6,8 +6,9 @@
 
 Skeleton::Skeleton(const ITable& t) : Entity(t) {
 
-    auto modelId = t.get<std::string>("model");
-    auto model = Engine::get().GetAssetManager().GetModel(modelId);
+    auto* factory = Engine::get().GetSceneFactory();
+
+    auto model = factory->make2<IModel>(t.get<PyDict>("model"));
 
     auto speedUp = t.get<float>("speed_up", 1.0f);
 

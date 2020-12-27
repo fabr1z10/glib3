@@ -40,3 +40,7 @@ class StateCallback:
         self.f = f
 
 
+class StateTransition:
+    def __init__(self, state : str):
+        self.type = 'stateaction.statetransition'
+        self.state = state

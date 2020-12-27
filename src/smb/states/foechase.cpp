@@ -42,15 +42,15 @@ void FoeChase::AttachStateMachine(StateMachine * sm) {
     // here I will get the skeletal model or sprite model
     auto animator = sm->GetObject()->GetComponent<IAnimator>();
     auto shapes = animator->getModel()->getAttackShapes();
-    float am = std::numeric_limits<float>::infinity();
-    float aM = -std::numeric_limits<float>::infinity();
+    float am = -std::numeric_limits<float>::infinity();
+    float aM = std::numeric_limits<float>::infinity();
     float scale = m_entity->GetScale();
     for (const auto& shape : shapes) {
         auto sb = shape->getBounds();
-        am = std::min(am, scale*sb.min.x);
-        aM = std::max(aM, scale*sb.max.x);
+        am = std::max(am, scale*sb.min.x);
+        aM = std::min(aM, scale*sb.max.x);
     }
-    m_attackPos = am + 0.8f * (aM-am);
+    m_attackPos = aM;
 
     m_target = Monkey::get().Get<Entity>("player");
 }

@@ -8,6 +8,8 @@ SkAnimator::SkAnimator(std::shared_ptr<IModel> model) : IAnimator(), m_currentAn
 
 }
 
+
+
 void SkAnimator::Update(double dt) {
 
     if (m_currentAnimation == nullptr) {
@@ -30,7 +32,7 @@ void SkAnimator::Update(double dt) {
     const auto& offsetPoints = m_model->getOffsetPoints();
     if (!offsetPoints.empty()) {
         glm::vec3 offset(0.0f);
-        std::cout << "no of offset points: " << offsetPoints.size() << "\n";
+        //std::cout << "no of offset points: " << offsetPoints.size() << "\n";
         for (const auto &a : offsetPoints) {
 
             // find coordinates of offset pointg
@@ -135,16 +137,52 @@ std::unordered_map<std::string, glm::mat4> SkAnimator::interpolatePoses(SKeyFram
 
 
 void SkAnimator::Start() {
-
     m_animationTime = 0.0f;
-
     if (!m_initAnim.empty()) {
         SetAnimation(m_initAnim);
     }
-    //m_offsetPoints = m_model->getOffsetPoints();
     m_renderer = m_entity->GetComponent<Renderer>();
-    //SetAnimation (m_model->GetDefaultAnimation());
 }
+
+std::unordered_map<std::string, glm::mat4> SkAnimator::computePose(const std::string &animation, float t) {
+    auto* anim = m_model->getAnimation(animation);
+    const auto& keyFrames = anim->getKeyFrames();
+    unsigned i = 1;
+    float k = 0.0f;
+    for (; i< keyFrames.size(); ++i) {
+        float t1 = keyFrames[i]->getTimeStamp();
+        if (t1 >= t) {
+            float t0 = keyFrames[i-1]->getTimeStamp();
+            k = (t - t0) / (t1 - t0);
+            break;
+        }
+    }
+    auto cpose = interpolatePoses(keyFrames[i-1].get(), keyFrames[i].get(), k);
+    std::list<std::pair<std::shared_ptr<Joint>, glm::mat4>> joints;
+    joints.emplace_back(m_model->getRootJoint(), glm::mat4(1.0f));
+    std::unordered_map<std::string, glm::mat4> output;
+    while (!joints.empty()) {
+        auto currentJointData = joints.front();
+        auto currentJoint = currentJointData.first;
+        auto parentTransform = currentJointData.second;
+        joints.pop_front();
+        glm::mat4 currentLocalTransform(1.0f);
+        auto iter = cpose.find(currentJoint->getName());
+        if (iter != cpose.end()) {
+            currentLocalTransform = iter->second;
+        } else {
+            currentLocalTransform = currentJoint->getRestTransform().getLocalTransform();
+        }
+        glm::mat4 currentTransform = parentTransform * currentLocalTransform;
+        // push children
+        for (const auto& c : currentJoint->getChildren()) {
+            joints.emplace_back(c, currentTransform);
+        }
+        output[currentJoint->getName()] = currentTransform;
+    }
+    return output;
+}
+
 
 
 void SkAnimator::SetAnimation(const std::string &anim, bool forward) {
@@ -182,6 +220,7 @@ std::type_index SkAnimator::GetType() {
 bool SkAnimator::IsComplete() const {
     return m_complete;
 }
+
 
 
 void SkAnimator::applyPoseToJoints(const std::unordered_map<std::string, glm::mat4> &currentPose,

@@ -21,6 +21,7 @@ void AssetManager::Init() {
 PyDict AssetManager::getMeshTemplate(const std::string & id) {
     return PyDict(m_mesh[id.c_str()]);
 }
+
 std::shared_ptr<IMesh> AssetManager::GetMesh(const std::string & id) {
 	// check if the mesh is cached
 	auto iter = m_meshes.find(id);
@@ -52,7 +53,8 @@ std::shared_ptr<IModel> AssetManager::GetModel(const std::string & id) {
         	t = std::make_unique<PyTable>(m_modelDict[id.c_str()].cast<py::dict>());
 		}
 		auto model = Engine::get().GetSceneFactory()->make2<IModel>(*(t.get()));
-        m_models.insert(std::make_pair(id, model));
+        if (model->isShareable())
+            m_models.insert(std::make_pair(id, model));
         return model;
     }}
 

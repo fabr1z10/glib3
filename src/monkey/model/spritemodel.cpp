@@ -6,6 +6,7 @@
 namespace py = pybind11;
 
 SpriteModel::SpriteModel (const ITable& t) : IModel() {
+    m_shareable = true;
 
     auto sheetId = t.get<std::string>("sheet");
     auto ppu = t.get<float>("ppu", 1.0);
