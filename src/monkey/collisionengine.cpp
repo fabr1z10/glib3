@@ -313,7 +313,7 @@ ShapeCastHit CollisionEngine::ShapeCast (Shape* shape, const glm::mat4& transfor
                         continue;
                     }
                     // perform a aabb testing
-                    if (!aabb.Intersects(b)) {
+                    if (!aabb.Intersects2D(b)) {
                         continue;
                     }
                     Shape* s = c->GetShape();
