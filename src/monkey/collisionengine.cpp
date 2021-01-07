@@ -306,6 +306,7 @@ ShapeCastHit CollisionEngine::ShapeCast (Shape* shape, const glm::mat4& transfor
                     if (m == 0) {
                         continue;
                     }
+                    std::cerr << "qui\n";
                     auto b = c->GetBounds();
                     float zc = c->GetObject()->GetPosition().z;
                     // 2.5d collision check
@@ -315,6 +316,7 @@ ShapeCastHit CollisionEngine::ShapeCast (Shape* shape, const glm::mat4& transfor
                     // perform a aabb testing
                     if (!aabb.Intersects2D(b)) {
                         continue;
+
                     }
                     Shape* s = c->GetShape();
                     if (s != nullptr) {
@@ -326,6 +328,8 @@ ShapeCastHit CollisionEngine::ShapeCast (Shape* shape, const glm::mat4& transfor
                             result.report = report;
                             result.entity = c;
                             return result;
+                        } else {
+                        	std::cerr << "!\n";
                         }
                     }
                 }
