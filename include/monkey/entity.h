@@ -25,13 +25,16 @@
 #include <memory>
 #include <unordered_map>
 
+
+
+
 /// An entity (aka node) has a position, a tag and a bunch of components attached
 /// that determine its behaviour. Every entity can have zero or more children entities
 /// and only one parent (i.e. they are organized in a tree)
 class Entity : public Ref {
 public:
     Entity() : Ref(), m_parent(nullptr), m_update(true), m_localTransform{glm::mat4(1.0)},
-               m_worldTransform{glm::mat4(1.0)}, m_enableControls{true}, m_flipHorizontal{false}, m_started(false) {}
+               m_worldTransform{glm::mat4(1.0)}, m_enableControls{true}, m_flipHorizontal{false}, m_started(false), m_layer(0) {}
     ~Entity() override ;
 
     Entity(const ITable&);
@@ -65,8 +68,8 @@ public:
 
     void AddChild(std::shared_ptr<Entity>);
     void ClearAllChildren();
-    std::unordered_map<int, std::shared_ptr<Entity> >& GetChildren();
-    void Remove(int);
+    std::map<int, std::unordered_map<int, std::shared_ptr<Entity>>>& GetChildren();
+    void Remove(Entity*);
     void Update(double);
     void start();
     void restart();
@@ -151,6 +154,7 @@ public:
     //Entity* GetNamedChild(const std::string& name);
     void setOnMoveEnabled (bool);
     std::string toString() override;
+    int getLayer() const;
 protected:
     virtual void Start();
 
@@ -164,11 +168,12 @@ private:
     bool m_update;
     bool m_started;
     bool m_enableControls;
-    //int m_layer;
+    int m_layer;
     Entity* m_parent;
     //std::list<std::shared_ptr<Entity> >::iterator m_itParent;
     //std::list<std::shared_ptr<Entity> > m_children;
-    std::unordered_map<int, std::shared_ptr<Entity> > m_children;
+
+    std::map<int, std::unordered_map<int, std::shared_ptr<Entity>>> m_children;
 
     glm::mat4 m_localTransform;
     glm::mat4 m_worldTransform;
@@ -213,8 +218,11 @@ inline void Entity::SetControlsEnabled(bool value) {
 
 inline void Entity::SetEnableUpdate(bool value){
     m_update = value;
-    for (auto& c : m_children)
-        c.second->SetEnableUpdate(value);
+    for (const auto& layer : m_children) {
+        for (auto& child : layer.second) {
+            child.second->SetEnableUpdate(value);
+        }
+    }
 }
 
 inline bool Entity::IsUpdateEnabled() const {
@@ -231,6 +239,10 @@ inline std::string Entity::GetName() const {
 
 inline bool Entity::GetFlipX() const {
     return m_flipHorizontal;
+}
+
+inline int Entity::getLayer() const {
+    return m_layer;
 }
 
 #endif /* entity_h */

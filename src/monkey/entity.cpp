@@ -16,6 +16,9 @@ namespace py = pybind11;
 
 using namespace std;
 
+
+
+
 Entity::Entity(const ITable& t) : Ref(t),
     m_localTransform{glm::mat4(1.0)}, m_worldTransform{glm::mat4(1.0)}, m_parent(nullptr), m_flipHorizontal{false},
     m_enableControls{true}, m_update{true}
@@ -34,6 +37,8 @@ Entity::Entity(const ITable& t) : Ref(t),
 	}
     auto flipx = t.get<bool>("flipx", false);
     SetFlipX(flipx);
+
+    m_layer = t.get<int>("layer", 0);
 
     if (t.hasKey("scale")) {
         auto scale = t.get<float>("scale");
@@ -85,13 +90,15 @@ void Entity::restart() {
 }
 
 void Entity::AddChild(std::shared_ptr<Entity> child) {
-    m_children.insert(std::make_pair(child->GetId(), child));
+    int layer = child->getLayer();
+    m_children[layer].insert(std::make_pair(child->GetId(), child));
     child->SetParent(this);
 
     std::string name = child->GetName();
     if (!name.empty()) {
         m_namedChildren[name] = child->GetId();
     }
+
     // if engine is running, start
     child->UpdateWorldTransform();
     onAdd.Fire(child.get());
@@ -111,22 +118,28 @@ void Entity::setActive(bool value) {
         h.second->setActive(value);
     }
     // now call setActive on all children
-    if (recursive)
-        for (auto& c: m_children)
-            c.second->setActive(value);
+    if (recursive) {
+        for (const auto& layer : m_children) {
+            for (auto& child : layer.second) {
+                child.second->setActive(value);
+            }
+        }
+    }
     SetActiveInnerCheck(value);
 }
 
 
-void Entity::Remove(int id) {
+void Entity::Remove(Entity* entity) {
     //std::string name = entity->GetName();
     //if (!name.empty())
     //    m_namedChildren.erase(name);
-    if (m_children.count(id) > 0) {
-		auto entity = m_children.at(id);
-		entity->WindDown();
-		m_children.erase(id);
-	}
+    int layer = entity->getLayer();
+    auto it = m_children.find(layer);
+    if (it != m_children.end()) {
+        entity->WindDown();
+        it->second.erase(entity->GetId());
+
+    }
 
 }
 
@@ -139,12 +152,14 @@ void Entity::Remove(int id) {
 
 void Entity::ClearAllChildren() {
 
-    for (auto& c : m_children) {
-        Engine::get().Remove(c.second.get());
+    for (const auto& layer : m_children) {
+        for (auto& child : layer.second) {
+            Engine::get().Remove(child.second.get());
+        }
     }
 }
 
-std::unordered_map<int, std::shared_ptr<Entity> >& Entity::GetChildren() {
+std::map<int, std::unordered_map<int, std::shared_ptr<Entity>>>& Entity::GetChildren() {
     return m_children;
 }
 
@@ -161,8 +176,10 @@ void Entity::Start() {
     for (auto& iter : m_components) {
         iter.second->Start();
     }
-    for (auto& m : m_children) {
-        m.second->Start();
+    for (const auto& layer : m_children) {
+        for (auto& child : layer.second) {
+            child.second->Start();
+        }
     }
 }
 
@@ -170,8 +187,10 @@ void Entity::WindDown() {
     for (auto& iter : m_components) {
         iter.second->End();
     }
-    for (auto& child : m_children) {
-        child.second->WindDown();
+    for (const auto& layer : m_children) {
+        for (auto& child : layer.second) {
+            child.second->WindDown();
+        }
     }
 	if (!onRemove.isEmpty()) {
 		onRemove.Fire(this);
@@ -183,8 +202,11 @@ void Entity::Begin() {
     for (auto& iter : m_components) {
         iter.second->Begin();
     }
-    for (auto& m : m_children)
-        m.second->Begin();
+    for (const auto& layer : m_children) {
+        for (auto& child : layer.second) {
+            child.second->Begin();
+        }
+    }
 
 }
 
@@ -201,17 +223,17 @@ bool Entity::IsDescendantOf(Entity * other) const {
 
 
 std::string Entity::ToString() {
-    std::stringstream  s ;
-    s << GetTag() << ": " ;
-    for (auto& c : m_children) {
-        std::string t = c.second->GetTag();
-        if (t.empty()) t = "*unknown*";
-        s << t << ", ";
-    }
-    s << "\n";
-    for (auto& c : m_children)
-        s << c.second->ToString();
-    return s.str();
+//    std::stringstream  s ;
+//    s << GetTag() << ": " ;
+//    for (auto& c : m_children) {
+//        std::string t = c.second->GetTag();
+//        if (t.empty()) t = "*unknown*";
+//        s << t << ", ";
+//    }
+//    s << "\n";
+//    for (auto& c : m_children)
+//        s << c.second->ToString();
+//    return s.str();
 
 }
 
@@ -247,10 +269,12 @@ void Entity::SetWorldTransform(glm::mat4& wt) {
 void Entity::Notify() {
     //m_worldTransform = parentTransform * m_localTransform;
     glm::mat4 t = m_cameras == nullptr ? m_worldTransform : glm::mat4(1.0f);
-    for (auto& c : m_children) {
-        c.second->SetWorldTransform(t);
-    }
 
+    for (const auto& layer : m_children) {
+        for (auto& child : layer.second) {
+            child.second->SetWorldTransform(t);
+        }
+    }
 }
 
 void Entity::SetPosition(glm::vec3 pos){
@@ -387,7 +411,11 @@ float Entity::GetScale() const {
 
 void Entity::setOnMoveEnabled (bool value) {
     onMove.setEnabled(value);
-    for (const auto& c : m_children) c.second->onMove.setEnabled(value);
+    for (const auto& layer : m_children) {
+        for (auto& child : layer.second) {
+            child.second->onMove.setEnabled(value);
+        }
+    }
 
 }
 

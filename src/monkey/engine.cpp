@@ -277,7 +277,7 @@ void Engine::MainLoop() {
                     for (auto & g : m_garbage) {
                         // remove from parent
                         auto parent = g.first->GetParent();
-                        parent->Remove(g.first->GetId());
+                        parent->Remove(g.first);
 //                        if (g.second != nullptr) {
 //                            g.second->AddChild(g.first);
 //                        }

@@ -101,7 +101,7 @@ void SmartCollider::Start() {
     auto shapeEntity = std::make_shared<Entity>();
 
     if (m_shapeEntity != nullptr) {
-        m_entity->Remove(m_shapeEntity->GetId());
+        m_entity->Remove(m_shapeEntity);
         m_shapeEntity = nullptr;
     }
     m_entity->AddChild(shapeEntity);
