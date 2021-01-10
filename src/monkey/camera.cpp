@@ -80,7 +80,7 @@ void Camera::SetPosition(glm::vec3 eye, glm::vec3 dir, glm::vec3 up, bool always
         m_viewMatrix = glm::lookAt(eye, eye + dir, up);
         OnMove.Fire(this);
     }
-
+    std::cerr << "cam " << eye.x << " " << eye.y << "\n";
 }
 
 

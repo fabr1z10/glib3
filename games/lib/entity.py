@@ -37,6 +37,7 @@ class Entity:
         self.children = []
         self.scale = None
         self.flip_x = False
+        self.layer = 0
 
     def add(self, entity):
         self.children.append(entity)
