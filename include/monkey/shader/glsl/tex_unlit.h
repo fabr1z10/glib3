@@ -31,7 +31,7 @@ const char fs_tex_unlit[] =
                 "void main()\n"
                 "{\n"
                 "vec4 texColor = texture (Tex1, tex);\n"
-                "if (texColor.a < 0.5)\n"
+				"if (texColor.a < 0.5)\n"
                 "discard;\n"
                 "texColor *= color;\n"
                 "texColor += additive;\n"

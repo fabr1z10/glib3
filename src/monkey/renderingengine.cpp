@@ -140,8 +140,10 @@ void RenderingEngine::Update(double)
                 glm::mat4 mvm = cam->m_viewMatrix * wt;
                 //glUniformMatrix4fv(mvLoc, 1, GL_FALSE, &mvm[0][0]);
                 shader->initMesh(wt, cam);
-
+				//std::cout << "drawing at " << wt[3][0] << " " << wt[3][1] << " layer = " << renderer->GetObject()->getLayer()<< "\n";
+				renderer->init();
                 renderer->Draw(shader.get());
+                renderer->post();
             }
             ++iterator;
 

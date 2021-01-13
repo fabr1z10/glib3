@@ -41,8 +41,9 @@ public:
         onPop(top);
 
         auto& children = top->GetChildren();
-        for (const auto& layer : children) {
-            for (auto& child : layer.second) {
+        for (auto it = children.rbegin(); it != children.rend(); it++) {
+        //for (const auto& layer : children) {
+            for (auto& child : it->second) {
                 m_stack.push(child.second.get());
             }
         }

@@ -13,7 +13,7 @@
 #include <iostream>
 
 Renderer::Renderer() : Component(), m_baseModel(nullptr),
-    m_multColor(1.0f), m_addColor(0.0f), m_renderingTransform(1.0f), m_forceZ(false), m_forcedZ(0.0f), m_texOffset(0.0f) {
+    m_multColor(1.0f), m_addColor(0.0f), m_renderingTransform(1.0f), m_forceZ(false), m_forcedZ(0.0f), m_texOffset(0.0f), m_blend(Blend::DEFAULT) {
 
 }
 
@@ -23,7 +23,24 @@ Renderer::Renderer(const Renderer& orig) : Component(orig),
     
 }
 
+void Renderer::init() {
+	if (m_blend != Blend::DEFAULT) {
+		if (m_blend == Blend::SUB) {
+			glBlendFunc(GL_ONE, GL_ONE);
+			glBlendEquation(GL_FUNC_REVERSE_SUBTRACT);
+		}
+	}
+}
 
+void Renderer::post() {
+	if (m_blend != Blend::DEFAULT) {
+		// reset to default
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glBlendEquation(GL_FUNC_ADD);
+
+	}
+
+}
 
 void Renderer::Draw(Shader* shader) {
     auto mcolor = shader->GetUniformLocation(MULTCOLOR);
@@ -65,6 +82,10 @@ Bounds Renderer::GetBounds2D() const {
     return b;
 }
 
+
+void Renderer::setBlendMode(Blend b) {
+	m_blend = b;
+}
 //void Renderer::AdvanceFrame(int m) {
 //    m_frame += m;
 //    int n = m_currentAnim->getFrameCount();

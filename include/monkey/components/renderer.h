@@ -13,13 +13,19 @@
 #include <monkey/component.h>
 #include <monkey/assets/imodel.h>
 
+enum Blend {
+	DEFAULT=0, ADD, SUB
+};
+
 // a renderer is the component responsible for rendering a model onto the screen
 class Renderer : public Component {
 public:
     Renderer();
     Renderer(const Renderer&);
     ~ Renderer() override = default;
+    void init();
     virtual void Draw(Shader*);
+    void post();
     // dynamically change the model
     virtual void SetModel(std::shared_ptr<IModel> mesh) = 0;
     IModel* GetModel();
@@ -39,7 +45,7 @@ public:
 
     const glm::mat4& GetTransform() const;
     void SetTransform(const glm::mat4&);
-
+	void setBlendMode (Blend);
 protected:
     IModel* m_baseModel;
     glm::mat4 m_renderingTransform;
@@ -48,6 +54,7 @@ protected:
     bool m_forceZ;
     float m_forcedZ;
     glm::vec2 m_texOffset;
+    Blend m_blend;
     //int m_count;
     //int m_offset;
 };

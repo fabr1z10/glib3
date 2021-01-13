@@ -47,11 +47,12 @@ class Entity:
 
 
 class Sprite(Entity):
-    def __init__(self, model: str, anim: str = None, tag=None, pos: tuple = (0, 0, 0)):
+    def __init__(self, model: str, anim: str = None, tag=None, pos: tuple = (0, 0, 0), blend: int = 0):
         super().__init__(tag, pos)
         self.type = 'sprite'
         self.model = model
         self.anim = anim
+        self.blend = blend
 
 
 class Skeleton(Entity):

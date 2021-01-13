@@ -6,8 +6,10 @@
 
 Sprite::Sprite(const ITable & t) : Entity(t) {
     auto modelId = t.get<std::string>("model");
+    auto blend = static_cast<Blend>(t.get<int>("blend", 0));
     auto model = Engine::get().GetAssetManager().GetModel(modelId);
     auto renderer = std::make_shared<SpriteRenderer>(model);
+    renderer->setBlendMode(blend);
     auto animator = std::make_shared<Animator>(model);
     AddComponent(renderer);
     AddComponent(animator);

@@ -105,6 +105,8 @@ void PolygonalMover::Update(double dt) {
     } else {
         m_entity->MoveLocal(translation);
     }
+    auto pos = m_entity->GetPosition();
+    std::cerr << pos.x << ", " << pos.y << ", " << pos.z << "!\n";
 }
 
 void PolygonalMover::setStartPosition(int si, float pct) {
