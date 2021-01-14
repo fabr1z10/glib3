@@ -1,5 +1,6 @@
 #include <monkey/components/mover.h>
 #include <monkey/entity.h>
+#include <monkey/math/geom.h>
 
 Mover::Mover() : Component(), m_pause(false), m_hold(false) {}
 
@@ -15,10 +16,21 @@ PolygonalMover::Movement::Movement(glm::vec2 delta, float speed, float hold) : s
 PolygonalMover::PolygonalMover(int loopType, glm::vec2 origin) : Mover(), m_O(origin), m_loopType(loopType), m_startIndex(0), m_pctComplete(0.0f) {}
 
 
-PolygonalMover::PolygonalMover(const ITable & t) : Mover(), m_O(glm::vec2(0.0f)), m_startIndex(0), m_pctComplete(0.0f){
+PolygonalMover::PolygonalMover(const ITable & t) : Mover(), m_O(glm::vec2(0.0f)), m_startIndex(0), m_pctComplete(0.0f), m_hasSinX(false), m_hasSinY(false) {
 	m_O = t.get<glm::vec2>("origin");
 	m_loopType = t.get<int>("loop");
 	m_pctComplete = t.get<float>("pct", 0.0f);
+	if (t.hasKey("sinx")) {
+	    m_hasSinX = true;
+	    m_sinx = t.get<glm::vec3>("sinx");
+	    // convert period to freq
+	    m_sinx[1] = 2 * M_PI / m_sinx[1];
+	}
+    if (t.hasKey("siny")) {
+        m_hasSinY = true;
+        m_siny = t.get<glm::vec3>("siny");
+        m_siny[1] = 2 * M_PI / m_siny[1];
+    }
 	t.foreach<PyDict>("moves", [&] (const PyDict& d) {
 		auto delta = d.get<glm::vec2>("delta");
 		auto speed = d.get<float>("speed");
@@ -41,6 +53,7 @@ void PolygonalMover::Start() {
     for ( auto& m : m_movements) {
         m.startPosition = P;
         m.endPosition = P + m.dir * m.length;
+        m.time = m.length / m.speed;
         P = m.endPosition;
     }
     //m_entity->SetPosition(m_O);
@@ -50,11 +63,12 @@ void PolygonalMover::Start() {
     glm::vec2 startPos = im.startPosition + im.dir * m_cumulatedLength;
     m_entity->SetPosition(startPos);
     m_fwd = true;
+    m_t = m_pctComplete * im.time;
 }
 
 void PolygonalMover::Update(double dt) {
     if (m_pause || m_movements.empty()) return;
-
+    m_t += dt;
     if (m_hold) {
         m_holdTimer += dt;
         if (m_holdTimer >= m_holdTime) {
@@ -83,6 +97,7 @@ void PolygonalMover::Update(double dt) {
                     }
                     m_entity->SetPosition(m_O);
                     m_currentMovement = 0;
+                    m_t = 0;
                 }
             } else {
                 m_entity->SetPosition(cm.endPosition);
@@ -93,6 +108,7 @@ void PolygonalMover::Update(double dt) {
                 m_entity->SetPosition(cm.startPosition);
                 m_currentMovement = 0;
                 m_fwd = true;
+                m_t = 0;
             } else {
                 m_entity->SetPosition(cm.startPosition);
             }
@@ -103,10 +119,18 @@ void PolygonalMover::Update(double dt) {
             m_holdTimer = 0.0f;
         }
     } else {
-        m_entity->MoveLocal(translation);
+        glm::vec2 currentPos = cm.startPosition + cm.dir * m_cumulatedLength;
+        // apply sinusoidal component
+        if (m_hasSinX) {
+            currentPos.x += m_sinx[0] * sin(m_sinx[1] * m_t + m_sinx[2]);
+        }
+        if (m_hasSinY) {
+            currentPos.y += m_sinx[0] * sin(m_sinx[1] * m_t + m_sinx[2]);
+        }
+        m_entity->SetPosition(currentPos);
+        // m_entity->MoveLocal(translation);
     }
     auto pos = m_entity->GetPosition();
-    std::cerr << pos.x << ", " << pos.y << ", " << pos.z << "!\n";
 }
 
 void PolygonalMover::setStartPosition(int si, float pct) {

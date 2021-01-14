@@ -35,6 +35,7 @@ private:
         float speed;
         float hold;
         float length;
+        float time;
         glm::vec2 startPosition;
     };
     glm::vec2 m_O;          // origin
@@ -48,6 +49,11 @@ private:
     float m_cumulatedLength;
     bool m_fwd;
     std::shared_ptr<pybind11::function> m_hook;
+    bool m_hasSinX;
+    bool m_hasSinY;
+    glm::vec3 m_sinx;
+    glm::vec3 m_siny;
+    float m_t;
 
 };
 

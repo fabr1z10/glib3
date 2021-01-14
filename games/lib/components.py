@@ -123,12 +123,14 @@ class Parallax:
 
 
 class PolygonalMover:
-    def __init__(self, origin, loop, moves, pct=0):
+    def __init__(self, origin, loop, moves, pct=0, sinx = None, siny=None):
         self.type ='components.polymover'
         self.moves = moves
         self.origin = origin
         self.loop = loop
         self.pct = pct
+        self.sinx = sinx
+        self.siny = siny
 
 
 class Platform:
