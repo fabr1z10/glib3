@@ -4,7 +4,7 @@ class FPSCounter:
 
 
 class Gfx:
-    def __init__(self, image, width: float = None, height: float = None, repeat: list = None, offset = (0, 0)):
+    def __init__(self, image, width: float = None, height: float = None, repeat: list = None, offset = (0, 0), blend = 0):
         self.type = 'components.gfx'
         self.image = image
         self.width = width
@@ -12,6 +12,7 @@ class Gfx:
         self.rep = repeat
         self.offset = offset
         self.cls = 0
+        self.blend = blend
 
 
 class Info:

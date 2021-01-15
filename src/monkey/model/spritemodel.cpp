@@ -90,6 +90,10 @@ SpriteModel::SpriteModel (const ITable& t) : IModel() {
             frameInfo.move = true;
             frameInfo.origin = glm::vec2(0.0f);
             frameInfo.translation = a.get<glm::vec2>("pos", glm::vec2(0.0f));
+            if (a.hasKey("alpha")) {
+            	frameInfo.applyAlpha = true;
+            	frameInfo.alpha = a.get<float>("alpha") / 256.0f;
+            }
             int fq=0;
             a.foreach<py::list>("quads", [&] (const py::list& l) {
                 auto p = l.cast<std::vector<int>>();

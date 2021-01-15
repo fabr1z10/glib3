@@ -23,11 +23,28 @@ Renderer::Renderer(const Renderer& orig) : Component(orig),
     
 }
 
+Renderer::Renderer(const ITable& t) : m_multColor(1.0f),
+	m_addColor(0.0f), m_renderingTransform(1.0f), m_forceZ(false), m_forcedZ(0.0f), m_texOffset(0.0f), m_blend(Blend::DEFAULT) {
+	//m_multColor = t.get<glm::vec4>("multcolor", glm::vec4(1.0f));
+	//m_addColor = t.get<glm::vec4>("acccolor", glm::vec4(0.0f));
+	m_blend = static_cast<Blend>(t.get<int>("blend", 0));
+}
+
+
 void Renderer::init() {
 	if (m_blend != Blend::DEFAULT) {
+		switch (m_blend) {
+			case Blend::SUB:
+				glBlendFunc(GL_ONE, GL_ONE);
+				glBlendEquation(GL_FUNC_REVERSE_SUBTRACT);
+				break;
+			case Blend::ADD:
+				glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+				//glBlendEquation(GL_FUNC_REVERSE_SUBTRACT)
+				break;
+		}
+
 		if (m_blend == Blend::SUB) {
-			glBlendFunc(GL_ONE, GL_ONE);
-			glBlendEquation(GL_FUNC_REVERSE_SUBTRACT);
 		}
 	}
 }

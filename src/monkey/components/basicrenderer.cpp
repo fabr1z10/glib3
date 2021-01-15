@@ -9,7 +9,7 @@ BasicRenderer::BasicRenderer(std::shared_ptr<IModel> model) : Renderer() {
     m_baseModel = model.get();
 }
 
-BasicRenderer::BasicRenderer(const ITable & t) : Renderer() {
+BasicRenderer::BasicRenderer(const ITable & t) : Renderer(t) {
     int cls = t.get<int>("cls");
     if (cls == 0) {
         auto image = t.get<std::string>("image");

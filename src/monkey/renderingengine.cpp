@@ -91,6 +91,13 @@ void RenderingEngine::Notify(float w, float h)  {
         cam.second->Resize(w, h);
 }
 
+void RenderingEngine::setupCamera(Camera* cam) {
+	cam->SetProjectionMatrix();
+	auto vp = cam->GetScreenViewPort();
+	Engine::get().SetViewport(vp[0], vp[1], vp[2], vp[3]);
+}
+
+
 void RenderingEngine::Update(double)
 {
     int drawCount {0};
@@ -106,48 +113,58 @@ void RenderingEngine::Update(double)
         // start the shader
         Shader::SetCurrentShader(shader.get());
 
-        // loop through all nodes
-        RenderingIterator iterator(root);
-        for (; !iterator.end();) {
-            // get the renderer component
-
-            auto cam = iterator.GetCamera();
-            if (cam == nullptr) {
-                ++iterator;
-                continue;
-            }
-            m_currentCamera = cam;
-            Entity& e = *iterator;
-            //std::cout << "Examining " << e.GetTag() << "\n";
-            if (!e.isActive()) {
-                iterator.advanceSkippingChildren();
-                continue;
-
-            }
-            Renderer* renderer = e.GetComponent<Renderer>();
-            if (renderer != nullptr && !renderer->isActive()) {
-                iterator.advanceSkippingChildren();
-                continue;
-            }
-
-            if (renderer != nullptr && renderer->GetShaderType() == stype) {
-                glm::mat4 wt = iterator->GetWorldTransform() * renderer->GetTransform();
-                // check for frustrum culling ...
-                drawCount++;
-                        
-                // compute model view matrix
-                m_mvm = wt;
-                glm::mat4 mvm = cam->m_viewMatrix * wt;
-                //glUniformMatrix4fv(mvLoc, 1, GL_FALSE, &mvm[0][0]);
-                shader->initMesh(wt, cam);
-				//std::cout << "drawing at " << wt[3][0] << " " << wt[3][1] << " layer = " << renderer->GetObject()->getLayer()<< "\n";
-				renderer->init();
-                renderer->Draw(shader.get());
-                renderer->post();
-            }
-            ++iterator;
-
+        // loop through all nodes depth-first, maintaining the order of insertion
+        std::list<Entity*> nodesToProcess;
+        std::list<std::pair<int, Camera*>> cameras;
+        nodesToProcess.push_back(root);
+        Camera* currentCam = nullptr;
+        while (!nodesToProcess.empty()) {
+        	// get current node
+        	auto node = nodesToProcess.front();
+        	nodesToProcess.pop_front();
+			if (node->isActive()) {
+				// *** handle camera
+				auto cam = node->GetCamera();
+				if (!cameras.empty() && node->GetId() == cameras.front().first) {
+					// pop the camera
+					cameras.pop_front();
+					// if current node does not have a camera, initialize the old camera, if any
+					if (cam == nullptr && !cameras.empty()) {
+						currentCam = cameras.front().second;
+						setupCamera(currentCam);
+					}
+				}
+				// check if current node has a camera, in this case push it, and initialize it
+				if (cam != nullptr) {
+					cameras.push_front(std::make_pair(nodesToProcess.empty() ? -1 : nodesToProcess.front()->GetId(), cam));
+					currentCam = cameras.front().second;
+					setupCamera(currentCam);
+				}
+				// *** end handle camera
+				auto* renderer = node->GetComponent<Renderer>();
+				if (renderer != nullptr && renderer->GetShaderType() == stype) {
+					glm::mat4 wt = node->GetWorldTransform() * renderer->GetTransform();
+					// check for frustrum culling ...
+					drawCount++;
+					// compute model view matrix
+					//m_mvm = wt;
+					glm::mat4 mvm = currentCam->m_viewMatrix * wt;
+					//glUniformMatrix4fv(mvLoc, 1, GL_FALSE, &mvm[0][0]);
+					shader->initMesh(wt, currentCam);
+					renderer->init();
+					renderer->Draw(shader.get());
+					renderer->post();
+				}
+				// add children, go reverse order
+				const auto& children = node->GetChildren();
+				for (auto iter = children.rbegin(); iter != children.rend(); ++iter) {
+					for (auto iter2 = iter->second.rbegin(); iter2 != iter->second.rend(); ++iter2) {
+						nodesToProcess.push_front(iter2->get());
+					}
+				}
+			}
         }
+
         shader->Stop();
 
     }
@@ -160,25 +177,25 @@ void RenderingEngine::AddShader (std::unique_ptr<Shader> s) {
     m_shaders.push_back(std::move(s));
 
 }
-
-void RenderingEngine::AddCamera(std::unique_ptr<Camera> cam) {
-
-    if (Engine::get().isRunning()) {
-        int widthPixel, heightPixel;
-        glfwGetFramebufferSize(window, &widthPixel, &heightPixel);
-        cam->Resize(widthPixel, heightPixel);
-        // get the root entity for each camera
-        std::string root = cam->GetRoot();
-        auto rootNode = Monkey::get().Get<Entity>(root);
-        m_roots.insert(std::make_pair(cam.get(), rootNode));
-    }
-    m_cameras[cam->GetId()] = std::move(cam);
-
-}
-
-void RenderingEngine::RemoveCamera(int id) {
-    m_cameras.erase(id);
-}
+//
+//void RenderingEngine::AddCamera(std::unique_ptr<Camera> cam) {
+//
+//    if (Engine::get().isRunning()) {
+//        int widthPixel, heightPixel;
+//        glfwGetFramebufferSize(window, &widthPixel, &heightPixel);
+//        cam->Resize(widthPixel, heightPixel);
+//        // get the root entity for each camera
+//        std::string root = cam->GetRoot();
+//        auto rootNode = Monkey::get().Get<Entity>(root);
+//        m_roots.insert(std::make_pair(cam.get(), rootNode));
+//    }
+//    m_cameras[cam->GetId()] = std::move(cam);
+//
+//}
+//
+//void RenderingEngine::RemoveCamera(int id) {
+//    m_cameras.erase(id);
+//}
 
 void RenderingEngine::AddLight (Light* light) {
     m_lights.insert(light);
@@ -188,10 +205,10 @@ void RenderingEngine::RemoveLight(Light* light ) {
     m_lights.erase(light);
 }
 
-glm::mat4& RenderingEngine::getModelViewMatrix() {
-    return m_mvm;
-}
+//glm::mat4& RenderingEngine::getModelViewMatrix() {
+//    return m_mvm;
+//}
 
-Camera* RenderingEngine::getCurrentCamera() {
-    return m_currentCamera;
-}
+//Camera* RenderingEngine::getCurrentCamera() {
+//    return m_currentCamera;
+//}

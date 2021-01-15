@@ -68,7 +68,7 @@ public:
 
     void AddChild(std::shared_ptr<Entity>);
     void ClearAllChildren();
-    std::map<int, std::unordered_map<int, std::shared_ptr<Entity>>>& GetChildren();
+	std::map<int, std::list<std::shared_ptr<Entity>>>& GetChildren();
     void Remove(Entity*);
     void Update(double);
     void start();
@@ -173,9 +173,10 @@ private:
     //std::list<std::shared_ptr<Entity> >::iterator m_itParent;
     //std::list<std::shared_ptr<Entity> > m_children;
 
-    std::map<int, std::unordered_map<int, std::shared_ptr<Entity>>> m_children;
+    std::map<int, std::list<std::shared_ptr<Entity>>> m_children;
+	std::unordered_map<int, std::list<std::shared_ptr<Entity>>::iterator > m_iters;
 
-    glm::mat4 m_localTransform;
+			glm::mat4 m_localTransform;
     glm::mat4 m_worldTransform;
     std::unordered_map<std::type_index, std::shared_ptr<Component> > m_components;
     // can also be a vec of cameras?
@@ -220,7 +221,7 @@ inline void Entity::SetEnableUpdate(bool value){
     m_update = value;
     for (const auto& layer : m_children) {
         for (auto& child : layer.second) {
-            child.second->SetEnableUpdate(value);
+            child->SetEnableUpdate(value);
         }
     }
 }

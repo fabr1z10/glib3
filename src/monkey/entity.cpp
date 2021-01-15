@@ -91,7 +91,8 @@ void Entity::restart() {
 
 void Entity::AddChild(std::shared_ptr<Entity> child) {
     int layer = child->getLayer();
-    m_children[layer].insert(std::make_pair(child->GetId(), child));
+    m_children[layer].push_back(child);
+    m_iters[child->GetId()] = std::prev(m_children.at(layer).end());
     child->SetParent(this);
 
     std::string name = child->GetName();
@@ -121,7 +122,7 @@ void Entity::setActive(bool value) {
     if (recursive) {
         for (const auto& layer : m_children) {
             for (auto& child : layer.second) {
-                child.second->setActive(value);
+                child->setActive(value);
             }
         }
     }
@@ -137,7 +138,8 @@ void Entity::Remove(Entity* entity) {
     auto it = m_children.find(layer);
     if (it != m_children.end()) {
         entity->WindDown();
-        it->second.erase(entity->GetId());
+        it->second.erase(m_iters.at(entity->GetId()));
+        //it->second.erase(entity->GetId());
 
     }
 
@@ -154,12 +156,12 @@ void Entity::ClearAllChildren() {
 
     for (const auto& layer : m_children) {
         for (auto& child : layer.second) {
-            Engine::get().Remove(child.second.get());
+            Engine::get().Remove(child.get());
         }
     }
 }
 
-std::map<int, std::unordered_map<int, std::shared_ptr<Entity>>>& Entity::GetChildren() {
+std::map<int, std::list<std::shared_ptr<Entity>>>& Entity::GetChildren() {
     return m_children;
 }
 
@@ -178,7 +180,7 @@ void Entity::Start() {
     }
     for (const auto& layer : m_children) {
         for (auto& child : layer.second) {
-            child.second->Start();
+            child->Start();
         }
     }
 }
@@ -189,7 +191,7 @@ void Entity::WindDown() {
     }
     for (const auto& layer : m_children) {
         for (auto& child : layer.second) {
-            child.second->WindDown();
+            child->WindDown();
         }
     }
 	if (!onRemove.isEmpty()) {
@@ -204,7 +206,7 @@ void Entity::Begin() {
     }
     for (const auto& layer : m_children) {
         for (auto& child : layer.second) {
-            child.second->Begin();
+            child->Begin();
         }
     }
 
@@ -272,7 +274,7 @@ void Entity::Notify() {
 
     for (const auto& layer : m_children) {
         for (auto& child : layer.second) {
-            child.second->SetWorldTransform(t);
+            child->SetWorldTransform(t);
         }
     }
 }
@@ -413,7 +415,7 @@ void Entity::setOnMoveEnabled (bool value) {
     onMove.setEnabled(value);
     for (const auto& layer : m_children) {
         for (auto& child : layer.second) {
-            child.second->onMove.setEnabled(value);
+            child->onMove.setEnabled(value);
         }
     }
 

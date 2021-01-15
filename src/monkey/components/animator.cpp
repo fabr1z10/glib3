@@ -53,6 +53,9 @@ void Animator::Update(double dt) {
                 //                m_entity->SetAngle(frameInfo.angle);
                 //m_entity->SetPosition(frameInfo.translation);
             }
+            if (frameInfo.applyAlpha) {
+            	m_renderer->setMultColor(glm::vec4(1.0, 1.0, 1.0, frameInfo.alpha));
+            }
             //m_renderer->SetMeshInfo(frameInfo.offset, frameInfo.count);
             onFrameUpdate.Fire(this);
         }
