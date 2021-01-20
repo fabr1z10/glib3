@@ -1,4 +1,4 @@
-#include "example.h"
+#xinclude "example.h"
 #include <pybind11/pybind11.h>
 #include <monkey/python/wrap1.h>
 #include <monkey/python/pymonkey.h>

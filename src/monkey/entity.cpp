@@ -134,6 +134,7 @@ void Entity::Remove(Entity* entity) {
     //std::string name = entity->GetName();
     //if (!name.empty())
     //    m_namedChildren.erase(name);
+    std::cerr << "removing " << entity->GetTag() << "\n";
     int layer = entity->getLayer();
     auto it = m_children.find(layer);
     if (it != m_children.end()) {

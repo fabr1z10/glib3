@@ -40,7 +40,6 @@ void WalkSide::End() {
 }
 
 void WalkSide::Run (double dt) {
-
     if (!m_controller->grounded()) {
         m_sm->SetState(m_jumpState);
         return;

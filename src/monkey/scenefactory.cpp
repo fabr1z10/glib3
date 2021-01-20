@@ -11,6 +11,7 @@
 #include <monkey/components/follow.h>
 #include <monkey/components/scripthotspot.h>
 #include <monkey/components/basicrenderer.h>
+#include <monkey/components/animrenderer.h>
 #include <monkey/components/luakeylistener.h>
 #include <monkey/dynamicworld.h>
 #include <monkey/scheduler.h>
@@ -153,6 +154,7 @@ SceneFactory::SceneFactory() {
 	add2<SkeletalColliderManager>("components.collidermanager");
     add2<ScriptHotSpot> ("components.hotspot");
     add2<BasicRenderer> ("components.gfx");
+	add2<AnimRenderer> ("components.animgfx");
     add2<LuaKeyListener> ("runner.keylistener");
     add2<LuaInfo> ("components.info");
 	add2<PolygonalMover> ("components.polymover");

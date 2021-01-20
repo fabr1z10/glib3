@@ -15,6 +15,15 @@ class Gfx:
         self.blend = blend
 
 
+class AnimGfx:
+    def __init__(self):
+        self.type = 'components.animgfx'
+        self.frames = []
+    def add_frame(self, image: str, duration: float, disp = [0, 0]):
+        self.frames.append({'image': image, 'disp': disp, 'duration': duration})
+
+
+
 class Info:
     def __init__(self, **kwargs):
         self.type = 'components.info'
