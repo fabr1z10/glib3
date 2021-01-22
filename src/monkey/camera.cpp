@@ -32,11 +32,10 @@ Camera::Camera(glm::vec4 viewport) : Ref(), m_camViewport{viewport} {
 
 
 Camera::Camera(const ITable & t) : Ref(t) {
-    auto eye = t.get<glm::vec3>("pos", glm::vec3(0.0f));
+    m_eye = t.get<glm::vec3>("pos", glm::vec3(0.0f));
     m_fwd = t.get<glm::vec3>("direction", glm::vec3(0, 0, -1));
     m_up = t.get<glm::vec3>("up", glm::vec3(0, 1, 0));
     m_camViewport = t.get<glm::vec4>("viewport", glm::vec4(0.0f, 0.0f, Engine::get().GetDeviceSize()));
-
 	m_xMax = m_yMax = std::numeric_limits<float>::infinity();
 	m_xMin = m_yMin = -m_xMax;
 	auto bounds = t.get<glm::vec4>("bounds", glm::vec4(0.0));

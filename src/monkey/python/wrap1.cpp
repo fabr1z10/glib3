@@ -90,6 +90,11 @@ void Wrap1::follow(bool value) {
 
 }
 
+void Wrap1::setTransform(std::vector<float> &f) {
+    for (const auto& a: f) {
+        std::cout << a << ",";
+    }
+}
 
 void Wrap1::setPosition(float x, float y, float z) {
 

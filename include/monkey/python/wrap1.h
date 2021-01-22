@@ -26,6 +26,7 @@ public:
     void setScale(float);
     void follow(bool);
     void setPosition(float x, float y, float z);
+    void setTransform(std::vector<float>& f);
     void move(float dx, float dy, float dz);
     int id() const;
     void setEntity(Entity* e);

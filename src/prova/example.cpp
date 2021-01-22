@@ -40,6 +40,7 @@ PYBIND11_MODULE(example, m) {
         .def("play", &Wrap1::play)
         .def("killScripts", &Wrap1::killScripts)
         .def("setPosition", &Wrap1::setPosition)
+        .def("setTransform", &Wrap1::setTransform)
         .def("getAttackPos", &Wrap1::getAttackPos)
         .def("parent", &Wrap1::getParent)
         .def("setColor", &Wrap1::setColor)

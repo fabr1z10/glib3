@@ -2,6 +2,7 @@ class Camera:
     def __init__(self, viewport, tag: str = None):
         self.tag = tag
         self.viewport = viewport
+        self.pos = (0, 0, 0)
 
 
 class OrthoCamera(Camera):
@@ -17,4 +18,11 @@ class OrthoCamera(Camera):
         self.cam_width = cam_width
         self.cam_height = cam_height
 
+class PerspectiveCamera(Camera):
+    def __init__(self, viewport, fov = 45.0, near = 0.1, far = 100, tag: str = None):
+        super().__init__(viewport, tag)
+        self.type = 'cam.perspective'
+        self.fov = fov
+        self.near = near
+        self.far = far
 

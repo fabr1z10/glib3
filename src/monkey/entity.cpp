@@ -32,6 +32,11 @@ Entity::Entity(const ITable& t) : Ref(t),
         SetPosition(pos);
     }
 
+    if (t.hasKey("transform")) {
+    	m_localTransform = t.get<glm::mat4>("transform");
+    }
+
+
 	if (t.hasKey("rotx")) {
 		Rotate(glm::radians(t.get<float>("rotx")), glm::vec3(1.0f, 0.0f, 0.0f));
 	}

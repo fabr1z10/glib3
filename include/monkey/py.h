@@ -7,6 +7,7 @@
 #include <tuple>
 #include <functional>
 #include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 class ITable {
 public:
@@ -89,6 +90,20 @@ inline glm::vec2 ITable::cast(pybind11::object o) const {
     auto vec = o.cast<std::tuple<float, float>>();
     return glm::vec2(std::get<0>(vec), std::get<1>(vec));
 }
+
+template <>
+inline glm::mat4 ITable::cast(pybind11::object o) const {
+	auto tu = o.cast<std::vector<pybind11::object>>();
+	glm::mat4 m;
+	for (size_t i =0;i <4; ++i) {
+		auto b = tu[i].cast<std::vector<float>>();
+		for (size_t j = 0; j< 4; ++j)
+			m[i][j] = (b[j]);
+	}
+	return m;
+
+}
+
 
 template <>
 inline glm::ivec2 ITable::cast(pybind11::object o) const {

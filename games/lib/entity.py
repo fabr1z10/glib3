@@ -38,6 +38,7 @@ class Entity:
         self.scale = None
         self.flip_x = False
         self.layer = 0
+        self.transform = None
 
     def add(self, entity):
         self.children.append(entity)
