@@ -295,7 +295,8 @@ void Entity::SetPosition(glm::vec3 pos){
 }
 
 void Entity::SetPosition(glm::vec3 pos, float angle){
-    m_localTransform = glm::rotate(angle, glm::vec3(0.0f, 0.0f, 1.0f));
+	float scale = GetScale();
+    m_localTransform = glm::scale(glm::vec3(scale)) * glm::rotate(angle, glm::vec3(0.0f, 0.0f, 1.0f));
     m_localTransform[3][0] = pos.x;
     m_localTransform[3][1] = pos.y;
     m_localTransform[3][2] = pos.z;

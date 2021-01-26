@@ -56,7 +56,8 @@ void Controller2D::Begin() {
 
 void Controller2D::CalculateRaySpacing() {
     
-    Bounds bounds = m_cc->GetDynamicBounds();
+    // Bounds bounds = m_cc->GetDynamicBounds();
+    Bounds bounds = m_cc->getControllerBounds();
     bounds.Expand(m_skinWidth * -2);
     m_horizontalRaySpacing = bounds.GetSize().y / (m_horizontalRayCount - 1);
     m_verticalRaySpacing = bounds.GetSize().x / (m_verticalRayCount - 1);
@@ -65,7 +66,8 @@ void Controller2D::CalculateRaySpacing() {
 
 void Controller2D::UpdateRaycastOrigins() {
 	if (m_cc != nullptr) {
-		Bounds bounds = m_cc->GetDynamicBounds();
+		//Bounds bounds = m_cc->GetDynamicBounds();
+		Bounds bounds = m_cc->getControllerBounds();
 		bounds.Expand(m_skinWidth * -2);
 		m_raycastOrigins.bottomLeft = vec2(bounds.min.x, bounds.min.y);
 		m_raycastOrigins.bottomRight = vec2(bounds.max.x, bounds.min.y);
@@ -150,7 +152,7 @@ void Controller2D::HorizontalCollisions(glm::vec2& velocity) {
             }
 
             if (!m_details.climbingSlope || (slopeAngle*rad2deg) > m_maxClimbAngle) {
-                velocity.x = (hit.length - m_skinWidth) ;//*directionX;
+                velocity.x = (hit.length - m_skinWidth) * sign(velocity.x);
 
                 rayLength = hit.length;
                 if (m_details.climbingSlope) {

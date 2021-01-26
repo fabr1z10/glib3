@@ -77,6 +77,7 @@
 #include <monkey/components/texanimator.h>
 #include <monkey/components/garbagecollect.h>
 #include <monkey/components/scriptplayer.h>
+#include <monkey/components/shadowrenderer.h>
 
 
 namespace py = pybind11;
@@ -168,6 +169,7 @@ SceneFactory::SceneFactory() {
     add2<Cursor> ("components.cursor");
     add2<GarbageCollect> ("components.garbagecollect");
     add2<Shadow>("components.shadow");
+	add2<ShadowRenderer>("components.shadowrenderer");
     add2<ShadowX>("components.shadowx");
     add2<Fader>("components.fader");
     add2<TexAnimator> ("components.texanimator");

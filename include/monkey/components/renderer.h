@@ -24,7 +24,7 @@ public:
     Renderer(const Renderer&);
     Renderer(const ITable& t);
     ~ Renderer() override = default;
-    void init();
+    void init(Shader*);
     virtual void Draw(Shader*);
     void post();
     // dynamically change the model

@@ -23,6 +23,7 @@ public:
     Bounds GetBounds() const;
     Bounds GetDynamicBounds () const;
     virtual Bounds getAttackBounds() const;
+    Bounds getControllerBounds() const;
     void Start() override;
     void End() override;
     using ParentClass = ICollider;
@@ -32,6 +33,7 @@ protected:
     virtual Bounds GetStaticBoundsI () const = 0;
     virtual Bounds GetDynamicBoundsI () const = 0;
     ICollisionEngine* m_engine;
+	Bounds m_controllerBounds;
 
 };
 

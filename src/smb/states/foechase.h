@@ -47,7 +47,7 @@ private:
     std::map<float, int> m_attackMap;
     float m_speed;
     float m_acceleration;
-    float m_probAttack;
+    //float m_probAttack;
     // flip gfx horizontally when going left
     // bool m_fliph;
     //bool m_flipIfPlatformEnds;

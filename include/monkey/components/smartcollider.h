@@ -33,7 +33,7 @@ public:
     int GetCollisionMask() const override;
     int setCollisionMask(int);
     std::type_index GetType() override;
-    void onFrameUpdate(Animator*a);
+	void onFrameUpdate(Animator*a);
     void AddAttackTag(const std::string& anim, int tag, int mask);
     Bounds getAttackBounds() const override;
     void addStateCollisionDetails (const std::string&, int flag, int mask, int tag);

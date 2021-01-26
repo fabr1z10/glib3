@@ -8,6 +8,7 @@
 class Controller2D;
 class Dynamics2D;
 class InputMethod;
+class ICollisionEngine;
 
 // this is the walk state used in platformers like SuperMario
 class JAttack : public PlatformerState {
@@ -37,9 +38,11 @@ private:
 	Entity* m_target;
 	StateMachine* m_targetStateMachine;
 	pybind11::function m_callback;
+	ICollisionEngine* m_collision;
 	float m_jumpSpeed;
 	float m_targetVelocityX;
 	float m_timeDown;
 	float m_speedDown;
+	int m_hitMask;
 };
 

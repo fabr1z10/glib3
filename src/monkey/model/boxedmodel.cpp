@@ -23,6 +23,10 @@ BoxedModel::BoxedModel(const ITable &t) : SpriteModel(t) {
     float dz = 0.5f * thickness;
     bool model3d = (thickness > 0.0f);
 
+    auto controllerBounds = t.get<glm::vec2>("controller_bounds", glm::vec2(0.0f));
+	m_controllerBounds.min = glm::vec3(-0.5f * controllerBounds.x, 0.0f, 0.0f);
+	m_controllerBounds.max = glm::vec3(0.5f * controllerBounds.x, controllerBounds.y, 0.0f);
+
     t.foreach<py::list>("boxes", [&] (py::list p) {
         std::vector<float> pp = p.cast<std::vector<float>>();
         std::shared_ptr<Shape> shape;

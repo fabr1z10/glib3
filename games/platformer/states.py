@@ -62,3 +62,16 @@ class IsHit (lib.states.State):
         self.anim = anim
         self.acceleration = acceleration
         self.dist = dist
+
+
+class JAttack (lib.states.State):
+    def __init__(self, uid: str, animup: str, animdown: str, animland: str, height: float, hit_mask: int, timeDown = 1, callback = None):
+        super().__init__(uid)
+        self.type = 'state.jattack'
+        self.anim_up = animup
+        self.anim_down = animdown
+        self.anim_land = animland
+        self.jump_height = height
+        self.time_down = timeDown
+        self.hit_mask = hit_mask
+        self.callback = callback

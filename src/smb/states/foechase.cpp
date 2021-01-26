@@ -32,7 +32,6 @@ FoeChase::FoeChase(const ITable & t) : PlatformerState(t) {
     });
 
     //m_attacks = t.get<std::vector<std::string>>("attacks");
-    m_probAttack = t.get<float>("probattack");
 }
 
 void FoeChase::AttachStateMachine(StateMachine * sm) {

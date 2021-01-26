@@ -32,6 +32,13 @@ Bounds ICollider::GetBounds() const {
     return b;
 }
 
+Bounds ICollider::getControllerBounds() const {
+	auto b = m_controllerBounds;
+	b.Transform(m_entity->GetWorldTransform());
+	return b;
+
+}
+
 Bounds ICollider::GetDynamicBounds() const {
     Bounds b = GetDynamicBoundsI();
     b.Transform(m_entity->GetWorldTransform());

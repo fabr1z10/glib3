@@ -31,7 +31,7 @@ Renderer::Renderer(const ITable& t) : m_multColor(1.0f),
 }
 
 
-void Renderer::init() {
+void Renderer::init(Shader* shader) {
 	if (m_blend != Blend::DEFAULT) {
 		switch (m_blend) {
 			case Blend::SUB:
@@ -47,6 +47,23 @@ void Renderer::init() {
 		if (m_blend == Blend::SUB) {
 		}
 	}
+	auto mcolor = shader->GetUniformLocation(MULTCOLOR);
+	auto acolor = shader->GetUniformLocation(ADDCOLOR);
+	if (mcolor != GL_INVALID) {
+		glUniform4fv(mcolor, 1, &m_multColor[0]);
+	}
+	if (acolor != GL_INVALID) {
+		glUniform4fv(acolor, 1, &m_addColor[0]);
+	}
+//    auto fz = shader->GetUniformLocation(FORCEZ);
+//	auto fzv = shader->GetUniformLocation(FORCEDZ);
+//    if (fz != GL_INVALID) {
+//    	glUniform1i(fz, m_forceZ ? 1 : 0);
+//    	glUniform1f(fzv, m_forcedZ);
+//    }
+
+	auto to = shader->GetUniformLocation(TEXOFFSET);
+	glUniform2fv (to, 1, &m_texOffset[0]);
 }
 
 void Renderer::post() {
@@ -60,23 +77,7 @@ void Renderer::post() {
 }
 
 void Renderer::Draw(Shader* shader) {
-    auto mcolor = shader->GetUniformLocation(MULTCOLOR);
-    auto acolor = shader->GetUniformLocation(ADDCOLOR);
-    if (mcolor != GL_INVALID) {
-        glUniform4fv(mcolor, 1, &m_multColor[0]);
-    }
-    if (acolor != GL_INVALID) {
-        glUniform4fv(acolor, 1, &m_addColor[0]);
-    }
-//    auto fz = shader->GetUniformLocation(FORCEZ);
-//	auto fzv = shader->GetUniformLocation(FORCEDZ);
-//    if (fz != GL_INVALID) {
-//    	glUniform1i(fz, m_forceZ ? 1 : 0);
-//    	glUniform1f(fzv, m_forcedZ);
-//    }
 
-    auto to = shader->GetUniformLocation(TEXOFFSET);
-    glUniform2fv (to, 1, &m_texOffset[0]);
     //m_model->Draw(shader, m_offset, m_count);
 }
 

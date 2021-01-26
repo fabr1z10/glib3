@@ -1,7 +1,7 @@
 #include <monkey/components/smartcollider.h>
 #include <monkey/components/animator.h>
 #include <monkey/model/boxedmodel.h>
-#include <monkey/collisionengine.h>
+
 #include <monkey/model/basicmodel.h>
 #include <monkey/components/statemachine.h>
 #include <monkey/entity.h>
@@ -14,12 +14,14 @@ SmartCollider::~SmartCollider() {
 
 }
 
+
 SmartCollider::SmartCollider(const ITable & table) : ICollider(), m_shapeEntity(nullptr), m_colliderRenderer(nullptr) {
     m_tag = table.get<int>("tag");
     m_flag = table.get<int>("flag");
     m_mask = table.get<int>("mask");
     m_castTag = table.get<int>("cast_tag", 0);
     m_castMask = table.get<int>("cast_mask", 0);
+
 }
 
 void SmartCollider::AddAttackTag(const std::string& anim, int tag, int mask) {
@@ -95,6 +97,7 @@ void SmartCollider::Start() {
     // a smart collider requires an animator
     m_animator = dynamic_cast<Animator*>(m_entity->GetComponent<IAnimator>());
     m_model = dynamic_cast<BoxedModel*>(m_animator->GetModel().get());
+    m_controllerBounds = m_model->getControllerBounds();
     m_animator->onFrameUpdate.Register(this, [&] (Animator* a) { this->onFrameUpdate(a); });
     ICollider::Start();
 

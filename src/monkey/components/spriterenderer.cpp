@@ -11,6 +11,7 @@ void SpriteRenderer::Start() {
     m_animator = dynamic_cast<Animator*>(m_entity->GetComponent<IAnimator>());
 
 }
+
 void SpriteRenderer::Draw(Shader * shader) {
     Renderer::Draw(shader);
     const auto* frameInfo = m_animator->getFrameInfo();

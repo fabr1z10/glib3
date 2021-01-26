@@ -142,7 +142,7 @@ void RenderingEngine::Update(double)
 				}
 				// *** end handle camera
 				auto* renderer = node->GetComponent<Renderer>();
-				if (renderer != nullptr && renderer->GetShaderType() == stype) {
+				if (renderer != nullptr && renderer->isActive() && renderer->GetShaderType() == stype) {
 					glm::mat4 wt = node->GetWorldTransform() * renderer->GetTransform();
 					// check for frustrum culling ...
 					drawCount++;
@@ -151,7 +151,7 @@ void RenderingEngine::Update(double)
 					glm::mat4 mvm = currentCam->m_viewMatrix * wt;
 					//glUniformMatrix4fv(mvLoc, 1, GL_FALSE, &mvm[0][0]);
 					shader->initMesh(wt, currentCam);
-					renderer->init();
+					renderer->init(shader.get());
 					renderer->Draw(shader.get());
 					renderer->post();
 				}

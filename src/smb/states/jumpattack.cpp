@@ -1,9 +1,13 @@
+#define GLM_ENABLE_EXPERIMENTAL
 #include "jumpattack.h"
+#include <glm/gtx/transform.hpp>
 #include <monkey/components/ianimator.h>
 #include <monkey/components/dynamics2d.h>
 #include <monkey/entity.h>
+#include <monkey/engine.h>
 #include <monkey/python/wrap1.h>
 #include <monkey/components/controller2d.h>
+#include <monkey/singleton.h>
 
 JAttack::JAttack(const ITable & t) : PlatformerState(t) {
 	m_animUp = t.get<std::string>("anim_up", "jumpup");
@@ -14,6 +18,7 @@ JAttack::JAttack(const ITable & t) : PlatformerState(t) {
 	m_timeDown = t.get<float>("time_down", 1.0f);
 	m_speedDown = m_jumpHeight / m_timeDown;
 	m_callback = t.get<pybind11::function>("callback");
+	m_hitMask = t.get<int>("hit_mask");
 }
 
 void JAttack::End() {
@@ -25,6 +30,7 @@ void JAttack::AttachStateMachine(StateMachine * sm) {
 	PlatformerState::AttachStateMachine(sm);
 	m_target = Monkey::get().Get<Entity>("player");
 	m_targetStateMachine = m_target->GetComponent<StateMachine>();
+	m_collision = Engine::get().GetRunner<ICollisionEngine>();
 }
 
 void JAttack::Init(pybind11::dict &) {
@@ -54,6 +60,19 @@ void JAttack::Run(double dt) {
 			m_animator->SetAnimation(m_animDown);
 			m_targetVelocityX = 0.0f;
 			m_dynamics->m_velocity.y = -m_speedDown;
+
+			// check collision with player
+			auto rect = std::make_shared<Rect>(10.0f, 2.0f);
+			glm::mat4 tr = glm::translate(m_entity->GetPosition());
+			auto result = m_collision->ShapeCast(rect.get(), tr, m_hitMask);
+			if (result.report.collide) {
+
+
+				bool handled = m_callback(Wrap1::create(m_entity)).cast<bool>();
+				if (handled) {
+					return;
+				}
+			}
 		}
 	}
 
@@ -61,19 +80,19 @@ void JAttack::Run(double dt) {
 
 	m_controller->Move(delta);
 	if (m_controller->grounded()) {
-		std::cout << "ciao " << delta.y<< "\n";
-		std::cout << "bottom: " << m_controller->m_raycastOrigins.bottomLeft.y<< "\n";
-		std::cout << "y: " << m_entity->GetPosition().y << "\n";
+		//std::cout << "ciao " << delta.y<< "\n";
+		//std::cout << "bottom: " << m_controller->m_raycastOrigins.bottomLeft.y<< "\n";
+		//std::cout << "y: " << m_entity->GetPosition().y << "\n";
 		if (m_dynamics->m_velocity.y < 0) {
-			float deltaY = m_controller->m_raycastOrigins.bottomLeft.y - m_entity->GetPosition().y;
-			std::cout << "delta = " << deltaY << "\n";
-			m_entity->MoveOrigin(glm::vec2(0, deltaY));
-			// now check the next state
-			if (m_targetStateMachine->GetState() == "stomped")
+			//float deltaY = m_controller->m_raycastOrigins.bottomLeft.y - m_entity->GetPosition().y;
+			//std::cout << "delta = " << deltaY << "\n";
+//			m_entity->MoveOrigin(glm::vec2(0, deltaY/m_entity->GetScale()));
+//			// now check the next state
+//			if (m_targetStateMachine->GetState() == "stomped")
 				//m_sm->SetState("landed");
-				m_callback(Wrap1::create(m_entity));
-			else
-				m_sm->SetState("walk");
+//				m_callback(Wrap1::create(m_entity));
+//			else
+			m_sm->SetState("walk");
 			return;
 		}
 	}
