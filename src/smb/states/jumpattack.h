@@ -28,6 +28,7 @@ public:
 	void ResetAnimation() override {}
 	void ModifyAnimation() override {}
 private:
+	float m_colliderWidth;
 	std::string m_animUp;
 	std::string m_animDown;
 	std::string m_animLand;

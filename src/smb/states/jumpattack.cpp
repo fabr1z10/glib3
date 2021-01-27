@@ -31,6 +31,8 @@ void JAttack::AttachStateMachine(StateMachine * sm) {
 	m_target = Monkey::get().Get<Entity>("player");
 	m_targetStateMachine = m_target->GetComponent<StateMachine>();
 	m_collision = Engine::get().GetRunner<ICollisionEngine>();
+	auto cbounds = m_entity->GetComponent<ICollider>()->getControllerBounds();
+	m_colliderWidth = cbounds.GetSize()[0];
 }
 
 void JAttack::Init(pybind11::dict &) {
@@ -62,7 +64,7 @@ void JAttack::Run(double dt) {
 			m_dynamics->m_velocity.y = -m_speedDown;
 
 			// check collision with player
-			auto rect = std::make_shared<Rect>(10.0f, 2.0f);
+			auto rect = std::make_shared<Rect>(m_colliderWidth, 2.0f, glm::vec3(-m_colliderWidth*0.5f, 0.0f, 0.0f));
 			glm::mat4 tr = glm::translate(m_entity->GetPosition());
 			auto result = m_collision->ShapeCast(rect.get(), tr, m_hitMask);
 			if (result.report.collide) {
