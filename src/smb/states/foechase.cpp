@@ -135,7 +135,7 @@ void FoeChase::Run(double dt) {
 //
 //        }
         //if (!m_c->IsFalling( m_targetVelocityX > 0 ? 1 : -1)) {
-        if (true) {
+        if (!m_inRange) {
             glm::vec3 delta = m_dynamics->step(dt, m_targetVelocityX, m_acceleration);
             //if (m_speed < 30.0f) std::cout << delta.x << "\n";
             // before moving, check if I'm falling off the platform
