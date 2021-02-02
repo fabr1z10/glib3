@@ -29,3 +29,7 @@ SkeletalAnimation3D::SkeletalAnimation3D(const ITable & t) {
 		m_frames.push_back(std::make_shared<KeyFrameSkeletal>(t, pose));
 	});
 }
+
+float SkeletalAnimation3D::getLength() const {
+	return m_duration;
+}
