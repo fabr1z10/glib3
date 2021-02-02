@@ -17,6 +17,7 @@ void ShadowRenderer::Update(double) {
 	auto pos = m_parent->GetPosition();
 	bool flipx = m_parent->GetFlipX();
 	float scale = m_parent->GetScale();
+	SetTransform(m_parentRenderer->GetTransform());
 	m_entity->SetLocalTransform(
 			glm::translate(glm::vec3(0.0f, -pos.y/scale, -pos.y/scale)) *
 			glm::scale(glm::vec3(1.0f, m_scaleLength, 1.0f)) *

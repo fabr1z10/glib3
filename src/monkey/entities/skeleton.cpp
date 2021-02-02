@@ -13,7 +13,11 @@ Skeleton::Skeleton(const ITable& t) : Entity(t) {
     auto speedUp = t.get<float>("speed_up", 1.0f);
 
     auto renderer = std::make_shared<SkRenderer>(model);
+
+	auto depth = static_cast<GLenum>(t.get<int>("depth", GL_LESS));
+	renderer->setDepthFunc(depth);
     // renderer->setForcedZ(0.0);
+
     this->AddComponent(renderer);
 
     auto anim = t.get<std::string>("anim", "");

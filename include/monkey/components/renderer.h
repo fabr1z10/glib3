@@ -47,6 +47,7 @@ public:
     const glm::mat4& GetTransform() const;
     void SetTransform(const glm::mat4&);
 	void setBlendMode (Blend);
+	void setDepthFunc (GLenum);
 protected:
     IModel* m_baseModel;
     glm::mat4 m_renderingTransform;
@@ -56,6 +57,7 @@ protected:
     float m_forcedZ;
     glm::vec2 m_texOffset;
     Blend m_blend;
+    GLenum m_depth;
     //int m_count;
     //int m_offset;
 };

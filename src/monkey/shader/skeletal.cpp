@@ -19,6 +19,8 @@ SkeletalShader::SkeletalShader() : Shader(sk_vshader, sk_fshader) {
 
 	AddUniform (FORCEZ, "forceZ");
 	AddUniform (FORCEDZ, "forcedZ");
+	AddUniform(MULTCOLOR, "color");
+	AddUniform(ADDCOLOR, "additive");
 }
 
 void SkeletalShader::initMesh(const glm::mat4 &modelMatrix, Camera *cam) {

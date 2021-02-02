@@ -59,6 +59,7 @@ class Engine:
                         models = yaml.load(f, Loader=yaml.FullLoader)
                         for key, value in models.items():
                             tp = value['type']
+                            #print ('AAAA ' + key + ' ' + str(value))
                             self.assets[d[1]][key] = value
 
     def load_strings(self):

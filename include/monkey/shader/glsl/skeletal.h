@@ -51,6 +51,8 @@ const char sk_fshader[] =
         //"        return;\n"
         //"    }\n"
         "    vec4 diffuseColor = texture(tex1, pass_texCoord);\n"
+		"    diffuseColor *= color;\n"
+		"    diffuseColor += additive;\n"
         "    fragColor = diffuseColor;\n"
         "}\n";
         //        "fragColor *= color;\n"

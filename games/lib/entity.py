@@ -54,6 +54,7 @@ class Sprite(Entity):
         self.model = model
         self.anim = anim
         self.blend = blend
+        self.depth = 0x0201             # GL_LESS is the default
 
 
 class Skeleton(Entity):
@@ -63,6 +64,7 @@ class Skeleton(Entity):
         self.model = model
         self.anim = anim
         self.speed_up = 1.0
+        self.depth = 0x0201             
 
 
 class Text(Entity):

@@ -2,7 +2,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <monkey/components/ianimator.h>
 
-SkRend::SkRend(SkModel* model, std::shared_ptr<Mesh<VertexSkeletalColor>> mesh) {
+SkRend::SkRend(SkModel* model, std::shared_ptr<Mesh<VertexSkeletalColor>> mesh) : Renderer() {
 	m_model = model;
 	m_mesh = mesh;
 }

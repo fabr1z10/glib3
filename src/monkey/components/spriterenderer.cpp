@@ -18,6 +18,7 @@ void SpriteRenderer::Draw(Shader * shader) {
     if (frameInfo != nullptr) {
         m_model->Draw(shader, frameInfo->offset, frameInfo->count);
     }
+
 }
 
 std::type_index SpriteRenderer::GetType() {

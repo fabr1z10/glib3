@@ -13,12 +13,14 @@
 #include <iostream>
 
 Renderer::Renderer() : Component(), m_baseModel(nullptr),
-    m_multColor(1.0f), m_addColor(0.0f), m_renderingTransform(1.0f), m_forceZ(false), m_forcedZ(0.0f), m_texOffset(0.0f), m_blend(Blend::DEFAULT) {
+    m_multColor(1.0f), m_addColor(0.0f), m_renderingTransform(1.0f), m_forceZ(false), m_forcedZ(0.0f),
+    m_texOffset(0.0f), m_blend(Blend::DEFAULT), m_depth(GL_LESS) {
 
 }
 
 Renderer::Renderer(const Renderer& orig) : Component(orig),
-    m_multColor(orig.m_multColor), m_addColor(orig.m_addColor), m_renderingTransform(orig.m_renderingTransform), m_baseModel(orig.m_baseModel), m_texOffset(0.0f)
+    m_multColor(orig.m_multColor), m_addColor(orig.m_addColor), m_renderingTransform(orig.m_renderingTransform),
+    m_baseModel(orig.m_baseModel), m_texOffset(0.0f), m_depth(GL_LESS)
 {
     
 }
@@ -28,6 +30,7 @@ Renderer::Renderer(const ITable& t) : m_multColor(1.0f),
 	//m_multColor = t.get<glm::vec4>("multcolor", glm::vec4(1.0f));
 	//m_addColor = t.get<glm::vec4>("acccolor", glm::vec4(0.0f));
 	m_blend = static_cast<Blend>(t.get<int>("blend", 0));
+	m_depth = static_cast<GLenum>(t.get<int>("depth", GL_LESS));
 }
 
 
@@ -46,6 +49,9 @@ void Renderer::init(Shader* shader) {
 
 		if (m_blend == Blend::SUB) {
 		}
+	}
+	if (m_depth != GL_LESS) {
+		glDepthFunc(m_depth);
 	}
 	auto mcolor = shader->GetUniformLocation(MULTCOLOR);
 	auto acolor = shader->GetUniformLocation(ADDCOLOR);
@@ -72,6 +78,9 @@ void Renderer::post() {
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glBlendEquation(GL_FUNC_ADD);
 
+	}
+	if (m_depth != GL_LESS) {
+		glDepthFunc(GL_LESS);
 	}
 
 }
@@ -104,6 +113,11 @@ Bounds Renderer::GetBounds2D() const {
 void Renderer::setBlendMode(Blend b) {
 	m_blend = b;
 }
+
+void Renderer::setDepthFunc(GLenum f) {
+	m_depth = f;
+}
+
 //void Renderer::AdvanceFrame(int m) {
 //    m_frame += m;
 //    int n = m_currentAnim->getFrameCount();
