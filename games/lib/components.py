@@ -151,3 +151,23 @@ class PolygonalMover:
 class Platform:
     def __init__(self):
         self.type = 'components.platform'
+
+
+class ColliderManager:
+    def __init__(self):
+        self.type = 'components.collidermanager'
+        self.colliders = []
+
+class SkColl:
+    def __init__ (self, flag: int, mask: int, tag: int, width, P0,j0,w0,P1,j1,w1):
+        self.type = 'components.skc'
+        self.flag = flag
+        self.mask = mask
+        self.tag = tag
+        self.width = width
+        self.P0 = P0
+        self.j0 = j0
+        self.w0 = w0
+        self.P1 = P1
+        self.j1 = j1
+        self.w1 = w1        

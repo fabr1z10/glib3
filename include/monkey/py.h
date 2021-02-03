@@ -140,6 +140,7 @@ private:
 
 class PyDict : public ITable {
 public:
+	PyDict() {}
     PyDict (pybind11::dict o) : obj(o) {}
     PyDict (const PyDict&);
     std::shared_ptr<ITable> clone() const override;

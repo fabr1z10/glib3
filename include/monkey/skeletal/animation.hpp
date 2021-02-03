@@ -13,6 +13,8 @@ public:
      */
     float getLength();
     const std::vector<std::shared_ptr<SKeyFrame>>& getKeyFrames();
+	std::tuple<SKeyFrame*, SKeyFrame*, float> getPreviousAndNextKeyFrames (float t);
+
 private:
     bool m_loop;
     float m_length;

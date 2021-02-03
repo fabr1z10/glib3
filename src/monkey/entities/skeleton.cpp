@@ -2,6 +2,7 @@
 #include <monkey/engine.h>
 #include <monkey/skeletal/skrenderer.hpp>
 #include <monkey/skeletal/skanimator.hpp>
+#include <monkey/skeletal/animation/skanimator2.hpp>
 
 
 Skeleton::Skeleton(const ITable& t) : Entity(t) {
@@ -22,6 +23,7 @@ Skeleton::Skeleton(const ITable& t) : Entity(t) {
 
     auto anim = t.get<std::string>("anim", "");
     auto animator = std::make_shared<SkAnimator>(model);
+
     animator->setSpeedUp(speedUp);
 
     // check if we have offset

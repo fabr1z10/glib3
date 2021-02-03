@@ -31,10 +31,10 @@ protected:
     std::shared_ptr<SkModel> m_model;
     Renderer* m_renderer;
 private:
-    std::unordered_map<std::string, glm::mat4> calculateCurrentAnimationPose();
-    std::pair<SKeyFrame*, SKeyFrame*> getPreviousAndNextFrames();
-    std::unordered_map<std::string, glm::mat4> interpolatePoses(SKeyFrame* previousFrame, SKeyFrame* nextFrame, float progression);
-    void applyPoseToJoints(const std::unordered_map<std::string, glm::mat4>& currentPose, std::shared_ptr<Joint> joint, glm::mat4& parentTransform);
+    std::unordered_map<std::string, JointTransform> calculateCurrentAnimationPose();
+    //std::pair<SKeyFrame*, SKeyFrame*> getPreviousAndNextFrames();
+    std::unordered_map<std::string, JointTransform> interpolatePoses(SKeyFrame* previousFrame, SKeyFrame* nextFrame, float progression);
+    void applyPoseToJoints(const std::unordered_map<std::string, JointTransform>& currentPose, std::shared_ptr<Joint> joint, glm::mat4& parentTransform);
     void applyPoseToJoints(const std::unordered_map<std::string, glm::mat4>& currentPose, std::shared_ptr<Joint> joint);
 
     std::vector<std::pair<std::string, glm::vec3>> m_offsetPoints;

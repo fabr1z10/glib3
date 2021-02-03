@@ -77,7 +77,8 @@ void SkModel::setMesh(const std::string &jointId, const std::string &meshId, flo
         const auto& attachPoint = child->getAttachPoint();
         // get coordinates of attach point
         glm::vec2 p = m_keyPoints.at(jointId).at(attachPoint);
-        JointTransform tr(p.x, p.y, 0.0f);
+        JointTransform tr;
+        tr.translation = glm::vec3(p.x, p.y, 0.0f);
         child->setLocalToParentTransform(tr, joint->getBindTransform());
         m_restTransforms[child->getName()] = tr;
 
@@ -262,57 +263,12 @@ SkModel::SkModel(const ITable & t) {
         if (dict.hasKey("parent")) {
             root = false;
             parentId = m_allJoints.at(dict.get<std::string>("parent"))->getIndex();
+        } else {
+        	m_restTransforms[id] = JointTransform();
         }
         // TODO call setMesh to avoid code duplication
         setMesh(id, meshId, 1.0f);
-//        std::vector<VertexSkeletal> vertices;
-//        std::vector<unsigned> indices;
-//        // determine mesh location
-//        //auto iter = textureInfo.find(texName);
-//        //if (iter == textureInfo.end()) {
-//        auto tex = Engine::get().GetAssetManager().GetTex(texName);
-//        // add one mesh
-//        //auto texw = tex->GetWidth();
-//        //auto texh = tex->GetHeight();
-//        //textureInfo[texName] = std::make_tuple(m_meshes.size(), texw, texh);
-//        auto mesh = std::make_shared<TexturedMesh<VertexSkeletal>>(SKELETAL_SHADER, GL_TRIANGLES, texName);
-//        m_meshes[id] = mesh;
-//        auto points = meshTemplate.get<std::vector<Coord>>("data");
-//        assert(points.size() % 7 == 0);
-//        std::vector<Point> polygon;
-//        for (unsigned int i = 0 ; i < points.size(); i += 7) {
-//            VertexSkeletal vertex{};
-//            // transform local to model
-//            glm::vec3 modelPos = transform * glm::vec4(points[i], points[i+1], points[i+2], 1.0f);
-////            //auto tup = po[i].cast<pybind11::tuple>();
-//            vertex.x = modelPos.x;
-//            vertex.y = modelPos.y;
-//            vertex.z = modelPos.z;
-//            m_maxBounds.addPoint(glm::vec3(vertex.x, vertex.y, vertex.z));
-////            if (autotc) {
-//            vertex.s = points[i+3];
-//            vertex.t = points[i+4];
-//            vertex.index0 = jointCount;
-//            vertex.index1 = parentId;
-//            vertex.index2 = 0.0f;
-//            vertex.weight0 = points[i+5];
-//            vertex.weight1 = points[i+6];
-//            vertex.weight2 = 0.0f;
-//            polygon.push_back({vertex.x, vertex.y});
-//            vertices.push_back(vertex);
-//        }
-//        // triangualate pol
-//        std::vector<std::vector<Point>> p;
-//        p.push_back(polygon);
-//        auto tri = mapbox::earcut<N>(p);
-//        // now add indices
-//        for (const auto& i : tri) {
-//            indices.push_back(i);
-//        }
-//        // update offset
-//        mesh->Init(vertices, indices);
-//        // m_jointToMesh[id] = m_meshes.size();
-//        jointCount++;
+
     });
     computeOffset();
     //glm::mat4 identity(1.0f);

@@ -65,12 +65,12 @@ void SkAnimator::Update(double dt) {
  *         for all the joints. The transforms are indexed by the name ID of
  *         the joint that they should be applied to.
  */
-std::unordered_map<std::string, glm::mat4> SkAnimator::calculateCurrentAnimationPose() {
-    auto frames = getPreviousAndNextFrames();
-    float totalTime = frames.second->getTimeStamp() - frames.first->getTimeStamp();
-    float currentTime = m_animationTime - frames.first->getTimeStamp();
-    float progression = (totalTime == 0.0f) ? 0.0f : (currentTime / totalTime);
-    return interpolatePoses(frames.first, frames.second, progression);
+std::unordered_map<std::string, JointTransform> SkAnimator::calculateCurrentAnimationPose() {
+    auto frames = m_currentAnimation->getPreviousAndNextKeyFrames(m_animationTime);
+//    float totalTime = frames.second->getTimeStamp() - frames.first->getTimeStamp();
+//    float currentTime = m_animationTime - frames.first->getTimeStamp();
+//    float progression = (totalTime == 0.0f) ? 0.0f : (currentTime / totalTime);
+    return interpolatePoses(std::get<0>(frames), std::get<1>(frames), std::get<2>(frames));
 }
 
 /**
@@ -84,20 +84,20 @@ std::unordered_map<std::string, glm::mat4> SkAnimator::calculateCurrentAnimation
  * @return The previous and next keyframes, in an array which therefore will
  *         always have a length of 2.
  */
-std::pair<SKeyFrame*, SKeyFrame*> SkAnimator::getPreviousAndNextFrames() {
-
-    const auto& allFrames = m_currentAnimation->getKeyFrames();
-    SKeyFrame* previousFrame = allFrames[0].get();
-    SKeyFrame* nextFrame = allFrames[0].get();
-    for (int i = 1; i < allFrames.size(); i++) {
-        nextFrame = allFrames[i].get();
-        if (nextFrame->getTimeStamp() > m_animationTime) {
-            break;
-        }
-        previousFrame = allFrames[i].get();
-    }
-    return std::make_pair(previousFrame, nextFrame);
-}
+//std::pair<SKeyFrame*, SKeyFrame*> SkAnimator::getPreviousAndNextFrames() {
+//
+//    const auto& allFrames = m_currentAnimation->getKeyFrames();
+//    SKeyFrame* previousFrame = allFrames[0].get();
+//    SKeyFrame* nextFrame = allFrames[0].get();
+//    for (int i = 1; i < allFrames.size(); i++) {
+//        nextFrame = allFrames[i].get();
+//        if (nextFrame->getTimeStamp() > m_animationTime) {
+//            break;
+//        }
+//        previousFrame = allFrames[i].get();
+//    }
+//    return std::make_pair(previousFrame, nextFrame);
+//}
 
 /**
  * Calculates all the local-space joint transforms for the desired current
@@ -115,8 +115,8 @@ std::pair<SKeyFrame*, SKeyFrame*> SkAnimator::getPreviousAndNextFrames() {
  *         current pose. They are returned in a map, indexed by the name of
  *         the joint to which they should be applied.
  */
-std::unordered_map<std::string, glm::mat4> SkAnimator::interpolatePoses(SKeyFrame* previousFrame, SKeyFrame* nextFrame, float progression) {
-    std::unordered_map<std::string, glm::mat4> currentPose;
+std::unordered_map<std::string, JointTransform> SkAnimator::interpolatePoses(SKeyFrame* previousFrame, SKeyFrame* nextFrame, float progression) {
+    std::unordered_map<std::string, JointTransform> currentPose;
     const auto& nf = nextFrame->getJointKeyFrames();
     for (const auto& p : previousFrame->getJointKeyFrames()) {
         if (!m_model->hasJoint(p.first))
@@ -126,10 +126,11 @@ std::unordered_map<std::string, glm::mat4> SkAnimator::interpolatePoses(SKeyFram
         JointTransform nextTransform = nf.at(p.first);
         JointTransform currentTransform = m_model->getRestTransform(p.first);
         //nextTransform.z = currentTransform.z;
+
         currentTransform += JointTransform::interpolate(p.second, nextTransform, progression);
         //currentTransform.z = 0;
         //std::cout << m_animationTime << " . " << currentTransform.alpha << "\n";
-        currentPose.insert(std::make_pair(p.first, currentTransform.getLocalTransform()));
+        currentPose.insert(std::make_pair(p.first, currentTransform));
     }
     return currentPose;
 }
@@ -169,7 +170,7 @@ std::unordered_map<std::string, glm::mat4> SkAnimator::computePose(const std::st
         glm::mat4 currentLocalTransform(1.0f);
         auto iter = cpose.find(currentJoint->getName());
         if (iter != cpose.end()) {
-            currentLocalTransform = iter->second;
+            currentLocalTransform = iter->second.getLocalTransform();
         } else {
             currentLocalTransform = currentJoint->getRestTransform().getLocalTransform();
         }
@@ -223,26 +224,33 @@ bool SkAnimator::IsComplete() const {
 
 
 
-void SkAnimator::applyPoseToJoints(const std::unordered_map<std::string, glm::mat4> &currentPose,
+void SkAnimator::applyPoseToJoints(const std::unordered_map<std::string, JointTransform> &currentPose,
                                    std::shared_ptr<Joint> joint, glm::mat4& parentTransform)
 {
     // get the local transform of the current joint
     glm::mat4 currentLocalTransform(1.0f);
+    glm::mat4 scalingMatrix (1.0f);
     if (currentPose.count(joint->getName()) > 0) {
-        currentLocalTransform = currentPose.at(joint->getName());
-
+        currentLocalTransform = currentPose.at(joint->getName()).getLocalTransform();
+        scalingMatrix = glm::scale(glm::vec3(currentPose.at(joint->getName()).scale));
     } else {
         currentLocalTransform = joint->getRestTransform().getLocalTransform();
     }
     // mutliply by the parent
     glm::mat4 currentTransform = parentTransform * currentLocalTransform;
+
     // call children
+
     for (const auto& c : joint->getChildren()) {
+		// remove scale by current transform
+
         applyPoseToJoints(currentPose, c, currentTransform);
     }
+    // apply scale
+    glm::mat4 scaledCurrentTransform = currentTransform * scalingMatrix;
     // revert to model space
     //glm::mat4 ct = joint->getInverseBindTransform()*currentTransform;
-    glm::mat4 ct = currentTransform *joint->getInverseBindTransform();
+    glm::mat4 ct = scaledCurrentTransform *joint->getInverseBindTransform();
     joint->setAnimationTransform(ct);
 
 }
