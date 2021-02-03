@@ -15,6 +15,7 @@
 #include <monkey/components/scriptplayer.h>
 #include <monkey/skeletal/skmodel.hpp>
 #include <monkey/skeletal/skcollider.hpp>
+#include <monkey/skeletal/skanimator.hpp>
 
 namespace py = pybind11;
 
@@ -76,6 +77,11 @@ float Wrap1::getVx() const {
 }
 float Wrap1::getScale() const {
     return m_entity->GetScale();
+}
+
+
+int Wrap1::getKeyFrame() const {
+	return static_cast<SkAnimator*>(m_entity->GetComponent<IAnimator>())->getKeyFrame();
 }
 
 void Wrap1::setVx(float value) {

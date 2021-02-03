@@ -5,6 +5,7 @@ SkAnimation::SkAnimation(const ITable & t) {
 
 	m_length = t.get<float>("length");
 
+	int index = 0;
 	t.foreach<PyDict>("keyframes", [&](const PyDict &dict) {
 		// get the timestamp
 		auto t = dict.get<float>("t");
@@ -27,7 +28,8 @@ SkAnimation::SkAnimation(const ITable & t) {
 
 			pose[jointName] = t;
 		}
-		m_keyFrames.push_back(std::make_shared<SKeyFrame>(t, pose));
+		m_keyFrames.push_back(std::make_shared<SKeyFrame>(index, t, pose));
+		index++;
 	});
 }
 

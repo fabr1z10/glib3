@@ -21,17 +21,23 @@
  */
 class SKeyFrame {
 public:
-    SKeyFrame (float timeStamp, std::unordered_map<std::string, JointTransform>& p) : m_timeStamp(timeStamp), m_pose(p) {}
+    SKeyFrame (int index, float timeStamp, std::unordered_map<std::string, JointTransform>& p) : m_timeStamp(timeStamp), m_pose(p), m_index(index) {}
 
     /**
 	 * @return The time in seconds of the keyframe in the animation.
 	 */
     float getTimeStamp() const;
     const std::unordered_map<std::string, JointTransform>& getJointKeyFrames() const;
+    int getIndex() const;
 private:
+	int m_index;
     float m_timeStamp;
     std::unordered_map<std::string, JointTransform> m_pose;
 };
+
+inline int SKeyFrame::getIndex() const {
+	return m_index;
+}
 
 inline float SKeyFrame::getTimeStamp() const {
     return m_timeStamp;

@@ -1,4 +1,4 @@
-#xinclude "example.h"
+#include "example.h"
 #include <pybind11/pybind11.h>
 #include <monkey/python/wrap1.h>
 #include <monkey/python/pymonkey.h>
@@ -61,6 +61,7 @@ PYBIND11_MODULE(example, m) {
         .def("follow", &Wrap1::follow)
     	.def("rotatex", &Wrap1::rotx)
     	.def("getTextSize", &Wrap1::getTextSize)
+    	.def("getKeyFrame", &Wrap1::getKeyFrame)
         .def("getBoxSize", &Wrap1::getBoxSize);
 
     py::class_<PyEngine>(m, "engine")

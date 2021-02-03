@@ -67,6 +67,7 @@ void SkAnimator::Update(double dt) {
  */
 std::unordered_map<std::string, JointTransform> SkAnimator::calculateCurrentAnimationPose() {
     auto frames = m_currentAnimation->getPreviousAndNextKeyFrames(m_animationTime);
+    m_currentIndex = std::get<0>(frames)->getIndex();
 //    float totalTime = frames.second->getTimeStamp() - frames.first->getTimeStamp();
 //    float currentTime = m_animationTime - frames.first->getTimeStamp();
 //    float progression = (totalTime == 0.0f) ? 0.0f : (currentTime / totalTime);

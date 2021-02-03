@@ -108,7 +108,9 @@ void WalkArea::Start() {
 
     if (m_depthFunc != nullptr || m_scaleFunc != nullptr) {
         for (const auto &c : m_entity->GetChildren()) {
-            onAdd(c.second.get());
+            for (const auto& d : c.second) {
+				onAdd(d.get());
+			}
         }
     }
     m_entity->onAdd.Register(this, [&] (Entity* e) { onAdd(e); });

@@ -19,6 +19,7 @@ public:
     void setElevation(float);
     bool getFlipx() const;
     std::string getAnim() const;
+    int getKeyFrame() const;
     void setVy(float);
     float getVx() const;
     void setVx(float);

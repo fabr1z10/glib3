@@ -24,6 +24,7 @@ public:
     float getAnimationTime() const;
     using ParentClass = IAnimator;
     std::unordered_map<std::string, glm::mat4> computePose (const std::string& animation, float t);
+    int getKeyFrame() const;
 protected:
     float m_animationTime;
     SkAnimation* m_currentAnimation;
@@ -40,6 +41,7 @@ private:
     std::vector<std::pair<std::string, glm::vec3>> m_offsetPoints;
     bool m_complete;
     float m_speedUp;
+    int m_currentIndex;
 };
 
 
@@ -50,4 +52,8 @@ inline SkModel* SkAnimator::getSkeletalModel() const {
 inline float SkAnimator::getAnimationTime() const {
     return m_animationTime;
 
+}
+
+inline int SkAnimator::getKeyFrame() const {
+	return m_currentIndex;
 }
