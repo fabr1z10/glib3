@@ -35,6 +35,13 @@ struct CollisionBox {
 };
 
 
+struct DrawingBit {
+	DrawingBit() : mesh(nullptr), bb(GL_LESS) {}
+	IMesh* mesh;
+	GLenum bb;
+
+};
+
 
 class SkModel : public IModel {
 public:
@@ -48,7 +55,7 @@ public:
     std::shared_ptr<Joint> getRootJoint();
     Joint* getJoint (const std::string&);
     bool hasJoint (const std::string&);
-    void setMesh (const std::string& jointId, const std::string& meshId, float scale, glm::vec2 offset = glm::vec2(0.0f));
+    void setMesh (const std::string& jointId, const std::string& meshId, float scale, glm::vec2 offset = glm::vec2(0.0f), int order = 0);
     void setAnimation (const std::string& animId, const std::string& anim);
     void Draw (Shader*);
     /**
@@ -90,6 +97,7 @@ private:
     // create one mesh per texture!
 
     std::unordered_map<std::string, std::shared_ptr<Mesh<VertexSkeletal>> > m_meshes;
+    std::map<int, std::vector<DrawingBit>> m_sortedMeshes;
     std::unordered_map<std::string, IMesh*> m_meshMap;
     std::unordered_map<std::string, std::shared_ptr<SkAnimation>> m_animations;
     std::string m_defaultAnimation;
@@ -101,7 +109,6 @@ private:
     std::vector<SkBoxInfo> m_skeletalBoxes;
     std::vector<std::pair<std::string, std::string>> m_offsetPointIds;
     std::unordered_map<std::string, std::unordered_map<std::string, glm::vec2>> m_keyPoints;
-
 };
 
 inline std::shared_ptr<Joint> SkModel::getRootJoint() {

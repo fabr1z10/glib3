@@ -47,7 +47,7 @@ int SkModel::getShapeId(const std::string& animId) {
 
 }
 
-void SkModel::setMesh(const std::string &jointId, const std::string &meshId, float scale, glm::vec2 offset) {
+void SkModel::setMesh(const std::string &jointId, const std::string &meshId, float scale, glm::vec2 offset, int order) {
     // when I apply a mesh to a joint, I
     // 1 - set the joint's children local transform (this updates their bind transform and inverse bind transforms)
     // 2 - I assume that if I'm setting a joint, my bind transform is SET. Otherwise I have a problem )add a check
@@ -56,9 +56,11 @@ void SkModel::setMesh(const std::string &jointId, const std::string &meshId, flo
     using Point = std::array<Coord, 2>;
     using N = uint32_t;
 
+
     PyDict meshTemplate = Engine::get().GetAssetManager().getMeshTemplate(meshId);
     if (meshTemplate.hasKey("key_points"))
         m_keyPoints[jointId] = meshTemplate.get<PyDict>("key_points").toDict<std::string, glm::vec2>();
+	//auto depth = meshTemplate.get<int>("depth", GL_LESS);
 
     glm::mat4 scalingMat = glm::scale(glm::vec3(scale));
     const auto& joint = m_allJoints.at(jointId);
@@ -105,6 +107,11 @@ void SkModel::setMesh(const std::string &jointId, const std::string &meshId, flo
     //textureInfo[texName] = std::make_tuple(m_meshes.size(), texw, texh);
     auto mesh = std::make_shared<TexturedMesh<VertexSkeletal>>(SKELETAL_SHADER, GL_TRIANGLES, texName);
     m_meshes[jointId] = mesh;
+
+    DrawingBit bit;
+    bit.mesh = mesh.get();
+    //bit.bb = depth;
+	m_sortedMeshes[order].push_back(bit);
     auto points = meshTemplate.get<std::vector<Coord>>("data");
     assert(points.size() % 7 == 0);
     std::vector<Point> polygon;
@@ -255,6 +262,8 @@ SkModel::SkModel(const ITable & t) {
         if (meshId.empty()) {
             return;
         }
+        int sortingOrder = dict.get<int>("order", 0);
+        GLenum depth = dict.get<GLenum>("depth", GL_LESS);
         auto id = dict.get<std::string>("id");
         PyDict meshTemplate = Engine::get().GetAssetManager().getMeshTemplate(meshId);
         auto texName = meshTemplate.get<std::string>("tex");
@@ -267,8 +276,9 @@ SkModel::SkModel(const ITable & t) {
         	m_restTransforms[id] = JointTransform();
         }
         // TODO call setMesh to avoid code duplication
-        setMesh(id, meshId, 1.0f);
+        setMesh(id, meshId, 1.0f, glm::vec2(0.0f), sortingOrder);
 
+		m_sortedMeshes[sortingOrder].back().bb = depth;
     });
     computeOffset();
     //glm::mat4 identity(1.0f);
@@ -471,8 +481,16 @@ Shape* SkModel::getShapeCastId (const std::string& animId, float t) {
 
 
 void SkModel::Draw(Shader * shader) {
-    for (const auto &m : m_meshes) {
-        m.second->Draw(shader, 0, 0);
+    for (const auto &m : m_sortedMeshes) {
+    	for (const auto & mesh : m.second) {
+    		if (mesh.bb != GL_LESS) {
+    			glDepthFunc(mesh.bb);
+    		}
+    		mesh.mesh->Draw(shader, 0, 0);
+    		if (mesh.bb != GL_LESS) {
+				glDepthFunc(GL_LESS);
+    		}
+		}
     }
 }
 
