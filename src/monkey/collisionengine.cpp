@@ -306,7 +306,7 @@ ShapeCastHit CollisionEngine::ShapeCast (Shape* shape, const glm::mat4& transfor
                     if (m == 0) {
                         continue;
                     }
-                    std::cerr << "qui\n";
+                    //std::cerr << "qui\n";
                     auto b = c->GetBounds();
                     float zc = c->GetObject()->GetPosition().z;
                     // 2.5d collision check

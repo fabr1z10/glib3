@@ -26,8 +26,11 @@ struct PointLocator {
 struct AttackBox {
 	float t0;
 	float t1;
-	std::vector<PointLocator> pts; // points contained within the attack box
+	size_t bone;
+	std::string boneId;
+	//std::vector<PointLocator> pts; // points contained within the attack box
 	std::shared_ptr<Shape> shape;
+	std::shared_ptr<Shape> shapeTransformed;
 };
 
 struct CollisionBox {
@@ -54,6 +57,7 @@ public:
     SkAnimation* getAnimation(const std::string&);
     std::shared_ptr<Joint> getRootJoint();
     Joint* getJoint (const std::string&);
+    size_t getJointCount() const;
     bool hasJoint (const std::string&);
     void setMesh (const std::string& jointId, const std::string& meshId, float scale, glm::vec2 offset = glm::vec2(0.0f), int order = 0);
     void setAnimation (const std::string& animId, const std::string& anim);
@@ -76,7 +80,7 @@ public:
 
     Shape* getShape (const std::string& animId);
     Shape* getShape (int shapeId);
-    Shape* getShapeCastId (const std::string& animId, float t);
+    const AttackBox* getShapeCastId (const std::string& animId, float t);
     std::vector<std::shared_ptr<Shape>> getAttackShapes() const override;
     void computeOffset();
     const std::unordered_map<std::string, std::unordered_map<std::string, glm::vec2>>& getKeyPoints() const;
@@ -111,6 +115,10 @@ private:
     std::unordered_map<std::string, std::unordered_map<std::string, glm::vec2>> m_keyPoints;
 };
 
+inline size_t SkModel::getJointCount() const {
+    return m_allJoints.size();
+
+}
 inline std::shared_ptr<Joint> SkModel::getRootJoint() {
     return m_rootJoint;
 }

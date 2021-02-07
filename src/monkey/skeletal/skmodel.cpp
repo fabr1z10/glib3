@@ -192,9 +192,11 @@ SkModel::SkModel(const ITable & t) {
     // ##################
     int curr = 0;
     m_jointCount = 0;
+    std::unordered_map<std::string, size_t> boneToIndex;
     //std::unordered_map<std::string, std::shared_ptr<Joint>> joints;
     t.foreach<PyDict>("joints", [&] (const PyDict& dict) {
         auto id = dict.get<std::string>("id");
+        boneToIndex[id] = curr;
         auto z = dict.get<float>("z", 0.0f);
         auto joint = std::make_shared<Joint>(curr++, id, z);
         auto parent = dict.get<std::string>("parent", "");
@@ -281,73 +283,7 @@ SkModel::SkModel(const ITable & t) {
 		m_sortedMeshes[sortingOrder].back().bb = depth;
     });
     computeOffset();
-    //glm::mat4 identity(1.0f);
-    //m_rootJoint->calcInverseBindTransform(identity);
-    // initiliaze meshes
-    //for (unsigned long i = 0; i < m_meshes.size(); ++i) {
-   // }
-//    });
-//
-//
-//    t.foreach<PyDict>("polygons", [&] (const PyDict& po) {
-//        auto id = po.get<std::string>("id");
-//        auto texName = po.get<std::string>("texture");
-//        // get the tex info
-//        auto texInfo = textureInfo.at(texName);
-//        auto meshLoc = std::get<0>(texInfo);
-//        auto texw = std::get<1>(texInfo);
-//        auto texh = std::get<2>(texInfo);
-//        auto polyOffset = polyOffsets[meshLoc];
-//        auto autotc = po.get<bool>("auto_tex_coord", false);
-//        using Point = std::array<Coord, 2>;
-//        std::vector<Point> polygon;
-//        auto points = po.get<std::vector<Coord>>("points");
-//        assert(points.size() % point_size == 0);
-//        for (unsigned int i = 0 ; i < points.size(); i += point_size) {
-//            VertexSkeletal vertex;
-//            //auto tup = po[i].cast<pybind11::tuple>();
-//            vertex.x = points[i];
-//            vertex.y = points[i+1];
-//            vertex.z = points[i+2];
-//            //m_maxBounds.addPoint(glm::vec3(vertex.x, vertex.y, vertex.z));
-//            if (autotc) {
-//                vertex.s = vertex.x / texw;
-//                vertex.t = vertex.y / texh;
-//            } else {
-//                vertex.s = points[i + 3] / texw;
-//                vertex.t = points[i + 4] / texh;
-//            }
-//
-//            vertex.index0 = points[i+5];
-//            vertex.index1 = points[i+6];
-//            vertex.index2 = points[i+7];
-//            vertex.weight0 = points[i+8];
-//            vertex.weight1 = points[i+9];
-//            vertex.weight2 = points[i+10];
-//            polygon.push_back({vertex.x, vertex.y});
-//            vertices[meshLoc].push_back(vertex);
-//        }
-//        /// triangualate pol
-//        std::vector<std::vector<Point>> p;
-//        p.push_back(polygon);
-//        auto tri = mapbox::earcut<N>(p);
-//        // now add indices
-//        for (const auto& i : tri) {
-//            indices[meshLoc].push_back(polyOffset + i);
-//        }
-//        // update offset
-//        polyOffsets[meshLoc] += polygon.size();
-//    });
-//
-//    // initilize meshes
-//    for (unsigned long i = 0; i < m_meshes.size(); ++i) {
-//        m_meshes[i]->Init(vertices[i], indices[i]);
-//    }
-//
-//
-//    // ##################
-//    // read skeleton
-//    // ##################
+
     int ac = 0;
     t.foreach<pybind11::tuple>("animations", [&] (const pybind11::tuple& tu) {
         auto id = tu[0].cast<std::string>();
@@ -363,25 +299,6 @@ SkModel::SkModel(const ITable & t) {
     // ################## read boxes
     if (t.hasKey("boxes")) {
         auto b = t.get<PyDict>("boxes");
-//        //#auto defaultBox = b.get<glm::vec2> ("default");
-//        //m_defaultShape = std::make_shared<Rect>(defaultBox[0], defaultBox[1], glm::vec3(-0.5f*defaultBox[0], 0, 0));
-//        //m_shapes.push_back(m_defaultShape);
-////		b.foreach<pydict> ("collider", [&] (const pydict& d) {
-////			auto anim = d.get<std::string>("anim");
-////			auto joint = d.get<std::string>("joint");
-////			auto p0 = d.get<glm::vec2>("p0");
-////			auto p1 = d.get<glm::vec2>("p1");
-////			auto width = d.get<float>("width");
-////			//auto box = d.get<glm::vec4>("box");
-////			glm::vec2 axis0 = p1 - p0;
-////			glm::vec2 axis1 = glm::normalize(perp(axis0));
-////			std::vector<glm::vec2> pts ({ p0 + axis1 * width, p1 + axis1*width, p1-axis1*width, p0 - axis1*width });
-////			m_shapes.push_back(std::make_shared<polygon>(pts));
-////			//m_attacktimes[anim].insert(std::make_pair(t, m_shapes.size()));
-////			//m_shapes.push_back(std::make_shared<rect>(box[2], box[3], glm::vec3(box[0], box[1], 0.0f)));
-////		});
-//
-//
         auto anim = b.get<pybind11::dict>("anim");
         //Bounds maxSize;
         for (const auto& a : anim) {
@@ -393,27 +310,51 @@ SkModel::SkModel(const ITable & t) {
                 auto pointId = tup[1].cast<std::string>();
                 m_boxInfo[animId].pts.emplace_back(PointLocator{jointId, pointId});
             }
-//
-//            lb[0].cast<>()
-//            auto size = a.second.cast<std::vector<float>>();
-//            auto shape = std::make_shared<Rect> (size[0], size[1], glm::vec3(-0.5f*size[0], 0.0f, 0.0f));
-//            maxSize.ExpandWith(shape->getBounds());
-//            m_animToShape[animId] = m_shapes.size();
-//            m_shapes.push_back(shape);
         }
-        //m_maxBounds = maxSize;
+
         b.foreach<PyDict> ("attack", [&] (const PyDict& d) {
             auto anim = d.get<std::string>("anim");
-            auto abox = std::make_shared<AttackBox>();
-            abox->t0 = d.get<float>("t0");
-            abox->t1 = d.get<float>("t1");
 
-            d.foreach<pybind11::tuple>("points", [&] (const pybind11::tuple& t) {
-                auto jointId = t[0].cast<std::string>();
-                auto pointId = t[1].cast<std::string>();
-                abox->pts.emplace_back(PointLocator{jointId, pointId});
-            });
+            const auto& animation = m_animations.at(anim);
+
+            // need the transformation of the bone at attack time
+
+
+            auto box = d.get<int>("box");
+            auto atimes = animation->getAttackTimes(box);
+            auto abox = std::make_shared<AttackBox>();
+            abox->t0 = atimes.first;
+            abox->t1 = atimes.second;
+
+            auto boneId =d.get<std::string>("bone");
+
+
+
+            Joint* joint = getJoint(boneId);
+            auto transform = joint->getBindTransform();
+            abox->boneId = boneId;
+            abox->bone = boneToIndex.at(boneId);
+            auto pointName = d.get<std::string>("point");
+            auto size = d.get<std::string>("size");
+            auto point = m_keyPoints.at(boneId).at(pointName);
+            auto transformedPoint = transform * glm::vec4(point,0.0f,1.0f);
+            auto dims = m_keyPoints.at(boneId).at(size);
+            abox->shape = std::make_shared<Rect>(dims[0], dims[1], glm::vec3(transformedPoint));
+
+            auto tr0 = animation->getAnimTransform(abox->t0, this);
+            auto boneTransform0 = tr0.at(boneId);
+            auto tb1 = abox->shape->getBounds();
+            tb1.Transform(boneTransform0);
+            auto tsb = tb1.GetSize();
+            abox->shapeTransformed = std::make_shared<Rect>(tsb[0], tsb[1], glm::vec3(tb1.min.x, tb1.min.y, 0.0f));
             m_attackTimes[anim] = abox;
+//            auto width = d.get<std::string>("width");
+//            auto height = d.get<std::string>("height");
+//            d.foreach<pybind11::tuple>("points", [&] (const pybind11::tuple& t) {
+//                auto jointId = t[0].cast<std::string>();
+//                auto pointId = t[1].cast<std::string>();
+//                abox->pts.emplace_back(PointLocator{jointId, pointId});
+//            });
         });
 //
     }
@@ -466,14 +407,14 @@ SkAnimation* SkModel::getAnimation(const std::string& id) {
     return m_animations.at(id).get();
 }
 
-Shape* SkModel::getShapeCastId (const std::string& animId, float t) {
+const AttackBox* SkModel::getShapeCastId (const std::string& animId, float t) {
     // check if the current animations has any shapes to cast
     auto it = m_attackTimes.find(animId);
     if (it == m_attackTimes.end() || it->second->shape == nullptr) {
         return nullptr;
     }
     if (it->second->t0 <= t && t < it->second->t1) {
-        return it->second->shape.get();
+        return it->second.get();
     }
     return nullptr;
 
@@ -516,8 +457,10 @@ std::vector<std::shared_ptr<Shape>> SkModel::getAttackShapes() const {
     std::vector<std::shared_ptr<Shape>> shapes;
     for (const auto& m : m_attackTimes) {
         //for (const auto& c : m.second) {
+
+
         if (m.second->shape) {
-            shapes.emplace_back(m.second->shape);
+            shapes.emplace_back(m.second->shapeTransformed);
         }
         //shapes.push_back(m_shapes[m.second.boxId]);
         //}

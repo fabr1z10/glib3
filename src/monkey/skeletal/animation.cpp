@@ -1,4 +1,6 @@
 #include <monkey/skeletal/animation.hpp>
+#include <monkey/skeletal/skmodel.hpp>
+#include <glm/gtx/transform.hpp>
 
 SkAnimation::SkAnimation(const ITable & t) {
 	m_loop = t.get<bool>("loop", true);
@@ -29,13 +31,25 @@ SkAnimation::SkAnimation(const ITable & t) {
 			pose[jointName] = t;
 		}
 		m_keyFrames.push_back(std::make_shared<SKeyFrame>(index, t, pose));
+
 		index++;
 	});
+
+	// attack boxes
+    t.foreach<PyDict> ("attack", [&] (const PyDict& dict) {
+        auto start_time = dict.get<float>("start");
+        auto end_time = dict.get<float>("end");
+        m_attacks.emplace_back(start_time, end_time);
+    });
 }
 
 float SkAnimation::getLength() {
     return m_length;
 
+}
+
+std::pair<float, float> SkAnimation::getAttackTimes(int index) const {
+    return m_attacks.at(index);
 }
 
 std::tuple<SKeyFrame*, SKeyFrame*, float> SkAnimation::getPreviousAndNextKeyFrames(float t) {
@@ -52,4 +66,53 @@ std::tuple<SKeyFrame*, SKeyFrame*, float> SkAnimation::getPreviousAndNextKeyFram
 	float progression = (t - m_keyFrames.back()->getTimeStamp()) / (m_length - m_keyFrames.back()->getTimeStamp());
 	return std::make_tuple(m_keyFrames.back().get(), m_keyFrames.front().get(), progression);
 
+}
+
+
+std::unordered_map<std::string, glm::mat4> SkAnimation::getAnimTransform(float t, SkModel* model) {
+    auto pnframes = getPreviousAndNextKeyFrames(t);
+    float progression = std::get<2>(pnframes);
+    const auto& nf = std::get<1>(pnframes)->getJointKeyFrames();
+    std::unordered_map<std::string, JointTransform> currentPose;
+    for (const auto& p : std::get<0>(pnframes)->getJointKeyFrames()) {
+        if (!model->hasJoint(p.first))
+            continue;
+        JointTransform nextTransform = nf.at(p.first);
+        JointTransform currentTransform = model->getRestTransform(p.first);
+        //nextTransform.z = currentTransform.z;
+
+        currentTransform += JointTransform::interpolate(p.second, nextTransform, progression);
+        //currentTransform.z = 0;
+        //std::cout << m_animationTime << " . " << currentTransform.alpha << "\n";
+        currentPose.insert(std::make_pair(p.first, currentTransform));
+    }
+
+    std::list<std::pair<Joint*, glm::mat4>> toProcess;
+    toProcess.emplace_back(model->getRootJoint().get(), glm::mat4(1.0f));
+    std::unordered_map<std::string, glm::mat4> result;
+    while (!toProcess.empty()) {
+        // get current joint
+        auto current = toProcess.front();
+        toProcess.pop_front();
+        glm::mat4 currentLocalTransform(1.0f);
+        glm::mat4 scalingMat (1.0f);
+        if (currentPose.count(current.first->getName()) > 0) {
+            currentLocalTransform = currentPose.at(current.first->getName()).getLocalTransform();
+            scalingMat = glm::scale(glm::vec3(currentPose.at(current.first->getName()).scale));
+        } else {
+            currentLocalTransform = current.first->getRestTransform().getLocalTransform();
+        }
+        // multiply by parent
+        glm::mat4 currentTransform = current.second * currentLocalTransform;
+        // add children to list
+        for (const auto& c : current.first->getChildren()) {
+            toProcess.emplace_back(c.get(), currentTransform);
+        }
+        // apply scale
+        glm::mat4 scaledCurrentTransform = currentTransform * scalingMat;
+        // revert to model space
+        glm::mat4 ct = scaledCurrentTransform * current.first->getInverseBindTransform();
+        result[current.first->getName()] = ct;
+    }
+    return result;
 }

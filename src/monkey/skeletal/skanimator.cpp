@@ -151,15 +151,16 @@ std::unordered_map<std::string, glm::mat4> SkAnimator::computePose(const std::st
     const auto& keyFrames = anim->getKeyFrames();
     unsigned i = 1;
     float k = 0.0f;
-    for (; i< keyFrames.size(); ++i) {
-        float t1 = keyFrames[i]->getTimeStamp();
-        if (t1 >= t) {
-            float t0 = keyFrames[i-1]->getTimeStamp();
-            k = (t - t0) / (t1 - t0);
-            break;
-        }
-    }
-    auto cpose = interpolatePoses(keyFrames[i-1].get(), keyFrames[i].get(), k);
+    auto fr = anim->getPreviousAndNextKeyFrames(t);
+//    for (; i< keyFrames.size(); ++i) {
+//        float t1 = keyFrames[i]->getTimeStamp();
+//        if (t1 >= t) {
+//            float t0 = keyFrames[i-1]->getTimeStamp();
+//            k = (t - t0) / (t1 - t0);
+//            break;
+//        }
+//    }
+    auto cpose = interpolatePoses(std::get<0>(fr), std::get<1>(fr), std::get<2>(fr));
     std::list<std::pair<std::shared_ptr<Joint>, glm::mat4>> joints;
     joints.emplace_back(m_model->getRootJoint(), glm::mat4(1.0f));
     std::unordered_map<std::string, glm::mat4> output;
@@ -244,7 +245,6 @@ void SkAnimator::applyPoseToJoints(const std::unordered_map<std::string, JointTr
 
     for (const auto& c : joint->getChildren()) {
 		// remove scale by current transform
-
         applyPoseToJoints(currentPose, c, currentTransform);
     }
     // apply scale

@@ -17,6 +17,7 @@ void SkRenderer::SetModel(std::shared_ptr<IModel> model) {
 
 void SkRenderer::Start() {
     m_ic = m_entity->GetComponent<IAnimator>();
+    m_jointTransforms = std::vector<glm::mat4>(m_model->getJointCount());
 }
 
 void SkRenderer::Draw(Shader * shader) {
@@ -24,9 +25,9 @@ void SkRenderer::Draw(Shader * shader) {
     // we need to send the bone transforms to the shader
     auto boneId = shader->GetUniformLocation(BONES);
 
-    auto jointTransforms = m_model->getJointTransforms();
+    m_jointTransforms = m_model->getJointTransforms();
 
-    glUniformMatrix4fv(boneId, jointTransforms.size(), GL_FALSE, glm::value_ptr(jointTransforms[0]));
+    glUniformMatrix4fv(boneId, m_jointTransforms.size(), GL_FALSE, glm::value_ptr(m_jointTransforms[0]));
 
     m_model->Draw(shader);
 

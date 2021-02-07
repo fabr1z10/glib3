@@ -6,6 +6,7 @@ class SkModel;
 class SkAnimator;
 struct PointLocator;
 class MultiRenderer;
+class SkRenderer;
 /*
  * A smart collider needs to be used with a skeletal model.
  * You can associate a BOX to each animation, plus attack boxes
@@ -29,7 +30,7 @@ public:
     int setCollisionMask(int);
     std::type_index GetType() override;
     Bounds getAttackBounds() const override;
-    void computeAttackBoxes();
+    //void computeAttackBoxes();
     std::shared_ptr<Shape> getBox(const std::string& anim, float t, const std::vector<PointLocator>& pts,
                                   const std::vector<glm::vec2>& fixedPoints = std::vector<glm::vec2>());
 private:
@@ -38,8 +39,8 @@ private:
     int m_shapeId;
     SkAnimator* m_animator;
     Entity* m_shapeEntity;
-    MultiRenderer* m_colliderRenderer;
-
+    std::vector<MultiRenderer*> m_colliderRenderers;
+    SkRenderer* m_mainRenderer;
     SkModel* m_model;
     Bounds GetStaticBoundsI() const override;
     Bounds GetDynamicBoundsI() const override;

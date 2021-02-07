@@ -126,9 +126,9 @@ void Wrap1::setMesh(const std::string & jointId, const std::string & meshId, flo
     model->getRootJoint()->calcInverseBindTransform(glm::mat4(1.0f));
     model->computeOffset();
     auto* collider = m_entity->GetComponent<ICollider>();
-    if (collider != nullptr) {
-        static_cast<SkCollider*>(collider)->computeAttackBoxes();
-    }
+//    if (collider != nullptr) {
+//        static_cast<SkCollider*>(collider)->computeAttackBoxes();
+//    }
 
 }
 
@@ -138,9 +138,9 @@ void Wrap1::setAnim(const std::string & animId, const std::string & anim) {
     model->setAnimation(animId, anim);
     a->resetAnimation();
     auto* collider = m_entity->GetComponent<ICollider>();
-    if (collider != nullptr) {
-        static_cast<SkCollider*>(collider)->computeAttackBoxes();
-    }
+//    if (collider != nullptr) {
+//        static_cast<SkCollider*>(collider)->computeAttackBoxes();
+//    }
 
 }
 
