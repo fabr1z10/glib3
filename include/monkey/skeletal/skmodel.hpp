@@ -59,6 +59,8 @@ public:
     Joint* getJoint (const std::string&);
     size_t getJointCount() const;
     bool hasJoint (const std::string&);
+    void attachMesh (const std::string& meshId, const std::string& parentMesh, int parentJointId, float scale);
+
     void setMesh (const std::string& jointId, const std::string& meshId, float scale, glm::vec2 offset = glm::vec2(0.0f), int order = 0);
     void setAnimation (const std::string& animId, const std::string& anim);
     void Draw (Shader*);
@@ -89,6 +91,8 @@ public:
     void addShape(const std::string& animId, std::shared_ptr<Shape> shape);
     void resetShapes();
 private:
+    std::unordered_map<std::string, std::unordered_map<unsigned, unsigned>> m_jointMap;
+    unsigned _nextJointId;
     //std::shared_ptr<Shape> m_defaultShape;
     std::vector<std::shared_ptr<Shape>> m_shapes;
     std::unordered_map<std::string, int> m_animToShape;
@@ -109,6 +113,8 @@ private:
     std::unordered_map<std::string, JointTransform> m_restTransforms;
     std::vector<std::pair<std::string, glm::vec3>> m_offsetPoints;
     std::unordered_map<std::string, std::shared_ptr<Joint>> m_allJoints;
+
+    std::vector<std::shared_ptr<Joint>> m_js;
     Bounds m_maxBounds;
     std::vector<SkBoxInfo> m_skeletalBoxes;
     std::vector<std::pair<std::string, std::string>> m_offsetPointIds;

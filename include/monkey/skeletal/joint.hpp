@@ -35,6 +35,7 @@
  */
 class Joint {
 public:
+    Joint (int index);
     Joint (int index, const std::string& name, float z);
 
     void addChild (std::shared_ptr<Joint>);
