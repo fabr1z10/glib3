@@ -14,24 +14,22 @@ SkAnimation::SkAnimation(const ITable & t) {
 		std::unordered_map<std::string, JointTransform> pose;
 		// for each joint I need 7 numbers: x, y, z (translation), rot, ax, ay, az (rotation,
 		// specified with axis and rotation in degrees)
-		auto p1 = dict.get<PyDict>("pose");
-		auto p = p1.toDict<std::string, PyDict>();
-		for (const auto& joint : p) {
-			auto jointName = joint.first;
+		dict.foreach<PyDict>("pose", [&](const PyDict &dict2) {
+			auto mesh = dict2.get<std::string>("mesh");
+			auto joint = dict2.get<int>("joint");
+			std::string jointId = mesh + "@" + std::to_string(joint);
 			JointTransform t;
-			t.translation = joint.second.get<glm::vec3>("pos", glm::vec3(0.0f));
-			if (joint.second.hasKey("rot")) {
-				auto rotDef = joint.second.get<glm::vec4>("rot");
+			t.translation = dict2.get<glm::vec3>("pos", glm::vec3(0.0f));
+			if (dict2.hasKey("rot")) {
+				auto rotDef = dict2.get<glm::vec4>("rot");
 				float angle = glm::radians(rotDef[0]);
 				auto axis = glm::normalize(glm::vec3(rotDef[1], rotDef[2], rotDef[3]));
 				t.rotation = glm::angleAxis(angle, axis);
 			}
-			t.scale = joint.second.get<glm::vec3>("scale", glm::vec3(1.0f));
-
-			pose[jointName] = t;
-		}
+			t.scale = dict2.get<glm::vec3>("scale", glm::vec3(1.0f));
+			pose[jointId] = t;
+		});
 		m_keyFrames.push_back(std::make_shared<SKeyFrame>(index, t, pose));
-
 		index++;
 	});
 

@@ -40,7 +40,7 @@ struct CollisionBox {
 
 struct DrawingBit {
 	DrawingBit() : mesh(nullptr), bb(GL_LESS) {}
-	IMesh* mesh;
+	std::shared_ptr<IMesh> mesh;
 	GLenum bb;
 
 };
@@ -59,7 +59,7 @@ public:
     Joint* getJoint (const std::string&);
     size_t getJointCount() const;
     bool hasJoint (const std::string&);
-    void attachMesh (const std::string& meshId, const std::string& parentMesh, int parentJointId, float scale);
+    void attachMesh (const std::string& id, const std::string& meshId, const std::string& parentMesh, int parentJointId, float scale, int order);
 
     void setMesh (const std::string& jointId, const std::string& meshId, float scale, glm::vec2 offset = glm::vec2(0.0f), int order = 0);
     void setAnimation (const std::string& animId, const std::string& anim);
@@ -92,6 +92,7 @@ public:
     void resetShapes();
 private:
     std::unordered_map<std::string, std::unordered_map<unsigned, unsigned>> m_jointMap;
+    std::unordered_map<std::string, unsigned> m_jointMap2;
     unsigned _nextJointId;
     //std::shared_ptr<Shape> m_defaultShape;
     std::vector<std::shared_ptr<Shape>> m_shapes;
@@ -140,7 +141,10 @@ inline const std::vector<std::pair<std::string, glm::vec3>>& SkModel::getOffsetP
 }
 
 inline Joint* SkModel::getJoint(const std::string & id) {
-    return m_allJoints.at(id).get();
+	auto it = m_jointMap2.find(id);
+	if (it == m_jointMap2.end())
+		return nullptr;
+	return m_js[it->second].get();
 }
 
 inline Shape* SkModel::getShape(int shapeId) {

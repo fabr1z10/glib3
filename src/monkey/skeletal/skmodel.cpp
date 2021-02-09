@@ -47,7 +47,8 @@ int SkModel::getShapeId(const std::string& animId) {
 
 }
 
-void SkModel::attachMesh (const std::string& meshId, const std::string& parentMesh, int parentJointId, float scale) {
+void SkModel::attachMesh (const std::string& id, const std::string& meshId,
+	const std::string& parentMesh, int parentJointId, float scale, int order) {
 
     using Coord = float;
     using Point = std::array<Coord, 2>;
@@ -58,40 +59,42 @@ void SkModel::attachMesh (const std::string& meshId, const std::string& parentMe
 
     const unsigned stride = 11;
     unsigned rootJointId = 0;
+    unsigned parentJointIndex = -1;
     meshTemplate.foreach<PyDict>("joints", [&] (const PyDict& dict) {
 
         int index = dict.get<int>("index");
         int parent = dict.get<int>("parent", -1);
-        unsigned mappedIndex =0;
-        if (index == 0 && !parentMesh.empty()) {
-            // if we are attaching to an existing joint, no need to duplicate index
-            mappedIndex = m_jointMap.at(parentMesh).at(parentJointId);
-        } else {
-            mappedIndex = m_js.size();
-            auto joint = std::make_shared<Joint>(mappedIndex);
-            // check if we have a parent joint
-            if (parent != -1) {
-                // get parent joint
-                auto parentJoint = m_js[m_jointMap.at(meshId).at(parent)];
-                auto pos = dict.get<glm::vec2>("pos");
-                JointTransform tr;
-                tr.translation = glm::vec3(pos.x, pos.y, 0.0f);
-                joint->setLocalToParentTransform(tr, parentJoint->getBindTransform());
-            }
-            m_js.push_back(joint);
-            if (index == 0) {
-                // if we are here, then it's the root node of a mesh with no parent
-                // hence it is the root joint
-                m_rootJoint = joint;
-            }
-        }
+		auto jointId = id +"@" + std::to_string(index);
+		unsigned mappedIndex = m_js.size();
+		auto joint = std::make_shared<Joint>(mappedIndex, jointId);
 
-
-        m_jointMap[meshId][index] = mappedIndex;
+		// check if we have a parent joint
+		Joint* parentJoint =  nullptr;
+		// if parent is populated (not -1) then this is linked to a joint in the same mesh
+		if (parent != -1) {
+			parentJoint = m_js[m_jointMap.at(id).at(parent)].get();
+		} else if (!parentMesh.empty()) {
+			parentJointIndex = m_jointMap.at(parentMesh).at(parentJointId);
+			parentJoint = m_js[parentJointIndex].get();
+		}
+		if (parentJoint != nullptr) {
+			parentJoint->addChild(joint);
+			auto pos = dict.get<glm::vec2>("pos");
+			JointTransform tr;
+			tr.translation = glm::vec3(pos.x, pos.y, 0.0f);
+			joint->setLocalToParentTransform(tr, parentJoint->getBindTransform());
+			m_restTransforms[jointId] = tr;
+		} else {
+			m_rootJoint = joint;
+		}
+        m_js.push_back(joint);
+        m_jointMap[id][index] = mappedIndex;
+        m_jointMap2[jointId] = mappedIndex;
 
     });
+	m_jointCount = m_js.size();
 
-    const auto& localToModelIndex = m_jointMap.at(meshId);
+    const auto& localToModelIndex = m_jointMap.at(id);
     auto rootJoint = m_js[localToModelIndex.at(0)];
     // get the origin transform
     auto transform = rootJoint->getBindTransform();
@@ -112,9 +115,12 @@ void SkModel::attachMesh (const std::string& meshId, const std::string& parentMe
         m_maxBounds.addPoint(glm::vec3(vertex.x, vertex.y, vertex.z));
         vertex.s = points[i+3];
         vertex.t = points[i+4];
-        vertex.index0 = localToModelIndex.at(static_cast<int>(points[i+5]));
-        vertex.index1 = localToModelIndex.at(static_cast<int>(points[i+6]));
-        vertex.index2 = localToModelIndex.at(static_cast<int>(points[i+7]));
+        int i1 = static_cast<int>(points[i+5]);
+		int i2 = static_cast<int>(points[i+6]);
+		int i3 = static_cast<int>(points[i+7]);
+        vertex.index0 = (i1 == -1 ? parentJointIndex : localToModelIndex.at(i1));
+        vertex.index1 = (i2 == -1 ? parentJointIndex : localToModelIndex.at(i2));
+        vertex.index2 = (i3 == -1 ? parentJointIndex : localToModelIndex.at(i3));
         vertex.weight0 = points[i+8];
         vertex.weight1 = points[i+9];
         vertex.weight2 = points[i+10];
@@ -130,6 +136,11 @@ void SkModel::attachMesh (const std::string& meshId, const std::string& parentMe
     //}
     // update offset
     mesh->Init(vertices, tri);
+
+    DrawingBit bit;
+    bit.mesh = mesh;
+	m_sortedMeshes[order].push_back(bit);
+
 }
 
 
@@ -195,7 +206,7 @@ void SkModel::setMesh(const std::string &jointId, const std::string &meshId, flo
     m_meshes[jointId] = mesh;
 
     DrawingBit bit;
-    bit.mesh = mesh.get();
+    bit.mesh = mesh;
     //bit.bb = depth;
 	m_sortedMeshes[order].push_back(bit);
     auto points = meshTemplate.get<std::vector<Coord>>("data");
@@ -271,13 +282,27 @@ void SkModel::computeOffset() {
     }
 }
 
-SkModel::SkModel(const ITable & t) : _nextJointId(0) {
+SkModel::SkModel(const ITable & t) : _nextJointId(0), m_jointCount(0) {
     t.foreach<PyDict>("meshes", [&] (const PyDict& dict) {
         auto id = dict.get<std::string>("id");
+        auto meshId = dict.get<std::string>("mesh");
         auto parent = dict.get<std::string>("parent", std::string());
         auto scale = dict.get<float> ("scale", 1.0f);
         auto parentJoint = dict.get<int>("joint", 0);
-        attachMesh(id, parent, parentJoint, scale);
+		auto sortingOrder = dict.get<int>("order", 0);
+		attachMesh(id, meshId, parent, parentJoint, scale, sortingOrder);
+    });
+
+    int ac = 0;
+    t.foreach<pybind11::tuple>("animations", [&] (const pybind11::tuple& tu) {
+        auto id = tu[0].cast<std::string>();
+        auto animId = tu[1].cast<std::string>();
+        if (ac == 0) {
+            m_defaultAnimation = id;
+        }
+        auto sanim = Engine::get().GetAssetManager().getSkeletalAnimation(animId);
+        m_animations[id] = sanim;
+        ac++;
     });
 
 //    m_shareable = false;
@@ -378,17 +403,7 @@ SkModel::SkModel(const ITable & t) : _nextJointId(0) {
 //    });
 //    computeOffset();
 //
-//    int ac = 0;
-//    t.foreach<pybind11::tuple>("animations", [&] (const pybind11::tuple& tu) {
-//        auto id = tu[0].cast<std::string>();
-//        auto animId = tu[1].cast<std::string>();
-//        if (ac == 0) {
-//            m_defaultAnimation = id;
-//        }
-//        auto sanim = Engine::get().GetAssetManager().getSkeletalAnimation(animId);
-//        m_animations[id] = sanim;
-//        ac++;
-//    });
+
 //
 //    // ################## read boxes
 //    if (t.hasKey("boxes")) {
@@ -527,7 +542,7 @@ void SkModel::Draw(Shader * shader) {
     		}
 		}
     }
-}
+ }
 
 
 

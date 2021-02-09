@@ -35,7 +35,7 @@
  */
 class Joint {
 public:
-    Joint (int index);
+    Joint (int index,const std::string& name);
     Joint (int index, const std::string& name, float z);
 
     void addChild (std::shared_ptr<Joint>);
@@ -72,6 +72,7 @@ public:
      */
     void calcInverseBindTransform (glm::mat4 parentBindTransform);
     std::vector<std::shared_ptr<Joint>>& getChildren();
+    void setName(const std::string& name);
     std::string getName() const;
     std::string getParent() const;
     std::string getAttachPoint() const;
@@ -117,6 +118,10 @@ inline glm::mat4 Joint::getBindTransform() const {
 
 inline std::string Joint::getName() const {
     return m_name;
+}
+
+inline void Joint::setName(const std::string &name) {
+	m_name = name;
 }
 
 inline int Joint::getIndex() const {

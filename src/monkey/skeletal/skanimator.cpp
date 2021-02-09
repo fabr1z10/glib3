@@ -120,13 +120,14 @@ std::unordered_map<std::string, JointTransform> SkAnimator::interpolatePoses(SKe
     std::unordered_map<std::string, JointTransform> currentPose;
     const auto& nf = nextFrame->getJointKeyFrames();
     for (const auto& p : previousFrame->getJointKeyFrames()) {
-        if (!m_model->hasJoint(p.first))
-            continue;
-        // previosTransform is p.second
+    	Joint* currentJoint = m_model->getJoint(p.first);
+        if (currentJoint == nullptr) {
+			continue;
+		}
 
+        // previousTransform is p.second
         JointTransform nextTransform = nf.at(p.first);
         JointTransform currentTransform = m_model->getRestTransform(p.first);
-        //nextTransform.z = currentTransform.z;
 
         currentTransform += JointTransform::interpolate(p.second, nextTransform, progression);
         //currentTransform.z = 0;
@@ -253,5 +254,5 @@ void SkAnimator::applyPoseToJoints(const std::unordered_map<std::string, JointTr
     //glm::mat4 ct = joint->getInverseBindTransform()*currentTransform;
     glm::mat4 ct = scaledCurrentTransform *joint->getInverseBindTransform();
     joint->setAnimationTransform(ct);
-
+	//std::cerr << "setting " << joint->getName() << " to " << ct[3][0] << ", " << ct[3][1] << "\n";
 }
