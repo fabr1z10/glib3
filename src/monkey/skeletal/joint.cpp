@@ -2,7 +2,7 @@
 
 
 Joint::Joint(int index, const std::string& name) : m_index(index), m_localBindTransform(1.0f),
-    m_inverseBindTransform(1.0f), m_name(name), m_bindTransform(1.0f) {}
+    m_inverseBindTransform(1.0f), m_name(name), m_bindTransform(1.0f), m_z(0) {}
 
 
 Joint::Joint(int index, const std::string& name, float z) :

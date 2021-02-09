@@ -94,6 +94,7 @@ void SkModel::attachMesh (const std::string& id, const std::string& meshId,
     });
 	m_jointCount = m_js.size();
 
+
     const auto& localToModelIndex = m_jointMap.at(id);
     auto rootJoint = m_js[localToModelIndex.at(0)];
     // get the origin transform
@@ -104,6 +105,7 @@ void SkModel::attachMesh (const std::string& id, const std::string& meshId,
     std::vector<VertexSkeletal> vertices;
     std::vector<unsigned> indices;
     auto mesh = std::make_shared<TexturedMesh<VertexSkeletal>>(SKELETAL_SHADER, GL_TRIANGLES, texName);
+    std::cout << "creating mesh for " << id << "\n";
     for (unsigned int i = 0 ; i < points.size(); i += stride) {
         VertexSkeletal vertex{};
         // transform local to model
@@ -126,6 +128,8 @@ void SkModel::attachMesh (const std::string& id, const std::string& meshId,
         vertex.weight2 = points[i+10];
         polygon.push_back({vertex.x, vertex.y});
         vertices.push_back(vertex);
+		std::cout << vertex.x << ", " << vertex.y << ", " << vertex.z << ", " << vertex.index0 << ", " <<
+		vertex.index1 << ", " << vertex.index2 << ", " << vertex.weight0 << ", " << vertex.weight1 << ", " << vertex.weight2 << "\n";
     }
     std::vector<std::vector<Point>> p;
     p.push_back(polygon);
