@@ -59,7 +59,8 @@ public:
     Joint* getJoint (const std::string&);
     size_t getJointCount() const;
     bool hasJoint (const std::string&);
-    void attachMesh (const std::string& id, const std::string& meshId, const std::string& parentMesh, int parentJointId, float scale, int order);
+    void attachMesh (const std::string& id, const std::string& meshId, const std::string& parentMesh, int parentJointId, float scale, int order,
+					 glm::vec2 offset = glm::vec2(0.0f));
 
     void setMesh (const std::string& jointId, const std::string& meshId, float scale, glm::vec2 offset = glm::vec2(0.0f), int order = 0);
     void setAnimation (const std::string& animId, const std::string& anim);
@@ -120,6 +121,7 @@ private:
     std::vector<SkBoxInfo> m_skeletalBoxes;
     std::vector<std::pair<std::string, std::string>> m_offsetPointIds;
     std::unordered_map<std::string, std::unordered_map<std::string, glm::vec2>> m_keyPoints;
+	std::unordered_map<std::string, std::unordered_map<std::string, glm::vec2>> m_dims;
 };
 
 inline size_t SkModel::getJointCount() const {

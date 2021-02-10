@@ -48,7 +48,7 @@ int SkModel::getShapeId(const std::string& animId) {
 }
 
 void SkModel::attachMesh (const std::string& id, const std::string& meshId,
-	const std::string& parentMesh, int parentJointId, float scale, int order) {
+	const std::string& parentMesh, int parentJointId, float scale, int order, glm::vec2 offset) {
 
     using Coord = float;
     using Point = std::array<Coord, 2>;
@@ -60,6 +60,22 @@ void SkModel::attachMesh (const std::string& id, const std::string& meshId,
     const unsigned stride = 11;
     unsigned rootJointId = 0;
     unsigned parentJointIndex = -1;
+
+    // add key points and dimensions, if any
+    if (meshTemplate.hasKey("key_points")) {
+    	auto kps = meshTemplate.get<PyDict>("key_points").toDict<std::string, glm::vec2>();
+    	for (const auto& kp : kps) {
+    		m_keyPoints[id][kp.first] = kp.second;
+    	}
+    }
+
+    if (meshTemplate.hasKey("dims")) {
+		auto kps = meshTemplate.get<PyDict>("dims").toDict<std::string, glm::vec2>();
+		for (const auto& kp : kps) {
+			m_dims[id][kp.first] = kp.second;
+		}
+	}
+
     meshTemplate.foreach<PyDict>("joints", [&] (const PyDict& dict) {
 
         int index = dict.get<int>("index");
@@ -67,7 +83,7 @@ void SkModel::attachMesh (const std::string& id, const std::string& meshId,
 		auto jointId = id +"@" + std::to_string(index);
 		unsigned mappedIndex = m_js.size();
 		auto joint = std::make_shared<Joint>(mappedIndex, jointId);
-
+		joint->setScale(scale);
 		// check if we have a parent joint
 		Joint* parentJoint =  nullptr;
 		// if parent is populated (not -1) then this is linked to a joint in the same mesh
@@ -77,16 +93,16 @@ void SkModel::attachMesh (const std::string& id, const std::string& meshId,
 			parentJointIndex = m_jointMap.at(parentMesh).at(parentJointId);
 			parentJoint = m_js[parentJointIndex].get();
 		}
+		JointTransform tr;
 		if (parentJoint != nullptr) {
 			parentJoint->addChild(joint);
 			auto pos = dict.get<glm::vec2>("pos");
-			JointTransform tr;
 			tr.translation = glm::vec3(pos.x, pos.y, 0.0f);
 			joint->setLocalToParentTransform(tr, parentJoint->getBindTransform());
-			m_restTransforms[jointId] = tr;
 		} else {
 			m_rootJoint = joint;
 		}
+		m_restTransforms[jointId] = tr;
         m_js.push_back(joint);
         m_jointMap[id][index] = mappedIndex;
         m_jointMap2[jointId] = mappedIndex;
@@ -111,8 +127,8 @@ void SkModel::attachMesh (const std::string& id, const std::string& meshId,
         // transform local to model
         glm::vec3 modelPos = transform * scalingMat * glm::vec4(points[i], points[i+1], points[i+2], 1.0f);
 //            //auto tup = po[i].cast<pybind11::tuple>();
-        vertex.x = modelPos.x;
-        vertex.y = modelPos.y;
+        vertex.x = modelPos.x + offset.x;
+        vertex.y = modelPos.y + offset.y;
         vertex.z = modelPos.z;
         m_maxBounds.addPoint(glm::vec3(vertex.x, vertex.y, vertex.z));
         vertex.s = points[i+3];
@@ -277,11 +293,13 @@ void SkModel::computeOffset() {
         auto iter = m_keyPoints.find(p.first);
         if (iter != m_keyPoints.end()) {
             auto point = iter->second.at(p.second);
-            const auto& joint = m_allJoints.at(p.first);
+            //const auto& joint = m_allJoints.at(p.first);
+            auto jointId = p.first+"@0";
+            const auto& joint = m_js[m_jointMap2.at(jointId)];
             auto transform = joint->getBindTransform();
             auto scaling = glm::scale(glm::vec3(joint->getScale()));
             glm::vec3 tp = transform * scaling * glm::vec4(point.x, point.y, 0.0f, 1.0f);
-            m_offsetPoints.emplace_back(p.first, glm::vec3(tp.x, tp.y, 0.0f));
+            m_offsetPoints.emplace_back(jointId, glm::vec3(tp.x, tp.y, 0.0f));
         }
     }
 }
@@ -292,9 +310,10 @@ SkModel::SkModel(const ITable & t) : _nextJointId(0), m_jointCount(0) {
         auto meshId = dict.get<std::string>("mesh");
         auto parent = dict.get<std::string>("parent", std::string());
         auto scale = dict.get<float> ("scale", 1.0f);
+        auto offset = dict.get<glm::vec2> ("offset", glm::vec2(0.0f));
         auto parentJoint = dict.get<int>("joint", 0);
 		auto sortingOrder = dict.get<int>("order", 0);
-		attachMesh(id, meshId, parent, parentJoint, scale, sortingOrder);
+		attachMesh(id, meshId, parent, parentJoint, scale, sortingOrder, offset);
     });
 
     int ac = 0;
@@ -308,6 +327,17 @@ SkModel::SkModel(const ITable & t) : _nextJointId(0), m_jointCount(0) {
         m_animations[id] = sanim;
         ac++;
     });
+
+    // ##################
+    // read offset
+    // ##################
+    t.foreach<pybind11::tuple> ("offset", [&] (const pybind11::tuple& P) {
+		auto mesh = P[0].cast<std::string>();
+		auto point = P[1].cast<std::string>();
+		m_offsetPointIds.emplace_back(mesh, point);
+
+    }) ;
+
 
 //    m_shareable = false;
 //    // ##################
@@ -361,22 +391,6 @@ SkModel::SkModel(const ITable & t) : _nextJointId(0), m_jointCount(0) {
 //    //using N = uint32_t;
 //
 //    //const int point_size = VertexSkeletal::point_size;
-//    // ##################
-//    // read offset
-//    // ##################
-//    t.foreach<pybind11::tuple> ("offset", [&] (const pybind11::tuple& P) {
-//        auto joint = P[0].cast<std::string>();
-//        auto point = P[1].cast<std::string>();
-//        m_offsetPointIds.push_back(std::make_pair<>(joint, point));
-////        auto iter = meshInfo.find(joint);
-////        if (iter != meshInfo.end()) {
-////            auto p = iter->second.at(point);
-////            std::cerr << " Joint: " << joint << ", " << point << ": " << p.x << ", " << p.y << "\n";
-////            auto transform = glm::inverse(m_allJoints.at(joint)->getInverseBindTransform());
-////            glm::vec3 tp = transform * glm::vec4(p.x, p.y, 0.0f, 1.0f);
-////            m_offsetPoints.emplace_back(joint, glm::vec3(tp.x, tp.y, 0.0f));
-////        }
-//    }) ;
 //
 //    // ##################
 //    // read skin
@@ -405,25 +419,44 @@ SkModel::SkModel(const ITable & t) : _nextJointId(0), m_jointCount(0) {
 //
 //		m_sortedMeshes[sortingOrder].back().bb = depth;
 //    });
-//    computeOffset();
+    computeOffset();
 //
 
 //
-//    // ################## read boxes
-//    if (t.hasKey("boxes")) {
-//        auto b = t.get<PyDict>("boxes");
-//        auto anim = b.get<pybind11::dict>("anim");
+    // ################## read boxes
+    if (t.hasKey("boxes")) {
+        auto b = t.get<PyDict>("boxes");
+        b.foreach<PyDict> ("attack", [&] (const PyDict& d) {
+            auto anim = d.get<std::string>("anim");
+			auto box = d.get<int>("box");
+			auto boneId =d.get<std::string>("joint");
+			auto meshId = boneId.substr(0,boneId.find("@"));
+			auto pointName = d.get<std::string>("point");
+			auto size = d.get<std::string>("size");
+            const auto& animation = m_animations.at(anim);
+            // need the transformation of the bone at attack time
+            auto atimes = animation->getAttackTimes(box);
+            auto abox = std::make_shared<AttackBox>();
+            abox->t0 = atimes.first;
+            abox->t1 = atimes.second;
+            Joint* joint = getJoint(boneId);
+            auto transform = joint->getBindTransform();
+            abox->boneId = boneId;
+            abox->bone = m_jointMap2.at(boneId);//  boneToIndex.at(boneId);
+            auto point = m_keyPoints.at(meshId).at(pointName);
+            auto transformedPoint = transform * glm::vec4(point,0.0f,1.0f);
+            auto dims = m_dims.at(meshId).at(size);
+            abox->shape = std::make_shared<Rect>(dims[0], dims[1], glm::vec3(transformedPoint));
+            auto tr0 = animation->getAnimTransform(abox->t0, this);
+            auto boneTransform0 = tr0.at(boneId);
+            auto tb1 = abox->shape->getBounds();
+            tb1.Transform(boneTransform0);
+            auto tsb = tb1.GetSize();
+            abox->shapeTransformed = std::make_shared<Rect>(tsb[0], tsb[1], glm::vec3(tb1.min.x, tb1.min.y, 0.0f));
+            m_attackTimes[anim] = abox;
+        });
+    }
 //        //Bounds maxSize;
-//        for (const auto& a : anim) {
-//            auto animId = a.first.cast<std::string>();
-//            auto lb = a.second.cast<pybind11::list>();
-//            for (size_t i = 0; i < lb.size(); ++i) {
-//                auto tup = lb[i].cast<pybind11::tuple>();
-//                auto jointId = tup[0].cast<std::string>();
-//                auto pointId = tup[1].cast<std::string>();
-//                m_boxInfo[animId].pts.emplace_back(PointLocator{jointId, pointId});
-//            }
-//        }
 //
 //        b.foreach<PyDict> ("attack", [&] (const PyDict& d) {
 //            auto anim = d.get<std::string>("anim");

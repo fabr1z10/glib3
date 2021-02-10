@@ -49,7 +49,7 @@ void FoeChase::AttachStateMachine(StateMachine * sm) {
         am = std::max(am, scale*sb.min.x);
         aM = std::min(aM, scale*sb.max.x);
     }
-    m_attackPos = aM;
+    m_attackPos = 0.5f* (am+aM);
 
     m_target = Monkey::get().Get<Entity>("player");
 }

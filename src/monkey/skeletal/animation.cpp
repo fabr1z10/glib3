@@ -73,8 +73,12 @@ std::unordered_map<std::string, glm::mat4> SkAnimation::getAnimTransform(float t
     const auto& nf = std::get<1>(pnframes)->getJointKeyFrames();
     std::unordered_map<std::string, JointTransform> currentPose;
     for (const auto& p : std::get<0>(pnframes)->getJointKeyFrames()) {
-        if (!model->hasJoint(p.first))
-            continue;
+        //if (!model->hasJoint(p.first))
+        //    continue;
+		Joint* currentJoint = model->getJoint(p.first);
+		if (currentJoint == nullptr) {
+			continue;
+		}
         JointTransform nextTransform = nf.at(p.first);
         JointTransform currentTransform = model->getRestTransform(p.first);
         //nextTransform.z = currentTransform.z;
