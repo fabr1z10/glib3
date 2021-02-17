@@ -32,7 +32,7 @@ private:
     float m_c2;
     int m_castMask;
     int m_castTag;
-    std::shared_ptr<Shape> m_shape;
+    std::shared_ptr<IShape> m_shape;
     ICollisionEngine* m_engine;
 
     std::vector<KeyFrame> m_keyFrames;

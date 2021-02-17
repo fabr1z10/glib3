@@ -8,7 +8,7 @@ public:
     ScriptHotSpot (const ITable& t);
 
     ScriptHotSpot (
-            std::shared_ptr<Shape> shape,
+            std::shared_ptr<IShape> shape,
             int priority) : HotSpot(shape, priority) {}
     
     void onLeave() override;

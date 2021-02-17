@@ -14,18 +14,18 @@
 class HotSpot : public Component {
 public:
     HotSpot (int priority) : Component(), m_shape{nullptr}, m_focus{false}, m_priority{priority} {}
-    HotSpot (const LuaTable&);
+    //HotSpot (const LuaTable&);
     HotSpot (const ITable&);
     HotSpot (const HotSpot&);
-    HotSpot (std::shared_ptr<Shape> shape, int priority) : Component(),
+    HotSpot (std::shared_ptr<IShape> shape, int priority) : Component(),
     m_shape{shape}, m_focus{false}, m_priority{priority} {}
     virtual ~HotSpot();
     virtual bool isMouseInside(glm::vec2);
     void SetFocus (bool);
     Event<HotSpot*> onDestroy;
     void Start() override;
-    Shape* GetShape();
-    void SetShape (std::shared_ptr<Shape> shape);
+    IShape* GetShape();
+    void SetShape (std::shared_ptr<IShape> shape);
     void Update(double) override {}
     void SetParent(Entity*) override;
     virtual void onEnter() = 0;
@@ -43,16 +43,16 @@ public:
 protected:
     virtual std::shared_ptr<Entity> getDebugMesh();
     int m_priority;
-    std::shared_ptr<Shape> m_shape;
+    std::shared_ptr<IShape> m_shape;
     bool m_focus;
 };
 
-inline Shape* HotSpot::GetShape()
+inline IShape* HotSpot::GetShape()
 {
     return m_shape.get();
 }
 
-inline void HotSpot::SetShape (std::shared_ptr<Shape> shape) {
+inline void HotSpot::SetShape (std::shared_ptr<IShape> shape) {
     m_shape =shape;
 }
 

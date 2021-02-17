@@ -13,7 +13,7 @@ set(BIN_DIR ${PROJECT_DIR}/bin)
 set(LIB_DIR ${PROJECT_DIR}/lib)
 set(INCLUDE_DIR ${PROJECT_DIR}/include)
 set(SRC_DIR ${PROJECT_DIR}/src)
-set(PYBIND_INCLUDE_DIR ${PROJECT_DIR}/include/py/include)
+set(PYBIND_INCLUDE_DIR ${PROJECT_DIR}/pybind11/include)
 
 set(CMAKE_CXX_STANDARD 17)
 #set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fpic")
@@ -58,7 +58,7 @@ configure_file (
 )
 
 # source directory
-add_subdirectory(include/py)
+add_subdirectory(pybind11)
 add_subdirectory(src/alglib)
 add_subdirectory(src/monkey)
 add_subdirectory(src/scumm)

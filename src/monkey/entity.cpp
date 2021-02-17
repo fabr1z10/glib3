@@ -178,6 +178,12 @@ void Entity::Update(double dt) {
     for (auto& iter : m_components) {
         iter.second->Update(dt);
     }
+    // now call update on children
+    for (auto iter = m_children.rbegin(); iter != m_children.rend(); ++iter) {
+        for (const auto& entity : iter->second) {
+            entity->Update(dt);
+        }
+    }
 }
 
 void Entity::Start() {

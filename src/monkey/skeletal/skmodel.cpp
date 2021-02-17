@@ -23,11 +23,11 @@ std::string SkModel::GetDefaultAnimation() const {
     return m_defaultAnimation;
 }
 
-const std::vector<std::shared_ptr<Shape>>& SkModel::getShapes() {
+const std::vector<std::shared_ptr<IShape>>& SkModel::getShapes() {
     return m_shapes;
 }
 
-Shape* SkModel::getShape (const std::string& animId) {
+IShape* SkModel::getShape (const std::string& animId) {
     auto it = m_animToShape.find(animId);
     if (it == m_animToShape.end()) {
         return nullptr;
@@ -526,7 +526,7 @@ void SkModel::setAnimation(const std::string &animId, const std::string &anim) {
 }
 
 
-void SkModel::addShape(const std::string& animId, std::shared_ptr<Shape> shape) {
+void SkModel::addShape(const std::string& animId, std::shared_ptr<IShape> shape) {
 
 //            lb[0].cast<>()
 //            auto size = a.second.cast<std::vector<float>>();
@@ -598,9 +598,9 @@ void SkModel::addJointsToArray(Joint * j, std::vector<glm::mat4> & jointMatrices
 }
 
 
-std::vector<std::shared_ptr<Shape>> SkModel::getAttackShapes() const {
+std::vector<std::shared_ptr<IShape>> SkModel::getAttackShapes() const {
 
-    std::vector<std::shared_ptr<Shape>> shapes;
+    std::vector<std::shared_ptr<IShape>> shapes;
     for (const auto& m : m_attackTimes) {
         //for (const auto& c : m.second) {
 

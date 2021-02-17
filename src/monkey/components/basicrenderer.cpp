@@ -44,61 +44,61 @@ BasicRenderer::BasicRenderer(const ITable & t) : Renderer(t) {
         SetModel( std::make_shared<BasicModel>(mesh));
     } else if (cls == 2) {
         // shape renderer
-        auto factory = Engine::get().GetSceneFactory();
-        auto shapeT = t.get<PyTable>("shape");
-        auto shape = factory->make2<Shape>(shapeT);
-        auto tex = t.get<std::string>("tex");
-        float x0 = t.get<float>("x0", 0.0f);
-        float y0 = t.get<float>("y0", 0.0f);
-        float repx = t.get<float>("repx", 1.0f);
-        float repy = t.get<float>("repy",1.0f);
-        float slantx = t.get<float>("slantx", 0.0f);
-        float slanty = t.get<float>("slanty", 0.0f);
-        std::shared_ptr<Fill> fill;
-        if (t.hasKey("fill")) {
-            auto fillT = t.get<PyTable>("fill");
-            fill = factory->make2<Fill>(fillT);
-        } else {
-            fill = std::make_shared<SolidFill>(glm::vec4(255.0f));
-        }
-        auto mesh = MeshFactoryTextured::CreateMesh(*(shape.get()), tex, x0, y0, repx, repy, slantx, slanty, fill);
-        SetModel (std::make_shared<BasicModel>(mesh));
+//        auto factory = Engine::get().GetSceneFactory();
+//        auto shapeT = t.get<PyTable>("shape");
+//        auto shape = factory->make2<IShape>(shapeT);
+//        auto tex = t.get<std::string>("tex");
+//        float x0 = t.get<float>("x0", 0.0f);
+//        float y0 = t.get<float>("y0", 0.0f);
+//        float repx = t.get<float>("repx", 1.0f);
+//        float repy = t.get<float>("repy",1.0f);
+//        float slantx = t.get<float>("slantx", 0.0f);
+//        float slanty = t.get<float>("slanty", 0.0f);
+//        std::shared_ptr<Fill> fill;
+//        if (t.hasKey("fill")) {
+//            auto fillT = t.get<PyTable>("fill");
+//            fill = factory->make2<Fill>(fillT);
+//        } else {
+//            fill = std::make_shared<SolidFill>(glm::vec4(255.0f));
+//        }
+//        auto mesh = MeshFactoryTextured::CreateMesh(*(shape.get()), tex, x0, y0, repx, repy, slantx, slanty, fill);
+      //  SetModel (std::make_shared<BasicModel>(mesh));
     } else if (cls ==3) {
-        auto factory = Engine::get().GetSceneFactory();
-        auto shapeT = t.get<PyTable>("shape");
-        auto shape = factory->make2<Shape>(shapeT);
-        auto fillT = t.get<PyTable>("fill");
-        auto fill = factory->make2<Fill>(fillT);
-        float z = t.get<float>("z", 0.0f);
-        auto mesh = MeshFactorySolid::CreateMesh(*(shape.get()), fill, z);
-        SetModel (std::make_shared<BasicModel>(mesh));
+//        auto factory = Engine::get().GetSceneFactory();
+//        auto shapeT = t.get<PyTable>("shape");
+//        auto shape = factory->make2<IShape>(shapeT);
+//        auto fillT = t.get<PyTable>("fill");
+//        auto fill = factory->make2<Fill>(fillT);
+//        float z = t.get<float>("z", 0.0f);
+//        auto mesh = MeshFactorySolid::CreateMesh(*(shape.get()), fill, z);
+//        SetModel (std::make_shared<BasicModel>(mesh));
         
     } else if (cls==4) {
         // create a colored shape outline texture
-        auto factory = Engine::get().GetSceneFactory();
-        auto color = t.get<glm::vec4>("color");
-        color /= 255.0f;
-        auto shapeT = t.get<PyTable>("shape");
-        auto shape = factory->make2<Shape>(shapeT);
-        auto z = t.get<float>("z", 0.0f);
-        auto mesh = MeshFactory::CreateMesh(*(shape.get()), z, color);
-        SetModel (std::make_shared<BasicModel>(mesh));
+//        auto factory = Engine::get().GetSceneFactory();
+//        auto color = t.get<glm::vec4>("color");
+//        color /= 255.0f;
+//        auto shapeT = t.get<PyTable>("shape");
+//        auto shape = factory->make2<IShape>(shapeT);
+//        auto z = t.get<float>("z", 0.0f);
+//        auto mesh = MeshFactory::CreateMesh(*(shape.get()), z, color);
+//        SetModel (std::make_shared<BasicModel>(mesh));
     } else if (cls == 5) {
 		// textured mesh
-		auto factory = Engine::get().GetSceneFactory();
-		TexMeshFactory meshFactory;
-		t.foreach<PyDict>("texinfo", [&] (const PyDict& d) {
-			auto id = d.get<std::string>("id", "default");
-			auto tex = d.get<std::string>("tex");
-			auto repeat = d.get<glm::vec2>("repeat", glm::vec2(1.0f, 1.0f));
-			meshFactory.addTexInfo( TexInfo{id,tex,repeat});
-		});
-		auto shapeT = t.get<PyTable>("shape");
-		auto shape = factory->make2<Shape>(shapeT);
-		auto meshes = meshFactory.CreateMesh(*(shape.get()));
-		if (meshes.size() == 1) {
-			SetModel (std::make_shared<BasicModel>(meshes.front()));
-		}
+//		auto factory = Engine::get().GetSceneFactory();
+//		TexMeshFactory meshFactory;
+//		t.foreach<PyDict>("texinfo", [&] (const PyDict& d) {
+//			auto id = d.get<std::string>("id", "default");
+//			auto tex = d.get<std::string>("tex");
+//			auto repeat = d.get<glm::vec2>("repeat", glm::vec2(1.0f, 1.0f));
+//			meshFactory.addTexInfo( TexInfo{id,tex,repeat});
+//		});
+//		auto shapeT = t.get<PyTable>("shape");
+//		auto shape = factory->make2<IShape>(shapeT);
+//		auto meshes = meshFactory.CreateMesh(*(shape.get()));
+//		if (meshes.size() == 1) {
+//			SetModel (std::make_shared<BasicModel>(meshes.front()));
+//		}
 		// you can provide a list of textures. Each texture has
 		// id, tex, repeat (offset, skew)
 

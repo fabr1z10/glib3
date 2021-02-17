@@ -1,0 +1,164 @@
+---
+lookout:
+  stringset: lookout
+  nodes:
+    intro1:
+      status: 1
+      next: intro1
+      order: 10 
+    intro2:
+      status: 1
+      next: intro1
+      order: 20      
+    intro3:
+      status: 1
+      next: intro1
+      order: 30      
+    intro4:
+      status: 1
+      next: intro1
+      order: 40          
+    imguy:
+      status: 1
+      next: intro1
+      once: True
+      close_nodes: [actuallyimguy]      
+      order: 10
+      parent: intro1
+    actuallyimguy:
+      status: 0
+      next: intro1
+      once: True
+      order: 10
+      parent: intro1
+    squinky:
+      status: 1
+      order: 20
+      next: intro1
+      once: True
+      close_nodes: [imguy]
+      activate_nodes: [actuallyimguy]
+      parent: intro1
+    overhere:
+      status: 1
+      order: 30
+      next: intro1
+      once: True
+      parent: intro1
+    whoru:
+      status: 1
+      order: 40
+      next: intro1
+      once: True
+      activate_nodes: [whyguvworried, bat]
+      parent: intro1
+    whyguvworried:
+      status: 0
+      order: 40
+      next: intro1
+      once: True
+      parent: intro1
+    bat:
+      status: 0
+      order: 50
+      next: intro1
+      once: True
+      parent: intro1      
+    fortune:
+      status: 1
+      order: 100
+      parent: intro1
+      
+
+mancomb:
+  stringset: mancomb
+  nodes:
+    imguy: 
+      status: 1
+      next: imguy
+      activate_nodes: [yourname2]
+      once: True
+      order: 10     
+    yourname2:
+      status: 0
+      order: 10  
+      once: True
+    rupirate: 
+      status: 1
+      next: _root
+      once: True
+      activate_nodes: [guvnor]
+      close_nodes: [charge]
+      order: 10       
+    charge: 
+      status: 1
+      next: charge
+      #once: True
+      order: 10       
+    leaders:
+      status: 1
+      once: True
+      order: 10
+      close_nodes: [charge, rupirate]
+      activate_nodes: [guvnor]
+      next: _root
+      parent: charge
+    guvnor2:
+      status: 1
+      once: True
+      next: guvnor
+      order: 20
+      parent: charge
+    nice:
+      status: 1
+      order: 100
+      parent: charge
+    guvnor:
+      status: 0
+      next: guvnor
+      once: True
+      order: 20
+    whynot:
+      status: 1
+      once: True
+      parent: guvnor
+      next: whynot
+      order: 10
+    welcome:
+      status: 1
+      once: True
+      next: _root
+      parent: guvnor
+      order: 20
+    gothere:
+      status: 1
+      once: True
+      parent: guvnor      
+      order: 30
+    howsthat:
+      status: 1
+      parent: whynot
+      order: 10
+      next: _root    
+    whois:
+      status: 1
+      parent: whynot
+      next: _root    
+      order: 20      
+    toobad:
+      status: 1
+      parent: whynot
+      order: 30      
+    bye:       
+      status: 1
+      order: 100
+    ilikeguy:
+      status: 1
+      parent: imguy
+      once: True
+      order: 10    
+    insulted:
+      status: 1
+      parent: imguy
+      order: 50
+

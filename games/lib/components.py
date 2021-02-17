@@ -170,4 +170,18 @@ class SkColl:
         self.w0 = w0
         self.P1 = P1
         self.j1 = j1
-        self.w1 = w1        
+        self.w1 = w1
+
+class HotSpot:
+    def __init__(self, shape, priority:int=0,onenter = None, onleave = None, onclick = None):
+        self.type = 'components.hotspot'
+        self.shape = shape
+        self.onenter = onenter
+        self.onleave = onleave
+        self.onclick = onclick
+        self.priority = priority
+
+class HotSpotManager:
+    def __init__(self, lmbclick = None):
+        self.type = 'components.hotspotmanager'
+        self.lmbclick = lmbclick

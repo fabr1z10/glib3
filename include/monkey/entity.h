@@ -16,7 +16,7 @@
 #include <monkey/ref.h>
 #include <monkey/py.h>
 #include <monkey/camera.h>
-#include <monkey/iterator.h>
+//#include <monkey/iterator.h>
 #include <monkey/component.h>
 #include <string>
 #include <typeindex>
@@ -75,13 +75,13 @@ public:
     void restart();
     void WindDown();
     void Begin();
-    friend class DepthFirstIterator<Entity>;
-    DepthFirstIterator<Entity> begin() {
-        return DepthFirstIterator<Entity>(this);
-    }
-    DepthFirstIterator<Entity> end() {
-        return DepthFirstIterator<Entity>();
-    }
+//    friend class DepthFirstIterator<Entity>;
+//    DepthFirstIterator<Entity> begin() {
+//        return DepthFirstIterator<Entity>(this);
+//    }
+//    DepthFirstIterator<Entity> end() {
+//        return DepthFirstIterator<Entity>();
+//    }
     bool IsDescendantOf (Entity*) const;
     
 

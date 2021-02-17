@@ -73,6 +73,8 @@ public:
     Controller3D(float maxClimbAngle, float maxDescendAngle, float skinwidth = .015f, int horizontalRayCount = 4, int verticalRayCount = 4)
             : IController(), m_maxClimbAngle(maxClimbAngle), m_maxDescendAngle(maxDescendAngle), m_skinWidth(skinwidth), m_horizontalRayCount(horizontalRayCount), m_verticalRayCount(verticalRayCount), m_platform(nullptr) {}
     virtual ~Controller3D() {}
+
+    Controller3D (const ITable&);
     void Start() override;
     void Begin() override;
     bool IsFalling(int x, int z);
@@ -81,8 +83,7 @@ public:
     bool ceiling () const override;
 	bool side () const override {return false;}
 
-    void ClimbSlope(glm::vec3&, float);
-    void DescendSlope(glm::vec3&);
+
     void CalculateRaySpacing();
     void Update(double) override {}
 //    void ResetShape(ICollider*);
@@ -116,6 +117,10 @@ private:
     float m_maxDescendAngle;
     bool m_wasGnd;
     CollisionDetails3D m_detailsOld;
+    float m_widthX;
+    float m_widthZ;
+    float m_horXSpacing;
+    float m_horZSpacing;
 };
 
 inline std::type_index Controller3D::GetType() {

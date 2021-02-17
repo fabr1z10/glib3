@@ -288,9 +288,9 @@ void Engine::MainLoop() {
                 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
                 // update all active components
-                for (auto iter = m_scene->begin(); iter != m_scene->end(); ++iter) {
-                    iter->Update(m_frameTime);
-                }
+                // this calls update on children nodes
+                m_scene->Update(m_frameTime);
+                //iterateDepth(m_scene.get(), [&] (Entity* entity) { entity->Update(m_frameTime); });
 
                 // update all the runners (script, collision, etc.)
                 for (auto& runner : m_runners) {

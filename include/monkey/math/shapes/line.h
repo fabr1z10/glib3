@@ -1,43 +1,37 @@
 #pragma once
 
-#include <monkey/math/shape.h>
+#include <monkey/math/shapes/convexpoly.h>
 
 // a segment
-class Line : public Shape {
+class Segment : public IConvexPolygon {
 public:
-    Line (glm::vec2 A, glm::vec2 B);
-    Line (glm::vec3 A, glm::vec3 B);
-    Line (const ITable&);
-    bool isPointInside(glm::vec3) const override;
-    void accept (AcyclicVisitor& v) override;
-    float GetLength() const;
-    glm::vec2 GetDirection() const;
-    std::string toString() const override;
+    Segment (glm::vec2 A, glm::vec2 B);
+    explicit Segment (const ITable&);
+    std::unique_ptr<IShape> transform (const glm::mat4& t) override;
     glm::vec2 getA() const;
     glm::vec2 getB() const;
-    glm::vec2 project(const glm::vec2 axis, const glm::mat4& worldTransform) override;
-    std::vector<glm::vec2> getPoints() override;
-    std::vector<glm::vec2> getEdges() override;
+    //    bool isPoint    virtual std::unique_ptr<IShape> transform (const glm::mat4& t) = 0;Inside(glm::vec3) const override;
+//    void accept (AcyclicVisitor& v) override;
+    float getLength() const;
+    glm::vec2 getDirection() const;
+    bool isPointInside(glm::vec3) const override;
+    glm::vec2 project(glm::vec2) const override;
+
+    std::vector<glm::vec2> getEdges() const override;
+    std::vector<glm::vec2> getVertices() const override;
+
 private:
-    glm::vec3 m_A;
-    glm::vec3 m_B;
-    glm::vec3 m_dir;
-    float m_length;
-    float m_length2;
+    glm::vec2 m_A;
+    glm::vec2 m_B;
+    glm::vec2 m_dir;
+    void initBounds();
 };
 
-inline float Line::GetLength () const {
-    return m_length;
-}
 
-inline glm::vec2 Line::GetDirection() const {
-    return m_dir;
-}
-
-inline glm::vec2 Line::getA() const {
+inline glm::vec2 Segment::getA() const {
     return m_A;
 }
 
-inline glm::vec2 Line::getB() const {
+inline glm::vec2 Segment::getB() const {
     return m_B;
 }

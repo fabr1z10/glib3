@@ -8,9 +8,9 @@ namespace py = pybind11;
 BoxedModel::BoxedModel(std::shared_ptr<SpriteMesh> mesh) : SpriteModel(mesh) {}
 
 
-std::vector<std::shared_ptr<Shape>> BoxedModel::getAttackShapes() const {
+std::vector<std::shared_ptr<IShape>> BoxedModel::getAttackShapes() const {
 
-    std::vector<std::shared_ptr<Shape>> shapes;
+    std::vector<std::shared_ptr<IShape>> shapes;
     for (const auto& m : m_shapeCast) {
         shapes.push_back(m_shapes[m.second]);
     }
@@ -29,20 +29,20 @@ BoxedModel::BoxedModel(const ITable &t) : SpriteModel(t) {
 
     t.foreach<py::list>("boxes", [&] (py::list p) {
         std::vector<float> pp = p.cast<std::vector<float>>();
-        std::shared_ptr<Shape> shape;
+        std::shared_ptr<IShape> shape;
         if (pp.size() == 4) {
             float width = pp[2] - pp[0];
             float height = pp[3] - pp[1];
             shape = std::make_shared<Rect>(width, height, glm::vec3(pp[0], pp[1], 0.0f));
         } else {
-            auto cs = std::make_shared<CompoundShape>();
-            for (int i = 0; i < pp.size(); i+= 4) {
-                float width = pp[i+2] - pp[i];
-                float height = pp[i+3] - pp[i+1];
-                auto rect = std::make_shared<Rect>(width, height, glm::vec3(pp[i], pp[i+1], 0.0f));
-                cs->AddShape(rect);
-            }
-            shape = cs;
+//            auto cs = std::make_shared<CompoundShape>();
+//            for (int i = 0; i < pp.size(); i+= 4) {
+//                float width = pp[i+2] - pp[i];
+//                float height = pp[i+3] - pp[i+1];
+//                auto rect = std::make_shared<Rect>(width, height, glm::vec3(pp[i], pp[i+1], 0.0f));
+//                cs->AddShape(rect);
+//            }
+//            shape = cs;
         }
         this->addShape(shape);
     });
@@ -161,7 +161,7 @@ BoxedModel::BoxedModel(const ITable &t) : SpriteModel(t) {
 
 }
 
-void BoxedModel::addShape(std::shared_ptr<Shape> s) {
+void BoxedModel::addShape(std::shared_ptr<IShape> s) {
     m_shapes.push_back(s);
     m_maxBounds.ExpandWith(s->getBounds());
 }
@@ -232,7 +232,7 @@ int BoxedModel::getShapeId(const std::string & anim, int frame) {
     return box->second;
 }
 
-std::shared_ptr<Shape> BoxedModel::shape(int id) {
+std::shared_ptr<IShape> BoxedModel::shape(int id) {
     return m_shapes[id];
 }
 
@@ -246,7 +246,7 @@ int BoxedModel::getShapeCastId(const std::string & anim, int frame) {
 
 }
 
-std::shared_ptr<Shape> BoxedModel::getShape(const std::string & anim, int frame) {
+std::shared_ptr<IShape> BoxedModel::getShape(const std::string & anim, int frame) {
     auto key = std::make_pair(anim, frame);
     auto box = m_boxInfo.find(key);
     if (box == m_boxInfo.end()) {
@@ -255,7 +255,7 @@ std::shared_ptr<Shape> BoxedModel::getShape(const std::string & anim, int frame)
     return m_shapes[box->second];
 }
 
-std::shared_ptr<Shape> BoxedModel::getShapeCast(const std::string & anim, int frame) {
+std::shared_ptr<IShape> BoxedModel::getShapeCast(const std::string & anim, int frame) {
     auto key = std::make_pair(anim, frame);
     auto box = m_shapeCast.find(key);
     if (box == m_shapeCast.end()) {

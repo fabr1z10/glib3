@@ -92,33 +92,6 @@ float ComputeOverlap(glm::vec2& p1, glm::vec2& p2) {
     return -b;
 }
 
-CollisionReport SAT(std::unordered_set<glm::vec2>& axesw, Shape* a, Shape* b, const glm::mat4& ta, const glm::mat4& tb) {
-    // axes are given in world coordinates
-    // since dot products do not depend on coordinate systems, we transform axes from world to local
-    CollisionReport report;
-    report.distance = std::numeric_limits<float>::infinity();
-    for (auto& axis : axesw) {
-        glm::vec2 pA = a->project(axis, ta);
-        glm::vec2 pB = b->project(axis, tb);
-        if (pA.x > pB.y || pB.x > pA.y) {
-            // we found a non-overlapping axis
-            // so we are sure that the two shapes do not collide
-            report.collide = false;
-            return report;
-        }
-        // there's overlapping in this axis
-        // compute overlap
-        float overlap = ComputeOverlap(pA, pB);
-        if (fabs(overlap) < fabs(report.distance)) {
-            report.distance = fabs(overlap);
-            report.direction = axis * (overlap < 0 ? -1.0f : 1.0f);
-        }
-    }
-    // if we get here, it means we haven't found a separating axis.
-    // Therefore, we can conclude the two shapes collide
-    report.collide = true;
-    return report;
-}
 
 float sign (const glm::vec2& p1, const glm::vec2& p2, const glm::vec2& p3)
 {

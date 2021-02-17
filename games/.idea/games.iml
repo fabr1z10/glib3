@@ -5,8 +5,9 @@
       <sourceFolder url="file://$MODULE_DIR$/lib" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/smb" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/smb/factories" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/monkey" isTestSource="false" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="Python 3.8" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>

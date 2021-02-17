@@ -2,7 +2,7 @@
 
 #include <monkey/mesh.h>
 #include <monkey/math/shapes/rect.h>
-#include <monkey/math/shapes/box3d.h>
+//#include <monkey/math/shapes/box3d.h>
 #include <monkey/math/shapes/line.h>
 #include <monkey/math/shapes/poly.h>
 #include <monkey/math/shapes/polyline.h>
@@ -14,8 +14,8 @@
 class Contour :
     public AcyclicVisitor,
     public Visitor<Rect>,
-    public Visitor<Line>,
-    public Visitor<Box3D>
+    public Visitor<Segment>
+    //public Visitor<Box3D>
 //    public Visitor<Polygon>,
 //    public Visitor<Poly>,
 //    public Visitor<PolyLine>,
@@ -25,9 +25,9 @@ class Contour :
 {
 public:
     void visit(Rect&) override;
-    void visit(Line&) override;
-    void visit(Box3D&) override;
-    static std::vector<glm::vec3> CreateContour (Shape*);
+    void visit(Segment&) override;
+    //void visit(Box3D&) override;
+    static std::vector<glm::vec3> CreateContour (IShape*);
 private:
     std::vector<glm::vec3> m_result;
     Contour () {}

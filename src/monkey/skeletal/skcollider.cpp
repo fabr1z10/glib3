@@ -47,7 +47,7 @@ Bounds SkCollider::getAttackBounds() const {
 
 }
 
-Shape* SkCollider::GetShape() {
+IShape* SkCollider::GetShape() {
     if (m_shapeId == -1)
         return nullptr;
     return m_model->getShape(m_shapeId);
@@ -58,7 +58,7 @@ void SkCollider::Begin() {
     updateShape();
 }
 
-std::shared_ptr<Shape> SkCollider::getBox(const std::string& anim, float t, const std::vector<PointLocator>& pts,
+std::shared_ptr<IShape> SkCollider::getBox(const std::string& anim, float t, const std::vector<PointLocator>& pts,
                                           const std::vector<glm::vec2>& fixedPoints) {
     const auto& keyPoints = m_model->getKeyPoints();
     float xMin = std::numeric_limits<float>::max();
@@ -185,14 +185,14 @@ void SkCollider::Start() {
     // create debug mesh
     const auto& attackInfo = m_model->getAttackInfo();
     for (const auto& info : attackInfo) {
-        auto c = std::make_shared<Entity>();
-        m_entity->AddChild(c);
-        auto renderer = std::make_shared<MultiRenderer>();
-        auto mesh = MeshFactory::CreateMesh(*(info.second->shape.get()));
-        auto model = std::make_shared<BasicModel>(mesh);
-        renderer->addModel(model);
-        c->AddComponent(renderer);
-        m_colliderRenderers.push_back(renderer.get());
+//        auto c = std::make_shared<Entity>();
+//        m_entity->AddChild(c);
+//        auto renderer = std::make_shared<MultiRenderer>();
+//        auto mesh = MeshFactory::CreateMesh(*(info.second->shape.get()));
+//        auto model = std::make_shared<BasicModel>(mesh);
+//        renderer->addModel(model);
+//        c->AddComponent(renderer);
+//        m_colliderRenderers.push_back(renderer.get());
     }
     // m_shapeEntity = c.get();
 

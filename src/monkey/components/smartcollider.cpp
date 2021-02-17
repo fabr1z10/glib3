@@ -115,9 +115,9 @@ void SmartCollider::Start() {
     auto renderer = std::make_shared<MultiRenderer>();
 //
     for (const auto& shape : m_model->getShapes()) {
-        auto mesh = MeshFactory::CreateMesh(*(shape.get()));
-        auto model = std::make_shared<BasicModel>(mesh);
-        renderer->addModel(model);
+//        auto mesh = MeshFactory::CreateMesh(*(shape.get()));
+//        auto model = std::make_shared<BasicModel>(mesh);
+//        renderer->addModel(model);
     }
 //
     renderer->setAddColor(color);
@@ -128,7 +128,7 @@ void SmartCollider::Start() {
 //    m_stateMachine = m_entity->GetComponent<StateMachine>();
 }
 
-Shape* SmartCollider::GetShape() {
+IShape* SmartCollider::GetShape() {
     int frame = m_animator->GetFrame();
     std::string anim = m_animator->GetAnimation();
     // now with these info, I ask the model to give me the current shape

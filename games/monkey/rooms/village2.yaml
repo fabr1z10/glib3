@@ -1,0 +1,26 @@
+---
+  id: village2
+  width: 480
+  height: 144
+  bg:
+    - image: gfx/village2.png
+      pos: [0, 0, -1]
+  walkareas:
+    - type: poly
+      outline: [0, 24, 123, 63, 199, 63, 299, 30, 377, 30, 385, 35, 454, 35, 470, 0, 0]
+      depth: auto
+      scale:
+        type: 'func.patch2d'
+        func: 
+          - pos: [0, 0]
+            size: [480, 30]
+            f:
+              type: 'func.const'
+              value: 1
+          - pos: [0, 30]
+            size: [480, 104]
+            f: 
+              type: 'func.linear.y'
+              p0: [30, 1]
+              p1: [59, 0.35]
+               

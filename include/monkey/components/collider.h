@@ -12,19 +12,19 @@ class SimpleCollider : public ICollider {
 public:
     SimpleCollider (int tag, int flag, int mask) : m_shape{nullptr}, m_tag{tag}, m_flag{flag}, m_mask{mask}, m_enabled{true} {}
     SimpleCollider (const ITable&);
-    SimpleCollider (std::shared_ptr<Shape> shape, int tag, int flag, int mask) :
+    SimpleCollider (std::shared_ptr<IShape> shape, int tag, int flag, int mask) :
     m_shape{shape}, m_tag{tag}, m_enabled{true}, m_flag{flag}, m_mask{mask} {}
     virtual ~SimpleCollider();
     
     // ICollider interface
-    Shape* GetShape() override;
+    IShape* GetShape() override;
     int GetCollisionTag() const override;
     int GetCollisionFlag() const override;
     int GetCollisionMask() const override;
     
     
     bool HasShape() const;
-    void SetShape(std::shared_ptr<Shape> shape);
+    void SetShape(std::shared_ptr<IShape> shape);
     void SetParent(Entity* parent) override;
     void Start() override;
     void Update(double) override {}
@@ -40,7 +40,7 @@ protected:
     int m_flag;
     int m_mask;
     int m_tag;
-    std::shared_ptr<Shape> m_shape;
+    std::shared_ptr<IShape> m_shape;
     Bounds m_aabb;
     bool m_enabled;
 private:
@@ -57,7 +57,7 @@ inline Bounds SimpleCollider::GetDynamicBoundsI() const {
     return m_aabb;
 }
 
-inline Shape* SimpleCollider::GetShape() {
+inline IShape* SimpleCollider::GetShape() {
     return m_shape.get();
 }
 

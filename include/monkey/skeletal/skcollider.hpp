@@ -22,7 +22,7 @@ public:
     void Begin() override;
 
     void Update(double) override;
-    Shape* GetShape() override;
+    IShape* GetShape() override;
 
     int GetCollisionTag() const override;
     int GetCollisionFlag() const override;
@@ -31,7 +31,7 @@ public:
     std::type_index GetType() override;
     Bounds getAttackBounds() const override;
     //void computeAttackBoxes();
-    std::shared_ptr<Shape> getBox(const std::string& anim, float t, const std::vector<PointLocator>& pts,
+    std::shared_ptr<IShape> getBox(const std::string& anim, float t, const std::vector<PointLocator>& pts,
                                   const std::vector<glm::vec2>& fixedPoints = std::vector<glm::vec2>());
 private:
     void recalcShapesDebug();

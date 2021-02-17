@@ -27,7 +27,7 @@ public:
     SmartCollider (const ITable&);
     void Start() override;
     void Update(double) override {}
-    Shape* GetShape() override;
+    IShape* GetShape() override;
     int GetCollisionTag() const override;
     int GetCollisionFlag() const override;
     int GetCollisionMask() const override;

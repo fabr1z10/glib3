@@ -12,9 +12,30 @@
 #include <stack>
 #include <queue>
 #include <functional>
-
+#include <monkey/entity.h>
 // need to do something after each atomic operation on the stack.
 // it will check the top element and do some custom operation
+
+template<typename T>
+void iterateDepth(Entity* root, T func) {
+    std::list<Entity*> nodesToProcess;
+    nodesToProcess.push_back(root);
+    while (!nodesToProcess.empty()) {
+        // get current node
+        auto node = nodesToProcess.front();
+        nodesToProcess.pop_front();
+        if (node->isActive()) {
+            func(node);
+            const auto &children = node->GetChildren();
+            for (auto iter = children.rbegin(); iter != children.rend(); ++iter) {
+                for (auto iter2 = iter->second.rbegin(); iter2 != iter->second.rend(); ++iter2) {
+                    nodesToProcess.push_front(iter2->get());
+                }
+            }
+        }
+    }
+}
+
 
 
 // generic iterator for Depth-first search in tree structures (for instance game objects and scheduler)

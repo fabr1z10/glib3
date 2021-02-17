@@ -206,6 +206,6 @@ void SpriteModel::Draw(Shader* shader, int offset, int count) {
 }
 
 
-std::vector<std::shared_ptr<Shape>> SpriteModel::getAttackShapes() const {
-    return std::vector<std::shared_ptr<Shape>>();
+std::vector<std::shared_ptr<IShape>> SpriteModel::getAttackShapes() const {
+    return std::vector<std::shared_ptr<IShape>>();
 }

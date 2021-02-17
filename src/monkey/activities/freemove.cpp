@@ -74,7 +74,7 @@ FreeMove::FreeMove(const ITable & t) : TargetActivity(t), m_shape(nullptr) {
     if (t.hasKey("cast")) {
         auto factory = Engine::get().GetSceneFactory();
         auto shapeR = t.get<PyTable>("cast");
-        m_shape = factory->make2<Shape>(shapeR);
+        m_shape = factory->make2<IShape>(shapeR);
         m_c1 = t.get<float>("c1");
         m_c2 = t.get<float>("c2");
         m_castTag = t.get<int>("cast_tag");

@@ -162,40 +162,40 @@ float SmoothDamp(float current, float target, float& currentVelocity, float smoo
 //
 //}
 
-bool inLineOfSight (const Poly& p, glm::vec2 start, glm::vec2 end) {
-    
-   	float epsilon = 0.5;
-    
-    // Not in LOS if any of the ends is outside the polygon
-    if ( !p.isPointInside(glm::vec3(start, 0.0f)) || !p.isPointInside(glm::vec3(end, 0.0f))) {
-        return false;
-    }
-    
-    // In LOS if it's the same start and end location
-    if (glm::length(end - start) < epsilon) {
-        return false;
-    }
-    
-    // Not in LOS if any edge is intersected by the start-end line segment
-   // bool inSight = true;
-//    int n = p.GetHoleCount() + 1;
+//bool inLineOfSight (const Poly& p, glm::vec2 start, glm::vec2 end) {
 //
-//    // contour
-//    int m = p.GetVertexCount();
-//    p.GetVertex()
+//   	float epsilon = 0.5;
 //
-//    for (int i = 0; i < n; ++i) {
-//        int m = p.GetVertexCount(i);
-//        glm::vec2 v1 = p.GetVertex(m-1, i);
-//        for (int j = 1; j < m; ++j) {
-//            glm::vec2 v2 = p.GetVertex(j);
-//            if (LineSegmentCross(start, end, v1, v2)) {
-//                return false;
-//            }
-//            v1 = v2;
-//        }
+//    // Not in LOS if any of the ends is outside the polygon
+//    if ( !p.isPointInside(glm::vec3(start, 0.0f)) || !p.isPointInside(glm::vec3(end, 0.0f))) {
+//        return false;
 //    }
-
-
-    return true;
-}
+//
+//    // In LOS if it's the same start and end location
+//    if (glm::length(end - start) < epsilon) {
+//        return false;
+//    }
+//
+//    // Not in LOS if any edge is intersected by the start-end line segment
+//   // bool inSight = true;
+////    int n = p.GetHoleCount() + 1;
+////
+////    // contour
+////    int m = p.GetVertexCount();
+////    p.GetVertex()
+////
+////    for (int i = 0; i < n; ++i) {
+////        int m = p.GetVertexCount(i);
+////        glm::vec2 v1 = p.GetVertex(m-1, i);
+////        for (int j = 1; j < m; ++j) {
+////            glm::vec2 v2 = p.GetVertex(j);
+////            if (LineSegmentCross(start, end, v1, v2)) {
+////                return false;
+////            }
+////            v1 = v2;
+////        }
+////    }
+//
+//
+//    return true;
+//}

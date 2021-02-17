@@ -6,7 +6,7 @@
 class LambdaHotSpot : public HotSpot {
 public:
     LambdaHotSpot (const LambdaHotSpot&);
-    LambdaHotSpot(std::shared_ptr<Shape> shape, int priority) : HotSpot(shape, priority) {}
+    LambdaHotSpot(std::shared_ptr<IShape> shape, int priority) : HotSpot(shape, priority) {}
     void SetOnEnter (std::function<void()> f) {
         m_onEnter = f;
     }

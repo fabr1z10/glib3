@@ -65,10 +65,10 @@
 #include <monkey/skeletal/skcollider.hpp>
 #include <monkey/states/jumpattack.h>
 #include <monkey/activities/blink.h>
-#include <monkey/math/shapes/plane3d.h>
+//#include <monkey/math/shapes/plane3d.h>
 #include <monkey/skeletal/skcoll.h>
 #include <monkey/skeletal/skeletalcollidermanager.h>
-#include <monkey/math/shapes/polychain3d.h>
+//#include <monkey/math/shapes/polychain3d.h>
 #include <monkey/math/shapes/surf2d.h>
 #include <monkey/components/fpscounter.h>
 #include <monkey/activities/scale.h>
@@ -78,6 +78,7 @@
 #include <monkey/components/garbagecollect.h>
 #include <monkey/components/scriptplayer.h>
 #include <monkey/components/shadowrenderer.h>
+#include <monkey/geom3d/collisionengine3d.h>
 
 
 namespace py = pybind11;
@@ -151,8 +152,8 @@ SceneFactory::SceneFactory() {
     add2<SmartCollider> ("components.smartcollider");
     add2<SkCollider> ("components.skeletalcollider");
     add2<FPSCounter> ("components.fpscounter");
-	add2<SkColl> ("components.skc");
-	add2<SkeletalColliderManager>("components.collidermanager");
+//	add2<SkColl> ("components.skc");
+//	add2<SkeletalColliderManager>("components.collidermanager");
     add2<ScriptHotSpot> ("components.hotspot");
     add2<BasicRenderer> ("components.gfx");
 	add2<AnimRenderer> ("components.animgfx");
@@ -206,17 +207,18 @@ SceneFactory::SceneFactory() {
     add2<ScaleTo>("action.scale");
     add2<HotSpotManager> ("components.hotspotmanager");
     add2<Scheduler> ("runner.scheduler");
-    add2<CollisionEngine> ("runner.collisionengine");
+    add2<SpatialHashingCollisionEngine> ("runner.collisionengine");
+    //add2<geom3D::CollisionEngine3D> ("runner.collisionengine3d");
     add2<DynamicWorldBuilder> ("runner.dynamicworld");
     add2<OrthographicCamera> ("cam.ortho");
     add2<PerspectiveCamera> ("cam.perspective");
-    add2<Poly> ("shape.poly");
-    add2<Polygon>("shape.polygon");
-    add2<PolyTri>("shape.polygontri");
+//    add2<Poly> ("shape.poly");
+    //add2<Polygon>("shape.polygon");
+    //dd2<PolyTri>("shape.polygontri");
     add2<Rect> ("rect");
-    add2<Line> ("line");
-    add2<PolyLine> ("shape.graph");
-    add2<Ellipse> ("shape.ellipse");
+    add2<Segment> ("line");
+    //add2<PolyLine> ("shape.graph");
+    //add2<Ellipse> ("shape.ellipse");
     add2<Circle> ("shape.circle");
     add2<SolidFill>("fill.solid");
     add2<LinearGradient>("fill.lineargradient");
@@ -241,9 +243,9 @@ SceneFactory::SceneFactory() {
 
     add2<DirectionalLight> ("light.directional");
     // mesh
-    add2<Plane3D> ("shape.plane3d");
-    add2<PolyChain3D> ("shape.polychain3d");
-    add2<PySurf2D>("shape.surf2d");
+    //add2<Plane3D> ("shape.plane3d");
+    //add2<PolyChain3D> ("shape.polychain3d");
+    //add2<PySurf2D>("shape.surf2d");
 }
 
 //void SceneFactory::addStateFactory(const std::string &a, std::unique_ptr<FactoryMethod<State>> f) {
