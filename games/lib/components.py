@@ -89,6 +89,11 @@ class KeyInput:
         self.type = 'components.keyinput'
 
 
+class KeyListener:
+    def __init__(self):
+        self.type = 'runner.'
+
+
 class Follow:
     def __init__(self, cam='maincam', relpos=[0, 0, 5], up=[0, 1, 0]):
         self.type = 'components.follow'
@@ -121,11 +126,12 @@ class TiledGfx:
 
 # create a colored shape
 class ShapeGfxColor:
-    def __init__(self, shape, fill):
+    def __init__(self, shape, color):
         self.type ='components.gfx'
         self.cls = 3
         self.shape = shape
-        self.fill = fill
+        self.color = color
+
 
 
 class Parallax:

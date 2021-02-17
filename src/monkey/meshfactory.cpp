@@ -1,11 +1,54 @@
 //#include <monkey/math/geom.h>
-//#include <monkey/meshfactory.h>
+#include <monkey/meshfactory.h>
 //#include <monkey/vertices.h>
 //#include <cmath>
 //#include <monkey/math/earcut.h>
-//#include <monkey/quadmesh.h>
+#include <monkey/quadmesh.h>
+#include <monkey/model/basicmodel.h>
 //
 //
+
+MeshFactory::MeshFactory() {
+    m_plotters.insert(std::make_pair(ShapeType::RECT, [&] (IShape* s, glm::vec4 color) { return drawConvexPoly(s, color); }));
+    m_plotters.insert(std::make_pair(ShapeType::SEGMENT, [&] (IShape* s, glm::vec4 color) { return drawConvexPoly(s, color); }));
+    m_plotters.insert(std::make_pair(ShapeType::CONVEXPOLY, [&] (IShape* s, glm::vec4 color) { return drawConvexPoly(s, color); }));
+
+}
+
+std::shared_ptr<IModel> MeshFactory::drawConvexPoly(IShape * s, glm::vec4 color) {
+    auto* seg = static_cast<IConvexPolygon*>(s);
+    std::vector<VertexColor> vertices;
+    std::vector<unsigned> indices = {0, 1};
+    unsigned c = 0;
+    for (const auto& vertex : seg->getVertices()) {
+        vertices.emplace_back(vertex.x, vertex.y, 0.0f, color.r, color.g, color.b, color.a);
+        indices.emplace_back(c++);
+    }
+    auto mesh = std::make_shared<Mesh<VertexColor>>(COLOR_SHADER);
+    mesh->Init(vertices, indices);
+    mesh->m_primitive = GL_LINE_LOOP;
+    return std::make_shared<BasicModel>(mesh);
+}
+
+
+
+std::shared_ptr<IModel> MeshFactory::createWireframe(IShape * shape, glm::vec4 color) {
+
+    auto st = shape->getShapeType();
+    auto it = m_plotters.find(st);
+    if (it != m_plotters.end()) {
+        return it->second(shape, color);
+    }
+    return nullptr;
+
+////    return mesh;
+////            {0.0f, 0.0f, 0.0f, color.r, color.g, color.b, color.a},
+////            {width, 0.0f, 0.0f, color.r, color.g, color.b, color.a},
+////            {width, height, 0.0f, color.r, color.g, color.b, color.a},
+////            {0.0f, height, 0.0f, color.r, color.g, color.b, color.a}};
+////
+
+}
 ////std::shared_ptr<IMesh> MeshFactory::CreateBoxMesh (float width, float height, glm::vec4 color) {
 ////    std::vector<VertexColor> vertices = {
 ////            {0.0f, 0.0f, 0.0f, color.r, color.g, color.b, color.a},

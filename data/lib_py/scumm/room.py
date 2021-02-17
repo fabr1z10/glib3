@@ -81,7 +81,7 @@ def makeDialogueButton(dialogueline):
         colorInactive = scumm.Config.Colors.verb_unselected,
         colorActive = scumm.Config.Colors.verb_selected)
 
-class RoomDialogue(room.Room):
+clasDialogue(room.Room):
     def __init__(self, id: str):
         width = engine.device_size[0]
         uisize = scumm.Config.ui_height

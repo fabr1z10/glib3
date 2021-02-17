@@ -26,6 +26,8 @@ std::unique_ptr<IShape> Segment::transform(const glm::mat4 &t) {
 }
 
 void Segment::initBounds() {
+    m_type = ShapeType::SEGMENT;
+
     m_dir = glm::normalize(m_B - m_A);
     if (m_A.x < m_B.x) {
         m_bounds.min.x = m_A.x;

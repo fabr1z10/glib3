@@ -1,6 +1,13 @@
 import lib.states
 
 
+class KeyMove(lib.states.State):
+    def __init__(self, uid, speed: float, rotation_speed: float,  keys=None):
+        super().__init__(uid, keys)
+        self.type = 'state.keymove'
+        self.speed = speed
+        self.rotation_speed = rotation_speed
+
 class WalkSide(lib.states.State):
     def __init__(self, uid, speed: float, acceleration: float, jump_speed: float, flip_horizontal: bool, keys=None):
         super().__init__(uid, keys)

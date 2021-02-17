@@ -10,6 +10,7 @@ Rect::Rect(float width, float height, glm::vec3 offset) : IConvexPolygon(), m_wi
 Rect::Rect(const ITable & t) : IConvexPolygon(t) {
     m_width = t.get<float>("width");
     m_height = t.get<float>("height");
+    m_offset = t.get<glm::vec3> ("offset", glm::vec3(0.0f));
     initBounds();
 }
 
@@ -22,6 +23,7 @@ std::unique_ptr<IShape> Rect::transform(const glm::mat4 &t) {
 }
 
 void Rect::initBounds() {
+    m_type = ShapeType::RECT;
     m_u = glm::vec2(1.0f, 0.0f);
     m_v = glm::vec2(0.0f, 1.0f);
     m_bounds.min = m_offset;
@@ -35,7 +37,7 @@ std::vector<glm::vec2> Rect::getEdges() const {
 std::vector<glm::vec2> Rect::getVertices() const {
     glm::vec2 o(m_offset);
     glm::vec2 ax = m_u * m_width;
-    glm::vec2 ay = m_v * m_width;
+    glm::vec2 ay = m_v * m_height;
     return {o, o + ax, o + ax + ay, o + ay};
 }
 

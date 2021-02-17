@@ -1,5 +1,7 @@
-//#pragma once
-//
+#pragma once
+
+#include <monkey/assets/imodel.h>
+#include <monkey/math/shape.h>
 //#include <monkey/mesh.h>
 //#include <monkey/math/shapes/rect.h>
 //#include <monkey/math/shapes/line.h>
@@ -10,10 +12,16 @@
 //#include <monkey/math/compound.h>
 //#include <monkey/math/shapes/polytri.h>
 //#include <monkey/fill.h>
-//#include <memory>
-//
-//// creates a mesh from a shape
-//class MeshFactory :
+
+// creates a model from a shape
+class MeshFactory {
+public:
+    MeshFactory ();
+    std::shared_ptr<IModel> createWireframe (IShape*, glm::vec4 color);
+private:
+    std::unordered_map<ShapeType, std::function<std::shared_ptr<IModel>(IShape*, glm::vec4)>> m_plotters;
+    std::shared_ptr<IModel> drawConvexPoly(IShape*, glm::vec4);
+};
 //    public AcyclicVisitor,
 //    public Visitor<Rect>,
 //    public Visitor<Segment>,

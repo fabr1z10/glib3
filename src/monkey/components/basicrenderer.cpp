@@ -63,15 +63,14 @@ BasicRenderer::BasicRenderer(const ITable & t) : Renderer(t) {
 //        }
 //        auto mesh = MeshFactoryTextured::CreateMesh(*(shape.get()), tex, x0, y0, repx, repy, slantx, slanty, fill);
       //  SetModel (std::make_shared<BasicModel>(mesh));
-    } else if (cls ==3) {
-//        auto factory = Engine::get().GetSceneFactory();
-//        auto shapeT = t.get<PyTable>("shape");
-//        auto shape = factory->make2<IShape>(shapeT);
-//        auto fillT = t.get<PyTable>("fill");
-//        auto fill = factory->make2<Fill>(fillT);
-//        float z = t.get<float>("z", 0.0f);
-//        auto mesh = MeshFactorySolid::CreateMesh(*(shape.get()), fill, z);
-//        SetModel (std::make_shared<BasicModel>(mesh));
+    } else if (cls == 3) {
+        auto factory = Engine::get().GetSceneFactory();
+        auto shapeT = t.get<PyTable>("shape");
+        auto color = t.get<glm::vec4>("color");
+        auto shape = factory->make2<IShape>(shapeT);
+        MeshFactory mf;
+        auto model = mf.createWireframe(shape.get(), color);
+        SetModel(model);
         
     } else if (cls==4) {
         // create a colored shape outline texture

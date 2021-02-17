@@ -19,7 +19,7 @@ class CollisionResponse:
 class CollisionEngine:
     def __init__(self, width: int, height: int, coll25: bool = False, eps: float = 0.01):
         self.type = 'runner.collisionengine'
-        self.size = [width, height]
+        self.size = [width, height, 0]
         self.response = []
         self.coll25 = coll25
         self.eps = eps
