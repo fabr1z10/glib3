@@ -79,6 +79,7 @@
 #include <monkey/components/scriptplayer.h>
 #include <monkey/components/shadowrenderer.h>
 #include <monkey/geom3d/collisionengine3d.h>
+#include <monkey/components/controllerflat.h>
 
 
 namespace py = pybind11;
@@ -162,6 +163,7 @@ SceneFactory::SceneFactory() {
 	add2<PolygonalMover> ("components.polymover");
     add2<KeyboardInputMethod> ("components.keyinput");
     add2<Controller2D> ("components.controller2D");
+	add2<ControllerFlat> ("components.controller_flat");
     add2<Controller25> ("components.controller25");
     add2<Dynamics2D> ("components.dynamics2D");
     add2<PlatformComponent>("components.platform");
@@ -215,11 +217,18 @@ SceneFactory::SceneFactory() {
 //    add2<Poly> ("shape.poly");
     //add2<Polygon>("shape.polygon");
     //dd2<PolyTri>("shape.polygontri");
+
+    // ************ 2d shapes **************
     add2<Rect> ("rect");
     add2<Segment> ("line");
+    add2<ConvexPolygon>("convex_polygon");
+	add2<Circle> ("circle");
+
+	// ************ 3d shapes **************
+	// TODO !
+
     //add2<PolyLine> ("shape.graph");
     //add2<Ellipse> ("shape.ellipse");
-    add2<Circle> ("shape.circle");
     add2<SolidFill>("fill.solid");
     add2<LinearGradient>("fill.lineargradient");
     add2<StateFunc> ("stateaction.callback");

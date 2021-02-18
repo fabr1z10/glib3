@@ -43,5 +43,4 @@ void KeyMove::AttachStateMachine(StateMachine * sm) {
     m_entity = sm->GetObject();
     m_input = m_entity->GetComponent<InputMethod>();
 
-
 }

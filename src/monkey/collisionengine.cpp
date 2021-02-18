@@ -45,8 +45,11 @@ SpatialHashingCollisionEngine::SpatialHashingCollisionEngine(const ITable & tabl
     });
 
     SetResponseManager(std::move(crm));
-    // choose between 2d or 3d intersector
 
+    // choose between 2d or 3d intersector
+	if (use2D) {
+		m_intersector = std::make_unique<Intersector2D>();
+	}
     //m_intersector = std::make_unique<Intersector>();
 
 }
@@ -133,7 +136,7 @@ void SpatialHashingCollisionEngine::PopCollider(ICollider* c, bool rmvPairs) {
 void SpatialHashingCollisionEngine::PushCollider(ICollider* c, glm::ivec3 m, glm::ivec3 M) {
     for (int i = m.x; i <= M.x; ++i) {
         for (int j = m.y; j <= M.y; ++j) {
-            for (int k = m.z; k <= M.z; ++j) {
+            for (int k = m.z; k <= M.z; ++k) {
                 auto &cell = m_cells[glm::ivec3(i, j, k)];
                 cell.colliders.insert(c);
                 cell.dirty = true;
@@ -184,10 +187,10 @@ void SpatialHashingCollisionEngine::Update(double dt) {
     //std::unordered_set<std::pair<Collider*, Collider*>> testedPairs;
     for (auto& c : m_cells) {
         auto& cell = c.second;
-        cellsExamined.insert(c.first);
         if (!cell.dirty) {
             continue;
         }
+		cellsExamined.insert(c.first);
         // skip cells that have less than 2 colliders
         if (cell.colliders.size() < 2) {
             cell.dirty = false;
@@ -380,8 +383,8 @@ RayCastHit SpatialHashingCollisionEngine::Raycast (glm::vec3 rayOrigin, glm::vec
                     auto shapeBounds = c->GetBounds();
                     if (lineBounds.Intersects2D(shapeBounds)) {
                         auto t = c->GetObject()->GetWorldTransform();
-                        auto cshape = c->GetShape()->transform(t).get();
-                        auto report = m_intersector->intersect(&line, cshape);
+                        auto cshape = c->GetShape()->transform(t);
+                        auto report = m_intersector->intersect(&line, cshape.get());
                         if (report.collide && (!out.collide || out.length > report.distance)) {
                             out.entity = c;
                             out.length = report.distance;

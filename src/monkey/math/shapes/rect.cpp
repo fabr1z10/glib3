@@ -74,7 +74,7 @@ bool Rect::isPointInside(glm::vec3 P) const {
 glm::vec2 Rect::project(glm::vec2 axis) const {
     glm::vec2 o(m_offset);
     glm::vec2 ax = m_u * m_width;
-    glm::vec2 ay = m_v * m_width;
+    glm::vec2 ay = m_v * m_height;
     std::vector<glm::vec2> points = {o, o + ax, o + ax + ay, o + ay};
     return ::project(points, axis);
 }

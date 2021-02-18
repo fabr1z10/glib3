@@ -65,6 +65,14 @@ class Controller2D:
         self.maskUp = mask_up
         self.maskDown = mask_down
 
+class ControllerFlat:
+    def __init__(self, mask: int, size, hor_rays : int = 4, vert_rays: int = 4):
+        self.type = 'components.controller_flat'
+        self.horRays = hor_rays
+        self.vertRays = vert_rays
+        self.mask = mask
+        self.size = size
+
 
 class Dynamics2D:
     def __init__(self, gravity):

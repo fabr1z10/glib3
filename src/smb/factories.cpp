@@ -21,6 +21,7 @@
 #include "states/ishit.h"
 #include "states/bounce.h"
 #include "states/keymove.h"
+#include "states/keymovef.h"
 //#include <platformer/states/jump3d.h>
 //#include <platformer/states/ch1.h>
 //#include <platformer/states/duck.h>
@@ -50,6 +51,7 @@ void Extension::extend(SceneFactory* f) {
     f->add2<KoopaShell> ("state.koopashell");
     f->add2<Bounce>("state.bounce");
     f->add2<KeyMove>("state.keymove");
+	f->add2<KeyMoveF>("state.keymovef");
     //f->addStateFactory("walkside", std::make_unique<WalkSideFactory>());
 //    f->addStateFactory("jump", std::make_unique<Jump2DFactory>());
 //

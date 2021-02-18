@@ -8,6 +8,13 @@ class KeyMove(lib.states.State):
         self.speed = speed
         self.rotation_speed = rotation_speed
 
+class KeyMoveF(lib.states.State):
+    def __init__(self, uid, speed: float,  keys=None):
+        super().__init__(uid, keys)
+        self.type = 'state.keymovef'
+        self.speed = speed
+
+
 class WalkSide(lib.states.State):
     def __init__(self, uid, speed: float, acceleration: float, jump_speed: float, flip_horizontal: bool, keys=None):
         super().__init__(uid, keys)

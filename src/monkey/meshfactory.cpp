@@ -1,7 +1,7 @@
 //#include <monkey/math/geom.h>
 #include <monkey/meshfactory.h>
 //#include <monkey/vertices.h>
-//#include <cmath>
+#include <cmath>
 //#include <monkey/math/earcut.h>
 #include <monkey/quadmesh.h>
 #include <monkey/model/basicmodel.h>
@@ -12,6 +12,28 @@ MeshFactory::MeshFactory() {
     m_plotters.insert(std::make_pair(ShapeType::RECT, [&] (IShape* s, glm::vec4 color) { return drawConvexPoly(s, color); }));
     m_plotters.insert(std::make_pair(ShapeType::SEGMENT, [&] (IShape* s, glm::vec4 color) { return drawConvexPoly(s, color); }));
     m_plotters.insert(std::make_pair(ShapeType::CONVEXPOLY, [&] (IShape* s, glm::vec4 color) { return drawConvexPoly(s, color); }));
+	m_plotters.insert(std::make_pair(ShapeType::CIRCLE, [&] (IShape* s, glm::vec4 color) { return drawCircle(s, color); }));
+
+}
+
+std::shared_ptr<IModel> MeshFactory::drawCircle(IShape * s, glm::vec4 color) {
+	auto* c = static_cast<Circle*>(s);
+	float radius = c->getRadius();
+	glm::vec2 center = c->getOffset();
+	std::vector<VertexColor> vertices;
+	int n = 100;
+	float angleStep = (2.0 * M_PI) / n;
+	unsigned count {};
+	std::vector<unsigned> indices = {0, 1};
+	for (int i = 0; i < n; ++i) {
+		float alpha = i * angleStep;
+		vertices.emplace_back(center.x + radius * cos(alpha), center.x + radius * sin(alpha), 0.0f, color.r, color.g, color.b, color.a);
+		indices.emplace_back(count++);
+	}
+	auto mesh = std::make_shared<Mesh<VertexColor>>(COLOR_SHADER);
+	mesh->Init(vertices, indices);
+	mesh->m_primitive = GL_LINE_LOOP;
+	return std::make_shared<BasicModel>(mesh);
 
 }
 

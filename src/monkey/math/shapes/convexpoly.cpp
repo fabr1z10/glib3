@@ -15,8 +15,16 @@ ConvexPolygon::ConvexPolygon(const ITable & t) {
 }
 
 void ConvexPolygon::init() {
+
+	m_type = ShapeType::CONVEXPOLY;
+	m_bounds.min = glm::vec3(m_points[0], 0.0f);
+	m_bounds.max = glm::vec3(m_points[0], 0.0f);
     for (unsigned i = 1; i < m_points.size(); ++i) {
         m_edges.push_back(glm::normalize(m_points[i] - m_points[i-1]));
+        m_bounds.min.x = std::min(m_bounds.min.x, m_points[i].x);
+		m_bounds.min.y = std::min(m_bounds.min.y, m_points[i].y);
+		m_bounds.max.x = std::max(m_bounds.max.x, m_points[i].x);
+		m_bounds.max.y = std::max(m_bounds.max.y, m_points[i].y);
     }
     m_edges.push_back(glm::normalize(m_points.front()-m_points.back()));
 

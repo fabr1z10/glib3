@@ -21,6 +21,7 @@ public:
 private:
     std::unordered_map<ShapeType, std::function<std::shared_ptr<IModel>(IShape*, glm::vec4)>> m_plotters;
     std::shared_ptr<IModel> drawConvexPoly(IShape*, glm::vec4);
+	std::shared_ptr<IModel> drawCircle(IShape*, glm::vec4);
 };
 //    public AcyclicVisitor,
 //    public Visitor<Rect>,
