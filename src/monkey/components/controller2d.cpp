@@ -13,7 +13,7 @@
 
 using namespace glm;
 
-Controller2D::Controller2D(const ITable &t) : m_cc(nullptr) {
+Controller2D::Controller2D(const ITable &t) {
     m_maxClimbAngle = t.get<float>("maxClimbAngle");
     m_maxDescendAngle = t.get<float>("maxDescendAngle");
     m_horizontalRayCount = t.get<int>("horRays", 4);
@@ -25,7 +25,9 @@ Controller2D::Controller2D(const ITable &t) : m_cc(nullptr) {
     //mint maskUp = table.Get<int>("maskup", 2);
     //int maskDown = table.Get<int>("maskdown", 2|32);
     //return std::make_shared<Controller2D>(maxClimbAngle, maxDescendAngle, maskUp, maskDown, skinWidth, horCount, vertCount);
-
+	m_halfSize = t.get<glm::vec2>("size");
+	m_horizontalRaySpacing = (2.0f * m_halfSize[1]) / (m_horizontalRayCount - 1);
+	m_verticalRaySpacing = (2.0f * m_halfSize[0]) / (m_verticalRayCount - 1);
 }
 
 
@@ -38,46 +40,48 @@ void Controller2D::Start() {
 }
 
 void Controller2D::Begin() {
-    m_cc =  m_entity->GetComponent<ICollider>();
-    if (m_cc == nullptr) {
-        GLIB_FAIL("The controller2D requires a collider!");
-    }
-    // recalc ray spacing when shape changes
-    m_cc->onShapeChange.Register(this, [&] (ICollider* c) {
-        CalculateRaySpacing();
-    });
+//    m_cc =  m_entity->GetComponent<ICollider>();
+//    if (m_cc == nullptr) {
+//        GLIB_FAIL("The controller2D requires a collider!");
+//    }
+//    // recalc ray spacing when shape changes
+//    m_cc->onShapeChange.Register(this, [&] (ICollider* c) {
+//        CalculateRaySpacing();
+//    });
     //m_cc->onShapeChanged.Register(this, [&] (Collider* c) { this->ResetShape(c); });
-    CalculateRaySpacing();
-	UpdateRaycastOrigins();
+    //CalculateRaySpacing();
+	//UpdateRaycastOrigins();
 }
 
 
 
 
-void Controller2D::CalculateRaySpacing() {
-    
-    // Bounds bounds = m_cc->GetDynamicBounds();
-    Bounds bounds = m_cc->getControllerBounds();
-    bounds.Expand(m_skinWidth * -2);
-    m_horizontalRaySpacing = bounds.GetSize().y / (m_horizontalRayCount - 1);
-    m_verticalRaySpacing = bounds.GetSize().x / (m_verticalRayCount - 1);
-    //std::cout <<"ray spacing = "<< m_horizontalRaySpacing << ","<<m_verticalRaySpacing<<"\n";
-}
+//void Controller2D::CalculateRaySpacing() {
+//
+//    // Bounds bounds = m_cc->GetDynamicBounds();
+//    Bounds bounds = m_cc->getControllerBounds();
+//    bounds.Expand(m_skinWidth * -2);
+//    m_horizontalRaySpacing = bounds.GetSize().y / (m_horizontalRayCount - 1);
+//    m_verticalRaySpacing = bounds.GetSize().x / (m_verticalRayCount - 1);
+//    //std::cout <<"ray spacing = "<< m_horizontalRaySpacing << ","<<m_verticalRaySpacing<<"\n";
+//}
 
-void Controller2D::UpdateRaycastOrigins() {
-	if (m_cc != nullptr) {
-		//Bounds bounds = m_cc->GetDynamicBounds();
-		Bounds bounds = m_cc->getControllerBounds();
-		bounds.Expand(m_skinWidth * -2);
-		m_raycastOrigins.bottomLeft = vec2(bounds.min.x, bounds.min.y);
-		m_raycastOrigins.bottomRight = vec2(bounds.max.x, bounds.min.y);
-		m_raycastOrigins.topLeft = vec2(bounds.min.x, bounds.max.y);
-		m_raycastOrigins.topRight = vec2(bounds.max.x, bounds.max.y);
-	}
-}
+//void Controller2D::UpdateRaycastOrigins() {
+//	if (m_cc != nullptr) {
+//		//Bounds bounds = m_cc->GetDynamicBounds();
+//		Bounds bounds = m_cc->getControllerBounds();
+//		bounds.Expand(m_skinWidth * -2);
+//		m_raycastOrigins.bottomLeft = vec2(bounds.min.x, bounds.min.y);
+//		m_raycastOrigins.bottomRight = vec2(bounds.max.x, bounds.min.y);
+//		m_raycastOrigins.topLeft = vec2(bounds.min.x, bounds.max.y);
+//		m_raycastOrigins.topRight = vec2(bounds.max.x, bounds.max.y);
+//	}
+//}
 
 bool Controller2D::IsFalling(int dir) {
-    glm::vec2 rayOrigin = (dir == -1) ? m_raycastOrigins.bottomLeft : m_raycastOrigins.bottomRight;
+	glm::vec2 pos = m_entity->GetPosition();
+	glm::vec2 rayOrigin = pos + glm::vec2(dir==-1 ? -m_halfSize[0] : -m_halfSize[0], -m_halfSize[1]);
+    //glm::vec2 rayOrigin = (dir == -1) ? m_raycastOrigins.bottomLeft : m_raycastOrigins.bottomRight;
     RayCastHit hit = m_collision->Raycast(glm::vec3(rayOrigin, 0.0f), monkey::down, 5.0, 2|32);
     if (!hit.collide)
         return true;
@@ -89,13 +93,6 @@ void Controller2D::Move(glm::vec3& delta) {
 glm::vec2 dx(delta);
     float scale = m_entity->GetScale();
     if (dx != vec2(0.0f)) {
-        UpdateRaycastOrigins();
-        //m_ppp.clear();
-        // get all the stuff that might be on the way
-//        Bounds b;
-//        b.min = m_raycastOrigins.bottomLeft + glm::vec2((dx.x < 0.0f) ? dx.x : 0.0f, (dx.y < 0.0f)? dx.y : 0.0f);
-//        b.max = m_raycastOrigins.topRight + glm::vec2((dx.x > 0.0f) ? dx.x : 0.0f, (dx.y > 0.0f)? dx.y : 0.0f);
-        //m_ppp = m_collision->GetNodes(b, 2 | 32);
 
         m_wasGnd = m_details.below;
         m_details.Reset();
@@ -126,10 +123,13 @@ void Controller2D::HorizontalCollisions(glm::vec2& velocity) {
     float directionX = facingLeft ? -1.0 : 1.0;
     float rayLength = fabs(velocity.x) + m_skinWidth;
 
+	glm::vec2 pos = m_entity->GetPosition();
+	vec2 r0 = pos + glm::vec2(facingLeft ? - m_halfSize[0] : m_halfSize[0], -m_halfSize[1]);
+
     for (int i = 0; i < m_horizontalRayCount; i++) {
-        vec2 rayOrigin = facingLeft ? m_raycastOrigins.bottomLeft : m_raycastOrigins.bottomRight;
-        rayOrigin += vec2(0.0f, 1.0f) * (i *m_horizontalRaySpacing);
-        //RayCastHit2D hit = m_collision->Raycast(rayOrigin, glm::vec2(1, 0) * directionX, rayLength, 2);
+        vec2 rayOrigin = r0 + vec2(0.0f, i * m_horizontalRaySpacing);
+
+		//RayCastHit2D hit = m_collision->Raycast(rayOrigin, glm::vec2(1, 0) * directionX, rayLength, 2);
         RayCastHit hit = m_collision->Raycast(glm::vec3(rayOrigin, 0.0f), monkey::right * directionX, rayLength, 2 | 32);
         if (hit.collide) {
 
@@ -192,9 +192,10 @@ void Controller2D::DescendSlope(glm::vec2& velocity) {
     bool flipx = m_entity->GetFlipX();
     bool facingLeft = (flipx && velocity.x > 0) || (!flipx && velocity.x < 0);
     float directionX = facingLeft ? -1.0 : 1.0;
-    vec2 rayOrigin = ((directionX == -1) ? m_raycastOrigins.bottomRight : m_raycastOrigins.bottomLeft);
-    //RayCastHit2D hit = m_collision->Raycast(rayOrigin, vec2(0, -1), 100.0f, m_platform != nullptr ? 2 | 32 : 2);
-    RayCastHit hit = m_collision->Raycast(vec3(rayOrigin,0.0f), monkey::down, 100.0f, 2 | 32);
+
+	glm::vec2 pos = m_entity->GetPosition();
+	vec2 r0 = pos + glm::vec2(facingLeft ? - m_halfSize[0] : m_halfSize[0], -m_halfSize[1]);
+    RayCastHit hit = m_collision->Raycast(vec3(r0, 0.0f), monkey::down, 100.0f, 2 | 32);
     if (hit.collide) {
         float slopeAngle = angle(hit.normal, vec2(0, 1));
         //std::cout << "DESCEND SLOPE, angle = " << rad2deg * slopeAngle << "\n";
@@ -219,9 +220,12 @@ void Controller2D::VerticalCollisions(glm::vec2& velocity) {
     float rayLength = std::abs(velocity.y) + m_skinWidth;
     Entity* m_obstacle = nullptr;
     float velx = velocity.x * (m_entity->GetFlipX() ? -1.0f : 1.0f);
+	glm::vec2 pos = m_entity->GetPosition();
+	vec2 r0 = pos + vec2(-m_halfSize[0], directionY > 0 ? m_halfSize[1] : -m_halfSize[1]);
+
     for (int i = 0; i < m_verticalRayCount; i++) {
-        vec2 rayOrigin = (directionY == -1) ? m_raycastOrigins.bottomLeft : m_raycastOrigins.topLeft;
-        rayOrigin += vec2(1, 0) * (i *m_verticalRaySpacing + velx);
+		vec2 rayOrigin = r0 + vec2(1,0) * (velx + i * m_verticalRaySpacing);
+
         int collMask = (directionY == -1 ? (m_maskDown) : m_maskUp);
         RayCastHit hit = m_collision->Raycast(vec3(rayOrigin, 0.0f), monkey::up * directionY, rayLength, collMask);
         if (hit.collide) {
@@ -274,7 +278,9 @@ void Controller2D::VerticalCollisions(glm::vec2& velocity) {
     if (m_details.climbingSlope) {
         float directionX = sign(velocity.x);
         rayLength = fabs(velocity.x) + m_skinWidth;
-        vec2 rayOrigin = ((directionX == -1) ? m_raycastOrigins.bottomLeft : m_raycastOrigins.bottomRight) + vec2(0, 1) * velocity.y;
+        vec2 pos = m_entity->GetPosition();
+        vec2 rayOrigin = pos + vec2( (directionX == -1) ? -m_halfSize[0] : m_halfSize[0], -m_halfSize[1]);
+        rayOrigin += vec2(0, 1) * velocity.y;
         //RayCastHit2D hit = m_collision->Raycast(rayOrigin, vec2(1, 0) * directionX, rayLength, 2);
         RayCastHit hit = m_collision->Raycast(vec3(rayOrigin, 0.0f), monkey::right * directionX, rayLength, 2);
         if (hit.collide) {

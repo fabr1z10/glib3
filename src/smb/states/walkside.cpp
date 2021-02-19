@@ -79,6 +79,8 @@ void WalkSide::Run (double dt) {
 void WalkSide::ResetAnimation() {}
 
 void WalkSide::ModifyAnimation() {
+	if (m_animator == nullptr)
+		return;
     if (fabs(m_dynamics->m_velocity.x) > 1.0f) {
         m_animator->SetAnimation(m_walkAnim);
     } else {

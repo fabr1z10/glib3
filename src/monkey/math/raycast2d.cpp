@@ -1,6 +1,75 @@
-//#include <monkey/math/raycast.h>
-//#include <monkey/math/geom.h>
-//
+#include <monkey/math/raycast2d.h>
+#include <monkey/math/geom.h>
+#include <monkey/math/shapes/convexpoly.h>
+
+RayCast2D::RayCast2D() {
+	m_raycasters[ShapeType::SEGMENT] = [&] (glm::vec2 A, glm::vec2 B, IShape* s) {
+		return this->rayCast<IConvexPolygon, false>(A, B, s);
+	};
+	m_raycasters[ShapeType::RECT] = [&] (glm::vec2 A, glm::vec2 B, IShape* s) {
+		return this->rayCast<IConvexPolygon, true>(A, B, s);
+	};
+	m_raycasters[ShapeType::CONVEXPOLY] = [&] (glm::vec2 A, glm::vec2 B, IShape* s) {
+		return this->rayCast<IConvexPolygon, true>(A, B, s);
+	};
+
+
+}
+
+RayCastHit RayCast2D::run(glm::vec3 O, glm::vec3 dir, float length, IShape *shape) {
+	glm::vec2 A(O);
+	glm::vec2 B = O + dir * length;
+	RayCastHit out;
+	auto it = m_raycasters.find(shape->getShapeType());
+	if (it == m_raycasters.end()) {
+		return out;
+	}
+
+	out = it->second(A, B, shape);
+	if (out.collide) {
+		// here length is just a number between 0 and 1, so it must be scaled to the proper length
+		out.length *= length;
+	}
+	return out;
+
+}
+void RayCast2D::updateRaycastHit(RayCastHit& r, glm::vec2 ray, glm::vec2 line, float u) {
+	r.collide = true;
+	if (u < r.length) {
+		r.length = u;
+		// compute normal w.r.t. ray
+		glm::vec2 d = glm::normalize(line);
+		r.normal = glm::vec3(-glm::normalize(ray - d * glm::dot(ray, d)), 0.0f);
+	}
+}
+
+
+bool RayCast2D::seg2seg(glm::vec2 A, glm::vec2 B, glm::vec2 C, glm::vec2 D, float &t) {
+	// eq for segment 1 is
+	// Ax + t(Bx - Ax) = Cx + u(Dx - Cx)
+	// Ay + t(By - Ay) = Cy + u(Dy - Cy)
+	// which is
+	// t(Bx - Ax) - u(Dx - Cx) = (Cx - Ax)
+	// t(By - Ay) - u(Dy - Cy) = (Cy - Ay)
+	// solution is
+	//      | Cx - Ax    Dx - Cx |
+	//      | Cy - Ay    Dy - Cy |
+	// t = ------------------------
+	//      | Bx - Ax    Dx - Cx |
+	//      | By - Ay    Dy - Cy |
+	glm::vec2 AB = B - A;
+	glm::vec2 CD = D - C;
+	float den = cross(AB, CD);
+	if (isZero(den)) {
+		return false;
+	}
+	glm::vec2 AC = C - A;
+	t = cross(AC, CD) / den;
+	return (t >= 0 && t <= 1);
+}
+
+
+
 //float RayCast2D::SegmentIntersection(glm::vec2 A, glm::vec2 B, glm::vec2 C, glm::vec2 D) {
 //
 //    // check if A and B are same side of BC

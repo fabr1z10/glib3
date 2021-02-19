@@ -1,6 +1,6 @@
 #include <monkey/collisionengine.h>
 #include <iostream>
-#include <monkey/math/raycast.h>
+#include <monkey/math/raycast2d.h>
 #include <monkey/luacollision.h>
 
 namespace py = pybind11;
@@ -49,6 +49,7 @@ SpatialHashingCollisionEngine::SpatialHashingCollisionEngine(const ITable & tabl
     // choose between 2d or 3d intersector
 	if (use2D) {
 		m_intersector = std::make_unique<Intersector2D>();
+		m_raycast = std::make_unique<RayCast2D>();
 	}
     //m_intersector = std::make_unique<Intersector>();
 
@@ -342,24 +343,42 @@ RayCastHit SpatialHashingCollisionEngine::Raycast (glm::vec3 rayOrigin, glm::vec
     // m = 0 <-> r_y = 0 <-> horizontal line
     float l = 0.0f;
     bool endReached = false;
-
+	int id = 0, jd = 0, kd = 0;
     RayCastHit out;
     out.length = length;
 
     // we can (and we MUST) exit the loop as soon as we find a collision
     while (!endReached && !out.collide) {
         // get the next point into this cell
+        // compute how much distance you need to cover to hit the cell boundary,
+        // and what boundary you hit first (x, y or z)
         float tx = (rayDir.x == 0.0f) ? std::numeric_limits<float>::infinity() : ((i+n) * m_size.x - P.x) / rayDir.x;
         float ty = (rayDir.y == 0.0f) ? std::numeric_limits<float>::infinity() : ((j+m) * m_size.y - P.y) / rayDir.y;
         float tz = (rayDir.z == 0.0f || !m_3d) ? std::numeric_limits<float>::infinity() : ((k+q) * m_size.z - P.z) / rayDir.z;
-        float tm = std::min(tx, std::min(ty, tz));
+        float tm {0.0f};
+        id = 0;
+        jd = 0;
+        kd = 0;
+        if (tx <= ty && tx <= tz) {
+        	tm = tx;
+        	id = rayDir.x > 0 ? 1 : -1;
+        } else if (ty <= tx && ty <= tz) {
+        	tm = ty;
+        	jd = rayDir.y > 0 ? 1 : -1;
+        } else {
+        	tm = tz;
+        	kd = rayDir.z > 0 ? 1 : -1;
+        }
 
+        // advance by tm
         if (l + tm < length) {
             // need to add a tiny extra bit in case the colliding object is a line that lies exactly at the border
             // of two neighboring cell!
             P1 = P + (tm+0.01f) * rayDir;
+            // add tm to the cumulated length done
+			l += tm;
         } else {
-            P1 = P + length * rayDir;
+            P1 = P + (length - l) * rayDir;
             endReached = true;
         }
 
@@ -376,27 +395,27 @@ RayCastHit SpatialHashingCollisionEngine::Raycast (glm::vec3 rayOrigin, glm::vec
                 int m = flag & mask;
 
                 if (m != 0) {
-//                    float zc = c->GetObject()->GetPosition().z;
-//                    if (use_z && zc > -2 && m_coll25d && fabs(z-zc) > m_eps) {
-//                        continue;
-//                    }
                     auto shapeBounds = c->GetBounds();
                     if (lineBounds.Intersects2D(shapeBounds)) {
                         auto t = c->GetObject()->GetWorldTransform();
                         auto cshape = c->GetShape()->transform(t);
-                        auto report = m_intersector->intersect(&line, cshape.get());
-                        if (report.collide && (!out.collide || out.length > report.distance)) {
+                        //auto report = m_intersector->intersect(&line, cshape.get());
+                        auto report = m_raycast->run(rayOrigin, rayDir, length, cshape.get());
+                        if (report.collide && (!out.collide || out.length > report.length)) {
                             out.entity = c;
-                            out.length = report.distance;
+                            out.length = report.length;
                             out.collide = true;
+                            out.normal = report.normal;
                         }
                     }
                 }
             }
         }
         P = P1;
-        l += tm;
         // TODO move to next cell
+        i += id;
+        j += jd;
+        k += kd;
 //        if (t1 < t2) {
 //            i += (rayDir.x > 0 ? 1 : -1);
 //        } else {

@@ -59,16 +59,16 @@ public:
 	bool side () const override;
 	void ClimbSlope(glm::vec2&, float);
 	void DescendSlope(glm::vec2&);
-	void CalculateRaySpacing();
+	//void CalculateRaySpacing();
 	void Update(double) override {}
 	//void ForceMove(glm::vec2&);
 	CollisionDetails m_details;
-	RaycastOrigins m_raycastOrigins;
+	//RaycastOrigins m_raycastOrigins;
 	using ParentClass = Controller2D;
 	void DetachFromPlatform();
 	void ForceDetach() { m_platform = nullptr; }
     std::type_index GetType() override;
-	void UpdateRaycastOrigins();
+	//void UpdateRaycastOrigins();
 
     //RayCastHit2D Raycast(glm::vec2 origin, glm::vec2 direction, float length, int mask);
 private:
@@ -76,9 +76,12 @@ private:
 	void HorizontalCollisions(glm::vec2& velocity);
 	void VerticalCollisions(glm::vec2& velocity);
 
+
+	glm::vec2 m_halfSize;
+
 	//int m_handleNotify;
 	Entity* m_platform;
-	ICollider* m_cc;
+	//ICollider* m_cc;
 	ICollisionEngine * m_collision;
 	//int m_collisionMaskDown;
 	//int m_collisionMaskAny;

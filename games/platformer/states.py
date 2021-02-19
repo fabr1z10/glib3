@@ -26,7 +26,7 @@ class WalkSide(lib.states.State):
 
 
 class Jump(lib.states.State):
-    def __init__(self, uid, speed: float, acceleration: float, flip_horizontal: bool, anim_up: str, anim_down: str, keys=None):
+    def __init__(self, uid, speed: float, acceleration: float, flip_horizontal: bool, anim_up: str = None, anim_down: str = None, keys=None):
         super().__init__(uid, keys)
         self.type = 'state.jump'
         self.speed = speed

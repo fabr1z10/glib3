@@ -6,6 +6,7 @@
 #include "monkey/hashpair.h"
 #include <monkey/collisionresponse.h>
 #include "monkey/math/intersect.h"
+#include <monkey/math/raycast2d.h>
 #include "monkey/icollisionengine.h"
 
 struct CollisionEngineCell {
@@ -56,6 +57,7 @@ private:
     bool m_3d;
     glm::vec3 m_size;
     std::unique_ptr<IIntersector> m_intersector;
+    std::unique_ptr<IRayCast> m_raycast;
     std::unordered_map<glm::ivec3, CollisionEngineCell> m_cells;
     std::unordered_map<ICollider*, std::pair<glm::ivec3, glm::ivec3>> m_colliderLocations;
     std::unordered_map<std::pair<ICollider*, ICollider*>, CollisionInfo> m_previouslyCollidingPairs;

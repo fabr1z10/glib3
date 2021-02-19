@@ -34,7 +34,7 @@ void PlatformerState::AttachStateMachine(StateMachine * sm) {
     }
     m_dynamics = m_entity->GetComponent<Dynamics2D>();
     if (m_dynamics == nullptr) {
-        GLIB_FAIL("Walk4Way state requires a <Dynamics2D> component!");
+        GLIB_FAIL("Platormer state requires a <Dynamics2D> component!");
     }
     //m_animator = m_entity->GetComponent<Animator>();
     m_input = m_entity->GetComponent<InputMethod>();

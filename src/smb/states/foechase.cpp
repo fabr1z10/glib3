@@ -96,7 +96,7 @@ void FoeChase::Init(pybind11::dict& d) {
         m_left = dict.get<int>("left");
     }
     m_inRange = false;
-    m_c->UpdateRaycastOrigins();
+    //m_c->UpdateRaycastOrigins();
     // character will go towards player
 
 

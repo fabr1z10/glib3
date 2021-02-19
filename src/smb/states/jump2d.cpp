@@ -21,8 +21,8 @@ Jump2D::Jump2D(const ITable& t) : PlatformerState(t) {
     m_accTimeAir = t.get<float>("acceleration");
     m_flipHorizontally = t.get<bool>("flipH");
     //float jumpSpeed= table.Get<float>("jumpspeed");
-    m_jumpAnimUp = t.get<std::string>("animUp");
-    m_jumpAnimDown = t.get<std::string>("animDown");
+    m_jumpAnimUp = t.get<std::string>("animUp", "jumpup");
+    m_jumpAnimDown = t.get<std::string>("animDown", "jumpdown");
     m_bounce = t.get<bool>("bounce", false);
     m_bounceFactor = t.get<float>("bouncefactor", 0.0f);
     m_walkState = t.get<std::string>("walkState", "walk");
@@ -75,12 +75,14 @@ void Jump2D::Run(double dt) {
 
 void Jump2D::ModifyAnimation() {
     float vy1 = m_dynamics->m_velocity.y;
-    if (m_vy0 >= 0 && vy1 < 0) {
+    if (m_animator != nullptr && m_vy0 >= 0 && vy1 < 0) {
         m_animator->SetAnimation(m_jumpAnimDown);
     }
 }
 
 void Jump2D::ResetAnimation() {
+	if (m_animator == nullptr)
+		return;
     if (m_dynamics->m_velocity.y >=  0) {
         m_animator->SetAnimation(m_jumpAnimUp);
     } else {
