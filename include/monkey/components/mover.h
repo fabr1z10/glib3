@@ -43,7 +43,7 @@ private:
     int m_startIndex;
     float m_pctComplete;
 
-    int m_loopType;         // 0 = bidirectional, 1 = unidirectional (discontinuity at end)
+    //int m_loopType;         // 0 = bidirectional, 1 = unidirectional (discontinuity at end)
     std::vector<Movement> m_movements;
     int m_currentMovement;
     float m_cumulatedLength;

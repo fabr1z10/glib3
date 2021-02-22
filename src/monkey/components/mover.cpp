@@ -13,12 +13,12 @@ PolygonalMover::Movement::Movement(glm::vec2 delta, float speed, float hold) : s
     length = glm::length(delta);
     dir = glm::normalize(delta);
 }
-PolygonalMover::PolygonalMover(int loopType, glm::vec2 origin) : Mover(), m_O(origin), m_loopType(loopType), m_startIndex(0), m_pctComplete(0.0f) {}
+PolygonalMover::PolygonalMover(int loopType, glm::vec2 origin) : Mover(), m_O(origin), m_startIndex(0), m_pctComplete(0.0f) {}
 
 
 PolygonalMover::PolygonalMover(const ITable & t) : Mover(), m_O(glm::vec2(0.0f)), m_startIndex(0), m_pctComplete(0.0f), m_hasSinX(false), m_hasSinY(false) {
 	m_O = t.get<glm::vec2>("origin");
-	m_loopType = t.get<int>("loop");
+	//m_loopType = t.get<int>("loop");
 	m_pctComplete = t.get<float>("pct", 0.0f);
 	if (t.hasKey("sinx")) {
 	    m_hasSinX = true;
@@ -85,22 +85,9 @@ void PolygonalMover::Update(double dt) {
         m_cumulatedLength = 0.0f;
         if (m_fwd) {
             m_currentMovement++;
+			m_entity->SetPosition(cm.endPosition);
             if (m_currentMovement >= m_movements.size()) {
-                if (m_loopType == 0) {
-                    m_entity->SetPosition(cm.endPosition);
-                    m_currentMovement -= 1;
-                    m_fwd = false;
-                } else {
-
-                    if (m_hook != nullptr) {
-                     //   m_hook->operator()(EntityWrapper(m_entity));
-                    }
-                    m_entity->SetPosition(m_O);
-                    m_currentMovement = 0;
-                    m_t = 0;
-                }
-            } else {
-                m_entity->SetPosition(cm.endPosition);
+            	m_currentMovement = 0;
             }
         } else {
             m_currentMovement--;
