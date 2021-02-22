@@ -52,7 +52,8 @@ void Jump2D::Run(double dt) {
     // bump head
     if (m_controller->ceiling()) {
         m_dynamics->m_velocity.y = 0;
-        m_animator->SetAnimation(m_jumpAnimDown);
+        if (m_animator != nullptr)
+        	m_animator->SetAnimation(m_jumpAnimDown);
     }
 
     float targetVelocityX = 0.0f;

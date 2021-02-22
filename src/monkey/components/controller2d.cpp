@@ -194,7 +194,7 @@ void Controller2D::DescendSlope(glm::vec2& velocity) {
     float directionX = facingLeft ? -1.0 : 1.0;
 
 	glm::vec2 pos = m_entity->GetPosition();
-	vec2 r0 = pos + glm::vec2(facingLeft ? - m_halfSize[0] : m_halfSize[0], -m_halfSize[1]);
+	vec2 r0 = pos + glm::vec2(facingLeft ? m_halfSize[0] : -m_halfSize[0], -m_halfSize[1]);
     RayCastHit hit = m_collision->Raycast(vec3(r0, 0.0f), monkey::down, 100.0f, 2 | 32);
     if (hit.collide) {
         float slopeAngle = angle(hit.normal, vec2(0, 1));
