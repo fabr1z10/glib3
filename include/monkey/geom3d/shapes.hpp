@@ -14,15 +14,7 @@ namespace geom3d {
         virtual std::unique_ptr<Shape3D> transform(const glm::mat4&) = 0;
     };
 
-    struct Plane : public Shape3D {
-        Plane() : n(glm::vec3(0.0f)), d(0.0f) {}
-        glm::vec3 n;    // Plane normal. Points x on the plane satisfy Dot(n,x) = d
-        float d;        // distance of the plane from the origin
-        Shape3DType getType() override {
-            return PLANE;
-        }
-        std::unique_ptr<Shape3D> transform(const glm::mat4&) override;
-    };
+
 
     struct Segment : public Shape3D {
         glm::vec3 a;
@@ -51,14 +43,7 @@ namespace geom3d {
         std::unique_ptr<Shape3D> transform(const glm::mat4&) override;
     };
 
-    // construct a plane given 3 points
-    inline Plane computePlane(glm::vec3 a, glm::vec3 b, glm::vec3 c)
-    {
-        Plane p;
-        p.n = glm::normalize(glm::cross(b - a, c - a));
-        p.d = glm::dot(p.n, a);
-        return p;
-    }
+
 
 
 }

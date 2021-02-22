@@ -13,7 +13,6 @@ namespace geom3d {
     };
 
 
-    CollisionReport intersectSegmentPlane(const Segment& s, const Plane& p); //, float &t, glm::vec3 &q);
     CollisionReport intersectPlanes(const Plane& p1, const Plane& p2);
     CollisionReport intersectSegmentAABB(const Segment& s, const geom3d::AABox& a);
     CollisionReport TestAABBPlane(const AABox& b, const Plane& p);
