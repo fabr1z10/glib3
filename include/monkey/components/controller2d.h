@@ -63,22 +63,23 @@ public:
 	void Update(double) override {}
 	//void ForceMove(glm::vec2&);
 	CollisionDetails m_details;
-	//RaycastOrigins m_raycastOrigins;
+
 	using ParentClass = Controller2D;
 	void DetachFromPlatform();
 	void ForceDetach() { m_platform = nullptr; }
     std::type_index GetType() override;
-	//void UpdateRaycastOrigins();
+	void updateRaycastOrigins();
 
     //RayCastHit2D Raycast(glm::vec2 origin, glm::vec2 direction, float length, int mask);
 private:
+	RaycastOrigins m_raycastOrigins;
 	//std::vector<Collider*> m_ppp;
 	void HorizontalCollisions(glm::vec2& velocity);
 	void VerticalCollisions(glm::vec2& velocity);
 
 
 	glm::vec2 m_halfSize;
-
+	glm::vec2 m_shift;
 	//int m_handleNotify;
 	Entity* m_platform;
 	//ICollider* m_cc;
@@ -95,6 +96,7 @@ private:
     bool m_wasGnd;
 	int m_maskUp;
 	int m_maskDown;
+	bool m_debug;
 };
 
 inline std::type_index Controller2D::GetType() {

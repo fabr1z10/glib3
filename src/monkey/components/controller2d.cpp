@@ -10,6 +10,8 @@
 #include <monkey/components/platform.h>
 #include <iostream>
 #include <monkey/math/geomalgo.h>
+#include <monkey/meshfactory.h>
+#include <monkey/components/basicrenderer.h>
 
 using namespace glm;
 
@@ -26,8 +28,10 @@ Controller2D::Controller2D(const ITable &t) {
     //int maskDown = table.Get<int>("maskdown", 2|32);
     //return std::make_shared<Controller2D>(maxClimbAngle, maxDescendAngle, maskUp, maskDown, skinWidth, horCount, vertCount);
 	m_halfSize = t.get<glm::vec2>("size");
+	m_shift = t.get<glm::vec2>("shift", glm::vec2(0.0f));
 	m_horizontalRaySpacing = (2.0f * m_halfSize[1]) / (m_horizontalRayCount - 1);
 	m_verticalRaySpacing = (2.0f * m_halfSize[0]) / (m_verticalRayCount - 1);
+	m_debug = t.get<bool>("debug", false);
 }
 
 
@@ -37,6 +41,17 @@ void Controller2D::Start() {
     m_collision = Engine::get().GetRunner<ICollisionEngine>();
     if (m_collision == nullptr)
         GLIB_FAIL("Controller2D requires a collision engine running!");
+    if (m_debug) {
+		auto debugEntity = std::make_shared<Entity>();
+		auto shape = std::make_shared<Rect>(m_halfSize[0] * 2.0f, m_halfSize[1] * 2.0f, glm::vec3(-m_halfSize[0]+m_shift[0], -m_halfSize[1]+m_shift[1], 0));
+		MeshFactory m;
+		auto model = m.createWireframe(shape.get(), glm::vec4(1.0f));
+        auto renderer = std::make_shared<BasicRenderer>(model);
+//        glm::vec4 color(1.0f, 0.0f, 0.0f, 1.0f);
+//        renderer->setMultColor(color);
+        debugEntity->AddComponent(renderer);
+        m_entity->AddChild(debugEntity);
+    }
 }
 
 void Controller2D::Begin() {
@@ -66,17 +81,19 @@ void Controller2D::Begin() {
 //    //std::cout <<"ray spacing = "<< m_horizontalRaySpacing << ","<<m_verticalRaySpacing<<"\n";
 //}
 
-//void Controller2D::UpdateRaycastOrigins() {
-//	if (m_cc != nullptr) {
-//		//Bounds bounds = m_cc->GetDynamicBounds();
-//		Bounds bounds = m_cc->getControllerBounds();
-//		bounds.Expand(m_skinWidth * -2);
-//		m_raycastOrigins.bottomLeft = vec2(bounds.min.x, bounds.min.y);
-//		m_raycastOrigins.bottomRight = vec2(bounds.max.x, bounds.min.y);
-//		m_raycastOrigins.topLeft = vec2(bounds.min.x, bounds.max.y);
-//		m_raycastOrigins.topRight = vec2(bounds.max.x, bounds.max.y);
-//	}
-//}
+void Controller2D::updateRaycastOrigins() {
+	auto scale = m_entity->GetScale();
+	glm::vec2 pos = m_entity->GetPosition();
+	pos += scale * m_shift;
+	auto scaledHalfsize = scale * m_halfSize;
+	m_horizontalRaySpacing = (2.0f * scaledHalfsize[1]) / (m_horizontalRayCount - 1);
+	m_verticalRaySpacing = (2.0f * scaledHalfsize[0]) / (m_verticalRayCount - 1);
+
+	m_raycastOrigins.bottomLeft = pos - scaledHalfsize;
+	m_raycastOrigins.bottomRight = pos + vec2(scaledHalfsize[0], -scaledHalfsize[1]);
+	m_raycastOrigins.topLeft = pos + vec2(-scaledHalfsize[0], scaledHalfsize[1]);
+	m_raycastOrigins.topRight = pos + scaledHalfsize;
+}
 
 bool Controller2D::IsFalling(int dir) {
 	glm::vec2 pos = m_entity->GetPosition();
@@ -93,7 +110,7 @@ void Controller2D::Move(glm::vec3& delta) {
 glm::vec2 dx(delta);
     float scale = m_entity->GetScale();
     if (dx != vec2(0.0f)) {
-
+		updateRaycastOrigins();
         m_wasGnd = m_details.below;
         m_details.Reset();
         m_details.velocityOld = dx;
@@ -123,8 +140,10 @@ void Controller2D::HorizontalCollisions(glm::vec2& velocity) {
     float directionX = facingLeft ? -1.0 : 1.0;
     float rayLength = fabs(velocity.x) + m_skinWidth;
 
-	glm::vec2 pos = m_entity->GetPosition();
-	vec2 r0 = pos + glm::vec2(facingLeft ? - m_halfSize[0] : m_halfSize[0], -m_halfSize[1]);
+	//glm::vec2 pos = m_entity->GetPositfion();
+	//vec2 r0 = pos + glm::vec2(facingLeft ? - m_halfSize[0] : m_halfSize[0], -m_halfSize[1]);
+
+	vec2 r0 = facingLeft ? m_raycastOrigins.bottomLeft : m_raycastOrigins.bottomRight;
 
     for (int i = 0; i < m_horizontalRayCount; i++) {
         vec2 rayOrigin = r0 + vec2(0.0f, i * m_horizontalRaySpacing);
@@ -193,8 +212,10 @@ void Controller2D::DescendSlope(glm::vec2& velocity) {
     bool facingLeft = (flipx && velocity.x > 0) || (!flipx && velocity.x < 0);
     float directionX = facingLeft ? -1.0 : 1.0;
 
-	glm::vec2 pos = m_entity->GetPosition();
-	vec2 r0 = pos + glm::vec2(facingLeft ? m_halfSize[0] : -m_halfSize[0], -m_halfSize[1]);
+	//glm::vec2 pos = m_entity->GetPosition();
+	//vec2 r0 = pos + glm::vec2(facingLeft ? m_halfSize[0] : -m_halfSize[0], -m_halfSize[1]);
+	vec2 r0 = facingLeft ? m_raycastOrigins.bottomRight : m_raycastOrigins.bottomLeft;
+
     RayCastHit hit = m_collision->Raycast(vec3(r0, 0.0f), monkey::down, 100.0f, 2 | 32);
     if (hit.collide) {
         float slopeAngle = angle(hit.normal, vec2(0, 1));
@@ -220,9 +241,10 @@ void Controller2D::VerticalCollisions(glm::vec2& velocity) {
     float rayLength = std::abs(velocity.y) + m_skinWidth;
     Entity* m_obstacle = nullptr;
     float velx = velocity.x * (m_entity->GetFlipX() ? -1.0f : 1.0f);
-	glm::vec2 pos = m_entity->GetPosition();
-	vec2 r0 = pos + vec2(-m_halfSize[0], directionY > 0 ? m_halfSize[1] : -m_halfSize[1]);
+	//glm::vec2 pos = m_entity->GetPosition();
+	//vec2 r0 = pos + vec2(-m_halfSize[0], directionY > 0 ? m_halfSize[1] : -m_halfSize[1]);
 
+	vec2 r0 = directionY > 0 ? m_raycastOrigins.topLeft : m_raycastOrigins.bottomLeft;
     for (int i = 0; i < m_verticalRayCount; i++) {
 		vec2 rayOrigin = r0 + vec2(1,0) * (velx + i * m_verticalRaySpacing);
 

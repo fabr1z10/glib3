@@ -286,7 +286,8 @@ def loadAssets():
                             raise ValueError("Don't know how to build " + tp)
                         data['assets'][asset_loc[tp]][key] = asset_fac[tp](value)
                         #print ('stored ' + key)
-                    
+    print ('DONEjjj!')
+    exit(1)
 
 
 def loadSprites():

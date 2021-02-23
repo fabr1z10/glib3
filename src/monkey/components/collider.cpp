@@ -15,6 +15,8 @@ SimpleCollider::SimpleCollider(const ITable & t) : ICollider() {
     m_tag = t.get<int>("tag");
     m_flag = t.get<int>("flag");
     m_mask = t.get<int>("mask");
+
+    m_debug = t.get<bool>("debug", false);
 }
 
 
@@ -28,14 +30,12 @@ void SimpleCollider::Start() {
     m_aabb = m_shape->getBounds();
     ICollider::Start();
     if (m_shape != nullptr) {
-//        auto c = std::make_shared<Entity>();
-//        auto mesh = MeshFactory::CreateMesh(*(m_shape.get()), 0.0f);
-//        auto model = std::make_shared<BasicModel>(mesh);
-//        auto renderer = std::make_shared<BasicRenderer>(model);
-//        glm::vec4 color(1.0f, 0.0f, 0.0f, 1.0f);
-//        renderer->setMultColor(color);
-//        c->AddComponent(renderer);
-//        m_entity->AddChild(c);
+        auto c = std::make_shared<Entity>();
+        MeshFactory m;
+        auto model = m.createWireframe(m_shape.get(), glm::vec4(1.0f));
+        auto renderer = std::make_shared<BasicRenderer>(model);
+	    c->AddComponent(renderer);
+		m_entity->AddChild(c);
     }
 
 }

@@ -34,6 +34,7 @@ protected:
     virtual Bounds GetDynamicBoundsI () const = 0;
     ICollisionEngine* m_engine;
 	Bounds m_controllerBounds;
+	bool m_debug;
 
 };
 

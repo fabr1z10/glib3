@@ -16,8 +16,8 @@ class Engine:
             self.window_size = tuple(a['window_size'])
             self.room = a['start_room']
             self.title = a['title']
-            print('# loading assets ...')
-            self.load_assets()
+            #print('# loading assets ...')
+            #self.load_assets()
             print ('# loading strings ...')
             self.load_strings()
             # read game variables, and functions
@@ -46,11 +46,12 @@ class Engine:
             ('skeletalmodels', 'models'),
             ('mesh', 'mesh')
         ]
+        print ('loading assetz.....')
         for d in dirs:
             directory = example.dir + '/assets/' + d[0]
-            print('checking directory ' + directory)
+            #print('checking directory ' + directory)
             if os.path.exists(directory):
-                print ('exists')
+                #print ('exists')
                 files = os.listdir(directory)
                 for fi in files:
                     if os.path.isdir(directory + fi):
@@ -59,8 +60,10 @@ class Engine:
                         models = yaml.load(f, Loader=yaml.FullLoader)
                         for key, value in models.items():
                             tp = value['type']
-                            print ('AAAA ' + key + ' ' + str(value))
+                            #print ('AAAA ' + key + ' ' + str(value))
                             self.assets[d[1]][key] = value
+        print('done!')
+        exit(1)
 
     def load_strings(self):
         directory = example.dir + '/text/' + self.lang;
@@ -125,6 +128,10 @@ class Engine:
 
     def get_item_factory(self, uid: str):
         return self.factories['items'].get(uid, None)
+
+    def get_sprite_model(self, uid: str):
+        print ('HALLLO')
+        exit(1)
 
     shaders = []
     device_size = []

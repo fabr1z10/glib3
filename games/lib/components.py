@@ -31,12 +31,13 @@ class Info:
 
 
 class Collider:
-    def __init__(self, flag: int, mask: int, tag: int, shape):
+    def __init__(self, flag: int, mask: int, tag: int, shape, debug = False):
         self.type = 'components.collider'
         self.flag = flag
         self.mask = mask
         self.tag = tag
         self.shape = shape
+        self.debug = debug
 
 
 class SmartCollider(Collider):
@@ -56,7 +57,7 @@ class SkeletalCollider(Collider):
 
 
 class Controller2D:
-    def __init__(self, mask_up: int, mask_down: int, max_climb_angle: float, max_descend_angle, size, hor_rays : int = 4, vert_rays: int = 4):
+    def __init__(self, mask_up: int, mask_down: int, max_climb_angle: float, max_descend_angle, size, shift = (0, 0), debug = False, hor_rays : int = 4, vert_rays: int = 4):
         self.type = 'components.controller2D'
         self.maxClimbAngle = max_climb_angle
         self.maxDescendAngle = max_descend_angle
@@ -65,6 +66,8 @@ class Controller2D:
         self.maskUp = mask_up
         self.maskDown = mask_down
         self.size = size
+        self.shift = shift
+        self.debug = debug
 
 
 class ControllerFlat:

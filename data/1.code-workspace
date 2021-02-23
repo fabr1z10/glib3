@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "smb_py"
+		},
+		{
+			"path": "lib_py"
+		}
+	],
+	"settings": {}
+}
