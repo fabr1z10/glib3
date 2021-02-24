@@ -5,7 +5,7 @@
 
 namespace py = pybind11;
 
-SpriteModel::SpriteModel (const ITable& t) : IModel() {
+SpriteModel::SpriteModel (const YamlWrapper& t) : IModel() {
     m_shareable = true;
 
     auto sheetId = t.get<std::string>("sheet");
@@ -73,7 +73,7 @@ SpriteModel::SpriteModel (const ITable& t) : IModel() {
     };
 
     // this is the routine which is used if you specify the frames using the frames desc
-    auto rf = [&] (PyDict& d, AnimInfo& ai) {
+    auto rf = [&] (YAML::Node& d, AnimInfo& ai) {
 
         // EACH FRAME has
         // quads (mandatory)
@@ -113,19 +113,18 @@ SpriteModel::SpriteModel (const ITable& t) : IModel() {
 
 
     m_mesh = std::make_shared<SpriteMesh>(sheetId);
-    auto anims = t.get<py::dict>("animations");
+    auto anims = t.get<YAML::Node>("animations");
 
     for (auto anim : anims) {
         AnimInfo animInfo;
-        std::string animId = anim.first.cast<std::string>();
+        auto animId = anim.first.as<std::string>();
         if (defaultAnimation.empty()) {
             defaultAnimation = animId;
         }
-        PyDict animData(anim.second.cast<py::dict>());
-        animInfo.loop = animData.get<bool>("loop", true);
-        animInfo.loopFrame = animData.get<int>("loop_frame", 0);
-
-        if (animData.hasKey("elements")) {
+        auto animData = anim.second;
+        animInfo.loop = animData["loop"].as<bool>( true);
+        animInfo.loopFrame = animData["loop_frame"].as<int>(0);
+        if (animData["elements"]) {
             rf (animData, animInfo);
         } else {
             auto frames = animData.get<py::list>("frames");

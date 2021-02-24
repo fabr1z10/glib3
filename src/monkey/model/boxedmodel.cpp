@@ -17,7 +17,7 @@ std::vector<std::shared_ptr<IShape>> BoxedModel::getAttackShapes() const {
     return shapes;
 }
 
-BoxedModel::BoxedModel(const ITable &t) : SpriteModel(t) {
+BoxedModel::BoxedModel(const YamlWrapper &t) : SpriteModel(t) {
 
     float thickness = t.get<float>("thickness", 0.0f);
     float dz = 0.5f * thickness;
@@ -27,44 +27,38 @@ BoxedModel::BoxedModel(const ITable &t) : SpriteModel(t) {
 	m_controllerBounds.min = glm::vec3(-0.5f * controllerBounds.x, 0.0f, 0.0f);
 	m_controllerBounds.max = glm::vec3(0.5f * controllerBounds.x, controllerBounds.y, 0.0f);
 
-    t.foreach<py::list>("boxes", [&] (py::list p) {
-        std::vector<float> pp = p.cast<std::vector<float>>();
+	const auto boxes= t.get<std::vector<YAML::Node>>("boxes", std::vector<YAML::Node>());
+	for (const auto& box : boxes) {
+        auto pp = box.as<std::vector<float>>();
+        int nboxes = pp.size() / 4;
+        nboxes = 1;
         std::shared_ptr<IShape> shape;
-        if (pp.size() == 4) {
+        for (int i = 0; i < nboxes; ++i) {
             float width = pp[2] - pp[0];
             float height = pp[3] - pp[1];
             shape = std::make_shared<Rect>(width, height, glm::vec3(pp[0], pp[1], 0.0f));
-        } else {
-//            auto cs = std::make_shared<CompoundShape>();
-//            for (int i = 0; i < pp.size(); i+= 4) {
-//                float width = pp[i+2] - pp[i];
-//                float height = pp[i+3] - pp[i+1];
-//                auto rect = std::make_shared<Rect>(width, height, glm::vec3(pp[i], pp[i+1], 0.0f));
-//                cs->AddShape(rect);
-//            }
-//            shape = cs;
         }
-        this->addShape(shape);
-    });
+        addShape(shape);
+	}
 
-    auto anims = t.get<py::dict>("animations");
+
+    auto anims = t.get<YAML::Node>("animations");
     for (auto anim : anims) {
         // get the box
-        auto animId = anim.first.cast<std::string>();
-        PyDict animData(anim.second.cast<py::dict>());
+        auto animId = anim.first.as<std::string>();
+        auto animData = anim.second;
         // each animation might have a box
-        if (animData.hasKey("box")) {
-            int boxId = animData.get<int>("box");
+        if (animData["box"]) {
+            int boxId = animData.as<int>("box");
             this->setAnimShape(animId, boxId);
         }
 
-        if (animData.hasKey("elements")) {
-            auto frames = animData.get<py::list>("elements");
+        if (animData["elements"]) {
+            auto frames = animData["elements"].as<std::vector<YAML::Node>>();
             int frameId = 0;
             for (auto frame : frames) {
-                PyDict a(frame.cast<py::dict>());
-                int box = a.get<int>("box", -1);
-                int attack = a.get<int>("attack", -1);
+                int box = frame["box"].as<int>(-1);;
+                int attack = frame["attack"].as<int>(-1);
                 if (box != -1) {
                     this->setFrameShape(animId, frameId, box);
                 }
@@ -75,90 +69,7 @@ BoxedModel::BoxedModel(const ITable &t) : SpriteModel(t) {
             }
 
         }
-//        if (animData.hasKey("shapecast")) {
-//            auto sc = animData.get<py::list>("shapecast");
-//            for (auto p : sc) {
-//                auto pp = p.cast<std::vector<int>>();
-//                setShapeCast(animId, pp[0], pp[1]);
-//            }
-//        }
     }
-
-    // read shape-casts
-
-
-
-//        luabridge::LuaRef an = t.Get<luabridge::LuaRef>("animations");
-//        // loop through animations
-//        for (int i = 0; i < an.length(); ++i) {
-//            luabridge::LuaRef at = an[i+1];
-//            std::string anim = at["name"].cast<std::string>();
-//            glm::vec4 box = LuaTable::Read<glm::vec4>(at["box"], glm::vec4(0.0f));
-//            if (box != glm::vec4(0.0f)) {
-//                pp->AddAnimationData(anim, Bounds{glm::vec3(box[0], box[1], box[0]), glm::vec3(box[2], box[3], box[2])});
-//            }
-//            luabridge::LuaRef fr = at["frames"];
-//            for (int j = 0; j < fr.length(); ++j) {
-//                luabridge::LuaRef a2 = fr[j + 1];
-//                // get the shape associated to this frame
-//                LuaTable table(a2);
-//                if (box != glm::vec4(0.0f)) {
-//                    if (table.HasKey("boxes")) {
-//                        auto boxes = table.Get<luabridge::LuaRef>("boxes");
-//                        if (boxes.length() == 1) {
-//                            glm::vec4 box = LuaTable::Read<glm::vec4>(boxes[1]);
-//                            std::shared_ptr<Shape> collisionShape;
-//                            float width = box[2] - box[0];
-//                            float height = box[3] - box[1];
-//                            if (model3d) {
-//                                collisionShape = std::make_shared<Box3D>(width, height, thickness,
-//                                                                       glm::vec3(box[0], box[1], -dz));
-//                            } else {
-//                                collisionShape = std::make_shared<Rect>(width, height, glm::vec3(box[0], box[1], 0.0f));
-//                            }
-//                            pp->AddCollisionData(anim, j, collisionShape);
-//                        }
-//                    } else {
-//                        // if no boxes field is specified for this frame, use the box at animation level
-//                        std::shared_ptr<Shape> collisionShape;
-//                        float width = box[2] - box[0];
-//                        float height = box[3] - box[1];
-//                        if (model3d) {
-//                            collisionShape = std::make_shared<Box3D>(width, height, thickness,
-//                                                                   glm::vec3(box[0], box[1], -dz));
-//                        } else {
-//                            collisionShape = std::make_shared<Rect>(width, height, glm::vec3(box[0], box[1], 0.0f));
-//                        }
-//                        pp->AddCollisionData(anim, j, collisionShape);
-//                    }
-//                } else {
-//                    pp->AddCollisionData(anim, j, nullptr);
-//                }
-//
-//                if (table.HasKey("attack")) {
-//                    glm::vec4 attackBox = table.Get<glm::vec4>("attack");
-//                    // attack box is a 4d vec {x, y, w, h} where x, y are the coords relative to the top left
-//                    float w = attackBox[2];
-//                    float h = attackBox[3];
-//                    std::shared_ptr<Shape> attackShape;
-//                    if (model3d) {
-//                        attackShape = std::make_shared<Box3D>(w, h, thickness, glm::vec3(attackBox[0], attackBox[1], -dz));
-//                    } else {
-//                        attackShape = std::make_shared<Rect>(w, h, glm::vec3(attackBox[0], attackBox[1], 0.0f));
-//                    }
-//                    pp->AddAttackData(anim, j, attackShape);
-//                    //attackTag = table.Get<int>("attack_tag");
-//                }
-//            }
-//
-//        }
-//        pp->generateDebugMesh();
-//        return pp;
-//
-//
-//    }
-
-
 }
 
 void BoxedModel::addShape(std::shared_ptr<IShape> s) {

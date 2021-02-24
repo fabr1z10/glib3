@@ -8,46 +8,46 @@
 #include <monkey/skeletal/animation.hpp>
 #include <monkey/assets/skeletalanimation.h>
 
-template <typename T>
-class IAssetStore {
-private:
-    virtual std::shared_ptr<T> create(const std::string& id) = 0;
-public:
-    std::shared_ptr<T> Get (const std::string& id) {
-
-        auto it = m_assets.find(id);
-        if (it == m_assets.end()) {
-            auto asset = create(id);
-            m_assets.insert(std::make_pair(id, asset));
-            if (m_local) {
-                m_localAssets.insert(id);
-            }
-            return asset;
-        }
-        return it->second;
-    }
-
-    virtual void Init(const std::string& f, SceneFactory* sf) {
-        m_factory = sf;
-    }
-
-    void CleanUp() {
-        for (const auto& s : m_localAssets) {
-            std::cout << "### dropping asset " << s << "\n";
-            m_assets.erase(s);
-        }
-        m_localAssets.clear();
-    }
-    void SetLocal(bool value) {
-        m_local = value;
-    }
-
-protected:
-    bool m_local;
-    std::unordered_map<std::string, std::shared_ptr<T>> m_assets;
-    std::unordered_set<std::string> m_localAssets;
-    SceneFactory* m_factory;
-};
+//template <typename T>
+//class IAssetStore {
+//private:
+//    virtual std::shared_ptr<T> create(const std::string& id) = 0;
+//public:
+//    std::shared_ptr<T> Get (const std::string& id) {
+//
+//        auto it = m_assets.find(id);
+//        if (it == m_assets.end()) {
+//            auto asset = create(id);
+//            m_assets.insert(std::make_pair(id, asset));
+//            if (m_local) {
+//                m_localAssets.insert(id);
+//            }
+//            return asset;
+//        }
+//        return it->second;
+//    }
+//
+//    virtual void Init(const std::string& f, SceneFactory* sf) {
+//        m_factory = sf;
+//    }
+//
+//    void CleanUp() {
+//        for (const auto& s : m_localAssets) {
+//            std::cout << "### dropping asset " << s << "\n";
+//            m_assets.erase(s);
+//        }
+//        m_localAssets.clear();
+//    }
+//    void SetLocal(bool value) {
+//        m_local = value;
+//    }
+//
+//protected:
+//    bool m_local;
+//    std::unordered_map<std::string, std::shared_ptr<T>> m_assets;
+//    std::unordered_set<std::string> m_localAssets;
+//    SceneFactory* m_factory;
+//};
 
 
 

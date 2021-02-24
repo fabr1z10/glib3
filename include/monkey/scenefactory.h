@@ -59,12 +59,7 @@ public:
 //    std::shared_ptr<SkeletalAnimation> makeSkeletalAnimation(luabridge::LuaRef ref);
 
 
-    template <typename T>
-    void add(const std::string& type) {
-        m_facs.insert(std::make_pair(type, [] (const LuaTable& t) {
-            return std::make_shared<T>(t);
-        }));
-    }
+
     template <typename T>
     void add2(const std::string& type) {
         m_facs2.insert(std::make_pair(type, [] (const ITable& t) {
@@ -72,6 +67,12 @@ public:
         }));
     }
 
+    template <typename T>
+    void addAssetFactory(const std::string& type) {
+        m_assetFactories.insert(std::make_pair(type, [] (const ITable& t) {
+            return std::make_shared<T>(t);
+        }));
+    }
 
 
     template <typename T, bool = std::is_base_of<Ref, T>::value >
@@ -82,6 +83,17 @@ public:
             GLIB_FAIL("Unknown type: " << type);
         }
         return std::static_pointer_cast<T>((it->second)(t));
+    }
+
+    template <typename T, bool = std::is_base_of<Asset, T>::value >
+    std::shared_ptr<T> makeAsset(const YamlWrapper& t) {
+        auto type = t.get<std::string>("type");
+        auto it = m_assetFactories.find(type);
+        if (it == m_assetFactories.end()) {
+            GLIB_FAIL("Unknown type: " << type);
+        }
+        return std::static_pointer_cast<T>((it->second)(t));
+
     }
 
 
@@ -96,8 +108,10 @@ public:
 //    Factory<State> m_stateFactory;
 //    Factory<SkeletalAnimation> m_skeletalAnimFactory;
 
-    std::unordered_map<std::string, std::function<std::shared_ptr<Object>(const LuaTable&)> > m_facs;
     std::unordered_map<std::string, std::function<std::shared_ptr<Object>(const ITable&)> > m_facs2;
+    std::unordered_map<std::string, std::function<std::shared_ptr<Object>(const YamlWrapper&)> > m_assetFactories;
+
+
     //Factory<StateInitializer> m_stateInitFactory;
     //Factory<StateBehaviour> m_stateBehaviorFactory;
 };

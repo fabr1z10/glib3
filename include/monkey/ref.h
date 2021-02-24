@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include <monkey/asset.h>
+#include <monkey/object.h>
 #include <monkey/py.h>
 #include <unordered_map>
 #include <monkey/error.h>

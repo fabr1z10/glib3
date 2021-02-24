@@ -1,6 +1,8 @@
 #include <monkey/assetman.h>
 #include <monkey/engine.h>
 #include <monkey/texturedmesh.h>
+#include "yaml-cpp/yaml.h"
+#include <fstream>
 
 namespace py = pybind11;
 
@@ -42,6 +44,32 @@ std::shared_ptr<IModel> AssetManager::GetModel(const std::string & id) {
     auto it = m_models.find(id);
     if (it != m_models.end()) {
         return it->second;
+    }
+
+    // open the file
+    std::stringstream stream;
+    auto l = id.find_last_of("/");
+    if (l == std::string::npos) {
+        GLIB_FAIL("model id must have the form: [location]/name")
+    }
+    stream << Engine::get().GetGameDirectory() << "assets/" << id.substr(0, l) << ".yaml";
+    std::cerr << "# opening file: " << stream.str() << std::endl;
+//    std::ifstream fin("test.yaml");
+//    YAML::Parser parser(fin);
+//
+//    YAML::Node doc;
+    auto mm = YAML::LoadFile(stream.str().c_str());
+    std::cerr << mm.Type()<< "\n";
+    auto factory = Engine::get().GetSceneFactory();
+    for (const auto& i : mm) {
+        std::cerr << i.first.as<std::string>() << std::endl;
+        YamlWrapper w(i.second);
+
+        auto model = factory->makeAsset<IModel>(w);
+        //std::cerr << i.second.as<std::string>() << std::endl;
+        YAML::Emitter e;
+        e << i.second;
+        std::cerr << e.c_str();
     }
     if (m_modelDict.is_none()) {
         

@@ -3,15 +3,14 @@
 #include <monkey/assets/imodel.h>
 #include <monkey/spritemesh.h>
 #include <monkey/components/renderer.h>
+#include <monkey/yaml.h>
 
 class SpriteModel : public IModel {
 public:
     explicit SpriteModel (std::shared_ptr<SpriteMesh> mesh) : m_mesh(mesh) {
 
     }
-
-    SpriteModel (const LuaTable& t);
-    SpriteModel (const ITable& t);
+    SpriteModel (const YamlWrapper&);
     Bounds GetBounds() const override;
     std::vector<std::string> GetAnimations() const override;
     std::string GetDefaultAnimation() const override;

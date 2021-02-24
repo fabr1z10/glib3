@@ -1,6 +1,11 @@
 #pragma once
 
-class Object {
+#include <monkey/object.h>
+#include <monkey/yaml.h>
+
+
+class Asset : public Object{
 public:
-    virtual ~Object()= default;
+    Asset (const YamlWrapper&);
+
 };

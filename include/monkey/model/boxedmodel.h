@@ -7,7 +7,7 @@
 class BoxedModel : public SpriteModel {
 public:
     explicit BoxedModel (std::shared_ptr<SpriteMesh> mesh);
-    BoxedModel(const ITable& t);
+    BoxedModel(const YamlWrapper& t);
     void addShape (std::shared_ptr<IShape>);
     void setAnimShape (const std::string& anim, int shapeId);
     void setFrameShape (const std::string& anim, int frame, int shapeId);
