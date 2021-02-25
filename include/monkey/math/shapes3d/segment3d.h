@@ -7,7 +7,6 @@ public:
 	Segment3D(glm::vec3 A, glm::vec3 B) : IShape(), a(A), b(B) {}
 	Segment3D(const ITable& t);
 	bool isPointInside (glm::vec3) const override;
-	std::unique_ptr<IShape> transform(const glm::mat4&) override;
 	glm::vec3 getA() const;
 	glm::vec3 getB() const;
 private:

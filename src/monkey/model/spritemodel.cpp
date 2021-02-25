@@ -5,24 +5,24 @@
 
 namespace py = pybind11;
 
-SpriteModel::SpriteModel (const YamlWrapper& t) : IModel() {
-    m_shareable = true;
+SpriteModel::SpriteModel (const YAML::Node& t) : IModel() {
+//    m_shareable = true;
 
-    auto sheetId = t.get<std::string>("sheet");
-    auto ppu = t.get<float>("ppu", 1.0);
+    auto sheetId = t["sheet"].as<std::string>();
+    auto ppu = t["ppu"].as<float>(1.0);
 
     std::string defaultAnimation;
 
     auto tex = Engine::get().GetAssetManager().GetTex(sheetId);
 
-    float texWidth = static_cast<float>(tex->GetWidth());
-    float texHeight = static_cast<float>(tex->GetHeight());
+    auto texWidth = static_cast<float>(tex->GetWidth());
+    auto texHeight = static_cast<float>(tex->GetHeight());
 
 
-    float dt = Engine::get().getMainTable().get<float>("frame_time");
+    auto dt = Engine::get().getMainTable().get<float>("frame_time");
     std::vector<Vertex3D> vertices;
     std::vector<unsigned int> indices;
-    unsigned quadCount {0};
+    int quadCount {0};
 
     auto addQuad = [&] (const std::vector<int>& q) {
         int x = q[0];                // top left x coord in sheet
@@ -74,37 +74,32 @@ SpriteModel::SpriteModel (const YamlWrapper& t) : IModel() {
 
     // this is the routine which is used if you specify the frames using the frames desc
     auto rf = [&] (YAML::Node& d, AnimInfo& ai) {
-
         // EACH FRAME has
         // quads (mandatory)
         // shape (a collision shape -> if not, the anim shape is assigned, if any)
         // cast shape
-        auto frames = d.get<py::list>("elements");
+        auto frames = d["elements"].as<std::vector<YAML::Node>>();
         for (auto frame : frames) {
-            PyDict a(frame.cast<py::dict>());
             FrameInfo frameInfo;
-            frameInfo.duration = a.get<float>("ticks") * (1.0f/60.0f);
-            frameInfo.flipx = a.get<bool>("flipx", false);
-            frameInfo.angle = a.get<float>("angle", 0.0f);
+            frameInfo.duration = frame["ticks"].as<int>(1) * (1.0f/60.0f);
+            frameInfo.flipx = frame["flipx"].as<bool>(false);
+            frameInfo.angle = frame["angle"].as<float>(0.0f);
             frameInfo.offset = 6 * quadCount;
             frameInfo.move = true;
             frameInfo.origin = glm::vec2(0.0f);
-            frameInfo.translation = a.get<glm::vec2>("pos", glm::vec2(0.0f));
-            if (a.hasKey("alpha")) {
+            frameInfo.translation = YamlWrapper::as<glm::vec2>(frame, "pos", glm::vec2(0.0f));
+            if (frame["alpha"]) {
             	frameInfo.applyAlpha = true;
-            	frameInfo.alpha = a.get<float>("alpha") / 256.0f;
+            	frameInfo.alpha = frame["alpha"].as<float>() / 255.0f;
             }
             int fq=0;
-            a.foreach<py::list>("quads", [&] (const py::list& l) {
-                auto p = l.cast<std::vector<int>>();
-                //p[0] *= texWidth;
-                //p[1] *= texHeight;
-                // p[2] *= texWidth;
-                //p[3] *= texHeight;
-                addQuad(p);
-                quadCount++;
-                fq++;
-            });
+			auto quads = frame["quads"].as<std::vector<YAML::Node>>();
+            for (auto& quad : quads) {
+            	auto p = quad.as<std::vector<int>>();
+				addQuad(p);
+				quadCount++;
+				fq++;
+            }
             frameInfo.count = 6 * fq;
             ai.frameInfo.push_back(frameInfo);
 
@@ -113,7 +108,7 @@ SpriteModel::SpriteModel (const YamlWrapper& t) : IModel() {
 
 
     m_mesh = std::make_shared<SpriteMesh>(sheetId);
-    auto anims = t.get<YAML::Node>("animations");
+    auto anims = t["animations"].as<YAML::Node>();
 
     for (auto anim : anims) {
         AnimInfo animInfo;
@@ -126,42 +121,42 @@ SpriteModel::SpriteModel (const YamlWrapper& t) : IModel() {
         animInfo.loopFrame = animData["loop_frame"].as<int>(0);
         if (animData["elements"]) {
             rf (animData, animInfo);
-        } else {
-            auto frames = animData.get<py::list>("frames");
-            for (auto frame : frames) {
-                FrameInfo frameInfo;
-                frameInfo.duration = dt;
-                frameInfo.offset = 6 * quadCount;
-
-                // check if this frame is defined as a vec of ints
-                int frameQuads = 0;
-                try {
-                    auto fi = frame.cast<std::vector<int>>();
-                    addQuad(fi);
-                    quadCount++;
-                    frameQuads = 1;
-                    frameInfo.count = 6;
-                    animInfo.frameInfo.push_back(frameInfo);
-                    continue;
-                } catch (...) {}
-
-                // check if this frame is defined as a list of quads
-                try {
-                    auto quads = frame.cast<py::list>();
-                    for (auto quad : quads) {
-                        std::vector<int> quadInfo = quad.cast<std::vector<int>>();
-                        addQuad(quadInfo);
-                        quadCount++;
-                        frameQuads++;
-                    }
-                    frameInfo.count = 6 * frameQuads;
-                    animInfo.frameInfo.push_back(frameInfo);
-                } catch (...) {
-                    GLIB_FAIL("Cannot read frame")
-                }
-
-            }
         }
+//            auto frames = animData.get<py::list>("frames");
+//            for (auto frame : frames) {
+//                FrameInfo frameInfo;
+//                frameInfo.duration = dt;
+//                frameInfo.offset = 6 * quadCount;
+//
+//                // check if this frame is defined as a vec of ints
+//                int frameQuads = 0;
+//                try {
+//                    auto fi = frame.cast<std::vector<int>>();
+//                    addQuad(fi);
+//                    quadCount++;
+//                    frameQuads = 1;
+//                    frameInfo.count = 6;
+//                    animInfo.frameInfo.push_back(frameInfo);
+//                    continue;
+//                } catch (...) {}
+//
+//                // check if this frame is defined as a list of quads
+//                try {
+//                    auto quads = frame.cast<py::list>();
+//                    for (auto quad : quads) {
+//                        std::vector<int> quadInfo = quad.cast<std::vector<int>>();
+//                        addQuad(quadInfo);
+//                        quadCount++;
+//                        frameQuads++;
+//                    }
+//                    frameInfo.count = 6 * frameQuads;
+//                    animInfo.frameInfo.push_back(frameInfo);
+//                } catch (...) {
+//                    GLIB_FAIL("Cannot read frame")
+//                }
+//
+//            }
+//        }
         animInfo.frameCount = animInfo.frameInfo.size();
         m_mesh->AddAnimInfo(animId, animInfo);
     }

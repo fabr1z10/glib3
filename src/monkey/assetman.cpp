@@ -40,51 +40,59 @@ std::shared_ptr<IMesh> AssetManager::GetMesh(const std::string & id) {
 }
 
 std::shared_ptr<IModel> AssetManager::GetModel(const std::string & id) {
-    // check if model is cached
-    auto it = m_models.find(id);
-    if (it != m_models.end()) {
-        return it->second;
-    }
+	// check if model is cached
+	auto it = m_models.find(id);
+	if (it != m_models.end()) {
+		return it->second;
+	}
 
-    // open the file
-    std::stringstream stream;
-    auto l = id.find_last_of("/");
-    if (l == std::string::npos) {
-        GLIB_FAIL("model id must have the form: [location]/name")
-    }
-    stream << Engine::get().GetGameDirectory() << "assets/" << id.substr(0, l) << ".yaml";
-    std::cerr << "# opening file: " << stream.str() << std::endl;
+	// open the file
+	std::stringstream stream;
+	auto l = id.find_last_of("/");
+	if (l == std::string::npos) {
+		GLIB_FAIL("model id must have the form: [location]/name")
+	}
+	std::string location = id.substr(0, l);
+	std::string asset_id = id.substr(l+1);
+
+	stream << Engine::get().GetGameDirectory() << "assets/" << id.substr(0, l) << ".yaml";
+
+	std::cerr << "# opening file: " << stream.str() << std::endl;
 //    std::ifstream fin("test.yaml");
 //    YAML::Parser parser(fin);
 //
 //    YAML::Node doc;
-    auto mm = YAML::LoadFile(stream.str().c_str());
-    std::cerr << mm.Type()<< "\n";
-    auto factory = Engine::get().GetSceneFactory();
-    for (const auto& i : mm) {
-        std::cerr << i.first.as<std::string>() << std::endl;
-        YamlWrapper w(i.second);
+	auto mm = YAML::LoadFile(stream.str().c_str());
+	std::cerr << mm.Type() << "\n";
+	auto factory = Engine::get().GetSceneFactory();
+	// store all models in this file
+	for (const auto &i : mm) {
+		std::cerr << i.first.as<std::string>() << std::endl;
+		auto model = factory->makeAsset<IModel>(i.second);
 
-        auto model = factory->makeAsset<IModel>(w);
-        //std::cerr << i.second.as<std::string>() << std::endl;
-        YAML::Emitter e;
-        e << i.second;
-        std::cerr << e.c_str();
-    }
-    if (m_modelDict.is_none()) {
-        
-    } else {
-    	std::unique_ptr<ITable> t;
-        try {
-			t = std::make_unique<PyDict>(m_modelDict[id.c_str()].cast<py::dict>());
-		} catch (...) {
-        	t = std::make_unique<PyTable>(m_modelDict[id.c_str()].cast<py::dict>());
-		}
-		auto model = Engine::get().GetSceneFactory()->make2<IModel>(*(t.get()));
-        if (model->isShareable())
-            m_models.insert(std::make_pair(id, model));
-        return model;
-    }}
+		m_models[location + "/" + i.first.as<std::string>()] = model;
+		//std::cerr << i.second.as<std::string>() << std::endl;
+		//YAML::Emitter e;
+		//e << i.second;
+		//std::cerr << e.c_str();
+	}
+	return m_models.at(id);
+
+	if (m_modelDict.is_none()) {
+	}
+}
+//    } else {
+//    	std::unique_ptr<ITable> t;
+//        try {
+//			t = std::make_unique<PyDict>(m_modelDict[id.c_str()].cast<py::dict>());
+//		} catch (...) {
+//        	t = std::make_unique<PyTable>(m_modelDict[id.c_str()].cast<py::dict>());
+//		}
+//		auto model = Engine::get().GetSceneFactory()->make2<IModel>(*(t.get()));
+//        if (model->isShareable())
+//            m_models.insert(std::make_pair(id, model));
+//        return model;
+//    }}
 
 
 std::shared_ptr<Font> AssetManager::GetFont (const std::string& fontId) {

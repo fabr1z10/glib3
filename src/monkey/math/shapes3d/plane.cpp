@@ -6,13 +6,6 @@ Plane::Plane(const ITable& t) : IShape(t) {
 
 }
 
-std::unique_ptr<IShape> Plane::transform(const glm::mat4 & m) {
-	auto plane = std::make_unique<Plane>();
-	auto pp = glm::transpose(glm::inverse(m)) * glm::vec4(n, -d);
-	plane->n = glm::vec3(pp);
-	plane->d = -pp[3];
-	return plane;
-}
 
 bool Plane::isPointInside(glm::vec3 P) const {
 	return iszero(d - glm::dot(n, P));

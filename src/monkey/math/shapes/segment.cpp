@@ -18,12 +18,12 @@ Segment::Segment (glm::vec2 A, glm::vec2 B) : IConvexPolygon(), m_A(A), m_B(B) {
 }
 
 
-std::unique_ptr<IShape> Segment::transform(const glm::mat4 &t) {
-    glm::vec3 ta = t * glm::vec4(m_A, 0.0f, 1.0f);
-    glm::vec3 tb = t * glm::vec4(m_B, 0.0f, 1.0f);
-    auto ptr= std::make_unique<Segment>(ta, tb);
-    return ptr;
-}
+//std::unique_ptr<IShape> Segment::transform(const glm::mat4 &t) {
+//    glm::vec3 ta = t * glm::vec4(m_A, 0.0f, 1.0f);
+//    glm::vec3 tb = t * glm::vec4(m_B, 0.0f, 1.0f);
+//    auto ptr= std::make_unique<Segment>(ta, tb);
+//    return ptr;
+//}
 
 void Segment::initBounds() {
     m_type = ShapeType::SEGMENT;
@@ -56,9 +56,11 @@ float Segment::getLength() const {
     return glm::length(m_B - m_A);
 }
 
-glm::vec2 Segment::project(glm::vec2 axis) const {
-    float a = glm::dot(m_A, axis);
-    float b = glm::dot(m_B, axis);
+glm::vec2 Segment::project(glm::vec2 axis, const glm::mat4& t) const {
+	glm::vec2 aw = t * glm::vec4(m_A, 0.0f, 1.0f);
+	glm::vec2 bw = t * glm::vec4(m_B, 0.0f, 1.0f);
+    float a = glm::dot(aw, axis);
+    float b = glm::dot(bw, axis);
     if (a < b) {
         return glm::vec2(a, b);
     }

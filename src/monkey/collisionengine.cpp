@@ -230,14 +230,14 @@ void SpatialHashingCollisionEngine::Update(double dt) {
                 }
 
                 // get the shape in local coordinates
-                auto& t1 = c1->GetObject()->GetWorldTransform();
-                auto& t2 = c2->GetObject()->GetWorldTransform();
-                auto s1 = c1->GetShape()->transform(t1);
-                auto s2 = c2->GetShape()->transform(t2);
+                const auto& t1 = c1->GetObject()->GetWorldTransform();
+                const auto& t2 = c2->GetObject()->GetWorldTransform();
+                //auto s1 = c1->GetShape()->transform(t1);
+                //auto s2 = c2->GetShape()->transform(t2);
 
 
                 // bounding boxes intersect, so let's make a proper collision test
-                auto report = m_intersector->intersect(s1.get(), s2.get());
+                auto report = m_intersector->intersect(c1->GetShape(), c2->GetShape(), t1, t2);
                 if (report.collide) {
                     CollisionInfo ci;
                     ci.report = report;
@@ -306,11 +306,11 @@ ShapeCastHit SpatialHashingCollisionEngine::ShapeCast (IShape* shape, const glm:
                         }
                         auto *s = c->GetShape();
                         if (s != nullptr) {
-                            auto &t = c->GetObject()->GetWorldTransform();
-                            auto s1 = s->transform(t);
-                            auto s2 = shape->transform(transform);
+                            const auto &t = c->GetObject()->GetWorldTransform();
+                            //auto s1 = s->transform(t);
+                            //auto s2 = shape->transform(transform);
                             // bounding boxes intersect, so let's make a proper collision test
-                            auto report = m_intersector->intersect(s1.get(), s2.get());
+                            auto report = m_intersector->intersect(shape, s, transform, t);
                             if (report.collide) {
                                 result.report = report;
                                 result.entity = c;
@@ -397,10 +397,10 @@ RayCastHit SpatialHashingCollisionEngine::Raycast (glm::vec3 rayOrigin, glm::vec
                 if (m != 0) {
                     auto shapeBounds = c->GetBounds();
                     if (lineBounds.Intersects2D(shapeBounds)) {
-                        auto t = c->GetObject()->GetWorldTransform();
-                        auto cshape = c->GetShape()->transform(t);
+                        const auto& t = c->GetObject()->GetWorldTransform();
+                        //auto cshape = c->GetShape()->transform(t);
                         //auto report = m_intersector->intersect(&line, cshape.get());
-                        auto report = m_raycast->run(rayOrigin, rayDir, length, cshape.get());
+                        auto report = m_raycast->run(rayOrigin, rayDir, length, c->GetShape(), t);
                         if (report.collide && (!out.collide || out.length > report.length)) {
                             out.entity = c;
                             out.length = report.length;

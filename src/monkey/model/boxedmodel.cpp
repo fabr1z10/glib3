@@ -17,39 +17,33 @@ std::vector<std::shared_ptr<IShape>> BoxedModel::getAttackShapes() const {
     return shapes;
 }
 
-BoxedModel::BoxedModel(const YamlWrapper &t) : SpriteModel(t) {
+BoxedModel::BoxedModel(const YAML::Node &t) : SpriteModel(t) {
 
-    float thickness = t.get<float>("thickness", 0.0f);
-    float dz = 0.5f * thickness;
-    bool model3d = (thickness > 0.0f);
-
-    auto controllerBounds = t.get<glm::vec2>("controller_bounds", glm::vec2(0.0f));
-	m_controllerBounds.min = glm::vec3(-0.5f * controllerBounds.x, 0.0f, 0.0f);
-	m_controllerBounds.max = glm::vec3(0.5f * controllerBounds.x, controllerBounds.y, 0.0f);
-
-	const auto boxes= t.get<std::vector<YAML::Node>>("boxes", std::vector<YAML::Node>());
-	for (const auto& box : boxes) {
-        auto pp = box.as<std::vector<float>>();
-        int nboxes = pp.size() / 4;
-        nboxes = 1;
-        std::shared_ptr<IShape> shape;
-        for (int i = 0; i < nboxes; ++i) {
-            float width = pp[2] - pp[0];
-            float height = pp[3] - pp[1];
-            shape = std::make_shared<Rect>(width, height, glm::vec3(pp[0], pp[1], 0.0f));
-        }
-        addShape(shape);
+	if (t["boxes"]) {
+		const auto boxes = t["boxes"].as<std::vector<YAML::Node>>();
+		for (const auto &box : boxes) {
+			auto pp = box.as<std::vector<float>>();
+			int nboxes = pp.size() / 4;
+			nboxes = 1;
+			std::shared_ptr<IShape> shape;
+			for (int i = 0; i < nboxes; ++i) {
+				float width = pp[2] - pp[0];
+				float height = pp[3] - pp[1];
+				shape = std::make_shared<Rect>(width, height, glm::vec3(pp[0], pp[1], 0.0f));
+			}
+			addShape(shape);
+		}
 	}
 
 
-    auto anims = t.get<YAML::Node>("animations");
+    auto anims = t["animations"].as<YAML::Node>();
     for (auto anim : anims) {
         // get the box
         auto animId = anim.first.as<std::string>();
         auto animData = anim.second;
         // each animation might have a box
         if (animData["box"]) {
-            int boxId = animData.as<int>("box");
+            int boxId = animData["box"].as<int>();
             this->setAnimShape(animId, boxId);
         }
 

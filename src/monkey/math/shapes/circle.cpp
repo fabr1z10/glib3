@@ -22,10 +22,10 @@ bool Circle::isPointInside(glm::vec3 P) const {
     return (rp.x * rp.x + rp.y * rp.y <= m_radius * m_radius);
 }
 
-std::unique_ptr<IShape> Circle::transform(const glm::mat4 &t) {
-    glm::vec2 center = t * glm::vec4(m_offset, 1.0f);
-    return std::make_unique<Circle>(m_radius, glm::vec3(center, 0.0f));
-}
+//std::unique_ptr<IShape> Circle::transform(const glm::mat4 &t) {
+//    glm::vec2 center = t * glm::vec4(m_offset, 1.0f);
+//    return std::make_unique<Circle>(m_radius, glm::vec3(center, 0.0f));
+//}
 //
 //void Circle::accept (AcyclicVisitor& v) {
 //    Visitor<Circle>* v1 = dynamic_cast<Visitor<Circle>*>(&v);
@@ -42,8 +42,9 @@ std::unique_ptr<IShape> Circle::transform(const glm::mat4 &t) {
 //    return stream.str();
 //}
 //
-glm::vec2 Circle::project(glm::vec2 axis) const {
-    float x = glm::dot(glm::vec2(m_offset), axis);
+glm::vec2 Circle::project(glm::vec2 axis, const glm::mat4& t) const {
+	glm::vec2 cw = t * glm::vec4(axis, 0.0f, 1.0f);
+    float x = glm::dot(cw, axis);
     return glm::vec2(x - m_radius, x + m_radius);
 }
 //

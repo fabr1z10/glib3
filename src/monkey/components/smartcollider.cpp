@@ -97,7 +97,7 @@ void SmartCollider::Start() {
     // a smart collider requires an animator
     m_animator = dynamic_cast<Animator*>(m_entity->GetComponent<IAnimator>());
     m_model = dynamic_cast<BoxedModel*>(m_animator->GetModel().get());
-    m_controllerBounds = m_model->getControllerBounds();
+    //m_controllerBounds = m_model->getControllerBounds();
     m_animator->onFrameUpdate.Register(this, [&] (Animator* a) { this->onFrameUpdate(a); });
     ICollider::Start();
 

@@ -29,7 +29,7 @@ public:
     explicit IShape(const ITable& t);
     Bounds getBounds() const;
     glm::vec3 getOffset() const;
-    virtual std::unique_ptr<IShape> transform (const glm::mat4& t) = 0;
+    //virtual std::unique_ptr<IShape> transform (const glm::mat4& t) = 0;
     virtual bool isPointInside (glm::vec3) const = 0;
     ShapeType getShapeType();
 protected:
@@ -55,7 +55,8 @@ class Shape2D : public IShape {
 public:
     Shape2D() = default;
     explicit Shape2D(const ITable& t) : IShape(t) {}
-    virtual glm::vec2 project(glm::vec2) const = 0;
+
+    virtual glm::vec2 project(glm::vec2, const glm::mat4&) const = 0;
 };
 
 

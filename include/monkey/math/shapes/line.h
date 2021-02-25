@@ -7,7 +7,7 @@ class Segment : public IConvexPolygon {
 public:
     Segment (glm::vec2 A, glm::vec2 B);
     explicit Segment (const ITable&);
-    std::unique_ptr<IShape> transform (const glm::mat4& t) override;
+    //std::unique_ptr<IShape> transform (const glm::mat4& t) override;
     glm::vec2 getA() const;
     glm::vec2 getB() const;
     //    bool isPoint    virtual std::unique_ptr<IShape> transform (const glm::mat4& t) = 0;Inside(glm::vec3) const override;
@@ -15,7 +15,7 @@ public:
     float getLength() const;
     glm::vec2 getDirection() const;
     bool isPointInside(glm::vec3) const override;
-    glm::vec2 project(glm::vec2) const override;
+    glm::vec2 project(glm::vec2, const glm::mat4&) const override;
 
     std::vector<glm::vec2> getEdges() const override;
     std::vector<glm::vec2> getVertices() const override;

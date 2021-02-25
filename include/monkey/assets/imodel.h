@@ -24,13 +24,13 @@ public:
     virtual std::vector<std::shared_ptr<IShape>> getAttackShapes() const {
         return std::vector<std::shared_ptr<IShape>>();
     }
-    bool isShareable() const;
+    // bool isShareable() const;
 
 protected:
-    bool m_shareable;
+    //bool m_shareable;
 };
 
-inline bool IModel::isShareable() const {
-    return m_shareable;
-}
+//inline bool IModel::isShareable() const {
+//    return m_shareable;
+//}
 

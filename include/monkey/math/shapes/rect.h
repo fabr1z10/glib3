@@ -7,14 +7,14 @@ class Rect : public IConvexPolygon {
 public:
     Rect(float width, float height, glm::vec3 offset=glm::vec3(0.0f));
     explicit Rect(const ITable&);
-    std::unique_ptr<IShape> transform (const glm::mat4& t) override;
+    //std::unique_ptr<IShape> transform (const glm::mat4& t) override;
 
     float getWidth() const;
     float getHeight() const;
     bool isPointInside(glm::vec3) const override;
     //void accept (AcyclicVisitor& v) override;
 
-    glm::vec2 project(glm::vec2 axis) const override;
+    glm::vec2 project(glm::vec2 axis, const glm::mat4& t) const override;
     //std::vector<glm::vec2> getPoints() override;
     std::vector<glm::vec2> getEdges() const override;
     std::vector<glm::vec2> getVertices() const override;

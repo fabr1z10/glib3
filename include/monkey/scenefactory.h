@@ -69,7 +69,7 @@ public:
 
     template <typename T>
     void addAssetFactory(const std::string& type) {
-        m_assetFactories.insert(std::make_pair(type, [] (const ITable& t) {
+        m_assetFactories.insert(std::make_pair(type, [] (const YAML::Node& t) {
             return std::make_shared<T>(t);
         }));
     }
@@ -86,8 +86,8 @@ public:
     }
 
     template <typename T, bool = std::is_base_of<Asset, T>::value >
-    std::shared_ptr<T> makeAsset(const YamlWrapper& t) {
-        auto type = t.get<std::string>("type");
+    std::shared_ptr<T> makeAsset(const YAML::Node& t) {
+        auto type = t["type"].as<std::string>();
         auto it = m_assetFactories.find(type);
         if (it == m_assetFactories.end()) {
             GLIB_FAIL("Unknown type: " << type);
@@ -109,7 +109,7 @@ public:
 //    Factory<SkeletalAnimation> m_skeletalAnimFactory;
 
     std::unordered_map<std::string, std::function<std::shared_ptr<Object>(const ITable&)> > m_facs2;
-    std::unordered_map<std::string, std::function<std::shared_ptr<Object>(const YamlWrapper&)> > m_assetFactories;
+    std::unordered_map<std::string, std::function<std::shared_ptr<Object>(const YAML::Node&)> > m_assetFactories;
 
 
     //Factory<StateInitializer> m_stateInitFactory;

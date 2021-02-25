@@ -16,8 +16,8 @@ class ConvexPolygon : public IConvexPolygon {
 public:
     explicit ConvexPolygon(const std::vector<glm::vec2>&);
     explicit ConvexPolygon(const ITable&);
-    std::unique_ptr<IShape> transform (const glm::mat4& t) override;
-    glm::vec2 project(glm::vec2) const ;
+    //std::unique_ptr<IShape> transform (const glm::mat4& t) override;
+    glm::vec2 project(glm::vec2, const glm::mat4&) const ;
 
     bool isPointInside(glm::vec3) const override;
     std::vector<glm::vec2> getEdges() const override;

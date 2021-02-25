@@ -8,7 +8,7 @@
 #include <monkey/math/shapes/polyline.h>
 #include <monkey/math/shapes/circle.h>
 #include <monkey/math/shapes/ellipse.h>
-#include <monkey/math/compound.h>
+#include <monkey/math/shapes/compound.h>
 #include <memory>
 
 class Contour :

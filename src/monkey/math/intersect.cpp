@@ -35,7 +35,7 @@ Intersector2D::Intersector2D() {
 
 }
 
-CollisionReport Intersector2D::intersect(IShape * s1, IShape *s2) {
+CollisionReport Intersector2D::intersect(IShape * s1, IShape *s2, const glm::mat4& t1, const glm::mat4& t2) {
 
     auto it = m_func.find (std::make_pair(s1->getShapeType(), s2->getShapeType()));
     if (it == m_func.end()) {
@@ -43,13 +43,13 @@ CollisionReport Intersector2D::intersect(IShape * s1, IShape *s2) {
         if (it == m_func.end()) {
             std::cout << "Don't have a routine to intersect shapes\n";
         } else {
-            auto report = it->second->intersect(s2, s1);
+            auto report = it->second->intersect(s2, s1, t2, t1);
             report.direction *= -1.0f;
             return report;
         }
         
     } else {
-        return it->second->intersect(s1, s2);
+        return it->second->intersect(s1, s2, t1, t2);
     }
     return CollisionReport();
 }

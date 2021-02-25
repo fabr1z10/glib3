@@ -3,20 +3,20 @@
 #include <monkey/math/shapes/convexpoly.h>
 
 RayCast2D::RayCast2D() {
-	m_raycasters[ShapeType::SEGMENT] = [&] (glm::vec2 A, glm::vec2 B, IShape* s) {
-		return this->rayCast<IConvexPolygon, false>(A, B, s);
+	m_raycasters[ShapeType::SEGMENT] = [&] (glm::vec2 A, glm::vec2 B, IShape* s, const glm::mat4& t) {
+		return this->rayCast<IConvexPolygon, false>(A, B, s, t);
 	};
-	m_raycasters[ShapeType::RECT] = [&] (glm::vec2 A, glm::vec2 B, IShape* s) {
-		return this->rayCast<IConvexPolygon, true>(A, B, s);
+	m_raycasters[ShapeType::RECT] = [&] (glm::vec2 A, glm::vec2 B, IShape* s, const glm::mat4& t) {
+		return this->rayCast<IConvexPolygon, true>(A, B, s, t);
 	};
-	m_raycasters[ShapeType::CONVEXPOLY] = [&] (glm::vec2 A, glm::vec2 B, IShape* s) {
-		return this->rayCast<IConvexPolygon, true>(A, B, s);
+	m_raycasters[ShapeType::CONVEXPOLY] = [&] (glm::vec2 A, glm::vec2 B, IShape* s, const glm::mat4& t) {
+		return this->rayCast<IConvexPolygon, true>(A, B, s, t);
 	};
 
 
 }
 
-RayCastHit RayCast2D::run(glm::vec3 O, glm::vec3 dir, float length, IShape *shape) {
+RayCastHit RayCast2D::run(glm::vec3 O, glm::vec3 dir, float length, IShape *shape, const glm::mat4& t) {
 	glm::vec2 A(O);
 	glm::vec2 B = O + dir * length;
 	RayCastHit out;
@@ -25,7 +25,7 @@ RayCastHit RayCast2D::run(glm::vec3 O, glm::vec3 dir, float length, IShape *shap
 		return out;
 	}
 
-	out = it->second(A, B, shape);
+	out = it->second(A, B, shape, t);
 	if (out.collide) {
 		// here length is just a number between 0 and 1, so it must be scaled to the proper length
 		out.length *= length;

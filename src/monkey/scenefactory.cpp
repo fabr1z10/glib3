@@ -234,7 +234,7 @@ SceneFactory::SceneFactory() {
     add2<StateFunc> ("stateaction.callback");
     add2<StateTransition> ("stateaction.statetransition");
     // assets
-    add2<SpriteModel> ("asset.sprite");
+	addAssetFactory<SpriteModel> ("asset.sprite");
     addAssetFactory<BoxedModel> ("asset.boxed");
     add2<TexturedMesh<VertexSkeletal>>("asset.mesh");
 

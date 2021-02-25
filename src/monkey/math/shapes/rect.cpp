@@ -14,13 +14,13 @@ Rect::Rect(const ITable & t) : IConvexPolygon(t) {
     initBounds();
 }
 
-std::unique_ptr<IShape> Rect::transform(const glm::mat4 &t) {
-    auto ptr= std::make_unique<Rect>(m_width, m_height);
-    ptr->m_offset = t * glm::vec4(m_offset, 1.0f);
-    ptr->m_u = t * glm::vec4(m_u, 0.0f, 0.0f);
-    ptr->m_v = t * glm::vec4(m_v, 0.0f, 0.0f);
-    return ptr;
-}
+//std::unique_ptr<IShape> Rect::transform(const glm::mat4 &t) {
+//    auto ptr= std::make_unique<Rect>(m_width, m_height);
+//    ptr->m_offset = t * glm::vec4(m_offset, 1.0f);
+//    ptr->m_u = t * glm::vec4(m_u, 0.0f, 0.0f);
+//    ptr->m_v = t * glm::vec4(m_v, 0.0f, 0.0f);
+//    return ptr;
+//}
 
 void Rect::initBounds() {
     m_type = ShapeType::RECT;
@@ -71,12 +71,12 @@ bool Rect::isPointInside(glm::vec3 P) const {
 //    return stream.str();
 //}
 
-glm::vec2 Rect::project(glm::vec2 axis) const {
+glm::vec2 Rect::project(glm::vec2 axis, const glm::mat4& t) const {
     glm::vec2 o(m_offset);
     glm::vec2 ax = m_u * m_width;
     glm::vec2 ay = m_v * m_height;
     std::vector<glm::vec2> points = {o, o + ax, o + ax + ay, o + ay};
-    return ::project(points, axis);
+    return ::project(points, axis, t);
 }
 //
 //

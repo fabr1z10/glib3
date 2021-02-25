@@ -1,14 +1,14 @@
 #include <monkey/math/algo/sat.h>
 #include <monkey/math/geomalgo.h>
 
-CollisionReport performSAT(std::unordered_set<glm::vec2>& axesw, const Shape2D& a, const Shape2D& b) {
+CollisionReport performSAT(std::unordered_set<glm::vec2>& axesw, const Shape2D& a, const Shape2D& b, const glm::mat4& t1, const glm::mat4& t2) {
     // axes are given in world coordinates
     // since dot products do not depend on coordinate systems, we transform axes from world to local
     CollisionReport report;
     report.distance = std::numeric_limits<float>::infinity();
     for (auto& axis : axesw) {
-        glm::vec2 pA = a.project(axis);
-        glm::vec2 pB = b.project(axis);
+        glm::vec2 pA = a.project(axis, t1);
+        glm::vec2 pB = b.project(axis, t2);
         if (pA.x > pB.y || pB.x > pA.y) {
             // we found a non-overlapping axis
             // so we are sure that the two shapes do not collide
@@ -29,37 +29,44 @@ CollisionReport performSAT(std::unordered_set<glm::vec2>& axesw, const Shape2D& 
     return report;
 }
 
-CollisionReport SAT(const IConvexPolygon& p1, const IConvexPolygon& p2)
+CollisionReport SAT(const IConvexPolygon& p1, const IConvexPolygon& p2, const glm::mat4& t1, const glm::mat4& t2)
 {
     auto edges1 = p1.getEdges();
     auto edges2 = p2.getEdges();
 
     std::unordered_set<glm::vec2> axes;
     for (auto& e : edges1) {
-        axes.insert (glm::vec2(-e.y, e.x));
+    	// transform axis in world coordinates
+    	glm::vec2 ew = t1 * glm::vec4(e, 0.0f, 0.0f);
+        axes.insert (glm::vec2(-ew.y, ew.x));
     }
     for (auto& e : edges2) {
-        axes.insert (glm::vec2(-e.y, e.x));
+		glm::vec2 ew = t2 * glm::vec4(e, 0.0f, 0.0f);
+        axes.insert (glm::vec2(-ew.y, ew.x));
     }
-    return performSAT(axes, p1, p2);
+    // pass the axes in world coordinates
+    return performSAT(axes, p1, p2, t1, t2);
 }
 
-CollisionReport SATCircle(const IConvexPolygon& p, const Circle& c) {
+CollisionReport SATCircle(const IConvexPolygon& p, const Circle& c, const glm::mat4& t1, const glm::mat4& t2) {
 
     auto edges1 = p.getEdges();
     std::unordered_set<glm::vec2> axes;
     for (auto& e : edges1) {
-        axes.insert (glm::normalize(glm::vec2(-e.y, e.x)));
+		glm::vec2 ew = t1 * glm::vec4(e, 0.0f, 0.0f);
+        axes.insert (glm::normalize(glm::vec2(-ew.y, ew.x)));
     }
 
-    // loop through all points
-    glm::vec2 center = c.getOffset();
+    // get circle center in world coordinates
+    glm::vec2 centerw = t2 * glm::vec4(c.getOffset(), 1.0f);
     auto vertices = p.getVertices();
     glm::vec2 extraAxis(0.0f);
     float mind2 = std::numeric_limits<float>::infinity();
 
+	// loop through all points
     for (auto& p : vertices) {
-        glm::vec2 d = center - p;
+    	glm::vec2 pw = t1 * glm::vec4(p, 0.0f, 1.0f);
+        glm::vec2 d = centerw - pw;
         float d2 = d.x * d.x + d.y * d.y;
         if (d2 <= mind2) {
             mind2 = d2;
@@ -68,5 +75,5 @@ CollisionReport SATCircle(const IConvexPolygon& p, const Circle& c) {
     }
     axes.insert (glm::normalize(extraAxis));
 
-    return performSAT(axes, p, c);
+    return performSAT(axes, p, c, t1, t2);
 }

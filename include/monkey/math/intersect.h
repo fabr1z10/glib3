@@ -5,7 +5,7 @@
 #include <monkey/math/shapes/poly.h>
 #include <monkey/math/shapes/polyline.h>
 #include <monkey/math/shapes/circle.h>
-#include <monkey/math/compound.h>
+#include <monkey/math/shapes/compound.h>
 
 #include <typeinfo>
 #include <typeindex>
@@ -24,16 +24,16 @@
 
 class IIntersector {
 public:
-    virtual CollisionReport intersect(IShape*, IShape*) = 0;
+    virtual CollisionReport intersect(IShape*, IShape*, const glm::mat4&, const glm::mat4&) = 0;
 };
 
-template <typename T1, typename T2, CollisionReport(*f)(const T1&, const T2&)>
+template <typename T1, typename T2, CollisionReport(*f)(const T1&, const T2&, const glm::mat4&, const glm::mat4&)>
 class Intersector : public IIntersector {
 public:
-    CollisionReport intersect(IShape* s1, IShape* s2) override {
-        T1* t1 = static_cast<T1*>(s1);
-        T2* t2 = static_cast<T2*>(s2);
-        return f(*t1, *t2);
+    CollisionReport intersect(IShape* s1, IShape* s2, const glm::mat4& t1, const glm::mat4& t2) override {
+        T1* sc1 = static_cast<T1*>(s1);
+        T2* sc2 = static_cast<T2*>(s2);
+        return f(*sc1, *sc2, t1, t2);
 
     }
 };
@@ -41,7 +41,7 @@ public:
 class Intersector2D : public IIntersector {
 public:
     Intersector2D();
-    CollisionReport intersect(IShape* shape1, IShape* shape2) override;
+    CollisionReport intersect(IShape* shape1, IShape* shape2, const glm::mat4&, const glm::mat4&) override;
 private:
     std::unordered_map<std::pair<ShapeType, ShapeType>, std::unique_ptr<IIntersector> > m_func;
 };

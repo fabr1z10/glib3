@@ -34,19 +34,19 @@ bool ConvexPolygon::isPointInside(glm::vec3 P) const {
     return pointInConvexPolygon(glm::vec2(P), m_points);
 }
 
-glm::vec2 ConvexPolygon::project(glm::vec2 axis) const {
+glm::vec2 ConvexPolygon::project(glm::vec2 axis, const glm::mat4& t) const {
     std::vector<glm::vec2> pts;
     for (const auto& p : m_points) pts.push_back(glm::vec2(m_offset) + p);
-    return ::project(pts, axis);
+    return ::project(pts, axis, t);
 }
 
-std::unique_ptr<IShape> ConvexPolygon::transform(const glm::mat4 &t) {
-    // transform each point
-    std::vector<glm::vec2> points;
-    for (const auto& p : m_points) {
-        points.emplace_back(t * glm::vec4(p, 0.0f, 1.0f));
-    }
-    return std::make_unique<ConvexPolygon>(points);
-
-}
-
+//std::unique_ptr<IShape> ConvexPolygon::transform(const glm::mat4 &t) {
+//    // transform each point
+//    std::vector<glm::vec2> points;
+//    for (const auto& p : m_points) {
+//        points.emplace_back(t * glm::vec4(p, 0.0f, 1.0f));
+//    }
+//    return std::make_unique<ConvexPolygon>(points);
+//
+//}
+//

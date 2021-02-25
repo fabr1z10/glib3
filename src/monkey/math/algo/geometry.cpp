@@ -25,10 +25,11 @@ int pointInConvexPolygon(glm::vec2 p, const std::vector<glm::vec2>& v)
     return triangleIsCCW(v[low], v[high], p);
 }
 
-glm::vec2 project(const std::vector<glm::vec2>& points, const glm::vec2& axis) {
+glm::vec2 project(const std::vector<glm::vec2>& points, const glm::vec2& axis, const glm::mat4& t) {
     glm::vec2 out (std::numeric_limits<float>::infinity(), -std::numeric_limits<float>::infinity());
     for (const auto& p : points) {
-        float pr = glm::dot (p, axis);
+    	glm::vec2 pw = t * glm::vec4(p, 0.0f, 1.0f);
+        float pr = glm::dot (pw, axis);
         out.x = std::min (out.x, pr);
         out.y = std::max (out.y, pr);
     }
@@ -36,9 +37,11 @@ glm::vec2 project(const std::vector<glm::vec2>& points, const glm::vec2& axis) {
 }
 
 
-CollisionReport circleVsCircle(const Circle& c1, const Circle& c2) {
+CollisionReport circleVsCircle(const Circle& c1, const Circle& c2, const glm::mat4& t1, const glm::mat4& t2) {
     CollisionReport report;
-    glm::vec2 ab = c2.getOffset() - c1.getOffset();
+    glm::vec2 c1w = t1 * glm::vec4(c1.getOffset(), 1.0f);
+	glm::vec2 c2w = t2 * glm::vec4(c2.getOffset(), 1.0f);
+    glm::vec2 ab = c2w - c1w;
     float rsum = c1.getRadius() + c2.getRadius();
     float d2 = ab.x * ab.x + ab.y * ab.y;
     report.collide = (d2 < (rsum * rsum));

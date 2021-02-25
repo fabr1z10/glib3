@@ -7,7 +7,7 @@
 class BoxedModel : public SpriteModel {
 public:
     explicit BoxedModel (std::shared_ptr<SpriteMesh> mesh);
-    BoxedModel(const YamlWrapper& t);
+    BoxedModel(const YAML::Node& t);
     void addShape (std::shared_ptr<IShape>);
     void setAnimShape (const std::string& anim, int shapeId);
     void setFrameShape (const std::string& anim, int frame, int shapeId);
@@ -32,7 +32,6 @@ public:
     Bounds GetAnimBounds(const std::string&) const;
     const std::vector<std::shared_ptr<IShape>>& getShapes();
     std::vector<std::shared_ptr<IShape>> getAttackShapes() const override;
-	Bounds getControllerBounds() const;
 private:
     std::vector<std::shared_ptr<IShape>> m_shapes;
     std::unordered_map<std::pair<std::string, int>, int> m_boxInfo;
@@ -42,7 +41,6 @@ private:
     int addShapeMesh(const std::shared_ptr<Shape>&, int& pc, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices);
     std::shared_ptr<IMesh> m_collisionMesh;
     Bounds m_maxBounds;
-	Bounds m_controllerBounds;
 
 };
 
@@ -59,9 +57,7 @@ inline const std::vector<std::shared_ptr<IShape>>& BoxedModel::getShapes() {
     return m_shapes;
 }
 
-inline Bounds BoxedModel::getControllerBounds() const {
-	return m_controllerBounds;
-}
+
 //inline const BoxInfo& BoxedModel::getBoxInfo(const std::string& anim, int frame) const {
 //    return m_boxInfo.at(std::make_pair(anim, frame));
 //}
