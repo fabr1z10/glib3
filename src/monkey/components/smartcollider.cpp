@@ -101,28 +101,26 @@ void SmartCollider::Start() {
     m_animator->onFrameUpdate.Register(this, [&] (Animator* a) { this->onFrameUpdate(a); });
     ICollider::Start();
 
-    auto shapeEntity = std::make_shared<Entity>();
 
-    if (m_shapeEntity != nullptr) {
-        m_entity->Remove(m_shapeEntity);
-        m_shapeEntity = nullptr;
+    // if debug is active, show currently active collision shapes
+    if (m_debug) {
+        auto shapeEntity = std::make_shared<Entity>();
+        if (m_shapeEntity != nullptr) {
+            m_entity->Remove(m_shapeEntity);
+            m_shapeEntity = nullptr;
+        }
+        m_entity->AddChild(shapeEntity);
+        m_shapeEntity = shapeEntity.get();
+        auto renderer = std::make_shared<MultiRenderer>();
+        MeshFactory mf;
+        for (const auto &shape : m_model->getShapes()) {
+            auto model = mf.createWireframe(shape.get(), glm::vec4(1.0f));
+            renderer->addModel(model);
+        }
+        m_shapeEntity->AddComponent(renderer);
+        m_colliderRenderer = renderer.get();
     }
-    m_entity->AddChild(shapeEntity);
-    m_shapeEntity = shapeEntity.get();
-    glm::vec4 color(1.0f, 0.0f, 0.0f, 1.0f);
-////    auto mesh = m_model->GetCollisionMesh();
-////    auto model = std::make_shared<BasicModel>(mesh);
-    auto renderer = std::make_shared<MultiRenderer>();
 //
-    for (const auto& shape : m_model->getShapes()) {
-//        auto mesh = MeshFactory::CreateMesh(*(shape.get()));
-//        auto model = std::make_shared<BasicModel>(mesh);
-//        renderer->addModel(model);
-    }
-//
-    renderer->setAddColor(color);
-    m_shapeEntity->AddComponent(renderer);
-    m_colliderRenderer = renderer.get();
 //    //renderer->SetMeshInfo(0, 8);
     //m_entity->AddChild(c);
 //    m_stateMachine = m_entity->GetComponent<StateMachine>();

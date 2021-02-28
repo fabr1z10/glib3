@@ -9,58 +9,118 @@
 //
 
 MeshFactory::MeshFactory() {
-    m_plotters.insert(std::make_pair(ShapeType::RECT, [&] (IShape* s, glm::vec4 color) { return drawConvexPoly(s, color); }));
-    m_plotters.insert(std::make_pair(ShapeType::SEGMENT, [&] (IShape* s, glm::vec4 color) { return drawConvexPoly(s, color); }));
-    m_plotters.insert(std::make_pair(ShapeType::CONVEXPOLY, [&] (IShape* s, glm::vec4 color) { return drawConvexPoly(s, color); }));
-	m_plotters.insert(std::make_pair(ShapeType::CIRCLE, [&] (IShape* s, glm::vec4 color) { return drawCircle(s, color); }));
+    m_plotters.insert(std::make_pair(ShapeType::RECT, [&] (IShape* s, glm::vec4 color, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices)
+        { return drawConvexPoly(s, color, vertices, indices, true); }));
+    m_plotters.insert(std::make_pair(ShapeType::SEGMENT, [&] (IShape* s, glm::vec4 color, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices)
+        { return drawConvexPoly(s, color, vertices, indices, false); }));
+    m_plotters.insert(std::make_pair(ShapeType::CONVEXPOLY, [&] (IShape* s, glm::vec4 color, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices)
+        { return drawConvexPoly(s, color, vertices, indices, false); }));
+	m_plotters.insert(std::make_pair(ShapeType::CIRCLE, [&] (IShape* s, glm::vec4 color, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices)
+	    { return drawCircle(s, color, vertices, indices); }));
 
 }
 
-std::shared_ptr<IModel> MeshFactory::drawCircle(IShape * s, glm::vec4 color) {
-	auto* c = static_cast<Circle*>(s);
-	float radius = c->getRadius();
-	glm::vec2 center = c->getOffset();
-	std::vector<VertexColor> vertices;
-	int n = 100;
-	float angleStep = (2.0 * M_PI) / n;
-	unsigned count {};
-	std::vector<unsigned> indices = {0, 1};
-	for (int i = 0; i < n; ++i) {
-		float alpha = i * angleStep;
-		vertices.emplace_back(center.x + radius * cos(alpha), center.x + radius * sin(alpha), 0.0f, color.r, color.g, color.b, color.a);
-		indices.emplace_back(count++);
-	}
-	auto mesh = std::make_shared<Mesh<VertexColor>>(COLOR_SHADER);
-	mesh->Init(vertices, indices);
-	mesh->m_primitive = GL_LINE_LOOP;
-	return std::make_shared<BasicModel>(mesh);
-
-}
-
-std::shared_ptr<IModel> MeshFactory::drawConvexPoly(IShape * s, glm::vec4 color) {
+void MeshFactory::drawConvexPoly (IShape* s, glm::vec4 color, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices, bool closeLoop) {
     auto* seg = static_cast<IConvexPolygon*>(s);
-    std::vector<VertexColor> vertices;
-    std::vector<unsigned> indices = {0, 1};
-    unsigned c = 0;
+    unsigned offset = vertices.size();
+    unsigned c = offset;
+    indices.insert(indices.end(), {offset, offset+1});
+    unsigned count = 0;
+    unsigned nVertices = seg->getVertices().size();
     for (const auto& vertex : seg->getVertices()) {
         vertices.emplace_back(vertex.x, vertex.y, 0.0f, color.r, color.g, color.b, color.a);
-        indices.emplace_back(c++);
+        if (count < nVertices - 1) {
+            indices.emplace_back(c++);
+            indices.emplace_back(c);
+        } else if (closeLoop) {
+            // last
+            indices.emplace_back(c);
+            indices.emplace_back(offset);
+        }
     }
-    auto mesh = std::make_shared<Mesh<VertexColor>>(COLOR_SHADER);
-    mesh->Init(vertices, indices);
-    mesh->m_primitive = GL_LINE_LOOP;
-    return std::make_shared<BasicModel>(mesh);
+}
+
+void MeshFactory::drawCircle(IShape * s, glm::vec4 color, std::vector<VertexColor> &vertices, std::vector<unsigned int> &indices) {
+    auto* c = static_cast<Circle*>(s);
+    float radius = c->getRadius();
+    glm::vec2 center = c->getOffset();
+    int n = 100;
+    float angleStep = (2.0 * M_PI) / n;
+    unsigned offset = indices.size();
+    unsigned current = offset;
+    for (int i = 0; i < n; ++i) {
+        float alpha = i * angleStep;
+        vertices.emplace_back(center.x + radius * cos(alpha), center.x + radius * sin(alpha), 0.0f, color.r, color.g, color.b, color.a);
+        if (i < n-1) {
+            indices.emplace_back(current++);
+            indices.emplace_back(current);
+        } else {
+            indices.emplace_back(current);
+            indices.emplace_back(offset);
+        }
+    }
 }
 
 
+//std::shared_ptr<BasicModel> MeshFactory::drawCircle(IShape * s, glm::vec4 color) {
+//	auto* c = static_cast<Circle*>(s);
+//	float radius = c->getRadius();
+//	glm::vec2 center = c->getOffset();
+//	std::vector<VertexColor> vertices;
+//	int n = 100;
+//	float angleStep = (2.0 * M_PI) / n;
+//	unsigned count {};
+//	std::vector<unsigned> indices = {0, 1};
+//	for (int i = 0; i < n; ++i) {
+//		float alpha = i * angleStep;
+//		vertices.emplace_back(center.x + radius * cos(alpha), center.x + radius * sin(alpha), 0.0f, color.r, color.g, color.b, color.a);
+//		indices.emplace_back(count++);
+//	}
+//	auto mesh = std::make_shared<Mesh<VertexColor>>(COLOR_SHADER);
+//	mesh->Init(vertices, indices);
+//	mesh->m_primitive = GL_LINE_LOOP;
+//	return std::make_shared<BasicModel>(mesh);
+//
+//}
+//
+//std::shared_ptr<BasicModel> MeshFactory::drawConvexPoly(IShape * s, glm::vec4 color) {
+//    auto* seg = static_cast<IConvexPolygon*>(s);
+//    std::vector<VertexColor> vertices;
+//    std::vector<unsigned> indices = {0, 1};
+//    unsigned c = 0;
+//    for (const auto& vertex : seg->getVertices()) {
+//        vertices.emplace_back(vertex.x, vertex.y, 0.0f, color.r, color.g, color.b, color.a);
+//        indices.emplace_back(c++);
+//    }
+//    auto mesh = std::make_shared<Mesh<VertexColor>>(COLOR_SHADER);
+//    mesh->Init(vertices, indices);
+//    mesh->m_primitive = GL_LINE_LOOP;
+//    return std::make_shared<BasicModel>(mesh);
+//}
 
-std::shared_ptr<IModel> MeshFactory::createWireframe(IShape * shape, glm::vec4 color) {
+
+
+std::shared_ptr<BasicModel> MeshFactory::createWireframe(IShape * shape, glm::vec4 color) {
 
     auto st = shape->getShapeType();
+
+
+    std::vector<VertexColor> vertices;
+    std::vector<unsigned> indices;
+
+
+
     auto it = m_plotters.find(st);
     if (it != m_plotters.end()) {
-        return it->second(shape, color);
+        it->second(shape, color, vertices, indices);
+    } else {
+        return nullptr;
+        //GLIB_FAIL("don't know how to build shape " << shape->getShapeType());
     }
+
+    auto mesh = std::make_shared<Mesh<VertexColor>>(COLOR_SHADER);
+    mesh->Init(vertices, indices);
+    mesh->m_primitive = GL_LINES;
     return nullptr;
 
 ////    return mesh;

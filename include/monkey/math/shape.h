@@ -18,7 +18,7 @@
 #include <monkey/py.h>
 
 enum class ShapeType {
-    SEGMENT, RECT, CIRCLE, PLANE, SPHERE, AABB, CONVEXPOLY
+    SEGMENT, RECT, CIRCLE, PLANE, SPHERE, AABB, CONVEXPOLY, COMPOUND
 };
 
 

@@ -1,5 +1,6 @@
 #include <monkey/model/boxedmodel.h>
 #include <monkey/contour.h>
+#include <monkey/math/shapes/compound.h>
 
 #include <iostream>
 
@@ -24,12 +25,20 @@ BoxedModel::BoxedModel(const YAML::Node &t) : SpriteModel(t) {
 		for (const auto &box : boxes) {
 			auto pp = box.as<std::vector<float>>();
 			int nboxes = pp.size() / 4;
-			nboxes = 1;
-			std::shared_ptr<IShape> shape;
-			for (int i = 0; i < nboxes; ++i) {
-				float width = pp[2] - pp[0];
-				float height = pp[3] - pp[1];
-				shape = std::make_shared<Rect>(width, height, glm::vec3(pp[0], pp[1], 0.0f));
+            std::shared_ptr<IShape> shape;
+			if (nboxes == 1) {
+                float width = pp[2] - pp[0];
+                float height = pp[3] - pp[1];
+                shape = std::make_shared<Rect>(width, height, glm::vec3(pp[0], pp[1], 0.0f));
+			} else {
+                auto cs = std::make_shared<CompoundShape>();
+                for (int i = 0; i < pp.size(); i+= 4) {
+                    float width = pp[i+2] - pp[i];
+                    float height = pp[i+3] - pp[i+1];
+                    auto rect = std::make_shared<Rect>(width, height, glm::vec3(pp[i], pp[i+1], 0.0f));
+                    cs->addShape(rect);
+                }
+                shape = cs;
 			}
 			addShape(shape);
 		}

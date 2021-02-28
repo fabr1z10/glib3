@@ -18,7 +18,7 @@ public:
     const AnimInfo* GetAnimInfo() const;
     const AnimInfo* GetAnimInfo(const std::string&) const;
 
-    // non è meglio avere un draw con animation e frame?
+    // TODO non è meglio avere un draw con animation e frame?
 
     void Draw (Shader*, int offset, int count);
     std::vector<std::shared_ptr<IShape>> getAttackShapes() const override;

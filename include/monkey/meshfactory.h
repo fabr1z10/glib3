@@ -1,6 +1,6 @@
 #pragma once
 
-#include <monkey/assets/imodel.h>
+#include <monkey/model/basicmodel.h>
 #include <monkey/math/shape.h>
 //#include <monkey/mesh.h>
 //#include <monkey/math/shapes/rect.h>
@@ -17,11 +17,16 @@
 class MeshFactory {
 public:
     MeshFactory ();
-    std::shared_ptr<IModel> createWireframe (IShape*, glm::vec4 color);
+    std::shared_ptr<BasicModel> createWireframe (IShape*, glm::vec4 color);
 private:
-    std::unordered_map<ShapeType, std::function<std::shared_ptr<IModel>(IShape*, glm::vec4)>> m_plotters;
-    std::shared_ptr<IModel> drawConvexPoly(IShape*, glm::vec4);
-	std::shared_ptr<IModel> drawCircle(IShape*, glm::vec4);
+    std::unordered_map<ShapeType, std::function<void(IShape*, glm::vec4, std::vector<VertexColor>&, std::vector<unsigned>&)>> m_plotters;
+//    std::shared_ptr<BasicModel> drawConvexPoly(IShape*, glm::vec4);
+//	std::shared_ptr<BasicModel> drawCircle(IShape*, glm::vec4);
+
+	void drawConvexPoly (IShape*, glm::vec4, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices, bool closeLoop);
+    void drawCircle (IShape*, glm::vec4, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices);
+    void drawCompound (IShape*, glm::vec4, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices);
+
 };
 //    public AcyclicVisitor,
 //    public Visitor<Rect>,
