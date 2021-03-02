@@ -36,7 +36,7 @@ public:
     void ResetAnimation() override {}
     void ModifyAnimation() override {}
 private:
-    void computeDirection();
+    float computeDirection();
     void setDirection(int);
     Controller2D* m_c;
 

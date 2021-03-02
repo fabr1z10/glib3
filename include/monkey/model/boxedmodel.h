@@ -32,6 +32,7 @@ public:
     Bounds GetAnimBounds(const std::string&) const;
     const std::vector<std::shared_ptr<IShape>>& getShapes();
     std::vector<std::shared_ptr<IShape>> getAttackShapes() const override;
+    float getAttackDistance() const;
 private:
     std::vector<std::shared_ptr<IShape>> m_shapes;
     std::unordered_map<std::pair<std::string, int>, int> m_boxInfo;
@@ -41,7 +42,7 @@ private:
     int addShapeMesh(const std::shared_ptr<Shape>&, int& pc, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices);
     std::shared_ptr<IMesh> m_collisionMesh;
     Bounds m_maxBounds;
-
+	float m_attackDistance;
 };
 
 inline Bounds BoxedModel::GetMaxBounds() const {
@@ -49,6 +50,10 @@ inline Bounds BoxedModel::GetMaxBounds() const {
 
 }
 
+
+inline float BoxedModel::getAttackDistance() const {
+	return m_attackDistance;
+}
 inline std::shared_ptr<IMesh> BoxedModel::GetCollisionMesh() {
     return m_collisionMesh;
 }

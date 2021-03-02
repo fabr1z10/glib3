@@ -5,6 +5,7 @@
 //#include <monkey/math/earcut.h>
 #include <monkey/quadmesh.h>
 #include <monkey/model/basicmodel.h>
+#include <monkey/math/shapes3d/aabb.h>
 //
 //
 
@@ -17,14 +18,51 @@ MeshFactory::MeshFactory() {
         { return drawConvexPoly(s, color, vertices, indices, false); }));
 	m_plotters.insert(std::make_pair(ShapeType::CIRCLE, [&] (IShape* s, glm::vec4 color, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices)
 	    { return drawCircle(s, color, vertices, indices); }));
+	m_plotters.insert(std::make_pair(ShapeType::COMPOUND, [&] (IShape* s, glm::vec4 color, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices)
+		{ return drawCompound(s, color, vertices, indices); }));
+	m_plotters.insert(std::make_pair(ShapeType::AABB, [&] (IShape* s, glm::vec4 color, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices)
+		{ return drawAABB(s, color, vertices, indices); }));
 
 }
 
+void MeshFactory::drawAABB(IShape* s, glm::vec4 color, std::vector<VertexColor> &vertices,
+						   std::vector<unsigned int> &indices)
+{
+	auto* a = static_cast<AABB*>(s);
+	auto O = a->getOffset();
+	auto size = a->getSize();
+
+	vertices.emplace_back(O.x, O.y, O.z, color.r, color.g, color.b, color.a);
+	vertices.emplace_back(O.x, O.y, O.z + size.z, color.r, color.g, color.b, color.a);
+	vertices.emplace_back(O.x + size.x, O.y, O.z + size.z, color.r, color.g, color.b, color.a);
+	vertices.emplace_back(O.x + size.x, O.y, O.z, color.r, color.g, color.b, color.a);
+	vertices.emplace_back(O.x, O.y + size.y, O.z, color.r, color.g, color.b, color.a);
+	vertices.emplace_back(O.x, O.y + size.y, O.z + size.z, color.r, color.g, color.b, color.a);
+	vertices.emplace_back(O.x + size.x, O.y + size.y, O.z + size.z, color.r, color.g, color.b, color.a);
+	vertices.emplace_back(O.x + size.x, O.y + size.y, O.z, color.r, color.g, color.b, color.a);
+	indices.insert(indices.end(), {0, 1, 1, 2, 2, 3, 3, 0, 4, 5, 5, 6, 6, 7, 7, 4, 0, 4, 1, 5, 2, 6, 3, 7});
+
+
+}
+
+void MeshFactory::drawCompound(IShape * s, glm::vec4 color, std::vector<VertexColor> &vertices, std::vector<unsigned int> &indices)
+{
+	auto* cs = static_cast<CompoundShape*>(s);
+	for (const auto& shape : cs->getShapes()) {
+		auto shapeType = shape->getShapeType();
+		auto it = m_plotters.find(shapeType);
+		if (it != m_plotters.end()) {
+			it->second(shape.get(), color, vertices, indices);
+		}
+	}
+
+
+
+}
 void MeshFactory::drawConvexPoly (IShape* s, glm::vec4 color, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices, bool closeLoop) {
     auto* seg = static_cast<IConvexPolygon*>(s);
     unsigned offset = vertices.size();
     unsigned c = offset;
-    indices.insert(indices.end(), {offset, offset+1});
     unsigned count = 0;
     unsigned nVertices = seg->getVertices().size();
     for (const auto& vertex : seg->getVertices()) {
@@ -32,11 +70,14 @@ void MeshFactory::drawConvexPoly (IShape* s, glm::vec4 color, std::vector<Vertex
         if (count < nVertices - 1) {
             indices.emplace_back(c++);
             indices.emplace_back(c);
-        } else if (closeLoop) {
-            // last
-            indices.emplace_back(c);
-            indices.emplace_back(offset);
+        } else {
+        	if (closeLoop) {
+        		// last
+        		indices.emplace_back(c);
+        		indices.emplace_back(offset);
+        	}
         }
+        count++;
     }
 }
 
@@ -121,7 +162,7 @@ std::shared_ptr<BasicModel> MeshFactory::createWireframe(IShape * shape, glm::ve
     auto mesh = std::make_shared<Mesh<VertexColor>>(COLOR_SHADER);
     mesh->Init(vertices, indices);
     mesh->m_primitive = GL_LINES;
-    return nullptr;
+    return std::make_shared<BasicModel>(mesh);
 
 ////    return mesh;
 ////            {0.0f, 0.0f, 0.0f, color.r, color.g, color.b, color.a},

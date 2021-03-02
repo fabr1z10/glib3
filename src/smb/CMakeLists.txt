@@ -4,6 +4,7 @@ add_executable(smb
         main.cpp
         factories.cpp
         states/walkside.cpp
+        states/walkside3d.cpp
         states/jump2d.cpp
         states/jumpattack.cpp
         states/foewalk.cpp

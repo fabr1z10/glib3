@@ -134,27 +134,74 @@ void Controller3D::Move(glm::vec3& dx) {
 
 // this will have x and z components
 void Controller3D::HorizontalCollisions(glm::vec3& vel) {
-    float flip = m_entity->GetFlipX() ? -1.0f : 1.0f;
-    bool goingForward = (vel.x * flip) > 0;
-    float dx = vel.x * (m_entity->GetFlipX() ? -1.0f : 1.0f);
-    float dz = vel.z;
-    // try first to move along the x direction
-    glm::vec3 pos = m_entity->GetPosition();
-    if (dx != 0.0f) {
-        glm::vec3 startPos = pos + glm::vec3(dx > 0 ? m_widthX : -m_widthX, -m_widthZ, 0.0f);
-        glm::vec3 rayOrigin;
-        glm::vec3 rayDir = glm::vec3(1.0f, 0.0f, 0.0f);
-        float rayLength = vel.x;
-        for (unsigned i = 0; i < m_horizontalRayCount; ++i) {
-            rayOrigin = startPos + static_cast<float>(i) * glm::vec3(0.0f, 0.0f, m_horZSpacing);
-            m_engine->Raycast(rayOrigin, rayDir, rayLength, 2);
+	bool flipx = m_entity->GetFlipX();
+	bool facingLeft = (flipx && vel.x > 0) || (!flipx && vel.x < 0);
+	float directionX = facingLeft ? -1.0 : 1.0;
+	float rayLength = fabs(vel.x) + m_skinWidth;
+	auto pos = m_entity->GetPosition();
+	float dx = facingLeft ? -m_halfSize[0] : m_halfSize[0];
+	std::array<glm::vec3, 4> raycastOrigins = {
+			pos + glm::vec3(dx, -m_halfSize[1], -m_halfSize[2]),
+			pos + glm::vec3(dx, -m_halfSize[1], m_halfSize[2]),
+			pos + glm::vec3(dx, m_halfSize[1], -m_halfSize[2]),
+			pos + glm::vec3(dx, m_halfSize[1], m_halfSize[2])};
 
-        }
-    }
+	int i = 0;
+	// try first moving along X direction
+	for (const auto& r0 : raycastOrigins) {
+
+		RayCastHit hit = m_collision->Raycast(r0, monkey::right * directionX, rayLength, 2 | 32);
+		if (hit.collide) {
+			float slopeAngle = angle(hit.normal, vec2(0, 1));
+			//std::cout << "SLOPE ANGLE = " << rad2deg*slopeAngle << std::endl;
+			if (i < 2 && (slopeAngle*rad2deg) <= m_maxClimbAngle) {
+				if (m_details.descendingSlope) {
+					m_details.descendingSlope = false;
+					// TODO vel = m_details.velocityOld;
+				}
+				float distanceToSlopeStart = 0;
+				if (slopeAngle != m_details.slopeAngleOld) {
+					distanceToSlopeStart = hit.length - m_skinWidth;
+					vel.x -= distanceToSlopeStart * directionX;
+				}
+				ClimbSlope(vel, slopeAngle);
+				vel.x += distanceToSlopeStart * directionX;
+
+			}
+
+			if (!m_details.climbingSlope || (slopeAngle*rad2deg) > m_maxClimbAngle) {
+				vel.x = (hit.length - m_skinWidth) * sign(vel.x);
+				rayLength = hit.length;
+				if (m_details.climbingSlope) {
+					vel.y = tan(m_details.slopeAngle) * fabs(vel.x);
+				}
+				m_details.left = directionX == -1;
+				m_details.right = directionX == 1;
+			}
+			// this condition should go
+			//if (hit.object != nullptr) {
+			//	auto callback = m_wallCallback.find (hit.object->getCollisionResponseId());
+			//	if (callback != m_wallCallback.end())
+			//		callback->second->Run (m_target, hit.object, hit);
+			//}
+		}
+	}
+
 
 
 }
 
+void Controller3D::ClimbSlope(glm::vec3& velocity, float slopeAngle) {
+	float moveDistance = fabs(velocity.x);
+	float climbVelocityY = sin(slopeAngle) * moveDistance;
+	if (velocity.y <= climbVelocityY) {
+		velocity.y = climbVelocityY;
+		velocity.x = cos(slopeAngle) * moveDistance * sign(velocity.x);
+		m_details.below = true;
+		m_details.climbingSlope = true;
+		m_details.slopeAngle = slopeAngle;
+	}
+}
 
 void Controller3D::VerticalCollisions(glm::vec3& velocity) {
 

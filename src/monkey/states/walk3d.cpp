@@ -2,6 +2,7 @@
 #include <monkey/components/inputmethod.h>
 #include <monkey/components/animator.h>
 #include <monkey/entity.h>
+#include <monkey/components/controller3d.h>
 
 
 Walk3D::Walk3D(const ITable & t) : State(t) {

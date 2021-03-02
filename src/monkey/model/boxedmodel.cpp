@@ -44,7 +44,7 @@ BoxedModel::BoxedModel(const YAML::Node &t) : SpriteModel(t) {
 		}
 	}
 
-
+	m_attackDistance = std::numeric_limits<float>::infinity();
     auto anims = t["animations"].as<YAML::Node>();
     for (auto anim : anims) {
         // get the box
@@ -56,6 +56,9 @@ BoxedModel::BoxedModel(const YAML::Node &t) : SpriteModel(t) {
             this->setAnimShape(animId, boxId);
         }
 
+        // find attack position for this animation, if any
+        bool isAttackingAnim = false;
+        float attackPos {0.0f};
         if (animData["elements"]) {
             auto frames = animData["elements"].as<std::vector<YAML::Node>>();
             int frameId = 0;
@@ -66,11 +69,16 @@ BoxedModel::BoxedModel(const YAML::Node &t) : SpriteModel(t) {
                     this->setFrameShape(animId, frameId, box);
                 }
                 if (attack != -1) {
+                	isAttackingAnim = true;m_shapes[attack]->getBounds().max.x;
+                	attackPos = std::max(attackPos, m_shapes[attack]->getBounds().max.x);
                     this->setShapeCast(animId, frameId, attack);
                 }
                 frameId++;
             }
-
+        }
+        if (isAttackingAnim) {
+        	std::cerr << " attack position for anim " << animId << ": " << attackPos << "\n";
+        	m_attackDistance = std::min(m_attackDistance, attackPos);
         }
     }
 }

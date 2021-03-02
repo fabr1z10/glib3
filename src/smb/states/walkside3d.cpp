@@ -1,37 +1,31 @@
-#include <platformer/states/walk3d.h>
+#include "walkside3d.h"
 
 #include <monkey/math/geom.h>
 
 #include <monkey/entity.h>
-#include <monkey/components/icontroller.h>
+#include <monkey/components/controller3d.h>
 #include <monkey/components/inputmethod.h>
 #include <monkey/components/dynamics2d.h>
 #include <monkey/components/animator.h>
 #include <monkey/components/statemachine.h>
 #include <GLFW/glfw3.h>
 
-Walk3D::Walk3D(float speed, float acceleration, bool fliph, float jumpSpeed) :
+WalkSide3D::WalkSide3D(float speed, float acceleration, bool fliph, float jumpSpeed) :
         m_speed(speed), m_acceleration(acceleration), m_flipHorizontally(fliph), m_velocitySmoothing(0.0f), m_jumpSpeed(jumpSpeed) {}
 
-Walk3D::Walk3D(const Walk3D &orig) : PlatformerState(orig) {
-    m_speed = orig.m_speed;
-    m_acceleration = orig.m_acceleration;
-    m_flipHorizontally =orig.m_flipHorizontally;
-}
-
-std::shared_ptr<State> Walk3D::clone() const {
-    return std::make_shared<Walk3D>(*this);
-}
-
-void Walk3D::Init() {
+WalkSide3D::WalkSide3D(const ITable&) {
 
 }
 
-void Walk3D::End() {
+void WalkSide3D::Init(pybind11::dict&) {
 
 }
 
-void Walk3D::Run (double dt) {
+void WalkSide3D::End() {
+
+}
+
+void WalkSide3D::Run (double dt) {
 
     if (!m_controller->grounded()) {
         m_sm->SetState("jump");
@@ -70,19 +64,30 @@ void Walk3D::Run (double dt) {
     glm::vec3 delta =m_dynamics->step(dt, targetVelocityX, targetVelocityZ, m_acceleration);
     m_controller->Move(delta);
     //std::cerr << "new z = " << m_entity->GetPosition().z << "\n";
-    UpdateAnimation();
+    //UpdateAnimation();
 }
 
 
-void Walk3D::ResetAnimation() {}
 
-void Walk3D::ModifyAnimation() {
-    if (fabs(m_dynamics->m_velocity.x) > 1.0f || fabs(m_dynamics->m_velocity.z) > 1.0f) {
-        m_animator->SetAnimation("walk");
-    } else {
-        m_animator->SetAnimation("idle");
-    }
+
+void WalkSide3D::AttachStateMachine(StateMachine * sm) {
+	State::AttachStateMachine(sm);
+	m_entity = sm->GetObject();
+	m_controller = dynamic_cast<Controller3D*>(m_entity->GetComponent<IController>());
+	if (m_controller == nullptr) {
+		GLIB_FAIL("Platformer state requires a <Controller2D> component!");
+	}
+	m_dynamics = m_entity->GetComponent<Dynamics2D>();
+	if (m_dynamics == nullptr) {
+		GLIB_FAIL("Platormer state requires a <Dynamics2D> component!");
+	}
+	//m_animator = m_entity->GetComponent<Animator>();
+	m_input = m_entity->GetComponent<InputMethod>();
+	//if (m_input == nullptr) {
+	//    GLIB_FAIL("Walk state requires an <InputMethod> component!");
+	//}
+	// TODO set animator
+	//m_animator = m_entity->GetComponent<IAnimator>();
 
 
 }
-

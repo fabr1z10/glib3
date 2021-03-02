@@ -26,7 +26,8 @@ private:
 	void drawConvexPoly (IShape*, glm::vec4, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices, bool closeLoop);
     void drawCircle (IShape*, glm::vec4, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices);
     void drawCompound (IShape*, glm::vec4, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices);
-
+	// 3d shapes
+	void drawAABB (IShape*, glm::vec4, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices);
 };
 //    public AcyclicVisitor,
 //    public Visitor<Rect>,

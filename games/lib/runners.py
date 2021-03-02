@@ -17,11 +17,10 @@ class CollisionResponse:
 
 
 class CollisionEngine:
-    def __init__(self, width: int, height: int, coll25: bool = False, eps: float = 0.01):
+    def __init__(self, width: int, height: int, depth: int = 0, eps: float = 0.01):
         self.type = 'runner.collisionengine'
-        self.size = [width, height, 0]
+        self.size = [width, height, depth]
         self.response = []
-        self.coll25 = coll25
         self.eps = eps
 
     def add_response(self, tag1: int, tag2: int, response: CollisionResponse):

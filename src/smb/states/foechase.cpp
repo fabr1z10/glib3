@@ -5,6 +5,7 @@
 #include <monkey/components/animator.h>
 #include <monkey/random.h>
 #include <GLFW/glfw3.h>
+#include <monkey/model/boxedmodel.h>
 
 FoeChase::FoeChase(const std::string &walkAnim, const std::string &idleAnim, float speed, float acceleration,
     bool fliph, bool flipIfPlatformEnds, int left) : PlatformerState(),
@@ -40,45 +41,64 @@ void FoeChase::AttachStateMachine(StateMachine * sm) {
 
     // here I will get the skeletal model or sprite model
     auto animator = sm->GetObject()->GetComponent<IAnimator>();
-    auto shapes = animator->getModel()->getAttackShapes();
-    float am = -std::numeric_limits<float>::infinity();
-    float aM = std::numeric_limits<float>::infinity();
-    float scale = m_entity->GetScale();
-    for (const auto& shape : shapes) {
-        auto sb = shape->getBounds();
-        am = std::max(am, scale*sb.min.x);
-        aM = std::min(aM, scale*sb.max.x);
-    }
-    m_attackPos = 0.5f* (am+aM);
+
+	float scale = m_entity->GetScale();
+    m_attackPos = scale * dynamic_cast<BoxedModel*>(animator->getModel())->getAttackDistance();
+
+//    auto shapes = animator->getModel()->getAttackShapes();
+//    float am = -std::numeric_limits<float>::infinity();
+//    float aM = std::numeric_limits<float>::infinity();
+//    for (const auto& shape : shapes) {
+//        auto sb = shape->getBounds();
+//        am = std::max(am, scale*sb.min.x);
+//        aM = std::min(aM, scale*sb.max.x);
+//    }
+//    m_attackPos = aM;
 
     m_target = Monkey::get().Get<Entity>("player");
 }
 
-void FoeChase::computeDirection() {
+float FoeChase::computeDirection() {
 
     float x = m_target->GetPosition().x;
     float x0 = x - m_attackPos;
     float x1 = x + m_attackPos;
     float ex = m_entity->GetPosition().x;
-    if (ex > x1) {
-        // go left, face left
-        m_entity-> SetFlipX(true);
-        m_targetVelocityX = m_speed;
-    } else if (ex < x0) {
-        // go right, face right
-        m_entity->SetFlipX(false);
-        m_targetVelocityX = m_speed;
-    } else if (ex >= x0 && ex < x) {
-        // go left, face right
-        m_entity->SetFlipX(false);
-        m_targetVelocityX = -m_speed;
-    } else if (ex >=x && ex < x1) {
-        // go right, face left
-        m_entity->SetFlipX(true);
-        m_targetVelocityX = -m_speed;
-    }
-    //m_inRange =abs(abs(ex-x)-m_attackPos) < 0.2f;
-	m_inRange =abs(ex-x) < m_attackPos;
+	float dist {0.0f};
+	float eps = 0.1f;
+	m_inRange = false;
+	if (ex > x) {
+		// enemy is right of player
+		auto target = x1;
+		dist = fabs(target - ex);
+		// check if we have reached the target
+		if (dist < eps) {
+			m_inRange = true;
+		} else {
+			m_entity-> SetFlipX(true);
+			if (ex > x1) {
+				m_targetVelocityX = m_speed;
+			} else {
+				m_targetVelocityX = -m_speed;
+			}
+		}
+	} else {
+		// enemy is left of player
+		auto target = x0;
+		dist = fabs(target - ex);
+		// check if we have reached the target
+		if (dist < eps) {
+			m_inRange = true;
+		} else {
+			m_entity-> SetFlipX(false);
+			if (ex < x0) {
+				m_targetVelocityX = m_speed;
+			} else {
+				m_targetVelocityX = -m_speed;
+			}
+		}
+	}
+
     //std::cout << abs(ex-x) << ", " << m_attackPos << abs(abs(ex-x)-m_attackPos) << "\n";
     if (m_inRange) {
         m_animator->SetAnimation(m_idleAnim);
@@ -86,7 +106,7 @@ void FoeChase::computeDirection() {
     } else {
         m_animator->SetAnimation(m_walkAnim);
     }
-
+	return dist;
 
 }
 
@@ -113,7 +133,7 @@ void FoeChase::Run(double dt) {
     if (m_controller->grounded()) {
 
         m_dynamics->m_velocity.y = 0.0f;
-        computeDirection();
+        float dist = computeDirection();
         // if I'm at the right position, go to idle
         // randomly attack if within range
 		float u = Random::get().GetUniformReal(0.0f, 1.0f);
@@ -139,7 +159,10 @@ void FoeChase::Run(double dt) {
         glm::vec3 delta = m_dynamics->step(dt, m_targetVelocityX, m_acceleration);
             //if (m_speed < 30.0f) std::cout << delta.x << "\n";
             // before moving, check if I'm falling off the platform
-
+			if (fabs(delta.x) > fabs(dist)) {
+				delta.x = sign(delta.x) * dist;
+				std::cerr << "dist = " << dist << "\n";
+			}
         m_controller->Move(delta);
 
     } else {

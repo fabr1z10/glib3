@@ -3,7 +3,9 @@
 
 ICollider::ICollider() : Component(), m_engine(nullptr) {}
 
-
+ICollider::ICollider(const ITable& t) {
+	m_debug = t.get<bool>("debug");
+}
 // when a collider starts, it add itself to the collision engine.
 // A collision engine needs to be running for a collider object to start!
 void ICollider::Start() {

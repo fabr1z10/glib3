@@ -16,6 +16,7 @@ class ICollider : public Component {
 public:
     ICollider();
     ~ICollider() override = default;
+    ICollider (const ITable&);
     virtual IShape* GetShape() = 0;
     virtual int GetCollisionTag() const = 0;
     virtual int GetCollisionFlag() const = 0;

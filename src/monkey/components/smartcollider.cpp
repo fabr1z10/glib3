@@ -15,7 +15,7 @@ SmartCollider::~SmartCollider() {
 }
 
 
-SmartCollider::SmartCollider(const ITable & table) : ICollider(), m_shapeEntity(nullptr), m_colliderRenderer(nullptr) {
+SmartCollider::SmartCollider(const ITable & table) : ICollider(table), m_shapeEntity(nullptr), m_colliderRenderer(nullptr) {
     m_tag = table.get<int>("tag");
     m_flag = table.get<int>("flag");
     m_mask = table.get<int>("mask");

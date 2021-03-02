@@ -94,6 +94,7 @@ public:
 //    void DetachFromPlatform();
 //    void ForceDetach() { m_platform = nullptr; }
     std::type_index GetType() override;
+	void ClimbSlope(glm::vec3&, float);
 
     //RayCastHit2D Raycast(glm::vec2 origin, glm::vec2 direction, float length, int mask);
 private:
@@ -101,7 +102,10 @@ private:
     void HorizontalCollisions(glm::vec3& velocity);
     void VerticalCollisions(glm::vec3& velocity);
     void UpdateRaycastOrigins();
+	ICollisionEngine * m_collision;
 
+	glm::vec3 m_halfSize;
+	glm::vec3 m_shift;
 //    //int m_handleNotify;
     Entity* m_platform;
     ICollider* m_cc;

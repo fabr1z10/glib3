@@ -80,6 +80,7 @@
 #include <monkey/components/shadowrenderer.h>
 #include <monkey/geom3d/collisionengine3d.h>
 #include <monkey/components/controllerflat.h>
+#include <monkey/math/shapes3d/aabb.h>
 
 
 namespace py = pybind11;
@@ -225,6 +226,7 @@ SceneFactory::SceneFactory() {
 	add2<Circle> ("circle");
 
 	// ************ 3d shapes **************
+	add2<AABB>("shape3d.aabb");
 	// TODO !
 
     //add2<PolyLine> ("shape.graph");
