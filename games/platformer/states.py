@@ -46,7 +46,7 @@ class Jump(lib.states.State):
 class Jump3D(lib.states.State):
     def __init__(self, uid, speed: float, acceleration: float, flip_horizontal: bool, anim_up: str = None, anim_down: str = None, keys=None):
         super().__init__(uid, keys)
-        self.type = 'state.jump'
+        self.type = 'state.jump3D'
         self.speed = speed
         self.acceleration = acceleration
         self.flipH = flip_horizontal

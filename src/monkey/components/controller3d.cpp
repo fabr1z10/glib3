@@ -17,13 +17,16 @@ using namespace glm;
 
 Controller3D::Controller3D(const ITable & t) {
 
-    m_horizontalRayCount = t.get<int>("hor_raycount");
-    auto size = t.get<glm::vec2>("size");
+    auto size = t.get<glm::vec3>("size");
     // half sizes
-    m_widthX = 0.5f * size.x;
-    m_widthZ = 0.5f * size.y;
-    m_horXSpacing = size.y / (m_horizontalRayCount - 1);
-    m_horZSpacing = size.x / (m_horizontalRayCount - 1);
+    m_halfSize = 0.5f * size;
+	m_maxClimbAngle = t.get<float>("maxClimbAngle");
+	m_maxDescendAngle = t.get<float>("maxDescendAngle");
+	m_skinWidth = t.get<float>("skinWidth", .015f);
+	m_maskUp = t.get<int>("maskUp");
+	m_maskDown = t.get<int>("maskDown");
+	m_platform = nullptr;
+
 
 
 }

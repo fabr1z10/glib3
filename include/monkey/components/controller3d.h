@@ -103,6 +103,8 @@ private:
     void VerticalCollisions(glm::vec3& velocity);
     void UpdateRaycastOrigins();
 	ICollisionEngine * m_collision;
+	int m_maskUp;
+	int m_maskDown;
 
 	glm::vec3 m_halfSize;
 	glm::vec3 m_shift;

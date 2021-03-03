@@ -23,6 +23,7 @@
 #include "states/keymove.h"
 #include "states/keymovef.h"
 #include "states/walkside3d.h"
+#include "states/jump3d.h"
 //#include <platformer/states/jump3d.h>
 //#include <platformer/states/ch1.h>
 //#include <platformer/states/duck.h>
@@ -45,6 +46,7 @@ void Extension::extend(SceneFactory* f) {
     f->add2<WalkSide> ("state.walkside");
 	f->add2<WalkSide3D> ("state.walkside3d");
     f->add2<Jump2D> ("state.jump");
+	f->add2<Jump3D> ("state.jump3D");
     f->add2<FoeWalk> ("state.foewalk");
     f->add2<FoeChase> ("state.foechase");
     f->add2<IsHit> ("state.hit");

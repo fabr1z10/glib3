@@ -13,7 +13,11 @@
 WalkSide3D::WalkSide3D(float speed, float acceleration, bool fliph, float jumpSpeed) :
         m_speed(speed), m_acceleration(acceleration), m_flipHorizontally(fliph), m_velocitySmoothing(0.0f), m_jumpSpeed(jumpSpeed) {}
 
-WalkSide3D::WalkSide3D(const ITable&) {
+WalkSide3D::WalkSide3D(const ITable& t) : State(t)  {
+	m_speed = t.get<float>("speed");
+	m_acceleration = t.get<float>("acceleration");
+	m_flipHorizontally = t.get<bool>("flipH");
+	m_jumpSpeed = t.get<float>("jumpSpeed");
 
 }
 
@@ -75,7 +79,7 @@ void WalkSide3D::AttachStateMachine(StateMachine * sm) {
 	m_entity = sm->GetObject();
 	m_controller = dynamic_cast<Controller3D*>(m_entity->GetComponent<IController>());
 	if (m_controller == nullptr) {
-		GLIB_FAIL("Platformer state requires a <Controller2D> component!");
+		GLIB_FAIL("Platformer state requires a <Controller3D> component!");
 	}
 	m_dynamics = m_entity->GetComponent<Dynamics2D>();
 	if (m_dynamics == nullptr) {

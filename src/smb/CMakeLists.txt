@@ -6,6 +6,7 @@ add_executable(smb
         states/walkside.cpp
         states/walkside3d.cpp
         states/jump2d.cpp
+        states/jump3d.cpp
         states/jumpattack.cpp
         states/foewalk.cpp
         states/foechase.cpp

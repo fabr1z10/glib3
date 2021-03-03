@@ -81,6 +81,7 @@
 #include <monkey/geom3d/collisionengine3d.h>
 #include <monkey/components/controllerflat.h>
 #include <monkey/math/shapes3d/aabb.h>
+#include <monkey/components/controller3d.h>
 
 
 namespace py = pybind11;
@@ -164,6 +165,7 @@ SceneFactory::SceneFactory() {
 	add2<PolygonalMover> ("components.polymover");
     add2<KeyboardInputMethod> ("components.keyinput");
     add2<Controller2D> ("components.controller2D");
+    add2<Controller3D> ("components.controller3D");
 	add2<ControllerFlat> ("components.controller_flat");
     add2<Controller25> ("components.controller25");
     add2<Dynamics2D> ("components.dynamics2D");
