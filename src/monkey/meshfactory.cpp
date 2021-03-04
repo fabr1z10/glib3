@@ -6,6 +6,7 @@
 #include <monkey/quadmesh.h>
 #include <monkey/model/basicmodel.h>
 #include <monkey/math/shapes3d/aabb.h>
+#include <monkey/math/shapes3d/plane.h>
 //
 //
 
@@ -22,6 +23,41 @@ MeshFactory::MeshFactory() {
 		{ return drawCompound(s, color, vertices, indices); }));
 	m_plotters.insert(std::make_pair(ShapeType::AABB, [&] (IShape* s, glm::vec4 color, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices)
 		{ return drawAABB(s, color, vertices, indices); }));
+	m_plotters.insert(std::make_pair(ShapeType::PLANE, [&] (IShape* s, glm::vec4 color, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices)
+		{ return drawPlane(s, color, vertices, indices); }));
+
+}
+
+void MeshFactory::drawPlane(IShape* s, glm::vec4 color, std::vector<VertexColor> &vertices, std::vector<unsigned int> &indices) {
+	auto* a = static_cast<Plane*>(s);
+	auto n = a->getNormal();
+	auto t1 = (n == glm::vec3(0.0f, 1.0f, 0.0f) ? glm::vec3(0.0f, 0.0f, 1.0f) : glm::normalize(glm::cross(n, glm::vec3(0.0f, 1.0f, 0.0f))));
+	auto t2 = glm::cross(n, t1);
+	auto origin = a->getNormal() * a->getDistance();
+	// make a grid
+	float size = 10.0f;
+	float hsize = size* 0.5f;
+	int np = 10;
+	float delta = size / (np - 1);
+	glm::vec3 b = origin - t1 * hsize - t2 * hsize;
+	glm::vec3 c = origin - t1 * hsize + t2 * hsize;
+	for (int i = 0; i < np; ++i) {
+		glm::vec3 b1 = b + t1 * (i*delta);
+		glm::vec3 c1 = c + t1 * (i*delta);
+		vertices.emplace_back(b1.x, b1.y, b1.z, color.r, color.g, color.b, color.a);
+		vertices.emplace_back(c1.x, c1.y, c1.z, color.r, color.g, color.b, color.a);
+	}
+	b = origin - t2 * hsize - t1 * hsize;
+	c = origin - t2 * hsize + t1 * hsize;
+	for (int i = 0; i < np; ++i) {
+		glm::vec3 b1 = b + t2 * (i*delta);
+		glm::vec3 c1 = c + t2 * (i*delta);
+		vertices.emplace_back(b1.x, b1.y, b1.z, color.r, color.g, color.b, color.a);
+		vertices.emplace_back(c1.x, c1.y, c1.z, color.r, color.g, color.b, color.a);
+	}
+	for (int i = 0; i < 4*np; ++i) {
+		indices.emplace_back(i);
+	}
 
 }
 

@@ -82,6 +82,7 @@
 #include <monkey/components/controllerflat.h>
 #include <monkey/math/shapes3d/aabb.h>
 #include <monkey/components/controller3d.h>
+#include <monkey/math/shapes3d/plane.h>
 
 
 namespace py = pybind11;
@@ -229,6 +230,7 @@ SceneFactory::SceneFactory() {
 
 	// ************ 3d shapes **************
 	add2<AABB>("shape3d.aabb");
+	add2<Plane>("shape3d.plane");
 	// TODO !
 
     //add2<PolyLine> ("shape.graph");

@@ -33,7 +33,9 @@ Controller3D::Controller3D(const ITable & t) {
 
 void Controller3D::Start() {
     m_engine = Engine::get().GetRunner<ICollisionEngine>();
-    if (m_engine == nullptr)
+	m_collision = Engine::get().GetRunner<ICollisionEngine>();
+
+	if (m_engine == nullptr)
         GLIB_FAIL("Controller3D requires a collision engine running!");
 }
 
@@ -208,6 +210,82 @@ void Controller3D::ClimbSlope(glm::vec3& velocity, float slopeAngle) {
 
 void Controller3D::VerticalCollisions(glm::vec3& velocity) {
 
+	float directionY = sign(velocity.y);
+	float rayLength = std::abs(velocity.y) + m_skinWidth;
+	Entity* m_obstacle = nullptr;
+
+	float velx = velocity.x * (m_entity->GetFlipX() ? -1.0f : 1.0f);
+	float velz = velocity.z;
+	//glm::vec2 pos = m_entity->GetPosition();
+	//vec2 r0 = pos + vec2(-m_halfSize[0], directionY > 0 ? m_halfSize[1] : -m_halfSize[1]);
+	auto pos = m_entity->GetPosition();
+	float dy = directionY > 0 ? m_halfSize[1] : -m_halfSize[1];
+	std::array<glm::vec3, 4> raycastOrigins = {
+			pos + glm::vec3(-m_halfSize[0] + velx, dy, -m_halfSize[2] + velz),
+			pos + glm::vec3(-m_halfSize[0] + velx, dy, m_halfSize[2] + velz),
+			pos + glm::vec3(m_halfSize[0] + velx, dy, m_halfSize[2] + velz),
+			pos + glm::vec3(m_halfSize[0] + velx, dy, -m_halfSize[2] + velz)};
+
+	for (const auto& r0 : raycastOrigins) {
+		int collMask = (directionY == -1 ? (m_maskDown) : m_maskUp);
+		RayCastHit hit = m_collision->Raycast(r0, monkey::up * directionY, rayLength, collMask);
+		if (hit.collide) {
+			velocity.y = (hit.length - m_skinWidth) * directionY;
+			rayLength = hit.length;
+			if (m_details.climbingSlope) {
+				velocity.x = (velocity.y / tan(m_details.slopeAngle)) * sign(velocity.x);
+			}
+			m_details.below = directionY == -1;
+			m_details.above = directionY == 1;
+			m_obstacle = hit.entity->GetObject();
+		}
+	}
+
+
+
+
+//	if (m_details.climbingSlope) {
+//		float directionX = sign(velocity.x);
+//		rayLength = fabs(velocity.x) + m_skinWidth;
+//		vec2 pos = m_entity->GetPosition();
+//		vec2 rayOrigin = pos + vec2( (directionX == -1) ? -m_halfSize[0] : m_halfSize[0], -m_halfSize[1]);
+//		rayOrigin += vec2(0, 1) * velocity.y;
+//		//RayCastHit2D hit = m_collision->Raycast(rayOrigin, vec2(1, 0) * directionX, rayLength, 2);
+//		RayCastHit hit = m_collision->Raycast(vec3(rayOrigin, 0.0f), monkey::right * directionX, rayLength, 2);
+//		if (hit.collide) {
+//			float slopeAngle = angle(hit.normal, vec2(0, 1));
+//			if (slopeAngle != m_details.slopeAngle) {
+//				velocity.x = (hit.length - m_skinWidth) * directionX;
+//				m_details.slopeAngle = slopeAngle;
+//			}
+//		}
+//	}
+//
+//	// for tomorrow
+//
+//	// if I land on a platform, need to register if it's a moving platform
+//	if (m_details.below && m_platform != m_obstacle && m_obstacle != nullptr) {
+//		// notify platform that I'm on top of it
+//		if (m_platform != nullptr) {
+//			auto platformController = m_platform->GetComponent<PlatformComponent>();
+//			if (platformController != nullptr)
+//				platformController->Unregister(this);
+//		}
+//
+//		auto platformController = m_obstacle->GetComponent<PlatformComponent>();
+//		if (platformController != nullptr) {
+//			m_platform = m_obstacle;
+//			platformController->Register(this);
+//		}
+//	}
+//	// leave a platform
+//	if (!m_details.below && m_platform != nullptr) {
+//		//auto platformController = m_platform->GetComponent<PlatformComponent>();
+//		//if (platformController != nullptr)
+//		//	platformController->Unregister(this);
+//		//m_platform = nullptr;
+//		DetachFromPlatform();
+//	}
 
 }
 

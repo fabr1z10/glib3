@@ -23,6 +23,26 @@ Jump3D::Jump3D(const ITable& t) : State(t) {
 }
 
 
+void Jump3D::AttachStateMachine(StateMachine * sm) {
+	State::AttachStateMachine(sm);
+	m_entity = sm->GetObject();
+	m_controller = dynamic_cast<Controller3D *>(m_entity->GetComponent<IController>());
+	if (m_controller == nullptr) {
+		GLIB_FAIL("Platformer state requires a <Controller3D> component!");
+	}
+	m_dynamics = m_entity->GetComponent<Dynamics2D>();
+	if (m_dynamics == nullptr) {
+		GLIB_FAIL("Platormer state requires a <Dynamics2D> component!");
+	}
+	//m_animator = m_entity->GetComponent<Animator>();
+	m_input = m_entity->GetComponent<InputMethod>();
+	//if (m_input == nullptr) {
+	//    GLIB_FAIL("Walk state requires an <InputMethod> component!");
+	//}
+	// TODO set animator
+	//m_animator = m_entity->GetComponent<IAnimator>();
+}
+
 void Jump3D::Run(double dt) {
     // if not touching the ground, set status to jump
     bool left = m_input->isKeyDown(GLFW_KEY_LEFT);

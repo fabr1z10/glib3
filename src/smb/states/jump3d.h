@@ -13,6 +13,7 @@ public:
 	void Run (double) override;
 	void Init (pybind11::dict&) override {}
 	void End () override {}
+	void AttachStateMachine(StateMachine*) override;
 
 private:
 	Controller3D* m_controller;
