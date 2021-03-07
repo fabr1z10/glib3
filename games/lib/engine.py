@@ -90,6 +90,7 @@ class Engine:
 
     # read a string
     def read(self, value):
+        print ('called with ' + value)
         if isinstance(value, str):
             if value[0] == '@':
                 c = value[1]

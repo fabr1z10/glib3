@@ -255,6 +255,18 @@ def bg(**kwargs):
     return f
 
 
+def walkarea(**kwargs):
+    def f(*args):
+        a = entity.Entity(pos=(args[0], args[1], args[2]))
+        a.add_component()
+        a.add_component(comp.ShapeGfxColor(shape=sh.Rect(256, 256), fill=sh.SolidFill(r=color[0], g=color[1], b=color[2])))
+        a.add_component(comp.Parallax(cam='maincam', factor=[1, 1], campos0=[128, 128], pos0=[0, 0]))
+        return a
+    return f
+
+
+
+
 def warp(**kwargs):
     def f(*args):
         pos = makePos(*args)

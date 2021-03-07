@@ -11,19 +11,20 @@
       d: [ [204, 0, 1] ]
     - factory: [bg, {'image': gfx/kitchen3.png}]
       d: [ [115, 0, 1] ]
-
-  bg:
-    - image: gfx/kitchen.png
-      pos: [0, 0, -1]
-    - image: gfx/kitchen2.png
-      pos: [204, 0,1]
-    - image: gfx/kitchen3.png
-      pos: [115, 0, 1]
-  walkareas:
-    - type: poly
-      outline: [40, 16, 59, 21, 155, 21, 180, 18, 192,18,294,18,307,12,199,9,207,0,160,0,149,11,112,11,100,0,40,0]
-      blocked_lines:
-        - A: [190, 0]
-          B: [190, 144]
-          active: true
-      depth: auto
+    - factory: [walkarea, {'id': walkarea_0, 'outline': [40, 16, 59, 21, 155, 21, 180, 18, 192,18,294,18,307,12,199,9,207,0,160,0,149,11,112,11,100,0,40,0]}]
+      d: [[0,0,0]]
+##  bg:
+#    - image: gfx/kitchen.png
+#      pos: [0, 0, -1]
+#    - image: gfx/kitchen2.png
+#      pos: [204, 0,1]
+#    - image: gfx/kitchen3.png
+#      pos: [115, 0, 1]
+#  walkareas:
+#    - type: poly
+#      outline: [40, 16, 59, 21, 155, 21, 180, 18, 192,18,294,18,307,12,199,9,207,0,160,0,149,11,112,11,100,0,40,0]
+#      blocked_lines:
+#        - A: [190, 0]
+#          B: [190, 144]
+#          active: true
+#      depth: auto

@@ -5,6 +5,17 @@
 
 class IAnimator;
 
+class CharacterController : public Component {
+public:
+    CharacterController(const ITable&);
+    void Start () override;
+    void Update(double) override {}
+    void turn (char);
+private:
+    IAnimator* m_animator;
+    char m_dir;
+};
+
 class StateCharacter : public StateMachine {
 public:
     StateCharacter(float speed, char dir, const std::string& initialState);

@@ -227,6 +227,8 @@ SceneFactory::SceneFactory() {
     add2<Segment> ("line");
     add2<ConvexPolygon>("convex_polygon");
 	add2<Circle> ("circle");
+    add2<Polygon> ("poly");
+
 
 	// ************ 3d shapes **************
 	add2<AABB>("shape3d.aabb");

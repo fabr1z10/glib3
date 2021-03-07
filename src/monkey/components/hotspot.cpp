@@ -339,7 +339,14 @@ void HotSpot::Start() {
         m_entity->AddChild(mesh);
     }
 
-
+    if (m_shape != nullptr) {
+        auto c = std::make_shared<Entity>();
+        MeshFactory m;
+        auto model = m.createWireframe(m_shape.get(), glm::vec4(1.0f));
+        auto renderer = std::make_shared<BasicRenderer>(model);
+        c->AddComponent(renderer);
+        m_entity->AddChild(c);
+    }
     //auto hs = (Engine::get().GetRef<HotSpotManager>("_hotspotmanager"));
     //hs->Register(this);
     // if DEBUG

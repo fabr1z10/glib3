@@ -37,3 +37,10 @@ class ConvexPolygon(Shape):
         super().__init__([0,0])
         self.type = 'convex_polygon'
         self.points = points
+
+class Poly(Shape):
+    def __init__(self, outline):
+        super().__init__([0,0])
+        self.type = 'poly'
+        self.outline = outline
+        self.holes = []

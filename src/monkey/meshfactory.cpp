@@ -21,6 +21,8 @@ MeshFactory::MeshFactory() {
 	    { return drawCircle(s, color, vertices, indices); }));
 	m_plotters.insert(std::make_pair(ShapeType::COMPOUND, [&] (IShape* s, glm::vec4 color, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices)
 		{ return drawCompound(s, color, vertices, indices); }));
+    m_plotters.insert(std::make_pair(ShapeType::POLY, [&] (IShape* s, glm::vec4 color, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices)
+        { return drawPoly(s, color, vertices, indices); }));
 	m_plotters.insert(std::make_pair(ShapeType::AABB, [&] (IShape* s, glm::vec4 color, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices)
 		{ return drawAABB(s, color, vertices, indices); }));
 	m_plotters.insert(std::make_pair(ShapeType::PLANE, [&] (IShape* s, glm::vec4 color, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices)
@@ -95,6 +97,32 @@ void MeshFactory::drawCompound(IShape * s, glm::vec4 color, std::vector<VertexCo
 
 
 }
+
+
+void MeshFactory::drawPoly (IShape* s, glm::vec4 color, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices) {
+    auto* poly = static_cast<Polygon*>(s);
+    unsigned first = vertices.size();
+    unsigned c = first;
+    for (const auto& vertex : poly->getOutlineVertices()) {
+        vertices.emplace_back(vertex.x, vertex.y, 0.0f, color.r, color.g, color.b, color.a);
+        indices.emplace_back(c++);
+        indices.emplace_back(c);
+    }
+    indices.back() = first;
+    for (int i = 0; i < poly->getHoleCount(); ++i) {
+        first = vertices.size();
+        c = first;
+        for (const auto& vertex : poly->getHoleVertices(i)) {
+            vertices.emplace_back(vertex.x, vertex.y, 0.0f, color.r, color.g, color.b, color.a);
+            indices.emplace_back(c++);
+            indices.emplace_back(c);
+        }
+        indices.back() = first;
+    }
+
+}
+
+
 void MeshFactory::drawConvexPoly (IShape* s, glm::vec4 color, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices, bool closeLoop) {
     auto* seg = static_cast<IConvexPolygon*>(s);
     unsigned offset = vertices.size();

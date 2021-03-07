@@ -6,7 +6,7 @@
 #include <monkey/activities/move.h>
 #include <monkey/math/shortestpath.h>
 #include <glm/glm.hpp>
-#include <monkey/math/closest.h>
+#include <monkey/math/algo/closest.h>
 #include <iostream>
 #include "../components/walkarea.h"
 #include "turn.h"
@@ -44,19 +44,19 @@ void Walk::Start() {
             std::cerr << err.what();
             SetComplete();
             return;
-
         }
     }
     // use the walk-area associated with the character
-
-    //auto walkArea = Engine::get().GetRef<WalkArea>("walkarea");
-
-    //std::cout << "Calling walk for " << m_actorId << " to " << m_p.x << ", " << m_p.y << "\n";
     auto actor = Monkey::get().Get<Entity>(m_actorId);
-    float speed = actor->GetComponent<StateCharacter>()->GetSpeed();
-
-    // see if you have an associated walk-area
     auto walkArea = actor->GetParent()->GetComponent<WalkArea>();
+//    //auto walkArea = Engine::get().GetRef<WalkArea>("walkarea");
+//
+//    //std::cout << "Calling walk for " << m_actorId << " to " << m_p.x << ", " << m_p.y << "\n";
+//
+//    float speed = actor->GetComponent<StateCharacter>()->GetSpeed();
+//
+//    // see if you have an associated walk-area
+//    auto walkArea = actor->GetParent()->GetComponent<WalkArea>();
     if (walkArea == nullptr) {
         std::cerr << ("The character is unable to walk as it's not associated to a walk area!\n");
         m_success = false;
@@ -64,101 +64,104 @@ void Walk::Start() {
         return;
     }
 
-    m_shape = walkArea->GetShape();
-    auto blockedLines = walkArea->GetActiveWalls();
+    const auto* shape = walkArea->getShape();
+    //    auto blockedLines = walkArea->GetActiveWalls();
 
-    glm::vec3 currentPos(actor->GetPosition());
-    //std::cout << "current position is " << currentPos.x << ", " << currentPos.y << "\n";
+    glm::vec2 currentPos(actor->GetPosition());
+    std::cout << "current position is " << currentPos.x << ", " << currentPos.y << "\n";
     // if current position is not in shape
-    if (!m_shape->isPointInside(currentPos)) {
-
-        auto p = ClosestPointOnEdge::Find(*(m_shape), currentPos);
-        glm::vec3 a (p.P + 0.5f* p.normal, 0.0f);
-        actor->SetPosition(a);
-        currentPos = a;
-
+    if (!shape->isPointInside(glm::vec3(currentPos, 0.0f))) {
+        auto& algo = ClosestPointOnEdge::get();
+        algo.find(currentPos, shape);
     }
-    //std::cout << "current position is " << currentPos.x << ", " << currentPos.y << "\n";
-    std::cout << "target point is " << m_p.x << ", " << m_p.y << "\n";
-
-    // if target point is not in shape
-    if (!m_shape->isPointInside(glm::vec3(m_p, 0.0f))) {
-        auto pos = ClosestPointOnEdge::Find(*(m_shape), m_p);
-        m_p = pos.P + pos.normal*0.01f;
-    }
-
-    //std::cout << "target point is " << m_p.x << ", " << m_p.y << "\n";
-
-    glm::vec2 pos2d(currentPos);
-    glm::vec2 delta = m_p - pos2d;
-
-    if (delta != glm::vec2(0.0f))
-    {
-        std::cerr << "delta " << delta.x << " " << delta.y << "\n";
-        std::cerr << "finding sp to " << m_p.x << " " << m_p.y << "\n";
-        std::cerr << "cpos " << currentPos.x << " " << currentPos.y << "\n";
-        std::vector<glm::vec2> points = ShortestPath::Find(*m_shape, currentPos, m_p);
-        //std::cerr << "ok\n";
-        //int count = 0;
-        //glm::vec2 currentPoint = points.front();
-        std::string anim2;
-        // set status to walk
-        auto setStateAction = std::make_shared<SetState>("walk");
-        setStateAction->SetId(m_actorId);
-        Push(setStateAction);
-        for (size_t i = 1; i < points.size(); ++i) {
-            delta = points[i] - pos2d;
-            float length = glm::length(delta);
-            if (delta == glm::vec2(0.0f))
-                continue;
-
-            // see if this intersects one of the walls.
-            // If it does, this is the last movement and it will end here
-            float tMin = 1.0;
-            for (auto& b : blockedLines) {
-                float t = LineSegmentIntersection(pos2d, points[i], b.A, b.B);
-                if (t > 0) {
-                    tMin = std::min(tMin, t);
-                }
-            }
-            // effective displacement
-            if (tMin < 1.0) {
-                length = tMin * length - 0.1f;
-                length = std::max(0.0f, length);
-            }
-            if (length == 0.0f)
-                break;
-            char dir;
-            //std::string anim2;
-            if (std::fabs(delta.x) > std::fabs(delta.y)) {
-                dir = delta.x > 0 ? 'e' : 'w';
-            } else {
-                dir = delta.y > 0 ? 'n' : 's';
-            }
-
-            Push(std::make_shared<Turn>(m_actorId, dir));
-            glm::vec2 P = pos2d + length * glm::normalize(delta);
-            Push(std::make_shared<MoveToScaled>(m_actorId, P, speed, false, false));
-            //std::cerr << "adding move to " << P.x << ", " << P.y << "\n";
-            //if (i == points.size() - 1 || tMin < 1.0)
-            pos2d = points[i];
-            if (tMin < 1.0)
-            {
-                // I hit a wall!
-                break;
-            }
-            //script->AddActivity(p);
-        }
-        auto setIdle = std::make_shared<SetState>("idle");
-        setIdle->SetId(m_actorId);
-        Push(setIdle);
-
-        //Push(std::make_shared<SetState>(m_actorId, "idle"));
-
-//        if (!anim2.empty())
-  //          Push(std::make_shared<Animate>(actor, anim2, flipX));
-    } else {
-
-        SetComplete();
-    }
+            //auto p = ClosestPointOnEdge::Find(*(m_shape), currentPos);
+////        glm::vec3 a (p.P + 0.5f* p.normal, 0.0f);
+////        actor->SetPosition(a);
+////        currentPos = a;
+//
+//    }
+//    //std::cout << "current position is " << currentPos.x << ", " << currentPos.y << "\n";
+//    std::cout << "target point is " << m_p.x << ", " << m_p.y << "\n";
+//
+//    // if target point is not in shape
+//    if (!m_shape->isPointInside(glm::vec3(m_p, 0.0f))) {
+//        //auto pos = ClosestPointOnEdge::Find(*(m_shape), m_p);
+//        //m_p = pos.P + pos.normal*0.01f;
+//    }
+//
+//    //std::cout << "target point is " << m_p.x << ", " << m_p.y << "\n";
+//
+//    glm::vec2 pos2d(currentPos);
+//    glm::vec2 delta = m_p - pos2d;
+//
+//    if (delta != glm::vec2(0.0f))
+//    {
+//        std::cerr << "delta " << delta.x << " " << delta.y << "\n";
+//        std::cerr << "finding sp to " << m_p.x << " " << m_p.y << "\n";
+//        std::cerr << "cpos " << currentPos.x << " " << currentPos.y << "\n";
+//        std::vector<glm::vec2> points;
+//        //std::vector<glm::vec2> points = ShortestPath::Find(*m_shape, currentPos, m_p);
+//        //std::cerr << "ok\n";
+//        //int count = 0;
+//        //glm::vec2 currentPoint = points.front();
+//        std::string anim2;
+//        // set status to walk
+//        auto setStateAction = std::make_shared<SetState>("walk");
+//        setStateAction->SetId(m_actorId);
+//        Push(setStateAction);
+//        for (size_t i = 1; i < points.size(); ++i) {
+//            delta = points[i] - pos2d;
+//            float length = glm::length(delta);
+//            if (delta == glm::vec2(0.0f))
+//                continue;
+//
+//            // see if this intersects one of the walls.
+//            // If it does, this is the last movement and it will end here
+//            float tMin = 1.0;
+//            for (auto& b : blockedLines) {
+//                float t = LineSegmentIntersection(pos2d, points[i], b.A, b.B);
+//                if (t > 0) {
+//                    tMin = std::min(tMin, t);
+//                }
+//            }
+//            // effective displacement
+//            if (tMin < 1.0) {
+//                length = tMin * length - 0.1f;
+//                length = std::max(0.0f, length);
+//            }
+//            if (length == 0.0f)
+//                break;
+//            char dir;
+//            //std::string anim2;
+//            if (std::fabs(delta.x) > std::fabs(delta.y)) {
+//                dir = delta.x > 0 ? 'e' : 'w';
+//            } else {
+//                dir = delta.y > 0 ? 'n' : 's';
+//            }
+//
+//            Push(std::make_shared<Turn>(m_actorId, dir));
+//            glm::vec2 P = pos2d + length * glm::normalize(delta);
+//            Push(std::make_shared<MoveToScaled>(m_actorId, P, speed, false, false));
+//            //std::cerr << "adding move to " << P.x << ", " << P.y << "\n";
+//            //if (i == points.size() - 1 || tMin < 1.0)
+//            pos2d = points[i];
+//            if (tMin < 1.0)
+//            {
+//                // I hit a wall!
+//                break;
+//            }
+//            //script->AddActivity(p);
+//        }
+//        auto setIdle = std::make_shared<SetState>("idle");
+//        setIdle->SetId(m_actorId);
+//        Push(setIdle);
+//
+//        //Push(std::make_shared<SetState>(m_actorId, "idle"));
+//
+////        if (!anim2.empty())
+//  //          Push(std::make_shared<Animate>(actor, anim2, flipX));
+//    } else {
+//
+//        SetComplete();
+//    }
 }

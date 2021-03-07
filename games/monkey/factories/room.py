@@ -6,13 +6,15 @@ import engine
 import monkey
 import factories.items
 import components as compo
-
+import func
+import runners
 
 def default_room(desc: dict):
     id = desc['id']
     width = desc['width']
     height = desc['height']
     r = room.Room(id, width, height)
+    r.add_runner(runners.Scheduler())
     print('uisize is ' + str(vars.ui_height))
     device_size = monkey.engine.device_size
     cam_width = device_size[0]
@@ -21,18 +23,24 @@ def default_room(desc: dict):
     # # add the main node
     main = entity.Entity(tag='main')
     main.camera = cam.OrthoCamera(width, height, cam_width, cam_height, [0, vars.ui_height, cam_width, cam_height], tag='maincam')
+    main.add_component(compo.HotSpotManager(lmbclick=func.walkto))
     r.add(main)
     # # main.add (e.Text(font='ui', text='ciao', color = [255, 255, 255, 255], align = e.TextAlignment.bottom, pos = [camWidth/2, 16, 0]))
-    ui = entity.Entity(tag='ui')
-    ui.camera = cam.OrthoCamera(cam_width, vars.ui_height, cam_width, vars.ui_height, [0, 0, cam_width, vars.ui_height], tag='uicam')
     verb_set = desc.get('verb_set', 0)
     # get current verb set
     vset = vars.verb_sets[verb_set]
     dv = vars.verbs[vset['default_verb']]
+    vars.current_verb = vset['default_verb']
+    vars.current_item_1 = ''
+    vars.current_item_2 = ''
+
+    ui = entity.Entity(tag='ui')
+    ui.camera = cam.OrthoCamera(cam_width, vars.ui_height, cam_width, vars.ui_height, [0, 0, cam_width, vars.ui_height], tag='uicam')
 
     ui.add(entity.Text(font='ui', size=8, text=monkey.engine.read(dv['text']), color=vars.Colors.current_action,
-        align=entity.TextAlignment.bottom, tag='current_verb', pos=(cam_width / 2, 48, 0)))
+         align=entity.TextAlignment.bottom, tag='current_verb', pos=(cam_width / 2, 48, 0)))
     ui.add_component(compo.HotSpotManager())
+
 
     r.add(ui)
     cy = vars.ui_height - 2 * vars.font_size
@@ -64,7 +72,16 @@ def default_room(desc: dict):
 
     # add dynamic items
     for key in vars.items_in_room[id]:
-        print ('Adding dynamic item: ' + str(key))
+        item_desc = vars.items[key]
+        tp = item_desc.get('type', None)
+        if tp is None:
+            print ('item ' + key + ' does not have type!')
+            exit(1)
+        print ('ciao ' + tp)
+        factory = getattr(factories.items, tp)
+        e = factory()(key, item_desc)
+        parent = item_desc.get('parent', 'main')
+        r.add(e, parent)
     return r
 
     # super().__init__(id, width, height)

@@ -22,6 +22,8 @@ engine.add_shader(shader.ShaderType.unlit_color)
 engine.add_shader(shader.ShaderType.text)
 engine.add_room_factory('default', factories.room.default_room)
 engine.add_item_factory('bg', factories.items.bg)
+engine.add_item_factory('walkarea', factories.items.walkarea)
+
 
 # load adventure items. fill up the items_in_room structure
 with open(example.dir+  '/items.yaml') as f:

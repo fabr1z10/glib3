@@ -1,9 +1,10 @@
 ---
 guybrush:
-  model: 'guybrush'
+  type: player
+  model: 01/guybrush
   pos: [126, 52]
-  room: lookout
-  node: walkarea
+  room: kitchen
+  parent: walkarea_0
   dir: s
   speed: 500
   text_color: [255, 255, 255, 255]
@@ -261,62 +262,70 @@ cook:
 seagull:
   model: seagull
   pos: [0,0,1]  
-kitchen_door:
-  text: door
-  width: 38
-  height: 53
-  pos: [19, 18, -1]
-  room: kitchen
-  walkto: '@&kitchen_door'
-  wdir: w
-  anim: '@&doors/kitchen'
-  model: door_kitchen_scummbar
-kitchen_potostew:
-  model: potostew
-  pos: [153,39,-0.9]
-  room: kitchen
-kitchen_door_pier:
-  model: door_kitchen_pier
-  pos: [192, 9, -1]
-  room: kitchen
-  text: door
-  width: 20
-  height: 64
-  walkto: [182, 9]
-  anim: '@&doors/pier'
-  wdir: e
+#kitchen_door:
+#  text: door
+#  width: 38
+#  height: 53
+#  pos: [19, 18, -1]
+#  room: kitchen
+#  walkto: '@&kitchen_door'
+#  wdir: w
+#  anim: '@&doors/kitchen'
+#  model: door_kitchen_scummbar
+#kitchen_potostew:
+#  model: potostew
+#  pos: [153,39,-0.9]
+#  room: kitchen
+#kitchen_door_pier:
+#  model: door_kitchen_pier
+#  pos: [192, 9, -1]
+#  room: kitchen
+#  text: door
+#  width: 20
+#  height: 64
+#  walkto: [182, 9]
+#  anim: '@&doors/pier'
+#  wdir: e
 meat:
-  model: meat
+  type: item1
+  model: 01/meat
   pos: [79, 40, -0.9]
-  text: '@$objects/meat'
-  width: 20
-  height: 20
+  text: '$objects/meat'
+  size: [20, 20]
   room: kitchen
   walkto: [90, 18]
   wdir: n
-fish:
-  model: fish
-  pos: [234, 9, 1]
-  text: '@$objects/fish'
-  width: 12
-  height: 7
+meat2:
+  type: item1
+  pos: [30, 0, 0]
+  text: '$objects/meat'
+  size: [20, 20]
   room: kitchen
-  walkto: [234, 12]
-  wdir: s
-pot:
-  model: pot
-  pos: [104, 24, -0.90]
-  text: '@$objects/pot'
-  width: 15
-  height: 7
-  room: kitchen
-  walkto: [112,18]
+  walkto: [90, 18]
   wdir: n
-kitchen_trap:
-  pos: [100, 0, 0]
-  room: kitchen
-  collision:
-    size: [10, 144]
-    flag: 1
-    mask: 0
-    tag: 1
+#fish:
+#  model: fish
+#  pos: [234, 9, 1]
+#  text: '@$objects/fish'
+#  width: 12
+#  height: 7
+#  room: kitchen
+#  walkto: [234, 12]
+#  wdir: s
+#pot:
+#  model: pot
+#  pos: [104, 24, -0.90]
+#  text: '@$objects/pot'
+#  width: 15
+#  height: 7
+#  room: kitchen
+#  walkto: [112,18]
+#  wdir: n
+#kitchen_trap:
+#  pos: [100, 0, 0]
+#  room: kitchen
+#  collision:
+#    size: [10, 144]
+#    flag: 1
+#    mask: 0
+#    tag: 1

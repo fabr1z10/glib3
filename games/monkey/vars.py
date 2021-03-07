@@ -10,6 +10,8 @@ items = dict()
 
 items_in_room = dict()
 
+inventory = dict()
+
 class Colors:
     current_action = [0, 170, 170, 255]
     verb_selected = [255, 255, 85, 255]

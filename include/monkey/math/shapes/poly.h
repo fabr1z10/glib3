@@ -1,18 +1,28 @@
-//#pragma once
-//
+#pragma once
+
+// a generic polygon, may be concave, might have holes
 //#include <vector>
 //#include <list>
 //#include <memory>
-//#include "monkey/math/shape.h"
-//
-//class Entity;
-//
-//// simple polygon (can be concave), no holes
-//class Polygon : public Shape {
-//public:
-//    Polygon (const std::vector<glm::vec2>& p);
-//    Polygon(const ITable&);
-//    bool isPointInside (glm::vec3 P) const override;
+#include "monkey/math/shape.h"
+
+class PolygonHelper {
+public:
+    PolygonHelper(const std::vector<float>& p);
+    bool isPointInside (glm::vec3 P) const;
+    const std::vector<glm::vec2>& getVertices() const;
+private:
+    std::vector<glm::vec2> m_points;
+};
+
+class Polygon : public IShape {
+public:
+    Polygon(const ITable &);
+    bool isPointInside(glm::vec3 P) const override;
+    int getHoleCount() const;
+    const std::vector<glm::vec2>& getOutlineVertices() const;
+    const std::vector<glm::vec2>& getHoleVertices(int) const;
+
 //    // tests if segment AB is within the polygon
 //    bool isInLineOfSight(glm::vec2 A, glm::vec2 B);
 //    int GetVertexCount() const;
@@ -28,7 +38,10 @@
 //    std::vector<glm::vec2> getPoints() override;
 //    void setPoints (std::vector<glm::vec2>& pts);
 //    std::vector<glm::vec2> getEdges() override;
-//private:
+private:
+    std::unique_ptr<PolygonHelper> m_outline;
+    std::vector<std::unique_ptr<PolygonHelper>> m_holes;
+};
 //    std::vector <glm::vec2> m_points;
 //};
 //

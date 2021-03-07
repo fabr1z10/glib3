@@ -17,7 +17,7 @@ public:
     void Start() override;
     void SetComplete() override;
 private:
-    Shape* m_shape;
+    IShape* m_shape;
     int m_actorId;
     std::string m_tag;
     glm::vec2 m_p;

@@ -12,10 +12,12 @@ struct BlockedLine {
     bool active;
 };
 
-class WalkArea : public ScriptHotSpot {
+class WalkArea : public Component {
 public:
-    WalkArea (std::shared_ptr<Shape> shape, int priority);
+    //WalkArea (std::shared_ptr<IShape> shape, int priority);
     WalkArea (const ITable&);
+    void Update(double) override {}
+    const IShape* getShape() const;
     void assignDepth (Entity*);
     void assignScaleAndDepth (Entity*);
     void onAdd(Entity*);
@@ -34,13 +36,17 @@ public:
     using ParentClass = HotSpot;
     std::type_index GetType() override;
 private:
-    std::shared_ptr<Entity> getDebugMesh() override ;
+    //std::shared_ptr<Entity> getDebugMesh() override ;
+    std::shared_ptr<IShape> m_shape;
 
     std::vector<BlockedLine> m_walls;
     std::shared_ptr<Function2D> m_depthFunc;
     std::shared_ptr<Function2D> m_scaleFunc;
 };
 
+inline const IShape * WalkArea::getShape() const {
+    return m_shape.get();
+}
 
 
 inline void WalkArea::SetDepthFunction (std::shared_ptr<Function2D> func) {

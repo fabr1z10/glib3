@@ -2,6 +2,25 @@
 #include <monkey/entity.h>
 #include <monkey/components/animator.h>
 
+CharacterController::CharacterController(const ITable &t) : Component(t) {
+    m_dir = t.get<std::string>("dir")[0];
+}
+
+
+void CharacterController::Start() {
+    m_animator = m_entity->GetComponent<IAnimator>();
+    if (m_animator == nullptr) {
+        GLIB_FAIL("animator required");
+    }
+    turn(m_dir);
+}
+
+void CharacterController::turn(char dir) {
+    std::string anim = "idle_" + std::string(1,dir == 'w' ? 'e' : dir);
+    m_animator->SetAnimation(anim);
+
+}
+
 StateCharacter::StateCharacter(float speed, char dir, const std::string& initialState) :
     StateMachine(initialState), m_speed(speed), m_dir(dir) {
 }

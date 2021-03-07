@@ -4,15 +4,19 @@
 
 #include <monkey/engine.h>
 #include <iostream>
-#include <monkey/math/closest.h>
+#include <monkey/math/algo/closest.h>
 #include <monkey/math/shortestpath.h>
 #include <monkey/properties.h>
+#include <monkey/meshfactory.h>
+#include <monkey/components/basicrenderer.h>
 
-WalkArea::WalkArea(std::shared_ptr<Shape> shape, int priority) : ScriptHotSpot(shape, priority) {}
+//WalkArea::WalkArea(std::shared_ptr<IShape> shape, int priority) : ScriptHotSpot(shape, priority) {}
 
-WalkArea::WalkArea(const ITable & t) : ScriptHotSpot(t) {
+WalkArea::WalkArea(const ITable & t) : Component(t) {
     auto factory = Engine::get().GetSceneFactory();
-    
+    auto sh = t.get<PyTable>("shape");
+    m_shape = factory->make2<IShape>(sh);
+
     if (t.hasKey("depth")) {
         auto dref = t.get<PyTable>("depth");
         auto depthFunc = factory->make2<Function2D>(dref);
@@ -92,19 +96,19 @@ void WalkArea::assignScaleAndDepth (Entity* e) {
     e->setOnMoveEnabled(true);
 }
 
-std::shared_ptr<Entity> WalkArea::getDebugMesh() {
-    auto ptr = HotSpot::getDebugMesh();
-//    auto props = std::make_shared<Properties>();
-//    //return nullptr;
-//    luabridge::LuaRef ciao = LuaWrapper::makeTable();
-//    ciao["walkarea_scale"] = false;
-//    props->addAdditionalProps(ciao);
-//    ptr->AddComponent(props);
-    return ptr;
-}
+//std::shared_ptr<Entity> WalkArea::getDebugMesh() {
+//    auto ptr = HotSpot::getDebugMesh();
+////    auto props = std::make_shared<Properties>();
+////    //return nullptr;
+////    luabridge::LuaRef ciao = LuaWrapper::makeTable();
+////    ciao["walkarea_scale"] = false;
+////    props->addAdditionalProps(ciao);
+////    ptr->AddComponent(props);
+//    return ptr;
+//}
 
 void WalkArea::Start() {
-    ScriptHotSpot::Start();
+    //ScriptHotSpot::Start();
 
     if (m_depthFunc != nullptr || m_scaleFunc != nullptr) {
         for (const auto &c : m_entity->GetChildren()) {
@@ -122,7 +126,14 @@ void WalkArea::Start() {
     //auto coll = std::make_shared<SimpleCollider>(m_shape,1,2,1);
     //m_entity->AddComponent(coll);
     //coll->Start();
-
+    if (m_shape != nullptr) {
+        auto c = std::make_shared<Entity>();
+        MeshFactory m;
+        auto model = m.createWireframe(m_shape.get(), glm::vec4(1.0f));
+        auto renderer = std::make_shared<BasicRenderer>(model);
+        c->AddComponent(renderer);
+        m_entity->AddChild(c);
+    }
 }
 
 

@@ -13,7 +13,9 @@
 
 void Extension::extend(SceneFactory* f) {
 
-    f->add2<WalkArea> ("components.walkarea");
+    f->add2<WalkArea> ("scumm.components.walkarea");
+    f->add2<CharacterController> ("scumm.components.character_controller");
+
     f->add2<StateCharacter> ("components.character");
 //
     f->add2<Walk> ("scumm.action.walk");

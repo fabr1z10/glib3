@@ -1,10 +1,62 @@
 //#define GLM_ENABLE_EXPERIMENTAL
-//#include <monkey/math/closest.h>
+#include <monkey/math/algo/closest.h>
+#include <monkey/math/shapes/circle.h>
+#include <monkey/math/shapes/poly.h>
+#include <monkey/math/geom.h>
 //#include <iostream>
 //#include <glm/gtx/transform.hpp>
 //#include <glm/gtx/norm.hpp>
 //#include <monkey/math/geom.h>
 //
+ClosestPointOnEdge::ClosestPointOnEdge() : m_eps(0.1f) {
+    m_algos.insert(std::make_pair(ShapeType::POLY, [&](glm::vec2 P, const IShape *s) { return findPoly(P, s); }));
+    m_algos.insert(std::make_pair(ShapeType::CIRCLE, [&](glm::vec2 P, const IShape *s) { return findCircle(P, s); }));
+
+}
+
+glm::vec2 ClosestPointOnEdge::find(glm::vec2 P, const IShape * s) {
+    auto it = m_algos.find(s->getShapeType());
+    if (it != m_algos.end()) {
+        return it->second(P, s);
+    }
+}
+
+glm::vec2 ClosestPointOnEdge::findCircle(glm::vec2 P, const IShape * s) {
+    const auto* c = static_cast<const Circle*>(s);
+    glm::vec2 O = c->getOffset();
+    glm::vec2 OP = P - O;
+    if (OP.x * OP.x + OP.y * OP.y <= c->getRadius() * c->getRadius() ) {
+        return P;
+    }
+    return O + glm::normalize(OP) * (c->getRadius() - m_eps);
+}
+
+glm::vec2 ClosestPointOnEdge::findPoly(glm::vec2 P, const IShape * s) {
+    // do a preliminary test. If point is inside, return the point itself
+    if (s->isPointInside(glm::vec3(P, 0.0f))) {
+        return P;
+    }
+    const auto* p = static_cast<const Polygon*>(s);
+    const auto& vertices = p->getOutlineVertices();
+    float currentDist = std::numeric_limits<float>::infinity();
+    glm::vec2 currentPoint(0.0f);
+    for (int i = 0; i < vertices.size(); ++i) {
+        int inext = (i + 1) % vertices.size();
+        glm::vec2 A = vertices[i];
+        glm::vec2 B = vertices[inext];
+        auto l2 = length2(B - A);
+        auto p = glm::dot(P - A, B - A);
+        if (p < 0) {
+            // closest point is A. Update only if d2 < currentDIst
+
+        } else if (p > l2) {
+            // closest point is B
+        } else {
+            // closest point is midline
+        }
+    }
+
+}
 //void ClosestPointOnEdge::replace(float& d, glm::vec2& bp, float cand, glm::vec2 cp) {
 //    if (cand < d) {
 //        d = cand;

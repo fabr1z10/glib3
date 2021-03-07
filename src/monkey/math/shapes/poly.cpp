@@ -1,4 +1,4 @@
-//#include <monkey/math/shapes/poly.h>
+#include <monkey/math/shapes/poly.h>
 //#include <monkey/math/geom.h>
 //#include <monkey/error.h>
 //#include <monkey/math/geomalgo.h>
@@ -16,22 +16,56 @@
 //
 //}
 //
-//Polygon::Polygon(const ITable & t) : Shape(t) {
-//    std::vector<float> outline = t.get<std::vector<float> >("outline");
-//
-//    for (size_t i = 0; i < outline.size(); i = i + 2)
-//        m_points.push_back(glm::vec2(outline[i], outline[i + 1]));
-//
-//    m_bounds.min = glm::vec3(m_points[0], 0.0f);
-//    m_bounds.max = glm::vec3(m_points[0], 0.0f);
-//    for (int i = 1; i < m_points.size(); ++i) {
-//        m_bounds.min.x = std::min(m_bounds.min.x, m_points[i].x);
-//        m_bounds.min.y = std::min(m_bounds.min.y, m_points[i].y);
-//        m_bounds.max.x = std::max(m_bounds.max.x, m_points[i].x);
-//        m_bounds.max.y = std::max(m_bounds.max.y, m_points[i].y);
-//    }
-//
-//}
+PolygonHelper::PolygonHelper(const std::vector<float> &p) {
+    for (size_t i = 0; i < p.size(); i += 2) {
+        m_points.emplace_back(glm::vec2(p[i], p[i+1]));
+    }
+}
+
+const std::vector<glm::vec2> & PolygonHelper::getVertices() const {
+    return m_points;
+}
+
+Polygon::Polygon(const ITable & t) : IShape(t) {
+    m_type = ShapeType::POLY;
+    auto outline = t.get<std::vector<float> >("outline");
+    m_outline = std::make_unique<PolygonHelper>(outline);
+    t.foreach<std::vector<float>>("holes", [&] (const std::vector<float>& l) {
+       m_holes.push_back(std::make_unique<PolygonHelper>(l));
+    });
+
+    m_bounds.min = glm::vec3(outline[0], outline[1], 0.0f);
+    m_bounds.max = glm::vec3(outline[0], outline[1], 0.0f);
+    for (size_t i = 2; i < outline.size(); i += 2) {
+        m_bounds.min.x = std::min(m_bounds.min.x, outline[i]);
+        m_bounds.min.y = std::min(m_bounds.min.y, outline[i+1]);
+        m_bounds.max.x = std::max(m_bounds.max.x, outline[i]);
+        m_bounds.max.y = std::max(m_bounds.max.y, outline[i+1]);
+    }
+}
+
+bool Polygon::isPointInside(glm::vec3 P) const {
+    if (!m_outline->isPointInside(P))
+        return false;
+    for (const auto& hole : m_holes) {
+        if (hole->isPointInside(P)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+int Polygon::getHoleCount() const {
+    return m_holes.size();
+}
+const std::vector<glm::vec2> & Polygon::getOutlineVertices() const {
+    return m_outline->getVertices();
+}
+
+const std::vector<glm::vec2> & Polygon::getHoleVertices(int i) const {
+    return m_holes[i]->getVertices();
+}
+
 //
 //
 //
@@ -46,17 +80,17 @@
 //    return x < 0;
 //}
 //
-//bool Polygon::isPointInside(glm::vec3 point) const {
-//    int i, j;
-//    bool c = false;
-//    int nvert = m_points.size();
-//    for (i = 0, j = nvert-1; i < nvert; j = i++) {
-//        if ( ((m_points[i].y > point.y) != (m_points[j].y > point.y)) &&
-//             (point.x < (m_points[j].x-m_points[i].x) * (point.y-m_points[i].y) / (m_points[j].y-m_points[i].y) + m_points[i].x) )
-//            c = !c;
-//    }
-//    return c;
-//}
+bool PolygonHelper::isPointInside(glm::vec3 point) const {
+    int i, j;
+    bool c = false;
+    int nvert = m_points.size();
+    for (i = 0, j = nvert-1; i < nvert; j = i++) {
+        if ( ((m_points[i].y > point.y) != (m_points[j].y > point.y)) &&
+             (point.x < (m_points[j].x-m_points[i].x) * (point.y-m_points[i].y) / (m_points[j].y-m_points[i].y) + m_points[i].x) )
+            c = !c;
+    }
+    return c;
+}
 //
 //bool Polygon::isInLineOfSight(glm::vec2 A, glm::vec2 B) {
 //    //if (!isPointInside(A) || !isPointInside(B))
@@ -133,16 +167,6 @@
 //
 //}
 //
-//bool Poly::isPointInside(glm::vec3 P) const {
-//    if (!m_contour->isPointInside(P))
-//        return false;
-//    for (const auto& hole : m_holes) {
-//        if (hole.isPointInside(P)) {
-//            return false;
-//        }
-//    }
-//    return true;
-//}
 //
 //void Poly::accept (AcyclicVisitor& v) {
 //    Visitor<Poly>* v1 = dynamic_cast<Visitor<Poly>*>(&v);

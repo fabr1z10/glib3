@@ -18,7 +18,7 @@
 #include <monkey/py.h>
 
 enum class ShapeType {
-    SEGMENT, RECT, CIRCLE, PLANE, SPHERE, AABB, CONVEXPOLY, COMPOUND
+    SEGMENT, RECT, CIRCLE, PLANE, SPHERE, AABB, CONVEXPOLY, COMPOUND, POLY
 };
 
 
@@ -31,14 +31,14 @@ public:
     glm::vec3 getOffset() const;
     //virtual std::unique_ptr<IShape> transform (const glm::mat4& t) = 0;
     virtual bool isPointInside (glm::vec3) const = 0;
-    ShapeType getShapeType();
+    ShapeType getShapeType() const;
 protected:
     Bounds m_bounds;
     glm::vec3 m_offset{};
     ShapeType m_type;
 };
 
-inline ShapeType IShape::getShapeType() {
+inline ShapeType IShape::getShapeType() const {
     return m_type;
 }
 
