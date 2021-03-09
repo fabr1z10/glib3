@@ -48,6 +48,8 @@ public:
     pybind11::object getInfo ();
     pybind11::list getAttackPos();
 	pybind11::list getTextSize();
+	pybind11::list getCollisionBounds();
+	pybind11::list getAttackCollisionBounds();
 	pybind11::list getBoxSize(const std::string& animId);
     static pybind11::object create(Entity*);
     void play (pybind11::object o);

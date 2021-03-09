@@ -62,6 +62,8 @@ PYBIND11_MODULE(example, m) {
     	.def("rotatex", &Wrap1::rotx)
     	.def("getTextSize", &Wrap1::getTextSize)
     	.def("getKeyFrame", &Wrap1::getKeyFrame)
+    	.def("getCollisionBounds",&Wrap1::getCollisionBounds)
+		.def("getAttackCollisionBounds",&Wrap1::getAttackCollisionBounds)
         .def("getBoxSize", &Wrap1::getBoxSize);
 
     py::class_<PyEngine>(m, "engine")

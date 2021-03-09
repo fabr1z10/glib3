@@ -33,6 +33,10 @@ Intersector2D::Intersector2D() {
     m_func[std::make_pair(ShapeType::CIRCLE, ShapeType::CIRCLE)] =
             std::make_unique<Intersector<Circle, Circle, circleVsCircle>>();
 
+	m_func[std::make_pair(ShapeType::RECT, ShapeType::COMPOUND)] =
+			std::make_unique<CompoundIntersector>(this);
+
+
 }
 
 CollisionReport Intersector2D::intersect(IShape * s1, IShape *s2, const glm::mat4& t1, const glm::mat4& t2) {

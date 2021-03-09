@@ -16,7 +16,8 @@
 #include <monkey/skeletal/skmodel.hpp>
 #include <monkey/skeletal/skcollider.hpp>
 #include <monkey/skeletal/skanimator.hpp>
-
+#include <monkey/model/boxedmodel.h>
+#include <monkey/components/animator.h>
 namespace py = pybind11;
 
 Wrap1::Wrap1() : m_entity(nullptr) {
@@ -234,6 +235,35 @@ pybind11::list Wrap1::getTextSize() {
 
 }
 
+pybind11::list Wrap1::getCollisionBounds() {
+	auto* a = dynamic_cast<Animator*>(m_entity->GetComponent<IAnimator>());
+	auto* model = static_cast<BoxedModel*>(a->getModel());
+	auto bounds = model->getShape(a->GetAnimation(), a->GetFrame())->getBounds();
+	pybind11::list l;
+	float scale = m_entity->GetScale();
+	auto pos = m_entity->GetPosition();
+	l.append(pos.x + scale * bounds.min.x);
+	l.append(pos.y + scale * bounds.min.y);
+	l.append(pos.x + scale * bounds.max.x);
+	l.append(pos.y + scale * bounds.max.y);
+	return l;
+
+}
+pybind11::list Wrap1::getAttackCollisionBounds() {
+	auto* a = dynamic_cast<Animator*>(m_entity->GetComponent<IAnimator>());
+	auto* model = static_cast<BoxedModel*>(a->getModel());
+	auto bounds = model->getShapeCast(a->GetAnimation(), a->GetFrame())->getBounds();
+	pybind11::list l;
+	float f = m_entity->GetFlipX() ? -1.0f : 1.0f;
+	float scale = m_entity->GetScale();
+	auto pos = m_entity->GetPosition();
+	l.append(pos.x + f * scale * bounds.min.x);
+	l.append(pos.y + scale * bounds.min.y);
+	l.append(pos.x + f *scale * bounds.max.x);
+	l.append(pos.y + scale * bounds.max.y);
+	return l;
+
+}
 pybind11::list Wrap1::getBoxSize(const std::string& animId) {
     auto* a = m_entity->GetComponent<IAnimator>();
     auto* model = static_cast<SkModel*>(a->getModel());

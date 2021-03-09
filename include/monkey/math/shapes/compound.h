@@ -12,12 +12,12 @@ public:
 	glm::vec2 project(glm::vec2 axis, const glm::mat4& worldTransform) const override;
 //    std::vector<glm::vec2> getPoints() override;
 //    std::vector<glm::vec2> getEdges() override;
-    const std::vector<std::shared_ptr<Shape2D>>& getShapes();
+    const std::vector<std::shared_ptr<Shape2D>>& getShapes() const;
     void addShape (std::shared_ptr<Shape2D>);
 private:
     std::vector<std::shared_ptr<Shape2D>> m_shapes;
 };
 
-inline const std::vector<std::shared_ptr<Shape2D>>& CompoundShape::getShapes() {
+inline const std::vector<std::shared_ptr<Shape2D>>& CompoundShape::getShapes() const {
     return m_shapes;
 }

@@ -27,8 +27,8 @@ Renderer::Renderer(const Renderer& orig) : Component(orig),
 
 Renderer::Renderer(const ITable& t) : m_multColor(1.0f),
 	m_addColor(0.0f), m_renderingTransform(1.0f), m_forceZ(false), m_forcedZ(0.0f), m_texOffset(0.0f), m_blend(Blend::DEFAULT) {
-	//m_multColor = t.get<glm::vec4>("multcolor", glm::vec4(1.0f));
-	//m_addColor = t.get<glm::vec4>("acccolor", glm::vec4(0.0f));
+	m_multColor = t.get<glm::vec4>("multcolor", glm::vec4(1.0f));
+	m_addColor = t.get<glm::vec4>("addcolor", glm::vec4(0.0f));
 	m_blend = static_cast<Blend>(t.get<int>("blend", 0));
 	m_depth = static_cast<GLenum>(t.get<int>("depth", GL_LESS));
 }

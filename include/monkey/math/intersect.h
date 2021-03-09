@@ -27,6 +27,8 @@ public:
     virtual CollisionReport intersect(IShape*, IShape*, const glm::mat4&, const glm::mat4&) = 0;
 };
 
+
+
 template <typename T1, typename T2, CollisionReport(*f)(const T1&, const T2&, const glm::mat4&, const glm::mat4&)>
 class Intersector : public IIntersector {
 public:
@@ -36,6 +38,23 @@ public:
         return f(*sc1, *sc2, t1, t2);
 
     }
+};
+
+class CompoundIntersector : public IIntersector {
+public:
+	CompoundIntersector(IIntersector* main) : m_main(main) {}
+	CollisionReport intersect(IShape* s1, IShape* s2, const glm::mat4& t1, const glm::mat4& t2) override {
+		CompoundShape* c2= static_cast<CompoundShape*>(s2);
+		for (const auto& shape : c2->getShapes()) {
+			auto report = m_main->intersect(s1, shape.get(), t1, t2);
+			if (report.collide) {
+				return report;
+			}
+		}
+		return CollisionReport();
+	}
+private:
+	IIntersector* m_main;
 };
 
 class Intersector2D : public IIntersector {

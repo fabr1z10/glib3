@@ -1,4 +1,5 @@
 #include <monkey/math/algo/geometry.h>
+#include <monkey/math/shapes/compound.h>
 
 bool triangleIsCCW(const glm::vec2& a, const glm::vec2& b, const glm::vec2& c) {
     float det = ((a.x - c.x) * (b.y - c.y)) - ((a.y - c.y) * (b.x - c.x));
@@ -46,4 +47,10 @@ CollisionReport circleVsCircle(const Circle& c1, const Circle& c2, const glm::ma
     float d2 = ab.x * ab.x + ab.y * ab.y;
     report.collide = (d2 < (rsum * rsum));
     return report;
+}
+
+CollisionReport shapeVsCompound(const IShape& c1, const CompoundShape& c2, const glm::mat4&, const glm::mat4&) {
+	for (const auto& shape : c2.getShapes()) {
+
+	}
 }

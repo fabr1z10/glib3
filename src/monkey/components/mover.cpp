@@ -128,3 +128,21 @@ void PolygonalMover::setStartPosition(int si, float pct) {
 void PolygonalMover::setCompleteCallback(pybind11::function f) {
     m_hook = std::make_shared<pybind11::function>(f);
 }
+
+AcceleratedMover::AcceleratedMover(const ITable& t) {
+	m_angularSpeed = t.get<float>("angular_speed", 0.0f);
+	m_initialVelocity = t.get<glm::vec2>("v0");
+	m_acceleration = t.get<glm::vec2>("acceleration");
+	m_velocity = m_initialVelocity;
+	m_angle = 0.0f;
+}
+
+void AcceleratedMover::Update(double dt) {
+	float step = dt;
+	m_angle += m_angularSpeed * dt;
+	glm::vec2 dpos = m_velocity * step;
+	glm::vec2 dvel = m_acceleration * step;
+	m_velocity += dvel;
+	m_entity->MoveOrigin(dpos);
+	m_entity->SetAngle(m_angle);
+}

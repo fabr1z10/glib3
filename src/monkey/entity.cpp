@@ -40,7 +40,7 @@ Entity::Entity(const ITable& t) : Ref(t),
 	if (t.hasKey("rotx")) {
 		Rotate(glm::radians(t.get<float>("rotx")), glm::vec3(1.0f, 0.0f, 0.0f));
 	}
-    auto flipx = t.get<bool>("flipx", false);
+    auto flipx = t.get<bool>("flip_x", false);
     SetFlipX(flipx);
 
     m_layer = t.get<int>("layer", 0);
@@ -371,6 +371,7 @@ Camera* Entity::GetCamera() {
 
 void Entity::SetAngle(float angle) {
     glm::mat4 m = glm::rotate(deg2rad * angle, glm::vec3(0,0,1));
+    std::cerr << "angle= " << angle << "\n";
     m_localTransform[0][0] = (m_flipHorizontal ? -1 : 1) * m[0][0];
     m_localTransform[0][1] = (m_flipHorizontal ? -1 : 1) * m[0][1];
     m_localTransform[1][0] = m[1][0];

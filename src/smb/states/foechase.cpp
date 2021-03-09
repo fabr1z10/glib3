@@ -161,7 +161,7 @@ void FoeChase::Run(double dt) {
             // before moving, check if I'm falling off the platform
 			if (fabs(delta.x) > fabs(dist)) {
 				delta.x = sign(delta.x) * dist;
-				std::cerr << "dist = " << dist << "\n";
+				//std::cerr << "dist = " << dist << "\n";
 			}
         m_controller->Move(delta);
 

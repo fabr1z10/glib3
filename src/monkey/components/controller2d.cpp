@@ -96,8 +96,9 @@ void Controller2D::updateRaycastOrigins() {
 }
 
 bool Controller2D::IsFalling(int dir) {
-	glm::vec2 pos = m_entity->GetPosition();
-	glm::vec2 rayOrigin = pos + glm::vec2(dir==-1 ? -m_halfSize[0] : -m_halfSize[0], -m_halfSize[1]);
+	//glm::vec2 pos = m_entity->GetPosition();
+	//glm::vec2 rayOrigin = pos + glm::vec2(dir==-1 ? -m_halfSize[0] : -m_halfSize[0], -m_halfSize[1]);
+	auto rayOrigin = (dir == -1 ? m_raycastOrigins.bottomLeft : m_raycastOrigins.bottomRight);
     //glm::vec2 rayOrigin = (dir == -1) ? m_raycastOrigins.bottomLeft : m_raycastOrigins.bottomRight;
     RayCastHit hit = m_collision->Raycast(glm::vec3(rayOrigin, 0.0f), monkey::down, 5.0, 2|32);
     if (!hit.collide)
@@ -107,7 +108,7 @@ bool Controller2D::IsFalling(int dir) {
 
 
 void Controller2D::Move(glm::vec3& delta) {
-glm::vec2 dx(delta);
+	glm::vec2 dx(delta);
     float scale = m_entity->GetScale();
     if (dx != vec2(0.0f)) {
 		updateRaycastOrigins();
@@ -139,12 +140,12 @@ void Controller2D::HorizontalCollisions(glm::vec2& velocity) {
     bool facingLeft = (flipx && velocity.x > 0) || (!flipx && velocity.x < 0);
     float directionX = facingLeft ? -1.0 : 1.0;
     float rayLength = fabs(velocity.x) + m_skinWidth;
-
+	float sgnx = sign(velocity.x);
 	//glm::vec2 pos = m_entity->GetPositfion();
 	//vec2 r0 = pos + glm::vec2(facingLeft ? - m_halfSize[0] : m_halfSize[0], -m_halfSize[1]);
 
 	vec2 r0 = facingLeft ? m_raycastOrigins.bottomLeft : m_raycastOrigins.bottomRight;
-
+	std::cout << "r0 = " << r0.x << ", " << r0.y << "\n";
     for (int i = 0; i < m_horizontalRayCount; i++) {
         vec2 rayOrigin = r0 + vec2(0.0f, i * m_horizontalRaySpacing);
 
@@ -171,8 +172,8 @@ void Controller2D::HorizontalCollisions(glm::vec2& velocity) {
             }
 
             if (!m_details.climbingSlope || (slopeAngle*rad2deg) > m_maxClimbAngle) {
-                velocity.x = (hit.length - m_skinWidth) * sign(velocity.x);
-
+                velocity.x = std::max(hit.length - m_skinWidth, 0.0f) * sgnx;
+                std::cerr << "ray " << i << " " << hit.length  << ", velx = " << velocity.x << "\n";
                 rayLength = hit.length;
                 if (m_details.climbingSlope) {
                     velocity.y = tan(m_details.slopeAngle)* fabs(velocity.x);

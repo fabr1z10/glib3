@@ -29,7 +29,7 @@ void SimpleCollider::SetParent(Entity * entity) {
 void SimpleCollider::Start() {
     m_aabb = m_shape->getBounds();
     ICollider::Start();
-    if (m_shape != nullptr) {
+    if (m_debug && m_shape != nullptr) {
         auto c = std::make_shared<Entity>();
         MeshFactory m;
         auto model = m.createWireframe(m_shape.get(), glm::vec4(1.0f));

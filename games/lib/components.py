@@ -4,7 +4,8 @@ class FPSCounter:
 
 
 class Gfx:
-    def __init__(self, image, width: float = None, height: float = None, repeat: list = None, offset = (0, 0), blend = 0):
+    def __init__(self, image, width: float = None, height: float = None, repeat: list = None, offset = (0, 0), blend = 0,
+                 multcolor = (1,1,1,1)):
         self.type = 'components.gfx'
         self.image = image
         self.width = width
@@ -13,6 +14,7 @@ class Gfx:
         self.offset = offset
         self.cls = 0
         self.blend = blend
+        self.multcolor = multcolor
 
 
 class AnimGfx:
@@ -173,6 +175,13 @@ class PolygonalMover:
         self.pct = pct
         self.sinx = sinx
         self.siny = siny
+
+class AcceleratedMover:
+    def __init__(self, v0, acceleration, angular_speed = None):
+        self.type ='components.accelerated_mover'
+        self.v0 = v0
+        self.acceleration = acceleration
+        self.angular_speed = angular_speed
 
 
 class Platform:

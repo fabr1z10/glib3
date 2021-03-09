@@ -15,4 +15,6 @@ int pointInConvexPolygon(glm::vec2 p, const std::vector<glm::vec2>& v);
 glm::vec2 project(const std::vector<glm::vec2>& points, const glm::vec2& axis, const glm::mat4& t);
 CollisionReport circleVsCircle(const Circle& c1, const Circle& c2, const glm::mat4&, const glm::mat4&);
 
+CollisionReport shapeVsCompound(const IShape& c1, const CompoundShape& c2, const glm::mat4&, const glm::mat4&);
+
 

@@ -26,7 +26,9 @@ void IsHit::Run(double dt) {
 	m_controller->Move(deltaH);
 	if (m_controller->side()) {
 		//m_sm->SetState("walk");
-		std::cerr << "a!";
+		//std::cerr << "a!";
+	} else {
+		std::cerr <<  "b!\n";
 	}
 	//std::cerr << "aa:" << deltaH.x;
 	if (fabs(m_distanceTravelled) > m_dist || fabs(deltaH.x) <0.01f) {

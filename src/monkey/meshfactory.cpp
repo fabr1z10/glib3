@@ -128,9 +128,10 @@ void MeshFactory::drawConvexPoly (IShape* s, glm::vec4 color, std::vector<Vertex
     unsigned offset = vertices.size();
     unsigned c = offset;
     unsigned count = 0;
+    // offset is already taken into account in getVertices
     unsigned nVertices = seg->getVertices().size();
     for (const auto& vertex : seg->getVertices()) {
-        vertices.emplace_back(vertex.x, vertex.y, 0.0f, color.r, color.g, color.b, color.a);
+        vertices.emplace_back( vertex.x, vertex.y, 0.0f, color.r, color.g, color.b, color.a);
         if (count < nVertices - 1) {
             indices.emplace_back(c++);
             indices.emplace_back(c);

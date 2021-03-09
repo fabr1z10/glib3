@@ -17,6 +17,20 @@ protected:
     float m_holdTimer;
 };
 
+
+class AcceleratedMover : public Mover {
+public:
+	AcceleratedMover(const ITable&);
+	void Start() override  {}
+	void Update(double) override ;
+private:
+	glm::vec2 m_acceleration;
+	glm::vec2 m_initialVelocity;
+	glm::vec2 m_velocity;
+	float m_angularSpeed;
+	float m_angle;
+};
+
 class PolygonalMover : public Mover {
 public:
     PolygonalMover (int loopType, glm::vec2 origin = glm::vec2(0.0f));
