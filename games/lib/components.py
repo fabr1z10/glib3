@@ -106,6 +106,13 @@ class StateMachine:
         self.initialState = initial_state
         self.states = []
 
+class MarkovStateMachine(StateMachine):
+    def __init__(self, initial_state: str):
+        super().__init__(initial_state)
+        self.type = 'components.markov_state_machine'
+        self.probs = None
+
+
 
 class KeyInput:
     def __init__(self):

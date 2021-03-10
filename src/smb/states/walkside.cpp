@@ -32,6 +32,8 @@ WalkSide::WalkSide(const ITable & t) : PlatformerState(t) {
 }
 
 
+
+
 void WalkSide::Init(pybind11::dict&) {
 
 }

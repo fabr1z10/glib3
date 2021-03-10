@@ -83,6 +83,7 @@
 #include <monkey/math/shapes3d/aabb.h>
 #include <monkey/components/controller3d.h>
 #include <monkey/math/shapes3d/plane.h>
+#include <monkey/components/markov.h>
 
 
 namespace py = pybind11;
@@ -173,6 +174,7 @@ SceneFactory::SceneFactory() {
     add2<Dynamics2D> ("components.dynamics2D");
     add2<PlatformComponent>("components.platform");
     add2<ExtendedStateMachine> ("components.statemachine");
+	add2<MarkovStateMachine> ("components.markov_state_machine");
     add2<Parallax>("components.parallax");
     add2<Cursor> ("components.cursor");
     add2<GarbageCollect> ("components.garbagecollect");

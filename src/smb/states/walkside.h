@@ -47,3 +47,4 @@ inline void WalkSide::setIdleAnimation (const std::string& anim) {
 inline void WalkSide::setJumpState (const std::string& state) {
     m_jumpState = state;
 }
+
