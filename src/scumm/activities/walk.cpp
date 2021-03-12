@@ -69,11 +69,21 @@ void Walk::Start() {
 
     glm::vec2 currentPos(actor->GetPosition());
     std::cout << "current position is " << currentPos.x << ", " << currentPos.y << "\n";
+
     // if current position is not in shape
+    glm::vec2 p0 = currentPos;
     if (!shape->isPointInside(glm::vec3(currentPos, 0.0f))) {
         auto& algo = ClosestPointOnEdge::get();
-        algo.find(currentPos, shape);
+        p0 = algo.find(currentPos, shape);
+        actor->SetPosition(p0);
     }
+	// if target point is not in shape
+	if (!shape->isPointInside(glm::vec3(m_p, 0.0f))) {
+		auto& algo = ClosestPointOnEdge::get();
+		m_p = algo.find(m_p, shape);
+	}
+	std::cout << "target point is " << m_p.x << ", " << m_p.y << "\n";
+
             //auto p = ClosestPointOnEdge::Find(*(m_shape), currentPos);
 ////        glm::vec3 a (p.P + 0.5f* p.normal, 0.0f);
 ////        actor->SetPosition(a);
@@ -81,13 +91,7 @@ void Walk::Start() {
 //
 //    }
 //    //std::cout << "current position is " << currentPos.x << ", " << currentPos.y << "\n";
-//    std::cout << "target point is " << m_p.x << ", " << m_p.y << "\n";
 //
-//    // if target point is not in shape
-//    if (!m_shape->isPointInside(glm::vec3(m_p, 0.0f))) {
-//        //auto pos = ClosestPointOnEdge::Find(*(m_shape), m_p);
-//        //m_p = pos.P + pos.normal*0.01f;
-//    }
 //
 //    //std::cout << "target point is " << m_p.x << ", " << m_p.y << "\n";
 //

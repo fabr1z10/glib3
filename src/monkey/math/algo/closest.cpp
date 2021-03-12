@@ -45,17 +45,28 @@ glm::vec2 ClosestPointOnEdge::findPoly(glm::vec2 P, const IShape * s) {
         glm::vec2 A = vertices[i];
         glm::vec2 B = vertices[inext];
         auto l2 = length2(B - A);
+        //glm::vec2 u = glm::normalize(B - A);
         auto p = glm::dot(P - A, B - A);
-        if (p < 0) {
+		//auto p = glm::dot(P - A, u);
+        float candDist{0.0f};
+        glm::vec2 candPoint;
+        if (p < 0.0f) {
             // closest point is A. Update only if d2 < currentDIst
-
+			candPoint = A;
         } else if (p > l2) {
             // closest point is B
+			candPoint = B;
         } else {
             // closest point is midline
+            candPoint = A + p * ((B - A) / l2);
+        }
+		candDist = glm::dot(P - candPoint, P - candPoint);
+        if (candDist < currentDist) {
+        	currentDist = candDist;
+        	currentPoint = candPoint;
         }
     }
-
+	return currentPoint;
 }
 //void ClosestPointOnEdge::replace(float& d, glm::vec2& bp, float cand, glm::vec2 cp) {
 //    if (cand < d) {
