@@ -8,8 +8,10 @@
 Skeleton::Skeleton(const ITable& t) : Entity(t) {
 
     auto* factory = Engine::get().GetSceneFactory();
+    auto modelId = t.get<std::string>("model");
 
-    auto model = factory->make2<IModel>(t.get<PyDict>("model"));
+    //    auto modelId = t.get<std::string>("model");auto model = factory->make2<IModel>(t.get<PyDict>("model"));
+    auto model = Engine::get().GetAssetManager().GetModel(modelId);
 
     auto speedUp = t.get<float>("speed_up", 1.0f);
 
@@ -29,8 +31,8 @@ Skeleton::Skeleton(const ITable& t) : Entity(t) {
     // check if we have offset
 
 
-    if (!anim.empty())
-        animator->SetInitialAnimation(anim);
+    // if (!anim.empty())
+    //    animator->SetInitialAnimation(anim);
     AddComponent(animator);
 
 }

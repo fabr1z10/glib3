@@ -9,6 +9,12 @@ class TexturedMesh : public Mesh<T> {
 public:
 	TexturedMesh() = default;
 
+	TexturedMesh(const YAML::Node& main) : Mesh<T>(main) {
+        auto texName = main["tex"].as<std::string>();
+        auto tex = Engine::get().GetAssetManager().GetTex(texName);
+        m_texId = tex->GetTexId();
+	}
+
     TexturedMesh(ShaderType type, GLenum prim, const std::string& filename) : Mesh<T>(type) {
         this->m_primitive = prim;
         auto tex = Engine::get().GetAssetManager().GetTex(filename);

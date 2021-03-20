@@ -4,7 +4,7 @@
 #include <monkey/monkey.h>
 #include <monkey/activities/animate.h>
 #include <monkey/activities/move.h>
-#include <monkey/math/shortestpath.h>
+#include <monkey/math/algo/shortestpath.h>
 #include <glm/glm.hpp>
 #include <monkey/math/algo/closest.h>
 #include <iostream>

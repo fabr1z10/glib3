@@ -39,6 +39,12 @@ bool isZero (T x, T eps = monkey::epsilon) {
     return isEqual(x, 0.0f, eps);
 }
 
+inline bool match(glm::vec2 A, glm::vec2 B, float tol) {
+    glm::vec2 c = B-A;
+    return (c.x*c.x+c.y*c.y) < tol;
+}
+
+
 inline float cross (glm::vec2 a, glm::vec2 b) {
     return a.x * b.y - a.y * b.x;
 }

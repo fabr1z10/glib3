@@ -39,6 +39,7 @@ class Entity:
         self.flip_x = False
         self.layer = 0
         self.transform = None
+        self.depth = 0x0201             # GL_LESS is the default
 
     def add(self, entity):
         self.children.append(entity)
@@ -54,7 +55,6 @@ class Sprite(Entity):
         self.model = model
         self.anim = anim
         self.blend = blend
-        self.depth = 0x0201             # GL_LESS is the default
 
 
 class Skeleton(Entity):

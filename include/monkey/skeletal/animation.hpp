@@ -9,7 +9,7 @@ class SkModel;
 
 class SkAnimation : public Object {
 public:
-    SkAnimation (const ITable&);
+    SkAnimation (const YAML::Node&);
 
     /**
      * @return The length of the animation in seconds.

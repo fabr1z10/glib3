@@ -1,6 +1,6 @@
 #include <monkey/scenefactory.h>
 #include <monkey/scenefactory.h>
-#include <monkey/factories.h>
+#include <monkey/factories/dynamicassets.h>
 #include <monkey/components/smartcollider.h>
 #include <monkey/components/controller2d.h>
 #include <monkey/components/dynamics2d.h>
@@ -247,12 +247,13 @@ SceneFactory::SceneFactory() {
     // assets
 	addAssetFactory<SpriteModel> ("asset.sprite");
     addAssetFactory<BoxedModel> ("asset.boxed");
-    add2<TexturedMesh<VertexSkeletal>>("asset.mesh");
-
+    addAssetFactory<SkModel>("asset.skeletalmodel");
+    addAssetFactory<TexturedMesh<VertexSkeletal>>("asset.skeletalmesh");
+    addAssetFactory<SkAnimation> ("asset.skeletalanimation");
+    m_dynamicAssetFactories.insert(std::make_pair("asset.skeletalmesh", makeDynamicSkeletalMesh));
     //add2<SkeletalModel> ("asset.skeleton");
     //add2<SkeletalModel2> ("asset.skeleton2");
-    add2<SkModel> ("asset.skeletalmodel");
-    add2<SkAnimation> ("asset.skeletalanimation");
+    //add2<SkModel> ("asset.skeletalmodel");
     add2<Font> ("font");
 
     // functions

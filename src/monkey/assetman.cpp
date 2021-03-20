@@ -8,6 +8,7 @@ namespace py = pybind11;
 
 AssetManager::AssetManager() {
     SetLocal(false);
+
 }
 
 void AssetManager::Init() {
@@ -19,9 +20,41 @@ void AssetManager::Init() {
     m_modelDict = assets["models"];
     m_skeletalAnimDict = assets["skeletal_animations"];
     m_mesh = assets["mesh"];
+    this->m_factory = Engine::get().GetSceneFactory();
+    this->m_homeDir = Engine::get().GetGameDirectory();
 }
-PyDict AssetManager::getMeshTemplate(const std::string & id) {
-    return PyDict(m_mesh[id.c_str()]);
+//PyDict AssetManager::getMeshTemplate(const std::string & id) {
+//    return PyDict(m_mesh[id.c_str()]);
+//}
+
+YAML::Node AssetManager::openFile(const std::string & id) {
+    std::stringstream stream;
+    auto l = id.find_last_of("/");
+    if (l == std::string::npos) {
+        GLIB_FAIL("mesh id must have the form: [location]/name")
+    }
+    std::string location = id.substr(0, l);
+    std::string asset_id = id.substr(l+1);
+    stream << Engine::get().GetGameDirectory() << "assets/" << id.substr(0, l) << ".yaml";
+
+    auto mm = YAML::LoadFile(stream.str().c_str());
+    return mm;
+}
+
+std::shared_ptr<IMesh> AssetManager::getMesh(const std::string & locator, const YAML::Node &args) {
+    auto factory = Engine::get().GetSceneFactory();
+    // check if node template is cached.
+    auto iter = m_meshTemplate.find(locator);
+    if (iter != m_meshTemplate.end()) {
+        // ok, create
+        return factory->makeDynamicAsset<IMesh>(iter->second, args);
+    }
+    std::string location = locator.substr(0, locator.find_last_of("/"));
+    auto file = openFile(locator);
+    for (const auto &i : file) {
+        m_meshTemplate[location + "/" + i.first.as<std::string>()] = i.second;
+    }
+    return factory->makeDynamicAsset<IMesh>(m_meshTemplate.at(locator), args);
 }
 
 std::shared_ptr<IMesh> AssetManager::GetMesh(const std::string & id) {
@@ -30,14 +63,40 @@ std::shared_ptr<IMesh> AssetManager::GetMesh(const std::string & id) {
 	if (iter != m_meshes.end()) {
 		return iter->second;
 	}
+    // open the file
+    std::stringstream stream;
+    auto l = id.find_last_of("/");
+    if (l == std::string::npos) {
+        GLIB_FAIL("mesh id must have the form: [location]/name")
+    }
+    std::string location = id.substr(0, l);
+    std::string asset_id = id.substr(l+1);
 
-	PyDict t(m_mesh[id.c_str()]);
-	auto mesh = Engine::get().GetSceneFactory()->make2<IMesh>(t);
-	m_meshes.insert(std::make_pair(id, mesh));
-	return mesh;
+    stream << Engine::get().GetGameDirectory() << "assets/" << id.substr(0, l) << ".yaml";
 
+    std::cerr << "# opening file: " << stream.str() << std::endl;
+//    std::ifstream fin("test.yaml");
+//    YAML::Parser parser(fin);
+//
+//    YAML::Node doc;
+    auto mm = YAML::LoadFile(stream.str().c_str());
+    std::cerr << mm.Type() << "\n";
+    auto factory = Engine::get().GetSceneFactory();
+    // store all models in this file
+    for (const auto &i : mm) {
+        std::cerr << i.first.as<std::string>() << std::endl;
+        auto model = factory->makeAsset<IMesh>(i.second);
+
+        m_meshes[location + "/" + i.first.as<std::string>()] = model;
+        //std::cerr << i.second.as<std::string>() << std::endl;
+        //YAML::Emitter e;
+        //e << i.second;
+        //std::cerr << e.c_str();
+    }
+    return m_meshes.at(id);
 
 }
+
 
 std::shared_ptr<IModel> AssetManager::GetModel(const std::string & id) {
 	// check if model is cached
@@ -81,18 +140,7 @@ std::shared_ptr<IModel> AssetManager::GetModel(const std::string & id) {
 	if (m_modelDict.is_none()) {
 	}
 }
-//    } else {
-//    	std::unique_ptr<ITable> t;
-//        try {
-//			t = std::make_unique<PyDict>(m_modelDict[id.c_str()].cast<py::dict>());
-//		} catch (...) {
-//        	t = std::make_unique<PyTable>(m_modelDict[id.c_str()].cast<py::dict>());
-//		}
-//		auto model = Engine::get().GetSceneFactory()->make2<IModel>(*(t.get()));
-//        if (model->isShareable())
-//            m_models.insert(std::make_pair(id, model));
-//        return model;
-//    }}
+
 
 
 std::shared_ptr<Font> AssetManager::GetFont (const std::string& fontId) {
@@ -101,12 +149,13 @@ std::shared_ptr<Font> AssetManager::GetFont (const std::string& fontId) {
     if (it != m_fonts.end()) {
         return it->second;
     }
-    
+
+
     if (m_fontDict.is_none()) {
-    
+
     } else {
         PyTable t(m_fontDict[fontId.c_str()].cast<py::object>());
-        
+
         auto font= Engine::get().GetSceneFactory()->make2<Font>(t);
         m_fonts.insert(std::make_pair(fontId, font));
         return font;
@@ -115,17 +164,19 @@ std::shared_ptr<Font> AssetManager::GetFont (const std::string& fontId) {
 
 
 std::shared_ptr<SkAnimation> AssetManager::getSkeletalAnimation(const std::string &id) {
-    auto it = m_sanim.find(id);
-    if (it != m_sanim.end()) {
-        return it->second;
-    }
-    else {
-        PyDict t(m_skeletalAnimDict[id.c_str()].cast<py::object>());
 
-        auto font= Engine::get().GetSceneFactory()->make2<SkAnimation>(t);
-        m_sanim.insert(std::make_pair(id, font));
-        return font;
-    }
+    return genericLoader<SkAnimation>(id, m_sanim);
+//    auto it = m_sanim.find(id);
+//    if (it != m_sanim.end()) {
+//        return it->second;
+//    }
+//    else {
+//        PyDict t(m_skeletalAnimDict[id.c_str()].cast<py::object>());
+//
+//        auto font= Engine::get().GetSceneFactory()->make2<SkAnimation>(t);
+//        m_sanim.insert(std::make_pair(id, font));
+//        return font;
+//    }
 }
 
 

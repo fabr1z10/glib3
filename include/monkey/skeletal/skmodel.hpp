@@ -48,7 +48,8 @@ struct DrawingBit {
 
 class SkModel : public IModel {
 public:
-    SkModel (const ITable&);
+    //SkModel (const ITable&);
+    SkModel (const YAML::Node&);
 
     Bounds GetBounds() const override;
     std::vector<std::string> GetAnimations() const override;
@@ -59,10 +60,10 @@ public:
     Joint* getJoint (const std::string&);
     size_t getJointCount() const;
     bool hasJoint (const std::string&);
-    void attachMesh (const std::string& id, const std::string& meshId, const std::string& parentMesh, int parentJointId, float scale, int order,
-					 glm::vec2 offset = glm::vec2(0.0f));
-
-    void setMesh (const std::string& jointId, const std::string& meshId, float scale, glm::vec2 offset = glm::vec2(0.0f), int order = 0);
+//    void attachMesh (const std::string& id, const std::string& meshId, const std::string& parentMesh, int parentJointId, float scale, int order,
+//					 glm::vec2 offset = glm::vec2(0.0f));
+    void addMesh (const std::string& id, const std::string& meshId, const std::string& parentMesh, glm::vec2 attachPoint, float z, float scale, int order);
+    //void setMesh (const std::string& jointId, const std::string& meshId, float scale, glm::vec2 offset = glm::vec2(0.0f), int order = 0);
     void setAnimation (const std::string& animId, const std::string& anim);
     void Draw (Shader*);
     /**
@@ -92,8 +93,7 @@ public:
     void addShape(const std::string& animId, std::shared_ptr<IShape> shape);
     void resetShapes();
 private:
-    std::unordered_map<std::string, std::unordered_map<unsigned, unsigned>> m_jointMap;
-    std::unordered_map<std::string, unsigned> m_jointMap2;
+    std::unordered_map<std::string, unsigned> m_meshToJointId;
     unsigned _nextJointId;
     //std::shared_ptr<Shape> m_defaultShape;
     std::vector<std::shared_ptr<IShape>> m_shapes;
@@ -106,7 +106,7 @@ private:
 
     // create one mesh per texture!
 
-    std::unordered_map<std::string, std::shared_ptr<Mesh<VertexSkeletal>> > m_meshes;
+    std::unordered_map<std::string, std::shared_ptr<IMesh> > m_meshes;
     std::map<int, std::vector<DrawingBit>> m_sortedMeshes;
     std::unordered_map<std::string, IMesh*> m_meshMap;
     std::unordered_map<std::string, std::shared_ptr<SkAnimation>> m_animations;
@@ -143,10 +143,7 @@ inline const std::vector<std::pair<std::string, glm::vec3>>& SkModel::getOffsetP
 }
 
 inline Joint* SkModel::getJoint(const std::string & id) {
-	auto it = m_jointMap2.find(id);
-	if (it == m_jointMap2.end())
-		return nullptr;
-	return m_js[it->second].get();
+    return m_js[m_meshToJointId.at(id)].get();
 }
 
 inline IShape* SkModel::getShape(int shapeId) {

@@ -2,6 +2,7 @@
 
 #include <monkey/imesh.h>
 #include <vector>
+#include <monkey/math/algo/geometry.h>
 
 template<class Vertex>
 class Mesh : public IMesh {
@@ -11,7 +12,23 @@ public:
     Mesh(std::vector<Vertex>& vertices, std::vector<unsigned int>& indices) {
         Init(vertices, indices);
     }
-    Mesh(const ITable& t) : IMesh(t) {}
+
+    Mesh(const YAML::Node& t) : IMesh(t) {
+
+        // init vertices
+        const auto& data = t["data"].as<std::vector<float>>();
+        std::vector<VertexSkeletal> vertices;
+        for (size_t i = 0; i < data.size(); i += Vertex::point_size) {
+            vertices.push_back(Vertex(&data[i]));
+
+        }
+        std::vector<unsigned> indices = triangulate(vertices);
+        Init(vertices, indices);
+
+    }
+
+
+
     ~Mesh() {
         if (m_vb != INVALID_OGL_VALUE)
             glDeleteBuffers(1, &m_vb);

@@ -26,7 +26,7 @@ class Shader;
 class IMesh : public Object {
 public:
 	IMesh() = default;
-	IMesh(const ITable&);
+	IMesh(const YAML::Node&);
     IMesh(ShaderType type) : m_vb(INVALID_OGL_VALUE), m_ib(INVALID_OGL_VALUE), m_shaderType{type} {}
     virtual ~IMesh() {}
 
@@ -44,6 +44,7 @@ public:
     void SetId(const std::string&);
     ShaderType GetShaderType() const;
     glm::vec2 getKeyPoint(const std::string&) const;
+    void addKeyPoint(const std::string&, glm::vec2);
     bool hasKeyPoint (const std::string&) const;
 protected:
     ShaderType m_shaderType;
@@ -115,6 +116,8 @@ inline bool IMesh::hasKeyPoint(const std::string & id) const {
 	return m_keyPoints.count(id) > 0;
 }
 
-
+inline void IMesh::addKeyPoint(const std::string & id, glm::vec2 pos) {
+    m_keyPoints[id] = pos;
+}
 
 #endif /* imesh_h */

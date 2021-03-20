@@ -4,6 +4,7 @@
 #include <monkey/math/funcs.h>
 #include <monkey/math/geom.h>
 #include <monkey/components/scripthotspot.h>
+#include <monkey/math/algo/shortestpath.h>
 
 class Scheduler;
 
@@ -42,6 +43,7 @@ private:
     std::vector<BlockedLine> m_walls;
     std::shared_ptr<Function2D> m_depthFunc;
     std::shared_ptr<Function2D> m_scaleFunc;
+    std::shared_ptr<ShortestPath> m_shortestPath;
 };
 
 inline const IShape * WalkArea::getShape() const {

@@ -121,15 +121,15 @@ void Wrap1::setColor(std::vector<float> & mult, std::vector<float>& add) {
 }
 
 void Wrap1::setMesh(const std::string & jointId, const std::string & meshId, float scale, float ox, float oy) {
-    auto* a = m_entity->GetComponent<IAnimator>();
-    auto* model = static_cast<SkModel*>(a->getModel());
-    model->setMesh(jointId, meshId, scale, glm::vec2(ox, oy));
-    model->getRootJoint()->calcInverseBindTransform(glm::mat4(1.0f));
-    model->computeOffset();
-    auto* collider = m_entity->GetComponent<ICollider>();
-//    if (collider != nullptr) {
-//        static_cast<SkCollider*>(collider)->computeAttackBoxes();
-//    }
+//    auto* a = m_entity->GetComponent<IAnimator>();
+//    auto* model = static_cast<SkModel*>(a->getModel());
+//    model->setMesh(jointId, meshId, scale, glm::vec2(ox, oy));
+//    model->getRootJoint()->calcInverseBindTransform(glm::mat4(1.0f));
+//    model->computeOffset();
+//    auto* collider = m_entity->GetComponent<ICollider>();
+////    if (collider != nullptr) {
+////        static_cast<SkCollider*>(collider)->computeAttackBoxes();
+////    }
 
 }
 

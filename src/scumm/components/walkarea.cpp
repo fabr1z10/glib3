@@ -5,7 +5,7 @@
 #include <monkey/engine.h>
 #include <iostream>
 #include <monkey/math/algo/closest.h>
-#include <monkey/math/shortestpath.h>
+#include <monkey/math/algo/shortestpath.h>
 #include <monkey/properties.h>
 #include <monkey/meshfactory.h>
 #include <monkey/components/basicrenderer.h>
@@ -16,6 +16,8 @@ WalkArea::WalkArea(const ITable & t) : Component(t) {
     auto factory = Engine::get().GetSceneFactory();
     auto sh = t.get<PyTable>("shape");
     m_shape = factory->make2<IShape>(sh);
+    m_shortestPath = std::make_shared<ShortestPath>();
+    m_shortestPath->setShape(m_shape);
 
     if (t.hasKey("depth")) {
         auto dref = t.get<PyTable>("depth");
@@ -46,6 +48,9 @@ WalkArea::WalkArea(const ITable & t) : Component(t) {
 //            AddBlockedLine(A, B, active);
 //        }
      }
+
+    m_shortestPath = std::make_shared<ShortestPath>();
+    m_shortestPath->setShape(m_shape);
 }
 
 void WalkArea::onAdd(Entity * e) {

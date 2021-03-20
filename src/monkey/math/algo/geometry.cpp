@@ -1,10 +1,48 @@
 #include <monkey/math/algo/geometry.h>
 #include <monkey/math/shapes/compound.h>
+#include <monkey/math/geom.h>
 
 bool triangleIsCCW(const glm::vec2& a, const glm::vec2& b, const glm::vec2& c) {
     float det = ((a.x - c.x) * (b.y - c.y)) - ((a.y - c.y) * (b.x - c.x));
     return det > 0;
 }
+
+
+bool segmentIntersection(glm::vec2 A, glm::vec2 B, glm::vec2 C, glm::vec2 D) {
+    // eq for segment 1 is
+    // Ax + t(Bx - Ax) = Cx + u(Dx - Cx)
+    // Ay + t(By - Ay) = Cy + u(Dy - Cy)
+    // which is
+    // t(Bx - Ax) + u(Cx - Dx) = (Cx - Ax)
+    // t(By - Ay) + u(Cy - Dy) = (Cy - Ay)
+    // solution is
+    //      | Cx - Ax    Cx - Dx |
+    //      | Cy - Ay    Cy - Dy |
+    // t = ------------------------
+    //      | Bx - Ax    Cx - Dx |
+    //      | By - Ay    Cy - Dy |
+    //
+    //      | Bx - Ax    Cx - Ax |
+    //      | By - Ay    Cy - Ay |
+    // u = ------------------------
+    //      | Bx - Ax    Cx - Dx |
+    //      | By - Ay    Cy - Dy |
+
+    glm::vec2 AB = B - A;
+    glm::vec2 DC = C - D;
+    float den = cross(AB, DC);
+    if (isZero(den)) {
+        return false;
+    }
+    glm::vec2 AC = C - A;
+    auto t = cross(AC, DC) / den;
+    if (t < 0 || t > 1) {
+        return false;
+    }
+    auto u = cross(AB, AC) / den;
+    return (u >= 0 && u <= 1);
+}
+
 
 int pointInConvexPolygon(glm::vec2 p, const std::vector<glm::vec2>& v)
 {
@@ -54,3 +92,4 @@ CollisionReport shapeVsCompound(const IShape& c1, const CompoundShape& c2, const
 
 	}
 }
+

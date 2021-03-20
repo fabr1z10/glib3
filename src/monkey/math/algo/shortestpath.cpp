@@ -1,7 +1,116 @@
-//#include <monkey/math/shortestpath.h>
+#include <monkey/math/algo/shortestpath.h>
+#include <monkey/math/shapes/poly.h>
+#include <monkey/math/geom.h>
+#include <monkey/math/algo/geometry.h>
 //#include <monkey/math/graph.h>
 //#include <monkey/math/algo.h>
 //
+
+ShortestPath::ShortestPath() {}
+
+
+
+void ShortestPath::addNode(Polygon* p, glm::vec2 point) {
+    // adds a node to the graph
+    // and an edge from the new node to every other node that is in line of sight with it
+    int id = m_graph->getVertexCount();
+
+    m_graph->addNode(id, point);
+    // add one edge to other nodes if they are in LOS
+    for (const auto& node : m_graph->getNodes()) {
+        if (node.first != id) {
+            glm::vec2 P = node.second;
+            // checks to see if there's any intersection with the edges
+            // you need to check outline and active holes
+            const auto& vertices = p->getOutlineVertices();
+            bool intersection = false;
+            for (int i = 0; i < vertices.size(); i++) {
+                glm::vec2 a = vertices[i];
+                glm::vec2 b = vertices[(i+1)%vertices.size()];
+                std::cerr << " seg intersect: (" << point.x << ", " << point.y << ") - (" << P.x << ", " << P.y << "), (" <<
+                a.x << ", " << a.y << ") - (" << b.x << ", " <<
+                b.y << ") ...";
+                // if one of the two points match, within a certain tolerance, no intersection
+                bool m = match(point, a, 0.01f) || match(point, b, 0.01f) || match(P, a, 0.01f) || match(P, b, 0.01f);
+                if (!m && segmentIntersection(point, P, a, b)) {
+                    // if we have intersection, no edge is needed
+                    std::cerr << " YES\n";
+                    intersection = true;
+                    break;
+                } else {
+                    std::cerr << " NO\n";
+                }
+            }
+            for (int i = 0; !intersection && i < p->getHoleCount(); ++i) {
+                if (m_inactiveHoles.count(i) == 0) {
+                    const auto& vertices = p->getHoleVertices(i);
+                    for (int i = 0; i < vertices.size(); i++) {
+                        if (segmentIntersection(point, P, vertices[i], vertices[i+1 % vertices.size()])) {
+                            intersection = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (!intersection) {
+                // check mid point. The segment might connect two vertices of the polygon but lie completely outside of it
+                // quick way is to check if mid point of the segment lies inside the poly
+                auto midPoint = 0.5f * (point + P);
+                if (p->isPointInside(glm::vec3(midPoint, 0.0f))) {
+                    // add edge
+                    m_graph->addEdge(id, node.first, glm::length(point - P));
+                }
+
+
+            }
+
+        }
+    }
+
+}
+
+void ShortestPath::addPoly(Polygon* p, const std::vector<glm::vec2> & outline, float flip) {
+
+    size_t n = outline.size();
+    for (size_t i = 0; i < n; ++i) {
+        size_t inext = (i + 1) % n;
+        size_t iprev = (i == 0) ? n - 1 : i - 1;
+        glm::vec2 v0 = outline[i] - outline[iprev];
+        glm::vec2 v1 = outline[inext] - outline[i];
+        auto f = cross(v0, v1) * flip;
+        // assume outline is specified counterclockwise
+        // therefore a concave vertex
+        int id = m_graph->getVertexCount();
+        if (f < 0) {
+            addNode(p, outline[i]);
+        }
+
+
+    }
+}
+
+void ShortestPath::setShape(std::shared_ptr<IShape> shape) {
+    m_shape = shape;
+    m_graph = std::make_shared<Graph<int, glm::vec2>>();
+    auto type = m_shape->getShapeType();
+    if (type == ShapeType::POLY) {
+        auto poly = std::static_pointer_cast<Polygon>(shape);
+        // get edges to test for LOS
+        std::vector<glm::vec2> edges;
+        auto outline = poly->getOutlineVertices();
+        addPoly(poly.get(), outline);
+        for (int i = 0; i < poly->getHoleCount(); ++i) {
+            if (m_inactiveHoles.count(i) == 0) {
+                addPoly(poly.get(), poly->getHoleVertices(i), -1.0f);
+            }
+        }
+
+    }
+}
+
+
+
 //void ShortestPath::visit(PolyLine& p) {
 //
 //

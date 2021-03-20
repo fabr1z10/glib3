@@ -26,6 +26,13 @@ const std::vector<glm::vec2> & PolygonHelper::getVertices() const {
     return m_points;
 }
 
+Polygon::Polygon(const std::vector<float> &outline) {
+    m_outline = std::make_unique<PolygonHelper>(outline);
+
+}
+
+
+
 Polygon::Polygon(const ITable & t) : IShape(t) {
     m_type = ShapeType::POLY;
     auto outline = t.get<std::vector<float> >("outline");

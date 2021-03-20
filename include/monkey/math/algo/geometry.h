@@ -4,6 +4,10 @@
 #include <vector>
 #include <monkey/math/shapes/convexpoly.h>
 #include <monkey/math/intersect.h>
+#include <monkey/math/earcut.h>
+
+// tests whether AB intersects CD
+bool segmentIntersection(glm::vec2 A, glm::vec2 B, glm::vec2 C, glm::vec2 D);
 
 // Determines whether or not a set of three points is in counter-clockwise order.
 bool triangleIsCCW(const glm::vec2& a, const glm::vec2& b, const glm::vec2& c);
@@ -17,4 +21,17 @@ CollisionReport circleVsCircle(const Circle& c1, const Circle& c2, const glm::ma
 
 CollisionReport shapeVsCompound(const IShape& c1, const CompoundShape& c2, const glm::mat4&, const glm::mat4&);
 
-
+template<typename Vertex>
+std::vector<unsigned> triangulate(std::vector<Vertex>& vertices) {
+    using Coord = float;
+    using Point = std::array<Coord, 2>;
+    using N = uint32_t;
+    std::vector<std::vector<Point>> p;
+    std::vector<Point> points;
+    for (const auto& vertex : vertices) {
+        points.push_back({vertex.x, vertex.y});
+    }
+    p.push_back(points);
+    auto tri = mapbox::earcut<N>(p);
+    return tri;
+}

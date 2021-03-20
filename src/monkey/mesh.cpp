@@ -10,17 +10,18 @@
 #include <monkey/shader.h>
 #include <monkey/error.h>
 
-IMesh::IMesh(const ITable& t) {
+IMesh::IMesh(const YAML::Node& t) {
 
-	m_shaderType = static_cast<ShaderType>(t.get<int>("shader"));
-	m_primitive = t.get<GLenum>("primitive");
-	if (m_primitive == GL_TRIANGLES) {
-		std::cout << "TRI\n";
+	m_shaderType = static_cast<ShaderType>(t["shader"].as<int>(0));
+	m_primitive = t["primitive"].as<GLenum>(GL_TRIANGLES);
+	// read keypoints
+	if (t["key_points"]) {
+	    for (auto kp : t["key_points"]) {
+	        auto id = kp.first.as<std::string>();
+	        auto pos = YamlWrapper::as<glm::vec2>(kp.second);
+	        m_keyPoints[id] = pos;
+	    }
 	}
-	if (t.hasKey("key_points")) {
-		m_keyPoints = t.get<PyDict>("key_points").toDict<std::string, glm::vec2>();
-	}
-
 }
 
 void IMesh::Draw(Shader* shader, int offset, int count) {

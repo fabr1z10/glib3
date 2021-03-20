@@ -2,11 +2,11 @@
 
 
 Joint::Joint(int index, const std::string& name) : m_index(index), m_localBindTransform(1.0f),
-    m_inverseBindTransform(1.0f), m_name(name), m_bindTransform(1.0f), m_z(0) {}
+    m_inverseBindTransform(1.0f), m_name(name), m_bindTransform(1.0f), m_z(0), m_transform(1.0f) {}
 
 
 Joint::Joint(int index, const std::string& name, float z) :
-    m_index(index), m_name(name), m_root(true), m_localBindTransform(1.0f), m_inverseBindTransform(1.0f), m_bindTransform(1.0f), m_z(z)
+    m_index(index), m_name(name), m_root(true), m_localBindTransform(1.0f), m_inverseBindTransform(1.0f), m_bindTransform(1.0f), m_z(z), m_transform(1.0f)
 {
     // bind and inverse bind transforms are initialized to identity
     m_inverseBindTransform[3][2] = m_z;
