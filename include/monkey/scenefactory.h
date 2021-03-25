@@ -16,6 +16,11 @@ class SkeletalAnimation;
 class Entity;
 class Ref;
 
+class GenericFactory {
+public:
+
+};
+
 class SceneFactory {
 public:
     SceneFactory ();
@@ -96,7 +101,7 @@ public:
     }
 
     template <typename T, bool = std::is_base_of<Asset, T>::value >
-    std::shared_ptr<T> makeDynamicAsset(const YAML::Node& t, const YAML::Node& args) {
+    std::shared_ptr<T> makeDynamicAsset(const YAML::Node& t, const ITable& args) {
         auto type = t["type"].as<std::string>();
         auto it = m_dynamicAssetFactories.find(type);
         if (it == m_dynamicAssetFactories.end()) {
@@ -119,7 +124,7 @@ public:
     std::unordered_map<std::string, std::function<std::shared_ptr<Object>(const ITable&)> > m_facs2;
     std::unordered_map<std::string, std::function<std::shared_ptr<Object>(const YAML::Node&)> > m_assetFactories;
 
-    std::unordered_map<std::string, std::function<std::shared_ptr<Object>(const YAML::Node&, const YAML::Node&)> > m_dynamicAssetFactories;
+    std::unordered_map<std::string, std::function<std::shared_ptr<Object>(const YAML::Node&, const ITable&)> > m_dynamicAssetFactories;
 
     //Factory<StateInitializer> m_stateInitFactory;
     //Factory<StateBehaviour> m_stateBehaviorFactory;

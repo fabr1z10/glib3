@@ -93,14 +93,8 @@ inline glm::vec2 ITable::cast(pybind11::object o) const {
 
 template <>
 inline glm::mat4 ITable::cast(pybind11::object o) const {
-	auto tu = o.cast<std::vector<pybind11::object>>();
-	glm::mat4 m;
-	for (size_t i =0;i <4; ++i) {
-		auto b = tu[i].cast<std::vector<float>>();
-		for (size_t j = 0; j< 4; ++j)
-			m[i][j] = (b[j]);
-	}
-	return m;
+	auto tu = o.cast<std::vector<float>>();
+	return glm::make_mat4(&tu[0]);
 
 }
 
@@ -145,6 +139,11 @@ public:
     PyDict (const PyDict&);
     std::shared_ptr<ITable> clone() const override;
 
+    template<typename T>
+    void add(const std::string& key, T value) {
+        obj[key.c_str()] = value;
+    }
+    
 	template<typename Key, typename Value>
 	std::unordered_map<Key, Value> toDict() {
 		std::unordered_map<Key, Value> d;
@@ -153,10 +152,19 @@ public:
 		}
 		return d;
 	}
+
 private:
     virtual pybind11::object getHandle (const std::string& key) const;
+
     pybind11::dict obj;
 };
+
+template<>
+inline void PyDict::add(const std::string& key, glm::mat4 value) {
+    std::vector<float> vecTransform;
+    vecTransform.assign(glm::value_ptr(value), glm::value_ptr(value) + 16);
+    obj[key.c_str()] = vecTransform;
+}
 
 template <>
 inline PyTable ITable::cast(pybind11::object o) const {

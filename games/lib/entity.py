@@ -64,7 +64,8 @@ class Skeleton(Entity):
         self.model = model
         self.anim = anim
         self.speed_up = 1.0
-        self.depth = 0x0201             
+        self.depth = 0x0201
+        self.model_args = None
 
 
 class Text(Entity):

@@ -41,20 +41,20 @@ YAML::Node AssetManager::openFile(const std::string & id) {
     return mm;
 }
 
-std::shared_ptr<IMesh> AssetManager::getMesh(const std::string & locator, const YAML::Node &args) {
+std::shared_ptr<IMesh> AssetManager::getMesh(const std::string & locator, const ITable& args) {
     auto factory = Engine::get().GetSceneFactory();
     // check if node template is cached.
-    auto iter = m_meshTemplate.find(locator);
-    if (iter != m_meshTemplate.end()) {
+    auto iter = m_templates.find(locator);
+    if (iter != m_templates.end()) {
         // ok, create
         return factory->makeDynamicAsset<IMesh>(iter->second, args);
     }
     std::string location = locator.substr(0, locator.find_last_of("/"));
     auto file = openFile(locator);
     for (const auto &i : file) {
-        m_meshTemplate[location + "/" + i.first.as<std::string>()] = i.second;
+        m_templates[location + "/" + i.first.as<std::string>()] = i.second;
     }
-    return factory->makeDynamicAsset<IMesh>(m_meshTemplate.at(locator), args);
+    return factory->makeDynamicAsset<IMesh>(m_templates.at(locator), args);
 }
 
 std::shared_ptr<IMesh> AssetManager::GetMesh(const std::string & id) {
@@ -98,47 +98,21 @@ std::shared_ptr<IMesh> AssetManager::GetMesh(const std::string & id) {
 }
 
 
+std::shared_ptr<IModel> AssetManager::getModel(const pybind11::object &obj) {
+    try {
+        auto id = obj.cast<std::string>();
+        return GetModel(id);
+    } catch(pybind11::cast_error&) {
+        auto tp = obj.cast<pybind11::tuple>();
+        auto id = tp[0].cast<std::string>();
+        auto args = PyDict(tp[1].cast<pybind11::dict>());
+        return genericLoaderArgs<IModel>(id, args);
+
+    }
+}
+
 std::shared_ptr<IModel> AssetManager::GetModel(const std::string & id) {
-	// check if model is cached
-	auto it = m_models.find(id);
-	if (it != m_models.end()) {
-		return it->second;
-	}
-
-	// open the file
-	std::stringstream stream;
-	auto l = id.find_last_of("/");
-	if (l == std::string::npos) {
-		GLIB_FAIL("model id must have the form: [location]/name")
-	}
-	std::string location = id.substr(0, l);
-	std::string asset_id = id.substr(l+1);
-
-	stream << Engine::get().GetGameDirectory() << "assets/" << id.substr(0, l) << ".yaml";
-
-	std::cerr << "# opening file: " << stream.str() << std::endl;
-//    std::ifstream fin("test.yaml");
-//    YAML::Parser parser(fin);
-//
-//    YAML::Node doc;
-	auto mm = YAML::LoadFile(stream.str().c_str());
-	std::cerr << mm.Type() << "\n";
-	auto factory = Engine::get().GetSceneFactory();
-	// store all models in this file
-	for (const auto &i : mm) {
-		std::cerr << i.first.as<std::string>() << std::endl;
-		auto model = factory->makeAsset<IModel>(i.second);
-
-		m_models[location + "/" + i.first.as<std::string>()] = model;
-		//std::cerr << i.second.as<std::string>() << std::endl;
-		//YAML::Emitter e;
-		//e << i.second;
-		//std::cerr << e.c_str();
-	}
-	return m_models.at(id);
-
-	if (m_modelDict.is_none()) {
-	}
+    return genericLoader<IModel>(id, m_models);
 }
 
 

@@ -104,7 +104,9 @@ public:
     std::unordered_map<Key, Value>& getNodes() {
         return m_nodes;
     }
-
+    std::unordered_map<Key, std::unordered_map<Key, float>>& getEdges() {
+        return m_edges;
+    }
 private:
     std::unordered_map<Key, std::unordered_map<Key, float>> m_edges;
     std::unordered_map<Key, Value> m_nodes;

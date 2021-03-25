@@ -58,6 +58,7 @@ class AssetManager {
 public:
     AssetManager();
     void Init();
+    std::shared_ptr<IModel> getModel (const pybind11::object& obj);
 
 
     std::shared_ptr<Font> GetFont (const std::string& loc);
@@ -68,11 +69,27 @@ public:
     std::shared_ptr<SkAnimation> getSkeletalAnimation(const std::string &);
 
     // support for dynamic model / meshes
-    std::shared_ptr<IMesh> getMesh (const std::string&, const YAML::Node& args);
+    std::shared_ptr<IMesh> getMesh (const std::string&, const ITable& args);
 
 
     void SetLocal (bool);
     void CleanUp();
+
+    template<typename T>
+    std::shared_ptr<T> genericLoaderArgs (const std::string& id, const ITable& args) {
+        // check if node template is cached.
+        auto iter = m_templates.find(id);
+        if (iter != m_templates.end()) {
+            // ok, create
+            return m_factory->makeDynamicAsset<T>(iter->second, args);
+        }
+        std::string location = id.substr(0, id.find_last_of("/"));
+        auto file = openFile(id);
+        for (const auto &i : file) {
+            m_templates[location + "/" + i.first.as<std::string>()] = i.second;
+        }
+        return m_factory->makeDynamicAsset<T>(m_templates.at(id), args);
+    }
 
     template<typename T>
     std::shared_ptr<T> genericLoader (const std::string& id, std::unordered_map<std::string, std::shared_ptr<T> >& store) {
@@ -107,7 +124,6 @@ public:
         return store.at(id);
 
     }
-    //PyDict getMeshTemplate (const std::string&);
 private:
     YAML::Node openFile(const std::string&);
     pybind11::dict m_fontDict;
@@ -122,8 +138,8 @@ private:
     std::unordered_map<std::string, std::shared_ptr<SkAnimation> > m_sanim;
 
     // support for dynamic assets
-    std::unordered_map<std::string, YAML::Node> m_meshTemplate;
-    std::unordered_map<std::string, YAML::Node> m_modelTemplate;
+    std::unordered_map<std::string, YAML::Node> m_templates;
+    //std::unordered_map<std::string, YAML::Node> m_modelTemplate;
     SceneFactory* m_factory;
     std::string m_homeDir;
     //BasicAssetStore<Font> m_fonts;

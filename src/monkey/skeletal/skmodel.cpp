@@ -51,20 +51,26 @@ void SkModel::addMesh(const std::string& id, const std::string& meshId, const st
                       float z, float scale, int order) {
 
     // assumption : one mesh, one joint
+    PyDict dict;
     YAML::Node args;
     int newJointId = m_js.size();
     m_meshToJointId[id] = newJointId;
     args["z"] = 0.0f;
+    dict.add("scale", scale);
+    dict.add("z", 0.0f);
     args["jointId"] = newJointId;
+    dict.add("jointId", newJointId);
     int parentJointId = -1;
     glm::mat4 bindTransform(1.0f);
     JointTransform tr;
     tr.translation = glm::vec3(attachPoint, 0.0f);
     auto joint = std::make_shared<Joint>(newJointId, id);
+    joint->setScale(scale);
     m_js.push_back(joint);
     if (!parentMesh.empty()) {
         auto parentJointIndex = m_meshToJointId.at(parentMesh);
         args["parentJointId"] = parentJointIndex;
+        dict.add("parentJointId", parentJointIndex);
         auto parentJoint = m_js[parentJointIndex];
         joint->setLocalToParentTransform(tr, parentJoint->getBindTransform());
         bindTransform = parentJoint->getBindTransform() * tr.getLocalTransform();
@@ -77,8 +83,9 @@ void SkModel::addMesh(const std::string& id, const std::string& meshId, const st
     std::vector<float> vecTransform;
     vecTransform.assign(glm::value_ptr(bindTransform), glm::value_ptr(bindTransform)+ 16);
     args["transform"] = vecTransform;
+    dict.add("transform", bindTransform);
 
-    auto mesh = Engine::get().GetAssetManager().getMesh(meshId, args);
+    auto mesh = Engine::get().GetAssetManager().getMesh(meshId, dict);
     DrawingBit bit;
     bit.mesh = mesh;
     m_meshes[id] = mesh;
@@ -211,20 +218,22 @@ std::vector<glm::vec2> SkModel::getOffsetPoints(const std::unordered_map<std::st
 }
 
 void SkModel::computeOffset() {
-//    m_offsetPoints.clear();
-//    for (const auto& p : m_offsetPointIds) {
-//        auto iter = m_keyPoints.find(p.first);
-//        if (iter != m_keyPoints.end()) {
-//            auto point = iter->second.at(p.second);
-//            //const auto& joint = m_allJoints.at(p.first);
-//            auto jointId = p.first+"@0";
-//            const auto& joint = m_js[m_jointMap2.at(jointId)];
-//            auto transform = joint->getBindTransform();
-//            auto scaling = glm::scale(glm::vec3(joint->getScale()));
-//            glm::vec3 tp = transform * scaling * glm::vec4(point.x, point.y, 0.0f, 1.0f);
-//            m_offsetPoints.emplace_back(jointId, glm::vec3(tp.x, tp.y, 0.0f));
-//        }
-//    }
+    m_offsetPoints.clear();
+    for (const auto& p : m_offsetPointIds) {
+
+        auto iter = m_meshes.find(p.first);
+        if (iter != m_meshes.end()) {
+            auto point = iter->second->getKeyPoint(p.second);
+            //auto point = iter->second.at(p.second);
+            //const auto& joint = m_allJoints.at(p.first);
+            //auto jointId = p.first+"@0";
+            const auto& joint = m_js[m_meshToJointId.at(p.first)];//  m_jointMap2.at(jointId)];
+            auto transform = joint->getBindTransform();
+            auto scaling = glm::scale(glm::vec3(joint->getScale()));
+            glm::vec3 tp = transform * scaling * glm::vec4(point.x, point.y, 0.0f, 1.0f);
+            m_offsetPoints.emplace_back(p.first, glm::vec3(tp.x, tp.y, 0.0f));
+        }
+    }
 }
 
 SkModel::SkModel(const YAML::Node& main) : _nextJointId(0), m_jointCount(0) {
@@ -265,6 +274,11 @@ SkModel::SkModel(const YAML::Node& main) : _nextJointId(0), m_jointCount(0) {
     // read offset
     // ##################
     if (main["offset"]) {
+        auto offsets = main["offset"].as<std::vector<YAML::Node>>();
+        for (const auto& offset : offsets) {
+            auto ostr = offset.as<std::vector<std::string>>();
+            m_offsetPointIds.emplace_back(ostr[0], ostr[1]);
+        }
         //auto offset = main["offset"].as<std::vector<
     }
 //    t.foreach<pybind11::tuple> ("offset", [&] (const pybind11::tuple& P) {

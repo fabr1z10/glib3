@@ -251,6 +251,8 @@ SceneFactory::SceneFactory() {
     addAssetFactory<TexturedMesh<VertexSkeletal>>("asset.skeletalmesh");
     addAssetFactory<SkAnimation> ("asset.skeletalanimation");
     m_dynamicAssetFactories.insert(std::make_pair("asset.skeletalmesh", makeDynamicSkeletalMesh));
+    m_dynamicAssetFactories.insert(std::make_pair("asset.skeletalmodel", makeDynamic<SkModel>));
+
     //add2<SkeletalModel> ("asset.skeleton");
     //add2<SkeletalModel2> ("asset.skeleton2");
     //add2<SkModel> ("asset.skeletalmodel");

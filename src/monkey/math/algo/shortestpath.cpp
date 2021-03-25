@@ -107,6 +107,17 @@ void ShortestPath::setShape(std::shared_ptr<IShape> shape) {
         }
 
     }
+    std::cout << "nodes\n-----\n";
+    for (const auto& node : m_graph->getNodes()) {
+        std::cout << node.first << ": " << node.second.x << ", " << node.second.y << "\n";
+    }
+    std::cout << "edges\n-----\n";
+    for (const auto& e : m_graph->getEdges()) {
+        for (const auto& edge : e.second) {
+            std::cout << e.first << " --> " << edge.first << " (" << edge.second << ")\n";
+        }
+    }
+    exit(1);
 }
 
 

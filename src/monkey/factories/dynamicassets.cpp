@@ -5,17 +5,57 @@
 #include <monkey/skeletal/skmesh.h>
 #include <glm/gtx/transform.hpp>
 
-std::shared_ptr<Object> makeDynamicSkeletalMesh(const YAML::Node& node, const YAML::Node& args) {
+
+void nodeHelper(std::list<YAML::Node>& nodes, YAML::Node node, const ITable& args) {
+    if (node.Type() == YAML::NodeType::Map || node.Type() == YAML::NodeType::Sequence) {
+        nodes.push_back(node);
+    } else if (node.Type() == YAML::NodeType::Scalar) {
+        auto str = node.as<std::string>("");
+        if (str.length() > 2) {
+            if (str[0] == '$' && str[1] != '$') {
+                // check if default value is provided
+                // get type
+                    int colonIndex = str.find(':');
+                    if (colonIndex == -1) {
+                        GLIB_FAIL("placeholder values must have a type between $ and : current value is " << str);
+                    }
+                    auto typ = str.substr(1, colonIndex-1);
+                    auto dindex = str.find('#');
+                    auto varName = dindex == std::string::npos ? str.substr(colonIndex+1) :
+                            str.substr(colonIndex+1, dindex-colonIndex-1);
+                    if (dindex == std::string::npos) {
+                        if (typ == "int") {
+                            node = args.get<int>(varName);
+                        } else if (typ == "float") {
+                            node = args.get<float>(varName);
+                        } else if (typ == "str") {
+                            node = args.get<std::string>(varName);
+                        }
+                    } else {
+                        auto defString = str.substr(dindex+1);
+                        if (typ == "int") {
+                            node = args.get<int>(varName, std::stoi(defString));
+                        } else if (typ == "float") {
+                            node = args.get<float>(varName, std::stof(defString));
+                        } else if (typ == "str") {
+                            node = args.get<std::string>(varName, defString);
+                        }
+                    }
+            }
+        }
+    }
+}
+std::shared_ptr<Object> makeDynamicSkeletalMesh(const YAML::Node& node, const ITable& args) {
     using Coord = float;
     using Point = std::array<Coord, 2>;
     using N = uint32_t;
 
-    auto offset = YamlWrapper::as<glm::vec2>(args, "offset", glm::vec2(0.0f));
-    auto z = args["z"].as<float>(0.0f);
-    auto parentJointId = args["parentJointId"].as<int>(-1);
-    auto jointId = args["jointId"].as<int>();
-    auto scale = args["scale"].as<float>(1.0f);
-    auto transform = YamlWrapper::as<glm::mat4>(args, "transform");
+    auto offset = args.get<glm::vec2>("offset", glm::vec2(0.0f));//YamlWrapper::as<glm::vec2>(args, "offset", glm::vec2(0.0f));
+    auto z = args.get<float>("z", 0.0f); // args["z"].as<float>(0.0f);
+    auto parentJointId = args.get<int>("parentJointId", -1);
+    auto jointId = args.get<int>("jointId");
+    auto scale = args.get("scale", 1.0f);
+    auto transform = args.get<glm::mat4>("transform"); //YamlWrapper::as<glm::mat4>(args, "transform");
     glm::mat4 scalingMat = glm::scale(glm::vec3(scale));
 
     auto localOrigin = YamlWrapper::as<glm::vec2>(node, "origin");
