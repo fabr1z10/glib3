@@ -2,14 +2,14 @@
 
 #include <monkey/asset.h>
 #include <monkey/skeletal/keyframe.hpp>
-#include <monkey/py.h>
+#include <monkey/itable.h>
 
 class SkModel;
 
 
 class SkAnimation : public Object {
 public:
-    SkAnimation (const YAML::Node&);
+    SkAnimation (const ITab&);
 
     /**
      * @return The length of the animation in seconds.

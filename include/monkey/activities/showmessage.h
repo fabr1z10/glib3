@@ -10,7 +10,7 @@ class Entity;
 
 class ShowMessage : public Activity {
 public:
-    ShowMessage(const ITable&);
+    ShowMessage(const ITab&);
     ShowMessage(
             const std::string& message,
             const std::string& font,

@@ -4,7 +4,7 @@
 #include <monkey/entity.h>
 #include <GLFW/glfw3.h>
 
-KeyMoveF::KeyMoveF(const ITable & t) : State(t) {
+KeyMoveF::KeyMoveF(const ITab& t) : State(t) {
 	m_speed = t.get<float>("speed");
 }
 

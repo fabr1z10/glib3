@@ -6,7 +6,7 @@
 class ScaleTo : public TargetActivity {
 public:
     ScaleTo( float duration, float scale);
-	ScaleTo(const ITable&);
+	ScaleTo(const ITab&);
     void Start() override;
     void Run (float dt) override;
 private:

@@ -17,7 +17,7 @@ public:
         int horizontalRayCount = 4,
         int verticalRayCount = 4) : IController(), m_skinWidth(0.015f), m_horizontalRayCount(horizontalRayCount),
               m_verticalRayCount(verticalRayCount), m_maskWall(maskWall) {}
-    Controller25(const ITable&);
+    Controller25(const ITab&);
     virtual ~Controller25();
     void CalculateRaySpacing();
     void UpdateRaycastOrigins();

@@ -14,7 +14,7 @@ public:
      * @param fliph Flip entity horizontally when going left
      */
     FoeWalk (const std::string& anim, float speed, float acceleration, bool fliph, bool flipIfPlatformEnds, int left);
-    FoeWalk (const ITable&);
+    FoeWalk (const ITab&);
     void AttachStateMachine(StateMachine*) override;
 
     void Run(double) override;

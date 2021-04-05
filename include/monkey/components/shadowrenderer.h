@@ -5,7 +5,7 @@
 class ShadowRenderer : public Renderer {
 public:
 	ShadowRenderer () {}
-	ShadowRenderer(const ITable&);
+	ShadowRenderer(const ITab&);
 	void Draw(Shader*) override;
 	std::type_index GetType() override;
 	void Start() override;

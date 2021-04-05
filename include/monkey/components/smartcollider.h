@@ -24,7 +24,7 @@ class SmartCollider : public ICollider {
 public:
     SmartCollider(int flag, int mask, int tag) : ICollider(), m_flag(flag), m_mask(mask), m_tag(tag) {}
     ~SmartCollider() override;
-    SmartCollider (const ITable&);
+    SmartCollider (const ITab&);
     void Start() override;
     void Update(double) override {}
     IShape* GetShape() override;

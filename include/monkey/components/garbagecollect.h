@@ -7,7 +7,7 @@
 class GarbageCollect : public Component {
 public:
     //GarbageCollect(const std::string& target, float deltaXMax, float deltaYMax);
-    GarbageCollect(const ITable&);
+    GarbageCollect(const ITab&);
     void Start() override ;
     void Update(double) override;
 private:

@@ -10,13 +10,13 @@ ExtendedStateMachine::ExtendedStateMachine(const std::string& initialState) : St
 }
 
 
-ExtendedStateMachine::ExtendedStateMachine(const ITable & t) {
+ExtendedStateMachine::ExtendedStateMachine(const ITab & t) {
     m_initialState = t.get<std::string>("initialState");
     m_currentState = nullptr;
     auto factory = Engine::get().GetSceneFactory();
 
 
-    t.foreach<PyTable>("states", [&] (PyTable table) {
+    t.foreach("states", [&] (const ITab& table) {
         auto state = factory->make2<State>(table);
         this->AddState(state->getId(), state);
     });

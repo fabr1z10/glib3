@@ -1,4 +1,5 @@
 #include "say.h"
+#include "../components/character.h"
 #include <monkey/engine.h>
 #include <monkey/activities/animate.h>
 #include <monkey/activities/setstate.h>
@@ -7,14 +8,14 @@
 #include <monkey/components/info.h>
 
 
-Say::Say(const ITable& t) : Sequence() {
+Say::Say(const ITab& t) : Sequence() {
     m_lines = t.get<std::vector<std::string>>("lines");
     //m_color = t.Get<glm::vec4>("color");
     // m_color /= 255.0f;
     //m_offset = t.Get<glm::vec2>("offset");
     m_fontId = t.get<std::string>("font");
 
-    if (t.hasKey("id")) {
+    if (t.has("id")) {
         m_actorId = t.get<int>("id");
     } else {
         m_tag = t.get<std::string>("tag");
@@ -49,43 +50,37 @@ void Say::Start() {
     }
 
     // need to check the character information. offset and text color
-    auto infoc = item->GetComponent<LuaInfo>();
-    if (infoc == nullptr) GLIB_FAIL("<Say> action requires an info component!");
-    auto addInfo = infoc->get2();
+    auto infoc = item->GetComponent<CharacterController>();
 
-    m_color = addInfo.get<glm::vec4>("text_color");
-    m_color /= 255.0f;
-    m_offset = addInfo.get<glm::vec2>("text_offset");
+    auto offset = infoc->getTextOffset();
+    auto color = infoc->getTextColor();
+    //color /= 255.0f;
+
+    //if (infoc == nullptr) GLIB_FAIL("<Say> action requires an info component!");
+    //auto addInfo = infoc->get2();
+
+
 
     if (!m_noAnim) {
-
-        if (m_animStart.empty()) {
-            auto action =std::make_shared<SetState>("talk");
-            action->SetId(m_actorId);
-            Push (action);
-        } else {
-            auto action =std::make_shared<Animate>(m_animStart, true);
-            action->SetId(m_actorId);
-            Push (action);
-        }
+        // automatically assign animation
+        char dir = infoc->getDirection();
+        auto action =std::make_shared<Animate>("talk_" + std::string(1, dir), true);
+        action->SetTag(m_tag);
+        Push(action);
     }
 
     for (auto& s : m_lines) {
 
-        Push(std::make_shared<ShowMessage>(s, m_fontId, m_actorId, 8, m_color, glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), BOTTOM, 1.0f, m_offset));
+        Push(std::make_shared<ShowMessage>(s, m_fontId, m_actorId, 8,
+                                           color, glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
+                                           BOTTOM, 1.0f, offset));
     }
 
     if (!m_noAnim) {
-        if (m_animEnd.empty()) {
-            auto action =std::make_shared<SetState>("idle");
-            action->SetId(m_actorId);
-            Push (action);
-        } else {
-            auto action =std::make_shared<Animate>(m_animEnd, true);
-            action->SetId(m_actorId);
-            Push (action);
-            //Push (std::make_shared<Animate>(m_actorId, m_animEnd, 0));
-        }
+        // automatically assign animation
+        auto action =std::make_shared<Animate>("idle_" + std::string(1, infoc->getDirection()), true);
+        action->SetTag(m_tag);
+        Push(action);
     }
 
 }

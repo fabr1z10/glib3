@@ -7,7 +7,7 @@
 #include <monkey/math/earcut.h>
 
 // tests whether AB intersects CD
-bool segmentIntersection(glm::vec2 A, glm::vec2 B, glm::vec2 C, glm::vec2 D);
+bool segmentIntersection(glm::vec2 A, glm::vec2 B, glm::vec2 C, glm::vec2 D, float& t, float& u);
 
 // Determines whether or not a set of three points is in counter-clockwise order.
 bool triangleIsCCW(const glm::vec2& a, const glm::vec2& b, const glm::vec2& c);

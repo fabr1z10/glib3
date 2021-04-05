@@ -45,7 +45,7 @@ void nodeHelper(std::list<YAML::Node>& nodes, YAML::Node node, const ITable& arg
         }
     }
 }
-std::shared_ptr<Object> makeDynamicSkeletalMesh(const YAML::Node& node, const ITable& args) {
+std::shared_ptr<Object> makeDynamicSkeletalMesh(const ITab& node, const ITab& args) {
     using Coord = float;
     using Point = std::array<Coord, 2>;
     using N = uint32_t;
@@ -58,8 +58,8 @@ std::shared_ptr<Object> makeDynamicSkeletalMesh(const YAML::Node& node, const IT
     auto transform = args.get<glm::mat4>("transform"); //YamlWrapper::as<glm::mat4>(args, "transform");
     glm::mat4 scalingMat = glm::scale(glm::vec3(scale));
 
-    auto localOrigin = YamlWrapper::as<glm::vec2>(node, "origin");
-    auto texName = node["tex"].as<std::string>();
+    auto localOrigin = node.get<glm::vec2>("origin");
+    auto texName = node.get<std::string>("tex");
     auto tex = Engine::get().GetAssetManager().GetTex(texName);
     float texWidth = tex->GetWidth();
     float texHeight = tex->GetHeight();
@@ -71,13 +71,12 @@ std::shared_ptr<Object> makeDynamicSkeletalMesh(const YAML::Node& node, const IT
     // add key points and dimensions, if any
     auto mesh = std::make_shared<SkeletalMesh>(texName);
 
-    if (node["key_points"]) {
-        for (const auto& keyPoint : node["key_points"]) {
-            glm::vec2 klocal = YamlWrapper::as<glm::vec2>(keyPoint.second) - localOrigin;
-            klocal.y = -klocal.y;
-            mesh->addKeyPoint(keyPoint.first.as<std::string>(), klocal );
-        }
-    }
+    node.foreach("key_points", [&] (const std::string& id, const ITab& t) {
+        glm::vec2 klocal = t.as<glm::vec2>() - localOrigin;
+        klocal.y = -klocal.y;
+        mesh->addKeyPoint(id, klocal);
+
+    });
 
 //    if (meshTemplate.hasKey("dims")) {
 //        auto kps = meshTemplate.get<PyDict>("dims").toDict<std::string, glm::vec2>();
@@ -107,7 +106,7 @@ std::shared_ptr<Object> makeDynamicSkeletalMesh(const YAML::Node& node, const IT
     std::vector<VertexSkeletal> vertices;
     std::vector<unsigned> indices;
 
-    auto points = node["data"].as<std::vector<float>>();
+    auto points = node.get<std::vector<float>>("data");
     for (unsigned int i = 0 ; i < points.size(); i += stride) {
         VertexSkeletal vertex{};
         // get the pixel coords

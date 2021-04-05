@@ -12,7 +12,7 @@ Ref::Ref(const Ref & orig) : m_id{Monkey::get().getNextId()}, m_active{orig.m_ac
 }
 
 
-Ref::Ref(const ITable& table) : Ref() {
+Ref::Ref(const ITab& table) : Ref() {
     m_tag = table.get<std::string>("tag", "");
     m_active = table.get<bool>("active", true);
     Monkey::get().add(m_id, this);

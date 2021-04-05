@@ -6,7 +6,7 @@ namespace py = pybind11;
 
 
 
-SetState::SetState(const ITable& t) : TargetActivity(t) {
+SetState::SetState(const ITab& t) : TargetActivity(t) {
     m_state = t.get<std::string>("state");
     m_args = t.get<py::dict>("args", py::dict());
 }

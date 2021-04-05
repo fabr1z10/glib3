@@ -6,7 +6,7 @@
 class SetState : public TargetActivity {
 public:
     SetState (const std::string& state) : TargetActivity(), m_state(state) {}
-    SetState (const ITable& );
+    SetState (const ITab& );
     void Start() override;
     void Run (float dt) override {}
 private:

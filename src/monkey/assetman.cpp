@@ -3,6 +3,8 @@
 #include <monkey/texturedmesh.h>
 #include "yaml-cpp/yaml.h"
 #include <fstream>
+#include <monkey/input/yamltab.h>
+#include <monkey/input/pytab.h>
 
 namespace py = pybind11;
 
@@ -41,20 +43,20 @@ YAML::Node AssetManager::openFile(const std::string & id) {
     return mm;
 }
 
-std::shared_ptr<IMesh> AssetManager::getMesh(const std::string & locator, const ITable& args) {
+std::shared_ptr<IMesh> AssetManager::getMesh(const std::string & locator, const ITab& args) {
     auto factory = Engine::get().GetSceneFactory();
     // check if node template is cached.
     auto iter = m_templates.find(locator);
     if (iter != m_templates.end()) {
         // ok, create
-        return factory->makeDynamicAsset<IMesh>(iter->second, args);
+        return factory->makeDynamicAsset<IMesh>(YAMLTab(iter->second), args);
     }
     std::string location = locator.substr(0, locator.find_last_of("/"));
     auto file = openFile(locator);
     for (const auto &i : file) {
         m_templates[location + "/" + i.first.as<std::string>()] = i.second;
     }
-    return factory->makeDynamicAsset<IMesh>(m_templates.at(locator), args);
+    return factory->makeDynamicAsset<IMesh>(YAMLTab(m_templates.at(locator)), args);
 }
 
 std::shared_ptr<IMesh> AssetManager::GetMesh(const std::string & id) {
@@ -85,7 +87,7 @@ std::shared_ptr<IMesh> AssetManager::GetMesh(const std::string & id) {
     // store all models in this file
     for (const auto &i : mm) {
         std::cerr << i.first.as<std::string>() << std::endl;
-        auto model = factory->makeAsset<IMesh>(i.second);
+        auto model = factory->makeAsset<IMesh>(YAMLTab(i.second));
 
         m_meshes[location + "/" + i.first.as<std::string>()] = model;
         //std::cerr << i.second.as<std::string>() << std::endl;
@@ -106,8 +108,9 @@ std::shared_ptr<IModel> AssetManager::getModel(const pybind11::object &obj) {
         auto tp = obj.cast<pybind11::tuple>();
         auto id = tp[0].cast<std::string>();
         auto args = PyDict(tp[1].cast<pybind11::dict>());
-        return genericLoaderArgs<IModel>(id, args);
-
+        //return genericLoaderArgs<IModel>(id, args);
+        // TODO CIAPPO
+        return nullptr;
     }
 }
 
@@ -128,8 +131,7 @@ std::shared_ptr<Font> AssetManager::GetFont (const std::string& fontId) {
     if (m_fontDict.is_none()) {
 
     } else {
-        PyTable t(m_fontDict[fontId.c_str()].cast<py::object>());
-
+        PyTab t(m_fontDict[fontId.c_str()].cast<py::object>());
         auto font= Engine::get().GetSceneFactory()->make2<Font>(t);
         m_fonts.insert(std::make_pair(fontId, font));
         return font;

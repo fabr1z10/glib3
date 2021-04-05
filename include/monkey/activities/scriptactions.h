@@ -6,7 +6,7 @@
 class SuspendScript : public Activity {
 public:
     SuspendScript(const std::string& script) : Activity(), m_script{script} {}
-    SuspendScript (const ITable&);
+    SuspendScript (const ITab&);
     void Start() override ;
     void Run (float dt) override {}
 private:
@@ -27,7 +27,7 @@ private:
 class ResumeScript : public Activity {
 public:
     ResumeScript(const std::string& script) : Activity(), m_script{script} {}
-    ResumeScript (const ITable&);
+    ResumeScript (const ITab&);
     void Start() override ;
     void Run (float dt) override {}
 private:
@@ -37,7 +37,7 @@ private:
 class KillScript : public Activity {
 public:
     KillScript(const std::string& script) : Activity(), m_script{script} {}
-	KillScript (const ITable&);
+	KillScript (const ITab&);
 
     void Start() override ;
     void Run (float dt) override {}

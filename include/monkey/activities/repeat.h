@@ -5,7 +5,7 @@
 class Repeat : public Activity {
 public:
     //Repeat(luabridge::LuaRef func, float interval);
-    Repeat (const ITable&);
+    Repeat (const ITab&);
     void Start() override;
     void Run (float dt) override;
 private:

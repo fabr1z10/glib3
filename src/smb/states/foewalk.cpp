@@ -10,7 +10,7 @@ m_anim(anim), m_speed(speed), m_acceleration(acceleration), m_fliph(fliph), m_le
 
 }
 
-FoeWalk::FoeWalk(const ITable & t) : PlatformerState(t) {
+FoeWalk::FoeWalk(const ITab& t) : PlatformerState(t) {
     m_anim = t.get<std::string>("anim");
     m_speed = t.get<float>("speed");
     m_acceleration = t.get<float>("acceleration");

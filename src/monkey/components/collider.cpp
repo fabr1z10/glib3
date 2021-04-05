@@ -4,13 +4,13 @@
 #include <monkey/engine.h>
 #include <monkey/model/basicmodel.h>
 
-SimpleCollider::SimpleCollider(const ITable & t) : ICollider() {
+SimpleCollider::SimpleCollider(const ITab& t) : ICollider() {
 
     auto factory = Engine::get().GetSceneFactory();
 
 
-    auto shapeR = t.get<PyTable>("shape");
-    m_shape = factory->make2<IShape>(shapeR);
+    auto shapeR = t["shape"];
+    m_shape = factory->make2<IShape>(*shapeR);
 
     m_tag = t.get<int>("tag");
     m_flag = t.get<int>("flag");

@@ -17,28 +17,29 @@ SpatialHashingCollisionEngine::~SpatialHashingCollisionEngine() {
 
 }
 
-SpatialHashingCollisionEngine::SpatialHashingCollisionEngine(const ITable & table) : ICollisionEngine(table) {
+SpatialHashingCollisionEngine::SpatialHashingCollisionEngine(const ITab & table) : ICollisionEngine(table) {
 
     m_size = table.get<glm::vec3>("size");
     bool use2D = (m_size.z == 0.0f);
     // if m_size.z == 0, this is a 2d collider
 
+
     auto crm = std::make_unique<CollisionResponseManager>();
-    table.foreach<py::tuple>("response", [&] (py::tuple p) {
-        auto tag0 = p[0].cast<int>();
-        auto tag1 = p[1].cast<int>();
-        PyTable t(p[2].cast<py::object>());
+    table.foreach("response", [&] (const ITab& p) {
+        auto tag0 = p.get<int>("tag1");
+        auto tag1 = p.get<int>("tag2");
+        //PyTable t(p[2].cast<py::object>());
         std::unique_ptr<LuaCollisionResponse> l(new LuaCollisionResponse);
-        if (t.hasKey("on_enter")) {
-            auto f = t.get<py::function>("on_enter");
+        if (p.has("on_enter")) {
+            auto f = p.get<py::function>("on_enter");
             l->setOnEnter(f);
         }
-        if (t.hasKey("on_leave")) {
-            auto f = t.get<py::function>("on_leave");
+        if (p.has("on_leave")) {
+            auto f = p.get<py::function>("on_leave");
             l->setOnLeave(f);
         }
-        if (t.hasKey("on_stay")) {
-            auto f = t.get<py::function>("on_stay");
+        if (p.has("on_stay")) {
+            auto f = p.get<py::function>("on_stay");
             l->setOnStay(f);
         }
         crm->AddCollisionResponse(tag0, tag1, std::move(l));

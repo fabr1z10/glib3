@@ -4,7 +4,7 @@
 
 class JumpAttack : public PlatformerState {
 public:
-    JumpAttack (const ITable& t);
+    JumpAttack (const ITab& t);
     //void AttachStateMachine(StateMachine * sm) override;
 
     void Init (pybind11::dict&) override;

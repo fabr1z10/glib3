@@ -1,11 +1,12 @@
 #pragma once
 
 #include <monkey/component.h>
+#include <monkey/py.h>
 
 // stores custom additional information for the entity
 class LuaInfo : public Component {
 public:
-    LuaInfo (const ITable& t);
+    LuaInfo (const ITab& t);
     void Start() override {}
     void Update(double) override{}
     using ParentClass = LuaInfo;

@@ -5,7 +5,7 @@
 class Circle : public Shape2D {
 public:
     explicit Circle(float radius, glm::vec3 center =glm::vec3(0.0f));
-    explicit Circle(const ITable&);
+    explicit Circle(const ITab&);
     //std::unique_ptr<IShape> transform (const glm::mat4& t) override;
 
     bool isPointInside(glm::vec3) const override;

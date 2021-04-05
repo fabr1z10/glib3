@@ -17,7 +17,7 @@
 #include <string>
 #include <algorithm>
 #include <unordered_map>
-#include <monkey/py.h>
+#include <monkey/itable.h>
 
 #define INVALID_OGL_VALUE 0xFFFFFFFF
 
@@ -26,7 +26,7 @@ class Shader;
 class IMesh : public Object {
 public:
 	IMesh() = default;
-	IMesh(const YAML::Node&);
+	IMesh(const ITab&);
     IMesh(ShaderType type) : m_vb(INVALID_OGL_VALUE), m_ib(INVALID_OGL_VALUE), m_shaderType{type} {}
     virtual ~IMesh() {}
 

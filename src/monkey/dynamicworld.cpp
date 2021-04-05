@@ -55,7 +55,7 @@ void DynamicWorldItem::destroy() {
     Engine::get().Remove(m_id);
 }
 
-DynamicWorldBuilder::DynamicWorldBuilder(const ITable &t) : Runner(t), m_x(-1), m_y(-1) {
+DynamicWorldBuilder::DynamicWorldBuilder(const ITab &t) : Runner(t), m_x(-1), m_y(-1) {
     m_width = t.get<float>("width");
     m_height = t.get<float>("height");
 
@@ -65,9 +65,8 @@ DynamicWorldBuilder::DynamicWorldBuilder(const ITable &t) : Runner(t), m_x(-1), 
     m_camName = t.get<std::string>("cam");
     auto factory = Engine::get().GetSceneFactory();
     // get dynamic entities
-    t.foreach<py::object>("items", [&] (py::object obj) {
-        PyTable table(obj);
-        auto node = factory->make2<Entity>(table);
+    t.foreach("items", [&] (const ITab& obj) {
+        auto node = factory->make2<Entity>(obj);
 		node->onRemove.Register(this, [&] (Entity* e) {
 			// problem is: if we keep a shared_ptr here, the dtor will never be called.
 			// that's why we register to onRemove

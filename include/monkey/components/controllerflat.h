@@ -7,7 +7,7 @@ class ICollisionEngine;
 
 class ControllerFlat : public IController {
 public:
-	ControllerFlat(const ITable&);
+	ControllerFlat(const ITab&);
 	virtual ~ControllerFlat() = default;
 	void Start() override;
 	void Begin() override;

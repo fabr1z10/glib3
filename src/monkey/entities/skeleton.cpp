@@ -5,7 +5,7 @@
 #include <monkey/skeletal/animation/skanimator2.hpp>
 
 
-Skeleton::Skeleton(const ITable& t) : Entity(t) {
+Skeleton::Skeleton(const ITab& t) : Entity(t) {
 
     auto* factory = Engine::get().GetSceneFactory();
     auto modelId = t.get<pybind11::object>("model");
@@ -37,7 +37,7 @@ Skeleton::Skeleton(const ITable& t) : Entity(t) {
 
 }
 
-Skeleton2::Skeleton2(const ITable& t) : Entity(t) {
+Skeleton2::Skeleton2(const ITab& t) : Entity(t) {
 
     auto modelId = t.get<std::string>("model");
     auto model = Engine::get().GetAssetManager().GetModel(modelId);

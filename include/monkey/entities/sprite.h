@@ -6,6 +6,6 @@
 // it takes a MODEL parameter
 class Sprite : public Entity {
 public:
-    Sprite (const ITable&);
+    Sprite (const ITab&);
     ~Sprite() override = default;
 };

@@ -5,7 +5,7 @@
 class Segment3D : public IShape {
 public:
 	Segment3D(glm::vec3 A, glm::vec3 B) : IShape(), a(A), b(B) {}
-	Segment3D(const ITable& t);
+	Segment3D(const ITab& t);
 	bool isPointInside (glm::vec3) const override;
 	glm::vec3 getA() const;
 	glm::vec3 getB() const;

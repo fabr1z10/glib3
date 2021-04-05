@@ -9,7 +9,7 @@ BasicRenderer::BasicRenderer(std::shared_ptr<IModel> model) : Renderer() {
     m_baseModel = model.get();
 }
 
-BasicRenderer::BasicRenderer(const ITable & t) : Renderer(t) {
+BasicRenderer::BasicRenderer(const ITab & t) : Renderer(t) {
     int cls = t.get<int>("cls");
     if (cls == 0) {
         auto image = t.get<std::string>("image");
@@ -17,7 +17,7 @@ BasicRenderer::BasicRenderer(const ITable & t) : Renderer(t) {
         auto h = t.get<float>("height", 0.0f);
         glm::vec2 offset = t.get<glm::vec2>("offset", glm::vec2(0.0f));
         std::shared_ptr<IMesh> mesh;
-        if (t.hasKey("quad")) {
+        if (t.has("quad")) {
             glm::ivec4 quad = t.get<glm::ivec4>("quad");
             mesh = std::make_shared<QuadMesh>(image, w, h, offset, quad[0], quad[1], quad[2], quad[3]);
         } else {
@@ -65,9 +65,9 @@ BasicRenderer::BasicRenderer(const ITable & t) : Renderer(t) {
       //  SetModel (std::make_shared<BasicModel>(mesh));
     } else if (cls == 3) {
         auto factory = Engine::get().GetSceneFactory();
-        auto shapeT = t.get<PyTable>("shape");
+        auto shapeT = t["shape"];
         auto color = t.get<glm::vec4>("color");
-        auto shape = factory->make2<IShape>(shapeT);
+        auto shape = factory->make2<IShape>(*shapeT);
         MeshFactory mf;
         auto model = mf.createWireframe(shape.get(), color);
         SetModel(model);

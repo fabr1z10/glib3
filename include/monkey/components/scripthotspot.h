@@ -5,7 +5,7 @@
 class ScriptHotSpot : public HotSpot {
 public:
     ScriptHotSpot (int priority) : HotSpot(priority) {}
-    ScriptHotSpot (const ITable& t);
+    ScriptHotSpot (const ITab& t);
 
     ScriptHotSpot (
             std::shared_ptr<IShape> shape,

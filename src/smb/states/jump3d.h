@@ -9,7 +9,7 @@ class InputMethod;
 class Jump3D : public State {
 public:
 	Jump3D(float accelerationTimeAirborne, float speed, bool fliph, const std::string& animUp, const std::string& animDown);
-	Jump3D(const ITable&);
+	Jump3D(const ITab&);
 	void Run (double) override;
 	void Init (pybind11::dict&) override {}
 	void End () override {}

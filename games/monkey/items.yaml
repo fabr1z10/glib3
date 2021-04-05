@@ -272,10 +272,11 @@ seagull:
 #  wdir: w
 #  anim: '@&doors/kitchen'
 #  model: door_kitchen_scummbar
-#kitchen_potostew:
-#  model: potostew
-#  pos: [153,39,-0.9]
-#  room: kitchen
+kitchen_potostew:
+  type: item1
+  model: 01/potostew
+  pos: [153,39,-0.9]
+  room: kitchen
 #kitchen_door_pier:
 #  model: door_kitchen_pier
 #  pos: [192, 9, -1]
@@ -291,7 +292,7 @@ meat:
   model: 01/meat
   pos: [79, 40, -0.9]
   text: '$objects/meat'
-  size: [20, 20]
+  size: [20, 10]
   room: kitchen
   walkto: [90, 18]
   wdir: n
@@ -303,24 +304,24 @@ meat2:
   room: kitchen
   walkto: [90, 18]
   wdir: n
-#fish:
-#  model: fish
-#  pos: [234, 9, 1]
-#  text: '@$objects/fish'
-#  width: 12
-#  height: 7
-#  room: kitchen
-#  walkto: [234, 12]
-#  wdir: s
-#pot:
-#  model: pot
-#  pos: [104, 24, -0.90]
-#  text: '@$objects/pot'
-#  width: 15
-#  height: 7
-#  room: kitchen
-#  walkto: [112,18]
-#  wdir: n
+fish:
+  type: item1
+  model: 01/fish
+  pos: [234, 9, 1]
+  text: '$objects/fish'
+  size: [12,7]
+  room: kitchen
+  walkto: [234, 12]
+  wdir: s
+pot:
+  type: item1
+  model: 01/pot
+  pos: [104, 24, -0.90]
+  text: '$objects/pot'
+  size: [15, 7]
+  room: kitchen
+  walkto: [112,18]
+  wdir: n
 #kitchen_trap:
 #  pos: [100, 0, 0]
 #  room: kitchen

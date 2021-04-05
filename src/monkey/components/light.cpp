@@ -10,7 +10,7 @@ Light::~Light() {
     Engine::get().GetRenderingEngine()->RemoveLight(this);
 }
 
-DirectionalLight::DirectionalLight(const ITable & t) {
+DirectionalLight::DirectionalLight(const ITab & t) {
 	m_direction = t.get<glm::vec3>("direction");
 	m_ambient = t.get<glm::vec4>("ambient");
 	m_ambient /= 255.0f;

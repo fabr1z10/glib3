@@ -16,7 +16,7 @@ public:
      * @param fliph Flip entity horizontally when going left
      */
     WalkSide (float speed, float acceleration, bool fliph, float jumpSpeed);
-    WalkSide (const ITable&);
+    WalkSide (const ITab&);
     void Run(double) override;
     void Init (pybind11::dict&) override;
     void End () override;

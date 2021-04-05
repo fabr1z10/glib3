@@ -6,7 +6,7 @@
 class TextView: public Entity {
 public:
     TextView (glm::vec2 pos, float width, float height, float fontSize, int lines, pybind11::function factory) ;
-    TextView (const ITable&);
+    TextView (const ITab&);
     //virtual ~TextView();
 
     void AddItem (pybind11::object&);

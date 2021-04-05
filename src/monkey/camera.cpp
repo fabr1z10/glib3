@@ -31,7 +31,7 @@ Camera::Camera(glm::vec4 viewport) : Ref(), m_camViewport{viewport} {
 }
 
 
-Camera::Camera(const ITable & t) : Ref(t) {
+Camera::Camera(const ITab & t) : Ref(t) {
     m_eye = t.get<glm::vec3>("pos", glm::vec3(0.0f));
     m_fwd = t.get<glm::vec3>("direction", glm::vec3(0, 0, -1));
     m_up = t.get<glm::vec3>("up", glm::vec3(0, 1, 0));
@@ -95,7 +95,7 @@ OrthographicCamera::OrthographicCamera(float orthoWidth, float orthoHeight, glm:
     Init();
 }
 
-OrthographicCamera::OrthographicCamera(const ITable & table) : Camera(table) {
+OrthographicCamera::OrthographicCamera(const ITab& table) : Camera(table) {
 
     glm::vec2 size = table.get<glm::vec2>("size");
     m_orthoWidth = size.x;
@@ -120,7 +120,7 @@ PerspectiveCamera::PerspectiveCamera (glm::vec4 viewport, float fov, float nearP
     
 }
 
-PerspectiveCamera::PerspectiveCamera(const ITable & t) : Camera(t) {
+PerspectiveCamera::PerspectiveCamera(const ITab& t) : Camera(t) {
 	m_fov = t.get<float>("fov", 45.0f);
 	m_near = t.get<float>("near", 0.1f);
 	m_far = t.get<float>("far", 100.0f);

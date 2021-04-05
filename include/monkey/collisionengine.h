@@ -35,7 +35,7 @@ class SpatialHashingCollisionEngine : public ICollisionEngine {
 public:
     ~SpatialHashingCollisionEngine() override;
     // can be 2d or 3d
-    explicit SpatialHashingCollisionEngine (const ITable&);
+    explicit SpatialHashingCollisionEngine (const ITab&);
     void Add (ICollider*) override ;
     void Remove(ICollider*) override ;
     void Clear() override ;

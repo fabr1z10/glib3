@@ -4,10 +4,10 @@
 
 class Skeleton : public Entity {
 public:
-    Skeleton (const ITable&);
+    Skeleton (const ITab&);
 };
 
 class Skeleton2: public Entity {
 public:
-    Skeleton2 (const ITable&);
+    Skeleton2 (const ITab&);
 };

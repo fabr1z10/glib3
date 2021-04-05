@@ -2,7 +2,7 @@
 
 #include <string>
 #include <monkey/object.h>
-#include <monkey/py.h>
+#include <monkey/itable.h>
 #include <unordered_map>
 #include <monkey/error.h>
 #include <memory>
@@ -12,7 +12,7 @@ class Ref : public Object {
 public:
     Ref();
     Ref(const Ref&);
-    Ref(const ITable&);
+    Ref(const ITab&);
     ~Ref() override;
     std::string GetTag() const;
     void SetTag(const std::string&);

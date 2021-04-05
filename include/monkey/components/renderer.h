@@ -22,7 +22,7 @@ class Renderer : public Component {
 public:
     Renderer();
     Renderer(const Renderer&);
-    Renderer(const ITable& t);
+    Renderer(const ITab& t);
     ~ Renderer() override = default;
     void init(Shader*);
     virtual void Draw(Shader*);

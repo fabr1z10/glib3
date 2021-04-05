@@ -2,8 +2,8 @@
 #include "monkey/components/renderer.h"
 #include "monkey/entity.h"
 
-Fader::Fader(const ITable & t) {
-    t.foreach<PyDict> ("colors", [&] (const PyDict& dict) {
+Fader::Fader(const ITab& t) {
+    t.foreach("colors", [&] (const ITab& dict) {
        auto t = dict.get<float>("t");
        auto color = dict.get<glm::vec4>("color");
        color /= 255.0f;

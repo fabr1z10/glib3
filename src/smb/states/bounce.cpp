@@ -3,7 +3,7 @@
 #include <monkey/components/dynamics2d.h>
 #include "monkey/entity.h"
 
-Bounce::Bounce(const ITable & t) : PlatformerState(t) {
+Bounce::Bounce(const ITab& t) : PlatformerState(t) {
     m_speed = t.get<float>("speed");
     m_a = t.get<float>("a");
     m_b = t.get<float>("b");

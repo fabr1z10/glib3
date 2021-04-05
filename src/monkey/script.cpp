@@ -6,23 +6,24 @@
 
 namespace py = pybind11;
 
-Script::Script(const ITable & table) : m_complete(false), m_suspended(false), m_loop(false) {
+Script::Script(const ITab& table) : m_complete(false), m_suspended(false), m_loop(false) {
     m_name = table.get<std::string>("id", "");
     auto factory = Engine::get().GetSceneFactory();
     int id = 0;
-    table.foreach<PyTable>("actions", [&] (const PyTable& a) {
+    table.foreach("actions", [&] (const ITab& a) {
         auto action = factory->make2<Activity>(a);
         AddActivity(id, action);
         ++id;
     });
 
-    table.foreach<py::list>("edges", [&] (const py::list& a) {
-        int tailId = a[0].cast<int>();
-        int headId = a[1].cast<int>();
+    table.foreach("edges", [&] (const ITab& a) {
+        auto b = a.as<std::vector<int>>();
+        int tailId = b[0];
+        int headId = b[1];
         AddEdge (tailId, headId);
     });
 
-    if (table.hasKey("loop")) {
+    if (table.has("loop")) {
         m_loop = true;
         m_loopId = table.get<int>("loop");
     }

@@ -2,7 +2,7 @@
 #include "../components/walkarea.h"
 #include <monkey/engine.h>
 
-EnableBlock::EnableBlock(const ITable & table) : Activity() {
+EnableBlock::EnableBlock(const ITab& table) : Activity() {
     m_id = table.get<std::string>("walkarea");
     m_wall = table.get<int>("wall");
     m_active = table.get<bool>("active");

@@ -84,6 +84,7 @@ public:
     std::string GetGame() const;
     std::string GetGameDirectory() const;
     PyTable& getMainTable() const;
+    float getTickMultiplier() const;
 private:
     pybind11::scoped_interpreter m_guard;
     std::unique_ptr<PyTable> m_mainTable;
@@ -117,6 +118,7 @@ private:
     std::string m_game;
     std::string m_gameDirectory;
     std::string m_title;
+    float m_tickMultiplier;
 };
 
 inline PyTable& Engine::getMainTable() const {
@@ -215,4 +217,9 @@ inline std::string Engine::GetGame() const {
 }
 inline std::string Engine::GetGameDirectory() const {
     return m_gameDirectory;
+}
+
+
+inline float Engine::getTickMultiplier() const {
+    return m_tickMultiplier;
 }

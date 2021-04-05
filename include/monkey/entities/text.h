@@ -7,5 +7,6 @@
 // it takes a MODEL parameter
 class Text : public Entity {
 public:
-    Text (const ITable&);
+    Text(const std::string&, const std::string& font, float size, TextAlignment align, glm::vec4 color, glm::vec2 pos);
+    Text (const ITab&);
 };

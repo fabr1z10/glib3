@@ -1,6 +1,6 @@
 #include <monkey/math/shapes3d/plane.h>
 
-Plane::Plane(const ITable& t) : IShape(t) {
+Plane::Plane(const ITab& t) : IShape(t) {
 	m_type = ShapeType::PLANE;
 	n = t.get<glm::vec3>("n");
 	d = t.get<float>("d");

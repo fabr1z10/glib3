@@ -1,13 +1,17 @@
 #include <monkey/itable.h>
 
-int PyTab::_getInt() const {
-    return m_obj.cast<int>();
-}
+template<> int ITab::as() const { return _asInt(); }
+template<> float ITab::as() const { return _asFloat(); }
+template<> bool ITab::as() const { return _asBool(); }
+template<> std::string ITab::as() const { return _asString(); }
 
-float PyTab::_getFloat() const {
-    return m_obj.cast<float>();
-}
+template<> glm::vec2 ITab::as() const { return _asVec2(); }
+template<> glm::vec3 ITab::as() const { return _asVec3(); }
+template<> glm::vec4 ITab::as() const { return _asVec4(); }
+template<> glm::mat4 ITab::as() const { return _asMat4(); }
+//template<> pybind11::function ITab::as() const { return _asFunction(); }
 
-std::string PyTab::_getString() const {
-    return m_obj.cast<std::string>();
-}
+template<> std::vector<int> ITab::as() const { return _asVecInt(); }
+template<> std::vector<float> ITab::as() const { return _asVecFloat(); }
+template<> std::vector<std::string> ITab::as() const { return _asVecStr(); }
+

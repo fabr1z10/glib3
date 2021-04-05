@@ -4,6 +4,7 @@
 #include <pybind11/pytypes.h>
 #include <monkey/math/geom.h>
 #include <glm/gtx/transform.hpp>
+#include <monkey/input/pytab.h>
 
 ShaderType SkModel::GetShaderType() const {
     return SKELETAL_SHADER;
@@ -51,15 +52,15 @@ void SkModel::addMesh(const std::string& id, const std::string& meshId, const st
                       float z, float scale, int order) {
 
     // assumption : one mesh, one joint
-    PyDict dict;
+    auto dict = pybind11::dict();
     YAML::Node args;
     int newJointId = m_js.size();
     m_meshToJointId[id] = newJointId;
     args["z"] = 0.0f;
-    dict.add("scale", scale);
-    dict.add("z", 0.0f);
+    dict["scale"] = scale;
+    dict["z"] =  0.0f;
     args["jointId"] = newJointId;
-    dict.add("jointId", newJointId);
+    dict["jointId"]= newJointId;
     int parentJointId = -1;
     glm::mat4 bindTransform(1.0f);
     JointTransform tr;
@@ -70,7 +71,7 @@ void SkModel::addMesh(const std::string& id, const std::string& meshId, const st
     if (!parentMesh.empty()) {
         auto parentJointIndex = m_meshToJointId.at(parentMesh);
         args["parentJointId"] = parentJointIndex;
-        dict.add("parentJointId", parentJointIndex);
+        dict["parentJointId"]= parentJointIndex;
         auto parentJoint = m_js[parentJointIndex];
         joint->setLocalToParentTransform(tr, parentJoint->getBindTransform());
         bindTransform = parentJoint->getBindTransform() * tr.getLocalTransform();
@@ -83,9 +84,9 @@ void SkModel::addMesh(const std::string& id, const std::string& meshId, const st
     std::vector<float> vecTransform;
     vecTransform.assign(glm::value_ptr(bindTransform), glm::value_ptr(bindTransform)+ 16);
     args["transform"] = vecTransform;
-    dict.add("transform", bindTransform);
-
-    auto mesh = Engine::get().GetAssetManager().getMesh(meshId, dict);
+    dict["transform"] = bindTransform;
+    PyTab t(dict);
+    auto mesh = Engine::get().GetAssetManager().getMesh(meshId, t);
     DrawingBit bit;
     bit.mesh = mesh;
     m_meshes[id] = mesh;
@@ -236,57 +237,42 @@ void SkModel::computeOffset() {
     }
 }
 
-SkModel::SkModel(const YAML::Node& main) : _nextJointId(0), m_jointCount(0) {
+SkModel::SkModel(const ITab& main) : _nextJointId(0), m_jointCount(0) {
 
-    auto meshNode = main["meshes"].as<std::vector<YAML::Node>>();
-    for (auto mesh : meshNode) {
-        auto id = mesh["id"].as<std::string>();
-        auto meshId = mesh["mesh"].as<std::string>();
-        auto parent = mesh["parent"].as<std::string>(std::string());
-        auto scale = mesh["scale"].as<float>(1.0f);
-        auto z = mesh["z"].as<float>(0.0f);
+    //auto meshNode = main["meshes"].as<std::vector<YAML::Node>>();
+    main.foreach("meshes", [&] (const ITab& mesh) {
+        auto id = mesh.get<std::string>("id");
+        auto meshId = mesh.get<std::string>("mesh");
+        auto parent = mesh.get<std::string>("parent");
+        auto scale = mesh.get<float>("scale", 1.0f);
+        auto z = mesh.get<float>("z", 0.0f);
         glm::vec2 attachPoint(0.0f);
         if (!parent.empty()) {
-            auto keyPoint = mesh["key_point"].as<std::string>();
+            auto keyPoint = mesh.get<std::string>("key_point");
             attachPoint = m_meshes.at(parent)->getKeyPoint(keyPoint);
         }
         //auto sortingOrder = main["order"].as<int>(0);
         addMesh(id, meshId, parent, attachPoint, z, scale, 0);
-        //attachMesh(id, meshId, parent, parentJoint, scale, sortingOrder, offset);
-    }
+    });
 
     int ac = 0;
-    if (main["animations"]) {
-        for (auto anim : main["animations"]) {
-            auto id = anim.first.as<std::string>();
-            auto animId = anim.second.as<std::string>();
-            if (ac == 0) {
-                m_defaultAnimation = id;
-            }
-            auto sanim = Engine::get().GetAssetManager().getSkeletalAnimation(animId);
-            m_animations[id] = sanim;
-            ac++;
+    main.foreach("animations", [&] (const std::string& id, const ITab& node) {
+        auto animId = node.as<std::string>();
+        if (ac == 0) {
+            m_defaultAnimation = id;
         }
-    }
-
+        auto sanim = Engine::get().GetAssetManager().getSkeletalAnimation(animId);
+        m_animations[id] = sanim;
+        ac++;
+    });
 
     // ##################
     // read offset
     // ##################
-    if (main["offset"]) {
-        auto offsets = main["offset"].as<std::vector<YAML::Node>>();
-        for (const auto& offset : offsets) {
-            auto ostr = offset.as<std::vector<std::string>>();
-            m_offsetPointIds.emplace_back(ostr[0], ostr[1]);
-        }
-        //auto offset = main["offset"].as<std::vector<
-    }
-//    t.foreach<pybind11::tuple> ("offset", [&] (const pybind11::tuple& P) {
-//		auto mesh = P[0].cast<std::string>();
-//		auto point = P[1].cast<std::string>();
-//		m_offsetPointIds.emplace_back(mesh, point);
-//
-//    }) ;
+    main.foreach("offset", [&] (const ITab& node) {
+        auto ostr = node.as<std::vector<std::string>>();
+        m_offsetPointIds.emplace_back(ostr[0], ostr[1]);
+    });
 
     computeOffset();
 

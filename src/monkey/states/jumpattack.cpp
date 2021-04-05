@@ -6,7 +6,7 @@
 #include <monkey/components/controller2d.h>
 #include <monkey/components/ianimator.h>
 
-JumpAttack::JumpAttack(const ITable &t) : PlatformerState(t) {
+JumpAttack::JumpAttack(const ITab &t) : PlatformerState(t) {
     m_speed = t.get<float>("speed");
     m_accTimeAir = t.get<float>("acceleration");
     m_flipHorizontally = t.get<bool>("flipH");

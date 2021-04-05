@@ -6,7 +6,7 @@
 #include <monkey/error.h>
 #include <map>
 #include <monkey/asset.h>
-#include <monkey/py.h>
+#include <monkey/itable.h>
 
 class LuaTable;
 
@@ -44,7 +44,7 @@ public:
 class Constant2D : public Function2D {
 public:
     Constant2D(float value) : m_value{value} {}
-    Constant2D(const ITable& t);
+    Constant2D(const ITab& t);
     float operator()(float, float) override {
         return m_value;
     }
@@ -55,7 +55,7 @@ private:
 class Linear2Dx : public Function2D {
 public:
     Linear2Dx(float x0, float value0, float x1, float value1) : m_x0{x0}, m_value0{value0}, m_delta{(value1-value0)/(x1-x0)} {}
-    Linear2Dx(const ITable&);
+    Linear2Dx(const ITab&);
 
     float operator()(float x, float y) override {
         return m_value0 + (x - m_x0) * m_delta;
@@ -70,7 +70,7 @@ private:
 class Linear2Dy : public Function2D {
 public:
     Linear2Dy(float y0, float value0, float y1, float value1) : m_y0{y0}, m_value0{value0}, m_delta{(value1-value0)/(y1-y0)} {}
-    Linear2Dy(const ITable&);
+    Linear2Dy(const ITab&);
     float operator()(float x, float y) override {
         return m_value0 + (y - m_y0) * m_delta;
     }
@@ -87,7 +87,7 @@ private:
 class PatchwiseLinear2D : public Function2D {
 public:
     PatchwiseLinear2D() {}
-    PatchwiseLinear2D (const ITable&);
+    PatchwiseLinear2D (const ITab&);
 
     float operator() (float x, float y) override;
     void AddFunction (glm::vec4, std::shared_ptr<Function2D>);

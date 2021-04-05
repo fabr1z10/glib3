@@ -5,7 +5,7 @@ ConvexPolygon::ConvexPolygon(const std::vector<glm::vec2>& pts) : m_points(pts) 
     init();
 }
 
-ConvexPolygon::ConvexPolygon(const ITable & t) {
+ConvexPolygon::ConvexPolygon(const ITab& t) {
     auto pts = t.get<std::vector<float>>("points");
     for (int i = 0; i < pts.size(); i += 2) {
         glm::vec2 cp(pts[i], pts[i+1]);

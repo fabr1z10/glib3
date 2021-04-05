@@ -49,7 +49,7 @@ struct DrawingBit {
 class SkModel : public IModel {
 public:
     //SkModel (const ITable&);
-    SkModel (const YAML::Node&);
+    SkModel (const ITab&);
 
     Bounds GetBounds() const override;
     std::vector<std::string> GetAnimations() const override;

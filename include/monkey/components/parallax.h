@@ -9,7 +9,7 @@
 class Parallax : public Component {
 public:
     Parallax (const std::string& camId, glm::vec2 factor);
-    Parallax(const ITable&);
+    Parallax(const ITab&);
     void Start() override;
     void Begin() override;
     void Update(double) override {}

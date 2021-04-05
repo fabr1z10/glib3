@@ -3,7 +3,7 @@
 #include "monkey/entity.h"
 #include "monkey/math/geomalgo.h"
 
-TexAnimator::TexAnimator(const ITable & t) {
+TexAnimator::TexAnimator(const ITab & t) {
     m_T = t.get<glm::vec2> ("period");
     m_sgn.x = m_T.x > 0 ? 1.0f : (m_T.x < 0 ? -1.0f : 0.0f);
     m_sgn.y = m_T.y > 0 ? 1.0f : (m_T.y < 0 ? -1.0f : 0.0f);

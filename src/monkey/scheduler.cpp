@@ -3,7 +3,7 @@
 #include <iostream>
 
 
-Scheduler::Scheduler(const ITable & table) : Runner(table) {
+Scheduler::Scheduler(const ITab & table) : Runner(table) {
 
 }
 
@@ -52,8 +52,8 @@ void Scheduler::Update(double dt) {
 
 void Scheduler::AddScript(const std::string &name, std::shared_ptr<Script> script) {
     if (m_scripts.count(name) > 0) {
-        // a script with the same name already exists. Suspend it
-        m_scripts[name]->SetSuspended(true);
+        // a script with the same name already exists. Kill it
+        m_scripts[name]->Kill();
     }
     m_queuedScripts[name] = script;
 

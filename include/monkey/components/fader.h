@@ -1,12 +1,13 @@
 #pragma once
 
 #include "monkey/components/ianimator.h"
+#include <glm/glm.hpp>
 
 class Renderer;
 
 class Fader : public IAnimator {
 public:
-    Fader (const ITable&);
+    Fader (const ITab&);
     virtual ~Fader() {}
     bool IsComplete() const override;
     void Start() override;

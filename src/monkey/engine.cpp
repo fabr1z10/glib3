@@ -75,6 +75,8 @@ void Engine::init(const std::string& gameFolder) {
     m_mainTable = std::make_unique<PyTable>(module.attr("engine"));
 
     glm::vec2 deviceSize = m_mainTable->get<glm::vec2>("device_size");
+    m_tickMultiplier = m_mainTable->get<float>("tick_multiplier", 1.0f);
+
     SetDeviceSize(deviceSize);
     m_winSize = m_mainTable->get<glm::vec2>("window_size");
     m_title = m_mainTable->get<std::string>("title");

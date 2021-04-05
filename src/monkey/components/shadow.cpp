@@ -3,7 +3,7 @@
 
 Shadow::Shadow() : Component() {}
 
-Shadow::Shadow(const ITable &t) : Component() {
+Shadow::Shadow(const ITab &t) : Component() {
 
 }
 
@@ -23,7 +23,7 @@ void Shadow::Update(double) {
 
 ShadowX::ShadowX() : Component() {}
 
-ShadowX::ShadowX(const ITable &t) : Component() {
+ShadowX::ShadowX(const ITab&t) : Component() {
     m_target = t.get<std::string>("target");
     m_y = t.get<float>("y");
 }

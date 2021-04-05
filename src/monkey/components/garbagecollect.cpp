@@ -1,7 +1,7 @@
 #include <monkey/components/garbagecollect.h>
 #include <monkey/engine.h>
 
-GarbageCollect::GarbageCollect(const ITable& t) : Component()
+GarbageCollect::GarbageCollect(const ITab& t) : Component()
 {
     m_target = nullptr;
     m_tag = t.get<std::string>("cam", "");

@@ -2,7 +2,7 @@
 #include <monkey/entity.h>
 #include <glm/gtx/transform.hpp>
 
-ShadowRenderer::ShadowRenderer(const ITable& t) : Renderer(t) {
+ShadowRenderer::ShadowRenderer(const ITab& t) : Renderer(t) {
 
 	m_angle = t.get<float>("angle", 0.0f);
 	m_scaleLength = t.get<float>("scale_length", 1.0f);

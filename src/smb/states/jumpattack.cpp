@@ -1,4 +1,5 @@
 #define GLM_ENABLE_EXPERIMENTAL
+
 #include "jumpattack.h"
 #include <glm/gtx/transform.hpp>
 #include <monkey/components/ianimator.h>
@@ -7,9 +8,9 @@
 #include <monkey/engine.h>
 #include <monkey/python/wrap1.h>
 #include <monkey/components/controller2d.h>
-#include <monkey/singleton.h>
 
-JAttack::JAttack(const ITable & t) : PlatformerState(t) {
+
+JAttack::JAttack(const ITab& t) : PlatformerState(t) {
 	m_animUp = t.get<std::string>("anim_up", "jumpup");
 	m_animDown = t.get<std::string>("anim_down", "jumpdown");
 	m_animLand = t.get<std::string>("anim_land");

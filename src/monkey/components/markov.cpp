@@ -3,17 +3,17 @@
 #include <monkey/random.h>
 #include <monkey/engine.h>
 
-MarkovStateMachine::MarkovStateMachine(const ITable& t) : StateMachine() {
+MarkovStateMachine::MarkovStateMachine(const ITab& t) : StateMachine() {
 	m_initialState = t.get<std::string>("initialState");
 	m_currentState = nullptr;
 	auto factory = Engine::get().GetSceneFactory();
 
 
-	t.foreach<PyTable>("states", [&] (PyTable table) {
+	t.foreach("states", [&] (const ITab& table) {
 		auto state = factory->make2<State>(table);
 		this->AddState(state->getId(), state);
 	});
-	if (t.hasKey("probs")) {
+	if (t.has("probs")) {
 		auto probs = t.get<PyDict>("probs").toDict<std::string, pybind11::list>();
 		for (const auto& p : probs) {
 			auto startState = p.first;

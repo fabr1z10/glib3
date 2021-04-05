@@ -19,7 +19,7 @@ public:
 	 * @param acceleration The acceleration
 	 * @param fliph Flip entity horizontally when going left
 	 */
-	JAttack (const ITable&);
+	JAttack (const ITab&);
 	void AttachStateMachine(StateMachine * sm) override;
 
 	void Run(double) override;

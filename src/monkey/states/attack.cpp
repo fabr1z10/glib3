@@ -4,7 +4,7 @@
 #include <GLFW/glfw3.h>
 
 
-Attack::Attack(const ITable &t) : State(t) {
+Attack::Attack(const ITab &t) : State(t) {
 
     m_anim = t.get<std::string>("anim");
 

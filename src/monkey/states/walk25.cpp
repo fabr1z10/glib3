@@ -17,7 +17,7 @@ Walk25::Walk25(float speed, float acceleration, bool fliph, bool anim4, float ju
     m_acceleration(acceleration), m_flipHorizontal(fliph), m_velocitySmoothingX(0.0f), m_velocitySmoothingY(0.0f), m_4WayAnim(anim4),
     m_dir(dir), m_jumpVelocity(jumpspeed) {}
 
-Walk25::Walk25(const ITable & t) : State(t), m_velocitySmoothingX(0.0f), m_velocitySmoothingY(0.0f), m_4WayAnim(false),
+Walk25::Walk25(const ITab& t) : State(t), m_velocitySmoothingX(0.0f), m_velocitySmoothingY(0.0f), m_4WayAnim(false),
 m_airAttack(false) {
     m_speed = t.get<float>("speed");
     m_acceleration = t.get<float> ("acceleration");
@@ -28,10 +28,11 @@ m_airAttack(false) {
     m_jumpKey = t.get<int>("jumpkey");
 
     // read attack keys and anims
-    t.foreach<py::tuple>("attack", [&] (const py::tuple& t) {
-        auto key = t[0].cast<int>();
-        auto anim = t[1].cast<std::string>();
-        m_attacks.insert(std::make_pair(key, anim));
+    t.foreach("attack", [&] (const ITab& t) {
+//        TODO CIAPPO
+//        auto key = t[0].cast<int>();
+//        auto anim = t[1].cast<std::string>();
+//        m_attacks.insert(std::make_pair(key, anim));
     });
 }
 

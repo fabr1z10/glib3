@@ -20,13 +20,13 @@ void Follow::Begin() {
 
 }
 
-Follow::Follow(const ITable & t) : Component(t), m_fixZ{false} {
+Follow::Follow(const ITab & t) : Component(t), m_fixZ{false} {
     m_dir = glm::vec3(0,0, -1);
 
     m_camId = t.get<std::string>("cam");
     m_relativePos = t.get<glm::vec3>("relativepos");
     m_up = t.get<glm::vec3>("up");
-    if (t.hasKey("z")) {
+    if (t.has("z")) {
         float z = t.get<float>("z");
         fixZ(z);
     }

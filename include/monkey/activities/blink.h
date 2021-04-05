@@ -12,7 +12,7 @@ public:
     /*! Blink the given actor for a certain time, each blink lasting t.
      */
     Blink(float totalDuration, float blinkDuration);
-    Blink (const ITable&);
+    Blink (const ITab&);
     //@}
     void Start() override;
     void Run (float dt) override ;

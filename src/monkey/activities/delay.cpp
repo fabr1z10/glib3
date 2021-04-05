@@ -1,7 +1,7 @@
 #include <monkey/activities/delay.h>
 
 
-DelayTime::DelayTime(const ITable & t) : Activity() {
+DelayTime::DelayTime(const ITab & t) : Activity() {
     m_time = t.get<float>("sec");
 }
 
@@ -17,7 +17,7 @@ void DelayTime::Run(float dt) {
 }
 
 
-DelayTimeDynamic::DelayTimeDynamic(const ITable & t) : Activity() {
+DelayTimeDynamic::DelayTimeDynamic(const ITab & t) : Activity() {
     m_func = t.get<pybind11::function>("func");
 }
 

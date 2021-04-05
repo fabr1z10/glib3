@@ -16,22 +16,22 @@ PolygonalMover::Movement::Movement(glm::vec2 delta, float speed, float hold) : s
 PolygonalMover::PolygonalMover(int loopType, glm::vec2 origin) : Mover(), m_O(origin), m_startIndex(0), m_pctComplete(0.0f) {}
 
 
-PolygonalMover::PolygonalMover(const ITable & t) : Mover(), m_O(glm::vec2(0.0f)), m_startIndex(0), m_pctComplete(0.0f), m_hasSinX(false), m_hasSinY(false) {
+PolygonalMover::PolygonalMover(const ITab & t) : Mover(), m_O(glm::vec2(0.0f)), m_startIndex(0), m_pctComplete(0.0f), m_hasSinX(false), m_hasSinY(false) {
 	m_O = t.get<glm::vec2>("origin");
 	//m_loopType = t.get<int>("loop");
 	m_pctComplete = t.get<float>("pct", 0.0f);
-	if (t.hasKey("sinx")) {
+	if (t.has("sinx")) {
 	    m_hasSinX = true;
 	    m_sinx = t.get<glm::vec3>("sinx");
 	    // convert period to freq
 	    m_sinx[1] = 2 * M_PI / m_sinx[1];
 	}
-    if (t.hasKey("siny")) {
+    if (t.has("siny")) {
         m_hasSinY = true;
         m_siny = t.get<glm::vec3>("siny");
         m_siny[1] = 2 * M_PI / m_siny[1];
     }
-	t.foreach<PyDict>("moves", [&] (const PyDict& d) {
+	t.foreach("moves", [&] (const ITab& d) {
 		auto delta = d.get<glm::vec2>("delta");
 		auto speed = d.get<float>("speed");
 		auto hold = d.get<float>("hold");
@@ -129,7 +129,7 @@ void PolygonalMover::setCompleteCallback(pybind11::function f) {
     m_hook = std::make_shared<pybind11::function>(f);
 }
 
-AcceleratedMover::AcceleratedMover(const ITable& t) {
+AcceleratedMover::AcceleratedMover(const ITab& t) {
 	m_angularSpeed = t.get<float>("angular_speed", 0.0f);
 	m_initialVelocity = t.get<glm::vec2>("v0");
 	m_acceleration = t.get<glm::vec2>("acceleration");

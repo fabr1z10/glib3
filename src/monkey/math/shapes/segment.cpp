@@ -5,7 +5,7 @@
 #include <vector>
 
 
-Segment::Segment(const ITable& t) : IConvexPolygon(t) {
+Segment::Segment(const ITab& t) : IConvexPolygon(t) {
     m_A = t.get<glm::vec2>("A");
     m_B = t.get<glm::vec2>("B");
     initBounds();

@@ -17,7 +17,7 @@ public:
         std::cout << "attempt to destroy cam\n";
 
     }
-    Camera(const ITable&);
+    Camera(const ITab&);
     virtual void Resize(int width, int height) = 0;
     glm::vec3 GetPosition() const;
     void SetPosition(glm::vec3 eye, glm::vec3 direction, glm::vec3 up = glm::vec3(0, 1, 0), bool alwaysUpdate = false);
@@ -95,7 +95,7 @@ inline void Camera::SetScreenViewPort(glm::vec4 viewport) {
 class OrthographicCamera : public Camera {
 public:
     OrthographicCamera(float orthoWidth, float orthoHeight, glm::vec4 viewport = glm::vec4());
-    OrthographicCamera(const ITable&);
+    OrthographicCamera(const ITab&);
     void setOrthoSize(float w, float h);
     glm::vec2 getOrthoSize() const;
     // set the visible rectangle
@@ -134,7 +134,7 @@ inline glm::vec2 OrthographicCamera::GetSize() {
 class PerspectiveCamera : public Camera, public WindowResizeListener {
 public:
     PerspectiveCamera (glm::vec4 viewport, float fov = 45.0f, float nearPlane = 0.05f, float farPlane = 1000.0f);
-    PerspectiveCamera (const ITable&);
+    PerspectiveCamera (const ITab&);
     void Resize(int w, int h) override;
     bool IsVisible(const Bounds&) override {return true;}
     void Notify(float, float) override ;

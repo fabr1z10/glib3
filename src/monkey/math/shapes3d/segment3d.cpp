@@ -1,6 +1,6 @@
 #include <monkey/math/shapes3d/segment3d.h>
 
-Segment3D::Segment3D(const ITable& t) : IShape(t) {
+Segment3D::Segment3D(const ITab& t) : IShape(t) {
 	a = t.get<glm::vec3>("a");
 	b = t.get<glm::vec3>("b");
 

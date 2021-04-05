@@ -9,6 +9,8 @@ import components as compo
 import func
 import runners
 
+
+
 def default_room(desc: dict):
     id = desc['id']
     width = desc['width']
@@ -36,11 +38,11 @@ def default_room(desc: dict):
 
     ui = entity.Entity(tag='ui')
     ui.camera = cam.OrthoCamera(cam_width, vars.ui_height, cam_width, vars.ui_height, [0, 0, cam_width, vars.ui_height], tag='uicam')
-
-    ui.add(entity.Text(font='ui', size=8, text=monkey.engine.read(dv['text']), color=vars.Colors.current_action,
-         align=entity.TextAlignment.bottom, tag='current_verb', pos=(cam_width / 2, 48, 0)))
+    #monkey.engine.read(dv['text']
+    ui.add(entity.Text(font='ui', size=8, text='mierda', color=vars.Colors.current_action,
+      align=entity.TextAlignment.bottom, tag='current_verb', pos=(cam_width / 2, 48, 0)))
     ui.add_component(compo.HotSpotManager())
-
+    r.init.append(func.refresh_inventory)
 
     r.add(ui)
     cy = vars.ui_height - 2 * vars.font_size
@@ -54,6 +56,14 @@ def default_room(desc: dict):
         shift = max(shift, 1 + len(monkey.engine.read(vars.verbs[i]['text'])))
         ui.add(e)
         count += 1
+    inventory_node = entity.TextView(factory=factories.items.make_inventory_button, pos=(160, 0), size=(160, 48),
+                                     font_size=8, lines=6, delta_x=26, tag='inventory')
+    inventory_node.add_component(compo.HotSpotManager())
+
+    r.add(inventory_node)
+
+#     inventory_node.addComponent(compo.HotSpotManager())
+
 
     # now add all items
     if 'items' in desc:
@@ -80,8 +90,9 @@ def default_room(desc: dict):
         print ('ciao ' + tp)
         factory = getattr(factories.items, tp)
         e = factory()(key, item_desc)
-        parent = item_desc.get('parent', 'main')
-        r.add(e, parent)
+        if e is not None:
+            parent = item_desc.get('parent', 'main')
+            r.add(e, parent)
     return r
 
     # super().__init__(id, width, height)

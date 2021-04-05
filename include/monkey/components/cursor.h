@@ -9,7 +9,7 @@ class Camera;
 class Cursor : public Component, public MouseListener {
 public:
     Cursor () : Component() {}
-    Cursor (const ITable&) : Component(), MouseListener() {}
+    Cursor (const ITab&) : Component(), MouseListener() {}
 
     void Start() override ;
     void Update(double) override {}

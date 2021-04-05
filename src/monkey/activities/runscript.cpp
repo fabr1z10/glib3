@@ -2,10 +2,10 @@
 #include <monkey/engine.h>
 #include <monkey/scheduler.h>
 
-RunScript::RunScript(const ITable& t) : Activity() {
+RunScript::RunScript(const ITab& t) : Activity() {
 
-    auto ts = t.get<PyTable>("script");
-    m_script = std::make_shared<Script>(ts);
+    auto ts = t["script"];
+    m_script = std::make_shared<Script>(*ts);
 }
 
 void RunScript::Start() {

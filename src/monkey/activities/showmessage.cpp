@@ -6,7 +6,7 @@
 #include <monkey/model/textmodel.h>
 
 
-ShowMessage::ShowMessage(const ITable & t) {
+ShowMessage::ShowMessage(const ITab& t) {
     m_actor = -1;
     m_message = t.get<std::string>("text");
     m_font = t.get<std::string>("font");

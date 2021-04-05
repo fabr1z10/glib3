@@ -15,7 +15,7 @@ class HotSpot : public Component {
 public:
     HotSpot (int priority) : Component(), m_shape{nullptr}, m_focus{false}, m_priority{priority} {}
     //HotSpot (const LuaTable&);
-    HotSpot (const ITable&);
+    HotSpot (const ITab&);
     HotSpot (const HotSpot&);
     HotSpot (std::shared_ptr<IShape> shape, int priority) : Component(),
     m_shape{shape}, m_focus{false}, m_priority{priority} {}
@@ -67,7 +67,7 @@ inline int HotSpot::GetPriority() const {
 class HotSpotManager : public Component, public MouseListener, public KeyboardListener {
 public:
     HotSpotManager();
-    HotSpotManager(const ITable&);
+    HotSpotManager(const ITab&);
 
 
     ~HotSpotManager() override;

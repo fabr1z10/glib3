@@ -15,7 +15,7 @@ class Dynamics2D;
 class Walk25 : public State {
 public:
     Walk25(float speed, float acceleration, bool fliph, bool anim4, float jumpspeed, char dir='e');
-    Walk25 (const ITable&);
+    Walk25 (const ITab&);
     void Run(double) override;
     void Init (pybind11::dict&) override;
     void End () override;

@@ -15,7 +15,7 @@
 using namespace glm;
 
 
-Controller3D::Controller3D(const ITable & t) {
+Controller3D::Controller3D(const ITab & t) {
 
     auto size = t.get<glm::vec3>("size");
     // half sizes

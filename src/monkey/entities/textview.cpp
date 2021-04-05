@@ -8,14 +8,16 @@
 #include <monkey/spritefactory.h>
 #include <monkey/components/lambdahotspot.h>
 #include <monkey/model/textmodel.h>
+#include <monkey/input/pytab.h>
+#include <monkey/entities/text.h>
 
 namespace py = pybind11;
 
 
 
-TextView::TextView(const ITable & t) : Entity(t) {
-    glm::vec2 size = t.get<glm::vec2>("size");
-    float fontSize = t.get<float>("fontSize");
+TextView::TextView(const ITab& t) : Entity(t) {
+    auto size = t.get<glm::vec2>("size");
+    auto fontSize = t.get<float>("font_size");
     int lines = t.get<int>("lines");
     m_factory = t.get<pybind11::function>("factory");
 
@@ -31,14 +33,18 @@ TextView::TextView(const ITable & t) : Entity(t) {
 void TextView::init() {
     glm::vec2 wpos(GetPosition());
     m_loc = wpos;
-    auto cam = std::make_shared<OrthographicCamera>(m_width, m_height,glm::vec4(wpos.x, wpos.y, m_width, m_height));
+    auto cam = std::make_shared<OrthographicCamera>(m_width, m_height,glm::vec4(m_loc.x, m_loc.y, m_width, m_height));
     SetCamera(cam);
-    cam->SetPosition(glm::vec3(m_width*0.5f, -m_height*0.5f, 5.0f), glm::vec3(0,0,-1), glm::vec3(0,1,0));
+    cam->SetBounds(m_width*0.5f, m_width*0.5f,  -std::numeric_limits<float>::infinity(), -m_height*0.5f);
+    cam->SetPosition(glm::vec3(m_width*0.5f, -m_height*0.5f, 5.0f), glm::vec3(0,0,-1), glm::vec3(0,1,0), true);
+
+    //cam->SetPosition(glm::vec3(m_width*0.5f, -m_height*0.5f, 5.0f), glm::vec3(0,0,-1), glm::vec3(0,1,0));
     m_nextPos = glm::vec2(0.0f);
     m_scroll =false;
   //  AddArrows();
     auto textContainer = std::make_shared<Entity>();
-
+    //textContainer->AddChild(std::make_shared<Text>("ciao", "ui", 8.0f, TextAlignment::TOP_LEFT, glm::vec4(255.0f), glm::vec2(0.0f, 0.0f)));
+    //textContainer->AddChild(std::make_shared<Text>("cammello", "ui", 8.0f, TextAlignment::TOP_LEFT, glm::vec4(255.0f), glm::vec2(0.0f, -8.0f)));
     AddChild(textContainer);
     textContainer->SetPosition(glm::vec3(0.0f));
     m_textContainer = textContainer.get();
@@ -71,11 +77,11 @@ void TextView::AddEntity(pybind11::object& ref) {
     //ref["maxwidth"] = m_scroll ? m_width - m_deltax : m_width;
     py::object obj = m_factory(ref);
     obj.attr("maxwidth") = m_width;
-    PyTable ft(obj);
+    //PyTable ft(obj);
 
     // 1. find the number of rows of this
     auto mf = Engine::get().GetSceneFactory();
-    auto ptr = mf->make2<Entity>(ft);
+    auto ptr = mf->make2<Entity>(PyTab(obj));
 
     int n = dynamic_cast<TextModel*>(ptr->GetComponent<Renderer>()->GetModel())->GetNumberOfLines();
     m_nLines += n;
@@ -85,6 +91,7 @@ void TextView::AddEntity(pybind11::object& ref) {
     } else {
         glm::vec2 bottomLeftPos = m_nextPos - glm::vec2(0.0f, m_fontSize*n);
         m_textContainer->AddChild(ptr);
+        //bottomLeftPos = glm::vec2(0.0f);
         ptr->SetPosition(glm::vec3(bottomLeftPos, 0.0f));
         m_nextPos = bottomLeftPos;
     }

@@ -22,7 +22,7 @@ PlatformerState::PlatformerState(const PlatformerState &) {
 
 }
 
-PlatformerState::PlatformerState(const ITable & t) : State(t) {}
+PlatformerState::PlatformerState(const ITab& t) : State(t) {}
 
 
 void PlatformerState::AttachStateMachine(StateMachine * sm) {

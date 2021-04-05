@@ -33,12 +33,13 @@ Polygon::Polygon(const std::vector<float> &outline) {
 
 
 
-Polygon::Polygon(const ITable & t) : IShape(t) {
+Polygon::Polygon(const ITab& t) : IShape(t) {
     m_type = ShapeType::POLY;
     auto outline = t.get<std::vector<float> >("outline");
     m_outline = std::make_unique<PolygonHelper>(outline);
-    t.foreach<std::vector<float>>("holes", [&] (const std::vector<float>& l) {
-       m_holes.push_back(std::make_unique<PolygonHelper>(l));
+    t.foreach("holes", [&] (const ITab& t) {
+        auto l = t.as<std::vector<float>>();
+        m_holes.push_back(std::make_unique<PolygonHelper>(l));
     });
 
     m_bounds.min = glm::vec3(outline[0], outline[1], 0.0f);
@@ -93,7 +94,7 @@ bool PolygonHelper::isPointInside(glm::vec3 point) const {
     int nvert = m_points.size();
     for (i = 0, j = nvert-1; i < nvert; j = i++) {
         if ( ((m_points[i].y > point.y) != (m_points[j].y > point.y)) &&
-             (point.x < (m_points[j].x-m_points[i].x) * (point.y-m_points[i].y) / (m_points[j].y-m_points[i].y) + m_points[i].x) )
+             (point.x <= (m_points[j].x-m_points[i].x) * (point.y-m_points[i].y) / (m_points[j].y-m_points[i].y) + m_points[i].x) )
             c = !c;
     }
     return c;

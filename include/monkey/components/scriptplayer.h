@@ -5,7 +5,7 @@
 
 class ScriptPlayer : public Component {
 public:
-    ScriptPlayer(const ITable&);
+    ScriptPlayer(const ITab&);
 
     virtual ~ScriptPlayer();
 

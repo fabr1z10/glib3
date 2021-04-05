@@ -19,25 +19,25 @@ using namespace std;
 
 
 
-Entity::Entity(const ITable& t) : Ref(t),
+Entity::Entity(const ITab& t) : Ref(t),
     m_localTransform{glm::mat4(1.0)}, m_worldTransform{glm::mat4(1.0)}, m_parent(nullptr), m_flipHorizontal{false},
     m_enableControls{true}, m_update{true}
 {
 
     auto pos = t.get<glm::vec3>("pos", glm::vec3(0.0f));
-    if (t.hasKey("angle")) {
+    if (t.has("angle")) {
         auto angle = t.get<float>("angle", 0.0f);
         SetPosition(pos, deg2rad* angle);
     } else {
         SetPosition(pos);
     }
 
-    if (t.hasKey("transform")) {
+    if (t.has("transform")) {
     	m_localTransform = t.get<glm::mat4>("transform");
     }
 
 
-	if (t.hasKey("rotx")) {
+	if (t.has("rotx")) {
 		Rotate(glm::radians(t.get<float>("rotx")), glm::vec3(1.0f, 0.0f, 0.0f));
 	}
     auto flipx = t.get<bool>("flip_x", false);
@@ -45,27 +45,27 @@ Entity::Entity(const ITable& t) : Ref(t),
 
     m_layer = t.get<int>("layer", 0);
 
-    if (t.hasKey("scale")) {
+    if (t.has("scale")) {
         auto scale = t.get<float>("scale");
         SetScale(scale);
     }
 
     auto factory = Engine::get().GetSceneFactory();
 
-    if (t.hasKey("camera")) {
-        auto camt = t.get<PyTable>("camera");
-        auto camera = factory->make2<Camera>(camt);
+    if (t.has("camera")) {
+        auto camt = t["camera"];
+        auto camera = factory->make2<Camera>(*camt);
         SetCamera(camera);
 
     }
 
     // Add components ...
-    t.foreach<PyTable>("components", [&] (const PyTable& t) {
+    t.foreach("components", [&] (const ITab& t) {
         AddComponent(factory->make2<Component>(t));
     });
 
     // ... and children
-    t.foreach<PyTable>("children", [&] (const PyTable& t) {
+    t.foreach("children", [&] (const ITab& t) {
         AddChild(factory->make2<Entity>(t));
     });
 

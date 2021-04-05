@@ -3,7 +3,7 @@
 #include <monkey/factory.h>
 #include <monkey/asset.h>
 #include <unordered_set>
-#include <monkey/py.h>
+#include <monkey/itable.h>
 
 class Engine;
 class IModel;
@@ -67,21 +67,21 @@ public:
 
     template <typename T>
     void add2(const std::string& type) {
-        m_facs2.insert(std::make_pair(type, [] (const ITable& t) {
+        m_facs2.insert(std::make_pair(type, [] (const ITab& t) {
             return std::make_shared<T>(t);
         }));
     }
 
     template <typename T>
     void addAssetFactory(const std::string& type) {
-        m_assetFactories.insert(std::make_pair(type, [] (const YAML::Node& t) {
+        m_assetFactories.insert(std::make_pair(type, [] (const ITab& t) {
             return std::make_shared<T>(t);
         }));
     }
 
 
     template <typename T, bool = std::is_base_of<Ref, T>::value >
-    std::shared_ptr<T> make2 (const ITable& t) {
+    std::shared_ptr<T> make2 (const ITab& t) {
         auto type = t.get<std::string>("type" );
         auto it = m_facs2.find(type);
         if (it == m_facs2.end()) {
@@ -91,8 +91,8 @@ public:
     }
 
     template <typename T, bool = std::is_base_of<Asset, T>::value >
-    std::shared_ptr<T> makeAsset(const YAML::Node& t) {
-        auto type = t["type"].as<std::string>();
+    std::shared_ptr<T> makeAsset(const ITab& t) {
+        auto type = t.get<std::string>("type");
         auto it = m_assetFactories.find(type);
         if (it == m_assetFactories.end()) {
             GLIB_FAIL("Unknown type: " << type);
@@ -101,8 +101,8 @@ public:
     }
 
     template <typename T, bool = std::is_base_of<Asset, T>::value >
-    std::shared_ptr<T> makeDynamicAsset(const YAML::Node& t, const ITable& args) {
-        auto type = t["type"].as<std::string>();
+    std::shared_ptr<T> makeDynamicAsset(const ITab& t, const ITab& args) {
+        auto type = t.get<std::string>("type");
         auto it = m_dynamicAssetFactories.find(type);
         if (it == m_dynamicAssetFactories.end()) {
             GLIB_FAIL("Unknown type: " << type);
@@ -121,10 +121,10 @@ public:
 //    Factory<State> m_stateFactory;
 //    Factory<SkeletalAnimation> m_skeletalAnimFactory;
 
-    std::unordered_map<std::string, std::function<std::shared_ptr<Object>(const ITable&)> > m_facs2;
-    std::unordered_map<std::string, std::function<std::shared_ptr<Object>(const YAML::Node&)> > m_assetFactories;
+    std::unordered_map<std::string, std::function<std::shared_ptr<Object>(const ITab&)> > m_facs2;
+    std::unordered_map<std::string, std::function<std::shared_ptr<Object>(const ITab&)> > m_assetFactories;
 
-    std::unordered_map<std::string, std::function<std::shared_ptr<Object>(const YAML::Node&, const ITable&)> > m_dynamicAssetFactories;
+    std::unordered_map<std::string, std::function<std::shared_ptr<Object>(const ITab&, const ITab&)> > m_dynamicAssetFactories;
 
     //Factory<StateInitializer> m_stateInitFactory;
     //Factory<StateBehaviour> m_stateBehaviorFactory;

@@ -14,7 +14,7 @@ public:
 	 * @param acceleration The acceleration
 	 * @param fliph Flip entity horizontally when going left
 	 */
-	KeyMoveF (const ITable&);
+	KeyMoveF (const ITab&);
 	void Run(double) override;
 	void Init (pybind11::dict&) override;
 	void End () override;

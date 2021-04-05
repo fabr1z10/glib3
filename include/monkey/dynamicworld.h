@@ -50,7 +50,7 @@ class DynamicWorldBuilder : public Runner {
 public:
     DynamicWorldBuilder(float cellWidth, float cellHeight, const std::string& camName) : Runner(),
         m_width(cellWidth), m_height(cellHeight), m_x(-1), m_y(-1), m_camName(camName), m_halfWidth(cellWidth*0.5f), m_halfHeight(cellHeight*0.5f), m_itemCount(0) {}
-    DynamicWorldBuilder(const ITable& t);
+    DynamicWorldBuilder(const ITab& t);
     ~DynamicWorldBuilder() override;
     //void Init() override;
 	void Begin() override;

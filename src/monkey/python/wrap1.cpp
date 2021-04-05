@@ -18,6 +18,8 @@
 #include <monkey/skeletal/skanimator.hpp>
 #include <monkey/model/boxedmodel.h>
 #include <monkey/components/animator.h>
+#include <monkey/input/pytab.h>
+
 namespace py = pybind11;
 
 Wrap1::Wrap1() : m_entity(nullptr) {
@@ -174,7 +176,7 @@ void Wrap1::appendText(pybind11::object text) {
 int Wrap1::add(pybind11::object ref) {
 
     auto mf = Engine::get().GetSceneFactory();
-    PyTable table(ref);
+    PyTab table(ref);
     auto ptr = mf->make2<Entity>(table);
     m_entity->AddChild(ptr);
     return ptr->GetId();
@@ -207,6 +209,16 @@ pybind11::object Wrap1::create(Entity* e) {
     wo->setEntity(e);
     return w;
 
+}
+
+void Wrap1::runScript(Engine& engine, pybind11::object o) {
+
+    //auto scheduler = m_engine->GetRunner<Scheduler>();
+    auto scheduler = engine.GetRunner<Scheduler>();
+
+    //PyTab t(o);
+    auto script = std::make_shared<Script>(PyTab(o));
+    scheduler->AddScript(script);
 }
 
 pybind11::object Wrap1::getParent() {
@@ -298,8 +310,8 @@ void Wrap1::rotx(float angle) {
 void Wrap1::play(pybind11::object o) {
 
     auto sp = m_entity->GetComponent<ScriptPlayer>();
-    PyTable t(o);
-    auto script = std::make_shared<Script>(t);
+
+    auto script = std::make_shared<Script>(PyTab(o));
     sp->play(script);
 }
 

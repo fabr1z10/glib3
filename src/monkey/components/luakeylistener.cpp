@@ -5,13 +5,14 @@ namespace py = pybind11;
 
 
 
-LuaKeyListener::LuaKeyListener(const ITable & t) : Runner() {
-
-    t.foreach<py::dict>("keys", [&] (const py::dict& d) {
-        int key = d["key"].cast<int>();
-        py::function callback = d["func"].cast<py::function>();
+LuaKeyListener::LuaKeyListener(const ITab & t) : Runner() {
+    t.foreach("keys", [&] (const ITab& d) {
+        auto key = d.get<int>("key");
+        auto callback = d.get<py::function>("func");
         addHotKey (key, callback);
+
     });
+
 
 }
 

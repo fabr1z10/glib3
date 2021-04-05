@@ -3,7 +3,7 @@
 #include <monkey/math/geom.h>
 #include <monkey/engine.h>
 
-FreeMove::FreeMove(const ITable & t) : TargetActivity(t), m_shape(nullptr) {
+FreeMove::FreeMove(const ITab& t) : TargetActivity(t), m_shape(nullptr) {
 
     float x_default = 0.0f;
     float y_default = 0.0f;
@@ -18,15 +18,15 @@ FreeMove::FreeMove(const ITable & t) : TargetActivity(t), m_shape(nullptr) {
     //                           *(interp.get()));
     //m_interpolants.push_back(std::move(interp));
     // at least one keyframe should be provided
-    t.foreach<PyTable>("keyframes", [&] (const PyTable& t) {
-        float time = t.get<float>("t");
+    t.foreach("keyframes", [&] (const ITab& t) {
+        auto time = t.get<float>("t");
         // for keyframe whatever item you don't specify takes the last value
-        float x = t.get<float>("x", x_default);
-        float y = t.get<float>("y", y_default);
-        float z = t.get<float>("z", y_default);
+        auto x = t.get<float>("x", x_default);
+        auto y = t.get<float>("y", y_default);
+        auto z = t.get<float>("z", y_default);
         float angle = deg2rad * (t.get<float>("angle", angle_default));
-        float sx = t.get<float>("scalex", scalex_default);
-        float sy = t.get<float>("scaley", scaley_default);
+        auto sx = t.get<float>("scalex", scalex_default);
+        auto sy = t.get<float>("scaley", scaley_default);
         m_keyFrames.push_back(KeyFrame{time, x, y, z, angle, sx, sy});
         x_default = x;
         y_default = y;
@@ -71,10 +71,10 @@ FreeMove::FreeMove(const ITable & t) : TargetActivity(t), m_shape(nullptr) {
     }
 
     // cast shape ?
-    if (t.hasKey("cast")) {
+    if (t.has("cast")) {
         auto factory = Engine::get().GetSceneFactory();
-        auto shapeR = t.get<PyTable>("cast");
-        m_shape = factory->make2<IShape>(shapeR);
+        auto shapeR = t["cast"];
+        m_shape = factory->make2<IShape>(*shapeR);
         m_c1 = t.get<float>("c1");
         m_c2 = t.get<float>("c2");
         m_castTag = t.get<int>("cast_tag");

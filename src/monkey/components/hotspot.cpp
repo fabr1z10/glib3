@@ -11,16 +11,15 @@ extern GLFWwindow* window;
 
 namespace py = pybind11;
 
-HotSpot::HotSpot(const ITable & table) : m_shape(nullptr) {
+HotSpot::HotSpot(const ITab& table) : m_shape(nullptr) {
     m_priority = table.get<int>("priority", 0);
     auto factory = Engine::get().GetSceneFactory();
 
-    if (table.hasKey("shape")) {
-        auto shape_table = table.get<PyTable>("shape");
-        m_shape = factory->make2<IShape>(shape_table);
+    if (table.has("shape")) {
+        auto shape_table = table["shape"];
+        m_shape = factory->make2<IShape>(*shape_table);
     }
     m_focus = false;
-
 }
 
 HotSpot::HotSpot(const HotSpot& orig) :
@@ -65,13 +64,13 @@ HotSpotManager::HotSpotManager() : Component(), MouseListener(), m_currentlyActi
 
 
 
-HotSpotManager::HotSpotManager(const ITable & table) : Component(table) {
+HotSpotManager::HotSpotManager(const ITab& table) : Component(table) {
     m_currentlyActiveHotSpot = nullptr;
     m_pixelRatio = Engine::get().GetPixelRatio();
 
     // this is the function that gets called
     // if no hotspot is active when left mouse button is clicked,
-    if (table.hasKey("lmbclick")) {
+    if (table.has("lmbclick")) {
         auto f = table.get<py::function>("lmbclick");
         setLmbClickCallback([f] (float x, float y) { f(x, y); });
         //setLmbClickCallback([f] (float x, float y) { f.execute(x, y);});
@@ -108,6 +107,10 @@ void HotSpotManager::CursorPosCallback(GLFWwindow*, double x, double y) {
     //    return;
     bool isInViewport = m_defaultCamera->IsInViewport(x, y);
     if (!isInViewport) {
+        if (m_currentlyActiveHotSpot != nullptr) {
+            m_currentlyActiveHotSpot->onLeave();
+            m_currentlyActiveHotSpot = nullptr;
+        }
         return;
     }
     // loop through all hot-spots children of this entity
@@ -275,7 +278,6 @@ void HotSpotManager::MouseButtonCallback(GLFWwindow* window, int button, int act
             // convert mouse to world coordinates
             double xpos, ypos;
             glfwGetCursorPos(window, &xpos, &ypos);
-            std::cerr << xpos << ", " << ypos << " " << m_defaultCamera->GetTag() << "\n";
             if (m_defaultCamera->IsInViewport(xpos, ypos)) {
                 glm::vec2 wp = m_defaultCamera->GetWorldCoordinates(glm::vec2(xpos, ypos));
                 if (m_lmbClick) m_lmbClick(wp.x, wp.y);

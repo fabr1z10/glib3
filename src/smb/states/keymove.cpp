@@ -3,7 +3,7 @@
 #include <monkey/entity.h>
 #include <GLFW/glfw3.h>
 
-KeyMove::KeyMove(const ITable & t) : State(t) {
+KeyMove::KeyMove(const ITab& t) : State(t) {
     m_speed = t.get<float>("speed");
     m_rotationSpeed = t.get<float>("rotation_speed");
 

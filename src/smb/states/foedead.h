@@ -12,7 +12,7 @@ public:
      * @param fliph Flip entity horizontally when going left
      */
     FoeDead (float time);
-    FoeDead (const ITable&);
+    FoeDead (const ITab&);
 
 
     void Run(double) override;

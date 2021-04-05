@@ -14,7 +14,7 @@ Controller25::~Controller25() {
 }
 
 
-Controller25::Controller25(const ITable &t) : IController() {
+Controller25::Controller25(const ITab &t) : IController() {
     m_horizontalRayCount = t.get<int>("horRays", 4);
     m_verticalRayCount = t.get<int>("vertRays", 4);
     m_maskWall = t.get<int>("mask");

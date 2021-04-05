@@ -84,6 +84,7 @@
 #include <monkey/components/controller3d.h>
 #include <monkey/math/shapes3d/plane.h>
 #include <monkey/components/markov.h>
+#include <monkey/input/pytab.h>
 
 
 namespace py = pybind11;
@@ -302,7 +303,7 @@ std::shared_ptr<Entity> SceneFactory::Create(py::object& roomDef) {
     auto engineList = roomDef.attr("engines").cast<py::list>();
 
     for (const auto& p : engineList) {
-        PyTable t(p.cast<py::object>());
+        PyTab t(p.cast<py::object>());
         engine.AddRunner(make2<Runner>(t));
     }
 
@@ -346,7 +347,7 @@ std::shared_ptr<Entity> SceneFactory::Create(py::object& roomDef) {
     auto scene = std::make_shared<Entity>();
     auto sceneList = roomDef.attr("scene").cast<py::list>();
     for (const auto& p : sceneList) {
-        PyTable t(p.cast<py::object>());
+        PyTab t(p.cast<py::object>());
         scene->AddChild(make2<Entity>(t));
     }
 

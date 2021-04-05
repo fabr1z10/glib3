@@ -9,7 +9,7 @@ public:
     //! An activity that acts upon an entity
     //! You can provide the entity by giving the unique identifier or the tag
     TargetActivity() : Activity(), m_id(-1) {}
-    TargetActivity(const ITable&);
+    TargetActivity(const ITab&);
     virtual ~TargetActivity() { /*std::cerr << "clearing a target act\n";*/ }
     TargetActivity(int id);
     TargetActivity(const std::string& tag);

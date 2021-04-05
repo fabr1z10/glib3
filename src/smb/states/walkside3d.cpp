@@ -13,7 +13,7 @@
 WalkSide3D::WalkSide3D(float speed, float acceleration, bool fliph, float jumpSpeed) :
         m_speed(speed), m_acceleration(acceleration), m_flipHorizontally(fliph), m_velocitySmoothing(0.0f), m_jumpSpeed(jumpSpeed) {}
 
-WalkSide3D::WalkSide3D(const ITable& t) : State(t)  {
+WalkSide3D::WalkSide3D(const ITab& t) : State(t)  {
 	m_speed = t.get<float>("speed");
 	m_acceleration = t.get<float>("acceleration");
 	m_flipHorizontally = t.get<bool>("flipH");

@@ -8,6 +8,7 @@
 #include <monkey/assets/imodel.h>
 #include <monkey/skeletal/animation.hpp>
 #include <monkey/assets/skeletalanimation.h>
+#include <monkey/input/yamltab.h>
 
 //template <typename T>
 //class IAssetStore {
@@ -69,14 +70,14 @@ public:
     std::shared_ptr<SkAnimation> getSkeletalAnimation(const std::string &);
 
     // support for dynamic model / meshes
-    std::shared_ptr<IMesh> getMesh (const std::string&, const ITable& args);
+    std::shared_ptr<IMesh> getMesh (const std::string&, const ITab& args);
 
 
     void SetLocal (bool);
     void CleanUp();
 
     template<typename T>
-    std::shared_ptr<T> genericLoaderArgs (const std::string& id, const ITable& args) {
+    std::shared_ptr<T> genericLoaderArgs (const std::string& id, const ITab& args) {
         // check if node template is cached.
         auto iter = m_templates.find(id);
         if (iter != m_templates.end()) {
@@ -118,7 +119,7 @@ public:
         // store all models in this file
         for (const auto &i : mm) {
             std::cerr << i.first.as<std::string>() << std::endl;
-            auto asset = m_factory->makeAsset<T>(i.second);
+            auto asset = m_factory->makeAsset<T>(YAMLTab(i.second));
             store[location + "/" + i.first.as<std::string>()] = asset;
         }
         return store.at(id);

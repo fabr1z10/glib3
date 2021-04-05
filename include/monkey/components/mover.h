@@ -20,7 +20,7 @@ protected:
 
 class AcceleratedMover : public Mover {
 public:
-	AcceleratedMover(const ITable&);
+	AcceleratedMover(const ITab&);
 	void Start() override  {}
 	void Update(double) override ;
 private:
@@ -34,7 +34,7 @@ private:
 class PolygonalMover : public Mover {
 public:
     PolygonalMover (int loopType, glm::vec2 origin = glm::vec2(0.0f));
-    PolygonalMover (const ITable&);
+    PolygonalMover (const ITab&);
     std::type_index GetType() override;
     void addMovement(glm::vec2 delta, float speed, float hold);
     void Start() override ;

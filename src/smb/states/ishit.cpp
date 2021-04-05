@@ -3,7 +3,7 @@
 #include <monkey/components/controller2d.h>
 #include <monkey/components/ianimator.h>
 
-IsHit::IsHit(const ITable & t) : PlatformerState(t) {
+IsHit::IsHit(const ITab& t) : PlatformerState(t) {
 	m_acceleration = t.get<float>("acceleration");
 	m_anim = t.get<std::string>("anim");
 	m_dist = t.get<float>("dist");

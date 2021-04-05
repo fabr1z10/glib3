@@ -5,7 +5,7 @@
 class IConvexPolygon : public Shape2D {
 public:
     IConvexPolygon() : Shape2D() {}
-    explicit IConvexPolygon(const ITable& t) : Shape2D(t) {}
+    explicit IConvexPolygon(const ITab& t) : Shape2D(t) {}
     virtual std::vector<glm::vec2> getEdges() const = 0;
     virtual std::vector<glm::vec2> getVertices() const = 0;
 
@@ -15,7 +15,7 @@ public:
 class ConvexPolygon : public IConvexPolygon {
 public:
     explicit ConvexPolygon(const std::vector<glm::vec2>&);
-    explicit ConvexPolygon(const ITable&);
+    explicit ConvexPolygon(const ITab&);
     //std::unique_ptr<IShape> transform (const glm::mat4& t) override;
     glm::vec2 project(glm::vec2, const glm::mat4&) const ;
 

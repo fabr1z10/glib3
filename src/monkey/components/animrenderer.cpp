@@ -2,10 +2,10 @@
 #include <monkey/quadmesh.h>
 
 
-AnimRenderer::AnimRenderer(const ITable & t) : Renderer(t) {
+AnimRenderer::AnimRenderer(const ITab& t) : Renderer(t) {
 
 
-	t.foreach<PyDict>("frames", [&] (const PyDict& d) {
+	t.foreach("frames", [&] (const ITab& d) {
 		Frame f;
 		auto image = d.get<std::string>("image");
 		f.displacement = d.get<glm::vec2>("disp");

@@ -5,7 +5,7 @@
 
 class Attack : public State {
 public:
-    Attack (const ITable& t);
+    Attack (const ITab& t);
 
     void AttachStateMachine(StateMachine * sm) override;
 

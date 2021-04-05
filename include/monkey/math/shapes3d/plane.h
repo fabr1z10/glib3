@@ -5,7 +5,7 @@
 class Plane : public IShape {
 public:
 	Plane() : n(glm::vec3(0.0f)), d(0.0f) {}
-	Plane(const ITable& t);
+	Plane(const ITab& t);
 	bool isPointInside (glm::vec3) const override;
 	std::unique_ptr<Plane> computePlane(glm::vec3 a, glm::vec3 b, glm::vec3 c);
 	glm::vec3 getNormal() const;

@@ -12,7 +12,7 @@ public:
      * @param fliph Flip entity horizontally when going left
      */
     KoopaShell (float time, float timeWalk);
-    KoopaShell (const ITable&);
+    KoopaShell (const ITab&);
 
     void Run(double) override;
     void Init (pybind11::dict&) override;

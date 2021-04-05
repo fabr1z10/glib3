@@ -4,6 +4,7 @@
 #include <pybind11/stl.h>
 
 class Entity;
+class Engine;
 
 class PYBIND11_EXPORT Wrap1 {
 public:
@@ -52,6 +53,7 @@ public:
 	pybind11::list getAttackCollisionBounds();
 	pybind11::list getBoxSize(const std::string& animId);
     static pybind11::object create(Entity*);
+    static void runScript(Engine& engine, pybind11::object);
     void play (pybind11::object o);
     void killScripts ();
 private:

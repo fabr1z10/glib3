@@ -5,7 +5,7 @@
 
 class AnimRenderer : public Renderer {
 public:
-	AnimRenderer (const ITable&);
+	AnimRenderer (const ITab&);
 	void Draw(Shader*) override;
 	void Start() override;
 	void Update(double) override;

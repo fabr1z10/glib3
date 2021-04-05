@@ -47,7 +47,7 @@ public:
 			int verticalRayCount = 4)
 		: IController(), m_maxClimbAngle(maxClimbAngle), m_maxDescendAngle(maxDescendAngle), m_skinWidth(skinwidth), m_horizontalRayCount(horizontalRayCount),
 		  m_verticalRayCount(verticalRayCount), m_maskUp(maskUp), m_maskDown(maskDown), m_platform(nullptr) {}
-    Controller2D(const ITable&);
+    Controller2D(const ITab&);
 	virtual ~Controller2D();
 	void Start() override;
 	void Begin() override;

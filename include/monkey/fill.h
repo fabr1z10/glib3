@@ -2,7 +2,7 @@
 
 #include <glm/glm.hpp>
 #include <monkey/asset.h>
-#include <monkey/py.h>
+#include <monkey/itable.h>
 
 class Fill : public Object {
 public:
@@ -12,7 +12,7 @@ public:
 class SolidFill : public Fill {
 public:
     SolidFill(const glm::vec4&);
-    SolidFill(const ITable&);
+    SolidFill(const ITab&);
     glm::vec4 getColor (const glm::vec2& p) override;
 
 private:
@@ -22,7 +22,7 @@ private:
 class LinearGradient : public Fill {
 public:
     LinearGradient(const glm::vec4& color0, const glm::vec2 P0, const glm::vec4& color1, const glm::vec2 P1);
-    LinearGradient(const ITable&);
+    LinearGradient(const ITab&);
     glm::vec4 getColor (const glm::vec2& p) override;
 private:
     glm::vec3 m_color0;

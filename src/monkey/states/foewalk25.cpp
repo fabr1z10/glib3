@@ -9,7 +9,7 @@
 
 namespace py = pybind11;
 
-FoeWalk25::FoeWalk25(const ITable & t) : State(t) {
+FoeWalk25::FoeWalk25(const ITab& t) : State(t) {
     m_jumping = false;
     m_speed = t.get<float>("speed");
     m_acceleration = t.get<float>("acceleration");

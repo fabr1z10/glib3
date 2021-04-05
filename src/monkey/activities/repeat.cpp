@@ -1,6 +1,6 @@
 #include <monkey/activities/repeat.h>
 
-Repeat::Repeat(const ITable & t) : Activity() {
+Repeat::Repeat(const ITab & t) : Activity() {
     m_func = t.get<pybind11::function>("func");
     m_interval = t.get<float>("every");
 }

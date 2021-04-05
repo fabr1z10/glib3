@@ -5,7 +5,7 @@
 Scroll::Scroll(const std::string &camId, glm::vec2 targetPos, bool relative, float speed) : Activity(),
     m_targetPos{targetPos}, m_relative{relative}, m_speed{speed}, m_camId{camId}, m_distanceToCover{0.0f}, m_distanceCovered{0.0f} {}
 
-Scroll::Scroll(const ITable &t) : m_distanceToCover{0.0f}, m_distanceCovered{0.0f} {
+Scroll::Scroll(const ITab& t) : m_distanceToCover{0.0f}, m_distanceCovered{0.0f} {
     m_targetPos = t.get<glm::vec2>("pos");
     m_relative = t.get<bool>("relative");
     m_speed = t.get<float>("speed");

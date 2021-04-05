@@ -4,7 +4,7 @@
 
 class CallFunc : public Activity {
 public:
-    CallFunc(const ITable& t);
+    CallFunc(const ITab& t);
     void Start() override;
     void Run (float dt) override {}
 private:

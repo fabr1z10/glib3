@@ -4,6 +4,7 @@
 #include <monkey/entity.h>
 #include <monkey/script.h>
 #include <monkey/entities/textview.h>
+#include <monkey/input/pytab.h>
 
 Wrap1 get(const std::string & tag) {
     Wrap1 w;
@@ -64,11 +65,7 @@ std::vector<float> campos(const std::string& camId) {
 
 void play (pybind11::object o) {
 
-    auto scheduler = m_engine->GetRunner<Scheduler>();
-    PyTable t(o);
-
-    auto script = std::make_shared<Script>(t);
-    scheduler->AddScript(script);
+    Wrap1::runScript(*m_engine, o);
 
 }
 

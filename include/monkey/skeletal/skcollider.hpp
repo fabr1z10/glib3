@@ -17,7 +17,7 @@ class SkRenderer;
 class SkCollider : public ICollider {
 public:
     // ctor and clone
-    SkCollider (const ITable&);
+    SkCollider (const ITab&);
     void Start() override;
     void Begin() override;
 

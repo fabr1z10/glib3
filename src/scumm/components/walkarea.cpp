@@ -12,45 +12,52 @@
 
 //WalkArea::WalkArea(std::shared_ptr<IShape> shape, int priority) : ScriptHotSpot(shape, priority) {}
 
-WalkArea::WalkArea(const ITable & t) : Component(t) {
+WalkArea::WalkArea(const ITab& t) : Component(t) {
     auto factory = Engine::get().GetSceneFactory();
-    auto sh = t.get<PyTable>("shape");
-    m_shape = factory->make2<IShape>(sh);
+    auto sh = t["shape"];
+    m_shape = factory->make2<IShape>(*sh);
     m_shortestPath = std::make_shared<ShortestPath>();
-    m_shortestPath->setShape(m_shape);
 
-    if (t.hasKey("depth")) {
-        auto dref = t.get<PyTable>("depth");
-        auto depthFunc = factory->make2<Function2D>(dref);
+    if (t.has("depth")) {
+        auto dref = t["depth"];
+        auto depthFunc = factory->make2<Function2D>(*dref);
         SetDepthFunction(depthFunc);
     }
     
-    if (t.hasKey("scale")) {
-        auto dref = t.get<PyTable>("scale");
-        auto scaleFunc = factory->make2<Function2D>(dref);
+    if (t.has("scale")) {
+        auto dref = t["scale"];
+        auto scaleFunc = factory->make2<Function2D>(*dref);
         SetScalingFunction(scaleFunc);
     }
-    
-    if (t.hasKey("blocked_lines")) {
-        t.foreach<PyDict>("blocked_lines", [&] (const PyDict& d) {
-            auto A = d.get<glm::vec2>("A");
-            auto B = d.get<glm::vec2>("B");
-            auto active = d.get<bool>("active", true);
-            AddBlockedLine(A, B, active);
-        });
-//        luabridge::LuaRef ref = t.Get<luabridge::LuaRef>("blockedlines");
-//        for (int i = 0; i < ref.length(); ++i) {
-//            luabridge::LuaRef bl = ref[i+1];
-//            LuaTable t(bl);
-//            glm::vec2 A = t.Get<glm::vec2>("A");
-//            glm::vec2 B = t.Get<glm::vec2>("B");
-//            bool active = t.Get<bool>("active");
-//            AddBlockedLine(A, B, active);
-//        }
-     }
 
-    m_shortestPath = std::make_shared<ShortestPath>();
+    t.foreach("walls", [&] (const ITab& t) {
+        auto a = t.get<glm::vec2>("A");
+        auto b = t.get<glm::vec2>("B");
+        auto active = t.get<bool>("active");
+        m_shortestPath->addWall(a, b, active);
+    });
     m_shortestPath->setShape(m_shape);
+
+//    if (t.has("blocked_lines")) {
+//        t.foreach("blocked_lines", [&] (const ITab& d) {
+//            auto A = d.get<glm::vec2>("A");
+//            auto B = d.get<glm::vec2>("B");
+//            auto active = d.get<bool>("active", true);
+//            AddBlockedLine(A, B, active);
+//        });
+////        luabridge::LuaRef ref = t.Get<luabridge::LuaRef>("blockedlines");
+////        for (int i = 0; i < ref.length(); ++i) {
+////            luabridge::LuaRef bl = ref[i+1];
+////            LuaTable t(bl);
+////            glm::vec2 A = t.Get<glm::vec2>("A");
+////            glm::vec2 B = t.Get<glm::vec2>("B");
+////            bool active = t.Get<bool>("active");
+////            AddBlockedLine(A, B, active);
+////        }
+//     }
+
+//    m_shortestPath = std::make_shared<ShortestPath>();
+//    m_shortestPath->setShape(m_shape);
 }
 
 void WalkArea::onAdd(Entity * e) {
@@ -112,6 +119,10 @@ void WalkArea::assignScaleAndDepth (Entity* e) {
 //    return ptr;
 //}
 
+void WalkArea::EnableBlockedLine(int id, bool active) {
+    m_shortestPath->setWall(id, active);
+}
+
 void WalkArea::Start() {
     //ScriptHotSpot::Start();
 
@@ -138,10 +149,23 @@ void WalkArea::Start() {
         auto renderer = std::make_shared<BasicRenderer>(model);
         c->AddComponent(renderer);
         m_entity->AddChild(c);
+        for (const auto& wall : m_shortestPath->getWalls()) {
+            Segment seg(wall.A, wall.B);
+            auto d = std::make_shared<Entity>();
+            auto mod = m.createWireframe(&seg, glm::vec4(1.0f));
+            auto rend = std::make_shared<BasicRenderer>(mod);
+            d->AddComponent(rend);
+            c->AddChild(d);
+
+        }
     }
 }
 
-
+std::vector<glm::vec2> WalkArea::findPath(glm::vec2 A, glm::vec2 B) {
+    std::vector<glm::vec2> points;
+    m_shortestPath->find(A, B, points);
+    return points;
+}
 //void WalkArea::onClick(glm::vec2 worldCoords, int button, int action, int mods) {
 //
 //    // here I need to answer this question:
@@ -176,21 +200,6 @@ void WalkArea::Start() {
 //    return m_scaleFunc->operator()(x, y);
 //}
 
-void WalkArea::AddBlockedLine(glm::vec2 A, glm::vec2 B, bool active) {
-    m_walls.push_back( BlockedLine { LineSegment{A, B}, active });
-}
 
-void WalkArea::EnableBlockedLine(int i, bool value) {
-    m_walls[i].active = value;
 
-}
-
-std::vector<LineSegment> WalkArea::GetActiveWalls() const {
-    std::vector<LineSegment> segs;
-    for (auto& m : m_walls) {
-        if (m.active)
-            segs.push_back(m.seg);
-    }
-    return segs;
-}
 

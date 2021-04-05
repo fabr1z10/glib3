@@ -5,7 +5,7 @@
 class AABB : public IShape {
 public:
 	AABB(glm::vec3 size, glm::vec3 offset) : IShape(offset), m_size(size) {}
-	AABB(const ITable& t);
+	AABB(const ITab& t);
 	bool isPointInside (glm::vec3) const override;
 	glm::vec3 getSize() const;
 private:

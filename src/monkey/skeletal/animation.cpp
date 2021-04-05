@@ -2,35 +2,33 @@
 #include <monkey/skeletal/skmodel.hpp>
 #include <glm/gtx/transform.hpp>
 
-SkAnimation::SkAnimation(const YAML::Node & t) {
-	m_loop = t["loop"].as<bool>(true);
-	m_length = t["length"].as<float>();
+SkAnimation::SkAnimation(const ITab& t) {
+	m_loop = t.get<bool>("loop", true);
+	m_length = t.get<float>("length");
 
-	auto keyframes = t["keyframes"].as<std::vector<YAML::Node>>();
-	int index = 0;
-	for (const auto& keyframe : keyframes) {
-		// get the timestamp
-		auto t = keyframe["t"].as<float>();
-		std::unordered_map<std::string, JointTransform> pose;
-		// for each joint I need 7 numbers: x, y, z (translation), rot, ax, ay, az (rotation,
-		// specified with axis and rotation in degrees)
-        auto bones = keyframe["pose"].as<std::vector<YAML::Node>>();
-        for (const auto& bone : bones) {
-			auto jointId = bone["mesh"].as<std::string>();
-			JointTransform t;
-			t.translation = YamlWrapper::as<glm::vec3>(bone, "pos", glm::vec3(0.0f));
-			if (bone["rot"]) {
-				auto rotDef = YamlWrapper::as<glm::vec4>(bone, "rot");
-				float angle = glm::radians(rotDef[0]);
-				auto axis = glm::normalize(glm::vec3(rotDef[1], rotDef[2], rotDef[3]));
-				t.rotation = glm::angleAxis(angle, axis);
-			}
-			t.scale = YamlWrapper::as<glm::vec3>(bone, "scale", glm::vec3(1.0f));
-			pose[jointId] = t;
-		};
-		m_keyFrames.push_back(std::make_shared<SKeyFrame>(index, t, pose));
-		index++;
-	}
+    int index = 0;
+	t.foreach("keyframes", [&] (const ITab& keyframe) {
+        auto t = keyframe.get<float>("t");
+        std::unordered_map<std::string, JointTransform> pose;
+        // for each joint I need 7 numbers: x, y, z (translation), rot, ax, ay, az (rotation,
+        // specified with axis and rotation in degrees)
+        keyframe.foreach("pose", [&] (const ITab& bone) {
+            auto jointId = bone.get<std::string>("mesh");
+            JointTransform t;
+            t.translation = bone.get<glm::vec3>("pos", glm::vec3(0.0f));
+            if (bone.has("rot")) {
+                auto rotDef = bone.get<glm::vec4>("rot");
+                float angle = glm::radians(rotDef[0]);
+                auto axis = glm::normalize(glm::vec3(rotDef[1], rotDef[2], rotDef[3]));
+                t.rotation = glm::angleAxis(angle, axis);
+            }
+            t.scale = bone.get<glm::vec3>("scale", glm::vec3(1.0f));
+            pose[jointId] = t;
+
+        });
+        m_keyFrames.push_back(std::make_shared<SKeyFrame>(index, t, pose));
+        index++;
+    });
 
 	//  TO DO attack boxes
 //    t.foreach<PyDict> ("attack", [&] (const PyDict& dict) {

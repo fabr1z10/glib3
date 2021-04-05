@@ -74,7 +74,7 @@ public:
             : IController(), m_maxClimbAngle(maxClimbAngle), m_maxDescendAngle(maxDescendAngle), m_skinWidth(skinwidth), m_horizontalRayCount(horizontalRayCount), m_verticalRayCount(verticalRayCount), m_platform(nullptr) {}
     virtual ~Controller3D() {}
 
-    Controller3D (const ITable&);
+    Controller3D (const ITab&);
     void Start() override;
     void Begin() override;
     bool IsFalling(int x, int z);

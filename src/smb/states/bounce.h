@@ -7,7 +7,7 @@ class Controller2D;
 // this is the walk state used in platformers like SuperMario
 class Bounce : public PlatformerState {
 public:
-    Bounce (const ITable&);
+    Bounce (const ITab&);
 
     void AttachStateMachine(StateMachine*) override;
 

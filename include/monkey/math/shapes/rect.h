@@ -6,7 +6,7 @@
 class Rect : public IConvexPolygon {
 public:
     Rect(float width, float height, glm::vec3 offset=glm::vec3(0.0f));
-    explicit Rect(const ITable&);
+    explicit Rect(const ITab&);
     //std::unique_ptr<IShape> transform (const glm::mat4& t) override;
 
     float getWidth() const;

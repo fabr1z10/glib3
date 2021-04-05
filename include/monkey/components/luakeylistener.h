@@ -11,7 +11,7 @@
 class LuaKeyListener : public Runner, public KeyboardListener {
 public:
     LuaKeyListener() : KeyboardListener(), Runner() {}
-    LuaKeyListener(const ITable&);
+    LuaKeyListener(const ITab&);
     LuaKeyListener(const LuaKeyListener&);
 
     void addHotKey (int, pybind11::function);

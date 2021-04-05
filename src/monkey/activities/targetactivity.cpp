@@ -6,8 +6,8 @@ TargetActivity::TargetActivity(int id) : Activity(), m_id(id), m_entity(nullptr)
 
 }
 
-TargetActivity::TargetActivity(const ITable & t) : Activity(), m_id(-1) {
-    if (t.hasKey("tag")) {
+TargetActivity::TargetActivity(const ITab & t) : Activity(), m_id(-1) {
+    if (t.has("tag")) {
         m_tag = t.get<std::string>("tag");
     } else {
         m_id = t.get<int>("id");

@@ -1,12 +1,12 @@
 #pragma once
 
 #include "monkey/components/ianimator.h"
-
+#include <glm/glm.hpp>
 class Renderer;
 
 class TexAnimator : public IAnimator {
 public:
-    TexAnimator (const ITable&);
+    TexAnimator (const ITab&);
     virtual ~TexAnimator() {}
     bool IsComplete() const override;
     void Start() override;

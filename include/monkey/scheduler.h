@@ -7,7 +7,7 @@
 class Scheduler : public Runner {
 public:
     Scheduler() : Runner(), m_count{0} {}
-    Scheduler(const ITable&);
+    Scheduler(const ITab&);
     ~Scheduler() override;
     void Update(double) override;
     void AddScript (const std::string& name, std::shared_ptr<Script> script);

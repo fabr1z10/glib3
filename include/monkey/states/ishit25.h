@@ -16,7 +16,7 @@ class IsHit25 : public State {
 public:
     //FoeWalk25(float speed, float acceleration, bool fliph);
 
-    IsHit25(const ITable &);
+    IsHit25(const ITab &);
 
     void Run(double) override;
 

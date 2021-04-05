@@ -19,6 +19,9 @@ class Colors:
     inv_unselected = [170, 0, 170, 255]
     inv_selected= [255, 85, 255, 255]
 
+#inventory['meat'] = 1
+#inventory['fish'] = 1
+
 verbs = {
     'open': {'text': '$ui/open', 'items': 1},
     'close': {'text': '$ui/close', 'items': 1},

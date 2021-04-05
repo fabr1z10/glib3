@@ -6,7 +6,7 @@
 class StateTransition : public StateAction {
 public:
     StateTransition(const std::string& state);
-    StateTransition(const ITable&);
+    StateTransition(const ITab&);
 
     void Run (StateMachine*) override;
 private:
@@ -17,7 +17,7 @@ private:
 
 class StateFunc : public StateAction {
 public:
-    StateFunc(const ITable& t);
+    StateFunc(const ITab& t);
     void Run (StateMachine*) override;
 private:
 

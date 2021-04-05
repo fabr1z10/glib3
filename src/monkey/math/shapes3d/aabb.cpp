@@ -1,6 +1,6 @@
 #include <monkey/math/shapes3d/aabb.h>
 
-AABB::AABB(const ITable& t) : IShape(t) {
+AABB::AABB(const ITab& t) : IShape(t) {
 	m_type = ShapeType::AABB;
 	m_size = t.get<glm::vec3>("size");
 }

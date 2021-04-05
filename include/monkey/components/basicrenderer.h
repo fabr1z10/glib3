@@ -6,7 +6,7 @@
 class BasicRenderer : public Renderer {
 public:
     BasicRenderer (std::shared_ptr<IModel> model);
-    BasicRenderer (const ITable&);
+    BasicRenderer (const ITab&);
 
     void Draw(Shader*) override;
     void Start() override {}

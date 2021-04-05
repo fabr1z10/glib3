@@ -14,7 +14,7 @@ m_walkAnim(walkAnim), m_idleAnim(idleAnim), m_speed(speed), m_acceleration(accel
 
 }
 
-FoeChase::FoeChase(const ITable & t) : PlatformerState(t) {
+FoeChase::FoeChase(const ITab& t) : PlatformerState(t) {
     m_walkAnim = t.get<std::string>("walkanim");
     m_idleAnim = t.get<std::string>("idleanim");
     m_speed = t.get<float>("speed");
@@ -23,7 +23,8 @@ FoeChase::FoeChase(const ITable & t) : PlatformerState(t) {
     // m_flipIfPlatformEnds = t.get<bool>("flipWhenPlatformEnds");
     //m_left = t.get<int>("left");
     float cumProb = 0.0f;
-    t.foreach<PyDict>("attacks", [&] (const PyDict& dict) {
+
+    t.foreach("attacks", [&] (const ITab& dict) {
     	auto state = dict.get<std::string>("state");
     	auto prob = dict.get<float>("prob");
     	auto inRange = dict.get<bool> ("in_range");

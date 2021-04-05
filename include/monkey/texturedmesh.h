@@ -9,8 +9,8 @@ class TexturedMesh : public Mesh<T> {
 public:
 	TexturedMesh() = default;
 
-	TexturedMesh(const YAML::Node& main) : Mesh<T>(main) {
-        auto texName = main["tex"].as<std::string>();
+	TexturedMesh(const ITab& main) : Mesh<T>(main) {
+        auto texName = main.get<std::string>("tex");
         auto tex = Engine::get().GetAssetManager().GetTex(texName);
         m_texId = tex->GetTexId();
 	}

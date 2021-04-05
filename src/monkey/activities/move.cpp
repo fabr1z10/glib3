@@ -10,8 +10,8 @@ MoveTo::MoveTo(glm::vec2 pos, float speed, bool relative, bool immediate, bool f
 
 }
 
-MoveTo::MoveTo(const ITable & t) : TargetActivity(t), m_lengthCovered(0.0f), m_lengthToCover(0.0f), m_acceleration(0.0f), m_accelerationVector(0.0f) {
-    if (t.hasKey("to")) {
+MoveTo::MoveTo(const ITab & t) : TargetActivity(t), m_lengthCovered(0.0f), m_lengthToCover(0.0f), m_acceleration(0.0f), m_accelerationVector(0.0f) {
+    if (t.has("to")) {
         m_relative = false;
         m_toPos = t.get<glm::vec2>("to");
     } else {
@@ -21,7 +21,7 @@ MoveTo::MoveTo(const ITable & t) : TargetActivity(t), m_lengthCovered(0.0f), m_l
     m_speed = t.get<float>("speed", 0.0f);
     m_flip = t.get<bool>("flip", false);
     m_immediate = t.get<bool>("immediate", false);
-    if (t.hasKey("acceleration")) {
+    if (t.has("acceleration")) {
         float acceleration = t.get<float>("acceleration");
         SetAcceleration(acceleration);
     }
@@ -145,7 +145,7 @@ MoveAccelerated::MoveAccelerated (
 
 }
 
-MoveAccelerated::MoveAccelerated(const ITable & t) : TargetActivity(t) {
+MoveAccelerated::MoveAccelerated(const ITab & t) : TargetActivity(t) {
     //std::shared_ptr<Activity> MoveAcceleratedActFactory::Create(luabridge::LuaRef &ref) {
     //LuaTable table(ref);
 

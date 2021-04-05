@@ -7,7 +7,7 @@ Rect::Rect(float width, float height, glm::vec3 offset) : IConvexPolygon(), m_wi
     initBounds();
 }
 
-Rect::Rect(const ITable & t) : IConvexPolygon(t) {
+Rect::Rect(const ITab& t) : IConvexPolygon(t) {
     m_width = t.get<float>("width");
     m_height = t.get<float>("height");
     m_offset = t.get<glm::vec3> ("offset", glm::vec3(0.0f));

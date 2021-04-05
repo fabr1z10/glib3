@@ -18,7 +18,7 @@ private:
 class Polygon : public IShape {
 public:
     Polygon(const std::vector<float>& outline);
-    Polygon(const ITable &);
+    Polygon(const ITab &);
     bool isPointInside(glm::vec3 P) const override;
     int getHoleCount() const;
     const std::vector<glm::vec2>& getOutlineVertices() const;

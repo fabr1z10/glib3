@@ -3,7 +3,7 @@
 
 using namespace glm;
 
-PlatformComponent::PlatformComponent(const ITable & t) : Component(t) {}
+PlatformComponent::PlatformComponent(const ITab& t) : Component(t) {}
 
 void PlatformComponent::Start() {
     m_entity->onMove.Register(this, [this](Entity* node) { Move(node); });

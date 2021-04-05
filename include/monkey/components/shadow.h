@@ -6,7 +6,7 @@
 class Shadow : public Component {
 public:
     Shadow();
-    Shadow (const ITable& t);
+    Shadow (const ITab& t);
     void Start() override;
     void Update(double) override ;
     using ParentClass = Shadow;
@@ -20,7 +20,7 @@ private:
 class ShadowX : public Component {
 public:
     ShadowX();
-    ShadowX (const ITable& t);
+    ShadowX (const ITab& t);
     void Start() override;
     void Update(double) override ;
     using ParentClass = Shadow;

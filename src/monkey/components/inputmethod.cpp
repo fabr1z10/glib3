@@ -3,7 +3,7 @@
 
 extern GLFWwindow* window;
 
-KeyboardInputMethod::KeyboardInputMethod(const ITable & t) : InputMethod(t), m_demoMode(false) {}
+KeyboardInputMethod::KeyboardInputMethod(const ITab & t) : InputMethod(t), m_demoMode(false) {}
 
 bool KeyboardInputMethod::isKeyDown(int key) {
     if (m_demoMode) {

@@ -26,7 +26,7 @@ public:
      */
     FoeChase (const std::string& walkAnim, const std::string& idleAnim,
               float speed, float acceleration, bool fliph, bool flipIfPlatformEnds, int left);
-    FoeChase (const ITable&);
+    FoeChase (const ITab&);
     void AttachStateMachine(StateMachine*) override;
 
     void Run(double) override;

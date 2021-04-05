@@ -4,7 +4,7 @@
 #include <monkey/components/spriterenderer.h>
 #include <monkey/components/animator.h>
 
-Sprite::Sprite(const ITable & t) : Entity(t) {
+Sprite::Sprite(const ITab& t) : Entity(t) {
     auto modelId = t.get<std::string>("model");
     auto blend = static_cast<Blend>(t.get<int>("blend", 0));
 	auto depth = static_cast<GLenum>(t.get<int>("depth", GL_LESS));
@@ -16,7 +16,7 @@ Sprite::Sprite(const ITable & t) : Entity(t) {
     AddComponent(renderer);
     AddComponent(animator);
 
-    if (t.hasKey("anim")) {
+    if (t.has("anim")) {
         auto anim = t.get<std::string>("anim");
         animator->SetInitialAnimation(anim);
     } else {

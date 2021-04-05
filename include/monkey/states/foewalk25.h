@@ -16,7 +16,7 @@ class FoeWalk25 : public State {
 public:
     //FoeWalk25(float speed, float acceleration, bool fliph);
 
-    FoeWalk25(const ITable &);
+    FoeWalk25(const ITab &);
 
     void Run(double) override;
 

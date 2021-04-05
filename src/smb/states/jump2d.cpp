@@ -16,7 +16,7 @@ Jump2D::Jump2D(float accelerationTimeAirborne, float speed, bool flipH, const st
     m_bounce(bounce), m_bounceFactor(bounceFactor), m_jumpAnimUp(animUp), m_jumpAnimDown(animDown), m_walkState("walk")
 {}
 
-Jump2D::Jump2D(const ITable& t) : PlatformerState(t) {
+Jump2D::Jump2D(const ITab& t) : PlatformerState(t) {
     m_speed = t.get<float>("speed");
     m_accTimeAir = t.get<float>("acceleration");
     m_flipHorizontally = t.get<bool>("flipH");

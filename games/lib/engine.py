@@ -14,6 +14,7 @@ class Engine:
             self.lang = a['lang']
             self.device_size = tuple(a['device_size'])
             self.window_size = tuple(a['window_size'])
+            self.tick_multiplier = a.get('tick_multiplier', 1.0)
             self.room = a['start_room']
             self.title = a['title']
             #print('# loading assets ...')
@@ -114,7 +115,9 @@ class Engine:
                     # get a string
                     cc = self.assets['strings']
                     for b in value[1:].split('/'):
-                        cc = cc[str(b)]
+                        print ('fottiti' + str(b) + ' ' + str(b.isdigit()))
+                        cc = cc[int(b) if b.isdigit() else b]
+                        print (cc)
                     return cc
         return value
 

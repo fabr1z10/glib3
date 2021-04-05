@@ -5,14 +5,14 @@
 
 StateTransition::StateTransition(const std::string &state) : StateAction(), m_state(state) {}
 
-StateTransition::StateTransition(const ITable & t) {
+StateTransition::StateTransition(const ITab& t) {
     m_state = t.get<std::string>("state");
 }
 void StateTransition::Run(StateMachine * sm) {
     sm->SetState(m_state);
 }
 
-StateFunc::StateFunc(const ITable &t) {
+StateFunc::StateFunc(const ITab&t) {
     m_callback = t.get<pybind11::function>("f");
 }
 

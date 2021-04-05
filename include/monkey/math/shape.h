@@ -15,7 +15,7 @@
 #include <monkey/asset.h>
 #include <string>
 #include <vector>
-#include <monkey/py.h>
+#include <monkey/itable.h>
 
 enum class ShapeType {
     SEGMENT, RECT, CIRCLE, PLANE, SPHERE, AABB, CONVEXPOLY, COMPOUND, POLY
@@ -26,7 +26,7 @@ class IShape : public Object {
 public:
     IShape() = default;
     explicit IShape(glm::vec3 offset) : Object(), m_offset(offset) {}
-    explicit IShape(const ITable& t);
+    explicit IShape(const ITab& t);
     Bounds getBounds() const;
     glm::vec3 getOffset() const;
     //virtual std::unique_ptr<IShape> transform (const glm::mat4& t) = 0;
@@ -54,7 +54,7 @@ inline glm::vec3 IShape::getOffset() const {
 class Shape2D : public IShape {
 public:
     Shape2D() = default;
-    explicit Shape2D(const ITable& t) : IShape(t) {}
+    explicit Shape2D(const ITab& t) : IShape(t) {}
 
     virtual glm::vec2 project(glm::vec2, const glm::mat4&) const = 0;
 };

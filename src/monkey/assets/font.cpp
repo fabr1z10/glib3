@@ -11,7 +11,7 @@ Font::Font() {
         return;
 }
 
-Font::Font(const ITable& t) : Font() {
+Font::Font(const ITab& t) : Font() {
     
     std::string file = t.get<std::string>("file");
     if (file[0] == '.') {

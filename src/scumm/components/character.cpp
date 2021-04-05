@@ -2,8 +2,13 @@
 #include <monkey/entity.h>
 #include <monkey/components/animator.h>
 
-CharacterController::CharacterController(const ITable &t) : Component(t) {
+CharacterController::CharacterController(const ITab &t) : Component(t) {
     m_dir = t.get<std::string>("dir")[0];
+    m_speed = t.get<float>("speed");
+    m_textOffset = t.get<glm::vec2>("text_offset");
+    m_textColor = t.get<glm::vec4>("text_color");
+    m_textColor /= 255.0f;
+
 }
 
 
@@ -16,6 +21,7 @@ void CharacterController::Start() {
 }
 
 void CharacterController::turn(char dir) {
+    m_dir = dir;
     std::string anim = "idle_" + std::string(1,dir == 'w' ? 'e' : dir);
     m_animator->SetAnimation(anim);
 
@@ -26,7 +32,7 @@ StateCharacter::StateCharacter(float speed, char dir, const std::string& initial
 }
 
 
-StateCharacter::StateCharacter(const ITable &t) : StateMachine() {
+StateCharacter::StateCharacter(const ITab &t) : StateMachine() {
     m_dir = t.get<std::string>("dir")[0];
     m_speed = t.get<float>("speed");
     m_initialState = t.get<std::string>("state");

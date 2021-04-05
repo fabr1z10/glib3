@@ -15,7 +15,7 @@
 
 using namespace glm;
 
-Controller2D::Controller2D(const ITable &t) {
+Controller2D::Controller2D(const ITab&t) {
     m_maxClimbAngle = t.get<float>("maxClimbAngle");
     m_maxDescendAngle = t.get<float>("maxDescendAngle");
     m_horizontalRayCount = t.get<int>("horRays", 4);

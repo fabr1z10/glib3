@@ -35,11 +35,9 @@ Box3D::Box3D(const ITable & t) {
 	indices.push_back(0);
 	frontMesh->Init(vertices, indices);
 	m_meshes.push_back(frontMesh);
-
-
-
-
 }
+
+
 
 void Box3D::Draw(Shader * shader) {
 	for (const auto &m : m_meshes) {

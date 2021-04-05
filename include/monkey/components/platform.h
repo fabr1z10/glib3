@@ -12,7 +12,7 @@
 class PlatformComponent : public Component {
 public:
     PlatformComponent() : Component() {}
-    PlatformComponent(const ITable&);
+    PlatformComponent(const ITab&);
     virtual ~PlatformComponent();
     void Move(Entity*);
     void Start() override;

@@ -14,7 +14,7 @@ Jump3D::Jump3D(float accelerationTimeAirborne, float speed, bool flipH, const st
 {}
 
 
-Jump3D::Jump3D(const ITable& t) : State(t) {
+Jump3D::Jump3D(const ITab& t) : State(t) {
 	m_speed = t.get<float>("speed");
 	m_accTimeAir = t.get<float>("acceleration");
 	m_flipHorizontally = t.get<bool>("flipH");

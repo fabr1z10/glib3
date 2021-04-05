@@ -11,7 +11,7 @@ public:
     // input method abstracts an input control
     // it can be human driven
     InputMethod() = default;
-    InputMethod(const ITable& t) : Component(t                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ) {}
+    InputMethod(const ITab& t) : Component(t                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ) {}
     InputMethod(const InputMethod& orig) : Component(orig) {}
 
     // first of all, it has a keydown event.
@@ -33,7 +33,7 @@ struct DemoKeyEvent {
 class KeyboardInputMethod : public InputMethod, public KeyboardListener {
 public:
     KeyboardInputMethod() : InputMethod(), m_demoMode(false), m_demoTimer(0.0), m_length(0.0f) {}
-    KeyboardInputMethod(const ITable&);
+    KeyboardInputMethod(const ITab&);
     void Start() override {}
     void Update (double) override;
     bool isKeyDown(int) override;

@@ -6,7 +6,7 @@
 class Segment : public IConvexPolygon {
 public:
     Segment (glm::vec2 A, glm::vec2 B);
-    explicit Segment (const ITable&);
+    explicit Segment (const ITab&);
     //std::unique_ptr<IShape> transform (const glm::mat4& t) override;
     glm::vec2 getA() const;
     glm::vec2 getB() const;

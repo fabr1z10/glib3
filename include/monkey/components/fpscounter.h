@@ -7,7 +7,7 @@ class FPSCounter : public Component {
 
 public:
     FPSCounter();
-    FPSCounter(const ITable&);
+    FPSCounter(const ITab&);
     void Start() override ;
     void Update(double) override;
 private:

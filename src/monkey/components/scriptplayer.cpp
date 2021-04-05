@@ -2,7 +2,7 @@
 #include <monkey/scheduler.h>
 #include <monkey/engine.h>
 
-ScriptPlayer::ScriptPlayer(const ITable &) {}
+ScriptPlayer::ScriptPlayer(const ITab&) {}
 
 ScriptPlayer::~ScriptPlayer() noexcept {
     // stop all scripts associated to this entity

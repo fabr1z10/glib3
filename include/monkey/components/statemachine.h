@@ -14,7 +14,7 @@ public:
 class State : public Ref {
 public:
     State() {}
-    State(const ITable&);
+    State(const ITab&);
     virtual ~State() = default;
     // init is called every time this state is set, so DON't put initialization code here!
     virtual void Init (pybind11::dict& d) = 0;

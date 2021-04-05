@@ -6,7 +6,7 @@
 class MoveTo : public TargetActivity {
 public:
     MoveTo(glm::vec2 pos, float speed, bool relative, bool immediate, bool flip = false);
-    MoveTo(const ITable&);
+    MoveTo(const ITab&);
     MoveTo(int id, glm::vec2 pos, float speed, bool relative, bool immediate, bool flip = false) : MoveTo(pos, speed, relative, immediate, flip) {
         SetId(id);
     }
@@ -66,7 +66,7 @@ public:
         float yStop,
         float rotationSpeed,
         float finalRotation);
-    MoveAccelerated(const ITable&);
+    MoveAccelerated(const ITab&);
 
     void Start() override;
 

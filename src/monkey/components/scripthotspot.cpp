@@ -6,29 +6,30 @@
 
 namespace py = pybind11;
 
-ScriptHotSpot::ScriptHotSpot(const ITable &t) : HotSpot(t), r_enter(py::none()), r_leave(py::none()), r_move(py::none()), r_click(py::none()) {
-
-    if (t.hasKey("onenter")) {
+ScriptHotSpot::ScriptHotSpot(const ITab& t) : HotSpot(t) {
+    //r_enter = py::none();//, r_leave(py::none()), r_move(py::none()), r_click(py::none())
+    //exit(1);
+    if (t.has("onenter")) {
         auto r = t.get<py::function>("onenter");
         SetOnEnter(r);
     }
 
-    if (t.hasKey("onleave")) {
+    if (t.has("onleave")) {
         auto r = t.get<py::function>("onleave");
         SetOnLeave(r);
     }
 
-    if (t.hasKey("onclick")) {
+    if (t.has("onclick")) {
         auto r = t.get<py::function>("onclick");
         SetOnClick(r);
     }
 
-    if (t.hasKey("onrmbclick")) {
+    if (t.has("onrmbclick")) {
         auto r = t.get<py::function>("onrmbclick");
         SetOnRightMouseButtonClick(r);
     }
 
-    if (t.hasKey("onmove")) {
+    if (t.has("onmove")) {
         auto r = t.get<py::function>("onmove");
         SetOnMove(r);
     }

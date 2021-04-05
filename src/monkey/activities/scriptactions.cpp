@@ -3,14 +3,14 @@
 #include <monkey/scheduler.h>
 
 
-SuspendScript::SuspendScript(const ITable & t)  {
+SuspendScript::SuspendScript(const ITab & t)  {
     m_script = t.get<std::string>("script");
 }
 
-ResumeScript::ResumeScript(const ITable & t)  {
+ResumeScript::ResumeScript(const ITab & t)  {
     m_script = t.get<std::string>("script");
 }
-KillScript::KillScript(const ITable & t)  {
+KillScript::KillScript(const ITab & t)  {
 	m_script = t.get<std::string>("script");
 }
 void SuspendScript::Start() {

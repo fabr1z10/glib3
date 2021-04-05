@@ -14,7 +14,7 @@
 class Script {
 public:
     Script();
-    Script(const ITable&);
+    Script(const ITab&);
     ~Script();
 
     void Run (float);

@@ -37,7 +37,7 @@ public:
                m_worldTransform{glm::mat4(1.0)}, m_enableControls{true}, m_flipHorizontal{false}, m_started(false), m_layer(0) {}
     ~Entity() override ;
 
-    Entity(const ITable&);
+    Entity(const ITab&);
 
     // copy ctor
     //Entity(const Entity&);

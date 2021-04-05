@@ -16,7 +16,7 @@ WalkSide::WalkSide(float speed, float acceleration, bool fliph, float jumpSpeed)
         m_jumpState("jump"), m_idleAnim("idle"), m_walkAnim("walk") {}
 
 
-WalkSide::WalkSide(const ITable & t) : PlatformerState(t) {
+WalkSide::WalkSide(const ITab& t) : PlatformerState(t) {
     m_speed = t.get<float>("speed");
     m_acceleration = t.get<float>("acceleration");
     m_flipHorizontally = t.get<bool>("flipH");

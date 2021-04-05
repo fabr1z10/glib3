@@ -8,15 +8,15 @@
 
 class Scheduler;
 
-struct BlockedLine {
-    LineSegment seg;
-    bool active;
-};
+//struct BlockedLine {
+//    LineSegment seg;
+//    bool active;
+//};
 
 class WalkArea : public Component {
 public:
     //WalkArea (std::shared_ptr<IShape> shape, int priority);
-    WalkArea (const ITable&);
+    WalkArea (const ITab&);
     void Update(double) override {}
     const IShape* getShape() const;
     void assignDepth (Entity*);
@@ -30,7 +30,7 @@ public:
     void SetDepthFunction (std::shared_ptr<Function2D> func);
     void SetScalingFunction (std::shared_ptr<Function2D> func);
     //void SetHandler (std::shared_ptr<LuaFunction> func);
-
+    std::vector<glm::vec2> findPath(glm::vec2 A, glm::vec2 B);
     void AddBlockedLine(glm::vec2 A, glm::vec2 B, bool active);
     void EnableBlockedLine(int, bool);
     std::vector<LineSegment> GetActiveWalls() const;
@@ -40,7 +40,7 @@ private:
     //std::shared_ptr<Entity> getDebugMesh() override ;
     std::shared_ptr<IShape> m_shape;
 
-    std::vector<BlockedLine> m_walls;
+    //std::vector<BlockedLine> m_walls;
     std::shared_ptr<Function2D> m_depthFunc;
     std::shared_ptr<Function2D> m_scaleFunc;
     std::shared_ptr<ShortestPath> m_shortestPath;
@@ -63,3 +63,4 @@ inline void WalkArea::SetScalingFunction (std::shared_ptr<Function2D> func) {
 inline std::type_index WalkArea::GetType() {
     return std::type_index(typeid(HotSpot));
 }
+

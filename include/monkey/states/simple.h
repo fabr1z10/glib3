@@ -8,7 +8,7 @@ class IAnimator;
 class NullState : public State {
 public:
     NullState ();
-    NullState (const ITable&);
+    NullState (const ITab&);
     void Run(double) override;
     void Init (pybind11::dict&) override;
     void End () override;
@@ -17,7 +17,7 @@ public:
 class SimpleState : public State {
 public:
     SimpleState(const std::string& anim);
-    SimpleState(const ITable&);
+    SimpleState(const ITab&);
     void Run(double) override;
     void Init (pybind11::dict&) override;
     void End () override;

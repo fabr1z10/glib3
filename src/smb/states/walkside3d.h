@@ -16,7 +16,7 @@ public:
 	 * @param fliph Flip entity horizontally when going left
 	 */
 	WalkSide3D(float speed, float acceleration, bool fliph, float jumpSpeed);
-	WalkSide3D(const ITable&);
+	WalkSide3D(const ITab&);
 	void AttachStateMachine(StateMachine*) override;
 
 	void Run(double) override;

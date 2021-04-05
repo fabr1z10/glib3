@@ -14,7 +14,7 @@ class InputMethod;
 class ExtendedStateMachine : public StateMachine {
 public:
     ExtendedStateMachine(const std::string& initialState);
-    ExtendedStateMachine(const ITable&);
+    ExtendedStateMachine(const ITab&);
 
     void Start () override ;
     void KeyListener (int key);

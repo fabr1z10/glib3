@@ -10,7 +10,7 @@ public:
     explicit SpriteModel (std::shared_ptr<SpriteMesh> mesh) : m_mesh(mesh) {
 
     }
-    SpriteModel (const YAML::Node&);
+    SpriteModel (const ITab&);
     Bounds GetBounds() const override;
     std::vector<std::string> GetAnimations() const override;
     std::string GetDefaultAnimation() const override;

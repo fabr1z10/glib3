@@ -9,7 +9,7 @@ Circle::Circle(float radius, glm::vec3 offset) : Shape2D(), m_radius(radius) {
     m_bounds.max = offset + glm::vec3(m_radius, m_radius, 1.0f);
 }
 
-Circle::Circle(const ITable& t) : Shape2D(t) {
+Circle::Circle(const ITab& t) : Shape2D(t) {
 	m_type = ShapeType::CIRCLE;
     m_radius = t.get<float>("radius");
     m_bounds.min = m_offset - glm::vec3(m_radius, m_radius, 1.0f);

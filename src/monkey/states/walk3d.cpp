@@ -5,7 +5,7 @@
 #include <monkey/components/controller3d.h>
 
 
-Walk3D::Walk3D(const ITable & t) : State(t) {
+Walk3D::Walk3D(const ITab& t) : State(t) {
     m_acceleration = t.get<float> ("acceleration");
 }
 

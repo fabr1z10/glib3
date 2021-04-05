@@ -4,7 +4,7 @@
 
 NullState::NullState() : State() {}
 
-NullState::NullState(const ITable & t) : State(t) {
+NullState::NullState(const ITab & t) : State(t) {
 
 }
 
@@ -20,7 +20,7 @@ void NullState::Run (double dt) {
 
 SimpleState::SimpleState(const std::string &anim) : State(), m_anim(anim) {}
 
-SimpleState::SimpleState(const ITable & t) : State(t) {
+SimpleState::SimpleState(const ITab& t) : State(t) {
     m_anim = t.get<std::string>("anim");
     m_endOnAnimComplete = t.get<bool>("end_on_anim_complete", false);
     m_nextState = t.get<std::string>("next", "");

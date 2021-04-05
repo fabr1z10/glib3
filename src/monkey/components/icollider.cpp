@@ -3,7 +3,7 @@
 
 ICollider::ICollider() : Component(), m_engine(nullptr) {}
 
-ICollider::ICollider(const ITable& t) {
+ICollider::ICollider(const ITab& t) {
 	m_debug = t.get<bool>("debug");
 }
 // when a collider starts, it add itself to the collision engine.

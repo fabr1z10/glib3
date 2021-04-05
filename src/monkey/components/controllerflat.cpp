@@ -5,7 +5,7 @@
 
 using namespace glm;
 
-ControllerFlat::ControllerFlat(const ITable &t) {
+ControllerFlat::ControllerFlat(const ITab&t) {
 	m_horizontalRayCount = t.get<int>("hor_rays", 4);
 	m_verticalRayCount = t.get<int>("vert_rays", 4);
 	m_skinWidth = t.get<float>("skinWidth", .015f);

@@ -9,7 +9,7 @@ m_time(time) {
 
 }
 
-FoeDead::FoeDead(const ITable & t) : PlatformerState(t) {
+FoeDead::FoeDead(const ITab& t) : PlatformerState(t) {
     m_time = t.get<float>("time");
     m_anim = t.get<std::string>("anim");
 }

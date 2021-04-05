@@ -10,7 +10,7 @@ ChangeCamBounds::ChangeCamBounds(const std::string &camId, float xMin, float xMa
 }
 
 
-ChangeCamBounds::ChangeCamBounds(const ITable& t) : Activity() {
+ChangeCamBounds::ChangeCamBounds(const ITab& t) : Activity() {
     m_camId = t.get<std::string>("cam");
 
     m_xMin = t.get<float>("xmin");

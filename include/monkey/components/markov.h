@@ -3,7 +3,7 @@
 
 class MarkovStateMachine : public StateMachine {
 public:
-	MarkovStateMachine(const ITable&);
+	MarkovStateMachine(const ITab&);
 	void Update(double) override;
 	std::type_index GetType() override;
 private:

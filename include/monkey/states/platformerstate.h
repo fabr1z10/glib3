@@ -11,7 +11,7 @@ class PlatformerState : public State {
 public:
     PlatformerState();
     PlatformerState(const PlatformerState&);
-    PlatformerState(const ITable&);
+    PlatformerState(const ITab&);
     void AttachStateMachine(StateMachine*) override;
     //bool KeyListener (int) override;
     void SetOverrideAnimation(const std::string& anim);

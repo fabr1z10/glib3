@@ -8,7 +8,7 @@ bool triangleIsCCW(const glm::vec2& a, const glm::vec2& b, const glm::vec2& c) {
 }
 
 
-bool segmentIntersection(glm::vec2 A, glm::vec2 B, glm::vec2 C, glm::vec2 D) {
+bool segmentIntersection(glm::vec2 A, glm::vec2 B, glm::vec2 C, glm::vec2 D, float& t, float& u) {
     // eq for segment 1 is
     // Ax + t(Bx - Ax) = Cx + u(Dx - Cx)
     // Ay + t(By - Ay) = Cy + u(Dy - Cy)
@@ -35,11 +35,11 @@ bool segmentIntersection(glm::vec2 A, glm::vec2 B, glm::vec2 C, glm::vec2 D) {
         return false;
     }
     glm::vec2 AC = C - A;
-    auto t = cross(AC, DC) / den;
+    t = cross(AC, DC) / den;
     if (t < 0 || t > 1) {
         return false;
     }
-    auto u = cross(AB, AC) / den;
+    u = cross(AB, AC) / den;
     return (u >= 0 && u <= 1);
 }
 

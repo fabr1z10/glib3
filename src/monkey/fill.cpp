@@ -5,7 +5,7 @@ SolidFill::SolidFill(const glm::vec4 & color) : m_color(color) {
     m_color /= 255.0f;
 }
 
-SolidFill::SolidFill(const ITable & t) {
+SolidFill::SolidFill(const ITab & t) {
     m_color = t.get<glm::vec4>("color");
     m_color /= 255.0f;
 }
@@ -20,7 +20,7 @@ LinearGradient::LinearGradient(const glm::vec4 &color0, const glm::vec2 P0, cons
     m_dist = glm::length(m_P1 - m_P0);
 }
 
-LinearGradient::LinearGradient(const ITable & t) {
+LinearGradient::LinearGradient(const ITab & t) {
     m_color0 = t.get<glm::vec3>("color0");
     m_color1 = t.get<glm::vec3>("color1");
     m_color0 /= 255.0f;

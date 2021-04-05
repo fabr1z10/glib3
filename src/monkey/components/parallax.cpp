@@ -8,7 +8,7 @@
 Parallax::Parallax (const std::string& camId, glm::vec2 factor) :
 m_camId(camId), m_factor(factor) {}
 
-Parallax::Parallax(const ITable & t) : Component(t) {
+Parallax::Parallax(const ITab & t) : Component(t) {
     m_camId = t.get<std::string>("cam");
     m_factor = t.get<glm::vec2>("factor");
     m_campos0 = t.get<glm::vec2>("cam0");

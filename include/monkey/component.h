@@ -17,7 +17,7 @@ class Entity;
 
 class Component : public Ref {
 public:
-    Component (const ITable& t) : Ref(t) {}
+    Component (const ITab& t) : Ref(t) {}
     ~ Component() override = default;
     // called once when the entity is added to the scene
     virtual void Start() = 0;

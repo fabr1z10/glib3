@@ -6,7 +6,7 @@
 #include <monkey/components/animator.h>
 #include <monkey/components/statemachine.h>
 
-IsHit25::IsHit25(const ITable & t) : State(t) {
+IsHit25::IsHit25(const ITab & t) : State(t) {
     m_acceleration = t.get<float>("acceleration");
     m_anim = t.get<std::string>("anim");
 }

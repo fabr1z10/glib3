@@ -3,7 +3,7 @@
 
 
 
-ChangeRoom::ChangeRoom(const ITable & t) : Activity() {
+ChangeRoom::ChangeRoom(const ITab & t) : Activity() {
     m_roomId = t.get<std::string>("room");
 }
 

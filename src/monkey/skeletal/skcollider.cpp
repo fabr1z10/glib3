@@ -6,7 +6,7 @@
 #include <monkey/meshfactory.h>
 #include <glm/gtx/transform.hpp>
 
-SkCollider::SkCollider(const ITable& table) : ICollider(), m_shapeEntity(nullptr), m_shapeId(-1) {
+SkCollider::SkCollider(const ITab& table) : ICollider(), m_shapeEntity(nullptr), m_shapeId(-1) {
     m_tag = table.get<int>("tag");
     m_flag = table.get<int>("flag");
     m_mask = table.get<int>("mask");

@@ -18,19 +18,18 @@ std::vector<std::shared_ptr<IShape>> BoxedModel::getAttackShapes() const {
     return shapes;
 }
 
-BoxedModel::BoxedModel(const YAML::Node &t) : SpriteModel(t) {
+BoxedModel::BoxedModel(const ITab& t) : SpriteModel(t) {
 
-	if (t["boxes"]) {
-		const auto boxes = t["boxes"].as<std::vector<YAML::Node>>();
-		for (const auto &box : boxes) {
-			auto pp = box.as<std::vector<float>>();
-			int nboxes = pp.size() / 4;
+	if (t.has("boxes")) {
+	    t.foreach("boxes", [&] (const ITab& box) {
+            auto pp = box.as<std::vector<float>>();
+            int nboxes = pp.size() / 4;
             std::shared_ptr<IShape> shape;
-			if (nboxes == 1) {
+            if (nboxes == 1) {
                 float width = pp[2] - pp[0];
                 float height = pp[3] - pp[1];
                 shape = std::make_shared<Rect>(width, height, glm::vec3(pp[0], pp[1], 0.0f));
-			} else {
+            } else {
                 auto cs = std::make_shared<CompoundShape>();
                 for (int i = 0; i < pp.size(); i+= 4) {
                     float width = pp[i+2] - pp[i];
@@ -39,48 +38,45 @@ BoxedModel::BoxedModel(const YAML::Node &t) : SpriteModel(t) {
                     cs->addShape(rect);
                 }
                 shape = cs;
-			}
-			addShape(shape);
-		}
+            }
+            addShape(shape);
+	    });
 	}
 
 	m_attackDistance = std::numeric_limits<float>::infinity();
-    auto anims = t["animations"].as<YAML::Node>();
-    for (auto anim : anims) {
-        // get the box
-        auto animId = anim.first.as<std::string>();
-        auto animData = anim.second;
+    //auto anims = t["animations"].as<YAML::Node>();
+
+    t.foreach("anims", [&] (const std::string& animId, const ITab& anim) {
         // each animation might have a box
-        if (animData["box"]) {
-            int boxId = animData["box"].as<int>();
-            this->setAnimShape(animId, boxId);
+        if (anim.has("box")) {
+            auto boxId = anim.get<int>("box");
+            setAnimShape(animId, boxId);
         }
 
         // find attack position for this animation, if any
         bool isAttackingAnim = false;
         float attackPos {0.0f};
-        if (animData["elements"]) {
-            auto frames = animData["elements"].as<std::vector<YAML::Node>>();
-            int frameId = 0;
-            for (auto frame : frames) {
-                int box = frame["box"].as<int>(-1);;
-                int attack = frame["attack"].as<int>(-1);
-                if (box != -1) {
-                    this->setFrameShape(animId, frameId, box);
-                }
-                if (attack != -1) {
-                	isAttackingAnim = true;m_shapes[attack]->getBounds().max.x;
-                	attackPos = std::max(attackPos, m_shapes[attack]->getBounds().max.x);
-                    this->setShapeCast(animId, frameId, attack);
-                }
-                frameId++;
+        int frameId = 0;
+        anim.foreach("elements", [&] (const ITab& element) {
+            int box = element.get<int>("box", -1);
+            int attack = element.get<int>("attack", -1);
+            if (box != -1) {
+                this->setFrameShape(animId, frameId, box);
             }
-        }
+            if (attack != -1) {
+                isAttackingAnim = true;m_shapes[attack]->getBounds().max.x;
+                attackPos = std::max(attackPos, m_shapes[attack]->getBounds().max.x);
+                this->setShapeCast(animId, frameId, attack);
+            }
+            frameId++;
+
+        });
+
         if (isAttackingAnim) {
-        	std::cerr << " attack position for anim " << animId << ": " << attackPos << "\n";
-        	m_attackDistance = std::min(m_attackDistance, attackPos);
+            std::cerr << " attack position for anim " << animId << ": " << attackPos << "\n";
+            m_attackDistance = std::min(m_attackDistance, attackPos);
         }
-    }
+    });
 }
 
 void BoxedModel::addShape(std::shared_ptr<IShape> s) {

@@ -29,7 +29,7 @@ public:
 class DirectionalLight : public Light {
 public:
     //DirectionalLight (glm::vec3 direction, glm::vec3 color) ;
-    DirectionalLight (const ITable&);
+    DirectionalLight (const ITab&);
     void setUp(Shader*) override ;
 private:
     glm::vec4 m_ambient;

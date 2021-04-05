@@ -6,7 +6,7 @@
 class NoOp : public Activity {
 public:
     NoOp() : Activity() {}
-    NoOp (const ITable&) {}
+    NoOp (const ITab&) {}
     void Start() {
         SetComplete();
     }

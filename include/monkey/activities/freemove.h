@@ -19,7 +19,7 @@ public:
         float scaley;
     };
 
-    FreeMove(const ITable&);
+    FreeMove(const ITab&);
     void Start() override;
     void Run (float dt) override;
     void Reset() override;
