@@ -1,38 +1,38 @@
 ui:
-  open: Open
-  close: Close
-  push: Push
-  pull: Pull
-  walkto: Walk to
-  pickup: Pick up
-  talkto: Talk to
-  give: Give
-  use: Use
-  lookat: Look at
-  turnon: Turn on
-  turnoff: Turn off
-  to: to
-  with: with
-pause_message: Game Paused. Press SPACE to Continue.
+  open: Ouvrez
+  close: Fermez
+  push: Poussez
+  pull: Tirez
+  walkto: Marchez
+  pickup: Ramassez
+  talkto: Parlez
+  give: Donnez
+  use: Utilisez
+  lookat: Regardez
+  turnon: Allumez
+  turnoff: Eteignez
+  to: à
+  with: avec
+pause_message: Jeu Arrêté. Appuyez sur SPACE pour continuer.
 defaultactions:
-  1: It doesn't seem to open.
+  1: Ça n'a pas l'air de s'ouvrir.
   2: That doesn't seem to work.
   3: I can't move it.
-  4: I don't see anything special about it.
-  5: I can't pick that up.
+  4: Je ne vois rien de spécial.
+  5: Je n'y arrive pas.
 objects: 
   stairs: stairs
-  cliffside : cliffside
-  archway: archway
+  cliffside : bord de falaise
+  archway: arche
   path: path
-  poster: poster
-  door: door
+  poster: affiche
+  door: porte
   lookout: lookout
   clearing: clearing
   pirate: pirate
   pirates: pirates
-  fireplace: fireplace
-  ilp: important-looking pirates
+  fireplace: cheminée
+  ilp: conseil des pirates
   citizen : Citizen of Mêlée
   lowmoralfiber: Men of Low Moral Fiber (pirates)
   baskets: baskets
@@ -44,51 +44,51 @@ objects:
   rubberchicken: rubber chicken
   pieceofeight: piece of eight
   piecesofeight: pieces of eight
-  meat: hunk of meat
-  fish: fish
-  pot: pot
-  barrel: barrel
-  potostew: pot o'stew
-  stewed_meat: stewed meat
-  stewed_meat_2: stewed meat
+  meat: morceau de viande
+  fish: poisson
+  pot: marmite
+  barrel: tonneau
+  potostew: marmite de ragout
+  stewed_meat: viande en sauce
+  stewed_meat_2: ragout de viande
 dialogues:
   mancomb:
-    1: "Ahoy there, stranger."
-    2: "New in town?"
-    imguy: "My name's Guybrush Threepwood. I'm new in town."
-    rupirate: "Are you a pirate? Can I be on your crew?"
-    charge: "Who's in charge here?"
-    bye: "Nice talking to you."
+    1: "Bien le bonjour, étranger."
+    2: "Tu viens d'arriver dans le coin?"
+    imguy: "Je m'appelle Guybrush Threepwood. Je viens d'arriver."
+    rupirate: "Es-tu pirate? Puis-je me joindre à ton équipage?"
+    charge: "Qui est-ce qui commande ici?"
+    bye: "Enchanté d'avoir discuté avec toi."
     7: "Have fun on Mêlée Island™."
     8: "Hey, nice to see you again."
     9: "Guybrush Threepwood?"
     10: "Ha ha ha!!!"
-    11: "That's the stupidest name I've ever heard!"
-    ilikeguy: "I don't know... I kind of like 'Guybrush'."
-    yourname: "Well, what's YOUR name?"
-    dumb: "Yeah, it's pretty dumb, isn't it?"
-    insulted: "I'm insulted. Goodbye."
-    16: "But it's not even a name!"
-    17: "My name is Mancomb Seepgood."
-    18: "So what brings you to Mêlée Island™ anyway?"
-    19: "I want to be a pirate!"
-    20: "I've come seeking my fortune."
-    21: "I really don't know."
-    22: "None of your business. Goodbye."
-    23: "Oh really?"
-    24: "You should go talk to the important-looking pirates in the next room."
-    25: "They're pretty much in charge around here."
+    11: "C'est le nom le plus idiot que j'ai jamais entendu."
+    ilikeguy: "Enfin... J'aime bien Guybrush."
+    yourname: "Alors, comment t'appelles-TU?"
+    dumb: "Ouais, c'est plutôt du genre stupide?"
+    insulted: "Tu m'insultes. Au revoir."
+    16: "Ce n'est même pas un nom!"
+    17: "Je m'appelle Mancomb Seepgood."
+    18: "Qu'est-ce qui t'amène donc sur l'Ile de Mêlée?"
+    19: "Je veux devenir pirate!"
+    20: "Je viens chercher l'aventure."
+    21: "Je ne sais pas du tout."
+    22: "Ce ne te regarde pas. Salut."
+    23: "Ah, vraiment?"
+    24: "Le conseil des pirates se trouve dans la pièce à côté."
+    25: "C'est eux qui commandent ici."
     26: "They can tell you where to go and what to do."
-    guvnor: "Where can I find the Governor?"
+    guvnor: "Où est-ce que je peux trouver le Gouverneur?"
     28: "Oh, you Have, have you?"
     29: "Well, I am a pirate."
     30: "But, alas, I'm not a captain."
-    31: "Governor Marley?"
-    32: "Her mansion is on the other side of town."
-    33: "But pirates aren't as welcome around her place as they used to be."
-    whynot: "Why not?"
-    welcome: "I'm welcome everywhere I go."
-    gothere: "I think I'll go there right now. Bye."
+    31: "Gouverneur Marley?"
+    32: "Son palais est de l'autre côté de la ville."
+    33: "Malheureusement les pirates n'y sont plus aussi bienvenus qu'avant."
+    whynot: "Pourquoi?"
+    welcome: "Où que j'aille, je suis le bienvenu."
+    gothere: "Je vais y aller tout de suite. Salut."
     37: "Okay, but watch out for those guard dogs!"
     38: "My grog is going flat, so you'll have to excuse me."
     39: "I don't want to come between a pirate and his grog."
@@ -104,7 +104,7 @@ dialogues:
     yourname2: "So, what was your name, anyway?"
     50: "Well, it sure wasn't for the sunshine."
     51: "I think you need some guidance."
-    52: "Well, the last time she had a pirate over for dinner, he fell in love with her."
+    52: "La dernière fois qu'un pirate est allé manger chez elle, il est tombé amoureux."
     53: "It's made things rather uncomfortable for everybody."
     howsthat: "How's that?"
     whois: "Who is this pirate?"
@@ -283,9 +283,9 @@ dialogues:
     53: "Thranwook."
     54: "Thrumwink."
 lines:
-  1: "Re-elect Governor Marley."
-  2: "\"When there's only one candidate, there's only one choice.\""
-  3: "Cozy."
+  1: "Réélisez le Gouverneur Marley."
+  2: "\"Quand il n'y a qu'un seul candidat, il n'y a qu'un seul choix.\""
+  3: "Il fait bon."
   4: "I don't want to bother them."
   5: "They're busy listening to the guy on the left."
   6: "I don't think it's wise to wake a sleeping pirate."
@@ -317,12 +317,12 @@ lines:
   32: Hey!
   33: Don't go into the kitchen!
   34: You can't come back here!
-  35: It's some sort of meat or meatlike substance...
-  36: Someone cooked a headcheese in this.
-  37: I think it's a herring.
-  38: I think that bird will peck my hand off...
-  39: I think it's full of that foul stuff pirates drink.
-  40: It's boiling hot.
-  41: Hmm. Stewed meat.
-  42: Ouch!
-  43: Got it!
+  35: On dirait quelque chose qui ressemble à de la viande...
+  36: Quelqu'un a cuisiné un fromage de tête à l'intérieur.
+  37: Je crois que c'est un hareng.
+  38: Je crois que cet oiseau va me picorer la main...
+  39: Je crois qu'il est plein de cette boisson infâme que les pirates boivent.
+  40: Elle boue.
+  41: Miam miam. Un râgout.
+  42: Aie.
+  43: Je l'ai attrapé!

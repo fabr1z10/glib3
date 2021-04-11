@@ -23,6 +23,7 @@ private:
 
     std::string _asString() const override;
     pybind11::function _asFunction() const override {throw;}
+    pybind11::object _asPyObject() const override {throw;}
 
     // glm objects
     glm::vec2 _asVec2() const override;

@@ -6,6 +6,23 @@ import script
 import scumm.actions
 import scripts.actions
 
+def set_item_pos(item_id, room, pos, dir = None):
+    item = vars.items[item_id]
+    old_room = item['room']
+    item['room'] = room
+    item['pos'] = pos
+    if dir:
+        item['dir'] = dir
+    if old_room != room:
+        vars.items_in_room[old_room].remove(item_id)
+        if room not in vars.items_in_room:
+            vars.items_in_room[room] = set()
+        vars.items_in_room[room].add(item_id)
+
+def get_script(str):
+    return getattr(scripts.actions, str, None)
+
+
 def change_color(color):
     def f(e: example.Wrap1):
         e.setColor([0, 0, 0, 0], color)
@@ -30,12 +47,19 @@ def set_verb(verb_id):
 
 
 def update_current_action():
+    print ('IPDDAA')
     a = example.get('current_verb')
     verb = vars.verbs[vars.current_verb]
     text = monkey.engine.read(verb['text'])
     if vars.current_item_1:
         item = vars.items[vars.current_item_1]
         text += ' ' + monkey.engine.read(item['text'])
+    if verb['items'] == 2:
+        if vars.wait_for_second_item:
+            text += ' ' + monkey.engine.read(verb['prep'])
+            if vars.current_item_2:
+                item2 = vars.items[vars.current_item_2]
+                text += ' ' + monkey.engine.read(item2['text'])
     a.setText(text)
 
 
@@ -75,14 +99,39 @@ def prova():
     def f(x, y, item):
         print('current verb: ' + str(vars.current_verb))
         print('object      : ' + vars.current_item_1)
-        # see if I have a callback of form <verb>_<object>
-        f1 = vars.current_verb + '_' + vars.current_item_1
-        fc = getattr(scripts.actions, f1, None)
-        if fc is None:
-            f2 = vars.current_verb + '_'
-            fc = getattr(scripts.actions, f2, None)
-        if fc:
-            fc(vars.current_item_1)
+        print('second obj  : ' + vars.current_item_2)
+        if vars.current_item_2 == '':
+            # see if I have a callback of form <verb>_<object>
+            f1 = vars.current_verb + '_' + vars.current_item_1
+            fc = getattr(scripts.actions, f1, None)
+            if fc is None:
+                # if verb takes two objects, wait for 2nd object
+                if vars.verbs[vars.current_verb]['items'] == 2:
+                    print ('xxx')
+                    vars.wait_for_second_item = True
+                    update_current_action()
+                else:
+                    f2 = vars.current_verb + '_'
+                    fc = getattr(scripts.actions, f2, None)
+            if fc:
+                fc(vars.current_item_1, item)
+        else:
+            f1 = vars.current_verb + '_' + vars.current_item_1 + '_' + vars.current_item_2
+            fc = getattr(scripts.actions, f1, None)
+            if fc is None:
+                # try flipping the objects
+                f1 = vars.current_verb + '_' + vars.current_item_2 + '_' + vars.current_item_1
+                fc = getattr(scripts.actions, f1, None)
+                if fc:
+                    fc(vars.current_item_2, vars.current_item_1)
+                else:
+                    f2 = vars.current_verb + '_'
+                    fc = getattr(scripts.actions, f2, None)
+                    if fc:
+                        fc(vars.current_item_2, item)
+            else:
+                fc(vars.current_item_1, vars.current_item_2)
+
     return f
 
 
@@ -112,3 +161,9 @@ def hover_off(obj):
                 vars.current_item_1 = ''
         update_current_action()
     return f
+
+def on_enter_trap(player, trap, dx, dy):
+    f = trap.getInfo().get('func')
+    print('ciappo!' + str(f))
+    if f:
+        getattr(scripts.actions, f)(trap)

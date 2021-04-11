@@ -23,6 +23,7 @@ public:
     void assignScaleAndDepth (Entity*);
     void onAdd(Entity*);
     void Start() override;
+    void recalc();
 //    void onEnter() override {}
 //    void onLeave() override {}
 //    void onClick(glm::vec2, int button, int action, int mods) override;
@@ -30,7 +31,7 @@ public:
     void SetDepthFunction (std::shared_ptr<Function2D> func);
     void SetScalingFunction (std::shared_ptr<Function2D> func);
     //void SetHandler (std::shared_ptr<LuaFunction> func);
-    std::vector<glm::vec2> findPath(glm::vec2 A, glm::vec2 B);
+    std::vector<glm::vec2> findPath(glm::vec2 A, glm::vec2 B, int&);
     void AddBlockedLine(glm::vec2 A, glm::vec2 B, bool active);
     void EnableBlockedLine(int, bool);
     std::vector<LineSegment> GetActiveWalls() const;

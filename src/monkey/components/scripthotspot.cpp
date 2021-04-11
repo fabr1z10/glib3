@@ -41,7 +41,7 @@ ScriptHotSpot::ScriptHotSpot(const ITab& t) : HotSpot(t) {
 
 void ScriptHotSpot::onClick(glm::vec2 pos, int button, int action, int mods) {
     if (action == GLFW_PRESS) {
-        if (button == GLFW_MOUSE_BUTTON_LEFT && !r_click.is_none()) {
+        if (button == GLFW_MOUSE_BUTTON_LEFT && r_click) {
             pybind11::object example = py::module::import("example").attr("Wrap1");
             pybind11::object w = example();
             Wrap1* wo = w.cast<Wrap1*>();
@@ -65,7 +65,7 @@ void ScriptHotSpot::onMove(glm::vec2 p) {
     }
 }
 void ScriptHotSpot::onEnter() {
-    if (!r_enter.is_none()) {
+    if (r_enter) {
         //#pybind11::object o;
         pybind11::object example = py::module::import("example").attr("Wrap1");
 
@@ -77,7 +77,7 @@ void ScriptHotSpot::onEnter() {
 }
 
 void ScriptHotSpot::onLeave() {
-    if (!r_leave.is_none()) {
+    if (r_leave) {
         pybind11::object example = py::module::import("example").attr("Wrap1");
         pybind11::object w = example();
         Wrap1* wo = w.cast<Wrap1*>();

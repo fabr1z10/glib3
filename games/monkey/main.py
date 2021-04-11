@@ -3,6 +3,7 @@ import yaml
 from pathlib import Path
 import example
 import vars
+import status
 
 # add folder
 path = Path(__file__)
@@ -17,6 +18,7 @@ import factories.items
 import shader
 
 engine = eng.Engine()
+engine.vars = status
 engine.add_shader(shader.ShaderType.unlit_textured)
 engine.add_shader(shader.ShaderType.unlit_color)
 engine.add_shader(shader.ShaderType.text)
@@ -28,6 +30,8 @@ engine.add_item_factory('walkarea', factories.items.walkarea)
 # load adventure items. fill up the items_in_room structure
 with open(example.dir+  '/items.yaml') as f:
     vars.items = yaml.load(f, Loader=yaml.FullLoader)
+with open(example.dir + '/dialogues.yaml') as f:
+    vars.dialogues = yaml.load(f, Loader=yaml.FullLoader)
 print('# loaded ' + str(len(vars.items)) + ' items')
 for k, v in vars.items.items():
     if 'room' in v:

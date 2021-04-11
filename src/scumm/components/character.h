@@ -37,6 +37,9 @@ inline float CharacterController::getSpeed() const {
 }
 
 inline char CharacterController::getDirection() const {
+    if (m_dir == 'w') {
+        return 'e';
+    }
     return m_dir;
 }
 

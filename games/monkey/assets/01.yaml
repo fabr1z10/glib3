@@ -93,6 +93,12 @@ guybrush:
         - quads: [[189,12,20,36,12,0], [220,101,11,12,7,-35]]
         - quads: [[189,12,20,36,12,0], [233,101,11,12,7,-35]]
         - quads: [[189,12,20,36,12,0], [220,115,11,12,7,-35]]
+    kneel_s:
+      elements:
+        - quads: [[80, 163, 17, 33, 10, 0]]
+    push_plank:
+      elements:
+        - quads: [[57, 150, 21, 47, 10, 0]]
 lookout:
   sheet: 'gfx/sprites/sprites1.png'
   type: 'asset.sprite'
@@ -114,6 +120,17 @@ lookout:
         - [[193,459,23,35,11,0], [223,496,9,15,5,-32]]
         - [[193,459,23,35,11,0], [234,496,9,13,5,-32]]
         - [[193,459,23,35,11,0], [223,496,9,15,5,-32]]
+plank:
+  sheet: "gfx/sprites/sprites1.png"
+  type: "asset.sprite"
+  animations:
+    idle:
+      elements:
+        - quads: [[65, 235, 67, 24]]
+          ticks: 10
+    pushed:
+      elements:
+        - quads: [[65, 210, 61, 24]]
 door_village_scummbar:
   sheet: "gfx/sprites/sprites1.png"
   type: "asset.sprite"
@@ -149,11 +166,11 @@ door_kitchen_scummbar:
   type: "asset.sprite"
   animations:
     open:
-      frames:
-        - [358,104,37,53]
+      elements:
+        - quads: [[358,104,37,53]]
     closed:
-      frames:
-        - [397,104,37,53]
+      elements:
+        - quads: [[397,104,37,53]]
 scummbar.mancomb:
   sheet: 'gfx/sprites/sprites1.png'
   type: 'asset.sprite'
@@ -193,10 +210,10 @@ scummbar.fireplace:
   type: 'asset.sprite'
   animations:
     idle_1:
-      frames:
-        - [334,160,32,26]
-        - [368,160,32,26]
-        - [402,160,32,26]
+      elements:
+        - quads: [[334,160,32,26]]
+        - quads: [[368,160,32,26]]
+        - quads: [[402,160,32,26]]
 scummbar.pirate1:
   sheet: 'gfx/sprites/sprites2.png'
   type: 'asset.sprite'
@@ -301,35 +318,35 @@ ilp1:
   type: 'asset.sprite'
   animations:
     idle_e:
-      frames:
-        - [319,410,35,55]
+      elements:
+        - quads: [[319,410,35,55]]
     talk_e:
-      frames:
-        - [394,409,35,56]
-        - [431,411,35,54]
+      elements:
+        - quads: [[394,409,35,56]]
+        - quads: [[431,411,35,54]]
 ilp2:
   sheet: 'gfx/sprites/sprites2.png'
   type: 'asset.sprite'
   animations:
     idle_e:
-      frames:
-        - [2,1,34,53]
+      elements:
+        - quads: [[2,1,34,53]]
     talk_e:
-      frames:
-        - [39,1,34,56]
-        - [75,1,35,52]
+      elements:
+        - quads: [[39,1,34,56]]
+        - quads: [[75,1,35,52]]
 ilp3:
   sheet: 'gfx/sprites/sprites2.png'
   type: 'asset.sprite'
   animations:
     idle_e:
-      frames:
-        - [113,1,35,52]
+      elements:
+        - quads: [[113,1,35,52]]
     talk_e:
-      frames:
-        - [150,1,31,52]
-        - [183,2,32,51]
-        - [217,1,31,52]
+      elements:
+        - quads: [[150,1,31,52]]
+        - quads: [[183,2,32,51]]
+        - quads: [[217,1,31,52]]
 cook:
   sheet: 'gfx/sprites/sprites1.png'
   type: 'asset.sprite'
@@ -602,11 +619,11 @@ door_kitchen_pier:
   type: 'asset.sprite'
   animations:
     closed:
-      frames:
-        - [469, 143, 32, 60]
+      elements:
+        - quads: [[469, 143, 32, 60]]
     open:
-      frames:
-        - [435, 143, 32, 60]
+      elements:
+        - quads: [[435, 143, 32, 60]]
 baskets:
   sheet: 'gfx/sprites/sprites2.png'
   type: 'asset.sprite'
@@ -654,56 +671,66 @@ seagull:
   type: asset.sprite
   animations:
     fly:
-      frames:
-        - [3,220,20,14,-307,-37]
-        - [3,236,25,12,-295,-35]
-        - [3,220,20,14,-292,-33]
-        - [3,250,19,25,-285,-29]
-        - [3,277,19,19,-277,-32]
-        - [3,250,19,25,-269,-22]
-        - [3,220,20,14,-260,-25]
-        - [3,236,25,12,-247,-23]
-        - [3,220,20,14,-244,-21]
-        - [3,277,19,19,-245,-23]
-        - [3,277,19,19,-250,-17]
-        - [3,298,23,15,-248,-14]
-        - [3,315,25,11,-246,-13]
-        - [3,298,23,15,-243,-12]
-        - [3,328,19,9,-243,-10]
+      elements:
+        - quads: [[3,220,20,14,-307,-37]]
+        - quads: [[3,236,25,12,-295,-35]]
+        - quads: [[3,220,20,14,-292,-33]]
+        - quads: [[3,250,19,25,-285,-29]]
+        - quads: [[3,277,19,19,-277,-32]]
+        - quads: [[3,250,19,25,-269,-22]]
+        - quads: [[3,220,20,14,-260,-25]]
+        - quads: [[3,236,25,12,-247,-23]]
+        - quads: [[3,220,20,14,-244,-21]]
+        - quads: [[3,277,19,19,-245,-23]]
+        - quads: [[3,277,19,19,-250,-17]]
+        - quads: [[3,298,23,15,-248,-14]]
+        - quads: [[3,315,25,11,-246,-13]]
+        - quads: [[3,298,23,15,-243,-12]]
+        - quads: [[3,328,19,9,-243,-10]]
     eat:
-      frames:
-        - [3,339,15,13,-245,-10]
-        - [25,223,18,11,-242,-10]
-        - [30,238,17,10,-243,-10]
-        - [24,250,19,9,-242,-10]
-        - [24,261,19,10,-242,-10]
-        - [24,273,17,10,-243,-10]
-        - [24,285,18,11,-242,-10]
-        - [28,298,15,13,-245,-10]
-        - [30,312,11,17,-249,-10]
-        - [24,331,12,17,-248,-10]
-        - [49,224,12,17,-248,-10]
-
-# seagull_fly_1 = {x=3, y = 220, width=20, height=14 },
-# seagull_fly_2 = {x=3, y = 187+49, width=25, height=12},
-# seagull_fly_3 = {x=3, y = 187+63, width=19, height=25},
-# seagull_fly_4 = {x=3, y = 187+90, width=19, height=19},
-# seagull_fly_5 = {x=3, y = 187+111, width=23, height=15},
-# seagull_fly_6 = {x=3, y = 187+128, width=25, height=11},
-# seagull_fly_7 = {x=3, y = 187+141, width=19, height=9},
-# seagull_fly_8 = {x=47, y = 301, width=19, height=19},
-# seagull_fly_9 = {x=46, y = 291, width=23, height=7},
-# seagull_eat_1 = {x=3, y = 339, width=15, height=13},
-# seagull_eat_2 = {x=25, y = 223, width=18, height=11},
-# seagull_eat_3 = {x=30, y= 238, width=17, height=10},
-# seagull_eat_4 = {x=24, y=250, width=19, height=9},
-# seagull_eat_5 = {x=24, y=261, width=19, height=10},
-# seagull_eat_6 = {x=24, y=273, width=17, height=10},
-# seagull_eat_7 = {x=24, y=285, width=18, height=11},
-# seagull_eat_8 = {x=28, y=298, width=15, height=13},
-# seagull_eat_9 = {x=30, y=312, width=11, height=17},
-# seagull_eat_10 = {x=30, y=331, width=12, height=17},
-# seagull_eat_11 = {x=49, y=224, width=12, height=17},
+      elements:
+        - quads: [[3, 339, 15, 13, -245, -10]]
+        - quads: [[25,223,18,11,-242, -10]]
+        - quads: [[30,238,17,10,-243, -10]]
+        - quads: [[24,250,19,9,-242, -10]]
+        - quads: [[24,261,19,10,-242, -10]]
+        - quads: [[24,273,17,10,-243, -10]]
+        - quads: [[24,285,18,11,-242, -10]]
+        - quads: [[28,298,15,13,-245, -10]]
+        - quads: [[30,312,11,17,-249, -10]]
+        - quads: [[24,331,12,17,-248, -10]]
+        - quads: [[49,224,12,17,-248, -10]]
+    jump1:
+      elements:
+        - quads: [[3,339,15,13,-245,-40]]
+        - quads: [[3,339,15,13,-245,-64]]
+        - quads: [[3,339,15,13,-245,-94]]
+        - quads: [[3,339,15,13,-245,-100]]
+        - quads: [[3,277,19,19,-237,-82]]
+        - quads: [[3,277,19,19,-237,-64]]
+        - quads: [[3,277,19,19,-237,-40]]
+        - quads: [[3,277,19,19,-237,-10]]
+    jump2:
+      elements:
+        - quads: [[3,339,15,13,-245,-40]]
+        - quads: [[3,339,15,13,-245,-64]]
+        - quads: [[3,339,15,13,-245,-94]]
+        - quads: [[3,339,15,13,-245,-100]]
+        - quads: [[47,301,19,19,-249,-98]]
+        - quads: [[47,301,19,19,-255,-94]]
+        - quads: [[47,301,19,19,-261,-86]]
+        - quads: [[47,301,19,19,-267,-74]]
+        - quads: [[47,301,19,19,-273,-58]]
+        - quads: [[47,301,19,19,-279,-38]]
+        - quads: [[46,291,23,7,-268,-34]]
+        - quads: [[3,250,19,25,-259,-27]]
+        - quads: [[3,220,20,14,-254,-23]]
+        - quads: [[3,236,25,12,-245,-15]]
+        - quads: [[3,277,19,19,-250,-17]]
+        - quads: [[3,298,23,15,-248,-14]]
+        - quads: [[3,315,23,15,-246,-13]]
+        - quads: [[3,298,23,15,-244,-12]]
+        - quads: [[3,328,19,9,-243,-11]]
         # 		{
 # 			name="talk_e",
 # 			frames = {

@@ -5,8 +5,7 @@
 
 class LuaCollisionResponse : public CollisionResponse {
 public:
-    LuaCollisionResponse () : CollisionResponse(), m_onEnter(pybind11::none()),
-    m_onLeave(pybind11::none()), m_onStay(pybind11::none()) {}
+    LuaCollisionResponse () : CollisionResponse() {}
     void onStart (Entity*, Entity*, const CollisionReport& report) override;
     void onEnd (Entity*, Entity*, const CollisionReport& report) override;
     void onStay (Entity*, Entity*, const CollisionReport& report) override;

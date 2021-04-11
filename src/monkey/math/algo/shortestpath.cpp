@@ -155,7 +155,9 @@ void ShortestPath::updateGraph() {
         }
     }
     for (const auto& wall : m_walls) {
-        m_edges.push_back({wall.A, wall.B, true});
+        if (wall.active) {
+            m_edges.push_back({wall.A, wall.B, true});
+        }
     }
 
     // step 2.
@@ -218,7 +220,7 @@ void ShortestPath::setShape(std::shared_ptr<IShape> shape) {
     //exit(1);
 }
 
-float ShortestPath::find(glm::vec2 start, glm::vec2 end, std::vector<glm::vec2> &path) {
+int ShortestPath::find(glm::vec2 start, glm::vec2 end, std::vector<glm::vec2> &path) {
     // finds the shortest path between start and end points. Place all intermediate points in path
 
     // 1. If start, or end point, is outside of the shape, then we use their closest point to the edge
@@ -236,7 +238,7 @@ float ShortestPath::find(glm::vec2 start, glm::vec2 end, std::vector<glm::vec2> 
     }
     // if p0 == p1, nothing to do
     if (glm::length(p0 - p1) < 0.01f) {
-        return 0.0f;
+        return 0;
     }
 
     // now we need to add p0 and p1 to the graph
@@ -289,7 +291,7 @@ float ShortestPath::find(glm::vec2 start, glm::vec2 end, std::vector<glm::vec2> 
     }
     removeNode(istart);
     removeNode(iend);
-
+    return (hasFreePath ? 0 : 1);
     //m_graph->removeNode(istart);
     //m_graph->removeNode(iend);
 

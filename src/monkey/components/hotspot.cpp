@@ -338,6 +338,7 @@ void HotSpot::Start() {
 
         // if debug mode
         auto mesh = this->getDebugMesh();
+        mesh->SetZ(2.0f);
         m_entity->AddChild(mesh);
     }
 
@@ -347,6 +348,7 @@ void HotSpot::Start() {
         auto model = m.createWireframe(m_shape.get(), glm::vec4(1.0f));
         auto renderer = std::make_shared<BasicRenderer>(model);
         c->AddComponent(renderer);
+        c->SetZ(2.0f);
         m_entity->AddChild(c);
     }
     //auto hs = (Engine::get().GetRef<HotSpotManager>("_hotspotmanager"));

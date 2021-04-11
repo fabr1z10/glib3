@@ -14,7 +14,7 @@ void LuaCollisionResponse::setOnStay(pybind11::function& ref) {
 }
 
 void LuaCollisionResponse::onStart(Entity* e1, Entity* e2, const CollisionReport& report) {
-    if (!m_onEnter.is_none()) {
+    if (m_onEnter) {
         glm::vec2 separationVector = report.direction * report.distance;
         auto obj1 = Wrap1::create(e1);
         auto obj2 = Wrap1::create(e2);
@@ -24,7 +24,7 @@ void LuaCollisionResponse::onStart(Entity* e1, Entity* e2, const CollisionReport
 
 
 void LuaCollisionResponse::onEnd(Entity* e1, Entity* e2, const CollisionReport& report) {
-    if (!m_onLeave.is_none()) {
+    if (m_onLeave) {
         glm::vec2 separationVector = report.direction * report.distance;
         auto obj1 = Wrap1::create(e1);
         auto obj2 = Wrap1::create(e2);
@@ -34,7 +34,7 @@ void LuaCollisionResponse::onEnd(Entity* e1, Entity* e2, const CollisionReport& 
 }
 
 void LuaCollisionResponse::onStay(Entity*, Entity*, const CollisionReport& report) {
-    if (!m_onStay.is_none()) {
+    if (m_onStay) {
         // TODO!!!
         m_onStay();
     }

@@ -89,9 +89,22 @@ class Engine:
             print(error)
             exit(1)
 
+    def set(self, id, value):
+        if isinstance(id, str):
+            print('CANE=' + str(id))
+            if id[0] == '@':
+                cc = self.vars
+                d = id[1:].split('/')
+                print(d)
+                for b in d[:-1]:
+                    cc = getattr(cc, b)
+                print ('current value = ' + str(getattr(cc, d[-1])))
+                print ('ccc = ' + str(d[-1]))
+                setattr(cc, d[-1], value)
+                print ('current value = ' + str(getattr(cc, d[-1])))
+
     # read a string
     def read(self, value):
-        print ('called with ' + value)
         if isinstance(value, str):
             if value[0] == '@':
                 c = value[1]
@@ -115,9 +128,7 @@ class Engine:
                     # get a string
                     cc = self.assets['strings']
                     for b in value[1:].split('/'):
-                        print ('fottiti' + str(b) + ' ' + str(b.isdigit()))
                         cc = cc[int(b) if b.isdigit() else b]
-                        print (cc)
                     return cc
         return value
 

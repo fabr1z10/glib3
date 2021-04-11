@@ -27,3 +27,10 @@ class Say:
         self.lines = lines
         self.animate = animate
 
+class SetWall:
+    def __init__(self, walkarea: str, wall_id: int, enabled: bool):
+        self.type = 'scumm.action.enable_block'
+        self.walkarea = walkarea
+        self.wall = wall_id
+        self.active = enabled
+

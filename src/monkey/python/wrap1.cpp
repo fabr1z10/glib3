@@ -135,16 +135,9 @@ void Wrap1::setMesh(const std::string & jointId, const std::string & meshId, flo
 
 }
 
-void Wrap1::setAnim(const std::string & animId, const std::string & anim) {
+void Wrap1::setAnim(const std::string & animId) {
     auto* a = m_entity->GetComponent<IAnimator>();
-    auto* model = static_cast<SkModel*>(a->getModel());
-    model->setAnimation(animId, anim);
-    a->resetAnimation();
-    auto* collider = m_entity->GetComponent<ICollider>();
-//    if (collider != nullptr) {
-//        static_cast<SkCollider*>(collider)->computeAttackBoxes();
-//    }
-
+    a->SetAnimation(animId);
 }
 
 void Wrap1::setModel(const std::string& modelId) {

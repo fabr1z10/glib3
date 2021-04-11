@@ -58,6 +58,7 @@ private:
     virtual bool _asBool() const = 0;
     virtual std::string _asString() const = 0;
     virtual pybind11::function _asFunction() const = 0;
+    virtual pybind11::object _asPyObject() const = 0;
 
     // glm stuff
     virtual glm::vec2 _asVec2() const = 0;
@@ -81,6 +82,7 @@ template<> glm::vec3 ITab::as() const;
 template<> glm::vec4 ITab::as() const;
 template<> glm::mat4 ITab::as() const;
 template<> inline pybind11::function ITab::as() const { return _asFunction(); }
+template<> inline pybind11::object ITab::as() const { return _asPyObject(); }
 
 template<> std::vector<int> ITab::as() const;
 template<> std::vector<float> ITab::as() const;

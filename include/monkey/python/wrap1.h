@@ -36,7 +36,7 @@ public:
     void setText (const std::string&);
     void setModel (const std::string&);
     void setMesh (const std::string&, const std::string&, float scale, float ox, float oy);
-    void setAnim (const std::string&, const std::string&);
+    void setAnim (const std::string&);
     void appendText (pybind11::object);
     void setEnableUpdate (bool);
     int add(pybind11::object);

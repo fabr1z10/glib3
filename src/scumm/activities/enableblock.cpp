@@ -9,8 +9,9 @@ EnableBlock::EnableBlock(const ITab& table) : Activity() {
 }
 
 void EnableBlock::Start() {
-    auto walkarea = dynamic_cast<WalkArea*>(Monkey::get().Get<Entity>(m_id)->GetComponent<HotSpot>());
+    auto walkarea = Monkey::get().Get<Entity>(m_id)->GetComponent<WalkArea>();
     walkarea->EnableBlockedLine(m_wall, m_active);
+    walkarea->recalc();
     SetComplete();
 
 }

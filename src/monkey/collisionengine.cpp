@@ -29,17 +29,18 @@ SpatialHashingCollisionEngine::SpatialHashingCollisionEngine(const ITab & table)
         auto tag0 = p.get<int>("tag1");
         auto tag1 = p.get<int>("tag2");
         //PyTable t(p[2].cast<py::object>());
-        std::unique_ptr<LuaCollisionResponse> l(new LuaCollisionResponse);
-        if (p.has("on_enter")) {
-            auto f = p.get<py::function>("on_enter");
+        auto l = std::make_unique<LuaCollisionResponse>();
+        auto response = p["response"];
+        if (response->has("on_enter")) {
+            auto f = response->get<py::function>("on_enter");
             l->setOnEnter(f);
         }
-        if (p.has("on_leave")) {
-            auto f = p.get<py::function>("on_leave");
+        if (response->has("on_leave")) {
+            auto f = response->get<py::function>("on_leave");
             l->setOnLeave(f);
         }
-        if (p.has("on_stay")) {
-            auto f = p.get<py::function>("on_stay");
+        if (response->has("on_stay")) {
+            auto f = response->get<py::function>("on_stay");
             l->setOnStay(f);
         }
         crm->AddCollisionResponse(tag0, tag1, std::move(l));

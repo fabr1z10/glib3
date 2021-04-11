@@ -20,6 +20,8 @@ class Room:
         if parent and parent in self.ref:
             self.ref[parent].add(e)
         else:
+            if parent:
+                print ('WARNING! ' + parent +' + not found!')
             self.scene.append(e)
         if e.tag:
             self.ref[e.tag] = e

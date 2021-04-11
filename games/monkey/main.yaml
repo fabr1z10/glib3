@@ -1,13 +1,13 @@
 ---
   title: The secret of Monkey Island
-  lang: eng
+  lang: fra
   device_size: [320, 200]
   window_size: [640, 400]
   tick_multiplier: 5
-  start_room: kitchen
+  start_room: scummbar
   fonts:
     - id: ui
-      file: './fonts/monkeysmall.ttf'
+      file: './fonts/arial.ttf'
       #file: '/usr/share/fonts/truetype/ubuntu/Ubuntu-M.ttf'
       #file: './fonts/MonkeyIsland-1990.ttf'
     - id: monkey

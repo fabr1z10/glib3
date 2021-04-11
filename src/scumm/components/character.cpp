@@ -23,6 +23,7 @@ void CharacterController::Start() {
 void CharacterController::turn(char dir) {
     m_dir = dir;
     std::string anim = "idle_" + std::string(1,dir == 'w' ? 'e' : dir);
+    m_entity->SetFlipX(dir == 'w');
     m_animator->SetAnimation(anim);
 
 }

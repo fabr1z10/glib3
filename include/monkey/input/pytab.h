@@ -20,6 +20,7 @@ private:
     bool _asBool() const override;
     std::string _asString() const override;
     pybind11::function _asFunction() const override;
+    pybind11::object _asPyObject() const override;
 
     // glm objects
     glm::vec2 _asVec2() const override;

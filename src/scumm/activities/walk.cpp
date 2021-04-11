@@ -14,7 +14,7 @@
 #include "../components/character.h"
 #include <monkey/components/animator.h>
 
-Walk::Walk(const ITab& t) : Sequence() {
+Walk::Walk(const ITab& t) : Sequence(), m_pathFound(0) {
     m_p = t.get<glm::vec2>("pos");
 
     if (t.has("id")) {
@@ -32,10 +32,14 @@ void Walk::SetComplete() {
     auto actor = Monkey::get().Get<Entity>(m_actorId);
     glm::vec2 currentPos(actor->GetPosition());
     // set to idle
-    auto animator = actor->GetComponent<IAnimator>();
-    auto currentAnim = animator->GetAnimation();
-    actor->GetComponent<CharacterController>()->turn(currentAnim[currentAnim.size()-1]);
-    m_success =(glm::length(m_p - currentPos) < 0.01);
+    //auto animator = actor->GetComponent<IAnimator>();
+    //auto currentAnim = animator->GetAnimation();
+    //bool flipx = actor->GetFlipX();
+    //char dir = currentAnim[currentAnim.size()-1];
+    //if (dir == 'e' &&  flipx) dir = 'w';
+    actor->GetComponent<CharacterController>()->turn(m_lastDirection);
+    //m_success =(glm::length(m_p - currentPos) < 0.01);
+    m_success = (m_pathFound == 0);
 }
 
 
@@ -55,6 +59,7 @@ void Walk::Start() {
     auto actor = Monkey::get().Get<Entity>(m_actorId);
     auto walkArea = actor->GetParent()->GetComponent<WalkArea>();
     auto characterController = actor->GetComponent<CharacterController>();
+    m_lastDirection = characterController->getDirection();
     auto speed = characterController->getSpeed();
 //    //auto walkArea = Engine::get().GetRef<WalkArea>("walkarea");
 //
@@ -75,7 +80,8 @@ void Walk::Start() {
     std::cerr << "current pos = " << currentPos.x << ", " << currentPos.y << "\n";
     std::cerr << "walkt to = " << m_p.x << ", " << m_p.y << "\n";
     auto dd = glm::length(currentPos - m_p);
-    auto path = walkArea->findPath(currentPos, m_p);
+    auto path = walkArea->findPath(currentPos, m_p, m_pathFound);
+
     if (path.empty()) {
         SetComplete();
         return;
@@ -92,8 +98,10 @@ void Walk::Start() {
         if (fabs(move.x) > fabs(move.y)) {
             anim = "walk_e";
             flipH = move.x < 0 ? 2 : 1;
+            m_lastDirection = move.x < 0 ? 'w' : 'e';
         } else {
             anim = move.y > 0 ? "walk_n" : "walk_s";
+            m_lastDirection = move.y > 0 ? 'n' : 's';
         }
         auto setStateAction = std::make_shared<Animate>(anim, true, flipH);
         setStateAction->SetId(m_actorId);

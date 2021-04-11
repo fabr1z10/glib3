@@ -123,6 +123,10 @@ void WalkArea::EnableBlockedLine(int id, bool active) {
     m_shortestPath->setWall(id, active);
 }
 
+void WalkArea::recalc() {
+    m_shortestPath->updateGraph();
+}
+
 void WalkArea::Start() {
     //ScriptHotSpot::Start();
 
@@ -161,9 +165,9 @@ void WalkArea::Start() {
     }
 }
 
-std::vector<glm::vec2> WalkArea::findPath(glm::vec2 A, glm::vec2 B) {
+std::vector<glm::vec2> WalkArea::findPath(glm::vec2 A, glm::vec2 B, int& retval) {
     std::vector<glm::vec2> points;
-    m_shortestPath->find(A, B, points);
+    retval = m_shortestPath->find(A, B, points);
     return points;
 }
 //void WalkArea::onClick(glm::vec2 worldCoords, int button, int action, int mods) {

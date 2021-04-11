@@ -33,6 +33,10 @@ pybind11::function PyTab::_asFunction() const {
     return m_obj.cast<pybind11::function>();
 }
 
+pybind11::object PyTab::_asPyObject() const {
+    return m_obj;
+}
+
 glm::vec2 PyTab::_asVec2() const {
     auto vec = m_obj.cast<std::vector<float>>();
     return glm::vec2(vec[0], vec[1]);

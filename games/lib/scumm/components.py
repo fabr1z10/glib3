@@ -2,6 +2,7 @@ class Walkarea:
     def __init__(self, shape):
         self.type = 'scumm.components.walkarea'
         self.shape = shape
+        self.depth = None
         self.walls = []
 
     def add_wall(self, A, B, active):

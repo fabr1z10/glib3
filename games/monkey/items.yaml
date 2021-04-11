@@ -3,9 +3,9 @@ guybrush:
   type: player
   model: 01/guybrush
   pos: [126, 52]
-  room: kitchen
+  room: scummbar
   parent: walkarea_0
-  dir: s
+  dir: e
   speed: 500
   text_color: [255, 255, 255, 255]
   text_offset: [0, 60]
@@ -90,26 +90,26 @@ village1_door:
   wdir: n
   anim: '@&doors/scummbar'
   model: door_village_scummbar
-scummbar_door_out:
-  text: door
-  width: 38
-  height: 47
-  pos: [32, 24]
-  room: scummbar
-  walkto: '@scummbar_entrance'
-  wdir: w
-  anim: '@&doors/scummbar'
-  model: door_scummbar_village
-scummbar_door_kitchen:
-  text: door
-  width: 35
-  height: 69
-  pos: [591, 9,-1]
-  room: scummbar
-  walkto: '@&scummbar_kitchen'
-  wdir: e
-  anim: '@&doors/kitchen'
-  model: door_scummbar_kitchen
+#scummbar_door_out:
+#  text: door
+#  width: 38
+#  height: 47
+#  pos: [32, 24]
+#  room: scummbar
+#  walkto: '@scummbar_entrance'
+#  wdir: w
+#  anim: '@&doors/scummbar'
+#  model: door_scummbar_village
+#scummbar_door_kitchen:
+#  text: door
+#  width: 35
+#  height: 69
+#  pos: [591, 9,-1]
+#  room: scummbar
+#  walkto: '@&scummbar_kitchen'
+#  wdir: e
+#  anim: '@&doors/kitchen'
+#  model: door_scummbar_kitchen
 
 village2_archway1:
   text: archway
@@ -163,130 +163,131 @@ meleemap_clearing:
     pos: '@clearing_path' 
     dir: w 
   room: meleemap  
-scummbar_pirate1:
-  text: pirate
-  pos: [138, 38]
-  width: 30
-  height: 30
-  model: scummbar.pirate1
-  walkto: [140,20]
-  wdir: n
-  room: scummbar 
-  node: walkarea
-scummbar_pirate2:
-  pos: [124, 20]
-  model: scummbar.pirate2
-  room: scummbar   
-  node: walkarea
-scummbar_pirate3:
-  pos: [30, 0]
-  model: scummbar.pirate3
-  room: scummbar   
-  node: walkarea
-scummbar_pirate4:
-  pos: [0, 0]
-  model: scummbar.pirate4
-  text: pirates
-  width: 70
-  height: 20
-  walkto: [50, 10]
-  wdir: s
-  room: scummbar   
-  node: walkarea  
-scummbar_pirate5:
-  pos: [200,18,1]
-  model: scummbar.pirate5
-  room: scummbar   
-scummbar_pirate6:
-  pos: [160,0,1]
-  model: scummbar.pirate6
-  room: scummbar     
-scummbar_pirate7:
-  pos: [255,38,-1]
-  model: scummbar.pirate7
-  room: scummbar       
-scummbar_pirate8:
-  pos: [215,44,-1]
-  model: scummbar.pirate8
-  room: scummbar       
-scummbar_pirate9:
-  pos: [278,40,-1]
-  model: scummbar.pirate9
-  room: scummbar
-scummbar_mancomb:
-  text: pirate
-  pos: [89,24]
-  model: scummbar.mancomb
-  width: 30
-  height: 30
-  walkto: '@scummbar_mancomb'
-  wdir: n
-  room: scummbar
-  node: walkarea
-scummbar_estevan:
-  text: pirate
-  pos: [164,21,1]
-  model: scummbar.estevan
-  width: 30
-  height: 20
-  walkto: '@scummbar_estevan'
-  wdir: s
-  room: scummbar
-scummbar_loom:
-  text: pirate
-  pos: [260,17,-0.99]
-  model: scummbar.loom
-  width: 20
-  height: 20
-  walkto: '@scummbar_loom'
-  wdir: n
-  room: scummbar
+#scummbar_pirate1:
+#  text: pirate
+#  pos: [138, 38]
+#  width: 30
+#  height: 30
+#  model: scummbar.pirate1
+#  walkto: [140,20]
+#  wdir: n
+#  room: scummbar
+#  node: walkarea
+#scummbar_pirate2:
+#  pos: [124, 20]
+#  model: scummbar.pirate2
+#  room: scummbar
+#  node: walkarea
+#scummbar_pirate3:
+#  pos: [30, 0]
+#  model: scummbar.pirate3
+#  room: scummbar
+#  node: walkarea
+#scummbar_pirate4:
+#  pos: [0, 0]
+#  model: scummbar.pirate4
+#  text: pirates
+#  width: 70
+#  height: 20
+#  walkto: [50, 10]
+#  wdir: s
+#  room: scummbar
+#  node: walkarea
+#scummbar_pirate5:
+#  pos: [200,18,1]
+#  model: scummbar.pirate5
+#  room: scummbar
+#scummbar_pirate6:
+#  pos: [160,0,1]
+#  model: scummbar.pirate6
+#  room: scummbar
+#scummbar_pirate7:
+#  pos: [255,38,-1]
+#  model: scummbar.pirate7
+#  room: scummbar
+#scummbar_pirate8:
+#  pos: [215,44,-1]
+#  model: scummbar.pirate8
+#  room: scummbar
+#scummbar_pirate9:
+#  pos: [278,40,-1]
+#  model: scummbar.pirate9
+#  room: scummbar
+#scummbar_mancomb:
+#  text: pirate
+#  pos: [89,24]
+#  model: scummbar.mancomb
+#  width: 30
+#  height: 30
+#  walkto: '@scummbar_mancomb'
+#  wdir: n
+#  room: scummbar
+#  node: walkarea
+#scummbar_estevan:
+#  text: pirate
+#  pos: [164,21,1]
+#  model: scummbar.estevan
+#  width: 30
+#  height: 20
+#  walkto: '@scummbar_estevan'
+#  wdir: s
+#  room: scummbar
+#scummbar_loom:
+#  text: pirate
+#  pos: [260,17,-0.99]
+#  model: scummbar.loom
+#  width: 20
+#  height: 20
+#  walkto: '@scummbar_loom'
+#  wdir: n
+#  room: scummbar
 scummbar_fireplace:
-  model: scummbar.fireplace
+  type: item1
+  model: 01/scummbar.fireplace
   pos: [509, 44]
-  text: fireplace
-  width: 29
-  height: 18
+  text: '$objects/fireplace'
+  size: [29, 18]
   walkto: [512, 40]
   wdir: e
   room: scummbar
-cook:
-  model: cook
-  pos: [589, 14]
-  #room: scummbar
-  node: walkarea
-  dir: w
-  speed: 100
-  text_color: [85, 255, 255, 255]
-  text_offset: [0,60]
+#cook:
+#  model: cook
+#  pos: [589, 14]
+#  #room: scummbar
+#  node: walkarea
+#  dir: w
+#  speed: 100
+#  text_color: [85, 255, 255, 255]
+#  text_offset: [0,60]
 seagull:
   model: seagull
   pos: [0,0,1]  
-#kitchen_door:
-#  text: door
-#  width: 38
-#  height: 53
-#  pos: [19, 18, -1]
-#  room: kitchen
-#  walkto: '@&kitchen_door'
-#  wdir: w
-#  anim: '@&doors/kitchen'
-#  model: door_kitchen_scummbar
+kitchen_door:
+  type: item1
+  text: '$objects/door'
+  size: [38, 53]
+  pos: [19, 18, -1]
+  room: kitchen
+  walkto: '@pos/kitchen_door'
+  wdir: w
+  anim: '@doors/kitchen'
+  next_room: [scummbar, '@pos/scummbar_kitchen_door', 'w']
+  model: 01/door_kitchen_scummbar
 kitchen_potostew:
   type: item1
   model: 01/potostew
   pos: [153,39,-0.9]
   room: kitchen
-#kitchen_door_pier:
-#  model: door_kitchen_pier
-#  pos: [192, 9, -1]
-#  room: kitchen
-#  text: door
-#  width: 20
-#  height: 64
-#  walkto: [182, 9]
-#  anim: '@&doors/pier'
-#  wdir: e
+kitchen_door_pier:
+  type: item1
+  model: 01/door_kitchen_pier
+  pos: [192, 9, -1]
+  room: kitchen
+  text: '$objects/door'
+  size: [20, 64]
+  walkto: [182, 9]
+  anim: '@doors/pier'
+  wdir: e
 meat:
   type: item1
   model: 01/meat
@@ -296,13 +297,21 @@ meat:
   room: kitchen
   walkto: [90, 18]
   wdir: n
-meat2:
+barrel:
   type: item1
-  pos: [30, 0, 0]
-  text: '$objects/meat'
-  size: [20, 20]
+  pos: [8, 0, 0]
+  text: '$objects/barrel'
+  size: [27, 29]
   room: kitchen
-  walkto: [90, 18]
+  walkto: [41, 5]
+  wdir: w
+potostew:
+  type: item1
+  pos: [157, 39, 0]
+  text: '$objects/potostew'
+  size: [25, 16]
+  room: kitchen
+  walkto: [168, 16]
   wdir: n
 fish:
   type: item1
@@ -322,9 +331,41 @@ pot:
   room: kitchen
   walkto: [112,18]
   wdir: n
-#kitchen_trap:
-#  pos: [100, 0, 0]
-#  room: kitchen
+kitchen_trap:
+  type: item2
+  pos: [100, 0, 0]
+  room: kitchen
+  size: [10, 144]
+  func: on_kitchen_trap
+plank:
+  type: item1
+  tag: plank
+  pos: [248, 0, 1]
+  model: 01/plank
+  room: kitchen
+  walkto: [295, 0]
+  wdir: s
+plank_button:
+  type: item3
+  pos: [277, 8]
+  size: [34, 9]
+  func: on_click_plank
+  room: kitchen
+important_looking_pirate_1:
+  type: item1
+  pos: [376, 11, 0.95]
+  model: 01/ilp1
+  text_color: [85, 85, 255, 255]
+  text_offset: [0, 60]
+  room: scummbar
+important_looking_pirates:
+  type: item1
+  pos: [376, 21]
+  size: [80, 20]
+  text: '$objects/ilp'
+  room: scummbar
+  walkto: [461,3]
+  wdir: w
 #  collision:
 #    size: [10, 144]
 #    flag: 1

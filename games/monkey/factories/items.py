@@ -7,6 +7,7 @@ import func
 import entity
 import scumm.components
 import shapes
+import scripts.actions
 
 def bg(**kwargs):
     def f(*args):
@@ -27,6 +28,7 @@ def walkarea(**kwargs):
             for hole in kwargs['holes']:
                 shape.holes.append(hole)
         walkarea = scumm.components.Walkarea(shape=shape)
+        walkarea.depth= kwargs.get('depth', None)
         walls = kwargs.get('walls', None)
         if walls:
             for w in walls:
@@ -47,7 +49,33 @@ def player(**kwargs):
         s = entity.Sprite(model=model, pos=pos, tag='player')
         dir = desc.get('dir', 's')
         print ('direction is ' + str(dir))
-        s.add_component(scumm.components.CharacterController(dir=dir, speed=20, text_color=text_color, text_offset=text_offset))
+        s.add_component(scumm.components.CharacterController(dir=dir, speed=100, text_color=text_color, text_offset=text_offset))
+        s.add_component(compo.Collider(debug=True, flag=vars.Collision.Flags.player, mask=vars.Collision.Flags.other,
+                                       tag=vars.Collision.Tags.player, shape=shapes.Rect(width=8, height=2, offset=[-4, 0])))
+        s.add_component(compo.Follow())
+        return s
+    return f
+
+def item2(**kwargs):
+    def f(*args):
+        desc = args[1]
+        pos = desc.get('pos')
+        size = desc.get('size')
+        s = entity.Entity(pos=pos)
+        s.add_component(compo.Collider(flag=vars.Collision.Flags.other, mask=vars.Collision.Flags.player,
+                                       tag=vars.Collision.Tags.trap, shape=shapes.Rect(width=size[0],height=size[1]),debug=True))
+        s.add_component(compo.Info(func=desc.get('func')))
+        return s
+    return f
+
+def item3(**kwargs):
+    def f(*args):
+        desc = args[1]
+        pos = desc.get('pos')
+        size = desc.get('size')
+        s = entity.Entity(pos=pos)
+        fu = getattr(scripts.actions, desc.get('func'))
+        s.add_component(compo.HotSpot(shape=shapes.Rect(width=size[0], height=size[1]), onclick=fu))
         return s
     return f
 
@@ -64,9 +92,12 @@ def item1(**kwargs):
         #text = monkey.engine.read(desc.get('text'))
         s = None
         if model:
-            s = entity.Sprite(model=model, pos=pos)
+            anim = monkey.engine.read(desc.get('anim', None))
+            s = entity.Sprite(model=model, pos=pos, anim= anim)
         else:
             s = entity.Entity(pos = pos)
+        #s.tag = desc.get('tag', None)
+        s.tag= key
         # if a size is provided, add a hotspot
         size = desc.get('size', None)
         if size:
@@ -112,6 +143,18 @@ class InventoryButton(entity.Text):
             onleave=func.hover_off_inventory_button(item_id),
             onclick=func.prova()))
 
+
+class DialogueButton(entity.Text):
+    def __init__(self, font: str, text: str, color_inactive, color_active,
+                 align: entity.TextAlignment = entity.TextAlignment.bottom_left, script: callable = None,
+                 tag=None, pos=[0, 0, 0]):
+        super().__init__(font,8, text, color_inactive, align, tag, pos)
+        self.add_component(compo.HotSpot(
+            shape=None,
+            onenter=func.change_color(color_active),
+            onleave=func.change_color(color_inactive),
+            onclick=script))
+
 def make_inventory_button(item):
     return InventoryButton(
         font='ui',
@@ -120,6 +163,13 @@ def make_inventory_button(item):
         color_inactive=vars.Colors.inv_unselected,
         color_active=vars.Colors.inv_selected)
 
+def make_dialogue_button(dialogueline):
+    return DialogueButton(
+        font='ui',
+        text=dialogueline,
+        script=None,
+        color_inactive=vars.Colors.verb_unselected,
+        color_active=vars.Colors.verb_selected)
 # def makeDialogueButton(dialogueline):
 #     return se.DialogueButton(
 #         font = 'ui',

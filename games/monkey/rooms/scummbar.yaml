@@ -1,17 +1,20 @@
 ---
   id: scummbar
+  type: default
   width: 640
   height: 144
-  bg:
-    - image: gfx/scummbar_1.png
-      pos: [0, 0, -3]
-    - image: gfx/scummbar_2.png
-      pos: [374, 20, 0.95]
-    - image: gfx/scummbar_3.png
-      pos: [157, 0, 0.99]
-    - image: gfx/scummbar_4.png
-      pos: [20, 0, 0.99]
-  walkareas:
-    - type: poly
-      outline: [32, 16, 70, 24, 128, 19, 251, 18, 311, 10, 321, 10, 345, 32, 467, 41, 492, 50, 514, 40, 565, 40, 580, 35, 629, 6, 626, 0, 256, 0, 200, 16, 149, 0, 90, 0, 85, 10]
-      depth: auto
+  items:
+    - factory: [bg, {'image': gfx/scummbar_1.png}]
+      d: [[0, 0, -3]]
+
+    - factory: [bg, {'image': gfx/scummbar_3.png}]
+      d: [[157, 0, 0.99]]
+    - factory: [bg, {'image': gfx/scummbar_4.png}]
+      d: [[20, 0, 0.99]]
+    - factory: [walkarea, {'id': walkarea_0, 'depth': { 'type': "func.liny", 'values': [0, 1, 144, 0]}, 'outline':
+      [32, 16, 85, 10, 90, 0, 149, 0, 200, 16, 256, 0, 626, 0, 580, 35, 565, 40, 514, 40, 492, 50, 467,41, 345, 32, 321, 10, 311, 10, 251, 18, 128, 19, 70, 24 ],
+      'holes': [[374,5,501,5,501,23,474,30,374,23]] } ]
+      d: [[0,0,0]]
+    - factory: [bg, {'image': gfx/scummbar_table.png}]
+      parent: walkarea_0
+      d: [[374, 5, 0]]

@@ -23,7 +23,7 @@ public:
     ShortestPath ();
     void setShape (std::shared_ptr<IShape>);
 
-    float find(glm::vec2 start, glm::vec2 end, std::vector<glm::vec2>& path);
+    int find(glm::vec2 start, glm::vec2 end, std::vector<glm::vec2>& path);
     void updateGraph ();
     void addWall(glm::vec2 A, glm::vec2 B, bool active);
     void setWall(int id, bool active);

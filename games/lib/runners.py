@@ -24,7 +24,7 @@ class CollisionEngine:
         self.eps = eps
 
     def add_response(self, tag1: int, tag2: int, response: CollisionResponse):
-        self.response.append([tag1, tag2, response])
+        self.response.append({'tag1': tag1, 'tag2': tag2, 'response': response})
 
 
 class DynamicWorld:

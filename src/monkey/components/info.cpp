@@ -3,5 +3,5 @@
 
 LuaInfo::LuaInfo(const ITab &t) : Component(t)
 {
-    m_stuff = t.get<pybind11::dict>("stuff");
+    m_stuff = t.get<pybind11::object>("stuff").cast<pybind11::dict>();
 }

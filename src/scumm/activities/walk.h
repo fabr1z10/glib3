@@ -17,8 +17,10 @@ public:
     void Start() override;
     void SetComplete() override;
 private:
+    char m_lastDirection;
     IShape* m_shape;
     int m_actorId;
     std::string m_tag;
     glm::vec2 m_p;
+    int m_pathFound;
 };
