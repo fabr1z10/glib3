@@ -317,10 +317,10 @@ ilp1:
   sheet: 'gfx/sprites/sprites1.png'
   type: 'asset.sprite'
   animations:
-    idle_e:
+    idle_s:
       elements:
         - quads: [[319,410,35,55]]
-    talk_e:
+    talk_s:
       elements:
         - quads: [[394,409,35,56]]
         - quads: [[431,411,35,54]]

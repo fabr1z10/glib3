@@ -9,8 +9,6 @@
 #ifndef entity_h
 #define entity_h
 
-#define GLM_ENABLE_EXPERIMENTAL
-
 #include <glm/glm.hpp>
 #include <monkey/enums.h>
 #include <monkey/ref.h>

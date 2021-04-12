@@ -38,21 +38,22 @@ def walkarea(**kwargs):
     return f
 
 
-def player(**kwargs):
+def character(**kwargs):
     def f(*args):
         key = args[0]
+        is_player = key == vars.current_player
         desc = args[1]
         model = desc['model']
         text_color = desc.get('text_color', [255, 255, 255, 255])
         text_offset = desc.get('text_offset', [0, 60])
         pos = desc.get('pos')
-        s = entity.Sprite(model=model, pos=pos, tag='player')
+        s = entity.Sprite(model=model, pos=pos, tag='player' if is_player else key)
         dir = desc.get('dir', 's')
-        print ('direction is ' + str(dir))
         s.add_component(scumm.components.CharacterController(dir=dir, speed=100, text_color=text_color, text_offset=text_offset))
         s.add_component(compo.Collider(debug=True, flag=vars.Collision.Flags.player, mask=vars.Collision.Flags.other,
                                        tag=vars.Collision.Tags.player, shape=shapes.Rect(width=8, height=2, offset=[-4, 0])))
-        s.add_component(compo.Follow())
+        if is_player:
+            s.add_component(compo.Follow())
         return s
     return f
 
@@ -166,8 +167,8 @@ def make_inventory_button(item):
 def make_dialogue_button(dialogueline):
     return DialogueButton(
         font='ui',
-        text=dialogueline,
-        script=None,
+        text= monkey.engine.read(dialogueline['text']),
+        script=func.execute_dialogue_script(dialogueline),
         color_inactive=vars.Colors.verb_unselected,
         color_active=vars.Colors.verb_selected)
 # def makeDialogueButton(dialogueline):

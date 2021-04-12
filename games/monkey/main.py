@@ -7,6 +7,9 @@ import status
 
 # add folder
 path = Path(__file__)
+print (path)
+
+sys.path.append(example.dir)
 sys.path.append(str(path.parent.parent / 'lib'))
 
 import engine as eng

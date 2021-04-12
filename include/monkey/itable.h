@@ -1,5 +1,6 @@
 #pragma once
 
+#include <functional>
 #include <monkey/error.h>
 #include <monkey/typename.h>
 #include <pybind11/embed.h>

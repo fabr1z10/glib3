@@ -1,3 +1,4 @@
-from scripts.actions.shared import *
-from scripts.actions.kitchen import *
-from scripts.actions.scummbar    import *
+__all__ = ["shared", "kitchen", "scummbar"]
+from .shared import *
+from .kitchen import *
+from .scummbar import *

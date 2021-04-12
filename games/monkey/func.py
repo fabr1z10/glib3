@@ -47,7 +47,6 @@ def set_verb(verb_id):
 
 
 def update_current_action():
-    print ('IPDDAA')
     a = example.get('current_verb')
     verb = vars.verbs[vars.current_verb]
     text = monkey.engine.read(verb['text'])
@@ -113,6 +112,8 @@ def prova():
                 else:
                     f2 = vars.current_verb + '_'
                     fc = getattr(scripts.actions, f2, None)
+                    if fc is None:
+                        print ('not found: ' + f2)
             if fc:
                 fc(vars.current_item_1, item)
         else:
@@ -167,3 +168,15 @@ def on_enter_trap(player, trap, dx, dy):
     print('ciappo!' + str(f))
     if f:
         getattr(scripts.actions, f)(trap)
+
+def execute_dialogue_script(line):
+    def f(x, y, z):
+        if 'scr' in line:
+            s = script.Script()
+            for a in line['scr']:
+                action = a[0]
+                if action == 'say':
+                    s.add_action(scumm.actions.Say(tag=a[1], font='monkey', lines=[monkey.engine.read(x) for x in a[2:]]))
+            print (line['scr'])
+            example.play(s)
+    return f

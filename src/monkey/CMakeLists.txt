@@ -10,6 +10,8 @@ file(GLOB MONKEY_SOURCE *.cpp lua/*.cpp python/*.cpp components/*.cpp activities
 
 #set(CMAKE_ENABLE_EXPORTS ON)
 
+add_definitions(-DGLM_ENABLE_EXPERIMENTAL)
+
 add_library(monkey SHARED ${MONKEY_INCLUDE} ${MONKEY_SOURCE})
 
 #message(${LUA_INCLUDE_DIR})

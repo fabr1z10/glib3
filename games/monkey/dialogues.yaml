@@ -3,6 +3,7 @@ mancomb:
   lines:
     0:
       text: '$dialogues/mancomb/imguy'
+      scr: [ [say, player, '$dialogues/mancomb/imguy']]
     1:
       text: '$dialogues/mancomb/rupirate'
     2:

@@ -1,4 +1,5 @@
-import scripts.actions.shared as a
+from . import shared as a
+
 import scumm.actions
 import example
 import entity
@@ -21,7 +22,7 @@ def talkto_important_looking_pirates(a,b):
     print ('*******')
     for l in node['lines']:
         line = monkey.engine.read(lines[l]['text'])
-        dial.appendText(line)
+        dial.appendText(lines[l])
         print(line)
     print ('*******')
     print ('suca')

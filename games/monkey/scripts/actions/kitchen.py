@@ -1,4 +1,4 @@
-import scripts.actions.shared as a
+from . import shared as a
 import scumm.actions
 import example
 import entity

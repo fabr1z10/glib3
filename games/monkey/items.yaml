@@ -1,6 +1,6 @@
 ---
 guybrush:
-  type: player
+  type: character
   model: 01/guybrush
   pos: [126, 52]
   room: scummbar
@@ -352,7 +352,7 @@ plank_button:
   func: on_click_plank
   room: kitchen
 important_looking_pirate_1:
-  type: item1
+  type: character
   pos: [376, 11, 0.95]
   model: 01/ilp1
   text_color: [85, 85, 255, 255]
