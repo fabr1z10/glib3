@@ -24,6 +24,9 @@ class Callbacks:
         return f
 
 
+
+
+
     def pickup(id, entity_id):
         def f():
             example.remove(entity_id)

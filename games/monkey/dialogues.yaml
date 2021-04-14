@@ -1,18 +1,91 @@
 ---
 mancomb:
+  text_set: '$dialogues/mancomb'
   lines:
     0:
-      text: '$dialogues/mancomb/imguy'
-      scr: [ [say, player, '$dialogues/mancomb/imguy']]
+      text: imguy
+      scr:
+        - [0, 0, say, important_looking_pirate_2]
+        - [0, 0, say, player, imguy]
+        - [1, 0, say, important_looking_pirate_1, imguy]
     1:
-      text: '$dialogues/mancomb/rupirate'
+      text: 'rupirate'
     2:
-      text: '$dialogues/mancomb/charge'
+      text: 'charge'
     3:
-      text: '$dialogues/mancomb/bye'
+      text: 'bye'
     4:
-      text: '$dialogues/mancomb/yourname2'
+      text: 'yourname2'
       active: False
   nodes:
     root:
       lines: [0, 1, 2, 3, 4]
+ilp:
+  text_set: '$dialogues/important_looking_pirates'
+  lines:
+    0:
+      text: 2
+      scr:
+        - [0, 0, say, player, 2]
+        - [1, 0, say, important_looking_pirate_1, 5]
+    1:
+      text: 3
+      next: info
+      scr:
+        - [0, 0, say, player, 3]
+        - [1, 0, say, important_looking_pirate_1, 6]
+        - [2, 1, say, important_looking_pirate_2, 7]
+        - [3, 2, say, important_looking_pirate_3, 8]
+        - [4, 3, say, important_looking_pirate_1, 9]
+        - [5, 4, say, important_looking_pirate_3, 10]
+        - [6, 5, say, important_looking_pirate_1, 11, 12]
+        - [7, 6, say, player, 13]
+        - [8, 7, say, important_looking_pirate_1, 14, 15]
+        - [9, 8, say, important_looking_pirate_3, 16]
+        - [10, 9, say, important_looking_pirate_1, 17]
+        - [11, 9, say, important_looking_pirate_2, 17]
+        - [12, 9, say, important_looking_pirate_3, 17]
+        - [13, [10, 11, 12], say, player, 18, 19]
+        - [14, 13, say, important_looking_pirate_2, 20]
+        - [15, 14, say, important_looking_pirate_1, 21]
+        - [16, 15, say, important_looking_pirate_2, 22]
+        - [17, 16, say, important_looking_pirate_3, 23]
+        - [18, 17, say, important_looking_pirate_2, 24]
+        - [19, 18, say, important_looking_pirate_3, 25]
+        - [20, 19, say, important_looking_pirate_2, 26, 27, 28, 29]
+        - [21, 20, say, important_looking_pirate_1, 30]
+        - [22, 21, say, important_looking_pirate_1, 31]
+        - [23, 21, say, important_looking_pirate_2, 31]
+        - [24, 21, say, important_looking_pirate_3, 31]
+
+    2:
+      text: 4
+      scr:
+        - [0, 0, say, player, 4]
+        - [1, 0, say, important_looking_pirate_1, 5]
+    3:
+      text: 32
+      next: info
+      scr:
+        - [0, 0, say, player, 32]
+        - [1, 0, say, important_looking_pirate_1, 42, 43, 44, 45, 46]
+        - [2, 1, say, important_looking_pirate_3, 47, 48]
+        - [3, 2, say, important_looking_pirate_1, 49]
+        - [4, 2, say, important_looking_pirate_2, 49]
+        - [5, 2, say, important_looking_pirate_3, 49]
+    4:
+      text: 33
+    5:
+      text: 34
+    6:
+      text: 35
+    7:
+      text: 36
+    8:
+      text: 37
+
+  nodes:
+    root:
+      lines: [0, 1, 2]
+    info:
+      lines: [3, 4, 5, 6, 7, 8]

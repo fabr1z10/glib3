@@ -10,3 +10,4 @@ class pos:
 seagull_on_plank = False
 seagull_jump = 1
 meat_in_pot = False
+pirates_know_guybrush = 0

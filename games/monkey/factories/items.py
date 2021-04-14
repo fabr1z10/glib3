@@ -165,9 +165,13 @@ def make_inventory_button(item):
         color_active=vars.Colors.inv_selected)
 
 def make_dialogue_button(dialogueline):
+    a = str(dialogueline[1]['text'])
+    dialogue_id = dialogueline[0]
+    set_tex = vars.dialogues[dialogue_id]['text_set']
+    line = monkey.engine.read(a if a[0]=='$' else set_tex + '/' + a)
     return DialogueButton(
         font='ui',
-        text= monkey.engine.read(dialogueline['text']),
+        text=line,
         script=func.execute_dialogue_script(dialogueline),
         color_inactive=vars.Colors.verb_unselected,
         color_active=vars.Colors.verb_selected)

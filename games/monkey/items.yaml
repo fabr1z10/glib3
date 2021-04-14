@@ -358,6 +358,20 @@ important_looking_pirate_1:
   text_color: [85, 85, 255, 255]
   text_offset: [0, 60]
   room: scummbar
+important_looking_pirate_2:
+  type: character
+  pos: [413, 11, 0.95]
+  model: 01/ilp2
+  text_color: [255, 255, 85, 255]
+  text_offset: [0, 60]
+  room: scummbar
+important_looking_pirate_3:
+  type: character
+  pos: [444, 18, 0.95]
+  model: 01/ilp3
+  text_color: [255, 85, 255, 255]
+  text_offset: [0, 60]
+  room: scummbar
 important_looking_pirates:
   type: item1
   pos: [376, 21]

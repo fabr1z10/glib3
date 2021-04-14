@@ -328,10 +328,10 @@ ilp2:
   sheet: 'gfx/sprites/sprites2.png'
   type: 'asset.sprite'
   animations:
-    idle_e:
+    idle_s:
       elements:
         - quads: [[2,1,34,53]]
-    talk_e:
+    talk_s:
       elements:
         - quads: [[39,1,34,56]]
         - quads: [[75,1,35,52]]
@@ -339,10 +339,10 @@ ilp3:
   sheet: 'gfx/sprites/sprites2.png'
   type: 'asset.sprite'
   animations:
-    idle_e:
+    idle_s:
       elements:
         - quads: [[113,1,35,52]]
-    talk_e:
+    talk_s:
       elements:
         - quads: [[150,1,31,52]]
         - quads: [[183,2,32,51]]

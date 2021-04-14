@@ -4,6 +4,7 @@ import sys
 import monkey
 import script
 import scumm.actions
+import actions
 import scripts.actions
 
 def set_item_pos(item_id, room, pos, dir = None):
@@ -169,14 +170,30 @@ def on_enter_trap(player, trap, dx, dy):
     if f:
         getattr(scripts.actions, f)(trap)
 
-def execute_dialogue_script(line):
+
+
+def execute_dialogue_script(l):
     def f(x, y, z):
+        line = l[1]
+        set_text = vars.dialogues[l[0]]['text_set']
+
         if 'scr' in line:
             s = script.Script()
+            s.add_action(scumm.actions.HideDialogue())
             for a in line['scr']:
-                action = a[0]
+                id = a[0]
+                after = a[1]
+                if id == 0:
+                    after = None
+                if isinstance(after, int):
+                    after = [after]
+                action = a[2]
                 if action == 'say':
-                    s.add_action(scumm.actions.Say(tag=a[1], font='monkey', lines=[monkey.engine.read(x) for x in a[2:]]))
-            print (line['scr'])
+                    ts1 = [str(y) for y in a[4:]]
+                    s.add_action(scumm.actions.Say(tag=a[3], font='monkey', lines=[monkey.engine.read(x if x[0]=='$' else set_text+'/'+x) for x in ts1]), id=id, after=after)
+            if 'next' in line:
+                s.add_action(scumm.actions.RestartDialogue(l[0], line['next']))
+            else:
+                s.add_action(scumm.actions.ExitDialogue())
             example.play(s)
     return f
