@@ -14,10 +14,11 @@ CharacterController::CharacterController(const ITab &t) : Component(t) {
 
 void CharacterController::Start() {
     m_animator = m_entity->GetComponent<IAnimator>();
-    if (m_animator == nullptr) {
-        GLIB_FAIL("animator required");
+    if (m_animator != nullptr) {
+		//GLIB_FAIL("animator required");
+		turn(m_dir);
     }
-    turn(m_dir);
+
 }
 
 void CharacterController::turn(char dir) {

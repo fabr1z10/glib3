@@ -43,17 +43,22 @@ def character(**kwargs):
         key = args[0]
         is_player = key == vars.current_player
         desc = args[1]
-        model = desc['model']
+        model = desc.get('model', None)
         text_color = desc.get('text_color', [255, 255, 255, 255])
         text_offset = desc.get('text_offset', [0, 60])
         pos = desc.get('pos')
-        s = entity.Sprite(model=model, pos=pos, tag='player' if is_player else key)
+        tag = desc.get('tag', key)
+        s = None
         dir = desc.get('dir', 's')
-        s.add_component(scumm.components.CharacterController(dir=dir, speed=100, text_color=text_color, text_offset=text_offset))
-        s.add_component(compo.Collider(debug=True, flag=vars.Collision.Flags.player, mask=vars.Collision.Flags.other,
+        if model:
+            s = entity.Sprite(model=model, pos=pos, tag='player' if is_player else tag)
+            s.add_component(compo.Collider(debug=True, flag=vars.Collision.Flags.player, mask=vars.Collision.Flags.other,
                                        tag=vars.Collision.Tags.player, shape=shapes.Rect(width=8, height=2, offset=[-4, 0])))
-        if is_player:
-            s.add_component(compo.Follow())
+            if is_player:
+                s.add_component(compo.Follow())
+        else:
+            s = entity.Entity(pos=pos, tag='player' if is_player else tag)
+        s.add_component(scumm.components.CharacterController(dir=dir, speed=100, text_color=text_color, text_offset=text_offset))
         return s
     return f
 
@@ -165,13 +170,9 @@ def make_inventory_button(item):
         color_active=vars.Colors.inv_selected)
 
 def make_dialogue_button(dialogueline):
-    a = str(dialogueline[1]['text'])
-    dialogue_id = dialogueline[0]
-    set_tex = vars.dialogues[dialogue_id]['text_set']
-    line = monkey.engine.read(a if a[0]=='$' else set_tex + '/' + a)
     return DialogueButton(
         font='ui',
-        text=line,
+        text=dialogueline.get_text(),
         script=func.execute_dialogue_script(dialogueline),
         color_inactive=vars.Colors.verb_unselected,
         color_active=vars.Colors.verb_selected)

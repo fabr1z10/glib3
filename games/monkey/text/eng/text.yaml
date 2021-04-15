@@ -314,56 +314,56 @@ dialogues:
     29: then return with proof that you've done it.
     30: And then ye must drink grog with us!!
     31: GROG!!!
-    32: "Tell me more about mastering the sword.",
-    33: "Tell me more about mastering the art of thievery.",
-    34: "Tell me more about treasure hunting.",
-    35: "You're a bunch of foul-smelling, grog-swilling pigs!",
-    36: "What's in that grog stuff, anyway?",
-    37: "I'll just be running along now.",
-    38: "Leave us to our grog.",
-    39: "Come back later and tell us how ye're doing.",
-    40: "Well, if it isn't the boy who wants to be a pirate.",
-    41: "How do you fare on your quests?",
-    42: "First, get ye a sword.",
-    43: "You must seek out and defeat the Sword Master.",
-    44: "Someone in town can probably direct you.",
-    45: "Oh!",
-    46: "You'll want to find someone to train you first.",
-    47: "Ha ha.",
-    48: "Imagine trying to take on the Sword Master without any training!",
-    49: "Har har har",
-    50: "Tell me again about mastering the sword.",
-    51: "And get yourself trained first.",
-    52: "We want you to procure a small item for us...",
-    53: "The Idol of Many Hands...",
-    54: "...in the Governor's mansion!",
-    55: "The Governor keeps the Idol o' Many Hands in a display case in the mansion outside of town.",
-    56: "You'll have to get past the guards, naturally.",
-    57: "The tricky part will be getting past the dogs outside.",
-    58: "They're a particularly vicious breed...",
-    59: "...you might be able to drug them or something.",
-    60: "Tell me again about pilfering the idol.",
-    61: "Legend has it that there's a treasure buried here on the island...",
-    62: "All you must do is find the Legendary Lost Treasure of Mêlée Island and bring it back here.",
-    63: "Should I have a map or something?",
-    64: "You can hardly expect to find a treasure without a map!",
-    65: "...and don't forget:",
-    66: "X marks the spot!",
-    67: "Tell me again about the Lost Treasure.",
-    68: "To be a pirate ye must also be a foul-smelling, grog-swilling pig.",
-    69: "Grog is a secret mixture which contains one or more of the following:",
-    70: "kerosene",
-    71: "propylene glycol",
-    72: "artificial sweeteners",
-    73: "sulphuric acid",
-    74: "rum",
-    75: "acetone",
-    76: "red dye #2",
-    77: "scumm",
-    78: "axle grease",
-    79: "battery acid",
-    80: "and/or pepperoni",
-    81: "As you can probably imagine, it's one of the most caustic, volatile substances known to man.",
+    32: "Tell me more about mastering the sword."
+    33: "Tell me more about mastering the art of thievery."
+    34: "Tell me more about treasure hunting."
+    35: "You're a bunch of foul-smelling, grog-swilling pigs!"
+    36: "What's in that grog stuff, anyway?"
+    37: "I'll just be running along now."
+    38: "Leave us to our grog."
+    39: "Come back later and tell us how ye're doing."
+    40: "Well, if it isn't the boy who wants to be a pirate."
+    41: "How do you fare on your quests?"
+    42: "First, get ye a sword."
+    43: "You must seek out and defeat the Sword Master."
+    44: "Someone in town can probably direct you."
+    45: "Oh!"
+    46: "You'll want to find someone to train you first."
+    47: "Ha ha."
+    48: "Imagine trying to take on the Sword Master without any training!"
+    49: "Har har har"
+    50: "Tell me again about mastering the sword."
+    51: "And get yourself trained first."
+    52: "We want you to procure a small item for us..."
+    53: "The Idol of Many Hands..."
+    54: "...in the Governor's mansion!"
+    55: "The Governor keeps the Idol o' Many Hands in a display case in the mansion outside of town."
+    56: "You'll have to get past the guards, naturally."
+    57: "The tricky part will be getting past the dogs outside."
+    58: "They're a particularly vicious breed..."
+    59: "...you might be able to drug them or something."
+    60: "Tell me again about pilfering the idol."
+    61: "Legend has it that there's a treasure buried here on the island..."
+    62: "All you must do is find the Legendary Lost Treasure of Mêlée Island™ and bring it back here."
+    63: "Should I have a map or something?"
+    64: "You can hardly expect to find a treasure without a map!"
+    65: "...and don't forget:"
+    66: "X marks the spot!"
+    67: "Tell me again about the Lost Treasure."
+    68: "To be a pirate ye must also be a foul-smelling, grog-swilling pig."
+    69: "Grog is a secret mixture which contains one or more of the following:"
+    70: "kerosene"
+    71: "propylene glycol"
+    72: "artificial sweeteners"
+    73: "sulphuric acid"
+    74: "rum"
+    75: "acetone"
+    76: "red dye #2"
+    77: "scumm"
+    78: "axle grease"
+    79: "battery acid"
+    80: "and/or pepperoni"
+    81: "As you can probably imagine, it's one of the most caustic, volatile substances known to man."
     82: "The stuff eats right through these mugs and the cook is losing a fortune replacing them."
 lines:
   1: "Re-elect Governor Marley."

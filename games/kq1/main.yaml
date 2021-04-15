@@ -1,0 +1,10 @@
+---
+  title: King's Quest
+  lang: eng
+  device_size: [320, 200]
+  window_size: [640, 400]
+  tick_multiplier: 5
+  start_room: "01"
+  fonts:
+    - id: main
+      file: './fonts/sierra1.ttf'

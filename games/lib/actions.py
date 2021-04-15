@@ -2,7 +2,7 @@ from script import Script
 import engine
 import example
 import random
-
+import monkey
 
 class NoOp:
     def __init__(self):
@@ -170,3 +170,14 @@ class Repeat:
         self.type = 'action.repeat'
         self.func = func
         self.every = interval
+
+
+class SetVariable(CallFunc):
+    @staticmethod
+    def set(name, value):
+        def f():
+            monkey.engine.set(name, value)
+        return f
+
+    def __init__(self, name, value):
+        super().__init__(f=SetVariable.set(name, value))

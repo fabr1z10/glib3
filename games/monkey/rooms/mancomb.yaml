@@ -1,8 +1,9 @@
 ---
   id: mancomb  
-  type: dialogue
+  type: default
   width: 320
   height: 144
-  bg:
-    - image: gfx/mancomb.png
-      pos: [0, 0, -3]
+  on_load: pappo
+  items:
+    - factory: [bg, {'image': gfx/mancomb.png}]
+      d: [[0, 0, -3]]

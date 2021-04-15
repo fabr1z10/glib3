@@ -8,7 +8,7 @@ import factories.items
 import components as compo
 import func
 import runners
-
+import scripts.actions
 
 
 def default_room(desc: dict):
@@ -48,6 +48,9 @@ def default_room(desc: dict):
       align=entity.TextAlignment.bottom, tag='current_verb', pos=(cam_width / 2, 48, 0)))
     ui.add_component(compo.HotSpotManager())
     r.init.append(func.refresh_inventory)
+    on_load = desc.get('on_load', None)
+    if on_load:
+        r.init.append(getattr(scripts.actions, on_load))
 
     r.add(ui)
     cy = vars.ui_height - 2 * vars.font_size

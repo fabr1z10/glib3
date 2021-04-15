@@ -31,11 +31,19 @@ lookout:
   text_color: [170, 170, 170, 255]
   text_offset: [0,60]
 mancomb:
+  type: character
   pos: [52, 18]
-  model: mancomb.mancomb
+  model: 01/mancomb.mancomb
   text_color: [255, 85, 85, 255]
   text_offset: [0, 90]
-  room: mancomb  
+  room: mancomb
+mancomb.player:
+  tag: player
+  type: character
+  pos: [250, 20]
+  text_color: [255, 255, 255, 255]
+  text_offset: [0, 90]
+  room: mancomb
 lookout_fire:
   model: fire
   pos: [126, 52]
@@ -213,34 +221,34 @@ meleemap_clearing:
 #  pos: [278,40,-1]
 #  model: scummbar.pirate9
 #  room: scummbar
-#scummbar_mancomb:
-#  text: pirate
-#  pos: [89,24]
-#  model: scummbar.mancomb
-#  width: 30
-#  height: 30
-#  walkto: '@scummbar_mancomb'
-#  wdir: n
-#  room: scummbar
-#  node: walkarea
-#scummbar_estevan:
-#  text: pirate
-#  pos: [164,21,1]
-#  model: scummbar.estevan
-#  width: 30
-#  height: 20
-#  walkto: '@scummbar_estevan'
-#  wdir: s
-#  room: scummbar
-#scummbar_loom:
-#  text: pirate
-#  pos: [260,17,-0.99]
-#  model: scummbar.loom
-#  width: 20
-#  height: 20
-#  walkto: '@scummbar_loom'
-#  wdir: n
-#  room: scummbar
+scummbar_mancomb:
+  type: item1
+  text: '$objects/pirate'
+  pos: [89,24]
+  model: 01/scummbar.mancomb
+  size: [30, 30]
+  walkto: [120, 20]
+  wdir: n
+  room: scummbar
+  node: walkarea
+scummbar_estevan:
+  type: item1
+  text: '$objects/pirate'
+  pos: [164, 21, 1]
+  model: 01/scummbar.estevan
+  size: [30, 20]
+  walkto: [194,10]
+  wdir: s
+  room: scummbar
+scummbar_loom:
+  type: item1
+  text: '$objects/pirate'
+  pos: [260, 17, -0.99]
+  model: 01/scummbar.loom
+  size: [20, 20]
+  walkto: [250, 10]
+  wdir: n
+  room: scummbar
 scummbar_fireplace:
   type: item1
   model: 01/scummbar.fireplace

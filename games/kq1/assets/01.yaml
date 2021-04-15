@@ -1,0 +1,37 @@
+graham:
+  sheet: "gfx/sprites.png"
+  type: 'asset.sprite'
+  animations:
+    idle_e:
+      elements:
+        - quads: [[106, 1, 12, 32, 6, 0]]
+    idle_n:
+      elements:
+        - quads: [[106,35,10,32,5,0]]
+    idle_s:
+      elements:
+        - quads: [[106,69,10,31,5,0]]
+    walk_e:
+      elements:
+        - quads: [[106,1,12,32,6,0]]
+        - quads: [[119,1,10,32,4,0]]
+        - quads: [[130,2,12,31,6,0]]
+        - quads: [[143,2,12,31,6,0]]
+        - quads: [[156,1,10,32,4,0]]
+        - quads: [[167,2,12,31,6,0]]
+    walk_s:
+      elements:
+        - quads: [[106,69,10,31,5,0]]
+        - quads: [[118,68,10,32,5,0]]
+        - quads: [[130,69,10,31,5,0]]
+        - quads: [[142,69,10,31,5,0]]
+        - quads: [[154,68,10,32,5,0]]
+        - quads: [[166,69,10,31,5,0]]
+    walk_n:
+      elements:
+        - quads: [[106,35,10,32,5,0]]
+        - quads: [[118,36,10,31,5,0]]
+        - quads: [[130,36,10,31,5,0]]
+        - quads: [[142,35,10,32,5,0]]
+        - quads: [[154,36,10,31,5,0]]
+        - quads: [[166,36,10,31,5,0]]

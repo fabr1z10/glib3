@@ -4,8 +4,34 @@ import example
 import random
 import actions
 import vars
+import monkey
 
-def start_dialogue(dialogue_id):
+class DialogueLine:
+    def __init__(self, current_node, order, dialogue_id, line):
+        self.order = order
+        self.dialogue_id = dialogue_id
+        self.line = line
+        self.text_set = vars.dialogues[dialogue_id]['text_set']
+        self.current_node = current_node
+
+    def __lt__(self, other):
+        return self.order < other.order
+
+
+    def get_text(self):
+        a = str(self.line['text'])
+        line = monkey.engine.read(a if a[0]=='$' else self.text_set + '/' + a)
+        return line
+
+
+def enable_ui(value):
+    def f():
+        example.get('main').enableControls(value)
+        example.get('ui').setActive(value)
+        example.get('inventory').setActive(value)
+    return f
+
+def start_dialogue(dialogue_id, node_id = None):
     def f():
         example.get('main').enableControls(False)
         example.get('ui').setActive(False)
@@ -13,26 +39,23 @@ def start_dialogue(dialogue_id):
         dial = example.get('dialogue')
         dial.setActive(True)
         dial.clearText()
-        start_node = 'root'
         dialogue = vars.dialogues[dialogue_id]
+        start_node = node_id if node_id is not None else dialogue.get('root', 'root')
         #tset = dialogue['text_set']
         node = dialogue['nodes'][start_node]
         lines = dialogue['lines']
+        ll = []
         for l in node['lines']:
-            dial.appendText([dialogue_id, lines[l]])
+            active = lines[l].get('active', True)
+            if active:
+                order = lines[l].get('order', 0)
+                ll.append(DialogueLine(node, order, dialogue_id, lines[l]))
+        ll.sort()
+        for dl in ll:
+            dial.appendText(dl)
     return f
 
-def restart_dialogue(dialogue_id, node_id):
-    def f():
-        dial = example.get('dialogue')
-        dial.setActive(True)
-        dial.clearText()
-        dialogue = vars.dialogues[dialogue_id]
-        node = dialogue['nodes'][node_id]
-        lines = dialogue['lines']
-        for l in node['lines']:
-            dial.appendText([dialogue_id, lines[l]])
-    return f
+
 
 
 def hide_dialogue():
@@ -48,9 +71,24 @@ def exit_dialogue():
     dial.setActive(False)
     start_node = 'root'
 
+def set_dialogue_root(dialogue_id, node_id):
+    def f():
+        vars.dialogues[dialogue_id]['root'] = node_id
+    return f
+
+
+class EnableUI(actions.CallFunc):
+    def __init__(self, value):
+        super().__init__(f=enable_ui(value))
+
+
+class SetDialogueRoot(actions.CallFunc):
+    def __init__(self, dialogue_id, node_id):
+        super().__init__(f=set_dialogue_root(dialogue_id, node_id))
+
 class StartDialogue(actions.CallFunc):
-    def __init__(self, dialogue_id):
-        super().__init__(f=start_dialogue(dialogue_id))
+    def __init__(self, dialogue_id, node_id = None):
+        super().__init__(f=start_dialogue(dialogue_id, node_id))
 
 class HideDialogue(actions.CallFunc):
     def __init__(self):

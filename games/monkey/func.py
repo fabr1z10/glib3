@@ -174,9 +174,18 @@ def on_enter_trap(player, trap, dx, dy):
 
 def execute_dialogue_script(l):
     def f(x, y, z):
-        line = l[1]
-        set_text = vars.dialogues[l[0]]['text_set']
-
+        line = l.line
+        dialogue = vars.dialogues[l.dialogue_id]
+        set_text = dialogue['text_set']
+        if 'activate' in line:
+            for node in line['activate']:
+                dialogue['lines'][node]['active'] = True
+        if 'deactivate' in line:
+            for node in line['deactivate']:
+                dialogue['lines'][node]['active'] = False
+        persist = line.get('persist', False)
+        if not persist:
+            line['active'] = False
         if 'scr' in line:
             s = script.Script()
             s.add_action(scumm.actions.HideDialogue())
@@ -191,9 +200,20 @@ def execute_dialogue_script(l):
                 if action == 'say':
                     ts1 = [str(y) for y in a[4:]]
                     s.add_action(scumm.actions.Say(tag=a[3], font='monkey', lines=[monkey.engine.read(x if x[0]=='$' else set_text+'/'+x) for x in ts1]), id=id, after=after)
+                elif action == 'sayn':
+                    ts1 = [str(y) for y in a[4:]]
+                    s.add_action(scumm.actions.Say(animate=False, tag=a[3], font='monkey', lines=[monkey.engine.read(x if x[0]=='$' else set_text+'/'+x) for x in ts1]), id=id, after=after)
+                elif action == 'set':
+                    s.add_action(actions.SetVariable(a[3], a[4]))
+                elif action == 'set_dialogue_root':
+                    s.add_action(scumm.actions.SetDialogueRoot(a[3], a[4]))
             if 'next' in line:
-                s.add_action(scumm.actions.RestartDialogue(l[0], line['next']))
+                s.add_action(scumm.actions.StartDialogue(l.dialogue_id, line['next']))
             else:
-                s.add_action(scumm.actions.ExitDialogue())
+                # check if dialogue has a on_exit script
+                if 'on_exit' in dialogue:
+                    s.add_action(actions.CallFunc(f=getattr(scripts.actions, dialogue['on_exit'])))
+                else:
+                    s.add_action(scumm.actions.ExitDialogue())
             example.play(s)
     return f
