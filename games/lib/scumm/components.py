@@ -10,9 +10,10 @@ class Walkarea:
 
 
 class CharacterController:
-    def __init__(self, dir, speed, text_color, text_offset):
+    def __init__(self, dir, speed, text_color, text_offset, ways=4):
         self.type = 'scumm.components.character_controller'
         self.dir = dir
         self.speed = speed
         self.text_color = text_color
         self.text_offset = text_offset
+        self.ways=ways

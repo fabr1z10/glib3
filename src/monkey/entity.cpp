@@ -69,6 +69,10 @@ Entity::Entity(const ITab& t) : Ref(t),
         AddChild(factory->make2<Entity>(t));
     });
 
+    if (t.has("on_create")) {
+    	t.get<pybind11::function>("on_create")(m_id);
+    }
+
 }
 
 

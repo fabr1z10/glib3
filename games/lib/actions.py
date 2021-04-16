@@ -20,9 +20,10 @@ class Animate:
 
 
 class RunScript:
-    def __init__(self, s: Script):
+    def __init__(self, s: Script = None, func = None):
         self.type = 'action.runscript'
         self.script = s
+        self.func = func
 
 
 class SuspendScript:

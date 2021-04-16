@@ -2,10 +2,26 @@
 graham:
   type: character
   model: 01/graham
-  pos: [158, 83]
+  pos: [200, 83]
   room: 01
   parent: walkarea_0
   dir: s
   speed: 500
   text_color: [255, 255, 255, 255]
   text_offset: [0, 60]
+alligator_1:
+  type: character
+  model: 01/alligator
+  pos: [10,10]
+  room: 01
+  parent: walkarea_1
+  ways: 2
+  script: pane
+alligator_2:
+  type: character
+  model: 01/alligator
+  pos: [10,10]
+  room: 01
+  parent: walkarea_1
+  ways: 2
+  script: pane

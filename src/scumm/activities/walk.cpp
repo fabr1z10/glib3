@@ -14,6 +14,10 @@
 #include "../components/character.h"
 #include <monkey/components/animator.h>
 
+
+
+
+
 Walk::Walk(const ITab& t) : Sequence(), m_pathFound(0) {
     m_p = t.get<glm::vec2>("pos");
 
@@ -23,6 +27,8 @@ Walk::Walk(const ITab& t) : Sequence(), m_pathFound(0) {
         m_actorId = -1;
         m_tag = t.get<std::string>("tag");
     }
+
+
 
 }
 void Walk::SetComplete() {
@@ -77,8 +83,6 @@ void Walk::Start() {
     }
 
     glm::vec2 currentPos(actor->GetPosition());
-    std::cerr << "current pos = " << currentPos.x << ", " << currentPos.y << "\n";
-    std::cerr << "walkt to = " << m_p.x << ", " << m_p.y << "\n";
     auto dd = glm::length(currentPos - m_p);
     auto path = walkArea->findPath(currentPos, m_p, m_pathFound);
 
@@ -92,26 +96,26 @@ void Walk::Start() {
     // for each line in polyline
     int flipH = 1;
     std::string anim;
+    glm::vec2 lastMove;
     for (int i = 1; i < path.size(); ++i) {
         glm::vec2 move = path[i] - path[i-1];
+		if (fabs(move.x) > fabs(move.y)) {
+			m_lastDirection = (move.x >= 0) ? 'e' : 'w';
+		} else {
+			m_lastDirection = (move.y >= 0) ? 'n' : 's';
+		}
         flipH = false;
-        if (fabs(move.x) > fabs(move.y)) {
-            anim = "walk_e";
-            flipH = move.x < 0 ? 2 : 1;
-            m_lastDirection = move.x < 0 ? 'w' : 'e';
-        } else {
-            anim = move.y > 0 ? "walk_n" : "walk_s";
-            m_lastDirection = move.y > 0 ? 'n' : 's';
-        }
-        auto setStateAction = std::make_shared<Animate>(anim, true, flipH);
+        auto canim = characterController->getAnim("walk", move);
+        auto setStateAction = std::make_shared<Animate>(canim.first, true, canim.second ? 2 : 1);
         setStateAction->SetId(m_actorId);
         Push(setStateAction);
         auto moveAction = std::make_shared<MoveTo>(path[i], speed, false, false);
         moveAction->SetId(m_actorId);
         Push(moveAction);
+        lastMove = move;
     }
-    std::string idleAnim = "idle_" + anim.substr(anim.size()-1);
-    auto setStateAction = std::make_shared<Animate>(idleAnim, true, flipH);
+    auto canim = characterController->getAnim("idle", lastMove);
+    auto setStateAction = std::make_shared<Animate>(canim.first, true, canim.second ? 2 : 1);
     setStateAction->SetId(m_actorId);
     Push(setStateAction);
 

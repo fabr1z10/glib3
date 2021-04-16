@@ -3,11 +3,13 @@ import entity
 import components as compo
 import scumm.components
 import shapes
+import scripts
 
 def bg(**kwargs):
     def f(*args):
         e = entity.Entity(pos=(args[0], args[1], args[2]))
-        e.add_component(compo.Gfx(image = kwargs['image']))
+        offset = kwargs.get('offset', (0, 0))
+        e.add_component(compo.Gfx(image = kwargs['image'],offset=offset))
         return e
     return f
 
@@ -41,6 +43,7 @@ def character(**kwargs):
         tag = desc.get('tag', key)
         s = None
         dir = desc.get('dir', 's')
+        ways = desc.get('ways', 4)
         if model:
             s = entity.Sprite(model=model, pos=pos, tag='player' if is_player else tag)
             #s.add_component(compo.Collider(debug=True, flag=vars.Collision.Flags.player, mask=vars.Collision.Flags.other,
@@ -49,6 +52,9 @@ def character(**kwargs):
                 s.add_component(compo.Follow())
         else:
             s = entity.Entity(pos=pos, tag='player' if is_player else tag)
-        s.add_component(scumm.components.CharacterController(dir=dir, speed=100, text_color=text_color, text_offset=text_offset))
+        s.add_component(scumm.components.CharacterController(dir=dir, speed=100, text_color=text_color, text_offset=text_offset, ways=ways))
+        on_create_script = desc.get('script', None)
+        if on_create_script:
+            s.on_create = getattr(scripts, on_create_script)
         return s
     return f

@@ -8,6 +8,8 @@
 #include <monkey/math/geom.h>
 #include <iostream>
 
+
+
 class Walk : public Sequence {
 public:
     Walk (const ITab&);

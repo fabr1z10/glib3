@@ -10,6 +10,15 @@
       [0, 19, 0, 8, 219, 8, 232, 21, 247, 27, 272, 27, 296, 14, 296, 7, 316, 0, 316, 132, 167, 132, 167, 51, 207, 36, 202, 33, 187, 19],
       }]
       d: [[0,0,0]]
+    - factory: [walkarea, {'id': walkarea_1, 'depth': { 'type': "func.liny", 'values': [0, 0.1, 166, 0]}, 'outline':
+      [0,6,0,0,302,0,176,42,176,28,230,6] }]
+      d: [[0,0,0]]
     - factory: [bg, {'image': gfx/01a.png}]
       parent: walkarea_0
       d: [[198,39,0]]
+    - factory: [bg, {'image': gfx/01b.png, 'offset': [0,-30]}]
+      parent: walkarea_0
+      d: [[184,38,0]]
+    - factory: [bg, {'image': gfx/01c.png}]
+      parent: walkarea_0
+      d: [[118,19,0]]

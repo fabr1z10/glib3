@@ -5,6 +5,22 @@
 
 class IAnimator;
 
+class ICharAnimator {
+public:
+	virtual std::pair<std::string, bool> getAnim(const std::string& anim, glm::vec2) = 0;
+	virtual std::pair<std::string, bool> getAnim(const std::string& anim, char dir);
+};
+
+class WalkAni2 : public ICharAnimator {
+public:
+	std::pair<std::string, bool> getAnim(const std::string& anim, glm::vec2) override;
+};
+
+class WalkAni4 : public ICharAnimator {
+public:
+	std::pair<std::string, bool> getAnim(const std::string& anim, glm::vec2) override;
+};
+
 class CharacterController : public Component {
 public:
     CharacterController(const ITab&);
@@ -16,12 +32,15 @@ public:
     using ParentClass = CharacterController;
     glm::vec4 getTextColor() const;
     glm::vec2 getTextOffset() const;
+	std::pair<std::string, bool> getAnim(const std::string& anim, glm::vec2);
 private:
     IAnimator* m_animator;
     char m_dir;
     float m_speed;
     glm::vec4 m_textColor;
     glm::vec2 m_textOffset;
+	std::unique_ptr<ICharAnimator> m_charAnimator;
+
 };
 
 inline glm::vec4 CharacterController::getTextColor() const {

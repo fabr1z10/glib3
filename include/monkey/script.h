@@ -19,6 +19,7 @@ public:
 
     void Run (float);
     void Start();
+    void Restart();
     void AddActivity(int id, std::shared_ptr<Activity>);
     void AddEdge (int fromActivity, int toActivity);
     bool IsComplete() const;

@@ -228,3 +228,8 @@ class HotSpotManager:
     def __init__(self, lmbclick = None):
         self.type = 'components.hotspotmanager'
         self.lmbclick = lmbclick
+
+class Cursor:
+    def __init__(self):
+        self.type = 'components.cursor'
+

@@ -7,6 +7,23 @@ bool triangleIsCCW(const glm::vec2& a, const glm::vec2& b, const glm::vec2& c) {
     return det > 0;
 }
 
+int linint(glm::vec2 A, glm::vec2 B, glm::vec2 C, glm::vec2 D, float& t, float& u) {
+	glm::vec2 AB = B - A;
+	glm::vec2 DC = C - D;
+	glm::vec2 AC = C - A;
+	float den = cross(AB, DC);
+	if (isZero(den)) {
+		// parallel
+		if (isZero(cross(AC, AB))) {
+			return 2; // collinear
+		}
+		return 1; // parallel
+	}
+	t = cross(AC, DC) / den;
+	u = cross(AB, AC) / den;
+	return 0;
+
+}
 
 bool segmentIntersection(glm::vec2 A, glm::vec2 B, glm::vec2 C, glm::vec2 D, float& t, float& u) {
     // eq for segment 1 is

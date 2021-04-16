@@ -83,6 +83,10 @@ void Script::SetSuspended(bool value) {
     }
 }
 
+void Script::Restart() {
+	ResetActivity(0);
+	m_complete = false;
+}
 
 void Script::ResetActivity(int id) {
     auto activity = m_activities[id].get();

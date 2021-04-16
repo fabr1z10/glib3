@@ -35,3 +35,37 @@ graham:
         - quads: [[142,35,10,32,5,0]]
         - quads: [[154,36,10,31,5,0]]
         - quads: [[166,36,10,31,5,0]]
+cursor:
+  sheet: "gfx/sprites.png"
+  type: 'asset.sprite'
+  animations:
+    use:
+      elements:
+        - quads: [[1,53,15,16,9,8]]
+    talk:
+      elements:
+        - quads: [[17,53,16,16,8,8]]
+    walk:
+      elements:
+        - quads: [[34,53,11,16,6,8]]
+    look:
+      elements:
+        - quads: [[46,53,12,9,6,4]]
+    dagger:
+      elements:
+        - quads: [[60,56,8,8,4,4]]
+alligator:
+  sheet: "gfx/sprites.png"
+  type: 'asset.sprite'
+  animations:
+    idle:
+      elements:
+        - quads: [ [75,23,26,4,15,0] ]
+        - quads: [ [75,1,26,8,15,0] ]
+        - quads: [ [75,11,24,11,15,0] ]
+    walk:
+      elements:
+        - quads: [ [75,23,26,4,15,0] ]
+        - quads: [ [75,1,26,8,15,0] ]
+        - quads: [ [75,11,24,11,15,0] ]
+

@@ -26,6 +26,11 @@ def default_room(desc: dict):
     main.add_component(compo.HotSpotManager(lmbclick=func.walkto))
     r.add(main)
 
+    a = entity.Sprite(model='01/cursor')
+    a.add_component(compo.Cursor())
+    a.pos=(0,0,5)
+    main.add(a)
+
     # now add all items
     if 'items' in desc:
         for item in desc['items']:

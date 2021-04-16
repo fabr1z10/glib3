@@ -25,16 +25,25 @@ bool ShortestPath::pointInPoly(glm::vec2 P) {
         glm::vec2 a = vertices[i];
         glm::vec2 b = vertices[(i+1)%vertices.size()];
         // if point is contained
-        segmentIntersection(P, Q, a, b, t, u);
-        if (t < m_eps) {
-            // point is contained in segment
-            return true;
+        auto r = linint(P, Q, a, b, t, u);
+        // don't consider parallel/collinear
+        if (r == 2) {
+        	if ((P.x >= a.x && P.x <= b.x) || (P.x >= b.x && P.x <= a.x)) {
+        		return true;
+        	}
         }
-        // if ray intersects segment flip the contained flag
-        if (t > 0) {
-            contained = !contained;
-        }
+		if (r == 0) {
+			if (fabs(t) < m_eps) {
+				// point is contained in segment
+				return true;
+			}
+			// if ray intersects segment flip the contained flag
+			if (t > 0 && u >= 0 && u <= 1.0f) {
+				contained = !contained;
+			}
+		}
     }
+    return contained;
 
 }
 
