@@ -82,14 +82,14 @@ public:
         auto iter = m_templates.find(id);
         if (iter != m_templates.end()) {
             // ok, create
-            return m_factory->makeDynamicAsset<T>(iter->second, args);
+            return m_factory->makeDynamicAsset<T>(YAMLTab(iter->second), args);
         }
         std::string location = id.substr(0, id.find_last_of("/"));
         auto file = openFile(id);
         for (const auto &i : file) {
             m_templates[location + "/" + i.first.as<std::string>()] = i.second;
         }
-        return m_factory->makeDynamicAsset<T>(m_templates.at(id), args);
+        return m_factory->makeDynamicAsset<T>(YAMLTab(m_templates.at(id)), args);
     }
 
     template<typename T>

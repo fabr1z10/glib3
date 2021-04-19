@@ -2,7 +2,6 @@
 
 #include <monkey/listener.h>
 #include <monkey/runner.h>
-#include <monkey/py.h>
 #include <unordered_map>
 
 

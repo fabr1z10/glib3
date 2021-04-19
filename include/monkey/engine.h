@@ -83,11 +83,11 @@ public:
     std::string GetDirectory() const;
     std::string GetGame() const;
     std::string GetGameDirectory() const;
-    PyTable& getMainTable() const;
+    ITab& getMainTable() const;
     float getTickMultiplier() const;
 private:
     pybind11::scoped_interpreter m_guard;
-    std::unique_ptr<PyTable> m_mainTable;
+    std::unique_ptr<ITab> m_mainTable;
     friend class Singleton<Engine>;
     Engine();
     void InitGL();
@@ -121,7 +121,7 @@ private:
     float m_tickMultiplier;
 };
 
-inline PyTable& Engine::getMainTable() const {
+inline ITab& Engine::getMainTable() const {
     return *(m_mainTable.get());
 }
 

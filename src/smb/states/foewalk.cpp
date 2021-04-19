@@ -4,6 +4,7 @@
 #include <monkey/entity.h>
 #include <monkey/components/animator.h>
 #include <GLFW/glfw3.h>
+#include <monkey/input/pytab.h>
 
 FoeWalk::FoeWalk(const std::string& anim, float speed, float acceleration, bool fliph, bool flipIfPlatformEnds, int left) : PlatformerState(),
 m_anim(anim), m_speed(speed), m_acceleration(acceleration), m_fliph(fliph), m_left(left), m_flipIfPlatformEnds(flipIfPlatformEnds) {
@@ -27,8 +28,8 @@ void FoeWalk::AttachStateMachine(StateMachine * sm) {
 }
 
 void FoeWalk::Init(pybind11::dict& d) {
-    PyDict dict(d);
-    if (dict.hasKey("left")) {
+    PyTab dict(d);
+    if (dict.has("left")) {
         m_left = dict.get<int>("left");
     }
     setDirection(m_left);

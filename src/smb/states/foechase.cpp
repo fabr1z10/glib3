@@ -4,8 +4,8 @@
 #include <monkey/entity.h>
 #include <monkey/components/animator.h>
 #include <monkey/random.h>
-#include <GLFW/glfw3.h>
 #include <monkey/model/boxedmodel.h>
+#include <monkey/input/pytab.h>
 
 FoeChase::FoeChase(const std::string &walkAnim, const std::string &idleAnim, float speed, float acceleration,
     bool fliph, bool flipIfPlatformEnds, int left) : PlatformerState(),
@@ -112,8 +112,8 @@ float FoeChase::computeDirection() {
 }
 
 void FoeChase::Init(pybind11::dict& d) {
-    PyDict dict(d);
-    if (dict.hasKey("left")) {
+    PyTab dict(d);
+    if (dict.has("left")) {
         m_left = dict.get<int>("left");
     }
     m_inRange = false;

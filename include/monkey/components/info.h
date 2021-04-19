@@ -1,7 +1,6 @@
 #pragma once
 
 #include <monkey/component.h>
-#include <monkey/py.h>
 
 // stores custom additional information for the entity
 class LuaInfo : public Component {
@@ -10,9 +9,9 @@ public:
     void Start() override {}
     void Update(double) override{}
     using ParentClass = LuaInfo;
-    PyDict get2() const {
-        return PyDict(m_stuff);
-    }
+//    PyDict get2() const {
+//        return PyDict(m_stuff);
+//    }
     pybind11::dict& getStuff() {
         return m_stuff;
     }

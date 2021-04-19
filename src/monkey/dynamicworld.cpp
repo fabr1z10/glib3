@@ -3,6 +3,7 @@
 #include <monkey/components/renderer.h>
 #include <iostream>
 #include <monkey/components/info.h>
+#include <monkey/input/pytab.h>
 
 
 namespace py = pybind11;
@@ -81,7 +82,8 @@ DynamicWorldBuilder::DynamicWorldBuilder(const ITab &t) : Runner(t), m_x(-1), m_
         } else {
             // TODO
             auto info = node->GetComponent<LuaInfo>();
-            auto b = info->get2().get<glm::vec4>("bounds");
+            auto i2 = PyTab(info->getStuff());
+            auto b = i2.get<glm::vec4>("bounds");
             bounds.min.x = b[0];
             bounds.min.y = b[1];
             bounds.max.x = b[2];

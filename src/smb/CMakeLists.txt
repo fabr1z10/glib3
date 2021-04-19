@@ -17,7 +17,7 @@ add_executable(smb
         states/keymovef.cpp
         states/koopashell.cpp)
 
-include_directories(${INCLUDE_DIR}  ${PYBIND_INCLUDE_DIR} ${Python_INCLUDE_DIRS} ${FREETYPE_INCLUDE_DIRS} ${GLM_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS} ${LUA_INCLUDE_DIR})
+include_directories(${INCLUDE_DIR} ${PYBIND_INCLUDE_DIR} ${Python_INCLUDE_DIRS} ${FREETYPE_INCLUDE_DIRS} ${GLM_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS})
 
 target_link_libraries(smb PUBLIC monkey)
 

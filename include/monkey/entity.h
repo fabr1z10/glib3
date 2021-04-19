@@ -12,7 +12,6 @@
 #include <glm/glm.hpp>
 #include <monkey/enums.h>
 #include <monkey/ref.h>
-#include <monkey/py.h>
 #include <monkey/camera.h>
 //#include <monkey/iterator.h>
 #include <monkey/component.h>

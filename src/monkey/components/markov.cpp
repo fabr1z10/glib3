@@ -14,9 +14,9 @@ MarkovStateMachine::MarkovStateMachine(const ITab& t) : StateMachine() {
 		this->AddState(state->getId(), state);
 	});
 	if (t.has("probs")) {
-		auto probs = t.get<PyDict>("probs").toDict<std::string, pybind11::list>();
+		auto probs = t.get<pybind11::dict>("probs");
 		for (const auto& p : probs) {
-			auto startState = p.first;
+			auto startState = p.first.cast<std::string>();
 			for (const auto& tp : p.second) {
 				auto tuple = tp.cast<pybind11::tuple>();
 				auto prob = tuple[0].cast<float>();

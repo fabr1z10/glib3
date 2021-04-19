@@ -3,8 +3,6 @@
 #include <monkey/activity.h>
 #include <unordered_map>
 #include <unordered_set>
-#include <monkey/py.h>
-
 
 // a script is basically a graph of activities. At every point in time it contains a set of
 // active task. At each iteration, each active task is run and check for completion. If complete, the

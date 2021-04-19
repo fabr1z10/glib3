@@ -37,7 +37,6 @@
 #include <monkey/components/cursor.h>
 #include <monkey/components/platform.h>
 #include <monkey/activities/setactive.h>
-#include <monkey/py.h>
 #include <monkey/activities/runscript.h>
 #include <monkey/activities/move.h>
 #include <monkey/activities/cambounds.h>
@@ -251,8 +250,8 @@ SceneFactory::SceneFactory() {
     addAssetFactory<SkModel>("asset.skeletalmodel");
     addAssetFactory<TexturedMesh<VertexSkeletal>>("asset.skeletalmesh");
     addAssetFactory<SkAnimation> ("asset.skeletalanimation");
-    m_dynamicAssetFactories.insert(std::make_pair("asset.skeletalmesh", makeDynamicSkeletalMesh));
-    m_dynamicAssetFactories.insert(std::make_pair("asset.skeletalmodel", makeDynamic<SkModel>));
+    // m_dynamicAssetFactories.insert(std::make_pair("asset.skeletalmesh", makeDynamicSkeletalMesh));
+    //m_dynamicAssetFactories.insert(std::make_pair("asset.skeletalmodel", makeDynamic<SkModel>));
 
     //add2<SkeletalModel> ("asset.skeleton");
     //add2<SkeletalModel2> ("asset.skeleton2");

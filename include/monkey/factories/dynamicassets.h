@@ -3,7 +3,6 @@
 #include <monkey/yaml.h>
 #include <monkey/object.h>
 #include <monkey/engine.h>
-#include <monkey/py.h>
 
 void nodeHelper(std::list<YAML::Node>& nodes, YAML::Node node, const ITab& args) ;
 

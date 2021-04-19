@@ -4,9 +4,9 @@
 #include <monkey/scenefactory.h>
 #include <monkey/renderingiterator.h>
 
-#include <monkey/py.h>
 #include <monkey/python/pymonkey.h>
 #include <pybind11/stl.h>
+#include <monkey/input/pytab.h>
 
 namespace py = pybind11;
 
@@ -72,7 +72,7 @@ void Engine::init(const std::string& gameFolder) {
 
     auto module = py::module::import("main");
     //module.attr("engine.device)
-    m_mainTable = std::make_unique<PyTable>(module.attr("engine"));
+    m_mainTable = std::make_unique<PyTab>(module.attr("engine"));
 
     glm::vec2 deviceSize = m_mainTable->get<glm::vec2>("device_size");
     m_tickMultiplier = m_mainTable->get<float>("tick_multiplier", 1.0f);

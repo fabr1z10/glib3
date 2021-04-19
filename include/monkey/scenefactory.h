@@ -103,11 +103,14 @@ public:
     template <typename T, bool = std::is_base_of<Asset, T>::value >
     std::shared_ptr<T> makeDynamicAsset(const ITab& t, const ITab& args) {
         auto type = t.get<std::string>("type");
-        auto it = m_dynamicAssetFactories.find(type);
-        if (it == m_dynamicAssetFactories.end()) {
+        auto it = m_assetFactories.find(type);
+        if (it == m_assetFactories.end()) {
             GLIB_FAIL("Unknown type: " << type);
         }
-        return std::static_pointer_cast<T>((it->second)(t, args));
+        // transform t in t1 ...
+        t.clone(args);
+        return nullptr;
+        //return std::static_pointer_cast<T>((it->second)(t, args));
     }
 
         protected:
@@ -124,7 +127,7 @@ public:
     std::unordered_map<std::string, std::function<std::shared_ptr<Object>(const ITab&)> > m_facs2;
     std::unordered_map<std::string, std::function<std::shared_ptr<Object>(const ITab&)> > m_assetFactories;
 
-    std::unordered_map<std::string, std::function<std::shared_ptr<Object>(const ITab&, const ITab&)> > m_dynamicAssetFactories;
+    //std::unordered_map<std::string, std::function<std::shared_ptr<Object>(const ITab&, const ITab&)> > m_dynamicAssetFactories;
 
     //Factory<StateInitializer> m_stateInitFactory;
     //Factory<StateBehaviour> m_stateBehaviorFactory;

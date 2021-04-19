@@ -53,6 +53,8 @@ public:
     virtual void foreach(const std::string& id, std::function<void(const std::string&, const ITab&)> f) const = 0;
 
     virtual std::unique_ptr<ITab> operator[](const std::string&) const = 0;
+
+    virtual std::shared_ptr<ITab> clone(const ITab&) const = 0;
 private:
     virtual int _asInt() const = 0;
     virtual float _asFloat() const = 0;

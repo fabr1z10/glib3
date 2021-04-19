@@ -4,7 +4,6 @@
 #include <GL/glew.h>
 #include <monkey/bounds.h>
 #include "shader.h"
-#include <monkey/py.h>
 #include "monkey/ref.h"
 #include <monkey/event.h>
 #include <monkey/listener.h>

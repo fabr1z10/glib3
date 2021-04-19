@@ -1,7 +1,6 @@
 #pragma once
 
 #include <monkey/collisionresponse.h>
-#include <monkey/py.h>
 
 class LuaCollisionResponse : public CollisionResponse {
 public:

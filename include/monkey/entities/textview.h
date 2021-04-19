@@ -1,7 +1,6 @@
 #pragma once
 
 #include <monkey/entity.h>
-#include <monkey/py.h>
 
 class TextView: public Entity {
 public:

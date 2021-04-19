@@ -1,11 +1,14 @@
 #include <monkey/input/pytab.h>
 #include <glm/gtc/type_ptr.hpp>
 
-PyTab::PyTab(pybind11::object obj) : m_obj(obj) {
-    //std::cerr << obj.get_type() << "\n";
-    m_dict = (pybind11::type::of(obj) == pybind11::type::of(pybind11::dict()));
+PyTab::PyTab() {}
 
-}
+
+//PyTab::PyTab(pybind11::object obj) : m_obj(obj) {
+//    //std::cerr << obj.get_type() << "\n";l
+//    m_dict = (pybind11::type::of(obj) == pybind11::type::of(pybind11::dict()));
+//
+//}
 
 pybind11::object PyTab::_get(const std::string & key) const {
     if (m_dict)
@@ -121,4 +124,8 @@ void PyTab::foreach(const std::string &id, std::function<void(const std::string 
     } catch (...) {
 
     }
+}
+
+std::shared_ptr<ITab> PyTab::clone(const ITab &) const {
+	throw "Not supported yet!";
 }

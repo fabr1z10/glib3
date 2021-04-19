@@ -16,7 +16,7 @@ AssetManager::AssetManager() {
 void AssetManager::Init() {
 
     auto& mt = Engine::get().getMainTable();
-    auto assets = mt.get<py::dict>("assets");
+    auto assets = mt.get<py::object>("assets").cast<py::dict>();
 
     m_fontDict = assets["fonts"];
     m_modelDict = assets["models"];
@@ -107,10 +107,10 @@ std::shared_ptr<IModel> AssetManager::getModel(const pybind11::object &obj) {
     } catch(pybind11::cast_error&) {
         auto tp = obj.cast<pybind11::tuple>();
         auto id = tp[0].cast<std::string>();
-        auto args = PyDict(tp[1].cast<pybind11::dict>());
-        //return genericLoaderArgs<IModel>(id, args);
+        auto args = PyTab(tp[1].cast<pybind11::dict>());
+        return genericLoaderArgs<IModel>(id, args);
         // TODO CIAPPO
-        return nullptr;
+        //return nullptr;
     }
 }
 

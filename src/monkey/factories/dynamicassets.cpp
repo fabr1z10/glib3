@@ -6,7 +6,7 @@
 #include <glm/gtx/transform.hpp>
 
 
-void nodeHelper(std::list<YAML::Node>& nodes, YAML::Node node, const ITable& args) {
+void nodeHelper(std::list<YAML::Node>& nodes, YAML::Node node, const ITab& args) {
     if (node.Type() == YAML::NodeType::Map || node.Type() == YAML::NodeType::Sequence) {
         nodes.push_back(node);
     } else if (node.Type() == YAML::NodeType::Scalar) {

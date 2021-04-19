@@ -26,7 +26,7 @@ public:
 
 private:
     std::shared_ptr<SpriteMesh> m_mesh;
-    void readFrames(PyDict&);
+    //void readFrames(PyDict&);
 };
 
 inline Bounds SpriteModel::GetBounds() const {

@@ -12,7 +12,7 @@ void ChangeRoom::Start() {
     auto& t = Engine::get().getMainTable();
 
     auto oldRoom = t.get<std::string>("room");
-    auto& obj = t.getObject();
+    auto obj = t.as<pybind11::object>();
     obj.attr("room") =  m_roomId;
     obj.attr("previous_room") = oldRoom;
 //    luabridge::LuaRef ref = LuaWrapper::GetGlobalPath({"engine","state"});

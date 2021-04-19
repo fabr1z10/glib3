@@ -2,7 +2,6 @@
 
 #include <monkey/activity.h>
 #include <monkey/script.h>
-#include <monkey/py.h>
 
 class RunScript : public Activity {
 public:

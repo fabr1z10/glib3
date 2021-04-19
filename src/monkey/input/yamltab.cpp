@@ -88,3 +88,56 @@ std::vector<float> YAMLTab::_asVecFloat() const {
 std::vector<std::string> YAMLTab::_asVecStr() const {
     return m_node.as<std::vector<std::string>>();
 }
+
+std::shared_ptr<ITab> YAMLTab::clone(const ITab & args) const {
+	auto nnode = YAML::Clone(m_node);
+	std::cerr << nnode << "\n";
+	std::list<YAML::Node> nodes;
+	nodes.push_back(nnode);
+	while (!nodes.empty()) {
+		// process current node
+		auto& current = nodes.front();
+		nodes.pop_front();
+		if (current.Type() == YAML::NodeType::Map) {
+			for (auto iter : current) {
+				nodes.push_back(iter.second);
+			}
+		} else if (current.Type() == YAML::NodeType::Sequence) {
+			if (current.size() > 0) {
+				// check if this is a replacement
+				auto pp = current[0].as<std::string>("");
+				if (pp[0] == '$') {
+					auto varName = current[1].as<std::string>();
+					auto type = pp.substr(1);
+					try {
+						if (type == "str") {
+							current = args.get<std::string>(varName);
+						} else if (type == "float") {
+							current = args.get<float>(varName);
+						}
+					} catch (...) {
+						if (pp.size() > 2) {
+							current = pp[2];
+						}
+					}
+				} else {
+					for (auto iter : current) {
+						nodes.push_back(iter);
+					}
+				}
+			}
+		}
+	}
+	std::cerr << "===========\n";
+	std::cerr << nnode << "\n";
+
+//	for (YAML::iterator iter = nnode.begin(); iter != nnode.end(); iter++) {
+//		if (iter->Type() == YAML::NodeType::Map) {
+//			std::cerr << " ** found map: " << iter->first << "\n";
+//		} else if (iter->Type() == YAML::NodeType::Sequence) {
+//			std::cerr << " ** found seq\n";
+//		}
+//
+//	}
+	exit(1);
+}

@@ -15,6 +15,7 @@ public:
     void foreach(const std::string& id, std::function<void(const std::string&, const ITab&)> f) const override;
 
     bool has(const std::string& id) const override;
+	std::shared_ptr<ITab> clone(const ITab&) const override;
 
 private:
     int _asInt() const override;

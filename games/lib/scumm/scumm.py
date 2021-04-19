@@ -35,7 +35,7 @@ def init_scumm(vars, status):
                 vars.dialogues.update(yaml.load(f, Loader=yaml.FullLoader))
         print ('OK. (' + str(len(vars.dialogues)) + ')')
     else:
-        print (' === no dialogues foound.')
+        print (' === no dialogues found.')
     # initialize room <-> items map
     print (' === setting room -> item map... ', end='')
     for k, v in vars.items.items():
