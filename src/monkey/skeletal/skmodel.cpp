@@ -92,7 +92,7 @@ void SkModel::addMesh(const std::string& id, const std::string& meshId, const st
 	auto meshraw = Engine::get().GetAssetManager().getRaw(meshId);
 	std::cerr << meshraw->has("origin");
 	auto mesh = std::dynamic_pointer_cast<IMesh>(makeDynamicSkeletalMesh(*meshraw.get(), newJointId, parentJointId,
-    	0.0f, scale, bindTransform, glm::vec2(0.0f)));
+    	z, scale, bindTransform, glm::vec2(0.0f)));
     DrawingBit bit;
     bit.mesh = mesh;
     m_meshes[id] = mesh;
@@ -207,22 +207,22 @@ void SkModel::addMesh(const std::string& id, const std::string& meshId, const st
 //
 //}
 
-std::vector<glm::vec2> SkModel::getOffsetPoints(const std::unordered_map<std::string, glm::mat4> &pose) const {
-    std::vector<glm::vec2> ops;
-    for (const auto& p : m_offsetPointIds) {
-        auto iter = m_keyPoints.find(p.first);
-        if (iter != m_keyPoints.end()) {
-            auto point = iter->second.at(p.second);
-            const auto& joint = m_allJoints.at(p.first);
-            auto transform = pose.at(p.first);
-            auto scaling = glm::scale(glm::vec3(joint->getScale()));
-            glm::vec3 tp = transform * scaling * glm::vec4(point.x, point.y, 0.0f, 1.0f);
-            ops.emplace_back(glm::vec2(tp.x, tp.y));
-        }
-    }
-    return ops;
-
-}
+//std::vector<glm::vec2> SkModel::getOffsetPoints(const std::unordered_map<std::string, glm::mat4> &pose) const {
+//    std::vector<glm::vec2> ops;
+//    for (const auto& p : m_offsetPointIds) {
+//        auto iter = m_keyPoints.find(p.first);
+//        if (iter != m_keyPoints.end()) {
+//            auto point = iter->second.at(p.second);
+//            const auto& joint = m_allJoints.at(p.first);
+//            auto transform = pose.at(p.first);
+//            auto scaling = glm::scale(glm::vec3(joint->getScale()));
+//            glm::vec3 tp = transform * scaling * glm::vec4(point.x, point.y, 0.0f, 1.0f);
+//            ops.emplace_back(glm::vec2(tp.x, tp.y));
+//        }
+//    }
+//    return ops;
+//
+//}
 
 void SkModel::computeOffset() {
     m_offsetPoints.clear();
@@ -288,6 +288,40 @@ SkModel::SkModel(const ITab& main) : _nextJointId(0), m_jointCount(0) {
     computeOffset();
 
     // ################## read boxes
+    main.foreach("attack_boxes", [&] (const ITab& node) {
+		auto anim = node.get<std::string>("anim");
+    	auto box = node.get<int>("box");
+		auto boneId = node.get<std::string>("joint");
+		auto pointName = node.get<std::string>("point");
+		auto size = node.get<std::string>("size");
+		/// ---
+        const auto& animation = m_animations.at(anim);
+        auto atimes = animation->getAttackTimes(box);
+        auto abox = std::make_shared<AttackBox>();
+        abox->t0 = atimes.first;
+        abox->t1 = atimes.second;
+        abox->boneId = boneId;
+		//abox->bone = m_jointMap2.at(boneId);//  boneToIndex.at(boneId);
+        Joint* joint = getJoint(boneId);
+        auto transform = joint->getBindTransform();
+        auto point = getKeyPoint(boneId, pointName);
+        auto transformedPoint = transform * glm::vec4(point,0.0f,1.0f);
+        auto dims = getKeyPoint(boneId, size);
+        abox->shape = std::make_shared<Rect>(dims[0], dims[1], glm::vec3(transformedPoint));
+        auto tr0 = animation->getAnimTransform(abox->t0, this);
+        auto boneTransform0 = tr0.at(boneId);
+        auto tb1 = abox->shape->getBounds();
+        tb1.Transform(boneTransform0);
+        auto tsb = tb1.GetSize();
+        abox->shapeTransformed = std::make_shared<Rect>(tsb[0], tsb[1], glm::vec3(tb1.min.x, tb1.min.y, 0.0f));
+        m_attackTimes[anim] = abox;
+
+
+	});
+
+//    if (main.has("attack")) {
+//
+//    }
 //    if (t.hasKey("boxes")) {
 //        auto b = t.get<PyDict>("boxes");
 //        b.foreach<PyDict> ("attack", [&] (const PyDict& d) {
@@ -321,6 +355,10 @@ SkModel::SkModel(const ITab& main) : _nextJointId(0), m_jointCount(0) {
 //        });
 //    }
 
+}
+
+glm::vec2 SkModel::getKeyPoint(const std::string &joint, const std::string &pointId) const {
+	return m_meshes.at(joint)->getKeyPoint(pointId);
 }
 
 void SkModel::setAnimation(const std::string &animId, const std::string &anim) {
@@ -417,6 +455,6 @@ std::vector<std::shared_ptr<IShape>> SkModel::getAttackShapes() const {
     return shapes;
 }
 
-const std::unordered_map<std::string, std::unordered_map<std::string, glm::vec2>> & SkModel::getKeyPoints() const {
-    return m_keyPoints;
-}
+//const std::unordered_map<std::string, std::unordered_map<std::string, glm::vec2>> & SkModel::getKeyPoints() const {
+//    return m_keyPoints;
+//}

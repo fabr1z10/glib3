@@ -10,7 +10,7 @@
 //
 //
 
-MeshFactory::MeshFactory() {
+MeshFactory::MeshFactory(float z) : m_z(z) {
     m_plotters.insert(std::make_pair(ShapeType::RECT, [&] (IShape* s, glm::vec4 color, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices)
         { return drawConvexPoly(s, color, vertices, indices, true); }));
     m_plotters.insert(std::make_pair(ShapeType::SEGMENT, [&] (IShape* s, glm::vec4 color, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices)
@@ -131,7 +131,7 @@ void MeshFactory::drawConvexPoly (IShape* s, glm::vec4 color, std::vector<Vertex
     // offset is already taken into account in getVertices
     unsigned nVertices = seg->getVertices().size();
     for (const auto& vertex : seg->getVertices()) {
-        vertices.emplace_back( vertex.x, vertex.y, 0.0f, color.r, color.g, color.b, color.a);
+        vertices.emplace_back( vertex.x, vertex.y, m_z, color.r, color.g, color.b, color.a);
         if (count < nVertices - 1) {
             indices.emplace_back(c++);
             indices.emplace_back(c);

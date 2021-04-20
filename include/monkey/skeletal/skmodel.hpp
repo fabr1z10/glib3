@@ -77,8 +77,8 @@ public:
      */
     std::vector<glm::mat4> getJointTransforms();
     JointTransform getRestTransform(const std::string& id) const;
-    const std::vector<std::pair<std::string, glm::vec3>>& getOffsetPoints() const;
-    std::vector<glm::vec2> getOffsetPoints(const std::unordered_map<std::string, glm::mat4>& pose) const;
+	const std::vector<std::pair<std::string, glm::vec3>>& getOffsetPoints() const;
+    //std::vector<glm::vec2> getOffsetPoints(const std::unordered_map<std::string, glm::mat4>& pose) const;
     const std::vector<std::shared_ptr<IShape>>& getShapes();
     int getShapeId (const std::string& animId);
 
@@ -87,11 +87,12 @@ public:
     const AttackBox* getShapeCastId (const std::string& animId, float t);
     std::vector<std::shared_ptr<IShape>> getAttackShapes() const override;
     void computeOffset();
-    const std::unordered_map<std::string, std::unordered_map<std::string, glm::vec2>>& getKeyPoints() const;
+    //const std::unordered_map<std::string, std::unordered_map<std::string, glm::vec2>>& getKeyPoints() const;
     const std::unordered_map<std::string, std::shared_ptr<AttackBox>>& getAttackInfo() const;
     const std::unordered_map<std::string, CollisionBox>& getBoxInfo() const;
     void addShape(const std::string& animId, std::shared_ptr<IShape> shape);
     void resetShapes();
+    glm::vec2 getKeyPoint(const std::string& joint, const std::string& pointId) const;
 private:
     std::unordered_map<std::string, unsigned> m_meshToJointId;
     unsigned _nextJointId;
@@ -120,8 +121,8 @@ private:
     Bounds m_maxBounds;
     std::vector<SkBoxInfo> m_skeletalBoxes;
     std::vector<std::pair<std::string, std::string>> m_offsetPointIds;
-    std::unordered_map<std::string, std::unordered_map<std::string, glm::vec2>> m_keyPoints;
-	std::unordered_map<std::string, std::unordered_map<std::string, glm::vec2>> m_dims;
+    //std::unordered_map<std::string, std::unordered_map<std::string, glm::vec2>> m_keyPoints;
+	//std::unordered_map<std::string, std::unordered_map<std::string, glm::vec2>> m_dims;
 };
 
 inline size_t SkModel::getJointCount() const {

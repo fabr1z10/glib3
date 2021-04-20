@@ -1,6 +1,7 @@
 #include <monkey/components/statemachine.h>
 #include <monkey/error.h>
 #include <monkey/engine.h>
+#include <monkey/input/pytab.h>
 
 State::State(const ITab& t) : Ref(t) {
     m_id = t.get<std::string>("id");
@@ -8,11 +9,11 @@ State::State(const ITab& t) : Ref(t) {
     auto factory = Engine::get().GetSceneFactory();
     t.foreach("keys", [&] (const ITab& p) {
         // TODO CIAPPO
-//        auto key = p[0].cast<int>();
-//        PyTable table(p[1]);
-//
-//        auto action = factory->make2<StateAction>(table);
-//        m_actions.insert(std::make_pair(key, action));
+        auto key = p[0]->as<int>();
+        auto tbl = PyTab(p[1]->as<pybind11::object>());
+
+        auto action = factory->make2<StateAction>(tbl);
+        m_actions.insert(std::make_pair(key, action));
 
     });
 

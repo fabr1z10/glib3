@@ -60,44 +60,44 @@ void SkCollider::Begin() {
 
 std::shared_ptr<IShape> SkCollider::getBox(const std::string& anim, float t, const std::vector<PointLocator>& pts,
                                           const std::vector<glm::vec2>& fixedPoints) {
-    const auto& keyPoints = m_model->getKeyPoints();
-    float xMin = std::numeric_limits<float>::max();
-    float xMax = -xMin;
-    float yMin = xMin;
-    float yMax = -yMin;
-    const auto& pose = m_animator->computePose(anim, t);
-    auto offsetPoints = m_model->getOffsetPoints(pose);
-    float offsetY = 0.0f;
-    for (const auto &a : offsetPoints) {
-        offsetY = std::max(offsetY, -a.y);
-    }
-    std::vector<glm::vec2> transformedPoints = fixedPoints;
-    for (const auto& point : pts) {
-        auto it = keyPoints.find(point.jointId);
-        if (it != keyPoints.end()) {
-            auto it2 = it->second.find(point.pointId);
-            if (it2 != it->second.end()) {
-                glm::vec2 p = it2->second;
-                float scale = m_model->getJoint(point.jointId)->getScale();
-                auto scaling = glm::scale(glm::vec3(scale));
-                glm::vec3 tp = pose.at(point.jointId) * scaling * glm::vec4(p.x, p.y, 0.0f, 1.0f);
-                transformedPoints.emplace_back(glm::vec2(tp.x, tp.y + offsetY));
-            }
-        }
-    }
-    if (!transformedPoints.empty()) {
-        for (const auto& p : transformedPoints) {
-            xMin = std::min(xMin, p.x);
-            xMax = std::max(xMax, p.x);
-            yMin = std::min(yMin, p.y);
-            yMax = std::max(yMax, p.y);
-        }
-        float width = xMax - xMin;
-        float height = yMax - yMin;
-        auto rect = std::make_shared<Rect>(width, height, glm::vec3(xMin, yMin, 0.0f));
-        return rect;
-    }
-    return nullptr;
+//    const auto& keyPoints = m_model->getKeyPoints();
+//    float xMin = std::numeric_limits<float>::max();
+//    float xMax = -xMin;
+//    float yMin = xMin;
+//    float yMax = -yMin;
+//    const auto& pose = m_animator->computePose(anim, t);
+//    auto offsetPoints = m_model->getOffsetPoints(pose);
+//    float offsetY = 0.0f;
+//    for (const auto &a : offsetPoints) {
+//        offsetY = std::max(offsetY, -a.y);
+//    }
+//    std::vector<glm::vec2> transformedPoints = fixedPoints;
+//    for (const auto& point : pts) {
+//        auto it = keyPoints.find(point.jointId);
+//        if (it != keyPoints.end()) {
+//            auto it2 = it->second.find(point.pointId);
+//            if (it2 != it->second.end()) {
+//                glm::vec2 p = it2->second;
+//                float scale = m_model->getJoint(point.jointId)->getScale();
+//                auto scaling = glm::scale(glm::vec3(scale));
+//                glm::vec3 tp = pose.at(point.jointId) * scaling * glm::vec4(p.x, p.y, 0.0f, 1.0f);
+//                transformedPoints.emplace_back(glm::vec2(tp.x, tp.y + offsetY));
+//            }
+//        }
+//    }
+//    if (!transformedPoints.empty()) {
+//        for (const auto& p : transformedPoints) {
+//            xMin = std::min(xMin, p.x);
+//            xMax = std::max(xMax, p.x);
+//            yMin = std::min(yMin, p.y);
+//            yMax = std::max(yMax, p.y);
+//        }
+//        float width = xMax - xMin;
+//        float height = yMax - yMin;
+//        auto rect = std::make_shared<Rect>(width, height, glm::vec3(xMin, yMin, 0.0f));
+//        return rect;
+//    }
+//    return nullptr;
 }
 
 //void SkCollider::computeAttackBoxes() {
@@ -184,15 +184,16 @@ void SkCollider::Start() {
 
     // create debug mesh
     const auto& attackInfo = m_model->getAttackInfo();
+    MeshFactory m(1.0f);
     for (const auto& info : attackInfo) {
-//        auto c = std::make_shared<Entity>();
-//        m_entity->AddChild(c);
-//        auto renderer = std::make_shared<MultiRenderer>();
-//        auto mesh = MeshFactory::CreateMesh(*(info.second->shape.get()));
-//        auto model = std::make_shared<BasicModel>(mesh);
-//        renderer->addModel(model);
-//        c->AddComponent(renderer);
-//        m_colliderRenderers.push_back(renderer.get());
+        auto c = std::make_shared<Entity>();
+        m_entity->AddChild(c);
+        auto renderer = std::make_shared<MultiRenderer>();
+        auto model = m.createWireframe(info.second->shape.get(), glm::vec4(1.0f));// MeshFactory::CreateMesh(*(info.second->shape.get()));
+        //auto model = std::make_shared<BasicModel>(mesh);
+        renderer->addModel(model);
+        c->AddComponent(renderer);
+        m_colliderRenderers.push_back(renderer.get());
     }
     // m_shapeEntity = c.get();
 

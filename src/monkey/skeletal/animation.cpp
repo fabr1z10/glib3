@@ -30,12 +30,12 @@ SkAnimation::SkAnimation(const ITab& t) {
         index++;
     });
 
-	//  TO DO attack boxes
-//    t.foreach<PyDict> ("attack", [&] (const PyDict& dict) {
-//        auto start_time = dict.get<float>("start");
-//        auto end_time = dict.get<float>("end");
-//        m_attacks.emplace_back(start_time, end_time);
-//    });
+	// attack boxes
+    t.foreach("attack", [&] (const ITab& dict) {
+        auto start_time = dict.get<float>("start");
+        auto end_time = dict.get<float>("end");
+        m_attacks.emplace_back(start_time, end_time);
+    });
 }
 
 float SkAnimation::getLength() {

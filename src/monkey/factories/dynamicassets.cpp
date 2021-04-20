@@ -76,10 +76,13 @@ std::shared_ptr<Object> makeDynamicSkeletalMesh(const ITab& node, int jointId, i
         glm::vec2 klocal = t.as<glm::vec2>() - localOrigin;
         klocal.y = -klocal.y;
         mesh->addKeyPoint(id, klocal);
-
     });
 
-//    if (meshTemplate.hasKey("dims")) {
+	node.foreach("dims", [&] (const std::string& id, const ITab& t) {
+		auto size = t.as<glm::vec2>();
+		mesh->addKeyPoint(id, size);
+	});
+
 //        auto kps = meshTemplate.get<PyDict>("dims").toDict<std::string, glm::vec2>();
 //        for (const auto& kp : kps) {
 //            m_dims[id][kp.first] = kp.second;
@@ -117,10 +120,10 @@ std::shared_ptr<Object> makeDynamicSkeletalMesh(const ITab& node, int jointId, i
         // flip y as pixel coordinates increase downward!
         local.y = -local.y;
         // transform local to model
-        glm::vec3 modelPos = transform * scalingMat * glm::vec4(local, z, 1.0f);
+        glm::vec3 modelPos = transform * scalingMat * glm::vec4(local, 0.0, 1.0f);
         vertex.x = modelPos.x + offset.x;
         vertex.y = modelPos.y + offset.y;
-        vertex.z = modelPos.z;
+        vertex.z = z;
         // TODO m_maxBounds.addPoint(glm::vec3(vertex.x, vertex.y, vertex.z));
         vertex.s = pixel.x / texWidth;
         vertex.t = pixel.y / texHeight;
