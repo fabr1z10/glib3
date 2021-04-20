@@ -43,6 +43,18 @@ YAML::Node AssetManager::openFile(const std::string & id) {
     return mm;
 }
 
+std::shared_ptr<ITab> AssetManager::getRaw(const std::string & locator) {
+	size_t n = locator.find_last_of("/");
+	auto file = openFile(locator);
+	for (const auto &i : file) {
+		if (i.first.as<std::string>() == locator.substr(n+1)) {
+			return std::make_shared<YAMLTab>((i.second));
+		}
+	}
+	return nullptr;
+
+}
+
 std::shared_ptr<IMesh> AssetManager::getMesh(const std::string & locator, const ITab& args) {
     auto factory = Engine::get().GetSceneFactory();
     // check if node template is cached.
@@ -138,6 +150,17 @@ std::shared_ptr<Font> AssetManager::GetFont (const std::string& fontId) {
     }
 }
 
+std::shared_ptr<SkAnimation> AssetManager::getSkeletalAnimation(const ITab& id) {
+	auto str = id.as<std::string>("");
+	if (str.empty()) {
+		auto templateId = id[0]->as<std::string>();
+		auto args = id[1];
+		return genericLoaderArgs<SkAnimation>(templateId, *args.get());
+	} else {
+		return genericLoader<SkAnimation>(str, m_sanim);
+	}
+
+}
 
 std::shared_ptr<SkAnimation> AssetManager::getSkeletalAnimation(const std::string &id) {
 

@@ -108,8 +108,10 @@ public:
             GLIB_FAIL("Unknown type: " << type);
         }
         // transform t in t1 ...
-        t.clone(args);
-        return nullptr;
+
+        auto t1 = t.clone(args);
+
+        return std::static_pointer_cast<T>( (it->second)(*t1.get()));
         //return std::static_pointer_cast<T>((it->second)(t, args));
     }
 

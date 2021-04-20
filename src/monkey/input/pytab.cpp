@@ -76,6 +76,11 @@ std::unique_ptr<ITab> PyTab::operator[] (const std::string & key) const {
     return std::make_unique<PyTab>(_get(key));
 }
 
+std::unique_ptr<ITab> PyTab::operator[] (int key) const {
+	return std::make_unique<PyTab>(m_obj.cast<pybind11::tuple>()[key]);
+}
+
+
 bool PyTab::has(const std::string &id) const {
     try {
         auto obj = _get(id);
@@ -128,4 +133,8 @@ void PyTab::foreach(const std::string &id, std::function<void(const std::string 
 
 std::shared_ptr<ITab> PyTab::clone(const ITab &) const {
 	throw "Not supported yet!";
+}
+
+void PyTab::print(std::ostream & out) const {
+
 }

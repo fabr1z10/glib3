@@ -5,6 +5,7 @@
 #include <monkey/math/geom.h>
 #include <glm/gtx/transform.hpp>
 #include <monkey/input/pytab.h>
+#include <monkey/factories/dynamicassets.h>
 
 ShaderType SkModel::GetShaderType() const {
     return SKELETAL_SHADER;
@@ -52,15 +53,15 @@ void SkModel::addMesh(const std::string& id, const std::string& meshId, const st
                       float z, float scale, int order) {
 
     // assumption : one mesh, one joint
-    auto dict = pybind11::dict();
-    YAML::Node args;
+    //auto dict = pybind11::dict();
+    //YAML::Node args;
     int newJointId = m_js.size();
     m_meshToJointId[id] = newJointId;
-    args["z"] = 0.0f;
-    dict["scale"] = scale;
-    dict["z"] =  0.0f;
-    args["jointId"] = newJointId;
-    dict["jointId"]= newJointId;
+    //a/rgs["z"] = 0.0f;
+    //dict["scale"] = scale;
+    //dict["z"] =  0.0f;
+    //args["jointId"] = newJointId;
+    //dict["jointId"]= newJointId;
     int parentJointId = -1;
     glm::mat4 bindTransform(1.0f);
     JointTransform tr;
@@ -69,10 +70,10 @@ void SkModel::addMesh(const std::string& id, const std::string& meshId, const st
     joint->setScale(scale);
     m_js.push_back(joint);
     if (!parentMesh.empty()) {
-        auto parentJointIndex = m_meshToJointId.at(parentMesh);
-        args["parentJointId"] = parentJointIndex;
-        dict["parentJointId"]= parentJointIndex;
-        auto parentJoint = m_js[parentJointIndex];
+		parentJointId = m_meshToJointId.at(parentMesh);
+        //args["parentJointId"] = parentJointIndex;
+        //dict["parentJointId"]= parentJointIndex;
+        auto parentJoint = m_js[parentJointId];
         joint->setLocalToParentTransform(tr, parentJoint->getBindTransform());
         bindTransform = parentJoint->getBindTransform() * tr.getLocalTransform();
         parentJoint->addChild(joint);
@@ -81,12 +82,17 @@ void SkModel::addMesh(const std::string& id, const std::string& meshId, const st
     }
     m_restTransforms[id] = tr;
 
-    std::vector<float> vecTransform;
-    vecTransform.assign(glm::value_ptr(bindTransform), glm::value_ptr(bindTransform)+ 16);
-    args["transform"] = vecTransform;
-    dict["transform"] = bindTransform;
-    PyTab t(dict);
-    auto mesh = Engine::get().GetAssetManager().getMesh(meshId, t);
+    //std::vector<float> vecTransform;
+    //vecTransform.assign(glm::value_ptr(bindTransform), glm::value_ptr(bindTransform)+ 16);
+    //args["transform"] = vecTransform;
+    //dict["transform"] = bindTransform;
+    //PyTab t(dict);
+
+    //auto mesh = Engine::get().GetAssetManager().getMesh(meshId, t);
+	auto meshraw = Engine::get().GetAssetManager().getRaw(meshId);
+	std::cerr << meshraw->has("origin");
+	auto mesh = std::dynamic_pointer_cast<IMesh>(makeDynamicSkeletalMesh(*meshraw.get(), newJointId, parentJointId,
+    	0.0f, scale, bindTransform, glm::vec2(0.0f)));
     DrawingBit bit;
     bit.mesh = mesh;
     m_meshes[id] = mesh;
@@ -243,7 +249,7 @@ SkModel::SkModel(const ITab& main) : _nextJointId(0), m_jointCount(0) {
     main.foreach("meshes", [&] (const ITab& mesh) {
         auto id = mesh.get<std::string>("id");
         auto meshId = mesh.get<std::string>("mesh");
-        auto parent = mesh.get<std::string>("parent");
+        auto parent = mesh.get<std::string>("parent", "");
         auto scale = mesh.get<float>("scale", 1.0f);
         auto z = mesh.get<float>("z", 0.0f);
         glm::vec2 attachPoint(0.0f);
@@ -257,11 +263,16 @@ SkModel::SkModel(const ITab& main) : _nextJointId(0), m_jointCount(0) {
 
     int ac = 0;
     main.foreach("animations", [&] (const std::string& id, const ITab& node) {
-        auto animId = node.as<std::string>();
+
+        auto animId = node.as<std::string>("");
         if (ac == 0) {
             m_defaultAnimation = id;
         }
-        auto sanim = Engine::get().GetAssetManager().getSkeletalAnimation(animId);
+		std::cerr << "==\n";
+        node.print(std::cerr);
+        std::cerr << "\n==\n";
+        //auto sanim = Engine::get().GetAssetManager().getSkeletalAnimation(animId);
+		auto sanim = Engine::get().GetAssetManager().getSkeletalAnimation(node);
         m_animations[id] = sanim;
         ac++;
     });

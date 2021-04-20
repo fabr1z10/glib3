@@ -59,4 +59,5 @@ std::shared_ptr<T> makeDynamic(const ITab& node, const ITab& args) {
 }
 
 // create a mesh with dynamic joint ids
-std::shared_ptr<Object> makeDynamicSkeletalMesh(const ITab& node, const ITab& args);
+std::shared_ptr<Object> makeDynamicSkeletalMesh(const ITab& node, int jointId, int parentJointId,
+	float z, float scale, const glm::mat4& transform, glm::vec2 offset);

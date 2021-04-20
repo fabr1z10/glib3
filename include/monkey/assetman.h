@@ -67,11 +67,14 @@ public:
 
     std::shared_ptr<IModel> GetModel (const std::string&);
     std::shared_ptr<IMesh> GetMesh (const std::string&);
+
+	std::shared_ptr<SkAnimation> getSkeletalAnimation(const ITab&);
     std::shared_ptr<SkAnimation> getSkeletalAnimation(const std::string &);
 
     // support for dynamic model / meshes
     std::shared_ptr<IMesh> getMesh (const std::string&, const ITab& args);
 
+    std::shared_ptr<ITab> getRaw(const std::string&);
 
     void SetLocal (bool);
     void CleanUp();

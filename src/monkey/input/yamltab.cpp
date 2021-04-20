@@ -17,19 +17,29 @@ std::string YAMLTab::_asString() const {
 }
 
 glm::vec2 YAMLTab::_asVec2() const {
-    throw;
+	auto vec = m_node.as<std::vector<float>>();
+	return glm::vec2(vec[0], vec[1]);
+
 }
 
 glm::vec3 YAMLTab::_asVec3() const {
+	auto vec = m_node.as<std::vector<float>>();
+	return glm::vec3(vec[0], vec[1], vec[2]);
 
 }
 
 glm::vec4 YAMLTab::_asVec4() const {
+	auto vec = m_node.as<std::vector<float>>();
+	return glm::vec4(vec[0], vec[1], vec[2], vec[3]);
 
 }
 
 glm::mat4 YAMLTab::_asMat4() const {
     
+}
+
+std::unique_ptr<ITab> YAMLTab::operator[] (int key) const {
+	return std::make_unique<YAMLTab>(m_node[key]);
 }
 
 std::unique_ptr<ITab> YAMLTab::operator[] (const std::string & key) const {
@@ -116,8 +126,8 @@ std::shared_ptr<ITab> YAMLTab::clone(const ITab & args) const {
 							current = args.get<float>(varName);
 						}
 					} catch (...) {
-						if (pp.size() > 2) {
-							current = pp[2];
+						if (current.size() > 2) {
+							current = current[2];
 						}
 					}
 				} else {
@@ -139,5 +149,9 @@ std::shared_ptr<ITab> YAMLTab::clone(const ITab & args) const {
 //		}
 //
 //	}
-	exit(1);
+	return std::make_shared<YAMLTab>(nnode);
+}
+
+void YAMLTab::print(std::ostream & out) const {
+	out << m_node;
 }

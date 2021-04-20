@@ -12,6 +12,7 @@ public:
 		m_dict = (pybind11::type::of(obj) == pybind11::type::of(pybind11::dict()));
 
 	}
+	std::unique_ptr<ITab> operator[](int) const override;
     std::unique_ptr<ITab> operator[](const std::string&) const override;
     void foreach(std::function<void(const ITab&)> f) const override;
     void foreach(const std::string& id, std::function<void(const ITab&)> f) const override;
@@ -19,6 +20,7 @@ public:
     void foreach(const std::string& id, std::function<void(const std::string&, const ITab&)> f) const override;
     bool has(const std::string& id) const override;
 	std::shared_ptr<ITab> clone(const ITab&) const override;
+	void print(std::ostream&) const override;
 private:
     pybind11::object _get(const std::string&) const;
     bool m_dict;

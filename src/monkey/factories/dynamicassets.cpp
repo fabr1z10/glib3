@@ -45,17 +45,18 @@ void nodeHelper(std::list<YAML::Node>& nodes, YAML::Node node, const ITab& args)
         }
     }
 }
-std::shared_ptr<Object> makeDynamicSkeletalMesh(const ITab& node, const ITab& args) {
+std::shared_ptr<Object> makeDynamicSkeletalMesh(const ITab& node, int jointId, int parentJointId,
+												float z, float scale, const glm::mat4& transform, glm::vec2 offset) {
     using Coord = float;
     using Point = std::array<Coord, 2>;
     using N = uint32_t;
 
-    auto offset = args.get<glm::vec2>("offset", glm::vec2(0.0f));//YamlWrapper::as<glm::vec2>(args, "offset", glm::vec2(0.0f));
-    auto z = args.get<float>("z", 0.0f); // args["z"].as<float>(0.0f);
-    auto parentJointId = args.get<int>("parentJointId", -1);
-    auto jointId = args.get<int>("jointId");
-    auto scale = args.get("scale", 1.0f);
-    auto transform = args.get<glm::mat4>("transform"); //YamlWrapper::as<glm::mat4>(args, "transform");
+    //auto offset = args.get<glm::vec2>("offset", glm::vec2(0.0f));//YamlWrapper::as<glm::vec2>(args, "offset", glm::vec2(0.0f));
+    //auto z = args.get<float>("z", 0.0f); // args["z"].as<float>(0.0f);
+    //auto parentJointId = args.get<int>("parentJointId", -1);
+    //auto jointId = args.get<int>("jointId");
+    //auto scale = args.get("scale", 1.0f);
+    ///auto transform = args.get<glm::mat4>("transform"); //YamlWrapper::as<glm::mat4>(args, "transform");
     glm::mat4 scalingMat = glm::scale(glm::vec3(scale));
 
     auto localOrigin = node.get<glm::vec2>("origin");
@@ -123,9 +124,6 @@ std::shared_ptr<Object> makeDynamicSkeletalMesh(const ITab& node, const ITab& ar
         // TODO m_maxBounds.addPoint(glm::vec3(vertex.x, vertex.y, vertex.z));
         vertex.s = pixel.x / texWidth;
         vertex.t = pixel.y / texHeight;
-        int i1 = static_cast<int>(points[i+5]);
-        int i2 = static_cast<int>(points[i+6]);
-        int i3 = static_cast<int>(points[i+7]);
         vertex.index0 = jointId;
         vertex.index1 = (parentJointId == -1) ? 0 : parentJointId;
         vertex.index2 = 0;

@@ -6,7 +6,9 @@
 class YAMLTab : public ITab {
 public:
     YAMLTab(YAML::Node node) : m_node(node) {}
-    std::unique_ptr<ITab> operator[](const std::string&) const override;
+	std::unique_ptr<ITab> operator[](int) const override;
+
+	std::unique_ptr<ITab> operator[](const std::string&) const override;
 
     void foreach(std::function<void(const ITab&)> f) const override;
     void foreach(const std::string& id, std::function<void(const ITab&)> f) const override;
@@ -16,6 +18,8 @@ public:
 
     bool has(const std::string& id) const override;
 	std::shared_ptr<ITab> clone(const ITab&) const override;
+
+	void print(std::ostream&) const override;
 
 private:
     int _asInt() const override;
