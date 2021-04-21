@@ -46,7 +46,7 @@ BoxedModel::BoxedModel(const ITab& t) : SpriteModel(t) {
 	m_attackDistance = std::numeric_limits<float>::infinity();
     //auto anims = t["animations"].as<YAML::Node>();
 
-    t.foreach("anims", [&] (const std::string& animId, const ITab& anim) {
+    t.foreach("animations", [&] (const std::string& animId, const ITab& anim) {
         // each animation might have a box
         if (anim.has("box")) {
             auto boxId = anim.get<int>("box");

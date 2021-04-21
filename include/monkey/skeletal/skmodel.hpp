@@ -93,6 +93,7 @@ public:
     void addShape(const std::string& animId, std::shared_ptr<IShape> shape);
     void resetShapes();
     glm::vec2 getKeyPoint(const std::string& joint, const std::string& pointId) const;
+    std::pair<bool, glm::vec2> getKeyPointRestWorld(const std::string& joint, const std::string& pointId);
 private:
     std::unordered_map<std::string, unsigned> m_meshToJointId;
     unsigned _nextJointId;

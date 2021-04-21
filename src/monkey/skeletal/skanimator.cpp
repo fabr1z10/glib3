@@ -225,7 +225,13 @@ bool SkAnimator::IsComplete() const {
     return m_complete;
 }
 
-
+IShape * SkAnimator::getShapeCast() {
+	auto* shapeCastId = m_model->getShapeCastId(GetAnimation(), m_animationTime);
+	if (shapeCastId == nullptr) {
+		return nullptr;
+	}
+	return shapeCastId->shape.get();
+}
 
 void SkAnimator::applyPoseToJoints(const std::unordered_map<std::string, JointTransform> &currentPose,
                                    std::shared_ptr<Joint> joint, glm::mat4& parentTransform)

@@ -75,6 +75,8 @@ std::shared_ptr<Object> makeDynamicSkeletalMesh(const ITab& node, int jointId, i
     node.foreach("key_points", [&] (const std::string& id, const ITab& t) {
         glm::vec2 klocal = t.as<glm::vec2>() - localOrigin;
         klocal.y = -klocal.y;
+        // TODO mult by scaling? mm
+        //glm::vec2 pp = scalingMat * glm::vec4(klocal, 0.0f, 0.0f);
         mesh->addKeyPoint(id, klocal);
     });
 

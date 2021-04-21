@@ -145,7 +145,7 @@ void Controller2D::HorizontalCollisions(glm::vec2& velocity) {
 	//vec2 r0 = pos + glm::vec2(facingLeft ? - m_halfSize[0] : m_halfSize[0], -m_halfSize[1]);
 
 	vec2 r0 = facingLeft ? m_raycastOrigins.bottomLeft : m_raycastOrigins.bottomRight;
-	std::cout << "r0 = " << r0.x << ", " << r0.y << "\n";
+	//std::cout << "r0 = " << r0.x << ", " << r0.y << "\n";
     for (int i = 0; i < m_horizontalRayCount; i++) {
         vec2 rayOrigin = r0 + vec2(0.0f, i * m_horizontalRaySpacing);
 
@@ -173,7 +173,7 @@ void Controller2D::HorizontalCollisions(glm::vec2& velocity) {
 
             if (!m_details.climbingSlope || (slopeAngle*rad2deg) > m_maxClimbAngle) {
                 velocity.x = std::max(hit.length - m_skinWidth, 0.0f) * sgnx;
-                std::cerr << "ray " << i << " " << hit.length  << ", velx = " << velocity.x << "\n";
+                //std::cerr << "ray " << i << " " << hit.length  << ", velx = " << velocity.x << "\n";
                 rayLength = hit.length;
                 if (m_details.climbingSlope) {
                     velocity.y = tan(m_details.slopeAngle)* fabs(velocity.x);

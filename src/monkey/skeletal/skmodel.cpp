@@ -49,6 +49,8 @@ int SkModel::getShapeId(const std::string& animId) {
 
 }
 
+
+
 void SkModel::addMesh(const std::string& id, const std::string& meshId, const std::string& parentMesh, glm::vec2 attachPoint,
                       float z, float scale, int order) {
 
@@ -93,6 +95,7 @@ void SkModel::addMesh(const std::string& id, const std::string& meshId, const st
 	std::cerr << meshraw->has("origin");
 	auto mesh = std::dynamic_pointer_cast<IMesh>(makeDynamicSkeletalMesh(*meshraw.get(), newJointId, parentJointId,
     	z, scale, bindTransform, glm::vec2(0.0f)));
+
     DrawingBit bit;
     bit.mesh = mesh;
     m_meshes[id] = mesh;
@@ -288,6 +291,13 @@ SkModel::SkModel(const ITab& main) : _nextJointId(0), m_jointCount(0) {
     computeOffset();
 
     // ################## read boxes
+    main.foreach("boxes", [&] (const std::string& anim, const ITab& node) {
+    	auto size = node.as<glm::vec2>();
+    	m_animToShape[anim] = m_shapes.size();
+    	auto shape = std::make_shared<Rect>(size.x, size.y, glm::vec3(-0.5f*size.x, 0.0f, 0.0f));
+    	m_shapes.push_back(shape);
+    	m_maxBounds.ExpandWith(shape->getBounds());
+    });
     main.foreach("attack_boxes", [&] (const ITab& node) {
 		auto anim = node.get<std::string>("anim");
     	auto box = node.get<int>("box");
@@ -318,6 +328,7 @@ SkModel::SkModel(const ITab& main) : _nextJointId(0), m_jointCount(0) {
 
 
 	});
+
 
 //    if (main.has("attack")) {
 //
@@ -355,10 +366,26 @@ SkModel::SkModel(const ITab& main) : _nextJointId(0), m_jointCount(0) {
 //        });
 //    }
 
+
+
 }
 
 glm::vec2 SkModel::getKeyPoint(const std::string &joint, const std::string &pointId) const {
 	return m_meshes.at(joint)->getKeyPoint(pointId);
+}
+
+std::pair<bool, glm::vec2> SkModel::getKeyPointRestWorld(const std::string &jointId, const std::string &pointId) {
+	try {
+		glm::vec2 localPoint = getKeyPoint(jointId, pointId);
+		Joint* joint = getJoint(jointId);
+		auto scale = joint->getScale();
+		glm::mat4 scalingMat = glm::scale(glm::vec3(scale));
+		auto transform = joint->getBindTransform();
+		auto transformedPoint = transform * scalingMat * glm::vec4(localPoint, 0.0f, 1.0f);
+		return std::make_pair(true, transformedPoint);
+	} catch (...) {
+		return std::make_pair(false, glm::vec2());
+	}
 }
 
 void SkModel::setAnimation(const std::string &animId, const std::string &anim) {

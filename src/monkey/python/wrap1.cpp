@@ -255,9 +255,15 @@ pybind11::list Wrap1::getCollisionBounds() {
 
 }
 pybind11::list Wrap1::getAttackCollisionBounds() {
-	auto* a = dynamic_cast<Animator*>(m_entity->GetComponent<IAnimator>());
-	auto* model = static_cast<BoxedModel*>(a->getModel());
-	auto bounds = model->getShapeCast(a->GetAnimation(), a->GetFrame())->getBounds();
+	auto* a = m_entity->GetComponent<IAnimator>();
+	auto * shape = a->getShapeCast();
+//	auto* a = dynamic_cast<Animator*>(m_entity->GetComponent<IAnimator>());
+//	auto* model = static_cast<BoxedModel*>(a->getModel());
+//	auto bounds = model->getShapeCast(a->GetAnimation(), a->GetFrame())->getBounds();
+	if (shape == nullptr) {
+		return pybind11::none();
+	}
+	auto bounds = shape->getBounds();
 	pybind11::list l;
 	float f = m_entity->GetFlipX() ? -1.0f : 1.0f;
 	float scale = m_entity->GetScale();
@@ -269,6 +275,8 @@ pybind11::list Wrap1::getAttackCollisionBounds() {
 	return l;
 
 }
+
+
 pybind11::list Wrap1::getBoxSize(const std::string& animId) {
     auto* a = m_entity->GetComponent<IAnimator>();
     auto* model = static_cast<SkModel*>(a->getModel());
@@ -280,6 +288,19 @@ pybind11::list Wrap1::getBoxSize(const std::string& animId) {
     return l;
 }
 
+pybind11::list Wrap1::getKeyPoint(const std::string &joint, const std::string &point) {
+	auto* a = m_entity->GetComponent<IAnimator>();
+	auto* model = static_cast<SkModel*>(a->getModel());
+	auto p = model->getKeyPointRestWorld(joint, point);
+	if (p.first) {
+		pybind11::list l;
+		l.append(p.second[0]);
+		l.append(p.second[1]);
+		return l;
+	}
+	return pybind11::none();
+
+}
 
 py::object Wrap1::getInfo() {
     auto hs = m_entity->GetComponent<LuaInfo>();

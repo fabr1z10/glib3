@@ -196,7 +196,16 @@ void SkCollider::Start() {
         m_colliderRenderers.push_back(renderer.get());
     }
     // m_shapeEntity = c.get();
-
+	auto collisionShapeEntity = std::make_shared<Entity>();
+	m_entity->AddChild(collisionShapeEntity);
+	auto renderer = std::make_shared<MultiRenderer>();
+	MeshFactory mf;
+	for (const auto &shape : m_model->getShapes()) {
+		auto model = mf.createWireframe(shape.get(), glm::vec4(1.0f));
+		renderer->addModel(model);
+	}
+	collisionShapeEntity->AddComponent(renderer);
+	//m_colliderRenderer = renderer.get();
 
 //    if (m_shapeEntity == nullptr) {
 //        auto c = std::make_shared<Entity>();

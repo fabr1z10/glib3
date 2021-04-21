@@ -4,6 +4,7 @@
 #include <monkey/error.h>
 #include <glm/gtx/transform.hpp>
 #include <monkey/math/geom.h>
+#include <monkey/model/boxedmodel.h>
 
 
 Animator::Animator(std::shared_ptr<IModel> model) : IAnimator() {
@@ -111,4 +112,11 @@ const FrameInfo* Animator::getFrameInfo() {
 
 
 
+IShape * Animator::getShapeCast() {
+	auto* boxedModel = dynamic_cast<BoxedModel*>(m_model.get());
+	if (boxedModel == nullptr) {
+		return nullptr;
+	}
+	return boxedModel->getShapeCast(GetAnimation(), GetFrame()).get();
+}
 

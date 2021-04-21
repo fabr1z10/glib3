@@ -4,12 +4,14 @@
 #include <monkey/event.h>
 
 class IModel;
+class IShape;
 
 class IAnimator : public Component {
 public:
     IAnimator() : m_forward(true) {}
     std::string GetAnimation() const ;
     virtual void SetAnimation (const std::string& anim, bool forward = true) = 0;
+    virtual IShape* getShapeCast() = 0;
     void resetAnimation();
     void SetInitialAnimation (const std::string& anim);
     void SetPlayForward (bool);

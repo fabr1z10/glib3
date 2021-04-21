@@ -25,6 +25,8 @@ public:
     using ParentClass = IAnimator;
     std::unordered_map<std::string, glm::mat4> computePose (const std::string& animation, float t);
     int getKeyFrame() const;
+	IShape* getShapeCast() override;
+
 protected:
     float m_animationTime;
     SkAnimation* m_currentAnimation;

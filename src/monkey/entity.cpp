@@ -410,7 +410,7 @@ void Entity::SetScale(float s) {
     glm::vec3 k = glm::normalize(glm::vec3(m_localTransform[2]));
     i *= s;
     j *= s;
-    k *= s;
+    //zk *= s;
     m_localTransform[0][0] = i.x;
     m_localTransform[0][1] = i.y;
     m_localTransform[0][2] = i.z;

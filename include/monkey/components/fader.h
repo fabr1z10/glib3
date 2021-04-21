@@ -16,6 +16,7 @@ public:
     void setModel (std::shared_ptr<IModel> model) override { throw; }
     void SetAnimation (const std::string& anim, bool forward = true) override { throw; }
     virtual IModel* getModel() const { return nullptr;}
+	IShape* getShapeCast() override { return nullptr;}
 private:
     std::vector<glm::vec4> m_colors;
     std::vector<float> m_times;
