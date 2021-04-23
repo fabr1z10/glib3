@@ -52,7 +52,7 @@ public:
 	pybind11::list getCollisionBounds();
 	pybind11::list getAttackCollisionBounds();
 	pybind11::list getKeyPoint(const std::string& joint, const std::string& point);
-	pybind11::list getBoxSize(const std::string& animId);
+	pybind11::list getBoxSize(const std::string& animId="");
     static pybind11::object create(Entity*);
     static void runScript(Engine& engine, pybind11::object);
     void play (pybind11::object o);

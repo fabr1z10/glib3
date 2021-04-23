@@ -41,6 +41,9 @@ Intersector2D::Intersector2D() {
 
 CollisionReport Intersector2D::intersect(IShape * s1, IShape *s2, const glm::mat4& t1, const glm::mat4& t2) {
 
+	if (s1 == nullptr || s2 == nullptr) {
+		return CollisionReport();
+	}
     auto it = m_func.find (std::make_pair(s1->getShapeType(), s2->getShapeType()));
     if (it == m_func.end()) {
         it = m_func.find (std::make_pair(s2->getShapeType(), s1->getShapeType()));

@@ -49,6 +49,13 @@ class RestartRoom:
         self.type = 'action.changeroom'
         self.room = engine.engine.room
 
+class Scale:
+    def __init__(self, scale, duration, entity_id=None, tag=None):
+        self.type = 'action.scale'
+        self.scale= scale
+        self.duration = duration
+        self.id = entity_id
+        self.tag = tag
 
 class Scroll:
     def __init__(self, pos, relative, speed, cam):

@@ -1,5 +1,6 @@
 #include <monkey/input/yamltab.h>
-
+#include <monkey/math/util.h>
+#include <exprtk.hpp>
 int YAMLTab::_asInt() const {
     return m_node.as<int>();
 }
@@ -106,7 +107,7 @@ std::shared_ptr<ITab> YAMLTab::clone(const ITab & args) const {
 	nodes.push_back(nnode);
 	while (!nodes.empty()) {
 		// process current node
-		auto& current = nodes.front();
+		auto current = nodes.front();
 		nodes.pop_front();
 		if (current.Type() == YAML::NodeType::Map) {
 			for (auto iter : current) {
@@ -117,17 +118,35 @@ std::shared_ptr<ITab> YAMLTab::clone(const ITab & args) const {
 				// check if this is a replacement
 				auto pp = current[0].as<std::string>("");
 				if (pp[0] == '$') {
-					auto varName = current[1].as<std::string>();
 					auto type = pp.substr(1);
-					try {
-						if (type == "str") {
-							current = args.get<std::string>(varName);
-						} else if (type == "float") {
-							current = args.get<float>(varName);
+					if (type == "expr") {
+						// expression ...
+						// we need first the variables, to be fetched from args
+						auto variables = current[1].as<std::vector<std::string>>();
+						auto exprString = current[2].as<std::string>();
+
+						//float value = glib3::math::parse_expr("2+3.5");
+						std::unordered_map<std::string, float> vars;
+						for (const auto& var : variables) {
+							vars.insert(std::make_pair(var, args.get<float>(var)));
 						}
-					} catch (...) {
-						if (current.size() > 2) {
-							current = current[2];
+						float value = glib3::math::parse_expr(exprString, vars);
+						std::cerr << "the value is " << 22 << "\n";
+						current = value;
+						// create symbol table
+
+					} else {
+						auto varName = current[1].as<std::string>();
+						if (args.has(varName)) {
+							if (type == "str") {
+								current = args.get<std::string>(varName);
+							} else if (type == "float") {
+								current = args.get<float>(varName);
+							}
+						} else {
+							if (current.size() > 2) {
+								current = current[2];
+							}
 						}
 					}
 				} else {

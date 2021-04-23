@@ -279,9 +279,10 @@ pybind11::list Wrap1::getAttackCollisionBounds() {
 
 pybind11::list Wrap1::getBoxSize(const std::string& animId) {
     auto* a = m_entity->GetComponent<IAnimator>();
-    auto* model = static_cast<SkModel*>(a->getModel());
+    auto bounds = a->getShape(animId)->getBounds().GetSize();
+    //auto* model = static_cast<SkModel*>(a->getModel());
 
-    auto bounds = model->getShape(animId)->getBounds().GetSize();
+    //auto bounds = model->getShape(animId)->getBounds().GetSize();
     pybind11::list l;
     l.append(bounds[0]);
     l.append(bounds[1]);

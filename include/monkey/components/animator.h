@@ -51,7 +51,7 @@ public:
     const FrameInfo* getFrameInfo();
     Event<Animator*> onFrameUpdate;
 	IShape* getShapeCast() override;
-
+	IShape* getShape(const std::string& animId) override;
 protected:
 
     // play animation forward

@@ -233,6 +233,11 @@ IShape * SkAnimator::getShapeCast() {
 	return shapeCastId->shape.get();
 }
 
+IShape* SkAnimator::getShape(const std::string& animId) {
+	auto anim = animId.empty() ? GetAnimation(): animId;
+	return m_model->getShape(anim);
+}
+
 void SkAnimator::applyPoseToJoints(const std::unordered_map<std::string, JointTransform> &currentPose,
                                    std::shared_ptr<Joint> joint, glm::mat4& parentTransform)
 {

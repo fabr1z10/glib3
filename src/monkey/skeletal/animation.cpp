@@ -4,11 +4,12 @@
 
 SkAnimation::SkAnimation(const ITab& t) {
 	m_loop = t.get<bool>("loop", true);
-	m_length = t.get<float>("length");
+	auto speedUp = t.get<float>("speed_up", 1.0f);
+	m_length = t.get<float>("length") * speedUp;
 
     int index = 0;
 	t.foreach("keyframes", [&] (const ITab& keyframe) {
-        auto t = keyframe.get<float>("t");
+        auto t = keyframe.get<float>("t") * speedUp;
         std::unordered_map<std::string, JointTransform> pose;
         // for each joint I need 7 numbers: x, y, z (translation), rot, ax, ay, az (rotation,
         // specified with axis and rotation in degrees)
@@ -32,8 +33,8 @@ SkAnimation::SkAnimation(const ITab& t) {
 
 	// attack boxes
     t.foreach("attack", [&] (const ITab& dict) {
-        auto start_time = dict.get<float>("start");
-        auto end_time = dict.get<float>("end");
+        auto start_time = dict.get<float>("start") * speedUp;
+        auto end_time = dict.get<float>("end") * speedUp;
         m_attacks.emplace_back(start_time, end_time);
     });
 }

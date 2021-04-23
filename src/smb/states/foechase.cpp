@@ -119,7 +119,8 @@ void FoeChase::Init(pybind11::dict& d) {
     m_inRange = false;
     //m_c->UpdateRaycastOrigins();
     // character will go towards player
-
+	float scale = m_entity->GetScale();
+	m_attackPos = scale * dynamic_cast<BoxedModel*>(m_animator->getModel())->getAttackDistance();
 
     //setDirection(m_left);
     computeDirection();
