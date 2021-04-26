@@ -5,6 +5,7 @@
 #include <monkey/components/multirenderer.h>
 #include <monkey/meshfactory.h>
 #include <glm/gtx/transform.hpp>
+#include <monkey/components/basicrenderer.h>
 
 SkCollider::SkCollider(const ITab& table) : ICollider(), m_shapeEntity(nullptr), m_shapeId(-1) {
     m_tag = table.get<int>("tag");
@@ -185,26 +186,31 @@ void SkCollider::Start() {
     // create debug mesh
     const auto& attackInfo = m_model->getAttackInfo();
     MeshFactory m(1.0f);
-    for (const auto& info : attackInfo) {
-        auto c = std::make_shared<Entity>();
-        m_entity->AddChild(c);
-        auto renderer = std::make_shared<MultiRenderer>();
-        auto model = m.createWireframe(info.second->shape.get(), glm::vec4(1.0f));// MeshFactory::CreateMesh(*(info.second->shape.get()));
-        //auto model = std::make_shared<BasicModel>(mesh);
-        renderer->addModel(model);
-        c->AddComponent(renderer);
-        m_colliderRenderers.push_back(renderer.get());
-    }
-    // m_shapeEntity = c.get();
-	auto collisionShapeEntity = std::make_shared<Entity>();
-	m_entity->AddChild(collisionShapeEntity);
-	auto renderer = std::make_shared<MultiRenderer>();
-	MeshFactory mf;
-	for (const auto &shape : m_model->getShapes()) {
-		auto model = mf.createWireframe(shape.get(), glm::vec4(1.0f));
-		renderer->addModel(model);
+	//auto collisionShapeEntity = std::make_shared<Entity>();
+	if (m_shapeEntity != nullptr) {
+		m_entity->Remove(m_shapeEntity);
+		m_shapeEntity = nullptr;
 	}
-	collisionShapeEntity->AddComponent(renderer);
+	auto boxEntity =std::make_shared<Entity>();
+	m_shapeEntity = boxEntity.get();
+	m_colliderRenderers.clear();
+    for (const auto& info : attackInfo) {
+    	auto entity = std::make_shared<Entity>();
+		auto model = m.createWireframe(info.second->shape.get(), glm::vec4(1.0f));// MeshFactory::CreateMesh(*(info.second->shape.get()));
+		auto renderer = std::make_shared<BasicRenderer>(model);
+		entity->AddComponent(renderer);
+		m_colliderRenderers.push_back(renderer.get());
+		boxEntity->AddChild(entity);
+    }
+    m_entity->AddChild(boxEntity);
+
+//	for (const auto &shape : m_model->getShapes()) {
+//		auto model = m.createWireframe(shape.get(), glm::vec4(1.0f));
+//		renderer->addModel(model);
+//	}
+//	collisionShapeEntity->AddComponent(renderer);
+//	m_entity->AddChild(collisionShapeEntity);
+//	collisionShapeEntity->AddComponent(renderer);
 	//m_colliderRenderer = renderer.get();
 
 //    if (m_shapeEntity == nullptr) {

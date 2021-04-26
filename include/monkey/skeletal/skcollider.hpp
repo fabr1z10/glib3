@@ -1,6 +1,7 @@
 #pragma once
 
 #include <monkey/components/icollider.h>
+#include <monkey/components/renderer.h>
 
 class SkModel;
 class SkAnimator;
@@ -39,7 +40,7 @@ private:
     int m_shapeId;
     SkAnimator* m_animator;
     Entity* m_shapeEntity;
-    std::vector<MultiRenderer*> m_colliderRenderers;
+    std::vector<Renderer*> m_colliderRenderers;
     SkRenderer* m_mainRenderer;
     SkModel* m_model;
     Bounds GetStaticBoundsI() const override;
