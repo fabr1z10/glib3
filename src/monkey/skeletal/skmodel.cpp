@@ -52,7 +52,7 @@ int SkModel::getShapeId(const std::string& animId) {
 
 
 void SkModel::addMesh(const std::string& id, const std::string& meshId, const std::string& parentMesh, glm::vec2 attachPoint,
-                      float z, float scale, int order) {
+                      float z, float scale, int order, glm::vec2 offset) {
 
     // assumption : one mesh, one joint
     //auto dict = pybind11::dict();
@@ -94,7 +94,7 @@ void SkModel::addMesh(const std::string& id, const std::string& meshId, const st
 	auto meshraw = Engine::get().GetAssetManager().getRaw(meshId);
 	std::cerr << meshraw->has("origin");
 	auto mesh = std::dynamic_pointer_cast<IMesh>(makeDynamicSkeletalMesh(*meshraw.get(), newJointId, parentJointId,
-    	z, scale, bindTransform, glm::vec2(0.0f)));
+    	z, scale, bindTransform, offset));
 
     DrawingBit bit;
     bit.mesh = mesh;
@@ -254,6 +254,7 @@ SkModel::SkModel(const ITab& main) : _nextJointId(0), m_jointCount(0) {
         auto meshId = mesh.get<std::string>("mesh");
         auto parent = mesh.get<std::string>("parent", "");
         auto scale = mesh.get<float>("scale", 1.0f);
+        auto offset = mesh.get<glm::vec2>("offset", glm::vec2(0.0f));
         auto z = mesh.get<float>("z", 0.0f);
         glm::vec2 attachPoint(0.0f);
         if (!parent.empty()) {
@@ -261,7 +262,7 @@ SkModel::SkModel(const ITab& main) : _nextJointId(0), m_jointCount(0) {
             attachPoint = m_meshes.at(parent)->getKeyPoint(keyPoint);
         }
         //auto sortingOrder = main["order"].as<int>(0);
-        addMesh(id, meshId, parent, attachPoint, z, scale, 0);
+        addMesh(id, meshId, parent, attachPoint, z, scale, 0, offset);
     });
 
     int ac = 0;
@@ -303,7 +304,9 @@ SkModel::SkModel(const ITab& main) : _nextJointId(0), m_jointCount(0) {
     	auto box = node.get<int>("box");
 		auto boneId = node.get<std::string>("joint");
 		auto pointName = node.get<std::string>("point");
+		float boneScale = m_js[m_meshToJointId[boneId]]->getScale();
 		auto size = node.get<std::string>("size");
+
 		/// ---
         const auto& animation = m_animations.at(anim);
         auto atimes = animation->getAttackTimes(box);
@@ -315,8 +318,9 @@ SkModel::SkModel(const ITab& main) : _nextJointId(0), m_jointCount(0) {
         Joint* joint = getJoint(boneId);
         auto transform = joint->getBindTransform();
         auto point = getKeyPoint(boneId, pointName);
-        auto transformedPoint = transform * glm::vec4(point,0.0f,1.0f);
-        auto dims = getKeyPoint(boneId, size);
+
+        auto transformedPoint = transform * glm::scale(glm::vec3(boneScale)) * glm::vec4(point,0.0f,1.0f);
+        auto dims = boneScale * getKeyPoint(boneId, size);
         abox->shape = std::make_shared<Rect>(dims[0], dims[1], glm::vec3(transformedPoint));
         auto tr0 = animation->getAnimTransform(abox->t0, this);
         auto boneTransform0 = tr0.at(boneId);

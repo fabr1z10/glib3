@@ -62,7 +62,8 @@ public:
     bool hasJoint (const std::string&);
 //    void attachMesh (const std::string& id, const std::string& meshId, const std::string& parentMesh, int parentJointId, float scale, int order,
 //					 glm::vec2 offset = glm::vec2(0.0f));
-    void addMesh (const std::string& id, const std::string& meshId, const std::string& parentMesh, glm::vec2 attachPoint, float z, float scale, int order);
+    void addMesh (const std::string& id, const std::string& meshId, const std::string& parentMesh,
+				  glm::vec2 attachPoint, float z, float scale, int order, glm::vec2 offset = glm::vec2(0.0f));
     //void setMesh (const std::string& jointId, const std::string& meshId, float scale, glm::vec2 offset = glm::vec2(0.0f), int order = 0);
     void setAnimation (const std::string& animId, const std::string& anim);
     void Draw (Shader*);

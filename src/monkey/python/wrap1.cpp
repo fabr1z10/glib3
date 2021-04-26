@@ -140,10 +140,10 @@ void Wrap1::setAnim(const std::string & animId) {
     a->SetAnimation(animId);
 }
 
-void Wrap1::setModel(const std::string& modelId) {
+void Wrap1::setModel(pybind11::object obj) {
     Renderer* r = m_entity->GetComponent<Renderer>();
     IAnimator* a = m_entity->GetComponent<IAnimator>();
-    auto model = Engine::get().GetAssetManager().GetModel(modelId);
+    auto model = Engine::get().GetAssetManager().getModel(obj);
     r->SetModel(model);
     a->setModel(model);
     r->Start();
@@ -289,7 +289,7 @@ pybind11::list Wrap1::getBoxSize(const std::string& animId) {
     return l;
 }
 
-pybind11::list Wrap1::getKeyPoint(const std::string &joint, const std::string &point) {
+pybind11::object Wrap1::getKeyPoint(const std::string &joint, const std::string &point) {
 	auto* a = m_entity->GetComponent<IAnimator>();
 	auto* model = static_cast<SkModel*>(a->getModel());
 	auto p = model->getKeyPointRestWorld(joint, point);
@@ -299,7 +299,7 @@ pybind11::list Wrap1::getKeyPoint(const std::string &joint, const std::string &p
 		l.append(p.second[1]);
 		return l;
 	}
-	return pybind11::none();
+	return pybind11::cast<pybind11::none>(Py_None);
 
 }
 

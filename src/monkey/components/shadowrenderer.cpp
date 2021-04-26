@@ -21,7 +21,7 @@ void ShadowRenderer::Update(double) {
 	//m_entity->SetLocalTransform(glm::translate(glm::vec3(20.0f, 0.0f, 0.0f)));
 	//m_entity->SetLocalTransform(glm::rotate(glm::radians<float>(-89.9f), glm::vec3(1.0f, 0.0f, 0.0f)));
 	m_entity->SetLocalTransform(
-			glm::translate(glm::vec3(0.0f, -pos.y/scale, -pos.y/scale)) *
+			//glm::translate(glm::vec3(0.0f, 0.0f,-pos.y/scale)) *
 			glm::scale(glm::vec3(1.0f, m_scaleLength, 1.0f)) *
 			glm::rotate(glm::radians<float>(m_angle*(flipx ? 1.0f : -1.0f)), glm::vec3(0.0f,1.0f,0.0f)) *
 			glm::rotate(glm::radians<float>(-89.9f), glm::vec3(1.0f,0.0f,0.0f)));
