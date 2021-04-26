@@ -22,6 +22,7 @@ struct Bounds {
     glm::vec3 GetSize() const;
     glm::vec3 GetCenter();
     glm::vec3 GetExtents();
+	Bounds intersect(const Bounds& other);
 
     bool isVoid () const;
     void Expand(float);

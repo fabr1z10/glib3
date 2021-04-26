@@ -314,7 +314,9 @@ ShapeCastHit SpatialHashingCollisionEngine::ShapeCast (IShape* shape, const glm:
                             // bounding boxes intersect, so let's make a proper collision test
                             auto report = m_intersector->intersect(shape, s, transform, t);
                             if (report.collide) {
+                            	Bounds bb = aabb.intersect(b);
                                 result.report = report;
+                                result.report.direction = glm::vec2(bb.GetCenter());
                                 result.entity = c;
                                 return result;
                             }

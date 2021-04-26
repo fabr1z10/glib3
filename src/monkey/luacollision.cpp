@@ -15,10 +15,10 @@ void LuaCollisionResponse::setOnStay(pybind11::function& ref) {
 
 void LuaCollisionResponse::onStart(Entity* e1, Entity* e2, const CollisionReport& report) {
     if (m_onEnter) {
-        glm::vec2 separationVector = report.direction * report.distance;
+        glm::vec2 collisionPoint = report.direction;
         auto obj1 = Wrap1::create(e1);
         auto obj2 = Wrap1::create(e2);
-        m_onEnter(obj1, obj2, separationVector.x, separationVector.y);
+        m_onEnter(obj1, obj2, collisionPoint.x, collisionPoint.y);
     }
 }
 

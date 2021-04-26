@@ -7,6 +7,16 @@ void Bounds::Translate(const glm::vec3 & disp) {
 
 }
 
+Bounds Bounds::intersect(const Bounds &other) {
+    Bounds b;
+    b.min.x = std::max(this->min.x, other.min.x);
+    b.min.y = std::max(this->min.y, other.min.y);
+    b.max.x = std::min(this->max.x, other.max.x);
+    b.max.y = std::min(this->max.y, other.max.y);
+    return b;
+
+}
+
 void Bounds::Transform(const glm::mat4& m) {
     glm::vec3 P[] = {
         glm::vec3(min.x, min.y, min.z),

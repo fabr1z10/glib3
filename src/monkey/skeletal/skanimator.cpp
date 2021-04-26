@@ -228,12 +228,20 @@ bool SkAnimator::IsComplete() const {
     return m_complete;
 }
 
-IShape * SkAnimator::getShapeCast() {
+std::shared_ptr<IShape> SkAnimator::getShapeCast() {
 	auto* shapeCastId = m_model->getShapeCastId(GetAnimation(), m_animationTime);
+
+
+
 	if (shapeCastId == nullptr) {
 		return nullptr;
 	}
-	return shapeCastId->shape.get();
+	glm::mat4 animTransform = m_model->getJoint(shapeCastId->boneId)->getAnimatedTransform();
+	auto bds= shapeCastId->shape->getBounds();
+	auto size = bds.GetSize();
+	auto center = animTransform * glm::vec4(bds.GetCenter(), 1.0f);
+	return std::make_shared<Rect>(size[0], size[1], center);
+	//return shapeCastId->shape.get();
 }
 
 IShape* SkAnimator::getShape(const std::string& animId) {

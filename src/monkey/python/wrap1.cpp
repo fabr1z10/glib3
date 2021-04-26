@@ -256,7 +256,7 @@ pybind11::list Wrap1::getCollisionBounds() {
 }
 pybind11::list Wrap1::getAttackCollisionBounds() {
 	auto* a = m_entity->GetComponent<IAnimator>();
-	auto * shape = a->getShapeCast();
+	auto shape = a->getShapeCast();
 //	auto* a = dynamic_cast<Animator*>(m_entity->GetComponent<IAnimator>());
 //	auto* model = static_cast<BoxedModel*>(a->getModel());
 //	auto bounds = model->getShapeCast(a->GetAnimation(), a->GetFrame())->getBounds();

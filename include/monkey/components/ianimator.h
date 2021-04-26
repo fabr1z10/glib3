@@ -11,7 +11,7 @@ public:
     IAnimator() : m_forward(true) {}
     std::string GetAnimation() const ;
     virtual void SetAnimation (const std::string& anim, bool forward = true) = 0;
-    virtual IShape* getShapeCast() = 0;
+    virtual std::shared_ptr<IShape> getShapeCast() = 0;
     virtual IShape* getShape(const std::string& anim = "");
     void resetAnimation();
     void SetInitialAnimation (const std::string& anim);

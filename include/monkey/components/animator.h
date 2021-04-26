@@ -50,7 +50,7 @@ public:
     std::type_index GetType() override;
     const FrameInfo* getFrameInfo();
     Event<Animator*> onFrameUpdate;
-	IShape* getShapeCast() override;
+	std::shared_ptr<IShape> getShapeCast() override;
 	IShape* getShape(const std::string& animId) override;
 protected:
 

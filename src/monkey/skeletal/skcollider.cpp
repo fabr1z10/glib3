@@ -285,6 +285,8 @@ void SkCollider::Update(double dt) {
     auto e = m_engine->ShapeCast(shape.get(), transform, m_castMask);
     if (e.report.collide) {
         std::cerr << "HIT!\n";
+        auto center = transform * glm::vec4(shape->getBounds().GetCenter(), 1.0f);
+        std::cerr << "center: "<< center.x << ", "<< center.y << "\n";
         auto rm = m_engine->GetResponseManager();
         if (rm == nullptr) {
             std::cerr << "no handler!\n";
