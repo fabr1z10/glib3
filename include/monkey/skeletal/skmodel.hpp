@@ -95,6 +95,7 @@ public:
     void resetShapes();
     glm::vec2 getKeyPoint(const std::string& joint, const std::string& pointId) const;
     std::pair<bool, glm::vec2> getKeyPointRestWorld(const std::string& joint, const std::string& pointId);
+    float getAttackDistance() const;
 private:
     std::unordered_map<std::string, unsigned> m_meshToJointId;
     unsigned _nextJointId;
@@ -106,6 +107,7 @@ private:
 
     std::shared_ptr<Joint> m_rootJoint;
     int m_jointCount;
+    float m_attackDistance;
 
     // create one mesh per texture!
 
@@ -160,4 +162,8 @@ inline bool SkModel::hasJoint(const std::string & id) {
 
 inline const std::unordered_map<std::string, CollisionBox> & SkModel::getBoxInfo() const {
     return m_boxInfo;
+}
+
+inline float SkModel::getAttackDistance() const {
+    return m_attackDistance;
 }

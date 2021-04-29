@@ -299,6 +299,7 @@ SkModel::SkModel(const ITab& main) : _nextJointId(0), m_jointCount(0) {
     	m_shapes.push_back(shape);
     	m_maxBounds.ExpandWith(shape->getBounds());
     });
+    m_attackDistance = 0.0f;
     main.foreach("attack_boxes", [&] (const ITab& node) {
 		auto anim = node.get<std::string>("anim");
     	auto box = node.get<int>("box");
@@ -329,8 +330,8 @@ SkModel::SkModel(const ITab& main) : _nextJointId(0), m_jointCount(0) {
         auto tsb = tb1.GetSize();
         abox->shapeTransformed = std::make_shared<Rect>(tsb[0], tsb[1], glm::vec3(tb1.min.x, tb1.min.y, 0.0f));
         m_attackTimes[anim] = abox;
-
-
+        //m_attackDistance = std::max(m_attackDistance, tb1.min.x);
+        m_attackDistance = 0.5f * (tb1.min.x+tb1.max.x);
 	});
 
 

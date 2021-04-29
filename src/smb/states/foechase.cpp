@@ -44,7 +44,8 @@ void FoeChase::AttachStateMachine(StateMachine * sm) {
     auto animator = sm->GetObject()->GetComponent<IAnimator>();
 
 	float scale = m_entity->GetScale();
-    m_attackPos = scale * dynamic_cast<BoxedModel*>(animator->getModel())->getAttackDistance();
+    m_attackPos = scale * m_entity->GetComponent<ICollider>()->getAttackDistance();
+    //m_attackPos = scale * dynamic_cast<BoxedModel*>(animator->getModel())->getAttackDistance();
 
 //    auto shapes = animator->getModel()->getAttackShapes();
 //    float am = -std::numeric_limits<float>::infinity();
@@ -120,7 +121,8 @@ void FoeChase::Init(pybind11::dict& d) {
     //m_c->UpdateRaycastOrigins();
     // character will go towards player
 	float scale = m_entity->GetScale();
-	m_attackPos = scale * dynamic_cast<BoxedModel*>(m_animator->getModel())->getAttackDistance();
+	//m_attackPos = scale * dynamic_cast<BoxedModel*>(m_animator->getModel())->getAttackDistance();
+    m_attackPos = scale * m_entity->GetComponent<ICollider>()->getAttackDistance();
 
     //setDirection(m_left);
     computeDirection();

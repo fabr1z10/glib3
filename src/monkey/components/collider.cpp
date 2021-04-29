@@ -43,7 +43,9 @@ void SimpleCollider::Start() {
 SimpleCollider::~SimpleCollider() {
 }
 
-
+float SimpleCollider::getAttackDistance() const {
+    throw;
+}
 
 void SimpleCollider::SetShape(std::shared_ptr<IShape> shape) {
     m_shape = shape;

@@ -34,7 +34,7 @@ public:
     Event<SimpleCollider*> onShapeChanged;
     void SetEnabled (bool);
     std::type_index GetType() override;
-
+    float getAttackDistance() const override;
 
 protected:
     int m_flag;

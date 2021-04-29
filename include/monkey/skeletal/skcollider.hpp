@@ -34,6 +34,8 @@ public:
     //void computeAttackBoxes();
     std::shared_ptr<IShape> getBox(const std::string& anim, float t, const std::vector<PointLocator>& pts,
                                   const std::vector<glm::vec2>& fixedPoints = std::vector<glm::vec2>());
+    float getAttackDistance() const override;
+
 private:
     void recalcShapesDebug();
     void updateShape();

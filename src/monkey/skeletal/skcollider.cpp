@@ -342,3 +342,7 @@ void SkCollider::Update(double dt) {
 std::type_index SkCollider::GetType() {
     return std::type_index(typeid(ICollider));
 }
+
+float SkCollider::getAttackDistance() const {
+    return m_model->getAttackDistance();
+}
