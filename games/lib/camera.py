@@ -3,6 +3,7 @@ class Camera:
         self.tag = tag
         self.viewport = viewport
         self.pos = (0, 0, 0)
+        self.bounds = None
 
 
 class OrthoCamera(Camera):

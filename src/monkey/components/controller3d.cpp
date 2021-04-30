@@ -20,6 +20,8 @@ Controller3D::Controller3D(const ITab & t) {
     auto size = t.get<glm::vec3>("size");
     // half sizes
     m_halfSize = 0.5f * size;
+	m_shift = t.get<glm::vec3>("shift", glm::vec3(0.0f));
+
 	m_maxClimbAngle = t.get<float>("maxClimbAngle");
 	m_maxDescendAngle = t.get<float>("maxDescendAngle");
 	m_skinWidth = t.get<float>("skinWidth", .015f);
@@ -32,6 +34,7 @@ Controller3D::Controller3D(const ITab & t) {
 }
 
 void Controller3D::Start() {
+	m_details.Reset();
     m_engine = Engine::get().GetRunner<ICollisionEngine>();
 	m_collision = Engine::get().GetRunner<ICollisionEngine>();
 

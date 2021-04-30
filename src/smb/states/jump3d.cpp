@@ -85,8 +85,8 @@ void Jump3D::Run(double dt) {
         targetVelocityZ = m_speed;
     }
     glm::vec3 delta = m_dynamics->step(dt, targetVelocityX, targetVelocityZ, m_accTimeAir);
-
     m_controller->Move(delta);
+    std::cerr << "y = " << m_entity->GetPosition().y << "\n";
     // UpdateAnimation();
 
 
