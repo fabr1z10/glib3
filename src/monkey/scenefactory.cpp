@@ -84,6 +84,7 @@
 #include <monkey/math/shapes3d/plane.h>
 #include <monkey/components/markov.h>
 #include <monkey/input/pytab.h>
+#include <monkey/collisionengine3d.h>
 
 
 namespace py = pybind11;
@@ -217,6 +218,7 @@ SceneFactory::SceneFactory() {
     add2<HotSpotManager> ("components.hotspotmanager");
     add2<Scheduler> ("runner.scheduler");
     add2<SpatialHashingCollisionEngine> ("runner.collisionengine");
+    add2<SpatialHashingCollisionEngine3D> ("runner.collisionengine3d");
     //add2<geom3D::CollisionEngine3D> ("runner.collisionengine3d");
     add2<DynamicWorldBuilder> ("runner.dynamicworld");
     add2<OrthographicCamera> ("cam.ortho");

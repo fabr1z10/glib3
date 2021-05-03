@@ -17,14 +17,25 @@ class CollisionResponse:
 
 
 class CollisionEngine:
-    def __init__(self, width: int, height: int, depth: int = 0, eps: float = 0.01):
+    def __init__(self, width: int, height: int, eps: float = 0.01):
         self.type = 'runner.collisionengine'
+        self.size = [width, height]
+        self.response = []
+        self.eps = eps
+
+    def add_response(self, tag1: int, tag2: int, response: CollisionResponse):
+        self.response.append({'tag1': tag1, 'tag2': tag2, 'response': response})
+
+class CollisionEngine3D:
+    def __init__(self, width: int, height: int, depth: int, eps: float = 0.01):
+        self.type = 'runner.collisionengine3d'
         self.size = [width, height, depth]
         self.response = []
         self.eps = eps
 
     def add_response(self, tag1: int, tag2: int, response: CollisionResponse):
         self.response.append({'tag1': tag1, 'tag2': tag2, 'response': response})
+
 
 
 class DynamicWorld:

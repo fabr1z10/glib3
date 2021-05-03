@@ -53,4 +53,14 @@ struct hash<glm::ivec3> {
     }
 };
 
+template<>
+struct hash<glm::ivec2> {
+	inline size_t operator()(const glm::ivec2& p) const {
+		size_t seed = 0;
+		::hash_combine(seed, p.x);
+		::hash_combine(seed, p.y);
+		return seed;
+	}
+};
+
 }

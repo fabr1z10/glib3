@@ -11,6 +11,9 @@
 #include <iostream>
 #include <monkey/math/geomalgo.h>
 #include <glm/gtx/vector_angle.hpp>
+#include <monkey/math/shapes3d/aabb.h>
+#include <monkey/meshfactory.h>
+#include <monkey/components/basicrenderer.h>
 
 using namespace glm;
 
@@ -20,7 +23,8 @@ Controller3D::Controller3D(const ITab & t) {
     auto size = t.get<glm::vec3>("size");
     // half sizes
     m_halfSize = 0.5f * size;
-	m_shift = t.get<glm::vec3>("shift", glm::vec3(0.0f));
+    m_shift = glm::vec3(0.0f, m_halfSize.y, 0.0f);
+	//m_shift = t.get<glm::vec3>("shift", glm::vec3(0.0f));
 
 	m_maxClimbAngle = t.get<float>("maxClimbAngle");
 	m_maxDescendAngle = t.get<float>("maxDescendAngle");
@@ -28,6 +32,7 @@ Controller3D::Controller3D(const ITab & t) {
 	m_maskUp = t.get<int>("maskUp");
 	m_maskDown = t.get<int>("maskDown");
 	m_platform = nullptr;
+	m_debug = t.get<bool>("debug", false);
 
 
 
@@ -40,6 +45,18 @@ void Controller3D::Start() {
 
 	if (m_engine == nullptr)
         GLIB_FAIL("Controller3D requires a collision engine running!");
+	if (m_debug) {
+		auto debugEntity = std::make_shared<Entity>();
+		auto shape = std::make_shared<AABB>(2.0f * m_halfSize, glm::vec3(-m_halfSize.x, 0.0f, -m_halfSize.z));
+		MeshFactory m;
+		auto model = m.createWireframe(shape.get(), glm::vec4(1.0f));
+		auto renderer = std::make_shared<BasicRenderer>(model);
+//        glm::vec4 color(1.0f, 0.0f, 0.0f, 1.0f);
+//        renderer->setMultColor(color);
+		debugEntity->AddComponent(renderer);
+		m_entity->AddChild(debugEntity);
+	}
+
 }
 
 void Controller3D::Begin() {
@@ -50,19 +67,33 @@ void Controller3D::CalculateRaySpacing() {
 }
 
 void Controller3D::UpdateRaycastOrigins() {
+	auto scale = m_entity->GetScale();
+	glm::vec3 pos = m_entity->GetPosition();
+
+	pos += scale * m_shift;
+	auto scaledHalfSize = scale * m_halfSize;
+
+	m_raycastOrigins.left = pos.x - scaledHalfSize.x;
+	m_raycastOrigins.right = pos.x + scaledHalfSize.x;
+
+	m_raycastOrigins.bottom = pos.y - scaledHalfSize.y;
+	m_raycastOrigins.top = pos.y + scaledHalfSize.y;
+
+	m_raycastOrigins.back = pos.z - scaledHalfSize.z;
+	m_raycastOrigins.front = pos.z + scaledHalfSize.z;
 }
 
 bool Controller3D::IsFalling(int x, int z) {
-    //glm::vec3 rayOrigin = m_entity->GetPosition();
-    glm::vec3 rayOrigin;
-    rayOrigin.x = (x == 0 ? m_raycastOrigins.xMid() : (x > 0 ? m_raycastOrigins.xRight() : m_raycastOrigins.xLeft()));
-    rayOrigin.z = (z == 0 ? m_raycastOrigins.zMid() : (z > 0 ? m_raycastOrigins.zFront() : m_raycastOrigins.zBack()));
-    rayOrigin.y = m_raycastOrigins.yBottom();
-
-    RayCastHit hit = m_engine->Raycast(rayOrigin, monkey::down, 5.0, 2);
-    if (!hit.collide)
-        return true;
-    return false;
+//    //glm::vec3 rayOrigin = m_entity->GetPosition();
+//    glm::vec3 rayOrigin;
+//    rayOrigin.x = (x == 0 ? m_raycastOrigins.xMid() : (x > 0 ? m_raycastOrigins.xRight() : m_raycastOrigins.xLeft()));
+//    rayOrigin.z = (z == 0 ? m_raycastOrigins.zMid() : (z > 0 ? m_raycastOrigins.zFront() : m_raycastOrigins.zBack()));
+//    rayOrigin.y = m_raycastOrigins.yBottom();
+//
+//    RayCastHit hit = m_engine->Raycast(rayOrigin, monkey::down, 5.0, 2);
+//    if (!hit.collide)
+//        return true;
+//    return false;
 }
 //bool Controller2D::IsFalling(int dir) {
 //    glm::vec2 rayOrigin = (dir == -1) ? m_raycastOrigins.bottomLeft : m_raycastOrigins.bottomRight;
@@ -76,7 +107,8 @@ bool Controller3D::IsFalling(int x, int z) {
 void Controller3D::Move(glm::vec3& dx) {
     float scale = m_entity->GetScale();
     if (dx != vec3(0.0f)) {
-        //UpdateRaycastOrigins();
+        UpdateRaycastOrigins();
+		m_details.Reset();
         //m_ppp.clear();
         bool movingHorizontally = !isEqual(dx.x, 0.0f) || !isEqual(dx.z, 0.0f);
         if (movingHorizontally)
@@ -219,21 +251,23 @@ void Controller3D::VerticalCollisions(glm::vec3& velocity) {
 
 	float velx = velocity.x * (m_entity->GetFlipX() ? -1.0f : 1.0f);
 	float velz = velocity.z;
-	//glm::vec2 pos = m_entity->GetPosition();
+	glm::vec3 pos = m_entity->GetPosition();
 	//vec2 r0 = pos + vec2(-m_halfSize[0], directionY > 0 ? m_halfSize[1] : -m_halfSize[1]);
-	auto pos = m_entity->GetPosition();
-	float dy = directionY > 0 ? m_halfSize[1] : -m_halfSize[1];
+	//auto pos = m_entity->GetPosition();
+	//auto scale = m_entity->GetScale();
+	//float dy = scale * (m_shift.y + (directionY > 0 ? m_halfSize[1] : -m_halfSize[1]));
 	std::array<glm::vec3, 4> raycastOrigins = {
-			pos + glm::vec3(-m_halfSize[0] + velx, dy, -m_halfSize[2] + velz),
-			pos + glm::vec3(-m_halfSize[0] + velx, dy, m_halfSize[2] + velz),
-			pos + glm::vec3(m_halfSize[0] + velx, dy, m_halfSize[2] + velz),
-			pos + glm::vec3(m_halfSize[0] + velx, dy, -m_halfSize[2] + velz)};
+			glm::vec3(m_raycastOrigins.left + velx, m_raycastOrigins.bottom, m_raycastOrigins.front + velz),
+			glm::vec3(m_raycastOrigins.right + velx, m_raycastOrigins.bottom,m_raycastOrigins.front + velz),
+			glm::vec3(m_raycastOrigins.left + velx, m_raycastOrigins.bottom, m_raycastOrigins.back + velz),
+			glm::vec3(m_raycastOrigins.right + velx, m_raycastOrigins.bottom,m_raycastOrigins.back + velz)};
 
 	for (const auto& r0 : raycastOrigins) {
 		int collMask = (directionY == -1 ? (m_maskDown) : m_maskUp);
 		RayCastHit hit = m_collision->Raycast(r0, monkey::up * directionY, rayLength, collMask);
 		if (hit.collide) {
 			velocity.y = (hit.length - m_skinWidth) * directionY;
+			rayLength = hit.length;
 			rayLength = hit.length;
 			if (m_details.climbingSlope) {
 				velocity.x = (velocity.y / tan(m_details.slopeAngle)) * sign(velocity.x);

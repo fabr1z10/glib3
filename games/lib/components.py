@@ -72,7 +72,7 @@ class Controller2D:
         self.debug = debug
 
 class Controller3D:
-    def __init__(self, mask_up: int, mask_down: int, max_climb_angle: float, max_descend_angle, size, shift = (0, 0, 0)):
+    def __init__(self, mask_up: int, mask_down: int, max_climb_angle: float, max_descend_angle, size, shift = (0, 0, 0), debug=False):
         self.type = 'components.controller3D'
         self.maxClimbAngle = max_climb_angle
         self.maxDescendAngle = max_descend_angle
@@ -80,6 +80,7 @@ class Controller3D:
         self.maskDown = mask_down
         self.size = size
         self.shift = shift
+        self.debug = debug
 
 class ControllerFlat:
     def __init__(self, mask: int, size, hor_rays : int = 4, vert_rays: int = 4):

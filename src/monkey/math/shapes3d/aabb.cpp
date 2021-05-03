@@ -3,6 +3,9 @@
 AABB::AABB(const ITab& t) : IShape(t) {
 	m_type = ShapeType::AABB;
 	m_size = t.get<glm::vec3>("size");
+	m_bounds.min = m_offset;
+	m_bounds.max = m_offset + m_size;
+
 }
 
 

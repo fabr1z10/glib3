@@ -2,6 +2,7 @@
 #include <iostream>
 #include <monkey/math/raycast2d.h>
 #include <monkey/luacollision.h>
+#include <monkey/math/raycast3d.h>
 
 namespace py = pybind11;
 
@@ -19,42 +20,11 @@ SpatialHashingCollisionEngine::~SpatialHashingCollisionEngine() {
 
 SpatialHashingCollisionEngine::SpatialHashingCollisionEngine(const ITab & table) : ICollisionEngine(table) {
 
-    m_size = table.get<glm::vec3>("size");
-    bool use2D = (m_size.z == 0.0f);
-    // if m_size.z == 0, this is a 2d collider
-
-
-    auto crm = std::make_unique<CollisionResponseManager>();
-    table.foreach("response", [&] (const ITab& p) {
-        auto tag0 = p.get<int>("tag1");
-        auto tag1 = p.get<int>("tag2");
-        //PyTable t(p[2].cast<py::object>());
-        auto l = std::make_unique<LuaCollisionResponse>();
-        auto response = p["response"];
-        if (response->has("on_enter")) {
-            auto f = response->get<py::function>("on_enter");
-            l->setOnEnter(f);
-        }
-        if (response->has("on_leave")) {
-            auto f = response->get<py::function>("on_leave");
-            l->setOnLeave(f);
-        }
-        if (response->has("on_stay")) {
-            auto f = response->get<py::function>("on_stay");
-            l->setOnStay(f);
-        }
-        crm->AddCollisionResponse(tag0, tag1, std::move(l));
-    });
-
-    SetResponseManager(std::move(crm));
+    m_size = table.get<glm::vec2>("size");
 
     // choose between 2d or 3d intersector
-	if (use2D) {
-		m_intersector = std::make_unique<Intersector2D>();
-		m_raycast = std::make_unique<RayCast2D>();
-	}
-    //m_intersector = std::make_unique<Intersector>();
-
+	m_intersector = std::make_unique<Intersector2D>();
+	m_raycast = std::make_unique<RayCast2D>();
 }
 
 void SpatialHashingCollisionEngine::Add(ICollider* c) {
@@ -95,9 +65,7 @@ void SpatialHashingCollisionEngine::Move(ICollider * c) {
             // if the entity is still in the same cell range, I still need to make them dirty
             for (int i = loc.first.x; i <= loc.second.x; ++i) {
                 for (int j = loc.first.y; j <= loc.second.y; ++j) {
-                    for (int k = loc.first.z; k <= loc.second.z; ++k) {
-                        m_cells[glm::ivec3(i, j, k)].dirty = true;
-                    }
+                    m_cells[glm::ivec2(i, j)].dirty = true;
                 }
             }
         }
@@ -115,11 +83,9 @@ void SpatialHashingCollisionEngine::PopCollider(ICollider* c, bool rmvPairs) {
         auto loc = it->second;
         for (int i = loc.first.x; i <= loc.second.x; ++i) {
             for (int j = loc.first.y; j <= loc.second.y; ++j) {
-                for (int k = loc.first.z; k <= loc.second.z; ++k) {
-                    auto &cell = m_cells[glm::ivec3(i, j, k)];
-                    cell.colliders.erase(c);
-                    cell.dirty = true;
-                }
+                auto &cell = m_cells[glm::ivec2(i, j)];
+                cell.colliders.erase(c);
+                cell.dirty = true;
             }
         }
     }
@@ -136,30 +102,24 @@ void SpatialHashingCollisionEngine::PopCollider(ICollider* c, bool rmvPairs) {
 }
 
 
-void SpatialHashingCollisionEngine::PushCollider(ICollider* c, glm::ivec3 m, glm::ivec3 M) {
+void SpatialHashingCollisionEngine::PushCollider(ICollider* c, glm::ivec2 m, glm::ivec2 M) {
     for (int i = m.x; i <= M.x; ++i) {
         for (int j = m.y; j <= M.y; ++j) {
-            for (int k = m.z; k <= M.z; ++k) {
-                auto &cell = m_cells[glm::ivec3(i, j, k)];
-                cell.colliders.insert(c);
-                cell.dirty = true;
-            }
+            auto &cell = m_cells[glm::ivec2(i, j)];
+            cell.colliders.insert(c);
+            cell.dirty = true;
         }
     }
     m_colliderLocations[c] = std::make_pair(m, M);
 }
 
-std::pair<glm::ivec3, glm::ivec3> SpatialHashingCollisionEngine::getLocation(const Bounds &b) {
-    glm::ivec3 min(0);
-    glm::ivec3 max(0);
+std::pair<glm::ivec2, glm::ivec2> SpatialHashingCollisionEngine::getLocation(const Bounds &b) {
+    glm::ivec2 min(0);
+    glm::ivec2 max(0);
     min.x = floor(b.min.x / m_size[0]);
     min.y = floor(b.min.y / m_size[1]);
     max.x = floor(b.max.x / m_size[0]);
     max.y = floor(b.max.y / m_size[1]);
-    if (m_3d) {
-        min.z = floor (b.min.z / m_size[2]);
-        max.z = floor (b.max.z / m_size[2]);
-    }
     return std::make_pair(min, max);
 }
 
@@ -186,7 +146,7 @@ void SpatialHashingCollisionEngine::Update(double dt) {
     // loop throught all dirty cells and do a pair-wise collision detection for each collider within the cell.
     std::unordered_map<std::pair<ICollider*, ICollider*>, CollisionInfo> currentlyCollidingPairs;
     //std::cout << "Running collision engine update...\n";
-    std::unordered_set<glm::ivec3> cellsExamined;
+    std::unordered_set<glm::ivec2> cellsExamined;
     //std::unordered_set<std::pair<Collider*, Collider*>> testedPairs;
     for (auto& c : m_cells) {
         auto& cell = c.second;
@@ -288,38 +248,36 @@ ShapeCastHit SpatialHashingCollisionEngine::ShapeCast (IShape* shape, const glm:
     auto loc = getLocation(aabb);
     for (int i = loc.first.x; i <= loc.second.x; ++i) {
         for (int j = loc.first.y; j <= loc.second.y; ++j) {
-            for (int k = loc.first.z; k <= loc.second.z; ++k) {
-                auto cell = m_cells.find(glm::vec3(i, j, k));
-                if (cell != m_cells.end()) {
-                    auto &colliders = cell->second.colliders;
-                    for (auto &c : colliders) {
-                        if (!c->isActive()) {
-                            continue;
-                        }
-                        int flag = c->GetCollisionFlag();
-                        int m = flag & mask;
-                        if (m == 0) {
-                            continue;
-                        }
-                        auto b = c->GetBounds();
-                        // perform a aabb testing
-                        if (!aabb.Intersects2D(b)) {
-                            continue;
-                        }
-                        auto *s = c->GetShape();
-                        if (s != nullptr) {
-                            const auto &t = c->GetObject()->GetWorldTransform();
-                            //auto s1 = s->transform(t);
-                            //auto s2 = shape->transform(transform);
-                            // bounding boxes intersect, so let's make a proper collision test
-                            auto report = m_intersector->intersect(shape, s, transform, t);
-                            if (report.collide) {
-                            	Bounds bb = aabb.intersect(b);
-                                result.report = report;
-                                result.report.direction = glm::vec2(bb.GetCenter());
-                                result.entity = c;
-                                return result;
-                            }
+            auto cell = m_cells.find(glm::vec2(i, j));
+            if (cell != m_cells.end()) {
+                auto &colliders = cell->second.colliders;
+                for (auto &c : colliders) {
+                    if (!c->isActive()) {
+                        continue;
+                    }
+                    int flag = c->GetCollisionFlag();
+                    int m = flag & mask;
+                    if (m == 0) {
+                        continue;
+                    }
+                    auto b = c->GetBounds();
+                    // perform a aabb testing
+                    if (!aabb.Intersects2D(b)) {
+                        continue;
+                    }
+                    auto *s = c->GetShape();
+                    if (s != nullptr) {
+                        const auto &t = c->GetObject()->GetWorldTransform();
+                        //auto s1 = s->transform(t);
+                        //auto s2 = shape->transform(transform);
+                        // bounding boxes intersect, so let's make a proper collision test
+                        auto report = m_intersector->intersect(shape, s, transform, t);
+                        if (report.collide) {
+                         	Bounds bb = aabb.intersect(b);
+                            result.report = report;
+                            result.report.direction = glm::vec2(bb.GetCenter());
+                            result.entity = c;
+                            return result;
                         }
                     }
                 }
@@ -338,11 +296,11 @@ RayCastHit SpatialHashingCollisionEngine::Raycast (glm::vec3 rayOrigin, glm::vec
     // initialize current cell
     int i = static_cast<int>(P.x / m_size.x);
     int j = static_cast<int>(P.y / m_size.y);
-    int k = (m_3d ? static_cast<int>(P.z / m_size.z) : 0);
+    //int k = (m_3d ? static_cast<int>(P.z / m_size.z) : 0);
 
     int n = (rayDir.x > 0 ? 1 : 0);
     int m = (rayDir.y > 0 ? 1 : 0);
-    int q = m_3d ? (rayDir.z > 0 ? 1 : 0) : 0;
+    //int q = m_3d ? (rayDir.z > 0 ? 1 : 0) : 0;
     // n = 0 <-> r_x = 0 <-> vertical line
     // m = 0 <-> r_y = 0 <-> horizontal line
     float l = 0.0f;
@@ -358,20 +316,17 @@ RayCastHit SpatialHashingCollisionEngine::Raycast (glm::vec3 rayOrigin, glm::vec
         // and what boundary you hit first (x, y or z)
         float tx = (rayDir.x == 0.0f) ? std::numeric_limits<float>::infinity() : ((i+n) * m_size.x - P.x) / rayDir.x;
         float ty = (rayDir.y == 0.0f) ? std::numeric_limits<float>::infinity() : ((j+m) * m_size.y - P.y) / rayDir.y;
-        float tz = (rayDir.z == 0.0f || !m_3d) ? std::numeric_limits<float>::infinity() : ((k+q) * m_size.z - P.z) / rayDir.z;
+        //float tz = (rayDir.z == 0.0f || !m_3d) ? std::numeric_limits<float>::infinity() : ((k+q) * m_size.z - P.z) / rayDir.z;
         float tm {0.0f};
         id = 0;
         jd = 0;
-        kd = 0;
-        if (tx <= ty && tx <= tz) {
+        //kd = 0;
+        if (tx <= ty) {
         	tm = tx;
         	id = rayDir.x > 0 ? 1 : -1;
-        } else if (ty <= tx && ty <= tz) {
+        } else {
         	tm = ty;
         	jd = rayDir.y > 0 ? 1 : -1;
-        } else {
-        	tm = tz;
-        	kd = rayDir.z > 0 ? 1 : -1;
         }
 
         // advance by tm
@@ -387,7 +342,7 @@ RayCastHit SpatialHashingCollisionEngine::Raycast (glm::vec3 rayOrigin, glm::vec
         }
 
         // get the colliders at the current cell
-        auto it = m_cells.find(glm::ivec3(i, j, k));
+        auto it = m_cells.find(glm::ivec2(i, j));
         Segment line (P, P1);
         auto lineBounds = line.getBounds();
         if (it != m_cells.end()) {
@@ -419,12 +374,6 @@ RayCastHit SpatialHashingCollisionEngine::Raycast (glm::vec3 rayOrigin, glm::vec
         // TODO move to next cell
         i += id;
         j += jd;
-        k += kd;
-//        if (t1 < t2) {
-//            i += (rayDir.x > 0 ? 1 : -1);
-//        } else {
-//            j += (rayDir.y > 0 ? 1 : -1);
-//        }
     }
 
     return out;

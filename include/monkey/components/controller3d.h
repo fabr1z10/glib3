@@ -29,42 +29,9 @@ inline void CollisionDetails3D::Reset() {
 }
 
 struct RaycastOrigins3D {
-
-    glm::vec3 bottomLeft, topRight;
-
-
-    float xLeft () const {
-        return bottomLeft.x;
-    }
-
-    float xRight () const {
-        return topRight.x;
-    }
-
-    float xMid () const {
-        return 0.5f * (bottomLeft.x + topRight.x);
-    }
-
-    float zBack () const {
-        return bottomLeft.z;
-    }
-
-    float zFront () const {
-        return topRight.z;
-    }
-
-    float zMid () const {
-        return 0.5f * (bottomLeft.z + topRight.z);
-    }
-
-    float yBottom () const {
-        return bottomLeft.y;
-    }
-
-    float yTop() const {
-        return topRight.y;
-    }
-
+	float left, right;
+	float bottom, top;
+	float front, back;
 };
 
 
@@ -127,6 +94,8 @@ private:
     float m_widthZ;
     float m_horXSpacing;
     float m_horZSpacing;
+	bool m_debug;
+
 };
 
 inline std::type_index Controller3D::GetType() {

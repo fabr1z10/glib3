@@ -7,11 +7,17 @@
 #include <monkey/collisionresponse.h>
 #include <monkey/math/intersect.h>
 #include <monkey/runner.h>
+#include "monkey/components/icollider.h"
+
+struct CollisionEngineCell {
+	bool dirty;
+	std::unordered_set<ICollider*> colliders;
+};
 
 class ICollisionEngine : public Runner {
 public:
     ICollisionEngine();
-    ICollisionEngine(const ITab& t) : Runner(t) {}
+    ICollisionEngine(const ITab& t);
     virtual void Add (ICollider*) = 0;
     virtual void Remove(ICollider*) = 0;
     virtual void Move(ICollider*) = 0;
