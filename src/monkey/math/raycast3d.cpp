@@ -34,30 +34,32 @@ RayCastHit RayCast3D::rayVsAABB(glm::vec3 O, glm::vec3 dir, IShape *aabb, const 
 
 	float inf = std::numeric_limits<float>::infinity();
 
-	float t1 = dir.x == 0.0f ? -inf : (bounds.min.x - O.x) / dir.x;
-	float t2 = dir.x == 0.0f ? inf : (bounds.max.x - O.x) / dir.x;
-	float t3 = dir.y == 0.0f ? -inf : (bounds.min.y - O.y) / dir.y;
-	float t4 = dir.y == 0.0f ? inf : (bounds.max.y - O.y) / dir.y;
-	float t5 = dir.z == 0.0f ? -inf : (bounds.min.z - O.z) / dir.z;
-	float t6 = dir.z == 0.0f ? inf : (bounds.max.z - O.z) / dir.z;
-	float tmin = std::max(std::max(std::min(t1, t2), std::min(t3, t4)), std::min(t5, t6));
-	float tmax = std::min(std::min(std::max(t1, t2), std::max(t3, t4)), std::max(t5, t6));
+	RayHit t1 {dir.x == 0.0f ? -inf : (bounds.min.x - O.x) / dir.x, glm::vec3(-1.0f, 0.0f, 0.0f)};					// left edge
+	RayHit t2 {dir.x == 0.0f ? inf : (bounds.max.x - O.x) / dir.x, glm::vec3(1.0f, 0.0f, 0.0f)};
+	RayHit t3 {dir.y == 0.0f ? -inf : (bounds.min.y - O.y) / dir.y, glm::vec3(0.0f, -1.0f, 0.0f)};
+	RayHit t4 {dir.y == 0.0f ? inf : (bounds.max.y - O.y) / dir.y, glm::vec3(0.0f, 1.0f, 0.0f)};
+	RayHit t5 {dir.z == 0.0f ? -inf : (bounds.min.z - O.z) / dir.z, glm::vec3(0.0f, 0.0f, -1.0f)};
+	RayHit t6 {dir.z == 0.0f ? inf : (bounds.max.z - O.z) / dir.z, glm::vec3(0.0f, 0.0f, 1.0f)};
+	RayHit tmin = std::max(std::max(std::min(t1, t2), std::min(t3, t4)), std::min(t5, t6));
+	RayHit tmax = std::min(std::min(std::max(t1, t2), std::max(t3, t4)), std::max(t5, t6));
 
 	// it tmax < 0, ray (line) is intersecting AABB, but whole AABB is behind us
-	if (tmax < 0) {
+	if (tmax.t < 0) {
 		return out;
 	}
 
 	// if tmin > tmax, ray doesn't intersect AABB
-	if (tmin > tmax) {
+	if (tmin.t > tmax.t) {
 		return out;
 	}
 
 	out.collide = true;
-	if (tmin < 0) {
-		out.length = tmax;
+	if (tmin.t < 0) {
+		out.normal = tmax.normal;
+		out.length = tmax.t;
 	} else {
-		out.length = tmin;
+		out.normal = tmin.normal;
+		out.length = tmin.t;
 	}
 	return out;
 

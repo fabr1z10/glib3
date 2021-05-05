@@ -2,6 +2,7 @@
 #include <iostream>
 #include <monkey/math/raycast3d.h>
 #include <monkey/luacollision.h>
+#include <monkey/math/shapes3d/segment3d.h>
 
 namespace py = pybind11;
 
@@ -356,7 +357,7 @@ RayCastHit SpatialHashingCollisionEngine3D::Raycast (glm::vec3 rayOrigin, glm::v
 
 		// get the colliders at the current cell
 		auto it = m_cells.find(glm::ivec3(i, j, k));
-		Segment line (P, P1);
+		Segment3D line (P, P1);
 		auto lineBounds = line.getBounds();
 		if (it != m_cells.end()) {
 			for (auto& c : it->second.colliders) {
@@ -368,7 +369,7 @@ RayCastHit SpatialHashingCollisionEngine3D::Raycast (glm::vec3 rayOrigin, glm::v
 
 				if (m != 0) {
 					auto shapeBounds = c->GetBounds();
-					if (lineBounds.Intersects2D(shapeBounds)) {
+					if (lineBounds.Intersects(shapeBounds)) {
 						const auto& t = c->GetObject()->GetWorldTransform();
 						//auto cshape = c->GetShape()->transform(t);
 						//auto report = m_intersector->intersect(&line, cshape.get());

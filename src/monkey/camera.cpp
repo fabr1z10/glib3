@@ -72,7 +72,8 @@ void Camera::SetProjectionMatrix() {
 void Camera::SetPosition(glm::vec3 eye, glm::vec3 dir, glm::vec3 up, bool alwaysUpdate) {
     eye.x = Clamp(eye.x, m_xMin, m_xMax);
     eye.y = Clamp(eye.y, m_yMin, m_yMax);
-    if (alwaysUpdate || !isEqual(eye.x, m_eye.x) || !isEqual(eye.y, m_eye.y)) {
+
+    if (alwaysUpdate || !isEqual(eye.x, m_eye.x) || !isEqual(eye.y, m_eye.y) || !isEqual(eye.z, m_eye.z)) {
         m_fwd = dir;
         m_up = up;
         m_eye = eye;

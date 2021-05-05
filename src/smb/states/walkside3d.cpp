@@ -38,6 +38,11 @@ void WalkSide3D::Run (double dt) {
         m_dynamics->m_velocity.y = 0.0f;
     }
 
+    if (m_controller->m_details.right || m_controller->m_details.left) {
+    	m_dynamics->m_velocity.x = 0.0f;
+
+    }
+
     bool left = m_input->isKeyDown(GLFW_KEY_LEFT);
     bool right = m_input->isKeyDown(GLFW_KEY_RIGHT);
     bool up = m_input->isKeyDown(GLFW_KEY_UP);
@@ -64,8 +69,10 @@ void WalkSide3D::Run (double dt) {
     if (up || down) {
         targetVelocityZ = (up ? -1.0f : 1.0f) * m_speed;
     }
-
     glm::vec3 delta =m_dynamics->step(dt, targetVelocityX, targetVelocityZ, m_acceleration);
+    if (left) {
+    	std::cerr << delta.z << " cas!\n";
+    }
     m_controller->Move(delta);
     //std::cerr << "new z = " << m_entity->GetPosition().z << "\n";
     //UpdateAnimation();

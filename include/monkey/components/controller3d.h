@@ -10,6 +10,7 @@ class PlatformComponent;
 struct CollisionDetails3D {
     bool above, below;
     bool left, right;
+    bool front, back;
 
     bool climbingSlope;
     bool descendingSlope;
@@ -21,6 +22,7 @@ struct CollisionDetails3D {
 inline void CollisionDetails3D::Reset() {
     above = below = false;
     left = right = false;
+    front = back  = false;
 
     climbingSlope = false;
     descendingSlope = false;

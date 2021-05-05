@@ -108,6 +108,12 @@ void Controller3D::Move(glm::vec3& dx) {
     float scale = m_entity->GetScale();
     if (dx != vec3(0.0f)) {
         UpdateRaycastOrigins();
+        if (m_raycastOrigins.left > 8.0f) {
+        	std::cerr << "AH\n";
+        }
+		if (m_raycastOrigins.right > 8.0f) {
+			std::cerr << "OH\n";
+		}
 		m_details.Reset();
         //m_ppp.clear();
         bool movingHorizontally = !isEqual(dx.x, 0.0f) || !isEqual(dx.z, 0.0f);
@@ -175,55 +181,108 @@ void Controller3D::Move(glm::vec3& dx) {
 // this will have x and z components
 void Controller3D::HorizontalCollisions(glm::vec3& vel) {
 	bool flipx = m_entity->GetFlipX();
-	bool facingLeft = (flipx && vel.x > 0) || (!flipx && vel.x < 0);
-	float directionX = facingLeft ? -1.0 : 1.0;
-	float rayLength = fabs(vel.x) + m_skinWidth;
-	auto pos = m_entity->GetPosition();
-	float dx = facingLeft ? -m_halfSize[0] : m_halfSize[0];
-	std::array<glm::vec3, 4> raycastOrigins = {
-			pos + glm::vec3(dx, -m_halfSize[1], -m_halfSize[2]),
-			pos + glm::vec3(dx, -m_halfSize[1], m_halfSize[2]),
-			pos + glm::vec3(dx, m_halfSize[1], -m_halfSize[2]),
-			pos + glm::vec3(dx, m_halfSize[1], m_halfSize[2])};
+	if (fabs(vel.x) > 0.0f) {
 
-	int i = 0;
-	// try first moving along X direction
-	for (const auto& r0 : raycastOrigins) {
+		bool facingLeft = (flipx && vel.x > 0) || (!flipx && vel.x < 0);
+		float directionX = facingLeft ? -1.0 : 1.0;
+		float rayLength = fabs(vel.x) + m_skinWidth;
+		auto pos = m_entity->GetPosition();
+		float dx = facingLeft ? -m_halfSize[0] : m_halfSize[0];
 
-		RayCastHit hit = m_collision->Raycast(r0, monkey::right * directionX, rayLength, 2 | 32);
-		if (hit.collide) {
-			float slopeAngle = angle(hit.normal, vec2(0, 1));
-			//std::cout << "SLOPE ANGLE = " << rad2deg*slopeAngle << std::endl;
-			if (i < 2 && (slopeAngle*rad2deg) <= m_maxClimbAngle) {
-				if (m_details.descendingSlope) {
-					m_details.descendingSlope = false;
-					// TODO vel = m_details.velocityOld;
+		int i = 0;
+		// try first moving along X direction
+		float x = facingLeft ? m_raycastOrigins.left : m_raycastOrigins.right;
+		std::array<glm::vec3, 2> raycastOrigins = {
+				glm::vec3(x, m_raycastOrigins.bottom, m_raycastOrigins.front),
+				glm::vec3(x, m_raycastOrigins.bottom, m_raycastOrigins.back)};
+
+		for (const auto &r0 : raycastOrigins) {
+			RayCastHit hit = m_collision->Raycast(r0, monkey::right * directionX, rayLength, 2 | 32);
+			if (hit.collide) {
+				float slopeAngle = glm::angle(hit.normal, glm::vec3(0.0f, 1.0f, 0.0f));
+				//std::cout << "SLOPE ANGLE = " << rad2deg*slopeAngle << std::endl;
+				if (slopeAngle * rad2deg <= m_maxClimbAngle) {
+					if (m_details.descendingSlope) {
+						m_details.descendingSlope = false;
+						// TODO vel = m_details.velocityOld;
+					}
+					float distanceToSlopeStart = 0;
+					if (slopeAngle != m_details.slopeAngleOld) {
+						distanceToSlopeStart = hit.length - m_skinWidth;
+						vel.x -= distanceToSlopeStart * directionX;
+					}
+					ClimbSlope(vel, slopeAngle);
+					vel.x += distanceToSlopeStart * directionX;
+
 				}
-				float distanceToSlopeStart = 0;
-				if (slopeAngle != m_details.slopeAngleOld) {
-					distanceToSlopeStart = hit.length - m_skinWidth;
-					vel.x -= distanceToSlopeStart * directionX;
-				}
-				ClimbSlope(vel, slopeAngle);
-				vel.x += distanceToSlopeStart * directionX;
 
+				if (!m_details.climbingSlope || (slopeAngle * rad2deg) > m_maxClimbAngle) {
+					//float newVelX = std::max(hit.length - m_skinWidth, 0.0f) * sign(vel.x);
+					//if (r0.x + newVelX > 8.0f) {
+				//		std::cerr << "AH!\n";
+				//	}
+					vel.x = std::max(hit.length - m_skinWidth, 0.0f) * sign(vel.x);
+					rayLength = hit.length;
+					if (m_details.climbingSlope) {
+						vel.y = tan(m_details.slopeAngle) * fabs(vel.x);
+					}
+					m_details.left = directionX == -1;
+					m_details.right = directionX == 1;
+				}
+				// this condition should go
+				//if (hit.object != nullptr) {
+				//	auto callback = m_wallCallback.find (hit.object->getCollisionResponseId());
+				//	if (callback != m_wallCallback.end())
+				//		callback->second->Run (m_target, hit.object, hit);
+				//}
 			}
+		}
+	}
 
-			if (!m_details.climbingSlope || (slopeAngle*rad2deg) > m_maxClimbAngle) {
-				vel.x = (hit.length - m_skinWidth) * sign(vel.x);
-				rayLength = hit.length;
-				if (m_details.climbingSlope) {
-					vel.y = tan(m_details.slopeAngle) * fabs(vel.x);
+	if (fabs(vel.z) > 0.0f) {
+		float z = vel.z > 0 ? m_raycastOrigins.front : m_raycastOrigins.back;
+		float directionZ = vel.z < 0 ? -1.0 : 1.0;
+		glm::vec3 dirZ (0.0f, 0.0f, vel.z > 0 ? 1.0f : -1.0f);
+		float dx = vel.x * (flipx ? -1.0f : 1.0f);
+		std::array<glm::vec3, 2> raycastOrigins = {
+				glm::vec3(m_raycastOrigins.left + dx, m_raycastOrigins.bottom, z),
+				glm::vec3(m_raycastOrigins.right + dx, m_raycastOrigins.bottom, z)};
+		float rayLength = fabs(vel.z) + m_skinWidth;
+		for (const auto &r0 : raycastOrigins) {
+			RayCastHit hit = m_collision->Raycast(r0, glm::vec3(0.0f, 0.0f, 1.0f) * directionZ, rayLength, 2 | 32);
+			if (hit.collide) {
+				float slopeAngle = glm::angle(hit.normal, glm::vec3(0.0f, 1.0f, 0.0f));
+				//std::cout << "SLOPE ANGLE = " << rad2deg*slopeAngle << std::endl;
+				if (slopeAngle * rad2deg <= m_maxClimbAngle) {
+					if (m_details.descendingSlope) {
+						m_details.descendingSlope = false;
+						// TODO vel = m_details.velocityOld;
+					}
+					float distanceToSlopeStart = 0;
+					if (slopeAngle != m_details.slopeAngleOld) {
+						distanceToSlopeStart = hit.length - m_skinWidth;
+						vel.z -= distanceToSlopeStart * directionZ;
+					}
+					ClimbSlope(vel, slopeAngle);
+					vel.z += distanceToSlopeStart * directionZ;
 				}
-				m_details.left = directionX == -1;
-				m_details.right = directionX == 1;
+
+				if (!m_details.climbingSlope || (slopeAngle * rad2deg) > m_maxClimbAngle) {
+					vel.z = std::max(hit.length - m_skinWidth, 0.0f) * sign(vel.z);
+					rayLength = hit.length;
+					if (m_details.climbingSlope) {
+						vel.y = tan(m_details.slopeAngle) * fabs(vel.z);
+					}
+					m_details.back = directionZ == -1;
+					m_details.front = directionZ == 1;
+				}
+				// this condition should go
+				//if (hit.object != nullptr) {
+				//	auto callback = m_wallCallback.find (hit.object->getCollisionResponseId());
+				//	if (callback != m_wallCallback.end())
+				//		callback->second->Run (m_target, hit.object, hit);
+				//}
 			}
-			// this condition should go
-			//if (hit.object != nullptr) {
-			//	auto callback = m_wallCallback.find (hit.object->getCollisionResponseId());
-			//	if (callback != m_wallCallback.end())
-			//		callback->second->Run (m_target, hit.object, hit);
-			//}
 		}
 	}
 
@@ -278,7 +337,10 @@ void Controller3D::VerticalCollisions(glm::vec3& velocity) {
 		}
 	}
 
-
+	if (m_details.below == 0) {
+		// leaving
+		std::cout << "leaving platform\n";
+	}
 
 
 //	if (m_details.climbingSlope) {

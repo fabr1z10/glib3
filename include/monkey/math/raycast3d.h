@@ -8,9 +8,16 @@
 class RayCast3D : public IRayCast {
 public:
 	RayCast3D();
-
 	RayCastHit run(glm::vec3 O, glm::vec3 dir, float length, IShape *shape, const glm::mat4 &t) override;
 private:
+	struct RayHit {
+		float t;
+		glm::vec3 normal;
+		bool operator< (const RayHit& other) const {
+			return t < other.t;
+		}
+	};
+
 	std::unordered_map<ShapeType, std::function<RayCastHit(glm::vec3, glm::vec3, IShape*, const glm::mat4&)>> m_raycasters;
 	RayCastHit rayVsAABB(glm::vec3 O, glm::vec3 dir, IShape* aabb, const glm::mat4&);
 	//float getT(float p, float o, float r);
