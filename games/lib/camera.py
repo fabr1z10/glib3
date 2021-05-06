@@ -4,6 +4,7 @@ class Camera:
         self.viewport = viewport
         self.pos = (0, 0, 0)
         self.bounds = None
+        self.boundsz = None
 
 
 class OrthoCamera(Camera):

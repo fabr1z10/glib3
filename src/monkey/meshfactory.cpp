@@ -204,6 +204,9 @@ void MeshFactory::drawCircle(IShape * s, glm::vec4 color, std::vector<VertexColo
 //    return std::make_shared<BasicModel>(mesh);
 //}
 
+std::shared_ptr<BasicModel> MeshFactory::createSolid(IShape* shape, glm::vec4 color) {
+	//auto st
+}
 
 
 std::shared_ptr<BasicModel> MeshFactory::createWireframe(IShape * shape, glm::vec4 color) {

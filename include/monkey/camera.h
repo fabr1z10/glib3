@@ -60,6 +60,7 @@ protected:
     // bounds
     float m_xMin, m_xMax;
     float m_yMin, m_yMax;
+    float m_zMin, m_zMax;
 };
 
 inline glm::vec3 Camera::getForward() const {

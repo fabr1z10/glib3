@@ -85,6 +85,16 @@ class FoeChase(lib.states.State):
         self.attacks = attacks
         self.probattack = prob_attack
 
+class FoeChase3D(lib.states.State):
+    def __init__(self, uid, walk_anim: str, idle_anim: str, speed: float, acceleration: float, attacks, prob_attack: float = 0):
+        super().__init__(uid)
+        self.type = 'state.foechase3d'
+        self.walkanim = walk_anim
+        self.idleanim = idle_anim
+        self.speed = speed
+        self.acceleration = acceleration
+        self.attacks = attacks
+        self.probattack = prob_attack
 
 class IsHit (lib.states.State):
     def __init__(self, uid,anim: str, acceleration: float, dist):

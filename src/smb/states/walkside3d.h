@@ -28,6 +28,7 @@ private:
 	Controller3D* m_controller;
 	Dynamics2D * m_dynamics;
 	InputMethod * m_input;
+	IAnimator* m_animator;
 	Entity * m_entity;
 
 	bool m_flipHorizontally;

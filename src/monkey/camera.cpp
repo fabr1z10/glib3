@@ -36,13 +36,17 @@ Camera::Camera(const ITab & t) : Ref(t) {
     m_fwd = t.get<glm::vec3>("direction", glm::vec3(0, 0, -1));
     m_up = t.get<glm::vec3>("up", glm::vec3(0, 1, 0));
     m_camViewport = t.get<glm::vec4>("viewport", glm::vec4(0.0f, 0.0f, Engine::get().GetDeviceSize()));
-	m_xMax = m_yMax = std::numeric_limits<float>::infinity();
-	m_xMin = m_yMin = -m_xMax;
+	m_xMax = m_yMax = m_zMax = std::numeric_limits<float>::infinity();
+	m_xMin = m_yMin = m_zMin = -m_xMax;
 	auto bounds = t.get<glm::vec4>("bounds", glm::vec4(0.0));
 	if (bounds != glm::vec4(0.0f)) {
 		SetBounds(bounds[0], bounds[2], bounds[1], bounds[3]);
 	}
-
+	if (t.has("boundsz")) {
+		auto bz = t.get<glm::vec2>("boundsz");
+		m_zMin = bz[0];
+		m_zMax = bz[1];
+	}
 
 }
 
@@ -72,6 +76,7 @@ void Camera::SetProjectionMatrix() {
 void Camera::SetPosition(glm::vec3 eye, glm::vec3 dir, glm::vec3 up, bool alwaysUpdate) {
     eye.x = Clamp(eye.x, m_xMin, m_xMax);
     eye.y = Clamp(eye.y, m_yMin, m_yMax);
+	eye.z = Clamp(eye.z, m_zMin, m_zMax);
 
     if (alwaysUpdate || !isEqual(eye.x, m_eye.x) || !isEqual(eye.y, m_eye.y) || !isEqual(eye.z, m_eye.z)) {
         m_fwd = dir;

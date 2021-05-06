@@ -18,6 +18,7 @@ class MeshFactory {
 public:
     MeshFactory (float z=0.0f);
     std::shared_ptr<BasicModel> createWireframe (IShape*, glm::vec4 color);
+    std::shared_ptr<BasicModel> createSolid (IShape*, glm::vec4 color);
 private:
 	float m_z;
     std::unordered_map<ShapeType, std::function<void(IShape*, glm::vec4, std::vector<VertexColor>&, std::vector<unsigned>&)>> m_plotters;

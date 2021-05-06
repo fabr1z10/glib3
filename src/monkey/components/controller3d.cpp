@@ -108,12 +108,6 @@ void Controller3D::Move(glm::vec3& dx) {
     float scale = m_entity->GetScale();
     if (dx != vec3(0.0f)) {
         UpdateRaycastOrigins();
-        if (m_raycastOrigins.left > 8.0f) {
-        	std::cerr << "AH\n";
-        }
-		if (m_raycastOrigins.right > 8.0f) {
-			std::cerr << "OH\n";
-		}
 		m_details.Reset();
         //m_ppp.clear();
         bool movingHorizontally = !isEqual(dx.x, 0.0f) || !isEqual(dx.z, 0.0f);

@@ -10,6 +10,7 @@ add_executable(smb
         states/jumpattack.cpp
         states/foewalk.cpp
         states/foechase.cpp
+        states/foechase3d.cpp
         states/foedead.cpp
         states/ishit.cpp
         states/bounce.cpp

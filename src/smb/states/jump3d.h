@@ -1,6 +1,7 @@
 #pragma once
 
 #include <monkey/components/statemachine.h>
+#include <monkey/components/ianimator.h>
 
 class Controller3D;
 class Dynamics2D;
@@ -19,6 +20,8 @@ private:
 	Controller3D* m_controller;
 	Dynamics2D * m_dynamics;
 	InputMethod * m_input;
+	IAnimator* m_animator;
+
 	Entity * m_entity;
 	float m_speed;
 	float m_accTimeAir;

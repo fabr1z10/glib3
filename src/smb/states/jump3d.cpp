@@ -30,6 +30,8 @@ void Jump3D::AttachStateMachine(StateMachine * sm) {
 	if (m_controller == nullptr) {
 		GLIB_FAIL("Platformer state requires a <Controller3D> component!");
 	}
+	m_animator = m_entity->GetComponent<IAnimator>();
+
 	m_dynamics = m_entity->GetComponent<Dynamics2D>();
 	if (m_dynamics == nullptr) {
 		GLIB_FAIL("Platormer state requires a <Dynamics2D> component!");
@@ -88,6 +90,6 @@ void Jump3D::Run(double dt) {
     m_controller->Move(delta);
     std::cerr << "y = " << m_entity->GetPosition().y << "\n";
     // UpdateAnimation();
-
+	m_animator->SetAnimation("jump");
 
 }
