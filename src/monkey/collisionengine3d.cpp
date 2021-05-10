@@ -272,7 +272,7 @@ ShapeCastHit SpatialHashingCollisionEngine3D::ShapeCast (IShape* shape, const gl
 						}
 						auto b = c->GetBounds();
 						// perform a aabb testing
-						if (!aabb.Intersects2D(b)) {
+						if (!aabb.Intersects(b)) {
 							continue;
 						}
 						auto *s = c->GetShape();

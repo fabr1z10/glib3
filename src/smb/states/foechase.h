@@ -9,7 +9,6 @@ struct AttackInfo {
 	std::string nextState;
 	float prob;
 	bool inRange;
-
 };
 /**
  * This enemy follows the player and places himself at a distance where he's able to attack him

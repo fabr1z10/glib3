@@ -1,5 +1,12 @@
 #include <monkey/math/shapes3d/aabb.h>
 
+AABB::AABB(glm::vec3 size, glm::vec3 offset) : IShape(offset), m_size(size)
+{
+    m_type = ShapeType::AABB;
+    m_bounds.min = m_offset;
+    m_bounds.max = m_offset + m_size;
+}
+
 AABB::AABB(const ITab& t) : IShape(t) {
 	m_type = ShapeType::AABB;
 	m_size = t.get<glm::vec3>("size");

@@ -14,21 +14,19 @@ FoeChase3D::FoeChase3D(const ITab& t) : State(t) {
 	m_speed = t.get<float>("speed");
 	m_acceleration = t.get<float>("acceleration");
 	float cumProb = 0.0f;
-//
-//	t.foreach("attacks", [&] (const ITab& dict) {
-//		auto state = dict.get<std::string>("state");
-//		auto prob = dict.get<float>("prob");
-//		auto inRange = dict.get<bool> ("in_range");
-//		cumProb += prob;
-//		m_attackMap.insert(std::make_pair(cumProb, m_attacks.size()));
-//		m_attacks.push_back( AttackInfo {state, prob, inRange});
-//	});
 
-	//m_attacks = t.get<std::vector<std::string>>("attacks");
+	t.foreach("attacks", [&] (const ITab& dict) {
+		auto state = dict.get<std::string>("state");
+		auto prob = dict.get<float>("prob");
+		auto inRange = dict.get<bool> ("in_range");
+		cumProb += prob;
+		m_attackMap.insert(std::make_pair(cumProb, m_attacks.size()));
+		m_attacks.push_back( AttackInfo {state, prob, inRange});
+	});
 }
 
 void FoeChase3D::AttachStateMachine(StateMachine * sm) {
-	//PlatformerState::AttachStateMachine(sm);
+	State::AttachStateMachine(sm);
 	m_entity = sm->GetObject();
 	m_animator = m_entity->GetComponent<IAnimator>();
 	m_controller = dynamic_cast<Controller3D*>(m_entity->GetComponent<IController>());
@@ -59,6 +57,19 @@ void FoeChase3D::Init(pybind11::dict& d) {
 
 
 
+bool FoeChase3D::randomAttack(glm::vec3 displacement) {
+    if (fabs(displacement.z) < 0.1f && fabs(displacement.x) <= m_attackPos + 0.1f) {
+        float u = Random::get().GetUniformReal(0.0f, 1.0f);
+        auto iter = m_attackMap.lower_bound(u);
+        if (iter != m_attackMap.end()) {
+            const auto &attack = m_attacks[iter->second];
+            m_sm->SetState(attack.nextState);
+            return true;
+        }
+    }
+    return false;
+}
+
 void FoeChase3D::Run(double dt) {
 	if (m_controller->grounded()) {
 		m_dynamics->m_velocity.y = 0.0f;
@@ -66,17 +77,45 @@ void FoeChase3D::Run(double dt) {
 		auto entityPos = m_entity->GetPosition();
 		float x0 = targetPos.x - m_attackPos;
 		float x1 = targetPos.x + m_attackPos;
-		glm::vec3 targetPoint(entityPos.x > targetPos.x ? x1 : x0, targetPos.y, targetPos.z);
-		float dist {0.0f};
+		bool rightOfPlayer = entityPos.x > targetPos.x;
+		glm::vec3 targetPoint(rightOfPlayer ? x1 : x0, targetPos.y, targetPos.z);
+        m_entity-> SetFlipX(rightOfPlayer);
+
+        // if we are within range, randomly attack
+
+
+
+
+        float dist {0.0f};
 		float eps = 0.1f;
 		m_inRange = false;
-		glm::vec3 displacement = glm::normalize(targetPoint - entityPos) * m_speed;
-		displacement.y = 0.0f;
-		std::cerr << glm::length(displacement) << "\n";
-		m_targetVelocityX = displacement.x;
-		m_targetVelocityZ = displacement.z;
-		glm::vec3 delta = m_dynamics->step(dt, m_targetVelocityX, m_targetVelocityZ, m_acceleration);
-		m_controller->Move(delta);
+		auto displacement = (targetPoint - entityPos);
+		displacement.y = 0;
+        if (randomAttack(displacement)) {
+            return;
+        }
+
+
+		if (glm::length(displacement) > 0.01f) {
+            m_animator->SetAnimation(m_walkAnim);
+
+            auto velocity = glm::normalize(displacement) * m_speed;
+
+            std::cerr << glm::length(displacement) << "\n";
+            m_targetVelocityX = velocity.x;
+            m_targetVelocityZ = velocity.z;
+            glm::vec3 delta = m_dynamics->step(dt, m_targetVelocityX, m_targetVelocityZ, m_acceleration);
+            if (fabs(delta.x) > fabs(displacement.x)) {
+                delta.x = sign(delta.x) * fabs(displacement.x);
+            }
+            if (fabs(delta.z) > fabs(displacement.z)) {
+                delta.z = sign(delta.z) * fabs(displacement.z);
+            }
+            m_controller->Move(delta);
+        } else {
+		    m_animator->SetAnimation(m_idleAnim);
+		    std::cerr << "viva\n";
+		}
 	} else {
 
 		m_animator->SetAnimation(m_walkAnim);

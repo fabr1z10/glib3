@@ -287,6 +287,8 @@ SceneFactory::SceneFactory() {
 std::shared_ptr<Entity> SceneFactory::Create(py::object& roomDef) {
 
     auto& engine = Engine::get();
+
+
 //
 //    // get current room
 //    const auto& table = engine.getMainTable();

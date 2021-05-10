@@ -7,7 +7,7 @@
 #include <glm/gtx/transform.hpp>
 #include <monkey/components/basicrenderer.h>
 
-SkCollider::SkCollider(const ITab& table) : ICollider(), m_shapeEntity(nullptr), m_shapeId(-1) {
+SkCollider::SkCollider(const ITab& table) : ICollider(table), m_shapeEntity(nullptr), m_shapeId(-1) {
     m_tag = table.get<int>("tag");
     m_flag = table.get<int>("flag");
     m_mask = table.get<int>("mask");
@@ -202,7 +202,16 @@ void SkCollider::Start() {
 		m_colliderRenderers.push_back(renderer.get());
 		boxEntity->AddChild(entity);
     }
+    for (const auto& shape : m_model->getShapes()) {
+        auto entity = std::make_shared<Entity>();
+        auto model = m.createWireframe(shape.get(), glm::vec4(1.0f));
+        auto renderer = std::make_shared<BasicRenderer>(model);
+        entity->AddComponent(renderer);
+        boxEntity->AddChild(entity);
+
+    }
     m_entity->AddChild(boxEntity);
+
 
 //	for (const auto &shape : m_model->getShapes()) {
 //		auto model = m.createWireframe(shape.get(), glm::vec4(1.0f));

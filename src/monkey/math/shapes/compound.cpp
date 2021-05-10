@@ -12,16 +12,16 @@ bool CompoundShape::isPointInside(glm::vec3 P) const {
 
 
 
-glm::vec2 CompoundShape::project(glm::vec2 axis, const glm::mat4& worldTransform) const {
-    glm::vec2 out (std::numeric_limits<float>::infinity(), -std::numeric_limits<float>::infinity());
-    for (const auto& s : m_shapes) {
-        auto p = s->project(axis, worldTransform);
-        out.x = std::min(out.x, p.x);
-        out.y = std::max(out.y, p.y);
-    }
-    return out;
-}
-//
+//glm::vec2 CompoundShape::project(glm::vec2 axis, const glm::mat4& worldTransform) const {
+//    glm::vec2 out (std::numeric_limits<float>::infinity(), -std::numeric_limits<float>::infinity());
+//    for (const auto& s : m_shapes) {
+//        auto p = s->project(axis, worldTransform);
+//        out.x = std::min(out.x, p.x);
+//        out.y = std::max(out.y, p.y);
+//    }
+//    return out;
+//}
+////
 //std::vector<glm::vec2> CompoundShape::getPoints() {
 //    return std::vector<glm::vec2>();
 //}
@@ -31,7 +31,7 @@ glm::vec2 CompoundShape::project(glm::vec2 axis, const glm::mat4& worldTransform
 //}
 //
 
-void CompoundShape::addShape (std::shared_ptr<Shape2D> s) {
+void CompoundShape::addShape (std::shared_ptr<IShape> s) {
     m_shapes.push_back(s);
     // update the bounding box
     auto b = s->getBounds();

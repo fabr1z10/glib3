@@ -1,6 +1,7 @@
 #pragma once
 
 #include <monkey/components/statemachine.h>
+#include "foechase.h"
 
 class Controller3D;
 class Dynamics2D;
@@ -36,6 +37,7 @@ public:
 	//void ResetAnimation() override {}
 	//void ModifyAnimation() override {}
 private:
+    bool randomAttack(glm::vec3);
 	float computeDirection();
 	void setDirection(int);
 	Controller3D* m_controller;
@@ -46,7 +48,7 @@ private:
 	std::string m_walkAnim;
 	std::string m_idleAnim;
 	//std::vector<std::string> m_attacks;
-	//std::vector<AttackInfo> m_attacks;
+	std::vector<AttackInfo> m_attacks;
 	std::map<float, int> m_attackMap;
 	float m_speed;
 	float m_acceleration;

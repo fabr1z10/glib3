@@ -85,6 +85,8 @@ public:
     std::string GetGameDirectory() const;
     ITab& getMainTable() const;
     float getTickMultiplier() const;
+    //void setDimensions(int);
+    //int getDimensions() const;
 private:
     pybind11::scoped_interpreter m_guard;
     std::unique_ptr<ITab> m_mainTable;
@@ -119,6 +121,7 @@ private:
     std::string m_gameDirectory;
     std::string m_title;
     float m_tickMultiplier;
+    //int m_dims;
 };
 
 inline ITab& Engine::getMainTable() const {
@@ -179,6 +182,13 @@ inline void Engine::Remove(int id) {
 inline void Engine::RemoveUnsafe(int id) {
     m_garbage.insert(std::make_pair(Monkey::get().Get<Entity>(id), nullptr));
 }
+
+//inline void Engine::setDimensions(int) {
+//    m_dims = dims;
+//}
+//inline int Engine::getDimensions() const {
+//    return m_dims;
+//}
 /*
 inline Shader* Engine::GetShader(ShaderType id) {
     auto it = m_shaders.find(id);

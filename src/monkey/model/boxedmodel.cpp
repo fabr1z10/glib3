@@ -3,6 +3,7 @@
 #include <monkey/math/shapes/compound.h>
 
 #include <iostream>
+#include <monkey/math/shapes3d/aabb.h>
 
 namespace py = pybind11;
 
@@ -20,6 +21,8 @@ std::vector<std::shared_ptr<IShape>> BoxedModel::getAttackShapes() const {
 
 BoxedModel::BoxedModel(const ITab& t) : SpriteModel(t) {
 
+    auto thickness = t.get<float>("thickness", 0.0f);
+    auto halfThickness = 0.5*thickness;
 	if (t.has("boxes")) {
 	    t.foreach("boxes", [&] (const ITab& box) {
             auto pp = box.as<std::vector<float>>();
@@ -28,13 +31,15 @@ BoxedModel::BoxedModel(const ITab& t) : SpriteModel(t) {
             if (nboxes == 1) {
                 float width = pp[2] - pp[0];
                 float height = pp[3] - pp[1];
-                shape = std::make_shared<Rect>(width, height, glm::vec3(pp[0], pp[1], 0.0f));
+                //shape = std::make_shared<Rect>(width, height, glm::vec3(pp[0], pp[1], 0.0f));
+                shape = std::make_shared<AABB>(glm::vec3(width, height, thickness), glm::vec3(pp[0], pp[1], -halfThickness));
             } else {
                 auto cs = std::make_shared<CompoundShape>();
                 for (int i = 0; i < pp.size(); i+= 4) {
                     float width = pp[i+2] - pp[i];
                     float height = pp[i+3] - pp[i+1];
-                    auto rect = std::make_shared<Rect>(width, height, glm::vec3(pp[i], pp[i+1], 0.0f));
+                    //auto rect = std::make_shared<Rect>(width, height, glm::vec3(pp[i], pp[i+1], 0.0f));
+                    auto rect = std::make_shared<AABB>(glm::vec3(width, height, thickness), glm::vec3(pp[i], pp[i+1], -halfThickness));
                     cs->addShape(rect);
                 }
                 shape = cs;
@@ -64,7 +69,7 @@ BoxedModel::BoxedModel(const ITab& t) : SpriteModel(t) {
                 this->setFrameShape(animId, frameId, box);
             }
             if (attack != -1) {
-                isAttackingAnim = true;m_shapes[attack]->getBounds().max.x;
+                isAttackingAnim = true;
                 attackPos = std::max(attackPos, m_shapes[attack]->getBounds().max.x);
                 this->setShapeCast(animId, frameId, attack);
             }

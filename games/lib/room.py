@@ -10,7 +10,7 @@ class Room:
         self.ref = {}
         self.engines = []
         self.init = []
-
+        self.dims = 2
         # collection of entities
         self.scene = []
 

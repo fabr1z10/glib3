@@ -6,6 +6,7 @@
 #include <glm/gtx/transform.hpp>
 #include <monkey/input/pytab.h>
 #include <monkey/factories/dynamicassets.h>
+#include <monkey/math/shapes3d/aabb.h>
 
 ShaderType SkModel::GetShaderType() const {
     return SKELETAL_SHADER;
@@ -292,10 +293,12 @@ SkModel::SkModel(const ITab& main) : _nextJointId(0), m_jointCount(0) {
     computeOffset();
 
     // ################## read boxes
+    auto thickness = main.get<float>("thickness", 0.0f);
+    auto half_thickness = 0.5f * thickness;
     main.foreach("boxes", [&] (const std::string& anim, const ITab& node) {
     	auto size = node.as<glm::vec2>();
     	m_animToShape[anim] = m_shapes.size();
-    	auto shape = std::make_shared<Rect>(size.x, size.y, glm::vec3(-0.5f*size.x, 0.0f, 0.0f));
+    	auto shape = std::make_shared<AABB>(glm::vec3(size.x, size.y, thickness), glm::vec3(-0.5f*size.x, 0.0f, -half_thickness));
     	m_shapes.push_back(shape);
     	m_maxBounds.ExpandWith(shape->getBounds());
     });
@@ -322,13 +325,15 @@ SkModel::SkModel(const ITab& main) : _nextJointId(0), m_jointCount(0) {
 
         auto transformedPoint = transform * glm::scale(glm::vec3(boneScale)) * glm::vec4(point,0.0f,1.0f);
         auto dims = boneScale * getKeyPoint(boneId, size);
-        abox->shape = std::make_shared<Rect>(dims[0], dims[1], glm::vec3(transformedPoint));
+        //abox->shape = std::make_shared<Rect>(dims[0], dims[1], glm::vec3(transformedPoint));
+        transformedPoint.z = -half_thickness;
+        abox->shape = std::make_shared<AABB>(glm::vec3(dims[0], dims[1], thickness), glm::vec3(transformedPoint));
         auto tr0 = animation->getAnimTransform(abox->t0, this);
         auto boneTransform0 = tr0.at(boneId);
         auto tb1 = abox->shape->getBounds();
         tb1.Transform(boneTransform0);
         auto tsb = tb1.GetSize();
-        abox->shapeTransformed = std::make_shared<Rect>(tsb[0], tsb[1], glm::vec3(tb1.min.x, tb1.min.y, 0.0f));
+        abox->shapeTransformed = std::make_shared<AABB>(glm::vec3(tsb[0], tsb[1], thickness), glm::vec3(tb1.min.x, tb1.min.y, -half_thickness));
         m_attackTimes[anim] = abox;
         //m_attackDistance = std::max(m_attackDistance, tb1.min.x);
         m_attackDistance = 0.5f * (tb1.min.x+tb1.max.x);
