@@ -186,11 +186,11 @@ void HotSpotManager::CursorPosCallback(GLFWwindow*, double x, double y) {
 
 }
 
-std::string HotSpotManager::toString() {
-    std::stringstream stream;
-    stream << "[HotSpotManager](tag = " << m_tag << ")";
-    return stream.str();
-}
+//std::string HotSpotManager::toString() {
+//    std::stringstream stream;
+//    stream << "[HotSpotManager](tag = " << m_tag << ")";
+//    return stream.str();
+//}
 
 //void HotSpotGroup::InitCamera() {
 //    m_cam = Engine::get().GetRef<OrthographicCamera>(m_camId);

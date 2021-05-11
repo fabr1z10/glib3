@@ -5,7 +5,7 @@
 #include <monkey/components/renderer.h>
 #include <monkey/yaml.h>
 
-class SpriteModel : public IModel {
+class __attribute__ ((visibility ("default"))) SpriteModel : public IModel {
 public:
     explicit SpriteModel (std::shared_ptr<SpriteMesh> mesh) : m_mesh(mesh) {
 

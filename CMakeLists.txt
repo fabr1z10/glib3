@@ -13,7 +13,7 @@ set(BIN_DIR ${PROJECT_DIR}/bin)
 set(LIB_DIR ${PROJECT_DIR}/lib)
 set(INCLUDE_DIR ${PROJECT_DIR}/include)
 set(SRC_DIR ${PROJECT_DIR}/src)
-set(PYBIND_INCLUDE_DIR ${PROJECT_DIR}/pybind11/include)
+set(PYBIND_INCLUDE_DIR ${PROJECT_DIR}/include/py/include)
 
 set(CMAKE_CXX_STANDARD 17)
 #set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fpic")
@@ -35,6 +35,8 @@ find_package(glm REQUIRED)
 find_package(Freetype REQUIRED)
 find_package(PNG REQUIRED)
 find_package(JPEG REQUIRED)
+find_package(yaml-cpp REQUIRED)
+find_package(ASSIMP REQUIRED)
 #find_package(Lua REQUIRED)
 find_package(Python COMPONENTS Interpreter Development REQUIRED)
 
@@ -58,10 +60,12 @@ configure_file (
 )
 
 # source directory
-add_subdirectory(pybind11)
+add_subdirectory(include/py)
 add_subdirectory(src/alglib)
 add_subdirectory(src/monkey)
-add_subdirectory(src/scumm)
-add_subdirectory(src/smb)
+#add_subdirectory(src/scumm)
+#add_subdirectory(src/smb)
+add_subdirectory(src/platformer)
 add_subdirectory(src/prova)
+add_subdirectory(src/mogo)
 

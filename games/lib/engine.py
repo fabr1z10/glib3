@@ -149,6 +149,7 @@ class Engine:
         exit(1)
 
     shaders = []
+    libs = []
     device_size = []
     window_size = []
     frame_time = 0.1

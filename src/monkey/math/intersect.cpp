@@ -8,6 +8,34 @@
 #include <monkey/math/algo/geometry.h>
 
 
+CollisionReport AABB2DIntersector::intersect(IShape *s1, IShape *s2, const glm::mat4 &t1, const glm::mat4 &t2) {
+	CollisionReport report;
+	auto b1 = s1->getBounds();
+	b1.Transform(t1);
+	auto b2 = s2->getBounds();
+	b2.Transform(t2);
+	report.collide = b1.Intersects2D(b2);
+	return report;
+}
+
+CollisionReport AABB3DIntersector::intersect(IShape *s1, IShape *s2, const glm::mat4 &t1, const glm::mat4 &t2) {
+	CollisionReport report;
+	auto b1 = s1->getBounds();
+	b1.Transform(t1);
+	auto b2 = s2->getBounds();
+	b2.Transform(t2);
+	report.collide = b1.Intersects(b2);
+	return report;
+
+}
+
+Intersector3D::Intersector3D() {
+	m_func[std::make_pair(ShapeType::AABB, ShapeType::AABB)] =
+			std::make_unique<AABB3DIntersector>();
+	m_func[std::make_pair(ShapeType::AABB, ShapeType::COMPOUND)] =
+			std::make_unique<CompoundIntersector>(this);
+}
+
 Intersector2D::Intersector2D() {
 
     m_func[std::make_pair(ShapeType::SEGMENT, ShapeType::SEGMENT)] =
@@ -16,6 +44,8 @@ Intersector2D::Intersector2D() {
             std::make_unique<Intersector<IConvexPolygon, IConvexPolygon, SAT>>();
     m_func[std::make_pair(ShapeType::RECT, ShapeType::RECT)] =
             std::make_unique<Intersector<IConvexPolygon, IConvexPolygon, SAT>>();
+
+
     m_func[std::make_pair(ShapeType::SEGMENT, ShapeType::CONVEXPOLY)] =
             std::make_unique<Intersector<IConvexPolygon, IConvexPolygon, SAT>>();
     m_func[std::make_pair(ShapeType::RECT, ShapeType::CONVEXPOLY)] =
@@ -35,7 +65,8 @@ Intersector2D::Intersector2D() {
 
 	m_func[std::make_pair(ShapeType::RECT, ShapeType::COMPOUND)] =
 			std::make_unique<CompoundIntersector>(this);
-
+	m_func[std::make_pair(ShapeType::AABB, ShapeType::AABB)] =
+			std::make_unique<AABB2DIntersector>();
 
 }
 
@@ -60,7 +91,27 @@ CollisionReport Intersector2D::intersect(IShape * s1, IShape *s2, const glm::mat
     }
     return CollisionReport();
 }
+CollisionReport Intersector3D::intersect(IShape * s1, IShape *s2, const glm::mat4& t1, const glm::mat4& t2) {
 
+	if (s1 == nullptr || s2 == nullptr) {
+		return CollisionReport();
+	}
+	auto it = m_func.find (std::make_pair(s1->getShapeType(), s2->getShapeType()));
+	if (it == m_func.end()) {
+		it = m_func.find (std::make_pair(s2->getShapeType(), s1->getShapeType()));
+		if (it == m_func.end()) {
+			std::cout << "Don't have a routine to intersect shapes\n";
+		} else {
+			auto report = it->second->intersect(s2, s1, t2, t1);
+			report.direction *= -1.0f;
+			return report;
+		}
+
+	} else {
+		return it->second->intersect(s1, s2, t1, t2);
+	}
+	return CollisionReport();
+}
 //CollisionReport ConvexPolygonIntersectionFunction::operator()(Shape *s1, Shape *s2, const glm::mat4 &t1, const glm::mat4 &t2)
 //{
 //    // in order to perform a collision test between two convex shapes, we will leverage the SAT

@@ -440,8 +440,8 @@ void Entity::setOnMoveEnabled (bool value) {
 
 }
 
-std::string Entity::toString() {
-    std::stringstream stream;
-    stream << "[Entity](tag = " << m_tag << ", parent = " << (m_parent == nullptr ? "<root>" : std::to_string(m_parent->GetId())) << ")";
-    return stream.str();
-}
+//std::string Entity::toString() {
+//    std::stringstream stream;
+//    stream << "[Entity](tag = " << m_tag << ", parent = " << (m_parent == nullptr ? "<root>" : std::to_string(m_parent->GetId())) << ")";
+//    return stream.str();
+//}

@@ -35,7 +35,7 @@ struct RaycastOrigins {
 };
 
 
-class Controller2D : public IController {
+class __attribute__ ((visibility ("default"))) Controller2D : public IController {
 public:
 	Controller2D(
 			float maxClimbAngle,

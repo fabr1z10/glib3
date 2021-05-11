@@ -3,7 +3,7 @@
 #include <monkey/itable.h>
 #include <pybind11/pybind11.h>
 
-class PyTab : public ITab {
+class __attribute__ ((visibility ("default"))) PyTab : public ITab {
 public:
 	PyTab();
     //explicit PyTab(pybind11::object obj);

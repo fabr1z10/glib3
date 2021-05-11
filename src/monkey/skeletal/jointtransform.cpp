@@ -1,5 +1,3 @@
-#define GLM_ENABLE_EXPERIMENTAL
-
 #include <monkey/skeletal/jointtransform.hpp>
 #include <glm/gtx/transform.hpp>
 

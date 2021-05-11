@@ -11,7 +11,7 @@ public:
 };
 
 
-class State : public Ref {
+class __attribute__ ((visibility ("default"))) State : public Ref {
 public:
     State() {}
     State(const ITab&);
@@ -42,7 +42,7 @@ inline std::string State::getId() const {
  states, of which only one is active at any given time. It provides methods
  to get the current state, and change the state to a new one.
  */
-class StateMachine : public Component {
+class __attribute__ ((visibility ("default"))) StateMachine : public Component {
 public:
     StateMachine() : m_currentState(nullptr), Component() {}
     StateMachine(const std::string& initialState) : m_initialState(initialState), m_currentState(nullptr) {}

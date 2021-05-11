@@ -5,7 +5,7 @@
 #include <monkey/engine.h>
 #include <monkey/python/wrap1.h>
 
-class PyEngine {
+class __attribute__ ((visibility ("default"))) PyEngine {
 public:
     PyEngine() : m_monkey(nullptr) {}
     PyEngine(Monkey* m, Engine* e) : m_monkey(m), m_engine(e) {}

@@ -4,7 +4,7 @@
 #include <random>
 #include <memory>
 
-class Random : public Singleton<Random> {
+class __attribute__ ((visibility ("default"))) Random : public Singleton<Random> {
 private:
     friend class Singleton<Random>;
     Random();

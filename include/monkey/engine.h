@@ -21,7 +21,7 @@
 class SceneFactory;
 class PyTable;
 
-class Engine : public Singleton<Engine> {
+class __attribute__ ((visibility ("default"))) Engine : public Singleton<Engine> {
 public:
     ~Engine();
     void init(const std::string&);

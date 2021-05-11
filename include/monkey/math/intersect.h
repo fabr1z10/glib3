@@ -57,6 +57,16 @@ private:
 	IIntersector* m_main;
 };
 
+class AABB2DIntersector : public IIntersector {
+public:
+	CollisionReport intersect(IShape* s1, IShape* s2, const glm::mat4& t1, const glm::mat4& t2) override;
+};
+
+class AABB3DIntersector : public IIntersector {
+public:
+	CollisionReport intersect(IShape* s1, IShape* s2, const glm::mat4& t1, const glm::mat4& t2) override;
+};
+
 class Intersector2D : public IIntersector {
 public:
     Intersector2D();
@@ -64,6 +74,16 @@ public:
 private:
     std::unordered_map<std::pair<ShapeType, ShapeType>, std::unique_ptr<IIntersector> > m_func;
 };
+
+
+class Intersector3D : public IIntersector {
+public:
+	Intersector3D();
+	CollisionReport intersect(IShape* shape1, IShape* shape2, const glm::mat4&, const glm::mat4&) override;
+private:
+	std::unordered_map<std::pair<ShapeType, ShapeType>, std::unique_ptr<IIntersector> > m_func;
+};
+
 //
 //
 //class ConvexPolygonIntersectionFunction : public IntersectionFunction{

@@ -7,7 +7,7 @@
 #include <pybind11/stl.h>
 #include <glm/glm.hpp>
 
-class ITab {
+class __attribute__ ((visibility ("default"))) ITab {
 public:
 
     template<typename T>

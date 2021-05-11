@@ -8,7 +8,7 @@
 #include <memory>
 
 
-class Ref : public Object {
+class __attribute__ ((visibility ("default"))) Ref : public Object {
 public:
     Ref();
     Ref(const Ref&);
@@ -18,7 +18,7 @@ public:
     void SetTag(const std::string&);
     int GetId() const;
     static void dump ();
-    virtual std::string toString();
+    //virtual std::string toString();
     // bool IsAlive(int);
     virtual void setActive(bool);
     bool isActive() const;

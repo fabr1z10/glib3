@@ -22,6 +22,7 @@ SpatialHashingCollisionEngine3D::SpatialHashingCollisionEngine3D(const ITab & ta
 
 	m_size = table.get<glm::vec3>("size");
 	// choose between 2d or 3d intersector
+	m_intersector = std::make_unique<Intersector3D>();
 	m_raycast = std::make_unique<RayCast3D>();
 
 }

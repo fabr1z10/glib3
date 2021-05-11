@@ -9,7 +9,7 @@
 // complete task is removed from the active tasks and all its children are examined. Each child
 // checks if all its parents are complete. If so, the child is added to the active set. When the
 // active set is empty, the script is itself complete.
-class Script {
+class __attribute__ ((visibility ("default"))) Script {
 public:
     Script();
     Script(const ITab&);

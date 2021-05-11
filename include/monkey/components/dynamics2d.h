@@ -4,7 +4,7 @@
 #include <glm/glm.hpp>
 
 // properties for dynamics
-class Dynamics2D : public Component {
+class __attribute__ ((visibility ("default"))) Dynamics2D : public Component {
 public:
     Dynamics2D(float gravity);
     Dynamics2D(const ITab&);

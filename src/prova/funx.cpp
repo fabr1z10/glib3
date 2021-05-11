@@ -1,9 +1,6 @@
 #include "example.h"
-#include <monkey/monkey.h>
 #include <monkey/engine.h>
 #include <monkey/entity.h>
-#include <monkey/script.h>
-#include <monkey/entities/textview.h>
 #include <monkey/input/pytab.h>
 
 Wrap1 get(const std::string & tag) {

@@ -55,7 +55,7 @@
 
 
 
-class AssetManager {
+class __attribute__ ((visibility ("default"))) AssetManager {
 public:
     AssetManager();
     void Init();

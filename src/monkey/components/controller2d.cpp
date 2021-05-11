@@ -1,5 +1,3 @@
-#define GLM_ENABLE_EXPERIMENTAL
-
 #include <monkey/components/controller2d.h>
 #include <glm/gtx/vector_angle.hpp>
 #include <monkey/error.h>

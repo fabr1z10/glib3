@@ -1,4 +1,4 @@
-#define GLM_ENABLE_EXPERIMENTAL
+//##define GLM_ENABLE_EXPERIMENTAL
 
 #include <monkey/components/controller3d.h>
 #include <glm/gtx/vector_angle.hpp>

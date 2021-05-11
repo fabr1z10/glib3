@@ -1,11 +1,14 @@
 #include <monkey/components/shadowrenderer.h>
 #include <monkey/entity.h>
 #include <glm/gtx/transform.hpp>
+#include <glm/gtx/transform2.hpp>
 
 ShadowRenderer::ShadowRenderer(const ITab& t) : Renderer(t) {
 
 	m_angle = t.get<float>("angle", 0.0f);
 	m_scaleLength = t.get<float>("scale_length", 1.0f);
+	m_translate = t.get<glm::vec3>("translate", glm::vec3(0.0f));
+	m_shear = t.get<float>("shear", 0.0f);
 }
 
 void ShadowRenderer::Draw(Shader * shader) {
@@ -20,8 +23,12 @@ void ShadowRenderer::Update(double) {
 	SetTransform(m_parentRenderer->GetTransform());
 	//m_entity->SetLocalTransform(glm::translate(glm::vec3(20.0f, 0.0f, 0.0f)));
 	//m_entity->SetLocalTransform(glm::rotate(glm::radians<float>(-89.9f), glm::vec3(1.0f, 0.0f, 0.0f)));
+	auto m =glm::shearX3D(glm::mat4(1.0f), m_shear, 0.0f);
+	//m_entity->SetLocalTransform(m);
+
 	m_entity->SetLocalTransform(
-			//glm::translate(glm::vec3(0.0f, 0.0f,-pos.y/scale)) *
+			m*
+			glm::translate(m_translate) *
 			glm::scale(glm::vec3(1.0f, m_scaleLength, 1.0f)) *
 			glm::rotate(glm::radians<float>(m_angle*(flipx ? 1.0f : -1.0f)), glm::vec3(0.0f,1.0f,0.0f)) *
 			glm::rotate(glm::radians<float>(-89.9f), glm::vec3(1.0f,0.0f,0.0f)));

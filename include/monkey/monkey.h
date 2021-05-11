@@ -3,7 +3,7 @@
 #include <monkey/ref.h>
 #include <monkey/singleton.h>
 
-class Monkey : public Singleton<Monkey> {
+class __attribute__ ((visibility ("default"))) Monkey : public Singleton<Monkey> {
 	friend class Singleton<Monkey>;
 	public:
 		template<class T>

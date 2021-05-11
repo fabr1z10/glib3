@@ -12,7 +12,7 @@ struct CollisionTriplet {
     int tag;
 };
 
-class ICollider : public Component {
+class __attribute__ ((visibility ("default"))) ICollider : public Component {
 public:
     ICollider();
     ~ICollider() override = default;

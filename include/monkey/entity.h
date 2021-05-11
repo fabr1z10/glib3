@@ -28,7 +28,7 @@
 /// An entity (aka node) has a position, a tag and a bunch of components attached
 /// that determine its behaviour. Every entity can have zero or more children entities
 /// and only one parent (i.e. they are organized in a tree)
-class Entity : public Ref {
+class __attribute__ ((visibility ("default"))) Entity : public Ref {
 public:
     Entity() : Ref(), m_parent(nullptr), m_update(true), m_localTransform{glm::mat4(1.0)},
                m_worldTransform{glm::mat4(1.0)}, m_enableControls{true}, m_flipHorizontal{false}, m_started(false), m_layer(0) {}
@@ -150,7 +150,7 @@ public:
     Camera* GetCamera();
     //Entity* GetNamedChild(const std::string& name);
     void setOnMoveEnabled (bool);
-    std::string toString() override;
+//    std::string toString() override;
     int getLayer() const;
 protected:
     virtual void Start();

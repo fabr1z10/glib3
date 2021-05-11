@@ -1,5 +1,3 @@
-#define GLM_ENABLE_EXPERIMENTAL
-
 #include <monkey/components/controllerflat.h>
 #include <monkey/engine.h>
 

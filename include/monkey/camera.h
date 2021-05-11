@@ -9,7 +9,7 @@
 #include <monkey/listener.h>
 #include <iostream>
 
-class Camera : public Ref {
+class __attribute__ ((visibility ("default"))) Camera : public Ref {
 public:
     Camera(glm::vec4 viewport = glm::vec4());
     virtual ~Camera() {

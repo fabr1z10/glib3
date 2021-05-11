@@ -97,9 +97,11 @@ class Dynamics2D:
         self.gravity = gravity
 
 class ShadowRenderer:
-    def __init__(self, angle = 0.0, scale_length = 1.0):
+    def __init__(self, angle = 0.0, scale_length = 1.0, translate = (0,0,0), shear = 0):
         self.type = 'components.shadowrenderer'
         self.angle = angle
+        self.translate = translate
+        self.shear = shear
         self.scale_length = scale_length
 
 class StateMachine:

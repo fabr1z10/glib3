@@ -87,7 +87,7 @@ public:
     void setActive(bool) override;
 
     using ParentClass = HotSpotManager;
-    std::string toString() override;
+    //std::string toString() override;
 protected:
     Camera* m_defaultCamera;
     glm::vec2 m_worldCoordinates;

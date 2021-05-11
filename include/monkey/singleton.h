@@ -10,7 +10,7 @@
 #define singleton_h
 
 template<class T>
-class Singleton
+class __attribute__ ((visibility ("default"))) Singleton
 {
 public:
     static T & get()

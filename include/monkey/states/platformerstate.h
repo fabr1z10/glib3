@@ -3,11 +3,12 @@
 #include <monkey/components/statemachine.h>
 
 class Controller2D;
+class IController;
 class Dynamics2D;
 class InputMethod;
 class IAnimator;
 
-class PlatformerState : public State {
+class __attribute__ ((visibility ("default"))) PlatformerState : public State {
 public:
     PlatformerState();
     PlatformerState(const PlatformerState&);
@@ -20,7 +21,7 @@ public:
     virtual void ResetAnimation() = 0;
 protected:
     IAnimator* m_animator;
-    Controller2D * m_controller;
+    IController * m_controller;
     Dynamics2D * m_dynamics;
     InputMethod * m_input;
     Entity * m_entity;

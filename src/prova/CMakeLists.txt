@@ -34,6 +34,6 @@ target_link_libraries(example PUBLIC monkey)
 #)
 
 install(TARGETS example DESTINATION ${BIN_DIR})
-install(CODE "execute_process(COMMAND ${BIN_DIR}/install.sh)")
+#install(CODE "execute_process(COMMAND ${BIN_DIR}/install.sh)")
 
 #INSTALL(CODE "execute_process(COMMAND ${BIN_DIR}/install.sh)")

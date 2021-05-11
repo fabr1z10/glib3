@@ -8,14 +8,14 @@
 #include <pybind11/stl.h>
 #include <monkey/input/pytab.h>
 
+#include <dlfcn.h>
+
 namespace py = pybind11;
 
 GLFWwindow* window;
 
 Engine::Engine() : m_mouseEnabled{true}, m_sceneFactory{nullptr} {
-
     m_sceneFactory = std::make_shared<SceneFactory>();
-
 }
 
 void Engine::SetDeviceSize(glm::vec2 size) {
@@ -74,6 +74,28 @@ void Engine::init(const std::string& gameFolder) {
     //module.attr("engine.device)
     m_mainTable = std::make_unique<PyTab>(module.attr("engine"));
 
+	// read addon libs
+	auto libs = m_mainTable->get<std::vector<std::string>>("libs");
+	for (const auto& lib : libs) {
+	    std::stringstream libFile;
+	    libFile << "../" << lib << "/lib" << lib << ".so";
+		void * handle = dlopen(libFile.str().c_str(), RTLD_NOW);
+		if (!handle) {
+			fputs(dlerror(), stderr);
+			exit(1);
+		}
+        //void (*extend)(SceneFactory*);
+        auto extendp = dlsym(handle, "applyExtension");
+		char* error;
+		if ((error = dlerror()) != NULL) {
+		    fputs(error, stderr);
+		    exit(1);
+		}
+        auto extend = reinterpret_cast<void(*)(SceneFactory*)>(extendp);
+
+		extend(m_sceneFactory.get());
+
+	}
     glm::vec2 deviceSize = m_mainTable->get<glm::vec2>("device_size");
     m_tickMultiplier = m_mainTable->get<float>("tick_multiplier", 1.0f);
 

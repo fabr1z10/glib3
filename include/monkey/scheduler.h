@@ -4,7 +4,7 @@
 #include <monkey/script.h>
 #include <unordered_map>
 
-class Scheduler : public Runner {
+class __attribute__ ((visibility ("default"))) Scheduler : public Runner {
 public:
     Scheduler() : Runner(), m_count{0} {}
     Scheduler(const ITab&);
@@ -18,7 +18,7 @@ public:
     Script* GetScript (const std::string&);
     using ParentClass = Scheduler;
     std::vector<std::string> GetActiveScripts() const;
-    std::string toString() override;
+   // std::string toString() override;
 private:
     std::unordered_map<std::string, std::shared_ptr<Script> > m_queuedScripts;
     std::unordered_map<std::string, std::shared_ptr<Script> > m_scripts;
