@@ -9,7 +9,8 @@ public:
     //explicit PyTab(pybind11::object obj);
 	PyTab(pybind11::object obj) : m_obj(obj) {
 		//std::cerr << obj.get_type() << "\n";l
-		m_dict = (pybind11::type::of(obj) == pybind11::type::of(pybind11::dict()));
+		//m_dict = (pybind11::type::of(obj) == pybind11::type::of(pybind11::dict()));
+        m_dict = (pybind11::type::of(obj).is(pybind11::type::of(pybind11::dict())));
 
 	}
 	std::unique_ptr<ITab> operator[](int) const override;
