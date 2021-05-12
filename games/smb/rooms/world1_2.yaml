@@ -8,11 +8,11 @@
   world_width: 192
   world_height: 16 
   start: 
-    - pos: [2, 2]
+    - pos: [2, 10]
     - pos: [116, 0]
       script: cippo
   items:
-    - factory: [bg, {'color': [0, 47, 70] }]
+    - factory: [bg, {'color': [0, 47, 70, 255] }]
       dynamic: False
       d: [ [0, 0, -5] ]
     - factory: [platform, {'image': '/gfx/block4.png' } ]
@@ -25,9 +25,9 @@
       d: [[10, 5]]
     - factory: [coin_brick]
       d: [[11, 5], [12, 5], [13, 5], [14, 5]]
-    - factory: [multi_coin_brick, {'model': bonusbrick2 } ]
+    - factory: [multi_coin_brick, {'model': sprites/01/bonusbrick2 } ]
       d: [[29,6,5]]
-    - factory: [brick, {'model': brick2, 'piece': brickpiece2}]
+    - factory: [brick, {'model': sprites/01/brick2, 'piece': sprites/01/brickpiece2}]
       d: [ [39,5],[39,6],[39,7],
            [40,5],[41,5],[41,6],[41,7],[42,7],[43,7],[44,7],[44,6],[44,5],[45,5],[46,5],[46,6],[46,7],
            [52,5],[53,5],[52,6],[53,6],[54,5],[55,5],[54,4],[55,4],[54,3],[55,3], [52,7],[53,7],[52,8],[53,8],[52,9],[53,9],[54,10],[55,10],[54,11],[55,11],
@@ -36,26 +36,26 @@
            [67,9],[67,8],[67,7],[67,6],[67,5],[68,5],[69,5],[69,6],
            [72,5],[73,5],[72,6],[73,6],[72,7],[73,7],[72,8],[73,8],[72,9],[73,9],
            [76,5],[77,5],[78,5],[79,5],[76,10],[77,10],[78,10],[79,10],[76,11],[77,11],[78,11],[79,11],
-           [145,6],[146,6],[147,6],[148,6],[149,6],[150,6]]      
-    - factory: [hotspot, {'model':pickupcoin, 'func':pickup_coin}]
-      d: [ [40,6],[41,9],[42,9],[43,9],[44,9],[45,6], [58,6],[59,6],[60,6],[61,6], [84,9],[85,9],[86,9],[87,9],[88,9],[89,9]]
-    - factory: [tile_map, {'id': pipe2}]
-      d: [ [115, 2,1] ]
-    - factory: [tile_map, {'id': pipe3}]
-      d: [ [103, 2] ]
-    - factory: [tile_map, {'id': pipe4}]
-      d: [ [109, 2] ]
+           [145,6],[146,6],[147,6],[148,6],[149,6],[150,6]]
+#    - factory: [hotspot, {'model':pickupcoin, 'func':pickup_coin}]
+#      d: [ [40,6],[41,9],[42,9],[43,9],[44,9],[45,6], [58,6],[59,6],[60,6],[61,6], [84,9],[85,9],[86,9],[87,9],[88,9],[89,9]]
+#    - factory: [tile_map, {'id': pipe2}]
+#      d: [ [115, 2,1] ]
+#    - factory: [tile_map, {'id': pipe3}]
+#      d: [ [103, 2] ]
+#    - factory: [tile_map, {'id': pipe4}]
+#      d: [ [109, 2] ]
     - factory: [moving_platform]
       d: [ [140, 0, 0, 3, 0, 12, 1, 20], [140, 0, 0, 3, 0.5, 12, 1, 20] ]
     - factory: [moving_platform]
       d: [ [155, 12, 0, 3, 0, -12, 1, 20], [155, 12, 0, 3, 0.5, -12, 1, 20] ]
-    - factory: [warp, { tag: w1 }]
-      d: [[116,4,0,'world1_2b',0]]
-    - factory: [tile_map, {'id': pipeh}]
-      d: [[166,5,1]]
-    - factory: [tile_map, {'id': pipeh3}]
-      d: [[168,7,1]]  
-    - factory: [line]
-      d: [[166,7,0,0,2,0]]      
-    - factory: [hotspot, {'func': pipe_out, 'info': {'world': 'world1_1', 'pos': 0}}]
-      d: [[165.9,5,0,2,2]]
+#    - factory: [warp, { tag: w1 }]
+#      d: [[116,4,0,'world1_2b',0]]
+#    - factory: [tile_map, {'id': pipeh}]
+#      d: [[166,5,1]]
+#    - factory: [tile_map, {'id': pipeh3}]
+#      d: [[168,7,1]]
+#    - factory: [line]
+#      d: [[166,7,0,0,2,0]]
+#    - factory: [hotspot, {'func': pipe_out, 'info': {'world': 'world1_1', 'pos': 0}}]
+#      d: [[165.9,5,0,2,2]]

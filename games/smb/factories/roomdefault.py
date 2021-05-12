@@ -93,7 +93,7 @@ class PlatformerRoom(room.Room):
         diag.add(Text('main', 8, uid, [255, 255, 255, 255], TextAlignment.top, pos=(164, 240, 2)))
         diag.add(Text('main', 8, monkey.engine.read('$time'), [255, 255, 255, 255], TextAlignment.top_right, pos=(232, 248, 2)))
         diag.add(Text('main', 8, str(vars.time), [255, 255, 255, 255], TextAlignment.top_right, tag='score_label', pos=(232, 240, 2)))
-        diag.add(Sprite(model='coin_counter', pos=(96, 232, 2)))
+        diag.add(Sprite(model='sprites/01/coin_counter', pos=(96, 232, 2)))
         diag.add(Text('main', 8, 'x', [255, 255, 255, 255], pos=(108, 240, 2)))
         diag.add(Text('main', 8, '{:02d}'.format(vars.coins), [255, 255, 255, 255], TextAlignment.top_left, tag='coin_label', pos=(116, 240, 2)))
         fps_count = Text('main', 8, '0', [255, 255, 255, 255], align=TextAlignment.top_left, tag='fps', pos=(0, 256, 2))

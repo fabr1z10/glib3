@@ -12,7 +12,9 @@ RayCast2D::RayCast2D() {
 	m_raycasters[ShapeType::CONVEXPOLY] = [&] (glm::vec2 A, glm::vec2 B, IShape* s, const glm::mat4& t) {
 		return this->rayCast<IConvexPolygon, true>(A, B, s, t);
 	};
-
+	m_raycasters[ShapeType::AABB] = [&] (glm::vec2 A, glm::vec2 B, IShape* s, const glm::mat4& t) {
+		return this->rayVsAABB(A, B, s, t);
+	};
 
 }
 
@@ -69,7 +71,44 @@ bool RayCast2D::seg2seg(glm::vec2 A, glm::vec2 B, glm::vec2 C, glm::vec2 D, floa
 }
 
 
+RayCastHit RayCast2D::rayVsAABB(glm::vec2 O, glm::vec2 B, IShape *aabb, const glm::mat4 & t) {
+	RayCastHit out;
 
+	auto bounds = aabb->getBounds();
+	bounds.Transform(t);
+
+	float inf = std::numeric_limits<float>::infinity();
+	glm::vec2 dir = glm::normalize(B - O);
+
+	RayHit t1 {dir.x == 0.0f ? -inf : (bounds.min.x - O.x) / dir.x, glm::vec3(-1.0f, 0.0f, 0.0f)};					// left edge
+	RayHit t2 {dir.x == 0.0f ? inf : (bounds.max.x - O.x) / dir.x, glm::vec3(1.0f, 0.0f, 0.0f)};
+	RayHit t3 {dir.y == 0.0f ? -inf : (bounds.min.y - O.y) / dir.y, glm::vec3(0.0f, -1.0f, 0.0f)};
+	RayHit t4 {dir.y == 0.0f ? inf : (bounds.max.y - O.y) / dir.y, glm::vec3(0.0f, 1.0f, 0.0f)};
+	RayHit tmin = std::max(std::min(t1, t2), std::min(t3, t4));
+	RayHit tmax = std::min(std::max(t1, t2), std::max(t3, t4));
+
+	// it tmax < 0, ray (line) is intersecting AABB, but whole AABB is behind us
+	if (tmax.t < 0) {
+		return out;
+	}
+
+	// if tmin > tmax, ray doesn't intersect AABB
+	if (tmin.t > tmax.t) {
+		return out;
+	}
+
+	out.collide = true;
+	auto len = glm::length(B - O);
+	if (tmin.t < 0) {
+		out.normal = tmax.normal;
+		out.length = tmax.t / len;
+	} else {
+		out.normal = tmin.normal;
+		out.length = tmin.t / len;
+	}
+	return out;
+
+}
 //float RayCast2D::SegmentIntersection(glm::vec2 A, glm::vec2 B, glm::vec2 C, glm::vec2 D) {
 //
 //    // check if A and B are same side of BC

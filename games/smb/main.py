@@ -23,6 +23,9 @@ import shader
 
 engine = eng.Engine()
 
+# add here add-on libraries you need
+engine.libs.append('platformer')
+
 engine.add_shader(shader.ShaderType.unlit_textured)
 engine.add_shader(shader.ShaderType.unlit_color)
 engine.add_shader(shader.ShaderType.text)

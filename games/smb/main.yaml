@@ -4,6 +4,7 @@
   device_size: [256, 256]
   window_size: [512, 512]
   start_room: world1_2
+  tick_multiplier: 4
   fonts:
     - id: main
       file: './fonts/prstartk.ttf'

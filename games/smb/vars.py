@@ -10,8 +10,8 @@ score = 0
 coins = 0
 time = 300
 start_pos = 0
-state = 2                           # 0 = Mario, 1 = SuperMario, 2 = Fiery Mario
-stateInfo = ['mario', 'supermario', 'fierymario']
+state = 0                           # 0 = Mario, 1 = SuperMario, 2 = Fiery Mario
+stateInfo = ['sprites/01/mario', 'sprites/01/supermario', 'sprites/01/fierymario']
 tile_data = {}
 
 class flags:

@@ -2,6 +2,7 @@ import vars
 import entity
 import components as comp
 import shapes as sh
+import shapes3d as sh3d
 import states
 import func
 import platformer.states
@@ -43,7 +44,7 @@ def player(**kwargs):
         p = entity.Sprite(model=model, pos=pos, tag='player')
         p.add_component(comp.SmartCollider(flag=vars.flags.player, mask=vars.flags.foe | vars.flags.foe_attack, tag=vars.tags.player))
         p.add_component(comp.Controller2D(mask_up=vars.flags.platform, mask_down=vars.flags.platform | vars.flags.platform_passthrough,
-                                          max_climb_angle=80, max_descend_angle=80))
+                                          max_climb_angle=80, max_descend_angle=80, size=(7, 6), shift=(0,6), debug=True))
         p.add_component(comp.Dynamics2D(gravity=vars.gravity))
         sm = comp.StateMachine(initial_state='walk')
         sm.states.append(states.SimpleState(uid='dead', anim='dead'))
@@ -84,7 +85,8 @@ def brick(**kwargs):
             flag=vars.flags.foe,
             mask=vars.flags.player,
             tag=vars.tags.brick_sensor,
-            shape=sh.Rect(width=vars.tile_size-4, height=1.0)
+            shape=sh3d.AABB(size=(vars.tile_size-4, 1, 1))
+            #shape=sh.Rect(width=vars.tile_size-4, height=1.0)
         ))
         a.add(b)
         return a
@@ -102,7 +104,9 @@ def _brick(x, y, model, hits, callback):
         flag=vars.flags.foe,
         mask=vars.flags.player,
         tag=vars.tags.bonus_brick_sensor,
-        shape=sh.Rect(width=vars.tile_size - 4, height=1.0)
+        debug=True,
+        shape=sh3d.AABB(size=(vars.tile_size-4, 1, 0))
+        #shape=sh.Rect(width=vars.tile_size - 4, height=1.0)
     ))
     a.add(b)
     return a
@@ -110,13 +114,13 @@ def _brick(x, y, model, hits, callback):
 
 def mushroom_brick(**kwargs):
     def f(*args):
-        return _brick(args[0], args[1], 'bonusbrick', 1, m1)
+        return _brick(args[0], args[1], 'sprites/01/bonusbrick', 1, m1)
     return f
 
 
 def coin_brick(**kwargs):
     def f(*args):
-        return _brick(args[0], args[1], 'bonusbrick', 1, m2)
+        return _brick(args[0], args[1], 'sprites/01/bonusbrick', 1, m2)
     return f
 
 
@@ -131,9 +135,9 @@ def multi_coinbrick(**kwargs):
 def m1(x: float, y: float):
     a = None
     if vars.state == 0:
-        a = monkey.engine.get_item_factory('moving_bonus')(model='mushroom', tag=vars.tags.mushroom, speed=30)(x, y, -1)
+        a = monkey.engine.get_item_factory('moving_bonus')(model='sprites/01/mushroom', tag=vars.tags.mushroom, speed=30)(x, y, -1)
     else:
-        a = monkey.engine.get_item_factory('moving_bonus')(model='flower', tag=vars.tags.mushroom, speed=0)(x, y, -1)
+        a = monkey.engine.get_item_factory('moving_bonus')(model='sprites/01/flower', tag=vars.tags.mushroom, speed=0)(x, y, -1)
     main = example.get('main')
     id = main.add(a)
     s = script.Script()
@@ -145,7 +149,7 @@ def m1(x: float, y: float):
 def m2(x: float, y: float):
     def score():
         m3(x, y+1)
-    a = entity.Sprite(model='flyingcoin', pos=(x * vars.tile_size, (y+1)*vars.tile_size, 0))
+    a = entity.Sprite(model='sprites/01/flyingcoin', pos=(x * vars.tile_size, (y+1)*vars.tile_size, 0))
     main = example.get('main')
     id = main.add(a)
     s = script.Script()
@@ -156,7 +160,7 @@ def m2(x: float, y: float):
 
 
 def m3(x: float, y: float):
-    a = entity.Sprite(model='score100', pos=(x * vars.tile_size, (y+1)*vars.tile_size, 0))
+    a = entity.Sprite(model='sprites/01/score100', pos=(x * vars.tile_size, (y+1)*vars.tile_size, 0))
     main = example.get('main')
     id = main.add(a)
     s = script.Script()
@@ -212,6 +216,8 @@ def moving_bonus(**kwargs):
         a.add_component(comp.Controller2D(
             mask_up=vars.flags.platform,
             mask_down=vars.flags.platform | vars.flags.platform_passthrough,
+            size=(7,8),
+            shift=(0,8),
             max_climb_angle=80,
             max_descend_angle=80))
         a.add_component(comp.Dynamics2D(gravity=vars.gravity))
@@ -249,7 +255,7 @@ def bg(**kwargs):
     def f(*args):
         color = kwargs.get('color')
         a = entity.Entity(pos=(args[0], args[1], args[2]))
-        a.add_component(comp.ShapeGfxColor(shape=sh.Rect(256, 256), fill=sh.SolidFill(r=color[0], g=color[1], b=color[2])))
+        a.add_component(comp.ShapeGfxColor(shape=sh.Rect(256, 256), color=color)) #fill=sh.SolidFill(r=color[0], g=color[1], b=color[2])))
         a.add_component(comp.Parallax(cam='maincam', factor=[1, 1], campos0=[128, 128], pos0=[0, 0]))
         return a
     return f

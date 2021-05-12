@@ -20,10 +20,18 @@ public:
     RayCast2D ();
     RayCastHit run(glm::vec3 O, glm::vec3 dir, float length, IShape* shape, const glm::mat4& t) override;
 private:
+	struct RayHit {
+		float t;
+		glm::vec3 normal;
+		bool operator< (const RayHit& other) const {
+			return t < other.t;
+		}
+	};
 	// test whether AB intersects CD; if they intersect, places in t the
 	bool seg2seg(glm::vec2 A, glm::vec2 B, glm::vec2 C, glm::vec2 D, float& t);
 
 	bool rayCastVsCircle (glm::vec2 A, glm::vec2 B, float& t, IShape*, const glm::mat4&);
+	RayCastHit rayVsAABB(glm::vec2 A, glm::vec2 B, IShape* aabb, const glm::mat4&);
 
 	void updateRaycastHit(RayCastHit& r, glm::vec2 ray, glm::vec2 line, float t);
 
