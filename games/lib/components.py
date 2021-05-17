@@ -59,7 +59,7 @@ class SkeletalCollider(Collider):
 
 
 class Controller2D:
-    def __init__(self, mask_up: int, mask_down: int, max_climb_angle: float, max_descend_angle, size, shift = (0, 0), debug = False, hor_rays : int = 4, vert_rays: int = 4):
+    def __init__(self, mask_up: int, mask_down: int, max_climb_angle: float, max_descend_angle, size, shift = None, debug = False, hor_rays : int = 4, vert_rays: int = 4):
         self.type = 'components.controller2D'
         self.maxClimbAngle = max_climb_angle
         self.maxDescendAngle = max_descend_angle

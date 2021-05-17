@@ -44,7 +44,7 @@ def player(**kwargs):
         p = entity.Sprite(model=model, pos=pos, tag='player')
         p.add_component(comp.SmartCollider(flag=vars.flags.player, mask=vars.flags.foe | vars.flags.foe_attack, tag=vars.tags.player))
         p.add_component(comp.Controller2D(mask_up=vars.flags.platform, mask_down=vars.flags.platform | vars.flags.platform_passthrough,
-                                          max_climb_angle=80, max_descend_angle=80, size=(7, 6), shift=(0,6), debug=True))
+                                          max_climb_angle=80, max_descend_angle=80, size=(14, 16), debug=True))
         p.add_component(comp.Dynamics2D(gravity=vars.gravity))
         sm = comp.StateMachine(initial_state='walk')
         sm.states.append(states.SimpleState(uid='dead', anim='dead'))

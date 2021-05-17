@@ -13,7 +13,7 @@
 
 using namespace glm;
 
-Controller2D::Controller2D(const ITab&t) {
+Controller2D::Controller2D(const ITab& t) : IController(t) {
     m_maxClimbAngle = t.get<float>("maxClimbAngle");
     m_maxDescendAngle = t.get<float>("maxDescendAngle");
     m_horizontalRayCount = t.get<int>("horRays", 4);
@@ -25,8 +25,6 @@ Controller2D::Controller2D(const ITab&t) {
     //mint maskUp = table.Get<int>("maskup", 2);
     //int maskDown = table.Get<int>("maskdown", 2|32);
     //return std::make_shared<Controller2D>(maxClimbAngle, maxDescendAngle, maskUp, maskDown, skinWidth, horCount, vertCount);
-	m_halfSize = t.get<glm::vec2>("size");
-	m_shift = t.get<glm::vec2>("shift", glm::vec2(0.0f));
 	m_horizontalRaySpacing = (2.0f * m_halfSize[1]) / (m_horizontalRayCount - 1);
 	m_verticalRaySpacing = (2.0f * m_halfSize[0]) / (m_verticalRayCount - 1);
 	m_debug = t.get<bool>("debug", false);
@@ -81,15 +79,15 @@ void Controller2D::Begin() {
 
 void Controller2D::updateRaycastOrigins() {
 	auto scale = m_entity->GetScale();
-	glm::vec2 pos = m_entity->GetPosition();
+	glm::vec3 pos = m_entity->GetPosition();
 	pos += scale * m_shift;
 	auto scaledHalfsize = scale * m_halfSize;
 	m_horizontalRaySpacing = (2.0f * scaledHalfsize[1]) / (m_horizontalRayCount - 1);
 	m_verticalRaySpacing = (2.0f * scaledHalfsize[0]) / (m_verticalRayCount - 1);
 
 	m_raycastOrigins.bottomLeft = pos - scaledHalfsize;
-	m_raycastOrigins.bottomRight = pos + vec2(scaledHalfsize[0], -scaledHalfsize[1]);
-	m_raycastOrigins.topLeft = pos + vec2(-scaledHalfsize[0], scaledHalfsize[1]);
+	m_raycastOrigins.bottomRight = pos + glm::vec3(scaledHalfsize[0], -scaledHalfsize[1], 0.0f);
+	m_raycastOrigins.topLeft = pos + vec3(-scaledHalfsize[0], scaledHalfsize[1], 0.0f);
 	m_raycastOrigins.topRight = pos + scaledHalfsize;
 }
 

@@ -18,13 +18,7 @@
 using namespace glm;
 
 
-Controller3D::Controller3D(const ITab & t) {
-
-    auto size = t.get<glm::vec3>("size");
-    // half sizes
-    m_halfSize = 0.5f * size;
-    m_shift = glm::vec3(0.0f, m_halfSize.y, 0.0f);
-	//m_shift = t.get<glm::vec3>("shift", glm::vec3(0.0f));
+Controller3D::Controller3D(const ITab & t) : IController(t) {
 
 	m_maxClimbAngle = t.get<float>("maxClimbAngle");
 	m_maxDescendAngle = t.get<float>("maxDescendAngle");

@@ -78,8 +78,6 @@ private:
 	void VerticalCollisions(glm::vec2& velocity);
 
 
-	glm::vec2 m_halfSize;
-	glm::vec2 m_shift;
 	//int m_handleNotify;
 	Entity* m_platform;
 	//ICollider* m_cc;

@@ -5,6 +5,9 @@ template<> float ITab::as() const { return _asFloat(); }
 template<> bool ITab::as() const { return _asBool(); }
 template<> std::string ITab::as() const { return _asString(); }
 
+template<> glm::ivec2 ITab::as() const { return _asIVec2(); }
+template<> glm::ivec3 ITab::as() const { return _asIVec3(); }
+template<> glm::ivec4 ITab::as() const { return _asIVec4(); }
 template<> glm::vec2 ITab::as() const { return _asVec2(); }
 template<> glm::vec3 ITab::as() const { return _asVec3(); }
 template<> glm::vec4 ITab::as() const { return _asVec4(); }

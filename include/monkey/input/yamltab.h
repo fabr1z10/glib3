@@ -31,6 +31,9 @@ private:
     pybind11::object _asPyObject() const override {throw;}
 
     // glm objects
+	glm::ivec2 _asIVec2() const override;
+	glm::ivec3 _asIVec3() const override;
+	glm::ivec4 _asIVec4() const override;
     glm::vec2 _asVec2() const override;
     glm::vec3 _asVec3() const override;
     glm::vec4 _asVec4() const override;

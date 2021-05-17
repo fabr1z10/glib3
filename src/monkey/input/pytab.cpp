@@ -40,14 +40,29 @@ pybind11::object PyTab::_asPyObject() const {
     return m_obj;
 }
 
+glm::ivec2 PyTab::_asIVec2() const {
+	auto vec = m_obj.cast<std::vector<int>>();
+	return glm::ivec2(vec[0], vec[1]);
+}
+
 glm::vec2 PyTab::_asVec2() const {
     auto vec = m_obj.cast<std::vector<float>>();
     return glm::vec2(vec[0], vec[1]);
 }
 
+glm::ivec3 PyTab::_asIVec3() const {
+	auto vec = m_obj.cast<std::vector<int>>();
+	return glm::ivec3(vec[0], vec[1], vec[2]);
+}
+
 glm::vec3 PyTab::_asVec3() const {
     auto vec = m_obj.cast<std::vector<float>>();
     return glm::vec3(vec[0], vec[1], vec[2]);
+}
+
+glm::ivec4 PyTab::_asIVec4() const {
+	auto vec = m_obj.cast<std::vector<int>>();
+	return glm::ivec4(vec[0], vec[1], vec[2], vec[3]);
 }
 
 glm::vec4 PyTab::_asVec4() const {

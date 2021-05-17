@@ -69,6 +69,9 @@ private:
     virtual pybind11::object _asPyObject() const = 0;
 
     // glm stuff
+	virtual glm::ivec2 _asIVec2() const = 0;
+	virtual glm::ivec3 _asIVec3() const = 0;
+	virtual glm::ivec4 _asIVec4() const = 0;
     virtual glm::vec2 _asVec2() const = 0;
     virtual glm::vec3 _asVec3() const = 0;
     virtual glm::vec4 _asVec4() const = 0;
@@ -85,6 +88,9 @@ template<> float ITab::as() const;
 template<> bool ITab::as() const;
 template<> std::string ITab::as() const;
 
+template<> glm::ivec2 ITab::as() const;
+template<> glm::ivec3 ITab::as() const;
+template<> glm::ivec4 ITab::as() const;
 template<> glm::vec2 ITab::as() const;
 template<> glm::vec3 ITab::as() const;
 template<> glm::vec4 ITab::as() const;

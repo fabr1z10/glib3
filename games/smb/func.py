@@ -8,7 +8,7 @@ import actions as act
 import components as comp
 import platformer.states
 from script import Script
-
+import math
 
 def toggle_pause():
     if vars.paused:
@@ -52,6 +52,7 @@ def brick_response(player: example.Wrap1, brick: example.Wrap1, x, y):
     # get the actual brick
     b = brick.parent()
     brick_id = b.id
+    player.vy=-abs(player.vy)
     if vars.state == 0:
         s = Script()
         ystop = b.y
@@ -119,6 +120,8 @@ def upgrade_player():
     # update model
     pl = example.get('player')
     pl.setModel(vars.stateInfo[vars.state])
+    # update bounding rect
+
 
 
 def coin_response(player: example.Wrap1, coin: example.Wrap1, x, y):

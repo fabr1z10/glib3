@@ -75,8 +75,6 @@ private:
 	int m_maskUp;
 	int m_maskDown;
 
-	glm::vec3 m_halfSize;
-	glm::vec3 m_shift;
 //    //int m_handleNotify;
     Entity* m_platform;
     ICollider* m_cc;

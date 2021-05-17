@@ -17,15 +17,30 @@ std::string YAMLTab::_asString() const {
     return m_node.as<std::string>();
 }
 
+glm::ivec2 YAMLTab::_asIVec2() const {
+	auto vec = m_node.as<std::vector<int>>();
+	return glm::ivec2(vec[0], vec[1]);
+}
+
 glm::vec2 YAMLTab::_asVec2() const {
 	auto vec = m_node.as<std::vector<float>>();
 	return glm::vec2(vec[0], vec[1]);
 
 }
 
+glm::ivec3 YAMLTab::_asIVec3() const {
+	auto vec = m_node.as<std::vector<int>>();
+	return glm::ivec3(vec[0], vec[1], vec[2]);
+}
+
 glm::vec3 YAMLTab::_asVec3() const {
 	auto vec = m_node.as<std::vector<float>>();
 	return glm::vec3(vec[0], vec[1], vec[2]);
+}
+
+glm::ivec4 YAMLTab::_asIVec4() const {
+	auto vec = m_node.as<std::vector<int>>();
+	return glm::ivec4(vec[0], vec[1], vec[2], vec[3]);
 
 }
 
