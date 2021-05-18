@@ -333,3 +333,7 @@ void Wrap1::play(pybind11::object o) {
 void Wrap1::killScripts() {
     m_entity->GetComponent<ScriptPlayer>()->killScripts();
 }
+
+void Wrap1::setControllerBounds(float width, float height, float depth, float x, float y, float z) {
+    m_entity->GetComponent<IController>()->setBounds(glm::vec3(width, height, depth), glm::vec3(x, y, z));
+}

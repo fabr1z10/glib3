@@ -65,8 +65,8 @@ PYBIND11_MODULE(example, m) {
     	.def("getCollisionBounds",&Wrap1::getCollisionBounds)
 		.def("getAttackCollisionBounds",&Wrap1::getAttackCollisionBounds)
 		.def("getKeyPoint", &Wrap1::getKeyPoint)
+		.def("setColliderBounds", &Wrap1::setControllerBounds)
 		.def("getBoxSize", &Wrap1::getBoxSize);
-
 
     py::class_<PyEngine>(m, "engine")
         //.def("get", &PyEngine::get, py::arg("tag"))

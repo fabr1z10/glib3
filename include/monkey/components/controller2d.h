@@ -72,7 +72,9 @@ public:
 
     //RayCastHit2D Raycast(glm::vec2 origin, glm::vec2 direction, float length, int mask);
 private:
-	RaycastOrigins m_raycastOrigins;
+    void drawShape() override;
+
+    RaycastOrigins m_raycastOrigins;
 	//std::vector<Collider*> m_ppp;
 	void HorizontalCollisions(glm::vec2& velocity);
 	void VerticalCollisions(glm::vec2& velocity);
@@ -94,7 +96,6 @@ private:
     bool m_wasGnd;
 	int m_maskUp;
 	int m_maskDown;
-	bool m_debug;
 };
 
 inline std::type_index Controller2D::GetType() {

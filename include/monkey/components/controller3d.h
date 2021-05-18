@@ -67,6 +67,8 @@ public:
 
     //RayCastHit2D Raycast(glm::vec2 origin, glm::vec2 direction, float length, int mask);
 private:
+    void drawShape() override;
+
     //std::vector<Collider*> m_ppp;
     void HorizontalCollisions(glm::vec3& velocity);
     void VerticalCollisions(glm::vec3& velocity);
@@ -94,7 +96,6 @@ private:
     float m_widthZ;
     float m_horXSpacing;
     float m_horZSpacing;
-	bool m_debug;
 
 };
 

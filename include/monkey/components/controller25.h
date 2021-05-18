@@ -34,6 +34,7 @@ public:
     float getElevation() const;
     void setElevation(float);
 private:
+    void drawShape() override;
     float m_verticalRaySpacing;
 
     RO m_raycastOrigins;

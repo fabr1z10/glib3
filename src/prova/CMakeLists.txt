@@ -25,15 +25,16 @@ configure_file(
 
 target_link_libraries(example PUBLIC monkey)
 
-#add_custom_command(
-#    TARGET example
-#    POST_BUILD
-#    COMMAND ${CMAKE_COMMAND} -E copy
-#    "${SRC_DIR}/prova/setup.py.in"
-#    "${BIN_DIR}/setup.py"
-#)
+add_custom_command(
+    TARGET example
+    POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy
+    "${SRC_DIR}/prova/setup.py.in"
+    "${BIN_DIR}/setup.py"
+)
 
 install(TARGETS example DESTINATION ${BIN_DIR})
-#install(CODE "execute_process(COMMAND ${BIN_DIR}/install.sh)")
+
+install(CODE "execute_process(COMMAND ${BIN_DIR}/install.sh)")
 
 #INSTALL(CODE "execute_process(COMMAND ${BIN_DIR}/install.sh)")

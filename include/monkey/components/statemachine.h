@@ -17,7 +17,7 @@ public:
     State(const ITab&);
     virtual ~State() = default;
     // init is called every time this state is set, so DON't put initialization code here!
-    virtual void Init (pybind11::dict& d) = 0;
+    virtual void Init (const ITab& d) = 0;
     virtual void Run (double) = 0;
     virtual void End () = 0;
     // This is called only once when the statemachine begins, so PUT your initialization code here!
@@ -52,7 +52,7 @@ public:
     void ResetState() ;
     std::string GetState() const;
     void SetState(const std::string&);
-    void SetState (const std::string&, pybind11::dict& d);
+    void SetState (const std::string&, const ITab& d);
     //void SetState (const std::string&, luabridge::LuaRef);
 
     State* GetState (const std::string&);

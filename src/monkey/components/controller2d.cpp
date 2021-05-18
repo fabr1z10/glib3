@@ -27,10 +27,19 @@ Controller2D::Controller2D(const ITab& t) : IController(t) {
     //return std::make_shared<Controller2D>(maxClimbAngle, maxDescendAngle, maskUp, maskDown, skinWidth, horCount, vertCount);
 	m_horizontalRaySpacing = (2.0f * m_halfSize[1]) / (m_horizontalRayCount - 1);
 	m_verticalRaySpacing = (2.0f * m_halfSize[0]) / (m_verticalRayCount - 1);
-	m_debug = t.get<bool>("debug", false);
 }
 
 
+void Controller2D::drawShape() {
+    auto debugEntity = std::make_shared<Entity>();
+    auto shape = std::make_shared<Rect>(m_halfSize[0] * 2.0f, m_halfSize[1] * 2.0f, glm::vec3(-m_halfSize[0]+m_shift[0], -m_halfSize[1]+m_shift[1], 0));
+    MeshFactory m;
+    auto model = m.createWireframe(shape.get(), glm::vec4(1.0f));
+    auto renderer = std::make_shared<BasicRenderer>(model);
+    debugEntity->AddComponent(renderer);
+    m_entity->AddChild(debugEntity);
+    m_debugShape = debugEntity.get();
+}
 
 void Controller2D::Start() {
     m_details.Reset();
@@ -38,16 +47,9 @@ void Controller2D::Start() {
     if (m_collision == nullptr)
         GLIB_FAIL("Controller2D requires a collision engine running!");
     if (m_debug) {
-		auto debugEntity = std::make_shared<Entity>();
-		auto shape = std::make_shared<Rect>(m_halfSize[0] * 2.0f, m_halfSize[1] * 2.0f, glm::vec3(-m_halfSize[0]+m_shift[0], -m_halfSize[1]+m_shift[1], 0));
-		MeshFactory m;
-		auto model = m.createWireframe(shape.get(), glm::vec4(1.0f));
-        auto renderer = std::make_shared<BasicRenderer>(model);
-//        glm::vec4 color(1.0f, 0.0f, 0.0f, 1.0f);
-//        renderer->setMultColor(color);
-        debugEntity->AddComponent(renderer);
-        m_entity->AddChild(debugEntity);
+        drawShape();
     }
+
 }
 
 void Controller2D::Begin() {

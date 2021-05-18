@@ -13,6 +13,9 @@ ControllerFlat::ControllerFlat(const ITab&t) {
 	m_verticalRaySpacing = (2.0f * m_size[0]) / (m_verticalRayCount - 1);
 }
 
+void ControllerFlat::drawShape() {
+
+}
 void ControllerFlat::Start() {
 	m_collision = Engine::get().GetRunner<ICollisionEngine>();
 	if (m_collision == nullptr)

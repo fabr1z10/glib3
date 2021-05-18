@@ -27,9 +27,9 @@ void IsHit25::Run(double dt) {
 }
 
 
-void IsHit25::Init(pybind11::dict & d) {
+void IsHit25::Init(const ITab& d) {
     m_animator->SetAnimation(m_anim);
-    m_sgn = d["sign"].cast<float>();
+    m_sgn = d.get<float>("sign");
     m_distanceTravelled = 0.0f;
 }
 

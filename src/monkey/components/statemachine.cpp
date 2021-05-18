@@ -68,10 +68,10 @@ void StateMachine::ResetState() {
 
 void StateMachine::SetState(const std::string& state) {
     pybind11::dict n;
-    SetState(state, n);
+    SetState(state, PyTab(n));
 }
 
-void StateMachine::SetState(const std::string & state, pybind11::dict& d) {
+void StateMachine::SetState(const std::string & state, const ITab& d) {
     if (state == m_currentStateId) {
         return;
     }

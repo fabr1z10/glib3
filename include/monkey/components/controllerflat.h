@@ -19,7 +19,9 @@ public:
 	bool side () const { return false; }
 
 private:
-	void HorizontalCollisions(glm::vec2& velocity);
+    void drawShape() override;
+
+    void HorizontalCollisions(glm::vec2& velocity);
 	void VerticalCollisions(glm::vec2& velocity);
 	Entity* m_platform;
 	ICollisionEngine * m_collision;

@@ -34,6 +34,10 @@ engine.add_shader(shader.ShaderType.text)
 engine.add_room_factory('default', factories.roomdefault.make_platformer_room)
 engine.add_item_factory('platform', factories.items.platform)
 engine.add_item_factory('player', factories.items.player)
+engine.add_item_factory('foe', factories.items.foe)
+engine.add_item_factory('koopa', factories.items.koopa)
+
+
 engine.add_item_factory('brick', factories.items.brick)
 engine.add_item_factory('mushroom_brick', factories.items.mushroom_brick)
 engine.add_item_factory('coin_brick', factories.items.coin_brick)

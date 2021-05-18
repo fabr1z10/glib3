@@ -35,16 +35,62 @@ def platform(**kwargs):
     return f
 
 
+def foe(**kwargs):
+    def f(*args):
+        pos = makePos2(*args)
+        foe_id = kwargs.get('id')
+        foe_info = vars.foes[foe_id]
+        model = foe_info['model']
+        p = entity.Sprite(model=model, pos=pos)
+        p.add_component(comp.SmartCollider(flag=vars.flags.foe, mask=vars.flags.player, tag=foe_info['tag']))
+        p.add_component(comp.Controller2D(mask_up=vars.flags.platform, mask_down=vars.flags.platform | vars.flags.platform_passthrough,
+                                          max_climb_angle=80, max_descend_angle=80, size=foe_info['size'], debug=True))
+        p.add_component(comp.Dynamics2D(gravity=vars.gravity))
+        sm = comp.StateMachine(initial_state='walk')
+        sm.states.append(states.SimpleState(uid='dead', anim='dead'))
+        sm.states.append(platformer.states.FoeWalk(uid='walk', anim='walk', speed=foe_info['speed'], acceleration=0,
+                                                   flip_horizontal=foe_info['flip_h'], flip_when_platform_ends=foe_info['flip_when_platform_ends'],
+                                                   left=1))
+        p.add_component(sm)
+        return p
+    return f
+
+
+def koopa(**kwargs):
+    def f(*args):
+        pos = makePos2(*args)
+        foe_id = kwargs.get('id')
+        foe_info = vars.foes[foe_id]
+        model = foe_info['model']
+        p = entity.Sprite(model=model, pos=pos)
+        p.add_component(comp.SmartCollider(flag=vars.flags.foe, mask=vars.flags.player, tag=foe_info['tag']))
+        p.add_component(comp.Controller2D(mask_up=vars.flags.platform, mask_down=vars.flags.platform | vars.flags.platform_passthrough,
+                                          max_climb_angle=80, max_descend_angle=80, size=foe_info['size'], debug=True))
+        p.add_component(comp.Dynamics2D(gravity=vars.gravity))
+        sm = comp.StateMachine(initial_state='walk')
+        sm.states.append(states.SimpleState(uid='hide', anim='hide'))
+        sm.states.append(platformer.states.FoeWalk(uid='walk', anim='walk', speed=foe_info['speed'], acceleration=0,
+                                                   flip_horizontal=foe_info['flip_h'], flip_when_platform_ends=foe_info['flip_when_platform_ends'],
+                                                   left=1))
+        sm.states.append(platformer.states.FoeWalk(uid='walk2', anim='hide', speed=foe_info['fast_speed'], acceleration=0,
+                                                   flip_horizontal=foe_info['flip_h'], flip_when_platform_ends=foe_info['flip_when_platform_ends'],
+                                                   left=1))
+        p.add_component(sm)
+        p.add_component(comp.ScriptPlayer())
+        return p
+    return f
+
 # #def player(model: str, x: float, y: float):
 def player(**kwargs):
     def f(*args):
         pos = makePos(*args)
-        model = kwargs.get('model')
-        speed = kwargs.get('speed')
+        current_state = vars.states[vars.state]
+        model = current_state['model']
+        speed = current_state['speed']
         p = entity.Sprite(model=model, pos=pos, tag='player')
         p.add_component(comp.SmartCollider(flag=vars.flags.player, mask=vars.flags.foe | vars.flags.foe_attack, tag=vars.tags.player))
         p.add_component(comp.Controller2D(mask_up=vars.flags.platform, mask_down=vars.flags.platform | vars.flags.platform_passthrough,
-                                          max_climb_angle=80, max_descend_angle=80, size=(14, 16), debug=True))
+                                          max_climb_angle=80, max_descend_angle=80, size=current_state['size'], debug=True))
         p.add_component(comp.Dynamics2D(gravity=vars.gravity))
         sm = comp.StateMachine(initial_state='walk')
         sm.states.append(states.SimpleState(uid='dead', anim='dead'))
@@ -216,10 +262,11 @@ def moving_bonus(**kwargs):
         a.add_component(comp.Controller2D(
             mask_up=vars.flags.platform,
             mask_down=vars.flags.platform | vars.flags.platform_passthrough,
-            size=(7,8),
-            shift=(0,8),
+            size=(14, 16),
+            shift=(0, 8),
             max_climb_angle=80,
-            max_descend_angle=80))
+            max_descend_angle=80,
+            debug=True))
         a.add_component(comp.Dynamics2D(gravity=vars.gravity))
         sm = comp.StateMachine(initial_state='idle')
         sm.states.append(states.SimpleState(uid='idle', anim='walk'))
@@ -240,13 +287,13 @@ def hotspot(**kwargs):
         pos = makePos2(*args)
         if model is None:
             a = entity.Entity(pos=pos)
-            size = [args[3], args[4]]
-            a.add_component(comp.Collider(flag=vars.flags.foe, mask=vars.flags.player, tag=vars.tags.key, shape=sh.Rect(width=size[0],height=size[1])))
-            a.add_component(comp.Info(func=callback, info=info, bounds=[0, 0, size[0], size[1]]))
+            size = [args[2] * vars.tile_size, args[3] * vars.tile_size, 0]
+            a.add_component(comp.Collider(debug=True, flag=vars.flags.foe, mask=vars.flags.player, tag=vars.tags.key, shape=sh3d.AABB(size=size)))
+            a.add_component(comp.Info(func=callback, info=info, args=args, bounds=[0, 0, size[0], size[1]]))
         else:
             a = entity.Sprite(model=model, pos=pos)
             a.add_component(comp.SmartCollider(flag=vars.flags.foe, mask=vars.flags.player, tag=vars.tags.key))
-            a.add_component(comp.Info(func=callback, info=info))
+            a.add_component(comp.Info(func=callback, info=info, args=args))
         return a
     return f
 

@@ -103,7 +103,7 @@ class PlatformerRoom(room.Room):
         self.add(diag)
 
         # add player
-        mario = monkey.engine.get_item_factory('player')(model=vars.stateInfo[vars.state], speed=200)(start_pos[0], start_pos[1], 0)
+        mario = monkey.engine.get_item_factory('player')()(start_pos[0], start_pos[1], 0)
         #mario = build.makePlayer(vars.stateInfo[vars.state], startPos[0], startPos[1])
         main.add(mario)
 

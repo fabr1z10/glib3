@@ -10,7 +10,7 @@ public:
     NullState ();
     NullState (const ITab&);
     void Run(double) override;
-    void Init (pybind11::dict&) override;
+    void Init (const ITab&) override;
     void End () override;
 };
 
@@ -19,7 +19,7 @@ public:
     SimpleState(const std::string& anim);
     SimpleState(const ITab&);
     void Run(double) override;
-    void Init (pybind11::dict&) override;
+    void Init (const ITab&) override;
     void End () override;
     void AttachStateMachine(StateMachine*) override;
 protected:

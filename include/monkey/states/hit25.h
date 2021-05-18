@@ -8,7 +8,7 @@ public:
     Hit25 (const std::string& anim);
     Hit25 (const ITab& t);
     void AttachStateMachine(StateMachine * sm) override;
-    void Init (pybind11::dict&) override;
+    void Init (const ITab&) override;
     void Run(double) override;
     void End () override {}
 private:

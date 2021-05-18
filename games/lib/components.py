@@ -42,6 +42,11 @@ class Collider:
         self.debug = debug
 
 
+class ScriptPlayer:
+    def __init__(self):
+        self.type = 'components.scriptplayer'
+
+
 class SmartCollider(Collider):
     def __init__(self, flag: int, mask: int, tag: int, cast_tag: int = 0, cast_mask: int = 0, debug = False):
         super().__init__(flag, mask, tag, None, debug)

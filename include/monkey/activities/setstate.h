@@ -11,6 +11,6 @@ public:
     void Run (float dt) override {}
 private:
     std::string m_state;
-    pybind11::dict m_args;
+    std::unique_ptr<ITab> m_args;
 };
 

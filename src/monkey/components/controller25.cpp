@@ -13,6 +13,8 @@ std::type_index Controller25::GetType() {
 Controller25::~Controller25() {
 }
 
+void Controller25::drawShape() {}
+
 
 Controller25::Controller25(const ITab &t) : IController() {
     m_horizontalRayCount = t.get<int>("horRays", 4);

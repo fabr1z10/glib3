@@ -11,6 +11,30 @@ coins = 0
 time = 300
 start_pos = 0
 state = 0                           # 0 = Mario, 1 = SuperMario, 2 = Fiery Mario
+
+states = [
+    {
+        'model': 'sprites/01/mario',
+        'size': (14, 15, 0),
+        'offset': (0, 7.5, 0),
+        'speed': 200
+    },
+    {
+        'model': 'sprites/01/supermario',
+        'size': (14, 30, 0),
+        'offset': (0, 15, 0),
+        'speed': 200
+    },
+    {
+        'model': 'sprites/01/fierymario',
+        'size': (14, 32, 0),
+        'offset': (0, 16, 0),
+        'speed': 200
+    },
+]
+
+
+
 stateInfo = ['sprites/01/mario', 'sprites/01/supermario', 'sprites/01/fierymario']
 tile_data = {}
 
@@ -42,3 +66,40 @@ class tags:
     plant = 25
     key = 26
     player_fire = 27
+
+foes = {
+    'goomba': {
+        'model': 'sprites/01/goomba',
+        'size': (14, 16),
+        'tag': tags.goomba,
+        'flip_h': False,
+        'flip_when_platform_ends': False,
+        'speed': 10
+    },
+    'goomba2': {
+        'model': 'sprites/01/goomba2',
+        'size': (14, 16),
+        'tag': tags.goomba,
+        'flip_h': False,
+        'flip_when_platform_ends': False,
+        'speed': 10
+    },
+    'koopa': {
+        'model': 'sprites/01/koopa',
+        'size': (14, 24),
+        'tag': tags.koopa,
+        'flip_h': True,
+        'flip_when_platform_ends': True,
+        'speed': 10,
+        'fast_speed': 300
+    },
+    'koopa2': {
+        'model': 'sprites/01/koopa2',
+        'size': (14, 24),
+        'tag': tags.koopa,
+        'flip_h': True,
+        'flip_when_platform_ends': True,
+        'speed': 10,
+        'fast_speed': 300
+    },
+}

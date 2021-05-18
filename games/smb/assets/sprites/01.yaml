@@ -197,18 +197,34 @@ goomba:
   boxes:
     - [-8, 0, 8, 16]
   animations:
-    idle:
-      frames:
-        - [112, 0, 16, 16, 8, 0]
     walk:
       box: 0
-      frames:
-        - [112, 0, 16, 16, 8, 0]
-        - [128, 0, 16, 16, 8, 0]
+      elements:
+        - quads: [[112, 0, 16, 16, 8, 0]]
+        - quads: [[128, 0, 16, 16, 8, 0]]
+    idle:
+      elements:
+        - quads: [[112, 0, 16, 16, 8, 0]]
     dead:
-      frames:
-        - [144, 0, 16, 16, 8, 0]
-
+      elements:
+        - quads: [[144, 0, 16, 16, 8, 0]]
+goomba2:
+  sheet: 'gfx/smb1.png'
+  type: 'asset.boxed'
+  boxes:
+    - [-8, 0, 8, 16]
+  animations:
+    walk:
+      box: 0
+      elements:
+        - quads: [[32, 96, 16, 16, 8, 0]]
+        - quads: [[48, 96, 16, 16, 8, 0]]
+    idle:
+      elements:
+        - quads: [[32, 96, 16, 16, 8, 0]]
+    dead:
+      elements:
+        - quads: [[96, 112, 16, 16, 8, 0]]
 koopa:
   sheet: 'gfx/smb1.png'
   type: 'asset.boxed'
@@ -218,19 +234,39 @@ koopa:
   animations:
     walk:
       box: 0
-      frames:
-        - [0, 16, 16, 32, 8, 0]
-        - [16, 16, 16, 32, 8, 0]
+      elements:
+        - quads: [[0, 16, 16, 32, 8, 0]]
+        - quads: [[16, 16, 16, 32, 8, 0]]
     hide:
       box: 1
-      frames:
-        - [32, 32, 16, 16, 8, 0]
+      elements:
+        - quads: [[32, 32, 16, 16, 8, 0]]
     hide_blink:
       box: 1
-      frames:
-        - [32, 32, 16, 16, 8, 0]
-        - [32, 16, 16, 16, 8, 0]
-
+      elements:
+        - quads: [[32, 32, 16, 16, 8, 0]]
+        - quads: [[32, 16, 16, 16, 8, 0]]
+koopa2:
+  sheet: 'gfx/smb1.png'
+  type: 'asset.boxed'
+  boxes:
+    - [-8, 0, 8, 24]
+    - [-8, 0, 8, 16]
+  animations:
+    walk:
+      box: 0
+      elements:
+        - quads: [[64, 96, 16, 32, 8, 0]]
+        - quads: [[80, 96, 16, 32, 8, 0]]
+    hide:
+      box: 1
+      elements:
+        - quads: [[112, 112, 16, 16, 8, 0]]
+    hide_blink:
+      box: 1
+      elements:
+        - quads: [[112, 112, 16, 16, 8, 0]]
+        - quads: [[112, 112, 16, 16, 8, 0]]
 
 pickupcoin:
   sheet: 'gfx/smb1.png'
@@ -240,10 +276,10 @@ pickupcoin:
   animations:
     def:
       box: 0
-      frames:
-        - [128, 64, 16, 16]
-        - [144, 64, 16, 16]
-        - [160, 64, 16, 16]
+      elements:
+        - quads: [[128, 64, 16, 16]]
+        - quads: [[144, 64, 16, 16]]
+        - quads: [[160, 64, 16, 16]]
 flyingcoin:
   sheet: "gfx/smb1.png"
   type: "asset.sprite"

@@ -26,10 +26,22 @@ Controller3D::Controller3D(const ITab & t) : IController(t) {
 	m_maskUp = t.get<int>("maskUp");
 	m_maskDown = t.get<int>("maskDown");
 	m_platform = nullptr;
-	m_debug = t.get<bool>("debug", false);
 
 
 
+}
+
+void Controller3D::drawShape() {
+    auto debugEntity = std::make_shared<Entity>();
+    auto shape = std::make_shared<AABB>(2.0f * m_halfSize, glm::vec3(-m_halfSize.x, 0.0f, -m_halfSize.z));
+    MeshFactory m;
+    auto model = m.createWireframe(shape.get(), glm::vec4(1.0f));
+    auto renderer = std::make_shared<BasicRenderer>(model);
+//        glm::vec4 color(1.0f, 0.0f, 0.0f, 1.0f);
+//        renderer->setMultColor(color);
+    debugEntity->AddComponent(renderer);
+    m_entity->AddChild(debugEntity);
+    m_debugShape = debugEntity.get();
 }
 
 void Controller3D::Start() {
@@ -40,15 +52,7 @@ void Controller3D::Start() {
 	if (m_engine == nullptr)
         GLIB_FAIL("Controller3D requires a collision engine running!");
 	if (m_debug) {
-		auto debugEntity = std::make_shared<Entity>();
-		auto shape = std::make_shared<AABB>(2.0f * m_halfSize, glm::vec3(-m_halfSize.x, 0.0f, -m_halfSize.z));
-		MeshFactory m;
-		auto model = m.createWireframe(shape.get(), glm::vec4(1.0f));
-		auto renderer = std::make_shared<BasicRenderer>(model);
-//        glm::vec4 color(1.0f, 0.0f, 0.0f, 1.0f);
-//        renderer->setMultColor(color);
-		debugEntity->AddComponent(renderer);
-		m_entity->AddChild(debugEntity);
+        drawShape();
 	}
 
 }

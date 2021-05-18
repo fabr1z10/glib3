@@ -119,7 +119,13 @@ def upgrade_player():
         vars.state = len(vars.stateInfo)-1
     # update model
     pl = example.get('player')
-    pl.setModel(vars.stateInfo[vars.state])
+
+    st = vars.states[vars.state]
+
+    size = st['size']
+    offset = st['offset']
+    pl.setModel(st['model'])
+    pl.setColliderBounds(size[0], size[1], size[2], offset[0], offset[1], offset[2])
     # update bounding rect
 
 
@@ -135,7 +141,7 @@ def on_hotspot_enter(player: example.Wrap1, warp: example.Wrap1, x, y):
 
 
 def goomba_response(player: example.Wrap1, goomba: example.Wrap1, x, y):
-    if player.getState() == 'jump' and y > 0 and abs(x) < 0.01:
+    if player.getState() == 'jump' and player.vy < 0:
         s = Script()
         player.vy = 300
         s.add_action(act.SetState(state='dead', entity_id=goomba.id ))
@@ -149,19 +155,26 @@ def goomba_response(player: example.Wrap1, goomba: example.Wrap1, x, y):
 def koopa_response(player: example.Wrap1, koopa: example.Wrap1, x, y):
     if koopa.getState() == 'hide':
         koopa.killScripts()
-        if player.getState() == 'jump' and y > 0 and abs(x) < 0.01:
+        if player.getState() == 'jump' and player.vy < 0:
             player.vy = 300
-        koopa.move(-10 * x, 0, 0)
+        #koopa.move(-10 * x, 0, 0)
         left = 0 if (player.x < koopa.x) else 1
         s = Script()
         s.add_action(act.SetState(state='walk2', entity_id=koopa.id, args={'left': left}))
         koopa.play(s)
+    elif koopa.getState() == 'walk2':
+        # hit player only if going towards player
+        dx = player.x - koopa.x
+        if (dx > 0 and not koopa.flipx) or (dx < 0 and koopa.flipx):
+            player_hit_by_enemy(player)
+
     else:
-        if player.getState() == "jump" and y > 0 and abs(x) < 0.01:
+        if player.getState() == "jump" and player.vy < 0:
+            print ('fokkami')
             player.vy = 300
             s = Script()
             s.add_action(act.SetState(state='hide', entity_id=koopa.id))
-            s.add_action(act.Delay(2))
+            s.add_action(act.Delay(20))
             s.add_action(act.Blink(duration=2,blink_duration=0.2,entity_id=koopa.id))
             s.add_action(act.SetState(state='walk', entity_id = koopa.id))
             koopa.play(s)
@@ -182,7 +195,11 @@ def downgrade_player():
     else:
         vars.invincibility = True
         pl = example.get('player')
-        pl.setModel(vars.stateInfo[vars.state])
+        st = vars.states[vars.state]
+        size = st['size']
+        offset = st['offset']
+        pl.setModel(st['model'])
+        pl.setColliderBounds(size[0], size[1], size[2], offset[0], offset[1], offset[2])
         s = Script()
         s.add_action(act.Blink(duration=5, blink_duration=0.2, entity_id=pl.id))
         s.add_action(act.CallFunc(reset_invincible))
@@ -305,6 +322,21 @@ def pickup_coin(p, k, x, y):
     example.remove(k.id)
     vars.coins += 1
     example.get('coin_label').setText ('{:02d}'.format(vars.coins))
+
+def spawn(p, k, x, y):
+    info = k.getInfo()
+    detail = info['info']
+    factory = detail['factory']
+    args = detail['args']
+    print(args)
+    func = monkey.engine.get_item_factory(factory)(**args)
+    positions = info['args'][4:]
+    example.remove(k.id)
+    for i in range(0, len(positions)//2):
+        ix = positions[i * 2]
+        iy = positions[i * 2 + 1]
+        foe = func(ix, iy)
+        example.get('main').add(foe)
 
 
 def pipe_out(p: example.Wrap1, k, x, y):

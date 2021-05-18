@@ -57,6 +57,7 @@ public:
     static void runScript(Engine& engine, pybind11::object);
     void play (pybind11::object o);
     void killScripts ();
+    void setControllerBounds(float width, float height, float depth, float x, float y, float z);
 private:
     int g;
     Entity* m_entity;

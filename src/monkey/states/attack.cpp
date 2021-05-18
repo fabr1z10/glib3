@@ -22,11 +22,8 @@ void Attack::Run(double dt) {
 }
 
 
-void Attack::Init(pybind11::dict& d) {
-    std::string anim = m_anim;
-    if (!d.empty()) {
-        anim = d["anim"].cast<std::string>();
-    }
+void Attack::Init(const ITab& d) {
+    auto anim = d.get<std::string>("anim", m_anim);
     m_animator->SetAnimation(anim);
 
 }

@@ -59,3 +59,10 @@
 #      d: [[166,7,0,0,2,0]]
 #    - factory: [hotspot, {'func': pipe_out, 'info': {'world': 'world1_1', 'pos': 0}}]
 #      d: [[165.9,5,0,2,2]]
+    - factory: [foe, {'id': goomba2}]
+      d: [ [16.5, 2], [18, 3], [29, 2]]
+    - factory: [hotspot, {'model': sprites/01/pickupcoin, 'func': pickup_coin}]
+      d: [[40, 6], [41, 9], [42, 9], [43, 9], [44, 9], [45, 6], [58, 6], [59, 6], [60, 6], [61, 6],
+          [68, 6]]
+    - factory: [hotspot, {'func': spawn, 'info': {'factory': koopa, 'args': {'id': koopa2}}}]
+      d: [ [35, 2, 0.5, 16, 44, 2 ]]#, 46, 2],]
