@@ -112,10 +112,9 @@ float FoeChase::computeDirection() {
 
 }
 
-void FoeChase::Init(pybind11::dict& d) {
-    PyTab dict(d);
-    if (dict.has("left")) {
-        m_left = dict.get<int>("left");
+void FoeChase::Init(const ITab& d) {
+    if (d.has("left")) {
+        m_left = d.get<int>("left");
     }
     m_inRange = false;
     //m_c->UpdateRaycastOrigins();

@@ -232,7 +232,7 @@ void FoeWalk25::Run(double dt) {
 }
 
 
-void FoeWalk25::Init(pybind11::dict &) {
+void FoeWalk25::Init(const ITab&) {
 }
 
 void FoeWalk25::End() {

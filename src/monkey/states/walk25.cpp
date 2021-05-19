@@ -10,6 +10,7 @@
 #include <monkey/components/dynamics2d.h>
 #include <monkey/components/icontroller.h>
 #include <pybind11/pytypes.h>
+#include <monkey/input/pytab.h>
 
 namespace py = pybind11;
 
@@ -59,7 +60,7 @@ void Walk25::AttachStateMachine(StateMachine * sm) {
     //}
 }
 
-void Walk25::Init(pybind11::dict&) {
+void Walk25::Init(const ITab&) {
     if (m_flipHorizontal) {
         //m_entity->SetFlipX(m_dir == 'w');
     }
@@ -93,7 +94,7 @@ void Walk25::Run (double dt) {
             if (m_controller->grounded()) {
                 py::dict d;
                 d["anim"]= p.second;
-                m_sm->SetState("attack", d);
+                m_sm->SetState("attack", PyTab(d));
                 return;
             } else {
                 m_airAttack = true;

@@ -12,7 +12,7 @@ public:
 	Jump3D(float accelerationTimeAirborne, float speed, bool fliph, const std::string& animUp, const std::string& animDown);
 	Jump3D(const ITab&);
 	void Run (double) override;
-	void Init (pybind11::dict&) override {}
+	void Init (const ITab&) override {}
 	void End () override {}
 	void AttachStateMachine(StateMachine*) override;
 

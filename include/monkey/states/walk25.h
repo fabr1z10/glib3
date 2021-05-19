@@ -17,7 +17,7 @@ public:
     Walk25(float speed, float acceleration, bool fliph, bool anim4, float jumpspeed, char dir='e');
     Walk25 (const ITab&);
     void Run(double) override;
-    void Init (pybind11::dict&) override;
+    void Init (const ITab&) override;
     void End () override;
     float GetSpeed() const;
     void AttachStateMachine(StateMachine*) override;

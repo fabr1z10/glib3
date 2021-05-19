@@ -9,7 +9,7 @@ NullState::NullState(const ITab & t) : State(t) {
 }
 
 
-void NullState::Init(pybind11::dict&) {}
+void NullState::Init(const ITab&) {}
 
 void NullState::End() {}
 
@@ -24,7 +24,6 @@ SimpleState::SimpleState(const ITab& t) : State(t) {
     m_anim = t.get<std::string>("anim");
     m_endOnAnimComplete = t.get<bool>("end_on_anim_complete", false);
     m_nextState = t.get<std::string>("next", "");
-    //std::cerr << m_anim << "!!!\n";
 }
 
 
@@ -35,7 +34,7 @@ void SimpleState::AttachStateMachine(StateMachine * sm) {
 
 }
 
-void SimpleState::Init(pybind11::dict& d) {
+void SimpleState::Init(const ITab& d) {
 //    PyDict dict(d);
 //    if (dict.hasKey("anim")) {
 //        m_anim = dict.get<std::string>("anim");

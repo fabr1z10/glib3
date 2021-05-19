@@ -27,10 +27,9 @@ void FoeWalk::AttachStateMachine(StateMachine * sm) {
     m_c = dynamic_cast<Controller2D*>(m_controller);
 }
 
-void FoeWalk::Init(pybind11::dict& d) {
-    PyTab dict(d);
-    if (dict.has("left")) {
-        m_left = dict.get<int>("left");
+void FoeWalk::Init(const ITab& d) {
+    if (d.has("left")) {
+        m_left = d.get<int>("left");
     }
     setDirection(m_left);
 

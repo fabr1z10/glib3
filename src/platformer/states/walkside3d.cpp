@@ -22,7 +22,7 @@ WalkSide3D::WalkSide3D(const ITab& t) : State(t), m_animator(nullptr)  {
 	m_walkAnim = t.get<std::string>("walk_anim", "walk");
 }
 
-void WalkSide3D::Init(pybind11::dict&) {
+void WalkSide3D::Init(const ITab&) {
 
 }
 

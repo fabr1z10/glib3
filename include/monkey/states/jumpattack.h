@@ -7,7 +7,7 @@ public:
     JumpAttack (const ITab& t);
     //void AttachStateMachine(StateMachine * sm) override;
 
-    void Init (pybind11::dict&) override;
+    void Init (const ITab&) override;
     void Run(double) override;
     void End () override {}
     void ModifyAnimation() override {}

@@ -31,7 +31,7 @@ public:
 	void AttachStateMachine(StateMachine*) override;
 
 	void Run(double) override;
-	void Init (pybind11::dict&) override;
+	void Init (const ITab&) override;
 	//void Init (luabridge::LuaRef) override;
 	void End () override;
 	//void ResetAnimation() override {}

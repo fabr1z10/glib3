@@ -8,7 +8,7 @@ public:
     Jump2D(const ITab&);
     //void Start() override;
     void Run (double) override;
-    void Init (pybind11::dict&) override ;
+    void Init (const ITab&) override ;
     void End () override {}
     void ModifyAnimation() override;
     void ResetAnimation() override;

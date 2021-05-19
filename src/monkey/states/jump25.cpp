@@ -27,7 +27,7 @@ void Jump25::AttachStateMachine(StateMachine * sm) {
     }
 }
 
-void Jump25::Init(pybind11::dict&) {
+void Jump25::Init(const ITab&) {
 //    if (m_flipHorizontal) {
 //        //m_entity->SetFlipX(m_dir == 'w');
 //    }

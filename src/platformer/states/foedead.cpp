@@ -15,7 +15,7 @@ FoeDead::FoeDead(const ITab& t) : PlatformerState(t) {
 }
 
 
-void FoeDead::Init(pybind11::dict&) {
+void FoeDead::Init(const ITab&) {
     m_animator->SetAnimation(m_anim);
     m_timer = 0.0f;
     m_id = m_entity->GetId();

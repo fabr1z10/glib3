@@ -9,9 +9,9 @@ IsHit::IsHit(const ITab& t) : PlatformerState(t) {
 	m_dist = t.get<float>("dist");
 }
 
-void IsHit::Init(pybind11::dict & d) {
+void IsHit::Init(const ITab & d) {
 	m_animator->SetAnimation(m_anim);
-	m_sgn = d["sign"].cast<float>();
+	m_sgn = d.get<float>("sign");
 	m_distanceTravelled = 0.0f;
 }
 void IsHit::Run(double dt) {

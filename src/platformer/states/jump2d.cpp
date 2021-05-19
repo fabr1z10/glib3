@@ -29,7 +29,7 @@ Jump2D::Jump2D(const ITab& t) : PlatformerState(t) {
 }
 
 
-void Jump2D::Init(pybind11::dict&) {
+void Jump2D::Init(const ITab&) {
     ResetAnimation();
 }
 

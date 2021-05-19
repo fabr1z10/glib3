@@ -34,7 +34,7 @@ WalkSide::WalkSide(const ITab& t) : PlatformerState(t) {
 
 
 
-void WalkSide::Init(pybind11::dict&) {
+void WalkSide::Init(const ITab&) {
 
 }
 

@@ -20,7 +20,7 @@ void Walk3D::AttachStateMachine(StateMachine * sm) {
     m_animator = m_entity->GetComponent<IAnimator>();
 }
 
-void Walk3D::Init(pybind11::dict&) {
+void Walk3D::Init(const ITab&) {
 }
 
 void Walk3D::End() {

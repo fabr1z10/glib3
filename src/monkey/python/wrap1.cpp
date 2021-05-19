@@ -314,7 +314,7 @@ std::string Wrap1::getState() {
 }
 
 void Wrap1::setState(const std::string & s, py::dict d) {
-    m_entity->GetComponent<StateMachine>()->SetState(s, d);
+    m_entity->GetComponent<StateMachine>()->SetState(s, PyTab(d));
 }
 
 void Wrap1::rotx(float angle) {
