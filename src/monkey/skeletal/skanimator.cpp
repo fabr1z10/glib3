@@ -21,7 +21,11 @@ void SkAnimator::Update(double dt) {
     m_animationTime += m_speedUp * dt;
     if (m_animationTime > m_currentAnimation->getLength()) {
         m_complete = true;
-        m_animationTime = fmod(m_animationTime, m_currentAnimation->getLength());
+        if (m_currentAnimation->loop()) {
+			m_animationTime = fmod(m_animationTime, m_currentAnimation->getLength());
+		} else {
+        	m_animationTime = m_currentAnimation->getLength() - 0.001f;
+        }
     }
     auto currentPose = calculateCurrentAnimationPose();
     // pass the identity mat

@@ -69,6 +69,7 @@ void MeshFactory::drawAABB(IShape* s, glm::vec4 color, std::vector<VertexColor> 
 	auto* a = static_cast<AABB*>(s);
 	auto O = a->getOffset();
 	auto size = a->getSize();
+	auto n = vertices.size();
 
 	vertices.emplace_back(O.x, O.y, O.z, color.r, color.g, color.b, color.a);
 	vertices.emplace_back(O.x, O.y, O.z + size.z, color.r, color.g, color.b, color.a);
@@ -78,7 +79,11 @@ void MeshFactory::drawAABB(IShape* s, glm::vec4 color, std::vector<VertexColor> 
 	vertices.emplace_back(O.x, O.y + size.y, O.z + size.z, color.r, color.g, color.b, color.a);
 	vertices.emplace_back(O.x + size.x, O.y + size.y, O.z + size.z, color.r, color.g, color.b, color.a);
 	vertices.emplace_back(O.x + size.x, O.y + size.y, O.z, color.r, color.g, color.b, color.a);
-	indices.insert(indices.end(), {0, 1, 1, 2, 2, 3, 3, 0, 4, 5, 5, 6, 6, 7, 7, 4, 0, 4, 1, 5, 2, 6, 3, 7});
+	for (auto a : {0, 1, 1, 2, 2, 3, 3, 0, 4, 5, 5, 6, 6, 7, 7, 4, 0, 4, 1, 5, 2, 6, 3, 7}) {
+		indices.push_back(n + a);
+	}
+
+	//indices.insert(indices.end(), {0, 1, 1, 2, 2, 3, 3, 0, 4, 5, 5, 6, 6, 7, 7, 4, 0, 4, 1, 5, 2, 6, 3, 7});
 
 
 }

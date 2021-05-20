@@ -156,7 +156,8 @@ void FoeChase::Run(double dt) {
         float eps = 0.1f;
         m_inRange = false;
         auto displacement = (targetPoint - entityPos.x);
-        if (randomAttack(displacement)) {
+        auto distance_to_player = targetPos.x - entityPos.x;
+        if (randomAttack(distance_to_player)) {
             return;
         }
 

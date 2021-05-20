@@ -121,7 +121,7 @@ std::shared_ptr<IShape> Animator::getShapeCast() {
 }
 
 IShape * Animator::getShape(const std::string& animId) {
-	std::string anim = animId.empty() ? GetAnimation() : animId;
+ 	std::string anim = animId.empty() ? GetAnimation() : animId;
 	int frame = animId.empty() ? GetFrame() : 0;
 	auto* boxedModel = dynamic_cast<BoxedModel*>(m_model.get());
 	if (boxedModel == nullptr) {

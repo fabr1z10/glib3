@@ -65,6 +65,8 @@ Intersector2D::Intersector2D() {
 
 	m_func[std::make_pair(ShapeType::RECT, ShapeType::COMPOUND)] =
 			std::make_unique<CompoundIntersector>(this);
+	m_func[std::make_pair(ShapeType::AABB, ShapeType::COMPOUND)] =
+			std::make_unique<CompoundIntersector>(this);
 	m_func[std::make_pair(ShapeType::AABB, ShapeType::AABB)] =
 			std::make_unique<AABB2DIntersector>();
 
