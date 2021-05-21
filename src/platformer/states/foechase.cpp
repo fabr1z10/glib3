@@ -169,15 +169,20 @@ void FoeChase::Run(double dt) {
             if (fabs(delta.x) > fabs(displacement)) {
                 delta.x = sign(delta.x) * fabs(displacement);
             }
-            m_controller->Move(delta);
+			m_controller->Move(delta);
         } else {
             m_animator->SetAnimation(m_idleAnim);
+			glm::vec3 delta = m_dynamics->step(dt, 0.0f, m_acceleration);
+			delta.x = 0.0f;
+			m_controller->Move(delta);
         }
-    } else {
+
+	} else {
         m_animator->SetAnimation(m_walkAnim);
         glm::vec3 delta = m_dynamics->step(dt, 0.0f, m_acceleration);
         m_controller->Move(delta);
     }
+
 }
 
 void FoeChase::End() {}
