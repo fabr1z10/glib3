@@ -74,8 +74,12 @@ class PlatformerRoom(room.Room):
         ce.add_response(vars.tags.player, vars.tags.coin, runners.CollisionResponse(on_enter=func.coin_response))
         ce.add_response(vars.tags.player, vars.tags.goomba, runners.CollisionResponse(on_enter=func.goomba_response))
         ce.add_response(vars.tags.player, vars.tags.koopa, runners.CollisionResponse(on_enter=func.koopa_response))
+        ce.add_response(vars.tags.player, vars.tags.plant, runners.CollisionResponse(on_enter=func.plant_response))
         ce.add_response(vars.tags.player, vars.tags.spawn, runners.CollisionResponse(on_enter=func.on_spawn))
         ce.add_response(vars.tags.player, vars.tags.key, runners.CollisionResponse(on_enter=func.on_collect_item))
+        ce.add_response(vars.tags.player, vars.tags.generic_hotspot, runners.CollisionResponse(on_enter=func.on_enter_hotspot,
+                                                                                               on_leave=func.on_leave_hotspot))
+
         ce.add_response(vars.tags.goomba, vars.tags.player_fire, runners.CollisionResponse(on_enter=func.fire_hits_foe))
         self.add_runner(ce)
 

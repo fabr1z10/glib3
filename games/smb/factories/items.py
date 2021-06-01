@@ -35,6 +35,19 @@ def platform(**kwargs):
     return f
 
 
+def plant(**kwargs):
+    def f(*args):
+        pos = makePos2(*args)
+        model = kwargs.get('model')
+        s = entity.Sprite(model=model, pos=pos)
+        s.add_component(comp.SmartCollider(flag=vars.flags.foe, mask=vars.flags.player, tag=vars.tags.plant, debug=True))
+        s.add_component(comp.PolygonalMover(origin=pos, loop=True, moves=[ {'delta': (0,-32), 'speed': 100, 'hold': 1},
+                                                    {'delta': (0, 32), 'speed': 100, 'hold': 1}]))
+        return s
+    return f
+
+
+
 def foe(**kwargs):
     def f(*args):
         pos = makePos2(*args)
@@ -325,11 +338,60 @@ def warp(**kwargs):
         pos = makePos(*args)
         pin = entity.Entity(pos=pos, tag=kwargs.get('tag', None))
         pin.add_component(
-            comp.Collider(flag=vars.flags.foe, mask=vars.flags.player, tag=vars.tags.warp, shape=sh.Rect(4, 2, [-2, 0])))
+            comp.Collider(debug=True, flag=vars.flags.foe, mask=vars.flags.player, tag=vars.tags.warp,
+                          shape=sh3d.AABB(size=(4,2,0), offset=(-2,0,0))))
         pin.add_component(comp.Info(world=args[3], start=args[4], bounds=[0, 0, 4, 2]))
         return pin
     return f
 
+
+def freeze_plant(plant_id, value):
+    def f(p, s):
+        example.get(plant_id).enableUpdate(value)
+    return f
+
+
+def pipe(**kwargs):
+    def f(*args):
+        pos = makePos(*args)
+        # coords of the top left tile. if (x, y) is the top left
+        # then (x+1, y) is the top right, and (x, y+1) and (x+1, y+1)
+        # the left and right walls of the pipe.
+        sheet = vars.tile_data['tile_sheets']['main']
+        tl = kwargs.get('top_left')
+        height = args[3]
+        data = [tl[0], tl[1] + 1, tl[0] + 1, tl[1] + 1] * (height - 1)
+        data.extend([tl[0], tl[1], tl[0]+1, tl[1]])
+        e = entity.Entity(pos=pos)
+        e.add_component(comp.TiledGfx(
+            tile_sheet=sheet['file'],
+            sheet_size=sheet['sheet_size'],
+            tile_data=data,
+            width=2,
+            height=height,
+            size=vars.tile_size))
+        shape = sh.Rect(width=2 * vars.tile_size, height=height * vars.tile_size)
+        e.add_component(comp.Collider(
+            flag=vars.flags.platform,
+            mask=1,
+            tag=1,
+            shape=shape
+        ))
+        foe = kwargs.get('foe', None)
+        if foe:
+            p = plant(model=foe)(1, height)
+            p.tag = 'c2x22'
+            plant_id = e.add(p)
+            sensor = entity.Entity(pos=(vars.tile_size, height * vars.tile_size))
+            size = (8.0, 0.4, 0.0)
+            sensor.add_component(comp.Collider(debug=True, flag=vars.flags.foe, mask=vars.flags.player, tag=vars.tags.generic_hotspot,
+                                               shape=sh3d.AABB(size=size, offset=(-size[0]*0.5, 0.0, 0.0))))
+            sensor.add_component(comp.Info(on_enter=freeze_plant(p.tag, False), on_leave=freeze_plant(p.tag, True)))
+            e.add(sensor)
+
+            #a.add_component(comp.Info(func=callback, info=info, args=args, bounds=[0, 0, size[0], size[1]]))
+        return e
+    return f
 
 def line(**kwargs):
     def f(*args):

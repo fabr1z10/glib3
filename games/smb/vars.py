@@ -66,6 +66,7 @@ class tags:
     plant = 25
     key = 26
     player_fire = 27
+    generic_hotspot = 28
 
 foes = {
     'goomba': {

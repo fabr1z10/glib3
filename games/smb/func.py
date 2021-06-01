@@ -140,6 +140,10 @@ def on_hotspot_enter(player: example.Wrap1, warp: example.Wrap1, x, y):
         info['func'](player, warp)
 
 
+def plant_response(player: example.Wrap1, goomba: example.Wrap1, x, y):
+    player_hit_by_enemy(player)
+
+
 def goomba_response(player: example.Wrap1, goomba: example.Wrap1, x, y):
     if player.getState() == 'jump' and player.vy < 0:
         s = Script()
@@ -244,6 +248,19 @@ def on_spawn(player: example.Wrap1, spawn: example.Wrap1, x, y):
 def on_collect_item(player: example.Wrap1, item: example.Wrap1, x, y):
     f = item.getInfo()['func']
     getattr(sys.modules[__name__], f)(player, item, x, y)
+
+
+def on_enter_hotspot(player: example.Wrap1, item: example.Wrap1, x, y):
+    info = item.getInfo()
+    if 'on_enter' in info:
+        info['on_enter'](player, item)
+
+
+def on_leave_hotspot(player: example.Wrap1, item: example.Wrap1, x, y):
+    info = item.getInfo()
+    if 'on_leave' in info:
+        info['on_leave'](player, item)
+
 
 
 def fire_hits_foe(foe: example.Wrap1, fire: example.Wrap1, x, y):

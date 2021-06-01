@@ -320,4 +320,16 @@ foam:
         - [176,128,16,16]
         - [192,128,16,16]
         - [208,128,16,16]
-
+plant:
+  sheet: 'gfx/smb1.png'
+  type: 'asset.boxed'
+  boxes:
+    - [-8, 0, 8, 24]
+  animations:
+    def:
+      box: 0
+      elements:
+        - quads: [[128, 96, 16, 32, 8, 0]]
+          ticks: 2
+        - quads: [[144, 96, 16, 32, 8, 0]]
+          ticks: 2

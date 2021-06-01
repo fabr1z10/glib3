@@ -52,6 +52,7 @@
       d: [[205, 2, 0, 2, 2]]
     - factory: [hotspot, {'func': dead }]
       d: [ [69, 0, 0, 32, 2 ]]
+
     - factory: [tile_map, {'id': hill}]
       d: [[0, 2, -1], [48, 2, -1], [96,2,-1], [144,2,-1], [192,2,-1]]
     - factory: [tile_map, {'id': hillsmall}]
