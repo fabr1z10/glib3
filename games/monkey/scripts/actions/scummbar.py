@@ -13,6 +13,29 @@ import vars
 lookat_scummbar_fireplace = a.Actions.say(['$lines/3'])
 
 
+def init_scummbar():
+    s = Script(loop=0)
+    s.add_action(actions.Delay(sec=5))
+    s.add_action(actions.CallFunc(f=a.Callbacks.add_item('cook', {'pos': (2, 3)})))
+    example.play(s)
+
+def open_scummbar_kitchen_door(aa, ba):
+    if status.cook_in_kitchen:
+        s = a.Scripts.walk('scummbar_kitchen_door')
+        s.add_action(actions.Animate(tag='scummbar_kitchen_door', anim='open'))
+        s.add_action(actions.Msg(text=monkey.engine.read('$lines/32'), font='monkey', pos=(609, 78), color=status.colors.cook_text_color))
+        s.add_action(actions.Msg(text=monkey.engine.read('$lines/34'), font='monkey', pos=(609, 78), color=status.colors.cook_text_color))
+        s.add_action(actions.Animate(tag='scummbar_kitchen_door', anim='closed'))
+        example.play(s)
+    else:
+        # cook is in scummbar
+        cook = example.get('cook')
+        s = a.Scripts.set_door('open')(aa, ba)
+        if cook.x > 320:
+            s.add_action(scumm.actions.Say(lines=['$lines/32', '$lines/33'], tag='cook', font='monkey'))
+        example.play(s)
+
+
 def talkto_important_looking_pirates(aa, ba):
     s = a.Scripts.walk('important_looking_pirates')
     m = '$dialogues/important_looking_pirates/'

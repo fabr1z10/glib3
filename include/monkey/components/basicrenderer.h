@@ -3,7 +3,7 @@
 #include <monkey/components/renderer.h>
 #include <monkey/model/basicmodel.h>
 
-class BasicRenderer : public Renderer {
+class __attribute__ ((visibility ("default"))) BasicRenderer : public Renderer {
 public:
     BasicRenderer (std::shared_ptr<IModel> model);
     BasicRenderer (const ITab&);

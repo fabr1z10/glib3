@@ -249,15 +249,7 @@ scummbar_loom:
   walkto: [250, 10]
   wdir: n
   room: scummbar
-scummbar_fireplace:
-  type: item1
-  model: 01/scummbar.fireplace
-  pos: [509, 44]
-  text: '$objects/fireplace'
-  size: [29, 18]
-  walkto: [512, 40]
-  wdir: e
-  room: scummbar
+
 #cook:
 #  model: cook
 #  pos: [589, 14]

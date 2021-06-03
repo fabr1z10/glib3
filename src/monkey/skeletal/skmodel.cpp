@@ -253,17 +253,19 @@ SkModel::SkModel(const ITab& main) : _nextJointId(0), m_jointCount(0) {
     main.foreach("meshes", [&] (const ITab& mesh) {
         auto id = mesh.get<std::string>("id");
         auto meshId = mesh.get<std::string>("mesh");
-        auto parent = mesh.get<std::string>("parent", "");
-        auto scale = mesh.get<float>("scale", 1.0f);
-        auto offset = mesh.get<glm::vec2>("offset", glm::vec2(0.0f));
-        auto z = mesh.get<float>("z", 0.0f);
-        glm::vec2 attachPoint(0.0f);
-        if (!parent.empty()) {
-            auto keyPoint = mesh.get<std::string>("key_point");
-            attachPoint = m_meshes.at(parent)->getKeyPoint(keyPoint);
+        if (!meshId.empty()) {
+            auto parent = mesh.get<std::string>("parent", "");
+            auto scale = mesh.get<float>("scale", 1.0f);
+            auto offset = mesh.get<glm::vec2>("offset", glm::vec2(0.0f));
+            auto z = mesh.get<float>("z", 0.0f);
+            glm::vec2 attachPoint(0.0f);
+            if (!parent.empty()) {
+                auto keyPoint = mesh.get<std::string>("key_point");
+                attachPoint = m_meshes.at(parent)->getKeyPoint(keyPoint);
+            }
+            //auto sortingOrder = main["order"].as<int>(0);
+            addMesh(id, meshId, parent, attachPoint, z, scale, 0, offset);
         }
-        //auto sortingOrder = main["order"].as<int>(0);
-        addMesh(id, meshId, parent, attachPoint, z, scale, 0, offset);
     });
 
     int ac = 0;

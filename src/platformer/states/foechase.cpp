@@ -163,7 +163,7 @@ void FoeChase::Run(double dt) {
 
         if (fabs(displacement) > 0.01f) {
             m_animator->SetAnimation(m_walkAnim);
-            std::cerr << glm::length(displacement) << "\n";
+            //std::cerr << glm::length(displacement) << "\n";
             m_targetVelocityX = fabs(entityPos.x - targetPos.x) > m_attackPos ? m_speed : -m_speed;
             glm::vec3 delta = m_dynamics->step(dt, m_targetVelocityX, m_acceleration);
             if (fabs(delta.x) > fabs(displacement)) {

@@ -4,7 +4,7 @@
 #include <monkey/entity.h>
 #include <monkey/handle.h>
 
-class   TargetActivity : public Activity {
+class __attribute__ ((visibility ("default"))) TargetActivity : public Activity {
 public:
     //! An activity that acts upon an entity
     //! You can provide the entity by giving the unique identifier or the tag

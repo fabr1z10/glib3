@@ -17,7 +17,7 @@ struct Edge {
 };
 
 
-class ShortestPath
+class __attribute__ ((visibility ("default"))) ShortestPath
 {
 public:
     ShortestPath ();

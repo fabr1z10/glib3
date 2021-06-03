@@ -3,6 +3,7 @@
   type: default
   width: 640
   height: 144
+  on_load: init_scummbar
   items:
     - factory: [bg, {'image': gfx/scummbar_1.png}]
       d: [[0, 0, -3]]

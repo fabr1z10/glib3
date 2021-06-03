@@ -3,7 +3,7 @@
 #include <monkey/math/shapes/convexpoly.h>
 
 // a segment
-class Segment : public IConvexPolygon {
+class __attribute__ ((visibility ("default"))) Segment : public IConvexPolygon {
 public:
     Segment (glm::vec2 A, glm::vec2 B);
     explicit Segment (const ITab&);

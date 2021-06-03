@@ -14,7 +14,6 @@ FoeChase3D::FoeChase3D(const ITab& t) : State(t) {
 	m_speed = t.get<float>("speed");
 	m_acceleration = t.get<float>("acceleration");
 	float cumProb = 0.0f;
-
 	t.foreach("attacks", [&] (const ITab& dict) {
 		auto state = dict.get<std::string>("state");
 		auto prob = dict.get<float>("prob");

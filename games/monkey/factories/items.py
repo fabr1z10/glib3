@@ -44,7 +44,8 @@ def character(**kwargs):
         is_player = key == vars.current_player
         desc = args[1]
         model = desc.get('model', None)
-        text_color = desc.get('text_color', [255, 255, 255, 255])
+        text_color = monkey.engine.read(desc.get('text_color', [255, 255, 255, 255]))
+        #text_color =
         text_offset = desc.get('text_offset', [0, 60])
         pos = desc.get('pos')
         tag = desc.get('tag', key)

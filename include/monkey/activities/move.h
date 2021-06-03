@@ -3,7 +3,7 @@
 #include <monkey/activities/targetactivity.h>
 #include <monkey/entity.h>
 
-class MoveTo : public TargetActivity {
+class __attribute__ ((visibility ("default")))  MoveTo : public TargetActivity {
 public:
     MoveTo(glm::vec2 pos, float speed, bool relative, bool immediate, bool flip = false);
     MoveTo(const ITab&);

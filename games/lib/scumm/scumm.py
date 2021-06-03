@@ -7,6 +7,7 @@ import yaml
 def init_scumm(vars, status):
     print (' === initializing scumm')
     engine = eng.Engine()
+    engine.libs.append('scumm')
     engine.vars = status
     print (' === adding shaders... ', end = '')
     engine.add_shader(shader.ShaderType.unlit_textured)

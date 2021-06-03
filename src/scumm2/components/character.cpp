@@ -88,7 +88,7 @@ void AnimateCharState::AttachStateMachine(StateMachine * sm) {
     }
 }
 
-void AnimateCharState::Init(const ITab&) {
+void AnimateCharState::Init(pybind11::dict&) {
     char dir = m_state->GetDirection();
     if (dir == 'w') dir='e';
     m_animator->SetAnimation(m_id + "_"+ dir);

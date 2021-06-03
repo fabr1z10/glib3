@@ -8,6 +8,7 @@ import actions
 import monkey
 import func
 import engine
+import factories
 
 
 class Callbacks:
@@ -23,7 +24,21 @@ class Callbacks:
             monkey.engine.set(var, value)
         return f
 
-
+    # add item dynamically
+    def add_item(item_id, args):
+        def f():
+            dic = vars.items[item_id].copy()
+            dic.update(args)
+            tp = dic.get('type', None)
+            if tp is None:
+                print('item ' + item_id + ' does not have type!')
+                exit(1)
+            factory = getattr(factories.items, tp)
+            e = factory()(item_id, dic)
+            if e is not None:
+                parent = dic.get('parent', 'main')
+                example.get(parent).add(e)
+        return f
 
 
 
@@ -173,6 +188,9 @@ class Actions:
 # default actions
 ######################################
 open_ = Actions.say(['$defaultactions/1'])
+close_ = Actions.say(['$defaultactions/2'])
+push_ = Actions.say(['$defaultactions/3'])
+pull_ = Actions.say(['$defaultactions/3'])
 lookat_ = Actions.say(['$defaultactions/4'])
 pickup_ = Actions.say(['$defaultactions/5'])
 use_ = Actions.say(['$defaultactions/2'])

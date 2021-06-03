@@ -14,7 +14,7 @@
 //#include <monkey/fill.h>
 
 // creates a model from a shape
-class MeshFactory {
+class __attribute__ ((visibility ("default"))) MeshFactory {
 public:
     MeshFactory (float z=0.0f);
     std::shared_ptr<BasicModel> createWireframe (IShape*, glm::vec4 color);

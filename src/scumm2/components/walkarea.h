@@ -35,7 +35,7 @@ public:
     void AddBlockedLine(glm::vec2 A, glm::vec2 B, bool active);
     void EnableBlockedLine(int, bool);
     std::vector<LineSegment> GetActiveWalls() const;
-    using ParentClass = WalkArea;
+    using ParentClass = HotSpot;
     std::type_index GetType() override;
 private:
     //std::shared_ptr<Entity> getDebugMesh() override ;
@@ -62,6 +62,6 @@ inline void WalkArea::SetScalingFunction (std::shared_ptr<Function2D> func) {
 
 
 inline std::type_index WalkArea::GetType() {
-    return std::type_index(typeid(WalkArea));
+    return std::type_index(typeid(HotSpot));
 }
 

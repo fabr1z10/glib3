@@ -4,7 +4,7 @@
 #include <vector>
 #include <monkey/ref.h>
 
-class Activity : public Ref {
+class __attribute__ ((visibility ("default"))) Activity : public Ref {
 public:
     Activity () : Ref(), m_complete{false}, m_success{true} {}
     virtual ~Activity();

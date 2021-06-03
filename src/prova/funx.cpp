@@ -46,8 +46,12 @@ void killScript(const std::string& scriptId) {
 
 
 void rmvt(const std::string& tag) {
-    auto entity = m_monkey->Get<Entity>(tag);
-    m_engine->Remove(entity);
+    try {
+        auto entity = m_monkey->Get<Entity>(tag);
+        m_engine->Remove(entity);
+    } catch (const Error& err) {
+        std::cerr << err.what() << "\n";
+    }
 }
 
 std::vector<float> campos(const std::string& camId) {

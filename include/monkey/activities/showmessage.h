@@ -8,7 +8,7 @@
 
 class Entity;
 
-class ShowMessage : public Activity {
+class __attribute__ ((visibility ("default"))) ShowMessage : public Activity {
 public:
     ShowMessage(const ITab&);
     ShowMessage(

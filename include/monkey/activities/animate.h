@@ -5,7 +5,7 @@
 
 class IAnimator;
 
-class Animate : public TargetActivity {
+class __attribute__ ((visibility ("default"))) Animate : public TargetActivity {
 public:
     //! \name Constructors
     //@{

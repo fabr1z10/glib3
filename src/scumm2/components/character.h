@@ -95,7 +95,7 @@ inline float StateCharacter::GetSpeed() const {
 class AnimateCharState : public State {
 public:
     AnimateCharState(const std::string& id) : m_id(id) {}
-    void Init (const ITab&) override;
+    void Init (pybind11::dict&) override;
     void Run (double) override {}
     void End () override {}
     void AttachStateMachine(StateMachine*) override;
