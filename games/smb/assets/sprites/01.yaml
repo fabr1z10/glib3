@@ -13,6 +13,10 @@ mario:
       box: 0
       elements:
         - quads: [[0, 0, 16, 16, 8, 0]]
+    pipe:
+      loop: true
+      elements:
+        - quads: [[0, 0, 16, 16, 8, 0]]
     walk:
       box: 0
       elements:

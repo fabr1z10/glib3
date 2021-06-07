@@ -1,0 +1,61 @@
+ui:
+  open: Open
+  close: Close
+  push: Push
+  read: Read
+  newkid: New Kid
+  unlock: Unlock
+  pull: Pull
+  walkto: Walk to
+  pickup: Pick up
+  talkto: Talk to
+  give: Give
+  use: Use
+  lookat: Look at
+  turnon: Turn on
+  turnoff: Turn off
+  to: to
+  with: with
+pause_message: Game Paused. Press SPACE to Continue.
+defaultactions:
+  1: It doesn't seem to open.
+  2: That doesn't seem to work.
+  3: I can't move it.
+  4: I don't see anything special about it.
+  5: I can't pick that up.
+  6: There's nothing to read on it.
+objects:
+  sign: sign
+  stairs: stairs
+  cliffside : cliffside
+  archway: archway
+  path: path
+  poster: poster
+  door: door
+  lookout: lookout
+  clearing: clearing
+  pirate: pirate
+  pirates: pirates
+  fireplace: fireplace
+  ilp: important-looking pirates
+  citizen : Citizen of Mêlée
+  lowmoralfiber: Men of Low Moral Fiber (pirates)
+  baskets: baskets
+  trunk: trunk
+  couch: couch
+  chalice: chalice
+  knickknacks: knickknacks
+  statue: statue
+  rubberchicken: rubber chicken
+  pieceofeight: piece of eight
+  piecesofeight: pieces of eight
+  meat: hunk of meat
+  fish: fish
+  pot: pot
+  barrel: barrel
+  potostew: pot o'stew
+  stewed_meat: stewed meat
+  stewed_meat_2: stewed meat
+lines:
+  1: WARNING!!
+  2: Trespassers will be horribly mutilated.

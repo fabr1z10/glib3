@@ -25,6 +25,8 @@ def toggle_pause():
 
 def goto_world(world_id: str, start_location: int):
     def f():
+        print(world_id)
+        print(start_location)
         vars.invincibility = False
         # Don't reset energy! This only should be done after player dies!
         # vars.energy = vars.init_energy
@@ -187,6 +189,7 @@ def koopa_response(player: example.Wrap1, koopa: example.Wrap1, x, y):
 
 
 def player_hit_by_enemy(player: example.Wrap1):
+    return
     if vars.invincibility:
         return
     downgrade_player()
@@ -366,7 +369,11 @@ def pipe_out(p: example.Wrap1, k, x, y):
 
 
 def cippo():
-    example.get('w1').setActive(False)
+    print('UEPA')
+    #example.get('w1').setActive(False)
+    if vars.start_pos in vars.disable_update_on_start:
+        for i in vars.disable_update_on_start[vars.start_pos]:
+            example.get(i).enableUpdate(False)
     s = Script()
     s.add_action(act.SetState(tag='player', state='pipe'))
     s.add_action(act.Move(tag='player', speed=50, by=[0, 64]))

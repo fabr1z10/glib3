@@ -9,6 +9,7 @@ import components as comp
 
 
 def make_platformer_room(room: dict):
+    vars.disable_update_on_start = dict()
     room_d = room['id']
     visible_name = room['label']
     width = room['width']

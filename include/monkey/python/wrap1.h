@@ -24,6 +24,7 @@ public:
     void setVy(float);
     float getVx() const;
     void setVx(float);
+    void clear();
     float getScale() const;
     void setScale(float);
     void follow(bool);

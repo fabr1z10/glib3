@@ -1,0 +1,18 @@
+---
+  type: default
+  id: yoshi1
+  label: 'Yoshi Island 1'
+  time: 300
+  width: 256
+  height: 256
+  world_width: 320
+  world_height: 16
+  start:
+    - pos: [2, 10]
+  items:
+      - factory: [ platform, {'sheet': 0, 'top_left': [0, 0]} ]
+        d: [[0,2,0,3,59R,4U,14R,4D,120R,1D,5R,1U,15R,3D], [174,8,-0.2,5,S,3R,E], [177,5,-0.1,3,S,2R,E], [177,10,-0.3,3,S,4R,6\,1R,E],
+            [215,0,0,3,3U,4R,1D,4R,1U,5R,3D], [230,0,0,3,3U,56R,3U,6R,3D,28R], [269,6,-0.1,3,S,7R,E]]
+      - factory: [ incline_platform, {'sheet': 0, 'top_left': [0, 0]} ]
+        d: [[11, 5, -0.1, 3, 6], [75, 5, -0.3, 3, 6], [79, 5, -0.2, 3, 6], [83, 5, -0.1, 3, 6]]
+        #d: [ [0,2,0,S,2R,1U,2R,5D,3R,2/,13R,2\,2R,E]]

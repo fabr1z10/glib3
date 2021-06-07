@@ -1,0 +1,25 @@
+---
+  type: default
+  id: world1_1
+  label: '1_3'
+  time: 300
+  width: 256
+  height: 256
+  world_width: 176
+  world_height: 16 
+  start: 
+    - pos: [2, 10]
+    - pos: [116, 0]
+      script: cippo
+  items:
+    - factory: [bg, {'color': [0, 47, 70, 255] }]
+      dynamic: False
+      d: [ [0, 0, -5] ]
+    - factory: [platform, {'image': '/gfx/block1.png' } ]
+      d: [ [0, 0, 1, 16, 2] ]
+    - factory: [wall]
+      d: [ [0, 0] ]
+    - factory: [tile_map, {'id': castle}]
+      d: [[0, 2, -1]]
+    - factory: [plat1, {'top_left': [1, 15]}]
+      d: [[18, 2, 0, 4, 3]]

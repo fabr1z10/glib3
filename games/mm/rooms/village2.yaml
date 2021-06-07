@@ -1,0 +1,14 @@
+---
+  id: village2
+  type: default
+  width: 480
+  height: 144
+  bg:
+    - image: gfx/village2.png
+      pos: [0, 0, -1]
+  items:
+    - factory: [bg, {'image': gfx/village2.png}]
+      d: [ [0, 0, -1] ]
+    - factory: [walkarea, {'id': walkarea_0, 'outline': [0, 24, 0, 0, 470, 0, 454,35,385,35,377,30,299,30,199,63,123,63]}]
+      d: [[0,0,0]]
+

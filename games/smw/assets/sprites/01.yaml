@@ -1,0 +1,33 @@
+---
+mario:
+  sheet: "gfx/tiles.png"
+  thickness: 1
+  frame_time: 2
+  type: "asset.boxed"
+  boxes:
+    - [-6, 0, 6, 16]
+  # casts
+  animations:
+    idle:
+      loop: true
+      box: 0
+      elements:
+        - quads: [[48, 160, 16, 32, 8, 0]]
+    pipe:
+      loop: true
+      elements:
+        - quads: [[144, 160, 16, 32, 8, 0]]
+    walk:
+      box: 0
+      elements:
+        - quads: [[64, 160, 16, 32, 8, 0]]
+        - quads: [[80, 160, 16, 32, 8, 0]]
+        - quads: [[96, 160, 16, 32, 8, 0]]
+    jump_up:
+      box: 0
+      elements:
+        - quads: [[112, 160, 16, 32, 8, 0]]
+    jump_down:
+      box: 0
+      elements:
+        - quads: [[128, 160, 16, 32, 8, 0]]

@@ -1,0 +1,67 @@
+---
+  title: The secret of Monkey Island
+  lang: eng
+  device_size: [320, 200]
+  window_size: [640, 400]
+  tick_multiplier: 5
+  start_room: outside
+  fonts:
+    - id: ui
+      file: './fonts/main.ttf'
+      #file: '/usr/share/fonts/truetype/ubuntu/Ubuntu-M.ttf'
+      #file: './fonts/MonkeyIsland-1990.ttf'
+    - id: monkey
+      file: './fonts/main.ttf'
+  custom:
+    ui_height: 56
+    players:
+      - guybrush
+    current_player: guybrush
+    verbs:
+      open:
+        text: ui/open
+        items: 1
+        # callback is setverb
+      close:
+        text: ui/close
+        items: 1
+        # callback is setverb
+      push:
+        text: ui/push
+        items: 1
+        # callback is setverb
+      pull:
+        text: ui/pull
+        items: 1
+        # callback is setverb
+      walkto:
+        text: ui/walkto
+        items: 1
+      pickup:
+        text: ui/pickup
+        items: 1
+      talkto:
+        text: ui/talkto
+        items: 1
+      give:
+        text: ui/give
+        items: 2
+        prep: ui/giveprep
+      use: 
+        text: ui/use
+        items: 2
+        prep: ui/useprep
+      look:
+        text: ui/lookat
+        items: 1
+      turnon:
+        text: ui/turnon
+        items: 1
+      turnoff:
+        text: ui/turnoff
+        items: 1
+    verbsets:
+      - verbs: [open, close, push, pull, walkto, pickup, talkto, give, use, look, turnon, turnoff ]
+        default_verb: walkto
+          
+

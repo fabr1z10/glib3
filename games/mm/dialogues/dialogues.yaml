@@ -1,0 +1,315 @@
+---
+mancomb:
+  text_set: '$dialogues/mancomb'
+  on_exit: on_exit_mancomb
+  lines:
+    0:
+      text: imguy
+      next: name
+      scr:
+        - [0, 0, sayn, player, imguy]
+        - [1, 0, sayn, mancomb, 9, 10, 11]
+    1:
+      text: 'rupirate'
+      activate: [8]
+      deactivate: [2]
+      next: root
+      scr:
+        - [0, 0, sayn, player, rupirate]
+        - [1, 0, sayn, mancomb, 29, 30, 24, 25, 26]
+    2:
+      text: 'charge'
+      next: a
+      activate: [8]
+      deactivate: [1]
+      scr:
+        - [0, 0, sayn, player, charge]
+        - [1, 0, sayn, mancomb, 40, 41]
+    3:
+      text: 'bye'
+      persist: True
+      scr:
+        - [0, 0, sayn, player, bye]
+        - [1, 0, sayn, mancomb, bye, 7]
+    4:
+      text: 'yourname2'
+      active: False
+    5:
+      text: leaders
+      next: root
+      scr:
+        - [0, 0, sayn, player, leaders]
+        - [1, 0, sayn, mancomb, 24, 25, 26]
+    6:
+      text: guvnor2
+      next: marley
+      scr:
+        - [0, 0, sayn, player, leaders]
+        - [1, 0, sayn, mancomb, 31, 32, 33]
+    7:
+      text: nice
+      persist: True
+      scr:
+        - [0, 0, sayn, player, nice]
+        - [1, 0, sayn, mancomb, bye, 7]
+    8:
+      text: guvnor
+      active: False
+      next: marley
+      scr:
+        - [0, 0, sayn, player, guvnor]
+        - [1, 0, sayn, mancomb, 31, 32, 33]
+    9:
+      text: whynot
+      next: marley_2
+      scr:
+        - [0, 0, sayn, player, whynot]
+        - [1, 0, sayn, mancomb, 52, 53]
+    10:
+      text: welcome
+      next: root
+      scr:
+        - [0, 0, sayn, player, welcome]
+        - [1, 0, sayn, mancomb, 64, 65]
+    11:
+      text: gothere
+      scr:
+        - [0, 0, sayn, player, welcome]
+        - [1, 0, sayn, mancomb, 37, bye, 7]
+    12:
+      text: howsthat
+      next: root
+      scr:
+        - [0, 0, sayn, player, howsthat]
+        - [1, 0, sayn, mancomb, 59, 60, 61, 62, 63]
+    13:
+      text: whois
+      next: root
+      scr:
+        - [0, 0, sayn, player, whois]
+        - [1, 0, sayn, mancomb, 58, 59, 60, 61, 62, 63]
+    14:
+      text: toobad
+      scr:
+        - [0, 0, sayn, player, toobad]
+        - [1, 0, sayn, mancomb, bye, 7]
+    15:
+      text: ilikeguy
+      next: name
+      scr:
+        - [0, 0, sayn, player, ilikeguy]
+        - [1, 0, sayn, mancomb, 16]
+    16:
+      text: yourname
+      next: b
+      scr:
+        - [0, 0, sayn, player, yourname]
+        - [1, 0, sayn, mancomb, 17, 18]
+    17:
+      text: dumb
+      next: b
+      scr:
+        - [0, 0, sayn, player, dumb]
+        - [1, 0, sayn, mancomb, 45, 46, 18]
+    18:
+      text: insulted
+    19:
+      text: 19
+      next: root
+      scr:
+        - [0, 0, sayn, player, 19]
+        - [1, 0, sayn, mancomb, 23, 24, 25, 26]
+    20:
+      text: 20
+      next: root
+      scr:
+        - [0, 0, sayn, player, 20]
+        - [1, 0, sayn, mancomb, 28, 24, 25, 26]
+    21:
+      text: 21
+      next: root
+      scr:
+        - [0, 0, sayn, player, 21]
+        - [1, 0, sayn, mancomb, 50, 51, 24, 25, 26]
+    22:
+      text: 22
+      scr:
+        - [0, 0, sayn, player, 22]
+        - [1, 0, sayn, mancomb, 47, 48]
+  nodes:
+    root:
+      lines: [0, 1, 2, 8, 3, 4]
+    a:
+      lines: [5, 6, 7]
+    marley:
+      lines: [9, 10, 11]
+    marley_2:
+      lines: [12, 13, 14]
+    name:
+      lines: [15, 16, 17, 18]
+    b:
+      lines: []
+ilp:
+  text_set: '$dialogues/important_looking_pirates'
+  lines:
+    0:
+      text: 2
+      scr:
+        - [0, 0, say, player, 2]
+        - [1, 0, say, important_looking_pirate_1, 5]
+    1:
+      text: 3
+      next: info
+      scr:
+        - [0, 0, say, player, 3]
+        - [100, 0, set, '@pirates_know_guybrush', True]
+        - [101, 0, set_dialogue_root, ilp, info]
+        - [1, 0, say, important_looking_pirate_1, 6]
+#        - [2, 1, say, important_looking_pirate_2, 7]
+#        - [3, 2, say, important_looking_pirate_3, 8]
+#        - [4, 3, say, important_looking_pirate_1, 9]
+#        - [5, 4, say, important_looking_pirate_3, 10]
+#        - [6, 5, say, important_looking_pirate_1, 11, 12]
+#        - [7, 6, say, player, 13]
+#        - [8, 7, say, important_looking_pirate_1, 14, 15]
+#        - [9, 8, say, important_looking_pirate_3, 16]
+#        - [10, 9, say, important_looking_pirate_1, 17]
+#        - [11, 9, say, important_looking_pirate_2, 17]
+#        - [12, 9, say, important_looking_pirate_3, 17]
+#        - [13, [10, 11, 12], say, player, 18, 19]
+#        - [14, 13, say, important_looking_pirate_2, 20]
+#        - [15, 14, say, important_looking_pirate_1, 21]
+#        - [16, 15, say, important_looking_pirate_2, 22]
+#        - [17, 16, say, important_looking_pirate_3, 23]
+#        - [18, 17, say, important_looking_pirate_2, 24]
+#        - [19, 18, say, important_looking_pirate_3, 25]
+#        - [20, 19, say, important_looking_pirate_2, 26, 27, 28, 29]
+#        - [21, 20, say, important_looking_pirate_1, 30]
+#        - [22, 21, say, important_looking_pirate_1, 31]
+#        - [23, 21, say, important_looking_pirate_2, 31]
+#        - [24, 21, say, important_looking_pirate_3, 31]
+
+    2:
+      text: 4
+      scr:
+        - [0, 0, say, player, 4]
+        - [1, 0, say, important_looking_pirate_1, 5]
+    3:
+      text: 32
+      next: info
+      deactivate: [3]
+      activate: [9]
+      scr:
+        - [0, 0, say, player, 32]
+        - [1, 0, say, important_looking_pirate_1, 42, 43, 44, 45, 46]
+        - [2, 1, say, important_looking_pirate_3, 47, 48]
+        - [3, 2, say, important_looking_pirate_1, 49]
+        - [4, 2, say, important_looking_pirate_2, 49]
+        - [5, 2, say, important_looking_pirate_3, 49]
+    4:
+      text: 33
+      order: 10
+      deactivate: [4]
+      activate: [10]
+      next: info
+      scr:
+        - [0, 0, say, player, 33]
+        - [1, 0, say, important_looking_pirate_2, 52]
+        - [2, 1, say, important_looking_pirate_1, 53]
+        - [3, 2, say, important_looking_pirate_3, 54]
+        - [4, 3, say, important_looking_pirate_2, 55]
+        - [5, 4, say, important_looking_pirate_1, 56]
+        - [6, 5, say, important_looking_pirate_3, 57]
+        - [7, 6, say, important_looking_pirate_1, 58, 59]
+    5:
+      text: 34
+      order: 20
+      deactivate: [5]
+      activate: [11]
+      next: info
+      scr:
+        - [0, 0, say, player, 34]
+        - [1, 0, say, important_looking_pirate_3, 61]
+        - [2, 1, say, important_looking_pirate_1, 62]
+        - [3, 2, say, player, 63]
+        - [4, 3, say, important_looking_pirate_1, 64]
+        - [5, 4, say, important_looking_pirate_2, 65, 66]
+        - [6, 5, say, important_looking_pirate_1, 49]
+        - [7, 5, say, important_looking_pirate_2, 49]
+        - [8, 5, say, important_looking_pirate_3, 49]
+    6:
+      text: 35
+      order: 30
+      next: info
+      scr:
+        - [0, 0, say, player, 35]
+        - [1, 0, say, important_looking_pirate_1, 68]
+    7:
+      text: 36
+      order: 40
+      scr:
+        - [0, 0, say, player, 36]
+        - [1, 0, say, important_looking_pirate_2, 69]
+        - [2, 1, say, important_looking_pirate_1, 70]
+        - [3, 2, say, important_looking_pirate_2, 71]
+        - [4, 3, say, important_looking_pirate_3, 72]
+        - [5, 4, say, important_looking_pirate_1, 73]
+        - [6, 5, say, important_looking_pirate_2, 74]
+        - [7, 6, say, important_looking_pirate_3, 75]
+        - [8, 7, say, important_looking_pirate_1, 76]
+        - [9, 8, say, important_looking_pirate_2, 77]
+        - [10, 9, say, important_looking_pirate_3, 78]
+        - [11, 10, say, important_looking_pirate_1, 79]
+        - [12, 11, say, important_looking_pirate_2, 80, 81]
+        - [13, 12, say, important_looking_pirate_1, 82]
+        - [14, 13, say, important_looking_pirate_1, 49]
+        - [15, 13, say, important_looking_pirate_2, 49]
+        - [16, 13, say, important_looking_pirate_3, 49]
+    8:
+      text: 37
+      order: 100
+      persist: True
+      scr:
+        - [0, 0, say, player, 37]
+        - [1, 0, say, important_looking_pirate_1, 38]
+        - [2, 1, say, important_looking_pirate_2, 39]
+    9:
+      text: 50
+      order: 0
+      active: False
+      next: info
+      persist: True
+      scr:
+        - [0, 0, say, player, 50]
+        - [1, 0, say, important_looking_pirate_1, 42, 43, 44]
+        - [2, 1, say, important_looking_pirate_3, 51]
+    10:
+      text: 60
+      order: 10
+      active: False
+      next: info
+      persist: True
+      scr:
+        - [0, 0, say, player, 60]
+        - [1, 0, say, important_looking_pirate_2, 55]
+        - [2, 1, say, important_looking_pirate_1, 56]
+        - [3, 2, say, important_looking_pirate_3, 57]
+        - [4, 3, say, important_looking_pirate_1, 58, 59]
+    11:
+      text: 67
+      order: 20
+      active: False
+      next : info
+      persiste: True
+      scr:
+        - [0, 0, say, player, 67]
+        - [1, 0, say, important_looking_pirate_1, 62]
+        - [2, 1, say, important_looking_pirate_2, 65, 66]
+        - [3, 2, say, important_looking_pirate_1, 49]
+        - [4, 2, say, important_looking_pirate_2, 49]
+        - [5, 2, say, important_looking_pirate_3, 49]
+  nodes:
+    root:
+      lines: [0, 1, 2]
+    info:
+      lines: [3, 4, 5, 6, 7, 8, 9, 10, 11]

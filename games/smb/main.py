@@ -33,6 +33,9 @@ engine.add_shader(shader.ShaderType.text)
 
 engine.add_room_factory('default', factories.roomdefault.make_platformer_room)
 engine.add_item_factory('platform', factories.items.platform)
+engine.add_item_factory('wall', factories.items.wall)
+engine.add_item_factory('plat1', factories.items.plat1)
+
 engine.add_item_factory('player', factories.items.player)
 engine.add_item_factory('foe', factories.items.foe)
 engine.add_item_factory('koopa', factories.items.koopa)

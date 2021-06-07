@@ -17,6 +17,7 @@ FoeWalk::FoeWalk(const ITab& t) : PlatformerState(t) {
     m_acceleration = t.get<float>("acceleration");
     m_fliph = t.get<bool>("flipH");
     m_flipIfPlatformEnds = t.get<bool>("flipWhenPlatformEnds");
+    m_flipWhenHitWall = t.get<bool>("flip_on_wall", true);
     m_left = t.get<int>("left");
 
 }
@@ -53,7 +54,7 @@ void FoeWalk::Run(double dt) {
         m_dynamics->m_velocity.y = 0.0f;
     }
 
-    if ((m_left && m_c->m_details.left) || (!m_left && m_c->m_details.right)) {
+    if (m_flipWhenHitWall && ((m_left && m_c->m_details.left) || (!m_left && m_c->m_details.right))) {
         // I bumped into a wall
         m_left = (m_left == 0 ? 1 : 0);
         setDirection(m_left);

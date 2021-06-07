@@ -1,0 +1,412 @@
+---
+dave:
+  type: character
+  model: 01/dave
+  pos: [126, 52]
+  room: outside
+  parent: walkarea_0
+  dir: e
+  speed: 500
+  text_color: [85, 85, 255, 255]
+  text_offset: [0, 90]
+  collision:
+    size: [4, 1]
+    offset: [-2, 0]
+    flag: 0
+    mask: 1
+    tag: 0
+michael:
+  type: character
+  model: 01/michael
+  pos: [150, 8]
+  room: outside
+  parent: walkarea_0
+  dir: s
+  speed: 500
+  text_color: [170, 85, 0, 255]
+  text_offset: [0, 90]
+  collision:
+    size: [4, 1]
+    offset: [-2, 0]
+    flag: 0
+    mask: 1
+    tag: 0
+lnk_outside_frontdoor:
+  type: item1
+  pos: [0, 0, 0]
+  room: outside
+  text: '$objects/path'
+  size: [4,128]
+  walkto: [0, 6]
+  wdir: w
+sign:
+  type: item1
+  pos: [9, 24, 0]
+  text: '$objects/sign'
+  size: [31, 24]
+  room: outside
+  walkto: [24, 6]
+  wdir: s
+lookout:
+  model: 'lookout'
+  pos: [114, 36]
+  room: lookout
+  node: walkarea
+  dir: w
+  width: 20
+  height: 47
+  offset: [-10, 0]
+  text: lookout
+  speed: 100
+  walkto: [134, 36]
+  wdir: w
+  text_color: [170, 170, 170, 255]
+  text_offset: [0,60]
+mancomb:
+  type: character
+  pos: [52, 18]
+  model: 01/mancomb.mancomb
+  text_color: [255, 85, 85, 255]
+  text_offset: [0, 90]
+  room: mancomb
+mancomb.player:
+  tag: player
+  type: character
+  pos: [250, 20]
+  text_color: [255, 255, 255, 255]
+  text_offset: [0, 90]
+  room: mancomb
+lookout_fire:
+  model: fire
+  pos: [126, 52]
+  room: lookout
+lookout_stairs:
+  text: stairs
+  pos: [230, 0]
+  width: 30
+  height: 10 
+  walkto: '@lookout_stairs'
+  wdir: 's'
+  room: lookout
+lookout_path:
+  text: path
+  pos: [294, 0]
+  width: 26
+  height: 144
+  walkto: '@lookout_path'
+  wdir: e
+  room: lookout
+village1_poster:
+  text: poster
+  pos: [259, 27]
+  room: village1
+  width: 20
+  height: 23
+  walkto: [269, 15]
+  wdir: n
+village1_cliffside:
+  text: cliffside
+  pos: [0, 0]
+  width: 10
+  height: 144 
+  walkto: '@village1_lookout'
+  wdir: 'w'
+  room: village1
+village1_archway:
+  text: archway
+  pos: [992, 30]
+  width: 16
+  height: 40
+  walkto: '@village1_village2'
+  wdir: e
+  room: village1
+village1_door:
+  text: door
+  width: 30
+  height: 45
+  pos: [699, 7]
+  room: village1
+  walkto: '@village1_door'
+  wdir: n
+  anim: '@&doors/scummbar'
+  model: door_village_scummbar
+#scummbar_door_out:
+#  text: door
+#  width: 38
+#  height: 47
+#  pos: [32, 24]
+#  room: scummbar
+#  walkto: '@scummbar_entrance'
+#  wdir: w
+#  anim: '@&doors/scummbar'
+#  model: door_scummbar_village
+#scummbar_door_kitchen:
+#  text: door
+#  width: 35
+#  height: 69
+#  pos: [591, 9,-1]
+#  room: scummbar
+#  walkto: '@&scummbar_kitchen'
+#  wdir: e
+#  anim: '@&doors/kitchen'
+#  model: door_scummbar_kitchen
+
+#village2_archway1:
+#  text: archway
+#  pos: [416, 34]
+#  width: 40
+#  height: 50
+#  walkto: '@village2_village1'
+#  wdir: n
+#  room: village2
+#village2_archway3:
+#  text: archway
+#  pos: [146, 63]
+#  width: 30
+#  height: 30
+#  walkto: '@village2_village3'
+#  wdir: n
+#  room: village2
+#village3_archway:
+#  text: archway
+#  pos: [753, 11]
+#  width: 23
+#  height: 74
+#  walkto: '@village3_village2'
+#  wdir: e
+#  room: village3
+#village2_door:
+#  text: door
+#  model: door_village_voodoolady
+#  anim: '@doors/voodoolady'
+#  pos: [220, 52]
+#  width: 26
+#  height: 26
+#  walkto: [220, 48]
+#  wdir: e
+#  room: village2
+meleemap_lookout:
+  pos: [75, 79]
+  type: maphotspot
+  text: lookout
+  goto:
+    room: lookout
+    pos: '@lookout_path' 
+    dir: w   
+  room: meleemap
+meleemap_clearing:
+  pos: [135, 113]
+  type: maphotspot
+  text: clearing
+  goto:
+    room: clearing
+    pos: '@clearing_path' 
+    dir: w 
+  room: meleemap  
+#scummbar_pirate1:
+#  text: pirate
+#  pos: [138, 38]
+#  width: 30
+#  height: 30
+#  model: scummbar.pirate1
+#  walkto: [140,20]
+#  wdir: n
+#  room: scummbar
+#  node: walkarea
+#scummbar_pirate2:
+#  pos: [124, 20]
+#  model: scummbar.pirate2
+#  room: scummbar
+#  node: walkarea
+#scummbar_pirate3:
+#  pos: [30, 0]
+#  model: scummbar.pirate3
+#  room: scummbar
+#  node: walkarea
+#scummbar_pirate4:
+#  pos: [0, 0]
+#  model: scummbar.pirate4
+#  text: pirates
+#  width: 70
+#  height: 20
+#  walkto: [50, 10]
+#  wdir: s
+#  room: scummbar
+#  node: walkarea
+#scummbar_pirate5:
+#  pos: [200,18,1]
+#  model: scummbar.pirate5
+#  room: scummbar
+#scummbar_pirate6:
+#  pos: [160,0,1]
+#  model: scummbar.pirate6
+#  room: scummbar
+#scummbar_pirate7:
+#  pos: [255,38,-1]
+#  model: scummbar.pirate7
+#  room: scummbar
+#scummbar_pirate8:
+#  pos: [215,44,-1]
+#  model: scummbar.pirate8
+#  room: scummbar
+#scummbar_pirate9:
+#  pos: [278,40,-1]
+#  model: scummbar.pirate9
+#  room: scummbar
+scummbar_mancomb:
+  type: item1
+  text: '$objects/pirate'
+  pos: [89,24]
+  model: 01/scummbar.mancomb
+  size: [30, 30]
+  walkto: [120, 20]
+  wdir: n
+  room: scummbar
+  node: walkarea
+scummbar_estevan:
+  type: item1
+  text: '$objects/pirate'
+  pos: [164, 21, 1]
+  model: 01/scummbar.estevan
+  size: [30, 20]
+  walkto: [194,10]
+  wdir: s
+  room: scummbar
+scummbar_loom:
+  type: item1
+  text: '$objects/pirate'
+  pos: [260, 17, -0.99]
+  model: 01/scummbar.loom
+  size: [20, 20]
+  walkto: [250, 10]
+  wdir: n
+  room: scummbar
+
+#cook:
+#  model: cook
+#  pos: [589, 14]
+#  #room: scummbar
+#  node: walkarea
+#  dir: w
+#  speed: 100
+#  text_color: [85, 255, 255, 255]
+#  text_offset: [0,60]
+seagull:
+  model: seagull
+  pos: [0,0,1]  
+kitchen_door:
+  type: item1
+  text: '$objects/door'
+  size: [38, 53]
+  pos: [19, 18, -1]
+  room: kitchen
+  walkto: '@pos/kitchen_door'
+  wdir: w
+  anim: '@doors/kitchen'
+  next_room: [scummbar, '@pos/scummbar_kitchen_door', 'w']
+  model: 01/door_kitchen_scummbar
+kitchen_potostew:
+  type: item1
+  model: 01/potostew
+  pos: [153,39,-0.9]
+  room: kitchen
+kitchen_door_pier:
+  type: item1
+  model: 01/door_kitchen_pier
+  pos: [192, 9, -1]
+  room: kitchen
+  text: '$objects/door'
+  size: [20, 64]
+  walkto: [182, 9]
+  anim: '@doors/pier'
+  wdir: e
+meat:
+  type: item1
+  model: 01/meat
+  pos: [79, 40, -0.9]
+  text: '$objects/meat'
+  size: [20, 10]
+  room: kitchen
+  walkto: [90, 18]
+  wdir: n
+
+potostew:
+  type: item1
+  pos: [157, 39, 0]
+  text: '$objects/potostew'
+  size: [25, 16]
+  room: kitchen
+  walkto: [168, 16]
+  wdir: n
+fish:
+  type: item1
+  model: 01/fish
+  pos: [234, 9, 1]
+  text: '$objects/fish'
+  size: [12,7]
+  room: kitchen
+  walkto: [234, 12]
+  wdir: s
+pot:
+  type: item1
+  model: 01/pot
+  pos: [104, 24, -0.90]
+  text: '$objects/pot'
+  size: [15, 7]
+  room: kitchen
+  walkto: [112,18]
+  wdir: n
+kitchen_trap:
+  type: item2
+  pos: [100, 0, 0]
+  room: kitchen
+  size: [10, 144]
+  func: on_kitchen_trap
+plank:
+  type: item1
+  tag: plank
+  pos: [248, 0, 1]
+  model: 01/plank
+  room: kitchen
+  walkto: [295, 0]
+  wdir: s
+plank_button:
+  type: item3
+  pos: [277, 8]
+  size: [34, 9]
+  func: on_click_plank
+  room: kitchen
+important_looking_pirate_1:
+  type: character
+  pos: [376, 11, 0.95]
+  model: 01/ilp1
+  text_color: [85, 85, 255, 255]
+  text_offset: [0, 60]
+  room: scummbar
+important_looking_pirate_2:
+  type: character
+  pos: [413, 11, 0.95]
+  model: 01/ilp2
+  text_color: [255, 255, 85, 255]
+  text_offset: [0, 60]
+  room: scummbar
+important_looking_pirate_3:
+  type: character
+  pos: [444, 18, 0.95]
+  model: 01/ilp3
+  text_color: [255, 85, 255, 255]
+  text_offset: [0, 60]
+  room: scummbar
+important_looking_pirates:
+  type: item1
+  pos: [376, 21]
+  size: [80, 20]
+  text: '$objects/ilp'
+  room: scummbar
+  walkto: [461,3]
+  wdir: w
+#  collision:
+#    size: [10, 144]
+#    flag: 1
+#    mask: 0
+#    tag: 1

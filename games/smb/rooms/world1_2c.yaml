@@ -1,0 +1,35 @@
+---
+  type: default
+  id: world1_1c
+  label: '1_2'
+  time: 300
+  width: 256
+  height: 256
+  world_width: 42
+  world_height: 16 
+  start: 
+    - pos: [4, 0]
+      script: cippo
+  foes: []
+  items:
+    - factory: [bg, {'color': [0, 47, 70]} ]
+      d: [ [0, 0, -5] ]
+    - factory: [platform, {'image': '/gfx/block1.png'} ]
+      d: [ [0, 0, 1, 192, 2] ]
+    - factory: [platform, {'image': '/gfx/block2.png'} ]
+      d: [ [5, 2, 0, 9, 1], [6, 3, 0, 8, 1], [7, 4, 0, 7, 1], [8, 5, 0, 6, 1], [9, 6, 0, 5, 1],
+           [10, 7, 0, 4, 1], [11, 8, 0, 3, 1], [12, 9, 0, 2, 1], [22, 2, 0, 1, 1]]
+    - factory: [pipe, {'top_left': [0, 3], 'foe': sprites/01/plant, 'exit': 1}]
+      d: [[3, 2, 1, 2]]
+    - factory: [tile_map, {'id': hill}]
+      d: [[16, 2, -1]]
+    - factory: [tile_map, {'id': hillsmall}]
+      d: [[32, 2, -1]]
+    - factory: [tile_map, {'id': castle}]
+      d: [[26, 2, -1]]
+    - factory: [tile_map, {'id': flagpole}]
+      d: [ [22, 3] ]
+    - factory: [hotspot, {'func': win_slide}]
+      d: [[22.5, 3, 0.1, 10]]
+    - factory: [hotspot, {'func': goto_stage, 'info': {'world': 'world1_2', 'pos': 0} }]
+      d: [[29, 2, 1, 2]]

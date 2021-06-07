@@ -31,6 +31,7 @@ private:
     float m_acceleration;
     // flip gfx horizontally when going left
     bool m_fliph;
+    bool m_flipWhenHitWall;
     bool m_flipIfPlatformEnds;
     int m_left;
     float m_targetVelocityX;

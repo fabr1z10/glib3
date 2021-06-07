@@ -81,13 +81,9 @@ DynamicWorldBuilder::DynamicWorldBuilder(const ITab &t) : Runner(t), m_x(-1), m_
             bounds = renderer->GetBounds();
         } else {
             // TODO
-            auto info = node->GetComponent<LuaInfo>();
-            auto i2 = PyTab(info->getStuff());
-            auto b = i2.get<glm::vec4>("bounds");
-            bounds.min.x = b[0];
-            bounds.min.y = b[1];
-            bounds.max.x = b[2];
-            bounds.max.y = b[3];
+            auto info = node->GetComponent<ICollider>();
+            auto b = info->GetBounds();
+            bounds = b;
 
 
         }

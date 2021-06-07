@@ -57,6 +57,7 @@ PYBIND11_MODULE(example, m) {
         .def("getState", &Wrap1::getState)
         .def("setState", &Wrap1::setState)
         .def("move", &Wrap1::move)
+        .def("clear", &Wrap1::clear)
         .def("clearText", &Wrap1::clearText)
         .def("follow", &Wrap1::follow)
     	.def("rotatex", &Wrap1::rotx)

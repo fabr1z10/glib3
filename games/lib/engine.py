@@ -148,6 +148,12 @@ class Engine:
         print ('HALLLO')
         exit(1)
 
+    def get_next_tag(self):
+        tag = '__' + str(self.taggen)
+        self.taggen += 1
+        return tag
+
+
     shaders = []
     libs = []
     device_size = []
@@ -157,6 +163,7 @@ class Engine:
     room = ''
     previous_room = ''
     lang = ''
+    taggen = 0
     vars = {}
     assets = {
         'fonts': {},

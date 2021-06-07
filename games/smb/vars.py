@@ -11,6 +11,7 @@ coins = 0
 time = 300
 start_pos = 0
 state = 0                           # 0 = Mario, 1 = SuperMario, 2 = Fiery Mario
+disable_update_on_start = dict()
 
 states = [
     {

@@ -87,6 +87,11 @@ int Wrap1::getKeyFrame() const {
 	return static_cast<SkAnimator*>(m_entity->GetComponent<IAnimator>())->getKeyFrame();
 }
 
+void Wrap1::clear() {
+    m_entity->ClearAllChildren();
+}
+
+
 void Wrap1::setVx(float value) {
     m_entity->GetComponent<Dynamics2D>()->m_velocity.x = value;
 }
