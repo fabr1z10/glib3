@@ -160,6 +160,7 @@ def prova():
                 fc(vars.current_item_1, item)
         else:
             f1 = vars.current_verb + '_' + vars.current_item_1 + '_' + vars.current_item_2
+            print('check if ' + f1 + ' exists.')
             fc = getattr(scripts.actions, f1, None)
             if fc is None:
                 # try flipping the objects
@@ -180,9 +181,13 @@ def prova():
 
 def refresh_inventory():
     p = example.get('inventory')
+
+
     if p.valid:
         p.clearText()
-        for k, v in vars.inventory.items():
+        # get inventory of currnet player
+        inve = vars.inventory[vars.current_player]
+        for k, v in inve.items():
             print (k + ' --- ' +str(v))
             p.appendText((k, v))
             print ('fmerda')

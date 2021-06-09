@@ -56,7 +56,7 @@ struct Vertex3DN {
     static void InitAttributes();
 };
 
-struct VertexColor {
+struct __attribute__ ((visibility ("default"))) VertexColor {
     VertexColor(GLfloat x, GLfloat y, GLfloat z, GLfloat r = 1.0f, GLfloat g = 1.0f, GLfloat b = 1.0f, GLfloat a = 1.0f)
     : x(x), y(y), z(z), r(r), g(g), b(b), a(a) {}
     GLfloat x, y, z;

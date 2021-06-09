@@ -31,7 +31,7 @@ michael:
     flag: 0
     mask: 1
     tag: 0
-lnk_outside_frontdoor:
+path_outside_frontdoor:
   type: item1
   pos: [0, 0, 0]
   room: outside
@@ -39,6 +39,67 @@ lnk_outside_frontdoor:
   size: [4,128]
   walkto: [0, 6]
   wdir: w
+bushes:
+  type: item1
+  pos: [255, 15]
+  size: [48, 14]
+  room: frontdoor
+  text: '$objects/bushes'
+  walkto: [270,10]
+  wdir: n
+  model: '01/bushes'
+  priority: 1
+doormat:
+  type: item1
+  pos: [336,41]
+  size: [88,6]
+  room: frontdoor
+  model: '01/doormat'
+  walkto: [387,46]
+  wdir: s
+  text: '$objects/doormat'
+grating:
+  type: item1
+  pos: [256, 16]
+  size: [46, 12]
+  room: frontdoor
+  text: '$objects/grating'
+  walkto: [270,10]
+  wdir: n
+entry_clock_sprite:
+  type: item1
+  pos: [116, 31]
+  room: entry
+  model: '01/grandfather_clock'
+key:
+  type: item1
+  pos: [408, 44]
+  size: [8,4]
+  room: frontdoor
+  text: '$objects/key'
+  walkto: [387, 46]
+  wdir: s
+  priority: 1
+  model: '01/key'
+doorbell:
+  type: item1
+  pos: [353, 99]
+  size: [8,4]
+  room: frontdoor
+  text: '$objects/doorbell'
+  walkto: [358, 46]
+  wdir: n
+  priority: 1
+front_door:
+  type: item1
+  anim: closed
+  pos: [380, 50]
+  room: frontdoor
+  size: [50,75]
+  text: '$objects/frontdoor'
+  walkto: [387,46]
+  wdir: n
+  model: '01/frontdoor'
 sign:
   type: item1
   pos: [9, 24, 0]

@@ -1,7 +1,7 @@
 ui_height = 56
 msg_height = 16
 main_height = 128
-
+speed = 300
 font_size = 8
 
 current_player = 'dave'
@@ -20,7 +20,20 @@ dialogues = dict()
 
 items_in_room = dict()
 
+
 inventory = dict()
+
+
+def init_inventory():
+    for player in player_info.values():
+        inventory[player] = dict()
+
+
+def someone_owns(key):
+    for p in inventory.values():
+        if key in p:
+            return True
+    return False
 
 class Collision:
     class Flags:

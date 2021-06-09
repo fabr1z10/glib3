@@ -59,7 +59,7 @@ def character(**kwargs):
                 s.add_component(compo.Follow())
         else:
             s = entity.Entity(pos=pos, tag='player' if is_player else tag)
-        s.add_component(scumm.components.CharacterController(dir=dir, speed=100, text_color=text_color, text_offset=text_offset))
+        s.add_component(scumm.components.CharacterController(dir=dir, speed=vars.speed, text_color=text_color, text_offset=text_offset))
         return s
     return f
 
@@ -91,7 +91,7 @@ def item1(**kwargs):
         key = args[0]
         desc = args[1]
         cio = desc.get('create_if_owned', False)
-        if (not cio) and key in vars.inventory:
+        if (not cio) and vars.someone_owns(key):
             # item is in inventory. don't create it
             return None
         pos = desc.get('pos')
@@ -108,7 +108,8 @@ def item1(**kwargs):
         # if a size is provided, add a hotspot
         size = desc.get('size', None)
         if size:
-            s.add_component(compo.HotSpot(shape=shapes.Rect(width=size[0], height=size[1]),
+            prio = desc.get('priority', 0)
+            s.add_component(compo.HotSpot(shape=shapes.Rect(width=size[0], height=size[1]), priority=prio,
                                           onenter=func.hover_on(key),
                                           onleave=func.hover_off(key),
                                           onclick=func.prova()))

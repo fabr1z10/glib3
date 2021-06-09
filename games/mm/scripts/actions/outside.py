@@ -11,3 +11,4 @@ import vars
 # one-object actions
 
 read_sign = a.Actions.say(['$lines/1', '$lines/2'])
+walkto_path_outside_frontdoor = a.Actions.goto_room('frontdoor', [960, 2], 'w')

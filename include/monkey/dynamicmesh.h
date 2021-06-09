@@ -4,7 +4,7 @@
 
 
 template<class Vertex>
-class DynamicMesh : public IMesh {
+class __attribute__ ((visibility ("default"))) DynamicMesh : public IMesh {
 public:
     DynamicMesh() = default;
     DynamicMesh(ShaderType type) : IMesh(type) {}
@@ -35,16 +35,26 @@ public:
         //m_bounds.min = m_localTransform * glm::vec4(m_bounds.min, 1.0f);
         //m_bounds.max = m_localTransform * glm::vec4(m_bounds.max, 1.0f);
         //m_indicesCount = indices.size();
+		m_nvertices = vertices.size();
+		m_nindices = indices.size();
+		m_init = true;
     }
 
     void UpdateGeometry(std::vector<Vertex>& vertices, std::vector<unsigned int>& indices) {
-        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vertex) * vertices.size(), &vertices[0]);
-        glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(unsigned int) * indices.size(), &indices[0]);
+    	if (!m_init) {
+    		Init(vertices, indices);
+
+    	} else {
+			glBindBuffer(GL_ARRAY_BUFFER, m_vb);
+			glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vertex) * vertices.size(), &vertices[0]);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ib);
+			glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(unsigned int) * indices.size(), &indices[0]);
+		}
     }
 
 
     virtual void InitAttributes() {
         Vertex::InitAttributes();
     }
-
+	bool m_init;
 };

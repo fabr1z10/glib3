@@ -26,6 +26,12 @@ defaultactions:
   6: There's nothing to read on it.
 objects:
   sign: sign
+  bushes: bushes
+  grating: grating
+  doormat: doormat
+  frontdoor: front door
+  key: key
+  doorbell: doorbell
   stairs: stairs
   cliffside : cliffside
   archway: archway
@@ -59,3 +65,8 @@ objects:
 lines:
   1: WARNING!!
   2: Trespassers will be horribly mutilated.
+  3: I can't budge it. It's rusted shut.
+  4: The door is locked.
+  5: This is the home of Dr. Fred,
+  6: Nurse Edna, Weird Ed, Dead Cousin Ted,
+  7: Green Tentacle and Purple Tentacle.

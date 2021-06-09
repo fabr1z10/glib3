@@ -62,10 +62,12 @@ class PlatformerRoom(room.Room):
         # self.keyl.addKey(key=264, func = checkWarp)
 
         main = Entity(tag='main')
-        main.camera = camera.OrthoCamera(world_width=world_width * vars.tile_size,
-                                         world_height=world_height * vars.tile_size,
-                                         cam_width=width, cam_height=height, viewport=[0, 0, width, height],
-                                         tag='maincam')
+        #main.camera = camera.OrthoCamera(world_width=world_width * vars.tile_size,
+        #                                 world_height=world_height * vars.tile_size,
+        #                                 cam_width=width, cam_height=height, viewport=[0, 0, width, height],
+        #                                 tag='maincam')
+        main.camera = camera.PerspectiveCamera(viewport=[0,0,width,height], tag='maincam')
+        main.camera.pos = (0, 1, 0)
         self.main = main
         self.add(main)
 

@@ -1,0 +1,14 @@
+---
+  id: frontdoor
+  type: default
+  width: 960
+  height: 144
+  on_load: init_frontdoor
+  items:
+    - factory: [bg, {'image': gfx/front.png}]
+      d: [[0, 0, -3]]
+    - factory: [bg, {'image': gfx/front_01.png}]
+      d: [[815, 0, 1]]
+    - factory: [walkarea, {'id': walkarea_0, 'depth': { 'type': "func.liny", 'values': [0, 1, 144, 0]}, 'outline': [0,0,960,0,960,12,482,12,482,4,
+    445,4,427,39,424,50,335,50,335,39,305,4,282,4,282,12,0,12]}]
+      d: [[0,0,0]]

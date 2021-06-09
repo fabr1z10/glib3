@@ -5,6 +5,8 @@
 #include <monkey/math/geom.h>
 #include <monkey/components/scripthotspot.h>
 #include <monkey/math/algo/shortestpath.h>
+#include <monkey/vertices.h>
+#include <monkey/dynamicmesh.h>
 
 class Scheduler;
 
@@ -16,7 +18,10 @@ public:
     void Start() override;
     using ParentClass = Road;
     std::type_index GetType() override;
-
+private:
+	std::shared_ptr<DynamicMesh<VertexColor>> m_mesh;
+	float m_curvature;
+	float m_step;
 };
 
 

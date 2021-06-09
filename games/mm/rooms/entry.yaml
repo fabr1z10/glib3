@@ -1,0 +1,11 @@
+---
+  id: entry
+  type: default
+  width: 640
+  height: 144
+  items:
+    - factory: [bg, {'image': gfx/entryway.png}]
+      d: [[0, 0, -3]]
+    - factory: [walkarea, {'id': walkarea_0, 'depth': { 'type': "func.liny", 'values': [0, 1, 144, 0]}, 'outline': [26,3,612,3,557,21,401,21,394,17,
+    327,17,215,17,210,24,149,24,147,17,99,17,84,21]}]
+      d: [[0,0,0]]

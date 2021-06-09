@@ -12,6 +12,11 @@ import factories
 
 
 class Callbacks:
+    def set_pos(item_id, room, pos, dir):
+        def f():
+            func.set_item_pos(item_id, room, pos, dir)
+        return f
+
     def set_door(id, var, value):
         def f():
             e = example.getById(id)
@@ -45,7 +50,7 @@ class Callbacks:
     def pickup(id, entity_id):
         def f():
             example.remove(entity_id)
-            vars.inventory[id] = 1
+            vars.inventory[vars.current_player][id] = 1
             func.refresh_inventory()
         return f
 
@@ -113,6 +118,9 @@ class Scripts:
             s.add_action(actions.CallFunc(f=Callbacks.set_door(entity.id, aaa, value)))
             return s
         return f
+
+
+
 
     def use_base(item1, item2):
         s = None
@@ -182,7 +190,14 @@ class Actions:
             example.play(s)
         return f
 
-
+    @staticmethod
+    def goto_room(room, pos, dir):
+        def f(item_id, entity):
+            s = Scripts.walk(item_id)
+            s.add_action(actions.CallFunc(f=Callbacks.set_pos(vars.current_player, room, pos, dir)))
+            s.add_action(actions.ChangeRoom(room=room))
+            example.play(s)
+        return f
 
 ######################################
 # default actions

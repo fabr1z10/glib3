@@ -1,4 +1,55 @@
 ---
+bushes:
+  sheet: "gfx/sprites/mm.png"
+  type: "asset.sprite"
+  animations:
+    def:
+      loop: true
+      elements:
+        - quads: [[2, 491, 51, 19, 0, 0]]
+key:
+  sheet: "gfx/sprites/mm.png"
+  type: "asset.sprite"
+  animations:
+    def:
+      loop: true
+      elements:
+        - quads: [[132, 496, 11, 4, 0, 0]]
+grandfather_clock:
+  sheet: "gfx/sprites/mm.png"
+  type: "asset.sprite"
+  animations:
+    def:
+      loop: true
+      elements:
+        - quads: [[100, 451, 10, 39, 0, 0]]
+          ticks: 5
+        - quads: [[112, 451, 10, 39, 0, 0]]
+          ticks: 5
+doormat:
+  sheet: "gfx/sprites/mm.png"
+  type: "asset.sprite"
+  animations:
+    closed:
+      loop: true
+      elements:
+        - quads: [[56,504,88,6,0,0]]
+    open:
+      loop: true
+      elements:
+        - quads: [[56,495,70,7,0,0]]
+frontdoor:
+  sheet: "gfx/sprites/mm.png"
+  type: "asset.sprite"
+  animations:
+    closed:
+      loop: true
+      elements:
+        - quads: [[2,412,46,78,0,0]]
+    open:
+      loop: true
+      elements:
+        - quads: [[51,412,46,78,0,0]]
 fire:
   sheet: "gfx/sprites/sprites1.png"
   type: "asset.sprite"

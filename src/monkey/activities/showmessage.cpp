@@ -35,7 +35,8 @@ void ShowMessage::Start() {
     }
 
     currentPos += m_offset;
-
+	auto maxY = m_mainCam->GetPosition().y + (0.5f*m_mainCam->GetSize().y) - m_size;
+	currentPos.y = std::min(currentPos.y, maxY);
     auto parent = std::make_shared<Entity>();
     Font* f = Engine::get().GetAssetManager().GetFont(m_font).get();
 
