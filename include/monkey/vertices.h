@@ -10,6 +10,7 @@
 #define vertices_h
 
 #include <GL/glew.h>
+#include <glm/glm.hpp>
 
 struct SimpleVertex3D {
     SimpleVertex3D(float x, float y, float z)
@@ -59,6 +60,8 @@ struct Vertex3DN {
 struct __attribute__ ((visibility ("default"))) VertexColor {
     VertexColor(GLfloat x, GLfloat y, GLfloat z, GLfloat r = 1.0f, GLfloat g = 1.0f, GLfloat b = 1.0f, GLfloat a = 1.0f)
     : x(x), y(y), z(z), r(r), g(g), b(b), a(a) {}
+	VertexColor(GLfloat x, GLfloat y, GLfloat z, glm::vec4 color )
+	: x(x), y(y), z(z), r(color.r), g(color.g), b(color.b), a(color.a) {}
     GLfloat x, y, z;
     GLfloat r, g, b, a;
     static void InitAttributes();

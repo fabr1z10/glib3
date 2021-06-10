@@ -91,6 +91,7 @@ class PlatformerRoom(room.Room):
         self.add(diag)
         e = Entity()
         e.add_component(Road())
+        e.add_component(comp.KeyInput())
         main.add(e)
         # add player
         # mario = monkey.engine.get_item_factory('player')()(start_pos[0], start_pos[1], 0)

@@ -7,6 +7,7 @@
 #include <monkey/math/algo/shortestpath.h>
 #include <monkey/vertices.h>
 #include <monkey/dynamicmesh.h>
+#include <monkey/components/inputmethod.h>
 
 class Scheduler;
 
@@ -22,6 +23,16 @@ private:
 	std::shared_ptr<DynamicMesh<VertexColor>> m_mesh;
 	float m_curvature;
 	float m_step;
+	InputMethod * m_input;
+	Camera* m_cam;
+	// position of the player in the road (distance from beginning)
+	float m_s;
+	// distance between horizontal bands
+	float m_d0;
+	float m_speed;
+	float m_acceleration;
+	// number of points per band
+	int m_n;
 };
 
 
