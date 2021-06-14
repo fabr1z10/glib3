@@ -14,18 +14,20 @@
 
 Road::Road(const ITab& t) : Component(t) {
 
-	m_n = 10;
+	m_n = 2;
 	m_s = 0.0f;
 	m_d0 = 5.0f;
 	m_step = m_d0 / m_n;
-
+	m_z0 = 0.0f;
 }
 
 
 void Road::Start() {
     // init mesh
+    m_oldy = 0.0f;
     std::cerr << "qu]m";
-
+	m_oldis = -10;
+	m_oldy = 0.0f;
     m_speed = 0.0f;
 	m_acceleration= 10.0f;
 
@@ -56,7 +58,28 @@ void Road::Start() {
 		indices.push_back(i+3);
 	}
 	m_curvature=0.0f;
+	m_initialSlope=0.0f;
+//	m_roadInfo[-10] = std::make_pair(0, 0);
+//	m_roadInfo[50] = std::make_pair(0.000001, 0);
+//	m_roadInfo[500] = std::make_pair(-0.000001, 0);
+//	m_roadInfo[900] = std::make_pair(0, 0);
 	//m_step = 0.01f;
+
+	m_roadInfo[-10] = std::make_pair(0, 0);
+	m_roadInfo[50] = std::make_pair(0, 0.01f);
+	m_roadInfo[200] = std::make_pair(0, 0.0f);
+	m_roadInfo[300] = std::make_pair(0, 0.01f);
+	m_roadInfo[400] = std::make_pair(0, -0.01f);
+	m_roadInfo[500] = std::make_pair(0, 0.01f);
+	m_roadInfo[800] = std::make_pair(0, 0.01f);
+	m_roadInfo[1000] = std::make_pair(0, 0.0f);
+	m_roadInfo[10000] = std::make_pair(0, 0.0f);
+//	m_roadInfo[500] = std::make_pair(0, -0.01f);
+//	m_roadInfo[600] = std::make_pair(0, 0.01f);
+//	m_roadInfo[700] = std::make_pair(0, -0.01f);
+//	m_roadInfo[800] = std::make_pair(0, 0.01f);
+//	m_roadInfo[500] = std::make_pair(-0.000001, 0);
+//	m_roadInfo[900] = std::make_pair(0, 0);
 	//m_mesh->UpdateGeometry(vertices, indices);
 }
 
@@ -79,17 +102,16 @@ void Road::Update(double dt) {
 
 	}
 
-//	bool left = m_input->isKeyDown(GLFW_KEY_LEFT);
-//	bool right = m_input->isKeyDown(GLFW_KEY_RIGHT);
-//	bool up = ;
-//	bool down = m_input->isKeyDown(GLFW_KEY_DOWN);
-	m_s+=dt*m_speed;
-	long is = int(m_s/m_step);
 
+	m_s += dt*m_speed;
+
+	float s0 = m_s - m_z0;
+
+	long is = int(s0 / m_step);
 	size_t current_color = int(is/(m_n-1)) % 2;
 
-	float s0 = int(m_s / m_step) * m_step;
-	float z0 = m_s - s0;
+	// length of first poly
+	float lambda0 = m_step - (s0 - is * m_step);
 
 	std::vector<VertexColor> vertices;
 	std::vector<unsigned> indices;
@@ -97,15 +119,54 @@ void Road::Update(double dt) {
 	float roadWidth{2.0f};
 	std::array<glm::vec4, 2> colors = { glm::vec4(0.64, 0.64, 0.64, 1.0f), glm::vec4(0.32,0.32f,0.32f,1.0)};
 
-	vertices.emplace_back(-roadWidth, 0.0f, z0, colors[current_color]);
-	vertices.emplace_back(roadWidth, 0.0f, z0, colors[current_color]);
 	unsigned k = 0;
+
+	auto currentRoadInfo = m_roadInfo.upper_bound(s0);
+	float next_change = currentRoadInfo->first;
+	currentRoadInfo--;
+//	float curvature = currentRoadInfo->second.first;
+	float slope = currentRoadInfo->second.second;
+	currentRoadInfo++;
+//	float s = s0;
+//	int ic = 0;
+
+	// road center, and deltaz
+//	if (is > m_oldis) {
+//		m_oldis = is;
+//		m_initialSlope = slope;
+//	}
+	float rx = 0.0f;
+	float ry = 0.0f;//slope * fabs(z0);
+	float dz = 0.0f;
+	float dy = 0.0f;
+
+
+
+	vertices.emplace_back(-roadWidth, ry, m_z0, colors[current_color]);
+	vertices.emplace_back(roadWidth, ry, m_z0, colors[current_color]);
+
+	float z = m_z0;
+	float s = s0;
 	for (int i = 0; i < n; ++i) {
 		is += 1;
 		// junction point. color changing here we need to add the start
 		bool jp = (is % (m_n - 1)) == 0;
-		vertices.emplace_back(-roadWidth, 0.0f, z0-(i+1)*m_step, colors[current_color]);
-		vertices.emplace_back(roadWidth, 0.0f, z0-(i+1)*m_step, colors[current_color]);
+		//auto j = ic*ic;
+		if (s > next_change) {
+			slope = currentRoadInfo->second.second;
+			currentRoadInfo++;
+			next_change = currentRoadInfo->first;
+		}
+		// update delta z
+		//dz += j * curvature;
+		float step = (i == 0 ? lambda0 : m_step);
+		s += step;
+		dy += slope * step;
+		rx += dz;
+		ry += dy;
+		z -= step;
+		vertices.emplace_back(rx - roadWidth, ry, z, colors[current_color]);
+		vertices.emplace_back(rx + roadWidth, ry, z, colors[current_color]);
 		indices.push_back(k);
 		indices.push_back(k+1);
 		indices.push_back(k+2);
@@ -115,10 +176,11 @@ void Road::Update(double dt) {
 		k += 2;
 		if (jp) {
 			current_color = (current_color + 1) % 2;
-			vertices.emplace_back(-roadWidth, 0.0f, z0-(i+1)*m_step, colors[current_color]);
-			vertices.emplace_back(roadWidth, 0.0f, z0-(i+1)*m_step, colors[current_color]);
+			vertices.emplace_back(rx - roadWidth , ry, z, colors[current_color]);
+			vertices.emplace_back(rx + roadWidth , ry, z, colors[current_color]);
 			k += 2;
 		}
+		//ic++;
 	}
 
 //	std::vector<VertexColor> vertices;

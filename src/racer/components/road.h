@@ -31,8 +31,14 @@ private:
 	float m_d0;
 	float m_speed;
 	float m_acceleration;
+	float m_initialSlope;
+	std::map<float, std::pair<float,float>> m_roadInfo;
 	// number of points per band
 	int m_n;
+	float m_oldy;
+	int m_oldis;
+
+	float m_z0;
 };
 
 
