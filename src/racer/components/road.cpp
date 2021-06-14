@@ -59,21 +59,25 @@ void Road::Start() {
 	}
 	m_curvature=0.0f;
 	m_initialSlope=0.0f;
-//	m_roadInfo[-10] = std::make_pair(0, 0);
-//	m_roadInfo[50] = std::make_pair(0.000001, 0);
-//	m_roadInfo[500] = std::make_pair(-0.000001, 0);
-//	m_roadInfo[900] = std::make_pair(0, 0);
+	// road 1
+	m_roadInfo[-10] = std::make_pair(0, 0);
+	m_roadInfo[50] = std::make_pair(0.01, 0);
+	m_roadInfo[500] = std::make_pair(-0.01, 0.01f);
+	m_roadInfo[900] = std::make_pair(0, 0);
+	// end road 1
 	//m_step = 0.01f;
 
-	m_roadInfo[-10] = std::make_pair(0, 0);
-	m_roadInfo[50] = std::make_pair(0, 0.01f);
-	m_roadInfo[200] = std::make_pair(0, 0.0f);
-	m_roadInfo[300] = std::make_pair(0, 0.01f);
-	m_roadInfo[400] = std::make_pair(0, -0.01f);
-	m_roadInfo[500] = std::make_pair(0, 0.01f);
-	m_roadInfo[800] = std::make_pair(0, 0.01f);
-	m_roadInfo[1000] = std::make_pair(0, 0.0f);
-	m_roadInfo[10000] = std::make_pair(0, 0.0f);
+	// road 2
+//	m_roadInfo[-10] = std::make_pair(0, 0);
+//	m_roadInfo[50] = std::make_pair(0, 0.01f);
+//	m_roadInfo[200] = std::make_pair(0, 0.0f);
+//	m_roadInfo[300] = std::make_pair(0, 0.01f);
+//	m_roadInfo[400] = std::make_pair(0, -0.01f);
+//	m_roadInfo[500] = std::make_pair(0, 0.01f);
+//	m_roadInfo[800] = std::make_pair(0, 0.01f);
+//	m_roadInfo[1000] = std::make_pair(0, 0.0f);
+//	m_roadInfo[10000] = std::make_pair(0, 0.0f);
+	// end road 2
 //	m_roadInfo[500] = std::make_pair(0, -0.01f);
 //	m_roadInfo[600] = std::make_pair(0, 0.01f);
 //	m_roadInfo[700] = std::make_pair(0, -0.01f);
@@ -124,7 +128,7 @@ void Road::Update(double dt) {
 	auto currentRoadInfo = m_roadInfo.upper_bound(s0);
 	float next_change = currentRoadInfo->first;
 	currentRoadInfo--;
-//	float curvature = currentRoadInfo->second.first;
+	float curvature = currentRoadInfo->second.first;
 	float slope = currentRoadInfo->second.second;
 	currentRoadInfo++;
 //	float s = s0;
@@ -153,14 +157,15 @@ void Road::Update(double dt) {
 		bool jp = (is % (m_n - 1)) == 0;
 		//auto j = ic*ic;
 		if (s > next_change) {
+			curvature = currentRoadInfo->second.first;
 			slope = currentRoadInfo->second.second;
 			currentRoadInfo++;
 			next_change = currentRoadInfo->first;
 		}
 		// update delta z
-		//dz += j * curvature;
 		float step = (i == 0 ? lambda0 : m_step);
 		s += step;
+		dz += step * curvature;
 		dy += slope * step;
 		rx += dz;
 		ry += dy;
