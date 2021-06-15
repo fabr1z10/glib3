@@ -1,0 +1,24 @@
+couch:
+  type: item1
+  pos: [249, 15]
+  size: [133, 51]
+  room: living
+  text: '$objects/couch'
+  walkto: [304, 11]
+  wdir: n
+living_window_l:
+  type: item1
+  pos: [175, 28]
+  size: [66, 84]
+  room: living
+  text: '$objects/window'
+  walkto: [207, 18]
+  wdir: n
+living_window_r:
+  type: item1
+  pos: [391, 28]
+  size: [66, 84]
+  room: living
+  text: '$objects/window'
+  walkto: [423, 18]
+  wdir: n

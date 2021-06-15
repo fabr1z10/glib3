@@ -210,12 +210,17 @@ def hover_off(obj):
         update_current_action()
     return f
 
+
 def on_enter_trap(player, trap, dx, dy):
-    f = trap.getInfo().get('func')
-    print('ciappo!' + str(f))
+    f = trap.getInfo().get('on_enter')
     if f:
         getattr(scripts.actions, f)(trap)
 
+
+def on_leave_trap(player, trap, dx, dy):
+    f = trap.getInfo().get('on_leave')
+    if f:
+        getattr(scripts.actions, f)(trap)
 
 
 def execute_dialogue_script(l):

@@ -13,6 +13,7 @@ ui:
   use: Use
   lookat: Look at
   turnon: Turn on
+  turnon: Turn on
   turnoff: Turn off
   to: to
   with: with
@@ -32,12 +33,21 @@ objects:
   frontdoor: front door
   key: key
   doorbell: doorbell
+  grandfather_clock: grandfather clock
+  door: door
+  vase: vase
+  gargoyle: gargoyle
+  light_switch: light switch
   stairs: stairs
-  cliffside : cliffside
+  furnace: furnace
+  nuclear_reactor: nuclear reactor
+  fusebox: fuse box
+  circuit_breakers: circuit breakers
+  silver_key: silver key
+  window: window
   archway: archway
   path: path
   poster: poster
-  door: door
   lookout: lookout
   clearing: clearing
   pirate: pirate
@@ -70,3 +80,9 @@ lines:
   5: This is the home of Dr. Fred,
   6: Nurse Edna, Weird Ed, Dead Cousin Ted,
   7: Green Tentacle and Purple Tentacle.
+  8: It's the correct time.
+  9: There's no handle here!
+  10: It's too hot!
+  11: Made in Chernobyl
+  12: MAIN POWER
+  13: Yuck! I'm not touching that!

@@ -33,11 +33,7 @@ def setMat(state):
             b.setActive(state[0] == 'o')
     return f
 
-def openDoor(item_id, state):
-    def f():
-        example.get(item_id).setAnim(state)
-        vars.items[item_id]['anim']=state
-    return f
+
 
 def pull_doormat(item_id, entity):
     s = a.Scripts.walk(item_id)
@@ -47,7 +43,7 @@ def pull_doormat(item_id, entity):
 
 def use_key_front_door(item_id, entity):
     s = a.Scripts.walk(entity)
-    s.add_action(actions.CallFunc(f=openDoor(entity, 'open')))
+    s.add_action(actions.CallFunc(f=a.openDoor(entity, 'open')))
     status.front_door_open = True
     example.play(s)
 
@@ -56,7 +52,7 @@ def open_front_door(item_id, entity):
         a.Actions.say(['$lines/4'])(item_id, entity)
     else:
         s = a.Scripts.walk(item_id)
-        s.add_action(actions.CallFunc(f=openDoor(item_id, 'open')))
+        s.add_action(actions.CallFunc(f=a.openDoor(item_id, 'open')))
         example.play(s)
 
 def close_front_door(item_id, entity):

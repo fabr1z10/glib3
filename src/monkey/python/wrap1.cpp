@@ -189,6 +189,13 @@ void Wrap1::setActive(bool value) {
     m_entity->setActive(value);
 }
 
+void Wrap1::setVisible(bool value) {
+	auto renderer = m_entity->GetComponent<Renderer>();
+	if (renderer != nullptr) {
+		renderer->setActive(value);
+	}
+}
+
 void Wrap1::enableControls(bool value) {
     auto hs = m_entity->GetComponent<HotSpotManager>();
     if (hs != nullptr)
@@ -259,6 +266,29 @@ pybind11::list Wrap1::getCollisionBounds() {
 	return l;
 
 }
+
+pybind11::list Wrap1::getChildren(bool recursive) {
+	std::list<Entity*> entities{m_entity};
+	pybind11::list l;
+	while (!entities.empty()) {
+		auto entity = entities.front();
+		entities.pop_front();
+		if (entity != m_entity) {
+			l.append(Wrap1::create(entity));
+		}
+		if (recursive || m_entity == m_entity) {
+			for (const auto &c : entity->GetChildren()) {
+				for (const auto &d : c.second) {
+					entities.push_back(d.get());
+				}
+			}
+		}
+	}
+	return l;
+
+
+}
+
 pybind11::list Wrap1::getAttackCollisionBounds() {
 	auto* a = m_entity->GetComponent<IAnimator>();
 	auto shape = a->getShapeCast();

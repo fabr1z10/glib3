@@ -1,0 +1,15 @@
+---
+  id: basement
+  type: default
+  width: 656
+  height: 128
+  on_load: init_basement
+  items:
+    - factory: [ bg, { 'image': gfx/basement.png, 'tag': bg } ]
+      d: [ [ 0, 0, -3 ] ]
+    - factory: [walkarea, {'id': walkarea_0, 'depth': { 'type': "func.liny", 'values': [0, 1, 128, 0]}, 'outline':
+      [0,0,656,0,656,8,627,21,602,21,588,122,567,122,567,21,529,21,510,7,108,7,112,18,464,18,464,24,60,24,0,4]}]
+      d: [[0,0,0]]
+    - factory: [ bg, { 'image': gfx/basemen2.png, 'tag': bg1 } ]
+      d: [ [ 112, 8, -3 ] ]
+      parent: walkarea_0

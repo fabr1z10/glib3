@@ -1,9 +1,0 @@
----
-  id: mancomb  
-  type: default
-  width: 320
-  height: 144
-  on_load: pappo
-  items:
-    - factory: [bg, {'image': gfx/mancomb.png}]
-      d: [[0, 0, -3]]

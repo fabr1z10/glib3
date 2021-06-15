@@ -11,7 +11,7 @@ import scripts.actions
 
 def bg(**kwargs):
     def f(*args):
-        e = entity.Entity(pos=(args[0], args[1], args[2]))
+        e = entity.Entity(pos=(args[0], args[1], args[2]), tag=kwargs.get('tag',None))
         e.add_component(compo.Gfx(image = kwargs['image']))
         return e
     return f
@@ -71,7 +71,7 @@ def item2(**kwargs):
         s = entity.Entity(pos=pos)
         s.add_component(compo.Collider(flag=vars.Collision.Flags.other, mask=vars.Collision.Flags.player,
                                        tag=vars.Collision.Tags.trap, shape=shapes.Rect(width=size[0],height=size[1]),debug=True))
-        s.add_component(compo.Info(func=desc.get('func')))
+        s.add_component(compo.Info(on_enter=desc.get('on_enter', None), on_leave=desc.get('on_leave', None)))
         return s
     return f
 

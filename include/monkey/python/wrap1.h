@@ -45,6 +45,7 @@ public:
     void setState(const std::string&, pybind11::dict d = pybind11::dict());
     void clearText ();
     void setActive (bool);
+    void setVisible(bool);
     void enableControls(bool);
     pybind11::object getParent();
     pybind11::object getInfo ();
@@ -52,6 +53,7 @@ public:
 	pybind11::list getTextSize();
 	pybind11::list getCollisionBounds();
 	pybind11::list getAttackCollisionBounds();
+	pybind11::list getChildren(bool recursive);
 	pybind11::object getKeyPoint(const std::string& joint, const std::string& point);
 	pybind11::list getBoxSize(const std::string& animId="");
     static pybind11::object create(Entity*);

@@ -1,38 +1,57 @@
 ui:
-  open: Ouvrez
-  close: Fermez
-  push: Poussez
-  pull: Tirez
-  walkto: Marchez
-  pickup: Ramassez
-  talkto: Parlez
-  give: Donnez
-  use: Utilisez
-  lookat: Regardez
-  turnon: Allumez
-  turnoff: Eteignez
+  open: Ouvrir
+  close: Fermer
+  push: Pousser
+  read: Lire
+  newkid: Changer
+  unlock: O-Serrure
+  pull: Tirer
+  walkto: Aller
+  pickup: Prendre
+  talkto: Talk to
+  give: Donner
+  use: Utiliser
+  turnon: Allumer
+  turnoff: Eteindre
   to: à
   with: avec
-pause_message: Jeu Arrêté. Appuyez sur SPACE pour continuer.
+pause_message: Game Paused. Press SPACE to Continue.
 defaultactions:
-  1: Ça n'a pas l'air de s'ouvrir.
+  1: It doesn't seem to open.
   2: That doesn't seem to work.
   3: I can't move it.
-  4: Je ne vois rien de spécial.
-  5: Je n'y arrive pas.
-objects: 
+  4: I don't see anything special about it.
+  5: I can't pick that up.
+  6: There's nothing to read on it.
+objects:
+  sign: sign
+  bushes: bushes
+  grating: grating
+  doormat: paillasson
+  frontdoor: front door
+  key: key
+  doorbell: doorbell
+  grandfather_clock: grandfather clock
+  door: door
+  vase: vase
+  gargoyle: gargoyle
+  light_switch: light switch
   stairs: stairs
-  cliffside : bord de falaise
-  archway: arche
+  furnace: furnace
+  nuclear_reactor: nuclear reactor
+  fusebox: fuse box
+  circuit_breakers: circuit breakers
+  silver_key: silver key
+  window: window
+  archway: archway
   path: path
-  poster: affiche
-  door: porte
+  poster: poster
   lookout: lookout
   clearing: clearing
   pirate: pirate
   pirates: pirates
-  fireplace: cheminée
-  ilp: conseil des pirates
+  fireplace: fireplace
+  ilp: important-looking pirates
   citizen : Citizen of Mêlée
   lowmoralfiber: Men of Low Moral Fiber (pirates)
   baskets: baskets
@@ -44,332 +63,24 @@ objects:
   rubberchicken: rubber chicken
   pieceofeight: piece of eight
   piecesofeight: pieces of eight
-  meat: morceau de viande
-  fish: poisson
-  pot: marmite
-  barrel: tonneau
-  potostew: marmite de ragout
-  stewed_meat: viande en sauce
-  stewed_meat_2: ragout de viande
-dialogues:
-  mancomb:
-    1: "Bien le bonjour, étranger."
-    2: "Tu viens d'arriver dans le coin?"
-    imguy: "Je m'appelle Guybrush Threepwood. Je viens d'arriver."
-    rupirate: "Es-tu pirate? Puis-je me joindre à ton équipage?"
-    charge: "Qui est-ce qui commande ici?"
-    bye: "Enchanté d'avoir discuté avec toi."
-    7: "Have fun on Mêlée Island™."
-    8: "Hey, nice to see you again."
-    9: "Guybrush Threepwood?"
-    10: "Ha ha ha!!!"
-    11: "C'est le nom le plus idiot que j'ai jamais entendu."
-    ilikeguy: "Enfin... J'aime bien Guybrush."
-    yourname: "Alors, comment t'appelles-TU?"
-    dumb: "Ouais, c'est plutôt du genre stupide?"
-    insulted: "Tu m'insultes. Au revoir."
-    16: "Ce n'est même pas un nom!"
-    17: "Je m'appelle Mancomb Seepgood."
-    18: "Qu'est-ce qui t'amène donc sur l'Ile de Mêlée?"
-    19: "Je veux devenir pirate!"
-    20: "Je viens chercher l'aventure."
-    21: "Je ne sais pas du tout."
-    22: "Ce ne te regarde pas. Salut."
-    23: "Ah, vraiment?"
-    24: "Le conseil des pirates se trouve dans la pièce à côté."
-    25: "C'est eux qui commandent ici."
-    26: "They can tell you where to go and what to do."
-    guvnor: "Où est-ce que je peux trouver le Gouverneur?"
-    28: "Oh, you Have, have you?"
-    29: "Well, I am a pirate."
-    30: "But, alas, I'm not a captain."
-    31: "Gouverneur Marley?"
-    32: "Son palais est de l'autre côté de la ville."
-    33: "Malheureusement les pirates n'y sont plus aussi bienvenus qu'avant."
-    whynot: "Pourquoi?"
-    welcome: "Où que j'aille, je suis le bienvenu."
-    gothere: "Je vais y aller tout de suite. Salut."
-    37: "Okay, but watch out for those guard dogs!"
-    38: "My grog is going flat, so you'll have to excuse me."
-    39: "I don't want to come between a pirate and his grog."
-    40: "Well, this island has a governor..."
-    41: "...but we pirates have our own leaders."
-    leaders: "I want to talk to the leaders of the pirates."
-    guvnor2: "Where can I find the Governor of the island?"
-    nice: "That's nice. Goodbye."
-    45: "That's okay."
-    46: "Mine is Mancomb Seepgood."
-    47: "Sorry to see you go away mad."
-    48: "Don't be a stranger."
-    yourname2: "So, what was your name, anyway?"
-    50: "Well, it sure wasn't for the sunshine."
-    51: "I think you need some guidance."
-    52: "La dernière fois qu'un pirate est allé manger chez elle, il est tombé amoureux."
-    53: "It's made things rather uncomfortable for everybody."
-    howsthat: "How's that?"
-    whois: "Who is this pirate?"
-    toobad: "That's too bad. Well, see you later."
-    57: "Well, excuse me Mr. Secretive."
-    58: "It was none other than the fearsome pirate LeChuck."
-    59: "Well, there's a whole big story about what happened next..."
-    60: "But I don't believe a word of it."
-    61: "Estevan over there at the other table might tell you about it."
-    62: "He takes the whole thing seriously."
-    63: "Very seriously."
-    64: "Whatever you say."
-    65: "Just watch out for those guard dogs!"
-    66: "Uh-oh, it looks like my grog is going flat, so you'll have to excuse me."
-  citizen:
-    1: "Excuse me, but do you have a cousin named Sven?"
-    2: "What?"
-    3: "No, I don't."
-    4: "What is that? Some sort of code?"
-    5: "No, but I once had a barber named Dominique."
-    6: "Never mind."
-    7: "Good night."
-    8: "Excuse me, but do--"
-    9: "Oh, it's only you again."
-    10: "I just want a map."
-    11: "My cousin Sven sends his regards."
-    12: "Could you tell me that code again?"
-    13: "Never mind. I can get a map somewhere else."
-    14: "Wanna bet?"
-    15: "Now get lost."
-    16: "Of course it's a code, you idiot."
-    17: "Close enough."
-    18: "Let's talk business."
-    19: "You want to buy a map to the Legendary Lost Treasure of Mêlée Island�?"
-    20: "Only one in existence."
-    21: "Rare."
-    22: "Very rare."
-    23: "Only 100 pieces of eight..."
-    24: "No thanks. I don't have enough money."
-    25: "No thanks. I don't want it."
-    26: "Well then, buzz off kid, it's bad for business."
-    27: "Come back for the map to the Legendary Lost Treasure of Mêlée Island�, eh?"
-    28: "I hope you brought enough money this time."
-    29: "Shhhhhhh!"
-    30: "Pipe down, will ya?"
-    31: "That ugly sheriff might be around here."
-    32: "Now, then..."
-    33: "I see."
-    34: "Not enough money, eh?"
-    35: "Come back when you're serious about treasure hunting, kid."
-    36: "I'll take it. It'll make a swell gift."
-    37: "There ya go. You've made a wise decision."
-    38: "Now get lost."
-  lowmoral:
-    1: "Hey, nice rat!"
-    2: "How can you stand to be near this vermin?"
-    3: "Do you guys know the sneaky-looking man on the opposite corner?"
-    4: "Say, are you guys pirates?"
-    5: "I'll just be running along, now."
-    6: "Do you like rats?"
-    7: "Yes, I love rats!"
-    8: "No, I can't stand them."
-    9: "Yes, especially in a light wine sauce."
-    10: "I can't talk about it right now. Got to go."
-    11: "They're very intelligent creatures!"
-    12: "Ha ha ha ha!!"
-    13: "More intelligent than HIM!"
-    14: "Why, there's a story around these parts that a bunch of rats actually crewed a ship here from fabled Monkey Island�."
-    15: "No, that's not right."
-    16: "It was actually a group of monkeys."
-    17: "That's amazing!"
-    18: "That's difficult to believe."
-    19: "No way could a bunch of stupid monkeys crew a ship!"
-    20: "Excuse me, I must be going."
-    21: "But true."
-    22: "When they arrived, they sold the ship for a pretty penny."
-    23: "Only time I've seen anyone get the better of ol'Stan in a deal."
-    24: "I thought it was rats..."
-    25: "Wanna buy a map, eh?"
-    26: "OUR maps are top quality, not like the birdcage liners you get from that clown across the street."
-    27: "No, just kidding."
-    28: "These are actually copies of the minutes of the last meeting of the M�l�e Island� PTA."
-    29: "Can't even GIVE them away."
-    30: "Want one?"
-    31: "No, thanks."
-    32: "No, I must be on my way."
-    33: "No, but I'll take one if you give me two pieces of eight."
-    34: "Oh, they are not so bad."
-    35: "-- squeak --"
-    36: "Sounds like this guy don't like rats!"
-    37: "Let's sauté him now!"
-    38: "I think you'd best leave, boy."
-    39: "Ha ha ha ha ha hoo hoo ha ha ha"
-    40: "I apologize for what I said about rats."
-    41: "But it's true."
-    42: "OK, that's fair."
-    43: "No, we're a wandering circus troupe."
-    44: "But this rat scared away the elephant."
-    45: "Of course we're pirates!"
-    46: "You can't buy clothes like these off the rack!"
-    47: "What do you want?"
-    48: "What's in the keg?"
-    49: "Where'd you get that rat?"
-    50: "Nothing. See you later."
-    51: "How come you're on this street corner and not on a ship, looting, pillaging, sacking, that sort of thing?"
-    52: "Rum."
-    53: "Jam."
-    54: "Er... rum and jam."
-    55: "It's an old pirate favorite, everybody knows that."
-    56: "Actually, they were chimps, and they WEREN'T stupid."
-    57: "AIEEE!!! Get away!!!"
-    58: "Well, pirating hasn't been panning out so well for us..."
-    59: "There are some UNNATURALLY talented pirates in the area right now..."
-    60: "...operating out of Monkey Island�."
-    61: "So we've been pursuing alternate means of self-support."
-    62: "We're trying to start up a circus."
-    63: "It was working out well, until the rat scared off the elephant."
-    64: "Now you've depressed us."
-    65: "Go home."
-    66: "See? Told you so."
-    67: "I'll take those minutes if you give me two pieces of eight."
-    68: "Do you know where I can find a treasure map around here?"
-  lookout: 
-    intro1: "I heard there was going to be a weenie roast here."
-    intro2: "I'm looking for fun. Seen any?"
-    intro3: "What's green and hairy and has a thousand legs?"
-    intro4: "Do you ever wonder if we're all just characters in a novel?"
-    5: "Yikes!"
-    6: "You almost scared me to death."
-    7: "I thought you were a--"
-    8: "--never mind."
-    9: "What did you say your name was, again?"
-    imguy: "I'm Guybrush Threepwood."
-    squinky: "Call me Squinky."
-    overthisway: "I'm over this way."
-    whoru: "Who are YOU?"
-    fortune: "I'll just be off to seek my fortune now."
-    15: "Eh?"
-    16: "Oh."
-    17: "I came to Mêlée Island because I want to be a pirate."
-    18: "Well, you picked the right place for it."
-    19: "Though perhaps the wrong time."
-    20: "Not to mention the wrong name."
-    21: "You have the silliest name I've heard in a long time."
-    22: "What the heck is wrong with \"Guybrush Threepwood\"?"
-    23: "Nothing, if you want to sell shoes."
-    24: "You want to be a pirate, boy, take my advice:"
-    25: "Change your name."
-    26: "Try something like \"Dreadbeard\" or \"Six-fingered Pete\"."
-    27: "You just said you were Gibberish Driftwood, or something like that."
-    28: "GUYBRUSH THREEPwood."
-    29: "Sure, whatever."
-    30: "I'm the lookout of Mêlée Island."
-    31: "I watch the ocean for approaching storms and ships, and report them directly to the Governor."
-    32: "She doesn't like unexpected visitors."
-    33: "...especially not now."
-    whyguvworried: "Why is the Governor worried about unexpected visitors?"
-    35: "Actually, it's the EXPECTED visitors we're worried about."
-    36: "One pirate captain in particular..."
-    37: "A dead one, but that doesn't make him any less dangerous."
-    bat: "How did you get to be the lookout when you're obviously blind as a bat?"
-    39: "Watch your tongue."
-    40: "I was hand-picked by Sheriff Shinetop!"
-    41: "OK, Squinky."
-    42: "Good luck."
-    43: "Oh, it's you again, "
-    44: "Listen, I'm sort of busy right now."
-    45: "I'll talk to you later."
-    46: "Look out! Ha ha. Get it?"
-    47: "That's THREEPWOOD."
-    actuallyimguy: "Actually, my name is Guybrush Threepwood."
-    49: "Oh, right."
-    50: "I am not sure, but I think he may be asleep."
-    51: "It's the only one I've ever heard that was more ridiculous than \"Squinky\"."
-    overhere: "I'm over here."
-    53: "Thranwook."
-    54: "Thrumwink."
-  important_looking_pirates:
-    1: "Qu'est-ce que tu veux mon garçon?"
-    2: "Je veux tous vous tuer!"
-    3: "Je veux devenir pirate."
-    4: "Je veux devenir pompier."
-    5: "Décampe gamin, tu nous déranges."
-    6: "Et alors?"
-    7: "Pourquoi tu nous déranges avec ça?"
-    8: "N'oubliez pas que nous manquons d'hommes à cause de cette histoire de LeChuck."
-    9: "Et alors?"
-    10: "C'est simple, sans pirate on a pas de butin, et sans butin pas de grog, et notre réserve diminue dangereusement."
-    11: "Hum..."
-    12: "Qu'est-ce que tu sais faire au juste?"
-    13: "Je peux retenir mon souffle pendant dix minutes!"
-    14: "Pas mal..."
-    15: "Très bien, mais il ne suffit pas de DEMANDER pour devenir pirate."
-    16: "Tu dois passer..."
-    17: "Les trois épreuves!"
-    18: "Ah..."
-    19: "Quelles sont ces trois épreuves?"
-    20: "Pour devenir pirate tu dois réussir les trois épreuves."
-    21: "Tu dois maîtriser l'usage de l'épée..."
-    22: "...et apprendre l'art du vol..."
-    23: "...et de la chasse."
-    24: "Ah oui?"
-    25: "La chasse au trésor, espèce d'oursin!"
-    26: "Ah d'accord."
-    27: "Tu dois faire tes preuves dans chacune de ces disciplines."
-    28: "l'escrime, le vol, et, hum, la chasse au trésor;"
-    29: "et ramène une preuve à ton retour."
-    30: "Et ensuite tu viens boire un grog avec nous!!"
-    31: "GROG!!!"
-    32: "Dites-moi comment maîtriser l'usage de l'épée."
-    33: "Dites-moi comment apprendre l'art du vol."
-    34: "Dites-moi comment faire la chasse au trésor."
-    35: "Vous n'êtes que des buveurs de rhum à la mauvaise haleine!"
-    36: "Au fait, qu'est-ce que vous mettez dans ce grog?"
-    37: "Bon et bien je dois y aller maintenant."
-
-    42: "Tout d'abord trouve une épée"
-    43: "Ensuite va voir la Reine du Sabre pour la vaincre"
-    44: "Quelqu'un en ville pourra sans doute t'indiquer le chemin à prendre"
-    45: "Ah!"
-    46: "D'abord tu dois trouver quelqu'un avec qui t'entraîner"
-    47: "Ha ha."
-    48: "Je t'imagine dé jà affronter la Reine du Sabre sans aucun entraînement!"
-    49: "Ha Ha Ha"
+  meat: hunk of meat
+  fish: fish
+  pot: pot
+  barrel: barrel
+  potostew: pot o'stew
+  stewed_meat: stewed meat
+  stewed_meat_2: stewed meat
 lines:
-  1: "Réélisez le Gouverneur Marley."
-  2: "\"Quand il n'y a qu'un seul candidat, il n'y a qu'un seul choix.\""
-  3: "Il fait bon."
-  4: "I don't want to bother them."
-  5: "They're busy listening to the guy on the left."
-  6: "I don't think it's wise to wake a sleeping pirate."
-  7: "Actually, I'm not THAT curious to find out what's inside."
-  8: "Probably poisonous snakes."
-  9: "No thanks, I'd rather not touch any of this creepy voodoo stuff."
-  10: "Gee, I wonder what's in these baskets."
-  11: "Hmmm... I think I hear slithering inside."
-  12: "No thanks. Something would probably jump out and bite me."
-  13: "Poor chickens..."
-  14: "I'd better not. They're probably being saved for a pagan ritual, and I wouldn't want to spoil it."
-  15: "Kind of an emaciated Charles Atlas."
-  16: "Let's see, there's a jar of bat drippings..."
-  17: "...a box that says, \"Assorted Scales\"..."
-  18: "...a shaker full of monkey flakes..."
-  19: "...and some cat knuckles."
-  20: "Cat knuckles?!?"
-  21: "How barbaric!"
-  22: "No thanks. I can never fall asleep in strange places."
-  23: "Looks comfortable, in a spooky sort of way."
-  24: "Probably got a body in it."
-  25: "Hmmm..."
-  26: "A rubber chicken with a pulley in the middle..."
-  27: "What possible use could that have?"
-  28: "Maybe no one will miss just this one thing..."
-  29: "Poor little thing..."
-  30: "Whatever it was."
-  31: "Now, THIS is the cup of a carpenter."
-  32: Hey!
-  33: Don't go into the kitchen!
-  34: You can't come back here!
-  35: On dirait quelque chose qui ressemble à de la viande...
-  36: Quelqu'un a cuisiné un fromage de tête à l'intérieur.
-  37: Je crois que c'est un hareng.
-  38: Je crois que cet oiseau va me picorer la main...
-  39: Je crois qu'il est plein de cette boisson infâme que les pirates boivent.
-  40: Elle boue.
-  41: Miam miam. Un râgout.
-  42: Aie.
-  43: Je l'ai attrapé!
+  1: WARNING!!
+  2: Trespassers will be horribly mutilated.
+  3: I can't budge it. It's rusted shut.
+  4: The door is locked.
+  5: This is the home of Dr. Fred,
+  6: Nurse Edna, Weird Ed, Dead Cousin Ted,
+  7: Green Tentacle and Purple Tentacle.
+  8: It's the correct time.
+  9: There's no handle here!
+  10: It's too hot!
+  11: Made in Chernobyl
+  12: MAIN POWER
+  13: Yuck! I'm not touching that!

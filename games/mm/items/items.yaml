@@ -3,7 +3,7 @@ dave:
   type: character
   model: 01/dave
   pos: [126, 52]
-  room: outside
+  room: entry
   parent: walkarea_0
   dir: e
   speed: 500

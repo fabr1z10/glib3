@@ -8,6 +8,7 @@ import actions
 import monkey
 import func
 import engine
+import status
 import factories
 
 
@@ -144,7 +145,58 @@ class Scripts:
                 s.add_action(actions.RunScript(Scripts.walk(other_item, None)))
         return s
 
+
+def openDoor(item_id, state):
+    def f():
+        example.get(item_id).setAnim(state)
+        vars.items[item_id]['anim']=state
+    return f
+
+
+def toggle_light(var, value):
+    def f():
+        mult_color = [255, 255, 255, 255] if value else [0, 0, 0, 255]
+        add_color = [0, 0, 0, 255] if value else [85, 85, 85, 255]
+        for c in example.get('main').children(True):
+            if c.tag.startswith('walkarea'):
+                continue
+            if c.tag == 'player' or (c.tag in vars.items and vars.items[c.tag]['type'] == 'character'):
+                c.setColor(mult_color, add_color)
+            else:
+                c.setVisible(value)
+        setattr(status, var, value)
+    return f
+
+
 class Actions:
+
+    @staticmethod
+    def open_door():
+        def f(item_id, entity):
+            s = Scripts.walk(item_id)
+            s.add_action(actions.CallFunc(f=openDoor(item_id, 'open')))
+            example.play(s)
+        return f
+
+    @staticmethod
+    def close_door():
+        def f(item_id, entity):
+            s = Scripts.walk(item_id)
+            s.add_action(actions.CallFunc(f=openDoor(item_id, 'closed')))
+            example.play(s)
+        return f
+
+    @staticmethod
+    def walk_door(room, pos, dir):
+        def f(item_id, entity):
+            if example.get(item_id).anim == 'open':
+                Actions.goto_room(room, pos, dir)(item_id, entity)
+            else:
+                s = Scripts.walk(item_id)
+                example.play(s)
+        return f
+
+
     @staticmethod
     def walkto():
         def f(item_id, entity):
@@ -167,21 +219,21 @@ class Actions:
             example.play(s)
         return f
 
-    @staticmethod
-    def walk_door():
-        def f(item_id, entity):
-            s = Scripts.walk(item_id)
-            anim = monkey.engine.read(vars.items[item_id]['anim'])
-            print ('CIAO ' + anim)
-            if anim == 'open':
-                nroom = vars.items[item_id]['next_room']
-                next_room = monkey.engine.read(nroom[0])
-                new_pos = monkey.engine.read(nroom[1])
-                new_dir = nroom[2]
-                func.set_item_pos(vars.current_player, next_room, new_pos, new_dir)
-                s.add_action(actions.ChangeRoom(room = next_room))
-            example.play(s)
-        return f
+    # @staticmethod
+    # def walk_door():
+    #     def f(item_id, entity):
+    #         s = Scripts.walk(item_id)
+    #         anim = monkey.engine.read(vars.items[item_id]['anim'])
+    #         print ('CIAO ' + anim)
+    #         if anim == 'open':
+    #             nroom = vars.items[item_id]['next_room']
+    #             next_room = monkey.engine.read(nroom[0])
+    #             new_pos = monkey.engine.read(nroom[1])
+    #             new_dir = nroom[2]
+    #             func.set_item_pos(vars.current_player, next_room, new_pos, new_dir)
+    #             s.add_action(actions.ChangeRoom(room = next_room))
+    #         example.play(s)
+    #     return f
 
     @staticmethod
     def pickup():

@@ -49,6 +49,7 @@ PYBIND11_MODULE(example, m) {
         .def("setMesh", &Wrap1::setMesh)
         .def("setAnim", &Wrap1::setAnim)
         .def("setActive", &Wrap1::setActive)
+		.def("setVisible", &Wrap1::setVisible)
         .def("enableControls", &Wrap1::enableControls)
         .def("enableUpdate", &Wrap1::setEnableUpdate)
         .def("appendText", &Wrap1::appendText)
@@ -67,7 +68,9 @@ PYBIND11_MODULE(example, m) {
 		.def("getAttackCollisionBounds",&Wrap1::getAttackCollisionBounds)
 		.def("getKeyPoint", &Wrap1::getKeyPoint)
 		.def("setColliderBounds", &Wrap1::setControllerBounds)
+		.def("children", &Wrap1::getChildren)
 		.def("getBoxSize", &Wrap1::getBoxSize);
+
 
     py::class_<PyEngine>(m, "engine")
         //.def("get", &PyEngine::get, py::arg("tag"))

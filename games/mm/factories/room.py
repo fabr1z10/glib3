@@ -20,7 +20,7 @@ def default_room(desc: dict):
 
     # setup collision engine
     ce = runners.CollisionEngine(80, 80)
-    ce.add_response(vars.Collision.Tags.player, vars.Collision.Tags.trap, runners.CollisionResponse(on_enter=func.on_enter_trap))
+    ce.add_response(vars.Collision.Tags.player, vars.Collision.Tags.trap, runners.CollisionResponse(on_enter=func.on_enter_trap, on_leave=func.on_leave_trap))
     r.add_runner(ce)
     print('uisize is ' + str(vars.ui_height))
     device_size = monkey.engine.device_size

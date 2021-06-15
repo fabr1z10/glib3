@@ -1,0 +1,58 @@
+grandfather_clock:
+  type: item1
+  pos: [109, 18]
+  size: [28, 94]
+  room: entry
+  text: '$objects/grandfather_clock'
+  walkto: [ 122,14 ]
+  wdir: n
+vase_left:
+  type: item1
+  pos: [218, 18]
+  size: [29, 43]
+  room: entry
+  text: '$objects/vase'
+  walkto: [ 232,14 ]
+  wdir: n
+vase_right:
+  type: item1
+  pos: [370, 18]
+  size: [29, 43]
+  room: entry
+  text: '$objects/vase'
+  walkto: [ 383,14 ]
+  wdir: n
+gargoyle_right:
+  type: item1
+  pos: [328, 47]
+  size: [25, 20]
+  room: entry
+  text: '$objects/gargoyle'
+  walkto: [ 349,16 ]
+  wdir: n
+door_entry_basement:
+  type: item1
+  anim: open
+  pos: [440, 24]
+  room: entry
+  size: [40, 88]
+  text: '$objects/door'
+  walkto: [459, 21]
+  wdir: n
+  model: '01/door_entry_basement'
+door_entry_living:
+  type: item1
+  anim: closed
+  pos: [588, 3]
+  room: entry
+  size: [26, 115]
+  text: '$objects/door'
+  walkto: [590, 7]
+  wdir: e
+  model: '01/door_entry_living'
+gargoyle_trap:
+  type: item2
+  pos: [337, 14]
+  room: entry
+  size: [14, 3]
+  on_leave: pino

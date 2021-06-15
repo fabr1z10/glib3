@@ -1,0 +1,70 @@
+basement_light_switch:
+  type: item1
+  pos: [545, 56]
+  size: [7, 8]
+  room: basement
+  text: '$objects/light_switch'
+  walkto: [ 548,20 ]
+  wdir: n
+path_basement_entry:
+  type: item1
+  pos: [561, 124, 0]
+  room: basement
+  text: '$objects/stairs'
+  size: [31,3]
+  walkto: [576, 124]
+  wdir: n
+furnace:
+  type: item1
+  pos: [427, 15]
+  size: [54,26]
+  room: basement
+  text: '$objects/furnace'
+  walkto: [ 452,5 ]
+  wdir: n
+nuclear_reactor:
+  type: item1
+  pos: [455, 48]
+  size: [49,55]
+  room: basement
+  text: '$objects/nuclear_reactor'
+  walkto: [ 480,5 ]
+  wdir: n
+fuse_box:
+  type: item1
+  anim: closed
+  pos: [64, 47]
+  room: basement
+  size: [33, 33]
+  text: '$objects/fusebox'
+  walkto: [79, 21]
+  wdir: n
+  model: '01/fusebox'
+circuit_breakers:
+  type: item1
+  pos: [71, 54]
+  room: basement
+  size: [18, 18]
+  text: '$objects/circuit_breakers'
+  walkto: [79, 23]
+  wdir: n
+silver_key:
+  type: item1
+  pos: [98, 61]
+  size: [6,12]
+  room: basement
+  text: '$objects/silver_key'
+  walkto: [101, 21]
+  wdir: n
+  priority: 1
+  model: '01/silver_key'
+slime:
+  type: item1
+  pos: [144, 0]
+  size: [45, 8]
+  room: basement
+  text: '$objects/slime'
+  walkto: [164, 6]
+  wdir: s
+  priority: 1
+

@@ -1,0 +1,10 @@
+---
+  id: living
+  type: default
+  width: 640
+  height: 144
+  items:
+    - factory: [bg, {'image': gfx/livingrm.png}]
+      d: [[0, 0, -3]]
+    - factory: [walkarea, {'id': walkarea_0, 'depth': { 'type': "func.liny", 'values': [0, 1, 144, 0]}, 'outline': [24,0,614,0,552,23,385,23,375,15,252,15,245,23,157,23,155,15,65,15]}]
+      d: [[0,0,0]]
