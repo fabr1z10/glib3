@@ -60,10 +60,25 @@ void Road::Start() {
 	m_curvature=0.0f;
 	m_initialSlope=0.0f;
 	// road 1
-	m_roadInfo[-10] = std::make_pair(0, 0);
-	m_roadInfo[50] = std::make_pair(0.01, 0);
-	m_roadInfo[500] = std::make_pair(-0.01, 0.01f);
-	m_roadInfo[900] = std::make_pair(0, 0);
+	std::map<float, RoadSection> r1;
+	r1[-10] = RoadSection(roadWidth, 0.0f, 0.0f, 0.0f);
+	r1[50] = RoadSection(roadWidth, 0.01f, 0.0f, 0.0f);
+	r1[500] = RoadSection(roadWidth, -0.01f, 0.01f, 0.0f);
+	r1[900] = RoadSection(roadWidth, 0.0f, 0.0f, 0.0f);
+	m_roadInfo.push_back(r1);
+
+	std::map<float, RoadSection> r2;
+	r2[50] = RoadSection(roadWidth, -0.01f, 0.0f, 0.0f);
+	r2[500] = RoadSection(roadWidth, 0.0f, 0.01f, 0.0f);
+	r2[5000] = RoadSection(roadWidth, 0.0f, 0.01f, 0.0f);
+	//m_roadInfo.push_back(r2);
+
+	float s0 = r2.begin()->first;
+
+	for (auto f = s0; f < r2.rbegin()->first; f+=m_step) {
+
+	}
+
 	// end road 1
 	//m_step = 0.01f;
 
@@ -88,7 +103,7 @@ void Road::Start() {
 }
 
 void Road::Update(double dt) {
-
+	std::cerr << "current pos: " << m_s << "\n";
 	if (m_input->isKeyDown(GLFW_KEY_UP)) {
 		m_speed += m_acceleration * dt;
 	} else if (m_input->isKeyDown(GLFW_KEY_DOWN)) {
@@ -106,87 +121,114 @@ void Road::Update(double dt) {
 
 	}
 
-
+	// advance car position
 	m_s += dt*m_speed;
-
-	float s0 = m_s - m_z0;
-
-	long is = int(s0 / m_step);
-	size_t current_color = int(is/(m_n-1)) % 2;
-
-	// length of first poly
-	float lambda0 = m_step - (s0 - is * m_step);
 
 	std::vector<VertexColor> vertices;
 	std::vector<unsigned> indices;
+
+	// number of points to draw (in -z direction)
 	int n{200};
+
+	// coordinate from which we start drawing
+	float s0 = m_s - m_z0;
+
+
+
 	float roadWidth{2.0f};
 	std::array<glm::vec4, 2> colors = { glm::vec4(0.64, 0.64, 0.64, 1.0f), glm::vec4(0.32,0.32f,0.32f,1.0)};
 
 	unsigned k = 0;
 
-	auto currentRoadInfo = m_roadInfo.upper_bound(s0);
-	float next_change = currentRoadInfo->first;
-	currentRoadInfo--;
-	float curvature = currentRoadInfo->second.first;
-	float slope = currentRoadInfo->second.second;
-	currentRoadInfo++;
-//	float s = s0;
-//	int ic = 0;
-
-	// road center, and deltaz
-//	if (is > m_oldis) {
-//		m_oldis = is;
-//		m_initialSlope = slope;
-//	}
-	float rx = 0.0f;
-	float ry = 0.0f;//slope * fabs(z0);
-	float dz = 0.0f;
-	float dy = 0.0f;
 
 
-
-	vertices.emplace_back(-roadWidth, ry, m_z0, colors[current_color]);
-	vertices.emplace_back(roadWidth, ry, m_z0, colors[current_color]);
-
-	float z = m_z0;
-	float s = s0;
-	for (int i = 0; i < n; ++i) {
-		is += 1;
-		// junction point. color changing here we need to add the start
-		bool jp = (is % (m_n - 1)) == 0;
-		//auto j = ic*ic;
-		if (s > next_change) {
-			curvature = currentRoadInfo->second.first;
-			slope = currentRoadInfo->second.second;
+	// draw all roads
+	// keep in mind that I draw everything from s0 to s0 + n*step
+	for (const auto& road : m_roadInfo) {
+		float road_s0 = road.begin()->first;
+		auto currentRoadInfo = road.upper_bound(s0);
+		if (currentRoadInfo == road.end()) {
+			// road has already ended
+			continue;
+		}
+		bool roadStartsLater = (currentRoadInfo == road.begin());
+		// check if road is visible
+		if (currentRoadInfo->first > s0 + n*m_step) {
+			continue;
+		}
+		k = vertices.size();
+		// road is visible, go to start point
+		float s = s0;
+		float next_change {0.0f};
+		float curvature {0.0f};
+		float slope{0.0f};
+		float z = m_z0;
+		if (roadStartsLater) {
+			s = currentRoadInfo->first;
+			curvature = currentRoadInfo->second.curvature;
+			slope = currentRoadInfo->second.slope;
 			currentRoadInfo++;
 			next_change = currentRoadInfo->first;
+			z = -(s-m_s);
+		} else {
+			next_change = currentRoadInfo->first;
+			currentRoadInfo--;
+			curvature = currentRoadInfo->second.curvature;
+			slope = currentRoadInfo->second.slope;
+			currentRoadInfo++;
 		}
-		// update delta z
-		float step = (i == 0 ? lambda0 : m_step);
-		s += step;
-		dz += step * curvature;
-		dy += slope * step;
-		rx += dz;
-		ry += dy;
-		z -= step;
+
+
+		long is = int((s-road_s0) / m_step);
+		size_t current_color = int(is/(m_n-1)) % 2;
+		// length of first poly
+		float lambda0 = m_step - ((s-road_s0) - is * m_step);
+
+		float rx = 0.0f;
+		float ry = 0.0f;//slope * fabs(z0);
+		float dz = 0.0f;
+		float dy = 0.0f;
+
+
 		vertices.emplace_back(rx - roadWidth, ry, z, colors[current_color]);
 		vertices.emplace_back(rx + roadWidth, ry, z, colors[current_color]);
-		indices.push_back(k);
-		indices.push_back(k+1);
-		indices.push_back(k+2);
-		indices.push_back(k+3);
-		indices.push_back(k+2);
-		indices.push_back(k+1);
-		k += 2;
-		if (jp) {
-			current_color = (current_color + 1) % 2;
-			vertices.emplace_back(rx - roadWidth , ry, z, colors[current_color]);
-			vertices.emplace_back(rx + roadWidth , ry, z, colors[current_color]);
+
+		for (int i = 0; i < n; ++i) {
+			is += 1;
+			// junction point. color changing here we need to add the start
+			bool jp = (is % (m_n - 1)) == 0;
+			//auto j = ic*ic;
+			if (s > next_change) {
+				curvature = currentRoadInfo->second.curvature;
+				slope = currentRoadInfo->second.slope;
+				currentRoadInfo++;
+				next_change = currentRoadInfo->first;
+			}
+			// update delta z
+			float step = (i == 0 ? lambda0 : m_step);
+			s += step;
+			dz += step * curvature;
+			dy += slope * step;
+			rx += dz;
+			ry += dy;
+			z -= step;
+			vertices.emplace_back(rx - roadWidth, ry, z, colors[current_color]);
+			vertices.emplace_back(rx + roadWidth, ry, z, colors[current_color]);
+			indices.push_back(k);
+			indices.push_back(k + 1);
+			indices.push_back(k + 2);
+			indices.push_back(k + 3);
+			indices.push_back(k + 2);
+			indices.push_back(k + 1);
 			k += 2;
+			if (jp) {
+				current_color = (current_color + 1) % 2;
+				vertices.emplace_back(rx - roadWidth, ry, z, colors[current_color]);
+				vertices.emplace_back(rx + roadWidth, ry, z, colors[current_color]);
+				k += 2;
+			}
+			//ic++;
 		}
-		//ic++;
-	}
 
 //	std::vector<VertexColor> vertices;
 //	std::vector<unsigned> indices;
@@ -206,6 +248,7 @@ void Road::Update(double dt) {
 //		indices.push_back(i+3);
 //	}
 //
+	}
 	m_mesh->UpdateGeometry(vertices, indices);
 
 }

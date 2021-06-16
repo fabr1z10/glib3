@@ -11,6 +11,17 @@
 
 class Scheduler;
 
+
+struct RoadSection {
+	RoadSection() = default;
+	RoadSection(float width, float curvature, float slope, float offset) :
+		width(width), curvature(curvature), slope(slope), offset(offset) {}
+	float width;
+	float curvature;
+	float slope;
+	float offset;
+};
+
 class Road : public Component {
 public:
     //WalkArea (std::shared_ptr<IShape> shape, int priority);
@@ -32,12 +43,13 @@ private:
 	float m_speed;
 	float m_acceleration;
 	float m_initialSlope;
-	std::map<float, std::pair<float,float>> m_roadInfo;
+	std::vector<std::map<float, RoadSection>> m_roadInfo;
+
 	// number of points per band
 	int m_n;
 	float m_oldy;
 	int m_oldis;
-
+	std::map<float, float> dist;
 	float m_z0;
 };
 
