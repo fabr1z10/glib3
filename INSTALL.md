@@ -72,13 +72,14 @@ This is a header-only library. Download the latest release from https://glm.g-tr
 
 ### ZLIB (required by PNG library)
 
-Go to https://www.zlib.net/ and download the source code. Unzip it, open a MS Visual Studio prompt and cd to the root folder of the unzipped file. Type the following:
+Go to https://www.zlib.net/ and download the source code. Unzip it, open a MS Visual Studio prompt with admin rights and type in the following:
 
-    mkdir build
+    md build
     cd build
     cmake ..
-    msbuild zlib.sln /p:Configuration=Release
-If everything goes well, you should have a `Release` folder inside the `Build` folder containing the binary files. Now copy `zlib.lib` and `zlibstatic.lib` into `{VC Root}\lib\x64`, and copy `zlib.dll` into `c:\windows\system32`. Also, copy the header file `zlib.h` and `build\zconf.h` in `{VC Root}\include`.
+    msbuild INSTALL.vcxproj /p:Configuration=Release
+
+This should build and install the library in a proper location (should be in `c:\Program Files (x86)\zlib` or the like).
 
 ### PNG
 
@@ -96,7 +97,14 @@ Get the `JPEG` lib package from https://www.nuget.org/packages/libjpeg/.
 
 ### FreeType
 
-Go to the Freetype main page https://www.freetype.org/. In the Download section, you should find a link to a GitHub repository with the latest binary files. Get the latest release, unzip it and cd to the newly created folder. You will find the binaries in the `win64` folder. Copy `freetype.lib` in `{VC Root}\lib\x64`, `freetype.dll` in `c:\windows\system32`, and the contents of the `include` folder in `{VC Root}\include`.
+Go to the Freetype main page https://www.freetype.org/ and download the latest stable release. Unzip it, and in a MS Visual Studio prompt (run it as administrator) type in the following:
+
+    md build
+	cd build
+	cmake .. -DBUILD_SHARED_LIBS:BOOL=TRUE
+	msbuild INSTALL.vcxproj /p:Configuration=Release 
+
+This will build the library and install it in the proper location, typically in a `freetype` folder in `C:\Program Files (x86)` or similar.
 
 ### LUA
 
