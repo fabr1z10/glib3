@@ -37,8 +37,7 @@ The library requires the following packages installed in your system. More detai
 * FreeType (https://www.freetype.org/)
 * PNG library (http://www.libpng.org/pub/png/libpng.html)
 * JPEG library (http://ijg.org/)
-* LUA (https://www.lua.org/home.html)
-* Boost (only the filesystem component) (https://www.boost.org/)
+* Python (https://www.python.org)
 
 You also need CMake to build the engine.
 
