@@ -106,11 +106,17 @@ Go to the Freetype main page https://www.freetype.org/ and download the latest 
 
 This will build the library and install it in the proper location, typically in a `freetype` folder in `C:\Program Files (x86)` or similar.
 
-### LUA
+### YAML
 
-Get the Windows binaries from http://luabinaries.sourceforge.net/download.html. Copy the `lua53.dll` in `c:\windows\system32` and `lua53.lib` into `{VC Root}\lib\x64`. Also, copy the content of the `include` folder in `{VC Root}\include`.
+You can find this library at https://github.com/jbeder/yaml-cpp. Download and unzip the latest release, then in the root folder type:
 
-### BOOST
+	md build && cd build
+	cmake ..
+	msbuild INSTALL.vcxproj /p:Configuration=Release
+
+### Python
+
+Go to https://www.python.org/ and grab and install the latest release for Windows. This should install all the components required by the engine.
 
 ## macOS details
 
