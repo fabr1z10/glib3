@@ -45,6 +45,7 @@ objects:
   circuit_breakers: circuit breakers
   silver_key: silver key
   window: window
+  radio: old fashion radio
   archway: archway
   path: path
   poster: poster

@@ -103,6 +103,8 @@ class Engine:
                 setattr(cc, d[-1], value)
                 print ('current value = ' + str(getattr(cc, d[-1])))
 
+
+
     # read a string
     def read(self, value):
         if isinstance(value, str):

@@ -6,6 +6,16 @@ couch:
   text: '$objects/couch'
   walkto: [304, 11]
   wdir: n
+radio:
+  type: item1
+  pos: [ 116, 41 ]
+  size: [ 24, 25 ]
+  room: living
+  text: '$objects/radio'
+  walkto: [ 128, 12 ]
+  wdir: n
+  anim: closed
+  model: '01/radio'
 living_window_l:
   type: item1
   pos: [175, 28]
@@ -22,3 +32,13 @@ living_window_r:
   text: '$objects/window'
   walkto: [423, 18]
   wdir: n
+door_living_entry:
+  type: item1
+  anim: '@Doors/entry_living'
+  pos: [26, 4]
+  room: living
+  size: [26, 104]
+  text: '$objects/door'
+  walkto: [47, 7]
+  wdir: w
+  model: '01/door_living_entry'

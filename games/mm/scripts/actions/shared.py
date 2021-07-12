@@ -145,11 +145,19 @@ class Scripts:
                 s.add_action(actions.RunScript(Scripts.walk(other_item, None)))
         return s
 
+def set_item_variable(item_id, var, value):
+    if var in vars.items[item_id] and isinstance(vars.items[item_id][var], str):
+        if vars.items[item_id][var][0] == '@':
+            monkey.engine.set(vars.items[item_id][var], value)
+        else:
+            vars.items[item_id][var] = value
 
 def openDoor(item_id, state):
     def f():
         example.get(item_id).setAnim(state)
-        vars.items[item_id]['anim']=state
+        set_item_variable(item_id, 'anim', state)
+        #monkey.engine.set(vars.items[item_id]['anim'], state)
+        #vars.items[item_id]['anim']=state
     return f
 
 

@@ -14,13 +14,32 @@ class Scheduler;
 
 struct RoadSection {
 	RoadSection() = default;
-	RoadSection(float width, float curvature, float slope, float offset) :
-		width(width), curvature(curvature), slope(slope), offset(offset) {}
+	RoadSection(long begins, long ends, float width, float curvature, float slope, float offset) :
+		width(width), curvature(curvature), slope(slope), offset(offset), begins(begins), ends(ends) {}
+	long begins;
+	long ends;
 	float width;
 	float curvature;
 	float slope;
 	float offset;
 };
+
+
+struct QuadInfo {
+    glm::vec4 loc;
+    glm::vec2 offset;
+};
+
+struct RoadItem {
+    float x;
+    float height;
+    int quadId;
+    bool flipH;
+    int i;
+};
+
+
+
 
 class Road : public Component {
 public:
@@ -32,6 +51,7 @@ public:
     std::type_index GetType() override;
 private:
 	std::shared_ptr<DynamicMesh<VertexColor>> m_mesh;
+	std::shared_ptr<DynamicMesh<Vertex3D>> m_meshItem;
 	float m_curvature;
 	float m_step;
 	InputMethod * m_input;
@@ -43,14 +63,17 @@ private:
 	float m_speed;
 	float m_acceleration;
 	float m_initialSlope;
-	std::vector<std::map<float, RoadSection>> m_roadInfo;
+	std::vector<std::vector<RoadSection>> m_roadInfo;
 
 	// number of points per band
-	int m_n;
+	long m_n;
 	float m_oldy;
 	int m_oldis;
-	std::map<float, float> dist;
+	std::map<long, float> m_branchOffset;
 	float m_z0;
+	int m_imax;
+	std::unordered_map<int, std::vector<RoadItem>> m_roadItems;
+	std::unordered_map<int, QuadInfo> m_quadInfo;
 };
 
 

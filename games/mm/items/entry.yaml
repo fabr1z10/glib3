@@ -42,13 +42,14 @@ door_entry_basement:
   model: '01/door_entry_basement'
 door_entry_living:
   type: item1
-  anim: closed
+  anim: '@Doors/entry_living'
   pos: [588, 3]
   room: entry
   size: [26, 115]
   text: '$objects/door'
-  walkto: [590, 7]
+  walkto: '@Pos/door_entry_living'
   wdir: e
+
   model: '01/door_entry_living'
 gargoyle_trap:
   type: item2

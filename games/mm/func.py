@@ -84,6 +84,12 @@ def set_verb(verb_id):
     vars.wait_for_second_item = False
     update_current_action()
 
+def set_verb_2(verb_id):
+    vars.current_verb = verb_id
+    vars.current_item_2 = ''
+    vars.wait_for_second_item = False
+    update_current_action()
+
 
 def update_current_action():
     a = example.get('current_verb')
@@ -158,6 +164,7 @@ def prova():
                         print ('not found: ' + f2)
             if fc:
                 fc(vars.current_item_1, item)
+                set_verb_2('walkto')
         else:
             f1 = vars.current_verb + '_' + vars.current_item_1 + '_' + vars.current_item_2
             print('check if ' + f1 + ' exists.')
@@ -168,13 +175,16 @@ def prova():
                 fc = getattr(scripts.actions, f1, None)
                 if fc:
                     fc(vars.current_item_2, vars.current_item_1)
+                    set_verb_2('walkto')
                 else:
                     f2 = vars.current_verb + '_'
                     fc = getattr(scripts.actions, f2, None)
                     if fc:
                         fc(vars.current_item_2, item)
+                        set_verb_2('walkto')
             else:
                 fc(vars.current_item_1, vars.current_item_2)
+                set_verb_2('walkto')
 
     return f
 

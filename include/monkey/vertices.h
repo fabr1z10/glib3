@@ -19,7 +19,7 @@ struct SimpleVertex3D {
     static void InitAttributes();
 };
 
-struct Vertex3D {
+struct __attribute__ ((visibility ("default")))  Vertex3D {
     Vertex3D(GLfloat x, GLfloat y, GLfloat z)
     :x(x), y(y), z(z), s(0.0f), t(0.0f) {}
     Vertex3D(GLfloat x, GLfloat y, GLfloat z, GLfloat s, GLfloat t)

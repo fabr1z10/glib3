@@ -19,7 +19,7 @@ michael:
   type: character
   model: 01/michael
   pos: [150, 8]
-  room: outside
+  room: living
   parent: walkarea_0
   dir: s
   speed: 500

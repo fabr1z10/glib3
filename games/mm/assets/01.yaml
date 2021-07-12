@@ -74,7 +74,18 @@ door_entry_living:
       loop: true
       elements:
         - quads: [[230,395,26,115]]
-
+door_living_entry:
+  sheet: "gfx/sprites/mm.png"
+  type: "asset.sprite"
+  animations:
+    closed:
+      loop: true
+      elements:
+        - quads: [[311,406,26,104]]
+    open:
+      loop: true
+      elements:
+        - quads: [[284,406,26,104]]
 fusebox:
   sheet: "gfx/sprites/mm.png"
   type: "asset.sprite"
@@ -185,3 +196,27 @@ dave:
     push_plank:
       elements:
         - quads: [[57, 150, 21, 47, 10, 0]]
+radio:
+  sheet: "gfx/sprites/mm.png"
+  type: "asset.sprite"
+  animations:
+    closed:
+      loop: true
+      elements:
+        - quads: [[52,386,24,25,0,0]]
+    open:
+      loop: true
+      elements:
+        - quads: [[77,386,45,25,0,0]]
+cabinet:
+  sheet: "gfx/sprites/mm.png"
+  type: "asset.sprite"
+  animations:
+    closed:
+      loop: true
+      elements:
+        - quads: [[101,366,36,19,0,0]]
+    open:
+      loop: true
+      elements:
+        - quads: [[52,366,48,19,0,0]]

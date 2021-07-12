@@ -74,3 +74,4 @@ verbs = {
 verb_sets = [
     { 'verbs': ['push', 'pull', 'give', 'open', 'close', 'read', 'walkto', 'pickup', 'unlock', 'newkid', 'use', 'turnon', 'turnoff'], 'default_verb': 'walkto'}
 ]
+

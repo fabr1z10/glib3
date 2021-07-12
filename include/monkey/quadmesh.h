@@ -16,7 +16,7 @@
 
 
 // rename this as texturedmesh
-class QuadMesh : public Mesh<Vertex3D> {
+class __attribute__ ((visibility ("default"))) QuadMesh : public Mesh<Vertex3D> {
 public:
     QuadMesh (GLenum prim, const std::string& filename);
     QuadMesh (const std::string& filename,

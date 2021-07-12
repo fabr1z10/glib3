@@ -1,25 +1,38 @@
 #pragma once
 
 #include <monkey/imesh.h>
-
+#include <monkey/engine.h>
 
 template<class Vertex>
 class __attribute__ ((visibility ("default"))) DynamicMesh : public IMesh {
 public:
     DynamicMesh() = default;
-    DynamicMesh(ShaderType type) : IMesh(type) {}
+    DynamicMesh(ShaderType type) : IMesh(type), m_texId(GL_INVALID) {}
 
 
-    DynamicMesh(const ITab& t) : IMesh(t) {
+    DynamicMesh(const ITab& t) : IMesh(t), m_texId(GL_INVALID)  {
 
     }
-
 
     ~DynamicMesh() {
         if (m_vb != INVALID_OGL_VALUE)
             glDeleteBuffers(1, &m_vb);
         if (m_ib != INVALID_OGL_VALUE)
             glDeleteBuffers(1, &m_ib);
+    }
+
+    void setTexture(const std::string& texName) {
+        auto tex = Engine::get().GetAssetManager().GetTex(texName);
+        m_texId = tex->GetTexId();
+    }
+
+    void Setup(Shader* shader) override {
+        if (m_texId != GL_INVALID) {
+            auto texLoc = shader->GetUniformLocation(TEXTURE);
+            glUniform1i(texLoc, 0);
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, m_texId);
+        }
     }
 
     void Init(std::vector<Vertex>& vertices, std::vector<unsigned int>& indices) {
@@ -60,4 +73,6 @@ public:
         Vertex::InitAttributes();
     }
 	bool m_init;
+    GLuint m_texId;
+
 };

@@ -29,9 +29,7 @@ def walkto_door_entry_basement(item_id, entity):
         example.play(s)
 
 
-open_door_entry_living = a.Actions.open_door()
-close_door_entry_living = a.Actions.close_door()
-walkto_door_entry_living = a.Actions.walk_door('living', [54, 6], 'e')
+
 
 pull_gargoyle_right = push_gargoyle_right
 

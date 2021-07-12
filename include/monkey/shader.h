@@ -26,7 +26,7 @@ class Camera;
 
 
 
-class Shader {
+class __attribute__ ((visibility ("default"))) Shader {
 public:
     Shader(const char* vertex, const char* fragment);
     virtual ~Shader() {}
