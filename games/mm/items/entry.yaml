@@ -49,8 +49,18 @@ door_entry_living:
   text: '$objects/door'
   walkto: '@Pos/door_entry_living'
   wdir: e
-
   model: '01/door_entry_living'
+door_entry_kitchen:
+  type: item1
+  anim: '@Doors/entry_kitchen'
+  pos: [160, 25]
+  room: entry
+  size: [40, 88]
+  text: '$objects/door'
+  walkto: '@Pos/door_entry_kitchen'
+  wdir: n
+  model: '01/door_entry_kitchen'
+
 gargoyle_trap:
   type: item2
   pos: [337, 14]

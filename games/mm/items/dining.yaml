@@ -1,0 +1,20 @@
+door_dining_kitchen:
+  type: item1
+  anim: '@Doors/kitchen_dining'
+  pos: [18, 17]
+  room: dining
+  size: [26, 103]
+  text: '$objects/door'
+  walkto: '@Pos/door_dining_kitchen'
+  wdir: w
+  model: '01/door_dining_kitchen'
+door_dining_storage:
+  type: item1
+  anim: '@Doors/dining_storage'
+  pos: [930, 17]
+  room: dining
+  size: [26, 100]
+  text: '$objects/door'
+  walkto: '@Pos/door_dining_storage'
+  wdir: e
+  model: '01/door_dining_storage'

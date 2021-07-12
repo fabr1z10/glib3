@@ -46,6 +46,14 @@ objects:
   silver_key: silver key
   window: window
   radio: old fashion radio
+  fridge: refrigerator
+  can_of_pepsi: can of Pepsi
+  developer: bottle of developer
+  tentacle_chow: tentacle chow
+  canned_goods: canned goods
+  fruit_drinks: fruit drinks
+  glass_jar: glass jar
+
   archway: archway
   path: path
   poster: poster
@@ -87,3 +95,4 @@ lines:
   11: Made in Chernobyl
   12: MAIN POWER
   13: Yuck! I'm not touching that!
+  14: 12 fluid ounces (354 ml)

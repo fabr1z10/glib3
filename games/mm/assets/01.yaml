@@ -74,6 +74,67 @@ door_entry_living:
       loop: true
       elements:
         - quads: [[230,395,26,115]]
+door_entry_kitchen:
+  sheet: "gfx/sprites/mm.png"
+  type: "asset.sprite"
+  animations:
+    closed:
+      loop: true
+      elements:
+        - quads: [[338,422,40,88,0,0]]
+    open:
+      loop: true
+      elements:
+        - quads: [[379,422,40,88,0,0]]
+door_kitchen_entry:
+  sheet: "gfx/sprites/mm.png"
+  type: "asset.sprite"
+  animations:
+    closed:
+      loop: true
+      elements:
+        - quads: [[447,395,26,115]]
+    open:
+      loop: true
+      elements:
+        - quads: [[420,395,26,115]]
+door_kitchen_dining:
+  sheet: "gfx/sprites/mm.png"
+  type: "asset.sprite"
+  animations:
+    closed:
+      loop: true
+      elements:
+        - quads: [[474,395,26,115]]
+    open:
+      loop: true
+      elements:
+        - quads: [[474,279,26,115]]
+door_dining_kitchen:
+  sheet: "gfx/sprites/mm.png"
+  type: "asset.sprite"
+  animations:
+    closed:
+      loop: true
+      elements:
+        - quads: [[365,318,26,103]]
+    open:
+      loop: true
+      elements:
+        - quads: [[338,318,26,103]]
+door_dining_storage:
+  sheet: "gfx/sprites/mm.png"
+  type: "asset.sprite"
+  animations:
+    closed:
+      loop: true
+      elements:
+        - quads: [[392,318,26,99]]
+    open:
+      loop: true
+      elements:
+        - quads: [[140,321,26,99]]
+
 door_living_entry:
   sheet: "gfx/sprites/mm.png"
   type: "asset.sprite"
@@ -106,6 +167,55 @@ silver_key:
       loop: true
       elements:
         - quads: [[124,478,6,12]]
+can_of_pepsi:
+  sheet: "gfx/sprites/mm.png"
+  type: "asset.sprite"
+  animations:
+    def:
+      loop: true
+      elements:
+        - quads: [[133,481,6,9]]
+developer:
+  sheet: "gfx/sprites/mm.png"
+  type: "asset.sprite"
+  animations:
+    def:
+      loop: true
+      elements:
+        - quads: [[69,342,8,14]]
+chow:
+  sheet: "gfx/sprites/mm.png"
+  type: "asset.sprite"
+  animations:
+    def:
+      loop: true
+      elements:
+        - quads: [[52,344,16,12]]
+canned_goods:
+  sheet: "gfx/sprites/mm.png"
+  type: "asset.sprite"
+  animations:
+    def:
+      loop: true
+      elements:
+        - quads: [[52,357,33,8]]
+fruit_drinks:
+  sheet: "gfx/sprites/mm.png"
+  type: "asset.sprite"
+  animations:
+    def:
+      loop: true
+      elements:
+        - quads: [[86,354,25,11]]
+glass_jar:
+  sheet: "gfx/sprites/mm.png"
+  type: "asset.sprite"
+  animations:
+    def:
+      loop: true
+      elements:
+        - quads: [[112,354,11,11]]
+
 michael:
   sheet: "gfx/sprites/mm.png"
   type: 'asset.sprite'
@@ -220,3 +330,15 @@ cabinet:
       loop: true
       elements:
         - quads: [[52,366,48,19,0,0]]
+fridge:
+  sheet: "gfx/sprites/mm.png"
+  type: "asset.sprite"
+  animations:
+    closed:
+      loop: true
+      elements:
+        - quads: [[168,341,60,80,0,0]]
+    open:
+      loop: true
+      elements:
+        - quads: [[230,314,64,80,0,0]]

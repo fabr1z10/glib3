@@ -11,3 +11,7 @@ import vars
 open_door_entry_living = a.Actions.open_door()
 close_door_entry_living = a.Actions.close_door()
 walkto_door_entry_living = a.Actions.walk_door('living', status.Pos.door_living_entry, 'e')
+
+open_door_entry_kitchen = a.Actions.open_door()
+close_door_entry_kitchen = a.Actions.close_door()
+walkto_door_entry_kitchen = a.Actions.walk_door('kitchen', status.Pos.door_kitchen_entry, 'e')

@@ -77,7 +77,9 @@ class Scripts:
     # creates a script where player walks to an item and turns towards it
     def walk(id, script_id='_main'):
         s = Script(uid=script_id)
-        has_item = vars.inventory.get(id, 0) > 0
+        #has_item = vars.inventory.get(id, 0) > 0
+        has_item = id in vars.inventory[vars.current_player] and vars.inventory[vars.current_player][id] > 0
+
         if not has_item:
             item = vars.items[id]
             wt = monkey.engine.read(item.get('walkto', None))

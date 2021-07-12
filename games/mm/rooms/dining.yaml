@@ -1,0 +1,12 @@
+---
+  id: dining
+  type: default
+  width: 960
+  height: 144
+  items:
+    - factory: [bg, {'image': gfx/dining.png}]
+      d: [[0, 0, -3]]
+    - factory: [bg, {'image': gfx/dining1.png}]
+      d: [[97, 0, 1]]
+    - factory: [walkarea, {'id': walkarea_0, 'depth': { 'type': "func.liny", 'values': [0, 1, 144, 0]}, 'outline': [0,0,80,0,110,14,858,14,880,0,960,0,960,14,908,32,65,32,0,8]}]
+      d: [[0,0,0]]

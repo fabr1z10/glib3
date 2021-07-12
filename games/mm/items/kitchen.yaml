@@ -1,0 +1,40 @@
+door_kitchen_entry:
+  type: item1
+  anim: '@Doors/entry_kitchen'
+  pos: [26, 3]
+  room: kitchen
+  size: [26, 115]
+  text: '$objects/door'
+  walkto: '@Pos/door_kitchen_entry'
+  wdir: w
+  model: '01/door_kitchen_entry'
+door_kitchen_dining:
+  type: item1
+  anim: '@Doors/kitchen_dining'
+  pos: [588, 3]
+  room: kitchen
+  size: [26, 115]
+  text: '$objects/door'
+  walkto: '@Pos/door_kitchen_dining'
+  wdir: e
+  model: '01/door_kitchen_dining'
+fridge:
+  type: item1
+  pos: [ 484, 16, -1 ]
+  size: [ 60, 80 ]
+  room: kitchen
+  text: '$objects/fridge'
+  walkto: [ 504, 14 ]
+  wdir: n
+  anim: closed
+  model: '01/fridge'
+pepsi:
+  type: item1
+  pos: [ 522, 61, -0.5 ]
+  size: [ 6,6 ]
+  room: kitchen
+  text: '$objects/can_of_pepsi'
+  walkto: [ 504,14 ]
+  wdir: n
+  priority: 1
+  model: '01/can_of_pepsi'

@@ -1,0 +1,11 @@
+---
+  id: kitchen
+  type: default
+  width: 640
+  height: 144
+  on_load: init_kitchen
+  items:
+    - factory: [bg, {'image': gfx/kitchen.png}]
+      d: [[0, 0, -3]]
+    - factory: [walkarea, {'id': walkarea_0, 'depth': { 'type': "func.liny", 'values': [0, 1, 144, 0]}, 'outline': [28,0,615,0,571,16,180,16,174,23,87,23]}]
+      d: [[0,0,0]]
