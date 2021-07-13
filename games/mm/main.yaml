@@ -7,7 +7,8 @@
   start_room: entry
   fonts:
     - id: ui
-      file: './fonts/main.ttf'
+      #file: './fonts/main.ttf'
+      file: './fonts/arial.ttf'
       #file: '/usr/share/fonts/truetype/ubuntu/Ubuntu-M.ttf'
       #file: './fonts/MonkeyIsland-1990.ttf'
     - id: monkey

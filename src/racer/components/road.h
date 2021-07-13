@@ -74,6 +74,12 @@ private:
 	int m_imax;
 	std::unordered_map<int, std::vector<RoadItem>> m_roadItems;
 	std::unordered_map<int, QuadInfo> m_quadInfo;
+
+	// colors
+	glm::vec4 m_roadColors[2];
+	glm::vec4 m_terrainColors[2];
+	glm::vec4 m_stripeColor;
+
 };
 
 
