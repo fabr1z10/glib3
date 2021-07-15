@@ -50,6 +50,7 @@ public:
     using ParentClass = Road;
     std::type_index GetType() override;
 private:
+	int addRoadVertices(std::vector<VertexColor>&, std::vector<unsigned>&, float x, float y, float z, unsigned colorIndex, bool);
 	std::shared_ptr<DynamicMesh<VertexColor>> m_mesh;
 	std::shared_ptr<DynamicMesh<Vertex3D>> m_meshItem;
 	float m_curvature;
@@ -64,7 +65,8 @@ private:
 	float m_acceleration;
 	float m_initialSlope;
 	std::vector<std::vector<RoadSection>> m_roadInfo;
-
+	float m_roadWidth;
+	int m_vindex;
 	// number of points per band
 	long m_n;
 	float m_oldy;

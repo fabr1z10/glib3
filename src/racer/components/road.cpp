@@ -92,6 +92,7 @@ void Road::Start() {
 	std::vector<VertexColor> vertices;
 	std::vector<unsigned> indices;
 	float roadWidth = 2.0f;
+	m_roadWidth = roadWidth;
 	int n = 200;
 	for (int i = 0; i < n; ++i) {
 		vertices.emplace_back(-roadWidth, 0.0f, -i);
@@ -167,6 +168,48 @@ void Road::Start() {
 	//m_mesh->UpdateGeometry(vertices, indices);
 }
 
+int Road::addRoadVertices(std::vector<VertexColor>& vertices, std::vector<unsigned int>& indices, float x, float y, float z, unsigned colorIndex, bool addIndices) {
+	unsigned nv = vertices.size();
+	float darken = exp(0.002f*(z+m_s));
+	glm::vec4 multiply (darken, darken, darken, 1.0f);
+	vertices.emplace_back(x - m_roadWidth, y, z, m_roadColors[colorIndex] * darken);
+	vertices.emplace_back(x + m_roadWidth, y, z, m_roadColors[colorIndex] * darken);
+	vertices.emplace_back(x + m_roadWidth, y, z, m_terrainColors[colorIndex]* darken);
+	vertices.emplace_back(x + m_roadWidth + 50.0f, y, z, m_terrainColors[colorIndex]*darken);
+	vertices.emplace_back(x - m_roadWidth -50.0f, y, z, m_terrainColors[colorIndex]*darken);
+	vertices.emplace_back(x - m_roadWidth, y, z, m_terrainColors[colorIndex]*darken);
+	float sw = 0.1f;
+	if (colorIndex == 0) {
+		vertices.emplace_back(x - m_roadWidth, y+0.01f, z, m_stripeColor);
+		vertices.emplace_back(x - m_roadWidth + sw, y+0.01f, z, m_stripeColor);
+		vertices.emplace_back(x + m_roadWidth - sw, y+0.01f, z, m_stripeColor);
+		vertices.emplace_back(x + m_roadWidth, y+0.01f, z, m_stripeColor);
+	} else {
+		vertices.emplace_back(x +sw- m_roadWidth, y+0.01f, z, m_stripeColor);
+		vertices.emplace_back(x +2*sw- m_roadWidth, y+0.01f, z, m_stripeColor);
+		vertices.emplace_back(x + m_roadWidth - 2*sw, y+0.01f, z, m_stripeColor);
+		vertices.emplace_back(x + m_roadWidth - sw, y+0.01f, z, m_stripeColor);
+	}
+
+
+	auto added = vertices.size()-nv;
+	if (addIndices) {
+		auto k = m_vindex;
+		auto vi = {0, 2, 4, 6, 8, 10};
+		for (const auto& n : vi) {
+			indices.push_back(k + n);
+			indices.push_back(k + n + 1);
+			indices.push_back(k + n + added);
+			indices.push_back(k + n + added+1);
+			indices.push_back(k + n + added);
+			indices.push_back(k + n + 1);
+		}
+
+		m_vindex += added ;
+	}
+	return added;
+}
+
 void Road::Update(double dt) {
 	if (m_input->isKeyDown(GLFW_KEY_UP)) {
 		m_speed += m_acceleration * dt;
@@ -198,7 +241,7 @@ void Road::Update(double dt) {
 	//std::array<glm::vec4, 2> colors = { glm::vec4(0.64, 0.64, 0.64, 1.0f), glm::vec4(0.32,0.32f,0.32f,1.0)};
 
 	unsigned k = 0;
-
+	m_vindex = 0;
 
 
 	// draw all roads (1st road is the main, other are branches)
@@ -247,16 +290,16 @@ void Road::Update(double dt) {
 		}
 		//float rx = roadIndex == 0 ? 0 : m_branchOffset[i0];
 		float ry = 0;
-        k = vertices.size();
+        m_vindex = vertices.size();
 
         // place the first two points
-
-        vertices.emplace_back(rx - roadWidth, ry, z0, m_roadColors[current_color] * glm::vec4(1.0f));
-        vertices.emplace_back(rx + roadWidth, ry, z0, m_roadColors[current_color]);
-		vertices.emplace_back(rx + roadWidth, ry, z0, m_terrainColors[current_color]);
-		vertices.emplace_back(rx + roadWidth+ 50.0f, ry, z0, m_terrainColors[current_color]);
-		vertices.emplace_back(rx - roadWidth-50.0f, ry, z0, m_roadColors[current_color]);
-		vertices.emplace_back(rx - roadWidth, ry, z0, m_roadColors[current_color]);
+		addRoadVertices(vertices, indices, rx, ry, z0, current_color, false);
+//        vertices.emplace_back(rx - roadWidth, ry, z0, m_roadColors[current_color] * glm::vec4(1.0f));
+//        vertices.emplace_back(rx + roadWidth, ry, z0, m_roadColors[current_color]);
+//		vertices.emplace_back(rx + roadWidth, ry, z0, m_terrainColors[current_color]);
+//		vertices.emplace_back(rx + roadWidth+ 50.0f, ry, z0, m_terrainColors[current_color]);
+//		vertices.emplace_back(rx - roadWidth-50.0f, ry, z0, m_roadColors[current_color]);
+//		vertices.emplace_back(rx - roadWidth, ry, z0, m_roadColors[current_color]);
 
         auto* cs = &road[currentSection];
         pos.x -= 5*ds * cs->curvature;
@@ -275,45 +318,47 @@ void Road::Update(double dt) {
                 rx = m_branchOffset[i];
             }
             pts[i] = glm::vec3(rx, ry, z);
-            vertices.emplace_back(rx - roadWidth, ry, z, m_roadColors[current_color]);
-            vertices.emplace_back(rx + roadWidth, ry, z, m_roadColors[current_color]);
-			vertices.emplace_back(rx + roadWidth, ry, z, m_terrainColors[current_color]);
-			vertices.emplace_back(rx + roadWidth+ 50.0f, ry, z, m_terrainColors[current_color]);
-			vertices.emplace_back(rx - roadWidth - 50.0f, ry, z, m_terrainColors[current_color]);
-			vertices.emplace_back(rx - roadWidth, ry, z, m_terrainColors[current_color]);
-            indices.push_back(k);
-            indices.push_back(k + 1);
-            indices.push_back(k + 6);
-            indices.push_back(k + 7);
-            indices.push_back(k + 6);
-            indices.push_back(k + 1);
-
-            indices.push_back(k + 2);
-			indices.push_back(k + 3);
-			indices.push_back(k + 8);
-			indices.push_back(k + 9);
-			indices.push_back(k + 8);
-			indices.push_back(k + 3);
-
-			indices.push_back(k + 4);
-			indices.push_back(k + 5);
-			indices.push_back(k + 10);
-			indices.push_back(k + 11);
-			indices.push_back(k + 10);
-			indices.push_back(k + 5);
-
-            k += 6;
+            addRoadVertices(vertices, indices, rx, ry, z, current_color, true);
+//            vertices.emplace_back(rx - roadWidth, ry, z, m_roadColors[current_color]);
+//            vertices.emplace_back(rx + roadWidth, ry, z, m_roadColors[current_color]);
+//			vertices.emplace_back(rx + roadWidth, ry, z, m_terrainColors[current_color]);
+//			vertices.emplace_back(rx + roadWidth+ 50.0f, ry, z, m_terrainColors[current_color]);
+//			vertices.emplace_back(rx - roadWidth - 50.0f, ry, z, m_terrainColors[current_color]);
+//			vertices.emplace_back(rx - roadWidth, ry, z, m_terrainColors[current_color]);
+//            indices.push_back(k);
+//            indices.push_back(k + 1);
+//            indices.push_back(k + 6);
+//            indices.push_back(k + 7);
+//            indices.push_back(k + 6);
+//            indices.push_back(k + 1);
+//
+//            indices.push_back(k + 2);
+//			indices.push_back(k + 3);
+//			indices.push_back(k + 8);
+//			indices.push_back(k + 9);
+//			indices.push_back(k + 8);
+//			indices.push_back(k + 3);
+//
+//			indices.push_back(k + 4);
+//			indices.push_back(k + 5);
+//			indices.push_back(k + 10);
+//			indices.push_back(k + 11);
+//			indices.push_back(k + 10);
+//			indices.push_back(k + 5);
+//
+//            k += 6;
             auto this_color = long(i/m_n) % 2;
             if (this_color != current_color) {
                 current_color = this_color;
-                vertices.emplace_back(rx - roadWidth, ry, z, m_roadColors[current_color]);
-                vertices.emplace_back(rx + roadWidth, ry, z, m_roadColors[current_color]);
-				vertices.emplace_back(rx + roadWidth, ry, z, m_terrainColors[current_color]);
-				vertices.emplace_back(rx + roadWidth +50.f, ry, z, m_terrainColors[current_color]);
-				vertices.emplace_back(rx - roadWidth-50.0f, ry, z, m_terrainColors[current_color]);
-				vertices.emplace_back(rx - roadWidth, ry, z, m_terrainColors[current_color]);
+                int added = addRoadVertices(vertices, indices, rx, ry, z, current_color, false);
+//                vertices.emplace_back(rx - roadWidth, ry, z, m_roadColors[current_color]);
+//                vertices.emplace_back(rx + roadWidth, ry, z, m_roadColors[current_color]);
+//				vertices.emplace_back(rx + roadWidth, ry, z, m_terrainColors[current_color]);
+//				vertices.emplace_back(rx + roadWidth +50.f, ry, z, m_terrainColors[current_color]);
+//				vertices.emplace_back(rx - roadWidth-50.0f, ry, z, m_terrainColors[current_color]);
+//				vertices.emplace_back(rx - roadWidth, ry, z, m_terrainColors[current_color]);
 
-                k += 6;
+                m_vindex += added;
             }
             i++;
             if (i > cs->ends) {
