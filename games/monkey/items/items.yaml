@@ -2,7 +2,7 @@
 guybrush:
   type: character
   model: 01/guybrush
-  pos: [126, 52]
+  pos: [500, 52]
   room: scummbar
   parent: walkarea_0
   dir: e
@@ -37,6 +37,20 @@ mancomb:
   text_color: [255, 85, 85, 255]
   text_offset: [0, 90]
   room: mancomb
+estevan:
+  type: character
+  pos: [176, 15]
+  model: 01/estevan.estevan
+  text_color: [170, 85, 0, 255]
+  text_offset: [0, 90]
+  room: estevan
+loom:
+  type: character
+  pos: [212, 26]
+  model: 01/loom.loom
+  text_color: [85, 85, 255, 255]
+  text_offset: [0, 90]
+  room: loom
 mancomb.player:
   tag: player
   type: character
@@ -44,6 +58,20 @@ mancomb.player:
   text_color: [255, 255, 255, 255]
   text_offset: [0, 90]
   room: mancomb
+estevan.player:
+  tag: player
+  type: character
+  pos: [20, 20]
+  text_color: [255, 255, 255, 255]
+  text_offset: [0, 90]
+  room: estevan
+loom.player:
+  tag: player
+  type: character
+  pos: [20, 20]
+  text_color: [255, 255, 255, 255]
+  text_offset: [0, 90]
+  room: loom
 lookout_fire:
   model: fire
   pos: [126, 52]
@@ -221,25 +249,7 @@ meleemap_clearing:
 #  pos: [278,40,-1]
 #  model: scummbar.pirate9
 #  room: scummbar
-scummbar_mancomb:
-  type: item1
-  text: '$objects/pirate'
-  pos: [89,24]
-  model: 01/scummbar.mancomb
-  size: [30, 30]
-  walkto: [120, 20]
-  wdir: n
-  room: scummbar
-  node: walkarea
-scummbar_estevan:
-  type: item1
-  text: '$objects/pirate'
-  pos: [164, 21, 1]
-  model: 01/scummbar.estevan
-  size: [30, 20]
-  walkto: [194,10]
-  wdir: s
-  room: scummbar
+
 scummbar_loom:
   type: item1
   text: '$objects/pirate'

@@ -1,3 +1,22 @@
+scummbar_mancomb:
+  type: item1
+  text: '$objects/pirate'
+  pos: [89,24]
+  model: 01/scummbar.mancomb
+  size: [30, 30]
+  walkto: [120, 20]
+  wdir: n
+  room: scummbar
+  node: walkarea
+scummbar_estevan:
+  type: item1
+  text: '$objects/pirate'
+  pos: [164, 21, 1]
+  model: 01/scummbar.estevan
+  size: [30, 20]
+  walkto: '@pos/estevan'
+  wdir: s
+  room: scummbar
 scummbar_fireplace:
   type: item1
   model: 01/scummbar.fireplace

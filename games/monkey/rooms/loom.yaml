@@ -1,0 +1,9 @@
+---
+  id: loom
+  type: default
+  width: 320
+  height: 144
+  on_load: on_enter_loom
+  items:
+    - factory: [bg, {'image': gfx/loompirate.png}]
+      d: [[0, 0, -3]]

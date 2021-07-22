@@ -3,7 +3,7 @@
   lang: eng
   device_size: [256, 256]
   window_size: [512, 512]
-  start_room: world1_3
+  start_room: world1_1
   tick_multiplier: 4
   fonts:
     - id: main

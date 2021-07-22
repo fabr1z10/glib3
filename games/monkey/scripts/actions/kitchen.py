@@ -77,7 +77,7 @@ def pickup_fish(item_id, entity):
 
 open_kitchen_door = a.Actions.set_door('open')
 close_kitchen_door = a.Actions.set_door('closed')
-walkto_kitchen_door = a.Actions.walk_door()
+walkto_kitchen_door = a.Actions.walk_door('scummbar', status.pos.scummbar_kitchen_door,'e')
 
 def on_kitchen_trap(trap):
     example.remove(trap.id)

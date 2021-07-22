@@ -12,6 +12,11 @@ import factories
 
 
 class Callbacks:
+    def set_pos(item_id, room, pos, dir):
+        def f():
+            func.set_item_pos(item_id, room, pos, dir)
+        return f
+
     def set_door(id, var, value):
         def f():
             e = example.getById(id)
@@ -136,11 +141,33 @@ class Scripts:
                 s.add_action(actions.RunScript(Scripts.walk(other_item, None)))
         return s
 
+def set_item_variable(item_id, var, value):
+    if var in vars.items[item_id] and isinstance(vars.items[item_id][var], str):
+        if vars.items[item_id][var][0] == '@':
+            monkey.engine.set(vars.items[item_id][var], value)
+        else:
+            vars.items[item_id][var] = value
+
+def openDoor(item_id, state):
+    def f():
+        example.get(item_id).setAnim(state)
+        set_item_variable(item_id, 'anim', state)
+    return f
+
 class Actions:
     @staticmethod
     def walkto():
         def f(item_id, entity):
             s = Scripts.walk(item_id)
+            example.play(s)
+        return f
+
+    # standard open door func
+    @staticmethod
+    def close_door():
+        def f(item_id, entity):
+            s = Scripts.walk(item_id)
+            s.add_action(actions.CallFunc(f=openDoor(item_id, 'closed')))
             example.play(s)
         return f
 
@@ -160,18 +187,29 @@ class Actions:
         return f
 
     @staticmethod
-    def walk_door():
+    def walk_door(room, pos, dir):
         def f(item_id, entity):
-            s = Scripts.walk(item_id)
-            anim = monkey.engine.read(vars.items[item_id]['anim'])
-            print ('CIAO ' + anim)
-            if anim == 'open':
-                nroom = vars.items[item_id]['next_room']
-                next_room = monkey.engine.read(nroom[0])
-                new_pos = monkey.engine.read(nroom[1])
-                new_dir = nroom[2]
-                func.set_item_pos(vars.current_player, next_room, new_pos, new_dir)
-                s.add_action(actions.ChangeRoom(room = next_room))
+            if example.get(item_id).anim == 'open':
+                Actions.goto_room(room, pos, dir)(item_id, entity)
+            else:
+                s = Scripts.walk(item_id)
+                example.play(s)
+        return f
+
+    @staticmethod
+    def goto_room(room, pos, dir):
+        def f(item_id, entity):
+            s = Scripts.walk(item_id) if item_id else Script()
+            s.add_action(actions.CallFunc(f=Callbacks.set_pos(vars.current_player, room, pos, dir)))
+            s.add_action(actions.ChangeRoom(room=room))
+            example.play(s)
+        return f
+
+    @staticmethod
+    def change_room(room):
+        def f(item_id, entity):
+            s = Scripts.walk(item_id) if item_id else Script()
+            s.add_action(actions.ChangeRoom(room=room))
             example.play(s)
         return f
 

@@ -181,6 +181,7 @@ scummbar.mancomb:
     idle_2:
       elements:
         - quads: [[277,68,36,39,1,-1]]
+          ticks: 2
 scummbar.estevan:
   sheet: 'gfx/sprites/sprites1.png'
   type: 'asset.sprite'
@@ -193,6 +194,7 @@ scummbar.estevan:
       elements:
         - quads: [[355,76,39,27]]
         - quads: [[396,76,37,27]]
+        - quads: [[355,76,39,27]]
 scummbar.loom:
   sheet: 'gfx/sprites/sprites1.png'
   type: 'asset.sprite'
@@ -362,11 +364,11 @@ cook:
         - quads: [[39, 77, 31, 48, 15, 0]]
     talk_e:
       elements:
-        - quads: [[2, 34, 28, 35, 17, 0], [90, 57, 11, 16, 8, 0]]
-        - quads: [[2, 34, 28, 35, 17, 0], [50, 57, 12, 18, 7, 2]]
-        - quads: [[2, 34, 28, 35, 17, 0], [64, 57, 11, 17, 8, 1]]
-        - quads: [[2, 34, 28, 35, 17, 0], [77, 57, 11, 17, 8, 1]]
-        - quads: [[2, 34, 28, 35, 17, 0], [103, 57, 11, 18, 7, 2]]
+        - quads: [[2, 34, 28, 35, 17, 0], [90, 57, 11, 16, 8, -32]]
+        - quads: [[2, 34, 28, 35, 17, 0], [50, 57, 12, 18, 7, -30]]
+        - quads: [[2, 34, 28, 35, 17, 0], [64, 57, 11, 17, 8, -31]]
+        - quads: [[2, 34, 28, 35, 17, 0], [77, 57, 11, 17, 8, -31]]
+        - quads: [[2, 34, 28, 35, 17, 0], [103, 57, 11, 18, 7, -30]]
     walk_e:
       elements:
         - quads: [[72,77,25,48,13,0]]
@@ -391,6 +393,33 @@ mancomb.mancomb:
     smile:
       elements:
         - quads: [[0,0,78,78]]
+estevan.estevan:
+  sheet: 'gfx/faces.png'
+  type: 'asset.sprite'
+  animations:
+    idle_s:
+      elements:
+        - quads: [[268,79,92,94]]
+    scared:
+      elements:
+        - quads: [[80,79,92,94]]
+    blink:
+      elements:
+        - quads: [[268,79,92,94]]
+        - quads: [[174,79,92,94]]
+        - quads: [[80,174,92,94]]
+        - quads: [[174,79,92,94]]
+        - quads: [[268,79,92,94]]
+loom.loom:
+  sheet: 'gfx/faces.png'
+  type: 'asset.sprite'
+  animations:
+    idle_s:
+      elements:
+        - quads: [[319,1,78,70]]
+    happy:
+      elements:
+        - quads: [[239,1,78,70]]
 citizen:
   sheet: 'gfx/sprites/sprites1.png'
   type: 'asset.sprite'

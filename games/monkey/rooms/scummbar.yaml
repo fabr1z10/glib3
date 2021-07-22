@@ -18,4 +18,4 @@
       d: [[0,0,0]]
     - factory: [bg, {'image': gfx/scummbar_table.png}]
       parent: walkarea_0
-      d: [[374, 5, 0]]
+      d: [[374, 5, 1]]

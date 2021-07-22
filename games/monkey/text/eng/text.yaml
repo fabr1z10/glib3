@@ -119,6 +119,43 @@ dialogues:
     64: "Whatever you say."
     65: "Just watch out for those guard dogs!"
     66: "Uh-oh, it looks like my grog is going flat, so you'll have to excuse me."
+  estevan:
+    1: What are you looking at me for?
+    2: I'd like to introduce myself... my name's Guybrush.
+    3: Excuse me, but I'm looking for the dart board.
+    4: Where can I get a drink?
+    5: Sorry to bother you. Bye.
+    6: Yeah, so what?
+    7: Dart board?
+    8: We don't have one anymore.
+    9: There was a horrible accident.
+    10: Drinking and darts don't mix.
+    11: Right.
+    12: A drink?
+    13: You could wait for the cook to notice you...
+    14: ...but that could take all day.
+    15: Just find a mug and sneak into the kitchen.
+    16: That's what we all do.
+    17: What happened to your eye?
+    18: Well, I was putting in my contact lens when--
+    19: Hey, wait a second!
+    20: That's none of your business!
+  loom:
+    1: Aye.
+    2: Aye, yourself.
+    3: Nice hat.
+    4: So, tell me about LOOM.
+    5: Nice talking to you.
+    6: You mean the latest masterpiece of fantasy storytelling from Lucasfilm's™ Brian Moriarty™?
+    7: Why it's an extraordinary adventure with an interface of magic...
+    8: ...stunning, high-resolution, 3D landscapes...
+    9: ...sophisticated score and musical effects.
+    10: Not to mention the detailed animation and special effects,
+    11: elegant point'n'click control of characters, objects, and magic spells.
+    12: Beat the rush!
+    13: Go out and buy Loom™ today!
+    14: Geeze, what an obvious sales pitch.
+    15: Sorry, but on some topics I just get carried away.
   citizen:
     1: "Excuse me, but do you have a cousin named Sven?"
     2: "What?"

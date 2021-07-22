@@ -1,3 +1,4 @@
+
 class doors:
     kitchen = "closed"
     pier = "closed"
@@ -6,6 +7,8 @@ class pos:
     kitchen_door = [45, 12]
     scummbar_main_door = [64, 19]
     scummbar_kitchen_door = [595, 13]
+    estevan = (194, 10)
+    loom = (250, 10)
 
 class colors:
     cook_text_color = [85, 255, 255, 255]

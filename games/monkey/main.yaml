@@ -7,9 +7,9 @@
   start_room: scummbar
   fonts:
     - id: ui
-      file: './fonts/arial.ttf'
+      #file: './fonts/arial.ttf'
       #file: '/usr/share/fonts/truetype/ubuntu/Ubuntu-M.ttf'
-      #file: './fonts/MonkeyIsland-1990.ttf'
+      file: './fonts/monkeysmall.ttf'
     - id: monkey
       file: './fonts/MonkeyIsland-1990.ttf'
   custom:

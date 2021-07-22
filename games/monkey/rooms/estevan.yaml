@@ -1,0 +1,9 @@
+---
+  id: estevan
+  type: default
+  width: 320
+  height: 144
+  on_load: on_enter_estevan
+  items:
+    - factory: [bg, {'image': gfx/estevan.png}]
+      d: [[0, 0, -3]]
