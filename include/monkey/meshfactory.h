@@ -29,6 +29,7 @@ private:
     void drawCircle (IShape*, glm::vec4, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices);
     void drawCompound (IShape*, glm::vec4, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices);
     void drawPoly (IShape*, glm::vec4, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices);
+    void drawPolyLine (IShape*, glm::vec4, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices);
 
     // 3d shapes
 	void drawAABB (IShape*, glm::vec4, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices);

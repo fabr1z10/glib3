@@ -3,7 +3,7 @@ guybrush:
   type: character
   model: 01/guybrush
   pos: [500, 52]
-  room: scummbar
+  room: village1
   parent: walkarea_0
   dir: e
   speed: 500
@@ -15,21 +15,21 @@ guybrush:
     flag: 0
     mask: 1
     tag: 0
-lookout:
-  model: 'lookout'
-  pos: [114, 36]
-  room: lookout
-  node: walkarea
-  dir: w
-  width: 20
-  height: 47
-  offset: [-10, 0]
-  text: lookout
-  speed: 100
-  walkto: [134, 36]
-  wdir: w
-  text_color: [170, 170, 170, 255]
-  text_offset: [0,60]
+#lookout:
+#  model: 'lookout'
+#  pos: [114, 36]
+#  room: lookout
+#  node: walkarea
+#  dir: w
+#  width: 20
+#  height: 47
+#  offset: [-10, 0]
+#  text: lookout
+#  speed: 100
+#  walkto: [134, 36]
+#  wdir: w
+#  text_color: [170, 170, 170, 255]
+#  text_offset: [0,60]
 mancomb:
   type: character
   pos: [52, 18]
@@ -72,60 +72,42 @@ loom.player:
   text_color: [255, 255, 255, 255]
   text_offset: [0, 90]
   room: loom
-lookout_fire:
-  model: fire
-  pos: [126, 52]
-  room: lookout
-lookout_stairs:
-  text: stairs
-  pos: [230, 0]
-  width: 30
-  height: 10 
-  walkto: '@lookout_stairs'
-  wdir: 's'
-  room: lookout
-lookout_path:
-  text: path
-  pos: [294, 0]
-  width: 26
-  height: 144
-  walkto: '@lookout_path'
-  wdir: e
-  room: lookout
-village1_poster:
-  text: poster
-  pos: [259, 27]
-  room: village1
-  width: 20
-  height: 23
-  walkto: [269, 15]
-  wdir: n
-village1_cliffside:
-  text: cliffside
-  pos: [0, 0]
-  width: 10
-  height: 144 
-  walkto: '@village1_lookout'
-  wdir: 'w'
-  room: village1
-village1_archway:
-  text: archway
-  pos: [992, 30]
-  width: 16
-  height: 40
-  walkto: '@village1_village2'
-  wdir: e
-  room: village1
-village1_door:
-  text: door
-  width: 30
-  height: 45
-  pos: [699, 7]
-  room: village1
-  walkto: '@village1_door'
-  wdir: n
-  anim: '@&doors/scummbar'
-  model: door_village_scummbar
+
+
+#village1_poster:
+#  text: poster
+#  pos: [259, 27]
+#  room: village1
+#  width: 20
+#  height: 23
+#  walkto: [269, 15]
+#  wdir: n
+#village1_cliffside:
+#  text: cliffside
+#  pos: [0, 0]
+#  width: 10
+#  height: 144
+#  walkto: '@village1_lookout'
+#  wdir: 'w'
+#  room: village1
+#village1_archway:
+#  text: archway
+#  pos: [992, 30]
+#  width: 16
+#  height: 40
+#  walkto: '@village1_village2'
+#  wdir: e
+#  room: village1
+#village1_door:
+#  text: door
+#  width: 30
+#  height: 45
+#  pos: [699, 7]
+#  room: village1
+#  walkto: '@village1_door'
+#  wdir: n
+#  anim: '@&doors/scummbar'
+#  model: door_village_scummbar
 #scummbar_door_out:
 #  text: door
 #  width: 38
@@ -181,24 +163,24 @@ village1_door:
 #  walkto: [220, 48]
 #  wdir: e
 #  room: village2
-meleemap_lookout:
-  pos: [75, 79]
-  type: maphotspot
-  text: lookout
-  goto:
-    room: lookout
-    pos: '@lookout_path' 
-    dir: w   
-  room: meleemap
-meleemap_clearing:
-  pos: [135, 113]
-  type: maphotspot
-  text: clearing
-  goto:
-    room: clearing
-    pos: '@clearing_path' 
-    dir: w 
-  room: meleemap  
+#meleemap_lookout:
+#  pos: [75, 79]
+#  type: maphotspot
+#  text: lookout
+#  goto:
+#    room: lookout
+#    pos: '@lookout_path'
+#    dir: w
+#  room: meleemap
+#meleemap_clearing:
+#  pos: [135, 113]
+#  type: maphotspot
+#  text: clearing
+#  goto:
+#    room: clearing
+#    pos: '@clearing_path'
+#    dir: w
+#  room: meleemap
 #scummbar_pirate1:
 #  text: pirate
 #  pos: [138, 38]

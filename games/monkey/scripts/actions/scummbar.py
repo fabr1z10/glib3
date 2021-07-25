@@ -103,6 +103,10 @@ def open_scummbar_kitchen_door(aa, ba):
         cook_upset(aa, ba, True)
 
 
+open_scummbar_village_door = a.Actions.open_door()
+close_scummbar_village_door = a.Actions.close_door()
+walkto_scummbar_village_door = a.Actions.walk_door('village1',status.pos.village_scummbar_door, 's')
+
 
 
 

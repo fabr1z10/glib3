@@ -164,6 +164,14 @@ class Actions:
 
     # standard open door func
     @staticmethod
+    def open_door():
+        def f(item_id, entity):
+            s = Scripts.walk(item_id)
+            s.add_action(actions.CallFunc(f=openDoor(item_id, 'open')))
+            example.play(s)
+        return f
+
+    @staticmethod
     def close_door():
         def f(item_id, entity):
             s = Scripts.walk(item_id)

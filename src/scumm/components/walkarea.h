@@ -44,7 +44,7 @@ private:
     //std::vector<BlockedLine> m_walls;
     std::shared_ptr<Function2D> m_depthFunc;
     std::shared_ptr<Function2D> m_scaleFunc;
-    std::shared_ptr<ShortestPath> m_shortestPath;
+    std::shared_ptr<IShortestPath> m_shortestPath;
 };
 
 inline const IShape * WalkArea::getShape() const {

@@ -23,6 +23,8 @@ MeshFactory::MeshFactory(float z) : m_z(z) {
 		{ return drawCompound(s, color, vertices, indices); }));
     m_plotters.insert(std::make_pair(ShapeType::POLY, [&] (IShape* s, glm::vec4 color, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices)
         { return drawPoly(s, color, vertices, indices); }));
+    m_plotters.insert(std::make_pair(ShapeType::POLYLINE, [&] (IShape* s, glm::vec4 color, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices)
+        { return drawPolyLine(s, color, vertices, indices); }));
 	m_plotters.insert(std::make_pair(ShapeType::AABB, [&] (IShape* s, glm::vec4 color, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices)
 		{ return drawAABB(s, color, vertices, indices); }));
 	m_plotters.insert(std::make_pair(ShapeType::PLANE, [&] (IShape* s, glm::vec4 color, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices)
@@ -101,6 +103,19 @@ void MeshFactory::drawCompound(IShape * s, glm::vec4 color, std::vector<VertexCo
 
 
 
+}
+
+void MeshFactory::drawPolyLine(IShape * s, glm::vec4 color, std::vector<VertexColor> &vertices, std::vector<unsigned int> &indices)
+{
+    auto* polyline = static_cast<PolyLine*>(s);
+    const auto& v = polyline->getVertices();
+    for (const auto& vertex : v) {
+        vertices.emplace_back(vertex.x, vertex.y, 0.0f, color.r, color.g, color.b, color.a);
+    }
+    for (const auto& e : polyline->getEdges()) {
+        indices.emplace_back(e[0]);
+        indices.emplace_back(e[1]);
+    }
 }
 
 

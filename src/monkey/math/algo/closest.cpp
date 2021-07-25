@@ -10,6 +10,8 @@
 //
 ClosestPointOnEdge::ClosestPointOnEdge() : m_eps(0.1f) {
     m_algos.insert(std::make_pair(ShapeType::POLY, [&](glm::vec2 P, const IShape *s) { return findPoly(P, s); }));
+    m_algos.insert(std::make_pair(ShapeType::POLYLINE, [&](glm::vec2 P, const IShape *s) { return findPoly(P, s); }));
+
     m_algos.insert(std::make_pair(ShapeType::CIRCLE, [&](glm::vec2 P, const IShape *s) { return findCircle(P, s); }));
 
 }

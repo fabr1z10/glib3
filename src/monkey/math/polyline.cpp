@@ -1,11 +1,26 @@
-//#include <monkey/math/shapes/polyline.h>
+#include <monkey/math/shapes/polyline.h>
 //#include <monkey/error.h>
 //#include <monkey/math/geom.h>
 //
-//namespace py = pybind11;
-//
-//
-//PolyLine::PolyLine(const ITable & t) : Shape(t) {
+
+namespace py = pybind11;
+
+
+PolyLine::PolyLine(const ITab & t) : IShape(t) {
+    m_type = ShapeType::POLYLINE;
+    auto rvert = t.get<std::vector<float>>("nodes");
+    for (size_t i = 0; i < rvert.size(); i += 2) {
+        m_vertices.emplace_back(rvert[i], rvert[i+1]);
+    }
+    auto redges = t.get<std::vector<int>>("edges");
+    for (size_t i = 0; i < redges.size(); i+= 2) {
+        m_edgeIndices.emplace_back(redges[i], redges[i+1]);
+    }
+
+    for (auto& e : m_edgeIndices) {
+        m_edges.emplace_back(std::make_pair(m_vertices[e[0]], m_vertices[e[1]]));
+    }
+}
 //    auto rVert = t.get<py::list>("nodes");
 //    for (const auto& l : rVert) {
 //        auto v = l.cast<std::vector<float>>();
@@ -41,9 +56,9 @@
 //        GLIB_FAIL("not a polyline visitor");
 //}
 //
-//bool PolyLine::isPointInside (glm::vec3 P) const {
-//    return false;
-//}
+bool PolyLine::isPointInside (glm::vec3 P) const {
+    return false;
+}
 //
 //int PolyLine::GetEdgeContaining(glm::vec2 P) {
 //    for (int i = 0; i < m_edges.size(); ++i) {

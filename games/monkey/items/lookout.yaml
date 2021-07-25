@@ -1,0 +1,22 @@
+---
+lookout_fire:
+  type: item1
+  model: 01/fire
+  pos: [126, 52]
+  room: lookout
+lookout_stairs:
+  type: item1
+  text: '$objects/stairs'
+  pos: [230, 0]
+  size: [30,10]
+  walkto: '@pos/lookout_stairs'
+  wdir: 's'
+  room: lookout
+lookout_path:
+  type: item1
+  text: '$objects/path'
+  pos: [294, 0]
+  size: [26, 144]
+  walkto: '@pos/lookout_path'
+  wdir: e
+  room: lookout

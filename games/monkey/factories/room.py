@@ -11,6 +11,66 @@ import runners
 import scripts.actions
 
 
+def map_room(desc: dict):
+    id = desc['id']
+    width = desc['width']
+    height = desc['height']
+    r = room.Room(id, width, height)
+    r.add_runner(runners.Scheduler())
+
+    # setup collision engine
+    ce = runners.CollisionEngine(80, 80)
+    ce.add_response(vars.Collision.Tags.player, vars.Collision.Tags.trap,
+                    runners.CollisionResponse(on_enter=func.on_enter_trap))
+    r.add_runner(ce)
+    device_size = monkey.engine.device_size
+    cam_width = device_size[0]
+    cam_height = device_size[1]
+    # # add the main node
+    main = entity.Entity(tag='main')
+    main.camera = cam.OrthoCamera(width, height, cam_width, cam_height, [0, 0, cam_width, cam_height],
+                                  tag='maincam')
+    main.add_component(compo.HotSpotManager(lmbclick=func.walkto))
+    r.add(main)
+    # # main.add (e.Text(font='ui', text='ciao', color = [255, 255, 255, 255], align = e.TextAlignment.bottom, pos = [camWidth/2, 16, 0]))
+    on_load = desc.get('on_load', None)
+    if on_load:
+        r.init.append(getattr(scripts.actions, on_load))
+
+    # now add all items
+    if 'items' in desc:
+        for item in desc['items']:
+            factory_id = item['factory']
+            factory = monkey.engine.get_item_factory(factory_id[0])
+            if factory is None:
+                print('Unable to find factory for item: ' + factory_id[0])
+                exit(1)
+            else:
+                props = {} if len(factory_id) == 1 else factory_id[1]
+                f = factory(**props)
+                parent = item.get('parent', 'main')
+                for a in item['d']:
+                    e = f(*a)
+                    r.add(e, parent)
+
+    # add dynamic items
+    if id in vars.items_in_room:
+        for key in vars.items_in_room[id]:
+            item_desc = vars.items[key]
+            tp = item_desc.get('type', None)
+            if tp is None:
+                print('item ' + key + ' does not have type!')
+                exit(1)
+            print('ciao ' + key)
+            factory = getattr(factories.items, tp)
+            e = factory()(key, item_desc)
+            if e is not None:
+                parent = item_desc.get('parent', 'main')
+                print('adding ' + key)
+                r.add(e, parent)
+    return r
+
+
 def default_room(desc: dict):
     id = desc['id']
     width = desc['width']
@@ -104,68 +164,12 @@ def default_room(desc: dict):
             if tp is None:
                 print ('item ' + key + ' does not have type!')
                 exit(1)
-            print ('ciao ' + tp)
+            print ('ciao ' + key)
             factory = getattr(factories.items, tp)
             e = factory()(key, item_desc)
             if e is not None:
                 parent = item_desc.get('parent', 'main')
+                print('adding ' + key)
                 r.add(e, parent)
     return r
 
-    # super().__init__(id, width, height)
-    # self.collide = collide
-    # scumm.State.collision_enabled = collide#
-    # uisize = scumm.Config.ui_height
-    # camWidth = engine.device_size[0]
-    # camHeight = engine.device_size[1] - uisize
-    #
-    # # get the verbset used in this room
-    # verbset: scumm.VerbSet = scumm.Config.verbSets[0]
-    # defv: scumm.Verb = scumm.Config.getVerb(verbset.defaultVerb)
-    # scumm.Config.verb = verbset.defaultVerb
-    # # verbs = settings.monkey.config['verbs']
-    # default_verb = scumm.Config.getVerb
-    #
-    # # add the ui node
-    # if addui:
-    #     main.addComponent(compo.HotSpotManager(lmbclick=func.walkto))
-    #
-    #     ui = entity.Entity(tag='ui')
-    #     ui.camera = cam.OrthoCamera(camWidth, uisize, camWidth, uisize, [0, 0, camWidth, uisize], tag='uicam')
-    #     ui.add(entity.Text(font='ui', text=defv.text, color=scumm.Config.Colors.current_action,
-    #                        align=entity.TextAlignment.bottom, tag='current_verb', pos=[camWidth / 2, 48, 0]))
-    #     ui.addComponent(compo.HotSpotManager())
-    #     inventory_node = entity.TextView(factory=makeInventoryButton, pos=(160, 0), size=(140, 48), fontSize=8, lines=6,
-    #                                      deltax=26, tag='inventory')
-    #     inventory_node.addComponent(compo.HotSpotManager())
-    #
-    #     row = 2
-    #     count = 0
-    #     for a in verbset.verbs:
-    #         col = 1 + count // 4
-    #         x = 2 + (col - 1) * 46
-    #         verb: scumm.Verb = scumm.Config.getVerb(a)
-    #         print('here ' + a + ' ' + verb.text)
-    #         ui.add(se.VerbButton(
-    #             font='ui',
-    #             verbId=a,
-    #             colorInactive=scumm.Config.Colors.verb_unselected,
-    #             colorActive=scumm.Config.Colors.verb_selected,
-    #             align=entity.TextAlignment.bottomleft,
-    #             pos=[x, uisize - row * 8, 0]
-    #         ))
-    #         count += 1
-    #         row += 1
-    #         if (row > 5):
-    #             row = 2
-    #     self.scene.append(ui)
-    #     self.scene.append(inventory_node)
-    #
-    #     scumm.Config.resetVerb()
-    #
-    # # add the dialogue node
-    # dialogue_node = entity.TextView(factory=makeDialogueButton, size=[320, 56], fontSize=8, lines=6, deltax=26,
-    #                                 tag='dialogue')
-    # dialogue_node.addComponent(compo.HotSpotManager())
-    #
-    # pass

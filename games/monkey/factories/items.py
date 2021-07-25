@@ -23,10 +23,16 @@ def walkarea(**kwargs):
     def f(*args):
         e = entity.Entity(pos=(args[0], args[1], args[2]))
         e.tag = kwargs.get('id')
-        shape = shapes.Poly(kwargs.get('outline'))
-        if 'holes' in kwargs:
-            for hole in kwargs['holes']:
-                shape.holes.append(hole)
+        shape = None
+        if 'outline' in kwargs:
+            # shape is a polygon
+            shape = shapes.Poly(kwargs.get('outline'))
+            if 'holes' in kwargs:
+                for hole in kwargs['holes']:
+                    shape.holes.append(hole)
+        else:
+            # shape is a polyline
+            shape = shapes.PolyLine(kwargs.get('nodes'), kwargs.get('edges'))
         walkarea = scumm.components.Walkarea(shape=shape)
         walkarea.depth= kwargs.get('depth', None)
         walls = kwargs.get('walls', None)
@@ -109,6 +115,7 @@ def item1(**kwargs):
         # if a size is provided, add a hotspot
         size = desc.get('size', None)
         if size:
+            print('size is ' + str(size))
             s.add_component(compo.HotSpot(shape=shapes.Rect(width=size[0], height=size[1]),
                                           onenter=func.hover_on(key),
                                           onleave=func.hover_off(key),

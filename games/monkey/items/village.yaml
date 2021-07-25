@@ -1,0 +1,17 @@
+---
+village1_poster:
+  type: item1
+  text: '$objects/poster'
+  pos: [259, 27, 0]
+  room: village1
+  size: [20, 23]
+  walkto: [269, 15]
+  wdir: n
+cliffside:
+  type: item1
+  text: '$objects/cliffside'
+  pos: [0, 0]
+  size: [10, 144]
+  walkto: '@pos/village_cliffside'
+  wdir: 'w'
+  room: village1

@@ -20,5 +20,8 @@ engine = sx.init_scumm(vars, status)
 
 # place custom factories here ...
 engine.add_room_factory('default', factories.room.default_room)
+engine.add_room_factory('map', factories.room.map_room)
+
+
 engine.add_item_factory('bg', factories.items.bg)
 engine.add_item_factory('walkarea', factories.items.walkarea)

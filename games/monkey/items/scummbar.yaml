@@ -26,6 +26,17 @@ scummbar_fireplace:
   walkto: [512, 40]
   wdir: e
   room: scummbar
+scummbar_village_door:
+  type: item1
+  text: '$objects/door'
+  size: [38, 47]
+  pos: [32, 24, -1]
+  room: scummbar
+  walkto: '@pos/scummbar_main_door'
+  wdir: w
+  anim: '@doors/scummbar'
+  #next_room: [village1, '@pos/village_scummbar_door', 's']
+  model: 01/door_scummbar_village
 scummbar_kitchen_door:
   type: item1
   text: '$objects/door'
@@ -35,7 +46,7 @@ scummbar_kitchen_door:
   walkto: '@pos/scummbar_kitchen_door'
   wdir: e
   anim: '@doors/kitchen'
-  next_room: [kitchen, '@pos/kitchen_door', 'e']
+  #next_room: [kitchen, '@pos/kitchen_door', 'e']
   model: 01/door_scummbar_kitchen
 cook:
   type: character

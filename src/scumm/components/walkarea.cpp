@@ -16,7 +16,11 @@ WalkArea::WalkArea(const ITab& t) : Component(t) {
     auto factory = Engine::get().GetSceneFactory();
     auto sh = t["shape"];
     m_shape = factory->make2<IShape>(*sh);
-    m_shortestPath = std::make_shared<ShortestPath>();
+    if (m_shape->getShapeType() == ShapeType::POLY) {
+        m_shortestPath = std::make_shared<PolygonShortestPath>();
+    } else if (m_shape->getShapeType() == ShapeType::POLYLINE) {
+        m_shortestPath = std::make_shared<PolyLineShortestPath>();
+    }
 
     if (t.has("depth")) {
         auto dref = t["depth"];

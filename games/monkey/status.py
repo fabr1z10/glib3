@@ -2,6 +2,7 @@
 class doors:
     kitchen = "closed"
     pier = "closed"
+    scummbar = "closed"
 
 class pos:
     kitchen_door = [45, 12]
@@ -9,6 +10,11 @@ class pos:
     scummbar_kitchen_door = [595, 13]
     estevan = (194, 10)
     loom = (250, 10)
+    village_scummbar_door = (0,0)
+    village_cliffside = (8, 71)
+    lookout_stairs = (248, 2)
+    lookout_path = (320, 62)
+    melee_village = (0, 0)
 
 class colors:
     cook_text_color = [85, 255, 255, 255]

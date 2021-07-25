@@ -5,11 +5,11 @@ fire:
   animations:
     def:
       loop: true
-      frames:
-        - [409, 479, 24, 32]
-        - [[435, 479, 24, 32]]
-        - [461, 479, 24, 32]
-        - [487, 479, 24, 32]
+      elements:
+        - quads: [[409, 479, 24, 32]]
+        - quads: [[435, 479, 24, 32]]
+        - quads: [[461, 479, 24, 32]]
+        - quads: [[487, 479, 24, 32]]
 potostew:
   sheet: "gfx/sprites/sprites1.png"
   type: "asset.sprite"
@@ -146,11 +146,11 @@ door_scummbar_village:
   type: "asset.sprite"
   animations:
     open:
-      frames:
-        - [472,2,38,47]
+      elements:
+        - quads: [[472,2,38,47]]
     closed:
-      frames:
-        - [472,50,38,47]
+      elements:
+        - quads: [[472,50,38,47]]
 door_scummbar_kitchen:
   sheet: "gfx/sprites/sprites1.png"
   type: "asset.sprite"
