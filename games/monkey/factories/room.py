@@ -53,6 +53,10 @@ def map_room(desc: dict):
                     e = f(*a)
                     r.add(e, parent)
 
+    cursor = entity.Text(font='monkey', size=8, text='', color=(255,255,255,255), tag='_cursor')
+    cursor.add_component(compo.Cursor())
+
+    main.add(cursor)
     # add dynamic items
     if id in vars.items_in_room:
         for key in vars.items_in_room[id]:

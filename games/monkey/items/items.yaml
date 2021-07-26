@@ -2,8 +2,8 @@
 guybrush:
   type: character
   model: 01/guybrush
-  pos: [500, 52]
-  room: village1
+  pos: [22, 52]
+  room: meleemap
   parent: walkarea_0
   dir: e
   speed: 500
@@ -15,21 +15,7 @@ guybrush:
     flag: 0
     mask: 1
     tag: 0
-#lookout:
-#  model: 'lookout'
-#  pos: [114, 36]
-#  room: lookout
-#  node: walkarea
-#  dir: w
-#  width: 20
-#  height: 47
-#  offset: [-10, 0]
-#  text: lookout
-#  speed: 100
-#  walkto: [134, 36]
-#  wdir: w
-#  text_color: [170, 170, 170, 255]
-#  text_offset: [0,60]
+
 mancomb:
   type: character
   pos: [52, 18]
@@ -163,24 +149,7 @@ loom.player:
 #  walkto: [220, 48]
 #  wdir: e
 #  room: village2
-#meleemap_lookout:
-#  pos: [75, 79]
-#  type: maphotspot
-#  text: lookout
-#  goto:
-#    room: lookout
-#    pos: '@lookout_path'
-#    dir: w
-#  room: meleemap
-#meleemap_clearing:
-#  pos: [135, 113]
-#  type: maphotspot
-#  text: clearing
-#  goto:
-#    room: clearing
-#    pos: '@clearing_path'
-#    dir: w
-#  room: meleemap
+
 #scummbar_pirate1:
 #  text: pirate
 #  pos: [138, 38]

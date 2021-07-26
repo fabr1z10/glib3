@@ -4,7 +4,7 @@
   device_size: [320, 200]
   window_size: [640, 400]
   tick_multiplier: 5
-  start_room: village1
+  start_room: meleemap
   fonts:
     - id: ui
       #file: './fonts/arial.ttf'

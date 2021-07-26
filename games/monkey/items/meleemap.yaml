@@ -1,0 +1,18 @@
+---
+meleemap_lookout:
+  type: map_hot_spot
+  pos: [75, 79]
+  size: [10, 10]
+  room: meleemap
+  text: '$objects/lookout'
+  walkto: [75, 79]
+  wdir: w
+meleemap_clearing:
+  type: map_hot_spot
+  pos: [135, 113]
+  size: [10, 10]
+  text: '$objects/clearing'
+  walkto: [135, 113]
+  wdir: e
+  room: meleemap
+

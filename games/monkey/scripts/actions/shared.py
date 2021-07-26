@@ -207,6 +207,7 @@ class Actions:
     @staticmethod
     def goto_room(room, pos, dir):
         def f(item_id, entity):
+            print('HEY item = ' + item_id)
             s = Scripts.walk(item_id) if item_id else Script()
             s.add_action(actions.CallFunc(f=Callbacks.set_pos(vars.current_player, room, pos, dir)))
             s.add_action(actions.ChangeRoom(room=room))

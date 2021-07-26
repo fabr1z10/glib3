@@ -153,6 +153,29 @@ def refresh_inventory():
     #     for key, value in inv.items():
     #         p.appendText ((key, value))
 
+def hover_on_map_hotspot(obj):
+    def f(item):
+        example.get('_cursor').setText(obj)
+    return f
+
+def hover_off_map_hotspot():
+    def f(item):
+        example.get('_cursor').setText('')
+    return f
+
+def click_on_map_hotspot(item):
+    def f(x,y,z):
+        name = 'click_' + item
+        print('try to look for a func: ' + name)
+        g = getattr(scripts.actions, name, None)
+        if g is None:
+            print('not found')
+        else:
+            g(item, z)
+    return f
+
+
+
 def hover_off(obj):
     def f(item):
         if vars.current_item_2:

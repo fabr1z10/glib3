@@ -1,4 +1,18 @@
 ---
+lookout:
+  type: character
+  model: 01/lookout
+  pos: [114, 36]
+  room: lookout
+  size: [20, 47]
+#  offset: [-10, 0]
+  text: '$objects/lookout'
+  speed: 100
+  walkto: [134, 36]
+  wdir: w
+  dir: w
+  text_color: [170, 170, 170, 255]
+  text_offset: [0,60]
 lookout_fire:
   type: item1
   model: 01/fire

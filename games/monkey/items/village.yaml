@@ -15,3 +15,21 @@ cliffside:
   walkto: '@pos/village_cliffside'
   wdir: 'w'
   room: village1
+village1_archway:
+  type: item1
+  text: '$objects/archway'
+  pos: [993, 30]
+  size: [21, 51]
+  walkto: '@pos/village1_archway'
+  wdir: 'w'
+  room: village1
+village_scummbar_door:
+  type: item1
+  text: '$objects/door'
+  size: [31, 52]
+  pos: [699, 6, -1]
+  room: village1
+  walkto: '@pos/village_scummbar_door'
+  wdir: n
+  anim: '@doors/scummbar'
+  model: 01/door_village_scummbar

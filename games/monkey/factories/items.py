@@ -55,6 +55,7 @@ def character(**kwargs):
         text_offset = desc.get('text_offset', [0, 60])
         pos = monkey.engine.read(desc.get('pos'))
         tag = desc.get('tag', key)
+        speed = desc.get('speed', 100)
         print (tag + " pos is " + str(pos))
         s = None
         dir = desc.get('dir', 's')
@@ -66,7 +67,7 @@ def character(**kwargs):
                 s.add_component(compo.Follow())
         else:
             s = entity.Entity(pos=pos, tag='player' if is_player else tag)
-        s.add_component(scumm.components.CharacterController(dir=dir, speed=100, text_color=text_color, text_offset=text_offset))
+        s.add_component(scumm.components.CharacterController(dir=dir, speed=speed, text_color=text_color, text_offset=text_offset))
         return s
     return f
 
@@ -90,6 +91,21 @@ def item3(**kwargs):
         s = entity.Entity(pos=pos)
         fu = getattr(scripts.actions, desc.get('func'))
         s.add_component(compo.HotSpot(shape=shapes.Rect(width=size[0], height=size[1]), onclick=fu))
+        return s
+    return f
+
+def map_hot_spot(**kwargs):
+    def f(*args):
+        key = args[0]
+        desc = args[1]
+        pos = desc.get('pos')
+        size = desc.get('size')
+        text = monkey.engine.read(desc.get('text'))
+        s = entity.Entity(pos=pos)
+        s.add_component(compo.HotSpot(shape=shapes.Rect(width=size[0], height=size[1], offset=(-size[0]*0.5, -size[1]*0.5)),
+                                      onenter=func.hover_on_map_hotspot(text),
+                                      onleave=func.hover_off_map_hotspot(),
+                                      onclick=func.click_on_map_hotspot(key)))
         return s
     return f
 

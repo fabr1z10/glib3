@@ -1,13 +1,13 @@
 ---
   id: clearing
+  type: default
   width: 496
   height: 144
-  bg:
-    - image: gfx/clearing1.png
-      pos: [0, 0, -3]
-    - image: gfx/clearing2.png
-      pos: [441, 0, 2]
-  walkareas:
-    - type: poly
-      outline: [496,38,496,0, 283, 0, 283, 20, 315, 28,315, 44, 229, 31, 92, 31, 41, 64,54, 75, 80, 64, 115, 58, 119, 48, 165, 53, 180,64, 214, 64, 229, 33, 315, 46, 400,38]
-      depth: auto
+  items:
+    - factory: [bg, {'image': gfx/clearing1.png}]
+      d: [[0, 0, -1]]
+    - factory: [bg, {'image': gfx/clearing2.png}]
+      d: [[441, 0, 1]]
+    - factory: [walkarea, {'id': walkarea_0, 'depth': { 'type': "func.liny", 'values': [0, 1, 144, 0]}, 'outline':
+        [496,38,496,0, 283, 0, 283, 20, 315, 28,315, 44, 229, 31, 92, 31, 41, 64,54, 75, 80, 64, 115, 58, 119, 48, 165, 53, 180,64, 214, 64, 229, 33, 315, 46, 400,38]} ]
+      d: [[0,0,0]]
