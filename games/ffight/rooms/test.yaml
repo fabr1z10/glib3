@@ -1,0 +1,18 @@
+---
+  type: 3d
+  id: 'test'
+  label: 'test'
+  width: 320
+  height: 240
+  scale: 1.0
+  time: 300
+  world_width: 700.0
+  world_height: 512
+  max_enemies: 1
+  prob_new_enemy: 0.1
+  enemies_to_kill: 10
+
+  items:
+
+    - factory: [player]
+      d: [ [5, 5] ]
