@@ -1,8 +1,8 @@
 ---
   title: Final Fight
   lang: eng
-  device_size: [320, 240]
-  window_size: [640, 480]
+  device_size: [384, 224]
+  window_size: [768, 448]
   start_room: 'test'
   fonts:
     - id: main

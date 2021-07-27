@@ -10,7 +10,7 @@ jump_velocity = abs(gravity) * time_to_jump_apex
 # height = 0
 # cm_per_unit = 40
 # # player variables - might change at game time
-player_scale = 0.05
+player_scale = 1
 player_speed = 100
 player_model = 'cody/sprite/main'
 # player_dead = False

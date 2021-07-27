@@ -134,11 +134,12 @@ class KeyListener:
 
 
 class Follow:
-    def __init__(self, cam='maincam', relpos=[0, 0, 5], up=[0, 1, 0]):
+    def __init__(self, cam='maincam', relpos=[0, 0, 5], up=[0, 1, 0], z = None):
         self.type = 'components.follow'
         self.cam = cam
         self.relativepos = relpos
         self.up = up
+        self.z = z
 
 
 class GarbageCollect:

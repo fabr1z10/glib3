@@ -2,8 +2,8 @@
   type: 3d
   id: 'test'
   label: 'test'
-  width: 320
-  height: 240
+  width: 384
+  height: 224
   scale: 1.0
   time: 300
   world_width: 700.0
@@ -15,4 +15,9 @@
   items:
 
     - factory: [player]
-      d: [ [5, 5] ]
+      d: [ [5, 5, -10] ]
+    - factory: [ aabb ]
+      d: [[0,-100,-60,1296,100,60], [0, 0, -60,1296,100,1], [0,0,0,1296,1000,1]]
+      #d: [ [0,0,0,10,1,2,0,0,-1], [15,-9,-8,10,10,10]]
+    - factory: [bg]
+      d: [[0, 0, -80,'assets/ff1.png']]

@@ -14,6 +14,7 @@
 #include <monkey/math/geom.h>
 #include <iostream>
 #include <monkey/engine.h>
+#include <glm/gtx/transform.hpp>
 
 using namespace glm;
 
@@ -83,7 +84,7 @@ void Camera::SetPosition(glm::vec3 eye, glm::vec3 dir, glm::vec3 up, bool always
         m_up = up;
         m_eye = eye;
         m_viewMatrix = glm::lookAt(eye, eye + dir, up);
-        OnMove.Fire(this);
+		OnMove.Fire(this);
     }
 }
 
@@ -114,7 +115,7 @@ OrthographicCamera::OrthographicCamera(const ITab& table) : Camera(table) {
 
 
 
-    SetPosition(m_eye, m_fwd, m_up, true);
+    //SetPosition(m_eye, m_fwd, m_up, true);
     Init();
 
 }
@@ -130,7 +131,6 @@ PerspectiveCamera::PerspectiveCamera(const ITab& t) : Camera(t) {
 	m_fov = t.get<float>("fov", 45.0f);
 	m_near = t.get<float>("near", 0.1f);
 	m_far = t.get<float>("far", 100.0f);
-	SetPosition(m_eye, m_fwd, m_up, true);
 	//Init();
 }
 
@@ -173,7 +173,7 @@ float PerspectiveCamera::getAspectRatio() const {
 
 
 void OrthographicCamera::Init() {
-
+	SetPosition(m_eye, m_fwd, m_up, true);
     m_aspectRatio = m_camViewport[2] / m_camViewport[3];
     m_extents = glm::vec2(m_orthoWidth * 0.5f, m_orthoHeight * 0.5f);
     float hw = m_orthoWidth / 2.0f;
@@ -182,6 +182,10 @@ void OrthographicCamera::Init() {
 
 }
 
+void PerspectiveCamera::Init() {
+	SetPosition(m_eye, m_fwd, m_up, true);
+
+}
 //void OrthographicCamera::SetPosition(vec3 eye, vec3 direction, vec3 up) {
 //    //std::cout << "update cam pos...\n";
 //    //std::cout << "Switch cam pos to " << eye.x << ", " << eye.y << "\n";

@@ -19,7 +19,7 @@ public:
     Camera(const ITab&);
     virtual void Resize(int width, int height) = 0;
     glm::vec3 GetPosition() const;
-    void SetPosition(glm::vec3 eye, glm::vec3 direction, glm::vec3 up = glm::vec3(0, 1, 0), bool alwaysUpdate = false);
+    virtual void SetPosition(glm::vec3 eye, glm::vec3 direction, glm::vec3 up = glm::vec3(0, 1, 0), bool alwaysUpdate = false);
     virtual void Start();
     virtual void Update(double) {}
     virtual void InitCamera() {}
@@ -43,7 +43,7 @@ public:
     glm::vec3 getUp() const;
     glm::vec3 getRight () const;
     void SetBounds(float xMin, float xMax, float yMin, float yMax);
-
+	virtual void Init() = 0;
 protected:
     // this is static and it's the viewport in device coordinates
     glm::vec4 m_camViewport;
@@ -104,7 +104,8 @@ public:
     glm::vec2 GetWorldCoordinates(glm::vec2) override;
     //void SetPosition(glm::vec3 eye, glm::vec3 direction, glm::vec3 up = glm::vec3(0, 1, 0)) override;
     glm::vec2 GetSize();
-    virtual void Init();
+	void Init() override;
+
     //void SetBounds(float xMin, float xMax, float yMin, float yMax) override;
 
     using ParentClass = Camera;
@@ -140,6 +141,8 @@ public:
     void Notify(float, float) override ;
     float getFieldOfView() const;
     float getAspectRatio() const;
+	void Init() override;
+
 private:
     float m_fov;
     float m_near;

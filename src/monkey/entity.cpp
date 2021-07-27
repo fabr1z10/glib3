@@ -55,6 +55,7 @@ Entity::Entity(const ITab& t) : Ref(t),
     if (t.has("camera")) {
         auto camt = t["camera"];
         auto camera = factory->make2<Camera>(*camt);
+        camera->Init();
         SetCamera(camera);
 
     }

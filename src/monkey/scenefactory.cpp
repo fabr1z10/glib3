@@ -85,6 +85,7 @@
 #include <monkey/components/markov.h>
 #include <monkey/input/pytab.h>
 #include <monkey/collisionengine3d.h>
+#include <monkey/cam25.h>
 
 
 namespace py = pybind11;
@@ -223,6 +224,7 @@ SceneFactory::SceneFactory() {
     add2<DynamicWorldBuilder> ("runner.dynamicworld");
     add2<OrthographicCamera> ("cam.ortho");
     add2<PerspectiveCamera> ("cam.perspective");
+    add2<Camera25> ("cam.cam25");
 //    add2<Poly> ("shape.poly");
     //add2<Polygon>("shape.polygon");
     //dd2<PolyTri>("shape.polygontri");

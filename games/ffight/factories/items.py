@@ -1,11 +1,21 @@
 import entity
 import components as comp
 import platformer.states as pstates
+import shapes3d as sh3d
 import vars
+import math
+
+def static_bg(**kwargs):
+    def f(*args):
+        pos = (args[0], args[2]/math.sqrt(2), args[2])
+        e = entity.Entity(pos=pos)
+        e.add_component(comp.Gfx(image=args[3]))
+        return e
+    return f
 
 def character_player(**kwargs):
     def f(*args):
-        pos = (args[0], args[1], 0)
+        pos = (args[0], args[1], args[2])
         scale = kwargs.get('scale', vars.player_scale)
         #char_info = vars.characters[vars.player]
         speed = vars.player_speed
@@ -49,6 +59,33 @@ def character_player(**kwargs):
             anim_down='jump'))
         p.add_component(sm)
         p.add_component(comp.KeyInput())
-        p.add_component(comp.Follow(relpos=(0, 5, 20)))
+        p.add_component(comp.Follow(relpos=(0, 0, 5), z=1))
         return p
+    return f
+
+
+def aabb3d(**kwargs):
+    def f(*args):
+        pos = (args[0], args[1], args[2])
+        width = args[3]
+        height = args[4]
+        depth = args[5]
+        offset = (0, 0, 0)
+        if len(args) > 6:
+            offset = (args[6], args[7], args[8])
+        color = kwargs.get('color', [1, 1, 1, 1])
+        e = entity.Entity(pos=pos)
+        shape = sh3d.AABB(size=(width, height, depth), offset=offset)
+        e.add_component(comp.ShapeGfxColor(shape=shape, color=color))
+        e.add_component(comp.Collider(shape=shape, flag=vars.flags.platform, mask=0, tag=vars.tags.platform))
+
+        tx_top = kwargs.get('top', None)
+        tx_front = kwargs.get('front', None)
+        if tx_top:
+            e.add(make_plat(glm.vec3(0, height, depth) + offset, (width, depth), tx_top))
+        if tx_front:
+            e.add(make_wall(glm.vec3(0, 0, depth) + offset, (width, height), tx_front))
+        #e.add(make_wall(offset + glm.vec3(0, 0, depth), (width, height), '2'))
+        #e.add(make_wall(offset + glm.vec3(width, 0, depth), (depth, height), '2', 90))
+        return e
     return f
