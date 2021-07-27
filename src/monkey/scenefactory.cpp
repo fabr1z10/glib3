@@ -86,6 +86,7 @@
 #include <monkey/input/pytab.h>
 #include <monkey/collisionengine3d.h>
 #include <monkey/cam25.h>
+#include <monkey/math/shapes3d/prism.h>
 
 
 namespace py = pybind11;
@@ -241,6 +242,7 @@ SceneFactory::SceneFactory() {
 	// ************ 3d shapes **************
 	add2<AABB>("shape3d.aabb");
 	add2<Plane>("shape3d.plane");
+	add2<Prism>("shape3d.prism");
 	// TODO !
 
     //add2<PolyLine> ("shape.graph");
