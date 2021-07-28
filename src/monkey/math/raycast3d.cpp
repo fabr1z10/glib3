@@ -36,11 +36,11 @@ RayCastHit RayCast3D::run(glm::vec3 O, glm::vec3 dir, float length, IShape *shap
 }
 
 RayCastHit RayCast3D::rayVsPrism(glm::vec3 O, glm::vec3 dir, float len, IShape *prism, const glm::mat4 & t) {
-	std::cerr << "?\n";
+	RayCastHit out;
 	auto* pr = static_cast<Prism*>(prism);
-
 	// project ray onto xz plane
 	auto baseShape = pr->getBaseShape();
+	float height = pr->getHeight();
 	glm::vec3 ep = O + dir * len;
 
 	// transform points from world to local
@@ -52,15 +52,36 @@ RayCastHit RayCast3D::rayVsPrism(glm::vec3 O, glm::vec3 dir, float len, IShape *
 	auto oInside = baseShape->isPointInside(ot);
 	auto eInside = baseShape->isPointInside(et);
 	if (isZero(glm::length2(ot-et))) {
-		return RayCastHit();
-	}
-	RayCast2D rc;
-	auto ce = rc.run(ot, et, baseShape, glm::mat4(1.0f));
-	if (ce.collide) {
+	    if (oInside) {
+	        if (Op.y > height && epp.y > height || Op.y < 0 && epp.y < 0) {
+	            return out;
+	        }
+	        if (Op.y > height) {
+	            out.collide = true;
+	            out.normal = monkey::up;
+	            out.length = Op.y - height;
+	        } else if (Op.y < 0) {
+	            out.collide = true;
+	            out.normal = monkey::down;
+	            out.length = -Op.y;
+	        }
 
-		std::cerr << "ici\n";
-	}
-	return RayCastHit();
+	    }
+	} else {
+        RayCast2D rc;
+        auto ce = rc.run(ot, et, baseShape, glm::mat4(1.0f));
+        if (ce.collide) {
+            // find y at impact point
+            auto impactPoint = Op + (epp - Op)* (ce.length / glm::length(et-ot));// ot + glm::normalize(et-ot) * ce.length;
+            if (impactPoint.y >= 0 && impactPoint.y <= height) {
+                out.collide = true;
+                out.normal = ce.normal;
+                out.length = ce.length;
+            }
+            std::cerr << "ici\n";
+        }
+    }
+	return out;
 }
 
 RayCastHit RayCast3D::rayVsAABB(glm::vec3 O, glm::vec3 dir, float len,IShape *aabb, const glm::mat4 & t) {

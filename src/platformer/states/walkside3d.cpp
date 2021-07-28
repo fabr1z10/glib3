@@ -71,9 +71,9 @@ void WalkSide3D::Run (double dt) {
         targetVelocityZ = (up ? -1.0f : 1.0f) * m_speed;
     }
     glm::vec3 delta =m_dynamics->step(dt, targetVelocityX, targetVelocityZ, m_acceleration);
-    if (left) {
-    	std::cerr << delta.z << " cas!\n";
-    }
+    //if (left) {
+    //	std::cerr << delta.z << " cas!\n";
+    //}
     m_controller->Move(delta);
     //std::cerr << "new z = " << m_entity->GetPosition().z << "\n";
 	if (m_animator != nullptr) {

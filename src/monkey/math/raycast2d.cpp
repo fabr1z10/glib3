@@ -25,19 +25,21 @@ RayCast2D::RayCast2D() {
 }
 
 RayCastHit RayCast2D::rayCastPoly(glm::vec2 A, glm::vec2 B, IShape *s, const glm::mat4 &t) {
-	auto poly = static_cast<Polygon*>(s);
+    RayCastHit out;
+    float u {};
+
+    auto poly = static_cast<Polygon*>(s);
 	const auto& vertices = poly->getOutlineVertices();
 	for (size_t i = 0; i < vertices.size(); ++i) {
-		size_t j = (i == vertices.size()-1 ? 0 : ++i);
+		size_t j = (i == vertices.size()-1 ? 0 : i+1);
 		glm::vec2 C = t * glm::vec4(vertices[i], 0.0f, 1.0f);
 		glm::vec2 D = t * glm::vec4(vertices[j], 0.0f, 1.0f);
 		if (seg2seg (A, B, C, D, u)) {
 			// update raycast hit
 			updateRaycastHit(out, B-A, D-C, u);
 		}
-
 	}
-
+    return out;
 }
 
 
