@@ -1,6 +1,7 @@
 #include <monkey/math/raycast2d.h>
 #include <monkey/math/geom.h>
 #include <monkey/math/shapes/convexpoly.h>
+#include <monkey/math/shapes/poly.h>
 
 RayCast2D::RayCast2D() {
 	m_raycasters[ShapeType::SEGMENT] = [&] (glm::vec2 A, glm::vec2 B, IShape* s, const glm::mat4& t) {
@@ -12,9 +13,47 @@ RayCast2D::RayCast2D() {
 	m_raycasters[ShapeType::CONVEXPOLY] = [&] (glm::vec2 A, glm::vec2 B, IShape* s, const glm::mat4& t) {
 		return this->rayCast<IConvexPolygon, true>(A, B, s, t);
 	};
+
+	m_raycasters[ShapeType::POLY] = [&] (glm::vec2 A, glm::vec2 B, IShape* s, const glm::mat4& t) {
+		return this->rayCastPoly(A, B, s, t);
+	};
+
 	m_raycasters[ShapeType::AABB] = [&] (glm::vec2 A, glm::vec2 B, IShape* s, const glm::mat4& t) {
 		return this->rayVsAABB(A, B, s, t);
 	};
+
+}
+
+RayCastHit RayCast2D::rayCastPoly(glm::vec2 A, glm::vec2 B, IShape *s, const glm::mat4 &t) {
+	auto poly = static_cast<Polygon*>(s);
+	const auto& vertices = poly->getOutlineVertices();
+	for (size_t i = 0; i < vertices.size(); ++i) {
+		size_t j = (i == vertices.size()-1 ? 0 : ++i);
+		glm::vec2 C = t * glm::vec4(vertices[i], 0.0f, 1.0f);
+		glm::vec2 D = t * glm::vec4(vertices[j], 0.0f, 1.0f);
+		if (seg2seg (A, B, C, D, u)) {
+			// update raycast hit
+			updateRaycastHit(out, B-A, D-C, u);
+		}
+
+	}
+
+}
+
+
+RayCastHit RayCast2D::run(glm::vec3 A, glm::vec3 B, IShape *shape, const glm::mat4& t) {
+	RayCastHit out;
+	auto it = m_raycasters.find(shape->getShapeType());
+	if (it == m_raycasters.end()) {
+		return out;
+	}
+
+	out = it->second(A, B, shape, t);
+	if (out.collide) {
+		// here length is just a number between 0 and 1, so it must be scaled to the proper length
+		out.length *= glm::length(B-A);
+	}
+	return out;
 
 }
 

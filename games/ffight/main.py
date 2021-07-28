@@ -55,6 +55,7 @@ engine.add_item_factory('player', factories.items.character_player)
 # engine.add_item_factory('item', factories.items.sprite_item)
 # engine.add_item_factory('plane', factories.items.plane)
 engine.add_item_factory('aabb', factories.items.aabb3d)
+engine.add_item_factory('prism', factories.items.prism3d)
 engine.add_item_factory('bg', factories.items.static_bg)
 
 engine.vars = v

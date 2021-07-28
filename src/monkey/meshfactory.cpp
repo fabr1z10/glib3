@@ -7,6 +7,7 @@
 #include <monkey/model/basicmodel.h>
 #include <monkey/math/shapes3d/aabb.h>
 #include <monkey/math/shapes3d/plane.h>
+#include <monkey/math/shapes3d/prism.h>
 //
 //
 
@@ -29,6 +30,9 @@ MeshFactory::MeshFactory(float z) : m_z(z) {
 		{ return drawAABB(s, color, vertices, indices); }));
 	m_plotters.insert(std::make_pair(ShapeType::PLANE, [&] (IShape* s, glm::vec4 color, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices)
 		{ return drawPlane(s, color, vertices, indices); }));
+	m_plotters.insert(std::make_pair(ShapeType::PRISM, [&] (IShape* s, glm::vec4 color, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices)
+		{ return drawPrism(s, color, vertices, indices); }));
+
 
 }
 
@@ -87,6 +91,38 @@ void MeshFactory::drawAABB(IShape* s, glm::vec4 color, std::vector<VertexColor> 
 
 	//indices.insert(indices.end(), {0, 1, 1, 2, 2, 3, 3, 0, 4, 5, 5, 6, 6, 7, 7, 4, 0, 4, 1, 5, 2, 6, 3, 7});
 
+
+}
+
+void MeshFactory::drawPrism(IShape * s, glm::vec4 color, std::vector<VertexColor> &vertices,
+							std::vector<unsigned int> &indices)
+{
+	auto* prism = static_cast<Prism*>(s);
+	auto* baseShape = prism->getBaseShape();
+	auto h = prism->getHeight();
+	auto it = m_plotters.find(baseShape->getShapeType());
+	if (it != m_plotters.end()) {
+		it->second(baseShape, color, vertices, indices);
+		for (auto& v : vertices) {
+			v.z = -v.y;
+			v.y = 0;
+		}
+		unsigned n = vertices.size();
+		unsigned m = indices.size();
+		for (size_t i = 0; i < n; ++i) {
+			vertices.push_back(vertices[i]);
+			vertices.back().y = h;
+		}
+		for (size_t i = 0; i < m; ++i) {
+			indices.push_back(indices[i] + n);
+		}
+		for (size_t i = 0; i < n; ++i) {
+			indices.push_back(i);
+			indices.push_back(i + n);
+		}
+
+
+	}
 
 }
 

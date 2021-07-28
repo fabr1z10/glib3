@@ -34,6 +34,7 @@ private:
     // 3d shapes
 	void drawAABB (IShape*, glm::vec4, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices);
 	void drawPlane (IShape*, glm::vec4, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices);
+	void drawPrism (IShape*, glm::vec4, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices);
 };
 //    public AcyclicVisitor,
 //    public Visitor<Rect>,

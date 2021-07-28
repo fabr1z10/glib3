@@ -2,6 +2,7 @@ import entity
 import components as comp
 import platformer.states as pstates
 import shapes3d as sh3d
+import shapes as sh
 import vars
 import math
 
@@ -67,18 +68,14 @@ def character_player(**kwargs):
 def prism3d(**kwargs):
     def f(*args):
         pos = (args[0], args[1], args[2])
-        width = args[3]
-        height = args[4]
-        depth = args[5]
-        offset = (0, 0, 0)
-        if len(args) > 6:
-            offset = (args[6], args[7], args[8])
         color = kwargs.get('color', [1, 1, 1, 1])
         e = entity.Entity(pos=pos)
-        shape = sh3d.AABB(size=(width, height, depth), offset=offset)
+        shape = sh3d.Prism(shape=sh.Poly(outline=kwargs.get('poly')), height=kwargs.get('height'))
+        print(shape)
         e.add_component(comp.ShapeGfxColor(shape=shape, color=color))
         e.add_component(comp.Collider(shape=shape, flag=vars.flags.platform, mask=0, tag=vars.tags.platform))
-
+        return e
+    return f
 
 def aabb3d(**kwargs):
     def f(*args):

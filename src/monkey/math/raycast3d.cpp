@@ -1,12 +1,21 @@
 #include <monkey/math/raycast3d.h>
+#include <monkey/math/shapes3d/prism.h>
+#include <glm/gtx/norm.hpp>
+#include <monkey/math/geom.h>
 
 RayCast3D::RayCast3D() {
 
-	m_raycasters[ShapeType::AABB] = [&] (glm::vec3 O, glm::vec3 dir, IShape* s, const glm::mat4& t) {
-		return this->rayVsAABB(O, dir, s, t);
+	m_raycasters[ShapeType::AABB] = [&] (glm::vec3 O, glm::vec3 dir, float len, IShape* s, const glm::mat4& t) {
+		return this->rayVsAABB(O, dir, len, s, t);
+	};
+	m_raycasters[ShapeType::PRISM] = [&] (glm::vec3 O, glm::vec3 dir, float len, IShape* s, const glm::mat4& t) {
+		return this->rayVsPrism(O, dir, len, s, t);
 	};
 }
 
+RayCastHit RayCast3D::run(glm::vec3 A, glm::vec3 B, IShape* shape, const glm::mat4& t)  {
+	throw;
+}
 
 RayCastHit RayCast3D::run(glm::vec3 O, glm::vec3 dir, float length, IShape *shape, const glm::mat4& t) {
 	//glm::vec2 A(O);
@@ -17,7 +26,7 @@ RayCastHit RayCast3D::run(glm::vec3 O, glm::vec3 dir, float length, IShape *shap
 		return out;
 	}
 
-	out = it->second(O, dir, shape, t);
+	out = it->second(O, dir, length, shape, t);
 //	if (out.collide) {
 //		// here length is just a number between 0 and 1, so it must be scaled to the proper length
 //		out.length *= length;
@@ -26,7 +35,35 @@ RayCastHit RayCast3D::run(glm::vec3 O, glm::vec3 dir, float length, IShape *shap
 
 }
 
-RayCastHit RayCast3D::rayVsAABB(glm::vec3 O, glm::vec3 dir, IShape *aabb, const glm::mat4 & t) {
+RayCastHit RayCast3D::rayVsPrism(glm::vec3 O, glm::vec3 dir, float len, IShape *prism, const glm::mat4 & t) {
+	std::cerr << "?\n";
+	auto* pr = static_cast<Prism*>(prism);
+
+	// project ray onto xz plane
+	auto baseShape = pr->getBaseShape();
+	glm::vec3 ep = O + dir * len;
+
+	// transform points from world to local
+	auto invt = glm::inverse(t);
+	auto Op = invt * glm::vec4(O, 1.0f);
+	auto epp = invt * glm::vec4(ep, 1.0f);
+	glm::vec3 ot(Op.x, -Op.z, 0.0f);
+	glm::vec3 et(epp.x, -epp.z, 0.0f);
+	auto oInside = baseShape->isPointInside(ot);
+	auto eInside = baseShape->isPointInside(et);
+	if (isZero(glm::length2(ot-et))) {
+		return RayCastHit();
+	}
+	RayCast2D rc;
+	auto ce = rc.run(ot, et, baseShape, glm::mat4(1.0f));
+	if (ce.collide) {
+
+		std::cerr << "ici\n";
+	}
+	return RayCastHit();
+}
+
+RayCastHit RayCast3D::rayVsAABB(glm::vec3 O, glm::vec3 dir, float len,IShape *aabb, const glm::mat4 & t) {
 	RayCastHit out;
 
 	auto bounds = aabb->getBounds();

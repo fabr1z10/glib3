@@ -11,6 +11,7 @@
 //
 class IRayCast {
 public:
+	virtual RayCastHit run(glm::vec3 A, glm::vec3 B, IShape* shape, const glm::mat4& t) = 0;
 	virtual RayCastHit run(glm::vec3 O, glm::vec3 dir, float length, IShape* shape, const glm::mat4& t) = 0;
 };
 
@@ -18,7 +19,8 @@ public:
 class RayCast2D : public IRayCast {
 public:
     RayCast2D ();
-    RayCastHit run(glm::vec3 O, glm::vec3 dir, float length, IShape* shape, const glm::mat4& t) override;
+	RayCastHit run(glm::vec3 A, glm::vec3 B, IShape* shape, const glm::mat4& t) override;
+	RayCastHit run(glm::vec3 O, glm::vec3 dir, float length, IShape* shape, const glm::mat4& t) override;
 private:
 	struct RayHit {
 		float t;
@@ -34,6 +36,7 @@ private:
 	RayCastHit rayVsAABB(glm::vec2 A, glm::vec2 B, IShape* aabb, const glm::mat4&);
 
 	void updateRaycastHit(RayCastHit& r, glm::vec2 ray, glm::vec2 line, float t);
+	RayCastHit rayCastPoly(glm::vec2 A, glm::vec2 B, IShape* s, const glm::mat4& t);
 
 	// generic raycast for shapes with vertices
 	template<typename T, bool closed>
