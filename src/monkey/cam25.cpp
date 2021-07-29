@@ -28,6 +28,7 @@ void Camera25::SetPosition(glm::vec3 eye, glm::vec3 dir, glm::vec3 up, bool alwa
 		m_viewMatrix[3][0] = -m_eye.x;
 		m_viewMatrix[3][1] = -m_eye.y;
 		m_viewMatrix[3][2] = -m_eye.z;
+		m_viewMatrix[2][2] = 0.01f;
 		OnMove.Fire(this);
 	}
 

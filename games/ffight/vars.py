@@ -1,7 +1,7 @@
 # # to be populated via the characters.yaml file
 # #characters = dict()
 #
-jump_height = 40.0
+jump_height = 150.0
 time_to_jump_apex = 0.5
 gravity = -(2.0 * jump_height) / (time_to_jump_apex * time_to_jump_apex)
 jump_velocity = abs(gravity) * time_to_jump_apex
