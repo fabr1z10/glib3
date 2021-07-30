@@ -61,7 +61,7 @@ class PlatformerRoom3D(room.Room):
         self.add_runner(keyl)
 
         main = Entity(tag='main')
-        cam = camera.Camera25(1296, 224, 384, 224, [0,0,384,224])
+        cam = camera.Camera25(5216, 736, 384, 224, [0,0,384,224])
         #cam = camera.PerspectiveCamera(viewport=[0, 0, 320, 240])
         cam.tag = 'maincam'
         cam.pos = (5, 0, 1)

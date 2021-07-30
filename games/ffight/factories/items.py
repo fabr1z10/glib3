@@ -60,7 +60,8 @@ def character_player(**kwargs):
             anim_down='jump'))
         p.add_component(sm)
         p.add_component(comp.KeyInput())
-        p.add_component(comp.Follow(relpos=(0, 0, 5), z=1))
+        p.add_component(comp.DynamicFollow(world_width=5216, cam_width=384, cam_height=224, bounds=[0, 256, 512, 256, 256, 528]))
+        #p.add_component(comp.Follow(relpos=(0, 0, 5), z=1))
         return p
     return f
 

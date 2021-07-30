@@ -156,6 +156,7 @@ SceneFactory::SceneFactory() {
     add2<Text> ("text");
     add2<TextView> ("textview");
     add2<Follow> ("components.follow");
+    add2<DynamicFollow> ("components.dynamic_follow");
     add2<SimpleCollider> ("components.collider");
     add2<SmartCollider> ("components.smartcollider");
     add2<SkCollider> ("components.skeletalcollider");
