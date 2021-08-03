@@ -64,6 +64,7 @@ public:
 //    void ForceDetach() { m_platform = nullptr; }
     std::type_index GetType() override;
 	void ClimbSlope(glm::vec3&, float);
+	void ClimbSlopeZ(glm::vec3&, float);
 
     //RayCastHit2D Raycast(glm::vec2 origin, glm::vec2 direction, float length, int mask);
 private:

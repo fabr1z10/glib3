@@ -9,11 +9,12 @@ class AABB(shapes.Shape):
 
 
 class Prism(shapes.Shape):
-    def __init__(self, shape, height, offset=(0, 0, 0)):
+    def __init__(self, shape, height, walls=[], offset=(0, 0, 0)):
         super().__init__(offset)
         self.shape = shape
         self.height = height
         self.type = 'shape3d.prism'
+        self.walls = walls
 
 
 class Plane(shapes.Shape):

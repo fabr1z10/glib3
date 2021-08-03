@@ -13,9 +13,13 @@ Prism::Prism(const ITab & t) {
     m_bounds = m_shape->getBounds();
     m_bounds.max.z = -m_bounds.min.y;
 	m_bounds.min.z = -m_bounds.max.y;
-	m_bounds.min.y = 0;
-	m_bounds.max.y = m_height;
+	m_bounds.min.y = -1000.0f;
+	m_bounds.max.y = 1000.0f;
 
+	auto walls = t.get<std::vector<int>>("walls", std::vector<int>());
+	for (auto wall : walls) {
+		m_walls.insert(wall);
+	}
 
 }
 

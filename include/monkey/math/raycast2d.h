@@ -35,7 +35,7 @@ private:
 	bool rayCastVsCircle (glm::vec2 A, glm::vec2 B, float& t, IShape*, const glm::mat4&);
 	RayCastHit rayVsAABB(glm::vec2 A, glm::vec2 B, IShape* aabb, const glm::mat4&);
 
-	void updateRaycastHit(RayCastHit& r, glm::vec2 ray, glm::vec2 line, float t);
+	void updateRaycastHit(RayCastHit& r, glm::vec2 ray, glm::vec2 line, float t, int segIndex);
 	RayCastHit rayCastPoly(glm::vec2 A, glm::vec2 B, IShape* s, const glm::mat4& t);
 
 	// generic raycast for shapes with vertices
@@ -52,14 +52,14 @@ private:
 			glm::vec2 D = t * glm::vec4(vertices[i], 0.0f, 1.0f);
 			if (seg2seg (A, B, C, D, u)) {
 				// update raycast hit
-				updateRaycastHit(out, B-A, D-C, u);
+				updateRaycastHit(out, B-A, D-C, u, i);
 			}
 		}
 		if (closed) {
 			glm::vec2 C = t * glm::vec4(vertices.back(), 0.0f, 1.0f);
 			glm::vec2 D = t * glm::vec4(vertices.front(), 0.0f, 1.0f);
 			if (seg2seg(A, B, C, D, u)) {
-				updateRaycastHit(out, B-A, D-C, u);
+				updateRaycastHit(out, B-A, D-C, u, 0);
 			}
 		}
 		return out;

@@ -36,7 +36,7 @@ RayCastHit RayCast2D::rayCastPoly(glm::vec2 A, glm::vec2 B, IShape *s, const glm
 		glm::vec2 D = t * glm::vec4(vertices[j], 0.0f, 1.0f);
 		if (seg2seg (A, B, C, D, u)) {
 			// update raycast hit
-			updateRaycastHit(out, B-A, D-C, u);
+			updateRaycastHit(out, B-A, D-C, u, i);
 		}
 	}
     return out;
@@ -76,13 +76,14 @@ RayCastHit RayCast2D::run(glm::vec3 O, glm::vec3 dir, float length, IShape *shap
 	return out;
 
 }
-void RayCast2D::updateRaycastHit(RayCastHit& r, glm::vec2 ray, glm::vec2 line, float u) {
+void RayCast2D::updateRaycastHit(RayCastHit& r, glm::vec2 ray, glm::vec2 line, float u, int si) {
 	r.collide = true;
 	if (u < r.length) {
 		r.length = u;
 		// compute normal w.r.t. ray
 		glm::vec2 d = glm::normalize(line);
 		r.normal = glm::vec3(-glm::normalize(ray - d * glm::dot(ray, d)), 0.0f);
+		r.segmentIndex = si;
 	}
 }
 

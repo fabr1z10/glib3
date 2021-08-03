@@ -71,11 +71,15 @@ RayCastHit RayCast3D::rayVsPrism(glm::vec3 O, glm::vec3 dir, float len, IShape *
         RayCast2D rc;
         auto ce = rc.run(ot, et, baseShape, glm::mat4(1.0f));
         if (ce.collide) {
-            // find y at impact point
-            auto impactPoint = Op + (epp - Op)* (ce.length / glm::length(et-ot));// ot + glm::normalize(et-ot) * ce.length;
-            if (impactPoint.y >= 0 && impactPoint.y <= height) {
+            // find y at impact point, unless it's a wall
+            bool collide = pr->isWall(ce.segmentIndex);
+            if (!collide) {
+				auto impactPoint = Op + (epp - Op)* (ce.length / glm::length(et-ot));// ot + glm::normalize(et-ot) * ce.length;
+				collide = impactPoint.y >= 0 && impactPoint.y <= height;
+			}
+            if (collide) {
                 out.collide = true;
-                out.normal = ce.normal;
+                out.normal = glm::vec3(ce.normal.x, 0.0f, -ce.normal.y);
                 out.length = ce.length;
             }
             std::cerr << "ici\n";

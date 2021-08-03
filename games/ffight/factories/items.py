@@ -68,10 +68,20 @@ def character_player(**kwargs):
 
 def prism3d(**kwargs):
     def f(*args):
-        pos = (args[0], args[1], args[2])
+        outline = kwargs.get('poly')
+        depth = kwargs.get('depth')
+        height = kwargs.get('height', 1.0)
+        y0 = outline[1] - depth
+        x0 = outline[0]
+        z0 = -depth * math.sqrt(2.0)
+        pos = (x0, y0 - height, z0)
         color = kwargs.get('color', [1, 1, 1, 1])
+        oline = []
+        for i in range(0, len(outline), 2):
+            oline.append(outline[i] - x0)
+            oline.append((outline[i+1] - y0) * math.sqrt(2.0))
         e = entity.Entity(pos=pos)
-        shape = sh3d.Prism(shape=sh.Poly(outline=kwargs.get('poly')), height=kwargs.get('height'))
+        shape = sh3d.Prism(shape=sh.Poly(outline=oline), height=height, walls=kwargs.get('walls',[]))
         print(shape)
         e.add_component(comp.ShapeGfxColor(shape=shape, color=color))
         e.add_component(comp.Collider(shape=shape, flag=vars.flags.platform, mask=0, tag=vars.tags.platform))

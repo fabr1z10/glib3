@@ -255,7 +255,7 @@ void Controller3D::HorizontalCollisions(glm::vec3& vel) {
 						distanceToSlopeStart = hit.length - m_skinWidth;
 						vel.z -= distanceToSlopeStart * directionZ;
 					}
-					ClimbSlope(vel, slopeAngle);
+					ClimbSlopeZ(vel, slopeAngle);
 					vel.z += distanceToSlopeStart * directionZ;
 				}
 
@@ -293,7 +293,17 @@ void Controller3D::ClimbSlope(glm::vec3& velocity, float slopeAngle) {
 		m_details.slopeAngle = slopeAngle;
 	}
 }
-
+void Controller3D::ClimbSlopeZ(glm::vec3& velocity, float slopeAngle) {
+	float moveDistance = fabs(velocity.z);
+	float climbVelocityY = sin(slopeAngle) * moveDistance;
+	if (velocity.y <= climbVelocityY) {
+		velocity.y = climbVelocityY;
+		velocity.z = cos(slopeAngle) * moveDistance * sign(velocity.z);
+		m_details.below = true;
+		m_details.climbingSlope = true;
+		m_details.slopeAngle = slopeAngle;
+	}
+}
 void Controller3D::VerticalCollisions(glm::vec3& velocity) {
 
 	float directionY = sign(velocity.y);
