@@ -90,6 +90,10 @@ void Jump3D::Run(double dt) {
     m_controller->Move(delta);
     std::cerr << "y = " << m_entity->GetPosition().y << "\n";
     // UpdateAnimation();
-	m_animator->SetAnimation("jump");
-
+	//m_animator->SetAnimation("jump");
+    if (m_dynamics->m_velocity.y >=  0) {
+        m_animator->SetAnimation(m_jumpAnimUp);
+    } else {
+        m_animator->SetAnimation(m_jumpAnimDown);
+    }
 }

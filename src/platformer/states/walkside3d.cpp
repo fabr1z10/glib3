@@ -14,12 +14,17 @@ WalkSide3D::WalkSide3D(float speed, float acceleration, bool fliph, float jumpSp
         m_speed(speed), m_acceleration(acceleration), m_flipHorizontally(fliph), m_velocitySmoothing(0.0f), m_jumpSpeed(jumpSpeed) {}
 
 WalkSide3D::WalkSide3D(const ITab& t) : State(t), m_animator(nullptr)  {
-	m_speed = t.get<float>("speed");
+    auto factory = Engine::get().GetSceneFactory();
+
+    m_speed = t.get<float>("speed");
 	m_acceleration = t.get<float>("acceleration");
 	m_flipHorizontally = t.get<bool>("flipH");
 	m_jumpSpeed = t.get<float>("jumpSpeed");
-	m_idleAnim = t.get<std::string>("idle_anim", "idle");
-	m_walkAnim = t.get<std::string>("walk_anim", "walk");
+	auto pi = t["animator"];
+    m_walkAnimator = factory->make2<WalkAnim>(*pi);
+
+    //m_idleAnim = t.get<std::string>("idle_anim", "idle");
+	//m_walkAnim = t.get<std::string>("walk_anim", "walk");
 }
 
 void WalkSide3D::Init(const ITab&) {
@@ -76,13 +81,15 @@ void WalkSide3D::Run (double dt) {
     //}
     m_controller->Move(delta);
     //std::cerr << "new z = " << m_entity->GetPosition().z << "\n";
-	if (m_animator != nullptr) {
-		if (fabs(m_dynamics->m_velocity.x) > 1.0f || fabs(m_dynamics->m_velocity.z) > 1.0f) {
-			m_animator->SetAnimation(m_walkAnim);
-		} else {
-			m_animator->SetAnimation(m_idleAnim);
-		}
-	}
+
+    m_walkAnimator->animate(m_animator, m_dynamics->m_velocity);
+//	if (m_animator != nullptr) {
+//		if (fabs(m_dynamics->m_velocity.x) > 1.0f || fabs(m_dynamics->m_velocity.z) > 1.0f) {
+//			m_animator->SetAnimation(m_walkAnim);
+//		} else {
+//			m_animator->SetAnimation(m_idleAnim);
+//		}
+//	}
     //UpdateAnimation();
 }
 

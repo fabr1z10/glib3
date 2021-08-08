@@ -24,14 +24,31 @@ class WalkSide(lib.states.State):
         self.jumpSpeed = jump_speed
         self.flipH = flip_horizontal
 
+class BasicAnimator:
+    def __init__(self, idle, walk):
+        self.type = 'walkanim.basic'
+        self.idle = idle
+        self.walk = walk
+
+
+class YAnimator:
+    def __init__(self, idle_up, walk_up, idle_down, walk_down):
+        self.type = 'walkanim.y'
+        self.idle_up = idle_up
+        self.walk_up = walk_up
+        self.idle_down = idle_down
+        self.walk_down = walk_down
+
+
 class WalkSide3D(lib.states.State):
-    def __init__(self, uid, speed: float, acceleration: float, jump_speed: float, flip_horizontal: bool, keys=None):
+    def __init__(self, uid, speed: float, acceleration: float, jump_speed: float, flip_horizontal: bool, animator, keys=None):
         super().__init__(uid, keys)
         self.type = 'state.walkside3d'
         self.speed = speed
         self.acceleration = acceleration
         self.jumpSpeed = jump_speed
         self.flipH = flip_horizontal
+        self.animator = animator
 
 class Jump(lib.states.State):
     def __init__(self, uid, speed: float, acceleration: float, flip_horizontal: bool, anim_up: str = None, anim_down: str = None, keys=None):

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <monkey/states/platformerstate.h>
+#include "../walkanim.h"
 
 class Controller3D;
 class Dynamics2D;
@@ -39,5 +40,6 @@ private:
 	std::string m_walkAnim;
 	std::string m_jumpState;
 	std::string m_idleAnim;
+	std::shared_ptr<WalkAnim> m_walkAnimator;
 };
 

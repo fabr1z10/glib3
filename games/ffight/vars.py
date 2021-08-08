@@ -12,7 +12,7 @@ jump_velocity = abs(gravity) * time_to_jump_apex
 # # player variables - might change at game time
 player_scale = 1
 player_speed = 100
-player_model = 'cody/sprite/main'
+player_model = 'billylee/sprite/main'
 # player_dead = False
 # energy = 599
 # energy_start = 10

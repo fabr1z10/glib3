@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.3)
 
 
 file(GLOB PLATFORMER_INCLUDE states/*.h)
-file(GLOB PLATFORMER_SOURCE states/*.cpp extend.cpp)
+file(GLOB PLATFORMER_SOURCE states/*.cpp extend.cpp walkanim.cpp)
 
 add_library(platformer SHARED ${PLATFORMER_INCLUDE} ${PLATFORMER_SOURCE})
 

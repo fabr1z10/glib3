@@ -8,6 +8,7 @@
 #include "states/foechase.h"
 #include "states/foechase3d.h"
 #include "states/foedead.h"
+#include "walkanim.h"
 
 extern "C" void applyExtension(SceneFactory* f) {
 
@@ -22,4 +23,8 @@ extern "C" void applyExtension(SceneFactory* f) {
     f->add2<FoeChase3D> ("state.foechase3d");
     f->add2<IsHit> ("state.hit");
     f->add2<FoeDead> ("state.foedead");
+
+    f->add2<BasicWalkAnim>("walkanim.basic")     ;
+    f->add2<WalkYAnim>("walkanim.y")     ;
+
 }

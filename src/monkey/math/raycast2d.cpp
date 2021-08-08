@@ -102,14 +102,18 @@ bool RayCast2D::seg2seg(glm::vec2 A, glm::vec2 B, glm::vec2 C, glm::vec2 D, floa
 	//      | Bx - Ax    Dx - Cx |
 	//      | By - Ay    Dy - Cy |
 	glm::vec2 AB = B - A;
-	glm::vec2 CD = D - C;
-	float den = cross(AB, CD);
+	glm::vec2 DC = C - D;
+	float den = cross(AB, DC);
 	if (isZero(den)) {
 		return false;
 	}
 	glm::vec2 AC = C - A;
-	t = cross(AC, CD) / den;
-	return (t >= 0 && t <= 1);
+	t = cross(AC, DC) / den;
+	if (t >= 0.0f && t <= 1.0f) {
+	    float u = cross(AB, AC) / den;
+	    return (u >= 0.0f && u <= 1.0f);
+	}
+	return false;
 }
 
 

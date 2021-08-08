@@ -48,6 +48,7 @@ def character_player(**kwargs):
             speed=speed,
             acceleration=0.05,
             jump_speed=vars.jump_velocity,
+            animator=pstates.YAnimator(idle_up='idle_up', idle_down='idle', walk_up='walk_up', walk_down='walk'),
             keys=[],
             flip_horizontal=True))
         sm.states.append(pstates.Jump3D(
@@ -56,8 +57,8 @@ def character_player(**kwargs):
             acceleration=0.10,
             flip_horizontal=True,
             keys=[],
-            anim_up='jump',
-            anim_down='jump'))
+            anim_up='jump_up',
+            anim_down='jump_down'))
         p.add_component(sm)
         p.add_component(comp.KeyInput())
         p.add_component(comp.DynamicFollow(world_width=5216, cam_width=384, cam_height=224, bounds=[0, 256, 512, 256, 256, 528]))
@@ -70,16 +71,27 @@ def prism3d(**kwargs):
     def f(*args):
         outline = kwargs.get('poly')
         depth = kwargs.get('depth')
+        fy = kwargs.get('fy', 0)
+        if fy > 0:
+            outline = [fy - outline[i] if i % 2 == 1 else outline[i] for i in range(0, len(outline))]
+            print(outline)
+            #exit(1)
+
         height = kwargs.get('height', 1.0)
-        y0 = outline[1] - depth
+        depth_y = depth * math.sqrt(2.0)
+        y0 = outline[1] - depth - height
         x0 = outline[0]
-        z0 = -depth * math.sqrt(2.0)
-        pos = (x0, y0 - height, z0)
+        z0 = -depth_y
+
+        pos = (x0, y0, z0)
+        print('PISUZIONA = ' + str(pos))
         color = kwargs.get('color', [1, 1, 1, 1])
         oline = []
+        a0 = outline[1]
         for i in range(0, len(outline), 2):
             oline.append(outline[i] - x0)
-            oline.append((outline[i+1] - y0) * math.sqrt(2.0))
+            oline.append((outline[i+1] - a0) * math.sqrt(2.0))
+        print(oline)
         e = entity.Entity(pos=pos)
         shape = sh3d.Prism(shape=sh.Poly(outline=oline), height=height, walls=kwargs.get('walls',[]))
         print(shape)
