@@ -85,6 +85,7 @@ public:
     std::string GetGameDirectory() const;
     ITab& getMainTable() const;
     float getTickMultiplier() const;
+    GLFWwindow * getWindow();
     //void setDimensions(int);
     //int getDimensions() const;
 private:

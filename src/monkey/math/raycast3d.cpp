@@ -38,6 +38,10 @@ RayCastHit RayCast3D::run(glm::vec3 O, glm::vec3 dir, float length, IShape *shap
 RayCastHit RayCast3D::rayVsPrism(glm::vec3 O, glm::vec3 dir, float len, IShape *prism, const glm::mat4 & t) {
 	RayCastHit out;
 	auto* pr = static_cast<Prism*>(prism);
+	//std::cerr << "hei = "<< pr->getHeight()<< std::endl;
+	if (pr->getHeight() > 50.0f) {
+	    int a =333;
+	}
 	// project ray onto xz plane
 	auto baseShape = pr->getBaseShape();
 	float height = pr->getHeight();

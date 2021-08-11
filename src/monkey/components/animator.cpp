@@ -23,6 +23,9 @@ void Animator::Start() {
 }
 
 void Animator::Update(double dt) {
+    if (!m_active)
+        return;
+
     m_time += dt;
     float frameDuration = m_animInfo->frameInfo[m_frame].duration;
     if (m_time >= frameDuration) {

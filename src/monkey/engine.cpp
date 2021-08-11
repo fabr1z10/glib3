@@ -128,6 +128,10 @@ void Engine::init(const std::string& gameFolder) {
 
 }
 
+GLFWwindow * Engine::getWindow() {
+    return window;
+}
+
 void Engine::restart() {
 
     m_scene->restart();

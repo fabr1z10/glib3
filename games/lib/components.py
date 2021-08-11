@@ -142,12 +142,13 @@ class Follow:
         self.z = z
 
 class DynamicFollow:
-    def __init__(self, world_width, cam_width, cam_height, bounds, cam='maincam', relpos=[0, 0, 5], up=[0, 1, 0], z = None):
+    def __init__(self, world_width, cam_width, cam_height, origin, path, cam='maincam', relpos=[0, 0, 5], up=[0, 1, 0], z = None):
         self.type = 'components.dynamic_follow'
         self.world_width = world_width
         self.cam_width = cam_width
         self.cam_height = cam_height
-        self.bounds = bounds
+        self.origin = origin
+        self.path = path
         self.cam = cam
         self.relativepos = relpos
         self.up = up

@@ -13,6 +13,10 @@ int add(int i, int j) {
     return i + j;
 }
 
+bool isPressed(int key) {
+    return (glfwGetKey(m_engine->getWindow(), key) == GLFW_PRESS);
+}
+
 void init(PyEngine& p) {
     m_monkey = p.getMo();
     m_engine = p.getEn();
@@ -84,6 +88,7 @@ PYBIND11_MODULE(example, m) {
 //        .def("diag", &Rect::diag);
 
     m.def("adder", &add, "A functione which adds two numbers");
+    m.def("is_pressed", &isPressed, "Check if a key is pressed");
     m.def("get", &get, "Gets a entity by tag");
     m.def("getById", &getById, "Gets an entity by id");
     m.def("killScript", &killScript, "Kills a script");

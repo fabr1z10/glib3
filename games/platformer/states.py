@@ -70,6 +70,15 @@ class Jump3D(lib.states.State):
         self.animUp = anim_up
         self.animDown = anim_down
 
+
+class Climb(lib.states.State):
+    def __init__(self, uid, speed, idle_anim, climb_anim, keys=None):
+        super().__init__(uid, keys)
+        self.type ='state.climb'
+        self.speed = speed
+        self.idle_anim = idle_anim
+        self.climb_anim = climb_anim
+
 class Bounce(lib.states.State):
     def __init__(self, uid: str, speed: float, a: float, b: float):
         super().__init__(uid)

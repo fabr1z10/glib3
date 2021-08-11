@@ -26,15 +26,28 @@ private:
 
 };
 
+
+
 class DynamicFollow : public Follow {
 public:
 	DynamicFollow(const ITab&);
 	void Update(double) override;
+    void Start() override;
 
 private:
+    struct ScrollBound {
+        float level;
+        float min;
+        float max;
+    };
 	float m_camHalfWidth;
 	float m_camHalfHeight;
 	float m_worldWidth;
-	float m_x0, m_x1;
+
 	std::map<float, glm::vec2> m_dynamicCamBounds;
+	std::map<float, std::vector<ScrollBound>> m_verticalWalls;
+    std::map<float, std::vector<ScrollBound>> m_horizontalWalls;
+    std::pair<bool, float> checkBounds(float halfSize, decltype(m_verticalWalls.begin()), decltype(m_verticalWalls.begin()), float z, float k, bool ) const;
+    std::pair<decltype(m_verticalWalls.begin()), decltype(m_verticalWalls.begin())> getIterators(std::map<float, std::vector<ScrollBound>>&, float z);
+
 };

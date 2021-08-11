@@ -1,10 +1,11 @@
 # # to be populated via the characters.yaml file
 # #characters = dict()
 #
-jump_height = 150.0
-time_to_jump_apex = 0.5
+jump_height = 64.0
+time_to_jump_apex = 0.25
 gravity = -(2.0 * jump_height) / (time_to_jump_apex * time_to_jump_apex)
 jump_velocity = abs(gravity) * time_to_jump_apex
+walk_areas = []
 # scale = 1
 # player = 'larry'
 # height = 0
@@ -12,6 +13,7 @@ jump_velocity = abs(gravity) * time_to_jump_apex
 # # player variables - might change at game time
 player_scale = 1
 player_speed = 100
+ladder_id = None
 player_model = 'billylee/sprite/main'
 # player_dead = False
 # energy = 599
@@ -140,6 +142,7 @@ class flags:
     foe_attack = 16
     platform_passthrough = 32
     gib = 64
+
 
 
 class tags:

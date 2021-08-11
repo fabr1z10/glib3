@@ -28,6 +28,7 @@ glm::vec3 Dynamics2D::step(float dt, float targetVelocityX, float accelerationX)
 
 }
 
+
 glm::vec3 Dynamics2D::step(float dt, float targetVelocityX, float targetVelocityZ, float accelerationX) {
     // first, apply gravitystd::cerr << "11\n";
     m_velocity.y += m_gravity * dt;

@@ -126,10 +126,8 @@ std::pair<glm::ivec3, glm::ivec3> SpatialHashingCollisionEngine3D::getLocation(c
 	min.y = floor(b.min.y / m_size[1]);
 	max.x = floor(b.max.x / m_size[0]);
 	max.y = floor(b.max.y / m_size[1]);
-	if (m_3d) {
 		min.z = floor (b.min.z / m_size[2]);
 		max.z = floor (b.max.z / m_size[2]);
-	}
 	return std::make_pair(min, max);
 }
 
@@ -306,13 +304,13 @@ RayCastHit SpatialHashingCollisionEngine3D::Raycast (glm::vec3 rayOrigin, glm::v
 	glm::vec3 P1 = P;
 	float z = rayOrigin.z;
 	// initialize current cell
-	int i = static_cast<int>(P.x / m_size.x);
-	int j = static_cast<int>(P.y / m_size.y);
-	int k = (m_3d ? static_cast<int>(P.z / m_size.z) : 0);
+	int i = std::floor(P.x / m_size.x);
+	int j = std::floor(P.y / m_size.y);
+	int k = std::floor(P.z / m_size.z);
 
 	int n = (rayDir.x > 0 ? 1 : 0);
 	int m = (rayDir.y > 0 ? 1 : 0);
-	int q = m_3d ? (rayDir.z > 0 ? 1 : 0) : 0;
+	int q = (rayDir.z > 0 ? 1 : 0);
 	// n = 0 <-> r_x = 0 <-> vertical line
 	// m = 0 <-> r_y = 0 <-> horizontal line
 	float l = 0.0f;
@@ -322,13 +320,15 @@ RayCastHit SpatialHashingCollisionEngine3D::Raycast (glm::vec3 rayOrigin, glm::v
 	out.length = length;
 
 	// we can (and we MUST) exit the loop as soon as we find a collision
+	glm::vec3 pp = rayOrigin + rayDir*length;
+	//std::cerr << "start from " << rayOrigin.x << ", " << rayOrigin.z << " goijng to " << pp.x << ", " << pp.z << std::endl;
 	while (!endReached && !out.collide) {
 		// get the next point into this cell
 		// compute how much distance you need to cover to hit the cell boundary,
 		// and what boundary you hit first (x, y or z)
 		float tx = (rayDir.x == 0.0f) ? std::numeric_limits<float>::infinity() : ((i+n) * m_size.x - P.x) / rayDir.x;
 		float ty = (rayDir.y == 0.0f) ? std::numeric_limits<float>::infinity() : ((j+m) * m_size.y - P.y) / rayDir.y;
-		float tz = (rayDir.z == 0.0f || !m_3d) ? std::numeric_limits<float>::infinity() : ((k+q) * m_size.z - P.z) / rayDir.z;
+		float tz = (rayDir.z == 0.0f) ? std::numeric_limits<float>::infinity() : ((k+q) * m_size.z - P.z) / rayDir.z;
 		float tm {0.0f};
 		id = 0;
 		jd = 0;
@@ -371,6 +371,7 @@ RayCastHit SpatialHashingCollisionEngine3D::Raycast (glm::vec3 rayOrigin, glm::v
 				if (m != 0) {
 					auto shapeBounds = c->GetBounds();
 					if (lineBounds.Intersects(shapeBounds)) {
+					    //std::cerr << "try with " << shapeBounds.GetSize().x << std::endl;
 						const auto& t = c->GetObject()->GetWorldTransform();
 						//auto cshape = c->GetShape()->transform(t);
 						//auto report = m_intersector->intersect(&line, cshape.get());

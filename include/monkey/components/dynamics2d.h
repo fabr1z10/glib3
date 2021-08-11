@@ -9,6 +9,7 @@ public:
     Dynamics2D(float gravity);
     Dynamics2D(const ITab&);
     glm::vec3 step(float dt, float tvx, float a);
+    glm::vec3 step_xy(float dt, float vx, float vy, float a);
     glm::vec3 step(float dt, float tvx, float tvz, float a);
     glm::vec3 m_velocity;
     void Start() override {}

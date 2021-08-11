@@ -46,6 +46,8 @@ engine.add_room_factory('3d', factories.room.make_platformer_room_3d)
 # engine.add_item_factory('block', factories.items.block)
 # engine.add_item_factory('platform', factories.items.platform)
 engine.add_item_factory('player', factories.items.character_player)
+engine.add_item_factory('npc', factories.items.npc)
+
 # engine.add_item_factory('player_beast', factories.items.character_player_beast)
 # engine.add_item_factory('character', factories.items.character)
 #
@@ -55,8 +57,10 @@ engine.add_item_factory('player', factories.items.character_player)
 # engine.add_item_factory('item', factories.items.sprite_item)
 # engine.add_item_factory('plane', factories.items.plane)
 engine.add_item_factory('aabb', factories.items.aabb3d)
-engine.add_item_factory('prism', factories.items.prism3d)
+engine.add_item_factory('walk_area', factories.items.walk_area)
+engine.add_item_factory('hotspot', factories.items.hotspot)
 engine.add_item_factory('bg', factories.items.static_bg)
+
 
 engine.vars = v
 #engine.startUp()

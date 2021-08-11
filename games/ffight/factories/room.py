@@ -15,6 +15,7 @@ def make_platformer_room_3d(room: dict):
     world_width = room['world_width']
     world_height = room['world_height']
     vars.world_size = [world_width, world_height]
+    vars.walk_areas = []
     #vars.z = room['z']
     r = PlatformerRoom3D(visible_name,(0, 10, 0, 10))
     if 'items' in room:
@@ -53,6 +54,9 @@ class PlatformerRoom3D(room.Room):
         super().__init__(uid, 384, 224)
         #width =
         #height = 240
+        device_width = monkey.engine.device_size[0]
+        device_height = monkey.engine.device_size[1]
+
         keyl = runners.KeyListener()
         # adding pause button
         #keyl.add_key(key=32, func=func.toggle_pause)
@@ -61,7 +65,7 @@ class PlatformerRoom3D(room.Room):
         self.add_runner(keyl)
 
         main = Entity(tag='main')
-        cam = camera.Camera25(5216, 736, 384, 224, [0,0,384,224])
+        cam = camera.Camera25(5216, 736, device_width, device_height, [0,0,device_width,device_height])
         #cam = camera.PerspectiveCamera(viewport=[0, 0, 320, 240])
         cam.tag = 'maincam'
         cam.pos = (5, 0, 1)
@@ -73,6 +77,7 @@ class PlatformerRoom3D(room.Room):
         self.add(main)
 
         ce = runners.CollisionEngine3D(80, 80, 80)            # this will be a 3d engine
+        ce.add_response(vars.tags.player, vars.tags.hotspot, runners.CollisionResponse(on_enter=func.on_enter_ladder_area, on_leave=func.on_leave_ladder_area))
         #ce.add_response(vars.tags.foe_attack, vars.tags.player, runners.CollisionResponse(on_enter=func.foe_hits_player))
         #ce.add_response(vars.tags.player_attack, vars.tags.foe, runners.CollisionResponse(on_enter=func.player_hits_foe))
         # ce.add_response(vars.tags.foe_attack, vars.tags.player, runners.CollisionResponse(on_enter=func.foe_hits_player))

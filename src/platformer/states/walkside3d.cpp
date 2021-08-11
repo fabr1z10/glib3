@@ -28,7 +28,8 @@ WalkSide3D::WalkSide3D(const ITab& t) : State(t), m_animator(nullptr)  {
 }
 
 void WalkSide3D::Init(const ITab&) {
-
+    m_controller->m_details.below= true;
+    m_dynamics->m_velocity = glm::vec3(0.0f);
 }
 
 void WalkSide3D::End() {

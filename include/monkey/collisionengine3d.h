@@ -43,7 +43,7 @@ private:
 		CollisionReport report;
 		glm::ivec3 pos;
 	};
-	bool m_3d;
+	//bool m_3d;
 	glm::vec3 m_size;
 	std::unique_ptr<IIntersector> m_intersector;
 	std::unique_ptr<IRayCast> m_raycast;

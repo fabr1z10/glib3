@@ -1,5 +1,5 @@
 # # functions
-# import vars
+import vars
 # import data
 import example
 # import entity
@@ -13,7 +13,30 @@ import example
 # from script import Script
 # import random
 # import math
-#
+
+
+def on_enter_ladder_area(x,y,z,t):
+    vars.ladder_id = y.getInfo()
+    if example.is_pressed(265):
+        climb_bottom(None)
+    elif example.is_pressed(264):
+        climb_top(None)
+
+
+def on_leave_ladder_area(x,y,z,t):
+    vars.ladder_id = None
+    print('now = ' + str(vars.ladder_id))
+
+
+def climb_bottom(k):
+    if vars.ladder_id is not None:
+        example.get('player').setState('climb', {'ladder': vars.ladder_id, 'dir': 0})
+
+
+def climb_top(k):
+    if vars.ladder_id is not None:
+        example.get('player').setState('climb', {'ladder': vars.ladder_id, 'dir': 1})
+
 
 def restart():
     #exit(1)
