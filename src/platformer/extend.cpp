@@ -10,6 +10,7 @@
 #include "states/foedead.h"
 #include "walkanim.h"
 #include "states/climb.h"
+#include "states/fly.h"
 
 extern "C" void applyExtension(SceneFactory* f) {
 
@@ -20,6 +21,8 @@ extern "C" void applyExtension(SceneFactory* f) {
     f->add2<Jump2D> ("state.jump");
     f->add2<Jump3D> ("state.jump3D");
     f->add2<Climb> ("state.climb");
+    f->add2<Fly> ("state.fly");
+
     f->add2<FoeWalk> ("state.foewalk");
     f->add2<FoeChase> ("state.foechase");
     f->add2<FoeChase3D> ("state.foechase3d");

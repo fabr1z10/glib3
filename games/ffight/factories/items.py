@@ -103,19 +103,30 @@ def npc(**kwargs):
         p.add_component(comp.Dynamics2D(gravity=vars.gravity))
         p.add_component(comp.SmartCollider(flag=vars.flags.foe, mask=vars.flags.player_attack,
                                            tag=vars.tags.foe, cast_tag=vars.tags.foe_attack, cast_mask=vars.flags.player, debug=True))
-        #p.add_component(comp.Info(energy=energy, hp=hp_map, remain_stomp=remain_stomp_anim, dseq=dseq, tiny=False))
+        p.add_component(comp.Info(energy=energy))
         sm = comp.StateMachine(initial_state='walk')
+
+        attacks = [{'state': 'attack0', 'prob': 0.1, 'in_range': True}]
+        sm.states.append(states.Attack(uid='attack0', anim='punch'))
+        # for i in range(0, n_attacks):
+        #     attack_id = 'attack' + str(i+1)
+        #     attack_list.append({'state': attack_id, 'prob': patt[i], 'in_range': True})
+        #     sm.states.append(states.Attack(uid=attack_id, anim=attack_id))
+        #     hp_map[attack_id] = hp[i]
 
         sm.states.append(pstates.FoeChase3D(
             uid='walk',
             walk_anim='walk',
             idle_anim='idle',
-            speed = speed,
+            speed=speed,
             acceleration=0.05,
-            attacks=[],
-            prob_attack=0))
+            attacks=attacks,
+            prob_attack=0.1))
         #     prob_attack=prob_attack))
-        #sm.states.append(platformer.states.IsHit(uid='ishit', anim='hit', acceleration=10, dist=4))
+        sm.states.append(pstates.IsHit(uid='hit', anim='hit', acceleration=10, dist=4))
+        v0y = math.sqrt(2*abs(vars.gravity)*32)
+        v0x = 64 * abs(vars.gravity)/v0y
+        sm.states.append(pstates.Fly(uid='dead', anim_up='dead_up', anim_down='dead_down', anim_lie='dead_lie', v0=(v0x, v0y)))
         #sm.states.append(states.SimpleState(uid='dead', anim='hit'))
         p.add_component(sm)
 
@@ -158,6 +169,7 @@ def character_player(**kwargs):
             jump_speed=vars.jump_velocity,
             animator=pstates.YAnimator(idle_up='idle_up', idle_down='idle', walk_up='walk_up', walk_down='walk'),
             keys=[
+                [90, states.StateTransition('attack1')],
                 [265, states.StateCallback(func.climb_bottom)],
                 [264, states.StateCallback(func.climb_top)]],
             flip_horizontal=True))
@@ -169,6 +181,11 @@ def character_player(**kwargs):
             keys=[],
             anim_up='jump_up',
             anim_down='jump_down'))
+        # attack states
+        sm.states.append(states.Attack(uid='attack1', anim='punch'))
+        sm.states.append(pstates.IsHit(uid='hit', anim='hit', acceleration=10, dist=4))
+
+        #sm.states.append(states.Attack(uid='attack2', anim='attack2'))
         sm.states.append(pstates.Climb(uid='climb', speed=50, idle_anim='climb', climb_anim='climb'))
         p.add_component(sm)
         p.add_component(comp.KeyInput())

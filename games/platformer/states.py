@@ -133,6 +133,16 @@ class IsHit (lib.states.State):
         self.dist = dist
 
 
+class Fly(lib.states.State):
+    def __init__(self, uid, anim_up: str, anim_down: str, anim_lie: str, v0):
+        super().__init__(uid)
+        self.type = 'state.fly'
+        self.anim_up = anim_up
+        self.anim_down = anim_down
+        self.anim_lie = anim_lie
+        self.v0 = v0
+
+
 class JAttack (lib.states.State):
     def __init__(self, uid: str, animup: str, animdown: str, animland: str, height: float, hit_mask: int, timeDown = 1, callback = None):
         super().__init__(uid)

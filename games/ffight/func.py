@@ -28,6 +28,23 @@ def on_leave_ladder_area(x,y,z,t):
     print('now = ' + str(vars.ladder_id))
 
 
+def player_hits_foe(p,f,x,y):
+    foe_info = f.getInfo()
+    foe_info["energy"] -= 1
+    player_left = p.x < f.x
+    sgn = -1.0 if (player_left and f.flipx) or (not player_left and not f.flipx) else 1.0
+    if foe_info["energy"] > 0:
+        f.setState("hit", {'sign': sgn})
+    else:
+        f.setState("dead", {'sign': sgn})
+
+
+def foe_hits_player(f,p,x,y):
+    foe_left = f.x < p.x
+    sgn = -1.0 if (foe_left and p.flipx) or (not foe_left and not p.flipx) else 1.0
+    p.setState("hit", {'sign': sgn})
+
+
 def climb_bottom(k):
     if vars.ladder_id is not None:
         example.get('player').setState('climb', {'ladder': vars.ladder_id, 'dir': 0})

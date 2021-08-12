@@ -113,7 +113,6 @@ void FoeChase3D::Run(double dt) {
             m_controller->Move(delta);
         } else {
 		    m_animator->SetAnimation(m_idleAnim);
-		    std::cerr << "viva\n";
 		}
 	} else {
 
