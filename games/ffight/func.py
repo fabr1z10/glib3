@@ -13,7 +13,7 @@ import example
 # from script import Script
 # import random
 # import math
-
+import time
 
 def on_enter_ladder_area(x,y,z,t):
     vars.ladder_id = y.getInfo()
@@ -33,6 +33,9 @@ def player_hits_foe(p,f,x,y):
     foe_info["energy"] -= 1
     player_left = p.x < f.x
     sgn = -1.0 if (player_left and f.flipx) or (not player_left and not f.flipx) else 1.0
+    vars.punch_seq = (vars.punch_seq + 1) % 3
+    vars.punch_combo_time = time.time()
+    print('focami ' + str(vars.punch_seq))
     if foe_info["energy"] > 0:
         f.setState("hit", {'sign': sgn})
     else:
@@ -44,6 +47,11 @@ def foe_hits_player(f,p,x,y):
     sgn = -1.0 if (foe_left and p.flipx) or (not foe_left and not p.flipx) else 1.0
     p.setState("hit", {'sign': sgn})
 
+
+def punch(x):
+    if (time.time() - vars.punch_combo_time) > 1:
+        vars.punch_seq = 0
+    x.setState('attack' + str(vars.punch_seq), {})
 
 def climb_bottom(k):
     if vars.ladder_id is not None:

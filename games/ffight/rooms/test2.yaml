@@ -16,7 +16,7 @@
 
     - factory: [player]
       d: [ [50, 257, -10] ]
-    - factory: [npc, {'model': 'jeff/sprite/main', 'speed': 50}]
+    - factory: [npc, {'model': 'jeff/sprite/main', 'speed': 50, 'energy': 50}]
       d: [ [60, 287, -10]]
     #- factory: [ aabb ]
     #  d: [[0,254,-90.51,1200,2,90.51]]#, [0, 0, -60,300,100,1], [0,0,0,300,1000,1]]

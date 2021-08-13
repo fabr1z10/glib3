@@ -74,7 +74,6 @@ main:
           ticks: 10
           quads: [[44,338,37,40,17,0]]
     hit:
-      box: 0
       elements:
         - ticks: 4
           quads: [ [ 8,584,28,62,15,0] ]

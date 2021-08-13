@@ -6,6 +6,9 @@ time_to_jump_apex = 0.25
 gravity = -(2.0 * jump_height) / (time_to_jump_apex * time_to_jump_apex)
 jump_velocity = abs(gravity) * time_to_jump_apex
 walk_areas = []
+
+punch_seq = 0
+punch_combo_time = 0
 # scale = 1
 # player = 'larry'
 # height = 0

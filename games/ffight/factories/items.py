@@ -106,7 +106,7 @@ def npc(**kwargs):
         p.add_component(comp.Info(energy=energy))
         sm = comp.StateMachine(initial_state='walk')
 
-        attacks = [{'state': 'attack0', 'prob': 0.1, 'in_range': True}]
+        attacks = [{'state': 'attack0', 'prob': 0, 'in_range': True}]
         sm.states.append(states.Attack(uid='attack0', anim='punch'))
         # for i in range(0, n_attacks):
         #     attack_id = 'attack' + str(i+1)
@@ -121,7 +121,7 @@ def npc(**kwargs):
             speed=speed,
             acceleration=0.05,
             attacks=attacks,
-            prob_attack=0.1))
+            prob_attack=0))
         #     prob_attack=prob_attack))
         sm.states.append(pstates.IsHit(uid='hit', anim='hit', acceleration=10, dist=4))
         v0y = math.sqrt(2*abs(vars.gravity)*32)
@@ -169,7 +169,7 @@ def character_player(**kwargs):
             jump_speed=vars.jump_velocity,
             animator=pstates.YAnimator(idle_up='idle_up', idle_down='idle', walk_up='walk_up', walk_down='walk'),
             keys=[
-                [90, states.StateTransition('attack1')],
+                [90, states.StateCallback(func.punch)],#StateTransition('attack1')],
                 [265, states.StateCallback(func.climb_bottom)],
                 [264, states.StateCallback(func.climb_top)]],
             flip_horizontal=True))
@@ -182,7 +182,9 @@ def character_player(**kwargs):
             anim_up='jump_up',
             anim_down='jump_down'))
         # attack states
-        sm.states.append(states.Attack(uid='attack1', anim='punch'))
+        sm.states.append(states.Attack(uid='attack0', anim='punch1'))
+        sm.states.append(states.Attack(uid='attack1', anim='punch2'))
+        sm.states.append(states.Attack(uid='attack2', anim='punch3'))
         sm.states.append(pstates.IsHit(uid='hit', anim='hit', acceleration=10, dist=4))
 
         #sm.states.append(states.Attack(uid='attack2', anim='attack2'))

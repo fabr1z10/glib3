@@ -96,7 +96,7 @@ main:
         -
           ticks: 10
           quads: [[110,175,21,61,11,0]]
-    punch:
+    punch1:
       box: 0
       elements:
         -
@@ -105,9 +105,37 @@ main:
         -
           ticks: 4
           quads: [[53,281,46,59,26,0]]
+          attack: 1
         -
           ticks: 4
           quads: [[107,281,27,59,20,0]]
+    punch2:
+      box: 0
+      elements:
+        -
+          ticks: 4
+          quads: [[166,280,27,60,24,0]]
+        -
+          ticks: 4
+          quads: [[201,281,46,59,27,0]]
+          attack: 1
+        -
+          ticks: 4
+          quads: [[255,282,29,59,25,0]]
+          attack: 1
+    punch3:  # uppercut
+      box: 0
+      elements:
+        -
+          ticks: 4
+          quads: [[441,283,25,57,15,0]]
+        -
+          ticks: 4
+          quads: [[474,280,35,60,23,0]]
+          attack: 1
+        -
+          ticks: 4
+          quads: [[517,269,30,71,19,0]]
           attack: 1
     hit:
       loop: false
