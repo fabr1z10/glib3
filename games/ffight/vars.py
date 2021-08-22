@@ -75,6 +75,14 @@ player_model = 'billylee/sprite/main'
 #
 #
 # # keys
+npcs = {
+    'jeff': {
+        'factory': 'foe',
+        'model': 'jeff/sprite/main',
+        'speed': 50,
+        'energy': 50
+    }
+}
 # class keys:
 #     hit1 = 90
 #     hit2 = 88
@@ -177,4 +185,5 @@ class tags:
     gib = 35
     platform = 36
     platform_destructible = 37
+    ladder = 38
 

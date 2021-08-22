@@ -7,6 +7,10 @@ class Script:
         self.edges = []
         self.map = {}
         self.loop = loop
+        self.on_kill = None
+
+    def set_loop(self, id):
+        self.loop = self.map[id]
 
     # add an action
     def add_action(self, action, id=None, after=None):

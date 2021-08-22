@@ -5,3 +5,4 @@ from .scummbar import *
 from .village import *
 from .lookout import *
 from .meleemap import *
+from .circus import *

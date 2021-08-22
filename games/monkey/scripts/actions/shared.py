@@ -11,7 +11,33 @@ import engine
 import factories
 
 
+def f_goto_room(room_id, pos, dir):
+    def f():
+        func.set_item_pos('guybrush', room_id, pos, dir)
+    return f
+
+
+def goto_room(s : Script, room_id, pos, dir):
+    print(dir)
+    s.add_action(actions.CallFunc(f=f_goto_room(room_id, pos, dir)))
+    s.add_action(actions.ChangeRoom(room=room_id))
+
+
+class GotoRoom(actions.CallFunc):
+    def __init__(self, room_id, pos, dir):
+        super().__init__(f=goto_room(room_id, pos, dir))
+
 class Callbacks:
+    def enable_controls(value):
+        def f():
+            main = example.get('main')
+            ui = example.get('ui')
+            if ui.valid:
+                ui.setActive(value)
+            main.enableControls(value)
+        return f
+
+
     def set_pos(item_id, room, pos, dir):
         def f():
             func.set_item_pos(item_id, room, pos, dir)

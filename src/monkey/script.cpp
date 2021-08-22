@@ -27,6 +27,10 @@ Script::Script(const ITab& table) : m_complete(false), m_suspended(false), m_loo
         m_loop = true;
         m_loopId = table.get<int>("loop");
     }
+
+    if (table.has("on_kill")) {
+        m_onKill = table.get<py::function>("on_kill");
+    }
 }
 
 Script::Script() : m_complete{false}, m_suspended{false}, m_loop{false}, m_loopId{0} {
@@ -111,6 +115,10 @@ void Script::Kill() {
     m_complete = true;
     for (auto& id : m_frontier) {
         m_activities[id]->SetComplete();
+    }
+
+    if (m_onKill) {
+        m_onKill();
     }
 }
 

@@ -37,6 +37,11 @@ class ResumeScript:
         self.type = 'action.resumescript'
         self.script = s
 
+class KillScript:
+    def __init__(self, s: str):
+        self.type = 'action.killscript'
+        self.script = s
+
 
 class ChangeRoom:
     def __init__(self, room: str):

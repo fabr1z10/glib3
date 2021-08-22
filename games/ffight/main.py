@@ -58,7 +58,10 @@ engine.add_item_factory('npc', factories.items.npc)
 # engine.add_item_factory('plane', factories.items.plane)
 engine.add_item_factory('aabb', factories.items.aabb3d)
 engine.add_item_factory('walk_area', factories.items.walk_area)
-engine.add_item_factory('hotspot', factories.items.hotspot)
+engine.add_item_factory('ladder', factories.items.ladder)
+# generic hotspot, you can specify a callback to run when player enters the area
+
+engine.add_item_factory('spawn', factories.items.spawn)
 engine.add_item_factory('bg', factories.items.static_bg)
 
 

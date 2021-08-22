@@ -99,7 +99,7 @@ void FoeChase3D::Run(double dt) {
 
             auto velocity = glm::normalize(displacement) * m_speed;
 
-            std::cerr << glm::length(displacement) << "\n";
+            //st::cerr << glm::length(displacement) << "\n";
 			//fabs(entityPos.x - targetPos.x) > m_attackPos
 			m_targetVelocityX = fabs(entityPos.x - targetPos.x) > m_attackPos ? fabs(velocity.x) : -fabs(velocity.x);
             m_targetVelocityZ = velocity.z;

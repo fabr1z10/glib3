@@ -25,6 +25,10 @@ void Scroll::Start() {
     }
     m_distanceToCover = glm::length(displacement);
     m_velocity = glm::normalize(displacement) * m_speed;
+    if (m_speed == 0.0f) {
+        m_camera->SetPosition(glm::vec3(m_finalPosition, m_camera->GetPosition().z), glm::vec3(0,0,-1));
+        SetComplete();
+    }
 }
 
 

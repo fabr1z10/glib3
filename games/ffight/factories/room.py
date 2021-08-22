@@ -77,7 +77,9 @@ class PlatformerRoom3D(room.Room):
         self.add(main)
 
         ce = runners.CollisionEngine3D(80, 80, 80)            # this will be a 3d engine
-        ce.add_response(vars.tags.player, vars.tags.hotspot, runners.CollisionResponse(on_enter=func.on_enter_ladder_area, on_leave=func.on_leave_ladder_area))
+        ce.add_response(vars.tags.player, vars.tags.ladder, runners.CollisionResponse(on_enter=func.on_enter_ladder_area, on_leave=func.on_leave_ladder_area))
+        ce.add_response(vars.tags.player, vars.tags.spawn, runners.CollisionResponse(on_enter=func.spawn))
+
         #ce.add_response(vars.tags.foe_attack, vars.tags.player, runners.CollisionResponse(on_enter=func.foe_hits_player))
         ce.add_response(vars.tags.player_attack, vars.tags.foe, runners.CollisionResponse(on_enter=func.player_hits_foe))
         ce.add_response(vars.tags.foe_attack, vars.tags.player, runners.CollisionResponse(on_enter=func.foe_hits_player))

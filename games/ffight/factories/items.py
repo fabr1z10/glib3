@@ -7,6 +7,7 @@ import shapes as sh
 import vars
 import math
 import func
+import sys
 
 sqrt2 = math.sqrt(2)
 
@@ -49,7 +50,22 @@ def t1(y, y_goto):
     return [y, y_goto[1], wo0[1], (y_goto[2] - wz0) * sqrt2]
 
 
-def hotspot(**kwargs):
+def spawn(**kwargs):
+    def f(*args):
+        x0 = args[0]
+        depth_y = args[2] * math.sqrt(2.0)
+        y0 = args[1] - args[2]
+        z0 = -depth_y
+        pos = (x0, y0, z0)
+        e = entity.Entity(pos=pos)
+        e.add_component(comp.Collider(debug=True, shape=sh3d.AABB(size=(args[3], args[4], args[5]*sqrt2)), flag=vars.flags.foe,
+                                  mask=vars.flags.player, tag=vars.tags.spawn))
+        e.add_component(comp.Info(enemies=args[6]))
+        return e
+    return f
+
+
+def ladder(**kwargs):
     def f(*args):
 
         ym = kwargs.get('y_min')
@@ -71,66 +87,70 @@ def hotspot(**kwargs):
         pos = (x0, y0, z0)
         e = entity.Entity(pos=pos)
         e.add_component(comp.Collider(debug=True, shape=sh3d.AABB(size=(args[3], args[4], args[5])), flag=vars.flags.foe,
-                                      mask=vars.flags.player, tag=vars.tags.hotspot))
+                                      mask=vars.flags.player, tag=vars.tags.ladder))
         e.add_component(comp.Info(x=522, y_min=ym, y_max=yM, y_min_goto=ymg, y_max_goto=yMg))
         return e
     return f
 
 
+def foe(pos, info):
+    model = info.get('model')
+    scale = info.get('scale', 1.0)
+    speed = info.get('speed', 50)
+    energy = info.get('energy', 2)
+    p = entity.Sprite(model=model, pos=pos)
+    # shadow = entity.Entity()
+    # shadow.add_component(comp.ShadowRenderer(angle=20.0))
+    # p.add(shadow)
+    p.layer = 1
+    p.scale = scale
+    p.add_component(comp.Controller3D(
+        mask_up=vars.flags.platform,
+        mask_down=vars.flags.platform | vars.flags.platform_passthrough,
+        size=[1, 1, 1],
+        shift=[0, 0.5],
+        max_climb_angle=80,
+        max_descend_angle=80,
+        debug=True))
+    p.add_component(comp.Dynamics2D(gravity=vars.gravity))
+    p.add_component(comp.SmartCollider(flag=vars.flags.foe, mask=vars.flags.player_attack,
+                                       tag=vars.tags.foe, cast_tag=vars.tags.foe_attack, cast_mask=vars.flags.player,
+                                       debug=True))
+    p.add_component(comp.Info(energy=energy))
+    sm = comp.StateMachine(initial_state='walk')
+
+    attacks = [{'state': 'attack0', 'prob': 0, 'in_range': True}]
+    sm.states.append(states.Attack(uid='attack0', anim='punch'))
+    # for i in range(0, n_attacks):
+    #     attack_id = 'attack' + str(i+1)
+    #     attack_list.append({'state': attack_id, 'prob': patt[i], 'in_range': True})
+    #     sm.states.append(states.Attack(uid=attack_id, anim=attack_id))
+    #     hp_map[attack_id] = hp[i]
+
+    sm.states.append(pstates.FoeChase3D(
+        uid='walk',
+        walk_anim='walk',
+        idle_anim='idle',
+        speed=speed,
+        acceleration=0.05,
+        attacks=attacks,
+        prob_attack=0))
+    #     prob_attack=prob_attack))
+    sm.states.append(pstates.IsHit(uid='hit', anim='hit', acceleration=10, dist=4))
+    v0y = math.sqrt(2 * abs(vars.gravity) * 32)
+    v0x = 64 * abs(vars.gravity) / v0y
+    sm.states.append(pstates.Fly(uid='dead', anim_up='dead_up', anim_down='dead_down', anim_lie='dead_lie', v0=(v0x, v0y)))
+    # sm.states.append(states.SimpleState(uid='dead', anim='hit'))
+    p.add_component(sm)
+    return p
+
+
 def npc(**kwargs):
     def f(*args):
         pos = (args[0], args[1], args[2])
-        model = kwargs.get('model')
-        scale = kwargs.get('scale', 1.0)
-        speed = kwargs.get('speed', 50)
-        width = kwargs.get('width')
-        energy = kwargs.get('energy', 2)
-
-        p = entity.Sprite(model=model, pos=pos)
-        #shadow = entity.Entity()
-        #shadow.add_component(comp.ShadowRenderer(angle=20.0))
-        #p.add(shadow)
-        p.layer = 1
-        p.scale = scale
-        p.add_component(comp.Controller3D(
-            mask_up=vars.flags.platform,
-            mask_down=vars.flags.platform | vars.flags.platform_passthrough,
-            size = [1, 1, 1],
-            shift = [0, 0.5],
-            max_climb_angle=80,
-            max_descend_angle=80,
-            debug=True))
-        p.add_component(comp.Dynamics2D(gravity=vars.gravity))
-        p.add_component(comp.SmartCollider(flag=vars.flags.foe, mask=vars.flags.player_attack,
-                                           tag=vars.tags.foe, cast_tag=vars.tags.foe_attack, cast_mask=vars.flags.player, debug=True))
-        p.add_component(comp.Info(energy=energy))
-        sm = comp.StateMachine(initial_state='walk')
-
-        attacks = [{'state': 'attack0', 'prob': 0, 'in_range': True}]
-        sm.states.append(states.Attack(uid='attack0', anim='punch'))
-        # for i in range(0, n_attacks):
-        #     attack_id = 'attack' + str(i+1)
-        #     attack_list.append({'state': attack_id, 'prob': patt[i], 'in_range': True})
-        #     sm.states.append(states.Attack(uid=attack_id, anim=attack_id))
-        #     hp_map[attack_id] = hp[i]
-
-        sm.states.append(pstates.FoeChase3D(
-            uid='walk',
-            walk_anim='walk',
-            idle_anim='idle',
-            speed=speed,
-            acceleration=0.05,
-            attacks=attacks,
-            prob_attack=0))
-        #     prob_attack=prob_attack))
-        sm.states.append(pstates.IsHit(uid='hit', anim='hit', acceleration=10, dist=4))
-        v0y = math.sqrt(2*abs(vars.gravity)*32)
-        v0x = 64 * abs(vars.gravity)/v0y
-        sm.states.append(pstates.Fly(uid='dead', anim_up='dead_up', anim_down='dead_down', anim_lie='dead_lie', v0=(v0x, v0y)))
-        #sm.states.append(states.SimpleState(uid='dead', anim='hit'))
-        p.add_component(sm)
-
-        return p
+        npc_info = vars.npcs[args[3]]
+        factory = npc_info['factory']
+        return getattr(sys.modules[__name__], factory)(pos, npc_info)
     return f
 
 def character_player(**kwargs):

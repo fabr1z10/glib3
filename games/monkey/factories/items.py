@@ -68,6 +68,14 @@ def character(**kwargs):
         else:
             s = entity.Entity(pos=pos, tag='player' if is_player else tag)
         s.add_component(scumm.components.CharacterController(dir=dir, speed=speed, text_color=text_color, text_offset=text_offset))
+        # if a size is provided, add a hotspot
+        size = desc.get('size', None)
+        if size:
+            print('size is ' + str(size))
+            s.add_component(compo.HotSpot(shape=shapes.Rect(width=size[0], height=size[1]),
+                                          onenter=func.hover_on(key),
+                                          onleave=func.hover_off(key),
+                                          onclick=func.prova()))
         return s
     return f
 

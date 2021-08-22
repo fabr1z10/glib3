@@ -98,6 +98,8 @@ class ExitDialogue(actions.CallFunc):
     def __init__(self):
         super().__init__(f=exit_dialogue)
 
+
+
 class RestartDialogue(actions.CallFunc):
     def __init__(self, dialogue_id, node):
         super().__init__(f=restart_dialogue(dialogue_id, node))

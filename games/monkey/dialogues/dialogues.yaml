@@ -1,4 +1,106 @@
 ---
+fettuccini:
+  text_set: '$dialogues/fettuccini'
+  nodes:
+    root:
+      lines: [0,1,2,3,7]
+    m1:
+      lines: [4,5,6,8,9]
+    m2:
+      lines: [10, 11]
+  lines:
+    0:
+      text: 29
+      script: pane
+      args: [29]
+      next: m1
+      persist: true
+    1:
+      text: 30
+      script: pane
+      args: [30]
+      next: m1
+      persist: true
+    2:
+      text: 31
+      script: pane
+      args: [31]
+      next: m1
+      persist: true
+    3:
+      text: 32
+      script: pane
+      args: [32]
+      next: m1
+      persist: true
+    7:
+      text: 33
+      script: pane
+      args: [33]
+      next: m1
+      persist: true
+    4:
+      text: 61
+      next: m1
+      persist: true
+      activate: [8, 9]
+      deactivate: [4, 5, 6]
+      scr:
+        - [ 0, 0, say, player, 61]
+        - [ 1, 0, say, alfredo, 69]
+        - [ 2, 1, say, alfredo, 70]
+        - [ 3, 0, set, '@circus_status', 2]
+    5:
+      text: 62
+      persist: true
+      next: m2
+      scr:
+        - [ 0, 0, say, player, 62]
+        - [ 1, 0, say, alfredo, 64]
+    6:
+      text: 63
+      script: fettuccini_exit
+      persist: true
+    8:
+      text: 71
+      active: false
+      persist: true
+      scr:
+        - [0, 0, say, player, 71]
+        - [1, 0, say, bill, 73]
+        - [2, 1, say, alfredo, 74]
+        - [3, 2, say, bill, 75]
+        - [4, 3, say, alfredo, 76]
+        - [5, 4, say, bill, 77]
+        - [6, 5, goto, clearing, '@pos/circus_tent', s]
+    9:
+      text: 72
+      active: false
+      persist: true
+      scr:
+        - [0, 0, say, player, 72]
+        - [1, 0, say, alfredo, 78]
+        - [2, 1, say, bill, 79]
+        - [3, 2, say, alfredo, 80]
+        - [4, 3, say, bill, 81]
+        - [5, 4, say, alfredo, 76]
+
+    10:
+      text: 65
+      persist: true
+      activate: [8, 9]
+      deactivate: [4, 5, 6]
+      next: m1
+      scr:
+        - [ 0, 0, say, player, 65 ]
+        - [ 1, 0, say, alfredo, 70 ]
+        - [ 2, 1, set, '@circus_status', 2 ]
+    11:
+      text: 66
+      persist: true
+      scr:
+        - [ 0, 0, say, player, 66 ]
+        - [ 6, 5, goto, clearing, '@pos/circus_tent', s ]
 loom:
   text_set: '$dialogues/loom'
   on_exit: on_exit_loom

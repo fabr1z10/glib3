@@ -46,6 +46,10 @@ private:
     //std::string m_startId;
     bool m_loop;
     size_t m_loopId;
+
+    pybind11::function m_onKill;
+    pybind11::function m_onSuspend;
+    pybind11::function m_onResume;
 };
 
 

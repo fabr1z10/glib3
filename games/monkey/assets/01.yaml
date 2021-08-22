@@ -10,6 +10,16 @@ fire:
         - quads: [[435, 479, 24, 32]]
         - quads: [[461, 479, 24, 32]]
         - quads: [[487, 479, 24, 32]]
+circus_fire:
+  sheet: "gfx/sprites/sprites2.png"
+  type: "asset.sprite"
+  animations:
+    def:
+      loop: true
+      elements:
+        - quads: [[179,102,10,29]]
+        - quads: [[191,102,10,29]]
+        - quads: [[203,102,10,29]]
 potostew:
   sheet: "gfx/sprites/sprites1.png"
   type: "asset.sprite"
@@ -420,6 +430,75 @@ loom.loom:
     happy:
       elements:
         - quads: [[239,1,78,70]]
+fettuccini_bill:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: 'asset.sprite'
+  animations:
+    idle_s:
+      elements:
+        - quads: [[137,317,27,45,14,0]]
+    idle_e:
+      elements:
+        - quads: [[167, 324, 22, 38, 13, 0], [183, 258, 10, 12, 6, -33]]
+    idle_n:
+      elements:
+        - quads: [[191, 271, 28, 45, 14, 0]]
+    walk_s:
+      elements:
+        - quads: [[221,318,23,45,11,0]]
+        - quads: [[246,317,24,46,11,0]]
+        - quads: [[272,317,24,46,11,0]]
+        - quads: [[298,318,23,45,11,0]]
+        - quads: [[323,318,24,45,11,0]]
+        - quads: [[349,318,24,45,11,0]]
+    walk_e:
+      elements:
+        - quads: [[374,302,28,43,15,0]]
+        - quads: [[404,303,24,42,15,0]]
+        - quads: [[429,300,15,45,10,0]]
+        - quads: [[446,302,26,43,15,0]]
+        - quads: [[473,303,21,42,15,0]]
+        - quads: [[496,300,15,45,10,0]]
+    talk_e:
+      elements:
+        - quads: [ [ 167, 324, 22, 38, 13, 0 ], [ 206,324,10,12,6,-33] ]
+        - quads: [ [ 167, 324, 22, 38, 13, 0], [ 206,337,10,12,6,-33 ] ]
+        - quads: [ [ 167, 324, 22, 38, 13, 0], [ 206,350,10,12,6,-33 ] ]
+fettuccini_alfredo:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: 'asset.sprite'
+  animations:
+    idle_s:
+      elements:
+        - quads: [[137, 271, 27, 45, 14, 0]]
+    idle_e:
+      elements:
+        - quads: [[167, 278, 22, 38, 13, 0], [170, 261, 11, 12, 6, -33]]
+    idle_n:
+      elements:
+        - quads: [[ 191, 271, 28, 45, 14, 0]]
+    walk_s:
+      elements:
+        - quads: [[221, 271, 23, 45, 11, 0]]
+        - quads: [[246, 270, 24, 46, 11, 0]]
+        - quads: [[272, 270, 24, 46, 11, 0]]
+        - quads: [[298, 271, 23, 45, 11, 0]]
+        - quads: [[323, 270, 24, 46, 11, 0]]
+        - quads: [[349, 271, 24, 45, 11, 0]]
+    walk_e:
+      elements:
+        - quads: [[374, 255, 28, 43, 15, 0]]
+        - quads: [[404, 256, 24, 42, 15, 0]]
+        - quads: [[429, 253, 15, 45, 10, 0]]
+        - quads: [[446, 255, 26, 43, 15, 0]]
+        - quads: [[473, 256, 21, 42, 15, 0]]
+        - quads: [[496, 253, 15, 45, 10, 0]]
+    talk_e:
+      elements:
+        - quads: [[167, 278, 22, 38, 13, 0], [194, 323, 10, 13, 6, -33]]
+        - quads: [[167, 278, 22, 38, 13, 0], [193, 337, 11, 12, 6, -33]]
+        - quads: [[167, 278, 22, 38, 13, 0], [194, 350, 9, 12, 6, -33]]
+
 citizen:
   sheet: 'gfx/sprites/sprites1.png'
   type: 'asset.sprite'

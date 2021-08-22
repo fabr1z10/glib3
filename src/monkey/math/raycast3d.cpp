@@ -86,7 +86,6 @@ RayCastHit RayCast3D::rayVsPrism(glm::vec3 O, glm::vec3 dir, float len, IShape *
                 out.normal = glm::vec3(ce.normal.x, 0.0f, -ce.normal.y);
                 out.length = ce.length;
             }
-            std::cerr << "ici\n";
         }
     }
 	return out;

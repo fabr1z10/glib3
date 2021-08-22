@@ -209,27 +209,36 @@ def execute_dialogue_script(l):
         persist = line.get('persist', False)
         if not persist:
             line['active'] = False
-        if 'scr' in line:
+        if 'scr' in line or 'script' in line:
             s = script.Script()
             s.add_action(scumm.actions.HideDialogue())
-            for a in line['scr']:
-                id = a[0]
-                after = a[1]
-                if id == 0:
-                    after = None
-                if isinstance(after, int):
-                    after = [after]
-                action = a[2]
-                if action == 'say':
-                    ts1 = [str(y) for y in a[4:]]
-                    s.add_action(scumm.actions.Say(tag=a[3], font='monkey', lines=[monkey.engine.read(x if x[0]=='$' else set_text+'/'+x) for x in ts1]), id=id, after=after)
-                elif action == 'sayn':
-                    ts1 = [str(y) for y in a[4:]]
-                    s.add_action(scumm.actions.Say(animate=False, tag=a[3], font='monkey', lines=[monkey.engine.read(x if x[0]=='$' else set_text+'/'+x) for x in ts1]), id=id, after=after)
-                elif action == 'set':
-                    s.add_action(actions.SetVariable(a[3], a[4]))
-                elif action == 'set_dialogue_root':
-                    s.add_action(scumm.actions.SetDialogueRoot(a[3], a[4]))
+            if 'scr' in line:
+                for a in line['scr']:
+                    id = a[0]
+                    after = a[1]
+                    if id == 0:
+                        after = None
+                    if isinstance(after, int):
+                        after = [after]
+                    action = a[2]
+                    if action == 'say':
+                        ts1 = [str(y) for y in a[4:]]
+                        s.add_action(scumm.actions.Say(tag=a[3], font='monkey', lines=[monkey.engine.read(x if x[0]=='$' else set_text+'/'+x) for x in ts1]), id=id, after=after)
+                    elif action == 'sayn':
+                        ts1 = [str(y) for y in a[4:]]
+                        s.add_action(scumm.actions.Say(animate=False, tag=a[3], font='monkey', lines=[monkey.engine.read(x if x[0]=='$' else set_text+'/'+x) for x in ts1]), id=id, after=after)
+                    elif action == 'set':
+                        s.add_action(actions.SetVariable(a[3], a[4]))
+                    elif action == 'set_dialogue_root':
+                        s.add_action(scumm.actions.SetDialogueRoot(a[3], a[4]))
+                    elif action == 'goto':
+                        scripts.actions.goto_room(s, a[3], monkey.engine.read(a[4]), a[5])
+
+            elif 'script' in line:
+                if 'args' in line:
+                    getattr(scripts.actions, line['script'])(s, *line['args'])
+                else:
+                    getattr(scripts.actions, line['script'])(s)
             if 'next' in line:
                 s.add_action(scumm.actions.StartDialogue(l.dialogue_id, line['next']))
             else:

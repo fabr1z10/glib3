@@ -2,6 +2,7 @@
 import vars
 # import data
 import example
+import factories.items as fi
 # import entity
 # import monkey
 # import sys
@@ -75,6 +76,14 @@ def restart():
     # vars.dynamic_foes.clear()
     #vars.scale_factor = 1
     example.restart()
+
+def spawn(player, item, x, y):
+    a = item.getInfo()['enemies']
+    example.remove(item.id)
+    main = example.get('main')
+    for b in a:
+        print('creating ' + str(b))
+        main.add(fi.npc()(*b))
 
 # def check_enemies():
 #     playerx = example.get('player').x

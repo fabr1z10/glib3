@@ -132,7 +132,7 @@ def default_room(desc: dict):
     inventory_node = entity.TextView(factory=factories.items.make_inventory_button, pos=(160, 0), size=(160, 48),
                                      font_size=8, lines=6, delta_x=26, tag='inventory')
     inventory_node.add_component(compo.HotSpotManager())
-    r.add(inventory_node)
+    ui.add(inventory_node)
 
     # dialogue node
     dialogue_node = entity.TextView(factory=factories.items.make_dialogue_button, pos=(0, 0), size=(320, 56),

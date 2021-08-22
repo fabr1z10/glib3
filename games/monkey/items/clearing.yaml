@@ -1,0 +1,57 @@
+clearing_path:
+  type: item1
+  text: '$objects/path'
+  pos: [486, 0]
+  size: [10, 144]
+  walkto: '@pos/clearing_path'
+  wdir: 'e'
+  room: clearing
+circus_tent:
+  type: item1
+  text: '$objects/circus_tent'
+  pos: [52,64]
+  size: [100,50]
+  walkto: '@pos/circus_tent'
+  room: clearing
+  wdir: n
+alfredo:
+  type: character
+  model: 01/fettuccini_alfredo
+  pos: [35, 28]
+  room: circus
+  size: [20, 47]
+  text: '$objects/fettuccini_bros'
+  speed: 100
+  walkto: [178, 9]
+  wdir: s
+  dir: e
+  text_color: [255, 85, 255, 255]
+  text_offset: [0,60]
+  parent: walkarea_0
+bill:
+  type: character
+  model: 01/fettuccini_bill
+  pos: [65, 28]
+  room: circus
+  size: [20, 47]
+  text: '$objects/fettuccini_bros'
+  speed: 100
+  walkto: [178, 9]
+  wdir: s
+  dir: w
+  text_color: [85, 255, 85, 255]
+  text_offset: [0,60]
+  parent: walkarea_0
+circus_fire:
+  type: item1
+  model: 01/circus_fire
+  pos: [ 14, 70, -1 ]
+  room: circus
+circus_exit:
+  type: item1
+  text: '$objects/path'
+  pos: [258, 34]
+  size: [50,100]
+  walkto: '@pos/circus_entry'
+  wdir: e
+  room: circus
