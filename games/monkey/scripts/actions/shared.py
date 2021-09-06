@@ -256,8 +256,48 @@ class Actions:
         return f
 
 
+class custom_actions_meta(type):
+    @property
+    def disable_controls(cls):
+        return actions.CallFunc(f=Callbacks.enable_controls(False))
 
-######################################
+    @property
+    def enable_controls(cls):
+        return actions.CallFunc(f=Callbacks.enable_controls(True))
+
+
+    def _add_item(cls, item_id, args):
+        def f():
+            dic = vars.items[item_id].copy()
+            dic.update(args)
+            tp = dic.get('type', None)
+            if tp is None:
+                print('item ' + item_id + ' does not have type!')
+                exit(1)
+            factory = getattr(factories.items, tp)
+            e = factory()(item_id, dic)
+            if e is not None:
+                parent = dic.get('parent', 'main')
+                example.get(parent).add(e)
+        return f
+
+    def _remove_item(cls, item_id):
+        def f():
+            example.removeByTag(item_id)
+        return f
+
+    def add_item(cls, item_id, args=dict()):
+        return actions.CallFunc(f=cls._add_item(item_id, args))
+
+    def remove_item(cls, item_id):
+        return actions.CallFunc(f=cls._remove_item(item_id))
+
+
+class custom_actions(metaclass=custom_actions_meta):
+    pass
+
+
+            ######################################
 # default actions
 ######################################
 open_ = Actions.say(['$defaultactions/1'])
@@ -267,6 +307,7 @@ pull_ = Actions.say(['$defaultactions/3'])
 lookat_ = Actions.say(['$defaultactions/4'])
 pickup_ = Actions.say(['$defaultactions/5'])
 use_ = Actions.say(['$defaultactions/2'])
+give_ = Actions.say(['$defaultactions/2'])
 walkto_ = Actions.walkto()
 
 

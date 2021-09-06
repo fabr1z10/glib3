@@ -72,7 +72,7 @@ def character(**kwargs):
         size = desc.get('size', None)
         if size:
             print('size is ' + str(size))
-            s.add_component(compo.HotSpot(shape=shapes.Rect(width=size[0], height=size[1]),
+            s.add_component(compo.HotSpot(shape=shapes.Rect(width=size[0], height=size[1], offset=[-0.5*size[0], 0]),
                                           onenter=func.hover_on(key),
                                           onleave=func.hover_off(key),
                                           onclick=func.prova()))

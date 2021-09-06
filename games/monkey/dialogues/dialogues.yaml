@@ -78,12 +78,12 @@ fettuccini:
       active: false
       persist: true
       scr:
-        - [0, 0, say, player, 72]
-        - [1, 0, say, alfredo, 78]
-        - [2, 1, say, bill, 79]
-        - [3, 2, say, alfredo, 80]
-        - [4, 3, say, bill, 81]
-        - [5, 4, say, alfredo, 76]
+        #- [0, 0, say, player, 72]
+        #- [1, 0, say, alfredo, 78]
+        #- [2, 1, say, bill, 79]
+        #- [3, 2, say, alfredo, 80]
+        #- [4, 3, say, bill, 81]
+        - [0, 0, say, alfredo, 76]
 
     10:
       text: 65

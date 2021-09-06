@@ -6,6 +6,14 @@ clearing_path:
   walkto: '@pos/clearing_path'
   wdir: 'e'
   room: clearing
+flying_guybrush:
+  type: item1
+  model: 01/flying_guybrush
+  pos: [0, 0]
+circus_explosion:
+  type: item1
+  model: 01/circus_explosion
+  pos: [0, 0]
 circus_tent:
   type: item1
   text: '$objects/circus_tent'

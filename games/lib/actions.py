@@ -90,8 +90,20 @@ class SetActive(CallFunc):
         super().__init__(f=SetActive.pippo(tag, value))
 
 
+class SetVisible(CallFunc):
+    @staticmethod
+    def pippo(tag, value):
+        def f():
+            m: example.Wrap1 = example.get(tag)
+            m.setVisible(value)
+        return f
+
+    def __init__(self, tag: str, value: bool):
+        super().__init__(f=SetVisible.pippo(tag, value))
+
+
 class Move:
-    def __init__(self, speed: float, to=None, by=None, immediate: bool = False, entity_id=None, tag=None):
+    def __init__(self, speed: float = None, to=None, by=None, immediate: bool = False, entity_id=None, tag=None):
         self.type = 'action.move'
         self.id = entity_id
         self.tag = tag
