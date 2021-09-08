@@ -7,7 +7,7 @@ Bounds BasicModel::GetBounds() const {
     return m_mesh->GetBounds();
 }
 
-void BasicModel::Draw(Shader* shader) {
+void BasicModel::draw(Shader* shader, int, int) {
     m_mesh->Draw(shader, 0, 0);
 }
 

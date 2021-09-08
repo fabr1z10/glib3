@@ -20,7 +20,7 @@ void MultiRenderer::Draw(Shader * shader) {
     Renderer::Draw(shader);
     for (const auto& m : m_models) {
         if (m.first) {
-            m.second->Draw(shader);
+            m.second->draw(shader);
         }
     }
 }

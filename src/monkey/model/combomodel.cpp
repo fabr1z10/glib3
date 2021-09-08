@@ -2,18 +2,17 @@
 
 ComboModel::ComboModel () {}
 
-void ComboModel::AddMesh(std::shared_ptr<IMesh> mesh) {
-    m_meshes.push_back(mesh);
-
+void ComboModel::addModel(std::shared_ptr<IModel> model) {
+    m_models.push_back(model);
 }
 
 Bounds ComboModel::GetBounds() const {
-    return m_meshes.front()->GetBounds();
+    return m_models.front()->GetBounds();
 }
 
-void ComboModel::Draw(Shader* shader, int offset, int count) {
-    for (auto& mesh : m_meshes) {
-        mesh->Draw(shader, offset, count);
+void ComboModel::draw(Shader* shader, int, int) {
+    for (auto& mesh : m_models) {
+        mesh->draw(shader);
     }
 }
 
@@ -27,5 +26,5 @@ std::string ComboModel::GetDefaultAnimation() const {
 
 
 ShaderType ComboModel::GetShaderType() const {
-    return m_meshes.front()->GetShaderType();
+    return m_models.front()->GetShaderType();
 }

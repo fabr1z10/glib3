@@ -49,7 +49,7 @@ void AnimRenderer::Update(double dt) {
 
 void AnimRenderer::Draw(Shader * shader) {
 	Renderer::Draw(shader);
-	m_frames[m_frame].model->Draw(shader);
+	m_frames[m_frame].model->draw(shader);
 
 }
 

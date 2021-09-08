@@ -213,7 +213,7 @@ const AnimInfo* SpriteModel::GetAnimInfo(const std::string& anim) const {
     return m_mesh->GetAnimInfo(anim);
 }
 
-void SpriteModel::Draw(Shader* shader, int offset, int count) {
+void SpriteModel::draw(Shader* shader, int offset, int count) {
     m_mesh->Draw(shader, offset, count);
 }
 

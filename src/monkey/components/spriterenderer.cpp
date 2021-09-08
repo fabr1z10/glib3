@@ -16,7 +16,7 @@ void SpriteRenderer::Draw(Shader * shader) {
     Renderer::Draw(shader);
     const auto* frameInfo = m_animator->getFrameInfo();
     if (frameInfo != nullptr) {
-        m_model->Draw(shader, frameInfo->offset, frameInfo->count);
+        m_model->draw(shader, frameInfo->offset, frameInfo->count);
     }
 
 }

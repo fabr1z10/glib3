@@ -8,6 +8,9 @@
 #include <monkey/math/shapes3d/aabb.h>
 #include <monkey/math/shapes3d/plane.h>
 #include <monkey/math/shapes3d/prism.h>
+#include <monkey/model/combomodel.h>
+#include <monkey/math/earcut.h>
+#include <monkey/texturedmesh.h>
 //
 //
 
@@ -33,6 +36,9 @@ MeshFactory::MeshFactory(float z) : m_z(z) {
 	m_plotters.insert(std::make_pair(ShapeType::PRISM, [&] (IShape* s, glm::vec4 color, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices)
 		{ return drawPrism(s, color, vertices, indices); }));
 
+
+	//m_plottersTex.insert(std::make_pair(ShapeType::POLY, [&] (IShape* s, const std::vector<TexInfo>& texInfos) { return drawPolyTex(s, texInfos); }));
+    m_plottersTex.insert(std::make_pair(ShapeType::PRISM, [&] (IShape* s, const std::vector<TexInfo>& texInfos) { return drawPrismTex(s, texInfos); }));
 
 }
 
@@ -94,6 +100,51 @@ void MeshFactory::drawAABB(IShape* s, glm::vec4 color, std::vector<VertexColor> 
 
 }
 
+std::shared_ptr<IModel> MeshFactory::drawPrismTex(IShape * s, const std::vector<TexInfo>& texInfos) {
+    auto comboModel = std::make_shared<ComboModel>();
+
+    // create top mesh
+    auto* prism = static_cast<Prism*>(s);
+    auto* baseShape = static_cast<Polygon*>(prism->getBaseShape());
+    auto it = m_plottersTex.find(baseShape->getShapeType());
+    auto cm = std::make_shared<ComboModel>();
+    auto h = prism->getHeight();
+
+    auto model = drawPolyTex(baseShape, texInfos, h);
+    comboModel->addModel(model);
+
+    // plot border
+    auto v = baseShape->getOutlineVertices();
+    std::vector<Vertex3D> aaa;
+    std::vector<unsigned> indices;
+    const auto& borderTexInfo = texInfos[1];
+    float x0 = v[0].x;
+    float z0 = -v[0].y;
+    // place one quad for each side
+    float tx = 0.0f;
+    float tyh = h/borderTexInfo.rep1;
+    for (size_t i = 0; i < v.size(); ++i) {
+        auto j = (i+1) % v.size();
+        aaa.emplace_back(v[i].x, h, -v[i].y, tx/borderTexInfo.rep0, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+        aaa.emplace_back(v[i].x, 0.0f, -v[i].y, tx/borderTexInfo.rep0, tyh, 1.0f, 1.0f, 1.0f, 1.0f);
+        tx += glm::length(v[j] - v[i]);
+        aaa.emplace_back(v[j].x, h, -v[j].y, tx/borderTexInfo.rep0, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+        aaa.emplace_back(v[j].x, 0.0f, -v[j].y, tx/borderTexInfo.rep0, tyh, 1.0f, 1.0f, 1.0f, 1.0f);
+        indices.push_back(i*4);
+        indices.push_back(i*4+1);
+        indices.push_back(i*4+2);
+        indices.push_back(i*4+1);
+        indices.push_back(i*4+3);
+        indices.push_back(i*4+2);
+    }
+    auto mesh = std::make_shared<TexturedMesh<Vertex3D>>(TEXTURE_SHADER_UNLIT, GL_TRIANGLES, borderTexInfo.tex);
+    mesh->Init(aaa, indices);
+    comboModel->addModel(std::make_shared<BasicModel>(mesh));
+    return comboModel;
+
+}
+
+
 void MeshFactory::drawPrism(IShape * s, glm::vec4 color, std::vector<VertexColor> &vertices,
 							std::vector<unsigned int> &indices)
 {
@@ -154,6 +205,36 @@ void MeshFactory::drawPolyLine(IShape * s, glm::vec4 color, std::vector<VertexCo
     }
 }
 
+std::shared_ptr<IModel> MeshFactory::drawPolyTex(IShape * shape, const std::vector<TexInfo>& texInfos, float h) {
+    using Coord = float;
+    using Point = std::array<Coord, 2>;
+    using N = uint32_t;
+    std::vector<Vertex3D> vertices;
+    std::vector<unsigned> indices;
+    auto* poly = static_cast<Polygon*>(shape);
+    std::vector<Point> polygon;
+    auto v = poly->getOutlineVertices();
+    float x0 = v[0].x;
+    float z0 = -v[0].y;
+    const auto& texInfo = texInfos[0];
+    for (const auto& vertex : v) {
+        float z = -vertex.y;
+        vertices.emplace_back(vertex.x, h, z, (vertex.x - x0) / texInfo.rep0, (z - z0) / texInfo.rep1, 1.0f, 1.0f, 1.0f, 1.0f);
+        polygon.push_back({vertex.x, z});
+    }
+
+    // triangualate polygon
+    std::vector<std::vector<Point>> p;
+    p.push_back(polygon);
+    auto tri = mapbox::earcut<N>(p);
+    // now add indices
+    for (const auto& i : tri) {
+        indices.push_back(i);
+    }
+    auto mesh = std::make_shared<TexturedMesh<Vertex3D>>(TEXTURE_SHADER_UNLIT, GL_TRIANGLES, texInfo.tex);
+    mesh->Init(vertices, indices);
+    return std::make_shared<BasicModel>(mesh);
+}
 
 void MeshFactory::drawPoly (IShape* s, glm::vec4 color, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices) {
     auto* poly = static_cast<Polygon*>(s);
@@ -265,16 +346,24 @@ std::shared_ptr<BasicModel> MeshFactory::createSolid(IShape* shape, glm::vec4 co
 }
 
 
-std::shared_ptr<BasicModel> MeshFactory::createWireframe(IShape * shape, glm::vec4 color) {
-
+std::shared_ptr<IModel> MeshFactory::createTextured(IShape * shape, const std::vector<TexInfo>& texInfos) {
     auto st = shape->getShapeType();
+    std::vector<Vertex3D> vertices;
+    std::vector<unsigned> indices;
+    auto it = m_plottersTex.find(st);
+    if (it != m_plottersTex.end()) {
+        return it->second(shape, texInfos);
+    } else {
+        return nullptr;
+        //GLIB_FAIL("don't know how to build shape " << shape->getShapeType());
+    }
 
+}
 
+std::shared_ptr<BasicModel> MeshFactory::createWireframe(IShape * shape, glm::vec4 color) {
+    auto st = shape->getShapeType();
     std::vector<VertexColor> vertices;
     std::vector<unsigned> indices;
-
-
-
     auto it = m_plotters.find(st);
     if (it != m_plotters.end()) {
         it->second(shape, color, vertices, indices);

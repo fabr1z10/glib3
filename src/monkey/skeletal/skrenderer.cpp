@@ -29,7 +29,7 @@ void SkRenderer::Draw(Shader * shader) {
 
     glUniformMatrix4fv(boneId, m_jointTransforms.size(), GL_FALSE, glm::value_ptr(m_jointTransforms[0]));
 
-    m_model->Draw(shader);
+    m_model->draw(shader);
 
 }
 

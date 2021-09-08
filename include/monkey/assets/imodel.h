@@ -25,7 +25,7 @@ public:
         return std::vector<std::shared_ptr<IShape>>();
     }
     // bool isShareable() const;
-
+    virtual void draw(Shader*, int offset = 0, int count = 0) = 0;
 protected:
     //bool m_shareable;
 };

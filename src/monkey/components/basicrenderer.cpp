@@ -4,8 +4,7 @@
 #include <monkey/math/geom.h>
 #include <monkey/texmeshfactory.h>
 
-BasicRenderer::BasicRenderer(std::shared_ptr<IModel> model) : Renderer() {
-    m_model = std::dynamic_pointer_cast<BasicModel>(model);
+BasicRenderer::BasicRenderer(std::shared_ptr<IModel> model) : Renderer(), m_model(model) {
     m_baseModel = model.get();
 }
 
@@ -73,6 +72,22 @@ BasicRenderer::BasicRenderer(const ITab & t) : Renderer(t) {
         SetModel(model);
         
     } else if (cls==4) {
+        auto factory = Engine::get().GetSceneFactory();
+        auto shapeT = t["shape"];
+        auto shape = factory->make2<IShape>(*shapeT);
+        std::vector<TexInfo> texInfos;
+        t.foreach("tex_infos", [&] (const ITab& t) {
+            TexInfo tinfo;
+            tinfo.tex = t.get<std::string>("tex");
+            tinfo.rep0 = t.get<float>("rep0");
+            tinfo.rep1 = t.get<float>("rep1");
+            texInfos.push_back(tinfo);
+        });
+        MeshFactory mf;
+        auto model = mf.createTextured(shape.get(), texInfos);
+        SetModel(model);
+
+
         // create a colored shape outline texture
 //        auto factory = Engine::get().GetSceneFactory();
 //        auto color = t.get<glm::vec4>("color");
@@ -111,12 +126,12 @@ BasicRenderer::BasicRenderer(const ITab & t) : Renderer(t) {
 
 void BasicRenderer::Draw(Shader* shader) {
     Renderer::Draw(shader);
-    m_model->Draw(shader);
+    m_model->draw(shader);
 
 }
 
 void BasicRenderer::SetModel(std::shared_ptr<IModel> model) {
-    m_model = std::dynamic_pointer_cast<BasicModel>(model);
+    m_model = model;
     m_baseModel = model.get();
 }
 

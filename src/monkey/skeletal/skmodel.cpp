@@ -447,7 +447,7 @@ const AttackBox* SkModel::getShapeCastId (const std::string& animId, float t) {
 }
 
 
-void SkModel::Draw(Shader * shader) {
+void SkModel::draw(Shader * shader, int, int) {
     for (const auto &m : m_sortedMeshes) {
     	for (const auto & mesh : m.second) {
     		if (mesh.bb != GL_LESS) {

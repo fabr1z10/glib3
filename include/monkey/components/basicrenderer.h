@@ -13,5 +13,5 @@ public:
     std::type_index GetType() override;
     void SetModel(std::shared_ptr<IModel> mesh) override;
 private:
-    std::shared_ptr<BasicModel> m_model;
+    std::shared_ptr<IModel> m_model;
 };

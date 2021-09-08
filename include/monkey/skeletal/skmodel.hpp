@@ -66,7 +66,7 @@ public:
 				  glm::vec2 attachPoint, float z, float scale, int order, glm::vec2 offset = glm::vec2(0.0f));
     //void setMesh (const std::string& jointId, const std::string& meshId, float scale, glm::vec2 offset = glm::vec2(0.0f), int order = 0);
     void setAnimation (const std::string& animId, const std::string& anim);
-    void Draw (Shader*);
+    void draw (Shader*, int offset=0, int count=0) override;
     /**
      * Gets an array of the all important model-space transforms of all the
      * joints (with the current animation pose applied) in the entity. The

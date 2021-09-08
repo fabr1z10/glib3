@@ -14,14 +14,22 @@
 //#include <monkey/fill.h>
 
 // creates a model from a shape
+struct TexInfo {
+    std::string tex;
+    float rep0;
+    float rep1;
+};
+
 class __attribute__ ((visibility ("default"))) MeshFactory {
 public:
     MeshFactory (float z=0.0f);
     std::shared_ptr<BasicModel> createWireframe (IShape*, glm::vec4 color);
     std::shared_ptr<BasicModel> createSolid (IShape*, glm::vec4 color);
+    std::shared_ptr<IModel> createTextured (IShape*, const std::vector<TexInfo>&);
 private:
 	float m_z;
     std::unordered_map<ShapeType, std::function<void(IShape*, glm::vec4, std::vector<VertexColor>&, std::vector<unsigned>&)>> m_plotters;
+    std::unordered_map<ShapeType, std::function<std::shared_ptr<IModel>(IShape*, std::vector<TexInfo>)>> m_plottersTex;
 //    std::shared_ptr<BasicModel> drawConvexPoly(IShape*, glm::vec4);
 //	std::shared_ptr<BasicModel> drawCircle(IShape*, glm::vec4);
 
@@ -35,6 +43,9 @@ private:
 	void drawAABB (IShape*, glm::vec4, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices);
 	void drawPlane (IShape*, glm::vec4, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices);
 	void drawPrism (IShape*, glm::vec4, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices);
+
+    std::shared_ptr<IModel> drawPolyTex(IShape*, const std::vector<TexInfo>&, float h);
+    std::shared_ptr<IModel> drawPrismTex (IShape*,const std::vector<TexInfo>&);
 };
 //    public AcyclicVisitor,
 //    public Visitor<Rect>,
