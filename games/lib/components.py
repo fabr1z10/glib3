@@ -185,6 +185,13 @@ class ShapeGfxColor:
         self.shape = shape
         self.color = color
 
+class ShapeTex:
+    def __init__(self, shape, tex_infos):
+        self.type ='components.gfx'
+        self.cls = 4
+        self.shape = shape
+        self.tex_infos = tex_infos
+
 
 
 class Parallax:
