@@ -47,7 +47,18 @@ def give_pot_alfredo(item, id):
     s.add_action(actions.Animate(tag='circus_explosion', anim='default', sync=True), id=11)
     s.add_action(actions.Animate(tag='flying_guybrush', anim='default', sync=True), id=12)
     s.add_action(a.custom_actions.remove_item('circus_explosion'), after=[11])
-    #s.add_action(actions.Animate(tag='player', anim='circus_cutscene_3', sync=True))
+    s.add_action(scumm.actions.Say(tag='alfredo', font='monkey', lines=[gl(89)]), after=[12])
+    s.add_action(scumm.actions.Say(tag='bill', font='monkey', lines=[gl(90)]), id=13)
+    s.add_action(scumm.actions.Walk(tag='alfredo', pos=(87, 29)), after=[13])
+    s.add_action(scumm.actions.Turn(tag='alfredo', dir='e'))
+    s.add_action(scumm.actions.Walk(tag='bill', pos=(126, 29)), after=[13])
+    s.add_action(scumm.actions.Turn(tag='bill', dir='w'))
+    s.add_action(scumm.actions.Say(tag='alfredo', font='monkey', lines=[gl(91)]))
+    s.add_action(scumm.actions.Say(tag='bill', font='monkey', lines=[gl(92)]))
+    s.add_action(a.custom_actions.add_to_inventory('pieces_of_eight', 478))
+    #{type = scumm.action.remove_from_inventory, args = {id = "kitchen.pot"}},
+    s.add_action(a.custom_actions.enable_controls)
+    s.add_action(scumm.actions.StartDialogue('fettuccini', 'm3'))
     example.play(s)
 
 def cane():

@@ -93,6 +93,13 @@ class Callbacks:
                 func.refresh_inventory()
         return f
 
+    def add_to_inventory(id, qty):
+        def f():
+            if id not in vars.inventory:
+                vars.inventory[id] = 0
+            vars.inventory[id] += qty
+        return f
+
     def set_item_text(item, text):
         def f():
             vars.items[item]['text']= text
@@ -266,6 +273,10 @@ class custom_actions_meta(type):
         return actions.CallFunc(f=Callbacks.enable_controls(True))
 
 
+
+
+
+
     def _add_item(cls, item_id, args):
         def f():
             dic = vars.items[item_id].copy()
@@ -292,6 +303,8 @@ class custom_actions_meta(type):
     def remove_item(cls, item_id):
         return actions.CallFunc(f=cls._remove_item(item_id))
 
+    def add_to_inventory(cls, item_id, qty):
+        return actions.CallFunc(f=Callbacks.add_to_inventory(item_id, qty))
 
 class custom_actions(metaclass=custom_actions_meta):
     pass

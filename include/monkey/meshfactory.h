@@ -46,6 +46,8 @@ private:
 
     std::shared_ptr<IModel> drawPolyTex(IShape*, const std::vector<TexInfo>&, float h);
     std::shared_ptr<IModel> drawPrismTex (IShape*,const std::vector<TexInfo>&);
+    std::shared_ptr<IModel> drawAABBTex (IShape*,const std::vector<TexInfo>&);
+
 };
 //    public AcyclicVisitor,
 //    public Visitor<Rect>,

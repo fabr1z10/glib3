@@ -8,6 +8,8 @@ fettuccini:
       lines: [4,5,6,8,9]
     m2:
       lines: [10, 11]
+    m3:
+      lines: [12, 13]
   lines:
     0:
       text: 29
@@ -101,6 +103,14 @@ fettuccini:
       scr:
         - [ 0, 0, say, player, 66 ]
         - [ 6, 5, goto, clearing, '@pos/circus_tent', s ]
+    12:
+      text: 93
+      scr:
+        - [0, 0, goto, clearing, '@pos/circus_tent', s]
+    13:
+      text: 94
+      scr:
+        - [0, 0, goto, clearing, '@pos/circus_tent', s]
 loom:
   text_set: '$dialogues/loom'
   on_exit: on_exit_loom

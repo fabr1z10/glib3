@@ -15,7 +15,9 @@ guybrush:
     flag: 0
     mask: 1
     tag: 0
-
+pieces_of_eight:
+  text: '$objects/pieceofeight'
+  plural: '$objects/piecesofeight'
 mancomb:
   type: character
   pos: [52, 18]

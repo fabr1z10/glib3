@@ -39,6 +39,7 @@ MeshFactory::MeshFactory(float z) : m_z(z) {
 
 	//m_plottersTex.insert(std::make_pair(ShapeType::POLY, [&] (IShape* s, const std::vector<TexInfo>& texInfos) { return drawPolyTex(s, texInfos); }));
     m_plottersTex.insert(std::make_pair(ShapeType::PRISM, [&] (IShape* s, const std::vector<TexInfo>& texInfos) { return drawPrismTex(s, texInfos); }));
+    m_plottersTex.insert(std::make_pair(ShapeType::AABB, [&] (IShape* s, const std::vector<TexInfo>& texInfos) { return drawAABBTex(s, texInfos); }));
 
 }
 
@@ -98,6 +99,11 @@ void MeshFactory::drawAABB(IShape* s, glm::vec4 color, std::vector<VertexColor> 
 	//indices.insert(indices.end(), {0, 1, 1, 2, 2, 3, 3, 0, 4, 5, 5, 6, 6, 7, 7, 4, 0, 4, 1, 5, 2, 6, 3, 7});
 
 
+}
+
+std::shared_ptr<IModel> MeshFactory::drawAABBTex(IShape *, const std::vector<TexInfo> &) {
+    std::vector<Vertex3D> aaa;
+    std::vector<unsigned> indices;
 }
 
 std::shared_ptr<IModel> MeshFactory::drawPrismTex(IShape * s, const std::vector<TexInfo>& texInfos) {
