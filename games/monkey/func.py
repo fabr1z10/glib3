@@ -195,11 +195,31 @@ def on_enter_trap(player, trap, dx, dy):
 
 
 
+def _make_say(a, context):
+    ts1 = [str(y) for y in a[2:]]
+    st = context['set_text']
+    return scumm.actions.Say(tag=a[1], font='monkey', lines=[monkey.engine.read(x if x[0] == '$' else st + '/' + x) for x in ts1])
+
+def _make_set(a, context):
+    print(a)
+    return actions.SetVariable(a[1], a[2])
+
+def _make_sdr(a, context):
+    return scumm.actions.SetDialogueRoot(a[1], a[2])
+
+
+dscript = {
+    'say': _make_say,
+    'set': _make_set,
+    'set_dialogue_root': _make_sdr
+}
+
 def execute_dialogue_script(l):
     def f(x, y, z):
         line = l.line
         dialogue = vars.dialogues[l.dialogue_id]
-        set_text = dialogue['text_set']
+        context = dict()
+        context['set_text'] = dialogue['text_set']
         if 'activate' in line:
             for node in line['activate']:
                 dialogue['lines'][node]['active'] = True
@@ -214,25 +234,35 @@ def execute_dialogue_script(l):
             s.add_action(scumm.actions.HideDialogue())
             if 'scr' in line:
                 for a in line['scr']:
-                    id = a[0]
-                    after = a[1]
-                    if id == 0:
-                        after = None
-                    if isinstance(after, int):
-                        after = [after]
-                    action = a[2]
-                    if action == 'say':
-                        ts1 = [str(y) for y in a[4:]]
-                        s.add_action(scumm.actions.Say(tag=a[3], font='monkey', lines=[monkey.engine.read(x if x[0]=='$' else set_text+'/'+x) for x in ts1]), id=id, after=after)
-                    elif action == 'sayn':
-                        ts1 = [str(y) for y in a[4:]]
-                        s.add_action(scumm.actions.Say(animate=False, tag=a[3], font='monkey', lines=[monkey.engine.read(x if x[0]=='$' else set_text+'/'+x) for x in ts1]), id=id, after=after)
-                    elif action == 'set':
-                        s.add_action(actions.SetVariable(a[3], a[4]))
-                    elif action == 'set_dialogue_root':
-                        s.add_action(scumm.actions.SetDialogueRoot(a[3], a[4]))
-                    elif action == 'goto':
-                        scripts.actions.goto_room(s, a[3], monkey.engine.read(a[4]), a[5])
+                    id = None
+                    after = None
+                    iafter = 0
+                    istart = 0
+                    if isinstance(a[0], int):
+                        id = a[0]
+                        iafter += 1
+                        istart += 1
+                    if isinstance(a[iafter], list):
+                        after = a[iafter]
+                        istart += 1
+                    action = a[istart]
+                    action_factory = dscript.get(action, None)
+                    if action_factory is None:
+                        print('don''t know action ' + action)
+                        exit(1)
+                    s.add_action(action_factory(a[istart:], context), id=id, after=after)
+                    # if action == 'say':
+                    #     ts1 = [str(y) for y in a[4:]]
+                    #     s.add_action(scumm.actions.Say(tag=a[3], font='monkey', lines=[monkey.engine.read(x if x[0]=='$' else set_text+'/'+x) for x in ts1]), id=id, after=after)
+                    # elif action == 'sayn':
+                    #     ts1 = [str(y) for y in a[4:]]
+                    #     s.add_action(scumm.actions.Say(animate=False, tag=a[3], font='monkey', lines=[monkey.engine.read(x if x[0]=='$' else set_text+'/'+x) for x in ts1]), id=id, after=after)
+                    # elif action == 'set':
+                    #     s.add_action(actions.SetVariable(a[3], a[4]))
+                    # elif action == 'set_dialogue_root':
+                    #     s.add_action(scumm.actions.SetDialogueRoot(a[3], a[4]))
+                    # elif action == 'goto':
+                    #     scripts.actions.goto_room(s, a[3], monkey.engine.read(a[4]), a[5])
 
             elif 'script' in line:
                 if 'args' in line:

@@ -3,7 +3,7 @@ guybrush:
   type: character
   model: 01/guybrush
   pos: [22, 52]
-  room: meleemap
+  room: clearing
   parent: walkarea_0
   dir: e
   speed: 500

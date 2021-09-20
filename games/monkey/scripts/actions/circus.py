@@ -50,10 +50,10 @@ def give_pot_alfredo(item, id):
     s.add_action(scumm.actions.Say(tag='alfredo', font='monkey', lines=[gl(89)]), after=[12])
     s.add_action(scumm.actions.Say(tag='bill', font='monkey', lines=[gl(90)]), id=13)
     s.add_action(scumm.actions.Walk(tag='alfredo', pos=(87, 29)), after=[13])
-    s.add_action(scumm.actions.Turn(tag='alfredo', dir='e'))
+    s.add_action(scumm.actions.Turn(tag='alfredo', dir='e'), id=14)
     s.add_action(scumm.actions.Walk(tag='bill', pos=(126, 29)), after=[13])
     s.add_action(scumm.actions.Turn(tag='bill', dir='w'))
-    s.add_action(scumm.actions.Say(tag='alfredo', font='monkey', lines=[gl(91)]))
+    s.add_action(scumm.actions.Say(tag='alfredo', font='monkey', lines=[gl(91)]), after=[14])
     s.add_action(scumm.actions.Say(tag='bill', font='monkey', lines=[gl(92)]))
     s.add_action(a.custom_actions.add_to_inventory('pieces_of_eight', 478))
     #{type = scumm.action.remove_from_inventory, args = {id = "kitchen.pot"}},
