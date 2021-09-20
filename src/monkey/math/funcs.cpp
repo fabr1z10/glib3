@@ -22,11 +22,11 @@ void PatchwiseLinear2D::AddFunction (glm::vec4 domain , std::shared_ptr<Function
 
 
 PatchwiseLinear2D::PatchwiseLinear2D(const ITab & t) {
+    auto factory = Engine::get().GetSceneFactory();
     t.foreach("rect", [&] (const ITab& table) {
         // read bottom left corner
         auto pos = table.get<glm::vec2>("pos");
         auto size = table.get<glm::vec2>("size");
-        auto factory = Engine::get().GetSceneFactory();
         auto func = table["func"];
         auto f = factory->make2<Function2D>(*func);
         this->AddFunction(glm::vec4(pos[0], pos[1], pos[0]+size[0], pos[1]+size[1]), f);

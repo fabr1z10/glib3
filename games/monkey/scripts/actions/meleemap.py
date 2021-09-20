@@ -14,4 +14,11 @@ click_meleemap_clearing = a.Actions.goto_room('clearing', status.pos.clearing_pa
 
 walkto_clearing_path = a.Actions.goto_room('meleemap', status.pos.melee_clearing, 'w')
 lookat_circus_tent = a.Actions.say(['$lines/44'])
-walkto_circus_tent = a.Actions.goto_room('circus', status.pos.circus_entry, 'w')
+
+
+def walkto_circus_tent(item, entity):
+    if status.circus_feat_done == 0:
+        return a.Actions.goto_room('circus', status.pos.circus_entry, 'w')(item, entity)
+    else:
+        return a.Actions.say(['$dialogues/fettuccini/104'])(item, entity)
+

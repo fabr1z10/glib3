@@ -109,7 +109,8 @@ void Walk::Start() {
         auto setStateAction = std::make_shared<Animate>(canim.first, true, canim.second ? 2 : 1);
         setStateAction->SetId(m_actorId);
         Push(setStateAction);
-        auto moveAction = std::make_shared<MoveTo>(path[i], speed, false, false);
+        //auto moveAction = std::make_shared<MoveTo>(path[i], speed, false, false);
+        auto moveAction = std::make_shared<MoveToScaled>(path[i], speed, false, false);
         moveAction->SetId(m_actorId);
         Push(moveAction);
         lastMove = move;

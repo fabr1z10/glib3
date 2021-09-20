@@ -1,3 +1,5 @@
+#ifdef USE_ASSIMP
+
 #include <monkey/model/model3d.h>
 
 
@@ -51,3 +53,5 @@ void Model3D::processNode(aiNode *node, const aiScene *scene)
         processNode(node->mChildren[i], scene);
     }
 }
+
+#endif

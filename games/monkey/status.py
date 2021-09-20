@@ -31,3 +31,5 @@ meat_in_pot = False
 pirates_know_guybrush = 0
 cook_in_kitchen = True
 circus_status = 0
+circus_feat_done = 0
+talked_to_lookout = 0

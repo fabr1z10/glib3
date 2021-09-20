@@ -87,6 +87,7 @@
 #include <monkey/collisionengine3d.h>
 #include <monkey/cam25.h>
 #include <monkey/math/shapes3d/prism.h>
+#include <monkey/activities/sequence.h>
 
 
 namespace py = pybind11;
@@ -201,6 +202,7 @@ SceneFactory::SceneFactory() {
     add2<DelayTime> ("action.delay");
     add2<DelayTimeDynamic> ("action.delaydynamic");
     add2<Animate> ("action.animate");
+    add2<Sequence> ("action.sequence");
     add2<Blink> ("action.blink");
     add2<NoOp>("action.noop");
     add2<Scroll> ("action.scroll");

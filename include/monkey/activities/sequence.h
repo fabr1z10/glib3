@@ -6,6 +6,8 @@
 class __attribute__ ((visibility ("default"))) Sequence : public Activity {
 public:
     Sequence();
+    Sequence (const ITab& t);
+
     void Start() override {}
     void Run (float dt) override;
     void Push (std::shared_ptr<Activity> activity);

@@ -6,6 +6,9 @@ import script
 import scumm.actions
 import actions
 import scripts.actions
+import scripts.actions.shared as aa
+
+
 
 def set_item_pos(item_id, room, pos, dir = None):
     item = vars.items[item_id]
@@ -194,24 +197,38 @@ def on_enter_trap(player, trap, dx, dy):
         getattr(scripts.actions, f)(trap)
 
 
-
 def _make_say(a, context):
     ts1 = [str(y) for y in a[2:]]
     st = context['set_text']
     return scumm.actions.Say(tag=a[1], font='monkey', lines=[monkey.engine.read(x if x[0] == '$' else st + '/' + x) for x in ts1])
 
+
+def _make_turn(a, context):
+    return scumm.actions.Turn(tag=a[1], dir=a[2])
+
+
 def _make_set(a, context):
     print(a)
     return actions.SetVariable(a[1], a[2])
+
 
 def _make_sdr(a, context):
     return scumm.actions.SetDialogueRoot(a[1], a[2])
 
 
+def _make_goto(a, context):
+    b = actions.Sequence()
+    b.activities.append(aa.custom_actions.goto_room(a[1], a[2], a[3]))
+    b.activities.append(actions.ChangeRoom(a[1]))
+    return b
+
+
 dscript = {
     'say': _make_say,
     'set': _make_set,
-    'set_dialogue_root': _make_sdr
+    'set_dialogue_root': _make_sdr,
+    'goto': _make_goto,
+    'turn': _make_turn
 }
 
 def execute_dialogue_script(l):

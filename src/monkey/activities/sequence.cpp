@@ -1,6 +1,16 @@
 #include <monkey/activities/sequence.h>
+#include <monkey/engine.h>
 
 Sequence::Sequence() : Activity(), m_current(nullptr) {}
+
+Sequence::Sequence(const ITab& t) {
+    auto factory = Engine::get().GetSceneFactory();
+    t.foreach("activities", [&] (const ITab& a) {
+        auto activity = factory->make2<Activity>(a);
+        m_innerActivities.push(activity);
+    });
+
+}
 
 void Sequence::Push(std::shared_ptr<Activity> activity) {
     m_innerActivities.push(activity);

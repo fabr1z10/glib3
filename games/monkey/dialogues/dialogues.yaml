@@ -108,11 +108,28 @@ fettuccini:
       scr:
         - [say, player, 93 ]
         - [say, alfredo, 95 ]
+        - [say, bill, 96 ]
+        - [say, alfredo, 97 ]
+        - [say, bill, 98 ]
+        - [say, alfredo, 99 ]
+        - [say, bill, 100 ]
+        - [say, alfredo, 101 ]
+        - [say, bill, 102 ]
+        - [say, alfredo, 103 ]
         - [goto, clearing, '@pos/circus_tent', s]
     13:
       text: 94
       scr:
         - [say, player, 94 ]
+        - [say, alfredo, 95 ]
+        - [say, bill, 96 ]
+        - [say, alfredo, 97 ]
+        - [say, bill, 98 ]
+        - [say, alfredo, 99 ]
+        - [say, bill, 100 ]
+        - [say, alfredo, 101 ]
+        - [say, bill, 102 ]
+        - [say, alfredo, 103 ]
         - [goto, clearing, '@pos/circus_tent', s]
 loom:
   text_set: '$dialogues/loom'
@@ -194,6 +211,33 @@ estevan:
         - [0, 0, sayn, player, 5]
         - [1, 0, sayn, estevan, 11]
 
+lookout:
+  text_set: '$dialogues/lookout'
+  nodes:
+    root:
+      lines: [0,1,2,3]
+    main:
+  lines:
+    0:
+      text: intro1
+      script: lookout_start_dialogue
+      args: [intro1]
+      next: main
+    1:
+      text: intro2
+      script: lookout_start_dialogue
+      args: [intro2]
+      next: main
+    2:
+      text: intro3
+      script: lookout_start_dialogue
+      args: [intro3]
+      next: main
+    3:
+      text: intro4
+      script: lookout_start_dialogue
+      args: [intro4]
+      next: main
 
 mancomb:
   text_set: '$dialogues/mancomb'

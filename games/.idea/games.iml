@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="PYTHON_MODULE" version="4">
+  <component name="FacetManager">
+    <facet type="Python" name="Python facet">
+      <configuration sdkName="Python 3.8 (games)" />
+    </facet>
+  </component>
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/lib" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/smb" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/smb/factories" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/monkey" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/venv" />
     </content>
     <orderEntry type="jdk" jdkName="Python 3.8" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Python 3.8 (games) interpreter library" level="application" />
   </component>
 </module>

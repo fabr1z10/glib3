@@ -18,6 +18,7 @@ def gl(id):
 def give_pot_alfredo(item, id):
     s = a.Scripts.walk('alfredo')
     s.add_action(a.custom_actions.disable_controls)
+    s.add_action(actions.SetVariable('@circus_feat_done', 1))
     s.add_action(actions.Animate(tag='player', anim='circus_cutscene_1', sync=True))
     s.add_action(scumm.actions.Say(tag='bill', font='monkey', lines=[gl(82)]))
     s.add_action(actions.Animate(tag='player', anim='circus_cutscene_1', fwd=False, sync=True))

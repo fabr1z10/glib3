@@ -100,6 +100,11 @@ class Callbacks:
             vars.inventory[id] += qty
         return f
 
+    def goto_room(room, pos, dir):
+        def f():
+            func.set_item_pos(vars.current_player, room, pos, dir)
+        return f
+
     def set_item_text(item, text):
         def f():
             vars.items[item]['text']= text
@@ -248,6 +253,16 @@ class Actions:
         return f
 
     @staticmethod
+    def start_dialogue(dialogue_id):
+        def f(item_id, entity):
+            s = Scripts.walk(item_id) if item_id else Script()
+            s.add_action(scumm.actions.StartDialogue(dialogue_id=dialogue_id))
+            example.play(s)
+        return f
+
+
+
+    @staticmethod
     def change_room(room):
         def f(item_id, entity):
             s = Scripts.walk(item_id) if item_id else Script()
@@ -306,6 +321,9 @@ class custom_actions_meta(type):
     def add_to_inventory(cls, item_id, qty):
         return actions.CallFunc(f=Callbacks.add_to_inventory(item_id, qty))
 
+    def goto_room(cls, room, pos, dir):
+        return actions.CallFunc(f=Callbacks.goto_room(room, pos, dir))
+
 class custom_actions(metaclass=custom_actions_meta):
     pass
 
@@ -321,6 +339,7 @@ lookat_ = Actions.say(['$defaultactions/4'])
 pickup_ = Actions.say(['$defaultactions/5'])
 use_ = Actions.say(['$defaultactions/2'])
 give_ = Actions.say(['$defaultactions/2'])
+talkto_ = Actions.say(['$defaultactions/2'])
 walkto_ = Actions.walkto()
 
 

@@ -36,7 +36,7 @@ inline void MoveTo::SetAcceleration(float acceleration) {
     m_acceleration = acceleration;
 }
 
-class MoveToScaled : public MoveTo {
+class __attribute__ ((visibility ("default")))  MoveToScaled : public MoveTo {
 public:
     MoveToScaled(glm::vec2 pos, float speed, bool relative, bool immediate);
     MoveToScaled(int id, glm::vec2 pos, float speed, bool relative, bool immediate);

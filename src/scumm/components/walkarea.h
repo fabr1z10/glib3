@@ -45,6 +45,8 @@ private:
     std::shared_ptr<Function2D> m_depthFunc;
     std::shared_ptr<Function2D> m_scaleFunc;
     std::shared_ptr<IShortestPath> m_shortestPath;
+
+    std::set<Entity*> m_scaleDepthExclude;
 };
 
 inline const IShape * WalkArea::getShape() const {

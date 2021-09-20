@@ -4,6 +4,7 @@ import example
 import vars
 import status
 
+
 # import required libraries
 path = Path(example.dir)
 sys.path.append(example.dir)
@@ -13,8 +14,11 @@ import scumm.scumm as sx
 import factories.room
 import factories.items
 
-engine = sx.init_scumm(vars, status)
 
+engine = sx.init_scumm(vars, status)
+import init
+
+init.start()
 # add here add-on libraries you need
 
 

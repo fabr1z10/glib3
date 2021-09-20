@@ -11,6 +11,13 @@ file(GLOB MONKEY_SOURCE *.cpp python/*.cpp components/*.cpp activities/*.cpp mat
 #set(CMAKE_ENABLE_EXPORTS ON)
 add_compile_options(-fvisibility=hidden)
 add_definitions(-DGLM_ENABLE_EXPERIMENTAL)
+message("PINOMERDA!")
+
+if(DEFINED USE_ASSIMP)
+	message("PINOMERDA")
+	add_definitions(-DUSE_ASSIMP)
+	#find_package(ASSIMP REQUIRED)
+endif(DEFINED USE_ASSIMP)
 
 add_library(monkey SHARED ${MONKEY_SOURCE})
 

@@ -206,3 +206,10 @@ class SetVariable(CallFunc):
 
     def __init__(self, name, value):
         super().__init__(f=SetVariable.set(name, value))
+
+
+class Sequence:
+    def __init__(self):
+        self.type = 'action.sequence'
+        self.activities = []
+

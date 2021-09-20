@@ -34,7 +34,8 @@ def walkarea(**kwargs):
             # shape is a polyline
             shape = shapes.PolyLine(kwargs.get('nodes'), kwargs.get('edges'))
         walkarea = scumm.components.Walkarea(shape=shape)
-        walkarea.depth= kwargs.get('depth', None)
+        walkarea.depth = kwargs.get('depth', None)
+        walkarea.scale = kwargs.get('scale', None)
         walls = kwargs.get('walls', None)
         if walls:
             for w in walls:

@@ -29,7 +29,7 @@ class Colors:
     inv_unselected = [170, 0, 170, 255]
     inv_selected= [255, 85, 255, 255]
 
-inventory['pot'] = 1
+#inventory['pot'] = 1
 #inventory['fish'] = 1
 
 verbs = {

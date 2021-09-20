@@ -97,6 +97,9 @@ void WalkArea::assignDepth (Entity* e) {
 
 
 void WalkArea::assignScaleAndDepth (Entity* e) {
+    if (m_scaleDepthExclude.count(e) > 0) {
+        return;
+    }
     e->setOnMoveEnabled(false);
     glm::vec2 pos = e->GetPosition();
     if (m_depthFunc != nullptr) {
@@ -152,6 +155,8 @@ void WalkArea::Start() {
     //coll->Start();
     if (m_shape != nullptr) {
         auto c = std::make_shared<Entity>();
+        m_scaleDepthExclude.insert(c.get());
+
         MeshFactory m;
         auto model = m.createWireframe(m_shape.get(), glm::vec4(1.0f));
         auto renderer = std::make_shared<BasicRenderer>(model);
