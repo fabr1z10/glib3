@@ -121,7 +121,7 @@ std::shared_ptr<IModel> MeshFactory::drawPrismTex(IShape * s, const std::vector<
 
     // plot border
     auto v = baseShape->getOutlineVertices();
-    std::vector<Vertex3D> aaa;
+    std::vector<Vertex3DN> aaa;
     std::vector<unsigned> indices;
     const auto& borderTexInfo = texInfos[1];
     float x0 = v[0].x;
@@ -131,11 +131,13 @@ std::shared_ptr<IModel> MeshFactory::drawPrismTex(IShape * s, const std::vector<
     float tyh = h/borderTexInfo.rep1;
     for (size_t i = 0; i < v.size(); ++i) {
         auto j = (i+1) % v.size();
-        aaa.emplace_back(v[i].x, h, -v[i].y, tx/borderTexInfo.rep0, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-        aaa.emplace_back(v[i].x, 0.0f, -v[i].y, tx/borderTexInfo.rep0, tyh, 1.0f, 1.0f, 1.0f, 1.0f);
+        auto tmp = glm::normalize(v[j] - v[i]);
+        glm::vec3 normal = glm::cross(glm::vec3(tmp.x, 0.0f, -tmp.y), glm::vec3(0.0f, 1.0f, 0.0f));
+        aaa.emplace_back(v[i].x, h, -v[i].y, tx/borderTexInfo.rep0, 0.0f, normal.x, normal.y, normal.z);
+        aaa.emplace_back(v[i].x, 0.0f, -v[i].y, tx/borderTexInfo.rep0, tyh, normal.x, normal.y, normal.z);
         tx += glm::length(v[j] - v[i]);
-        aaa.emplace_back(v[j].x, h, -v[j].y, tx/borderTexInfo.rep0, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-        aaa.emplace_back(v[j].x, 0.0f, -v[j].y, tx/borderTexInfo.rep0, tyh, 1.0f, 1.0f, 1.0f, 1.0f);
+        aaa.emplace_back(v[j].x, h, -v[j].y, tx/borderTexInfo.rep0, 0.0f, normal.x, normal.y, normal.z);
+        aaa.emplace_back(v[j].x, 0.0f, -v[j].y, tx/borderTexInfo.rep0, tyh, normal.x, normal.y, normal.z);
         indices.push_back(i*4);
         indices.push_back(i*4+1);
         indices.push_back(i*4+2);
@@ -143,7 +145,7 @@ std::shared_ptr<IModel> MeshFactory::drawPrismTex(IShape * s, const std::vector<
         indices.push_back(i*4+3);
         indices.push_back(i*4+2);
     }
-    auto mesh = std::make_shared<TexturedMesh<Vertex3D>>(TEXTURE_SHADER_UNLIT, GL_TRIANGLES, borderTexInfo.tex);
+    auto mesh = std::make_shared<TexturedMesh<Vertex3DN>>(TEXTURE_SHADER_LIGHT, GL_TRIANGLES, borderTexInfo.tex);
     mesh->Init(aaa, indices);
     comboModel->addModel(std::make_shared<BasicModel>(mesh));
     return comboModel;
@@ -215,7 +217,7 @@ std::shared_ptr<IModel> MeshFactory::drawPolyTex(IShape * shape, const std::vect
     using Coord = float;
     using Point = std::array<Coord, 2>;
     using N = uint32_t;
-    std::vector<Vertex3D> vertices;
+    std::vector<Vertex3DN> vertices;
     std::vector<unsigned> indices;
     auto* poly = static_cast<Polygon*>(shape);
     std::vector<Point> polygon;
@@ -225,7 +227,7 @@ std::shared_ptr<IModel> MeshFactory::drawPolyTex(IShape * shape, const std::vect
     const auto& texInfo = texInfos[0];
     for (const auto& vertex : v) {
         float z = -vertex.y;
-        vertices.emplace_back(vertex.x, h, z, (vertex.x - x0) / texInfo.rep0, (z - z0) / texInfo.rep1, 1.0f, 1.0f, 1.0f, 1.0f);
+        vertices.emplace_back(vertex.x, h, z, (vertex.x - x0) / texInfo.rep0, (z - z0) / texInfo.rep1, 0.0f, 1.0f, 0.0f);
         polygon.push_back({vertex.x, z});
     }
 
@@ -237,7 +239,7 @@ std::shared_ptr<IModel> MeshFactory::drawPolyTex(IShape * shape, const std::vect
     for (const auto& i : tri) {
         indices.push_back(i);
     }
-    auto mesh = std::make_shared<TexturedMesh<Vertex3D>>(TEXTURE_SHADER_UNLIT, GL_TRIANGLES, texInfo.tex);
+    auto mesh = std::make_shared<TexturedMesh<Vertex3DN>>(TEXTURE_SHADER_LIGHT, GL_TRIANGLES, texInfo.tex);
     mesh->Init(vertices, indices);
     return std::make_shared<BasicModel>(mesh);
 }

@@ -7,4 +7,5 @@ class ShaderType(enum.Enum):
     text = 2,
     skeletal = 3
     skeletal_color = 4
+    textured_light = 5
 

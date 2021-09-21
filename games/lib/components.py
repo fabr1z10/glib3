@@ -263,3 +263,10 @@ class Cursor:
     def __init__(self):
         self.type = 'components.cursor'
 
+
+class DirectionalLight:
+    def __init__(self, direction, ambient = (255,255,255,255), diffuse=(255,255,255,255)):
+        self.type = 'light.directional'
+        self.direction = direction
+        self.ambient = ambient
+        self.diffuse = diffuse
