@@ -12,7 +12,8 @@
       d: [[157, 0, 0.99]]
     - factory: [bg, {'image': gfx/scummbar_4.png}]
       d: [[20, 0, 0.99]]
-    - factory: [walkarea, {'id': walkarea_0, 'depth': { 'type': "func.liny", 'values': [0, 1, 144, 0]}, 'outline':
+    - factory: [walkarea, {'id': walkarea_0,
+                           'depth': { 'type': "func.liny", 'values': [0, 1, 144, 0]}, 'outline':
       [32, 16, 85, 10, 90, 0, 149, 0, 200, 16, 256, 0, 626, 0, 580, 35, 565, 40, 514, 40, 492, 50, 467,41, 345, 32, 321, 10, 311, 10, 251, 18, 128, 19, 70, 24 ],
       'holes': [[374,5,501,5,501,23,474,30,374,23]] } ]
       d: [[0,0,0]]

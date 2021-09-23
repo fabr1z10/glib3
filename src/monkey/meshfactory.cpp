@@ -101,9 +101,77 @@ void MeshFactory::drawAABB(IShape* s, glm::vec4 color, std::vector<VertexColor> 
 
 }
 
-std::shared_ptr<IModel> MeshFactory::drawAABBTex(IShape *, const std::vector<TexInfo> &) {
-    std::vector<Vertex3D> aaa;
+std::shared_ptr<IModel> MeshFactory::drawAABBTex(IShape * s, const std::vector<TexInfo> & texInfos) {
+    std::vector<Vertex3DN> aaa;
     std::vector<unsigned> indices;
+    auto* box = static_cast<AABB*>(s);
+    auto size = box->getSize();
+    const auto& texInfo = texInfos[0];
+    float w = size.x;
+    float h = size.y;
+    float d = size.z;
+    // face down
+    aaa.emplace_back(0.0f, 0.0f, 0.0f, 0.0f, d/texInfo.rep1, 0.0f, -1.0f, 0.0f);
+    aaa.emplace_back(w, 0.0f, 0.0f, w/texInfo.rep0, d/texInfo.rep1, 0.0f, -1.0f, 0.0f);
+    aaa.emplace_back(w, 0.0f, d, w/texInfo.rep0, 0.0f, 0.0f, -1.0f, 0.0f);
+    aaa.emplace_back(0.0f, 0.0f, d, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f);
+    indices.push_back(0);
+    indices.push_back(1);
+    indices.push_back(2);
+    indices.push_back(2);
+    indices.push_back(3);
+    indices.push_back(0);
+    // face up
+    aaa.emplace_back(0.0f, h, 0.0f, 0.0f, d/texInfo.rep1, 0.0f, 1.0f, 0.0f);
+    aaa.emplace_back(w, h, 0.0f, w/texInfo.rep0, d/texInfo.rep1, 0.0f, 1.0f, 0.0f);
+    aaa.emplace_back(w, h, d, w/texInfo.rep0, 0.0f, 0.0f, 1.0f, 0.0f);
+    aaa.emplace_back(0.0f, h, d, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+    indices.push_back(5);
+    indices.push_back(4);
+    indices.push_back(7);
+    indices.push_back(7);
+    indices.push_back(6);
+    indices.push_back(5);
+    // face front
+    aaa.emplace_back(0.0f, h, d, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f);
+    aaa.emplace_back(w, h, d, w/texInfo.rep0, 0.0f, 0.0f, 0.0f, 1.0f);
+    aaa.emplace_back(w, 0.0f, d, w/texInfo.rep0, h/texInfo.rep1, 0.0f, 0.0f, 1.0f);
+    aaa.emplace_back(0.0f, 0.0f, d, 0.0f, h/texInfo.rep1, 0.0f, 0.0f, 1.0f);
+    indices.push_back(8);
+    indices.push_back(9);
+    indices.push_back(11);
+    indices.push_back(11);
+    indices.push_back(10);
+    indices.push_back(9);
+    // face left
+    aaa.emplace_back(0.0f, h, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f);
+    aaa.emplace_back(0.0f, h, d, d/texInfo.rep0, 0.0f, -1.0f, 0.0f, 0.0f);
+    aaa.emplace_back(0.0f, 0.0f, d, d/texInfo.rep0, h/texInfo.rep1, -1.0f, 0.0f, 0.0f);
+    aaa.emplace_back(0.0f, 0.0f, 0.0f, 0.0f, h/texInfo.rep1, -1.0f, 0.0f, 1.0f);
+    indices.push_back(12);
+    indices.push_back(15);
+    indices.push_back(14);
+    indices.push_back(14);
+    indices.push_back(13);
+    indices.push_back(12);
+    // face right
+    aaa.emplace_back(w, h, d, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f);
+    aaa.emplace_back(w, h, 0.0f, d/texInfo.rep0, 0.0f, 1.0f, 0.0f, 0.0f);
+    aaa.emplace_back(w, 0.0f, 0.0f, d/texInfo.rep0, h/texInfo.rep1, 1.0f, 0.0f, 0.0f);
+    aaa.emplace_back(w, 0.0f, d, 0.0f, h/texInfo.rep1, 1.0f, 0.0f, 1.0f);
+    indices.push_back(16);
+    indices.push_back(19);
+    indices.push_back(18);
+    indices.push_back(18);
+    indices.push_back(17);
+    indices.push_back(16);
+
+
+
+    auto mesh = std::make_shared<TexturedMesh<Vertex3DN>>(TEXTURE_SHADER_LIGHT, GL_TRIANGLES, texInfo.tex);
+    mesh->Init(aaa, indices);
+    auto cm = std::make_shared<BasicModel>(mesh);
+    return cm;
 }
 
 std::shared_ptr<IModel> MeshFactory::drawPrismTex(IShape * s, const std::vector<TexInfo>& texInfos) {

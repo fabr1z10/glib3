@@ -21,7 +21,7 @@ village1_archway:
   pos: [993, 30]
   size: [21, 51]
   walkto: '@pos/village1_archway'
-  wdir: 'w'
+  wdir: 'e'
   room: village1
 village_scummbar_door:
   type: item1
@@ -33,3 +33,45 @@ village_scummbar_door:
   wdir: n
   anim: '@doors/scummbar'
   model: 01/door_village_scummbar
+village2_archway_to_village1:
+  type: item1
+  text: '$objects/archway'
+  pos: [416, 34, 0]
+  size: [40, 50]
+  room: village2
+  walkto: '@pos/village2_archway'
+  wdir: n
+village2_archway_to_village3:
+  type: item1
+  text: '$objects/archway'
+  pos: [146, 63]
+  size: [30, 30]
+  room: village2
+  walkto: '@pos/village2_archway3'
+  wdir: n
+village3_archway:
+  type: item1
+  text: '$objects/archway'
+  pos: [753, 11]
+  size: [23, 74]
+  room: village3
+  walkto: '@pos/village3_archway'
+  wdir: e
+village3_alley:
+  type: item1
+  text: '$objects/alley'
+  pos: [581, 56]
+  size: [20, 30]
+  room: village3
+  walkto: '@pos/village3_alley'
+  wdir: n
+village3_store_door:
+  type: item1
+  text: '$objects/door'
+  size: [20, 32]
+  pos: [659, 17, -1]
+  room: village3
+  walkto: '@pos/village_store_door'
+  wdir: n
+  anim: '@doors/store'
+  model: 01/door_store

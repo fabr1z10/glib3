@@ -56,3 +56,56 @@ cook:
   speed: 100
   text_color: '@colors/cook_text_color'
   text_offset: [0,60]
+scummbar_pirate_1:
+  type: item1
+  model: 01/scummbar.pirate1
+  room: scummbar
+  pos: [138, 38, -1]
+  text: '$objects/pirate'
+  size: [30, 30]
+  walkto: [140, 20]
+  wdir: n
+scummbar_pirate_2:
+  type: item1
+  model: 01/scummbar.pirate2
+  room: scummbar
+  pos: [124, 20, -1]
+scummbar_pirate_3:
+  type: item1
+  model: 01/scummbar.pirate3
+  room: scummbar
+  pos: [30, 0, 1]
+scummbar_pirate_4:
+  type: item1
+  model: 01/scummbar.pirate4
+  room: scummbar
+  pos: [0,0,1]
+  text: '$objects/pirates'
+  size: [70, 20]
+  walkto: [50, 10]
+  wdir: s
+scummbar_pirate_5:
+  type: item1
+  model: 01/scummbar.pirate5
+  room: scummbar
+  pos: [200, 18, 1]
+scummbar_pirate_6:
+  type: item1
+  model: 01/scummbar.pirate6
+  room: scummbar
+  pos: [160, 0, 1]
+scummbar_pirate_7:
+  type: item1
+  model: 01/scummbar.pirate7
+  room: scummbar
+  pos: [255, 38, 1]
+scummbar_pirate_8:
+  type: item1
+  model: 01/scummbar.pirate8
+  room: scummbar
+  pos: [215, 44, 1]
+scummbar_pirate_9:
+  type: item1
+  model: 01/scummbar.pirate8
+  room: scummbar
+  pos: [278, 40, 1]

@@ -18,7 +18,7 @@ import factories.items
 engine = sx.init_scumm(vars, status)
 import init
 
-init.start()
+init.store()
 # add here add-on libraries you need
 
 

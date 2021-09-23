@@ -53,6 +53,7 @@ objects:
   stewed_meat_2: stewed meat
   circus_tent: circus tent
   fettuccini_bros: Fettuccini brothers
+  alley: alley
 dialogues:
   mancomb:
     1: "Ahoy there, stranger."

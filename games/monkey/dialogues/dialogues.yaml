@@ -303,8 +303,8 @@ mancomb:
       text: imguy
       next: name
       scr:
-        - [0, 0, sayn, player, imguy]
-        - [1, 0, sayn, mancomb, 9, 10, 11]
+        - [sayn, player, imguy]
+        - [sayn, mancomb, 9, 10, 11]
     1:
       text: 'rupirate'
       activate: [8]

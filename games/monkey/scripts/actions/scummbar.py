@@ -75,6 +75,13 @@ def cook_upset(aa, ba, open_door):
     example.play(s)
 
 
+lookat_scummbar_pirate_1 = a.Actions.say(['$lines/5'])
+talkto_scummbar_pirate_1 = a.Actions.say(['$lines/5'])
+lookat_scummbar_pirate_4 = a.Actions.say(['$lines/6'])
+talkto_scummbar_pirate_4 = a.Actions.say(['$lines/6'])
+
+
+
 def walkto_scummbar_kitchen_door(aa, ba):
     if example.get('scummbar_kitchen_door').anim == 'closed':
         a.Actions.walkto()(aa, ba)

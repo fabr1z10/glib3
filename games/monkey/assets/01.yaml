@@ -297,100 +297,100 @@ scummbar.pirate1:
   type: 'asset.sprite'
   animations:
     idle_1:
-      frames:
-        - [330,1,26,27]
+      elements:
+        - quads: [[330,1,26,27]]
     idle_2:
       loop: false
-      frames:
-        - [358,1,27,27]
-        - [387,1,26,27]
+      elements:
+        - quads: [[358,1,27,27]]
+        - quads: [[387,1,26,27]]
 scummbar.pirate2:
   sheet: 'gfx/sprites/sprites2.png'
   type: 'asset.sprite'
   animations:
     idle_1:
-      frames:
-        - [330,31,36,37]
+      elements:
+        - quads: [[330,31,36,37]]
     idle_2:
-      frames:
-        - [368,31,36,37]
+      elements:
+        - quads: [[368,31,36,37]]
 scummbar.pirate3:
   sheet: 'gfx/sprites/sprites2.png'
   type: 'asset.sprite'
   animations:
     idle_1:
-      frames:
-        - [417,3,40,23]
+      elements:
+        - quads: [[417,3,40,23]]
     idle_2:
-      frames:
-        - [459,3,40,23]
+      elements:
+        - quads: [[459,3,40,23]]
 scummbar.pirate4:
   sheet: 'gfx/sprites/sprites2.png'
   type: 'asset.sprite'
   animations:
     idle_1:
-      frames:
-        - [407,35,33,25]
+      elements:
+        - quads: [[407,35,33,25]]
     idle_2:
       loop: false
-      frames:
-        - [442,35,33,25]
-        - [477,35,33,25]
+      elements:
+        - quads: [[442,35,33,25]]
+        - quads: [[477,35,33,25]]
 scummbar.pirate5:
   sheet: 'gfx/sprites/sprites2.png'
   type: 'asset.sprite'
   animations:
     idle_1:
-      frames:
-        - [400,71,35,27]
+      elements:
+        - quads: [[400,71,35,27]]
     idle_2:
       loop: false
-      frames:
-        - [437,71,35,27]
-        - [474,72,35,26]
+      elements:
+        - quads: [[437,71,35,27]]
+        - quads: [[474,72,35,26]]
 scummbar.pirate6:
   sheet: 'gfx/sprites/sprites2.png'
   type: 'asset.sprite'
   animations:
     idle_1:
-      frames:
-        - [347,71,50,26]
+      elements:
+        - quads: [[347,71,50,26]]
 scummbar.pirate7:
   sheet: 'gfx/sprites/sprites2.png'
   type: 'asset.sprite'
   animations:
     idle_1:
-      frames:
-        - [180,73,20,21]
+      elements:
+        - quads: [[180,73,20,21]]
     idle_2:
       loop: false
-      frames:
-        - [202,73,20,22]
-        - [157,73,20,21]
+      elements:
+        - quads: [[202,73,20,22]]
+        - quads: [[157,73,20,21]]
 scummbar.pirate8:
   sheet: 'gfx/sprites/sprites2.png'
   type: 'asset.sprite'
   animations:
     idle_1:
-      frames:
-        - [419,103,28,32]
+      elements:
+        - quads: [[419,103,28,32]]
     idle_2:
       loop: false
-      frames:
-        - [448,103,28,32]
-        - [479,103,29,32]
+      elements:
+        - quads: [[448,103,28,32]]
+        - quads: [[479,103,29,32]]
 scummbar.pirate9:
   sheet: 'gfx/sprites/sprites2.png'
   type: 'asset.sprite'
   animations:
     idle_1:
-      frames:
-        - [323,100,30,33]
+      elements:
+        - quads: [[323,100,30,33]]
     idle_2:
       loop: false
-      frames:
-        - [354,100,30,35]
-        - [386,100,30,39]
+      elements:
+        - quads: [[354,100,30,35]]
+        - quads: [[386,100,30,39]]
 ilp1:
   sheet: 'gfx/sprites/sprites1.png'
   type: 'asset.sprite'
@@ -798,6 +798,16 @@ door_kitchen_pier:
     open:
       elements:
         - quads: [[435, 143, 32, 60]]
+door_store:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: 'asset.sprite'
+  animations:
+    closed:
+      elements:
+        - quads: [[413,2,20,31]]
+    open:
+      elements:
+        - quads: [[390,2,20,31]]
 baskets:
   sheet: 'gfx/sprites/sprites2.png'
   type: 'asset.sprite'
