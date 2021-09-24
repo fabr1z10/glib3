@@ -11,9 +11,17 @@ struct Wall {
     bool active;
 };
 
+struct Vertex {
+    int id;
+    int next;
+    int prev;
+    glm::vec2 P;
+    bool hole;              // tells whether vertex belongs to a hole
+};
+
 struct Edge {
-    glm::vec2 A;
-    glm::vec2 B;
+    int i;
+    int j;
     bool wallEdge;
 };
 
@@ -46,15 +54,16 @@ public:
     void updateGraph() override;
 
 private:
-    void addPoly(const std::vector<glm::vec2>&, float flip = 1.0f);
-    int addNode(glm::vec2);
+    //void addPoly(const std::vector<glm::vec2>&, float flip = 1.0f);
+    void createGraph();
+    int addNode(int, glm::vec2);
     void removeNode(int id);
 
     std::shared_ptr<Polygon> m_shape;
     std::unordered_set<int> m_inactiveHoles;
 
     std::vector<Edge> m_edges;
-
+    std::unordered_map<int, Vertex> m_vertices;
     float m_eps;
 //    ShortestPath(glm::vec2 A, glm::vec2 B) : m_A{A}, m_B{B} {}
 //    glm::vec2 m_A, m_B;

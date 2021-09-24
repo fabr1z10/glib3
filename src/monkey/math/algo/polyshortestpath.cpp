@@ -31,39 +31,54 @@ void PolygonShortestPath::updateGraph() {
 
     m_edges.clear();
     auto outline = m_shape->getOutlineVertices();
-    for (size_t i = 0; i < outline.size(); ++i) {
-        m_edges.push_back({outline[i], outline[(i+1) % outline.size()], false});
+
+    for (int i = 0; i < outline.size(); ++i) {
+        int prev = (i == 0) ? outline.size() - 1 : i-1;
+        int next = (i+1) % outline.size();
+        m_vertices[i] = Vertex{i, next, prev, outline[i], false};
+        m_edges.push_back(Edge{i, next, false});
     }
+
     for (size_t i = 0; i < m_shape->getHoleCount(); ++i) {
+        int offset = m_vertices.size();
         if (m_inactiveHoles.count(i) == 0) {
             outline = m_shape->getHoleVertices(i);
-            for (size_t j = 0; j < outline.size(); ++j) {
-                m_edges.push_back({outline[j], outline[(j + 1) % outline.size()], false});
+            for (int j = 0; j < outline.size(); ++j) {
+                int prev = offset + ((j == 0) ? outline.size() - 1 : j-1);
+                int next = offset + ((j+1) % outline.size());
+                m_vertices[offset+j] = Vertex{offset+j, next, prev, outline[j], true};
+                m_edges.push_back(Edge{offset+j, next, false});
             }
-        }
-    }
-    for (const auto& wall : m_walls) {
-        if (wall.active) {
-            m_edges.push_back({wall.A, wall.B, true});
         }
     }
 
     // step 2.
-    outline = m_shape->getOutlineVertices();
-    addPoly(outline);
-    for (int i = 0; i < m_shape->getHoleCount(); ++i) {
-        if (m_inactiveHoles.count(i) == 0) {
-            addPoly(m_shape->getHoleVertices(i), -1.0f);
-        }
-    }
-    for (const auto& wall : m_walls) {
-        if (m_shape->isPointInside(glm::vec3(wall.A, 0.0f))) {
-            addNode(wall.A);
-        }
-        if (m_shape->isPointInside(glm::vec3(wall.B, 0.0f))) {
-            addNode(wall.B);
-        }
-    }
+    createGraph();
+
+    // TODO add back walls
+//    for (const auto& wall : m_walls) {
+//        if (wall.active) {
+//            m_edges.push_back({wall.A, wall.B, true});
+//        }
+//    }
+
+    // step 2.
+//    outline = m_shape->getOutlineVertices();
+//    addPoly(outline);
+//    for (int i = 0; i < m_shape->getHoleCount(); ++i) {
+//        if (m_inactiveHoles.count(i) == 0) {
+//            addPoly(m_shape->getHoleVertices(i), -1.0f);
+//        }
+//    }
+    // TODO add back walls
+//    for (const auto& wall : m_walls) {
+//        if (m_shape->isPointInside(glm::vec3(wall.A, 0.0f))) {
+//            addNode(wall.A);
+//        }
+//        if (m_shape->isPointInside(glm::vec3(wall.B, 0.0f))) {
+//            addNode(wall.B);
+//        }
+//    }
 }
 
 
@@ -144,10 +159,10 @@ int PolygonShortestPath::find(glm::vec2 start, glm::vec2 end, std::vector<glm::v
 
 }
 
-int PolygonShortestPath::addNode(glm::vec2 point) {
+int PolygonShortestPath::addNode(int id, glm::vec2 point) {
     // adds a node to the graph
     // and an edge from the new node to every other node that is in line of sight with it
-    int id = m_graph->getVertexCount();
+    //int id = m_graph->getVertexCount();
     m_graph->addNode(id, point);
     m_graphNoWalls->addNode(id, point);
     // add one edge to other nodes if they are in LOS
@@ -159,18 +174,23 @@ int PolygonShortestPath::addNode(glm::vec2 point) {
             // you need to check all edges
             bool intersection = false;
             bool intersectWithWall = false;
-            for (const auto& edge : m_edges) {
+
+            for (size_t ie = 0; ie < m_edges.size(); ie++) {
+                // if either of the point is an END POINT of the current edge, then there's no intersection
+                const auto& edge = m_edges[ie];
+                if (id == edge.i || id == edge.j || node.first == edge.i || node.first == edge.j) {
+                    continue;
+                }
                 float t = 0, u = 0;
-                if (segmentIntersection(point, P, edge.A, edge.B, t, u)) {
-                    float len = glm::length(point - P);
-                    float dist = t * len;
-                    if ( (dist > m_eps && dist < len - m_eps) ) { //|| ( u > m_eps && u < 1.0f - m_eps)) {
-                        if (edge.wallEdge) {
-                            intersectWithWall = true;
-                        } else {
-                            intersection = true;
-                            break;
-                        }
+                if (segmentIntersection(point, P, m_vertices.at(edge.i).P, m_vertices.at(edge.j).P, t, u)) {
+                    //float len = glm::length(point - P);
+                    //float dist = t * len;
+                    //if ( (dist > m_eps && dist < len - m_eps) ) { //|| ( u > m_eps && u < 1.0f - m_eps)) {
+                    if (edge.wallEdge) {
+                        intersectWithWall = true;
+                    } else {
+                        intersection = true;
+                        break;
                     }
                 }
             }
@@ -195,24 +215,39 @@ int PolygonShortestPath::addNode(glm::vec2 point) {
     return id;
 }
 
-void PolygonShortestPath::addPoly(const std::vector<glm::vec2> & outline, float flip) {
 
-    size_t n = outline.size();
-    for (size_t i = 0; i < n; ++i) {
-        size_t inext = (i + 1) % n;
-        size_t iprev = (i == 0) ? n - 1 : i - 1;
-        glm::vec2 v0 = outline[i] - outline[iprev];
-        glm::vec2 v1 = outline[inext] - outline[i];
-        auto f = cross(v0, v1) * flip;
-        // assume outline is specified counterclockwise
-        // therefore a concave vertex
+void PolygonShortestPath::createGraph() {
+    for (const auto& v : m_vertices) {
+        const auto& vertex = v.second;
+        glm::vec2 edgeNext = m_vertices.at(vertex.next).P - vertex.P;
+        glm::vec2 edgePrev = vertex.P - m_vertices.at(vertex.prev).P;
+        float flip = vertex.hole ? -1.0f : 1.0f;
+        auto f = cross(edgePrev, edgeNext) * flip;
         if (f < 0) {
-            addNode(outline[i]);
+            addNode(v.first, vertex.P);
         }
-
-
     }
 }
+
+
+//void PolygonShortestPath::addPoly(const std::vector<glm::vec2> & outline, float flip) {
+//
+//    size_t n = outline.size();
+//    for (size_t i = 0; i < n; ++i) {
+//        size_t inext = (i + 1) % n;
+//        size_t iprev = (i == 0) ? n - 1 : i - 1;
+//        glm::vec2 v0 = outline[i] - outline[iprev];
+//        glm::vec2 v1 = outline[inext] - outline[i];
+//        auto f = cross(v0, v1) * flip;
+//        // assume outline is specified counterclockwise
+//        // therefore a concave vertex
+//        if (f < 0) {
+//            addNode(outline[i]);
+//        }
+//
+//
+//    }
+//}
 
 void PolygonShortestPath::removeNode(int id) {
     m_graph->removeNode(id);
