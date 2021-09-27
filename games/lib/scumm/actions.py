@@ -40,6 +40,9 @@ def start_dialogue(dialogue_id, node_id = None):
         dial.setActive(True)
         dial.clearText()
         dialogue = vars.dialogues[dialogue_id]
+        if 'on_entry' in dialogue:
+            monkey.engine.scripts[dialogue['on_entry']]()
+            return
         start_node = node_id if node_id is not None else dialogue.get('root', 'root')
         #tset = dialogue['text_set']
         node = dialogue['nodes'][start_node]

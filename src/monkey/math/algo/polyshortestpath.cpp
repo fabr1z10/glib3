@@ -104,8 +104,9 @@ int PolygonShortestPath::find(glm::vec2 start, glm::vec2 end, std::vector<glm::v
     }
 
     // now we need to add p0 and p1 to the graph
-    int istart = addNode(p0);
-    int iend = addNode(p1);
+    int n = m_vertices.size();
+    int istart = addNode(n, p0);
+    int iend = addNode(n+1, p1);
     // TODO stuff
     std::vector<int> pth;
     auto dist = m_graph->shortestPath(istart, iend, pth);
@@ -128,11 +129,13 @@ int PolygonShortestPath::find(glm::vec2 start, glm::vec2 end, std::vector<glm::v
                 glm::vec2 wdir;
                 for (const auto &wall : m_edges) {
                     if (wall.wallEdge) {
-                        segmentIntersection(current, nextPoint, wall.A, wall.B, t, u);
+                        auto wA = m_vertices.at(wall.i).P;
+                        auto wB = m_vertices.at(wall.j).P;
+                        segmentIntersection(current, nextPoint, wA, wB, t, u);
                         if (t >= 0.0f && t <= wallHit) {
                             wallHit = t;
                             hitsWall = true;
-                            wdir = glm::normalize(wall.B-wall.A);
+                            wdir = glm::normalize(wB - wA);
                         }
                     }
                 }
@@ -163,6 +166,7 @@ int PolygonShortestPath::addNode(int id, glm::vec2 point) {
     // adds a node to the graph
     // and an edge from the new node to every other node that is in line of sight with it
     //int id = m_graph->getVertexCount();
+
     m_graph->addNode(id, point);
     m_graphNoWalls->addNode(id, point);
     // add one edge to other nodes if they are in LOS
@@ -183,14 +187,14 @@ int PolygonShortestPath::addNode(int id, glm::vec2 point) {
                 }
                 float t = 0, u = 0;
                 if (segmentIntersection(point, P, m_vertices.at(edge.i).P, m_vertices.at(edge.j).P, t, u)) {
-                    //float len = glm::length(point - P);
-                    //float dist = t * len;
                     //if ( (dist > m_eps && dist < len - m_eps) ) { //|| ( u > m_eps && u < 1.0f - m_eps)) {
-                    if (edge.wallEdge) {
-                        intersectWithWall = true;
-                    } else {
-                        intersection = true;
-                        break;
+                    if (t > 0 && t < 1 && u > 0 && u < 1) {
+                        if (edge.wallEdge) {
+                            intersectWithWall = true;
+                        } else {
+                            intersection = true;
+                            break;
+                        }
                     }
                 }
             }
@@ -198,8 +202,15 @@ int PolygonShortestPath::addNode(int id, glm::vec2 point) {
             if (!intersection) {
                 // check mid point. The segment might connect two vertices of the polygon but lie completely outside of it
                 // quick way is to check if mid point of the segment lies inside the poly
+                bool hasConnectingEdges = false;
+                for (const auto& edge : m_edges) {
+                    if ((id == edge.i && node.first == edge.j) || (id == edge.j && node.first == edge.i)) {
+                        hasConnectingEdges = true;
+                        break;
+                    }
+                }
                 auto midPoint = 0.5f * (point + P);
-                if (m_shape->isPointInside(glm::vec3(midPoint, 0.0f))) {
+                if (hasConnectingEdges || m_shape->isPointInside(glm::vec3(midPoint, 0.0f))) {
                     // add edge
                     m_graphNoWalls->addEdge(id, node.first, glm::length(point - P));
                     if (!intersectWithWall) {

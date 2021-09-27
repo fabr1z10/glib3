@@ -155,7 +155,7 @@ class Engine:
         self.taggen += 1
         return tag
 
-
+    scripts = None
     shaders = []
     libs = []
     device_size = []

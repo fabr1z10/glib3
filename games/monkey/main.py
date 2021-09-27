@@ -16,6 +16,10 @@ import factories.items
 
 
 engine = sx.init_scumm(vars, status)
+
+import scripts.actions
+engine.scripts = scripts.actions
+
 import init
 
 init.store()

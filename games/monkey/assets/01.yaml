@@ -496,6 +496,51 @@ loom.loom:
     happy:
       elements:
         - quads: [[239,1,78,70]]
+storekeeper:
+  sheet: 'gfx/sprites/sprites2.png'
+  type: 'asset.sprite'
+  animations:
+    idle_s:
+      elements:
+        - quads: [[225, 254, 34, 44, 19, 0]]
+    idle_e:
+      elements:
+        - quads: [[2, 254, 28, 42, 12, 0], [156, 56, 10, 13, -3, -30]]
+    idle_n:
+      elements:
+        - quads: [[332, 257, 28, 41, 20, 0]]
+    walk_s:
+      elements:
+        - quads: [[33, 254, 34, 43, 20, 0]]
+        - quads: [[68, 254, 29, 43, 17, 0]]
+        - quads: [[99, 256, 28, 41, 15, 0]]
+        - quads: [[129, 255, 29, 42, 14, 0]]
+        - quads: [[160, 255, 30, 42, 15, 0]]
+        - quads: [[192, 256, 31, 41, 17, 0]]
+    walk_n:
+      elements:
+        - quads: [[263, 255, 34, 43, 20, 0]]
+        - quads: [[301, 255, 28, 43, 20, 0]]
+        - quads: [[332, 257, 28, 41, 20, 0]]
+        - quads: [[362, 256, 28, 42, 20, 0]]
+        - quads: [[392, 257, 31, 41, 20, 0]]
+        - quads: [[426, 256, 32, 42, 20, 0]]
+    walk_e:
+      elements:
+        - quads: [[4, 299, 30, 45, 16, 0]]
+        - quads: [[36, 301, 26, 44, 16, 0]]
+        - quads: [[64, 299, 27, 46, 16, 0]]
+        - quads: [[93, 300, 26, 45, 18, 0]]
+        - quads: [[121, 302, 25, 43, 17, 0]]
+        - quads: [[149, 300, 37, 45, 18, 0]]
+    talk_e:
+      elements:
+        - quads: [[2, 254, 28, 42, 12, 0], [168, 56, 10, 14, -3, -30]]
+        - quads: [[2, 254, 28, 42, 12, 0], [180, 56, 10, 13, -3, -30]]
+        - quads: [[2, 254, 28, 42, 12, 0], [192, 57, 12, 12, -3, -30]]
+        - quads: [[2, 254, 28, 42, 12, 0], [206, 56, 11, 15, -3, -30]]
+        - quads: [[2, 254, 28, 42, 12, 0], [219, 56, 11, 15, -3, -30]]
+        - quads: [[2, 254, 28, 42, 12, 0], [156, 56, 10, 13, -3, -30]]
 fettuccini_bill:
   sheet: 'gfx/sprites/sprites1.png'
   type: 'asset.sprite'
@@ -808,6 +853,16 @@ door_store:
     open:
       elements:
         - quads: [[390,2,20,31]]
+door_store_in:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: 'asset.sprite'
+  animations:
+    closed:
+      elements:
+        - quads: [[446, 347, 31, 51]]
+    open:
+      elements:
+        - quads: [[479, 347, 31, 51]]
 baskets:
   sheet: 'gfx/sprites/sprites2.png'
   type: 'asset.sprite'
@@ -843,6 +898,20 @@ pot:
     default:
       elements:
         - quads: [[39,204,15,7]]
+sword:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: 'asset.sprite'
+  animations:
+    default:
+      elements:
+        - quads: [[99, 49, 30, 6]]
+shovel:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: 'asset.sprite'
+  animations:
+    default:
+      elements:
+        - quads: [[131, 49, 8, 25]]
 fish:
   sheet: 'gfx/sprites/sprites1.png'
   type: 'asset.sprite'

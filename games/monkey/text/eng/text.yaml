@@ -54,7 +54,16 @@ objects:
   circus_tent: circus tent
   fettuccini_bros: Fettuccini brothers
   alley: alley
+  storekeeper: storekeeper
+  sword: sword
+  shovel: shovel
 dialogues:
+  storekeeper:
+    1: Ahoy there, fancy pants.
+    2: Come on! just buy something.
+    3: Did you just come in here to get out of the cold, or do you need something?
+    4: Waddya want?
+    5: I think I'd just like to browse for now.
   mancomb:
     1: "Ahoy there, stranger."
     2: "New in town?"

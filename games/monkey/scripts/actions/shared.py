@@ -11,6 +11,9 @@ import engine
 import factories
 
 
+def make_lines(lines):
+    return [monkey.engine.read(x) for x in lines]
+
 def f_goto_room(room_id, pos, dir):
     def f():
         func.set_item_pos('guybrush', room_id, pos, dir)

@@ -75,3 +75,45 @@ village3_store_door:
   wdir: n
   anim: '@doors/store'
   model: 01/door_store
+store_door:
+  type: item1
+  text: '$objects/door'
+  size: [30, 50]
+  pos: [59,16,-0.9]
+  room: store
+  walkto: '@pos/store_entry'
+  wdir: w
+  anim: '@doors/store'
+  model: 01/door_store_in
+storekeeper:
+  type: character
+  model: 01/storekeeper
+  pos: [289, 7, 0]
+  room: store
+  size: [20, 40]
+  parent: walkarea_0
+  text: '$objects/storekeeper'
+  speed: 100
+  walkto: [229, 7]
+  wdir: e
+  dir: w
+  text_color: [255, 85, 255, 255]
+  text_offset: [ 0,60 ]
+sword:
+  type: item1
+  text: '$objects/sword'
+  size: [30, 6]
+  pos: [212, 45, -0.99]
+  room: store
+  walkto: [226, 18]
+  wdir: n
+  model: 01/sword
+shovel:
+  type: item1
+  text: '$objects/shovel'
+  size: [8, 20]
+  pos: [141, 69, -0.99]
+  room: store
+  walkto: [151, 69]
+  wdir: w
+  model: 01/shovel

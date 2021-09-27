@@ -1,4 +1,7 @@
 ---
+storekeeper:
+  text_set: '$dialogues/storekeeper'
+  on_entry: pippolandia
 fettuccini:
   text_set: '$dialogues/fettuccini'
   nodes:
