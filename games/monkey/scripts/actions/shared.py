@@ -78,7 +78,8 @@ class Callbacks:
 
     def pickup(id, entity_id):
         def f():
-            example.remove(entity_id)
+            #example.remove(entity_id)
+            example.getById(entity_id).setActive(False)
             vars.inventory[id] = 1
             func.refresh_inventory()
         return f
@@ -91,6 +92,7 @@ class Callbacks:
 
     def rm_from_inventory(id):
         def f():
+            print ('FOOOOSOODODOD')
             if id in vars.inventory:
                 del vars.inventory[id]
                 func.refresh_inventory()
@@ -100,7 +102,10 @@ class Callbacks:
         def f():
             if id not in vars.inventory:
                 vars.inventory[id] = 0
+            print('HEY ADDING '  + str(qty) + ' TO INV')
             vars.inventory[id] += qty
+            func.refresh_inventory()
+
         return f
 
     def goto_room(room, pos, dir):
@@ -323,6 +328,10 @@ class custom_actions_meta(type):
 
     def add_to_inventory(cls, item_id, qty):
         return actions.CallFunc(f=Callbacks.add_to_inventory(item_id, qty))
+
+    def rm_from_inventory(cls, item_id):
+        return actions.CallFunc(f=Callbacks.rm_from_inventory(item_id))
+
 
     def goto_room(cls, room, pos, dir):
         return actions.CallFunc(f=Callbacks.goto_room(room, pos, dir))

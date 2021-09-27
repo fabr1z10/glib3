@@ -287,7 +287,7 @@ def execute_dialogue_script(l):
                 else:
                     getattr(scripts.actions, line['script'])(s)
             if 'next' in line:
-                s.add_action(scumm.actions.StartDialogue(l.dialogue_id, line['next']))
+                s.add_action(scumm.actions.StartDialogue(l.dialogue_id, line['next'], True))
             else:
                 # check if dialogue has a on_exit script
                 if 'on_exit' in dialogue:

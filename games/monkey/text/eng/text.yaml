@@ -62,8 +62,56 @@ dialogues:
     1: Ahoy there, fancy pants.
     2: Come on! just buy something.
     3: Did you just come in here to get out of the cold, or do you need something?
-    4: Waddya want?
-    5: I think I'd just like to browse for now.
+    4: I don't have all day.
+    5: Got a special on shovels today...
+    6: Got a good deal on swords right now...
+    7: Can I help you?
+    8: Let's go, fancy-pants!
+    9: Are you waiting for me to fall asleep or something?
+    10: Waddya want?
+    11: I think I'd just like to browse for now.
+    12: Be my guest, fancy pants.
+    13: About this sword...
+    14: About this shovel...
+    15: I think I'd just like to browse.
+    16: What about it?
+    17: I want it.
+    18: How much is it?
+    19: I don't want it.
+    20: That's 100 pieces of eight.
+    21: Take it or leave it.
+    22: I don't have enough money.
+    23: Figures.
+    24: How else do you want to waste my time?
+    25: I already told you, it's 100 pieces of eight.
+    26: Did you bring enough money this time?
+    27: Another would-be treasure hunter, eh?
+    28: That'll cost you 75 pieces of eight.
+    29: 75 pieces of eight? I don't have that much.
+    30: Then you'd better go put it back.
+    31: "Same price as the last time you asked me:"
+    32: 75 pieces of eight.
+    33: Maybe you'd like to pay for that?
+    34: I'll take it.
+    35: Great.
+    36: Best 100 pieces of eight you ever spent.
+    37: What else do you want?
+    38: Now that I have this sword, who can I test it out on?
+    39: Well if you're looking for a good fight...
+    40: We've got the best swordfighter in all the Caribbean right here on Mêlée Island™.
+    41: Of course, no one knows where her secret hideout is...
+    42: ...nobody except me.
+    43: I'd have to go and ask her if it's okay to show you the way.
+    44: Hmmm...
+    45: I guess I could hike all the way over there...
+    46: ...ONCE.
+    47: Be right back.
+    48: I'm looking for the Sword Master of Mêlée Island™.
+    49: Look, I told you, she doesn't want to see you.
+    50: Maybe if you ask her again?
+    51: ...AGAIN.
+    52: AND DON'T TOUCH ANYTHING!
+
   mancomb:
     1: "Ahoy there, stranger."
     2: "New in town?"
@@ -564,3 +612,5 @@ lines:
   42: Ouch!
   43: Got it!
   44: I think there's something going on in there.
+  45: "\"SLASHMASTER™ -- When you want a sword as sharp as your wit.\""
+  46: "\"DIGMASTER™ -- The only shovel for serious treadure-hunting enthusiasts.\""

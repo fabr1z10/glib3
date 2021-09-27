@@ -1,7 +1,123 @@
 ---
 storekeeper:
   text_set: '$dialogues/storekeeper'
-  on_entry: pippolandia
+  on_entry: on_entry_storekeeper
+  on_exit: on_exit_storekeeper
+  nodes:
+    root:
+      lines: [14, 15, 0, 1, 2]
+    sword:
+      lines: [3, 4, 5]
+    sword_2:
+      lines: [13, 6, 7]
+    shovel:
+      lines: [8, 9, 10]
+    shovel_2:
+      lines: [11, 12]
+  lines:
+    0:
+      text: 13
+      active: '@has_sword_not_paid'
+      next: sword
+      persist: true
+      scr:
+        - [say, player, 13]
+        - [say, storekeeper, 16]
+    1:
+      text: 14
+      persist: true
+      active: '@has_shovel_not_paid'
+      next: shovel
+      scr:
+        - [say, player, 14]
+        - [say, storekeeper, 16]
+    2:
+      text: 15
+      persist: true
+      scr:
+        - [say, player, 15]
+        - [say, storekeeper, 12]
+    3:
+      text: 17
+      persist: true
+      scr:
+        - [say, player, 17]
+        - [say, storekeeper, 20]
+      next:
+        sword_2
+    4:
+      text: 18
+      persist: true
+      script: ask_sword_price
+      next:
+        sword_2
+    5:
+      text: 19
+      persist: true
+      script: replace_sword
+      args: [19, 23]
+      next: root
+    6:
+      text: 22
+      script: replace_sword
+      persist: true
+      args: [22, 23]
+      next: root
+    7:
+      text: 19
+      persist: true
+      script: replace_sword
+      args: [19, 23]
+      next: root
+    8:
+      text: 17
+      persist: true
+      script: ask_shovel_price
+      args: [17]
+      next:
+        shovel_2
+    9:
+      text: 18
+      persist: true
+      script: ask_shovel_price
+      args: [18]
+      next:
+        shovel_2
+    10:
+      text: 19
+      persist: true
+      script: replace_shovel
+      args: [19, 30]
+      next: root
+    11:
+      text: 29
+      persist: true
+      script: replace_shovel
+      args: [29, 30]
+      next: root
+    12:
+      text: 19
+      persist: true
+      script: replace_shovel
+      args: [19, 30]
+      next: root
+    13:
+      text: 34
+      active: '@enough_money_for_sword'
+      script: buy_sword
+      next: root
+      activate: [14]
+    14:
+      text: 38
+      active: false
+      activate: [15]
+      script: ask_for_sword_master
+    15:
+      text: 48
+      active: false
+      persist: true
+      script: ask_for_sword_master_2
+
 fettuccini:
   text_set: '$dialogues/fettuccini'
   nodes:

@@ -20,4 +20,6 @@ def scummbar():
 
 def store():
     func.set_item_pos('guybrush', 'store', status.pos.store_entry , 'e')
+    vars.inventory['pieces_of_eight'] = 478
+
     monkey.engine.room = 'store'

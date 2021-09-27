@@ -91,7 +91,7 @@ storekeeper:
   pos: [289, 7, 0]
   room: store
   size: [20, 40]
-  parent: walkarea_0
+  parent: walkarea_1
   text: '$objects/storekeeper'
   speed: 100
   walkto: [229, 7]

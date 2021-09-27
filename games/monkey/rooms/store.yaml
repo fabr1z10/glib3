@@ -10,7 +10,23 @@
     - factory: [bg, {'image': gfx/shop2.png}]
       d: [[117, 0, 1]]
     - factory: [bg, {'image': gfx/shop3.png}]
-      d: [[240, 0, 1]]
-    - factory: [walkarea, {'id': walkarea_0, 'depth': { 'type': "func.liny", 'values': [0, 1, 144, 0]}, 'outline':
-        [62,14,62,0,248,0,248,2,235,13,235,21,181,21,175,25,188,25,235,67,235,69,154,69,154,67,231,67,188,29,150,29,115,20,90,20]} ]
+      d: [[240, 0, 0.99]]
+    - factory: [walkarea, {'id': walkarea_0,
+                           'depth': { 'type': "func.liny", 'values': [0, 1, 144, 0]},
+                           'scale': { 'type': 'func.patch2d', 'rect': [
+                             { 'pos': [ 0, 0 ], 'size': [320, 20], 'func': { 'type': 'func.const', 'value': 1 } },
+                             { 'pos': [ 0, 20 ], 'size': [320, 10 ], 'func': { 'type': 'func.liny', 'values': [20, 1, 30, 0.6] } },
+                             { 'pos': [ 0, 30 ], 'size': [320, 104], 'func': { 'type': 'func.const', 'value': 0.6 } } ] },
+                           'outline': [62,14,62,0,248,0,248,2,235,13,235,21,181,21,175,25,188,25,235,67,235,69,154,69,154,67,231,67,188,29,150,29,115,20,90,20]} ]
       d: [[0,0,0]]
+    - factory: [walkarea, {'id': walkarea_1,
+                           'depth': { 'type': "func.liny", 'values': [0, 1, 144, 0]},
+                           'scale': { 'type': 'func.patch2d', 'rect': [
+                             { 'pos': [ 0, 0 ], 'size': [320, 20], 'func': { 'type': 'func.const', 'value': 1 } },
+                             { 'pos': [ 0, 20 ], 'size': [320, 10 ], 'func': { 'type': 'func.liny', 'values': [20, 1, 30, 0.6] } },
+                             { 'pos': [ 0, 30 ], 'size': [320, 104], 'func': { 'type': 'func.const', 'value': 0.6 } } ] },
+                           'outline': [62,14,62,0,320,0,320,10,283,24,283,9,300,0.1,248,0.1,235,13,235,21,181,21,175,25,188,25,235,67,235,69,154,69,154,67,231,67,188,29,150,29,115,20,90,20]} ]
+      d: [[0,0,0]]
+
+
+

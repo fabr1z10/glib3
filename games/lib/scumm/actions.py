@@ -31,7 +31,28 @@ def enable_ui(value):
         example.get('inventory').setActive(value)
     return f
 
-def start_dialogue(dialogue_id, node_id = None):
+
+def init_dialogue(dialogue_id, node_id = None):
+    def f():
+        dialogue = vars.dialogues[dialogue_id]
+        start_node = node_id if node_id is not None else dialogue.get('root', 'root')
+        #tset = dialogue['text_set']
+        node = dialogue['nodes'][start_node]
+        lines = dialogue['lines']
+        ll = []
+        for l in node['lines']:
+            active = monkey.engine.read(lines[l].get('active', True))
+            #active = lines[l].get('active', True)
+            if active:
+                order = lines[l].get('order', 0)
+                ll.append(DialogueLine(node, order, dialogue_id, lines[l]))
+        ll.sort()
+        dial = example.get('dialogue')
+        for dl in ll:
+            dial.appendText(dl)
+    return f
+
+def start_dialogue(dialogue_id, node_id = None, continue_dialogue = False):
     def f():
         example.get('main').enableControls(False)
         example.get('ui').setActive(False)
@@ -40,8 +61,8 @@ def start_dialogue(dialogue_id, node_id = None):
         dial.setActive(True)
         dial.clearText()
         dialogue = vars.dialogues[dialogue_id]
-        if 'on_entry' in dialogue:
-            monkey.engine.scripts[dialogue['on_entry']]()
+        if (not continue_dialogue) and 'on_entry' in dialogue:
+            getattr(monkey.engine.scripts, dialogue['on_entry'])()
             return
         start_node = node_id if node_id is not None else dialogue.get('root', 'root')
         #tset = dialogue['text_set']
@@ -49,13 +70,18 @@ def start_dialogue(dialogue_id, node_id = None):
         lines = dialogue['lines']
         ll = []
         for l in node['lines']:
-            active = lines[l].get('active', True)
+            active = monkey.engine.read(lines[l].get('active', True))
+            #active = lines[l].get('active', True)
             if active:
                 order = lines[l].get('order', 0)
                 ll.append(DialogueLine(node, order, dialogue_id, lines[l]))
         ll.sort()
         for dl in ll:
             dial.appendText(dl)
+        # what if ll is empty?
+        if not ll and 'on_empty' in dialogue:
+            getattr(monkey.engine.scripts, dialogue['on_empty'])()
+
     return f
 
 
@@ -90,8 +116,13 @@ class SetDialogueRoot(actions.CallFunc):
         super().__init__(f=set_dialogue_root(dialogue_id, node_id))
 
 class StartDialogue(actions.CallFunc):
+    def __init__(self, dialogue_id, node_id = None, continue_dialogue=False):
+        super().__init__(f=start_dialogue(dialogue_id, node_id, continue_dialogue))
+
+class InitDialogue(actions.CallFunc):
     def __init__(self, dialogue_id, node_id = None):
-        super().__init__(f=start_dialogue(dialogue_id, node_id))
+        super().__init__(f=init_dialogue(dialogue_id, node_id))
+
 
 class HideDialogue(actions.CallFunc):
     def __init__(self):

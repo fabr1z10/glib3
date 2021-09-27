@@ -1,3 +1,5 @@
+import vars
+
 
 class doors:
     kitchen = "closed"
@@ -40,3 +42,17 @@ cook_in_kitchen = True
 circus_status = 0
 circus_feat_done = 0
 talked_to_lookout = 0
+knows_sword_price = 0
+knows_shovel_price = 0
+paid_sword = 0
+paid_shovel = 0
+
+
+def has_sword_not_paid():
+    return 'sword' in vars.inventory and paid_sword == 0
+
+def enough_money_for_sword():
+    return vars.inventory.get('pieces_of_eight', 0) >= 100
+
+def has_shovel_not_paid():
+    return 'shovel' in vars.inventory and paid_shovel == 0
