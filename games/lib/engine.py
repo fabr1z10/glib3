@@ -79,6 +79,8 @@ class Engine:
             with open(filename) as f:
                 room = yaml.load(f, Loader=yaml.FullLoader)
                 rt = room['type']
+                if 'on_start' in room:
+                    getattr(self.scripts, room['on_start'])()
                 # check if a factory exists for this room type
                 factory = self.factories['rooms'].get(rt, None)
                 if factory is None:

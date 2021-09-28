@@ -258,7 +258,16 @@ void Engine::MainLoop() {
         std::cout << "=================================\n";
         std::cout << "Loading room: "<< room << std::endl;
         std::cout << "=================================\n";
+        // check if I have a on_start callback to call BEFORE room creation
+
+
 		auto roomDef = m_mainTable->get<py::function>("create_room") ();//   builder().cast<py::object>();
+//
+//        auto startFunc = roomDef.attr("on_start");
+//        if (!startFunc.is_none()) {
+//            std::cerr << " ** hey I have a start func!\n";
+//            startFunc.cast<py::function>()();
+//        }
 
         m_scene = m_sceneFactory->Create(roomDef);
         

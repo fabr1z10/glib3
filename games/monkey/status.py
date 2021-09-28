@@ -46,7 +46,7 @@ knows_sword_price = 0
 knows_shovel_price = 0
 paid_sword = 0
 paid_shovel = 0
-
+storekeeper_left_store = None
 
 def has_sword_not_paid():
     return 'sword' in vars.inventory and paid_sword == 0

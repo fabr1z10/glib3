@@ -4,6 +4,7 @@
   width: 320
   height: 144
   on_load: init_store
+  on_start: on_start_store
   items:
     - factory: [bg, {'image': gfx/shop.png}]
       d: [[0, 0, -1]]

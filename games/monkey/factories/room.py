@@ -82,6 +82,9 @@ def default_room(desc: dict):
     r = room.Room(id, width, height)
     r.add_runner(runners.Scheduler())
 
+    if 'on_start' in desc:
+        r.on_start = getattr(scripts.actions, desc['on_start'])
+
     # setup collision engine
     ce = runners.CollisionEngine(80, 80)
     ce.add_response(vars.Collision.Tags.player, vars.Collision.Tags.trap, runners.CollisionResponse(on_enter=func.on_enter_trap))

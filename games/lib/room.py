@@ -13,6 +13,8 @@ class Room:
         self.dims = 2
         # collection of entities
         self.scene = []
+        # method to call before room is created
+        self.on_start = None
 
     # add an entity. If you provide a parent, the entity will be added to the parent,
     # otherwise it will be added to the scene

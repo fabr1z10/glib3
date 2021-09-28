@@ -9,6 +9,7 @@ import monkey
 import func
 import engine
 import factories
+import time
 
 
 def make_lines(lines):
@@ -295,10 +296,20 @@ class custom_actions_meta(type):
     def enable_controls(cls):
         return actions.CallFunc(f=Callbacks.enable_controls(True))
 
+    def _set_timestamp(cls, var):
+        def f():
+            monkey.engine.set(var, time.time())
+        return f
 
 
-
-
+    def _update_item(cls, item_id, **kwargs):
+        def f():
+            dic = vars.items[item_id]
+            if 'room' in kwargs:
+                func.set_item_pos(item_id, kwargs.get('room'), kwargs.get('pos'), kwargs.get('dir',None) )
+            for key, value in kwargs.items():
+                dic[key] = value
+        return f
 
     def _add_item(cls, item_id, args):
         def f():
@@ -332,6 +343,11 @@ class custom_actions_meta(type):
     def rm_from_inventory(cls, item_id):
         return actions.CallFunc(f=Callbacks.rm_from_inventory(item_id))
 
+    def update_item(cls, item_id, **kwargs):
+        return actions.CallFunc(f=cls._update_item(item_id, **kwargs))
+
+    def set_timestamp(cls, var):
+        return actions.CallFunc(f=cls._set_timestamp(var))
 
     def goto_room(cls, room, pos, dir):
         return actions.CallFunc(f=Callbacks.goto_room(room, pos, dir))
