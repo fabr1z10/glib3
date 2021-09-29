@@ -3,6 +3,8 @@
   type: default
   width: 1008
   height: 144
+  on_start: on_start_village1
+  on_load: on_load_village1
   items:
     - factory: [bg, {'image': gfx/village1_1.png}]
       d: [[0, 0, -3]]

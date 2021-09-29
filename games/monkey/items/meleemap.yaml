@@ -15,4 +15,12 @@ meleemap_clearing:
   walkto: [135, 113]
   wdir: e
   room: meleemap
+meleemap_fork:
+  type: map_hot_spot
+  pos: [74, 112]
+  size: [10, 10]
+  text: '$objects/fork'
+  walkto: [74, 112]
+  wdir: n
+  room: meleemap
 

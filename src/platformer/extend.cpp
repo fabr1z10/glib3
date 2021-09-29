@@ -11,6 +11,7 @@
 #include "walkanim.h"
 #include "states/climb.h"
 #include "states/fly.h"
+#include "states/npcwalk3d.h"
 
 extern "C" void applyExtension(SceneFactory* f) {
 
@@ -18,6 +19,7 @@ extern "C" void applyExtension(SceneFactory* f) {
 
     f->add2<WalkSide> ("state.walkside");
     f->add2<WalkSide3D> ("state.walkside3d");
+    f->add2<NPCWalk3D> ("state.npcwalk3d");
     f->add2<Jump2D> ("state.jump");
     f->add2<Jump3D> ("state.jump3D");
     f->add2<Climb> ("state.climb");

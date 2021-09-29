@@ -9,6 +9,9 @@ import scripts.actions
 import scripts.actions.shared as aa
 
 
+def is_in_room(item_id, room):
+    return vars.items[item_id]['room'] == room
+
 
 def set_item_pos(item_id, room, pos, dir = None):
     item = vars.items[item_id]
@@ -49,6 +52,13 @@ def set_verb(verb_id):
     vars.wait_for_second_item = False
     update_current_action()
 
+
+def set_verb_2(verb_id, item_id):
+    vars.current_verb = verb_id
+    vars.current_item_1 = item_id
+    vars.current_item_2 = ''
+    vars.wait_for_second_item = False
+    update_current_action()
 
 def update_current_action():
     a = example.get('current_verb')
@@ -120,6 +130,7 @@ def prova():
                         print ('not found: ' + f2)
             if fc:
                 fc(vars.current_item_1, item)
+            set_verb_2('walkto', vars.current_item_1)
         else:
             f1 = vars.current_verb + '_' + vars.current_item_1 + '_' + vars.current_item_2
             fc = getattr(scripts.actions, f1, None)

@@ -22,3 +22,9 @@ def walkto_circus_tent(item, entity):
     else:
         return a.Actions.say(['$dialogues/fettuccini/104'])(item, entity)
 
+def on_start_meleemap():
+    a.chase_storekeeper_func('meleemap')
+
+
+def on_load_meleemap():
+    a.storekeeper_script((74, 112), 'forest1', (238, 60), 'n')

@@ -3,6 +3,8 @@
   type: default
   width: 320
   height: 144
+  on_start: on_start_lookout
+  on_load: on_load_lookout
   items:
     - factory: [bg, {'image': gfx/lookout_1.png}]
       d: [[0, 0, -1]]

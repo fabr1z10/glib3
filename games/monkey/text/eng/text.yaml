@@ -57,6 +57,7 @@ objects:
   storekeeper: storekeeper
   sword: sword
   shovel: shovel
+  fork: fork
 dialogues:
   storekeeper:
     1: Ahoy there, fancy pants.

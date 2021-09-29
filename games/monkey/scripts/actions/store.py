@@ -147,15 +147,16 @@ def buy_sword(s, *args):
 
 def ask_for_sword_master(s, *args):
     s.add_action(scumm.actions.Say(tag='player', font='monkey', lines=sh([38])))
-    s.add_action(scumm.actions.Say(tag='storekeeper', font='monkey', lines=sh([39, 40, 41, 42, 43, 44, 45, 46, 47])))
+    #s.add_action(scumm.actions.Say(tag='storekeeper', font='monkey', lines=sh([39, 40, 41, 42, 43, 44, 45, 46, 47])))
     s.add_action(scumm.actions.Walk(tag='storekeeper', pos=status.pos.store_entry))
-    s.add_action(scumm.actions.Turn(tag='storekeeper', dir='e'))
-    s.add_action(scumm.actions.Say(tag='storekeeper', font='monkey', lines=sh([52])))
-    s.add_action(scumm.actions.Turn(tag='storekeeper', dir='w'))
+    #s.add_action(scumm.actions.Turn(tag='storekeeper', dir='e'))
+    #s.add_action(scumm.actions.Say(tag='storekeeper', font='monkey', lines=sh([52])))
+    #s.add_action(scumm.actions.Turn(tag='storekeeper', dir='w'))
     s.add_action(actions.SetActive(tag='storekeeper', value=False))
     s.add_action(actions.Animate(tag='store_door', anim='closed'))
     s.add_action(a.custom_actions.update_item(item_id='storekeeper', room='village3', pos=(683, 10), dir='e', parent='walkarea_0', size=None))
     s.add_action(a.custom_actions.set_timestamp('@storekeeper_left_store'))
+    s.add_action(a.custom_actions.set_timestamp('@storekeeper_last_update'))
     # save timestamp to record WHEN storekeeper left
 
 

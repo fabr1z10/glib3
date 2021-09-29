@@ -8,6 +8,8 @@ import actions
 import status
 import monkey
 import vars
+import func
+
 
 import random
 
@@ -37,11 +39,25 @@ walkto_village_scummbar_door = a.Actions.walk_door('scummbar',status.pos.scummba
 walkto_village3_store_door = a.Actions.walk_door('store',status.pos.store_entry, 'e')
 
 
+def on_start_village3():
+    a.chase_storekeeper_func('village3')
 
-def init_village3():
-    print('CIAO === ' + str(status.storekeeper_left_store))
-    if example.get('storekeeper').valid:
-        s = Script()
-        s.add_action(scumm.actions.Walk(tag='storekeeper', pos=status.pos.village3_archway))
-        s.add_action(actions.SetActive(tag='storekeeper', value=False))
 
+def on_start_village2():
+    a.chase_storekeeper_func('village2')
+
+
+def on_start_village1():
+    a.chase_storekeeper_func('village1')
+
+
+def on_load_village3():
+    a.storekeeper_script(status.pos.village3_archway, 'village2', (162, 41), 's')
+
+
+def on_load_village2():
+    a.storekeeper_script(status.pos.village2_archway, 'village1', (820, 34), 'w')
+
+
+def on_load_village1():
+    a.storekeeper_script(status.pos.village_cliffside, 'lookout', (258, 52), 'n')

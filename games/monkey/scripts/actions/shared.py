@@ -10,7 +10,8 @@ import func
 import engine
 import factories
 import time
-
+import status
+import time
 
 def make_lines(lines):
     return [monkey.engine.read(x) for x in lines]
@@ -371,6 +372,25 @@ talkto_ = Actions.say(['$defaultactions/2'])
 walkto_ = Actions.walkto()
 
 
+def chase_storekeeper_func(room):
+    if func.is_in_room('storekeeper', room) and status.storekeeper_last_update:
+        if time.time() - status.storekeeper_last_update > 10:
+            print(' *** 10 sec have elapsed. chase failed.')
+            # you have 10 seconds to chase storekeeper to next screen
+            # otherwise storekeeper is reset into the store
+            func.set_item_pos('storekeeper', 'store', (289, 7), 'w')
+            vars.items['storekeeper']['parent'] = 'walkarea_1'
+            vars.items['storekeeper']['size'] = (20, 40)
+            status.storekeeper_last_update = None
 
+def storekeeper_script(walk_to_pos, next_room, next_room_pos, next_room_dir, parent='walkarea_0'):
+    if example.get('storekeeper').valid:
+        s = Script()
+        s.add_action(scumm.actions.Walk(tag='storekeeper', pos=walk_to_pos))
+        s.add_action(actions.SetActive(tag='storekeeper', value=False))
+        s.add_action(custom_actions.update_item(item_id='storekeeper', room=next_room, pos=next_room_pos, dir=next_room_dir,
+            parent=parent, size=None))
+        s.add_action(custom_actions.set_timestamp('@storekeeper_last_update'))
+        example.play(s)
 
 

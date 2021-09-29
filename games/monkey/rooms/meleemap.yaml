@@ -3,6 +3,8 @@
   type: map
   width: 320
   height: 200
+  on_start: on_start_meleemap
+  on_load: on_load_meleemap
   items:
     - factory: [ bg, { 'image': gfx/meleemap.png } ]
       d: [ [ 0, 0, -1 ] ]

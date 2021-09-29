@@ -31,3 +31,11 @@ def on_exit_lookout():
     s.add_action(scumm.actions.ExitDialogue())
     vars.dialogues['lookout']['lines'][6]['active'] = True
     example.play(s)
+
+
+def on_start_lookout():
+    a.chase_storekeeper_func('lookout')
+
+
+def on_load_lookout():
+    a.storekeeper_script(status.pos.lookout_path, 'meleemap', (48, 105), 'n')

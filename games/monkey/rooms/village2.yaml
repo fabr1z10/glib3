@@ -3,6 +3,8 @@
   type: default
   width: 480
   height: 144
+  on_start: on_start_village2
+  on_load: on_load_village2
   bg:
     - image: gfx/village2.png
       pos: [0, 0, -1]
