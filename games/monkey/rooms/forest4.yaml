@@ -1,0 +1,12 @@
+---
+  id: forest4
+  type: default
+  width: 320
+  height: 144
+  items:
+    - factory: [bg, {'image': gfx/forest_4.png}]
+      d: [[0, 0, -1]]
+    - factory: [walkarea, {'id': walkarea_0, 'depth': { 'type': "func.liny", 'values': [0, 1, 144, 0]},
+        'nodes': [0, 35, 266, 35, 320, 35, 266, 20],
+        'edges': [0,1,1,2,1,3]}]
+      d: [[0,0,0]]

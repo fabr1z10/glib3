@@ -338,7 +338,7 @@ class custom_actions_meta(type):
     def remove_item(cls, item_id):
         return actions.CallFunc(f=cls._remove_item(item_id))
 
-    def add_to_inventory(cls, item_id, qty):
+    def add_to_inventory(cls, item_id, qty=1):
         return actions.CallFunc(f=Callbacks.add_to_inventory(item_id, qty))
 
     def rm_from_inventory(cls, item_id):

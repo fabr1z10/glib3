@@ -905,6 +905,26 @@ sword:
     default:
       elements:
         - quads: [[99, 49, 30, 6]]
+swordmaster_sign:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: 'asset.sprite'
+  animations:
+    default:
+      elements:
+        - quads: [[395,382,26,25]]
+    activated:
+      elements:
+        - quads: [[422,383,21,25]]
+trunk_bridge:
+  sheet: 'gfx/sprites/sprites2.png'
+  type: 'asset.sprite'
+  animations:
+    closed:
+      elements:
+        - quads: [[252,1,77,38]]
+    activated:
+      elements:
+        - quads: [[252,41,77,38]]
 shovel:
   sheet: 'gfx/sprites/sprites1.png'
   type: 'asset.sprite'

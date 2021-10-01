@@ -19,6 +19,7 @@ class pos:
     lookout_path = (320, 62)
     melee_village = (0, 0)
     melee_clearing = (135, 113)
+    melee_fork = (74, 112)
     clearing_path = (496, 4)
     village1_archway = (1008, 34)
     village2_archway = (436, 34)
@@ -29,7 +30,9 @@ class pos:
     circus_tent = (83, 60)
     circus_entry = (294,32)
     store_entry = (83, 16)
-
+    forest1_entry = (310, 35)
+    f1f2 = (238,69)
+    f1f2b = (154,69)
 
 class colors:
     cook_text_color = [85, 255, 255, 255]

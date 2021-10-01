@@ -1,0 +1,16 @@
+---
+  id: forest2
+  type: default
+  width: 320
+  height: 144
+  items:
+    - factory: [bg, {'image': gfx/forest_2.png}]
+      d: [[0, 0, -1]]
+    - factory: [bg, {'image': gfx/forest_2a.png}]
+      d: [[122, 21, 1]]
+    - factory: [bg, {'image': gfx/forestyp.png}]
+      d: [[247, 0, 1]]
+    - factory: [walkarea, {'id': walkarea_0, 'depth': { 'type': "func.liny", 'values': [0, 1, 144, 0]},
+        'nodes': [0, 35, 257, 35, 320, 35, 257, 69, 271, 35, 271, 15],
+        'edges': [0,1,1,4,4,2,4,5,1,3]}]
+      d: [[0,0,0]]

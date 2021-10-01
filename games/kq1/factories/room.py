@@ -23,12 +23,12 @@ def default_room(desc: dict):
 
     main = entity.Entity(tag='main')
     main.camera = cam.OrthoCamera(width, height, 316, 166, [2, 24, 316, 166], tag='maincam')
-    main.add_component(compo.HotSpotManager(lmbclick=func.walkto))
+    main.add_component(compo.HotSpotManager(lmbclick=func.walkto, rmbclick=func.toggle_cursor))
     r.add(main)
 
-    a = entity.Sprite(model='01/cursor')
+    a = entity.Sprite(model='01/cursor', tag='cursor')
     a.add_component(compo.Cursor())
-    a.pos=(0,0,5)
+    a.pos=(0, 0, 5)
     main.add(a)
 
     # now add all items

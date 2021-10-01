@@ -58,6 +58,9 @@ objects:
   sword: sword
   shovel: shovel
   fork: fork
+  plants: plants
+  yellow_petal: yellow petal
+  sign: sign
 dialogues:
   storekeeper:
     1: Ahoy there, fancy pants.
@@ -615,3 +618,5 @@ lines:
   44: I think there's something going on in there.
   45: "\"SLASHMASTER™ -- When you want a sword as sharp as your wit.\""
   46: "\"DIGMASTER™ -- The only shovel for serious treadure-hunting enthusiasts.\""
+  47: My, what an unusually bright yellow they are.
+  48: It's a striking yellow color.

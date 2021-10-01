@@ -24,6 +24,7 @@ public:
 
 
 private:
+    void resetStep();
     Controller3D* m_controller;
     Dynamics2D * m_dynamics;
     IAnimator* m_animator;
@@ -42,5 +43,8 @@ private:
     int m_currentSegment;
     bool m_loop;
     glm::vec2 m_targetVelocity;
+    float m_distanceTraveled;
+    float m_distanceToCover;
+    int m_inc;
 };
 

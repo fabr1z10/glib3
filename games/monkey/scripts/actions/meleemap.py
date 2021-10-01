@@ -11,6 +11,8 @@ import vars
 
 click_meleemap_lookout = a.Actions.goto_room('lookout', status.pos.lookout_path, 'w')
 click_meleemap_clearing = a.Actions.goto_room('clearing', status.pos.clearing_path, 'w')
+click_meleemap_fork = a.Actions.goto_room('forest1', status.pos.forest1_entry, 'w')
+
 
 walkto_clearing_path = a.Actions.goto_room('meleemap', status.pos.melee_clearing, 'w')
 lookat_circus_tent = a.Actions.say(['$lines/44'])

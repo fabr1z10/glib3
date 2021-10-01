@@ -76,6 +76,12 @@ HotSpotManager::HotSpotManager(const ITab& table) : Component(table) {
         //setLmbClickCallback([f] (float x, float y) { f.execute(x, y);});
     }
 
+    if (table.has("rmbclick")) {
+        auto f = table.get<py::function>("rmbclick");
+        setRmbClickCallback([f] (float x, float y) { f(x, y); });
+        //setLmbClickCallback([f] (float x, float y) { f.execute(x, y);});
+    }
+
 }
 
 HotSpotManager::~HotSpotManager() {

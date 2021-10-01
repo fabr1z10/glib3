@@ -51,7 +51,7 @@ class WalkSide3D(lib.states.State):
         self.animator = animator
         
 class NPCWalk3D(lib.states.State):
-    def __init__(self, uid, speed: float, acceleration: float, jump_speed: float, flip_horizontal: bool, animator, keys=None):
+    def __init__(self, uid, speed: float, acceleration: float, jump_speed: float, flip_horizontal: bool, animator, keys=None, path=None):
         super().__init__(uid, keys)
         self.type = 'state.npcwalk3d'
         self.speed = speed
@@ -59,6 +59,7 @@ class NPCWalk3D(lib.states.State):
         self.jumpSpeed = jump_speed
         self.flipH = flip_horizontal
         self.animator = animator
+        self.path = path
 
 
 class Jump(lib.states.State):

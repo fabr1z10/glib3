@@ -255,9 +255,10 @@ class HotSpot:
         self.priority = priority
 
 class HotSpotManager:
-    def __init__(self, lmbclick = None):
+    def __init__(self, lmbclick = None, rmbclick=None):
         self.type = 'components.hotspotmanager'
         self.lmbclick = lmbclick
+        self.rmbclick = rmbclick
 
 class Cursor:
     def __init__(self):

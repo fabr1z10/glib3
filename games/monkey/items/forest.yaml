@@ -1,0 +1,162 @@
+---
+yellow_petal:
+  text: '$objects/yellow_petal'
+yellow_plant:
+  type: item1
+  pos: [253, 12, 1]
+  text: '$objects/plants'
+  size: [39, 29]
+  room: forest2
+  walkto: [271, 15]
+  wdir: s
+forest1_exit:
+  type: item1
+  text: '$objects/path'
+  pos: [310, 0]
+  size: [10, 144]
+  walkto: '@pos/forest1_entry'
+  wdir: 'e'
+  room: forest1
+forest1_forest2:
+  type: item1
+  text: '$objects/path'
+  pos: [228, 68]
+  size: [20, 50]
+  walkto: '@pos/f1f2'
+  wdir: 'n'
+  room: forest1
+forest1_forest2b:
+  type: item1
+  text: '$objects/path'
+  pos: [144, 68]
+  size: [20, 50]
+  walkto: '@pos/f1f2b'
+  wdir: 'n'
+  room: forest1
+forest2_forest1:
+  type: item1
+  text: '$objects/path'
+  pos: [310, 0]
+  size: [10, 144]
+  walkto: '@pos/forest1_entry'
+  wdir: 'e'
+  room: forest2
+forest2_forest3:
+  type: item1
+  text: '$objects/path'
+  pos: [247, 69]
+  size: [20, 50]
+  walkto: [257, 69]
+  wdir: n
+  room: forest2
+forest2_forest9:
+  type: item1
+  text: '$objects/path'
+  pos: [0, 0]
+  size: [10, 144]
+  walkto: [0, 35]
+  wdir: w
+  room: forest2
+forest3_forest2:
+  type: item1
+  text: '$objects/path'
+  pos: [125, 69]
+  size: [20, 50]
+  walkto: [135, 69]
+  wdir: n
+  room: forest3
+forest3_forest4:
+  type: item1
+  text: '$objects/path'
+  pos: [310, 0]
+  size: [10, 144]
+  walkto: [310, 35]
+  wdir: e
+  room: forest3
+forest4_forest3:
+  type: item1
+  text: '$objects/path'
+  pos: [0, 0]
+  size: [10, 144]
+  walkto: [0, 35]
+  wdir: w
+  room: forest4
+forest4_forest5:
+  type: item1
+  text: '$objects/path'
+  pos: [310, 0]
+  size: [10, 144]
+  walkto: [310, 35]
+  wdir: e
+  room: forest4
+forest5_forest4:
+  type: item1
+  text: '$objects/path'
+  pos: [231, 69]
+  size: [20, 50]
+  walkto: [241, 69]
+  wdir: n
+  room: forest5
+forest5_forest6:
+  type: item1
+  text: '$objects/path'
+  pos: [0, 0]
+  size: [10, 144]
+  walkto: [0, 24]
+  wdir: w
+  room: forest5
+forest5_forest8:
+  type: item1
+  text: '$objects/path'
+  pos: [310, 0]
+  size: [10, 144]
+  walkto: [310, 24]
+  wdir: e
+  room: forest5
+forest6_forest5:
+  type: item1
+  text: '$objects/path'
+  pos: [0, 0]
+  size: [10, 144]
+  walkto: [0, 35]
+  wdir: w
+  room: forest6
+forest6_forest7:
+  type: item1
+  text: '$objects/path'
+  pos: [141, 69]
+  size: [20, 50]
+  walkto: [151, 69]
+  wdir: n
+  room: forest6
+forest7_forest6:
+  type: item1
+  text: '$objects/path'
+  pos: [0, 0]
+  size: [10, 144]
+  walkto: [0, 40]
+  wdir: w
+  room: forest7
+forest7_swordmaster:
+  type: item1
+  text: '$objects/path'
+  pos: [310, 0]
+  size: [10, 144]
+  walkto: [310, 40]
+  wdir: e
+  room: forest7
+swordmaster_sign:
+  type: item1
+  model: 01/swordmaster_sign
+  text: '$objects/sign'
+  pos: [171, 20]
+  size: [26, 25]
+  walkto: [160, 20]
+  wdir: e
+  room: forest7
+  parent: walkarea_0
+trunk_bridge:
+  type: item1
+  model: 01/trunk_bridge
+  room: forest7
+  pos: [229, 22, 0]

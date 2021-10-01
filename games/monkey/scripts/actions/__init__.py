@@ -7,3 +7,4 @@ from .lookout import *
 from .meleemap import *
 from .circus import *
 from .store import *
+from .forest import *
