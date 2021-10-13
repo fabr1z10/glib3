@@ -6,6 +6,8 @@
   items:
     - factory: [bg, {'image': gfx/forest_6.png}]
       d: [[0, 0, -1]]
+    - factory: [bg, {'image': gfx/forest_rock.png}]
+      d: [[105, 18, 2]]
     - factory: [walkarea, {'id': walkarea_0, 'depth': { 'type': "func.liny", 'values': [0, 1, 144, 0]},
         'nodes': [0,35,151,35,151,69],
         'edges': [0,1,1,2]}]
