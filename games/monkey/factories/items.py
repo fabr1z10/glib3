@@ -39,7 +39,9 @@ def walkarea(**kwargs):
         walls = kwargs.get('walls', None)
         if walls:
             for w in walls:
-                walkarea.add_wall([w[0], w[1]], [w[2], w[3]], True)
+                active = monkey.engine.read(w[4] if w[4:] else True)
+                print ('fottimi ' + str(active))
+                walkarea.add_wall([w[0], w[1]], [w[2], w[3]], active)
         e.add_component(walkarea)
         return e
     return f

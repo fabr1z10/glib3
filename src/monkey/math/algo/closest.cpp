@@ -61,6 +61,8 @@ glm::vec2 ClosestPointOnEdge::findPoly(glm::vec2 P, const IShape * s) {
         } else {
             // closest point is midline
             candPoint = A + p * ((B - A) / l2);
+            candPoint += glm::normalize(Perp(B-A)) * 0.1f;
+
         }
 		candDist = glm::dot(P - candPoint, P - candPoint);
         if (candDist < currentDist) {

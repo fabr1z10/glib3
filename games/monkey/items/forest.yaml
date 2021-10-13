@@ -154,9 +154,11 @@ swordmaster_sign:
   walkto: [160, 20]
   wdir: e
   room: forest7
+  anim: '@forest_bridge'
   parent: walkarea_0
 trunk_bridge:
   type: item1
   model: 01/trunk_bridge
   room: forest7
+  anim: '@forest_bridge'
   pos: [229, 22, 0]

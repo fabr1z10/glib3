@@ -15,6 +15,25 @@ lookat_yellow_plant = a.Actions.say(['$lines/47'])
 lookat_yellow_petal = a.Actions.say(['$lines/48'])
 lookat_swordmaster_sign = a.Actions.say(['$lines/49'])
 
+
+def helper_swordmaster_sign(x, anim, bridge):
+    s = a.Scripts.walk(x)
+    s.add_action(actions.Animate(tag='player', anim='operate_e'))
+    s.add_action(actions.Animate(tag='player', anim='idle_e'))
+    s.add_action(actions.Animate(tag='swordmaster_sign', anim=anim))
+    s.add_action(actions.Animate(tag='trunk_bridge', anim=anim))
+    s.add_action(a.custom_actions.set_variable('@forest_bridge', anim))
+    s.add_action(scumm.actions.SetWall('walkarea_0', 0, bridge))
+    example.play(s)
+
+
+def push_swordmaster_sign(x, y):
+    helper_swordmaster_sign(x, 'activated', False)
+
+
+def pull_swordmaster_sign(x, y):
+    helper_swordmaster_sign(x, 'closed', True)
+
 def pickup_yellow_plant(x, y):
     if 'yellow_petal' not in vars.inventory:
         s = a.Scripts.walk(x)
@@ -36,6 +55,6 @@ walkto_forest5_forest8 = a.Actions.goto_room('forest8', (310, 35), 'w')
 walkto_forest6_forest5 = a.Actions.goto_room('forest5', (0, 35), 'e')
 walkto_forest6_forest7 = a.Actions.goto_room('forest7', (0, 30), 'e')
 walkto_forest7_forest6 = a.Actions.goto_room('forest6', (151, 69), 's')
-
+walkto_forest7_swordmaster = a.Actions.goto_room('swordmaster', (0, 0), 'e')
 #walkto_forest2_forest9 = a.Actions.goto_room('forest9', (238, 68), 's')
 

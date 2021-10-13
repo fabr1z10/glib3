@@ -73,7 +73,7 @@ void PolygonShortestPath::updateGraph() {
 
 int PolygonShortestPath::find(glm::vec2 start, glm::vec2 end, std::vector<glm::vec2> &path) {
     // finds the shortest path between start and end points. Place all intermediate points in path
-
+    std::cout << "request walk from (" << start.x << ", " << start.y << ") to (" << end.x << ", " << end.y << ")\n";
     // 1. If start, or end point, is outside of the shape, then we use their closest point to the edge
     //    of the shape
     glm::vec2 p0 = start;
@@ -100,6 +100,7 @@ int PolygonShortestPath::find(glm::vec2 start, glm::vec2 end, std::vector<glm::v
     std::vector<int> pth;
     auto dist = m_graph->shortestPath(istart, iend, pth);
     bool hasFreePath = true;
+    std::cerr << " path has " << pth.size() << "points\n";
     if (dist == std::numeric_limits<float>::infinity()) {
         // try to go to another point. Remove walls and see if now we have a path
         hasFreePath = false;

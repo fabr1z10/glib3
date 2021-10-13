@@ -51,6 +51,11 @@ paid_sword = 0
 paid_shovel = 0
 storekeeper_left_store = None
 storekeeper_last_update = None
+forest_bridge = 'closed'
+
+
+def forest_bridge_wall():
+    return forest_bridge == 'closed'
 
 def has_sword_not_paid():
     return 'sword' in vars.inventory and paid_sword == 0

@@ -302,6 +302,11 @@ class custom_actions_meta(type):
             monkey.engine.set(var, time.time())
         return f
 
+    def _set_variable(cls, var, value):
+        def f():
+            monkey.engine.set(var, value)
+        return f
+
 
     def _update_item(cls, item_id, **kwargs):
         def f():
@@ -349,6 +354,9 @@ class custom_actions_meta(type):
 
     def set_timestamp(cls, var):
         return actions.CallFunc(f=cls._set_timestamp(var))
+
+    def set_variable(cls, var, value):
+        return actions.CallFunc(f=cls._set_variable(var, value))
 
     def goto_room(cls, room, pos, dir):
         return actions.CallFunc(f=Callbacks.goto_room(room, pos, dir))

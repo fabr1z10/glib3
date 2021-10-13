@@ -103,6 +103,17 @@ guybrush:
         - quads: [[189,12,20,36,12,0], [220,101,11,12,7,-35]]
         - quads: [[189,12,20,36,12,0], [233,101,11,12,7,-35]]
         - quads: [[189,12,20,36,12,0], [220,115,11,12,7,-35]]
+    operate_e:
+      elements:
+        - quads: [[2,150,28,45,10,0]]
+          ticks: 10
+    operate_s:
+      elements:
+        - quads: [[125,151,18,46,12,0]]
+    operate_n:
+      elements:
+        - quads: [[33,150,19,45,10,0]]
+
     kneel_s:
       elements:
         - quads: [[80, 163, 17, 33, 10, 0]]
@@ -909,7 +920,7 @@ swordmaster_sign:
   sheet: 'gfx/sprites/sprites1.png'
   type: 'asset.sprite'
   animations:
-    default:
+    closed:
       elements:
         - quads: [[395,382,26,25]]
     activated:
