@@ -11,18 +11,24 @@ struct Wall {
     bool active;
 };
 
+enum class VertexType {
+    OUTLINE, HOLE, WALL
+};
+
 struct Vertex {
     int id;
     int next;
     int prev;
     glm::vec2 P;
-    bool hole;              // tells whether vertex belongs to a hole
+    VertexType tp;
+
 };
 
 struct Edge {
     int i;
     int j;
     bool wallEdge;
+    int wallId;
 };
 
 

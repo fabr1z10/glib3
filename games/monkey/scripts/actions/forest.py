@@ -13,6 +13,7 @@ import random
 
 lookat_yellow_plant = a.Actions.say(['$lines/47'])
 lookat_yellow_petal = a.Actions.say(['$lines/48'])
+lookat_swordmaster_sign = a.Actions.say(['$lines/49'])
 
 def pickup_yellow_plant(x, y):
     if 'yellow_petal' not in vars.inventory:

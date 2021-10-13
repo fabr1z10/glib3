@@ -35,7 +35,7 @@ void PolygonShortestPath::updateGraph() {
     for (int i = 0; i < outline.size(); ++i) {
         int prev = (i == 0) ? outline.size() - 1 : i-1;
         int next = (i+1) % outline.size();
-        m_vertices[i] = Vertex{i, next, prev, outline[i], false};
+        m_vertices[i] = Vertex{i, next, prev, outline[i], VertexType::OUTLINE};
         m_edges.push_back(Edge{i, next, false});
     }
 
@@ -46,39 +46,28 @@ void PolygonShortestPath::updateGraph() {
             for (int j = 0; j < outline.size(); ++j) {
                 int prev = offset + ((j == 0) ? outline.size() - 1 : j-1);
                 int next = offset + ((j+1) % outline.size());
-                m_vertices[offset+j] = Vertex{offset+j, next, prev, outline[j], true};
+                m_vertices[offset+j] = Vertex{offset+j, next, prev, outline[j], VertexType::HOLE};
                 m_edges.push_back(Edge{offset+j, next, false});
             }
         }
     }
 
+
+    // TODO add back walls
+    int offset = m_vertices.size();
+    int wallId = 0;
+    for (const auto& wall : m_walls) {
+        if (wall.active) {
+            m_vertices[offset] = Vertex{offset, -1, -1, wall.A, VertexType::WALL};
+            m_vertices[offset + 1] = Vertex{offset + 1, -1, -1, wall.B, VertexType::WALL};
+            m_edges.push_back(Edge{offset, offset + 1, true, wallId++});
+            offset += 2;
+        }
+    }
     // step 2.
     createGraph();
 
-    // TODO add back walls
-//    for (const auto& wall : m_walls) {
-//        if (wall.active) {
-//            m_edges.push_back({wall.A, wall.B, true});
-//        }
-//    }
 
-    // step 2.
-//    outline = m_shape->getOutlineVertices();
-//    addPoly(outline);
-//    for (int i = 0; i < m_shape->getHoleCount(); ++i) {
-//        if (m_inactiveHoles.count(i) == 0) {
-//            addPoly(m_shape->getHoleVertices(i), -1.0f);
-//        }
-//    }
-    // TODO add back walls
-//    for (const auto& wall : m_walls) {
-//        if (m_shape->isPointInside(glm::vec3(wall.A, 0.0f))) {
-//            addNode(wall.A);
-//        }
-//        if (m_shape->isPointInside(glm::vec3(wall.B, 0.0f))) {
-//            addNode(wall.B);
-//        }
-//    }
 }
 
 
@@ -124,15 +113,14 @@ int PolygonShortestPath::find(glm::vec2 start, glm::vec2 end, std::vector<glm::v
             auto nextPoint = m_graph->getNode(pth[i]);
             if (!hasFreePath) {
                 float t = 0, u = 0;
-                float wallHit = 2.0f;
+                float wallHit = 1.0f;
                 bool hitsWall = false;
                 glm::vec2 wdir;
                 for (const auto &wall : m_edges) {
                     if (wall.wallEdge) {
                         auto wA = m_vertices.at(wall.i).P;
                         auto wB = m_vertices.at(wall.j).P;
-                        segmentIntersection(current, nextPoint, wA, wB, t, u);
-                        if (t >= 0.0f && t <= wallHit) {
+                        if (segmentIntersection(current, nextPoint, wA, wB, t, u) && (t >= 0.0f && t <= wallHit)) {
                             wallHit = t;
                             hitsWall = true;
                             wdir = glm::normalize(wB - wA);
@@ -148,6 +136,7 @@ int PolygonShortestPath::find(glm::vec2 start, glm::vec2 end, std::vector<glm::v
                 }
             }
             path.push_back(nextPoint);
+            current = nextPoint;
         }
 //        for (auto iter = pth.rbegin(); iter != pth.rend(); iter++) {
 //            path.push_back(m_graph->getNode(*iter));
@@ -230,12 +219,19 @@ int PolygonShortestPath::addNode(int id, glm::vec2 point) {
 void PolygonShortestPath::createGraph() {
     for (const auto& v : m_vertices) {
         const auto& vertex = v.second;
-        glm::vec2 edgeNext = m_vertices.at(vertex.next).P - vertex.P;
-        glm::vec2 edgePrev = vertex.P - m_vertices.at(vertex.prev).P;
-        float flip = vertex.hole ? -1.0f : 1.0f;
-        auto f = cross(edgePrev, edgeNext) * flip;
-        if (f < 0) {
-            addNode(v.first, vertex.P);
+        if (vertex.tp == VertexType::WALL) {
+            // add only internal wall
+            if (m_shape->isPointInside(glm::vec3(vertex.P, 0.0f))) {
+                addNode(v.first, vertex.P);
+            }
+        } else {
+            glm::vec2 edgeNext = m_vertices.at(vertex.next).P - vertex.P;
+            glm::vec2 edgePrev = vertex.P - m_vertices.at(vertex.prev).P;
+            float flip = (vertex.tp == VertexType::HOLE) ? -1.0f : 1.0f;
+            auto f = cross(edgePrev, edgeNext) * flip;
+            if (f < 0) {
+                addNode(v.first, vertex.P);
+            }
         }
     }
 }

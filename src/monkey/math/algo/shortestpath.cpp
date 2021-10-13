@@ -57,6 +57,7 @@ void IShortestPath::addWall(glm::vec2 A, glm::vec2 B, bool active) {
 
 void IShortestPath::setWall(int id, bool active) {
     m_walls[id].active = active;
+    updateGraph();
 }
 
 //void ShortestPath::updateGraph(PolyLine * pline) {

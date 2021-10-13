@@ -10,9 +10,12 @@ def outside_circus():
 
 
 def start():
-    func.set_item_pos('guybrush', 'lookout', (240, 42), 'w')
-    monkey.engine.room = 'lookout'
+    func.set_item_pos('guybrush', 'forest6', (240, 42), 'w')
+    monkey.engine.room = 'forest6'
 
+def kitchen():
+    func.set_item_pos('guybrush', 'kitchen', (0,0), 'w')
+    monkey.engine.room = 'kitchen'
 
 def scummbar():
     func.set_item_pos('guybrush', 'scummbar', (0, 0), 'w')
