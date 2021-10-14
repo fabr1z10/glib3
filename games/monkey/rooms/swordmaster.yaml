@@ -3,6 +3,8 @@
   type: default
   width: 464
   height: 144
+  on_start: on_start_swordmaster
+  on_load: on_load_swordmaster
   items:
     - factory: [bg, {'image': gfx/swordmaster.png}]
       d: [[0, 0, -1]]

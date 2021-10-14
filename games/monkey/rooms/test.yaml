@@ -4,6 +4,7 @@
   width: 320
   height: 144
   collide: true
+
   items:
     - factory: [walkarea, {'id': walkarea_0, 'outline': [80, 20, 240, 20, 240, 60, 80, 60], 'walls': [ [160,10,160,40] ] }]
       d: [[0,0,0]]

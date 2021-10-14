@@ -950,6 +950,15 @@ fish:
     default:
       elements:
         - quads: [[23,204,12,7]]
+swordmaster_tiny:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: asset.sprite
+  animations:
+    default:
+      elements:
+        - quads: [[484, 465, 8, 12, 4, 0]]
+        - quads: [[494, 465, 8, 12, 4, 0]]
+        - quads: [[504, 465, 5, 12, 3, 0]]
 seagull:
   sheet: 'gfx/sprites/sprites1.png'
   type: asset.sprite

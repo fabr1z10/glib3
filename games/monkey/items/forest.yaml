@@ -162,3 +162,13 @@ trunk_bridge:
   room: forest7
   anim: '@forest_bridge'
   pos: [229, 22, 0]
+swordmaster_tiny:
+  type: item1
+  model: 01/swordmaster_tiny
+  text: '$objects/swordmaster'
+  pos: [385, 68, 0.5]
+  size: [8, 12]
+  walkto: [375, 68]
+  wdir: e
+  room: swordmaster
+

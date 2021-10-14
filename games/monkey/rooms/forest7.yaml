@@ -3,6 +3,8 @@
   type: default
   width: 320
   height: 144
+  on_start: on_start_forest7
+  on_load: on_load_forest7
   items:
     - factory: [bg, {'image': gfx/forest_7.png}]
       d: [[0, 0, -1]]

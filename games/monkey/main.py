@@ -22,7 +22,7 @@ engine.scripts = scripts.actions
 
 import init
 
-init.start()
+init.store()
 # add here add-on libraries you need
 
 

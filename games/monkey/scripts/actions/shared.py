@@ -307,6 +307,10 @@ class custom_actions_meta(type):
             monkey.engine.set(var, value)
         return f
 
+    def _set_follow(cls, value):
+        def f():
+            example.get('player').follow(value)
+        return f
 
     def _update_item(cls, item_id, **kwargs):
         def f():
@@ -360,6 +364,11 @@ class custom_actions_meta(type):
 
     def goto_room(cls, room, pos, dir):
         return actions.CallFunc(f=Callbacks.goto_room(room, pos, dir))
+
+    # set whether screen should scroll following the player
+    def set_follow(cls, value):
+        return actions.CallFunc(f=cls._set_follow(value))
+
 
 class custom_actions(metaclass=custom_actions_meta):
     pass
