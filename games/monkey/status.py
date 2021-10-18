@@ -6,6 +6,7 @@ class doors:
     pier = "closed"
     scummbar = "closed"
     store = 'closed'
+    voodoolady = 'closed'
 
 class pos:
     kitchen_door = [45, 12]
@@ -33,6 +34,7 @@ class pos:
     forest1_entry = (310, 35)
     f1f2 = (238,69)
     f1f2b = (154,69)
+    village2_voodoolady = (220, 48)
 
 class colors:
     cook_text_color = [85, 255, 255, 255]
@@ -52,7 +54,7 @@ paid_shovel = 0
 storekeeper_left_store = None
 storekeeper_last_update = None
 forest_bridge = 'closed'
-
+talked_to_citizen = 0
 
 def forest_bridge_wall():
     return forest_bridge == 'closed'
@@ -65,3 +67,6 @@ def enough_money_for_sword():
 
 def has_shovel_not_paid():
     return 'shovel' in vars.inventory and paid_shovel == 0
+
+def can_buy_map():
+    return talked_to_citizen == 2

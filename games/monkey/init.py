@@ -13,6 +13,10 @@ def start():
     func.set_item_pos('guybrush', 'forest6', (240, 42), 'w')
     monkey.engine.room = 'forest6'
 
+def village():
+    func.set_item_pos('guybrush', 'village2', (240, 42), 'w')
+    monkey.engine.room = 'village2'
+
 def kitchen():
     func.set_item_pos('guybrush', 'kitchen', (0,0), 'w')
     monkey.engine.room = 'kitchen'

@@ -49,6 +49,67 @@ village2_archway_to_village3:
   room: village2
   walkto: '@pos/village2_archway3'
   wdir: n
+village2_voodoolady:
+  type: item1
+  text: '$objects/door'
+  pos: [220, 52, -1]
+  size: [26, 26]
+  room: village2
+  walkto: '@pos/village2_voodoolady'
+  wdir: e
+  model: 01/door_village_voodoolady
+  anim: '@doors/voodoolady'
+village2_fakedoor1:
+  type: item1
+  text: '$objects/door'
+  pos: [377, 37, -1]
+  size: [20, 30]
+  room: village2
+  walkto: [389, 36]
+  wdir: w
+  model: 01/fakedoor1
+village2_fakedoor2:
+  type: item1
+  text: '$objects/door'
+  pos: [208,59,-1]
+  size: [10, 20]
+  room: village2
+  walkto: [206, 58]
+  wdir: e
+  model: 01/fakedoor2
+village2_fakedoor3:
+  type: item1
+  text: '$objects/door'
+  pos: [130, 63, -1]
+  size: [10, 15]
+  room: village2
+  walkto: [135, 60]
+  wdir: n
+  model: 01/fakedoor3
+village2_fakedoor4:
+  type: item1
+  text: '$objects/door'
+  pos: [184, 64, -1]
+  size: [10, 15]
+  room: village2
+  walkto: [188, 61]
+  wdir: n
+  model: 01/fakedoor4
+citizen:
+  type: character
+  model: 01/citizen
+  pos: [325, 27, 0]
+  room: village2
+  parent: walkarea_0
+  size: [30, 40]
+  text: '$objects/citizen'
+  speed: 100
+  walkto: [360, 27]
+  wdir: w
+  dir: s
+  text_color: [255, 85, 85, 255]
+  text_offset: [0,60]
+
 village3_archway:
   type: item1
   text: '$objects/archway'

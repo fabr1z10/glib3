@@ -117,6 +117,67 @@ storekeeper:
       active: false
       persist: true
       script: ask_for_sword_master_2
+citizen:
+  text_set: '$dialogues/citizen'
+  on_exit: on_exit_citizen
+  nodes:
+    root:
+      lines: [0, 1, 2, 3, 7, 8, 9, 4, 5, 6]
+  lines:
+    0:
+      text: 2
+      deactivate: [0, 1, 2, 3]
+      activate: [7, 8, 9]
+      scr:
+        - [say, player, 2]
+        - [say, citizen, 6, 7]
+    1:
+      text: 3
+      deactivate: [0, 1, 2, 3]
+      activate: [7, 8, 9]
+      scr:
+        - [say, player, 3]
+        - [say, citizen, 6, 7]
+    2:
+      text: 4
+      deactivate: [0, 1, 2, 3]
+      activate: [7, 8, 9]
+      scr:
+        - [say, player, 4]
+        - [say, citizen, 16, 6, 7]
+    3:
+      text: 5
+      next: root
+      deactivate: [0,1,2,3]
+      activate: [4,5]
+      script: citizen_map
+      args: [5, 17]
+    4:
+      text: 24
+      scr:
+        - [say, player, 24]
+        - [say, citizen, 26]
+      active: False
+    5:
+      text: 25
+      scr:
+        - [say, player, 25]
+        - [say, citizen, 26]
+      active: False
+    6:
+      text: 36
+      active: '@can_buy_map'
+    7:
+      text: 11
+      active: False
+      script: citizen_map
+      args: [11, 33]
+    8:
+      text: 12
+      active: False
+    9:
+      text: 13
+      active: False
 
 fettuccini:
   text_set: '$dialogues/fettuccini'
