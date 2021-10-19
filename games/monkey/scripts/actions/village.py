@@ -97,8 +97,9 @@ def on_load_village1():
 
 def citizen_map(s, *args):
     bb =shc('$dialogues/citizen/')
+    s.add_action(a.custom_actions.set_variable("@talked_to_citizen", 2))
     s.add_action(scumm.actions.Say(tag='player', font='monkey', lines=bb([args[0]])))
-    s.add_action(scumm.actions.Say(tag='citizen', font='monkey', lines=bb([args[1]])))
+    s.add_action(scumm.actions.Say(tag='citizen', font='monkey', lines=bb(args[1])))
     # business
     s.add_action(scumm.actions.Say(tag='citizen', font='monkey', lines=bb([18])))
     s.add_action(actions.Animate(tag='citizen', anim='open_jacket', sync=True))

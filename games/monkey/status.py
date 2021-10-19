@@ -69,4 +69,4 @@ def has_shovel_not_paid():
     return 'shovel' in vars.inventory and paid_shovel == 0
 
 def can_buy_map():
-    return talked_to_citizen == 2
+    return talked_to_citizen == 2 and vars.inventory.get('pieces_of_eight', 0) >= 100

@@ -151,15 +151,17 @@ citizen:
       deactivate: [0,1,2,3]
       activate: [4,5]
       script: citizen_map
-      args: [5, 17]
+      args: [5, [17]]
     4:
       text: 24
+      persist: True
       scr:
         - [say, player, 24]
         - [say, citizen, 26]
       active: False
     5:
       text: 25
+      persist: True
       scr:
         - [say, player, 25]
         - [say, citizen, 26]
@@ -167,14 +169,18 @@ citizen:
     6:
       text: 36
       active: '@can_buy_map'
+      persist: True
     7:
       text: 11
       active: False
       script: citizen_map
-      args: [11, 33]
+      args: [11, [33]]
+      next: root
     8:
       text: 12
       active: False
+      script: citizen_map
+      args: [12, [29,30,31,32]]
     9:
       text: 13
       active: False
