@@ -18,6 +18,8 @@ guybrush:
 pieces_of_eight:
   text: '$objects/pieceofeight'
   plural: '$objects/piecesofeight'
+map:
+  text: '$objects/map'
 mancomb:
   type: character
   pos: [52, 18]

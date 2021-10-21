@@ -170,6 +170,7 @@ citizen:
       text: 36
       active: '@can_buy_map'
       persist: True
+      script: buy_map
     7:
       text: 11
       active: False
@@ -184,6 +185,10 @@ citizen:
     9:
       text: 13
       active: False
+      scr:
+        - [say, player, 13]
+        - [say, citizen, 14, 15]
+
 
 fettuccini:
   text_set: '$dialogues/fettuccini'

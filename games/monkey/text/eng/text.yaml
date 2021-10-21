@@ -62,6 +62,7 @@ objects:
   yellow_petal: yellow petal
   sign: sign
   swordmaster: swordmaster
+  map: map
 dialogues:
   storekeeper:
     1: Ahoy there, fancy pants.
@@ -623,3 +624,4 @@ lines:
   48: It's a striking yellow color.
   49: "\"DANGER: Open ravine.\""
   50: I better just stay back here and eavesdrop.
+  51: I think I've been had!

@@ -15,6 +15,8 @@ def start():
 
 def village():
     func.set_item_pos('guybrush', 'village2', (240, 42), 'w')
+    vars.inventory['pieces_of_eight'] = 478
+
     monkey.engine.room = 'village2'
 
 def kitchen():

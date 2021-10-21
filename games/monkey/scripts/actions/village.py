@@ -21,6 +21,10 @@ walkto_village2_archway_to_village1 = a.Actions.goto_room('village1', status.pos
 walkto_village2_archway_to_village3 = a.Actions.goto_room('village3', status.pos.village3_archway, 'w')
 walkto_village3_archway = a.Actions.goto_room('village2', status.pos.village2_archway3, 's')
 
+def lookat_map(x, y):
+    s = Script()
+    s.add_action(actions.Animate(tag='player', anim='open_map', sync=True))
+    example.play(s)
 
 def talkto_citizen(x, y):
     bb = shc('$dialogues/citizen/')
@@ -95,12 +99,25 @@ def on_load_village1():
     a.storekeeper_script(status.pos.village_cliffside, 'lookout', (258, 52), 'n')
 
 
+def buy_map(s, *args):
+    bb =shc('$dialogues/citizen/')
+    s.add_action(scumm.actions.Say(tag='player', font='monkey', lines=bb([36])), id=1)
+    s.add_action(actions.Animate(tag='player', anim='operate_e'), after=[1])
+    s.add_action(actions.Animate(tag='citizen', anim='givemap', sync=True), after=[1], id=2)
+    s.add_action(scumm.actions.Say(tag='citizen', font='monkey', lines=bb([37]), animate=False), after=[1])
+    s.add_action(actions.Animate(tag='player', anim='idle_e'), after=[2])
+    s.add_action(actions.Animate(tag='citizen', anim='idle_s'), after=[2])
+    s.add_action(a.custom_actions.add_to_inventory('map'))
+
+
+
+
 def citizen_map(s, *args):
     bb =shc('$dialogues/citizen/')
     s.add_action(a.custom_actions.set_variable("@talked_to_citizen", 2))
     s.add_action(scumm.actions.Say(tag='player', font='monkey', lines=bb([args[0]])))
     s.add_action(scumm.actions.Say(tag='citizen', font='monkey', lines=bb(args[1])))
-    # business
+    # # business
     s.add_action(scumm.actions.Say(tag='citizen', font='monkey', lines=bb([18])))
     s.add_action(actions.Animate(tag='citizen', anim='open_jacket', sync=True))
     s.add_action(actions.Animate(tag='citizen', anim='idle_e_1', sync=True))
