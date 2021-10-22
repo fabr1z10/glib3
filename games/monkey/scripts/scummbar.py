@@ -1,15 +1,12 @@
 from . import shared as a
 
-import scumm.actions
+import mopy.scumm as scumm
+import mopy.actions as actions
+import mopy.monkey as monkey
+from mopy.script import Script
+
 import example
-import entity
-from script import Script
-import actions
-import status
-import monkey
-import vars
-
-
+import data.vars as vars
 
 
 lookat_scummbar_fireplace = a.Actions.say(['$lines/3'])
@@ -22,9 +19,10 @@ def cook_init_helper(s, id):
     s.add_action(scumm.actions.Walk(tag='cook', pos=(115, 18)))
     s.add_action(scumm.actions.Turn(tag='cook', dir='n'))
     s.add_action(actions.Delay(sec=2))
-    s.add_action(scumm.actions.Walk(tag='cook', pos=status.pos.scummbar_kitchen_door))
+    s.add_action(scumm.actions.Walk(tag='cook', pos=vars.pos.scummbar_kitchen_door))
     s.add_action(actions.RemoveEntity(tag='cook'))
     s.add_action(actions.Animate(tag='scummbar_kitchen_door', anim='closed'))
+
 
 def anim_helper(tag):
     s1 = Script(loop=0, uid='_' + tag)
@@ -40,7 +38,7 @@ def init_scummbar():
         s.add_action(actions.CallFunc(f=a.Callbacks.add_item('cook', {'pos': (115, 18), 'parent': 'walkarea_0'})))
         s.add_action(scumm.actions.Turn(tag='cook', dir='n'))
         s.add_action(actions.Delay(sec=2))
-        s.add_action(scumm.actions.Walk(tag='cook', pos = status.pos.scummbar_kitchen_door))
+        s.add_action(scumm.actions.Walk(tag='cook', pos = vars.pos.scummbar_kitchen_door))
         s.add_action(actions.RemoveEntity(tag='cook'))
         s.add_action(actions.Animate(tag='scummbar_kitchen_door', anim='closed'))
         cook_init_helper(s, 100)
@@ -90,7 +88,7 @@ def walkto_scummbar_kitchen_door(aa, ba):
         if cook.valid and cook.x > 320:
             cook_upset(aa, ba, False)
         else:
-            a.Actions.walk_door('kitchen', status.pos.kitchen_door, 'e')(aa, ba)
+            a.Actions.walk_door('kitchen', vars.pos.kitchen_door, 'e')(aa, ba)
 
 def open_scummbar_kitchen_door(aa, ba):
     cook: example.Wrap1 = example.get('cook')
@@ -102,8 +100,8 @@ def open_scummbar_kitchen_door(aa, ba):
     if not cook.valid:
         s = a.Scripts.walk('scummbar_kitchen_door')
         s.add_action(actions.Animate(tag='scummbar_kitchen_door', anim='open'))
-        s.add_action(actions.Msg(text=monkey.engine.read('$lines/32'), font='monkey', pos=(609, 78), color=status.colors.cook_text_color))
-        s.add_action(actions.Msg(text=monkey.engine.read('$lines/34'), font='monkey', pos=(609, 78), color=status.colors.cook_text_color))
+        s.add_action(actions.Msg(text=monkey.engine.read('$lines/32'), font='monkey', pos=(609, 78), color=vars.colors.cook_text_color))
+        s.add_action(actions.Msg(text=monkey.engine.read('$lines/34'), font='monkey', pos=(609, 78), color=vars.colors.cook_text_color))
         s.add_action(actions.Animate(tag='scummbar_kitchen_door', anim='closed'))
         example.play(s)
     else:
@@ -112,7 +110,7 @@ def open_scummbar_kitchen_door(aa, ba):
 
 open_scummbar_village_door = a.Actions.open_door()
 close_scummbar_village_door = a.Actions.close_door()
-walkto_scummbar_village_door = a.Actions.walk_door('village1',status.pos.village_scummbar_door, 's')
+walkto_scummbar_village_door = a.Actions.walk_door('village1',vars.pos.village_scummbar_door, 's')
 
 
 
@@ -120,7 +118,7 @@ walkto_scummbar_village_door = a.Actions.walk_door('village1',status.pos.village
 def talkto_important_looking_pirates(aa, ba):
     s = a.Scripts.walk('important_looking_pirates')
     m = '$dialogues/important_looking_pirates/'
-    if status.pirates_know_guybrush == 0:
+    if vars.pirates_know_guybrush == 0:
         l = [monkey.engine.read(m+'1')]
     else:
         l = [monkey.engine.read(m + '40'), monkey.engine.read(m + '41')]
@@ -175,7 +173,7 @@ def on_exit_mancomb():
 
 
 def on_exit_estevan():
-    a.Actions.goto_room('scummbar', status.pos.estevan, 's')(None, None)
+    a.Actions.goto_room('scummbar', vars.pos.estevan, 's')(None, None)
 
 def on_exit_loom():
-    a.Actions.goto_room('scummbar', status.pos.loom, 'n')(None, None)
+    a.Actions.goto_room('scummbar', vars.pos.loom, 'n')(None, None)

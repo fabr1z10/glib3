@@ -1,13 +1,11 @@
 from . import shared as a
 
-import scumm.actions
+import mopy.scumm as scumm
 import example
-import entity
-from script import Script
-import actions
-import status
-import monkey
-import vars
+
+from mopy.script import Script
+import mopy.actions as actions
+import mopy.monkey as monkey
 import func
 import random
 

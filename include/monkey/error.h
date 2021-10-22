@@ -8,7 +8,7 @@ class Error : public std::exception {
 public:
     Error(const std::string& file, long line, const std::string& msg = "") {
         std::stringstream stream;
-        stream << file << ", " << line << ": " << msg;
+        stream << file << ", " << line << ": " << msg << std::endl;
         m_msg = stream.str();
     }
     ~Error() throw() {}

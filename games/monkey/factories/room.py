@@ -1,14 +1,19 @@
-import room
-import vars
-import entity
-import camera as cam
-import engine
-import monkey
+import mopy.room as room
+#import mopy.engine as engine
+import mopy.monkey as monkey
+import mopy.entity as entity
+import mopy.camera as cam
+import data
+
+
+
+
 import factories.items
-import components as compo
+import mopy.components as compo
 import func
-import runners
-import scripts.actions
+import mopy.runners as runners
+
+import scripts
 
 
 def map_room(desc: dict):
@@ -20,7 +25,7 @@ def map_room(desc: dict):
 
     # setup collision engine
     ce = runners.CollisionEngine(80, 80)
-    ce.add_response(vars.Collision.Tags.player, vars.Collision.Tags.trap,
+    ce.add_response(data.Collision.Tags.player, data.Collision.Tags.trap,
                     runners.CollisionResponse(on_enter=func.on_enter_trap))
     r.add_runner(ce)
     device_size = monkey.engine.device_size
@@ -35,7 +40,7 @@ def map_room(desc: dict):
     # # main.add (e.Text(font='ui', text='ciao', color = [255, 255, 255, 255], align = e.TextAlignment.bottom, pos = [camWidth/2, 16, 0]))
     on_load = desc.get('on_load', None)
     if on_load:
-        r.init.append(getattr(scripts.actions, on_load))
+        r.init.append(getattr(scripts, on_load))
 
     # now add all items
     if 'items' in desc:
@@ -58,9 +63,9 @@ def map_room(desc: dict):
 
     main.add(cursor)
     # add dynamic items
-    if id in vars.items_in_room:
-        for key in vars.items_in_room[id]:
-            item_desc = vars.items[key]
+    if id in data.items_in_room:
+        for key in data.items_in_room[id]:
+            item_desc = data.items[key]
             tp = item_desc.get('type', None)
             if tp is None:
                 print('item ' + key + ' does not have type!')
@@ -83,52 +88,52 @@ def default_room(desc: dict):
     r.add_runner(runners.Scheduler())
 
     if 'on_start' in desc:
-        r.on_start = getattr(scripts.actions, desc['on_start'])
+        r.on_start = getattr(scripts, desc['on_start'])
 
     # setup collision engine
     ce = runners.CollisionEngine(80, 80)
-    ce.add_response(vars.Collision.Tags.player, vars.Collision.Tags.trap, runners.CollisionResponse(on_enter=func.on_enter_trap))
+    ce.add_response(data.Collision.Tags.player, data.Collision.Tags.trap, runners.CollisionResponse(on_enter=func.on_enter_trap))
     r.add_runner(ce)
-    print('uisize is ' + str(vars.ui_height))
+    print('uisize is ' + str(data.ui_height))
     device_size = monkey.engine.device_size
     cam_width = device_size[0]
-    cam_height = device_size[1] - vars.ui_height
+    cam_height = device_size[1] - data.ui_height
     print ('device size is ' + str(monkey.engine.device_size))
     # # add the main node
     main = entity.Entity(tag='main')
-    main.camera = cam.OrthoCamera(width, height, cam_width, cam_height, [0, vars.ui_height, cam_width, cam_height], tag='maincam')
+    main.camera = cam.OrthoCamera(width, height, cam_width, cam_height, [0, data.ui_height, cam_width, cam_height], tag='maincam')
     main.add_component(compo.HotSpotManager(lmbclick=func.walkto))
     r.add(main)
     # # main.add (e.Text(font='ui', text='ciao', color = [255, 255, 255, 255], align = e.TextAlignment.bottom, pos = [camWidth/2, 16, 0]))
     verb_set = desc.get('verb_set', 0)
     # get current verb set
-    vset = vars.verb_sets[verb_set]
-    dv = vars.verbs[vset['default_verb']]
-    vars.current_verb = vset['default_verb']
-    vars.current_item_1 = ''
-    vars.current_item_2 = ''
+    vset = data.verb_sets[verb_set]
+    dv = data.verbs[vset['default_verb']]
+    data.current_verb = vset['default_verb']
+    data.current_item_1 = ''
+    data.current_item_2 = ''
 
     ui = entity.Entity(tag='ui')
-    ui.camera = cam.OrthoCamera(cam_width, vars.ui_height, cam_width, vars.ui_height, [0, 0, cam_width, vars.ui_height], tag='uicam')
+    ui.camera = cam.OrthoCamera(cam_width, data.ui_height, cam_width, data.ui_height, [0, 0, cam_width, data.ui_height], tag='uicam')
     #monkey.engine.read(dv['text']
-    ui.add(entity.Text(font='ui', size=8, text='mierda', color=vars.Colors.current_action,
+    ui.add(entity.Text(font='ui', size=8, text='mierda', color=data.Colors.current_action,
       align=entity.TextAlignment.bottom, tag='current_verb', pos=(cam_width / 2, 48, 0)))
     ui.add_component(compo.HotSpotManager())
     r.init.append(func.refresh_inventory)
     on_load = desc.get('on_load', None)
     if on_load:
-        r.init.append(getattr(scripts.actions, on_load))
+        r.init.append(getattr(scripts, on_load))
 
     r.add(ui)
-    cy = vars.ui_height - 2 * vars.font_size
+    cy = data.ui_height - 2 * data.font_size
     count = 0
     shift = 0
     shift_applied = 46
     for i in vset['verbs']:
         cx = (count // 4) * shift_applied
-        cy = vars.ui_height - (2 + count % 4) * vars.font_size
+        cy = data.ui_height - (2 + count % 4) * data.font_size
         e = factories.items.make_verb_button(i, (cx, cy, 0))
-        shift = max(shift, 1 + len(monkey.engine.read(vars.verbs[i]['text'])))
+        shift = max(shift, 1 + len(monkey.engine.read(data.verbs[i]['text'])))
         ui.add(e)
         count += 1
     # inventory node
@@ -164,9 +169,9 @@ def default_room(desc: dict):
                     r.add(e, parent)
 
     # add dynamic items
-    if id in vars.items_in_room:
-        for key in vars.items_in_room[id]:
-            item_desc = vars.items[key]
+    if id in data.items_in_room:
+        for key in data.items_in_room[id]:
+            item_desc = data.items[key]
             tp = item_desc.get('type', None)
             if tp is None:
                 print ('item ' + key + ' does not have type!')

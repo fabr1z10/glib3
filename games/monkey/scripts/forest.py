@@ -1,13 +1,13 @@
 from . import shared as a
 
-import scumm.actions
+import mopy.scumm as scumm
 import example
-import entity
-from script import Script
-import actions
-import status
-import monkey
-import vars
+from mopy.script import Script
+import mopy.actions as actions
+
+import data.vars as vars
+
+
 import random
 
 
@@ -22,7 +22,7 @@ def helper_swordmaster_sign(x, anim, bridge):
     s.add_action(actions.Animate(tag='player', anim='idle_e'))
     s.add_action(actions.Animate(tag='swordmaster_sign', anim=anim))
     s.add_action(actions.Animate(tag='trunk_bridge', anim=anim))
-    s.add_action(a.custom_actions.set_variable('@forest_bridge', anim))
+    s.add_action(a.custom_actions.set_variable('@vars/forest_bridge', anim))
     s.add_action(scumm.actions.SetWall('walkarea_0', 0, bridge))
     example.play(s)
 
@@ -40,9 +40,9 @@ def pickup_yellow_plant(x, y):
         s.add_action(a.custom_actions.add_to_inventory("yellow_petal"))
         example.play(s)
 
-walkto_forest1_exit = a.Actions.goto_room('meleemap', status.pos.melee_fork, 's')
-walkto_forest1_forest2 = a.Actions.goto_room('forest2', status.pos.forest1_entry, 'w')
-walkto_forest1_forest2b = a.Actions.goto_room('forest2', status.pos.forest1_entry, 'w')
+walkto_forest1_exit = a.Actions.goto_room('meleemap', vars.pos.melee_fork, 's')
+walkto_forest1_forest2 = a.Actions.goto_room('forest2', vars.pos.forest1_entry, 'w')
+walkto_forest1_forest2b = a.Actions.goto_room('forest2', vars.pos.forest1_entry, 'w')
 walkto_forest2_forest1 = a.Actions.goto_room('forest1', (238, 68), 's')
 walkto_forest2_forest3 = a.Actions.goto_room('forest3', (135, 69), 's')
 walkto_forest3_forest2 = a.Actions.goto_room('forest2', (257, 69), 's')
@@ -64,7 +64,7 @@ def on_start_forest1():
 
 
 def on_load_forest1():
-    a.storekeeper_script(status.pos.f1f2, 'forest2', (257, 45), 'n')
+    a.storekeeper_script(vars.pos.f1f2, 'forest2', (257, 45), 'n')
 
 
 def on_start_forest2():

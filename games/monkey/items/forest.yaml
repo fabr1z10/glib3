@@ -14,7 +14,7 @@ forest1_exit:
   text: '$objects/path'
   pos: [310, 0]
   size: [10, 144]
-  walkto: '@pos/forest1_entry'
+  walkto: '@vars/pos/forest1_entry'
   wdir: 'e'
   room: forest1
 forest1_forest2:
@@ -22,7 +22,7 @@ forest1_forest2:
   text: '$objects/path'
   pos: [228, 68]
   size: [20, 50]
-  walkto: '@pos/f1f2'
+  walkto: '@vars/pos/f1f2'
   wdir: 'n'
   room: forest1
 forest1_forest2b:
@@ -30,7 +30,7 @@ forest1_forest2b:
   text: '$objects/path'
   pos: [144, 68]
   size: [20, 50]
-  walkto: '@pos/f1f2b'
+  walkto: '@vars/pos/f1f2b'
   wdir: 'n'
   room: forest1
 forest2_forest1:
@@ -38,7 +38,7 @@ forest2_forest1:
   text: '$objects/path'
   pos: [310, 0]
   size: [10, 144]
-  walkto: '@pos/forest1_entry'
+  walkto: '@vars/pos/forest1_entry'
   wdir: 'e'
   room: forest2
 forest2_forest3:
@@ -154,13 +154,13 @@ swordmaster_sign:
   walkto: [160, 20]
   wdir: e
   room: forest7
-  anim: '@forest_bridge'
+  anim: '@vars/forest_bridge'
   parent: walkarea_0
 trunk_bridge:
   type: item1
   model: 01/trunk_bridge
   room: forest7
-  anim: '@forest_bridge'
+  anim: '@vars/forest_bridge'
   pos: [229, 22, 0]
 swordmaster_tiny:
   type: item1

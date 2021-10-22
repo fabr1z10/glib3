@@ -1,13 +1,12 @@
 from . import shared as a
 
-import scumm.actions
+import mopy.scumm as scumm
+import mopy.actions as actions
+import mopy.monkey as monkey
+from mopy.script import Script
+
 import example
-import entity
-from script import Script
-import actions
-import status
-import monkey
-import vars
+import data.vars as vars
 import func
 
 
@@ -15,11 +14,11 @@ import random
 
 
 lookat_village1_poster = a.Actions.say(['$lines/1', '$lines/2'])
-walkto_cliffside = a.Actions.goto_room('lookout', status.pos.lookout_stairs, 'n')
-walkto_village1_archway = a.Actions.goto_room('village2', status.pos.village2_archway, 's')
-walkto_village2_archway_to_village1 = a.Actions.goto_room('village1', status.pos.village1_archway, 'w')
-walkto_village2_archway_to_village3 = a.Actions.goto_room('village3', status.pos.village3_archway, 'w')
-walkto_village3_archway = a.Actions.goto_room('village2', status.pos.village2_archway3, 's')
+walkto_cliffside = a.Actions.goto_room('lookout', vars.pos.lookout_stairs, 'n')
+walkto_village1_archway = a.Actions.goto_room('village2', vars.pos.village2_archway, 's')
+walkto_village2_archway_to_village1 = a.Actions.goto_room('village1', vars.pos.village1_archway, 'w')
+walkto_village2_archway_to_village3 = a.Actions.goto_room('village3', vars.pos.village3_archway, 'w')
+walkto_village3_archway = a.Actions.goto_room('village2', vars.pos.village2_archway3, 's')
 
 def lookat_map(x, y):
     s = Script()
@@ -29,17 +28,17 @@ def lookat_map(x, y):
 def talkto_citizen(x, y):
     bb = shc('$dialogues/citizen/')
     lines = [1]
-    if status.talked_to_citizen == 1:
+    if vars.talked_to_citizen == 1:
         lines = [8, 9]
-    elif status.talked_to_citizen == 2:
+    elif vars.talked_to_citizen == 2:
         lines = [8, 9, 27, 28]
     s = a.Scripts.walk(x)
     s.add_action(a.custom_actions.disable_controls)
     s.add_action(scumm.actions.Turn(tag='citizen', dir='e'))
     s.add_action(scumm.actions.Say(tag='citizen', lines=bb(lines), font='monkey'))
     s.add_action(scumm.actions.StartDialogue(dialogue_id='citizen'))
-    if status.talked_to_citizen == 0:
-        status.talked_to_citizen = 1
+    if vars.talked_to_citizen == 0:
+        vars.talked_to_citizen = 1
     example.play(s)
 
 def on_exit_citizen():
@@ -71,8 +70,8 @@ close_village3_store_door = a.Actions.close_door()
 
 
 
-walkto_village_scummbar_door = a.Actions.walk_door('scummbar',status.pos.scummbar_main_door, 'e')
-walkto_village3_store_door = a.Actions.walk_door('store',status.pos.store_entry, 'e')
+walkto_village_scummbar_door = a.Actions.walk_door('scummbar',vars.pos.scummbar_main_door, 'e')
+walkto_village3_store_door = a.Actions.walk_door('store',vars.pos.store_entry, 'e')
 
 
 def on_start_village3():
@@ -88,15 +87,15 @@ def on_start_village1():
 
 
 def on_load_village3():
-    a.storekeeper_script(status.pos.village3_archway, 'village2', (162, 41), 's')
+    a.storekeeper_script(vars.pos.village3_archway, 'village2', (162, 41), 's')
 
 
 def on_load_village2():
-    a.storekeeper_script(status.pos.village2_archway, 'village1', (820, 34), 'w')
+    a.storekeeper_script(vars.pos.village2_archway, 'village1', (820, 34), 'w')
 
 
 def on_load_village1():
-    a.storekeeper_script(status.pos.village_cliffside, 'lookout', (258, 52), 'n')
+    a.storekeeper_script(vars.pos.village_cliffside, 'lookout', (258, 52), 'n')
 
 
 def buy_map(s, *args):

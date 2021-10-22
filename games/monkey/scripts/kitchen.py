@@ -1,12 +1,14 @@
 from . import shared as a
-import scumm.actions
+
+import mopy.scumm as scumm
+import mopy.entity as entity
+from mopy.script import Script
+import mopy.actions as actions
+import mopy.monkey as monkey
+
 import example
-import entity
-from script import Script
-import actions
-import status
-import monkey
-import vars
+import data.vars as vars
+
 
 # one-object actions
 lookat_meat = a.Actions.say(['$lines/35'])
@@ -15,13 +17,15 @@ lookat_fish = a.Actions.say(['$lines/37'])
 lookat_barrel = a.Actions.say(['$lines/39'])
 
 
+
+
 def lookat_potostew(item, id):
-    lines = ['$lines/' + ('41' if status.meat_in_pot else '40')]
+    lines = ['$lines/' + ('41' if vars.meat_in_pot else '40')]
     a.Actions.say(lines)(item, id)
 
 
 def pickup_potostew(item, id):
-    if status.meat_in_pot:
+    if vars.meat_in_pot:
         vars.items['meat']['text'] = '$objects/stewed_meat_2'
         vars.items['potostew']['text'] = '$objects/potostew'
         s = a.Scripts.walk(item)
@@ -53,10 +57,10 @@ def on_click_plank(x, y, pippo):
     s2.add_action(actions.Animate(tag='plank', anim='pushed', sync=True), after=[1])
     s2.add_action(actions.Animate(tag='plank', anim='idle'))
     s2.add_action(actions.CallFunc(f=a.Callbacks.set_var("@seagull_on_plank", False)), after=[1])
-    s2.add_action(actions.Animate(tag='seagull', anim='jump' + str(status.seagull_jump), sync=True))
+    s2.add_action(actions.Animate(tag='seagull', anim='jump' + str(vars.seagull_jump), sync=True))
     s2.add_action(actions.CallFunc(f=a.Callbacks.set_var("@seagull_on_plank", True)))
     s2.add_action(actions.Animate(tag='seagull', anim='eat'))
-    status.seagull_jump = 2 if status.seagull_jump == 1 else 1
+    vars.seagull_jump = 2 if vars.seagull_jump == 1 else 1
     s.add_action(actions.RunScript(s2))
     example.play(s)
 
@@ -67,7 +71,7 @@ def pickup_fish(item_id, entity):
     s = a.Scripts.walk(item_id)
     s.add_action(actions.Animate(tag='player', anim='kneel_s'))
     s.add_action(actions.Delay(sec=0.5))
-    if status.seagull_on_plank:
+    if vars.seagull_on_plank:
         s.add_action(scumm.actions.Say(lines=[monkey.engine.read(x) for x in ['$lines/38']], font='monkey', tag='player'))
     else:
         s.add_action(actions.Animate(tag='player', anim='idle_s'))
@@ -77,7 +81,7 @@ def pickup_fish(item_id, entity):
 
 open_kitchen_door = a.Actions.set_door('open')
 close_kitchen_door = a.Actions.set_door('closed')
-walkto_kitchen_door = a.Actions.walk_door('scummbar', status.pos.scummbar_kitchen_door,'e')
+walkto_kitchen_door = a.Actions.walk_door('scummbar', vars.pos.scummbar_kitchen_door,'e')
 
 def on_kitchen_trap(trap):
     example.remove(trap.id)

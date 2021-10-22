@@ -1,5 +1,4 @@
-import vars
-
+inventory = dict()
 
 class doors:
     kitchen = "closed"
@@ -56,8 +55,11 @@ storekeeper_last_update = None
 forest_bridge = 'closed'
 talked_to_citizen = 0
 
+
 def forest_bridge_wall():
+    print ('the forest bridge is ' + forest_bridge)
     return forest_bridge == 'closed'
+
 
 def has_sword_not_paid():
     return 'sword' in vars.inventory and paid_sword == 0

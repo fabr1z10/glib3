@@ -1,13 +1,15 @@
-import vars
-import entity
-import monkey
-import components as compo
+import mopy.entity as entity
+import mopy.monkey as monkey
+import data
+import data.vars as vars
+import mopy.components as compo
 import example
 import func
-import entity
-import scumm.components
-import shapes
-import scripts.actions
+import mopy.scumm as scumm
+import mopy.shapes as shapes
+import scripts
+
+
 
 def bg(**kwargs):
     def f(*args):
@@ -50,7 +52,7 @@ def walkarea(**kwargs):
 def character(**kwargs):
     def f(*args):
         key = args[0]
-        is_player = key == vars.current_player
+        is_player = key == data.current_player
         desc = args[1]
         model = desc.get('model', None)
         text_color = monkey.engine.read(desc.get('text_color', [255, 255, 255, 255]))
@@ -64,8 +66,8 @@ def character(**kwargs):
         dir = desc.get('dir', 's')
         if model:
             s = entity.Sprite(model=model, pos=pos, tag='player' if is_player else tag)
-            s.add_component(compo.Collider(debug=True, flag=vars.Collision.Flags.player, mask=vars.Collision.Flags.other,
-                                       tag=vars.Collision.Tags.player, shape=shapes.Rect(width=8, height=2, offset=[-4, 0])))
+            s.add_component(compo.Collider(debug=True, flag=data.Collision.Flags.player, mask=data.Collision.Flags.other,
+                                       tag=data.Collision.Tags.player, shape=shapes.Rect(width=8, height=2, offset=[-4, 0])))
             if is_player:
                 s.add_component(compo.Follow())
         else:
@@ -157,9 +159,9 @@ def item1(**kwargs):
 
 
 def make_verb_button(verb_id: str, pos):
-    verb = vars.verbs[verb_id]
-    e = entity.Text(font='ui', size=8, text=monkey.engine.read(verb['text']), color=vars.Colors.verb_unselected, align=entity.TextAlignment.bottom_left, pos=pos)
-    e.add_component(compo.HotSpot(shape=None, onenter=func.change_color(vars.Colors.verb_selected), onleave=func.change_color(vars.Colors.verb_unselected),
+    verb = data.verbs[verb_id]
+    e = entity.Text(font='ui', size=8, text=monkey.engine.read(verb['text']), color=data.Colors.verb_unselected, align=entity.TextAlignment.bottom_left, pos=pos)
+    e.add_component(compo.HotSpot(shape=None, onenter=func.change_color(data.Colors.verb_selected), onleave=func.change_color(data.Colors.verb_unselected),
                                   onclick=func.on_verb_click(verb_id)))
     return e
 
@@ -202,16 +204,16 @@ def make_inventory_button(item):
         font='ui',
         item_id=item[0],
         qty=item[1],
-        color_inactive=vars.Colors.inv_unselected,
-        color_active=vars.Colors.inv_selected)
+        color_inactive=data.Colors.inv_unselected,
+        color_active=data.Colors.inv_selected)
 
 def make_dialogue_button(dialogueline):
     return DialogueButton(
         font='ui',
         text=dialogueline.get_text(),
         script=func.execute_dialogue_script(dialogueline),
-        color_inactive=vars.Colors.verb_unselected,
-        color_active=vars.Colors.verb_selected)
+        color_inactive=data.Colors.verb_unselected,
+        color_active=data.Colors.verb_selected)
 # def makeDialogueButton(dialogueline):
 #     return se.DialogueButton(
 #         font = 'ui',

@@ -1,6 +1,4 @@
-import vars
-import monkey
-import status
+import mopy.monkey as monkey
 import func
 
 def outside_circus():
@@ -10,8 +8,8 @@ def outside_circus():
 
 
 def start():
-    func.set_item_pos('guybrush', 'forest6', (240, 42), 'w')
-    monkey.engine.room = 'forest6'
+    func.set_item_pos('guybrush', 'forest2', (240, 42), 'w')
+    monkey.engine.room = 'forest2'
 
 def village():
     func.set_item_pos('guybrush', 'village2', (240, 42), 'w')

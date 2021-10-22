@@ -1,15 +1,15 @@
 from . import shared as a
 
-import scumm.actions
+import mopy.scumm as scumm
+import mopy.entity as entity
 import example
-import entity
-from script import Script
+
+from mopy.script import Script
 #import scripts.actions as aa
 
-import actions
-import status
-import monkey
-import vars
+import mopy.actions as actions
+import data
+import mopy.monkey as monkey
 
 
 def gl(id):
@@ -90,7 +90,7 @@ def bsay(n):
 def fettuccini_exit(s, *args):
     s.add_action(scumm.actions.HideDialogue())
     s.add_action(psay(63))
-    a.goto_room(s, 'clearing', status.pos.circus_tent, 's')
+    a.goto_room(s, 'clearing', data.pos.circus_tent, 's')
     example.play(s)
 
 
@@ -106,7 +106,7 @@ def pane(s, *args):
     s.add_action(scumm.actions.Turn(tag='bill', dir='w'))
     s.add_action(scumm.actions.Turn(tag='player', dir='s'))
 
-    if status.circus_status == 0:
+    if data.circus_data == 0:
         s.add_action(asay(34))
         # s.add_action(bsay(35))
         # s.add_action(asay(36))
@@ -133,11 +133,11 @@ def pane(s, *args):
         # s.add_action(bsay(58))
         # s.add_action(asay(59))
         s.add_action(bsay(60))
-        status.circus_status = 1
-    elif status.circus_status == 1:
+        data.circus_data = 1
+    elif data.circus_data == 1:
         s.add_action(asay(67))
         s.add_action(bsay(68))
-    elif status.circus_status == 2:
+    elif data.circus_data == 2:
         s.add_action(asay(67))
         s.add_action(bsay(68))
         s.add_action(asay(70))
@@ -193,7 +193,7 @@ def init_circus():
     s.add_action(id=1, action=actions.CallFunc(f=a.Callbacks.enable_controls(False)))
     s.add_action(scumm.actions.Walk(tag='player', pos=(178, 9)), after=[1])
     # TODO add after debug
-    # if status.circus_status == 0:
+    # if data.circus_data == 0:
     #     s.add_action(asay(1), after=[1])
     #     s.add_action(bsay(2))
     #     s.add_action(asay(3))

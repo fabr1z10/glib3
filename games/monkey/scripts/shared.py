@@ -1,17 +1,19 @@
-from script import Script
+from mopy.script import Script
+import mopy.entity as entity
+import mopy.scumm as scumm
 
 import example
-import entity
-import vars
-import scumm.actions
-import actions
-import monkey
+import data
+import data.vars as vars
+import mopy.actions as actions
+import mopy.monkey as monkey
 import func
-import engine
+import mopy.engine as engine
 import factories
 import time
-import status
 import time
+
+
 
 def make_lines(lines):
     return [monkey.engine.read(x) for x in lines]
@@ -126,7 +128,7 @@ class Scripts:
         s = Script(uid=script_id)
         has_item = vars.inventory.get(id, 0) > 0
         if not has_item:
-            item = vars.items[id]
+            item = data.items[id]
             wt = monkey.engine.read(item.get('walkto', None))
             if wt is not None:
                 wdir = item.get('wdir', None)
@@ -257,7 +259,7 @@ class Actions:
         def f(item_id, entity):
             print('HEY item = ' + item_id)
             s = Scripts.walk(item_id) if item_id else Script()
-            s.add_action(actions.CallFunc(f=Callbacks.set_pos(vars.current_player, room, pos, dir)))
+            s.add_action(actions.CallFunc(f=Callbacks.set_pos(data.current_player, room, pos, dir)))
             s.add_action(actions.ChangeRoom(room=room))
             example.play(s)
         return f

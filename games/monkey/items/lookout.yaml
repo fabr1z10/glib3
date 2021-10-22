@@ -23,7 +23,7 @@ lookout_stairs:
   text: '$objects/stairs'
   pos: [230, 0]
   size: [30,10]
-  walkto: '@pos/lookout_stairs'
+  walkto: '@vars/pos/lookout_stairs'
   wdir: 's'
   room: lookout
 lookout_path:
@@ -31,6 +31,6 @@ lookout_path:
   text: '$objects/path'
   pos: [294, 0]
   size: [26, 144]
-  walkto: '@pos/lookout_path'
+  walkto: '@vars/pos/lookout_path'
   wdir: e
   room: lookout

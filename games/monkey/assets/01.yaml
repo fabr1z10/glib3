@@ -207,9 +207,9 @@ lookout:
         - quads: [[193,459,23,35,11,0],[186,495,9,14,5,-32]]
     talk_e:
       elements:
-        - quads: [[170,457,20,37,11,0],[173,495,11,13,5,0]]
-        - quads: [[170,457,20,37,11,0],[197,496,11,14,5,0]]
-        - quads: [[170,457,20,37,11,0],[210,496,11,13,5,0]]
+        - quads: [[170,457,20,37,11,0],[173,495,11,13,4,-32]]
+        - quads: [[170,457,20,37,11,0],[197,496,11,14,4,-32]]
+        - quads: [[170,457,20,37,11,0],[210,496,11,13,4,-32]]
     talk_s:
       elements:
         - quads: [[193,459,23,35,11,0], [186,495,9,14,5,-32]]
@@ -973,6 +973,62 @@ swordmaster_tiny:
         - quads: [[484, 465, 8, 12, 4, 0]]
         - quads: [[494, 465, 8, 12, 4, 0]]
         - quads: [[504, 465, 5, 12, 3, 0]]
+low_moral_fiber_1:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: asset.sprite
+  animations:
+    idle_e:
+      elements:
+        - quads: [[33,15,34,39,17,0]]
+          ticks: 3
+        - quads: [[1,1,31,30,13,0], [33,1,15,12,7,-28]]
+          ticks: 3
+        - quads: [[69,16,27,39,9,0]]
+          ticks: 3
+        - quads: [[1,1,31,30,13,0], [33,1,15,12,7,-28]]
+          ticks: 3
+low_moral_fiber_2:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: asset.sprite
+  animations:
+    idle_e:
+      elements:
+        - quads: [[127,1,12,9,7,-28], [100,1,24,30,14,0]]
+low_moral_fiber_3:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: asset.sprite
+  animations:
+    idle_e:
+      elements:
+        - quads: [[67,127,24,37,14,0], [93,127,13,15,14,-34]]
+
+#	low_moral_fiber_body_1 = { x = 1, y=1, width=31, height=30, anchor={13, 0} },
+#	low_moral_fiber_1_talk1 = {x=33, y=1, width=15, height=12, anchor ={8, 0}},
+#	low_moral_fiber_1_talk2 = {x=66, y=1, width=15, height=12, anchor ={7, 2} },
+#	low_moral_fiber_1_talk3 = {x=50, y=1, width=15, height=13, anchor ={7, 1}},
+#	low_moral_fiber_1_look_north = {x=83, y=1, width=14, height=12, anchor ={8, 0}},
+#	low_moral_fiber_1_rock1 = { x=33, y=15, width=34, height=39, anchor={17, 0}},
+#	low_moral_fiber_1_rock2 = { x=69, y=16, width=27, height=39, anchor={9, 0}},
+#	low_moral_fiber_2_body = {x=100, y=1, width=24, height=30, anchor={14, 0}},
+#	low_moral_fiber_2_head_east = {x=127, y=1, width=12, z=0.01, height=9, anchor ={7,0}},
+#	low_moral_fiber_2_head_s_1 = {x=141, y=1, width=10, z=0.01, height=9, anchor ={7,0}},
+#	low_moral_fiber_2_head_s_2 = {x=153, y=1, width=10, z=0.01, height=9, anchor ={7,0}},
+#	low_moral_fiber_2_laugh1 = {x=314, y=34, width=24, height=39, anchor = {14, 0}},
+#	low_moral_fiber_2_laugh2 = {x=340, y=35, width=25, height=38, anchor = {15, 0}},
+#	low_moral_fiber_2_laugh3 = {x=367, y=34, width=24, height=39, anchor = {14, 0}},
+#	low_moral_fiber_2_head_hit = {x=128, y=11, width=11, height=8, anchor={7,0}},
+#low_moral_fiber_3_body_idle = { x = 67, y = 127, width = 24, height = 37, anchor={14,0} },
+#	low_moral_fiber_3_body_open_jacket_1 = { x = 124, y = 127, width = 23, height = 37, anchor={13, 0} },
+#	low_moral_fiber_3_body_open_jacket_2 = { x = 149, y = 127, width = 24, height = 37, anchor={13, 0} },
+#	low_moral_fiber_3_body_punch_1 = { x = 190, y = 127, width = 23, height = 37, anchor={13, 0} },
+#	low_moral_fiber_3_body_punch_2 = { x = 213, y = 127, width = 30, height = 45, anchor={18, 0} },
+#	low_moral_fiber_3_body_punch_3 = { x = 244, y = 127, width = 32, height = 37, anchor={20, 0} },
+#	low_moral_fiber_3_head_idle_e = { x=93, y=127, width=13, height=15, anchor = {10, 0}},
+#	low_moral_fiber_3_head_talk_e_1 = { x=93, y=144, width=13, height=15, anchor = {10, 0}},
+#	low_moral_fiber_3_head_talk_e_2 = { x=108, y=127, width=13, height=15, anchor = {10, 0}},
+#	low_moral_fiber_3_head_talk_e_3 = { x=108, y=144, width=13, height=15, anchor = {10, 0}},
+#	low_moral_fiber_3_head_idle_s = { x=176, y=127, width=11, height=13, anchor = {6, 0}},
+#	low_moral_fiber_3_head_talk_s_1 = { x=175, y=142, width=13, height=14, anchor = {7, 0}},
 seagull:
   sheet: 'gfx/sprites/sprites1.png'
   type: asset.sprite

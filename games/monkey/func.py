@@ -1,33 +1,37 @@
+import mopy.monkey as monkey
+import mopy.script as script
+
+import mopy.scumm as scumm
+import mopy.actions as actions
+
 import example
-import vars
+import data
+import data.vars as vars
 import sys
-import monkey
-import script
-import scumm.actions
-import actions
-import scripts.actions
-import scripts.actions.shared as aa
+
+import scripts
+import scripts.shared as aa
 
 
 def is_in_room(item_id, room):
-    return vars.items[item_id]['room'] == room
+    return data.items[item_id]['room'] == room
 
 
 def set_item_pos(item_id, room, pos, dir = None):
-    item = vars.items[item_id]
+    item = data.items[item_id]
     old_room = item['room']
     item['room'] = room
     item['pos'] = pos
     if dir:
         item['dir'] = dir
     if old_room != room:
-        vars.items_in_room[old_room].remove(item_id)
-        if room not in vars.items_in_room:
-            vars.items_in_room[room] = set()
-        vars.items_in_room[room].add(item_id)
+        data.items_in_room[old_room].remove(item_id)
+        if room not in data.items_in_room:
+            data.items_in_room[room] = set()
+        data.items_in_room[room].add(item_id)
 
 def get_script(str):
-    return getattr(scripts.actions, str, None)
+    return getattr(scripts, str, None)
 
 
 def change_color(color):
@@ -38,40 +42,39 @@ def change_color(color):
 
 def on_verb_click(verb_id):
     def f(e: example.Wrap1, x, y):
-        print('clicked on ' + verb_id)
-        verb = vars.verbs[verb_id]
+        verb = data.verbs[verb_id]
         callback = verb.get('callback', 'set_verb')
         getattr(sys.modules[__name__], callback)(verb_id)
     return f
 
 
 def set_verb(verb_id):
-    vars.current_verb = verb_id
-    vars.current_item_1 = ''
-    vars.current_item_2 = ''
-    vars.wait_for_second_item = False
+    data.current_verb = verb_id
+    data.current_item_1 = ''
+    data.current_item_2 = ''
+    data.wait_for_second_item = False
     update_current_action()
 
 
 def set_verb_2(verb_id, item_id):
-    vars.current_verb = verb_id
-    vars.current_item_1 = item_id
-    vars.current_item_2 = ''
-    vars.wait_for_second_item = False
+    data.current_verb = verb_id
+    data.current_item_1 = item_id
+    data.current_item_2 = ''
+    data.wait_for_second_item = False
     update_current_action()
 
 def update_current_action():
     a = example.get('current_verb')
-    verb = vars.verbs[vars.current_verb]
+    verb = data.verbs[data.current_verb]
     text = monkey.engine.read(verb['text'])
-    if vars.current_item_1:
-        item = vars.items[vars.current_item_1]
+    if data.current_item_1:
+        item = data.items[data.current_item_1]
         text += ' ' + monkey.engine.read(item['text'])
     if verb['items'] == 2:
-        if vars.wait_for_second_item:
+        if data.wait_for_second_item:
             text += ' ' + monkey.engine.read(verb['prep'])
-            if vars.current_item_2:
-                item2 = vars.items[vars.current_item_2]
+            if data.current_item_2:
+                item2 = data.items[data.current_item_2]
                 text += ' ' + monkey.engine.read(item2['text'])
     a.setText(text)
 
@@ -98,55 +101,53 @@ def hover_off_inventory_button(item):
 
 def hover_on(obj):
     def f(item):
-        print (obj)
-        if not vars.current_item_1:
-            vars.current_item_1 = obj
+        if not data.current_item_1:
+            data.current_item_1 = obj
         else:
             # if this verb takes 2 objects...
-            if vars.verbs[vars.current_verb]['items'] > 1 and vars.current_item_1 != obj:
-                vars.current_item_2 = obj
+            if data.verbs[data.current_verb]['items'] > 1 and data.current_item_1 != obj:
+                data.current_item_2 = obj
         update_current_action()
     return f
 
 def prova():
     def f(x, y, item):
-        print('current verb: ' + str(vars.current_verb))
-        print('object      : ' + vars.current_item_1)
-        print('second obj  : ' + vars.current_item_2)
-        if vars.current_item_2 == '':
+        print('current verb: ' + str(data.current_verb))
+        print('object      : ' + data.current_item_1)
+        print('second obj  : ' + data.current_item_2)
+        if data.current_item_2 == '':
             # see if I have a callback of form <verb>_<object>
-            f1 = vars.current_verb + '_' + vars.current_item_1
-            fc = getattr(scripts.actions, f1, None)
+            f1 = data.current_verb + '_' + data.current_item_1
+            fc = getattr(scripts, f1, None)
             if fc is None:
                 # if verb takes two objects, wait for 2nd object
-                if vars.verbs[vars.current_verb]['items'] == 2:
-                    print ('xxx')
-                    vars.wait_for_second_item = True
+                if data.verbs[data.current_verb]['items'] == 2:
+                    data.wait_for_second_item = True
                     update_current_action()
                 else:
-                    f2 = vars.current_verb + '_'
-                    fc = getattr(scripts.actions, f2, None)
+                    f2 = data.current_verb + '_'
+                    fc = getattr(scripts, f2, None)
                     if fc is None:
                         print ('not found: ' + f2)
             if fc:
-                fc(vars.current_item_1, item)
-            set_verb_2('walkto', vars.current_item_1)
+                fc(data.current_item_1, item)
+            set_verb_2('walkto', data.current_item_1)
         else:
-            f1 = vars.current_verb + '_' + vars.current_item_1 + '_' + vars.current_item_2
-            fc = getattr(scripts.actions, f1, None)
+            f1 = data.current_verb + '_' + data.current_item_1 + '_' + data.current_item_2
+            fc = getattr(scripts, f1, None)
             if fc is None:
                 # try flipping the objects
-                f1 = vars.current_verb + '_' + vars.current_item_2 + '_' + vars.current_item_1
-                fc = getattr(scripts.actions, f1, None)
+                f1 = data.current_verb + '_' + data.current_item_2 + '_' + data.current_item_1
+                fc = getattr(scripts, f1, None)
                 if fc:
-                    fc(vars.current_item_2, vars.current_item_1)
+                    fc(data.current_item_2, data.current_item_1)
                 else:
-                    f2 = vars.current_verb + '_'
-                    fc = getattr(scripts.actions, f2, None)
+                    f2 = data.current_verb + '_'
+                    fc = getattr(scripts, f2, None)
                     if fc:
-                        fc(vars.current_item_2, item)
+                        fc(data.current_item_2, item)
             else:
-                fc(vars.current_item_1, vars.current_item_2)
+                fc(data.current_item_1, data.current_item_2)
 
     return f
 
@@ -181,7 +182,7 @@ def click_on_map_hotspot(item):
     def f(x,y,z):
         name = 'click_' + item
         print('try to look for a func: ' + name)
-        g = getattr(scripts.actions, name, None)
+        g = getattr(scripts, name, None)
         if g is None:
             print('not found')
         else:
@@ -192,12 +193,12 @@ def click_on_map_hotspot(item):
 
 def hover_off(obj):
     def f(item):
-        if vars.current_item_2:
-            vars.current_item_2 = ''
+        if data.current_item_2:
+            data.current_item_2 = ''
         else:
             # set obj1 to nil unless we are waiting for 2nd object
-            if vars.verbs[vars.current_verb]['items'] == 1:
-                vars.current_item_1 = ''
+            if data.verbs[data.current_verb]['items'] == 1:
+                data.current_item_1 = ''
         update_current_action()
     return f
 
@@ -205,7 +206,7 @@ def on_enter_trap(player, trap, dx, dy):
     f = trap.getInfo().get('func')
     print('ciappo!' + str(f))
     if f:
-        getattr(scripts.actions, f)(trap)
+        getattr(scripts, f)(trap)
 
 
 def _make_say(a, context):
@@ -245,7 +246,7 @@ dscript = {
 def execute_dialogue_script(l):
     def f(x, y, z):
         line = l.line
-        dialogue = vars.dialogues[l.dialogue_id]
+        dialogue = data.dialogues[l.dialogue_id]
         context = dict()
         context['set_text'] = dialogue['text_set']
         if 'activate' in line:
@@ -294,15 +295,15 @@ def execute_dialogue_script(l):
 
             elif 'script' in line:
                 if 'args' in line:
-                    getattr(scripts.actions, line['script'])(s, *line['args'])
+                    getattr(scripts, line['script'])(s, *line['args'])
                 else:
-                    getattr(scripts.actions, line['script'])(s)
+                    getattr(scripts, line['script'])(s)
             if 'next' in line:
                 s.add_action(scumm.actions.StartDialogue(l.dialogue_id, line['next'], True))
             else:
                 # check if dialogue has a on_exit script
                 if 'on_exit' in dialogue:
-                    s.add_action(actions.CallFunc(f=getattr(scripts.actions, dialogue['on_exit'])))
+                    s.add_action(actions.CallFunc(f=getattr(scripts, dialogue['on_exit'])))
                 else:
                     s.add_action(scumm.actions.ExitDialogue())
             example.play(s)

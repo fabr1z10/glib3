@@ -109,7 +109,34 @@ citizen:
   dir: s
   text_color: [255, 85, 85, 255]
   text_offset: [0,60]
-
+lmf1:
+  type: character
+  model: 01/low_moral_fiber_1
+  dir: e
+  speed: 100
+  pos: [18, 10, 0]
+  room: village2
+  parent: walkarea_0
+  text_color: [255, 85, 255, 255]
+  text_offset: [0, 60]
+lmf2:
+  type: character
+  model: 01/low_moral_fiber_2
+  dir: e
+  pos: [44, 20, 0]
+  room: village2
+  parent: walkarea_0
+  text_color: [85, 255, 255, 255]
+  text_offset: [0, 60]
+lmf3:
+  type: character
+  model: 01/low_moral_fiber_3
+  dir: e
+  pos: [56, 23, 0]
+  room: village2
+  parent: walkarea_0
+  text_color: [85, 255, 85, 255]
+  text_offset: [0, 60]
 village3_archway:
   type: item1
   text: '$objects/archway'

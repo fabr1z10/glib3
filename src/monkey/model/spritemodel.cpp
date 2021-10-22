@@ -31,7 +31,6 @@ SpriteModel::SpriteModel (const ITab& t) : IModel() {
         int y = q[1];                // top left y coord in sheet
         int width = q[2];            // width in pixels
         int height = q[3];           // height in pixels
-        float z = 0.0f;
         // width and height in pixel
 
         float w = width / ppu;
@@ -50,6 +49,8 @@ SpriteModel::SpriteModel (const ITab& t) : IModel() {
         }
         bool flipX = qs > 6 ? (q[6] == 1) : false;
         bool flipY = qs > 7 ? (q[7] == 1) : false;
+        float z = qs > 8 ? q[8] : 0.0f;
+
         float tx0 = flipX ? tx+tw : tx;
         float tx1 = flipX ? tx : tx + tw;
         float ty0 = flipY ? ty : ty+th;
