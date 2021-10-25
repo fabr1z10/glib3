@@ -9,6 +9,47 @@ yellow_plant:
   room: forest2
   walkto: [271, 15]
   wdir: s
+red_plant:
+  type: item1
+  pos: [23, 10]
+  size: [35, 25]
+  text: '$objects/plants'
+  room: forest10
+  walkto: [50,24]
+  wdir: s
+campsite:
+  type: item1
+  pos: [138, 12]
+  size: [45, 16]
+  text: '$objects/campsite'
+  room: forest9
+  walkto: [158,36]
+  wdir: s
+bones:
+  type: item1
+  pos: [248, 13]
+  size: [41, 16]
+  text: '$objects/bones'
+  room: forest13
+  walkto: [267, 28]
+  wdir: s
+stump:
+  type: item1
+  pos: [32, 8]
+  size: [48, 30]
+  text: '$objects/stump'
+  room: forest18
+  walkto: [50, 24]
+  wdir: s
+rock_and_plant:
+  type: item1
+  pos: [232, 10]
+  size: [48, 22]
+  text: '$objects/rockandplant'
+  room: forest15
+  walkto: [264, 24]
+  wdir: s
+
 forest1_exit:
   type: item1
   text: '$objects/path'
@@ -171,4 +212,211 @@ swordmaster_tiny:
   walkto: [375, 68]
   wdir: e
   room: swordmaster
-
+forest9_forest2:
+  type: item1
+  text: '$objects/path'
+  pos: [0, 0]
+  size: [10, 144]
+  walkto: [0, 24]
+  wdir: w
+  room: forest9
+forest9_forest10_1:
+  type: item1
+  text: '$objects/path'
+  pos: [144, 62]
+  size: [20, 50]
+  walkto: [154, 62]
+  wdir: n
+  room: forest9
+forest9_forest10_2:
+  type: item1
+  text: '$objects/path'
+  pos: [249, 69]
+  size: [20, 50]
+  walkto: [249, 69]
+  wdir: n
+  room: forest9
+forest9_forest8:
+  type: item1
+  text: '$objects/path'
+  pos: [310, 0]
+  size: [10, 144]
+  walkto: [310, 24]
+  wdir: e
+  room: forest9
+forest10_forest9:
+  type: item1
+  text: '$objects/path'
+  pos: [310, 0]
+  size: [10, 144]
+  walkto: [310, 24]
+  wdir: e
+  room: forest10
+forest10_forest11:
+  type: item1
+  text: '$objects/path'
+  pos: [0, 0]
+  size: [10, 144]
+  walkto: [0, 24]
+  wdir: w
+  room: forest10
+forest11_forest10:
+  type: item1
+  text: '$objects/path'
+  pos: [310, 0]
+  size: [10, 144]
+  walkto: [310, 24]
+  wdir: e
+  room: forest11
+forest11_forest12:
+  type: item1
+  text: '$objects/path'
+  pos: [247, 59]
+  size: [20, 50]
+  walkto: [257, 59]
+  wdir: n
+  room: forest11
+forest12_forest11:
+  type: item1
+  text: '$objects/path'
+  pos: [310, 0]
+  size: [10, 144]
+  walkto: [310, 24]
+  wdir: e
+  room: forest12
+forest12_forest13:
+  type: item1
+  text: '$objects/path'
+  pos: [0, 0]
+  size: [10, 144]
+  walkto: [0, 24]
+  wdir: w
+  room: forest12
+forest13_forest12:
+  type: item1
+  text: '$objects/path'
+  pos: [310, 0]
+  size: [10, 144]
+  walkto: [310, 24]
+  wdir: e
+  room: forest13
+forest13_forest14:
+  type: item1
+  text: '$objects/path'
+  pos: [247, 59]
+  size: [20, 50]
+  walkto: [257, 59]
+  wdir: n
+  room: forest13
+forest14_forest13:
+  type: item1
+  text: '$objects/path'
+  pos: [0, 0]
+  size: [10, 144]
+  walkto: [0, 24]
+  wdir: w
+  room: forest14
+forest14_forest15:
+  type: item1
+  text: '$objects/path'
+  pos: [40, 59]
+  size: [20, 50]
+  walkto: [50, 59]
+  wdir: n
+  room: forest14
+forest15_forest14:
+  type: item1
+  text: '$objects/path'
+  pos: [143, 68]
+  size: [20, 50]
+  walkto: [153, 68]
+  wdir: n
+  room: forest15
+forest15_forest18:
+  type: item1
+  text: '$objects/path'
+  pos: [0, 0]
+  size: [10, 144]
+  walkto: [0, 24]
+  wdir: w
+  room: forest15
+forest15_forest16:
+  type: item1
+  text: '$objects/path'
+  pos: [310, 0]
+  size: [10, 144]
+  walkto: [310, 24]
+  wdir: e
+  room: forest15
+forest18_forest15:
+  type: item1
+  text: '$objects/path'
+  pos: [125, 65]
+  size: [20, 50]
+  walkto: [135, 65]
+  wdir: n
+  room: forest18
+forest18_forest19:
+  type: item1
+  text: '$objects/path'
+  pos: [0, 0]
+  size: [10, 144]
+  walkto: [0, 24]
+  wdir: w
+  room: forest18
+forest19_forest18:
+  type: item1
+  text: '$objects/path'
+  pos: [310, 0]
+  size: [10, 144]
+  walkto: [310, 24]
+  wdir: e
+  room: forest19
+forest19_forest20:
+  type: item1
+  text: '$objects/path'
+  pos: [146, 69]
+  size: [20, 50]
+  walkto: [156, 69]
+  wdir: n
+  room: forest19
+forest19_forest8:
+  type: item1
+  text: '$objects/path'
+  pos: [0, 0]
+  size: [10, 144]
+  walkto: [0, 24]
+  wdir: w
+  room: forest19
+forest8_forest19:
+  type: item1
+  text: '$objects/path'
+  pos: [0, 0]
+  size: [10, 144]
+  walkto: [0, 24]
+  wdir: w
+  room: forest8
+forest8_forest5:
+  type: item1
+  text: '$objects/path'
+  pos: [126, 65]
+  size: [20, 50]
+  walkto: [136, 65]
+  wdir: n
+  room: forest8
+forest8_forest9:
+  type: item1
+  text: '$objects/path'
+  pos: [310, 0]
+  size: [10, 144]
+  walkto: [310, 24]
+  wdir: e
+  room: forest8
+forest20_forest19:
+  type: item1
+  text: '$objects/path'
+  pos: [310, 0]
+  size: [10, 144]
+  walkto: [310, 24]
+  wdir: e
+  room: forest20

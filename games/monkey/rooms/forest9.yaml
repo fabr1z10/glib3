@@ -1,0 +1,18 @@
+---
+  id: forest9
+  type: default
+  width: 320
+  height: 144
+  #on_start: on_start_forest7
+  #on_load: on_load_forest7
+  items:
+    - factory: [bg, {'image': gfx/forest_9.png}]
+      d: [[0, 0, -1]]
+    - factory: [bg, {'image': gfx/forest_rock.png}]
+      d: [[209, 18, 2]]
+    - factory: [bg, {'image': gfx/forest_fg_4.png}]
+      d: [[0,0, 1]]
+    - factory: [walkarea, {'id': walkarea_0, 'depth': { 'type': "func.liny", 'values': [0, 1, 144, 0]},
+        'nodes': [0,24,128,24,128,36,320,36,154,36,154,62,259,36,259,69],
+        'edges': [0,1,1,2,2,4,4,6,6,3,4,5,6,7]}]
+      d: [[0,0,0]]

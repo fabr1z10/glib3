@@ -10,6 +10,8 @@
       d: [[0, 0, -1]]
     - factory: [bg, {'image': gfx/forest_1a.png}]
       d: [[102, 18, 1]]
+    - factory: [bg, {'image': gfx/forest_fg_1.png}]
+      d: [[208, 0, 1]]
     - factory: [walkarea, {'id': walkarea_0, 'depth': { 'type': "func.liny", 'values': [0, 1, 144, 0]},
         'nodes': [103,35,154,35,238,35,320,35,154,69,238,69],
         'edges': [0,1,1,2,2,3,1,4,2,5]}]

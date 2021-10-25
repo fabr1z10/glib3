@@ -14,6 +14,12 @@ import random
 lookat_yellow_plant = a.Actions.say(['$lines/47'])
 lookat_yellow_petal = a.Actions.say(['$lines/48'])
 lookat_swordmaster_sign = a.Actions.say(['$lines/49'])
+lookat_campsite = a.Actions.say(['$lines/52'])
+lookat_bones = a.Actions.say(['$lines/55'])
+lookat_red_plant = a.Actions.say(['$lines/53'])
+lookat_rock_and_plant = a.Actions.say(['$lines/56'])
+
+pickup_red_plant = a.Actions.say(['$lines/54'])
 
 
 def helper_swordmaster_sign(x, anim, bridge):
@@ -44,6 +50,7 @@ walkto_forest1_exit = a.Actions.goto_room('meleemap', vars.pos.melee_fork, 's')
 walkto_forest1_forest2 = a.Actions.goto_room('forest2', vars.pos.forest1_entry, 'w')
 walkto_forest1_forest2b = a.Actions.goto_room('forest2', vars.pos.forest1_entry, 'w')
 walkto_forest2_forest1 = a.Actions.goto_room('forest1', (238, 68), 's')
+walkto_forest2_forest9 = a.Actions.goto_room('forest9', (0, 24), 'e')
 walkto_forest2_forest3 = a.Actions.goto_room('forest3', (135, 69), 's')
 walkto_forest3_forest2 = a.Actions.goto_room('forest2', (257, 69), 's')
 walkto_forest3_forest4 = a.Actions.goto_room('forest4', (0, 35), 'e')
@@ -51,11 +58,48 @@ walkto_forest4_forest3 = a.Actions.goto_room('forest3', (310, 35), 'w')
 walkto_forest4_forest5 = a.Actions.goto_room('forest5', (241, 69), 's')
 walkto_forest5_forest4 = a.Actions.goto_room('forest4', (310, 35), 'w')
 walkto_forest5_forest6 = a.Actions.goto_room('forest6', (0, 35), 'e')
-walkto_forest5_forest8 = a.Actions.goto_room('forest8', (310, 35), 'w')
+walkto_forest5_forest8 = a.Actions.goto_room('forest8', (136, 65), 's')
 walkto_forest6_forest5 = a.Actions.goto_room('forest5', (0, 35), 'e')
 walkto_forest6_forest7 = a.Actions.goto_room('forest7', (0, 30), 'e')
 walkto_forest7_forest6 = a.Actions.goto_room('forest6', (151, 69), 's')
 walkto_forest7_swordmaster = a.Actions.goto_room('swordmaster', (0, 20), 'e')
+
+walkto_forest9_forest2 = a.Actions.goto_room('forest2', (0, 35), 'e')
+walkto_forest9_forest10_1 = a.Actions.goto_room('forest10', (310, 24), 'w')
+walkto_forest9_forest10_2 = a.Actions.goto_room('forest10', (310, 24), 'w')
+walkto_forest9_forest8 = a.Actions.goto_room('forest8', (310, 24), 'w')
+
+walkto_forest10_forest9 = a.Actions.goto_room('forest9', (259, 69), 's')
+walkto_forest10_forest11 = a.Actions.goto_room('forest11', (320, 24), 'w')
+
+walkto_forest11_forest10 = a.Actions.goto_room('forest10', (0, 24), 'e')
+walkto_forest11_forest12 = a.Actions.goto_room('forest12', (310, 24), 'w')
+
+walkto_forest12_forest11 = a.Actions.goto_room('forest11', (257, 59), 's')
+walkto_forest12_forest13 = a.Actions.goto_room('forest13', (310, 28), 's')
+
+walkto_forest13_forest12 = a.Actions.goto_room('forest12', (0, 46), 'e')
+walkto_forest13_forest14 = a.Actions.goto_room('forest14', (0, 48), 'e')
+
+walkto_forest14_forest13 = a.Actions.goto_room('forest13', (257, 59), 's')
+walkto_forest14_forest15 = a.Actions.goto_room('forest15', (153, 68), 's')
+
+walkto_forest15_forest14 = a.Actions.goto_room('forest14', (50, 59), 's')
+walkto_forest15_forest18 = a.Actions.goto_room('forest18', (135, 65), 's')
+
+walkto_forest18_forest15 = a.Actions.goto_room('forest15', (0, 32), 's')
+walkto_forest18_forest19 = a.Actions.goto_room('forest19', (310, 32), 's')
+
+walkto_forest19_forest18 = a.Actions.goto_room('forest18', (0, 24), 's')
+walkto_forest19_forest20 = a.Actions.goto_room('forest20', (310, 32), 'w')
+walkto_forest19_forest8 = a.Actions.goto_room('forest8', (0, 24), 'e')
+
+walkto_forest8_forest19 = a.Actions.goto_room('forest19', (0, 44), 'e')
+walkto_forest8_forest5 = a.Actions.goto_room('forest5', (310, 24), 'w')
+walkto_forest8_forest9 = a.Actions.goto_room('forest9', (310, 36), 'w')
+
+walkto_forest20_forest19 = a.Actions.goto_room('forest19', (156, 69), 's')
+
 #walkto_forest2_forest9 = a.Actions.goto_room('forest9', (238, 68), 's')
 
 

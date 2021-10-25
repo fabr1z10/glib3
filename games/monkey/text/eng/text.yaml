@@ -63,6 +63,10 @@ objects:
   sign: sign
   swordmaster: swordmaster
   map: map
+  campsite: campsite
+  bones: bones
+  rockandplant: rock and plant
+  stump: stump
 dialogues:
   storekeeper:
     1: Ahoy there, fancy pants.
@@ -625,3 +629,9 @@ lines:
   49: "\"DANGER: Open ravine.\""
   50: I better just stay back here and eavesdrop.
   51: I think I've been had!
+  52: Looks like an old, abandoned campsite.
+  53: Same old red flowers all over the forest.
+  54: I don't think strolling through the forest picking flowers is very good practice for being a pirate.
+  55: Creepy.
+  56: What a lovely plant.
+  57: Just a regular old stump.

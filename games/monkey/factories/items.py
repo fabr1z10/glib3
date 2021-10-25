@@ -170,9 +170,9 @@ class InventoryButton(entity.Text):
     def __init__(self, font: str, item_id: str, qty: int, color_inactive, color_active,
                  align: entity.TextAlignment = entity.TextAlignment.bottom_left,
                  script: callable = None, tag=None, pos=[0, 0, 0]):
-        if item_id not in vars.items:
+        if item_id not in data.items:
             raise BaseException('Hey! unknown item: ' + item_id)
-        item = vars.items[item_id]
+        item = data.items[item_id]
         text = ''
         if qty == 1:
             text = monkey.engine.read(item['text'])

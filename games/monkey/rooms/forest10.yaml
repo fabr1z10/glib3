@@ -1,19 +1,22 @@
 ---
-  id: forest4
+  id: forest10
   type: default
   width: 320
   height: 144
-  on_start: on_start_forest4
-  on_load: on_load_forest4
+  #on_start: on_start_forest7
+  #on_load: on_load_forest7
   items:
-    - factory: [bg, {'image': gfx/forest_4.png}]
+    - factory: [bg, {'image': gfx/forest_10.png}]
       d: [[0, 0, -1]]
+    - factory: [bg, {'image': gfx/forest_fg_4.png}]
+      d: [[208, 0, 1]]
     - factory: [bg, {'image': gfx/forest_fg_2.png}]
       d: [[104, 0, 1]]
     - factory: [bg, {'image': gfx/forest_fg_3.png}]
       d: [[0, 0, 1]]
-
+    - factory: [bg, {'image': gfx/red_flowers.png}]
+      d: [[23, 10, 1]]
     - factory: [walkarea, {'id': walkarea_0, 'depth': { 'type': "func.liny", 'values': [0, 1, 144, 0]},
-        'nodes': [0, 35, 266, 35, 320, 35, 266, 20],
-        'edges': [0,1,1,2,1,3]}]
+        'nodes': [0,24,320,24],
+        'edges': [0,1]}]
       d: [[0,0,0]]

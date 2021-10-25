@@ -87,14 +87,14 @@ def walkto(x, y):
 
 def hover_on_inventory_button(item):
     def f(e: example.Wrap1):
-        e.setColor([0, 0, 0, 0], vars.Colors.inv_selected)
+        e.setColor([0, 0, 0, 0], data.config.Colors.inv_selected)
         hover_on(item)(e)
     return f
 
 
 def hover_off_inventory_button(item):
     def f(e: example.Wrap1):
-        e.setColor([0, 0, 0, 0], vars.Colors.inv_unselected)
+        e.setColor([0, 0, 0, 0], data.config.Colors.inv_unselected)
         hover_off(e)(None)
     return f
 

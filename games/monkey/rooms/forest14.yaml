@@ -1,0 +1,14 @@
+---
+  id: forest14
+  type: default
+  width: 320
+  height: 144
+  #on_start: on_start_forest7
+  #on_load: on_load_forest7
+  items:
+    - factory: [bg, {'image': gfx/forest_14.png}]
+      d: [[0, 0, -1]]
+    - factory: [walkarea, {'id': walkarea_0, 'depth': { 'type': "func.liny", 'values': [0, 1, 144, 0]},
+        'nodes': [0,48,50,48,109,48,50,59],
+        'edges': [0,1,1,2,1,3]}]
+      d: [[0,0,0]]
