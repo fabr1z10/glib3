@@ -1,0 +1,7 @@
+type: _basic
+id: test1
+cam: perspective
+bounds:
+  x: [0, 100]
+  y: [0, 100]
+  z: [0, 100]

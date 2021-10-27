@@ -1,0 +1,6 @@
+---
+  title: model 3d test
+  lang: eng
+  device_size: [320, 240]
+  window_size: [640, 480]
+  start_room: 'test3d'

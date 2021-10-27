@@ -20,7 +20,7 @@ def map_room(desc: dict):
     id = desc['id']
     width = desc['width']
     height = desc['height']
-    r = room.Room(id, width, height)
+    r = room.Room(id)#, width, height)
     r.add_runner(runners.Scheduler())
 
     # setup collision engine
@@ -84,7 +84,7 @@ def default_room(desc: dict):
     id = desc['id']
     width = desc['width']
     height = desc['height']
-    r = room.Room(id, width, height)
+    r = room.Room(id)#, width, height)
     r.add_runner(runners.Scheduler())
 
     if 'on_start' in desc:

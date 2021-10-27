@@ -3,10 +3,10 @@ import entity
 
 
 class Room:
-    def __init__(self, uid: str, width, height):
+    def __init__(self, uid: str):
         self.id = uid
-        self.width = width
-        self.height = height
+        #self.width = width
+        #self.height = height
         self.ref = {}
         self.engines = []
         self.init = []

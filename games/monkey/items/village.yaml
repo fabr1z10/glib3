@@ -31,7 +31,7 @@ village_scummbar_door:
   room: village1
   walkto: '@pos/village_scummbar_door'
   wdir: n
-  anim: '@doors/scummbar'
+  anim: '@vars/doors/scummbar'
   model: 01/door_village_scummbar
 village2_archway_to_village1:
   type: item1

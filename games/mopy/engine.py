@@ -4,10 +4,11 @@ import os
 import mopy.font as font
 import mopy.monkey as monkey
 import sys
+import mopy.factories.basicroom
 
 
 class Engine:
-    def __init__(self, data, scripts):
+    def __init__(self, data = None, scripts = None):
         sys.path.append(example.dir)
         self.data = data
         self.scripts = scripts
@@ -27,8 +28,10 @@ class Engine:
             self.load_strings()
             print (' OK.')
             # read game variables, and functions
-            for file in a['fonts']:
+            for file in a.get('fonts', []):
                 self.add_font(file['id'], file['file'])
+        self.add_room_factory('_basic', mopy.factories.basicroom.BasicRoom.make)
+
 
     @staticmethod
     def open_data_file(filename):
