@@ -10,7 +10,7 @@ int main(int argc, char* argv[])
         return 1;
     }
     try {
-
+// ciao
         std::string gameDir(argv[1]);
         auto& engine = Engine::get();
         engine.init(gameDir);

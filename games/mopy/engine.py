@@ -5,7 +5,7 @@ import mopy.font as font
 import mopy.monkey as monkey
 import sys
 import mopy.factories.basicroom
-
+import mopy.factories.items
 
 class Engine:
     def __init__(self, data = None, scripts = None):
@@ -31,6 +31,7 @@ class Engine:
             for file in a.get('fonts', []):
                 self.add_font(file['id'], file['file'])
         self.add_room_factory('_basic', mopy.factories.basicroom.BasicRoom.make)
+        self.add_item_factory('_model3d', mopy.factories.items.model3d)
 
 
     @staticmethod

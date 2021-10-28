@@ -2,6 +2,7 @@
 #include <monkey/meshfactory.h>
 #include <monkey/quadmesh.h>
 #include <monkey/math/geom.h>
+#include <monkey/model/model3d.h>
 #include <monkey/texmeshfactory.h>
 
 BasicRenderer::BasicRenderer(std::shared_ptr<IModel> model) : Renderer(), m_model(model) {
@@ -98,6 +99,9 @@ BasicRenderer::BasicRenderer(const ITab & t) : Renderer(t) {
 //        auto mesh = MeshFactory::CreateMesh(*(shape.get()), z, color);
 //        SetModel (std::make_shared<BasicModel>(mesh));
     } else if (cls == 5) {
+        // model 3d
+        auto model = std::make_shared<Model3D>(t);
+
 		// textured mesh
 //		auto factory = Engine::get().GetSceneFactory();
 //		TexMeshFactory meshFactory;

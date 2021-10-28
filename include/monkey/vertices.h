@@ -45,6 +45,7 @@ struct Vertex3DC {
 // vertex with texture and normal
 
 struct Vertex3DN {
+    Vertex3DN() = default;
     Vertex3DN(
             GLfloat x, GLfloat y, GLfloat z,
             GLfloat s, GLfloat t,

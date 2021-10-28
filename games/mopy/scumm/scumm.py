@@ -13,8 +13,8 @@ def init(data, scripts):
 
     print (' === adding shaders... ', end = '')
     engine.add_shader(shader.ShaderType.unlit_textured)
-    engine.add_shader(shader.ShaderType.unlit_color)
-    engine.add_shader(shader.ShaderType.text)
+    #engine.add_shader(shader.ShaderType.unlit_color)
+    #engine.add_shader(shader.ShaderType.text)
     print ('OK.')
 
     items_dir = example.dir + '/items'

@@ -24,7 +24,21 @@ class BasicRoom(Room):
         main.cam = cam
         self.main = main
         self.add(main)
-
+        # now add all items
+        if 'items' in room_info:
+            for item in room_info['items']:
+                factory_id = item['factory']
+                factory = monkey.engine.get_item_factory(factory_id[0])
+                if factory is None:
+                    print('Unable to find factory for item: ' + factory_id[0])
+                    exit(1)
+                else:
+                    props = {} if len(factory_id) == 1 else factory_id[1]
+                    f = factory(**props)
+                    parent = item.get('parent', 'main')
+                    for a in item['d']:
+                        e = f(*a)
+                        self.add(e, parent)
     @staticmethod
     def make(room_info):
         return BasicRoom(room_info)

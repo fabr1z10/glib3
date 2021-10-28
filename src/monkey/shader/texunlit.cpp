@@ -3,7 +3,7 @@
 #include <monkey/shader/glsl/tex_unlit_exp.h>
 #include <monkey/vertices.h>
 
-TexturedUnlit::TexturedUnlit() : Shader(vs_tex_unlitc_exp, fs_tex_unlitc_exp) {
+TexturedUnlit::TexturedUnlit(const char* vertex, const char* fragment) : Shader(vertex, fragment) {
 
     m_shaderId = TEXTURE_SHADER_UNLIT;
     m_nAttributes = 3;

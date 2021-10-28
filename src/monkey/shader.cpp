@@ -18,6 +18,7 @@
 #include <monkey/shader/skeletal.h>
 #include <monkey/shader/texlight.h>
 #include <monkey/shader/skeletalc.h>
+#include <fstream>
 
 
 Shader* Shader::g_currentShader = nullptr;
@@ -34,12 +35,36 @@ void Shader::SetCurrentShader(Shader* s) {
     g_currentShader->Start();
 }
 
-Shader::Shader(const char* vertex, const char* fragment) {
+Shader::Shader(const char* vertexPath, const char* fragmentPath) {
+    std::string vertexCode;
+    std::string fragmentCode;
+
+    std::ifstream vShaderFile;
+    std::ifstream fShaderFile;
+    vShaderFile.exceptions (std::ifstream::failbit | std::ifstream::badbit);
+    fShaderFile.exceptions (std::ifstream::failbit | std::ifstream::badbit);
+    try {
+        vShaderFile.open(vertexPath);
+        fShaderFile.open(fragmentPath);
+        std::stringstream vShaderStream, fShaderStream;
+        vShaderStream << vShaderFile.rdbuf();
+        fShaderStream << fShaderFile.rdbuf();
+        vShaderFile.close();
+        fShaderFile.close();
+        vertexCode = vShaderStream.str();
+        fragmentCode = fShaderStream.str();
+    } catch (std::ifstream::failure& e) {
+        std::cout << "Error: shader file " << vertexPath << ", " << fragmentPath << " not successfully read" << std::endl;
+        exit(1);
+    }
+    const char* vShaderCode = vertexCode.c_str();
+    const char* fShaderCode = fragmentCode.c_str();
+
     GLint result;
     auto vid = glCreateShader(GL_VERTEX_SHADER);
     auto fid = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(vid, 1, &vertex, 0);
-    glShaderSource(fid, 1, &fragment, 0);
+    glShaderSource(vid, 1, &vShaderCode, 0);
+    glShaderSource(fid, 1, &fShaderCode, 0);
     
     glCompileShader(vid);
     glGetShaderiv(vid, GL_COMPILE_STATUS, &result);
@@ -78,7 +103,16 @@ Shader::Shader(const char* vertex, const char* fragment) {
     glAttachShader(progId, vid);
     glAttachShader(progId, fid);
     glLinkProgram(progId);
-    
+
+    glGetProgramiv(progId, GL_LINK_STATUS, &result);
+    if (GL_FALSE == result) {
+        std::cerr << "Error while linking program\n";
+        GLchar infoLog[1024];
+        glGetProgramInfoLog(progId, 1024, NULL, infoLog);
+        std::cerr << infoLog << "\n";
+        exit(1);
+
+    }
     m_programId = progId;
     
     glUseProgram(progId);
@@ -180,7 +214,7 @@ GLuint Shader::GetProgId() const {
 //}
 
 ShaderFactory::ShaderFactory() {
-    m_facs["unlit_textured"] = [] () { return std::make_unique<TexturedUnlit>(); };
+    m_facs["unlit_textured"] = [] () { return std::make_unique<TexturedUnlit>("glsl/unlit.vs", "glsl/unlit.fs"); };
     m_facs["unlit_color"] = [] () { return std::make_unique<ColorUnlit>(); };
     m_facs["text"] = [] () { return std::make_unique<TextShader>(); };
     m_facs["light_color"] = [] () { return std::make_unique<LightShader>(); };

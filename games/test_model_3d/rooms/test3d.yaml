@@ -5,3 +5,6 @@ bounds:
   x: [0, 100]
   y: [0, 100]
   z: [0, 100]
+items:
+  - factory: [_model3d, {'image': assets/porsche/scene.gltf}]
+    d: [[0, 0, -1]]
