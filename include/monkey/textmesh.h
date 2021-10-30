@@ -23,11 +23,11 @@ private:
     float m_fontSize;
     Font* m_font;
     GLuint m_texId;
-    void splitIntoLines(Font*, const std::string&, std::vector<std::string>& lines, float scalingFactor, float mll);
     //Bounds m_bounds;
     int m_lines;
     TextAlignment m_align;
     //glm::vec2 m_topLeft, m_bottomRight;
+
 };
 
 inline std::string TextMesh::GetText() const { return m_text;}

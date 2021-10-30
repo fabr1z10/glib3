@@ -37,7 +37,7 @@ public:
     virtual void InitAttributes() = 0;
     virtual void Setup(Shader*) {}
     virtual Bounds GetBounds() { return m_bounds; }
-    void Draw (Shader*, int offset, int count);
+    void draw (Shader*, int offset, int count);
     GLenum m_primitive;
     //const glm::mat4& GetLocalTransform() const;
     std::string GetId() const;

@@ -12,9 +12,9 @@ public:
     void Start() override;
     void Update(double dt) override;
     std::type_index GetType() override;
-    void setModel (std::shared_ptr<IModel> model) override { throw; }
+    void setModel (std::shared_ptr<Model> model) override { throw; }
     void SetAnimation (const std::string& anim, bool forward = true) override { throw; }
-    virtual IModel* getModel() const { return nullptr;}
+    virtual Model* getModel() const { return nullptr;}
 	std::shared_ptr<IShape> getShapeCast() override { return nullptr;}
 
 private:

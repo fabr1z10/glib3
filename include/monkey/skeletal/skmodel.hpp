@@ -1,7 +1,7 @@
 #pragma once
 
 
-#include <monkey/assets/imodel.h>
+#include <monkey/assets/model.h>
 #include <monkey/texturedmesh.h>
 #include <monkey/vertices.h>
 #include <monkey/skeletal/joint.hpp>
@@ -46,7 +46,7 @@ struct DrawingBit {
 };
 
 
-class SkModel : public IModel {
+class SkModel : public Model {
 public:
     //SkModel (const ITable&);
     SkModel (const ITab&);

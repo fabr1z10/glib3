@@ -1,13 +1,4 @@
-//
-//  shader.h
-//  glib
-//
-//  Created by Fabrizio Venturini on 04/05/2018.
-//
-//
-
-#ifndef shader_h
-#define shader_h
+#pragma once
 
 #include <GL/glew.h>
 #include <glm/glm.hpp>
@@ -19,20 +10,16 @@
 #include <functional>
 
 const GLuint GL_INVALID = std::numeric_limits<GLuint>::max();
-
-
-
 class Camera;
-
 
 
 class __attribute__ ((visibility ("default"))) Shader {
 public:
     Shader(const char* vertex, const char* fragment);
     virtual ~Shader() {}
-    GLuint GetProgId() const;
-    GLuint GetUniformLocation(ShaderUniform);
-    void AddUniform(ShaderUniform unif, const char*);
+    GLuint getProgId() const;
+    //GLuint GetUniformLocation(ShaderUniform);
+    //void AddUniform(ShaderUniform unif, const char*);
     virtual void Start();
     virtual void Stop();
     virtual void initMesh(const glm::mat4& modelMatrix, Camera* cam) = 0;
@@ -40,6 +27,20 @@ public:
     static Shader* GetCurrentShader();
     static void SetCurrentShader(Shader*);
     virtual void initVertexAttributes () = 0;
+    // utility uniform functions
+    // ------------------------------------------------------------------------
+    void setBool(const std::string &name, bool value) const;
+    void setInt(const std::string &name, int value) const;
+    void setFloat(const std::string &name, float value) const;
+    void setVec2(const std::string &name, const glm::vec2 &value) const;
+    void setVec2(const std::string &name, float x, float y) const;
+    void setVec3(const std::string &name, const glm::vec3 &value) const;
+    void setVec3(const std::string &name, float x, float y, float z) const;
+    void setVec4(const std::string &name, const glm::vec4 &value) const;
+    void setVec4(const std::string &name, float x, float y, float z, float w) const;
+    void setMat2(const std::string &name, const glm::mat2 &mat) const;
+    void setMat3(const std::string &name, const glm::mat3 &mat) const;
+    void setMat4(const std::string &name, const glm::mat4 &mat) const;
 protected:
     ShaderType m_shaderId;
     unsigned int m_nAttributes;
@@ -47,6 +48,7 @@ protected:
     GLuint m_programId;
     static Shader* g_currentShader;
 };
+
 
 class ShaderFactory {
 public:
@@ -57,4 +59,14 @@ private:
 
 };
 
-#endif /* shader_h */
+template <typename BaseShader, typename Vertex>
+class VShader : public BaseShader {
+public:
+    VShader(const char* v, const char* f) : BaseShader(v, f) {}
+    void initVertexAttributes () {
+        Vertex::InitAttributes();
+    }
+
+};
+
+

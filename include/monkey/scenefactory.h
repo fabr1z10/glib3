@@ -6,7 +6,7 @@
 #include <monkey/itable.h>
 
 class Engine;
-class IModel;
+class Model;
 class Activity;
 class LuaTable;
 class State;

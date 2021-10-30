@@ -26,7 +26,7 @@ void Model3D::loadModel(const std::string &path) {
 
 void Model3D::draw(Shader* shader, int offset, int count) {
     for (const auto& mesh : m_meshes) {
-        mesh->Draw(shader, offset, count);
+        mesh->draw(shader, offset, count);
     }
 }
 

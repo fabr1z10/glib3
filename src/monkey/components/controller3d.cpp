@@ -13,7 +13,7 @@
 #include <glm/gtx/vector_angle.hpp>
 #include <monkey/math/shapes3d/aabb.h>
 #include <monkey/meshfactory.h>
-#include <monkey/components/basicrenderer.h>
+#include <monkey/components/renderer.h>
 
 using namespace glm;
 
@@ -36,7 +36,7 @@ void Controller3D::drawShape() {
     auto shape = std::make_shared<AABB>(2.0f * m_halfSize, glm::vec3(-m_halfSize.x, 0.0f, -m_halfSize.z));
     MeshFactory m;
     auto model = m.createWireframe(shape.get(), glm::vec4(1.0f));
-    auto renderer = std::make_shared<BasicRenderer>(model);
+    auto renderer = std::make_shared<Renderer>(model);
 //        glm::vec4 color(1.0f, 0.0f, 0.0f, 1.0f);
 //        renderer->setMultColor(color);
     debugEntity->AddComponent(renderer);

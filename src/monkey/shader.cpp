@@ -8,16 +8,17 @@
 
 #include <monkey/shader.h>
 #include <monkey/error.h>
-
+#include <monkey/shader/mshader.h>
+#include <monkey/vertices.h>
 #include <iostream>
 
-#include <monkey/shader/texunlit.h>
-#include <monkey/shader/colorunlit.h>
-#include <monkey/shader/text.h>
-#include <monkey/shader/lightshader.h>
-#include <monkey/shader/skeletal.h>
-#include <monkey/shader/texlight.h>
-#include <monkey/shader/skeletalc.h>
+//#include <monkey/shader/texunlit.h>
+//#include <monkey/shader/colorunlit.h>
+//#include <monkey/shader/text.h>
+//#include <monkey/shader/lightshader.h>
+//#include <monkey/shader/skeletal.h>
+//#include <monkey/shader/texlight.h>
+//#include <monkey/shader/skeletalc.h>
 #include <fstream>
 
 
@@ -121,106 +122,37 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath) {
 
 void Shader::Start() {
     glUseProgram(m_programId);
-    for (size_t i = 0; i < m_nAttributes; i++)
-        glEnableVertexAttribArray(i);
+    // TODO move in vshader
+    //for (size_t i = 0; i < m_nAttributes; i++)
+    //    glEnableVertexAttribArray(i);
 }
 
 void Shader::Stop() {
-    for (size_t i = 0; i < m_nAttributes; i++)
-        glDisableVertexAttribArray(i);
+    // TODO move in vshader
+    //for (size_t i = 0; i < m_nAttributes; i++)
+    //    glDisableVertexAttribArray(i);
     
 }
 
-void Shader::AddUniform(ShaderUniform unif, const char* name) {
-    GLuint loc = glGetUniformLocation(m_programId, name);
-    m_locations[unif] = loc;
-}
-
-//std::unique_ptr<Shader> ShaderFactory::GetShader(const std::string& shaderId) {
-//    // IMPROVE HERE
-//    if (shaderId == "unlit_textured")
-//        return GetTextureShader();
-//    else if (shaderId == "unlit_color")
-//        return GetColorShader();
-//    else if (shaderId == "text")
-//        return GetTextShader();
-//    else if (shaderId == "light_color")
-//        return GetLightColorShader();
-//    else if (shaderId == "light_textured")
-//        return GetLightTexShader();
-//    else
-//        GLIB_FAIL("Unknown shader " << shaderId);
-//}
-//
-//std::unique_ptr<Shader> ShaderFactory::GetTextureShader() {
-//    std::unordered_map <ShaderUniform, std::string, EnumClassHash> uniforms;
-//
-//
-//    return std::unique_ptr<Shader> (
-//            new Shader(TEXTURE_SHADER, vs_tex_unlit, fs_tex_unlit, 2, uniforms));
-//}
-//
-//std::unique_ptr<Shader> ShaderFactory::GetColorShader() {
-//    std::unordered_map <ShaderUniform, std::string, EnumClassHash> uniforms;
-//    uniforms[MODELVIEW] = "MVmat";
-//    uniforms[PROJECTION] = "ProjMat";
-//    uniforms[TINT] = "color";
-//    return std::unique_ptr<Shader>(new Shader(COLOR_SHADER, vs_color_unlit, fs_color_unlit, 2, uniforms));
-//}
-//
-//std::unique_ptr<Shader> ShaderFactory::GetLightColorShader() {
-//    std::unordered_map <ShaderUniform, std::string, EnumClassHash> uniforms;
-//    uniforms[MODEL] = "modelMat";
-//    uniforms[VIEW] = "viewMat";
-//    uniforms[PROJECTION] = "ProjMat";
-//    uniforms[LIGHTCOLOR] = "lightColor";
-//    return std::unique_ptr<Shader>(new LightShader(COLOR_SHADER_LIGHT, basic_vshader_light, basic_fshader_light, 2, uniforms));
-//}
-//
-//std::unique_ptr<Shader> ShaderFactory::GetLightTexShader() {
-//    std::unordered_map <ShaderUniform, std::string, EnumClassHash> uniforms;
-//    uniforms[MODEL] = "modelMat";
-//    uniforms[VIEW] = "viewMat";
-//    uniforms[PROJECTION] = "ProjMat";
-//    uniforms[LIGHTCOLOR] = "lightColor";
-//    uniforms[LIGHTDIR] = "lightDir";
-//    uniforms[AMBIENT] = "ambient";
-//    return std::unique_ptr<Shader>(new LightShader(TEXTURE_SHADER_LIGHT, vs_tex_light, fs_tex_light, 3, uniforms));
+//void Shader::AddUniform(ShaderUniform unif, const char* name) {
+//    GLuint loc = glGetUniformLocation(m_programId, name);
+//    m_locations[unif] = loc;
 //}
 
 
-GLuint Shader::GetUniformLocation(ShaderUniform uniform) {
-    auto iter = m_locations.find(uniform);
-    if (iter == m_locations.end())
-        return GL_INVALID;
-    return iter->second;
-}
-
-
-GLuint Shader::GetProgId() const {
+GLuint Shader::getProgId() const {
     return m_programId;
 }
-//std::unique_ptr<Shader> ShaderFactory::GetTestShader() {
-//    std::unordered_map <ShaderUniform, std::string, EnumClassHash> uniforms;
-//    return std::unique_ptr<Shader>(new Shader(COLOR_SHADER, test_vertex_shader, test_frag_shader, 1, uniforms));
-//}
 
-//std::unique_ptr<Shader> ShaderFactory::GetTextShader() {
-//    std::unordered_map <ShaderUniform, std::string, EnumClassHash> uniforms;
-//    uniforms[TEXTURE] = "Tex1";
-//    uniforms[TINT] = "color";
-//    return std::unique_ptr<Shader>(new Shader(TEXT_SHADER, text_vshader, text_fshader, 3, uniforms));
-//
-//}
 
 ShaderFactory::ShaderFactory() {
-    m_facs["unlit_textured"] = [] () { return std::make_unique<TexturedUnlit>("glsl/unlit.vs", "glsl/unlit.fs"); };
-    m_facs["unlit_color"] = [] () { return std::make_unique<ColorUnlit>(); };
-    m_facs["text"] = [] () { return std::make_unique<TextShader>(); };
-    m_facs["light_color"] = [] () { return std::make_unique<LightShader>(); };
-    m_facs["skeletal"] = [] () { return std::make_unique<SkeletalShader>(); };
-	m_facs["skeletal_color"] = [] () { return std::make_unique<SkeletalShaderColor>(); };
-    m_facs["textured_light"] = [] () { return std::make_unique<TexturedLight>(); };
+    m_facs["unlit_textured"] = [] () { return std::make_unique<VShader<MVShader, Vertex3D>>("glsl/unlit.vs", "glsl/unlit.fs"); };
+//    m_facs["unlit_color"] = [] () { return std::make_unique<ColorUnlit>(); };
+//    m_facs["text"] = [] () { return std::make_unique<TextShader>(); };
+//    m_facs["light_color"] = [] () { return std::make_unique<LightShader>(); };
+//    m_facs["skeletal"] = [] () { return std::make_unique<SkeletalShader>(); };
+//	m_facs["skeletal_color"] = [] () { return std::make_unique<SkeletalShaderColor>(); };
+//    m_facs["textured_light"] = [] () { return std::make_unique<TexturedLight>(); };
 
 }
 std::unique_ptr<Shader> ShaderFactory::getShader(const std::string &shaderId) {
@@ -230,4 +162,63 @@ std::unique_ptr<Shader> ShaderFactory::getShader(const std::string &shaderId) {
     }
     return factory->second();
 
+}
+
+// utility uniform functions
+// ------------------------------------------------------------------------
+void Shader::setBool(const std::string &name, bool value) const
+{
+    glUniform1i(glGetUniformLocation(m_programId, name.c_str()), (int)value);
+}
+// ------------------------------------------------------------------------
+void Shader:: setInt(const std::string &name, int value) const
+{
+    glUniform1i(glGetUniformLocation(m_programId, name.c_str()), value);
+}
+// ------------------------------------------------------------------------
+void Shader:: setFloat(const std::string &name, float value) const
+{
+    glUniform1f(glGetUniformLocation(m_programId, name.c_str()), value);
+}
+// ------------------------------------------------------------------------
+void Shader:: setVec2(const std::string &name, const glm::vec2 &value) const
+{
+    glUniform2fv(glGetUniformLocation(m_programId, name.c_str()), 1, &value[0]);
+}
+void Shader:: setVec2(const std::string &name, float x, float y) const
+{
+    glUniform2f(glGetUniformLocation(m_programId, name.c_str()), x, y);
+}
+// ------------------------------------------------------------------------
+void Shader:: setVec3(const std::string &name, const glm::vec3 &value) const
+{
+    glUniform3fv(glGetUniformLocation(m_programId, name.c_str()), 1, &value[0]);
+}
+void Shader:: setVec3(const std::string &name, float x, float y, float z) const
+{
+    glUniform3f(glGetUniformLocation(m_programId, name.c_str()), x, y, z);
+}
+// ------------------------------------------------------------------------
+void Shader::setVec4(const std::string &name, const glm::vec4 &value) const
+{
+    glUniform4fv(glGetUniformLocation(m_programId, name.c_str()), 1, &value[0]);
+}
+void Shader::setVec4(const std::string &name, float x, float y, float z, float w) const
+{
+    glUniform4f(glGetUniformLocation(m_programId, name.c_str()), x, y, z, w);
+}
+// ------------------------------------------------------------------------
+void Shader::setMat2(const std::string &name, const glm::mat2 &mat) const
+{
+    glUniformMatrix2fv(glGetUniformLocation(m_programId, name.c_str()), 1, GL_FALSE, &mat[0][0]);
+}
+// ------------------------------------------------------------------------
+void Shader::setMat3(const std::string &name, const glm::mat3 &mat) const
+{
+    glUniformMatrix3fv(glGetUniformLocation(m_programId, name.c_str()), 1, GL_FALSE, &mat[0][0]);
+}
+// ------------------------------------------------------------------------
+void Shader::setMat4(const std::string &name, const glm::mat4 &mat) const
+{
+    glUniformMatrix4fv(glGetUniformLocation(m_programId, name.c_str()), 1, GL_FALSE, &mat[0][0]);
 }

@@ -161,7 +161,7 @@ void Wrap1::setText(const std::string& text) {
     Renderer *r = m_entity->GetComponent<Renderer>();
     auto tm = dynamic_cast<TextModel *>(r->GetModel());
     glm::vec2 oldOffset = tm->GetOffset();
-    tm->SetText(text);
+    tm->setText(text);
     glm::vec2 offset = tm->GetOffset();
     r->SetTransform(glm::translate(glm::vec3(offset, 0.0f)));
 }

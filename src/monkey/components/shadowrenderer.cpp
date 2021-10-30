@@ -36,9 +36,9 @@ void ShadowRenderer::Update(double) {
 
 }
 
-ShaderType ShadowRenderer::GetShaderType() const {
-	return m_parentRenderer->GetShaderType();
-}
+//ShaderType ShadowRenderer::GetShaderType() const {
+//	return m_parentRenderer->GetShaderType();
+//}
 
 
 void ShadowRenderer::Start() {

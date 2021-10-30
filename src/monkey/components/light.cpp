@@ -1,5 +1,5 @@
 #include <monkey/components/light.h>
-#include <monkey/shader/lightshader.h>
+//#include <monkey/shader/lightshader.h>
 #include <monkey/engine.h>
 
 void Light::Start() {
@@ -21,11 +21,10 @@ DirectionalLight::DirectionalLight(const ITab & t) {
 
 
 void DirectionalLight::setUp(Shader* s) {
-	auto locDir = s->GetUniformLocation(ShaderUniform::LIGHTDIR);
-	auto locAmb = s->GetUniformLocation(ShaderUniform::AMBIENT);
-	auto locDif = s->GetUniformLocation(ShaderUniform::LIGHTCOLOR);
-	glUniform3fv(locDir, 1, &m_direction[0]);
-	glUniform4fv(locAmb, 1, &m_ambient[0]);
-	glUniform4fv(locDif, 1, &m_diffuse[0]);
+    s->setVec3("lightDir", m_direction);
+    s->setVec4("ambient", m_ambient);
+    s->setVec3("diffuse", m_diffuse);
+
+
 
 }

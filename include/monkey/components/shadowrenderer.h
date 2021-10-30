@@ -4,14 +4,14 @@
 
 class ShadowRenderer : public Renderer {
 public:
-	ShadowRenderer () {}
+	//ShadowRenderer () {}
 	ShadowRenderer(const ITab&);
 	void Draw(Shader*) override;
 	std::type_index GetType() override;
 	void Start() override;
-	void SetModel(std::shared_ptr<IModel> mesh) override {}
+	//void SetModel(std::shared_ptr<IModel> mesh) override {}
 	void Update(double) override;
-	ShaderType GetShaderType() const override;
+//	ShaderType GetShaderType() const override;
 
 private:
 	Renderer* m_parentRenderer;

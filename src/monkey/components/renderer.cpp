@@ -12,18 +12,20 @@
 #include <monkey/entity.h>
 #include <iostream>
 
-Renderer::Renderer() : Component(), m_baseModel(nullptr),
-    m_multColor(1.0f), m_addColor(0.0f), m_renderingTransform(1.0f), m_forceZ(false), m_forcedZ(0.0f),
-    m_texOffset(0.0f), m_blend(Blend::DEFAULT), m_depth(GL_LESS) {
 
-}
-
-Renderer::Renderer(const Renderer& orig) : Component(orig),
-    m_multColor(orig.m_multColor), m_addColor(orig.m_addColor), m_renderingTransform(orig.m_renderingTransform),
-    m_baseModel(orig.m_baseModel), m_texOffset(0.0f), m_depth(GL_LESS)
-{
-    
-}
+Renderer::Renderer(std::shared_ptr<Model> model) : m_model(model) {}
+//Renderer::Renderer() : Component(), m_baseModel(nullptr),
+//    m_multColor(1.0f), m_addColor(0.0f), m_renderingTransform(1.0f), m_forceZ(false), m_forcedZ(0.0f),
+//    m_texOffset(0.0f), m_blend(Blend::DEFAULT), m_depth(GL_LESS) {
+//
+//}
+//
+//Renderer::Renderer(const Renderer& orig) : Component(orig),
+//    m_multColor(orig.m_multColor), m_addColor(orig.m_addColor), m_renderingTransform(orig.m_renderingTransform),
+//    m_baseModel(orig.m_baseModel), m_texOffset(0.0f), m_depth(GL_LESS)
+//{
+//
+//}
 
 Renderer::Renderer(const ITab& t) : m_multColor(1.0f),
 	m_addColor(0.0f), m_renderingTransform(1.0f), m_forceZ(false), m_forcedZ(0.0f), m_texOffset(0.0f), m_blend(Blend::DEFAULT) {
@@ -35,41 +37,41 @@ Renderer::Renderer(const ITab& t) : m_multColor(1.0f),
 
 
 void Renderer::init(Shader* shader) {
-	if (m_blend != Blend::DEFAULT) {
-		switch (m_blend) {
-			case Blend::SUB:
-				glBlendFunc(GL_ONE, GL_ONE);
-				glBlendEquation(GL_FUNC_REVERSE_SUBTRACT);
-				break;
-			case Blend::ADD:
-				glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-				//glBlendEquation(GL_FUNC_REVERSE_SUBTRACT)
-				break;
-		}
-
-		if (m_blend == Blend::SUB) {
-		}
-	}
-	if (m_depth != GL_LESS) {
-		glDepthFunc(m_depth);
-	}
-	auto mcolor = shader->GetUniformLocation(MULTCOLOR);
-	auto acolor = shader->GetUniformLocation(ADDCOLOR);
-	if (mcolor != GL_INVALID) {
-		glUniform4fv(mcolor, 1, &m_multColor[0]);
-	}
-	if (acolor != GL_INVALID) {
-		glUniform4fv(acolor, 1, &m_addColor[0]);
-	}
-//    auto fz = shader->GetUniformLocation(FORCEZ);
-//	auto fzv = shader->GetUniformLocation(FORCEDZ);
-//    if (fz != GL_INVALID) {
-//    	glUniform1i(fz, m_forceZ ? 1 : 0);
-//    	glUniform1f(fzv, m_forcedZ);
-//    }
-
-	auto to = shader->GetUniformLocation(TEXOFFSET);
-	glUniform2fv (to, 1, &m_texOffset[0]);
+//	if (m_blend != Blend::DEFAULT) {
+//		switch (m_blend) {
+//			case Blend::SUB:
+//				glBlendFunc(GL_ONE, GL_ONE);
+//				glBlendEquation(GL_FUNC_REVERSE_SUBTRACT);
+//				break;
+//			case Blend::ADD:
+//				glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+//				//glBlendEquation(GL_FUNC_REVERSE_SUBTRACT)
+//				break;
+//		}
+//
+//		if (m_blend == Blend::SUB) {
+//		}
+//	}
+//	if (m_depth != GL_LESS) {
+//		glDepthFunc(m_depth);
+//	}
+//	auto mcolor = shader->GetUniformLocation(MULTCOLOR);
+//	auto acolor = shader->GetUniformLocation(ADDCOLOR);
+//	if (mcolor != GL_INVALID) {
+//		glUniform4fv(mcolor, 1, &m_multColor[0]);
+//	}
+//	if (acolor != GL_INVALID) {
+//		glUniform4fv(acolor, 1, &m_addColor[0]);
+//	}
+////    auto fz = shader->GetUniformLocation(FORCEZ);
+////	auto fzv = shader->GetUniformLocation(FORCEDZ);
+////    if (fz != GL_INVALID) {
+////    	glUniform1i(fz, m_forceZ ? 1 : 0);
+////    	glUniform1f(fzv, m_forcedZ);
+////    }
+//
+//	auto to = shader->GetUniformLocation(TEXOFFSET);
+//	glUniform2fv (to, 1, &m_texOffset[0]);
 }
 
 void Renderer::post() {
@@ -86,7 +88,9 @@ void Renderer::post() {
 }
 
 void Renderer::Draw(Shader* shader) {
-
+    for (const auto& mesh : *m_model) {
+        mesh->draw(shader, 0, 0);
+    }
     //m_model->Draw(shader, m_offset, m_count);
 }
 
@@ -98,9 +102,9 @@ void Renderer::SetTransform(const glm::mat4& t) {
     m_renderingTransform = t;
 }
 
-ShaderType Renderer::GetShaderType() const {
-    return (m_baseModel == nullptr ? ShaderType::NONE : m_baseModel->GetShaderType());
-}
+//ShaderType Renderer::GetShaderType() const {
+//    return (m_model == nullptr ? ShaderType::NONE : m_model->GetShaderType());
+//}
 
 Bounds Renderer::GetBounds2D() const {
     Bounds b = GetBounds();

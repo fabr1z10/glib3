@@ -1,7 +1,7 @@
 #include <monkey/entities/sprite.h>
 #include <monkey/engine.h>
-
-#include <monkey/components/spriterenderer.h>
+#include <monkey/components/renderer.h>
+//#include <monkey/components/spriterenderer.h>
 #include <monkey/components/animator.h>
 
 Sprite::Sprite(const ITab& t) : Entity(t) {
@@ -9,7 +9,7 @@ Sprite::Sprite(const ITab& t) : Entity(t) {
     auto blend = static_cast<Blend>(t.get<int>("blend", 0));
 	auto depth = static_cast<GLenum>(t.get<int>("depth", GL_LESS));
     auto model = Engine::get().GetAssetManager().GetModel(modelId);
-    auto renderer = std::make_shared<SpriteRenderer>(model);
+    auto renderer = std::make_shared<Renderer>(model);
     renderer->setDepthFunc(depth);
     renderer->setBlendMode(blend);
     auto animator = std::make_shared<Animator>(model);

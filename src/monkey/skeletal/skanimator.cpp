@@ -1,7 +1,7 @@
 #include <monkey/skeletal/skanimator.hpp>
 #include <glm/gtx/transform.hpp>
 
-SkAnimator::SkAnimator(std::shared_ptr<IModel> model) : IAnimator(), m_currentAnimation(nullptr), m_complete(false), m_speedUp(1.0f)
+SkAnimator::SkAnimator(std::shared_ptr<Model> model) : IAnimator(), m_currentAnimation(nullptr), m_complete(false), m_speedUp(1.0f)
 {
     m_model = std::dynamic_pointer_cast<SkModel>(model);
     m_initAnim = m_model->GetDefaultAnimation();
@@ -209,7 +209,7 @@ void SkAnimator::setSpeedUp(float value) {
     m_speedUp = value;
 }
 
-void SkAnimator::setModel(std::shared_ptr<IModel> model) {
+void SkAnimator::setModel(std::shared_ptr<Model> model) {
     m_model = std::dynamic_pointer_cast<SkModel>(model);
     m_initAnim = m_model->GetDefaultAnimation();
     m_currentAnimation = nullptr;
@@ -219,7 +219,7 @@ void SkAnimator::setModel(std::shared_ptr<IModel> model) {
 
 }
 
-IModel* SkAnimator::getModel() const {
+Model* SkAnimator::getModel() const {
     return m_model.get();
 }
 

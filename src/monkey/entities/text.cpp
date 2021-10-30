@@ -3,10 +3,10 @@
 
 #include <monkey/engine.h>
 
-#include <monkey/components/spriterenderer.h>
+//#include <monkey/components/spriterenderer.h>
 #include <monkey/textmesh.h>
 #include <monkey/model/textmodel.h>
-#include <monkey/components/basicrenderer.h>
+#include <monkey/components/renderer.h>
 
 Text::Text(const std::string & text, const std::string &font, float size, TextAlignment align, glm::vec4 color, glm::vec2 pos) {
     SetPosition(pos);
@@ -14,7 +14,7 @@ Text::Text(const std::string & text, const std::string &font, float size, TextAl
     auto mesh = std::make_shared<TextMesh>(f, text, size, static_cast<TextAlignment >(align), 0.0f);
     glm::vec2 offset = mesh->getOffset();
     auto model = std::make_shared<TextModel>(mesh);
-    auto renderer = std::make_shared<BasicRenderer>(model);
+    auto renderer = std::make_shared<Renderer>(model);
     renderer->setMultColor(color);
 
     //MoveLocal(glm::vec3(offset, 0.0f));
@@ -41,7 +41,7 @@ Text::Text(const ITab& t) : Entity(t) {
 
     glm::vec2 offset = mesh->getOffset();
     auto model = std::make_shared<TextModel>(mesh);
-    auto renderer = std::make_shared<BasicRenderer>(model);
+    auto renderer = std::make_shared<Renderer>(model);
     renderer->setMultColor(color);
 
     //MoveLocal(glm::vec3(offset, 0.0f));

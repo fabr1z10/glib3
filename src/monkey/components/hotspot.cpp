@@ -1,9 +1,9 @@
 #include <monkey/components/hotspot.h>
 #include <monkey/engine.h>
-#include <monkey/components/basicrenderer.h>
+#include <monkey/components/renderer.h>
 #include <monkey/meshfactory.h>
 #include <monkey/iterator.h>
-#include <monkey/model/basicmodel.h>
+#include <monkey/assets/model.h>
 #include <iostream>
 #include <set>
 
@@ -352,7 +352,7 @@ void HotSpot::Start() {
         auto c = std::make_shared<Entity>();
         MeshFactory m;
         auto model = m.createWireframe(m_shape.get(), glm::vec4(1.0f));
-        auto renderer = std::make_shared<BasicRenderer>(model);
+        auto renderer = std::make_shared<Renderer>(model);
         c->AddComponent(renderer);
         c->SetZ(2.0f);
         m_entity->AddChild(c);

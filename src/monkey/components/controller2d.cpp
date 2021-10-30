@@ -9,7 +9,7 @@
 #include <iostream>
 #include <monkey/math/geomalgo.h>
 #include <monkey/meshfactory.h>
-#include <monkey/components/basicrenderer.h>
+#include <monkey/components/renderer.h>
 
 using namespace glm;
 
@@ -35,7 +35,7 @@ void Controller2D::drawShape() {
     auto shape = std::make_shared<Rect>(m_halfSize[0] * 2.0f, m_halfSize[1] * 2.0f, glm::vec3(-m_halfSize[0]+m_shift[0], -m_halfSize[1]+m_shift[1], 0));
     MeshFactory m;
     auto model = m.createWireframe(shape.get(), glm::vec4(1.0f));
-    auto renderer = std::make_shared<BasicRenderer>(model);
+    auto renderer = std::make_shared<Renderer>(model);
     debugEntity->AddComponent(renderer);
     m_entity->AddChild(debugEntity);
     m_debugShape = debugEntity.get();

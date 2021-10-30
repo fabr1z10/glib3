@@ -453,7 +453,7 @@ void SkModel::draw(Shader * shader, int, int) {
     		if (mesh.bb != GL_LESS) {
     			glDepthFunc(mesh.bb);
     		}
-    		mesh.mesh->Draw(shader, 0, 0);
+            mesh.mesh->draw(shader, 0, 0);
     		if (mesh.bb != GL_LESS) {
 				glDepthFunc(GL_LESS);
     		}

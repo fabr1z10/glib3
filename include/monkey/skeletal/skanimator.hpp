@@ -8,18 +8,18 @@
 
 class SkAnimator : public IAnimator {
 public:
-    SkAnimator(std::shared_ptr<IModel>);
+    SkAnimator(std::shared_ptr<Model>);
 
     virtual ~SkAnimator() {}
 	void setSpeedUp(float);
-    void setModel (std::shared_ptr<IModel> model) override;
+    void setModel (std::shared_ptr<Model> model) override;
     void Start() override;
     void Update(double dt) override;
     void SetAnimation (const std::string& anim, bool forward = true) override;
     //oid resetAnimation();
     bool IsComplete() const override;
     std::type_index GetType() override;
-    IModel* getModel() const override;
+    Model* getModel() const override;
     SkModel* getSkeletalModel() const;
     float getAnimationTime() const;
     using ParentClass = IAnimator;

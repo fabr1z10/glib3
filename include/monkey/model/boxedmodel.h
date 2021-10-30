@@ -31,7 +31,7 @@ public:
     Bounds GetMaxBounds() const;
     Bounds GetAnimBounds(const std::string&) const;
     const std::vector<std::shared_ptr<IShape>>& getShapes();
-    std::vector<std::shared_ptr<IShape>> getAttackShapes() const override;
+    std::vector<std::shared_ptr<IShape>> getAttackShapes() const ;
     float getAttackDistance() const;
 private:
     std::vector<std::shared_ptr<IShape>> m_shapes;

@@ -21,7 +21,7 @@ IMesh::IMesh(const ITab& t) {
 	});
 }
 
-void IMesh::Draw(Shader* shader, int offset, int count) {
+void IMesh::draw(Shader* shader, int offset, int count) {
     if (count == 0) count = m_nindices;
     glBindBuffer(GL_ARRAY_BUFFER, m_vb);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ib);

@@ -4,7 +4,7 @@
 #include <cmath>
 //#include <monkey/math/earcut.h>
 #include <monkey/quadmesh.h>
-#include <monkey/model/basicmodel.h>
+#include <monkey/assets/model.h>
 #include <monkey/math/shapes3d/aabb.h>
 #include <monkey/math/shapes3d/plane.h>
 #include <monkey/math/shapes3d/prism.h>
@@ -101,7 +101,7 @@ void MeshFactory::drawAABB(IShape* s, glm::vec4 color, std::vector<VertexColor> 
 
 }
 
-std::shared_ptr<IModel> MeshFactory::drawAABBTex(IShape * s, const std::vector<TexInfo> & texInfos) {
+std::shared_ptr<Model> MeshFactory::drawAABBTex(IShape * s, const std::vector<TexInfo> & texInfos) {
     std::vector<Vertex3DN> aaa;
     std::vector<unsigned> indices;
     auto* box = static_cast<AABB*>(s);
@@ -174,7 +174,7 @@ std::shared_ptr<IModel> MeshFactory::drawAABBTex(IShape * s, const std::vector<T
     return cm;
 }
 
-std::shared_ptr<IModel> MeshFactory::drawPrismTex(IShape * s, const std::vector<TexInfo>& texInfos) {
+std::shared_ptr<Model> MeshFactory::drawPrismTex(IShape * s, const std::vector<TexInfo>& texInfos) {
     auto comboModel = std::make_shared<ComboModel>();
 
     // create top mesh
@@ -281,7 +281,7 @@ void MeshFactory::drawPolyLine(IShape * s, glm::vec4 color, std::vector<VertexCo
     }
 }
 
-std::shared_ptr<IModel> MeshFactory::drawPolyTex(IShape * shape, const std::vector<TexInfo>& texInfos, float h) {
+std::shared_ptr<Model> MeshFactory::drawPolyTex(IShape * shape, const std::vector<TexInfo>& texInfos, float h) {
     using Coord = float;
     using Point = std::array<Coord, 2>;
     using N = uint32_t;
@@ -422,7 +422,7 @@ std::shared_ptr<BasicModel> MeshFactory::createSolid(IShape* shape, glm::vec4 co
 }
 
 
-std::shared_ptr<IModel> MeshFactory::createTextured(IShape * shape, const std::vector<TexInfo>& texInfos) {
+std::shared_ptr<Model> MeshFactory::createTextured(IShape * shape, const std::vector<TexInfo>& texInfos) {
     auto st = shape->getShapeType();
     std::vector<Vertex3D> vertices;
     std::vector<unsigned> indices;

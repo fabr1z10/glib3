@@ -3,7 +3,7 @@
 #include <monkey/component.h>
 #include <monkey/event.h>
 
-class IModel;
+class Model;
 class IShape;
 
 class IAnimator : public Component {
@@ -17,8 +17,8 @@ public:
     void SetInitialAnimation (const std::string& anim);
     void SetPlayForward (bool);
     virtual bool IsComplete() const = 0;
-    virtual void setModel (std::shared_ptr<IModel> model) = 0;
-    virtual IModel* getModel() const = 0 ;
+    virtual void setModel (std::shared_ptr<Model> model) = 0;
+    virtual Model* getModel() const = 0 ;
     using ParentClass = IAnimator;
     Event<IAnimator*> onAnimationChange;
 protected:

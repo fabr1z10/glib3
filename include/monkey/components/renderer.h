@@ -11,25 +11,27 @@
 
 #include <memory>
 #include <monkey/component.h>
-#include <monkey/assets/imodel.h>
+#include <monkey/assets/model.h>
 
 enum Blend {
 	DEFAULT=0, ADD, SUB
 };
 
 // a renderer is the component responsible for rendering a model onto the screen
-class Renderer : public Component {
+
+class __attribute__ ((visibility ("default"))) Renderer : public Component {
 public:
-    Renderer();
-    Renderer(const Renderer&);
+    // Renderer();
+    //Renderer(const Renderer&);
+    Renderer(std::shared_ptr<Model>);
     Renderer(const ITab& t);
     ~ Renderer() override = default;
     void init(Shader*);
     virtual void Draw(Shader*);
     void post();
     // dynamically change the model
-    virtual void SetModel(std::shared_ptr<IModel> mesh) = 0;
-    IModel* GetModel();
+    void SetModel(std::shared_ptr<Model> mesh);
+    Model* GetModel();
     Bounds GetBounds() const;
     Bounds GetBounds2D() const;
     void Start() override {}
@@ -39,7 +41,7 @@ public:
     void setAddColor(glm::vec4 c);
     void setTextureOffset (glm::vec2& offset);
     void setForcedZ(float);
-    virtual ShaderType GetShaderType() const;
+    //virtual ShaderType GetShaderType() const;
     using ParentClass = Renderer;
     //void SetMeshInfo (int offset, int count);
     //std::shared_ptr<Component> clone() const override;
@@ -49,7 +51,7 @@ public:
 	void setBlendMode (Blend);
 	void setDepthFunc (GLenum);
 protected:
-    IModel* m_baseModel;
+    std::shared_ptr<Model> m_model;
     glm::mat4 m_renderingTransform;
     glm::vec4 m_multColor;
     glm::vec4 m_addColor;
@@ -64,12 +66,12 @@ protected:
 
 
 inline Bounds Renderer::GetBounds() const {
-    return m_baseModel->GetBounds();
+    return m_model->GetBounds();
 }
 
 
-inline IModel* Renderer::GetModel() {
-    return m_baseModel;
+inline Model* Renderer::GetModel() {
+    return m_model.get();
 }
 
 inline void Renderer::setMultColor(glm::vec4 c) {
@@ -93,6 +95,10 @@ inline void Renderer::setForcedZ(float value) {
 //    m_offset = offset;
 //    m_count = count;
 //}
+
+inline void Renderer::SetModel(std::shared_ptr<Model> model) {
+    m_model = model;
+}
 
 
 #endif /* renderer_h */

@@ -1,11 +1,10 @@
 #include <monkey/skeletal/skcollider.hpp>
 #include <monkey/skeletal/skmodel.hpp>
 #include <monkey/skeletal/skanimator.hpp>
-#include <monkey/skeletal/skrenderer.hpp>
-#include <monkey/components/multirenderer.h>
+//#include <monkey/skeletal/skrenderer.hpp>
+#include <monkey/components/renderer.h>
 #include <monkey/meshfactory.h>
 #include <glm/gtx/transform.hpp>
-#include <monkey/components/basicrenderer.h>
 
 SkCollider::SkCollider(const ITab& table) : ICollider(table), m_shapeEntity(nullptr), m_shapeId(-1) {
     m_tag = table.get<int>("tag");
@@ -180,7 +179,7 @@ void SkCollider::Start() {
 
     ICollider::Start();
 
-    m_mainRenderer = static_cast<SkRenderer*>(m_entity->GetComponent<Renderer>());
+    m_mainRenderer = (m_entity->GetComponent<Renderer>());
     //auto shapeEntity = std::make_shared<Entity>();
 
     // create debug mesh
@@ -197,7 +196,7 @@ void SkCollider::Start() {
     for (const auto& info : attackInfo) {
     	auto entity = std::make_shared<Entity>();
 		auto model = m.createWireframe(info.second->shape.get(), glm::vec4(1.0f));// MeshFactory::CreateMesh(*(info.second->shape.get()));
-		auto renderer = std::make_shared<BasicRenderer>(model);
+		auto renderer = std::make_shared<Renderer>(model);
 		entity->AddComponent(renderer);
 		m_colliderRenderers.push_back(renderer.get());
 		boxEntity->AddChild(entity);
@@ -205,7 +204,7 @@ void SkCollider::Start() {
     for (const auto& shape : m_model->getShapes()) {
         auto entity = std::make_shared<Entity>();
         auto model = m.createWireframe(shape.get(), glm::vec4(1.0f));
-        auto renderer = std::make_shared<BasicRenderer>(model);
+        auto renderer = std::make_shared<Renderer>(model);
         entity->AddComponent(renderer);
         boxEntity->AddChild(entity);
 

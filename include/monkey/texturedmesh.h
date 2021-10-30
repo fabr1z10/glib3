@@ -52,8 +52,10 @@ public:
 //    }
 
     void Setup(Shader* shader) override {
-        auto texLoc = shader->GetUniformLocation(TEXTURE);
-        glUniform1i(texLoc, 0);
+	    shader->setInt("texture_diffuse1", 0);
+
+        //auto texLoc = shader->GetUniformLocation(TEXTURE);
+        //glUniform1i(texLoc, 0);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, m_texId);
     }

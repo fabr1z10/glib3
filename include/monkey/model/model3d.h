@@ -1,12 +1,12 @@
 #pragma once
 
-#include <monkey/assets/imodel.h>
+#include <monkey/assets/model.h>
 #include <monkey/multitexmesh.h>
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
-class Model3D : public IModel {
+class Model3D : public Model {
 public:
     //SkModel (const ITable&);
     Model3D(const ITab &);

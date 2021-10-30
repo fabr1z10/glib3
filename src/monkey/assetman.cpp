@@ -112,7 +112,7 @@ std::shared_ptr<IMesh> AssetManager::GetMesh(const std::string & id) {
 }
 
 
-std::shared_ptr<IModel> AssetManager::getModel(const pybind11::object &obj) {
+std::shared_ptr<Model> AssetManager::getModel(const pybind11::object &obj) {
     try {
         auto id = obj.cast<std::string>();
         return GetModel(id);
@@ -120,14 +120,14 @@ std::shared_ptr<IModel> AssetManager::getModel(const pybind11::object &obj) {
         auto tp = obj.cast<pybind11::tuple>();
         auto id = tp[0].cast<std::string>();
         auto args = PyTab(tp[1].cast<pybind11::dict>());
-        return genericLoaderArgs<IModel>(id, args);
+        return genericLoaderArgs<Model>(id, args);
         // TODO CIAPPO
         //return nullptr;
     }
 }
 
-std::shared_ptr<IModel> AssetManager::GetModel(const std::string & id) {
-    return genericLoader<IModel>(id, m_models);
+std::shared_ptr<Model> AssetManager::GetModel(const std::string & id) {
+    return genericLoader<Model>(id, m_models);
 }
 
 

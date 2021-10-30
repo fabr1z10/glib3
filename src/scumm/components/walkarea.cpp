@@ -8,7 +8,7 @@
 #include <monkey/math/algo/shortestpath.h>
 #include <monkey/properties.h>
 #include <monkey/meshfactory.h>
-#include <monkey/components/basicrenderer.h>
+#include <monkey/components/renderer.h>
 
 //WalkArea::WalkArea(std::shared_ptr<IShape> shape, int priority) : ScriptHotSpot(shape, priority) {}
 
@@ -159,14 +159,14 @@ void WalkArea::Start() {
 
         MeshFactory m;
         auto model = m.createWireframe(m_shape.get(), glm::vec4(1.0f));
-        auto renderer = std::make_shared<BasicRenderer>(model);
+        auto renderer = std::make_shared<Renderer>(model);
         c->AddComponent(renderer);
         m_entity->AddChild(c);
         for (const auto& wall : m_shortestPath->getWalls()) {
             Segment seg(wall.A, wall.B);
             auto d = std::make_shared<Entity>();
             auto mod = m.createWireframe(&seg, glm::vec4(1.0f));
-            auto rend = std::make_shared<BasicRenderer>(mod);
+            auto rend = std::make_shared<Renderer>(mod);
             d->AddComponent(rend);
             c->AddChild(d);
 

@@ -69,8 +69,9 @@ void Camera::Start() {
 
 void Camera::SetProjectionMatrix() {
     Shader* shader = Shader::GetCurrentShader();
-    GLuint projLoc = shader->GetUniformLocation(PROJECTION);
-    glUniformMatrix4fv(projLoc, 1, GL_FALSE, &m_projectionMatrix[0][0]);
+    shader->setMat4("projection", m_projectionMatrix);
+    //GLuint projLoc = shader->GetUniformLocation(PROJECTION);
+    //glUniformMatrix4fv(projLoc, 1, GL_FALSE, &m_projectionMatrix[0][0]);
     //glViewport(m_viewportX, m_viewportY, m_viewportWidth, m_viewportHeight);
 }
 

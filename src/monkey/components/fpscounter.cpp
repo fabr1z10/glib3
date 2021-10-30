@@ -28,7 +28,7 @@ void FPSCounter::Update(double) {
         double fps = std::round(m_frameCount / totalTime);
         //m_assetManager.GetVariable("_fps")->SetInt(static_cast<int>(fps));
         //m_vars.Get("_fps")->Set(static_cast<int>(fps));
-        m_textMesh->SetText (std::to_string(static_cast<int>(fps)));
+        m_textMesh->setText(std::to_string(static_cast<int>(fps)));
         m_frameCount = 0;
     }
 }

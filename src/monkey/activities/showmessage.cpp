@@ -1,7 +1,7 @@
 #include <monkey/activities/showmessage.h>
 #include <monkey/engine.h>
 #include <monkey/textmesh.h>
-#include <monkey/components/basicrenderer.h>
+#include <monkey/components/renderer.h>
 #include <glm/gtx/transform.hpp>
 #include <monkey/model/textmodel.h>
 
@@ -51,7 +51,7 @@ void ShowMessage::Start() {
         auto entity = std::make_shared<Entity>();
 
         auto model = std::make_shared<TextModel>(mesh);
-        auto renderer = std::make_shared<BasicRenderer>(model);
+        auto renderer = std::make_shared<Renderer>(model);
 
         entity->SetPosition(glm::vec3(outlineOffsets[i] * 0.5f, i == 0 ? 0 : -1));
         renderer->setMultColor(i==0 ? m_color : m_outlineColor);

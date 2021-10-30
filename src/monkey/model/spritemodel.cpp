@@ -5,7 +5,7 @@
 
 namespace py = pybind11;
 
-SpriteModel::SpriteModel (const ITab& t) : IModel() {
+SpriteModel::SpriteModel (const ITab& t) : Model() {
 //    m_shareable = true;
 
     auto sheetId = t.get<std::string>("sheet");;
@@ -215,7 +215,7 @@ const AnimInfo* SpriteModel::GetAnimInfo(const std::string& anim) const {
 }
 
 void SpriteModel::draw(Shader* shader, int offset, int count) {
-    m_mesh->Draw(shader, offset, count);
+    m_mesh->draw(shader, offset, count);
 }
 
 

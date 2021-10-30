@@ -7,10 +7,10 @@
 #include <monkey/model/boxedmodel.h>
 
 
-Animator::Animator(std::shared_ptr<IModel> model) : IAnimator() {
+Animator::Animator(std::shared_ptr<Model> model) : IAnimator() {
     m_model = std::dynamic_pointer_cast<SpriteModel>(model);
     m_animInfo = m_model->GetAnimInfo();
-    m_initAnim = model->GetDefaultAnimation();
+    m_initAnim = m_model->GetDefaultAnimation();
 }
 
 void Animator::Start() {
@@ -97,14 +97,14 @@ bool Animator::IsComplete() const {
     return m_animCompleted;
 }
 
-void Animator::setModel(std::shared_ptr<IModel> model) {
+void Animator::setModel(std::shared_ptr<Model> model) {
     m_model = std::dynamic_pointer_cast<SpriteModel>(model);
     m_animInfo = m_model->GetAnimInfo();
-    m_initAnim = model->GetDefaultAnimation();
+    m_initAnim = m_model->GetDefaultAnimation();
     Start();
 }
 
-IModel* Animator::getModel() const {
+Model* Animator::getModel() const {
     return m_model.get();
 }
 

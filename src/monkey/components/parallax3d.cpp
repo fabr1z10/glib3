@@ -1,8 +1,8 @@
 #include <monkey/components/parallax3d.h>
 #include <monkey/engine.h>
-#include <monkey/components/basicrenderer.h>
+#include <monkey/components/renderer.h>
 #include <monkey/quadmesh.h>
-#include <monkey/model/basicmodel.h>
+#include <monkey/assets/model.h>
 
 Parallax3D::Parallax3D(const std::string &camId, float z, const std::string &img) : m_camId(camId), m_img(img), m_z(z) {}
 
@@ -25,7 +25,7 @@ void Parallax3D::Start() {
     m_halfPanelHeight = 0.5*panelHeight;
     auto mesh = std::make_shared<QuadMesh>(m_img, 3*m_panelWidth, panelHeight, 3, 1);
     auto model = std::make_shared<BasicModel>(mesh);
-    auto renderer = std::make_shared<BasicRenderer>(model);
+    auto renderer = std::make_shared<Renderer>(model);
 
     glm::vec3 camPos = m_cam->GetPosition();
     camPos += glm::vec3(0, -m_halfPanelHeight, -m_z);

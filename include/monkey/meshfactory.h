@@ -1,6 +1,6 @@
 #pragma once
 
-#include <monkey/model/basicmodel.h>
+#include <monkey/assets/model.h>
 #include <monkey/math/shape.h>
 //#include <monkey/mesh.h>
 //#include <monkey/math/shapes/rect.h>
@@ -23,13 +23,13 @@ struct TexInfo {
 class __attribute__ ((visibility ("default"))) MeshFactory {
 public:
     MeshFactory (float z=0.0f);
-    std::shared_ptr<BasicModel> createWireframe (IShape*, glm::vec4 color);
-    std::shared_ptr<BasicModel> createSolid (IShape*, glm::vec4 color);
-    std::shared_ptr<IModel> createTextured (IShape*, const std::vector<TexInfo>&);
+    std::shared_ptr<Model> createWireframe (IShape*, glm::vec4 color);
+    std::shared_ptr<Model> createSolid (IShape*, glm::vec4 color);
+    std::shared_ptr<Model> createTextured (IShape*, const std::vector<TexInfo>&);
 private:
 	float m_z;
     std::unordered_map<ShapeType, std::function<void(IShape*, glm::vec4, std::vector<VertexColor>&, std::vector<unsigned>&)>> m_plotters;
-    std::unordered_map<ShapeType, std::function<std::shared_ptr<IModel>(IShape*, std::vector<TexInfo>)>> m_plottersTex;
+    std::unordered_map<ShapeType, std::function<std::shared_ptr<Model>(IShape*, std::vector<TexInfo>)>> m_plottersTex;
 //    std::shared_ptr<BasicModel> drawConvexPoly(IShape*, glm::vec4);
 //	std::shared_ptr<BasicModel> drawCircle(IShape*, glm::vec4);
 
@@ -44,9 +44,9 @@ private:
 	void drawPlane (IShape*, glm::vec4, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices);
 	void drawPrism (IShape*, glm::vec4, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices);
 
-    std::shared_ptr<IModel> drawPolyTex(IShape*, const std::vector<TexInfo>&, float h);
-    std::shared_ptr<IModel> drawPrismTex (IShape*,const std::vector<TexInfo>&);
-    std::shared_ptr<IModel> drawAABBTex (IShape*,const std::vector<TexInfo>&);
+    std::shared_ptr<Model> drawPolyTex(IShape*, const std::vector<TexInfo>&, float h);
+    std::shared_ptr<Model> drawPrismTex (IShape*, const std::vector<TexInfo>&);
+    std::shared_ptr<Model> drawAABBTex (IShape*, const std::vector<TexInfo>&);
 
 };
 //    public AcyclicVisitor,

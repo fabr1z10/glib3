@@ -108,89 +108,12 @@ void TextMesh::UpdateText(const std::string& msg, float maxLineWidth) {
     //material.texId = font.getTexId();
 }
 
-void TextMesh::splitIntoLines(Font* font, const string& msg, vector<string>& lines, float scalingFactor, float mll) {
-    float spaceLength = font->getGlyph(' ').advanceToNext * scalingFactor;
-    vector <string> words;
-    vector <float> wlenghts;
 
-    std::string current = "";
-    std::unordered_set<int> newLines;
-    for (auto& c : msg) {
-        if (c == ' ' || c == '\n') {
-            if (!current.empty()) {
-                words.push_back(current);
-            }
-            current = "";
-            if (c == '\n') {
-                newLines.insert(words.size()-1);
-            }
-        } else {
-            current.push_back(c);
-        }
-    }
-    if (!current.empty()) {
-        words.push_back(current);
-    }
-//    istringstream iss(msg);
-//    do {
-//        std::string word;
-//        iss >> word;
-//        words.push_back(word);
-//    } while (iss);
-
-    for (const auto& word : words) {
-
-        float wordLength = 0;
-        int charcount = 0;
-        auto sss = std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t >().from_bytes(word.c_str());
-        for (const auto& ch : sss) {
-            Glyph glyph = font->getGlyph(ch);
-            wordLength += ((charcount == word.size()-1) ? glyph.width : glyph.advanceToNext) * scalingFactor;
-            charcount += 1;
-        }
-        wlenghts.push_back(wordLength);
-    }
-
-    size_t nWords = words.size();
-    float currentLength = 0;
-    int wordsInLine = 0;
-
-    stringstream currentLine;
-    for (size_t i = 0; i < nWords; i++) {
-        float newLength = currentLength + wlenghts[i] + (wordsInLine > 0 ? spaceLength : 0);
-        bool added = false;
-        if (newLength <= mll) {
-            if (wordsInLine == 0)
-                currentLine << words[i];
-            else
-                currentLine << " " << words[i];
-            currentLength = newLength;
-            wordsInLine++;
-            added = true;
-        }
-
-        if (newLength > mll || (newLines.count(i) > 0)) {
-            lines.push_back(currentLine.str());
-            currentLine.str("");
-            currentLine.clear();
-            wordsInLine = 0;
-            if (!added) {
-                currentLine << words[i];
-                currentLength = wlenghts[i];
-                wordsInLine = 1;
-            }
-        }
-
-    }
-
-    if (currentLine.str().length() > 0)
-        lines.push_back(currentLine.str());
-
-}
 
 void TextMesh::Setup(Shader* shader) {
-    auto texLoc = shader->GetUniformLocation(TEXTURE);
-    glUniform1i(texLoc, 0);
+    shader->setInt("Tex1", 0);
+//    auto texLoc = shader->GetUniformLocation(TEXTURE);
+  //  glUniform1i(texLoc, 0);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, m_texId);
 }

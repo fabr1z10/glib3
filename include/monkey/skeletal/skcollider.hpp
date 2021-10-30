@@ -43,7 +43,7 @@ private:
     SkAnimator* m_animator;
     Entity* m_shapeEntity;
     std::vector<Renderer*> m_colliderRenderers;
-    SkRenderer* m_mainRenderer;
+    Renderer* m_mainRenderer;
     SkModel* m_model;
     Bounds GetStaticBoundsI() const override;
     Bounds GetDynamicBoundsI() const override;
