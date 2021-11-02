@@ -16,7 +16,7 @@ SkCollider::SkCollider(const ITab& table) : ICollider(table), m_shapeEntity(null
 }
 
 Bounds SkCollider::GetStaticBoundsI() const {
-    return m_model->GetBounds();
+    return m_model->getBounds();
 
 }
 

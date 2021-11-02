@@ -72,6 +72,12 @@ public:
         }));
     }
 
+    template<typename T>
+    void addf(const std::string& type, std::function<std::shared_ptr<T>(const ITab&)> f) {
+        m_facs2.insert(std::make_pair(type, f));
+    }
+
+
     template <typename T>
     void addAssetFactory(const std::string& type) {
         m_assetFactories.insert(std::make_pair(type, [] (const ITab& t) {

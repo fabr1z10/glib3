@@ -6,7 +6,7 @@
 #include <monkey/components/dynamics2d.h>
 #include <monkey/components/extstatemachine.h>
 #include <monkey/states/simple.h>
-
+#include <monkey/model/factory.h>
 #include <monkey/components/hotspot.h>
 #include <monkey/components/follow.h>
 #include <monkey/components/scripthotspot.h>
@@ -189,6 +189,8 @@ SceneFactory::SceneFactory() {
     add2<TexAnimator> ("components.texanimator");
     add2<ScriptPlayer> ("components.scriptplayer");
 
+    //add2<Model>("model.raw");
+    addf<Model>("model.poly", ModelFactory::polygon);
     add2<NullState> ("state.null");
     add2<SimpleState> ("state.simple");
     add2<Walk25> ("state.walk25");

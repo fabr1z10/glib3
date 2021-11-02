@@ -44,7 +44,7 @@ private:
 	void drawPlane (IShape*, glm::vec4, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices);
 	void drawPrism (IShape*, glm::vec4, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices);
 
-    std::shared_ptr<Model> drawPolyTex(IShape*, const std::vector<TexInfo>&, float h);
+    std::shared_ptr<IMesh> drawPolyTex(IShape*, const std::vector<TexInfo>&, float h);
     std::shared_ptr<Model> drawPrismTex (IShape*, const std::vector<TexInfo>&);
     std::shared_ptr<Model> drawAABBTex (IShape*, const std::vector<TexInfo>&);
 

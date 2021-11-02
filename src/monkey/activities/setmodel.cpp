@@ -17,7 +17,7 @@ void SetModel::Start() {
         m_entity->SetFlipX(m_flipX == 2);
     }
     //auto model = Engine::get().GetAssetManager().GetModel(m_model);
-    //m_renderer->SetModel(model);
+    //m_renderer->setModel(model);
     //m_renderer->SetAnimation(m_animId);
     SetComplete();
 

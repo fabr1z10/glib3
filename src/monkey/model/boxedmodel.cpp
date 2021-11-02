@@ -7,7 +7,7 @@
 
 namespace py = pybind11;
 
-BoxedModel::BoxedModel(std::shared_ptr<SpriteMesh> mesh) : SpriteModel(mesh) {}
+//BoxedModel::BoxedModel(std::shared_ptr<SpriteMesh> mesh) : SpriteModel(mesh) {}
 
 
 std::vector<std::shared_ptr<IShape>> BoxedModel::getAttackShapes() const {

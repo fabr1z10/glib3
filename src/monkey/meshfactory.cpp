@@ -167,25 +167,25 @@ std::shared_ptr<Model> MeshFactory::drawAABBTex(IShape * s, const std::vector<Te
     indices.push_back(16);
 
 
-
-    auto mesh = std::make_shared<TexturedMesh<Vertex3DN>>(TEXTURE_SHADER_LIGHT, GL_TRIANGLES, texInfo.tex);
+    auto mesh = std::make_shared<Mesh<Vertex3DN>>(TEXTURE_SHADER_LIGHT, GL_TRIANGLES);
+    mesh->addTexture(texInfo.tex, TexType::DIFFUSE);
     mesh->Init(aaa, indices);
-    auto cm = std::make_shared<BasicModel>(mesh);
+    auto cm = std::make_shared<Model>(mesh);
     return cm;
 }
 
 std::shared_ptr<Model> MeshFactory::drawPrismTex(IShape * s, const std::vector<TexInfo>& texInfos) {
-    auto comboModel = std::make_shared<ComboModel>();
+    auto comboModel = std::make_shared<Model>();
 
     // create top mesh
     auto* prism = static_cast<Prism*>(s);
     auto* baseShape = static_cast<Polygon*>(prism->getBaseShape());
     auto it = m_plottersTex.find(baseShape->getShapeType());
-    auto cm = std::make_shared<ComboModel>();
+    //auto cm = std::make_shared<Model>();
     auto h = prism->getHeight();
 
-    auto model = drawPolyTex(baseShape, texInfos, h);
-    comboModel->addModel(model);
+    auto m1 = drawPolyTex(baseShape, texInfos, h);
+    comboModel->addMesh(m1);
 
     // plot border
     auto v = baseShape->getOutlineVertices();
@@ -215,7 +215,7 @@ std::shared_ptr<Model> MeshFactory::drawPrismTex(IShape * s, const std::vector<T
     }
     auto mesh = std::make_shared<TexturedMesh<Vertex3DN>>(TEXTURE_SHADER_LIGHT, GL_TRIANGLES, borderTexInfo.tex);
     mesh->Init(aaa, indices);
-    comboModel->addModel(std::make_shared<BasicModel>(mesh));
+    comboModel->addMesh(mesh);
     return comboModel;
 
 }
@@ -281,7 +281,7 @@ void MeshFactory::drawPolyLine(IShape * s, glm::vec4 color, std::vector<VertexCo
     }
 }
 
-std::shared_ptr<Model> MeshFactory::drawPolyTex(IShape * shape, const std::vector<TexInfo>& texInfos, float h) {
+std::shared_ptr<IMesh> MeshFactory::drawPolyTex(IShape * shape, const std::vector<TexInfo>& texInfos, float h) {
     using Coord = float;
     using Point = std::array<Coord, 2>;
     using N = uint32_t;
@@ -309,7 +309,7 @@ std::shared_ptr<Model> MeshFactory::drawPolyTex(IShape * shape, const std::vecto
     }
     auto mesh = std::make_shared<TexturedMesh<Vertex3DN>>(TEXTURE_SHADER_LIGHT, GL_TRIANGLES, texInfo.tex);
     mesh->Init(vertices, indices);
-    return std::make_shared<BasicModel>(mesh);
+    return mesh;
 }
 
 void MeshFactory::drawPoly (IShape* s, glm::vec4 color, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices) {
@@ -417,7 +417,7 @@ void MeshFactory::drawCircle(IShape * s, glm::vec4 color, std::vector<VertexColo
 //    return std::make_shared<BasicModel>(mesh);
 //}
 
-std::shared_ptr<BasicModel> MeshFactory::createSolid(IShape* shape, glm::vec4 color) {
+std::shared_ptr<Model> MeshFactory::createSolid(IShape* shape, glm::vec4 color) {
 	//auto st
 }
 
@@ -436,7 +436,7 @@ std::shared_ptr<Model> MeshFactory::createTextured(IShape * shape, const std::ve
 
 }
 
-std::shared_ptr<BasicModel> MeshFactory::createWireframe(IShape * shape, glm::vec4 color) {
+std::shared_ptr<Model> MeshFactory::createWireframe(IShape * shape, glm::vec4 color) {
     auto st = shape->getShapeType();
     std::vector<VertexColor> vertices;
     std::vector<unsigned> indices;
@@ -451,7 +451,7 @@ std::shared_ptr<BasicModel> MeshFactory::createWireframe(IShape * shape, glm::ve
     auto mesh = std::make_shared<Mesh<VertexColor>>(COLOR_SHADER);
     mesh->Init(vertices, indices);
     mesh->m_primitive = GL_LINES;
-    return std::make_shared<BasicModel>(mesh);
+    return std::make_shared<Model>(mesh);
 
 ////    return mesh;
 ////            {0.0f, 0.0f, 0.0f, color.r, color.g, color.b, color.a},

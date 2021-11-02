@@ -9,6 +9,8 @@ class Mesh : public IMesh {
 public:
 	Mesh() = default;
     Mesh(ShaderType type) : IMesh(type) {}
+    Mesh(ShaderType type, GLenum primitive) : IMesh(type, primitive) {}
+
     Mesh(std::vector<Vertex>& vertices, std::vector<unsigned int>& indices) {
         Init(vertices, indices);
     }
@@ -44,7 +46,7 @@ public:
 
         glBindBuffer(GL_ARRAY_BUFFER, m_vb);
         glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * vertices.size(), &vertices[0], GL_STATIC_DRAW);
-
+        Vertex::InitAttributes();
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ib);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * indices.size(), &indices[0], GL_STATIC_DRAW);
         m_bounds = ComputeBounds(vertices);
@@ -53,8 +55,13 @@ public:
         //m_indicesCount = indices.size();
     }
 
-    virtual void InitAttributes() {
-        Vertex::InitAttributes();
-    }
+    // TODO question: why do we need to call this at every mesh? Can we move this to shader init?
+    // so let's remove this method and move it vshader class instead.
+//    virtual void InitAttributes() {
+//        // here glattribvertexpointers are called
+//
+//
+//        Vertex::InitAttributes();
+//    }
 
 };

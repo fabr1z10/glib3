@@ -149,7 +149,7 @@ void Wrap1::setModel(pybind11::object obj) {
     Renderer* r = m_entity->GetComponent<Renderer>();
     IAnimator* a = m_entity->GetComponent<IAnimator>();
     auto model = Engine::get().GetAssetManager().getModel(obj);
-    r->SetModel(model);
+    r->setModel(model);
     a->setModel(model);
     r->Start();
     auto collider = m_entity->GetComponent<ICollider>();
@@ -160,9 +160,9 @@ void Wrap1::setText(const std::string& text) {
 
     Renderer *r = m_entity->GetComponent<Renderer>();
     auto tm = dynamic_cast<TextModel *>(r->GetModel());
-    glm::vec2 oldOffset = tm->GetOffset();
+    glm::vec2 oldOffset = tm->getOffset();
     tm->setText(text);
-    glm::vec2 offset = tm->GetOffset();
+    glm::vec2 offset = tm->getOffset();
     r->SetTransform(glm::translate(glm::vec3(offset, 0.0f)));
 }
 

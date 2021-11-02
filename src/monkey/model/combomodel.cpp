@@ -6,8 +6,8 @@
 //    m_models.push_back(model);
 //}
 //
-//Bounds ComboModel::GetBounds() const {
-//    return m_models.front()->GetBounds();
+//Bounds ComboModel::getBounds() const {
+//    return m_models.front()->getBounds();
 //}
 //
 //void ComboModel::draw(Shader* shader, int, int) {
@@ -16,11 +16,11 @@
 //    }
 //}
 //
-//std::vector<std::string> ComboModel::GetAnimations() const {
+//std::vector<std::string> ComboModel::getAnimations() const {
 //    return {"default"};
 //}
 //
-//std::string ComboModel::GetDefaultAnimation() const {
+//std::string ComboModel::getDefaultAnimation() const {
 //    return "default";
 //}
 //

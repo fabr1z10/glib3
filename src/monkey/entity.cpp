@@ -11,6 +11,7 @@
 #include <monkey/engine.h>
 #include <glm/gtx/transform.hpp>
 #include <monkey/math/geom.h>
+#include <monkey/components/renderer.h>
 
 namespace py = pybind11;
 
@@ -31,6 +32,15 @@ Entity::Entity(const ITab& t) : Ref(t),
     } else {
         SetPosition(pos);
     }
+    auto factory = Engine::get().GetSceneFactory();
+
+    // let's see if this entity has a model
+    if (t.has("model")) {
+
+        auto model = factory->make2<Model>(*t["model"]);
+        AddComponent(model->makeRenderer(model));
+
+    }
 
     if (t.has("transform")) {
     	m_localTransform = t.get<glm::mat4>("transform");
@@ -50,7 +60,6 @@ Entity::Entity(const ITab& t) : Ref(t),
         SetScale(scale);
     }
 
-    auto factory = Engine::get().GetSceneFactory();
 
     if (t.has("camera")) {
         auto camt = t["camera"];

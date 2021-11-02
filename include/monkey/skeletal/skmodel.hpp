@@ -51,10 +51,10 @@ public:
     //SkModel (const ITable&);
     SkModel (const ITab&);
 
-    Bounds GetBounds() const override;
-    std::vector<std::string> GetAnimations() const override;
-    std::string GetDefaultAnimation() const override;
-    ShaderType GetShaderType() const override;
+    //Bounds getBounds() const ;
+    std::vector<std::string> getAnimations() const ;
+    std::string getDefaultAnimation() const;
+    ShaderType GetShaderType() const;
     SkAnimation* getAnimation(const std::string&);
     std::shared_ptr<Joint> getRootJoint();
     Joint* getJoint (const std::string&);
@@ -66,7 +66,7 @@ public:
 				  glm::vec2 attachPoint, float z, float scale, int order, glm::vec2 offset = glm::vec2(0.0f));
     //void setMesh (const std::string& jointId, const std::string& meshId, float scale, glm::vec2 offset = glm::vec2(0.0f), int order = 0);
     void setAnimation (const std::string& animId, const std::string& anim);
-    void draw (Shader*, int offset=0, int count=0) override;
+    void draw (Shader*, int offset=0, int count=0) ;
     /**
      * Gets an array of the all important model-space transforms of all the
      * joints (with the current animation pose applied) in the entity. The
@@ -86,7 +86,7 @@ public:
     IShape* getShape (const std::string& animId);
     IShape* getShape (int shapeId);
     const AttackBox* getShapeCastId (const std::string& animId, float t);
-    std::vector<std::shared_ptr<IShape>> getAttackShapes() const override;
+    std::vector<std::shared_ptr<IShape>> getAttackShapes() const ;
     void computeOffset();
     //const std::unordered_map<std::string, std::unordered_map<std::string, glm::vec2>>& getKeyPoints() const;
     const std::unordered_map<std::string, std::shared_ptr<AttackBox>>& getAttackInfo() const;

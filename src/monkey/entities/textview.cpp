@@ -83,7 +83,7 @@ void TextView::AddEntity(pybind11::object& ref) {
     auto mf = Engine::get().GetSceneFactory();
     auto ptr = mf->make2<Entity>(PyTab(obj));
 
-    int n = dynamic_cast<TextModel*>(ptr->GetComponent<Renderer>()->GetModel())->GetNumberOfLines();
+    int n = dynamic_cast<TextModel*>(ptr->GetComponent<Renderer>()->GetModel())->getNumberOfLines();
     m_nLines += n;
     if (!m_scroll && m_nLines > m_maxLines) {
         // recompute all lines
@@ -148,8 +148,8 @@ void TextView::AddArrows() {
     arrowUp->SetName("arrowUp");
     arrowDown->SetName("arrowDown");
 
-    glm::vec3 auExtents = arrowUpMesh->GetBounds().GetSize();
-    glm::vec3 adExtents = arrowDownMesh->GetBounds().GetSize();
+    glm::vec3 auExtents = arrowUpMesh->getBounds().GetSize();
+    glm::vec3 adExtents = arrowDownMesh->getBounds().GetSize();
     m_deltax = std::max(auExtents.x, adExtents.x) + 2;
 
 
@@ -168,7 +168,7 @@ void TextView::AddArrows() {
     arrowUp->AddComponent(hsu);
     arrowDown->AddComponent(hsd);
 
-    arrowUp->SetPosition(glm::vec3(0.0f, -arrowUpMesh->GetBounds().GetExtents().y, 1.0f));
+    arrowUp->SetPosition(glm::vec3(0.0f, -arrowUpMesh->getBounds().GetExtents().y, 1.0f));
     arrowDown->SetPosition(glm::vec3(0.0f, -m_height, 1.0f));
     AddChild(arrowUp);
     AddChild(arrowDown);
@@ -240,7 +240,7 @@ void TextView::Start() {
 ////
 ////        // if it's a button, also add a hotspot
 ////        if (item.hotspot != nullptr) {
-////            auto bounds = renderer->GetBounds();
+////            auto bounds = renderer->getBounds();
 ////            float w = bounds.max.x - bounds.min.x;
 ////            float h = bounds.max.y - bounds.min.y;
 ////            auto shape = std::make_shared<Rect>(w, h, glm::vec2(0, bounds.min.y));

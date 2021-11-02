@@ -9,7 +9,7 @@ public:
 	void Draw(Shader*) override;
 	std::type_index GetType() override;
 	void Start() override;
-	//void SetModel(std::shared_ptr<IModel> mesh) override {}
+	//void setModel(std::shared_ptr<IModel> mesh) override {}
 	void Update(double) override;
 //	ShaderType GetShaderType() const override;
 

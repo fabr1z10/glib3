@@ -118,16 +118,22 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath) {
     
     glUseProgram(progId);
 
+    //glGenVertexArrays(1, &m_vao);
+
 }
 
 void Shader::Start() {
     glUseProgram(m_programId);
+
+    //glBindVertexArray(m_vao);
+
     // TODO move in vshader
     //for (size_t i = 0; i < m_nAttributes; i++)
     //    glEnableVertexAttribArray(i);
 }
 
 void Shader::Stop() {
+    //glBindVertexArray(0);
     // TODO move in vshader
     //for (size_t i = 0; i < m_nAttributes; i++)
     //    glDisableVertexAttribArray(i);
@@ -147,6 +153,7 @@ GLuint Shader::getProgId() const {
 
 ShaderFactory::ShaderFactory() {
     m_facs["unlit_textured"] = [] () { return std::make_unique<VShader<MVShader, Vertex3D>>("glsl/unlit.vs", "glsl/unlit.fs"); };
+    m_facs["color"] = [] () { return std::make_unique<VShader<MVShader, VertexColor>>("glsl/color.vs", "glsl/color.fs"); };
 //    m_facs["unlit_color"] = [] () { return std::make_unique<ColorUnlit>(); };
 //    m_facs["text"] = [] () { return std::make_unique<TextShader>(); };
 //    m_facs["light_color"] = [] () { return std::make_unique<LightShader>(); };
@@ -220,5 +227,6 @@ void Shader::setMat3(const std::string &name, const glm::mat3 &mat) const
 // ------------------------------------------------------------------------
 void Shader::setMat4(const std::string &name, const glm::mat4 &mat) const
 {
+    auto pippo = glGetUniformLocation(m_programId, name.c_str());
     glUniformMatrix4fv(glGetUniformLocation(m_programId, name.c_str()), 1, GL_FALSE, &mat[0][0]);
 }

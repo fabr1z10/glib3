@@ -4,7 +4,7 @@
 SkAnimator::SkAnimator(std::shared_ptr<Model> model) : IAnimator(), m_currentAnimation(nullptr), m_complete(false), m_speedUp(1.0f)
 {
     m_model = std::dynamic_pointer_cast<SkModel>(model);
-    m_initAnim = m_model->GetDefaultAnimation();
+    m_initAnim = m_model->getDefaultAnimation();
 
 }
 
@@ -211,11 +211,11 @@ void SkAnimator::setSpeedUp(float value) {
 
 void SkAnimator::setModel(std::shared_ptr<Model> model) {
     m_model = std::dynamic_pointer_cast<SkModel>(model);
-    m_initAnim = m_model->GetDefaultAnimation();
+    m_initAnim = m_model->getDefaultAnimation();
     m_currentAnimation = nullptr;
     m_animation="";
     Start();
-    SetAnimation(m_model->GetDefaultAnimation());
+    SetAnimation(m_model->getDefaultAnimation());
 
 }
 

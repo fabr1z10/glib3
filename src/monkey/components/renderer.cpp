@@ -13,7 +13,7 @@
 #include <iostream>
 
 
-Renderer::Renderer(std::shared_ptr<Model> model) : m_model(model) {}
+Renderer::Renderer(std::shared_ptr<Model> model) : m_model(model),m_renderingTransform(1.0f) {}
 //Renderer::Renderer() : Component(), m_baseModel(nullptr),
 //    m_multColor(1.0f), m_addColor(0.0f), m_renderingTransform(1.0f), m_forceZ(false), m_forcedZ(0.0f),
 //    m_texOffset(0.0f), m_blend(Blend::DEFAULT), m_depth(GL_LESS) {
@@ -75,15 +75,15 @@ void Renderer::init(Shader* shader) {
 }
 
 void Renderer::post() {
-	if (m_blend != Blend::DEFAULT) {
-		// reset to default
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glBlendEquation(GL_FUNC_ADD);
-
-	}
-	if (m_depth != GL_LESS) {
-		glDepthFunc(GL_LESS);
-	}
+//	if (m_blend != Blend::DEFAULT) {
+//		// reset to default
+//		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+//		glBlendEquation(GL_FUNC_ADD);
+//
+//	}
+//	if (m_depth != GL_LESS) {
+//		glDepthFunc(GL_LESS);
+//	}
 
 }
 

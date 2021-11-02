@@ -1,4 +1,5 @@
 #include <monkey/model/textmodel.h>
+#include <monkey/mesh.h>
 #include <string>
 #include <locale>
 #include <codecvt>
@@ -12,14 +13,14 @@ void TextModel::updateText() {
     std::vector <unsigned int> indices;
     std::vector <std::string> lines;
 
-    float scalingFactor = size / m_font->size(); //font.getMaxHeight();
-    if (maxLineWidth == 0.0f)
-        lines.push_back(msg);
+    float scalingFactor = m_size / m_font->size(); //font.getMaxHeight();
+    if (m_maxLineWidth == 0.0f)
+        lines.push_back(m_text);
     else
-        splitIntoLines(m_font, m_text, lines, scalingFactor, maxLineWidth);
+        splitIntoLines(m_text, lines, scalingFactor, m_maxLineWidth);
 
     // now loop through each line
-    float y = -size;
+    float y = -m_size;
     unsigned int letterCount = 0;
 
     m_bounds.min = glm::vec3(std::numeric_limits<float>::infinity());
@@ -38,7 +39,7 @@ void TextModel::updateText() {
 
             //char c = lines[n][i];
             //bool isLastCharacter = i == lines[n].length()-1;
-            Glyph glyph = font->getGlyph(w);
+            Glyph glyph = m_font->getGlyph(w);
 
             float scaledWidth = glyph.width * scalingFactor;
             float scaledHeight = glyph.height * scalingFactor;
@@ -71,7 +72,7 @@ void TextModel::updateText() {
             x += scaleAdvance;
 
         }
-        y -= size;
+        y -= m_size;
     }
     //glm::vec2 offset = getOffset();
     //m_localTransform = glm::translate(glm::mat4(1.0f), glm::vec3(offset.x, offset.y, 0.0f));
@@ -92,7 +93,7 @@ TextModel::TextModel(Font* font,
     const std::string& msg,
     float size,
     TextAlignment align,
-    float maxLineWidth) : m_font(font), m_text(msg), m_size(size)
+    float maxLineWidth) : m_font(font), m_text(msg), m_size(size), m_align(align), m_maxLineWidth(maxLineWidth), m_lines(0)
 {
     updateText();
 }
@@ -179,20 +180,42 @@ std::string TextModel::getText () const {
 
 }
 
-void TextModel::setText(const std::string&) {
+void TextModel::setText(const std::string& text) {
     m_text = text;
     updateText();
 
 }
 
-Bounds TextModel::getBounds() const {
-	return m_textMesh->GetBounds();
+
+int TextModel::getNumberOfLines() const {
+    return m_lines;
 }
 
-int TextModel::GetNumberOfLines() const {
-    return m_textMesh->getNumberOfLines();
-}
-
-glm::vec2 TextModel::GetOffset() const {
-    return m_textMesh->getOffset();
-}
+glm::vec2 TextModel::getOffset() const {
+    glm::vec2 offset(0.0f);
+    switch (m_align) {
+        case BOTTOM_LEFT:
+            offset = glm::vec2(0.0f, m_lines * m_size);
+            //offset = glm::vec2(0.0f, 4.0f);
+            break;
+        case BOTTOM_RIGHT:
+            offset = glm::vec2(-m_bounds.max.x, m_lines * m_size);
+            //offset = - glm::vec2(m_bounds.max.x, m_bounds.min.y);
+            break;
+        case BOTTOM:
+            offset = -glm::vec2(0.5f * (m_bounds.min.x + m_bounds.max.x), m_bounds.min.y);
+            break;
+        case TOP_LEFT:
+            offset = glm::vec2(0.0f, 0.0f);
+            break;
+        case TOP_RIGHT:
+            offset = -glm::vec2(m_bounds.max.x, m_bounds.max.y);
+            break;
+        case TOP:
+            offset = -glm::vec2(0.5f * (m_bounds.min.x + m_bounds.max.x), m_bounds.max.y);
+            break;
+        case CENTER:
+            offset =-glm::vec2(0.5f * (m_bounds.min.x + m_bounds.max.x), 0.5f*(m_bounds.min.y + m_bounds.max.y));
+            break;
+    }
+    return offset;}

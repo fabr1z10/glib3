@@ -142,7 +142,7 @@ void RenderingEngine::Update(double)
 				}
 				// *** end handle camera
 				auto* renderer = node->GetComponent<Renderer>();
-				if (renderer != nullptr && renderer->isActive() && renderer->GetShaderType() == stype) {
+				if (currentCam != nullptr && renderer != nullptr && renderer->isActive() /*&& renderer->GetShaderType() == stype*/) {
 					glm::mat4 wt = node->GetWorldTransform() * renderer->GetTransform();
 					// check for frustrum culling ...
 					drawCount++;

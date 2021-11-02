@@ -30,8 +30,12 @@ class Engine:
             # read game variables, and functions
             for file in a.get('fonts', []):
                 self.add_font(file['id'], file['file'])
+            for shader in a.get('shaders', []):
+                self.add_shader(shader)
         self.add_room_factory('_basic', mopy.factories.basicroom.BasicRoom.make)
+
         self.add_item_factory('_model3d', mopy.factories.items.model3d)
+        self.add_item_factory('_entity', mopy.factories.items.entity)
 
 
     @staticmethod
@@ -41,7 +45,7 @@ class Engine:
             return a
 
     def add_shader(self, shader):
-        self.shaders.append(shader.name)
+        self.shaders.append(shader)
 
     def add_font(self, uid, file):
         self.assets['fonts'][uid] = font.Font(uid, file)

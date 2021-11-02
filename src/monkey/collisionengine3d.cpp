@@ -134,7 +134,7 @@ std::pair<glm::ivec3, glm::ivec3> SpatialHashingCollisionEngine3D::getLocation(c
 
 // TODO remove
 //Location CollisionEngine::GetLocation(const Bounds& aabb) {
-//    //auto aabb = c->GetBounds();
+//    //auto aabb = c->getBounds();
 //    Location loc;
 //    loc.x0 = floor(aabb.min.x / m_width);
 //    float mx = aabb.max.x / m_width;

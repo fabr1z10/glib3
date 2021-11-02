@@ -239,30 +239,30 @@ void FoeWalk25::End() {
 }
 
 void FoeWalk25::AttachStateMachine(StateMachine * sm) {
-    State::AttachStateMachine(sm);
-    m_entity = sm->GetObject();
-
-    m_target = Monkey::get().Get<Entity>("player");
-
-    // here I will get the skeletal model or sprite model
-    auto animator = sm->GetObject()->GetComponent<IAnimator>();
-    auto shapes = animator->getModel()->getAttackShapes();
-    float am = std::numeric_limits<float>::infinity();
-    float aM = std::numeric_limits<float>::infinity();
-    float scale = m_entity->GetScale();
-    for (const auto& shape : shapes) {
-        auto sb = shape->getBounds();
-        am = std::min(am, sb.min.x);
-        aM = std::min(aM, sb.max.x);
-    }
-    m_attackPos = 0.9f* (aM);
-
-
-    m_pc = dynamic_cast<Controller25*>(m_target->GetComponent<IController>());
-    m_targetSM = m_target->GetComponent<StateMachine>();
-
-    m_dynamics = m_entity->GetComponent<Dynamics2D>();
-    m_controller = dynamic_cast<Controller25*>(m_entity->GetComponent<IController>());
-    m_animator = m_entity->GetComponent<IAnimator>();
-    //m_delta = m_sdelta* m_entity->GetScale();
+//    State::AttachStateMachine(sm);
+//    m_entity = sm->GetObject();
+//
+//    m_target = Monkey::get().Get<Entity>("player");
+//
+//    // here I will get the skeletal model or sprite model
+//    auto animator = sm->GetObject()->GetComponent<IAnimator>();
+//    auto shapes = animator->getModel()->getAttackShapes();
+//    float am = std::numeric_limits<float>::infinity();
+//    float aM = std::numeric_limits<float>::infinity();
+//    float scale = m_entity->GetScale();
+//    for (const auto& shape : shapes) {
+//        auto sb = shape->getBounds();
+//        am = std::min(am, sb.min.x);
+//        aM = std::min(aM, sb.max.x);
+//    }
+//    m_attackPos = 0.9f* (aM);
+//
+//
+//    m_pc = dynamic_cast<Controller25*>(m_target->GetComponent<IController>());
+//    m_targetSM = m_target->GetComponent<StateMachine>();
+//
+//    m_dynamics = m_entity->GetComponent<Dynamics2D>();
+//    m_controller = dynamic_cast<Controller25*>(m_entity->GetComponent<IController>());
+//    m_animator = m_entity->GetComponent<IAnimator>();
+//    //m_delta = m_sdelta* m_entity->GetScale();
 }

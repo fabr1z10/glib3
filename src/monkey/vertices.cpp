@@ -21,8 +21,16 @@ void Vertex3DN::InitAttributes() {
 
 }
 
+void VertexColor::enableAttributes() {
+    glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(1);
+
+}
 void VertexColor::InitAttributes() {
+    //for (size_t i = 0; i < 2; i++)
+    glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(VertexColor), (void*)offsetof(VertexColor, x));
+    glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(VertexColor), (void*)offsetof(VertexColor, r));
 
 }

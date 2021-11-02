@@ -18,17 +18,18 @@ def make_room(room: dict):
     r = PlatformerRoom3D(visible_name,(15, -100, 385, 100))
     if 'items' in room:
         for item in room['items']:
-            factory_id = item['factory']
-            factory = monkey.engine.get_item_factory(factory_id[0])
-            if factory is None:
-                print('Unable to find factory for item: ' + factory_id[0])
-                exit(1)
-            else:
-                props = {} if len(factory_id) == 1 else factory_id[1]
-                f = factory(**props)
-                for a in item['d']:
-                    e = f(*a)
-                    r.main.add(e)
+            r.main.add(item)
+            # factory_id = item['factory']
+            # factory = monkey.engine.get_item_factory(factory_id[0])
+            # if factory is None:
+            #     print('Unable to find factory for item: ' + factory_id[0])
+            #     exit(1)
+            # else:
+            #     props = {} if len(factory_id) == 1 else factory_id[1]
+            #     f = factory(**props)
+            #     for a in item['d']:
+            #         e = f(*a)
+            #         r.main.add(e)
     if 'start_script' in room:
         r.init.append(getattr(func, room['start_script']))
     r.init.append(func.compute_height)

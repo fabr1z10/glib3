@@ -23,19 +23,33 @@
 
 class Shader;
 
+enum TexType {
+    DIFFUSE = 0,
+    SPECULAR = 1,
+    NORMAL = 2
+};
+
+struct TextureInfo {
+    unsigned int id;
+    TexType type;
+};
+
+
 class IMesh : public Object {
 public:
 	IMesh() = default;
 	IMesh(const ITab&);
     IMesh(ShaderType type) : m_vb(INVALID_OGL_VALUE), m_ib(INVALID_OGL_VALUE), m_shaderType{type} {}
+    IMesh(ShaderType type, GLenum prim) : m_vb(INVALID_OGL_VALUE), m_ib(INVALID_OGL_VALUE), m_shaderType{type}, m_primitive{prim} {}
+
     virtual ~IMesh() {}
 
     GLuint VertexBuffer() const { return m_vb; }
     GLuint IndexBuffer() const { return m_ib; }
     GLuint GetNumberOfIndices() { return m_nindices; }
     GLuint GetNumberOfVertices() { return m_nvertices; }
-    virtual void InitAttributes() = 0;
-    virtual void Setup(Shader*) {}
+    //virtual void InitAttributes() = 0;
+    virtual void Setup(Shader*);
     virtual Bounds GetBounds() { return m_bounds; }
     void draw (Shader*, int offset, int count);
     GLenum m_primitive;
@@ -46,6 +60,9 @@ public:
     glm::vec2 getKeyPoint(const std::string&) const;
     void addKeyPoint(const std::string&, glm::vec2);
     bool hasKeyPoint (const std::string&) const;
+    void addTexture(const TextureInfo&);
+    void addTexture(const std::string& file, TexType);
+
 protected:
     ShaderType m_shaderType;
     //glm::mat4 m_localTransform;
@@ -59,6 +76,8 @@ protected:
     //int m_indicesCount;
     //unsigned int m_shaderMask;
     std::unordered_map<std::string, glm::vec2> m_keyPoints;
+    std::vector<TextureInfo> m_textures;
+    static std::array<std::string, 3> g_texTypeStr;
 };
 
 inline ShaderType IMesh::GetShaderType() const {
@@ -118,6 +137,10 @@ inline bool IMesh::hasKeyPoint(const std::string & id) const {
 
 inline void IMesh::addKeyPoint(const std::string & id, glm::vec2 pos) {
     m_keyPoints[id] = pos;
+}
+
+inline void IMesh::addTexture(const TextureInfo& tex) {
+    m_textures.push_back(tex);
 }
 
 #endif /* imesh_h */

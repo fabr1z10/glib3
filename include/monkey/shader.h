@@ -27,6 +27,8 @@ public:
     static Shader* GetCurrentShader();
     static void SetCurrentShader(Shader*);
     virtual void initVertexAttributes () = 0;
+    virtual void a() {}
+    GLuint getVAO() const { return m_vao;}
     // utility uniform functions
     // ------------------------------------------------------------------------
     void setBool(const std::string &name, bool value) const;
@@ -47,6 +49,7 @@ protected:
     std::unordered_map <ShaderUniform, GLint, EnumClassHash> m_locations;
     GLuint m_programId;
     static Shader* g_currentShader;
+    GLuint m_vao;
 };
 
 
@@ -62,9 +65,28 @@ private:
 template <typename BaseShader, typename Vertex>
 class VShader : public BaseShader {
 public:
-    VShader(const char* v, const char* f) : BaseShader(v, f) {}
+    VShader(const char* v, const char* f) : BaseShader(v, f) {
+        //initVertexAttributes();
+        //glBindVertexArray(BaseShader::m_vao);
+        //Vertex::InitAttributes();
+    }
+
+
     void initVertexAttributes () {
         Vertex::InitAttributes();
+        //glBindVertexArray(0);
+
+    }
+
+    void Start() override {
+        Shader::Start();
+        a();
+        //Vertex::InitAttributes();
+    }
+
+    void a() override {
+        for (size_t i = 0; i < 2; i++)
+            glEnableVertexAttribArray(i);
     }
 
 };

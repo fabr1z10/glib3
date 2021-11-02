@@ -17,6 +17,7 @@ void MShader::initMesh(const glm::mat4 &modelMatrix, Camera *cam) {
 
 MVShader::MVShader(const char* vertex, const char* fragment) : Shader(vertex, fragment) {
     m_modelViewMat = glGetUniformLocation(m_programId, "modelview");
+
 }
 
 void MVShader::initMesh(const glm::mat4 &modelMatrix, Camera *cam) {

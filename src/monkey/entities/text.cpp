@@ -11,9 +11,9 @@
 Text::Text(const std::string & text, const std::string &font, float size, TextAlignment align, glm::vec4 color, glm::vec2 pos) {
     SetPosition(pos);
     Font* f = Engine::get().GetAssetManager().GetFont(font).get();
-    auto mesh = std::make_shared<TextMesh>(f, text, size, static_cast<TextAlignment >(align), 0.0f);
-    glm::vec2 offset = mesh->getOffset();
-    auto model = std::make_shared<TextModel>(mesh);
+    auto model = std::make_shared<TextModel>(f, text, size, static_cast<TextAlignment >(align), 0.0f);
+    glm::vec2 offset = model->getOffset();
+    //auto model = std::make_shared<TextModel>(mesh);
     auto renderer = std::make_shared<Renderer>(model);
     renderer->setMultColor(color);
 
@@ -37,10 +37,10 @@ Text::Text(const ITab& t) : Entity(t) {
 
     Font* f = Engine::get().GetAssetManager().GetFont(font).get();
 
-    auto mesh = std::make_shared<TextMesh>(f, text, size, static_cast<TextAlignment >(align), maxWidth);
+    auto model = std::make_shared<TextModel>(f, text, size, static_cast<TextAlignment >(align), maxWidth);
 
-    glm::vec2 offset = mesh->getOffset();
-    auto model = std::make_shared<TextModel>(mesh);
+    glm::vec2 offset = model->getOffset();
+    //  auto model = std::make_shared<TextModel>(mesh);
     auto renderer = std::make_shared<Renderer>(model);
     renderer->setMultColor(color);
 

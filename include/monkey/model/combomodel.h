@@ -5,10 +5,10 @@
 //class ComboModel : public Model {
 //public:
 //    ComboModel ();
-//    Bounds GetBounds() const override;
+//    Bounds getBounds() const override;
 //    void draw (Shader*, int offset = 0, int count = 0) override;
-//    std::vector<std::string> GetAnimations() const override;
-//    std::string GetDefaultAnimation() const override ;
+//    std::vector<std::string> getAnimations() const override;
+//    std::string getDefaultAnimation() const override ;
 //    ShaderType GetShaderType() const override;
 //    void addModel (std::shared_ptr<Model>);
 //private:

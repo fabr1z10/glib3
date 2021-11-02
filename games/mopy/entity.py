@@ -31,6 +31,7 @@ class Entity:
         else:
             self.pos = pos
 
+        self.model = None
         self.tag = tag
         self.camera = None
         self.components = []

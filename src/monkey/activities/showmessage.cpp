@@ -40,17 +40,17 @@ void ShowMessage::Start() {
     auto parent = std::make_shared<Entity>();
     Font* f = Engine::get().GetAssetManager().GetFont(m_font).get();
 
-    auto mesh = std::make_shared<TextMesh>(f, m_message, m_size, m_align, 280.0f);
-    auto offset = mesh->getOffset();
+    auto model = std::make_shared<TextModel>(f, m_message, m_size, m_align, 280.0f);
+    auto offset = model->getOffset();
     glm::mat4 transform = glm::translate(glm::vec3(offset, 0.0f));
-    Bounds ex = mesh->GetBounds();
+    Bounds ex = model->getBounds();
     ex.Transform(transform);
 
     glm::vec2 outlineOffsets[] = {{0, 0}, {-1, 0}, {-1,1}, {0, 1}, {1,1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1}};
     for (int i =0; i < 9; ++i) {
         auto entity = std::make_shared<Entity>();
 
-        auto model = std::make_shared<TextModel>(mesh);
+        //auto model = std::make_shared<TextModel>(mesh);
         auto renderer = std::make_shared<Renderer>(model);
 
         entity->SetPosition(glm::vec3(outlineOffsets[i] * 0.5f, i == 0 ? 0 : -1));

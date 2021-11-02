@@ -32,15 +32,15 @@ struct __attribute__ ((visibility ("default")))  Vertex3D {
     static void InitAttributes();
 };
 
-struct Vertex3DC {
-    Vertex3DC(GLfloat x, GLfloat y, GLfloat z, GLfloat s, GLfloat t, GLfloat r, GLfloat g, GLfloat b, GLfloat a)
-            : x(x), y(y), z(z), s(s), t(t), r(r), g(g), b(b), a(a) {}
-    GLfloat x, y, z;
-    GLfloat s, t;
-    GLfloat r, g, b, a;
-    static void InitAttributes();
-};
-
+//struct Vertex3DC {
+//    Vertex3DC(GLfloat x, GLfloat y, GLfloat z, GLfloat s, GLfloat t, GLfloat r, GLfloat g, GLfloat b, GLfloat a)
+//            : x(x), y(y), z(z), s(s), t(t), r(r), g(g), b(b), a(a) {}
+//    GLfloat x, y, z;
+//    GLfloat s, t;
+//    GLfloat r, g, b, a;
+//    static void InitAttributes();
+//};
+//
 
 // vertex with texture and normal
 
@@ -65,6 +65,7 @@ struct __attribute__ ((visibility ("default"))) VertexColor {
 	: x(x), y(y), z(z), r(color.r), g(color.g), b(color.b), a(color.a) {}
     GLfloat x, y, z;
     GLfloat r, g, b, a;
+    static void enableAttributes();
     static void InitAttributes();
 };
 

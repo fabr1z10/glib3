@@ -13,16 +13,12 @@ ShaderType SkModel::GetShaderType() const {
 }
 
 
-Bounds SkModel::GetBounds() const {
-    // TODO
-    return m_maxBounds;
-}
 
-std::vector<std::string> SkModel::GetAnimations() const {
+std::vector<std::string> SkModel::getAnimations() const {
     return std::vector<std::string>();
 }
 
-std::string SkModel::GetDefaultAnimation() const {
+std::string SkModel::getDefaultAnimation() const {
     return m_defaultAnimation;
 }
 

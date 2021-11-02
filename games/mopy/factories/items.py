@@ -11,3 +11,8 @@ def model3d(**kwargs):
         return e
     return f
 
+
+def entity(ciao):
+    e = Entity()
+    e.model = ciao.get('model', None)
+    return e

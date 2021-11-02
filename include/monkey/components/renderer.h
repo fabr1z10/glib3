@@ -21,7 +21,7 @@ enum Blend {
 
 class __attribute__ ((visibility ("default"))) Renderer : public Component {
 public:
-    // Renderer();
+    Renderer() = default;
     //Renderer(const Renderer&);
     Renderer(std::shared_ptr<Model>);
     Renderer(const ITab& t);
@@ -30,7 +30,7 @@ public:
     virtual void Draw(Shader*);
     void post();
     // dynamically change the model
-    void SetModel(std::shared_ptr<Model> mesh);
+    void setModel(std::shared_ptr<Model>);
     Model* GetModel();
     Bounds GetBounds() const;
     Bounds GetBounds2D() const;
@@ -66,7 +66,7 @@ protected:
 
 
 inline Bounds Renderer::GetBounds() const {
-    return m_model->GetBounds();
+    return m_model->getBounds();
 }
 
 
@@ -96,7 +96,7 @@ inline void Renderer::setForcedZ(float value) {
 //    m_count = count;
 //}
 
-inline void Renderer::SetModel(std::shared_ptr<Model> model) {
+inline void Renderer::setModel(std::shared_ptr<Model> model) {
     m_model = model;
 }
 
