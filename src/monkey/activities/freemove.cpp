@@ -2,6 +2,7 @@
 #include <glm/gtx/transform.hpp>
 #include <monkey/math/geom.h>
 #include <monkey/engine.h>
+#include <monkey/scenefactory.h>
 
 FreeMove::FreeMove(const ITab& t) : TargetActivity(t), m_shape(nullptr) {
 

@@ -11,14 +11,14 @@
 
 QuadMesh::QuadMesh(GLenum prim, const std::string& filename) : Mesh<Vertex3D>(TEXTURE_SHADER_UNLIT) {
     m_primitive = prim;
-    auto tex = Engine::get().GetAssetManager().GetTex(filename);
+    auto tex = Engine::get().GetAssetManager().get<Tex>(filename);
     m_texId = tex->GetTexId();
 }
 
 QuadMesh::QuadMesh(const std::string& filename, float width, float height,
                    float repeatx, float repeaty, float skewx, float skewy, glm::vec2 offset) : Mesh<Vertex3D>(TEXTURE_SHADER_UNLIT) {
     m_primitive = GL_TRIANGLES;
-    auto tex = Engine::get().GetAssetManager().GetTex(filename);
+    auto tex = Engine::get().GetAssetManager().get<Tex>(filename);
     m_texId = tex->GetTexId();
 
     if (width == 0) {
@@ -51,7 +51,7 @@ QuadMesh::QuadMesh(const std::string& filename, float width, float height,
 
 QuadMesh::QuadMesh(const std::string& filename, float width, float height, glm::vec2 offset, int tx, int ty, int tw, int th) : Mesh<Vertex3D>(TEXTURE_SHADER_UNLIT) {
     m_primitive = GL_TRIANGLES;
-    auto tex = Engine::get().GetAssetManager().GetTex(filename);
+    auto tex = Engine::get().GetAssetManager().get<Tex>(filename);
     m_texId = tex->GetTexId();
     // if one dimension is zero, keep aspect ratio
     if (width == 0) {
@@ -88,7 +88,7 @@ QuadMesh::QuadMesh(
     glm::vec2 delta, float angle)
 : Mesh<Vertex3D>(TEXTURE_SHADER_UNLIT) {
     m_primitive = GL_TRIANGLES;
-    auto tex = Engine::get().GetAssetManager().GetTex(filename);
+    auto tex = Engine::get().GetAssetManager().get<Tex>(filename);
     m_texId = tex->GetTexId();
     std::vector<Vertex3D> vertices;
     std::vector<unsigned int> indices;

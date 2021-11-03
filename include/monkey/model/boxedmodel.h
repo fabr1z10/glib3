@@ -18,9 +18,9 @@ public:
     //const BoxInfo& getBoxInfo(const std::string& anim, int frame) const;
     void AddAnimationData (const std::string& anim, Bounds b);
     void AddCollisionData (const std::string& anim, int frame,
-                           std::shared_ptr<Shape> collision);
+                           std::shared_ptr<IShape> collision);
                            //std::shared_ptr<Shape> attack);
-    void AddAttackData (const std::string& anim, int frame, std::shared_ptr<Shape> attack);
+    void AddAttackData (const std::string& anim, int frame, std::shared_ptr<IShape> attack);
     std::shared_ptr<IShape> getShape (const std::string&, int);
     std::shared_ptr<IShape> getShapeCast (const std::string&, int);
     std::shared_ptr<IShape> shape(int);
@@ -39,7 +39,7 @@ private:
     std::unordered_map<std::pair<std::string, int>, int> m_shapeCast;
 
     std::unordered_map<std::string, Bounds> m_animBounds;
-    int addShapeMesh(const std::shared_ptr<Shape>&, int& pc, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices);
+    //int addShapeMesh(const std::shared_ptr<Shape>&, int& pc, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices);
     std::shared_ptr<IMesh> m_collisionMesh;
     Bounds m_maxBounds;
 	float m_attackDistance;

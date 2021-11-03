@@ -22,8 +22,6 @@ class Engine:
             self.tick_multiplier = a.get('tick_multiplier', 1.0)
             self.room = a['start_room']
             self.title = a['title']
-            #print('# loading assets ...')
-            #self.load_assets()
             print (' === loading strings ...', end='')
             self.load_strings()
             print (' OK.')
@@ -32,6 +30,9 @@ class Engine:
                 self.add_font(file['id'], file['file'])
             for shader in a.get('shaders', []):
                 self.add_shader(shader)
+        # loading assets
+        self.load_assets()
+
         self.add_room_factory('_basic', mopy.factories.basicroom.BasicRoom.make)
 
         self.add_item_factory('_model3d', mopy.factories.items.model3d)
@@ -51,30 +52,40 @@ class Engine:
         self.assets['fonts'][uid] = font.Font(uid, file)
 
     def load_assets(self):
-        dirs = [
-            ('sprites', 'models'),
-            ('animations', 'skeletal_animations'),
-            ('skeletalmodels', 'models'),
-            ('mesh', 'mesh')
-        ]
-        print ('loading assetz.....')
-        for d in dirs:
-            directory = example.dir + '/assets/' + d[0]
-            #print('checking directory ' + directory)
-            if os.path.exists(directory):
-                #print ('exists')
-                files = os.listdir(directory)
-                for fi in files:
-                    if os.path.isdir(directory + fi):
-                        continue
-                    with open(directory + '/' + fi) as f:
-                        models = yaml.load(f, Loader=yaml.FullLoader)
-                        for key, value in models.items():
-                            tp = value['type']
-                            #print ('AAAA ' + key + ' ' + str(value))
-                            self.assets[d[1]][key] = value
-        print('done!')
-        exit(1)
+        root_dir = example.dir + '/assets'
+        for subdir, dirs, files in os.walk(root_dir):
+            for f in files:
+                filepath = subdir + os.sep + f
+                with open(filepath) as fi:
+                    cip = yaml.load(fi, Loader=yaml.FullLoader)
+                    if cip:
+                        self.assets.update(cip)
+        print(self.assets)
+        #exit(1)
+        # dirs = [
+        #     ('sprites', 'models'),
+        #     ('animations', 'skeletal_animations'),
+        #     ('skeletalmodels', 'models'),
+        #     ('mesh', 'mesh')
+        # ]
+        # print ('loading assetz.....')
+        # for d in dirs:
+        #     directory = example.dir + '/assets/' + d[0]
+        #     #print('checking directory ' + directory)
+        #     if os.path.exists(directory):
+        #         #print ('exists')
+        #         files = os.listdir(directory)
+        #         for fi in files:
+        #             if os.path.isdir(directory + fi):
+        #                 continue
+        #             with open(directory + '/' + fi) as f:
+        #                 models = yaml.load(f, Loader=yaml.FullLoader)
+        #                 for key, value in models.items():
+        #                     tp = value['type']
+        #                     #print ('AAAA ' + key + ' ' + str(value))
+        #                     self.assets[d[1]][key] = value
+        # print('done!')
+        # exit(1)
 
     def load_strings(self):
         directory = example.dir + '/text/' + self.lang;
@@ -179,16 +190,9 @@ class Engine:
     lang = ''
     taggen = 0
     #vars = {}
-    assets = {
-        'fonts': {},
-        'models': {},  # include sprite + skeletal
-        'mesh': {},
-        'skeletal_animations': {},
-        'strings': {},
-        # here go all the variables defined in variables.yaml
-        # these are game-related variables
-        'vars': {}
-    }
+    models = {}
+    assets = {}
+
     factories = {
         'rooms': {},
         'items': {}

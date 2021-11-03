@@ -7,7 +7,7 @@
 #include <monkey/monkey.h>
 #include <monkey/singleton.h>
 #include <monkey/shader.h>
-#include <monkey/scenefactory.h>
+
 #include <monkey/listener.h>
 #include <unordered_set>
 #include <monkey/assetman.h>
@@ -17,15 +17,17 @@
 #include <monkey/collisionengine.h>
 #include <monkey/runner.h>
 #include <monkey/keyboard.h>
+#include <monkey/assetman.h>
 
 class SceneFactory;
 class PyTable;
+class AssetManager;
 
 class __attribute__ ((visibility ("default"))) Engine : public Singleton<Engine> {
 public:
     ~Engine();
     void init(const std::string&);
-    void Init(const std::string& home, const std::string& game);
+    //void Init(const std::string& home, const std::string& game);
     void MainLoop();
     bool isRunning() const;
     Entity* GetScene() const;

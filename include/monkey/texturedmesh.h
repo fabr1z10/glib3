@@ -11,13 +11,13 @@ public:
 
 	TexturedMesh(const ITab& main) : Mesh<T>(main) {
         auto texName = main.get<std::string>("tex");
-        auto tex = Engine::get().GetAssetManager().GetTex(texName);
+        auto tex = Engine::get().GetAssetManager().get<Tex>(texName);
         m_texId = tex->GetTexId();
 	}
 
     TexturedMesh(ShaderType type, GLenum prim, const std::string& filename) : Mesh<T>(type) {
         this->m_primitive = prim;
-        auto tex = Engine::get().GetAssetManager().GetTex(filename);
+        auto tex = Engine::get().GetAssetManager().get<Tex>(filename);
         m_texId = tex->GetTexId();
     }
 

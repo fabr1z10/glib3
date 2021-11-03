@@ -88,16 +88,17 @@ void SkModel::addMesh(const std::string& id, const std::string& meshId, const st
     //PyTab t(dict);
 
     //auto mesh = Engine::get().GetAssetManager().getMesh(meshId, t);
-	auto meshraw = Engine::get().GetAssetManager().getRaw(meshId);
-	std::cerr << meshraw->has("origin");
-	auto mesh = std::dynamic_pointer_cast<IMesh>(makeDynamicSkeletalMesh(*meshraw.get(), newJointId, parentJointId,
-    	z, scale, bindTransform, offset));
-
-    DrawingBit bit;
-    bit.mesh = mesh;
-    m_meshes[id] = mesh;
-    m_jointCount++;
-    m_sortedMeshes[order].push_back(bit);
+    // TODO restore
+//	auto meshraw = Engine::get().GetAssetManager().getRaw(meshId);
+//	std::cerr << meshraw->has("origin");
+//	auto mesh = std::dynamic_pointer_cast<IMesh>(makeDynamicSkeletalMesh(*meshraw.get(), newJointId, parentJointId,
+//    	z, scale, bindTransform, offset));
+//
+//    DrawingBit bit;
+//    bit.mesh = mesh;
+//    m_meshes[id] = mesh;
+//    m_jointCount++;
+//    m_sortedMeshes[order].push_back(bit);
 }
 
 
@@ -275,8 +276,9 @@ SkModel::SkModel(const ITab& main) : _nextJointId(0), m_jointCount(0) {
         node.print(std::cerr);
         std::cerr << "\n==\n";
         //auto sanim = Engine::get().GetAssetManager().getSkeletalAnimation(animId);
-		auto sanim = Engine::get().GetAssetManager().getSkeletalAnimation(node);
-        m_animations[id] = sanim;
+		// TODO restore
+        //auto sanim = Engine::get().GetAssetManager().get<SkeletalAnimation>(node);
+        //m_animations[id] = sanim;
         ac++;
     });
 
@@ -397,8 +399,9 @@ std::pair<bool, glm::vec2> SkModel::getKeyPointRestWorld(const std::string &join
 }
 
 void SkModel::setAnimation(const std::string &animId, const std::string &anim) {
-    auto sanim = Engine::get().GetAssetManager().getSkeletalAnimation(anim);
-    m_animations[animId] = sanim;
+    // TODO restore
+    //auto sanim = Engine::get().GetAssetManager().get<SkeletalAnimation>(anim);
+    // m_animations[animId] = sanim;
 }
 
 

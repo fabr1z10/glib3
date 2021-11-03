@@ -1,5 +1,6 @@
 #include <monkey/activities/sequence.h>
 #include <monkey/engine.h>
+#include <monkey/scenefactory.h>
 
 Sequence::Sequence() : Activity(), m_current(nullptr) {}
 

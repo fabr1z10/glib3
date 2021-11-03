@@ -123,7 +123,7 @@ void Engine::init(const std::string& gameFolder) {
     EnableKeyboard();
     SetFPS(60);
 
-    m_assetManager.Init();
+    m_assetManager.init(*m_mainTable.get());
     m_sceneFactory->StartUp(this);
 
 }
@@ -138,41 +138,41 @@ void Engine::restart() {
     m_scene->Begin();
 }
 
-void Engine::Init(const std::string& home, const std::string& game) {
-
-    m_running = false;
-    SetDirectory(home);
-    m_game = game;
-    std::stringstream str;
-    str << m_directory << "data/" << m_game << '/';
-    m_gameDirectory = str.str();
-    m_sceneFactory->Init(this);
-    // NOW YOU CAN INITIALIZE THE ASSET MANAGER!!!
-    m_assetManager.Init();
-    InitGL();
-
-    // find pixel ratio
-    int widthPixel;
-    int widthPoint;
-    int heightPixel;
-    int heightPoint;
-    glfwGetWindowSize(window, &widthPoint, &heightPoint);
-    glfwGetFramebufferSize(window, &widthPixel, &heightPixel);
-    m_pixelRatio = static_cast<float>(widthPixel) / widthPoint;
-
-
-    // set-up the rendering engine
-    auto renderingEngine = std::unique_ptr<RenderingEngine>(new RenderingEngine);
-    SetRenderingEngine(std::move(renderingEngine));
-
-    m_sceneFactory->StartUp(this);
-    //
-
-
-
-
-
-}
+//void Engine::Init(const std::string& home, const std::string& game) {
+//
+//    m_running = false;
+//    SetDirectory(home);
+//    m_game = game;
+//    std::stringstream str;
+//    str << m_directory << "data/" << m_game << '/';
+//    m_gameDirectory = str.str();
+//    m_sceneFactory->Init(this);
+//    // NOW YOU CAN INITIALIZE THE ASSET MANAGER!!!
+//    m_assetManager.init();
+//    InitGL();
+//
+//    // find pixel ratio
+//    int widthPixel;
+//    int widthPoint;
+//    int heightPixel;
+//    int heightPoint;
+//    glfwGetWindowSize(window, &widthPoint, &heightPoint);
+//    glfwGetFramebufferSize(window, &widthPixel, &heightPixel);
+//    m_pixelRatio = static_cast<float>(widthPixel) / widthPoint;
+//
+//
+//    // set-up the rendering engine
+//    auto renderingEngine = std::unique_ptr<RenderingEngine>(new RenderingEngine);
+//    SetRenderingEngine(std::move(renderingEngine));
+//
+//    m_sceneFactory->StartUp(this);
+//    //
+//
+//
+//
+//
+//
+//}
 
 void Engine::InitGL() {
 

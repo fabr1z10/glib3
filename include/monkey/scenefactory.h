@@ -4,6 +4,7 @@
 #include <monkey/asset.h>
 #include <unordered_set>
 #include <monkey/itable.h>
+#include <monkey/engine.h>
 
 class Engine;
 class Model;
@@ -88,6 +89,13 @@ public:
 
     template <typename T, bool = std::is_base_of<Ref, T>::value >
     std::shared_ptr<T> make2 (const ITab& t) {
+        // check: if t is a string --> it's a reference to a cached asset (e.g. a model
+        // which is meant to be shared across more than one entity).
+        auto ref = t.as<std::string>("");
+        if (!ref.empty()) {
+            return Engine::get().GetAssetManager().get<T>(ref);
+        }
+
         auto type = t.get<std::string>("type" );
         auto it = m_facs2.find(type);
         if (it == m_facs2.end()) {

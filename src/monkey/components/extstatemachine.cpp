@@ -5,6 +5,7 @@
 #include <monkey/components/collider.h>
 #include <monkey/components/inputmethod.h>
 #include <iostream>
+#include <monkey/scenefactory.h>
 
 ExtendedStateMachine::ExtendedStateMachine(const std::string& initialState) : StateMachine(initialState) {
 }

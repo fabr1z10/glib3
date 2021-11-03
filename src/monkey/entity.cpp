@@ -12,6 +12,7 @@
 #include <glm/gtx/transform.hpp>
 #include <monkey/math/geom.h>
 #include <monkey/components/renderer.h>
+#include <monkey/scenefactory.h>
 
 namespace py = pybind11;
 

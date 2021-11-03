@@ -5,6 +5,10 @@
 
 
 std::shared_ptr<Model> ModelFactory::polygon(const ITab& t) {
+    // first of all, check if this is a REFERENCE
+
+
+
     auto format = t.get<std::string>("vertex");
     auto data = t.get<std::vector<float>>("points");
 
@@ -18,8 +22,19 @@ std::shared_ptr<Model> ModelFactory::polygon(const ITab& t) {
             vertices.emplace_back(data[i], data[i+1], data[i+2], data[i+3], data[i+4], data[i+5], data[i+6]);
         }
         points.push_back(outline);
+        if (t.has("holes")) {
+            t.foreach("holes", [&] (const ITab& t) {
+                auto ch = t.as<std::vector<float>>();
+                std::vector<glm::vec2> h;
+                for (size_t i = 0; i < ch.size(); i+=7) {
+                    h.push_back(glm::vec2(ch[i], ch[i+1]));
+                    vertices.emplace_back(ch[i], ch[i+1], ch[i+2], ch[i+3], ch[i+4], ch[i+5], ch[i+6]);
+                }
+                points.push_back(h);
+            });
+        }
         auto indices = glib3::math::triangulate(points);
-        indices = {0,1,2};
+        //indices = {0,1,2};
         auto m = std::make_shared<Mesh<VertexColor>>();
         m->m_primitive = GL_TRIANGLES;
         m->Init(vertices, indices);
@@ -35,7 +50,7 @@ std::shared_ptr<Model> ModelFactory::quad(const std::string& imagePath, float wi
     mesh->m_primitive = GL_TRIANGLES;
 
 
-    auto tex = Engine::get().GetAssetManager().GetTex(imagePath);
+    auto tex = Engine::get().GetAssetManager().get<Tex>(imagePath);
     mesh->addTexture({tex->GetTexId(), TexType::DIFFUSE});
 
     //m_texId = tex->GetTexId();

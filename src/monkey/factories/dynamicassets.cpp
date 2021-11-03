@@ -61,7 +61,7 @@ std::shared_ptr<Object> makeDynamicSkeletalMesh(const ITab& node, int jointId, i
 
     auto localOrigin = node.get<glm::vec2>("origin");
     auto texName = node.get<std::string>("tex");
-    auto tex = Engine::get().GetAssetManager().GetTex(texName);
+    auto tex = Engine::get().GetAssetManager().get<Tex>(texName);
     float texWidth = tex->GetWidth();
     float texHeight = tex->GetHeight();
 

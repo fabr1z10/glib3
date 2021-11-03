@@ -14,7 +14,7 @@ SpriteModel::SpriteModel (const ITab& t) : Model() {
     std::string defaultAnimation;
 
     auto& engine = Engine::get();
-    auto tex = engine.GetAssetManager().GetTex(sheetId);
+    auto tex = engine.GetAssetManager().get<Tex>(sheetId);
     float tm = engine.getTickMultiplier();
 
     auto texWidth = static_cast<float>(tex->GetWidth());

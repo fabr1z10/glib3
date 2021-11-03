@@ -125,7 +125,7 @@ std::vector<Texture> Model3D::loadMaterialTextures(aiMaterial *mat, aiTextureTyp
         mat->GetTexture(type, i, &str);
         // check if texture was loaded before and if so, continue to next iteration: skip loading a new texture
         std::string full_path = m_baseDirectory + std::string(str.C_Str());
-        auto tex = Engine::get().GetAssetManager().GetTex(full_path);
+        auto tex = Engine::get().GetAssetManager().get<Tex>(full_path);
         Texture texture;
         texture.type = typeName;
         texture.id = tex->GetTexId();

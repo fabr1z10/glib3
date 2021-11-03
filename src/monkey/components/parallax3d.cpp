@@ -14,7 +14,7 @@ void Parallax3D::Start() {
     m_cam->OnMove.Register(this, [&] (Camera* cam) { this->onCameraMove(cam); });
 
     // create the panel
-    auto tex = Engine::get().GetAssetManager().GetTex(m_img);
+    auto tex = Engine::get().GetAssetManager().get<Tex>(m_img);
     auto w = tex->GetWidth();
     auto h = tex->GetHeight();
 

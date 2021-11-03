@@ -42,8 +42,11 @@ class BasicRoom(Room):
                 if not factory:
                     print('Don''t have factory for item: ' + item['type'])
                     exit(1)
-                e = factory(entity_desc)
-                self.add(e, 'main')
+                for ip in range(0, len(item['pos']), 3):
+                    pos = item['pos'][ip:ip+3]
+                    e = factory(entity_desc)
+                    e.pos = pos
+                    self.add(e, 'main')
                 #self.add(im, 'main')
                 # factory_id = item['factory']
                 # factory = monkey.engine.get_item_factory(factory_id[0])

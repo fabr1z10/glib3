@@ -19,6 +19,7 @@
 #include <monkey/model/boxedmodel.h>
 #include <monkey/components/animator.h>
 #include <monkey/input/pytab.h>
+#include <monkey/scenefactory.h>
 
 namespace py = pybind11;
 
@@ -146,14 +147,15 @@ void Wrap1::setAnim(const std::string & animId) {
 }
 
 void Wrap1::setModel(pybind11::object obj) {
-    Renderer* r = m_entity->GetComponent<Renderer>();
-    IAnimator* a = m_entity->GetComponent<IAnimator>();
-    auto model = Engine::get().GetAssetManager().getModel(obj);
-    r->setModel(model);
-    a->setModel(model);
-    r->Start();
-    auto collider = m_entity->GetComponent<ICollider>();
-    if (collider != nullptr) collider->Start();
+    // TODO restore
+//    Renderer* r = m_entity->GetComponent<Renderer>();
+//    IAnimator* a = m_entity->GetComponent<IAnimator>();
+//    auto model = Engine::get().GetAssetManager().getModel(obj);
+//    r->setModel(model);
+//    a->setModel(model);
+//    r->Start();
+//    auto collider = m_entity->GetComponent<ICollider>();
+//    if (collider != nullptr) collider->Start();
 }
 
 void Wrap1::setText(const std::string& text) {

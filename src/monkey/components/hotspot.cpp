@@ -6,6 +6,7 @@
 #include <monkey/assets/model.h>
 #include <iostream>
 #include <set>
+#include <monkey/scenefactory.h>
 
 extern GLFWwindow* window;
 

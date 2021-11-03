@@ -1,6 +1,6 @@
 #include <monkey/math/shapes3d/prism.h>
 #include <monkey/engine.h>
-
+#include <monkey/scenefactory.h>
 
 Prism::Prism(const ITab & t) {
 	m_type = ShapeType::PRISM;

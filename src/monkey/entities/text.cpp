@@ -10,7 +10,7 @@
 
 Text::Text(const std::string & text, const std::string &font, float size, TextAlignment align, glm::vec4 color, glm::vec2 pos) {
     SetPosition(pos);
-    Font* f = Engine::get().GetAssetManager().GetFont(font).get();
+    Font* f = Engine::get().GetAssetManager().get<Font>(font).get();
     auto model = std::make_shared<TextModel>(f, text, size, static_cast<TextAlignment >(align), 0.0f);
     glm::vec2 offset = model->getOffset();
     //auto model = std::make_shared<TextModel>(mesh);
@@ -35,7 +35,7 @@ Text::Text(const ITab& t) : Entity(t) {
     auto color = t.get<glm::vec4>("color", glm::vec4(255.0f));
     color /= 255.0f;
 
-    Font* f = Engine::get().GetAssetManager().GetFont(font).get();
+    Font* f = Engine::get().GetAssetManager().get<Font>(font).get();
 
     auto model = std::make_shared<TextModel>(f, text, size, static_cast<TextAlignment >(align), maxWidth);
 

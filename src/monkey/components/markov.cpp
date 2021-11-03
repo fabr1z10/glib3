@@ -2,6 +2,7 @@
 #include <monkey/singleton.h>
 #include <monkey/random.h>
 #include <monkey/engine.h>
+#include <monkey/scenefactory.h>
 
 MarkovStateMachine::MarkovStateMachine(const ITab& t) : StateMachine() {
 	m_initialState = t.get<std::string>("initialState");

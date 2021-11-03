@@ -29,6 +29,7 @@ void IMesh::draw(Shader* shader, int offset, int count) {
     glBindBuffer(GL_ARRAY_BUFFER, m_vb);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ib);
     Setup(shader);
+    shader->initVertexAttributes();
 
     glDrawElements(m_primitive, count, GL_UNSIGNED_INT, (GLvoid*)(sizeof(GLuint) * offset));
 
@@ -49,6 +50,7 @@ void IMesh::Setup(Shader * shader) {
         std::string name = g_texTypeStr[m_textures[i].type];
         name += std::to_string(nr[m_textures[i].type]++);
         shader->setInt(name, i);
+
         //shader.setFloat(("material." + name + number).c_str(), i);
         glBindTexture(GL_TEXTURE_2D, m_textures[i].id);
     }

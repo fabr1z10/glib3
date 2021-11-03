@@ -3,6 +3,7 @@
 #include <iostream>
 #include <monkey/activities/noop.h>
 #include <monkey/engine.h>
+#include <monkey/scenefactory.h>
 
 namespace py = pybind11;
 

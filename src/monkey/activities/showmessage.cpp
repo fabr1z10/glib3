@@ -38,7 +38,7 @@ void ShowMessage::Start() {
 	auto maxY = m_mainCam->GetPosition().y + (0.5f*m_mainCam->GetSize().y) - m_size;
 	currentPos.y = std::min(currentPos.y, maxY);
     auto parent = std::make_shared<Entity>();
-    Font* f = Engine::get().GetAssetManager().GetFont(m_font).get();
+    Font* f = Engine::get().GetAssetManager().get<Font>(m_font).get();
 
     auto model = std::make_shared<TextModel>(f, m_message, m_size, m_align, 280.0f);
     auto offset = model->getOffset();

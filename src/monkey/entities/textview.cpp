@@ -10,6 +10,8 @@
 #include <monkey/model/textmodel.h>
 #include <monkey/input/pytab.h>
 #include <monkey/entities/text.h>
+#include <monkey/scenefactory.h>
+
 
 namespace py = pybind11;
 
@@ -139,8 +141,8 @@ void TextView::SetActiveInnerCheck(bool value) {
 
 void TextView::AddArrows() {
 
-    auto arrowUpMesh = Engine::get().GetAssetManager().GetModel("arrow_up");
-    auto arrowDownMesh = Engine::get().GetAssetManager().GetModel("arrow_down");
+    auto arrowUpMesh = Engine::get().GetAssetManager().get<Model>("arrow_up");
+    auto arrowDownMesh = Engine::get().GetAssetManager().get<Model>("arrow_down");
 
     std::shared_ptr<Entity> arrowUp;// = SpriteFactory::Create(arrowUpMesh);
     std::shared_ptr<Entity> arrowDown;// = SpriteFactory::Create(arrowDownMesh);

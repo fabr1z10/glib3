@@ -22,17 +22,17 @@ CollisionReport circleVsCircle(const Circle& c1, const Circle& c2, const glm::ma
 
 CollisionReport shapeVsCompound(const IShape& c1, const CompoundShape& c2, const glm::mat4&, const glm::mat4&);
 
-template<typename Vertex>
-std::vector<unsigned> triangulate(std::vector<Vertex>& vertices) {
-    using Coord = float;
-    using Point = std::array<Coord, 2>;
-    using N = uint32_t;
-    std::vector<std::vector<Point>> p;
-    std::vector<Point> points;
-    for (const auto& vertex : vertices) {
-        points.push_back({vertex.x, vertex.y});
-    }
-    p.push_back(points);
-    auto tri = mapbox::earcut<N>(p);
-    return tri;
-}
+//template<typename Vertex>
+//std::vector<unsigned> triangulate(std::vector<Vertex>& vertices) {
+//    using Coord = float;
+//    using Point = std::array<Coord, 2>;
+//    using N = uint32_t;
+//    std::vector<std::vector<Point>> p;
+//    std::vector<Point> points;
+//    for (const auto& vertex : vertices) {
+//        points.push_back({vertex.x, vertex.y});
+//    }
+//    p.push_back(points);
+//    auto tri = mapbox::earcut<N>(p);
+//    return tri;
+//}

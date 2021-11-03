@@ -2,6 +2,8 @@
 #include <monkey/error.h>
 #include <monkey/engine.h>
 #include <monkey/input/pytab.h>
+#include <monkey/scenefactory.h>
+
 
 State::State(const ITab& t) : Ref(t) {
     m_id = t.get<std::string>("id");

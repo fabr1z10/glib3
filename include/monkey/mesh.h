@@ -17,15 +17,15 @@ public:
 
     Mesh(const ITab& t) : IMesh(t) {
 
-        // init vertices
-        const auto& data = t.get<std::vector<float>>("data");
-        std::vector<VertexSkeletal> vertices;
-        for (size_t i = 0; i < data.size(); i += Vertex::point_size) {
-            vertices.push_back(Vertex(&data[i]));
-
-        }
-        std::vector<unsigned> indices = triangulate(vertices);
-        Init(vertices, indices);
+//        // init vertices
+//        const auto& data = t.get<std::vector<float>>("data");
+//        std::vector<VertexSkeletal> vertices;
+//        for (size_t i = 0; i < data.size(); i += Vertex::point_size) {
+//            vertices.push_back(Vertex(&data[i]));
+//
+//        }
+//        std::vector<unsigned> indices = triangulate(vertices);
+//        Init(vertices, indices);
 
     }
 

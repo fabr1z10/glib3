@@ -4,7 +4,7 @@
 #include <iostream>
 #include <monkey/components/info.h>
 #include <monkey/input/pytab.h>
-
+#include <monkey/scenefactory.h>
 
 namespace py = pybind11;
 

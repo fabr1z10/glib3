@@ -2,6 +2,7 @@
 #include <monkey/components/renderer.h>
 #include <monkey/meshfactory.h>
 #include <monkey/engine.h>
+#include <monkey/scenefactory.h>
 //#include <monkey/model/basicmodel.h>
 
 SimpleCollider::SimpleCollider(const ITab& t) : ICollider() {
