@@ -35,6 +35,20 @@ template<> std::shared_ptr<Model> AssetManager::get(const std::string& id) {
     m_models[id] = model;
     return model;
 }
+
+template<> std::shared_ptr<Tex> AssetManager::get(const std::string& texId) {
+    auto it = m_textures.find(texId);
+    if (it != m_textures.end()) {
+        return it->second;
+    }
+
+    std::string file = Engine::get().GetGameDirectory() + texId;
+    auto tex = std::make_shared<Tex>(file);
+    m_textures[texId] = tex;
+    return tex;
+}
+
+
 //#include <monkey/engine.h>
 //#include <monkey/texturedmesh.h>
 //#include "yaml-cpp/yaml.h"

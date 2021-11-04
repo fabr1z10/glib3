@@ -36,7 +36,7 @@ void Shader::SetCurrentShader(Shader* s) {
     g_currentShader->Start();
 }
 
-Shader::Shader(const char* vertexPath, const char* fragmentPath) {
+Shader::Shader(const char* vertexPath, const char* fragmentPath, ShaderType stype) : m_type(stype) {
     std::string vertexCode;
     std::string fragmentCode;
 
@@ -152,8 +152,8 @@ GLuint Shader::getProgId() const {
 
 
 ShaderFactory::ShaderFactory() {
-    m_facs["unlit_textured"] = [] () { return std::make_unique<VShader<MVShader, Vertex3D>>("glsl/unlit.vs", "glsl/unlit.fs"); };
-    m_facs["color"] = [] () { return std::make_unique<VShader<MVShader, VertexColor>>("glsl/color.vs", "glsl/color.fs"); };
+    m_facs["unlit_textured"] = [] () { return std::make_unique<VShader<MVShader, Vertex3D>>("glsl/unlit.vs", "glsl/unlit.fs", ShaderType::TEXTURE_SHADER_UNLIT); };
+    m_facs["color"] = [] () { return std::make_unique<VShader<MVShader, VertexColor>>("glsl/color.vs", "glsl/color.fs", ShaderType::COLOR_SHADER); };
 //    m_facs["unlit_color"] = [] () { return std::make_unique<ColorUnlit>(); };
 //    m_facs["text"] = [] () { return std::make_unique<TextShader>(); };
 //    m_facs["light_color"] = [] () { return std::make_unique<LightShader>(); };

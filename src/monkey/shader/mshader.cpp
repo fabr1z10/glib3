@@ -2,7 +2,7 @@
 #include <monkey/camera.h>
 
 
-MShader::MShader(const char* vertex, const char* fragment) : Shader(vertex, fragment) {
+MShader::MShader(const char* vertex, const char* fragment, ShaderType stype) : Shader(vertex, fragment, stype) {
 
     m_modelMat = glGetUniformLocation(m_programId, "model");
     m_viewMat = glGetUniformLocation(m_programId, "view");
@@ -15,7 +15,7 @@ void MShader::initMesh(const glm::mat4 &modelMatrix, Camera *cam) {
 }
 
 
-MVShader::MVShader(const char* vertex, const char* fragment) : Shader(vertex, fragment) {
+MVShader::MVShader(const char* vertex, const char* fragment, ShaderType stype) : Shader(vertex, fragment, stype) {
     m_modelViewMat = glGetUniformLocation(m_programId, "modelview");
 
 }

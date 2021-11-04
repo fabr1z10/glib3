@@ -3,6 +3,7 @@
   lang: eng
   device_size: [320, 240]
   window_size: [640, 480]
-  start_room: polygons
+  start_room: control1
   shaders:
     - color
+    - unlit_textured

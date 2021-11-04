@@ -3,40 +3,84 @@
 #include <monkey/engine.h>
 #include <monkey/math/util.h>
 
+std::shared_ptr<Model> ModelFactory::rect(const ITab & t) {
+    auto size = t.get<glm::vec2>("size");
+    float width = size[0];
+    float height = size[1];
+    auto tex = t.get<std::string>("tex", "");
+    auto render = t.get<std::string>("render", "fill");
+
+    auto color = t.get<glm::vec4> ("color");
+    std::shared_ptr<IMesh> mesh;
+
+    if (tex.empty()) {
+        auto m = std::make_shared<Mesh<VertexColor>>(ShaderType::COLOR_SHADER);
+        std::vector<VertexColor> vertices{
+                {0, 0, 0, color},
+                { width, 0, 0, color},
+                { width, height, 0, color},
+                { 0, height, 0, color},
+        };
+        std::vector<unsigned> indices;
+        if (render == "fill") {
+            indices = {0, 1, 2, 3, 0, 2};
+            m->m_primitive = GL_TRIANGLES;
+        } else {
+            indices = {0, 1, 1, 2, 2, 3, 3, 0};
+            m->m_primitive = GL_LINES;
+        }
+        m->Init(vertices, indices);
+        mesh = m;
+
+    }
+    return std::make_shared<Model>(mesh);
+}
 
 std::shared_ptr<Model> ModelFactory::polygon(const ITab& t) {
+
     // first of all, check if this is a REFERENCE
-
-
-
     auto format = t.get<std::string>("vertex");
     auto data = t.get<std::vector<float>>("points");
+    auto render = t.get<std::string>("render", "fill");
 
     std::vector<std::vector<glm::vec2>> points;
     std::shared_ptr<IMesh> mesh;
+    std::vector<unsigned> indices;
+
     if (format == "pc") {
         std::vector<VertexColor> vertices;
-        std::vector<glm::vec2> outline;
-        for (size_t i = 0; i < data.size(); i+=7) {
-            outline.push_back(glm::vec2(data[i], data[i+1]));
-            vertices.emplace_back(data[i], data[i+1], data[i+2], data[i+3], data[i+4], data[i+5], data[i+6]);
-        }
-        points.push_back(outline);
-        if (t.has("holes")) {
-            t.foreach("holes", [&] (const ITab& t) {
-                auto ch = t.as<std::vector<float>>();
-                std::vector<glm::vec2> h;
-                for (size_t i = 0; i < ch.size(); i+=7) {
-                    h.push_back(glm::vec2(ch[i], ch[i+1]));
-                    vertices.emplace_back(ch[i], ch[i+1], ch[i+2], ch[i+3], ch[i+4], ch[i+5], ch[i+6]);
+
+        ModelFactory::getPolyVerts<VertexColor>(t, data, vertices, points, 6, ModelFactory::get1);
+
+        auto m = std::make_shared<Mesh<VertexColor>>(ShaderType::COLOR_SHADER);
+        if (render == "fill") {
+            indices = glib3::math::triangulate(points);
+            m->m_primitive = GL_TRIANGLES;
+        } else {
+            m->m_primitive = GL_LINES;
+            unsigned n = 0;
+            for (const auto& path : points) {
+                unsigned first = n;
+                for (size_t i = 0; i < path.size()-1; ++i) {
+                    indices.push_back(n++);
+                    indices.push_back(n);
                 }
-                points.push_back(h);
-            });
+                indices.push_back(n++);
+                indices.push_back(first);
+            }
         }
-        auto indices = glib3::math::triangulate(points);
-        //indices = {0,1,2};
-        auto m = std::make_shared<Mesh<VertexColor>>();
+        m->Init(vertices, indices);
+        mesh = m;
+    } else if (format == "ptc") {
+        std::vector<Vertex3D> vertices;
+
+        ModelFactory::getPolyVerts<Vertex3D>(t, data, vertices, points, 8, ModelFactory::get2);
+        indices = glib3::math::triangulate(points);
+        auto m = std::make_shared<Mesh<Vertex3D>>(ShaderType::TEXTURE_SHADER_UNLIT);
+
         m->m_primitive = GL_TRIANGLES;
+        auto texFile = t.get<std::string>("tex");
+        m->addTexture(texFile, TexType::DIFFUSE);
         m->Init(vertices, indices);
         mesh = m;
     }

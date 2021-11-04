@@ -107,7 +107,7 @@ void RenderingEngine::Update(double)
     Entity* root = Engine::get().GetScene();
     //std::cout << root->ToString() << "\n";
     for (auto& shader : m_shaders) {
-        ShaderType stype = shader->GetShaderId();
+        ShaderType stype = shader->getShaderType();
         //shader->initVertexAttributes();
         //GLuint mvLoc = shader->GetUniformLocation(MODELVIEW);
         // start the shader

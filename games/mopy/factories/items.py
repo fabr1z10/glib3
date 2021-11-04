@@ -15,4 +15,5 @@ def model3d(**kwargs):
 def entity(ciao):
     e = Entity()
     e.model = ciao.get('model', None)
+    e.components = ciao.get('components', [])
     return e

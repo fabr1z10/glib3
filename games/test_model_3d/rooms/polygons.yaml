@@ -9,24 +9,17 @@ cam:
     y: [0, 100]
     z: [0, 100]
 items:
+  # example of using a shared model. The model is an id pointing to a model
+  # defined in the assets folder.
   - entity:
       type: _entity
       model: '001'
-    pos: [0, 0, 0, 0, -100, 0]
+    pos: [0, 50, 0, 0, -50, 0]
   - entity:
       type: _entity
-      model:
-        type: model.poly
-        vertex: pc
-        # pc = position color
-        points: [
-            200, 80, 0, 1, 0.5, 0.2, 1,
-            300, 80, 0, 1, 0.5, 0.2, 1,
-            300, 160, 0, 1, 0.5, 0.2, 1,
-            200, 160, 0, 1, 0.5, 0.2, 1]
-        holes: [
-          [220, 100, 0, 1, 0.5, 0.2, 1,
-           280, 100, 0, 1, 0.5, 0.2, 1,
-           280, 140, 0, 1, 0.5, 0.2, 1,
-           220, 140, 0, 1, 0.5, 0.2, 1]]
-    pos: [0, 0, 0]
+      model: '002_fill'
+    pos: [0, 50, 0]
+  - entity:
+      type: _entity
+      model: '002_lines'
+    pos: [0, -50, 0]

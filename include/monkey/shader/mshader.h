@@ -5,7 +5,7 @@
 // this shader has model and view matrices
 class MShader : public Shader {
 public:
-    MShader(const char* vertex, const char* fragment);
+    MShader(const char* vertex, const char* fragment, ShaderType stype);
     void initMesh(const glm::mat4& modelMatrix, Camera* cam) override;
 private:
     GLint m_modelMat;
@@ -15,7 +15,7 @@ private:
 // this shader has a single modelview matrix
 class MVShader : public Shader {
 public:
-    MVShader(const char* vertex, const char* fragment);
+    MVShader(const char* vertex, const char* fragment, ShaderType stype);
     void initMesh(const glm::mat4& modelMatrix, Camera* cam) override;
 private:
     GLint m_modelViewMat;
@@ -23,7 +23,7 @@ private:
 
 class LShader : public MShader {
 public:
-    LShader(const char* vertex, const char* fragment);
+    LShader(const char* vertex, const char* fragment, ShaderType stype);
     void Start() override;
     void initMesh(const glm::mat4& modelMatrix, Camera* cam) override;
 };

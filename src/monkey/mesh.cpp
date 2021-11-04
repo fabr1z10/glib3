@@ -10,7 +10,7 @@
 #include <monkey/shader.h>
 #include <monkey/error.h>
 
-std::array<std::string,3> IMesh::g_texTypeStr = {"diffuse", "specular", "normal"};
+std::array<std::string,3> IMesh::g_texTypeStr = {"texture_diffuse", "texture_specular", "texture_normal"};
 
 
 IMesh::IMesh(const ITab& t) {

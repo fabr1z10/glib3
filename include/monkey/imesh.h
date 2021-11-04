@@ -56,7 +56,7 @@ public:
     //const glm::mat4& GetLocalTransform() const;
     std::string GetId() const;
     void SetId(const std::string&);
-    ShaderType GetShaderType() const;
+    ShaderType getShaderType() const;
     glm::vec2 getKeyPoint(const std::string&) const;
     void addKeyPoint(const std::string&, glm::vec2);
     bool hasKeyPoint (const std::string&) const;
@@ -80,7 +80,7 @@ protected:
     static std::array<std::string, 3> g_texTypeStr;
 };
 
-inline ShaderType IMesh::GetShaderType() const {
+inline ShaderType IMesh::getShaderType() const {
     return m_shaderType;
 }
 

@@ -88,8 +88,11 @@ void Renderer::post() {
 }
 
 void Renderer::Draw(Shader* shader) {
+
     for (const auto& mesh : *m_model) {
-        mesh->draw(shader, 0, 0);
+        if (shader->getShaderType() == mesh->getShaderType()) {
+            mesh->draw(shader, 0, 0);
+        }
     }
     //m_model->Draw(shader, m_offset, m_count);
 }

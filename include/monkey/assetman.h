@@ -36,7 +36,7 @@ template<> std::shared_ptr<Font> AssetManager::get(const std::string& id);
 
 template<> std::shared_ptr<Model> AssetManager::get(const std::string& id);
 
-//template<> std::shared_ptr<Tex> AssetManager::get(const std::string& id);
+template<> std::shared_ptr<Tex> AssetManager::get(const std::string& id);
 
 
 //

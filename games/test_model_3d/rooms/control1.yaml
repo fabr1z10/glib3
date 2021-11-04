@@ -1,5 +1,5 @@
 type: _basic
-id: trinterp
+id: control1
 cam:
   type: ortho
   world_size: [320, 240]
@@ -9,6 +9,16 @@ cam:
     y: [0, 100]
     z: [0, 100]
 items:
+  - entity:
+      type: _entity
+      model:
+        type: model.rect
+        size: [10, 20]
+        color: [0.2,0.2,0.2,1]
+      components:
+        - type: components.keyinput
+        - type: components.controller_vehicle
+    pos: [20, 120, 0]
   - entity:
       type: _entity
       model:

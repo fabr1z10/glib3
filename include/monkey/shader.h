@@ -15,7 +15,7 @@ class Camera;
 
 class __attribute__ ((visibility ("default"))) Shader {
 public:
-    Shader(const char* vertex, const char* fragment);
+    Shader(const char* vertex, const char* fragment, ShaderType stype);
     virtual ~Shader() {}
     GLuint getProgId() const;
     //GLuint GetUniformLocation(ShaderUniform);
@@ -23,7 +23,7 @@ public:
     virtual void Start();
     virtual void Stop();
     virtual void initMesh(const glm::mat4& modelMatrix, Camera* cam) = 0;
-    ShaderType GetShaderId() const { return m_shaderId; }
+    ShaderType getShaderType() const { return m_type; }
     static Shader* GetCurrentShader();
     static void SetCurrentShader(Shader*);
     virtual void initVertexAttributes () = 0;
@@ -44,7 +44,7 @@ public:
     void setMat3(const std::string &name, const glm::mat3 &mat) const;
     void setMat4(const std::string &name, const glm::mat4 &mat) const;
 protected:
-    ShaderType m_shaderId;
+    ShaderType m_type;
     unsigned int m_nAttributes;
     std::unordered_map <ShaderUniform, GLint, EnumClassHash> m_locations;
     GLuint m_programId;
@@ -65,7 +65,7 @@ private:
 template <typename BaseShader, typename Vertex>
 class VShader : public BaseShader {
 public:
-    VShader(const char* v, const char* f) : BaseShader(v, f) {
+    VShader(const char* v, const char* f, ShaderType stype) : BaseShader(v, f, stype) {
         //initVertexAttributes();
         //glBindVertexArray(BaseShader::m_vao);
         //Vertex::InitAttributes();

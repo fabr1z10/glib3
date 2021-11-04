@@ -87,6 +87,7 @@
 #include <monkey/cam25.h>
 #include <monkey/math/shapes3d/prism.h>
 #include <monkey/activities/sequence.h>
+#include <monkey/components/controllervehicle.h>
 
 
 namespace py = pybind11;
@@ -172,6 +173,7 @@ SceneFactory::SceneFactory() {
 	add2<AcceleratedMover> ("components.accelerated_mover");
     add2<KeyboardInputMethod> ("components.keyinput");
     add2<Controller2D> ("components.controller2D");
+    add2<ControllerVehicle> ("components.controller_vehicle");
     add2<Controller3D> ("components.controller3D");
 	add2<ControllerFlat> ("components.controller_flat");
     add2<Controller25> ("components.controller25");
@@ -191,6 +193,7 @@ SceneFactory::SceneFactory() {
 
     //add2<Model>("model.raw");
     addf<Model>("model.poly", ModelFactory::polygon);
+    addf<Model>("model.rect", ModelFactory::rect);
     add2<NullState> ("state.null");
     add2<SimpleState> ("state.simple");
     add2<Walk25> ("state.walk25");
