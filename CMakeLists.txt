@@ -5,6 +5,11 @@ set(MAJOR_VERSION 0)
 set(MINOR_VERSION 0)
 set(PATCH_VERSION 0)
 set(VERSION ${ROOT_VERSION}.${MAJOR_VERSION}.${MINOR_VERSION}.${PATCH_VERSION})
+
+# uncomment this to use assimp
+set(USE_ASSIMP ON)
+set(USE_BOX2D ON)
+
 project(glib VERSION ${VERSION})
 set(_pf_x86 "Program\ Files\ \(x86\)")
 # work fine
@@ -45,7 +50,18 @@ find_package(PNG REQUIRED)
 find_package(JPEG REQUIRED)
 find_package(yaml-cpp REQUIRED)
 message(${yaml-cpp_FOUND})
-#find_package(ASSIMP REQUIRED)
+
+
+
+if(DEFINED USE_ASSIMP)
+    #add_compile_definitions(USE_ASSIMP)
+    find_package(ASSIMP REQUIRED)
+endif(DEFINED USE_ASSIMP)
+
+#if (DEFINED USE_BOX2D)
+find_package(box2d REQUIRED)
+#endif (DEFINED USE_BOX2D)
+
 #find_package(Lua REQUIRED)
 find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
 
@@ -72,7 +88,8 @@ configure_file (
 add_subdirectory(include/py)
 add_subdirectory(src/alglib)
 add_subdirectory(src/monkey)
-#add_subdirectory(src/scumm)
+add_subdirectory(src/scumm)
+add_subdirectory(src/racer)
 #add_subdirectory(src/smb)
 add_subdirectory(src/platformer)
 add_subdirectory(src/prova)

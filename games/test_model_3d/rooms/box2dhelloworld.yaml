@@ -1,0 +1,45 @@
+type: _basic
+id: box2dhelloworld
+cam:
+  type: ortho
+  world_size: [1280, 960]
+  cam_size: [1280, 960]
+  pos: [0, 0, 0]
+  bounds:
+    x: [-1000, 1000]
+    y: [-1000, 1000]
+    z: [-100, 100]
+engines:
+  - type: box2d_world
+    gravity: [0, -10]
+    scale: 0.1
+items:
+  - entity:
+      type: _entity
+      model:
+        type: model.rect
+        size: [1000, 200]
+        offset: [-500, -100]
+        color: [0.2, 0.2, 0.2, 1]
+      components:
+        - type: box2d_body
+          density: 0
+          shape:
+            type: box2d_rect
+            half_size: [50, 10]
+    pos: [0, -100]
+  - entity:
+      type: _entity
+      model:
+        type: model.rect
+        size: [20, 20]
+        offset: [-10, -10]
+        color: [0.4, 0.4, 0.4, 1]
+      components:
+        - type: box2d_body
+          density: 1
+          body_type: dynamic
+          shape:
+            type: box2d_rect
+            half_size: [1, 1]
+    pos: [0, 40]

@@ -88,6 +88,8 @@
 #include <monkey/math/shapes3d/prism.h>
 #include <monkey/activities/sequence.h>
 #include <monkey/components/controllervehicle.h>
+#include <monkey/box2dworld.h>
+#include <monkey/components/box2dbody.h>
 
 
 namespace py = pybind11;
@@ -279,6 +281,9 @@ SceneFactory::SceneFactory() {
     add2<PatchwiseLinear2D> ("func.patch2d");
 
     add2<DirectionalLight> ("light.directional");
+
+    add2<Box2DWorld>("box2d_world");
+    add2<Box2DBody>("box2d_body");
     // mesh
     //add2<Plane3D> ("shape.plane3d");
     //add2<PolyChain3D> ("shape.polychain3d");

@@ -5,6 +5,7 @@
 
 std::shared_ptr<Model> ModelFactory::rect(const ITab & t) {
     auto size = t.get<glm::vec2>("size");
+    auto offset = t.get<glm::vec2>("offset", glm::vec2(0.0f));
     float width = size[0];
     float height = size[1];
     auto tex = t.get<std::string>("tex", "");
@@ -16,10 +17,10 @@ std::shared_ptr<Model> ModelFactory::rect(const ITab & t) {
     if (tex.empty()) {
         auto m = std::make_shared<Mesh<VertexColor>>(ShaderType::COLOR_SHADER);
         std::vector<VertexColor> vertices{
-                {0, 0, 0, color},
-                { width, 0, 0, color},
-                { width, height, 0, color},
-                { 0, height, 0, color},
+                {offset.x, offset.y, 0, color},
+                { offset.x + width, offset.y, 0, color},
+                { offset.x + width, offset.y + height, 0, color},
+                { offset.x, offset.y + height, 0, color},
         };
         std::vector<unsigned> indices;
         if (render == "fill") {

@@ -2,7 +2,12 @@ from mopy.room import Room
 from mopy.entity import Entity
 from mopy.camera import OrthoCamera, PerspectiveCamera
 import mopy.monkey as monkey
+from mopy.runners import KeyListener
+import example
 
+
+def restart():
+    example.restart()
 
 class BasicRoom(Room):
     def __init__(self, room_info):
@@ -10,6 +15,7 @@ class BasicRoom(Room):
         main = Entity(tag='main')
         cam = room_info.get('cam', None)
         device_size = monkey.engine.device_size
+
         if cam:
             cam_type = cam['type']
             camera = None
@@ -20,7 +26,10 @@ class BasicRoom(Room):
                 viewport = cam.get('viewport', [0, 0, monkey.engine.device_size[0], monkey.engine.device_size[1]])
                 camera = OrthoCamera(world_size[0], world_size[1], cam_size[0], cam_size[1],
                                   viewport, tag='maincam')
-                camera.pos = (160, 120, 5)
+                camera.pos = cam.get('pos', [0,0,5])
+                bounds = cam['bounds']
+                camera.boundsz = bounds['z']
+                camera.bounds = [bounds['x'][0], bounds['y'][0], bounds['x'][1], bounds['y'][1]]
             elif cam_type == 'perspective':
                 cam = PerspectiveCamera(viewport=[0, 0, device_size[0], device_size[1]])
                 cam.pos = (5, 5, 15)
@@ -34,6 +43,10 @@ class BasicRoom(Room):
             main.camera = camera
         self.main = main
         self.add(main)
+        self.engines = room_info.get('engines', [])
+        keyl = KeyListener()
+        keyl.add_key(key=299, func=restart)
+        self.add_runner(keyl)
         # now add all items
         if 'items' in room_info:
             for item in room_info['items']:
