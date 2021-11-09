@@ -40,3 +40,12 @@
      280, 100, 1, 0.5, 0.2, 1,
      280, 140, 1, 0.5, 0.2, 1,
      220, 140, 1, 0.5, 0.2, 1]]
+block1:
+  type: _entity
+  components:
+    - type: box2d_body
+      draw_shape: True
+      shapes:
+        - type: box2d_rect
+          half_size: [50, 10]
+          density: 0

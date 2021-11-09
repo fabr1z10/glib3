@@ -2,6 +2,27 @@
 #include <monkey/mesh.h>
 #include <monkey/engine.h>
 #include <monkey/math/util.h>
+#include <monkey/box2dworld.h>
+
+std::shared_ptr<IMesh> ModelFactory::b2Poly(b2PolygonShape &shape, glm::vec4 color) {
+    auto world = Engine::get().GetRunner<Box2DWorld>();
+    float scale = 1.0f / world->getScalingFactor();
+
+    const auto& vertices = shape.m_vertices;
+    const auto o = shape.m_centroid;
+    auto mesh = std::make_shared<Mesh<VertexColor>>(ShaderType::COLOR_SHADER);
+    std::vector<VertexColor> verts;
+    std::vector<unsigned> indices;
+
+    for (size_t i = 0; i < shape.m_count; ++i) {
+        verts.emplace_back(scale * (o.x + vertices[i].x), scale * (o.y + vertices[i].y), 0.0f, color.r, color.g, color.b, color.a);
+        indices.push_back(i);
+        indices.push_back((i+1) % shape.m_count);
+    }
+    mesh->m_primitive = GL_LINES;
+    mesh->Init(verts, indices);
+    return mesh;
+}
 
 std::shared_ptr<Model> ModelFactory::rect(const ITab & t) {
     auto size = t.get<glm::vec2>("size");

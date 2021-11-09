@@ -90,6 +90,7 @@
 #include <monkey/components/controllervehicle.h>
 #include <monkey/box2dworld.h>
 #include <monkey/components/box2dbody.h>
+#include <monkey/components/box2dcc.h>
 
 
 namespace py = pybind11;
@@ -284,6 +285,8 @@ SceneFactory::SceneFactory() {
 
     add2<Box2DWorld>("box2d_world");
     add2<Box2DBody>("box2d_body");
+    add2<Box2DCharacterController>("box2d_cc");
+
     // mesh
     //add2<Plane3D> ("shape.plane3d");
     //add2<PolyChain3D> ("shape.polychain3d");

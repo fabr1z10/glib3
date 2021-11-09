@@ -51,6 +51,10 @@ class BasicRoom(Room):
         if 'items' in room_info:
             for item in room_info['items']:
                 entity_desc = item['entity']
+                if isinstance(entity_desc, str):
+                    print("Sto cazzo " + entity_desc)
+                    entity_desc = monkey.engine.assets[entity_desc]
+
                 factory = monkey.engine.get_item_factory(entity_desc['type'])
                 if not factory:
                     print('Don''t have factory for item: ' + item['type'])

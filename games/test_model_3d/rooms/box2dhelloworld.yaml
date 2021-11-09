@@ -3,43 +3,125 @@ id: box2dhelloworld
 cam:
   type: ortho
   world_size: [1280, 960]
-  cam_size: [1280, 960]
+  cam_size: [640, 480]
   pos: [0, 0, 0]
   bounds:
-    x: [-1000, 1000]
-    y: [-1000, 1000]
+    x: [-25000, 25000]
+    y: [-3000, 3000]
     z: [-100, 100]
 engines:
   - type: box2d_world
-    gravity: [0, -10]
+    gravity: [0, -20]
     scale: 0.1
 items:
+  - entity: block1
+    pos: [0, -100, 0, 1100, -100,0]
+#  - entity:
+#      type: _entity
+#      components:
+#        - type: box2d_body
+#          draw_shape: True
+#          shapes:
+#            - type: box2d_rect
+#              half_size: [1080, 10]
+#              density: 0
+#    pos: [11300, -80]
+#  - entity:
+#      type: _entity
+#      components:
+#        - type: box2d_body
+#          draw_shape: True
+#          shapes:
+#            - type: box2d_rect
+#              half_size: [10, 100]
+#              density: 0
+#    pos: [15900, -80]
+#  - entity:
+#      type: _entity
+#      components:
+#        - type: box2d_body
+#          draw_shape: True
+#          shapes:
+#            - type: box2d_poly
+#              points: [0, 0, 10, 20,10, 0]
+#              density: 0
+#    pos: [900, 20]
+#  - entity:
+#      type: _entity
+#      components:
+#        - type: box2d_body
+#          draw_shape: True
+#          shapes:
+#            - type: box2d_poly
+#              points: [0, 0, 0, 20, 10, 0]
+#              density: 0
+#    pos: [1400, 20]
+#  - entity:
+#      type: _entity
+#      components:
+#        - type: box2d_body
+#          draw_shape: True
+#          shapes:
+#            - type: box2d_rect
+#              half_size: [20, 10]
+#              density: 0
+#    pos: [1200, 120]
+#  - entity:
+#      type: _entity
+#      model:
+#        type: model.rect
+#        size: [1000, 200]
+#        offset: [-500, -100]
+#        color: [0.2, 0.2, 0.2, 1]
+#      components:
+#        - type: box2d_body
+#          density: 0
+#          shape:
+#            type: box2d_rect
+#            half_size: [50, 10]
+#    pos: [-700, 150]
+#  - entity:
+#      type: _entity
+#      model:
+#        type: model.rect
+#        size: [1000, 200]
+#        offset: [-500, -100]
+#        color: [0.2, 0.2, 0.2, 1]
+#      components:
+#        - type: box2d_body
+#          angle: -45
+#          density: 0
+#          shape:
+#            type: box2d_rect
+#            half_size: [50, 10]
+#    pos: [-400, -100]
   - entity:
       type: _entity
-      model:
-        type: model.rect
-        size: [1000, 200]
-        offset: [-500, -100]
-        color: [0.2, 0.2, 0.2, 1]
+#      model:
+#        type: model.rect
+#        size: [20, 20]
+#        offset: [-10, -10]
+#        color: [0.4, 0.4, 0.4, 1]
       components:
+        - type: components.keyinput
+        - type: components.follow
+          cam: maincam
+          relativepos: [0, 0, 5]
+          up: [0,1,0]
+        - type: box2d_cc
+          half_size: [1,1]
         - type: box2d_body
-          density: 0
-          shape:
-            type: box2d_rect
-            half_size: [50, 10]
-    pos: [0, -100]
-  - entity:
-      type: _entity
-      model:
-        type: model.rect
-        size: [20, 20]
-        offset: [-10, -10]
-        color: [0.4, 0.4, 0.4, 1]
-      components:
-        - type: box2d_body
-          density: 1
+          draw_shape: True
           body_type: dynamic
-          shape:
-            type: box2d_rect
-            half_size: [1, 1]
+          fixed_rot: true
+          shapes:
+            - type: box2d_rect
+              density: 0.1
+              friction: 2
+              half_size: [1,1]
+            - type: box2d_rect
+              density: 0.1
+              friction: 0
+              half_size: [1.02, 1]
+              offset: [0, 1]
     pos: [0, 40]

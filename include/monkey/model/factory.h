@@ -3,6 +3,7 @@
 #include <monkey/assets/model.h>
 #include <string>
 
+#include <box2d/box2d.h>
 
 class ModelFactory {
 
@@ -14,6 +15,10 @@ public:
                                  float repx = 1.0f, float repy = 1.0f);
     static std::shared_ptr<Model> polygon(const ITab&);
     static std::shared_ptr<Model> rect(const ITab&);
+
+    // create a shape from a polygon
+    static std::shared_ptr<IMesh> b2Poly(b2PolygonShape& shape, glm::vec4 color);
+
 private:
     static VertexColor get1(float* raw) {
         return VertexColor(raw[0], raw[1], 0.0f, raw[2], raw[3], raw[4], raw[5]);
