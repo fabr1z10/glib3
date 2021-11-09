@@ -53,7 +53,7 @@ class BasicRoom(Room):
                 entity_desc = item['entity']
                 if isinstance(entity_desc, str):
                     print("Sto cazzo " + entity_desc)
-                    entity_desc = monkey.engine.assets[entity_desc]
+                    entity_desc = monkey.engine.get_asset(entity_desc, item.get('args', None))
 
                 factory = monkey.engine.get_item_factory(entity_desc['type'])
                 if not factory:

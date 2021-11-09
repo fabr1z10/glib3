@@ -15,6 +15,7 @@ engines:
     scale: 0.1
 items:
   - entity: block1
+    args: [[20,10]]
     pos: [0, -100, 0, 1100, -100,0]
 #  - entity:
 #      type: _entity

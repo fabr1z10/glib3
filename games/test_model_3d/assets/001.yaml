@@ -47,5 +47,5 @@ block1:
       draw_shape: True
       shapes:
         - type: box2d_rect
-          half_size: [50, 10]
+          half_size: '@0'
           density: 0

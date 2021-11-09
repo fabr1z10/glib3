@@ -6,6 +6,9 @@ import mopy.monkey as monkey
 import sys
 import mopy.factories.basicroom
 import mopy.factories.items
+import copy
+
+
 
 class Engine:
     def __init__(self, data = None, scripts = None):
@@ -177,6 +180,37 @@ class Engine:
         tag = '__' + str(self.taggen)
         self.taggen += 1
         return tag
+
+    def replace(self, a, args):
+        if isinstance(a, dict):
+            for k, v in a.items():
+                if isinstance(v, dict) or isinstance(v, list):
+                    self.replace(v, args)
+                else:
+                    print(v)
+                    if isinstance(v, str) and v[0] == '@':
+                        print(args)
+                        a[k] = args[int(v[1:])]
+        elif isinstance(a, list):
+            for i in range(0, len(a)):
+                if isinstance(a[i], dict) or isinstance(a[i], list):
+                    self.replace(a[i], args)
+                else:
+                    if isinstance(a[i], str) and a[i][0] == '@':
+                        a[i] = args[int(a[i][1:])]
+
+
+
+
+    def get_asset(self, id, args=None):
+        if not args:
+            return self.assets[id]
+        else:
+            b = copy.deepcopy(self.assets[id])
+            print(b)
+            self.replace(b, args)
+            print(b)
+            return b
 
     scripts = None
     shaders = []
