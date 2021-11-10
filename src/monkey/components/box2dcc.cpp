@@ -4,17 +4,12 @@
 #include <monkey/components/box2dbody.h>
 #include <glm/gtx/vector_angle.hpp>
 
-Box2DCharacterController::Box2DCharacterController(const ITab & t) {
-    auto halfSize =t.get<glm::vec2>("half_size");
-    m_halfWidth = halfSize.x;
-    m_halfHeight = halfSize.y;
+Box2DCharacterController::Box2DCharacterController(const ITab & t) : Box2DCharacterControllerBase(t) {
 }
 
 
 void Box2DCharacterController::Start() {
-    //m_callBack = std::make_unique<Pippo>();
-    m_input = m_entity->GetComponent<InputMethod>();
-    m_body = m_entity->GetComponent<Box2DBody>()->getBody();
+    Box2DCharacterControllerBase::Start();
 }
 
 float Pippo::ReportFixture(b2Fixture *fixture, const b2Vec2 &point, const b2Vec2 &normal, float fraction) {

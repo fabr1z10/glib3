@@ -11,6 +11,7 @@ public:
     b2Body* createBody(b2BodyDef*);
 private:
     std::unique_ptr<b2World> m_world;
+    std::unique_ptr<b2ContactListener> m_listener;
     float m_scalingFactor;
     int32 m_velocityIterations;
     int32 m_positionIterations;

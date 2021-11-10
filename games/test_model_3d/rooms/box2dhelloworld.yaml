@@ -11,7 +11,7 @@ cam:
     z: [-100, 100]
 engines:
   - type: box2d_world
-    gravity: [0, -20]
+    gravity: [0, 0]
     scale: 0.1
 items:
   - entity: block1
@@ -109,20 +109,26 @@ items:
           cam: maincam
           relativepos: [0, 0, 5]
           up: [0,1,0]
-        - type: box2d_cc
+        - type: box2d_cc2
+          max_speed: 20
+          acceleration: 400
+          friction: 350
+          gravity: 10
           half_size: [1,1]
         - type: box2d_body
           draw_shape: True
           body_type: dynamic
           fixed_rot: true
+          collision_callbacks:
+            - type: box2d_platform_callback
           shapes:
             - type: box2d_rect
               density: 0.1
               friction: 2
               half_size: [1,1]
-            - type: box2d_rect
-              density: 0.1
-              friction: 0
-              half_size: [1.02, 1]
-              offset: [0, 1]
+#            - type: box2d_rect
+#              density: 0.1
+#              friction: 0
+#              half_size: [1.02, 1]
+#              offset: [0, 1]
     pos: [0, 40]

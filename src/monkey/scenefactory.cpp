@@ -91,6 +91,7 @@
 #include <monkey/box2dworld.h>
 #include <monkey/components/box2dbody.h>
 #include <monkey/components/box2dcc.h>
+#include <monkey/components/box2dcc2.h>
 
 
 namespace py = pybind11;
@@ -286,7 +287,10 @@ SceneFactory::SceneFactory() {
     add2<Box2DWorld>("box2d_world");
     add2<Box2DBody>("box2d_body");
     add2<Box2DCharacterController>("box2d_cc");
-
+    add2<Box2DCharacterController2>("box2d_cc2");
+    //m_facs2.insert(std::make_pair("ciao", [] (const ITab& t) { auto obj = std::make_shared<Box2DCharacterController2>(t);
+    //    return std::dynamic_pointer_cast<Object>(obj); }));
+    //add2<Box2DPlatfomerListener>("box2d_platform_callback");
     // mesh
     //add2<Plane3D> ("shape.plane3d");
     //add2<PolyChain3D> ("shape.polychain3d");

@@ -4,7 +4,23 @@
 #include <monkey/engine.h>
 #include <glm/gtx/transform.hpp>
 #include <monkey/model/factory.h>
+#include <monkey/scenefactory.h>
 #include <monkey/components/renderer.h>
+
+// youAreA tells whether the current body has fixture A. This is relevant
+// because normals are always pointing A->B, so if we are not A, we might
+// want to consider flipping it
+void Box2DBody::startContact(Box2DBody* other, b2Contact* c, bool youAreA) {
+    for (const auto& s : m_contactListeners) {
+        s->startContact(other, c, youAreA);
+    }
+}
+
+void Box2DBody::endContact(Box2DBody* other, b2Contact* c, bool youAreA) {
+    for (const auto& s : m_contactListeners) {
+        s->endContact(other, c, youAreA);
+    }
+}
 
 std::unordered_map<std::string, b2BodyType> Box2DBody::g_strToBodyType = {
         {"static", b2BodyType::b2_staticBody},
@@ -14,13 +30,19 @@ std::unordered_map<std::string, b2BodyType> Box2DBody::g_strToBodyType = {
 Box2DBody::Box2DBody(const ITab& t) : m_body(nullptr) {
     b2FixtureDef def;
     m_shapeDef = t["shapes"];
-
+    auto factory = Engine::get().GetSceneFactory();
     m_bodyType = g_strToBodyType[t.get<std::string>("body_type", "static")];
     m_angle = t.get<float>("angle", 0.0f);
     m_fixedRotation = t.get<bool>("fixed_rot", false);
     m_drawShape = t.get<bool>("draw_shape", false);
-
+//    if (t.has("collision_callbacks")) {
+//        t.foreach("collision_callbacks", [&](const ITab &cc) {
+//            m_contactListeners.push_back(factory->make2<IBox2DBodyListener>(cc));
+//        });
+//    }
 }
+
+
 
 void Box2DBody::Start() {
     auto world = Engine::get().GetRunner<Box2DWorld>();
@@ -31,12 +53,13 @@ void Box2DBody::Start() {
     float x = worldPos.x * scale;
     float y = worldPos.y * scale;
     b2BodyDef bodyDef;
+    bodyDef.userData.pointer = reinterpret_cast<uintptr_t>(this);
     bodyDef.position.Set(x, y);
     bodyDef.angle = m_angle;
     bodyDef.fixedRotation = m_fixedRotation;
     bodyDef.type = m_bodyType;
     m_body = world->createBody(&bodyDef);
-    m_body->SetLinearDamping(1.5);
+    //m_body->SetLinearDamping(1.5);
 
 
     // create shape & fixtures
@@ -109,4 +132,8 @@ void Box2DBody::Update(double dt) {
     mat[3][0] = pos.x * m_scaleBoxToGL;
     mat[3][1] = pos.y * m_scaleBoxToGL;
     m_entity->SetLocalTransform(mat);
+}
+
+void Box2DBody::registerCallback(IBox2DBodyListener* listener) {
+    m_contactListeners.push_back(listener);
 }

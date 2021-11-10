@@ -3,6 +3,7 @@
 #include <monkey/component.h>
 #include <box2d/box2d.h>
 #include "inputmethod.h"
+#include "box2dcontrollerbase.h"
 
 
 struct CRep {
@@ -24,7 +25,7 @@ public:
     b2Vec2 closestNormal;
 };
 
-class Box2DCharacterController : public Component {
+class Box2DCharacterController : public Box2DCharacterControllerBase {
 public:
     Box2DCharacterController(const ITab&);
     void Start() override;
@@ -35,12 +36,8 @@ public:
     bool rgrounded() const;
 private:
     CRep raycastDown(b2Vec2 P);
-    float m_halfWidth;
-    float m_halfHeight;
     CRep m_left;
     CRep m_right;
-    InputMethod * m_input;
-    b2Body* m_body;
     std::unique_ptr<Pippo> m_callBack;
     float m_previousAngle;
 };
