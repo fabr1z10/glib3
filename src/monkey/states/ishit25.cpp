@@ -3,7 +3,7 @@
 #include <monkey/entity.h>
 #include <monkey/components/controller25.h>
 #include <monkey/components/dynamics2d.h>
-#include <monkey/components/animator.h>
+#include <monkey/components/animrenderer.h>
 #include <monkey/components/statemachine.h>
 
 IsHit25::IsHit25(const ITab & t) : State(t) {
@@ -28,7 +28,7 @@ void IsHit25::Run(double dt) {
 
 
 void IsHit25::Init(const ITab& d) {
-    m_animator->SetAnimation(m_anim);
+    m_animator->setAnimation(m_anim);
     m_sgn = d.get<float>("sign");
     m_distanceTravelled = 0.0f;
 }
@@ -41,6 +41,6 @@ void IsHit25::AttachStateMachine(StateMachine * sm) {
     m_entity = sm->GetObject();
     m_dynamics = m_entity->GetComponent<Dynamics2D>();
     m_controller = dynamic_cast<Controller25*>(m_entity->GetComponent<IController>());
-    m_animator = m_entity->GetComponent<IAnimator>();
+    m_animator = dynamic_cast<AnimationRenderer*>(m_entity->GetComponent<Renderer>());
 
 }

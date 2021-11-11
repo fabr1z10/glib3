@@ -255,16 +255,16 @@ pybind11::list Wrap1::getTextSize() {
 }
 
 pybind11::list Wrap1::getCollisionBounds() {
-	auto* a = dynamic_cast<Animator*>(m_entity->GetComponent<IAnimator>());
-	auto* model = static_cast<BoxedModel*>(a->getModel());
-	auto bounds = model->getShape(a->GetAnimation(), a->GetFrame())->getBounds();
+//	auto* a = dynamic_cast<Animator*>(m_entity->GetComponent<IAnimator>());
+//	auto* model = static_cast<BoxedModel*>(a->getModel());
+//	auto bounds = model->getShape(a->GetAnimation(), a->GetFrame())->getBounds();
 	pybind11::list l;
-	float scale = m_entity->GetScale();
-	auto pos = m_entity->GetPosition();
-	l.append(pos.x + scale * bounds.min.x);
-	l.append(pos.y + scale * bounds.min.y);
-	l.append(pos.x + scale * bounds.max.x);
-	l.append(pos.y + scale * bounds.max.y);
+//	float scale = m_entity->GetScale();
+//	auto pos = m_entity->GetPosition();
+//	l.append(pos.x + scale * bounds.min.x);
+//	l.append(pos.y + scale * bounds.min.y);
+//	l.append(pos.x + scale * bounds.max.x);
+//	l.append(pos.y + scale * bounds.max.y);
 	return l;
 
 }

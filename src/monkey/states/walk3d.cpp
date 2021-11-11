@@ -1,9 +1,9 @@
 #include <monkey/states/walk3d.h>
 #include <monkey/components/inputmethod.h>
-#include <monkey/components/animator.h>
+#include <monkey/components/animrenderer.h>
 #include <monkey/entity.h>
 #include <monkey/components/controller3d.h>
-
+#include <GLFW/glfw3.h>
 
 Walk3D::Walk3D(const ITab& t) : State(t) {
     m_acceleration = t.get<float> ("acceleration");
@@ -17,7 +17,7 @@ void Walk3D::AttachStateMachine(StateMachine * sm) {
     if (m_input == nullptr) {
         GLIB_FAIL("Walk state requires an <InputMethod> component!");
     }
-    m_animator = m_entity->GetComponent<IAnimator>();
+    m_animator = dynamic_cast<AnimationRenderer*>(m_entity->GetComponent<Renderer>());
 }
 
 void Walk3D::Init(const ITab&) {

@@ -1,9 +1,24 @@
 #include <monkey/model/spritemodel.h>
 #include <monkey/entity.h>
+#include <monkey/engine.h>
 #include <iostream>
 #include <monkey/error.h>
+#include <pybind11/pytypes.h>
+#include <monkey/input/pytab.h>
+#include <monkey/components/spriterenderer.h>
+#include <monkey/mesh.h>
 
 namespace py = pybind11;
+
+std::shared_ptr<Renderer> SpriteModel::makeRenderer(std::shared_ptr<Model> model) {
+    auto renderer = std::make_shared<SpriteRenderer>(model);
+    renderer->setAnimation(m_defaultAnimation);
+    return renderer;
+}
+
+AnimationInfo * SpriteModel::getAnimationInfo(const std::string & id) {
+    return &m_animInfos.at(id);
+}
 
 SpriteModel::SpriteModel (const ITab& t) : Model() {
 //    m_shareable = true;
@@ -24,201 +39,136 @@ SpriteModel::SpriteModel (const ITab& t) : Model() {
     auto dt = Engine::get().getMainTable().get<float>("frame_time");
     std::vector<Vertex3D> vertices;
     std::vector<unsigned int> indices;
+    int icount {0};
     int quadCount {0};
+    // get the animations
+    int a=0;
 
-    auto addQuad = [&] (const std::vector<int>& q) {
-        int x = q[0];                // top left x coord in sheet
-        int y = q[1];                // top left y coord in sheet
-        int width = q[2];            // width in pixels
-        int height = q[3];           // height in pixels
-        // width and height in pixel
+    auto parseQuad = [&] (pybind11::list l) {
+        auto n = l.size();
+        auto x = l[0].cast<int>();
+        auto y = l[1].cast<int>();
+        auto width_px = l[2].cast<int>();
+        auto height_px = l[3].cast<int>();
+        int ox, oy = 0;
+        bool flipx, flipy = false;
+        if (n > 4) {
+            ox = l[4].cast<int>();
+            oy = l[5].cast<int>();
+        }
+        if (n > 6) {
+            PyTab extra(l[6]);
+            flipx = extra.get<bool>("flipx", false);
+            flipy = extra.get<bool>("flipy", false);
 
-        float w = width / ppu;
-        float h = height / ppu;
+        }
+        // compute width and height in world coordinates
+        float w = width_px / ppu;
+        float h = height_px / ppu;
         float tx = x / texWidth;
         float ty = y / texHeight;
-        float tw = width / texWidth;
-        float th = height / texHeight;
+        float tw = width_px / texWidth;
+        float th = height_px / texHeight;
 
-        // check if quad has anchor
-        glm::vec2 anchor(0.0f);
-        auto qs = q.size();
-        if (qs > 4) {
-            anchor.x = q[4];
-            anchor.y = q[5];
-        }
-        bool flipX = qs > 6 ? (q[6] == 1) : false;
-        bool flipY = qs > 7 ? (q[7] == 1) : false;
-        float z = qs > 8 ? q[8] : 0.0f;
+        float txl = flipx ? tx+tw : tx;
+        float txr = flipx ? tx : tx + tw;
+        float tyb = flipy ? ty : ty+th;
+        float tyt = flipy ? ty+th : ty;
 
-        float tx0 = flipX ? tx+tw : tx;
-        float tx1 = flipX ? tx : tx + tw;
-        float ty0 = flipY ? ty : ty+th;
-        float ty1 = flipY ? ty+th : ty;
-
-        glm::vec2 bottomLeft{-anchor.x / ppu, -anchor.y / ppu};
-//        float tx0 = tx;
-//        float tx1 = tx + tw;
-//        float ty0 = ty + th;
-//        float ty1 = ty;
-        vertices.emplace_back(Vertex3D(bottomLeft.x, bottomLeft.y, z, tx0, ty0));
-        vertices.emplace_back(Vertex3D(bottomLeft.x + w, bottomLeft.y, z, tx1, ty0));
-        vertices.emplace_back(Vertex3D(bottomLeft.x + w, bottomLeft.y + h, z, tx1, ty1));
-        vertices.emplace_back(Vertex3D(bottomLeft.x, bottomLeft.y + h, z, tx0, ty1));
+        // ccw from bottom left
+        vertices.emplace_back(Vertex3D(ox, oy, 0.0f, txl, tyb));
+        vertices.emplace_back(Vertex3D(ox + w, oy, 0.0f, txr, tyb));
+        vertices.emplace_back(Vertex3D(ox + w, oy + h, 0.0f, txr, tyt));
+        vertices.emplace_back(Vertex3D(ox, oy + h, 0.0f, txl, tyt));
         unsigned ix = quadCount * 4;
         indices.push_back(ix);
         indices.push_back(ix + 1);
-        indices.push_back(ix + 3);
-        indices.push_back(ix + 3);
         indices.push_back(ix + 2);
-        indices.push_back(ix + 1);
+        indices.push_back(ix + 3);
+        indices.push_back(ix);
+        indices.push_back(ix + 2);
+        // a quad has been added
+        quadCount++;
 
     };
 
-
-    // this is the routine which is used if you specify the frames using the frames desc
-    auto readFrame = [&] (const ITab& d, AnimInfo& ai) {
-        // EACH FRAME has
-        // quads (mandatory)
-        // shape (a collision shape -> if not, the anim shape is assigned, if any)
-        // cast shape
-        //d.foreach("elements", [&] const ITab& frame) {
-        FrameInfo frameInfo;
-        frameInfo.duration = d.get<int>("ticks", 1) * tm * (1.0f/60.0f);
-        frameInfo.flipx = d.get<bool>("flipx", false);
-        frameInfo.angle = d.get<float>("angle", 0.0f);
-        frameInfo.offset = 6 * quadCount;
-        frameInfo.move = true;
-        frameInfo.origin = glm::vec2(0.0f);
-        frameInfo.translation = d.get<glm::vec2>("pos", glm::vec2(0.0f));
-        if (d.has("alpha")) {
-            frameInfo.applyAlpha = true;
-            frameInfo.alpha = d.get<float>("alpha") / 255.0f;
+    t.foreach("animations", [&] (const std::string& animId, const ITab& u) {
+        std::cout << "anim: " << animId << "\n";
+        if (m_defaultAnimation.empty()) {
+            m_defaultAnimation = animId;
         }
-        int fq=0;
-
-        //auto quads = frame["quads"].as<std::vector<YAML::Node>>();
-        d.foreach("quads", [&] (const ITab& q) {
-            auto p = q.as<std::vector<int>>();
-            addQuad(p);
-            quadCount++;
-            fq++;
+        AnimationInfo animInfo;
+        animInfo.loop = u.get<bool>("loop");
+        animInfo.loopFrame = u.get<int>("loop_frame", 0);
+        u.foreach("frames", [&] (const ITab& v) {
+            FrameInfo frameInfo;
+            frameInfo.time = v.get<int>("ticks", 1) * (1.0f/60.0f);
+            frameInfo.offset = icount;
+            int n = 0;
+            auto qs = v.get<py::object>("quads").cast<py::list>();
+            try {
+                auto x = qs[0].cast<int>();
+                parseQuad(qs);
+                n += 6;
+            } catch (...) {
+                for (const auto& q : qs) {
+                    parseQuad(q.cast<pybind11::list>());
+                    n += 6;
+                }
+            }
+            frameInfo.count = n;
+            animInfo.frames.push_back(frameInfo);
+            icount += n;
         });
-        frameInfo.count = 6 * fq;
-        ai.frameInfo.push_back(frameInfo);
-    };
-
-
-    m_mesh = std::make_shared<SpriteMesh>(sheetId);
-
-    t.foreach("animations", [&] (const std::string& animId, const ITab& anim) {
-        AnimInfo animInfo;
-        if (defaultAnimation.empty()) {
-            defaultAnimation = animId;
-        }
-        animInfo.loop = anim.get<bool>("loop", true);
-        animInfo.loopFrame = anim.get<int>("loop_frame", 0);
-        auto elements = anim["elements"];
-        anim.foreach("elements", [&] (const ITab& element) { readFrame(element, animInfo); });
-//        if (elements != nullptr) {
-//            rf (*elements, animInfo);
-//        }
-        animInfo.frameCount = animInfo.frameInfo.size();
-        m_mesh->AddAnimInfo(animId, animInfo);
+        m_animInfos[animId] = animInfo;
+        a++;
     });
 
-    //auto anims = t["animations"].as<YAML::Node>();
+    std::cerr << "number of anism = " << a << "\n";
 
-//    for (auto anim : anims) {
-//        AnimInfo animInfo;
-//        auto animId = anim.first.as<std::string>();
-//        if (defaultAnimation.empty()) {
-//            defaultAnimation = animId;
-//        }
-//        auto animData = anim.second;
-//        animInfo.loop = animData["loop"].as<bool>( true);
-//        animInfo.loopFrame = animData["loop_frame"].as<int>(0);
-//        if (animData["elements"]) {
-//            rf (animData, animInfo);
-//        }
-////            auto frames = animData.get<py::list>("frames");
-////            for (auto frame : frames) {
-////                FrameInfo frameInfo;
-////                frameInfo.duration = dt;
-////                frameInfo.offset = 6 * quadCount;
-////
-////                // check if this frame is defined as a vec of ints
-////                int frameQuads = 0;
-////                try {
-////                    auto fi = frame.cast<std::vector<int>>();
-////                    addQuad(fi);
-////                    quadCount++;
-////                    frameQuads = 1;
-////                    frameInfo.count = 6;
-////                    animInfo.frameInfo.push_back(frameInfo);
-////                    continue;
-////                } catch (...) {}
-////
-////                // check if this frame is defined as a list of quads
-////                try {
-////                    auto quads = frame.cast<py::list>();
-////                    for (auto quad : quads) {
-////                        std::vector<int> quadInfo = quad.cast<std::vector<int>>();
-////                        addQuad(quadInfo);
-////                        quadCount++;
-////                        frameQuads++;
-////                    }
-////                    frameInfo.count = 6 * frameQuads;
-////                    animInfo.frameInfo.push_back(frameInfo);
-////                } catch (...) {
-////                    GLIB_FAIL("Cannot read frame")
-////                }
-////
-////            }
-////        }
-//        animInfo.frameCount = animInfo.frameInfo.size();
-//        m_mesh->AddAnimInfo(animId, animInfo);
+    auto mesh = std::make_shared<Mesh<Vertex3D>>(ShaderType::TEXTURE_SHADER_UNLIT);
+    mesh->m_primitive = GL_TRIANGLES;
+    mesh->Init(vertices, indices);
+    this->addMesh(mesh);
+    //m_mesh->SetDefaultAnimation(defaultAnimation);
+
+
+
+}
+
+//
+//
+//std::vector<std::string> SpriteModel::GetAnimations() const {
+//    const auto& m = m_mesh->GetAnimInfo();
+//    std::vector<std::string> animations;
+//    for (auto& a : m) {
+//        animations.push_back(a.first);
 //    }
-    m_mesh->Init(vertices, indices);
-    m_mesh->SetDefaultAnimation(defaultAnimation);
-
-
-
-}
-
-
-
-std::vector<std::string> SpriteModel::GetAnimations() const {
-    const auto& m = m_mesh->GetAnimInfo();
-    std::vector<std::string> animations;
-    for (auto& a : m) {
-        animations.push_back(a.first);
-    }
-    return animations;
-}
-
-std::string SpriteModel::GetDefaultAnimation() const {
-    return m_mesh->GetDefaultAnimation();
-}
-
-
-ShaderType SpriteModel::GetShaderType() const {
-    return TEXTURE_SHADER_UNLIT;
-}
-
-const AnimInfo* SpriteModel::GetAnimInfo() const {
-    return m_mesh->GetAnimInfo(m_mesh->GetDefaultAnimation());
-}
-
-const AnimInfo* SpriteModel::GetAnimInfo(const std::string& anim) const {
-    return m_mesh->GetAnimInfo(anim);
-}
-
-void SpriteModel::draw(Shader* shader, int offset, int count) {
-    m_mesh->draw(shader, offset, count);
-}
-
-
-std::vector<std::shared_ptr<IShape>> SpriteModel::getAttackShapes() const {
-    return std::vector<std::shared_ptr<IShape>>();
-}
+//    return animations;
+//}
+//
+//std::string SpriteModel::GetDefaultAnimation() const {
+//    return m_mesh->GetDefaultAnimation();
+//}
+//
+//
+//ShaderType SpriteModel::GetShaderType() const {
+//    return TEXTURE_SHADER_UNLIT;
+//}
+//
+//const AnimInfo* SpriteModel::GetAnimInfo() const {
+//    return m_mesh->GetAnimInfo(m_mesh->GetDefaultAnimation());
+//}
+//
+//const AnimInfo* SpriteModel::GetAnimInfo(const std::string& anim) const {
+//    return m_mesh->GetAnimInfo(anim);
+//}
+//
+//void SpriteModel::draw(Shader* shader, int offset, int count) {
+//    m_mesh->draw(shader, offset, count);
+//}
+//
+//
+//std::vector<std::shared_ptr<IShape>> SpriteModel::getAttackShapes() const {
+//    return std::vector<std::shared_ptr<IShape>>();
+//}

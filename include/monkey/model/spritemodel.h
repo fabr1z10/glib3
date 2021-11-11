@@ -8,37 +8,32 @@
 class SpriteRenderer;
 
 
-class __attribute__ ((visibility ("default"))) SpriteModel : public Model {
-public:
-//    explicit SpriteModel (std::shared_ptr<SpriteMesh> mesh) : m_mesh(mesh) {
-//
-//    }
-    SpriteModel (const ITab&);
-    //Bounds getBounds() const override;
-    std::vector<std::string> GetAnimations() const ;
-    std::string GetDefaultAnimation() const ;
-    ShaderType GetShaderType() const ;
-    const AnimInfo* GetAnimInfo() const;
-    const AnimInfo* GetAnimInfo(const std::string&) const;
-    using renderer = SpriteRenderer;
-    // TODO non è meglio avere un draw con animation e frame?
-    void draw (Shader*, int offset, int count);
-
-    std::vector<std::shared_ptr<IShape>> getAttackShapes() const ;
-
-private:
-    std::shared_ptr<SpriteMesh> m_mesh;
-    //void readFrames(PyDict&);
+struct FrameInfo {
+    float time;
+    int offset;
+    int count;
 };
 
-//inline Bounds SpriteModel::getBounds() const {
-//    return m_mesh->getBounds();
-//}
+struct AnimationInfo {
+    bool loop;
+    unsigned loopFrame;
+    std::vector<FrameInfo> frames;
+};
 
-//inline ModelType SpriteModel::GetType() const {
-//    return ModelType::SIMPLESPRITE;
-//}
 
-//inline std::shared_ptr<IMesh> SpriteModel::GetModel() {
-//    return m_mesh;
-//}
+class __attribute__ ((visibility ("default"))) SpriteModel : public Model {
+public:
+    SpriteModel (const ITab&);
+    std::string getDefaultAnimation() const ;
+    std::shared_ptr<Renderer> makeRenderer(std::shared_ptr<Model>) override;
+    AnimationInfo* getAnimationInfo(const std::string&);
+protected:
+    std::string m_defaultAnimation;
+    std::unordered_map<std::string, AnimationInfo> m_animInfos;
+};
+
+inline std::string SpriteModel::getDefaultAnimation() const {
+    return m_defaultAnimation;
+}
+
+

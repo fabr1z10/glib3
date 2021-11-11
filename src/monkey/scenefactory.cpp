@@ -198,6 +198,7 @@ SceneFactory::SceneFactory() {
     //add2<Model>("model.raw");
     addf<Model>("model.poly", ModelFactory::polygon);
     addf<Model>("model.rect", ModelFactory::rect);
+    add2<SpriteModel> ("model.sprite");
     add2<NullState> ("state.null");
     add2<SimpleState> ("state.simple");
     add2<Walk25> ("state.walk25");
@@ -263,7 +264,7 @@ SceneFactory::SceneFactory() {
     add2<StateFunc> ("stateaction.callback");
     add2<StateTransition> ("stateaction.statetransition");
     // assets
-	addAssetFactory<SpriteModel> ("asset.sprite");
+
     addAssetFactory<BoxedModel> ("asset.boxed");
     addAssetFactory<SkModel>("asset.skeletalmodel");
     addAssetFactory<TexturedMesh<VertexSkeletal>>("asset.skeletalmesh");

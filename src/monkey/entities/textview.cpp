@@ -157,16 +157,16 @@ void TextView::AddArrows() {
 
     auto hsu= std::make_shared<LambdaHotSpot>(std::make_shared<Rect>(auExtents[0], auExtents[1]), 1);
     auto hsd= std::make_shared<LambdaHotSpot>(std::make_shared<Rect>(adExtents[0], adExtents[1]), 1);
-    auto animatorUp = arrowUp->GetComponent<IAnimator>();
-    auto animatorDown = arrowDown->GetComponent<IAnimator>();
-
-
-    hsu->SetOnEnter( [animatorUp] () { animatorUp->SetAnimation("selected"); });
-    hsu->SetOnLeave( [animatorUp] () { animatorUp->SetAnimation("unselected"); });
-    hsu->SetOnClick( [&] (glm::vec2) { this->IncreaseTopLine(-1); });
-    hsd->SetOnEnter( [animatorDown] () { animatorDown->SetAnimation("selected"); });
-    hsd->SetOnLeave( [animatorDown] () { animatorDown->SetAnimation("unselected"); });
-    hsd->SetOnClick( [&] (glm::vec2) { this->IncreaseTopLine(1); });
+//    auto animatorUp = arrowUp->GetComponent<IAnimator>();
+//    auto animatorDown = arrowDown->GetComponent<IAnimator>();
+//
+//
+//    hsu->SetOnEnter( [animatorUp] () { animatorUp->SetAnimation("selected"); });
+//    hsu->SetOnLeave( [animatorUp] () { animatorUp->SetAnimation("unselected"); });
+//    hsu->SetOnClick( [&] (glm::vec2) { this->IncreaseTopLine(-1); });
+//    hsd->SetOnEnter( [animatorDown] () { animatorDown->SetAnimation("selected"); });
+//    hsd->SetOnLeave( [animatorDown] () { animatorDown->SetAnimation("unselected"); });
+//    hsd->SetOnClick( [&] (glm::vec2) { this->IncreaseTopLine(1); });
     arrowUp->AddComponent(hsu);
     arrowDown->AddComponent(hsd);
 

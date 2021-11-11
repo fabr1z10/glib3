@@ -1,0 +1,23 @@
+type: _basic
+id: sprite
+cam:
+  type: ortho
+  world_size: [320, 240]
+  cam_size: [320, 240]
+  bounds:
+    x: [0, 100]
+    y: [0, 100]
+    z: [0, 100]
+items:
+  - entity:
+      type: _entity
+      model:
+        type: model.sprite
+        sheet: gfx/smb1.png
+        animations:
+          idle:
+            loop: false
+            frames:
+              - quads: [0, 0, 16, 16, -8, 0, {'scale': 1.5}]
+
+    pos: [160, 120, 0]

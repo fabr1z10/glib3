@@ -5,7 +5,7 @@
 
 class InputMethod;
 class Entity;
-class IAnimator;
+class AnimationRenderer;
 
 
 class Walk3D : public State {
@@ -19,7 +19,7 @@ public:
     void AttachStateMachine(StateMachine*) override;
 protected:
     InputMethod * m_input;
-    IAnimator* m_animator;
+    AnimationRenderer* m_animator;
     Entity * m_entity;
     float m_acceleration;
 };

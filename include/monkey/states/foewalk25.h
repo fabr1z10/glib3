@@ -5,7 +5,7 @@
 #include <glm/glm.hpp>
 
 class Entity;
-class IAnimator;
+class AnimationRenderer;
 class IController;
 class ICollisionEngine;
 class Dynamics2D;
@@ -28,7 +28,7 @@ public:
     void computeDirection();
 protected:
     Controller25 *m_controller;
-    IAnimator *m_animator;
+    AnimationRenderer *m_animator;
     Entity *m_entity;
     Entity *m_target;
     Controller25* m_pc;

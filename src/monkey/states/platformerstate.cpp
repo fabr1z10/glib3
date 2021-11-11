@@ -9,7 +9,7 @@
 //#include <GLFW/glfw3.h>
 //#include <monkey/math/geom.h>
 //#include <monkey/error.h>
-//#include <monkey/components/renderer.h>
+#include <monkey/components/animrenderer.h>
 //#include <monkey/components/dynamics2d.h>
 //#include <monkey/engine.h>
 //
@@ -41,7 +41,7 @@ void PlatformerState::AttachStateMachine(StateMachine * sm) {
     //if (m_input == nullptr) {
     //    GLIB_FAIL("Walk state requires an <InputMethod> component!");
     //}
-    m_animator = m_entity->GetComponent<IAnimator>();
+    m_animator = dynamic_cast<AnimationRenderer*>(m_entity->GetComponent<Renderer>());
 
 
 }
@@ -59,13 +59,13 @@ void PlatformerState::AttachStateMachine(StateMachine * sm) {
 
 void PlatformerState::SetOverrideAnimation(const std::string &anim) {
     m_overrideAnimation = anim;
-    m_animator->SetAnimation(anim);
+    m_animator->setAnimation(anim);
 }
 
 
 void PlatformerState::UpdateAnimation() {
     if (!m_overrideAnimation.empty()) {
-        if (m_animator->IsComplete()) {
+        if (m_animator->isComplete()) {
             // in this case we reset the animation based on vy
             ResetAnimation();
         }

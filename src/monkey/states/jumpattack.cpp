@@ -4,7 +4,7 @@
 #include <monkey/components/inputmethod.h>
 #include <monkey/components/dynamics2d.h>
 #include <monkey/components/controller2d.h>
-#include <monkey/components/ianimator.h>
+#include <monkey/components/animrenderer.h>
 
 JumpAttack::JumpAttack(const ITab &t) : PlatformerState(t) {
     m_speed = t.get<float>("speed");
@@ -17,7 +17,7 @@ JumpAttack::JumpAttack(const ITab &t) : PlatformerState(t) {
 
 void JumpAttack::Run(double dt) {
 
-    if (m_animator->IsComplete()) {
+    if (m_animator->isComplete()) {
         m_sm->SetState("jump");
     }
 
@@ -58,7 +58,7 @@ void JumpAttack::Run(double dt) {
 
 void JumpAttack::Init(const ITab& d) {
     auto anim = d.get<std::string>("anim", m_anim);
-    m_animator->SetAnimation(anim);
+    m_animator->setAnimation(anim);
 
 }
 

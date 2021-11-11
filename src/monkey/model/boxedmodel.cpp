@@ -94,7 +94,7 @@ void BoxedModel::addShape(std::shared_ptr<IShape> s) {
 }
 
 void BoxedModel::setAnimShape(const std::string &anim, int shapeId) {
-    int fc = GetAnimInfo(anim)->frameCount;
+    int fc = m_animInfos.at(anim).frames.size();
     for (int i=0;i<fc; ++i) {
         m_boxInfo[std::make_pair(anim, i)] = shapeId;
     }

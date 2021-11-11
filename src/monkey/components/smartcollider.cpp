@@ -1,11 +1,10 @@
 #include <monkey/components/smartcollider.h>
-#include <monkey/components/animator.h>
+#include <monkey/components/spriterenderer.h>
 #include <monkey/model/boxedmodel.h>
 
 #include <monkey/assets/model.h>
 #include <monkey/components/statemachine.h>
 #include <monkey/entity.h>
-#include <monkey/components/renderer.h>
 #include <monkey/meshfactory.h>
 
 
@@ -30,17 +29,17 @@ void SmartCollider::AddAttackTag(const std::string& anim, int tag, int mask) {
 
 
 Bounds SmartCollider::getAttackBounds() const {
-    auto anim = m_animator->GetAnimation();
-    int fr = m_animator->GetFrame();
-
-
-    const auto& bi = m_model->getShapeCast(anim,fr);
-    if (bi == nullptr) {
-        return Bounds();
-    }
-    auto bounds = bi->getBounds();
-    bounds.Transform(m_entity->GetWorldTransform());
-    return bounds;
+//    auto anim = m_animator->GetAnimation();
+//    int fr = m_animator->GetFrame();
+//
+//
+//    const auto& bi = m_model->getShapeCast(anim,fr);
+//    if (bi == nullptr) {
+//        return Bounds();
+//    }
+//    auto bounds = bi->getBounds();
+//    bounds.Transform(m_entity->GetWorldTransform());
+//    return bounds;
 
 }
 
@@ -51,54 +50,54 @@ void SmartCollider::addStateCollisionDetails (const std::string& id, int flag, i
 
 
 
-void SmartCollider::onFrameUpdate(Animator *a) {
-    auto anim = a->GetAnimation();
-    int fr = a->GetFrame();
-
-//    if (m_colliderRenderer != nullptr) {
-//		m_colliderRenderer->clearVisible();
-//		int shapeId = m_model->getShapeId(anim, fr);
-//		m_colliderRenderer->setVisible(shapeId);
-//		auto castShapeId = m_model->getShapeCastId(anim, fr);
+//void SmartCollider::onFrameUpdate(Animator *a) {
+////    auto anim = a->GetAnimation();
+////    int fr = a->GetFrame();
 //
-//		// now, check if I have an attack box
-//		if (castShapeId != -1) {
-//			auto castShape = m_model->shape(castShapeId);
-//			m_colliderRenderer->setVisible(castShapeId);
+////    if (m_colliderRenderer != nullptr) {
+////		m_colliderRenderer->clearVisible();
+////		int shapeId = m_model->getShapeId(anim, fr);
+////		m_colliderRenderer->setVisible(shapeId);
+////		auto castShapeId = m_model->getShapeCastId(anim, fr);
+////
+////		// now, check if I have an attack box
+////		if (castShapeId != -1) {
+////			auto castShape = m_model->shape(castShapeId);
+////			m_colliderRenderer->setVisible(castShapeId);
+////
+////			auto t = m_entity->GetWorldTransform();
+////			//std::cout <<" **** hit ****\n";
+////			//std::cout << "character at position = " << t[3][0] << ", " << t[3][1] << " scale " << t[0][0] << "\n";
+////			auto e = m_engine->ShapeCast(castShape.get(), t, m_castMask);
+////
+////			if (e.report.collide) {
+////				//std::cerr << "HIT!\n";
+////				auto rm = m_engine->GetResponseManager();
+////				if (rm == nullptr) {
+////					std::cerr << "no handler!\n";
+////				}
+////				auto handler = rm->GetHandler(m_castTag, e.entity->GetCollisionTag());
+////				if (handler.response != nullptr) {
+////					auto object = e.entity->GetObject();
+////					//std::cerr << "FOUND RESPONSE\n";
+////					if (handler.flip) {
+////						handler.response->onStart(object, m_entity, e.report);
+////					} else {
+////						handler.response->onStart(m_entity, object, e.report);
+////					}
+////				}
+////			}
+////		}
+////	}
 //
-//			auto t = m_entity->GetWorldTransform();
-//			//std::cout <<" **** hit ****\n";
-//			//std::cout << "character at position = " << t[3][0] << ", " << t[3][1] << " scale " << t[0][0] << "\n";
-//			auto e = m_engine->ShapeCast(castShape.get(), t, m_castMask);
 //
-//			if (e.report.collide) {
-//				//std::cerr << "HIT!\n";
-//				auto rm = m_engine->GetResponseManager();
-//				if (rm == nullptr) {
-//					std::cerr << "no handler!\n";
-//				}
-//				auto handler = rm->GetHandler(m_castTag, e.entity->GetCollisionTag());
-//				if (handler.response != nullptr) {
-//					auto object = e.entity->GetObject();
-//					//std::cerr << "FOUND RESPONSE\n";
-//					if (handler.flip) {
-//						handler.response->onStart(object, m_entity, e.report);
-//					} else {
-//						handler.response->onStart(m_entity, object, e.report);
-//					}
-//				}
-//			}
-//		}
-//	}
-
-
-}
+//}
 void SmartCollider::Start() {
     // a smart collider requires an animator
-    m_animator = dynamic_cast<Animator*>(m_entity->GetComponent<IAnimator>());
-    m_model = dynamic_cast<BoxedModel*>(m_animator->GetModel().get());
+    m_animator = dynamic_cast<SpriteRenderer*>(m_entity->GetComponent<Renderer>());
+    m_model = dynamic_cast<BoxedModel*>(m_animator->GetModel());
     //m_controllerBounds = m_model->getControllerBounds();
-    m_animator->onFrameUpdate.Register(this, [&] (Animator* a) { this->onFrameUpdate(a); });
+    //m_animator->onFrameUpdate.Register(this, [&] (Animator* a) { this->onFrameUpdate(a); });
     ICollider::Start();
 
 
@@ -127,8 +126,8 @@ void SmartCollider::Start() {
 }
 
 IShape* SmartCollider::GetShape() {
-    int frame = m_animator->GetFrame();
-    std::string anim = m_animator->GetAnimation();
+    int frame = m_animator->getFrame();
+    std::string anim = m_animator->getAnimation();
     // now with these info, I ask the model to give me the current shape
     return m_model->getShape(anim, frame).get();
 }
@@ -167,7 +166,7 @@ Bounds SmartCollider::GetStaticBoundsI() const {
 }
 
 Bounds SmartCollider::GetDynamicBoundsI() const {
-    std::string anim = m_animator->GetAnimation();
+    std::string anim = m_animator->getAnimation();
     auto bounds = m_model->GetAnimBounds(anim);
 //    bounds.min.z = bounds.min.x;
 //    bounds.max.z = bounds.max.x;

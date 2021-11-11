@@ -6,7 +6,7 @@ class Controller2D;
 class IController;
 class Dynamics2D;
 class InputMethod;
-class IAnimator;
+class AnimationRenderer;
 
 class __attribute__ ((visibility ("default"))) PlatformerState : public State {
 public:
@@ -20,7 +20,7 @@ public:
     virtual void ModifyAnimation() = 0;
     virtual void ResetAnimation() = 0;
 protected:
-    IAnimator* m_animator;
+    AnimationRenderer* m_animator;
     IController * m_controller;
     Dynamics2D * m_dynamics;
     InputMethod * m_input;

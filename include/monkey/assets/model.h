@@ -37,6 +37,7 @@ public:
     iterator begin() { return m_meshes.begin(); }
     iterator end() { return m_meshes.end(); }
     void addMesh(std::shared_ptr<IMesh> mesh);
+    std::shared_ptr<IMesh> getMesh(size_t);
 protected:
     std::vector<std::shared_ptr<IMesh>> m_meshes;
     Bounds m_bounds;

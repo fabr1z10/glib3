@@ -2,8 +2,8 @@
 
 #include <monkey/activities/targetactivity.h>
 #include <monkey/entity.h>
+#include <monkey/components/animrenderer.h>
 
-class IAnimator;
 
 class __attribute__ ((visibility ("default"))) Animate : public TargetActivity {
 public:
@@ -28,7 +28,7 @@ private:
     bool m_forward;
     bool m_sync;
     int m_flipX;
-    IAnimator* m_animator;
+    AnimationRenderer* m_animator;
     std::string m_animId;
 };
 

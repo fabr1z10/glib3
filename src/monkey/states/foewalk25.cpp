@@ -4,7 +4,7 @@
 #include <monkey/math/geom.h>
 #include <monkey/components/controller25.h>
 #include <monkey/components/dynamics2d.h>
-#include <monkey/components/animator.h>
+#include <monkey/components/animrenderer.h>
 #include <monkey/random.h>
 
 namespace py = pybind11;
@@ -29,7 +29,7 @@ void FoeWalk25::computeDirection() {
     if (m_jumping) {
         if (!m_controller->grounded()) {
             if (m_dynamics->m_velocity.y < 0) {
-                m_animator->SetAnimation("jumpdown");
+                m_animator->setAnimation("jumpdown");
                 m_targetVelocityX = 0.0f;
                 m_targetVelocityY = 0.0f;
                 m_dynamics->m_velocity.y = -1000.0f;
@@ -111,10 +111,10 @@ void FoeWalk25::computeDirection() {
     std::cerr << m_targetVelocityX << ", " << m_targetVelocityY<<"\n";
     if (m_inRange) {
         // TODO make tem params
-        m_animator->SetAnimation("idle");
+        m_animator->setAnimation("idle");
         m_targetVelocityX = 0.0f;
     } else {
-        m_animator->SetAnimation("walk");
+        m_animator->setAnimation("walk");
     }
 
 
@@ -138,7 +138,7 @@ void FoeWalk25::Run(double dt) {
         if (m_jumpAttack && m_targetSM->GetState() != "dead2") {
             float u = Random::get().GetUniformReal(0.0f, 1.0f);
             if (u < 0.005f) {
-                m_animator->SetAnimation("jumpup");
+                m_animator->setAnimation("jumpup");
                 auto targetPos = m_target->GetPosition();
                 auto targetDepth = m_pc->getDepth();
                 auto mePos = m_entity->GetPosition();

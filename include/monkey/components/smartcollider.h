@@ -2,7 +2,7 @@
 
 #include <monkey/components/icollider.h>
 
-class Animator;
+class SpriteRenderer;
 class BoxedModel;
 class MultiRenderer;
 class StateMachine;
@@ -33,7 +33,7 @@ public:
     int GetCollisionMask() const override;
     int setCollisionMask(int);
     std::type_index GetType() override;
-	void onFrameUpdate(Animator*a);
+	//void onFrameUpdate(Animator*a);
     void AddAttackTag(const std::string& anim, int tag, int mask);
     Bounds getAttackBounds() const override;
     void addStateCollisionDetails (const std::string&, int flag, int mask, int tag);
@@ -41,7 +41,7 @@ public:
 
 private:
     StateMachine* m_stateMachine;
-    Animator* m_animator;
+    SpriteRenderer* m_animator;
     BoxedModel* m_model;
     MultiRenderer* m_colliderRenderer;
     Bounds GetStaticBoundsI() const override;
