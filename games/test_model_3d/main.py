@@ -1,7 +1,8 @@
 from mopy.engine import Engine
+import scripts
 
-print('figo')
 
-engine = Engine()
+
+engine = Engine(scripts=scripts)
 
 

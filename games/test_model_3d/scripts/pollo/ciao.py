@@ -1,0 +1,2 @@
+def jingo():
+    print('cc')

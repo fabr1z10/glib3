@@ -3,8 +3,19 @@
 #include <monkey/scenefactory.h>
 
 
-void AssetManager::init(const ITab & t) {
+void AssetManager::init(const ITab & t, pybind11::object scripts) {
     m_assets = t["assets"];
+    if (scripts.is_none()) {
+        std::cerr << "no scripts available!\n";
+    } else {
+        m_scripts = scripts;
+//
+//
+//        std::cerr << "fiwoirfj = " << m_scripts.attr("pollo").attr("ciao").attr("jingo").get_type() << "\n";
+//        get<Func>("pollo.ciao.jingo");
+//        get<Func>("pollo.ciao.jingo");
+    }
+   // m_scripts = t["scripts"];
     std::cerr << m_assets->has("001");
 }
 
@@ -48,7 +59,15 @@ template<> std::shared_ptr<Tex> AssetManager::get(const std::string& texId) {
     return tex;
 }
 
-
+template<> std::shared_ptr<Func> AssetManager::get(const std::string& id) {
+    std::stringstream test(id);
+    std::string segment;
+    pybind11::object tmp = m_scripts;
+    while (std::getline(test, segment, '.'))
+        tmp = tmp.attr(segment.c_str());
+    std::cerr << "filo = " << tmp.get_type() << "\n";
+    return std::make_shared<Func>(tmp);
+}
 //#include <monkey/engine.h>
 //#include <monkey/texturedmesh.h>
 //#include "yaml-cpp/yaml.h"

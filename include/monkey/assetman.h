@@ -9,6 +9,7 @@
 #include <monkey/skeletal/animation.hpp>
 #include <monkey/assets/skeletalanimation.h>
 #include <monkey/input/yamltab.h>
+#include <monkey/assets/func.h>
 
 
 class AssetManager {
@@ -16,7 +17,7 @@ public:
 
     AssetManager() = default;
 
-    void init(const ITab&);
+    void init(const ITab&, pybind11::object scripts);
 
     template <typename T>
     std::shared_ptr<T> get(const std::string& id) {
@@ -26,9 +27,12 @@ public:
 
 private:
     std::unique_ptr<ITab> m_assets;
+    pybind11::module m_scripts;
+   // std::unique_ptr<ITab> m_scripts;
     std::unordered_map<std::string, std::shared_ptr<Font> > m_fonts;
     std::unordered_map<std::string, std::shared_ptr<Model> > m_models;
     std::unordered_map<std::string, std::shared_ptr<Tex> > m_textures;
+    //std::unordered_map<std::string, std::shared_ptr<Func> > m_scr;
     //std::unordered_map<std::string, std::shared_ptr<SkAnimation> > m_sanim;
 };
 
@@ -38,6 +42,7 @@ template<> std::shared_ptr<Model> AssetManager::get(const std::string& id);
 
 template<> std::shared_ptr<Tex> AssetManager::get(const std::string& id);
 
+template<> std::shared_ptr<Func> AssetManager::get(const std::string& id);
 
 //
 ////template <typename T>

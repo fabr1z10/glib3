@@ -74,6 +74,7 @@ void Engine::init(const std::string& gameFolder) {
     //module.attr("engine.device)
     m_mainTable = std::make_unique<PyTab>(module.attr("engine"));
 
+    //std::cerr << "pippolandia = " << module.attr("engine").attr("scripts").get_type();
 	// read addon libs
 	auto libs = m_mainTable->get<std::vector<std::string>>("libs");
 	for (const auto& lib : libs) {
@@ -123,7 +124,8 @@ void Engine::init(const std::string& gameFolder) {
     EnableKeyboard();
     SetFPS(60);
 
-    m_assetManager.init(*m_mainTable.get());
+    m_assetManager.init(*m_mainTable.get(), module.attr("engine").attr("scripts"));
+
     m_sceneFactory->StartUp(this);
 
 }
