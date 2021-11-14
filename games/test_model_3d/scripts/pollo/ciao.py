@@ -1,2 +1,2 @@
 def jingo():
-    print('cc')
+    print('put initialization stuff here.')

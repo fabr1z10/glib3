@@ -4,6 +4,7 @@ from mopy.camera import OrthoCamera, PerspectiveCamera
 import mopy.monkey as monkey
 from mopy.runners import KeyListener
 import example
+import operator
 
 
 def restart():
@@ -15,7 +16,9 @@ class BasicRoom(Room):
         main = Entity(tag='main')
         cam = room_info.get('cam', None)
         device_size = monkey.engine.device_size
-
+        on_load = room_info.get('on_load', None)
+        if on_load:
+            self.init.append(operator.attrgetter(on_load)(monkey.engine.scripts))
         if cam:
             cam_type = cam['type']
             camera = None

@@ -8,6 +8,7 @@ cam:
     x: [0, 100]
     y: [0, 100]
     z: [0, 100]
+on_load: pollo.ciao.jingo
 items:
   - entity:
       type: _entity
