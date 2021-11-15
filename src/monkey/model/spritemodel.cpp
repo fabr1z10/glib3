@@ -129,6 +129,7 @@ SpriteModel::SpriteModel (const ITab& t) : Model() {
     auto mesh = std::make_shared<Mesh<Vertex3D>>(ShaderType::TEXTURE_SHADER_UNLIT);
     mesh->m_primitive = GL_TRIANGLES;
     mesh->Init(vertices, indices);
+    mesh->addTexture(TextureInfo{tex->GetTexId(), TexType::DIFFUSE});
     this->addMesh(mesh);
     //m_mesh->SetDefaultAnimation(defaultAnimation);
 

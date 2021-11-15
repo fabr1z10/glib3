@@ -1,5 +1,7 @@
 type: _basic
 id: sprite
+vars:
+  0: mario
 cam:
   type: ortho
   world_size: [320, 240]
@@ -8,28 +10,18 @@ cam:
     x: [0, 100]
     y: [0, 100]
     z: [0, 100]
-on_load: pollo.ciao.jingo
+on_load:
+  func: keys.init
+  args: '@0'
 items:
   - entity:
+      tag: sprite
       type: _entity
       components:
         - type: components.keyinput
           callbacks:
             - key: 81
               action: 1
-              func: keys.pippo
-      model:
-        type: model.sprite
-        sheet: gfx/smb1.png
-        animations:
-          idle:
-            loop: false
-            frames:
-              - quads: [0, 0, 16, 16, -8, 0, {'scale': 1.5}]
-          walk:
-            loop: true
-            frames:
-              - quads: [16, 0, 16, 16, -8, 0]
-              - quads: [32, 0, 16, 16, -8, 0]
-              - quads: [48, 0, 16, 16, -8, 0]
+              func: keys.on_key
+      model: '@0'
     pos: [160, 120, 0]

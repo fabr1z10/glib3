@@ -1,4 +1,6 @@
 #include <monkey/components/spriterenderer.h>
+#include <monkey/shader.h>
+
 
 SpriteRenderer::SpriteRenderer(std::shared_ptr<Model> model) : AnimationRenderer(model), m_currentAnimInfo(nullptr),
     m_frame(0), m_frameCount(0), m_time(0.0)
@@ -7,8 +9,12 @@ SpriteRenderer::SpriteRenderer(std::shared_ptr<Model> model) : AnimationRenderer
 }
 
 void SpriteRenderer::Draw(Shader * s) {
-    const auto& frameInfo = m_currentAnimInfo->frames[m_frame];
-    m_model->getMesh(0)->draw(s, frameInfo.offset, frameInfo.count);
+    if (s->getShaderType() == m_model->getMesh(0)->getShaderType()) {
+        const auto& frameInfo = m_currentAnimInfo->frames[m_frame];
+        m_model->getMesh(0)->draw(s, frameInfo.offset, frameInfo.count);
+    }
+
+
 }
 
 void SpriteRenderer::Update(double dt) {

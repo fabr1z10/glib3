@@ -16,4 +16,5 @@ def entity(ciao):
     e = Entity()
     e.model = ciao.get('model', None)
     e.components = ciao.get('components', [])
+    e.tag = ciao.get('tag', None)
     return e

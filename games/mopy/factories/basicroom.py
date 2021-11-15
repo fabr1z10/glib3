@@ -10,15 +10,25 @@ import operator
 def restart():
     example.restart()
 
+
 class BasicRoom(Room):
-    def __init__(self, room_info):
+    def __init__(self, desc):
+        print(desc)
+        aa = desc.get('vars', None)
+        if aa:
+            room_info = monkey.engine.repl_vars(desc, aa)
+        else:
+            room_info = aa
         super().__init__(room_info['id'])
         main = Entity(tag='main')
         cam = room_info.get('cam', None)
         device_size = monkey.engine.device_size
         on_load = room_info.get('on_load', None)
         if on_load:
-            self.init.append(operator.attrgetter(on_load)(monkey.engine.scripts))
+            func = operator.attrgetter(on_load['func'])(monkey.engine.scripts)
+            args = on_load.get('args', None)
+            self.init.append([func, args] if args else [func])
+
         if cam:
             cam_type = cam['type']
             camera = None

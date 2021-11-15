@@ -200,7 +200,10 @@ class Engine:
                         a[i] = args[int(a[i][1:])]
 
 
-
+    def repl_vars(self, dict, args=None):
+        b = copy.deepcopy(dict)
+        self.replace(b, args)
+        return b
 
     def get_asset(self, id, args=None):
         if not args:

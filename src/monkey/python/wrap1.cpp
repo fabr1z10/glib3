@@ -20,6 +20,7 @@
 #include <monkey/components/animator.h>
 #include <monkey/input/pytab.h>
 #include <monkey/scenefactory.h>
+#include <monkey/components/animrenderer.h>
 
 namespace py = pybind11;
 
@@ -142,8 +143,8 @@ void Wrap1::setMesh(const std::string & jointId, const std::string & meshId, flo
 }
 
 void Wrap1::setAnim(const std::string & animId) {
-    auto* a = m_entity->GetComponent<IAnimator>();
-    a->SetAnimation(animId);
+    auto* a = dynamic_cast<AnimationRenderer*>(m_entity->GetComponent<Renderer>());
+    a->setAnimation(animId);
 }
 
 void Wrap1::setModel(pybind11::object obj) {

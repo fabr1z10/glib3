@@ -291,7 +291,12 @@ void Engine::MainLoop() {
 //
         auto initFunc = roomDef.attr("init").cast<py::list>();
         for (auto ifunc : initFunc) {
-            ifunc();
+            auto ifu = ifunc.cast<py::list>();
+            if (ifu.size() == 0) {
+                ifu[0]();
+            } else {
+                ifu[0](ifu[1]);
+            }
         }
         //m_sceneFactory->PostInit();
 

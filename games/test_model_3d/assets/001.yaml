@@ -49,3 +49,20 @@ block1:
         - type: box2d_rect
           half_size: '@0'
           density: 0
+mario:
+  type: model.sprite
+  sheet: gfx/smb1.png
+  animations:
+    idle:
+      loop: false
+      frames:
+        - quads: [0, 0, 16, 16, -8, 0, {'scale': 1.5}]
+    walk:
+      loop: true
+      frames:
+        - ticks: 10
+          quads: [16, 0, 16, 16, -8, 0]
+        - ticks: 10
+          quads: [32, 0, 16, 16, -8, 0]
+        - ticks: 10
+          quads: [48, 0, 16, 16, -8, 0]
