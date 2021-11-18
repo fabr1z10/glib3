@@ -7,17 +7,18 @@
 
 State::State(const ITab& t) : Ref(t) {
     m_id = t.get<std::string>("id");
-
     auto factory = Engine::get().GetSceneFactory();
-    t.foreach("keys", [&] (const ITab& p) {
-        // TODO CIAPPO
-        auto key = p[0]->as<int>();
-        auto tbl = PyTab(p[1]->as<pybind11::object>());
+    if (t.has("keys")) {
+        t.foreach("keys", [&](const ITab &p) {
+            // TODO CIAPPO
+            auto key = p[0]->as<int>();
+            auto tbl = PyTab(p[1]->as<pybind11::object>());
 
-        auto action = factory->make2<StateAction>(tbl);
-        m_actions.insert(std::make_pair(key, action));
+            auto action = factory->make2<StateAction>(tbl);
+            m_actions.insert(std::make_pair(key, action));
 
-    });
+        });
+    }
 
 }
 

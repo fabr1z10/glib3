@@ -20,7 +20,7 @@ MeshFactory::MeshFactory(float z) : m_z(z) {
     m_plotters.insert(std::make_pair(ShapeType::SEGMENT, [&] (IShape* s, glm::vec4 color, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices)
         { return drawConvexPoly(s, color, vertices, indices, false); }));
     m_plotters.insert(std::make_pair(ShapeType::CONVEXPOLY, [&] (IShape* s, glm::vec4 color, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices)
-        { return drawConvexPoly(s, color, vertices, indices, false); }));
+        { return drawConvexPoly(s, color, vertices, indices, true); }));
 	m_plotters.insert(std::make_pair(ShapeType::CIRCLE, [&] (IShape* s, glm::vec4 color, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices)
 	    { return drawCircle(s, color, vertices, indices); }));
 	m_plotters.insert(std::make_pair(ShapeType::COMPOUND, [&] (IShape* s, glm::vec4 color, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices)

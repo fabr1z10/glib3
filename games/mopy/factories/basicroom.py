@@ -5,7 +5,7 @@ import mopy.monkey as monkey
 from mopy.runners import KeyListener
 import example
 import operator
-
+from mopy.util import tiles_to_world
 
 def restart():
     example.restart()
@@ -18,12 +18,14 @@ class BasicRoom(Room):
         if aa:
             room_info = monkey.engine.repl_vars(desc, aa)
         else:
-            room_info = aa
+            room_info = desc
         super().__init__(room_info['id'])
         main = Entity(tag='main')
         cam = room_info.get('cam', None)
         device_size = monkey.engine.device_size
         on_load = room_info.get('on_load', None)
+        monkey.engine.room_vars = room_info.get('config', {})
+        tile_size = monkey.engine.room_vars.get('tile_size', [1, 1])
         if on_load:
             func = operator.attrgetter(on_load['func'])(monkey.engine.scripts)
             args = on_load.get('args', None)
@@ -61,6 +63,7 @@ class BasicRoom(Room):
         keyl.add_key(key=299, func=restart)
         self.add_runner(keyl)
         # now add all items
+        print ('# engines: ' + str(len(self.engines)))
         if 'items' in room_info:
             for item in room_info['items']:
                 entity_desc = item['entity']
@@ -70,12 +73,12 @@ class BasicRoom(Room):
 
                 factory = monkey.engine.get_item_factory(entity_desc['type'])
                 if not factory:
-                    print('Don''t have factory for item: ' + item['type'])
+                    print('Don''t have factory for item: ' + entity_desc['type'])
                     exit(1)
                 for ip in range(0, len(item['pos']), 3):
                     pos = item['pos'][ip:ip+3]
                     e = factory(entity_desc)
-                    e.pos = pos
+                    e.pos = tiles_to_world(pos, tile_size)
                     self.add(e, 'main')
                 #self.add(im, 'main')
                 # factory_id = item['factory']

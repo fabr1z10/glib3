@@ -22,4 +22,16 @@ private:
     float m_velocitySmoothingZ;
 };
 
+class Dynamics : public Component {
+public:
+    Dynamics(const ITab&);
+    void Start() override {}
+    void Update(double) override {}
+    void step(float dt);
+    using ParentClass = Dynamics;
 
+
+    glm::vec2 m_velocity;
+    glm::vec2 m_acceleration;
+
+};

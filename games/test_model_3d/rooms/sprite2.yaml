@@ -1,0 +1,48 @@
+type: _basic
+id: sprite
+config:
+  tile_size: [16, 16]
+vars:
+  0: mario
+cam:
+  type: ortho
+  world_size: [640, 240]
+  cam_size: [320, 240]
+  bounds:
+    x: [0, 640]
+    y: [0, 240]
+    z: [0, 100]
+engines:
+  - type: runner.collisionengine
+    size: [80, 80]
+items:
+  - entity:
+      type: _player2D
+      size: [1, 1]
+      max_speed: 100
+      time_acc: 0.1
+      gravity: 100
+      jump_height: 64
+      time_to_jump_apex: 0.5
+      model: '@0'
+    pos: [10, 8, 0]
+  - entity:
+      type: _rect
+      size: [8, 2]
+    pos: [6, 4, 0, 8, 2, 0, 10, 0, 0, 26, 8,0]
+    
+  - entity:
+      type: _poly
+      points: [0, 0, 8, 0, 8, 8]
+    pos: [18, 2, 0]
+  - entity:
+      type: _poly
+      points: [0, 0, 0, -8, 8, -8]
+    pos: [34, 10, 0]
+  - entity:
+      type: _line
+      pos: [2, 0]
+      pass_thru: Trues
+    pos: [11,8,0]
+
+

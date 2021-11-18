@@ -13,7 +13,7 @@ Dynamics2D::Dynamics2D(const ITab & t) : m_velocity(0.0f), m_velocitySmoothing(0
     m_gravity = t.get<float>("gravity");
 }
 
-
+Dynamics::Dynamics(const ITab&) {}
 
 glm::vec3 Dynamics2D::step(float dt, float targetVelocityX, float accelerationX) {
     // first, apply gravity

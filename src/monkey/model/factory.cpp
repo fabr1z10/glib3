@@ -24,17 +24,8 @@ std::shared_ptr<IMesh> ModelFactory::b2Poly(b2PolygonShape &shape, glm::vec4 col
     return mesh;
 }
 
-std::shared_ptr<Model> ModelFactory::rect(const ITab & t) {
-    auto size = t.get<glm::vec2>("size");
-    auto offset = t.get<glm::vec2>("offset", glm::vec2(0.0f));
-    float width = size[0];
-    float height = size[1];
-    auto tex = t.get<std::string>("tex", "");
-    auto render = t.get<std::string>("render", "fill");
-
-    auto color = t.get<glm::vec4> ("color");
+std::shared_ptr<Model> ModelFactory::rect(float width, float height, glm::vec2 offset, RenderType rtype, glm::vec4 color, const std::string& tex) {
     std::shared_ptr<IMesh> mesh;
-
     if (tex.empty()) {
         auto m = std::make_shared<Mesh<VertexColor>>(ShaderType::COLOR_SHADER);
         std::vector<VertexColor> vertices{
@@ -44,7 +35,7 @@ std::shared_ptr<Model> ModelFactory::rect(const ITab & t) {
                 { offset.x, offset.y + height, 0, color},
         };
         std::vector<unsigned> indices;
-        if (render == "fill") {
+        if (rtype == RenderType::FILL) {
             indices = {0, 1, 2, 3, 0, 2};
             m->m_primitive = GL_TRIANGLES;
         } else {
@@ -56,6 +47,20 @@ std::shared_ptr<Model> ModelFactory::rect(const ITab & t) {
 
     }
     return std::make_shared<Model>(mesh);
+
+}
+
+
+std::shared_ptr<Model> ModelFactory::_rect(const ITab & t) {
+    auto size = t.get<glm::vec2>("size");
+    auto offset = t.get<glm::vec2>("offset", glm::vec2(0.0f));
+    float width = size[0];
+    float height = size[1];
+    auto tex = t.get<std::string>("tex", "");
+    auto render = t.get<std::string>("render", "fill");
+    auto color = t.get<glm::vec4> ("color");
+    auto rtype = (render == "fill" ? RenderType::FILL : RenderType::WIREFRAME);
+    return rect(width, height, offset, rtype, color, tex);
 }
 
 std::shared_ptr<Model> ModelFactory::polygon(const ITab& t) {

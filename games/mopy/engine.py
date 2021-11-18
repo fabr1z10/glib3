@@ -40,6 +40,10 @@ class Engine:
 
         self.add_item_factory('_model3d', mopy.factories.items.model3d)
         self.add_item_factory('_entity', mopy.factories.items.entity)
+        self.add_item_factory('_player2D', mopy.factories.items.player2D)
+        self.add_item_factory('_rect', mopy.factories.items.rect_platform)
+        self.add_item_factory('_line', mopy.factories.items.line_platform)
+        self.add_item_factory('_poly', mopy.factories.items.poly_platform)
 
 
     @staticmethod

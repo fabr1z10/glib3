@@ -4,7 +4,7 @@
 IController::IController(const ITab& t) : m_debugShape(nullptr) {
 	auto size = t.get<glm::vec3>("size");
 	m_halfSize = 0.5f * size;
-	m_shift = t.get<glm::vec3>("shift",glm::vec3(0.0f, m_halfSize.y, 0.0f));
+	m_shift = t.get<glm::vec3>("offset",glm::vec3(0.0f));
     m_debug = t.get<bool>("debug", false);
 
 }

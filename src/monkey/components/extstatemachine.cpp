@@ -12,7 +12,6 @@ ExtendedStateMachine::ExtendedStateMachine(const std::string& initialState) : St
 
 
 ExtendedStateMachine::ExtendedStateMachine(const ITab & t) {
-    m_initialState = t.get<std::string>("initialState");
     m_currentState = nullptr;
     auto factory = Engine::get().GetSceneFactory();
 
@@ -21,6 +20,7 @@ ExtendedStateMachine::ExtendedStateMachine(const ITab & t) {
         auto state = factory->make2<State>(table);
         this->AddState(state->getId(), state);
     });
+    m_initialState = t.get<std::string>("initial_state");
 
 //        luabridge::LuaRef statesRef = table.Get<luabridge::LuaRef>("states");
 //        for (int i = 0; i < statesRef.length(); ++i) {

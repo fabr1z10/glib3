@@ -5,6 +5,10 @@
 
 #include <box2d/box2d.h>
 
+enum RenderType {
+    FILL, WIREFRAME
+};
+
 class ModelFactory {
 
 public:
@@ -14,8 +18,9 @@ public:
     static std::shared_ptr<Model> quad(const std::string& imagePath, float width = 0.0f, float height = 0.0f,
                                  float repx = 1.0f, float repy = 1.0f);
     static std::shared_ptr<Model> polygon(const ITab&);
-    static std::shared_ptr<Model> rect(const ITab&);
-
+    static std::shared_ptr<Model> _rect(const ITab&);
+    static std::shared_ptr<Model> rect(float width, float height, glm::vec2 offset,
+                                       RenderType rtype, glm::vec4 color, const std::string& tex = "");
     // create a shape from a polygon
     static std::shared_ptr<IMesh> b2Poly(b2PolygonShape& shape, glm::vec4 color);
 

@@ -5,7 +5,6 @@
 #include <monkey/components/controller2d.h>
 #include <monkey/components/dynamics2d.h>
 #include <monkey/components/extstatemachine.h>
-#include <monkey/states/simple.h>
 #include <monkey/model/factory.h>
 #include <monkey/components/hotspot.h>
 #include <monkey/components/follow.h>
@@ -39,14 +38,9 @@
 #include <monkey/activities/runscript.h>
 #include <monkey/activities/move.h>
 #include <monkey/activities/cambounds.h>
-#include <monkey/states/walk25.h>
-#include <monkey/states/walk3d.h>
 
 #include <monkey/components/controller25.h>
 #include <monkey/math/shapes/ellipse.h>
-#include <monkey/states/hit25.h>
-#include <monkey/states/foewalk25.h>
-#include <monkey/states/ishit25.h>
 #include <monkey/components/parallax.h>
 #include <monkey/fill.h>
 #include <monkey/activities/repeat.h>
@@ -59,9 +53,7 @@
 #include <monkey/skeletal/skmodel.hpp>
 #include <monkey/skeletal/animation.hpp>
 #include <monkey/components/stateactions.h>
-#include <monkey/states/attack.h>
 #include <monkey/skeletal/skcollider.hpp>
-#include <monkey/states/jumpattack.h>
 #include <monkey/activities/blink.h>
 //#include <monkey/math/shapes/plane3d.h>
 #include <monkey/skeletal/skcoll.h>
@@ -92,6 +84,9 @@
 #include <monkey/components/box2dbody.h>
 #include <monkey/components/box2dcc.h>
 #include <monkey/components/box2dcc2.h>
+#include <monkey/states/nullstate.h>
+#include <monkey/states/playerjump.h>
+#include <monkey/states/playerwalk.h>
 
 
 namespace py = pybind11;
@@ -181,9 +176,9 @@ SceneFactory::SceneFactory() {
     add2<Controller3D> ("components.controller3D");
 	add2<ControllerFlat> ("components.controller_flat");
     add2<Controller25> ("components.controller25");
-    add2<Dynamics2D> ("components.dynamics2D");
+    add2<Dynamics> ("components.dynamics");
     add2<PlatformComponent>("components.platform");
-    add2<ExtendedStateMachine> ("components.statemachine");
+    add2<ExtendedStateMachine> ("components.state_machine");
 	add2<MarkovStateMachine> ("components.markov_state_machine");
     add2<Parallax>("components.parallax");
     add2<Cursor> ("components.cursor");
@@ -197,17 +192,8 @@ SceneFactory::SceneFactory() {
 
     //add2<Model>("model.raw");
     addf<Model>("model.poly", ModelFactory::polygon);
-    addf<Model>("model.rect", ModelFactory::rect);
+    addf<Model>("model.rect", ModelFactory::_rect);
     add2<SpriteModel> ("model.sprite");
-    add2<NullState> ("state.null");
-    add2<SimpleState> ("state.simple");
-    add2<Walk25> ("state.walk25");
-    add2<Walk3D> ("state.walk3d");
-    add2<FoeWalk25> ("state.foewalk25");
-    add2<Attack> ("state.attack");
-    add2<JumpAttack> ("state.jumpattack");
-    add2<Hit25> ("state.hit25");
-    add2<IsHit25> ("state.ishit25");
     add2<DelayTime> ("action.delay");
     add2<DelayTimeDynamic> ("action.delaydynamic");
     add2<Animate> ("action.animate");
@@ -289,6 +275,20 @@ SceneFactory::SceneFactory() {
     add2<Box2DBody>("box2d_body");
     add2<Box2DCharacterController>("box2d_cc");
     add2<Box2DCharacterController2>("box2d_cc2");
+
+    add2<NullState> ("state.null");
+    add2<PlayerJump> ("state.player_jump");
+    add2<PlayerWalk> ("state.player_walk");
+
+//    add2<SimpleState> ("state.simple");
+//    add2<Walk25> ("state.walk25");
+//    add2<Walk3D> ("state.walk3d");
+//    add2<FoeWalk25> ("state.foewalk25");
+//    add2<Attack> ("state.attack");
+//    add2<JumpAttack> ("state.jumpattack");
+//    add2<Hit25> ("state.hit25");
+//    add2<IsHit25> ("state.ishit25");
+
     //m_facs2.insert(std::make_pair("ciao", [] (const ITab& t) { auto obj = std::make_shared<Box2DCharacterController2>(t);
     //    return std::dynamic_pointer_cast<Object>(obj); }));
     //add2<Box2DPlatfomerListener>("box2d_platform_callback");

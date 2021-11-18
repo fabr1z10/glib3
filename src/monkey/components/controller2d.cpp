@@ -8,19 +8,20 @@
 #include <monkey/components/platform.h>
 #include <iostream>
 #include <monkey/math/geomalgo.h>
-#include <monkey/meshfactory.h>
+//#include <monkey/meshfactory.h>
 #include <monkey/components/renderer.h>
+#include <monkey/model/factory.h>
 
 using namespace glm;
 
 Controller2D::Controller2D(const ITab& t) : IController(t) {
-    m_maxClimbAngle = t.get<float>("maxClimbAngle");
-    m_maxDescendAngle = t.get<float>("maxDescendAngle");
+    m_maxClimbAngle = t.get<float>("maxClimbAngle", 80);
+    m_maxDescendAngle = t.get<float>("maxDescendAngle", 80);
     m_horizontalRayCount = t.get<int>("horRays", 4);
     m_verticalRayCount = t.get<int>("vertRays", 4);
     m_skinWidth = t.get<float>("skinWidth", .015f);
-    m_maskUp = t.get<int>("maskUp");
-    m_maskDown = t.get<int>("maskDown");
+    m_maskUp = t.get<int>("mask_up");
+    m_maskDown = t.get<int>("mask_down");
     m_platform = nullptr;
     //mint maskUp = table.Get<int>("maskup", 2);
     //int maskDown = table.Get<int>("maskdown", 2|32);
@@ -32,10 +33,13 @@ Controller2D::Controller2D(const ITab& t) : IController(t) {
 
 void Controller2D::drawShape() {
     auto debugEntity = std::make_shared<Entity>();
-    auto shape = std::make_shared<Rect>(m_halfSize[0] * 2.0f, m_halfSize[1] * 2.0f, glm::vec3(-m_halfSize[0]+m_shift[0], -m_halfSize[1]+m_shift[1], 0));
-    MeshFactory m;
-    auto model = m.createWireframe(shape.get(), glm::vec4(1.0f));
-    auto renderer = std::make_shared<Renderer>(model);
+    auto model = ModelFactory::rect(
+            m_halfSize[0] * 2.0f,
+            m_halfSize[1] * 2.0f,
+            glm::vec2(-m_halfSize[0] + m_shift[0], -m_halfSize[1] + m_shift[1]),
+            RenderType::WIREFRAME,
+            glm::vec4(1.0f));
+    auto renderer = model->makeRenderer(model);
     debugEntity->AddComponent(renderer);
     m_entity->AddChild(debugEntity);
     m_debugShape = debugEntity.get();
@@ -124,6 +128,7 @@ void Controller2D::Move(glm::vec3& delta) {
         if (!isEqual(dx.y, 0.0f))
             VerticalCollisions(dx);
         glm::vec2 actualMove = dx / scale;
+        std::cout << "moving by " << actualMove.x << ", " << actualMove.y << "\n";
         m_entity->MoveLocal(glm::vec3(actualMove.x, actualMove.y, 0));
         if (!m_wasGnd && m_details.below) {
             glm::vec3 p=m_entity->GetPosition();
@@ -295,23 +300,23 @@ void Controller2D::VerticalCollisions(glm::vec2& velocity) {
 //        }
 //    }
 
-
-    if (m_details.climbingSlope) {
-        float directionX = sign(velocity.x);
-        rayLength = fabs(velocity.x) + m_skinWidth;
-        vec2 pos = m_entity->GetPosition();
-        vec2 rayOrigin = pos + vec2( (directionX == -1) ? -m_halfSize[0] : m_halfSize[0], -m_halfSize[1]);
-        rayOrigin += vec2(0, 1) * velocity.y;
-        //RayCastHit2D hit = m_collision->Raycast(rayOrigin, vec2(1, 0) * directionX, rayLength, 2);
-        RayCastHit hit = m_collision->Raycast(vec3(rayOrigin, 0.0f), monkey::right * directionX, rayLength, 2);
-        if (hit.collide) {
-            float slopeAngle = angle(hit.normal, vec2(0, 1));
-            if (slopeAngle != m_details.slopeAngle) {
-                velocity.x = (hit.length - m_skinWidth) * directionX;
-                m_details.slopeAngle = slopeAngle;
-            }
-        }
-    }
+    // TODO do we need this???
+//    if (m_details.climbingSlope) {
+//        float directionX = sign(velocity.x);
+//        rayLength = fabs(velocity.x) + m_skinWidth;
+//        vec2 pos = m_entity->GetPosition();
+//        vec2 rayOrigin = pos + vec2( (directionX == -1) ? -m_halfSize[0] : m_halfSize[0], -m_halfSize[1]);
+//        rayOrigin += vec2(0, 1) * velocity.y;
+//        //RayCastHit2D hit = m_collision->Raycast(rayOrigin, vec2(1, 0) * directionX, rayLength, 2);
+//        RayCastHit hit = m_collision->Raycast(vec3(rayOrigin, 0.0f), monkey::right * directionX, rayLength, 2);
+//        if (hit.collide) {
+//            float slopeAngle = angle(hit.normal, vec2(0, 1));
+//            if (slopeAngle != m_details.slopeAngle) {
+//                velocity.x = (hit.length - m_skinWidth) * directionX;
+//                m_details.slopeAngle = slopeAngle;
+//            }
+//        }
+//    }
 
     // for tomorrow
 
