@@ -243,14 +243,14 @@ void Controller2D::DescendSlope(glm::vec2& velocity) {
 void Controller2D::VerticalCollisions(glm::vec2& velocity) {
     float directionY = sign(velocity.y);
     float rayLength = std::abs(velocity.y) + m_skinWidth;
-    Entity* m_obstacle = nullptr;
+    Entity *m_obstacle = nullptr;
     float velx = velocity.x * (m_entity->GetFlipX() ? -1.0f : 1.0f);
-	//glm::vec2 pos = m_entity->GetPosition();
-	//vec2 r0 = pos + vec2(-m_halfSize[0], directionY > 0 ? m_halfSize[1] : -m_halfSize[1]);
+    //glm::vec2 pos = m_entity->GetPosition();
+    //vec2 r0 = pos + vec2(-m_halfSize[0], directionY > 0 ? m_halfSize[1] : -m_halfSize[1]);
 
-	vec2 r0 = directionY > 0 ? m_raycastOrigins.topLeft : m_raycastOrigins.bottomLeft;
+    vec2 r0 = directionY > 0 ? m_raycastOrigins.topLeft : m_raycastOrigins.bottomLeft;
     for (int i = 0; i < m_verticalRayCount; i++) {
-		vec2 rayOrigin = r0 + vec2(1,0) * (velx + i * m_verticalRaySpacing);
+        vec2 rayOrigin = r0 + vec2(1, 0) * (velx + i * m_verticalRaySpacing);
 
         int collMask = (directionY == -1 ? (m_maskDown) : m_maskUp);
         RayCastHit hit = m_collision->Raycast(vec3(rayOrigin, 0.0f), monkey::up * directionY, rayLength, collMask);
@@ -320,29 +320,31 @@ void Controller2D::VerticalCollisions(glm::vec2& velocity) {
 
     // for tomorrow
 
-    // if I land on a platform, need to register if it's a moving platform
+
     if (m_details.below && m_platform != m_obstacle && m_obstacle != nullptr) {
-        // notify platform that I'm on top of it
+        // if I landed on a platform which is different than the current platform ...
         if (m_platform != nullptr) {
+            // if I changed platform, unregister from the current one, if it exists
             auto platformController = m_platform->GetComponent<PlatformComponent>();
             if (platformController != nullptr)
                 platformController->Unregister(this);
         }
-
         auto platformController = m_obstacle->GetComponent<PlatformComponent>();
         if (platformController != nullptr) {
             m_platform = m_obstacle;
             platformController->Register(this);
         }
     }
+
     // leave a platform
     if (!m_details.below && m_platform != nullptr) {
-        //auto platformController = m_platform->GetComponent<PlatformComponent>();
-        //if (platformController != nullptr)
-        //	platformController->Unregister(this);
-        //m_platform = nullptr;
+        auto platformController = m_platform->GetComponent<PlatformComponent>();
+        if (platformController != nullptr)
+            platformController->Unregister(this);
+        m_platform = nullptr;
         DetachFromPlatform();
     }
+
     ////// hit a platform from below... platform decides what to do
     //if (m_details.above) {
     //	auto platformController = m_obstacle->GetComponent<PlatformComponent>();

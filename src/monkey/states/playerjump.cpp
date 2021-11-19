@@ -44,6 +44,7 @@ void PlayerJump::Run(double dt) {
     if (m_controller->grounded() && m_dynamics->m_velocity.y < 0) {
         // landed on a platform
         m_dynamics->m_velocity.y = 0.0f;
+
         m_sm->SetState(m_walkState);
         return;
     }

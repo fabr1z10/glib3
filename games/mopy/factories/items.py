@@ -58,6 +58,7 @@ def line_platform(ciao):
     e = Entity()
     tile_size = monkey.engine.room_vars.get('tile_size', [1, 1])
     pass_thru = ciao.get('pass_thru', False)
+    moving = ciao.get('moving', False)
     pos = tiles_to_world(ciao.get('pos'), tile_size)
     e.components.append({
         'type': 'components.collider',
@@ -71,6 +72,16 @@ def line_platform(ciao):
         'mask': 0,
         'debug': True
     })
+    mp = ciao.get('move', None)
+    if mp:
+        e.components.append({'type': 'components.platform'})
+        path = mp['path']
+        e.components.append({
+            'type': 'components.polymover',
+            'points': [path[i]*tile_size[i%2] for i in range(0, len(path))],
+            'speed': mp['speed'],
+            'mode': mp['mode']
+        })
     return e
 
 

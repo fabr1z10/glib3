@@ -30,7 +30,6 @@ items:
       type: _rect
       size: [8, 2]
     pos: [6, 4, 0, 8, 2, 0, 10, 0, 0, 26, 8,0]
-    
   - entity:
       type: _poly
       points: [0, 0, 8, 0, 8, 8]
@@ -42,7 +41,17 @@ items:
   - entity:
       type: _line
       pos: [2, 0]
-      pass_thru: Trues
+      pass_thru: True
     pos: [11,8,0]
+  - entity:
+      type: _line
+      pos: [2, 0]
+      pass_thru: True
+      moving: True
+      move:
+        path: [11, 10, 9, 10]
+        mode: 1
+        speed: 10
+    pos: [11,10,0]
 
 
