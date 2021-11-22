@@ -9,13 +9,37 @@
 #include <monkey/mesh.h>
 #include <monkey/components/animrenderer.h>
 
+SmartColliderRenderer::SmartColliderRenderer(
+        std::shared_ptr<Model> model,
+        const std::vector<std::pair<unsigned int, unsigned int>> & info,
+        BoxedModel * boxedModel,
+        SpriteRenderer * renderer) : Renderer(model), m_boxedModel(boxedModel), m_renderer(renderer), m_shapeInfo(info) {
+
+}
+
 void SmartColliderRenderer::Draw(Shader * shader) {
+
     auto anim = m_renderer->getAnimation();
     auto frame = m_renderer->getFrame();
-    const auto& boxInfo = m_model->getBoxInfo(anim, frame);
+    const auto& boxInfo = m_boxedModel->getBoxInfo(anim, frame);
     m_model->getMesh(0)->draw(shader, 0, 0);
+    if (boxInfo.collisionShape != -1) {
+        const auto& pair = m_shapeInfo[boxInfo.collisionShape];
+        m_model->getMesh(0)->draw(shader,pair.first, pair.second);
+    }
+    if (boxInfo.attackShape != -1) {
+        const auto& pair = m_shapeInfo[boxInfo.attackShape];
+        m_model->getMesh(0)->draw(shader, pair.first, pair.second);
+    }
 
+}
 
+void SmartColliderRenderer::Start() {
+
+}
+
+std::type_index SmartColliderRenderer::GetType() {
+    return std::type_index(typeid(Renderer));
 }
 
 SmartCollider::~SmartCollider() = default;
@@ -130,7 +154,12 @@ void SmartCollider::Start() {
             m_entity->Remove(m_shapeEntity);
             m_shapeEntity = nullptr;
         }
-        shapeEntity->AddComponent(model->makeRenderer(model));
+        auto renderer = std::make_shared<SmartColliderRenderer>(model, shapeInfo, m_model, m_animator);
+        renderer->setModel(model);
+
+        shapeEntity->AddComponent(renderer);
+        //shapeEntity->AddComponent(model->makeRenderer(model));
+
         m_entity->AddChild(shapeEntity);
 
 //

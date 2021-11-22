@@ -18,11 +18,20 @@ struct SmartCollisionDetails {
 
 class SmartColliderRenderer : public Renderer {
 public:
+    SmartColliderRenderer(std::shared_ptr<Model> model,
+                          const std::vector<std::pair<unsigned, unsigned>>&, BoxedModel*, SpriteRenderer*);
     void Draw(Shader*) override;
+    //void setShapeInfo(const std::vector<std::pair<unsigned, unsigned>>&);
+    std::type_index GetType() override;
+    void Start() override;
+
 private:
     SpriteRenderer* m_renderer;
-    BoxedModel* m_model;
+    BoxedModel* m_boxedModel;
+    std::vector<std::pair<unsigned, unsigned>> m_shapeInfo;
 };
+
+
 /*
  * A smart collider needs to be used with a boxed model.
  * A boxed model is a model with collision boxes associated to each frame.
