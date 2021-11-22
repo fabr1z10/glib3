@@ -52,6 +52,8 @@ items:
       path: [1, 0, 1, 10]
       mode: 1
       speed: 10
+  - type: brick
+    pos: [2,10,0]
 
 
 

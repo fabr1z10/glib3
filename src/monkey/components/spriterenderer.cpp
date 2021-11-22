@@ -47,7 +47,7 @@ void SpriteRenderer::setAnimation(const std::string& anim) {
     m_frameCount = m_currentAnimInfo->frames.size();
     m_time = 0.0;
     m_frame = (m_playForward ? 0 : m_frameCount-1);
-
+    m_animation = anim;
 
 }
 

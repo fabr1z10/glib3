@@ -83,19 +83,27 @@ void MeshFactory::drawAABB(IShape* s, glm::vec4 color, std::vector<VertexColor> 
 	auto O = a->getOffset();
 	auto size = a->getSize();
 	auto n = vertices.size();
-
-	vertices.emplace_back(O.x, O.y, O.z, color.r, color.g, color.b, color.a);
-	vertices.emplace_back(O.x, O.y, O.z + size.z, color.r, color.g, color.b, color.a);
-	vertices.emplace_back(O.x + size.x, O.y, O.z + size.z, color.r, color.g, color.b, color.a);
-	vertices.emplace_back(O.x + size.x, O.y, O.z, color.r, color.g, color.b, color.a);
-	vertices.emplace_back(O.x, O.y + size.y, O.z, color.r, color.g, color.b, color.a);
-	vertices.emplace_back(O.x, O.y + size.y, O.z + size.z, color.r, color.g, color.b, color.a);
-	vertices.emplace_back(O.x + size.x, O.y + size.y, O.z + size.z, color.r, color.g, color.b, color.a);
-	vertices.emplace_back(O.x + size.x, O.y + size.y, O.z, color.r, color.g, color.b, color.a);
-	for (auto a : {0, 1, 1, 2, 2, 3, 3, 0, 4, 5, 5, 6, 6, 7, 7, 4, 0, 4, 1, 5, 2, 6, 3, 7}) {
-		indices.push_back(n + a);
-	}
-
+    if (size.z == 0.0f) {
+        vertices.emplace_back(O.x, O.y, O.z, color.r, color.g, color.b, color.a);
+        vertices.emplace_back(O.x + size.x, O.y, O.z, color.r, color.g, color.b, color.a);
+        vertices.emplace_back(O.x + size.x, O.y + size.y, O.z, color.r, color.g, color.b, color.a);
+        vertices.emplace_back(O.x, O.y + size.y, O.z, color.r, color.g, color.b, color.a);
+        for (auto a : {0, 1, 1, 2, 2, 3, 3, 0}) {
+            indices.push_back(n + a);
+        }
+    } else {
+        vertices.emplace_back(O.x, O.y, O.z, color.r, color.g, color.b, color.a);
+        vertices.emplace_back(O.x, O.y, O.z + size.z, color.r, color.g, color.b, color.a);
+        vertices.emplace_back(O.x + size.x, O.y, O.z + size.z, color.r, color.g, color.b, color.a);
+        vertices.emplace_back(O.x + size.x, O.y, O.z, color.r, color.g, color.b, color.a);
+        vertices.emplace_back(O.x, O.y + size.y, O.z, color.r, color.g, color.b, color.a);
+        vertices.emplace_back(O.x, O.y + size.y, O.z + size.z, color.r, color.g, color.b, color.a);
+        vertices.emplace_back(O.x + size.x, O.y + size.y, O.z + size.z, color.r, color.g, color.b, color.a);
+        vertices.emplace_back(O.x + size.x, O.y + size.y, O.z, color.r, color.g, color.b, color.a);
+        for (auto a : {0, 1, 1, 2, 2, 3, 3, 0, 4, 5, 5, 6, 6, 7, 7, 4, 0, 4, 1, 5, 2, 6, 3, 7}) {
+            indices.push_back(n + a);
+        }
+    }
 	//indices.insert(indices.end(), {0, 1, 1, 2, 2, 3, 3, 0, 4, 5, 5, 6, 6, 7, 7, 4, 0, 4, 1, 5, 2, 6, 3, 7});
 
 
@@ -421,7 +429,14 @@ std::shared_ptr<Model> MeshFactory::createSolid(IShape* shape, glm::vec4 color) 
 	//auto st
 }
 
+void MeshFactory::j2(IShape * shape, std::vector<VertexColor> & vertices, std::vector<unsigned int> & indices, glm::vec4 color) {
+    auto st = shape->getShapeType();
+    auto it = m_plotters.find(st);
+    if (it != m_plotters.end()) {
+        it->second(shape, color, vertices, indices);
+    }
 
+}
 std::shared_ptr<Model> MeshFactory::createTextured(IShape * shape, const std::vector<TexInfo>& texInfos) {
     auto st = shape->getShapeType();
     std::vector<Vertex3D> vertices;

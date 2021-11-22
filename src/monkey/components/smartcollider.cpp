@@ -6,12 +6,19 @@
 #include <monkey/components/statemachine.h>
 #include <monkey/entity.h>
 #include <monkey/meshfactory.h>
+#include <monkey/mesh.h>
+#include <monkey/components/animrenderer.h>
 
-
-SmartCollider::~SmartCollider() {
+void SmartColliderRenderer::Draw(Shader * shader) {
+    auto anim = m_renderer->getAnimation();
+    auto frame = m_renderer->getFrame();
+    const auto& boxInfo = m_model->getBoxInfo(anim, frame);
+    m_model->getMesh(0)->draw(shader, 0, 0);
 
 
 }
+
+SmartCollider::~SmartCollider() = default;
 
 
 SmartCollider::SmartCollider(const ITab& table) : ICollider(table), m_shapeEntity(nullptr), m_colliderRenderer(nullptr) {
@@ -103,11 +110,30 @@ void SmartCollider::Start() {
 
     // if debug is active, show currently active collision shapes
     if (m_debug) {
-//        auto shapeEntity = std::make_shared<Entity>();
-//        if (m_shapeEntity != nullptr) {
-//            m_entity->Remove(m_shapeEntity);
-//            m_shapeEntity = nullptr;
-//        }
+        MeshFactory mf;
+        std::vector<VertexColor> vertices;
+        std::vector<unsigned> indices;
+        std::vector<std::pair<unsigned, unsigned>> shapeInfo;
+        for (const auto &shape : m_model->getShapes()) {
+            unsigned offset = indices.size();
+            mf.j2(shape.get(), vertices, indices, glm::vec4(1.0f,0,0,1));
+            unsigned count = indices.size() - offset;
+            shapeInfo.push_back(std::make_pair(offset, count));
+        }
+        auto mesh = std::make_shared<Mesh<VertexColor>>(COLOR_SHADER);
+        mesh->Init(vertices, indices);
+        mesh->m_primitive = GL_LINES;
+        auto model = std::make_shared<Model>();
+        model->addMesh(mesh);
+        auto shapeEntity = std::make_shared<Entity>();
+        if (m_shapeEntity != nullptr) {
+            m_entity->Remove(m_shapeEntity);
+            m_shapeEntity = nullptr;
+        }
+        shapeEntity->AddComponent(model->makeRenderer(model));
+        m_entity->AddChild(shapeEntity);
+
+//
 //        m_entity->AddChild(shapeEntity);
 //        m_shapeEntity = shapeEntity.get();
 //        auto renderer = std::make_shared<Renderer>();

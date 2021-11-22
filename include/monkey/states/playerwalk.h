@@ -2,6 +2,7 @@
 #include <monkey/components/inputmethod.h>
 #include <monkey/components/dynamics2d.h>
 #include <monkey/components/icontroller.h>
+#include <monkey/components/animrenderer.h>
 
 class PlayerWalk : public State {
 public:
@@ -21,4 +22,7 @@ private:
     float m_maxSpeed;
     float m_jumpSpeed;
     std::string m_jumpState;
+    AnimationRenderer* m_renderer;
+    std::string m_idleAnim;
+    std::string m_walkAnim;
 };

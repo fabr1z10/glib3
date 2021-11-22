@@ -10,6 +10,8 @@ PlayerJump::PlayerJump(const ITab& t) : State(t) {
     m_acceleration = m_maxSpeed / tmax;
     m_gravity = t.get<float>("gravity");
     m_walkState = t.get<std::string>("walk_state");
+    m_jumpUpAnim = t.get<std::string>("idle_anim", "jump");
+    m_jumpDownAnim = t.get<std::string>("walk_anim", "jump");
 }
 
 void PlayerJump::AttachStateMachine(StateMachine * sm) {
@@ -32,6 +34,9 @@ void PlayerJump::AttachStateMachine(StateMachine * sm) {
     if (m_controller == nullptr) {
         GLIB_FAIL("Platformer state requires a <Controller2D> component!");
     }
+
+    m_renderer = dynamic_cast<AnimationRenderer*>(m_entity->GetComponent<Renderer>());
+
 }
 
 void PlayerJump::Init(const ITab &d) {
@@ -78,6 +83,13 @@ void PlayerJump::Run(double dt) {
     auto delta = glm::vec3(m_dynamics->m_velocity * dtf, 0.0f);
     //m_entity->MoveLocal(delta);
     m_controller->Move(delta);
+    if (m_renderer != nullptr) {
+        if (m_dynamics->m_velocity.y >= 0) {
+            m_renderer->setAnimation(m_jumpUpAnim);
+        } else {
+            m_renderer->setAnimation(m_jumpDownAnim);
+        }
+    }
 }
 
 void PlayerJump::End() {

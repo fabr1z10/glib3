@@ -4,6 +4,11 @@
 #include <monkey/math/shape.h>
 #include <monkey/hashpair.h>
 
+struct BoxInfo {
+    int collisionShape;
+    int attackShape;
+};
+
 class BoxedModel : public SpriteModel {
 public:
     //explicit BoxedModel (std::shared_ptr<SpriteMesh> mesh);
@@ -24,19 +29,21 @@ public:
     std::shared_ptr<IShape> getShape (const std::string&, int);
     std::shared_ptr<IShape> getShapeCast (const std::string&, int);
     std::shared_ptr<IShape> shape(int);
-    int getShapeId (const std::string&, int);
-    int getShapeCastId (const std::string&, int);
+    //int getShapeId (const std::string&, int);
+    //int getShapeCastId (const std::string&, int);
+    BoxInfo& getBoxInfo(const std::string&, int);
     void generateDebugMesh ();
     std::shared_ptr<IMesh> GetCollisionMesh();
     Bounds GetMaxBounds() const;
     Bounds GetAnimBounds(const std::string&) const;
     const std::vector<std::shared_ptr<IShape>>& getShapes();
-    std::vector<std::shared_ptr<IShape>> getAttackShapes() const ;
+    //std::vector<std::shared_ptr<IShape>> getAttackShapes() const ;
     float getAttackDistance() const;
 private:
     std::vector<std::shared_ptr<IShape>> m_shapes;
-    std::unordered_map<std::pair<std::string, int>, int> m_boxInfo;
-    std::unordered_map<std::pair<std::string, int>, int> m_shapeCast;
+    //std::unordered_map<std::pair<std::string, int>, int> m_boxInfo;
+    //std::unordered_map<std::pair<std::string, int>, int> m_shapeCast;
+    std::unordered_map<std::pair<std::string, int>, BoxInfo> m_boxInfos;
 
     std::unordered_map<std::string, Bounds> m_animBounds;
     //int addShapeMesh(const std::shared_ptr<Shape>&, int& pc, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices);

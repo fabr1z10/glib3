@@ -50,14 +50,16 @@ block1:
           half_size: '@0'
           density: 0
 mario:
-  type: model.sprite
+  type: model.boxed
   sheet: gfx/smb1.png
   animations:
     idle:
+      box: 0
       loop: false
       frames:
         - quads: [0, 0, 16, 16, -8, 0, {'scale': 1.5}]
     walk:
+      box: 0
       loop: true
       frames:
         - ticks: 10
@@ -66,3 +68,11 @@ mario:
           quads: [32, 0, 16, 16, -8, 0]
         - ticks: 10
           quads: [48, 0, 16, 16, -8, 0]
+    jump:
+      box: 0
+      loop: false
+      frames:
+        - quads: [80, 0, 16, 16, -8, 0]
+  boxes:
+    - [-4, 0, 4, 16]
+

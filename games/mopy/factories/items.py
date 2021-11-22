@@ -109,6 +109,13 @@ def player2D(ciao):
     e.components.append({'type': 'components.dynamics'})
     e.components.append({'type': 'components.keyinput'})
     e.components.append({
+        'type': 'components.smart_collider',
+        'flag': monkey.engine.data.collision_flags.player,
+        'mask': monkey.engine.data.collision_flags.foe,
+        'tag': monkey.engine.data.collision_tags.player,
+        'debug': True
+    })
+    e.components.append({
         'type': 'components.follow',
         'cam': 'maincam',
         'relativepos': [0, 0, 5],

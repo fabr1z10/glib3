@@ -11,6 +11,8 @@ PlayerWalk::PlayerWalk(const ITab& t) : State(t) {
     m_gravity = t.get<float>("gravity");
     m_jumpSpeed = t.get<float>("jump_speed");
     m_jumpState = t.get<std::string>("jump_state");
+    m_idleAnim = t.get<std::string>("idle_anim", "idle");
+    m_walkAnim = t.get<std::string>("walk_anim", "walk");
 }
 
 void PlayerWalk::AttachStateMachine(StateMachine * sm) {
@@ -33,6 +35,8 @@ void PlayerWalk::AttachStateMachine(StateMachine * sm) {
     if (m_controller == nullptr) {
         GLIB_FAIL("Platformer state requires a <Controller2D> component!");
     }
+
+    m_renderer = dynamic_cast<AnimationRenderer*>(m_entity->GetComponent<Renderer>());
 }
 
 void PlayerWalk::Init(const ITab &d) {
@@ -86,6 +90,13 @@ void PlayerWalk::Run(double dt) {
     auto delta = glm::vec3(m_dynamics->m_velocity * dtf, 0.0f);
     m_controller->Move(delta);
 
+    if (m_renderer != nullptr) {
+        if (fabs(m_dynamics->m_velocity.x) > 1.0f) {
+            m_renderer->setAnimation(m_walkAnim);
+        } else {
+            m_renderer->setAnimation(m_idleAnim);
+        }
+    }
 }
 
 void PlayerWalk::End() {

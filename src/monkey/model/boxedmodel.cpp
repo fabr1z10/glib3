@@ -9,15 +9,15 @@ namespace py = pybind11;
 
 //BoxedModel::BoxedModel(std::shared_ptr<SpriteMesh> mesh) : SpriteModel(mesh) {}
 
-
-std::vector<std::shared_ptr<IShape>> BoxedModel::getAttackShapes() const {
-
-    std::vector<std::shared_ptr<IShape>> shapes;
-    for (const auto& m : m_shapeCast) {
-        shapes.push_back(m_shapes[m.second]);
-    }
-    return shapes;
-}
+//
+//std::vector<std::shared_ptr<IShape>> BoxedModel::getAttackShapes() const {
+//
+//    std::vector<std::shared_ptr<IShape>> shapes;
+//    for (const auto& m : m_shapeCast) {
+//        shapes.push_back(m_shapes[m.second]);
+//    }
+//    return shapes;
+//}
 
 BoxedModel::BoxedModel(const ITab& t) : SpriteModel(t) {
 
@@ -53,16 +53,15 @@ BoxedModel::BoxedModel(const ITab& t) : SpriteModel(t) {
 
     t.foreach("animations", [&] (const std::string& animId, const ITab& anim) {
         // each animation might have a box
-        if (anim.has("box")) {
-            auto boxId = anim.get<int>("box");
-            setAnimShape(animId, boxId);
-        }
+        auto animBoxId = anim.get<int>("box", -1);
+
+        setAnimShape(animId, animBoxId);
 
         // find attack position for this animation, if any
         bool isAttackingAnim = false;
         float attackPos {0.0f};
         int frameId = 0;
-        anim.foreach("elements", [&] (const ITab& element) {
+        anim.foreach("frames", [&] (const ITab& element) {
             int box = element.get<int>("box", -1);
             int attack = element.get<int>("attack", -1);
             if (box != -1) {
@@ -83,7 +82,7 @@ BoxedModel::BoxedModel(const ITab& t) : SpriteModel(t) {
         }
     });
     std::cerr << "paino\n";
-    if (m_shapeCast.empty()) {
+    if (m_attackDistance== std::numeric_limits<float>::infinity()) {
         m_attackDistance = 10.0f;
     }
 }
@@ -96,7 +95,7 @@ void BoxedModel::addShape(std::shared_ptr<IShape> s) {
 void BoxedModel::setAnimShape(const std::string &anim, int shapeId) {
     int fc = m_animInfos.at(anim).frames.size();
     for (int i=0;i<fc; ++i) {
-        m_boxInfo[std::make_pair(anim, i)] = shapeId;
+        m_boxInfos[std::make_pair(anim, i)] = BoxInfo{shapeId, -1};
     }
     m_maxBounds.ExpandWith(m_shapes[shapeId]->getBounds());
     m_animBounds[anim] = m_shapes[shapeId]->getBounds();
@@ -104,7 +103,7 @@ void BoxedModel::setAnimShape(const std::string &anim, int shapeId) {
 
 
 void BoxedModel::setFrameShape(const std::string &anim, int frame, int shapeId) {
-    m_boxInfo[std::make_pair(anim, frame)] = shapeId;
+    m_boxInfos[std::make_pair(anim, frame)].collisionShape = shapeId;
     m_maxBounds.ExpandWith(m_shapes[shapeId]->getBounds());
     m_animBounds[anim] = m_shapes[shapeId]->getBounds();
 
@@ -112,11 +111,11 @@ void BoxedModel::setFrameShape(const std::string &anim, int frame, int shapeId) 
 
 
 void BoxedModel::setShape(const std::string &anim, int frame, int shapeId) {
-    m_boxInfo[std::make_pair(anim, frame)] = shapeId;
+    m_boxInfos[std::make_pair(anim, frame)].collisionShape = shapeId;
 }
 
 void BoxedModel::setShapeCast(const std::string &anim, int frame, int shapeId) {
-    m_shapeCast[std::make_pair(anim, frame)] = shapeId;
+    m_boxInfos[std::make_pair(anim, frame)].attackShape = shapeId;
 }
 
 //void BoxedModel::AddAnimationData(const std::string &anim, Bounds b) {
@@ -150,45 +149,50 @@ Bounds BoxedModel::GetAnimBounds(const std::string & name) const {
 //    m_boxInfo.at(std::make_pair(anim, frame)).m_attackShape = attack;
 //}
 
-int BoxedModel::getShapeId(const std::string & anim, int frame) {
-    auto key = std::make_pair(anim, frame);
-    auto box = m_boxInfo.find(key);
-    if (box == m_boxInfo.end()) {
-        return -1;
-    }
-    return box->second;
-}
+//int BoxedModel::getShapeId(const std::string & anim, int frame) {
+//    auto key = std::make_pair(anim, frame);
+//    auto box = m_boxInfo.find(key);
+//    if (box == m_boxInfo.end()) {
+//        return -1;
+//    }
+//    return box->second;
+//}
 
 std::shared_ptr<IShape> BoxedModel::shape(int id) {
     return m_shapes[id];
 }
 
-int BoxedModel::getShapeCastId(const std::string & anim, int frame) {
+BoxInfo & BoxedModel::getBoxInfo(const std::string& anim, int frame) {
     auto key = std::make_pair(anim, frame);
-    auto box = m_shapeCast.find(key);
-    if (box == m_shapeCast.end()) {
-        return -1;
-    }
-    return box->second;
-
+    return m_boxInfos.at(key);
 }
 
+//int BoxedModel::getShapeCastId(const std::string & anim, int frame) {
+//    auto key = std::make_pair(anim, frame);
+//    auto box = m_shapeCast.find(key);
+//    if (box == m_shapeCast.end()) {
+//        return -1;
+//    }
+//    return box->second;
+//
+//}
+//
 std::shared_ptr<IShape> BoxedModel::getShape(const std::string & anim, int frame) {
     auto key = std::make_pair(anim, frame);
-    auto box = m_boxInfo.find(key);
-    if (box == m_boxInfo.end()) {
+    auto box = m_boxInfos.at(key).collisionShape;
+    if (box == -1) {
         return nullptr;
     }
-    return m_shapes[box->second];
+    return m_shapes[box];
 }
 
 std::shared_ptr<IShape> BoxedModel::getShapeCast(const std::string & anim, int frame) {
     auto key = std::make_pair(anim, frame);
-    auto box = m_shapeCast.find(key);
-    if (box == m_shapeCast.end()) {
+    auto box = m_boxInfos.at(key).attackShape;
+    if (box == -1) {
         return nullptr;
     }
-    return m_shapes[box->second];
+    return m_shapes[box];
 }
 
 //int BoxedModel::addShapeMesh(const std::shared_ptr<Shape>& shape, int& pc, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices) {

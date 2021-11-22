@@ -158,7 +158,7 @@ SceneFactory::SceneFactory() {
     add2<Follow> ("components.follow");
     add2<DynamicFollow> ("components.dynamic_follow");
     add2<SimpleCollider> ("components.collider");
-    add2<SmartCollider> ("components.smartcollider");
+    add2<SmartCollider> ("components.smart_collider");
     add2<SkCollider> ("components.skeletalcollider");
     add2<FPSCounter> ("components.fpscounter");
 //	add2<SkColl> ("components.skc");
@@ -194,6 +194,8 @@ SceneFactory::SceneFactory() {
     addf<Model>("model.poly", ModelFactory::polygon);
     addf<Model>("model.rect", ModelFactory::_rect);
     add2<SpriteModel> ("model.sprite");
+    add2<BoxedModel> ("model.boxed");
+
     add2<DelayTime> ("action.delay");
     add2<DelayTimeDynamic> ("action.delaydynamic");
     add2<Animate> ("action.animate");
@@ -251,7 +253,6 @@ SceneFactory::SceneFactory() {
     add2<StateTransition> ("stateaction.statetransition");
     // assets
 
-    addAssetFactory<BoxedModel> ("asset.boxed");
     addAssetFactory<SkModel>("asset.skeletalmodel");
     addAssetFactory<TexturedMesh<VertexSkeletal>>("asset.skeletalmesh");
     addAssetFactory<SkAnimation> ("asset.skeletalanimation");

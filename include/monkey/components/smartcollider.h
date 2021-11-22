@@ -1,11 +1,13 @@
 #pragma once
 
 #include <monkey/components/icollider.h>
+#include "renderer.h"
 
 class SpriteRenderer;
 class BoxedModel;
 class MultiRenderer;
 class StateMachine;
+class AnimationRenderer;
 
 struct SmartCollisionDetails {
     int flag;
@@ -13,6 +15,14 @@ struct SmartCollisionDetails {
     int tag;
 };
 
+
+class SmartColliderRenderer : public Renderer {
+public:
+    void Draw(Shader*) override;
+private:
+    SpriteRenderer* m_renderer;
+    BoxedModel* m_model;
+};
 /*
  * A smart collider needs to be used with a boxed model.
  * A boxed model is a model with collision boxes associated to each frame.

@@ -26,6 +26,7 @@ public:
     std::shared_ptr<Model> createWireframe (IShape*, glm::vec4 color);
     std::shared_ptr<Model> createSolid (IShape*, glm::vec4 color);
     std::shared_ptr<Model> createTextured (IShape*, const std::vector<TexInfo>&);
+    void j2(IShape*, std::vector<VertexColor>&, std::vector<unsigned>&, glm::vec4);
 private:
 	float m_z;
     std::unordered_map<ShapeType, std::function<void(IShape*, glm::vec4, std::vector<VertexColor>&, std::vector<unsigned>&)>> m_plotters;
