@@ -16,42 +16,42 @@ engines:
   - type: runner.collisionengine
     size: [80, 80]
 items:
-  - entity:
-      type: _player2D
-      size: [1, 1]
-      max_speed: 100
-      time_acc: 0.1
-      gravity: 100
-      jump_height: 64
-      time_to_jump_apex: 0.5
-      model: '@0'
+  - type: _player2D
+    size: [1, 1]
+    max_speed: 100
+    time_acc: 0.1
+    gravity: 100
+    jump_height: 64
+    time_to_jump_apex: 0.5
+    model: '@0'
     pos: [10, 8, 0]
-  - entity:
-      type: _rect
-      size: [8, 2]
-    pos: [6, 4, 0, 8, 2, 0, 10, 0, 0, 26, 8,0]
-  - entity:
-      type: _poly
-      points: [0, 0, 8, 0, 8, 8]
+  - type: _rect
+    size: [8, 2]
+    pos: [6, 4, 0, 8, 2, 0, 10, 0, 0, 26, 8, 0]
+  - type: _poly
+    points: [0, 0, 8, 0, 8, 8]
     pos: [18, 2, 0]
-  - entity:
-      type: _poly
-      points: [0, 0, 0, -8, 8, -8]
+  - type: _poly
+    points: [0, 0, 0, -8, 8, -8]
     pos: [34, 10, 0]
-  - entity:
-      type: _line
-      pos: [2, 0]
-      pass_thru: True
+  - type: _line
+    size: [2, 0]
+    pass_thru: True
     pos: [11,8,0]
-  - entity:
-      type: _line
-      pos: [2, 0]
-      pass_thru: True
-      moving: True
-      move:
-        path: [11, 10, 9, 10]
-        mode: 1
-        speed: 10
-    pos: [11,10,0]
+  - type: _line
+    size: [2, 0]
+    pass_thru: True
+    move:
+      path: [11, 10, 9, 10]
+      mode: 1
+      speed: 10
+  - type: _line
+    size: [2,0]
+    pass_thru: True
+    move:
+      path: [1, 0, 1, 10]
+      mode: 1
+      speed: 10
+
 
 

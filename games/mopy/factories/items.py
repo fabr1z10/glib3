@@ -59,7 +59,7 @@ def line_platform(ciao):
     tile_size = monkey.engine.room_vars.get('tile_size', [1, 1])
     pass_thru = ciao.get('pass_thru', False)
     moving = ciao.get('moving', False)
-    pos = tiles_to_world(ciao.get('pos'), tile_size)
+    pos = tiles_to_world(ciao.get('size'), tile_size)
     e.components.append({
         'type': 'components.collider',
         'shape': {

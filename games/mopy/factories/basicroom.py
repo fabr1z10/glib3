@@ -66,17 +66,17 @@ class BasicRoom(Room):
         print ('# engines: ' + str(len(self.engines)))
         if 'items' in room_info:
             for item in room_info['items']:
-                entity_desc = item['entity']
-                if isinstance(entity_desc, str):
-                    print("Sto cazzo " + entity_desc)
-                    entity_desc = monkey.engine.get_asset(entity_desc, item.get('args', None))
-
+                positions = item.get('pos', [0, 0, 0])
+                entity_desc = item
+                # from template
+                if 'ref' in item:
+                    entity_desc = monkey.engine.get_asset(entity_desc, item['ref'])
                 factory = monkey.engine.get_item_factory(entity_desc['type'])
                 if not factory:
                     print('Don''t have factory for item: ' + entity_desc['type'])
                     exit(1)
-                for ip in range(0, len(item['pos']), 3):
-                    pos = item['pos'][ip:ip+3]
+                for ip in range(0, len(positions), 3):
+                    pos = positions[ip:ip+3]
                     e = factory(entity_desc)
                     e.pos = tiles_to_world(pos, tile_size)
                     self.add(e, 'main')
