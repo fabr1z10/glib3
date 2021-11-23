@@ -1,7 +1,5 @@
 type: _basic
 id: sprite
-config:
-  tile_size: [16, 16]
 vars:
   0: mario
 cam:
@@ -13,16 +11,23 @@ cam:
     y: [0, 240]
     z: [0, 100]
 engines:
+  - type: runner.scheduler
   - type: runner.collisionengine
+    response:
+      - tag1: $globals.CollisionTags.player
+        tag2: $globals.CollisionTags.goomba
+        on_enter: $scripts.mario.foe_hits_mario
+      - tag1: $globals.CollisionTags.player
+        tag2: $globals.CollisionTags.brick_sensor
+        on_enter: $scripts.mario.hit_brick_sensor
     size: [80, 80]
 items:
-  - type: _player2D
+  - type: mario
     size: [1, 1]
     max_speed: 100
     time_acc: 0.1
-    gravity: 100
-    jump_height: 64
-    time_to_jump_apex: 0.5
+    jump_height: $globals.jump_height
+    time_to_jump_apex: $globals.time_to_jump_apex
     model: '@0'
     pos: [10, 8, 0]
   - type: _rect
@@ -53,7 +58,16 @@ items:
       mode: 1
       speed: 10
   - type: brick
-    pos: [2,10,0]
+    pos: [6,9,0,7,9,0]
+  - type: goomba
+    model: goomba
+    size: [16, 16]
+    max_speed: 20
+    time_acc: 0.1
+    flip_on_edge: true
+    pos: [12, 7, 0, 6.5, 10.1,0]
+
+
 
 
 

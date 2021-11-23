@@ -87,6 +87,7 @@
 #include <monkey/states/nullstate.h>
 #include <monkey/states/playerjump.h>
 #include <monkey/states/playerwalk.h>
+#include <monkey/states/npcwalk.h>
 
 
 namespace py = pybind11;
@@ -280,6 +281,7 @@ SceneFactory::SceneFactory() {
     add2<NullState> ("state.null");
     add2<PlayerJump> ("state.player_jump");
     add2<PlayerWalk> ("state.player_walk");
+    add2<NPCWalk> ("state.npc_walk");
 
 //    add2<SimpleState> ("state.simple");
 //    add2<Walk25> ("state.walk25");

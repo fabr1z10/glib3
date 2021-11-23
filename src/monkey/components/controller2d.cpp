@@ -128,7 +128,7 @@ void Controller2D::Move(glm::vec3& delta) {
         if (!isEqual(dx.y, 0.0f))
             VerticalCollisions(dx);
         glm::vec2 actualMove = dx / scale;
-        std::cout << "moving by " << actualMove.x << ", " << actualMove.y << "\n";
+        //std::cout << "moving by " << actualMove.x << ", " << actualMove.y << "\n";
         m_entity->MoveLocal(glm::vec3(actualMove.x, actualMove.y, 0));
         if (!m_wasGnd && m_details.below) {
             glm::vec3 p=m_entity->GetPosition();

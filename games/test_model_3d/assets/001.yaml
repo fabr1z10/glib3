@@ -49,6 +49,26 @@ block1:
         - type: box2d_rect
           half_size: '@0'
           density: 0
+goomba:
+  type: model.boxed
+  sheet: gfx/smb1.png
+  animations:
+    walk:
+      box: 0
+      loop: true
+      frames:
+        - quads: [112, 0, 16, 16, -8, 0]
+        - quads: [128, 0, 16, 16, -8, 0]
+    idle:
+      box: 0
+      frames:
+        - quads: [112, 0, 16, 16, -8, 0]
+    dead:
+      frames:
+        - quads: [144, 0, 16, 16, -8, 0]
+  boxes:
+    - [-6, 0, 6, 16]
+
 mario:
   type: model.boxed
   sheet: gfx/smb1.png

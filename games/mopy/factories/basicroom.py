@@ -24,8 +24,9 @@ class BasicRoom(Room):
         cam = room_info.get('cam', None)
         device_size = monkey.engine.device_size
         on_load = room_info.get('on_load', None)
-        monkey.engine.room_vars = room_info.get('config', {})
-        tile_size = monkey.engine.room_vars.get('tile_size', [1, 1])
+        #monkey.engine.room_vars = room_info.get('config', {})
+        tile_size = getattr(monkey.engine.data.globals, 'tile_size', [1, 1])# monkey.engine.room_vars.get('tile_size', [1, 1])
+        print('tile size is ' + str(tile_size))
         if on_load:
             func = operator.attrgetter(on_load['func'])(monkey.engine.scripts)
             args = on_load.get('args', None)

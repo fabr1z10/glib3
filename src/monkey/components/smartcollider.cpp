@@ -22,7 +22,7 @@ void SmartColliderRenderer::Draw(Shader * shader) {
     auto anim = m_renderer->getAnimation();
     auto frame = m_renderer->getFrame();
     const auto& boxInfo = m_boxedModel->getBoxInfo(anim, frame);
-    m_model->getMesh(0)->draw(shader, 0, 0);
+    //m_model->getMesh(0)->draw(shader, 0, 0);
     if (boxInfo.collisionShape != -1) {
         const auto& pair = m_shapeInfo[boxInfo.collisionShape];
         m_model->getMesh(0)->draw(shader,pair.first, pair.second);

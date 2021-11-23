@@ -7,14 +7,13 @@ import sys
 import mopy.factories.basicroom
 import mopy.factories.items
 import copy
+import operator
 
-
-
+# data is a module that contain game variables, configuration and scripts
 class Engine:
-    def __init__(self, data = None, scripts = None):
+    def __init__(self, data=None):
         sys.path.append(example.dir)
         self.data = data
-        self.scripts = scripts
         example.init(example.what)
         monkey.engine = self
         with open(example.dir + '/main.yaml') as f:
@@ -25,9 +24,9 @@ class Engine:
             self.tick_multiplier = a.get('tick_multiplier', 1.0)
             self.room = a['start_room']
             self.title = a['title']
-            print (' === loading strings ...', end='')
+            print(' === loading strings ...', end='')
             self.load_strings()
-            print (' OK.')
+            print(' OK.')
             # read game variables, and functions
             for file in a.get('fonts', []):
                 self.add_font(file['id'], file['file'])
@@ -44,7 +43,6 @@ class Engine:
         self.add_item_factory('_rect', mopy.factories.items.rect_platform)
         self.add_item_factory('_line', mopy.factories.items.line_platform)
         self.add_item_factory('_poly', mopy.factories.items.poly_platform)
-
 
     @staticmethod
     def open_data_file(filename):
@@ -133,8 +131,6 @@ class Engine:
                 setattr(cc, d[-1], value)
                 print ('current value = ' + str(getattr(cc, d[-1])))
 
-
-
     # read a string
     def read(self, value):
         if isinstance(value, str):
@@ -185,23 +181,33 @@ class Engine:
         self.taggen += 1
         return tag
 
+    def _repl(self, a, index, value, args):
+        if isinstance(value, str):
+            if value[0] == '@' and value[1] != '@':
+                a[index] = args[int(value[1:])]
+            elif value[0] == '$' and value[1] != '$':
+                a[index] = operator.attrgetter(value[1:])(monkey.engine.data)
+
+
     def replace(self, a, args):
         if isinstance(a, dict):
             for k, v in a.items():
                 if isinstance(v, dict) or isinstance(v, list):
                     self.replace(v, args)
                 else:
-                    print(v)
-                    if isinstance(v, str) and v[0] == '@':
-                        print(args)
-                        a[k] = args[int(v[1:])]
+                    self._repl(a, k, v, args)
+                    # print(v)
+                    # if isinstance(v, str) and v[0] == '@':
+                    #     print(args)
+                    #     a[k] = args[int(v[1:])]
         elif isinstance(a, list):
             for i in range(0, len(a)):
                 if isinstance(a[i], dict) or isinstance(a[i], list):
                     self.replace(a[i], args)
                 else:
-                    if isinstance(a[i], str) and a[i][0] == '@':
-                        a[i] = args[int(a[i][1:])]
+                    self._repl(a, i, a[i], args)
+                    #if isinstance(a[i], str) and a[i][0] == '@':
+                    #    a[i] = args[int(a[i][1:])]
 
 
     def repl_vars(self, dict, args=None):

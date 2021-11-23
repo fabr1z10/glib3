@@ -98,7 +98,7 @@ SpriteModel::SpriteModel (const ITab& t) : Model() {
             m_defaultAnimation = animId;
         }
         AnimationInfo animInfo;
-        animInfo.loop = u.get<bool>("loop");
+        animInfo.loop = u.get<bool>("loop", true);
         animInfo.loopFrame = u.get<int>("loop_frame", 0);
         u.foreach("frames", [&] (const ITab& v) {
             FrameInfo frameInfo;

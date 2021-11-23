@@ -3,6 +3,7 @@
 #include <monkey/component.h>
 #include <glm/glm.hpp>
 #include <vector>
+#include "dynamics2d.h"
 
 class Mover : public Component {
 
@@ -35,6 +36,26 @@ private:
     bool m_done;
 };
 
+// models an object that can move on a 1D curve
+// you can specify min and max values for the single coord
+class ConstrainedDynamicMover : public Mover {
+public:
+    void Start() override;
+    void Update(double) override;
+private:
+    // returns t -> (x(t), y(t))
+    virtual glm::vec2 getPosition() = 0;
+
+    // returns t -> (x'(t), y'(t)).norm
+    virtual glm::vec2 tangent(float) = 0;
+
+    // the coordinate
+    float m_t;
+
+    // min and max values allowed
+    float m_tMin, m_tMax;
+    Dynamics* m_dynamics;
+};
 //
 //class AcceleratedMover : public Mover {
 //public:

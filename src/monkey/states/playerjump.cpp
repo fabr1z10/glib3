@@ -10,8 +10,8 @@ PlayerJump::PlayerJump(const ITab& t) : State(t) {
     m_acceleration = m_maxSpeed / tmax;
     m_gravity = t.get<float>("gravity");
     m_walkState = t.get<std::string>("walk_state");
-    m_jumpUpAnim = t.get<std::string>("idle_anim", "jump");
-    m_jumpDownAnim = t.get<std::string>("walk_anim", "jump");
+    m_jumpUpAnim = t.get<std::string>("jump_up_anim", "jump");
+    m_jumpDownAnim = t.get<std::string>("jump_down_anim", "jump");
 }
 
 void PlayerJump::AttachStateMachine(StateMachine * sm) {
@@ -53,6 +53,12 @@ void PlayerJump::Run(double dt) {
         m_sm->SetState(m_walkState);
         return;
     }
+
+    // bump head
+    if (m_controller->ceiling()) {
+        m_dynamics->m_velocity.y = 0;
+    }
+
 
     bool left = m_input->isKeyDown(GLFW_KEY_LEFT);
     bool right = m_input->isKeyDown(GLFW_KEY_RIGHT);

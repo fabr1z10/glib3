@@ -18,7 +18,7 @@ def model3d(**kwargs):
 
 def rect_platform(ciao):
     e = Entity()
-    tile_size = monkey.engine.room_vars.get('tile_size', [1, 1])
+    tile_size = getattr(monkey.engine.data.globals, 'tile_size', [1, 1])
     size = tiles_to_world(ciao.get('size'), tile_size)
     e.components.append({
         'type': 'components.collider',
@@ -37,7 +37,7 @@ def rect_platform(ciao):
 
 def poly_platform(ciao):
     e = Entity()
-    tile_size = monkey.engine.room_vars.get('tile_size', [1, 1])
+    tile_size = getattr(monkey.engine.data.globals, 'tile_size', [1, 1])
     px = ciao.get('points')
     points = [px[i]*tile_size[i%2] for i in range(0, len(px))]
     e.components.append({
@@ -56,7 +56,7 @@ def poly_platform(ciao):
 
 def line_platform(ciao):
     e = Entity()
-    tile_size = monkey.engine.room_vars.get('tile_size', [1, 1])
+    tile_size = getattr(monkey.engine.data.globals, 'tile_size', [1, 1])
     pass_thru = ciao.get('pass_thru', False)
     moving = ciao.get('moving', False)
     pos = tiles_to_world(ciao.get('size'), tile_size)
@@ -89,12 +89,13 @@ def line_platform(ciao):
 def player2D(ciao):
     e = Entity()
     e.model = ciao.get('model', None)
-    tile_size = monkey.engine.room_vars.get('tile_size', [1, 1])
+    tile_size = getattr(monkey.engine.data.globals, 'tile_size', [1, 1])
     size = tiles_to_world(ciao.get('size'), tile_size)
     max_speed = ciao.get('max_speed')
     time_acc = ciao.get('time_acc')
     jump_height = ciao.get('jump_height')
     time_to_jump_apex = ciao.get('time_to_jump_apex')
+    print('Jump height = ' + str(jump_height))
     gravity = (2.0 * jump_height) / (time_to_jump_apex * time_to_jump_apex)
     jump_speed = abs(gravity) * time_to_jump_apex
     e.tag = ciao.get('tag', None)
@@ -110,9 +111,9 @@ def player2D(ciao):
     e.components.append({'type': 'components.keyinput'})
     e.components.append({
         'type': 'components.smart_collider',
-        'flag': monkey.engine.data.collision_flags.player,
-        'mask': monkey.engine.data.collision_flags.foe,
-        'tag': monkey.engine.data.collision_tags.player,
+        'flag': monkey.engine.data.CollisionFlags.player,
+        'mask': monkey.engine.data.CollisionFlags.foe,
+        'tag': monkey.engine.data.CollisionTags.player,
         'debug': True
     })
     e.components.append({

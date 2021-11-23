@@ -411,7 +411,7 @@ void Entity::FlipX() {
 void Entity::SetFlipX(bool value) {
     if (value == m_flipHorizontal)
         return;
-    std::cerr << "flipping from " << m_flipHorizontal << "\n";
+    //std::cerr << "flipping from " << m_flipHorizontal << "\n";
     FlipX();
 }
 

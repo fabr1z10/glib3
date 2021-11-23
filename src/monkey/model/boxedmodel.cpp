@@ -97,8 +97,10 @@ void BoxedModel::setAnimShape(const std::string &anim, int shapeId) {
     for (int i=0;i<fc; ++i) {
         m_boxInfos[std::make_pair(anim, i)] = BoxInfo{shapeId, -1};
     }
-    m_maxBounds.ExpandWith(m_shapes[shapeId]->getBounds());
-    m_animBounds[anim] = m_shapes[shapeId]->getBounds();
+    if (shapeId != -1) {
+        m_maxBounds.ExpandWith(m_shapes[shapeId]->getBounds());
+        m_animBounds[anim] = m_shapes[shapeId]->getBounds();
+    }
 }
 
 

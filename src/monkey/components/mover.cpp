@@ -216,3 +216,14 @@ void PolygonalMover::Update(double dt) {
 //	m_entity->MoveOrigin(dpos);
 //	m_entity->SetAngle(m_angle);
 //}
+
+void ConstrainedDynamicMover::Start() {
+    m_dynamics = m_entity->GetComponent<Dynamics>();
+    if (m_dynamics == nullptr) {
+        GLIB_FAIL("Constrained dynamics component requires a dynamics component");
+    }
+}
+
+void ConstrainedDynamicMover::Update(double) {
+
+}

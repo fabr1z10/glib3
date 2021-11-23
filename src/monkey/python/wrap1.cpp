@@ -54,7 +54,7 @@ std::string Wrap1::tag() const {
 
 
 float Wrap1::getVy() const {
-    return m_entity->GetComponent<Dynamics2D>()->m_velocity.y;
+    return m_entity->GetComponent<Dynamics>()->m_velocity.y;
 }
 
 float Wrap1::getElevation() const {
@@ -75,7 +75,7 @@ std::string Wrap1::getAnim() const {
 }
 
 void Wrap1::setVy(float value) {
-    m_entity->GetComponent<Dynamics2D>()->m_velocity.y = value;
+    m_entity->GetComponent<Dynamics>()->m_velocity.y = value;
 }
 float Wrap1::getVx() const {
     return m_entity->GetComponent<Dynamics2D>()->m_velocity.x;
