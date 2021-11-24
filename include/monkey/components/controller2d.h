@@ -46,7 +46,7 @@ public:
 			int horizontalRayCount = 4,
 			int verticalRayCount = 4)
 		: IController(), m_maxClimbAngle(maxClimbAngle), m_maxDescendAngle(maxDescendAngle), m_skinWidth(skinwidth), m_horizontalRayCount(horizontalRayCount),
-		  m_verticalRayCount(verticalRayCount), m_maskUp(maskUp), m_maskDown(maskDown), m_platform(nullptr) {}
+		  m_verticalRayCount(verticalRayCount), m_maskUp(maskUp), m_maskDown(maskDown) {}
     Controller2D(const ITab&);
 	virtual ~Controller2D();
 	void Start() override;
@@ -60,16 +60,16 @@ public:
 	void ClimbSlope(glm::vec2&, float);
 	void DescendSlope(glm::vec2&);
 	//void CalculateRaySpacing();
-	void Update(double) override {}
+	void Update(double) override;
 	//void ForceMove(glm::vec2&);
 	CollisionDetails m_details;
 
 	using ParentClass = Controller2D;
-	void DetachFromPlatform();
-	void ForceDetach() { m_platform = nullptr; }
+	//void DetachFromPlatform();
+	void ForceDetach(Entity*);
     std::type_index GetType() override;
 	void updateRaycastOrigins();
-
+    void forceMove(glm::vec2);
     //RayCastHit2D Raycast(glm::vec2 origin, glm::vec2 direction, float length, int mask);
 private:
     void drawShape() override;
@@ -81,7 +81,9 @@ private:
 
 
 	//int m_handleNotify;
-	Entity* m_platform;
+	//Entity* m_platform;
+	// platforms on which I registered
+	std::list<Entity*> m_platforms;
 	//ICollider* m_cc;
 	ICollisionEngine * m_collision;
 	//int m_collisionMaskDown;
@@ -96,6 +98,7 @@ private:
     bool m_wasGnd;
 	int m_maskUp;
 	int m_maskDown;
+	glm::vec2 m_forcedMove;
 };
 
 inline std::type_index Controller2D::GetType() {

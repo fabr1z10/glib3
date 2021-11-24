@@ -42,11 +42,13 @@ class ConstrainedDynamicMover : public Mover {
 public:
     void Start() override;
     void Update(double) override;
-private:
+    ConstrainedDynamicMover(const ITab& t);
+protected:
     // returns t -> (x(t), y(t))
     virtual glm::vec2 getPosition() = 0;
 
     // returns t -> (x'(t), y'(t)).norm
+    // normalized!
     virtual glm::vec2 tangent(float) = 0;
 
     // the coordinate
@@ -55,6 +57,18 @@ private:
     // min and max values allowed
     float m_tMin, m_tMax;
     Dynamics* m_dynamics;
+};
+
+class LineDynamicMover : public ConstrainedDynamicMover {
+public:
+    void Start() override;
+    LineDynamicMover(const ITab& t);
+private:
+    glm::vec2 getPosition() override;
+    glm::vec2 tangent(float) override;
+    // unit vector
+    glm::vec2 m_u;
+    glm::vec2 m_origin;
 };
 //
 //class AcceleratedMover : public Mover {

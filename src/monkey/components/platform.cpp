@@ -12,7 +12,7 @@ void PlatformComponent::Start() {
 
 PlatformComponent::~PlatformComponent() {
     for (auto& c : m_characters)
-        c->ForceDetach();
+        c->ForceDetach(m_entity);
     m_current = nullptr;
 }
 
@@ -20,15 +20,18 @@ void PlatformComponent::Move(Entity* node) {
     glm::vec3 currentPosition = node->GetPosition();
     glm::vec3 delta = currentPosition - m_lastPosition;
     for (auto iter = m_characters.begin(); iter != m_characters.end(); iter++) {
+
+
         m_current = (*iter);
-        m_current->GetObject()->MoveOrigin(delta);
+        m_current->forceMove(delta);
+
     }
     m_lastPosition = currentPosition;
 }
 
 void PlatformComponent::RemoveCharacters() {
     for (auto& c : m_characters) {
-        c->ForceDetach();
+        c->ForceDetach(m_entity);
     }
     m_characters.clear();
 }

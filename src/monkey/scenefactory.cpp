@@ -170,6 +170,7 @@ SceneFactory::SceneFactory() {
     add2<LuaKeyListener> ("runner.keylistener");
     add2<LuaInfo> ("components.info");
 	add2<PolygonalMover> ("components.polymover");
+	add2<LineDynamicMover>("components.line_dynamic_mover");
 	//add2<AcceleratedMover> ("components.accelerated_mover");
     add2<KeyboardInputMethod> ("components.keyinput");
     add2<Controller2D> ("components.controller2D");

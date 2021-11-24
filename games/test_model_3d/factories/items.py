@@ -94,6 +94,12 @@ def brick(ciao):
         'mask': 0,
         'debug': True
     })
+    e.components.append({ 'type': 'components.dynamics'})
+    e.components.append({'type': 'components.platform'})
+    e.components.append({
+        'type': 'components.line_dynamic_mover',
+        'direction': (0, 1)
+    })
     # add brick sensor
     sensor = Entity()
     sensor.pos = [0.1 * tile_size[0], -0.1 *tile_size[1], 0]
@@ -108,5 +114,6 @@ def brick(ciao):
         'flag': data.CollisionFlags.foe,
         'debug': True
     })
+
     e.add(sensor)
     return e

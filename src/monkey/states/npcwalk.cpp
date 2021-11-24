@@ -66,6 +66,7 @@ void NPCWalk::Run(double dt) {
         // check if I reached the end of the platform
         if (m_controller->m_details.below && m_controller->IsFalling((m_direction == -1) ? -1 : 1)) {
             m_direction = (m_direction == -1) ? 1 : -1;
+            return;
         }
     }
     auto delta = glm::vec3(m_dynamics->m_velocity * dtf, 0.0f);

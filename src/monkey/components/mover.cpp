@@ -216,6 +216,10 @@ void PolygonalMover::Update(double dt) {
 //	m_entity->MoveOrigin(dpos);
 //	m_entity->SetAngle(m_angle);
 //}
+ConstrainedDynamicMover::ConstrainedDynamicMover(const ITab &t) : Mover() {
+    m_tMin = t.get<float>("min", std::numeric_limits<float>::lowest());
+    m_tMax = t.get<float>("max", std::numeric_limits<float>::max());
+}
 
 void ConstrainedDynamicMover::Start() {
     m_dynamics = m_entity->GetComponent<Dynamics>();
@@ -224,6 +228,44 @@ void ConstrainedDynamicMover::Start() {
     }
 }
 
-void ConstrainedDynamicMover::Update(double) {
+void ConstrainedDynamicMover::Update(double dt) {
+    // only consider the component of velocity along the line
+    auto t = tangent(m_t);
+    float speed = glm::dot(m_dynamics->m_velocity, t);
+    m_dynamics->m_velocity = speed * t;
 
+
+    // update position
+    glm::vec2 p0 = getPosition();
+    m_t += speed * dt;
+    if (m_t <= m_tMin) {
+        m_t = m_tMin;
+    } else if (m_t >= m_tMax) {
+        m_t = m_tMax;
+    }
+    auto delta = getPosition() - p0;
+    m_entity->MoveLocal(delta);
+
+}
+
+LineDynamicMover::LineDynamicMover(const ITab& t) : ConstrainedDynamicMover(t) {
+    m_u = glm::normalize(t.get<glm::vec2>("direction"));
+
+
+}
+
+
+void LineDynamicMover::Start() {
+    ConstrainedDynamicMover::Start();
+    m_origin = m_entity->GetPosition();
+    m_t = 0.0f;
+
+}
+
+glm::vec2 LineDynamicMover::getPosition() {
+    return m_origin + m_t * m_u;
+}
+
+glm::vec2 LineDynamicMover::tangent(float) {
+    return m_u;
 }

@@ -22,7 +22,7 @@ Controller2D::Controller2D(const ITab& t) : IController(t) {
     m_skinWidth = t.get<float>("skinWidth", .015f);
     m_maskUp = t.get<int>("mask_up");
     m_maskDown = t.get<int>("mask_down");
-    m_platform = nullptr;
+    //m_platform = nullptr;
     //mint maskUp = table.Get<int>("maskup", 2);
     //int maskDown = table.Get<int>("maskdown", 2|32);
     //return std::make_shared<Controller2D>(maxClimbAngle, maxDescendAngle, maskUp, maskDown, skinWidth, horCount, vertCount);
@@ -52,7 +52,10 @@ void Controller2D::Start() {
         GLIB_FAIL("Controller2D requires a collision engine running!");
     if (m_debug) {
         drawShape();
+
+
     }
+    //m_entity->onMove.Register(this, [&] (Entity*) { this->updateRaycastOrigins(); });
 
 }
 
@@ -82,6 +85,9 @@ void Controller2D::Begin() {
 //    m_verticalRaySpacing = bounds.GetSize().x / (m_verticalRayCount - 1);
 //    //std::cout <<"ray spacing = "<< m_horizontalRaySpacing << ","<<m_verticalRaySpacing<<"\n";
 //}
+void Controller2D::Update(double dt) {
+    m_forcedMove = glm::vec2(0.0f);
+}
 
 void Controller2D::updateRaycastOrigins() {
 	auto scale = m_entity->GetScale();
@@ -100,7 +106,9 @@ void Controller2D::updateRaycastOrigins() {
 bool Controller2D::IsFalling(int dir) {
 	//glm::vec2 pos = m_entity->GetPosition();
 	//glm::vec2 rayOrigin = pos + glm::vec2(dir==-1 ? -m_halfSize[0] : -m_halfSize[0], -m_halfSize[1]);
+    updateRaycastOrigins();
 	auto rayOrigin = (dir == -1 ? m_raycastOrigins.bottomLeft : m_raycastOrigins.bottomRight);
+
     //glm::vec2 rayOrigin = (dir == -1) ? m_raycastOrigins.bottomLeft : m_raycastOrigins.bottomRight;
     RayCastHit hit = m_collision->Raycast(glm::vec3(rayOrigin, 0.0f), monkey::down, 5.0, 2|32);
     if (!hit.collide)
@@ -243,14 +251,17 @@ void Controller2D::DescendSlope(glm::vec2& velocity) {
 void Controller2D::VerticalCollisions(glm::vec2& velocity) {
     float directionY = sign(velocity.y);
     float rayLength = std::abs(velocity.y) + m_skinWidth;
-    Entity *m_obstacle = nullptr;
+
+    float obstacleDistance = std::numeric_limits<float>::max();
+    std::unordered_set<Entity*> obstacles;
+
     float velx = velocity.x * (m_entity->GetFlipX() ? -1.0f : 1.0f);
     //glm::vec2 pos = m_entity->GetPosition();
     //vec2 r0 = pos + vec2(-m_halfSize[0], directionY > 0 ? m_halfSize[1] : -m_halfSize[1]);
 
     vec2 r0 = directionY > 0 ? m_raycastOrigins.topLeft : m_raycastOrigins.bottomLeft;
     for (int i = 0; i < m_verticalRayCount; i++) {
-        vec2 rayOrigin = r0 + vec2(1, 0) * (velx + i * m_verticalRaySpacing);
+        vec2 rayOrigin = r0 + vec2(1,0) * (velx + i * m_verticalRaySpacing);
 
         int collMask = (directionY == -1 ? (m_maskDown) : m_maskUp);
         RayCastHit hit = m_collision->Raycast(vec3(rayOrigin, 0.0f), monkey::up * directionY, rayLength, collMask);
@@ -264,7 +275,16 @@ void Controller2D::VerticalCollisions(glm::vec2& velocity) {
             }
             m_details.below = directionY == -1;
             m_details.above = directionY == 1;
-            m_obstacle = hit.entity->GetObject();
+            // only do this if going DOWN!!!!
+            if (directionY < 0.0f) {
+                if (hit.length < obstacleDistance) {
+                    obstacles.clear();
+                    obstacleDistance = hit.length;
+                }
+                std::cout << "hitting " << hit.entity->GetObject() << " with dist " << hit.length << " \n";
+                obstacles.insert(hit.entity->GetObject());
+            }
+
         }
     }
 
@@ -319,58 +339,79 @@ void Controller2D::VerticalCollisions(glm::vec2& velocity) {
 //    }
 
     // for tomorrow
-
-
-    if (m_details.below && m_platform != m_obstacle && m_obstacle != nullptr) {
-        // if I landed on a platform which is different than the current platform ...
-        if (m_platform != nullptr) {
-            // if I changed platform, unregister from the current one, if it exists
-            auto platformController = m_platform->GetComponent<PlatformComponent>();
-            if (platformController != nullptr)
+    std::cout << "cane: " << obstacles.size() <<  " " << m_platforms.size() << "\n";
+    // unregister to ALL platforms I am not on top anymore
+    if (!m_platforms.empty()) {
+        auto j = m_platforms.begin();
+        while (j != m_platforms.end()) {
+            auto i = obstacles.begin();
+            bool found = false;
+            while (i != obstacles.end())
+            {
+                if ((*j)->GetId() == (*i)->GetId()) {
+                    // ok, this means o is already registered
+                    obstacles.erase(i++);
+                    found = true;
+                    break;
+                } else {
+                    i++;
+                }
+            }
+            if (!found) {
+                // unregister
+                auto platformController = (*j)->GetComponent<PlatformComponent>();
                 platformController->Unregister(this);
+                m_platforms.erase(j++);
+            } else {
+                j++;
+            }
         }
-        auto platformController = m_obstacle->GetComponent<PlatformComponent>();
+    }
+
+    // register to new platforms
+    for (const auto& o : obstacles) {
+        auto platformController = o->GetComponent<PlatformComponent>();
         if (platformController != nullptr) {
-            m_platform = m_obstacle;
             platformController->Register(this);
+            m_platforms.push_back(o);
         }
+
     }
 
-    // leave a platform
-    if (!m_details.below && m_platform != nullptr) {
-        auto platformController = m_platform->GetComponent<PlatformComponent>();
-        if (platformController != nullptr)
-            platformController->Unregister(this);
-        m_platform = nullptr;
-        DetachFromPlatform();
-    }
 
-    ////// hit a platform from below... platform decides what to do
-    //if (m_details.above) {
-    //	auto platformController = m_obstacle->GetComponent<PlatformComponent>();
-    //	platformController->Collide(this, originalVelocity);
-    //	//	auto platformController = m_obstacle->GetChildByTag<PlatformController>(PlatformController::Tag);
-    //	//	//auto platformController = Store::GetFromTag<PlatformController>(1234);
-    //	//	if (platformController != nullptr)
-    //	//		platformController->HitFromBelow(this, m_target);
-    //	//	m_platform = nullptr;
-    //}
+    for (const auto& p : m_platforms) {
+        std::cout << m_entity->GetId() << " on top of " << p->GetId() << "\n";
+    }
 
 }
 
-void Controller2D::DetachFromPlatform() {
-    if (m_platform != nullptr) {
-        auto platformController = m_platform->GetComponent<PlatformComponent>();
-        if (platformController != nullptr)
-            platformController->Unregister(this);
-        m_platform = nullptr;
-    }
+void Controller2D::ForceDetach(Entity * e) {
+    m_platforms.remove(e);
 }
+
+//void Controller2D::DetachFromPlatform() {
+//    if (m_platform != nullptr) {
+//        auto platformController = m_platform->GetComponent<PlatformComponent>();
+//        if (platformController != nullptr)
+//            platformController->Unregister(this);
+//        m_platform = nullptr;
+//    }
+//}
 Controller2D::~Controller2D() {
-    DetachFromPlatform();
+    for (const auto& p : m_platforms) {
+        p->GetComponent<PlatformComponent>()->Unregister(this);
+    }
 }
 
 void Controller2D::setMask(int maskUp, int maskDown) {
     m_maskDown = maskDown;
     m_maskUp = maskUp;
+}
+
+void Controller2D::forceMove(glm::vec2 delta) {
+    // move the entity by some amount
+    glm::vec2 incrementalMove = delta - m_forcedMove;
+    m_forcedMove += incrementalMove;
+    m_entity->MoveOrigin(incrementalMove);
+
 }
