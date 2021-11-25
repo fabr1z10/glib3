@@ -3,13 +3,22 @@ id: sprite
 vars:
   0: mario
 cam:
-  type: ortho
-  world_size: [640, 240]
-  cam_size: [320, 240]
-  bounds:
-    x: [0, 640]
-    y: [0, 240]
-    z: [0, 100]
+  - type: ortho
+    id: main
+    world_size: [640, 240]
+    cam_size: [320, 240]
+    bounds:
+      x: [0, 640]
+      y: [0, 240]
+      z: [0, 100]
+  - type: ortho
+    id: diag
+    world_size: [320, 240]
+    cam_size: [320, 240]
+    bounds:
+      x: [0, 320]
+      y: [0, 240]
+      z: [0, 100]
 engines:
   - type: runner.scheduler
   - type: runner.collisionengine
@@ -22,6 +31,11 @@ engines:
         on_enter: $scripts.mario.hit_brick_sensor
     size: [80, 80]
 items:
+  - type: _fps_counter
+    font: mario_font
+    size: 8
+    parent: diag
+    pos: [0,15,0]
   - type: mario
     size: [1, 1]
     max_speed: 100

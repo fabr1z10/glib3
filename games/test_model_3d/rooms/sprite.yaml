@@ -3,25 +3,25 @@ id: sprite
 vars:
   0: mario
 cam:
-  type: ortho
-  world_size: [320, 240]
-  cam_size: [320, 240]
-  bounds:
-    x: [0, 100]
-    y: [0, 100]
-    z: [0, 100]
+  - type: ortho
+    id: main
+    world_size: [320, 240]
+    cam_size: [320, 240]
+    bounds:
+      x: [0, 100]
+      y: [0, 100]
+      z: [0, 100]
 on_load:
-  func: keys.init
+  func: $scripts.keys.init
   args: '@0'
 items:
-  - entity:
-      tag: sprite
-      type: _entity
-      components:
-        - type: components.keyinput
-          callbacks:
-            - key: 81
-              action: 1
-              func: keys.on_key
-      model: '@0'
-    pos: [160, 120, 0]
+  - type: _entity
+    tag: sprite
+    components:
+      - type: components.keyinput
+        callbacks:
+          - key: 81
+            action: 1
+            func: $scripts.keys.on_key
+    model: '@0'
+    pos: [10, 8, 0]

@@ -1,9 +1,7 @@
-from mopy.entity import Entity
+from mopy.entity import Entity, Text, TextAlignment
 from mopy.components import Gfx
 import mopy.monkey as monkey
 from mopy.util import tiles_to_world
-
-
 
 
 def model3d(**kwargs):
@@ -14,6 +12,21 @@ def model3d(**kwargs):
         e.add_component(renderer)
         return e
     return f
+
+def text(ciao):
+    font = ciao['font']
+    size = ciao['size']
+    text = ciao['text']
+    color = ciao.get('color', (1, 1, 1, 1))
+    align = TextAlignment[ciao.get('align')]
+    return Text(font, size, text, color, align)
+
+def fps_counter(ciao):
+    font = ciao['font']
+    size = ciao['size']
+    fps = Text(font, size, '0', (1, 1, 1, 1), TextAlignment.top_left)
+    fps.add_component({'type': 'components.fpscounter'})
+    return fps
 
 
 def rect_platform(ciao):
@@ -32,6 +45,7 @@ def rect_platform(ciao):
         'mask': 0,
         'debug': True
     })
+    e.model = ciao.get('model')
     return e
 
 

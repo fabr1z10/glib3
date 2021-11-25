@@ -2,6 +2,8 @@
 #include <stddef.h>
 
 unsigned VertexSkeletal::point_size = 11;
+unsigned Vertex3D::num_vertices = 3;
+unsigned VertexColor::num_vertices = 2;
 
 void SimpleVertex3D::InitAttributes() {
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(SimpleVertex3D), (void*)offsetof(SimpleVertex3D, x));

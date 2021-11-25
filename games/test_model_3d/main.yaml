@@ -3,7 +3,8 @@
   lang: eng
   device_size: [320, 240]
   window_size: [640, 480]
-  start_room: sprite2
+  start_room: sprite
   shaders:
     - color
     - unlit_textured
+    - text

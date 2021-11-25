@@ -1,0 +1,10 @@
+---
+  title: Super Mario Bros
+  lang: eng
+  device_size: [256, 240]
+  window_size: [512, 480]
+  start_room: world1_1
+  shaders:
+    - color
+    - unlit_textured
+    - text

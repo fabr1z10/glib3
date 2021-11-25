@@ -32,8 +32,8 @@ Text::Text(const ITab& t) : Entity(t) {
     auto size = t.get<float>("size", 8);
     auto align = t.get<int>("align", TextAlignment::TOP_LEFT);
     auto maxWidth = t.get<float>("maxwidth", 0.0f);
-    auto color = t.get<glm::vec4>("color", glm::vec4(255.0f));
-    color /= 255.0f;
+    auto color = t.get<glm::vec4>("color", glm::vec4(1.0));
+    //color /= 255.0f;
 
     Font* f = Engine::get().GetAssetManager().get<Font>(font).get();
 
@@ -41,11 +41,12 @@ Text::Text(const ITab& t) : Entity(t) {
 
     glm::vec2 offset = model->getOffset();
     //  auto model = std::make_shared<TextModel>(mesh);
-    auto renderer = std::make_shared<Renderer>(model);
-    renderer->setMultColor(color);
+
+    //auto renderer = std::make_shared<Renderer>(model);
+    //renderer->setMultColor(color);
 
     //MoveLocal(glm::vec3(offset, 0.0f));
-
+    auto renderer = model->makeRenderer(model);
     this->AddComponent(renderer);
 
     renderer->SetTransform(glm::translate(glm::vec3(offset, 0.0f)));

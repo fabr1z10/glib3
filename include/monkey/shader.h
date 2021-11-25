@@ -85,7 +85,7 @@ public:
     }
 
     void a() override {
-        for (size_t i = 0; i < 2; i++)
+        for (size_t i = 0; i < Vertex::num_vertices; i++)
             glEnableVertexAttribArray(i);
     }
 

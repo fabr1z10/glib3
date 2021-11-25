@@ -12,8 +12,8 @@ KeyboardInputMethod::KeyboardInputMethod(const ITab & t) : InputMethod(t) {
         t.foreach("callbacks", [&] (const ITab& u) {
             int key = u.get<int>("key");
             int action = u.get<int>("action");
-            auto func = u.get<std::string>("func");
-            m_callbacks[action].insert(std::make_pair(key, assetManager.get<Func>(func)));
+            auto func = u.get<pybind11::function>("func");
+            m_callbacks[action].insert(std::make_pair(key, std::make_shared<Func>(func)));//assetManager.get<Func>(func)));
         });
     }
 

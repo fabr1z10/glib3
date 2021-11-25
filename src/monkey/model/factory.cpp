@@ -24,7 +24,9 @@ std::shared_ptr<IMesh> ModelFactory::b2Poly(b2PolygonShape &shape, glm::vec4 col
     return mesh;
 }
 
-std::shared_ptr<Model> ModelFactory::rect(float width, float height, glm::vec2 offset, RenderType rtype, glm::vec4 color, const std::string& tex) {
+std::shared_ptr<Model> ModelFactory::rect(float width, float height,
+                                          glm::vec2 offset, RenderType rtype,
+                                          glm::vec4 color, const std::string& tex, glm::vec2 repeat) {
     std::shared_ptr<IMesh> mesh;
     if (tex.empty()) {
         auto m = std::make_shared<Mesh<VertexColor>>(ShaderType::COLOR_SHADER);
@@ -44,6 +46,20 @@ std::shared_ptr<Model> ModelFactory::rect(float width, float height, glm::vec2 o
         }
         m->Init(vertices, indices);
         mesh = m;
+    } else {
+        auto m = std::make_shared<Mesh<Vertex3D>>(ShaderType::TEXTURE_SHADER_UNLIT);
+        std::vector<Vertex3D> vertices{
+            {offset.x, offset.y, 0, 0, repeat.y, color.r, color.g, color.b, color.a},
+            {offset.x + width, offset.y, 0, repeat.x, repeat.y, color.r, color.g, color.b, color.a},
+            {offset.x + width, offset.y + height, 0, repeat.x, 0, color.r, color.g, color.b, color.a},
+            {offset.x, offset.y + height, 0, 0, 0, color.r, color.g, color.b, color.a},
+        };
+        std::vector<unsigned> indices;
+        indices = {0, 1, 2, 3, 0, 2};
+        m->m_primitive = GL_TRIANGLES;
+        m->Init(vertices, indices);
+        m->addTexture(tex, TexType::DIFFUSE);
+        mesh = m;
 
     }
     return std::make_shared<Model>(mesh);
@@ -58,9 +74,10 @@ std::shared_ptr<Model> ModelFactory::_rect(const ITab & t) {
     float height = size[1];
     auto tex = t.get<std::string>("tex", "");
     auto render = t.get<std::string>("render", "fill");
-    auto color = t.get<glm::vec4> ("color");
+    auto color = t.get<glm::vec4> ("color", glm::vec4(1.0f));
     auto rtype = (render == "fill" ? RenderType::FILL : RenderType::WIREFRAME);
-    return rect(width, height, offset, rtype, color, tex);
+    auto repeat = t.get<glm::vec2>("repeat", glm::vec2(1.0f, 1.0f));
+    return rect(width, height, offset, rtype, color, tex, repeat);
 }
 
 std::shared_ptr<Model> ModelFactory::polygon(const ITab& t) {

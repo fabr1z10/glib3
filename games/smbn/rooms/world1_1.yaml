@@ -1,0 +1,98 @@
+type: _basic
+id: world1_1
+vars:
+  0: mario
+cam:
+  - type: ortho
+    id: main
+    world_size: [3584, 240]
+    cam_size: [256, 240]
+    bounds:
+      x: [0, 3584]
+      y: [0, 240]
+      z: [0, 100]
+  - type: ortho
+    id: diag
+    world_size: [256, 240]
+    cam_size: [256, 240]
+    bounds:
+      x: [0, 256]
+      y: [0, 240]
+      z: [0, 100]
+engines:
+  - type: runner.scheduler
+  - type: runner.collisionengine
+    response:
+      - tag1: $globals.CollisionTags.player
+        tag2: $globals.CollisionTags.goomba
+        on_enter: $scripts.mario.foe_hits_mario
+      - tag1: $globals.CollisionTags.player
+        tag2: $globals.CollisionTags.brick_sensor
+        on_enter: $scripts.mario.hit_brick_sensor
+    size: [80, 80]
+items:
+  - type: _fps_counter
+    font: mario_font
+    size: 8
+    parent: diag
+    pos: [0, 15, 0]
+  - type: mario
+    size: [1, 1]
+    max_speed: 100
+    time_acc: 0.1
+    jump_height: $globals.jump_height
+    time_to_jump_apex: $globals.time_to_jump_apex
+    model: '@0'
+    pos: [2, 8, 0]
+  - type: rect
+    size: [69, 2]
+    img: gfx/block1.png
+    pos: [0, 0, 0]
+  - type: rect
+    size: [15, 2]
+    img: gfx/block1.png
+    pos: [71, 0, 0]
+  - type: rect
+    size: [64, 2]
+    img: gfx/block1.png
+    pos: [89, 0, 0]
+  - type: rect
+    size: [69, 2]
+    img: gfx/block1.png
+    pos: [155, 0, 0]
+  - type: rect
+    size: [5, 1]
+    img: gfx/block2.png
+    pos: [148, 2, 0, 185, 6, 0]
+  - type: rect
+    size: [4, 1]
+    img: gfx/block2.png
+    pos: [134, 2, 0, 140, 2, 0, 149, 3, 0, 155, 2, 0, 186, 7, 0]
+  - type: rect
+    size: [3, 1]
+    img: gfx/block2.png
+    pos: [135, 3, 0, 140, 3, 0, 150, 4, 0, 155, 3, 0, 187, 8, 0]
+  - type: rect
+    size: [2, 1]
+    img: gfx/block2.png
+    pos: [136, 4, 0, 140, 4, 0, 151, 5, 0, 155, 4, 0, 188, 9, 0]
+  - type: rect
+    size: [1, 1]
+    img: gfx/block2.png
+    pos: [137, 5, 0, 140, 5, 0, 155, 5, 0, 198, 2, 0]
+  - type: rect
+    size: [6, 1]
+    img: gfx/block2.png
+    pos: [184, 5, 0]
+  - type: rect
+    size: [7, 1]
+    img: gfx/block2.png
+    pos: [183, 4, 0]
+  - type: rect
+    size: [8, 1]
+    img: gfx/block2.png
+    pos: [182, 3, 0]
+  - type: rect
+    size: [9, 1]
+    img: gfx/block2.png
+    pos: [181, 2, 0]

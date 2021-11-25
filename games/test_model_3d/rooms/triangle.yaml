@@ -1,22 +1,22 @@
 type: _basic
 id: triangle
 cam:
-  type: ortho
-  world_size: [320, 240]
-  cam_size: [320, 240]
-  bounds:
-    x: [0, 100]
-    y: [0, 100]
-    z: [0, 100]
+  - type: ortho
+    id: main
+    world_size: [320, 240]
+    cam_size: [320, 240]
+    bounds:
+      x: [0, 100]
+      y: [0, 100]
+      z: [0, 100]
 items:
-  - entity:
-      type: _entity
-      model:
-        type: model.poly
-        vertex: pc
-        # pc = position color
-        points: [
-            80, 60, 1, 0.5, 0.2, 1,
-            240, 60, 1, 0.5, 0.2, 1,
-            160, 180, 1, 0.5, 0.2, 1]
+  - type: _entity
+    model:
+      type: model.poly
+      vertex: pc
+      # pc = position color
+      points: [
+          80, 60, 1, 0.5, 0.2, 1,
+          240, 60, 1, 0.5, 0.2, 1,
+          160, 180, 1, 0.5, 0.2, 1]
     pos: [0, 0, 0]

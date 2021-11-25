@@ -20,45 +20,49 @@ class BasicRoom(Room):
         else:
             room_info = desc
         super().__init__(room_info['id'])
-        main = Entity(tag='main')
-        cam = room_info.get('cam', None)
         device_size = monkey.engine.device_size
         on_load = room_info.get('on_load', None)
         #monkey.engine.room_vars = room_info.get('config', {})
         tile_size = getattr(monkey.engine.data.globals, 'tile_size', [1, 1])# monkey.engine.room_vars.get('tile_size', [1, 1])
         print('tile size is ' + str(tile_size))
         if on_load:
-            func = operator.attrgetter(on_load['func'])(monkey.engine.scripts)
+            func = on_load['func'] # operator.attrgetter(on_load['func'])(monkey.engine.scripts)
             args = on_load.get('args', None)
             self.init.append([func, args] if args else [func])
 
-        if cam:
-            cam_type = cam['type']
-            camera = None
-            if cam_type == 'ortho':
-                world_size = cam['world_size']
-                cam_size = cam['cam_size']
+        cams = room_info['cam']
+        self.main = None
+        if cams:
+            for cam in cams:
+                cam_type = cam['type']
+                id = cam['id']
+                main = Entity(tag=id)
+                camera = None
+                if cam_type == 'ortho':
+                    world_size = cam['world_size']
+                    cam_size = cam['cam_size']
 
-                viewport = cam.get('viewport', [0, 0, monkey.engine.device_size[0], monkey.engine.device_size[1]])
-                camera = OrthoCamera(world_size[0], world_size[1], cam_size[0], cam_size[1],
+                    viewport = cam.get('viewport', [0, 0, monkey.engine.device_size[0], monkey.engine.device_size[1]])
+                    camera = OrthoCamera(world_size[0], world_size[1], cam_size[0], cam_size[1],
                                   viewport, tag='maincam')
-                camera.pos = cam.get('pos', [0,0,5])
-                bounds = cam['bounds']
-                camera.boundsz = bounds['z']
-                camera.bounds = [bounds['x'][0], bounds['y'][0], bounds['x'][1], bounds['y'][1]]
-            elif cam_type == 'perspective':
-                cam = PerspectiveCamera(viewport=[0, 0, device_size[0], device_size[1]])
-                cam.pos = (5, 5, 15)
-                bounds = cam['bounds']
-                cam.boundsz = bounds['z']
-                cam.bounds = [bounds['x'][0], bounds['y'][0], bounds['x'][1], bounds['y'][1]]
-            else:
-                print('Unknown camera type: ' + cam_type)
-                exit(1)
-            camera.tag = 'maincam'
-            main.camera = camera
-        self.main = main
-        self.add(main)
+                    camera.pos = cam.get('pos', [0,0,5])
+                    bounds = cam['bounds']
+                    camera.boundsz = bounds['z']
+                    camera.bounds = [bounds['x'][0], bounds['y'][0], bounds['x'][1], bounds['y'][1]]
+                elif cam_type == 'perspective':
+                    cam = PerspectiveCamera(viewport=[0, 0, device_size[0], device_size[1]])
+                    cam.pos = (5, 5, 15)
+                    bounds = cam['bounds']
+                    cam.boundsz = bounds['z']
+                    cam.bounds = [bounds['x'][0], bounds['y'][0], bounds['x'][1], bounds['y'][1]]
+                else:
+                    print('Unknown camera type: ' + cam_type)
+                    exit(1)
+                camera.tag = id + 'cam'
+                main.camera = camera
+                if not self.main:
+                    self.main = main
+                self.add(main)
         self.engines = room_info.get('engines', [])
         keyl = KeyListener()
         keyl.add_key(key=299, func=restart)
@@ -68,6 +72,7 @@ class BasicRoom(Room):
         if 'items' in room_info:
             for item in room_info['items']:
                 positions = item.get('pos', [0, 0, 0])
+                parent = item.get('parent', 'main')
                 entity_desc = item
                 # from template
                 if 'ref' in item:
@@ -80,7 +85,7 @@ class BasicRoom(Room):
                     pos = positions[ip:ip+3]
                     e = factory(entity_desc)
                     e.pos = tiles_to_world(pos, tile_size)
-                    self.add(e, 'main')
+                    self.add(e, parent)
                 #self.add(im, 'main')
                 # factory_id = item['factory']
                 # factory = monkey.engine.get_item_factory(factory_id[0])

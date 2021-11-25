@@ -7,9 +7,11 @@
 void TextModel::updateText() {
     m_meshes.clear();
 
-    auto mesh = std::make_shared<Mesh<VertexText>>();
+    //auto mesh = std::make_shared<Mesh<VertexText>>();
+    auto mesh = std::make_shared<Mesh<Vertex3D>>(ShaderType::TEXT_SHADER);
+    mesh->m_primitive = GL_TRIANGLES;
 
-    std::vector <VertexText> vertices;
+    std::vector <Vertex3D> vertices;
     std::vector <unsigned int> indices;
     std::vector <std::string> lines;
 
@@ -51,10 +53,10 @@ void TextModel::updateText() {
             float lastX = x + scaledWidth;
 
 
-            vertices.emplace_back(VertexText(x, yTop, glyph.tx, glyph.ty, 1.0f, 1.0f, 1.0f, 1.0f));
-            vertices.emplace_back(VertexText(lastX, yTop, glyph.tx + glyph.tw, glyph.ty, 1.0f, 1.0f, 1.0f, 1.0f));
-            vertices.emplace_back(VertexText(lastX, yBottom, glyph.tx + glyph.tw, glyph.ty + glyph.th, 1.0f, 1.0f, 1.0f, 1.0f));
-            vertices.emplace_back(VertexText(x, yBottom, glyph.tx, glyph.ty + glyph.th, 1.0f, 1.0f, 1.0f, 1.0f));
+            vertices.push_back(Vertex3D(x, yTop, 0.0f, glyph.tx, glyph.ty, 1.0f, 1.0f, 1.0f, 1.0f));
+            vertices.push_back(Vertex3D(lastX, yTop, 0.0f, glyph.tx + glyph.tw, glyph.ty, 1.0f, 1.0f, 1.0f, 1.0f));
+            vertices.push_back(Vertex3D(lastX, yBottom, 0.0f, glyph.tx + glyph.tw, glyph.ty + glyph.th, 1.0f, 1.0f, 1.0f, 1.0f));
+            vertices.push_back(Vertex3D(x, yBottom, 0.0f, glyph.tx, glyph.ty + glyph.th, 1.0f, 1.0f, 1.0f, 1.0f));
 
             m_bounds.min.x = std::min(m_bounds.min.x, x);
             m_bounds.max.x = std::max(m_bounds.max.x, lastX);
@@ -83,6 +85,7 @@ void TextModel::updateText() {
     //m_bottomRight = glm::vec2 (xMax, yMin);
 
     mesh->Init(vertices, indices);
+    mesh->addTexture(TextureInfo{m_font->getTexId(), TexType::DIFFUSE});
     addMesh(mesh);
     //material.texId = font.getTexId();
 

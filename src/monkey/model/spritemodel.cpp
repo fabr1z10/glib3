@@ -76,10 +76,10 @@ SpriteModel::SpriteModel (const ITab& t) : Model() {
         float tyt = flipy ? ty+th : ty;
 
         // ccw from bottom left
-        vertices.emplace_back(Vertex3D(ox, oy, 0.0f, txl, tyb));
-        vertices.emplace_back(Vertex3D(ox + w, oy, 0.0f, txr, tyb));
-        vertices.emplace_back(Vertex3D(ox + w, oy + h, 0.0f, txr, tyt));
-        vertices.emplace_back(Vertex3D(ox, oy + h, 0.0f, txl, tyt));
+        vertices.emplace_back(Vertex3D(ox, oy, 0.0f, txl, tyb, 1, 1, 1, 1));
+        vertices.emplace_back(Vertex3D(ox + w, oy, 0.0f, txr, tyb, 1, 1, 1, 1));
+        vertices.emplace_back(Vertex3D(ox + w, oy + h, 0.0f, txr, tyt, 1, 1, 1, 1));
+        vertices.emplace_back(Vertex3D(ox, oy + h, 0.0f, txl, tyt, 1, 1, 1, 1));
         unsigned ix = quadCount * 4;
         indices.push_back(ix);
         indices.push_back(ix + 1);

@@ -1,0 +1,102 @@
+---
+mario_font:
+  type: font
+  file: ./fonts/prstartk.ttf
+goomba:
+  type: model.boxed
+  sheet: gfx/smb1.png
+  animations:
+    walk:
+      box: 0
+      loop: true
+      frames:
+        - quads: [112, 0, 16, 16, -8, 0]
+        - quads: [128, 0, 16, 16, -8, 0]
+    idle:
+      box: 0
+      frames:
+        - quads: [112, 0, 16, 16, -8, 0]
+    dead:
+      frames:
+        - quads: [144, 0, 16, 16, -8, 0]
+  boxes:
+    - [-6, 0, 6, 16]
+mario:
+  type: model.boxed
+  sheet: gfx/smb1.png
+  animations:
+    idle:
+      box: 0
+      loop: false
+      frames:
+        - quads: [0, 0, 16, 16, -8, 0, {'scale': 1.5}]
+    walk:
+      box: 0
+      loop: true
+      frames:
+        - ticks: 10
+          quads: [16, 0, 16, 16, -8, 0]
+        - ticks: 10
+          quads: [32, 0, 16, 16, -8, 0]
+        - ticks: 10
+          quads: [48, 0, 16, 16, -8, 0]
+    jump:
+      box: 0
+      loop: false
+      frames:
+        - quads: [80, 0, 16, 16, -8, 0]
+  boxes:
+    - [-4, 0, 4, 16]
+supermario:
+  type: model.boxed
+  sheet: gfx/smb1.png
+  # casts
+  animations:
+    idle:
+      loop: true
+      box: 0
+      frames:
+        - quads: [80, 16, 16, 32, -8, 0]
+    walk:
+      box: 0
+      frames:
+        - quads: [96, 16, 16, 32, -8, 0]
+        - quads: [112, 16, 16, 32, -8, 0]
+        - quads: [128, 16, 16, 32, -8, 0]
+    jump:
+      box: 0
+      frames:
+        - quads: [144, 16, 16, 32, -8, 0]
+    slide:
+      frames:
+        - quads: [192, 64, 16, 32, -8, 0]
+  boxes:
+    - [-4 0, 4, 32]
+fierymario:
+  type: model.boxed
+  sheet: gfx/smb1.png
+  # casts
+  animations:
+    idle:
+      loop: true
+      box: 0
+      frames:
+        - quads: [0, 112, 16, 32, -8, 0]
+    walk:
+      box: 0
+      frames:
+        - quads: [16, 112, 16, 32, -8, 0]
+        - quads: [32, 112, 16, 32, -8, 0]
+        - quads: [48, 112, 16, 32, -8, 0]
+    jump:
+      box: 0
+      frames:
+        - quads: [64, 128, 16, 32, -8, 0]
+    fire:
+      frames:
+        - quads: [80,128,16,32,-8,0]
+    slide:
+      frames:
+        - quads: [0, 144, 16, 32, -8, 0]
+  boxes:
+    - [-6, 0, 6, 32]

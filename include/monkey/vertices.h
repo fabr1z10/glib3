@@ -30,6 +30,7 @@ struct __attribute__ ((visibility ("default")))  Vertex3D {
     GLfloat s, t;
     GLfloat r, g, b, a;
     static void InitAttributes();
+    static unsigned num_vertices;
 };
 
 //struct Vertex3DC {
@@ -67,6 +68,7 @@ struct __attribute__ ((visibility ("default"))) VertexColor {
     GLfloat r, g, b, a;
     static void enableAttributes();
     static void InitAttributes();
+    static unsigned num_vertices;
 };
 
 struct VertexColorNormal {
