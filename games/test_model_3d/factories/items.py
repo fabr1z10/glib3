@@ -98,7 +98,9 @@ def brick(ciao):
     e.components.append({'type': 'components.platform'})
     e.components.append({
         'type': 'components.line_dynamic_mover',
-        'direction': (0, 1)
+        'direction': (0, 1),
+        'acceleration': (0, -data.globals.gravity),
+        'min': 0
     })
     # add brick sensor
     sensor = Entity()

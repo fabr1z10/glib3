@@ -43,24 +43,24 @@ items:
     size: [2, 0]
     pass_thru: True
     pos: [11,8,0]
-  - type: _line
-    size: [2, 0]
-    pass_thru: True
-    pos: [11,10,0]
 #  - type: _line
 #    size: [2, 0]
 #    pass_thru: True
-#    move:
-#      path: [11, 10, 9, 10]
-#      mode: 1
-#      speed: 10
-#  - type: _line
-#    size: [2,0]
-#    pass_thru: True
-#    move:
-#      path: [1, 0, 1, 10]
-#      mode: 1
-#      speed: 10
+#    pos: [11,10,0]
+  - type: _line
+    size: [2, 0]
+    pass_thru: True
+    move:
+      path: [11, 10, 9, 10]
+      mode: 1
+      speed: 10
+  - type: _line
+    size: [2,0]
+    pass_thru: True
+    move:
+      path: [1, 0, 1, 10]
+      mode: 1
+      speed: 10
   - type: brick
     pos: [6,9,0,7,9,0]
 #  - type: goomba

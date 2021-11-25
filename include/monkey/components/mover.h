@@ -57,6 +57,8 @@ protected:
     // min and max values allowed
     float m_tMin, m_tMax;
     Dynamics* m_dynamics;
+    glm::vec2 m_acceleration;
+
 };
 
 class LineDynamicMover : public ConstrainedDynamicMover {

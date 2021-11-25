@@ -18,4 +18,4 @@ def foe_hits_mario(player, foe, x, y):
 
 
 def hit_brick_sensor(player, sensor : example.Wrap1, x, y):
-    sensor.parent().vy = 10
+    sensor.parent().vy = 100
