@@ -127,7 +127,7 @@ items:
   - type: rect
     model: pipe2_green
     size: [2, 2]
-    pos: [28, 2, 0]
+    pos: [28, 2, 0, 163, 2, 0, 179, 2, 0]
   - type: rect
     model: pipe3_green
     size: [2, 3]

@@ -6,11 +6,11 @@ time_to_jump_apex = 0.5
 a = utils.compute_gravity(jump_height, time_to_jump_apex)
 gravity = a[0]
 jump_velocity = a[1]
-
+show_boxes = True
 player_modes = [
-    {'model': 'mario', 'size': (1, 1)},
-    {'model': 'supermario', 'size': (1, 2)},
-    {'model': 'fierymario', 'size': (1, 2)},
+    {'model': 'mario', 'size': (0.8, 1)},
+    {'model': 'supermario', 'size': (0.8, 2)},
+    {'model': 'fierymario', 'size': (0.8, 2)},
 ]
 player_mode =1
 
