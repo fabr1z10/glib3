@@ -41,6 +41,7 @@ PYBIND11_MODULE(example, m) {
         .def_property("vx", &Wrap1::getVx, &Wrap1::setVx)
         .def_property("elevation", &Wrap1::getElevation, &Wrap1::setElevation)
         .def_property("scale", &Wrap1::getScale, &Wrap1::setScale)
+        .def_property("collisionFlag", &Wrap1::getCollisionFlag, &Wrap1::setCollisionFlag)
         .def("play", &Wrap1::play)
         .def("killScripts", &Wrap1::killScripts)
         .def("setPosition", &Wrap1::setPosition)
@@ -72,6 +73,7 @@ PYBIND11_MODULE(example, m) {
 		.def("getAttackCollisionBounds",&Wrap1::getAttackCollisionBounds)
 		.def("getKeyPoint", &Wrap1::getKeyPoint)
 		.def("setColliderBounds", &Wrap1::setControllerBounds)
+
 		.def("children", &Wrap1::getChildren)
 		.def("getBoxSize", &Wrap1::getBoxSize);
 

@@ -66,6 +66,50 @@ std::shared_ptr<Model> ModelFactory::rect(float width, float height,
 
 }
 
+std::shared_ptr<Model> ModelFactory::_tiled(const ITab & t) {
+    auto mesh = std::make_shared<Mesh<Vertex3D>>(ShaderType::TEXTURE_SHADER_UNLIT);
+    mesh->m_primitive = GL_TRIANGLES;
+    std::vector<Vertex3D> verts;
+    std::vector<unsigned> indices;
+    auto texFile = t.get<std::string>("tex");
+    auto tex = Engine::get().GetAssetManager().get<Tex>(texFile);
+    mesh->addTexture(TextureInfo{tex->GetTexId(), TexType::DIFFUSE});
+    auto size = t.get<glm::ivec2>("size");
+    auto tileSize = t.get<glm::vec2>("tile_size");
+    auto imgTileSize = t.get<glm::vec2>("img_tile_size");
+
+    float tileWidth = tileSize[0];
+    float tileHeight = tileSize[1];
+    auto tw = imgTileSize[0] / tex->GetWidth();
+    auto th = imgTileSize[1] / tex->GetHeight();
+
+    auto data = t.get<std::vector<int>>("data");
+    size_t n = 0;
+    size_t v = 0;
+    for (int j = 0; j < size[1]; ++j) {
+        for (int i = 0; i < size[0]; ++i) {
+            if (data[n] == -1) {
+                n += 1;
+                continue;
+            }
+            verts.emplace_back(i * tileWidth, j * tileHeight, 0, data[n] * tw, (data[n+1] + 1) * th, 1, 1, 1, 1);
+            verts.emplace_back((i+1) * tileWidth, j * tileHeight, 0, (data[n] + 1) * tw, (data[n+1] +1) * th, 1, 1, 1, 1);
+            verts.emplace_back((i+1) * tileWidth, (j + 1) * tileHeight, 0, (data[n] + 1) * tw, data[n+1] * th, 1, 1, 1, 1);
+            verts.emplace_back(i * tileWidth, (j+1) * tileHeight, 0, data[n] * tw, data[n+1] * th, 1, 1, 1, 1);
+            indices.push_back(v);
+            indices.push_back(v+1);
+            indices.push_back(v+2);
+            indices.push_back(v+2);
+            indices.push_back(v+3);
+            indices.push_back(v);
+            v += 4;
+            n += 2;
+        }
+    }
+    mesh->Init(verts, indices);
+    return std::make_shared<Model>(mesh);
+
+}
 
 std::shared_ptr<Model> ModelFactory::_rect(const ITab & t) {
     auto size = t.get<glm::vec2>("size");

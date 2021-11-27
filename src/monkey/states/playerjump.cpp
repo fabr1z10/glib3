@@ -85,7 +85,7 @@ void PlayerJump::Run(double dt) {
             m_dynamics->m_velocity.x = sign(m_dynamics->m_velocity.x) * m_maxSpeed;
         }
     }
-    std::cerr << m_dynamics->m_velocity.x << "\n";
+    //std::cerr << m_dynamics->m_velocity.x << "\n";
     auto delta = glm::vec3(m_dynamics->m_velocity * dtf, 0.0f);
     //m_entity->MoveLocal(delta);
     m_controller->Move(delta);

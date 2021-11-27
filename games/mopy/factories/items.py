@@ -107,6 +107,7 @@ def player2D(ciao):
     size = tiles_to_world(ciao.get('size'), tile_size)
     max_speed = ciao.get('max_speed')
     time_acc = ciao.get('time_acc')
+    show_boxes = getattr(monkey.engine.data.globals, 'show_boxes', False)
     jump_height = ciao.get('jump_height')
     time_to_jump_apex = ciao.get('time_to_jump_apex')
     print('Jump height = ' + str(jump_height))
@@ -119,7 +120,7 @@ def player2D(ciao):
         'offset': [0, size[1] * 0.5, 0],
         'mask_up': 2,
         'mask_down': 2 | 32,
-        'debug': True
+        'debug': show_boxes
     })
     e.components.append({'type': 'components.dynamics'})
     e.components.append({'type': 'components.keyinput'})

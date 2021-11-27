@@ -5,6 +5,9 @@ ICollider::ICollider() : Component(), m_engine(nullptr) {}
 
 ICollider::ICollider(const ITab& t) {
 	m_debug = t.get<bool>("debug", false);
+    m_tag = t.get<int>("tag");
+    m_flag = t.get<int>("flag");
+    m_mask = t.get<int>("mask");
 }
 
 // when a collider starts, it add itself to the collision engine.
@@ -51,4 +54,16 @@ Bounds ICollider::GetDynamicBounds() const {
 Bounds ICollider::getAttackBounds() const {
 
     return Bounds();
+}
+
+int ICollider::GetCollisionTag() const {
+    return m_tag;
+}
+
+int ICollider::GetCollisionFlag() const {
+    return m_flag;
+}
+
+int ICollider::GetCollisionMask() const {
+    return m_mask;
 }

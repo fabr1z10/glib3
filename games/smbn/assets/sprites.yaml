@@ -60,9 +60,12 @@ supermario:
     walk:
       box: 0
       frames:
-        - quads: [96, 16, 16, 32, -8, 0]
-        - quads: [112, 16, 16, 32, -8, 0]
-        - quads: [128, 16, 16, 32, -8, 0]
+        - ticks: 10
+          quads: [96, 16, 16, 32, -8, 0]
+        - ticks: 10
+          quads: [112, 16, 16, 32, -8, 0]
+        - ticks: 10
+          quads: [128, 16, 16, 32, -8, 0]
     jump:
       box: 0
       frames:
@@ -71,7 +74,7 @@ supermario:
       frames:
         - quads: [192, 64, 16, 32, -8, 0]
   boxes:
-    - [-4 0, 4, 32]
+    - [-4, 0, 4, 32]
 fierymario:
   type: model.boxed
   sheet: gfx/smb1.png
@@ -85,9 +88,12 @@ fierymario:
     walk:
       box: 0
       frames:
-        - quads: [16, 112, 16, 32, -8, 0]
-        - quads: [32, 112, 16, 32, -8, 0]
-        - quads: [48, 112, 16, 32, -8, 0]
+        - ticks: 10
+          quads: [16, 112, 16, 32, -8, 0]
+        - ticks: 10
+          quads: [32, 112, 16, 32, -8, 0]
+        - ticks: 10
+          quads: [48, 112, 16, 32, -8, 0]
     jump:
       box: 0
       frames:
@@ -100,3 +106,116 @@ fierymario:
         - quads: [0, 144, 16, 32, -8, 0]
   boxes:
     - [-6, 0, 6, 32]
+bonusbrick:
+  type: model.sprite
+  sheet: gfx/smb1.png
+  animations:
+    default:
+      frames:
+        - ticks: 5
+          quads: [160, 0, 16, 16]
+        - ticks: 5
+          quads: [176, 0, 16, 16]
+        - ticks: 5
+          quads: [192, 0, 16, 16]
+        - ticks: 5
+          quads: [176, 0, 16, 16]
+    taken:
+      frames:
+        - quads: [224, 0, 16, 16]
+hiddenbrick:
+  type: model.sprite
+  sheet: gfx/smb1.png
+  animations:
+    default:
+      frames:
+        - ticks: 5
+          quads: [240, 112, 16, 16]
+    taken:
+      frames:
+        - quads: [224, 0, 16, 16]
+flying_coin:
+  type: model.sprite
+  sheet: gfx/smb1.png
+  animations:
+    walk:
+      frames:
+        - quads: [160, 16, 16, 16, -8, 0]
+          ticks: 5
+        - quads: [176, 16, 16, 16, -8, 0]
+          ticks: 5
+        - quads: [192, 16, 16, 16, -8, 0]
+          ticks: 5
+        - quads: [208, 16, 16, 16, -8, 0]
+          ticks: 5
+score_100:
+  type: model.sprite
+  sheet: gfx/smb1.png
+  animations:
+    def:
+      frames:
+        - quads: [0, 80, 16, 16, -8, 0]
+brick:
+  type: model.sprite
+  sheet: gfx/smb1.png
+  animations:
+    idle:
+      frames:
+        - quads: [240, 0, 16, 16]
+mushroom:
+  type: model.boxed
+  sheet: gfx/smb1.png
+  boxes:
+    - [-8, 0, 8, 16]
+  animations:
+    idle:
+      frames:
+        - quads: [48, 16, 16, 16, -8, 0]
+    walk:
+      box: 0
+      frames:
+        - quads: [48, 16, 16, 16, -8, 0]
+mushroom_1up:
+  type: model.boxed
+  sheet: gfx/smb1.png
+  boxes:
+    - [-8, 0, 8, 16]
+  animations:
+    idle:
+      frames:
+        - quads: [144, 48, 16, 16, -8, 0]
+    walk:
+      box: 0
+      frames:
+        - quads: [144, 48, 16, 16, -8, 0]
+brickpiece:
+  sheet: gfx/smb1.png
+  type: model.sprite
+  animations:
+    idle:
+      frames:
+        - quads: [64, 16, 16, 16]
+brickpiece2:
+  sheet: gfx/smb1.png
+  type: model.sprite
+  animations:
+    idle:
+      frames:
+        - quads: [224, 80, 16, 16]
+flower:
+  sheet: gfx/smb1.png
+  type: model.boxed
+  boxes:
+    - [-8, 0, 8, 16]
+  animations:
+    walk:
+      box: 0
+      frames:
+        - ticks: 5
+          quads: [176, 96, 16, 16, -8, 0]
+        - ticks: 5
+          quads: [192, 96, 16, 16, -8, 0]
+        - ticks: 5
+          quads: [208, 96, 16, 16, -8, 0]
+        - ticks: 5
+          quads: [224, 96, 16, 16, -8, 0]

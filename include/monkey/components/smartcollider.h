@@ -41,15 +41,13 @@ private:
  */
 class SmartCollider : public ICollider {
 public:
-    SmartCollider(int flag, int mask, int tag) : ICollider(), m_flag(flag), m_mask(mask), m_tag(tag) {}
+    //SmartCollider(int flag, int mask, int tag) : ICollider(), m_flag(flag), m_mask(mask), m_tag(tag) {}
     ~SmartCollider() override;
     SmartCollider (const ITab&);
     void Start() override;
     void Update(double) override {}
     IShape* GetShape() override;
-    int GetCollisionTag() const override;
-    int GetCollisionFlag() const override;
-    int GetCollisionMask() const override;
+
     int setCollisionMask(int);
     std::type_index GetType() override;
 	//void onFrameUpdate(Animator*a);
@@ -66,9 +64,7 @@ private:
     Bounds GetStaticBoundsI() const override;
     Bounds GetDynamicBoundsI() const override;
     Entity* m_shapeEntity;
-    int m_flag;
-    int m_mask;
-    int m_tag;
+
     int m_castTag;
     int m_castMask;
 

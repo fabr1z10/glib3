@@ -18,9 +18,7 @@ public:
     
     // ICollider interface
     IShape* GetShape() override;
-    int GetCollisionTag() const override;
-    int GetCollisionFlag() const override;
-    int GetCollisionMask() const override;
+
     
     
     bool HasShape() const;
@@ -69,18 +67,7 @@ inline void SimpleCollider::SetEnabled(bool value) {
     m_enabled = value;
 }
 
-inline int SimpleCollider::GetCollisionTag() const {
-    return m_tag;
 
-}
-
-inline int SimpleCollider::GetCollisionFlag() const {
-    return m_flag;
-}
-
-inline int SimpleCollider::GetCollisionMask() const {
-    return m_mask;
-}
 
 inline bool SimpleCollider::HasShape() const {
     return m_shape != nullptr;

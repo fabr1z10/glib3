@@ -281,7 +281,7 @@ void Controller2D::VerticalCollisions(glm::vec2& velocity) {
                     obstacles.clear();
                     obstacleDistance = hit.length;
                 }
-                std::cout << "hitting " << hit.entity->GetObject() << " with dist " << hit.length << " \n";
+                //std::cout << "hitting " << hit.entity->GetObject() << " with dist " << hit.length << " \n";
                 obstacles.insert(hit.entity->GetObject());
             }
 
@@ -339,7 +339,7 @@ void Controller2D::VerticalCollisions(glm::vec2& velocity) {
 //    }
 
     // for tomorrow
-    std::cout << "cane: " << obstacles.size() <<  " " << m_platforms.size() << "\n";
+    //std::cout << "cane: " << obstacles.size() <<  " " << m_platforms.size() << "\n";
     // unregister to ALL platforms I am not on top anymore
     if (!m_platforms.empty()) {
         auto j = m_platforms.begin();

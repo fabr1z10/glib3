@@ -8,7 +8,7 @@ namespace py = pybind11;
 
 
 SetState::SetState(const ITab& t) : TargetActivity(t) {
-    m_state = t.get<std::string>("state");
+        m_state = t.get<std::string>("state");
     m_args = std::make_unique<PyTab>(t.get<py::object>("args", py::dict()));
 }
 

@@ -18,20 +18,21 @@ SmartColliderRenderer::SmartColliderRenderer(
 }
 
 void SmartColliderRenderer::Draw(Shader * shader) {
+    if (shader->getShaderType() == COLOR_SHADER) {
 
-    auto anim = m_renderer->getAnimation();
-    auto frame = m_renderer->getFrame();
-    const auto& boxInfo = m_boxedModel->getBoxInfo(anim, frame);
-    //m_model->getMesh(0)->draw(shader, 0, 0);
-    if (boxInfo.collisionShape != -1) {
-        const auto& pair = m_shapeInfo[boxInfo.collisionShape];
-        m_model->getMesh(0)->draw(shader,pair.first, pair.second);
+        auto anim = m_renderer->getAnimation();
+        auto frame = m_renderer->getFrame();
+        const auto &boxInfo = m_boxedModel->getBoxInfo(anim, frame);
+        //m_model->getMesh(0)->draw(shader, 0, 0);
+        if (boxInfo.collisionShape != -1) {
+            const auto &pair = m_shapeInfo[boxInfo.collisionShape];
+            m_model->getMesh(0)->draw(shader, pair.first, pair.second);
+        }
+        if (boxInfo.attackShape != -1) {
+            const auto &pair = m_shapeInfo[boxInfo.attackShape];
+            m_model->getMesh(0)->draw(shader, pair.first, pair.second);
+        }
     }
-    if (boxInfo.attackShape != -1) {
-        const auto& pair = m_shapeInfo[boxInfo.attackShape];
-        m_model->getMesh(0)->draw(shader, pair.first, pair.second);
-    }
-
 }
 
 void SmartColliderRenderer::Start() {
@@ -46,9 +47,7 @@ SmartCollider::~SmartCollider() = default;
 
 
 SmartCollider::SmartCollider(const ITab& table) : ICollider(table), m_shapeEntity(nullptr), m_colliderRenderer(nullptr) {
-    m_tag = table.get<int>("tag");
-    m_flag = table.get<int>("flag");
-    m_mask = table.get<int>("mask");
+
     m_castTag = table.get<int>("cast_tag", 0);
     m_castMask = table.get<int>("cast_mask", 0);
 
@@ -192,27 +191,7 @@ int SmartCollider::setCollisionMask(int tag) {
     m_tag = tag;
 	return tag;
 }
-int SmartCollider::GetCollisionTag() const {
-    return m_tag;
-}
 
-int SmartCollider::GetCollisionFlag() const {
-
-    return m_flag;
-}
-
-int SmartCollider::GetCollisionMask() const {
-    return m_mask;
-//    if (m_stateMachine == nullptr) {
-//        return m_mask;
-//    }
-//    std::string currentState = m_stateMachine->GetState();
-//    auto it = m_collisionDetailsOverride.find(currentState);
-//    if (it == m_collisionDetailsOverride.end()) {
-//        return m_mask;
-//    }
-//    return it->second.mask;
-}
 
 // this returns the max bounds and is used by the collision engine
 // to locate the item in teh collision grid. However, this should not be used in the collider 2d!!!

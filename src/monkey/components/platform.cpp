@@ -19,12 +19,14 @@ PlatformComponent::~PlatformComponent() {
 void PlatformComponent::Move(Entity* node) {
     glm::vec3 currentPosition = node->GetPosition();
     glm::vec3 delta = currentPosition - m_lastPosition;
-    for (auto iter = m_characters.begin(); iter != m_characters.end(); iter++) {
+    if (delta.x != 0.0f || delta.y != 0.0f) {
+        for (auto iter = m_characters.begin(); iter != m_characters.end(); iter++) {
 
 
-        m_current = (*iter);
-        m_current->forceMove(delta);
+            m_current = (*iter);
+            m_current->forceMove(delta);
 
+        }
     }
     m_lastPosition = currentPosition;
 }

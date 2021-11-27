@@ -5,26 +5,17 @@
 #include <monkey/scenefactory.h>
 //#include <monkey/model/basicmodel.h>
 
-SimpleCollider::SimpleCollider(const ITab& t) : ICollider() {
 
+SimpleCollider::SimpleCollider(const ITab& t) : ICollider(t) {
     auto factory = Engine::get().GetSceneFactory();
-
-
     auto shapeR = t["shape"];
     m_shape = factory->make2<IShape>(*shapeR);
-
-    m_tag = t.get<int>("tag");
-    m_flag = t.get<int>("flag");
-    m_mask = t.get<int>("mask");
-
-    m_debug = t.get<bool>("debug", false);
 }
 
 
 void SimpleCollider::SetParent(Entity * entity) {
     Component::SetParent(entity);
 }
-
 
 
 void SimpleCollider::Start() {

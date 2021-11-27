@@ -18,9 +18,12 @@ public:
     ~ICollider() override = default;
     ICollider (const ITab&);
     virtual IShape* GetShape() = 0;
-    virtual int GetCollisionTag() const = 0;
-    virtual int GetCollisionFlag() const = 0;
-    virtual int GetCollisionMask() const = 0;
+    virtual int GetCollisionTag() const;
+    virtual int GetCollisionFlag() const;
+    virtual int GetCollisionMask() const;
+    void setCollisionFlag(int);
+    void setCollisionMask(int);
+    void setCollisionTag(int);
     Bounds GetBounds() const;
     Bounds GetDynamicBounds () const;
     virtual Bounds getAttackBounds() const;
@@ -37,7 +40,21 @@ protected:
     ICollisionEngine* m_engine;
 	Bounds m_controllerBounds;
 	bool m_debug;
-
+    int m_flag;
+    int m_mask;
+    int m_tag;
 };
 
 
+inline void ICollider::setCollisionFlag(int flag) {
+    m_flag = flag;
+}
+
+
+inline void ICollider::setCollisionMask(int mask) {
+    m_mask = mask;
+}
+
+inline void ICollider::setCollisionTag(int tag) {
+    m_tag = tag;
+}

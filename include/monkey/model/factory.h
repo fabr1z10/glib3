@@ -22,6 +22,7 @@ public:
     static std::shared_ptr<Model> rect(float width, float height, glm::vec2 offset,
                                        RenderType rtype, glm::vec4 color, const std::string& tex = "", glm::vec2 repeat = glm::vec2(1.0f, 1.0f));
     // create a shape from a polygon
+    static std::shared_ptr<Model> _tiled(const ITab&);
     static std::shared_ptr<IMesh> b2Poly(b2PolygonShape& shape, glm::vec4 color);
 
 private:

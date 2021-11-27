@@ -149,14 +149,21 @@ void Wrap1::setAnim(const std::string & animId) {
 
 void Wrap1::setModel(pybind11::object obj) {
     // TODO restore
+    auto renderer = m_entity->GetComponent<Renderer>();
+    auto factory = Engine::get().GetSceneFactory();
+    PyTab tab(obj);
+    auto model = factory->make2<Model>(tab);
+    renderer->setModel(model);
+    //AddComponent(model->makeRenderer(model));
+    //renderer->setModel()
 //    Renderer* r = m_entity->GetComponent<Renderer>();
 //    IAnimator* a = m_entity->GetComponent<IAnimator>();
 //    auto model = Engine::get().GetAssetManager().getModel(obj);
 //    r->setModel(model);
 //    a->setModel(model);
 //    r->Start();
-//    auto collider = m_entity->GetComponent<ICollider>();
-//    if (collider != nullptr) collider->Start();
+    auto collider = m_entity->GetComponent<ICollider>();
+    if (collider != nullptr) collider->Start();
 }
 
 void Wrap1::setText(const std::string& text) {
@@ -375,3 +382,13 @@ void Wrap1::killScripts() {
 void Wrap1::setControllerBounds(float width, float height, float depth, float x, float y, float z) {
     m_entity->GetComponent<IController>()->setBounds(glm::vec3(width, height, depth), glm::vec3(x, y, z));
 }
+
+int Wrap1::getCollisionFlag() const {
+    auto collider = m_entity->GetComponent<ICollider>();
+    return collider->GetCollisionFlag();
+}
+void Wrap1::setCollisionFlag(int flag) {
+    auto collider = m_entity->GetComponent<ICollider>();
+    collider->setCollisionFlag(flag);
+}
+

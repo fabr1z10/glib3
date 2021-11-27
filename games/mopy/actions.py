@@ -3,6 +3,8 @@ import mopy.engine as engine
 import mopy.monkey as monkey
 import example
 import random
+import mopy.util as utils
+
 
 class NoOp:
     def __init__(self):
@@ -155,6 +157,17 @@ class AddEntity(CallFunc):
 
     def __init__(self, entity, parent='main'):
         super().__init__(f=AddEntity.pippo(entity, parent))
+
+
+class CreateEntity(CallFunc):
+    @staticmethod
+    def pippo(func_id, pos, args, use_tile, parent):
+        def f():
+            utils.create_entity(func_id, pos, args=args, use_tile=use_tile, parent=parent)
+        return f
+
+    def __init__(self, func_id: str, pos, args=None, use_tile = True, parent='main'):
+        super().__init__(f=CreateEntity.pippo(func_id, pos, args, use_tile, parent))
 
 
 class RemoveEntity(CallFunc):

@@ -50,7 +50,8 @@ SpriteModel::SpriteModel (const ITab& t) : Model() {
         auto y = l[1].cast<int>();
         auto width_px = l[2].cast<int>();
         auto height_px = l[3].cast<int>();
-        int ox, oy = 0;
+        int ox = 0;
+        int oy = 0;
         bool flipx, flipy = false;
         if (n > 4) {
             ox = l[4].cast<int>();

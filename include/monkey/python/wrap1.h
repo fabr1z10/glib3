@@ -61,6 +61,8 @@ public:
     void play (pybind11::object o);
     void killScripts ();
     void setControllerBounds(float width, float height, float depth, float x, float y, float z);
+    int getCollisionFlag() const;
+    void setCollisionFlag(int);
 private:
     int g;
     Entity* m_entity;

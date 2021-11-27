@@ -81,7 +81,7 @@ Entity::Entity(const ITab& t) : Ref(t),
     });
 
     if (t.has("on_create")) {
-    	t.get<pybind11::function>("on_create")(m_id);
+    	t.get<pybind11::function>("on_create")(m_id, pos.x, pos.y, pos.z);
     }
 
 }
