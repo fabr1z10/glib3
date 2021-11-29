@@ -292,7 +292,7 @@ void Engine::MainLoop() {
         auto initFunc = roomDef.attr("init").cast<py::list>();
         for (auto ifunc : initFunc) {
             auto ifu = ifunc.cast<py::list>();
-            if (ifu.size() == 0) {
+            if (ifu.size() == 1) {
                 ifu[0]();
             } else {
                 ifu[0](ifu[1]);

@@ -38,7 +38,7 @@ void NPCWalk::AttachStateMachine(StateMachine * sm) {
 }
 
 void NPCWalk::Init(const ITab &d) {
-
+    m_direction = d.get<int>("direction", -1);
 }
 
 void NPCWalk::Run(double dt) {

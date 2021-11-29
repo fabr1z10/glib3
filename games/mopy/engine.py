@@ -121,17 +121,13 @@ class Engine:
 
     def set(self, id, value):
         if isinstance(id, str):
-            print('CANE=' + str(id))
-            if id[0] == '@':
-                cc = self.data
-                d = id[1:].split('/')
-                print(d)
-                for b in d[:-1]:
-                    cc = getattr(cc, b)
-                print ('current value = ' + str(getattr(cc, d[-1])))
-                print ('ccc = ' + str(d[-1]))
-                setattr(cc, d[-1], value)
-                print ('current value = ' + str(getattr(cc, d[-1])))
+            cc = self.data
+            d = id.split('.')
+            for b in d[:-1]:
+                cc = getattr(cc, b)
+            print('current value = ' + str(getattr(cc, d[-1])))
+            setattr(cc, d[-1], value)
+            print('current value = ' + str(getattr(cc, d[-1])))
 
     # read a string
     def read(self, value):
@@ -219,12 +215,10 @@ class Engine:
 
     def get_asset(self, id, args=None):
         if not args:
-            return self.assets[id]
+            return self.repl_vars(self.assets[id])
         else:
             b = copy.deepcopy(self.assets[id])
-            print(b)
             self.replace(b, args)
-            print(b)
             return b
 
     scripts = None

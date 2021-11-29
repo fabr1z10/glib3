@@ -17,6 +17,7 @@ def on_create_flying_coin(nid, x, y, z):
 
 
 def on_create_score_100(nid, x, y, z):
+    data.tils.add_score(100)
     s = Script()
     s.add_action(act.Move(speed=100, by=[0, 64], entity_id=nid))
     s.add_action(act.RemoveEntity(nid))

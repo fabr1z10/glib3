@@ -88,6 +88,7 @@
 #include <monkey/states/playerjump.h>
 #include <monkey/states/playerwalk.h>
 #include <monkey/states/npcwalk.h>
+#include <monkey/states/animstate.h>
 
 
 namespace py = pybind11;
@@ -281,6 +282,7 @@ SceneFactory::SceneFactory() {
     add2<Box2DCharacterController2>("box2d_cc2");
 
     add2<NullState> ("state.null");
+    add2<AnimState> ("state.anim");
     add2<PlayerJump> ("state.player_jump");
     add2<PlayerWalk> ("state.player_walk");
     add2<NPCWalk> ("state.npc_walk");

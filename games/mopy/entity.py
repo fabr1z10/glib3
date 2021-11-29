@@ -42,6 +42,7 @@ class Entity:
         self.transform = None
         self.depth = 0x0201             # GL_LESS is the default
         self.on_create = None
+        self.auto_pos = False
 
     def add(self, entity):
         self.children.append(entity)

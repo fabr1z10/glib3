@@ -219,3 +219,20 @@ flower:
           quads: [208, 96, 16, 16, -8, 0]
         - ticks: 5
           quads: [224, 96, 16, 16, -8, 0]
+pickupcoin:
+  sheet: gfx/smb1.png
+  type: model.boxed
+  boxes:
+    - [2, 0, 14, 16]
+  animations:
+    def:
+      box: 0
+      frames:
+        - ticks: 5
+          quads: [128, 64, 16, 16]
+        - ticks: 5
+          quads: [144, 64, 16, 16]
+        - ticks: 5
+          quads: [160, 64, 16, 16]
+        - ticks: 5
+          quads: [144, 64, 16, 16]

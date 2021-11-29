@@ -13,7 +13,6 @@ def restart():
 
 class BasicRoom(Room):
     def __init__(self, desc):
-        print(desc)
         aa = desc.get('vars', None)
         if aa:
             room_info = monkey.engine.repl_vars(desc, aa)
@@ -21,10 +20,13 @@ class BasicRoom(Room):
             room_info = desc
         super().__init__(room_info['id'])
         device_size = monkey.engine.device_size
+        on_preload = room_info.get('on_preload', None)
         on_load = room_info.get('on_load', None)
         #monkey.engine.room_vars = room_info.get('config', {})
         tile_size = getattr(monkey.engine.data.globals, 'tile_size', [1, 1])# monkey.engine.room_vars.get('tile_size', [1, 1])
         print('tile size is ' + str(tile_size))
+        if on_preload:
+            on_preload(room_info)
         if on_load:
             func = on_load['func'] # operator.attrgetter(on_load['func'])(monkey.engine.scripts)
             args = on_load.get('args', None)
@@ -41,12 +43,11 @@ class BasicRoom(Room):
                 if cam_type == 'ortho':
                     world_size = cam['world_size']
                     cam_size = cam['cam_size']
-
                     viewport = cam.get('viewport', [0, 0, monkey.engine.device_size[0], monkey.engine.device_size[1]])
                     camera = OrthoCamera(world_size[0], world_size[1], cam_size[0], cam_size[1],
                                   viewport, tag='maincam')
                     camera.pos = cam.get('pos', [0,0,5])
-                    bounds = cam['bounds']
+                    bounds = cam.get('bounds', {'x': [0, world_size[0]], 'y': [0, world_size[1]], 'z': [0, 100]})
                     camera.boundsz = bounds['z']
                     camera.bounds = [bounds['x'][0], bounds['y'][0], bounds['x'][1], bounds['y'][1]]
                 elif cam_type == 'perspective':
@@ -76,15 +77,20 @@ class BasicRoom(Room):
                 entity_desc = item
                 # from template
                 if 'ref' in item:
-                    entity_desc = monkey.engine.get_asset(entity_desc, item['ref'])
+                    entity_desc = monkey.engine.get_asset(item['ref'], item.get('args', None))
+                    print(entity_desc)
+
                 factory = monkey.engine.get_item_factory(entity_desc['type'])
                 if not factory:
                     print('Don''t have factory for item: ' + entity_desc['type'])
                     exit(1)
+
                 for ip in range(0, len(positions), 3):
+                    print(positions)
                     pos = positions[ip:ip+3]
                     e = factory(entity_desc)
-                    e.pos = tiles_to_world(pos, tile_size)
+                    if not e.auto_pos:
+                        e.pos = tiles_to_world(pos, tile_size)
                     self.add(e, parent)
                 #self.add(im, 'main')
                 # factory_id = item['factory']

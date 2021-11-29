@@ -11,8 +11,8 @@ State::State(const ITab& t) : Ref(t) {
     if (t.has("keys")) {
         t.foreach("keys", [&](const ITab &p) {
             // TODO CIAPPO
-            auto key = p[0]->as<int>();
-            auto tbl = PyTab(p[1]->as<pybind11::object>());
+            auto key = p.get<int>("key");
+            auto tbl = PyTab(p.get<pybind11::object>("action"));
 
             auto action = factory->make2<StateAction>(tbl);
             m_actions.insert(std::make_pair(key, action));

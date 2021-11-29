@@ -17,9 +17,14 @@ def text(ciao):
     font = ciao['font']
     size = ciao['size']
     text = ciao['text']
+    format = ciao.get('format')
+    if format:
+        text = format(text)
     color = ciao.get('color', (1, 1, 1, 1))
     align = TextAlignment[ciao.get('align')]
-    return Text(font, size, text, color, align)
+    txt = Text(font, size, text, color, align)
+    txt.tag = ciao.get('tag')
+    return txt
 
 def fps_counter(ciao):
     font = ciao['font']
@@ -165,4 +170,22 @@ def entity(ciao):
     e.model = ciao.get('model', None)
     e.components = ciao.get('components', [])
     e.tag = ciao.get('tag', None)
+    children = ciao.get('children')
+    if children:
+        tile_size = getattr(monkey.engine.data.globals, 'tile_size', [1, 1])# monkey.engine.room_vars.get('tile_size', [1, 1])
+        for c in children:
+            entity_desc = c
+            positions = c.get('pos', [0, 0, 0])
+            if 'ref' in c:
+                entity_desc = monkey.engine.get_asset(entity_desc, c['ref'])
+            factory = monkey.engine.get_item_factory(entity_desc['type'])
+            if not factory:
+                print('Don''t have factory for item: ' + entity_desc['type'])
+                exit(1)
+            for ip in range(0, len(positions), 3):
+                pos = positions[ip:ip + 3]
+                child = factory(entity_desc)
+                child.pos = tiles_to_world(pos, tile_size)
+                e.children.append(child)
+
     return e

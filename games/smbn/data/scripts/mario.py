@@ -72,7 +72,47 @@ def hit_basic_brick_sensor(player, sensor : example.Wrap1, x, y):
         utils.create_entity("scripts.factories.brick_piece", (brick.x, brick.y, 1), use_tile=False, args={'model': 'brickpiece', 'vx': -120, 'vy': 120})
         example.remove(brick.id)
 
+def set_warp(player, warp, x, y):
+    data.globals.active_warp = warp.getInfo()['warp_to']
+    print('setting warp')
 
 
+def clear_warp(player, warp, x, y):
+    data.globals.active_warp = None
+    print('clearing warp')
 
 
+def remove_item(player, item, x, y):
+    example.remove(item.id)
+
+def warp_down(a):
+    print ('checking warp... ' + str(data.globals.active_warp))
+    if data.globals.active_warp:
+        s = Script()
+        s.add_action(act.SetState(tag='player', state='warp'))
+        s.add_action(act.Move(speed=50, by=(0, -64), tag='player'))
+        s.add_action(act.ChangeRoom(data.globals.active_warp))
+        example.play(s)
+
+
+def on_warp_right(player, warp, x, y):
+    player.setState('npcwalk', { 'direction': 1})
+
+
+def end_level(player, warp, x, y):
+    player.setActive(False)
+    info = warp.getInfo()
+    s = Script()
+    s.add_action(act.Delay(sec=1))
+    s.add_action(act.SetVariable('globals.start_position', info['start_position']))
+    s.add_action(act.ChangeRoom(room=info['warp_to']))
+    example.play(s)
+
+
+def rise():
+    player = example.get('player')
+    player.setState('warp', {})
+    s = Script()
+    s.add_action(act.Move(speed=50, by=(0, 64), tag='player'))
+    s.add_action(act.SetState(tag='player', state='walk'))
+    example.play(s)

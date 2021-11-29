@@ -17,6 +17,31 @@ def mario(args):
         'time_to_jump_apex': data.globals.time_to_jump_apex
     }
     p = items.player2D(nargs)
+    # add special keys
+    # TODO change this... if player2D changes.. breaks everything
+    p.components[-1]['states'][-1]['keys'] = [
+        {
+            'key': data.globals.Keys.down,
+            'action': {
+                'type': 'stateaction.callback',
+                'f': data.scripts.warp_down
+            }
+        }]
+    p.components[-1]['states'].append({
+        'type': 'state.anim',
+        'id': 'warp',
+        'anim': 'idle'
+    })
+    p.components[-1]['states'].append({
+        'type': 'state.npc_walk',
+        'id': 'npcwalk',
+        'max_speed': 100,
+        'gravity': data.globals.gravity,
+        'jump_speed': 0
+    })
+
+    p.pos = utils.tiles_to_world(data.globals.start_positions[data.globals.start_position]['pos'], data.globals.tile_size)
+    p.auto_pos = True
     return p
 
 
@@ -47,6 +72,20 @@ def rect(args):
         p.model = asset
 
     return p
+
+
+def coin(args):
+    e = Entity()
+    e.model = args.get('model', 'pickupcoin')
+    e.add_component({
+        'type': 'components.smart_collider',
+        'tag': data.CollisionTags.pickup_coin,
+        'flag': data.CollisionFlags.foe,
+        'mask': data.CollisionFlags.player,
+        'debug': True
+    })
+    return e
+
 
 
 def goomba(args):

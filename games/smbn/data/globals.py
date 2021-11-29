@@ -1,4 +1,7 @@
 import mopy.util as utils
+import data.scripts
+
+
 
 tile_size = 16, 16
 jump_height = 80
@@ -12,7 +15,15 @@ player_modes = [
     {'model': 'supermario', 'size': (0.8, 2)},
     {'model': 'fierymario', 'size': (0.8, 2)},
 ]
-player_mode =1
+start_position = 0
+player_mode = 1
+score = 0
+time = 0
+display_name = ''
+active_warp = None
+
+class Keys:
+    down = 264
 
 class CollisionFlags:
     player = 1
@@ -29,4 +40,73 @@ class CollisionTags:
     mushroom = 5
     flower = 6
     hidden_brick_sensor = 7
+    warp = 8
+    pickup_coin = 9
+    warp_right = 10
+    end_level = 11
 
+class colors:
+    sky = [92/255.0, 148/255.0, 252/255.0, 1.0]
+
+collision_engine = {
+    'type': 'runner.collisionengine',
+    'response': [
+    {
+        'tag1': CollisionTags.player,
+        'tag2': CollisionTags.goomba,
+        'on_enter': data.scripts.mario.foe_hits_mario
+    },
+    {
+        'tag1': CollisionTags.player,
+        'tag2': CollisionTags.mushroom,
+        'on_enter': data.scripts.mario.player_gets_mushroom
+    },
+    {
+        'tag1': CollisionTags.player,
+        'tag2': CollisionTags.warp,
+        'on_enter': data.scripts.mario.set_warp,
+        'on_leave': data.scripts.mario.clear_warp
+    },
+    {
+        'tag1': CollisionTags.player,
+        'tag2': CollisionTags.pickup_coin,
+        'on_enter': data.scripts.mario.remove_item
+    },
+    {
+        'tag1': CollisionTags.player,
+        'tag2': CollisionTags.warp_right,
+        'on_enter': data.scripts.mario.on_warp_right
+    },
+    {
+        'tag1': CollisionTags.player,
+        'tag2': CollisionTags.end_level,
+        'on_enter': data.scripts.mario.end_level
+    },
+    {
+        'tag1': CollisionTags.player,
+        'tag2': CollisionTags.flower,
+        'on_enter': data.scripts.mario.player_gets_flower
+    },
+    {
+        'tag1': CollisionTags.player,
+        'tag2': CollisionTags.bonus_brick_sensor,
+        'on_enter': data.scripts.mario.hit_brick_sensor
+    },
+    {
+        'tag1': CollisionTags.player,
+        'tag2': CollisionTags.basic_brick_sensor,
+        'on_enter': data.scripts.mario.hit_basic_brick_sensor
+    },
+    {
+        'tag1': CollisionTags.player,
+        'tag2': CollisionTags.hidden_brick_sensor,
+        'on_enter': data.scripts.mario.hit_hidden_brick_sensor
+    }
+    ],
+    'size': [80, 80]
+}
+
+
+
+
+    # size: [80, 80]

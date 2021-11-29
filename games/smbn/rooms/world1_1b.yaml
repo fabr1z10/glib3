@@ -1,0 +1,65 @@
+type: _basic
+id: world1_1
+#time: 300
+display_name: '1_1'
+vars:
+  0: mario
+start_positions:
+  - pos: [2, 8]
+cam:
+  - type: ortho
+    id: main
+    world_size: [256, 240]
+    cam_size: [256, 240]
+    bounds:
+      x: [0, 256]
+      y: [0, 240]
+      z: [0, 100]
+  - type: ortho
+    id: diag
+    world_size: [256, 240]
+    cam_size: [256, 240]
+    bounds:
+      x: [0, 256]
+      y: [0, 240]
+      z: [0, 100]
+on_preload:
+  $tils.init
+on_load:
+  func: $tils.setup
+engines:
+  - type: runner.scheduler
+  - $globals.collision_engine
+items:
+  - ref: scoreboard
+    parent: diag
+  - type: mario
+  - type: rect
+    size: [16, 2]
+    img: gfx/block4.png
+    pos: [0, 0, 0]
+  - type: rect
+    size: [1, 11]
+    img: gfx/brick2.png
+    pos: [0, 2, 0]
+  - type: rect
+    size: [7, 3]
+    img: gfx/brick2.png
+    pos: [4, 2, 0]
+  - type: rect
+    size: [7, 1]
+    img: gfx/brick2.png
+    pos: [4, 12, 0]
+  - type: coin
+    pos: [4, 5, 0, 5, 5, 0, 6, 5, 0, 7, 5, 0, 8, 5, 0, 9, 5, 0, 10, 5, 0,
+          4, 7, 0, 5, 7, 0, 6, 7, 0, 7, 7, 0, 8, 7, 0, 9, 7, 0, 10, 7, 0,
+          5, 9, 0, 6, 9, 0, 7, 9, 0, 8, 9, 10, 9, 9, 0]
+  - ref: pipe_horizontal_green
+    pos: [13, 2, 0]
+  - ref: warp_right
+    pos: [13, 2, 0]
+  - ref: end_level
+    args:
+      - world1_1
+      - 1
+    pos: [14.8, 2, 0]

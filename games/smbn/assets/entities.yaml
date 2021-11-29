@@ -1,0 +1,104 @@
+scoreboard:
+  type: _entity
+  children:
+    - type: _text
+      size: 8
+      font: mario_font
+      text: MARIO
+      align: top_left
+      pos: [2, 14, 0]
+    - type: _text
+      tag: label_score
+      size: 8
+      font: mario_font
+      text: $globals.score
+      format: $tils.format_score
+      align: top_left
+      pos: [2, 13.5, 0]
+    - type: _text
+      size: 8
+      font: mario_font
+      text: WORLD
+      align: top_left
+      pos: [8.5, 14, 0]
+    - type: _text
+      tag: label_world
+      size: 8
+      font: mario_font
+      text: id
+      align: top_left
+      pos: [9, 13.5, 0]
+    - type: _text
+      size: 8
+      font: mario_font
+      text: TIME
+      align: top_right
+      pos: [14, 14, 0]
+    - type: _text
+      tag: label_time
+      size: 8
+      font: mario_font
+      text: '0'
+      align: top_right
+      pos: [14, 13.5, 0]
+    - type: _fps_counter
+      font: mario_font
+      size: 8
+      pos: [0, 15, 0]
+pipe_horizontal_green:
+  type: _entity
+  children:
+    - type: bg
+      model: pipe_green_hor
+      pos: [0, 0, 1]
+    - type: rect
+      size: [1, 9]
+      img: gfx/block3.png
+      pos: [2, 2, 0]
+    - type: _line
+      size: [3, 0]
+      pass_thru: False
+      pos: [0, 2, 0]
+warp_down:
+  type: _entity
+  components:
+    - type: components.collider
+      shape:
+        type: shape3d.aabb
+        size: [16, 1, 0]
+        offset: [-8, 0, 0]
+      flag: $globals.CollisionFlags.foe
+      mask: $globals.CollisionFlags.player
+      tag: $globals.CollisionTags.warp
+      debug: True
+    - type: components.info
+      stuff:
+        warp_to: '@0'
+warp_right:
+  type: _entity
+  components:
+    - type: components.collider
+      shape:
+        type: shape3d.aabb
+        size: [2, 16, 0]
+        offset: [0, 0, 0]
+      flag: $globals.CollisionFlags.foe
+      mask: $globals.CollisionFlags.player
+      tag: $globals.CollisionTags.warp_right
+      debug: True
+end_level:
+  type: _entity
+  components:
+    - type: components.collider
+      shape:
+        type: shape3d.aabb
+        size: [16, 16, 0]
+        offset: [0, 0, 0]
+      flag: $globals.CollisionFlags.foe
+      mask: $globals.CollisionFlags.player
+      tag: $globals.CollisionTags.end_level
+      debug: True
+    - type: components.info
+      stuff:
+        warp_to: '@0'
+        start_position: '@1'
