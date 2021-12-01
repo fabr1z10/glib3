@@ -37,7 +37,13 @@ def mario(args):
         'id': 'npcwalk',
         'max_speed': 100,
         'gravity': data.globals.gravity,
-        'jump_speed': 0
+        'jump_speed': 0,
+        'collision_mask': 8
+    })
+    p.components[-1]['states'].append({
+        'type': 'state.anim',
+        'id': 'slide',
+        'anim': 'slide'
     })
 
     p.pos = utils.tiles_to_world(data.globals.start_positions[data.globals.start_position]['pos'], data.globals.tile_size)

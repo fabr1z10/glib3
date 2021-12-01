@@ -1,4 +1,7 @@
 import enum
+import mopy.monkey as monkey
+from mopy.util import tiles_to_world
+
 
 
 class TextAlignment(enum.Enum):
@@ -49,6 +52,26 @@ class Entity:
 
     def add_component(self, comp):
         self.components.append(comp)
+
+    def read_children(self, ciao):
+        children = ciao.get('children')
+        if children:
+            tile_size = getattr(monkey.engine.data.globals, 'tile_size',
+                                [1, 1])  # monkey.engine.room_vars.get('tile_size', [1, 1])
+            for c in children:
+                entity_desc = c
+                positions = c.get('pos', [0, 0, 0])
+                if 'ref' in c:
+                    entity_desc = monkey.engine.get_asset(entity_desc, c['ref'])
+                factory = monkey.engine.get_item_factory(entity_desc['type'])
+                if not factory:
+                    print('Don''t have factory for item: ' + entity_desc['type'])
+                    exit(1)
+                for ip in range(0, len(positions), 3):
+                    pos = positions[ip:ip + 3]
+                    child = factory(entity_desc)
+                    child.pos = tiles_to_world(pos, tile_size)
+                    self.children.append(child)
 
 
 class Sprite(Entity):

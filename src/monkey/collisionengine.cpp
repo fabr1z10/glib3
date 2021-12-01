@@ -171,7 +171,7 @@ void SpatialHashingCollisionEngine::Update(double dt) {
                 if (!c2->isActive())
                     continue;
                 // check collision mask
-                if ( ((c1->GetCollisionMask() & c2->GetCollisionFlag()) == 0) && ((c2->GetCollisionMask() & c1->GetCollisionFlag()) == 0)) {
+                if ( ((c1->GetCollisionMask() & c2->GetCollisionFlag()) == 0) || ((c2->GetCollisionMask() & c1->GetCollisionFlag()) == 0)) {
                     // If at least one mask is hit, then we keep checking the collision.
                     // if both mask fail, then we skip to the next collider
                     continue;

@@ -1,0 +1,25 @@
+e_trunk:
+  type: bg
+  model: '@0'
+  children:
+    - type: _line
+      size: [4, 0]
+      pass_thru: true
+      pos: [1, 4]
+    - type: bg
+      model: door
+      pos: [2, 0, 0]
+    - type: _entity
+      components:
+        - type: components.collider
+          shape:
+            type: shape3d.aabb
+            size: [16, 32, 0]
+          flag: 12
+          mask: $globals.CollisionFlags.player
+          tag: $globals.CollisionTags.door
+          debug: True
+        - type: components.info
+          stuff:
+            warp_to: '@1'
+      pos: [2.5, 0, 0]

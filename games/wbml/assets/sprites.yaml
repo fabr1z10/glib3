@@ -1,0 +1,44 @@
+wboy0:
+  type: model.boxed
+  sheet: gfx/wbml.png
+  animations:
+    idle:
+      box: 0
+      loop: false
+      frames:
+        - quads: [1,1,21,24,-11,0]
+    walk:
+      box: 0
+      loop: true
+      frames:
+        - ticks: 10
+          quads: [23, 1, 21, 24, -11, 0]
+        - ticks: 10
+          quads: [46, 1, 22, 24, -11, 0]
+        - ticks: 10
+          quads: [70, 1, 21, 24, -11, 0]
+        - ticks: 10
+          quads: [92, 1, 21, 24, -11, 0]
+    jump:
+      box: 0
+      loop: false
+      frames:
+        - quads: [1,1,21,24,-11,0]
+    knock:
+      loop: true
+      frames:
+        - ticks: 10
+          quads: [115,1,17,26,-8,0]
+        - ticks: 10
+          quads: [133,1,16,26,-8,0]
+
+  boxes:
+    - [-4, 0, 4, 24]
+door:
+  type: model.sprite
+  sheet: gfx/wbml.png
+  animations:
+    closed:
+      loop: false
+      frames:
+        - quads: [96, 128, 32, 32]

@@ -80,3 +80,10 @@ pipe_green_hor:
   img_tile_size: [16, 16]
   size: [3, 2]
   data: [2, 5, 3, 5, 4, 5, 2, 4, 3, 4, 4, 4]
+flagpole:
+  type: model.tiled
+  tex: gfx/smb1.png
+  img_tile_size: [16, 16]
+  tile_size: [16, 16]
+  size: [1, 10]
+  data: [3,2,3,2,3,2,3,2,3,2,3,2,3,2,3,2,3,2,4,2]

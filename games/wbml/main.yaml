@@ -1,0 +1,10 @@
+---
+  title: Wonderboy in Monsterland
+  lang: eng
+  device_size: [192, 192]
+  window_size: [384, 384]
+  start_room: citywl
+  shaders:
+    - color
+    - unlit_textured
+    - text

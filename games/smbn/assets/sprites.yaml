@@ -175,6 +175,13 @@ mushroom:
       box: 0
       frames:
         - quads: [48, 16, 16, 16, -8, 0]
+flag:
+  type: model.sprite
+  sheet: gfx/smb1.png
+  animations:
+    idle:
+      frames:
+        - quads: [224,64,16,16]
 mushroom_1up:
   type: model.boxed
   sheet: gfx/smb1.png

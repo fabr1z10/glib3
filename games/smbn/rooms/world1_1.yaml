@@ -3,7 +3,7 @@ id: world1_1
 time: 300
 display_name: '1_1'
 start_positions:
-  - pos: [52, 8]
+  - pos: [192, 8]
   - pos: [164, 0]
     script: $scripts.mario.rise
 vars:
@@ -169,6 +169,13 @@ items:
   - type: bg
     model: castle
     pos: [202, 2, -0.5]
+  - ref: flag_pole
+    pos: [198,3,0]
+  - ref: end_level
+    args:
+      - world1_1
+      - 1
+    pos: [204.8, 2, 0]
 #  - type: goomba
 #    model: goomba
 #    size: [16, 16]

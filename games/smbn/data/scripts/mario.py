@@ -116,3 +116,11 @@ def rise():
     s.add_action(act.Move(speed=50, by=(0, 64), tag='player'))
     s.add_action(act.SetState(tag='player', state='walk'))
     example.play(s)
+
+def play_flag_scene(player, obj, x, y):
+    player.vy = 0
+    s = Script()
+    s.add_action(act.SetState(tag='player', state='slide'))
+    s.add_action(act.Move(tag='player', by=(0, obj.y - player.y), speed=50))
+    s.add_action(act.SetState(tag='player', state='npcwalk', args={'direction': 1}))
+    example.play(s)

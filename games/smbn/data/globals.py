@@ -29,6 +29,7 @@ class CollisionFlags:
     player = 1
     platform = 2
     foe = 4
+    controller = 8
     platform_passthrough = 32
 
 
@@ -44,6 +45,8 @@ class CollisionTags:
     pickup_coin = 9
     warp_right = 10
     end_level = 11
+    flag_pole = 12
+
 
 class colors:
     sky = [92/255.0, 148/255.0, 252/255.0, 1.0]
@@ -101,6 +104,11 @@ collision_engine = {
         'tag1': CollisionTags.player,
         'tag2': CollisionTags.hidden_brick_sensor,
         'on_enter': data.scripts.mario.hit_hidden_brick_sensor
+    },
+    {
+        'tag1': CollisionTags.player,
+        'tag2': CollisionTags.flag_pole,
+        'on_enter': data.scripts.mario.play_flag_scene
     }
     ],
     'size': [80, 80]

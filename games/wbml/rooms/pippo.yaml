@@ -1,0 +1,23 @@
+type: _basic
+id: pippo
+start_positions:
+  - pos: [0, 0]
+cam:
+  - type: ortho
+    id: main
+    world_size: [192, 192]
+    cam_size: [192, 192]
+  - type: ortho
+    id: diag
+    world_size: [192, 192]
+    cam_size: [192, 192]
+on_preload:
+  $scripts.init
+on_load:
+  func: $scripts.setup
+engines:
+  - type: runner.scheduler
+items:
+  - type: bg
+    model: a1
+    pos: [0, 0, 0]

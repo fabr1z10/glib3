@@ -19,6 +19,7 @@ private:
     float m_maxSpeed;
     float m_jumpSpeed;
     AnimationRenderer* m_renderer;
+    ICollider* m_collider;
     std::string m_idleAnim;
     std::string m_walkAnim;
     std::string m_jUpAnim;
@@ -27,4 +28,7 @@ private:
     bool m_fliph;
     bool m_flipIfPlatformEnds;
 
+    // override collision mask
+    int m_collisionMaskOverride;
+    int m_oldCollisionMask;
 };

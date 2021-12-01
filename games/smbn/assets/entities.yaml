@@ -94,7 +94,7 @@ end_level:
         type: shape3d.aabb
         size: [16, 16, 0]
         offset: [0, 0, 0]
-      flag: $globals.CollisionFlags.foe
+      flag: $globals.CollisionFlags.controller
       mask: $globals.CollisionFlags.player
       tag: $globals.CollisionTags.end_level
       debug: True
@@ -102,3 +102,22 @@ end_level:
       stuff:
         warp_to: '@0'
         start_position: '@1'
+flag_pole:
+  type: _entity
+  model: flagpole
+  components:
+    - type: components.collider
+      shape:
+        type: shape3d.aabb
+        size: [2, 144, 0]
+        offset: [7, 0, 0]
+      flag: $globals.CollisionFlags.foe
+      mask: $globals.CollisionFlags.player
+      tag: $globals.CollisionTags.flag_pole
+      debug: True
+  children:
+    - type: _entity
+      tag: flag
+      model: flag
+      pos: [-0.5, 8, 0]
+

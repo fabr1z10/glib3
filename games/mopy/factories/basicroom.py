@@ -14,10 +14,10 @@ def restart():
 class BasicRoom(Room):
     def __init__(self, desc):
         aa = desc.get('vars', None)
-        if aa:
-            room_info = monkey.engine.repl_vars(desc, aa)
-        else:
-            room_info = desc
+        #if aa:
+        room_info = monkey.engine.repl_vars(desc, aa)
+        #else:
+        #    room_info = desc
         super().__init__(room_info['id'])
         device_size = monkey.engine.device_size
         on_preload = room_info.get('on_preload', None)

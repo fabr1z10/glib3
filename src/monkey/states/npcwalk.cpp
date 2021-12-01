@@ -2,7 +2,7 @@
 #include <GLFW/glfw3.h>
 #include <monkey/math/geom.h>
 #include <monkey/entity.h>
-
+#include <monkey/components/icollider.h>
 
 NPCWalk::NPCWalk(const ITab& t) : State(t) {
     m_maxSpeed = t.get<float>("max_speed");
@@ -17,6 +17,7 @@ NPCWalk::NPCWalk(const ITab& t) : State(t) {
     m_direction = t.get<int>("direction", -1);
     m_fliph = t.get<bool>("flip_hor", true);
     m_flipIfPlatformEnds = t.get<bool>("flip_on_edge", false);
+    m_collisionMaskOverride = t.get<int>("collision_mask", -1);
 }
 
 void NPCWalk::AttachStateMachine(StateMachine * sm) {
@@ -35,10 +36,16 @@ void NPCWalk::AttachStateMachine(StateMachine * sm) {
     }
 
     m_renderer = dynamic_cast<AnimationRenderer*>(m_entity->GetComponent<Renderer>());
+    m_collider = m_entity->GetComponent<ICollider>();
 }
 
 void NPCWalk::Init(const ITab &d) {
     m_direction = d.get<int>("direction", -1);
+    //m_collider->setCollisionFlag(0);
+    if (m_collisionMaskOverride != -1) {
+        m_oldCollisionMask = m_collider->GetCollisionMask();
+        m_collider->setCollisionMask(m_collisionMaskOverride);
+    }
 }
 
 void NPCWalk::Run(double dt) {
@@ -86,5 +93,7 @@ void NPCWalk::Run(double dt) {
 }
 
 void NPCWalk::End() {
-
+    if (m_collisionMaskOverride != -1) {
+        m_collider->setCollisionMask(m_oldCollisionMask);
+    }
 }
