@@ -3,8 +3,9 @@
   lang: eng
   device_size: [320, 240]
   window_size: [640, 480]
-  start_room: sprite
+  start_room: skeletal
   shaders:
     - color
     - unlit_textured
     - text
+    - skeletal

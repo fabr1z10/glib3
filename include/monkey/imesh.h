@@ -57,9 +57,9 @@ public:
     std::string GetId() const;
     void SetId(const std::string&);
     ShaderType getShaderType() const;
-    glm::vec2 getKeyPoint(const std::string&) const;
-    void addKeyPoint(const std::string&, glm::vec2);
-    bool hasKeyPoint (const std::string&) const;
+//    glm::vec2 getKeyPoint(const std::string&) const;
+//    void addKeyPoint(const std::string&, glm::vec2);
+//    bool hasKeyPoint (const std::string&) const;
     void addTexture(const TextureInfo&);
     void addTexture(const std::string& file, TexType);
 
@@ -75,7 +75,7 @@ protected:
     GLuint m_ib;
     //int m_indicesCount;
     //unsigned int m_shaderMask;
-    std::unordered_map<std::string, glm::vec2> m_keyPoints;
+    //std::unordered_map<std::string, glm::vec2> m_keyPoints;
     std::vector<TextureInfo> m_textures;
     static std::array<std::string, 3> g_texTypeStr;
 };
@@ -127,17 +127,17 @@ inline Bounds ComputeBounds<VertexText>(std::vector<VertexText>& vertices) {
     return bounds;
 }
 
-inline glm::vec2 IMesh::getKeyPoint(const std::string & id) const {
-	return m_keyPoints.at(id);
-}
-
-inline bool IMesh::hasKeyPoint(const std::string & id) const {
-	return m_keyPoints.count(id) > 0;
-}
-
-inline void IMesh::addKeyPoint(const std::string & id, glm::vec2 pos) {
-    m_keyPoints[id] = pos;
-}
+//inline glm::vec2 IMesh::getKeyPoint(const std::string & id) const {
+//	return m_keyPoints.at(id);
+//}
+//
+//inline bool IMesh::hasKeyPoint(const std::string & id) const {
+//	return m_keyPoints.count(id) > 0;
+//}
+//
+//inline void IMesh::addKeyPoint(const std::string & id, glm::vec2 pos) {
+//    m_keyPoints[id] = pos;
+//}
 
 inline void IMesh::addTexture(const TextureInfo& tex) {
     m_textures.push_back(tex);

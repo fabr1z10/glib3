@@ -6,7 +6,7 @@
 #include <monkey/assets/font.h>
 #include <monkey/assets/tex.h>
 #include <monkey/assets/model.h>
-#include <monkey/skeletal/animation.hpp>
+//#include <monkey/skeletal/animation.hpp>
 #include <monkey/assets/skeletalanimation.h>
 #include <monkey/input/yamltab.h>
 #include <monkey/assets/func.h>
@@ -32,7 +32,9 @@ private:
     std::unordered_map<std::string, std::shared_ptr<Font> > m_fonts;
     std::unordered_map<std::string, std::shared_ptr<Model> > m_models;
     std::unordered_map<std::string, std::shared_ptr<Tex> > m_textures;
-    //std::unordered_map<std::string, std::shared_ptr<Func> > m_scr;
+	std::unordered_map<std::string, std::shared_ptr<IMesh> > m_meshes;
+
+	//std::unordered_map<std::string, std::shared_ptr<Func> > m_scr;
     //std::unordered_map<std::string, std::shared_ptr<SkAnimation> > m_sanim;
 };
 
@@ -43,6 +45,8 @@ template<> std::shared_ptr<Model> AssetManager::get(const std::string& id);
 template<> std::shared_ptr<Tex> AssetManager::get(const std::string& id);
 
 template<> std::shared_ptr<Func> AssetManager::get(const std::string& id);
+
+template<> std::shared_ptr<IMesh> AssetManager::get(const std::string& id);
 
 //
 ////template <typename T>

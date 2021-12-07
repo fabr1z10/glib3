@@ -1,4 +1,4 @@
-#include <monkey/skeletal/animation.hpp>
+#include <monkey/skeletal/skeletalanimation.hpp>
 #include <monkey/skeletal/skmodel.hpp>
 #include <glm/gtx/transform.hpp>
 

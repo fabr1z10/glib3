@@ -3,6 +3,7 @@
 #include <monkey/engine.h>
 #include <monkey/math/util.h>
 #include <monkey/box2dworld.h>
+#include <monkey/skeletalmesh.h>
 
 std::shared_ptr<IMesh> ModelFactory::b2Poly(b2PolygonShape &shape, glm::vec4 color) {
     auto world = Engine::get().GetRunner<Box2DWorld>();
@@ -210,4 +211,66 @@ std::shared_ptr<Model> ModelFactory::quad(const std::string& imagePath, float wi
     return std::make_shared<Model>(mesh);
 
 
+}
+
+
+std::shared_ptr<IMesh> ModelFactory::_mesh(const ITab & t) {
+	using Coord = float;
+	using Point = std::array<Coord, 2>;
+	using N = uint32_t;
+
+	auto mesh = std::make_shared<SkeletalMesh>();
+	auto data =t.get<std::vector<float>>("data");
+	mesh->m_primitive = GL_TRIANGLES;// t.get<GLenum>("primitive", GL_TRIANGLES);
+	auto origin = t.get<glm::vec2>("origin");
+	mesh->setOrigin(origin);
+	if (t.has("key_points")) {
+		t.foreach("key_points", [&] (const std::string& id, const ITab& point) {
+			auto p = point.as<glm::vec2>();
+			mesh->addKeyPoint(id, glm::vec2(p.x - origin.x, -(p.y - origin.y)));
+		});
+
+
+	}
+
+	auto& factory = Engine::get().GetAssetManager();
+	auto jointId = t.get<int>("joint_id");
+	auto parentJointId = t.get<int>("parent_joint_id", -1);
+	auto tex = factory.get<Tex>(t.get<std::string>("tex"));
+	std::vector<VertexSkeletal> vertices;
+	std::vector<Point> polygon;
+
+	for (size_t i = 0; i < data.size(); i += 4) {
+		size_t offset = 4 * i;
+		VertexSkeletal vertex;
+		float x = data[offset] - origin.x;
+		float y = -(data[offset + 1] - origin.y);
+		vertex.x = x;
+		vertex.y = y;
+		vertex.z = data[offset + 2];
+		vertex.s = data[offset] / tex->GetWidth();
+		vertex.t = data[offset + 1] / tex->GetHeight();
+		vertex.index0 = jointId;
+		if (parentJointId == -1) {
+			vertex.index1 = 0;
+			vertex.weight1 = 0.0;
+			vertex.weight0 = 1.0;
+		} else {
+			vertex.index1 = parentJointId;
+			vertex.weight1 = data[offset + 3];
+			vertex.weight0 = 1.0 - data[offset + 3];
+		}
+		vertex.index2 = 0;
+		vertex.weight2 = 0.0;
+		polygon.push_back({x, y});
+		vertices.push_back(vertex);
+	}
+
+	std::vector<std::vector<Point>> p;
+	p.push_back(polygon);
+	auto tri = mapbox::earcut<N>(p);
+	mesh->Init(vertices, tri);
+
+	mesh->addTexture(TextureInfo{tex->GetTexId(), TexType::DIFFUSE});
+	return mesh;
 }

@@ -168,6 +168,7 @@ def player2D(ciao):
 def entity(ciao):
     e = Entity()
     e.model = ciao.get('model', None)
+    e.scale = ciao.get('scale')
     e.components = ciao.get('components', [])
     e.tag = ciao.get('tag', None)
     children = ciao.get('children')

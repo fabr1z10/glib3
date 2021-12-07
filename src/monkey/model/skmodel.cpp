@@ -7,11 +7,18 @@
 #include <monkey/input/pytab.h>
 #include <monkey/factories/dynamicassets.h>
 #include <monkey/math/shapes3d/aabb.h>
+#include <monkey/imesh.h>
+#include <monkey/skeletal/skeletalanimation.hpp>
+#include <monkey/components/skeletalrenderer.h>
 
 ShaderType SkModel::GetShaderType() const {
     return SKELETAL_SHADER;
 }
 
+std::shared_ptr<Renderer> SkModel::makeRenderer(std::shared_ptr<Model> model) {
+	auto renderer = std::make_shared<SkeletalRenderer>(model);
+	return renderer;
+}
 
 
 std::vector<std::string> SkModel::getAnimations() const {
@@ -46,39 +53,54 @@ int SkModel::getShapeId(const std::string& animId) {
 
 }
 
+std::unordered_map<std::string, glm::mat4> SkModel::calculateCurrentPose() {
 
+	std::unordered_map<std::string, glm::mat4> result;
+	std::list<std::string> joints;
+	joints.push_back(m_root);
+	while (!joints.empty()) {
+		auto current = joints.front();
+		joints.pop_front();
+
+		auto restTransform = m_restTransforms.at(current);
+		// TODO apply local transform
+		auto localMat = restTransform.getLocalTransform();
+		result[current] = localMat;
+		// TODO convert to global mat
+		if (m_jointChildren.count(current) > 0) {
+			for (const auto &child : m_jointChildren.at(current)) {
+				joints.push_back(child);
+			}
+		}
+	}
+	return result;
+
+}
 
 void SkModel::addMesh(const std::string& id, const std::string& meshId, const std::string& parentMesh, glm::vec2 attachPoint,
                       float z, float scale, int order, glm::vec2 offset) {
 
-    // assumption : one mesh, one joint
-    //auto dict = pybind11::dict();
-    //YAML::Node args;
     int newJointId = m_js.size();
     m_meshToJointId[id] = newJointId;
-    //a/rgs["z"] = 0.0f;
-    //dict["scale"] = scale;
-    //dict["z"] =  0.0f;
-    //args["jointId"] = newJointId;
-    //dict["jointId"]= newJointId;
     int parentJointId = -1;
     glm::mat4 bindTransform(1.0f);
+
     JointTransform tr;
     tr.translation = glm::vec3(attachPoint, 0.0f);
     auto joint = std::make_shared<Joint>(newJointId, id);
     joint->setScale(scale);
     m_js.push_back(joint);
-    if (!parentMesh.empty()) {
-		parentJointId = m_meshToJointId.at(parentMesh);
-        //args["parentJointId"] = parentJointIndex;
-        //dict["parentJointId"]= parentJointIndex;
-        auto parentJoint = m_js[parentJointId];
-        joint->setLocalToParentTransform(tr, parentJoint->getBindTransform());
-        bindTransform = parentJoint->getBindTransform() * tr.getLocalTransform();
-        parentJoint->addChild(joint);
-    } else {
-        m_rootJoint = joint;
-    }
+//    if (!parentMesh.empty()) {
+//		parentJointId = m_meshToJointId.at(parentMesh);
+//        //args["parentJointId"] = parentJointIndex;
+//        //dict["parentJointId"]= parentJointIndex;
+//        auto parentJoint = m_js[parentJointId];
+//        joint->setLocalToParentTransform(tr, parentJoint->getBindTransform());
+//        bindTransform = parentJoint->getBindTransform() * tr.getLocalTransform();
+//        parentJoint->addChild(joint);
+//    } else {
+//        m_rootJoint = joint;
+//    }
     m_restTransforms[id] = tr;
 
     //std::vector<float> vecTransform;
@@ -89,6 +111,12 @@ void SkModel::addMesh(const std::string& id, const std::string& meshId, const st
 
     //auto mesh = Engine::get().GetAssetManager().getMesh(meshId, t);
     // TODO restore
+    auto mesh = Engine::get().GetAssetManager().get<IMesh>(meshId);
+
+    // store origin and key points for this mesh
+
+	Model::addMesh(mesh);
+	m_skeletalMeshes[id] = dynamic_cast<SkeletalMesh*>(mesh.get());
 //	auto meshraw = Engine::get().GetAssetManager().getRaw(meshId);
 //	std::cerr << meshraw->has("origin");
 //	auto mesh = std::dynamic_pointer_cast<IMesh>(makeDynamicSkeletalMesh(*meshraw.get(), newJointId, parentJointId,
@@ -226,28 +254,28 @@ void SkModel::addMesh(const std::string& id, const std::string& meshId, const st
 //}
 
 void SkModel::computeOffset() {
-    m_offsetPoints.clear();
-    for (const auto& p : m_offsetPointIds) {
-
-        auto iter = m_meshes.find(p.first);
-        if (iter != m_meshes.end()) {
-            auto point = iter->second->getKeyPoint(p.second);
-            //auto point = iter->second.at(p.second);
-            //const auto& joint = m_allJoints.at(p.first);
-            //auto jointId = p.first+"@0";
-            const auto& joint = m_js[m_meshToJointId.at(p.first)];//  m_jointMap2.at(jointId)];
-            auto transform = joint->getBindTransform();
-            auto scaling = glm::scale(glm::vec3(joint->getScale()));
-            glm::vec3 tp = transform * scaling * glm::vec4(point.x, point.y, 0.0f, 1.0f);
-            m_offsetPoints.emplace_back(p.first, glm::vec3(tp.x, tp.y, 0.0f));
-        }
-    }
+//    m_offsetPoints.clear();
+//    for (const auto& p : m_offsetPointIds) {
+//
+//        auto iter = m_meshes.find(p.first);
+//        if (iter != m_meshes.end()) {
+//            auto point = iter->second->getKeyPoint(p.second);
+//            //auto point = iter->second.at(p.second);
+//            //const auto& joint = m_allJoints.at(p.first);
+//            //auto jointId = p.first+"@0";
+//            const auto& joint = m_js[m_meshToJointId.at(p.first)];//  m_jointMap2.at(jointId)];
+//            auto transform = joint->getBindTransform();
+//            auto scaling = glm::scale(glm::vec3(joint->getScale()));
+//            glm::vec3 tp = transform * scaling * glm::vec4(point.x, point.y, 0.0f, 1.0f);
+//            m_offsetPoints.emplace_back(p.first, glm::vec3(tp.x, tp.y, 0.0f));
+//        }
+//    }
 }
 
 SkModel::SkModel(const ITab& main) : _nextJointId(0), m_jointCount(0) {
 
     //auto meshNode = main["meshes"].as<std::vector<YAML::Node>>();
-    main.foreach("meshes", [&] (const ITab& mesh) {
+    main.foreach("joints", [&] (const ITab& mesh) {
         auto id = mesh.get<std::string>("id");
         auto meshId = mesh.get<std::string>("mesh");
         if (!meshId.empty()) {
@@ -258,7 +286,10 @@ SkModel::SkModel(const ITab& main) : _nextJointId(0), m_jointCount(0) {
             glm::vec2 attachPoint(0.0f);
             if (!parent.empty()) {
                 auto keyPoint = mesh.get<std::string>("key_point");
-                attachPoint = m_meshes.at(parent)->getKeyPoint(keyPoint);
+                attachPoint = m_skeletalMeshes.at(parent)->getKeyPoint(keyPoint);
+                m_jointChildren[parent].push_back(id);
+            } else {
+            	m_root = id;
             }
             //auto sortingOrder = main["order"].as<int>(0);
             addMesh(id, meshId, parent, attachPoint, z, scale, 0, offset);
@@ -285,11 +316,12 @@ SkModel::SkModel(const ITab& main) : _nextJointId(0), m_jointCount(0) {
     // ##################
     // read offset
     // ##################
-    main.foreach("offset", [&] (const ITab& node) {
-        auto ostr = node.as<std::vector<std::string>>();
-        m_offsetPointIds.emplace_back(ostr[0], ostr[1]);
-    });
-
+    if (main.has("offset")) {
+		main.foreach("offset", [&](const ITab &node) {
+			auto ostr = node.as<std::vector<std::string>>();
+			m_offsetPointIds.emplace_back(ostr[0], ostr[1]);
+		});
+	}
     computeOffset();
 
     // ################## read boxes
@@ -303,42 +335,44 @@ SkModel::SkModel(const ITab& main) : _nextJointId(0), m_jointCount(0) {
     	m_maxBounds.ExpandWith(shape->getBounds());
     });
     m_attackDistance = 0.0f;
-    main.foreach("attack_boxes", [&] (const ITab& node) {
-		auto anim = node.get<std::string>("anim");
-    	auto box = node.get<int>("box");
-		auto boneId = node.get<std::string>("joint");
-		auto pointName = node.get<std::string>("point");
-		float boneScale = m_js[m_meshToJointId[boneId]]->getScale();
-		auto size = node.get<std::string>("size");
+    if (main.has("attack_boxes")) {
+		main.foreach("attack_boxes", [&](const ITab &node) {
+			auto anim = node.get<std::string>("anim");
+			auto box = node.get<int>("box");
+			auto boneId = node.get<std::string>("joint");
+			auto pointName = node.get<std::string>("point");
+			float boneScale = m_js[m_meshToJointId[boneId]]->getScale();
+			auto size = node.get<std::string>("size");
 
-		/// ---
-        const auto& animation = m_animations.at(anim);
-        auto atimes = animation->getAttackTimes(box);
-        auto abox = std::make_shared<AttackBox>();
-        abox->t0 = atimes.first;
-        abox->t1 = atimes.second;
-        abox->boneId = boneId;
-		//abox->bone = m_jointMap2.at(boneId);//  boneToIndex.at(boneId);
-        Joint* joint = getJoint(boneId);
-        auto transform = joint->getBindTransform();
-        auto point = getKeyPoint(boneId, pointName);
+			/// ---
+			const auto &animation = m_animations.at(anim);
+			auto atimes = animation->getAttackTimes(box);
+			auto abox = std::make_shared<AttackBox>();
+			abox->t0 = atimes.first;
+			abox->t1 = atimes.second;
+			abox->boneId = boneId;
+			//abox->bone = m_jointMap2.at(boneId);//  boneToIndex.at(boneId);
+			Joint *joint = getJoint(boneId);
+			auto transform = joint->getBindTransform();
+			auto point = getKeyPoint(boneId, pointName);
 
-        auto transformedPoint = transform * glm::scale(glm::vec3(boneScale)) * glm::vec4(point,0.0f,1.0f);
-        auto dims = boneScale * getKeyPoint(boneId, size);
-        //abox->shape = std::make_shared<Rect>(dims[0], dims[1], glm::vec3(transformedPoint));
-        transformedPoint.z = -half_thickness;
-        abox->shape = std::make_shared<AABB>(glm::vec3(dims[0], dims[1], thickness), glm::vec3(transformedPoint));
-        auto tr0 = animation->getAnimTransform(abox->t0, this);
-        auto boneTransform0 = tr0.at(boneId);
-        auto tb1 = abox->shape->getBounds();
-        tb1.Transform(boneTransform0);
-        auto tsb = tb1.GetSize();
-        abox->shapeTransformed = std::make_shared<AABB>(glm::vec3(tsb[0], tsb[1], thickness), glm::vec3(tb1.min.x, tb1.min.y, -half_thickness));
-        m_attackTimes[anim] = abox;
-        //m_attackDistance = std::max(m_attackDistance, tb1.min.x);
-        m_attackDistance = 0.5f * (tb1.min.x+tb1.max.x);
-	});
-
+			auto transformedPoint = transform * glm::scale(glm::vec3(boneScale)) * glm::vec4(point, 0.0f, 1.0f);
+			auto dims = boneScale * getKeyPoint(boneId, size);
+			//abox->shape = std::make_shared<Rect>(dims[0], dims[1], glm::vec3(transformedPoint));
+			transformedPoint.z = -half_thickness;
+			abox->shape = std::make_shared<AABB>(glm::vec3(dims[0], dims[1], thickness), glm::vec3(transformedPoint));
+			auto tr0 = animation->getAnimTransform(abox->t0, this);
+			auto boneTransform0 = tr0.at(boneId);
+			auto tb1 = abox->shape->getBounds();
+			tb1.Transform(boneTransform0);
+			auto tsb = tb1.GetSize();
+			abox->shapeTransformed = std::make_shared<AABB>(glm::vec3(tsb[0], tsb[1], thickness),
+															glm::vec3(tb1.min.x, tb1.min.y, -half_thickness));
+			m_attackTimes[anim] = abox;
+			//m_attackDistance = std::max(m_attackDistance, tb1.min.x);
+			m_attackDistance = 0.5f * (tb1.min.x + tb1.max.x);
+		});
+	}
 
 //    if (main.has("attack")) {
 //
@@ -381,7 +415,7 @@ SkModel::SkModel(const ITab& main) : _nextJointId(0), m_jointCount(0) {
 }
 
 glm::vec2 SkModel::getKeyPoint(const std::string &joint, const std::string &pointId) const {
-	return m_meshes.at(joint)->getKeyPoint(pointId);
+	return m_skeletalMeshes.at(joint)->getKeyPoint(pointId);
 }
 
 std::pair<bool, glm::vec2> SkModel::getKeyPointRestWorld(const std::string &jointId, const std::string &pointId) {

@@ -47,6 +47,21 @@ template<> std::shared_ptr<Model> AssetManager::get(const std::string& id) {
     return model;
 }
 
+template<> std::shared_ptr<IMesh> AssetManager::get(const std::string& id) {
+	auto it = m_meshes.find(id);
+	if (it != m_meshes.end()) {
+		std::cout << "cache hit for " << id << "!\n";
+		return it->second;
+	}
+	// create the model
+	// extract the itab
+	auto assetDesc = m_assets->operator[](id);
+	auto mesh = Engine::get().GetSceneFactory()->make2<IMesh>(*assetDesc.get());
+	m_meshes[id] = mesh;
+	return mesh;
+}
+
+
 template<> std::shared_ptr<Tex> AssetManager::get(const std::string& texId) {
     auto it = m_textures.find(texId);
     if (it != m_textures.end()) {

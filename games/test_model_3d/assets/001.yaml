@@ -72,6 +72,21 @@ goomba:
   boxes:
     - [-6, 0, 6, 16]
 
+skeleton_example:
+  type: model.skeletal
+  joints:
+    - id: torso
+      mesh: mesh.example1.torso
+    - id: legu
+      mesh: mesh.example1.legu
+      parent: torso
+      key_point: legu
+    - id: legl
+      mesh: mesh.example1.legl
+      parent: legu
+      key_point: legl
+
+
 mario:
   type: model.boxed
   sheet: gfx/smb1.png

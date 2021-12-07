@@ -51,7 +51,7 @@
 #include <monkey/activities/noop.h>
 #include <monkey/activities/scroll.h>
 #include <monkey/skeletal/skmodel.hpp>
-#include <monkey/skeletal/animation.hpp>
+#include <monkey/skeletal/skeletalanimation.hpp>
 #include <monkey/components/stateactions.h>
 #include <monkey/skeletal/skcollider.hpp>
 #include <monkey/activities/blink.h>
@@ -177,7 +177,7 @@ SceneFactory::SceneFactory() {
     add2<Controller2D> ("components.controller2D");
     add2<ControllerVehicle> ("components.controller_vehicle");
     add2<Controller3D> ("components.controller3D");
-	add2<ControllerFlat> ("components.controller_flat");
+	//add2<ControllerFlat> ("components.controller_flat");
     add2<Controller25> ("components.controller25");
     add2<Dynamics> ("components.dynamics");
     add2<PlatformComponent>("components.platform");
@@ -199,6 +199,9 @@ SceneFactory::SceneFactory() {
     addf<Model>("model.tiled", ModelFactory::_tiled);
     add2<SpriteModel> ("model.sprite");
     add2<BoxedModel> ("model.boxed");
+	add2<SkModel>("model.skeletal");
+	addf<IMesh>("skeletalmesh", ModelFactory::_mesh);
+
 
     add2<DelayTime> ("action.delay");
     add2<DelayTimeDynamic> ("action.delaydynamic");
@@ -257,7 +260,6 @@ SceneFactory::SceneFactory() {
     add2<StateTransition> ("stateaction.statetransition");
     // assets
 
-    addAssetFactory<SkModel>("asset.skeletalmodel");
     addAssetFactory<TexturedMesh<VertexSkeletal>>("asset.skeletalmesh");
     addAssetFactory<SkAnimation> ("asset.skeletalanimation");
     // m_dynamicAssetFactories.insert(std::make_pair("asset.skeletalmesh", makeDynamicSkeletalMesh));

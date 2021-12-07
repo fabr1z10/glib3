@@ -45,6 +45,7 @@ void nodeHelper(std::list<YAML::Node>& nodes, YAML::Node node, const ITab& args)
         }
     }
 }
+/*
 std::shared_ptr<Object> makeDynamicSkeletalMesh(const ITab& node, int jointId, int parentJointId,
 												float z, float scale, const glm::mat4& transform, glm::vec2 offset) {
     using Coord = float;
@@ -143,4 +144,4 @@ std::shared_ptr<Object> makeDynamicSkeletalMesh(const ITab& node, int jointId, i
     auto tri = mapbox::earcut<N>(p);
     mesh->Init(vertices, tri);
     return mesh;
-}
+}*/

@@ -5,6 +5,9 @@
 #include <monkey/texturedmesh.h>
 #include <monkey/vertices.h>
 #include <monkey/skeletal/joint.hpp>
+#include <monkey/skeletal/skeletalanimation.hpp>
+#include <monkey/skeletalmesh.h>
+
 
 struct SkPointInfo {
 	glm::vec2 point;
@@ -50,8 +53,10 @@ class SkModel : public Model {
 public:
     //SkModel (const ITable&);
     SkModel (const ITab&);
+    std::unordered_map<std::string, glm::mat4> calculateCurrentPose();
+	std::shared_ptr<Renderer> makeRenderer(std::shared_ptr<Model>) override;
 
-    //Bounds getBounds() const ;
+	//Bounds getBounds() const ;
     std::vector<std::string> getAnimations() const ;
     std::string getDefaultAnimation() const;
     ShaderType GetShaderType() const;
@@ -97,6 +102,9 @@ public:
     std::pair<bool, glm::vec2> getKeyPointRestWorld(const std::string& joint, const std::string& pointId);
     float getAttackDistance() const;
 private:
+	std::string m_root;
+	std::unordered_map<std::string, std::vector<std::string>> m_jointChildren;
+	std::unordered_map<std::string, SkeletalMesh*> m_skeletalMeshes;
     std::unordered_map<std::string, unsigned> m_meshToJointId;
     unsigned _nextJointId;
     //std::shared_ptr<Shape> m_defaultShape;

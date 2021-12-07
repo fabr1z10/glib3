@@ -1,0 +1,25 @@
+type: _basic
+id: skeletal
+vars:
+  0: skeleton_example
+cam:
+  - type: ortho
+    id: main
+    world_size: [320, 240]
+    cam_size: [320, 240]
+    bounds:
+      x: [0, 100]
+      y: [0, 100]
+      z: [0, 100]
+items:
+  - type: _entity
+    tag: sprite
+    scale: 0.2
+    components:
+      - type: components.keyinput
+        callbacks:
+          - key: 81
+            action: 1
+            func: $scripts.keys.on_key
+    model: '@0'
+    pos: [10, 8, 0]

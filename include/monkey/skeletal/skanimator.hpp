@@ -2,7 +2,7 @@
 
 #include <monkey/component.h>
 #include <monkey/components/ianimator.h>
-#include <monkey/skeletal/animation.hpp>
+#include <monkey/skeletal/skeletalanimation.hpp>
 #include <monkey/skeletal/skmodel.hpp>
 #include <monkey/components/renderer.h>
 

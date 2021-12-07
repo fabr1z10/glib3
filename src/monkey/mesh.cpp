@@ -17,11 +17,7 @@ IMesh::IMesh(const ITab& t) {
 
 	m_shaderType = static_cast<ShaderType>(t.get<int>("shader", 0));
 	m_primitive = t.get<GLenum>("primitive", GL_TRIANGLES);
-	// read keypoints
-	t.foreach("key_points", [&] (const std::string& id, const ITab& t) {
-        auto pos = t.as<glm::vec2>();
-        m_keyPoints[id] = pos;
-	});
+
 }
 
 void IMesh::draw(Shader* shader, int offset, int count) {
