@@ -1,4 +1,15 @@
 ---
+mesh.prova:
+  type: skeletalmesh
+  joint_id: 0
+  tex: gfx/meshes/example1/a.png
+  origin: [150, 93]
+  data: [
+    102, 47, 0, 0,
+    102, 175, 0, 0,
+    206, 175, 0, 0,
+    206, 47, 0, 0
+  ]
 mesh.example1.torso:
   type: skeletalmesh
   joint_id: 0

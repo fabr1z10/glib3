@@ -50,6 +50,7 @@ void SkeletalRenderer::Draw(Shader * s) {
 	if (s->getShaderType() == ShaderType::SKELETAL_SHADER) {
 		for (const auto& mesh : *m_model) {
 			mesh->draw(s, 0, 0);
+			break;
 		}
 	}
 

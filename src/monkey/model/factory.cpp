@@ -241,7 +241,7 @@ std::shared_ptr<IMesh> ModelFactory::_mesh(const ITab & t) {
 	std::vector<Point> polygon;
 
 	for (size_t i = 0; i < data.size(); i += 4) {
-		size_t offset = 4 * i;
+		size_t offset = i;
 		VertexSkeletal vertex;
 		float x = data[offset] - origin.x;
 		float y = -(data[offset + 1] - origin.y);
