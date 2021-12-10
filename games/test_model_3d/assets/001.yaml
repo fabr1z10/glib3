@@ -85,7 +85,8 @@ skeleton_example:
       mesh: mesh.example1.legl
       parent: legu
       key_point: legl
-
+  animations:
+    walk: anim.walk
 
 mario:
   type: model.boxed

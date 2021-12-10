@@ -1,0 +1,29 @@
+anim.walk:
+  type: skeletalanimation
+  loop: true
+  length: 4
+  keyframes:
+    - t: 0
+      pose:
+        legu:
+          angle: 0
+        legl:
+          angle: -10
+    - t: 1
+      pose:
+        legu:
+          angle: 20
+        legl:
+          angle: -10
+    - t: 2
+      pose:
+        legu:
+          angle: 2
+        legl:
+          angle: -2
+    - t: 3
+      pose:
+        legu:
+          angle: -20
+        legl:
+          angle: -30

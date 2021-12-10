@@ -7,7 +7,7 @@
 #include <monkey/assets/tex.h>
 #include <monkey/assets/model.h>
 //#include <monkey/skeletal/animation.hpp>
-#include <monkey/assets/skeletalanimation.h>
+#include <monkey/skeletal/skeletalanimation.hpp>
 #include <monkey/input/yamltab.h>
 #include <monkey/assets/func.h>
 
@@ -33,6 +33,7 @@ private:
     std::unordered_map<std::string, std::shared_ptr<Model> > m_models;
     std::unordered_map<std::string, std::shared_ptr<Tex> > m_textures;
 	std::unordered_map<std::string, std::shared_ptr<IMesh> > m_meshes;
+    std::unordered_map<std::string, std::shared_ptr<SkAnimation> > m_skeletalAnimations;
 
 	//std::unordered_map<std::string, std::shared_ptr<Func> > m_scr;
     //std::unordered_map<std::string, std::shared_ptr<SkAnimation> > m_sanim;

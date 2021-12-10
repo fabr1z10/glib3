@@ -13,18 +13,20 @@ SkAnimation::SkAnimation(const ITab& t) {
         std::unordered_map<std::string, JointTransform> pose;
         // for each joint I need 7 numbers: x, y, z (translation), rot, ax, ay, az (rotation,
         // specified with axis and rotation in degrees)
-        keyframe.foreach("pose", [&] (const ITab& bone) {
-            auto jointId = bone.get<std::string>("mesh");
-            JointTransform t;
-            t.translation = bone.get<glm::vec3>("pos", glm::vec3(0.0f));
-            if (bone.has("rot")) {
-                auto rotDef = bone.get<glm::vec4>("rot");
-                float angle = glm::radians(rotDef[0]);
-                auto axis = glm::normalize(glm::vec3(rotDef[1], rotDef[2], rotDef[3]));
-                t.rotation = glm::angleAxis(angle, axis);
+        keyframe.foreach("pose", [&] (const std::string& jointId, const ITab& data) {
+            //auto jointId = bone.get<std::string>("mesh");
+            JointTransform tr;
+            tr.translation = data.get<glm::vec3>("pos", glm::vec3(0.0f));
+            if (data.has("angle")) {
+                float angle = glm::radians(data.get<float>("angle"));
+                //auto rotDef = bone.get<glm::vec4>("angle");
+                //float angle = glm::radians(rotDef[0]);
+                //auto axis = glm::normalize(glm::vec3(rotDef[1], rotDef[2], rotDef[3]));
+                auto axis = glm::vec3(0, 0, 1);
+                tr.rotation = glm::angleAxis(angle, axis);
             }
-            t.scale = bone.get<glm::vec3>("scale", glm::vec3(1.0f));
-            pose[jointId] = t;
+            tr.scale = data.get<glm::vec3>("scale", glm::vec3(1.0f));
+            pose[jointId] = tr;
 
         });
         m_keyFrames.push_back(std::make_shared<SKeyFrame>(index, t, pose));
@@ -32,11 +34,11 @@ SkAnimation::SkAnimation(const ITab& t) {
     });
 
 	// attack boxes
-    t.foreach("attack", [&] (const ITab& dict) {
+/*    t.foreach("attack", [&] (const ITab& dict) {
         auto start_time = dict.get<float>("start") * speedUp;
         auto end_time = dict.get<float>("end") * speedUp;
         m_attacks.emplace_back(start_time, end_time);
-    });
+    });*/
 }
 
 float SkAnimation::getLength() {

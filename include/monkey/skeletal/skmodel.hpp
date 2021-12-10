@@ -49,11 +49,21 @@ struct DrawingBit {
 };
 
 
+struct JointInfo {
+    JointInfo(int id, int parent, const std::string& name) : id(id), parent(parent), name(name), mesh(nullptr) {}
+    int id;
+    int parent;
+    std::vector<int> children;
+    std::string name;
+    JointTransform restTransform;
+    SkeletalMesh * mesh;
+};
+
 class SkModel : public Model {
 public:
     //SkModel (const ITable&);
     SkModel (const ITab&);
-    std::unordered_map<std::string, glm::mat4> calculateCurrentPose();
+    std::vector<glm::mat4> calculateCurrentPose(std::unordered_map<int, JointTransform>& pose);
 	std::shared_ptr<Renderer> makeRenderer(std::shared_ptr<Model>) override;
 
 	//Bounds getBounds() const ;
@@ -65,10 +75,11 @@ public:
     Joint* getJoint (const std::string&);
     size_t getJointCount() const;
     bool hasJoint (const std::string&);
+    int getJointId(const std::string&);
 //    void attachMesh (const std::string& id, const std::string& meshId, const std::string& parentMesh, int parentJointId, float scale, int order,
 //					 glm::vec2 offset = glm::vec2(0.0f));
-    void addMesh (const std::string& id, const std::string& meshId, const std::string& parentMesh,
-				  glm::vec2 attachPoint, float z, float scale, int order, glm::vec2 offset = glm::vec2(0.0f));
+    void setMesh (int id, const std::string& meshId, glm::vec2 attachPoint);
+				  //glm::vec2 attachPoint, float z, float scale, int order, glm::vec2 offset = glm::vec2(0.0f));
     //void setMesh (const std::string& jointId, const std::string& meshId, float scale, glm::vec2 offset = glm::vec2(0.0f), int order = 0);
     void setAnimation (const std::string& animId, const std::string& anim);
     void draw (Shader*, int offset=0, int count=0) ;
@@ -83,7 +94,11 @@ public:
      */
     std::vector<glm::mat4> getJointTransforms();
     JointTransform getRestTransform(const std::string& id) const;
-	const std::vector<std::pair<std::string, glm::vec3>>& getOffsetPoints() const;
+    const glm::mat4& getRestTransform(int id) const {
+        return m_restTransforms2[id];
+    }
+
+    const std::vector<std::pair<std::string, glm::vec3>>& getOffsetPoints() const;
     //std::vector<glm::vec2> getOffsetPoints(const std::unordered_map<std::string, glm::mat4>& pose) const;
     const std::vector<std::shared_ptr<IShape>>& getShapes();
     int getShapeId (const std::string& animId);
@@ -102,7 +117,12 @@ public:
     std::pair<bool, glm::vec2> getKeyPointRestWorld(const std::string& joint, const std::string& pointId);
     float getAttackDistance() const;
 private:
-	std::string m_root;
+    std::vector<glm::mat4> m_restTransforms2;
+    std::vector<glm::mat4> m_invRestTransforms2;
+
+    std::vector<JointInfo> m_jointInfos;
+    std::unordered_map<std::string, int> m_jointNameToId;
+	int m_root;
 	std::unordered_map<std::string, std::vector<std::string>> m_jointChildren;
 	std::unordered_map<std::string, SkeletalMesh*> m_skeletalMeshes;
     std::unordered_map<std::string, unsigned> m_meshToJointId;
@@ -129,7 +149,7 @@ private:
     std::vector<std::pair<std::string, glm::vec3>> m_offsetPoints;
     std::unordered_map<std::string, std::shared_ptr<Joint>> m_allJoints;
 
-    std::vector<std::shared_ptr<Joint>> m_js;
+    //std::vector<std::shared_ptr<Joint>> m_js;
     Bounds m_maxBounds;
     std::vector<SkBoxInfo> m_skeletalBoxes;
     std::vector<std::pair<std::string, std::string>> m_offsetPointIds;
@@ -156,7 +176,8 @@ inline const std::vector<std::pair<std::string, glm::vec3>>& SkModel::getOffsetP
 }
 
 inline Joint* SkModel::getJoint(const std::string & id) {
-    return m_js[m_meshToJointId.at(id)].get();
+    return nullptr;
+    //return m_js[m_meshToJointId.at(id)].get();
 }
 
 inline IShape* SkModel::getShape(int shapeId) {

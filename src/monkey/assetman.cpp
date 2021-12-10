@@ -61,6 +61,19 @@ template<> std::shared_ptr<IMesh> AssetManager::get(const std::string& id) {
 	return mesh;
 }
 
+template<> std::shared_ptr<SkAnimation> AssetManager::get(const std::string& id) {
+    auto it = m_skeletalAnimations.find(id);
+    if (it != m_skeletalAnimations.end()) {
+        std::cout << "cache hit for " << id << "!\n";
+        return it->second;
+    }
+    // create the model
+    // extract the itab
+    auto assetDesc = m_assets->operator[](id);
+    auto anim = Engine::get().GetSceneFactory()->make2<SkAnimation>(*assetDesc.get());
+    m_skeletalAnimations[id] = anim;
+    return anim;
+}
 
 template<> std::shared_ptr<Tex> AssetManager::get(const std::string& texId) {
     auto it = m_textures.find(texId);

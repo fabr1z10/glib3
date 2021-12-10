@@ -8,6 +8,7 @@
 class SkeletalRenderer : public AnimationRenderer {
 public:
 	SkeletalRenderer(std::shared_ptr<Model>);
+	void Start() override;
 	void Update(double) override;
 	void Draw(Shader*) override;
 	void setAnimation(const std::string&) override;
@@ -15,11 +16,16 @@ public:
 	std::type_index GetType() override;
 
 private:
-	//int m_frame;
+    std::unordered_map<int, JointTransform> interpolatePoses(
+            SKeyFrame* previousFrame, SKeyFrame* nextFrame, float progression);
+
+
+        //int m_frame;
 	float m_animationTime;
 	SkModel* m_spriteModel;
 	SkAnimation* m_currentAnimation;
-
+	std::string m_currentAnimationId;
+    std::vector<glm::mat4> m_bones;
 	//AnimationInfo* m_currentAnimInfo;
 	//int m_frameCount;
 	//double m_time;
