@@ -60,3 +60,5 @@ def create_entity(id, pos, args=None, parent='main', use_tile=True):
     #         f = operator.attrgetter(on_create)(monkey.engine.data)
     #         f(eid, p)
 
+def rgb(r, g, b):
+    return (r/255.0, g/255.0, b/255.0, 1.0)

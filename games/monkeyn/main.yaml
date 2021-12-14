@@ -1,0 +1,10 @@
+---
+  title: hello_world
+  lang: eng
+  device_size: [320, 200]
+  window_size: [640, 400]
+  start_room: hello_world
+  shaders:
+    - color
+    - unlit_textured
+    - text

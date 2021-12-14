@@ -77,14 +77,27 @@ skeleton_example:
   joints:
     - id: torso
       mesh: mesh.example1.torso
-    - id: legu
+      windex: [0, 0, 0]
+    - id: legur
       mesh: mesh.example1.legu
       parent: torso
       key_point: legu
-    - id: legl
+      windex: [1, 0, 0]
+    - id: leglr
       mesh: mesh.example1.legl
-      parent: legu
+      parent: legur
       key_point: legl
+      windex: [2, 1, 0]
+    - id: legul
+      mesh: mesh.example1.legu
+      parent: torso
+      key_point: legu
+      windex: [3, 0, 0]
+    - id: legll
+      mesh: mesh.example1.legl
+      parent: legul
+      key_point: legl
+      windex: [4, 3, 0]
   animations:
     walk: anim.walk
 

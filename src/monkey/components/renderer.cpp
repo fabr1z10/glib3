@@ -90,6 +90,10 @@ void Renderer::post() {
 void Renderer::Draw(Shader* shader) {
 
     for (const auto& mesh : *m_model) {
+        auto mult_color_loc = glGetUniformLocation(shader->getProgId(), "mult_color");
+        if (mult_color_loc != GL_INVALID_VALUE) {
+            glUniform4fv(mult_color_loc, 1, &m_multColor[0]);
+        }
         if (shader->getShaderType() == mesh->getShaderType()) {
             mesh->draw(shader, 0, 0);
         }

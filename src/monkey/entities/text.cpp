@@ -47,6 +47,7 @@ Text::Text(const ITab& t) : Entity(t) {
 
     //MoveLocal(glm::vec3(offset, 0.0f));
     auto renderer = model->makeRenderer(model);
+    renderer->setMultColor(color);
     this->AddComponent(renderer);
 
     renderer->SetTransform(glm::translate(glm::vec3(offset, 0.0f)));

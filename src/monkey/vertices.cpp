@@ -4,7 +4,7 @@
 unsigned VertexSkeletal::point_size = 11;
 unsigned Vertex3D::num_vertices = 3;
 unsigned VertexColor::num_vertices = 2;
-unsigned VertexSkeletal::num_vertices = 4;
+unsigned VertexSkeletal::num_vertices = 3;
 
 void SimpleVertex3D::InitAttributes() {
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(SimpleVertex3D), (void*)offsetof(SimpleVertex3D, x));
@@ -58,19 +58,16 @@ VertexSkeletal::VertexSkeletal(const float *data) {
 	z = data[2];
 	s = data[3];
 	t = data[4];
-	index0 = static_cast<int>(data[5]);
-	index1 = static_cast<int>(data[6]);
-	index2 = static_cast<int>(data[7]);
-	weight0 = data[8];
-	weight1 = data[9];
-	weight2 = data[10];
+	weight0 = data[5];
+	weight1 = data[6];
+	weight2 = data[7];
 }
 
 void VertexSkeletal::InitAttributes() {
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(VertexSkeletal), (void*)offsetof(VertexSkeletal, x));
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(VertexSkeletal), (void*)offsetof(VertexSkeletal, s));
-    glVertexAttribIPointer(2, 3, GL_INT, sizeof(VertexSkeletal), (void*)offsetof(VertexSkeletal, index0));
-    glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(VertexSkeletal), (void*)offsetof(VertexSkeletal, weight0));
+    //glVertexAttribIPointer(2, 3, GL_INT, sizeof(VertexSkeletal), (void*)offsetof(VertexSkeletal, index0));
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(VertexSkeletal), (void*)offsetof(VertexSkeletal, weight0));
 
 
 

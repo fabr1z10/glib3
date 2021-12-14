@@ -79,14 +79,14 @@ std::vector<glm::mat4> SkModel::calculateCurrentPose(std::unordered_map<int, Joi
 
 }
 
-void SkModel::setMesh(int id, const std::string& meshId, glm::vec2 attachPoint) //, const std::string& parentMesh, glm::vec2 attachPoint,
+void SkModel::setMesh(int id, const std::string& meshId, glm::vec2 attachPoint, float z) //, const std::string& parentMesh, glm::vec2 attachPoint,
                       //float z, float scale, int order, glm::vec2 offset) {
 {
     glm::mat4 bindTransform(1.0f);
 
     // compute rest transform for this joint
     JointTransform tr;
-    tr.translation = glm::vec3(attachPoint, 0.0f);
+    tr.translation = glm::vec3(attachPoint, z);
     //auto joint = std::make_shared<Joint>(newJointId, id);
     //joint->setScale(scale);
     //m_js.push_back(joint);
@@ -282,7 +282,8 @@ SkModel::SkModel(const ITab& main) : _nextJointId(0), m_jointCount(0) {
         auto meshId = mesh.get<std::string>("mesh");
         auto parent = mesh.get<std::string>("parent", "");
         int parentId = (parent.empty() ? -1 : m_jointNameToId.at(parent));
-        m_jointInfos.emplace_back(id, parentId, name);
+        auto windex = mesh.get<glm::ivec3>("windex");
+        m_jointInfos.emplace_back(id, parentId, name, windex);
         m_jointNameToId[name] = id;
         glm::vec2 attachPoint(0.0f);
         if (parentId != -1) {
@@ -296,7 +297,7 @@ SkModel::SkModel(const ITab& main) : _nextJointId(0), m_jointCount(0) {
             auto scale = mesh.get<float>("scale", 1.0f);
             auto offset = mesh.get<glm::vec2>("offset", glm::vec2(0.0f));
             auto z = mesh.get<float>("z", 0.0f);
-            setMesh(id, meshId, attachPoint);//, z, scale, 0, offset);
+            setMesh(id, meshId, attachPoint, z);//, z, scale, 0, offset);
         }
     });
     // for each mesh we need to store transformation local -> model

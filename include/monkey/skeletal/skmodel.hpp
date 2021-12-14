@@ -50,13 +50,15 @@ struct DrawingBit {
 
 
 struct JointInfo {
-    JointInfo(int id, int parent, const std::string& name) : id(id), parent(parent), name(name), mesh(nullptr) {}
+    JointInfo(int id, int parent, const std::string& name, glm::ivec3 weightIndex) : id(id),
+        parent(parent), name(name), mesh(nullptr), weightIndex(weightIndex) {}
     int id;
     int parent;
     std::vector<int> children;
     std::string name;
     JointTransform restTransform;
     SkeletalMesh * mesh;
+    glm::ivec3 weightIndex;
 };
 
 class SkModel : public Model {
@@ -78,7 +80,7 @@ public:
     int getJointId(const std::string&);
 //    void attachMesh (const std::string& id, const std::string& meshId, const std::string& parentMesh, int parentJointId, float scale, int order,
 //					 glm::vec2 offset = glm::vec2(0.0f));
-    void setMesh (int id, const std::string& meshId, glm::vec2 attachPoint);
+    void setMesh (int id, const std::string& meshId, glm::vec2 attachPoint, float z);
 				  //glm::vec2 attachPoint, float z, float scale, int order, glm::vec2 offset = glm::vec2(0.0f));
     //void setMesh (const std::string& jointId, const std::string& meshId, float scale, glm::vec2 offset = glm::vec2(0.0f), int order = 0);
     void setAnimation (const std::string& animId, const std::string& anim);
@@ -96,6 +98,9 @@ public:
     JointTransform getRestTransform(const std::string& id) const;
     const glm::mat4& getRestTransform(int id) const {
         return m_restTransforms2[id];
+    }
+    glm::ivec3 getWeightIndex(int id)const {
+        return m_jointInfos[id].weightIndex;
     }
 
     const std::vector<std::pair<std::string, glm::vec3>>& getOffsetPoints() const;

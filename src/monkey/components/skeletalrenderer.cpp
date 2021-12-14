@@ -97,12 +97,15 @@ void SkeletalRenderer::Draw(Shader * s) {
 
         auto boneLoc = glGetUniformLocation(s->getProgId(), "Bone");
         auto l2m = glGetUniformLocation(s->getProgId(), "local_to_model");
+        auto weightIndex = glGetUniformLocation(s->getProgId(), "weightIndex");
 	    glUniformMatrix4fv(boneLoc, m_bones.size(), false, &m_bones[0][0][0]);
 		int n = 0;
 	    for (const auto& mesh : *m_model) {
 		    // set local to model
-		    auto restTransform = m_spriteModel->getRestTransform(n++);
+		    auto restTransform = m_spriteModel->getRestTransform(n);
+		    auto weightIndices = m_spriteModel->getWeightIndex(n++);
 		    glUniformMatrix4fv(l2m, 1, false, &restTransform[0][0]);
+		    glUniform3iv(weightIndex, 1, &weightIndices[0]);
 			mesh->draw(s, 0, 0);
 		}
 	}

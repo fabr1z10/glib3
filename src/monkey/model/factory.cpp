@@ -250,17 +250,9 @@ std::shared_ptr<IMesh> ModelFactory::_mesh(const ITab & t) {
 		vertex.z = data[offset + 2];
 		vertex.s = data[offset] / tex->GetWidth();
 		vertex.t = data[offset + 1] / tex->GetHeight();
-		vertex.index0 = jointId;
-		if (parentJointId == -1) {
-			vertex.index1 = 0;
-			vertex.weight1 = 0.0;
-			vertex.weight0 = 1.0;
-		} else {
-			vertex.index1 = parentJointId;
-			vertex.weight1 = data[offset + 3];
-			vertex.weight0 = 1.0 - data[offset + 3];
-		}
-		vertex.index2 = 0;
+
+		vertex.weight0 = 1.0 - data[offset + 3];
+		vertex.weight1 = data[offset + 3];
 		vertex.weight2 = 0.0;
 		polygon.push_back({x, y});
 		vertices.push_back(vertex);

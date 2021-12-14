@@ -5,25 +5,25 @@ anim.walk:
   keyframes:
     - t: 0
       pose:
-        legu:
+        legur:
           angle: 0
-        legl:
+        leglr:
           angle: -10
     - t: 1
       pose:
-        legu:
+        legur:
           angle: 20
-        legl:
+        leglr:
           angle: -10
     - t: 2
       pose:
-        legu:
+        legur:
           angle: 2
-        legl:
+        leglr:
           angle: -2
     - t: 3
       pose:
-        legu:
+        legur:
           angle: -20
-        legl:
+        leglr:
           angle: -30

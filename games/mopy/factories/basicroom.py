@@ -32,7 +32,7 @@ class BasicRoom(Room):
             args = on_load.get('args', None)
             self.init.append([func, args] if args else [func])
 
-        cams = room_info['cam']
+        cams = room_info.get('cam')
         self.main = None
         if cams:
             for cam in cams:
