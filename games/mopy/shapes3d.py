@@ -1,4 +1,4 @@
-import shapes
+import mopy.shapes as shapes
 
 
 class AABB(shapes.Shape):

@@ -6,7 +6,7 @@ time_to_jump_apex = 0.5
 a = utils.compute_gravity(jump_height, time_to_jump_apex)
 gravity = a[0]
 jump_velocity = a[1]
-
+show_boxes = True
 
 class CollisionFlags:
     player = 1

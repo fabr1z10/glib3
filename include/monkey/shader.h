@@ -20,7 +20,7 @@ public:
     GLuint getProgId() const;
     //GLuint GetUniformLocation(ShaderUniform);
     //void AddUniform(ShaderUniform unif, const char*);
-    virtual void Start();
+    virtual void Start(Shader*);
     virtual void Stop();
     virtual void initMesh(const glm::mat4& modelMatrix, Camera* cam) = 0;
     ShaderType getShaderType() const { return m_type; }
@@ -78,8 +78,8 @@ public:
 
     }
 
-    void Start() override {
-        Shader::Start();
+    void Start(Shader* s) override {
+		BaseShader::Start(s);
         a();
         //Vertex::InitAttributes();
     }

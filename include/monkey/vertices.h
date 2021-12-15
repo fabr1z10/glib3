@@ -55,6 +55,7 @@ struct Vertex3DN {
     GLfloat x, y, z;
     GLfloat s, t;
     GLfloat nx, ny, nz;
+	static unsigned num_vertices;
 
     static void InitAttributes();
 };

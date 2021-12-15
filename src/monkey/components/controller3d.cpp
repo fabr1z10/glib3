@@ -23,8 +23,8 @@ Controller3D::Controller3D(const ITab & t) : IController(t) {
 	m_maxClimbAngle = t.get<float>("maxClimbAngle");
 	m_maxDescendAngle = t.get<float>("maxDescendAngle");
 	m_skinWidth = t.get<float>("skinWidth", .015f);
-	m_maskUp = t.get<int>("maskUp");
-	m_maskDown = t.get<int>("maskDown");
+	m_maskUp = t.get<int>("mask_up");
+	m_maskDown = t.get<int>("mask_down");
 	m_platform = nullptr;
 
 

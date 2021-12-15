@@ -18,7 +18,9 @@ public:
     static std::shared_ptr<Model> quad(const std::string& imagePath, float width = 0.0f, float height = 0.0f,
                                  float repx = 1.0f, float repy = 1.0f);
     static std::shared_ptr<Model> polygon(const ITab&);
-    static std::shared_ptr<Model> _rect(const ITab&);
+	static std::shared_ptr<Model> prism(const ITab&);
+
+	static std::shared_ptr<Model> _rect(const ITab&);
     static std::shared_ptr<Model> rect(float width, float height, glm::vec2 offset,
                                        RenderType rtype, glm::vec4 color, const std::string& tex = "", glm::vec2 repeat = glm::vec2(1.0f, 1.0f));
     // create a shape from a polygon

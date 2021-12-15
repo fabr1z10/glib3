@@ -125,6 +125,71 @@ std::shared_ptr<Model> ModelFactory::_rect(const ITab & t) {
     return rect(width, height, offset, rtype, color, tex, repeat);
 }
 
+
+std::shared_ptr<Model> ModelFactory::prism(const ITab & t)  {
+	std::vector<Vertex3DN> vertices;
+	std::vector<unsigned> indices;
+	std::vector<Vertex3DN> side_vertices;
+	std::vector<unsigned> side_indices;
+
+	auto repeat_every = t.get<glm::vec3>("repeat");
+	auto top = t.get<std::string>("top");
+	auto side = t.get<std::string>("side");
+
+	float h = t.get<float>("height");
+
+	std::vector<std::vector<glm::vec2>> pts;
+	auto poly = t.get<std::vector<float>>("poly");
+	std::vector<glm::vec2> outline;
+	for (size_t i = 0; i < poly.size(); i+=2) {
+		outline.emplace_back(poly[i], poly[i+1]);
+		vertices.emplace_back(poly[i], 0.0f, -poly[i+1], (poly[i] / repeat_every.x), (-poly[i+1] / repeat_every.z), 0.0f, 1.0f, 0.0f);
+	}
+	float sx = 0.0f;
+	float tb = h / repeat_every.y;
+	for (size_t i = 0; i < poly.size(); i+=2) {
+		int j = i+2;
+		if (j >= poly.size())
+			j = 0;
+		glm::vec3 u = glm::normalize(glm::vec3(poly[j], 0.0f, -poly[j+1]) - glm::vec3(poly[i], 0.0f, -poly[i+1]));
+		glm::vec3 n = glm::cross(u, glm::vec3(0, 1, 0));
+		float length = glm::length(glm::vec3(poly[j], 0.0f, -poly[j+1]) - glm::vec3(poly[i], 0.0f, -poly[i+1]));
+		unsigned k = side_vertices.size();
+		side_indices.push_back(k);
+		side_indices.push_back(k+1);
+		side_indices.push_back(k+2);
+		side_indices.push_back(k+1);
+		side_indices.push_back(k+3);
+		side_indices.push_back(k+2);
+		side_vertices.emplace_back(poly[i], 0.0f, -poly[i+1], sx, 0.0f, n.x, n.y, n.z);
+		side_vertices.emplace_back(poly[i], -h, -poly[i+1], sx, tb, n.x, n.y, n.z);
+		sx += length / repeat_every.x;
+		side_vertices.emplace_back(poly[j], 0.0f, -poly[j+1], sx, 0.0f, n.x, n.y, n.z);
+		side_vertices.emplace_back(poly[j], -h, -poly[j+1], sx, tb, n.x, n.y, n.z);
+
+	}
+
+	// TODO add support for holes
+	pts.push_back(outline);
+	indices = glib3::math::triangulate(pts);
+
+	// create top mesh
+	auto mesh = std::make_shared<Mesh<Vertex3DN>>(ShaderType::TEXTURE_SHADER_LIGHT);
+	mesh->m_primitive = GL_TRIANGLES;
+	mesh->Init(vertices, indices);
+	mesh->addTexture(top, TexType::DIFFUSE);
+
+	auto sideMesh = std::make_shared<Mesh<Vertex3DN>>(ShaderType::TEXTURE_SHADER_LIGHT);
+	sideMesh->m_primitive = GL_TRIANGLES;
+	sideMesh->Init(side_vertices, side_indices);
+	sideMesh->addTexture(side, TexType::DIFFUSE);
+	auto model = std::make_shared<Model>();
+	model->addMesh(mesh);
+	model->addMesh(sideMesh);
+	return model;
+
+}
+
 std::shared_ptr<Model> ModelFactory::polygon(const ITab& t) {
 
     // first of all, check if this is a REFERENCE

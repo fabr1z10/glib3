@@ -196,6 +196,7 @@ SceneFactory::SceneFactory() {
     //add2<Model>("model.raw");
     addf<Model>("model.poly", ModelFactory::polygon);
     addf<Model>("model.rect", ModelFactory::_rect);
+    addf<Model>("model.prism", ModelFactory::prism);
     addf<Model>("model.tiled", ModelFactory::_tiled);
     add2<SpriteModel> ("model.sprite");
     add2<BoxedModel> ("model.boxed");

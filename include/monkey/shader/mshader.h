@@ -17,13 +17,16 @@ class MVShader : public Shader {
 public:
     MVShader(const char* vertex, const char* fragment, ShaderType stype);
     void initMesh(const glm::mat4& modelMatrix, Camera* cam) override;
-private:
+protected:
     GLint m_modelViewMat;
 };
 
-class LShader : public MShader {
+class LShader : public MVShader {
 public:
     LShader(const char* vertex, const char* fragment, ShaderType stype);
-    void Start() override;
     void initMesh(const glm::mat4& modelMatrix, Camera* cam) override;
+	void Start(Shader*) override;
+
+private:
+	GLint m_normalMat;
 };

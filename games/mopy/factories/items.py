@@ -1,6 +1,8 @@
 from mopy.entity import Entity, Text, TextAlignment
 from mopy.components import Gfx
 import mopy.monkey as monkey
+import mopy.shapes3d as sh3d
+import mopy.shapes as sh
 from mopy.util import tiles_to_world
 
 
@@ -104,6 +106,25 @@ def line_platform(ciao):
     return e
 
 
+def player3D(ciao):
+    e = Entity()
+    e.scale = ciao.get('scale', 1)
+    e.model = ciao.get('model', None)
+    size = ciao.get('size')
+    show_boxes = getattr(monkey.engine.data.globals, 'show_boxes', False)
+
+    e.components.append({
+        'type': 'components.controller3D',
+        'maxClimbAngle': 80,
+        'maxDescendAngle': 80,
+        'size': size,
+        'offset': [0, 0, 0],
+        'mask_up': 2,
+        'mask_down': 2 | 32,
+        'debug': show_boxes
+    })
+    return e
+
 
 def player2D(ciao):
     e = Entity()
@@ -164,6 +185,35 @@ def player2D(ciao):
     })
     return e
 
+
+def rect_platform_3d(ciao):
+    e = Entity()
+    outline = ciao['poly']
+    height = ciao.get('height', 1.0)
+
+    y = ciao.get('y', 0.0)
+    top_tex = ciao['top']
+    side_tex = ciao['side']
+    shape = sh3d.Prism(shape=sh.Poly(outline=outline), height=height, walls=ciao.get('walls', []))
+    e.model = {
+        'type': 'model.prism',
+        'repeat': ciao['repeat'],
+        'poly': outline,
+        'top': top_tex,
+        'side': side_tex,
+        'height': height
+    }
+    return e
+
+def dir_light(ciao):
+    e = Entity()
+    e.add_component({
+        'type': 'light.directional',
+        'ambient': ciao.get('ambient'),
+        'diffuse': ciao.get('diffuse'),
+        'direction': ciao.get('direction')
+    })
+    return e
 
 def entity(ciao):
     e = Entity()

@@ -51,11 +51,12 @@ class BasicRoom(Room):
                     camera.boundsz = bounds['z']
                     camera.bounds = [bounds['x'][0], bounds['y'][0], bounds['x'][1], bounds['y'][1]]
                 elif cam_type == 'perspective':
-                    cam = PerspectiveCamera(viewport=[0, 0, device_size[0], device_size[1]])
-                    cam.pos = (5, 5, 15)
-                    bounds = cam['bounds']
-                    cam.boundsz = bounds['z']
-                    cam.bounds = [bounds['x'][0], bounds['y'][0], bounds['x'][1], bounds['y'][1]]
+                    world_size = cam['world_size']
+                    camera = PerspectiveCamera(viewport=[0, 0, device_size[0], device_size[1]])
+                    camera.pos = (5, 5, 15)
+                    bounds = cam.get('bounds', {'x': [0, world_size[0]], 'y': [0, world_size[1]], 'z': [0, 100]})
+                    camera.boundsz = bounds['z']
+                    camera.bounds = [bounds['x'][0], bounds['y'][0], bounds['x'][1], bounds['y'][1]]
                 else:
                     print('Unknown camera type: ' + cam_type)
                     exit(1)
