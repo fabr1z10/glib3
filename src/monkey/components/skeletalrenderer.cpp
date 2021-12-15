@@ -1,5 +1,5 @@
 #include <monkey/components/skeletalrenderer.h>
-
+#include <glm/gtx/transform.hpp>
 
 SkeletalRenderer::SkeletalRenderer(std::shared_ptr<Model> model) : AnimationRenderer(model)
 {
@@ -55,6 +55,19 @@ void SkeletalRenderer::Update(double dt) {
 
 	m_bones = m_spriteModel->calculateCurrentPose(pose);
 
+    // apply offset
+	const auto& offsetPoints = m_spriteModel->getOffsetPoints();
+	if (!offsetPoints.empty()) {
+		glm::vec3 offset(0.0f);
+		//std::cout << "no of offset points: " << offsetPoints.size() << "\n";
+		for (const auto &a : offsetPoints) {
+			// find coordinates of offset pointg
+			glm::vec4 p = m_bones[a.first] * glm::vec4(a.second, 1.0f);
+			offset.y = std::max(-p.y, offset.y);
+		}
+		//std::cerr << offset.y << "\n";
+		SetTransform(glm::translate(offset));
+	}
 //	if (m_currentAnimation == nullptr) {
 //		// set rest pose
 //		m_model->getRootJoint()->setRest();

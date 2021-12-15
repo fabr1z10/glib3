@@ -51,9 +51,10 @@ struct DrawingBit {
 
 struct JointInfo {
     JointInfo(int id, int parent, const std::string& name, glm::ivec3 weightIndex) : id(id),
-        parent(parent), name(name), mesh(nullptr), weightIndex(weightIndex) {}
+        parent(parent), name(name), mesh(nullptr), weightIndex(weightIndex), scale(1.0f) {}
     int id;
     int parent;
+    float scale;
     std::vector<int> children;
     std::string name;
     JointTransform restTransform;
@@ -80,7 +81,7 @@ public:
     int getJointId(const std::string&);
 //    void attachMesh (const std::string& id, const std::string& meshId, const std::string& parentMesh, int parentJointId, float scale, int order,
 //					 glm::vec2 offset = glm::vec2(0.0f));
-    void setMesh (int id, const std::string& meshId, glm::vec2 attachPoint, float z);
+    void setMesh (int id, const std::string& meshId, glm::vec2 attachPoint, float z, float scale);
 				  //glm::vec2 attachPoint, float z, float scale, int order, glm::vec2 offset = glm::vec2(0.0f));
     //void setMesh (const std::string& jointId, const std::string& meshId, float scale, glm::vec2 offset = glm::vec2(0.0f), int order = 0);
     void setAnimation (const std::string& animId, const std::string& anim);
@@ -103,7 +104,7 @@ public:
         return m_jointInfos[id].weightIndex;
     }
 
-    const std::vector<std::pair<std::string, glm::vec3>>& getOffsetPoints() const;
+    const std::vector<std::pair<int, glm::vec3>>& getOffsetPoints() const;
     //std::vector<glm::vec2> getOffsetPoints(const std::unordered_map<std::string, glm::mat4>& pose) const;
     const std::vector<std::shared_ptr<IShape>>& getShapes();
     int getShapeId (const std::string& animId);
@@ -151,7 +152,7 @@ private:
     std::string m_defaultAnimation;
     void addJointsToArray(Joint*, std::vector<glm::mat4>&);
     std::unordered_map<std::string, JointTransform> m_restTransforms;
-    std::vector<std::pair<std::string, glm::vec3>> m_offsetPoints;
+    std::vector<std::pair<int, glm::vec3>> m_offsetPoints;
     std::unordered_map<std::string, std::shared_ptr<Joint>> m_allJoints;
 
     //std::vector<std::shared_ptr<Joint>> m_js;
@@ -175,7 +176,7 @@ inline JointTransform SkModel::getRestTransform(const std::string& id) const {
 
 }
 
-inline const std::vector<std::pair<std::string, glm::vec3>>& SkModel::getOffsetPoints() const {
+inline const std::vector<std::pair<int, glm::vec3>>& SkModel::getOffsetPoints() const {
     return m_offsetPoints;
 
 }

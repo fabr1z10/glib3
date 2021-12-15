@@ -234,25 +234,25 @@ std::shared_ptr<IMesh> ModelFactory::_mesh(const ITab & t) {
 	}
 
 	auto& factory = Engine::get().GetAssetManager();
-	auto jointId = t.get<int>("joint_id");
-	auto parentJointId = t.get<int>("parent_joint_id", -1);
+	//auto jointId = t.get<int>("joint_id");
+	//auto parentJointId = t.get<int>("parent_joint_id", -1);
 	auto tex = factory.get<Tex>(t.get<std::string>("tex"));
 	std::vector<VertexSkeletal> vertices;
 	std::vector<Point> polygon;
 
-	for (size_t i = 0; i < data.size(); i += 4) {
+	for (size_t i = 0; i < data.size(); i += 3) {
 		size_t offset = i;
 		VertexSkeletal vertex;
 		float x = data[offset] - origin.x;
 		float y = -(data[offset + 1] - origin.y);
 		vertex.x = x;
 		vertex.y = y;
-		vertex.z = data[offset + 2];
+		vertex.z = 0.0f;
 		vertex.s = data[offset] / tex->GetWidth();
 		vertex.t = data[offset + 1] / tex->GetHeight();
 
-		vertex.weight0 = 1.0 - data[offset + 3];
-		vertex.weight1 = data[offset + 3];
+		vertex.weight0 = 1.0 - data[offset + 2];
+		vertex.weight1 = data[offset + 2];
 		vertex.weight2 = 0.0;
 		polygon.push_back({x, y});
 		vertices.push_back(vertex);

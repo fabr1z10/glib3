@@ -86,7 +86,8 @@ float Wrap1::getScale() const {
 
 
 int Wrap1::getKeyFrame() const {
-	return static_cast<SkAnimator*>(m_entity->GetComponent<IAnimator>())->getKeyFrame();
+	return 0;
+	//return static_cast<SkAnimator*>(m_entity->GetComponent<IAnimator>())->getKeyFrame();
 }
 
 void Wrap1::clear() {

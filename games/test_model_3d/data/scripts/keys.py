@@ -9,7 +9,7 @@ def init(model):
     global anims, current
     m = monkey.engine.get_asset(model)
     anims = list(m['animations'].keys())
-    print ('fucamilcazzo')
+    print(anims)
     current = 0
 
 

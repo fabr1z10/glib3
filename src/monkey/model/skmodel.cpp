@@ -79,13 +79,14 @@ std::vector<glm::mat4> SkModel::calculateCurrentPose(std::unordered_map<int, Joi
 
 }
 
-void SkModel::setMesh(int id, const std::string& meshId, glm::vec2 attachPoint, float z) //, const std::string& parentMesh, glm::vec2 attachPoint,
+void SkModel::setMesh(int id, const std::string& meshId, glm::vec2 attachPoint, float z, float scale) //, const std::string& parentMesh, glm::vec2 attachPoint,
                       //float z, float scale, int order, glm::vec2 offset) {
 {
     glm::mat4 bindTransform(1.0f);
-
+	m_jointInfos[id].scale = scale;
     // compute rest transform for this joint
     JointTransform tr;
+    tr.scale = glm::vec3(scale);
     tr.translation = glm::vec3(attachPoint, z);
     //auto joint = std::make_shared<Joint>(newJointId, id);
     //joint->setScale(scale);
@@ -255,9 +256,15 @@ void SkModel::setMesh(int id, const std::string& meshId, glm::vec2 attachPoint, 
 //}
 
 void SkModel::computeOffset() {
-//    m_offsetPoints.clear();
-//    for (const auto& p : m_offsetPointIds) {
-//
+    m_offsetPoints.clear();
+    for (const auto& p : m_offsetPointIds) {
+		int jointId = m_jointNameToId.at(p.first);
+		auto kp = m_jointInfos[jointId].mesh->getKeyPoint(p.second);
+		std::cerr << "key point " << p.first << ", " << p.second << ": " << kp.x << ", " << kp.y << "\n";
+
+		auto mp = m_restTransforms2[jointId] * glm::vec4(kp.x, kp.y, 0.0f, 1.0f);
+		std::cerr << "key point (model) " << p.first << ", " << p.second << ": " << mp.x << ", " << mp.y << "\n";
+		m_offsetPoints.emplace_back(jointId, glm::vec3(mp.x, mp.y, 0.0f));
 //        auto iter = m_meshes.find(p.first);
 //        if (iter != m_meshes.end()) {
 //            auto point = iter->second->getKeyPoint(p.second);
@@ -270,7 +277,7 @@ void SkModel::computeOffset() {
 //            glm::vec3 tp = transform * scaling * glm::vec4(point.x, point.y, 0.0f, 1.0f);
 //            m_offsetPoints.emplace_back(p.first, glm::vec3(tp.x, tp.y, 0.0f));
 //        }
-//    }
+    }
 }
 
 SkModel::SkModel(const ITab& main) : _nextJointId(0), m_jointCount(0) {
@@ -297,7 +304,7 @@ SkModel::SkModel(const ITab& main) : _nextJointId(0), m_jointCount(0) {
             auto scale = mesh.get<float>("scale", 1.0f);
             auto offset = mesh.get<glm::vec2>("offset", glm::vec2(0.0f));
             auto z = mesh.get<float>("z", 0.0f);
-            setMesh(id, meshId, attachPoint, z);//, z, scale, 0, offset);
+            setMesh(id, meshId, attachPoint, z, scale);//, z, scale, 0, offset);
         }
     });
     // for each mesh we need to store transformation local -> model
@@ -334,16 +341,16 @@ SkModel::SkModel(const ITab& main) : _nextJointId(0), m_jointCount(0) {
         ac++;
     });
 
-//    // ##################
-//    // read offset
-//    // ##################
-//    if (main.has("offset")) {
-//		main.foreach("offset", [&](const ITab &node) {
-//			auto ostr = node.as<std::vector<std::string>>();
-//			m_offsetPointIds.emplace_back(ostr[0], ostr[1]);
-//		});
-//	}
-//    computeOffset();
+    // ##################
+    // read offset
+    // ##################
+    if (main.has("offset")) {
+		main.foreach("offset", [&](const ITab &node) {
+			auto ostr = node.as<std::vector<std::string>>();
+			m_offsetPointIds.emplace_back(ostr[0], ostr[1]);
+		});
+	}
+    computeOffset();
 //
 //    // ################## read boxes
 //    auto thickness = main.get<float>("thickness", 0.0f);

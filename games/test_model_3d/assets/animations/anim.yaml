@@ -9,21 +9,37 @@ anim.walk:
           angle: 0
         leglr:
           angle: -10
+        legul:
+          angle: 2
+        legll:
+          angle: -2
     - t: 1
       pose:
         legur:
           angle: 20
         leglr:
           angle: -10
+        legul:
+          angle: -20
+        legll:
+          angle: -30
     - t: 2
       pose:
         legur:
           angle: 2
         leglr:
           angle: -2
+        legul:
+          angle: 0
+        legll:
+          angle: -10
     - t: 3
       pose:
         legur:
           angle: -20
         leglr:
           angle: -30
+        legul:
+          angle: 20
+        legll:
+          angle: -10

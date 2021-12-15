@@ -98,6 +98,11 @@ skeleton_example:
       parent: legul
       key_point: legl
       windex: [4, 3, 0]
+  offset:
+    - ['leglr', 'heel']
+    - ['legll', 'heel']
+    - ['leglr', 'ball']
+    - ['legll', 'ball']
   animations:
     walk: anim.walk
 

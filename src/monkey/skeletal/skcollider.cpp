@@ -21,12 +21,12 @@ Bounds SkCollider::GetStaticBoundsI() const {
 }
 
 Bounds SkCollider::GetDynamicBoundsI() const {
-
-    std::string anim = m_animator->GetAnimation();
-    auto shape = m_model->getShape(anim);
-    if (shape == nullptr)
-        return Bounds();
-    return shape->getBounds();
+	// TODO
+//    std::string anim = m_animator->GetAnimation();
+//    auto shape = m_model->getShape(anim);
+//    if (shape == nullptr)
+//        return Bounds();
+//    return shape->getBounds();
 }
 
 int SkCollider::GetCollisionTag() const {
@@ -173,43 +173,44 @@ void SkCollider::recalcShapesDebug() {
 }
 
 void SkCollider::Start() {
-    // a smart collider requires an animator
-    m_animator = dynamic_cast<SkAnimator*>(m_entity->GetComponent<IAnimator>());
-    m_model = dynamic_cast<SkModel*>(m_animator->getModel());
-
-    ICollider::Start();
-
-    m_mainRenderer = (m_entity->GetComponent<Renderer>());
-    //auto shapeEntity = std::make_shared<Entity>();
-
-    // create debug mesh
-    const auto& attackInfo = m_model->getAttackInfo();
-    MeshFactory m(1.0f);
-	//auto collisionShapeEntity = std::make_shared<Entity>();
-	if (m_shapeEntity != nullptr) {
-		m_entity->Remove(m_shapeEntity);
-		m_shapeEntity = nullptr;
-	}
-	auto boxEntity =std::make_shared<Entity>();
-	m_shapeEntity = boxEntity.get();
-	m_colliderRenderers.clear();
-    for (const auto& info : attackInfo) {
-    	auto entity = std::make_shared<Entity>();
-		auto model = m.createWireframe(info.second->shape.get(), glm::vec4(1.0f));// MeshFactory::CreateMesh(*(info.second->shape.get()));
-		auto renderer = std::make_shared<Renderer>(model);
-		entity->AddComponent(renderer);
-		m_colliderRenderers.push_back(renderer.get());
-		boxEntity->AddChild(entity);
-    }
-    for (const auto& shape : m_model->getShapes()) {
-        auto entity = std::make_shared<Entity>();
-        auto model = m.createWireframe(shape.get(), glm::vec4(1.0f));
-        auto renderer = std::make_shared<Renderer>(model);
-        entity->AddComponent(renderer);
-        boxEntity->AddChild(entity);
-
-    }
-    m_entity->AddChild(boxEntity);
+	// TODO
+//    // a smart collider requires an animator
+//    m_animator = dynamic_cast<SkAnimator*>(m_entity->GetComponent<IAnimator>());
+//    m_model = dynamic_cast<SkModel*>(m_animator->getModel());
+//
+//    ICollider::Start();
+//
+//    m_mainRenderer = (m_entity->GetComponent<Renderer>());
+//    //auto shapeEntity = std::make_shared<Entity>();
+//
+//    // create debug mesh
+//    const auto& attackInfo = m_model->getAttackInfo();
+//    MeshFactory m(1.0f);
+//	//auto collisionShapeEntity = std::make_shared<Entity>();
+//	if (m_shapeEntity != nullptr) {
+//		m_entity->Remove(m_shapeEntity);
+//		m_shapeEntity = nullptr;
+//	}
+//	auto boxEntity =std::make_shared<Entity>();
+//	m_shapeEntity = boxEntity.get();
+//	m_colliderRenderers.clear();
+//    for (const auto& info : attackInfo) {
+//    	auto entity = std::make_shared<Entity>();
+//		auto model = m.createWireframe(info.second->shape.get(), glm::vec4(1.0f));// MeshFactory::CreateMesh(*(info.second->shape.get()));
+//		auto renderer = std::make_shared<Renderer>(model);
+//		entity->AddComponent(renderer);
+//		m_colliderRenderers.push_back(renderer.get());
+//		boxEntity->AddChild(entity);
+//    }
+//    for (const auto& shape : m_model->getShapes()) {
+//        auto entity = std::make_shared<Entity>();
+//        auto model = m.createWireframe(shape.get(), glm::vec4(1.0f));
+//        auto renderer = std::make_shared<Renderer>(model);
+//        entity->AddComponent(renderer);
+//        boxEntity->AddChild(entity);
+//
+//    }
+//    m_entity->AddChild(boxEntity);
 
 
 //	for (const auto &shape : m_model->getShapes()) {
@@ -242,78 +243,78 @@ void SkCollider::Start() {
 
 
 void SkCollider::updateShape() {
-
-    std::string anim = m_animator->GetAnimation();
-    int shapeId = m_model->getShapeId(anim);
-    if (m_shapeId != shapeId) {
-        // notify listeners that shape has changed
-        m_shapeId = shapeId;
-        onShapeChange.Fire(this);
-    }
+	// TODO
+//    std::string anim = m_animator->GetAnimation();
+//    int shapeId = m_model->getShapeId(anim);
+//    if (m_shapeId != shapeId) {
+//        // notify listeners that shape has changed
+//        m_shapeId = shapeId;
+//        onShapeChange.Fire(this);
+//    }
 
 
 }
 
 void SkCollider::Update(double dt) {
-
-    updateShape();
-
-    const auto& attackInfo = m_model->getAttackInfo();
-    auto mtr = (m_mainRenderer->GetTransform());
-    size_t i = 0;
-    for (const auto& info : attackInfo) {
-        glm::mat4 at = m_model->getJoint(info.second->boneId)->getAnimatedTransform();
-        //glm::mat4 at = m_mainRenderer->getJointTransform(info.second->bone);
-        m_colliderRenderers[i++]->SetTransform(mtr*at);
-    }
-    //m_colliderRenderer->clearVisible();
-
-    //if (m_shapeId != -1) {
-    //    m_colliderRenderer->setVisible(m_shapeId);
-    //}
-
-    float t = m_animator->getAnimationTime();
-
-    // check attack
-    std::string anim = m_animator->GetAnimation();
-    //m_model->getJoint("coc")->getAnimatedTransform()
-    const auto* castShape = m_model->getShapeCastId(anim, t);
-    if (castShape == nullptr) {
-        return;
-    }
-
-    auto shape = castShape->shape;
-    //m_colliderRenderer->setVisible(shapeCastId);
-    auto wt =  m_entity->GetWorldTransform();
-    glm::mat4 at = m_model->getJoint(castShape->boneId)->getAnimatedTransform();
-    //glm::mat4 scale = glm::scale(glm::vec3(m_entity->GetScale()));
-    auto transform =  wt*mtr*at;
-    //auto castShape = m_model->getShape(shapeCastId);
-
-    auto e = m_engine->ShapeCast(shape.get(), transform, m_castMask);
-    if (e.report.collide) {
-        std::cerr << "HIT!\n";
-        auto center = transform * glm::vec4(shape->getBounds().GetCenter(), 1.0f);
-        std::cerr << "center: "<< center.x << ", "<< center.y << "\n";
-        auto rm = m_engine->GetResponseManager();
-        if (rm == nullptr) {
-            std::cerr << "no handler!\n";
-        } else {
-            auto object = e.entity->GetObject();
-            //std::cerr << m_attackTag << ", " << e.entity->GetCollisionTag();
-            auto handler = rm->GetHandler(m_castTag, e.entity->GetCollisionTag());
-            if (handler.response != nullptr) {
-                std::cerr << "FOUND RESPONSE\n";
-                if (handler.flip) {
-                    handler.response->onStart(object, m_entity, e.report);
-                } else {
-                    handler.response->onStart(m_entity, object, e.report);
-                }
-            }
-        }
-    } else {
-
-    }
+	// TODO
+//    updateShape();
+//
+//    const auto& attackInfo = m_model->getAttackInfo();
+//    auto mtr = (m_mainRenderer->GetTransform());
+//    size_t i = 0;
+//    for (const auto& info : attackInfo) {
+//        glm::mat4 at = m_model->getJoint(info.second->boneId)->getAnimatedTransform();
+//        //glm::mat4 at = m_mainRenderer->getJointTransform(info.second->bone);
+//        m_colliderRenderers[i++]->SetTransform(mtr*at);
+//    }
+//    //m_colliderRenderer->clearVisible();
+//
+//    //if (m_shapeId != -1) {
+//    //    m_colliderRenderer->setVisible(m_shapeId);
+//    //}
+//
+//    float t = m_animator->getAnimationTime();
+//
+//    // check attack
+//    std::string anim = m_animator->GetAnimation();
+//    //m_model->getJoint("coc")->getAnimatedTransform()
+//    const auto* castShape = m_model->getShapeCastId(anim, t);
+//    if (castShape == nullptr) {
+//        return;
+//    }
+//
+//    auto shape = castShape->shape;
+//    //m_colliderRenderer->setVisible(shapeCastId);
+//    auto wt =  m_entity->GetWorldTransform();
+//    glm::mat4 at = m_model->getJoint(castShape->boneId)->getAnimatedTransform();
+//    //glm::mat4 scale = glm::scale(glm::vec3(m_entity->GetScale()));
+//    auto transform =  wt*mtr*at;
+//    //auto castShape = m_model->getShape(shapeCastId);
+//
+//    auto e = m_engine->ShapeCast(shape.get(), transform, m_castMask);
+//    if (e.report.collide) {
+//        std::cerr << "HIT!\n";
+//        auto center = transform * glm::vec4(shape->getBounds().GetCenter(), 1.0f);
+//        std::cerr << "center: "<< center.x << ", "<< center.y << "\n";
+//        auto rm = m_engine->GetResponseManager();
+//        if (rm == nullptr) {
+//            std::cerr << "no handler!\n";
+//        } else {
+//            auto object = e.entity->GetObject();
+//            //std::cerr << m_attackTag << ", " << e.entity->GetCollisionTag();
+//            auto handler = rm->GetHandler(m_castTag, e.entity->GetCollisionTag());
+//            if (handler.response != nullptr) {
+//                std::cerr << "FOUND RESPONSE\n";
+//                if (handler.flip) {
+//                    handler.response->onStart(object, m_entity, e.report);
+//                } else {
+//                    handler.response->onStart(m_entity, object, e.report);
+//                }
+//            }
+//        }
+//    } else {
+//
+//    }
 
 //
 //    if (m_currentAttackInfo != nullptr) {
