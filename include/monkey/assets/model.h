@@ -32,6 +32,7 @@ public:
     Model(std::shared_ptr<IMesh>);
     virtual ~Model() = default;
     Bounds getBounds() const;
+    void setOffset(glm::vec3);
     virtual std::shared_ptr<Renderer> makeRenderer(std::shared_ptr<Model>);
     using iterator =  std::vector<std::shared_ptr<IMesh>>::iterator;
     iterator begin() { return m_meshes.begin(); }
@@ -41,8 +42,13 @@ public:
 protected:
     std::vector<std::shared_ptr<IMesh>> m_meshes;
     Bounds m_bounds;
+    glm::vec3 m_offset;
     //bool m_shareable;
 };
+
+inline void Model::setOffset(glm::vec3 offset) {
+    m_offset = offset;
+}
 
 inline Bounds Model::getBounds() const {
     return m_bounds;

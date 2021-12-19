@@ -1,5 +1,5 @@
 from mopy.entity import Entity, Text, TextAlignment
-from mopy.components import Gfx
+from mopy.components import Gfx, Collider
 import mopy.monkey as monkey
 import mopy.shapes3d as sh3d
 import mopy.shapes as sh
@@ -112,17 +112,50 @@ def player3D(ciao):
     e.model = ciao.get('model', None)
     size = ciao.get('size')
     show_boxes = getattr(monkey.engine.data.globals, 'show_boxes', False)
-
+    max_speed = ciao.get('max_speed')
+    time_acc = ciao.get('time_acc')
+    jump_height = ciao.get('jump_height')
+    time_to_jump_apex = ciao.get('time_to_jump_apex')
+    gravity = (2.0 * jump_height) / (time_to_jump_apex * time_to_jump_apex)
+    jump_speed = abs(gravity) * time_to_jump_apex
     e.components.append({
         'type': 'components.controller3D',
         'maxClimbAngle': 80,
         'maxDescendAngle': 80,
         'size': size,
-        'offset': [0, 0, 0],
+        'offset': [0, size[1]*0.5, 0],
         'mask_up': 2,
         'mask_down': 2 | 32,
         'debug': show_boxes
     })
+    e.add_component({'type': 'components.dynamics3D'})
+    e.components.append({'type': 'components.keyinput'})
+    e.components.append({
+        'type': 'components.follow',
+        'cam': 'maincam',
+        'relativepos': [0, 5, 20],
+        'up': [0, 1, 0]
+    })
+    e.components.append({
+        'type': 'components.state_machine',
+        'initial_state': 'walk',
+        'states': [{
+            'id': 'walk',
+            'type': 'state.player_walk_3D',
+            'max_speed': max_speed,
+            'time_acc': time_acc,
+            'gravity': gravity,
+            'walk_state': 'walk',
+            'jump_speed': jump_speed
+        }, {
+            'id': 'jump',
+            'type': 'state.player_jump_3D',
+            'max_speed': max_speed,
+            'time_acc': time_acc,
+            'gravity': gravity,
+        }]
+    })
+
     return e
 
 
@@ -194,15 +227,18 @@ def rect_platform_3d(ciao):
     y = ciao.get('y', 0.0)
     top_tex = ciao['top']
     side_tex = ciao['side']
-    shape = sh3d.Prism(shape=sh.Poly(outline=outline), height=height, walls=ciao.get('walls', []))
+    shape = sh3d.Prism(shape=sh.Poly(outline=outline), height=height, walls=ciao.get('walls', [0]))
     e.model = {
         'type': 'model.prism',
         'repeat': ciao['repeat'],
         'poly': outline,
         'top': top_tex,
         'side': side_tex,
-        'height': height
+        'height': height,
+        'offset': [0, height, 0]
     }
+    # e.add_component(comp.ShapeGfxColor(shape=shape, color=color))
+    e.add_component(Collider(shape=shape, flag=2, mask=0, tag=2, debug=True))
     return e
 
 def dir_light(ciao):

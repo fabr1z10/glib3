@@ -29,6 +29,7 @@ public:
     explicit IShape(const ITab& t);
     Bounds getBounds() const;
     glm::vec3 getOffset() const;
+    void setOffset(glm::vec3);
     //virtual std::unique_ptr<IShape> transform (const glm::mat4& t) = 0;
     virtual bool isPointInside (glm::vec3) const = 0;
     ShapeType getShapeType() const;
@@ -37,6 +38,10 @@ protected:
     glm::vec3 m_offset{};
     ShapeType m_type;
 };
+
+inline void IShape::setOffset(glm::vec3 offset) {
+    m_offset = offset;
+}
 
 inline ShapeType IShape::getShapeType() const {
     return m_type;

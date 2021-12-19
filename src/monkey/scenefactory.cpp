@@ -89,6 +89,8 @@
 #include <monkey/states/playerwalk.h>
 #include <monkey/states/npcwalk.h>
 #include <monkey/states/animstate.h>
+#include <monkey/states/playerwalk3d.h>
+#include <monkey/states/playerjump3d.h>
 
 
 namespace py = pybind11;
@@ -180,6 +182,7 @@ SceneFactory::SceneFactory() {
 	//add2<ControllerFlat> ("components.controller_flat");
     add2<Controller25> ("components.controller25");
     add2<Dynamics> ("components.dynamics");
+    add2<Dynamics3D> ("components.dynamics3D");
     add2<PlatformComponent>("components.platform");
     add2<ExtendedStateMachine> ("components.state_machine");
 	add2<MarkovStateMachine> ("components.markov_state_machine");
@@ -288,6 +291,9 @@ SceneFactory::SceneFactory() {
     add2<AnimState> ("state.anim");
     add2<PlayerJump> ("state.player_jump");
     add2<PlayerWalk> ("state.player_walk");
+    add2<PlayerJump3D> ("state.player_jump_3D");
+    add2<PlayerWalk3D> ("state.player_walk_3D");
+
     add2<NPCWalk> ("state.npc_walk");
 
 //    add2<SimpleState> ("state.simple");

@@ -44,7 +44,7 @@ void PlayerWalk::Init(const ITab &d) {
 }
 
 void PlayerWalk::Run(double dt) {
-    float dtf = static_cast<float>(dt);
+    auto dtf = static_cast<float>(dt);
 
     if (!m_controller->grounded()) {
         m_sm->SetState(m_jumpState);

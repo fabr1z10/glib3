@@ -30,8 +30,20 @@ public:
     void step(float dt);
     using ParentClass = Dynamics;
 
-
     glm::vec2 m_velocity;
     glm::vec2 m_acceleration;
+
+};
+
+class Dynamics3D : public Component {
+public:
+    Dynamics3D(const ITab&);
+    void Start() override {}
+    void Update(double) override {}
+    void step(float dt);
+    using ParentClass = Dynamics3D;
+
+    glm::vec3 m_velocity;
+    glm::vec3 m_acceleration;
 
 };

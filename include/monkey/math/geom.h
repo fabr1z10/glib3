@@ -68,6 +68,10 @@ inline int sign (float f) {
     return f>=0.0f ? 1 : -1;
 }
 
+inline float signf (float f) {
+    return f >= 0.0f ? 1.0f : -1.0f;
+}
+
 template <class T>
 T Clamp(T x, T m, T M) {
     return (x > M ? M : (x < m ? m : x));

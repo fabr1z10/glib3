@@ -10,6 +10,7 @@ Prism::Prism(const ITab & t) {
 
     auto sh = t["shape"];
     m_shape = factory->make2<IShape>(*sh);
+    m_shape->setOffset(m_offset);
     m_bounds = m_shape->getBounds();
     m_bounds.max.z = -m_bounds.min.y;
 	m_bounds.min.z = -m_bounds.max.y;

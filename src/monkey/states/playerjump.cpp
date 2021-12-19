@@ -9,7 +9,7 @@ PlayerJump::PlayerJump(const ITab& t) : State(t) {
     auto tmax = t.get<float>("time_acc");
     m_acceleration = m_maxSpeed / tmax;
     m_gravity = t.get<float>("gravity");
-    m_walkState = t.get<std::string>("walk_state");
+    m_walkState = t.get<std::string>("walk_state", "walk");
     m_jumpUpAnim = t.get<std::string>("jump_up_anim", "jump");
     m_jumpDownAnim = t.get<std::string>("jump_down_anim", "jump");
 }

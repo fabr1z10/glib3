@@ -137,6 +137,7 @@ std::shared_ptr<Model> ModelFactory::prism(const ITab & t)  {
 	auto side = t.get<std::string>("side");
 
 	float h = t.get<float>("height");
+    auto offset = t.get<glm::vec3>("offset", glm::vec3(0.0f));
 
 	std::vector<std::vector<glm::vec2>> pts;
 	auto poly = t.get<std::vector<float>>("poly");
@@ -186,6 +187,7 @@ std::shared_ptr<Model> ModelFactory::prism(const ITab & t)  {
 	auto model = std::make_shared<Model>();
 	model->addMesh(mesh);
 	model->addMesh(sideMesh);
+    model->setOffset(offset);
 	return model;
 
 }
