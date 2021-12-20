@@ -36,7 +36,8 @@ public:
     void setColor (std::vector<float>& mult, std::vector<float>& add);
     void setText (const std::string&);
     void setModel (pybind11::object obj);
-    void setMesh (const std::string&, const std::string&, float scale, float ox, float oy);
+    void setMesh (const std::string& jointId, const std::string& parentJointId, const std::string& keyPoint,
+                  const std::string&, float scale, float z, float ox, float oy);
     void setAnim (const std::string&);
     void appendText (pybind11::object);
     void setEnableUpdate (bool);
@@ -54,7 +55,7 @@ public:
 	pybind11::list getCollisionBounds();
 	pybind11::list getAttackCollisionBounds();
 	pybind11::list getChildren(bool recursive);
-	pybind11::object getKeyPoint(const std::string& joint, const std::string& point);
+	//pybind11::object getKeyPoint(const std::string& joint, const std::string& point);
 	pybind11::list getBoxSize(const std::string& animId="");
     static pybind11::object create(Entity*);
     static void runScript(Engine& engine, pybind11::object);

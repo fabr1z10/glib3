@@ -132,6 +132,7 @@ void SkeletalRenderer::setAnimation(const std::string & id) {
 
     m_complete = false;
     m_currentAnimation = m_spriteModel->getAnimation(id);
+    m_currentAnimationId = id;
     m_animationTime = 0.0f;
 }
 

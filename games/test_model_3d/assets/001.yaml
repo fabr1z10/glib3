@@ -104,8 +104,60 @@ skeleton_example:
     - ['leglr', 'ball']
     - ['legll', 'ball']
   animations:
+    idle: anim.idle
     walk: anim.walk
-
+skeleton_example_2:
+  type: model.skeletal
+  joints:
+    - id: torso
+      mesh: mesh.g1.torso
+      windex: [0, 0, 0]
+    - id: legur
+      mesh: mesh.g1.legu
+      parent: torso
+      key_point: legu
+      windex: [1, 0, 0]
+    - id: leglr
+      mesh: mesh.g1.legl
+      parent: legur
+      key_point: legl
+      windex: [2, 1, 0]
+    - id: footr
+      mesh: mesh.g1.foot
+      parent: leglr
+      key_point: foot
+      windex: [3, 2, 0]
+    - id: legul
+      mesh: mesh.g1.legu
+      parent: torso
+      key_point: legu
+      windex: [4, 0, 0]
+    - id: legll
+      mesh: mesh.g1.legl
+      parent: legul
+      key_point: legl
+      windex: [5, 4, 0]
+    - id: footl
+      mesh: mesh.g1.foot
+      parent: legll
+      key_point: foot
+      windex: [6, 5, 0]
+    - id: shoer
+      parent: leglr
+      key_point: foot
+      windex: [7,2,0]
+    - id: shoel
+      parent: legll
+      key_point: foot
+      windex: [8, 5,0]
+  offset:
+    - ['footr', 'heel']
+    - ['footl', 'heel']
+    - ['footr', 'ball']
+    - ['footl', 'ball']
+  animations:
+    idle: anim.idle
+    walk: anim.walk
 mario:
   type: model.boxed
   sheet: gfx/smb1.png

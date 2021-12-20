@@ -1,3 +1,9 @@
+anim.idle:
+  type: skeletalanimation
+  loop: true
+  length: 4
+  keyframes:
+    - t: 0
 anim.walk:
   type: skeletalanimation
   loop: true

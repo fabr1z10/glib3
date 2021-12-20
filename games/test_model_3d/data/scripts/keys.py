@@ -21,3 +21,9 @@ def on_key():
     print('current anim: ' + anims[current])
     pippo = example.get('sprite')
     pippo.setAnim(anims[current])
+
+
+def restart():
+    print('fuccca')
+    example.restart()
+

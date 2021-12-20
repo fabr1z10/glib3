@@ -26,8 +26,8 @@ PlayerWalk3D::PlayerWalk3D(const ITab& t) : State(t), m_renderer(nullptr)  {
 	m_jumpKey = t.get<int>("jump_key", GLFW_KEY_A);
     //m_walkAnimator = factory->make2<WalkAnim>(*pi);
     m_jumpState = t.get<std::string>("jump_state", "jump");
-    //m_idleAnim = t.get<std::string>("idle_anim", "idle");
-	//m_walkAnim = t.get<std::string>("walk_anim", "walk");
+    m_idleAnim = t.get<std::string>("idle_anim", "idle");
+	m_walkAnim = t.get<std::string>("walk_anim", "walk");
 }
 
 void PlayerWalk3D::Init(const ITab&) {
@@ -101,13 +101,13 @@ void PlayerWalk3D::Run(double dt) {
 
     // TODO restore anim handle
 
-//    if (m_renderer != nullptr) {
-//        if (fabs(m_dynamics->m_velocity.x) > 1.0f) {
-//            m_renderer->setAnimation(m_walkAnim);
-//        } else {
-//            m_renderer->setAnimation(m_idleAnim);
-//        }
-//    }
+    if (m_renderer != nullptr) {
+        if ((fabs(m_dynamics->m_velocity.x) > 1.0f) || (fabs(m_dynamics->m_velocity.z) > 1.0f)) {
+            m_renderer->setAnimation(m_walkAnim);
+        } else {
+            m_renderer->setAnimation(m_idleAnim);
+        }
+    }
 }
 
 

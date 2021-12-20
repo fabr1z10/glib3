@@ -85,8 +85,10 @@ public:
 				  //glm::vec2 attachPoint, float z, float scale, int order, glm::vec2 offset = glm::vec2(0.0f));
     //void setMesh (const std::string& jointId, const std::string& meshId, float scale, glm::vec2 offset = glm::vec2(0.0f), int order = 0);
     void setAnimation (const std::string& animId, const std::string& anim);
-    void draw (Shader*, int offset=0, int count=0) ;
+    //void draw (Shader*, int offset=0, int count=0) ;
+    void prova();
     /**
+     *
      * Gets an array of the all important model-space transforms of all the
      * joints (with the current animation pose applied) in the entity. The
      * joints are ordered in the array based on their joint index. The position
@@ -118,9 +120,9 @@ public:
     const std::unordered_map<std::string, std::shared_ptr<AttackBox>>& getAttackInfo() const;
     const std::unordered_map<std::string, CollisionBox>& getBoxInfo() const;
     void addShape(const std::string& animId, std::shared_ptr<IShape> shape);
-    void resetShapes();
+
     glm::vec2 getKeyPoint(const std::string& joint, const std::string& pointId) const;
-    std::pair<bool, glm::vec2> getKeyPointRestWorld(const std::string& joint, const std::string& pointId);
+    //std::pair<bool, glm::vec2> getKeyPointRestWorld(const std::string& joint, const std::string& pointId);
     float getAttackDistance() const;
 private:
     std::vector<glm::mat4> m_restTransforms2;
@@ -131,8 +133,7 @@ private:
 	int m_root;
 	std::unordered_map<std::string, std::vector<std::string>> m_jointChildren;
 	std::unordered_map<std::string, SkeletalMesh*> m_skeletalMeshes;
-    std::unordered_map<std::string, unsigned> m_meshToJointId;
-    unsigned _nextJointId;
+
     //std::shared_ptr<Shape> m_defaultShape;
     std::vector<std::shared_ptr<IShape>> m_shapes;
     std::unordered_map<std::string, int> m_animToShape;
@@ -146,8 +147,7 @@ private:
     // create one mesh per texture!
 
     std::unordered_map<std::string, std::shared_ptr<IMesh> > m_meshes;
-    std::map<int, std::vector<DrawingBit>> m_sortedMeshes;
-    std::unordered_map<std::string, IMesh*> m_meshMap;
+
     std::unordered_map<std::string, std::shared_ptr<SkAnimation>> m_animations;
     std::string m_defaultAnimation;
     void addJointsToArray(Joint*, std::vector<glm::mat4>&);

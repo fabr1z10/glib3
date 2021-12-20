@@ -190,6 +190,8 @@ class Engine:
                 a[index] = operator.attrgetter(value[1:])(monkey.engine.data)
 
 
+
+
     def replace(self, a, args):
         if isinstance(a, dict):
             for k, v in a.items():

@@ -108,6 +108,8 @@ def line_platform(ciao):
 
 def player3D(ciao):
     e = Entity()
+    e.tag = ciao.get('tag', None)
+
     e.scale = ciao.get('scale', 1)
     e.model = ciao.get('model', None)
     size = ciao.get('size')

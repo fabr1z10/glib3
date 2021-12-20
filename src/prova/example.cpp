@@ -71,7 +71,7 @@ PYBIND11_MODULE(example, m) {
     	.def("getKeyFrame", &Wrap1::getKeyFrame)
     	.def("getCollisionBounds",&Wrap1::getCollisionBounds)
 		.def("getAttackCollisionBounds",&Wrap1::getAttackCollisionBounds)
-		.def("getKeyPoint", &Wrap1::getKeyPoint)
+		//.def("getKeyPoint", &Wrap1::getKeyPoint)
 		.def("setColliderBounds", &Wrap1::setControllerBounds)
 
 		.def("children", &Wrap1::getChildren)

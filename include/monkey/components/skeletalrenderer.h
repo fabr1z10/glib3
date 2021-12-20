@@ -14,7 +14,7 @@ public:
 	void setAnimation(const std::string&) override;
 	float getAnimationTime() const;
 	std::type_index GetType() override;
-
+    SkModel* getModel();
 private:
     std::unordered_map<int, JointTransform> interpolatePoses(
             SKeyFrame* previousFrame, SKeyFrame* nextFrame, float progression);
@@ -30,6 +30,11 @@ private:
 	//int m_frameCount;
 	//double m_time;
 };
+
+
+inline SkModel * SkeletalRenderer::getModel() {
+    return m_spriteModel;
+}
 
 inline float SkeletalRenderer::getAnimationTime() const {
 	return m_animationTime;

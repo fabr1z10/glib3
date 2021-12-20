@@ -9,6 +9,7 @@ LuaKeyListener::LuaKeyListener(const ITab & t) : Runner() {
     t.foreach("keys", [&] (const ITab& d) {
         auto key = d.get<int>("key");
         auto callback = d.get<py::function>("func");
+        //callback();
         addHotKey (key, callback);
 
     });

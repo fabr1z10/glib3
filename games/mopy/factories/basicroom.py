@@ -66,9 +66,9 @@ class BasicRoom(Room):
                     self.main = main
                 self.add(main)
         self.engines = room_info.get('engines', [])
-        keyl = KeyListener()
-        keyl.add_key(key=299, func=restart)
-        self.add_runner(keyl)
+        # keyl = KeyListener()
+        # keyl.add_key(key=299, func=restart)
+        # self.add_runner(keyl)
         # now add all items
         print ('# engines: ' + str(len(self.engines)))
         if 'items' in room_info:

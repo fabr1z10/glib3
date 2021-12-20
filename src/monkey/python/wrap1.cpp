@@ -21,6 +21,7 @@
 #include <monkey/input/pytab.h>
 #include <monkey/scenefactory.h>
 #include <monkey/components/animrenderer.h>
+#include <monkey/components/skeletalrenderer.h>
 
 namespace py = pybind11;
 
@@ -130,7 +131,16 @@ void Wrap1::setColor(std::vector<float> & mult, std::vector<float>& add) {
     }
 }
 
-void Wrap1::setMesh(const std::string & jointId, const std::string & meshId, float scale, float ox, float oy) {
+void Wrap1::setMesh(const std::string& jointId, const std::string& parentJointId, const std::string& keyPoint,
+                    const std::string& meshId, float scale, float z, float ox, float oy) {
+    auto renderer = static_cast<SkeletalRenderer*>(m_entity->GetComponent<Renderer>());
+    auto model =renderer->getModel();
+    int id = model->getJointId(jointId);
+    auto point = model->getKeyPoint(parentJointId, keyPoint);
+    model->setMesh(id, meshId, point, z, scale);
+    model->prova();
+//    renderer
+//    model->setMesh(jointId, meshId, scale, z);
 //    auto* a = m_entity->GetComponent<IAnimator>();
 //    auto* model = static_cast<SkModel*>(a->getModel());
 //    model->setMesh(jointId, meshId, scale, glm::vec2(ox, oy));
@@ -335,19 +345,19 @@ pybind11::list Wrap1::getBoxSize(const std::string& animId) {
     return l;
 }
 
-pybind11::object Wrap1::getKeyPoint(const std::string &joint, const std::string &point) {
-	auto* a = m_entity->GetComponent<IAnimator>();
-	auto* model = static_cast<SkModel*>(a->getModel());
-	auto p = model->getKeyPointRestWorld(joint, point);
-	if (p.first) {
-		pybind11::list l;
-		l.append(p.second[0]);
-		l.append(p.second[1]);
-		return l;
-	}
-	return pybind11::cast<pybind11::none>(Py_None);
-
-}
+//pybind11::object Wrap1::getKeyPoint(const std::string &joint, const std::string &point) {
+//	auto* a = m_entity->GetComponent<IAnimator>();
+//	auto* model = static_cast<SkModel*>(a->getModel());
+//	auto p = model->getKeyPointRestWorld(joint, point);
+//	if (p.first) {
+//		pybind11::list l;
+//		l.append(p.second[0]);
+//		l.append(p.second[1]);
+//		return l;
+//	}
+//	return pybind11::cast<pybind11::none>(Py_None);
+//
+//}
 
 py::object Wrap1::getInfo() {
     auto hs = m_entity->GetComponent<LuaInfo>();

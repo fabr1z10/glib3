@@ -68,7 +68,7 @@ std::vector<glm::mat4> SkModel::calculateCurrentPose(std::unordered_map<int, Joi
             localTransform += i->second;
 		}
         auto localMat = localTransform.getLocalTransform();
-		auto modelMat = current.second * localMat;
+		auto modelMat = current.second * localMat * glm::scale(glm::vec3(joint.scale));
 		result[current.first] = modelMat * m_invRestTransforms2[current.first];
 		// TODO convert to global mat
 		for (const auto &child : joint.children) {
@@ -280,13 +280,24 @@ void SkModel::computeOffset() {
     }
 }
 
-SkModel::SkModel(const ITab& main) : _nextJointId(0), m_jointCount(0) {
+void SkModel::prova() {
+    std::unordered_map<int, JointTransform> p;
+    m_invRestTransforms2 = std::vector<glm::mat4>(m_jointInfos.size());
+    for (size_t i = 0; i < m_invRestTransforms2.size(); ++i) {
+        m_invRestTransforms2[i] = glm::mat4(1.0f);
+    }
+    m_restTransforms2 = calculateCurrentPose(p);
+    for (size_t i = 0; i < m_invRestTransforms2.size(); ++i) {
+        m_invRestTransforms2[i] = glm::inverse(m_restTransforms2[i]);
+    }
+}
+SkModel::SkModel(const ITab& main) : m_jointCount(0) {
 
     //auto meshNode = main["meshes"].as<std::vector<YAML::Node>>();
     main.foreach("joints", [&] (const ITab& mesh) {
         int id = m_jointInfos.size();
         auto name = mesh.get<std::string>("id");
-        auto meshId = mesh.get<std::string>("mesh");
+        auto meshId = mesh.get<std::string>("mesh", "");
         auto parent = mesh.get<std::string>("parent", "");
         int parentId = (parent.empty() ? -1 : m_jointNameToId.at(parent));
         auto windex = mesh.get<glm::ivec3>("windex");
@@ -442,23 +453,24 @@ SkModel::SkModel(const ITab& main) : _nextJointId(0), m_jointCount(0) {
 
 }
 
-glm::vec2 SkModel::getKeyPoint(const std::string &joint, const std::string &pointId) const {
-	return m_skeletalMeshes.at(joint)->getKeyPoint(pointId);
+glm::vec2 SkModel::getKeyPoint(const std::string &joint, const std::string &keyPoint) const {
+    auto id = m_jointNameToId.at(joint);
+    return m_jointInfos[id].mesh->getKeyPoint(keyPoint);
 }
 
-std::pair<bool, glm::vec2> SkModel::getKeyPointRestWorld(const std::string &jointId, const std::string &pointId) {
-	try {
-		glm::vec2 localPoint = getKeyPoint(jointId, pointId);
-		Joint* joint = getJoint(jointId);
-		auto scale = joint->getScale();
-		glm::mat4 scalingMat = glm::scale(glm::vec3(scale));
-		auto transform = joint->getBindTransform();
-		auto transformedPoint = transform * scalingMat * glm::vec4(localPoint, 0.0f, 1.0f);
-		return std::make_pair(true, transformedPoint);
-	} catch (...) {
-		return std::make_pair(false, glm::vec2());
-	}
-}
+//std::pair<bool, glm::vec2> SkModel::getKeyPointRestWorld(const std::string &jointId, const std::string &pointId) {
+//	try {
+//		glm::vec2 localPoint = getKeyPoint(jointId, pointId);
+//		Joint* joint = getJoint(jointId);
+//		auto scale = joint->getScale();
+//		glm::mat4 scalingMat = glm::scale(glm::vec3(scale));
+//		auto transform = joint->getBindTransform();
+//		auto transformedPoint = transform * scalingMat * glm::vec4(localPoint, 0.0f, 1.0f);
+//		return std::make_pair(true, transformedPoint);
+//	} catch (...) {
+//		return std::make_pair(false, glm::vec2());
+//	}
+//}
 
 void SkModel::setAnimation(const std::string &animId, const std::string &anim) {
     // TODO restore
@@ -480,10 +492,6 @@ void SkModel::addShape(const std::string& animId, std::shared_ptr<IShape> shape)
     m_shapes.emplace_back(shape);
 }
 
-void SkModel::resetShapes() {
-    m_shapes.clear();
-    m_maxBounds = Bounds();
-}
 
 const std::unordered_map<std::string, std::shared_ptr<AttackBox>> & SkModel::getAttackInfo() const {
     return m_attackTimes;
@@ -508,19 +516,19 @@ const AttackBox* SkModel::getShapeCastId (const std::string& animId, float t) {
 }
 
 
-void SkModel::draw(Shader * shader, int, int) {
-    for (const auto &m : m_sortedMeshes) {
-    	for (const auto & mesh : m.second) {
-    		if (mesh.bb != GL_LESS) {
-    			glDepthFunc(mesh.bb);
-    		}
-            mesh.mesh->draw(shader, 0, 0);
-    		if (mesh.bb != GL_LESS) {
-				glDepthFunc(GL_LESS);
-    		}
-		}
-    }
- }
+//void SkModel::draw(Shader * shader, int, int) {
+//    for (const auto &m : m_sortedMeshes) {
+//    	for (const auto & mesh : m.second) {
+//    		if (mesh.bb != GL_LESS) {
+//    			glDepthFunc(mesh.bb);
+//    		}
+//            mesh.mesh->draw(shader, 0, 0);
+//    		if (mesh.bb != GL_LESS) {
+//				glDepthFunc(GL_LESS);
+//    		}
+//		}
+//    }
+// }
 
 int SkModel::getJointId(const std::string & id) {
     auto i = m_jointNameToId.find(id);
