@@ -2,6 +2,8 @@
 
 #include <monkey/components/icollider.h>
 #include <monkey/components/renderer.h>
+#include <monkey/components/skeletalrenderer.h>
+
 
 class SkModel;
 class SkAnimator;
@@ -40,10 +42,10 @@ private:
     void recalcShapesDebug();
     void updateShape();
     int m_shapeId;
-    SkAnimator* m_animator;
+    SkeletalRenderer* m_renderer;
     Entity* m_shapeEntity;
     std::vector<Renderer*> m_colliderRenderers;
-    Renderer* m_mainRenderer;
+    //Renderer* m_mainRenderer;
     SkModel* m_model;
     Bounds GetStaticBoundsI() const override;
     Bounds GetDynamicBoundsI() const override;

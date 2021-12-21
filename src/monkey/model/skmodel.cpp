@@ -378,14 +378,19 @@ SkModel::SkModel(const ITab& main) : m_jointCount(0) {
 //    	m_maxBounds.ExpandWith(shape->getBounds());
 //    });
 //    m_attackDistance = 0.0f;
-//    if (main.has("attack_boxes")) {
-//		main.foreach("attack_boxes", [&](const ITab &node) {
-//			auto anim = node.get<std::string>("anim");
+    if (main.has("attack_boxes")) {
+		main.foreach("attack_boxes", [&] (const ITab &node) {
+			auto anim = node.get<std::string>("anim");
+			auto startTime = node.get<float>("start");
+			auto endTime = node.get<float>("end");
+			auto boneId = node.get<std::string>("joint");
+			auto pointName = node.get<std::string>("point");
+			auto size = node.get<std::string>("size");
+		});
+	}
 //			auto box = node.get<int>("box");
-//			auto boneId = node.get<std::string>("joint");
-//			auto pointName = node.get<std::string>("point");
 //			float boneScale = m_js[m_meshToJointId[boneId]]->getScale();
-//			auto size = node.get<std::string>("size");
+
 //
 //			/// ---
 //			const auto &animation = m_animations.at(anim);

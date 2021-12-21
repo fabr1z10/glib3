@@ -25,6 +25,7 @@ void main()
     vec4 localPosition1 = Bone[weightIndex[1]] * modelpos;
     vec4 localPosition2 = Bone[weightIndex[2]] * modelpos;
     totalLocalPos += localPosition0 * vWeight[0] + localPosition1 * vWeight[1] + localPosition2 * vWeight[2];
+    totalLocalPos.z = modelpos.z;
     pass_texCoord= vTexture;
     //totalLocalPos = vec4(vPosition, 1.0);
     gl_Position = projection * modelview * totalLocalPos;

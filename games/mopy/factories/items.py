@@ -118,6 +118,9 @@ def player3D(ciao):
     time_acc = ciao.get('time_acc')
     jump_height = ciao.get('jump_height')
     time_to_jump_apex = ciao.get('time_to_jump_apex')
+    n_attacks = ciao.get('attacks', 0)
+
+
     gravity = (2.0 * jump_height) / (time_to_jump_apex * time_to_jump_apex)
     jump_speed = abs(gravity) * time_to_jump_apex
     e.components.append({
@@ -138,25 +141,41 @@ def player3D(ciao):
         'relativepos': [0, 5, 20],
         'up': [0, 1, 0]
     })
-    e.components.append({
+
+    walk_state = {
+        'id': 'walk',
+        'type': 'state.player_walk_3D',
+        'max_speed': max_speed,
+        'time_acc': time_acc,
+        'gravity': gravity,
+        'walk_state': 'walk',
+        'jump_speed': jump_speed
+    }
+    state_machine = {
         'type': 'components.state_machine',
         'initial_state': 'walk',
-        'states': [{
-            'id': 'walk',
-            'type': 'state.player_walk_3D',
-            'max_speed': max_speed,
-            'time_acc': time_acc,
-            'gravity': gravity,
-            'walk_state': 'walk',
-            'jump_speed': jump_speed
-        }, {
+        'states': [walk_state, {
             'id': 'jump',
             'type': 'state.player_jump_3D',
             'max_speed': max_speed,
             'time_acc': time_acc,
             'gravity': gravity,
         }]
-    })
+    }
+
+    if n_attacks > 0:
+        walk_state['keys'] = []
+        for i in range(0, n_attacks):
+            a_id = 'attack_' + str(i)
+            walk_state['keys'].append({'key': 81, 'action': {'type':'stateaction.statetransition', 'state': a_id}})
+            state_machine['states'].append({
+                'id': a_id,
+                'type': 'state.anim',
+                'anim': a_id,
+                'next_state': 'walk'
+            })
+
+    e.components.append(state_machine)
 
     return e
 

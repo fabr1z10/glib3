@@ -1,6 +1,6 @@
 #include <monkey/skeletal/skcollider.hpp>
 #include <monkey/skeletal/skmodel.hpp>
-#include <monkey/skeletal/skanimator.hpp>
+
 //#include <monkey/skeletal/skrenderer.hpp>
 #include <monkey/components/renderer.h>
 #include <monkey/meshfactory.h>
@@ -174,17 +174,17 @@ void SkCollider::recalcShapesDebug() {
 
 void SkCollider::Start() {
 	// TODO
-//    // a smart collider requires an animator
-//    m_animator = dynamic_cast<SkAnimator*>(m_entity->GetComponent<IAnimator>());
-//    m_model = dynamic_cast<SkModel*>(m_animator->getModel());
-//
-//    ICollider::Start();
-//
+    // a smart collider requires a skeletal renderer
+    m_renderer = dynamic_cast<SkeletalRenderer*>(m_entity->GetComponent<Renderer>());
+    m_model = dynamic_cast<SkModel*>(m_renderer->getModel());
+
+    ICollider::Start();
+
 //    m_mainRenderer = (m_entity->GetComponent<Renderer>());
-//    //auto shapeEntity = std::make_shared<Entity>();
-//
-//    // create debug mesh
-//    const auto& attackInfo = m_model->getAttackInfo();
+    auto shapeEntity = std::make_shared<Entity>();
+
+    // create debug mesh
+    const auto& attackInfo = m_model->getAttackInfo();
 //    MeshFactory m(1.0f);
 //	//auto collisionShapeEntity = std::make_shared<Entity>();
 //	if (m_shapeEntity != nullptr) {

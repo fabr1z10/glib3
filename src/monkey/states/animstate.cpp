@@ -16,7 +16,10 @@ void AnimState::Init(const ITab &d) {
 }
 
 void AnimState::Run(double) {
+	if (m_changeStateAfterAnim &&m_renderer->isComplete()) {
+		m_sm->SetState(m_nextState);
 
+	}
 
 
 }
