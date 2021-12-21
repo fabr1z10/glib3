@@ -51,10 +51,11 @@ struct DrawingBit {
 
 struct JointInfo {
     JointInfo(int id, int parent, const std::string& name, glm::ivec3 weightIndex) : id(id),
-        parent(parent), name(name), mesh(nullptr), weightIndex(weightIndex), scale(1.0f) {}
+        parent(parent), name(name), mesh(nullptr), weightIndex(weightIndex), scale(1.0f), z(0.0f) {}
     int id;
     int parent;
     float scale;
+    float z;
     std::vector<int> children;
     std::string name;
     JointTransform restTransform;
@@ -82,6 +83,7 @@ public:
 //    void attachMesh (const std::string& id, const std::string& meshId, const std::string& parentMesh, int parentJointId, float scale, int order,
 //					 glm::vec2 offset = glm::vec2(0.0f));
     void setMesh (int id, const std::string& meshId, glm::vec2 attachPoint, float z, float scale);
+    //void setAnimation(const std::string&, const std::string&);
 				  //glm::vec2 attachPoint, float z, float scale, int order, glm::vec2 offset = glm::vec2(0.0f));
     //void setMesh (const std::string& jointId, const std::string& meshId, float scale, glm::vec2 offset = glm::vec2(0.0f), int order = 0);
     void setAnimation (const std::string& animId, const std::string& anim);

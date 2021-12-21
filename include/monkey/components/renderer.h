@@ -30,7 +30,7 @@ public:
     virtual void Draw(Shader*);
     void post();
     // dynamically change the model
-    void setModel(std::shared_ptr<Model>);
+    virtual void setModel(std::shared_ptr<Model>);
     Model* GetModel();
     Bounds GetBounds() const;
     Bounds GetBounds2D() const;

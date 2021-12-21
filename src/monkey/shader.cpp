@@ -122,11 +122,11 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath, ShaderType styp
 
 }
 
-void Shader::Start(Shader*) {
+void Shader::Start(Shader* s) {
     glUseProgram(m_programId);
 
     //glBindVertexArray(m_vao);
-
+	s->setVec4("mult_color", glm::vec4(1.0f));
     // TODO move in vshader
     //for (size_t i = 0; i < m_nAttributes; i++)
     //    glEnableVertexAttribArray(i);

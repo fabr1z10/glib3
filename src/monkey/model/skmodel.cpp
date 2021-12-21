@@ -84,10 +84,12 @@ void SkModel::setMesh(int id, const std::string& meshId, glm::vec2 attachPoint, 
 {
     glm::mat4 bindTransform(1.0f);
 	m_jointInfos[id].scale = scale;
+	m_jointInfos[id].z = z;
+	//m_jointInfos[id].z = 0.0f;
     // compute rest transform for this joint
     JointTransform tr;
     tr.scale = glm::vec3(scale);
-    tr.translation = glm::vec3(attachPoint, z);
+    tr.translation = glm::vec3(attachPoint, 0.0f);
     //auto joint = std::make_shared<Joint>(newJointId, id);
     //joint->setScale(scale);
     //m_js.push_back(joint);
@@ -259,6 +261,9 @@ void SkModel::computeOffset() {
     m_offsetPoints.clear();
     for (const auto& p : m_offsetPointIds) {
 		int jointId = m_jointNameToId.at(p.first);
+		if (m_jointInfos[jointId].mesh == nullptr) {
+			continue;
+		}
 		auto kp = m_jointInfos[jointId].mesh->getKeyPoint(p.second);
 		std::cerr << "key point " << p.first << ", " << p.second << ": " << kp.x << ", " << kp.y << "\n";
 
@@ -287,10 +292,16 @@ void SkModel::prova() {
         m_invRestTransforms2[i] = glm::mat4(1.0f);
     }
     m_restTransforms2 = calculateCurrentPose(p);
+    // apply z
     for (size_t i = 0; i < m_invRestTransforms2.size(); ++i) {
+    	m_restTransforms2[i][3][2] = m_jointInfos[i].z;
         m_invRestTransforms2[i] = glm::inverse(m_restTransforms2[i]);
+        //m_invRestTransforms2[i][3][2] = -m_jointInfos[i].z;
     }
 }
+
+
+
 SkModel::SkModel(const ITab& main) : m_jointCount(0) {
 
     //auto meshNode = main["meshes"].as<std::vector<YAML::Node>>();
@@ -329,7 +340,9 @@ SkModel::SkModel(const ITab& main) : m_jointCount(0) {
     }
     m_restTransforms2 = calculateCurrentPose(p);
     for (size_t i = 0; i < m_invRestTransforms2.size(); ++i) {
-        m_invRestTransforms2[i] = glm::inverse(m_restTransforms2[i]);
+		m_restTransforms2[i][3][2] = m_jointInfos[i].z;
+		m_invRestTransforms2[i] = glm::inverse(m_restTransforms2[i]);
+		//m_invRestTransforms2[i][3][2] = -m_jointInfos[i].z;
     }
 
     int ac = 0;
@@ -339,16 +352,7 @@ SkModel::SkModel(const ITab& main) : m_jointCount(0) {
         if (ac == 0) {
             m_defaultAnimation = id;
         }
-        auto anim = Engine::get().GetAssetManager().get<SkAnimation>(animId);
-        m_animations[id] = anim;
-//
-//		std::cerr << "==\n";2
-//        node.print(std::cerr);
-//        std::cerr << "\n==\n";
-//        //auto sanim = Engine::get().GetAssetManager().getSkeletalAnimation(animId);
-//		// TODO restore
-//        //auto sanim = Engine::get().GetAssetManager().get<SkeletalAnimation>(node);
-//        //m_animations[id] = sanim;
+        setAnimation(id, animId);
         ac++;
     });
 
@@ -472,10 +476,10 @@ glm::vec2 SkModel::getKeyPoint(const std::string &joint, const std::string &keyP
 //	}
 //}
 
-void SkModel::setAnimation(const std::string &animId, const std::string &anim) {
-    // TODO restore
-    //auto sanim = Engine::get().GetAssetManager().get<SkeletalAnimation>(anim);
-    // m_animations[animId] = sanim;
+void SkModel::setAnimation(const std::string &id, const std::string &animId) {
+	auto anim = Engine::get().GetAssetManager().get<SkAnimation>(animId);
+	m_animations[id] = anim;
+
 }
 
 

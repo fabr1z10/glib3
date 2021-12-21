@@ -91,10 +91,15 @@ void PlayerWalk3D::Run(double dt) {
 
     // cap horizontal vel to max speed
     if (left || right) {
-        if (fabs(m_dynamics->m_velocity.x > m_maxSpeed)) {
+        if (fabs(m_dynamics->m_velocity.x) > m_maxSpeed) {
             m_dynamics->m_velocity.x = sign(m_dynamics->m_velocity.x) * m_maxSpeed;
         }
     }
+	if (up || down) {
+		if (fabs(m_dynamics->m_velocity.z) > m_maxSpeed) {
+			m_dynamics->m_velocity.z = sign(m_dynamics->m_velocity.z) * m_maxSpeed;
+		}
+	}
 
     auto delta = m_dynamics->m_velocity * dtf;
     m_controller->Move(delta);

@@ -12,6 +12,11 @@ void SkeletalRenderer::Start() {
     setAnimation("walk");
 }
 
+void SkeletalRenderer::setModel(std::shared_ptr<Model> model) {
+	Renderer::setModel(model);
+	m_spriteModel = dynamic_cast<SkModel*>(model.get());
+}
+
 std::unordered_map<int, JointTransform> SkeletalRenderer::interpolatePoses(
         SKeyFrame* previousFrame, SKeyFrame* nextFrame, float progression) {
     std::unordered_map<int, JointTransform> currentPose;
@@ -106,6 +111,7 @@ void SkeletalRenderer::Update(double dt) {
 }
 
 void SkeletalRenderer::Draw(Shader * s) {
+
 	if (s->getShaderType() == ShaderType::SKELETAL_SHADER) {
 
         auto boneLoc = glGetUniformLocation(s->getProgId(), "Bone");

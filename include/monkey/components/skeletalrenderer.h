@@ -15,6 +15,8 @@ public:
 	float getAnimationTime() const;
 	std::type_index GetType() override;
     SkModel* getModel();
+	void setModel(std::shared_ptr<Model>) override;
+
 private:
     std::unordered_map<int, JointTransform> interpolatePoses(
             SKeyFrame* previousFrame, SKeyFrame* nextFrame, float progression);

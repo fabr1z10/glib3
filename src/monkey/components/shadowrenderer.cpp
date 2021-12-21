@@ -12,8 +12,9 @@ ShadowRenderer::ShadowRenderer(const ITab& t) : Renderer(t) {
 }
 
 void ShadowRenderer::Draw(Shader * shader) {
-
+	shader->setVec4("mult_color", glm::vec4(0.0f, 0.0f, 0.0f, 0.5f));
 	m_parentRenderer->Draw(shader);
+	shader->setVec4("mult_color", glm::vec4(1.0f));
 }
 
 void ShadowRenderer::Update(double) {
