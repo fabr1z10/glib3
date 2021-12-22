@@ -21,8 +21,8 @@ std::shared_ptr<Renderer> SkModel::makeRenderer(std::shared_ptr<Model> model) {
 }
 
 
-std::vector<std::string> SkModel::getAnimations() const {
-    return std::vector<std::string>();
+const std::unordered_map<std::string, std::shared_ptr<SkAnimation>>& SkModel::getAnimations() const {
+    return m_animations;
 }
 
 std::string SkModel::getDefaultAnimation() const {
@@ -378,16 +378,16 @@ SkModel::SkModel(const ITab& main) : m_jointCount(0) {
 //    	m_maxBounds.ExpandWith(shape->getBounds());
 //    });
 //    m_attackDistance = 0.0f;
-    if (main.has("attack_boxes")) {
-		main.foreach("attack_boxes", [&] (const ITab &node) {
-			auto anim = node.get<std::string>("anim");
-			auto startTime = node.get<float>("start");
-			auto endTime = node.get<float>("end");
-			auto boneId = node.get<std::string>("joint");
-			auto pointName = node.get<std::string>("point");
-			auto size = node.get<std::string>("size");
-		});
-	}
+//    if (main.has("attack_boxes")) {
+//		main.foreach("attack_boxes", [&] (const ITab &node) {
+//			auto anim = node.get<std::string>("anim");
+//			auto startTime = node.get<float>("start");
+//			auto endTime = node.get<float>("end");
+//			auto boneId = node.get<std::string>("joint");
+//			auto pointName = node.get<std::string>("point");
+//			auto size = node.get<std::string>("size");
+//		});
+//	}
 //			auto box = node.get<int>("box");
 //			float boneScale = m_js[m_meshToJointId[boneId]]->getScale();
 
@@ -538,6 +538,10 @@ const AttackBox* SkModel::getShapeCastId (const std::string& animId, float t) {
 //		}
 //    }
 // }
+
+JointInfo* SkModel::getJoint(int id) {
+    return &m_jointInfos[id];
+}
 
 int SkModel::getJointId(const std::string & id) {
     auto i = m_jointNameToId.find(id);

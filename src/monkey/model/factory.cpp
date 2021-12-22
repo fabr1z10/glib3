@@ -296,10 +296,12 @@ std::shared_ptr<IMesh> ModelFactory::_mesh(const ITab & t) {
 			auto p = point.as<glm::vec2>();
 			mesh->addKeyPoint(id, glm::vec2(p.x - origin.x, -(p.y - origin.y)));
 		});
-
-
 	}
-
+    if (t.has("dimensions")) {
+        t.foreach("dimensions", [&] (const std::string& id, const ITab& point) {
+            mesh->addDimension(id, point.as<glm::vec2>());
+        });
+    }
 	auto& factory = Engine::get().GetAssetManager();
 	//auto jointId = t.get<int>("joint_id");
 	//auto parentJointId = t.get<int>("parent_joint_id", -1);

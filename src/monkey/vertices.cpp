@@ -6,6 +6,7 @@ unsigned Vertex3D::num_vertices = 3;
 unsigned Vertex3DN::num_vertices = 3;
 unsigned VertexColor::num_vertices = 2;
 unsigned VertexSkeletal::num_vertices = 3;
+unsigned VertexSkeletalColor::num_vertices = 3;
 
 void SimpleVertex3D::InitAttributes() {
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(SimpleVertex3D), (void*)offsetof(SimpleVertex3D, x));
@@ -77,8 +78,8 @@ void VertexSkeletal::InitAttributes() {
 void VertexSkeletalColor::InitAttributes() {
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(VertexSkeletalColor), (void*)offsetof(VertexSkeletalColor, x));
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(VertexSkeletalColor), (void*)offsetof(VertexSkeletalColor, r));
-    glVertexAttribIPointer(2, 3, GL_INT, sizeof(VertexSkeletalColor), (void*)offsetof(VertexSkeletalColor, index0));
-    glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(VertexSkeletalColor), (void*)offsetof(VertexSkeletalColor, weight0));
+    //glVertexAttribIPointer(2, 3, GL_INT, sizeof(VertexSkeletalColor), (void*)offsetof(VertexSkeletalColor, index0));
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(VertexSkeletalColor), (void*)offsetof(VertexSkeletalColor, weight0));
 
 
 

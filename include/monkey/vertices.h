@@ -111,9 +111,10 @@ struct VertexSkeletalColor
 {
 	GLfloat x, y, z;            // Vertex
 	GLfloat r, g, b;               // Texcoord
-	GLint index0, index1, index2;     // Index into the bone/offset matrix array (2 bones)
+	//GLint index0, index1, index2;     // Index into the bone/offset matrix array (2 bones)
 	GLfloat weight0, weight1, weight2;   // The blend factor for each bone/offset matrix (2 bones)
 	static void InitAttributes();
+    static unsigned num_vertices;
 
 };
 

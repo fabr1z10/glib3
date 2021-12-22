@@ -34,11 +34,18 @@ SkAnimation::SkAnimation(const ITab& t) {
     });
 
 	// attack boxes
-/*    t.foreach("attack", [&] (const ITab& dict) {
-        auto start_time = dict.get<float>("start") * speedUp;
-        auto end_time = dict.get<float>("end") * speedUp;
-        m_attacks.emplace_back(start_time, end_time);
-    });*/
+	if (t.has("attack")) {
+        t.foreach("attack", [&](const ITab &dict) {
+            AttackInfo aInfo;
+            aInfo.startTime = dict.get<float>("start") * speedUp;
+            aInfo.endTime = dict.get<float>("end") * speedUp;
+            dict.foreach("box", [&](const ITab &box) {
+                auto st = box.as<std::vector<std::string>>();
+                aInfo.boxInfos.push_back(SkeletalBoxInfo{st[0], st[1], st[2]});
+            });
+            m_attacks.push_back(aInfo);
+        });
+    }
 }
 
 float SkAnimation::getLength() {
@@ -46,9 +53,9 @@ float SkAnimation::getLength() {
 
 }
 
-std::pair<float, float> SkAnimation::getAttackTimes(int index) const {
-    return m_attacks.at(index);
-}
+//std::pair<float, float> SkAnimation::getAttackTimes(int index) const {
+//    return m_attacks.at(index);
+//}
 
 std::tuple<SKeyFrame*, SKeyFrame*, float> SkAnimation::getPreviousAndNextKeyFrames(float t) {
 	if (t < 0 || t > m_length) {

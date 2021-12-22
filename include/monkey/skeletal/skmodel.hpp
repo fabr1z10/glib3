@@ -71,14 +71,15 @@ public:
 	std::shared_ptr<Renderer> makeRenderer(std::shared_ptr<Model>) override;
 
 	//Bounds getBounds() const ;
-    std::vector<std::string> getAnimations() const ;
+    const std::unordered_map<std::string, std::shared_ptr<SkAnimation>>& getAnimations() const ;
     std::string getDefaultAnimation() const;
     ShaderType GetShaderType() const;
     SkAnimation* getAnimation(const std::string&);
     std::shared_ptr<Joint> getRootJoint();
     Joint* getJoint (const std::string&);
+    JointInfo* getJoint(int);
     size_t getJointCount() const;
-    bool hasJoint (const std::string&);
+    //bool hasJoint (const std::string&);
     int getJointId(const std::string&);
 //    void attachMesh (const std::string& id, const std::string& meshId, const std::string& parentMesh, int parentJointId, float scale, int order,
 //					 glm::vec2 offset = glm::vec2(0.0f));
@@ -148,7 +149,7 @@ private:
 
     // create one mesh per texture!
 
-    std::unordered_map<std::string, std::shared_ptr<IMesh> > m_meshes;
+    //std::unordered_map<std::string, std::shared_ptr<IMesh> > m_meshes;
 
     std::unordered_map<std::string, std::shared_ptr<SkAnimation>> m_animations;
     std::string m_defaultAnimation;
@@ -193,9 +194,9 @@ inline IShape* SkModel::getShape(int shapeId) {
 
 }
 
-inline bool SkModel::hasJoint(const std::string & id) {
-    return m_meshes.count(id)> 0;
-}
+//inline bool SkModel::hasJoint(const std::string & id) {
+//    return m_meshes.count(id)> 0;
+//}
 
 inline const std::unordered_map<std::string, CollisionBox> & SkModel::getBoxInfo() const {
     return m_boxInfo;

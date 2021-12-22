@@ -16,7 +16,7 @@ public:
 	std::type_index GetType() override;
     SkModel* getModel();
 	void setModel(std::shared_ptr<Model>) override;
-
+    const std::vector<glm::mat4>& getBonesTransform();
 private:
     std::unordered_map<int, JointTransform> interpolatePoses(
             SKeyFrame* previousFrame, SKeyFrame* nextFrame, float progression);
@@ -26,13 +26,16 @@ private:
 	float m_animationTime;
 	SkModel* m_spriteModel;
 	SkAnimation* m_currentAnimation;
-	std::string m_currentAnimationId;
+	//std::string m_currentAnimationId;
     std::vector<glm::mat4> m_bones;
 	//AnimationInfo* m_currentAnimInfo;
 	//int m_frameCount;
 	//double m_time;
 };
 
+inline const std::vector<glm::mat4> & SkeletalRenderer::getBonesTransform() {
+    return m_bones;
+}
 
 inline SkModel * SkeletalRenderer::getModel() {
     return m_spriteModel;
