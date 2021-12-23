@@ -240,6 +240,26 @@ def player2D(ciao):
     return e
 
 
+def box_platform_3d(ciao):
+    e = Entity()
+    size = ciao['size']
+    top_tex = ciao['top']
+    side_tex = ciao['side']
+    collision_tag = ciao.get('collision_tag', 0)
+    shape = sh3d.AABB(size=size, offset=(0, 0, -size[2]))
+    e.model = {
+        'type': 'model.prism',
+        'repeat': ciao['repeat'],
+        'poly': [0, 0, size[0], 0, size[0], size[2], 0, size[2]],
+        'top': top_tex,
+        'side': side_tex,
+        'height': size[1],
+        'offset': [0, size[1], 0]
+    }
+    e.add_component(Collider(shape=shape, flag=2, mask=0, tag=collision_tag, debug=True))
+    return e
+
+
 def rect_platform_3d(ciao):
     e = Entity()
     outline = ciao['poly']
@@ -248,7 +268,8 @@ def rect_platform_3d(ciao):
     y = ciao.get('y', 0.0)
     top_tex = ciao['top']
     side_tex = ciao['side']
-    shape = sh3d.Prism(shape=sh.Poly(outline=outline), height=height, walls=ciao.get('walls', [0]))
+    collision_tag = ciao.get('collision_tag', 0)
+    shape = sh3d.Prism(shape=sh.Poly(outline=outline), height=height, walls=ciao.get('walls', []))
     e.model = {
         'type': 'model.prism',
         'repeat': ciao['repeat'],
@@ -259,7 +280,7 @@ def rect_platform_3d(ciao):
         'offset': [0, height, 0]
     }
     # e.add_component(comp.ShapeGfxColor(shape=shape, color=color))
-    e.add_component(Collider(shape=shape, flag=2, mask=0, tag=2, debug=True))
+    e.add_component(Collider(shape=shape, flag=2, mask=0, tag=collision_tag, debug=True))
     return e
 
 def dir_light(ciao):

@@ -249,6 +249,7 @@ void SkCollider::Start() {
                         transformedPoint.z = -thickness;
                         auto shape = std::make_shared<AABB>(glm::vec3(dims[0], dims[1], thickness),
                                                             glm::vec3(transformedPoint));
+                        m_castShapes[animId.first] = ShapeCastInfo{shape, jId};
                         vertices.push_back(VertexSkeletalColor{transformedPoint.x, transformedPoint.y, 0.0f, 1.0f, 1.0f, 1.0f,1.0f, 0.0f, 0.0f});
                         vertices.push_back(VertexSkeletalColor{transformedPoint.x + dims.x, transformedPoint.y, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f});
                         vertices.push_back(VertexSkeletalColor{transformedPoint.x + dims.x, transformedPoint.y + dims.y, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f});
@@ -367,7 +368,45 @@ void SkCollider::Update(double dt) {
 //    float t = m_animator->getAnimationTime();
 //
 //    // check attack
-//    std::string anim = m_animator->GetAnimation();
+//
+    auto animId = m_renderer->getAnimation();
+    auto anim = m_model->getAnimation(animId);
+    if (anim->hasAttacks()) {
+        auto& bonesTransform = m_renderer->getBonesTransform();
+        const auto& attackInfo = anim->getAttacks()[0];
+        auto mtr = m_renderer->GetTransform();
+        auto t = m_renderer->getAnimationTime();
+        if (t >= attackInfo.startTime && t <= attackInfo.endTime) {
+            auto& castShapeInfo = m_castShapes.at(animId);
+            auto wt =  m_entity->GetWorldTransform();
+            auto rt = m_model->getRestTransform(castShapeInfo.jointId);
+            //int jointId = m_model->getJointId(castShapeInfo.jointId);
+            auto at = bonesTransform[castShapeInfo.jointId];
+            auto transform =  wt*mtr*at*rt;
+            auto e = m_engine->ShapeCast(castShapeInfo.shape.get(), transform, m_castMask);
+            if (e.report.collide) {
+                auto center = transform * glm::vec4(castShapeInfo.shape->getBounds().GetCenter(), 1.0f);
+                auto rm = m_engine->GetResponseManager();
+                if (rm == nullptr) {
+                    std::cerr << "no handler!\n";
+                } else {
+                    auto object = e.entity->GetObject();
+                    auto handler = rm->GetHandler(m_castTag, e.entity->GetCollisionTag());
+                    if (handler.response != nullptr) {
+                        std::cerr << "FOUND RESPONSE\n";
+                        if (handler.flip) {
+                            handler.response->onStart(object, m_entity, e.report);
+                        } else {
+                            handler.response->onStart(m_entity, object, e.report);
+                        }
+                    }
+                }
+
+            }
+        }
+
+
+    }
 //    //m_model->getJoint("coc")->getAnimatedTransform()
 //    const auto* castShape = m_model->getShapeCastId(anim, t);
 //    if (castShape == nullptr) {

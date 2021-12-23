@@ -47,6 +47,7 @@ class Engine:
         self.add_item_factory('_line', mopy.factories.items.line_platform)
         self.add_item_factory('_poly', mopy.factories.items.poly_platform)
         self.add_item_factory('_prism_3d', mopy.factories.items.rect_platform_3d)
+        self.add_item_factory('_box_3d', mopy.factories.items.box_platform_3d)
         self.add_item_factory('_directional_light', mopy.factories.items.dir_light)
 
     @staticmethod

@@ -37,6 +37,10 @@ private:
 
 };
 
+struct ShapeCastInfo {
+    std::shared_ptr<IShape> shape;
+    int jointId;
+};
 
 /*
  * A smart collider needs to be used with a skeletal model.
@@ -72,6 +76,8 @@ private:
     Entity* m_shapeEntity;
     //std::vector<Renderer*> m_colliderRenderers;
     //Renderer* m_mainRenderer;
+    std::unordered_map<std::string, ShapeCastInfo> m_castShapes;
+
     SkModel* m_model;
     Bounds GetStaticBoundsI() const override;
     Bounds GetDynamicBoundsI() const override;
