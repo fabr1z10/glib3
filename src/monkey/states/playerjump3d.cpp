@@ -1,55 +1,26 @@
 #include "monkey/states/playerjump3d.h"
-
 #include <monkey/components/inputmethod.h>
 #include <monkey/components/controller3d.h>
 #include <monkey/entity.h>
 #include <monkey/math/geom.h>
-
 #include <monkey/components/dynamics2d.h>
-#include <monkey/components/animator.h>
 #include <GLFW/glfw3.h>
 
-//Jump3D::Jump3D(float accelerationTimeAirborne, float speed, bool flipH, const std::string& animUp, const std::string& animDown) :
-//        m_accTimeAir(accelerationTimeAirborne), m_speed(speed), m_flipHorizontally(flipH), m_jumpAnimUp(animUp), m_jumpAnimDown(animDown)
-//{}
-
-
-PlayerJump3D::PlayerJump3D(const ITab& t) : State(t) {
-	m_maxSpeed = t.get<float>("max_speed");
-    auto tmax = t.get<float>("time_acc");
-    m_acceleration = m_maxSpeed / tmax;
-    m_gravity = t.get<float>("gravity");
+PlayerJump3D::PlayerJump3D(const ITab& t) : Base3D(t) {
     m_walkState = t.get<std::string>("walk_state", "walk");
     //m_flipHorizontally = t.get<bool>("flipH");
-	m_jumpAnimUp = t.get<std::string>("animUp", "jumpup");
-	m_jumpAnimDown = t.get<std::string>("animDown", "jumpdown");
+	//_jumpAnimUp = t.get<std::string>("animUp", "jumpup");
+	//m_jumpAnimDown = t.get<std::string>("animDown", "jumpdown");
 }
 
 
 void PlayerJump3D::AttachStateMachine(StateMachine * sm) {
-	State::AttachStateMachine(sm);
-	m_entity = sm->GetObject();
-	m_controller = dynamic_cast<Controller3D *>(m_entity->GetComponent<IController>());
-	if (m_controller == nullptr) {
-		GLIB_FAIL("Platformer state requires a <Controller3D> component!");
-	}
-    m_renderer = dynamic_cast<AnimationRenderer*>(m_entity->GetComponent<Renderer>());
-
-	m_dynamics = m_entity->GetComponent<Dynamics3D>();
-	if (m_dynamics == nullptr) {
-		GLIB_FAIL("Platormer state requires a <Dynamics3D> component!");
-	}
-	//m_animator = m_entity->GetComponent<Animator>();
+	Base3D::AttachStateMachine(sm);
 	m_input = m_entity->GetComponent<InputMethod>();
-	//if (m_input == nullptr) {
-	//    GLIB_FAIL("Walk state requires an <InputMethod> component!");
-	//}
-	// TODO set animator
-	//m_animator = m_entity->GetComponent<IAnimator>();
 }
 
 void PlayerJump3D::Run(double dt) {
-    float dtf = static_cast<float>(dt);
+    auto dtf = static_cast<float>(dt);
 
     if (m_controller->grounded() && m_dynamics->m_velocity.y < 0) {
         // landed on a platform

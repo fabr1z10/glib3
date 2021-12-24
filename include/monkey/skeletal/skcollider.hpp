@@ -17,6 +17,7 @@ struct SBox {
     int jointId;
     unsigned offset;
     unsigned count;
+    int isStatic;
 
 };
 
@@ -29,7 +30,7 @@ public:
     //void Start() override;
     void Update(double) override;
 
-    void addBox(const std::string& animation, int joint, unsigned offset, unsigned count);
+    void addBox(const std::string& animation, int joint, unsigned offset, unsigned count, bool);
 private:
     std::unordered_map<std::string, std::vector<SBox>> m_boxInfos;
     SkeletalRenderer* m_renderer;
@@ -77,11 +78,13 @@ private:
     //std::vector<Renderer*> m_colliderRenderers;
     //Renderer* m_mainRenderer;
     std::unordered_map<std::string, ShapeCastInfo> m_castShapes;
-
+    std::unordered_map<std::string, std::shared_ptr<IShape>> m_shapes;
+    std::shared_ptr<IShape> m_staticShape;
     SkModel* m_model;
     Bounds GetStaticBoundsI() const override;
     Bounds GetDynamicBoundsI() const override;
-
+    std::pair<unsigned, unsigned> addDebugMesh(std::vector<VertexSkeletalColor>& vertices, std::vector<unsigned>& indices,
+                                               float x, float y, float w, float h, glm::vec3 color);
     int m_castTag;
     int m_castMask;
 };

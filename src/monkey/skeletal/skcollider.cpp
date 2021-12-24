@@ -13,8 +13,8 @@ SkeletalColliderRenderer::SkeletalColliderRenderer(SkeletalRenderer* renderer, s
 
 }
 
-void SkeletalColliderRenderer::addBox(const std::string &animation, int joint, unsigned offset, unsigned count) {
-    m_boxInfos[animation].push_back(SBox{joint, offset, count});
+void SkeletalColliderRenderer::addBox(const std::string &animation, int joint, unsigned offset, unsigned count, bool isStatic) {
+    m_boxInfos[animation].push_back(SBox{joint, offset, count, isStatic});
 }
 
 std::type_index SkeletalColliderRenderer::GetType() {
@@ -26,6 +26,9 @@ void SkeletalColliderRenderer::Update(double) {
 }
 void SkeletalColliderRenderer::Draw(Shader * s) {
     // get the current animation
+    auto* cam = Engine::get().GetRenderingEngine()->getCurrentCamera();
+    auto a = cam->m_viewMatrix * m_entity->GetWorldTransform();
+    auto b = cam->m_viewMatrix * m_entity->GetWorldTransform() * m_renderingTransform;
     if (s->getShaderType() == ShaderType::SKELETAL_SHADER_COLOR) {
 
         auto currentAnimation = m_renderer->getAnimation();
@@ -40,7 +43,10 @@ void SkeletalColliderRenderer::Draw(Shader * s) {
             // set the bones, inherit the ones from renderer
             glUniformMatrix4fv(boneLoc, bones.size(), false, &bones[0][0][0]);
             for (const auto& box : it->second) {
-                auto restTransform = m_skeletalModel->getRestTransform(box.jointId);
+                glm::mat4 mv = (box.isStatic ? a : b);
+                s->setMat4("modelview", mv);
+                //glUniformMatrix4fv("modelview", 1, GL_FALSE, &mv[0][0]);
+                auto restTransform =  m_skeletalModel->getRestTransform(box.jointId);
                 auto weightIndices = glm::ivec3(box.jointId, 0, 0);
                 glUniformMatrix4fv(l2m, 1, false, &restTransform[0][0]);
                 glUniform3iv(weightIndex, 1, &weightIndices[0]);
@@ -51,7 +57,7 @@ void SkeletalColliderRenderer::Draw(Shader * s) {
     }
 }
 
-SkCollider::SkCollider(const ITab& table) : ICollider(table), m_shapeEntity(nullptr), m_shapeId(-1),
+SkCollider::SkCollider(const ITab& table) : ICollider(table), m_shapeEntity(nullptr), m_shapeId(-1), m_staticShape(nullptr),
     m_renderer(nullptr), m_model(nullptr) {
 
     m_castTag = table.get<int>("cast_tag", 0);
@@ -60,7 +66,13 @@ SkCollider::SkCollider(const ITab& table) : ICollider(table), m_shapeEntity(null
 }
 
 Bounds SkCollider::GetStaticBoundsI() const {
-    return m_model->getBounds();
+    auto defaultBox = m_model->getBoundingBox();
+    float width = defaultBox[0];
+    float height = defaultBox[1];
+    float thickness = width;
+    AABB pd(glm::vec3(width, height, thickness), glm::vec3(-width*0.5f, 0.0f, -thickness*0.5f));
+    return pd.getBounds();
+
 
 }
 
@@ -82,9 +94,13 @@ Bounds SkCollider::getAttackBounds() const {
 }
 
 IShape* SkCollider::GetShape() {
-    if (m_shapeId == -1)
-        return nullptr;
-    return m_model->getShape(m_shapeId);
+
+    std::string anim = m_renderer->getAnimation();
+    auto i = m_shapes.find(anim);
+    if (i != m_shapes.end()) {
+        return i->second.get();
+    }
+    return nullptr;
 }
 
 
@@ -206,6 +222,26 @@ void SkCollider::recalcShapesDebug() {
 //    }
 }
 
+
+std::pair<unsigned, unsigned> SkCollider::addDebugMesh(std::vector<VertexSkeletalColor>& vertices, std::vector<unsigned>& indices,
+                              float x, float y, float w, float h, glm::vec3 color) {
+    unsigned offset = indices.size();
+    unsigned vc = vertices.size();
+    vertices.push_back(VertexSkeletalColor{x, y, 0.f, color.r, color.g, color.b, 1.0f, 0.0f, 0.0f});
+    vertices.push_back(VertexSkeletalColor{x + w, y, 0.0f, color.r, color.g, color.b, 1.0f, 0.0f, 0.0f});
+    vertices.push_back(VertexSkeletalColor{x + w, y + h, 0.0f, color.r, color.g, color.b, 1.0f, 0.0f, 0.0f});
+    vertices.push_back(VertexSkeletalColor{x, y + h, 0.0f, color.r, color.g, color.b, 1.0f, 0.0f, 0.0f});
+    indices.push_back(vc);
+    indices.push_back(vc+1);
+    indices.push_back(vc+1);
+    indices.push_back(vc+2);
+    indices.push_back(vc+2);
+    indices.push_back(vc+3);
+    indices.push_back(vc+3);
+    indices.push_back(vc);
+    return std::make_pair(offset, 8u);
+}
+
 void SkCollider::Start() {
 	// TODO
     // a smart collider requires a skeletal renderer
@@ -227,12 +263,30 @@ void SkCollider::Start() {
     auto debugModel = std::make_shared<Model>();
     auto skcr = std::make_shared<SkeletalColliderRenderer>(m_renderer, debugModel, m_model);
 
+    auto defaultBox = m_model->getBoundingBox();
+    float width = defaultBox[0];
+    float height = defaultBox[1];
+    float thickness = width;
+
+
+
     for (const auto& animId : m_model->getAnimations()) {
         auto animation = animId.second;
+        // associate collision box
+        //auto kp = m_model->getKeyPoint("footr", "heel");
+       // auto ll = m_model->getRestTransform(3) * glm::vec4(kp, 0.0f, 1.0f);
+        auto shape = std::make_shared<AABB>(glm::vec3(width, height, thickness), glm::vec3(-width*0.5f, 0.0f, -thickness * 0.5f));
+        auto oc = addDebugMesh(vertices, indices, -width*0.5f, 0.0f, width, height, glm::vec3(1.0f, 1.0f, 0.0f));
+        skcr->addBox(animId.first, 0, oc.first, oc.second, true);
+        m_shapes[animId.first] = shape;
+        if (m_staticShape == nullptr) {
+            m_staticShape = shape;
+        }
+
+        // handle attacks
         if (animation->hasAttacks()) {
             const auto& attack = animation->getAttacks()[0];
             // create a shape
-            float thickness = 1.0f;
 
             for (const auto& b : attack.boxInfos) {
                 int jId = m_model->getJointId(b.jointId);
@@ -250,21 +304,8 @@ void SkCollider::Start() {
                         auto shape = std::make_shared<AABB>(glm::vec3(dims[0], dims[1], thickness),
                                                             glm::vec3(transformedPoint));
                         m_castShapes[animId.first] = ShapeCastInfo{shape, jId};
-                        vertices.push_back(VertexSkeletalColor{transformedPoint.x, transformedPoint.y, 0.0f, 1.0f, 1.0f, 1.0f,1.0f, 0.0f, 0.0f});
-                        vertices.push_back(VertexSkeletalColor{transformedPoint.x + dims.x, transformedPoint.y, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f});
-                        vertices.push_back(VertexSkeletalColor{transformedPoint.x + dims.x, transformedPoint.y + dims.y, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f});
-                        vertices.push_back(VertexSkeletalColor{transformedPoint.x, transformedPoint.y + dims.y, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f});
-                        unsigned offset = indices.size();
-                        indices.push_back(ic);
-                        indices.push_back(ic+1);
-                        indices.push_back(ic+1);
-                        indices.push_back(ic+2);
-                        indices.push_back(ic+2);
-                        indices.push_back(ic+3);
-                        indices.push_back(ic+3);
-                        indices.push_back(ic);
-                        ic += 4;
-                        skcr->addBox(animId.first, jId, offset, 8);
+                        auto oc = addDebugMesh(vertices, indices, transformedPoint.x, transformedPoint.y, dims.x, dims.y, glm::vec3(1.0f, 0.0f, 0.0f));
+                        skcr->addBox(animId.first, jId, oc.first, oc.second, false);
                         break;
                     }
                 }

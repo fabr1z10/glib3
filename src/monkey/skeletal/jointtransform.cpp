@@ -12,7 +12,7 @@ JointTransform JointTransform::interpolate(const JointTransform &A, const JointT
 }
 
 glm::mat4 JointTransform::getLocalTransform() const {
-	auto sc = glm::scale(glm::vec3(scale));
+	auto sc = glm::scale(scale);
 	auto rot =glm::mat4_cast(rotation);
 	auto trans = glm::translate(glm::mat4(1.0f), translation);
 	//return rot * trans;

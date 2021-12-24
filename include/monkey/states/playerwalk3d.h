@@ -1,14 +1,12 @@
 #pragma once
 
-#include <monkey/components/statemachine.h>
+#include <monkey/states/base3d.h>
 #include <monkey/components/animrenderer.h>
 
-class Controller3D;
-class Dynamics3D;
 class InputMethod;
 
 // this is the walk state for moving in 3d world (x, z horizontal)
-class PlayerWalk3D : public State {
+class PlayerWalk3D : public Base3D {
 public:
 	/**
 	 *
@@ -26,24 +24,15 @@ public:
 
 
 private:
-	Controller3D* m_controller;
-    Dynamics3D * m_dynamics;
 	InputMethod * m_input;
-    AnimationRenderer* m_renderer;
-	Entity * m_entity;
 
-	//bool m_flipHorizontally;
 	float m_speed;
-	float m_acceleration;
-	float m_velocitySmoothing;
 	float m_jumpSpeed;
 	std::string m_walkAnim;
 	std::string m_jumpState;
 	std::string m_idleAnim;
 	//std::shared_ptr<WalkAnim> m_walkAnimator;
 	int m_jumpKey;
-    float m_maxSpeed;
-    float m_gravity;
 
 };
 

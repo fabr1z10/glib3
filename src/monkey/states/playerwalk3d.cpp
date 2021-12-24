@@ -1,30 +1,18 @@
 #include <monkey/states/playerwalk3d.h>
 #include <monkey/math/geom.h>
-
 #include <monkey/entity.h>
 #include <monkey/engine.h>
 #include <monkey/components/controller3d.h>
 #include <monkey/components/inputmethod.h>
 #include <monkey/components/dynamics2d.h>
-#include <monkey/components/animator.h>
 #include <monkey/components/statemachine.h>
 #include <GLFW/glfw3.h>
 
-//PlayerWalk3D::PlayerWalk3D(float speed, float acceleration, bool fliph, float jumpSpeed) :
-//        m_speed(speed), m_acceleration(acceleration), m_flipHorizontally(fliph), m_velocitySmoothing(0.0f), m_jumpSpeed(jumpSpeed) {}
+PlayerWalk3D::PlayerWalk3D(const ITab& t) : Base3D(t) {
 
-PlayerWalk3D::PlayerWalk3D(const ITab& t) : State(t), m_renderer(nullptr)  {
-    //auto factory = Engine::get().GetSceneFactory();
-
-    m_maxSpeed = t.get<float>("max_speed");
-    auto tmax = t.get<float>("time_acc");
-    m_acceleration = m_maxSpeed / tmax;
-	//m_flipHorizontally = t.get<bool>("flipH");
 	m_jumpSpeed = t.get<float>("jump_speed");
-	//auto pi = t["animator"];
-	m_gravity = t.get<float>("gravity");
 	m_jumpKey = t.get<int>("jump_key", GLFW_KEY_A);
-    //m_walkAnimator = factory->make2<WalkAnim>(*pi);
+
     m_jumpState = t.get<std::string>("jump_state", "jump");
     m_idleAnim = t.get<std::string>("idle_anim", "idle");
 	m_walkAnim = t.get<std::string>("walk_anim", "walk");
@@ -115,28 +103,7 @@ void PlayerWalk3D::Run(double dt) {
     }
 }
 
-
-
-
 void PlayerWalk3D::AttachStateMachine(StateMachine * sm) {
-	State::AttachStateMachine(sm);
-	m_entity = sm->GetObject();
-	m_controller = dynamic_cast<Controller3D*>(m_entity->GetComponent<IController>());
-	if (m_controller == nullptr) {
-		GLIB_FAIL("Platformer state requires a <Controller3D> component!");
-	}
-    m_renderer = dynamic_cast<AnimationRenderer*>(m_entity->GetComponent<Renderer>());
-	m_dynamics = m_entity->GetComponent<Dynamics3D>();
-	if (m_dynamics == nullptr) {
-		GLIB_FAIL("Platormer state requires a <Dynamics2D> component!");
-	}
-	//m_animator = m_entity->GetComponent<Animator>();
+	Base3D::AttachStateMachine(sm);
 	m_input = m_entity->GetComponent<InputMethod>();
-	//if (m_input == nullptr) {
-	//    GLIB_FAIL("Walk state requires an <InputMethod> component!");
-	//}
-	// TODO set animator
-	//m_animator = m_entity->GetComponent<IAnimator>();
-
-
 }

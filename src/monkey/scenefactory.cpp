@@ -91,6 +91,7 @@
 #include <monkey/states/animstate.h>
 #include <monkey/states/playerwalk3d.h>
 #include <monkey/states/playerjump3d.h>
+#include <monkey/states/foechase3d.h>
 
 
 namespace py = pybind11;
@@ -293,6 +294,7 @@ SceneFactory::SceneFactory() {
     add2<PlayerWalk> ("state.player_walk");
     add2<PlayerJump3D> ("state.player_jump_3D");
     add2<PlayerWalk3D> ("state.player_walk_3D");
+    add2<FoeChase3D> ("state.foe_chase_3D");
 
     add2<NPCWalk> ("state.npc_walk");
 

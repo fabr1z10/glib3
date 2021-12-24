@@ -49,7 +49,7 @@ public:
 //    void AddCamera (std::unique_ptr<Camera>);
 //    void RemoveCamera(int);
 //    Camera* GetCamera (int);
-//    Camera* getCurrentCamera();
+    Camera* getCurrentCamera();
     void Notify(float, float) override;
     using ParentClass = RenderingEngine;
     void AddLight (Light*);
@@ -57,6 +57,7 @@ public:
     std::unordered_set<Light*>& GetLights();
     //glm::mat4& getModelViewMatrix();
     void setupCamera(Camera*);
+
 private:
     int m_i;
     std::vector<std::unique_ptr<Shader>> m_shaders;
@@ -74,5 +75,7 @@ private:
 inline std::unordered_set<Light*>& RenderingEngine::GetLights() {
     return m_lights;
 }
+
+
 
 #endif /* renderingengine_h */

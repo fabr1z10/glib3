@@ -106,23 +106,14 @@ def line_platform(ciao):
     return e
 
 
-def player3D(ciao):
+def common3D(ciao):
     e = Entity()
     e.tag = ciao.get('tag', None)
-
     e.scale = ciao.get('scale', 1)
     e.model = ciao.get('model', None)
     size = ciao.get('size')
     show_boxes = getattr(monkey.engine.data.globals, 'show_boxes', False)
-    max_speed = ciao.get('max_speed')
-    time_acc = ciao.get('time_acc')
-    jump_height = ciao.get('jump_height')
-    time_to_jump_apex = ciao.get('time_to_jump_apex')
-    n_attacks = ciao.get('attacks', 0)
 
-
-    gravity = (2.0 * jump_height) / (time_to_jump_apex * time_to_jump_apex)
-    jump_speed = abs(gravity) * time_to_jump_apex
     e.components.append({
         'type': 'components.controller3D',
         'maxClimbAngle': 80,
@@ -134,6 +125,47 @@ def player3D(ciao):
         'debug': show_boxes
     })
     e.add_component({'type': 'components.dynamics3D'})
+    return e
+
+
+def foe3D(ciao):
+    e = common3D(ciao)
+    max_speed = ciao.get('max_speed')
+    time_acc = ciao.get('time_acc')
+    jump_height = ciao.get('jump_height')
+    time_to_jump_apex = ciao.get('time_to_jump_apex')
+    n_attacks = ciao.get('attacks', 0)
+    gravity = (2.0 * jump_height) / (time_to_jump_apex * time_to_jump_apex)
+    jump_speed = abs(gravity) * time_to_jump_apex
+    walk_state = {
+        'id': 'walk',
+        'type': 'state.foe_chase_3D',
+        'max_speed': max_speed,
+        'time_acc': time_acc,
+        'gravity': gravity,
+        'walk_state': 'walk',
+        'jump_speed': jump_speed
+    }
+    state_machine = {
+        'type': 'components.state_machine',
+        'initial_state': 'walk',
+        'states': [walk_state]
+    }
+    e.components.append(state_machine)
+
+    return e
+
+
+
+def player3D(ciao):
+    e = common3D(ciao)
+    max_speed = ciao.get('max_speed')
+    time_acc = ciao.get('time_acc')
+    jump_height = ciao.get('jump_height')
+    time_to_jump_apex = ciao.get('time_to_jump_apex')
+    n_attacks = ciao.get('attacks', 0)
+    gravity = (2.0 * jump_height) / (time_to_jump_apex * time_to_jump_apex)
+    jump_speed = abs(gravity) * time_to_jump_apex
     e.components.append({'type': 'components.keyinput'})
     e.components.append({
         'type': 'components.follow',

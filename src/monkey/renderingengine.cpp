@@ -138,6 +138,7 @@ void RenderingEngine::Update(double)
 				if (cam != nullptr) {
 					cameras.push_front(std::make_pair(nodesToProcess.empty() ? -1 : nodesToProcess.front()->GetId(), cam));
 					currentCam = cameras.front().second;
+					m_currentCamera = currentCam;
 					setupCamera(currentCam);
 				}
 				// *** end handle camera
@@ -209,6 +210,6 @@ void RenderingEngine::RemoveLight(Light* light ) {
 //    return m_mvm;
 //}
 
-//Camera* RenderingEngine::getCurrentCamera() {
-//    return m_currentCamera;
-//}
+Camera* RenderingEngine::getCurrentCamera() {
+    return m_currentCamera;
+}

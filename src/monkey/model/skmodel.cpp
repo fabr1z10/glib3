@@ -366,6 +366,8 @@ SkModel::SkModel(const ITab& main) : m_jointCount(0) {
 		});
 	}
     computeOffset();
+
+    m_meshBounds = main.get<glm::vec4>("bounding_box");
 //
 //    // ################## read boxes
 //    auto thickness = main.get<float>("thickness", 0.0f);
@@ -487,6 +489,10 @@ void SkModel::setAnimation(const std::string &id, const std::string &animId) {
 
 }
 
+
+glm::vec4 SkModel::getBoundingBox() const {
+    return m_meshBounds;
+}
 
 void SkModel::addShape(const std::string& animId, std::shared_ptr<IShape> shape) {
 

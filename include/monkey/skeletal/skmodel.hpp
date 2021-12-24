@@ -127,6 +127,7 @@ public:
     glm::vec2 getKeyPoint(const std::string& joint, const std::string& pointId) const;
     //std::pair<bool, glm::vec2> getKeyPointRestWorld(const std::string& joint, const std::string& pointId);
     float getAttackDistance() const;
+    glm::vec4 getBoundingBox() const;
 private:
     std::vector<glm::mat4> m_restTransforms2;
     std::vector<glm::mat4> m_invRestTransforms2;
@@ -159,6 +160,7 @@ private:
     std::unordered_map<std::string, std::shared_ptr<Joint>> m_allJoints;
 
     //std::vector<std::shared_ptr<Joint>> m_js;
+    glm::vec4 m_meshBounds;
     Bounds m_maxBounds;
     std::vector<SkBoxInfo> m_skeletalBoxes;
     std::vector<std::pair<std::string, std::string>> m_offsetPointIds;
