@@ -29,7 +29,6 @@ public:
     const std::vector<std::shared_ptr<SKeyFrame>>& getKeyFrames();
 	std::tuple<SKeyFrame*, SKeyFrame*, float> getPreviousAndNextKeyFrames (float t);
     const std::vector<AttackInfo>& getAttacks() const;
-
     //std::pair<float, float> getAttackTimes(int) const;
     std::unordered_map<std::string, glm::mat4> getAnimTransform(float, SkModel*);
     bool hasAttacks() const;

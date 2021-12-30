@@ -54,7 +54,7 @@ class ChangeRoom:
 class RestartRoom:
     def __init__(self):
         self.type = 'action.changeroom'
-        self.room = engine.engine.room
+        self.room = monkey.engine.room
 
 class Scale:
     def __init__(self, scale, duration, entity_id=None, tag=None):

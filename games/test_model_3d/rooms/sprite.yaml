@@ -1,7 +1,7 @@
 type: _basic
 id: sprite
 vars:
-  0: mario
+  0: sprites.mario
 cam:
   - type: ortho
     id: main

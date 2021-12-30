@@ -4,10 +4,14 @@
 #include <monkey/skeletal/skmodel.hpp>
 
 
+struct Pose {
+    std::vector<glm::mat4> bonesTransform;
+    glm::mat4 offset;
+};
 
 class SkeletalRenderer : public AnimationRenderer {
 public:
-	SkeletalRenderer(std::shared_ptr<Model>);
+	explicit SkeletalRenderer(std::shared_ptr<Model>);
 	void Start() override;
 	void Update(double) override;
 	void Draw(Shader*) override;
@@ -17,6 +21,7 @@ public:
     SkModel* getModel();
 	void setModel(std::shared_ptr<Model>) override;
     const std::vector<glm::mat4>& getBonesTransform();
+    Pose computePose(const std::string& anim, float t);
 private:
     std::unordered_map<int, JointTransform> interpolatePoses(
             SKeyFrame* previousFrame, SKeyFrame* nextFrame, float progression);

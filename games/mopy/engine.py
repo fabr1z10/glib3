@@ -64,39 +64,16 @@ class Engine:
 
     def load_assets(self):
         root_dir = example.dir + '/assets'
+        n = len(root_dir) + 1
         for subdir, dirs, files in os.walk(root_dir):
             for f in files:
                 filepath = subdir + os.sep + f
+                prefix = filepath[n:-5].replace('/', '.') + '.'
                 with open(filepath) as fi:
                     cip = yaml.load(fi, Loader=yaml.FullLoader)
                     if cip:
-                        self.assets.update(cip)
-        print(self.assets)
-        #exit(1)
-        # dirs = [
-        #     ('sprites', 'models'),
-        #     ('animations', 'skeletal_animations'),
-        #     ('skeletalmodels', 'models'),
-        #     ('mesh', 'mesh')
-        # ]
-        # print ('loading assetz.....')
-        # for d in dirs:
-        #     directory = example.dir + '/assets/' + d[0]
-        #     #print('checking directory ' + directory)
-        #     if os.path.exists(directory):
-        #         #print ('exists')
-        #         files = os.listdir(directory)
-        #         for fi in files:
-        #             if os.path.isdir(directory + fi):
-        #                 continue
-        #             with open(directory + '/' + fi) as f:
-        #                 models = yaml.load(f, Loader=yaml.FullLoader)
-        #                 for key, value in models.items():
-        #                     tp = value['type']
-        #                     #print ('AAAA ' + key + ' ' + str(value))
-        #                     self.assets[d[1]][key] = value
-        # print('done!')
-        # exit(1)
+                        for key, value in cip.items():
+                            self.assets[prefix + key] = value
 
     def load_strings(self):
         directory = example.dir + '/text/' + self.lang;

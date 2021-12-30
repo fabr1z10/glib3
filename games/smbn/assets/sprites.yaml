@@ -74,7 +74,7 @@ supermario:
       frames:
         - quads: [192, 64, 16, 32, -8, 0]
   boxes:
-    - [-4, 0, 4, 32]
+    - [-4, 0, 4, 32, -2, 32, 2, 48]
 fierymario:
   type: model.boxed
   sheet: gfx/smb1.png

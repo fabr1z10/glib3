@@ -2,25 +2,36 @@
 #include <monkey/components/controller3d.h>
 #include <monkey/components/dynamics2d.h>
 #include <monkey/entity.h>
-//#include <monkey/components/animator.h>
-//#include <monkey/random.h>
-//#include <monkey/model/boxedmodel.h>
-//#include <monkey/input/pytab.h>
-//
-//
+#include <monkey/components/icollider.h>
+#include <monkey/random.h>
+
 FoeChase3D::FoeChase3D(const ITab& t) : Base3D(t) {
     m_idleAnim = t.get<std::string>("idle_anim", "idle");
     m_walkAnim = t.get<std::string>("walk_anim", "walk");//	m_speed = t.get<float>("speed");
 //	m_acceleration = t.get<float>("acceleration");
-//	float cumProb = 0.0f;
-//	t.foreach("attacks", [&] (const ITab& dict) {
-//		auto state = dict.get<std::string>("state");
-//		auto prob = dict.get<float>("prob");
-//		auto inRange = dict.get<bool> ("in_range");
-//		cumProb += prob;
-//		m_attackMap.insert(std::make_pair(cumProb, m_attacks.size()));
-//		m_attacks.push_back( AttackInfo {state, prob, inRange});
-//	});
+
+	if (t.has("attacks")) {
+        float cumOdds = 0.0f;
+        std::vector<float> odds;
+        std::vector<AttackDetails> details;
+        int attackId = 0;
+        t.foreach("attacks", [&] (const ITab& dict) {
+    //		auto state = dict.get<std::string>("state");
+            auto odd = dict.get<float>("prob");
+            odds.push_back(odd);
+            auto inRange = dict.get<bool> ("in_range", true);
+            cumOdds += odd;
+            details.push_back({attackId++, inRange});
+    //		m_attackMap.insert(std::make_pair(cumProb, m_attacks.size()));
+    //		m_attacks.push_back( AttackInfo {state, prob, inRange});
+        });
+        cumOdds = 1.0f / cumOdds;
+        //std::transform(odds.begin(), odds.end(), odds.begin(), [&cumOdds] (auto& c) {return c * cumOdds;});
+        for (size_t j = 0; j < odds.size() - 1; ++j) {
+            m_attackMap.insert(std::make_pair(odds[j] * cumOdds, details[j]));
+        }
+
+    }
 }
 //
 void FoeChase3D::AttachStateMachine(StateMachine * sm) {
@@ -33,7 +44,9 @@ void FoeChase3D::AttachStateMachine(StateMachine * sm) {
 //}
 //
 void FoeChase3D::Init(const ITab& d) {
-    m_attackDistance = 8.0f;
+    m_attackDistance = m_entity->GetComponent<ICollider>()->getAttackDistance();
+    // loop through
+
 //	if (d.has("left")) {
 //		m_left = d.get<int>("left");
 //	}
@@ -50,18 +63,25 @@ void FoeChase3D::Init(const ITab& d) {
 //
 //
 //
-//bool FoeChase3D::randomAttack(glm::vec3 displacement) {
+// returns whether attack is performed
+bool FoeChase3D::randomAttack(glm::vec3 displacement) {
 //    if (fabs(displacement.z) < 0.1f && fabs(displacement.x) <= m_attackPos + 0.1f) {
-//        float u = Random::get().GetUniformReal(0.0f, 1.0f);
-//        auto iter = m_attackMap.lower_bound(u);
-//        if (iter != m_attackMap.end()) {
-//            const auto &attack = m_attacks[iter->second];
-//            m_sm->SetState(attack.nextState);
-//            return true;
-//        }
+    // draw random number to decide whether to attack
+
+    float u = Random::get().GetUniformReal(0.0f, 1.0f);
+    auto iter = m_attackMap.lower_bound(u);
+    if (iter != m_attackMap.end()) {
+        if (!iter->second.inRange || m_inRange) {
+            std::string nextState = "attack_" + std::to_string(iter->second.attackId);
+            m_sm->SetState(nextState);
+            return true;
+        }
+    }
+    // no attack
+    return false;
 //    }
 //    return false;
-//}
+}
 //
 void FoeChase3D::Run(double dt) {
     auto dtf = static_cast<float>(dt);
@@ -80,19 +100,19 @@ void FoeChase3D::Run(double dt) {
 	m_entity-> SetFlipX(rightOfPlayer);
 
 
-    bool posReached = fabs(fabs(targetPos.x - entityPos.x) - m_attackDistance) < 0.1f && fabs(targetPos.z - entityPos.z) < 0.1f;
+    m_inRange = fabs(fabs(targetPos.x - entityPos.x) - m_attackDistance) < 0.1f && fabs(targetPos.z - entityPos.z) < 0.1f;
 	glm::vec3 displacement(0.0f);
-	if (!posReached) {
+	if (!m_inRange) {
         // if we are within range, randomly attack
         float dist{0.0f};
         float eps = 0.1f;
-        m_inRange = false;
         displacement = (targetPoint - entityPos);
         displacement.y = 0;
     }
-//    if (m_controller->grounded() && randomAttack(displacement)) {
-//	    return;
-//    }
+    if (m_controller->grounded() && randomAttack(displacement)) {
+        return;
+    }
+
 
     m_dynamics->m_velocity.y = -m_gravity * dtf;
 

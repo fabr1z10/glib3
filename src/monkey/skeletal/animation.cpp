@@ -57,6 +57,8 @@ float SkAnimation::getLength() {
 //    return m_attacks.at(index);
 //}
 
+
+
 std::tuple<SKeyFrame*, SKeyFrame*, float> SkAnimation::getPreviousAndNextKeyFrames(float t) {
 	if (t < 0 || t > m_length) {
 		return std::make_tuple(nullptr, nullptr, 0.0f);

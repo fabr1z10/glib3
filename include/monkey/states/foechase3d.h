@@ -2,6 +2,10 @@
 
 #include <monkey/states/base3d.h>
 
+struct AttackDetails {
+    int attackId;
+    bool inRange;               // attacks only if within range
+};
 
 /**
  * This enemy follows the player and places himself at a distance where he's able to attack him
@@ -19,12 +23,13 @@ public:
 
     void End() override;
 private:
+    bool randomAttack(glm::vec3);
     Entity* m_target;
     float m_attackDistance;
     bool m_inRange;
 	std::string m_walkAnim;
 	std::string m_idleAnim;
-
+	std::map<float, AttackDetails> m_attackMap;
 };
 //private:
 //    bool randomAttack(glm::vec3);
@@ -37,7 +42,7 @@ private:
 //
 //	//std::vector<std::string> m_attacks;
 //	std::vector<AttackInfo> m_attacks;
-//	std::map<float, int> m_attackMap;
+
 //	float m_speed;
 //	float m_acceleration;
 //	//float m_probAttack;

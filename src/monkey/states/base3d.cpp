@@ -7,8 +7,8 @@
 Base3D::Base3D(const ITab& t) : State(t), m_renderer(nullptr)  {
     //auto factory = Engine::get().GetSceneFactory();
     m_maxSpeed = t.get<float>("max_speed");
-    auto tmax = t.get<float>("time_acc");
-    m_acceleration = m_maxSpeed / tmax;
+    auto tmax = t.get<float>("time_acc", 0.0f);
+    m_acceleration = (tmax == 0.0f) ? 0.0f : m_maxSpeed / tmax;
     m_gravity = t.get<float>("gravity");
 
 }

@@ -27,11 +27,13 @@ void SpriteRenderer::Update(double dt) {
             m_frame++;
             if (m_frame >= m_currentAnimInfo->frames.size()) {
                 m_frame = 0;
+                m_complete = true;
             }
         } else {
             m_frame--;
             if (m_frame < 0) {
                 m_frame = m_currentAnimInfo->frames.size() - 1;
+                m_complete = true;
             }
         }
     }

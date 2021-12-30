@@ -41,6 +41,28 @@ std::unordered_map<int, JointTransform> SkeletalRenderer::interpolatePoses(
 }
 
 
+Pose SkeletalRenderer::computePose(const std::string &animId, float t) {
+    Pose pose;
+    auto anim = m_spriteModel->getAnimation(animId);
+    auto frames = anim->getPreviousAndNextKeyFrames(t);
+    auto p = interpolatePoses(std::get<0>(frames), std::get<1>(frames), std::get<2>(frames));
+    pose.bonesTransform = m_spriteModel->calculateCurrentPose(p);
+
+    const auto& offsetPoints = m_spriteModel->getOffsetPoints();
+    if (!offsetPoints.empty()) {
+        glm::vec3 offset(0.0f);
+        //std::cout << "no of offset points: " << offsetPoints.size() << "\n";
+        for (const auto &a : offsetPoints) {
+            // find coordinates of offset pointg
+            glm::vec4 p = pose.bonesTransform[a.first] * glm::vec4(a.second, 1.0f);
+            offset.y = std::max(-p.y, offset.y);
+        }
+        //std::cerr << offset.y << "\n";
+        pose.offset = glm::translate(offset);
+    }
+    return pose;
+}
+
 void SkeletalRenderer::Update(double dt) {
     std::unordered_map<int, JointTransform> pose;
     if (m_currentAnimation != nullptr) {
@@ -73,41 +95,7 @@ void SkeletalRenderer::Update(double dt) {
 		//std::cerr << offset.y << "\n";
 		SetTransform(glm::translate(offset));
 	}
-//	if (m_currentAnimation == nullptr) {
-//		// set rest pose
-//		m_model->getRootJoint()->setRest();
-//		return;
-//	}
-//	// increase animation time
-//	m_animationTime += m_speedUp * dt;
-//	if (m_animationTime > m_currentAnimation->getLength()) {
-//		m_complete = true;
-//		if (m_currentAnimation->loop()) {
-//			m_animationTime = fmod(m_animationTime, m_currentAnimation->getLength());
-//		} else {
-//			m_animationTime = m_currentAnimation->getLength() - 0.001f;
-//		}
-//	}
-//	auto currentPose = calculateCurrentAnimationPose();
-//	// pass the identity mat
-//	glm::mat4 I(1.0f);
-//	applyPoseToJoints (currentPose, m_model->getRootJoint(), I);
-//
-//	// apply offset
-//	const auto& offsetPoints = m_model->getOffsetPoints();
-//	if (!offsetPoints.empty()) {
-//		glm::vec3 offset(0.0f);
-//		//std::cout << "no of offset points: " << offsetPoints.size() << "\n";
-//		for (const auto &a : offsetPoints) {
-//
-//			// find coordinates of offset pointg
-//			glm::mat4 t = m_model->getJoint(a.first)->getAnimatedTransform();
-//			glm::vec4 p = t * glm::vec4(a.second, 1.0f);
-//			offset.y = std::max(-p.y, offset.y);
-//		}
-//		//std::cerr << offset.y << "\n";
-//		m_renderer->SetTransform(glm::translate(offset));
-//	}
+
 }
 
 void SkeletalRenderer::Draw(Shader * s) {

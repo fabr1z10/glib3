@@ -1,7 +1,4 @@
 ---
-mario_font:
-  type: font
-  file: ./fonts/prstartk.ttf
 '001':
   type: model.poly
   vertex: pc

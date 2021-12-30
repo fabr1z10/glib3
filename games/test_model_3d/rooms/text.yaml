@@ -1,34 +1,35 @@
 type: _basic
 id: text
 cam:
-  type: ortho
-  world_size: [320, 240]
-  cam_size: [320, 240]
-  bounds:
-    x: [0, 320]
-    y: [0, 240]
-    z: [0, 100]
+  - type: ortho
+    id: main
+    world_size: [320, 240]
+    cam_size: [320, 240]
+    bounds:
+      x: [0, 320]
+      y: [0, 240]
+      z: [0, 100]
 items:
   - type: _text
-    font: mario_font
+    font: fonts.mario
     align: top_left
     size: 8
     text: Top left
     pos: [0, 15, 0]
   - type: _text
-    font: mario_font
+    font: fonts.mario
     align: bottom_left
     size: 8
     text: Bottom left
     pos: [0, 0, 0]
   - type: _text
-    font: mario_font
+    font: fonts.mario
     align: top_right
     size: 8
     text: Top right
     pos: [20, 15, 0]
   - type: _text
-    font: mario_font
+    font: fonts.mario
     align: bottom_right
     size: 8
     text: Bottom right

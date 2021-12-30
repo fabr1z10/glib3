@@ -244,6 +244,7 @@ std::pair<unsigned, unsigned> SkCollider::addDebugMesh(std::vector<VertexSkeleta
 
 void SkCollider::Start() {
 	// TODO
+	m_lastHit = nullptr;
     // a smart collider requires a skeletal renderer
     m_renderer = dynamic_cast<SkeletalRenderer*>(m_entity->GetComponent<Renderer>());
     m_model = dynamic_cast<SkModel*>(m_renderer->getModel());
@@ -269,7 +270,8 @@ void SkCollider::Start() {
     float thickness = width;
 
 
-
+    float minMaxAttackDist = 1000.0f;
+    float maxMinAttackDist = -1000.0f;
     for (const auto& animId : m_model->getAnimations()) {
         auto animation = animId.second;
         // associate collision box
@@ -306,12 +308,24 @@ void SkCollider::Start() {
                         m_castShapes[animId.first] = ShapeCastInfo{shape, jId};
                         auto oc = addDebugMesh(vertices, indices, transformedPoint.x, transformedPoint.y, dims.x, dims.y, glm::vec3(1.0f, 0.0f, 0.0f));
                         skcr->addBox(animId.first, jId, oc.first, oc.second, false);
+                        // now check the transformation @ attack time
+                        //attack.startTime
+                        auto attackPose = m_renderer->computePose(animId.first, attack.startTime);
+                        auto rt = m_model->getRestTransform(jId);
+                        auto at = attackPose.bonesTransform[jId];
+                        auto atr = attackPose.offset * at * rt;
+                        auto atrBounds = shape->getBounds();
+                        atrBounds.Transform(atr);
+                        minMaxAttackDist = std::min(minMaxAttackDist, atrBounds.max.x);
+                        maxMinAttackDist = std::max(maxMinAttackDist, atrBounds.min.x);
                         break;
                     }
                 }
             }
         }
     }
+    m_attackDistance = 0.5f * (minMaxAttackDist + maxMinAttackDist) * m_entity->GetScale();
+
     mesh->Init(vertices, indices);
     debugModel->addMesh(mesh);
     shapeEntity->AddComponent(skcr);
@@ -412,6 +426,7 @@ void SkCollider::Update(double dt) {
 //
     auto animId = m_renderer->getAnimation();
     auto anim = m_model->getAnimation(animId);
+    bool hit = false;
     if (anim->hasAttacks()) {
         auto& bonesTransform = m_renderer->getBonesTransform();
         const auto& attackInfo = anim->getAttacks()[0];
@@ -426,27 +441,31 @@ void SkCollider::Update(double dt) {
             auto transform =  wt*mtr*at*rt;
             auto e = m_engine->ShapeCast(castShapeInfo.shape.get(), transform, m_castMask);
             if (e.report.collide) {
-                auto center = transform * glm::vec4(castShapeInfo.shape->getBounds().GetCenter(), 1.0f);
-                auto rm = m_engine->GetResponseManager();
-                if (rm == nullptr) {
-                    std::cerr << "no handler!\n";
-                } else {
-                    auto object = e.entity->GetObject();
-                    auto handler = rm->GetHandler(m_castTag, e.entity->GetCollisionTag());
-                    if (handler.response != nullptr) {
-                        std::cerr << "FOUND RESPONSE\n";
-                        if (handler.flip) {
-                            handler.response->onStart(object, m_entity, e.report);
-                        } else {
-                            handler.response->onStart(m_entity, object, e.report);
+                hit = true;
+                if (e.entity != m_lastHit) {
+                    m_lastHit = e.entity;
+                    auto center = transform * glm::vec4(castShapeInfo.shape->getBounds().GetCenter(), 1.0f);
+                    auto rm = m_engine->GetResponseManager();
+                    if (rm == nullptr) {
+                        std::cerr << "no handler!\n";
+                    } else {
+                        auto object = e.entity->GetObject();
+                        auto handler = rm->GetHandler(m_castTag, e.entity->GetCollisionTag());
+                        if (handler.response != nullptr) {
+                            std::cerr << "FOUND RESPONSE\n";
+                            if (handler.flip) {
+                                handler.response->onStart(object, m_entity, e.report);
+                            } else {
+                                handler.response->onStart(m_entity, object, e.report);
+                            }
                         }
                     }
                 }
-
             }
         }
-
-
+    }
+    if (!hit) {
+        m_lastHit = nullptr;
     }
 //    //m_model->getJoint("coc")->getAnimatedTransform()
 //    const auto* castShape = m_model->getShapeCastId(anim, t);
@@ -524,5 +543,5 @@ std::type_index SkCollider::GetType() {
 }
 
 float SkCollider::getAttackDistance() const {
-    return m_model->getAttackDistance();
+    return m_attackDistance;
 }

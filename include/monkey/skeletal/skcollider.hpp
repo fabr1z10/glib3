@@ -87,4 +87,6 @@ private:
                                                float x, float y, float w, float h, glm::vec3 color);
     int m_castTag;
     int m_castMask;
+    float m_attackDistance;
+    ICollider* m_lastHit;
 };

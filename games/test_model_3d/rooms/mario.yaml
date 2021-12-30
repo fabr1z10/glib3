@@ -1,7 +1,7 @@
 type: _basic
 id: sprite
 vars:
-  0: mario
+  0: sprites.mario
 cam:
   - type: ortho
     id: main
@@ -32,7 +32,7 @@ engines:
     size: [80, 80]
 items:
   - type: _fps_counter
-    font: mario_font
+    font: fonts.mario
     size: 8
     parent: diag
     pos: [0,15,0]

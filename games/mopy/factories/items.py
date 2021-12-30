@@ -112,6 +112,7 @@ def common3D(ciao):
     e.scale = ciao.get('scale', 1)
     e.model = ciao.get('model', None)
     size = ciao.get('size')
+    energy = ciao.get('energy', 1)
     show_boxes = getattr(monkey.engine.data.globals, 'show_boxes', False)
 
     e.components.append({
@@ -125,6 +126,12 @@ def common3D(ciao):
         'debug': show_boxes
     })
     e.add_component({'type': 'components.dynamics3D'})
+    e.add_component({
+        'type': 'components.info',
+        'stuff': {
+            'energy': energy
+        }
+    })
     return e
 
 
@@ -134,7 +141,9 @@ def foe3D(ciao):
     time_acc = ciao.get('time_acc')
     jump_height = ciao.get('jump_height')
     time_to_jump_apex = ciao.get('time_to_jump_apex')
-    n_attacks = ciao.get('attacks', 0)
+    attacks = ciao.get('attacks', None)
+    n_attacks = len(attacks) - 1 if attacks else 0
+
     gravity = (2.0 * jump_height) / (time_to_jump_apex * time_to_jump_apex)
     jump_speed = abs(gravity) * time_to_jump_apex
     walk_state = {
@@ -144,13 +153,47 @@ def foe3D(ciao):
         'time_acc': time_acc,
         'gravity': gravity,
         'walk_state': 'walk',
-        'jump_speed': jump_speed
+        'jump_speed': jump_speed,
+        'attacks': attacks
     }
+
+    hit_state = {
+        'id': 'hit',
+        'type': 'state.hit',
+        'max_speed': 4 * max_speed,
+        'time_acc': 0.5,
+        'gravity': gravity,
+        'hit_anim': 'hit',
+        'next_state': 'walk'
+    }
+
+    dead_state = {
+        'id': 'dead',
+        'type': 'state.hit',
+        'max_speed': 8 * max_speed,
+        'timeout': 1,
+        'gravity': gravity,
+        'hit_anim': 'hit'
+    }
+
+
+
     state_machine = {
         'type': 'components.state_machine',
         'initial_state': 'walk',
-        'states': [walk_state]
+        'states': [walk_state, hit_state, dead_state]
     }
+
+    if n_attacks > 0:
+        for i in range(0, n_attacks):
+            a_id = 'attack_' + str(i)
+            state_machine['states'].append({
+                'id': a_id,
+                'type': 'state.anim',
+                'anim': a_id,
+                'next_state': 'walk'
+            })
+
     e.components.append(state_machine)
 
     return e
@@ -163,7 +206,9 @@ def player3D(ciao):
     time_acc = ciao.get('time_acc')
     jump_height = ciao.get('jump_height')
     time_to_jump_apex = ciao.get('time_to_jump_apex')
-    n_attacks = ciao.get('attacks', 0)
+    attacks = ciao.get('attacks', None)
+    n_attacks = len(attacks) - 1 if attacks else 0
+
     gravity = (2.0 * jump_height) / (time_to_jump_apex * time_to_jump_apex)
     jump_speed = abs(gravity) * time_to_jump_apex
     e.components.append({'type': 'components.keyinput'})
@@ -183,10 +228,30 @@ def player3D(ciao):
         'walk_state': 'walk',
         'jump_speed': jump_speed
     }
+
+    hit_state = {
+        'id': 'hit',
+        'type': 'state.hit',
+        'max_speed': 4 * max_speed,
+        'time_acc': 0.5,
+        'gravity': gravity,
+        'hit_anim': 'hit',
+        'next_state': 'walk'
+    }
+
+    dead_state = {
+        'id': 'dead',
+        'type': 'state.hit',
+        'max_speed': 8 * max_speed,
+        'timeout': 1,
+        'gravity': gravity,
+        'hit_anim': 'hit'
+    }
+
     state_machine = {
         'type': 'components.state_machine',
         'initial_state': 'walk',
-        'states': [walk_state, {
+        'states': [walk_state, hit_state, dead_state, {
             'id': 'jump',
             'type': 'state.player_jump_3D',
             'max_speed': max_speed,
