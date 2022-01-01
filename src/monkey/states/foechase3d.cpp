@@ -44,7 +44,8 @@ void FoeChase3D::AttachStateMachine(StateMachine * sm) {
 //}
 //
 void FoeChase3D::Init(const ITab& d) {
-    m_attackDistance = m_entity->GetComponent<ICollider>()->getAttackDistance();
+	float scale = m_entity->GetScale();
+    m_attackDistance = scale * m_entity->GetComponent<ICollider>()->getAttackDistance();
     // loop through
 
 //	if (d.has("left")) {
@@ -53,7 +54,6 @@ void FoeChase3D::Init(const ITab& d) {
 //	m_inRange = false;
 //	//m_c->UpdateRaycastOrigins();
 //	// character will go towards player
-//	float scale = m_entity->GetScale();
 //	//m_attackPos = scale * dynamic_cast<BoxedModel*>(m_animator->getModel())->getAttackDistance();
 //	m_attackPos = scale * m_entity->GetComponent<ICollider>()->getAttackDistance();
 //

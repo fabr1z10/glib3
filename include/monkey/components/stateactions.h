@@ -13,7 +13,13 @@ private:
     std::string m_state;
 };
 
-
+class PlayAnim : public StateAction {
+public:
+    PlayAnim(const ITab&);
+    void Run (StateMachine*) override;
+private:
+    std::string m_anim;
+};
 
 class StateFunc : public StateAction {
 public:

@@ -73,7 +73,10 @@ class Engine:
                     cip = yaml.load(fi, Loader=yaml.FullLoader)
                     if cip:
                         for key, value in cip.items():
+                            print (prefix + " " + key)
                             self.assets[prefix + key] = value
+        # for key, value in self.assets.items():
+        #     print(key + ':')
 
     def load_strings(self):
         directory = example.dir + '/text/' + self.lang;

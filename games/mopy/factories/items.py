@@ -1,5 +1,5 @@
 from mopy.entity import Entity, Text, TextAlignment
-from mopy.components import Gfx, Collider
+from mopy.components import Gfx, Collider, SmartCollider, SkeletalCollider, ShadowRenderer
 import mopy.monkey as monkey
 import mopy.shapes3d as sh3d
 import mopy.shapes as sh
@@ -136,7 +136,10 @@ def common3D(ciao):
 
 
 def foe3D(ciao):
+    dt = monkey.engine.data.globals
+    is_sprite = isinstance(ciao['model'], str)
     e = common3D(ciao)
+    dead_type = ciao.get('dead_type', 0)
     max_speed = ciao.get('max_speed')
     time_acc = ciao.get('time_acc')
     jump_height = ciao.get('jump_height')
@@ -167,14 +170,29 @@ def foe3D(ciao):
         'next_state': 'walk'
     }
 
-    dead_state = {
-        'id': 'dead',
-        'type': 'state.hit',
-        'max_speed': 8 * max_speed,
-        'timeout': 1,
-        'gravity': gravity,
-        'hit_anim': 'hit'
-    }
+    print(dead_type)
+
+    if dead_type == 0:
+        dead_state = {
+            'id': 'dead',
+            'type': 'state.hit',
+            'max_speed': 8 * max_speed,
+            'timeout': 1,
+            'gravity': gravity,
+            'hit_anim': 'hit'
+        }
+    else:
+        dead_state = {
+            'id': 'dead',
+            'type': 'state.dead',
+            'max_speed': 10,
+            'vy': 20,
+             'gravity': gravity * 0.5,
+            'start_anim': 'hit',
+            'fall_anim': 'airfall',
+            'lie_anim': 'liedown',
+        }
+
 
 
 
@@ -194,19 +212,40 @@ def foe3D(ciao):
                 'next_state': 'walk'
             })
 
-    e.components.append(state_machine)
 
+    e.components.append(state_machine)
+    if is_sprite:
+        e.add_component(SmartCollider(
+            flag=dt.CollisionFlags.foe,
+            mask=dt.CollisionFlags.player_attack,
+            tag=dt.CollisionTags.foe,
+            debug=True,
+            cast_tag=dt.CollisionTags.foe_attack,
+            cast_mask=dt.CollisionFlags.player))
+    else:
+        e.add_component(SkeletalCollider(
+            flag=dt.CollisionFlags.foe,
+            mask=dt.CollisionFlags.player_attack,
+            tag=dt.CollisionTags.foe,
+            cast_tag=dt.CollisionTags.foe_attack,
+            cast_mask=dt.CollisionFlags.player))
+    if ciao.get('apply_shadow', False):
+        shadow = Entity()
+        shadow.add_component(ShadowRenderer(angle=20.0))
+        e.add(shadow)
     return e
 
 
-
 def player3D(ciao):
+    dt = monkey.engine.data.globals
+    is_sprite = isinstance(ciao['model'], str)
     e = common3D(ciao)
     max_speed = ciao.get('max_speed')
     time_acc = ciao.get('time_acc')
     jump_height = ciao.get('jump_height')
     time_to_jump_apex = ciao.get('time_to_jump_apex')
     attacks = ciao.get('attacks', None)
+    jattacks = ciao.get('jump_attacks', None)
     n_attacks = len(attacks) - 1 if attacks else 0
 
     gravity = (2.0 * jump_height) / (time_to_jump_apex * time_to_jump_apex)
@@ -227,6 +266,16 @@ def player3D(ciao):
         'gravity': gravity,
         'walk_state': 'walk',
         'jump_speed': jump_speed
+    }
+
+    jump_state = {
+        'id': 'jump',
+        'type': 'state.player_jump_3D',
+        'max_speed': max_speed,
+        'time_acc': time_acc,
+        'gravity': gravity,
+        'anim_up': 'jumpup',
+        'anim_down': 'jumpdown',
     }
 
     hit_state = {
@@ -251,20 +300,16 @@ def player3D(ciao):
     state_machine = {
         'type': 'components.state_machine',
         'initial_state': 'walk',
-        'states': [walk_state, hit_state, dead_state, {
-            'id': 'jump',
-            'type': 'state.player_jump_3D',
-            'max_speed': max_speed,
-            'time_acc': time_acc,
-            'gravity': gravity,
-        }]
+        'states': [walk_state, hit_state, dead_state, jump_state]
     }
+
+    akeys = getattr(monkey.engine.data.globals, 'attack_keys')
 
     if n_attacks > 0:
         walk_state['keys'] = []
         for i in range(0, n_attacks):
             a_id = 'attack_' + str(i)
-            walk_state['keys'].append({'key': 81, 'action': {'type':'stateaction.statetransition', 'state': a_id}})
+            walk_state['keys'].append({'key': akeys[i] , 'action': {'type':'stateaction.statetransition', 'state': a_id}})
             state_machine['states'].append({
                 'id': a_id,
                 'type': 'state.anim',
@@ -272,7 +317,36 @@ def player3D(ciao):
                 'next_state': 'walk'
             })
 
+    if jattacks:
+        jump_state['keys'] = []
+        i = 0
+        for attack in jattacks:
+            jump_state['keys'].append({'key': akeys[i], 'action': {'type': 'stateaction.play_anim', 'anim': attack['anim']}})
+            i += 1
+        print(jump_state['keys'])
+        #exit(1)
+
     e.components.append(state_machine)
+    if is_sprite:
+        e.add_component(SmartCollider(
+            flag=dt.CollisionFlags.player,
+            mask=dt.CollisionFlags.foe_attack,
+            tag=dt.CollisionTags.player,
+            debug=True,
+            cast_tag=dt.CollisionTags.player_attack,
+            cast_mask=dt.CollisionFlags.foe | dt.CollisionFlags.platform))
+    else:
+        e.add_component(SkeletalCollider(
+            flag=dt.CollisionFlags.player,
+            mask=dt.CollisionFlags.foe_attack,
+            tag=dt.CollisionTags.player,
+            cast_tag=dt.CollisionTags.player_attack,
+            cast_mask=dt.CollisionFlags.foe | dt.CollisionFlags.platform))
+
+    if ciao.get('apply_shadow', False):
+        shadow = Entity()
+        shadow.add_component(ShadowRenderer(angle=20.0))
+        e.add(shadow)
 
     return e
 

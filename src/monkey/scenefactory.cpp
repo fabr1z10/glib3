@@ -93,6 +93,7 @@
 #include <monkey/states/playerjump3d.h>
 #include <monkey/states/foechase3d.h>
 #include <monkey/states/hit3d.h>
+#include <monkey/states/dead3d.h>
 
 
 namespace py = pybind11;
@@ -264,6 +265,7 @@ SceneFactory::SceneFactory() {
     add2<LinearGradient>("fill.lineargradient");
     add2<StateFunc> ("stateaction.callback");
     add2<StateTransition> ("stateaction.statetransition");
+    add2<PlayAnim> ("stateaction.play_anim");
     // assets
 
     addAssetFactory<TexturedMesh<VertexSkeletal>>("asset.skeletalmesh");
@@ -297,6 +299,7 @@ SceneFactory::SceneFactory() {
     add2<PlayerWalk3D> ("state.player_walk_3D");
     add2<FoeChase3D> ("state.foe_chase_3D");
     add2<Hit3D>("state.hit");
+    add2<Dead3D>("state.dead");
 
     add2<NPCWalk> ("state.npc_walk");
 

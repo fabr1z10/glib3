@@ -17,4 +17,6 @@ public:
 private:
 	InputMethod * m_input;
 	std::string m_walkState;
+	std::string m_jumpUp;
+    std::string m_jumpDown;
 };

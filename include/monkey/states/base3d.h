@@ -11,7 +11,7 @@ class Base3D : public State {
 public:
     explicit Base3D(const ITab&);
     void AttachStateMachine(StateMachine*) override;
-
+    void setOverrideAnimation(const std::string&);
 protected:
     Controller3D* m_controller;
     Dynamics3D * m_dynamics;
@@ -21,6 +21,7 @@ protected:
     float m_acceleration;
     float m_maxSpeed;
     float m_gravity;
-
+    // this should go in a base class ...
+    std::string m_overrideAnim;
 };
 

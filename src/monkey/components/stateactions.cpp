@@ -2,6 +2,7 @@
 #include <monkey/entity.h>
 #include <monkey/components/animator.h>
 #include <monkey/python/wrap1.h>
+#include <monkey/states/base3d.h>
 
 StateTransition::StateTransition(const std::string &state) : StateAction(), m_state(state) {}
 
@@ -20,4 +21,15 @@ StateFunc::StateFunc(const ITab&t) {
 void StateFunc::Run(StateMachine * sm) {
     auto obj = Wrap1::create(sm->GetObject());
     m_callback(obj);
+}
+
+PlayAnim::PlayAnim(const ITab & t) {
+    m_anim = t.get<std::string>("anim");
+}
+
+void PlayAnim::Run(StateMachine * sm) {
+    auto state = dynamic_cast<Base3D*>(sm->GetState(sm->GetState()));
+
+    state->setOverrideAnimation(m_anim);
+
 }

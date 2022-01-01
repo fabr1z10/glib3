@@ -45,7 +45,7 @@ public:
     ~SmartCollider() override;
     SmartCollider (const ITab&);
     void Start() override;
-    void Update(double) override {}
+    void Update(double) override;
     IShape* GetShape() override;
 
     int setCollisionMask(int);
@@ -72,4 +72,6 @@ private:
     std::unordered_map<std::string, SmartCollisionDetails> m_collisionDetailsOverride;
 
     std::unordered_map<std::string, std::pair<int, int>> m_attackInfo;
+    ICollider* m_lastHit;
+
 };

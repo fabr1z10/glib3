@@ -50,7 +50,8 @@ BoxedModel::BoxedModel(const ITab& t) : SpriteModel(t) {
 
 	m_attackDistance = std::numeric_limits<float>::infinity();
     //auto anims = t["animations"].as<YAML::Node>();
-
+    float attackMin = -std::numeric_limits<float>::infinity();
+    float attackMax = std::numeric_limits<float>::infinity();
     t.foreach("animations", [&] (const std::string& animId, const ITab& anim) {
         // each animation might have a box
         auto animBoxId = anim.get<int>("box", -1);
@@ -59,8 +60,11 @@ BoxedModel::BoxedModel(const ITab& t) : SpriteModel(t) {
 
         // find attack position for this animation, if any
         bool isAttackingAnim = false;
-        float attackPos {0.0f};
+
         int frameId = 0;
+        // for each animation, find the xmin and xmax
+        float xAttackMin = std::numeric_limits<float>::infinity();
+        float xAttackMax = -std::numeric_limits<float>::infinity();
         anim.foreach("frames", [&] (const ITab& element) {
             int box = element.get<int>("box", -1);
             int attack = element.get<int>("attack", -1);
@@ -69,7 +73,8 @@ BoxedModel::BoxedModel(const ITab& t) : SpriteModel(t) {
             }
             if (attack != -1) {
                 isAttackingAnim = true;
-                attackPos = std::max(attackPos, m_shapes[attack]->getBounds().max.x);
+                xAttackMin = std::min(xAttackMin, m_shapes[attack]->getBounds().min.x);
+                xAttackMax = std::max(xAttackMin, m_shapes[attack]->getBounds().max.x);
                 this->setShapeCast(animId, frameId, attack);
             }
             frameId++;
@@ -77,10 +82,13 @@ BoxedModel::BoxedModel(const ITab& t) : SpriteModel(t) {
         });
 
         if (isAttackingAnim) {
-            std::cerr << " attack position for anim " << animId << ": " << attackPos << "\n";
-            m_attackDistance = std::min(m_attackDistance, attackPos);
+            attackMin = std::max(attackMin, xAttackMin);
+            attackMax = std::min(attackMax, xAttackMax);
+            //std::cerr << " attack position for anim " << animId << ": " << attackPos << "\n";
+            //m_attackDistance = std::min(m_attackDistance, attackPos);
         }
     });
+    m_attackDistance = 0.5f * (attackMin + attackMax);
     std::cerr << "paino\n";
     if (m_attackDistance== std::numeric_limits<float>::infinity()) {
         m_attackDistance = 10.0f;
@@ -89,7 +97,7 @@ BoxedModel::BoxedModel(const ITab& t) : SpriteModel(t) {
 
 void BoxedModel::addShape(std::shared_ptr<IShape> s) {
     m_shapes.push_back(s);
-    m_maxBounds.ExpandWith(s->getBounds());
+    //m_maxBounds.ExpandWith(s->getBounds());
 }
 
 void BoxedModel::setAnimShape(const std::string &anim, int shapeId) {

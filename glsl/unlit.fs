@@ -16,7 +16,7 @@ void main()
 		discard;
 	}
 	texColor *= col;
-	//texColor *= mult_color;
+	texColor *= mult_color;
 	//texColor += add_color;
 	fragColor = texColor;
 }

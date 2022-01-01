@@ -9,8 +9,8 @@
 PlayerJump3D::PlayerJump3D(const ITab& t) : Base3D(t) {
     m_walkState = t.get<std::string>("walk_state", "walk");
     //m_flipHorizontally = t.get<bool>("flipH");
-	//_jumpAnimUp = t.get<std::string>("animUp", "jumpup");
-	//m_jumpAnimDown = t.get<std::string>("animDown", "jumpdown");
+	m_jumpUp = t.get<std::string>("anim_up", "idle");
+	m_jumpDown = t.get<std::string>("anim_down", "idle");
 }
 
 
@@ -80,11 +80,17 @@ void PlayerJump3D::Run(double dt) {
     //m_entity->MoveLocal(delta);
     std::cerr << delta.z << std::endl;
     m_controller->Move(delta);
-//    if (m_renderer != nullptr) {
-//        if (m_dynamics->m_velocity.y >= 0) {
-//            m_renderer->setAnimation(m_jumpUpAnim);
-//        } else {
-//            m_renderer->setAnimation(m_jumpDownAnim);
-//        }
-//    }
+    if (m_renderer != nullptr) {
+        if (!m_overrideAnim.empty()) {
+            if (m_renderer->isComplete()) {
+                m_overrideAnim.clear();
+            }
+        } else {
+            if (m_dynamics->m_velocity.y >= 0) {
+                m_renderer->setAnimation(m_jumpUp);
+            } else {
+                m_renderer->setAnimation(m_jumpDown);
+            }
+        }
+    }
 }

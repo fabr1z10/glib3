@@ -13,6 +13,10 @@ Base3D::Base3D(const ITab& t) : State(t), m_renderer(nullptr)  {
 
 }
 
+void Base3D::setOverrideAnimation(const std::string& id) {
+    m_overrideAnim = id;
+    m_renderer->setAnimation(id);
+}
 
 
 void Base3D::AttachStateMachine(StateMachine * sm) {
@@ -29,3 +33,4 @@ void Base3D::AttachStateMachine(StateMachine * sm) {
     }
 
 }
+

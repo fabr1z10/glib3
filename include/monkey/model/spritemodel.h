@@ -16,14 +16,14 @@ struct FrameInfo {
 
 struct AnimationInfo {
     bool loop;
-    unsigned loopFrame;
+    int loopFrame;
     std::vector<FrameInfo> frames;
 };
 
 
 class __attribute__ ((visibility ("default"))) SpriteModel : public Model {
 public:
-    SpriteModel (const ITab&);
+    explicit SpriteModel (const ITab&);
     std::string getDefaultAnimation() const ;
     std::shared_ptr<Renderer> makeRenderer(std::shared_ptr<Model>) override;
     AnimationInfo* getAnimationInfo(const std::string&);

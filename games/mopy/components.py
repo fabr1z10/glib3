@@ -50,7 +50,7 @@ class ScriptPlayer:
 class SmartCollider(Collider):
     def __init__(self, flag: int, mask: int, tag: int, cast_tag: int = 0, cast_mask: int = 0, debug = False):
         super().__init__(flag, mask, tag, None, debug)
-        self.type = 'components.smartcollider'
+        self.type = 'components.smart_collider'
         self.cast_tag = cast_tag
         self.cast_mask = cast_mask
 

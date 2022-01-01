@@ -8,6 +8,7 @@
 #include <monkey/meshfactory.h>
 #include <monkey/mesh.h>
 #include <monkey/components/animrenderer.h>
+#include <monkey/collisionengine.h>
 
 SmartColliderRenderer::SmartColliderRenderer(
         std::shared_ptr<Model> model,
@@ -79,6 +80,62 @@ void SmartCollider::addStateCollisionDetails (const std::string& id, int flag, i
 }
 
 
+void SmartCollider::Update(double) {
+    auto animId = m_animator->getAnimation();
+    auto frame = m_animator->getFrame();
+    auto box = m_model->getShapeCast(animId, frame);
+    bool hit = false;
+    if (box != nullptr) {
+        //std::cerr << "qui\n";
+        auto t = m_entity->GetWorldTransform();
+        auto e = m_engine->ShapeCast(box.get(), t, m_castMask);
+        if (e.report.collide) {
+            hit = true;
+            if (e.entity != m_lastHit) {
+                m_lastHit = e.entity;
+                auto rm = m_engine->GetResponseManager();
+                if (rm == nullptr) {
+                    std::cerr << "no handler!\n";
+                } else {
+                    auto object = e.entity->GetObject();
+                    auto handler = rm->GetHandler(m_castTag, e.entity->GetCollisionTag());
+                    if (handler.response != nullptr) {
+                        std::cerr << "FOUND RESPONSE\n";
+                        if (handler.flip) {
+                            handler.response->onStart(object, m_entity, e.report);
+                        } else {
+                            handler.response->onStart(m_entity, object, e.report);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    if (!hit) {
+        m_lastHit = nullptr;
+    }
+////
+////			if (e.report.collide) {
+////				//std::cerr << "HIT!\n";
+////				auto rm = m_engine->GetResponseManager();
+////				if (rm == nullptr) {
+////					std::cerr << "no handler!\n";
+////				}
+////				auto handler = rm->GetHandler(m_castTag, e.entity->GetCollisionTag());
+////				if (handler.response != nullptr) {
+////					auto object = e.entity->GetObject();
+////					//std::cerr << "FOUND RESPONSE\n";
+////					if (handler.flip) {
+////						handler.response->onStart(object, m_entity, e.report);
+////					} else {
+////						handler.response->onStart(m_entity, object, e.report);
+////					}
+////				}
+////			}
+
+
+
+}
 
 //void SmartCollider::onFrameUpdate(Animator *a) {
 ////    auto anim = a->GetAnimation();

@@ -24,11 +24,15 @@ void SpriteRenderer::Update(double dt) {
         m_time = m_time - m_currentAnimInfo->frames[m_frame].time;
         // update frame
         if (m_playForward) {
-            m_frame++;
-            if (m_frame >= m_currentAnimInfo->frames.size()) {
-                m_frame = 0;
+            if (m_frame == m_currentAnimInfo->frames.size() - 1) {
+                m_frame = (m_currentAnimInfo->loop ? m_currentAnimInfo->loopFrame : m_frame);
                 m_complete = true;
+            } else {
+                m_frame++;
             }
+//            if (m_frame >= m_currentAnimInfo->frames.size()) {
+//                m_frame = 0;
+//            }
         } else {
             m_frame--;
             if (m_frame < 0) {
