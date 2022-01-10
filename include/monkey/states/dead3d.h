@@ -22,4 +22,7 @@ private:
     float m_timeOut;
     float m_t1;
     int m_state;
+    float m_startBlinkAfter;
+    float m_removeAfter;
+
 };

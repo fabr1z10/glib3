@@ -1,4 +1,5 @@
 #include <monkey/states/dead3d.h>
+#include <monkey/engine.h>
 #include <monkey/components/dynamics2d.h>
 #include <monkey/components/controller3d.h>
 
@@ -7,7 +8,8 @@ Dead3D::Dead3D(const ITab& t) : Base3D(t) {
     m_animStart = t.get<std::string>("start_anim");
     m_animFall = t.get<std::string>("fall_anim");
     m_animLie = t.get<std::string>("lie_anim");
-
+	m_startBlinkAfter = t.get<float>("blink_after", 2.0f);
+	m_removeAfter = t.get<float>("remove_after", 5.0f);
 
 }
 
@@ -36,7 +38,15 @@ void Dead3D::Run(double dt) {
         if (m_controller->grounded()) {
             m_state = 1;
             m_renderer->setAnimation(m_animLie);
+            m_timer = 0.0f;
         }
+    } else if (m_state == 1) {
+    	m_timer += dt;
+    	if (m_timer >= m_removeAfter) {
+			Engine::get().Remove(m_entity);
+    	} else if (m_startBlinkAfter > 0.0f && m_timer >= m_startBlinkAfter) {
+			m_renderer->setActive(static_cast<int>((m_timer - m_startBlinkAfter) / 0.1f) % 2);
+    	}
     }
 
 }

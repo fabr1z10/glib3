@@ -70,11 +70,13 @@ class Engine:
                 filepath = subdir + os.sep + f
                 prefix = filepath[n:-5].replace('/', '.') + '.'
                 with open(filepath) as fi:
-                    cip = yaml.load(fi, Loader=yaml.FullLoader)
-                    if cip:
-                        for key, value in cip.items():
-                            print (prefix + " " + key)
-                            self.assets[prefix + key] = value
+                    if filepath[-4:] == 'yaml':
+                        print(filepath)
+                        cip = yaml.load(fi, Loader=yaml.FullLoader)
+                        if cip:
+                            for key, value in cip.items():
+                                print (prefix + " " + key)
+                                self.assets[prefix + key] = value
         # for key, value in self.assets.items():
         #     print(key + ':')
 

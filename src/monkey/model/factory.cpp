@@ -177,6 +177,7 @@ std::shared_ptr<Model> ModelFactory::prism(const ITab & t)  {
 	// create top mesh
 	auto mesh = std::make_shared<Mesh<Vertex3DN>>(ShaderType::TEXTURE_SHADER_LIGHT);
 	mesh->m_primitive = GL_TRIANGLES;
+	//mesh->m_behind = true;
 	mesh->Init(vertices, indices);
 	mesh->addTexture(top, TexType::DIFFUSE);
 
