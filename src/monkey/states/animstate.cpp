@@ -5,6 +5,7 @@
 AnimState::AnimState(const ITab& t) : State(t){
     m_anim = t.get<std::string>("anim");
     auto nextState = t.get<std::string>("next_state", "");
+    m_changeStateAfterAnim = false;
     if (!nextState.empty()) {
         m_changeStateAfterAnim = true;
         m_nextState = nextState;

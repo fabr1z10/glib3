@@ -37,10 +37,12 @@ Polygon::Polygon(const ITab& t) : IShape(t) {
     m_type = ShapeType::POLY;
     auto outline = t.get<std::vector<float> >("outline");
     m_outline = std::make_unique<PolygonHelper>(outline);
-    t.foreach("holes", [&] (const ITab& t) {
-        auto l = t.as<std::vector<float>>();
-        m_holes.push_back(std::make_unique<PolygonHelper>(l));
-    });
+    if (t.has("holes")) {
+        t.foreach("holes", [&](const ITab &t) {
+            auto l = t.as<std::vector<float>>();
+            m_holes.push_back(std::make_unique<PolygonHelper>(l));
+        });
+    }
 
     m_bounds.min = glm::vec3(outline[0], outline[1], 0.0f);
     m_bounds.max = glm::vec3(outline[0], outline[1], 0.0f);

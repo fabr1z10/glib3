@@ -27,6 +27,8 @@ void TextModel::updateText() {
 
     m_bounds.min = glm::vec3(std::numeric_limits<float>::infinity());
     m_bounds.max = glm::vec3(-std::numeric_limits<float>::infinity());
+    m_bounds.min.z = 0.0f;
+	m_bounds.max.z = 0.0f;
     m_lines = lines.size();
 
     // loop through lines

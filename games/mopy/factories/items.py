@@ -129,7 +129,8 @@ def common3D(ciao):
     e.add_component({
         'type': 'components.info',
         'stuff': {
-            'energy': energy
+            'energy': energy,
+            'attacks': ciao.get('attacks', None)
         }
     })
     return e
@@ -139,7 +140,7 @@ def foe3D(ciao):
     dt = monkey.engine.data.globals
     is_sprite = isinstance(ciao['model'], str)
     e = common3D(ciao)
-    dead_type = ciao.get('dead_type', 0)
+    #dead_type = ciao.get('dead_type', 0)
     max_speed = ciao.get('max_speed')
     time_acc = ciao.get('time_acc')
     jump_height = ciao.get('jump_height')
@@ -170,36 +171,13 @@ def foe3D(ciao):
         'next_state': 'walk'
     }
 
-    print(dead_type)
-
-    if dead_type == 0:
-        dead_state = {
-            'id': 'dead',
-            'type': 'state.hit',
-            'max_speed': 8 * max_speed,
-            'timeout': 1,
-            'gravity': gravity,
-            'hit_anim': 'hit'
-        }
-    else:
-        dead_state = {
-            'id': 'dead',
-            'type': 'state.dead',
-            'max_speed': 10,
-            'vy': 20,
-             'gravity': gravity * 0.5,
-            'start_anim': 'hit',
-            'fall_anim': 'airfall',
-            'lie_anim': 'liedown',
-        }
-
-
-
+    states = [walk_state, hit_state]
+    states.extend(make_death_sequence(ciao['model'], gravity, max_speed))
 
     state_machine = {
         'type': 'components.state_machine',
         'initial_state': 'walk',
-        'states': [walk_state, hit_state, dead_state]
+        'states': states
     }
 
     if n_attacks > 0:
@@ -236,6 +214,41 @@ def foe3D(ciao):
     return e
 
 
+def make_death_sequence(model, gravity, speed):
+    # get animations
+    anims = monkey.engine.get_asset(model)['animations']
+    dseq = []
+    if 'airfall' in anims and 'liedown' in anims:
+        dseq.append({
+            'id': 'dead',
+            'type': 'state.dead',
+            'max_speed': 10,
+            'vy': 20,
+            'gravity': gravity * 0.5,
+            'start_anim': 'hit',
+            'fall_anim': 'airfall',
+            'lie_anim': 'liedown',
+        })
+    elif 'dead_0' in anims:
+        j = 0
+        while 'dead_' + str(j) in anims:
+            dseq.append({
+                'id': 'dead_' + str(j),
+                'type': 'state.anim',
+                'anim': 'dead_' + str(j)
+            })
+            j += 1
+    else:
+        dseq.append({
+            'id': 'dead',
+            'type': 'state.hit',
+            'max_speed': 8 * speed,
+            'timeout': 1,
+            'gravity': gravity,
+            'hit_anim': 'hit'
+        })
+    return dseq
+
 def player3D(ciao):
     dt = monkey.engine.data.globals
     is_sprite = isinstance(ciao['model'], str)
@@ -247,6 +260,9 @@ def player3D(ciao):
     attacks = ciao.get('attacks', None)
     jattacks = ciao.get('jump_attacks', None)
     n_attacks = len(attacks) - 1 if attacks else 0
+
+
+
 
     gravity = (2.0 * jump_height) / (time_to_jump_apex * time_to_jump_apex)
     jump_speed = abs(gravity) * time_to_jump_apex
@@ -281,26 +297,24 @@ def player3D(ciao):
     hit_state = {
         'id': 'hit',
         'type': 'state.hit',
-        'max_speed': 4 * max_speed,
-        'time_acc': 0.5,
+        'max_speed': max_speed,
+        'time_acc': 0.2,
         'gravity': gravity,
         'hit_anim': 'hit',
         'next_state': 'walk'
     }
 
-    dead_state = {
-        'id': 'dead',
-        'type': 'state.hit',
-        'max_speed': 8 * max_speed,
-        'timeout': 1,
-        'gravity': gravity,
-        'hit_anim': 'hit'
-    }
+    # handle death sequence
+    # case 1. animations include airfall and liedown -->
+    # case 2. animations include dead_n --> add
+    states = [walk_state, hit_state, jump_state]
+    states.extend(make_death_sequence(ciao['model'], gravity, max_speed))
+
 
     state_machine = {
         'type': 'components.state_machine',
         'initial_state': 'walk',
-        'states': [walk_state, hit_state, dead_state, jump_state]
+        'states': states
     }
 
     akeys = getattr(monkey.engine.data.globals, 'attack_keys')

@@ -49,7 +49,13 @@ std::shared_ptr<Model> ModelFactory::rect(float width, float height,
         mesh = m;
     } else {
         auto m = std::make_shared<Mesh<Vertex3D>>(ShaderType::TEXTURE_SHADER_UNLIT);
-        std::vector<Vertex3D> vertices{
+        if (width == 0 || height == 0) {
+			auto t = Engine::get().GetAssetManager().get<Tex>(tex);
+			width = t->GetWidth();
+			height = t->GetHeight();
+		}
+
+		std::vector<Vertex3D> vertices{
             {offset.x, offset.y, 0, 0, repeat.y, color.r, color.g, color.b, color.a},
             {offset.x + width, offset.y, 0, repeat.x, repeat.y, color.r, color.g, color.b, color.a},
             {offset.x + width, offset.y + height, 0, repeat.x, 0, color.r, color.g, color.b, color.a},
@@ -113,7 +119,7 @@ std::shared_ptr<Model> ModelFactory::_tiled(const ITab & t) {
 }
 
 std::shared_ptr<Model> ModelFactory::_rect(const ITab & t) {
-    auto size = t.get<glm::vec2>("size");
+    auto size = t.get<glm::vec2>("size", glm::vec2(0.0f));
     auto offset = t.get<glm::vec2>("offset", glm::vec2(0.0f));
     float width = size[0];
     float height = size[1];

@@ -2,3 +2,6 @@
 ui:
   type: font
   file: ./fonts/monkeysmall.ttf
+monkey:
+  type: font
+  file: ./fonts/MonkeyIsland-1990.ttf

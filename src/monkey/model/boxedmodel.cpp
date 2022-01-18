@@ -88,7 +88,7 @@ BoxedModel::BoxedModel(const ITab& t) : SpriteModel(t) {
             //m_attackDistance = std::min(m_attackDistance, attackPos);
         }
     });
-    m_attackDistance = 0.5f * (attackMin + attackMax);
+    m_attackDistance = 0.95f * attackMax; 0.5f * (attackMin + attackMax);
     std::cerr << "paino\n";
     if (m_attackDistance== std::numeric_limits<float>::infinity()) {
         m_attackDistance = 10.0f;

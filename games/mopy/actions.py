@@ -4,7 +4,7 @@ import mopy.monkey as monkey
 import example
 import random
 import mopy.util as utils
-
+import mopy
 
 class NoOp:
     def __init__(self):
@@ -226,3 +226,27 @@ class Sequence:
         self.type = 'action.sequence'
         self.activities = []
 
+
+class Walk:
+    def __init__(self, pos, tag=None, id=None):
+        self.type ='action.walk'
+        self.pos = pos
+        self.tag = tag
+        self.id = id
+
+
+class Turn:
+    def __init__(self, dir, tag=None, id=None):
+        self.type ='action.turn'
+        self.dir = dir
+        self.tag = tag
+        self.id = id
+
+
+class Say:
+    def __init__(self, lines, font=None, tag=None, id=None):
+        self.type = 'action.say'
+        self.lines = [mopy.monkey.engine.read(x) for x in lines]
+        self.tag = tag
+        self.font = font if font else mopy.monkey.engine.data.globals.default_font
+        self.id = id

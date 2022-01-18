@@ -4,10 +4,44 @@ import os
 import mopy.font as font
 import mopy.monkey as monkey
 import sys
+import mopy.factories.scumm
 import mopy.factories.basicroom
 import mopy.factories.items
 import copy
 import operator
+from collections import defaultdict
+
+def scumm_init(engine):
+    engine.add_room_factory('scumm.room', mopy.factories.scumm.default_room)
+    engine.add_item_factory('scumm.bg', mopy.factories.scumm.bg)
+    engine.add_item_factory('scumm.walkarea', mopy.factories.scumm.walkarea)
+    engine.data.items = {}
+    engine.data.r2i = defaultdict(list)
+    engine.data.i2r = {}
+    root_dir = example.dir + '/items'
+    n = len(root_dir) + 1
+    for subdir, dirs, files in os.walk(root_dir):
+        for f in files:
+            filepath = subdir + os.sep + f
+            prefix = filepath[n:-5].replace('/', '.') + '.'
+            with open(filepath) as fi:
+                if filepath[-4:] == 'yaml':
+                    print(filepath)
+                    cip = yaml.load(fi, Loader=yaml.FullLoader)
+                    if cip:
+                        for key, value in cip.items():
+                            item_id = prefix + key
+                            engine.data.items[item_id] = value
+                            room = value.get('room')
+                            if room:
+                                engine.data.r2i[room].append(item_id)
+                                engine.data.i2r[item_id] = room
+
+
+
+initializers = {
+    'scumm': scumm_init
+}
 
 # data is a module that contain game variables, configuration and scripts
 class Engine:
@@ -34,6 +68,10 @@ class Engine:
                 self.add_shader(shader)
         # loading assets
         self.load_assets()
+        game_type = a.get('type', 'default')
+        print('the game type is ' + game_type)
+        if game_type != 'default':
+            initializers[game_type](self)
 
         self.add_room_factory('_basic', mopy.factories.basicroom.BasicRoom.make)
 

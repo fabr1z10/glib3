@@ -101,6 +101,7 @@ void SmartCollider::Update(double) {
                     auto handler = rm->GetHandler(m_castTag, e.entity->GetCollisionTag());
                     if (handler.response != nullptr) {
                         std::cerr << "FOUND RESPONSE\n";
+                        //m_stateMachine->getCurrentState()->onCollide();
                         if (handler.flip) {
                             handler.response->onStart(object, m_entity, e.report);
                         } else {

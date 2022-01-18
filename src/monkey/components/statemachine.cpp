@@ -42,6 +42,8 @@ bool State::KeyListener(int key) {
 
 
 
+
+
 void StateMachine::Begin() {
     for (auto& s : m_states) {
         s.second->AttachStateMachine(this);
@@ -109,4 +111,9 @@ void StateMachine::SetState(const std::string & state, const ITab& d) {
 
 State* StateMachine::GetState (const std::string& state) {
     return m_states.at(state).get();
+}
+
+
+void State::onCollide() {
+
 }

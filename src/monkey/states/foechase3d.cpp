@@ -18,9 +18,9 @@ FoeChase3D::FoeChase3D(const ITab& t) : Base3D(t) {
         t.foreach("attacks", [&] (const ITab& dict) {
     //		auto state = dict.get<std::string>("state");
             auto odd = dict.get<float>("prob");
-            odds.push_back(odd);
+			cumOdds += odd;
+            odds.push_back(cumOdds);
             auto inRange = dict.get<bool> ("in_range", true);
-            cumOdds += odd;
             details.push_back({attackId++, inRange});
     //		m_attackMap.insert(std::make_pair(cumProb, m_attacks.size()));
     //		m_attacks.push_back( AttackInfo {state, prob, inRange});

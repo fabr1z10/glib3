@@ -6,12 +6,16 @@ font_size = 8
 current_verb = None
 current_item_1 = ''
 current_item_2 = ''
-
+current_player = 'main.guybrush'
+default_text_offset = (0, 60)
+default_speed = 100
+ui_font = 'fonts.ui'
+default_font = 'fonts.monkey'
 
 class Colors:
     current_action = utils.rgb(0, 170, 170)
-    verb_selected = [255, 255, 85, 255]
-    verb_unselected = [0, 170, 0, 255]
+    verb_selected = utils.rgb(255, 255, 85)
+    verb_unselected = utils.rgb(0, 170, 0)
     inv_unselected = [170, 0, 170, 255]
     inv_selected = [255, 85, 255, 255]
 
@@ -34,3 +38,5 @@ verbs = {
 verb_sets = [
     {'verbs': ['open', 'close', 'push', 'pull', 'walkto', 'pickup', 'talkto', 'give', 'use', 'lookat', 'turnon', 'turnoff'], 'default_verb': 'walkto'}
 ]
+
+inventory =dict()

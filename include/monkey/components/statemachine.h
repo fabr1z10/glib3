@@ -25,6 +25,7 @@ public:
     virtual bool KeyListener (int);
     std::string getId() const;
     void AddKey (int, std::shared_ptr<StateAction>);
+    virtual void onCollide();
 protected:
     std::string m_id;
     StateMachine* m_sm;
@@ -59,6 +60,7 @@ public:
     virtual void Refresh () {}
     void AddState(const std::string& id, std::shared_ptr<State> state);
     using ParentClass = StateMachine;
+    State* getCurrentState();
 protected:
     State* m_currentState;
     std::string m_currentStateId;
@@ -75,4 +77,8 @@ inline std::string StateMachine::GetState() const {
     return m_currentStateId;
 }
 
+
+inline State * StateMachine::getCurrentState() {
+	return m_currentState;
+}
 

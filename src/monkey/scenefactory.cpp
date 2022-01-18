@@ -94,6 +94,11 @@
 #include <monkey/states/foechase3d.h>
 #include <monkey/states/hit3d.h>
 #include <monkey/states/dead3d.h>
+#include <monkey/components/walkarea.h>
+#include <monkey/components/character.h>
+#include <monkey/activities/walk.h>
+#include <monkey/activities/turn.h>
+#include <monkey/activities/say.h>
 
 
 namespace py = pybind11;
@@ -198,6 +203,8 @@ SceneFactory::SceneFactory() {
     add2<Fader>("components.fader");
     add2<TexAnimator> ("components.texanimator");
     add2<ScriptPlayer> ("components.scriptplayer");
+    add2<WalkArea>("components.walkarea");
+	add2<CharacterController>("components.character_controller");
 
     //add2<Model>("model.raw");
     addf<Model>("model.poly", ModelFactory::polygon);
@@ -231,6 +238,10 @@ SceneFactory::SceneFactory() {
     add2<ChangeCamBounds> ("action.changecambounds");
     add2<Repeat>("action.repeat");
     add2<ScaleTo>("action.scale");
+    add2<Walk>("action.walk");
+	add2<Turn>("action.turn");
+	add2<Say>("action.say");
+
     add2<HotSpotManager> ("components.hotspotmanager");
     add2<Scheduler> ("runner.scheduler");
     add2<SpatialHashingCollisionEngine> ("runner.collisionengine");
@@ -241,7 +252,7 @@ SceneFactory::SceneFactory() {
     add2<PerspectiveCamera> ("cam.perspective");
     add2<Camera25> ("cam.cam25");
 //    add2<Poly> ("shape.poly");
-    //add2<Polygon>("shape.polygon");
+    add2<Polygon>("shape.polygon");
     //dd2<PolyTri>("shape.polygontri");
 
     // ************ 2d shapes **************

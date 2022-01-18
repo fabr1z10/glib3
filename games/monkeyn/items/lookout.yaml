@@ -1,0 +1,6 @@
+---
+fire:
+  type: scumm.item
+  model: 01.fire
+  pos: [126, 52]
+  room: lookout

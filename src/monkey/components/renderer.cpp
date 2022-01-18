@@ -13,7 +13,7 @@
 #include <iostream>
 
 
-Renderer::Renderer(std::shared_ptr<Model> model) : m_model(model), m_renderingTransform(1.0f) {}
+Renderer::Renderer(std::shared_ptr<Model> model) : m_model(model), m_renderingTransform(1.0f), m_multColor(glm::vec4(1.0f)) {}
 //Renderer::Renderer() : Component(), m_baseModel(nullptr),
 //    m_multColor(1.0f), m_addColor(0.0f), m_renderingTransform(1.0f), m_forceZ(false), m_forcedZ(0.0f),
 //    m_texOffset(0.0f), m_blend(Blend::DEFAULT), m_depth(GL_LESS) {
@@ -94,6 +94,7 @@ void Renderer::Draw(Shader* shader) {
 //        if (mult_color_loc != GL_INVALID_VALUE) {
 //            glUniform4fv(mult_color_loc, 1, &m_multColor[0]);
 //        }
+		shader->setVec4("mult_color", m_multColor);
         if (shader->getShaderType() == mesh->getShaderType()) {
             mesh->draw(shader, 0, 0);
         }
