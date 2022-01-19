@@ -16,8 +16,8 @@ class Colors:
     current_action = utils.rgb(0, 170, 170)
     verb_selected = utils.rgb(255, 255, 85)
     verb_unselected = utils.rgb(0, 170, 0)
-    inv_unselected = [170, 0, 170, 255]
-    inv_selected = [255, 85, 255, 255]
+    inv_unselected = utils.rgb(170, 0, 170)
+    inv_selected = utils.rgb(255, 85, 255)
 
 
 verbs = {
@@ -39,4 +39,7 @@ verb_sets = [
     {'verbs': ['open', 'close', 'push', 'pull', 'walkto', 'pickup', 'talkto', 'give', 'use', 'lookat', 'turnon', 'turnoff'], 'default_verb': 'walkto'}
 ]
 
-inventory =dict()
+inventory = dict()
+
+
+talked_to_lookout = 0

@@ -1,0 +1,82 @@
+lookout:
+  text_set: '$dialogues/lookout'
+  #on_entry: entry_lookout
+  on_exit: on_exit_lookout
+  nodes:
+    root:
+      lines: [0,1,2,3]
+    main:
+      lines: [4,9,5,10,11,6,7,8]
+  lines:
+    0:
+      text: intro1
+      script: lookout_start_dialogue
+      args: [intro1]
+      next: main
+      persist: true
+    1:
+      text: intro2
+      script: lookout_start_dialogue
+      args: [intro2]
+      next: main
+      persist: true
+    2:
+      text: intro3
+      script: lookout_start_dialogue
+      args: [intro3]
+      next: main
+      persist: true
+    3:
+      text: intro4
+      script: lookout_start_dialogue
+      args: [intro4]
+      next: main
+      persist: true
+    4:
+      text: imguy
+      activate: [9]
+      script: lookout_4
+      next: main
+    5:
+      text: squinky
+    6:
+      text: overthisway
+      scr:
+        - [say, player, overthisway]
+        - [turn, lookout, e]
+        - [say, lookout, 15, 16]
+      next: main
+    7:
+      text: whoru
+      activate: [10, 11]
+      scr:
+        - [say, player, whoru]
+        - [say, lookout, 30, 31, 32, 33]
+      next: main
+    8:
+      text: fortune
+      scr:
+        - [say, player, fortune]
+        - [say, lookout, 42]
+      persist: true
+    9:
+      text: 22
+      active: false
+      scr:
+        - [say, player, 22]
+        - [say, lookout, 23, 24, 25, 26]
+      next: main
+    10:
+      text: whyguvworried
+      active: false
+      scr:
+        - [say, player, whyguvworried]
+        - [say, lookout, 35, 36, 37]
+      next: main
+    11:
+      text: bat
+      active: false
+      scr:
+        - [say, player, bat]
+        - [say, lookout, 39, 40]
+      next: main

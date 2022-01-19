@@ -1,6 +1,6 @@
 from mopy.factories.basicroom import BasicRoom
 from mopy.runners import Scheduler
-from mopy.entity import Entity, Text, TextAlignment, Sprite
+from mopy.entity import Entity, Text, TextAlignment, Sprite, TextView
 from mopy.camera import OrthoCamera
 from mopy.components import HotSpot, HotSpotManager, Gfx
 from mopy.shapes import Rect
@@ -10,7 +10,8 @@ from mopy.script import Script
 import example
 from mopy.actions import Walk
 
-from mopy.factories.scumm_item import create_dynamic, update_current_action
+from mopy.factories.interface import update_current_action, make_inventory_button,  make_dialogue_button, make_verb_button
+from mopy.factories.scumm_item import create_dynamic
 
 
 def walk_to(x, y):
@@ -19,40 +20,13 @@ def walk_to(x, y):
     example.play(s)
 
 
-def change_color(color):
-    def f(e: example.Wrap1):
-        e.setColor(color, (0, 0, 0, 0))
-    return f
 
 
 
 
 
-def on_verb_click(verb_id):
-    def f(e: example.Wrap1, x, y):
-        gl = mopy.monkey.engine.data.globals
-        verb = gl.verbs[verb_id]
-        callback = verb.get('callback', None)
-        if not callback:
-            gl.current_verb = verb_id
-            gl.current_item_1 = ''
-            gl.current_item_2 = ''
-            gl.wait_for_second_item = False
-            update_current_action()
-        else:
-            pass
-            #getattr(sys.modules[__name__], callback)(verb_id)
-    return f
 
 
-def verb_button(verb_id: str, pos):
-    gl = mopy.monkey.engine.data.globals
-    verb = gl.verbs[verb_id]
-    e = Text(font=gl.ui_font, size=gl.font_size, text=mopy.monkey.engine.read(verb['text']),
-             color=gl.Colors.verb_unselected, align=TextAlignment.bottom_left, pos=pos)
-    e.add_component(HotSpot(shape=None, onenter=change_color(gl.Colors.verb_selected), onleave=change_color(gl.Colors.verb_unselected),
-                            onclick=on_verb_click(verb_id)))
-    return e
 
 
 def default_room(desc: dict):
@@ -95,11 +69,23 @@ def default_room(desc: dict):
     for i in vset['verbs']:
         cx = (count // 4) * shift_applied
         cy = gl.ui_height - (2 + count % 4) * gl.font_size
-        e = verb_button(i, (cx, cy, 0))
+        e = make_verb_button(i, (cx, cy, 0))
         shift = max(shift, 1 + len(mopy.monkey.engine.read(gl.verbs[i]['text'])))
         ui.add(e)
         count += 1
     room.add(ui)
+    # inventory node
+    inventory_node = TextView(factory=make_inventory_button, pos=(160, 0), size=(160, 48),
+        font_size=8, lines=6, delta_x=26, tag='inventory')
+    inventory_node.add_component(HotSpotManager())
+    ui.add(inventory_node)
+
+    # dialogue node
+    dialogue_node = TextView(factory=make_dialogue_button, pos=(0, 0), size=(320, 56),
+        font_size=8, lines=7, delta_x=26, tag='dialogue')
+    dialogue_node.add_component(HotSpotManager())
+    room.add(dialogue_node)
+
     # add static items
     room.add_items(desc)
     # add dynamic items

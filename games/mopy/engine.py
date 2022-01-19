@@ -10,16 +10,20 @@ import mopy.factories.items
 import copy
 import operator
 from collections import defaultdict
+import mopy.scumm
 
 def scumm_init(engine):
     engine.add_room_factory('scumm.room', mopy.factories.scumm.default_room)
     engine.add_item_factory('scumm.bg', mopy.factories.scumm.bg)
     engine.add_item_factory('scumm.walkarea', mopy.factories.scumm.walkarea)
     engine.data.items = {}
+    engine.data.dialogues= {}
     engine.data.r2i = defaultdict(list)
     engine.data.i2r = {}
     root_dir = example.dir + '/items'
+    dial_dir = example.dir + '/dialogues'
     n = len(root_dir) + 1
+
     for subdir, dirs, files in os.walk(root_dir):
         for f in files:
             filepath = subdir + os.sep + f
@@ -36,8 +40,19 @@ def scumm_init(engine):
                             if room:
                                 engine.data.r2i[room].append(item_id)
                                 engine.data.i2r[item_id] = room
-
-
+    for subdir, dirs, files in os.walk(dial_dir):
+        for f in files:
+            filepath = subdir + os.sep + f
+            prefix = filepath[n:-5].replace('/', '.') + '.'
+            with open(filepath) as fi:
+                if filepath[-4:] == 'yaml':
+                    cip = yaml.load(fi, Loader=yaml.FullLoader)
+                    if cip:
+                        for key, value in cip.items():
+                            engine.data.dialogues[key] = value
+                            print('loaded dialogue: ' + key)
+    mopy.scumm.gl = engine.data.globals
+    print(' i am here ' + str(mopy.scumm.gl))
 
 initializers = {
     'scumm': scumm_init

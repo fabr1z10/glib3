@@ -13,7 +13,10 @@ class Script:
         self.loop = self.map[id]
 
     # add an action
+
+        
     def add_action(self, action, id=None, after=None):
+        print('sss')
         iid = len(self.actions)
         if id is not None:
             self.map[id] = iid
@@ -26,4 +29,4 @@ class Script:
             if iid > 0:
                 self.edges.append([iid - 1, iid])
 
-
+    add = add_action

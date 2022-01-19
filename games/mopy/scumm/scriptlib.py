@@ -1,6 +1,7 @@
 import mopy
 from mopy.script import Script
 from mopy.actions import Walk, Turn, Say
+from mopy.scumm.actionlib import start_dialogue
 
 
 def walk_to(item_id):
@@ -20,3 +21,9 @@ def walk_and_say(item_id, lines):
     s = walk_to(item_id)
     s.add_action(Say(lines=lines, tag='player'))
     return s
+
+
+def walk_and_dialogue(item_id, dialogue_id):
+    a = walk_to(item_id)
+    a.add_action(start_dialogue(dialogue_id, False))
+    return a
