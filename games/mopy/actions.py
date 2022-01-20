@@ -250,3 +250,12 @@ class Say:
         self.tag = tag
         self.font = font if font else mopy.monkey.engine.data.globals.default_font
         self.id = id
+
+
+class Sayd:
+    def __init__(self, lines, tag=None, font=None, id=None):
+        self.type = 'action.say'
+        self.lines = lines
+        self.tag = tag
+        self.font = font if font else mopy.monkey.engine.data.globals.default_font
+        self.id = id

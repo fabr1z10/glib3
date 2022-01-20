@@ -99,11 +99,21 @@ def on_verb_click(verb_id):
 
 # executes a dialogue script
 def exec_script(s):
-    def f(x,y,z):
+    def f(x, y, z):
         scr = s.script
+        if 'activate' in s.line:
+            for node in s.line['activate']:
+                s.dialogue['lines'][node]['active'] = True
+        if 'deactivate' in s.line:
+            for node in s.line['deactivate']:
+                s.dialogue['lines'][node]['active'] = False
+        persist = s.line.get('persist', False)
+        if not persist:
+            s.line['active'] = False
         s1 = Script()
         s1.add(enable_controls(False))
         example.get('dialogue').clearText()
+        s.line["clicked"] = s.line.get("clicked", 0) + 1
         if isinstance(scr, str):
             fc = getattr(mopy.monkey.engine.data.scripts, scr, None)
             if fc:
@@ -114,9 +124,11 @@ def exec_script(s):
             s1.add_action(start_dialogue(s.dialogue_id, True, next))
         else:
             # check if dialogue has a on_exit script
-            on_exit = s.line.get('on_exit')
-            if 'on_exit':
-                s1.add(RunScript(getattr(mopy.monkey.engine.data.scripts, on_exit)()))
+            on_exit = s.dialogue.get('on_exit')
+            if on_exit:
+                on_exit_script = getattr(mopy.monkey.engine.data.scripts, on_exit)()
+                if on_exit_script:
+                    s1.add(RunScript(on_exit_script))
             else:
                 pass
                 #s.add_action(scumm.actions.ExitDialogue())

@@ -10,6 +10,7 @@ class DialogueLine:
         self.line = line
         self.script = line.get('script')
         self.dialogue_id = dialogue_id
+        self.dialogue = dialogue
         #self.current_node = current_node
 
     def __lt__(self, other):
@@ -68,6 +69,11 @@ def _display_dialogue(did, dialogue, start_node):
             dial.appendText(dl)
     return f
 
+
+def exit_dialogue():
+    def _exit_dialogue():
+        _enable_controls(True)()
+    return _helper(_exit_dialogue)
 
 def start_dialogue(dialogue_id, continue_dialogue, start_node = 'root'):
     def _start_dialogue():

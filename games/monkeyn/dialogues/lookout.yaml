@@ -39,6 +39,8 @@ lookout:
       next: main
     5:
       text: squinky
+      script: lookout_5
+      next: main
     6:
       text: overthisway
       scr:
@@ -55,16 +57,12 @@ lookout:
       next: main
     8:
       text: fortune
-      scr:
-        - [say, player, fortune]
-        - [say, lookout, 42]
+      script: lookout_8
       persist: true
     9:
       text: 22
       active: false
-      scr:
-        - [say, player, 22]
-        - [say, lookout, 23, 24, 25, 26]
+      script: lookout_9
       next: main
     10:
       text: whyguvworried
