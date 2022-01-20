@@ -1,0 +1,28 @@
+---
+  type: scumm.room
+  id: village1
+  width: 1008
+  height: 144
+  #on_start: on_start_village1
+  #on_load: on_load_village1
+  items:
+    - type: scumm.bg
+      image: gfx/village1_1.png
+      pos: [0, 0, -3]
+    - type: scumm.bg
+      image: gfx/village1_2.png
+      pos: [73, 0, 1]
+    - type: scumm.bg
+      image: gfx/village1_3.png
+      pos: [229, 0, 1]
+    - type: scumm.bg
+      image: gfx/village1_4.png
+      pos: [606, 0, 1]
+    - type: scumm.walkarea
+      id: 0
+      nodes: [8, 71, 23, 63, 49, 49, 40, 37, 56, 24, 84, 13, 770, 13, 780, 34, 1000, 34]
+      edges: [0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8]
+      depth:
+        type: func.liny
+        values: [0, 1, 144, 0]
+      scale: {'type': "func.liny", 'values': [0, 0.8, 144, 0.1]}

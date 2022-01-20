@@ -43,17 +43,12 @@ lookout:
       next: main
     6:
       text: overthisway
-      scr:
-        - [say, player, overthisway]
-        - [turn, lookout, e]
-        - [say, lookout, 15, 16]
+      script: lookout_6
       next: main
     7:
       text: whoru
       activate: [10, 11]
-      scr:
-        - [say, player, whoru]
-        - [say, lookout, 30, 31, 32, 33]
+      script: lookout_7
       next: main
     8:
       text: fortune
@@ -67,14 +62,10 @@ lookout:
     10:
       text: whyguvworried
       active: false
-      scr:
-        - [say, player, whyguvworried]
-        - [say, lookout, 35, 36, 37]
+      script: lookout_10
       next: main
     11:
       text: bat
       active: false
-      scr:
-        - [say, player, bat]
-        - [say, lookout, 39, 40]
+      script: lookout_11
       next: main

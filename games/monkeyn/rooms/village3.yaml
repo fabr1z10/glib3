@@ -1,0 +1,18 @@
+---
+  id: village3
+  type: default
+  width: 800
+  height: 144
+  on_start: on_start_village3
+  on_load: on_load_village3
+  items:
+    - factory: [bg, {'image': gfx/village3_1.png}]
+      d: [ [0, 0, -1] ]
+    - factory: [bg, {'image': gfx/village3_2.png}]
+      d: [ [166, 0, 2] ]
+    - factory: [walkarea, {
+        'id': walkarea_0,
+        'depth': { 'type': 'func.liny', 'values': [0, 1, 144, 0] },
+        'scale': { 'type': 'func.const', 'value': 0.3},
+        'outline': [406,49,396,22,374,0,775,0,762,10,770,10,770,17,752,17,745,23,638,23,600,71,594,71,594,42,494,42,494,63,436,63,425,49]}]
+      d: [[0,0,0]]

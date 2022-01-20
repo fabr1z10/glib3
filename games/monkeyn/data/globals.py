@@ -8,7 +8,7 @@ current_item_1 = ''
 current_item_2 = ''
 current_player = 'main.guybrush'
 default_text_offset = (0, 60)
-default_speed = 100
+default_speed = 300
 ui_font = 'fonts.ui'
 default_font = 'fonts.monkey'
 

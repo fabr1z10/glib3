@@ -105,3 +105,20 @@ def start_dialogue(dialogue_id, continue_dialogue, start_node = 'root'):
         # if not ll and 'on_empty' in dialogue:
         #     getattr(monkey.engine.scripts, dialogue['on_empty'])()
     return _helper(_start_dialogue)
+
+
+def update_item(item_id, d: dict):
+    def _set_item_pos():
+        data = mopy.monkey.engine.data
+        item = data.items[item_id]
+        if 'room' in d and d['room'] != item.get('room'):
+            old_room = item.get('room')
+            if old_room:
+                data.r2i[old_room].remove(item_id)
+            data.r2i[d['room']].append(item_id)
+            data.i2r[item_id] = d['room']
+            print('scopami')
+            print(data.r2i)
+        item.update(d)
+
+    return _helper(_set_item_pos)

@@ -4,3 +4,19 @@ fire:
   model: 01.fire
   pos: [126, 52]
   room: lookout
+stairs:
+  type: scumm.item
+  text: '$objects/stairs'
+  pos: [230, 0]
+  size: [30,10]
+  walk_to: '@game.pos.lookout_stairs'
+  wdir: 's'
+  room: lookout
+path:
+  type: scumm.item
+  text: '$objects/path'
+  pos: [294, 0]
+  size: [26, 144]
+  walk_to: '@game.pos.lookout_path'
+  wdir: e
+  room: lookout

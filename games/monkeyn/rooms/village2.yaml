@@ -1,0 +1,21 @@
+---
+  id: village2
+  type: default
+  width: 480
+  height: 144
+  on_start: on_start_village2
+  on_load: on_load_village2
+  bg:
+    - image: gfx/village2.png
+      pos: [0, 0, -1]
+  items:
+    - factory: [bg, {'image': gfx/village2.png}]
+      d: [ [0, 0, -1] ]
+    - factory: [walkarea, {'id': walkarea_0,
+                           'depth': { 'type': 'func.liny', 'values': [0, 1, 144, 0] },
+                           'scale': { 'type': 'func.patch2d', 'rect': [
+                             {'pos': [0, 0], 'size': [480, 30], 'func': { 'type': 'func.const', 'value': 1 } },
+                             {'pos': [0, 30], 'size': [480, 104], 'func': { 'type': 'func.liny', 'values': [30, 1, 59, 0.35] } } ] },
+                           'outline': [0, 24, 0, 0, 470, 0, 454,35,385,35,377,30,299,30,199,63,123,63]}]
+      d: [[0,0,0]]
+

@@ -15,9 +15,19 @@ def _a(*args):
 def _b(n):
     return mopy.monkey.engine.read('$dialogues/lookout/' + str(n))
 
+def lookat_main_lookout(item_id, entity):
+    return sl.walk_and_say(item_id, _a(50))
 
 def talkto_main_lookout(item_id, entity):
     return sl.walk_and_dialogue(item_id, 'lookout')
+
+def walkto_lookout_stairs(item_id, entity):
+    return sl.walk_and_change_room(item_id, 'village1', mopy.monkey.engine.data.game.pos.village_cliffside, 'e', 'walkarea_0')
+
+def walkto_lookout_path(item_id, entity):
+    return sl.walk_and_change_room(item_id, 'melee_map')
+
+
 
 def on_exit_lookout():
     s = Script()
@@ -56,6 +66,7 @@ def lookout_8(args):
     s.add(Say(_a(42), 'main.lookout'))
     return s
 
+
 def lookout_5(args):
     s = Script()
     s.add(Say(_a('squinky'), 'player'))
@@ -65,3 +76,27 @@ def lookout_5(args):
         s.add(Say(_a(27), 'main.lookout'))
     return s
 
+def lookout_6(args):
+    s = Script()
+    s.add(Say(_a('overthisway'), 'player'))
+    s.add(Turn('e', 'main.lookout'))
+    s.add(Say(_a(15, 16), 'main.lookout'))
+    return s
+
+def lookout_7(args):
+    s = Script()
+    s.add(Say(_a('whoru'), 'player'))
+    s.add(Say(_a(30, 31, 32, 33), 'main.lookout'))
+    return s
+
+def lookout_10(args):
+    s = Script()
+    s.add(Say(_a('whyguvworried'), 'player'))
+    s.add(Say(_a(35, 36, 37), 'main.lookout'))
+    return s
+
+def lookout_11(args):
+    s = Script()
+    s.add(Say(_a('bat'), 'player'))
+    s.add(Say(_a(39, 40), 'main.lookout'))
+    return s

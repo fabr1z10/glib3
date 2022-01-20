@@ -220,10 +220,20 @@ class Engine:
 
     def _repl(self, a, index, value, args):
         if isinstance(value, str):
-            if value[0] == '@' and value[1] != '@':
+            if value[0] == '#' and value[1] != '#':
                 a[index] = args[int(value[1:])]
-            elif value[0] == '$' and value[1] != '$':
+            elif value[0] == '@' and value[1] != '@':
+                print(' *** reading variable: ' + value[1:])
                 a[index] = operator.attrgetter(value[1:])(monkey.engine.data)
+                print(str(a[index]) + ' is da valu')
+            elif value[0] == '$' and value[1] != '$':
+                print(' *** reading str: ' + value[1:])
+                # get a string
+                cc = self.assets['strings']
+                for b in value[1:].split('/'):
+                    cc = cc[int(b) if b.isdigit() else b]
+                print (' *** valuf is ' + cc)
+                a[index] = cc
 
 
 

@@ -34,6 +34,7 @@ class BasicRoom(Room):
                     self.add(e, parent)
 
     def __init__(self, desc):
+        self.id = desc['id']
         aa = desc.get('vars', None)
         room_info = monkey.engine.repl_vars(desc, aa)
         super().__init__(room_info['id'])

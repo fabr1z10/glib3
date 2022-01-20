@@ -9,7 +9,7 @@ import mopy.engine
 from mopy.script import Script
 import example
 from mopy.actions import Walk
-
+import mopy.scumm as scumm
 from mopy.factories.interface import update_current_action, make_inventory_button,  make_dialogue_button, make_verb_button
 from mopy.factories.scumm_item import create_dynamic
 
@@ -20,18 +20,43 @@ def walk_to(x, y):
     example.play(s)
 
 
+class ScummRoom(BasicRoom):
+    def __init__(self, desc):
+        super().__init__(desc)
+
+    def load_dynamic_items(self):
+        for r in mopy.monkey.engine.data.r2i.get(self.id, []):
+            entity = create_dynamic(r)
+            item = mopy.monkey.engine.data.items.get(r)
+            self.add(entity, item.get('parent', self.default_item))
 
 
+def map_room(desc: dict):
+    room = ScummRoom(desc)
+    room.add_runner(Scheduler())
+    # read world size
+    width = desc['width']
+    height = desc['height']
 
-
-
-
-
+    device_size = mopy.monkey.engine.device_size
+    cam_width = device_size[0]
+    cam_height = device_size[1]
+    # # add the main node
+    room.default_item = 'main'
+    main = Entity(tag='main')
+    main.camera = OrthoCamera(width, height, cam_width, cam_height, [0, 0, cam_width, cam_height], tag='maincam')
+    main.add_component(HotSpotManager(lmbclick=walk_to))
+    room.add(main)
+    # add static items
+    room.add_items(desc)
+    # add dynamic items
+    room.load_dynamic_items()
+    return room
 
 
 def default_room(desc: dict):
     gl = mopy.monkey.engine.data.globals
-    room = BasicRoom(desc)
+    room = ScummRoom(desc)
     room.add_runner(Scheduler())
 
     # read world size
@@ -89,25 +114,37 @@ def default_room(desc: dict):
     # add static items
     room.add_items(desc)
     # add dynamic items
-    print (' ### looking up for dynamic items in room ' + desc['id'])
-    for r in mopy.monkey.engine.data.r2i.get(desc['id'], []):
-        print('QUI')
-        entity = create_dynamic(r)
-        item = mopy.monkey.engine.data.items.get(r)
-        print(item.get('parent', room.default_item) +' facomi')
-        room.add(entity, item.get('parent', room.default_item))
+    room.load_dynamic_items()
+    # print (' ### looking up for dynamic items in room ' + desc['id'])
+    # for r in mopy.monkey.engine.data.r2i.get(desc['id'], []):
+    #     print('QUI')
+    #     entity = create_dynamic(r)
+    #     item = mopy.monkey.engine.data.items.get(r)
+    #     print(item.get('parent', room.default_item) +' facomi')
+    #     room.add(entity, item.get('parent', room.default_item))
     return room
 
 def walkarea(data):
     e = Entity()
     e.tag = 'walkarea_' + str(data.get('id', 0))
-    e.add_component({
+    walkarea = {
         'type': 'components.walkarea',
-        'shape': {
+        'depth': data.get('depth', None),
+        'scale': data.get('scale', None)
+    }
+
+    if 'poly' in data:
+        walkarea['shape'] = {
             'type': 'shape.polygon',
             'outline': data['poly']
         }
-    })
+    else:
+        walkarea['shape'] = {
+            'type': 'shape.polyline',
+            'nodes': data['nodes'],
+            'edges': data['edges']
+        }
+    e.add_component(walkarea)
     return e
 
 def bg(data):

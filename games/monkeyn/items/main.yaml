@@ -3,7 +3,7 @@ guybrush:
   type: scumm.character
   model: 01.guybrush
   text_color: [255, 255, 255, 255]
-  speed: 50
+  #speed: 50
   collision:
     size: [ 4, 1 ]
     offset: [ -2, 0 ]
