@@ -3,8 +3,15 @@
 #include <monkey/components/renderer.h>
 
 #include <monkey/components/animator.h>
+#include <monkey/components/animrenderer.h>
 
 Sprite::Sprite(const ITab& t) : Entity(t) {
+	if (t.has("anim")) {
+		auto *r = dynamic_cast<AnimationRenderer *>(GetComponent<Renderer>());
+		r->setAnimation(t.get<std::string>("anim"));
+	}
+
+
 //    auto modelId = t.get<std::string>("model");
 //    auto blend = static_cast<Blend>(t.get<int>("blend", 0));
 //	auto depth = static_cast<GLenum>(t.get<int>("depth", GL_LESS));

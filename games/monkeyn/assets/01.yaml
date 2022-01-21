@@ -197,3 +197,96 @@ guybrush:
         - quads: [[93,301,22,47,10,0]]
         - quads: [[116,301,21,47,9,0]]
        # - quads: [[140,312,21,36,9,0]]
+door_village_scummbar:
+  sheet: "gfx/sprites/sprites1.png"
+  type: "model.sprite"
+  animations:
+    open:
+      frames:
+        - quads: [3,126,31,52]
+    closed:
+      frames:
+        - quads: [35,126,31,52]
+door_scummbar_village:
+  sheet: "gfx/sprites/sprites1.png"
+  type: "model.sprite"
+  animations:
+    open:
+      frames:
+        - quads: [472,2,38,47]
+    closed:
+      frames:
+        - quads: [472,50,38,47]
+scummbar_fireplace:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: 'model.sprite'
+  animations:
+    idle_1:
+      frames:
+        - ticks: 5
+          quads: [334,160,32,26]
+        - ticks: 5
+          quads: [368,160,32,26]
+        - ticks: 5
+          quads: [402,160,32,26]
+fakedoor1:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: 'model.sprite'
+  animations:
+    closed:
+      frames:
+        - quads: [58,179,16,29]
+    open:
+      frames:
+        - quads: [76,179,16,29]
+
+fakedoor2:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: 'model.sprite'
+  animations:
+    closed:
+      frames:
+        - quads: [3,204,8,14]
+    open:
+      frames:
+        - quads: [13,204,8,14]
+fakedoor3:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: 'model.sprite'
+  animations:
+    closed:
+      frames:
+        - quads: [388,484,8,13]
+    open:
+      frames:
+        - quads: [398,484,8,13]
+fakedoor4:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: 'model.sprite'
+  animations:
+    closed:
+      frames:
+        - quads: [388,498,8,12]
+    open:
+      frames:
+        - quads: [398,398,8,12]
+door_village_voodoolady:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: 'model.sprite'
+  animations:
+    closed:
+      frames:
+        - quads: [3,179,26,24]
+    open:
+      frames:
+        - quads: [31,179,26,24]
+door_voodoolady_village:
+  sheet: 'gfx/sprites/sprites2.png'
+  type: 'asset.sprite'
+  animations:
+    closed:
+      frames:
+        - [1,55,33,58]
+    open:
+      frames:
+        - [36,55,33,58]

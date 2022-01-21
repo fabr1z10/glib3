@@ -107,6 +107,19 @@ def start_dialogue(dialogue_id, continue_dialogue, start_node = 'root'):
     return _helper(_start_dialogue)
 
 
+def open_door(item_id, door_id):
+    def _open_door():
+        setattr(mopy.monkey.engine.data.game.doors, door_id, 'open')
+        example.get(item_id).setAnim('open')
+    return _helper(_open_door)
+
+def close_door(item_id, door_id):
+    def _close_door():
+        setattr(mopy.monkey.engine.data.game.doors, door_id, 'closed')
+        example.get(item_id).setAnim('closed')
+    return _helper(_close_door)
+
+
 def update_item(item_id, d: dict):
     def _set_item_pos():
         data = mopy.monkey.engine.data

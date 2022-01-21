@@ -4,6 +4,7 @@ from mopy.entity import Entity, Sprite
 from mopy.components import HotSpot, Collider, Follow
 from mopy.shapes import Rect
 from mopy.factories.interface import hover_on, hover_off, run_action
+from mopy.scumm import get_item
 import example
 
 
@@ -69,7 +70,8 @@ def item(key, desc):
     #text = monkey.engine.read(desc.get('text'))
     s = None
     if model:
-        anim = eng.read(desc.get('anim', None))
+        anim = desc.get('anim', None)
+        print('the animation is ' + str(anim))
         s = Sprite(model=model, pos=pos, anim=anim)
     else:
         s = Entity(pos=pos)
@@ -94,7 +96,8 @@ item_maps = {
 def create_dynamic(key):
     data = mopy.monkey.engine.data
     print (' ### creating dynamic item: ' + key)
-    item = data.items.get(key)
+    item =  get_item(key)
+    print ('HERE IS THETHING: ' + str(item))
     if item:
         type = item['type']
         print(' ### item type: ' + type)

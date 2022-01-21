@@ -27,7 +27,7 @@ public:
 private:
     ClosestPointOnEdge();
     std::unordered_map<ShapeType, std::function<glm::vec2(glm::vec2, const IShape*)>> m_algos;
-
+	void getClosestPointToOutline(const std::vector<glm::vec2>& vertices, const glm::vec2 P, glm::vec2& current, float& currDist, bool hole);
     float m_eps;
     glm::vec2 findCircle(glm::vec2, const IShape*);
     glm::vec2 findPoly (glm::vec2, const IShape*);

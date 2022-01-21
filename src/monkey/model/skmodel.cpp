@@ -1,6 +1,5 @@
 #include <monkey/skeletal/skmodel.hpp>
 #include <monkey/math/earcut.h>
-#include <monkey/skeletal/joint.hpp>
 #include <pybind11/pytypes.h>
 #include <monkey/math/geom.h>
 #include <glm/gtx/transform.hpp>
@@ -314,6 +313,7 @@ SkModel::SkModel(const ITab& main) : m_jointCount(0) {
         auto windex = mesh.get<glm::ivec3>("windex");
         m_jointInfos.emplace_back(id, parentId, name, windex);
         m_jointNameToId[name] = id;
+
         glm::vec2 attachPoint(0.0f);
         if (parentId != -1) {
             m_jointInfos[parentId].children.push_back(id);
@@ -485,6 +485,25 @@ glm::vec2 SkModel::getKeyPoint(const std::string &joint, const std::string &keyP
 
 void SkModel::setAnimation(const std::string &id, const std::string &animId) {
 	auto anim = Engine::get().GetAssetManager().get<SkAnimation>(animId);
+	if (anim->hasAttacks()) {
+
+		auto attackInfos = anim->getAttacks();
+		for (const auto& a : attackInfos) {
+			// need to get the joint
+			for (const auto& b : a.boxInfos) {
+				if (m_jointNameToId.count(b.jointId) > 0) {
+					int id = m_jointNameToId[b.jointId];
+					if (m_jointInfos[id].mesh != nullptr) {
+						std::cerr << "ok, getting trans";
+						//auto t = anim->getAnimTransform(a.startTime, this);
+					}
+
+				}
+			}
+
+		}
+	}
+
 	m_animations[id] = anim;
 
 }
@@ -558,19 +577,19 @@ int SkModel::getJointId(const std::string & id) {
 }
 
 
-std::vector<glm::mat4> SkModel::getJointTransforms() {
-    std::vector<glm::mat4> jointMatrices(m_jointCount);
-    addJointsToArray(m_rootJoint.get(), jointMatrices);
-    return jointMatrices;
-}
+//std::vector<glm::mat4> SkModel::getJointTransforms() {
+//    std::vector<glm::mat4> jointMatrices(m_jointCount);
+//    addJointsToArray(m_rootJoint.get(), jointMatrices);
+//    return jointMatrices;
+//}
 
-void SkModel::addJointsToArray(Joint * j, std::vector<glm::mat4> & jointMatrices) {
-    jointMatrices[j->getIndex()] = j->getAnimatedTransform();
-
-    for (const auto& child : j->getChildren()) {
-        addJointsToArray(child.get(), jointMatrices);
-    }
-}
+//void SkModel::addJointsToArray(Joint * j, std::vector<glm::mat4> & jointMatrices) {
+//    jointMatrices[j->getIndex()] = j->getAnimatedTransform();
+//
+//    for (const auto& child : j->getChildren()) {
+//        addJointsToArray(child.get(), jointMatrices);
+//    }
+//}
 
 
 std::vector<std::shared_ptr<IShape>> SkModel::getAttackShapes() const {

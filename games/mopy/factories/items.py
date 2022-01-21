@@ -216,8 +216,12 @@ def foe3D(ciao):
 
 def make_death_sequence(model, gravity, speed):
     # get animations
-    anims = monkey.engine.get_asset(model)['animations']
+    if isinstance(model, str):
+        anims = monkey.engine.get_asset(model)['animations']
+    else:
+        anims = dict()
     dseq = []
+
     if 'airfall' in anims and 'liedown' in anims:
         dseq.append({
             'id': 'dead',
@@ -252,6 +256,7 @@ def make_death_sequence(model, gravity, speed):
 def player3D(ciao):
     dt = monkey.engine.data.globals
     is_sprite = isinstance(ciao['model'], str)
+    print ('is sprite: '  + str(is_sprite))
     e = common3D(ciao)
     max_speed = ciao.get('max_speed')
     time_acc = ciao.get('time_acc')
@@ -308,6 +313,8 @@ def player3D(ciao):
     # case 1. animations include airfall and liedown -->
     # case 2. animations include dead_n --> add
     states = [walk_state, hit_state, jump_state]
+
+
     states.extend(make_death_sequence(ciao['model'], gravity, max_speed))
 
 

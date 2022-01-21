@@ -12,6 +12,121 @@ cliffside:
   text: '$objects/cliffside'
   pos: [0, 0]
   size: [10, 144]
-  walk_to: '@pos.village_cliffside'
+  walk_to: '@game.pos.village_cliffside'
   wdir: 'w'
   room: village1
+archway1:
+  type: scumm.item
+  text: '$objects/archway'
+  pos: [993, 30]
+  size: [21, 51]
+  walk_to: '@game.pos.village1_archway'
+  wdir: 'e'
+  room: village1
+archway2:
+  type: scumm.item
+  text: '$objects/archway'
+  pos: [416, 34, 0]
+  size: [40, 50]
+  room: village2
+  walk_to: '@game.pos.village2_archway'
+  wdir: n
+archway3:
+  type: scumm.item
+  text: '$objects/archway'
+  pos: [146, 63]
+  size: [30, 30]
+  room: village2
+  walk_to: '@game.pos.village2_archway3'
+  wdir: n
+archway4:
+  type: scumm.item
+  text: '$objects/archway'
+  pos: [753, 11]
+  size: [23, 74]
+  room: village3
+  walk_to: '@game.pos.village3_archway'
+  wdir: e
+alley:
+  type: scumm.item
+  text: '$objects/alley'
+  pos: [581, 56]
+  size: [20, 30]
+  room: village3
+  walk_to: '@game.pos.village3_alley'
+  wdir: n
+door_scummbar:
+  type: scumm.item
+  text: '$objects/door'
+  size: [31, 52]
+  pos: [699, 6, -1]
+  room: village1
+  walk_to: '@game.pos.village_scummbar_door'
+  wdir: n
+  anim: '@game.doors.scummbar'
+  model: '01.door_village_scummbar'
+door_voodoolady:
+  type: scumm.item
+  text: '$objects/door'
+  pos: [220, 52, -1]
+  size: [26, 26]
+  room: village2
+  walk_to: '@game.pos.village2_voodoolady'
+  wdir: e
+  model: 01.door_village_voodoolady
+  anim: '@game.doors.voodoolady'
+door_scummbar_out:
+  type: scumm.item
+  text: '$objects/door'
+  size: [38, 47]
+  pos: [32, 24, -1]
+  room: scummbar
+  walk_to: '@game.pos.scummbar_main_door'
+  wdir: w
+  anim: '@game.doors.scummbar'
+  model: '01.door_scummbar_village'
+fireplace:
+  type: scumm.item
+  model: 01.scummbar_fireplace
+  pos: [509, 44]
+  text: '$objects/fireplace'
+  size: [29, 18]
+  walk_to: [512, 40]
+  wdir: e
+  room: scummbar
+fakedoor1:
+  type: scumm.item
+  text: '$objects/door'
+  pos: [377, 37, -1]
+  size: [20, 30]
+  room: village2
+  walk_to: [389, 36]
+  wdir: w
+  model: 01.fakedoor1
+fakedoor2:
+  type: scumm.item
+  text: '$objects/door'
+  pos: [208,59,-1]
+  size: [10, 20]
+  room: village2
+  walk_to: [206, 58]
+  wdir: e
+  model: 01.fakedoor2
+fakedoor3:
+  type: scumm.item
+  text: '$objects/door'
+  pos: [130, 63, -1]
+  size: [10, 15]
+  room: village2
+  walk_to: [135, 60]
+  wdir: n
+  model: 01.fakedoor3
+fakedoor4:
+  type: scumm.item
+  text: '$objects/door'
+  pos: [184, 64, -1]
+  size: [10, 15]
+  room: village2
+  walk_to: [188, 61]
+  wdir: n
+  model: 01.fakedoor4

@@ -25,3 +25,8 @@ class pos:
     f1f2 = (238,69)
     f1f2b = (154,69)
     village2_voodoolady = (220, 48)
+
+
+class doors:
+    scummbar = 'closed'
+    voodoolady = 'closed'

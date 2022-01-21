@@ -13,6 +13,8 @@ from collections import defaultdict
 import mopy.scumm
 
 def scumm_init(engine):
+    mopy.scumm.gl = engine.data.globals
+
     engine.add_room_factory('scumm.room', mopy.factories.scumm.default_room)
     engine.add_item_factory('scumm.bg', mopy.factories.scumm.bg)
     engine.add_item_factory('scumm.walkarea', mopy.factories.scumm.walkarea)
@@ -35,6 +37,8 @@ def scumm_init(engine):
                     if cip:
                         for key, value in cip.items():
                             item_id = prefix + key
+                            if item_id == mopy.scumm.gl.current_player:
+                                value['room'] = mopy.monkey.engine.room
                             engine.data.items[item_id] = value
                             room = value.get('room')
                             if room:
@@ -51,7 +55,7 @@ def scumm_init(engine):
                         for key, value in cip.items():
                             engine.data.dialogues[key] = value
                             print('loaded dialogue: ' + key)
-    mopy.scumm.gl = engine.data.globals
+
     print(' i am here ' + str(mopy.scumm.gl))
 
 initializers = {
@@ -153,6 +157,7 @@ class Engine:
                 if factory is None:
                     print('Unable to find factory for room type: ' + rt)
                     exit(1)
+                f = factory(room)
                 return factory(room)
         except EnvironmentError as error:
             print(error)

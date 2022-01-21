@@ -136,7 +136,8 @@ def walkarea(data):
     if 'poly' in data:
         walkarea['shape'] = {
             'type': 'shape.polygon',
-            'outline': data['poly']
+            'outline': data['poly'],
+            'holes': data.get('holes')
         }
     else:
         walkarea['shape'] = {
