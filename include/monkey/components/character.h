@@ -3,6 +3,8 @@
 #include <monkey/components/statemachine.h>
 #include <unordered_map>
 #include "animrenderer.h"
+#include "walkarea.h"
+#include <monkey/components/inputmethod.h>
 
 class IAnimator;
 
@@ -26,7 +28,7 @@ class CharacterController : public Component {
 public:
     CharacterController(const ITab&);
     void Start () override;
-    void Update(double) override {}
+    void Update(double) override;
     void turn (char);
     float getSpeed() const;
     char getDirection() const;
@@ -35,13 +37,16 @@ public:
     glm::vec2 getTextOffset() const;
 	std::pair<std::string, bool> getAnim(const std::string& anim, glm::vec2);
 private:
-    AnimationRenderer* m_animator;
+	InputMethod * m_input;
+	AnimationRenderer* m_animator;
     char m_dir;
     float m_speed;
     glm::vec4 m_textColor;
     glm::vec2 m_textOffset;
 	std::unique_ptr<ICharAnimator> m_charAnimator;
-
+	bool m_useKeyboard;
+	WalkArea* m_walkArea;
+	int m_inputLastFrame;
 };
 
 inline glm::vec4 CharacterController::getTextColor() const {

@@ -25,7 +25,7 @@ class CharacterController : public Component {
 public:
     CharacterController(const ITab&);
     void Start () override;
-    void Update(double) override {}
+    void Update(double) override;
     void turn (char);
     float getSpeed() const;
     char getDirection() const;

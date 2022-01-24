@@ -46,27 +46,6 @@ WalkArea::WalkArea(const ITab& t) : Component(t) {
         });
     }
     m_shortestPath->setShape(m_shape);
-
-//    if (t.has("blocked_lines")) {
-//        t.foreach("blocked_lines", [&] (const ITab& d) {
-//            auto A = d.get<glm::vec2>("A");
-//            auto B = d.get<glm::vec2>("B");
-//            auto active = d.get<bool>("active", true);
-//            AddBlockedLine(A, B, active);
-//        });
-////        luabridge::LuaRef ref = t.Get<luabridge::LuaRef>("blockedlines");
-////        for (int i = 0; i < ref.length(); ++i) {
-////            luabridge::LuaRef bl = ref[i+1];
-////            LuaTable t(bl);
-////            glm::vec2 A = t.Get<glm::vec2>("A");
-////            glm::vec2 B = t.Get<glm::vec2>("B");
-////            bool active = t.Get<bool>("active");
-////            AddBlockedLine(A, B, active);
-////        }
-//     }
-
-//    m_shortestPath = std::make_shared<ShortestPath>();
-//    m_shortestPath->setShape(m_shape);
 }
 
 void WalkArea::onAdd(Entity * e) {
@@ -187,6 +166,23 @@ std::vector<glm::vec2> WalkArea::findPath(glm::vec2 A, glm::vec2 B, int& retval)
     retval = m_shortestPath->find(A, B, points);
     return points;
 }
+
+float WalkArea::checkMove(glm::vec2 A, glm::vec2 dir, float length) {
+	RayCast2D ciao;
+	glm::vec3 P0(A, 0.0f);
+	glm::vec3 P1 = P0 + glm::vec3(dir, 0.0f) * length;
+	auto pippo = ciao.run(P0, P1, m_shape.get(), glm::mat4(1.0f));
+	if (pippo.collide) {
+		std::cout << "FIGAAA!!\n";
+		if (pippo.length < 0.1f) {
+			return 0.0f;
+		}
+		return 0.9f* pippo.length;
+	}
+	return length;
+
+}
+
 //void WalkArea::onClick(glm::vec2 worldCoords, int button, int action, int mods) {
 //
 //    // here I need to answer this question:

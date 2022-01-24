@@ -32,6 +32,7 @@ public:
     void SetScalingFunction (std::shared_ptr<Function2D> func);
     //void SetHandler (std::shared_ptr<LuaFunction> func);
     std::vector<glm::vec2> findPath(glm::vec2 A, glm::vec2 B, int&);
+    float checkMove (glm::vec2 A, glm::vec2 dir, float);
     void AddBlockedLine(glm::vec2 A, glm::vec2 B, bool active);
     void EnableBlockedLine(int, bool);
     std::vector<LineSegment> GetActiveWalls() const;
@@ -66,4 +67,5 @@ inline void WalkArea::SetScalingFunction (std::shared_ptr<Function2D> func) {
 inline std::type_index WalkArea::GetType() {
     return std::type_index(typeid(WalkArea));
 }
+
 

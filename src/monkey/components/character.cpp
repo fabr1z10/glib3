@@ -1,6 +1,8 @@
 #include "monkey/components/character.h"
 #include <monkey/entity.h>
 #include <monkey/components/animator.h>
+#include <GLFW/glfw3.h>
+#include <monkey/math/raycast2d.h>
 
 std::pair<std::string, bool> ICharAnimator::getAnim(const std::string &anim, char dir) {
 	switch (dir) {
@@ -45,6 +47,7 @@ CharacterController::CharacterController(const ITab &t) : Component(t) {
 	} else {
 		m_charAnimator = std::make_unique<WalkAni2>();
 	}
+	m_useKeyboard = t.get<bool>("use_keyboard", false);
 }
 
 std::pair<std::string, bool> CharacterController::getAnim(const std::string &anim, glm::vec2 move) {
@@ -58,6 +61,15 @@ void CharacterController::Start() {
 		turn(m_dir);
     }
 
+	//m_animator = m_entity->GetComponent<Animator>();
+	if (m_useKeyboard) {
+		m_input = m_entity->GetComponent<InputMethod>();
+		if (m_input == nullptr) {
+			GLIB_FAIL("player jump state requires a input method component!");
+		}
+		m_walkArea = m_entity->GetParent()->GetComponent<WalkArea>();
+	}
+	m_inputLastFrame = 0;
 }
 
 void CharacterController::turn(char dir) {
@@ -66,5 +78,59 @@ void CharacterController::turn(char dir) {
     std::string anim = "idle_" + std::string(1,dir == 'w' ? 'e' : dir);
     m_entity->SetFlipX(canim.second);//  dir == 'w');
     m_animator->setAnimation(canim.first);
+
+}
+
+
+void CharacterController::Update(double dt) {
+	if (m_useKeyboard) {
+		bool left = m_input->isKeyDown(GLFW_KEY_LEFT);
+		bool right = m_input->isKeyDown(GLFW_KEY_RIGHT);
+		bool up = m_input->isKeyDown(GLFW_KEY_UP);
+		bool down = m_input->isKeyDown(GLFW_KEY_DOWN);
+
+		glm::vec3 move(0.0f);
+		std::string anim;
+		bool flipx = left;
+		bool isMoving = false;
+		if (left || right) {
+			anim = "walk_e";
+			move += glm::vec3(left ? -1.0f : 1.0f, 0.0f, 0.0f);
+			isMoving = true;
+			m_dir = 'e';
+		}
+		if (up || down) {
+			if (!left && !right) {
+				anim = up ? "walk_n" : "walk_s";
+				m_dir = up ? 'n' : 's';
+			}
+			move += glm::vec3(0.0f, up ? 1.0f : -1.0f, 0.0f);
+			isMoving = true;
+		}
+		if (isMoving) {
+			m_inputLastFrame = 1;
+			m_animator->setAnimation(anim);
+			m_entity->SetFlipX(flipx);
+			move = glm::normalize(move);
+			float length = m_speed * dt;
+			auto startPosition = m_entity->GetPosition();
+			auto le = m_walkArea->checkMove(startPosition, move, length);
+			move.x = abs(move.x);
+			m_entity->MoveLocal(move * le);
+		} else {
+			if (m_inputLastFrame == 1) {
+				m_inputLastFrame = 0;
+				auto dir = m_dir == 'w' ? 'e' : m_dir;
+				m_animator->setAnimation("idle_" + std::string(1, dir));
+			}
+		}
+
+
+
+
+/*		bool left = m_input->isKeyDown(GLFW_KEY_LEFT);
+		bool right = m_input->isKeyDown(GLFW_KEY_RIGHT);
+		bool up = m_input->isKeyDown(GLFW_KEY_UP);*/
+	}
 
 }

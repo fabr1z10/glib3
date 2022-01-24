@@ -47,7 +47,11 @@ def character(key, desc):
         'speed': speed,
         'text_offset': text_offset,
         'text_color': text_color,
+        'use_keyboard': gl.use_keyboard if is_player else False
     })
+    if is_player and gl.use_keyboard:
+        s.add_component({ 'type': 'components.keyinput'})
+
       #cumm.components.CharacterController(dir=dir, speed=speed, text_color=text_color, text_offset=text_offset))
     # if a size is provided, add a hotspot
     size = desc.get('size', None)

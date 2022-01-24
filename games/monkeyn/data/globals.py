@@ -8,9 +8,10 @@ current_item_1 = ''
 current_item_2 = ''
 current_player = 'main.guybrush'
 default_text_offset = (0, 60)
-default_speed = 300
+default_speed = 50
 ui_font = 'fonts.ui'
 default_font = 'fonts.monkey'
+use_keyboard = True
 
 class Colors:
     current_action = utils.rgb(0, 170, 170)

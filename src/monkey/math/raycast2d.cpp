@@ -39,6 +39,19 @@ RayCastHit RayCast2D::rayCastPoly(glm::vec2 A, glm::vec2 B, IShape *s, const glm
 			updateRaycastHit(out, B-A, D-C, u, i);
 		}
 	}
+	for (size_t i = 0; i < poly->getHoleCount(); ++i) {
+		const auto& vertices = poly->getHoleVertices(i);
+		for (size_t j = 0; j < vertices.size(); ++j) {
+			size_t k = (j == vertices.size()-1 ? 0 : j+1);
+			glm::vec2 C = t * glm::vec4(vertices[j], 0.0f, 1.0f);
+			glm::vec2 D = t * glm::vec4(vertices[k], 0.0f, 1.0f);
+			if (seg2seg (A, B, C, D, u)) {
+				// update raycast hit
+				updateRaycastHit(out, B-A, D-C, u, i);
+			}
+		}
+	}
+
     return out;
 }
 
