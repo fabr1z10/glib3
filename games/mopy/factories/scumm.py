@@ -2,7 +2,7 @@ from mopy.factories.basicroom import BasicRoom
 from mopy.runners import Scheduler
 from mopy.entity import Entity, Text, TextAlignment, Sprite, TextView
 from mopy.camera import OrthoCamera
-from mopy.components import HotSpot, HotSpotManager, Gfx
+from mopy.components import HotSpot, HotSpotManager, Gfx, Cursor
 from mopy.shapes import Rect
 import mopy.monkey
 import mopy.engine
@@ -20,12 +20,24 @@ def walk_to(x, y):
     example.play(s)
 
 
+def toggle_cursor(x, y):
+    gl = mopy.monkey.engine.data.globals
+    gl.current_action += 1
+    if gl.current_action >= len(gl.actions):
+        gl.current_action = 0
+    if gl.actions[gl.current_action] == -1:
+        gl.current_action = 0
+    example.get('cursor').setAnim(gl.actions[gl.current_action])
+
+
 class ScummRoom(BasicRoom):
     def __init__(self, desc):
         super().__init__(desc)
 
     def load_dynamic_items(self):
+        print('loadin dynamic')
         for r in mopy.monkey.engine.data.r2i.get(self.id, []):
+            print('okk')
             entity = create_dynamic(r)
             item = mopy.monkey.engine.data.items.get(r)
             self.add(entity, item.get('parent', self.default_item))
@@ -52,6 +64,43 @@ def map_room(desc: dict):
     # add dynamic items
     room.load_dynamic_items()
     return room
+
+
+
+
+def sierra_room(desc: dict):
+    gl = mopy.monkey.engine.data.globals
+    room = ScummRoom(desc)
+    room.add_runner(Scheduler())
+
+    # read world size
+    width = desc['width']
+    height = desc['height']
+
+    device_size = mopy.monkey.engine.device_size
+    cam_width = device_size[0]
+    cam_height = device_size[1]
+
+    # add the main node
+    room.default_item = 'main'
+    main = Entity(tag='main')
+    main.camera = OrthoCamera(width, height, gl.sci_viewport[2], gl.sci_viewport[3], gl.sci_viewport, tag='maincam')
+    print('fottimi ' + str(width) +'  ' + str(height) )
+    print('fottimi ' + str(cam_width) +'  ' + str(cam_height) )
+
+    main.add_component(HotSpotManager(lmbclick=walk_to, rmbclick=toggle_cursor))
+    room.add(main)
+
+    a = Sprite(model='01.cursor', tag='cursor')
+    a.add_component(Cursor())
+    a.pos = (0, 0, 5)
+    main.add(a)
+    # add static items
+    room.add_items(desc)
+    # add dynamic items
+    room.load_dynamic_items()
+    return room
+
 
 
 def default_room(desc: dict):
@@ -150,11 +199,13 @@ def walkarea(data):
 
 def bg(data):
     e = Entity()
-    e.model = {
-        'type': 'model.rect',
-        'tex': data['image']
-
-    }
+    if 'image' in data:
+        e.model = {
+            'type': 'model.rect',
+            'tex': data['image']
+        }
+    else:
+        e.model = data['model']
     # auto size = t.get<glm::vec2>("size");
     # auto offset = t.get<glm::vec2>("offset", glm::vec2(0.0f));
     # float width = size[0];

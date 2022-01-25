@@ -1,0 +1,18 @@
+---
+  id: '01'
+  type: scumm.sierra
+  width: 320
+  height: 190
+  items:
+    - type: scumm.bg
+      image: gfx/v01.png
+      pos: [0, 0, -1]
+    - type: scumm.bg
+      model: 01.moat
+      pos: [0, 27, 0]
+    - type: scumm.walkarea
+      id: 0
+      poly: [0,0,320,0,320,190,0,190]
+      depth:
+        type: func.liny
+        values: [0, 1, 190, 0]

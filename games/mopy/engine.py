@@ -16,6 +16,7 @@ def scumm_init(engine):
     mopy.scumm.gl = engine.data.globals
 
     engine.add_room_factory('scumm.room', mopy.factories.scumm.default_room)
+    engine.add_room_factory('scumm.sierra', mopy.factories.scumm.sierra_room)
     engine.add_item_factory('scumm.bg', mopy.factories.scumm.bg)
     engine.add_item_factory('scumm.walkarea', mopy.factories.scumm.walkarea)
     engine.data.items = {}

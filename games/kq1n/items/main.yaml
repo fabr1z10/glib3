@@ -1,0 +1,17 @@
+---
+graham:
+  type: scumm.character
+  model: 01.graham
+  text_color: [255, 255, 255, 255]
+  #speed: 50
+  collision:
+    size: [ 4, 1 ]
+    offset: [ -2, 0 ]
+    flag: 0
+    mask: 1
+    tag: 0
+  pos: [182, 32]
+  room: '01'
+  parent: walkarea_0
+  dir: n
+

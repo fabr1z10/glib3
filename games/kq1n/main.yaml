@@ -1,0 +1,11 @@
+---
+  title: King's Quest
+  type: scumm
+  lang: eng
+  device_size: [320, 200]
+  window_size: [640, 400]
+  start_room: "01"
+  shaders:
+    - color
+    - unlit_textured
+    - text
