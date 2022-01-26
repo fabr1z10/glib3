@@ -10,14 +10,11 @@ from mopy.script import Script
 import example
 from mopy.actions import Walk
 import mopy.scumm as scumm
-from mopy.factories.interface import update_current_action, make_inventory_button,  make_dialogue_button, make_verb_button
+from mopy.factories.interface import *
 from mopy.factories.scumm_item import create_dynamic
 
 
-def walk_to(x, y):
-    s = Script(uid='_main')
-    s.add_action(Walk((x, y), 'player'))
-    example.play(s)
+
 
 
 def toggle_cursor(x, y):
@@ -73,6 +70,14 @@ def sierra_room(desc: dict):
     room = ScummRoom(desc)
     room.add_runner(Scheduler())
 
+    room.add_runner({
+        'type': 'runner.collisionengine',
+        'size': [80, 80],
+        'response': [{'tag1': 1, 'tag2': 2, 'on_enter': on_enter_collision_area, 'on_leave': on_leave_collision_area}]
+    })
+
+
+
     # read world size
     width = desc['width']
     height = desc['height']
@@ -88,7 +93,7 @@ def sierra_room(desc: dict):
     print('fottimi ' + str(width) +'  ' + str(height) )
     print('fottimi ' + str(cam_width) +'  ' + str(cam_height) )
 
-    main.add_component(HotSpotManager(lmbclick=walk_to, rmbclick=toggle_cursor))
+    main.add_component(HotSpotManager(lmbclick=sierra_walk_to, rmbclick=toggle_cursor))
     room.add(main)
 
     a = Sprite(model='01.cursor', tag='cursor')

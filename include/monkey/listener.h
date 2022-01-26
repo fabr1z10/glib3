@@ -20,6 +20,17 @@ protected:
     bool m_enabled;
 };
 
+class LMBCallback : public MouseListener {
+public:
+	LMBCallback(std::function<void()> f);
+	void CursorPosCallback(GLFWwindow*, double, double) override {}
+	void MouseButtonCallback(GLFWwindow*, int, int, int) override;
+	void ScrollCallback(GLFWwindow*, double, double) override {}
+private:
+	std::function<void()> m_f;
+};
+
+
 inline void MouseListener::Enable(bool value) {
     m_enabled = value;
 }

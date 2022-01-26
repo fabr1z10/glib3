@@ -1,8 +1,9 @@
 import mopy
 from mopy.script import Script
-from mopy.actions import Walk, Turn, Say, ChangeRoom
-from mopy.scumm.actionlib import start_dialogue, update_item, open_door, close_door
+from mopy.actions import Walk, Turn, Say, ChangeRoom, Msg
+from mopy.scumm.actionlib import start_dialogue, update_item, open_door, close_door, sierra_enable_controls
 import mopy.scumm.shortcut as sc
+from mopy.entity import TextAlignment
 
 
 def walk_to(item_id):
@@ -53,4 +54,24 @@ def walk_to_door(item_id, door_id, room, pos, dir, parent='walkarea_0'):
         s = walk_and_change_room(item_id, room, pos, dir, parent)
     else:
         s = walk_to(item_id)
+    return s
+
+
+def sierra_msg(text):
+    gl = mopy.scumm.gl #mopy.monkey.engine.data.globals
+    s = Script()
+    s.add_action(sierra_enable_controls(False))
+    s.add_action(Msg(
+        font=gl.msg_font,
+        color=(127, 83, 30, 255),
+        align=TextAlignment.center,
+        text=mopy.monkey.engine.read(text),
+        pos=(gl.sci_viewport[2] * 0.5, gl.sci_viewport[3] * 0.5, 1),
+        inner_texture=gl.msg_inner_texture,
+        border_texture=gl.msg_border_texture,
+        eoc=True,
+        timeout=1000,
+        box=True,
+        padding=(4, 5)))
+    s.add_action(sierra_enable_controls(True))
     return s

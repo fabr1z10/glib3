@@ -3,19 +3,14 @@ import mopy.engine
 from mopy.entity import Entity, Sprite
 from mopy.components import HotSpot, Collider, Follow
 from mopy.shapes import Rect
-from mopy.factories.interface import hover_on, hover_off, run_action
+from mopy.factories.interface import hover_on, hover_off, run_action, run_action_sci
 from mopy.scumm import get_item
 import example
 
 
-
-
-
-
-
-
-
-
+def add_collision_box(entity, desc):
+    size = desc.get('size')
+    entity.add_component(Collider(shape=Rect(size[0], size[1], offset=desc.get('offset', (0, 0))), flag=desc.get('flag'), mask=desc.get('mask'), tag=desc.get('tag'), debug=True))
 
 
 
@@ -60,6 +55,9 @@ def character(key, desc):
                                       onenter=hover_on(key),
                                       onleave=hover_off(key),
                                       onclick=run_action()))
+    cbox = desc.get('collision', None)
+    if cbox:
+        add_collision_box(s, cbox)
     return s
 
 def item(key, desc):
@@ -88,12 +86,43 @@ def item(key, desc):
             onenter=hover_on(key),
             onleave=hover_off(key),
             onclick=run_action()))
+    cbox = desc.get('collision', None)
+    if cbox:
+        add_collision_box(s, cbox)
+
     return s
 
+# item for sierra game. Nothing happens when hovering
+def sitem(key, desc):
+    eng = mopy.monkey.engine
+    data = eng.data
+    cio = desc.get('create_if_owned', False)
+    if (not cio) and key in data.globals.inventory:
+        # item is in inventory. don't create it
+        return None
+    pos = desc.get('pos')
+    model = desc.get('model', None)
+    s = None
+    if model:
+        anim = desc.get('anim', None)
+        s = Sprite(model=model, pos=pos, anim=anim)
+    else:
+        s = Entity(pos=pos)
+    s.tag = key
+    # if a size is provided, add a hotspot
+    size = desc.get('size', None)
+    if size:
+        print('size is ' + str(size))
+        s.add_component(HotSpot(shape=Rect(width=size[0], height=size[1]), onclick=run_action_sci()))
+    cbox = desc.get('collision', None)
+    if cbox:
+        add_collision_box(s, cbox)
 
+    return s
 
 item_maps = {
     'scumm.item': item,
+    'sierra.item': sitem,
     'scumm.character': character
 }
 

@@ -1,6 +1,7 @@
 from mopy.script import Script
 import mopy.engine as engine
 import mopy.monkey as monkey
+from mopy.entity import TextAlignment
 import example
 import random
 import mopy.util as utils
@@ -186,13 +187,22 @@ class RemoveEntity(CallFunc):
 
 
 class Msg:
-    def __init__(self, text: str, font: str, pos: tuple, color: tuple):
+    def __init__(self, text: str, font: str, pos: tuple, color: tuple, eoc=False, timeout=1, outline_color=None, outline=False, box=False, padding = 0,
+                 inner_texture='', border_texture='', align=TextAlignment.top_left):
         self.type = 'action.msg'
         self.font = font
         self.text = text
         self.pos = pos
         self.color = color
-
+        self.outline_color = outline_color
+        self.end_on_click = eoc
+        self.time = timeout
+        self.outline = outline
+        self.box = box
+        self.padding = padding
+        self.inner_texture = inner_texture
+        self.border_texture = border_texture
+        self.align = align
 
 class Blink:
     def __init__(self, duration: float, blink_duration: float, entity_id=None, tag=None):

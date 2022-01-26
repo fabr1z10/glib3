@@ -5,6 +5,7 @@
 #include <monkey/enums.h>
 #include <string>
 #include <monkey/camera.h>
+#include <monkey/listener.h>
 
 class Entity;
 
@@ -38,6 +39,7 @@ public:
     void Run (float dt) override;
     void NotifySuspend() override;
 private:
+	std::shared_ptr<Entity> makeBorder(float, float, float, float, float, float);
     TextAlignment m_align;
     float m_elapsedTime;
     float m_size;
@@ -51,4 +53,13 @@ private:
     std::string m_font;
     std::shared_ptr<Entity> m_generatedEntity;
     OrthographicCamera* m_mainCam;
+    bool m_endOnClick;
+    std::shared_ptr<MouseListener> m_mouseListener;
+    bool m_outline;
+    // box stuff
+    bool m_box;
+    glm::vec2 m_padding;
+    std::string m_innerTexture;
+    std::string m_borderTexture;
+    float m_maxWidth;
 };

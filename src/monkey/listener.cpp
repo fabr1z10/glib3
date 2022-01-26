@@ -10,6 +10,14 @@ MouseListener::~MouseListener() {
     Engine::get().UnregisterToMouseEvent(this);
 }
 
+LMBCallback::LMBCallback(std::function<void()> f) : MouseListener(), m_f(f) {}
+
+void LMBCallback::MouseButtonCallback(GLFWwindow *, int button, int action, int) {
+	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
+		m_f();
+	}
+}
+
 KeyboardListener::KeyboardListener() {
     Engine::get().RegisterToKeyboardEvent(this);
 }

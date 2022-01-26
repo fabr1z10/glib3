@@ -1,0 +1,29 @@
+---
+moat:
+  type: sierra.item
+  pos: [0, 30, 0]
+  room: '01'
+  size: [320, 15]
+portcullis:
+  type: sierra.item
+  pos: [127, 116, 0]
+  room: '01'
+  size: [63, 72]
+urns:
+  type: sierra.item
+  pos: [19,92,0]
+  room: '01'
+  size: [29, 15]
+shade:
+  type: sierra.item
+  pos: [79, 95]
+  room: '01'
+  on_enter: add_shade
+  on_leave: rm_shade
+  collision:
+    size: [155, 50]
+    offset: [0, 0]
+    flag: 2
+    mask: 1
+    tag: 2
+

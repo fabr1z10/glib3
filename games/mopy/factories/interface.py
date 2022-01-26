@@ -3,8 +3,33 @@ import example
 from mopy.entity import Text, TextAlignment
 from mopy.components import HotSpot
 from mopy.script import Script
-from mopy.actions import RunScript
+from mopy.actions import RunScript, Walk
 from mopy.scumm.actionlib import enable_controls, start_dialogue
+
+
+def walk_to(x, y):
+    s = Script(uid='_main')
+    s.add_action(Walk((x, y), 'player'))
+    example.play(s)
+
+
+def sierra_walk_to(x, y):
+    gl = mopy.monkey.engine.data.globals
+    if gl.current_action == 0:
+        s = Script(uid='_main')
+        s.add_action(Walk((x, y), 'player'))
+        example.play(s)
+    else:
+        scripts = mopy.monkey.engine.data.scripts
+        action = gl.actions[gl.current_action]
+        f1 = action + '_' + mopy.monkey.engine.room
+        fc = getattr(scripts, f1, None)
+        if fc is None:
+            print('cazzone!!! non cè ' + f1)
+        else:
+            example.play(fc(0, 0))
+
+
 
 def change_color(color):
     def f(e: example.Wrap1):
@@ -135,6 +160,25 @@ def exec_script(s):
         example.play(s1)
     return f
 
+
+def run_action_sci():
+    def f(x, y, item):
+        gl = mopy.monkey.engine.data.globals
+        if gl.current_action == 0:
+            walk_to(x, y)
+        else:
+            scripts = mopy.monkey.engine.data.scripts
+            # check if I have a script
+            action = gl.actions[gl.current_action]
+            f1 = action + '_' + item.tag.replace('.', '_')
+            fc = getattr(scripts, f1, None)
+            if fc is None:
+                print ('cazzone!!! non cè ' + f1)
+            else:
+                example.play(fc(0,0))
+    return f
+
+
 def run_action():
     def f(x, y, item):
         scripts = mopy.monkey.engine.data.scripts
@@ -210,3 +254,19 @@ def make_dialogue_button(dialogue_line):
     e.add_component(HotSpot(shape=None, onenter=change_color(gl.Colors.verb_selected), onleave=change_color(gl.Colors.verb_unselected),
                             onclick=exec_script(dialogue_line)))
     return e
+
+
+def on_enter_collision_area(player, entity, x, y):
+    item = mopy.monkey.engine.data.items[entity.tag]
+    on_enter = item.get('on_enter', None)
+    if on_enter:
+        f = getattr(mopy.monkey.engine.data.scripts, on_enter)
+        f(player, entity, x, y)
+
+
+def on_leave_collision_area(player, entity, x, y):
+    item = mopy.monkey.engine.data.items[entity.tag]
+    on_leave = item.get('on_leave', None)
+    if on_leave:
+        f = getattr(mopy.monkey.engine.data.scripts, on_leave)
+        f(player, entity, x, y)

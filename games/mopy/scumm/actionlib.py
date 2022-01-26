@@ -41,6 +41,12 @@ def _enable_controls(value):
     return f
 
 
+def _sierra_enable_controls(value):
+    def f():
+        example.get('main').enableControls(value)
+    return f
+
+
 def log(msg):
     def _print():
         print(msg)
@@ -50,6 +56,8 @@ def log(msg):
 def enable_controls(value):
     return _helper(_enable_controls(value))
 
+def sierra_enable_controls(value):
+    return _helper(_sierra_enable_controls(value))
 
 def _display_dialogue(did, dialogue, start_node):
     def f():
