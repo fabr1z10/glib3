@@ -19,6 +19,7 @@ public:
                                  float repx = 1.0f, float repy = 1.0f);
     static std::shared_ptr<Model> polygon(const ITab&);
 	static std::shared_ptr<Model> prism(const ITab&);
+	static std::shared_ptr<Model> shape(const ITab&);
 
 	static std::shared_ptr<Model> _rect(const ITab&);
     static std::shared_ptr<Model> rect(float width, float height, glm::vec2 offset,

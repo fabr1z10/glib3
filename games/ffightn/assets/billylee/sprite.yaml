@@ -1,0 +1,150 @@
+---
+main:
+  sheet: 'assets/billylee/billylee.png'
+  type: 'asset.boxed'
+  animations:
+    idle:
+      loop: True
+      loop_frame: 0
+      box: 0
+      elements:
+        -
+          ticks: 1
+          quads: [[16,16,20,63,13,0]]
+    idle_up:
+      loop: True
+      loop_frame: 0
+      box: 0
+      elements:
+        -
+          ticks: 4
+          quads: [[158,98,23,60,12,0]]
+    walk:
+      loop: True
+      loop_frame: 0
+      elements:
+        -
+          ticks: 4
+          quads: [[16,95,20,63,13,0]]
+          box: 0
+        -
+          ticks: 4
+          quads: [[44,96,24,62,13,0]]
+          box: 0
+        -
+          ticks: 3
+          quads: [[76, 95, 24, 63, 13, 0]]
+          box: 0
+        -
+          ticks: 4
+          quads: [[108,96,18,62,11,0]]
+          box: 0
+    walk_up:
+      loop: True
+      loop_frame: 0
+      elements:
+        -
+          ticks: 4
+          quads: [[158,98,23,60,12,0]]
+          box: 0
+        -
+          ticks: 4
+          quads: [[189,97,26,61,13,0]]
+          box: 0
+        -
+          ticks: 3
+          quads: [[223,97,23,61,13,0]]
+          box: 0
+        -
+          ticks: 4
+          quads: [[257,98,22,60,11,0]]
+          box: 0
+
+    jump_up:
+      loop: False
+      loop_frame: 0
+      elements:
+        -
+          ticks: 2
+          quads: [[16,435,28,64,18,0]]
+          box: 3
+        -
+          ticks: 10
+          quads: [[52,460,37,39,17,0]]
+          box: 3
+    jump_down:
+      loop: False
+      loop_frame: 0
+      elements:
+        -
+          ticks: 10
+          quads: [[52,460,37,39,17,0]]
+          box: 3
+    climb:
+      loop: True
+      box: 0
+      elements:
+        -
+          ticks: 10
+          quads: [[16,174,22,62,10,0]]
+        -
+          ticks: 10
+          quads: [[46,175,24,61,12,0]]
+        -
+          ticks: 10
+          quads: [[78,174,24,62,14,0]]
+        -
+          ticks: 10
+          quads: [[110,175,21,61,11,0]]
+    punch1:
+      box: 0
+      elements:
+        -
+          ticks: 4
+          quads: [[16,280,29,60,23,0]]
+        -
+          ticks: 4
+          quads: [[53,281,46,59,26,0]]
+          attack: 1
+        -
+          ticks: 4
+          quads: [[107,281,27,59,20,0]]
+    punch2:
+      box: 0
+      elements:
+        -
+          ticks: 4
+          quads: [[166,280,27,60,24,0]]
+        -
+          ticks: 4
+          quads: [[201,281,46,59,27,0]]
+          attack: 1
+        -
+          ticks: 4
+          quads: [[255,282,29,59,25,0]]
+          attack: 1
+    punch3:  # uppercut
+      box: 0
+      elements:
+        -
+          ticks: 4
+          quads: [[441,283,25,57,15,0]]
+        -
+          ticks: 4
+          quads: [[474,280,35,60,23,0]]
+          attack: 1
+        -
+          ticks: 4
+          quads: [[517,269,30,71,19,0]]
+          attack: 1
+    hit:
+      loop: false
+      box: 0
+      elements:
+        - ticks: 4
+          quads: [ [ 16,849,23,64,11,0] ]
+        - ticks: 4
+          quads: [ [71,851,28,62,16,0] ]
+  boxes:
+    - [-11,0,4,60]
+    - [10,44,22,52]

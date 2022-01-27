@@ -1,0 +1,108 @@
+---
+main:
+  sheet: 'assets/jeff/jeff.png'
+  type: 'asset.boxed'
+  animations:
+    idle:
+      loop: True
+      loop_frame: 0
+      box: 0
+      elements:
+        -
+          ticks: 1
+          quads: [[8,44,24,63,13,0]]
+    idle_up:
+      loop: True
+      loop_frame: 0
+      box: 0
+      elements:
+        -
+          ticks: 4
+          quads: [[8,44,24,63,13,0]]
+    walk:
+      loop: True
+      loop_frame: 0
+      box: 0
+      elements:
+        -
+          ticks: 4
+          quads: [[72,44,24,63,13,0]]
+        -
+          ticks: 4
+          quads: [[104,45,18,62,11,0]]
+        -
+          ticks: 3
+          quads: [[130, 44, 20, 63, 13, 0]]
+        -
+          ticks: 4
+          quads: [[158,45,24,62,13,0]]
+    walk_up:
+      loop: True
+      loop_frame: 0
+      box: 0
+      elements:
+        -
+          ticks: 4
+          quads: [[222,47,23,60,12,0]]
+        -
+          ticks: 4
+          quads: [[253,46,26,61,13,0]]
+        -
+          ticks: 3
+          quads: [[287,46,26,61,13,0]]
+        -
+          ticks: 4
+          quads: [[321,47,22,60,11,0]]
+
+    jump_up:
+      loop: False
+      loop_frame: 0
+      box: 0
+      elements:
+        -
+          ticks: 2
+          quads: [[8,314,28,64,18,0]]
+        -
+          ticks: 10
+          quads: [[44,338,37,40,17,0]]
+    jump_down:
+      loop: False
+      loop_frame: 0
+      box: 0
+      elements:
+        -
+          ticks: 10
+          quads: [[44,338,37,40,17,0]]
+    hit:
+      elements:
+        - ticks: 4
+          quads: [ [ 8,584,28,62,15,0] ]
+    dead_up:
+      elements:
+        - ticks: 4
+          quads: [ [ 200,602,46,44, 27, 0 ] ]
+    dead_down:
+      elements:
+        - ticks: 4
+          quads: [ [ 254,615,47,31,24, 0] ]
+    dead_lie:
+      elements:
+        - ticks: 4
+          quads: [ [309,617,47,29,22, 10] ]
+    punch:
+      loop: false
+      box: 0
+      elements:
+        -
+          ticks: 4
+          quads: [[8,143,28,59,23,0]]
+        -
+          ticks: 4
+          quads: [[44,143,46,59,24,0]]
+        -
+          ticks: 4
+          quads: [[98,142,27,60,17,0]]
+          attack: 1
+  boxes:
+    - [-11,0,4,60]
+    - [10,44,22,52]

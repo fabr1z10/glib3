@@ -4,6 +4,8 @@
 #include <monkey/math/util.h>
 #include <monkey/box2dworld.h>
 #include <monkey/skeletalmesh.h>
+#include <monkey/scenefactory.h>
+#include <monkey/meshfactory.h>
 
 std::shared_ptr<IMesh> ModelFactory::b2Poly(b2PolygonShape &shape, glm::vec4 color) {
     auto world = Engine::get().GetRunner<Box2DWorld>();
@@ -131,6 +133,17 @@ std::shared_ptr<Model> ModelFactory::_rect(const ITab & t) {
     return rect(width, height, offset, rtype, color, tex, repeat);
 }
 
+
+std::shared_ptr<Model> ModelFactory::shape(const ITab & t) {
+	auto factory = Engine::get().GetSceneFactory();
+	auto shapeDesc = t["shape"];
+	auto color = t.get<glm::vec4>("color", glm::vec4(1.0f));
+	auto shape = factory->make2<IShape>(*shapeDesc.get());
+	MeshFactory m;
+	auto pino = m.createWireframe(shape.get(), color);
+	std::cout << "FAIGA";
+	exit(1);
+}
 
 std::shared_ptr<Model> ModelFactory::prism(const ITab & t)  {
 	std::vector<Vertex3DN> vertices;

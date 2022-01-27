@@ -1,0 +1,13 @@
+---
+  title: Final Fight
+  lang: eng
+  device_size: [320, 200]
+  window_size: [640, 400]
+  start_room: 'test2'
+  shaders:
+    - color
+    - unlit_textured
+    - text
+#  fonts:
+#    - id: main
+#      file: './fonts/prstartk.ttf'

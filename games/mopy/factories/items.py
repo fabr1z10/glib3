@@ -1,10 +1,11 @@
 from mopy.entity import Entity, Text, TextAlignment
-from mopy.components import Gfx, Collider, SmartCollider, SkeletalCollider, ShadowRenderer
+from mopy.components import Gfx, Collider, SmartCollider, SkeletalCollider, ShadowRenderer, ShapeGfxColor
 import mopy.monkey as monkey
 import mopy.shapes3d as sh3d
 import mopy.shapes as sh
 from mopy.util import tiles_to_world
-
+import copy
+import math
 
 def model3d(**kwargs):
     def f(*args):
@@ -107,11 +108,13 @@ def line_platform(ciao):
 
 
 def common3D(ciao):
+    dt = monkey.engine.data.globals
+
     e = Entity()
     e.tag = ciao.get('tag', None)
     e.scale = ciao.get('scale', 1)
     e.model = ciao.get('model', None)
-    size = ciao.get('size')
+    size = ciao.get('size', dt.default_size)
     energy = ciao.get('energy', 1)
     show_boxes = getattr(monkey.engine.data.globals, 'show_boxes', False)
 
@@ -253,22 +256,60 @@ def make_death_sequence(model, gravity, speed):
         })
     return dseq
 
-def player3D(ciao):
+def wa3d(desc):
+    outline = desc.get('poly')
+    depth = desc.get('depth')
+    fy = desc.get('fy', 0)
+    if fy > 0:
+        outline = [fy - outline[i] if i % 2 == 1 else outline[i] for i in range(0, len(outline))]
+        print(outline)
+    height = desc.get('height', 1.0)
+    depth_y = depth * math.sqrt(2.0)
+    y0 = outline[1] - depth - height
+    x0 = outline[0]
+    z0 = -depth_y
+    pos = (x0, y0, z0)
+    top = (x0, y0 + height, z0)
+    #vars.walk_areas.append (WalkAreaInfo(x0, y0 + height, z0, fy, outline[1]))
+    color = desc.get('color', [1, 1, 1, 1])
+    oline = []
+    a0 = outline[1]
+    for i in range(0, len(outline), 2):
+        oline.append(outline[i] - x0)
+        oline.append((outline[i+1] - a0) * math.sqrt(2.0))
+    print(oline)
+    e = Entity(pos=pos)
+    shape = sh3d.Prism(shape=sh.Poly(outline=oline), height=height, walls=desc.get('walls',[]))
+    print(shape)
+    e.model = {'type': 'model.shape', 'shape': shape, 'color': color}
+    #e.add_component(ShapeGfxColor(shape=shape, color=color))
     dt = monkey.engine.data.globals
-    is_sprite = isinstance(ciao['model'], str)
+    e.add_component(Collider(shape=shape, flag=dt.CollisionFlags.platform, mask=0, tag=dt.CollisionTags.platform))
+    return e
+
+
+
+def player3D(ciao):
+    # get the character id
+    id = ciao.get('id')
+    if not id:
+        print ('** unknown character: ' + str(id))
+        exit(1)
+    print (' ** reading character: ' + str(id))
+    t = copy.deepcopy(monkey.engine.get_asset(id))
+    model_desc = t.get('model')
+    dt = monkey.engine.data.globals
+    is_sprite = isinstance(model_desc, str)
     print ('is sprite: '  + str(is_sprite))
-    e = common3D(ciao)
-    max_speed = ciao.get('max_speed')
-    time_acc = ciao.get('time_acc')
-    jump_height = ciao.get('jump_height')
-    time_to_jump_apex = ciao.get('time_to_jump_apex')
-    attacks = ciao.get('attacks', None)
-    jattacks = ciao.get('jump_attacks', None)
+
+    e = common3D(t)
+    max_speed = t.get('max_speed', dt.default_speed)
+    time_acc = t.get('time_acc', dt.default_time_acc)
+    jump_height = t.get('jump_height', dt.default_jump_height)
+    time_to_jump_apex = t.get('time_to_jump_apex', dt.default_time_to_jump_apex)
+    attacks = t.get('attacks', None)
+    jattacks = t.get('jump_attacks', None)
     n_attacks = len(attacks) - 1 if attacks else 0
-
-
-
-
     gravity = (2.0 * jump_height) / (time_to_jump_apex * time_to_jump_apex)
     jump_speed = abs(gravity) * time_to_jump_apex
     e.components.append({'type': 'components.keyinput'})
@@ -315,7 +356,7 @@ def player3D(ciao):
     states = [walk_state, hit_state, jump_state]
 
 
-    states.extend(make_death_sequence(ciao['model'], gravity, max_speed))
+    states.extend(make_death_sequence(model_desc, gravity, max_speed))
 
 
     state_machine = {

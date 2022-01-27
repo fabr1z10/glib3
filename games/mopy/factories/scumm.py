@@ -12,7 +12,7 @@ from mopy.actions import Walk
 import mopy.scumm as scumm
 from mopy.factories.interface import *
 from mopy.factories.scumm_item import create_dynamic
-
+import math
 
 
 
@@ -211,6 +211,19 @@ def bg(data):
         }
     else:
         e.model = data['model']
+    return e
+
+
+
+def bg_ps3D(data):
+    e = bg(data)
+    e.auto_pos = True
+    e.pos = data['pos']
+    e.pos[1] = e.pos[2] / math.sqrt(2)
+    return e
+
+
+
     # auto size = t.get<glm::vec2>("size");
     # auto offset = t.get<glm::vec2>("offset", glm::vec2(0.0f));
     # float width = size[0];

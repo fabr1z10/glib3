@@ -1,0 +1,92 @@
+---
+larry:
+  sheet: 'assets/sprites/larry.png'
+  thickness: 20
+  type: model.boxed
+  boxes:
+    - [-8, 0, 8, 48]
+    - [0,20,20,30]
+  animations:
+    idle:
+      loop: true
+      box: 0
+      frames:
+        - ticks: 4
+          quads: [4,4,18,47,-12,0]
+    hit:
+      loop: true
+      box: 0
+      frames:
+        - ticks: 4
+          quads: [4,4,18,47,-12,0]
+    walk:
+      box: 0
+      frames:
+        - ticks: 1
+          quads: [24, 6, 21, 45, -12, 0]
+        - ticks: 1
+          quads: [48, 6, 17, 45, -12, 0]
+        - ticks: 1
+          quads: [70, 6, 19, 45, -12, 0]
+        - ticks: 1
+          quads: [92, 7, 21, 44, -15, 0]
+        - ticks: 1
+          quads: [118, 6, 17, 45, -11, 0]
+        - ticks: 1
+          quads: [140, 6, 17, 45, -12, 0]
+        - ticks: 1
+          quads: [162, 6, 19, 45, -12, 0]
+        - ticks: 1
+          quads: [186, 7, 23, 44, -14, 0]
+    jumpup:
+      box: 0
+      frames:
+        - ticks: 1
+          quads: [4,4,18,47,-12,0]
+    jumpdown:
+      box: 0
+      frames:
+        - ticks: 1
+          quads: [4,4,18,47,-12,0]
+    attack_0:
+      box: 0
+      frames:
+        - ticks: 4
+          quads: [33,461,18,47,-12,0]
+        - ticks: 8
+          quads: [3,461,28,47,-12,0]
+          attack: 1
+#    attack2:
+#      box: 0
+#      elements:
+#        -
+#          ticks: 1
+#          quads: [[4,4,18,47,12,0]]
+    dead_0:
+      loop: false
+      frames:
+        - ticks: 3
+          quads: [12,76,26,47,-23,0]
+        - ticks: 3
+          quads: [47,76,37,47,-34,0]
+        - ticks: 3
+          quads: [96,72,49,49,-46,0]
+        - ticks: 3
+          quads: [161,76,58,45,-56,-1]
+        - ticks: 3
+          quads: [177,129,42,11,-39,0]
+    dead_1:
+      loop: false
+      frames:
+        - ticks: 4
+          quads: [12,283,26,43,-15,0]
+        - ticks: 4
+          quads: [73,284,37,43,-20,0]
+        - ticks: 4
+          quads: [122,287,54,40,-25,0]
+        - ticks: 4
+          quads: [181,286,67,42,-32,0]
+        - ticks: 4
+          quads: [11,342,85,42,-40,0]
+        - ticks: 4
+          quads: [17,391,62,6,-27,0]

@@ -1,0 +1,143 @@
+sk1:
+  #size: [50, 100, 10]
+  scale: 0.007
+  attacks:
+    - prob: 10
+      in_range: True
+    - prob: 90
+  energy: 3
+  model:
+    template: b
+    args:
+      #torso: meshes.g1.torso
+      torso: meshes.ex1.ex1.torso
+      #leg_upper: meshes.g1.legu
+      leg_upper: meshes.ex1.ex1.legu
+      #leg_lower: meshes.g1.legl
+      leg_lower: meshes.ex1.ex1.legl
+      #foot: meshes.g1.foot
+      anim_idle: animations.anim.idle
+      anim_walk: animations.anim.walk
+      anim_attack_0: animations.anim.kick
+sk2:
+  #size: [50, 100, 10]
+  scale: 0.007
+  attacks:
+    - prob: 10
+      in_range: True
+    - prob: 90
+  energy: 3
+  model:
+    template: a
+    args:
+      torso: meshes.g1.torso
+      leg_upper: meshes.g1.legu
+      leg_lower: meshes.g1.legl
+      foot: meshes.g1.foot
+      anim_idle: animations.anim.idle
+      anim_walk: animations.anim.walk
+      anim_attack_0: animations.anim.kick
+larry:
+  attacks:
+    - prob: 10
+    - prob: 1000
+  model: sprites.larry.larry
+  energy: 2
+  scale: 1
+cody:
+  scale: 0.05
+  attacks:
+    - prob: 10
+    - prob: 10
+    - prob: 10
+    - prob: 90
+  jump_attacks:
+    - anim: attack_3
+    - anim: attack_4
+  model: sprites.cody.cody
+rick:
+  dead_type: 1
+  scale: 0.05
+  max_speed: 1
+  energy: 5
+  attacks:
+    - prob: 10
+    - prob: 300
+  model: sprites.64thrick.rick
+hag0:
+  scale: 0.05
+  max_speed: 1
+  energy: 5
+  attacks:
+    - prob: 10
+    - prob: 10
+    - prob: 10
+      hard: True
+    - prob: 10
+    - prob: 10
+      hard: True
+    - prob: 200
+  model: sprites.haggar0.haggar0
+
+cody2:
+  dead_type: 1
+  scale: 0.05
+  max_speed: 1
+  energy: 5
+  attacks:
+    - prob: 10
+    - prob: 10
+    - prob: 10
+      hard: True
+    - prob: 200
+  jump_attacks:
+    - anim: attack_3
+    - anim: attack_4
+  model: sprites.cody.cody
+char_default_slow:
+  #size: [50, 100, 10]
+  scale: 0.01
+  attacks:
+    - prob: 10
+      in_range: True
+    - prob: 300
+  max_speed: 5
+  energy: 2
+  model:
+    template: a
+    args:
+      torso: mesh.g1.torso
+      leg_upper: mesh.g1.legu
+      leg_lower: mesh.g1.legl
+      foot: mesh.g1.foot
+      anim_idle: anim.idle
+      anim_walk: anim.walk
+      anim_hit: anim.idle
+char_default_2:
+  size: [50, 100, 10]
+  scale: 0.01
+  model:
+    template: a
+    args:
+      torso: mesh.g1.torso
+      leg_upper: mesh.g1.legu
+      leg_lower: mesh.g1.legl
+      foot: mesh.g1.foot
+      anim_idle: anim.idle.10
+      anim_walk: anim.walk.10
+      shoe: mesh.filadisr.root
+      shoe_scale: 0.2
+char_default_3:
+  size: [50, 100, 10]
+  scale: 0.01
+  model:
+    template: a
+    args:
+      torso: mesh.g1.torso
+      leg_upper: mesh.g1.legu
+      leg_lower: mesh.g1.legl
+      foot: mesh.g1.foot
+      anim_idle: anim.idle.10
+      anim_walk: anim.walk.10
+      shoe: mesh.combat.root
+      shoe_scale: 0.2
