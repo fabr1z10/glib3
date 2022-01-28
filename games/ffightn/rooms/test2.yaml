@@ -2,27 +2,34 @@
   type: 3d
   id: 'test'
   label: 'test'
-  width: 256
-  height: 240
+  width: 320
+  height: 200
   scale: 1.0
   time: 300
-  world_width: 5216
-  world_height: 736
   max_enemies: 1
   prob_new_enemy: 0.1
   enemies_to_kill: 10
   items:
+    - type:  mopy.bg_pseudo_3D
+      model: 01.moat
+      pos: [0, 27, -100]
     - type: mopy.bg_pseudo_3D
       image: gfx/v01.png
       pos: [0, 0, -100]
+    - type: mopy.bg_pseudo_3D
+      image: gfx/v01a.png
+      pos: [0, 0, 1]
+    - type: mopy.bg_pseudo_3D
+      image: gfx/v01b.png
+      pos: [251, 0, 1]
     - type: _player3D
       id: characters.larry
       pos: [2, 2, -2]
     - type: mopy.walk_pseudo_3D
-      poly: [0, 0, 320, 0, 320, 10, 0, 10]
+      poly: [0, 190, 320,190,320,160,0,160]
+      walls: [0,1,2,3]
       depth: 0
-      fy: 0
-
+      fy: 190
 
 #    - type: mopy.bg
 #      image: assets/ddragon1.png

@@ -101,6 +101,7 @@ class Engine:
         self.add_item_factory('_fps_counter', mopy.factories.items.fps_counter)
         self.add_item_factory('_player2D', mopy.factories.items.player2D)
         self.add_item_factory('_player3D', mopy.factories.items.player3D)
+        self.add_item_factory('_npc3D', mopy.factories.items.foe3D)
         self.add_item_factory('_rect', mopy.factories.items.rect_platform)
         self.add_item_factory('_line', mopy.factories.items.line_platform)
         self.add_item_factory('_poly', mopy.factories.items.poly_platform)
@@ -110,6 +111,10 @@ class Engine:
         self.add_item_factory('mopy.bg', mopy.factories.scumm.bg)
         self.add_item_factory('mopy.bg_pseudo_3D', mopy.factories.scumm.bg_ps3D)
         self.add_item_factory('mopy.walk_pseudo_3D', mopy.factories.items.wa3d)
+
+
+    def ciao(self, p):
+        print ('sucam il cazzone !! ' + str(p))
 
     @staticmethod
     def open_data_file(filename):
@@ -162,7 +167,7 @@ class Engine:
                     print('Unable to find factory for room type: ' + rt)
                     exit(1)
                 f = factory(room)
-                return factory(room)
+                return f
         except EnvironmentError as error:
             print(error)
             exit(1)
@@ -185,6 +190,7 @@ class Engine:
                 if c == '@':
                     return value[1:]
                 else:
+                    print ('STRONZO MERDA! ' + value)
                     # get a variable
                     cc = self.data
                     for b in value[1:].split('/'):
@@ -193,6 +199,7 @@ class Engine:
                     if callable(cc):
                         return cc()
                     else:
+                        print ('RITORNO ' + str(cc))
                         return cc
             elif value[0] == '$':
                 c = value[1]

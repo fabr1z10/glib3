@@ -30,7 +30,9 @@ class BasicRoom(Room):
                     pos = positions[ip:ip+3]
                     e = factory(entity_desc)
                     if not e.auto_pos:
+                        print('froci')
                         e.pos = tiles_to_world(pos, self.tile_size)
+                    print('cazzo! ' + str(e.pos))
                     self.add(e, parent)
 
     def __init__(self, desc):

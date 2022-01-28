@@ -140,15 +140,16 @@ def common3D(ciao):
 
 
 def foe3D(ciao):
+    t = get_char_desc(ciao)
+    model_desc = t.get('model')
     dt = monkey.engine.data.globals
-    is_sprite = isinstance(ciao['model'], str)
-    e = common3D(ciao)
-    #dead_type = ciao.get('dead_type', 0)
-    max_speed = ciao.get('max_speed')
-    time_acc = ciao.get('time_acc')
-    jump_height = ciao.get('jump_height')
-    time_to_jump_apex = ciao.get('time_to_jump_apex')
-    attacks = ciao.get('attacks', None)
+    is_sprite = isinstance(model_desc, str)
+    e = common3D(t)
+    max_speed = t.get('max_speed', dt.default_speed)
+    time_acc = t.get('time_acc', dt.default_time_acc)
+    jump_height = t.get('jump_height', dt.default_jump_height)
+    time_to_jump_apex = t.get('time_to_jump_apex', dt.default_time_to_jump_apex)
+    attacks = t.get('attacks', None)
     n_attacks = len(attacks) - 1 if attacks else 0
 
     gravity = (2.0 * jump_height) / (time_to_jump_apex * time_to_jump_apex)
@@ -175,7 +176,7 @@ def foe3D(ciao):
     }
 
     states = [walk_state, hit_state]
-    states.extend(make_death_sequence(ciao['model'], gravity, max_speed))
+    states.extend(make_death_sequence(model_desc, gravity, max_speed))
 
     state_machine = {
         'type': 'components.state_machine',
@@ -273,12 +274,14 @@ def wa3d(desc):
     #vars.walk_areas.append (WalkAreaInfo(x0, y0 + height, z0, fy, outline[1]))
     color = desc.get('color', [1, 1, 1, 1])
     oline = []
-    a0 = outline[1]
+    a0 = 0 #outline[1]
     for i in range(0, len(outline), 2):
         oline.append(outline[i] - x0)
         oline.append((outline[i+1] - a0) * math.sqrt(2.0))
     print(oline)
+    pos=(0,0,0)
     e = Entity(pos=pos)
+    e.auto_pos= True
     shape = sh3d.Prism(shape=sh.Poly(outline=oline), height=height, walls=desc.get('walls',[]))
     print(shape)
     e.model = {'type': 'model.shape', 'shape': shape, 'color': color}
@@ -289,8 +292,7 @@ def wa3d(desc):
 
 
 
-def player3D(ciao):
-    # get the character id
+def get_char_desc(ciao):
     id = ciao.get('id')
     if not id:
         print ('** unknown character: ' + str(id))
@@ -301,8 +303,15 @@ def player3D(ciao):
     dt = monkey.engine.data.globals
     is_sprite = isinstance(model_desc, str)
     print ('is sprite: '  + str(is_sprite))
+    return t
 
+def player3D(ciao):
+    t = get_char_desc(ciao)
+    model_desc = t.get('model')
+    dt = monkey.engine.data.globals
+    is_sprite = isinstance(model_desc, str)
     e = common3D(t)
+    e.tag = 'player'
     max_speed = t.get('max_speed', dt.default_speed)
     time_acc = t.get('time_acc', dt.default_time_acc)
     jump_height = t.get('jump_height', dt.default_jump_height)
@@ -313,12 +322,12 @@ def player3D(ciao):
     gravity = (2.0 * jump_height) / (time_to_jump_apex * time_to_jump_apex)
     jump_speed = abs(gravity) * time_to_jump_apex
     e.components.append({'type': 'components.keyinput'})
-    e.components.append({
-        'type': 'components.follow',
-        'cam': 'maincam',
-        'relativepos': [0, 5, 20],
-        'up': [0, 1, 0]
-    })
+    # e.components.append({
+    #     'type': 'components.follow',
+    #     'cam': 'maincam',
+    #     'relativepos': [0, 5, 20],
+    #     'up': [0, 1, 0]
+    # })
 
     walk_state = {
         'id': 'walk',

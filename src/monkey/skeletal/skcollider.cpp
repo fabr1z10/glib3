@@ -324,7 +324,8 @@ void SkCollider::Start() {
             }
         }
     }
-    m_attackDistance = 0.5f * (minMaxAttackDist + maxMinAttackDist) * m_entity->GetScale();
+    //m_attackDistance = 0.5f * (minMaxAttackDist + maxMinAttackDist) * m_entity->GetScale();
+    m_attackDistance= glm::vec2(0.0f);
 
     mesh->Init(vertices, indices);
     debugModel->addMesh(mesh);
@@ -542,6 +543,6 @@ std::type_index SkCollider::GetType() {
     return std::type_index(typeid(ICollider));
 }
 
-float SkCollider::getAttackDistance() const {
+glm::vec2 SkCollider::getAttackDistance() const {
     return m_attackDistance;
 }

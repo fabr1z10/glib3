@@ -32,7 +32,7 @@ public:
     Event<SimpleCollider*> onShapeChanged;
     void SetEnabled (bool);
     std::type_index GetType() override;
-    float getAttackDistance() const override;
+    glm::vec2 getAttackDistance() const override;
 
 protected:
 

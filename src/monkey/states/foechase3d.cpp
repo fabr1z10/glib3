@@ -45,7 +45,8 @@ void FoeChase3D::AttachStateMachine(StateMachine * sm) {
 //
 void FoeChase3D::Init(const ITab& d) {
 	float scale = m_entity->GetScale();
-    m_attackDistance = scale * m_entity->GetComponent<ICollider>()->getAttackDistance();
+    m_attackRange = scale * m_entity->GetComponent<ICollider>()->getAttackDistance();
+    m_attackDistance = 0.5f * (m_attackRange[0] + m_attackRange[1]);
     // loop through
 
 //	if (d.has("left")) {
@@ -93,6 +94,7 @@ void FoeChase3D::Run(double dt) {
 //
 	auto targetPos = m_target->GetPosition();
 	auto entityPos = m_entity->GetPosition();
+
 	float x0 = targetPos.x - m_attackDistance;
 	float x1 = targetPos.x + m_attackDistance;
 	bool rightOfPlayer = entityPos.x > targetPos.x;

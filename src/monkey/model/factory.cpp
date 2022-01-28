@@ -141,8 +141,7 @@ std::shared_ptr<Model> ModelFactory::shape(const ITab & t) {
 	auto shape = factory->make2<IShape>(*shapeDesc.get());
 	MeshFactory m;
 	auto pino = m.createWireframe(shape.get(), color);
-	std::cout << "FAIGA";
-	exit(1);
+	return pino;
 }
 
 std::shared_ptr<Model> ModelFactory::prism(const ITab & t)  {

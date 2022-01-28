@@ -8,6 +8,7 @@ from mopy.camera import Camera25
 
 def ciao(desc):
     r = PlatformerRoom3D(desc)
+
     r.add_items(desc)
     return r
 

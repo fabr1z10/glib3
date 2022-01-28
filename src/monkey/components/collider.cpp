@@ -35,7 +35,7 @@ void SimpleCollider::Start() {
 SimpleCollider::~SimpleCollider() {
 }
 
-float SimpleCollider::getAttackDistance() const {
+glm::vec2 SimpleCollider::getAttackDistance() const {
     throw;
 }
 

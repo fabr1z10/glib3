@@ -67,7 +67,7 @@ public:
     //void computeAttackBoxes();
 //    std::shared_ptr<IShape> getBox(const std::string& anim, float t, const std::vector<PointLocator>& pts,
 //                                  const std::vector<glm::vec2>& fixedPoints = std::vector<glm::vec2>());
-    float getAttackDistance() const override;
+	glm::vec2 getAttackDistance() const override;
 
 private:
     void recalcShapesDebug();
@@ -87,6 +87,6 @@ private:
                                                float x, float y, float w, float h, glm::vec3 color);
     int m_castTag;
     int m_castMask;
-    float m_attackDistance;
+    glm::vec2 m_attackDistance;
     ICollider* m_lastHit;
 };

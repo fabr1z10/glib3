@@ -1,7 +1,7 @@
 default_size = (2, 2, 2)
-default_speed = 10
+default_speed = 50
 default_time_acc = 0.1
-default_jump_height = 10
+default_jump_height = 50
 default_time_to_jump_apex = 0.5
 attack_keys = [
     81, # Q

@@ -75,7 +75,11 @@ void PlayerJump3D::Run(double dt) {
             m_dynamics->m_velocity.x = sign(m_dynamics->m_velocity.x) * m_maxSpeed;
         }
     }
-
+	if (up || down) {
+		if (fabs(m_dynamics->m_velocity.z > m_maxSpeed)) {
+			m_dynamics->m_velocity.z = sign(m_dynamics->m_velocity.z) * m_maxSpeed;
+		}
+	}
     auto delta = m_dynamics->m_velocity * dtf;
     //m_entity->MoveLocal(delta);
     std::cerr << delta.z << std::endl;

@@ -1,0 +1,104 @@
+moat:
+  sheet: gfx/bg1.png
+  type: model.sprite
+  animations:
+    default:
+      frames:
+        - ticks: 12
+          quads: [0,6,320,20]
+        - ticks: 12
+          quads: [0,28,320,20]
+        - ticks: 12
+          quads: [0,49,320,20]
+        - ticks: 12
+          quads: [0,70,320,20]
+
+graham:
+  sheet: "gfx/sprites.png"
+  type: 'model.sprite'
+  animations:
+    idle_e:
+      frames:
+        - quads: [106, 1, 12, 32, -6, 0]
+    idle_n:
+      frames:
+        - quads: [106,35,10,32,-5,0]
+    idle_s:
+      frames:
+        - quads: [106,69,10,31,-5,0]
+    walk_e:
+      frames:
+        - ticks: 5
+          quads: [106,1,12,32,-6,0]
+        - ticks: 5
+          quads: [119,1,10,32,-4,0]
+        - ticks: 5
+          quads: [130,2,12,31,-6,0]
+        - ticks: 5
+          quads: [143,2,12,31,-6,0]
+        - ticks: 5
+          quads: [156,1,10,32,-4,0]
+        - ticks: 5
+          quads: [167,2,12,31,-6,0]
+    walk_s:
+      frames:
+        - ticks: 5
+          quads: [106,69,10,31,-5,0]
+        - ticks: 5
+          quads: [118,68,10,32,-5,0]
+        - ticks: 5
+          quads: [130,69,10,31,-5,0]
+        - ticks: 5
+          quads: [142,69,10,31,-5,0]
+        - ticks: 5
+          quads: [154,68,10,32,-5,0]
+        - ticks: 5
+          quads: [166,69,10,31,-5,0]
+    walk_n:
+      frames:
+        - ticks: 5
+          quads: [106,35,10,32,-5,0]
+        - ticks: 5
+          quads: [118,36,10,31,-5,0]
+        - ticks: 5
+          quads: [130,36,10,31,-5,0]
+        - ticks: 5
+          quads: [142,35,10,32,-5,0]
+        - ticks: 5
+          quads: [154,36,10,31,-5,0]
+        - ticks: 5
+          quads: [166,36,10,31,-5,0]
+cursor:
+  sheet: "gfx/sprites.png"
+  type: 'model.sprite'
+  animations:
+    walk:
+      frames:
+        - quads: [34,53,11,16,-6,-8]
+    use:
+      frames:
+        - quads: [1,53,15,16,-9,-8]
+    talk:
+      frames:
+        - quads: [17,53,16,16,-8,-8]
+    look:
+      frames:
+        - quads: [46,53,12,9,-6,-4]
+    dagger:
+      frames:
+        - quads: [60,56,8,8,-4,-4]
+alligator:
+  sheet: "gfx/sprites.png"
+  type: 'asset.sprite'
+  animations:
+    idle:
+      elements:
+        - quads: [ [75,23,26,4,15,0] ]
+        - quads: [ [75,1,26,8,15,0] ]
+        - quads: [ [75,11,24,11,15,0] ]
+    walk:
+      elements:
+        - quads: [ [75,23,26,4,15,0] ]
+        - quads: [ [75,1,26,8,15,0] ]
+        - quads: [ [75,11,24,11,15,0] ]
+

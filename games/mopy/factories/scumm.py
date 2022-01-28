@@ -219,7 +219,8 @@ def bg_ps3D(data):
     e = bg(data)
     e.auto_pos = True
     e.pos = data['pos']
-    e.pos[1] = e.pos[2] / math.sqrt(2)
+    e.pos[1] += e.pos[2] / math.sqrt(2)
+    print('cazzone ' + str(e.pos))
     return e
 
 

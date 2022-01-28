@@ -1,5 +1,5 @@
 #include <monkey/model/boxedmodel.h>
-#include <monkey/contour.h>
+#include <monkey/engine.h>
 #include <monkey/math/shapes/compound.h>
 
 #include <iostream>
@@ -21,6 +21,7 @@ namespace py = pybind11;
 
 BoxedModel::BoxedModel(const ITab& t) : SpriteModel(t) {
 
+	auto thick= Engine::get().getVariable<float>("data.globals.thickness");
     auto thickness = t.get<float>("thickness", 0.0f);
     auto halfThickness = 0.5*thickness;
 	if (t.has("boxes")) {
@@ -48,7 +49,7 @@ BoxedModel::BoxedModel(const ITab& t) : SpriteModel(t) {
 	    });
 	}
 
-	m_attackDistance = std::numeric_limits<float>::infinity();
+	//m_attackDistance = std::numeric_limits<float>::infinity();
     //auto anims = t["animations"].as<YAML::Node>();
     float attackMin = -std::numeric_limits<float>::infinity();
     float attackMax = std::numeric_limits<float>::infinity();
@@ -73,8 +74,11 @@ BoxedModel::BoxedModel(const ITab& t) : SpriteModel(t) {
             }
             if (attack != -1) {
                 isAttackingAnim = true;
-                xAttackMin = std::min(xAttackMin, m_shapes[attack]->getBounds().min.x);
-                xAttackMax = std::max(xAttackMin, m_shapes[attack]->getBounds().max.x);
+                auto shape = m_shapes[attack]->getBounds();
+                float currentFrameMin = shape.min.x;
+				float currentFrameMax = shape.max.x;
+                xAttackMin = std::min(xAttackMin, currentFrameMin);
+                xAttackMax = std::max(xAttackMin, currentFrameMax);
                 this->setShapeCast(animId, frameId, attack);
             }
             frameId++;
@@ -82,17 +86,11 @@ BoxedModel::BoxedModel(const ITab& t) : SpriteModel(t) {
         });
 
         if (isAttackingAnim) {
-            attackMin = std::max(attackMin, xAttackMin);
-            attackMax = std::min(attackMax, xAttackMax);
-            //std::cerr << " attack position for anim " << animId << ": " << attackPos << "\n";
-            //m_attackDistance = std::min(m_attackDistance, attackPos);
+            attackMin = std::min(attackMin, xAttackMin);
+            attackMax = std::max(attackMax, xAttackMax);
         }
     });
-    m_attackDistance = 0.95f * attackMax; 0.5f * (attackMin + attackMax);
-    std::cerr << "paino\n";
-    if (m_attackDistance== std::numeric_limits<float>::infinity()) {
-        m_attackDistance = 10.0f;
-    }
+    m_attackRange = glm::vec2(std::max(0.0f, attackMin), std::max(0.0f, attackMax));
 }
 
 void BoxedModel::addShape(std::shared_ptr<IShape> s) {

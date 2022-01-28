@@ -25,6 +25,7 @@ public:
 private:
     bool randomAttack(glm::vec3);
     Entity* m_target;
+    glm::vec2 m_attackRange;
     float m_attackDistance;
     bool m_inRange;
 	std::string m_walkAnim;

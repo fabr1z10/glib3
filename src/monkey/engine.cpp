@@ -72,6 +72,7 @@ void Engine::init(const std::string& gameFolder) {
 
     auto module = py::module::import("main");
     //module.attr("engine.device)
+    m_link = module.attr("engine");
     m_mainTable = std::make_unique<PyTab>(module.attr("engine"));
 
     //std::cerr << "pippolandia = " << module.attr("engine").attr("scripts").get_type();

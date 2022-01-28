@@ -49,6 +49,13 @@ public:
     void RemoveUnsafe(int);
     void Move (Entity*, Entity*);
     void restart();
+
+    template<class T>
+    T getVariable(const std::string& a) {
+    	return m_link.attr("read")("@globals/thickness").cast<T>();
+    }
+
+
     template <class T>
     T* GetRunner() {
         auto it = m_runners.find(std::type_index(typeid(T)));
@@ -125,6 +132,7 @@ private:
     std::string m_title;
     float m_tickMultiplier;
     //int m_dims;
+    pybind11::object m_link;
 };
 
 inline ITab& Engine::getMainTable() const {

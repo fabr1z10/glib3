@@ -268,6 +268,6 @@ std::type_index SmartCollider::GetType() {
     return std::type_index(typeid(ICollider));
 }
 
-float SmartCollider::getAttackDistance() const {
+glm::vec2 SmartCollider::getAttackDistance() const {
     return m_model->getAttackDistance();
 }

@@ -32,7 +32,7 @@ public:
     void End() override;
     using ParentClass = ICollider;
     Event<ICollider*> onShapeChange;
-    virtual float getAttackDistance() const = 0;
+    virtual glm::vec2 getAttackDistance() const = 0;
 protected:
     void Move(Entity*);
     virtual Bounds GetStaticBoundsI () const = 0;
