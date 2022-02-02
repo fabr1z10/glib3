@@ -24,7 +24,8 @@
       pos: [251, 0, 1]
     - type: _player3D
       id: characters.larry
-      pos: [2, 2, -2]
+      pos: [2, 2, -2
+
     - type: mopy.walk_pseudo_3D
       poly: [0, 190, 320,190,320,160,0,160]
       walls: [0,1,2,3]

@@ -33,7 +33,7 @@ public:
     void SetEnabled (bool);
     std::type_index GetType() override;
     glm::vec2 getAttackDistance() const override;
-
+    glm::vec2 getAttackRange(const std::string&) const override;
 protected:
 
     std::shared_ptr<IShape> m_shape;

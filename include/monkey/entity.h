@@ -135,6 +135,8 @@ public:
     float GetScale() const;
     void SetScale(float);
 
+    glm::vec3 getScaleVec() const;
+    void setScale(glm::vec3);
     bool AreControlsEnabled() const;
     void SetControlsEnabled(bool);
     glm::mat4& GetLastMove();
@@ -180,6 +182,7 @@ private:
     std::shared_ptr<Camera> m_cameras;
     std::string m_name;
     std::unordered_map<std::string, int> m_namedChildren;
+    glm::vec3 m_scale;
 };
 
 //inline int Entity::GetLayer() const {

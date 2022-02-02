@@ -112,7 +112,8 @@ def common3D(ciao):
 
     e = Entity()
     e.tag = ciao.get('tag', None)
-    e.scale = ciao.get('scale', 1)
+    scale = ciao.get('scale', 1)
+    e.scale = (scale, scale, 1)
     e.model = ciao.get('model', None)
     size = ciao.get('size', dt.default_size)
     energy = ciao.get('energy', 1)
@@ -145,6 +146,7 @@ def foe3D(ciao):
     dt = monkey.engine.data.globals
     is_sprite = isinstance(model_desc, str)
     e = common3D(t)
+    #return e
     max_speed = t.get('max_speed', dt.default_speed)
     time_acc = t.get('time_acc', dt.default_time_acc)
     jump_height = t.get('jump_height', dt.default_jump_height)

@@ -39,6 +39,7 @@ public:
     const std::vector<std::shared_ptr<IShape>>& getShapes();
     //std::vector<std::shared_ptr<IShape>> getAttackShapes() const ;
 	glm::vec2 getAttackDistance() const;
+	glm::vec2 getAttackRange(const std::string&) const;
 private:
     std::vector<std::shared_ptr<IShape>> m_shapes;
     //std::unordered_map<std::pair<std::string, int>, int> m_boxInfo;
@@ -51,6 +52,7 @@ private:
     Bounds m_maxBounds;
 	// interval in which attack can be made
     glm::vec2 m_attackRange;
+    std::unordered_map<std::string, glm::vec2> m_attackRanges;
 };
 
 inline Bounds BoxedModel::GetMaxBounds() const {
@@ -70,6 +72,9 @@ inline const std::vector<std::shared_ptr<IShape>>& BoxedModel::getShapes() {
     return m_shapes;
 }
 
+inline glm::vec2 BoxedModel::getAttackRange(const std::string & id) const {
+    return m_attackRanges.at(id);
+}
 
 //inline const BoxInfo& BoxedModel::getBoxInfo(const std::string& anim, int frame) const {
 //    return m_boxInfo.at(std::make_pair(anim, frame));

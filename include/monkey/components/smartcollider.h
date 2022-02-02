@@ -55,7 +55,7 @@ public:
     Bounds getAttackBounds() const override;
     void addStateCollisionDetails (const std::string&, int flag, int mask, int tag);
 	glm::vec2 getAttackDistance() const override;
-
+    glm::vec2 getAttackRange(const std::string&) const override;
 private:
     StateMachine* m_stateMachine;
     SpriteRenderer* m_animator;

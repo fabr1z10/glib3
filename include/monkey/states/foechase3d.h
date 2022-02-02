@@ -1,9 +1,11 @@
 #pragma once
 
 #include <monkey/states/base3d.h>
+#include <monkey/components/icollider.h>
 
 struct AttackDetails {
     int attackId;
+    glm::vec2 range;
     bool inRange;               // attacks only if within range
 };
 
@@ -23,7 +25,7 @@ public:
 
     void End() override;
 private:
-    bool randomAttack(glm::vec3);
+    bool randomAttack(float distance);
     Entity* m_target;
     glm::vec2 m_attackRange;
     float m_attackDistance;
@@ -31,6 +33,9 @@ private:
 	std::string m_walkAnim;
 	std::string m_idleAnim;
 	std::map<float, AttackDetails> m_attackMap;
+	float m_thickness;
+	float m_halfThickness;
+	ICollider* m_collider;
 };
 //private:
 //    bool randomAttack(glm::vec3);

@@ -38,7 +38,9 @@ SimpleCollider::~SimpleCollider() {
 glm::vec2 SimpleCollider::getAttackDistance() const {
     throw;
 }
-
+glm::vec2 SimpleCollider::getAttackRange(const std::string&) const {
+    throw;
+}
 void SimpleCollider::SetShape(std::shared_ptr<IShape> shape) {
     m_shape = shape;
     // call move

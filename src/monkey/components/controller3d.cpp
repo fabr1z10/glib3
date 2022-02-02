@@ -103,7 +103,7 @@ bool Controller3D::IsFalling(int x, int z) {
 
 
 void Controller3D::Move(glm::vec3& dx) {
-    float scale = m_entity->GetScale();
+    auto scale = m_entity->getScaleVec();
     if (dx != vec3(0.0f)) {
         UpdateRaycastOrigins();
 		m_details.Reset();
@@ -113,7 +113,7 @@ void Controller3D::Move(glm::vec3& dx) {
             HorizontalCollisions(dx);
         if (!isEqual(dx.y, 0.0f))
             VerticalCollisions(dx);
-        glm::vec3 actualMove = dx / scale;
+        glm::vec3 actualMove(dx.x / scale.x, dx.y/scale.y, dx.z/scale.z);
         m_entity->MoveLocal(actualMove);
 //        if (m_details.climbingSlope) {
 //            UpdateRaycastOrigins();

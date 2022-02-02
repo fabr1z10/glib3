@@ -57,8 +57,8 @@ Entity::Entity(const ITab& t) : Ref(t),
     m_layer = t.get<int>("layer", 0);
 
     if (t.has("scale")) {
-        auto scale = t.get<float>("scale");
-        SetScale(scale);
+        auto scale = t.get<glm::vec3>("scale");
+        setScale(scale);
     }
 
 
@@ -415,13 +415,14 @@ void Entity::SetFlipX(bool value) {
     FlipX();
 }
 
-void Entity::SetScale(float s) {
+void Entity::setScale(glm::vec3 scale) {
+    m_scale = scale;
     glm::vec3 i = glm::normalize(glm::vec3(m_localTransform[0]));
     glm::vec3 j = glm::normalize(glm::vec3(m_localTransform[1]));
     glm::vec3 k = glm::normalize(glm::vec3(m_localTransform[2]));
-    i *= s;
-    j *= s;
-    k *= s;
+    i *= scale.x;
+    j *= scale.y;
+    k *= scale.z;
     m_localTransform[0][0] = i.x;
     m_localTransform[0][1] = i.y;
     m_localTransform[0][2] = i.z;
@@ -432,12 +433,19 @@ void Entity::SetScale(float s) {
     m_localTransform[2][1] = k.y;
     m_localTransform[2][2] = k.z;
     UpdateWorldTransform();
+}
 
+void Entity::SetScale(float s) {
+    setScale(glm::vec3(s));
 
 }
 
 float Entity::GetScale() const {
     return glm::length(glm::vec3(m_localTransform[0]));
+}
+
+glm::vec3 Entity::getScaleVec() const {
+    return m_scale;
 }
 
 

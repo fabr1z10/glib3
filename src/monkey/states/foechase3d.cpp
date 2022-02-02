@@ -2,6 +2,7 @@
 #include <monkey/components/controller3d.h>
 #include <monkey/components/dynamics2d.h>
 #include <monkey/entity.h>
+#include <monkey/engine.h>
 #include <monkey/components/icollider.h>
 #include <monkey/random.h>
 
@@ -21,7 +22,7 @@ FoeChase3D::FoeChase3D(const ITab& t) : Base3D(t) {
 			cumOdds += odd;
             odds.push_back(cumOdds);
             auto inRange = dict.get<bool> ("in_range", true);
-            details.push_back({attackId++, inRange});
+            details.push_back({attackId++, glm::vec2(0.0f), inRange});
     //		m_attackMap.insert(std::make_pair(cumProb, m_attacks.size()));
     //		m_attacks.push_back( AttackInfo {state, prob, inRange});
         });
@@ -37,6 +38,21 @@ FoeChase3D::FoeChase3D(const ITab& t) : Base3D(t) {
 void FoeChase3D::AttachStateMachine(StateMachine * sm) {
 	Base3D::AttachStateMachine(sm);
 	m_target = Monkey::get().Get<Entity>("player");
+    m_collider = m_entity->GetComponent<ICollider>();
+	// set the attack ranges
+    auto scale = m_entity->getScaleVec();
+    m_thickness = scale.z * Engine::get().getVariable<float>("data.globals.thickness");
+    m_halfThickness = 0.5f * m_thickness;
+    m_attackRange = scale.x * m_collider->getAttackDistance();
+    m_attackDistance = 0.5f * (m_attackRange[0] + m_attackRange[1]);
+
+	int attackId = 0;
+	for (auto& a : m_attackMap) {
+	    if (a.second.inRange) {
+	        a.second.range = scale.x * m_collider->getAttackRange("attack_" + std::to_string(attackId));
+	    }
+	    attackId++;
+	}
 }
 //
 //float FoeChase3D::computeDirection() {
@@ -44,9 +60,8 @@ void FoeChase3D::AttachStateMachine(StateMachine * sm) {
 //}
 //
 void FoeChase3D::Init(const ITab& d) {
-	float scale = m_entity->GetScale();
-    m_attackRange = scale * m_entity->GetComponent<ICollider>()->getAttackDistance();
-    m_attackDistance = 0.5f * (m_attackRange[0] + m_attackRange[1]);
+
+
     // loop through
 
 //	if (d.has("left")) {
@@ -65,25 +80,21 @@ void FoeChase3D::Init(const ITab& d) {
 //
 //
 // returns whether attack is performed
-bool FoeChase3D::randomAttack(glm::vec3 displacement) {
-//    if (fabs(displacement.z) < 0.1f && fabs(displacement.x) <= m_attackPos + 0.1f) {
-    // draw random number to decide whether to attack
+bool FoeChase3D::randomAttack(float dx) {
 
     float u = Random::get().GetUniformReal(0.0f, 1.0f);
     auto iter = m_attackMap.lower_bound(u);
-    if (iter != m_attackMap.end()) {
-        if (!iter->second.inRange || m_inRange) {
+    while (iter != m_attackMap.end()) {
+        if (!iter->second.inRange || (dx > iter->second.range[0] && dx < iter->second.range[1])) {
             std::string nextState = "attack_" + std::to_string(iter->second.attackId);
             m_sm->SetState(nextState);
             return true;
         }
+        iter++;
     }
-    // no attack
     return false;
-//    }
-//    return false;
 }
-//
+
 void FoeChase3D::Run(double dt) {
     auto dtf = static_cast<float>(dt);
 
@@ -99,10 +110,27 @@ void FoeChase3D::Run(double dt) {
 	float x1 = targetPos.x + m_attackDistance;
 	bool rightOfPlayer = entityPos.x > targetPos.x;
 	glm::vec3 targetPoint(rightOfPlayer ? x1 : x0, targetPos.y, targetPos.z);
+
+
 	m_entity-> SetFlipX(rightOfPlayer);
+	auto d = targetPos - entityPos;
+	float dx = d.x * (m_entity->GetFlipX() ? -1.0f : 1.0f);
+    m_inRange = (fabs(d.z) < m_halfThickness) &&
+            (dx > m_attackRange[0] && dx < m_attackRange[1]);
+    if (m_inRange) {
+        // attack with probability p_attack
+        std::cout << "qui;";
+        if (randomAttack(dx)) {
+            std::cout << dx << ", " << d.z << ", " << m_halfThickness << " " << m_attackRange[0] << " " << m_attackRange[1] << "\n";
+            return;
+        }
+    }
+    std::cout << dx << ", " << d.z << ", " << m_halfThickness << " " << m_attackRange[0] << " " << m_attackRange[1] << "\n";
+    m_renderer->setAnimation(m_idleAnim);
 
+    return;
 
-    m_inRange = fabs(fabs(targetPos.x - entityPos.x) - m_attackDistance) < 0.1f && fabs(targetPos.z - entityPos.z) < 0.1f;
+    //m_inRange = fabs(fabs(targetPos.x - entityPos.x) - m_attackDistance) < 0.1f && fabs(targetPos.z - entityPos.z) < 0.1f;
 	glm::vec3 displacement(0.0f);
 	if (!m_inRange) {
         // if we are within range, randomly attack
@@ -111,9 +139,9 @@ void FoeChase3D::Run(double dt) {
         displacement = (targetPoint - entityPos);
         displacement.y = 0;
     }
-    if (m_controller->grounded() && randomAttack(displacement)) {
-        return;
-    }
+    //if (m_controller->grounded() && randomAttack(displacement)) {
+       // return;
+   // }
 
 
     m_dynamics->m_velocity.y = -m_gravity * dtf;

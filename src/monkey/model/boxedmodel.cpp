@@ -22,7 +22,7 @@ namespace py = pybind11;
 BoxedModel::BoxedModel(const ITab& t) : SpriteModel(t) {
 
 	auto thick= Engine::get().getVariable<float>("data.globals.thickness");
-    auto thickness = t.get<float>("thickness", 0.0f);
+    auto thickness = t.get<float>("thickness", thick);
     auto halfThickness = 0.5*thickness;
 	if (t.has("boxes")) {
 	    t.foreach("boxes", [&] (const ITab& box) {
@@ -51,8 +51,8 @@ BoxedModel::BoxedModel(const ITab& t) : SpriteModel(t) {
 
 	//m_attackDistance = std::numeric_limits<float>::infinity();
     //auto anims = t["animations"].as<YAML::Node>();
-    float attackMin = -std::numeric_limits<float>::infinity();
-    float attackMax = std::numeric_limits<float>::infinity();
+    float attackMin = std::numeric_limits<float>::infinity();
+    float attackMax = -std::numeric_limits<float>::infinity();
     t.foreach("animations", [&] (const std::string& animId, const ITab& anim) {
         // each animation might have a box
         auto animBoxId = anim.get<int>("box", -1);
@@ -86,6 +86,7 @@ BoxedModel::BoxedModel(const ITab& t) : SpriteModel(t) {
         });
 
         if (isAttackingAnim) {
+            m_attackRanges[animId] = glm::vec2(xAttackMin, xAttackMax);
             attackMin = std::min(attackMin, xAttackMin);
             attackMax = std::max(attackMax, xAttackMax);
         }

@@ -271,3 +271,7 @@ std::type_index SmartCollider::GetType() {
 glm::vec2 SmartCollider::getAttackDistance() const {
     return m_model->getAttackDistance();
 }
+
+glm::vec2 SmartCollider::getAttackRange(const std::string & anim) const {
+    return m_model->getAttackRange(anim);
+}
