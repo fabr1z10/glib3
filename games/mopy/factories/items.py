@@ -137,6 +137,12 @@ def common3D(ciao):
             'attacks': ciao.get('attacks', None)
         }
     })
+    # shadow
+    apply_shadow = getattr(dt, 'apply_shadow', False)
+    if apply_shadow:
+        shadow = Entity()
+        shadow.add_component(ShadowRenderer(**dt.shadow))
+        e.add(shadow)
     return e
 
 
@@ -213,10 +219,11 @@ def foe3D(ciao):
             tag=dt.CollisionTags.foe,
             cast_tag=dt.CollisionTags.foe_attack,
             cast_mask=dt.CollisionFlags.player))
-    if ciao.get('apply_shadow', False):
-        shadow = Entity()
-        shadow.add_component(ShadowRenderer(angle=20.0))
-        e.add(shadow)
+    # apply_shadow = getattr(dt, 'apply_shadow', False)
+    # if apply_shadow:
+    #     shadow = Entity()
+    #     shadow.add_component(ShadowRenderer(angle=20.0))
+    #     e.add(shadow)
     return e
 
 
@@ -416,10 +423,7 @@ def player3D(ciao):
             cast_tag=dt.CollisionTags.player_attack,
             cast_mask=dt.CollisionFlags.foe | dt.CollisionFlags.platform))
 
-    if ciao.get('apply_shadow', False):
-        shadow = Entity()
-        shadow.add_component(ShadowRenderer(angle=20.0))
-        e.add(shadow)
+
 
     return e
 
