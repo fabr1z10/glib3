@@ -39,12 +39,17 @@ public:
     iterator end() { return m_meshes.end(); }
     void addMesh(std::shared_ptr<IMesh> mesh);
     std::shared_ptr<IMesh> getMesh(size_t);
+    size_t getMeshCount() const;
 protected:
     std::vector<std::shared_ptr<IMesh>> m_meshes;
     Bounds m_bounds;
     glm::vec3 m_offset;
     //bool m_shareable;
 };
+
+inline size_t Model::getMeshCount() const {
+	return m_meshes.size();
+}
 
 inline void Model::setOffset(glm::vec3 offset) {
     m_offset = offset;

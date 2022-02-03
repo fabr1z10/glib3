@@ -20,4 +20,5 @@ private:
 	float m_angle;
 	float m_shear;
 	float m_scaleLength;
+
 };

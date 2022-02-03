@@ -37,41 +37,8 @@ Renderer::Renderer(const ITab& t) : m_multColor(1.0f),
 
 
 void Renderer::init(Shader* shader) {
-//	if (m_blend != Blend::DEFAULT) {
-//		switch (m_blend) {
-//			case Blend::SUB:
-//				glBlendFunc(GL_ONE, GL_ONE);
-//				glBlendEquation(GL_FUNC_REVERSE_SUBTRACT);
-//				break;
-//			case Blend::ADD:
-//				glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-//				//glBlendEquation(GL_FUNC_REVERSE_SUBTRACT)
-//				break;
-//		}
-//
-//		if (m_blend == Blend::SUB) {
-//		}
-//	}
-//	if (m_depth != GL_LESS) {
-//		glDepthFunc(m_depth);
-//	}
-//	auto mcolor = shader->GetUniformLocation(MULTCOLOR);
-//	auto acolor = shader->GetUniformLocation(ADDCOLOR);
-//	if (mcolor != GL_INVALID) {
-//		glUniform4fv(mcolor, 1, &m_multColor[0]);
-//	}
-//	if (acolor != GL_INVALID) {
-//		glUniform4fv(acolor, 1, &m_addColor[0]);
-//	}
-////    auto fz = shader->GetUniformLocation(FORCEZ);
-////	auto fzv = shader->GetUniformLocation(FORCEDZ);
-////    if (fz != GL_INVALID) {
-////    	glUniform1i(fz, m_forceZ ? 1 : 0);
-////    	glUniform1f(fzv, m_forcedZ);
-////    }
-//
-//	auto to = shader->GetUniformLocation(TEXOFFSET);
-//	glUniform2fv (to, 1, &m_texOffset[0]);
+	shader->setVec4("mult_color", m_multColor);
+
 }
 
 void Renderer::post() {
@@ -94,7 +61,6 @@ void Renderer::Draw(Shader* shader) {
 //        if (mult_color_loc != GL_INVALID_VALUE) {
 //            glUniform4fv(mult_color_loc, 1, &m_multColor[0]);
 //        }
-		shader->setVec4("mult_color", m_multColor);
         if (shader->getShaderType() == mesh->getShaderType()) {
             mesh->draw(shader, 0, 0);
         }

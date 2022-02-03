@@ -119,26 +119,52 @@ void FoeChase3D::Run(double dt) {
             (dx > m_attackRange[0] && dx < m_attackRange[1]);
     if (m_inRange) {
         // attack with probability p_attack
-        std::cout << "qui;";
+        //std::cout << "qui;";
         if (randomAttack(dx)) {
-            std::cout << dx << ", " << d.z << ", " << m_halfThickness << " " << m_attackRange[0] << " " << m_attackRange[1] << "\n";
+            //std::cout << dx << ", " << d.z << ", " << m_halfThickness << " " << m_attackRange[0] << " " << m_attackRange[1] << "\n";
             return;
         }
     }
-    std::cout << dx << ", " << d.z << ", " << m_halfThickness << " " << m_attackRange[0] << " " << m_attackRange[1] << "\n";
-    m_renderer->setAnimation(m_idleAnim);
+
+    // find current displacement
+    auto displacement = targetPoint - entityPos;
+    displacement.y = 0.0f;
+
+    //std::cout << dx << ", " << d.z << ", " << m_halfThickness << " " << m_attackRange[0] << " " << m_attackRange[1] << "\n";
+
+    m_dynamics->m_velocity.y = -m_gravity * dtf;
+    auto dl = glm::length(displacement);
+	if (dl > 0.1f) {
+		m_renderer->setAnimation(m_walkAnim);
+		float maxSpeed = (dl / dtf) > m_maxSpeed ? m_maxSpeed : (dl /dtf);
+		auto velocity = glm::normalize(displacement) * maxSpeed;
+		m_dynamics->m_velocity.x = fabs(entityPos.x - targetPos.x) > m_attackDistance ? fabs(velocity.x) : -fabs(velocity.x);
+		m_dynamics->m_velocity.z = velocity.z;
+		auto delta = m_dynamics->m_velocity * dtf;
+		m_controller->Move(delta);
+	} else {
+		m_dynamics->m_velocity = glm::vec3(0.0f);
+		auto delta = m_dynamics->m_velocity * dtf;
+		m_controller->Move(delta);
+		if (m_controller->grounded()) {
+			m_renderer->setAnimation(m_idleAnim);
+		} else {
+			m_renderer->setAnimation(m_walkAnim);
+		}
+	}
+
 
     return;
 
     //m_inRange = fabs(fabs(targetPos.x - entityPos.x) - m_attackDistance) < 0.1f && fabs(targetPos.z - entityPos.z) < 0.1f;
-	glm::vec3 displacement(0.0f);
-	if (!m_inRange) {
-        // if we are within range, randomly attack
-        float dist{0.0f};
-        float eps = 0.1f;
-        displacement = (targetPoint - entityPos);
-        displacement.y = 0;
-    }
+//	glm::vec3 displacement(0.0f);
+//	if (!m_inRange) {
+//        // if we are within range, randomly attack
+//        float dist{0.0f};
+//        float eps = 0.1f;
+//        displacement = (targetPoint - entityPos);
+//        displacement.y = 0;
+//    }
     //if (m_controller->grounded() && randomAttack(displacement)) {
        // return;
    // }

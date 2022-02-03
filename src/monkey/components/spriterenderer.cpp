@@ -10,7 +10,6 @@ SpriteRenderer::SpriteRenderer(std::shared_ptr<Model> model) : AnimationRenderer
 
 void SpriteRenderer::Draw(Shader * s) {
     if (s->getShaderType() == m_model->getMesh(0)->getShaderType()) {
-		s->setVec4("mult_color", m_multColor);
         const auto& frameInfo = m_currentAnimInfo->frames[m_frame];
         m_model->getMesh(0)->draw(s, frameInfo.offset, frameInfo.count);
     }
