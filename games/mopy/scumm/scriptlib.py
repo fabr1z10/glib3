@@ -1,7 +1,7 @@
 import mopy
 from mopy.script import Script
 from mopy.actions import Walk, Turn, Say, ChangeRoom, Msg
-from mopy.scumm.actionlib import start_dialogue, update_item, open_door, close_door, sierra_enable_controls
+from mopy.scumm.actionlib import start_dialogue, update_item, open_door, close_door, sierra_enable_controls, pickup_item
 import mopy.scumm.shortcut as sc
 from mopy.entity import TextAlignment
 
@@ -22,6 +22,12 @@ def walk_to(item_id):
 def walk_and_say(item_id, lines):
     s = walk_to(item_id)
     s.add_action(Say(lines=lines, tag='player'))
+    return s
+
+
+def walk_and_pickup(item_id, e):
+    s = walk_to(item_id)
+    s.add_action(pickup_item(item_id, e.id))
     return s
 
 

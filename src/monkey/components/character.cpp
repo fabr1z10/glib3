@@ -40,7 +40,7 @@ CharacterController::CharacterController(const ITab &t) : Component(t) {
     m_speed = t.get<float>("speed");
     m_textOffset = t.get<glm::vec2>("text_offset");
     m_textColor = t.get<glm::vec4>("text_color");
-    m_textColor /= 255.0f;
+    //m_textColor /= 255.0f;
 	auto ways = t.get<int>("ways", 4);
 	if (ways == 4) {
 		m_charAnimator = std::make_unique<WalkAni4>();

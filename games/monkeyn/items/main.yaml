@@ -2,14 +2,14 @@
 guybrush:
   type: scumm.character
   model: 01.guybrush
-  text_color: [255, 255, 255, 255]
-  #speed: 50
+  text_color: '@game.colors.guybrush_text'
+  # speed: 50
   collision:
     size: [ 4, 1 ]
     offset: [ -2, 0 ]
-    flag: 0
-    mask: 1
-    tag: 0
+    flag: 1
+    mask: 2
+    tag: 1
   pos: [182, 32]
   room: lookout
   parent: walkarea_0
@@ -27,4 +27,11 @@ lookout:
   dir: w
   text_color: [170, 170, 170, 255]
   text_offset: [0,60]
-
+cook:
+  type: scumm.character
+  model: 01.cook
+  pos: [0,0]
+  dir: w
+  speed: 100
+  text_color: '@game.colors.cook_text'
+  text_offset: [0,60]

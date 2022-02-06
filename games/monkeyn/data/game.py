@@ -1,3 +1,5 @@
+import mopy.util as utils
+
 class pos:
     kitchen_door = [45, 12]
     scummbar_main_door = [64, 19]
@@ -26,7 +28,21 @@ class pos:
     f1f2b = (154,69)
     village2_voodoolady = (220, 48)
 
+class colors:
+    guybrush_text = utils.rgb(255, 255, 255)
+    cook_text = utils.rgb(85, 255, 255)
 
 class doors:
     scummbar = 'closed'
     voodoolady = 'closed'
+    kitchen = 'closed'
+    pier = 'closed'
+
+seagull_on_plank = False
+seagull_jump = 1
+fish_not_taken = True
+
+def is_pier_door_closed():
+    return doors.pier == 'closed'
+
+

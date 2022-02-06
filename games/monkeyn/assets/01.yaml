@@ -126,43 +126,47 @@ guybrush:
           quads: [[157,112,19,36,-10,0], [205,101,11,12,-7,35]]
     talk_s:
       frames:
-        - quads: [[164,12,22,36,12,0], [179,129,11,13,6,-34]]
-        - quads: [[164,12,22,36,12,0], [192,129,11,13,6,-34]]
-        - quads: [[164,12,22,36,12,0], [179,129,11,13,6,-34]]
-        - quads: [[164,12,22,36,12,0], [192,129,11,13,6,-34]]
-        - quads: [[164,12,22,36,12,0], [205,129,11,13,6,-34]]
-        - quads: [[164,12,22,36,12,0], [179,143,11,13,6,-34]]
-        - quads: [[164,12,22,36,12,0], [192,129,11,13,6,-34]]
-        - quads: [[164,12,22,36,12,0], [192,143,11,13,6,-34]]
-        - quads: [[164,12,22,36,12,0], [205,143,11,13,6,-34]]
-        - quads: [[164,12,22,36,12,0], [192,143,11,13,6,-34]]
-        - quads: [[164,12,22,36,12,0], [179,129,11,13,6,-34]]
-        - quads: [[164,12,22,36,12,0], [192,129,11,13,6,-34]]
-        - quads: [[164,12,22,36,12,0], [205,143,11,13,6,-34]]
+        - quads: [[164,12,22,36,-12,0], [179,129,11,13,-6,34]]
+        - quads: [[164,12,22,36,-12,0], [192,129,11,13,-6,34]]
+        - quads: [[164,12,22,36,-12,0], [179,129,11,13,-6,34]]
+        - quads: [[164,12,22,36,-12,0], [192,129,11,13,-6,34]]
+        - quads: [[164,12,22,36,-12,0], [205,129,11,13,-6,34]]
+        - quads: [[164,12,22,36,-12,0], [179,143,11,13,-6,34]]
+        - quads: [[164,12,22,36,-12,0], [192,129,11,13,-6,34]]
+        - quads: [[164,12,22,36,-12,0], [192,143,11,13,-6,34]]
+        - quads: [[164,12,22,36,-12,0], [205,143,11,13,-6,34]]
+        - quads: [[164,12,22,36,-12,0], [192,143,11,13,-6,34]]
+        - quads: [[164,12,22,36,-12,0], [179,129,11,13,-6,34]]
+        - quads: [[164,12,22,36,-12,0], [192,129,11,13,-6,34]]
+        - quads: [[164,12,22,36,-12,0], [205,143,11,13,-6,34]]
     talk_n:
       frames:
         - quads: [[189,12,20,36,-12,0], [220,101,11,12,-7,35]]
+          ticks: 5
         - quads: [[189,12,20,36,-12,0], [233,101,11,12,-7,35]]
+          ticks: 5
         - quads: [[189,12,20,36,-12,0], [220,101,11,12,-7,35]]
+          ticks: 5
         - quads: [[189,12,20,36,-12,0], [233,101,11,12,-7,35]]
+          ticks: 5
         - quads: [[189,12,20,36,-12,0], [220,115,11,12,-7,35]]
+          ticks: 5
     operate_e:
-      elements:
-        - quads: [[2,150,28,45,10,0]]
+      frames:
+        - quads: [2,150,28,45,-10,0]
           ticks: 10
     operate_s:
-      elements:
-        - quads: [[125,151,18,46,12,0]]
+      frames:
+        - quads: [125,151,18,46,-12,0]
     operate_n:
-      elements:
-        - quads: [[33,150,19,45,10,0]]
-
+      frames:
+        - quads: [33,150,19,45,-10,0]
     kneel_s:
-      elements:
-        - quads: [[80, 163, 17, 33, 10, 0]]
+      frames:
+        - quads: [80, 163, 17, 33, -10, 0]
     push_plank:
-      elements:
-        - quads: [[57, 150, 21, 47, 10, 0]]
+      frames:
+        - quads: [57, 150, 21, 47, -10, 0]
     circus_cutscene_1:
       loop: False
       elements:
@@ -217,6 +221,16 @@ door_scummbar_village:
     closed:
       frames:
         - quads: [472,50,38,47]
+door_scummbar_kitchen:
+  sheet: "gfx/sprites/sprites1.png"
+  type: "model.sprite"
+  animations:
+    open:
+      frames:
+        - quads: [435, 73, 35, 69]
+    closed:
+      frames:
+        - quads: [435, 2, 35, 69]
 scummbar_fireplace:
   sheet: 'gfx/sprites/sprites1.png'
   type: 'model.sprite'
@@ -290,3 +304,391 @@ door_voodoolady_village:
     open:
       frames:
         - [36,55,33,58]
+cook:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: 'model.sprite'
+  animations:
+    idle_e:
+      frames:
+        - quads: [[2, 34, 28, 35, -17, 0], [36, 57, 11, 16, -7, 32]]
+    idle_n:
+      frames:
+        - quads: [2, 72, 36, 48, -17, 0]
+    idle_s:
+      frames:
+        - quads: [39, 77, 31, 48, -15, 0]
+    talk_e:
+      frames:
+        - ticks: 5
+          quads: [[2, 34, 28, 35, -17, 0], [90, 57, 11, 16, -8,32]]
+        - ticks: 5
+          quads: [[2, 34, 28, 35, -17, 0], [50, 57, 12, 18, -7, 30]]
+        - ticks: 5
+          quads: [[2, 34, 28, 35, -17, 0], [64, 57, 11, 17, -8, 31]]
+        - ticks: 5
+          quads: [[2, 34, 28, 35, -17, 0], [77, 57, 11, 17, -8, 31]]
+        - ticks: 5
+          quads: [[2, 34, 28, 35, -17, 0], [103, 57, 11, 18, -7, 30]]
+    walk_e:
+      frames:
+        - ticks: 5
+          quads: [72,77,25,48,-13,0]
+        - ticks: 5
+          quads: [99,78,31,47,-17,0]
+        - ticks: 5
+          quads: [132,76,20,49,-12,0]
+        - ticks: 5
+          quads: [154,76,28,49,-16,0]
+        - ticks: 5
+          quads: [184, 77, 26, 48, -16, 0]
+        - ticks: 5
+          quads: [212, 77, 22, 48, -13, 0]
+    walk_n:
+      frames:
+        - quads: [2, 72, 36, 48, -17, 0]
+    walk_s:
+      frames:
+        - quads: [39, 77, 31, 48, -15, 0]
+door_kitchen_scummbar:
+  sheet: "gfx/sprites/sprites1.png"
+  type: "model.sprite"
+  animations:
+    open:
+      frames:
+        - quads: [358, 104, 37, 53]
+    closed:
+      frames:
+        - quads: [397, 104, 37, 53]
+potostew:
+  sheet: "gfx/sprites/sprites1.png"
+  type: "model.sprite"
+  animations:
+    def:
+      loop: true
+      frames:
+        - ticks: 5
+          quads: [326,104,29,17]
+        - ticks: 5
+          quads: [326,123,29,17]
+        - ticks: 5
+          quads: [326,142,29,17]
+fish:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: 'model.sprite'
+  animations:
+    default:
+      frames:
+        - quads: [23, 204, 12, 7]
+meat:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: 'model.sprite'
+  animations:
+    default:
+      frames:
+        - quads: [24,213,24,6]
+pot:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: 'model.sprite'
+  animations:
+    default:
+      frames:
+        - quads: [39,204,15,7]
+door_pier:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: 'model.sprite'
+  animations:
+    closed:
+      frames:
+        - quads: [469, 143, 32, 60]
+    open:
+      frames:
+        - quads: [435, 143, 32, 60]
+seagull:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: model.sprite
+  animations:
+    fly:
+      frames:
+        - quads: [3,220,20,14,307,37]
+          ticks: 5
+
+        - quads: [3,236,25,12,295,35]
+          ticks: 5
+        - quads: [3,220,20,14,292,33]
+          ticks: 5
+
+        - quads: [3,250,19,25,285,29]
+          ticks: 5
+
+        - quads: [3,277,19,19,277,32]
+          ticks: 5
+
+        - quads: [3,250,19,25,269,22]
+          ticks: 5
+
+        - quads: [3,220,20,14,260,25]
+          ticks: 5
+
+        - quads: [3,236,25,12,247,23]
+          ticks: 5
+
+        - quads: [3,220,20,14,244,21]
+          ticks: 5
+
+        - quads: [3,277,19,19,245,23]
+          ticks: 5
+
+        - quads: [3,277,19,19,250,17]
+          ticks: 5
+
+        - quads: [3,298,23,15,248,14]
+          ticks: 5
+
+        - quads: [3,315,25,11,246,13]
+          ticks: 5
+
+        - quads: [3,298,23,15,243,12]
+          ticks: 5
+
+        - quads: [3,328,19,9,243,10]
+          ticks: 5
+
+    eat:
+      frames:
+        - quads: [3, 339, 15, 13, 245, 10]
+          ticks: 5
+
+        - quads: [25,223,18,11,242, 10]
+          ticks: 5
+
+        - quads: [30,238,17,10,243, 10]
+          ticks: 5
+
+        - quads: [24,250,19,9,242, 10]
+          ticks: 5
+
+        - quads: [24,261,19,10,242, 10]
+          ticks: 5
+
+        - quads: [24,273,17,10,243, 10]
+          ticks: 5
+
+        - quads: [24,285,18,11,242, 10]
+          ticks: 5
+
+        - quads: [28,298,15,13,245, 10]
+          ticks: 5
+
+        - quads: [30,312,11,17,249, 10]
+          ticks: 5
+
+        - quads: [24,331,12,17,248, 10]
+          ticks: 5
+
+        - quads: [49,224,12,17,248, 10]
+          ticks: 5
+
+    jump1:
+      frames:
+        - quads: [3,339,15,13,245,40]
+          ticks: 5
+        - quads: [3,339,15,13,245,64]
+          ticks: 5
+        - quads: [3,339,15,13,245,94]
+          ticks: 5
+        - quads: [3,339,15,13,245,100]
+          ticks: 5
+        - quads: [3,277,19,19,237,82]
+          ticks: 5
+        - quads: [3,277,19,19,237,64]
+          ticks: 5
+        - quads: [3,277,19,19,237,40]
+          ticks: 5
+        - quads: [3,277,19,19,237,10]
+          ticks: 5
+    jump2:
+      frames:
+        - quads: [3,339,15,13,245,40]
+          ticks: 5
+        - quads: [3,339,15,13,245,64]
+          ticks: 5
+        - quads: [3,339,15,13,245,94]
+          ticks: 5
+        - quads: [3,339,15,13,245,100]
+          ticks: 5
+        - quads: [47,301,19,19,249,98]
+          ticks: 5
+        - quads: [47,301,19,19,255,94]
+          ticks: 5
+        - quads: [47,301,19,19,261,86]
+          ticks: 5
+        - quads: [47,301,19,19,267,74]
+          ticks: 5
+        - quads: [47,301,19,19,273,58]
+          ticks: 5
+        - quads: [47,301,19,19,279,38]
+          ticks: 5
+        - quads: [46,291,23,7,268,34]
+          ticks: 5
+        - quads: [3,250,19,25,259,27]
+          ticks: 5
+        - quads: [3,220,20,14,254,23]
+          ticks: 5
+        - quads: [3,236,25,12,245,15]
+          ticks: 5
+        - quads: [3,277,19,19,250,17]
+          ticks: 5
+        - quads: [3,298,23,15,248,14]
+          ticks: 5
+        - quads: [3,315,23,15,246,13]
+          ticks: 5
+        - quads: [3,298,23,15,244,12]
+          ticks: 5
+        - quads: [3,328,19,9,243,11]
+          ticks: 5
+plank:
+  sheet: "gfx/sprites/sprites1.png"
+  type: "model.sprite"
+  animations:
+    idle:
+      frames:
+        - quads: [65, 235, 67, 24]
+          ticks: 10
+    pushed:
+      frames:
+        - quads: [65, 210, 61, 24]
+scummbar.mancomb:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: 'model.sprite'
+  animations:
+    idle_1:
+      frames:
+        - quads: [241,68,33,40]
+    idle_2:
+      frames:
+        - quads: [277,68,36,39,-1,1]
+          ticks: 2
+scummbar.estevan:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: 'model.sprite'
+  animations:
+    idle_1:
+      frames:
+        - quads: [318,76,35,27]
+    idle_2:
+      loop: false
+      frames:
+        - quads: [355,76,39,27]
+        - quads: [396,76,37,27]
+        - quads: [355,76,39,27]
+scummbar.loom:
+  sheet: 'gfx/sprites/sprites1.png'
+  type: 'model.sprite'
+  animations:
+    idle_1:
+      frames:
+        - quads: [221,457,29,38]
+    idle_2:
+      loop: false
+      frames:
+        - quads: [252,458,29,37]
+        - quads: [283,458,29,37]
+scummbar.pirate1:
+  sheet: 'gfx/sprites/sprites2.png'
+  type: 'model.sprite'
+  animations:
+    idle_1:
+      frames:
+        - quads: [330,1,26,27]
+    idle_2:
+      loop: false
+      frames:
+        - quads: [358,1,27,27]
+        - quads: [387,1,26,27]
+scummbar.pirate2:
+  sheet: 'gfx/sprites/sprites2.png'
+  type: 'model.sprite'
+  animations:
+    idle_1:
+      frames:
+        - quads: [330,31,36,37]
+    idle_2:
+      frames:
+        - quads: [368,31,36,37]
+scummbar.pirate3:
+  sheet: 'gfx/sprites/sprites2.png'
+  type: 'model.sprite'
+  animations:
+    idle_1:
+      frames:
+        - quads: [417,3,40,23]
+    idle_2:
+      frames:
+        - quads: [459,3,40,23]
+scummbar.pirate4:
+  sheet: 'gfx/sprites/sprites2.png'
+  type: 'model.sprite'
+  animations:
+    idle_1:
+      frames:
+        - quads: [407,35,33,25]
+    idle_2:
+      loop: false
+      frames:
+        - quads: [442,35,33,25]
+        - quads: [477,35,33,25]
+scummbar.pirate5:
+  sheet: 'gfx/sprites/sprites2.png'
+  type: 'model.sprite'
+  animations:
+    idle_1:
+      frames:
+        - quads: [400,71,35,27]
+    idle_2:
+      loop: false
+      frames:
+        - quads: [437,71,35,27]
+        - quads: [474,72,35,26]
+scummbar.pirate6:
+  sheet: 'gfx/sprites/sprites2.png'
+  type: 'model.sprite'
+  animations:
+    idle_1:
+      frames:
+        - quads: [347,71,50,26]
+scummbar.pirate7:
+  sheet: 'gfx/sprites/sprites2.png'
+  type: 'model.sprite'
+  animations:
+    idle_1:
+      frames:
+        - quads: [180,73,20,21]
+    idle_2:
+      loop: false
+      frames:
+        - quads: [202,73,20,22]
+        - quads: [157,73,20,21]
+scummbar.pirate8:
+  sheet: 'gfx/sprites/sprites2.png'
+  type: 'model.sprite'
+  animations:
+    idle_1:
+      frames:
+        - quads: [419,103,28,32]
+    idle_2:
+      loop: false
+      frames:
+        - quads: [448,103,28,32]
+        - quads: [479,103,29,32]
+scummbar.pirate9:
+  sheet: 'gfx/sprites/sprites2.png'
+  type: 'model.sprite'
+  animations:
+    idle_1:
+      frames:
+        - quads: [323,100,30,33]
+    idle_2:
+      loop: false
+      frames:
+        - quads: [354,100,30,35]
+        - quads: [386,100,30,39]

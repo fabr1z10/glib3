@@ -60,6 +60,30 @@ def character(key, desc):
         add_collision_box(s, cbox)
     return s
 
+
+def trap(key, desc):
+    pos = desc.get('pos')
+    s = Entity(pos=pos)
+    s.tag = key
+    size = desc.get('size')
+    s.add_component(Collider(flag=2, mask=1, tag=2, shape=Rect(size[0], size[1]), debug=True))
+    return s
+
+
+def hotspot(key, desc):
+    pos = desc.get('pos')
+    size = desc.get('size')
+    on_enter = desc.get('on_enter')
+    on_leave = desc.get('on_leave')
+    on_click = desc.get('on_click')
+    on_enter_f = getattr(mopy.monkey.engine.data.scripts, on_enter) if on_enter else None
+    on_leave_f = getattr(mopy.monkey.engine.data.scripts, on_leave) if on_leave else None
+    on_click_f = getattr(mopy.monkey.engine.data.scripts, on_click) if on_click else None
+    s = Entity(pos=pos)
+    s.add_component(HotSpot(shape=Rect(width=size[0], height=size[1]), onclick=on_click_f, onenter=on_enter_f, onleave=on_leave_f))
+    return s
+
+
 def item(key, desc):
     eng = mopy.monkey.engine
     data = eng.data
@@ -122,16 +146,25 @@ def sitem(key, desc):
 
 item_maps = {
     'scumm.item': item,
+    'scumm.trap': trap,
+    'scumm.hotspot': hotspot,
     'sierra.item': sitem,
     'scumm.character': character
 }
 
+
 def create_dynamic(key):
     data = mopy.monkey.engine.data
-    print (' ### creating dynamic item: ' + key)
-    item =  get_item(key)
-    print ('HERE IS THETHING: ' + str(item))
+    item = get_item(key)
+    if item and item.get('active', True):
+        type = item['type']
+        return item_maps[type](key, item)
+
+
+def create_dynamic_wa(key, args=dict()):
+    data = mopy.monkey.engine.data
+    item = get_item(key)
+    item.update(args)
     if item:
         type = item['type']
-        print(' ### item type: ' + type)
         return item_maps[type](key, item)

@@ -3,7 +3,8 @@
   type: scumm.room
   width: 640
   height: 144
-  #on_load: init_scummbar
+  on_load:
+    func: '@scripts.init_scummbar'
   items:
     - type: scumm.bg
       image: gfx/scummbar_1.png

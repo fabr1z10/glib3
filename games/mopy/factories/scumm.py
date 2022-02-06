@@ -30,14 +30,22 @@ def toggle_cursor(x, y):
 class ScummRoom(BasicRoom):
     def __init__(self, desc):
         super().__init__(desc)
+        self.add_runner(Scheduler())
+        self.add_runner({
+            'type': 'runner.collisionengine',
+            'size': [80, 80],
+            'response': [
+                {'tag1': 1, 'tag2': 2, 'on_enter': on_enter_collision_area, 'on_leave': on_leave_collision_area}]
+        })
 
     def load_dynamic_items(self):
         print('loadin dynamic')
         for r in mopy.monkey.engine.data.r2i.get(self.id, []):
             print('okk')
             entity = create_dynamic(r)
-            item = mopy.monkey.engine.data.items.get(r)
-            self.add(entity, item.get('parent', self.default_item))
+            if entity:
+                item = mopy.monkey.engine.data.items.get(r)
+                self.add(entity, item.get('parent', self.default_item))
 
 
 def map_room(desc: dict):
@@ -68,13 +76,7 @@ def map_room(desc: dict):
 def sierra_room(desc: dict):
     gl = mopy.monkey.engine.data.globals
     room = ScummRoom(desc)
-    room.add_runner(Scheduler())
 
-    room.add_runner({
-        'type': 'runner.collisionengine',
-        'size': [80, 80],
-        'response': [{'tag1': 1, 'tag2': 2, 'on_enter': on_enter_collision_area, 'on_leave': on_leave_collision_area}]
-    })
 
 
 
@@ -112,7 +114,7 @@ def default_room(desc: dict):
     gl = mopy.monkey.engine.data.globals
     room = ScummRoom(desc)
     room.add_runner(Scheduler())
-
+    room.init.append([refresh_inventory])
     # read world size
     width = desc['width']
     height = desc['height']
@@ -184,7 +186,8 @@ def walkarea(data):
     walkarea = {
         'type': 'components.walkarea',
         'depth': data.get('depth', None),
-        'scale': data.get('scale', None)
+        'scale': data.get('scale', None),
+        'walls': data.get('walls', None)
     }
 
     if 'poly' in data:

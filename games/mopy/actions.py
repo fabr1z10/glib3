@@ -13,13 +13,14 @@ class NoOp:
 
 
 class Animate:
-    def __init__(self, anim: str, entity_id=None, tag=None, fwd: bool = True, sync: bool = False):
+    def __init__(self, anim: str, entity_id=None, tag=None, fwd: bool = True, sync: bool = False, flipx: bool = False):
         self.type = 'action.animate'
         self.id = entity_id
         self.tag = tag
         self.anim = anim
         self.fwd = fwd
         self.sync = sync
+        self.flipx = flipx
 
 
 class RunScript:
@@ -269,3 +270,10 @@ class Sayd:
         self.tag = tag
         self.font = font if font else mopy.monkey.engine.data.globals.default_font
         self.id = id
+
+class SetWall:
+    def __init__(self, walkarea: str, wall_id: int, enabled: bool):
+        self.type = 'action.enable_block'
+        self.walkarea = walkarea
+        self.wall = wall_id
+        self.active = enabled

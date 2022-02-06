@@ -1,6 +1,10 @@
 import example
 import mopy
 from mopy.script import Script
+from mopy.scumm.shortcut import get_item
+
+
+
 
 
 class DialogueLine:
@@ -115,6 +119,21 @@ def start_dialogue(dialogue_id, continue_dialogue, start_node = 'root'):
     return _helper(_start_dialogue)
 
 
+def create_item(item_id, args=dict(), parent='main'):
+    def _create_item():
+        from mopy.factories.scumm_item import create_dynamic_wa
+        pippo = create_dynamic_wa(item_id, args)
+        pa = example.get(parent)
+        pa.add(pippo)
+    return _helper(_create_item)
+
+def remove_item(item_id):
+    def _remove_item():
+        example.removeByTag(item_id)
+    return _helper(_remove_item)
+
+
+
 def open_door(item_id, door_id):
     def _open_door():
         setattr(mopy.monkey.engine.data.game.doors, door_id, 'open')
@@ -143,3 +162,13 @@ def update_item(item_id, d: dict):
         item.update(d)
 
     return _helper(_set_item_pos)
+
+
+def pickup_item(item_id, id):
+    from mopy.factories.interface import refresh_inventory
+    def _pickup_item():
+        example.getById(id).setActive(False)
+        data = mopy.monkey.engine.data.globals
+        data.inventory[item_id] = 1
+        refresh_inventory()
+    return _helper(_pickup_item)

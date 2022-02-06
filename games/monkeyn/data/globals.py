@@ -6,9 +6,9 @@ font_size = 8
 current_verb = None
 current_item_1 = ''
 current_item_2 = ''
-current_player = 'main.guybrush'
+current_player = 'guybrush'
 default_text_offset = (0, 60)
-default_speed = 50
+default_speed = 500
 ui_font = 'fonts.ui'
 default_font = 'fonts.monkey'
 use_keyboard = True
@@ -19,6 +19,7 @@ class Colors:
     verb_unselected = utils.rgb(0, 170, 0)
     inv_unselected = utils.rgb(170, 0, 170)
     inv_selected = utils.rgb(255, 85, 255)
+
 
 
 verbs = {

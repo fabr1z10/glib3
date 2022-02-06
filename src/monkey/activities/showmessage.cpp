@@ -13,8 +13,8 @@ ShowMessage::ShowMessage(const ITab& t) {
     m_size = t.get<float>("size", 8.0f);
     m_color = t.get<glm::vec4>("color");
     m_outlineColor = t.get<glm::vec4>("outline_color", glm::vec4(0.0f, 0.0f, 0.0f, 255.0f));
-    m_color /= 255.0f;
-    m_outlineColor /= 255.0f;
+    //m_color /= 255.0f;
+    //m_outlineColor /= 255.0f;
 
     m_align = static_cast<TextAlignment>(t.get<int>("align", TextAlignment::BOTTOM));
     m_offset = t.get<glm::vec2>("offset", glm::vec2(0.0f));

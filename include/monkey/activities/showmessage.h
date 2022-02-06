@@ -22,7 +22,7 @@ public:
             TextAlignment align,
             float time,
             glm::vec2 offset) : Activity(), m_generatedEntity{nullptr}, m_message{message}, m_time{time}, m_font{font}, m_actor{actor}, m_size{size},
-                                m_align{align}, m_color{color}, m_outlineColor{outlineColor}, m_offset{offset} {}
+                                m_align{align}, m_color{color}, m_outlineColor{outlineColor}, m_offset{offset}, m_maxWidth{1000.0f} {}
     ShowMessage(
             const std::string& message,
             const std::string& font,
@@ -33,7 +33,7 @@ public:
             TextAlignment align,
             float time,
             glm::vec2 offset) : Activity(), m_generatedEntity{nullptr}, m_message{message}, m_time{time}, m_font{font}, m_pos{pos}, m_size{size},
-                                m_align{align}, m_color{color}, m_outlineColor{outlineColor}, m_offset{offset}, m_actor(-1) {}
+                                m_align{align}, m_color{color}, m_outlineColor{outlineColor}, m_offset{offset}, m_actor(-1), m_maxWidth{1000.0f} {}
     virtual ~ShowMessage();
     void Start() override;
     void Run (float dt) override;

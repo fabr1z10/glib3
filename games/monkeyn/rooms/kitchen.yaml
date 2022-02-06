@@ -1,0 +1,25 @@
+---
+  type: scumm.room
+  id: kitchen
+  width: 320
+  height: 144
+  items:
+    - type: scumm.bg
+      image: gfx/kitchen.png
+      pos: [0, 0, -1]
+    - type: scumm.bg
+      image: gfx/kitchen2.png
+      pos: [204, 0, 1]
+    - type: scumm.bg
+      image: gfx/kitchen3.png
+      pos: [115, 0, 1]
+    - type: scumm.walkarea
+      id: 0
+      poly: [40,0,100,0,112,11,149,11,160,0,207,0,199,9,307,12,294,18,192,18,180,18,155,21,59,21,40,16]
+      walls:
+        - A: [204, -1]
+          B: [172, 48]
+          active: '~game.is_pier_door_closed'
+      depth:
+        type: func.liny
+        values: [0, 1, 144, 0]

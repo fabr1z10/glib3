@@ -237,10 +237,11 @@ def make_verb_button(verb_id: str, pos):
 
 
 def make_inventory_button(item):
+    print('making in vbutton for  ' + str(item))
     items = mopy.monkey.engine.data.items
     gl = mopy.monkey.engine.data.globals
-    qty = gl.inventory[item]['qty']
-    text = mopy.monkey.engine.read(item['text']) if qty == 1 else str(qty) + ' ' + mopy.monkey.engine.read(item['plural'])
+    qty = gl.inventory[item]
+    text = mopy.monkey.engine.read(items[item]['text']) if qty == 1 else str(qty) + ' ' + mopy.monkey.engine.read(items[item]['plural'])
     e = Text(font=gl.ui_font, size=gl.font_size, text=text, color=gl.Colors.inv_unselected, align=TextAlignment.bottom_left)
     e.add_component(HotSpot(shape=None, onenter=hover_on_inventory_button(item), onleave=hover_off_inventory_button(item),
                             onclick=run_action()))
@@ -270,3 +271,12 @@ def on_leave_collision_area(player, entity, x, y):
     if on_leave:
         f = getattr(mopy.monkey.engine.data.scripts, on_leave)
         f(player, entity, x, y)
+
+
+def refresh_inventory():
+    p = example.get('inventory')
+    g = mopy.monkey.engine.data.globals
+    if p.valid:
+        p.clearText()
+        for k, v in g.inventory.items():
+            p.appendText(k)

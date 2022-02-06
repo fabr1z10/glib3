@@ -33,13 +33,15 @@ def scumm_init(engine):
             prefix = filepath[n:-5].replace('/', '.') + '.'
             with open(filepath) as fi:
                 if filepath[-4:] == 'yaml':
-                    print(filepath)
                     cip = yaml.load(fi, Loader=yaml.FullLoader)
                     if cip:
                         for key, value in cip.items():
-                            item_id = prefix + key
+                            item_id = key
                             if item_id == mopy.scumm.gl.current_player:
                                 value['room'] = mopy.monkey.engine.room
+                            if item_id in engine.data.items:
+                                print('Error! Duplicate item: ' + item_id)
+                                exit(1)
                             engine.data.items[item_id] = value
                             room = value.get('room')
                             if room:
@@ -56,8 +58,6 @@ def scumm_init(engine):
                         for key, value in cip.items():
                             engine.data.dialogues[key] = value
                             print('loaded dialogue: ' + key)
-
-    print(' i am here ' + str(mopy.scumm.gl))
 
 initializers = {
     'scumm': scumm_init
@@ -157,7 +157,8 @@ class Engine:
         filename = example.dir + '/rooms/' + self.room + '.yaml'
         try:
             with open(filename) as f:
-                room = yaml.load(f, Loader=yaml.FullLoader)
+                room2 = yaml.load(f, Loader=yaml.FullLoader)
+                room = mopy.monkey.engine.repl_vars(room2)
                 rt = room['type']
                 if 'on_start' in room:
                     getattr(self.scripts, room['on_start'])()
@@ -239,9 +240,9 @@ class Engine:
             if value[0] == '#' and value[1] != '#':
                 a[index] = args[int(value[1:])]
             elif value[0] == '@' and value[1] != '@':
-                print(' *** reading variable: ' + value[1:])
                 a[index] = operator.attrgetter(value[1:])(monkey.engine.data)
-                print(str(a[index]) + ' is da valu')
+            elif value[0] == '~' and value[1] != '~':
+                a[index] = operator.attrgetter(value[1:])(monkey.engine.data)()
             elif value[0] == '$' and value[1] != '$':
                 print(' *** reading str: ' + value[1:])
                 # get a string

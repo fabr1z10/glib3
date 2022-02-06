@@ -55,7 +55,7 @@ alley:
   room: village3
   walk_to: '@game.pos.village3_alley'
   wdir: n
-door_scummbar:
+door_village_scummbar:
   type: scumm.item
   text: '$objects/door'
   size: [31, 52]
@@ -65,7 +65,7 @@ door_scummbar:
   wdir: n
   anim: '@game.doors.scummbar'
   model: '01.door_village_scummbar'
-door_voodoolady:
+door_village_voodoolady:
   type: scumm.item
   text: '$objects/door'
   pos: [220, 52, -1]
@@ -75,7 +75,7 @@ door_voodoolady:
   wdir: e
   model: 01.door_village_voodoolady
   anim: '@game.doors.voodoolady'
-door_scummbar_out:
+door_scummbar_village:
   type: scumm.item
   text: '$objects/door'
   size: [38, 47]
@@ -85,6 +85,16 @@ door_scummbar_out:
   wdir: w
   anim: '@game.doors.scummbar'
   model: '01.door_scummbar_village'
+door_scummbar_kitchen:
+  type: scumm.item
+  text: '$objects/door'
+  size: [35, 69]
+  pos: [591, 8, -1]
+  room: scummbar
+  walk_to: '@game.pos.scummbar_kitchen_door'
+  wdir: e
+  anim: '@game.doors.kitchen'
+  model: '01.door_scummbar_kitchen'
 fireplace:
   type: scumm.item
   model: 01.scummbar_fireplace
@@ -130,3 +140,171 @@ fakedoor4:
   walk_to: [188, 61]
   wdir: n
   model: 01.fakedoor4
+door_kitchen_scummbar:
+  type: scumm.item
+  text: '$objects/door'
+  size: [38, 53]
+  pos: [19, 18, -1]
+  room: kitchen
+  walk_to: '@pos.kitchen_door'
+  wdir: w
+  anim: '@game.doors.kitchen'
+  model: 01.door_kitchen_scummbar
+kitchen_potostew:
+  type: scumm.item
+  model: 01.potostew
+  pos: [153, 39, -0.9]
+  room: kitchen
+door_pier:
+  type: scumm.item
+  model: 01.door_pier
+  pos: [192, 9, -1]
+  room: kitchen
+  text: '$objects/door'
+  size: [20, 64]
+  walk_to: [182, 9]
+  anim: '@game.doors.pier'
+  wdir: e
+meat:
+  type: scumm.item
+  model: 01.meat
+  pos: [79, 40, -0.9]
+  text: '$objects/meat'
+  size: [20, 10]
+  room: kitchen
+  walk_to: [90, 18]
+  wdir: n
+barrel:
+  type: scumm.item
+  pos: [8, 0, 0]
+  text: '$objects/barrel'
+  size: [27, 29]
+  room: kitchen
+  walk_to: [41, 5]
+  wdir: w
+potostew:
+  type: scumm.item
+  pos: [157, 39, 0]
+  text: '$objects/potostew'
+  size: [25, 16]
+  room: kitchen
+  walk_to: [168, 16]
+  wdir: n
+fish:
+  type: scumm.item
+  model: 01.fish
+  pos: [234, 9, 1]
+  text: '$objects/fish'
+  size: [12,7]
+  room: kitchen
+  walk_to: [234, 12]
+  wdir: s
+pot:
+  type: scumm.item
+  model: 01.pot
+  pos: [104, 24, -0.90]
+  text: '$objects/pot'
+  size: [15, 7]
+  room: kitchen
+  walk_to: [112,18]
+  wdir: n
+kitchen_trap:
+  type: scumm.trap
+  pos: [100, 0, 0]
+  room: kitchen
+  size: [10, 144]
+  on_enter: on_kitchen_trap
+  active: '@game.fish_not_taken'
+seagull:
+  type: scumm.item
+  model: 01.seagull
+  pos: [0,0,1]
+plank_button:
+  type: scumm.hotspot
+  pos: [277, 8]
+  size: [34, 9]
+  on_click: pane
+  room: kitchen
+plank:
+  type: scumm.item
+  tag: plank
+  pos: [248, 0, 1]
+  model: 01.plank
+  room: kitchen
+  walk_to: [295, 0]
+  wdir: s
+scummbar_mancomb:
+  type: scumm.item
+  text: '$objects/pirate'
+  pos: [89, 24]
+  model: 01.scummbar.mancomb
+  size: [30, 30]
+  walk_to: [120, 20]
+  wdir: n
+  room: scummbar
+  parent: walkarea_0
+scummbar_estevan:
+  type: scumm.item
+  text: '$objects/pirate'
+  pos: [164, 21, 1]
+  model: 01.scummbar.estevan
+  size: [30, 20]
+  walk_to: '@game.pos.estevan'
+  wdir: s
+  room: scummbar
+scummbar_pirate_1:
+  type: scumm.item
+  model: 01.scummbar.pirate1
+  room: scummbar
+  pos: [138, 38, -1]
+  text: '$objects/pirates'
+  size: [30, 30]
+  walk_to: [140, 20]
+  wdir: n
+scummbar_pirate_2:
+  type: scumm.item
+  model: 01.scummbar.pirate2
+  room: scummbar
+  pos: [124, 20, -1]
+scummbar_pirate_3:
+  type: scumm.item
+  model: 01.scummbar.pirate3
+  room: scummbar
+  pos: [30, 0, 1]
+scummbar_pirate_4:
+  type: scumm.item
+  model: 01.scummbar.pirate4
+  room: scummbar
+  pos: [0,0,1]
+  text: '$objects/pirates'
+  size: [70, 20]
+  walk_to: [50, 10]
+  wdir: s
+scummbar_pirate_5:
+  type: scumm.item
+  model: 01.scummbar.pirate5
+  room: scummbar
+  pos: [200, 18, 1]
+scummbar_pirate_6:
+  type: scumm.item
+  model: 01.scummbar.pirate6
+  room: scummbar
+  pos: [160, 0, 1]
+scummbar_pirate_7:
+  type: scumm.item
+  model: 01.scummbar.pirate7
+  room: scummbar
+  pos: [255, 38, 1]
+  parent: walkarea_0
+scummbar_pirate_8:
+  type: scumm.item
+  model: 01.scummbar.pirate8
+  room: scummbar
+  pos: [215, 44, 1]
+  parent: walkarea_0
+scummbar_pirate_9:
+  type: scumm.item
+  model: 01.scummbar.pirate9
+  room: scummbar
+  pos: [278, 40, 1]
+  parent: walkarea_0
