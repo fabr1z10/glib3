@@ -1,0 +1,11 @@
+---
+  type: scumm.dialogue_room
+  id: mancomb
+  width: 320
+  height: 144
+  on_load:
+    func: '@scripts.on_init_mancomb'
+  items:
+    - type: scumm.bg
+      image: gfx/mancomb.png
+      pos: [0, 0, -1]

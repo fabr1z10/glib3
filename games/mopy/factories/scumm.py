@@ -71,6 +71,44 @@ def map_room(desc: dict):
     return room
 
 
+def dialogue_room(desc: dict):
+    gl = mopy.monkey.engine.data.globals
+    room = ScummRoom(desc)
+    room.add_runner(Scheduler())
+    room.init.append([refresh_inventory])
+    # read world size
+    width = desc['width']
+    height = desc['height']
+
+    device_size = mopy.monkey.engine.device_size
+    cam_width = device_size[0]
+    cam_height = device_size[1] - gl.ui_height
+
+    # add the main node
+    room.default_item = 'main'
+    main = Entity(tag='main')
+    main.camera = OrthoCamera(width, height, cam_width, cam_height, [0, gl.ui_height, cam_width, cam_height], tag='maincam')
+    room.add(main)
+
+    # add the ui node
+    ui = Entity(tag='ui')
+    ui.camera = OrthoCamera(cam_width, gl.ui_height, cam_width, gl.ui_height, [0, 0, cam_width, gl.ui_height], tag='uicam')
+    room.add(ui)
+
+    # dialogue node
+    dialogue_node = TextView(factory=make_dialogue_button, pos=(0, 0), size=(320, 56),
+        font_size=8, lines=7, delta_x=26, tag='dialogue')
+    dialogue_node.add_component(HotSpotManager())
+    room.add(dialogue_node)
+
+    inventory_node = Entity(tag='inventory')
+    ui.add(inventory_node)
+
+    # add static items
+    room.add_items(desc)
+    room.load_dynamic_items()
+    return room
+
 
 
 def sierra_room(desc: dict):

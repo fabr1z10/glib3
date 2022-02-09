@@ -10,7 +10,7 @@ guybrush:
     flag: 1
     mask: 2
     tag: 1
-  pos: [182, 32]
+  pos: [62, 32]
   room: lookout
   parent: walkarea_0
   dir: n

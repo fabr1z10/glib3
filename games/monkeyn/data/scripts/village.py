@@ -111,6 +111,8 @@ def lookat_pot(item_id, e): return sl.walk_and_say(item_id, ['$lines/36'])
 def lookat_fish(item_id, e): return sl.walk_and_say(item_id, ['$lines/37'])
 def lookat_barrel(item_id, e): return sl.walk_and_say(item_id, ['$lines/39'])
 def lookat_scummbar_pirate_1(item_id, e): return sl.walk_and_say(item_id, ['$lines/5'])
+def lookat_scummbar_mancomb(item_id, e):
+    return sl.walk_and_change_room(item_id, 'mancomb')
 
 def pickup_meat(item_id, e): return sl.walk_and_pickup(item_id, e)
 def pickup_pot(item_id, e): return sl.walk_and_pickup(item_id, e)
@@ -186,7 +188,8 @@ def init_scummbar():
 def seagull_lands():
     s = Script()
     if 'fish' in mopy.monkey.engine.data.globals.inventory:
-        s.add_action(actions.Animate(tag='seagull', anim='eat'))
+        s.add_action(actions.Animate(tag='seagull', anim='leave', sync=True))
+        s.add_action(al.remove_item('seagull'))
     else:
         s.add_action(actions.Animate(tag='seagull', anim='eat'))
     example.play(s)

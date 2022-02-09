@@ -9,8 +9,10 @@ from mopy.entity import TextAlignment
 def walk_to(item_id):
     # now get the walk_to for this item
     s = Script(uid='_main')
+    # if you own the item, no need to walk
+    if item_id in mopy.monkey.engine.data.globals.inventory:
+        return s
     item = sc.get_item(item_id)
-
     pos = item.get('walk_to')
     wdir = item.get('wdir', None)
     s.add_action(Walk(pos, 'player'))
@@ -31,9 +33,10 @@ def walk_and_pickup(item_id, e):
     return s
 
 
-def walk_and_change_room(item_id, room, pos, dir, parent='walkarea_0'):
+def walk_and_change_room(item_id, room, pos = None, dir = None, parent='walkarea_0'):
     s = walk_to(item_id)
-    s.add_action(update_item(mopy.monkey.engine.data.globals.current_player, {'room': room, 'pos': pos, 'dir': dir, 'parent': parent}))
+    if pos:
+        s.add_action(update_item(mopy.monkey.engine.data.globals.current_player, {'room': room, 'pos': pos, 'dir': dir, 'parent': parent}))
     s.add_action(ChangeRoom(room))
     return s
 

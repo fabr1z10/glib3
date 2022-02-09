@@ -20,6 +20,8 @@ class Script:
         iid = len(self.actions)
         if id is not None:
             self.map[id] = iid
+        if id and self.loop == id:
+            self.loop = iid
         self.actions.append(action)
         if after:
             for aid in after:
