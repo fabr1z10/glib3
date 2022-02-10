@@ -62,4 +62,5 @@ private:
     std::string m_innerTexture;
     std::string m_borderTexture;
     float m_maxWidth;
+    float m_outlineThickness;
 };

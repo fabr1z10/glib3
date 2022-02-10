@@ -188,11 +188,11 @@ class RemoveEntity(CallFunc):
 
 
 class Msg:
-    def __init__(self, text: str, font: str, pos: tuple, color: tuple, eoc=False, timeout=1, outline_color=None, outline=False, box=False, padding = 0,
-                 inner_texture='', border_texture='', align=TextAlignment.top_left):
+    def __init__(self, text: str, font: str = None, pos: tuple = (0, 0, 0), color: tuple = (1, 1, 1, 1), eoc=False, timeout=1, outline_color=None, outline=False, box=False, padding = 0,
+                 inner_texture='', border_texture='', align=TextAlignment.top_left, max_width=1000.0, thickness=1.0):
         self.type = 'action.msg'
-        self.font = font
-        self.text = text
+        self.font = font if font else mopy.monkey.engine.data.globals.default_font
+        self.text = mopy.monkey.engine.read(text)
         self.pos = pos
         self.color = color
         self.outline_color = outline_color
@@ -204,6 +204,9 @@ class Msg:
         self.inner_texture = inner_texture
         self.border_texture = border_texture
         self.align = align
+        self.max_width = max_width
+        self.thickness = thickness
+
 
 class Blink:
     def __init__(self, duration: float, blink_duration: float, entity_id=None, tag=None):

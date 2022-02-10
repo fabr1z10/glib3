@@ -40,6 +40,13 @@ def walk_and_change_room(item_id, room, pos = None, dir = None, parent='walkarea
     s.add_action(ChangeRoom(room))
     return s
 
+def change_room(room, pos = None, dir = None, parent='walkarea_0'):
+    s = Script()
+    if pos:
+        s.add_action(update_item(mopy.monkey.engine.data.globals.current_player, {'room': room, 'pos': pos, 'dir': dir, 'parent': parent}))
+    s.add_action(ChangeRoom(room))
+    return s
+
 def walk_and_dialogue(item_id, dialogue_id):
     a = walk_to(item_id)
     a.add_action(start_dialogue(dialogue_id, False))

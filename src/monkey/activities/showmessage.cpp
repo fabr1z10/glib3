@@ -12,7 +12,7 @@ ShowMessage::ShowMessage(const ITab& t) {
     m_font = t.get<std::string>("font");
     m_size = t.get<float>("size", 8.0f);
     m_color = t.get<glm::vec4>("color");
-    m_outlineColor = t.get<glm::vec4>("outline_color", glm::vec4(0.0f, 0.0f, 0.0f, 255.0f));
+    m_outlineColor = t.get<glm::vec4>("outline_color", glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
     //m_color /= 255.0f;
     //m_outlineColor /= 255.0f;
 
@@ -27,6 +27,7 @@ ShowMessage::ShowMessage(const ITab& t) {
 	m_innerTexture = t.get<std::string>("inner_texture", "");
 	m_borderTexture = t.get<std::string>("border_texture", "");
 	m_maxWidth = t.get<float>("max_width", 1000.0f);
+	m_outlineThickness = t.get<float>("thickness", 1.0f);
 }
 
 void ShowMessage::Start() {
@@ -58,21 +59,21 @@ void ShowMessage::Start() {
     ex.Transform(transform);
 	std::cout << "the bounds: " << ex.min.x << ", " << ex.min.y << " to " << ex.max.x << ", " << ex.max.y << "\n";
 		glm::vec2 outlineOffsets[] = {{0,  0},
-									  {-1, 0},
-									  {-1, 1},
-									  {0,  1},
-									  {1,  1},
-									  {1,  0},
-									  {1,  -1},
-									  {0,  -1},
-									  {-1, -1}};
-		for (int i = 0; i < (m_outline ? 9 : 1); ++i) {
+									  {-m_outlineThickness, 0},
+									  {m_outlineThickness, 0},
+									  {0,  m_outlineThickness},
+                                      {0,  -m_outlineThickness},
+									  {m_outlineThickness,  m_outlineThickness},
+                                      {m_outlineThickness,  -m_outlineThickness},
+                                      {-m_outlineThickness,  m_outlineThickness},
+									  {-m_outlineThickness, -m_outlineThickness}};
+		for (int i = 0; i < (m_outline ? 9: 1); ++i) {
 			auto entity = std::make_shared<Entity>();
 
 			//auto model = std::make_shared<TextModel>(mesh);
 			auto renderer = std::make_shared<Renderer>(model);
 
-			entity->SetPosition(glm::vec3(outlineOffsets[i] * 0.5f, i == 0 ? 0 : -1));
+			entity->SetPosition(glm::vec3(outlineOffsets[i][0], outlineOffsets[i][1], i == 0 ? 0 : -0.1));
 			renderer->setMultColor(i == 0 ? m_color : m_outlineColor);
 			renderer->SetTransform(transform);
 			entity->AddComponent(renderer);

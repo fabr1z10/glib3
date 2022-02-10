@@ -111,8 +111,13 @@ def lookat_pot(item_id, e): return sl.walk_and_say(item_id, ['$lines/36'])
 def lookat_fish(item_id, e): return sl.walk_and_say(item_id, ['$lines/37'])
 def lookat_barrel(item_id, e): return sl.walk_and_say(item_id, ['$lines/39'])
 def lookat_scummbar_pirate_1(item_id, e): return sl.walk_and_say(item_id, ['$lines/5'])
+def lookat_scummbar_pirate_4(item_id, e): return sl.walk_and_say(item_id, ['$lines/6'])
+talkto_scummbar_pirate_4 = lookat_scummbar_pirate_4
+
 def lookat_scummbar_mancomb(item_id, e):
     return sl.walk_and_change_room(item_id, 'mancomb')
+
+talkto_scummbar_mancomb = lookat_scummbar_mancomb
 
 def pickup_meat(item_id, e): return sl.walk_and_pickup(item_id, e)
 def pickup_pot(item_id, e): return sl.walk_and_pickup(item_id, e)
@@ -159,6 +164,13 @@ def cook_init_helper(s, id):
     # s.add_action(actions.RemoveEntity(tag='cook'))
     # s.add_action(actions.Animate(tag='scummbar_kitchen_door', anim='closed'))
 
+def anim_helper(tag):
+    s1 = Script(loop=0, uid='_' + tag)
+    s1.add_action(actions.DelayRandom(1.0, 5.0))
+    s1.add_action(actions.Animate(tag=tag, anim='idle_2', sync=True))
+    s1.add_action(actions.Animate(tag=tag, anim='idle_1'))
+    example.play(s1)
+
 def init_scummbar():
     if mopy.monkey.engine.previous_room == 'kitchen':
         s = Script(loop=100, uid='cook')
@@ -181,8 +193,8 @@ def init_scummbar():
         cook_init_helper(s, 0)
         example.play(s)
 
-    #anim_helper('scummbar_mancomb')
-    #anim_helper('scummbar_estevan')
+    anim_helper('scummbar_mancomb')
+    anim_helper('scummbar_estevan')
 
 
 def seagull_lands():

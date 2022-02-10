@@ -35,3 +35,22 @@ cook:
   speed: 100
   text_color: '@game.colors.cook_text'
   text_offset: [0,60]
+mancomb:
+  type: scumm.item
+  pos: [52, 18]
+  model: 01.mancomb
+  room: mancomb
+estevan:
+  type: character
+  pos: [176, 15]
+  model: 01/estevan.estevan
+  text_color: [170, 85, 0, 255]
+  text_offset: [0, 90]
+  room: estevan
+loom:
+  type: character
+  pos: [212, 26]
+  model: 01/loom.loom
+  text_color: [85, 85, 255, 255]
+  text_offset: [0, 90]
+  room: loom

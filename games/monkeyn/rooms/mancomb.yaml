@@ -1,5 +1,5 @@
 ---
-  type: scumm.dialogue_room
+  type: scumm.room
   id: mancomb
   width: 320
   height: 144
@@ -8,4 +8,4 @@
   items:
     - type: scumm.bg
       image: gfx/mancomb.png
-      pos: [0, 0, -1]
+      pos: [0, 0, -2]
