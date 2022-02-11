@@ -44,6 +44,7 @@ template<> std::shared_ptr<Model> AssetManager::get(const std::string& id) {
     auto assetDesc = m_assets->operator[](id);
     auto model = Engine::get().GetSceneFactory()->make2<Model>(*assetDesc.get());
     m_models[id] = model;
+    model->setId(id);
     return model;
 }
 
@@ -95,6 +96,12 @@ template<> std::shared_ptr<Func> AssetManager::get(const std::string& id) {
         tmp = tmp.attr(segment.c_str());
     std::cerr << "filo = " << tmp.get_type() << "\n";
     return std::make_shared<Func>(tmp);
+}
+
+
+std::unique_ptr<ITab> AssetManager::getAsset(const std::string &id) {
+    auto p = m_assets->operator[](id);
+    return p;
 }
 //#include <monkey/engine.h>
 //#include <monkey/texturedmesh.h>

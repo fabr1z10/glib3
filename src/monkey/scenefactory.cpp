@@ -99,6 +99,7 @@
 #include <monkey/activities/walk.h>
 #include <monkey/activities/turn.h>
 #include <monkey/activities/say.h>
+#include <monkey/activities/split.h>
 #include "../scumm/activities/enableblock.h"
 
 
@@ -244,6 +245,7 @@ SceneFactory::SceneFactory() {
 	add2<Turn>("action.turn");
 	add2<Say>("action.say");
     add2<EnableBlock> ("action.enable_block");
+    add2<SplitQuad> ("action.split_quad");
 
     add2<HotSpotManager> ("components.hotspotmanager");
     add2<Scheduler> ("runner.scheduler");

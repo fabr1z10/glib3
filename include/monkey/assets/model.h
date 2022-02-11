@@ -40,13 +40,23 @@ public:
     void addMesh(std::shared_ptr<IMesh> mesh);
     std::shared_ptr<IMesh> getMesh(size_t);
     size_t getMeshCount() const;
+    std::string getId() const;
+    void setId(const std::string&);
 protected:
     std::vector<std::shared_ptr<IMesh>> m_meshes;
     Bounds m_bounds;
     glm::vec3 m_offset;
+    std::string m_id;
     //bool m_shareable;
 };
 
+inline std::string Model::getId() const {
+    return m_id;
+}
+
+inline void Model::setId(const std::string& id) {
+    m_id = id;
+}
 inline size_t Model::getMeshCount() const {
 	return m_meshes.size();
 }

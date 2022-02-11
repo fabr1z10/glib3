@@ -24,6 +24,7 @@ public:
         GLIB_FAIL("IMMM");
     }
 
+    std::unique_ptr<ITab> getAsset(const std::string& id);
 
 private:
     std::unique_ptr<ITab> m_assets;
@@ -38,6 +39,8 @@ private:
 	//std::unordered_map<std::string, std::shared_ptr<Func> > m_scr;
     //std::unordered_map<std::string, std::shared_ptr<SkAnimation> > m_sanim;
 };
+
+
 
 template<> std::shared_ptr<Font> AssetManager::get(const std::string& id);
 
