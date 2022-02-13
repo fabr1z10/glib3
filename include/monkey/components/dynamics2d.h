@@ -24,6 +24,7 @@ private:
 
 class Dynamics : public Component {
 public:
+    Dynamics() : m_velocity(0.0f), m_acceleration(0.0f) {}
     Dynamics(const ITab&);
     void Start() override {}
     void Update(double) override {}
@@ -37,6 +38,7 @@ public:
 
 class Dynamics3D : public Component {
 public:
+    Dynamics3D();
     Dynamics3D(const ITab&);
     void Start() override {}
     void Update(double) override {}

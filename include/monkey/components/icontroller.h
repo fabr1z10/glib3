@@ -7,6 +7,7 @@
 class IController : public Component {
 public:
 	IController() = default;
+	IController(glm::vec3 size, glm::vec3 shift, bool debugShape = false);
 	IController(const ITab&);
 	virtual void Move(glm::vec3&) = 0;
     virtual bool grounded() const = 0;

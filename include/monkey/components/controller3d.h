@@ -39,6 +39,8 @@ struct RaycastOrigins3D {
 
 class __attribute__ ((visibility ("default"))) Controller3D : public IController {
 public:
+    Controller3D(glm::vec3 size, glm::vec3 shift, int maskUp, int maskDown, float skinWidth = .015f,
+                 float maxClimbAngle = 80.0f, float maxDescendAngle = 80.0f, bool debugShape = false);
     Controller3D(float maxClimbAngle, float maxDescendAngle, float skinwidth = .015f, int horizontalRayCount = 4, int verticalRayCount = 4)
             : IController(), m_maxClimbAngle(maxClimbAngle), m_maxDescendAngle(maxDescendAngle), m_skinWidth(skinwidth), m_horizontalRayCount(horizontalRayCount), m_verticalRayCount(verticalRayCount), m_platform(nullptr) {}
     virtual ~Controller3D() {}

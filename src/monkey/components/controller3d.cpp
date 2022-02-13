@@ -17,6 +17,10 @@
 
 using namespace glm;
 
+Controller3D::Controller3D(glm::vec3 size, glm::vec3 shift, int maskUp, int maskDown, float skinWidth, float maxClimbAngle, float maxDescendAngle,
+    bool debugShape) : IController(size, shift, debugShape), m_maxClimbAngle{maxClimbAngle}, m_maxDescendAngle{maxDescendAngle},
+    m_skinWidth{skinWidth}, m_maskUp{maskUp}, m_maskDown{maskDown} {
+}
 
 Controller3D::Controller3D(const ITab & t) : IController(t) {
 

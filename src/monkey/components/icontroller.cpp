@@ -1,6 +1,11 @@
 #include <monkey/components/icontroller.h>
 #include <monkey/entity.h>
 
+IController::IController(glm::vec3 size, glm::vec3 shift, bool debugShape) : Component(),
+m_halfSize(0.5f * size), m_shift(shift), m_debug(debugShape) {
+
+}
+
 IController::IController(const ITab& t) : m_debugShape(nullptr) {
 	auto size = t.get<glm::vec3>("size");
 	m_halfSize = 0.5f * size;

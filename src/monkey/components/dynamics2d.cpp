@@ -21,6 +21,9 @@ Dynamics3D::Dynamics3D(const ITab&) {
     m_velocity = glm::vec3(0.0f);
 }
 
+Dynamics3D::Dynamics3D() : m_velocity(glm::vec3(0.0f)) {
+
+}
 
 glm::vec3 Dynamics2D::step(float dt, float targetVelocityX, float accelerationX) {
     // first, apply gravity
