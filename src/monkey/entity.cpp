@@ -387,10 +387,10 @@ Camera* Entity::GetCamera() {
 void Entity::SetAngle(float angle) {
     glm::mat4 m = glm::rotate(deg2rad * angle, glm::vec3(0,0,1));
     std::cerr << "angle= " << angle << "\n";
-    m_localTransform[0][0] = (m_flipHorizontal ? -1 : 1) * m[0][0];
-    m_localTransform[0][1] = (m_flipHorizontal ? -1 : 1) * m[0][1];
-    m_localTransform[1][0] = m[1][0];
-    m_localTransform[1][1] = m[1][1];
+    m_localTransform[0][0] = m_scale.x * (m_flipHorizontal ? -1 : 1) * m[0][0];
+    m_localTransform[0][1] = m_scale.x * (m_flipHorizontal ? -1 : 1) * m[0][1];
+    m_localTransform[1][0] = m_scale.y * m[1][0];
+    m_localTransform[1][1] = m_scale.y * m[1][1];
 
     UpdateWorldTransform();
 }

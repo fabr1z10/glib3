@@ -12,6 +12,7 @@ Fly::Fly(const ITab& t) : State(t) {
     m_initialVelocity = t.get<glm::vec2>("initial_velocity");
     m_angularSpeed = t.get<float>("angular_speed", 0.0f);
     m_gravity = t.get<float>("gravity");
+
 }
 
 void Fly::AttachStateMachine(StateMachine * sm) {
@@ -33,12 +34,11 @@ void Fly::AttachStateMachine(StateMachine * sm) {
 
 void Fly::Init(const ITab &d) {
     m_dynamics->m_velocity = m_initialVelocity;
+    m_angle = 0.0f;
 }
 
 void Fly::Run(double dt) {
     auto dtf = static_cast<float>(dt);
-    m_entity->MoveLocal(m_initialVelocity*dtf);
-    return;
 
     if (m_controller->grounded()) {
         return;
@@ -47,9 +47,11 @@ void Fly::Run(double dt) {
     glm::vec2 a(0.0f);
     a.y = -m_gravity;
     m_dynamics->m_velocity += a * dtf;
-
     auto delta = glm::vec3(m_dynamics->m_velocity * dtf, 0.0f);
+    m_entity->SetAngle(0.0f);
     m_controller->Move(delta);
+    m_entity->SetAngle(m_angle);
+    m_angle += m_angularSpeed * dtf;
 
 }
 

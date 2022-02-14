@@ -25,4 +25,5 @@ private:
     AnimationRenderer* m_renderer;
     glm::vec2 m_initialVelocity;
     float m_angularSpeed;
+    float m_angle;
 };

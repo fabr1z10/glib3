@@ -12,6 +12,10 @@ public:
     void Start() override;
 
     void Run(float) override {}
-
+private:
+    int m_pieces;
+    float m_angularSpeed;
+    float m_xSpeedFactor;
+    float m_gravity;
 };
 

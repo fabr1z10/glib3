@@ -4,7 +4,7 @@
 
 SkAnimation::SkAnimation(const ITab& t) {
 	m_loop = t.get<bool>("loop", true);
-	auto speedUp = t.get<float>("speed_up", 1.0f);
+	auto speedUp = 1.0f / t.get<float>("speed_up", 1.0f);
 	m_length = t.get<float>("length") * speedUp;
 
     int index = 0;

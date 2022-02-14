@@ -3,6 +3,7 @@ from mopy.components import Gfx, Collider, SmartCollider, SkeletalCollider, Shad
 import mopy.monkey as monkey
 import mopy.shapes3d as sh3d
 import mopy.shapes as sh
+import mopy
 from mopy.util import tiles_to_world
 import copy
 import math
@@ -115,6 +116,14 @@ def common3D(ciao):
     scale = ciao.get('scale', 1)
     e.scale = (scale, scale, 1)
     e.model = ciao.get('model', None)
+    print('THE MODEL IS ' + str(e.model))
+    if isinstance(e.model, dict):
+        ciao = copy.deepcopy(mopy.monkey.engine.get_asset(e.model['template']))
+        f = getattr(mopy.monkey.engine.data.scripts, ciao['builder'])
+        if not f:
+            print ("hey I need a function: " + f + " to create the model")
+        e.model = f(ciao, e.model['args'])
+        print(e.model)
     size = ciao.get('size', dt.default_size)
     energy = ciao.get('energy', 1)
     show_boxes = getattr(monkey.engine.data.globals, 'show_boxes', False)
@@ -320,6 +329,7 @@ def player3D(ciao):
     dt = monkey.engine.data.globals
     is_sprite = isinstance(model_desc, str)
     e = common3D(t)
+    print('SUCLAMINCH')
     e.tag = 'player'
     max_speed = t.get('max_speed', dt.default_speed)
     time_acc = t.get('time_acc', dt.default_time_acc)
