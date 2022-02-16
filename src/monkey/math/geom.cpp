@@ -96,6 +96,25 @@ float GetFirstSolution(float a, float b, float c) {
     return (-b -sqrt(delta)) / (2.0f*a);
 }
 
+glm::vec2 incenter(const glm::vec2& A, const glm::vec2& B, const glm::vec2& C) {
+    auto ab = glm::length(B - A);
+    auto bc = glm::length(C - B);
+    auto ac = glm::length(C - A);
+    auto perim = ab + bc + ac;
+    glm::vec2 incenter((bc * A.x + ac * B.x + ab * C.x) / perim, (bc * A.y + ac * B.y + ab * C.y) / perim);
+    return incenter;
+}
+
+float rad_inscribed_circle(const glm::vec2& A, const glm::vec2& B, const glm::vec2& C) {
+    auto ab = glm::length(B - A);
+    auto bc = glm::length(C - B);
+    auto ac = glm::length(C - A);
+    auto semi_perim = 0.5f * (ab + bc + ac);
+    auto area = abs(cross(B - A, C - A)) * 0.5f;
+    return area / (semi_perim);
+
+}
+
 float SmoothDamp(float current, float target, float& currentVelocity, float smoothTime, float deltaTime, float maxSpeed)
 {
     smoothTime = std::max(0.0001f, smoothTime);

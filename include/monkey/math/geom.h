@@ -93,3 +93,7 @@ bool inLineOfSight (const Poly&, glm::vec2, glm::vec2);
 
 float GetFirstSolution(float, float, float);
 float SmoothDamp(float current, float target, float& currentVelocity, float smoothTime, float deltaTime, float maxSpeed = 10000000.0f);
+
+/// computes incenter of triangles defined by points A, B, C
+glm::vec2 incenter(const glm::vec2& A, const glm::vec2& B, const glm::vec2& C);
+float rad_inscribed_circle(const glm::vec2& A, const glm::vec2& B, const glm::vec2& C);

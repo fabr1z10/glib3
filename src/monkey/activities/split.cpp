@@ -7,6 +7,8 @@
 #include <monkey/components/statemachine.h>
 #include <monkey/states/fly.h>
 #include <monkey/components/controller3d.h>
+#include <monkey/math/util.h>
+
 
 SplitQuad::SplitQuad(const ITab& t) : TargetActivity(t) {
     m_pieces = t.get<int>("pieces");
@@ -55,7 +57,7 @@ void SplitQuad::Start() {
         delaunator::Delaunator d(coords);
         auto mainEntity = std::make_shared<Entity>();
         auto scale = m_entity->getScaleVec();
-        auto l = [&] (std::vector<Vertex3D>& vertices, unsigned index) {
+        auto l = [&] (std::vector<Vertex3D>& vertices, unsigned index, std::vector<unsigned>& indices) {
             float xA = coords[2 * d.triangles[index]];
             float yA = coords[2 * d.triangles[index] + 1];
             float xB = coords[2 * d.triangles[index+1]];
@@ -63,13 +65,41 @@ void SplitQuad::Start() {
             float xC = coords[2 * d.triangles[index+2]];
             float yC = coords[2 * d.triangles[index+2] + 1];
 
+            glm::vec2 A(xA, yA);
+            glm::vec2 B(xB, yB);
+            glm::vec2 C(xC, yC);
+//            auto ab = glm::length(B - A);
+//            auto bc = glm::length(C - B);
+//            auto ac = glm::length(C - A);
+//            auto perim = (ab + bc + ac);
+            auto inc = incenter(A, B, C);
+            //glm::vec2 incenter((bc * xA + ac * xB + ab * xC) / perim, (bc * yA + ac * yB + ab * yC)/perim);
+            float radius = rad_inscribed_circle(A, B, C);
+            glm::vec2 center(inc);
+            unsigned u = 10;
+            float step = 2.0 * M_PI / u;
+            vertices.emplace_back(0.0f, 0.0f, 0.0f, (x + center.x) / texWidth, (y + height - center.y) / texHeight, 1.0f, 1.0f, 1.0f, 1.0f);
+            for (int i = 0; i < u; ++i) {
+                float xc = center.x + radius * cos(step * i);
+                float yc = center.y + radius * sin(step * i);
+                vertices.emplace_back(xc - center.x, yc - center.y, 0.0f, (xc + x) / texWidth, (y + height - yc) / texHeight, 1.0f, 1.0f, 1.0f, 1.0f);
+                indices.push_back(0);
+                indices.push_back(i+1);
+                indices.push_back((i==u-1 ? 1 : i+2));
+
+            }
+
+            /* old
             glm::vec2 centroid((xA + xB + xC) / 3.0f, (yA + yB + yC) / 3.0f);
+
 
             vertices.emplace_back(xA - centroid.x, yA - centroid.y, 0.0f, (xA + x) / texWidth, (y + height - yA) / texHeight, 1.0f, 1.0f, 1.0f, 1.0f);
             vertices.emplace_back(xB - centroid.x, yB - centroid.y, 0.0f, (xB + x) / texWidth, (y + height - yB) / texHeight, 1.0f, 1.0f, 1.0f, 1.0f);
             vertices.emplace_back(xC - centroid.x, yC - centroid.y, 0.0f, (xC + x) / texWidth, (y + height - yC) / texHeight, 1.0f, 1.0f, 1.0f, 1.0f);
 
             auto c1 = centroid + glm::vec2(ox, oy);
+            */
+            auto c1 = center + glm::vec2(ox, oy);
             c1.x *= scale.x;
             c1.y *= scale.y;
             return c1;
@@ -77,10 +107,10 @@ void SplitQuad::Start() {
 
         for (size_t i = 0; i < d.triangles.size(); i+=3) {
             std::vector<Vertex3D> vertices;
-            std::vector<unsigned int> indices{0, 1, 2};
+            std::vector<unsigned int> indices;
             auto mesh = std::make_shared<Mesh<Vertex3D>>(ShaderType::TEXTURE_SHADER_UNLIT);
             mesh->m_primitive = GL_TRIANGLES;
-            auto centroid = l(vertices, i);
+            auto centroid = l(vertices, i, indices);
             mesh->Init(vertices, indices);
             glm::vec2 vel (centroid.x * m_xSpeedFactor, centroid.y * 0.2f);
             mesh->addTexture(sheet, TexType::DIFFUSE);
@@ -88,7 +118,7 @@ void SplitQuad::Start() {
             m->addMesh(mesh);
             auto subEntity = std::make_shared<Entity>();
             auto renderer = m->makeRenderer(m);
-            renderer->setMultColor(glm::vec4(1.0f, 0.5f, 0.5f, 1.0f));
+            renderer->setMultColor(glm::vec4(1.0f, 0.6f, 0.6f, 1.0f));
             subEntity->AddComponent(renderer);
             subEntity->AddComponent(std::make_shared<Controller3D>(glm::vec3(1.0f), glm::vec3(0.0f), 2, 2));
             subEntity->AddComponent(std::make_shared<Dynamics>());

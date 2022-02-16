@@ -62,9 +62,24 @@ public:
 	CollisionReport intersect(IShape* s1, IShape* s2, const glm::mat4& t1, const glm::mat4& t2) override;
 };
 
+class AABBToConvex : public IIntersector {
+public:
+    CollisionReport intersect(IShape* s1, IShape* s2, const glm::mat4& t1, const glm::mat4& t2) override;
+
+
+};
+
 class AABB3DIntersector : public IIntersector {
 public:
 	CollisionReport intersect(IShape* s1, IShape* s2, const glm::mat4& t1, const glm::mat4& t2) override;
+};
+
+class AABBvsPseudo3D : public IIntersector {
+public:
+    AABBvsPseudo3D(IIntersector* int2d) : m_intersector(int2d) {}
+    CollisionReport intersect(IShape* s1, IShape* s2, const glm::mat4& t1, const glm::mat4& t2) override;
+private:
+    IIntersector * m_intersector;
 };
 
 class Intersector2D : public IIntersector {
@@ -82,6 +97,7 @@ public:
 	CollisionReport intersect(IShape* shape1, IShape* shape2, const glm::mat4&, const glm::mat4&) override;
 private:
 	std::unordered_map<std::pair<ShapeType, ShapeType>, std::unique_ptr<IIntersector> > m_func;
+	std::shared_ptr<Intersector2D> m_int2D;
 };
 
 //

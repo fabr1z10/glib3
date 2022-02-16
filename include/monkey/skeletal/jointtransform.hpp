@@ -17,4 +17,6 @@ struct JointTransform {
 
     static JointTransform interpolate(const JointTransform& A, const JointTransform& B, float progression);
     glm::mat4 getLocalTransform() const;
+    glm::mat4 getLocalTransformScale() const;
+
 };

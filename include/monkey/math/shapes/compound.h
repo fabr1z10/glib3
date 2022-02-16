@@ -6,6 +6,7 @@
 class CompoundShape : public IShape {
 public:
     CompoundShape() : IShape() { m_type = ShapeType::COMPOUND; }
+    CompoundShape(const ITab&);
     bool isPointInside(glm::vec3) const override;
 //	std::unique_ptr<IShape> transform (const glm::mat4& t) override;
 

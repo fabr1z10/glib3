@@ -2,11 +2,71 @@
 #include <monkey/entity.h>
 #include <monkey/math/geom.h>
 
+
 Mover::Mover() : Component(), m_pause(false), m_hold(false) {}
 
 void Mover::setPause(bool value) {
     m_pause = value;
 }
+
+PoweredUpMover::PoweredUpMover(const ITab& t) {
+    t.foreach("pos", [&] (const ITab& u) {
+        auto pos = u.get<glm::vec3>("pos");
+        auto angle = glm::radians(u.get<float>("angle", 0.0f));
+        MoverFrame t;
+        t.transform.translation = pos;
+        t.transform.scale = u.get<glm::vec3>("scale", glm::vec3(1.0f));
+        t.time = u.get<float>("time");
+        t.mask = u.get<int>("mask", -1);
+
+        //auto rotDef = bone.get<glm::vec4>("angle");
+        //float angle = glm::radians(rotDef[0]);
+        //auto axis = glm::normalize(glm::vec3(rotDef[1], rotDef[2], rotDef[3]));
+        auto axis = glm::vec3(0, 0, 1);
+        t.transform.rotation = glm::angleAxis(angle, axis);
+        m_transforms.push_back(t);
+    });
+}
+
+void PoweredUpMover::startMove() {
+    m_progression = 0.0f;
+    m_t = 0.0f;
+    auto& m = m_transforms[m_current];
+    if (m.mask != -1) {
+        m_collider->setCollisionMask(m.mask);
+    }
+
+
+
+}
+
+void PoweredUpMover::Start() {
+    m_collider = m_entity->GetComponent<ICollider>();
+    m_current = 0;
+    startMove();
+}
+
+void PoweredUpMover::Update(double dt) {
+    m_t += static_cast<float>(dt);
+    auto& a = m_transforms[m_current];
+    auto& b = m_transforms[m_current+1];
+    auto progression = std::min(1.0f, m_t / (b.time - a.time));
+    auto t = JointTransform::interpolate(a.transform, b.transform, progression);
+    auto mat =  t.getLocalTransformScale();
+    m_entity->SetLocalTransform(mat);
+    if (progression >= 1.0f) {
+        if (m_current == m_transforms.size()-2) {
+            m_current = 0;
+        } else {
+            m_current++;
+        }
+        startMove();
+    }
+
+
+
+}
+
 
 PolygonalMover::PolygonalMover(const ITab& t) {
     auto pts = t.get<std::vector<float>>("points");

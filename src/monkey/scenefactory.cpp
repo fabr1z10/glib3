@@ -100,6 +100,8 @@
 #include <monkey/activities/turn.h>
 #include <monkey/activities/say.h>
 #include <monkey/activities/split.h>
+#include <monkey/math/shapes3d/pseudo3d.h>
+#include <monkey/states/foepath.h>
 #include "../scumm/activities/enableblock.h"
 
 
@@ -183,6 +185,7 @@ SceneFactory::SceneFactory() {
     add2<LuaKeyListener> ("runner.keylistener");
     add2<LuaInfo> ("components.info");
 	add2<PolygonalMover> ("components.polymover");
+    add2<PoweredUpMover> ("components.powered_up_mover");
 	add2<LineDynamicMover>("components.line_dynamic_mover");
 	//add2<AcceleratedMover> ("components.accelerated_mover");
     add2<KeyboardInputMethod> ("components.keyinput");
@@ -267,12 +270,14 @@ SceneFactory::SceneFactory() {
 	add2<Circle> ("circle");
     add2<Polygon> ("poly");
     add2<PolyLine> ("shape.polyline");
+    add2<CompoundShape> ("shape.compound");
 
 
 	// ************ 3d shapes **************
 	add2<AABB>("shape3d.aabb");
 	add2<Plane>("shape3d.plane");
 	add2<Prism>("shape3d.prism");
+	add2<Pseudo3DShape>("shape3d.pseudo3d");
 	// TODO !
 
     //add2<PolyLine> ("shape.graph");
@@ -314,6 +319,7 @@ SceneFactory::SceneFactory() {
     add2<PlayerJump3D> ("state.player_jump_3D");
     add2<PlayerWalk3D> ("state.player_walk_3D");
     add2<FoeChase3D> ("state.foe_chase_3D");
+    add2<FoePath> ("state.foe_path");
     add2<Hit3D>("state.hit");
     add2<Dead3D>("state.dead");
 

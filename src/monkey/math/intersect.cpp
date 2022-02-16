@@ -6,6 +6,7 @@
 #include <monkey/math/shapes/polytri.h>
 #include <monkey/math/algo/sat.h>
 #include <monkey/math/algo/geometry.h>
+#include <monkey/math/shapes3d/pseudo3d.h>
 
 
 CollisionReport AABB2DIntersector::intersect(IShape *s1, IShape *s2, const glm::mat4 &t1, const glm::mat4 &t2) {
@@ -16,6 +17,14 @@ CollisionReport AABB2DIntersector::intersect(IShape *s1, IShape *s2, const glm::
 	b2.Transform(t2);
 	report.collide = b1.Intersects2D(b2);
 	return report;
+}
+
+CollisionReport AABBToConvex::intersect(IShape *s1, IShape *s2, const glm::mat4 &t1, const glm::mat4 &t2) {
+    auto bounds = s1->getBounds();
+    bounds.Transform(t1);
+    auto* sc2 = static_cast<IConvexPolygon*>(s2);
+    auto r = Rect(bounds.max.x - bounds.min.x, bounds.max.y - bounds.min.y, glm::vec3(bounds.min.x, bounds.min.y, 0.0f));
+    return SAT(r, *sc2, glm::mat4(1.0f), t2);
 }
 
 CollisionReport AABB3DIntersector::intersect(IShape *s1, IShape *s2, const glm::mat4 &t1, const glm::mat4 &t2) {
@@ -29,11 +38,34 @@ CollisionReport AABB3DIntersector::intersect(IShape *s1, IShape *s2, const glm::
 
 }
 
+CollisionReport AABBvsPseudo3D::intersect(IShape *s1, IShape *s2, const glm::mat4 &t1, const glm::mat4 &t2) {
+    // test z first
+    auto aabbBounds = s1->getBounds();
+    aabbBounds.Transform(t1);
+    auto pseudo = dynamic_cast<Pseudo3DShape*>(s2);
+    auto dz = pseudo->getHalfDepth();
+    float z = t2[3][2];
+    bool not_overlap = (aabbBounds.min.z > z + dz) || (z - dz > aabbBounds.max.z);
+    if (not_overlap) {
+        return CollisionReport();
+    }
+    return m_intersector->intersect(s1, pseudo->getInternalShape(), t1, t2);
+}
+
 Intersector3D::Intersector3D() {
+    m_int2D = std::make_shared<Intersector2D>();
 	m_func[std::make_pair(ShapeType::AABB, ShapeType::AABB)] =
 			std::make_unique<AABB3DIntersector>();
 	m_func[std::make_pair(ShapeType::AABB, ShapeType::COMPOUND)] =
 			std::make_unique<CompoundIntersector>(this);
+    m_func[std::make_pair(ShapeType::COMPOUND, ShapeType::COMPOUND)] =
+            std::make_unique<CompoundIntersector>(this);
+    //m_func[std::make_pair(ShapeType::PSEUDO3D, ShapeType::PSEUDO3D)] =
+    //        std::make_unique<CompoundIntersector>(this);
+    m_func[std::make_pair(ShapeType::PSEUDO3D, ShapeType::COMPOUND)] =
+            std::make_unique<CompoundIntersector>(this);
+    m_func[std::make_pair(ShapeType::AABB, ShapeType::PSEUDO3D)] =
+            std::make_unique<AABBvsPseudo3D>(m_int2D.get());
 }
 
 Intersector2D::Intersector2D() {
@@ -69,6 +101,8 @@ Intersector2D::Intersector2D() {
 			std::make_unique<CompoundIntersector>(this);
 	m_func[std::make_pair(ShapeType::AABB, ShapeType::AABB)] =
 			std::make_unique<AABB2DIntersector>();
+    m_func[std::make_pair(ShapeType::AABB, ShapeType::CONVEXPOLY)] =
+            std::make_unique<AABBToConvex>();
 
 }
 

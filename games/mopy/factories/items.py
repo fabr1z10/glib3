@@ -155,6 +155,33 @@ def common3D(ciao):
     return e
 
 
+def pr3D(ciao):
+    t = get_char_desc(ciao)
+    model_desc = t.get('model')
+    dt = monkey.engine.data.globals
+    is_sprite = isinstance(model_desc, str)
+    max_speed = t.get('max_speed', dt.default_speed)
+    jump_height = t.get('jump_height', dt.default_jump_height)
+    time_to_jump_apex = t.get('time_to_jump_apex', dt.default_time_to_jump_apex)
+    gravity = (2.0 * jump_height) / (time_to_jump_apex * time_to_jump_apex)
+    e = common3D(t)
+    walk_state = {
+        'id': 'walk',
+        'type': 'state.foe_path',
+        'moves': ciao['moves'],
+        'max_speed': max_speed,
+        'gravity': gravity
+    }
+    states = [walk_state]
+    state_machine = {
+        'type': 'components.state_machine',
+        'initial_state': 'walk',
+        'states': states
+    }
+    e.components.append(state_machine)
+
+    return e
+
 def foe3D(ciao):
     t = get_char_desc(ciao)
     model_desc = t.get('model')
@@ -248,12 +275,14 @@ def make_death_sequence(model, gravity, speed):
         dseq.append({
             'id': 'dead',
             'type': 'state.dead',
-            'max_speed': 10,
-            'vy': 20,
+            'max_speed': mopy.monkey.engine.data.globals.dead_sequnce_vel[0],
+            'vy': mopy.monkey.engine.data.globals.dead_sequnce_vel[1],
             'gravity': gravity * 0.5,
             'start_anim': 'hit',
             'fall_anim': 'airfall',
             'lie_anim': 'liedown',
+            'blink_after': mopy.monkey.engine.data.globals.dead_sequence_blink_after,
+            'remove_after': mopy.monkey.engine.data.globals.dead_sequence_remove_after,
         })
     elif 'dead_0' in anims:
         j = 0

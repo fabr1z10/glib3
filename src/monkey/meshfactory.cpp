@@ -11,6 +11,7 @@
 #include <monkey/model/combomodel.h>
 #include <monkey/math/earcut.h>
 #include <monkey/texturedmesh.h>
+#include <monkey/math/shapes3d/pseudo3d.h>
 //
 //
 
@@ -35,6 +36,8 @@ MeshFactory::MeshFactory(float z) : m_z(z) {
 		{ return drawPlane(s, color, vertices, indices); }));
 	m_plotters.insert(std::make_pair(ShapeType::PRISM, [&] (IShape* s, glm::vec4 color, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices)
 		{ return drawPrism(s, color, vertices, indices); }));
+    m_plotters.insert(std::make_pair(ShapeType::PSEUDO3D, [&] (IShape* s, glm::vec4 color, std::vector<VertexColor>& vertices, std::vector<unsigned>& indices)
+        { return drawPseudo3D(s, color, vertices, indices); }));
 
 
 	//m_plottersTex.insert(std::make_pair(ShapeType::POLY, [&] (IShape* s, const std::vector<TexInfo>& texInfos) { return drawPolyTex(s, texInfos); }));
@@ -228,6 +231,16 @@ std::shared_ptr<Model> MeshFactory::drawPrismTex(IShape * s, const std::vector<T
 
 }
 
+void MeshFactory::drawPseudo3D(IShape * s, glm::vec4 t, std::vector<VertexColor> &vertices,
+                               std::vector<unsigned int> &indices)
+{
+    auto ps =dynamic_cast<Pseudo3DShape*>(s);
+    auto is = ps->getInternalShape();
+    auto plotter = m_plotters.find(is->getShapeType());
+    if (plotter != m_plotters.end()) {
+        plotter->second(is, t, vertices, indices);
+    }
+}
 
 void MeshFactory::drawPrism(IShape * s, glm::vec4 color, std::vector<VertexColor> &vertices,
 							std::vector<unsigned int> &indices)

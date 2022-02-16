@@ -1,6 +1,19 @@
 #include <algorithm>
 #include <monkey/math/shapes/compound.h>
 #include <monkey/error.h>
+#include <monkey/engine.h>
+#include <monkey/scenefactory.h>
+
+
+
+CompoundShape::CompoundShape(const ITab& t) {
+    m_type = ShapeType::COMPOUND;
+    auto factory = Engine::get().GetSceneFactory();
+    t.foreach("shapes", [&] (const ITab& shape) {
+        auto s = factory->make2<IShape>(shape);
+        this->addShape(s);
+    });
+}
 
 bool CompoundShape::isPointInside(glm::vec3 P) const {
     for (auto& shape : m_shapes) {

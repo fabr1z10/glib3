@@ -19,6 +19,15 @@ glm::mat4 JointTransform::getLocalTransform() const {
 	return trans*rot;
 }
 
+glm::mat4 JointTransform::getLocalTransformScale() const {
+    auto sc = glm::scale(scale);
+    auto rot =glm::mat4_cast(rotation);
+    auto trans = glm::translate(glm::mat4(1.0f), translation);
+    //return rot * trans;
+    return trans*rot*sc;
+}
+
+
 JointTransform& JointTransform::operator+=(const JointTransform &b) {
 	translation += b.translation;
 	rotation = b.rotation;

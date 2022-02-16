@@ -4,6 +4,8 @@
 #include <glm/glm.hpp>
 #include <vector>
 #include "dynamics2d.h"
+#include "icollider.h"
+#include <monkey/skeletal/jointtransform.hpp>
 
 class Mover : public Component {
 
@@ -35,6 +37,27 @@ private:
     int m_mode;
     bool m_done;
 };
+
+class PoweredUpMover : public Mover {
+public:
+    PoweredUpMover(const ITab&);
+    void Start() override;
+    void Update(double) override;
+private:
+    void startMove();
+    struct MoverFrame {
+        JointTransform transform;
+        float time;
+        int mask;
+    };
+    unsigned int m_current;
+    // goes from 0 to 1
+    float m_progression;
+    float m_t;
+    std::vector<MoverFrame> m_transforms;
+    ICollider* m_collider;
+};
+
 
 // models an object that can move on a 1D curve
 // you can specify min and max values for the single coord
