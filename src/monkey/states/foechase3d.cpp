@@ -115,8 +115,8 @@ void FoeChase3D::Run(double dt) {
 	m_entity-> SetFlipX(rightOfPlayer);
 	auto d = targetPos - entityPos;
 	float dx = d.x * (m_entity->GetFlipX() ? -1.0f : 1.0f);
-    m_inRange = (fabs(d.z) < m_halfThickness) &&
-            (dx > m_attackRange[0] && dx < m_attackRange[1]);
+    m_inRange = true;//(fabs(d.z) < m_halfThickness) &&
+            //(dx > m_attackRange[0] && dx < m_attackRange[1]);
     if (m_inRange) {
         // attack with probability p_attack
         //std::cout << "qui;";

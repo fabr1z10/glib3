@@ -345,7 +345,6 @@ void Controller3D::VerticalCollisions(glm::vec3& velocity) {
 
 	if (m_details.below == 0) {
 		// leaving
-		std::cout << "leaving platform\n";
 	}
 
 

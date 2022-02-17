@@ -231,12 +231,28 @@ def foe3D(ciao):
     if n_attacks > 0:
         for i in range(0, n_attacks):
             a_id = 'attack_' + str(i)
-            state_machine['states'].append({
-                'id': a_id,
-                'type': 'state.anim',
-                'anim': a_id,
-                'next_state': 'walk'
-            })
+            attack_style = attacks[i].get('style', 'anim')
+            if attack_style == 'anim':
+                state_machine['states'].append({
+                    'id': a_id,
+                    'type': 'state.anim',
+                    'anim': a_id,
+                    'next_state': 'walk'
+                })
+            elif attack_style == 'jmp':
+                state_machine['states'].append({
+                    'id': a_id,
+                    'type': 'state.jump_attack',
+                    'anim': a_id,
+                    'next_state': 'walk',
+                    'max_speed': max_speed,
+                    'gravity': gravity,
+                    'cast_mask': dt.CollisionFlags.player,
+                    'cast_tag': dt.CollisionTags.big_foe,
+                    'peak_height': 200,
+                    'down_speed': 1000.0
+                })
+
 
 
     e.components.append(state_machine)

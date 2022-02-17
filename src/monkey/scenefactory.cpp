@@ -102,6 +102,7 @@
 #include <monkey/activities/split.h>
 #include <monkey/math/shapes3d/pseudo3d.h>
 #include <monkey/states/foepath.h>
+#include <monkey/states/jumpattack.h>
 #include "../scumm/activities/enableblock.h"
 
 
@@ -320,6 +321,7 @@ SceneFactory::SceneFactory() {
     add2<PlayerWalk3D> ("state.player_walk_3D");
     add2<FoeChase3D> ("state.foe_chase_3D");
     add2<FoePath> ("state.foe_path");
+    add2<JumpAttack> ("state.jump_attack");
     add2<Hit3D>("state.hit");
     add2<Dead3D>("state.dead");
 
