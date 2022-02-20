@@ -25,10 +25,13 @@ public:
 
     void End() override;
 private:
-    bool randomAttack(float distance);
+    bool randomAttack(float distance, float scale);
     Entity* m_target;
     glm::vec2 m_attackRange;
     float m_attackDistance;
+    glm::vec2 m_unscaledAttackRange;
+    float m_unscaledAttackDistance;
+    float m_unscaledThickness;
     bool m_inRange;
 	std::string m_walkAnim;
 	std::string m_idleAnim;

@@ -103,6 +103,7 @@
 #include <monkey/math/shapes3d/pseudo3d.h>
 #include <monkey/states/foepath.h>
 #include <monkey/states/jumpattack.h>
+#include <monkey/components/scaler.h>
 #include "../scumm/activities/enableblock.h"
 
 
@@ -210,6 +211,7 @@ SceneFactory::SceneFactory() {
     add2<TexAnimator> ("components.texanimator");
     add2<ScriptPlayer> ("components.scriptplayer");
     add2<WalkArea>("components.walkarea");
+    add2<Scaler>("components.scaler");
 	add2<CharacterController>("components.character_controller");
 
     //add2<Model>("model.raw");

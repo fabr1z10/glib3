@@ -40,16 +40,19 @@ void FoeChase3D::AttachStateMachine(StateMachine * sm) {
 	m_target = Monkey::get().Get<Entity>("player");
     m_collider = m_entity->GetComponent<ICollider>();
 	// set the attack ranges
-    auto scale = m_entity->getScaleVec();
-    m_thickness = scale.z * Engine::get().getVariable<float>("data.globals.thickness");
-    m_halfThickness = 0.5f * m_thickness;
-    m_attackRange = scale.x * m_collider->getAttackDistance();
-    m_attackDistance = 0.5f * (m_attackRange[0] + m_attackRange[1]);
+
+	m_unscaledThickness = Engine::get().getVariable<float>("data.globals.thickness");
+	m_unscaledAttackRange = m_collider->getAttackDistance();
+    m_unscaledAttackDistance = 0.5f * (m_unscaledAttackRange[0] + m_unscaledAttackRange[1]);
+	//m_thickness = scale.z * Engine::get().getVariable<float>("data.globals.thickness");
+    //m_halfThickness = 0.5f * m_thickness;
+    //m_attackRange = scale.x * m_collider->getAttackDistance();
+    //m_attackDistance = 0.5f * (m_attackRange[0] + m_attackRange[1]);
 
 	int attackId = 0;
 	for (auto& a : m_attackMap) {
 	    if (a.second.inRange) {
-	        a.second.range = scale.x * m_collider->getAttackRange("attack_" + std::to_string(attackId));
+	        a.second.range = m_collider->getAttackRange("attack_" + std::to_string(attackId));
 	    }
 	    attackId++;
 	}
@@ -80,12 +83,12 @@ void FoeChase3D::Init(const ITab& d) {
 //
 //
 // returns whether attack is performed
-bool FoeChase3D::randomAttack(float dx) {
+bool FoeChase3D::randomAttack(float dx, float scaleX) {
 
     float u = Random::get().GetUniformReal(0.0f, 1.0f);
     auto iter = m_attackMap.lower_bound(u);
     while (iter != m_attackMap.end()) {
-        if (!iter->second.inRange || (dx > iter->second.range[0] && dx < iter->second.range[1])) {
+        if (!iter->second.inRange || (dx > scaleX * iter->second.range[0] && dx < scaleX * iter->second.range[1])) {
             std::string nextState = "attack_" + std::to_string(iter->second.attackId);
             m_sm->SetState(nextState);
             return true;
@@ -97,8 +100,10 @@ bool FoeChase3D::randomAttack(float dx) {
 
 void FoeChase3D::Run(double dt) {
     auto dtf = static_cast<float>(dt);
-
-
+    auto scale = m_entity->getScaleVec();
+    m_thickness = scale.z * m_unscaledThickness;
+    m_attackRange = scale.x * m_unscaledAttackRange;
+    m_attackDistance = 0.5f * (m_attackRange[0] + m_attackRange[1]);
 //	if (m_controller->grounded() && m_dynamics->m_velocity.y <=0) {
 //        m_dynamics->m_velocity.y = 0.0f;
 //    }
@@ -120,7 +125,7 @@ void FoeChase3D::Run(double dt) {
     if (m_inRange) {
         // attack with probability p_attack
         //std::cout << "qui;";
-        if (randomAttack(dx)) {
+        if (randomAttack(dx, scale.x)) {
             //std::cout << dx << ", " << d.z << ", " << m_halfThickness << " " << m_attackRange[0] << " " << m_attackRange[1] << "\n";
             return;
         }

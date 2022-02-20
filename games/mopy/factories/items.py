@@ -146,6 +146,13 @@ def common3D(ciao):
             'attacks': ciao.get('attacks', None)
         }
     })
+    scaling = ciao.get('scaling')
+    if scaling:
+        e.add_component({
+            'type': 'components.scaler',
+            'p0': scaling[0],
+            'p1': scaling[1]
+        })
     # shadow
     apply_shadow = getattr(dt, 'apply_shadow', False)
     if apply_shadow:
@@ -569,19 +576,20 @@ def rect_platform_3d(ciao):
     height = ciao.get('height', 1.0)
 
     y = ciao.get('y', 0.0)
-    top_tex = ciao['top']
-    side_tex = ciao['side']
+    top_tex = ciao.get('top')
+    side_tex = ciao.get('side')
     collision_tag = ciao.get('collision_tag', 0)
     shape = sh3d.Prism(shape=sh.Poly(outline=outline), height=height, walls=ciao.get('walls', []))
-    e.model = {
-        'type': 'model.prism',
-        'repeat': ciao['repeat'],
-        'poly': outline,
-        'top': top_tex,
-        'side': side_tex,
-        'height': height,
-        'offset': [0, height, 0]
-    }
+    if top_tex and side_tex:
+        e.model = {
+            'type': 'model.prism',
+            'repeat': ciao['repeat'],
+            'poly': outline,
+            'top': top_tex,
+            'side': side_tex,
+            'height': height,
+            'offset': [0, height, 0]
+        }
     # e.add_component(comp.ShapeGfxColor(shape=shape, color=color))
     e.add_component(Collider(shape=shape, flag=2, mask=0, tag=collision_tag, debug=True))
     return e
