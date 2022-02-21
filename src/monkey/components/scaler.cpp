@@ -22,6 +22,6 @@ void Scaler::Update(double) {
     auto z = m_entity->GetPosition().z;
     auto scaleFactor = m_a * z + m_b;
     auto scale = scaleFactor * m_scale;
-    std::cerr << "now scale " << z << " " << scale[0] << std::endl;
+    //std::cerr << "now scale " << z << " " << scale[0] << std::endl;
     m_entity->setScale(scale);
 }

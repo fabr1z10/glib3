@@ -44,6 +44,7 @@ class BasicRoom(Room):
         on_preload = room_info.get('on_preload', None)
         on_load = room_info.get('on_load', None)
         self.tile_size = getattr(monkey.engine.data.globals, 'tile_size', [1, 1])# monkey.engine.room_vars.get('tile_size', [1, 1])
+        monkey.engine.data.globals.room_scaling = desc.get('scaling')
         if on_preload:
             on_preload(room_info)
         if on_load:

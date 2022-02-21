@@ -9,7 +9,7 @@ ShadowRenderer::ShadowRenderer(const ITab& t) : Renderer(t) {
 	m_scaleLength = t.get<float>("scale_length", 1.0f);
 	m_translate = t.get<glm::vec3>("translate", glm::vec3(0.0f));
 	m_shear = t.get<float>("shear", 0.0f);
-	m_multColor = glm::vec4(0.0f, 0.0f, 0.0f, 0.5f);
+	m_multColor = glm::vec4(1.0f, 0.0f, 0.0f, 0.5f);
 }
 
 void ShadowRenderer::Draw(Shader * shader) {

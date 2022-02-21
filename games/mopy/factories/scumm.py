@@ -248,10 +248,13 @@ def bg(data):
     if 'image' in data:
         e.model = {
             'type': 'model.rect',
-            'tex': data['image']
+            'tex': data['image'],
+            'scale': data.get('scale', (1, 1)),
+            'repeat': data.get('repeat', (1, 1)),
         }
     else:
         e.model = data['model']
+
     return e
 
 
@@ -259,8 +262,25 @@ def bg(data):
 def bg_ps3D(data):
     e = bg(data)
     e.auto_pos = True
-    e.pos = data['pos']
-    e.pos[1] += e.pos[2] / math.sqrt(2)
+    # check if epos is set
+    if 'epos' in data:
+        ep = data['epos']
+        e.pos = [ep[0], 0, -math.sqrt(2.0) * ep[1]]
+    else:
+        e.pos = data['pos']
+        sq = math.sqrt(2) * 0.5
+        e.pos[1] += e.pos[2] / math.sqrt(2)
+    if 'parallax' in data:
+        p0 = data['parallax']['initial_position']
+        p0[1] += sq * e.pos[2]
+        device = mopy.monkey.engine.device_size
+        e.add_component({
+            'type': 'components.parallax',
+            'cam': 'maincam',
+            'factor': data['parallax']['factor'],
+            'cam0': [device[0] * 0.5, device[1] * 0.5],
+            'pos0': p0
+        })
     print('cazzone ' + str(e.pos))
     return e
 

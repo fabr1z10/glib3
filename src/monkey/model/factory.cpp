@@ -29,7 +29,7 @@ std::shared_ptr<IMesh> ModelFactory::b2Poly(b2PolygonShape &shape, glm::vec4 col
 
 std::shared_ptr<Model> ModelFactory::rect(float width, float height,
                                           glm::vec2 offset, RenderType rtype,
-                                          glm::vec4 color, const std::string& tex, glm::vec2 repeat) {
+                                          glm::vec4 color, const std::string& tex, glm::vec2 repeat, glm::vec2 scale) {
     std::shared_ptr<IMesh> mesh;
     if (tex.empty()) {
         auto m = std::make_shared<Mesh<VertexColor>>(ShaderType::COLOR_SHADER);
@@ -53,8 +53,8 @@ std::shared_ptr<Model> ModelFactory::rect(float width, float height,
         auto m = std::make_shared<Mesh<Vertex3D>>(ShaderType::TEXTURE_SHADER_UNLIT);
         if (width == 0 || height == 0) {
 			auto t = Engine::get().GetAssetManager().get<Tex>(tex);
-			width = t->GetWidth();
-			height = t->GetHeight();
+			width = scale.x * t->GetWidth();
+			height = scale.y * t->GetHeight();
 		}
 
 		std::vector<Vertex3D> vertices{
@@ -130,7 +130,8 @@ std::shared_ptr<Model> ModelFactory::_rect(const ITab & t) {
     auto color = t.get<glm::vec4> ("color", glm::vec4(1.0f));
     auto rtype = (render == "fill" ? RenderType::FILL : RenderType::WIREFRAME);
     auto repeat = t.get<glm::vec2>("repeat", glm::vec2(1.0f, 1.0f));
-    return rect(width, height, offset, rtype, color, tex, repeat);
+    auto scale = t.get<glm::vec2>("scale", glm::vec2(1.0f, 1.0f));
+    return rect(width, height, offset, rtype, color, tex, repeat, scale);
 }
 
 

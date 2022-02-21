@@ -146,12 +146,13 @@ def common3D(ciao):
             'attacks': ciao.get('attacks', None)
         }
     })
-    scaling = ciao.get('scaling')
-    if scaling:
+
+    # scaling should be applied only if current room has a scaling associated
+    if dt.room_scaling:
         e.add_component({
             'type': 'components.scaler',
-            'p0': scaling[0],
-            'p1': scaling[1]
+            'p0': dt.room_scaling[0],
+            'p1': dt.room_scaling[1]
         })
     # shadow
     apply_shadow = getattr(dt, 'apply_shadow', False)
@@ -337,7 +338,7 @@ def wa3d(desc):
     height = desc.get('height', 1.0)
     depth_y = depth * math.sqrt(2.0)
     y0 = outline[1] - depth - height
-    x0 = outline[0]
+    x0 = 0
     z0 = -depth_y
     pos = (x0, y0, z0)
     top = (x0, y0 + height, z0)
@@ -349,6 +350,7 @@ def wa3d(desc):
         oline.append(outline[i] - x0)
         oline.append((outline[i+1] - a0) * math.sqrt(2.0))
     print(oline)
+
     pos=(0,0,0)
     e = Entity(pos=pos)
     e.auto_pos= True
@@ -393,12 +395,12 @@ def player3D(ciao):
     gravity = (2.0 * jump_height) / (time_to_jump_apex * time_to_jump_apex)
     jump_speed = abs(gravity) * time_to_jump_apex
     e.components.append({'type': 'components.keyinput'})
-    # e.components.append({
-    #     'type': 'components.follow',
-    #     'cam': 'maincam',
-    #     'relativepos': [0, 5, 20],
-    #     'up': [0, 1, 0]
-    # })
+    e.components.append({
+         'type': 'components.follow',
+         'cam': 'maincam',
+         'relativepos': [0, 5, 20],
+         'up': [0, 1, 0]
+    })
 
     walk_state = {
         'id': 'walk',

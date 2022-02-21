@@ -31,7 +31,9 @@ void FoePath::Run(double dt) {
 
     glm::vec3 delta = seg.direction * m_maxSpeed * static_cast<float>(dt);
     m_controller->Move(delta);
-
+    if (m_time >= seg.time) {
+        Engine::get().Remove(m_entity);
+    }
 
 
 }
