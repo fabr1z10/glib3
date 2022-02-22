@@ -272,6 +272,9 @@ void SkCollider::Start() {
 
     float minMaxAttackDist = 1000.0f;
     float maxMinAttackDist = -1000.0f;
+	float attackMin = std::numeric_limits<float>::infinity();
+	float attackMax = -std::numeric_limits<float>::infinity();
+
     for (const auto& animId : m_model->getAnimations()) {
         auto animation = animId.second;
         // associate collision box
@@ -289,7 +292,7 @@ void SkCollider::Start() {
         if (animation->hasAttacks()) {
             const auto& attack = animation->getAttacks()[0];
             // create a shape
-
+			glm::vec2 range(std::numeric_limits<float>::infinity(), -std::numeric_limits<float>::infinity());
             for (const auto& b : attack.boxInfos) {
                 int jId = m_model->getJointId(b.jointId);
                 if (jId != -1) {
@@ -316,16 +319,24 @@ void SkCollider::Start() {
                         auto atr = attackPose.offset * at * rt;
                         auto atrBounds = shape->getBounds();
                         atrBounds.Transform(atr);
-                        minMaxAttackDist = std::min(minMaxAttackDist, atrBounds.max.x);
-                        maxMinAttackDist = std::max(maxMinAttackDist, atrBounds.min.x);
+						attackMin = std::min(attackMin, atrBounds.min.x);
+						attackMax = std::max(attackMax, atrBounds.max.x);
+						range.x = std::min(range.x, attackMin);
+						range.y = std::max(range.y, attackMax);
+                        //minMaxAttackDist = std::min(minMaxAttackDist, atrBounds.max.x);
+                        //maxMinAttackDist = std::max(maxMinAttackDist, atrBounds.min.x);
                         break;
                     }
                 }
             }
+			m_attackRanges[animId.first] = range;
         }
     }
+	m_attackDistance = glm::vec2(std::max(0.0f, attackMin), std::max(0.0f, attackMax));
     //m_attackDistance = 0.5f * (minMaxAttackDist + maxMinAttackDist) * m_entity->GetScale();
-    m_attackDistance= glm::vec2(0.0f);
+
+
+	//m_attackDistance= glm::vec2(0.0f);
 
     mesh->Init(vertices, indices);
     debugModel->addMesh(mesh);
@@ -545,4 +556,8 @@ std::type_index SkCollider::GetType() {
 
 glm::vec2 SkCollider::getAttackDistance() const {
     return m_attackDistance;
+}
+
+glm::vec2 SkCollider::getAttackRange(const std::string & id) const {
+	return m_attackRanges.at(id);
 }

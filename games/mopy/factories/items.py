@@ -117,6 +117,7 @@ def common3D(ciao):
     e.scale = (scale, scale, 1)
     e.model = ciao.get('model', None)
     print('THE MODEL IS ' + str(e.model))
+    energy = ciao.get('energy', 1)
     if isinstance(e.model, dict):
         ciao = copy.deepcopy(mopy.monkey.engine.get_asset(e.model['template']))
         f = getattr(mopy.monkey.engine.data.scripts, ciao['builder'])
@@ -125,7 +126,9 @@ def common3D(ciao):
         e.model = f(ciao, e.model['args'])
         print(e.model)
     size = ciao.get('size', dt.default_size)
-    energy = ciao.get('energy', 1)
+
+    print ('MEGASUCA = ' + str(ciao))
+    print ('FOTTIMI COL CAZZO ' + str(energy))
     show_boxes = getattr(monkey.engine.data.globals, 'show_boxes', False)
 
     e.components.append({
@@ -371,6 +374,8 @@ def get_char_desc(ciao):
         exit(1)
     print (' ** reading character: ' + str(id))
     t = copy.deepcopy(monkey.engine.get_asset(id))
+    print('HERE IS THE BITCH')
+    print(t)
     model_desc = t.get('model')
     dt = monkey.engine.data.globals
     is_sprite = isinstance(model_desc, str)
