@@ -19,5 +19,5 @@ private:
     ICollisionEngine* m_engine;
     int m_castMask;
     int m_castTag;
-
+    bool m_hit;
 };

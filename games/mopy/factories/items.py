@@ -1,5 +1,5 @@
 from mopy.entity import Entity, Text, TextAlignment
-from mopy.components import Gfx, Collider, SmartCollider, SkeletalCollider, ShadowRenderer, ShapeGfxColor
+from mopy.components import Gfx, Collider, SmartCollider, SkeletalCollider, ShadowRenderer, ShapeGfxColor, Info
 import mopy.monkey as monkey
 import mopy.shapes3d as sh3d
 import mopy.shapes as sh
@@ -112,11 +112,11 @@ def common3D(ciao):
     dt = monkey.engine.data.globals
 
     e = Entity()
+    e.layer = 1
     e.tag = ciao.get('tag', None)
     scale = ciao.get('scale', 1)
     e.scale = (scale, scale, 1)
     e.model = ciao.get('model', None)
-    print('THE MODEL IS ' + str(e.model))
     energy = ciao.get('energy', 1)
     if isinstance(e.model, dict):
         ciao = copy.deepcopy(mopy.monkey.engine.get_asset(e.model['template']))
@@ -124,11 +124,8 @@ def common3D(ciao):
         if not f:
             print ("hey I need a function: " + f + " to create the model")
         e.model = f(ciao, e.model['args'])
-        print(e.model)
     size = ciao.get('size', dt.default_size)
 
-    print ('MEGASUCA = ' + str(ciao))
-    print ('FOTTIMI COL CAZZO ' + str(energy))
     show_boxes = getattr(monkey.engine.data.globals, 'show_boxes', False)
 
     e.components.append({
@@ -193,6 +190,18 @@ def pr3D(ciao):
 
     return e
 
+
+# an AABB that triggers a callback when player collides with it
+def collider(ciao):
+    e = Entity()
+    dt = monkey.engine.data.globals
+    size = ciao['size']
+    e.add_component(Collider(shape=sh3d.AABB(size), flag=dt.CollisionFlags.foe, mask=dt.CollisionFlags.player,
+                             tag=dt.CollisionTags.player_callback, debug=dt.show_boxes))
+    e.add_component(Info(func=ciao['func']))
+    return e
+
+
 def foe3D(ciao):
     t = get_char_desc(ciao)
     model_desc = t.get('model')
@@ -254,7 +263,7 @@ def foe3D(ciao):
                 state_machine['states'].append({
                     'id': a_id,
                     'type': 'state.jump_attack',
-                    'anim': a_id,
+                    #'anim': a_id,
                     'next_state': 'walk',
                     'max_speed': max_speed,
                     'gravity': gravity,
@@ -262,6 +271,19 @@ def foe3D(ciao):
                     'cast_tag': dt.CollisionTags.big_foe,
                     'peak_height': 200,
                     'down_speed': 1000.0
+                })
+                state_machine['states'].append({
+                    'id': 'land',
+                    'type': 'state.anim',
+                    'anim': 'land',
+                    'next_state': 'idle'
+                })
+                state_machine['states'].append({
+                    'id': 'idle',
+                    'type': 'state.foe_path',
+                    'moves': [{'direction': [1,0], 'time': 10, 'on_end': 1}],
+                    'max_speed': max_speed,
+                    'gravity': gravity
                 })
 
 
@@ -372,14 +394,10 @@ def get_char_desc(ciao):
     if not id:
         print ('** unknown character: ' + str(id))
         exit(1)
-    print (' ** reading character: ' + str(id))
     t = copy.deepcopy(monkey.engine.get_asset(id))
-    print('HERE IS THE BITCH')
-    print(t)
     model_desc = t.get('model')
     dt = monkey.engine.data.globals
     is_sprite = isinstance(model_desc, str)
-    print ('is sprite: '  + str(is_sprite))
     return t
 
 def player3D(ciao):
@@ -388,7 +406,6 @@ def player3D(ciao):
     dt = monkey.engine.data.globals
     is_sprite = isinstance(model_desc, str)
     e = common3D(t)
-    print('SUCLAMINCH')
     e.tag = 'player'
     max_speed = t.get('max_speed', dt.default_speed)
     time_acc = t.get('time_acc', dt.default_time_acc)

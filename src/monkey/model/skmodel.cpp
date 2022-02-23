@@ -264,10 +264,10 @@ void SkModel::computeOffset() {
 			continue;
 		}
 		auto kp = m_jointInfos[jointId].mesh->getKeyPoint(p.second);
-		std::cerr << "key point " << p.first << ", " << p.second << ": " << kp.x << ", " << kp.y << "\n";
+		//std::cerr << "key point " << p.first << ", " << p.second << ": " << kp.x << ", " << kp.y << "\n";
 
 		auto mp = m_restTransforms2[jointId] * glm::vec4(kp.x, kp.y, 0.0f, 1.0f);
-		std::cerr << "key point (model) " << p.first << ", " << p.second << ": " << mp.x << ", " << mp.y << "\n";
+		//std::cerr << "key point (model) " << p.first << ", " << p.second << ": " << mp.x << ", " << mp.y << "\n";
 		m_offsetPoints.emplace_back(jointId, glm::vec3(mp.x, mp.y, 0.0f));
 //        auto iter = m_meshes.find(p.first);
 //        if (iter != m_meshes.end()) {

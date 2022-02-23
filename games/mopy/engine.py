@@ -12,6 +12,11 @@ import operator
 from collections import defaultdict
 import mopy.scumm
 
+
+
+
+
+
 def scumm_init(engine):
     mopy.scumm.gl = engine.data.globals
 
@@ -103,6 +108,7 @@ class Engine:
         self.add_item_factory('_player2D', mopy.factories.items.player2D)
         self.add_item_factory('_player3D', mopy.factories.items.player3D)
         self.add_item_factory('_npc3D', mopy.factories.items.foe3D)
+        self.add_item_factory('_collider', mopy.factories.items.collider)
         self.add_item_factory('_rect', mopy.factories.items.rect_platform)
         self.add_item_factory('_line', mopy.factories.items.line_platform)
         self.add_item_factory('_poly', mopy.factories.items.poly_platform)
@@ -192,7 +198,6 @@ class Engine:
                 if c == '@':
                     return value[1:]
                 else:
-                    print ('STRONZO MERDA! ' + value)
                     # get a variable
                     cc = self.data
                     for b in value[1:].split('/'):
@@ -201,7 +206,6 @@ class Engine:
                     if callable(cc):
                         return cc()
                     else:
-                        print ('RITORNO ' + str(cc))
                         return cc
             elif value[0] == '$':
                 c = value[1]

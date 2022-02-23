@@ -40,12 +40,13 @@ void JumpAttack::Run(double dt) {
         m_dynamics->m_velocity.z = 0.0f;
         m_dynamics->m_velocity.y = -m_downSpeed;
     }
-    if (m_controller->grounded()) {
+    if (m_dynamics->m_velocity.y < 0.0f) {
         // test collision
         auto r = AABB(glm::vec3(10.0f, 1.0f, 10.0f), glm::vec3(-5.0f, 0.0f, -5.0f));
         auto t = m_entity->GetWorldTransform();
         auto e = m_engine->ShapeCast(&r, t, m_castMask);
         if (e.report.collide) {
+        	m_hit = true;
             std::cerr << "FUCKING HIT!!!!\n";
             auto rm = m_engine->GetResponseManager();
             if (rm == nullptr) {
@@ -64,11 +65,19 @@ void JumpAttack::Run(double dt) {
                 }
             }
         }
-        m_sm->SetState("walk");
+
+    }
+    if (m_controller->grounded()) {
+    	if (m_hit) {
+			m_sm->SetState("land");
+    	} else {
+			m_sm->SetState("walk");
+		}
     }
 }
 
 void JumpAttack::Init(const ITab &) {
+	m_hit = false;
     auto entityPos = m_entity->GetPosition();
     auto targetPos = m_target->GetPosition();
     auto delta = targetPos - entityPos;

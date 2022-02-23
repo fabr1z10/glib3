@@ -254,25 +254,25 @@ def bg(data):
         }
     else:
         e.model = data['model']
-
+    e.layer = data.get('layer', 0)
     return e
 
 
 
 def bg_ps3D(data):
     e = bg(data)
-    e.auto_pos = True
     # check if epos is set
-    if 'epos' in data:
-        ep = data['epos']
-        e.pos = [ep[0], 0, -math.sqrt(2.0) * ep[1]]
-    else:
-        e.pos = data['pos']
-        sq = math.sqrt(2) * 0.5
-        e.pos[1] += e.pos[2] / math.sqrt(2)
+    # if 'epos' in data:
+    #     ep = data['epos']
+    #     e.pos = [ep[0], 0, -math.sqrt(2.0) * ep[1]]
+    # else:
+    #     e.pos = data['pos']
+    #
+    #     e.pos[1] += e.pos[2] / math.sqrt(2)
+    sq = math.sqrt(2) * 0.5
     if 'parallax' in data:
         p0 = data['parallax']['initial_position']
-        p0[1] += sq * e.pos[2]
+        #p0[1] += sq * e.pos[2]
         device = mopy.monkey.engine.device_size
         e.add_component({
             'type': 'components.parallax',
@@ -281,7 +281,6 @@ def bg_ps3D(data):
             'cam0': [device[0] * 0.5, device[1] * 0.5],
             'pos0': p0
         })
-    print('cazzone ' + str(e.pos))
     return e
 
 

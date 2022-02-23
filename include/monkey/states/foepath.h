@@ -17,6 +17,7 @@ private:
     struct PathSeg {
         glm::vec3 direction;
         float time;
+        int oe;
     };
     std::vector<PathSeg> m_segments;
     bool m_loop;

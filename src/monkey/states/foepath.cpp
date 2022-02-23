@@ -11,6 +11,7 @@ FoePath::FoePath(const ITab& t) : Base3D(t) {
        PathSeg seg;
        seg.direction = glm::normalize(u.get<glm::vec3>("direction"));
        seg.time = u.get<float>("time");
+       seg.oe = u.get<int>("on_end", 0);
        m_segments.push_back(seg);
     });
 }
@@ -29,10 +30,16 @@ void FoePath::Run(double dt) {
     m_time += dt;
     auto& seg = m_segments[m_currentIndex];
 
-    glm::vec3 delta = seg.direction * m_maxSpeed * static_cast<float>(dt);
-    m_controller->Move(delta);
     if (m_time >= seg.time) {
-        Engine::get().Remove(m_entity);
+    	if (seg.oe == 0) {
+			Engine::get().Remove(m_entity);
+		} else {
+    		m_renderer->setAnimation("idle");
+    	}
+    } else {
+		glm::vec3 delta = seg.direction * m_maxSpeed * static_cast<float>(dt);
+		m_controller->Move(delta);
+
     }
 
 

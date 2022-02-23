@@ -12,18 +12,18 @@ Parallax::Parallax(const ITab & t) : Component(t) {
     m_camId = t.get<std::string>("cam");
     m_factor = t.get<glm::vec2>("factor");
     m_campos0 = t.get<glm::vec2>("cam0");
-	m_pos0 = t.get<glm::vec2>("pos0");
+	//m_pos0 = t.get<glm::vec2>("pos0");
     //m_offset = t.get<glm::vec2>("offset", glm::vec2(0.0f));
-	m_ax = m_factor.x;
-	m_bx = m_pos0.x - m_ax * m_campos0.x ;
-	m_ay = m_factor.y;
-	m_by = m_pos0.y - m_ay * m_campos0.y ;
 }
 
 void Parallax::Begin() {
     m_cam = Monkey::get().Get<Camera>(m_camId);
 	m_entityInitPos = m_entity->GetPosition();
-
+	m_pos0 = m_entityInitPos;
+	m_ax = m_factor.x;
+	m_bx = m_pos0.x - m_ax * m_campos0.x ;
+	m_ay = m_factor.y;
+	m_by = m_pos0.y - m_ay * m_campos0.y ;
 
 
 

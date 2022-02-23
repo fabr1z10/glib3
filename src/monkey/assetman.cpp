@@ -1,4 +1,5 @@
 #include <monkey/assetman.h>
+#include <monkey/assetman.h>
 #include <monkey/engine.h>
 #include <monkey/scenefactory.h>
 
@@ -36,7 +37,7 @@ template<> std::shared_ptr<Font> AssetManager::get(const std::string& id) {
 template<> std::shared_ptr<Model> AssetManager::get(const std::string& id) {
     auto it = m_models.find(id);
     if (it != m_models.end()) {
-        std::cout << "cache hit for " << id << "!\n";
+		//std::cout << "cache hit for " << id << "!\n";
         return it->second;
     }
     // create the model
@@ -51,7 +52,7 @@ template<> std::shared_ptr<Model> AssetManager::get(const std::string& id) {
 template<> std::shared_ptr<IMesh> AssetManager::get(const std::string& id) {
 	auto it = m_meshes.find(id);
 	if (it != m_meshes.end()) {
-		std::cout << "cache hit for " << id << "!\n";
+		//std::cout << "cache hit for " << id << "!\n";
 		return it->second;
 	}
 	// create the model
@@ -65,7 +66,7 @@ template<> std::shared_ptr<IMesh> AssetManager::get(const std::string& id) {
 template<> std::shared_ptr<SkAnimation> AssetManager::get(const std::string& id) {
     auto it = m_skeletalAnimations.find(id);
     if (it != m_skeletalAnimations.end()) {
-        std::cout << "cache hit for " << id << "!\n";
+        //std::cout << "cache hit for " << id << "!\n";
         return it->second;
     }
     // create the model

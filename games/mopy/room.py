@@ -1,5 +1,39 @@
 import mopy.engine as engine
 import mopy.entity as entity
+import mopy
+import math
+
+
+
+#########################
+# creates one or more entities and add them to given parent
+# pos_type:
+# 0 --- unchanged
+# 1 --- pseudo 3d
+# 2 --- pseudo 3d alwyas in bg
+#########################
+def build_entity(item, pos):
+    item_type = item.get('type')
+    if not item_type:
+        print('Error! Missing <type> field in item descriptor.')
+        exit(1)
+    factory = mopy.monkey.engine.get_item_factory(item_type)
+    if not factory:
+        print('Don''t have factory for item: ' + item_type)
+        exit(1)
+    e = factory(item)
+    if not e.auto_pos:
+        pos_type = item.get('pos_type', 0)
+        real_pos = pos
+        if pos_type == 1:
+            # this is pseudo 3d coords, pos[2] is the elevation
+            real_pos = [pos[0], pos[2], -math.sqrt(2.0) * pos[1]]
+            print('real pos = ' +str(real_pos))
+        elif pos_type == 2:
+            real_pos[2] = pos[2]
+            real_pos[1] += real_pos[2] / math.sqrt(2)
+        e.pos = real_pos
+    return e
 
 
 class Room:
@@ -30,4 +64,5 @@ class Room:
 
     def add_runner(self, r):
         self.engines.append(r)
+
 

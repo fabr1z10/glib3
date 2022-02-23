@@ -267,7 +267,8 @@ void SkCollider::Start() {
     auto defaultBox = m_model->getBoundingBox();
     float width = defaultBox[0];
     float height = defaultBox[1];
-    float thickness = width;
+	auto thick= Engine::get().getVariable<float>("data.globals.thickness");
+	float thickness = thick;
 
 
     float minMaxAttackDist = 1000.0f;

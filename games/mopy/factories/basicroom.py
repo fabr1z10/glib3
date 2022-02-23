@@ -1,4 +1,4 @@
-from mopy.room import Room
+from mopy.room import Room, build_entity
 from mopy.entity import Entity
 from mopy.camera import OrthoCamera, PerspectiveCamera
 import mopy.monkey as monkey
@@ -7,33 +7,23 @@ import example
 import operator
 from mopy.util import tiles_to_world
 
+
 def restart():
     example.restart()
 
 
 class BasicRoom(Room):
     def add_items(self, desc):
-        if 'items' in desc:
-            for item in desc['items']:
-                positions = item.get('pos', [0, 0, 0])
-                parent = item.get('parent', self.default_item)
-                entity_desc = item
-                if 'ref' in item:
-                    entity_desc = monkey.engine.get_asset(item['ref'], item.get('args', None))
-                    print(entity_desc)
-                factory = monkey.engine.get_item_factory(entity_desc['type'])
-                if not factory:
-                    print('Don''t have factory for item: ' + entity_desc['type'])
-                    exit(1)
-                for ip in range(0, len(positions), 3):
-                    print(positions)
-                    pos = positions[ip:ip+3]
-                    e = factory(entity_desc)
-                    if not e.auto_pos:
-                        print('froci')
-                        e.pos = tiles_to_world(pos, self.tile_size)
-                    print('cazzo! ' + str(e.pos))
-                    self.add(e, parent)
+        for item in desc.get('items', []):
+            p = item.get('pos', [0, 0, 0])
+            pos = [ [p[i], p[i+1], p[i+2]] for i in range(0, len(p), 3)]
+            parent = item.get('parent', self.default_item)
+            # check if it's a reference to an asset
+            entity_desc = monkey.engine.get_asset(item['ref'], item.get('args', None)) if 'ref' in item else item
+            for position in pos:
+                a = build_entity(item, position)
+                self.add(a, parent)
+
 
     def __init__(self, desc):
         self.id = desc['id']
