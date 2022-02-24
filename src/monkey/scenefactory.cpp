@@ -217,6 +217,7 @@ SceneFactory::SceneFactory() {
     //add2<Model>("model.raw");
     addf<Model>("model.poly", ModelFactory::polygon);
     addf<Model>("model.rect", ModelFactory::_rect);
+	addf<Model>("model.quad", ModelFactory::_quad);
     addf<Model>("model.prism", ModelFactory::prism);
 	addf<Model>("model.shape", ModelFactory::shape);
     addf<Model>("model.tiled", ModelFactory::_tiled);

@@ -134,6 +134,31 @@ std::shared_ptr<Model> ModelFactory::_rect(const ITab & t) {
     return rect(width, height, offset, rtype, color, tex, repeat, scale);
 }
 
+std::shared_ptr<Model> ModelFactory::_quad(const ITab & t) {
+	auto w = t.get<glm::vec2>("width"); // width below and above
+	auto h = t.get<glm::vec2>("height"); // height left and right
+	auto offset = t.get<glm::vec2>("offset"); // height left and right
+	auto color = t.get<glm::vec4> ("color", glm::vec4(1.0f));
+	auto tex = t.get<std::string>("tex", "");
+
+	auto m = std::make_shared<Mesh<Vertex3D>>(ShaderType::TEXTURE_SHADER_UNLIT);
+
+	std::vector<Vertex3D> vertices{
+		{-0.5f * w[1] + offset.x, 0.5f * h[0]+ offset.y, 0, 0, 0, color.r, color.g, color.b, color.a},
+		{-0.5f * w[0]+ offset.x, -0.5f * h[0]+ offset.y, 0, 0, 1, color.r, color.g, color.b, color.a},
+		{0.5f * w[0]+ offset.x, -0.5f * h[1]+ offset.y, 0, 1, 1, color.r, color.g, color.b, color.a},
+		{0.5f * w[1]+ offset.x, 0.5f * h[1]+ offset.y, 0, 1, 0, color.r, color.g, color.b, color.a},
+	};
+	std::vector<unsigned> indices;
+	indices = {0, 1, 2, 3, 0, 2};
+	m->m_primitive = GL_TRIANGLES;
+	m->Init(vertices, indices);
+	m->addTexture(tex, TexType::DIFFUSE);
+
+	return std::make_shared<Model>(m);
+
+}
+
 
 std::shared_ptr<Model> ModelFactory::shape(const ITab & t) {
 	auto factory = Engine::get().GetSceneFactory();

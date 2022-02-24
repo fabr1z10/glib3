@@ -14,15 +14,17 @@ public:
 
     void End() override;
 private:
+	void initSeg(unsigned);
     struct PathSeg {
         glm::vec3 direction;
-        float time;
+        float distance;
         int oe;
+        std::string anim;
     };
     std::vector<PathSeg> m_segments;
     bool m_loop;
     bool m_disappearOnEnd;
-    float m_time;
+    float m_dist;
     unsigned m_currentIndex;
 };
 //private:

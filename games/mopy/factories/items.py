@@ -252,6 +252,8 @@ def foe3D(ciao):
         for i in range(0, n_attacks):
             a_id = 'attack_' + str(i)
             attack_style = attacks[i].get('style', 'anim')
+            win_anim = attacks[i].get('win', 'idle')
+            win_dist = attacks[i].get('dist', 80)
             if attack_style == 'anim':
                 state_machine['states'].append({
                     'id': a_id,
@@ -281,7 +283,10 @@ def foe3D(ciao):
                 state_machine['states'].append({
                     'id': 'idle',
                     'type': 'state.foe_path',
-                    'moves': [{'direction': [1,0], 'time': 10, 'on_end': 1}],
+                    'moves': [
+                        {'direction': [1, 0, 0], 'distance': win_dist, 'on_end': 0, 'anim': 'walk'},
+                        {'direction': [1, 0, 0], 'distance': 0, 'on_end': 0, 'anim': win_anim},
+                    ],
                     'max_speed': max_speed,
                     'gravity': gravity
                 })

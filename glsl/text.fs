@@ -15,8 +15,8 @@ void main()
 {
     vec4 texColor = texture(texture_diffuse1, tex);
     texColor = texColor.rrrr * col;
-    //if (texColor.a < 0.5)
-    //    discard;
+    if (texColor.a < 0.5)
+        discard;
     texColor *= mult_color;
     fragColor = texColor;                
 }

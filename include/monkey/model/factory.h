@@ -22,6 +22,7 @@ public:
 	static std::shared_ptr<Model> shape(const ITab&);
 
 	static std::shared_ptr<Model> _rect(const ITab&);
+	static std::shared_ptr<Model> _quad(const ITab&);
     static std::shared_ptr<Model> rect(float width, float height, glm::vec2 offset,
                                        RenderType rtype, glm::vec4 color, const std::string& tex = "", glm::vec2 repeat = glm::vec2(1.0f, 1.0f),
                                        glm::vec2 scale = glm::vec2(1.0f, 1.0f));
