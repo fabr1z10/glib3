@@ -16,6 +16,7 @@ public:
     float z() const;
     void rotx(float) ;
     float getVy() const;
+    bool grounded() const;
     float getElevation() const;
     void setElevation(float);
     bool getFlipx() const;
@@ -64,6 +65,8 @@ public:
     void setControllerBounds(float width, float height, float depth, float x, float y, float z);
     int getCollisionFlag() const;
     void setCollisionFlag(int);
+	int getCollisionMask() const;
+	void setCollisionMask(int);
 private:
     int g;
     Entity* m_entity;

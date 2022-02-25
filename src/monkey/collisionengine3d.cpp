@@ -248,8 +248,9 @@ void SpatialHashingCollisionEngine3D::Update(double dt) {
 	// add the new collision pairs
 }
 
-ShapeCastHit SpatialHashingCollisionEngine3D::ShapeCast (IShape* shape, const glm::mat4& transform, int mask) {
-	ShapeCastHit result;
+std::vector<ShapeCastHit> SpatialHashingCollisionEngine3D::ShapeCast (IShape* shape, const glm::mat4& transform, int mask, bool onlyFirst) {
+	std::vector<ShapeCastHit> result;
+
 	auto aabb = shape->getBounds();
 	aabb.Transform(transform);
 	float z = transform[3][2];
@@ -283,10 +284,14 @@ ShapeCastHit SpatialHashingCollisionEngine3D::ShapeCast (IShape* shape, const gl
 							auto report = m_intersector->intersect(shape, s, transform, t);
 							if (report.collide) {
 								Bounds bb = aabb.intersect(b);
-								result.report = report;
-								result.report.direction = glm::vec2(bb.GetCenter());
-								result.entity = c;
-								return result;
+								ShapeCastHit res;
+								res.report = report;
+								res.report.direction = glm::vec2(bb.GetCenter());
+								res.entity = c;
+								result.push_back(res);
+								if (onlyFirst) {
+									return result;
+								}
 							}
 						}
 					}

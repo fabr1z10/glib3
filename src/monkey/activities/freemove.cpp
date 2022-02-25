@@ -113,24 +113,26 @@ void FreeMove::updateTransform() {
     m_entity->SetLocalTransform(transform);
     if (m_shape != nullptr && m_time >= m_c1 && m_time < m_c2) {
         // cast shape
-        auto e = m_engine->ShapeCast(m_shape.get(), transform, m_castMask);
-        if (e.report.collide) {
-            std::cerr << "HIT!\n";
-            auto rm = m_engine->GetResponseManager();
-            if (rm == nullptr) {
-                std::cerr << "no handler!\n";
-            }
-            auto handler = rm->GetHandler(m_castTag, e.entity->GetCollisionTag());
-            if (handler.response != nullptr) {
-                auto object = e.entity->GetObject();
-                std::cerr << "FOUND RESPONSE\n";
-                if (handler.flip) {
-                    handler.response->onStart(object, m_entity.get(), e.report);
-                } else {
-                    handler.response->onStart(m_entity.get(), object, e.report);
-                }
-            }
-        }
+        auto e = m_engine->ShapeCast(m_shape.get(), transform, m_castMask, true);
+        if (!e.empty()) {
+			auto rm = m_engine->GetResponseManager();
+			for (const auto &collision : e) {
+				std::cerr << "HIT!\n";
+				if (rm == nullptr) {
+					std::cerr << "no handler!\n";
+				}
+				auto handler = rm->GetHandler(m_castTag, collision.entity->GetCollisionTag());
+				if (handler.response != nullptr) {
+					auto object = collision.entity->GetObject();
+					std::cerr << "FOUND RESPONSE\n";
+					if (handler.flip) {
+						handler.response->onStart(object, m_entity.get(), collision.report);
+					} else {
+						handler.response->onStart(m_entity.get(), object, collision.report);
+					}
+				}
+			}
+		}
     }
 }
 

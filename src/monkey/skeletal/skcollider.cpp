@@ -453,27 +453,9 @@ void SkCollider::Update(double dt) {
             auto at = bonesTransform[castShapeInfo.jointId];
             auto transform =  wt*mtr*at*rt;
             auto e = m_engine->ShapeCast(castShapeInfo.shape.get(), transform, m_castMask);
-            if (e.report.collide) {
-                hit = true;
-                if (e.entity != m_lastHit) {
-                    m_lastHit = e.entity;
-                    auto center = transform * glm::vec4(castShapeInfo.shape->getBounds().GetCenter(), 1.0f);
-                    auto rm = m_engine->GetResponseManager();
-                    if (rm == nullptr) {
-                        std::cerr << "no handler!\n";
-                    } else {
-                        auto object = e.entity->GetObject();
-                        auto handler = rm->GetHandler(m_castTag, e.entity->GetCollisionTag());
-                        if (handler.response != nullptr) {
-                            std::cerr << "FOUND RESPONSE\n";
-                            if (handler.flip) {
-                                handler.response->onStart(object, m_entity, e.report);
-                            } else {
-                                handler.response->onStart(m_entity, object, e.report);
-                            }
-                        }
-                    }
-                }
+            if (!e.empty()) {
+            	hit = true;
+            	m_engine->processCollisions(e, m_entity, m_castTag);
             }
         }
     }

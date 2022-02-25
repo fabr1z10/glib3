@@ -89,27 +89,9 @@ void SmartCollider::Update(double) {
         //std::cerr << "qui\n";
         auto t = m_entity->GetWorldTransform();
         auto e = m_engine->ShapeCast(box.get(), t, m_castMask);
-        if (e.report.collide) {
-            hit = true;
-            if (e.entity != m_lastHit) {
-                m_lastHit = e.entity;
-                auto rm = m_engine->GetResponseManager();
-                if (rm == nullptr) {
-                    std::cerr << "no handler!\n";
-                } else {
-                    auto object = e.entity->GetObject();
-                    auto handler = rm->GetHandler(m_castTag, e.entity->GetCollisionTag());
-                    if (handler.response != nullptr) {
-                        std::cerr << "FOUND RESPONSE\n";
-                        //m_stateMachine->getCurrentState()->onCollide();
-                        if (handler.flip) {
-                            handler.response->onStart(object, m_entity, e.report);
-                        } else {
-                            handler.response->onStart(m_entity, object, e.report);
-                        }
-                    }
-                }
-            }
+        if (!e.empty()) {
+        	hit = true;
+        	m_engine->processCollisions(e, m_entity, m_castTag);
         }
     }
     if (!hit) {

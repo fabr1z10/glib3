@@ -45,26 +45,27 @@ void JumpAttack::Run(double dt) {
         auto r = AABB(glm::vec3(10.0f, 1.0f, 10.0f), glm::vec3(-5.0f, 0.0f, -5.0f));
         auto t = m_entity->GetWorldTransform();
         auto e = m_engine->ShapeCast(&r, t, m_castMask);
-        if (e.report.collide) {
-        	m_hit = true;
-            std::cerr << "FUCKING HIT!!!!\n";
-            auto rm = m_engine->GetResponseManager();
-            if (rm == nullptr) {
-                std::cerr << "no handler!\n";
-            } else {
-                auto object = e.entity->GetObject();
-                auto handler = rm->GetHandler(m_castTag, e.entity->GetCollisionTag());
-                if (handler.response != nullptr) {
-                    std::cerr << "FOUND RESPONSE\n";
-                    //m_stateMachine->getCurrentState()->onCollide();
-                    if (handler.flip) {
-                        handler.response->onStart(object, m_entity, e.report);
-                    } else {
-                        handler.response->onStart(m_entity, object, e.report);
-                    }
-                }
-            }
-        }
+        m_engine->processCollisions(e, m_entity, m_castTag);
+//        if (e.report.collide) {
+//        	m_hit = true;
+//            std::cerr << "FUCKING HIT!!!!\n";
+//            auto rm = m_engine->GetResponseManager();
+//            if (rm == nullptr) {
+//                std::cerr << "no handler!\n";
+//            } else {
+//                auto object = e.entity->GetObject();
+//                auto handler = rm->GetHandler(m_castTag, e.entity->GetCollisionTag());
+//                if (handler.response != nullptr) {
+//                    std::cerr << "FOUND RESPONSE\n";
+//                    //m_stateMachine->getCurrentState()->onCollide();
+//                    if (handler.flip) {
+//                        handler.response->onStart(object, m_entity, e.report);
+//                    } else {
+//                        handler.response->onStart(m_entity, object, e.report);
+//                    }
+//                }
+//            }
+//        }
 
     }
     if (m_controller->grounded()) {

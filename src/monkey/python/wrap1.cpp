@@ -58,6 +58,10 @@ float Wrap1::getVy() const {
     return m_entity->GetComponent<Dynamics>()->m_velocity.y;
 }
 
+bool Wrap1::grounded() const {
+	return m_entity->GetComponent<IController>()->grounded();
+}
+
 float Wrap1::getElevation() const {
 
     return m_entity->GetComponent<Controller25>()->getElevation();
@@ -366,7 +370,9 @@ pybind11::list Wrap1::getBoxSize(const std::string& animId) {
 
 py::object Wrap1::getInfo() {
     auto hs = m_entity->GetComponent<LuaInfo>();
-    return hs->getStuff();
+    if (hs != nullptr)
+    	return hs->getStuff();
+    return pybind11::cast<pybind11::none>(Py_None);
 
 }
 
@@ -406,5 +412,14 @@ int Wrap1::getCollisionFlag() const {
 void Wrap1::setCollisionFlag(int flag) {
     auto collider = m_entity->GetComponent<ICollider>();
     collider->setCollisionFlag(flag);
+}
+
+int Wrap1::getCollisionMask() const {
+	auto collider = m_entity->GetComponent<ICollider>();
+	return collider->GetCollisionMask();
+}
+void Wrap1::setCollisionMask(int flag) {
+	auto collider = m_entity->GetComponent<ICollider>();
+	collider->setCollisionMask(flag);
 }
 

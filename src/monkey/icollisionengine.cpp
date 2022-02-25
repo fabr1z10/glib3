@@ -40,3 +40,22 @@ void ICollisionEngine::SetResponseManager(std::unique_ptr<CollisionResponseManag
 CollisionResponseManager* ICollisionEngine::GetResponseManager() {
     return m_responseManager.get();
 }
+
+void ICollisionEngine::processCollisions(const std::vector<ShapeCastHit> & e, Entity* entity, int tag) {
+	auto rm = GetResponseManager();
+	if (rm == nullptr) {
+		return;
+	}
+	for (const auto& coll : e) {
+		auto object = coll.entity->GetObject();
+		auto handler = rm->GetHandler(tag, coll.entity->GetCollisionTag());
+		if (handler.response != nullptr) {
+			if (handler.flip) {
+				handler.response->onStart(object, entity, coll.report);
+			} else {
+				handler.response->onStart(entity, object, coll.report);
+			}
+		}
+	}
+
+}
