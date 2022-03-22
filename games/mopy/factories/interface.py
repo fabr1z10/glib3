@@ -187,6 +187,20 @@ def run_action():
         print('current verb: ' + str(gl.current_verb))
         print('object      : ' + gl.current_item_1)
         print('second obj  : ' + gl.current_item_2)
+
+        sid = gl.current_verb + '_' + gl.current_item_1
+        if gl.current_item_2:
+            sid += '_' + gl.current_item_2
+        print(' *** searching for script: ' + sid)
+        script = mopy.monkey.engine.script.get(sid)
+        if script:
+            print (' *** found.')
+            scr = script.make()
+            example.play(scr)
+        else:
+            print(' *** not found.')
+        return
+
         script = None
         if gl.current_item_2 == '':
             # see if I have a callback of form <verb>_<object>

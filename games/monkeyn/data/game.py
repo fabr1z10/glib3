@@ -1,5 +1,6 @@
 import mopy.util as utils
 
+
 class pos:
     kitchen_door = [45, 12]
     scummbar_main_door = [64, 19]
@@ -27,6 +28,12 @@ class pos:
     f1f2 = (238,69)
     f1f2b = (154,69)
     village2_voodoolady = (220, 48)
+
+positions = {
+    0: ['village1', pos.village_cliffside, 'e', 'walkarea_0'],
+    1: ['lookout', pos.lookout_stairs, 'n', 'walkarea_0']
+}
+
 
 class colors:
     guybrush_text = utils.rgb(255, 255, 255)

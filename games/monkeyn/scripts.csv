@@ -1,0 +1,14 @@
+:walkto,stairs
+0,WTI
+1,CHR,0
+0->1
+:walkto,cliffside
+0,WTI
+1,CHR,1
+0->1
+:walkto,lookout
+0,WTI
+
+
+
+

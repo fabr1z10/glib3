@@ -11,13 +11,49 @@ import copy
 import operator
 from collections import defaultdict
 import mopy.scumm
-
-
-
-
-
+from csv import reader
+from mopy.script import ScriptDesc
 
 def scumm_init(engine):
+
+    # read scripts
+    with open(example.dir + '/scripts.csv') as file:
+        csv_reader = reader(file)
+        # Check file as empty
+        s = None
+        nscr = 0
+        mopy.monkey.engine.script = dict()
+        lines = file.readlines()
+        for line in lines:
+            line = line.strip()
+            if not line or line[0] == '#':                  # comment
+                continue
+            elif line[0] == ':':                # new script
+                print('adding script')
+                if s is not None:
+                    mopy.monkey.engine.script[s.id()] = s
+                a = line[1:].split(',')
+                action = a[0]
+                item = a[1]
+                nscr += 1
+                s = ScriptDesc(action, item)
+            elif line.find('->') != -1:         # arcs
+                aa = line.split('->')
+                last = int(aa[0])
+                for b in aa[1:]:
+                    c = b.split(',')
+                    for d in c:
+                        s.add_arc(last, int(d))
+                    last = int(c[-1])
+            else:                               # node
+                node = line.split(',')
+                s.add_node(int(node[0]), node[1:])
+        if s is not None:
+            mopy.monkey.engine.script[s.id()] = s
+        print ('read ' + str(nscr) + ' scripts.')
+        print(mopy.monkey.engine.script.keys())
+
+
     mopy.scumm.gl = engine.data.globals
 
     engine.add_room_factory('scumm.room', mopy.factories.scumm.default_room)
@@ -295,6 +331,7 @@ class Engine:
             return b
 
     scripts = None
+    script = None
     shaders = []
     libs = []
     device_size = []
