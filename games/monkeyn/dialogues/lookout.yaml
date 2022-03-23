@@ -1,5 +1,5 @@
 lookout:
-  text_set: '$dialogues/lookout'
+  text_set: '$dial/look'
   #on_entry: entry_lookout
   on_exit: on_exit_lookout
   nodes:
@@ -10,62 +10,62 @@ lookout:
   lines:
     0:
       text: intro1
-      script: lookout_start_dialogue
-      args: [intro1]
+      script: lookout0
+      args: [$dial/look/intro1]
       next: main
       persist: true
     1:
       text: intro2
-      script: lookout_start_dialogue
-      args: [intro2]
+      script: lookout0
+      args: [$dial/look/intro2]
       next: main
       persist: true
     2:
       text: intro3
-      script: lookout_start_dialogue
-      args: [intro3]
+      script: lookout0
+      args: [$dial/look/intro3]
       next: main
       persist: true
     3:
       text: intro4
-      script: lookout_start_dialogue
-      args: [intro4]
+      script: lookout0
+      args: [$dial/look/intro4]
       next: main
       persist: true
     4:
       text: imguy
       activate: [9]
-      script: lookout_4
+      script: lookout4
       next: main
     5:
       text: squinky
-      script: lookout_5
+      script: lookout5
       next: main
     6:
       text: overthisway
-      script: lookout_6
+      script: lookout6
       next: main
     7:
       text: whoru
       activate: [10, 11]
-      script: lookout_7
+      script: lookout7
       next: main
     8:
       text: fortune
-      script: lookout_8
+      script: lookout8
       persist: true
     9:
       text: 22
       active: false
-      script: lookout_9
+      script: lookout9
       next: main
     10:
       text: whyguvworried
       active: false
-      script: lookout_10
+      script: lookout10
       next: main
     11:
       text: bat
       active: false
-      script: lookout_11
+      script: lookout11
       next: main

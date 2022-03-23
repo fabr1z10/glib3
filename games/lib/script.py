@@ -19,9 +19,7 @@ class Script:
             self.map[id] = iid
         self.actions.append(action)
         if after:
-            print('STOCANE' + str(after))
             for aid in after:
-                print('STOCANE' + str(aid))
                 self.edges.append([aid, iid])
         else:
             # if after is not provided, we assum it goes after the last added action

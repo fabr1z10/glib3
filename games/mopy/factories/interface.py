@@ -2,7 +2,7 @@ import mopy
 import example
 from mopy.entity import Text, TextAlignment
 from mopy.components import HotSpot
-from mopy.script import Script
+from mopy.script import Script, ScriptDesc
 from mopy.actions import RunScript, Walk
 from mopy.scumm.actionlib import enable_controls, start_dialogue
 
@@ -136,24 +136,31 @@ def exec_script(s):
         if not persist:
             s.line['active'] = False
         s1 = Script()
-        s1.add(enable_controls(False))
+        iid = s1.add(enable_controls(False))
+        print('Ok 222 ' + str(iid))
         example.get('dialogue').clearText()
         s.line["clicked"] = s.line.get("clicked", 0) + 1
         if isinstance(scr, str):
-            fc = getattr(mopy.monkey.engine.data.scripts, scr, None)
-            if fc:
-                args = s.line.get('args', [])
-                s1.add_action(RunScript(fc(args)))
+            fc : ScriptDesc = mopy.monkey.engine.get_script(scr)
+            if not fc:
+                print ('mmh cannot find script: ' + scr)
+                exit(1)
+            #fc = getattr(mopy.monkey.engine.data.scripts, scr, None)
+            args = s.line.get('args', [])
+            print('Ok 223 ' + str(iid))
+            dc = RunScript(fc.make(args))
+            print('ok 234 = ' + str(iid))
+            iid = s1.add_action(dc, after=iid)
         next = s.line.get('next')
         if next:
-            s1.add_action(start_dialogue(s.dialogue_id, True, next))
+            s1.add_action(start_dialogue(s.dialogue_id, True, next), after=iid)
         else:
             # check if dialogue has a on_exit script
             on_exit = s.dialogue.get('on_exit')
             if on_exit:
                 on_exit_script = getattr(mopy.monkey.engine.data.scripts, on_exit)()
                 if on_exit_script:
-                    s1.add(RunScript(on_exit_script))
+                    s1.add(RunScript(on_exit_script), after=iid)
             else:
                 pass
                 #s.add_action(scumm.actions.ExitDialogue())
@@ -192,13 +199,18 @@ def run_action():
         if gl.current_item_2:
             sid += '_' + gl.current_item_2
         print(' *** searching for script: ' + sid)
-        script = mopy.monkey.engine.script.get(sid)
+        script = mopy.monkey.engine.get_script(sid)
         if script:
             print (' *** found.')
-            scr = script.make()
+            scr = script.make([gl.current_item_1, gl.current_item_2])
             example.play(scr)
         else:
             print(' *** not found.')
+            script = mopy.monkey.engine.get_script('_'+gl.current_verb)
+            if script:
+                scr = script.make([gl.current_item_1, gl.current_item_2])
+                example.play(scr)
+
         return
 
         script = None

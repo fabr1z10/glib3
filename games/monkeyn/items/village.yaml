@@ -65,6 +65,7 @@ door_village_scummbar:
   wdir: n
   anim: '@game.doors.scummbar'
   model: '01.door_village_scummbar'
+  door: 'scummbar'
 door_village_voodoolady:
   type: scumm.item
   text: '$objects/door'
@@ -75,6 +76,7 @@ door_village_voodoolady:
   wdir: e
   model: 01.door_village_voodoolady
   anim: '@game.doors.voodoolady'
+  door: 'voodoolady'
 door_scummbar_village:
   type: scumm.item
   text: '$objects/door'

@@ -67,7 +67,8 @@ objects:
   bones: bones
   rockandplant: rock and plant
   stump: stump
-dialogues:
+  village: village
+dial:
   storekeeper:
     1: Ahoy there, fancy pants.
     2: Come on! just buy something.
@@ -334,7 +335,7 @@ dialogues:
     66: "See? Told you so."
     67: "I'll take those minutes if you give me two pieces of eight."
     68: "Do you know where I can find a treasure map around here?"
-  lookout: 
+  look:
     intro1: "I heard there was going to be a weenie roast here."
     intro2: "I'm looking for fun. Seen any?"
     intro3: "What's green and hairy and has a thousand legs?"

@@ -147,6 +147,30 @@ def sierra_room(desc: dict):
     return room
 
 
+def map_room(desc: dict):
+    gl = mopy.monkey.engine.data.globals
+    room = ScummRoom(desc)
+    room.add_runner(Scheduler())
+    width = desc['width']
+    height = desc['height']
+    device_size = mopy.monkey.engine.device_size
+    cam_width = device_size[0]
+    cam_height = device_size[1]
+    # add the main node
+    room.default_item = 'main'
+    main = Entity(tag='main')
+    main.camera = OrthoCamera(width, height, cam_width, cam_height, [0, 0, cam_width, cam_height], tag='maincam')
+    main.add_component(HotSpotManager(lmbclick=walk_to))
+    room.add(main)
+    cursor = Text(font=gl.default_font, size=8, text='#', color=(255, 255, 255, 255), tag='_cursor')
+    cursor.add_component(Cursor())
+    main.add(cursor)
+    # add static items
+    room.add_items(desc)
+    # add dynamic items
+    room.load_dynamic_items()
+    return room
+
 
 def default_room(desc: dict):
     gl = mopy.monkey.engine.data.globals

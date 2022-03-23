@@ -87,6 +87,20 @@ def exit_dialogue():
         _enable_controls(True)()
     return _helper(_exit_dialogue)
 
+
+def set_variable(variable, value):
+    def _set_variable():
+        setattr(mopy.monkey.engine.data.game, variable, value)
+    return _helper(_set_variable)
+
+def set_text(entity, txt):
+    def _set_text():
+        example.get(entity).setText(txt)
+
+    return _helper(_set_text)
+
+
+
 def start_dialogue(dialogue_id, continue_dialogue, start_node = 'root'):
     def _start_dialogue():
         _enable_controls(False)()

@@ -260,7 +260,7 @@ class Turn:
 class Say:
     def __init__(self, lines, tag=None, font=None, id=None):
         self.type = 'action.say'
-        self.lines = [mopy.monkey.engine.read(x) for x in lines]
+        self.lines = lines # [mopy.monkey.engine.read(x) for x in lines]
         self.tag = tag
         self.font = font if font else mopy.monkey.engine.data.globals.default_font
         self.id = id

@@ -20,3 +20,45 @@ path:
   walk_to: '@game.pos.lookout_path'
   wdir: e
   room: lookout
+melee_map_village:
+  type: scumm.hotspot
+  pos: [71, 74]
+  walk_to: [76, 79]
+  wdir: s
+  size: [10, 10]
+  on_enter: map_enter
+  on_enter_args:
+    - $objects/village
+  on_click: map_click
+  on_click_args:
+    - '3'
+  on_leave: map_leave
+  room: meleemap
+melee_map_clearing:
+  type: scumm.hotspot
+  pos: [130, 107]
+  walk_to: [135, 112]
+  wdir: e
+  size: [10, 10]
+  on_enter: map_enter
+  on_enter_args:
+    - $objects/clearing
+  on_click: map_click
+  on_click_args:
+    - '3'
+  on_leave: map_leave
+  room: meleemap
+melee_map_fork:
+  type: scumm.hotspot
+  pos: [69, 108]
+  walk_to: [74, 113]
+  wdir: n
+  size: [10, 10]
+  on_enter: map_enter
+  on_enter_args:
+    - $objects/fork
+  on_click: map_click
+  on_click_args:
+    - '3'
+  on_leave: map_leave
+  room: meleemap

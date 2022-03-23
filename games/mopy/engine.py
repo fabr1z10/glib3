@@ -26,17 +26,23 @@ def scumm_init(engine):
         lines = file.readlines()
         for line in lines:
             line = line.strip()
+
             if not line or line[0] == '#':                  # comment
                 continue
             elif line[0] == ':':                # new script
-                print('adding script')
-                if s is not None:
-                    mopy.monkey.engine.script[s.id()] = s
-                a = line[1:].split(',')
-                action = a[0]
-                item = a[1]
-                nscr += 1
-                s = ScriptDesc(action, item)
+                ref = line.find('->')
+                if ref != -1:
+                    script_id = line[1:ref]
+                    referenced = line[ref+2:]
+                    print('ref scirpt ' + script_id)
+                    mopy.monkey.engine.script[script_id] = mopy.monkey.engine.script[referenced]
+                else:
+                    s = ScriptDesc(line[1:])
+                    mopy.monkey.engine.script[line[1:]] = [s]
+            elif line[0] == ';':
+                old_id = s.id
+                s = ScriptDesc(line[1:])
+                mopy.monkey.engine.script[old_id].append(s)
             elif line.find('->') != -1:         # arcs
                 aa = line.split('->')
                 last = int(aa[0])
@@ -48,8 +54,8 @@ def scumm_init(engine):
             else:                               # node
                 node = line.split(',')
                 s.add_node(int(node[0]), node[1:])
-        if s is not None:
-            mopy.monkey.engine.script[s.id()] = s
+        #if s is not None:
+        #    mopy.monkey.engine.script[s.id] = s
         print ('read ' + str(nscr) + ' scripts.')
         print(mopy.monkey.engine.script.keys())
 
@@ -57,6 +63,7 @@ def scumm_init(engine):
     mopy.scumm.gl = engine.data.globals
 
     engine.add_room_factory('scumm.room', mopy.factories.scumm.default_room)
+    engine.add_room_factory('scumm.map_room', mopy.factories.scumm.map_room)
     engine.add_room_factory('scumm.dialogue_room', mopy.factories.scumm.dialogue_room)
     engine.add_room_factory('scumm.sierra', mopy.factories.scumm.sierra_room)
     engine.add_item_factory('scumm.bg', mopy.factories.scumm.bg)
@@ -329,6 +336,21 @@ class Engine:
             b = copy.deepcopy(self.assets[id])
             self.replace(b, args)
             return b
+
+    def get_script(self, name):
+        s = self.script.get(name)
+        if not s or len(s) == 0:
+            #print(' *** unknown script: ' + name)
+            return None
+        if len(s) == 1:
+            return s[0]
+        f = getattr(self.data.game, '_select_'+ name)
+        if not f:
+            return s[0]
+        return s[f()]
+
+
+
 
     scripts = None
     script = None

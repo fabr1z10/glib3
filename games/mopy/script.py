@@ -3,14 +3,10 @@
 class ScriptDesc:
 
 
-    def __init__(self, action, item):
+    def __init__(self, id):
         self.nodes = dict()
         self.arcs = dict()
-        self.action = action
-        self.item = item
-
-    def id(self):
-        return self.action + '_' + self.item
+        self.id = id
 
     def add_node(self, id: int, args: list):
         self.nodes[id] = args
@@ -20,7 +16,7 @@ class ScriptDesc:
             self.arcs[id0] = list()
         self.arcs[id0].append(id1)
 
-    def make(self):
+    def make(self, script_args= []):
         # creates an actual script
         s = Script()
         import mopy.scumm.scriptmake as sm
@@ -32,7 +28,9 @@ class ScriptDesc:
             if not factory:
                 print('mmh cannot find opcode: ' + str(opcode))
                 exit(1)
-            e = factory(self.item, args, s, current)
+            pargs = sm.proc_args(args[1:], script_args)
+            print('processed args: ' + str(pargs))
+            e = factory(pargs, s, current, script_args)
             ia[node] = (current, e)
             current = e+1
 
@@ -65,13 +63,18 @@ class Script:
 
         
     def add_action(self, action, id=None, after=None):
+        print('after = ' + str(after))
         iid = len(self.actions)
+        print('after = ' + str(after))
         if id is not None:
             self.map[id] = iid
         if id and self.loop == id:
             self.loop = iid
         self.actions.append(action)
-        if after:
+        if after is not None:
+            if isinstance(after, int):
+                after = [after]
+            print('ok ' + str(after))
             for aid in after:
                 self.edges.append([aid, iid])
         # else:

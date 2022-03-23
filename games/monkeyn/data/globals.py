@@ -44,4 +44,4 @@ verb_sets = [
 inventory = dict()
 
 
-talked_to_lookout = 0
+

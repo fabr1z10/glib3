@@ -70,15 +70,38 @@ def trap(key, desc):
     return s
 
 
+def on_enter_hotspot(f, args):
+    def f1(s):
+        scr = mopy.monkey.engine.get_script(f)
+        example.play(scr.make(args))
+    return f1
+
+def on_click_hotspot(f, args):
+    def f1(a,b,c):
+        scr = mopy.monkey.engine.get_script(f)
+        example.play(scr.make(args))
+    return f1
+
+
 def hotspot(key, desc):
     pos = desc.get('pos')
     size = desc.get('size')
     on_enter = desc.get('on_enter')
     on_leave = desc.get('on_leave')
     on_click = desc.get('on_click')
-    on_enter_f = getattr(mopy.monkey.engine.data.scripts, on_enter) if on_enter else None
-    on_leave_f = getattr(mopy.monkey.engine.data.scripts, on_leave) if on_leave else None
-    on_click_f = getattr(mopy.monkey.engine.data.scripts, on_click) if on_click else None
+    if on_enter:
+        on_enter_args = desc.get('on_enter_args', [])
+        on_enter_f = on_enter_hotspot(on_enter, on_enter_args)
+    if on_click:
+        on_click_args = desc.get('on_click_args', [])
+        on_click_args.insert(0, key)
+        on_click_f = on_click_hotspot(on_click, on_click_args)
+    if on_leave:
+        on_leave_args = desc.get('on_leave_args', [])
+        on_leave_f = on_enter_hotspot(on_leave,on_leave_args)
+    #on_enter_f = getattr(mopy.monkey.engine.data.scripts, on_enter) if on_enter else None
+    #on_leave_f = getattr(mopy.monkey.engine.data.scripts, on_leave) if on_leave else None
+    #on_click_f = getattr(mopy.monkey.engine.data.scripts, on_click) if on_click else None
     s = Entity(pos=pos)
     s.add_component(HotSpot(shape=Rect(width=size[0], height=size[1]), onclick=on_click_f, onenter=on_enter_f, onleave=on_leave_f))
     return s
