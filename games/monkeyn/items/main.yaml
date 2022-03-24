@@ -11,7 +11,7 @@ guybrush:
     mask: 2
     tag: 1
   pos: [62, 32]
-  room: lookout
+  room: village1
   parent: walkarea_0
   dir: n
 lookout:

@@ -1,5 +1,5 @@
 sci_viewport = (0, 0, 320, 190)
-current_player = 'main.graham'
+current_player = 'graham'
 default_text_offset =(0, 0)
 default_speed = 50
 use_keyboard = True

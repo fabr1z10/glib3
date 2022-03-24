@@ -130,3 +130,11 @@ loop:0
 8,CLO,door_scummbar_kitchen
 9,DEL,cook
 0->7->1->2->3->4->5->8->9
+:open_door_scummbar_kitchen
+0,WTI
+1,DUI
+2,SUS,cook_init
+3,TUR,cook,e
+4,SAY,cook,$lines/32,$lines/33
+5,RES,cook_init
+0->1->2->3->4->5

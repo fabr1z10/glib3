@@ -20,14 +20,15 @@ def sierra_walk_to(x, y):
         s.add_action(Walk((x, y), 'player'))
         example.play(s)
     else:
-        scripts = mopy.monkey.engine.data.scripts
-        action = gl.actions[gl.current_action]
-        f1 = action + '_' + mopy.monkey.engine.room
-        fc = getattr(scripts, f1, None)
-        if fc is None:
-            print('cazzone!!! non cè ' + f1)
-        else:
-            example.play(fc(0, 0))
+        return
+        # scripts = mopy.monkey.engine.data.scripts
+        # action = gl.actions[gl.current_action]
+        # f1 = action + '_' + mopy.monkey.engine.room
+        # fc = getattr(scripts, f1, None)
+        # if fc is None:
+        #     print('cazzone!!! non cè ' + f1)
+        # else:
+        #     example.play(fc(0, 0))
 
 
 
@@ -170,19 +171,25 @@ def exec_script(s):
 
 def run_action_sci():
     def f(x, y, item):
+        print ('fottimi ! yesss')
         gl = mopy.monkey.engine.data.globals
         if gl.current_action == 0:
             walk_to(x, y)
         else:
-            scripts = mopy.monkey.engine.data.scripts
+            #scripts = mopy.monkey.engine.data.scripts
             # check if I have a script
             action = gl.actions[gl.current_action]
-            f1 = action + '_' + item.tag.replace('.', '_')
-            fc = getattr(scripts, f1, None)
-            if fc is None:
-                print ('cazzone!!! non cè ' + f1)
+            sid = action + '_' + item.tag.replace('.', '_')
+            print('look for ' + sid)
+            script = mopy.monkey.engine.get_script(sid)
+            #args = [gl.current_item_1, gl.current_item_2]
+            #fc = getattr(scripts, f1, None)
+            if script is None:
+                print ('cazzone!!! non cè ' + sid)
             else:
-                example.play(fc(0,0))
+                scr = script.make([item])
+                scr.id = '_main'
+                example.play(scr)
     return f
 
 
@@ -203,12 +210,14 @@ def run_action():
         args = [gl.current_item_1, gl.current_item_2]
         if script:
             scr = script.make(args)
+            scr.id = '_main'
             example.play(scr)
         else:
             print(' *** not found.')
             script = mopy.monkey.engine.get_script('_'+gl.current_verb)
             if script:
                 scr = script.make(args)
+                scr.id = '_main'
                 example.play(scr)
         return
 

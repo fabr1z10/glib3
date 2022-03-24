@@ -54,10 +54,12 @@ void Walk::Start() {
     }
     // use the walk-area associated with the character
     auto actor = Monkey::get().Get<Entity>(m_actorId);
+    m_animator = dynamic_cast<AnimationRenderer*>(actor->GetComponent<Renderer>());
     auto walkArea = actor->GetParent()->GetComponent<WalkArea>();
     auto characterController = actor->GetComponent<CharacterController>();
     m_lastDirection = characterController->getDirection();
     auto speed = characterController->getSpeed();
+    m_entity = actor;
 //    //auto walkArea = Engine::get().GetRef<WalkArea>("walkarea");
 //
 //    //std::cout << "Calling walk for " << m_actorId << " to " << m_p.x << ", " << m_p.y << "\n";
@@ -259,4 +261,17 @@ void Walk::Start() {
 //
 //        SetComplete();
 //    }
+}
+
+
+void Walk::NotifySuspend() {
+    Sequence::NotifySuspend();
+    m_currentAnim = m_animator->getAnimation();
+    m_flip = m_entity->GetFlipX();
+
+}
+
+void Walk::onResume() {
+    m_animator->setAnimation(m_currentAnim);
+    m_entity->SetFlipX(m_flip);
 }

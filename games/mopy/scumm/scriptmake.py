@@ -1,7 +1,8 @@
 import mopy
-from mopy.actions import Walk, Turn, ChangeRoom, Say, Turn, Delay, DelayRandom
+from mopy.actions import Walk, Turn, ChangeRoom, Say, Turn, Delay, DelayRandom, SuspendScript, ResumeScript, Msg
 import mopy.scumm.shortcut as sc
-from mopy.scumm.actionlib import update_item, start_dialogue, set_variable, set_text, open_door, close_door, create_item, remove_item
+from mopy.entity import TextAlignment
+from mopy.scumm.actionlib import update_item, start_dialogue, set_variable, set_text, open_door, close_door, create_item, remove_item, enable_controls, sierra_enable_controls
 import operator
 import types
 
@@ -137,6 +138,41 @@ def del_item(args, s, current, sa):
     iid = s.add_action(remove_item(args[0]))
     return iid
 
+def eui(args, s, current, sa):
+    iid = s.add_action(enable_controls(True))
+    return iid
+
+def dui(args, s, current, sa):
+    iid = s.add_action(enable_controls(False))
+    return iid
+
+def sus(args, s, current, sa):
+    iid = s.add_action(SuspendScript(args[0]))
+    return iid
+
+def res(args, s, current, sa):
+    iid = s.add_action(ResumeScript(args[0]))
+    return iid
+
+
+def msg(args, s, current, sa):
+    gl = mopy.scumm.gl #mopy.monkey.engine.data.globals
+    iid = s.add_action(sierra_enable_controls(False))
+    iid = s.add_action(Msg(
+        font=gl.msg_font,
+        color=(127/255.0, 83/255.0, 30/255.0, 255/255.0),
+        align=TextAlignment.center,
+        text=args[0],
+        pos=(gl.sci_viewport[2] * 0.5, gl.sci_viewport[3] * 0.5, 1),
+        inner_texture=gl.msg_inner_texture,
+        border_texture=gl.msg_border_texture,
+        eoc=True,
+        timeout=1000,
+        box=True,
+        padding=(4, 5)), after=iid)
+    iid = s.add_action(sierra_enable_controls(True), after=iid)
+    return iid
+
 
 script_factories['wti'] = wti
 script_factories['wtp'] = wtp
@@ -151,4 +187,8 @@ script_factories['clo'] = clo
 script_factories['dly'] = dly
 script_factories['new'] = new
 script_factories['del'] = del_item
-
+script_factories['eui'] = eui
+script_factories['dui'] = dui
+script_factories['sus'] = sus
+script_factories['res'] = res
+script_factories['msg'] = msg

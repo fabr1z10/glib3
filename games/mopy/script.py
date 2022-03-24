@@ -20,7 +20,7 @@ class ScriptDesc:
 
     def make(self, script_args= []):
         # creates an actual script
-        s = Script(loop=self.loop)
+        s = Script(loop=self.loop, uid=self.id)
         import mopy.scumm.scriptmake as sm
         current = 0
         ia = dict()

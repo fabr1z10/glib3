@@ -18,6 +18,7 @@ import math
 
 
 def toggle_cursor(x, y):
+
     gl = mopy.monkey.engine.data.globals
     gl.current_action += 1
     if gl.current_action >= len(gl.actions):

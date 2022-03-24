@@ -83,14 +83,22 @@ void Script::Print() {
 
 void Script::SetSuspended(bool value) {
     m_suspended = value;
-    for (auto& a : m_frontier) {
-        m_activities[a]->NotifySuspend();
+    if (value) {
+        for (auto &a : m_frontier) {
+            m_activities[a]->NotifySuspend();
+        }
+    } else {
+        for (auto& a : m_frontier) {
+            m_activities[a]->onResume();
+        }
     }
 }
 
 void Script::Restart() {
 	ResetActivity(0);
+
 	m_complete = false;
+
 }
 
 void Script::ResetActivity(int id) {

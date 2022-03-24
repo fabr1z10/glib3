@@ -22,6 +22,7 @@ public:
     // called when a script is suspended and this activity is current.
     // default behavior is do nothing
     virtual void NotifySuspend() {}
+    virtual void onResume() {}
 private:
     //int m_id;
     //std::vector<Activity*> m_previous;

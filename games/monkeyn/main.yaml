@@ -4,7 +4,7 @@
   lang: eng
   device_size: [320, 200]
   window_size: [640, 400]
-  start_room: lookout
+  start_room: village1
   shaders:
     - color
     - unlit_textured
