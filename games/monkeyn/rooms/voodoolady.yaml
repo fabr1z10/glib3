@@ -1,0 +1,15 @@
+---
+  type: scumm.room
+  id: voodoolady
+  width: 496
+  height: 144
+  items:
+    - type: scumm.bg
+      image: gfx/voodoolady1.png
+      pos: [0, 0, -1]
+    - type: scumm.walkarea
+      id: 0
+      poly: [78,37,124,47,146,42,320,42,320,40,320,0,156,0,145,22]
+      depth:
+        type: func.liny
+        values: [0, 1, 144, 0]

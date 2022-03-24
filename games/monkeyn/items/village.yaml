@@ -97,6 +97,7 @@ door_scummbar_kitchen:
   wdir: e
   anim: '@game.doors.kitchen'
   model: '01.door_scummbar_kitchen'
+  door: 'kitchen'
 fireplace:
   type: scumm.item
   model: 01.scummbar_fireplace

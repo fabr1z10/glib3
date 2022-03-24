@@ -4,12 +4,18 @@ from mopy.camera import OrthoCamera, PerspectiveCamera
 import mopy.monkey as monkey
 from mopy.runners import KeyListener
 import example
-import operator
-from mopy.util import tiles_to_world
-
+import mopy
 
 def restart():
     example.restart()
+
+
+def play_script(s):
+    def f(n):
+        scr = mopy.monkey.engine.get_script(s).make()
+        example.play(scr)
+    return f
+
 
 
 class BasicRoom(Room):
@@ -33,6 +39,7 @@ class BasicRoom(Room):
         device_size = monkey.engine.device_size
         on_preload = room_info.get('on_preload', None)
         on_load = room_info.get('on_load', None)
+        scripts = room_info.get('scripts', None)
         self.tile_size = getattr(monkey.engine.data.globals, 'tile_size', [1, 1])# monkey.engine.room_vars.get('tile_size', [1, 1])
         monkey.engine.data.globals.room_scaling = desc.get('scaling')
         if on_preload:
@@ -41,6 +48,9 @@ class BasicRoom(Room):
             func = on_load['func'] # operator.attrgetter(on_load['func'])(monkey.engine.scripts)
             args = on_load.get('args', None)
             self.init.append([func, args] if args else [func])
+        if scripts:
+            for s in scripts:
+                self.init.append([play_script(s), None])
         cams = room_info.get('cam')
         self.main = None
         self.default_item = None

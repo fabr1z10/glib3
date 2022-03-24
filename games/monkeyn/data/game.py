@@ -1,10 +1,11 @@
 import mopy.util as utils
 import mopy 
-
+import mopy.scumm.shortcut as sc
 class pos:
     kitchen_door = [45, 12]
     scummbar_main_door = [64, 19]
     scummbar_kitchen_door = [595, 13]
+    mancomb = (115, 18)
     estevan = (194, 10)
     loom = (250, 10)
     village_scummbar_door = (713, 11)
@@ -28,6 +29,7 @@ class pos:
     f1f2 = (238,69)
     f1f2b = (154,69)
     village2_voodoolady = (220, 48)
+    voodoolady_door = (108,36)
 
 positions = {
     0: ['village1', pos.village_cliffside, 'e', 'walkarea_0'],
@@ -35,7 +37,9 @@ positions = {
     2: ['meleemap', pos.melee_village, 'n', 'walkarea_0'],
     3: ['lookout', pos.lookout_path, 'w', 'walkarea_0'],
     4: ['village2', pos.village2_archway, 's', 'walkarea_0'],
-    5: ['village1', pos.village1_archway, 'w', 'walkarea_0']
+    5: ['village1', pos.village1_archway, 'w', 'walkarea_0'],
+    6: ['scummbar', pos.scummbar_main_door, 'e', 'walkarea_0'],
+    7: ['voodoolady', pos.voodoolady_door, 'e', 'walkarea_0']
 
 }
 
@@ -67,3 +71,9 @@ def _select_lookout0():
 
 def _select_lookout5():
     return 0 if mopy.monkey.engine.data.dialogues['lookout']['lines'][4].get('clicked', 0) else 1
+
+def _select__walkdoor(args):
+    door_id = sc.get_item(args[0])['door']
+    if getattr(doors, door_id) == 'open':
+        return 1
+    return 0

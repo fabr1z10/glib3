@@ -96,10 +96,20 @@
 0,WTI
 1,CLO
 0->1
+:_walkdoor
+# 0 -> closed
+0,WTI
+;
+# 1 -> open
+0,WTI
+1,CHR,@2
+0->1
 :open_door_village_scummbar->_opendoor
 :close_door_village_scummbar->_closedoor
 :open_door_village_voodoolady->_opendoor
 :close_door_village_voodoolady->_closedoor
+:walkto_door_village_scummbar->_walkdoor(6)
+:walkto_door_village_voodoolady->_walkdoor(7)
 :walkto_archway1
 0,WTI
 1,CHR,4
@@ -108,3 +118,15 @@
 0,WTI
 1,CHR,5
 0->1
+:cook_init
+loop:0
+0,DLY,5
+7,OPE,door_scummbar_kitchen
+1,NEW,cook,#game.pos.scummbar_kitchen_door
+2,WTP,cook,#game.pos.mancomb
+3,TUR,cook,n
+4,DLY,2
+5,WTP,cook,#game.pos.scummbar_kitchen_door
+8,CLO,door_scummbar_kitchen
+9,DEL,cook
+0->7->1->2->3->4->5->8->9

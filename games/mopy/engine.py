@@ -12,7 +12,7 @@ import operator
 from collections import defaultdict
 import mopy.scumm
 from csv import reader
-from mopy.script import ScriptDesc
+from mopy.script import ScriptDesc, ScriptBuilder, IndirectScriptBuilder
 
 def scumm_init(engine):
 
@@ -21,28 +21,42 @@ def scumm_init(engine):
         csv_reader = reader(file)
         # Check file as empty
         s = None
+        sb = None
         nscr = 0
         mopy.monkey.engine.script = dict()
         lines = file.readlines()
         for line in lines:
             line = line.strip()
-
             if not line or line[0] == '#':                  # comment
                 continue
             elif line[0] == ':':                # new script
                 ref = line.find('->')
+                print('new script')
                 if ref != -1:
                     script_id = line[1:ref]
                     referenced = line[ref+2:]
-                    print('ref scirpt ' + script_id)
-                    mopy.monkey.engine.script[script_id] = mopy.monkey.engine.script[referenced]
+                    # check if has args
+                    obrack = referenced.find('(')
+                    args = None
+                    sref = None
+                    if obrack != -1:
+                        cbrack = referenced.rfind(')')
+                        sref = referenced[:obrack]
+                        args = referenced[obrack+1:cbrack].split(',')
+                        print('STOMONDO ' + str(args))
+                    else:
+                        sref = referenced
+                    mopy.monkey.engine.script[script_id] = IndirectScriptBuilder(mopy.monkey.engine.script[sref], args)
                 else:
-                    s = ScriptDesc(line[1:])
-                    mopy.monkey.engine.script[line[1:]] = [s]
+                    id = line[1:]
+                    sb = ScriptBuilder(id)
+                    s = ScriptDesc(id)
+                    sb.desc.append(s)
+                    mopy.monkey.engine.script[id] = sb
             elif line[0] == ';':
-                old_id = s.id
+                # append a script o current scriptbuilder
                 s = ScriptDesc(line[1:])
-                mopy.monkey.engine.script[old_id].append(s)
+                sb.desc.append(s)
             elif line.find('->') != -1:         # arcs
                 aa = line.split('->')
                 last = int(aa[0])
@@ -51,13 +65,11 @@ def scumm_init(engine):
                     for d in c:
                         s.add_arc(last, int(d))
                     last = int(c[-1])
+            elif line.startswith('loop:'):
+                s.loop = int(line[line.find(':')+1:])
             else:                               # node
                 node = line.split(',')
                 s.add_node(int(node[0]), node[1:])
-        #if s is not None:
-        #    mopy.monkey.engine.script[s.id] = s
-        print ('read ' + str(nscr) + ' scripts.')
-        print(mopy.monkey.engine.script.keys())
 
 
     mopy.scumm.gl = engine.data.globals
@@ -339,15 +351,7 @@ class Engine:
 
     def get_script(self, name):
         s = self.script.get(name)
-        if not s or len(s) == 0:
-            #print(' *** unknown script: ' + name)
-            return None
-        if len(s) == 1:
-            return s[0]
-        f = getattr(self.data.game, '_select_'+ name)
-        if not f:
-            return s[0]
-        return s[f()]
+        return s
 
 
 

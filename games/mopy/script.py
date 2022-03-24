@@ -1,12 +1,14 @@
 # a script is a graph whose nodes are actions
 
+import mopy
+
+
 class ScriptDesc:
-
-
     def __init__(self, id):
         self.nodes = dict()
         self.arcs = dict()
         self.id = id
+        self.loop = None
 
     def add_node(self, id: int, args: list):
         self.nodes[id] = args
@@ -18,7 +20,7 @@ class ScriptDesc:
 
     def make(self, script_args= []):
         # creates an actual script
-        s = Script()
+        s = Script(loop=self.loop)
         import mopy.scumm.scriptmake as sm
         current = 0
         ia = dict()
@@ -42,7 +44,32 @@ class ScriptDesc:
         return s
 
 
+class ScriptBuilder:
+    def __init__(self, id):
+        self.desc = []
+        self.id = id
 
+    def make(self, script_args=[]):
+        # seect which desc to use
+        index = 0
+        if len(self.desc) > 1:
+            f = getattr(mopy.monkey.engine.data.game, '_select_'+ self.id)
+            if f:
+                index = f(script_args)
+        return self.desc[index].make(script_args)
+
+class IndirectScriptBuilder:
+    def __init__(self, builder, args):
+        self.sb = builder
+        self.args = args
+
+    def make(self, script_args=[]):
+        print('ciao '  + str(self.sb))
+        print ('args = ' + str(script_args))
+        if self.args:
+            script_args.extend(self.args)
+        print('sticane = ' + str(script_args))
+        return self.sb.make(script_args)
 
 
 

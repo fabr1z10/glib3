@@ -200,17 +200,16 @@ def run_action():
             sid += '_' + gl.current_item_2
         print(' *** searching for script: ' + sid)
         script = mopy.monkey.engine.get_script(sid)
+        args = [gl.current_item_1, gl.current_item_2]
         if script:
-            print (' *** found.')
-            scr = script.make([gl.current_item_1, gl.current_item_2])
+            scr = script.make(args)
             example.play(scr)
         else:
             print(' *** not found.')
             script = mopy.monkey.engine.get_script('_'+gl.current_verb)
             if script:
-                scr = script.make([gl.current_item_1, gl.current_item_2])
+                scr = script.make(args)
                 example.play(scr)
-
         return
 
         script = None
