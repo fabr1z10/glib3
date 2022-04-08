@@ -31,7 +31,6 @@ def scumm_init(engine):
                 continue
             elif line[0] == ':':                # new script
                 ref = line.find('->')
-                print('new script')
                 if ref != -1:
                     script_id = line[1:ref]
                     referenced = line[ref+2:]
@@ -43,7 +42,6 @@ def scumm_init(engine):
                         cbrack = referenced.rfind(')')
                         sref = referenced[:obrack]
                         args = referenced[obrack+1:cbrack].split(',')
-                        print('STOMONDO ' + str(args))
                     else:
                         sref = referenced
                     mopy.monkey.engine.script[script_id] = IndirectScriptBuilder(mopy.monkey.engine.script[sref], args)
@@ -118,13 +116,13 @@ def scumm_init(engine):
                     if cip:
                         for key, value in cip.items():
                             engine.data.dialogues[key] = value
-                            print('loaded dialogue: ' + key)
 
 initializers = {
     'scumm': scumm_init
 }
 
-# data is a module that contain game variables, configuration and scripts
+# inject game-specific stuff in data
+# you can create custom init script by supplying an init script
 class Engine:
     def __init__(self, data=None):
         sys.path.append(example.dir)
@@ -141,7 +139,6 @@ class Engine:
             self.title = a['title']
             print(' === loading strings ...', end='')
             self.load_strings()
-            print(' OK.')
             # read game variables, and functions
             for file in a.get('fonts', []):
                 self.add_font(file['id'], file['file'])
@@ -150,7 +147,7 @@ class Engine:
         # loading assets
         self.load_assets()
         game_type = a.get('type', 'default')
-        print('the game type is ' + game_type)
+        print(' === game type: ' + game_type)
         if game_type != 'default':
             initializers[game_type](self)
 
@@ -173,6 +170,10 @@ class Engine:
         self.add_item_factory('mopy.bg', mopy.factories.scumm.bg)
         self.add_item_factory('mopy.bg_pseudo_3D', mopy.factories.scumm.bg_ps3D)
         self.add_item_factory('mopy.walk_pseudo_3D', mopy.factories.items.wa3d)
+        custom_init_script = getattr(data.scripts, 'init')
+        if custom_init_script:
+            print ('running custom init script')
+            custom_init_script()
 
 
     def ciao(self, p):
@@ -203,7 +204,6 @@ class Engine:
                         cip = yaml.load(fi, Loader=yaml.FullLoader)
                         if cip:
                             for key, value in cip.items():
-                                print (prefix + " " + key)
                                 self.assets[prefix + key] = value
         # for key, value in self.assets.items():
         #     print(key + ':')
@@ -215,7 +215,6 @@ class Engine:
                 self.assets['strings'] = yaml.load(f, Loader=yaml.FullLoader)
 
     def create_room(self):
-        print('Hey, creating room: ' + self.room)
         filename = example.dir + '/rooms/' + self.room + '.yaml'
         try:
             with open(filename) as f:
@@ -304,7 +303,7 @@ class Engine:
             elif value[0] == '~' and value[1] != '~':
                 a[index] = operator.attrgetter(value[1:])(monkey.engine.data)()
             elif value[0] == '$' and value[1] != '$':
-                print(' *** reading str: ' + value[1:])
+                #print(' *** reading str: ' + value[1:])
                 # get a string
                 cc = self.assets['strings']
                 for b in value[1:].split('/'):

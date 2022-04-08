@@ -126,7 +126,6 @@ void SceneFactory::StartUp(Engine * engine) {
     ShaderFactory sf;
     auto re = engine->GetRenderingEngine();
     for (const auto& s : shaders) {
-        std::cout << "loading shader " << s << std::endl;
         auto sh = sf.getShader(s);
         re->AddShader(std::move(sh));
     }

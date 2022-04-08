@@ -7,7 +7,6 @@
 void AssetManager::init(const ITab & t, pybind11::object scripts) {
     m_assets = t["assets"];
     if (scripts.is_none()) {
-        std::cerr << "no scripts available!\n";
     } else {
         m_scripts = scripts;
 //
@@ -17,7 +16,7 @@ void AssetManager::init(const ITab & t, pybind11::object scripts) {
 //        get<Func>("pollo.ciao.jingo");
     }
    // m_scripts = t["scripts"];
-    std::cerr << m_assets->has("001");
+    //std::cerr << m_assets->has("001");
 }
 
 template<> std::shared_ptr<Font> AssetManager::get(const std::string& id) {

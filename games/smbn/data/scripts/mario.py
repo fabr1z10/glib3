@@ -2,7 +2,21 @@ from mopy.script import Script
 import mopy.actions as act
 import example
 import data
+import mopy
 import mopy.util as utils
+import data.factories as f
+
+
+def init():
+    engine = mopy.monkey.engine
+    engine.add_item_factory('brick', f.brick)
+    engine.add_item_factory('goomba', f.goomba)
+    engine.add_item_factory('mario', f.mario)
+    engine.add_item_factory('rect', f.rect)
+    engine.add_item_factory('bg', f.bg)
+    engine.add_item_factory('coin', f.coin)
+    engine.add_item_factory('scoreboard', f.scoreboard)
+
 
 def set_player_mode(n):
     player = example.get('player')

@@ -131,11 +131,17 @@ def sierra_room(desc: dict):
     room.default_item = 'main'
     main = Entity(tag='main')
     main.camera = OrthoCamera(width, height, gl.sci_viewport[2], gl.sci_viewport[3], gl.sci_viewport, tag='maincam')
-    print('fottimi ' + str(width) +'  ' + str(height) )
-    print('fottimi ' + str(cam_width) +'  ' + str(cam_height) )
-
     main.add_component(HotSpotManager(lmbclick=sierra_walk_to, rmbclick=toggle_cursor))
     room.add(main)
+
+    # add the ui node
+    ui = Entity(tag='ui')
+    ui.camera = OrthoCamera(cam_width, cam_height, cam_width, cam_height, [0, 0, cam_width, cam_height])
+    ui.add(Text(text=mopy.monkey.engine.title, color=gl.ui_txt_color, pos=(0, cam_height), align=TextAlignment.top_left, font=gl.msg_font, size=8))
+    ui.add(Text(text=str(gl.score) + ' of ' + str(gl.max_score), color=gl.ui_txt_color, pos=(cam_width, cam_height), align=TextAlignment.top_right, font=gl.msg_font, size=8))
+    room.add(ui)
+
+
 
     a = Sprite(model='01.cursor', tag='cursor')
     a.add_component(Cursor())

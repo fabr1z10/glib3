@@ -32,6 +32,10 @@ def build_entity(item, pos):
         elif pos_type == 2:
             real_pos[2] = pos[2]
             real_pos[1] += real_pos[2] / math.sqrt(2)
+        if mopy.monkey.engine.data.globals.tiled_pos:
+            tile_size = mopy.monkey.engine.data.globals.tile_size
+            real_pos[0] = real_pos[0] *tile_size[0]
+            real_pos[1] = real_pos[1] * tile_size[1]
         e.pos = real_pos
     return e
 

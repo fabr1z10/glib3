@@ -20,7 +20,19 @@ def sierra_walk_to(x, y):
         s.add_action(Walk((x, y), 'player'))
         example.play(s)
     else:
-        return
+        # check if we have a default script for given action
+        sa = '_default_' + str(gl.current_action) + '_' + str(mopy.monkey.engine.room)
+        script = mopy.monkey.engine.get_script(sa)
+        if script:
+            s = script.make()
+            example.play(s)
+        else:
+            sa = '_default_' + str(gl.current_action)
+            script = mopy.monkey.engine.get_script(sa)
+            if script:
+                s = script.make()
+                example.play(s)
+
         # scripts = mopy.monkey.engine.data.scripts
         # action = gl.actions[gl.current_action]
         # f1 = action + '_' + mopy.monkey.engine.room
@@ -169,6 +181,18 @@ def exec_script(s):
     return f
 
 
+def try_script(script_id, args):
+    print('trying ' + script_id)
+    script = mopy.monkey.engine.get_script(script_id)
+    if script is None:
+        return 1
+    else:
+        scr = script.make(args)
+        scr.id = '_main'
+        example.play(scr)
+        return 0
+
+
 def run_action_sci():
     def f(x, y, item):
         print ('fottimi ! yesss')
@@ -181,15 +205,25 @@ def run_action_sci():
             action = gl.actions[gl.current_action]
             sid = action + '_' + item.tag.replace('.', '_')
             print('look for ' + sid)
-            script = mopy.monkey.engine.get_script(sid)
-            #args = [gl.current_item_1, gl.current_item_2]
-            #fc = getattr(scripts, f1, None)
-            if script is None:
-                print ('cazzone!!! non cè ' + sid)
-            else:
-                scr = script.make([item])
-                scr.id = '_main'
-                example.play(scr)
+            args = [item]
+
+            scripts = [sid, '_default_' + str(gl.current_action)]
+            i = 0
+            while i < len(scripts) and try_script(scripts[i], args):
+                i += 1
+            #
+            #
+            # if try_script(sid, [item]) == 1:
+            #
+            # script = mopy.monkey.engine.get_script(sid)
+            # #args = [gl.current_item_1, gl.current_item_2]
+            # #fc = getattr(scripts, f1, None)
+            # if script is None:
+            #     print ('cazzone!!! non cè ' + sid)
+            # else:
+            #     scr = script.make([item])
+            #     scr.id = '_main'
+            #     example.play(scr)
     return f
 
 

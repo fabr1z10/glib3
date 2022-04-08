@@ -249,9 +249,7 @@ void Engine::MainLoop() {
     while (!glfwWindowShouldClose(window)) {
 
         // get current room
-        std::cerr << "abc\n";
         auto room = m_mainTable->get<std::string>("room");
-		std::cerr << "room: " << room;
         py::function builder;
 //        try {
 //            builder = m_mainTable->get<py::dict>("data")["rooms"][room.c_str()].cast<py::function>();

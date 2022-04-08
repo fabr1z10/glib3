@@ -86,7 +86,6 @@ class BasicRoom(Room):
                 if not self.main:
                     self.main = main
                 self.add(main)
-        print ('SUCKALLLO ' + str(room_info.get('engines',None)))
         self.engines = room_info.get('engines', [])
 
                 #self.add(im, 'main')

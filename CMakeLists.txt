@@ -8,18 +8,16 @@ set(VERSION ${ROOT_VERSION}.${MAJOR_VERSION}.${MINOR_VERSION}.${PATCH_VERSION})
 
 # uncomment this to use assimp
 set(USE_ASSIMP ON)
-set(USE_BOX2D ON)
+#set(USE_BOX2D ON)
+set(USE_BULLET ON)
 
 project(glib VERSION ${VERSION})
+
 set(_pf_x86 "Program\ Files\ \(x86\)")
-# work fine
-message( "$ENV{ProgramFiles\(x86\)}" )
-message( "$ENV{ProgramFiles}" )
+
 # set environment variables and flags
 cmake_policy(SET CMP0074 NEW)
 set(PROJECT_DIR ${CMAKE_CURRENT_LIST_DIR})
-set(BIN_DIR ${PROJECT_DIR}/bin)
-set(LIB_DIR ${PROJECT_DIR}/lib)
 set(INCLUDE_DIR ${PROJECT_DIR}/include)
 set(SRC_DIR ${PROJECT_DIR}/src)
 set(PYBIND_INCLUDE_DIR ${PROJECT_DIR}/include/py/include)
@@ -41,6 +39,7 @@ IF(MSVC)
 	set(JPEG_INCLUDE_DIR c:/Users/fabve/Downloads/jpeg-9d)
 	set(JPEG_LIBRARY_RELEASE c:\\Users\\fabve\\Downloads\\jpeg-9d\\Release\\x64)
 ENDIF(MSVC)
+
 find_package(OpenGL REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(glfw3 REQUIRED)
@@ -49,12 +48,8 @@ find_package(Freetype REQUIRED)
 find_package(PNG REQUIRED)
 find_package(JPEG REQUIRED)
 find_package(yaml-cpp REQUIRED)
-message(${yaml-cpp_FOUND})
-
-
 
 if(DEFINED USE_ASSIMP)
-    #add_compile_definitions(USE_ASSIMP)
     find_package(ASSIMP REQUIRED)
 endif(DEFINED USE_ASSIMP)
 
@@ -62,7 +57,10 @@ endif(DEFINED USE_ASSIMP)
 find_package(box2d REQUIRED)
 #endif (DEFINED USE_BOX2D)
 
-#find_package(Lua REQUIRED)
+#if (DEFINED USE_BULLET)
+find_package(Bullet REQUIRED)
+#endif (DEFINED USE_BULLET)
+
 find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
 
 if(APPLE)
@@ -73,11 +71,7 @@ if(APPLE)
     include_directories(/usr/local/include)
 endif (APPLE)
 
-
-#include_directories(${INCLUDE_DIR} ${FREETYPE_INCLUDE_DIRS} ${GLM_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS} )
-#link_directories(${LIB_DIR})
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
-
 
 configure_file (
     "${INCLUDE_DIR}/version.h.in"
@@ -88,10 +82,10 @@ configure_file (
 add_subdirectory(include/py)
 add_subdirectory(src/alglib)
 add_subdirectory(src/monkey)
-add_subdirectory(src/scumm)
-add_subdirectory(src/racer)
+#add_subdirectory(src/scumm)
+#add_subdirectory(src/racer)
 #add_subdirectory(src/smb)
-add_subdirectory(src/platformer)
+#add_subdirectory(src/platformer)
 add_subdirectory(src/prova)
-add_subdirectory(src/mogo)
+#add_subdirectory(src/mogo)
 

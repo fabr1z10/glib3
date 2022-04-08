@@ -2,7 +2,7 @@ import mopy.util as utils
 import data.scripts
 
 
-
+tiled_pos = True
 tile_size = 16, 16
 jump_height = 80
 time_to_jump_apex = 0.5
@@ -50,6 +50,7 @@ class CollisionTags:
 
 class colors:
     sky = [92/255.0, 148/255.0, 252/255.0, 1.0]
+    sky2 = utils.rgb(36, 60, 98)
 
 collision_engine = {
     'type': 'runner.collisionengine',

@@ -4,3 +4,7 @@
 0,MSG,$msg/3
 :look_moat
 0,MSG,$msg/1
+:_default_1_01
+0,MSG,$msg/2
+:_default_2
+0,MSG,$msg/5
