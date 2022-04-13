@@ -24,6 +24,7 @@ public:
     //void setShapeInfo(const std::vector<std::pair<unsigned, unsigned>>&);
     std::type_index GetType() override;
     void Start() override;
+	//void setModel(std::shared_ptr<Model>) override;
 
 private:
     SpriteRenderer* m_renderer;

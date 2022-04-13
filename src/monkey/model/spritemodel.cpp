@@ -94,7 +94,7 @@ SpriteModel::SpriteModel (const ITab& t) : Model() {
     };
 
     t.foreach("animations", [&] (const std::string& animId, const ITab& u) {
-        std::cout << "anim: " << animId << "\n";
+        //std::cout << "anim: " << animId << "\n";
         if (m_defaultAnimation.empty()) {
             m_defaultAnimation = animId;
         }
@@ -125,7 +125,7 @@ SpriteModel::SpriteModel (const ITab& t) : Model() {
         a++;
     });
 
-    std::cerr << "number of anism = " << a << "\n";
+    //std::cerr << "number of anism = " << a << "\n";
 
     auto mesh = std::make_shared<Mesh<Vertex3D>>(ShaderType::TEXTURE_SHADER_UNLIT);
     mesh->m_primitive = GL_TRIANGLES;

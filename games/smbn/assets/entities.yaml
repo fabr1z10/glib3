@@ -49,7 +49,7 @@ pipe_horizontal_green:
   type: _entity
   children:
     - type: bg
-      model: pipe_green_hor
+      model: model.pipe_green_hor
       pos: [0, 0, 1]
     - type: rect
       size: [1, 9]
@@ -67,13 +67,13 @@ warp_down:
         type: shape3d.aabb
         size: [16, 1, 0]
         offset: [-8, 0, 0]
-      flag: $globals.CollisionFlags.foe
-      mask: $globals.CollisionFlags.player
-      tag: $globals.CollisionTags.warp
+      flag: '@globals.CollisionFlags.foe'
+      mask: '@globals.CollisionFlags.player'
+      tag: '@globals.CollisionTags.warp'
       debug: True
     - type: components.info
       stuff:
-        warp_to: '@0'
+        warp_to: '#0'
 warp_right:
   type: _entity
   components:
@@ -102,6 +102,28 @@ end_level:
       stuff:
         warp_to: '@0'
         start_position: '@1'
+goomba:
+  type: goomba
+  model: sprites.goomba
+  size: [16, 16]
+  max_speed: 5
+  time_acc: 0.1
+  flip_on_edge: false
+goombad:
+  type: goomba
+  model: sprites.goomba_dark
+  size: [16, 16]
+  max_speed: 5
+  time_acc: 0.1
+  flip_on_edge: false
+flying_coin:
+  type: _entity
+  model: sprites.flying_coin
+  on_create: init_flying_coin
+score_100:
+  type: _entity
+  model: sprites.score_100
+  on_create: init_score
 flag_pole:
   type: _entity
   model: flagpole

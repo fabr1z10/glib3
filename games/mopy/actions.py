@@ -5,7 +5,7 @@ from mopy.entity import TextAlignment
 import example
 import random
 import mopy.util as utils
-import mopy
+from mopy.room import add_entity
 
 class NoOp:
     def __init__(self):
@@ -150,15 +150,16 @@ class MoveAccelerated:
 
 class AddEntity(CallFunc):
     @staticmethod
-    def pippo(entity, parent):
+    def pippo(entity, pos, parent):
         def f():
-            m: example.Wrap1 = example.get(parent)
-            m.add(entity)
+            add_entity(entity, pos, parent)
+            # m: example.Wrap1 = example.get(parent)
+            # m.add(entity)
 
         return f
 
-    def __init__(self, entity, parent='main'):
-        super().__init__(f=AddEntity.pippo(entity, parent))
+    def __init__(self, entity_id, pos, parent='main'):
+        super().__init__(f=AddEntity.pippo(entity_id, pos, parent))
 
 
 class CreateEntity(CallFunc):

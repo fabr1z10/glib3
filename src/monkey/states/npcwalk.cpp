@@ -4,17 +4,33 @@
 #include <monkey/entity.h>
 #include <monkey/components/controller3d.h>
 
-NPCWalk::NPCWalk(const ITab& t) : Base3D(t) {
+NPCWalk::NPCWalk(const ITab& t) : State(t) {
     m_walkAnim = t.get<std::string>("walk_anim", "walk");
     m_direction = t.get<int>("direction", -1);
     m_fliph = t.get<bool>("flip_hor", true);
     m_flipIfPlatformEnds = t.get<bool>("flip_on_edge", false);
     m_collisionMaskOverride = t.get<int>("collision_mask", -1);
+	m_gravity = t.get<float>("gravity");
+	m_maxSpeed = t.get<float>("max_speed");
+
 }
 
 void NPCWalk::AttachStateMachine(StateMachine * sm) {
 
-    Base3D::AttachStateMachine(sm);
+	State::AttachStateMachine(sm);
+	m_entity = sm->GetObject();
+
+	m_dynamics = m_entity->GetComponent<Dynamics>();
+	if (m_dynamics == nullptr) {
+		GLIB_FAIL("player jump state requires a dynamics component!");
+	}
+
+	m_controller = dynamic_cast<Controller2D*>(m_entity->GetComponent<IController>());
+	if (m_controller == nullptr) {
+		GLIB_FAIL("Platformer state requires a <Controller2D> component!");
+	}
+
+	m_renderer = dynamic_cast<AnimationRenderer*>(m_entity->GetComponent<Renderer>());
 }
 
 void NPCWalk::Init(const ITab &d) {
@@ -24,13 +40,13 @@ void NPCWalk::Init(const ITab &d) {
 }
 
 void NPCWalk::Run(double dt) {
-    float dtf = static_cast<float>(dt);
+    auto dtf = static_cast<float>(dt);
 
     if (m_controller->grounded()) {
         m_dynamics->m_velocity.y = 0.0f;
     }
 
-    glm::vec3 a(0.0f);
+    glm::vec2 a(0.0f);
     a.y = -m_gravity;
     m_dynamics->m_velocity += a * dtf;
     if (m_fliph) {
@@ -46,12 +62,12 @@ void NPCWalk::Run(double dt) {
     }
     if (m_flipIfPlatformEnds) {
         // check if I reached the end of the platform
-        if (m_controller->m_details.below && m_controller->IsFalling((m_direction == -1) ? -1 : 1, 0)) {
+        if (m_controller->m_details.below && m_controller->IsFalling((m_direction == -1) ? -1 : 1 )) {
             m_direction = (m_direction == -1) ? 1 : -1;
             return;
         }
     }
-    auto delta = m_dynamics->m_velocity * dtf;
+    auto delta = glm::vec3(m_dynamics->m_velocity * dtf, 0.0f);
     m_controller->Move(delta);
 
 //    if (m_renderer != nullptr) {

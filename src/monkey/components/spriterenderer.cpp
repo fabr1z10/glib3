@@ -8,6 +8,15 @@ SpriteRenderer::SpriteRenderer(std::shared_ptr<Model> model) : AnimationRenderer
     m_spriteModel = dynamic_cast<SpriteModel*>(model.get());
 }
 
+void SpriteRenderer::setModel(std::shared_ptr<Model> model) {
+	Renderer::setModel(model);
+	m_spriteModel = dynamic_cast<SpriteModel*>(model.get());
+	// reset animation
+	auto anim = m_animation;
+	m_animation.clear();
+	setAnimation(anim);
+}
+
 void SpriteRenderer::Draw(Shader * s) {
     if (s->getShaderType() == m_model->getMesh(0)->getShaderType()) {
         const auto& frameInfo = m_currentAnimInfo->frames[m_frame];

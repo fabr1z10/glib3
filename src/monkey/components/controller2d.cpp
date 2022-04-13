@@ -379,9 +379,9 @@ void Controller2D::VerticalCollisions(glm::vec2& velocity) {
     }
 
 
-    for (const auto& p : m_platforms) {
-        std::cout << m_entity->GetId() << " on top of " << p->GetId() << "\n";
-    }
+//    for (const auto& p : m_platforms) {
+//        std::cout << m_entity->GetId() << " on top of " << p->GetId() << "\n";
+//    }
 
 }
 

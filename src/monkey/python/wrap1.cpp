@@ -164,9 +164,17 @@ void Wrap1::setAnim(const std::string & animId) {
 }
 
 void Wrap1::setModel(pybind11::object obj) {
+
+
 	auto factory = Engine::get().GetSceneFactory();
-	auto model = factory->make2<Model>(PyTab(obj));
-	m_entity->GetComponent<Renderer>()->setModel(model);
+	std::shared_ptr<Model> model;
+	try {
+		auto pane = obj.cast<std::string>();
+		model = factory->make2<Model>(PyTab(obj));
+	} catch (...) {
+		model = factory->make2<Model>(PyTab(obj));
+	}
+		m_entity->GetComponent<Renderer>()->setModel(model);
 	//m_entity->AddComponent(model->makeRenderer(model));
 //    // TODO restore
 //    auto renderer = m_entity->GetComponent<Renderer>();
@@ -182,8 +190,8 @@ void Wrap1::setModel(pybind11::object obj) {
 ////    r->setModel(model);
 ////    a->setModel(model);
 ////    r->Start();
-//    auto collider = m_entity->GetComponent<ICollider>();
-//    if (collider != nullptr) collider->Start();
+    auto collider = m_entity->GetComponent<ICollider>();
+    if (collider != nullptr) collider->Start();
 }
 
 void Wrap1::setText(const std::string& text) {

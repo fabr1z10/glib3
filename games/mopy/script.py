@@ -88,11 +88,15 @@ class Script:
 
     # add an action
 
-        
+    def seq(self, sequence: list, after=None):
+        after = after if after else len(self.actions)
+        for action in sequence:
+            after = self.add_action(action, after=after)
+        return after
+
+
     def add_action(self, action, id=None, after=None):
-        print('after = ' + str(after))
         iid = len(self.actions)
-        print('after = ' + str(after))
         if id is not None:
             self.map[id] = iid
         if id and self.loop == id:

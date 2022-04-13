@@ -7,6 +7,7 @@ import example
 import mopy
 
 def restart():
+    print('suca')
     example.restart()
 
 
@@ -27,7 +28,7 @@ class BasicRoom(Room):
             # check if it's a reference to an asset
             entity_desc = monkey.engine.get_asset(item['ref'], item.get('args', None)) if 'ref' in item else item
             for position in pos:
-                a = build_entity(item, position)
+                a = build_entity(entity_desc, position)
                 self.add(a, parent)
 
 
@@ -59,7 +60,8 @@ class BasicRoom(Room):
                 cam_type = cam['type']
                 id = cam['id']
                 main = Entity(tag=id)
-                self.default_item = id
+                if self.default_item is None:
+                    self.default_item = id
                 camera = None
                 if cam_type == 'ortho':
                     world_size = cam['world_size']
@@ -87,6 +89,9 @@ class BasicRoom(Room):
                     self.main = main
                 self.add(main)
         self.engines = room_info.get('engines', [])
+        keyl = KeyListener()
+        keyl.add_key(key=299, func=restart)
+        self.add_runner(keyl)
 
                 #self.add(im, 'main')
                 # factory_id = item['factory']

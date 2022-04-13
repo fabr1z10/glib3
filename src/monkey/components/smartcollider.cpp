@@ -18,6 +18,12 @@ SmartColliderRenderer::SmartColliderRenderer(
 
 }
 
+//void SmartColliderRenderer::setModel(std::shared_ptr<Model> model) {
+//	Renderer::setModel(model);
+//	m_boxedModel = dynamic_cast<BoxedModel*>(model.get());
+//
+//}
+
 void SmartColliderRenderer::Draw(Shader * shader) {
     if (shader->getShaderType() == COLOR_SHADER) {
 
@@ -200,6 +206,7 @@ void SmartCollider::Start() {
         //shapeEntity->AddComponent(model->makeRenderer(model));
 
         m_entity->AddChild(shapeEntity);
+        m_shapeEntity = shapeEntity.get();
 
 //
 //        m_entity->AddChild(shapeEntity);

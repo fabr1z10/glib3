@@ -55,7 +55,15 @@ public:
     	return m_link.attr("read")("@globals/thickness").cast<T>();
     }
 
+	template<class T>
+	T getVariable(const std::string& a, T defaultValue) {
+		try {
+			return m_link.attr("read")("@globals/thickness").cast<T>();
+		} catch (...) {
+			return defaultValue;
+		}
 
+	}
     template <class T>
     T* GetRunner() {
         auto it = m_runners.find(std::type_index(typeid(T)));

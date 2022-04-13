@@ -3,7 +3,7 @@
 #include <monkey/components/controller2d.h>
 #include <monkey/components/animrenderer.h>
 
-class NPCWalk : public Base3D {
+class NPCWalk : public State {
 public:
     NPCWalk(const ITab& t);
     void Init(const ITab& d) override;
@@ -22,8 +22,13 @@ private:
     int m_direction; // -1 = going left, 1 = going right
     bool m_fliph;
     bool m_flipIfPlatformEnds;
-
+	float m_gravity;
+	float m_maxSpeed;
     // override collision mask
     int m_collisionMaskOverride;
     int m_oldCollisionMask;
+	AnimationRenderer* m_renderer;
+	Entity * m_entity;
+	Controller2D * m_controller;
+	Dynamics * m_dynamics;
 };

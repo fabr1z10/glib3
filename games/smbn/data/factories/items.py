@@ -9,8 +9,19 @@ import mopy.monkey as monkey
 import data
 import mopy.util as utils
 import mopy.factories.items as items
+from mopy.components import Collider, Info
 import copy
 import mopy
+
+def hotspot(args):
+    glo = mopy.monkey.engine.data.globals
+    hotspot = Entity()
+    size = args['size']
+    hotspot.add_component(Collider(debug=True, flag=glo.CollisionFlags.foe, mask=glo.CollisionFlags.player, tag=glo.CollisionTags.hotspot,
+                                   shape=mopy.shapes3d.AABB([size[0], size[1], 1])))
+    hotspot.add_component(Info(callback=args['callback'], args=args.get('args', [])))
+    return hotspot
+
 
 
 def scoreboard(args):
@@ -58,20 +69,24 @@ def mario(args):
         'id': 'warp',
         'anim': 'idle'
     })
-    p.components[-1]['states'].append({
-        'type': 'state.npc_walk',
-        'id': 'npcwalk',
-        'max_speed': 100,
-        'gravity': data.globals.gravity,
-        'jump_speed': 0,
-        'collision_mask': 8
-    })
+    # p.components[-1]['states'].append({
+    #     'type': 'state.npc_walk',
+    #     'id': 'npcwalk',
+    #     'max_speed': 100,
+    #     'gravity': data.globals.gravity,
+    #     'jump_speed': 0,
+    #     'collision_mask': 8
+    # })
     p.components[-1]['states'].append({
         'type': 'state.anim',
         'id': 'slide',
         'anim': 'slide'
     })
-
+    p.components[-1]['states'].append({
+        'type': 'state.anim',
+        'id': 'dead',
+        'anim': 'dead'
+    })
     p.pos = utils.tiles_to_world(data.globals.start_positions[data.globals.start_position]['pos'], data.globals.tile_size)
     p.auto_pos = True
     return p
@@ -99,16 +114,18 @@ def rect(args):
                 'tex': args.get('img')
             }
     else:
-        asset = copy.deepcopy(monkey.engine.get_asset(args.get('model', None)))
-        asset['tile_size'] = [16,16]
-        p.model = asset
+        mdl = args.get('model', None)
+        if mdl:
+            asset = copy.deepcopy(monkey.engine.get_asset(args.get('model', None)))
+            asset['tile_size'] = [16,16]
+            p.model = asset
 
     return p
 
 
 def coin(args):
     e = Entity()
-    e.model = args.get('model', 'pickupcoin')
+    e.model = args.get('model', 'sprites.pickupcoin')
     e.add_component({
         'type': 'components.smart_collider',
         'tag': data.CollisionTags.pickup_coin,

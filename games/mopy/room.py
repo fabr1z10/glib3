@@ -2,7 +2,17 @@ import mopy.engine as engine
 import mopy.entity as entity
 import mopy
 import math
+import example
 
+
+def add_entity(itemid, pos, parent):
+    item = mopy.monkey.engine.get_asset(itemid)
+    a = build_entity(item, pos)
+    id = example.get(parent).add(a)
+    if 'on_create' in item:
+        f = getattr(mopy.monkey.engine.data.scripts, item['on_create'])
+        f(id, pos[0], pos[1])
+    return id
 
 
 #########################

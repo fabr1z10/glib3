@@ -3,9 +3,9 @@ id: world1_1
 time: 300
 display_name: '1_1'
 start_positions:
-  - pos: [192, 8]
-  - pos: [164, 0]
-    script: '@scripts.mario.rise'
+  - pos: [2, 8]
+#  - pos: [164, 0]
+#    script: '@scripts.mario.rise'
 vars:
   0: mario
 cam:
@@ -28,145 +28,125 @@ items:
   - type: scoreboard
     parent: diag
   - type: _entity
-    parent: diag
     model:
       type: model.rect
       size: [256, 240]
       color: '@globals.colors.sky2'
     pos: [0,0,-5]
-
+    parent: diag
   - type: mario
   - type: rect
     size: [69, 2]
     img: gfx/block1.png
     pos: [0, 0, 0]
-#  - type: rect
-#    size: [15, 2]
-#    img: gfx/block1.png
-#    pos: [71, 0, 0]
-#  - type: rect
-#    size: [64, 2]
-#    img: gfx/block1.png
-#    pos: [89, 0, 0]
-#  - type: rect
-#    size: [69, 2]
-#    img: gfx/block1.png
-#    pos: [155, 0, 1]
-#  - type: rect
-#    size: [5, 1]
-#    img: gfx/block2.png
-#    pos: [148, 2, 0, 185, 6, 0]
-#  - type: rect
-#    size: [4, 1]
-#    img: gfx/block2.png
-#    pos: [134, 2, 0, 140, 2, 0, 149, 3, 0, 155, 2, 0, 186, 7, 0]
-#  - type: rect
-#    size: [3, 1]
-#    img: gfx/block2.png
-#    pos: [135, 3, 0, 140, 3, 0, 150, 4, 0, 155, 3, 0, 187, 8, 0]
-#  - type: rect
-#    size: [2, 1]
-#    img: gfx/block2.png
-#    pos: [136, 4, 0, 140, 4, 0, 151, 5, 0, 155, 4, 0, 188, 9, 0]
-#  - type: rect
-#    size: [1, 1]
-#    img: gfx/block2.png
-#    pos: [137, 5, 0, 140, 5, 0, 155, 5, 0, 198, 2, 0]
-#  - type: rect
-#    size: [6, 1]
-#    img: gfx/block2.png
-#    pos: [184, 5, 0]
-#  - type: rect
-#    size: [7, 1]
-#    img: gfx/block2.png
-#    pos: [183, 4, 0]
-#  - type: rect
-#    size: [8, 1]
-#    img: gfx/block2.png
-#    pos: [182, 3, 0]
-#  - type: rect
-#    size: [9, 1]
-#    img: gfx/block2.png
-#    pos: [181, 2, 0]
-#  - type: brick
-#    model: bonusbrick
-#    item: scripts.factories.flying_coin
-#    pos: [16, 5, 0, 23, 5, 0, 22, 9, 0, 94, 9, 0, 106, 5, 0, 109, 5, 0, 112, 5, 0, 129, 9, 0, 130, 9, 0, 170, 5, 0]
-#  - type: brick
-#    model: brick
-#    pos: [20, 5, 0, 22, 5, 0, 24, 5, 0, 77, 5, 0, 79, 5, 0, 80, 9, 0, 81, 9, 0, 82, 9, 0, 83, 9, 0, 84, 9, 0, 85, 9, 0,
-#    86, 9, 0, 87, 9, 0, 91, 9, 0, 92, 9, 0, 93, 9, 0, 100, 5, 0, 118, 5, 0, 121, 9, 0, 122, 9, 0, 123, 9, 0, 128, 9, 0,
-#    129, 5, 0, 130, 5, 0, 131, 9, 0, 168, 5, 0, 169, 5, 0, 171, 5, 0]
-#  - type: brick
-#    model: bonusbrick
-#    item: scripts.factories.mushroom
-#    pos: [21, 5, 0, 78, 5, 0, 109, 9, 0]
-#  - type: brick
-#    model: hiddenbrick
-#    hidden: true
-#    item: scripts.factories.mushroom_1up
-#    pos: [64, 6, 0]
-#  - type: rect
-#    model: pipe2_green
-#    size: [2, 2]
-#    pos: [28, 2, 0, 163, 2, 1, 179, 2, 0]
-#  - type: rect
-#    model: pipe3_green
-#    size: [2, 3]
-#    pos: [38, 2, 0]
-#  - type: rect
-#    model: pipe4_green
-#    size: [2, 4]
-#    pos: [46, 2, 0, 57, 2, 1]
-#  - ref: warp_down
-#    args:
-#      - world1_1b
-#    pos: [58, 6, 0]
-#
-#  - type: bg
-#    model: hill
-#    pos: [0, 2, -1, 48, 2, -1, 96, 2, -1, 144, 2, -1, 192, 2, -1]
-#  - type: bg
-#    model: hill_small
-#    pos: [16, 2, -1, 64, 2, -1, 112, 2, -1, 160, 2, -1, 208, 2, -1]
-#  - type: bg
-#    model: bush_3
-#    pos: [11, 2, -1, 59, 2, -1, 107, 2, -1, 155, 2, -1, 203, 2, -1]
-#  - type: bg
-#    model: bush_2
-#    pos: [41,2,-1, 89, 2, -1, 137, 2, -1, 185, 2, -1]
-#  - type: bg
-#    model: bush_1
-#    pos: [23,2,-1,71,2,-1,119,2,-1,167,2,-1,215,2,-1]
-#  - type: bg
-#    model: cloud_1
-#    pos: [8, 10, -1, 19, 11, -1, 56, 10, -1, 67, 11, -1, 104, 10, -1, 115, 11, -1, 152, 10, -1, 163, 11, -1, 200, 10, -1, 211, 11, -1]
-#  - type: bg
-#    model: cloud_2
-#    pos: [36,11,0,84,11,0,132,11,0,180,11,0]
-#  - type: bg
-#    model: cloud_3
-#    pos: [27,10,0,75,10,0,123,10,0,171,10,0,219,10,0]
-#
-#  - type: bg
-#    model: castle
-#    pos: [202, 2, -0.5]
-#  - ref: flag_pole
-#    pos: [198,3,0]
-#  - ref: end_level
-#    args:
-#      - world1_1
-#      - 1
-#    pos: [204.8, 2, 0]
-#
-# --------------------------
+  - type: rect
+    size: [15, 2]
+    img: gfx/block1.png
+    pos: [71, 0, 0]
+  - type: rect
+    size: [64, 2]
+    img: gfx/block1.png
+    pos: [89, 0, 0]
+  - type: rect
+    size: [69, 2]
+    img: gfx/block1.png
+    pos: [155, 0, 1]
+  - type: rect
+    size: [5, 1]
+    img: gfx/block2.png
+    pos: [148, 2, 0, 185, 6, 0]
+  - type: rect
+    size: [4, 1]
+    img: gfx/block2.png
+    pos: [134, 2, 0, 140, 2, 0, 149, 3, 0, 155, 2, 0, 186, 7, 0]
+  - type: rect
+    size: [3, 1]
+    img: gfx/block2.png
+    pos: [135, 3, 0, 140, 3, 0, 150, 4, 0, 155, 3, 0, 187, 8, 0]
+  - type: rect
+    size: [2, 1]
+    img: gfx/block2.png
+    pos: [136, 4, 0, 140, 4, 0, 151, 5, 0, 155, 4, 0, 188, 9, 0]
+  - type: rect
+    size: [1, 1]
+    img: gfx/block2.png
+    pos: [137, 5, 0, 140, 5, 0, 155, 5, 0, 198, 2, 0]
+  - type: rect
+    size: [6, 1]
+    img: gfx/block2.png
+    pos: [184, 5, 0]
+  - type: rect
+    size: [7, 1]
+    img: gfx/block2.png
+    pos: [183, 4, 0]
+  - type: rect
+    size: [8, 1]
+    img: gfx/block2.png
+    pos: [182, 3, 0]
+  - type: rect
+    size: [9, 1]
+    img: gfx/block2.png
+    pos: [181, 2, 0]
+  - type: rect
+    model: model.pipe2_green
+    size: [2, 2]
+    pos: [28, 2, 0, 163, 2, 1, 179, 2, 0]
+  - type: rect
+    model: model.pipe3_green
+    size: [2, 3]
+    pos: [38, 2, 0]
+  - type: rect
+    model: model.pipe4_green
+    size: [2, 4]
+    pos: [46, 2, 0, 57, 2, 1]
+
+  # left boundary
+  - type: rect
+    size: [1, 16]
+    pos: [-1, 0, 0]
+  - ref: entities.goomba
+    pos: [21, 6, 0, 15, 6, 0]
+  - ref: entities.goombad
+    pos: [13, 6, 0]
 #  - type: goomba
-#    model: goomba
+#    model: sprites.goomba
 #    size: [16, 16]
 #    max_speed: 5
 #    time_acc: 0.1
 #    flip_on_edge: true
-#    pos: [21, 6,0]
+#    pos: [21, 6, 0]
+  - type: hotspot
+    callback: create_item
+    args: [entities.goomba, 10, 10]
+    size: [10, 10]
+    pos: [10, 2, 0]
+  - type: brick
+    model: sprites.bonusbrick
+    item: entities.flying_coin
+    pos: [16, 5, 0, 23, 5, 0, 22, 9, 0, 94, 9, 0, 106, 5, 0, 109, 5, 0, 112, 5, 0, 129, 9, 0, 130, 9, 0, 170, 5, 0]
+  - type: brick
+    model: sprites.brick
+    pos: [20, 5, 0, 22, 5, 0, 24, 5, 0, 77, 5, 0, 79, 5, 0, 80, 9, 0, 81, 9, 0, 82, 9, 0, 83, 9, 0, 84, 9, 0, 85, 9, 0,
+    86, 9, 0, 87, 9, 0, 91, 9, 0, 92, 9, 0, 93, 9, 0, 100, 5, 0, 118, 5, 0, 121, 9, 0, 122, 9, 0, 123, 9, 0, 128, 9, 0,
+    129, 5, 0, 130, 5, 0, 131, 9, 0, 168, 5, 0, 169, 5, 0, 171, 5, 0]
+  - type: brick
+    model: sprites.bonusbrick
+    item: entities.mushroom
+    pos: [21, 5, 0, 78, 5, 0, 109, 9, 0]
+  - type: brick
+    model: sprites.hiddenbrick
+    hidden: true
+    item: entities.mushroom_1up
+    pos: [64, 6, 0]
+  - ref: entities.warp_down
+    args:
+      - world1_1b
+    pos: [58, 6, 0]
+#
+
+#
+# --------------------------
+
 #  - type: _entity
 #    components:
 #      - type: components.collider
@@ -186,3 +166,38 @@ items:
 # ----------------------------------
 # background items
 # ----------------------------------
+  - type: bg
+    model: model.hill
+    pos: [0, 2, -1, 48, 2, -1, 96, 2, -1, 144, 2, -1, 192, 2, -1]
+  - type: bg
+    model: model.hill_small
+    pos: [16, 2, -1, 64, 2, -1, 112, 2, -1, 160, 2, -1, 208, 2, -1]
+  - type: bg
+    model: model.bush_3
+    pos: [11, 2, -1, 59, 2, -1, 107, 2, -1, 155, 2, -1, 203, 2, -1]
+  - type: bg
+    model: model.bush_2
+    pos: [41,2,-1, 89, 2, -1, 137, 2, -1, 185, 2, -1]
+  - type: bg
+    model: model.bush_1
+    pos: [23,2,-1,71,2,-1,119,2,-1,167,2,-1,215,2,-1]
+  - type: bg
+    model: model.cloud_1
+    pos: [8, 10, -1, 19, 11, -1, 56, 10, -1, 67, 11, -1, 104, 10, -1, 115, 11, -1, 152, 10, -1, 163, 11, -1, 200, 10, -1, 211, 11, -1]
+  - type: bg
+    model: model.cloud_2
+    pos: [36,11,0,84,11,0,132,11,0,180,11,0]
+  - type: bg
+    model: model.cloud_3
+    pos: [27,10,0,75,10,0,123,10,0,171,10,0,219,10,0]
+
+  - type: bg
+    model: model.castle
+    pos: [202, 2, -0.5]
+#  - ref: flag_pole
+#    pos: [198,3,0]
+#  - ref: end_level
+#    args:
+#      - world1_1
+#      - 1
+#    pos: [204.8, 2, 0]

@@ -24,14 +24,14 @@ cam:
       y: [0, 240]
       z: [0, 100]
 on_preload:
-  $tils.init
+  '@tils.init'
 on_load:
-  func: $tils.setup
+  func: '@tils.setup'
 engines:
   - type: runner.scheduler
-  - $globals.collision_engine
+  - '@globals.collision_engine'
 items:
-  - ref: scoreboard
+  - type: scoreboard
     parent: diag
   - type: mario
   - type: rect
@@ -54,12 +54,12 @@ items:
     pos: [4, 5, 0, 5, 5, 0, 6, 5, 0, 7, 5, 0, 8, 5, 0, 9, 5, 0, 10, 5, 0,
           4, 7, 0, 5, 7, 0, 6, 7, 0, 7, 7, 0, 8, 7, 0, 9, 7, 0, 10, 7, 0,
           5, 9, 0, 6, 9, 0, 7, 9, 0, 8, 9, 10, 9, 9, 0]
-  - ref: pipe_horizontal_green
+  - ref: entities.pipe_horizontal_green
     pos: [13, 2, 0]
-  - ref: warp_right
-    pos: [13, 2, 0]
-  - ref: end_level
-    args:
-      - world1_1
-      - 1
-    pos: [14.8, 2, 0]
+#  - ref: entities.warp_right
+#    pos: [13, 2, 0]
+#  - ref: end_level
+#    args:
+#      - world1_1
+#      - 1
+#    pos: [14.8, 2, 0]

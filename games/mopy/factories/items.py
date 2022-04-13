@@ -529,7 +529,6 @@ def player2D(ciao):
     show_boxes = getattr(monkey.engine.data.globals, 'show_boxes', False)
     jump_height = ciao.get('jump_height')
     time_to_jump_apex = ciao.get('time_to_jump_apex')
-    print('Jump height = ' + str(jump_height))
     gravity = (2.0 * jump_height) / (time_to_jump_apex * time_to_jump_apex)
     jump_speed = abs(gravity) * time_to_jump_apex
     e.tag = ciao.get('tag', None)

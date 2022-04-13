@@ -21,6 +21,26 @@ goomba:
         - quads: [144, 0, 16, 16, -8, 0]
   boxes:
     - [-6, 0, 6, 16]
+goomba_dark:
+  type: model.boxed
+  sheet: gfx/smb1.png
+  animations:
+    walk:
+      box: 0
+      loop: true
+      frames:
+        - quads: [32, 96, 16, 16, -8, 0]
+        - quads: [48, 96, 16, 16, -8, 0]
+    idle:
+      box: 0
+      frames:
+        - quads: [32, 96, 16, 16, -8, 0]
+    dead:
+      frames:
+        - quads: [96, 112, 16, 16, -8, 0]
+  boxes:
+    - [-6, 0, 6, 16]
+
 mario:
   type: model.boxed
   sheet: gfx/smb1.png
@@ -45,6 +65,11 @@ mario:
       loop: false
       frames:
         - quads: [80, 0, 16, 16, -8, 0]
+    dead:
+      loop: false
+      frames:
+        - quads: [96, 0, 16, 16, -8, 0]
+
   boxes:
     - [-4, 0, 4, 16]
 supermario:
@@ -65,6 +90,8 @@ supermario:
         - ticks: 10
           quads: [112, 16, 16, 32, -8, 0]
         - ticks: 10
+          quads: [96, 16, 16, 32, -8, 0]
+        - ticks: 10
           quads: [128, 16, 16, 32, -8, 0]
     jump:
       box: 0
@@ -74,7 +101,7 @@ supermario:
       frames:
         - quads: [192, 64, 16, 32, -8, 0]
   boxes:
-    - [-4, 0, 4, 32, -2, 32, 2, 48]
+    - [-4, 0, 4, 32]
 fierymario:
   type: model.boxed
   sheet: gfx/smb1.png
@@ -92,6 +119,8 @@ fierymario:
           quads: [16, 112, 16, 32, -8, 0]
         - ticks: 10
           quads: [32, 112, 16, 32, -8, 0]
+        - ticks: 10
+          quads: [16, 112, 16, 32, -8, 0]
         - ticks: 10
           quads: [48, 112, 16, 32, -8, 0]
     jump:

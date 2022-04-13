@@ -21,7 +21,7 @@ namespace py = pybind11;
 
 BoxedModel::BoxedModel(const ITab& t) : SpriteModel(t) {
 
-	auto thick= Engine::get().getVariable<float>("data.globals.thickness");
+	auto thick= Engine::get().getVariable<float>("data.globals.thickness", 0.0f);
     auto thickness = t.get<float>("thickness", thick);
     auto halfThickness = 0.5*thickness;
 	if (t.has("boxes")) {

@@ -15,7 +15,7 @@ def init(desc):
     if 'time' in desc:
         data.globals.time = desc['time']
         data.globals.display_name = desc['display_name']
-    #data.globals.start_positions = desc['start_positions']
+    data.globals.start_positions = desc['start_positions']
 
 
 

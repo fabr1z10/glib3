@@ -11,6 +11,7 @@ public:
     void setAnimation(const std::string&) override;
     int getFrame() const;
     std::type_index GetType() override;
+	void setModel(std::shared_ptr<Model>) override;
 
 private:
     int m_frame;

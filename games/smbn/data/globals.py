@@ -11,16 +11,18 @@ gravity = a[0]
 jump_velocity = a[1]
 show_boxes = True
 player_modes = [
-    {'model': 'mario', 'size': (0.8, 1)},
-    {'model': 'supermario', 'size': (0.8, 2)},
-    {'model': 'fierymario', 'size': (0.8, 2)},
+    {'model': 'sprites.mario', 'size': (0.8, 1)},
+    {'model': 'sprites.supermario', 'size': (0.8, 2)},
+    {'model': 'sprites.fierymario', 'size': (0.8, 2)},
 ]
 start_position = 0
-player_mode = 1
+player_mode = 0
 score = 0
 time = 0
 display_name = ''
 active_warp = None
+invincible = False
+invincible_time = 5
 
 class Keys:
     down = 264
@@ -46,6 +48,7 @@ class CollisionTags:
     warp_right = 10
     end_level = 11
     flag_pole = 12
+    hotspot = 13
 
 
 class colors:
@@ -60,6 +63,14 @@ collision_engine = {
         'tag2': CollisionTags.goomba,
         'on_enter': data.scripts.mario.foe_hits_mario
     },
+    {
+        'tag1': CollisionTags.player,
+        'tag2': CollisionTags.hotspot,
+        'on_enter': data.scripts.mario.player_hits_hotspot
+    },
+
+
+
     {
         'tag1': CollisionTags.player,
         'tag2': CollisionTags.mushroom,
