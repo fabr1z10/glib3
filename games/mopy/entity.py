@@ -96,7 +96,7 @@ class Skeleton(Entity):
 
 class Text(Entity):
     def __init__(self, font: str, size, text: str, color, align: TextAlignment = TextAlignment.top_left, tag = None,
-                 pos: tuple = (0, 0, 0)):
+                 pos: tuple = (0, 0, 0), maxwidth=None):
         super().__init__(tag, pos)
         self.type = 'text'
         self.font = font
@@ -104,6 +104,7 @@ class Text(Entity):
         self.size = size
         self.align = align.value
         self.color = color
+        self.maxwidth = maxwidth
 
 
 class TextView(Entity):

@@ -76,7 +76,10 @@ def rect(args):
 def bg(args):
     e = Entity()
     asset = copy.deepcopy(monkey.engine.get_asset(args.get('model', None)))
-    asset['tile_size'] = [16, 16]
+    e.tag = args.get('tag')
+    if 'tile_size' not in asset:
+        asset['tile_size'] = [16, 16]
     e.model = asset
+    print ('THE TAG IS ' + str(e.tag))
     e.read_children(args)
     return e

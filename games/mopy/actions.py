@@ -126,6 +126,8 @@ class SetState:
         self.args = args
 
 
+
+
 class Delay:
     def __init__(self, sec: float):
         self.type = 'action.delay'
@@ -171,6 +173,19 @@ class CreateEntity(CallFunc):
 
     def __init__(self, func_id: str, pos, args=None, use_tile = True, parent='main'):
         super().__init__(f=CreateEntity.pippo(func_id, pos, args, use_tile, parent))
+
+
+class SetText(CallFunc):
+    @staticmethod
+    def pippo(tag, text):
+        def f():
+            example.get(tag).setText(text)
+        return f
+
+    def __init__(self, tag, text):
+        super().__init__(f=SetText.pippo(tag, text))
+
+
 
 
 class RemoveEntity(CallFunc):

@@ -1,3 +1,7 @@
+---
+mario_font:
+  type: font
+  file: ./fonts/prstartk.ttf
 wboy0:
   type: model.boxed
   sheet: gfx/wbml.png
@@ -42,3 +46,8 @@ door:
       loop: false
       frames:
         - quads: [96, 128, 32, 32]
+    open:
+      loop: false
+      frames:
+        - quads: [128, 128, 32, 32]
+

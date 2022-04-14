@@ -12,12 +12,12 @@ cam:
     world_size: [192, 192]
     cam_size: [192, 192]
 on_preload:
-  $scripts.init
+  '@scripts.preload'
 on_load:
-  func: $scripts.setup
+  func: '@scripts.setup2'
 engines:
   - type: runner.scheduler
 items:
   - type: bg
-    model: a1
+    model: model.a1
     pos: [0, 0, 0]

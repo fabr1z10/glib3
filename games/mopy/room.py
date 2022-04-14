@@ -7,6 +7,8 @@ import example
 
 def add_entity(itemid, pos, parent):
     item = mopy.monkey.engine.get_asset(itemid)
+    print('cazzo di merda')
+    print(item)
     a = build_entity(item, pos)
     id = example.get(parent).add(a)
     if 'on_create' in item:

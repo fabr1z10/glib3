@@ -12,12 +12,12 @@ cam:
     world_size: [192, 192]
     cam_size: [192, 192]
 on_preload:
-  $scripts.init
+  '@scripts.preload'
 on_load:
-  func: $scripts.setup
+  func: '@scripts.setup'
 engines:
   - type: runner.scheduler
-  - $globals.collision_engine
+  - '@globals.collision_engine'
 items:
   - type: player
   - type: rect
@@ -42,26 +42,32 @@ items:
     tiles: [3, 8, 4, 8, 4, 8,
             3, 9, 4, 9, 4, 9]
     pos: [26.5, 2, 0]
-  - type: bg
-    model: tree
-    pos: [0, 2, 0, 12, 2, 0, 15, 2, 0]
-  - type: bg
-    model: sign
-    pos: [8, 2, 0]
-  - type: bg
-    model: arrow
-    pos: [6, 2, 0, 27.5, 7, 0]
+  - ref: entities.trunk
+    args:
+      - pippo
+      - door0
+    pos: [20, 2, 0]
 
-  - ref: e_trunk
-    args:
-      - trunk
-      - pippo
-    pos: [19.5, 2, 0]
-  - ref: e_trunk
-    args:
-      - trunk2
-      - pippo
-    pos: [37.5, 3, -0.1]
+#  - type: bg
+#    model: tree
+#    pos: [0, 2, 0, 12, 2, 0, 15, 2, 0]
+#  - type: bg
+#    model: sign
+#    pos: [8, 2, 0]
+#  - type: bg
+#    model: arrow
+#    pos: [6, 2, 0, 27.5, 7, 0]
+#
+#  - ref: e_trunk
+#    args:
+#      - trunk
+#      - pippo
+#    pos: [19.5, 2, 0]
+#  - ref: e_trunk
+#    args:
+#      - trunk2
+#      - pippo
+#    pos: [37.5, 3, -0.1]
 #  - type: bg
 #    model: trunk
 #    pos: [20,2,0]

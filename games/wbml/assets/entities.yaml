@@ -1,13 +1,17 @@
-e_trunk:
+textbg:
+  type: _entity
+  model: model.textbg
+trunk:
   type: bg
-  model: '@0'
+  model: model.trunk
   children:
     - type: _line
       size: [4, 0]
       pass_thru: true
       pos: [1, 4]
     - type: bg
-      model: door
+      model: sprites.door
+      tag: '#1'
       pos: [2, 0, 0]
     - type: _entity
       components:
@@ -16,10 +20,11 @@ e_trunk:
             type: shape3d.aabb
             size: [16, 32, 0]
           flag: 12
-          mask: $globals.CollisionFlags.player
-          tag: $globals.CollisionTags.door
+          mask: '@globals.CollisionFlags.player'
+          tag: '@globals.CollisionTags.door'
           debug: True
         - type: components.info
           stuff:
-            warp_to: '@1'
+            warp_to: '#0'
+            door_tag: '#1'
       pos: [2.5, 0, 0]

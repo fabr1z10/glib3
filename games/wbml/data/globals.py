@@ -1,6 +1,7 @@
 import mopy.util as utils
 import data.scripts as scripts
 
+tiled_pos = True
 tile_size = [16, 16]
 jump_height = 96
 time_to_jump_apex = 0.5
@@ -8,7 +9,7 @@ a = utils.compute_gravity(jump_height, time_to_jump_apex)
 gravity = a[0]
 jump_velocity = a[1]
 player_modes = [
-    {'model': 'wboy0', 'size': (0.8, 1)},
+    {'model': 'sprites.wboy0', 'size': (0.8, 1)},
 ]
 player_mode = 0
 start_position = 0
