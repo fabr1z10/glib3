@@ -64,7 +64,7 @@ namespace std {
 
 class KeyboardListener {
 public:
-    KeyboardListener();
+    KeyboardListener(bool activateNow = true);
     virtual~ KeyboardListener();
     virtual void KeyCallback(GLFWwindow*, int key, int scancode, int action, int mods) = 0;
     void AddCallback (const KeyEvent& event, std::function<void()>);

@@ -104,6 +104,7 @@
 #include <monkey/states/foepath.h>
 #include <monkey/states/jumpattack.h>
 #include <monkey/components/scaler.h>
+#include <monkey/activities/waitforkey.h>
 #include "../scumm/activities/enableblock.h"
 
 
@@ -229,6 +230,7 @@ SceneFactory::SceneFactory() {
     add2<DelayTime> ("action.delay");
     add2<DelayTimeDynamic> ("action.delaydynamic");
     add2<Animate> ("action.animate");
+    add2<WaitForKey> ("action.wait_for_key");
     add2<Sequence> ("action.sequence");
     add2<Blink> ("action.blink");
     add2<NoOp>("action.noop");

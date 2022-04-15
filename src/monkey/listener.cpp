@@ -18,8 +18,9 @@ void LMBCallback::MouseButtonCallback(GLFWwindow *, int button, int action, int)
 	}
 }
 
-KeyboardListener::KeyboardListener() {
-    Engine::get().RegisterToKeyboardEvent(this);
+KeyboardListener::KeyboardListener(bool activateNow) {
+    if (activateNow)
+        Engine::get().RegisterToKeyboardEvent(this);
 }
 
 void KeyboardListener::AddCallback (const KeyEvent& event, std::function<void()> cb) {

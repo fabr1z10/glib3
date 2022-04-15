@@ -5,7 +5,6 @@ from mopy.entity import Text, TextAlignment, Entity
 import example
 import mopy
 
-
 def init():
     engine = mopy.monkey.engine
     engine.add_item_factory('player', data.factories.player)
@@ -23,7 +22,12 @@ def setup():
 
 def setup2():
     #pass
-    pane()
+    from wbml.data.actions import WBM
+
+    s = Script()
+    s.seq([WBM('$msg/1'), WBM('$msg/2')])
+    example.play(s)
+    #pane()
 
 def set_warp(player, warp, x, y):
     info = warp.getInfo()

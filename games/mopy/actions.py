@@ -264,6 +264,11 @@ class Walk:
         self.tag = tag
         self.id = id
 
+class WaitForKey:
+    def __init__(self, key = None):
+        self.type = 'action.wait_for_key'
+        self.key = key
+
 
 class Turn:
     def __init__(self, dir, tag=None, id=None):
