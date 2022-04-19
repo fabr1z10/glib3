@@ -52,7 +52,8 @@ void ShowMessage::Start() {
     auto parent = std::make_shared<Entity>();
     Font* f = Engine::get().GetAssetManager().get<Font>(m_font).get();
 
-    auto model = std::make_shared<TextModel>(f, m_message, m_size, m_align, m_maxWidth);
+    auto model = std::make_shared<TextModel>(f, m_size, m_align, m_color, m_maxWidth);
+    model->setText(m_message);
     auto offset = model->getOffset();
     glm::mat4 transform = glm::translate(glm::vec3(offset, 0.0f));
     Bounds ex = model->getBounds();

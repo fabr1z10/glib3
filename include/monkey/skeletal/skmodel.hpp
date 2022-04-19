@@ -66,7 +66,7 @@ class SkModel : public Model {
 public:
     SkModel (const ITab&);
     std::vector<glm::mat4> calculateCurrentPose(std::unordered_map<int, JointTransform>& pose);
-	std::shared_ptr<Renderer> makeRenderer(std::shared_ptr<Model>) override;
+	std::shared_ptr<Renderer> makeRenderer(std::shared_ptr<Model>, const ITab& t = PyTab()) override;
 
 	//Bounds getBounds() const ;
     const std::unordered_map<std::string, std::shared_ptr<SkAnimation>>& getAnimations() const ;

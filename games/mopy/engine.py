@@ -167,6 +167,7 @@ class Engine:
         self.add_item_factory('_prism_3d', mopy.factories.items.rect_platform_3d)
         self.add_item_factory('_box_3d', mopy.factories.items.box_platform_3d)
         self.add_item_factory('_directional_light', mopy.factories.items.dir_light)
+        self.add_item_factory('_directional_light', mopy.factories.items.dir_light)
         self.add_item_factory('mopy.bg', mopy.factories.scumm.bg)
         self.add_item_factory('mopy.bg_pseudo_3D', mopy.factories.scumm.bg_ps3D)
         self.add_item_factory('mopy.walk_pseudo_3D', mopy.factories.items.wa3d)
@@ -239,10 +240,17 @@ class Engine:
             cc = self.data
             d = id.split('.')
             for b in d[:-1]:
-                cc = getattr(cc, b)
-            print('current value = ' + str(getattr(cc, d[-1])))
-            setattr(cc, d[-1], value)
-            print('current value = ' + str(getattr(cc, d[-1])))
+                if isinstance(cc, dict):
+                    if str.isdigit(b):
+                        cc = cc.__getitem__(int(b))
+                    else:
+                        cc = cc.__getitem__(b)
+                else:
+                    cc = getattr(cc, b)
+            if isinstance(cc, dict):
+                cc.__setitem__(d[-1], value)
+            else:
+                setattr(cc, d[-1], value)
 
     # read a string
     def read(self, value):

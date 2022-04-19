@@ -14,7 +14,7 @@ ShaderType SkModel::GetShaderType() const {
     return SKELETAL_SHADER;
 }
 
-std::shared_ptr<Renderer> SkModel::makeRenderer(std::shared_ptr<Model> model) {
+std::shared_ptr<Renderer> SkModel::makeRenderer(std::shared_ptr<Model> model, const ITab& t) {
 	auto renderer = std::make_shared<SkeletalRenderer>(model);
 	return renderer;
 }

@@ -2,6 +2,7 @@ type: _basic
 id: citywl
 start_positions:
   - pos: [2, 8]
+  - pos: [23, 2]
 cam:
   - type: ortho
     id: main
@@ -20,6 +21,7 @@ engines:
   - '@globals.collision_engine'
 items:
   - type: player
+
   - type: rect
     size: [27, 2]
     # tiles: topleft, top, topright, left, center, right
@@ -42,11 +44,14 @@ items:
     tiles: [3, 8, 4, 8, 4, 8,
             3, 9, 4, 9, 4, 9]
     pos: [26.5, 2, 0]
-  - ref: entities.trunk
-    args:
-      - pippo
-      - door0
+  - type: trunk
+    door: 0
     pos: [20, 2, 0]
+#  - ref: entities.trunk
+#    args:
+#      - pippo
+#      - door0
+#    pos: [20, 2, 0]
 
 #  - type: bg
 #    model: tree

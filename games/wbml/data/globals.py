@@ -10,6 +10,7 @@ gravity = a[0]
 jump_velocity = a[1]
 player_modes = [
     {'model': 'sprites.wboy0', 'size': (0.8, 1)},
+    {'model': 'sprites.wboy1', 'size': (0.8, 1)},
 ]
 player_mode = 0
 start_position = 0
@@ -42,4 +43,8 @@ collision_engine = {
         'on_leave': scripts.clear_warp
     }],
     'size': [80, 80]
+}
+
+doors = {
+    0: {'open': 1, 'anim': 'closed', 'room': 'pippo'}
 }

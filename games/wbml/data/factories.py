@@ -1,10 +1,12 @@
 from mopy.entity import Entity
 import mopy.monkey as monkey
 import data
+from mopy.components import Collider, Info
+import mopy
 import mopy.util as utils
 import mopy.factories.items as items
 import copy
-
+from mopy.room import build_entity
 
 def player(args):
     mode = data.globals.player_modes[data.globals.player_mode]
@@ -76,10 +78,48 @@ def rect(args):
 def bg(args):
     e = Entity()
     asset = copy.deepcopy(monkey.engine.get_asset(args.get('model', None)))
+    e.anim = args.get('anim', None)
     e.tag = args.get('tag')
     if 'tile_size' not in asset:
         asset['tile_size'] = [16, 16]
     e.model = asset
+
     print ('THE TAG IS ' + str(e.tag))
     e.read_children(args)
+    return e
+
+
+def trunk(args):
+    door = args.get('door')
+    tag= 'door_' + str(door)
+    e = Entity()
+    e.model = 'model.trunk'
+    door_info = mopy.monkey.engine.data.globals.doors[door]
+    if door_info['open'] == 1:
+        anim = door_info['anim']
+    else:
+        anim = 'barred'
+    e.children.append(build_entity({
+        'type': '_line',
+        'size': [4, 0],
+        'pass_thru': True},
+        [1, 4]))
+
+
+    e.children.append(build_entity({
+        'type': 'bg', 'model': 'sprites.door', 'anim': anim, 'tag': tag}, [2, 0, 0]))
+    # check if door is available
+    if door_info['open'] == 1:
+        coll = Entity()
+        coll.add_component(Collider(shape={
+            'type': 'shape3d.aabb',
+            'size': [16, 32, 0]},
+            flag=12,
+            mask=mopy.monkey.engine.data.globals.CollisionFlags.player,
+            tag=mopy.monkey.engine.data.globals.CollisionTags.door,
+            debug=True))
+        coll.pos =[2.5*16, 0, 0]
+        coll.add_component(Info(door_id=door))
+
+        e.children.append(coll)
     return e

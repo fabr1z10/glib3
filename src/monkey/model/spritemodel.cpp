@@ -10,9 +10,10 @@
 
 namespace py = pybind11;
 
-std::shared_ptr<Renderer> SpriteModel::makeRenderer(std::shared_ptr<Model> model) {
+std::shared_ptr<Renderer> SpriteModel::makeRenderer(std::shared_ptr<Model> model, const ITab& t) {
     auto renderer = std::make_shared<SpriteRenderer>(model);
-    renderer->setAnimation(m_defaultAnimation);
+    auto anim = t.get<std::string>("anim", m_defaultAnimation);
+    renderer->setAnimation(anim);
     return renderer;
 }
 

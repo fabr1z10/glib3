@@ -38,8 +38,8 @@ def initialize_message(msg_id):
         #s = Script()
         #acts=[]
         #print('positioned ' + str(text_size))
-        id1 = example.get('main').add(Text(tag='ciaone', font='sprites.mario_font', size=8, text=aa,
-                                          color=[255,255,255,255], maxwidth=160,align=TextAlignment.top_left, pos=[96-0.5*tw, 132+0.5*th, 1.02]))
+        id1 = example.get('main').add(Text(tag='ciaone', font='sprites.mario_font', size=8, text='', mode=1,
+                                          color=[255,255,255,255], shade_color=(255,0,0,255), maxwidth=160,align=TextAlignment.top_left, pos=[96-0.5*tw, 132+0.5*th, 1.02]))
     return f
 
     # for n in range(1, len(aa)+1):

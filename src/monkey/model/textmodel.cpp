@@ -4,6 +4,41 @@
 #include <locale>
 #include <codecvt>
 
+
+void TextModel::addChar(const char32_t w, float scalingFactor, std::vector<Vertex3D>& vertices, std::vector<unsigned>& indices, float& x, float& y) {
+    Glyph glyph = m_font->getGlyph(w);
+
+    float scaledWidth = glyph.width * scalingFactor;
+    float scaledHeight = glyph.height * scalingFactor;
+    float scaledYOffset = glyph.heightOffset * scalingFactor;
+    float scaleAdvance = glyph.advanceToNext * scalingFactor;
+
+    float yTop = y + scaledYOffset;
+    float yBottom = yTop - scaledHeight;
+    float lastX = x + scaledWidth;
+
+
+    unsigned int ix = vertices.size();
+    vertices.emplace_back(x, yTop, 0.0f, glyph.tx, glyph.ty, m_color.r, m_color.g, m_color.b, m_color.a);
+    vertices.emplace_back(lastX, yTop, 0.0f, glyph.tx + glyph.tw, glyph.ty,m_color.r, m_color.g, m_color.b, m_color.a);
+    vertices.emplace_back(lastX, yBottom, 0.0f, glyph.tx + glyph.tw, glyph.ty + glyph.th, m_color.r, m_color.g, m_color.b, m_color.a);
+    vertices.emplace_back(x, yBottom, 0.0f, glyph.tx, glyph.ty + glyph.th, m_color.r, m_color.g, m_color.b, m_color.a);
+
+    m_bounds.min.x = std::min(m_bounds.min.x, x);
+    m_bounds.max.x = std::max(m_bounds.max.x, lastX);
+    m_bounds.min.y = std::min(m_bounds.min.y, yBottom);
+    m_bounds.max.y = std::max(m_bounds.max.y, yTop);
+
+    indices.push_back(ix);
+    indices.push_back(ix + 1);
+    indices.push_back(ix + 3);
+    indices.push_back(ix + 3);
+    indices.push_back(ix + 2);
+    indices.push_back(ix + 1);
+    //letterCount++;
+    x += scaleAdvance;
+
+}
 void TextModel::updateText() {
     m_meshes.clear();
 
@@ -40,41 +75,7 @@ void TextModel::updateText() {
         //std::string sss = lines[n];
         float x = 0.0f;					// current cursor position
         for (const auto& w : sss) {
-
-            //char c = lines[n][i];
-            //bool isLastCharacter = i == lines[n].length()-1;
-            Glyph glyph = m_font->getGlyph(w);
-
-            float scaledWidth = glyph.width * scalingFactor;
-            float scaledHeight = glyph.height * scalingFactor;
-            float scaledYOffset = glyph.heightOffset * scalingFactor;
-            float scaleAdvance = glyph.advanceToNext * scalingFactor;
-
-            float yTop = y + scaledYOffset;
-            float yBottom = yTop - scaledHeight;
-            float lastX = x + scaledWidth;
-
-
-            vertices.push_back(Vertex3D(x, yTop, 0.0f, glyph.tx, glyph.ty, 1.0f, 1.0f, 1.0f, 1.0f));
-            vertices.push_back(Vertex3D(lastX, yTop, 0.0f, glyph.tx + glyph.tw, glyph.ty, 1.0f, 1.0f, 1.0f, 1.0f));
-            vertices.push_back(Vertex3D(lastX, yBottom, 0.0f, glyph.tx + glyph.tw, glyph.ty + glyph.th, 1.0f, 1.0f, 1.0f, 1.0f));
-            vertices.push_back(Vertex3D(x, yBottom, 0.0f, glyph.tx, glyph.ty + glyph.th, 1.0f, 1.0f, 1.0f, 1.0f));
-
-            m_bounds.min.x = std::min(m_bounds.min.x, x);
-            m_bounds.max.x = std::max(m_bounds.max.x, lastX);
-            m_bounds.min.y = std::min(m_bounds.min.y, yBottom);
-            m_bounds.max.y = std::max(m_bounds.max.y, yTop);
-
-            unsigned int ix = letterCount * 4;
-            indices.push_back(ix);
-            indices.push_back(ix + 1);
-            indices.push_back(ix + 3);
-            indices.push_back(ix + 3);
-            indices.push_back(ix + 2);
-            indices.push_back(ix + 1);
-            letterCount++;
-            x += scaleAdvance;
-
+            addChar(w, scalingFactor, vertices, indices, x, y);
         }
         y -= m_size;
     }
@@ -95,12 +96,12 @@ void TextModel::updateText() {
 }
 
 TextModel::TextModel(Font* font,
-    const std::string& msg,
     float size,
     TextAlignment align,
-    float maxLineWidth) : m_font(font), m_text(msg), m_size(size), m_align(align), m_maxLineWidth(maxLineWidth), m_lines(0)
+    glm::vec4 color,
+    float maxLineWidth) : m_font(font), m_size(size), m_align(align), m_maxLineWidth(maxLineWidth), m_lines(0), m_color(color)
 {
-    updateText();
+    //updateText();
 }
 
 

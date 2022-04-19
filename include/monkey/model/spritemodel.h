@@ -25,7 +25,7 @@ class __attribute__ ((visibility ("default"))) SpriteModel : public Model {
 public:
     explicit SpriteModel (const ITab&);
     std::string getDefaultAnimation() const ;
-    std::shared_ptr<Renderer> makeRenderer(std::shared_ptr<Model>) override;
+    std::shared_ptr<Renderer> makeRenderer(std::shared_ptr<Model>, const ITab& t = PyTab()) override;
     AnimationInfo* getAnimationInfo(const std::string&);
 protected:
     std::string m_defaultAnimation;

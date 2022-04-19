@@ -1,7 +1,9 @@
 #include <monkey/input/pytab.h>
 #include <glm/gtc/type_ptr.hpp>
 
-PyTab::PyTab() {}
+PyTab::PyTab() {
+    m_obj = pybind11::none();
+}
 
 
 //PyTab::PyTab(pybind11::object obj) : m_obj(obj) {

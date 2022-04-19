@@ -7,6 +7,7 @@
 #include <monkey/imesh.h>
 #include <monkey/animation.h>
 #include <monkey/asset.h>
+#include <monkey/input/pytab.h>
 
 
 class IShape;
@@ -33,7 +34,7 @@ public:
     virtual ~Model() = default;
     Bounds getBounds() const;
     void setOffset(glm::vec3);
-    virtual std::shared_ptr<Renderer> makeRenderer(std::shared_ptr<Model>);
+    virtual std::shared_ptr<Renderer> makeRenderer(std::shared_ptr<Model>, const ITab& p = PyTab());
     using iterator =  std::vector<std::shared_ptr<IMesh>>::iterator;
     iterator begin() { return m_meshes.begin(); }
     iterator end() { return m_meshes.end(); }

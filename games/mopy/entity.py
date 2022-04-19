@@ -35,6 +35,7 @@ class Entity:
             self.pos = pos
 
         self.model = None
+        self.anim = None
         self.tag = tag
         self.camera = None
         self.components = []
@@ -96,7 +97,7 @@ class Skeleton(Entity):
 
 class Text(Entity):
     def __init__(self, font: str, size, text: str, color, align: TextAlignment = TextAlignment.top_left, tag = None,
-                 pos: tuple = (0, 0, 0), maxwidth=None):
+                 pos: tuple = (0, 0, 0), mode=0, shade_color = None, maxwidth=None):
         super().__init__(tag, pos)
         self.type = 'text'
         self.font = font
@@ -105,6 +106,8 @@ class Text(Entity):
         self.align = align.value
         self.color = color
         self.maxwidth = maxwidth
+        self.mode = mode
+        self.shade_color = shade_color
 
 
 class TextView(Entity):

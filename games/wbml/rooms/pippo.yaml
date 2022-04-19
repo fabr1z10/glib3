@@ -21,3 +21,9 @@ items:
   - type: bg
     model: model.a1
     pos: [0, 0, 0]
+  - type: _entity
+    model: sprites.creature_1
+    pos: [4.25, 3.1875, 0.1]
+  - type: _entity
+    model: sprites.sword_1
+    pos: [4, 9.5625, 0.1]

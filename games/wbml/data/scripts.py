@@ -10,6 +10,7 @@ def init():
     engine.add_item_factory('player', data.factories.player)
     engine.add_item_factory('rect', data.factories.rect)
     engine.add_item_factory('bg', data.factories.bg)
+    engine.add_item_factory('trunk', data.factories.trunk)
 
 
 def preload(desc):
@@ -25,18 +26,23 @@ def setup2():
     from wbml.data.actions import WBM
 
     s = Script()
-    s.seq([WBM('$msg/1'), WBM('$msg/2')])
+    s.seq([WBM('$msg/1'),# WBM('$msg/2'), WBM('$msg/3'), WBM('$msg/4'),
+           act.SetVariable('globals.player_mode', 1),
+           act.SetVariable('globals.start_position', 1),
+           act.SetVariable('globals.doors.0.open', 0),
+           act.ChangeRoom('citywl')])
+
     example.play(s)
     #pane()
 
 def set_warp(player, warp, x, y):
     info = warp.getInfo()
-    data.globals.active_warp = [info['warp_to'], info['door_tag']]
-    print('setting warp')
+    mopy.monkey.engine.data.globals.active_warp = info['door_id']
+    print('setting warp: ' + str(info['door_id']))
 
 
 def clear_warp(player, warp, x, y):
-    data.globals.active_warp = None
+    mopy.monkey.engine.data.globals.active_warp = None
     print('clearing warp')
 
 
@@ -105,12 +111,14 @@ def pane():
 
 def enter_door(x):
     print('CIAO')
-    if data.globals.active_warp:
+
+    if mopy.monkey.engine.data.globals.active_warp is not None:
+        door_info = mopy.monkey.engine.data.globals.doors[mopy.monkey.engine.data.globals.active_warp]
         s = Script()
         s.seq([
             act.SetState(tag='player', state='knock'),
             act.Delay(sec=0.1),
-            act.Animate(tag=data.globals.active_warp[1], anim='open'),
-            act.ChangeRoom(room=data.globals.active_warp[0])
+            act.Animate(tag='door_' + str(mopy.monkey.engine.data.globals.active_warp), anim='open'),
+            act.ChangeRoom(room=door_info['room'])
         ])
         example.play(s)

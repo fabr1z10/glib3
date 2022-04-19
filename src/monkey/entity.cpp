@@ -38,7 +38,9 @@ Entity::Entity(const ITab& t) : Ref(t),
     if (t.has("model")) {
 
         auto model = factory->make2<Model>(*t["model"]);
-        AddComponent(model->makeRenderer(model));
+        auto renderer = model->makeRenderer(model);
+
+        AddComponent(model->makeRenderer(model, t));
 
     }
 

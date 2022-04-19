@@ -17,7 +17,7 @@ std::shared_ptr<IMesh> Model::getMesh(size_t i) {
     return m_meshes[i];
 }
 
-std::shared_ptr<Renderer> Model::makeRenderer(std::shared_ptr<Model> model) {
+std::shared_ptr<Renderer> Model::makeRenderer(std::shared_ptr<Model> model, const ITab& t) {
 
     auto renderer = std::make_shared<Renderer>(model);
     renderer->SetTransform(glm::translate(glm::mat4(1.0f), m_offset));
