@@ -547,6 +547,8 @@ def player2D(ciao):
         'flag': monkey.engine.data.CollisionFlags.player,
         'mask': monkey.engine.data.CollisionFlags.foe,
         'tag': monkey.engine.data.CollisionTags.player,
+        'cast_mask': monkey.engine.data.CollisionFlags.foe,
+        'cast_tag': getattr(monkey.engine.data.CollisionTags, 'player_attack'),
         'debug': True
     })
     e.components.append({

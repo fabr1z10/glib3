@@ -13,7 +13,7 @@ public:
 
 private:
     float m_jumpSpeed;
-
+    float m_bounce;
     ICollider* m_collider;
     std::string m_idleAnim;
     std::string m_walkAnim;
@@ -31,4 +31,5 @@ private:
 	Entity * m_entity;
 	Controller2D * m_controller;
 	Dynamics * m_dynamics;
+	pybind11::function m_onLand;
 };

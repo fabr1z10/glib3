@@ -11,6 +11,8 @@ def init():
     engine.add_item_factory('rect', data.factories.rect)
     engine.add_item_factory('bg', data.factories.bg)
     engine.add_item_factory('trunk', data.factories.trunk)
+    engine.add_item_factory('mp', data.factories.moving_platform)
+    engine.add_item_factory('foe', data.factories.foe)
 
 
 def preload(desc):
@@ -30,6 +32,7 @@ def setup2():
            act.SetVariable('globals.player_mode', 1),
            act.SetVariable('globals.start_position', 1),
            act.SetVariable('globals.doors.0.open', 0),
+           act.SetVariable('globals.room0', 1),
            act.ChangeRoom('citywl')])
 
     example.play(s)
@@ -40,6 +43,35 @@ def set_warp(player, warp, x, y):
     mopy.monkey.engine.data.globals.active_warp = info['door_id']
     print('setting warp: ' + str(info['door_id']))
 
+
+def ciaone(player, foe, x, y):
+    gl = mopy.monkey.engine.data.globals
+    if not gl.invincible:
+        player.setState('hit', {'direction': 1 if player.flipx else -1})
+        player.vy = 300
+        player.vx = -100 if player.vx > 0 else 100
+
+
+def coinland(e):
+    e.setAnim('fall')
+
+
+def pick_up_coin(player, coin, x, y):
+    example.remove(coin.id)
+
+
+def ciaone2(player_attack, foe, x, y):
+    foe.setState('dead', {})
+    s = Script()
+    s.seq([
+        act.Delay(sec=1),
+        act.RemoveEntity(entity_id=foe.id),
+        act.AddEntity(entity_id='entities.flying_coin', pos=[foe.x / 16, foe.y / 16, 1])
+    ])
+    example.play(s)
+
+
+    #example.remove(foe.id)
 
 def clear_warp(player, warp, x, y):
     mopy.monkey.engine.data.globals.active_warp = None
@@ -113,12 +145,14 @@ def enter_door(x):
     print('CIAO')
 
     if mopy.monkey.engine.data.globals.active_warp is not None:
-        door_info = mopy.monkey.engine.data.globals.doors[mopy.monkey.engine.data.globals.active_warp]
+        warp_id =mopy.monkey.engine.data.globals.active_warp
+        mopy.monkey.engine.data.globals.active_warp = None
+        door_info = mopy.monkey.engine.data.globals.doors[warp_id]
         s = Script()
         s.seq([
             act.SetState(tag='player', state='knock'),
             act.Delay(sec=0.1),
-            act.Animate(tag='door_' + str(mopy.monkey.engine.data.globals.active_warp), anim='open'),
+            act.Animate(tag='door_' + str(warp_id), anim='open'),
             act.ChangeRoom(room=door_info['room'])
         ])
         example.play(s)

@@ -2,6 +2,7 @@
 mario_font:
   type: font
   file: ./fonts/prstartk.ttf
+
 wboy0:
   type: model.boxed
   sheet: gfx/wbml.png
@@ -38,6 +39,80 @@ wboy0:
 
   boxes:
     - [-4, 0, 4, 24]
+foe0:
+  type: model.boxed
+  sheet: gfx/wbml.png
+  animations:
+    walk:
+      box: 0
+      loop: true
+      frames:
+        - ticks: 10
+          quads: [1,28,14,20,-8,0]
+        - ticks: 10
+          quads: [16,28,16,20,-10,0]
+    dead:
+      loop: true
+      frames:
+        - ticks: 10
+          quads: [33,30,18,18,-8,0]
+        - ticks: 10
+          quads: [96,29,17,18,-8,0]
+  boxes:
+    - [-4,0,4,16]
+flying_coin:
+  type: model.boxed
+  sheet: gfx/wbml.png
+  animations:
+    default:
+      box: 0
+      loop: true
+      frames:
+        - ticks: 5
+          quads: [65,48,13,14,-7,0]
+        - ticks: 5
+          quads: [65,63,11,14,-6,0]
+        - ticks: 5
+          quads: [66,78,4,14,-2,0]
+        - ticks: 5
+          quads: [65,63,11,14,-6,0, {'flipx': True}]
+    fall:
+      box: 0
+      loop: false
+      frames:
+        - ticks: 5
+          quads: [65,48,13,14,-7,0]
+        - ticks: 5
+          quads: [65,63,11,14,-6,0]
+        - ticks: 5
+          quads: [66,78,4,14,-2,0]
+        - ticks: 5
+          quads: [65,63,11,14,-6,0, {'flipx': True}]
+        - ticks: 10
+          quads: [65,48,13,14,-7,0]
+        - ticks: 10
+          quads: [65,63,11,14,-6,0]
+        - ticks: 10
+          quads: [66,78,4,14,-2,0]
+        - ticks: 10
+          quads: [65,63,11,14,-6,0, {'flipx': True}]
+        - ticks: 5
+          quads: [79, 48, 11, 9, -6, 0]
+        - ticks: 5
+          quads: [79, 48, 11, 9, -6, 0, {'flipx': True}]
+        - ticks: 3
+          quads: [79, 48, 11, 9, -6, 0]
+        - ticks: 3
+          quads: [79, 48, 11, 9, -6, 0, {'flipx': True}]
+        - ticks: 1
+          quads: [79, 48, 11, 9, -6, 0]
+        - ticks: 1
+          quads: [79, 48, 11, 9, -6, 0, {'flipx': True}]
+        - ticks: 1
+          quads: [79, 58, 12, 5, -6, 0]
+  boxes:
+    - [-4,0,4,14]
+
 wboy1:
   type: model.boxed
   sheet: gfx/wbml.png
@@ -71,9 +146,25 @@ wboy1:
           quads: [115,1,17,26,-8,0]
         - ticks: 10
           quads: [133,1,16,26,-8,0]
+    attack:
+      loop: false
+      frames:
+        - ticks: 10
+          quads: [210, 52, 18, 24, -11, 0]
+        - ticks: 10
+          quads: [229, 54, 26, 24, -12, 0]
+          attack: 1
+    hit:
+      loop: true
+      frames:
+        - ticks: 1
+          quads: [231, 80, 24, 27, -13, 0]
+        - ticks: 1
+          quads: [206, 80, 24, 27, -13, 0]
 
   boxes:
     - [-4, 0, 4, 24]
+    - [10, 10, 20, 20]
 door:
   type: model.sprite
   sheet: gfx/wbml.png

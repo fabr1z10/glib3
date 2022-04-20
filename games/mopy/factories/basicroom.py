@@ -26,6 +26,10 @@ class BasicRoom(Room):
             pos = [ [p[i], p[i+1], p[i+2]] for i in range(0, len(p), 3)]
             parent = item.get('parent', self.default_item)
             # check if it's a reference to an asset
+            condition = item.get('if', None)
+            if condition:
+                if not eval(str(condition[0]) + condition[1]):
+                    continue
             entity_desc = monkey.engine.get_asset(item['ref'], item.get('args', None)) if 'ref' in item else item
             for position in pos:
                 a = build_entity(entity_desc, position)

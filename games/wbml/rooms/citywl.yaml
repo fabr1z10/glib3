@@ -21,7 +21,12 @@ engines:
   - '@globals.collision_engine'
 items:
   - type: player
-
+  - type: foe
+    model: sprites.foe0
+    size: [16, 16]
+    max_speed: 0
+    direction: -1
+    pos: [5, 2, 0]
   - type: rect
     size: [27, 2]
     # tiles: topleft, top, topright, left, center, right
@@ -47,6 +52,25 @@ items:
   - type: trunk
     door: 0
     pos: [20, 2, 0]
+  - type: trunk
+    door: 0
+    pos: [37.5, 3, 0]
+  - type: mp
+    width: 1
+    points: [25.5, 2, 25.5, 6]
+    speed: 20
+    if: ['@globals.room0', ' == 1']
+
+  - type: bg
+    model: model.arrow
+    pos: [6, 2, -1, 27.5, 7, -1]
+  - type: bg
+    model: model.sign
+    pos: [8,2,-1]
+  - type: bg
+    model: model.tree
+    pos: [0,2,-1,12,2,-1,15,2,-1]
+    #pos: [5, 5, 0]
 #  - ref: entities.trunk
 #    args:
 #      - pippo

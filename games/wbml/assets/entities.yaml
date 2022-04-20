@@ -1,6 +1,36 @@
 textbg:
   type: _entity
   model: model.textbg
+flying_coin:
+  type: _entity
+  model: sprites.flying_coin
+  components:
+    - type: components.controller2D
+      size: [4, 14]
+      offset: [0, 7]
+      mask_up: 2
+      mask_down: 34
+      debug: true
+    - type: components.dynamics
+      velocity: [0, 300]
+    - type: components.smart_collider
+      debug: true
+      tag: '@globals.CollisionTags.coin'
+      mask: '@globals.CollisionFlags.player'
+      flag: '@globals.CollisionFlags.foe'
+    - type: components.state_machine
+      initial_state: main
+      states:
+        - id: main
+          gravity: '@globals.gravity'
+          type: state.npc_walk
+          max_speed: 0
+          walk_anim: default
+          bounce: 0.8
+          on_land: '@scripts.coinland'
+
+
+  #on_create: init_flying_coin
 trunk:
   type: bg
   model: model.trunk

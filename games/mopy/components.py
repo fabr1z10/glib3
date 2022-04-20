@@ -204,14 +204,17 @@ class Parallax:
 
 
 class PolygonalMover:
-    def __init__(self, origin, loop, moves, pct=0, sinx = None, siny=None):
+    def __init__(self, points, speed, mode):
         self.type ='components.polymover'
-        self.moves = moves
-        self.origin = origin
-        self.loop = loop
-        self.pct = pct
-        self.sinx = sinx
-        self.siny = siny
+        self.points = points
+        self.speed = speed
+        self.mode = mode
+        # self.moves = moves
+        # self.origin = origin
+        # self.loop = loop
+        # self.pct = pct
+        # self.sinx = sinx
+        # self.siny = siny
 
 class AcceleratedMover:
     def __init__(self, v0, acceleration, angular_speed = None):

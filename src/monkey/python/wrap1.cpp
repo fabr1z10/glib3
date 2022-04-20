@@ -83,7 +83,7 @@ void Wrap1::setVy(float value) {
     m_entity->GetComponent<Dynamics>()->m_velocity.y = value;
 }
 float Wrap1::getVx() const {
-    return m_entity->GetComponent<Dynamics2D>()->m_velocity.x;
+    return m_entity->GetComponent<Dynamics>()->m_velocity.x;
 }
 float Wrap1::getScale() const {
     return m_entity->GetScale();
@@ -101,7 +101,7 @@ void Wrap1::clear() {
 
 
 void Wrap1::setVx(float value) {
-    m_entity->GetComponent<Dynamics2D>()->m_velocity.x = value;
+    m_entity->GetComponent<Dynamics>()->m_velocity.x = value;
 }
 void Wrap1::setScale(float value) {
     m_entity->SetScale(value);

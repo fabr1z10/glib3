@@ -13,8 +13,8 @@ Dynamics2D::Dynamics2D(const ITab & t) : m_velocity(0.0f), m_velocitySmoothing(0
     m_gravity = t.get<float>("gravity");
 }
 
-Dynamics::Dynamics(const ITab&) {
-    m_velocity = glm::vec2(0.0f);
+Dynamics::Dynamics(const ITab& t ) {
+    m_velocity = t.get<glm::vec2>("velocity", glm::vec2(0.0f));
 }
 
 Dynamics3D::Dynamics3D(const ITab&) {
