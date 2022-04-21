@@ -177,6 +177,11 @@ door:
       loop: false
       frames:
         - quads: [128, 128, 32, 32]
+    bar:
+      loop: false
+      frames:
+        - quads: [96, 160, 32, 32]
+
     barred:
       frames:
         - quads: [129, 161, 32, 32]

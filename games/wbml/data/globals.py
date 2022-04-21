@@ -65,7 +65,8 @@ collision_engine = {
 }
 
 doors = {
-    0: {'open': 1, 'anim': 'closed', 'room': 'pippo'}
+    0: {'open': 1, 'anim': 'closed', 'room': 'pippo'},
+    1: {'open': 1, 'anim': 'bar', 'room': 'bar'}
 }
 
 room0 = 0

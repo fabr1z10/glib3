@@ -1,0 +1,12 @@
+---
+  type: _basic
+  id: hello_world
+  cam:
+    - type: ortho
+      id: main
+      world_size: [320, 240]
+      cam_size: [320, 240]
+      bounds:
+        x: [0, 320]
+        y: [0, 240]
+        z: [0, 100]

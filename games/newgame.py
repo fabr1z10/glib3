@@ -1,11 +1,12 @@
 #!/usr/bin/python3
 
+# script to create a blank game!
+
 import os
 import argparse
 
-
-
 parser = argparse.ArgumentParser(description = "Create a blank new game.")
+
 parser.add_argument('file', metavar='file', help = 'the name of the game')
 
 args = parser.parse_args()
@@ -18,14 +19,28 @@ if os.path.isdir(filename):
 os.mkdir(filename)
 os.mkdir(filename + '/assets')
 os.mkdir(filename + '/data')
+os.mkdir(filename + '/data/scripts')
 os.mkdir(filename + '/fonts')
 os.mkdir(filename + '/gfx')
 os.mkdir(filename + '/rooms')
 
 open(filename + '/data/globals.py', 'a').close()
 f = open(filename + '/data/__init__.py', 'w')
-f.write('from .globals import *')
+f.write('from .globals import *\n')
+f.write('from .scripts import *\n')
 f.close()
+
+f = open(filename + '/data/scripts/__init__.py', 'w')
+f.write('from .init import *')
+f.close()
+
+f = open(filename + '/data/scripts/init.py', 'w')
+f.write('def init():\n')
+f.write('\t# put here your initialization code\n')
+f.write('\tpass\n')
+f.close()
+
+
 
 f = open(filename+'/main.py', 'w')
 f.write("from mopy.engine import Engine\n")

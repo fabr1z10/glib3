@@ -1,7 +1,7 @@
 type: _basic
 id: citywl
 start_positions:
-  - pos: [2, 8]
+  - pos: [38, 8]
   - pos: [23, 2]
 cam:
   - type: ortho
@@ -26,7 +26,7 @@ items:
     size: [16, 16]
     max_speed: 0
     direction: -1
-    pos: [5, 2, 0]
+    pos: [5, 2, 0, 30.5, 7, 0]
   - type: rect
     size: [27, 2]
     # tiles: topleft, top, topright, left, center, right
@@ -53,7 +53,7 @@ items:
     door: 0
     pos: [20, 2, 0]
   - type: trunk
-    door: 0
+    door: 1
     pos: [37.5, 3, 0]
   - type: mp
     width: 1
@@ -69,7 +69,7 @@ items:
     pos: [8,2,-1]
   - type: bg
     model: model.tree
-    pos: [0,2,-1,12,2,-1,15,2,-1]
+    pos: [0,2,-1,12,2,-1,15,2,-1, 31.5, 7, -1, 34.5, 7, -1]
     #pos: [5, 5, 0]
 #  - ref: entities.trunk
 #    args:

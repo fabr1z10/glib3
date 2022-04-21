@@ -101,10 +101,20 @@ std::shared_ptr<Model> ModelFactory::_tiled(const ITab & t) {
                 n += 1;
                 continue;
             }
-            verts.emplace_back(i * tileWidth, j * tileHeight, 0, data[n] * tw, (data[n+1] + 1) * th, 1, 1, 1, 1);
-            verts.emplace_back((i+1) * tileWidth, j * tileHeight, 0, (data[n] + 1) * tw, (data[n+1] +1) * th, 1, 1, 1, 1);
-            verts.emplace_back((i+1) * tileWidth, (j + 1) * tileHeight, 0, (data[n] + 1) * tw, data[n+1] * th, 1, 1, 1, 1);
-            verts.emplace_back(i * tileWidth, (j+1) * tileHeight, 0, data[n] * tw, data[n+1] * th, 1, 1, 1, 1);
+            bool fliph = false;
+            if (data[n] == -2) {
+                // flip horizontally next tile
+                n++;
+                fliph = true;
+
+            }
+            float tx0 = data[n] * tw;
+            float tx1 = (data[n] + 1) * tw;
+            if (fliph) std::swap(tx0, tx1);
+            verts.emplace_back(i * tileWidth, j * tileHeight, 0, tx0, (data[n+1] + 1) * th, 1, 1, 1, 1);
+            verts.emplace_back((i+1) * tileWidth, j * tileHeight, 0, tx1, (data[n+1] +1) * th, 1, 1, 1, 1);
+            verts.emplace_back((i+1) * tileWidth, (j + 1) * tileHeight, 0, tx1, data[n+1] * th, 1, 1, 1, 1);
+            verts.emplace_back(i * tileWidth, (j+1) * tileHeight, 0, tx0, data[n+1] * th, 1, 1, 1, 1);
             indices.push_back(v);
             indices.push_back(v+1);
             indices.push_back(v+2);
