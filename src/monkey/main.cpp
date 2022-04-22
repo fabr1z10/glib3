@@ -1,9 +1,11 @@
 #include <iostream>
 #include <version.h>
 #include <monkey/engine.h>
+#include "btBulletDynamicsCommon.h"
 
 int main(int argc, char* argv[])
 {
+
 	if (argc < 2) {
 		std::cout << "The Monkey Engine " << VERSION << "\n";
 		std::cout << "Usage: monkey <directory>" << std::endl;

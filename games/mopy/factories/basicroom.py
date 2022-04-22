@@ -80,7 +80,7 @@ class BasicRoom(Room):
                 elif cam_type == 'perspective':
                     world_size = cam['world_size']
                     camera = PerspectiveCamera(viewport=[0, 0, device_size[0], device_size[1]])
-                    camera.pos = (5, 5, 15)
+                    camera.pos = cam.get('pos', [0, 1, 5])
                     bounds = cam.get('bounds', {'x': [0, world_size[0]], 'y': [0, world_size[1]], 'z': [0, 100]})
                     camera.boundsz = bounds['z']
                     camera.bounds = [bounds['x'][0], bounds['y'][0], bounds['x'][1], bounds['y'][1]]

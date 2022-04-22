@@ -7,25 +7,25 @@
 #include <monkey/scenefactory.h>
 #include <monkey/meshfactory.h>
 
-std::shared_ptr<IMesh> ModelFactory::b2Poly(b2PolygonShape &shape, glm::vec4 color) {
-    auto world = Engine::get().GetRunner<Box2DWorld>();
-    float scale = 1.0f / world->getScalingFactor();
-
-    const auto& vertices = shape.m_vertices;
-    const auto o = shape.m_centroid;
-    auto mesh = std::make_shared<Mesh<VertexColor>>(ShaderType::COLOR_SHADER);
-    std::vector<VertexColor> verts;
-    std::vector<unsigned> indices;
-
-    for (size_t i = 0; i < shape.m_count; ++i) {
-        verts.emplace_back(scale * (o.x + vertices[i].x), scale * (o.y + vertices[i].y), 0.0f, color.r, color.g, color.b, color.a);
-        indices.push_back(i);
-        indices.push_back((i+1) % shape.m_count);
-    }
-    mesh->m_primitive = GL_LINES;
-    mesh->Init(verts, indices);
-    return mesh;
-}
+//std::shared_ptr<IMesh> ModelFactory::b2Poly(b2PolygonShape &shape, glm::vec4 color) {
+//    auto world = Engine::get().GetRunner<Box2DWorld>();
+//    float scale = 1.0f / world->getScalingFactor();
+//
+//    const auto& vertices = shape.m_vertices;
+//    const auto o = shape.m_centroid;
+//    auto mesh = std::make_shared<Mesh<VertexColor>>(ShaderType::COLOR_SHADER);
+//    std::vector<VertexColor> verts;
+//    std::vector<unsigned> indices;
+//
+//    for (size_t i = 0; i < shape.m_count; ++i) {
+//        verts.emplace_back(scale * (o.x + vertices[i].x), scale * (o.y + vertices[i].y), 0.0f, color.r, color.g, color.b, color.a);
+//        indices.push_back(i);
+//        indices.push_back((i+1) % shape.m_count);
+//    }
+//    mesh->m_primitive = GL_LINES;
+//    mesh->Init(verts, indices);
+//    return mesh;
+//}
 
 std::shared_ptr<Model> ModelFactory::rect(float width, float height,
                                           glm::vec2 offset, RenderType rtype,
@@ -128,6 +128,166 @@ std::shared_ptr<Model> ModelFactory::_tiled(const ITab & t) {
     mesh->Init(verts, indices);
     return std::make_shared<Model>(mesh);
 
+}
+
+std::shared_ptr<Model> ModelFactory::_box3DColor(const ITab & t) {
+    std::vector<VertexColorNormal> vertices;
+    std::vector<unsigned> indices;
+
+    auto size = t.get<glm::vec3>("size", glm::vec3(1.0f));
+    auto color = t.get<glm::vec4>("color");
+    auto frontColor = t.get<glm::vec4>("color_front", color);
+    auto topColor = t.get<glm::vec4>("color_top", color);
+    auto leftColor = t.get<glm::vec4>("color_left", color);
+    auto rightColor = t.get<glm::vec4>("color_right", color);
+    auto backColor = t.get<glm::vec4>("color_back", color);
+    auto bottomColor = t.get<glm::vec4>("color_bottom", color);
+    auto offset = t.get<glm::vec3>("offset", glm::vec3(0.0f));
+    auto m = std::make_shared<Mesh<VertexColorNormal>>(ShaderType::COLOR_SHADER_LIGHT);
+
+    glm::vec3 fbl = offset + glm::vec3(0.0f, 0.0f, size.z);
+    glm::vec3 fbr = offset + glm::vec3(size.x, 0.0f, size.z);
+    glm::vec3 ftr = offset + glm::vec3(size.x, size.y, size.z);
+    glm::vec3 ftl = offset + glm::vec3(0.0f, size.y, size.z);
+    glm::vec3 bbl = offset + glm::vec3(0.0f, 0.0f, 0.0f);
+    glm::vec3 bbr = offset + glm::vec3(size.x, 0.0f, 0.0f);
+    glm::vec3 btr = offset + glm::vec3(size.x, size.y, 0.0f);
+    glm::vec3 btl = offset + glm::vec3(0.0f, size.y, 0.0f);
+    glm::vec3 x(1.0f, 0.0f, 0.0f);
+    glm::vec3 y(0.0f, 1.0f, 1.0f);
+    glm::vec3 z(0.0f, 0.0f, 1.0f);
+
+    // front face
+    vertices.emplace_back(fbl, z, frontColor);
+    vertices.emplace_back(fbr, z, frontColor);
+    vertices.emplace_back(ftr, z, frontColor);
+    vertices.emplace_back(ftl, z, frontColor);
+    //indices = {0, 1, 2, 3, 0, 2};
+
+    // top face
+    vertices.emplace_back(btl, y, topColor);
+    vertices.emplace_back(ftl, y, topColor);
+    vertices.emplace_back(ftr, y, topColor);
+    vertices.emplace_back(btr, y, topColor);
+
+    // back
+    vertices.emplace_back(bbr, -z, backColor);
+    vertices.emplace_back(bbl, -z, backColor);
+    vertices.emplace_back(btl, -z, backColor);
+    vertices.emplace_back(btr, -z, backColor);
+
+    // right
+    vertices.emplace_back(fbr, x, rightColor);
+    vertices.emplace_back(bbr, x, rightColor);
+    vertices.emplace_back(btr, x, rightColor);
+    vertices.emplace_back(ftr, x, rightColor);
+
+    // left
+    vertices.emplace_back(bbl, -x, leftColor);
+    vertices.emplace_back(fbl, -x, leftColor);
+    vertices.emplace_back(ftl, -x, leftColor);
+    vertices.emplace_back(btl, -x, leftColor);
+
+    // bottom
+    vertices.emplace_back(bbl, -y, bottomColor);
+    vertices.emplace_back(bbr, -y, bottomColor);
+    vertices.emplace_back(fbr, -y, bottomColor);
+    vertices.emplace_back(fbl, -y, bottomColor);
+
+    indices = {
+            0, 1, 2, 3, 0, 2,
+            4, 5, 6, 7, 4, 6,
+            8, 9, 10, 11, 8, 9,
+            12, 13, 14, 15, 12, 14,
+            16, 17, 18, 19, 16, 18,
+            20, 21, 22, 23, 20, 22
+    };
+
+
+    m->m_primitive = GL_TRIANGLES;
+    m->Init(vertices, indices);
+    //m->addTexture(tex, TexType::DIFFUSE);
+
+    return std::make_shared<Model>(m);
+}
+
+std::shared_ptr<Model> ModelFactory::_cube3D(const ITab & t) {
+    std::vector<Vertex3DN> vertices;
+    std::vector<unsigned> indices;
+
+    auto size = glm::vec3(t.get<float>("size", 1.0f));
+    auto tex = t.get<std::string>("tex");
+    auto offset = t.get<glm::vec3>("offset", glm::vec3(0.0f));
+
+    auto m = std::make_shared<Mesh<Vertex3DN>>(ShaderType::TEXTURE_SHADER_LIGHT);
+
+    float u = 1.0f / 3.0f;
+    float u1 = 2.0f / 3.0f;
+
+    glm::vec3 fbl = offset + glm::vec3(0.0f, 0.0f, size.z);
+    glm::vec3 fbr = offset + glm::vec3(size.x, 0.0f, size.z);
+    glm::vec3 ftr = offset + glm::vec3(size.x, size.y, size.z);
+    glm::vec3 ftl = offset + glm::vec3(0.0f, size.y, size.z);
+    glm::vec3 bbl = offset + glm::vec3(0.0f, 0.0f, 0.0f);
+    glm::vec3 bbr = offset + glm::vec3(size.x, 0.0f, 0.0f);
+    glm::vec3 btr = offset + glm::vec3(size.x, size.y, 0.0f);
+    glm::vec3 btl = offset + glm::vec3(0.0f, size.y, 0.0f);
+    glm::vec3 x(1.0f, 0.0f, 0.0f);
+    glm::vec3 y(0.0f, 1.0f, 1.0f);
+    glm::vec3 z(0.0f, 0.0f, 1.0f);
+
+    // front face
+    vertices.emplace_back(fbl, glm::vec2(0.0f, 1.0f), z);
+    vertices.emplace_back(fbr, glm::vec2(u, 1.0f), z);
+    vertices.emplace_back(ftr, glm::vec2(u, u1), z);
+    vertices.emplace_back(ftl, glm::vec2(0.0f, u1), z);
+    //indices = {0, 1, 2, 3, 0, 2};
+
+    // top face
+    vertices.emplace_back(btl, glm::vec2(u, u1), y);
+    vertices.emplace_back(ftl, glm::vec2(u, 1.0f), y);
+    vertices.emplace_back(ftr, glm::vec2(u1, 1.0f), y);
+    vertices.emplace_back(btr, glm::vec2(u1, u1), y);
+
+    // back
+    vertices.emplace_back(bbr, glm::vec2(u1, 1.0f), -z);
+    vertices.emplace_back(bbl, glm::vec2(1.0f, 1.0f), -z);
+    vertices.emplace_back(btl, glm::vec2(1.0f, u1), -z);
+    vertices.emplace_back(btr, glm::vec2(u1, u1), -z);
+
+    // right
+    vertices.emplace_back(fbr, glm::vec2(u1, u1), x);
+    vertices.emplace_back(bbr, glm::vec2(1.0f, u1), x);
+    vertices.emplace_back(btr, glm::vec2(1.0f, u), x);
+    vertices.emplace_back(ftr, glm::vec2(u1, u), x);
+
+    // left
+    vertices.emplace_back(bbl, glm::vec2(u, u1), -x);
+    vertices.emplace_back(fbl, glm::vec2(u1, u1), -x);
+    vertices.emplace_back(ftl, glm::vec2(u1, u), -x);
+    vertices.emplace_back(btl, glm::vec2(u, u), -x);
+
+    // bottom
+    vertices.emplace_back(bbl, glm::vec2(0.0f, u), -y);
+    vertices.emplace_back(bbr, glm::vec2(u, u), -y);
+    vertices.emplace_back(fbr, glm::vec2(u, u1), -y);
+    vertices.emplace_back(fbl, glm::vec2(0, u1), -y);
+
+    indices = {
+        0, 1, 2, 3, 0, 2,
+        4, 5, 6, 7, 4, 6,
+        8, 9, 10, 11, 8, 9,
+        12, 13, 14, 15, 12, 14,
+        16, 17, 18, 19, 16, 18,
+        20, 21, 22, 23, 20, 22
+    };
+
+
+    m->m_primitive = GL_TRIANGLES;
+    m->Init(vertices, indices);
+    m->addTexture(tex, TexType::DIFFUSE);
+
+    return std::make_shared<Model>(m);
 }
 
 std::shared_ptr<Model> ModelFactory::_rect(const ITab & t) {

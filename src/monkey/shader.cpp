@@ -158,6 +158,7 @@ ShaderFactory::ShaderFactory() {
     m_facs["skeletal"] = [] () { return std::make_unique<VShader<MVShader, VertexSkeletal>>("glsl/skeletal.vs", "glsl/skeletal.fs", ShaderType::SKELETAL_SHADER); };
     m_facs["skeletal_color"] = [] () { return std::make_unique<VShader<MVShader, VertexSkeletalColor>>("glsl/skeletal_color.vs", "glsl/skeletal_color.fs", ShaderType::SKELETAL_SHADER_COLOR); };
     m_facs["light"] = [] () { return std::make_unique<VShader<LShader, Vertex3DN>>("glsl/light.vs", "glsl/light.fs", ShaderType::TEXTURE_SHADER_LIGHT); };
+    m_facs["light_color"] = [] () { return std::make_unique<VShader<LShader, VertexColorNormal>>("glsl/color_light.vs", "glsl/color_light.fs", ShaderType::COLOR_SHADER_LIGHT); };
 //    m_facs["unlit_color"] = [] () { return std::make_unique<ColorUnlit>(); };
 //    m_facs["text"] = [] () { return std::make_unique<TextShader>(); };
 //    m_facs["light_color"] = [] () { return std::make_unique<LightShader>(); };

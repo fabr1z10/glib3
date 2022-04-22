@@ -8,3 +8,5 @@
     - color
     - unlit_textured
     - text
+    - light
+    - light_color

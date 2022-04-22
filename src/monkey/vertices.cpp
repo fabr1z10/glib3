@@ -5,6 +5,7 @@ unsigned VertexSkeletal::point_size = 11;
 unsigned Vertex3D::num_vertices = 3;
 unsigned Vertex3DN::num_vertices = 3;
 unsigned VertexColor::num_vertices = 2;
+unsigned VertexColorNormal::num_vertices = 3;
 unsigned VertexSkeletal::num_vertices = 3;
 unsigned VertexSkeletalColor::num_vertices = 3;
 

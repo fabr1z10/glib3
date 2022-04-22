@@ -1,12 +1,46 @@
 ---
   type: _basic
   id: hello_world
+  engines:
+    - type: runner.bullet_world
+
   cam:
-    - type: ortho
+    - type: perspective
       id: main
-      world_size: [320, 240]
-      cam_size: [320, 240]
+      world_size: [100, 100, 100]
+      pos: [-2, 2, 8]
       bounds:
-        x: [0, 320]
-        y: [0, 240]
-        z: [0, 100]
+        x: [-50, 50]
+        y: [-50, 50]
+        z: [-50, 50]
+  items:
+    - type: _directional_light
+      ambient: [0.2, 0.2, 0.2, 1.0]
+      diffuse: [1.0, 1.0, 1.0, 1.0]
+      direction: [0.2, -1, -0.5]
+    - type: _entity
+      model:
+        type: model.cube
+        tex: 'gfx/2.png'
+        offset: [-0.5, -0.5, -0.5]
+      components:
+        - type: bullet.rigid_body
+          pos: [0, 5, 0]
+          mass: 1
+          shape:
+            type: bullet.box
+            size: [0.5, 0.5, 0.5]
+    - type: _entity
+      model:
+        type: model.box3D_color
+        color: [0.5, 0, 0, 1]
+        size: [3, 1, 2]
+        offset: [-1.5, -0.5, -1]
+      components:
+        - type: bullet.rigid_body
+          pos: [0, 0, 0]
+          mass: 0
+          shape:
+            type: bullet.box
+            size: [1.5, 0.5, 1.0]
+      pos: [0, 0, 0]

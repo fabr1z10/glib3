@@ -105,6 +105,8 @@
 #include <monkey/states/jumpattack.h>
 #include <monkey/components/scaler.h>
 #include <monkey/activities/waitforkey.h>
+#include <monkey/bullet/bulletworld.h>
+#include <monkey/bullet/rigidbody.h>
 #include "../scumm/activities/enableblock.h"
 
 
@@ -221,6 +223,9 @@ SceneFactory::SceneFactory() {
     addf<Model>("model.prism", ModelFactory::prism);
 	addf<Model>("model.shape", ModelFactory::shape);
     addf<Model>("model.tiled", ModelFactory::_tiled);
+    addf<Model>("model.cube", ModelFactory::_cube3D);
+    addf<Model>("model.box3D_color", ModelFactory::_box3DColor);
+
     add2<SpriteModel> ("model.sprite");
     add2<BoxedModel> ("model.boxed");
 	add2<SkModel>("model.skeletal");
@@ -257,6 +262,9 @@ SceneFactory::SceneFactory() {
 
     add2<HotSpotManager> ("components.hotspotmanager");
     add2<Scheduler> ("runner.scheduler");
+    add2<BulletWorld> ("runner.bullet_world");
+    add2<BulletRigidBody>("bullet.rigid_body");
+
     add2<SpatialHashingCollisionEngine> ("runner.collisionengine");
     add2<SpatialHashingCollisionEngine3D> ("runner.collisionengine3d");
     //add2<geom3D::CollisionEngine3D> ("runner.collisionengine3d");
@@ -312,10 +320,10 @@ SceneFactory::SceneFactory() {
 
     add2<DirectionalLight> ("light.directional");
 
-    add2<Box2DWorld>("box2d_world");
-    add2<Box2DBody>("box2d_body");
-    add2<Box2DCharacterController>("box2d_cc");
-    add2<Box2DCharacterController2>("box2d_cc2");
+//    add2<Box2DWorld>("box2d_world");
+//    add2<Box2DBody>("box2d_body");
+//    add2<Box2DCharacterController>("box2d_cc");
+//    add2<Box2DCharacterController2>("box2d_cc2");
 
     add2<NullState> ("state.null");
     add2<AnimState> ("state.anim");

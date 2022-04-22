@@ -28,8 +28,12 @@ public:
                                        glm::vec2 scale = glm::vec2(1.0f, 1.0f));
     // create a shape from a polygon
     static std::shared_ptr<Model> _tiled(const ITab&);
-    static std::shared_ptr<IMesh> b2Poly(b2PolygonShape& shape, glm::vec4 color);
+    //static std::shared_ptr<IMesh> b2Poly(b2PolygonShape& shape, glm::vec4 color);
 	static std::shared_ptr<IMesh> _mesh(const ITab&);
+
+    static std::shared_ptr<Model> _box3DColor(const ITab&);
+
+	static std::shared_ptr<Model> _cube3D(const ITab&);
 private:
     static VertexColor get1(float* raw) {
         return VertexColor(raw[0], raw[1], 0.0f, raw[2], raw[3], raw[4], raw[5]);

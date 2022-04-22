@@ -47,6 +47,8 @@ struct __attribute__ ((visibility ("default")))  Vertex3D {
 
 struct Vertex3DN {
     Vertex3DN() = default;
+    Vertex3DN(const glm::vec3& pos, const glm::vec2& tex, const glm::vec3& n) :
+        x(pos.x), y(pos.y), z(pos.z), s(tex[0]), t(tex[1]), nx(n.x), ny(n.y), nz(n.z) {}
     Vertex3DN(
             GLfloat x, GLfloat y, GLfloat z,
             GLfloat s, GLfloat t,
@@ -78,10 +80,14 @@ struct VertexColorNormal {
         GLfloat nx, GLfloat ny, GLfloat nz,
         GLfloat r = 1.0f, GLfloat g = 1.0f, GLfloat b = 1.0f, GLfloat a = 1.0f)
             : x(x), y(y), z(z), nx(nx), ny(ny), nz(nz), r(r), g(g), b(b), a(a) {}
+    VertexColorNormal(const glm::vec3& pos, const glm::vec3& n, const glm::vec4& color) :
+        x(pos.x), y(pos.y), z(pos.z), nx(n.x), ny(n.y), nz(n.z), r(color.r), g(color.g), b(color.b), a(color.a) {}
     GLfloat x, y, z;
     GLfloat nx, ny, nz;
     GLfloat r, g, b, a;
     static void InitAttributes();
+    static unsigned num_vertices;
+
 };
 
 struct VertexText {
