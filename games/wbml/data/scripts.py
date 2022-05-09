@@ -38,6 +38,17 @@ def setup2():
     example.play(s)
     #pane()
 
+def setup3():
+    from wbml.data.actions import WBM
+    s = Script()
+    s.seq([WBM('$msg/5')])
+    example.play(s)
+    #pane()
+
+
+def cazzo():
+    print ('cazzone!?')
+
 def set_warp(player, warp, x, y):
     info = warp.getInfo()
     mopy.monkey.engine.data.globals.active_warp = info['door_id']

@@ -13,11 +13,39 @@ cam:
     cam_size: [192, 192]
 #on_preload:
 #  '@scripts.preload'
-#on_load:
-#  func: '@scripts.setup2'
+on_load:
+  func: '@scripts.setup3'
 engines:
   - type: runner.scheduler
 items:
   - type: bg
     model: model.a2
     pos: [0, 0, 0]
+  - type: _entity
+    model: sprites.creature_2
+    pos: [4,3,0.1]
+  - type: _entity
+    model: sprites.cocktail
+    pos: [1.75,10.2,0.1]
+  - type: _entity
+    model: sprites.beer
+    pos: [9,10.2,0.1]
+  - type: _entity
+    model: sprites.rect
+    pos: [1,10,0.1,4.5,9.5625,0.1,8,10,0.1]
+  - type: _entity
+    model: sprites.exit
+    pos: [4.6875,10,0.11]
+  - type: _entity
+    components:
+      - type: components.keyinput
+        callbacks:
+          - key: 263
+            action: 1
+            func: '@scripts.cazzo'
+  - type: _text
+    font: sprites.mario_font
+    text: '238'
+    size: 8
+    align: bottom_right
+    pos: [3.5,9,1]

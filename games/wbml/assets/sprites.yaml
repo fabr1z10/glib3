@@ -193,6 +193,54 @@ creature_1:
       loop: false
       frames:
         - quads: [113, 196, 56, 60]
+creature_2:
+  type: model.sprite
+  sheet: gfx/wbml.png
+  animations:
+    default:
+      loop: false
+      frames:
+        - quads: [0, 257, 63, 64]
+cocktail:
+  type: model.sprite
+  sheet: gfx/wbml.png
+  animations:
+    default:
+      loop: false
+      frames:
+        - quads: [66, 258, 30, 23]
+beer:
+  type: model.sprite
+  sheet: gfx/wbml.png
+  animations:
+    default:
+      loop: false
+      frames:
+        - quads: [66, 282, 23, 24]
+hand:
+  type: model.sprite
+  sheet: gfx/wbml.png
+  animations:
+    default:
+      loop: false
+      frames:
+        - quads: [66, 307, 24, 26]
+rect:
+  type: model.sprite
+  sheet: gfx/wbml.png
+  animations:
+    default:
+      loop: false
+      frames:
+        - quads: [194, 145, 47, 23]
+exit:
+  type: model.sprite
+  sheet: gfx/wbml.png
+  animations:
+    default:
+      loop: false
+      frames:
+        - quads: [1, 322, 40, 12]
 sword_1:
   type: model.sprite
   sheet: gfx/wbml.png
