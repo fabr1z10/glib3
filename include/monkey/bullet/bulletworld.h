@@ -12,6 +12,8 @@ public:
     //float getScalingFactor() const;
     btCollisionShape* getShape(const ITab&);
     void addBody(btRigidBody*);
+    btDiscreteDynamicsWorld* getDynamicsWorld();
+    btRigidBody* addBody(btScalar mass, const btTransform& startTransform, btCollisionShape* shape);
 private:
     ShapeFactory* m_shapeFactory;
     btDefaultCollisionConfiguration* m_collisionCnfiguration;
@@ -22,4 +24,8 @@ private:
     //keep track of the shapes, we release memory at exit.
     //make sure to re-use collision shapes among rigid bodies whenever possible!
 };
+
+inline btDiscreteDynamicsWorld* BulletWorld::getDynamicsWorld() {
+    return m_dynamicsWorld;
+}
 

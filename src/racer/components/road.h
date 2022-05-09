@@ -14,10 +14,10 @@ class Scheduler;
 
 struct RoadSection {
 	RoadSection() = default;
-	RoadSection(long begins, long ends, float width, float curvature, float slope, float offset) :
-		width(width), curvature(curvature), slope(slope), offset(offset), begins(begins), ends(ends) {}
-	long begins;
-	long ends;
+	RoadSection(long steps, float width, float curvature, float slope, float offset) :
+		width(width), curvature(curvature), slope(slope), offset(offset), steps(steps) {}
+	long startIndex;
+	long steps;
 	float width;
 	float curvature;
 	float slope;

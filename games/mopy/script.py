@@ -26,6 +26,7 @@ class ScriptDesc:
         ia = dict()
         for node, args in self.nodes.items():
             opcode = args[0].lower()
+            print('processing ' + opcode)
             factory = sm.script_factories.get(opcode)
             if not factory:
                 print('mmh cannot find opcode: ' + str(opcode))
@@ -36,8 +37,7 @@ class ScriptDesc:
             ia[node] = (current, e)
             current = e+1
 
-        print(ia)
-        print(self.arcs)
+        print('done!')
         for tail, heads in self.arcs.items():
             for a1 in heads:
                 s.add_edge(ia[tail][1], ia[a1][0])
@@ -52,10 +52,15 @@ class ScriptBuilder:
     def make(self, script_args=[]):
         # seect which desc to use
         index = 0
+        print('fottimi bnelo' + str(len(self.desc)))
         if len(self.desc) > 1:
-            f = getattr(mopy.monkey.engine.data.game, '_select_'+ self.id)
+            selector_id = '_select_'+ self.id
+            print('searching selector: ' + selector_id)
+            f = getattr(mopy.monkey.engine.data.game, selector_id)
             if f:
                 index = f(script_args)
+        print('cazzo: ' + str(len(self.desc)))
+
         return self.desc[index].make(script_args)
 
 class IndirectScriptBuilder:

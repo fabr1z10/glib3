@@ -5,6 +5,10 @@
   window_size: [512, 512]
   start_room: yoshi1
   tick_multiplier: 4
-  fonts:
-    - id: main
-      file: './fonts/prstartk.ttf'
+  shaders:
+    - color
+    - unlit_textured
+    - text
+    - light
+    - light_color
+

@@ -5,10 +5,12 @@
 
 class BulletRigidBody : public Component {
 public:
+    BulletRigidBody() = default;
     BulletRigidBody(const ITab&);
     void Start() override {}
     void Update(double) override;
-private:
+    using ParentClass = BulletRigidBody;
+protected:
     glm::mat4 bulletToGlm(const btTransform& t);
 
     btTransform m_transform;

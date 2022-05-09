@@ -3,6 +3,7 @@
   id: kitchen
   width: 320
   height: 144
+
   items:
     - type: scumm.bg
       image: gfx/kitchen.png

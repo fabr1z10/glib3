@@ -46,7 +46,7 @@ def sierra_walk_to(x, y):
 
 def change_color(color):
     def f(e: example.Wrap1):
-        e.setColor(color, (0, 0, 0, 0))
+        e.setColor((0, 0, 0, 0), color)
     return f
 
 
@@ -243,8 +243,11 @@ def run_action():
         script = mopy.monkey.engine.get_script(sid)
         args = [gl.current_item_1, gl.current_item_2]
         if script:
+            print('fancul')
             scr = script.make(args)
             scr.id = '_main'
+            print('fancul2')
+
             example.play(scr)
         else:
             print(' *** not found.')
@@ -329,8 +332,14 @@ def on_enter_collision_area(player, entity, x, y):
     item = mopy.monkey.engine.data.items[entity.tag]
     on_enter = item.get('on_enter', None)
     if on_enter:
-        f = getattr(mopy.monkey.engine.data.scripts, on_enter)
-        f(player, entity, x, y)
+        script = mopy.monkey.engine.get_script(on_enter)
+        if script:
+            scr = script.make([])
+            example.play(scr)
+        else:
+            print(' *** don''t know script: '  + on_enter)
+        #f = getattr(mopy.monkey.engine.data.scripts, on_enter)
+        #f(player, entity, x, y)
 
 
 def on_leave_collision_area(player, entity, x, y):

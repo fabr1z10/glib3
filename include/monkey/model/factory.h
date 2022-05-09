@@ -32,6 +32,7 @@ public:
 	static std::shared_ptr<IMesh> _mesh(const ITab&);
 
     static std::shared_ptr<Model> _box3DColor(const ITab&);
+    static std::shared_ptr<Model> _rampWireframe(const ITab&);
 
 	static std::shared_ptr<Model> _cube3D(const ITab&);
 private:

@@ -89,6 +89,9 @@ def hotspot(key, desc):
     on_enter = desc.get('on_enter')
     on_leave = desc.get('on_leave')
     on_click = desc.get('on_click')
+    on_enter_f = None
+    on_click_f = None
+    on_leave_f = None
     if on_enter:
         on_enter_args = desc.get('on_enter_args', [])
         on_enter_f = on_enter_hotspot(on_enter, on_enter_args)
@@ -188,6 +191,8 @@ def create_dynamic_wa(key, args=dict()):
     data = mopy.monkey.engine.data
     item = get_item(key)
     item.update(args)
+    print('sti cazzi')
+    print(item)
     if item:
         type = item['type']
         return item_maps[type](key, item)

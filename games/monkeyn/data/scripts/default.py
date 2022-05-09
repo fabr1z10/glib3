@@ -5,6 +5,8 @@ from mopy.script import Script
 from mopy.actions import Walk, Turn, Say
 import mopy.scumm.scriptlib as sl
 
+def init():
+    pass
 
 def walkto_(id, e):
     return sl.walk_to(id)

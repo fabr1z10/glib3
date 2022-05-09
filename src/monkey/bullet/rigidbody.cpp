@@ -13,19 +13,20 @@ BulletRigidBody::BulletRigidBody(const ITab& t) {
 
     m_transform.setIdentity();
     m_transform.setOrigin(btVector3(pos.x, pos.y, pos.z));
-    bool isDynamic = (mass != 0.0f);
-    btVector3 localInertia(0, 0, 0);
-    if (isDynamic)
-        m_shape->calculateLocalInertia(mass, localInertia);
+    m_body = world->addBody(mass, m_transform, m_shape);
+//    bool isDynamic = (mass != 0.0f);
+//    btVector3 localInertia(0, 0, 0);
+//    if (isDynamic)
+//        m_shape->calculateLocalInertia(mass, localInertia);
+//
+//    //using motionstate is optional, it provides interpolation capabilities, and only synchronizes 'active' objects
+//    btDefaultMotionState* myMotionState = new btDefaultMotionState(m_transform);
+//    btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, m_shape, localInertia);
+//    btRigidBody* body = new btRigidBody(rbInfo);
+//
+//    //add the body to the dynamics world
+//    world->addBody(body);
 
-    //using motionstate is optional, it provides interpolation capabilities, and only synchronizes 'active' objects
-    btDefaultMotionState* myMotionState = new btDefaultMotionState(m_transform);
-    btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, m_shape, localInertia);
-    btRigidBody* body = new btRigidBody(rbInfo);
-
-    //add the body to the dynamics world
-    world->addBody(body);
-    m_body = body;
 }
 
 void BulletRigidBody::Update(double) {

@@ -1,6 +1,7 @@
 from mopy.script import Script
 import mopy.engine as engine
 import mopy.monkey as monkey
+import mopy
 from mopy.entity import TextAlignment
 import example
 import random

@@ -1,12 +1,75 @@
----
-  type: default
-  id: yoshi1
-  label: 'Yoshi Island 1'
-  time: 300
-  width: 256
-  height: 256
-  world_width: 320
-  world_height: 16
-  start:
-    - pos: [2, 10]
-  items: []
+type: _basic
+id: world1_1
+display_name: '1_1'
+cam:
+  - type: perspective
+    id: main
+    world_size: [256, 240]
+    cam_size: [256, 240]
+    bounds:
+      x: [-50, 50]
+      y: [-50, 50]
+      z: [-50, 50]
+  - type: ortho
+    id: diag
+    world_size: [256, 240]
+    cam_size: [256, 240]
+items:
+  - type: _entity
+    tag: car
+    model: 01.car
+    scale: [0.006,0.006,1]
+    pos: [0, 0, -1.5]
+  - type: _entity
+    components:
+      - type: components.road
+        items:
+          - model: 01.palm
+            start: 5
+            x: 1.2
+            delta: 2
+            scale: 0.01
+            count: 200
+          - model: 01.palm
+            start: 5
+            x: -1.2
+            delta: 2
+            flip: true
+            scale: 0.01
+            count: 200
+
+        road:
+          - branch: 0
+            sections:
+              - type: road
+                length: 200
+                curve: 0
+                width: 1
+                slope: 0
+              - type: road
+                length: 200
+                curve: 0.01
+                width: 1
+                slope: 0.01
+              - type: road
+                length: 50
+                curve: 0.005
+                width: 1
+                slope: -0.01
+              - type: road
+                length: 50
+                curve: -0.005
+                width: 1
+                slope: 0.01
+              - type: road
+                length: 50
+                curve: 0.005
+                width: 1
+                slope: -0.01
+              - type: road
+                length: 5000
+                curve: -0.005
+                width: 1
+                slope: 0.01
+
+      - type: components.keyinput

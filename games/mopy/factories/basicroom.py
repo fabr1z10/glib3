@@ -13,6 +13,7 @@ def restart():
 
 def play_script(s):
     def f(n):
+
         scr = mopy.monkey.engine.get_script(s).make()
         example.play(scr)
     return f

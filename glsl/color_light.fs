@@ -16,6 +16,7 @@ void main()
     vec3 n = normalize(Normal);
     vec3 e = normalize(vec3(eye));
     float intensity = max (dot(n, -lightDir), 0.0);
+    //intensity *= smoothstep(1.0, 0.2, gl_FragDepth);
     vec4 d = (intensity * diffuse + ambient) * col;
     fragColor = d;
 }

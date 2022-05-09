@@ -64,3 +64,9 @@ def create_entity(id, pos, args=None, parent='main', use_tile=True):
 
 def rgb(r, g, b):
     return (r/255.0, g/255.0, b/255.0, 1.0)
+
+
+def hex_to_rgb(value):
+    value = value.lstrip('#')
+    lv = len(value)
+    return tuple(int(value[i:i + lv // 3], 16)/255.0 for i in range(0, lv, lv // 3))

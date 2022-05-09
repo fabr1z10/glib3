@@ -153,6 +153,7 @@ door_kitchen_scummbar:
   wdir: w
   anim: '@game.doors.kitchen'
   model: 01.door_kitchen_scummbar
+  door: 'kitchen'
 kitchen_potostew:
   type: scumm.item
   model: 01.potostew
@@ -168,6 +169,7 @@ door_pier:
   walk_to: [182, 9]
   anim: '@game.doors.pier'
   wdir: e
+  door: 'pier'
 meat:
   type: scumm.item
   model: 01.meat

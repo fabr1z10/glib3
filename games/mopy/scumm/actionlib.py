@@ -181,8 +181,10 @@ def update_item(item_id, d: dict):
 def pickup_item(item_id, id):
     from mopy.factories.interface import refresh_inventory
     def _pickup_item():
-        example.getById(id).setActive(False)
+        example.get(item_id).setActive(False)
         data = mopy.monkey.engine.data.globals
         data.inventory[item_id] = 1
         refresh_inventory()
+    print('fucka: ' + item_id)
+    print('fucka: ' + str(id))
     return _helper(_pickup_item)

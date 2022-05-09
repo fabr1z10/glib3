@@ -107,6 +107,9 @@
 #include <monkey/activities/waitforkey.h>
 #include <monkey/bullet/bulletworld.h>
 #include <monkey/bullet/rigidbody.h>
+#include <monkey/bullet/vehicle.h>
+#include <monkey/bullet/vehiclefollow.h>
+#include <monkey/components/road.h>
 #include "../scumm/activities/enableblock.h"
 
 
@@ -181,6 +184,7 @@ SceneFactory::SceneFactory() {
     add2<SmartCollider> ("components.smart_collider");
     add2<SkCollider> ("components.skeletalcollider");
     add2<FPSCounter> ("components.fpscounter");
+	add2<Road> ("components.road");
 //	add2<SkColl> ("components.skc");
 //	add2<SkeletalColliderManager>("components.collidermanager");
     add2<ScriptHotSpot> ("components.hotspot");
@@ -225,6 +229,7 @@ SceneFactory::SceneFactory() {
     addf<Model>("model.tiled", ModelFactory::_tiled);
     addf<Model>("model.cube", ModelFactory::_cube3D);
     addf<Model>("model.box3D_color", ModelFactory::_box3DColor);
+    addf<Model>("model.ramp3D_wireframe", ModelFactory::_rampWireframe);
 
     add2<SpriteModel> ("model.sprite");
     add2<BoxedModel> ("model.boxed");
@@ -264,6 +269,8 @@ SceneFactory::SceneFactory() {
     add2<Scheduler> ("runner.scheduler");
     add2<BulletWorld> ("runner.bullet_world");
     add2<BulletRigidBody>("bullet.rigid_body");
+    add2<Vehicle>("bullet.vehicle");
+    add2<VehicleFollow>("bullet.vehicle_follow");
 
     add2<SpatialHashingCollisionEngine> ("runner.collisionengine");
     add2<SpatialHashingCollisionEngine3D> ("runner.collisionengine3d");

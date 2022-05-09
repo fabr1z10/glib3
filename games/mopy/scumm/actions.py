@@ -2,6 +2,7 @@ from mopy.script import Script
 import mopy.engine as engine
 import example
 import random
+import mopy
 import mopy.actions as actions
 import mopy.monkey as monkey
 

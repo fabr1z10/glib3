@@ -81,6 +81,7 @@ void Follow::Start() {
 
 }
 
+
 void DynamicFollow::Start() {
     Follow::Start();
     auto size = dynamic_cast<OrthographicCamera*>(m_cam)->GetSize();

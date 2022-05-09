@@ -1,6 +1,9 @@
 import mopy.util as utils
 import mopy 
 import mopy.scumm.shortcut as sc
+import example
+
+
 class pos:
     kitchen_door = [45, 12]
     scummbar_main_door = [64, 19]
@@ -39,8 +42,9 @@ positions = {
     4: ['village2', pos.village2_archway, 's', 'walkarea_0'],
     5: ['village1', pos.village1_archway, 'w', 'walkarea_0'],
     6: ['scummbar', pos.scummbar_main_door, 'e', 'walkarea_0'],
-    7: ['voodoolady', pos.voodoolady_door, 'e', 'walkarea_0']
-
+    7: ['voodoolady', pos.voodoolady_door, 'e', 'walkarea_0'],
+    8: ['kitchen', pos.kitchen_door, 'e', 'walkarea_0'],
+    9: ['scummbar', pos.scummbar_kitchen_door, 'w', 'walkarea_0']
 }
 
 
@@ -75,5 +79,33 @@ def _select_lookout5():
 def _select__walkdoor(args):
     door_id = sc.get_item(args[0])['door']
     if getattr(doors, door_id) == 'open':
+        return 1
+    return 0
+
+def _select_open_door_scummbar_kitchen(args):
+    cook = example.get('cook')
+    if cook.valid:
+        if cook.x > 320:
+            return 0
+        return 1
+    return 2
+
+def _select_walkto_door_scummbar_kitchen(args):
+    if doors.kitchen == 'closed':
+        return 0
+    else:
+        cook = example.get('cook')
+        if cook.valid:
+            if cook.x > 320:
+                return 1
+            return 2
+        return 0
+
+
+def _select_pickup_fish(args):
+    return 1
+
+def _select_cook_init(args):
+    if mopy.monkey.engine.previous_room == 'kitchen':
         return 1
     return 0

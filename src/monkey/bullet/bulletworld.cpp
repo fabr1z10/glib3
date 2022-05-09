@@ -1,5 +1,36 @@
 #include <monkey/bullet/bulletworld.h>
 
+
+btRigidBody* BulletWorld::addBody(btScalar mass, const btTransform &startTransform, btCollisionShape *shape) {
+    btAssert((!shape || shape->getShapeType() != INVALID_SHAPE_PROXYTYPE));
+
+    //rigidbody is dynamic if and only if mass is non zero, otherwise static
+    bool isDynamic = (mass != 0.f);
+
+    btVector3 localInertia(0, 0, 0);
+    if (isDynamic)
+        shape->calculateLocalInertia(mass, localInertia);
+
+    //using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
+
+#define USE_MOTIONSTATE 1
+#ifdef USE_MOTIONSTATE
+    btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
+
+    btRigidBody::btRigidBodyConstructionInfo cInfo(mass, myMotionState, shape, localInertia);
+
+    btRigidBody* body = new btRigidBody(cInfo);
+    //body->setContactProcessingThreshold(m_defaultContactProcessingThreshold);
+
+#else
+    btRigidBody* body = new btRigidBody(mass, 0, shape, localInertia);
+	body->setWorldTransform(startTransform);
+#endif  //
+
+    m_dynamicsWorld->addRigidBody(body);
+    return body;
+}
+
 BulletWorld::BulletWorld(const ITab& t) {
     float gravity = t.get<float>("gravity", -10.0f);
     ///-----initialization_start-----
@@ -14,7 +45,7 @@ BulletWorld::BulletWorld(const ITab& t) {
     m_overlappingPairCache = new btDbvtBroadphase();
 
     ///the default constraint solver. For parallel processing you can use a different solver (see Extras/BulletMultiThreaded)
-    m_solver = new btSequentialImpulseConstraintSolver;
+    m_solver = new btSequentialImpulseConstraintSolver();
 
     m_dynamicsWorld = new btDiscreteDynamicsWorld(m_dispatcher, m_overlappingPairCache, m_solver, m_collisionCnfiguration);
 

@@ -2,6 +2,7 @@
 
 ShapeFactory::ShapeFactory() {
     m_factories["bullet.box"] = [&] (const ITab& t) { return makeBox(t); };
+    m_factories["bullet.ramp"] = [&] (const ITab& t) { return makeConvexHull(t); };
 }
 
 ShapeFactory::~ShapeFactory() {
@@ -44,4 +45,18 @@ btCollisionShape * ShapeFactory::makeBox(const ITab & t) {
     box->calculateLocalInertia(1.0f, li);
 
     return box;
+}
+
+btCollisionShape * ShapeFactory::makeConvexHull(const ITab & t) {
+    auto shape = new btConvexHullShape();
+    float width = t.get<float>("width");
+    float length = t.get<float>("length");
+    float height = t.get<float>("height");
+    shape->addPoint(btVector3(0.0f, 0.0f, 0.0f));
+    shape->addPoint(btVector3(width, 0.0f, 0.0f));
+    shape->addPoint(btVector3(width, 0.0f, length));
+    shape->addPoint(btVector3(0.0f, 0.0f, length));
+    shape->addPoint(btVector3(width, height, length));
+    shape->addPoint(btVector3(0.0f, height, length));
+    return shape;
 }

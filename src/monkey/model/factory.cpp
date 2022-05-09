@@ -130,6 +130,29 @@ std::shared_ptr<Model> ModelFactory::_tiled(const ITab & t) {
 
 }
 
+std::shared_ptr<Model> ModelFactory::_rampWireframe(const ITab & t) {
+    std::vector<VertexColor> vertices;
+    std::vector<unsigned> indices;
+    float width = t.get<float>("width");
+    float height = t.get<float>("height");
+    float length = t.get<float>("length");
+
+    vertices.emplace_back(0.0f, 0.0f, 0.0f, 1.0f, 1.0, 1.0f, 1.0f);
+    vertices.emplace_back(width, 0.0f, 0.0f, 1.0f, 1.0, 1.0f, 1.0f);
+    vertices.emplace_back(width, 0.0f, length, 1.0f, 1.0, 1.0f, 1.0f);
+    vertices.emplace_back(0.0f, 0.0f, length, 1.0f, 1.0, 1.0f, 1.0f);
+    vertices.emplace_back(width, height, length, 1.0f, 1.0, 1.0f, 1.0f);
+    vertices.emplace_back(0.0f, height, length, 1.0f, 1.0, 1.0f, 1.0f);
+    indices = {0, 1, 1, 2, 2, 3, 3, 0, 1, 4, 2, 4, 0, 5, 3, 5, 4, 5};
+
+    auto m = std::make_shared<Mesh<VertexColor>>(ShaderType::COLOR_SHADER);
+    m->m_primitive = GL_LINES;
+    m->Init(vertices, indices);
+    //m->addTexture(tex, TexType::DIFFUSE);
+
+    return std::make_shared<Model>(m);
+}
+
 std::shared_ptr<Model> ModelFactory::_box3DColor(const ITab & t) {
     std::vector<VertexColorNormal> vertices;
     std::vector<unsigned> indices;
@@ -197,7 +220,7 @@ std::shared_ptr<Model> ModelFactory::_box3DColor(const ITab & t) {
     indices = {
             0, 1, 2, 3, 0, 2,
             4, 5, 6, 7, 4, 6,
-            8, 9, 10, 11, 8, 9,
+            8, 9, 10, 11, 8, 10,
             12, 13, 14, 15, 12, 14,
             16, 17, 18, 19, 16, 18,
             20, 21, 22, 23, 20, 22

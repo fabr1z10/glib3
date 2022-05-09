@@ -1,0 +1,16 @@
+car:
+  sheet: gfx/car.png
+  type: model.sprite
+  animations:
+    default:
+      frames:
+        - ticks: 12
+          quads: [0,0,77,41,-38,0]
+palm:
+  sheet: gfx/or.png
+  type: model.sprite
+  animations:
+    default:
+      frames:
+        - ticks: 1
+          quads: [0,0,78,168, -62,-4]

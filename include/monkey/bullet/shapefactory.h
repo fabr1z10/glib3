@@ -13,6 +13,7 @@ private:
     btAlignedObjectArray<btCollisionShape*> m_collisionShapes;
 
     btCollisionShape* makeBox(const ITab&);
+    btCollisionShape* makeConvexHull(const ITab&);
 
     std::unordered_map<std::string, std::function<btCollisionShape*(const ITab&)>> m_factories;
 

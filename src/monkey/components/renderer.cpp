@@ -13,7 +13,7 @@
 #include <iostream>
 
 
-Renderer::Renderer(std::shared_ptr<Model> model) : m_model(model), m_renderingTransform(1.0f), m_multColor(glm::vec4(1.0f)) {}
+Renderer::Renderer(std::shared_ptr<Model> model) : m_model(model), m_renderingTransform(1.0f), m_multColor(glm::vec4(1.0f)), m_addColor(glm::vec4(0.0f)) {}
 //Renderer::Renderer() : Component(), m_baseModel(nullptr),
 //    m_multColor(1.0f), m_addColor(0.0f), m_renderingTransform(1.0f), m_forceZ(false), m_forcedZ(0.0f),
 //    m_texOffset(0.0f), m_blend(Blend::DEFAULT), m_depth(GL_LESS) {
@@ -38,6 +38,7 @@ Renderer::Renderer(const ITab& t) : m_multColor(1.0f),
 
 void Renderer::init(Shader* shader) {
 	shader->setVec4("mult_color", m_multColor);
+	shader->setVec4("add_color", m_addColor);
 
 }
 

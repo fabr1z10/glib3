@@ -41,6 +41,7 @@ void Road::Start() {
     m_speed = 0.0f;
 	m_acceleration= 10.0f;
 
+
 	m_roadColors[0] = glm::vec4(156, 156, 156, 255) / 255.0f;
 	m_roadColors[1] = glm::vec4(148, 148, 148, 255) / 255.0f;
 	m_terrainColors[1] = glm::vec4(239, 222, 208, 255) / 255.0f;
@@ -168,9 +169,10 @@ void Road::Start() {
 	//m_mesh->UpdateGeometry(vertices, indices);
 }
 
-int Road::addRoadVertices(std::vector<VertexColor>& vertices, std::vector<unsigned int>& indices, float x, float y, float z, unsigned colorIndex, bool addIndices) {
+int Road::addRoadVertices(std::vector<VertexColor>& vertices, std::vector<unsigned int>& indices,
+						  float x, float y, float z, unsigned colorIndex, bool addIndices) {
 	unsigned nv = vertices.size();
-	float darken = exp(0.002f*(z+m_s));
+	float darken = 1.0f; //exp(0.002f*(z+m_s));
 	glm::vec4 multiply (darken, darken, darken, 1.0f);
 	vertices.emplace_back(x - m_roadWidth, y, z, m_roadColors[colorIndex] * darken);
 	vertices.emplace_back(x + m_roadWidth, y, z, m_roadColors[colorIndex] * darken);
@@ -248,6 +250,9 @@ void Road::Update(double dt) {
 	int roadIndex = -1;
     long j0 = int(m_s / m_step);
     long j1 = j0 + n;
+    if (m_lastIndex != j0) {
+    	m_lastIndex = j0;
+    }
     std::unordered_map<int, glm::vec3> pts;
 	for (const auto& road : m_roadInfo) {
 	    roadIndex++;

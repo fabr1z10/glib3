@@ -5,7 +5,8 @@ file(GLOB MONKEY_SOURCE *.cpp python/*.cpp components/*.cpp activities/*.cpp mat
 		states/*.cpp assets/*.cpp model/*.cpp shader/*.cpp skeletal/*.cpp skeletal/animation/*.cpp)
 
 if (DEFINED USE_BULLET)
-  set (MONKEY_SOURCE ${MONKEY_SOURCE} bullet/bulletworld.cpp bullet/rigidbody.cpp bullet/shapefactory.cpp)
+  set (MONKEY_SOURCE ${MONKEY_SOURCE} bullet/bulletworld.cpp bullet/rigidbody.cpp bullet/shapefactory.cpp
+		  bullet/vehicle.cpp bullet/vehiclefollow.cpp)
 endif(DEFINED USE_BULLET)
 
 #set(CMAKE_ENABLE_EXPORTS ON)

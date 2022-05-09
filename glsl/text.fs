@@ -8,7 +8,7 @@ in vec4 col;
 uniform sampler2D texture_diffuse1;
 
 uniform vec4 mult_color;
-//uniform vec4 additive;
+uniform vec4 add_color
         
 
 void main()
@@ -18,5 +18,6 @@ void main()
     if (texColor.a < 0.5)
         discard;
     texColor *= mult_color;
+    texColor += add_color;
     fragColor = texColor;                
 }

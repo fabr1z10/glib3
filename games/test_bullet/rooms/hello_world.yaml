@@ -8,7 +8,7 @@
     - type: perspective
       id: main
       world_size: [100, 100, 100]
-      pos: [-2, 2, 8]
+      pos: [-2, 4, 32]
       bounds:
         x: [-50, 50]
         y: [-50, 50]
@@ -18,29 +18,56 @@
       ambient: [0.2, 0.2, 0.2, 1.0]
       diffuse: [1.0, 1.0, 1.0, 1.0]
       direction: [0.2, -1, -0.5]
-    - type: _entity
-      model:
-        type: model.cube
-        tex: 'gfx/2.png'
-        offset: [-0.5, -0.5, -0.5]
-      components:
-        - type: bullet.rigid_body
-          pos: [0, 5, 0]
-          mass: 1
-          shape:
-            type: bullet.box
-            size: [0.5, 0.5, 0.5]
+#    - type: _entity
+#      model:
+#        type: model.cube
+#        tex: 'gfx/2.png'
+#        offset: [-0.5, -0.5, -0.5]
+#      components:
+#        - type: bullet.rigid_body
+#          pos: [0, 5, 0]
+#          mass: 1
+#          shape:
+#            type: bullet.box
+#            size: [0.5, 0.5, 0.5]
+    - type: box
+      color: '##ee8b73'
+      size: [10, 1, 50]
+      pos: [0, 0, 0]
+      mass: 0
+    - type: ramp
+      width: 10
+      height: 5
+      length: 50
+      pos: [-5, 0.5, 25]
+#    - type: _entity
+#      model:
+#        type: model.box3D_color
+#        color: [0.5, 0, 0, 1]
+#        size: [30, 1, 8]
+#        offset: [-15, -0.5, -4]
+#      components:
+#        - type: bullet.rigid_body
+#          pos: [0, 0, 0]
+#          mass: 0
+#          shape:
+#            type: bullet.box
+#            size: [15, 0.5, 4.0]
+#      pos: [0, 0, 0]
     - type: _entity
       model:
         type: model.box3D_color
-        color: [0.5, 0, 0, 1]
-        size: [3, 1, 2]
-        offset: [-1.5, -0.5, -1]
+        color: [0, 0.5, 0, 1]
+        size: [2, 1, 4]
+        offset: [-1, -0.5, -2.0]
       components:
-        - type: bullet.rigid_body
-          pos: [0, 0, 0]
-          mass: 0
-          shape:
-            type: bullet.box
-            size: [1.5, 0.5, 1.0]
-      pos: [0, 0, 0]
+        - type: components.keyinput
+        - type: bullet.vehicle
+          pos: [0, 2, 0]
+          chassis_mass: 80
+          steering_increment: 0.01
+
+          half_extents: [1, 0.5, 2.0]
+        - type: bullet.vehicle_follow
+          #eye: [20, 3, 0]
+          #dir: [-1, 0, 0]
