@@ -14,7 +14,7 @@ cam:
 #on_preload:
 #  '@scripts.preload'
 on_load:
-  func: '@scripts.setup3'
+  func: '@scripts.setup_bar'
 engines:
   - type: runner.scheduler
 items:
@@ -24,12 +24,10 @@ items:
   - type: _entity
     model: sprites.creature_2
     pos: [4,3,0.1]
-  - type: _entity
-    model: sprites.cocktail
-    pos: [1.75,10.2,0.1]
-  - type: _entity
-    model: sprites.beer
-    pos: [9,10.2,0.1]
+
+#  - type: _entity
+#    model: '#2'
+#    pos: [9.5,10.2,0.1]
   - type: _entity
     model: sprites.rect
     pos: [1,10,0.1,4.5,9.5625,0.1,8,10,0.1]
@@ -42,10 +40,30 @@ items:
         callbacks:
           - key: 263
             action: 1
-            func: '@scripts.cazzo'
+            func: '@scripts.hand_left'
+          - key: 262
+            action: 1
+            func: '@scripts.hand_right'
+          - key: 341
+            action: 1
+            func: '@scripts.hand_select'
   - type: _text
     font: sprites.mario_font
-    text: '238'
+    text: '#1'
     size: 8
     align: bottom_right
+    mode: 1
+    shade_color: [1,0,0,1]
     pos: [3.5,9,1]
+  - type: _text
+    font: sprites.mario_font
+    text: '#3'
+    size: 8
+    align: bottom_right
+    mode: 1
+    shade_color: [1,0,0,1]
+    pos: [11,9,1]
+  - type: _entity
+    model: sprites.hand
+    tag: hand
+    pos: [5.25, 7.625, 0.1]

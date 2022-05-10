@@ -12,4 +12,5 @@ public:
     void Run (float dt) override {}
 private:
     std::string m_roomId;
+    pybind11::object m_args;
 };

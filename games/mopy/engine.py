@@ -217,10 +217,11 @@ class Engine:
 
     def create_room(self):
         filename = example.dir + '/rooms/' + self.room + '.yaml'
+        print('args=' + str(self.room_args))
         try:
             with open(filename) as f:
                 room2 = yaml.load(f, Loader=yaml.FullLoader)
-                room = mopy.monkey.engine.repl_vars(room2)
+                room = mopy.monkey.engine.repl_vars(room2, self.room_args)
                 rt = room['type']
                 if 'on_start' in room:
                     getattr(self.scripts, room['on_start'])()
@@ -372,6 +373,7 @@ class Engine:
     frame_time = 0.1
     title = ''
     room = ''
+    room_args = None
     previous_room = ''
     lang = ''
     taggen = 0

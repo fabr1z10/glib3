@@ -38,16 +38,80 @@ def setup2():
     example.play(s)
     #pane()
 
-def setup3():
+def setup_bar():
+    ra = mopy.monkey.engine.room_args
+    gl = mopy.monkey.engine.data.globals
+    bonus_left = Entity()
+    bonus_left.model = gl.bonus_list[ra[0]]['gfx']
+    bonus_left.pos = (2.5*16, 10.2*16, 0.11)
+    example.get('main').add(bonus_left)
+    bonus_right = Entity()
+    bonus_right.model = gl.bonus_list[ra[2]]['gfx']
+    bonus_right.pos = (9.5*16, 10.2*16, 0.11)
+    example.get('main').add(bonus_right)
+
+
+
+
     from wbml.data.actions import WBM
-    s = Script()
-    s.seq([WBM('$msg/5')])
-    example.play(s)
+
+    # check if player has enough gold to buy items
+    min_cost = min(int(ra[1]), int(ra[3]))
+    if gl.gold < min_cost:
+        s = Script()
+        s.seq([WBM('$msg/8'), act.ChangeRoom('citywl')])
+        example.play(s)
+    else:
+        mopy.monkey.engine.data.globals.pos = [(2, 7.625, 0.1), (5.25, 7.625, 0.1), (9.5, 7.625, 0.1)]
+        mopy.monkey.engine.data.globals.cpos = 1
+        s = Script()
+        s.seq([WBM('$msg/5')])
+        example.play(s)
     #pane()
 
 
-def cazzo():
-    print ('cazzone!?')
+def hand_left():
+    mopy.monkey.engine.data.globals.cpos = max(0,mopy.monkey.engine.data.globals.cpos-1)
+    p = mopy.monkey.engine.data.globals.pos[mopy.monkey.engine.data.globals.cpos]
+    example.get('hand').setPosition(p[0] * 16, p[1] * 16, p[2] * 16)
+
+
+def hand_right():
+    mopy.monkey.engine.data.globals.cpos = min(2,mopy.monkey.engine.data.globals.cpos+1)
+    p = mopy.monkey.engine.data.globals.pos[mopy.monkey.engine.data.globals.cpos]
+    example.get('hand').setPosition(p[0] * 16, p[1] * 16, p[2] * 16)
+
+def hand_select():
+    from wbml.data.actions import WBM
+    gl = mopy.monkey.engine.data.globals
+    selected = mopy.monkey.engine.data.globals.cpos
+    s = Script()
+    if selected == 1:
+        s.seq([act.SetActive(tag='hand', value=False),
+            WBM('$msg/6'), act.SetVariable('globals.start_position', 2), act.ChangeRoom('citywl')])
+    else:
+        bonus_picked = None
+        cost = 0
+        msg = None
+        if selected == 0:
+            bonus_picked = mopy.monkey.engine.room_args[0]
+            cost = int(mopy.monkey.engine.room_args[1])
+            msg = mopy.monkey.engine.room_args[4]
+        else:
+            bonus_picked = mopy.monkey.engine.room_args[2]
+            cost = int(mopy.monkey.engine.room_args[3])
+            msg = mopy.monkey.engine.room_args[5]
+        if mopy.monkey.engine.data.globals.gold >= cost:
+            mopy.monkey.engine.data.globals.gold -= cost
+            bonus =gl.bonus_list[bonus_picked]
+            bonus['callback']()
+            s.seq([
+                act.SetActive(tag='hand', value=False),
+                WBM(msg),
+                act.SetVariable('globals.start_position', 2),
+                act.ChangeRoom('citywl')])
+    example.play(s)
+
 
 def set_warp(player, warp, x, y):
     info = warp.getInfo()
@@ -153,17 +217,20 @@ def pane():
 
 
 def enter_door(x):
-    print('CIAO')
-
     if mopy.monkey.engine.data.globals.active_warp is not None:
         warp_id =mopy.monkey.engine.data.globals.active_warp
         mopy.monkey.engine.data.globals.active_warp = None
         door_info = mopy.monkey.engine.data.globals.doors[warp_id]
         s = Script()
+        args = door_info.get('args',None)
+        print('args=' +str(args))
         s.seq([
             act.SetState(tag='player', state='knock'),
             act.Delay(sec=0.1),
             act.Animate(tag='door_' + str(warp_id), anim='open'),
-            act.ChangeRoom(room=door_info['room'])
+            act.ChangeRoom(room=door_info['room'], args=args)
         ])
         example.play(s)
+
+def panepippo():
+    print('ciao')

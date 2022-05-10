@@ -165,6 +165,15 @@ wboy1:
   boxes:
     - [-4, 0, 4, 24]
     - [10, 10, 20, 20]
+portcullis:
+  type: model.sprite
+  sheet: gfx/wbml.png
+  animations:
+    closed:
+      loop: false
+      frames:
+        - quads: [96,256,32,32]
+
 door:
   type: model.sprite
   sheet: gfx/wbml.png
@@ -208,7 +217,7 @@ cocktail:
     default:
       loop: false
       frames:
-        - quads: [66, 258, 30, 23]
+        - quads: [66, 258, 30, 23, -12, 0]
 beer:
   type: model.sprite
   sheet: gfx/wbml.png
@@ -216,7 +225,7 @@ beer:
     default:
       loop: false
       frames:
-        - quads: [66, 282, 23, 24]
+        - quads: [66, 282, 23, 24, -12, 0]
 hand:
   type: model.sprite
   sheet: gfx/wbml.png

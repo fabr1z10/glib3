@@ -21,12 +21,14 @@ def text(ciao):
     font = ciao['font']
     size = ciao['size']
     text = ciao['text']
+    mode = ciao.get('mode', 0)
+    shade_color = ciao.get('shade_color', None)
     format = ciao.get('format')
     if format:
         text = format(text)
     color = ciao.get('color', (1, 1, 1, 1))
     align = TextAlignment[ciao.get('align')]
-    txt = Text(font, size, text, color, align)
+    txt = Text(font, size, text, color, align, mode=mode, shade_color=shade_color)
     txt.tag = ciao.get('tag')
     return txt
 

@@ -3,6 +3,7 @@ import data.scripts as scripts
 
 tiled_pos = True
 tile_size = [16, 16]
+gold = 200
 jump_height = 96
 time_to_jump_apex = 0.5
 a = utils.compute_gravity(jump_height, time_to_jump_apex)
@@ -66,7 +67,12 @@ collision_engine = {
 
 doors = {
     0: {'open': 1, 'anim': 'closed', 'room': 'pippo'},
-    1: {'open': 1, 'anim': 'bar', 'room': 'bar'}
+    1: {'open': 1, 'anim': 'bar', 'room': 'bar', 'args': ['cocktail', '18', 'beer', '25', '$msg/7', '$msg/10']}
+}
+
+bonus_list = {
+    'cocktail': {'gfx': 'sprites.cocktail', 'callback': scripts.panepippo},
+    'beer': {'gfx': 'sprites.beer', 'callback': scripts.panepippo},
 }
 
 room0 = 0

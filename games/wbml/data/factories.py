@@ -189,9 +189,12 @@ def bg(args):
 
 def trunk(args):
     door = args.get('door')
+    model = args.get('model', 'model.trunk')
+    width = args.get('width', 6)
+    xs = (width - 4)/2
     tag= 'door_' + str(door)
     e = Entity()
-    e.model = 'model.trunk'
+    e.model = model
     door_info = mopy.monkey.engine.data.globals.doors[door]
     if door_info['open'] == 1:
         anim = door_info['anim']
@@ -201,11 +204,11 @@ def trunk(args):
         'type': '_line',
         'size': [4, 0],
         'pass_thru': True},
-        [1, 4]))
+        [xs, 4]))
 
 
     e.children.append(build_entity({
-        'type': 'bg', 'model': 'sprites.door', 'anim': anim, 'tag': tag}, [2, 0, 0]))
+        'type': 'bg', 'model': 'sprites.door', 'anim': anim, 'tag': tag}, [xs + 1, 0, 0]))
     # check if door is available
     if door_info['open'] == 1:
         coll = Entity()
@@ -216,7 +219,7 @@ def trunk(args):
             mask=mopy.monkey.engine.data.globals.CollisionFlags.player,
             tag=mopy.monkey.engine.data.globals.CollisionTags.door,
             debug=True))
-        coll.pos =[2.5*16, 0, 0]
+        coll.pos =[(xs + 1.5)*16, 0, 0]
         coll.add_component(Info(door_id=door))
 
         e.children.append(coll)

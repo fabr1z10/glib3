@@ -3,10 +3,11 @@ id: citywl
 start_positions:
   - pos: [38, 8]
   - pos: [23, 2]
+  - pos: [40.5,3]
 cam:
   - type: ortho
     id: main
-    world_size: [3584, 192]
+    world_size: [1272, 192]
     cam_size: [192, 192]
   - type: ortho
     id: diag
@@ -34,10 +35,26 @@ items:
             4, 9, 4, 9, 4, 9]
     pos: [0, 0, 0]
   - type: rect
-    size: [27, 3]
-    tiles: [4, 8, 4, 8, 4, 8,
+    size: [6, 3]
+    tiles: [4, 8, 4, 8, 5, 8,
             4, 9, 4, 9, 4, 9]
     pos: [38.5, 0, 0]
+  - type: rect
+    size: [10, 2]
+    tiles: [4, 8, 4, 8, 4, 8, 4, 9, 4, 9, 4, 9]
+    pos: [44.5, 0, 0]
+  - type: rect
+    size: [2, 3]
+    tiles: [3, 8, 4, 8, 4, 8, 4, 9, 4, 9, 4, 9]
+    pos: [54.5, 0, 0]
+  - type: rect
+    size: [2, 4]
+    tiles: [3, 8, 4, 8, 4, 8, 4, 9, 4, 9, 4, 9]
+    pos: [56.5, 0, 0]
+  - type: rect
+    size: [21, 5]
+    tiles: [3, 8, 4, 8, 4, 8, 4, 9, 4, 9, 4, 9]
+    pos: [58.5, 0, 0]
   - type: rect
     size: [12, 2]
     tiles: [4, 9, 4, 9, 4, 9,
@@ -63,13 +80,25 @@ items:
 
   - type: bg
     model: model.arrow
-    pos: [6, 2, -1, 27.5, 7, -1]
+    pos: [6, 2, -1, 27.5, 7, -1, 44.5, 2, -1]
   - type: bg
     model: model.sign
     pos: [8,2,-1]
   - type: bg
     model: model.tree
-    pos: [0,2,-1,12,2,-1,15,2,-1, 31.5, 7, -1, 34.5, 7, -1]
+    pos: [0,2,-1,12,2,-1,15,2,-1, 31.5, 7, -1, 34.5, 7, -1,66.5,5,-1,69.5,5,-1,72.5,5,-1]
+  - type: bg
+    model: model.fence
+    pos: [60.5, 5, 0]
+  - type: bg
+    model: model.castle
+    pos: [76.5, 5, 0]
+  - type: trunk
+    door: 0
+    model: model.trunk3
+    width: 4
+    pos: [66.5, 5, 0]
+
     #pos: [5, 5, 0]
 #  - ref: entities.trunk
 #    args:

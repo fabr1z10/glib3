@@ -95,36 +95,63 @@ std::shared_ptr<Model> ModelFactory::_tiled(const ITab & t) {
     auto data = t.get<std::vector<int>>("data");
     size_t n = 0;
     size_t v = 0;
-    for (int j = 0; j < size[1]; ++j) {
-        for (int i = 0; i < size[0]; ++i) {
-            if (data[n] == -1) {
-                n += 1;
-                continue;
-            }
-            bool fliph = false;
-            if (data[n] == -2) {
-                // flip horizontally next tile
-                n++;
-                fliph = true;
-
-            }
-            float tx0 = data[n] * tw;
-            float tx1 = (data[n] + 1) * tw;
-            if (fliph) std::swap(tx0, tx1);
-            verts.emplace_back(i * tileWidth, j * tileHeight, 0, tx0, (data[n+1] + 1) * th, 1, 1, 1, 1);
-            verts.emplace_back((i+1) * tileWidth, j * tileHeight, 0, tx1, (data[n+1] +1) * th, 1, 1, 1, 1);
-            verts.emplace_back((i+1) * tileWidth, (j + 1) * tileHeight, 0, tx1, data[n+1] * th, 1, 1, 1, 1);
-            verts.emplace_back(i * tileWidth, (j+1) * tileHeight, 0, tx0, data[n+1] * th, 1, 1, 1, 1);
-            indices.push_back(v);
-            indices.push_back(v+1);
-            indices.push_back(v+2);
-            indices.push_back(v+2);
-            indices.push_back(v+3);
-            indices.push_back(v);
-            v += 4;
-            n += 2;
+    //for (int j = 0; j < size[1]; ++j) {
+    //    for (int i = 0; i < size[0]; ++i) {
+    int i = 0;
+    int j = 0;
+    int count = 0;
+    int tileCount = size[0] * size[1];
+    while (count < tileCount) {
+    	if (data[n] == -1) {
+        	n += 1;
+        	count++;
+			i++;
+			if (i >= size[0]) {
+				i = 0;
+				j++;
+			}
+            continue;
+    	}
+        bool fliph = false;
+        int repeat = 1;
+        if (data[n] == -2) {
+        	// flip horizontally next tile
+           	n++;
+           	fliph = true;
         }
+
+        if (data[n] == -3) {
+          	n++;
+           	repeat = data[n++];
+        }
+
+        for (int k = 0; k < repeat; k++) {
+			float tx0 = data[n] * tw;
+			float tx1 = (data[n] + 1) * tw;
+			if (fliph) std::swap(tx0, tx1);
+			verts.emplace_back(i * tileWidth, j * tileHeight, 0, tx0, (data[n + 1] + 1) * th, 1, 1, 1, 1);
+			verts.emplace_back((i + 1) * tileWidth, j * tileHeight, 0, tx1, (data[n + 1] + 1) * th, 1, 1, 1, 1);
+			verts.emplace_back((i + 1) * tileWidth, (j + 1) * tileHeight, 0, tx1, data[n + 1] * th, 1, 1, 1, 1);
+			verts.emplace_back(i * tileWidth, (j + 1) * tileHeight, 0, tx0, data[n + 1] * th, 1, 1, 1, 1);
+			indices.push_back(v);
+			indices.push_back(v + 1);
+			indices.push_back(v + 2);
+			indices.push_back(v + 2);
+			indices.push_back(v + 3);
+			indices.push_back(v);
+			v += 4;
+			// increase x
+			i++;
+			if (i >= size[0]) {
+				i = 0;
+				j++;
+			}
+			count++;
+        }
+        n += 2;
+
     }
+
     mesh->Init(verts, indices);
     return std::make_shared<Model>(mesh);
 

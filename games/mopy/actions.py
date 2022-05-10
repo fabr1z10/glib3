@@ -49,9 +49,10 @@ class KillScript:
 
 
 class ChangeRoom:
-    def __init__(self, room: str):
+    def __init__(self, room: str, args=None):
         self.type = 'action.changeroom'
         self.room = room
+        self.args = args
 
 
 class RestartRoom:

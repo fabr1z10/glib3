@@ -5,6 +5,7 @@
 
 ChangeRoom::ChangeRoom(const ITab & t) : Activity() {
     m_roomId = t.get<std::string>("room");
+    m_args = t.get<pybind11::object>("args", pybind11::none());
 }
 
 
@@ -14,6 +15,7 @@ void ChangeRoom::Start() {
     auto oldRoom = t.get<std::string>("room");
     auto obj = t.as<pybind11::object>();
     obj.attr("room") =  m_roomId;
+    obj.attr("room_args") = m_args;
     obj.attr("previous_room") = oldRoom;
 //    luabridge::LuaRef ref = LuaWrapper::GetGlobalPath({"engine","state"});
 //    std::string oldRoom = ref["room"].cast<std::string>();
